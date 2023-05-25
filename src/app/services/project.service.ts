@@ -28,6 +28,7 @@ export class ProjectService {
     public appConfigService: AppConfigService,
     private logger: LoggerService
   ) {
+
     this.user = auth.user_bs.value
     this.checkIfUserExistAndGetToken()
 

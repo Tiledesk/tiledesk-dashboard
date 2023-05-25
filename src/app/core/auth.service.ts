@@ -23,7 +23,8 @@ import { AppConfigService } from '../services/app-config.service'
 import { WebSocketJs } from '../services/websocket/websocket-js'
 import { LoggerService } from '../services/logger/logger.service'
 import { ScriptService } from '../services/script/script.service'
-import { PLAN_NAME } from 'app/utils/util'
+import { APP_SUMO_PLAN_NAME, PLAN_NAME } from 'app/utils/util'
+// import { ProjectPlanService } from 'app/services/project-plan.service'
 
 // import { SsoService } from './sso.service';
 
@@ -42,7 +43,8 @@ const superusers = [
 
 @Injectable()
 export class AuthService {
-  PLAN_NAME = PLAN_NAME
+  PLAN_NAME = PLAN_NAME;
+  APP_SUMO_PLAN_NAME = APP_SUMO_PLAN_NAME;
   SERVER_BASE_PATH: string
   SIGNUP_BASE_URL: string
   SIGNIN_BASE_URL: string
@@ -81,7 +83,9 @@ export class AuthService {
   HAS_JWT: boolean
 
   selected_project_id: string
-  public_Key: string
+  public_Key: string;
+  appSumoProfile: string;
+  prjct_profile_name_for_segment: string;
 
   constructor(
     private _httpClient: HttpClient,
@@ -94,6 +98,7 @@ export class AuthService {
     public webSocketJs: WebSocketJs,
     private logger: LoggerService,
     private scriptService: ScriptService,
+    // private prjctPlanService: ProjectPlanService,
   ) // public ssoService: SsoService
   {
     this.logger.log(
@@ -114,8 +119,55 @@ export class AuthService {
 
     this.checkIfExpiredSessionModalIsOpened()
     this.getAppConfigAnBuildUrl()
-
+    // this.getProjectPlan()
   }
+
+  // getProjectPlan() {
+  //   this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
+  //     console.log('[NAVBAR] - getProjectPlan project Profile Data', projectProfileData)
+  //     if (projectProfileData) {
+        
+  //       if (projectProfileData && projectProfileData.extra3) {
+  //         this.logger.log('[NAVBAR] projectProfileData extra3', projectProfileData.extra3)
+  //         this.appSumoProfile = APP_SUMO_PLAN_NAME[projectProfileData.extra3]
+  //         this.logger.log('[NAVBAR] projectProfileData appSumoProfile ', this.appSumoProfile)
+  //       }
+
+  //       if (projectProfileData.profile_type === 'free') {
+  //         if (projectProfileData.trial_expired === false) {
+  //           this.prjct_profile_name_for_segment = PLAN_NAME.B + " plan (trial)"
+
+  //         } else {
+  //           this.prjct_profile_name_for_segment = "Free plan";
+  //         }
+  //       } else if (projectProfileData.profile_type === 'payment') {
+
+  //         if (projectProfileData.profile_name === PLAN_NAME.A) {
+  //           if (!this.appSumoProfile) {
+  //             this.prjct_profile_name_for_segment = PLAN_NAME.A + " plan";
+
+  //           } else {
+  //             this.prjct_profile_name_for_segment = PLAN_NAME.A + " plan " + '(' + this.appSumoProfile + ')';
+
+  //           }
+  //         } else if (projectProfileData.profile_name === PLAN_NAME.B) {
+  //           if (!this.appSumoProfile) {
+  //             this.prjct_profile_name_for_segment = PLAN_NAME.B + " plan";
+
+  //           } else {
+  //             this.prjct_profile_name_for_segment = PLAN_NAME.B + " plan " + '(' + this.appSumoProfile + ')';
+  //           }
+  //         } else if (projectProfileData.profile_name === PLAN_NAME.C) {
+  //           this.prjct_profile_name_for_segment = PLAN_NAME.C + " plan";
+  //         }
+  //       }
+  //     }
+  //   }, error => {
+  //     this.logger.error('[NAVBAR] - getProjectPlan - ERROR', error);
+  //   }, () => {
+  //     this.logger.log('[NAVBAR] - getProjectPlan - COMPLETE')
+  //   });
+  // }
 
 
   browserNameAndVersion(browserName, browserVersion) {
@@ -247,6 +299,11 @@ export class AuthService {
     this.logger.log('[AUTH-SERV] PUBLISH THE PROJECT OBJECT RECEIVED  > selected_project_id ', project._id,)
     this.selected_project_id = project._id // used in checkRoleForCurrentProject if nav_project_id is undefined
     this.project_bs.next(project)
+  }
+
+  projectProfile(projectprofile) {
+    // console.log('[AUTH-SERV] - PROJECT PROFILE ', projectprofile)
+    this.prjct_profile_name_for_segment = projectprofile
   }
 
   toggleSettingsSidebar(isopened) {
@@ -983,7 +1040,7 @@ export class AuthService {
                 name: storedUserParsed.firstname + ' ' + storedUserParsed.lastname,
                 email: storedUserParsed.email,
                 logins: 5,
-                plan: projectProfileName
+                plan: this.prjct_profile_name_for_segment
               });
             } catch (err) {
               this.logger.error('identify Signed Out error', err);
@@ -1005,7 +1062,7 @@ export class AuthService {
             try {
               window['analytics'].group(projectId, {
                 name: storedPrjctParsed.name,
-                plan: projectProfileName,
+                plan: this.prjct_profile_name_for_segment,
               });
             } catch (err) {
               this.logger.error('group Signed Out error', err);
@@ -1054,10 +1111,7 @@ export class AuthService {
 
     this.user_bs.next(null)
     this.project_bs.next(null)
-    this.logger.log(
-      '[AUTH-SERV] SIGNOUT project_bs VALUE: ',
-      this.project_bs.value,
-    )
+    this.logger.log(  '[AUTH-SERV] SIGNOUT project_bs VALUE: ', this.project_bs.value, )
 
     const storedRoute = this.localDbService.getFromStorage('wannago')
     if (storedRoute) {

@@ -336,6 +336,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
         this.appSumoProfile = APP_SUMO_PLAN_NAME[projectProfileData.extra3]
         this.logger.log('[HOME] Find Current Project appSumoProfile ', this.appSumoProfile)
+       
       }
 
       // console.log('[HOME] - Find Current Project Among All - current_selected_prjct - prjct_name ', this.prjct_name);
@@ -362,12 +363,14 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           this.logger.log('[HOME] Find Current Project Among All BRS-LANG 2 ', this.browserLang);
           this.profile_name_for_segment = PLAN_NAME.B + " (trial)"
           this.prjct_profile_name = PLAN_NAME.B + " (trial)"
+          this.auth.projectProfile(this.profile_name_for_segment)
           // this.getProPlanTrialTranslation();
 
         } else {
           // this.isVisibleANA = false;
 
           this.profile_name_for_segment = "Free"
+          this.auth.projectProfile(this.profile_name_for_segment)
           this.prjct_profile_name = "Free plan";
           // this.getPaidPlanTranslation(this.prjct_profile_name);
           this.logger.log('[HOME] Find Current Project Among All BRS-LANG 3 ', this.browserLang);
@@ -381,9 +384,11 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           if (!this.appSumoProfile) {
             this.prjct_profile_name = PLAN_NAME.A + ' plan'
             this.profile_name_for_segment = PLAN_NAME.A
+            this.auth.projectProfile(this.profile_name_for_segment)
           } else {
             this.prjct_profile_name = PLAN_NAME.A + ' plan ' + '(' + this.appSumoProfile + ')'
             this.profile_name_for_segment = PLAN_NAME.A + '(' + this.appSumoProfile + ')'
+            this.auth.projectProfile(this.profile_name_for_segment)
           }
 
           // this.isVisibleANA = false;
@@ -393,15 +398,18 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           if (!this.appSumoProfile) {
             this.prjct_profile_name = PLAN_NAME.B + ' plan'
             this.profile_name_for_segment = PLAN_NAME.B
+            this.auth.projectProfile(this.profile_name_for_segment)
           } else {
-            this.prjct_profile_name = PLAN_NAME.B + ' plan' + '(' + this.appSumoProfile + ')'
+            this.prjct_profile_name = PLAN_NAME.B + ' plan ' + '(' + this.appSumoProfile + ')'
             this.profile_name_for_segment = PLAN_NAME.B + '(' + this.appSumoProfile + ')'
+            this.auth.projectProfile(this.profile_name_for_segment)
           }
 
 
         } else if (this.prjct_profile_name === PLAN_NAME.C) {
           this.prjct_profile_name = PLAN_NAME.C + ' plan'
           this.profile_name_for_segment = PLAN_NAME.C
+          this.auth.projectProfile(this.profile_name_for_segment)
           if (this.subscription_is_active) {
             // this.isVisibleANA = true;
           } else {

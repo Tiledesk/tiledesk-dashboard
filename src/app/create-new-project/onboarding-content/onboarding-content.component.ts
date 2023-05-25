@@ -74,7 +74,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
   botId: string;
   CREATE_FAQ_ERROR: boolean = false;
 
-  segmentAttributes: any = {};
+  segmentIdentifyAttributes: any = {};
   isFirstProject: boolean = false;
 
   constructor(
@@ -355,7 +355,8 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
   }
 
   goToNextQuestion($event){
-    this.segmentAttributes = $event;
+    this.segmentIdentifyAttributes = $event;
+    // console.log('goToNextQuestion::: ', $event, this.segmentIdentifyAttributes)
     this.checkQuestions();
   }
 
@@ -392,7 +393,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
 
   goToNextStep() {
     // this.DISPLAY_SPINNER_SECTION = false;  
-    if(this.segmentAttributes["solution_channel"] === "whatsapp_fb_messenger"){
+    if(this.segmentIdentifyAttributes && this.segmentIdentifyAttributes["solution_channel"] === "whatsapp_fb_messenger"){
       this.arrayOfSteps.splice(this.arrayOfSteps.length - 2);
       this.createNewProject();
     } else {
@@ -501,7 +502,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
               name: this.user.firstname + ' ' + this.user.lastname,
               email: this.user.email,
               logins: 5,
-              plan: "Pro (trial)"
+              plan: "Scale (trial)"
             });
           } catch (err) {
             this.logger.error('Wizard Create project identify error', err);
@@ -511,7 +512,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
               "userId": this.user._id,
               "trial_start_date": trialStarDate,
               "trial_end_date": trialEndDate,
-              "trial_plan_name": "Pro (trial)",
+              "trial_plan_name": "Scale (trial)",
               "context": {
                 "groupId": this.newProject._id
               }
@@ -522,7 +523,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
           try {
             window['analytics'].group(this.newProject._id, {
               name: this.newProject.name,
-              plan: "Pro (trial)",
+              plan: "Scale (trial)",
             });
           } catch (err) {
             this.logger.error('Wizard Create project group error', err);
@@ -591,17 +592,24 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
       this.DISPLAY_SPINNER_SECTION = true;
       this.DISPLAY_SPINNER = false;
 
-      this.segmentAttributes["projectId"] = this.projectID;
-      this.segmentAttributes["projectName"] = this.projectName;
-      this.segmentAttributes["userId"] = this.user._id;
-      this.segmentAttributes["username"] = this.user.firstname + ' ' + this.user.lastname;
-      this.segmentAttributes["botId"] = this.botId;
+
+
+      // this.segmentAttributes["projectId"] = this.projectID;
+      // this.segmentAttributes["projectName"] = this.projectName;
+      // this.segmentAttributes["userId"] = this.user._id;
+      // this.segmentAttributes["username"] = this.user.firstname + ' ' + this.user.lastname;
+      // this.segmentAttributes["botId"] = this.botId;
+
       let segmentPageName = "Wizard, Onboarding";
       let segmentTrackName = "Onboarding";
-      let segmentTrackAttr = this.segmentAttributes;
-
-      this.segment(segmentPageName, segmentTrackName, segmentTrackAttr);
-
+      var segmentTrackAttr = {};
+      segmentTrackAttr["projectId"] = this.projectID;
+      segmentTrackAttr["projectName"] = this.projectName;
+      segmentTrackAttr["userId"] = this.user._id;
+      segmentTrackAttr["username"] = this.user.firstname + ' ' + this.user.lastname;
+      segmentTrackAttr["botId"] = this.botId;
+      // let segmentTrackAttr = this.segmentAttributes;
+      this.segment(segmentPageName, segmentTrackName, segmentTrackAttr, this.segmentIdentifyAttributes);
       // this.DISPLAY_SPINNER_SECTION = false;
       // this.DISPLAY_BOT = true;
       this.goToExitOnboarding();
@@ -611,8 +619,8 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
 
 
 
-  segment(pageName, trackName, trackAttr){
-    // console.log('segment::: ', trackAttr);
+  segment(pageName, trackName, trackAttr, segmentIdentifyAttributes){
+    // console.log('segment::: ', segmentIdentifyAttributes);
     if (!isDevMode()) {
       try {
         window['analytics'].page(pageName, {
@@ -624,7 +632,8 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
         window['analytics'].identify(this.user._id, {
           name: this.user.firstname + ' ' + this.user.lastname,
           email: this.user.email,
-          logins: 5
+          logins: 5, 
+          segmentIdentifyAttributes
         });
       } catch (err) {
         this.logger.error(pageName+' identify error', err);

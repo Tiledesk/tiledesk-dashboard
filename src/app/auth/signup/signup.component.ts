@@ -638,7 +638,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
         // console.log('self.EXIST_STORED_ROUTE: ', self.EXIST_STORED_ROUTE, self.storedRoute);
         // console.log('self.SKIP_WIZARD: ', self.SKIP_WIZARD);
         
-        //if (!self.EXIST_STORED_ROUTE) {
+        if (!self.EXIST_STORED_ROUTE) {
           if (self.SKIP_WIZARD === false) {
             // self.router.navigate(['/create-project']);
             // self.createNewProject(signupResponse)
@@ -646,10 +646,10 @@ export class SignupComponent implements OnInit, AfterViewInit {
           } else {
             self.router.navigate(['/projects']);
           }
-        // } else {
-        //   // self.localDbService.removeFromStorage('wannago')
-        //   self.router.navigate([self.storedRoute]);
-        // }
+        } else {
+          // self.localDbService.removeFromStorage('wannago')
+          self.router.navigate([self.storedRoute]);
+        }
 
       } else {
         self.showSpinnerInLoginBtn = false;

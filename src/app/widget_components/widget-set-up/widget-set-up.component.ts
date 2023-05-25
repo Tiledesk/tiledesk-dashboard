@@ -44,6 +44,7 @@ import { isDevMode } from '@angular/core';
 export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, AfterViewInit, OnDestroy {
   PLAN_NAME = PLAN_NAME;
   APP_SUMO_PLAN_NAME = APP_SUMO_PLAN_NAME;
+  prjct_profile_name_for_segment:string;
   public disabled = false;
   public color: ThemePalette = 'primary';
   public touchUi = false;
@@ -208,7 +209,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   cancel: string;
   upgradePlan: string;
   appSumoProfile: string;
-  appSumoProfilefeatureAvailableFromBPlan:string;
+  appSumoProfilefeatureAvailableFromBPlan: string;
 
   en_missing_labels =
     {
@@ -577,14 +578,45 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           this.subscription_end_date = projectProfileData.subscription_end_date;
 
           if (projectProfileData.extra3) {
-            this.logger.log('[WIDGET-SET-UP] projectProfileData.extra3 ',projectProfileData.extra3)
+            this.logger.log('[WIDGET-SET-UP] projectProfileData.extra3 ', projectProfileData.extra3)
             this.appSumoProfile = APP_SUMO_PLAN_NAME[projectProfileData.extra3]
-            this.appSumoProfilefeatureAvailableFromBPlan =  APP_SUMO_PLAN_NAME['tiledesk_tier3']
+            this.appSumoProfilefeatureAvailableFromBPlan = APP_SUMO_PLAN_NAME['tiledesk_tier3']
             if (projectProfileData.extra3 === "tiledesk_tier1" || projectProfileData.extra3 === "tiledesk_tier2") {
               this.t_params = { 'plan_name': this.appSumoProfilefeatureAvailableFromBPlan }
             }
           } else if (!projectProfileData.extra3) {
             this.t_params = { 'plan_name': PLAN_NAME.B }
+          }
+
+
+          if (projectProfileData.profile_type === 'free') {
+            if (projectProfileData.trial_expired === false) {
+              this.prjct_profile_name_for_segment = PLAN_NAME.B + " plan (trial)"
+
+            } else {
+              this.prjct_profile_name_for_segment = "Free plan";
+
+            }
+          } else if (projectProfileData.profile_type === 'payment') {
+
+            if (projectProfileData.profile_name === PLAN_NAME.A) {
+              if (!this.appSumoProfile) {
+                this.prjct_profile_name_for_segment = PLAN_NAME.A + " plan";
+
+              } else {
+                this.prjct_profile_name_for_segment = PLAN_NAME.A + " plan " + '(' + this.appSumoProfile + ')';
+              }
+            } else if (projectProfileData.profile_name === PLAN_NAME.B) {
+              if (!this.appSumoProfile) {
+                this.prjct_profile_name_for_segment = PLAN_NAME.B + " plan";
+
+              } else {
+                this.prjct_profile_name_for_segment = PLAN_NAME.B + " plan " + '(' + this.appSumoProfile + ')';;
+
+              }
+            } else if (projectProfileData.profile_name === PLAN_NAME.C) {
+              this.prjct_profile_name_for_segment = PLAN_NAME.C + " plan";
+            }
           }
 
           // if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false || this.prjct_profile_type === 'free' && this.prjct_trial_expired === true) {
@@ -721,7 +753,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
             name: this.user.firstname + ' ' + this.user.lastname,
             email: this.user.email,
             logins: 5,
-            plan: this.profile_name,
+            plan: this.prjct_profile_name_for_segment,
           });
         } catch (err) {
           this.logger.error('identify [WIDGET-SET-UP] Update plan error', err);
@@ -730,7 +762,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         try {
           window['analytics'].group(this.id_project, {
             name: this.projectName,
-            plan: this.profile_name,
+            plan: this.prjct_profile_name_for_segment,
           });
         } catch (err) {
           this.logger.error('group [WIDGET-SET-UP] Update plan error', err);
@@ -2043,7 +2075,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           // console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) THEME COLOR: ', this.primaryColor);
           this.primaryColorRgb = this.hexToRgb(this.primaryColor)
           this.generateRgbaGradientAndBorder(this.primaryColorRgb);
-     
+
         } else {
 
           // ------------------------------------------------------------------------
@@ -2066,7 +2098,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           // console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) THEME COLOR OPACITY: ', this.themeColorOpacity);
           this.primaryColorOpacityEnabled = false
           this.generateRgbaGradientAndBorder(this.primaryColorRgb);
-        } 
+        }
         if (project.widget.themeColorOpacity === 0) {
           // console.log('here yes project.widget.themeColorOpacity ', project.widget.themeColorOpacity)
           this.themeColorOpacity = "0.50";

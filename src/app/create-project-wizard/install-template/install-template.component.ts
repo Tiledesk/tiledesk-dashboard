@@ -15,13 +15,16 @@ import { Location } from '@angular/common';
 import { BotLocalDbService } from 'app/services/bot-local-db.service';
 import { DepartmentService } from 'app/services/department.service';
 import { AppConfigService } from 'app/services/app-config.service';
+import { APP_SUMO_PLAN_NAME, PLAN_NAME } from 'app/utils/util';
 @Component({
   selector: 'appdashboard-install-template',
   templateUrl: './install-template.component.html',
   styleUrls: ['./install-template.component.scss']
 })
 export class InstallTemplateComponent extends WidgetSetUpBaseComponent implements OnInit {
-
+  PLAN_NAME = PLAN_NAME;
+  APP_SUMO_PLAN_NAME = APP_SUMO_PLAN_NAME;
+  appSumoProfile: string
   projectId: string;
   projectName: string;
   projectPlan: string;
@@ -48,6 +51,7 @@ export class InstallTemplateComponent extends WidgetSetUpBaseComponent implement
   public templatesCertifiedTags: any;
   project: Project;
   public TESTSITE_BASE_URL: string;
+  prjct_profile_name: string
   constructor(
     private route: ActivatedRoute,
     private faqKbService: FaqKbService,
@@ -145,10 +149,49 @@ export class InstallTemplateComponent extends WidgetSetUpBaseComponent implement
         projects.forEach(project => {
           // this.logger.log('[INSTALL-TEMPLATE] - GET PROJECTS  project ', project);
           if (project.id_project.id === projectid) {
-            // this.logger.log('[INSTALL-TEMPLATE] - GET PROJECTS selected project ', project);
+            console.log('[INSTALL-TEMPLATE] - GET PROJECTS selected project ', project);
             this.project = project.id_project
             this.projectName = project.id_project.name;
             this.projectPlan = project.id_project.profile.name
+
+            if (project.id_project.profile.extra3) {
+              
+              this.appSumoProfile = APP_SUMO_PLAN_NAME[project.id_project.profile.extra3]
+              console.log('[INSTALL-TEMPLATE] Find Current Project appSumoProfile ', this.appSumoProfile)
+            }
+
+
+            if (project.id_project.profile.type === 'free') {
+              if (project.id_project.trial_expired === false) {
+                this.prjct_profile_name = PLAN_NAME.B + " plan (trial)"
+               
+                
+              } else {
+                this.prjct_profile_name = "Free plan";
+              
+              }
+            } else if (project.id_project.profile.type === 'payment') {
+            
+                if (project.id_project.profile.name === PLAN_NAME.A) {
+                  if (!this.appSumoProfile) {
+                    this.prjct_profile_name = PLAN_NAME.A + " plan";
+                  
+                  } else {
+                    this.prjct_profile_name = PLAN_NAME.A + " plan " + '(' + this.appSumoProfile + ')';
+                  
+                  }
+                } else if (project.id_project.profile.name === PLAN_NAME.B) {
+                  if (!this.appSumoProfile) {
+                    this.prjct_profile_name = PLAN_NAME.B + " plan";
+                   
+                  } else {
+                    this.prjct_profile_name = PLAN_NAME.B + " plan " + '(' + this.appSumoProfile + ')';;
+                  
+                  }
+                } else if (project.id_project.profile.name === PLAN_NAME.C) {
+                  this.prjct_profile_name = PLAN_NAME.C + " plan";
+                }
+            }
 
             const selectedProject: Project = {
               _id: project['id_project']['_id'],
@@ -234,7 +277,7 @@ export class InstallTemplateComponent extends WidgetSetUpBaseComponent implement
             try {
               window['analytics'].group(this.projectId, {
                 name: this.projectName,
-                plan: this.projectPlan,
+                plan: this.prjct_profile_name,
               });
             } catch (err) {
               this.logger.error('Group Install template group error', err);
@@ -380,7 +423,7 @@ export class InstallTemplateComponent extends WidgetSetUpBaseComponent implement
 
           try {
             window['analytics'].group(this.projectId, {
-              name: this.projectName,
+              name: this.prjct_profile_name,
 
             });
           } catch (err) {
