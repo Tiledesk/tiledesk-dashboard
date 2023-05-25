@@ -12,7 +12,7 @@ import { BrandService } from '../services/brand.service';
 import { LoggerService } from '../services/logger/logger.service';
 import { AppConfigService } from '../services/app-config.service';
 import { TranslateService } from '@ngx-translate/core';
-import { featuresPlanA, featuresPlanB, highlightedFeaturesPlanA, highlightedFeaturesPlanB, PLAN_NAME } from 'app/utils/util';
+import { featuresPlanA, featuresPlanB, featuresPlanC, highlightedFeaturesPlanA, highlightedFeaturesPlanB, highlightedFeaturesPlanC, PLAN_NAME } from 'app/utils/util';
 import { NotifyService } from 'app/core/notify.service';
 
 declare var Stripe: any;
@@ -562,8 +562,8 @@ export class PricingComponent implements OnInit, OnDestroy {
 
     if (planname === PLAN_NAME.C) {
       // console.log(' PLAN C Features');
-      this.planFeatures = featuresPlanA;
-      this.highlightedFeatures = highlightedFeaturesPlanA;
+      this.planFeatures = featuresPlanC;
+      this.highlightedFeatures = highlightedFeaturesPlanC;
     }
 
     this.selectedPeriod('monthly')
