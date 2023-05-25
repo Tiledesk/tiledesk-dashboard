@@ -36,7 +36,7 @@ import { Subscription } from 'rxjs'
 import { BrandService } from './../../services/brand.service';
 import { LocalDbService } from '../../services/users-local-db.service';
 import { LoggerService } from '../../services/logger/logger.service';
-import { PLAN_NAME, URL_understanding_default_roles } from '../../utils/util';
+import { APP_SUMO_PLAN_NAME, PLAN_NAME, URL_understanding_default_roles } from '../../utils/util';
 
 const swal = require('sweetalert');
 
@@ -48,8 +48,10 @@ const swal = require('sweetalert');
 })
 export class NavbarComponent implements OnInit, AfterViewInit, AfterContentChecked, OnDestroy, AfterViewChecked {
 
-  PLAN_NAME = PLAN_NAME
-
+  PLAN_NAME = PLAN_NAME;
+  APP_SUMO_PLAN_NAME: APP_SUMO_PLAN_NAME;
+  appSumoProfile: string;
+  prjct_profile_name_for_segment: string;
   URL_UNDERSTANDING_DEFAULT_ROLES = URL_understanding_default_roles
   // used to unsuscribe from behaviour subject
   private unsubscribe$: Subject<any> = new Subject<any>();
@@ -153,7 +155,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
   flag_url: string;
   dsbrd_lang: string;
   tlangparams: any;
-  
+
   constructor(
     location: Location,
     private element: ElementRef,
@@ -261,7 +263,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
   getLoggedUser() {
     this.auth.user_bs.subscribe((user) => {
-    //  console.log('[NAVBAR] »»» »»» USER GET IN NAVBAR ', user)
+      //  console.log('[NAVBAR] »»» »»» USER GET IN NAVBAR ', user)
       // tslint:disable-next-line:no-debugger
       // debugger
       this.user = user;
@@ -610,9 +612,9 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
    * - WHEN IS DETECTED THE PROJECT PAGE OR THE LOGIN PAGE OR THE SIGNUP PAGE  THE "PENDING EMAIL VERIFICATION ALERT " IS NOT DISPLAYED
    */
   hidePendingEmailNotification() {
-  //  const hidePendingEmailAlert = this.localDbService.getFromStorage('hpea');
+    //  const hidePendingEmailAlert = this.localDbService.getFromStorage('hpea');
 
-  
+
     this.router.events.subscribe((val) => {
       if (this.location.path() !== '') {
         this.route = this.location.path();
@@ -744,7 +746,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
   getProjectPlan() {
     this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-      // console.log('[NAVBAR] - getProjectPlan project Profile Data', projectProfileData)
+      console.log('[NAVBAR] - getProjectPlan project Profile Data', projectProfileData)
       if (projectProfileData) {
         this.prjct_profile_name = projectProfileData.profile_name;
         this.profile_name = projectProfileData.profile_name;
@@ -753,6 +755,43 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
         this.prjct_profile_type = projectProfileData.profile_type;
         this.subscription_end_date = projectProfileData.subscription_end_date;
         this.subscription_is_active = projectProfileData.subscription_is_active;
+
+        if (projectProfileData && projectProfileData.extra3) {
+          this.logger.log('[NAVBAR] projectProfileData extra3', projectProfileData.extra3)
+          this.appSumoProfile = APP_SUMO_PLAN_NAME[projectProfileData.extra3]
+          this.logger.log('[NAVBAR] projectProfileData appSumoProfile ', this.appSumoProfile)
+        }
+
+        if (projectProfileData.profile_type === 'free') {
+          if (projectProfileData.trial_expired === false) {
+            this.prjct_profile_name_for_segment = PLAN_NAME.B + " plan (trial)"
+
+          } else {
+            this.prjct_profile_name_for_segment = "Free plan";
+          }
+        } else if (projectProfileData.profile_type === 'payment') {
+
+          if (projectProfileData.profile_name === PLAN_NAME.A) {
+            if (!this.appSumoProfile) {
+              this.prjct_profile_name_for_segment = PLAN_NAME.A + " plan";
+
+            } else {
+              this.prjct_profile_name_for_segment = PLAN_NAME.A + " plan " + '(' + this.appSumoProfile + ')';
+
+            }
+          } else if (projectProfileData.profile_name === PLAN_NAME.B) {
+            if (!this.appSumoProfile) {
+              this.prjct_profile_name_for_segment = PLAN_NAME.B + " plan";
+
+            } else {
+              this.prjct_profile_name_for_segment = PLAN_NAME.B + " plan " + '(' + this.appSumoProfile + ')';
+            }
+          } else if (projectProfileData.profile_name === PLAN_NAME.C) {
+            this.prjct_profile_name_for_segment = PLAN_NAME.C + " plan";
+          }
+
+
+        }
         // this.prjc_trial_days_left_percentage = ((this.prjc_trial_days_left *= -1) * 100) / 30
         // console.log('[NAVBAR]  prjc_trial_days_left ', this.prjc_trial_days_left)
 
@@ -848,7 +887,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
   }
 
   presentModalUpgradePlan() {
-   
+
     this.notifyService.presentContactUsModalToUpgradePlan(true);
     if (!isDevMode()) {
       if (window['analytics']) {
@@ -870,7 +909,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
             name: this.user.firstname + ' ' + this.user.lastname,
             email: this.user.email,
             logins: 5,
-            plan: this.profile_name,
+            plan: this.prjct_profile_name_for_segment,
           });
         } catch (err) {
           this.logger.error('identify [NAVBAR] Update plan error', err);
@@ -879,7 +918,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
         try {
           window['analytics'].group(this.projectId, {
             name: this.projectName,
-            plan: this.profile_name,
+            plan: this.prjct_profile_name_for_segment,
           });
         } catch (err) {
           this.logger.error('group [NAVBAR] Update plan error', err);
@@ -888,8 +927,8 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     }
 
   }
- 
- 
+
+
 
   // goToPayment() {
   //   var _this = this;
@@ -937,7 +976,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
   // WHEN A USER CLICK ON A PROJECT IN THE NAVBAR DROPDOWN 
   goToHome(
     project: any,
-    id_project: string, 
+    id_project: string,
     project_name: string,
     project_profile_name: string,
     project_trial_expired: string,
@@ -951,7 +990,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
       // this.subscription.unsubscribe();
       // this.unsubscribe$.next();
       // this.unsubscribe$.complete();
-      
+
       this.router.navigate([`/project/${id_project}/home`]);
 
       // WHEN THE USER SELECT A PROJECT ITS ID and NAME IS SEND IN THE AUTH SERVICE THAT PUBLISHES IT

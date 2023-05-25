@@ -14,7 +14,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
 import { TranslateService } from '@ngx-translate/core';
 import { LoggerService } from '../services/logger/logger.service';
-import { tranlatedLanguage, avatarPlaceholder, getColorBck, PLAN_NAME } from 'app/utils/util';
+import { tranlatedLanguage, avatarPlaceholder, getColorBck, PLAN_NAME, APP_SUMO_PLAN_NAME } from 'app/utils/util';
 import { LocalDbService } from 'app/services/users-local-db.service';
 import { environment } from '../../environments/environment';
 import { ProjectPlanService } from 'app/services/project-plan.service';
@@ -28,7 +28,9 @@ const swal = require('sweetalert');
   styleUrls: ['./user-profile.component.scss']
 })
 export class UserProfileComponent implements OnInit {
-  PLAN_NAME = PLAN_NAME
+  PLAN_NAME = PLAN_NAME;
+  APP_SUMO_PLAN_NAME = APP_SUMO_PLAN_NAME;
+  appSumoProfile: string;
   user: any;
   project: Project;
   userFirstname: string;
@@ -202,34 +204,72 @@ export class UserProfileComponent implements OnInit {
       if (projectProfileData) {
         this.prjct_id = projectProfileData._id
         this.prjct_name = projectProfileData.name
+
+        if (projectProfileData && projectProfileData.extra3) {
+          this.logger.log('[HOME] Find Current Project Among All extra3 ', projectProfileData.extra3)
+          this.appSumoProfile = APP_SUMO_PLAN_NAME[projectProfileData.extra3]
+          this.logger.log('[USERS] Find Current Project appSumoProfile ', this.appSumoProfile)
+        }
+
+
         if (projectProfileData.profile_type === 'free') {
           if (projectProfileData.trial_expired === false) {
-           
             this.prjct_profile_name = PLAN_NAME.B + " plan (trial)"
+       
           } else {
-
-            this.prjct_profile_name = "Free plan"
-
+            this.prjct_profile_name = "Free plan";
+           
           }
         } else if (projectProfileData.profile_type === 'payment') {
-
-          if (projectProfileData.profile_name === PLAN_NAME.A) {
-            this.prjct_profile_name = PLAN_NAME.A + " plan";
+         
+            if (projectProfileData.profile_name === PLAN_NAME.A) {
+              if (!this.appSumoProfile) {
+                this.prjct_profile_name = PLAN_NAME.A + " plan";
+      
+              } else {
+                this.prjct_profile_name = PLAN_NAME.A + " plan " + '(' + this.appSumoProfile + ')';
+              }
+            } else if (projectProfileData.profile_name === PLAN_NAME.B) {
+              if (!this.appSumoProfile) {
+                this.prjct_profile_name = PLAN_NAME.B + " plan";
+             
+              } else {
+                this.prjct_profile_name = PLAN_NAME.B + " plan " + '(' + this.appSumoProfile + ')';;
            
-            // console.log('[USER-PROFILE] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.A)
-
-          } else if (projectProfileData.profile_name === PLAN_NAME.B) {
-            this.prjct_profile_name = PLAN_NAME.B + " plan";
-           
-            // console.log('[USER-PROFILE] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.B)
-
-          } else if (projectProfileData.profile_name === PLAN_NAME.C) {
-            this.prjct_profile_name = PLAN_NAME.C + " plan";
-           
-            // console.log('[USER-PROFILE] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.C)
-          }
-
+              }
+            } else if (projectProfileData.profile_name === PLAN_NAME.C) {
+              this.prjct_profile_name = PLAN_NAME.C + " plan";
+            }
         }
+
+        // if (projectProfileData.profile_type === 'free') {
+        //   if (projectProfileData.trial_expired === false) {
+           
+        //     this.prjct_profile_name = PLAN_NAME.B + " plan (trial)"
+        //   } else {
+
+        //     this.prjct_profile_name = "Free plan"
+
+        //   }
+        // } else if (projectProfileData.profile_type === 'payment') {
+
+        //   if (projectProfileData.profile_name === PLAN_NAME.A) {
+        //     this.prjct_profile_name = PLAN_NAME.A + " plan";
+           
+        //     // console.log('[USER-PROFILE] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.A)
+
+        //   } else if (projectProfileData.profile_name === PLAN_NAME.B) {
+        //     this.prjct_profile_name = PLAN_NAME.B + " plan";
+           
+        //     // console.log('[USER-PROFILE] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.B)
+
+        //   } else if (projectProfileData.profile_name === PLAN_NAME.C) {
+        //     this.prjct_profile_name = PLAN_NAME.C + " plan";
+           
+        //     // console.log('[USER-PROFILE] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.C)
+        //   }
+
+        // }
       }
     }, error => {
       this.logger.error('[USER-PROFILE][ACCOUNT-SETTINGS]] - getProjectPlan - ERROR', error);
