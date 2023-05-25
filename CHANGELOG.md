@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.4.36
+- Deploys in production
+- Improvements and bug fixing
+
 ### 2.4.35
 - Deploys in production
 - Adds the ability to all teammates to download the chat transcript
