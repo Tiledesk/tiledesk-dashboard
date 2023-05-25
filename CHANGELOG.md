@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.4.37
+- Deploys in production
+- Fixes the bug: on the pricing page the features available with the Plus plan are not correct
+
 ### 2.4.36
 - Deploys in production
 - Improvements and bug fixing
