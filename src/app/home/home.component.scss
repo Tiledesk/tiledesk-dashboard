@@ -2383,3 +2383,33 @@
   padding-top: 8px !important;
   padding-bottom: 8px !important;
 }
+
+
+/* New Home
+/*********************************************** */
+.home-project {
+  position: relative;display: flex;
+  flex: 1 1 auto;
+  width: 100%;
+}
+
+.flex {
+    display: flex !important;
+}
+.min-w-0 {
+  min-width: 0px !important;
+}
+
+.flex-auto {
+  flex: 1 1 auto !important;
+}
+
+.flex-col {
+  flex-direction: column !important;
+}
+
+.bg-card {
+  opacity: 1;
+  background-color: #FFF;
+
+}
