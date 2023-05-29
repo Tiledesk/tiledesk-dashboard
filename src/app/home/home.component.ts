@@ -523,7 +523,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     // this.endDay = moment().subtract(0, 'd').format('D/M/YYYY') /// VISITOR GRAPH FOR THE NEW HOME
     // this.logger.log("INIT", this.initDay, "END", this.endDay); /// VISITOR GRAPH FOR THE NEW HOME
 
-    this.getRequestByLast7Day()
+    // this.getRequestByLast7Day()
 
   }
 
@@ -1762,9 +1762,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
               }
             }
-
-          }
-          ,
+          },
           plugins: [{
             beforeDraw: function (chartInstance, easing) {
               var ctx = chartInstance.chart.ctx;

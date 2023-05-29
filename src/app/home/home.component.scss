@@ -1510,7 +1510,7 @@
 }
 
 // @media (max-width: 992px) {
- 
+
 // }
 @media (max-width: 992px) {
   .n-header-home {
@@ -2371,8 +2371,7 @@
 }
 
 .home-edit-project-name-icon:hover {
-    background: #e4e6eb;
-   
+  background: #e4e6eb;
 }
 
 ::ng-deep .custom-mat-tooltip {
@@ -2384,17 +2383,17 @@
   padding-bottom: 8px !important;
 }
 
-
 /* New Home
 /*********************************************** */
 .home-project {
-  position: relative;display: flex;
+  position: relative;
+  display: flex;
   flex: 1 1 auto;
   width: 100%;
 }
 
 .flex {
-    display: flex !important;
+  display: flex !important;
 }
 .min-w-0 {
   min-width: 0px !important;
@@ -2410,6 +2409,215 @@
 
 .bg-card {
   opacity: 1;
-  background-color: #FFF;
+  background-color: #fff;
+}
 
+.padding-l-r {
+  padding-left: 1.5rem !important;
+  padding-right: 1.5rem !important;
+}
+
+@media (min-width: 600px) {
+  .padding-l-r {
+    padding-left: 2rem !important;
+    padding-right: 2rem !important;
+  }
+  .sm-items-center {
+    align-items: center !important;
+  }
+
+  .sm-flex-row {
+    flex-direction: row !important;
+  }
+  .sm-my-12 {
+    margin-top: 3rem !important;
+    margin-bottom: 3rem !important;
+  }
+
+  .sm-mt-0 {
+    margin-top: 0px !important;
+  }
+  .sm-ml-2 {
+    margin-left: 0.5rem !important;
+  }
+}
+
+.max-w-screen-xl {
+  max-width: 1440px !important;
+}
+
+.w-full {
+  width: 100% !important;
+}
+
+.mx-auto {
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.flex-auto {
+  flex: 1 1 auto !important;
+}
+
+.min-w-0 {
+  min-width: 0px !important;
+}
+
+.my-8 {
+  margin-top: 2rem !important;
+  margin-bottom: 2rem !important;
+}
+
+.items-center {
+  align-items: center !important;
+}
+
+.rounded-full {
+  border-radius: 9999px !important;
+}
+
+.overflow-hidden {
+  overflow: hidden !important;
+}
+
+.flex-0 {
+  flex: 0 0 auto !important;
+}
+
+.w-16 {
+  width: 4rem !important;
+}
+
+.h-16 {
+  height: 4rem !important;
+}
+
+.object-cover {
+  object-fit: cover !important;
+}
+
+.w-full {
+  width: 100% !important;
+}
+
+.h-full {
+  height: 100% !important;
+}
+
+img {
+  width: 100%;
+  vertical-align: top;
+  max-width: 100%;
+  // display: block;
+}
+
+.ml-4 {
+  margin-left: 1rem !important;
+}
+
+@media (min-width: 960px) {
+  .md-leading-snug {
+    line-height: 1.375 !important;
+  }
+
+  .md-text-5xl {
+    font-size: 2.25rem !important;
+  }
+}
+
+.tracking-tight {
+  letter-spacing: -0.025em !important;
+}
+
+.leading-7 {
+  line-height: 1.75rem !important;
+}
+
+.font-semibold {
+  font-weight: 600 !important;
+}
+
+.font-w-400 {
+  font-weight: 400 !important;
+}
+
+.text-2xl {
+  // font-size: 1.25rem !important;
+  font-size: 36px !important;
+  height: 40px;
+}
+
+.truncate {
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+.icon-size-5 {
+  width: 20px !important;
+  height: 20px !important;
+  min-width: 20px !important;
+  min-height: 20px !important;
+  font-size: 1.25rem !important;
+  line-height: 1.25rem !important;
+}
+
+.icon-size-5 svg {
+  width: 20px !important;
+  height: 20px !important;
+  // fill: #64748b;
+}
+
+.mat-icon {
+  color: rgba(100, 116, 139, 1);
+}
+
+.leading-6 {
+  line-height: 1.5rem !important;
+}
+
+.ml-1-dot-5 {
+  margin-left: 0.375rem !important;
+}
+
+.text-secondary {
+  color: rgba(100, 116, 139, 1) !important;
+  font-weight: 400;
+}
+
+.mt-6 {
+  margin-top: 1.5rem !important;
+}
+
+.mat-flat-button {
+  padding: 0 20px !important;
+  border-radius: 9999px !important;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  min-height: 40px;
+  max-height: 40px;
+  line-height: 1 !important;
+}
+
+.mat-button .mat-button-wrapper > *,
+.mat-flat-button .mat-button-wrapper > * {
+  vertical-align: middle;
+}
+
+.bg-accent-700 {
+  background-color: rgba(51, 65, 85, 1);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 400;
+  margin-right: 12px;
+}
+
+::ng-deep .edit-operating-hours {
+  box-shadow: 0 0 20px 4px rgb(154 161 177 / 15%), 0 4px 80px -8px rgb(36 40 47 / 25%),
+    0 4px 4px -2px rgb(91 94 105 / 15%);
+  background: #ffff;
+  border-radius: 8px;
+  min-height: 48px;
 }

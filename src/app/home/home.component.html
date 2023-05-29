@@ -5,14 +5,162 @@
 <!-- -------------------------------------------------------------------------------- -->
 <!-- New home  -->
 <!-- -------------------------------------------------------------------------------- -->
-<div class="home-project">
+<div class="main-content" style="padding-top: 8px;margin-top: 0px;">
+  <div class="container-fluid" style="max-width: 100%;">
+    <div class="home-project">
 
-  <div class="flex flex-col flex-auto min-w-0">
- <div class="bg-card"> 
+      <div class="flex flex-col flex-auto min-w-0">
+        <div class="bg-card">
+          <div class="flex flex-col w-full max-w-screen-xl mx-auto padding-l-r">
+
+            <div class="flex flex-col sm-flex-row flex-auto sm-items-center min-w-0 my-8 sm:my-12">
+              <div class="flex flex-auto items-center min-w-0">
+                <div class="flex-0 w-16 h-16 rounded-full overflow-hidden">
+                  <img src="assets/images/avatars/brian-hughes.jpg" class="w-full h-full object-cover">
+                </div>
+                <div class="flex flex-col min-w-0 ml-4">
+                  <!-- leading-7 -->
+                  <div
+                    class="text-2xl md-text-5xl font-w-400 tracking-tight  md-leading-snug truncate ng-star-inserted">
+                    Welcome back, Brian!
+                  </div>
+                  <!--ng-container-->
+                  <!--container-->
+                  <div class="flex items-center">
+
+                    <div class="example-button-container">
+                      <button mat-mini-fab color="warn" aria-label="Example icon button with a filter list icon"
+                        style="width: 28px; height: 28px; box-shadow: unset;">
+                        <mat-icon role="img" class="mat-icon notranslate icon-size-5 mat-icon-no-color"
+                          aria-hidden="true" ng-reflect-svg-icon="heroicons_solid:bell" data-mat-icon-type="svg"
+                          data-mat-icon-name="date_range" data-mat-icon-namespace="heroicons_solid"
+                          style="position: relative;">
+                          <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 0 24 24" width="20px"
+                            fill="#fff">
+                            <path d="M0 0h24v24H0V0z" fill="none" />
+                            <path
+                              d="M7 11h2v2H7v-2zm14-5v14c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2l.01-14c0-1.1.88-2 1.99-2h1V2h2v2h8V2h2v2h1c1.1 0 2 .9 2 2zM5 8h14V6H5v2zm14 12V10H5v10h14zm-4-7h2v-2h-2v2zm-4 0h2v-2h-2v2z" />
+                          </svg>
+
+                        </mat-icon>
+                      </button>
+                    </div>
+                    <mat-icon style="display: none;" role="img"
+                      class="mat-icon notranslate icon-size-5 mat-icon-no-color" aria-hidden="true"
+                      ng-reflect-svg-icon="heroicons_solid:bell" data-mat-icon-type="svg"
+                      data-mat-icon-name="date_range" data-mat-icon-namespace="heroicons_solid">
+                      <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" fit=""
+                        height="100%" width="100%" preserveAspectRatio="xMidYMid meet" focusable="false">
+                        <path
+                          d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z">
+                        </path>
+                      </svg> -->
+                      <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 0 24 24" width="20px"
+                        fill="#000000">
+                        <path d="M0 0h24v24H0V0z" fill="none" />
+                        <path
+                          d="M7 11h2v2H7v-2zm14-5v14c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2l.01-14c0-1.1.88-2 1.99-2h1V2h2v2h8V2h2v2h1c1.1 0 2 .9 2 2zM5 8h14V6H5v2zm14 12V10H5v10h14zm-4-7h2v-2h-2v2zm-4 0h2v-2h-2v2z" />
+                      </svg>
+                    </mat-icon>
+                    <!-- <div class="ml-1-dot-5 leading-6 truncate text-secondary">You have 2 new messages and 15 new tasks
+                    </div> -->
+                  </div>
+                </div>
+              </div>
+              <!-- ---------------------------------- -->
+              <!-- Left side -->
+              <!-- ---------------------------------- -->
+              <div class="flex items-center mt-6 sm-mt-0 sm-ml-2 space-x-3">
+
+                <!-- ------------------------------------ -->
+                <!-- Operating Hours -->
+                <!-- ------------------------------------ -->
+                <button mat-mini-fab color="warn" aria-label="date_range icon"
+                  style="box-shadow: unset;margin-right: 16px;" [satPopoverAnchor]="editOperatingHours"
+                  (click)="editOperatingHours.toggle();">
+                  <mat-icon style="color: #fff;">date_range</mat-icon>
+                </button>
+
+                <sat-popover #editOperatingHours id="edit-operating-hours" horizontalAlign="center"
+                  verticalAlign="center" hasBackdrop (backdropClicked)="editOperatingHours.close()"
+                  panelClass="edit-operating-hours" interactiveClose="false">
+                  <div class="edit-operating-hours-content-wpr" style="padding-top: 8px;padding-bottom: 8px;">
+
+                    <div
+                      style="align-items: center;color: rgba(0,0,0,.55); display: flex;padding-left: 16px;padding-right: 16px;">
+
+                      <div class="opicon" style=" padding-right: 8px;">
+                        <button mat-mini-fab aria-label="Button with a date_range icon"
+                          style="background-color: #4caf50; box-sizing: unset; cursor: default ;" disabled>
+                          <mat-icon style="color: #fff;">date_range</mat-icon>
+                        </button>
+                      </div>
+
+                      <div class="optext"
+                        style="overflow: hidden;padding-right: 12px;display: flex;flex-direction: column;align-items: center;justify-content: center;">
+
+                        <div style="color: rgba(0, 0, 0, 0.87);font-weight: 500;font-size: 14px;">
+                          Operating Hours
+                        </div>
+
+                        <div style="font-size: 12px;font-weight: 500;text-transform: uppercase;">
+                          Disabled
+                        </div>
+                      </div>
 
 
- </div>
 
+                      <button tabindex="-1" mat-icon-button color="primary" aria-label="Button with a settings icon">
+                        <mat-icon>settings</mat-icon>
+                      </button>
+                    </div>
+                  </div>
+                </sat-popover>
+
+                <!-- ------------------------------------ -->
+                <!-- Settings -->
+                <!-- ------------------------------------ -->
+                <button mat-flat-button=""
+                  class="mat-focus-indicator fuse-mat-button-rounded mat-flat-button mat-button-base mat-primary"
+                  ng-reflect-color="primary">
+                  <span class="mat-button-wrapper">
+                    <mat-icon role="img" class="mat-icon notranslate icon-size-5 mat-icon-no-color" aria-hidden="true"
+                      ng-reflect-svg-icon="heroicons_solid:cog" data-mat-icon-type="svg" data-mat-icon-name="cog"
+                      data-mat-icon-namespace="heroicons_solid" style="margin-right: 8px;width: 20px! important;
+                      height: 20px !important;">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" fit=""
+                        height="20px" width="20px" preserveAspectRatio="xMidYMid meet" focusable="false"
+                        style="fill: #fff;">
+                        <path fill-rule="evenodd"
+                          d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z"
+                          clip-rule="evenodd">
+                        </path>
+                      </svg>
+                    </mat-icon>
+                    <span class="ml-2" style="font-size: 16px;">
+                      Settings
+                    </span>
+                  </span>
+                  <span matripple="" class="mat-ripple mat-button-ripple" ng-reflect-disabled="false"
+                    ng-reflect-centered="false" ng-reflect-trigger="[object HTMLButtonElement]">
+                  </span>
+                  <span class="mat-button-focus-overlay"> </span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div> <!-- ./ bg-card -->
+
+        <appdashboard-home-report> </appdashboard-home-report>
+
+
+
+      </div> 
+
+
+
+
+    </div>
   </div>
 </div>
 
@@ -39,7 +187,7 @@
 <appdashboard-home-promo-banner *ngIf="isVisibleHomeBanner" (showPromoBanner)='showPromoBanner()'>
 </appdashboard-home-promo-banner>
 
-<appdashboard-home-promo-design-studio style="position: relative;" [user]="user"
+<appdashboard-home-promo-design-studio style="position: relative; display: none;" [user]="user"
   [ngStyle]="{'margin-top':isVisibleHomeBanner === true ? '0px' : '-5px' }">
 </appdashboard-home-promo-design-studio>
 
@@ -163,7 +311,8 @@
               {{projectUsers?.length}}
 
               <span *ngIf="projectUsers?.length === 1"> {{'Teammate' | translate}} </span>
-              <span *ngIf="projectUsers?.length > 1 || projectUsers?.length === 0"> {{'Teammates' | translate}} </span>
+              <span *ngIf="projectUsers?.length > 1 || projectUsers?.length === 0"> {{'Teammates' | translate}}
+              </span>
               <span class="tool_tip" *ngIf="!DISPLAY_TEAMMATES">
                 <!-- (click)="toggleDisplayTeammates()" -->
                 <span class="material-icons add-operators-icons tool_tip">
@@ -366,7 +515,8 @@
               (click)="goToOperatingHours()">
               <span *ngIf="!OPERATING_HOURS_ACTIVE || DISPLAY_OPH_AS_DISABLED"> {{'OperatingHoursDisabled' | translate
                 }}</span>
-              <span *ngIf="OPERATING_HOURS_ACTIVE && !DISPLAY_OPH_AS_DISABLED"> {{'OperatingHoursEnabled' | translate}}
+              <span *ngIf="OPERATING_HOURS_ACTIVE && !DISPLAY_OPH_AS_DISABLED">
+                {{'OperatingHoursEnabled' | translate}}
               </span>
               <span class="tool_tip">
                 <span *ngIf="USER_ROLE !== 'agent'" class="material-icons add-operators-icons tool_tip"

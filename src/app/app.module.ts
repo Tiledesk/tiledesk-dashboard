@@ -272,6 +272,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 import { MomentModule } from 'ngx-moment';
 import { NgImageSliderModule } from 'ng-image-slider';
@@ -335,6 +336,8 @@ import { ActivateAppsumoProductComponent } from './create-project-wizard/activat
 import { ContactCustomPropertiesComponent } from './components/modals/contact-custom-properties/contact-custom-properties.component';
 import { ContactInfoComponent } from './components/shared/contact-info/contact-info.component';
 import { CreateProjectGsComponent } from './create-project-wizard/create-project-gs/create-project-gs.component';
+import { HomeReportComponent } from './home-components/home-report/home-report.component';
+
 
 
 
@@ -594,7 +597,8 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     ActivateAppsumoProductComponent,
     ContactCustomPropertiesComponent,
     ContactInfoComponent,
-    CreateProjectGsComponent
+    CreateProjectGsComponent,
+    HomeReportComponent
   ],
   imports: [
     TooltipModule.forRoot(CutomTooltipOptions as TooltipOptions),
@@ -620,6 +624,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     MatExpansionModule,
     MatDialogModule,
     MatCheckboxModule,
+    MatButtonToggleModule,
     /* PRIVATE */
     PricingModule,
     ChatbotDesignStudioModule,
