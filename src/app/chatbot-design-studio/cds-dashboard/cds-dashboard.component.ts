@@ -240,11 +240,11 @@ export class CdsDashboardComponent implements OnInit {
     this.logger.log('getFaqById');
     this.showSpinner = true;
     this.faqKbService.getBotById(botid).subscribe((chatbot: Chatbot) => {
-      // console.log('[CDS DSHBRD] - GET BOT BY ID RES - chatbot', chatbot);
+      console.log('[CDS DSHBRD] - GET BOT BY ID RES - chatbot', chatbot);
       if (chatbot) {
         this.selectedChatbot = chatbot;
         this.translateparamBotName = { bot_name: this.selectedChatbot.name }
-        if (this.selectedChatbot && this.selectedChatbot.attributes) {
+        if (this.selectedChatbot && this.selectedChatbot.attributes && this.selectedChatbot.attributes.variables) {
           variableList.userDefined = this.convertJsonToArray(this.selectedChatbot.attributes.variables);
         }
         if(this.selectedChatbot.intentsEngine == 'tiledesk-ai'){
@@ -262,6 +262,7 @@ export class CdsDashboardComponent implements OnInit {
   }
 
   private convertJsonToArray(jsonData) {
+    console.log('convertJsonToArray  jsonData ', jsonData)
     const arrayOfObjs = Object.entries(jsonData).map(([key, value]) => ({ 'name': key, 'value': value }))
     return arrayOfObjs;
   }
