@@ -849,7 +849,7 @@
                           'contact-location-chat-one-agent': CHAT_PANEL_MODE === true && agents_array?.length === 1, 
                           'contact-location-chat-two-agent': CHAT_PANEL_MODE === true && agents_array?.length === 2,
                           'contact-location-chat-three-agent': CHAT_PANEL_MODE === true && agents_array?.length === 3}">
-                          <!-- (click)="openMapRightSideBar()" -->
+                            <!-- (click)="openMapRightSideBar()" -->
                             <span (click)="viewInGooleMaps()" *ngIf="locationCity || locationCountry"
                               class="location-wpr" matTooltipClass="custom-mat-tooltip"
                               matTooltip="{{ 'Location' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
@@ -1827,11 +1827,10 @@
                             </g>
                           </svg> -->
 
-                          <svg xmlns="http://www.w3.org/2000/svg" height="22px"
-                          viewBox="0 0 24 24" width="22px" fill="none" style="min-width: 22px; min-height: 22px;"
-                          matTooltipClass="custom-mat-tooltip"
-                          matTooltip="{{'IPAddress' | translate}}"
-                          #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
+                          <svg xmlns="http://www.w3.org/2000/svg" height="22px" viewBox="0 0 24 24" width="22px"
+                            fill="none" style="min-width: 22px; min-height: 22px;" matTooltipClass="custom-mat-tooltip"
+                            matTooltip="{{'IPAddress' | translate}}" #tooltip="matTooltip" matTooltipPosition='right'
+                            matTooltipHideDelay="100">
                             <path d="M0 0h24v24H0V0z" fill="none" />
                             <path
                               d="M12 8c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm8.94 3c-.46-4.17-3.77-7.48-7.94-7.94V1h-2v2.06C6.83 3.52 3.52 6.83 3.06 11H1v2h2.06c.46 4.17 3.77 7.48 7.94 7.94V23h2v-2.06c4.17-.46 7.48-3.77 7.94-7.94H23v-2h-2.06zM12 19c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z" />
@@ -1839,9 +1838,8 @@
                         </span>
                         <div class="form-group" style="margin-top: 9px;">
                           <input *ngIf="!showSpinner" name="ip-address" type="text" data-id="ip-address"
-                            class="form-control input-md" title="ip-address"
-                            disabled style="width: 240px;cursor: default;"
-                            value="{{ ipAddress }}">
+                            class="form-control input-md" title="ip-address" disabled
+                            style="width: 240px;cursor: default;" value="{{ ipAddress }}">
 
                         </div>
                       </div>
@@ -1873,7 +1871,8 @@
                     <!-- ------------------------------------- -->
                     <!-- Deparment -->
                     <!-- ------------------------------------- -->
-                    <li class="deparment" *ngIf="request?.department && request?.department?.name !== 'Default Department'">
+                    <li class="deparment"
+                      *ngIf="request?.department && request?.department?.name !== 'Default Department'">
                       <div class="contact-row">
                         <span>
                           <svg xmlns="http://www.w3.org/2000/svg" height="22px" viewBox="0 0 24 24"
@@ -1920,11 +1919,12 @@
                         <div class="form-group" style="margin-top: 9px;" (click)="toggleViewedPages()"
                           [ngStyle]="{'width':CHAT_PANEL_MODE === true ? 'unset' : '100%' }">
                           <input id="source-page-input" name="sourcepage" type="text" data-id="sourcepage"
-                            class="form-control input-md" disabled value="{{'ViewedPages' | translate}}" style="cursor: pointer;"
-                            [ngStyle]="{'width':CHAT_PANEL_MODE === true ? '220px' : '100%' }">
+                            class="form-control input-md" disabled value="{{'ViewedPages' | translate}}"
+                            style="cursor: pointer;" [ngStyle]="{'width':CHAT_PANEL_MODE === true ? '220px' : '100%' }">
                         </div>
                         <div class="action-btns-arrow" (click)="toggleViewedPages()">
-                          <button type="button" data-id="toggle-viewed-pages"  [ngStyle]="{'margin-right':CHAT_PANEL_MODE === true ? '0px' : '-11px' }">
+                          <button type="button" data-id="toggle-viewed-pages"
+                            [ngStyle]="{'margin-right':CHAT_PANEL_MODE === true ? '0px' : '-11px' }">
                             <svg id="viewed-page-arrow-down" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                               viewBox="0 0 24 24" width="24px"
                               style="min-width: 24px; min-height: 24px;position: relative;right: 3px;top: -2px;">
@@ -1939,22 +1939,21 @@
                     <li *ngIf="showViewedPages" class="viewed-pages-list">
                       <ul>
                         <li *ngFor="let page of viewedPages" class="viewed-pages-wpr" style="padding-left: 8px;">
-                          <a style="font-weight: 400;" class="viewed-pages-anchor"
-                           title="{{page?.viewedPageTitle}}" href="{{page?.viewedPageLink}}"
-                          target="_blank">
-                           <div class="viewed-pages-dot"> </div> 
-                           {{page?.viewedPageTitle}} 
-                          <div class="viewed-pages-url">  {{page?.viewedPageLink}} </div>
-                        </a>
+                          <a style="font-weight: 400;" class="viewed-pages-anchor" title="{{page?.viewedPageTitle}}"
+                            href="{{page?.viewedPageLink}}" target="_blank">
+                            <div class="viewed-pages-dot"> </div>
+                            {{page?.viewedPageTitle}}
+                            <div class="viewed-pages-url"> {{page?.viewedPageLink}} </div>
+                          </a>
                         </li>
                       </ul>
-                     
+
                     </li>
 
                     <!-- ---------------------------------------- -->
                     <!-- Request Channel telegram  -->
                     <!-- ---------------------------------------- -->
-                    
+
                     <li class="telegram-channel" *ngIf="request?.channel?.name === 'telegram'">
                       <div id="contact-row-telegram-channel" class="contact-row">
                         <span>
@@ -1979,7 +1978,7 @@
                     <!-- ---------------------------------------- -->
                     <!-- Request Channel whatsapp   -->
                     <!-- ---------------------------------------- -->
-                    
+
                     <li class="whatsapp-channel" *ngIf="request?.channel?.name === 'whatsapp'">
                       <div id="contact-row-whatsapp-channel" class="contact-row">
                         <span>
@@ -1992,7 +1991,8 @@
                           </svg> -->
 
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" height="22px" width="22px"
-                            matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'MessageChannel' | translate }}: WhatsApp" #tooltip="matTooltip"
+                            matTooltipClass="custom-mat-tooltip"
+                            matTooltip="{{ 'MessageChannel' | translate }}: WhatsApp" #tooltip="matTooltip"
                             matTooltipPosition='right' matTooltipHideDelay="100">
 
                             <path
@@ -2001,8 +2001,8 @@
                         </span>
                         <div class="form-group" style="margin-top: 9px;">
                           <input *ngIf="!showSpinner" name="whatsapp-channel" type="text" data-id="whatsapp-channel"
-                            class="form-control input-md" title="WhatsApp" disabled value="WhatsApp ({{whatsAppPhoneNumber}})"
-                            style="cursor: default;width: 240px;">
+                            class="form-control input-md" title="WhatsApp" disabled
+                            value="WhatsApp ({{whatsAppPhoneNumber}})" style="cursor: default;width: 240px;">
                         </div>
                       </div>
                     </li>
@@ -2113,7 +2113,7 @@
 
                             <! -- --------------------------------------------------------------------------------------------------------------------------------------- -- >
                             <! -- Revove tag (note: the request to remove tag in is not called if the current user has agent role and is not among the participants) -->
-                            <!-- --------------------------------------------------------------------------------------------------------------------------------------- -- >
+                  <!-- --------------------------------------------------------------------------------------------------------------------------------------- -- >
                             <div (click)="removeTag(tag)">
                               <div class="icon-container" style="display: inline-block;">
                                 <svg style="width: 13px; height: auto;position:absolute;margin-top: 6px;"
@@ -2376,7 +2376,8 @@
                   <!--  ---------------------------------------------------------------- -->
                   <!--  @ Chatbot attributes accordion -->
                   <!--  ---------------------------------------------------------------- -->
-                  <div id="chatbot-attributes-accordion" *ngIf="tab0 && botConversationArray && botConversationArray.length > 0">
+                  <div id="chatbot-attributes-accordion"
+                    *ngIf="tab0 && botConversationArray && botConversationArray.length > 0">
                     <div class="chatbot-conv-accordion-wpr"
                       [ngClass]="{'chatbot-conv-accordion-wpr-chat': CHAT_PANEL_MODE === true}">
 
@@ -2403,7 +2404,9 @@
                           </g>
                         </svg>
 
-                        <span style="position: relative;top: -6px;font-weight: 400; margin-left: -2px;">{{ "ChatbotAttributes" | translate }} </span>
+                        <span
+                          style="position: relative;top: -6px;font-weight: 400; margin-left: -2px;">{{ "ChatbotAttributes" | translate }}
+                        </span>
                       </div>
 
                       <div class="chatbot-conv-accordion-panel">
@@ -2449,7 +2452,9 @@
                   <!-- ------------------------------------- -->
                   <li *ngIf="request?.ticket_id" class="ticket-id">
                     <div class="contact-row">
-                      <span>
+                      <span class="ticket-id-text"> {{ 'TicketId' | translate }} </span>
+
+                      <!-- <span>
                         <svg xmlns="http://www.w3.org/2000/svg" height="22px" viewBox="0 0 24 24" width="22px"
                           fill="none" style="min-width: 22px; min-height: 22px;" matTooltipClass="custom-mat-tooltip"
                           matTooltip="{{ 'TicketId' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
@@ -2457,8 +2462,8 @@
                           <path d="M0 0h24v24H0V0z" fill="none" />
                           <path
                             d="M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" />
-                        </svg>
-                      </span>
+                        </svg> -->
+                      <!-- </span> -->
                       <div class="form-group" style="margin-top: 10px;">
                         <input *ngIf="!showSpinner" name="ticket_id" type="text" data-id="ticket_id"
                           class="form-control input-md" style="width: 240px;cursor: default;"
@@ -2588,9 +2593,9 @@
 
                           <span *ngIf="request?.smartAssignment === true" class="convert-to-offline-btn"
                             (click)="smartAssignmentOff()">
-                            Convert to offline
+                            {{'ConvertToOffline' | translate}}
                             <span matTooltipClass="custom-mat-tooltip"
-                              matTooltip="Select this option to disable automatic reassignment for this conversation. It will be treated like a ticket that will allow you to take his time to reply"
+                              matTooltip="{{'SmartReassignmentForThisConversationWillBeDisabled' | translate}}"
                               #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
                               <i class="material-icons"
                                 style=" font-size:16px; color:#7695a5;vertical-align: middle; cursor:pointer;position: relative;top: -2px;">
@@ -2601,9 +2606,9 @@
 
                           <span *ngIf="request?.smartAssignment === false" class="convert-to-offline-btn"
                             (click)="smartAssignmentOn()">
-                            Convert to online
+                            {{'ConvertToOnline' | translate}}
                             <span matTooltipClass="custom-mat-tooltip"
-                              matTooltip="Select this option to enable automatic reassignment for this conversation"
+                              matTooltip="{{'SmartReassignmentForThisConversationWillBeEnabled' | translate}"
                               #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
                               <i class="material-icons"
                                 style=" font-size:16px; color:#7695a5;vertical-align: middle; cursor:pointer;position: relative;top: -2px;">
@@ -2617,8 +2622,85 @@
                     </div>
                   </div>
                 </div>
-                <!-- </div> -->
-                <!-- </div> -->
+                <!-- ------------------------------------------ -->
+                <!-- @ Conversation Tags (new) -->
+                <!-- ------------------------------------------ -->
+                <div *ngIf="isVisibleLBS === true" class="tag-content-wpr"
+                  [ngClass]="{'tag-content-wpr-chat': CHAT_PANEL_MODE === true}">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
+                    style="min-width: 22px; min-height: 22px;" matTooltipClass="custom-mat-tooltip"
+                    matTooltip="{{ 'Tags.Tags' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
+                    matTooltipHideDelay="100">
+                    <path d="M0 0h22v22H0z" fill="none"></path>
+                    <path
+                      d="M19.626 10.615l-8.25-8.25a1.822 1.822 0 00-1.293-.532H3.667a1.839 1.839 0 00-1.834 1.834v6.416c0 .505.202.963.541 1.302l8.25 8.25c.33.33.788.532 1.293.532.504 0 .962-.202 1.292-.541l6.417-6.417c.339-.33.54-.788.54-1.292 0-.505-.21-.972-.54-1.302zM5.042 6.417c-.761 0-1.375-.614-1.375-1.375s.614-1.375 1.375-1.375c.76 0 1.375.614 1.375 1.375 0 .76-.614 1.375-1.375 1.375z">
+                    </path>
+                  </svg>
+
+                  <form style="min-height: 52px;" [ngStyle]="{'height':convTagContainerElementHeight }">
+                    <div class="tags--container-wpr">
+                      <div class="tags--container">
+                        <div *ngIf="request?.tags?.length === 0" aria-label="tag" class="no-conv-tags-wpr">
+                          <p weight="400" class="no-conv-tags"> {{'NoTAGAssignedYet' | translate}}</p>
+                        </div>
+
+                        <div class="tag" *ngFor="let tag of request?.tags" role="button">
+
+                          <!-- --------------------------------------------------------------------------------------------------------------------------------------- -->
+                          <!-- Revove tag (note: the request to remove tag in is not called if the current user has agent role and is not among the participants) -->
+                          <!-- --------------------------------------------------------------------------------------------------------------------------------------- -->
+                          <div (click)="removeTag(tag)">
+                            <div class="icon-container" style="display: inline-block;">
+                              <svg style="width: 13px; height: auto;position:absolute;margin-top: 6px;"
+                                aria-hidden="true" focusable="false" data-prefix="fas" data-icon="tag"
+                                class="svg-inline--fa-tag-icon fa-tag fa-w-16" role="img"
+                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+
+                                <path [ngStyle]="{'fill':tag.color}" class="tag_icon_in_ws_msgs"
+                                  d="M0 252.118V48C0 21.49 21.49 0 48 0h204.118a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882 0L14.059 286.059A48 48 0 0 1 0 252.118zM112 64c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z">
+                                </path>
+                              </svg>
+                              <span class="tag-delete">
+                                <i class="material-icons delete_note_icon" style="font-size: 16px;"> close </i>
+                              </span>
+                            </div>
+                            {{ tag.tag}}
+                          </div>
+
+                        </div>
+                      </div>
+                      <div class="ng-select-tags-wpr"
+                        [ngStyle]="{'width':CHAT_PANEL_MODE === true ? '240px' : 'auto' }">
+
+                        <ng-select style="margin-right: 13px;" class="ng-select-tags" id="select-tag" #ngSelect (change)="addTag()"
+                          [items]="tagsList" bindLabel="tag" bindValue="_id" [clearable]="false"
+                          [clearSearchOnAdd]="true" [hideSelected]="true" placeholder="{{ typeALabelAndPressEnter}}"
+                          [(ngModel)]="tag" addTagText="Create New" [addTag]="createNewTag"
+                          (keyup.enter)="ngSelect.close()" notFoundText="No tags found. Type to create a tag"
+                          [disabled]="DISABLE_ADD_NOTE_AND_TAGS === true">
+
+                          <ng-template ng-label-tmp let-item="item">
+                            <i [style.color]="item.color" class="fa fa-tag"
+                              style="font-size: 18px;position: relative;top: 2px;margin-right: 5px;"></i>
+
+                            {{item.tag}}
+                          </ng-template>
+                          <ng-template ng-option-tmp let-item="item" let-index="index">
+                            <i [style.color]="item.color" class="fa fa-tag"
+                              style="font-size: 18px;position: relative;top: 2px;margin-right: 5px;"></i>
+                            {{item.tag}}
+                          </ng-template>
+                        </ng-select>
+                      </div>
+
+                    </div>
+                  </form>
+
+                </div> <!-- ./Conversation tag -->
+                <div class="link-to-tags-page" *ngIf="CURRENT_USER_ROLE !== 'agent' && CHAT_PANEL_MODE === false"
+                  (click)="goToTags()" class="manage_tags">
+                  {{ 'Tags.ManageTags' | translate}}
+                </div>
               </div>
 
               <div *ngIf="tab2">
