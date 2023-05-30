@@ -2362,7 +2362,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           this.messagesList.forEach(message => {
             // this.logger.log('[WS-REQUESTS-MSGS] message attributes', message.attributes);
             let viewedPageTitleValue = ''
-            if (message.attributes.sourceTitle) {
+            if (message.attributes && message.attributes.sourceTitle) {
               viewedPageTitleValue = message.attributes.sourceTitle
             } else {
              viewedPageTitleValue = "Not available"
