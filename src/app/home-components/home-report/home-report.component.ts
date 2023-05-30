@@ -20,6 +20,7 @@ export class HomeReportComponent implements OnInit {
  
   countOfLastSevenDaysRequests: number;
   countOfLastSevenDaysRequestsHandledByBot: number;
+  percentageOfSevenDaysRequestsHandledByBots: any;
   
   countOfLastMonthRequests: number; // USED FOR COUNT OF LAST 30 DAYS
   countOfLastMonthRequestsHandledByBots: number;
@@ -153,7 +154,6 @@ export class HomeReportComponent implements OnInit {
         } else {
           this.percentageOfLastMonthRequestsHandledByBots = 0
         }
-
       }, (error) => {
         console.error('[HOME-ANALITICS] - GET REQUESTS COUNT HANDLED BY BOT LAST 30 DAYS - ERROR ', error);
 
@@ -210,6 +210,18 @@ export class HomeReportComponent implements OnInit {
 
         this.countOfLastSevenDaysRequestsHandledByBot = _requestsByDayBotServed_series_array.reduce((partialSum, a) => partialSum + a, 0);
         console.log('[HOME-ANALITICS] - REQUESTS BY DAY HANDLED BY BOT - LAST SEVEN DAYS COUNT ', this.countOfLastSevenDaysRequestsHandledByBot);
+
+     
+
+        if (this.countOfLastSevenDaysRequestsHandledByBot > 0 && this.countOfLastSevenDaysRequests) {
+          const _percentageOfLastSevenDaysRequestsHandledByBots = (this.countOfLastSevenDaysRequestsHandledByBot / this.countOfLastSevenDaysRequests) * 100
+         
+          console.log("[HOME-ANALITICS] - getRequestsHasBotCount % REQUESTS HANDLED BY BOT LAST 30 DAYS: ", _percentageOfLastSevenDaysRequestsHandledByBots);
+          console.log("[HOME-ANALITICS] - getRequestsHasBotCount % REQUESTS HANDLED BY BOT LAST 30 DAYS typeof: ", typeof _percentageOfLastSevenDaysRequestsHandledByBots);
+          this.percentageOfSevenDaysRequestsHandledByBots = _percentageOfLastSevenDaysRequestsHandledByBots.toFixed(1);
+        } else {
+          this.percentageOfSevenDaysRequestsHandledByBots = 0
+        }
       })
   }
 

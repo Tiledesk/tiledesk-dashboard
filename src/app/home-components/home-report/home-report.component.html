@@ -58,18 +58,23 @@
     
     <div class="flex flex-col flex-auto overflow-hidden items-center">
       
-      <span *ngIf="numOfDays === 7" class="graph-footer-num"> {{countOfLastSevenDaysRequests}} Total</span>  
-      <span *ngIf="numOfDays === 30" class="graph-footer-num"> {{countOfLastMonthRequests}} Total</span>  
+      <span *ngIf="numOfDays === 7" class="graph-footer-num"> {{countOfLastSevenDaysRequests}}</span>  
+      <span *ngIf="numOfDays === 30" class="graph-footer-num"> {{countOfLastMonthRequests}} </span>  
+      <span> Total </span>
     </div>
     <div class="flex flex-col flex-auto overflow-hidden items-center">
 
-      <span *ngIf="numOfDays === 7" class="graph-footer-num"> {{countOfLastSevenDaysRequestsHandledByBot}} handled by bots </span> 
-      <span *ngIf="numOfDays === 30" class="graph-footer-num"> {{countOfLastMonthRequestsHandledByBots}} handled by bots</span> 
+      <span *ngIf="numOfDays === 7" class="graph-footer-num"> {{countOfLastSevenDaysRequestsHandledByBot}} </span> 
+      <span *ngIf="numOfDays === 30" class="graph-footer-num"> {{countOfLastMonthRequestsHandledByBots}}</span> 
+      <span> handled by bots </span>
      
       
     </div>
     <div class="flex flex-col flex-auto overflow-hidden items-center">
-      <span class="graph-footer-num"> {{percentageOfLastMonthRequestsHandledByBots}}% </span> percentage handled by bots
+      <span *ngIf="numOfDays === 7" class="graph-footer-num"> {{percentageOfSevenDaysRequestsHandledByBots}}% </span> 
+      <span *ngIf="numOfDays === 30" class="graph-footer-num"> {{percentageOfLastMonthRequestsHandledByBots}}% </span> 
+      
+      <span> percentage handled by bots</span>
     </div>
 
   </div>
