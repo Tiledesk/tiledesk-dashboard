@@ -40,8 +40,13 @@
     <!-- <div class="close-wizard-page">
         <i *ngIf="projects && projects?.length !==0 " class="material-icons close-btn" (click)="goToYourProject()">clear</i>
     </div> -->
+    <div *ngIf="showSpinner" style="width: 100%;display: flex; justify-content: center;
+    align-items: center;
+    height: 100vh;"> 
+    <loading-spinner></loading-spinner>
+    </div>
 
-    <div class="col-left">
+    <div *ngIf="!showSpinner" class="col-left">
 
         <div class="fade-in-left lft-col-left">
 
@@ -140,7 +145,7 @@
         </div>
     </div>
 
-    <div class="wpr-plan-features-card" style="margin-top: 180px;margin-right: 50px;">
+    <div *ngIf="!showSpinner" class="wpr-plan-features-card" style="margin-top: 180px;margin-right: 50px;">
         <div class="css-4lq111 e194a3xf5 plan-card-wpr">
             <div class="css-82a6rk e194a3xf2 plan-card-left-content">
                 <h2 weight="500" class="e194a3xf4 css-ai3f0v eimqq0f0 plan-card-title">

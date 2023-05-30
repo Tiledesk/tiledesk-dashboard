@@ -11,12 +11,14 @@ import { WidgetSetUpBaseComponent } from 'app/widget_components/widget-set-up/wi
 import { WidgetService } from 'app/services/widget.service';
 import { NotifyService } from 'app/core/notify.service';
 import { UsersService } from 'app/services/users.service';
+const swal = require('sweetalert');
 
 @Component({
   selector: 'appdashboard-activate-appsumo-product',
   templateUrl: './activate-appsumo-product.component.html',
   styleUrls: ['./activate-appsumo-product.component.scss']
 })
+
 export class ActivateAppsumoProductComponent extends WidgetSetUpBaseComponent implements OnInit {
   APP_SUMO_PLAN_NAME = APP_SUMO_PLAN_NAME;
   APPSUMO_PLAN_SEATS = APPSUMO_PLAN_SEATS;
@@ -43,6 +45,8 @@ export class ActivateAppsumoProductComponent extends WidgetSetUpBaseComponent im
   public USER_ROLE: string;
   public onlyOwnerCanManageTheAccountPlanMsg: string;
   public learnMoreAboutDefaultRoles: string;
+  public showSpinner : boolean = true;
+  contactSalesEmail: string;
 
   constructor(
     private projectService: ProjectService,
@@ -62,6 +66,7 @@ export class ActivateAppsumoProductComponent extends WidgetSetUpBaseComponent im
     this.tparams = brand;
     this.company_name = brand['company_name'];
     this.company_site_url = brand['company_site_url'];
+    this.contactSalesEmail = "sales@tiledesk.com"
   }
 
   ngOnInit(): void {
@@ -196,6 +201,8 @@ export class ActivateAppsumoProductComponent extends WidgetSetUpBaseComponent im
         this.createNewProject()
         // console.log('[ACTIVATE-APPSUMO-PRODUCT] user has not a projects - create a new one ') 
       } else {
+        this.showSpinner = false;
+        this.presentModalErrorOccured()
         this.logger.info('[ACTIVATE-APPSUMO-PRODUCT] user has already a project ');
         this.USER_ROLE = projects[0].role
         this.new_project = projects[0].id_project;
@@ -216,9 +223,9 @@ export class ActivateAppsumoProductComponent extends WidgetSetUpBaseComponent im
       //   });
       // }
     }, error => {
-      this.logger.error('[SIGN-UP] getProjectsAndSaveInStorage - ERROR ', error)
+      this.logger.error('[ACTIVATE-APPSUMO-PRODUCT] getProjectsAndSaveInStorage - ERROR ', error)
     }, () => {
-      this.logger.log('[SIGN-UP] getProjectsAndSaveInStorage - COMPLETE')
+      this.logger.log('[ACTIVATE-APPSUMO-PRODUCT] getProjectsAndSaveInStorage - COMPLETE')
     });
   }
 
@@ -267,7 +274,8 @@ export class ActivateAppsumoProductComponent extends WidgetSetUpBaseComponent im
       }, (error) => {
         // this.DISPLAY_SPINNER = false;
         this.logger.error('[ACTIVATE-APPSUMO-PRODUCT] CREATE NEW PROJECT - POST REQUEST - ERROR ', error);
-
+        this.showSpinner = false;
+        this.presentModalErrorOccured()
       }, () => {
         this.logger.log('[ACTIVATE-APPSUMO-PRODUCT]CREATE NEW PROJECT - POST REQUEST * COMPLETE *');
         this.updateProject()
@@ -326,11 +334,26 @@ export class ActivateAppsumoProductComponent extends WidgetSetUpBaseComponent im
         this.logger.log('[ACTIVATE-APPSUMO-PRODUCT] UPDATE THE NEW PROJECT - RES ', updatedproject);
 
     }, (error) => {
+      this.showSpinner = false;
+      this.presentModalErrorOccured()
 
       this.logger.error('[ACTIVATE-APPSUMO-PRODUCT] UPDATE THE NEW PROJECT - ERROR ', error);
 
     }, () => {
       this.logger.log('[ACTIVATE-APPSUMO-PRODUCT] UPDATE THE NEW PROJECT * COMPLETE * ');
+      this.showSpinner = false
+    })
+  }
+
+  presentModalErrorOccured() {
+    const el = document.createElement('div')
+    el.innerHTML = 'There was an error. Please contact us to' + `<a href=mailto:${this.contactSalesEmail} target='_blank'>`+ " Sales support </a>"
+   
+    swal({
+      content: el,
+      icon: "warning",
+      button: "OK",
+      dangerMode: true,
     })
   }
 
