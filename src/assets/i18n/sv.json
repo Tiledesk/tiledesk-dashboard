@@ -2319,6 +2319,7 @@
     "ViewedPages":"Sedda sidor",
     "IPAddress":"IP-adress",
     "NoTAGAssignedToThisContactYet":"Ingen TAG har tilldelats den här kontakten ännu",
+    "NoTAGAssignedYet":"Ingen TAG tilldelad än",
     "AddIntentPage": {
         "AddForm": "Lägga till formulär",
         "SelectTemplateForm": "Välj en typ av formulär bland de föreslagna eller skapa en ny",

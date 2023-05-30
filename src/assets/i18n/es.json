@@ -2319,6 +2319,7 @@
     "ViewedPages":"Páginas vistas",
     "IPAddress":"Dirección IP",
     "NoTAGAssignedToThisContactYet":"No hay TAG asignado a este contacto todavía",
+    "NoTAGAssignedYet":"No hay TAG asignado todavía",
     "AddIntentPage": {
         "AddForm": "Agregar forma",
         "SelectTemplateForm": "Seleccione un tipo de formulario entre los sugeridos o cree uno nuevo",

@@ -2319,6 +2319,7 @@
     "ViewedPages":"Koʻrilgan sahifalar",
     "IPAddress":"IP manzili",
     "NoTAGAssignedToThisContactYet":"Hozircha bu kontaktga TAG tayinlanmagan",
+    "NoTAGAssignedYet":"TAG hali tayinlanmagan",
     "AddIntentPage": {
         "AddForm": "Shakl qo'shing",
         "SelectTemplateForm": "Tavsiya etilganlar orasida shakl turini tanlang yoki yangisini yarating",

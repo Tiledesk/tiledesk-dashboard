@@ -2319,6 +2319,7 @@
     "ViewedPages":"Görüntülenen Sayfalar",
     "IPAddress":"IP adresi",
     "NoTAGAssignedToThisContactYet":"Bu kişiye henüz bir TAG atanmadı",
+    "NoTAGAssignedYet":"Henüz TAG atanmadı",
     "AddIntentPage": {
         "AddForm": "Form ekle",
         "SelectTemplateForm": "Önerilenler arasında bir tür form seçin veya yeni bir form oluşturun",

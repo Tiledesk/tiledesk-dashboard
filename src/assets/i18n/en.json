@@ -2317,6 +2317,7 @@
     "ViewedPages":"Viewed Pages",
     "IPAddress":"IP Address",
     "NoTAGAssignedToThisContactYet":"No TAG assigned to this contact yet",
+    "NoTAGAssignedYet":"No TAG assigned yet",
     "AddIntentPage": {
         "AddForm": "Add form",
         "SelectTemplateForm": "Select a type of form among those suggested, or create a new one",

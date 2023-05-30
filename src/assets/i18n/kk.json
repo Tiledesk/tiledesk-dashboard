@@ -2319,6 +2319,7 @@
     "ViewedPages":"Қаралған беттер",
     "IPAddress":"IP мекенжайы",
     "NoTAGAssignedToThisContactYet":"Бұл контактіге әлі бірде-бір TAG тағайындалмаған",
+    "NoTAGAssignedYet":"Әлі TAG тағайындалмаған",
     "AddIntentPage": {
         "AddForm": "Пішін қосу",
         "SelectTemplateForm": "Ұсынылғандар арасында пішін түрін таңдаңыз немесе жаңасын жасаңыз",

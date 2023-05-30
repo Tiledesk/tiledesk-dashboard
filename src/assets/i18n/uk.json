@@ -2319,6 +2319,7 @@
     "ViewedPages":"Переглянутих сторінок",
     "IPAddress":"IP-адреса",
     "NoTAGAssignedToThisContactYet":"Цього контакту ще не призначено TAG",
+    "NoTAGAssignedYet":"Теги ще не призначені",
     "AddIntentPage": {
         "AddForm": "Додати форму",
         "SelectTemplateForm": "Виберіть тип форми серед запропонованих або створіть новий",
