@@ -9,7 +9,7 @@
     (toggleSidebarWith)="onToggleSidebarWith($event)"> 
 </cds-header>
 
-<div class="chatboat-dashboard">
+<div class="chatboat-dashboard"  cdkDropListGroup>
 
     <cds-sidebar 
         class="cds-sidebar"
@@ -65,8 +65,14 @@
         <div id="cds-box-right" class="drag-content box-right">
 
             <cds-panel-elements class="cds-panel-elements"
-                (addNewElement)="onAddNewElement()">
-            </cds-panel-elements>
+                (showPanelActions)="onShowPanelActions($event)"
+                (addNewElement)="onAddNewElement()"
+            ></cds-panel-elements>
+
+            <!-- <cds-panel-actions class="cds-panel-actions"
+                [pos]="positionPanelActions"
+                [isOpenPanelActions] ="isOpenPanelActions"
+            ></cds-panel-actions>  -->
 
             <!-- <cds-splash-screen *ngIf=!intentSelected 
                 [text]="'Select a block from the left sidebar or create a new one'"
@@ -145,7 +151,9 @@
         </div>
     </ng-template>
 
-    
+    <cds-panel-detail
+        [isOpenPanelDetail] ="isOpenPanelDetail"
+    ></cds-panel-detail> 
 
 </div>
 

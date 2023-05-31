@@ -5,6 +5,12 @@ $width-card-tools: 160px;
 $margin-left-card: 30px;
 $margin-top-card: 30px;
 
+.cds-panel-actions {
+  z-index: 10;
+  position: absolute;
+  padding: 4px;
+}
+
 /*********** START Draggable  *************/
 .drag-content {
   position:relative;

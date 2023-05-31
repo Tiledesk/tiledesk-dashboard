@@ -1,10 +1,19 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { Form, Intent } from '../../../models/intent-model';
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+
 // import { Observable, Subscription } from 'rxjs';
-import { ACTIONS_LIST, TYPE_ACTION, patchActionId } from 'app/chatbot-design-studio/utils';
+import { ACTIONS_LIST, TYPE_ACTION, patchActionId, CreateNewAction } from 'app/chatbot-design-studio/utils';
 import { LoggerService } from 'app/services/logger/logger.service';
 const swal = require('sweetalert');
+import {
+  CdkDragDrop,
+  CdkDrag,
+  CdkDropList,
+  CdkDropListGroup,
+  moveItemInArray,
+  transferArrayItem
+} from '@angular/cdk/drag-drop';
+
 
 export enum HAS_SELECTED_TYPE {
   ANSWER = "HAS_SELECTED_ANSWER",
@@ -21,6 +30,8 @@ export enum HAS_SELECTED_TYPE {
 })
 
 export class CdsPanelIntentComponent implements OnInit, OnChanges {
+
+  arrayActionsForDrop = [];
 
   @Input() idSelected: string;
   @Input() intentSelected: Intent;
@@ -254,5 +265,31 @@ export class CdsPanelIntentComponent implements OnInit, OnChanges {
       this.isDeleting = false;
     });
   }
+
+
+
+  drop(event: CdkDragDrop<string[]>) {
+    console.log('event:', event, 'previousContainer:', event.previousContainer, 'event.container:', event.container);
+    if (event.previousContainer === event.container) {
+      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    } else {
+      try {
+        let actionType: any = event.previousContainer.data[event.previousIndex];
+        // transferArrayItem(
+        //   event.previousContainer.data,
+        //   event.container.data,
+        //   event.previousIndex,
+        //   event.currentIndex
+        // );
+        let newAction = CreateNewAction(actionType.value.type);
+        this.actions.splice(event.currentIndex, 0, newAction);
+      } catch (error) {
+        console.error(error);
+      }
+      
+    }
+  }
+
+  
 
 }

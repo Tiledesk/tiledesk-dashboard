@@ -96,6 +96,11 @@ export class CdsDashboardComponent implements OnInit {
   // HAS_COMPLETED_HOOK_BOOT_TO_DEPT_ERROR: boolean = false;
   translateparamBotName: any;
 
+  
+  isOpenPanelDetail: boolean = false;
+  isOpenPanelActions: boolean = true;
+  positionPanelActions: any;
+
   // popup_visibility: string = 'none'
 
   // isBetaUrl: boolean;
@@ -113,6 +118,7 @@ export class CdsDashboardComponent implements OnInit {
     // private multichannelService: MultichannelService,
     private el: ElementRef,
     public dialog: MatDialog,
+    private translate: TranslateService
     // private notify: NotifyService,
     // public usersLocalDbService: LocalDbService,
   ) { }
@@ -121,7 +127,7 @@ export class CdsDashboardComponent implements OnInit {
   ngOnInit() {
     this.auth.checkRoleForCurrentProject();
     this.executeTailAsyncFunctions();
-    this.hideShowWidget('show');
+    
     // // if (this.router.url.indexOf('/createfaq') !== -1) {
     // //   this.logger.log('[CDS DSHBRD] HAS CLICKED CREATE ');
     // //   this.CREATE_VIEW = true;
@@ -138,7 +144,10 @@ export class CdsDashboardComponent implements OnInit {
     // // this.getDeptsByProjectId();
   }
 
+
   ngAfterViewInit(){
+    this.setDragConfig();
+    this.hideShowWidget('show');
   }
 
   ngOnDestroy() {
@@ -164,12 +173,10 @@ export class CdsDashboardComponent implements OnInit {
       console.log('Risultato 5:', getBrowserVersion);
       const getAllIntents = await this.getAllIntents(this.id_faq_kb);
       console.log('Risultato 6:', getAllIntents, this.listOfIntents);
-      this.setDragConfig();
-      setTimeout(() => {
-        this.setDragAndListnerEventToElements();
-      }, 500);
-      
-
+      // this.setDragConfig();
+      // setTimeout(() => {
+      //   this.setDragAndListnerEventToElements();
+      // }, 500);
     } catch (errore) {
       console.log('Si è verificato un errore:', errore);
       console.error('Si è verificato un errore:', errore);
@@ -338,7 +345,11 @@ export class CdsDashboardComponent implements OnInit {
         if (faqs) {
           this.listOfIntents = JSON.parse(JSON.stringify(faqs));
         }
-        // console.log('getAllIntents: ',faqs);
+        console.log('getAllIntents: ',faqs);
+        // this.setDragConfig();
+        setTimeout(() => {
+          this.setDragAndListnerEventToElements();
+        }, 0);
         resolve(true);
       }, (error) => {
         this.logger.error('ERROR: ', error);
@@ -376,6 +387,8 @@ export class CdsDashboardComponent implements OnInit {
     const y = element.offsetTop; 
     element.style.zIndex = 2;
     console.log("CHIAMA ON mouseDown x:", x, " y: ",y);
+    
+
   }
 
   onMouseUp(intent, element){
@@ -389,6 +402,7 @@ export class CdsDashboardComponent implements OnInit {
       // this.CREATE_VIEW = false;
       // this.saveIntent(intent);
     }
+    this.isOpenPanelDetail = true;
   }
 
   onMouseMove(element){
@@ -397,36 +411,56 @@ export class CdsDashboardComponent implements OnInit {
     // console.log("CHIAMA ON onMouseMove x:", x, " y: ",y);
   }
     
-  
 
-  /** ADD INTENT  */
-  private creatIntent() {
-    console.log('creatIntent', this.intentSelected, this.id_faq_kb);
-    this.spinnerCreateIntent = true
-    this.logger.log('[CDS DSHBRD] creatIntent spinnerCreateIntent ', this.spinnerCreateIntent)
-    this.startUpdatedIntent.next(true)
-    this.logger.log('creatIntent')
-    this.showSpinner = true;
-    // let id_faq_kb = this.intentSelected.id_faq_kb;
-    let questionIntentSelected = this.intentSelected.question;
-    let answerIntentSelected = this.intentSelected.answer;
-    let displayNameIntentSelected = this.intentSelected.intent_display_name;
-    let formIntentSelected = this.intentSelected.form;
-    this.logger.log('[CDS DSHBRD] creatIntent formIntentSelected ', formIntentSelected)
-    let actionsIntentSelected = this.intentSelected.actions;
-    this.logger.log('[CDS DSHBRD] creatIntent actionsIntentSelected ', actionsIntentSelected)
-    let webhookEnabledIntentSelected = this.intentSelected.webhook_enabled;
+  private deleteIntent(intent) {
+    console.log('deleteIntent', intent);
+    // // this.listOfIntents = this.listOfIntents.filter(int => int.id != intentId);
+    // // this.listOfIntents = intents;
+    swal({
+      title: this.translate.instant('AreYouSure'),
+      text: "The intent " + intent.intent_display_name + " will be deleted",
+      icon: "warning",
+      buttons: ["Cancel", "Delete"],
+      dangerMode: true,
+    }).then((WillDelete) => {
+      if (WillDelete) {
+        this.faqService.deleteFaq(intent.id).subscribe((data) => {
+          // this.intents = this.intents.filter(int => int.id != intent.id);
+          // this.filtered_intents = this.filtered_intents.filter(int => int.id != intent.id);
+          // console.log('DELETED: ', this.intents);
+          this.getAllIntents(this.id_faq_kb);
+          // console.log('onDeleteIntent::: ', this.listOfIntents);
+          this.intentSelected = null;
+          this.elementIntentSelected = {};
+          this.elementIntentSelected['type'] = '';
+          this.elementIntentSelected['element'] = null;
+        }, (error) => {
+          swal(this.translate.instant('AnErrorOccurredWhilDeletingTheAnswer'), {
+            icon: "error"
+          })
+          this.logger.log('[PANEL-INTENT-LIST] delete intent ERROR ', error)
+        }, () => {
+          swal(this.translate.instant('Done') + "!", this.translate.instant('FaqPage.AnswerSuccessfullyDeleted'), {
+            icon: "success",
+          }).then((okpressed) => {
+            this.logger.log("ok pressed");
+          })
+        })
+      }
+    })
+  }
 
-    // const pendingClassName = 'loading-btn--pending';
-    // const successClassName = 'loading-btn--success';
-    // const failClassName = 'loading-btn--fail';
-    const stateDuration = 1500;
-    // const button = this.el.nativeElement.querySelector('#cds-save-intent-btn')
 
-    //PENDING STATE
-    // button.classList.add(pendingClassName)
-    const that = this
-
+  private creatIntent(newIntent) {
+    console.log('creatIntent', newIntent, this.id_faq_kb);
+    let questionIntentSelected = newIntent.question;
+    let answerIntentSelected = newIntent.answer;
+    let displayNameIntentSelected = newIntent.intent_display_name;
+    let formIntentSelected = newIntent.form;
+    let actionsIntentSelected = newIntent.actions;
+    let webhookEnabledIntentSelected = newIntent.webhook_enabled;
+    // PENDING STATE
+    const that = this;
     this.faqService.addIntent(
       this.id_faq_kb,
       questionIntentSelected,
@@ -436,63 +470,117 @@ export class CdsDashboardComponent implements OnInit {
       actionsIntentSelected,
       webhookEnabledIntentSelected
     ).subscribe((intent) => {
-
-      // const pendingClassName = 'loading-btn--pending';
-      // const successClassName = 'loading-btn--success';
-      // const failClassName = 'loading-btn--fail';
-      const stateDuration = 200;
-      // const button = this.el.nativeElement.querySelector('#cds-save-intent-btn')
-
-      this.showSpinner = false;
-      this.logger.log('[CDS DSHBRD] creatIntent RES ', intent);
-      if (intent) {
-
-        //SUCCESS STATE
-        setTimeout(() => {
-          // if (button) {
-          //   button.classList.remove(pendingClassName);
-          //   button.classList.add(successClassName);
-          // }
-          window.setTimeout(() => {
-            // if (button) {
-            //   button.classList.remove(successClassName)
-            // }
-            this.logger.log('[CDS DSHBRD] HERE YES  ');
-            //that.eventsSubject.next(intent);
-            that.createIntent.next(intent);
-
-          }, stateDuration);
-        }, stateDuration);
-
-      }
+      console.log('addIntent: ', intent);
+      that.getAllIntents(that.id_faq_kb);
+      // if (intent) {
+      //   //SUCCESS STATE
+      //   setTimeout(() => {
+      //     this.setDragAndListnerEventToElements();
+      //   }, 0);
+      // }
     }, (error) => {
-      this.showSpinner = false;
-      this.spinnerCreateIntent = false
-      this.logger.log('[CDS DSHBRD] creatIntent ERROR spinnerCreateIntent ', this.spinnerCreateIntent)
-      this.logger.error('[CDS DSHBRD] CREATED FAQ - ERROR ', error);
-      //FAIL STATE
-      setTimeout(() => {
-        // if (button) {
-        //   button.classList.remove(pendingClassName);
-        //   button.classList.add(failClassName);
-        // }
-
-        window.setTimeout(() => {
-          // button.classList.remove(failClassName), stateDuration
-        });
-      }, stateDuration);
-
+      console.log('error: ', error);
     }, () => {
-      this.showSpinner = false;
-      this.spinnerCreateIntent = true
-      this.logger.log('[CDS DSHBRD] creatIntent COMPLETE spinnerCreateIntent ', this.spinnerCreateIntent)
-      this.logger.log('[CDS DSHBRD] creatIntent * COMPLETE *');
-      // =========== NOTIFY SUCCESS===========
-      // this.notify.showWidgetStyleUpdateNotification(this.createFaqSuccessNoticationMsg, 2, 'done');
-      // this.router.navigate(['project/' + this.project._id + '/bots/intents/' + this.id_faq_kb + "/" + this.botType]); 
+      console.log('fine: ');
     });
 
   }
+  
+
+  /** ADD INTENT  */
+  // private creatIntent_old() {
+  //   console.log('creatIntent', this.intentSelected, this.id_faq_kb);
+  //   this.spinnerCreateIntent = true
+  //   this.logger.log('[CDS DSHBRD] creatIntent spinnerCreateIntent ', this.spinnerCreateIntent)
+  //   this.startUpdatedIntent.next(true)
+  //   this.logger.log('creatIntent')
+  //   this.showSpinner = true;
+  //   // let id_faq_kb = this.intentSelected.id_faq_kb;
+  //   let questionIntentSelected = this.intentSelected.question;
+  //   let answerIntentSelected = this.intentSelected.answer;
+  //   let displayNameIntentSelected = this.intentSelected.intent_display_name;
+  //   let formIntentSelected = this.intentSelected.form;
+  //   this.logger.log('[CDS DSHBRD] creatIntent formIntentSelected ', formIntentSelected)
+  //   let actionsIntentSelected = this.intentSelected.actions;
+  //   this.logger.log('[CDS DSHBRD] creatIntent actionsIntentSelected ', actionsIntentSelected)
+  //   let webhookEnabledIntentSelected = this.intentSelected.webhook_enabled;
+
+  //   // const pendingClassName = 'loading-btn--pending';
+  //   // const successClassName = 'loading-btn--success';
+  //   // const failClassName = 'loading-btn--fail';
+  //   const stateDuration = 1500;
+  //   // const button = this.el.nativeElement.querySelector('#cds-save-intent-btn')
+
+  //   //PENDING STATE
+  //   // button.classList.add(pendingClassName)
+  //   const that = this
+
+  //   this.faqService.addIntent(
+  //     this.id_faq_kb,
+  //     questionIntentSelected,
+  //     answerIntentSelected,
+  //     displayNameIntentSelected,
+  //     formIntentSelected,
+  //     actionsIntentSelected,
+  //     webhookEnabledIntentSelected
+  //   ).subscribe((intent) => {
+
+  //     // const pendingClassName = 'loading-btn--pending';
+  //     // const successClassName = 'loading-btn--success';
+  //     // const failClassName = 'loading-btn--fail';
+  //     const stateDuration = 200;
+  //     // const button = this.el.nativeElement.querySelector('#cds-save-intent-btn')
+
+  //     this.showSpinner = false;
+  //     this.logger.log('[CDS DSHBRD] creatIntent RES ', intent);
+  //     if (intent) {
+
+  //       //SUCCESS STATE
+  //       setTimeout(() => {
+  //         // if (button) {
+  //         //   button.classList.remove(pendingClassName);
+  //         //   button.classList.add(successClassName);
+  //         // }
+  //         window.setTimeout(() => {
+  //           // if (button) {
+  //           //   button.classList.remove(successClassName)
+  //           // }
+  //           this.logger.log('[CDS DSHBRD] HERE YES  ');
+  //           //that.eventsSubject.next(intent);
+  //           that.createIntent.next(intent);
+
+  //         }, stateDuration);
+  //       }, stateDuration);
+
+  //     }
+  //   }, (error) => {
+  //     this.showSpinner = false;
+  //     this.spinnerCreateIntent = false
+  //     this.logger.log('[CDS DSHBRD] creatIntent ERROR spinnerCreateIntent ', this.spinnerCreateIntent)
+  //     this.logger.error('[CDS DSHBRD] CREATED FAQ - ERROR ', error);
+  //     //FAIL STATE
+  //     setTimeout(() => {
+  //       // if (button) {
+  //       //   button.classList.remove(pendingClassName);
+  //       //   button.classList.add(failClassName);
+  //       // }
+
+  //       window.setTimeout(() => {
+  //         // button.classList.remove(failClassName), stateDuration
+  //       });
+  //     }, stateDuration);
+
+  //   }, () => {
+  //     this.showSpinner = false;
+  //     this.spinnerCreateIntent = true
+  //     this.logger.log('[CDS DSHBRD] creatIntent COMPLETE spinnerCreateIntent ', this.spinnerCreateIntent)
+  //     this.logger.log('[CDS DSHBRD] creatIntent * COMPLETE *');
+  //     // =========== NOTIFY SUCCESS===========
+  //     // this.notify.showWidgetStyleUpdateNotification(this.createFaqSuccessNoticationMsg, 2, 'done');
+  //     // this.router.navigate(['project/' + this.project._id + '/bots/intents/' + this.id_faq_kb + "/" + this.botType]); 
+  //   });
+
+  // }
 
   /** EDIT INTENT  */
   private editIntent() {
@@ -574,6 +662,11 @@ export class CdsDashboardComponent implements OnInit {
 
 
   // EVENTS //
+
+  onShowPanelActions(pos){
+    console.log('onShowPanelActions:: ', pos);
+    this.positionPanelActions = pos;
+  }
 
   /** SIDEBAR OUTPUT EVENTS */
   onClickItemList(event: string) {
@@ -684,17 +777,20 @@ export class CdsDashboardComponent implements OnInit {
       this.elementIntentSelected['type'] = '';
       this.elementIntentSelected['element'] = null;
     }
-    this.router.navigate(['project/' + this.projectID + '/cds/' + this.id_faq_kb + '/intent/' + this.intentSelected.id], { replaceUrl: true })
+    // this.router.navigate(['project/' + this.projectID + '/cds/' + this.id_faq_kb + '/intent/' + this.intentSelected.id], { replaceUrl: true })
   }
 
   /** onDeleteIntent */
-  onDeleteIntent(intents) {
-    this.listOfIntents = intents;
-    console.log('onDeleteIntent::: ',intents, this.listOfIntents);
-    this.intentSelected = null;
-    this.elementIntentSelected = {};
-    this.elementIntentSelected['type'] = '';
-    this.elementIntentSelected['element'] = null;
+  onDeleteIntent(intent) {
+    this.deleteIntent(intent);
+    // // this.listOfIntents = this.listOfIntents.filter(int => int.id != intentId);
+    // // this.listOfIntents = intents;
+    // this.getAllIntents(this.id_faq_kb);
+    // console.log('onDeleteIntent::: ', this.listOfIntents);
+    // this.intentSelected = null;
+    // this.elementIntentSelected = {};
+    // this.elementIntentSelected['type'] = '';
+    // this.elementIntentSelected['element'] = null;
   }
 
   // onReturnListOfIntents(intents) {
@@ -837,17 +933,22 @@ export class CdsDashboardComponent implements OnInit {
     this.intentSelected.attributes.y = 80;
     console.log(':::: onAddNewElement :::: ', this.intentSelected);
     this.listOfIntents.push(this.intentSelected);
-    this.creatIntent();
+    this.creatIntent(this.intentSelected);
   }
 
   private setDisplayName(){
-    const preDisplayName = 'untitled_block';
-    const untitledIntents = this.listOfIntents.filter((el) => {
-      return el.intent_display_name.indexOf(preDisplayName) > -1;
-    });
-    let num:number = untitledIntents.length+1;
-    let intent_display_name = preDisplayName+'_'+num;
-    return intent_display_name;
+    const preDisplayName = 'untitled_block_';
+    const filteredArray = this.listOfIntents.filter((element) => element.intent_display_name.startsWith(preDisplayName));
+    const lastElement = filteredArray.slice(-1)[0];
+    const intent_display_name = parseInt(lastElement.intent_display_name.substring(preDisplayName.length));
+    return preDisplayName+(intent_display_name+1);
+    // const preDisplayName = 'untitled_block_';
+    // const untitledIntents = this.listOfIntents.filter((el) => {
+    //   return el.intent_display_name.indexOf(preDisplayName) > -1;
+    // });
+    // let num:number = untitledIntents.length+1;
+    // let intent_display_name = preDisplayName+'_'+num;
+    // return intent_display_name;
   }
   /** END EVENTS PANEL ELEMENTS  */
 
@@ -942,7 +1043,7 @@ export class CdsDashboardComponent implements OnInit {
     });
     console.log("********* el.id ********* ", this.CREATE_VIEW, intentNameAlreadyCreated, this.intentSelected.id);
     if (this.CREATE_VIEW && !intentNameAlreadyCreated) {
-      this.creatIntent();
+      this.creatIntent(this.intentSelected);
     } else if (this.EDIT_VIEW) {
       this.editIntent();
     }

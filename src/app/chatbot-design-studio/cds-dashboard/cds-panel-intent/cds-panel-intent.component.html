@@ -2,9 +2,9 @@
     
     <!-- <div class="pic-content "> -->
 
-        <div class="pic-header draggable">
-            <div class="pic-header-title draggable">
-                <div class="pic-header-title-input draggable">
+        <div class="pic-header draggable2">
+            <div class="pic-header-title draggable2">
+                <div class="pic-header-title-input draggable2">
                     <div class="pic-title-text draggable">{{ intentSelected.intent_display_name }}</div>
 
                     <!-- <div class="pic-header-title-input">
@@ -27,6 +27,27 @@
                         'no-question': questionCount === 0  || !question }">
             <img src="assets/cds/images/brain.svg" [title]="ACTIONS_LIST['REPLACE_BOT'].name">
             <span> Train this block </span>
+        </div>
+
+        
+        
+        <div id="drop-actions" class="drag-actions target-container" [cdkDropListData]="actions" cdkDropList (cdkDropListDropped)="drop($event)">
+            <div class="target-item" *ngFor="let action of actions" cdkDrag>
+      
+                <div id="action_{{i}}" 
+                    class="action--box" 
+                    [ngSwitch]="action._tdActionType" 
+                    [ngClass]="{
+                    'action--box-first-no-title': !action._tdActionTitle && firstItem,
+                    'action--box-first-with-title': action._tdActionTitle && firstItem,
+                    'action--box-no-title': !action._tdActionTitle && !firstItem, 
+                    'action--box-with-title': action._tdActionTitle && !firstItem,
+                    'cds-action-active': idSelected === 'action_'+i }"
+                    cdkDragLockAxis="y" 
+                    (click)="onActionSelected(action, i, 'action_'+i)">
+                </div>
+
+            </div>
         </div>
 
         <!-- <div class="header__center" *ngIf="actions && actions?.length > 0">Actions</div> -->

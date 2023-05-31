@@ -1,4 +1,5 @@
-<div class="cds-panel-elements">
+<div class="cds-panel-elements" (mouseover)="onOverMenu()" (mouseleave)="onLeaveMenu()">
+
 
     <!-- <div size="1" class="sc-dvqNbr vpWBe">
         <div class="vf-step-menu__item">
@@ -15,9 +16,11 @@
         </div>
     </div> -->
 
-    <div size="4" class="cds-elements">
+    <div size="4" class="cds-elements" mat-button >
         
-        <div class="cds-element" (click)="onAddNewElement()">
+        
+
+        <div class="cds-element" (click)="onAddNewElement()" (mouseleave)="closeMenu()" (mouseover)="openMenu(div1)" #div1>
             <div class="cds-button-element">
                 <div class="cds-box-button">
                     <span class="box-img">
@@ -30,7 +33,7 @@
             </div>
         </div>
 
-        <div class="cds-element" (click)="onAddNewElement()">
+        <div class="cds-element" (click)="onAddNewElement()"  (mouseleave)="closeMenu()" (mouseover)="openMenu(div2)" #div2>
             <div class="cds-button-element">
                 <div class="cds-box-button">
                     <span class="box-img">
@@ -43,7 +46,7 @@
             </div>
         </div>
 
-        <div class="cds-element" (click)="onAddNewElement()">
+        <div class="cds-element" (click)="onAddNewElement()" (mouseleave)="closeMenu()" (mouseover)="openMenu(div3)" #div3>
             <div class="cds-button-element">
                 <div class="cds-box-button">
                     <span class="box-img">
@@ -56,7 +59,7 @@
             </div>
         </div>
 
-        <div class="cds-element" (click)="onAddNewElement()">
+        <div class="cds-element" (click)="onAddNewElement()" (mouseleave)="closeMenu()" (mouseover)="openMenu(div4)" #div4>
             <div class="cds-button-element">
                 <div class="cds-box-button">
                     <span class="box-img">
@@ -69,5 +72,29 @@
             </div>
         </div>
 
+        <div #menuElement id="menuElement"
+            [style.display]="isOpen?'block':'none'"
+            [style.top.px]="positionMenu.y"
+            [style.left.px]="positionMenu.x"
+            (mouseover)="onOverMenu()"
+            (mouseleave)="onLeaveMenu()">
+            <cds-panel-actions></cds-panel-actions>
+        </div>
+
     </div>
+
+
+    
+    <!-- <div onMouseLeave={closeMenu}>
+        <button onMouseOver=(openMenu) />
+        <Menu />
+        <MenuItems />
+    </div> -->
+
+    <!-- <button mat-button #menuTrigger="matMenuTrigger" [matMenuTriggerFor]="menu">Menu</button>
+    <mat-menu #menuElement #menu="matMenu">
+        <button mat-menu-item>Item 1</button>
+        <button mat-menu-item>Item 2</button>
+    </mat-menu> -->
+
 </div>

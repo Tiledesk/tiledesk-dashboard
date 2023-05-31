@@ -10,6 +10,7 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { PickerModule } from '@ctrl/ngx-emoji-mart';
+// import { CdkFocusModule } from './cds-modules/cdk-focus/cdk-focus.module';
 
 //MATERIAL ELEMENTS
 import { MatInputModule } from '@angular/material/input';
@@ -28,8 +29,9 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatTabsModule } from '@angular/material/tabs';
-import {MatButtonModule} from '@angular/material/button';
-import {MatIconModule} from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
 
 
 // import { SharedModule } from '../shared/shared.module';
@@ -114,7 +116,8 @@ import { CdsPopupComponent } from './cds-dashboard/cds-popup/cds-popup.component
 import { CdsModalActivateBotComponent } from './cds-dashboard/cds-modal-activate-bot/cds-modal-activate-bot.component';
 import { CdsPanelIntentComponent } from './cds-dashboard/cds-panel-intent/cds-panel-intent.component';
 import { CdsPanelElementsComponent } from './cds-dashboard/cds-panel-elements/cds-panel-elements.component';
-
+import { CdsPanelDetailComponent } from './cds-dashboard/cds-panel-detail/cds-panel-detail.component';
+import { CdsPanelActionsComponent } from './cds-dashboard/cds-panel-actions/cds-panel-actions.component';
 
 @NgModule({
   declarations: [
@@ -187,7 +190,9 @@ import { CdsPanelElementsComponent } from './cds-dashboard/cds-panel-elements/cd
     CdsPopupComponent,
     CdsModalActivateBotComponent,
     CdsPanelIntentComponent,
-    CdsPanelElementsComponent
+    CdsPanelElementsComponent,
+    CdsPanelDetailComponent,
+    CdsPanelActionsComponent
   ],
   imports: [
     A11yModule,
@@ -216,6 +221,7 @@ import { CdsPanelElementsComponent } from './cds-dashboard/cds-panel-elements/cd
     MatExpansionModule,
     MatDialogModule,
     MatTabsModule,
+    MatMenuModule,
     FormsModule,
     ReactiveFormsModule,
     SatPopoverModule,

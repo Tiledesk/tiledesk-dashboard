@@ -4,6 +4,7 @@ import { FaqService } from './../../../services/faq.service';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 // import { ActivatedRoute, Router } from '@angular/router';
 import { Intent } from 'app/models/intent-model';
+import { timeInterval } from 'rxjs/operators';
 // import { Observable } from 'rxjs';
 
 const swal = require('sweetalert');
@@ -49,12 +50,29 @@ export class PanelIntentListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.selectedIntent = null;
-    // this.filtered_intents = this.intents;
-    this.filtered_intents = this.intents.map(a => {return {...a}});
-    this.preselectIntent();
-    this.setDefaultsIntents();
+    console.log('ngOnInit:: ');
+    // this.initialize();
   }
+
+  ngOnChanges() {
+    console.log('ngOnChanges:: ');
+    setTimeout(() => {
+      this.initialize();
+    },0);
+    // this.filtered_intents = this.intents;
+  }
+
+  private initialize(){
+    if(this.intents && this.intents.length>0){
+      console.log('initialize:: ');
+      this.selectedIntent = null;
+      this.filtered_intents = this.intents;
+      // this.filtered_intents = this.intents.map(a => {return {...a}});
+      this.preselectIntent();
+      this.setDefaultsIntents();
+    }
+  }
+
 
   private setDefaultsIntents(){
     this.intent_start = null;
@@ -69,7 +87,6 @@ export class PanelIntentListComponent implements OnInit {
       this.intent_defaultFallback = this.filtered_intents.splice(this.filtered_intents.indexOf(this.filtered_intents.find(o => o.intent_display_name.trim() === 'defaultFallback')), 1)[0];
       this.default_intents.push(this.intent_defaultFallback);
     }
-
     this.listOfActions = this.filtered_intents.map(a => {
       if (a.intent_display_name.trim() === 'start') {
         return { name: a.intent_display_name, value: '#' + a.intent_id, icon: 'rocket_launch' }
@@ -306,53 +323,24 @@ export class PanelIntentListComponent implements OnInit {
 
 
   onDeleteButtonClicked(intent) {
-    swal({
-      title: this.translate.instant('AreYouSure'),
-      text: "The intent " + intent.intent_display_name + " will be deleted",
-      icon: "warning",
-      buttons: ["Cancel", "Delete"],
-      dangerMode: true,
-    }).then((WillDelete) => {
-      if (WillDelete) {
-        this.faqService.deleteFaq(intent.id).subscribe((data) => {
-          this.intents = this.intents.filter(int => int.id != intent.id);
-          this.filtered_intents = this.filtered_intents.filter(int => int.id != intent.id);
-          // console.log('DELETED: ', this.intents);
-          this.deleteIntent.emit(this.intents);
-        }, (error) => {
-          swal(this.translate.instant('AnErrorOccurredWhilDeletingTheAnswer'), {
-            icon: "error"
-          })
-          this.logger.log('[PANEL-INTENT-LIST] delete intent ERROR ', error)
-        }, () => {
-          if (this.selectedIntent && this.selectedIntent.id === intent.id) {
-            this.reselectselectedIntent();
-          }
-          swal(this.translate.instant('Done') + "!", this.translate.instant('FaqPage.AnswerSuccessfullyDeleted'), {
-            icon: "success",
-          }).then((okpressed) => {
-            this.logger.log("ok pressed")
-          })
-        })
-      }
-    })
+    this.deleteIntent.emit(intent);
   }
 
-  reselectselectedIntent() {
-    setTimeout(() => {
-      try {
-        const index = this.filtered_intents.findIndex((e) => e.id === this.selectedIntent.id);
-        const element = document.getElementById('intent_' + index);
-        if (element && index !== -1) {
-          element.classList.add("active")
-          //element.scrollIntoView();
-        }
-      } catch (error) {
-        console.error('ERROR: ', error);
-      }
+  // reselectselectedIntent() {
+  //   setTimeout(() => {
+  //     try {
+  //       const index = this.filtered_intents.findIndex((e) => e.id === this.selectedIntent.id);
+  //       const element = document.getElementById('intent_' + index);
+  //       if (element && index !== -1) {
+  //         element.classList.add("active")
+  //         //element.scrollIntoView();
+  //       }
+  //     } catch (error) {
+  //       console.error('ERROR: ', error);
+  //     }
       
-    }, 500);
-  }
+  //   }, 500);
+  // }
 
 
 
