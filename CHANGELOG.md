@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.4.40
+- Deploys in production
+- Adds the ability to tag conversations and tickets which helps users categorize and organize all customer communications
+
 ### 2.4.39
 - Deploys in production
 - Improvements and bug fixing
