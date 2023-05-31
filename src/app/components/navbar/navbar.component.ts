@@ -746,7 +746,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
   getProjectPlan() {
     this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-      console.log('[NAVBAR] - getProjectPlan project Profile Data', projectProfileData)
+      // console.log('[NAVBAR] - getProjectPlan project Profile Data', projectProfileData)
       if (projectProfileData) {
         this.prjct_profile_name = projectProfileData.profile_name;
         this.profile_name = projectProfileData.profile_name;

@@ -356,6 +356,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   mainTabs: boolean = true
 
   tagContainerElementHeight: any;
+  convTagContainerElementHeight: any
   requestInfoListElementHeight: any;
   displayAppsinSidebar: boolean = false
   dashboardApps: Array<any>
@@ -516,6 +517,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
       this.tagContainerElementHeight = (this.requestInfoListElementHeight + tagContainerElement.offsetHeight) + 'px';
       this.logger.log('this.tagContainerElementHeight ', this.tagContainerElementHeight)
+
+      this.convTagContainerElementHeight = tagContainerElement.offsetHeight + 20 + 'px';
+      this.logger.log('this.tagContainerElementHeight ', this.convTagContainerElementHeight)
     }
   }
 
@@ -1567,18 +1571,18 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.ticketSubject = ''
   }
 
-  getTagContainerElementHeightAfterViewInit() {
-    setTimeout(() => {
-      const tagContainerElement = <HTMLElement>document.querySelector('.tags--container');
-      this.logger.log('tagContainerElement.offsetHeight ', tagContainerElement)
-      if (tagContainerElement) {
-        this.logger.log('tagContainerElement.offsetHeight ', tagContainerElement.offsetHeight)
-        // this.tagContainerElementHeight = tagContainerElement.offsetHeight
-        this.tagContainerElementHeight = (292 + tagContainerElement.offsetHeight) + 'px';
-        this.logger.log('this.tagContainerElementHeight ', this.tagContainerElementHeight)
-      }
-    }, 1500);
-  }
+  // getTagContainerElementHeightAfterViewInit() {
+  //   setTimeout(() => {
+  //     const tagContainerElement = <HTMLElement>document.querySelector('.tags--container');
+  //     this.logger.log('tagContainerElement.offsetHeight ', tagContainerElement)
+  //     if (tagContainerElement) {
+  //       this.logger.log('tagContainerElement.offsetHeight ', tagContainerElement.offsetHeight)
+  //       // this.tagContainerElementHeight = tagContainerElement.offsetHeight
+  //       this.tagContainerElementHeight = (292 + tagContainerElement.offsetHeight) + 'px';
+  //       this.logger.log('this.tagContainerElementHeight ', this.tagContainerElementHeight)
+  //     }
+  //   }, 1500);
+  // }
 
   getWsRequestById$() {
     this.wsRequestsService.wsRequest$
@@ -1821,11 +1825,11 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           if (this.request.tags) {
             this.tagsArray = this.request.tags // initialize the tagsArray with the existing tags
             this.logger.log('[WS-REQUESTS-MSGS] - onInit TAGS ARRAY: ', this.tagsArray);
-            if (this.tagsArray) {
-              setTimeout(() => {
-                this.getTagContainerElementHeight()
-              }, 100);
-            }
+            // if (this.tagsArray) {
+            //   setTimeout(() => {
+            //     this.getTagContainerElementHeight()
+            //   }, 1500);
+            // }
 
             this.getTag();
 
@@ -2365,7 +2369,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
             if (message.attributes && message.attributes.sourceTitle) {
               viewedPageTitleValue = message.attributes.sourceTitle
             } else {
-             viewedPageTitleValue = "Not available"
+              viewedPageTitleValue = "Not available"
             }
             if (message.attributes && message.attributes.sourceTitle && message.attributes.sourcePage) {
               const index = this.viewedPages.findIndex((e) => e.viewedPageLink === message.attributes.sourcePage);
@@ -4029,28 +4033,28 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   displayModalDownloadTranscript() {
     if (this.isVisiblePaymentTab) {
       // if (this.CURRENT_USER_ROLE === 'owner') {
-        if (
-          (this.profile_name === PLAN_NAME.A) ||
-          (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
-          (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
-          (this.prjct_profile_type === 'free' && this.trial_expired === true)
+      if (
+        (this.profile_name === PLAN_NAME.A) ||
+        (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
+        (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
+        (this.prjct_profile_type === 'free' && this.trial_expired === true)
 
-        ) {
-          if (!this.appSumoProfile) {
-            this.presentModalFeautureAvailableFromBPlan()
-          } else if (this.appSumoProfile) {
-            this.presentModalAppSumoFeautureAvailableFromBPlan()
-          }
-          // this.logger.log('[HISTORY & NORT-CONVS] -  EXPORT DATA IS NOT AVAILABLE ')
-        } else if (
-          (this.profile_name === PLAN_NAME.B && this.subscription_is_active === true) ||
-          (this.profile_name === PLAN_NAME.C && this.subscription_is_active === true) ||
-          (this.prjct_profile_type === 'free' && this.trial_expired === false)
-
-        ) {
-          this.displayModalTranscript = 'block'
-          // this.logger.log('[HISTORY & NORT-CONVS] - EXPORT DATA IS AVAILABLE ')
+      ) {
+        if (!this.appSumoProfile) {
+          this.presentModalFeautureAvailableFromBPlan()
+        } else if (this.appSumoProfile) {
+          this.presentModalAppSumoFeautureAvailableFromBPlan()
         }
+        // this.logger.log('[HISTORY & NORT-CONVS] -  EXPORT DATA IS NOT AVAILABLE ')
+      } else if (
+        (this.profile_name === PLAN_NAME.B && this.subscription_is_active === true) ||
+        (this.profile_name === PLAN_NAME.C && this.subscription_is_active === true) ||
+        (this.prjct_profile_type === 'free' && this.trial_expired === false)
+
+      ) {
+        this.displayModalTranscript = 'block'
+        // this.logger.log('[HISTORY & NORT-CONVS] - EXPORT DATA IS AVAILABLE ')
+      }
       // } else {
       //   this.presentModalAgentCannotManageAvancedSettings()
       // }
@@ -5568,6 +5572,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.tab3 = false;
     this.tab4 = false;
     this.logger.log('haSelectedTab1 ', this.tab1)
+    setTimeout(() => {
+      this.getTagContainerElementHeight()
+    }, 1000);
   }
 
   hasSelectedTab2() {
@@ -5631,7 +5638,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.EMAIL_IS_VALID = this.validateEmail(event)
     this.logger.log('ON EMAIL CHANGE EMAIL_IS_VALID ', this.EMAIL_IS_VALID)
 
-    this.getTagContainerElementHeight()
+    // this.getTagContainerElementHeight()
 
   }
 

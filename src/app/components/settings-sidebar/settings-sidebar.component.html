@@ -132,12 +132,12 @@
     <!-- ------------------------------------------------------------- -->
     <ng-container *ngIf="isVisibleLBS && USER_ROLE !== 'agent'">
       <li [ngClass]="{'active-item': TAG_ROUTE_IS_ACTIVE}" (click)="goToTags()"
-        matTooltipClass="custom-mat-tooltip-in-settings-sidebar" matTooltip=" {{'Tags.Tags' | translate}}"
+        matTooltipClass="custom-mat-tooltip-in-settings-sidebar" matTooltip=" {{'Tags.ConversationsTAG' | translate}}"
         #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100" [matTooltipDisabled]="IS_OPEN">
         <a>
           <i *ngIf="IS_OPEN === true || IS_OPEN === false" class="material-icons settings-sidebar-icons">local_offer</i>
           <p *ngIf="IS_OPEN === true" class="custom_paragraph">
-            {{'Tags.Tags' | translate}}
+            {{'Tags.ConversationsTAG' | translate}}
           </p>
         </a>
       </li>

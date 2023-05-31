@@ -1973,12 +1973,13 @@ span .conv-svg-icon {
 }
 
 .manage_tags {
-  float: right;
+  // float: right;
   color: #03a5e8;
   font-size: 12px;
   font-weight: 400;
   margin-top: 7px;
   cursor: pointer;
+  margin-left: 53px;
 }
 
 .manage_tags:hover {
@@ -5139,4 +5140,34 @@ label {
   vertical-align: middle;
   color: #3ea9f5;
   font-size: 17px;
+}
+
+.no-conv-tags-wpr {
+  min-height: 29px;
+}
+
+.no-conv-tags {
+  margin-top: 0;
+  margin-bottom: 0;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 18px;
+  letter-spacing: -0.01em;
+  padding: 3px 20px 4px 3px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 1;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  color: #8796af;
+}
+
+.ticket-id-text {
+  font-family: Poppins,Roboto,Arial,sans-serif;
+  color: #394f5a;
+  font-weight: 500;
+  margin-bottom: 0;
+  font-size: 14px;
+  margin-right: 6px;
+  margin-top: 2px;
 }
