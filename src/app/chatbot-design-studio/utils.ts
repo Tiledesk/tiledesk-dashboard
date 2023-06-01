@@ -107,7 +107,7 @@ export enum TYPE_ACTION {
     CHANGE_DEPARTMENT = 'department',
     ONLINE_AGENTS = 'ifonlineagents',
     OPEN_HOURS = 'ifopenhours',
-    HIDE_MESSSAGE = 'hmessage',
+    HIDE_MESSAGE = 'hmessage',
     JSON_CONDITION = 'jsoncondition'
 }
 
@@ -195,7 +195,7 @@ export const ELEMENTS_LIST = [
     { name: 'Change dept', type: TYPE_ACTION.CHANGE_DEPARTMENT, src: "assets/cds/images/actions/change_department.svg"},
     { name: 'If Online Agent', type: TYPE_ACTION.ONLINE_AGENTS, src: "assets/cds/images/actions/online_agents.svg", description: 'This action moves the flow to different blocks, based on the agents’ availability.<br>If there are agents available the <b>TRUE block</b> will be triggered.<br>If there are no agents available the <b>FALSE block</b> will be triggered.<br>One of the two options can be unset. The flow will optionally stop only when a block-populated condition is met.<br>To optionally stop the flow set “Stop on met condition”. To always continue unset Stop on met condition.' },
     { name: 'If Operating Hours', type: TYPE_ACTION.OPEN_HOURS, src: "assets/cds/images/actions/open_hours.svg", description: 'This action moves the flow to different blocks, based on the operating hours status.<br>During working hours the <b>TRUE block</b> will be triggered.<br>During offline hours the <b>FALSE block</b> will be triggered.<br>One of the two options can be unset. The flow will optionally stop only when a block-populated condition is met.<br>To optionally stop the flow set “Stop on met condition”. To always continue unset the same option.'},
-    { name: 'Hidden message', type: TYPE_ACTION.HIDE_MESSSAGE, src: "assets/cds/images/actions/hidden_message.svg"},
+    { name: 'Hidden message', type: TYPE_ACTION.HIDE_MESSAGE, src: "assets/cds/images/actions/hidden_message.svg"},
     { name: 'Condition', type: TYPE_ACTION.JSON_CONDITION, src: "assets/cds/images/actions/condition.svg"},
     { name: 'Form', type: TYPE_INTENT_ELEMENT.FORM, src: "assets/cds/images/form.svg", description: "Add a Form to ask user data"},
     { name: 'Answer', type: TYPE_INTENT_ELEMENT.ANSWER, src: "assets/cds/images/form.svg", description: "Add an Answer"},
@@ -220,7 +220,7 @@ export const ACTIONS_LIST= {
     CHANGE_DEPARTMENT: { name: 'Change dept', type: TYPE_ACTION.CHANGE_DEPARTMENT, src: "assets/cds/images/actions/change_department.svg" },
     ONLINE_AGENTS: { name: 'If Online Agent', type: TYPE_ACTION.ONLINE_AGENTS, src: "assets/cds/images/actions/online_agents.svg", description: 'This action moves the flow to different blocks, based on the agents’ availability.<br>If there are agents available the <b>TRUE block</b> will be triggered.<br>If there are no agents available the <b>FALSE block</b> will be triggered.<br>One of the two options can be unset. The flow will optionally stop only when a block-populated condition is met.<br>To optionally stop the flow set “Stop on met condition”. To always continue unset Stop on met condition.' },
     OPEN_HOURS: { name: 'If Operating Hours', type: TYPE_ACTION.OPEN_HOURS, src: "assets/cds/images/actions/open_hours.svg", description: 'This action moves the flow to different blocks, based on the operating hours status.<br>During working hours the <b>TRUE block</b> will be triggered.<br>During offline hours the <b>FALSE block</b> will be triggered.<br>One of the two options can be unset. The flow will optionally stop only when a block-populated condition is met.<br>To optionally stop the flow set “Stop on met condition”. To always continue unset the same option.' },
-    HIDE_MESSSAGE: { name: 'Hidden message', type: TYPE_ACTION.HIDE_MESSSAGE, src: "assets/cds/images/actions/hidden_message.svg" },
+    HIDE_MESSAGE: { name: 'Hidden message', type: TYPE_ACTION.HIDE_MESSAGE, src: "assets/cds/images/actions/hidden_message.svg" },
     JSON_CONDITION: { name: 'Condition', type: TYPE_ACTION.JSON_CONDITION, src: "assets/cds/images/actions/condition.svg" }
 }
 
@@ -371,7 +371,7 @@ export function CreateNewAction(typeAction: TYPE_ACTION) {
     if(typeAction === TYPE_ACTION.CHANGE_DEPARTMENT) {
       action = new  ActionChangeDepartment();
     }
-    if(typeAction === TYPE_ACTION.HIDE_MESSSAGE){
+    if(typeAction === TYPE_ACTION.HIDE_MESSAGE){
       action = new ActionHideMessage();
     }
     if(typeAction === TYPE_ACTION.JSON_CONDITION){

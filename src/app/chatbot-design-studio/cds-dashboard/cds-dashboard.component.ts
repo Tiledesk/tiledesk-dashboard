@@ -1,6 +1,6 @@
 import { TYPE_ACTION, variableList } from 'app/chatbot-design-studio/utils';
 // import { MultichannelService } from 'app/services/multichannel.service';
-import { Component, OnInit, ElementRef, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, ElementRef, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { FaqService } from '../../services/faq.service';
@@ -10,6 +10,7 @@ import { Location } from '@angular/common';
 import { TranslateService } from '@ngx-translate/core';
 import { LoggerService } from '../../services/logger/logger.service';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+
 import { HttpClient } from "@angular/common/http";
 import { Intent, Button, Action, Form, ActionReply, Command, Message, ActionAssignVariable, Attributes } from '../../models/intent-model';
 import { TYPE_COMMAND, TYPE_INTENT_ELEMENT, EXTERNAL_URL, TYPE_MESSAGE, TIME_WAIT_DEFAULT } from '../utils';
@@ -24,9 +25,10 @@ import { Chatbot } from 'app/models/faq_kb-model';
 
 import { DialogYesNoComponent } from 'app/chatbot-design-studio/cds-base-element/dialog-yes-no/dialog-yes-no.component';
 import { MatDialog } from '@angular/material/dialog';
-import { timeInterval } from 'rxjs/operators';
-const swal = require('sweetalert');
+import { DragDropService } from 'app/chatbot-design-studio/cds-services/drag-drop.service';
+import { IntentService } from 'app/chatbot-design-studio/cds-services/intent.service';
 
+const swal = require('sweetalert');
 
 declare function setDrawer(el, drawer);
 declare function setDragElement(el);
@@ -37,6 +39,9 @@ declare function setDragElement(el);
   styleUrls: ['./cds-dashboard.component.scss']
 })
 export class CdsDashboardComponent implements OnInit {
+
+  @ViewChild('receiver_elements_dropped_on_stage') receiverElementsDroppedOnStage: ElementRef;
+  @ViewChild('drawer_of_items_to_zoom_and_drag') drawerOfItemsToZoomAndDrag: ElementRef;
 
   listOfIntents: Array<Intent>;
   intentStart: Intent;
@@ -101,6 +106,9 @@ export class CdsDashboardComponent implements OnInit {
   isOpenPanelActions: boolean = true;
   positionPanelActions: any;
 
+
+
+  dashboardAttributes: any = {};
   // popup_visibility: string = 'none'
 
   // isBetaUrl: boolean;
@@ -111,6 +119,8 @@ export class CdsDashboardComponent implements OnInit {
     private auth: AuthService,
     public location: Location,
     private logger: LoggerService,
+    private dragDropService:DragDropService,
+    private intentService: IntentService,
     private httpClient: HttpClient,
     private faqKbService: FaqKbService,
     // public appConfigService: AppConfigService,
@@ -156,7 +166,7 @@ export class CdsDashboardComponent implements OnInit {
 
 
   
-  async  executeTailAsyncFunctions() {
+  async executeTailAsyncFunctions() {
     // Le funzioni asincrone sono state eseguite in coda
     try {
       const GetTranslations = await this.getTranslations();
@@ -278,7 +288,7 @@ export class CdsDashboardComponent implements OnInit {
   private setDragConfig(){
     let el = document.getElementById("cds-box-right");
     // console.log('getElementById:: el', el);
-    let drawer = document.getElementById("cds-box-right-content");
+    let drawer = document.getElementById("drawer-of-items-to-zoom-and-drag");
     // console.log('getElementById:: drawer', drawer);
     setDrawer(el, drawer);
   }
@@ -710,6 +720,69 @@ export class CdsDashboardComponent implements OnInit {
 
 
   /** START EVENTS PANEL INTENT */
+
+  droppedElementOnStage(event: CdkDragDrop<string[]>) {
+    // console.log('droppedElementOnStage!!!!!', event);
+    let actionType = '';
+    let pos = this.dragDropService.positionElementOnStage(event.dropPoint, this.receiverElementsDroppedOnStage, this.drawerOfItemsToZoomAndDrag);
+    try {
+      let action: any = event.previousContainer.data[event.previousIndex];
+      actionType = action.value.type;
+      // console.log('actionType::: ', actionType);
+    } catch (error) {
+      console.error('ERROR: ', error);
+    }
+    this.onAddNewElementToStage(pos, actionType);
+  }
+
+  // positionElementOnStage(dropPoint:any, receiverElementsDroppedOnStageReference:ElementRef, drawerOfItemsToZoomAndDragReference:ElementRef){
+  //     let pos = {
+  //       'x': 0,
+  //       'y': 0
+  //     }
+  //     const dropElement = receiverElementsDroppedOnStageReference.nativeElement;
+  //     const posDropElement = dropElement.getBoundingClientRect();
+  //     console.log('drop X:', posDropElement.left);
+  //     console.log('drop Y:', posDropElement.top);
+  //     let point = {'x':0, 'y':0};
+  //     point.x = dropPoint.x-posDropElement.left;
+  //     point.y = dropPoint.y-posDropElement.top;
+  //     console.log('point:', point.x, point.y);
+  //     const drawerElement = drawerOfItemsToZoomAndDragReference.nativeElement;
+  //     const rectDrawerElement = drawerElement.getBoundingClientRect();
+  //     console.log('drawerElement:', this.drawerOfItemsToZoomAndDrag);
+  //     console.log('drawer X:', rectDrawerElement.left);
+  //     console.log('drawer Y:', rectDrawerElement.top);
+  //     let scaleValue = 1;
+  //     try {
+  //       const transform = drawerElement.style.transform; 
+  //       const scaleMatch = transform.match(/scale\((.*?)\)/);
+  //       if (scaleMatch) {
+  //         scaleValue = scaleMatch[1];
+  //         console.log('Scala di trasformazione:', scaleValue);
+  //       } else {
+  //         console.log('Nessuna scala di trasformazione trovata');
+  //       }
+  //     } catch (error) {
+  //       console.error('ERROR: ', error);
+  //     }
+  //     // calcolo differenza di posizione
+  //     let diffX = (rectDrawerElement.left - posDropElement.left);
+  //     let diffY = (rectDrawerElement.top - posDropElement.top);
+  //     console.log('diff X:', diffX);
+  //     console.log('diff Y:', diffY);
+
+  //     // pos.x = (point.x - 0);
+  //     // pos.y = (point.y - 0);
+  //     // console.log('pos:', pos.x, pos.y);
+
+  //     pos.x = (point.x - diffX)/scaleValue;
+  //     pos.y = (point.y - diffY)/scaleValue;
+  //     console.log('new pos:', pos.x, pos.y);
+  //     return pos;
+  // }
+
+
   onOpenActionDrawer(_isOpenActioDrawer: boolean) {
     this.logger.log('[CDS DSBRD] onOpenActionDrawer - isOpenActioDrawer ', _isOpenActioDrawer)
     this.isOpenActionDrawer = _isOpenActioDrawer;
@@ -915,48 +988,46 @@ export class CdsDashboardComponent implements OnInit {
   /** END EVENTS PANEL INTENT LIST */
 
   /** START EVENTS PANEL ELEMENTS */
-  onAddNewElement(){
+  onAddNewElementToStage(pos, actionType){
     this.CREATE_VIEW = true;
-    this.logger.log('[CDS DSBRD] addNewIntent  ')
-    this.intentSelected = new Intent();
-    this.intentSelected.id_faq_kb = this.id_faq_kb;
-    this.intentSelected.intent_display_name = this.setDisplayName();
-    let action = new ActionReply();
-    let commandWait = new Command(TYPE_COMMAND.WAIT);
-    action.attributes.commands.push(commandWait);
-    let command = new Command(TYPE_COMMAND.MESSAGE);
-    command.message = new Message('text', 'A chat message will be sent to the visitor');
-    action.text = command.message.text; //Set default reply global text
-    action.attributes.commands.push(command);
-    this.intentSelected.actions.push(action)
-    this.intentSelected.attributes.x = 300;
-    this.intentSelected.attributes.y = 80;
-    console.log(':::: onAddNewElement :::: ', this.intentSelected);
+    this.intentSelected = this.intentService.addNewIntent(this.id_faq_kb, this.listOfIntents, actionType);
     this.listOfIntents.push(this.intentSelected);
-    this.creatIntent(this.intentSelected);
+
+    this.intentSelected.attributes.x = pos.x;
+    this.intentSelected.attributes.y = pos.y;
+    console.log(':::: onAddNewElement :::: ', this.intentSelected);
+    
+    // this.creatIntent(this.intentSelected);
   }
 
-  private setDisplayName(){
-    const preDisplayName = 'untitled_block_';
-    const filteredArray = this.listOfIntents.filter((element) => element.intent_display_name.startsWith(preDisplayName));
-    const lastElement = filteredArray.slice(-1)[0];
-    const intent_display_name = parseInt(lastElement.intent_display_name.substring(preDisplayName.length));
-    return preDisplayName+(intent_display_name+1);
-    // const preDisplayName = 'untitled_block_';
-    // const untitledIntents = this.listOfIntents.filter((el) => {
-    //   return el.intent_display_name.indexOf(preDisplayName) > -1;
-    // });
-    // let num:number = untitledIntents.length+1;
-    // let intent_display_name = preDisplayName+'_'+num;
-    // return intent_display_name;
-  }
+  // onAddNewElement(){
+  //   this.CREATE_VIEW = true;
+  //   this.logger.log('[CDS DSBRD] addNewIntent  ')
+  //   this.intentSelected = new Intent();
+  //   this.intentSelected.id_faq_kb = this.id_faq_kb;
+  //   // console.log(':::: intentSelected :::: ', this.intentSelected);
+  //   this.intentSelected.intent_display_name = this.setDisplayName();
+  //   let action = new ActionReply();
+  //   let commandWait = new Command(TYPE_COMMAND.WAIT);
+  //   action.attributes.commands.push(commandWait);
+  //   let command = new Command(TYPE_COMMAND.MESSAGE);
+  //   command.message = new Message('text', 'A chat message will be sent to the visitor');
+  //   action.text = command.message.text; //Set default reply global text
+  //   action.attributes.commands.push(command);
+  //   this.intentSelected.actions.push(action)
+  //   this.intentSelected.attributes.x = 300;
+  //   this.intentSelected.attributes.y = 80;
+  //   console.log(':::: onAddNewElement :::: ', this.intentSelected);
+  //   this.listOfIntents.push(this.intentSelected);
+  //   this.creatIntent(this.intentSelected);
+  // }
   /** END EVENTS PANEL ELEMENTS  */
 
   /** START EVENTS SPLASH SCREEN */
-  onAddIntentFromSplashScreen(hasClickedAddNewIntent) {
-    this.logger.log('[CDS DSBRD] onAddIntentFromSplashScreen hasClickedAddNewIntent ', hasClickedAddNewIntent)
-    this.newIntentFromSplashScreen.next(hasClickedAddNewIntent)
-  }
+  // onAddIntentFromSplashScreen(hasClickedAddNewIntent) {
+  //   this.logger.log('[CDS DSBRD] onAddIntentFromSplashScreen hasClickedAddNewIntent ', hasClickedAddNewIntent)
+  //   this.newIntentFromSplashScreen.next(hasClickedAddNewIntent)
+  // }
   /** END EVENTS SPLASH SCREEN  */
 
 
@@ -964,22 +1035,22 @@ export class CdsDashboardComponent implements OnInit {
   
   /** START EVENTS INTENT HEADER */
   onSaveIntent(intent: Intent) {
-    console.log('onSaveIntent:: ', intent);
-    this.CREATE_VIEW = true;
-    this.intentSelected = new Intent();
-    this.intentSelected.intent_display_name = this.setDisplayName();
-    let action = new ActionReply();
-    let commandWait = new Command(TYPE_COMMAND.WAIT);
-    action.attributes.commands.push(commandWait);
-    let command = new Command(TYPE_COMMAND.MESSAGE);
-    command.message = new Message('text', 'A chat message will be sent to the visitor');
-    action.text = command.message.text;
-    action.attributes.commands.push(command);
-    this.intentSelected.actions.push(action)
-    this.intentSelected.attributes.x = 300;
-    this.intentSelected.attributes.y = 80;
-    console.log(':::: onAddNewElement :::: ', this.intentSelected);
-    this.listOfIntents.push(this.intentSelected);
+    console.log('**** onSaveIntent:: ', intent);
+    // this.CREATE_VIEW = true;
+    // this.intentSelected = new Intent();
+    // this.intentSelected.intent_display_name = this.intentService.setDisplayName(this.listOfIntents);
+    // let action = new ActionReply();
+    // let commandWait = new Command(TYPE_COMMAND.WAIT);
+    // action.attributes.commands.push(commandWait);
+    // let command = new Command(TYPE_COMMAND.MESSAGE);
+    // command.message = new Message('text', 'A chat message will be sent to the visitor');
+    // action.text = command.message.text;
+    // action.attributes.commands.push(command);
+    // this.intentSelected.actions.push(action)
+    // this.intentSelected.attributes.x = 300;
+    // this.intentSelected.attributes.y = 80;
+    // console.log(':::: onAddNewElement :::: ', this.intentSelected);
+    // this.listOfIntents.push(this.intentSelected);
     //this.saveIntent(this.intentSelected);
   }
   /** END EVENTS INTENT HEADER  */

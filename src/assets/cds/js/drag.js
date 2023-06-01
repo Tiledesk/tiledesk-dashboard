@@ -53,8 +53,8 @@ function zoom(event) {
     function transform() {
       let tcmd = `translate(${tx}px, ${ty}px)`;
       let scmd = `scale(${scale})`;
-      console.log("tcmd:", tcmd);
-      console.log("scmd:", scmd);
+      // console.log("tcmd:", tcmd);
+      // console.log("scmd:", scmd);
       this.drawer.style.transform = tcmd + " " + scmd;
     }
 

@@ -1,6 +1,4 @@
 import { SatPopoverModule } from '@ncstate/sat-popover';
-import { ActionJsonConditionComponent } from './cds-dashboard/panel-intent-detail/actions/action-json-condition/action-json-condition.component';
-
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DragDropModule } from '@angular/cdk/drag-drop';
@@ -10,7 +8,10 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { PickerModule } from '@ctrl/ngx-emoji-mart';
-// import { CdkFocusModule } from './cds-modules/cdk-focus/cdk-focus.module';
+import { HttpClient } from '@angular/common/http';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+
+
 
 //MATERIAL ELEMENTS
 import { MatInputModule } from '@angular/material/input';
@@ -33,6 +34,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 
+//SERVICES
+import { DragDropService } from './cds-services/drag-drop.service';
 
 // import { SharedModule } from '../shared/shared.module';
 import { CdsDashboardComponent } from './cds-dashboard/cds-dashboard.component';
@@ -58,7 +61,6 @@ import { FormFieldComponent } from './cds-dashboard/panel-intent-detail/form/for
 import { FormEditAddComponent } from './cds-dashboard/panel-intent-detail/form/form-edit-add/form-edit-add.component';
 import { ModalWindowComponent } from './cds-dashboard/panel-intent-detail/form/modal-window/modal-window.component';
 import { CdsSidebarComponent } from './cds-sidebar/cds-sidebar.component';
-
 import { ElementTextareaComponent } from './cds-dashboard/panel-intent-detail/actions/action-reply/elements/element-textarea/element-textarea.component';
 import { CdsChatbotDetailsComponent } from './cds-chatbot-details/cds-chatbot-details.component';
 import { CdsFulfillmentComponent } from './cds-fulfillment/cds-fulfillment.component';
@@ -76,7 +78,7 @@ import { ConditionComponent } from './cds-rules/rules-add/condition/condition.co
 import { ActionComponent } from './cds-rules/rules-add/action/action.component';
 
 
-//intent ACTIONS
+//INTENT ACTIONS
 import { ActionWaitComponent } from './cds-dashboard/panel-intent-detail/actions/action-wait/action-wait.component';
 import { ActionEmailComponent } from './cds-dashboard/panel-intent-detail/actions/action-email/action-email.component';
 import { ActionIntentComponent } from './cds-dashboard/panel-intent-detail/actions/action-intent/action-intent.component'
@@ -90,10 +92,8 @@ import { ActionHideMessageComponent } from './cds-dashboard/panel-intent-detail/
 import { ActionDescriptionComponent } from './cds-dashboard/panel-intent-detail/actions/action-description/action-description.component';
 import { ActionCloseComponent } from './cds-dashboard/panel-intent-detail/actions/action-close/action-close.component';
 import { ActionAgentHandoffComponent } from './cds-dashboard/panel-intent-detail/actions/action-agent-handoff/action-agent-handoff.component';
+import { ActionJsonConditionComponent } from './cds-dashboard/panel-intent-detail/actions/action-json-condition/action-json-condition.component';
 
-
-import { HttpClient } from '@angular/common/http';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { CdsSplashScreenComponent } from './cds-dashboard/cds-splash-screen/cds-splash-screen.component';
 import { CdsFooterComponent } from './cds-dashboard/cds-footer/cds-footer.component';
 import { CdsPublishOnCommunityModalComponent } from './cds-dashboard/cds-publish-on-community-modal/cds-publish-on-community-modal.component';
@@ -153,7 +153,6 @@ import { CdsPanelActionsComponent } from './cds-dashboard/cds-panel-actions/cds-
     CdsChatbotDetailsComponent,
     CdsSplashScreenComponent,
     ActionWaitComponent,
-    //BASE-ELEMENT
     CDSTextComponent,
     CDSDelaySliderComponent,
     CDSFilterComponent,
@@ -232,6 +231,9 @@ import { CdsPanelActionsComponent } from './cds-dashboard/cds-panel-actions/cds-
         deps: [HttpClient],
       },
     })
+  ],
+  providers: [
+    DragDropService
   ]
 })
 export class ChatbotDesignStudioModule { }

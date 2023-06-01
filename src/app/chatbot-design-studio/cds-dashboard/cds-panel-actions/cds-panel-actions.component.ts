@@ -1,6 +1,7 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { TYPE_ACTION, ACTIONS_LIST } from '../../utils';
-import { CdkDragDrop, CdkDragStart, CdkDragEnd, CdkDrag, CdkDragMove, CdkDragPlaceholder, CdkDragHandle } from '@angular/cdk/drag-drop';
+import { CdkDropList, CdkDragStart, CdkDragEnd, CdkDragMove } from '@angular/cdk/drag-drop';
+import { DragDropService } from 'app/chatbot-design-studio/cds-services/drag-drop.service';
 
 @Component({
   selector: 'cds-panel-actions',
@@ -8,21 +9,27 @@ import { CdkDragDrop, CdkDragStart, CdkDragEnd, CdkDrag, CdkDragMove, CdkDragPla
   styleUrls: ['./cds-panel-actions.component.scss']
 })
 export class CdsPanelActionsComponent implements OnInit {
-  @Input() isOpenPanelDetail: boolean;
-  @Input() pos: any;
+  @ViewChild('action_list_drop_connect') actionListDropConnect: CdkDropList;
 
+  @Input() pos: any;
+  @Output() isDraggingMenuElement = new EventEmitter();
 
   TYPE_ACTION = TYPE_ACTION;
   actionList: any;
-  // isDragging: any;
+  isDragging: any = false;
+  indexDrag: number;
+  // dropList: CdkDropList;
+  connectedLists: CdkDropList[];
+  connectedIDLists: string[];
 
-  constructor() { }
+  constructor(
+    public dragDropService: DragDropService
+  ) { }
 
   ngOnInit(): void {
     if(!this.pos){
       this.pos = {'x': 0, 'y':0};
     }
-
     this.actionList = Object.keys(ACTIONS_LIST).map(key => {
       return {
         type: key,
@@ -30,6 +37,7 @@ export class CdsPanelActionsComponent implements OnInit {
       };
     });
     console.log('ACTIONS_LIST',this.actionList);
+    
   }
 
   ngOnChanges() {
@@ -37,46 +45,43 @@ export class CdsPanelActionsComponent implements OnInit {
   }
 
 
+  ngAfterViewInit(){
+    this.dragDropService.addConnectedIDList('action_list_drop_connect');
+    // this.dragDropService.addConnectedIDList('cds-box-right-content');
+    this.dragDropService.addConnectedList(this.actionListDropConnect);
+    this.connectedLists = this.dragDropService.connectedLists;
+    this.connectedIDLists = this.dragDropService.connectedIDLists;
+    // ['action_list_drop_connect','drop-actions'];
+    // this.dragDropService.connectedIDLists;
+    console.log("connectedLists--------------------> ",this.connectedIDLists);
+  }
 
 
 
 
 
-  dragStarted(event: CdkDragStart, currentIndex) {
+  onDragStarted(event:CdkDragStart, currentIndex: number) {
     console.log('Drag started!', event, currentIndex);
-    this.actionList[currentIndex].isDragging = true;
-    // this.actionList.splice(currentIndex+1, 0, emptyAction);
+    this.isDragging = true;
+    this.indexDrag = currentIndex;
+    this.isDraggingMenuElement.emit(this.isDragging);
   }
 
-  dragEnd(event: CdkDragEnd, currentIndex) {
-    console.log('Drag End!', event, currentIndex);
-    this.actionList[currentIndex].isDragging = false;
-    // this.actionList.splice(currentIndex+1, 1);
+  onDragEnd(event: CdkDragEnd) {
+    // console.log('Drag End!', event);
+    this.isDragging = false;
+    this.indexDrag = null;
+    this.isDraggingMenuElement.emit(this.isDragging);
   }
 
-  dragMoved(event: CdkDragMove, currentIndex) {
-    console.log('Drag Moved!', event);
-    // this.actionList = event.source.dropContainer.data;
+  onDragMoved(event: CdkDragMove) {
+    // console.log('Drag Moved!', event);
+    // const element = event.source.element.nativeElement;
   }
 
-  dragOver(event: DragEvent) {
+  onDragOver(event: DragEvent) {
     console.log('Drag dragOver!', event);
     // event.preventDefault(); // Annulla l'evento di default che consente il drop
   }
-
-  
-
-  // drop(event: CdkDragDrop<string[]>) {
-  //   if (event.previousContainer === event.container) {
-  //     //moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-  //   } else {
-  //     // copyArrayItem(
-  //     //   event.previousContainer.data,
-  //     //   event.container.data,
-  //     //   event.previousIndex,
-  //     //   event.currentIndex
-  //     // );
-  //   }
-  // }
 
 }

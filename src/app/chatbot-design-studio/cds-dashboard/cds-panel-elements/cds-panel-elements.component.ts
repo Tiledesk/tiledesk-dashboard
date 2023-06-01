@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 // import {MatMenuModule} from '@angular/material/menu';
 // import {MatButtonModule} from '@angular/material/button';
 import { MatMenuTrigger } from '@angular/material/menu';
@@ -14,12 +14,14 @@ export class CdsPanelElementsComponent implements OnInit {
   @ViewChild('menuTrigger') menuTrigger: MatMenuTrigger;
   @ViewChild('menuElement', { static: false }) private menuElement: ElementRef;
 
+
   @Output() addNewElement = new EventEmitter();
   @Output() showPanelActions = new EventEmitter();
   
-  isOpen: boolean = true;
+  isOpen: boolean = false;
   isOverMenu: boolean = false;
   positionMenu: any = {'x': 80, 'y': 0 };
+  isDraggingMenuElement: boolean = false;
 
   constructor() { }
 
@@ -27,21 +29,18 @@ export class CdsPanelElementsComponent implements OnInit {
   }
 
 
- 
-  
-
 
   openMenu(e) {
     //this.menuTrigger.openMenu();
     let x = e.offsetLeft;
     let y = e.offsetTop;
-    // let x = e.getBoundingClientRect().left;
-    // let y = e.getBoundingClientRect().top;
-    console.log(':::: CdsPanelElementsComponent onMouseOverElement :::: ', y);
+    console.log(':::: CdsPanelElementsComponent onMouseOverElement :::: ', y, this.isDraggingMenuElement);
     this.isOpen = true;
     setTimeout(() => {
-      console.log("OPEN", e);
-      this.positionMenu = {'x': 80, 'y': y }
+      if(this.isDraggingMenuElement == false){
+        console.log("OPEN", e);
+        this.positionMenu = {'x': 80, 'y': y }
+      }
     }, 0);
     
   }
@@ -49,9 +48,9 @@ export class CdsPanelElementsComponent implements OnInit {
   closeMenu() {
     // this.menuTrigger.closeMenu();
     setTimeout(() => {
-      if(this.isOverMenu == false){
+      if(this.isOverMenu == false && this.isDraggingMenuElement == false){
         console.log("CLOSE");
-        this.isOpen = true;
+        this.isOpen = false;
       }
     }, 0);
   }
@@ -80,6 +79,13 @@ export class CdsPanelElementsComponent implements OnInit {
   onLeaveMenu(){
     this.isOverMenu = false;
     this.closeMenu();
+  }
+
+  onIsDraggingMenuElement(event: boolean){
+    this.isDraggingMenuElement = event;
+    if(event === false){
+      this.closeMenu();
+    }
   }
 
 }

@@ -1,43 +1,37 @@
-<!-- <div 
-    #panel_actions_div
-    id="panel_actions_div"
-    class="actions-drawer SlZFU" 
-    [style.top.px]="pos.y"
-    [style.left.px]="pos.x"
-    data-popper-reference-hidden="false" 
-    data-popper-escaped="false" 
-    data-popper-placement="right-start">
-    actions
-</div> 
-(cdkDropListDropped)="drop($event)"
-(cdkDragMoved)="dragMoved($event,i)"  
--->
-
-<div class="actions-drawer" #panel_actions_div id="panel_actions_div">
-   
-    <div class="action-list" cdkDropList cdkDropListSortingDisabled [cdkDropListData]="actionList" cdkDropListConnectedTo="drop-actions" >
-
-        <div class="action-box" *ngFor="let action of actionList; let i = index;" cdkDrag (cdkDragStarted)="dragStarted($event, i)" (cdkDragEnded)="dragEnd($event, i)">
-
-            <!-- <div class="example-custom-placeholder" *cdkDragPlaceholder></div> -->
-
-            <div class="actions-btns-wpr">
-                <div class="action-btn-icon">
-                    <button class="btn btn-tdblu-no-boxshadow action-btn">
-                        <img [src]="action.value.src" [title]="action.value.name">
-                    </button>
+<div id="panel_actions_div" class="actions-drawer" #panel_actions_div22222 >
+    <!--  -->
+    <!-- <div class="action-list" cdkDropList cdkDropListSortingDisabled [cdkDropListData]="actionList" cdkDropListConnectedTo="drop-actions" > [cdkDropListConnectedTo]="drop-actions"-->
+        <!-- cdkDropList [cdkDropListConnectedTo]="connectedLists" (cdkDropListDropped)="onDrop($event)" cdkDropListSortingDisabled [cdkDropListConnectedTo]="connectedIDLists" -->
+    <div class="action-list" id="action_list_drop_connect" #action_list_drop_connect cdkDropList [cdkDropListData]="actionList">
+        
+        <div [style.display]="isDragging?'block':'none'" class="menu-dragging">
+            <div class="action-box" *ngFor="let action of actionList; let i = index;">
+                <div *ngIf="indexDrag===i" class="example-custom-placeholder"></div>
+                <div *ngIf="indexDrag!==i" class="actions-btns-wpr">
+                    <div class="action-btn-icon">
+                        <button class="btn btn-tdblu-no-boxshadow action-btn">
+                            <img [src]="action.value.src" [title]="action.value.name">
+                        </button>
+                    </div>
+                    <div class="action-btn-text">{{action.value.name}}</div>
                 </div>
-                <div class="action-btn-text">{{action.value.name}}</div>
             </div>
-            
-
-            <div *ngIf="action.isDragging" [class]="'placeholder--'+i" [style.height.px]="action.isDragging?'30':'30'"></div>
-            <!-- <div class="example-custom-placeholder" *cdkDragPreview>{{action.value.name}}</div> -->
-            <!-- <div class="actions-btns-wpr">
-                <div class="action-btn-text">{{action.value.name}}</div>
-            </div> -->
-            
         </div>
+
+        <div [style.display]="isDragging?'none':'block'" class="menu-dragging">
+            <div class="action-box" *ngFor="let action of actionList; let i = index;" cdkDrag (cdkDragStarted)="onDragStarted($event, i)" (cdkDragMoved)="onDragMoved($event)" (cdkDragEnded)="onDragEnd($event)">
+                <!-- <div class="example-custom-placeholder" *cdkDragPlaceholder></div> -->
+                <div class="actions-btns-wpr">
+                    <div class="action-btn-icon">
+                        <button class="btn btn-tdblu-no-boxshadow action-btn">
+                            <img [src]="action.value.src" [title]="action.value.name">
+                        </button>
+                    </div>
+                    <div class="action-btn-text">{{action.value.name}}</div>
+                </div>
+            </div>
+        </div>
+
     </div>
    
 </div>

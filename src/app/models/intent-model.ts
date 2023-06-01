@@ -141,7 +141,7 @@ export class ActionHideMessage extends Action {
     attributes: {};
     constructor() {
         super();
-        this._tdActionType = TYPE_ACTION.HIDE_MESSSAGE;
+        this._tdActionType = TYPE_ACTION.HIDE_MESSAGE;
         this.attributes = {  subtype: "info"}
     }
 }

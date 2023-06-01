@@ -246,14 +246,14 @@
                                 </div>
 
 
-                                <div class="action-wpr" *ngSwitchCase="TYPE_ACTION.HIDE_MESSSAGE" cdkDragHandle>
+                                <div class="action-wpr" *ngSwitchCase="TYPE_ACTION.HIDE_MESSAGE" cdkDragHandle>
                                     <div class="cds-action-title" *ngIf="action._tdActionTitle">
                                         {{ action._tdActionTitle }}
                                     </div>
                                     <div class="cds-action-icon-wpr">
-                                        <img [src]="ACTIONS_LIST['HIDE_MESSSAGE'].src" [title]="ACTIONS_LIST['HIDE_MESSSAGE'].name">
+                                        <img [src]="ACTIONS_LIST['HIDE_MESSAGE'].src" [title]="ACTIONS_LIST['HIDE_MESSAGE'].name">
                                     </div>
-                                    <div class="cds-action-name-wpr">{{ACTIONS_LIST['HIDE_MESSSAGE'].name}}</div>
+                                    <div class="cds-action-name-wpr">{{ACTIONS_LIST['HIDE_MESSAGE'].name}}</div>
                                     <div class="cds-action-arrow" *ngIf="!lastItem">
                                         <span class="material-icons">
                                             keyboard_backspace

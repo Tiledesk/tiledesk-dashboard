@@ -1,4 +1,3 @@
-<!-- (goToGetBotById)="getBotById($event)" -->
 <cds-header class="cds-header"
     [IS_OPEN]="IS_OPEN"
     [projectID]="projectID"
@@ -9,7 +8,7 @@
     (toggleSidebarWith)="onToggleSidebarWith($event)"> 
 </cds-header>
 
-<div class="chatboat-dashboard"  cdkDropListGroup>
+<div class="chatboat-dashboard">
 
     <cds-sidebar 
         class="cds-sidebar"
@@ -48,8 +47,7 @@
         <cds-rules [listOfIntents]="listOfIntents" [selectedChatbot]="selectedChatbot"></cds-rules>
     </ng-template>
 
-
-    <ng-template #intents>
+    <ng-template #intents cdkDropListGroup>
         
         <div id="cds-box-left" class="box-left">
             <appdashboard-panel-intent-list 
@@ -62,43 +60,20 @@
             </appdashboard-panel-intent-list>
         </div>
 
+        
+
         <div id="cds-box-right" class="drag-content box-right">
+
+            <div #receiver_elements_dropped_on_stage class="receiver-elements-dropped-on-stage" cdkDropList (cdkDropListDropped)="droppedElementOnStage($event)"></div>
 
             <cds-panel-elements class="cds-panel-elements"
                 (showPanelActions)="onShowPanelActions($event)"
                 (addNewElement)="onAddNewElement()"
             ></cds-panel-elements>
 
-            <!-- <cds-panel-actions class="cds-panel-actions"
-                [pos]="positionPanelActions"
-                [isOpenPanelActions] ="isOpenPanelActions"
-            ></cds-panel-actions>  -->
-
-            <!-- <cds-splash-screen *ngIf=!intentSelected 
-                [text]="'Select a block from the left sidebar or create a new one'"
-                [videoUrl]="'https://www.youtube.com/embed/b0laljUl85E'"
-                [videoDescription]="'Learn about conversation blocks and how to create them here'"
-                [section]="'cds-sb-intents'" 
-                (onClickBtn)="onAddIntentFromSplashScreen($event)">
-            </cds-splash-screen> -->
-
-            <!-- <div class="box-right-header">
-                <appdashboard-panel-intent-header *ngIf=intentSelected 
-                    [intentSelected]="intentSelected"
-                    [listOfIntents]="listOfIntents" 
-                    (saveIntent)=onSaveIntent($event)>
-                </appdashboard-panel-intent-header>
-            </div> -->
-
-            <div id="cds-box-right-content" class="drag-drawer box-right-content">
+            <div #drawer_of_items_to_zoom_and_drag id="drawer-of-items-to-zoom-and-drag" class="drag-drawer box-right-content">
                 
-                <!-- <div *ngFor="let intent of listOfIntents; let i = index;let lastIntent = last; let firstIntent = first"> -->
-                    <!-- <div [id]="intent.id" class="draggable prevent-select input-block">
-                        <p>Move2</p>
-                    </div> 
-                   [ngStyle]="{'top.px':intent.attribute.y ? intent.attribute.y : '0px' }"-->
-                    
-                    <cds-panel-intent *ngFor="let intent of listOfIntents; let i = index;let lastIntent = last; let firstIntent = first"
+                <cds-panel-intent *ngFor="let intent of listOfIntents; let i = index; let lastIntent = last; let firstIntent = first"
                         [id]="intent.id"
                         [style.top.px]="(intent.attributes && intent.attributes.y)?intent.attributes.y:0" 
                         [style.left.px]="(intent.attributes && intent.attributes.x)?intent.attributes.x:0"
@@ -117,8 +92,8 @@
                         (actionDeleted)=onActionDeleted($event)
                         (intentForm)=onIntentFormSelected($event)
                         (dropAction)=onDropAction($event)>
-                    </cds-panel-intent>
-                <!-- </div> -->
+                </cds-panel-intent>
+  
 
                 <!-- <appdashboard-panel-actions *ngIf="isOpenActionDrawer" 
                     style="z-index: 101;" 
@@ -148,12 +123,15 @@
                 </cds-footer> -->
             </div>
 
-        </div>
-    </ng-template>
+            
 
-    <cds-panel-detail
-        [isOpenPanelDetail] ="isOpenPanelDetail"
-    ></cds-panel-detail> 
+        </div>
+
+        <cds-panel-detail
+            [isOpenPanelDetail] ="isOpenPanelDetail"
+        ></cds-panel-detail> 
+
+    </ng-template>
 
 </div>
 

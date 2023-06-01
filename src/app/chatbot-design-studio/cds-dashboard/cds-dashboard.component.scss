@@ -5,6 +5,18 @@ $width-card-tools: 160px;
 $margin-left-card: 30px;
 $margin-top-card: 30px;
 
+
+.receiver-elements-dropped-on-stage {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  left: 0px;
+  bottom: 0px;
+  background-color: #ff080010;
+  z-index: inherit;
+}
+
+
 .cds-panel-actions {
   z-index: 10;
   position: absolute;

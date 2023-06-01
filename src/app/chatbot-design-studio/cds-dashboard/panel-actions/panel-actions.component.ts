@@ -18,7 +18,7 @@ import { LoggerService } from 'app/services/logger/logger.service';
 })
 export class PanelActionsComponent implements OnInit, OnChanges {
 
-  @ViewChild('panel_actions_div') panel_actions_div: ElementRef;
+  // @ViewChild('panel_actions_div') panel_actions_div: ElementRef;
 
   // @Input() isOpenActionDrawer: boolean;
   @Input() intentSelected: Intent
@@ -38,8 +38,8 @@ export class PanelActionsComponent implements OnInit, OnChanges {
   }
 
   ngAfterViewInit(){
-    this.logger.log('focussss', this.panel_actions_div)
-    this.panel_actions_div.nativeElement.focus();
+    // this.logger.log('focussss', this.panel_actions_div)
+    // this.panel_actions_div.nativeElement.focus();
   }
 
 
@@ -142,7 +142,7 @@ export class PanelActionsComponent implements OnInit, OnChanges {
     if(typeAction === TYPE_ACTION.CHANGE_DEPARTMENT) {
       action = new  ActionChangeDepartment();
     }
-    if(typeAction === TYPE_ACTION.HIDE_MESSSAGE){
+    if(typeAction === TYPE_ACTION.HIDE_MESSAGE){
       action = new ActionHideMessage();
     }
     if(typeAction === TYPE_ACTION.JSON_CONDITION){

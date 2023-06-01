@@ -1,4 +1,4 @@
-<div class="actions-drawer" #panel_actions_div id="panel_actions_div" (focusout)="onFocusOut($event)">
+<div class="actions-drawer" #panel_actions_div2 id="panel_actions_div" (focusout)="onFocusOut($event)">
   <div class="actions-drawer-close-btn-wpr">
     <button type="button" size="35" aria-label="Close" class="actions-drawer-close-btn" (click)="closeActionsDrawer()">
       <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24"
@@ -235,11 +235,11 @@
         <div class="action-box-wpr">
           <div class="action-box">
             <div class="action-btn-icon">
-              <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="onActionSelected(TYPE_ACTION.HIDE_MESSSAGE)">
-                <img [src]="ACTIONS_LIST['HIDE_MESSSAGE'].src" [title]="ACTIONS_LIST['HIDE_MESSSAGE'].name">
+              <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="onActionSelected(TYPE_ACTION.HIDE_MESSAGE)">
+                <img [src]="ACTIONS_LIST['HIDE_MESSAGE'].src" [title]="ACTIONS_LIST['HIDE_MESSAGE'].name">
               </button>
             </div>
-            <div class="action-btn-text">{{ACTIONS_LIST['HIDE_MESSSAGE'].name}}</div>
+            <div class="action-btn-text">{{ACTIONS_LIST['HIDE_MESSAGE'].name}}</div>
           </div>
         </div>
         <div class="action-box-wpr">
