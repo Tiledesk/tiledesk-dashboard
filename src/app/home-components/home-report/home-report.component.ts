@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { AnalyticsService } from 'app/analytics/analytics-service/analytics.service';
 // import { ApexOptions } from 'ng-apexcharts';
 import { Chart } from 'chart.js';
@@ -6,34 +6,48 @@ import moment from "moment";
 import { Subject } from 'rxjs';
 import { skip, takeUntil } from 'rxjs/operators'
 import { TranslateService } from '@ngx-translate/core';
+import { UsersService } from 'app/services/users.service';
+import { Router } from '@angular/router';
+import { ContactsService } from 'app/services/contacts.service';
 
 @Component({
   selector: 'appdashboard-home-report',
   templateUrl: './home-report.component.html',
   styleUrls: ['./home-report.component.scss']
 })
+
 export class HomeReportComponent implements OnInit {
   private unsubscribe$: Subject<any> = new Subject<any>();
+  @Input() public projectId: string;
+  @Input() public USER_ROLE: string;
   monthNames: any;
   numOfDays: number = 7;
   browserLang: string;
- 
-  countOfLastSevenDaysRequests: number;
-  countOfLastSevenDaysRequestsHandledByBot: number;
+
+  countOfLastSevenDaysRequests: number = 0;
+  countOfLastSevenDaysRequestsHandledByBot: number = 0;
   percentageOfSevenDaysRequestsHandledByBots: any;
-  
+
   countOfLastMonthRequests: number; // USED FOR COUNT OF LAST 30 DAYS
   countOfLastMonthRequestsHandledByBots: number;
   percentageOfLastMonthRequestsHandledByBots: any;
   lineChart: any;
+  servedByBots: string;
+  servedByHumans: string;
+  countOfActiveContacts: number;
+  countOfVisitors: number;
+  countOfLastMonthMsgs: number;
 
 
   /**
-     * Constructor
-     */
+   * Constructor
+   */
   constructor(
     private analyticsService: AnalyticsService,
     public translate: TranslateService,
+    private usersService: UsersService,
+    private router: Router,
+    private contactsService: ContactsService
   ) { }
 
 
@@ -46,13 +60,16 @@ export class HomeReportComponent implements OnInit {
    */
   ngOnInit(): void {
 
-    this.getRequestsHandleByHumanByDayRange(this.numOfDays);
-    this.getRequestsHandleByBotByDayRange(this.numOfDays);
+    this.getRequestByLastNDayMerge(this.numOfDays);
     this.getLastMounthRequestsCount();
-    this.getCountAndPercentageOfRequestsHandledByBotsLastMonth();
-    // this.getBrowserLanguage()
-    this.getMonthsName()
+    this.getMonthsName();
+    this.getUserRole();
+    this.translateString();
+    this.getActiveContactsCount();
+    this.getVisitorsCount();
+    this.getLastMounthMessagesCount();
   }
+
 
 
   /**
@@ -65,27 +82,100 @@ export class HomeReportComponent implements OnInit {
   }
 
 
-
-  // getBrowserLanguage() {
-  //   this.browserLang = this.translate.getBrowserLang();
-  //   console.log('[HOME-ANALITICS] BRS-LANG (USED FOR SWITCH MONTH NAME)', this.browserLang)
-
-
-  //   this.switchMonthName(); /// VISITOR GRAPH FOR THE NEW NOME
-  // }
-  // switchMonthName() {
-  //   if (this.browserLang) {
-  //     if (this.browserLang === 'it') {
-  //       this.monthNames = { '1': 'Gen', '2': 'Feb', '3': 'Mar', '4': 'Apr', '5': 'Mag', '6': 'Giu', '7': 'Lug', '8': 'Ago', '9': 'Set', '10': 'Ott', '11': 'Nov', '12': 'Dic' }
-  //     } else {
-  //       this.monthNames = { '1': 'Jan', '2': 'Feb', '3': 'Mar', '4': 'Apr', '5': 'May', '6': 'Jun', '7': 'Jul', '8': 'Aug', '9': 'Sep', '10': 'Oct', '11': 'Nov', '12': 'Dec' }
-  //     }
-  //   }
-  // }
-
   // -----------------------------------------------------------------------------------------------------
   // @ Public methods
   // -----------------------------------------------------------------------------------------------------
+  translateString() {
+    this.translate.get('ServedByBots')
+      .subscribe((translation: any) => {
+        this.servedByBots = translation;
+      });
+
+    this.translate.get('ServedByHumans')
+      .subscribe((translation: any) => {
+        this.servedByHumans = translation;
+      });
+  }
+
+  getActiveContactsCount() {
+    this.contactsService.getLeadsActive().subscribe((activeleads: any) => {
+      console.log('[HOME] - GET ACTIVE LEADS RESPONSE ', activeleads)
+      if (activeleads) {
+
+        this.countOfActiveContacts = activeleads['count'];
+        console.log('[HOME] - ACTIVE LEADS COUNT ', this.countOfActiveContacts)
+      }
+    }, (error) => {
+      console.error('[HOME] - GET ACTIVE LEADS - ERROR ', error);
+
+    }, () => {
+      console.log('[HOME] - GET ACTIVE LEADS * COMPLETE *');
+    });
+  }
+
+ 
+
+  getVisitorsCount() {
+    this.analyticsService.getVisitors()
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((visitorcounts: any) => {
+        console.log("HOME - GET VISITORS COUNT RES: ", visitorcounts)
+
+        if (visitorcounts && visitorcounts.length > 0) {
+          this.countOfVisitors = visitorcounts[0]['totalCount']
+          console.log("HOME - GET VISITORS COUNT: ", this.countOfVisitors)
+        } else {
+          this.countOfVisitors = 0
+        }
+      }, (error) => {
+        console.error('[HOME] - GET VISITORS COUNT - ERROR ', error);
+
+      }, () => {
+        console.log('[HOME] - GET VISITORS COUNT * COMPLETE *');
+      });
+  }
+
+
+
+ 
+
+  getLastMounthMessagesCount() {
+    this.analyticsService.getLastMountMessagesCount()
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((msgscount: any) => {
+       console.log('[HOME] - GET LAST 30 DAYS MESSAGE COUNT RES', msgscount);
+        if (msgscount && msgscount.length > 0) {
+          this.countOfLastMonthMsgs = msgscount[0]['totalCount']
+
+          console.log('[HOME] - GET LAST 30 DAYS MESSAGE COUNT ', this.countOfLastMonthMsgs);
+        } else {
+          this.countOfLastMonthMsgs = 0;
+        }
+      }, (error) => {
+        console.error('[HOME] - GET LAST 30 DAYS MESSAGE - ERROR ', error);
+
+      }, () => {
+        console.log('[HOME] - GET LAST 30 DAYS MESSAGE * COMPLETE *');
+      });
+  }
+
+
+ 
+
+  getUserRole() {
+    this.usersService.project_user_role_bs
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((userRole) => {
+        this.USER_ROLE = userRole;
+      })
+  }
+
   getMonthsName() {
     this.monthNames =
     {
@@ -123,6 +213,7 @@ export class HomeReportComponent implements OnInit {
 
       }, () => {
         console.log('[HOME-ANALITICS] - GET LAST 30 DAYS CONVERSATION COUNT * COMPLETE *');
+        this.getCountAndPercentageOfRequestsHandledByBotsLastMonth();
       });
   }
 
@@ -166,30 +257,45 @@ export class HomeReportComponent implements OnInit {
     console.log('[HOME-ANALITICS] - SELECT CONVERSATION RANGE rangeDays', rangeDays);
     this.numOfDays = rangeDays;
     this.lineChart.destroy();
-    this.unsubscribe$.next(null);
-    this.unsubscribe$.complete();
-    this.getRequestsHandleByHumanByDayRange(rangeDays)
-    this.getRequestsHandleByBotByDayRange(rangeDays)
+
+    this.getRequestByLastNDayMerge(rangeDays)
   }
 
 
-  getRequestsHandleByBotByDayRange(numOfDays) {
-    this.analyticsService.requestsByDayBotServed(numOfDays)
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((requestsByDayBotServed: any) => {
-        console.log('[HOME-ANALITICS] - REQUESTS BY DAY HANDLED BY BOT ', requestsByDayBotServed);
+  getRequestByLastNDayMerge(lastdays) {
+
+    console.log("[ANALYTICS - CONVS] GET REQUEST TYPE: Merged")
+    this.analyticsService.requestsByDay(lastdays).subscribe((requestsByDay: any) => {
+      console.log('[ANALYTICS - CONVS] - REQUESTS BY  N-DAY ', requestsByDay);
+
+      this.analyticsService.requestsByDayBotServed(lastdays).subscribe((requestsByDayBotServed: any) => {
+        console.log('[ANALYTICS - CONVS] - REQUESTS BY N-DAY BOT SERVED ', requestsByDayBotServed);
+
+        // CREATES THE INITIAL ARRAY WITH THE LAST SEVEN DAYS (calculated with moment) AND REQUESTS COUNT = O
         const last7days_initarray = []
-        for (let i = 0; i < numOfDays -1; i++) {
-          // this.logger.log('»» !!! ANALYTICS - LOOP INDEX', i);
+        for (let i = 0; i < lastdays - 1; i++) {
+          // console.log('»» !!! ANALYTICS - LOOP INDEX', i);
           last7days_initarray.push({ 'count': 0, day: moment().subtract(i, 'd').format('D/M/YYYY') })
         }
 
         last7days_initarray.reverse()
+        console.log('[ANALYTICS - CONVS] - REQUESTS BY lastDAY - MOMENT LAST N DATE (init array)', last7days_initarray);
 
+        const requestsByDay_series_array = [];
+        const requestsByDay_labels_array = [];
 
+        // CREATES A NEW ARRAY FROM THE ARRAY RETURNED FROM THE SERVICE SO THAT IT IS COMPARABLE WITH last7days_initarray
+        const requestsByDay_array = [];
         const requestByDayBotServed_array = [];
+
+        // human
+        for (let j = 0; j < requestsByDay.length; j++) {
+          if (requestsByDay[j]) {
+            requestsByDay_array.push({ 'count': requestsByDay[j]['count'], day: requestsByDay[j]['_id']['day'] + '/' + requestsByDay[j]['_id']['month'] + '/' + requestsByDay[j]['_id']['year'] })
+          }
+        }
+
+        // bot
         for (let j = 0; j < requestsByDayBotServed.length; j++) {
 
           if (requestsByDayBotServed[j] && (requestsByDayBotServed[j]['_id']['hasBot'] == true)) {
@@ -197,136 +303,129 @@ export class HomeReportComponent implements OnInit {
           }
         }
 
-        console.log('[HOME-ANALITICS] - REQUESTS BY DAY HANDLED BY BOT ARRAY ', requestByDayBotServed_array);
-        const requestByDaysBotServed_final_array = last7days_initarray.map(obj => requestByDayBotServed_array.find(o => o.day === obj.day) || obj);
-        console.log('[HOME-ANALITICS] - REQUESTS BY DAY HANDLED BY BOT ARRAY - FINAL ARRAY ', requestByDaysBotServed_final_array);
-
-        const _requestsByDayBotServed_series_array = [];
-
-        requestByDaysBotServed_final_array.forEach(requestByDayBotServed => {
-          _requestsByDayBotServed_series_array.push(requestByDayBotServed.count);
-        })
-        console.log('[HOME-ANALITICS] - REQUESTS BY DAY HANDLED BY BOT ARRAY - SERIES ', _requestsByDayBotServed_series_array);
-
-        this.countOfLastSevenDaysRequestsHandledByBot = _requestsByDayBotServed_series_array.reduce((partialSum, a) => partialSum + a, 0);
-        console.log('[HOME-ANALITICS] - REQUESTS BY DAY HANDLED BY BOT - LAST SEVEN DAYS COUNT ', this.countOfLastSevenDaysRequestsHandledByBot);
-
-     
-
-        if (this.countOfLastSevenDaysRequestsHandledByBot > 0 && this.countOfLastSevenDaysRequests) {
-          const _percentageOfLastSevenDaysRequestsHandledByBots = (this.countOfLastSevenDaysRequestsHandledByBot / this.countOfLastSevenDaysRequests) * 100
-         
-          console.log("[HOME-ANALITICS] - getRequestsHasBotCount % REQUESTS HANDLED BY BOT LAST 30 DAYS: ", _percentageOfLastSevenDaysRequestsHandledByBots);
-          console.log("[HOME-ANALITICS] - getRequestsHasBotCount % REQUESTS HANDLED BY BOT LAST 30 DAYS typeof: ", typeof _percentageOfLastSevenDaysRequestsHandledByBots);
-          this.percentageOfSevenDaysRequestsHandledByBots = _percentageOfLastSevenDaysRequestsHandledByBots.toFixed(1);
-        } else {
-          this.percentageOfSevenDaysRequestsHandledByBots = 0
-        }
-      })
-  }
-
-  getRequestsHandleByHumanByDayRange(numOfDays) {
-    this.analyticsService.requestsByDay(numOfDays)
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((requestsByDay: any) => {
-        console.log('[HOME-ANALITICS] - REQUESTS BY DAY HANDLED BY HUMAN > numOfDays', numOfDays);
-        console.log('[HOME-ANALITICS] - REQUESTS BY DAY HANDLED BY HUMAN > requestsByDay', requestsByDay);
-
-        // CREATES THE INITIAL ARRAY WITH THE LAST SEVEN DAYS (calculated with moment) AND REQUESTS COUNT = O
-        const last7days_initarray = []
-        for (let i = 0; i <= this.numOfDays - 1; i++) {
-          // console.log('[HOME-ANALITICS] - LOOP INDEX', i);
-          last7days_initarray.push({ 'count': 0, day: moment().subtract(i, 'd').format('D-M-YYYY') })
-        }
-
-        last7days_initarray.reverse()
-
-        // CREATES A NEW ARRAY FROM THE ARRAY RETURNED FROM THE SERVICE SO THAT IT IS COMPARABLE WITH last7days_initarray
-        const requestsByDay_array = []
-        for (let j = 0; j < requestsByDay.length; j++) {
-          if (requestsByDay[j]) {
-            requestsByDay_array.push({ 'count': requestsByDay[j]['count'], day: requestsByDay[j]['_id']['day'] + '-' + requestsByDay[j]['_id']['month'] + '-' + requestsByDay[j]['_id']['year'] })
-          }
-        }
-        // console.log('[HOME-ANALITICS] - REQUESTS BY DAY FORMATTED ', requestsByDay_array);
+        console.log('[ANALYTICS - CONVS] - REQUESTS BY DAY FORMATTED ', requestsByDay_array);
+        console.log('[ANALYTICS - CONVS] - REQUESTS BY DAY BOT SERVED FORMATTED ', requestByDayBotServed_array);
 
         /**
          * MERGE THE ARRAY last7days_initarray WITH requestsByDay_array  */
         // Here, requestsByDay_formatted_array.find(o => o.day === obj.day)
         // will return the element i.e. object from requestsByDay_formatted_array if the day is found in the requestsByDay_formatted_array.
         // If not, then the same element in last7days i.e. obj is returned.
+        // human
         const requestByDays_final_array = last7days_initarray.map(obj => requestsByDay_array.find(o => o.day === obj.day) || obj);
-        // console.log('[HOME-ANALITICS] - REQUESTS BY DAY - FINAL ARRAY ', requestByDays_final_array);
+        console.log('[ANALYTICS - CONVS] - REQUESTS BY DAY - FINAL ARRAY ', requestByDays_final_array);
+        // bot
+        const requestByDaysBotServed_final_array = last7days_initarray.map(obj => requestByDayBotServed_array.find(o => o.day === obj.day) || obj);
+        console.log('[ANALYTICS - CONVS] - REQUESTS BY DAY BOT SERVED - FINAL ARRAY ', requestByDaysBotServed_final_array);
 
+        // human
         const _requestsByDay_series_array = [];
         const _requestsByDay_labels_array = [];
+        // bot
+        const _requestsByDayBotServed_series_array = [];
 
+
+        // human
         requestByDays_final_array.forEach(requestByDay => {
-          // console.log('[HOME-ANALITICS] - REQUESTS BY DAY - requestByDay', requestByDay);
+          //console.log('»» !!! ANALYTICS - REQUESTS BY DAY - requestByDay', requestByDay);
           _requestsByDay_series_array.push(requestByDay.count)
 
-          const splitted_date = requestByDay.day.split('-');
-          // console.log('[HOME-ANALITICS] - REQUESTS BY DAY - SPLITTED DATE', splitted_date);
+          const splitted_date = requestByDay.day.split('/');
+          //console.log('»» !!! ANALYTICS - REQUESTS BY DAY - SPLITTED DATE', splitted_date);
           _requestsByDay_labels_array.push(splitted_date[0] + ' ' + this.monthNames[splitted_date[1]])
         });
 
+        // bot
+        requestByDaysBotServed_final_array.forEach(requestByDayBotServed => {
+          _requestsByDayBotServed_series_array.push(requestByDayBotServed.count);
+        })
 
-        // console.log('[HOME-ANALITICS] - REQUESTS BY DAY - SERIES (ARRAY OF COUNT - to use for debug)', requestsByDay_series_array);
-        console.log('[HOME-ANALITICS] - REQUESTS BY DAY  HANDLED BY HUMAN - SERIES (+ SERIES + ARRAY OF COUNT)', _requestsByDay_series_array);
+
+        // console.log('[ANALYTICS - CONVS] - REQUESTS BY DAY - SERIES (ARRAY OF COUNT - to use for debug)', requestsByDay_series_array);
+        // console.log('[ANALYTICS - CONVS] - REQUESTS BY DAY - LABELS (ARRAY OF DAY - to use for debug)', requestsByDay_labels_array);
+
+        console.log('[ANALYTICS - CONVS] - REQUESTS BY DAY (HUMAN SERVERVED) - SERIES ', _requestsByDay_series_array);
+        console.log('[ANALYTICS - CONVS] - REQUESTS BY DAY (BOT SERVERVED) - SERIES', _requestsByDayBotServed_series_array);
+        console.log('[ANALYTICS - CONVS] - REQUESTS BY DAY - LABELS (+ NEW + ARRAY OF DAY)', _requestsByDay_labels_array);
 
         this.countOfLastSevenDaysRequests = _requestsByDay_series_array.reduce((partialSum, a) => partialSum + a, 0);
-        console.log('[HOME-ANALITICS] - REQUESTS BY DAY - countOfLastSevenDaysRequests', this.countOfLastSevenDaysRequests);
-        // console.log('[HOME-ANALITICS] - REQUESTS BY DAY - LABELS (ARRAY OF DAY - to use for debug)', requestsByDay_labels_array);
-        console.log('[HOME-ANALITICS] - REQUESTS BY DAY  HANDLED BY HUMAN - LABELS (+ LABELS + ARRAY OF DAY)', _requestsByDay_labels_array);
+        this.countOfLastSevenDaysRequestsHandledByBot = _requestsByDayBotServed_series_array.reduce((partialSum, a) => partialSum + a, 0);
 
+        console.log('[ANALYTICS - CONVS] - REQUESTS BY N OF DAY', lastdays, ' - NUMB OF CONV HUMAN HANDLED ', this.countOfLastSevenDaysRequests);
+        console.log('[ANALYTICS - CONVS] - REQUESTS BY N OF DAY', lastdays, ' - NUMB OF CONV BOT HANDLED ', this.countOfLastSevenDaysRequestsHandledByBot);
+
+        if (this.countOfLastSevenDaysRequestsHandledByBot > 0 && this.countOfLastSevenDaysRequests) {
+          const totalSevendaysConvs = this.countOfLastSevenDaysRequestsHandledByBot + this.countOfLastSevenDaysRequests
+          const _percentageOfLastSevenDaysRequestsHandledByBots = (this.countOfLastSevenDaysRequestsHandledByBot / totalSevendaysConvs) * 100
+
+          console.log("[HOME-ANALITICS] - REQUESTS BY DAY HANDLED BY BOT LAST (%) on ", lastdays, " DAYS: ", _percentageOfLastSevenDaysRequestsHandledByBots);
+          // console.log("[HOME-ANALITICS] - REQUESTS BY DAY HANDLED BY BOT LAST (%) on ", numOfDays ," DAYS typeof: ", typeof _percentageOfLastSevenDaysRequestsHandledByBots);
+          this.percentageOfSevenDaysRequestsHandledByBots = _percentageOfLastSevenDaysRequestsHandledByBots.toFixed(1);
+        } else {
+          this.percentageOfSevenDaysRequestsHandledByBots = 0
+        }
+
+        //get higher value of xvalue array 
         const higherCount = this.getMaxOfArray(_requestsByDay_series_array);
-        // console.log('[HOME-ANALITICS] - REQUESTS BY DAY - HIGHTER COUNT ', higherCount);
+        console.log('[ANALYTICS - CONVS] - REQUESTS BY DAY - HIGHTER COUNT ', higherCount);
 
-        let lang = this.browserLang;
-        const canvas = <HTMLCanvasElement>document.getElementById('last7dayChart'); // nk added to resolve Failed to create chart: can't acquire context from the given item
-        const ctx = canvas.getContext('2d'); // nk added to resolve Failed to create chart: can't acquire context from the given item
-        // var lineChart = new Chart('last7dayChart', {
-        this.lineChart = new Chart(ctx, {
+        this.lineChart = new Chart('lastNdayChart', {
           type: 'line',
           data: {
             labels: _requestsByDay_labels_array,
-            datasets: [{
-              label: 'Number of conversations in last 7 days ',//active label setting to true the legend value
-              data: _requestsByDay_series_array,
-              fill: true, //riempie zona sottostante dati
-              lineTension: 0.4,
-              backgroundColor: 'rgba(129,140,248, 0.6)', // 'rgba(30, 136, 229, 0.6)',
-              borderColor: 'rgba(129,140,248, 1)',
-              borderWidth: 3,
-              borderDash: [],
-              borderDashOffset: 0.0,
-              pointBackgroundColor: 'rgba(129,140,248, 1)',
-              pointBorderColor: 'rgba(129,140,248, 1)'
-
-            }]
+            datasets: [
+              {
+                label: this.servedByBots, // this.translate.instant('ServedByBots'), // 'Served by bots', //active labet setting to true the legend value
+                data: _requestsByDayBotServed_series_array,
+                fill: true, //riempie zona sottostante dati
+                lineTension: 0.4,
+                backgroundColor: 'rgba(129,140,248, 0.6)', // 'rgba(232, 32, 32, 0.6)',
+                borderColor: 'rgba(129,140,248, 1)', // 'rgba(189, 16, 16, 1)',
+                borderWidth: 3,
+                borderDash: [],
+                borderDashOffset: 0.0,
+                pointBackgroundColor: 'rgba(129,140,248, 1)', //'rgba(255, 255, 255, 0.8)',
+                pointBorderColor: 'rgba(129,140,248, 1)' //'#b00e0e'
+              },
+              {
+                label: this.servedByHumans, //this.translate.instant('ServedByHumans'), // 'Served by humans',//active labet setting to true the legend value
+                data: _requestsByDay_series_array,
+                fill: true, //riempie zona sottostante dati
+                lineTension: 0.4,
+                backgroundColor: 'rgba(30, 136, 229, 0.6)',
+                borderColor: 'rgba(30, 136, 229, 1)',
+                borderWidth: 3,
+                borderDash: [],
+                borderDashOffset: 0.0,
+                pointBackgroundColor: 'rgba(30, 136, 229, 1)',
+                pointBorderColor: 'rgba(30, 136, 229, 1)'
+              }]
           },
           options: {
-            maintainAspectRatio: false, //allow to resize chart
+            maintainAspectRatio: false,
             title: {
-              text: 'Last 7 days converdations',
+              text: 'AVERAGE TIME RESPONSE',
               display: false
             },
             legend: {
-              display: false //do not show label title
+              display: true,
+              position: 'top',
+              align: "center",
+              fullWidth: false,
+              labels: {
+                usePointStyle: false,
+                // padding: 10
+              }
             },
             scales: {
               xAxes: [{
-
                 ticks: {
                   beginAtZero: true,
                   display: true,
-                  //minRotation: 30,
                   fontColor: 'white',
-
                 },
                 gridLines: {
+                  display: true,
                   borderDash: [8, 4],
                   color: 'rgba(255, 255, 255, 0.5)',
                   lineWidth: 0.5
@@ -335,9 +434,11 @@ export class HomeReportComponent implements OnInit {
               }],
               yAxes: [{
                 gridLines: {
+                  display: true,
                   borderDash: [8, 4],
                   color: 'rgba(255, 255, 255, 0.5)',
                   lineWidth: 0.5
+
                 },
                 ticks: {
                   beginAtZero: true,
@@ -349,22 +450,16 @@ export class HomeReportComponent implements OnInit {
                   },
                   display: true,
                   fontColor: 'white',
-                  suggestedMax: higherCount + 2,
-
+                  suggestedMax: higherCount + 1,
                 }
               }]
             },
             tooltips: {
               callbacks: {
                 label: (tooltipItem, data) => {
-
                   const currentItemValue = tooltipItem.yLabel
+
                   return this.translate.instant('Requests') + ':' + currentItemValue;
-                  // if (lang === 'it') {
-                  //   return 'Conversazioni: ' + currentItemValue;
-                  // } else {
-                  //   return 'Conversations:' + currentItemValue;
-                  // }
 
                 }
               }
@@ -372,37 +467,64 @@ export class HomeReportComponent implements OnInit {
           },
           plugins: [{
             beforeDraw: function (chartInstance, easing) {
-              var ctx = chartInstance.chart.ctx;
-              //this.logger.log("chartistance",chartInstance)
-              // ctx.fillStyle = 'red'; // your color here
+              let ctx = chartInstance.chart.ctx;
+              // console.log("chartistance",chartInstance)
+              //ctx.fillStyle = 'red'; // your color here
               ctx.height = 128
               //chartInstance.chart.canvas.parentNode.style.height = '128px';
-              ctx.font = 'Roboto'
+              ctx.font = 'Roboto';
+
               var chartArea = chartInstance.chartArea;
               //ctx.fillRect(chartArea.left, chartArea.top, chartArea.right - chartArea.left, chartArea.bottom - chartArea.top);
             }
           }]
         });
+      })
 
-      }, (error) => {
-        console.error('[HOME-ANALITICS] - REQUESTS BY DAY  HANDLED BY HUMAN - ERROR ', error);
-
-      }, () => {
-        console.log('[HOME-ANALITICS] - REQUESTS BY DAY  HANDLED BY HUMAN * COMPLETE *');
-
-      });
+    }, (error) => {
+      console.error('[ANALYTICS - CONVS] - REQUESTS BY DAY - ERROR ', error);
+    }, () => {
+      console.log('[ANALYTICS - CONVS] - REQUESTS BY DAY * COMPLETE *');
+    });
   }
 
-  // plugins: {
-  //   customCanvasBackgroundColor: {
-  //     color: 'lightGreen',
-  //   }
-  // },
+
+
+
+
+
 
   getMaxOfArray(requestsByDay_series_array) {
     return Math.max.apply(null, requestsByDay_series_array);
   }
 
+  // -----------------------------------------------------------------------------------------------------
+  // @ Navigation
+  // -----------------------------------------------------------------------------------------------------
+
+  goToRequestsAnalytics() {
+    // this.router.navigate(['project/' + this.projectId + '/conversation-analytics']);
+    if (this.USER_ROLE !== 'agent') {
+      this.router.navigate(['project/' + this.projectId + '/analytics/metrics']);
+    }
+  }
+
+  goToVisitorsAnalytics() {
+    if (this.USER_ROLE !== 'agent') {
+      this.router.navigate(['project/' + this.projectId + '/analytics/metrics/visitors']);
+    }
+  }
+
+  goToMessagesAnalytics() {
+    // this.router.navigate(['project/' + this.projectId + '/messages-analytics']);
+    if (this.USER_ROLE !== 'agent') {
+      this.router.navigate(['project/' + this.projectId + '/analytics/metrics/messages']);
+    }
+  }
+
+  goToContacts() {
+    this.router.navigate(['project/' + this.projectId + '/contacts']);
+  }
 
 
 }

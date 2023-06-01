@@ -1,22 +1,36 @@
-<div class="home-reports">
+<div class="convesations-analytics-report-wpr">
 
-  <div class="sm:col-span-2 lg:col-span-3 dark flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden">
-    <div class="flex items-center justify-between mt-10 ml-10 mr-6 sm:mr-10 mb-18">
+  <div class="sm:col-span-2 lg:col-span-3 dark flex flex-col flex-auto bg-card overflow-hidden">
+    <div class="flex items-center justify-between mt-10 ml-10 mr-6 sm:mr-10 mb-12">
       <div class="flex flex-col">
         <div class="mr-4 text-2xl md:text-3xl graph-title tracking-tight leading-7">Conversations Overview</div>
-        <div class="text-secondary">Last 7 days conversations</div>
+        <div class="text-accent-link-on-black" (click)="goToRequestsAnalytics()">
+
+
+          <span> More filter in Analytics </span>
+          <span class="material-icons m-i-arrow-on-black">
+            keyboard_arrow_right
+          </span>
+        </div>
       </div>
+
+
       <div class="ml-2">
-
-    
-
-        <button [ngClass]="{'active-period': numOfDays === 30}" class="period-switch-btn" (click)="selectConversationsRange(30)">
+        <button [ngClass]="{'active-period': numOfDays === 30}" class="period-switch-btn"
+          (click)="selectConversationsRange(30)">
           Last 30 days
         </button>
 
-        <button [ngClass]="{'active-period': numOfDays === 7}" class="period-switch-btn" (click)="selectConversationsRange(7)">
+        <button [ngClass]="{'active-period': numOfDays === 7}" class="period-switch-btn" style="margin-left: 3px;"
+          (click)="selectConversationsRange(7)">
           Last 7 days
         </button>
+
+        <!-- <div class="analytics-link-wpr">
+          <div class="analytics-link" (click)="goToRequestsAnalytics()">
+            More filter in Analytics
+          </div>
+        </div> -->
 
 
         <!-- <div id="" class="graph-period-badge" >
@@ -26,7 +40,7 @@
         <div class="graph-period-badge" >
          Last 7 days
         </div> -->
-        
+
         <!-- <mat-button-toggle-group class="hidden sm:inline-flex border-none space-x-1" value="this-year"
           #visitorsYearSelector="matButtonToggleGroup">
           <mat-button-toggle class="px-1.5 rounded-full overflow-hidden border-none font-medium" value="last-year">Last
@@ -50,34 +64,102 @@
 
     <div class="flex flex-col flex-auto h-80">
 
-      <canvas id="last7dayChart" style="background-color: #1C2533;"></canvas>
+      <!-- <canvas id="last7dayChart" style="background-color: #1C2533;"></canvas> -->
+      <canvas id="lastNdayChart" style="background-color: #1C2533;"></canvas>
     </div>
   </div>
 
   <div class="grid graph-footer grid-cols-1 gap-8 w-full mt-8">
-    
-    <div class="flex flex-col flex-auto overflow-hidden items-center">
-      
-      <span *ngIf="numOfDays === 7" class="graph-footer-num"> {{countOfLastSevenDaysRequests}}</span>  
-      <span *ngIf="numOfDays === 30" class="graph-footer-num"> {{countOfLastMonthRequests}} </span>  
-      <span> Total </span>
-    </div>
-    <div class="flex flex-col flex-auto overflow-hidden items-center">
 
-      <span *ngIf="numOfDays === 7" class="graph-footer-num"> {{countOfLastSevenDaysRequestsHandledByBot}} </span> 
-      <span *ngIf="numOfDays === 30" class="graph-footer-num"> {{countOfLastMonthRequestsHandledByBots}}</span> 
-      <span> handled by bots </span>
-     
-      
-    </div>
     <div class="flex flex-col flex-auto overflow-hidden items-center">
-      <span *ngIf="numOfDays === 7" class="graph-footer-num"> {{percentageOfSevenDaysRequestsHandledByBots}}% </span> 
-      <span *ngIf="numOfDays === 30" class="graph-footer-num"> {{percentageOfLastMonthRequestsHandledByBots}}% </span> 
-      
-      <span> percentage handled by bots</span>
+      <span *ngIf="numOfDays === 7" class="graph-footer-num">
+        {{countOfLastSevenDaysRequests + countOfLastSevenDaysRequestsHandledByBot}} </span>
+      <span *ngIf="numOfDays === 30" class="graph-footer-num"> {{countOfLastMonthRequests}} </span>
+      <span class="graph-footer-text"> Total </span>
+    </div>
+
+    <div class="flex flex-col flex-auto overflow-hidden items-center">
+      <span *ngIf="numOfDays === 7" class="graph-footer-num"> {{countOfLastSevenDaysRequestsHandledByBot}} </span>
+      <span *ngIf="numOfDays === 30" class="graph-footer-num"> {{countOfLastMonthRequestsHandledByBots}}</span>
+      <span class="graph-footer-text"> handled by bots </span>
+    </div>
+
+    <div class="flex flex-col flex-auto overflow-hidden items-center">
+      <span *ngIf="numOfDays === 7" class="graph-footer-num"> {{percentageOfSevenDaysRequestsHandledByBots}}% </span>
+      <span *ngIf="numOfDays === 30" class="graph-footer-num"> {{percentageOfLastMonthRequestsHandledByBots}}% </span>
+      <span class="graph-footer-text"> percentage handled by bots</span>
+    </div>
+  </div>
+
+
+</div>
+
+<div class="other-analytics-report-wpr">
+  <div class="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-3 gap-6 w-full min-w-0">
+
+    <div class="flex flex-col flex-auto p-24 bg-card shadow rounded-2xl overflow-hidden">
+      <div class="flex flex-col items-center mt-2">
+        <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none other-analytics-num">
+          {{countOfActiveContacts}}
+        </div>
+        <div class="other-analytics-text truncate">
+          {{'TotalLeadsAcquired' | translate}}
+        </div>
+        <div class="flex items-baseline justify-center w-full mt-5 text-secondary" (click)="goToContacts()">
+          <div class="text-accent-link-on-white text-md font-medium truncate">
+
+            <span> {{'GoToContactList' | translate}}</span>
+            <span class="material-icons m-i-arrow-on-white">
+              keyboard_arrow_right
+            </span>
+          </div>
+          <!-- <div class="ml-1.5 text-lg font-semibold">13</div> -->
+        </div>
+      </div>
+    </div>
+
+    <div class="flex flex-col flex-auto p-24 bg-card shadow rounded-2xl overflow-hidden">
+      <div class="flex flex-col items-center mt-2">
+        <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none other-analytics-num">
+          {{countOfVisitors}}
+        </div>
+        <div class="other-analytics-text truncate">
+          {{'Last30DaysVisitors' | translate }}
+        </div>
+        <div class="flex items-baseline justify-center w-full mt-5 text-secondary" (click)="goToVisitorsAnalytics()">
+          <div class="text-accent-link-on-white text-md font-medium truncate">
+
+            <span> {{'FilterReportInAnalytics' | translate}} </span>
+            <span class="material-icons m-i-arrow-on-white">
+              keyboard_arrow_right
+            </span>
+          </div>
+          <!-- <div class="ml-1.5 text-lg font-semibold">13</div> -->
+        </div>
+      </div>
+    </div>
+
+    <div class="flex flex-col flex-auto p-24 bg-card shadow rounded-2xl overflow-hidden">
+      <div class="flex flex-col items-center mt-2">
+        <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none other-analytics-num">
+          {{countOfLastMonthMsgs}}
+        </div>
+        <div class="other-analytics-text truncate">
+          {{'Last30DaysMessages' | translate}}
+        </div>
+        <div class="flex items-baseline justify-center w-full mt-5 text-secondary" (click)="goToMessagesAnalytics()">
+          <div class="text-accent-link-on-white text-md font-medium truncate">
+
+            <span> {{'FilterReportInAnalytics' | translate}} </span>
+            <span class="material-icons m-i-arrow-on-white">
+              keyboard_arrow_right
+            </span>
+          </div>
+          <!-- <div class="ml-1.5 text-lg font-semibold">13</div> -->
+        </div>
+      </div>
     </div>
 
   </div>
-  
 
 </div>
