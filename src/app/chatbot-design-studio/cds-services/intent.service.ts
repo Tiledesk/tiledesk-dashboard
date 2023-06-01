@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { FaqService } from '../../services/faq.service';
+
 import { 
   Intent, 
   ActionReply, 
@@ -27,33 +29,146 @@ import { TYPE_ACTION, TYPE_COMMAND, TYPE_INTENT_ELEMENT, EXTERNAL_URL, TYPE_MESS
 export class IntentService {
 
   // listOfIntents: Array<Intent>;
+  keyDashboardAttributes = 'Dashboard-Attributes';
+  jsonDashboardAttributes: any;
   preDisplayName: string = 'untitled_block_';
-  listOfIntents: any
+  listOfIntents: any;
 
 
-   /** GET ALL INTENTS  */
-  //  private async getAllIntents(id_faq_kb): Promise<boolean> { 
-  //   return new Promise((resolve, reject) => {
-  //     this.faqService._getAllFaqByFaqKbId(id_faq_kb).subscribe((faqs: Intent[]) => {
-  //       if (faqs) {
-  //         this.listOfIntents = JSON.parse(JSON.stringify(faqs));
-  //       }
-  //       console.log('getAllIntents: ',faqs);
-  //       // this.setDragConfig();
-  //       setTimeout(() => {
-  //         this.setDragAndListnerEventToElements();
-  //       }, 0);
-  //       resolve(true);
-  //     }, (error) => {
-  //       this.logger.error('ERROR: ', error);
-  //       reject(false);
-  //     }, () => {
-  //       this.logger.log('COMPLETE ');
-  //       resolve(true);
-  //     });
-  //   });
-  // }
 
+  constructor(
+    private faqService: FaqService
+  ) { }
+
+ 
+
+  setDashboardAttributes(data){
+    // Dati da salvare come JSON
+    let key = this.keyDashboardAttributes;
+    this.setFromLocalStorage(key, data);
+  }
+
+
+  getDashboardAttributes(){
+    let key = this.keyDashboardAttributes;
+    const savedData = this.getFromLocalStorage(key);
+    if(savedData){
+      this.jsonDashboardAttributes = savedData;
+    } else {
+      this.jsonDashboardAttributes = {
+        intents: []
+      }
+    }
+    return this.jsonDashboardAttributes;
+  }
+
+
+  private setFromLocalStorage(key, data){
+    const json = JSON.stringify(data);
+    localStorage.setItem(key, json);
+  }
+
+
+  private getFromLocalStorage(key){
+    const savedJson = localStorage.getItem(key);
+    const savedData = JSON.parse(savedJson);
+    return savedData;
+  }
+
+
+
+
+  
+
+  /** GET ALL INTENTS  */
+  public async getAllIntents(id_faq_kb): Promise<boolean> { 
+    return new Promise((resolve, reject) => {
+      this.faqService._getAllFaqByFaqKbId(id_faq_kb).subscribe((faqs: Intent[]) => {
+        if (faqs) {
+          this.listOfIntents = JSON.parse(JSON.stringify(faqs));
+        }
+        console.log('getAllIntents: ',faqs);
+        // this.setDragConfig();
+        // setTimeout(() => {
+        //   // this.setDragAndListnerEventToElements();
+        // }, 0);
+        resolve(true);
+      }, (error) => {
+        console.error('ERROR: ', error);
+        reject(false);
+      }, () => {
+        console.log('COMPLETE ');
+        resolve(true);
+      });
+    });
+  }
+
+
+  public async createIntent(id_faq_kb, newIntent): Promise<string> { 
+    return new Promise((resolve, reject) => {
+      let questionIntentSelected = newIntent.question;
+      let answerIntentSelected = newIntent.answer;
+      let displayNameIntentSelected = newIntent.intent_display_name;
+      let formIntentSelected = newIntent.form;
+      let actionsIntentSelected = newIntent.actions;
+      let webhookEnabledIntentSelected = newIntent.webhook_enabled;
+      const that = this;
+      this.faqService.addIntent(
+        id_faq_kb,
+        questionIntentSelected,
+        answerIntentSelected,
+        displayNameIntentSelected,
+        formIntentSelected,
+        actionsIntentSelected,
+        webhookEnabledIntentSelected
+      ).subscribe((intent) => {
+        console.log('addIntent: ************************', intent['id']);
+        resolve(intent['id']);
+      }, (error) => {
+          console.error('ERROR: ', error);
+          reject(false);
+      }, () => {
+          console.log('COMPLETE ');
+          resolve(null);
+      });
+    });
+  }
+
+  public async editIntent(intent): Promise<boolean> { 
+    return new Promise((resolve, reject) => {
+      let id = intent.id;
+      let attributes = intent.attributes;
+      let questionIntent = intent.question;
+      let answerIntent = intent.answer;
+      let displayNameIntent = intent.intent_display_name;
+      let formIntent = {};
+      if (intent.form !== null) {
+        formIntent = intent.form;
+      }
+      let actionsIntent = intent.actions;
+      let webhookEnabledIntent = intent.webhook_enabled;
+      this.faqService.updateIntent(
+        id,
+        attributes,
+        questionIntent,
+        answerIntent,
+        displayNameIntent,
+        formIntent,
+        actionsIntent,
+        webhookEnabledIntent
+      ).subscribe((intent) => {
+        console.log('edit intent: ', intent);
+        resolve(true);
+      }, (error) => {
+        console.error('ERROR: ', error);
+        reject(false);
+      }, () => {
+        console.log('COMPLETE ');
+        resolve(true);
+      });
+    });
+  }
+      
 
 
   public addNewIntent(id_faq_kb: string, listOfIntents:Array<Intent>, actionType: string){

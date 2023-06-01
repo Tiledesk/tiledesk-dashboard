@@ -64,7 +64,7 @@
 
         <div id="cds-box-right" class="drag-content box-right">
 
-            <div #receiver_elements_dropped_on_stage class="receiver-elements-dropped-on-stage" cdkDropList (cdkDropListDropped)="droppedElementOnStage($event)"></div>
+            <div #receiver_elements_dropped_on_stage class="receiver-elements-dropped-on-stage" cdkDropList (cdkDropListDropped)="onDroppedElementToStage($event)"></div>
 
             <cds-panel-elements class="cds-panel-elements"
                 (showPanelActions)="onShowPanelActions($event)"
@@ -75,8 +75,8 @@
                 
                 <cds-panel-intent *ngFor="let intent of listOfIntents; let i = index; let lastIntent = last; let firstIntent = first"
                         [id]="intent.id"
-                        [style.top.px]="(intent.attributes && intent.attributes.y)?intent.attributes.y:0" 
-                        [style.left.px]="(intent.attributes && intent.attributes.x)?intent.attributes.x:0"
+                        [style.top.px]="getIntentPosition(intent.id).y" 
+                        [style.left.px]="getIntentPosition(intent.id).x" 
                         draggable="true"
                         class="panel-intent draggable prevent-select input-block"
                         [idSelected]="idElementOfIntentSelected"

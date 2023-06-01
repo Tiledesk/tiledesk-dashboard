@@ -2,8 +2,10 @@ import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChange
 import { Form, Intent } from '../../../models/intent-model';
 
 // import { Observable, Subscription } from 'rxjs';
-import { ACTIONS_LIST, TYPE_ACTION, patchActionId, CreateNewAction } from 'app/chatbot-design-studio/utils';
+import { ACTIONS_LIST, TYPE_ACTION, patchActionId } from 'app/chatbot-design-studio/utils';
 import { LoggerService } from 'app/services/logger/logger.service';
+import { IntentService } from 'app/chatbot-design-studio/cds-services/intent.service'; 
+
 const swal = require('sweetalert');
 import {
   CdkDragDrop,
@@ -63,7 +65,8 @@ export class CdsPanelIntentComponent implements OnInit, OnChanges {
   isDeleting: boolean = false;
 
   constructor(
-    private logger: LoggerService
+    private logger: LoggerService,
+    public intentService:IntentService
   ) { }
 
   ngOnInit(): void {
@@ -281,7 +284,9 @@ export class CdsPanelIntentComponent implements OnInit, OnChanges {
         //   event.previousIndex,
         //   event.currentIndex
         // );
-        let newAction = CreateNewAction(actionType.value.type);
+
+        let newAction = this.intentService.createAction(actionType.value.type)
+        // let newAction = CreateNewAction(actionType.value.type);
         this.actions.splice(event.currentIndex, 0, newAction);
       } catch (error) {
         console.error(error);

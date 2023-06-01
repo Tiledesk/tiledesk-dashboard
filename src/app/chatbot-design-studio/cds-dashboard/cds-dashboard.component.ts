@@ -13,7 +13,7 @@ import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/dr
 
 import { HttpClient } from "@angular/common/http";
 import { Intent, Button, Action, Form, ActionReply, Command, Message, ActionAssignVariable, Attributes } from '../../models/intent-model';
-import { TYPE_COMMAND, TYPE_INTENT_ELEMENT, EXTERNAL_URL, TYPE_MESSAGE, TIME_WAIT_DEFAULT } from '../utils';
+import { TYPE_COMMAND, TYPE_INTENT_ELEMENT, EXTERNAL_URL, TYPE_MESSAGE, TIME_WAIT_DEFAULT, convertJsonToArray } from '../utils';
 import { Subject } from 'rxjs';
 import { FaqKbService } from 'app/services/faq-kb.service';
 import { Chatbot } from 'app/models/faq_kb-model';
@@ -136,6 +136,8 @@ export class CdsDashboardComponent implements OnInit {
   // SYSTEM FUNCTIONS //
   ngOnInit() {
     this.auth.checkRoleForCurrentProject();
+    this.dashboardAttributes = this.intentService.getDashboardAttributes();
+    console.log('dashboardAttributes::: ', this.dashboardAttributes);
     this.executeTailAsyncFunctions();
     
     // // if (this.router.url.indexOf('/createfaq') !== -1) {
@@ -156,11 +158,13 @@ export class CdsDashboardComponent implements OnInit {
 
 
   ngAfterViewInit(){
+    console.log('ngAfterViewInit -------------> ');
     this.setDragConfig();
     this.hideShowWidget('show');
   }
 
   ngOnDestroy() {
+    // **************** !!!!!!!! rimuovo tutti i listner !!!!!!! *******************//
   }
 
 
@@ -181,12 +185,15 @@ export class CdsDashboardComponent implements OnInit {
       console.log('Risultato 4:', getCurrentProject);
       const getBrowserVersion = await this.getBrowserVersion();
       console.log('Risultato 5:', getBrowserVersion);
-      const getAllIntents = await this.getAllIntents(this.id_faq_kb);
-      console.log('Risultato 6:', getAllIntents, this.listOfIntents);
+      const getAllIntents = await this.intentService.getAllIntents(this.id_faq_kb);
+      console.log('Risultato 6:', getAllIntents);
+      if(getAllIntents){
+        this.listOfIntents = this.intentService.listOfIntents;
+        setTimeout(() => {
+          this.setDragAndListnerEventToElements();
+        }, 1000);
+      }
       // this.setDragConfig();
-      // setTimeout(() => {
-      //   this.setDragAndListnerEventToElements();
-      // }, 500);
     } catch (errore) {
       console.log('Si è verificato un errore:', errore);
       console.error('Si è verificato un errore:', errore);
@@ -259,7 +266,7 @@ export class CdsDashboardComponent implements OnInit {
           this.selectedChatbot = chatbot;
           this.translateparamBotName = { bot_name: this.selectedChatbot.name }
           if (this.selectedChatbot && this.selectedChatbot.attributes) {
-            variableList.userDefined = this.convertJsonToArray(this.selectedChatbot.attributes.variables);
+            variableList.userDefined = convertJsonToArray(this.selectedChatbot.attributes.variables);
           }
           // console.log('ok: funzioneAsincrona3');
           resolve(true);
@@ -277,21 +284,6 @@ export class CdsDashboardComponent implements OnInit {
     });
   }
 
-  /** convertJsonToArray */
-  private convertJsonToArray(jsonData:any) {
-    const arrayOfObjs = Object.entries(jsonData).map(([key, value]) => ({ 'name': key, 'value': value }))
-    return arrayOfObjs;
-  }
-
-
-  /**  setDragConfig */
-  private setDragConfig(){
-    let el = document.getElementById("cds-box-right");
-    // console.log('getElementById:: el', el);
-    let drawer = document.getElementById("drawer-of-items-to-zoom-and-drag");
-    // console.log('getElementById:: drawer', drawer);
-    setDrawer(el, drawer);
-  }
 
 
   /** hideShowWidget */
@@ -347,33 +339,25 @@ export class CdsDashboardComponent implements OnInit {
   }
   // END CUSTOM FUNCTIONS //
 
-  // SERVICE FUNCTIONS //
-  /** GET ALL INTENTS  */
-  private async getAllIntents(id_faq_kb): Promise<boolean> { 
-    return new Promise((resolve, reject) => {
-      this.faqService._getAllFaqByFaqKbId(id_faq_kb).subscribe((faqs: Intent[]) => {
-        if (faqs) {
-          this.listOfIntents = JSON.parse(JSON.stringify(faqs));
-        }
-        console.log('getAllIntents: ',faqs);
-        // this.setDragConfig();
-        setTimeout(() => {
-          this.setDragAndListnerEventToElements();
-        }, 0);
-        resolve(true);
-      }, (error) => {
-        this.logger.error('ERROR: ', error);
-        reject(false);
-      }, () => {
-        this.logger.log('COMPLETE ');
-        resolve(true);
-      });
-    });
-  }
 
+
+
+  /** ************************* **/
+  /** START DRAG DROP FUNCTIONS 
+  /** ************************* **/
+
+  /**  setDragConfig */
+  private setDragConfig(){
+    let el = document.getElementById("cds-box-right");
+    // console.log('getElementById:: el', el);
+    let drawer = document.getElementById("drawer-of-items-to-zoom-and-drag");
+    // console.log('getElementById:: drawer', drawer);
+    setDrawer(el, drawer);
+  }
 
   /** setDragAndListnerEventToElements */
   private setDragAndListnerEventToElements(){
+    
     this.listOfIntents.forEach(intent => {
       try {
         if(!intent.attributes){
@@ -383,34 +367,45 @@ export class CdsDashboardComponent implements OnInit {
         console.error('ERROR: ',error);
       }
       console.log('SET -----> ', intent);
-      let elem = document.getElementById(intent.id);
-      setDragElement(elem);
-      elem.addEventListener('mouseup',(evt) => this.onMouseUp(intent, elem));
-      elem.addEventListener('mousedown',(evt) => this.onMouseDown(elem));
-      elem.addEventListener('mousemove',(evt) => this.onMouseMove(elem));
+      try {
+        let elem = document.getElementById(intent.id);
+        setDragElement(elem);
+        // **************** !!!!!!!! se non esiste aggiungo listner !!!!!!! *******************//
+        elem.addEventListener('mouseup',(evt) => this.onMouseUp(intent, elem));
+        elem.addEventListener('mousedown',(evt) => this.onMouseDown(elem));
+        elem.addEventListener('mousemove',(evt) => this.onMouseMove(elem));
+      } catch (error) {
+        console.error('ERROR', error);
+      }
+      
     });
   }
-
 
   onMouseDown(element){
     const x = element.offsetLeft; 
     const y = element.offsetTop; 
     element.style.zIndex = 2;
     console.log("CHIAMA ON mouseDown x:", x, " y: ",y);
-    
-
   }
 
   onMouseUp(intent, element){
     const x = element.offsetLeft; 
     const y = element.offsetTop; 
-    console.log("CHIAMA ON mouseup x:", x, " y: ",y);
-    if(x != intent.attributes.x || y != intent.attributes.y){
-      intent.attributes.x = x;
-      intent.attributes.y = y;
+    let pos = {'x':0, 'y':0};
+    try {
+      // posX = this.dashboardAttributes.intents[intent.id].pos['x'];
+      // posY = this.dashboardAttributes.intents[intent.id].pos['y'];
+      pos = this.getIntentPosition(intent.id);
+    } catch (error) {
+      console.error("ERROR: ", error);
+    }
+    if(x != pos.x || y != pos.y){
       element.style.zIndex = 'auto';
       // this.CREATE_VIEW = false;
       // this.saveIntent(intent);
+      let pos = {'x':x, 'y':y};
+      this.setIntentPosition(intent.id, pos);
+      this.intentService.setDashboardAttributes(this.dashboardAttributes);
     }
     this.isOpenPanelDetail = true;
   }
@@ -420,7 +415,111 @@ export class CdsDashboardComponent implements OnInit {
     // const y = element.offsetTop; 
     // console.log("CHIAMA ON onMouseMove x:", x, " y: ",y);
   }
-    
+
+  getIntentPosition(value){
+    let key = 'id';
+    let pos = {'x':0, 'y':0};
+    try {
+      const foundItem = this.dashboardAttributes.intents.find(item => item[key] === value);
+      // console.log('foundItem ------------------>', foundItem);
+      return foundItem.pos;
+    } catch (error) {
+      // console.log('ERRORE ----------->', error);
+      return pos;
+    }
+  }
+
+  setIntentPosition(id, pos){
+    let intent = {
+      'id': id,
+      'pos': {'x': pos.x, 'y': pos.y}
+    }
+    this.dashboardAttributes.intents.push(intent);
+  }
+
+  /** ************************* **/
+  /** END DRAG DROP FUNCTIONS 
+  /** ************************* **/
+
+
+  /** ************************* **/
+  /** START CUSTOM FUNCTIONS 
+  /** ************************* **/
+
+  async addNewElementToStage(pos, actionType){
+    this.CREATE_VIEW = true;
+    this.intentSelected = this.intentService.addNewIntent(this.id_faq_kb, this.listOfIntents, actionType);
+    this.intentSelected.id = 'new';
+    this.setIntentPosition('new', pos);
+    this.listOfIntents.push(this.intentSelected); 
+    // lo aggiungo - ma è momentaneo, appena salva il new intent ricarica e ripopola listOfIntents
+    // CREATE INTENT //
+    const idNewIntent = await this.intentService.createIntent(this.id_faq_kb, this.intentSelected);
+    console.log('creatIntent:', idNewIntent);
+    if(idNewIntent){
+      this.setIntentPosition(idNewIntent, pos);
+      const getAllIntents = await this.intentService.getAllIntents(this.id_faq_kb);
+      console.log('getAllIntents:', getAllIntents);
+      if(getAllIntents){
+        this.listOfIntents = this.intentService.listOfIntents;
+        this.setDragAndListnerEventToElements();
+      }
+    }
+  }
+
+
+  // onXXX(){
+  //   const editIntent = await this.intentService.editIntent(this.intentSelected);
+  //   console.log('editIntent:', editIntent);
+  //   if(editIntent){
+
+  //   }
+  // }
+
+
+
+
+
+
+
+
+
+  // private creatIntent(newIntent) {
+  //   console.log('creatIntent', newIntent, this.id_faq_kb);
+  //   let questionIntentSelected = newIntent.question;
+  //   let answerIntentSelected = newIntent.answer;
+  //   let displayNameIntentSelected = newIntent.intent_display_name;
+  //   let formIntentSelected = newIntent.form;
+  //   let actionsIntentSelected = newIntent.actions;
+  //   let webhookEnabledIntentSelected = newIntent.webhook_enabled;
+  //   // PENDING STATE
+  //   const that = this;
+  //   this.faqService.addIntent(
+  //     this.id_faq_kb,
+  //     questionIntentSelected,
+  //     answerIntentSelected,
+  //     displayNameIntentSelected,
+  //     formIntentSelected,
+  //     actionsIntentSelected,
+  //     webhookEnabledIntentSelected
+  //   ).subscribe((intent) => {
+  //     console.log('addIntent: ', intent);
+  //     const getAllIntents = await that.intentService.getAllIntents(that.id_faq_kb);
+  //     if(getAllIntents){
+  //       that.listOfIntents = that.intentService.listOfIntents;
+  //       that.setDragAndListnerEventToElements();
+  //     }
+  //   }, (error) => {
+  //     console.log('error: ', error);
+  //   }, () => {
+  //     console.log('fine: ');
+  //   });
+
+  // }
+
+  /** ************************* **/
+  /** END CUSTOM FUNCTIONS 
+  /** ************************* **/
 
   private deleteIntent(intent) {
     console.log('deleteIntent', intent);
@@ -438,7 +537,7 @@ export class CdsDashboardComponent implements OnInit {
           // this.intents = this.intents.filter(int => int.id != intent.id);
           // this.filtered_intents = this.filtered_intents.filter(int => int.id != intent.id);
           // console.log('DELETED: ', this.intents);
-          this.getAllIntents(this.id_faq_kb);
+// --------> this.getAllIntents(this.id_faq_kb);
           // console.log('onDeleteIntent::: ', this.listOfIntents);
           this.intentSelected = null;
           this.elementIntentSelected = {};
@@ -461,40 +560,7 @@ export class CdsDashboardComponent implements OnInit {
   }
 
 
-  private creatIntent(newIntent) {
-    console.log('creatIntent', newIntent, this.id_faq_kb);
-    let questionIntentSelected = newIntent.question;
-    let answerIntentSelected = newIntent.answer;
-    let displayNameIntentSelected = newIntent.intent_display_name;
-    let formIntentSelected = newIntent.form;
-    let actionsIntentSelected = newIntent.actions;
-    let webhookEnabledIntentSelected = newIntent.webhook_enabled;
-    // PENDING STATE
-    const that = this;
-    this.faqService.addIntent(
-      this.id_faq_kb,
-      questionIntentSelected,
-      answerIntentSelected,
-      displayNameIntentSelected,
-      formIntentSelected,
-      actionsIntentSelected,
-      webhookEnabledIntentSelected
-    ).subscribe((intent) => {
-      console.log('addIntent: ', intent);
-      that.getAllIntents(that.id_faq_kb);
-      // if (intent) {
-      //   //SUCCESS STATE
-      //   setTimeout(() => {
-      //     this.setDragAndListnerEventToElements();
-      //   }, 0);
-      // }
-    }, (error) => {
-      console.log('error: ', error);
-    }, () => {
-      console.log('fine: ');
-    });
-
-  }
+  
   
 
   /** ADD INTENT  */
@@ -621,7 +687,6 @@ export class CdsDashboardComponent implements OnInit {
     // button.classList.add(pendingClassName)
     const that = this
 
-
     this.faqService.updateIntent(
       id,
       attributes,
@@ -721,7 +786,7 @@ export class CdsDashboardComponent implements OnInit {
 
   /** START EVENTS PANEL INTENT */
 
-  droppedElementOnStage(event: CdkDragDrop<string[]>) {
+  onDroppedElementToStage(event: CdkDragDrop<string[]>) {
     // console.log('droppedElementOnStage!!!!!', event);
     let actionType = '';
     let pos = this.dragDropService.positionElementOnStage(event.dropPoint, this.receiverElementsDroppedOnStage, this.drawerOfItemsToZoomAndDrag);
@@ -732,9 +797,9 @@ export class CdsDashboardComponent implements OnInit {
     } catch (error) {
       console.error('ERROR: ', error);
     }
-    this.onAddNewElementToStage(pos, actionType);
+    this.addNewElementToStage(pos, actionType);
   }
-
+ 
   // positionElementOnStage(dropPoint:any, receiverElementsDroppedOnStageReference:ElementRef, drawerOfItemsToZoomAndDragReference:ElementRef){
   //     let pos = {
   //       'x': 0,
@@ -988,17 +1053,7 @@ export class CdsDashboardComponent implements OnInit {
   /** END EVENTS PANEL INTENT LIST */
 
   /** START EVENTS PANEL ELEMENTS */
-  onAddNewElementToStage(pos, actionType){
-    this.CREATE_VIEW = true;
-    this.intentSelected = this.intentService.addNewIntent(this.id_faq_kb, this.listOfIntents, actionType);
-    this.listOfIntents.push(this.intentSelected);
 
-    this.intentSelected.attributes.x = pos.x;
-    this.intentSelected.attributes.y = pos.y;
-    console.log(':::: onAddNewElement :::: ', this.intentSelected);
-    
-    // this.creatIntent(this.intentSelected);
-  }
 
   // onAddNewElement(){
   //   this.CREATE_VIEW = true;
@@ -1114,7 +1169,7 @@ export class CdsDashboardComponent implements OnInit {
     });
     console.log("********* el.id ********* ", this.CREATE_VIEW, intentNameAlreadyCreated, this.intentSelected.id);
     if (this.CREATE_VIEW && !intentNameAlreadyCreated) {
-      this.creatIntent(this.intentSelected);
+      // this.creatIntent(this.intentSelected);
     } else if (this.EDIT_VIEW) {
       this.editIntent();
     }

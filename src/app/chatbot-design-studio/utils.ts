@@ -1,26 +1,6 @@
 import { AbstractControl } from "@angular/forms";
 // import { ActionAssignVariable, Intent } from "app/models/intent-model";
 import { v4 as uuidv4 } from 'uuid';
-import { 
-    Command, 
-    Message, 
-    ActionAgent, 
-    ActionAssignFunction, 
-    ActionChangeDepartment, 
-    ActionClose, 
-    ActionDeleteVariable, 
-    ActionReply, 
-    ActionAssignVariable, 
-    ActionRandomReply, 
-    ActionEmail, 
-    ActionHideMessage, 
-    ActionJsonCondition, 
-    ActionOnlineAgent, 
-    ActionOpenHours, 
-    ActionReplaceBot, 
-    ActionWait, 
-    ActionWebRequest, 
-    Expression } from 'app/models/intent-model';
 
 export enum EXTERNAL_URL {
     getchatbotinfo = "https://tiledesk.com/community/getchatbotinfo/chatbotId/"
@@ -316,73 +296,78 @@ export function patchActionId(action) {
 }
 
 
+export function convertJsonToArray(jsonData:any){
+    const arrayOfObjs = Object.entries(jsonData).map(([key, value]) => ({ 'name': key, 'value': value }))
+    return arrayOfObjs;
+}
 
-export function CreateNewAction(typeAction: TYPE_ACTION) {
-    console.log('[PANEL ACTION] actionSelected ', typeAction);
-    let action: any;
-    if(typeAction === TYPE_ACTION.REPLY){
-      action = new ActionReply();
-      let commandWait = new Command(TYPE_COMMAND.WAIT);
-      action.attributes.commands.push(commandWait);
-      let command = new Command(TYPE_COMMAND.MESSAGE);
-      command.message = new Message('text', 'A chat message will be sent to the visitor');
-      action.attributes.commands.push(command);
-    }
-    if(typeAction === TYPE_ACTION.RANDOM_REPLY){
-      action = new ActionRandomReply();
-      let commandWait = new Command(TYPE_COMMAND.WAIT);
-      action.attributes.commands.push(commandWait);
-      let command = new Command(TYPE_COMMAND.MESSAGE);
-      command.message = new Message('text', 'A chat message will be sent to the visitor');
-      action.attributes.commands.push(command);
-    }
-    if(typeAction === TYPE_ACTION.WEB_REQUEST){
-      action = new ActionWebRequest();
-    }
-    if(typeAction === TYPE_ACTION.AGENT){
-      action = new ActionAgent();
-    }
-    if(typeAction === TYPE_ACTION.CLOSE){
-      action = new ActionClose();
-    }
-    if(typeAction === TYPE_ACTION.WAIT){
-      action = new ActionWait();
-    }
-    if(typeAction === TYPE_ACTION.INTENT) {
-    }
-    if(typeAction === TYPE_ACTION.EMAIL) {
-      action = new ActionEmail();
-    }
-    if(typeAction === TYPE_ACTION.ASSIGN_VARIABLE){
-      action = new ActionAssignVariable();
-    }
-    if(typeAction === TYPE_ACTION.DELETE_VARIABLE){
-      action = new ActionDeleteVariable();
-    }
-    if(typeAction === TYPE_ACTION.ONLINE_AGENTS){
-      action = new ActionOnlineAgent();
-    }
-    if(typeAction === TYPE_ACTION.OPEN_HOURS){
-      action = new ActionOpenHours();
-    }
-    if(typeAction === TYPE_ACTION.REPLACE_BOT){
-      action = new  ActionReplaceBot();
-    }
-    if(typeAction === TYPE_ACTION.CHANGE_DEPARTMENT) {
-      action = new  ActionChangeDepartment();
-    }
-    if(typeAction === TYPE_ACTION.HIDE_MESSAGE){
-      action = new ActionHideMessage();
-    }
-    if(typeAction === TYPE_ACTION.JSON_CONDITION){
-      action = new ActionJsonCondition();
-      action.groups.push( new Expression());
-    }
-    if(typeAction === TYPE_ACTION.ASSIGN_FUNCTION){
-      action = new ActionAssignFunction();
-    }
-    return action;
-  }
+
+// export function CreateNewAction(typeAction: TYPE_ACTION) {
+//     console.log('[PANEL ACTION] actionSelected ', typeAction);
+//     let action: any;
+//     if(typeAction === TYPE_ACTION.REPLY){
+//       action = new ActionReply();
+//       let commandWait = new Command(TYPE_COMMAND.WAIT);
+//       action.attributes.commands.push(commandWait);
+//       let command = new Command(TYPE_COMMAND.MESSAGE);
+//       command.message = new Message('text', 'A chat message will be sent to the visitor');
+//       action.attributes.commands.push(command);
+//     }
+//     if(typeAction === TYPE_ACTION.RANDOM_REPLY){
+//       action = new ActionRandomReply();
+//       let commandWait = new Command(TYPE_COMMAND.WAIT);
+//       action.attributes.commands.push(commandWait);
+//       let command = new Command(TYPE_COMMAND.MESSAGE);
+//       command.message = new Message('text', 'A chat message will be sent to the visitor');
+//       action.attributes.commands.push(command);
+//     }
+//     if(typeAction === TYPE_ACTION.WEB_REQUEST){
+//       action = new ActionWebRequest();
+//     }
+//     if(typeAction === TYPE_ACTION.AGENT){
+//       action = new ActionAgent();
+//     }
+//     if(typeAction === TYPE_ACTION.CLOSE){
+//       action = new ActionClose();
+//     }
+//     if(typeAction === TYPE_ACTION.WAIT){
+//       action = new ActionWait();
+//     }
+//     if(typeAction === TYPE_ACTION.INTENT) {
+//     }
+//     if(typeAction === TYPE_ACTION.EMAIL) {
+//       action = new ActionEmail();
+//     }
+//     if(typeAction === TYPE_ACTION.ASSIGN_VARIABLE){
+//       action = new ActionAssignVariable();
+//     }
+//     if(typeAction === TYPE_ACTION.DELETE_VARIABLE){
+//       action = new ActionDeleteVariable();
+//     }
+//     if(typeAction === TYPE_ACTION.ONLINE_AGENTS){
+//       action = new ActionOnlineAgent();
+//     }
+//     if(typeAction === TYPE_ACTION.OPEN_HOURS){
+//       action = new ActionOpenHours();
+//     }
+//     if(typeAction === TYPE_ACTION.REPLACE_BOT){
+//       action = new  ActionReplaceBot();
+//     }
+//     if(typeAction === TYPE_ACTION.CHANGE_DEPARTMENT) {
+//       action = new  ActionChangeDepartment();
+//     }
+//     if(typeAction === TYPE_ACTION.HIDE_MESSAGE){
+//       action = new ActionHideMessage();
+//     }
+//     if(typeAction === TYPE_ACTION.JSON_CONDITION){
+//       action = new ActionJsonCondition();
+//       action.groups.push( new Expression());
+//     }
+//     if(typeAction === TYPE_ACTION.ASSIGN_FUNCTION){
+//       action = new ActionAssignFunction();
+//     }
+//     return action;
+//   }
 
 // export function retriveListOfVariables(intents: Array<Intent>) {
 //     variableList.userDefined = []
