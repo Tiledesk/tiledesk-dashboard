@@ -230,7 +230,8 @@
                             <!-- 2nd combination: | htmlEntitiesEncode | autolinker -->
                             <!-- 3rd combination (as in chat): | htmlEntitiesEncode  | marked -->
                             <!-- -------------------------------------------------------------- -->
-                            <p *ngIf="message?.type === 'text'" class="message ow"
+                           
+                            <p *ngIf="message?.type === 'text' || message?.type === 'file'" class="message ow"
                               [innerHTML]="message?.text | htmlEntitiesEncode | marked ">
                             </p>
                             <div *ngIf="message?.type === 'image'" class="message ow">
