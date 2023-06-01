@@ -337,6 +337,8 @@ import { ContactCustomPropertiesComponent } from './components/modals/contact-cu
 import { ContactInfoComponent } from './components/shared/contact-info/contact-info.component';
 import { CreateProjectGsComponent } from './create-project-wizard/create-project-gs/create-project-gs.component';
 import { HomeReportComponent } from './home-components/home-report/home-report.component';
+import { HomeWhatsappAccountComponent } from './home-components/home-whatsapp-account/home-whatsapp-account.component';
+
 
 
 
@@ -598,7 +600,8 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     ContactCustomPropertiesComponent,
     ContactInfoComponent,
     CreateProjectGsComponent,
-    HomeReportComponent
+    HomeReportComponent,
+    HomeWhatsappAccountComponent
   ],
   imports: [
     TooltipModule.forRoot(CutomTooltipOptions as TooltipOptions),
