@@ -293,7 +293,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         takeUntil(this.unsubscribe$)
       )
       .subscribe((project) => {
-        this.logger.log('[HOME] $UBSCIBE TO PUBLISHED PROJECT - RES  ', project)
+        console.log('[HOME] $UBSCIBE TO PUBLISHED PROJECT - RES  ', project)
 
         if (project) {
           this.project = project

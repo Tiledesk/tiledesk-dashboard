@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { AnalyticsService } from 'app/analytics/analytics-service/analytics.service';
 // import { ApexOptions } from 'ng-apexcharts';
 import { Chart } from 'chart.js';
@@ -16,7 +16,7 @@ import { ContactsService } from 'app/services/contacts.service';
   styleUrls: ['./home-report.component.scss']
 })
 
-export class HomeReportComponent implements OnInit {
+export class HomeReportComponent implements OnInit, OnChanges {
   private unsubscribe$: Subject<any> = new Subject<any>();
   @Input() public projectId: string;
   @Input() public USER_ROLE: string;
@@ -59,18 +59,34 @@ export class HomeReportComponent implements OnInit {
    * On init
    */
   ngOnInit(): void {
-
-    this.getRequestByLastNDayMerge(this.numOfDays);
-    this.getLastMounthRequestsCount();
     this.getMonthsName();
     this.getUserRole();
     this.translateString();
+    this.inizializeHomeStatic()
+  }
+  
+  inizializeHomeStatic() {
+    this.getRequestByLastNDayMerge(this.numOfDays);
+    this.getLastMounthRequestsCount();
     this.getActiveContactsCount();
     this.getVisitorsCount();
     this.getLastMounthMessagesCount();
+   
   }
 
+  ngOnChanges(changes: SimpleChanges) {
+    console.log('[HOME-ANALITICS] ngOnChanges changes ', changes)
+    console.log('[HOME-ANALITICS] ngOnChanges changes projectId ', this.projectId)
 
+    if (changes.projectId &&  changes.projectId.firstChange === false) {
+      console.log('[HOME-ANALITICS] ngOnChanges changes changes.projectId.currentValue ', changes.projectId.currentValue)
+      console.log('[HOME-ANALITICS] ngOnChanges changes changes.projectId.previousValue ', changes.projectId.previousValue)
+      if (changes.projectId.currentValue !== changes.projectId.previousValue) {
+        console.log('[HOME-ANALITICS] ngOnChanges changes HAS CHANGED PROJECT ')
+        this.inizializeHomeStatic()
+      }
+    }
+  }
 
   /**
    * On destroy
@@ -99,17 +115,17 @@ export class HomeReportComponent implements OnInit {
 
   getActiveContactsCount() {
     this.contactsService.getLeadsActive().subscribe((activeleads: any) => {
-      console.log('[HOME] - GET ACTIVE LEADS RESPONSE ', activeleads)
+      console.log('[HOME-ANALITICS] - GET ACTIVE LEADS RESPONSE ', activeleads)
       if (activeleads) {
 
         this.countOfActiveContacts = activeleads['count'];
-        console.log('[HOME] - ACTIVE LEADS COUNT ', this.countOfActiveContacts)
+        console.log('[HOME-ANALITICS] - ACTIVE LEADS COUNT ', this.countOfActiveContacts)
       }
     }, (error) => {
-      console.error('[HOME] - GET ACTIVE LEADS - ERROR ', error);
+      console.error('[HOME-ANALITICS] - GET ACTIVE LEADS - ERROR ', error);
 
     }, () => {
-      console.log('[HOME] - GET ACTIVE LEADS * COMPLETE *');
+      console.log('[HOME-ANALITICS] - GET ACTIVE LEADS * COMPLETE *');
     });
   }
 
@@ -130,10 +146,10 @@ export class HomeReportComponent implements OnInit {
           this.countOfVisitors = 0
         }
       }, (error) => {
-        console.error('[HOME] - GET VISITORS COUNT - ERROR ', error);
+        console.error('[HOME-ANALITICS] - GET VISITORS COUNT - ERROR ', error);
 
       }, () => {
-        console.log('[HOME] - GET VISITORS COUNT * COMPLETE *');
+        console.log('[HOME-ANALITICS] - GET VISITORS COUNT * COMPLETE *');
       });
   }
 
@@ -147,19 +163,19 @@ export class HomeReportComponent implements OnInit {
         takeUntil(this.unsubscribe$)
       )
       .subscribe((msgscount: any) => {
-       console.log('[HOME] - GET LAST 30 DAYS MESSAGE COUNT RES', msgscount);
+       console.log('[HOME-ANALITICS] - GET LAST 30 DAYS MESSAGE COUNT RES', msgscount);
         if (msgscount && msgscount.length > 0) {
           this.countOfLastMonthMsgs = msgscount[0]['totalCount']
 
-          console.log('[HOME] - GET LAST 30 DAYS MESSAGE COUNT ', this.countOfLastMonthMsgs);
+          console.log('[HOME-ANALITICS] - GET LAST 30 DAYS MESSAGE COUNT ', this.countOfLastMonthMsgs);
         } else {
           this.countOfLastMonthMsgs = 0;
         }
       }, (error) => {
-        console.error('[HOME] - GET LAST 30 DAYS MESSAGE - ERROR ', error);
+        console.error('[HOME-ANALITICS] - GET LAST 30 DAYS MESSAGE - ERROR ', error);
 
       }, () => {
-        console.log('[HOME] - GET LAST 30 DAYS MESSAGE * COMPLETE *');
+        console.log('[HOME-ANALITICS] - GET LAST 30 DAYS MESSAGE * COMPLETE *');
       });
   }
 
