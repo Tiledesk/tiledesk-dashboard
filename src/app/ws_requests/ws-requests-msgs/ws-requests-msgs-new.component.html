@@ -2459,7 +2459,9 @@
                   <!-- ------------------------------------- -->
                   <li *ngIf="request?.ticket_id" class="ticket-id">
                     <div class="contact-row">
-                      <span class="ticket-id-text"> {{ 'TicketId' | translate }} </span>
+                      <span class="ticket-id-text" style="white-space: nowrap;"> 
+                        {{ 'TicketId' | translate }} 
+                      </span>
 
                       <!-- <span>
                         <svg xmlns="http://www.w3.org/2000/svg" height="22px" viewBox="0 0 24 24" width="22px"
@@ -2677,7 +2679,7 @@
                                     </div>
                                   </div>
                                   <div class="ng-select-tags-wpr"
-                                    [ngStyle]="{'width':CHAT_PANEL_MODE === true ? '240px' : 'auto' }">
+                                    [ngStyle]="{'width':CHAT_PANEL_MODE === true ? 'auto' : 'auto' }">
 
                                     <ng-select style="margin-right: 13px;" class="ng-select-tags" id="select-tag"
                                       #ngSelect (change)="addTag()" [items]="tagsList" bindLabel="tag" bindValue="_id"
