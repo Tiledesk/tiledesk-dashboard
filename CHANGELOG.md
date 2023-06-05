@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.4.43
+- Deploys in production
+- Improvements and bug fixing
+
 ### 2.4.42
 - Deploys in production
 - Improvements and bug fixing
