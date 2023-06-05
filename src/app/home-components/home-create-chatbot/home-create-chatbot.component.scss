@@ -1,4 +1,4 @@
-.whatsapp-account-wpr {
+.home-block-wpr {
     margin-top: 18px;
     border-radius: 12px;
     padding: 24px;
@@ -6,45 +6,45 @@
         0 4px 4px -2px rgb(91 94 105 / 15%);
 }
 
-.whatsapp-account-header-wpr {
+.home-block-header-wpr {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.whatsapp-account-header {
+.home-block-header {
     align-items: center;
     flex-direction: row;
     display: flex;
 }
 
-.whatsapp-img-title-wpr {
+.home-block-img-title-wpr {
     margin-right: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.whatsapp-img {
+.home-block-img {
     width: 42px;
     height: 42px;
     margin-right: 8px;
 }
 
-.whatsapp-title {
+.home-block-title {
     font-size: 20px;
     font-weight: 400;
     font-family: "Poppins", "Roboto", "Arial", sans-serif;
 }
 
-.whatsapp-block-description-and-connect-btn-wpr {
+.home-block-description-and-connect-btn-wpr {
     display: flex;
     justify-content: space-between;
     align-items: baseline;
 }
 
-.whatsapp-block-description {
-    color: var(--black);
+.home-block-description {
+    color: #000000;
     font-size: 15px;
     font-weight: 400;
     line-height: 20px;

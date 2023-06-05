@@ -339,7 +339,7 @@ import { CreateProjectGsComponent } from './create-project-wizard/create-project
 import { HomeReportComponent } from './home-components/home-report/home-report.component';
 import { HomeWhatsappAccountComponent } from './home-components/home-whatsapp-account/home-whatsapp-account.component';
 import { HomeCreateChatbotComponent } from './home-components/home-create-chatbot/home-create-chatbot.component';
-
+import { HomeNewsFeedComponent } from './home-components/home-news-feed/home-news-feed.component';
 
 
 // NOTE: Eliminazione del local storage produce inconsistenza delle instances Firebase. Si salta il logout.
@@ -599,7 +599,8 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     CreateProjectGsComponent,
     HomeReportComponent,
     HomeWhatsappAccountComponent,
-    HomeCreateChatbotComponent
+    HomeCreateChatbotComponent,
+    HomeNewsFeedComponent
   ],
   imports: [
     TooltipModule.forRoot(CutomTooltipOptions as TooltipOptions),
