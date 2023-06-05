@@ -554,7 +554,7 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
     contactAddressTemp = contactAddressTemp.filter((element) => {
       return element !== undefined && element !== '';
     });
-    console.log('contactAddressTemp ', contactAddressTemp)
+    // console.log('contactAddressTemp ', contactAddressTemp)
     if (contactAddressTemp.length > 0) {
       contactAddressTemp.join(", ")
       const contactAddressTempString = contactAddressTemp.toString()
