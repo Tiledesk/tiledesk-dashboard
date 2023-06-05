@@ -237,9 +237,8 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
           // console.log('YES isFirstProject:: ', this.arrayOfSteps);
         } else {
           this.arrayOfSteps.push(TYPE_STEP.NAME_PROJECT);
-          this.arrayOfSteps.push(TYPE_STEP.WELCOME_MESSAGE);
+          // this.arrayOfSteps.push(TYPE_STEP.WELCOME_MESSAGE);
           this.arrayOfSteps.push(TYPE_STEP.WIDGET_INSTALLATION);
-          // console.log('NO isFirstProject:: ', this.arrayOfSteps);
         }
 
       }
@@ -262,9 +261,6 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
         }
         this.loadJsonOnboardingConfig(onboardingConfig);
       });
-    // } else {
-    //   this.arrayOfSteps.push(TYPE_STEP.WELCOME_MESSAGE);
-    // }
   }
 
 
@@ -294,7 +290,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
         this.activeStep = this.customSteps[0];
         this.activeQuestion = this.customSteps[0].questions[0];    
       }
-      this.arrayOfSteps.push(TYPE_STEP.WELCOME_MESSAGE);
+      // this.arrayOfSteps.push(TYPE_STEP.WELCOME_MESSAGE);
       this.arrayOfSteps.push(TYPE_STEP.WIDGET_INSTALLATION);
     });
   }
@@ -579,15 +575,15 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
   // -----------------  FUNCTION CALLBACK   ------------------------ //
   callback(step:string, variable?: any){
     if(step === 'createNewProject'){
-      this.createBot();
-    }
-    else if(step === 'createBot'){
-      this.hookBotToDept(variable);
-    }
-    else if(step === 'hookBotToDept'){
-      this.createDefaultFaqOnBot();
-    }
-    else if(step === 'uploadFaqFromCSV'){
+    //   this.createBot();
+    // }
+    // else if(step === 'createBot'){
+    //   this.hookBotToDept(variable);
+    // }
+    // else if(step === 'hookBotToDept'){
+    //   this.createDefaultFaqOnBot();
+    // }
+    // else if(step === 'uploadFaqFromCSV'){
       //this.goToNextStep();
       this.DISPLAY_SPINNER_SECTION = true;
       this.DISPLAY_SPINNER = false;
