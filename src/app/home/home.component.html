@@ -15,55 +15,33 @@
 
             <div class="flex flex-col sm-flex-row flex-auto sm-items-center min-w-0 my-8 sm:my-12">
               <div class="flex flex-auto items-center min-w-0">
-                <div class="flex-0 w-16 h-16 rounded-full overflow-hidden">
+                <!-- <div class="flex-0 w-16 h-16 rounded-full overflow-hidden">
                   <img src="assets/images/avatars/brian-hughes.jpg" class="w-full h-full object-cover">
-                </div>
+                </div> -->
                 <div class="flex flex-col min-w-0 ml-4">
                   <!-- leading-7 -->
                   <div
                     class="text-2xl md-text-5xl font-w-400 tracking-tight  md-leading-snug truncate ng-star-inserted">
-                    Welcome back, Brian!
+                    <span style="font-family: 'Poppins', Arial, sans-serif;"> {{ prjct_name }} </span>
+                    <span class="material-icons home-edit-project-name-icon" (click)="goToProjectSettingsGeneral()"
+                      matTooltipClass="custom-mat-tooltip" matTooltip="{{'EditProjectName' | translate }}"
+                      #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
+                      mode_edit
+                    </span>
                   </div>
                   <!--ng-container-->
                   <!--container-->
                   <div class="flex items-center">
-
-                    <div class="example-button-container">
-                      <button mat-mini-fab color="warn" aria-label="Example icon button with a filter list icon"
-                        style="width: 28px; height: 28px; box-shadow: unset;">
-                        <mat-icon role="img" class="mat-icon notranslate icon-size-5 mat-icon-no-color"
-                          aria-hidden="true" ng-reflect-svg-icon="heroicons_solid:bell" data-mat-icon-type="svg"
-                          data-mat-icon-name="date_range" data-mat-icon-namespace="heroicons_solid"
-                          style="position: relative;">
-                          <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 0 24 24" width="20px"
-                            fill="#fff">
-                            <path d="M0 0h24v24H0V0z" fill="none" />
-                            <path
-                              d="M7 11h2v2H7v-2zm14-5v14c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2l.01-14c0-1.1.88-2 1.99-2h1V2h2v2h8V2h2v2h1c1.1 0 2 .9 2 2zM5 8h14V6H5v2zm14 12V10H5v10h14zm-4-7h2v-2h-2v2zm-4 0h2v-2h-2v2z" />
-                          </svg>
-
-                        </mat-icon>
-                      </button>
+                    <div *ngIf="project_plan_badge" class="project-plan-badge" 
+                    [ngClass]="{
+                      'free-plan-badge': current_selected_prjct?.plan_badge_background_type === 'free_plan_badge', 
+                      'a-plan-badge':  current_selected_prjct?.plan_badge_background_type === 'a_plan_badge',
+                      'b-plan-badge': current_selected_prjct?.plan_badge_background_type === 'b_plan_badge', 
+                      'c-plan-badge': current_selected_prjct?.plan_badge_background_type === 'c_plan_badge',
+                      'unsupported-plan-badge': current_selected_prjct?.plan_badge_background_type === 'unsupported_plan_badge'
+                      }">
+                      {{ prjct_profile_name }}
                     </div>
-                    <mat-icon style="display: none;" role="img"
-                      class="mat-icon notranslate icon-size-5 mat-icon-no-color" aria-hidden="true"
-                      ng-reflect-svg-icon="heroicons_solid:bell" data-mat-icon-type="svg"
-                      data-mat-icon-name="date_range" data-mat-icon-namespace="heroicons_solid">
-                      <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" fit=""
-                        height="100%" width="100%" preserveAspectRatio="xMidYMid meet" focusable="false">
-                        <path
-                          d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z">
-                        </path>
-                      </svg> -->
-                      <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 0 24 24" width="20px"
-                        fill="#000000">
-                        <path d="M0 0h24v24H0V0z" fill="none" />
-                        <path
-                          d="M7 11h2v2H7v-2zm14-5v14c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2l.01-14c0-1.1.88-2 1.99-2h1V2h2v2h8V2h2v2h1c1.1 0 2 .9 2 2zM5 8h14V6H5v2zm14 12V10H5v10h14zm-4-7h2v-2h-2v2zm-4 0h2v-2h-2v2z" />
-                      </svg>
-                    </mat-icon>
-                    <!-- <div class="ml-1-dot-5 leading-6 truncate text-secondary">You have 2 new messages and 15 new tasks
-                    </div> -->
                   </div>
                 </div>
               </div>
@@ -159,7 +137,7 @@
 
         <appdashboard-home-news-feed> </appdashboard-home-news-feed>
 
-      </div> 
+      </div>
 
 
 
@@ -167,13 +145,6 @@
     </div>
   </div>
 </div>
-
-
-
-
-
-
-
 
 
 <!-- -------------------------------------------------------------------------------- -->

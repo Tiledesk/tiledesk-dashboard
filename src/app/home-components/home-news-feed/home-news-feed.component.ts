@@ -1,21 +1,53 @@
-import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'appdashboard-home-news-feed',
   templateUrl: './home-news-feed.component.html',
   styleUrls: ['./home-news-feed.component.scss']
 })
-export class HomeNewsFeedComponent implements OnInit {
-
-  constructor() { }
+export class HomeNewsFeedComponent implements OnInit, AfterViewInit{
+  newsFeedList: any;
+  displayScrollLeftBtn = false
+  constructor(
+    private httpClient: HttpClient
+  ) { }
 
   ngOnInit(): void {
-
-    this.initCarousel()
+    this.getNewsFeed()
   }
 
+ngAfterViewInit() {
+  
+}
+
+  getNewsFeed() {
+
+    let url = 'assets/mock-data/newsFeed.json';
+    this.httpClient.get(url).subscribe(news => { 
+
+      console.log('[HOME-NEWS-FEED] - GET NEWS FEED ', news)
+      this.newsFeedList = news;
+    }, error => {
+      console.error('[HOME-NEWS-FEED] - GET NEWS FEED - ERROR: ', error);
+    }, () => {
+      console.log('[HOME-NEWS-FEED] - GET NEWS FEED * COMPLETE *')
+      setTimeout(() => {
+        this.initCarousel()
+      }, 1000);
+      
+    });
+  }
+
+
+  openNewsLink(url: string) {
+    console.log('[HOME-NEWS-FEED] url ', url)
+    window.open(url, '_blank');
+  }  
+
+  // https://www.codingnepalweb.com/draggable-card-slider-html-css-javascript/
   initCarousel() {
-    const wrapper = <HTMLElement>document.querySelector(".wrapper");
+    const wrapper = <HTMLElement>document.querySelector(".news-wrapper");
     const carousel = <HTMLElement>document.querySelector(".carousel");
     const _firstCardWidth = <HTMLElement>carousel.querySelector(".news-card");
     const firstCardWidth = _firstCardWidth.offsetWidth;
@@ -56,6 +88,15 @@ export class HomeNewsFeedComponent implements OnInit {
     arrowBtns.forEach(btn => {
       btn.addEventListener("click", () => {
         carousel.scrollLeft += btn.id == "left" ? -firstCardWidth : firstCardWidth;
+        console.log('[HOME-NEWS-FEED] carousel.scrollLeft ', carousel.scrollLeft)
+
+         
+
+        if (carousel.scrollLeft < 40 ){
+          this.displayScrollLeftBtn = false
+        } else if (carousel.scrollLeft >= 40)  {
+          this.displayScrollLeftBtn = true
+        }
       });
     });
 

@@ -2621,3 +2621,35 @@ img {
   border-radius: 8px;
   min-height: 48px;
 }
+
+.free-plan-badge {
+  // background-color: #faba3e;
+  background-color: #ff9f05;
+}
+
+.a-plan-badge {
+  background-color: #19a95d
+}
+
+.b-plan-badge {
+  background-color: #00a1c2;
+}
+
+.c-plan-badge {
+  background-color: #9966ff;
+}
+
+.unsupported-plan-badge {
+  background-color: #ed006b;
+}
+
+.project-plan-badge {
+  width: fit-content;
+  border-radius: 4px;
+  padding: 0px 5px;
+  color: #fff;
+  text-transform: capitalize;
+  font-size: 11px;
+  font-weight: 400;
+}
+

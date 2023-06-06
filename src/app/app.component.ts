@@ -98,11 +98,11 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         // private faqKbService: FaqKbService,
     ) {
 
-        this.router.events.subscribe((event) => {
-            if (event instanceof NavigationEnd) {
-                gtag('config', 'G-BKHKLWGG6F', { 'page_path': event.urlAfterRedirects });
-            }
-        })
+        // this.router.events.subscribe((event) => {
+        //     if (event instanceof NavigationEnd) {
+        //         gtag('config', 'G-BKHKLWGG6F', { 'page_path': event.urlAfterRedirects });
+        //     }
+        // })
 
         this.auth.project_bs.subscribe((project) => {
             if (project) {

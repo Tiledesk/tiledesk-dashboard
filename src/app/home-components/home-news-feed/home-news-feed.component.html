@@ -1,73 +1,237 @@
 <div class="home-news-feed" style="margin-top: 18px;">
-    <div class="wrapper">
-
-        <i id="left" class="material-icons">
+    <div class="news-wrapper">
+        <!-- *ngIf="displayScrollLeftBtn"   [ngStyle]="{'opacity':displayScrollLeftBtn === false ? '0' : '1' }" -->
+        <i id="left" class="material-icons" [ngStyle]="{'opacity':displayScrollLeftBtn === false ? '0' : '1' }">
             navigate_before
         </i>
         <ul class="carousel">
-            <li class="news-card">
-                <!-- <div class="img">
-                    <img src="https://www.tidio.com/wp-content/uploads/use-sales-strategy-newsfeed.jpg" alt="img"
-                        draggable="false">
-                </div> -->
-                <div class="news-tag"> Academy</div>
-                <h2>Getting started for admin</h2>
-                
-                <div class="news-link">Read more</div>
-            </li>
-            <li class="news-card">
-                <!-- <div class="img">
-                    <img src="https://www.tidio.com/wp-content/uploads/use-sales-strategy-newsfeed.jpg" alt="img"
-                        draggable="false">
-                </div> -->
-                <div class="news-tag">Academy</div>
-                <h2>Getting started for agents</h2>
-                
-                <div class="news-link">Read more</div>
-            </li>
-            <li class="news-card">
-                <!-- <div class="img">
-                    <img src="https://www.tidio.com/wp-content/uploads/use-sales-strategy-newsfeed.jpg" alt="img"
-                        draggable="false">
-                </div> -->
-                <div class="news-tag">Academy</div>
-                <h2>Developer docs</h2>
-                
-                <div class="news-link">Read more</div>
-            </li>
-            <li class="news-card">
-                <!-- <div class="img">
-                    <img src="https://www.tidio.com/wp-content/uploads/use-sales-strategy-newsfeed.jpg" alt="img"
-                        draggable="false">
-                </div> -->
-                <div class="news-tag">Feature</div>
-                <h2>How to connect Tiledesk with Telegram</h2>
-                <div class="news-link">Read more</div>
+            <li class="news-card" *ngFor="let news of newsFeedList">
+                <div class="img">
+                    <img [src]="news?.image" alt="img" draggable="false">
+                </div>
+                <div class="news-tag">
+                    <span *ngIf="news?.tag === 'Academy'" class="news-tag-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px"
+                            fill="#0566ff">
+                            <path d="M0 0h24v24H0V0z" fill="none" />
+                            <path
+                                d="M12 3 1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3zm6.82 6L12 12.72 5.18 9 12 5.28 18.82 9zM17 15.99l-5 2.73-5-2.73v-3.72L12 15l5-2.73v3.72z" />
+                        </svg>
+                    </span>
 
+                    <span *ngIf="news?.tag === 'Feature'" class="news-tag-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px"
+                            viewBox="0 0 24 24" width="24px" fill="#0566ff">
+                            <g>
+                                <rect fill="none" height="24" width="24" x="0" />
+                            </g>
+                            <g>
+                                <g>
+                                    <polygon points="19,9 20.25,6.25 23,5 20.25,3.75 19,1 17.75,3.75 15,5 17.75,6.25" />
+                                    <polygon
+                                        points="19,15 17.75,17.75 15,19 17.75,20.25 19,23 20.25,20.25 23,19 20.25,17.75" />
+                                    <path
+                                        d="M11.5,9.5L9,4L6.5,9.5L1,12l5.5,2.5L9,20l2.5-5.5L17,12L11.5,9.5z M9.99,12.99L9,15.17l-0.99-2.18L5.83,12l2.18-0.99 L9,8.83l0.99,2.18L12.17,12L9.99,12.99z" />
+                                </g>
+                            </g>
+                        </svg>
+                    </span>
+                    <!-- <div class="news-tag-name">
+                        {{news?.tag}}
+    
+                    </div> -->
+                    <svg style="position: absolute;top: -26px; left: 0px" height="30" viewBox="0 0 137 30" width="137" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="m137 146.822306v.177694h-137v-8.133761c4.35695074-2.216475 8.42072398-4.86895 12.0925645-7.92295l9.5477997-7.954631c4.7738998-3.992439 11.0834598-5.988658 17.3596358-5.988658s12.585736 1.996219 17.3596358 5.988658l9.5811836 7.954631c12.2185129 10.162571 28.7769348 15.879017 46.0364186 15.879017z"
+                            fill="#fff" fill-rule="evenodd" transform="translate(0 -117)" />
+                    </svg>
+                </div>
+
+                <h2>{{news?.title}}</h2>
+
+                <div class="news-link" (click)="openNewsLink(news?.learnmore)">
+
+                    Read more
+                </div>
             </li>
-            <li class="news-card">
-                <!-- <div class="img">
-                    <img src="https://www.tidio.com/wp-content/uploads/use-sales-strategy-newsfeed.jpg" alt="img"
-                        draggable="false">
-                </div> -->
-                <div class="news-tag">Feature</div>
-                <h2>Kristina Zasiadko</h2>
-                
-                <div class="news-link">Read more</div>
-            </li>
-            <li class="news-card">
-                <!-- <div class="img">
-                    <img src="https://www.tidio.com/wp-content/uploads/use-sales-strategy-newsfeed.jpg" alt="img"
-                        draggable="false">
-                </div> -->
-                <h2>Donald Horton</h2>
-                <div class="news-tag">App Designer</div>
-                <div class="news-link">Read more</div>
-            </li>
+
         </ul>
         <!-- <i class="fa-solid fa-angle-right"></i> -->
         <i id="right" class="material-icons">
             keyboard_arrow_right
         </i>
+    </div>
+
+    <div style="display: none;" class="slide-container swiper">
+        <div class="slide-content">
+            <div class="card-wrapper swiper-wrapper">
+                <div class="card swiper-slide">
+                    <div class="image-content">
+                        <span class="overlay"></span>
+
+                        <div class="card-image">
+                            <img src="https://tinypic.host/images/2022/12/19/img_avatar.png" alt="" class="card-img">
+                        </div>
+                    </div>
+
+                    <div class="card-content">
+                        <h2 class="name">Mohamed Yousef
+                        </h2>
+                        <p class="description">The lorem text the section that contains header with having open
+                            functionality. Lorem dolor sit amet consectetur adipisicing elit.</p>
+
+                        <button class="button">View More</button>
+                    </div>
+                </div>
+                <div class="card swiper-slide">
+                    <div class="image-content">
+                        <span class="overlay"></span>
+
+                        <div class="card-image">
+                            <img src="https://tinypic.host/images/2022/12/19/img_avatar.png" alt="" class="card-img">
+                        </div>
+                    </div>
+
+                    <div class="card-content">
+                        <h2 class="name">1 Mohamed Yousef
+                        </h2>
+                        <p class="description">The lorem text the section that contains header with having open
+                            functionality. Lorem dolor sit amet consectetur adipisicing elit.</p>
+
+                        <button class="button">View More</button>
+                    </div>
+                </div>
+                <div class="card swiper-slide">
+                    <div class="image-content">
+                        <span class="overlay"></span>
+
+                        <div class="card-image">
+                            <img src="https://tinypic.host/images/2022/12/19/img_avatar.png" alt="" class="card-img">
+                        </div>
+                    </div>
+
+                    <div class="card-content">
+                        <h2 class="name">2 Mohamed Yousef
+                        </h2>
+                        <p class="description">The lorem text the section that contains header with having open
+                            functionality. Lorem dolor sit amet consectetur adipisicing elit.</p>
+
+                        <button class="button">View More</button>
+                    </div>
+                </div>
+                <div class="card swiper-slide">
+                    <div class="image-content">
+                        <span class="overlay"></span>
+
+                        <div class="card-image">
+                            <img src="https://tinypic.host/images/2022/12/19/img_avatar.png" alt="" class="card-img">
+                        </div>
+                    </div>
+
+                    <div class="card-content">
+                        <h2 class="name">3 Mohamed Yousef
+                        </h2>
+                        <p class="description">The lorem text the section that contains header with having open
+                            functionality. Lorem dolor sit amet consectetur adipisicing elit.</p>
+
+                        <button class="button">View More</button>
+                    </div>
+                </div>
+                <div class="card swiper-slide">
+                    <div class="image-content">
+                        <span class="overlay"></span>
+
+                        <div class="card-image">
+                            <img src="https://tinypic.host/images/2022/12/19/img_avatar.png" alt="" class="card-img">
+                        </div>
+                    </div>
+
+                    <div class="card-content">
+                        <h2 class="name"> 4 Mohamed Yousef
+                        </h2>
+                        <p class="description">The lorem text the section that contains header with having open
+                            functionality. Lorem dolor sit amet consectetur adipisicing elit.</p>
+
+                        <button class="button">View More</button>
+                    </div>
+                </div>
+                <div class="card swiper-slide">
+                    <div class="image-content">
+                        <span class="overlay"></span>
+
+                        <div class="card-image">
+                            <img src="https://tinypic.host/images/2022/12/19/img_avatar.png" alt="" class="card-img">
+                        </div>
+                    </div>
+
+                    <div class="card-content">
+                        <h2 class="name">Mohamed Yousef
+                        </h2>
+                        <p class="description">The lorem text the section that contains header with having open
+                            functionality. Lorem dolor sit amet consectetur adipisicing elit.</p>
+
+                        <button class="button">View More</button>
+                    </div>
+                </div>
+                <div class="card swiper-slide">
+                    <div class="image-content">
+                        <span class="overlay"></span>
+
+                        <div class="card-image">
+                            <img src="https://tinypic.host/images/2022/12/19/img_avatar.png" alt="" class="card-img">
+                        </div>
+                    </div>
+
+                    <div class="card-content">
+                        <h2 class="name">5 Mohamed Yousef
+                        </h2>
+                        <p class="description">The lorem text the section that contains header with having open
+                            functionality. Lorem dolor sit amet consectetur adipisicing elit.</p>
+
+                        <button class="button">View More</button>
+                    </div>
+                </div>
+                <div class="card swiper-slide">
+                    <div class="image-content">
+                        <span class="overlay"></span>
+
+                        <div class="card-image">
+                            <img src="https://tinypic.host/images/2022/12/19/img_avatar.png" alt="" class="card-img">
+                        </div>
+                    </div>
+
+                    <div class="card-content">
+                        <h2 class="name">6 Mohamed Yousef
+                        </h2>
+                        <p class="description">The lorem text the section that contains header with having open
+                            functionality. Lorem dolor sit amet consectetur adipisicing elit.</p>
+
+                        <button class="button">View More</button>
+                    </div>
+                </div>
+                <div class="card swiper-slide">
+                    <div class="image-content">
+                        <span class="overlay"></span>
+
+                        <div class="card-image">
+                            <img src="https://tinypic.host/images/2022/12/19/img_avatar.png" alt="" class="card-img">
+                        </div>
+                    </div>
+
+                    <div class="card-content">
+                        <h2 class="name">8 Mohamed Yousef
+                        </h2>
+                        <p class="description">The lorem text the section that contains header with having open
+                            functionality. Lorem dolor sit amet consectetur adipisicing elit.</p>
+
+                        <button class="button">View More</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="swiper-button-next swiper-navBtn"></div>
+        <div class="swiper-button-prev swiper-navBtn"></div>
+        <div class="swiper-pagination"></div>
     </div>
 </div>

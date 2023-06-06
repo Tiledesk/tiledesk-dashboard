@@ -1,0 +1,63 @@
+[
+    {
+        "tag": "Feature",
+        "title": "How to connect Tiledesk with Telegram",
+        "image": "https://tiledesk.com/wp-content/uploads/2023/06/Getting-started-for-admin.png",
+        "description": "",
+        "learnmore": "https://docs.tiledesk.com/knowledge-base/telegram/"
+    },
+    {
+        "tag": "Academy",
+        "title": "Developer docs",
+        "image": "https://tiledesk.com/wp-content/uploads/2023/06/Developer-docs.png",
+        "description": "",
+        "learnmore": "https://developer.tiledesk.com/"
+    },
+    {
+        "tag": "Academy",
+        "title": "Getting started for admin",
+        "image": "https://tiledesk.com/wp-content/uploads/2023/06/Getting-started-for-admin_v2.png",
+        "description": "",
+        "learnmore": "https://gethelp.tiledesk.com/categories/getting-started-for-admins/"
+    
+    },
+    {
+        "tag": "Academy",
+        "title": "Getting started for agents",
+        "image": "https://tiledesk.com/wp-content/uploads/2023/06/Getting-started-for-agent.png",
+        "description": "",
+        "learnmore": "https://gethelp.tiledesk.com/categories/getting-started-for-agents/"
+       
+    },
+    {
+        "tag": "Feature",
+        "title": "How to connect Tiledesk with Telegram",
+        "image": "https://tiledesk.com/wp-content/uploads/2023/06/Getting-started-for-admin.png",
+        "description": "",
+        "learnmore": "https://docs.tiledesk.com/knowledge-base/telegram/"
+    },
+    {
+        "tag": "Academy",
+        "title": "Developer docs",
+        "image": "https://tiledesk.com/wp-content/uploads/2023/06/Getting-started-for-admin.png",
+        "description": "",
+        "learnmore": "https://developer.tiledesk.com/"
+    },
+    {
+        "tag": "Academy",
+        "title": "Getting started for admin",
+        "image": "https://tiledesk.com/wp-content/uploads/2023/06/Getting-started-for-admin.png",
+        "description": "",
+        "learnmore": "https://gethelp.tiledesk.com/categories/getting-started-for-admins/"
+    
+    },
+    {
+        "tag": "Academy",
+        "title": "Getting started for agents",
+        "image": "https://tiledesk.com/wp-content/uploads/2023/06/Getting-started-for-admin.png",
+        "description": "",
+        "learnmore": "https://gethelp.tiledesk.com/categories/getting-started-for-agents/"
+       
+    }
+
+]

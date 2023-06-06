@@ -116,6 +116,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   current_selected_prjct: any;
   popup_visibility: string = 'none';
   appSumoProfile: string;
+  project_plan_badge: boolean;
   // dispayPromoBanner: boolean = true;
   // promoBannerContent: any;
   // promoBannerSyle: any;
@@ -321,7 +322,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.projectService.getProjects().subscribe((projects: any) => {
 
       this.current_selected_prjct = projects.find(prj => prj.id_project.id === projectId);
-      this.logger.log('[HOME] - Find Current Project Among All - current_selected_prjct ', this.current_selected_prjct);
+      console.log('[HOME] - Find Current Project Among All - current_selected_prjct ', this.current_selected_prjct);
       const projectProfileData = this.current_selected_prjct.id_project.profile
 
       this.prjct_name = this.current_selected_prjct.id_project.name;
@@ -332,10 +333,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.subscription_is_active = this.current_selected_prjct.id_project.isActiveSubscription;
       this.subscription_end_date = projectProfileData.subEnd;
       if (projectProfileData && projectProfileData.extra3) {
-        this.logger.log('[HOME] Find Current Project Among All extra3 ', projectProfileData.extra3)
+        console.log('[HOME] Find Current Project Among All extra3 ', projectProfileData.extra3)
 
         this.appSumoProfile = APP_SUMO_PLAN_NAME[projectProfileData.extra3]
-        this.logger.log('[HOME] Find Current Project appSumoProfile ', this.appSumoProfile)
+        console.log('[HOME] Find Current Project appSumoProfile ', this.appSumoProfile)
        
       }
 
@@ -364,6 +365,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           this.profile_name_for_segment = PLAN_NAME.B + " (trial)"
           this.prjct_profile_name = PLAN_NAME.B + " (trial)"
           this.auth.projectProfile(this.profile_name_for_segment)
+          this.current_selected_prjct['plan_badge_background_type'] = 'b_plan_badge'
           // this.getProPlanTrialTranslation();
 
         } else {
@@ -372,6 +374,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           this.profile_name_for_segment = "Free"
           this.auth.projectProfile(this.profile_name_for_segment)
           this.prjct_profile_name = "Free plan";
+          this.current_selected_prjct['plan_badge_background_type'] = 'free_plan_badge'
           // this.getPaidPlanTranslation(this.prjct_profile_name);
           this.logger.log('[HOME] Find Current Project Among All BRS-LANG 3 ', this.browserLang);
 
@@ -390,7 +393,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
             this.profile_name_for_segment = PLAN_NAME.A + '(' + this.appSumoProfile + ')'
             this.auth.projectProfile(this.profile_name_for_segment)
           }
-
+          this.current_selected_prjct['plan_badge_background_type'] = 'a_plan_badge'
           // this.isVisibleANA = false;
 
 
@@ -404,12 +407,13 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
             this.profile_name_for_segment = PLAN_NAME.B + '(' + this.appSumoProfile + ')'
             this.auth.projectProfile(this.profile_name_for_segment)
           }
-
+          this.current_selected_prjct['plan_badge_background_type'] = 'b_plan_badge'
 
         } else if (this.prjct_profile_name === PLAN_NAME.C) {
           this.prjct_profile_name = PLAN_NAME.C + ' plan'
           this.profile_name_for_segment = PLAN_NAME.C
           this.auth.projectProfile(this.profile_name_for_segment)
+          this.current_selected_prjct['plan_badge_background_type'] = 'c_plan_badge'
           if (this.subscription_is_active) {
             // this.isVisibleANA = true;
           } else {
@@ -1052,6 +1056,20 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           // this.logger.log('[HOME] PUBLIC-KEY - oph isVisible', this.isVisibleOPH);
         }
       }
+
+      if (key.includes("PPB")) {
+        // console.log('PUBLIC-KEY (PROJECTS-LIST) - key', key);
+        let ppb = key.split(":");
+        // console.log('PUBLIC-KEY (PROJECTS-LIST) - ppb key&value', ppb);
+
+        if (ppb[1] === "F") {
+          this.project_plan_badge = false;
+          // console.log('PUBLIC-KEY (PROJECTS-LIST) - project plan badge is', this.project_plan_badge);
+        } else {
+          this.project_plan_badge = true;
+          // console.log('PUBLIC-KEY (PROJECTS-LIST) - project plan badge is', this.project_plan_badge);
+        }
+      }
     });
 
     if (!this.public_Key.includes("ANA")) {
@@ -1072,6 +1090,11 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     if (!this.public_Key.includes("HPB")) {
       // this.logger.log('[HOME] PUBLIC-KEY - key.includes("OPH")', this.public_Key.includes("OPH"));
       this.isVisibleHomeBanner = false;
+    }
+
+    if (!this.public_Key.includes("PPB")) {
+      // console.log('PUBLIC-KEY (PROJECTS-LIST) - key.includes("PPB")', this.public_Key.includes("PPB"));
+      this.project_plan_badge = false;
     }
 
     // this.logger.log('eoscode', this.eos)
