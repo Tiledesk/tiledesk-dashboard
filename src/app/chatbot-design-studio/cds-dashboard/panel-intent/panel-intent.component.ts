@@ -100,7 +100,7 @@ export class PanelIntentComponent implements OnInit, OnChanges {
 
 
   ngOnChanges(changes: SimpleChanges){
-    this.setIntentSelected();
+    // this.setIntentSelected();
   }
 
   

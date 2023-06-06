@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FaqService } from '../../services/faq.service';
+import { BehaviorSubject } from 'rxjs';
 
 import { 
   Intent, 
@@ -19,35 +19,40 @@ import {
   ActionReplaceBot,
   ActionWait,
   ActionWebRequest,
-  Command, Message, Expression } from '../../models/intent-model';
-import { TYPE_ACTION, TYPE_COMMAND, TYPE_INTENT_ELEMENT, EXTERNAL_URL, TYPE_MESSAGE, TIME_WAIT_DEFAULT } from '../utils';
+  Command, Message, Expression } from 'app/models/intent-model';
+
+import { FaqService } from 'app/services/faq.service';
+import { TYPE_ACTION, TYPE_COMMAND } from 'app/chatbot-design-studio/utils';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class IntentService {
+  intents = new BehaviorSubject <Intent[]>([]);
 
-  // listOfIntents: Array<Intent>;
   keyDashboardAttributes = 'Dashboard-Attributes';
   jsonDashboardAttributes: any;
   preDisplayName: string = 'untitled_block_';
-  listOfIntents: any;
-
-
 
   constructor(
     private faqService: FaqService
   ) { }
 
- 
+  getIntents() {
+    return this.intents.asObservable();
+  }
+
+  updateIntents(newIntents: Intent[]) {
+    this.intents.next(newIntents);
+  }
+
+  // START DASHBOARD FUNCTIONS //
 
   setDashboardAttributes(data){
-    // Dati da salvare come JSON
     let key = this.keyDashboardAttributes;
     this.setFromLocalStorage(key, data);
   }
-
 
   getDashboardAttributes(){
     let key = this.keyDashboardAttributes;
@@ -62,12 +67,10 @@ export class IntentService {
     return this.jsonDashboardAttributes;
   }
 
-
   private setFromLocalStorage(key, data){
     const json = JSON.stringify(data);
     localStorage.setItem(key, json);
   }
-
 
   private getFromLocalStorage(key){
     const savedJson = localStorage.getItem(key);
@@ -75,24 +78,23 @@ export class IntentService {
     return savedData;
   }
 
-
-
+  // END DASHBOARD FUNCTIONS //
 
   
+
+
+  // START INTENT FUNCTIONS //
 
   /** GET ALL INTENTS  */
   public async getAllIntents(id_faq_kb): Promise<boolean> { 
     return new Promise((resolve, reject) => {
       this.faqService._getAllFaqByFaqKbId(id_faq_kb).subscribe((faqs: Intent[]) => {
         if (faqs) {
-          this.listOfIntents = JSON.parse(JSON.stringify(faqs));
-        }
-        console.log('getAllIntents: ',faqs);
-        // this.setDragConfig();
-        // setTimeout(() => {
-        //   // this.setDragAndListnerEventToElements();
-        // }, 0);
-        resolve(true);
+          // console.log('getAllIntents: ', faqs);
+          let arrayOfIntents = JSON.parse(JSON.stringify(faqs));
+          this.updateIntents(arrayOfIntents);
+          // resolve(true);
+        } 
       }, (error) => {
         console.error('ERROR: ', error);
         reject(false);
@@ -103,8 +105,33 @@ export class IntentService {
     });
   }
 
+  public createIntent(id_faq_kb: string, actionType: TYPE_ACTION){
+    let intent = new Intent();
+    intent.id_faq_kb = id_faq_kb;
+    intent.intent_display_name = this.setDisplayName();
+    let action = this.createAction(actionType);
+    intent.actions.push(action);
+    return intent;
+    //this.creatIntent(this.intent);
+  }
 
-  public async createIntent(id_faq_kb, newIntent): Promise<string> { 
+  public setDisplayName(){
+    let listOfIntents = this.intents.getValue();
+    const filteredArray = listOfIntents.filter((element) => element.intent_display_name.startsWith(this.preDisplayName));
+    if(filteredArray.length>0){
+      const lastElement = filteredArray.slice(-1)[0];
+      const intent_display_name = parseInt(lastElement.intent_display_name.substring(this.preDisplayName.length));
+      return this.preDisplayName+(intent_display_name+1);
+    } else {
+      return this.preDisplayName+1;
+    }
+  }
+  
+  public async addNewIntent(id_faq_kb, newIntent): Promise<boolean> { 
+    let newIntents = this.intents.getValue();
+    newIntents.push(newIntent); 
+    console.log("Aggiungo un intent all'array in ultima posizione con id fake");
+    // this.updateIntents(newIntents);
     return new Promise((resolve, reject) => {
       let questionIntentSelected = newIntent.question;
       let answerIntentSelected = newIntent.answer;
@@ -122,14 +149,18 @@ export class IntentService {
         actionsIntentSelected,
         webhookEnabledIntentSelected
       ).subscribe((intent) => {
-        console.log('addIntent: ************************', intent['id']);
-        resolve(intent['id']);
+        console.log("addIntent: sostituisto l'ultimo elemento dell'array aggiunto in precedenza, con quello salvato con un id valido");
+        let newIntents = this.intents.getValue();
+        newIntents[newIntents.length-1] = intent;
+        this.intents.next(newIntents);
+        console.log('ADDED');
+        resolve(true);
       }, (error) => {
-          console.error('ERROR: ', error);
-          reject(false);
+        console.error('ERROR: ', error);
+        reject(false);
       }, () => {
-          console.log('COMPLETE ');
-          resolve(null);
+        console.log('COMPLETE ');
+        resolve(true);
       });
     });
   }
@@ -157,7 +188,7 @@ export class IntentService {
         actionsIntent,
         webhookEnabledIntent
       ).subscribe((intent) => {
-        console.log('edit intent: ', intent);
+        console.log('EDIT ', intent);
         resolve(true);
       }, (error) => {
         console.error('ERROR: ', error);
@@ -168,45 +199,29 @@ export class IntentService {
       });
     });
   }
-      
 
 
-  public addNewIntent(id_faq_kb: string, listOfIntents:Array<Intent>, actionType: string){
-    let intent = new Intent();
-    intent.id_faq_kb = id_faq_kb;
-    intent.intent_display_name = this.setDisplayName(listOfIntents);
-    let action = this.addActionToIntent(actionType);
-    intent.actions.push(action);
-    return intent;
-    //this.creatIntent(this.intent);
+  public async deleteIntent(intentId: string): Promise<boolean> { 
+    return new Promise((resolve, reject) => {
+      this.faqService.deleteFaq(intentId).subscribe((data) => {
+        let newIntents = this.intents.getValue();
+        newIntents = newIntents.filter(obj => obj.id !== intentId);
+        this.intents.next(newIntents);
+        console.log('DELETE ', intentId);
+        resolve(true);
+      }, (error) => {
+        console.error('ERROR: ', error);
+        reject(false);
+      }, () => {
+        console.log('COMPLETE ');
+        resolve(true);
+      });
+    });
   }
+  // END INTENT FUNCTIONS //
 
 
-  public addActionToIntent(actionType){
-    let action = this.createAction(actionType);
-    //new ActionReply();
-    let commandWait = new Command(TYPE_COMMAND.WAIT);
-    action.attributes.commands.push(commandWait);
-    let command = new Command(TYPE_COMMAND.MESSAGE);
-    command.message = new Message('text', 'A chat message will be sent to the visitor');
-    action.text = command.message.text;
-    action.attributes.commands.push(command);
-    return action;
-  }
-
-
-  public setDisplayName(listOfIntents){
-    const filteredArray = listOfIntents.filter((element) => element.intent_display_name.startsWith(this.preDisplayName));
-    if(filteredArray.length>0){
-      const lastElement = filteredArray.slice(-1)[0];
-      const intent_display_name = parseInt(lastElement.intent_display_name.substring(this.preDisplayName.length));
-      return this.preDisplayName+(intent_display_name+1);
-    } else {
-      return this.preDisplayName+1;
-    }
-  }
-
-
+  // START ATTRIBUTE FUNCTIONS //
   public createAction(typeAction: TYPE_ACTION) {
     let action: any;
     if(typeAction === TYPE_ACTION.REPLY){
@@ -272,5 +287,6 @@ export class IntentService {
     }
     return action;
   }
+  // END ATTRIBUTE FUNCTIONS //
   
 }

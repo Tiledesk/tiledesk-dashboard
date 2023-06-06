@@ -71,7 +71,7 @@ export class CdsPanelIntentComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     // this.listenToIntentUpdates();
-    console.log('PanelIntentComponent ngOnInit-->', this.intentSelected)
+    // console.log('CdsPanelIntentComponent ngOnInit-->', this.intentSelected)
     // this.actions = this.intentSelected.actions
     // setTimeout(() => {
     //   let el = document.getElementById("panel-intent-content");
@@ -87,7 +87,7 @@ export class CdsPanelIntentComponent implements OnInit, OnChanges {
 
 
   ngAfterViewInit(){
-    console.log('PanelIntentComponent ngAfterViewInit-->');
+    // console.log('CdsPanelIntentComponent ngAfterViewInit-->');
   }
   
   private patchAllActionsId(){
@@ -130,7 +130,7 @@ export class CdsPanelIntentComponent implements OnInit, OnChanges {
     this.answer = null;
     this.question = null;
     this.questionCount = 0;
-    console.log('PanelIntentComponent ngOnChanges-->', this.idSelected);
+    // console.log('CdsPanelIntentComponent setIntentSelected-->', this.idSelected);
     try {
       if (this.intentSelected) {
         this.patchAllActionsId();

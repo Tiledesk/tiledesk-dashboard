@@ -1,0 +1,97 @@
+<div class="content" >
+
+    <div class="search-box">
+        <div class="input-box">
+            <input class="custom-input" placeholder="search a block..." (input)="livesearch($event.target.value);">
+        </div>
+    </div>
+
+
+    <div class="intents-list">
+
+        <div class="topic-internal">
+
+            <div class="intents">
+                <div *ngFor="let intent of internalIntents; let id = index" 
+                    id="intent_{{id}}" 
+                    class="intent"
+                    [ngClass]="{'active': idSelectedIntent === 'int-'+id}" 
+                    [value]="intent.id" 
+                    (click)="onSelectIntent(intent, 'int-'+id)">
+
+                    <div class="icon-container" 
+                        [ngClass]="getIconForName(intent.intent_display_name)">
+                        <span class="material-icons">{{getIconForName(intent.intent_display_name)}}</span>
+                    </div>
+
+                    <div class="item-box">
+                        <div>
+                            <p class="intent-display-name truncate">{{intent.intent_display_name}}</p>
+                            <div class="icon-list">
+                                <p *ngIf="intent.questions" class="ai-icon icon" style="margin-bottom: 0px">Ai</p>
+                                <span *ngIf="intent.webhook_enabled" class="material-icons icon webhook-icon">webhook</span>
+                                <span *ngIf="intent.form" class="material-icons icon list-alt-icon">list_alt</span>
+                                <div *ngIf="intent?.actions && intent?.actions?.length > 0" class="actions">
+                                    <span class="material-icons icon bolt-icon">bolt</span>
+                                    <p class="action-counter icon">{{ intent.actions?.length }}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="delete-box" *ngIf="selectedIntent !== null">
+                            <span class="material-icons delete-icon" (click)="$event.stopPropagation();onDeleteButtonClicked(intent)">delete</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+
+
+
+        <div style="width: 100%; display: flex; justify-content: center;">
+            <div class="custom-divider"></div>
+        </div>
+
+        <div class="intents" id="intents-list">
+            <div *ngFor="let intent of filteredIntents; let id = index" 
+                id="intent_{{id}}" 
+                class="intent"
+                [ngClass]="{'active': idSelectedIntent === 'fil-'+id}"
+                style="padding-left: 10px;" 
+                value="intent.id" 
+                (click)="onSelectIntent(intent, 'fil-'+id)">
+                
+                <div class="icon-container" 
+                    [ngClass]="getIconForName(intent.intent_display_name)">
+                    <span class="material-icons">{{getIconForName(intent.intent_display_name)}}</span>
+                </div>
+
+                <div class="item-box">
+                    <div>
+                        <p class="intent-display-name">{{intent.intent_display_name}}</p>
+                        <div class="icon-list">
+                            <p *ngIf="intent.questions" class="ai-icon icon" style="margin-bottom: 0px">Ai</p>
+                            <span *ngIf="intent.webhook_enabled" class="material-icons icon webhook-icon">webhook</span>
+                            <span *ngIf="intent.form" class="material-icons icon list-alt-icon">list_alt</span>
+                            <div *ngIf="intent?.actions && intent?.actions?.length > 0" class="actions"><span
+                                    class="material-icons icon bolt-icon">bolt</span>
+                                <p class="action-counter icon">{{ intent.actions?.length }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="delete-box" *ngIf="selectedIntent !== null">
+                        <span class="material-icons delete-icon"
+                            (click)="$event.stopPropagation();onDeleteButtonClicked(intent)">delete</span>
+                    </div>
+                </div>
+
+            </div>
+            
+        </div>
+
+
+    </div>
+</div>

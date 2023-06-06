@@ -1,6 +1,7 @@
 import { TYPE_ACTION, variableList } from 'app/chatbot-design-studio/utils';
+import { Subscription } from 'rxjs';
 // import { MultichannelService } from 'app/services/multichannel.service';
-import { Component, OnInit, ElementRef, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { FaqService } from '../../services/faq.service';
@@ -28,6 +29,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { DragDropService } from 'app/chatbot-design-studio/cds-services/drag-drop.service';
 import { IntentService } from 'app/chatbot-design-studio/cds-services/intent.service';
 
+// import { Subscription } from 'rxjs';
+
 const swal = require('sweetalert');
 
 declare function setDrawer(el, drawer);
@@ -42,12 +45,17 @@ export class CdsDashboardComponent implements OnInit {
 
   @ViewChild('receiver_elements_dropped_on_stage') receiverElementsDroppedOnStage: ElementRef;
   @ViewChild('drawer_of_items_to_zoom_and_drag') drawerOfItemsToZoomAndDrag: ElementRef;
+  private subscriptionListOfIntents: Subscription;
+  // @Input() listOfIntents: Intent[] = [];
 
+  updatePanelIntentList: boolean = true;
   listOfIntents: Array<Intent>;
+
+
+
   intentStart: Intent;
   intentDefaultFallback: Intent;
   intentSelected: Intent;
-
   listOfActions: Array<{ name: string, value: string, icon?: string }>;
   listOfVariables: { userDefined: Array<any>, systemDefined: Array<any> };
   
@@ -131,7 +139,13 @@ export class CdsDashboardComponent implements OnInit {
     private translate: TranslateService
     // private notify: NotifyService,
     // public usersLocalDbService: LocalDbService,
-  ) { }
+  ) { 
+    this.subscriptionListOfIntents = this.intentService.getIntents().subscribe(value => {
+      console.log("subscriptionListOfIntents********** ", value);
+      this.updatePanelIntentList = !this.updatePanelIntentList;
+      this.listOfIntents = value;
+    });
+  }
 
   // SYSTEM FUNCTIONS //
   ngOnInit() {
@@ -163,8 +177,19 @@ export class CdsDashboardComponent implements OnInit {
     this.hideShowWidget('show');
   }
 
+
+  // ngOnChanges(changes: SimpleChanges) {
+  //   console.log('ngOnChanges:: cds-dashboard');
+  //   if (changes.listOfIntents) {
+  //     const newValue = changes.listOfIntents.currentValue;
+  //     // Aggiorna il valore della variabile e reagisci di conseguenza
+  //     console.log('Nuovo valore:', newValue);
+  //   }
+  // }
+
+
   ngOnDestroy() {
-    // **************** !!!!!!!! rimuovo tutti i listner !!!!!!! *******************//
+    this.subscriptionListOfIntents.unsubscribe();
   }
 
 
@@ -186,9 +211,10 @@ export class CdsDashboardComponent implements OnInit {
       const getBrowserVersion = await this.getBrowserVersion();
       console.log('Risultato 5:', getBrowserVersion);
       const getAllIntents = await this.intentService.getAllIntents(this.id_faq_kb);
-      console.log('Risultato 6:', getAllIntents);
+      console.log('Risultato 6: getAllIntents', getAllIntents );
       if(getAllIntents){
-        this.listOfIntents = this.intentService.listOfIntents;
+        // !!! il valore di listOfIntents è bindato nel costructor con subscriptionListOfIntents !!! //
+        // this.listOfIntents = this.intentService.getIntents();
         setTimeout(() => {
           this.setDragAndListnerEventToElements();
         }, 1000);
@@ -357,7 +383,7 @@ export class CdsDashboardComponent implements OnInit {
 
   /** setDragAndListnerEventToElements */
   private setDragAndListnerEventToElements(){
-    
+    let that = this;
     this.listOfIntents.forEach(intent => {
       try {
         if(!intent.attributes){
@@ -367,16 +393,59 @@ export class CdsDashboardComponent implements OnInit {
         console.error('ERROR: ',error);
       }
       console.log('SET -----> ', intent);
-      try {
-        let elem = document.getElementById(intent.id);
-        setDragElement(elem);
-        // **************** !!!!!!!! se non esiste aggiungo listner !!!!!!! *******************//
-        elem.addEventListener('mouseup',(evt) => this.onMouseUp(intent, elem));
-        elem.addEventListener('mousedown',(evt) => this.onMouseDown(elem));
-        elem.addEventListener('mousemove',(evt) => this.onMouseMove(elem));
-      } catch (error) {
-        console.error('ERROR', error);
+      
+
+      if(intent.id){
+        try {
+          setTimeout(() => {
+            let elem = document.getElementById(intent.id);
+            setDragElement(elem);
+            // **************** !!!!!!!! se non esiste aggiungo listner !!!!!!! *******************//
+
+
+
+
+
+
+// Rimuovi l'event listener con i parametri
+elem.removeEventListener('mouseup', function() {
+  that.onMouseUp(intent, elem);
+});
+// Aggiungi l'event listener con i parametri
+elem.addEventListener('mouseup', function() {
+  that.onMouseUp(intent, elem);
+});
+
+// Rimuovi l'event listener con i parametri
+elem.removeEventListener('mousedown', function() {
+  that.onMouseDown(elem);
+});
+// Aggiungi l'event listener con i parametri
+elem.addEventListener('mousedown', function() {
+  that.onMouseDown(elem);
+});
+
+// Rimuovi l'event listener con i parametri
+elem.removeEventListener('mousemove', function() {
+  that.onMouseMove(elem);
+});
+// Aggiungi l'event listener con i parametri
+elem.addEventListener('mousemove', function() {
+  that.onMouseMove(elem);
+});
+
+
+            // elem.addEventListener('mouseup',(evt) => this.onMouseUp(intent, elem));
+            // elem.addEventListener('mousedown',(evt) => this.onMouseDown(elem));
+            // elem.addEventListener('mousemove',(evt) => this.onMouseMove(elem));
+            
+           
+          }, 500);
+        } catch (error) {
+          console.error('ERROR', error);
+        }
       }
+      
       
     });
   }
@@ -446,26 +515,7 @@ export class CdsDashboardComponent implements OnInit {
   /** START CUSTOM FUNCTIONS 
   /** ************************* **/
 
-  async addNewElementToStage(pos, actionType){
-    this.CREATE_VIEW = true;
-    this.intentSelected = this.intentService.addNewIntent(this.id_faq_kb, this.listOfIntents, actionType);
-    this.intentSelected.id = 'new';
-    this.setIntentPosition('new', pos);
-    this.listOfIntents.push(this.intentSelected); 
-    // lo aggiungo - ma è momentaneo, appena salva il new intent ricarica e ripopola listOfIntents
-    // CREATE INTENT //
-    const idNewIntent = await this.intentService.createIntent(this.id_faq_kb, this.intentSelected);
-    console.log('creatIntent:', idNewIntent);
-    if(idNewIntent){
-      this.setIntentPosition(idNewIntent, pos);
-      const getAllIntents = await this.intentService.getAllIntents(this.id_faq_kb);
-      console.log('getAllIntents:', getAllIntents);
-      if(getAllIntents){
-        this.listOfIntents = this.intentService.listOfIntents;
-        this.setDragAndListnerEventToElements();
-      }
-    }
-  }
+  
 
 
   // onXXX(){
@@ -520,44 +570,6 @@ export class CdsDashboardComponent implements OnInit {
   /** ************************* **/
   /** END CUSTOM FUNCTIONS 
   /** ************************* **/
-
-  private deleteIntent(intent) {
-    console.log('deleteIntent', intent);
-    // // this.listOfIntents = this.listOfIntents.filter(int => int.id != intentId);
-    // // this.listOfIntents = intents;
-    swal({
-      title: this.translate.instant('AreYouSure'),
-      text: "The intent " + intent.intent_display_name + " will be deleted",
-      icon: "warning",
-      buttons: ["Cancel", "Delete"],
-      dangerMode: true,
-    }).then((WillDelete) => {
-      if (WillDelete) {
-        this.faqService.deleteFaq(intent.id).subscribe((data) => {
-          // this.intents = this.intents.filter(int => int.id != intent.id);
-          // this.filtered_intents = this.filtered_intents.filter(int => int.id != intent.id);
-          // console.log('DELETED: ', this.intents);
-// --------> this.getAllIntents(this.id_faq_kb);
-          // console.log('onDeleteIntent::: ', this.listOfIntents);
-          this.intentSelected = null;
-          this.elementIntentSelected = {};
-          this.elementIntentSelected['type'] = '';
-          this.elementIntentSelected['element'] = null;
-        }, (error) => {
-          swal(this.translate.instant('AnErrorOccurredWhilDeletingTheAnswer'), {
-            icon: "error"
-          })
-          this.logger.log('[PANEL-INTENT-LIST] delete intent ERROR ', error)
-        }, () => {
-          swal(this.translate.instant('Done') + "!", this.translate.instant('FaqPage.AnswerSuccessfullyDeleted'), {
-            icon: "success",
-          }).then((okpressed) => {
-            this.logger.log("ok pressed");
-          })
-        })
-      }
-    })
-  }
 
 
   
@@ -787,7 +799,7 @@ export class CdsDashboardComponent implements OnInit {
   /** START EVENTS PANEL INTENT */
 
   onDroppedElementToStage(event: CdkDragDrop<string[]>) {
-    // console.log('droppedElementOnStage!!!!!', event);
+    console.log('droppedElementOnStage!!!!!', event);
     let actionType = '';
     let pos = this.dragDropService.positionElementOnStage(event.dropPoint, this.receiverElementsDroppedOnStage, this.drawerOfItemsToZoomAndDrag);
     try {
@@ -797,9 +809,63 @@ export class CdsDashboardComponent implements OnInit {
     } catch (error) {
       console.error('ERROR: ', error);
     }
-    this.addNewElementToStage(pos, actionType);
+    this.addNewIntent(pos, actionType);
   }
  
+  /** */
+  private async addNewIntent(pos, actionType){
+    this.CREATE_VIEW = true;
+    this.intentSelected = this.intentService.createIntent(this.id_faq_kb, actionType);
+    this.intentSelected.id = 'new';
+    this.setIntentPosition('new', pos);
+    const idNewIntent = await this.intentService.addNewIntent(this.id_faq_kb, this.intentSelected);
+    console.log('creatIntent: OK ', idNewIntent);
+    if(idNewIntent){
+      // !!! il valore di listOfIntents è bindato nel costructor con subscriptionListOfIntents !!! //
+      this.setIntentPosition(idNewIntent, pos);
+      this.setDragAndListnerEventToElements();
+    }
+  }
+
+
+  /** onDeleteIntent */
+  onDeleteIntent(intent) {
+    swal({
+      title: this.translate.instant('AreYouSure'),
+      text: "The intent " + intent.intent_display_name + " will be deleted",
+      icon: "warning",
+      buttons: ["Cancel", "Delete"],
+      dangerMode: true,
+    }).then((WillDelete) => {
+      if (WillDelete) {
+        this.deleteIntent(intent.id);
+      }
+    })
+  }
+
+  /** deleteIntent */
+  private async deleteIntent(intentId) {
+    const deleteIntent = await this.intentService.deleteIntent(intentId);
+    if(deleteIntent){
+      this.intentSelected = null;
+      this.elementIntentSelected = {};
+      this.elementIntentSelected['type'] = '';
+      this.elementIntentSelected['element'] = null;
+      // !!! il valore di listOfIntents è bindato nel costructor con subscriptionListOfIntents !!! //
+      // this.listOfIntents = this.intentService.intents.getValue();
+      this.setDragAndListnerEventToElements();
+      swal(this.translate.instant('Done') + "!", this.translate.instant('FaqPage.AnswerSuccessfullyDeleted'), {
+        icon: "success",
+      }).then((okpressed) => {
+        this.logger.log("ok pressed");
+      })
+    } else {
+      swal(this.translate.instant('AnErrorOccurredWhilDeletingTheAnswer'), {
+        icon: "error"
+      })
+    }
+  }
+
   // positionElementOnStage(dropPoint:any, receiverElementsDroppedOnStageReference:ElementRef, drawerOfItemsToZoomAndDragReference:ElementRef){
   //     let pos = {
   //       'x': 0,
@@ -889,7 +955,6 @@ export class CdsDashboardComponent implements OnInit {
   }
 
   onActionDeleted(event) {
-    this.logger.log('[CDS DSBRD] onActionDeleted - from PANEL INTENT event ', event)
     this.elementIntentSelected = {};
     this.elementIntentSelected['type'] = ''
     this.elementIntentSelected['element'] = null
@@ -902,7 +967,7 @@ export class CdsDashboardComponent implements OnInit {
 
   /** START EVENTS PANEL INTENT LIST */
   onSelectIntent(intent: Intent) { 
-    console.log('onSelectIntent::: ', intent);
+    // console.log('onSelectIntent::: ', intent);
     this.EDIT_VIEW = true;
     this.intentSelected = intent;
     this.isIntentElementSelected = false;
@@ -918,18 +983,7 @@ export class CdsDashboardComponent implements OnInit {
     // this.router.navigate(['project/' + this.projectID + '/cds/' + this.id_faq_kb + '/intent/' + this.intentSelected.id], { replaceUrl: true })
   }
 
-  /** onDeleteIntent */
-  onDeleteIntent(intent) {
-    this.deleteIntent(intent);
-    // // this.listOfIntents = this.listOfIntents.filter(int => int.id != intentId);
-    // // this.listOfIntents = intents;
-    // this.getAllIntents(this.id_faq_kb);
-    // console.log('onDeleteIntent::: ', this.listOfIntents);
-    // this.intentSelected = null;
-    // this.elementIntentSelected = {};
-    // this.elementIntentSelected['type'] = '';
-    // this.elementIntentSelected['element'] = null;
-  }
+  
 
   // onReturnListOfIntents(intents) {
   //   console.log('onReturnListOfIntents:::: ', intents);

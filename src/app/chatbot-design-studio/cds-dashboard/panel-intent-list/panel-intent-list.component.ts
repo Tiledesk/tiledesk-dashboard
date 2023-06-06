@@ -266,7 +266,7 @@ export class PanelIntentListComponent implements OnInit {
   // }
 
   onSelectIntent(intent: Intent, index: number) {
-    console.log('onSelectIntent:: ', intent, index);
+    // console.log('onSelectIntent:: ', intent, index);
     this.idSelectedIntent = index;
     this.selectedIntent = intent;
     this.selectIntent.emit(intent);

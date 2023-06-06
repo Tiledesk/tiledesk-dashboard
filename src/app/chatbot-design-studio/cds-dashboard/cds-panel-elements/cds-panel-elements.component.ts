@@ -34,11 +34,11 @@ export class CdsPanelElementsComponent implements OnInit {
     //this.menuTrigger.openMenu();
     let x = e.offsetLeft;
     let y = e.offsetTop;
-    console.log(':::: CdsPanelElementsComponent onMouseOverElement :::: ', y, this.isDraggingMenuElement);
+    // console.log(':::: CdsPanelElementsComponent onMouseOverElement :::: ', y, this.isDraggingMenuElement);
     this.isOpen = true;
     setTimeout(() => {
       if(this.isDraggingMenuElement == false){
-        console.log("OPEN", e);
+        // console.log("OPEN", e);
         this.positionMenu = {'x': 80, 'y': y }
       }
     }, 0);
@@ -49,7 +49,7 @@ export class CdsPanelElementsComponent implements OnInit {
     // this.menuTrigger.closeMenu();
     setTimeout(() => {
       if(this.isOverMenu == false && this.isDraggingMenuElement == false){
-        console.log("CLOSE");
+        // console.log("CLOSE");
         this.isOpen = false;
       }
     }, 0);
@@ -62,7 +62,7 @@ export class CdsPanelElementsComponent implements OnInit {
   }
 
   onMouseLeaveElement(e){
-    console.log(':::: CdsPanelElementsComponent onMouseOverElement :::: ', e, e.target.offsetLeft);
+    // console.log(':::: CdsPanelElementsComponent onMouseOverElement :::: ', e, e.target.offsetLeft);
     let pos = {'x': -100, 'y': -100 }
     // 144 92 136 (8+64)
     this.showPanelActions.emit(pos);

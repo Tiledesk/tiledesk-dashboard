@@ -50,14 +50,15 @@
     <ng-template #intents cdkDropListGroup>
         
         <div id="cds-box-left" class="box-left">
-            <appdashboard-panel-intent-list 
+            <cds-panel-intent-list 
                 *ngIf="listOfIntents"
                 class="panel-intent-list" 
-                [intents] = "listOfIntents"
+                [updatePanelIntentList] = "updatePanelIntentList"
+                [listOfIntents] = "listOfIntents"
                 [intent_id]="intent_id"
                 (selectIntent)=onSelectIntent($event)
                 (deleteIntent)="onDeleteIntent($event)">
-            </appdashboard-panel-intent-list>
+            </cds-panel-intent-list>
         </div>
 
         
