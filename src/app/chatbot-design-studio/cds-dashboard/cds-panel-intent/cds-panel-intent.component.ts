@@ -34,7 +34,8 @@ export enum HAS_SELECTED_TYPE {
 export class CdsPanelIntentComponent implements OnInit, OnChanges {
 
   arrayActionsForDrop = [];
-
+  
+  @Input() listOfActions:  Array<{ name: string, value: string, icon?: string }>;
   @Input() idSelected: string;
   @Input() intentSelected: Intent;
   @Input() isIntentElementSelected: boolean = false;
@@ -295,6 +296,25 @@ export class CdsPanelIntentComponent implements OnInit, OnChanges {
     }
   }
 
+
+  getActionParams(action){
+    const enumKeys = Object.keys(TYPE_ACTION);
+    let keyAction = '';
+    try {
+      for (const key of enumKeys) {
+        if (TYPE_ACTION[key] === action._tdActionType) {
+          keyAction = key;
+          return ACTIONS_LIST[keyAction];
+        }
+      }
+      return;
+    } catch (error) {
+      console.error("ERROR: ", error);
+      return;
+    }
+    
+    //const oggettoAzione = TYPE_ACTION.find(item => item.type === 'azione');
+  }
   
 
 }

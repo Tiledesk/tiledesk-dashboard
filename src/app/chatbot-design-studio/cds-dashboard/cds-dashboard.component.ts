@@ -144,6 +144,7 @@ export class CdsDashboardComponent implements OnInit {
       console.log("subscriptionListOfIntents********** ", value);
       this.updatePanelIntentList = !this.updatePanelIntentList;
       this.listOfIntents = value;
+      this.setListOfActions();
     });
   }
 
@@ -176,6 +177,20 @@ export class CdsDashboardComponent implements OnInit {
     this.setDragConfig();
     this.hideShowWidget('show');
   }
+
+
+  setListOfActions(){
+    this.listOfActions = this.listOfIntents.map(a => {
+      if (a.intent_display_name.trim() === 'start') {
+        return { name: a.intent_display_name, value: '#' + a.intent_id, icon: 'rocket_launch' }
+      } else if (a.intent_display_name.trim() === 'defaultFallback') {
+        return { name: a.intent_display_name, value: '#' + a.intent_id, icon: 'undo' }
+      } else {
+        return { name: a.intent_display_name, value: '#' + a.intent_id, icon: 'label_important_outline' }
+      }
+    });
+  }
+
 
 
   // ngOnChanges(changes: SimpleChanges) {
@@ -214,7 +229,6 @@ export class CdsDashboardComponent implements OnInit {
       console.log('Risultato 6: getAllIntents', getAllIntents );
       if(getAllIntents){
         // !!! il valore di listOfIntents è bindato nel costructor con subscriptionListOfIntents !!! //
-        // this.listOfIntents = this.intentService.getIntents();
         setTimeout(() => {
           this.setDragAndListnerEventToElements();
         }, 1000);
@@ -374,71 +388,59 @@ export class CdsDashboardComponent implements OnInit {
 
   /**  setDragConfig */
   private setDragConfig(){
-    let el = document.getElementById("cds-box-right");
-    // console.log('getElementById:: el', el);
-    let drawer = document.getElementById("drawer-of-items-to-zoom-and-drag");
-    // console.log('getElementById:: drawer', drawer);
-    setDrawer(el, drawer);
+    const container = document.querySelector('#ds_container');
+    const drawer = document.querySelector('#ds_drawer');
+    console.log('getElementById:: drawer',container,  drawer);
+    setDrawer(container, drawer);
   }
 
   /** setDragAndListnerEventToElements */
   private setDragAndListnerEventToElements(){
     let that = this;
     this.listOfIntents.forEach(intent => {
-      try {
-        if(!intent.attributes){
-          intent.attributes = {'x':0, 'y':0};
-        }
-      } catch (error) {
-        console.error('ERROR: ',error);
-      }
+      // try {
+      //   if(!intent.attributes){
+      //     intent.attributes = {'x':0, 'y':0};
+      //   }
+      // } catch (error) {
+      //   console.error('ERROR: ',error);
+      // }
       console.log('SET -----> ', intent);
       
-
       if(intent.id){
         try {
           setTimeout(() => {
             let elem = document.getElementById(intent.id);
             setDragElement(elem);
-            // **************** !!!!!!!! se non esiste aggiungo listner !!!!!!! *******************//
+            // **************** !!!!!!!! aggiungo listner !!!!!!! *******************//
 
+            // Rimuovi l'event listener con i parametri
+            elem.removeEventListener('mouseup', function() {
+              that.onMouseUp(intent, elem);
+            });
+            // Aggiungi l'event listener con i parametri
+            elem.addEventListener('mouseup', function() {
+              that.onMouseUp(intent, elem);
+            });
 
+            // Rimuovi l'event listener con i parametri
+            elem.removeEventListener('mousedown', function() {
+              that.onMouseDown(elem);
+            });
+            // Aggiungi l'event listener con i parametri
+            elem.addEventListener('mousedown', function() {
+              that.onMouseDown(elem);
+            });
 
-
-
-
-// Rimuovi l'event listener con i parametri
-elem.removeEventListener('mouseup', function() {
-  that.onMouseUp(intent, elem);
-});
-// Aggiungi l'event listener con i parametri
-elem.addEventListener('mouseup', function() {
-  that.onMouseUp(intent, elem);
-});
-
-// Rimuovi l'event listener con i parametri
-elem.removeEventListener('mousedown', function() {
-  that.onMouseDown(elem);
-});
-// Aggiungi l'event listener con i parametri
-elem.addEventListener('mousedown', function() {
-  that.onMouseDown(elem);
-});
-
-// Rimuovi l'event listener con i parametri
-elem.removeEventListener('mousemove', function() {
-  that.onMouseMove(elem);
-});
-// Aggiungi l'event listener con i parametri
-elem.addEventListener('mousemove', function() {
-  that.onMouseMove(elem);
-});
-
-
-            // elem.addEventListener('mouseup',(evt) => this.onMouseUp(intent, elem));
-            // elem.addEventListener('mousedown',(evt) => this.onMouseDown(elem));
-            // elem.addEventListener('mousemove',(evt) => this.onMouseMove(elem));
-            
+            // Rimuovi l'event listener con i parametri
+            elem.removeEventListener('mousemove', function() {
+              that.onMouseMove(elem);
+            });
+            // Aggiungi l'event listener con i parametri
+            elem.addEventListener('mousemove', function() {
+              that.onMouseMove(elem);
+            });
+          
            
           }, 500);
         } catch (error) {
@@ -473,7 +475,7 @@ elem.addEventListener('mousemove', function() {
       element.style.zIndex = 'auto';
       // this.CREATE_VIEW = false;
       // this.saveIntent(intent);
-      let pos = {'x':x, 'y':y};
+      // let pos = {'x':x, 'y':y};
       this.setIntentPosition(intent.id, pos);
       // this.intentService.setDashboardAttributes(this.dashboardAttributes);
     }

@@ -4,11 +4,12 @@ var ty = 0;
 let scale = 1;
 let container;
 let drawer;
+let classDraggable = "ds-draggable";
 // let element;
 
 
 function setDrawer(el,drawer) {
-  console.log("setDrawer:", el, drawer);
+  // console.log("setDrawer:", el, drawer);
   this.drawer = drawer;
   this.container = el;
   this.container.onwheel = zoom;
@@ -16,7 +17,7 @@ function setDrawer(el,drawer) {
 }
 
 function setDragElement(element){
-  console.log("setDragElement: ", element);
+  // console.log("setDragElement: ", element);
   //elmnt.dragElement;
   dragElement(element);
   // dragElement(document.getElementById(id));
@@ -104,8 +105,8 @@ function dragElement(elmnt) {
   /* otherwise, move the DIV from anywhere inside the DIV:*/
   elmnt.onmousedown = dragMouseDown;
   function dragMouseDown(e) {
-    //console.log("e.id", e.target.id)
-    if (!e.target.classList.contains("draggable")) {
+    // console.log("classDraggable", classDraggable)
+    if (!e.target.classList.contains(classDraggable)) {
       return;
     }
     e = e || window.event;

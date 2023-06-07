@@ -1,408 +1,82 @@
-<div class="panel-intent-content draggable">
+<div class="panel-intent-content ds-draggable">
     
-    <!-- <div class="pic-content "> -->
+    <div class="pic-header ds-draggable">
+        <div class="pic-header-title ds-draggable">
+            <div class="pic-header-title-input ds-draggable">
+                <div class="pic-title-text ds-draggable">
+                    {{ intentSelected.intent_display_name }}
+                </div>
+                <div class="sc-gTRrQi sc-ezLegt hnylmc eexGFU">
+                    <div class="sc-kUYxwz alspn vf-canvas__port">
+                        <div class="sc-guKdVK sc-jjRfBx gDikTU biGEuu"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        <div class="pic-header draggable2">
-            <div class="pic-header-title draggable2">
-                <div class="pic-header-title-input draggable2">
-                    <div class="pic-title-text draggable">{{ intentSelected.intent_display_name }}</div>
+    <div class="button-intent button-intent-questions"
+        (click)="onSelectQuestion(HAS_SELECTED_TYPE.QUESTION)"
+        [ngClass]="{
+        'button-intent-active': idSelected === HAS_SELECTED_TYPE.QUESTION,
+        'no-question': questionCount === 0 || !question
+        }">
+        <img src="assets/cds/images/brain.svg" [title]="ACTIONS_LIST['REPLACE_BOT'].name"/>
+        <span> Train this block </span>
+    </div>
 
-                    <!-- <div class="pic-header-title-input">
-                        <div class="pic-title-input">Intents in Voiceflow input</div>
-                    </div> -->
+    <div id="drop-actions"
+        class="drag-actions target-container"
+        [cdkDropListData]="actions"
+        cdkDropList
+        (cdkDropListDropped)="drop($event)">
+        <div *ngFor="let action of actions"
+            cdkDrag
+            id="action_{{ i }}"
+            class="action--box2"
+            [ngSwitch]="action._tdActionType"
+            [ngClass]="{'cds-action-active': idSelected === 'action_' + i}"
+            (click)="onActionSelected(action, i, 'action_' + i)">
+            <!-- 'action--box-first-no-title': !action._tdActionTitle && firstItem,
+                'action--box-first-with-title': action._tdActionTitle && firstItem,
+                'action--box-no-title': !action._tdActionTitle && !firstItem,
+                'action--box-with-title': action._tdActionTitle && !firstItem,
+                cdkDragLockAxis="y" -->
+            <div cdkDragHandle draggable="true" class="sc-ispOId sc-kcuKUB sc-kBOlNM gvYlug tfpks vf-canvas__step-item hLzrwM">
+                <div class="Lmxui">
+                    <div color="#718497" class="sc-ewnqHT sc-bYKpqt knWnJm cbNhVH">
+                        <span class="sc-ejWHKt dRtfnM vf-svg-icon vf-svg-icon--radar" size="18" color="currentColor">
+                            <img [src]="getActionParams(action).src" [title]="getActionParams(action).name" />
+                        </span>
+                    </div>
+                    <span class="sc-eywOmQ sc-dPwPAC sc-fFkRSK dkfzdg ezyJGE blRtEf">
+                        <div class="sc-irCEUn gzQaYi vf-canvas__step-item-label">
+                            {{ getActionParams(action).name }}
+                        </div>
+                    </span>
 
-                    <div class="sc-gTRrQi sc-ezLegt hnylmc eexGFU">
+                    <div class="sc-cXkhKi fbZvAl">
                         <div class="sc-kUYxwz alspn vf-canvas__port">
-                            <div class="sc-guKdVK sc-jjRfBx gDikTU biGEuu"></div>
+                            <div class="sc-guKdVK sc-jjRfBx bHrIYh biGEuu"></div>
+                            <!-- <div class="sc-guKdVK sc-jjRfBx fQxrue fmbOyt"></div> -->
                         </div>
                     </div>
 
                 </div>
-            </div>
-        </div>
-
-        <div class="button-intent button-intent-questions" 
-            (click)="onSelectQuestion(HAS_SELECTED_TYPE.QUESTION)"
-            [ngClass]="{'button-intent-active': idSelected === HAS_SELECTED_TYPE.QUESTION, 
-                        'no-question': questionCount === 0  || !question }">
-            <img src="assets/cds/images/brain.svg" [title]="ACTIONS_LIST['REPLACE_BOT'].name">
-            <span> Train this block </span>
-        </div>
-
-        
-        
-        <div id="drop-actions" class="drag-actions target-container" [cdkDropListData]="actions" cdkDropList (cdkDropListDropped)="drop($event)">
-            <div class="target-item" *ngFor="let action of actions" cdkDrag>
-      
-                <div id="action_{{i}}" 
-                    class="action--box" 
-                    [ngSwitch]="action._tdActionType" 
-                    [ngClass]="{
-                    'action--box-first-no-title': !action._tdActionTitle && firstItem,
-                    'action--box-first-with-title': action._tdActionTitle && firstItem,
-                    'action--box-no-title': !action._tdActionTitle && !firstItem, 
-                    'action--box-with-title': action._tdActionTitle && !firstItem,
-                    'cds-action-active': idSelected === 'action_'+i }"
-                    cdkDragLockAxis="y" 
-                    (click)="onActionSelected(action, i, 'action_'+i)">
-                </div>
-
-            </div>
-        </div>
-
-        <!-- <div class="header__center" *ngIf="actions && actions?.length > 0">Actions</div> -->
-
-<!-- 
-        <div class="action-list-wpr" *ngIf="actions && actions?.length > 0">
-            <div cdkDropList class="action--list" (cdkDropListDropped)="onDropAction($event)">
                 
-                        <div class="action--element"  *ngFor="let action of actions; let i = index;let lastItem = last; let firstItem = first">
 
-
-                            <div id="action_{{i}}" 
-                                class="action--box" 
-                                [ngSwitch]="action._tdActionType" 
-                                [ngClass]="{
-                                'action--box-first-no-title': !action._tdActionTitle && firstItem,
-                                'action--box-first-with-title': action._tdActionTitle && firstItem,
-                                'action--box-no-title': !action._tdActionTitle && !firstItem, 
-                                'action--box-with-title': action._tdActionTitle && !firstItem,
-                                'cds-action-active': idSelected === 'action_'+i }"
-                                cdkDrag
-                                cdkDragLockAxis="y" 
-                                (click)="onActionSelected(action, i, 'action_'+i)">
-                        
-
-                                <div class="action--handle" cdkDragHandle>
-                                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px"
-                                        fill="#647283">
-                                        <path d="M0 0h24v24H0V0z" fill="none" />
-                                        <path
-                                            d="M11 18c0 1.1-.9 2-2 2s-2-.9-2-2 .9-2 2-2 2 .9 2 2zm-2-8c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0-6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 4c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" />
-                                    </svg>
-                                </div>
-
-
-
-                                <div class="action-wpr" *ngSwitchCase="TYPE_ACTION.REPLY" cdkDragHandle>
-                                    <div class="cds-action-title" *ngIf="action._tdActionTitle">
-                                        {{ action._tdActionTitle }}
-                                    </div>
-                                    <div class="cds-action-icon-wpr">
-                                        <img [src]="ACTIONS_LIST['REPLY'].src" [title]="ACTIONS_LIST['REPLY'].name">
-                                    </div>
-                                    <div class="cds-action-name-wpr">{{ACTIONS_LIST['REPLY'].name}}</div>
-                                    <div class="cds-action-arrow" *ngIf="!lastItem">
-                                        <span class="material-icons">
-                                            keyboard_backspace
-                                        </span>
-                                    </div>
-                                </div>
-
-
-                                <div class="action-wpr" *ngSwitchCase="TYPE_ACTION.RANDOM_REPLY" cdkDragHandle>
-                                    <div class="cds-action-title" *ngIf="action._tdActionTitle">
-                                        {{ action._tdActionTitle }}
-                                    </div>
-                                    <div class="cds-action-icon-wpr">
-                                        <img [src]="ACTIONS_LIST['RANDOM_REPLY'].src" [title]="ACTIONS_LIST['RANDOM_REPLY'].name">
-                                    </div>
-                                    <div class="cds-action-name-wpr">{{ACTIONS_LIST['RANDOM_REPLY'].name}}</div>
-                                    <div class="cds-action-arrow" *ngIf="!lastItem">
-                                        <span class="material-icons">
-                                            keyboard_backspace
-                                        </span>
-                                    </div>
-                                </div>
-
-
-                                <div class="action-wpr" *ngSwitchCase="TYPE_ACTION.WEB_REQUEST" cdkDragHandle>
-                                    <div class="cds-action-title" *ngIf="action._tdActionTitle">
-                                        {{ action._tdActionTitle }}
-                                    </div>
-                                    <div class="cds-action-icon-wpr">
-                                        <img [src]="ACTIONS_LIST['WEB_REQUEST'].src" [title]="ACTIONS_LIST['WEB_REQUEST'].name">
-                                    </div>
-                                    <div class="cds-action-name-wpr">{{ACTIONS_LIST['WEB_REQUEST'].name}}</div>
-                                    <div class="cds-action-arrow" *ngIf="!lastItem">
-                                        <span class="material-icons">
-                                            keyboard_backspace
-                                        </span>
-                                    </div>
-                                </div>
-
-
-                                <div class="action-wpr" *ngSwitchCase="TYPE_ACTION.JSON_CONDITION" cdkDragHandle>
-                                    <div class="cds-action-title" *ngIf="action._tdActionTitle">
-                                        {{ action._tdActionTitle }}
-                                    </div>
-                                    <div class="cds-action-icon-wpr">
-                                        <img [src]="ACTIONS_LIST['JSON_CONDITION'].src" [title]="ACTIONS_LIST['JSON_CONDITION'].name">
-                                    </div>
-                                    <div class="cds-action-name-wpr">{{ACTIONS_LIST['JSON_CONDITION'].name}}</div>
-                                    <div class="cds-action-arrow" *ngIf="!lastItem">
-                                        <span class="material-icons">
-                                            keyboard_backspace
-                                        </span>
-                                    </div>
-                                </div>
-
-
-                                <div class="action-wpr" *ngSwitchCase="TYPE_ACTION.INTENT" cdkDragHandle>
-                                    <div class="cds-action-title" *ngIf="action._tdActionTitle">
-                                        {{ action._tdActionTitle }}
-                                    </div>
-                                    <div class="cds-action-icon-wpr">
-                                        <img [src]="ACTIONS_LIST['INTENT'].src" [title]="ACTIONS_LIST['INTENT'].name">
-                                    </div>
-                                    <div class="cds-action-name-wpr">{{ACTIONS_LIST['INTENT'].name}}</div>
-                                    <div class="cds-action-arrow" *ngIf="!lastItem">
-                                        <span class="material-icons">
-                                            keyboard_backspace
-                                        </span>
-                                    </div>
-                                </div>
-
-
-                                <div class="action-wpr" *ngSwitchCase="TYPE_ACTION.AGENT" cdkDragHandle>
-                                    <div class="cds-action-title" *ngIf="action._tdActionTitle">
-                                        {{ action._tdActionTitle }}
-                                    </div>
-                                    <div class="cds-action-icon-wpr">
-                                        <img [src]="ACTIONS_LIST['AGENT'].src" [title]="ACTIONS_LIST['AGENT'].name">
-                                    </div>
-                                    <div class="cds-action-name-wpr">{{ACTIONS_LIST['AGENT'].name}}</div>
-                                    <div class="cds-action-arrow" *ngIf="!lastItem">
-                                        <span class="material-icons">
-                                            keyboard_backspace
-                                        </span>
-                                    </div>
-
-                                </div>
-
-
-
-                                <div class="action-wpr" *ngSwitchCase="TYPE_ACTION.OPEN_HOURS" cdkDragHandle>
-                                    <div class="cds-action-title" *ngIf="action._tdActionTitle">
-                                        {{ action._tdActionTitle }}
-                                    </div>
-                                    <div class="cds-action-icon-wpr">
-                                        <img [src]="ACTIONS_LIST['OPEN_HOURS'].src" [title]="ACTIONS_LIST['OPEN_HOURS'].name">
-                                    </div>
-                                    <div class="cds-action-name-wpr">{{ACTIONS_LIST['OPEN_HOURS'].name}}</div>
-                                    <div class="cds-action-arrow" *ngIf="!lastItem">
-                                        <span class="material-icons">
-                                            keyboard_backspace
-                                        </span>
-                                    </div>
-                                </div>
-
-
-                                <div class="action-wpr" *ngSwitchCase="TYPE_ACTION.ASSIGN_FUNCTION" cdkDragHandle>
-                                    <div class="cds-action-title" *ngIf="action._tdActionTitle">
-                                        {{ action._tdActionTitle }}
-                                    </div>
-                                    <div class="cds-action-icon-wpr">
-                                        <img [src]="ACTIONS_LIST['ASSIGN_FUNCTION'].src" [title]="ACTIONS_LIST['ASSIGN_FUNCTION'].name">
-                                    </div>
-                                    <div class="cds-action-name-wpr">{{ACTIONS_LIST['ASSIGN_FUNCTION'].name}}</div>
-                                    <div class="cds-action-arrow" *ngIf="!lastItem">
-                                        <span class="material-icons">
-                                            keyboard_backspace
-                                        </span>
-                                    </div>
-                                </div>
-
-
-                                <div class="action-wpr" *ngSwitchCase="TYPE_ACTION.ASSIGN_VARIABLE" cdkDragHandle>
-                                    <div class="cds-action-title" *ngIf="action._tdActionTitle">
-                                        {{ action._tdActionTitle }}
-                                    </div>
-                                    <div class="cds-action-icon-wpr">
-                                        <img [src]="ACTIONS_LIST['ASSIGN_VARIABLE'].src" [title]="ACTIONS_LIST['ASSIGN_VARIABLE'].name">
-                                    </div>
-                                    <div class="cds-action-name-wpr">{{ACTIONS_LIST['ASSIGN_VARIABLE'].name}}</div>
-                                    <div class="cds-action-arrow" *ngIf="!lastItem">
-                                        <span class="material-icons">
-                                            keyboard_backspace
-                                        </span>
-                                    </div>
-                                </div>
-
-
-                                <div class="action-wpr" *ngSwitchCase="TYPE_ACTION.DELETE_VARIABLE" cdkDragHandle>
-                                    <div class="cds-action-title" *ngIf="action._tdActionTitle">
-                                        {{ action._tdActionTitle }}
-                                    </div>
-                                    <div class="cds-action-icon-wpr">
-                                        <img [src]="ACTIONS_LIST['DELETE_VARIABLE'].src" [title]="ACTIONS_LIST['DELETE_VARIABLE'].name">
-                                    </div>
-                                    <div class="cds-action-name-wpr">{{ACTIONS_LIST['DELETE_VARIABLE'].name}}</div>
-                                    <div class="cds-action-arrow" *ngIf="!lastItem">
-                                        <span class="material-icons">
-                                            keyboard_backspace
-                                        </span>
-                                    </div>
-                                </div>
-
-
-                                <div class="action-wpr" *ngSwitchCase="TYPE_ACTION.HIDE_MESSAGE" cdkDragHandle>
-                                    <div class="cds-action-title" *ngIf="action._tdActionTitle">
-                                        {{ action._tdActionTitle }}
-                                    </div>
-                                    <div class="cds-action-icon-wpr">
-                                        <img [src]="ACTIONS_LIST['HIDE_MESSAGE'].src" [title]="ACTIONS_LIST['HIDE_MESSAGE'].name">
-                                    </div>
-                                    <div class="cds-action-name-wpr">{{ACTIONS_LIST['HIDE_MESSAGE'].name}}</div>
-                                    <div class="cds-action-arrow" *ngIf="!lastItem">
-                                        <span class="material-icons">
-                                            keyboard_backspace
-                                        </span>
-                                    </div>
-                                </div>
-
-
-                                <div class="action-wpr" *ngSwitchCase="TYPE_ACTION.EMAIL" cdkDragHandle>
-                                    <div class="cds-action-title" *ngIf="action._tdActionTitle">
-                                        {{ action._tdActionTitle }}
-                                    </div>
-                                    <div class="cds-action-icon-wpr">
-                                        <img [src]="ACTIONS_LIST['EMAIL'].src" [title]="ACTIONS_LIST['EMAIL'].name">
-                                    </div>
-                                    <div class="cds-action-name-wpr">{{ACTIONS_LIST['EMAIL'].name}}</div>
-                                    <div class="cds-action-arrow" *ngIf="!lastItem">
-                                        <span class="material-icons">
-                                            keyboard_backspace
-                                        </span>
-                                    </div>
-                                </div>
-
-
-                                <div class="action-wpr" *ngSwitchCase="TYPE_ACTION.ONLINE_AGENTS" cdkDragHandle>
-                                    <div class="cds-action-title" *ngIf="action._tdActionTitle">
-                                        {{ action._tdActionTitle }}
-                                    </div>
-                                    <div class="cds-action-icon-wpr">
-                                        <img [src]="ACTIONS_LIST['ONLINE_AGENTS'].src" [title]="ACTIONS_LIST['ONLINE_AGENTS'].name">
-                                    </div>
-                                    <div class="cds-action-name-wpr">{{ACTIONS_LIST['ONLINE_AGENTS'].name}}</div>
-                                    <div class="cds-action-arrow" *ngIf="!lastItem">
-                                        <span class="material-icons">
-                                            keyboard_backspace
-                                        </span>
-                                    </div>
-                                </div>
-
-
-                                <div class="action-wpr" *ngSwitchCase="TYPE_ACTION.CLOSE" cdkDragHandle>
-                                    <div class="cds-action-title" *ngIf="action._tdActionTitle">
-                                        {{ action._tdActionTitle }}
-                                    </div>
-                                    <div class="cds-action-icon-wpr">
-                                        <img [src]="ACTIONS_LIST['CLOSE'].src" [title]="ACTIONS_LIST['CLOSE'].name">
-                                    </div>
-                                    <div class="cds-action-name-wpr">{{ACTIONS_LIST['CLOSE'].name}}</div>
-                                    <div class="cds-action-arrow" *ngIf="!lastItem">
-                                        <span class="material-icons">
-                                            keyboard_backspace
-                                        </span>
-                                    </div>
-                                </div>
-
-
-                                <div class="action-wpr" *ngSwitchCase="TYPE_ACTION.WAIT" cdkDragHandle>
-                                    <div class="cds-action-title" *ngIf="action._tdActionTitle">
-                                        {{ action._tdActionTitle }}
-                                    </div>
-                                    <div class="cds-action-icon-wpr">
-                                        <img [src]="ACTIONS_LIST['WAIT'].src" [title]="ACTIONS_LIST['WAIT'].name">
-                                    </div>
-                                    <div class="cds-action-name-wpr">{{ACTIONS_LIST['WAIT'].name}}</div>
-                                    <div class="cds-action-arrow" *ngIf="!lastItem">
-                                        <span class="material-icons">
-                                            keyboard_backspace
-                                        </span>
-                                    </div>
-                                </div>
-
-
-                                <div class="action-wpr" *ngSwitchCase="TYPE_ACTION.REPLACE_BOT" cdkDragHandle>
-                                    <div class="cds-action-title" *ngIf="action._tdActionTitle">
-                                        {{ action._tdActionTitle }}
-                                    </div>
-                                    <div class="cds-action-icon-wpr">
-                                        <img [src]="ACTIONS_LIST['REPLACE_BOT'].src" [title]="ACTIONS_LIST['REPLACE_BOT'].name">
-                                    </div>
-                                    <div class="cds-action-name-wpr">{{ACTIONS_LIST['REPLACE_BOT'].name}}</div>
-                                    <div class="cds-action-arrow" *ngIf="!lastItem">
-                                        <span class="material-icons">
-                                            keyboard_backspace
-                                        </span>
-                                    </div>
-                                </div>
-
-
-                                <div class="action-wpr" *ngSwitchCase="TYPE_ACTION.CHANGE_DEPARTMENT" cdkDragHandle>
-                                    <div class="cds-action-title" *ngIf="action._tdActionTitle">
-                                        {{ action._tdActionTitle }}
-                                    </div>
-                                    <div class="cds-action-icon-wpr">
-                                        <img [src]="ACTIONS_LIST['CHANGE_DEPARTMENT'].src"
-                                            [title]="ACTIONS_LIST['CHANGE_DEPARTMENT'].name">
-                                    </div>
-                                    <div class="cds-action-name-wpr">{{ACTIONS_LIST['CHANGE_DEPARTMENT'].name}}</div>
-                                    <div class="cds-action-arrow" *ngIf="!lastItem">
-                                        <span class="material-icons">
-                                            keyboard_backspace
-                                        </span>
-                                    </div>
-                                </div>
-
-                                <div class="control-button delete-action" (click)="onDeleteAction(i)">
-                                    <em class="material-icons">delete</em>
-                                </div>
-                            </div>
-                        </div>
-
+                <cds-action-intent 
+                    class="panel-response"
+                    [action]="action"
+                    [intents]="listOfActions"
+                ></cds-action-intent>
 
             </div>
+
+
+            
+
         </div>
+    </div>
 
-
-
-        <div *ngIf="actions && !answer" class="csd-action-dot-and-btn-wpr">
-            <div class="cds-action-dot-line">
-                <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
-                    xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 24 36.9"
-                    style="enable-background:new 0 0 24 36.9;width: 20px; height: auto;fill:#d2e3fc" xml:space="preserve">
-                    <g>
-                        <circle cx="12" cy="21.5" r="2" />
-                        <circle cx="12" cy="27.5" r="2" />
-                        <circle cx="12" cy="33.5" r="2" />
-                        <circle cx="12" cy="3.3" r="2" />
-                        <circle cx="12" cy="9.3" r="2" />
-                        <circle cx="12" cy="15.3" r="2" />
-                    </g>
-                </svg>
-            </div>
-            <div class="csd-add-action-btn-wpr csd-add-action-btn-wpr-element" (click)="openActionsDrawer()">
-                <button class="btn btn-white cds-add-action-btn csd-add-action-btn-wpr-element">
-                    <span class="material-icons csd-add-action-btn-wpr-element">
-                        add
-                    </span>
-                </button>
-                <div class="action--text csd-add-action-btn-wpr-element"> Add action </div>
-            </div>
-        </div>
-
-
-        <div *ngIf="answer" class="button-intent button-intent-answer" (click)="onSelectAnswer(HAS_SELECTED_TYPE.ANSWER)"
-            [ngClass]="{'button-intent-active': idSelected === HAS_SELECTED_TYPE.ANSWER}">
-            <span class="material-icons">
-                message
-            </span>
-            <span> Answer </span>
-        </div> -->
-
-    <!-- </div> -->
-</div> 
+</div>

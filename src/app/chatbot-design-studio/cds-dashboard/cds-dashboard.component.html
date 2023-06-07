@@ -30,7 +30,6 @@
         </ng-container>
     </div>
 
-
     <ng-template #settings>
         <cds-chatbot-details [selectedChatbot]="selectedChatbot"></cds-chatbot-details>
     </ng-template>
@@ -49,7 +48,7 @@
 
     <ng-template #intents cdkDropListGroup>
         
-        <div id="cds-box-left" class="box-left">
+        <div class="box-left">
             <cds-panel-intent-list 
                 *ngIf="listOfIntents"
                 class="panel-intent-list" 
@@ -57,74 +56,45 @@
                 [listOfIntents] = "listOfIntents"
                 [intent_id]="intent_id"
                 (selectIntent)=onSelectIntent($event)
-                (deleteIntent)="onDeleteIntent($event)">
-            </cds-panel-intent-list>
+                (deleteIntent)="onDeleteIntent($event)"
+            ></cds-panel-intent-list>
         </div>
 
-        
-
-        <div id="cds-box-right" class="drag-content box-right">
+        <div id="ds_container" class="ds-drag-container box-right">
 
             <div #receiver_elements_dropped_on_stage class="receiver-elements-dropped-on-stage" cdkDropList (cdkDropListDropped)="onDroppedElementToStage($event)"></div>
 
-            <cds-panel-elements class="cds-panel-elements"
+            <cds-panel-elements 
+                class="cds-panel-elements"
                 (showPanelActions)="onShowPanelActions($event)"
                 (addNewElement)="onAddNewElement()"
             ></cds-panel-elements>
 
-            <div #drawer_of_items_to_zoom_and_drag id="drawer-of-items-to-zoom-and-drag" class="drag-drawer box-right-content">
-                
-                <cds-panel-intent *ngFor="let intent of listOfIntents; let i = index; let lastIntent = last; let firstIntent = first"
-                        [id]="intent.id"
-                        [style.top.px]="getIntentPosition(intent.id).y" 
-                        [style.left.px]="getIntentPosition(intent.id).x" 
-                        draggable="true"
-                        class="panel-intent draggable prevent-select input-block"
-                        [idSelected]="idElementOfIntentSelected"
-                        [intentSelected]="intent"
-                        [isIntentElementSelected]="isIntentElementSelected"
-                        [isOpenActionDrawer]="isOpenActionDrawer"
-                        [eventUpadatedIntent]="upadatedIntent.asObservable()"
-                        [eventCreateIntent]="createIntent.asObservable()" 
-                        (openActionDrawer)=onOpenActionDrawer($event)
-                        (answerSelected)=onAnswerSelected($event) 
-                        (actionSelected)=onActionSelected($event)
-                        (questionSelected)=onQuestionSelected($event) 
-                        (actionDeleted)=onActionDeleted($event)
-                        (intentForm)=onIntentFormSelected($event)
-                        (dropAction)=onDropAction($event)>
-                </cds-panel-intent>
+            <div #drawer_of_items_to_zoom_and_drag id="ds_drawer" class="ds-drag-drawer box-right-content">
+         
+                <cds-panel-intent *ngFor="let intent of listOfIntents;"
+                    [id]="intent.id"
+                    [style.top.px]="getIntentPosition(intent.id).y" 
+                    [style.left.px]="getIntentPosition(intent.id).x" 
+                    draggable="true"
+                    class="panel-intent draggable ds-draggable"
+                    [listOfActions]="listOfActions"
+                    [idSelected]="idElementOfIntentSelected"
+                    [intentSelected]="intent"
+                    [isIntentElementSelected]="isIntentElementSelected"
+                    [isOpenActionDrawer]="isOpenActionDrawer"
+                    [eventUpadatedIntent]="upadatedIntent.asObservable()"
+                    [eventCreateIntent]="createIntent.asObservable()" 
+                    (openActionDrawer)=onOpenActionDrawer($event)
+                    (answerSelected)=onAnswerSelected($event) 
+                    (actionSelected)=onActionSelected($event)
+                    (questionSelected)=onQuestionSelected($event) 
+                    (actionDeleted)=onActionDeleted($event)
+                    (intentForm)=onIntentFormSelected($event)
+                    (dropAction)=onDropAction($event)
+                ></cds-panel-intent>
   
-
-                <!-- <appdashboard-panel-actions *ngIf="isOpenActionDrawer" 
-                    style="z-index: 101;" 
-                    [intentSelected]="intentSelected"
-                    (addNewAction)=onAddNewAction($event)
-                    (openActionDrawer)=onOpenActionDrawer($event)>
-                </appdashboard-panel-actions>
-      
-                <appdashboard-panel-intent-detail *ngIf=isIntentElementSelected
-                    class="panel-intent-detail-wrapper"
-                    (click)="onClickPanelIntentDetail()"
-                    [class.sidebar-opened]="IS_OPEN"
-                    [listOfActions]="listOfActions" 
-                    [elementIntentSelected]="elementIntentSelected"
-                    [intentSelected]="intentSelected" 
-                    [showSpinner]="showSpinner"
-                    (closeAndSavePanelIntentDetail)="onCloseAndSavePanelIntentDetail($event)"
-                    (clickedInsidePanelIntentDetail)="onClickedInsidePanelIntentDetail()">
-                </appdashboard-panel-intent-detail> -->
-
-                <!-- <cds-footer class="cds--footer" 
-                    *ngIf=intentSelected 
-                    [intentSelected]="intentSelected"
-                    (saveIntent)=onSaveIntent($event) 
-                    [listOfIntents]="listOfIntents"
-                    [newIntentName]="newIntentName">
-                </cds-footer> -->
             </div>
-
-            
 
         </div>
 
@@ -141,7 +111,7 @@
 
 
 <cds-modal-activate-bot
-    [selectedChatbot]="selectedChatbot">
-</cds-modal-activate-bot>
+    [selectedChatbot]="selectedChatbot"
+></cds-modal-activate-bot>
 
 <cds-popup></cds-popup>
