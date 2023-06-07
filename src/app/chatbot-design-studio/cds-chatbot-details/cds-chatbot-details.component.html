@@ -47,7 +47,7 @@
     </cds-detail-botdetail>
 
     <cds-detail-import-export *ngIf="activeSection==='import_export'"
-      [id_faq_kb]="id_faq_kb"
+      [id_faq_kb]="selectedChatbot?._id"
       [faqKb_name]="faqKb_name">
     </cds-detail-import-export>
 
