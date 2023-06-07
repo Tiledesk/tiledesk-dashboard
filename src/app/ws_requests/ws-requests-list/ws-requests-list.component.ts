@@ -4,7 +4,7 @@ import { LocalDbService } from '../../services/users-local-db.service';
 import { BotLocalDbService } from '../../services/bot-local-db.service';
 import { Router } from '@angular/router';
 import { AuthService } from '../../core/auth.service';
-import { avatarPlaceholder, getColorBck } from '../../utils/util';
+import { avatarPlaceholder, getColorBck, PLAN_NAME } from '../../utils/util';
 import { NotifyService } from '../../core/notify.service';
 
 import { TranslateService } from '@ngx-translate/core';
@@ -41,6 +41,10 @@ const swal = require('sweetalert');
   // encapsulation: ViewEncapsulation.None
 })
 export class WsRequestsListComponent extends WsSharedComponent implements OnInit, AfterViewInit, OnDestroy {
+  PLAN_NAME = PLAN_NAME;
+  trial_expired: string;
+  profile_name: string;
+  subscription_end_date: any;
 
   CHAT_BASE_URL: string;
 
@@ -160,10 +164,6 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   agentCannotManageAdvancedOptions: string;
   learnMoreAboutDefaultRoles: string;
   featureIsAvailableWithTheProPlan: string;
-
-  prjct_profile_name: string;
-  subscription_end_date: any;
-
   public_Key: string;
   isVisibleSmartAssignOption: boolean;
   isVisibleOPH: boolean;
@@ -182,6 +182,11 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   DISPLAY_ALL_TEAMMATES_TO_AGENT: boolean;
   newTicketRequestId: string;
   onlyAvailableWithEnterprisePlan: string;
+  isVisiblePay: boolean;
+  cancelLbl: string;
+  upgradePlan: string;
+  cPlanOnly: string;
+  prjct_profile_name: string;
   /**
    * 
    * @param wsRequestsService 
@@ -230,26 +235,19 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     // console.log('SELECTED PRIORITY ', this.selectedPriority)
     this.getBrowserVersion()
     this.getOSCODE();
-
     this.getImageStorageAndThenProjectUsers();
     this.getDepartments();
     // this.getActiveContacts();
-
     this.getCurrentProject();
     this.getProjectPlan();
     this.getLoggedUser();
     this.getProjectUserRole();
-
     this.detectBrowserRefresh();
-
     this.getChatUrl();
     this.getTestSiteUrl();
-
     this.translateString()
     // this.listenToParentPostMessage()
-
     // this.getGroupsByProjectId();
-   
   }
 
 
@@ -322,10 +320,13 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
         this.subscription_is_active = projectProfileData.subscription_is_active;
         this.prjct_profile_name = projectProfileData.profile_name;
 
+        this.trial_expired = projectProfileData.trial_expired
+        this.profile_name = projectProfileData.profile_name;
+        this.subscription_end_date = projectProfileData.subscription_end_date;
 
         if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false || this.prjct_profile_type === 'free' && this.prjct_trial_expired === true) {
           this.DISPLAY_OPH_AS_DISABLED = true;
-        } else {
+        } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true || this.prjct_profile_type === 'free' && this.prjct_trial_expired === false) {
           this.DISPLAY_OPH_AS_DISABLED = false;
         }
       }
@@ -370,6 +371,16 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
         }
       }
 
+      if (key.includes("PAY")) {
+        let pay = key.split(":");
+
+        if (pay[1] === "F") {
+          this.isVisiblePay = false;
+        } else {
+          this.isVisiblePay = true;
+        }
+      }
+
     });
 
 
@@ -381,6 +392,9 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     if (!this.public_Key.includes("OPH")) {
       // this.logger.log('[WS-REQUESTS-LIST] PUBLIC-KEY - key.includes("OPH")', this.public_Key.includes("OPH"));
       this.isVisibleOPH = false;
+    }
+    if (!this.public_Key.includes("PAY")) {
+      this.isVisiblePay = false;
     }
   }
 
@@ -406,10 +420,24 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
         this.featureIsAvailableWithTheProPlan = translation;
       });
 
-      this.translate.get('ProjectEditPage.FeatureOnlyAvailableWithTheEnterprisePlan')
+    this.translate.get('ProjectEditPage.FeatureOnlyAvailableWithTheEnterprisePlan')
       .subscribe((translation: any) => {
         // this.logger.log('[PRJCT-EDIT-ADD] onlyOwnerCanManageTheAccountPlanMsg text', translation)
         this.onlyAvailableWithEnterprisePlan = translation;
+      });
+
+    this.translate.get('Cancel').subscribe((text: string) => {
+      this.cancelLbl = text;
+    });
+
+    this.translate.get('Pricing.UpgradePlan')
+      .subscribe((translation: any) => {
+        this.upgradePlan = translation;
+      });
+
+    this.translate.get('AvailableWithThePlan', { plan_name: PLAN_NAME.C })
+      .subscribe((translation: any) => {
+        this.cPlanOnly = translation;
       });
   }
 
@@ -891,20 +919,27 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
 
   goToProjectSettings_Advanced() {
-    // console.log('[WS-REQUESTS-LIST] HAS CLICKED goToProjectSettings_Advanced prjct_profile_name',this.prjct_profile_name);
-    // console.log('[WS-REQUESTS-LIST] HAS CLICKED goToProjectSettings_Advanced subscription_is_active',this.subscription_is_active);
+    this.logger.log('[WS-REQUESTS-LIST] HAS CLICKED goToProjectSettings_Advanced');
 
-    if (this.prjct_profile_name === 'enterprise' && this.subscription_is_active === true) {
-      if (this.CURRENT_USER_ROLE === 'owner') {
+    // if (this.CURRENT_USER_ROLE !== 'agent') {
+    //   this.router.navigate(['project/' + this.projectId + '/project-settings/advanced']);
+
+    // } else if (this.CURRENT_USER_ROLE === 'agent') {
+    //   this.presentModalAgentCannotManageAvancedSettings();
+    // }
+    if (this.CURRENT_USER_ROLE === 'owner') {
+      if (this.profile_name === PLAN_NAME.C && this.subscription_is_active === true) {
+
         // console.log('[PRJCT-EDIT-ADD] - HAS CLICKED goToProjectSettings_Advanced');
         this.router.navigate(['project/' + this.projectId + '/project-settings/advanced']);
-      } else {
-        this.presentModalAgentCannotManageAvancedSettings()
+
+      } else if (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) {
+        this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.C, this.subscription_end_date);
+      } else if (this.profile_name !== PLAN_NAME.C) {
+        this.presentModalFeautureAvailableOnlyWithPlanC()
       }
-    } else if (this.prjct_profile_name === 'enterprise' && this.subscription_is_active === false) {
-      this.notify.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
-    } else if (this.prjct_profile_name !== 'enterprise') {
-      this.presentModalFeautureAvailableOnlyWithEnterprisePlan()
+    } else {
+      this.presentModalAgentCannotManageAvancedSettings()
     }
 
 
@@ -929,6 +964,43 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
       },
       dangerMode: false,
     })
+  }
+
+  presentModalFeautureAvailableOnlyWithPlanC() {
+    const el = document.createElement('div')
+    el.innerHTML = this.cPlanOnly
+    swal({
+      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
+      content: el,
+      icon: "info",
+      // buttons: true,
+      buttons: {
+        cancel: this.cancelLbl,
+        catch: {
+          text: this.upgradePlan,
+          value: "catch",
+        },
+      },
+      dangerMode: false,
+    }).then((value) => {
+      if (value === 'catch') {
+        // console.log('featureAvailableFromPlanC value', value)
+        if (this.isVisiblePay) {
+          if (this.CURRENT_USER_ROLE === 'owner') {
+            if (this.prjct_profile_type === 'payment') {
+              this.notify._displayContactUsModal(true, 'upgrade_plan');
+            } else if (this.prjct_profile_type === 'free') {
+              this.router.navigate(['project/' + this.projectId + '/pricing']);
+
+            }
+          } else {
+            this.presentModalAgentCannotManageAvancedSettings();
+          }
+        } else {
+          this.notify._displayContactUsModal(true, 'upgrade_plan');
+        }
+      }
+    });
   }
 
   presentModalAgentCannotManageAvancedSettings() {
@@ -958,8 +1030,8 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
       .then((upgradePlan) => {
         if (upgradePlan) {
           this.logger.log('[WS-REQUESTS-LIST] swal upgradePlan', upgradePlan)
-          // this.router.navigate(['project/' + this.projectId + '/pricing']);
-          this.notify.presentContactUsModalToUpgradePlan(true);
+          this.router.navigate(['project/' + this.projectId + '/pricing']);
+          // this.notify.presentContactUsModalToUpgradePlan(true);
         } else {
           this.logger.log('[WS-REQUESTS-LIST] swal upgradePlan (else)', upgradePlan)
         }
@@ -1869,7 +1941,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
       this.logger.log('[WS-REQUESTS-LIST] create internalRequest * COMPLETE *')
       this.showSpinner_createInternalRequest = false;
       this.createNewInternalRequest_hasError = false;
-      this.wsRequestsService.updateRequestWorkingStatus( this.newTicketRequestId, 'new')
+      this.wsRequestsService.updateRequestWorkingStatus(this.newTicketRequestId, 'new')
         .subscribe((request) => {
 
           this.logger.log('[WS-REQUESTS-MSGS] - create internalRequest WORKING STATUS ', request);
@@ -2118,8 +2190,8 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     const projectUsers = this.usersService.getProjectUsersByProjectId();
     const leads = this.contactsService.getAllLeadsActiveWithLimit(10000);
 
-    
-       zip(projectUsers, leads, (_projectUsers: any, _leads: any) => ({ _projectUsers, _leads }))
+
+    zip(projectUsers, leads, (_projectUsers: any, _leads: any) => ({ _projectUsers, _leads }))
       .subscribe(pair => {
         this.logger.log('[WS-REQUESTS-LIST] - GET P-USERS-&-LEADS - PROJECT USERS : ', pair._projectUsers);
         this.logger.log('[WS-REQUESTS-LIST] - GET P-USERS-&-LEADS - LEADS RES: ', pair._leads);
@@ -2163,7 +2235,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     const depts = this.departmentService.getDeptsByProjectId();
 
 
-      zip(projectUsers, bots, depts, (_projectUsers: any, _bots: any, _depts: any) => ({ _projectUsers, _bots, _depts }))
+    zip(projectUsers, bots, depts, (_projectUsers: any, _bots: any, _depts: any) => ({ _projectUsers, _bots, _depts }))
       .subscribe(pair => {
         this.logger.log('[WS-REQUESTS-LIST] - GET P-USERS-&-BOTS-&-DEPTS - PROJECT USERS : ', pair._projectUsers);
         this.logger.log('[WS-REQUESTS-LIST] - GET P-USERS-&-BOTS-&-DEPTS - BOTS : ', pair._bots);

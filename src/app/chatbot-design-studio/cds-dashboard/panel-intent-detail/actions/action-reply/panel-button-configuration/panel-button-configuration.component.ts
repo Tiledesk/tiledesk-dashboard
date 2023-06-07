@@ -125,7 +125,7 @@ export class PanelButtonConfigurationComponent implements OnInit {
         // console.log('intent 5', intent);
       }
       catch (err) {
-        console.log("error on intent.parameters = JSON.parse(json_string)", err);
+        // console.log("error on intent.parameters = JSON.parse(json_string)", err);
       }            
     }
     return intent;
@@ -149,7 +149,7 @@ export class PanelButtonConfigurationComponent implements OnInit {
       this.button.value = this.buttonLabel;
       this.buttonLabelResult = true;
     } catch (error) {
-      console.log('error: ', error);
+      // console.log('error: ', error);
     }
     return true;
   }

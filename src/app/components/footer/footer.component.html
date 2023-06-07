@@ -25,13 +25,15 @@
                 </li>
 
                 <li *ngIf="display_contact_us_email">
-                    <!-- <a target="_blank" href="mailto:info@tiledesk.com" style="text-transform: none"> -->
-                    <a target="_blank" href="mailto:{{contactUsEmail}}" style="text-transform: none">
-                        <!-- Need help? write to   -->
-                        {{ 'NeedHelpWriteTo' | translate }} <span style="font-weight:800">
-                            {{contactUsEmail}}
-                        </span>
-                    </a>
+                    <span *ngIf="displayContactUs">
+                        <!-- <a target="_blank" href="mailto:info@tiledesk.com" style="text-transform: none"> -->
+                        <a target="_blank" href="mailto:{{contactUsEmail}}" style="text-transform: none">
+                            <!-- Need help? write to   -->
+                            {{ 'NeedHelpWriteTo' | translate }} <span style="font-weight:800">
+                                {{contactUsEmail}}
+                            </span>
+                        </a>
+                    </span>
                 </li>
                 <li>
                     <!-- <a  style="text-transform: none"> -->
@@ -49,7 +51,7 @@
                     <a href="https://www.facebook.com/tiledesk" target="_blank">
                         <i class="fa fa-facebook"></i>
                     </a>
-                </li> 
+                </li>
                 <li>
                     <a href="https://www.linkedin.com/company/tiledesk" target="_blank">
                         <i class="fa fa-linkedin"></i>
@@ -57,7 +59,7 @@
                 </li>
 
 
-               
+
             </ul>
         </nav>
         <!-- &copy; {{test | date: 'yyyy'}} <a href="http://www.creative-tim.com">Creative Tim</a>, made with love for a better web -->

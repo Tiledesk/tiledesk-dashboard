@@ -187,6 +187,11 @@ input:-webkit-autofill {
   }
 }
 
+.appsumo-features-signup-description {
+  margin-top: 16px;
+  font-family: "Poppins", "Roboto", "Arial", sans-serif;
+}
+
 .signup-title > h2 {
   font-size: 36px;
   // line-height: 55px;
@@ -260,17 +265,17 @@ label {
 
 .pswrd-eye-btn {
   cursor: pointer;
-    position: absolute;
-    right: 1px;
-    /* top: calc(50% - 12px); */
-    border: 0px;
-    background: transparent;
-    outline: none;
-    margin: 0;
-    padding: 0;
-    width: 50px;
-    /* background: aliceblue; */
-    height: 54px;
+  position: absolute;
+  right: 1px;
+  /* top: calc(50% - 12px); */
+  border: 0px;
+  background: transparent;
+  outline: none;
+  margin: 0;
+  padding: 0;
+  width: 50px;
+  /* background: aliceblue; */
+  height: 54px;
 }
 
 // start CHECKBOX TERMS AND CONDITIONS
@@ -287,7 +292,7 @@ label {
   -ms-user-select: none;
   user-select: none;
   padding-top: 3px;
-  font-family: 'Poppins', 'Roboto',  'Arial', sans-serif;
+  font-family: "Poppins", "Roboto", "Arial", sans-serif;
 }
 
 /* Hide the browser's default checkbox */
@@ -370,22 +375,21 @@ input.secure {
 /* -------------------------------------------------------- */
 
 .social-proof-container {
-bottom: 20px;
-    position: absolute;
-    left: 0;
-    right: 0;
-    margin-left: auto;
-    margin-right: auto;
-  }
+  bottom: 20px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+}
 
-.social-proof-wpr  {
+.social-proof-wpr {
   -webkit-box-align: center;
-    align-items: center;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
-
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
 }
 
 .social-proof {
@@ -395,6 +399,25 @@ bottom: 20px;
   justify-content: flex-start;
   -webkit-box-align: center;
   align-items: center;
+}
+
+/*
+/* AppSumo branding
+/* -------------------------------------------------------- */
+.logos-wpr {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.plus-appsumo {
+  margin-left: 12px;
+  margin-right: 12px;
+}
+
+.disabled-email-input-appsumo-signup {
+  background-color: #eee !important;
+  cursor: not-allowed;
 }
 
 // @import "./src/assets/sass/md/_variables.scss";

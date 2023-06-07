@@ -128,7 +128,7 @@ export class CreateProjectComponent extends WidgetSetUpBaseComponent implements 
     this.DISPLAY_SPINNER = true;
     this.logger.log('[WIZARD - CREATE-PRJCT] CREATE NEW PROJECT - PROJECT-NAME DIGIT BY USER ', this.project_name);
 
-    this.projectService.createProject(this.project_name)
+    this.projectService.createProject(this.project_name, 'create-project')
       .subscribe((project) => {
         this.logger.log('[WIZARD - CREATE-PRJCT] POST DATA PROJECT RESPONSE ', project);
         if (project) {

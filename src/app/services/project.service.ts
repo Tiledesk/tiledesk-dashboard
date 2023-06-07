@@ -1,6 +1,6 @@
 // tslint:disable:max-line-length
 import { Injectable } from '@angular/core';
-import { Observable, BehaviorSubject} from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { Project } from '../models/project-model';
 import { AuthService } from '../core/auth.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -15,12 +15,14 @@ export class ProjectService {
   user: any;
   currentUserID: string;
   projectID: string;
+ 
+  APP_SUMO_API_BASE_URL = "https://tiledesk-sumo.tiledesk.repl.co/"
 
   public myAvailabilityCount: BehaviorSubject<number> = new BehaviorSubject<number>(null);
   public hasCreatedNewProject$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   constructor(
- 
+
     public auth: AuthService,
     public _httpclient: HttpClient,
     public appConfigService: AppConfigService,
@@ -140,7 +142,8 @@ export class ProjectService {
    * @param name
    * @param id_user
    */
-  public createProject(name: string) {
+  public createProject(name: string, calledBy) {
+    console.log('[PROJECT-SERV] CREATE calledBy ', calledBy);
     const httpOptions = {
       headers: new HttpHeaders({
         'Accept': 'application/json',
@@ -273,7 +276,8 @@ export class ProjectService {
     };
 
     const url = this.SERVER_BASE_PATH + 'modules/payments/stripe/cancelsubscription';
-    this.logger.log('[PROJECT-SERV] - CANCEL SUBSCRIPTION - PUT URL ', url);
+    // const url = 'https://8ba8-79-8-190-172.eu.ngrok.io/modules/payments/stripe/cancelsubscription';
+    // console.log('[PROJECT-SERV] - CANCEL SUBSCRIPTION - PUT URL ', url);
 
     const body = { 'projectid': this.projectID, 'userid': this.user._id };
     this.logger.log('[PROJECT-SERV] - CANCEL SUBSCRIPTION - PUT REQUEST BODY ', body);
@@ -287,6 +291,35 @@ export class ProjectService {
   // ----------------------------------------------------------
 
 
+    // -----------------------------------------------------------------
+  // Used to update the project name - todo from put to patch
+  // -----------------------------------------------------------------
+  public updateAppSumoProject(
+    proiectid: string, 
+    projectProfileName: string, 
+    agentNumber: number,
+    activationemail: string, 
+    licenseproductkeyuuid: string, 
+    plan_id: string, 
+    invoice_item_uuid: string) {
+    // 'Authorization': this.TOKEN
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        
+      })
+    };
+
+    let url = this.APP_SUMO_API_BASE_URL+ 'updateproject';
+    this.logger.log('[PROJECT-SERV] - UPDATE APPSUMO PRJECT - PUT URL ', url);
+
+    const body = { 'proiectid': proiectid, profileName: projectProfileName, seats: agentNumber, 'extra1': activationemail, 'extra2': licenseproductkeyuuid, 'extra3': plan_id, 'extra4': invoice_item_uuid};
+    this.logger.log('[PROJECT-SERV] - UPDATE APPSUMO PRJECT - PUT BODY ', body);
+
+    return this._httpclient
+      .post(url, body, httpOptions)
+  }
 
   // -----------------------------------------------------------------
   // Used to update the project name - todo from put to patch
@@ -722,7 +755,7 @@ export class ProjectService {
   // -------------------------------------
   // UPDATE SUBSCRIPTION !! Used for test
   // -------------------------------------
-  public updatesubscription() {
+  public updatesubscription(price) {
     const httpOptions = {
       headers: new HttpHeaders({
         'Accept': 'application/json',
@@ -734,7 +767,7 @@ export class ProjectService {
     const url = this.SERVER_BASE_PATH + 'modules/payments/stripe/updatesubscription';
     this.logger.log('[PROJECT-SERV] UPDATE SUBSCRIPTION PUT URL ', url);
 
-    const body = { 'projectid': this.projectID, 'userid': this.user._id };
+    const body = { 'projectid': this.projectID, 'userid': this.user._id, price: price };
     this.logger.log('[PROJECT-SERV] UPDATE SUBSCRIPTION PUT  BODY ', body);
 
     return this._httpclient
@@ -760,6 +793,29 @@ export class ProjectService {
     const url = this.SERVER_BASE_PATH + 'modules/payments/stripe/stripesubs/' + subscriptionId;
     this.logger.log('[PROJECT-SERV] - GET SUBSCRIPTION BY ID - ID', subscriptionId);
     this.logger.log('[PROJECT-SERV] - GET SUBSCRIPTION BY ID - URL', url);
+
+
+    return this._httpclient
+      .get<[any]>(url, httpOptions)
+  }
+
+  // -----------------------------------
+  //  GET STRIPE SESSION by SESSION ID 
+  // -----------------------------------
+  public getStripeSessionById(sessionid: string): Observable<[any]> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      }),
+      // responseType: 'text' as 'json'
+    };
+
+    const url = this.SERVER_BASE_PATH + 'modules/payments/stripe/checkoutSession/' + sessionid;
+    // const url = 'https://c1a0-79-8-190-172.eu.ngrok.io/modules/payments/stripe/checkoutSession/' + sessionid;
+    // console.log('[PROJECT-SERV] - GET STRIPE SESSION BY ID - ID', sessionid);
+    // console.log('[PROJECT-SERV] - GET STRIPE SESSION BY ID - URL', url);
 
 
     return this._httpclient
@@ -796,7 +852,7 @@ export class ProjectService {
     // const url =  'https://cabd-151-35-162-143.ngrok.io/modules/payments/stripe/customers/' + customerId;
     this.logger.log('[PROJECT-SERV] - GET CUSTOMER BY ID - ID', customerId);
     this.logger.log('[PROJECT-SERV] - GET CUSTOMER BY ID - URL', url);
-   
+
     const httpOptions = {
       headers: new HttpHeaders({
         'Accept': 'application/json',
@@ -806,6 +862,84 @@ export class ProjectService {
     };
     return this._httpclient
       .get<[any]>(url, httpOptions)
-  } 
+  }
+
+    // --------------------------------
+  //  APPSUMO TEST 
+  // --------------------------------
+  public activateAppSumoTier() {
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/x-www-form-urlencoded',
+        
+      })
+    };
+
+    const url = "https://tiledesk-sumo.tiledesk.repl.co/notification";
+
+    const body = "action=activate&plan_id=tiledesk_tier1&uuid=65b9528a-702d-4326-9b23-3e0c37ce4553&activation_email=padokes502@lieboe.com&invoice_item_uuid=01ae3d93-ec5f-44a8-b4b9-093cbd662164"
+
+    return this._httpclient
+      .post(url, body, httpOptions)
+  }
+
+  public updateAppSumoTier() {
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/x-www-form-urlencoded',
+        
+      })
+    };
+
+    const url = "https://tiledesk-sumo.tiledesk.repl.co/notification";
+
+    const body = "action=enhance_tier&plan_id=tiledesk_tier2&uuid=65b9528a-702d-4326-9b23-3e0c37ce4553&activation_email=padokes502@lieboe.com"
+
+    return this._httpclient
+      .post(url, body, httpOptions)
+  }
+
+  public downgradeAppSumoTier() {
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/x-www-form-urlencoded',
+        
+      })
+    };
+
+    const url = "https://tiledesk-sumo.tiledesk.repl.co/notification";
+
+    const body = "action=reduce_tier&plan_id=tiledesk_tier1&uuid=65b9528a-702d-4326-9b23-3e0c37ce4553&activation_email=padokes502@lieboe.com"
+
+    return this._httpclient
+      .post(url, body, httpOptions)
+  }
+
+  refundAppSumoTier() {
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/x-www-form-urlencoded',
+        
+      })
+    };
+
+    const url = "https://tiledesk-sumo.tiledesk.repl.co/notification";
+
+    const body = "action=refund&plan_id=yourproduct_tier1&uuid=65b9528a-702d-4326-9b23-3e0c37ce4553&activation_email=padokes502@lieboe.com&invoice_item_uuid=01ae3d93-ec5f-44a8-b4b9-093cbd662164"
+
+    return this._httpclient
+      .post(url, body, httpOptions)
+
+  }
+
+
 
 }

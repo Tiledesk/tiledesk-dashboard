@@ -681,7 +681,7 @@ export class WsRequestsService implements OnDestroy {
     };
     // this.logger.log('[WS-REQUESTS-SERV] -  CLOSE SUPPORT-GROUP OPTIONS  ', options)
 
-    const body = {force: true};
+    const body = { force: true };
     // const body = {};
 
     // const url = 'https://tiledesk-server-pre.herokuapp.com/' + this.project_id + '/requests/' + group_id + '/close';
@@ -1145,6 +1145,25 @@ export class WsRequestsService implements OnDestroy {
 
     return this._httpClient
       .patch(url, JSON.stringify(body), httpOptions)
+  }
+
+  // -----------------------------------------------------------------------------------------
+  // Get Bot conversation attributes
+  // -----------------------------------------------------------------------------------------
+  public getBotConversationAttribute(id_request) {
+
+    const url = this.SERVER_BASE_PATH + 'modules/tilebot/ext/parameters/requests/' + id_request;
+    // console.log('[WS-REQUESTS-SERV] - GET CONVERSATION WITH BOT URL ', url);
+
+    // 'Authorization': this.TOKEN,
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+
+      }),
+    };
+    return this._httpClient
+      .get(url, httpOptions)
   }
 
 

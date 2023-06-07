@@ -265,7 +265,7 @@ and also iPads specifically.
 
 .users-groups-tab {
   color: #fff;
-  font-family: 'Poppins','Roboto', 'Arial', sans-serif;
+  font-family: "Poppins", "Roboto", "Arial", sans-serif;
   font-size: 14px;
   line-height: 24px;
   font-weight: 500;
@@ -393,8 +393,8 @@ $f21blue: #039be5;
 }
 
 @media (max-width: 991px) {
-  .bottom-nav li { 
-    z-index: 1049
+  .bottom-nav li {
+    z-index: 1049;
   }
 }
 
@@ -497,7 +497,7 @@ $f21blue: #039be5;
 // - end - BOTTOM NAVBAR  //
 
 .msg-alert {
-  font-family:'Poppins','Roboto', 'Arial', sans-serif;
+  font-family: "Poppins", "Roboto", "Arial", sans-serif;
   font-weight: 400;
 }
 
@@ -749,7 +749,6 @@ $f21blue: #039be5;
   border-color: #d9d9d9;
   width: 130px;
   text-transform: capitalize;
-  
 }
 
 .is-user-online {
@@ -772,6 +771,30 @@ $f21blue: #039be5;
   height: 12px;
 }
 
+::ng-deep .custom-mat-tooltip {
+  background-color: #2d323e !important;
+  font-size: 12px !important;
+  border-radius: 2px !important;
+  font-family: "Poppins", "Roboto", "Arial", sans-serif !important;
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+}
+
+.upgrade--plan-btn {
+  color: #039be5;
+  cursor: pointer;
+  background: #fff;
+  padding: 2px 8px;
+  border-radius: 4px;
+  // display: block;
+  border: #fff;
+  margin-top: 6px;
+}
+
+.upgrade--plan-btn:hover {
+  background: #e8eaed;
+}
+
 // .fa:before {
 //     content: "\f2da";
 //     display: inline-block;
@@ -779,5 +802,3 @@ $f21blue: #039be5;
 //     position: absolute;
 //     right: -1.5em;
 //   }
-
-

@@ -1,5 +1,77 @@
 # tiledesk-dashboard
 
+### 2.4.30
+- Deploys in production
+- AppSumo implementation
+
+### 2.4.29
+- Deploys in production
+- Improvements and bug fixing
+
+### 2.4.28
+- Deploys in production
+- Increases the number of seats available for the trial plan
+
+### 2.4.27
+- Deploys in production
+- Improvements and bug fixing
+
+### 2.4.26
+- Deploys in production
+- Adds markdown rendering for the community chatbot descriptions
+- Removes the description of the chatbot on the Onboarding page Install Chatbot (first step of the installation wizard of the chatbot chosen in the community)
+
+### 2.4.25
+- Deploys in production
+- Implements the management of new pricing plans
+
+### 2.4.25-rc1
+- Changes the endpoint of the app store
+
+### 2.4.24
+- Deploys in production
+- Improvements and bug fixing
+
+### 2.4.23
+- Deploys in production
+- Adds the "Chatbot Attributes" accordion to the sidebar of the conversation details page
+
+### 2.4.23-rc1
+- Adds the "Chatbot Attributes" accordion to the sidebar of the conversation details page
+
+### 2.4.22
+- Deploys in production
+- Improves Community chatbot onboarding
+- Changes in widget unbranding section the default "Powered by"
+
+### 2.4.21
+- Deploys in production
+- Adds a new textarea (cds-textarea) that allows to add tags
+- Adds the ability to add emojis
+- Adds the action "Set function"
+- Improvements and bug fixing
+
+### 2.4.21-rc1
+- Adds a new textarea (cds-textarea) that allows to add tags
+- Adds the ability to add emojis
+- Adds the action "Set fuction"
+- Improvements and bug fixing
+
+### 2.4.20
+- Deploys in production
+- Improvements and bug fixing
+
+### 2.4.20-rc1
+- Improvements and bug fixing
+
+### 2.4.19
+- Deploys in production
+- Fixed the bug: 'ng-select' in 'Reply' action buttons
+
+### 2.4.18
+- Deploys in production
+- Improvements and bug fixing
+
 ### 2.4.16
 - Deploys in production
 - Adds the ability to delete an operation in action 'assignVariable'

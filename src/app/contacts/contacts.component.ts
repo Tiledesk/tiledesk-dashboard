@@ -7,7 +7,7 @@ import { Contact } from '../models/contact-model';
 import { Router } from '@angular/router';
 import { AuthService } from '../core/auth.service';
 import { NotifyService } from '../core/notify.service';
-import { avatarPlaceholder, getColorBck } from '../utils/util';
+import { APP_SUMO_PLAN_NAME, avatarPlaceholder, getColorBck, PLAN_NAME } from '../utils/util';
 import { UsersService } from '../services/users.service';
 import { TranslateService } from '@ngx-translate/core';
 import { ProjectPlanService } from '../services/project-plan.service';
@@ -22,6 +22,15 @@ const swal = require('sweetalert');
   styleUrls: ['./contacts.component.scss'],
 })
 export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
+
+  PLAN_NAME = PLAN_NAME;
+  APP_SUMO_PLAN_NAME = APP_SUMO_PLAN_NAME;
+  appSumoProfile: string;
+  appSumoProfilefeatureAvailableFromBPlan: string;
+  profile_name: string;
+  upgradePlan: string;
+  cancel: string;
+  featureAvailableFromBPlan: string;
 
   public colours = [
     '#1abc9c', '#2ecc71', '#3498db', '#9b59b6', '#34495e', '#16a085',
@@ -63,6 +72,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
   selectedContactEmailValue: string;
   IS_CURRENT_USER_AGENT: boolean;
   IS_CURRENT_USER_OWNER: boolean;
+  USER_ROLE: any;
 
   deleteLeadSuccessNoticationMsg: string;
   deleteLeadErrorNoticationMsg: string;
@@ -99,6 +109,8 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
   payIsVisible: boolean;
   public_Key: any;
   isChromeVerGreaterThan100: boolean;
+  onlyOwnerCanManageTheAccountPlanMsg: string;
+  learnMoreAboutDefaultRoles: string;
   constructor(
     private contactsService: ContactsService,
     private router: Router,
@@ -238,6 +250,33 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
         this.moveToTrash_msg = text;
       });
 
+    this.translate.get('Pricing.UpgradePlan')
+      .subscribe((translation: any) => {
+        this.upgradePlan = translation;
+      });
+
+    this.translate.get('Cancel')
+      .subscribe((translation: any) => {
+        this.cancel = translation;
+      });
+
+    this.translate.get('AvailableFromThePlan', { plan_name: PLAN_NAME.B })
+      .subscribe((translation: any) => {
+        this.featureAvailableFromBPlan = translation;
+      });
+
+    this.translate.get('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan')
+      .subscribe((translation: any) => {
+
+        this.onlyOwnerCanManageTheAccountPlanMsg = translation;
+      });
+
+    this.translate.get('LearnMoreAboutDefaultRoles')
+      .subscribe((translation: any) => {
+
+        this.learnMoreAboutDefaultRoles = translation;
+      });
+
     this.translatePlaceholder();
 
   }
@@ -272,14 +311,18 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
     this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
       this.logger.log('[CONTACTS-COMP] getProjectPlan project Profile Data', projectProfileData)
       if (projectProfileData) {
-
+        this.profile_name = projectProfileData.profile_name
         this.prjct_profile_type = projectProfileData.profile_type;
         this.subscription_is_active = projectProfileData.subscription_is_active;
 
         this.subscription_end_date = projectProfileData.subscription_end_date;
         this.trial_expired = projectProfileData.trial_expired
 
-        this.buildPlanName(projectProfileData.profile_name, this.browserLang, this.prjct_profile_type);
+        // this.buildPlanName(projectProfileData.profile_name, this.browserLang, this.prjct_profile_type);
+        if (projectProfileData.extra3) {
+          this.appSumoProfile = APP_SUMO_PLAN_NAME[projectProfileData.extra3]
+          this.appSumoProfilefeatureAvailableFromBPlan = APP_SUMO_PLAN_NAME['tiledesk_tier3']
+        }
       }
     }, error => {
 
@@ -330,6 +373,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
   getProjectUserRole() {
     this.usersService.project_user_role_bs.subscribe((user_role) => {
       const current_user_role = user_role;
+      this.USER_ROLE = user_role;
       this.logger.log('[CONTACTS-COMP] - SUBSCRIBE PROJECT_USER_ROLE_BS ', current_user_role);
       if (current_user_role) {
         this.logger.log('[CONTACTS-COMP] - PROJECT USER ROLE ', current_user_role);
@@ -874,19 +918,45 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   exportContactsToCsv() {
-    this.contactsService.exportLeadToCsv(this.queryString, 0, this.hasClickedTrashed).subscribe((leads_object: any) => {
-      this.logger.log('!!!! CONTACTS - EXPORT CONTACT TO CSV RESPONSE ', leads_object);
 
-      // this.logger.log('!!!! CONTACTS - CONTACTS LIST ', this.contacts);
-      if (leads_object) {
-        this.logger.log('[CONTACTS-COMP] - EXPORT CONTACTS TO CSV RESPONSE', leads_object);
-        this.downloadFile(leads_object);
+    if (this.payIsVisible) {
+      if (
+        (this.profile_name === PLAN_NAME.A) ||
+        (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
+        (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
+        (this.prjct_profile_type === 'free' && this.trial_expired === true)
+
+      ) {
+        if (!this.appSumoProfile) {
+        this.presentModalFeautureAvailableOnlyWithPaidPlans()
+      } else if (this.appSumoProfile) {
+        this.presentModalAppSumoFeautureAvailableFromBPlan()
       }
-    }, (error) => {
-      this.logger.error('[CONTACTS-COMP]- EXPORT CONTACT TO CSV - ERROR  ', error);
-    }, () => {
-      this.logger.log('[CONTACTS-COMP] - EXPORT CONTACT TO CSV * COMPLETE *');
-    });
+        // console.log('[CONTACTS-COMP] -  EXPORT DATA IS NOT AVAILABLE ')
+      } else if (
+        (this.profile_name === PLAN_NAME.B && this.subscription_is_active === true) ||
+        (this.profile_name === PLAN_NAME.C && this.subscription_is_active === true) ||
+        (this.prjct_profile_type === 'free' && this.trial_expired === false)
+
+      ) {
+        this.contactsService.exportLeadToCsv(this.queryString, 0, this.hasClickedTrashed).subscribe((leads_object: any) => {
+          this.logger.log('[CONTACTS-COMP] - EXPORT CONTACT TO CSV RESPONSE ', leads_object);
+          if (leads_object) {
+            this.logger.log('[CONTACTS-COMP] - EXPORT CONTACTS TO CSV RESPONSE', leads_object);
+            this.downloadFile(leads_object);
+          }
+        }, (error) => {
+          this.logger.error('[CONTACTS-COMP]- EXPORT CONTACT TO CSV - ERROR  ', error);
+        }, () => {
+          this.logger.log('[CONTACTS-COMP] - EXPORT CONTACT TO CSV * COMPLETE *');
+        });
+        // console.log('[CONTACTS-COMP] - EXPORT DATA IS  AVAILABLE ')
+      }
+
+    } else {
+      this.notify._displayContactUsModal(true, 'upgrade_plan');
+    }
+
 
     // if (this.payIsVisible) {
     //   if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false || this.prjct_profile_type === 'free' && this.trial_expired === true) {
@@ -914,6 +984,100 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
     //   this.notify._displayContactUsModal(true, 'upgrade_plan');
     // }
   }
+
+  // Export CSV
+  presentModalFeautureAvailableOnlyWithPaidPlans() {
+    const el = document.createElement('div')
+    el.innerHTML = this.featureAvailableFromBPlan
+    swal({
+      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
+      content: el,
+      icon: "info",
+      // buttons: true,
+      buttons: {
+        cancel: this.cancel,
+        catch: {
+          text: this.upgradePlan,
+          value: "catch",
+        },
+      },
+      dangerMode: false,
+    }).then((value) => {
+      if (value === 'catch') {
+        // console.log('featureAvailableFromBPlan value', value)
+        // if (this.payIsVisible) {
+        //   if (this.USER_ROLE === 'owner') {
+        //     if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
+        //       this.notify._displayContactUsModal(true, 'upgrade_plan');
+        //     } else {
+        //       this.router.navigate(['project/' + this.projectId + '/pricing']);
+
+        //     }
+        //   } else {
+        //     this.presentModalOnlyOwnerCanManageTheAccountPlan();
+        //   }
+        // } else {
+        //   this.notify._displayContactUsModal(true, 'upgrade_plan');
+        // }
+        if (this.payIsVisible) {
+
+          if (this.USER_ROLE === 'owner') {
+            if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
+              if (this.profile_name !== PLAN_NAME.C) {
+                this.notify.displaySubscripionHasExpiredModal(true, this.profile_name, this.subscription_end_date);
+              } else if (this.profile_name === PLAN_NAME.C) {
+                this.notify.displayEnterprisePlanHasExpiredModal(true, this.profile_name, this.subscription_end_date);
+              }
+    
+            } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true) {
+              this.notify._displayContactUsModal(true, 'upgrade_plan');
+            } else if (this.profile_name === 'free') {  // 
+              this.router.navigate(['project/' + this.projectId + '/pricing']);
+              // this.notify.presentContactUsModalToUpgradePlan(true);
+            }
+    
+          } else {
+            this.presentModalOnlyOwnerCanManageTheAccountPlan();
+          }
+        } else {
+          this.notify._displayContactUsModal(true, 'upgrade_plan');
+        }
+      }
+    });
+  }
+
+  presentModalAppSumoFeautureAvailableFromBPlan() {
+    const el = document.createElement('div')
+    el.innerHTML = 'Available with ' + this.appSumoProfilefeatureAvailableFromBPlan
+    swal({
+      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
+      content: el,
+      icon: "info",
+      // buttons: true,
+      buttons: {
+        cancel: this.cancel,
+        catch: {
+          text: this.upgradePlan,
+          value: "catch",
+        },
+      },
+      dangerMode: false,
+    }).then((value) => {
+      if (value === 'catch') {
+        if (this.USER_ROLE === 'owner') {
+          this.router.navigate(['project/' + this.projectId + '/project-settings/payments']);
+        } else {
+          this.presentModalOnlyOwnerCanManageTheAccountPlan();
+        }
+      }
+    });
+  }
+
+  presentModalOnlyOwnerCanManageTheAccountPlan() {
+    // https://github.com/t4t5/sweetalert/issues/845
+    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles)
+  }
+
 
   downloadFile(data) {
     const blob = new Blob(['\ufeff' + data], { type: 'text/csv;charset=utf-8;' });

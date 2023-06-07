@@ -63,11 +63,11 @@ export class ProjectPlanService {
       if (ev instanceof NavigationEnd) {
 
         const current_url = ev.url
-        this.logger.log('[PROJECT-PLAN-SERV] - NavigationEnd current_url', current_url);
+        // console.log('[PROJECT-PLAN-SERV] - NavigationEnd current_url', current_url);
         const url_segments = current_url.split('/');
         this.logger.log('[PROJECT-PLAN-SERV] - CURRENT URL SEGMENTS ', url_segments);
         const nav_project_id = url_segments[2];
-        this.logger.log('[PROJECT-PLAN-SERV] - nav_project_id ', nav_project_id);
+        // console.log('[PROJECT-PLAN-SERV] - nav_project_id ', nav_project_id);
 
         this.progetIdGetFromParams = nav_project_id
         // -----------------------------------------------------------------
@@ -82,9 +82,11 @@ export class ProjectPlanService {
           url_segments[1] !== 'resetpassword' &&
           url_segments[1] !== 'autologin' &&
           url_segments[1] !== 'get-chatbot' &&
+          url_segments[1] !== 'activate-product' &&
           url_segments[1] !== 'install-template' &&
           url_segments[1] !== 'create-project-itw' &&
           url_segments[1] !== 'install-template-np' &&
+          url_segments[1] !== 'success' &&
           current_url !== '/projects'
         ) {
           // this.getProjectByIdAndPublish(nav_project_id, calledBy)
@@ -105,7 +107,7 @@ export class ProjectPlanService {
     this.projectService.getProjects().subscribe((projects: any) => {
    
       const current_prjct = projects.find(prj => prj.id_project.id === projectId);
-      this.logger.log('[PROJECT-PLAN-SERV] - FIND CURRENT PROJECT AMONG ALL - current_prjct ', current_prjct);
+      console.log('[PROJECT-PLAN-SERV] - FIND CURRENT PROJECT AMONG ALL - current_prjct ', current_prjct);
       const projectPlanData: Project = {
 
         _id: current_prjct.id_project._id,
@@ -121,10 +123,12 @@ export class ProjectPlanService {
         subscription_start_date: current_prjct.id_project.profile['subStart'],
         subscription_end_date: current_prjct.id_project.profile['subEnd'],
         subscription_id: current_prjct.id_project.profile['subscriptionId'],
-        subscription_creation_date: current_prjct.id_project.profile['subscription_creation_date']
+        subscription_creation_date: current_prjct.id_project.profile['subscription_creation_date'],
+        extra3: current_prjct.id_project.profile['extra3'],
+        extra4: current_prjct.id_project.profile['extra4']
       }
 
-      this.logger.log('[PROJECT-PLAN-SERV] - FIND CURRENT PROJECT AMONG ALL - projectPlanData ', projectPlanData) 
+      console.log('[PROJECT-PLAN-SERV] - FIND CURRENT PROJECT AMONG ALL - projectPlanData ', projectPlanData) 
 
       this.projectPlan$.next(projectPlanData);
 
