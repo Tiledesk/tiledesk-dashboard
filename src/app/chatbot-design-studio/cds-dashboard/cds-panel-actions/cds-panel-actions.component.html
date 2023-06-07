@@ -1,33 +1,33 @@
-<div id="panel_actions_div" class="actions-drawer" #panel_actions_div22222 >
-    <!--  -->
-    <!-- <div class="action-list" cdkDropList cdkDropListSortingDisabled [cdkDropListData]="actionList" cdkDropListConnectedTo="drop-actions" > [cdkDropListConnectedTo]="drop-actions"-->
-        <!-- cdkDropList [cdkDropListConnectedTo]="connectedLists" (cdkDropListDropped)="onDrop($event)" cdkDropListSortingDisabled [cdkDropListConnectedTo]="connectedIDLists" -->
-    <div class="action-list" id="action_list_drop_connect" #action_list_drop_connect cdkDropList [cdkDropListData]="actionList">
+<div *ngIf="menuItemsList.length>0" id="panel_actions_div" class="actions-drawer" #panel_actions_div >
+
+    <div class="action-list" id="action_list_drop_connect" #action_list_drop_connect cdkDropList [cdkDropListData]="menuItemsList">
         
+
         <div [style.display]="isDragging?'block':'none'" class="menu-dragging">
-            <div class="action-box" *ngFor="let action of actionList; let i = index;">
+            <div class="action-box" *ngFor="let item of menuItemsList; let i = index;">
                 <div *ngIf="indexDrag===i" class="example-custom-placeholder"></div>
                 <div *ngIf="indexDrag!==i" class="actions-btns-wpr">
-                    <div class="action-btn-icon">
+                    <div *ngIf="item.value.src && item.value.name" class="action-btn-icon">
                         <button class="btn btn-tdblu-no-boxshadow action-btn">
-                            <img [src]="action.value.src" [title]="action.value.name">
+                            <img [src]="item.value.src" [title]="item.value.name">
                         </button>
                     </div>
-                    <div class="action-btn-text">{{action.value.name}}</div>
+                    <div *ngIf="item.value.name" class="action-btn-text">{{item.value.name}}</div>
                 </div>
             </div>
         </div>
 
+
         <div [style.display]="isDragging?'none':'block'" class="menu-dragging">
-            <div class="action-box" *ngFor="let action of actionList; let i = index;" cdkDrag (cdkDragStarted)="onDragStarted($event, i)" (cdkDragMoved)="onDragMoved($event)" (cdkDragEnded)="onDragEnd($event)">
+            <div class="action-box" *ngFor="let item of menuItemsList; let i = index;" cdkDrag (cdkDragStarted)="onDragStarted($event, i)" (cdkDragMoved)="onDragMoved($event)" (cdkDragEnded)="onDragEnd($event)">
                 <!-- <div class="example-custom-placeholder" *cdkDragPlaceholder></div> -->
                 <div class="actions-btns-wpr">
-                    <div class="action-btn-icon">
+                    <div *ngIf="item.value.src && item.value.name" class="action-btn-icon">
                         <button class="btn btn-tdblu-no-boxshadow action-btn">
-                            <img [src]="action.value.src" [title]="action.value.name">
+                            <img [src]="item.value.src" [title]="item.value.name">
                         </button>
                     </div>
-                    <div class="action-btn-text">{{action.value.name}}</div>
+                    <div *ngIf="item.value.name" class="action-btn-text">{{item.value.name}}</div>
                 </div>
             </div>
         </div>

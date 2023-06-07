@@ -468,13 +468,14 @@ elem.addEventListener('mousemove', function() {
     } catch (error) {
       console.error("ERROR: ", error);
     }
+
     if(x != pos.x || y != pos.y){
       element.style.zIndex = 'auto';
       // this.CREATE_VIEW = false;
       // this.saveIntent(intent);
       let pos = {'x':x, 'y':y};
       this.setIntentPosition(intent.id, pos);
-      this.intentService.setDashboardAttributes(this.dashboardAttributes);
+      // this.intentService.setDashboardAttributes(this.dashboardAttributes);
     }
     this.isOpenPanelDetail = true;
   }
@@ -486,24 +487,30 @@ elem.addEventListener('mousemove', function() {
   }
 
   getIntentPosition(value){
-    let key = 'id';
+    // let key = 'id';
     let pos = {'x':0, 'y':0};
-    try {
-      const foundItem = this.dashboardAttributes.intents.find(item => item[key] === value);
-      // console.log('foundItem ------------------>', foundItem);
-      return foundItem.pos;
-    } catch (error) {
-      // console.log('ERRORE ----------->', error);
-      return pos;
+    // console.log("getIntentPosition: ", value);
+    if(this.dashboardAttributes[value]){
+      return this.dashboardAttributes[value];
     }
+    return pos;
+    // try {
+    //   // const foundItem = this.dashboardAttributes.find(item => item[key] === value);
+    //   // console.log('foundItem ------------------>', foundItem);
+    //   pos = this.dashboardAttributes[value];
+    //   return pos;
+    // } catch (error) {
+    //   // console.log('ERRORE ----------->', error);
+    //   return pos;
+    // }
   }
 
   setIntentPosition(id, pos){
-    let intent = {
-      'id': id,
-      'pos': {'x': pos.x, 'y': pos.y}
-    }
-    this.dashboardAttributes.intents.push(intent);
+    // console.log('setIntentPosition ----------->', id, pos);
+    // const intent = { key: id, value:  };
+    this.dashboardAttributes[id] =  {'x': pos.x, 'y': pos.y};
+    console.log(this.dashboardAttributes);
+    this.intentService.setDashboardAttributes(this.dashboardAttributes);
   }
 
   /** ************************* **/

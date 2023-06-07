@@ -61,7 +61,6 @@ export class IntentService {
       this.jsonDashboardAttributes = savedData;
     } else {
       this.jsonDashboardAttributes = {
-        intents: []
       }
     }
     return this.jsonDashboardAttributes;
@@ -127,7 +126,7 @@ export class IntentService {
     }
   }
   
-  public async addNewIntent(id_faq_kb, newIntent): Promise<boolean> { 
+  public async addNewIntent(id_faq_kb, newIntent): Promise<any> { 
     let newIntents = this.intents.getValue();
     newIntents.push(newIntent); 
     console.log("Aggiungo un intent all'array in ultima posizione con id fake");
@@ -148,19 +147,19 @@ export class IntentService {
         formIntentSelected,
         actionsIntentSelected,
         webhookEnabledIntentSelected
-      ).subscribe((intent) => {
+      ).subscribe((intent:any) => {
         console.log("addIntent: sostituisto l'ultimo elemento dell'array aggiunto in precedenza, con quello salvato con un id valido");
         let newIntents = this.intents.getValue();
         newIntents[newIntents.length-1] = intent;
         this.intents.next(newIntents);
         console.log('ADDED');
-        resolve(true);
+        resolve(intent.id);
       }, (error) => {
         console.error('ERROR: ', error);
         reject(false);
       }, () => {
         console.log('COMPLETE ');
-        resolve(true);
+        resolve(false);
       });
     });
   }

@@ -1,9 +1,7 @@
 import { TranslateService } from '@ngx-translate/core';
-import { LoggerService } from './../../../services/logger/logger.service';
 import { Component, OnInit, OnChanges, SimpleChanges, Input, Output, EventEmitter } from '@angular/core';
+import { LoggerService } from 'app/services/logger/logger.service';
 import { Intent } from 'app/models/intent-model';
-import { timeInterval } from 'rxjs/operators';
-const swal = require('sweetalert');
 
 @Component({
   selector: 'cds-panel-intent-list',
@@ -27,7 +25,10 @@ export class CdsPanelIntentListComponent implements OnInit, OnChanges {
 
   TOPIC_INTERNAL = 'internal';
   DISPLAY_NAME_START = "start";
-  DISPLAY_NAME_DEFAULT_FALLBACK = "defaultFallback"
+  DISPLAY_NAME_DEFAULT_FALLBACK = "defaultFallback";
+  ICON_DEFAULT = 'label_important_outline';
+  ICON_ROCKET = 'rocket_launch';
+  ICON_UNDO = 'undo';
 
   constructor(
     private logger: LoggerService,
@@ -35,23 +36,21 @@ export class CdsPanelIntentListComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnInit(): void {
-    console.log('ngOnInit:: ');
-    // this.initialize();
+    // console.log('ngOnInit:: ');
   }
 
 
   // ngOnChanges funziona con gli @input bindati in html
   ngOnChanges(changes: SimpleChanges) {
-    console.log('ngOnChanges:: CdsPanelIntentListComponent');
-    console.log(changes);
+    // console.log('ngOnChanges:: CdsPanelIntentListComponent');
+    // console.log(changes);
     setTimeout(() => {
       this.initialize();
-    },0);
+    },100);
   }
 
-
   private initialize(){
-    console.log('initialize:: ');
+    // console.log('initialize:: ');
     if(this.listOfIntents && this.listOfIntents.length>0){
       this.selectedIntent = null;
       this.preselectIntent();
@@ -95,33 +94,40 @@ export class CdsPanelIntentListComponent implements OnInit, OnChanges {
       } else {
         this.selectedIntent = this.filteredIntents.find(o => o.id == this.intent_id);
       }
-      this.logger.log("[PANEL-INTENT-LIST] selectedIntent: ", this.selectedIntent);
     }
   }
 
 
 
-  getIconForName(name){
-    let icon = 'label_important_outline'
+
+
+  
+
+
+  /** EVENTS  */
+
+  onGetIconForName(name){
+    let icon = this.ICON_DEFAULT;
     if (name.trim() === this.DISPLAY_NAME_START) {
-      icon = 'rocket_launch';
+      icon = this.ICON_ROCKET;
     } else if (name.trim() === this.DISPLAY_NAME_DEFAULT_FALLBACK) {
-      icon = 'undo';
+      icon = this.ICON_UNDO;
     }
     return icon;
   }
 
   /** Search a block... */
-  livesearch(text: string) {
+  onLivesearch(text: string) {
+    // console.log("onLivesearch: ", text);
     this.filteredIntents = this.defaultIntents.filter(element => element.intent_display_name.toLowerCase().includes(text.toLowerCase()));
   }
 
   onSelectIntent(intent: Intent, index: string) {
-    // console.log('onSelectIntent:: ', intent, index);
     this.idSelectedIntent = index;
     this.selectedIntent = intent;
     this.selectIntent.emit(intent);
   }
+
 
   onDeleteButtonClicked(intent) {
     this.deleteIntent.emit(intent);

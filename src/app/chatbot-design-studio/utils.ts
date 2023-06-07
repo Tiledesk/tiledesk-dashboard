@@ -141,6 +141,15 @@ export enum TYPE_METHOD_ATTRIBUTE {
 }
 
 
+
+export enum TYPE_OF_MENU {
+    EVENT = 'event',
+    BLOCK = 'block',
+    ACTION = 'action',
+    FORM = 'form'
+}
+
+
 export const MESSAGE_METADTA_WIDTH = '100%';
 export const MESSAGE_METADTA_HEIGHT = 230;
 export const TIME_WAIT_DEFAULT = 500;
@@ -183,7 +192,7 @@ export const ELEMENTS_LIST = [
 ]
 
 
-export const ACTIONS_LIST= {
+export const ACTIONS_LIST = {
     REPLY : { name: 'Reply', type: TYPE_ACTION.REPLY, src:"assets/cds/images/actions/reply.svg", description: '<b>Pro tip</b>: Turn this block into a programmed proactive message. <a href=https://www.youtube.com/embed/SgDGwvVoqWE target=_blank>Here is how!</a> '},
     RANDOM_REPLY : { name: 'Random Reply', type: TYPE_ACTION.RANDOM_REPLY, src:"assets/cds/images/actions/random_reply.svg", description: 'Create some replies that will be randomly selected'},
     WEB_REQUEST : { name: 'Web Request', type: TYPE_ACTION.WEB_REQUEST, src:"assets/cds/images/actions/web_request.svg", description: ''},

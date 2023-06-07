@@ -34,32 +34,34 @@ export class DragDropService {
   positionElementOnStage(dropPoint:any, receiverElementsDroppedOnStageReference:ElementRef, drawerOfItemsToZoomAndDragReference:ElementRef){
     let pos = {'x': 0,'y': 0};
     let point = {'x':0, 'y':0};
+    console.log('dropPoint X:', dropPoint.x);
+    console.log('dropPoint Y:', dropPoint.y);
     const dropElement = receiverElementsDroppedOnStageReference.nativeElement;
     const posDropElement = dropElement.getBoundingClientRect();
-    // console.log('drop X:', posDropElement.left);
-    // console.log('drop Y:', posDropElement.top);
+    console.log('posDropElement X:', posDropElement.left);
+    console.log('posDropElement Y:', posDropElement.top);
     point.x = dropPoint.x-posDropElement.left;
     point.y = dropPoint.y-posDropElement.top;
-    // console.log('point:', point.x, point.y);
+    console.log('point:', point.x, point.y);
     const drawerElement = drawerOfItemsToZoomAndDragReference.nativeElement;
     const rectDrawerElement = drawerElement.getBoundingClientRect();
-    // console.log('drawer X:', rectDrawerElement.left);
-    // console.log('drawer Y:', rectDrawerElement.top);
+    console.log('rectDrawerElement X:', rectDrawerElement.left);
+    console.log('rectDrawerElement Y:', rectDrawerElement.top);
     let scaleValue = 1;
     try {
       const transform = drawerElement.style.transform; 
       const scaleMatch = transform.match(/scale\((.*?)\)/);
       if (scaleMatch) {
         scaleValue = scaleMatch[1];
-        // console.log('Scala di trasformazione:', scaleValue);
+        console.log('Scala di trasformazione:', scaleValue);
       }
     } catch (error) {
       console.error('ERROR: ', error);
     }
     let diffX = (rectDrawerElement.left - posDropElement.left);
     let diffY = (rectDrawerElement.top - posDropElement.top);
-    // console.log('diff X:', diffX);
-    // console.log('diff Y:', diffY);
+    console.log('diff X:', diffX);
+    console.log('diff Y:', diffY);
     pos.x = (point.x - diffX)/scaleValue;
     pos.y = (point.y - diffY)/scaleValue;
     console.log('new pos:', pos.x, pos.y);

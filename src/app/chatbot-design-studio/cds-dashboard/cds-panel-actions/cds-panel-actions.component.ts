@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
-import { TYPE_ACTION, ACTIONS_LIST } from '../../utils';
+import { TYPE_ACTION, ACTIONS_LIST, TYPE_OF_MENU } from 'app/chatbot-design-studio/utils';
 import { CdkDropList, CdkDragStart, CdkDragEnd, CdkDragMove } from '@angular/cdk/drag-drop';
 import { DragDropService } from 'app/chatbot-design-studio/cds-services/drag-drop.service';
 
@@ -11,37 +11,66 @@ import { DragDropService } from 'app/chatbot-design-studio/cds-services/drag-dro
 export class CdsPanelActionsComponent implements OnInit {
   @ViewChild('action_list_drop_connect') actionListDropConnect: CdkDropList;
 
+  @Input() menuType: string;
   @Input() pos: any;
   @Output() isDraggingMenuElement = new EventEmitter();
 
   TYPE_ACTION = TYPE_ACTION;
-  actionList: any;
+  TYPE_OF_MENU = TYPE_OF_MENU;
+
+  menuItemsList: any;
   isDragging: any = false;
   indexDrag: number;
   // dropList: CdkDropList;
   connectedLists: CdkDropList[];
   connectedIDLists: string[];
+  
 
   constructor(
     public dragDropService: DragDropService
   ) { }
 
   ngOnInit(): void {
-    if(!this.pos){
-      this.pos = {'x': 0, 'y':0};
-    }
-    this.actionList = Object.keys(ACTIONS_LIST).map(key => {
-      return {
-        type: key,
-        value: ACTIONS_LIST[key]
-      };
-    });
-    console.log('ACTIONS_LIST',this.actionList);
-    
+    // console.log('ngOnInit: ', this.menuType);
+    // console.log('menuItemsList',this.menuItemsList, this.menuType);
   }
 
   ngOnChanges() {
-    console.log('ngOnChanges:: ', this.pos);
+    console.log('ngOnChanges:: ', this.pos, this.menuType);
+    switch (this.menuType) {
+      case TYPE_OF_MENU.ACTION:
+        this.menuItemsList = [];
+        break;
+      case TYPE_OF_MENU.EVENT:
+        this.menuItemsList = Object.keys(ACTIONS_LIST).map(key => {
+          return {
+            type: key,
+            value: ACTIONS_LIST[key]
+          };
+        });
+        break;
+      case TYPE_OF_MENU.BLOCK:
+        this.menuItemsList = [{
+          "type": "BLOCK",
+          "value": {
+            "name": "Block",
+            "type": "BLOCK",
+            "src": "",
+            "description": ""
+          }
+        }];
+        break;
+      case TYPE_OF_MENU.FORM:
+        this.menuItemsList = [];
+        break;
+      default:
+        this.menuItemsList = [];
+        break;
+    }
+    
+    if(!this.pos){
+      this.pos = {'x': 0, 'y':0};
+    }
   }
 
 
@@ -56,10 +85,6 @@ export class CdsPanelActionsComponent implements OnInit {
     console.log("connectedLists--------------------> ",this.connectedIDLists);
   }
 
-
-
-
-
   onDragStarted(event:CdkDragStart, currentIndex: number) {
     console.log('Drag started!', event, currentIndex);
     this.isDragging = true;
@@ -68,7 +93,7 @@ export class CdsPanelActionsComponent implements OnInit {
   }
 
   onDragEnd(event: CdkDragEnd) {
-    // console.log('Drag End!', event);
+    console.log('Drag End!', event);
     this.isDragging = false;
     this.indexDrag = null;
     this.isDraggingMenuElement.emit(this.isDragging);

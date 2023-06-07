@@ -152,7 +152,7 @@ export class CdsPanelIntentComponent implements OnInit, OnChanges {
     } catch (error) {
       this.logger.error("error: ", error);
     }
-    console.log('PanelIntentComponent questionCount , question -->', this.questionCount, this.question);
+    // console.log('PanelIntentComponent questionCount , question -->', this.questionCount, this.question);
   }
 
   onDropAction(event: CdkDragDrop<string[]>) {

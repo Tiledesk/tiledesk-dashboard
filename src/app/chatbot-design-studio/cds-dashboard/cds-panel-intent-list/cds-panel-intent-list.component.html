@@ -2,7 +2,7 @@
 
     <div class="search-box">
         <div class="input-box">
-            <input class="custom-input" placeholder="search a block..." (input)="livesearch($event.target.value);">
+            <input class="custom-input" placeholder="search a block..." (input)="onLivesearch($event.target.value);">
         </div>
     </div>
 
@@ -20,8 +20,8 @@
                     (click)="onSelectIntent(intent, 'int-'+id)">
 
                     <div class="icon-container" 
-                        [ngClass]="getIconForName(intent.intent_display_name)">
-                        <span class="material-icons">{{getIconForName(intent.intent_display_name)}}</span>
+                        [ngClass]="onGetIconForName(intent.intent_display_name)">
+                        <span class="material-icons">{{onGetIconForName(intent.intent_display_name)}}</span>
                     </div>
 
                     <div class="item-box">
@@ -65,8 +65,8 @@
                 (click)="onSelectIntent(intent, 'fil-'+id)">
                 
                 <div class="icon-container" 
-                    [ngClass]="getIconForName(intent.intent_display_name)">
-                    <span class="material-icons">{{getIconForName(intent.intent_display_name)}}</span>
+                    [ngClass]="onGetIconForName(intent.intent_display_name)">
+                    <span class="material-icons">{{onGetIconForName(intent.intent_display_name)}}</span>
                 </div>
 
                 <div class="item-box">

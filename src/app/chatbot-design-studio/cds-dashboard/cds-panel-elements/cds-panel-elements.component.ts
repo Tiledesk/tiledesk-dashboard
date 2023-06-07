@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
-// import {MatMenuModule} from '@angular/material/menu';
-// import {MatButtonModule} from '@angular/material/button';
 import { MatMenuTrigger } from '@angular/material/menu';
+import { TYPE_ACTION, ACTIONS_LIST, TYPE_OF_MENU } from 'app/chatbot-design-studio/utils';
+
 
 @Component({
   selector: 'cds-panel-elements',
@@ -22,6 +22,8 @@ export class CdsPanelElementsComponent implements OnInit {
   isOverMenu: boolean = false;
   positionMenu: any = {'x': 80, 'y': 0 };
   isDraggingMenuElement: boolean = false;
+  menuType: string;
+  TYPE_OF_MENU = TYPE_OF_MENU;
 
   constructor() { }
 
@@ -30,22 +32,22 @@ export class CdsPanelElementsComponent implements OnInit {
 
 
 
-  openMenu(e) {
-    //this.menuTrigger.openMenu();
-    let x = e.offsetLeft;
-    let y = e.offsetTop;
-    // console.log(':::: CdsPanelElementsComponent onMouseOverElement :::: ', y, this.isDraggingMenuElement);
-    this.isOpen = true;
+  onOpenMenu(e, type) {
     setTimeout(() => {
+      console.log('onOpenMenu: ', type);
+      this.menuType = type;
+      //this.menuTrigger.openMenu();
+      // let x = e.offsetLeft;
+      let y = e.offsetTop;
+      // console.log(':::: CdsPanelElementsComponent onMouseOverElement :::: ', y, this.isDraggingMenuElement);
+      this.isOpen = true;
       if(this.isDraggingMenuElement == false){
-        // console.log("OPEN", e);
         this.positionMenu = {'x': 80, 'y': y }
       }
     }, 0);
-    
   }
   
-  closeMenu() {
+  onCloseMenu() {
     // this.menuTrigger.closeMenu();
     setTimeout(() => {
       if(this.isOverMenu == false && this.isDraggingMenuElement == false){
@@ -64,27 +66,27 @@ export class CdsPanelElementsComponent implements OnInit {
   onMouseLeaveElement(e){
     // console.log(':::: CdsPanelElementsComponent onMouseOverElement :::: ', e, e.target.offsetLeft);
     let pos = {'x': -100, 'y': -100 }
-    // 144 92 136 (8+64)
     this.showPanelActions.emit(pos);
   }
 
   onAddNewElement(){
     // console.log(':::: CdsPanelElementsComponent onAddNewElement :::: ');
-    this.addNewElement.emit();
+    // this.addNewElement.emit();
   }
 
   onOverMenu(){
     this.isOverMenu = true;
   }
+
   onLeaveMenu(){
     this.isOverMenu = false;
-    this.closeMenu();
+    this.onCloseMenu();
   }
 
   onIsDraggingMenuElement(event: boolean){
     this.isDraggingMenuElement = event;
     if(event === false){
-      this.closeMenu();
+      this.onCloseMenu();
     }
   }
 
