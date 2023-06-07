@@ -718,13 +718,15 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     // this.project = this.auth.project_bs.value;
     this.auth.project_bs.subscribe((project) => {
       if (project) {
-        this.project = project
-        this.logger.log('[NAVBAR] project from AUTH service subscription ', this.project);
-        this.projectId = project._id;
-        this.projectName = project.name;
-        this.OPERATING_HOURS_ACTIVE = this.project.operatingHours
+        if (project.name) {
+          this.project = project
+          // console.log('[NAVBAR] project from AUTH service subscription ', this.project);
+          this.projectId = project._id;
+          this.projectName = project.name;
+          this.OPERATING_HOURS_ACTIVE = this.project.operatingHours
 
-        this.logger.log('[NAVBAR] -> OPERATING_HOURS_ACTIVE ', this.OPERATING_HOURS_ACTIVE);
+          this.logger.log('[NAVBAR] -> OPERATING_HOURS_ACTIVE ', this.OPERATING_HOURS_ACTIVE);
+        }
         // this.prjct_profile_name = this.project.profile_name;
         // this.prjct_trial_expired = this.project.trial_expired;
         // this.prjc_trial_days_left = this.project.trial_days_left;
