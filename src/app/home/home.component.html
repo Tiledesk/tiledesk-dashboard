@@ -18,20 +18,32 @@
                 <!-- <div class="flex-0 w-16 h-16 rounded-full overflow-hidden">
                   <img src="assets/images/avatars/brian-hughes.jpg" class="w-full h-full object-cover">
                 </div> -->
-                <div class="flex flex-col min-w-0 ml-4">
+                <div class="flex flex-col min-w-0 ml-4" style="flex-direction: row !important;">
                   <!-- leading-7 -->
                   <div
-                    class="text-2xl md-text-5xl font-w-400 tracking-tight  md-leading-snug truncate ng-star-inserted">
+                    class="text-2xl md-text-5xl font-w-400 tracking-tight  md-leading-snug truncate ng-star-inserted" style="margin-bottom: 6px;">
                     <span style="font-family: 'Poppins', Arial, sans-serif;"> {{ prjct_name }} </span>
                     <span class="material-icons home-edit-project-name-icon" (click)="goToProjectSettingsGeneral()"
                       matTooltipClass="custom-mat-tooltip" matTooltip="{{'EditProjectName' | translate }}"
                       #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
                       mode_edit
                     </span>
+
+                    <!-- <span *ngIf="project_plan_badge" class="project-plan-badge" 
+                    [ngClass]="{
+                      'free-plan-badge': current_selected_prjct?.plan_badge_background_type === 'free_plan_badge', 
+                      'a-plan-badge':  current_selected_prjct?.plan_badge_background_type === 'a_plan_badge',
+                      'b-plan-badge': current_selected_prjct?.plan_badge_background_type === 'b_plan_badge', 
+                      'c-plan-badge': current_selected_prjct?.plan_badge_background_type === 'c_plan_badge',
+                      'unsupported-plan-badge': current_selected_prjct?.plan_badge_background_type === 'unsupported_plan_badge'
+                      }">
+                      {{ prjct_profile_name }}
+                    </span> -->
+
                   </div>
                   <!--ng-container-->
                   <!--container-->
-                  <div class="flex items-center">
+                  <div  class="flex items-center">
                     <div *ngIf="project_plan_badge" class="project-plan-badge" 
                     [ngClass]="{
                       'free-plan-badge': current_selected_prjct?.plan_badge_background_type === 'free_plan_badge', 
@@ -46,9 +58,9 @@
                 </div>
               </div>
               <!-- ---------------------------------- -->
-              <!-- Left side -->
+              <!-- Left side mt-6 -------------------------------------------------------------------------------------------------------------->
               <!-- ---------------------------------- -->
-              <div class="flex items-center mt-6 sm-mt-0 sm-ml-2 space-x-3">
+              <div class="flex items-center  sm-mt-0 sm-ml-2 space-x-3">
 
                 <!-- ------------------------------------ -->
                 <!-- Operating Hours -->
