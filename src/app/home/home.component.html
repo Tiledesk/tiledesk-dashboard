@@ -18,10 +18,11 @@
                 <!-- <div class="flex-0 w-16 h-16 rounded-full overflow-hidden">
                   <img src="assets/images/avatars/brian-hughes.jpg" class="w-full h-full object-cover">
                 </div> -->
-                <div class="flex flex-col min-w-0 ml-4" style="flex-direction: row !important;">
+                <!-- style="flex-direction: row !important;" -->
+                <div class="flex flex-col min-w-0 ml-4" >
                   <!-- leading-7 -->
                   <div
-                    class="text-2xl md-text-5xl font-w-400 tracking-tight  md-leading-snug truncate ng-star-inserted" style="margin-bottom: 6px;">
+                    class="text-2xl md-text-5xl font-w-400 tracking-tight  md-leading-snug truncate ng-star-inserted">
                     <span style="font-family: 'Poppins', Arial, sans-serif;"> {{ prjct_name }} </span>
                     <span class="material-icons home-edit-project-name-icon" (click)="goToProjectSettingsGeneral()"
                       matTooltipClass="custom-mat-tooltip" matTooltip="{{'EditProjectName' | translate }}"
@@ -44,7 +45,9 @@
                   <!--ng-container-->
                   <!--container-->
                   <div  class="flex items-center">
-                    <div *ngIf="project_plan_badge" class="project-plan-badge" 
+                    <div style="font-family: 'Poppins';
+                    border-radius: 999px;
+                    padding: 2px 8px;" *ngIf="project_plan_badge" class="project-plan-badge" 
                     [ngClass]="{
                       'free-plan-badge': current_selected_prjct?.plan_badge_background_type === 'free_plan_badge', 
                       'a-plan-badge':  current_selected_prjct?.plan_badge_background_type === 'a_plan_badge',
@@ -65,7 +68,7 @@
                 <!-- ------------------------------------ -->
                 <!-- Operating Hours -->
                 <!-- ------------------------------------ -->
-                <button mat-mini-fab color="warn" aria-label="date_range icon"
+                <button mat-mini-fab style="background-color: #f44336" aria-label="date_range icon"
                   style="box-shadow: unset;margin-right: 16px;" [satPopoverAnchor]="editOperatingHours"
                   (click)="editOperatingHours.toggle();">
                   <mat-icon style="color: #fff;">date_range</mat-icon>
