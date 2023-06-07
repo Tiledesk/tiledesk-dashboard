@@ -39,13 +39,9 @@ export class InstallTemplateComponent extends WidgetSetUpBaseComponent implement
   public templates: any;
   public newlyCreatedProject = false
   public user: any
-  public botid: string;
+  botid: string;
   public defaultDeptID: string;
   public botname: string;
-  public botDescription: string;
-  public templateFeature: any;
-  public templateTags: any;
-  public templatesCertifiedTags: any;
   project: Project;
   public TESTSITE_BASE_URL: string;
   constructor(
@@ -63,7 +59,7 @@ export class InstallTemplateComponent extends WidgetSetUpBaseComponent implement
     private botLocalDbService: BotLocalDbService,
     private departmentService: DepartmentService,
     public appConfigService: AppConfigService,
-
+    
   ) {
     super(translate);
     const brand = brandService.getBrand();
@@ -92,13 +88,13 @@ export class InstallTemplateComponent extends WidgetSetUpBaseComponent implement
   getParamsTemplatesAndProjects() {
     this.route.params.subscribe((params) => {
 
-      // console.log('[INSTALL-TEMPLATE] params ', params)
+      this.logger.log('[INSTALL-TEMPLATE] params ', params)
       this.projectId = params.projectid;
       // this.logger.log('[INSTALL-TEMPLATE] projectId ', this.projectId)
       this.botId = params.botid;
       this.langCode = params.langcode;
       this.langName = params.langname;
-      // console.log('[INSTALL-TEMPLATE] params langCode: ', this.langCode, ' - langName: ', this.langName)
+      this.logger.log('[INSTALL-TEMPLATE] params langCode: ', this.langCode, ' - langName: ', this.langName)
       if (this.langCode && this.langName) {
         this.addNewLanguage(this.langCode, this.langName)
         this.newlyCreatedProject = true
@@ -160,7 +156,7 @@ export class InstallTemplateComponent extends WidgetSetUpBaseComponent implement
             }
             this.auth.projectSelected(selectedProject)
 
-            this.getDeptsByProjectId()
+            this.getDeptsByProjectId() 
           }
         });
       }
@@ -175,45 +171,30 @@ export class InstallTemplateComponent extends WidgetSetUpBaseComponent implement
 
 
   getTemplates(botid) {
-    // this.faqKbService.getTemplates().subscribe((res: any) => {
-    this.faqKbService.getChatbotTemplateById(botid).subscribe((res: any) => {
+    this.faqKbService.getTemplates().subscribe((res: any) => {
+
       if (res) {
-        // console.log('[INSTALL-TEMPLATE] GET TEMPLATES - RES ', res)
+        // this.logger.log('[INSTALL-TEMPLATE] GET TEMPLATES - RES ', res)
 
-        // const selectedTemplate = res.filter((obj) => {
-        //   return obj._id === botid
-        // });
-        this.templates = res;
-        this.botname = res['name']
-        this.botDescription = res['description']
-        this.templateFeature = res['templateFeatures']
-        this.templateTags = res['tags']
-        this.templatesCertifiedTags = res['certifiedTags']
+        const selectedTemplate = res.filter((obj) => {
+          return obj._id === botid
+        });
+        this.templates = selectedTemplate
         // this.openDialog(this.templates[0])
-        // console.log('[INSTALL-TEMPLATE] GET TEMPLATES - SELECTED TEMPALTES > templateFeature', this.templateFeature)
-        // console.log('[INSTALL-TEMPLATE] GET TEMPLATES - SELECTED TEMPALTES > templateTags', this.templateTags)
-        // console.log('[INSTALL-TEMPLATE] GET TEMPLATES - SELECTED TEMPALTES ', this.templates)
+        this.logger.log('[INSTALL-TEMPLATE] GET TEMPLATES - SELECTED TEMPALTES ', this.templates)
 
-        if (this.templates && this.templates.certifiedTags) {
-          this.generateTagsBackgroundFromCertifiedTags(this.templates)
-        } 
-        // else  if (this.templates && this.templates.tags) {
-        //   this.generateTagsBackgroundFromTags(this.templates)
-        // }
+        if (this.templates) {
+          this.generateTagsBackground(this.templates)
+        }
 
-        if (this.templates && this.templates['bigImage']) {
-          this.templateImg = this.templates['bigImage'];
-        }
-        if (  this.templates && this.templates['name']) {
-        this.botname = this.templates['name']
-        // console.log('[INSTALL-TEMPLATE] GET TEMPLATES - SELECTED TEMPALTES >  botname', this.botname)
-        }
+        this.templateImg = this.templates[0]['bigImage'];
+        this.botname = this.templates[0]['name']
 
         if (!isDevMode()) {
           if (window['analytics']) {
             try {
               window['analytics'].page("Wizard, Install chatbot", {
-                "chatbotName": this.botname
+                "chatbotName": this.templates[0]['name']
               });
             } catch (err) {
               this.logger.error('Wizard Install template page error', err);
@@ -252,7 +233,7 @@ export class InstallTemplateComponent extends WidgetSetUpBaseComponent implement
     });
   }
 
-  generateTagsBackgroundFromCertifiedTags(templates) {
+  generateTagsBackground(templates) {
     templates.forEach(template => {
       // this.logger.log('generateTagsBackground template', template)
       if (template && template.certifiedTags) {
@@ -276,32 +257,6 @@ export class InstallTemplateComponent extends WidgetSetUpBaseComponent implement
         });
       }
     });
-  }
-
-  generateTagsBackgroundFromTags(template) {
-    
-      // console.log('generateTagsBackground template', template)
-      if (template && template.tags) {
-        template.tags.forEach(tag => {
-          // console.log('generateTagsBackground tag', tag)
-          let tagbckgnd = ''
-          if (tag.color === "#a16300" || tag.color === "#A16300") {
-            tagbckgnd = 'rgba(255,221,167,1)'
-          } else if (tag.color === "#00699E" || tag.color === "#00699e") {
-            tagbckgnd = 'rgba(208,239,255, 1)'
-          } else if (tag.color === "#25833e" || tag.color === "#25833E") {
-            tagbckgnd = 'rgba(204,241,213, 1)'
-          } else if (tag.color === "#0049bd" || tag.color === "#0049BD") {
-            tagbckgnd = 'rgba(220,233,255, 1)'
-          } else if (tag.color !== "#a16300" && tag.color !== "#A16300" && tag.color !== "#00699E" && tag.color !== "#00699e" && tag.color !== "#25833e" && tag.color !== "#25833E" && tag.color !== "#0049bd" && tag.color !== "#0049BD") {
-
-            tagbckgnd = this.hexToRgba(tag.color)
-            // this.logger.log('generateTagsBackground tagbckgnd ', tagbckgnd)
-          }
-          tag.background = tagbckgnd;
-        });
-      }
-    
   }
 
   hexToRgba(hex) {
@@ -340,7 +295,7 @@ export class InstallTemplateComponent extends WidgetSetUpBaseComponent implement
 
 
   forkTemplate() {
-    this.faqKbService.installTemplate(this.templates._id, this.projectId, true, this.templates._id).subscribe((res: any) => {
+    this.faqKbService.installTemplate(this.templates[0]._id, this.projectId, true, this.templates[0]._id).subscribe((res: any) => {
       this.logger.log('[INSTALL-TEMPLATE] - FORK TEMPLATE RES', res);
       this.botid = res.bot_id
 
@@ -399,11 +354,11 @@ export class InstallTemplateComponent extends WidgetSetUpBaseComponent implement
       // this.logger.log('[FAQ-EDIT-ADD] - DEPT - GET DEPTS  - RES', departments);
       if (departments) {
         departments.forEach((dept: any) => {
-
+         
 
           if (dept.default === true) {
             this.defaultDeptID = dept._id;
-
+          
           }
         });
       }
@@ -457,7 +412,7 @@ export class InstallTemplateComponent extends WidgetSetUpBaseComponent implement
     const testItOutBaseUrl = this.TESTSITE_BASE_URL.substring(0, this.TESTSITE_BASE_URL.lastIndexOf('/'));
     const testItOutUrl = testItOutBaseUrl + '/chatbot-panel.html'
     // const url = testItOutUrl + '?tiledesk_projectid=' + "635b97cc7d7275001a2ab3e0" + '&tiledesk_participants=bot_' + this.templateid + "&tiledesk_departmentID=635b97cc7d7275001a2ab3e4"
-    const url = testItOutUrl + '?tiledesk_projectid=' + this.templates.id_project + '&tiledesk_participants=bot_' + this.templates._id + "&tiledesk_departmentID=" + "63d7911ca7b3d3001a4a9408"
+    const url = testItOutUrl + '?tiledesk_projectid=' + this.templates[0].id_project + '&tiledesk_participants=bot_' + this.templates[0]._id + "&tiledesk_departmentID=" + "63d7911ca7b3d3001a4a9408"
     // this.logger.log('openTestSiteInPopupWindow URL ', url)
 
 

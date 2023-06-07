@@ -9,7 +9,6 @@ import { ProjectPlanService } from '../../services/project-plan.service';
 import { UsersService } from '../../services/users.service';
 import { LoggerService } from '../../services/logger/logger.service';
 import { AppConfigService } from 'app/services/app-config.service';
-import { PLAN_NAME } from 'app/utils/util';
 const swal = require('sweetalert');
 
 @Component({
@@ -18,7 +17,7 @@ const swal = require('sweetalert');
   styleUrls: ['./trigger-static.component.scss']
 })
 export class TriggerStaticComponent extends StaticPageBaseComponent implements OnInit, OnDestroy {
-  PLAN_NAME = PLAN_NAME
+
   projectId: string;
   browserLang: string;
   prjct_profile_type: string;
@@ -147,9 +146,9 @@ export class TriggerStaticComponent extends StaticPageBaseComponent implements O
 
         if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
           if (this.USER_ROLE === 'owner') {
-            if (this.profile_name !== PLAN_NAME.C) {
+            if (this.profile_name !== 'enterprise') {
               this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
-            } else if (this.profile_name === PLAN_NAME.C) {
+            } else if (this.profile_name === 'enterprise') {
               this.notify.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
             }
           }
@@ -169,8 +168,8 @@ export class TriggerStaticComponent extends StaticPageBaseComponent implements O
         if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
           this.notify._displayContactUsModal(true, 'upgrade_plan');
         } else {
-          this.router.navigate(['project/' + this.projectId + '/pricing']);
-          // this.notify.presentContactUsModalToUpgradePlan(true);
+          // this.router.navigate(['project/' + this.projectId + '/pricing']);
+          this.notify.presentContactUsModalToUpgradePlan(true);
         }
       } else {
         this.presentModalOnlyOwnerCanManageTheAccountPlan();

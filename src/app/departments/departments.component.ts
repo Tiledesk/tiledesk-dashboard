@@ -9,7 +9,7 @@ import { GroupService } from '../services/group.service';
 import { FaqKbService } from '../services/faq-kb.service';
 import { TranslateService } from '@ngx-translate/core';
 import { NotifyService } from '../core/notify.service';
-import { APP_SUMO_PLAN_NAME, avatarPlaceholder, getColorBck, PLAN_NAME } from '../utils/util';
+import { avatarPlaceholder, getColorBck } from '../utils/util';
 import { AppConfigService } from '../services/app-config.service';
 import { ProjectPlanService } from '../services/project-plan.service';
 import { LoggerService } from '../services/logger/logger.service';
@@ -20,9 +20,7 @@ import { LoggerService } from '../services/logger/logger.service';
 })
 
 export class DepartmentsComponent implements OnInit {
-  PLAN_NAME = PLAN_NAME;
-  APP_SUMO_PLAN_NAME = APP_SUMO_PLAN_NAME
-  t_params: any;
+
   departments: Department[] = [];
 
   dept_name: string;
@@ -60,13 +58,9 @@ export class DepartmentsComponent implements OnInit {
   prjct_profile_type: string;
   subscription_is_active: boolean;
   trialExpired: boolean;
-  profile_name: string;
   subscriptionInactiveOrTrialExpired: boolean;
   IS_OPEN_SETTINGS_SIDEBAR: boolean;
   isChromeVerGreaterThan100: boolean;
-  appSumoProfile: string;
- 
-  appSumoProfilefeatureAvailableFromBPlan: string;
   constructor(
     private deptService: DepartmentService,
     private router: Router,
@@ -78,9 +72,7 @@ export class DepartmentsComponent implements OnInit {
     private prjctPlanService: ProjectPlanService,
     public appConfigService: AppConfigService,
     private logger: LoggerService
-  ) { 
-   
-  }
+  ) { }
 
   ngOnInit() {
     this.auth.checkRoleForCurrentProject();
@@ -335,24 +327,12 @@ export class DepartmentsComponent implements OnInit {
     this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
       this.logger.log('[DEPTS] getProjectPlan project Profile Data', projectProfileData)
       if (projectProfileData) {
-        this.profile_name = projectProfileData.profile_name;
         this.prjct_profile_type = projectProfileData.profile_type;
         this.logger.log('[DEPTS] getProjectPlan prjct_profile_type', this.prjct_profile_type)
         this.subscription_is_active = projectProfileData.subscription_is_active;
         this.logger.log('[DEPTS] getProjectPlan subscription_is_active', this.subscription_is_active)
         this.trialExpired = projectProfileData.trial_expired;
         this.logger.log('[DEPTS] getProjectPlan trialExpired', this.trialExpired)
-
-       
-        if (projectProfileData.extra3) {
-          this.appSumoProfile = APP_SUMO_PLAN_NAME[projectProfileData.extra3]
-          this.appSumoProfilefeatureAvailableFromBPlan = APP_SUMO_PLAN_NAME['tiledesk_tier3']
-
-          this.t_params = { 'plan_name': this.appSumoProfilefeatureAvailableFromBPlan }
-
-        } else if (!projectProfileData.extra3) {
-          this.t_params = { 'plan_name': PLAN_NAME.B }
-        }
 
         if ((this.prjct_profile_type === 'payment' && this.subscription_is_active === false) || (this.prjct_profile_type === 'free' && this.trialExpired === true)) {
           this.subscriptionInactiveOrTrialExpired = true;
@@ -380,25 +360,6 @@ export class DepartmentsComponent implements OnInit {
     } else {
       this.router.navigate(['project/' + this.project._id + '/department/create']);
     }
-
-    if (
-      (this.profile_name === PLAN_NAME.A) ||
-      (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
-      (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
-      (this.prjct_profile_type === 'free' && this.trialExpired === true) 
-     
-      ) {
-        this.router.navigate(['project/' + this.project._id + '/departments-demo']);
-      // console.log('[WIDGET-SET-UP] - featureIsAvailable IS NOT AVAIBLE ')
-    } else if (
-      (this.profile_name === PLAN_NAME.B && this.subscription_is_active === true) ||
-      (this.profile_name === PLAN_NAME.C && this.subscription_is_active === true) ||
-      (this.prjct_profile_type === 'free' && this.trialExpired === false)
-     
-      ) {
-        this.router.navigate(['project/' + this.project._id + '/department/create']);
-        // console.log('[WIDGET-SET-UP] - featureIsAvailable IS AVAIBLE' )
-      }
   }
 
   /**

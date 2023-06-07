@@ -19,7 +19,6 @@ export class CommunityTemplateDtlsComponent implements OnInit {
   public templateId: string;
   public projectId: string;
   public template: any;
-  description: any;
   public isChromeVerGreaterThan100: boolean;
   public UPLOAD_ENGINE_IS_FIREBASE: boolean;
   public storageBucket: string;
@@ -85,8 +84,6 @@ export class CommunityTemplateDtlsComponent implements OnInit {
         this.logger.log('[COMMUNITY-TEMPLATE-DTLS] GET COMMUNITY TEMPLATE - template ', _template);
         if (_template) {
           this.template = _template
-
-
         }
       })
   }

@@ -1314,27 +1314,27 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                 this.plan_name = this.current_selected_prjct.id_project.profile.name;
                 this.plan_type = this.current_selected_prjct.id_project.profile.type;
                 this.prjct_name = this.current_selected_prjct.id_project.name;
-                // if (this.current_selected_prjct.id_project.profile.type === 'free') {
-                //     if (this.current_selected_prjct.id_project.trialExpired === false) {
-                //         if (this.isVisiblePAY) {
-                //             this.getProPlanTrialTranslation();
-                //         } else {
-                //             this.getUnavailablePlanProfile()
-                //         }
-                //     } else {
-                //         if (this.isVisiblePAY) {
-                //             this.getPaidPlanTranslation(this.current_selected_prjct.id_project.profile.name);
-                //         } else {
-                //             this.getUnavailablePlanProfile()
-                //         }
-                //     }
-                // } else if (this.current_selected_prjct.id_project.profile.type === 'payment') {
-                //     if (this.isVisiblePAY) {
-                //         this.getPaidPlanTranslation(this.current_selected_prjct.id_project.profile.name);
-                //     } else {
-                //         this.getUnavailablePlanProfile()
-                //     }
-                // }
+                if (this.current_selected_prjct.id_project.profile.type === 'free') {
+                    if (this.current_selected_prjct.id_project.trialExpired === false) {
+                        if (this.isVisiblePAY) {
+                            this.getProPlanTrialTranslation();
+                        } else {
+                            this.getUnavailablePlanProfile()
+                        }
+                    } else {
+                        if (this.isVisiblePAY) {
+                            this.getPaidPlanTranslation(this.current_selected_prjct.id_project.profile.name);
+                        } else {
+                            this.getUnavailablePlanProfile()
+                        }
+                    }
+                } else if (this.current_selected_prjct.id_project.profile.type === 'payment') {
+                    if (this.isVisiblePAY) {
+                        this.getPaidPlanTranslation(this.current_selected_prjct.id_project.profile.name);
+                    } else {
+                        this.getUnavailablePlanProfile()
+                    }
+                }
             }
             this.logger.log('[SIDEBAR] - GET PROJECTS - projects ', projects);
         }, error => {
@@ -1344,30 +1344,30 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         });
     }
 
-    // getProPlanTrialTranslation() {
-    //     this.translate.get('ProPlanTrial')
-    //         .subscribe((translation: any) => {
-    //             this._prjct_profile_name = translation;
+    getProPlanTrialTranslation() {
+        this.translate.get('ProPlanTrial')
+            .subscribe((translation: any) => {
+                this._prjct_profile_name = translation;
 
-    //             this.logger.log('[SIDEBAR] PLAN NAME ', this._prjct_profile_name)
-    //         });
-    // }
+                this.logger.log('[SIDEBAR] PLAN NAME ', this._prjct_profile_name)
+            });
+    }
 
-    // getPaidPlanTranslation(project_profile_name) {
-    //     this.translate.get('PaydPlanName', { projectprofile: project_profile_name })
-    //         .subscribe((text: string) => {
-    //             this._prjct_profile_name = text;
-    //             this.logger.log('[SIDEBAR] PLAN NAME ', this._prjct_profile_name)
-    //         });
-    // }
+    getPaidPlanTranslation(project_profile_name) {
+        this.translate.get('PaydPlanName', { projectprofile: project_profile_name })
+            .subscribe((text: string) => {
+                this._prjct_profile_name = text;
+                this.logger.log('[SIDEBAR] PLAN NAME ', this._prjct_profile_name)
+            });
+    }
 
-    // getUnavailablePlanProfile() {
-    //     this.translate.get('ProfileNotAvailable')
-    //         .subscribe((text: string) => {
-    //             this._prjct_profile_name = text;
-    //             this.logger.log('[SIDEBAR] PLAN NAME ', this._prjct_profile_name)
-    //         });
-    // }
+    getUnavailablePlanProfile() {
+        this.translate.get('ProfileNotAvailable')
+            .subscribe((text: string) => {
+                this._prjct_profile_name = text;
+                this.logger.log('[SIDEBAR] PLAN NAME ', this._prjct_profile_name)
+            });
+    }
 
 
 

@@ -667,13 +667,8 @@ div.clear {
 }
 
 ::ng-deep #c21-powered-by > div > a > img {
-    width: 20px;
+    width: 68px;
     height: auto;
-    max-height: 40px;
-    font-size: 1.2em;
-    font-weight: 500;
-    line-height: 22px;
-
 }
 
 ::ng-deep #c21-powered-by > div > a {
@@ -683,8 +678,9 @@ div.clear {
 
 ::ng-deep #c21-powered-by > div > a > span {
     color: #aaa;
+    font-size: 12px;
     position: relative;
-    // top: 1px;
+    top: 1px;
 }
 
 // #chat21-home-component .c21-header-container .c21-logo img {

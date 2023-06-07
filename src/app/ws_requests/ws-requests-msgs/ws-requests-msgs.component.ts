@@ -24,7 +24,7 @@ import { TagsService } from '../../services/tags.service';
 
 import { UAParser } from 'ua-parser-js';
 import { ContactsService } from '../../services/contacts.service';
-import { APP_SUMO_PLAN_NAME, avatarPlaceholder, getColorBck, PLAN_NAME } from '../../utils/util';
+import { avatarPlaceholder, getColorBck } from '../../utils/util';
 import { LoggerService } from '../../services/logger/logger.service';
 
 import 'firebase/database';
@@ -36,9 +36,6 @@ import moment from 'moment';
 import { UploadImageService } from 'app/services/upload-image.service';
 import { UploadImageNativeService } from 'app/services/upload-image-native.service';
 import { TooltipOptions } from 'ng2-tooltip-directive';
-import { ProjectPlanService } from 'app/services/project-plan.service';
-import { MatDialog } from '@angular/material/dialog';
-import { UpgradePlanModalComponent } from 'app/components/modals/upgrade-plan-modal/upgrade-plan-modal.component';
 
 const swal = require('sweetalert');
 // './ws-requests-msgs.component.html',
@@ -48,16 +45,7 @@ const swal = require('sweetalert');
   styleUrls: ['./ws-requests-msgs.component.scss']
 })
 export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit, OnDestroy, AfterViewInit {
-  PLAN_NAME = PLAN_NAME;
-  APP_SUMO_PLAN_NAME = APP_SUMO_PLAN_NAME;
-  appSumoProfile: string;
-  appSumoProfilefeatureAvailableFromBPlan: string;
-  featureAvailableFromBPlan: string;
-  cancel: string;
-  upgradePlan: string;
-
   objectKeys = Object.keys;
-  isVisiblePaymentTab: boolean;
   @ViewChild('scrollMe', { static: false })
   private myScrollContainer: ElementRef;
 
@@ -180,7 +168,6 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   attributesDecodedJWTAttributesArray: Array<any>
   attributesDecodedJWTArrayMerged: Array<any>
   preChatFormArray: Array<any>;
-  botConversationArray: Array<any>;
   rightSidebarWidth: number;
   tag: any;
   tagcolor: any;
@@ -376,19 +363,6 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   smartReassignmentForThisConversationWillBeEnabled: string;
   tagAlreadyAssigned: string
   thisTagHasBeenAlreadyAssignedPleaseEnterUniqueTag: string
-  isOpenChatbotAttributesAccordion: boolean
-  profile_name: string;
-  subscription_is_active: any;
-  trial_expired: any;
-  prjct_profile_type: string;
-  agentCannotManageAdvancedOptions: string;
-  subscription_end_date: any;
-  onlyAvailableWithEnterprisePlan: string;
-  cPlanOnly: string
-  learnMoreAboutDefaultRoles: string;
-  displayChatRatings: boolean = true;
-  onlyOwnerCanManageTheAccountPlanMsg: string;
-  DASHBORD_BASE_URL: string;
   /**
    * Constructor
    * @param router 
@@ -433,8 +407,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     public appStoreService: AppStoreService,
     private uploadImageService: UploadImageService,
     private uploadImageNativeService: UploadImageNativeService,
-    private prjctPlanService: ProjectPlanService,
-    public dialog: MatDialog,
+
 
   ) {
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate)
@@ -540,130 +513,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.listenToUpladAttachmentRemoved();
     this.getRouteParams();
     this.getQueryParams();
-    this.getProjectPlan();
 
     // this.getClickOutEditContactFullname()
   }
 
-  getProjectPlan() {
-    this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-      // console.log('[WS-REQUESTS-MSGS] GET PROJECT PROFILE', projectProfileData)
-      if (projectProfileData) {
-
-        this.prjct_profile_type = projectProfileData.profile_type;
-        this.subscription_is_active = projectProfileData.subscription_is_active;
-        this.trial_expired = projectProfileData.trial_expired;
-        this.subscription_end_date = projectProfileData.subscription_end_date;
-        this.profile_name = projectProfileData.profile_name;
-
-        if (projectProfileData.extra3) {
-          this.appSumoProfile = APP_SUMO_PLAN_NAME[projectProfileData.extra3]
-          this.appSumoProfilefeatureAvailableFromBPlan = APP_SUMO_PLAN_NAME['tiledesk_tier3']
-        }
-
-
-        if (projectProfileData.profile_type === 'free') {
-          if (projectProfileData.trial_expired === false) {
-            this.displayChatRatings = true;
-            // console.log('[WS-REQUESTS-MSGS] profile_type', projectProfileData.profile_type)
-            // console.log('[WS-REQUESTS-MSGS] displayChatRatings', this.displayChatRatings)
-          } else {
-            this.displayChatRatings = false;
-            // console.log('[WS-REQUESTS-MSGS] profile_type', projectProfileData.profile_type)
-            // console.log('[WS-REQUESTS-MSGS] displayChatRatings', this.displayChatRatings)
-          }
-        } else if (projectProfileData.profile_type === 'payment') {
-          if (projectProfileData.subscription_is_active === true) {
-            this.displayChatRatings = true;
-            // console.log('[WS-REQUESTS-MSGS] profile_type', projectProfileData.profile_type)
-            // console.log('[WS-REQUESTS-MSGS] displayChatRatings', this.displayChatRatings)
-          } else if (projectProfileData.subscription_is_active === false) {
-            // console.log('[WS-REQUESTS-MSGS] profile_type', projectProfileData.profile_type)
-            this.displayChatRatings = false;
-            // console.log('[WS-REQUESTS-MSGS] displayChatRatings', this.displayChatRatings)
-          }
-        }
-
-        if (projectProfileData.profile_name === 'free' && projectProfileData.trial_expired === true && this.selectedResponseTypeID === 2) {
-          const elemTexareaSendMsg = <HTMLInputElement>document.querySelector('.send-message-texarea')
-          // console.log('[WS-REQUESTS-MSGS] GET PROJECT PLAN elemTexareaSendMsg USE CASE PRIVATE NOTE (ID 2)', elemTexareaSendMsg);
-          if (elemTexareaSendMsg && this.isVisiblePaymentTab) {
-            elemTexareaSendMsg.disabled = true;
-            this.openUpgradePlanDialog(projectProfileData._id)
-          }
-        }
-      }
-    }, err => {
-      // console.error('[WS-REQUESTS-MSGS] GET PROJECT PROFILE - ERROR', err);
-    }, () => {
-      // console.log('[WS-REQUESTS-MSGS] GET PROJECT PROFILE * COMPLETE *');
-    });
-  }
-
-  goToPricing() {
-    if (this.isVisiblePaymentTab) {
-      if (this.CURRENT_USER_ROLE === 'owner') {
-        if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
-          this.notify._displayContactUsModal(true, 'upgrade_plan');
-        } else {
-          this.router.navigate(['project/' + this.id_project + '/pricing']);
-
-        }
-      } else {
-        this.presentModalOnlyOwnerCanManageTheAccountPlan();
-      }
-    } else {
-      this.notify._displayContactUsModal(true, 'upgrade_plan');
-    }
-  }
-
-
-  goToPricingFromChat() {
-    if (this.isVisiblePaymentTab) {
-      if (this.CURRENT_USER_ROLE === 'owner') {
-        const href = window.location.href;
-        this.logger.log('[PRICING] href ', href)
-
-        const hrefArray = href.split('/#/');
-        this.dshbrdBaseUrl = hrefArray[0]
-        const pricingUrl = this.dshbrdBaseUrl + '/#/project/' + this.id_project + '/chat-pricing';
-        window.open(pricingUrl, '_blank');
-      } else {
-        this.presentModalOnlyOwnerCanManageTheAccountPlan();
-      }
-    } else {
-      this.notify._displayContactUsModal(true, 'upgrade_plan');
-    }
-  }
-
-  presentModalOnlyOwnerCanManageTheAccountPlan() {
-    // https://github.com/t4t5/sweetalert/issues/845
-    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles)
-
-  }
-
-  openUpgradePlanDialog(projectid) {
-    const dialogRef = this.dialog.open(UpgradePlanModalComponent, {
-      data: {
-        featureAvailableFrom: PLAN_NAME.A,
-        projectId: projectid,
-        userRole: this.CURRENT_USER_ROLE
-      },
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      // console.log(`Dialog result: ${result}`);
-      this.selectedResponseTypeID = 1
-      const elemTexareaSendMsg = <HTMLInputElement>document.querySelector('.send-message-texarea')
-      // console.log('[WS-REQUESTS-MSGS] GET PROJECT PLAN elemTexareaSendMsg PUBLIC ANSWER (ID 1) afterClosed', elemTexareaSendMsg);
-
-      if (elemTexareaSendMsg && elemTexareaSendMsg.disabled) {
-        elemTexareaSendMsg.disabled = false;
-        // console.log('✅ element is disabled afterClosed');
-      }
-
-    });
-  }
 
   getQueryParams() {
     this.route.queryParams
@@ -1236,16 +1089,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           this.isVisibleLBS = true;
           // this.logger.log('[WS-REQUESTS-MSGS] - lbs is', this.isVisibleLBS);
         }
-      }
 
-      if (key.includes("PAY")) {
-        let pay = key.split(":");
-
-        if (pay[1] === "F") {
-          this.isVisiblePaymentTab = false;
-        } else {
-          this.isVisiblePaymentTab = true;
-        }
       }
 
       if (key.includes("APP")) {
@@ -1264,10 +1108,6 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     }
     if (!this.public_Key.includes("APP")) {
       this.isVisibleAPP = false;
-    }
-
-    if (!this.public_Key.includes("PAY")) {
-      this.isVisiblePaymentTab = false;
     }
   }
 
@@ -1350,11 +1190,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   // ----------------------------------------------------------------------------
   getParamRequestId() {
     this.route.params.subscribe((params) => {
-      // console.log('[WS-REQUESTS-MSGS] - getParamRequestId  ', params);
-      this.getBotConversationAttribute(params.requestid)
+      this.logger.log('[WS-REQUESTS-MSGS] - getParamRequestId  ', params);
       if (this.id_request) {
-        // console.log('[WS-REQUESTS-MSGS] - UNSUB-REQUEST-BY-ID - id_request ', this.id_request);
-
+        this.logger.log('[WS-REQUESTS-MSGS] - UNSUB-REQUEST-BY-ID - id_request ', this.id_request);
         this.logger.log('[WS-REQUESTS-MSGS] - UNSUB-MSGS - id_request ', this.id_request);
 
         // Unsubcribe from old request
@@ -1371,81 +1209,12 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       }
 
       this.id_request = params.requestid;
-
-
-
       this.logger.log('[WS-REQUESTS-MSGS] request_id (new)', this.id_request);
     });
 
     if (this.id_request) {
       this.subscribeToWs_RequestById(this.id_request);
     }
-  }
-
-
-  getBotConversationAttribute(requestid) {
-    // console.log('HERE YES requestid', requestid)
-    this.wsRequestsService.getBotConversationAttribute(requestid)
-      .subscribe((data: any) => {
-        if (data) {
-          this.botConversationArray = []
-          for (let [key, value] of Object.entries(data)) {
-
-            // console.log(`[WS-REQUESTS-MSGS] - GET CONVERSATION WITH BOT key : ${key} - value ${value}`);
-
-            let _value: any;
-            if (typeof value === 'object' && value !== null) {
-              // this.logger.log(`:-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES value is an object :`, JSON.stringify(value));
-              _value = JSON.stringify(value)
-            } else {
-              _value = value
-            }
-
-            // https://stackoverflow.com/questions/50463738/how-to-find-width-of-each-character-in-pixels-using-javascript
-            let letterLength = {};
-            let letters = ["", " ", " ?", "= ", " -", " :", " _", " ,", " ", " ", " ", "(", ")", "}", "{", "\"", " ", "/", ".", "a", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
-
-            for (let letter of letters) {
-              let span = document.createElement('span');
-              span.append(document.createTextNode(letter));
-              span.style.display = "inline-block";
-              document.body.append(span);
-              letterLength[letter] = span.offsetWidth;
-              span.remove();
-            }
-            let totalLength = 0;
-
-            // for (let i = 0; i < _value.length; i++) {
-            //   this.logger.log(':-D Ws-REQUESTS-Msgs - getWsRequestById _value[i]', _value[i] + ": " + letterLength[_value[i]])
-            // }
-            if (_value) {
-              for (let i = 0; i < _value.length; i++) {
-                if (letterLength[_value[i]] !== undefined) {
-                  totalLength += letterLength[_value[i]];
-                } else {
-                  // if the letter not is in dictionary letters letterLength[_value[i]] is undefined so add the witdh of the 'S' letter (8px)
-                  totalLength += letterLength['S'];
-                }
-              }
-              // this.logger.log(':-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES value LENGHT ', _value + " totalLength : " + totalLength)
-
-              let entries = { 'attributeName': key, 'attributeValue': _value, 'attributeValueL': totalLength };
-              // if (key !== 'decoded_jwt') {
-              this.botConversationArray.push(entries)
-            }
-          }
-          // console.log('[WS-REQUESTS-MSGS] - GET CONVERSATION WITH BOT botConversationArray: ', this.botConversationArray);
-
-        } else {
-          // console.log('[WS-REQUESTS-MSGS] - GET CONVERSATION WITH BOT -  DATA IS UNDEFINED ');
-        }
-        // console.log('[WS-REQUESTS-MSGS] - GET CONVERSATION WITH BOT - RES: ', data);
-      }, (err) => {
-        this.logger.error('[WS-REQUESTS-MSGS] - GET CONVERSATION WITH BOT - ERROR: ', err);
-
-      }, () => {
-        this.logger.log('[WS-REQUESTS-MSGS] - GET CONVERSATION WITH BOT * COMPLETE *');
-      });
   }
 
   // https://stackoverflow.com/questions/40983055/how-to-reload-the-current-route-with-the-angular-2-router
@@ -3017,41 +2786,6 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   }
 
-  // ---------------------------------------------------------------------------------------
-  // @ Chatbot attributes accordion
-  // ---------------------------------------------------------------------------------------
-
-  openChatbotAttributesAccordion(isOpenChatbotAttributesAccordion) {
-    // console.log('[WS-REQUESTS-MSGS] isOpenChatbotAttributesAccordion ', isOpenChatbotAttributesAccordion)
-
-    var footerEl = <HTMLElement>document.querySelector('footer')
-    // console.log('[WS-REQUESTS-MSGS] footerEl ', footerEl)
-    // if (isOpenChatbotAttributesAccordion) {
-    //   if (footerEl) {
-    //     footerEl.style.display = 'none'
-    //   }
-    // } else if (!isOpenChatbotAttributesAccordion) {
-    //   if (footerEl) {
-    //     footerEl.style.display = 'block'
-    //   }
-    // }
-
-
-    var acc = <HTMLElement>document.querySelector('.chatbot-conv-accordion');
-
-    acc.classList.toggle("active");
-
-    var panel = <HTMLElement>document.querySelector('.chatbot-conv-accordion-panel')
-
-
-    if (panel.style.maxHeight) {
-      panel.style.maxHeight = null;
-    } else {
-      panel.style.maxHeight = panel.scrollHeight + "px";
-    }
-  }
-
-
 
 
   // ---------------------------------------------------------------------------------------
@@ -3971,38 +3705,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   displayModalDownloadTranscript() {
-    if (this.isVisiblePaymentTab) {
-      if (this.CURRENT_USER_ROLE === 'owner') {
-        if (
-          (this.profile_name === PLAN_NAME.A) ||
-          (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
-          (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
-          (this.prjct_profile_type === 'free' && this.trial_expired === true)
-
-        ) {
-          if (!this.appSumoProfile) {
-            this.presentModalFeautureAvailableFromBPlan()
-          } else if (this.appSumoProfile) {
-            this.presentModalAppSumoFeautureAvailableFromBPlan()
-          }
-          // console.log('[HISTORY & NORT-CONVS] -  EXPORT DATA IS NOT AVAILABLE ')
-        } else if (
-          (this.profile_name === PLAN_NAME.B && this.subscription_is_active === true) ||
-          (this.profile_name === PLAN_NAME.C && this.subscription_is_active === true) ||
-          (this.prjct_profile_type === 'free' && this.trial_expired === false)
-
-        ) {
-          this.displayModalTranscript = 'block'
-          // console.log('[HISTORY & NORT-CONVS] - EXPORT DATA IS AVAILABLE ')
-        }
-      } else {
-        this.presentModalAgentCannotManageAvancedSettings()
-      }
-
-    } else {
-      this.notify._displayContactUsModal(true, 'upgrade_plan');
-
-    }
+    this.displayModalTranscript = 'block'
   }
 
   closeModalTranscript() {
@@ -4102,59 +3805,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   // Ban Visitor
   // ---------------------------
   displayModalBanVisitor(leadid: string, ipaddress: string) {
-    // console.log('[WS-REQUESTS-MSGS] displayModalBanVisitor profile_name: ', this.profile_name)
-    // console.log('[WS-REQUESTS-MSGS] displayModalBanVisitor PLAN_NAME.C: ', PLAN_NAME.C)
-    // console.log('[WS-REQUESTS-MSGS] displayModalBanVisitor subscription_is_active: ', this.subscription_is_active)
-    // if ((this.profile_name === PLAN_NAME.B && this.subscription_is_active === true) || (this.prjct_profile_type === 'free' && this.trial_expired === false)) {
+
     this.logger.log('displayModalBanVisitor leadid ', leadid)
     this.logger.log('displayModalBanVisitor bannedVisitorsArray ', this.bannedVisitorsArray)
-    // if (this.CURRENT_USER_ROLE === 'owner') {
-
-    //   if (
-    //     (this.profile_name === PLAN_NAME.A) ||
-    //     (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
-    //     (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
-    //     (this.prjct_profile_type === 'free' && this.trial_expired === true)
-
-    //   ) {
-    //     this.presentModalFeautureAvailableOnlyWithPlanC();
-    //     console.log('[WIDGET-SET-UP] - featureIsAvailable IS NOT AVAILABLE')
-    //   } else if (
-
-    //     (this.profile_name === PLAN_NAME.C && this.subscription_is_active === true)
-
-
-    //   ) {
-    //     this.banVisitors(leadid, ipaddress)
-    //     console.log('[WS-REQUESTS-MSGS] - featureIsAvailable IS AVAILABLE')
-    //   }
-
-    // } else {
-    //   this.presentModalAgentCannotManageAvancedSettings()
-    // }
-
-    if (this.CURRENT_USER_ROLE === 'owner') {
-      if (this.profile_name === PLAN_NAME.C) {
-        // console.log('displayModalBanVisitor HERE 1 ')
-        if (this.subscription_is_active === true) {
-          this.banVisitors(leadid, ipaddress)
-        } else if (this.subscription_is_active === false) {
-          // console.log('displayModalBanVisitor HERE 3 ')
-          this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.C, this.subscription_end_date);
-        }
-      } else if (this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.B || this.prjct_profile_type === 'free') {
-        // console.log('displayModalBanVisitor HERE 4 ')
-        this.presentModalFeautureAvailableOnlyWithPlanC()
-      }
-    } else {
-      // console.log('displayModalBanVisitor HERE 5 ')
-      this.presentModalAgentCannotManageAvancedSettings()
-    }
-
-  }
-
-
-  banVisitors(leadid: string, ipaddress: string) {
     const index = this.bannedVisitorsArray.findIndex((v) => v.id === leadid);
     this.logger.log("displayModalBanVisitor bannedVisitorsArray", index)
     // if (this.visitorIsBanned === false) {
@@ -4179,8 +3832,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
               swal(this.anErrorHasOccurredMsg, {
                 icon: "error",
               });
+
             }, () => {
               // console.log('[WS-REQUESTS-MSGS] BAN VISITOR in swal * COMPLETE *');
+
               swal({
                 title: this.done_msg + "!",
                 icon: "success",
@@ -4199,125 +3854,6 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     } else {
       this.presentModalVisitorAlreadyBanned()
     }
-  }
-
-
-  // Download transcript
-  presentModalFeautureAvailableFromBPlan() {
-    const el = document.createElement('div')
-    el.innerHTML = this.featureAvailableFromBPlan
-    swal({
-      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
-      content: el,
-      icon: "info",
-      // buttons: true,
-      buttons: {
-        cancel: this.cancel,
-        catch: {
-          text: this.upgradePlan,
-          value: "catch",
-        },
-      },
-      dangerMode: false,
-    }).then((value) => {
-      if (value === 'catch') {
-        // console.log('featureAvailableFromBPlan value', value)
-        // this.router.navigate(['project/' + this.id_project + '/pricing']);
-        if (this.isVisiblePaymentTab) {
-
-          if (this.CURRENT_USER_ROLE === 'owner') {
-            if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
-              if (this.profile_name !== PLAN_NAME.C) {
-                this.notify.displaySubscripionHasExpiredModal(true, this.profile_name, this.subscription_end_date);
-              } else if (this.profile_name === PLAN_NAME.C) {
-                this.notify.displayEnterprisePlanHasExpiredModal(true, this.profile_name, this.subscription_end_date);
-              }
-            } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true) {
-              this.notify._displayContactUsModal(true, 'upgrade_plan');
-            } else if (this.profile_name === 'free') {  // 
-              this.router.navigate(['project/' + this.id_project + '/pricing']);
-              // this.notify.presentContactUsModalToUpgradePlan(true);
-            }
-
-          } else {
-            this.presentModalOnlyOwnerCanManageTheAccountPlan();
-          }
-        } else {
-          this.notify._displayContactUsModal(true, 'upgrade_plan');
-        }
-      }
-    });
-  }
-
-  presentModalAppSumoFeautureAvailableFromBPlan() {
-    const el = document.createElement('div')
-    el.innerHTML = 'Available with ' + this.appSumoProfilefeatureAvailableFromBPlan
-    swal({
-      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
-      content: el,
-      icon: "info",
-      // buttons: true,
-      buttons: {
-        cancel: this.cancel,
-        catch: {
-          text: this.upgradePlan,
-          value: "catch",
-        },
-      },
-      dangerMode: false,
-    }).then((value) => {
-      if (value === 'catch') {
-        if (this.CURRENT_USER_ROLE === 'owner') {
-          this.router.navigate(['project/' + this.id_project + '/project-settings/payments']);
-        } else {
-          this.presentModalOnlyOwnerCanManageTheAccountPlan();
-        }
-      }
-    });
-  }
-
-
-  // Banned visitors tab
-  presentModalFeautureAvailableOnlyWithPlanC() {
-    const el = document.createElement('div')
-    el.innerHTML = this.cPlanOnly
-    swal({
-      content: el,
-      icon: "info",
-      // buttons: true,
-      buttons: {
-        cancel: this.cancel,
-        catch: {
-          text: this.upgradePlan,
-          value: "catch",
-        },
-      },
-      dangerMode: false,
-    }).then((value) => {
-      if (value === 'catch') {
-        // console.log('featureAvailableFromPlanC value', value)
-        if (this.isVisiblePaymentTab) {
-          if (this.CURRENT_USER_ROLE === 'owner') {
-            if (this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.B) {
-              // if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
-              this.notify._displayContactUsModal(true, 'upgrade_plan');
-            } else if (this.prjct_profile_type === 'free') {
-              this.router.navigate(['project/' + this.id_project + '/pricing']);
-
-            }
-          } else {
-            this.presentModalOnlyOwnerCanManageTheAccountPlan();
-          }
-        } else {
-          this.notify._displayContactUsModal(true, 'upgrade_plan');
-        }
-      }
-
-    });
-  }
-
-  presentModalAgentCannotManageAvancedSettings() {
-    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.agentCannotManageAdvancedOptions, this.learnMoreAboutDefaultRoles)
   }
 
   presentModalVisitorAlreadyBanned() {
@@ -4769,45 +4305,6 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       this.thisTagHasBeenAlreadyAssignedPleaseEnterUniqueTag = text;
     });
 
-    this.translate.get('UsersWiththeAgentroleCannotManageTheAdvancedOptionsOfTheProject')
-      .subscribe((translation: any) => {
-        this.agentCannotManageAdvancedOptions = translation;
-      });
-
-
-    this.translate.get('AvailableWithThePlan', { plan_name: PLAN_NAME.C })
-      .subscribe((translation: any) => {
-        this.cPlanOnly = translation;
-      });
-
-    this.translate.get('LearnMoreAboutDefaultRoles')
-      .subscribe((translation: any) => {
-
-        this.learnMoreAboutDefaultRoles = translation;
-      });
-
-
-    this.translate.get('Pricing.UpgradePlan')
-      .subscribe((translation: any) => {
-        this.upgradePlan = translation;
-      });
-
-    this.translate.get('Cancel')
-      .subscribe((translation: any) => {
-        this.cancel = translation;
-      });
-
-    this.translate.get('AvailableFromThePlan', { plan_name: PLAN_NAME.B })
-      .subscribe((translation: any) => {
-        this.featureAvailableFromBPlan = translation;
-      });
-
-    this.translate.get('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan')
-      .subscribe((translation: any) => {
-
-        this.onlyOwnerCanManageTheAccountPlanMsg = translation;
-      });
-
   }
 
 
@@ -5253,24 +4750,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   onChangeReplyType(selectedResponseTypeID) {
-    // console.log('[WS-REQUESTS-MSGS] ON CHANGE REPLY TYPE selectedResponseTypeID', selectedResponseTypeID)
+    this.logger.log('[WS-REQUESTS-MSGS] ON CHANGE REPLY TYPE selectedResponseTypeID', selectedResponseTypeID)
     this.selectedResponseTypeID = selectedResponseTypeID;
-    if (this.selectedResponseTypeID === 2) { // Private note
-      this.getProjectPlan();
-    }
-    if (this.selectedResponseTypeID === 1) {
-      const elemTexareaSendMsg = <HTMLInputElement>document.querySelector('.send-message-texarea')
-      // console.log('[WS-REQUESTS-MSGS] GET PROJECT PLAN elemTexareaSendMsg PUBLIC ANSWER (ID 1)', elemTexareaSendMsg);
-
-      if (elemTexareaSendMsg && elemTexareaSendMsg.disabled) {
-        elemTexareaSendMsg.disabled = false;
-        // console.log('✅ element is disabled');
-      } else {
-        // console.log('⛔️ element is not disabled');
-      }
-
-
-    }
     const selectResponseTypeElem = <HTMLElement>document.querySelector('.select-response-type');
     selectResponseTypeElem.blur();
   }

@@ -21,7 +21,7 @@ import { LoggerService } from '../../services/logger/logger.service';
 import { UsersService } from '../../services/users.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { APP_SUMO_PLAN_NAME, PLAN_NAME, URL_google_tag_manager_add_tiledesk_to_your_sites } from '../../utils/util';
+import { URL_google_tag_manager_add_tiledesk_to_your_sites } from '../../utils/util';
 import { NgSelectComponent } from '@ng-select/ng-select';
 import * as moment from 'moment';
 import { ProjectPlanService } from 'app/services/project-plan.service';
@@ -42,8 +42,7 @@ import { isDevMode } from '@angular/core';
 
 
 export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, AfterViewInit, OnDestroy {
-  PLAN_NAME = PLAN_NAME;
-  APP_SUMO_PLAN_NAME = APP_SUMO_PLAN_NAME;
+
   public disabled = false;
   public color: ThemePalette = 'primary';
   public touchUi = false;
@@ -63,7 +62,6 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   @ViewChild("multilanguage", { static: false }) multilanguageRef: ElementRef;
   @ViewChild(NgSelectComponent, { static: false }) ngSelectComponent: NgSelectComponent;
   tparams: any;
-  t_params: any;
   company_name: any;
   company_site_url: any;
   TESTSITE_BASE_URL: string;
@@ -202,13 +200,6 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   displayNewCustomPrechatFormBuilder: boolean;
   hasBuiltPrechatformWithVisualTool: boolean;
   NEW_PRECHAT_LABEL_ARE_MISSING: boolean = false;
-
-  featureAvailableFromBPlan: string;
-  cancel: string;
-  upgradePlan: string;
-  appSumoProfile: string;
-  appSumoProfilefeatureAvailableFromBPlan:string;
-
   en_missing_labels =
     {
       "Full name": "Full name",
@@ -395,7 +386,6 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.tparams = brand;
     this.company_name = brand['company_name'];
     this.company_site_url = brand['company_site_url'];
-    // this.t_params = { 'plan_name': PLAN_NAME.B }
   }
 
   ngOnInit() {
@@ -563,7 +553,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         takeUntil(this.unsubscribe$)
       )
       .subscribe((projectProfileData: any) => {
-        this.logger.log('[WIDGET-SET-UP] - getProjectPlan project Profile Data', projectProfileData)
+        this.logger.log('[HOME] - getProjectPlan project Profile Data', projectProfileData)
         if (projectProfileData) {
 
 
@@ -575,42 +565,14 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           this.subscription_is_active = projectProfileData.subscription_is_active;
           this.subscription_end_date = projectProfileData.subscription_end_date;
 
-          if (projectProfileData.extra3) {
-            this.logger.log('[WIDGET-SET-UP] projectProfileData.extra3 ',projectProfileData.extra3)
-            this.appSumoProfile = APP_SUMO_PLAN_NAME[projectProfileData.extra3]
-            this.appSumoProfilefeatureAvailableFromBPlan =  APP_SUMO_PLAN_NAME['tiledesk_tier3']
-            if (projectProfileData.extra3 === "tiledesk_tier1" || projectProfileData.extra3 === "tiledesk_tier2") {
-              this.t_params = { 'plan_name': this.appSumoProfilefeatureAvailableFromBPlan }
-            }
-          } else if (!projectProfileData.extra3) {
-            this.t_params = { 'plan_name': PLAN_NAME.B }
-          }
-
-          // if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false || this.prjct_profile_type === 'free' && this.prjct_trial_expired === true) {
-          //   this.featureIsAvailable = false;
-          //   // console.log('[WIDGET-SET-UP] - featureIsAvailable ' , this.featureIsAvailable)
-          // } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true || this.prjct_profile_type === 'free' && this.prjct_trial_expired === false) {
-          //   this.featureIsAvailable = true;
-          //   // console.log('[WIDGET-SET-UP] - featureIsAvailable ' , this.featureIsAvailable)
-          // }
-          if (
-            (this.profile_name === PLAN_NAME.A) ||
-            (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
-            (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
-            (this.prjct_profile_type === 'free' && this.prjct_trial_expired === true)
-
-          ) {
+          if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false || this.prjct_profile_type === 'free' && this.prjct_trial_expired === true) {
             this.featureIsAvailable = false;
             // console.log('[WIDGET-SET-UP] - featureIsAvailable ' , this.featureIsAvailable)
-          } else if (
-            (this.profile_name === PLAN_NAME.B && this.subscription_is_active === true) ||
-            (this.profile_name === PLAN_NAME.C && this.subscription_is_active === true) ||
-            (this.prjct_profile_type === 'free' && this.prjct_trial_expired === false)
-
-          ) {
+          } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true || this.prjct_profile_type === 'free' && this.prjct_trial_expired === false) {
             this.featureIsAvailable = true;
             // console.log('[WIDGET-SET-UP] - featureIsAvailable ' , this.featureIsAvailable)
           }
+
         }
       }, error => {
 
@@ -622,79 +584,21 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
   goToPricing() {
     this.logger.log('[WIDGET-SET-UP] - goToPricing projectId ', this.id_project);
-
-    // if (this.payIsVisible) {
-    //   if (this.USER_ROLE === 'owner') {
-    //     if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
-    //       this.notify._displayContactUsModal(true, 'upgrade_plan');
-    //     } else {
-    //       this.router.navigate(['project/' + this.id_project + '/pricing']);
-    //       // this.presentModalContactUsToUpgradePlan()
-
-    //     }
-    //   } else {
-    //     this.presentModalOnlyOwnerCanManageTheAccountPlan();
-    //   }
-    // } else {
-    //   this.notify._displayContactUsModal(true, 'upgrade_plan');
-    // }
-    if (!this.appSumoProfile) {
-      this.presentModalFeautureAvailableFromBPlan()
-    } else {
-      this.router.navigate(['project/' + this.id_project + '/project-settings/payments']);
-    }
-  }
-
-  presentModalFeautureAvailableFromBPlan() {
-    const el = document.createElement('div')
-    el.innerHTML = this.featureAvailableFromBPlan
-    swal({
-      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
-      content: el,
-      icon: "info",
-      // buttons: true,
-      buttons: {
-        cancel: this.cancel,
-        catch: {
-          text: this.upgradePlan,
-          value: "catch",
-        },
-      },
-      dangerMode: false,
-    }).then((value) => {
-      if (value === 'catch') {
-        // console.log('featureAvailableFromPlanC value', value)
-        // console.log('[APP-STORE] prjct_profile_type', this.prjct_profile_type)
-        // console.log('[APP-STORE] subscription_is_active', this.subscription_is_active)
-        // console.log('[APP-STORE] prjct_profile_type', this.prjct_profile_type)
-        // console.log('[APP-STORE] trial_expired', this.trial_expired)
-        // console.log('[APP-STORE] isVisiblePAY', this.isVisiblePAY)
-        if (this.payIsVisible) {
-          // console.log('[APP-STORE] HERE 1')
-          if (this.USER_ROLE === 'owner') {
-            // console.log('[APP-STORE] HERE 2')
-            if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
-              if (this.profile_name !== PLAN_NAME.C) {
-                this.notify.displaySubscripionHasExpiredModal(true, this.profile_name, this.subscription_end_date);
-              } else if (this.profile_name === PLAN_NAME.C) {
-                this.notify.displayEnterprisePlanHasExpiredModal(true, this.profile_name, this.subscription_end_date);
-              }
-            } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true && this.profile_name === PLAN_NAME.A) {
-              this.notify._displayContactUsModal(true, 'upgrade_plan');
-            } else if (this.prjct_profile_type === 'free') {
-              // console.log('[APP-STORE] HERE 4')
-              this.router.navigate(['project/' + this.id_project + '/pricing']);
-            }
-          } else {
-            // console.log('[APP-STORE] HERE 5')
-            this.presentModalOnlyOwnerCanManageTheAccountPlan();
-          }
-        } else {
-          // console.log('[APP-STORE] HERE 6')
+    if (this.payIsVisible) {
+      if (this.USER_ROLE === 'owner') {
+        if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
           this.notify._displayContactUsModal(true, 'upgrade_plan');
+        } else {
+          // this.router.navigate(['project/' + this.id_project + '/pricing']);
+          this.presentModalContactUsToUpgradePlan()
+          
         }
+      } else {
+        this.presentModalOnlyOwnerCanManageTheAccountPlan();
       }
-    });
+    } else {
+      this.notify._displayContactUsModal(true, 'upgrade_plan');
+    }
   }
 
 
@@ -779,21 +683,6 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       .subscribe((translation: any) => {
         // this.logger.log('[PRJCT-EDIT-ADD] onlyOwnerCanManageTheAccountPlanMsg text', translation)
         this.learnMoreAboutDefaultRoles = translation;
-      });
-
-    this.translate.get('AvailableFromThePlan', { plan_name: PLAN_NAME.B })
-      .subscribe((translation: any) => {
-        this.featureAvailableFromBPlan = translation;
-      });
-
-    this.translate.get('Cancel')
-      .subscribe((text: string) => {
-        this.cancel = text;
-      });
-
-    this.translate.get('Pricing.UpgradePlan')
-      .subscribe((translation: any) => {
-        this.upgradePlan = translation;
       });
 
   }
@@ -1874,8 +1763,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           // ------------------------------------------------------------------------
           this.logger.log('[WIDGET-SET-UP] - onInit WIDGET DEFINED BUT POWERED-BY IS: ', project.widget.poweredBy, ' > SET DEFAULT ')
           // this.calloutTimerSecondSelected = -1;
-
-          this.footerBrand = '<a tabindex="-1" target="_blank" href="http://www.tiledesk.com/?utm_source=widget"><img src="https://panel.tiledesk.com/v3/dashboard/assets/img/logos/tiledesk-solo_logo_new_gray.svg"/><span>Powered by Tiledesk</span></a>';
+          this.footerBrand = '<a tabindex="-1" target="_blank" href="http://www.tiledesk.com/?utm_source=widget"><img src="https://console.tiledesk.com/v2/dashboard/assets/img/logos/tiledesk-logo_new_gray.svg"/></a>';
         }
 
         // -------------------------------------------
@@ -2193,8 +2081,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         // @ POWERED-BY
         // WIDGET UNDEFINED
         // -----------------------------------------------------------------------
-
-        this.footerBrand = '<a tabindex="-1" target="_blank" href="http://www.tiledesk.com/?utm_source=widget"><img src="https://panel.tiledesk.com/v3/dashboard/assets/img/logos/tiledesk-solo_logo_new_gray.svg"/><span>Powered by Tiledesk</span></a>'
+        this.footerBrand = '<a tabindex="-1" target="_blank" href="http://www.tiledesk.com/?utm_source=widget"><img src="https://console.tiledesk.com/v2/dashboard/assets/img/logos/tiledesk-logo_new_gray.svg"/></a>';
 
 
         // -----------------------------------------------------------------------

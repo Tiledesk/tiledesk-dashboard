@@ -199,6 +199,27 @@ export class NotificationEmailComponent implements OnInit, AfterViewInit {
 
   }
 
+  // NOT USED
+  // ftxt() {
+  //   console.log('[NOTIFICATION-EMAIL] FIND TEXT ON TEXAREA textToSearch', this.textToSearch)
+  //   if (this.emailTemplate.includes(this.textToSearch)) {
+  //     console.log('[NOTIFICATION-EMAIL] FIND TEXT ON TEXAREA TEXT FOUND')
+  //     const regex = new RegExp(this.textToSearch, 'gi');
+  //     // let text = this.emailTemplate.innerHTML;
+  //     let text = this.emailTemplate;
+  //     console.log('[NOTIFICATION-EMAIL] FIND text ', text)
+  //     text = text.replace(/(<mark class="highlight">|<\/mark>)/gim, '');
+  //     const newText = text.replace(regex, '<mark class="highlight">$&</mark>');
+  //     // this.emailTemplate.innerHTML = newText;
+  //     this.emailTemplate = newText;
+  //   } else {
+  //     console.log('[NOTIFICATION-EMAIL] FIND TEXT ON TEXAREA TEXT NOT FOUND')
+  //   }
+  // }
+
+
+
+
   onChangeEmailTempalte(event) {
     this.logger.log('[NOTIFICATION-EMAIL] - SAVE EMAIL TEMPLATE onChangeEmailTempalte ', this.emailTemplate);
     (<HTMLIFrameElement>document.getElementById("iframe-email-template-preview")).srcdoc = this.emailTemplate

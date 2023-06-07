@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Subject, BehaviorSubject } from 'rxjs';
 import { Location } from '@angular/common';
 import { LoggerService } from '../services/logger/logger.service';
-import { PLAN_NAME, URL_understanding_default_roles } from './../utils/util';
+import { URL_understanding_default_roles } from './../utils/util';
 const swal = require('sweetalert');
 declare var $: any;
 /// Notify users about errors and other helpful stuff
@@ -17,7 +17,7 @@ export interface Msg {
 
 @Injectable()
 export class NotifyService {
-  PLAN_NAME = PLAN_NAME
+
   displayExpiredSessionModal: string
 
   private _msgSource = new Subject<Msg | null>();
@@ -55,7 +55,6 @@ export class NotifyService {
 
   showSubtitleAllOperatorsSeatsUsed: boolean;
   displayLogoutModal = 'none';
-  prjct_profile_name: string;
 
   public URL_UNDERSTANDING_DEFAULT_ROLES = URL_understanding_default_roles
   public displayContactUsModalToUpgradePlan = 'none';
@@ -77,11 +76,6 @@ export class NotifyService {
   contacUsViaEmail() {
     window.open('mailto:sales@tiledesk.com?subject=Upgrade Tiledesk plan');
     this.closeContactUsModalToUpgradePlan()
-  }
-  
-  contacUsViaEmailPlanC() {
-    window.open(`mailto:sales@tiledesk.com?subject=Upgrade Tiledesk plan (${PLAN_NAME.C} expired)`);
-    this.closeModalEnterpiseSubsExpired()
   }
 
   closeContactUsModalToUpgradePlan() {
@@ -105,7 +99,6 @@ export class NotifyService {
   displayEnterprisePlanHasExpiredModal(subHasExpired: boolean, prjctPlanName: string, prjctPlanSubsEndDate: Date) {
     if (subHasExpired === true) {
       this.displayModalEnterpiseSubsExpired = 'block';
-      this.prjct_profile_name = prjctPlanName + ' plan'
     }
     this.logger.log('[NOTIFY-SERVICE] - HasExpiredEnterpriseModal prjctPlanName ', prjctPlanName);
   }

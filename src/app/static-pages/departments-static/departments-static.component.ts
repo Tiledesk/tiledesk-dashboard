@@ -9,7 +9,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { UsersService } from '../../services/users.service';
 import { LoggerService } from '../../services/logger/logger.service';
 import { AppConfigService } from 'app/services/app-config.service';
-import { APP_SUMO_PLAN_NAME, PLAN_NAME } from 'app/utils/util';
 const swal = require('sweetalert');
 // node_modules/ng-simple-slideshow/src/app/modules/slideshow/IImage.d.ts
 // src/app/static-pages/departments-static/departments-static.component.ts
@@ -19,8 +18,7 @@ const swal = require('sweetalert');
   styleUrls: ['./departments-static.component.scss']
 })
 export class DepartmentsStaticComponent extends StaticPageBaseComponent implements OnInit, OnDestroy {
-  PLAN_NAME = PLAN_NAME
-  APP_SUMO_PLAN_NAME = APP_SUMO_PLAN_NAME;
+
   imageObject = [
     {
       image: 'assets/img/static-depts4.png',
@@ -48,9 +46,6 @@ export class DepartmentsStaticComponent extends StaticPageBaseComponent implemen
   learnMoreAboutDefaultRoles: string;
   profile_name: string;
   isChromeVerGreaterThan100: boolean;
-  tparams: any;
-  appSumoProfile: string;
-  appSumoProfilefeatureAvailableFromBPlan: string;
   constructor(
     private router: Router,
     public auth: AuthService,
@@ -71,7 +66,6 @@ export class DepartmentsStaticComponent extends StaticPageBaseComponent implemen
     this.getProjectUserRole();
     this.getTranslationStrings();
     this.getBrowserVersion();
-
   }
 
   getBrowserVersion() {
@@ -165,26 +159,17 @@ export class DepartmentsStaticComponent extends StaticPageBaseComponent implemen
         this.profile_name = projectProfileData.profile_name
         this.buildPlanName(projectProfileData.profile_name, this.browserLang, this.prjct_profile_type);
 
-        if (projectProfileData.extra3) {
-          this.appSumoProfile = APP_SUMO_PLAN_NAME[projectProfileData.extra3]
-          this.appSumoProfilefeatureAvailableFromBPlan = APP_SUMO_PLAN_NAME['tiledesk_tier3']
-
-          this.tparams = { 'plan_name': this.appSumoProfilefeatureAvailableFromBPlan }
-        } else if (!projectProfileData.extra3) {
-          this.tparams = { 'plan_name': PLAN_NAME.B }
-        }
-
         if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
 
           if (this.USER_ROLE === 'owner') {
 
-            if (this.profile_name !== PLAN_NAME.C) {
+            if (this.profile_name !== 'enterprise') {
 
-              this.notify.displaySubscripionHasExpiredModal(true, this.profile_name, this.subscription_end_date)
+              this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date)
 
-            } else if (this.profile_name === PLAN_NAME.C) {
+            } else if (this.profile_name === 'enterprise') {
 
-              this.notify.displayEnterprisePlanHasExpiredModal(true, this.profile_name, this.subscription_end_date);
+              this.notify.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
             }
           }
 
@@ -199,23 +184,19 @@ export class DepartmentsStaticComponent extends StaticPageBaseComponent implemen
 
   goToPricing() {
     this.logger.log('[DEPTS-STATIC] - goToPricing projectId ', this.projectId);
-    if (!this.appSumoProfile) {
-      if (this.payIsVisible) {
-        if (this.USER_ROLE === 'owner') {
-          if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
-            this.notify._displayContactUsModal(true, 'upgrade_plan');
-          } else {
-            // this.router.navigate(['project/' + this.projectId + '/pricing']);
-            this.notify.presentContactUsModalToUpgradePlan(true);
-          }
+    if (this.payIsVisible) {
+      if (this.USER_ROLE === 'owner') {
+        if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
+          this.notify._displayContactUsModal(true, 'upgrade_plan');
         } else {
-          this.presentModalOnlyOwnerCanManageTheAccountPlan();
+          // this.router.navigate(['project/' + this.projectId + '/pricing']);
+          this.notify.presentContactUsModalToUpgradePlan(true);
         }
       } else {
-        this.notify._displayContactUsModal(true, 'upgrade_plan');
+        this.presentModalOnlyOwnerCanManageTheAccountPlan();
       }
-    } else if (this.appSumoProfile) {
-      this.router.navigate(['project/' + this.projectId + '/project-settings/payments']);
+    } else {
+      this.notify._displayContactUsModal(true, 'upgrade_plan');
     }
   }
 

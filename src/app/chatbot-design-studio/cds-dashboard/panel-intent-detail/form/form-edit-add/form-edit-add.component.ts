@@ -197,7 +197,7 @@ export class FormEditAddComponent implements OnInit, OnChanges {
   /** */
   onChangeParameterName(parameterName) {
     parameterName.toString();
-    // console.log('onChangeParameterName', parameterName);
+    console.log('onChangeParameterName', parameterName);
     this.fieldName = parameterName.replace(/[^A-Z0-9_]+/ig, "");
   }
 

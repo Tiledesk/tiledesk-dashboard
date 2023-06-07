@@ -80,7 +80,6 @@ import { AnalyticsStaticComponent } from './static-pages/analytics-static/analyt
 import { ActivitiesStaticComponent } from './static-pages/activities-static/activities-static.component';
 import { HoursStaticComponent } from './static-pages/hours-static/hours-static.component';
 import { DepartmentsStaticComponent } from './static-pages/departments-static/departments-static.component';
-import { ContactsStaticComponent } from './static-pages/contacts-static/contacts-static.component';
 
 import { AnalyticsComponent } from './analytics/analytics.component';
 import { PanoramicaComponent } from './analytics/panoramica/panoramica.component';
@@ -135,32 +134,24 @@ import { ContactsComponent } from './contacts/contacts.component';
 import { CdsDashboardComponent } from './chatbot-design-studio/cds-dashboard/cds-dashboard.component';
 import { CreateChatbotComponent } from './bots/create-chatbot/create-chatbot.component';
 import { CommunityTemplateDtlsComponent } from './bots/templates/community-template-dtls/community-template-dtls.component';
-import { CannedResponsesStaticComponent } from './static-pages/canned-responses-static/canned-responses-static.component';
-import { WsrequestsStaticComponent } from './static-pages/wsrequests-static/wsrequests-static.component';
-import { EmailTicketingStaticComponent } from './static-pages/email-ticketing-static/email-ticketing-static.component';
-import { ActivateAppsumoProductComponent } from './create-project-wizard/activate-appsumo-product/activate-appsumo-product.component';
 
 
 
 const routes: Routes = [
 
-  // Lazy loading
-  { path: 'project/:projectid/contacts', component: ContactsComponent, canActivate: [AuthGuard, ProjectProfileGuard] },
+// Lazy loading
+  { path: 'project/:projectid/contacts', component: ContactsComponent, canActivate: [AuthGuard] },
+  
   // {
   //   canActivate: [AuthGuard],
   //   path: 'project/:projectid/contacts',
   //   loadChildren: () => import('./contacts/contacts.module').then(m => m.ContactsModule)
   // },
 
-  { path: 'project/:projectid/contacts-demo', component: ContactsStaticComponent, canActivate: [AuthGuard] },
-  
-  
 
   /* PRIVATE */
   { path: 'project/:projectid/pricing', component: PricingComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/chat-pricing', component: PricingComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/success', component: PaymentSuccessPageComponent, canActivate: [AuthGuard] },
-  { path: 'success', component: PaymentSuccessPageComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/canceled', component: PaymentCanceledPageComponent, canActivate: [AuthGuard] },
 
 
@@ -173,7 +164,6 @@ const routes: Routes = [
   // are used in the left panel of the chat
   { path: 'projects-for-panel', component: ProjectsForPanelComponent, canActivate: [AuthGuard] },
   { path: 'get-chatbot/:botid', component: GetStartChatbotForkComponent, canActivate: [AuthGuard] },
-  { path: 'activate-product/:activation_email/:licenseproductkeyuuid/:plan_id/:invoice_item_uuid', component: ActivateAppsumoProductComponent, canActivate: [AuthGuard] },
   { path: 'install-template/:botid/:projectid', component: InstallTemplateComponent, canActivate: [AuthGuard] },
   { path: 'install-template-np/:botid/:projectid/:langcode/:langname', component: InstallTemplateComponent, canActivate: [AuthGuard] },
   { path: 'create-project-itw/:botid', component: CreateProjectComponent, canActivate: [AuthGuard] }, // wizard 
@@ -187,15 +177,14 @@ const routes: Routes = [
   { path: 'create-project', component: CreateProjectComponent, canActivate: [AuthGuard] }, // wizard 
   // USED WHEN THE USER CLICK ON 'ADD NEW PROJECT' FROM THE NAVBAR
   { path: 'create-new-project', component: CreateProjectComponent, canActivate: [AuthGuard] }, // wizard 
-
-  { path: 'project/:projectid/onboarding-widget', component: OnboardingWidgetComponent, canActivate: [AuthGuard] },
+ 
+  { path: 'project/:projectid/onboarding-widget', component: OnboardingWidgetComponent, canActivate: [AuthGuard] }, 
 
   { path: 'project/:projectid/configure-widget', component: ConfigureWidgetComponent, canActivate: [AuthGuard] }, // wizard step 2
   { path: 'project/:projectid/onboarding/:langcode/:langname', component: OnboardingComponent, canActivate: [AuthGuard] }, // wizard step 3
   { path: 'project/:projectid/install-widget/:langcode/:langname', component: InstallWidgetComponent, canActivate: [AuthGuard] },
 
-  { path: 'project/:projectid/cannedresponses', component: CannedResponsesListComponent, canActivate: [AuthGuard , ProjectProfileGuard] },
-  { path: 'project/:projectid/cannedresponses-demo', component: CannedResponsesStaticComponent, canActivate: [AuthGuard]},
+  { path: 'project/:projectid/cannedresponses', component: CannedResponsesListComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/labels', component: TagsComponent, canActivate: [AuthGuard] },
 
   { path: 'project/create', component: ProjectEditAddComponent, canActivate: [AuthGuard] },
@@ -238,15 +227,14 @@ const routes: Routes = [
 
   { path: 'userprofile', component: UserProfileComponent },
   // , canActivate: [AuthGuard]
-
-
+ 
+  
 
   /*** WEBSOCKET ***/
   /**
    * if change wsrequest search for all occurrence - 
    * remember that in the navbar component wsrequest is used for the link from the in app-notification to the request's messages */
-  { path: 'project/:projectid/wsrequests', component: WsRequestsListComponent, canActivate: [AuthGuard, ProjectProfileGuard] },
-  { path: 'project/:projectid/wsrequests-demo', component: WsrequestsStaticComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/wsrequests', component: WsRequestsListComponent, canActivate: [AuthGuard] },
 
   { path: 'project/:projectid/request-for-panel/:requestid', component: WsRequestsMsgsComponent, canActivate: [AuthGuard] },
 
@@ -283,17 +271,17 @@ const routes: Routes = [
   { path: 'project/:projectid/bots/my-chatbots/all', component: BotListComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/bots/my-chatbots/customer-satisfaction', component: BotListComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/bots/my-chatbots/increase-sales', component: BotListComponent, canActivate: [AuthGuard] },
-
+  
   { path: 'project/:projectid/bots/bot-select-type', component: BotTypeSelectComponent, canActivate: [AuthGuard] },
   // { path: 'project/:projectid/bots/createfaqkb', component: BotCreateComponent, canActivate: [AuthGuard] }, // replaced by the bottom path
   { path: 'project/:projectid/bots/create/:type', component: BotCreateComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/chatbot/create', component: CreateChatbotComponent, canActivate: [AuthGuard] },
-
+  
   { path: 'project/:projectid/bots/templates/all', component: TemplatesComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/bots/templates/customer-satisfaction', component: TemplatesComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/bots/templates/increase-sales', component: TemplatesComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/bots/templates/community', component: TemplatesComponent, canActivate: [AuthGuard] },
-
+  
 
   // rasa bot
   { path: 'project/:projectid/bot/rasa/create', component: RasaBotComponent, canActivate: [AuthGuard] },
@@ -313,9 +301,9 @@ const routes: Routes = [
   { path: 'project/:projectid/bots/intents/:faqkbid/:type', component: NativeBotComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/bots/fulfillment/:faqkbid/:type', component: NativeBotComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/bots/prebuilt', component: NativeBotSelectTypeComponent, canActivate: [AuthGuard] },
-
+  
   { path: 'project/:projectid/tilebot/general/:faqkbid/:type', component: TilebotComponent, canActivate: [AuthGuard] },
-
+ 
   { path: 'project/:projectid/tilebot/fulfillment/:faqkbid/:type', component: TilebotComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/tilebot/prebuilt', component: TilebotSelectTypeComponent, canActivate: [AuthGuard] },
 
@@ -329,7 +317,7 @@ const routes: Routes = [
   // -----------------------------------------
   { path: 'project/:projectid/cds/:faqkbid', component: CdsDashboardComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/cds/:faqkbid/intent/:intent_id', component: CdsDashboardComponent, canActivate: [AuthGuard] },
-
+  
   { path: 'project/:projectid/tilebot/intents/:faqkbid/:type', component: TilebotComponent, canActivate: [AuthGuard] },
 
   // old
@@ -363,7 +351,6 @@ const routes: Routes = [
 
   // , ProjectProfileGuard
   { path: 'project/:projectid/departments', component: DepartmentsComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/departments-demo', component: DepartmentsStaticComponent, canActivate: [AuthGuard] },
   // 
   { path: 'project/:projectid/department/create', component: DepartmentEditAddComponent, canActivate: [AuthGuard], canDeactivate: [PendingChangesGuard] },
 
@@ -372,10 +359,7 @@ const routes: Routes = [
 
   // new routing page is the edit department
   { path: 'project/:projectid/routing/:deptid', component: DepartmentEditAddComponent, canActivate: [AuthGuard] }, // new
- 
-
-
-
+  { path: 'project/:projectid/departments-demo', component: DepartmentsStaticComponent, canActivate: [AuthGuard] },
 
   // HISTORY & NORT
   { path: 'project/:projectid/history', component: HistoryAndNortConvsComponent, canActivate: [AuthGuard] },
@@ -402,8 +386,8 @@ const routes: Routes = [
   // and then again to request' details page
   { path: 'project/:projectid/wsrequest/loading', component: LoadingPageComponent, canActivate: [AuthGuard] },
 
-  // TRIGGER , ProjectProfileGuard
-  { path: 'project/:projectid/trigger', component: TriggerComponent, canActivate: [AuthGuard] },
+  // TRIGGER
+  { path: 'project/:projectid/trigger', component: TriggerComponent, canActivate: [AuthGuard, ProjectProfileGuard] },
   { path: 'project/:projectid/trigger-demo', component: TriggerStaticComponent, canActivate: [AuthGuard] },
 
   { path: 'project/:projectid/trigger/add', component: TriggerAddComponent, canActivate: [AuthGuard] },
@@ -443,7 +427,7 @@ const routes: Routes = [
   { path: 'forgotpsw', component: ResetPswComponent },
   { path: 'resetpassword/:resetpswrequestid', component: ResetPswComponent },
 
-
+  
   { path: 'project/:projectid/visitors', component: VisitorsComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/events/:requesterid', component: EventsComponent, canActivate: [AuthGuard] },
 
@@ -461,8 +445,8 @@ const routes: Routes = [
   // Webhook
   { path: 'project/:projectid/webhook', component: WebhookComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/map-request', component: MapRequestComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/email', component: EmailTicketingComponent, canActivate: [AuthGuard, ProjectProfileGuard] },
-  { path: 'project/:projectid/email-demo', component: EmailTicketingStaticComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/email', component: EmailTicketingComponent, canActivate: [AuthGuard] },
+
 
 
 ];

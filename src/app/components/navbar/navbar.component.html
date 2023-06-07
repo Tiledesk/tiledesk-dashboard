@@ -88,7 +88,7 @@
                 {{ "Pricing.Your" | translate }}
 
                 <span style="font-weight:600">
-                  {{ "Pricing.30DaysFreeTrial" | translate: translationParams }}
+                  {{ "Pricing.30DaysFreeTrialOfTiledeskProPlan" | translate: tparams }}
                 </span>
 
                 {{ "Pricing.WillExpireIn" | translate }}
@@ -105,7 +105,7 @@
               <p *ngIf="prjct_trial_expired === true" style="margin-bottom:0px">
                 {{ "Pricing.Your" | translate }}
                 <span style="font-weight:600">
-                  {{ "Pricing.30DaysFreeTrial" | translate: translationParams }}
+                  {{ "Pricing.30DaysFreeTrialOfTiledeskProPlan" | translate: tparams }}
                 </span>
                 {{ "Pricing.HasExpired" | translate }}
               </p>
@@ -145,10 +145,10 @@
                 <span class="expired__Tooltiptext"
                   style="font-size:12px; top: 27px;text-transform:none; cursor: pointer; height: fit-content;vertical-align: middle;">
 
-                  <span *ngIf="profile_name !== PLAN_NAME?.C">
+                  <span *ngIf="profile_name !== 'enterprise'">
                     {{ 'Pricing.SubscriptionPaymentProblem' | translate }}
                   </span>
-                  <span *ngIf="profile_name === PLAN_NAME?.C">
+                  <span *ngIf="profile_name === 'enterprise'">
                     {{ 'Pricing.ThePlanHasExpired' | translate }}
                   </span>
                 </span>

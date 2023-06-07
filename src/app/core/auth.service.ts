@@ -23,8 +23,6 @@ import { AppConfigService } from '../services/app-config.service'
 import { WebSocketJs } from '../services/websocket/websocket-js'
 import { LoggerService } from '../services/logger/logger.service'
 import { ScriptService } from '../services/script/script.service'
-import { PLAN_NAME } from 'app/utils/util'
-
 // import { SsoService } from './sso.service';
 
 // start SUPER USER
@@ -42,7 +40,7 @@ const superusers = [
 
 @Injectable()
 export class AuthService {
-  PLAN_NAME = PLAN_NAME
+
   SERVER_BASE_PATH: string
   SIGNUP_BASE_URL: string
   SIGNIN_BASE_URL: string
@@ -87,7 +85,7 @@ export class AuthService {
     private _httpClient: HttpClient,
     private router: Router,
     private notify: NotifyService,
-    private localDbService: LocalDbService,
+    private usersLocalDbService: LocalDbService,
     private route: ActivatedRoute,
     public location: Location,
     public appConfigService: AppConfigService,
@@ -327,12 +325,9 @@ export class AuthService {
               url_segments[1] !== 'resetpassword' &&
               url_segments[1] !== 'autologin' &&
               url_segments[1] !== 'get-chatbot' &&
-              url_segments[1] !== 'activate-product' &&
               url_segments[1] !== 'install-template' &&
               url_segments[1] !== 'create-project-itw' &&
               url_segments[1] !== 'install-template-np' &&
-              url_segments[1] !== 'install-template-np' &&
-              url_segments[1] !== 'success' &&
               current_url !== '/projects'
             ) {
               this.logger.log(
@@ -958,18 +953,18 @@ export class AuthService {
 
         if (storedPrjctParsed.profile_type === 'free') {
           if (storedPrjctParsed.trial_expired === false) {
-            projectProfileName = PLAN_NAME.B + " (trial)"
+            projectProfileName = "Pro plan (trial)"
           } else {
+
             projectProfileName = "Free"
+
           }
         } else if (storedPrjctParsed.profile_type === 'payment') {
 
-          if (storedPrjctParsed.profile_name === PLAN_NAME.A) {
-            projectProfileName = PLAN_NAME.A
-          } else if (storedPrjctParsed.profile_name === PLAN_NAME.B) {
-            projectProfileName = PLAN_NAME.B
-          } else if (storedPrjctParsed.profile_name === PLAN_NAME.B) {
-            projectProfileName = PLAN_NAME.B
+          if (storedPrjctParsed.profile_name === 'pro') {
+            projectProfileName = "Pro"
+          } else if (storedPrjctParsed.profile_name === 'enterprise') {
+            projectProfileName = "Enterprise"
           }
 
         }
@@ -1056,11 +1051,6 @@ export class AuthService {
       '[AUTH-SERV] SIGNOUT project_bs VALUE: ',
       this.project_bs.value,
     )
-
-    const storedRoute = this.localDbService.getFromStorage('wannago')
-    if (storedRoute) {
-      this.localDbService.removeFromStorage('wannago')
-    }
 
     localStorage.removeItem('user')
     localStorage.removeItem('project')

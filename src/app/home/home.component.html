@@ -21,21 +21,6 @@
       [ngStyle]="{'margin-top':isVisibleHomeBanner === true ? 'calc(-28px - 5px)' : 'calc(-25px - 5px)' }"
       [ngClass]="{'n-header-home-wpr-max-media-991-promo-banner': isVisibleHomeBanner}">
       <div class="n-header-home">
-        <!-- ----------------------------- -->
-        <!-- AppDumo test buttons -->
-        <!-- ----------------------------- -->
-        <!-- <button (click)="activateAppSumoLicenceTest()">
-          appSumo ACTIVATION
-        </button>
-        <button (click)="updateAppSumoLicenceTest()">
-          appSumo UPGRADE
-        </button>
-        <button (click)="downgradeAppSumoLicenceTest()">
-          appSumo Downgrade
-        </button>
-        <button (click)="refundAppSumoLicenceTest()">
-          appSumo Refund
-        </button> -->
         <h2 class="n-header-home-title">
           <span style="font-family: 'Poppins', Arial, sans-serif;"> {{ prjct_name }} </span>
           <span class="material-icons home-edit-project-name-icon" (click)="goToProjectSettingsGeneral()"
@@ -50,7 +35,7 @@
           <!-- // PLAN TYPE BADGE 
               <span class="project-plan" (click)="goToPayment()" -->
           <span *ngIf="isVisible" style="font-family: roboto;">
-            <span class="project-plan" (click)="goToPayment()"
+            <span class="project-plan"
               style="text-transform:capitalize; margin-left: 0px !important;top: -4px!important; box-shadow: 0 0 0 1px rgb(255 255 255 / 50%) inset">
               {{ prjct_profile_name }}
             </span>
@@ -62,10 +47,10 @@
               </i>
               <span class="expired__Tooltiptext"
                 style="font-size:14px; top: 43px;padding: 5px; height: 44px; cursor:pointer">
-                <span *ngIf="profile_name !== PLAN_NAME.C">
+                <span *ngIf="profile_name !== 'enterprise'">
                   {{ 'Pricing.SubscriptionPaymentProblem' | translate }}
                 </span>
-                <span *ngIf="profile_name === PLAN_NAME.C">
+                <span *ngIf="profile_name === 'enterprise'">
                   {{ 'Pricing.ThePlanHasExpired' | translate }}
                 </span>
               </span>

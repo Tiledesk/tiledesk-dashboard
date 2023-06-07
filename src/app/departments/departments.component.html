@@ -2,8 +2,7 @@
   {{ 'Settings' | translate }}
 </p> -->
 
-<span class="navbar-brand navbar-brand-sidebar-settings"
-  [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }"
+<span class="navbar-brand navbar-brand-sidebar-settings" [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }"
   [ngClass]="{'is_opened':IS_OPEN_SETTINGS_SIDEBAR, 'is_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
 
   <i class="material-icons">settings</i>
@@ -334,10 +333,7 @@
                     <div class="col-xs-12">
                       <h3 class="card_title__underlined">
                         <span class="card_title__underline">
-                          {{ "Departments" | translate }}
-                          <span
-                            *ngIf="profile_name === PLAN_NAME.A || prjct_profile_type === 'free' && trialExpired === true"
-                            class="from-b-plan-badge"> {{'AvailableFromThePlan' | translate: t_params }} </span>
+                          {{ "Departments" | translate }} <span class="pro-only-badge"> {{'ProOnly' | translate }}  </span>
                         </span>
                       </h3>
                     </div>

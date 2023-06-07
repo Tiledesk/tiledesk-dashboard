@@ -104,21 +104,6 @@ export class FaqKbService {
       .get(url, httpOptions)
   }
 
-  getChatbotTemplateById(chatbotid) {
-    // 'Authorization': this.TOKEN
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-      })
-    };
-    // const url = "https://chatbot-templates.herokuapp.com/chatbots/public/templates/"
-    const url = this.TEMPLATES_URL + '/windows/' + chatbotid
-
-    // console.log('[GET-TMPLT][FAQ-KB.SERV] - GET-CHATBOT-TEMPLATE-BY-ID - URL ', url);
-    return this._httpClient
-      .get(url, httpOptions)
-  }
-
   // const url = "https://chatbot-templates.herokuapp.com/chatbots/public/templates/"
   // const url = "https://chatbot-templates.herokuapp.com/chatbots/public/community"
   getCommunityTemplates() {

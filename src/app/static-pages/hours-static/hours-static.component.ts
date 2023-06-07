@@ -9,7 +9,6 @@ import { StaticPageBaseComponent } from './../static-page-base/static-page-base.
 import { UsersService } from '../../services/users.service';
 import { LoggerService } from '../../services/logger/logger.service';
 import { AppConfigService } from 'app/services/app-config.service';
-import { PLAN_NAME } from 'app/utils/util';
 const swal = require('sweetalert');
 
 @Component({
@@ -18,7 +17,6 @@ const swal = require('sweetalert');
   styleUrls: ['./hours-static.component.scss']
 })
 export class HoursStaticComponent extends StaticPageBaseComponent implements OnInit, OnDestroy {
-  PLAN_NAME = PLAN_NAME;
   projectId: string;
   subscription: Subscription;
   browserLang: string;
@@ -32,7 +30,6 @@ export class HoursStaticComponent extends StaticPageBaseComponent implements OnI
   learnMoreAboutDefaultRoles: string;
   profile_name: string;
   isChromeVerGreaterThan100: boolean;
-  tparams: any;
   constructor(
     private router: Router,
     public auth: AuthService,
@@ -42,11 +39,7 @@ export class HoursStaticComponent extends StaticPageBaseComponent implements OnI
     private usersService: UsersService,
     private logger: LoggerService,
     public appConfigService: AppConfigService
-  ) { 
-    super(translate); 
-    this.tparams = {plan_name: PLAN_NAME.A}
-  
-  }
+  ) { super(translate); }
 
   ngOnInit() {
     this.getOSCODE();
@@ -143,13 +136,13 @@ export class HoursStaticComponent extends StaticPageBaseComponent implements OnI
 
         if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
           if (this.USER_ROLE === 'owner') {
-            if (this.profile_name !== PLAN_NAME.C) {
+            if (this.profile_name !== 'enterprise') {
 
-              this.notify.displaySubscripionHasExpiredModal(true, this.profile_name, this.subscription_end_date)
+              this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date)
 
-            } else if (this.profile_name === PLAN_NAME.C) {
+            } else if (this.profile_name === 'enterprise') {
 
-              this.notify.displayEnterprisePlanHasExpiredModal(true, this.profile_name, this.subscription_end_date);
+              this.notify.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
             }
           }
         }
@@ -169,8 +162,8 @@ export class HoursStaticComponent extends StaticPageBaseComponent implements OnI
         if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
           this.notify._displayContactUsModal(true, 'upgrade_plan');
         } else {
-          this.router.navigate(['project/' + this.projectId + '/pricing']);
-          // this.notify.presentContactUsModalToUpgradePlan(true);
+          // this.router.navigate(['project/' + this.projectId + '/pricing']);
+          this.notify.presentContactUsModalToUpgradePlan(true);
         }
       } else {
         this.presentModalOnlyOwnerCanManageTheAccountPlan();

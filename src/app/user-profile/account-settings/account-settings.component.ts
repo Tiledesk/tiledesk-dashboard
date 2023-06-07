@@ -11,7 +11,6 @@ import { Subscription } from 'rxjs'
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
 import { ProjectPlanService } from 'app/services/project-plan.service';
-import { PLAN_NAME } from 'app/utils/util';
 const swal = require('sweetalert');
 
 @Component({
@@ -20,7 +19,7 @@ const swal = require('sweetalert');
   styleUrls: ['./account-settings.component.scss']
 })
 export class AccountSettingsComponent implements OnInit, OnDestroy {
-  PLAN_NAME = PLAN_NAME
+
   private unsubscribe$: Subject<any> = new Subject<any>();
   userId: string;
   projectId: string;
@@ -92,7 +91,7 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
 
   getProjectPlan() {
     this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-      this.logger.log('[USER-PROFILE][ACCOUNT-SETTINGS] - getProjectPlan project Profile Data', projectProfileData)
+      this.logger.log('[USER-PROFILE][ACCOUNT-SETTINGS]] - getProjectPlan project Profile Data', projectProfileData)
       if (projectProfileData) {
 
         this.prjct_profile_type = projectProfileData.profile_type;
@@ -101,28 +100,18 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
 
         if (this.prjct_profile_type === 'free') {
           if (projectProfileData.trial_expired === false) {
-            this.prjct_profile_name = PLAN_NAME.B + " plan (trial)"
+            this.prjct_profile_name = "Pro plan (trial)"
           } else {
 
-            this.prjct_profile_name = "Free plan"
+            this.prjct_profile_name = "Free"
 
           }
         } else if (this.prjct_profile_type === 'payment') {
 
-          if (projectProfileData.profile_name === PLAN_NAME.A) {
-            this.prjct_profile_name = PLAN_NAME.A + " plan";
-           
-            // console.log('[USER-PROFILE][ACCOUNT-SETTINGS] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.A)
-
-          } else if (projectProfileData.profile_name === PLAN_NAME.B) {
-            this.prjct_profile_name = PLAN_NAME.B + " plan";
-           
-            // console.log('[USER-PROFILE][ACCOUNT-SETTINGS] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.B)
-
-          } else if (projectProfileData.profile_name === PLAN_NAME.C) {
-            this.prjct_profile_name = PLAN_NAME.C + " plan";
-           
-            // console.log('[USER-PROFILE][ACCOUNT-SETTINGS] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.C)
+          if (projectProfileData.profile_name === 'pro') {
+            this.prjct_profile_name = "Pro"
+          } else if (projectProfileData.profile_name === 'enterprise') {
+            this.prjct_profile_name = "Enterprise"
           }
 
         }

@@ -13,7 +13,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { NotifyService } from '../../core/notify.service';
 import { ProjectService } from 'app/services/project.service';
-import { PLAN_NAME, tranlatedLanguage } from 'app/utils/util';
+import { tranlatedLanguage } from 'app/utils/util';
 import { avatarPlaceholder, getColorBck } from '../../utils/util'
 // import { slideInOutAnimation } from '../../../_animations/index';
 @Component({
@@ -23,7 +23,6 @@ import { avatarPlaceholder, getColorBck } from '../../utils/util'
 
 })
 export class SidebarUserDetailsComponent implements OnInit {
-  PLAN_NAME = PLAN_NAME
   public HAS_CLICKED_OPEN_USER_DETAIL: boolean = false;
   // @Output() onCloseUserDetailsSidebar = new EventEmitter();
   public _prjct_profile_name: string;
@@ -158,25 +157,18 @@ export class SidebarUserDetailsComponent implements OnInit {
         this.prjct_name = this.current_selected_prjct.id_project.name;
         if (this.current_selected_prjct.id_project.profile.type === 'free') {
           if (this.current_selected_prjct.id_project.trialExpired === false) {
-            // this.getProPlanTrialTranslation();
-            this._prjct_profile_name = PLAN_NAME.B + " plan (trial)"
+
+            this.getProPlanTrialTranslation();
+
           } else {
-            this._prjct_profile_name = "Free plan";
-            // this.getPaidPlanTranslation(this.current_selected_prjct.id_project.profile.name);
+
+            this.getPaidPlanTranslation(this.current_selected_prjct.id_project.profile.name);
+
+
           }
         } else if (this.current_selected_prjct.id_project.profile.type === 'payment') {
-    
-          // this.getPaidPlanTranslation(this.current_selected_prjct.id_project.profile.name);
 
-          if (this.plan_name === PLAN_NAME.A) {
-            this._prjct_profile_name = PLAN_NAME.A + " plan";
-
-          } else if (this.plan_name === PLAN_NAME.B) {
-            this._prjct_profile_name = PLAN_NAME.B + " plan";
-
-          } else if (this.plan_name === PLAN_NAME.C) {
-            this._prjct_profile_name = PLAN_NAME.C + " plan";
-          }
+          this.getPaidPlanTranslation(this.current_selected_prjct.id_project.profile.name);
 
         }
       }

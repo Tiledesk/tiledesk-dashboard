@@ -1,6 +1,5 @@
 <!-- margin-top:6px; -->
-<div class="navbar-brand" style="z-index: 1050;position: relative; padding-left:30px"
-  [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }">
+<div class="navbar-brand" style="z-index: 1050;position: relative; padding-left:30px" [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }">
   <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;"
     (click)="goBack()">keyboard_arrow_left</i>
   <span *ngIf="CREATE_VIEW">
@@ -20,77 +19,43 @@
 
     <div class="row">
 
-
-
-      <div class="col-xs-12" class="alert-exceed-numb-of-seats-allowed"
-        *ngIf="prjct_profile_type === 'payment' && subscription_is_active === false">
-        <i class="material-icons" style="vertical-align: middle; color: #f44336;">error_outline</i>
-        <span class="msg-alert">{{ "Pricing.YourSubscriptionToThe" | translate}}
-          <span style="text-transform: capitalize">
-            {{ prjct_profile_name }}
-          </span>
-          {{ "Pricing.HasExpiredOn" | translate}} {{ subscription_end_date | amDateFormat: 'LL' }}
-
-          <span style="display: block;padding-left: 25px;
-            padding-right: 25px;" *ngIf="projectUsersLength + countOfPendingInvites > PLAN_SEATS.free">
-            {{'NumberOfTeammatesExceedsThePlan' | translate: tParamsFreePlanSeatsNum}}
-          </span>
-          <div class="upgrade---plan-btn-wpr" style="text-align: center;">
-            <button class="upgrade---plan-btn" (click)="openModalSubsExpired()">
-              {{ "Pricing.UpgradePlan" | translate }}
-            </button>
-          </div>
-        </span>
-      </div>
-
-      <!-- -------------------------------------------------- -->
-      <!--  PROJECT PROFILE INFO  -->
-      <!-- -------------------------------------------------- -->
-      <div class="row">
-        <div class="col-md-12">
-          <div class="card card card--no-border" style="margin-top: 0px; margin-bottom: 0px;">
-            <div class="card-content" *ngIf="(((prjct_profile_type === 'payment' && subscription_is_active === true) || 
-            (prjct_profile_type === 'free' && trial_expired === false) || 
-            (prjct_profile_type === 'free' && trial_expired === true)) && 
-            (projectUsersLength + countOfPendingInvites <= seatsLimit))">
-            
-                <i class="material-icons" style="vertical-align: middle; color: #039be5;"> info </i>
-                <span class="msg-alert">
-                  {{ "YouCurrentlyAreUsing" | translate }}
-                  {{ this.projectUsersLength + this.countOfPendingInvites }}
-                  {{ "Of" | translate }} {{ seatsLimit }} {{ "ActiveOperatorSeatsInThe" | translate }}
-                  <span style="text-transform: capitalize">
-                    {{ prjct_profile_name }}</span> - <span style="color: #039be5; cursor:pointer"
-                    (click)="getMoreOperatorsSeats()">{{ "GetMore" | translate }} </span>
-                </span>
-              
-            </div>
-            <div class="card-content alert-exceed-numb-of-seats-allowed-sub-active" *ngIf="(((prjct_profile_type === 'payment' && subscription_is_active === true) ||
-            (prjct_profile_type === 'free' && trial_expired === false) || 
-            (prjct_profile_type === 'free' && trial_expired === true))  &&
-            (projectUsersLength + countOfPendingInvites > seatsLimit))">
-          
-                <!-- <i class="material-icons" style="vertical-align: middle; color: #039be5;"> info </i> -->
-                <span class="msg-alert">
-                  {{ 'NumberOfTeammatesExceedsThePlan_2' | translate: tParamsPlanAndSeats }}
-                </span>
-                <div class="upgrade---plan-btn-wpr" style="text-align: center;">
-                  <button class="upgrade---plan-btn" (click)="openModalSubsExpired()">
-                    {{ "Pricing.UpgradePlan" | translate }}
-                  </button>
-                </div>
-             
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- -------------------------------------------------- -->
-      <!--  ./ PROJECT PROFILE INFO  -->
-      <!-- -------------------------------------------------- -->
-
       <!-- CREATE VIEW -->
       <span *ngIf="CREATE_VIEW">
         <div class="col-md-8">
+          <!-- *********** start PROJECT PROFILE INFO  *********** -->
+          <div *ngIf="prjct_profile_type === 'payment'">
+
+            <div class="card" style="margin-top: 25px; margin-bottom: 0px;padding-bottom: 0px;">
+              <div class="card-content">
+                <span *ngIf="subscription_is_active === true">
+                  <i class="material-icons" style="vertical-align: middle; color: #039be5;"> info </i>
+                  <span class="msg-alert">
+                    {{ "YouCurrentlyAreUsing" | translate }} {{ this.projectUsersLength + this.countOfPendingInvites }}
+                    {{ "Of" | translate }} {{ projectPlanAgentsNo }} {{ "ActiveOperatorSeatsInThe" | translate }}
+                    <span style="text-transform: capitalize">
+                      {{ prjct_profile_name }}</span> - <span style="color: #039be5; cursor:pointer"
+                      (click)="getMoreOperatorsSeats()">{{ "GetMore" | translate }} </span>
+                  </span>
+                </span>
+                <span *ngIf="subscription_is_active === false">
+                  <i class="material-icons" style="vertical-align: middle; color: #f44336;">error_outline</i>
+                  <span class="msg-alert">{{ "Pricing.YourSubscriptionToThe" | translate}}
+                    <span style="text-transform: capitalize">
+                      {{ prjct_profile_name }}
+                    </span>
+
+                    {{ "Pricing.HasExpiredOn" | translate}} {{ subscription_end_date | date: 'dd/MM/y' }} -
+
+                    <span style="color: #039be5; cursor:pointer" (click)="openModalSubsExpired()">{{
+                      "Pricing.UpgradePlan" | translate }} </span>
+                  </span>
+                </span>
+
+
+              </div>
+            </div>
+          </div>
+          <!-- *********** ./end PROJECT PROFILE INFO  *********** -->
 
           <div class="card" style="padding-top:25px; padding-bottom:25px;margin-top: 15px;">
             <div class="card-content">
@@ -236,14 +201,15 @@
               </div>
 
               <!-- SPACER -->
-              <div class="col-sm-12" style="height:15px"></div>
+             <div class="col-sm-12" style="height:15px"></div>
               <div class="row">
                 <label class="col-sm-2 custom-label">
                   ID
                 </label>
 
                 <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                  <input style="color:#999999" [(ngModel)]="user_id" type="text" disabled>
+                  <input style="color:#999999" [(ngModel)]="user_id" type="text"
+                    disabled>
                 </div>
               </div>
 
@@ -274,21 +240,23 @@
                   </div> -->
 
 
-                  <ng-select style="text-align: left;"
-                    (change)="changeAvailabilityStatus(selectedStatus, projectUser?._id)" [(ngModel)]="selectedStatus"
-                    class="teammate-status-in-pu-details" [items]="teammateStatus" bindLabel="name" bindValue="id"
-                    [clearable]="false" [searchable]="false">
-                    <ng-template ng-label-tmp let-item="item">
+                  <ng-select style="text-align: left;" 
+                  (change)="changeAvailabilityStatus(selectedStatus, projectUser?._id)" 
+                  [(ngModel)]="selectedStatus" 
+                  class="teammate-status-in-pu-details" 
+                  [items]="teammateStatus" 
+                  bindLabel="name" bindValue="id"
+                  [clearable]="false"
+                  [searchable]="false">
+                  <ng-template ng-label-tmp let-item="item">
                       <img style="width: 15px;height: 15px;" height="15" width="15" [src]="item.avatar" />
-                      <span id="sidebaravatar_{{item.name}}" style="text-transform: capitalize;">
-                        {{item.name | translate}} </span>
-                    </ng-template>
-                    <ng-template ng-option-tmp let-item="item" let-index="index">
+                     <span id="sidebaravatar_{{item.name}}" style="text-transform: capitalize;">  {{item.name | translate}} </span>
+                  </ng-template>
+                  <ng-template ng-option-tmp let-item="item" let-index="index">
                       <img style="width: 15px;height: 15px;" height="15" width="15" [src]="item.avatar" />
-                      <span id="sidebaravatar_{{item.name}}" style="text-transform: capitalize;">
-                        {{item.name | translate }} </span>
-                    </ng-template>
-                  </ng-select>
+                      <span id="sidebaravatar_{{item.name}}" style="text-transform: capitalize;">  {{item.name | translate }} </span>
+                  </ng-template>
+              </ng-select>
                 </div>
               </div>
 
@@ -312,7 +280,7 @@
               <!-- ---------------------------------------------------- -->
               <!-- start project user-tags -->
               <!-- -------------------------------------------------------- -->
-              <div *ngIf="CURRENT_USER_ROLE !== 'agent'" class="row" style="margin-top: 12px;">
+             <div *ngIf="CURRENT_USER_ROLE !== 'agent'" class="row" style="margin-top: 12px;">
                 <label class="col-sm-2 custom-label" style="white-space: nowrap;">
                   {{'Tags.Tag'  | translate}}
                 </label>
@@ -330,7 +298,7 @@
                             <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="tag"
                               class="svg-inline--fa fa-tag fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg"
                               viewBox="0 0 512 512">
-
+                             
                               <path [ngStyle]="{'fill':color.hex}" class="tag_icon"
                                 d="M0 252.118V48C0 21.49 21.49 0 48 0h204.118a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882 0L14.059 286.059A48 48 0 0 1 0 252.118zM112 64c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z">
                               </path>
@@ -357,7 +325,7 @@
                     {{'TagNameIsRequired' | translate }}
                   </div>
                 </div>
-              </div>
+              </div> 
 
               <label class="col-sm-2 custom-label"> </label>
               <form style="position: relative;">
@@ -384,7 +352,7 @@
 
                   </span>
                 </div>
-              </form>
+              </form> 
 
               <!-- end project user tags -->
 
@@ -394,10 +362,10 @@
             <div class="card-footer" style="border-color: #e8f0f5 !important;">
 
               <div class="row">
-
+               
                 <div class="col-sm-10">
 
-
+                 
                   <button [disabled]="CURRENT_USER_ROLE === 'agent'" class="btn btn-primary update-pu-btn"
                     (click)="updateUserRoleAndMaxchat(); ">
                     {{ "UserEditAddPage.Update" | translate }}

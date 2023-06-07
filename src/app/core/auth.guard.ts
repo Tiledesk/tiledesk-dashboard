@@ -13,7 +13,7 @@ import { Subscription } from 'rxjs';
 
 import { LoggerService } from '../services/logger/logger.service';
 import { LocalDbService } from 'app/services/users-local-db.service';
-
+import { coerceStringArray } from '@angular/cdk/coercion';
 // import { RequestsMsgsComponent } from '../requests-msgs/requests-msgs.component';
 // import { HomeComponent } from '../home/home.component';
 
@@ -104,11 +104,10 @@ export class AuthGuard implements CanActivate {
     this.subscription = this.router.events.subscribe((e) => {
       if (e instanceof NavigationEnd) {
         const current_url = e.url
-
+  
         // console.log('[AUTH-GUARD] - GET PROJECT ID FROM URL -> CURRENT URL ', current_url);
 
         const url_segments = current_url.split('/');
-
         // console.log('[AUTH-GUARD] - GET PROJECT ID FROM URL -> CURRENT URL SEGMENTS ', url_segments);
 
         this.nav_project_id = url_segments[2];
@@ -141,11 +140,9 @@ export class AuthGuard implements CanActivate {
           url_segments[1] !== 'resetpassword' &&
           url_segments[1] !== 'autologin' &&
           url_segments[1] !== 'get-chatbot' &&
-          url_segments[1] !== 'activate-product' &&
           url_segments[1] !== 'install-template' &&
           url_segments[1] !== 'create-project-itw' &&
           url_segments[1] !== 'install-template-np' &&
-          url_segments[1] !== 'success' &&
           current_url !== '/projects') {
 
           this.subscription.unsubscribe();
@@ -351,9 +348,9 @@ export class AuthGuard implements CanActivate {
     // console.log('[AUTH-GUARD] _decodeCurrentUrl ', decodeCurrentUrl)
 
     const storedRoute = this.localDbService.getFromStorage('wannago')
-    // console.log('[AUTH-GUARD] storedRoute getFromStorage ', storedRoute)
+    // console.log('[AUTH-GUARD] storedRoute ', storedRoute)
 
-    if (decodeCurrentUrl === storedRoute) {
+    if (decodeCurrentUrl === storedRoute ) { 
       this.localDbService.removeFromStorage('wannago')
       // console.log('Hey baby - I removes the wannago stored url')
     }
@@ -381,11 +378,11 @@ export class AuthGuard implements CanActivate {
       (this.is_reset_psw_page === true) ||
       (this.is_handleinvitation_page === true) ||
       (this.is_signup_on_invitation_page === true)) {
-
+    
       return true;
-
+   
     } else {
-      // console.log('[AUTH-GUARD] SSO - CAN ACTIVATE queryParams HAS_JWT (2)', HAS_JWT);
+
       if (!HAS_JWT) {
         this.router.navigate(['/login']);
         // console.log('[AUTH-GUARD] SSO - CAN ACTIVATE queryParams HAS_JWT: NOT HAS - navigate to login ');
@@ -396,12 +393,7 @@ export class AuthGuard implements CanActivate {
         if (!storedRoute) {
           const URLtoStore = url;
           // console.log('[AUTH-GUARD] - CAN ACTIVATE queryParams HAS_JWT: NOT HAS - wanna go url - URLtoStore', URLtoStore);
-          if (URLtoStore !== '/projects') {
-            this.localDbService.setInStorage('wannago', URLtoStore);
-          }
-          if (URLtoStore.indexOf('/activate-product') !== -1) {
-            this.router.navigate(['/signup']);
-          }
+          this.localDbService.setInStorage('wannago', URLtoStore);
         }
       } else {
         // console.log('[AUTH-GUARD] SSO - CAN ACTIVATE queryParams HAS_JWT: YES HAS  navigate to autologin ');
@@ -425,9 +417,9 @@ export class AuthGuard implements CanActivate {
       (this.is_signup_on_invitation_page === true)) {
       // this.router.navigate(['/home']);
       return true;
-
+      
     } else {
-
+  
       this.router.navigate(['/login']);
       return false;
     }

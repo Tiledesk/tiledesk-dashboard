@@ -31,10 +31,10 @@
 
     <!-- <div class="row"> -->
 
-    <!-- -------------------------------------------------------- -->
-    <!-- @ Extenal -->
-    <!-- -------------------------------------------------------- -->
-    <!-- <div class="col-lg-4 col-md-4 col-sm-6">
+       <!-- -------------------------------------------------------- -->
+      <!-- @ Extenal -->
+      <!-- -------------------------------------------------------- -->
+      <!-- <div class="col-lg-4 col-md-4 col-sm-6">
         <div class="card card-app-store">
           <div class="card-content">
             <div class="row app-card-header">
@@ -100,10 +100,10 @@
         </div>
       </div> -->
 
-    <!-- -------------------------------------------------------- -->
-    <!-- @ Rasa -->
-    <!-- -------------------------------------------------------- -->
-    <!-- <div class="col-lg-4 col-md-4 col-sm-6">
+      <!-- -------------------------------------------------------- -->
+      <!-- @ Rasa -->
+      <!-- -------------------------------------------------------- -->
+      <!-- <div class="col-lg-4 col-md-4 col-sm-6">
         <div class="card card-app-store">
           <div class="card-content">
             <div class="row app-card-header">
@@ -154,10 +154,10 @@
         </div>
       </div> -->
 
-    <!-- -------------------------------------------------------- -->
-    <!-- @ Dialogflow -->
-    <!-- -------------------------------------------------------- -->
-    <!-- <div class="col-lg-4 col-md-4 col-sm-6">
+      <!-- -------------------------------------------------------- -->
+      <!-- @ Dialogflow -->
+      <!-- -------------------------------------------------------- -->
+      <!-- <div class="col-lg-4 col-md-4 col-sm-6">
         <div class="card card-app-store">
           <div class="card-content">
             <div class="row app-card-header">
@@ -280,7 +280,7 @@
           <div class="card-content">
             <div class="row app-card-header">
               <div class="col-xs-6">
-                <div class="app-icon" style="height:50px">
+                <div class="app-icon">
                   <img [src]="app.logo" />
                 </div>
               </div>
@@ -313,15 +313,10 @@
 
               </div>
             </div>
-            <!-- padding: 0px 20px; min-height: 52px; -->
-            <h5 class="card-title" style="margin-bottom: 5px;" [ngClass]="{'app-store-card-no-badge': (app?.title !== 'Zapier') && (app?.title !== 'WhatsApp Business') && (app?.title !== 'Facebook Messenger') && (app?.title !== 'Help Center')}">
+            <!-- padding: 0px 20px; -->
+            <h5 class="card-title" style="min-height: 52px;margin-bottom: 5px;">
               {{ app.title}}
             </h5>
-    
-            <div class="available-from-b-plan-badge b-plan-badge-color"
-              *ngIf="(app?.title === 'Zapier') || (app?.title === 'WhatsApp Business') || (app?.title === 'Facebook Messenger') || (app?.title === 'Help Center')">
-              {{ 'AvailableFromThePlan' | translate: tPlanParams }}
-            </div>
 
             <p class="card-content card-content-app-store" style="padding-top: 5px;">
               {{ app.description}}
@@ -342,12 +337,10 @@
 
               <!-- app.installed {{app.installed }}  app.version {{app.version }} -->
               <!-- app.where.appsstore >  {{app.where.appsstore }}  -->
-              <div *ngIf="!app.installed && app.version === 'v1'"
-                [ngClass]="{'div-disabled': app._id === '5fecb0d08b2c259c6e4a9706' }"
-                class="col-xs-6 app-store-right-col-btn"
+              <div *ngIf="!app.installed && app.version === 'v1'" [ngClass]="{'div-disabled': app._id === '5fecb0d08b2c259c6e4a9706' }" class="col-xs-6 app-store-right-col-btn"
                 (click)="installApp(app, app.installActionType, app.installActionURL, app.title, app._id)">
                 <a>
-                  {{'Install' | translate}}
+                 {{'Install' | translate}}
                 </a>
               </div>
 
@@ -455,41 +448,41 @@
     </div>
 
     <div class="row">
-      <!-- -------------------------------------------------------- -->
-      <!-- @ Extenal chatbot -->
+           <!-- -------------------------------------------------------- -->
+      <!-- @ Extenal -->
       <!-- -------------------------------------------------------- -->
       <div class="col-lg-4 col-md-4 col-sm-6">
         <div class="card card-app-store">
           <div class="card-content">
             <div class="row app-card-header">
               <div class="col-xs-6">
-                <div class="app-icon" style="height:50px">
+                <div class="app-icon">
                   <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
-                    xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 189.9 189.9"
-                    style="enable-background:new 0 0 189.9 189.9;" xml:space="preserve">
-                    <style type="text/css">
-                      .extlogo_st0 {
-                        fill: none;
-                      }
-
-                      .extlogo_st1 {
-                        fill: #03A5E8;
-                      }
-                    </style>
-                    <path class="extlogo_st0" d="M78.5,86h24v24h-24V86z" />
-                    <g>
-                      <path class="extlogo_st1"
-                        d="M114.6,76.4c16.6,16.6,16.4,43.3,0.1,59.6c0,0-0.1,0.1-0.1,0.1l-18.7,18.7c-16.5,16.5-43.3,16.5-59.7,0
+                  xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 189.9 189.9"
+                  style="enable-background:new 0 0 189.9 189.9;" xml:space="preserve">
+                  <style type="text/css">
+                    .extlogo_st0 {
+                      fill: none;
+                    }
+  
+                    .extlogo_st1 {
+                      fill: #03A5E8;
+                    }
+                  </style>
+                  <path class="extlogo_st0" d="M78.5,86h24v24h-24V86z" />
+                  <g>
+                    <path class="extlogo_st1"
+                      d="M114.6,76.4c16.6,16.6,16.4,43.3,0.1,59.6c0,0-0.1,0.1-0.1,0.1l-18.7,18.7c-16.5,16.5-43.3,16.5-59.7,0
                                 c-16.5-16.5-16.5-43.3,0-59.7l10.3-10.3c2.7-2.7,7.4-0.9,7.6,2.9c0.2,4.9,1.1,9.9,2.7,14.7c0.6,1.6,0.2,3.4-1.1,4.6l-3.6,3.6
                                 c-7.8,7.8-8,20.5-0.3,28.3c7.8,7.9,20.6,8,28.4,0.1l18.7-18.7c7.8-7.8,7.8-20.5,0-28.3c-1-1-2.1-1.8-2.9-2.4
                                 c-1.2-0.8-1.9-2.1-1.9-3.5c-0.1-2.9,0.9-6,3.3-8.3l5.9-5.9c1.5-1.5,3.9-1.7,5.7-0.5C111,73,112.9,74.6,114.6,76.4L114.6,76.4z" />
-                      <path class="extlogo_st1" d="M153.8,37.2c-16.5-16.5-43.3-16.5-59.7,0L75.4,55.9c0,0-0.1,0.1-0.1,0.1C59,72.4,58.8,99,75.4,115.6
+                    <path class="extlogo_st1" d="M153.8,37.2c-16.5-16.5-43.3-16.5-59.7,0L75.4,55.9c0,0-0.1,0.1-0.1,0.1C59,72.4,58.8,99,75.4,115.6
                                 c1.8,1.8,3.7,3.4,5.7,4.8c1.8,1.2,4.2,1.1,5.7-0.5l5.9-5.9c2.3-2.3,3.4-5.3,3.3-8.3c-0.1-1.4-0.8-2.7-1.9-3.5
                                 c-0.8-0.6-1.8-1.4-2.9-2.4c-7.8-7.8-7.8-20.5,0-28.3l18.7-18.7c7.8-7.8,20.7-7.8,28.4,0.1c7.7,7.9,7.5,20.5-0.3,28.3l-3.6,3.6
                                 c-1.2,1.2-1.6,3-1.1,4.6c1.6,4.8,2.5,9.7,2.7,14.7c0.1,3.9,4.9,5.7,7.6,2.9l10.3-10.3C170.3,80.5,170.3,53.7,153.8,37.2L153.8,37.2
                                 z" />
-                    </g>
-                  </svg>
+                  </g>
+                </svg>
                 </div>
               </div>
             </div>
@@ -505,16 +498,16 @@
           <div class="card-footer card-footer-app-store">
 
             <div class="row" style="display: block;">
-
-              <div class="col-xs-6 app-store-left-col-btn" (click)="openExternalBotIntegrationTutorial()">
+            
+              <div class="col-xs-6 app-store-left-col-btn"  (click)="openExternalBotIntegrationTutorial()">
                 <a style="cursor: pointer;">
                   {{'LearnMore' | translate}}
                 </a>
               </div>
 
 
-
-              <div class="col-xs-6 app-store-right-col-btn" (click)="goToCreateBot('external')">
+              
+              <div class="col-xs-6 app-store-right-col-btn" (click)="goToCreateBot('external')"> 
                 <a style="cursor: pointer;">
                   {{'Create' | translate}}
                 </a>
@@ -526,5 +519,5 @@
 
     </div>
 
-
+    
   </div>
