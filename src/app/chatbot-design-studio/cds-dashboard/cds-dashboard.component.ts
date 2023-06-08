@@ -51,15 +51,18 @@ export class CdsDashboardComponent implements OnInit {
   updatePanelIntentList: boolean = true;
   listOfIntents: Array<Intent>;
 
-
-
   intentStart: Intent;
   intentDefaultFallback: Intent;
+
+
+  idElementOfIntentSelected: string;
   intentSelected: Intent;
+  elementIntentSelected: any;
+
+
   listOfActions: Array<{ name: string, value: string, icon?: string }>;
   listOfVariables: { userDefined: Array<any>, systemDefined: Array<any> };
   
-  elementIntentSelected: any;
   newIntentName: string;
 
   CREATE_VIEW = false;
@@ -68,7 +71,7 @@ export class CdsDashboardComponent implements OnInit {
   isIntentElementSelected: boolean = false;
   isClickedInsidePanelIntentDetail: boolean = false;
   id_faq_kb: string;
-  idElementOfIntentSelected: string;
+ 
 
 
   id_faq: string;
@@ -976,7 +979,7 @@ export class CdsDashboardComponent implements OnInit {
 
   /** START EVENTS PANEL INTENT LIST */
   onSelectIntent(intent: Intent) { 
-    // console.log('onSelectIntent::: ', intent);
+    console.log('onSelectIntent::: ', intent);
     this.EDIT_VIEW = true;
     this.intentSelected = intent;
     this.isIntentElementSelected = false;
@@ -989,10 +992,52 @@ export class CdsDashboardComponent implements OnInit {
       this.elementIntentSelected['type'] = '';
       this.elementIntentSelected['element'] = null;
     }
+    this.posCenterIntentSelected(intent);
     // this.router.navigate(['project/' + this.projectID + '/cds/' + this.id_faq_kb + '/intent/' + this.intentSelected.id], { replaceUrl: true })
   }
 
   
+  posCenterIntentSelected(intent){
+    // add class animation
+    var stageElement = document.getElementById(intent.id);
+    var w = stageElement.offsetWidth;
+    var h = stageElement.offsetHeight;
+    var x = stageElement.offsetLeft;
+    var y = stageElement.offsetTop;
+    console.log("position : ", w,h,x,y);
+    const dropElement = this.receiverElementsDroppedOnStage.nativeElement;
+    const posDropElement = dropElement.getBoundingClientRect();
+    console.log('drop W:', posDropElement.width);
+    console.log('drop H:', posDropElement.height);
+    console.log('drop X:', posDropElement.left);
+    console.log('drop Y:', posDropElement.top);
+
+    const drawerElement = this.drawerOfItemsToZoomAndDrag.nativeElement;
+    drawerElement.style.transition = "transform 0.3s ease-in-out";
+
+    const posDrawerElement = drawerElement.getBoundingClientRect();
+    // console.log('drop W:', posDrawerElement.width);
+    // console.log('drop H:', posDrawerElement.height);
+    console.log('drop X:', posDrawerElement.left);
+    console.log('drop Y:', posDrawerElement.top);
+
+    let newX = (posDropElement.width/2)-(x+w/2);
+    console.log('newX:', newX);
+
+    let newY = (posDropElement.height/2)-(y+h/2);
+    console.log('newX:', newY);
+
+    let tcmd = `translate(${newX}px, ${newY}px)`;
+    // let scmd = `scale(${1})`;
+    // console.log("tcmd:", tcmd);
+    console.log("transform:", tcmd);
+    drawerElement.style.transform = tcmd;
+
+    setTimeout(() => {
+      drawerElement.style.removeProperty('transition');
+      // remove class animation
+    }, 300);
+  }
 
   // onReturnListOfIntents(intents) {
   //   console.log('onReturnListOfIntents:::: ', intents);

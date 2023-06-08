@@ -13,7 +13,6 @@ function setDrawer(el,drawer) {
   this.drawer = drawer;
   this.container = el;
   this.container.onwheel = zoom;
-  
 }
 
 function setDragElement(element){
@@ -27,12 +26,13 @@ function setDragElement(element){
 
 function zoom(event) {
       event.preventDefault();
-      //console.log("connectors:", connectors);
+      // console.log("zoom:", event);
       const dx = event.deltaX;
       const dy = event.deltaY;
+      getPositionNow();
       if (event.ctrlKey === false) {
         // pan
-        //console.log("pan");
+        // console.log("pan");
         // translate(42px, 18px)
         let direction = -1;
         tx += event.deltaX * direction;
@@ -40,7 +40,7 @@ function zoom(event) {
         transform();
       } else {
         // zoom
-        //console.log("zoom");
+        // console.log("zoom");
         scale += dy * -0.01;
         // Restrict scale
         scale = Math.min(Math.max(0.125, scale), 4);
@@ -59,6 +59,29 @@ function zoom(event) {
       this.drawer.style.transform = tcmd + " " + scmd;
     }
 
+
+
+    function getPositionNow(){
+     if(window.getComputedStyle(this.drawer)){
+        var computedStyle = window.getComputedStyle(this.drawer);
+        // console.log('computedStyle :', computedStyle);
+        var transformValue = computedStyle.getPropertyValue('transform');
+        // console.log('transformValue :', transformValue);
+        if(transformValue !== "none") {
+          var transformMatrix = transformValue.match(/matrix.*\((.+)\)/)[1].split(', ');
+          console.log('transformMatrix :', transformMatrix);
+          var translateX = parseFloat(transformMatrix[4]);
+          var translateY = parseFloat(transformMatrix[5]);
+          var scaleX = parseFloat(transformMatrix[0]);
+          console.log('Translate X:', translateX);
+          console.log('scaleX :', scaleX);
+          tx = translateX;
+          ty = translateY;
+          scale = scaleX;
+        }
+      }
+      
+    }
 
 
 
@@ -117,7 +140,7 @@ function dragElement(elmnt) {
     //const e_rect = e.target.getBoundingClientRect();
     //console.log("e_rect.left:", e_rect.left, "e_rect.top:", e_rect.top);
     //console.log("e_rect:", e_rect);
-    //console.log("pos_mouse_x:", pos_mouse_x, "pos_mouse_y:", pos_mouse_y);
+    console.log("pos_mouse_x:", pos_mouse_x, "pos_mouse_y:", pos_mouse_y);
     document.onmouseup = closeDragElement;
     // call a function whenever the cursor moves:
     document.onmousemove = elementDrag;
@@ -148,8 +171,7 @@ function dragElement(elmnt) {
     pos_x = elmnt.offsetLeft + delta_x/ scale;//pos_mouse_x/ scale - e.clientX/ scale - shift_x; // logic
     pos_y = elmnt.offsetTop + delta_y / scale;//pos_mouse_y/ scale - e.clientY/ scale - shift_y;
     //pos_y = ( e_rect.top + delta_y)/ scale;//pos_mouse_y/ scale - e.clientY/ scale - shift_y;
-    //console.log("pos_x:", pos_x, "pos_y:", pos_y);
-    
+    console.log("pos_x:", pos_x, "pos_y:", pos_y);
     // set the element's new position:
     elmnt.style.top = pos_y + "px";//(elmnt.offsetTop - pos_y) + "px";
     elmnt.style.left = pos_x + "px"; //(elmnt.offsetLeft - pos_x) + "px";
