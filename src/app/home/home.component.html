@@ -19,7 +19,7 @@
                   <img src="assets/images/avatars/brian-hughes.jpg" class="w-full h-full object-cover">
                 </div> -->
                 <!-- style="flex-direction: row !important;" -->
-                <div class="flex flex-col min-w-0 ml-4" >
+                <div class="flex flex-col min-w-0 ml-4">
                   <!-- leading-7 -->
                   <div
                     class="text-2xl md-text-5xl font-w-400 tracking-tight  md-leading-snug truncate ng-star-inserted">
@@ -44,11 +44,10 @@
                   </div>
                   <!--ng-container-->
                   <!--container-->
-                  <div  class="flex items-center">
+                  <div class="flex items-center">
                     <div style="font-family: 'Poppins';
                     border-radius: 999px;
-                    padding: 2px 8px;" *ngIf="project_plan_badge" class="project-plan-badge" 
-                    [ngClass]="{
+                    padding: 2px 8px;" *ngIf="project_plan_badge" class="project-plan-badge" [ngClass]="{
                       'free-plan-badge': current_selected_prjct?.plan_badge_background_type === 'free_plan_badge', 
                       'a-plan-badge':  current_selected_prjct?.plan_badge_background_type === 'a_plan_badge',
                       'b-plan-badge': current_selected_prjct?.plan_badge_background_type === 'b_plan_badge', 
@@ -66,56 +65,64 @@
               <div class="flex items-center  sm-mt-0 sm-ml-2 space-x-3">
 
                 <!-- ------------------------------------ -->
-                <!-- Operating Hours -->
+                <!-- Operating Hours style="background-color: #f44336-->
                 <!-- ------------------------------------ -->
-                <button mat-mini-fab style="background-color: #f44336" aria-label="date_range icon"
-                  style="box-shadow: unset;margin-right: 16px;" [satPopoverAnchor]="editOperatingHours"
-                  (click)="editOperatingHours.toggle();">
-                  <mat-icon style="color: #fff;">date_range</mat-icon>
-                </button>
+                <ng-container *ngIf="isVisibleOPH && USER_ROLE !== 'agent'">
+                  <button mat-mini-fab aria-label="date_range icon"
+                    [ngClass]="{'oph-disabled': !OPERATING_HOURS_ACTIVE || DISPLAY_OPH_AS_DISABLED, 'oph-enabled': OPERATING_HOURS_ACTIVE && !DISPLAY_OPH_AS_DISABLED }"
+                    style="box-shadow: unset;margin-right: 16px;" [satPopoverAnchor]="editOperatingHours"
+                    (click)="editOperatingHours.toggle();">
+                    <mat-icon style="color: #fff;">date_range</mat-icon>
+                  </button>
 
-                <sat-popover #editOperatingHours id="edit-operating-hours" horizontalAlign="center"
-                  verticalAlign="center" hasBackdrop (backdropClicked)="editOperatingHours.close()"
-                  panelClass="edit-operating-hours" interactiveClose="false">
-                  <div class="edit-operating-hours-content-wpr" style="padding-top: 8px;padding-bottom: 8px;">
+                  <sat-popover #editOperatingHours id="edit-operating-hours" horizontalAlign="center"
+                    verticalAlign="center" hasBackdrop (backdropClicked)="editOperatingHours.close()"
+                    panelClass="edit-operating-hours" interactiveClose="false">
+                    <div class="edit-operating-hours-content-wpr" style="padding-top: 8px;padding-bottom: 8px;">
 
-                    <div
-                      style="align-items: center;color: rgba(0,0,0,.55); display: flex;padding-left: 16px;padding-right: 16px;">
+                      <div
+                        style="align-items: center;color: rgba(0,0,0,.55); display: flex;padding-left: 16px;padding-right: 16px;">
 
-                      <div class="opicon" style=" padding-right: 8px;">
-                        <button mat-mini-fab aria-label="Button with a date_range icon"
-                          style="background-color: #4caf50; box-sizing: unset; cursor: default ;" disabled>
-                          <mat-icon style="color: #fff;">date_range</mat-icon>
+                        <div class="opicon" style=" padding-right: 8px;">
+                          <button mat-mini-fab aria-label="Button with a date_range icon"
+                            [ngClass]="{'oph-disabled': !OPERATING_HOURS_ACTIVE || DISPLAY_OPH_AS_DISABLED, 'oph-enabled': OPERATING_HOURS_ACTIVE && !DISPLAY_OPH_AS_DISABLED }"
+                            style="box-sizing: unset; cursor: default ;" disabled>
+                            <mat-icon style="color: #fff;">date_range</mat-icon>
+                          </button>
+                        </div>
+
+                        <div class="optext"
+                          style="overflow: hidden;padding-right: 12px;display: flex;flex-direction: column;align-items: center;justify-content: center;">
+
+                          <div style="color: rgba(0, 0, 0, 0.87);font-weight: 500;font-size: 14px;">
+                            Operating Hours
+                          </div>
+
+                          <div style="font-size: 12px;font-weight: 500;text-transform: uppercase;">
+                            <span *ngIf="!OPERATING_HOURS_ACTIVE || DISPLAY_OPH_AS_DISABLED">
+                              Disabled
+                            </span>
+
+                            <span *ngIf="OPERATING_HOURS_ACTIVE && !DISPLAY_OPH_AS_DISABLED">
+                              Enabled
+                            </span>
+                          </div>
+                        </div>
+                        <button tabindex="-1" mat-icon-button color="primary" aria-label="Button with a settings icon"
+                          (click)="goToOperatingHours()">
+                          <mat-icon>settings</mat-icon>
                         </button>
                       </div>
-
-                      <div class="optext"
-                        style="overflow: hidden;padding-right: 12px;display: flex;flex-direction: column;align-items: center;justify-content: center;">
-
-                        <div style="color: rgba(0, 0, 0, 0.87);font-weight: 500;font-size: 14px;">
-                          Operating Hours
-                        </div>
-
-                        <div style="font-size: 12px;font-weight: 500;text-transform: uppercase;">
-                          Disabled
-                        </div>
-                      </div>
-
-
-
-                      <button tabindex="-1" mat-icon-button color="primary" aria-label="Button with a settings icon">
-                        <mat-icon>settings</mat-icon>
-                      </button>
                     </div>
-                  </div>
-                </sat-popover>
+                  </sat-popover>
+                </ng-container>
 
                 <!-- ------------------------------------ -->
-                <!-- Settings -->
+                <!-- Settings mat-primary ng-reflect-color="primary"  -->
                 <!-- ------------------------------------ -->
-                <button mat-flat-button=""
-                  class="mat-focus-indicator fuse-mat-button-rounded mat-flat-button mat-button-base mat-primary"
-                  ng-reflect-color="primary">
+                <button mat-flat-button="" [matMenuTriggerFor]="menu"
+                  class="mat-focus-indicator fuse-mat-button-rounded mat-flat-button mat-button-base"
+                  style="background-color: #2196f3; color: #fff;">
                   <span class="mat-button-wrapper">
                     <mat-icon role="img" class="mat-icon notranslate icon-size-5 mat-icon-no-color" aria-hidden="true"
                       ng-reflect-svg-icon="heroicons_solid:cog" data-mat-icon-type="svg" data-mat-icon-name="cog"
@@ -139,6 +146,21 @@
                   </span>
                   <span class="mat-button-focus-overlay"> </span>
                 </button>
+
+                <mat-menu #menu="matMenu">
+                  <button mat-menu-item>
+                    <mat-icon>dialpad</mat-icon>
+                    <span>Redial</span>
+                  </button>
+                  <button mat-menu-item disabled>
+                    <mat-icon>voicemail</mat-icon>
+                    <span>Check voice mail</span>
+                  </button>
+                  <button mat-menu-item>
+                    <mat-icon>notifications_off</mat-icon>
+                    <span>Disable alerts</span>
+                  </button>
+                </mat-menu>
               </div>
             </div>
           </div>
@@ -503,8 +525,8 @@
             <span *ngIf="isVisibleOPH"
               style="padding-left: 4px;color: rgba(255,255,255,0.8);font-size: 13px;font-weight: 400;"
               (click)="goToOperatingHours()">
-              <span *ngIf="!OPERATING_HOURS_ACTIVE || DISPLAY_OPH_AS_DISABLED"> {{'OperatingHoursDisabled' | translate
-                }}</span>
+              <span *ngIf="!OPERATING_HOURS_ACTIVE || DISPLAY_OPH_AS_DISABLED">
+                 {{'OperatingHoursDisabled' | translate  }}</span>
               <span *ngIf="OPERATING_HOURS_ACTIVE && !DISPLAY_OPH_AS_DISABLED">
                 {{'OperatingHoursEnabled' | translate}}
               </span>
