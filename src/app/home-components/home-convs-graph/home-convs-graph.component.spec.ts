@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { HomeReportComponent } from './home-report.component';
+import { HomeConvsGraphComponent } from './home-convs-graph.component';
 
-describe('HomeReportComponent', () => {
-  let component: HomeReportComponent;
-  let fixture: ComponentFixture<HomeReportComponent>;
+describe('HomeConvsGraphComponent', () => {
+  let component: HomeConvsGraphComponent;
+  let fixture: ComponentFixture<HomeConvsGraphComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ HomeReportComponent ]
+      declarations: [ HomeConvsGraphComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(HomeReportComponent);
+    fixture = TestBed.createComponent(HomeConvsGraphComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

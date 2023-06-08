@@ -117,10 +117,21 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   popup_visibility: string = 'none';
   appSumoProfile: string;
   project_plan_badge: boolean;
+
+ 
+
   // dispayPromoBanner: boolean = true;
   // promoBannerContent: any;
   // promoBannerSyle: any;
   // resPromoBanner: any;
+
+   // HOME REVOLUTION 
+   displayAnalyticsConvsGraph: boolean = true;
+   displayAnalyticsIndicators: boolean = true;
+   displayConnectWhatsApp: boolean = true
+   displayCreateChatbot: boolean = true
+   displayNewsFeed: boolean = true
+
   constructor(
     public auth: AuthService,
     private route: ActivatedRoute,
@@ -2031,6 +2042,35 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         this.prjct_profile_name = text;
         this.logger.log('+ + + PaydPlanName ', text)
       });
+  }
+
+
+  // new dashbord
+  
+  switchAnalyticsConvsGraph(event) {
+    console.log('[HOME] SWITCH ANALYTICS OVERVIEW event ', event)
+    this.displayAnalyticsConvsGraph = event
+  }
+
+  switchAnalyticsIndicators(event) {
+    console.log('[HOME] SWITCH ANALYTICS OVERVIEW event ', event)
+    this.displayAnalyticsIndicators = event
+  }
+
+  
+
+  switchConnectWhatsApp(event) {
+    console.log('[HOME] SWITCH CNNECT WA event ', event)
+    this.displayConnectWhatsApp = event
+  } 
+
+  switchCreateChatbot(event) {
+    console.log('[HOME] SWITCH CREATE CHATBOT event ', event)
+    this.displayCreateChatbot = event
+  } 
+  switchNewsFeed (event) {
+    console.log('[HOME] SWITCH NEWS FEED event ', event)
+    this.displayNewsFeed = event
   }
 
 }

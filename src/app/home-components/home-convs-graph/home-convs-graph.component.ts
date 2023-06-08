@@ -4,19 +4,19 @@ import { AnalyticsService } from 'app/analytics/analytics-service/analytics.serv
 import { Chart } from 'chart.js';
 import moment from "moment";
 import { Subject } from 'rxjs';
-import { skip, takeUntil } from 'rxjs/operators'
+import { takeUntil } from 'rxjs/operators'
 import { TranslateService } from '@ngx-translate/core';
 import { UsersService } from 'app/services/users.service';
 import { Router } from '@angular/router';
 import { ContactsService } from 'app/services/contacts.service';
 
 @Component({
-  selector: 'appdashboard-home-report',
-  templateUrl: './home-report.component.html',
-  styleUrls: ['./home-report.component.scss']
+  selector: 'appdashboard-home-convs-graph',
+  templateUrl: './home-convs-graph.component.html',
+  styleUrls: ['./home-convs-graph.component.scss']
 })
 
-export class HomeReportComponent implements OnInit, OnChanges {
+export class HomeConvsGraphComponent implements OnInit, OnChanges {
   private unsubscribe$: Subject<any> = new Subject<any>();
   @Input() public projectId: string;
   @Input() public USER_ROLE: string;
@@ -68,21 +68,21 @@ export class HomeReportComponent implements OnInit, OnChanges {
   inizializeHomeStatic() {
     this.getRequestByLastNDayMerge(this.numOfDays);
     this.getLastMounthRequestsCount();
-    this.getActiveContactsCount();
-    this.getVisitorsCount();
-    this.getLastMounthMessagesCount();
+    // this.getActiveContactsCount();
+    // this.getVisitorsCount();
+    // this.getLastMounthMessagesCount();
    
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log('[HOME-ANALITICS] ngOnChanges changes ', changes)
-    console.log('[HOME-ANALITICS] ngOnChanges changes projectId ', this.projectId)
+    console.log('[HOME-CONVS-GRAPH] ngOnChanges changes ', changes)
+    console.log('[HOME-CONVS-GRAPH] ngOnChanges changes projectId ', this.projectId)
 
     if (changes.projectId &&  changes.projectId.firstChange === false) {
-      console.log('[HOME-ANALITICS] ngOnChanges changes changes.projectId.currentValue ', changes.projectId.currentValue)
-      console.log('[HOME-ANALITICS] ngOnChanges changes changes.projectId.previousValue ', changes.projectId.previousValue)
+      console.log('[HOME-CONVS-GRAPH] ngOnChanges changes changes.projectId.currentValue ', changes.projectId.currentValue)
+      console.log('[HOME-CONVS-GRAPH] ngOnChanges changes changes.projectId.previousValue ', changes.projectId.previousValue)
       if (changes.projectId.currentValue !== changes.projectId.previousValue) {
-        console.log('[HOME-ANALITICS] ngOnChanges changes HAS CHANGED PROJECT ')
+        console.log('[HOME-CONVS-GRAPH] ngOnChanges changes HAS CHANGED PROJECT ')
         this.inizializeHomeStatic()
       }
     }
@@ -113,71 +113,71 @@ export class HomeReportComponent implements OnInit, OnChanges {
       });
   }
 
-  getActiveContactsCount() {
-    this.contactsService.getLeadsActive().subscribe((activeleads: any) => {
-      console.log('[HOME-ANALITICS] - GET ACTIVE LEADS RESPONSE ', activeleads)
-      if (activeleads) {
+  // getActiveContactsCount() {
+  //   this.contactsService.getLeadsActive().subscribe((activeleads: any) => {
+  //     console.log('[HOME-CONVS-GRAPH] - GET ACTIVE LEADS RESPONSE ', activeleads)
+  //     if (activeleads) {
 
-        this.countOfActiveContacts = activeleads['count'];
-        console.log('[HOME-ANALITICS] - ACTIVE LEADS COUNT ', this.countOfActiveContacts)
-      }
-    }, (error) => {
-      console.error('[HOME-ANALITICS] - GET ACTIVE LEADS - ERROR ', error);
+  //       this.countOfActiveContacts = activeleads['count'];
+  //       console.log('[HOME-CONVS-GRAPH] - ACTIVE LEADS COUNT ', this.countOfActiveContacts)
+  //     }
+  //   }, (error) => {
+  //     console.error('[HOME-CONVS-GRAPH] - GET ACTIVE LEADS - ERROR ', error);
 
-    }, () => {
-      console.log('[HOME-ANALITICS] - GET ACTIVE LEADS * COMPLETE *');
-    });
-  }
-
- 
-
-  getVisitorsCount() {
-    this.analyticsService.getVisitors()
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((visitorcounts: any) => {
-        console.log("HOME - GET VISITORS COUNT RES: ", visitorcounts)
-
-        if (visitorcounts && visitorcounts.length > 0) {
-          this.countOfVisitors = visitorcounts[0]['totalCount']
-          console.log("HOME - GET VISITORS COUNT: ", this.countOfVisitors)
-        } else {
-          this.countOfVisitors = 0
-        }
-      }, (error) => {
-        console.error('[HOME-ANALITICS] - GET VISITORS COUNT - ERROR ', error);
-
-      }, () => {
-        console.log('[HOME-ANALITICS] - GET VISITORS COUNT * COMPLETE *');
-      });
-  }
-
-
+  //   }, () => {
+  //     console.log('[HOME-CONVS-GRAPH] - GET ACTIVE LEADS * COMPLETE *');
+  //   });
+  // }
 
  
 
-  getLastMounthMessagesCount() {
-    this.analyticsService.getLastMountMessagesCount()
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((msgscount: any) => {
-       console.log('[HOME-ANALITICS] - GET LAST 30 DAYS MESSAGE COUNT RES', msgscount);
-        if (msgscount && msgscount.length > 0) {
-          this.countOfLastMonthMsgs = msgscount[0]['totalCount']
+  // getVisitorsCount() {
+  //   this.analyticsService.getVisitors()
+  //     .pipe(
+  //       takeUntil(this.unsubscribe$)
+  //     )
+  //     .subscribe((visitorcounts: any) => {
+  //       console.log("HOME - GET VISITORS COUNT RES: ", visitorcounts)
 
-          console.log('[HOME-ANALITICS] - GET LAST 30 DAYS MESSAGE COUNT ', this.countOfLastMonthMsgs);
-        } else {
-          this.countOfLastMonthMsgs = 0;
-        }
-      }, (error) => {
-        console.error('[HOME-ANALITICS] - GET LAST 30 DAYS MESSAGE - ERROR ', error);
+  //       if (visitorcounts && visitorcounts.length > 0) {
+  //         this.countOfVisitors = visitorcounts[0]['totalCount']
+  //         console.log("HOME - GET VISITORS COUNT: ", this.countOfVisitors)
+  //       } else {
+  //         this.countOfVisitors = 0
+  //       }
+  //     }, (error) => {
+  //       console.error('[HOME-CONVS-GRAPH] - GET VISITORS COUNT - ERROR ', error);
 
-      }, () => {
-        console.log('[HOME-ANALITICS] - GET LAST 30 DAYS MESSAGE * COMPLETE *');
-      });
-  }
+  //     }, () => {
+  //       console.log('[HOME-CONVS-GRAPH] - GET VISITORS COUNT * COMPLETE *');
+  //     });
+  // }
+
+
+
+ 
+
+  // getLastMounthMessagesCount() {
+  //   this.analyticsService.getLastMountMessagesCount()
+  //     .pipe(
+  //       takeUntil(this.unsubscribe$)
+  //     )
+  //     .subscribe((msgscount: any) => {
+  //      console.log('[HOME-CONVS-GRAPH] - GET LAST 30 DAYS MESSAGE COUNT RES', msgscount);
+  //       if (msgscount && msgscount.length > 0) {
+  //         this.countOfLastMonthMsgs = msgscount[0]['totalCount']
+
+  //         console.log('[HOME-CONVS-GRAPH] - GET LAST 30 DAYS MESSAGE COUNT ', this.countOfLastMonthMsgs);
+  //       } else {
+  //         this.countOfLastMonthMsgs = 0;
+  //       }
+  //     }, (error) => {
+  //       console.error('[HOME-CONVS-GRAPH] - GET LAST 30 DAYS MESSAGE - ERROR ', error);
+
+  //     }, () => {
+  //       console.log('[HOME-CONVS-GRAPH] - GET LAST 30 DAYS MESSAGE * COMPLETE *');
+  //     });
+  // }
 
 
  
@@ -216,19 +216,19 @@ export class HomeReportComponent implements OnInit, OnChanges {
         takeUntil(this.unsubscribe$)
       )
       .subscribe((convcount: any) => {
-        console.log('[HOME-ANALITICS] - GET LAST 30 DAYS CONVERSATION COUNT RES', convcount);
+        console.log('[HOME-CONVS-GRAPH] - GET LAST 30 DAYS CONVERSATION COUNT RES', convcount);
 
         if (convcount && convcount.length > 0) {
           this.countOfLastMonthRequests = convcount[0]['totalCount'];
-          console.log('[HOME-ANALITICS] - GET LAST 30 DAYS CONVERSATION COUNT ', this.countOfLastMonthRequests);
+          console.log('[HOME-CONVS-GRAPH] - GET LAST 30 DAYS CONVERSATION COUNT ', this.countOfLastMonthRequests);
         } else {
           this.countOfLastMonthRequests = 0;
         }
       }, (error) => {
-        console.error('[HOME-ANALITICS] - GET LAST 30 DAYS CONVERSATION COUNT - ERROR ', error);
+        console.error('[HOME-CONVS-GRAPH] - GET LAST 30 DAYS CONVERSATION COUNT - ERROR ', error);
 
       }, () => {
-        console.log('[HOME-ANALITICS] - GET LAST 30 DAYS CONVERSATION COUNT * COMPLETE *');
+        console.log('[HOME-CONVS-GRAPH] - GET LAST 30 DAYS CONVERSATION COUNT * COMPLETE *');
         this.getCountAndPercentageOfRequestsHandledByBotsLastMonth();
       });
   }
@@ -239,7 +239,7 @@ export class HomeReportComponent implements OnInit, OnChanges {
         takeUntil(this.unsubscribe$)
       )
       .subscribe((res: any) => {
-        console.log("[HOME-ANALITICS] - getRequestsHasBotCount GET REQUESTS COUNT HANDLED BY BOT LAST 30 DAYS RES : ", res)
+        console.log("[HOME-CONVS-GRAPH] - getRequestsHasBotCount GET REQUESTS COUNT HANDLED BY BOT LAST 30 DAYS RES : ", res)
 
         if (res && res.length > 0) {
           this.countOfLastMonthRequestsHandledByBots = res[0]['totalCount']
@@ -248,29 +248,29 @@ export class HomeReportComponent implements OnInit, OnChanges {
           this.countOfLastMonthRequestsHandledByBots = 0
         }
 
-        console.log("[HOME-ANALITICS] - getRequestsHasBotCount REQUESTS COUNT HANDLED BY BOT LAST 30 DAYS: ", this.countOfLastMonthRequestsHandledByBots)
-        console.log("[HOME-ANALITICS] - getRequestsHasBotCount REQUESTS COUNT LAST 30 DAYS: ", this.countOfLastMonthRequests);
+        console.log("[HOME-CONVS-GRAPH] - getRequestsHasBotCount REQUESTS COUNT HANDLED BY BOT LAST 30 DAYS: ", this.countOfLastMonthRequestsHandledByBots)
+        console.log("[HOME-CONVS-GRAPH] - getRequestsHasBotCount REQUESTS COUNT LAST 30 DAYS: ", this.countOfLastMonthRequests);
         // numero di conversazioni gestite da bot / numero di conversazioni totali (già calcolata) * 100
 
         if (this.countOfLastMonthRequestsHandledByBots > 0 && this.countOfLastMonthRequests) {
           const _percentageOfLastMonthRequestsHandledByBots = (this.countOfLastMonthRequestsHandledByBots / this.countOfLastMonthRequests) * 100
-          console.log("[HOME-ANALITICS] - getRequestsHasBotCount % COUNT OF LAST MONTH REQUESTS: ", this.countOfLastMonthRequests);
-          console.log("[HOME-ANALITICS] - getRequestsHasBotCount % REQUESTS HANDLED BY BOT LAST 30 DAYS: ", _percentageOfLastMonthRequestsHandledByBots);
-          console.log("[HOME-ANALITICS] - getRequestsHasBotCount % REQUESTS HANDLED BY BOT LAST 30 DAYS typeof: ", typeof _percentageOfLastMonthRequestsHandledByBots);
+          console.log("[HOME-CONVS-GRAPH] - getRequestsHasBotCount % COUNT OF LAST MONTH REQUESTS: ", this.countOfLastMonthRequests);
+          console.log("[HOME-CONVS-GRAPH] - getRequestsHasBotCount % REQUESTS HANDLED BY BOT LAST 30 DAYS: ", _percentageOfLastMonthRequestsHandledByBots);
+          console.log("[HOME-CONVS-GRAPH] - getRequestsHasBotCount % REQUESTS HANDLED BY BOT LAST 30 DAYS typeof: ", typeof _percentageOfLastMonthRequestsHandledByBots);
           this.percentageOfLastMonthRequestsHandledByBots = _percentageOfLastMonthRequestsHandledByBots.toFixed(1);
         } else {
           this.percentageOfLastMonthRequestsHandledByBots = 0
         }
       }, (error) => {
-        console.error('[HOME-ANALITICS] - GET REQUESTS COUNT HANDLED BY BOT LAST 30 DAYS - ERROR ', error);
+        console.error('[HOME-CONVS-GRAPH] - GET REQUESTS COUNT HANDLED BY BOT LAST 30 DAYS - ERROR ', error);
 
       }, () => {
-        console.log('[HOME-ANALITICS] - GET REQUESTS COUNT HANDLED BY BOT LAST 30 DAYS * COMPLETE *');
+        console.log('[HOME-CONVS-GRAPH] - GET REQUESTS COUNT HANDLED BY BOT LAST 30 DAYS * COMPLETE *');
       });
   }
 
   selectConversationsRange(rangeDays) {
-    console.log('[HOME-ANALITICS] - SELECT CONVERSATION RANGE rangeDays', rangeDays);
+    console.log('[HOME-CONVS-GRAPH] - SELECT CONVERSATION RANGE rangeDays', rangeDays);
     this.numOfDays = rangeDays;
     this.lineChart.destroy();
 
@@ -374,8 +374,8 @@ export class HomeReportComponent implements OnInit, OnChanges {
           const totalSevendaysConvs = this.countOfLastSevenDaysRequestsHandledByBot + this.countOfLastSevenDaysRequests
           const _percentageOfLastSevenDaysRequestsHandledByBots = (this.countOfLastSevenDaysRequestsHandledByBot / totalSevendaysConvs) * 100
 
-          console.log("[HOME-ANALITICS] - REQUESTS BY DAY HANDLED BY BOT LAST (%) on ", lastdays, " DAYS: ", _percentageOfLastSevenDaysRequestsHandledByBots);
-          // console.log("[HOME-ANALITICS] - REQUESTS BY DAY HANDLED BY BOT LAST (%) on ", numOfDays ," DAYS typeof: ", typeof _percentageOfLastSevenDaysRequestsHandledByBots);
+          console.log("[HOME-CONVS-GRAPH] - REQUESTS BY DAY HANDLED BY BOT LAST (%) on ", lastdays, " DAYS: ", _percentageOfLastSevenDaysRequestsHandledByBots);
+          // console.log("[HOME-CONVS-GRAPH] - REQUESTS BY DAY HANDLED BY BOT LAST (%) on ", numOfDays ," DAYS typeof: ", typeof _percentageOfLastSevenDaysRequestsHandledByBots);
           this.percentageOfSevenDaysRequestsHandledByBots = _percentageOfLastSevenDaysRequestsHandledByBots.toFixed(1);
         } else {
           this.percentageOfSevenDaysRequestsHandledByBots = 0
@@ -525,22 +525,21 @@ export class HomeReportComponent implements OnInit, OnChanges {
     }
   }
 
-  goToVisitorsAnalytics() {
-    if (this.USER_ROLE !== 'agent') {
-      this.router.navigate(['project/' + this.projectId + '/analytics/metrics/visitors']);
-    }
-  }
+  // goToVisitorsAnalytics() {
+  //   if (this.USER_ROLE !== 'agent') {
+  //     this.router.navigate(['project/' + this.projectId + '/analytics/metrics/visitors']);
+  //   }
+  // }
 
-  goToMessagesAnalytics() {
-    // this.router.navigate(['project/' + this.projectId + '/messages-analytics']);
-    if (this.USER_ROLE !== 'agent') {
-      this.router.navigate(['project/' + this.projectId + '/analytics/metrics/messages']);
-    }
-  }
+  // goToMessagesAnalytics() {
+  //   if (this.USER_ROLE !== 'agent') {
+  //     this.router.navigate(['project/' + this.projectId + '/analytics/metrics/messages']);
+  //   }
+  // }
 
-  goToContacts() {
-    this.router.navigate(['project/' + this.projectId + '/contacts']);
-  }
+  // goToContacts() {
+  //   this.router.navigate(['project/' + this.projectId + '/contacts']);
+  // }
 
 
 }

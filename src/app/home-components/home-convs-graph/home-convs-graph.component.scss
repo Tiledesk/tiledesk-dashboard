@@ -2,8 +2,9 @@
     // background: #fff;
     border-radius: 12px;
     padding: 0px 12px 12px;
-    box-shadow: 0 0 20px 4px rgb(154 161 177 / 15%), 0 4px 80px -8px rgb(36 40 47 / 25%),
-        0 4px 4px -2px rgb(91 94 105 / 15%);
+    // box-shadow: 0 0 20px 4px rgb(154 161 177 / 15%), 0 4px 80px -8px rgb(36 40 47 / 25%),
+    //     0 4px 4px -2px rgb(91 94 105 / 15%);
+    box-shadow: 0 0 #0000, 0 0 #0000, 0 1px 3px #0000001a, 0 1px 2px -1px #0000001a;
     background-color: #1c2533;
 }
 
@@ -194,14 +195,14 @@
     cursor: pointer;
 }
 
-.text-accent-link-on-black  .m-i-arrow-on-black {
+.text-accent-link-on-black .m-i-arrow-on-black {
     vertical-align: middle;
     color: #00d4ff;
     margin-left: -6px;
     transition: 0.1s ease-in;
 }
 .text-accent-link-on-black:hover {
-    color: #fff
+    color: #fff;
 }
 .text-accent-link-on-black:hover .m-i-arrow-on-black {
     transform: translateX(10%);
@@ -215,22 +216,19 @@
     cursor: pointer;
 }
 
-.text-accent-link-on-white  .m-i-arrow-on-white {
+.text-accent-link-on-white .m-i-arrow-on-white {
     vertical-align: middle;
     color: #673ab7;
     margin-left: -4px;
     transition: 0.1s ease-in;
 }
 .text-accent-link-on-white:hover {
-    color: #0a2540
+    color: #0a2540;
 }
 .text-accent-link-on-white:hover .m-i-arrow-on-white {
     transform: translateX(10%);
     color: #0a2540;
 }
-
-
-
 
 // .graph-period-badge {
 // background-color: rgba(255, 255, 255, 0.2);
@@ -274,7 +272,6 @@
     font-weight: 500;
     font-size: 16px;
 }
-
 
 .truncate {
     overflow: hidden !important;

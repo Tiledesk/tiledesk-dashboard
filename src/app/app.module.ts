@@ -336,10 +336,13 @@ import { ActivateAppsumoProductComponent } from './create-project-wizard/activat
 import { ContactCustomPropertiesComponent } from './components/modals/contact-custom-properties/contact-custom-properties.component';
 import { ContactInfoComponent } from './components/shared/contact-info/contact-info.component';
 import { CreateProjectGsComponent } from './create-project-wizard/create-project-gs/create-project-gs.component';
-import { HomeReportComponent } from './home-components/home-report/home-report.component';
+import { HomeConvsGraphComponent } from './home-components/home-convs-graph/home-convs-graph.component';
 import { HomeWhatsappAccountComponent } from './home-components/home-whatsapp-account/home-whatsapp-account.component';
 import { HomeCreateChatbotComponent } from './home-components/home-create-chatbot/home-create-chatbot.component';
 import { HomeNewsFeedComponent } from './home-components/home-news-feed/home-news-feed.component';
+import { HomeAnalyticsIndicatorComponent } from './home-components/home-analytics-indicator/home-analytics-indicator.component';
+
+
 
 
 // NOTE: Eliminazione del local storage produce inconsistenza delle instances Firebase. Si salta il logout.
@@ -597,10 +600,11 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     ContactCustomPropertiesComponent,
     ContactInfoComponent,
     CreateProjectGsComponent,
-    HomeReportComponent,
+    HomeConvsGraphComponent,
     HomeWhatsappAccountComponent,
     HomeCreateChatbotComponent,
-    HomeNewsFeedComponent
+    HomeNewsFeedComponent,
+    HomeAnalyticsIndicatorComponent
   ],
   imports: [
     TooltipModule.forRoot(CutomTooltipOptions as TooltipOptions),
