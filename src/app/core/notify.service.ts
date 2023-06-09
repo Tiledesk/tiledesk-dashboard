@@ -625,7 +625,7 @@ export class NotifyService {
     })
   }
 
-  presentModalOnlyOwnerCanManageAdvancedProjectAdvancedSettings (onlyOwnerCanAdvencedProjectSettings: string, learnMoreAboutDefaultRoles: string) {
+  presentModalOnlyOwnerCanManageAdvancedProjectSettings (onlyOwnerCanAdvencedProjectSettings: string, learnMoreAboutDefaultRoles: string) {
     const el = document.createElement('div')
     el.innerHTML = onlyOwnerCanAdvencedProjectSettings + '. ' + `<a href=${this.URL_UNDERSTANDING_DEFAULT_ROLES} target='_blank'>` + learnMoreAboutDefaultRoles + "</a>"
     swal({

@@ -446,12 +446,12 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         this.onlyUsersWithTheOwnerRoleCanManageSMTPsettings = translation;
       });
 
-      this.translate.get('OnlyUserWithOwnerRoleCanManageAdvancedProjectSettings')
+    this.translate.get('OnlyUserWithOwnerRoleCanManageAdvancedProjectSettings')
       .subscribe((translation: any) => {
         this.onlyUserWithOwnerRoleCanManageAdvancedProjectSettings = translation;
       });
 
-      
+
   }
 
   translateThereHasBeenAnErrorProcessing() {
@@ -947,8 +947,8 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
   }
 
-  presentModalOnlyOwnerCanManageAdvancedProjectAdvancedSettings() {
-    this.notify.presentModalOnlyOwnerCanManageAdvancedProjectAdvancedSettings(this.onlyUserWithOwnerRoleCanManageAdvancedProjectSettings, this.learnMoreAboutDefaultRoles)
+  presentModalOnlyOwnerCanManageAdvancedProjectSettings() {
+    this.notify.presentModalOnlyOwnerCanManageAdvancedProjectSettings(this.onlyUserWithOwnerRoleCanManageAdvancedProjectSettings, this.learnMoreAboutDefaultRoles)
   }
 
 
@@ -965,7 +965,11 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
   goToProjectSettings_Advanced() {
     this.logger.log('[PRJCT-EDIT-ADD] - HAS CLICKED goToProjectSettings_Advanced');
-    this.router.navigate(['project/' + this.id_project + '/project-settings/advanced']);
+    if (this.USER_ROLE === 'owner') {
+      this.router.navigate(['project/' + this.id_project + '/project-settings/advanced']);
+    } else {
+      this.presentModalOnlyOwnerCanManageAdvancedProjectSettings()
+    }
   }
 
   goToProjectSettings_Notification() {
@@ -994,7 +998,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       }
     } else {
       // console.log('goToProjectSettings_Security HERE 5 ')
-      this.presentModalOnlyOwnerCanManageAdvancedProjectAdvancedSettings()
+      this.presentModalOnlyOwnerCanManageAdvancedProjectSettings()
     }
   }
 
@@ -1036,7 +1040,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       }
     } else {
       // console.log('displayModalBanVisitor HERE 5 ')
-      this.presentModalOnlyOwnerCanManageAdvancedProjectAdvancedSettings()
+      this.presentModalOnlyOwnerCanManageAdvancedProjectSettings()
     }
   }
 
@@ -1074,7 +1078,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       }
     } else {
       // console.log('goToCustomizeNotificationEmailPage HERE 5 ')
-      this.presentModalOnlyOwnerCanManageAdvancedProjectAdvancedSettings()
+      this.presentModalOnlyOwnerCanManageAdvancedProjectSettings()
     }
   }
 
@@ -1836,7 +1840,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       this.presentModalOnlyOwnerCanManageTheAccountPlan()
     }
   }
-  
+
   goToPricing() {
     // if (this.isVisiblePaymentTab) {
     //   if (this.USER_ROLE === 'owner') {
