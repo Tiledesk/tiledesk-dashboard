@@ -95,11 +95,7 @@
     <div class="home-block-description-and-connect-btn-wpr">
 
         <div class="home-block-description">
-
-            Build your chatbot from scratch or by selecting a Tiledesk chatbot template or selecting one from our
-            community
-
-
+            Create your chatbot from scratch with our brand new no-code Chatbot Design Studio or start by selecting a free ready-to-use template (pre-designed chatbot) that suits your needs
         </div>
 
         <!-- <button type="button" class="btn btn-primary home-block-btn">
@@ -123,17 +119,17 @@
                 <mat-icon style="color: #fff;">more_horiz</mat-icon>
             </button>
             <mat-menu #menu="matMenu" #aboveMenu="matMenu" yPosition="above">
-                <button mat-menu-item>
-                  <mat-icon>dialpad</mat-icon>
-                  <span>Redial</span>
+                <button mat-menu-item (click)="goToTemplates()">
+                  <mat-icon>class</mat-icon>
+                  <span>Tiledesk templates</span>
                 </button>
-                <button mat-menu-item disabled>
-                  <mat-icon>voicemail</mat-icon>
-                  <span>Check voice mail</span>
+                <button mat-menu-item (click)="goToCommunityTemplates()">
+                  <mat-icon>diversity_3</mat-icon>
+                  <span>Community templates </span>
                 </button>
-                <button mat-menu-item>
-                  <mat-icon>notifications_off</mat-icon>
-                  <span>Disable alerts</span>
+                <button mat-menu-item (click)="goToAddBotFromScratch()">
+                  <mat-icon>add_circle_outline</mat-icon>
+                  <span>Create from scratch</span>
                 </button>
               </mat-menu>
 

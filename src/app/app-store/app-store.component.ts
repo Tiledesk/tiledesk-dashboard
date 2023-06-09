@@ -142,7 +142,7 @@ export class AppStoreComponent implements OnInit {
         this.upgradePlan = translation;
       });
 
-    this.translate.get('UsersWiththeAgentroleCannotManageTheAdvancedOptionsOfTheProject')
+    this.translate.get('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan')
       .subscribe((translation: any) => {
         this.agentCannotManageAdvancedOptions = translation;
       });
@@ -331,7 +331,7 @@ export class AppStoreComponent implements OnInit {
   }
 
   installApp(app, installationType: string, installationUrl: string, appTitle: string, appId: string) {
-    // console.log('[APP-STORE] appId ', appId)
+    console.log('[APP-STORE] appId ', appId)
     if ((appTitle === "WhatsApp Business" || appTitle === "Facebook Messenger" || appTitle === "Zapier" || appTitle === 'Help Center') &&
       ((this.profile_name === PLAN_NAME.A) ||
         (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
@@ -378,6 +378,8 @@ export class AppStoreComponent implements OnInit {
     }
 
   }
+  
+  
 
   presentModalFeautureAvailableFromBPlan() {
     const el = document.createElement('div')
@@ -480,8 +482,12 @@ export class AppStoreComponent implements OnInit {
       }
 
     }
-    this.logger.log('openInAppStoreInstall app ', app)
-    this.router.navigate(['project/' + this.projectId + '/app-store-install/' + app._id + '/run'])
+    console.log('openInAppStoreInstall app ', app)
+    if (app.title === "WhatsApp Business" || app.title === "Facebook Messenger") {
+      this.router.navigate(['project/' + this.projectId + '/app-store-install/' + app._id + '/connect'])
+    } else {
+      this.router.navigate(['project/' + this.projectId + '/app-store-install/' + app._id + '/run'])
+    }
   }
 
   openConfigureUrlInAppStoreInstall(app) {
@@ -491,7 +497,7 @@ export class AppStoreComponent implements OnInit {
   installV2App(projectId, appId) {
 
     this.appStoreService.installAppVersionTwo(projectId, appId).subscribe((res: any) => {
-      this.logger.log('[APP-STORE] INSTALL V2 APP ', projectId, appId)
+      console.log('[APP-STORE] INSTALL V2 APP ', projectId, appId)
 
     }, (error) => {
       this.logger.error('[APP-STORE] INSTALL V2 APP - ERROR  ', error);

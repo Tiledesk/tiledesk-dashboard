@@ -1970,7 +1970,7 @@
                         </span>
                         <div class="form-group" style="margin-top: 9px;">
                           <input *ngIf="!showSpinner" name="telegram-channel" type="text" data-id="telegram-channel"
-                            class="form-control input-md" title="Telegram" disabled value="Telegram"
+                            class="form-control input-md" title="Telegram" disabled value="Telegram ({{whatsAppOrTelegramPhoneNumber}})" 
                             style="cursor: default;width: 240px;">
                         </div>
                       </div>
@@ -2001,7 +2001,7 @@
                         </span>
                         <div class="form-group" style="margin-top: 9px;">
                           <input *ngIf="!showSpinner" name="whatsapp-channel" type="text" data-id="whatsapp-channel"
-                            class="form-control input-md" title="WhatsApp" disabled value="WhatsApp ({{whatsAppPhoneNumber}})"
+                            class="form-control input-md" title="WhatsApp" disabled value="WhatsApp ({{whatsAppOrTelegramPhoneNumber}})"
                             style="cursor: default;width: 240px;">
                         </div>
                       </div>

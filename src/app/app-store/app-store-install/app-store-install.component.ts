@@ -96,6 +96,9 @@ export class AppStoreInstallComponent implements OnInit {
           } else if (this.result.version === 'v2' && params.reason === 'run') {
             this.appurl = this.result.runURL
             this.reason = 'Run'
+          } else if (this.result.version === 'v2' && params.reason === 'connect') {
+            this.appurl = this.result.runURL
+            this.reason = 'Connect'
             // console.log("[APP-STORE-INSTALL] USE CASE RUN - appurl ", this.appurl);
           } else if (this.result.version === 'v2' && params.reason === 'configure') {
 

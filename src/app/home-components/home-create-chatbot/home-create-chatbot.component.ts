@@ -49,4 +49,13 @@ export class HomeCreateChatbotComponent implements OnInit {
     this.router.navigate(['project/' + this.projectId + '/bots/templates/all']);
   }
 
+  goToCommunityTemplates() {
+    this.router.navigate(['project/' + this.projectId + '/bots/templates/community']);
+  }
+
+  goToAddBotFromScratch() { 
+    this.router.navigate(['project/' + this.projectId + '/bots/create/tilebot/blank']);
+  }
+
+
 }
