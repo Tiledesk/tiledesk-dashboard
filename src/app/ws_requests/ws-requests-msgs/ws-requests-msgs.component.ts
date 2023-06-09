@@ -396,6 +396,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   DASHBORD_BASE_URL: string;
   contact_details: any;
   whatsAppPhoneNumber: string;
+  telegramPhoneNumber: string;
   /**
    * Constructor
    * @param router 
@@ -1914,10 +1915,17 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
             // console.log('[WS-REQUESTS-MSGS] - contact_details ', this.contact_details)
             this.logger.log('[WS-REQUESTS-MSGS] - requester_id ', this.requester_id)
             // this.logger.log('this.request.lead ' , this.request.lead)
-            if (this.request.lead.lead_id.startsWith('wab-')) {
+            if (this.request.lead.lead_id && this.request.lead.lead_id.startsWith('wab-')) {
               // console.log('[WS-REQUESTS-MSGS] lead_id ',this.request.lead.lead_id)
               this.whatsAppPhoneNumber = this.request.lead.lead_id.slice(4);
               // console.log('[WS-REQUESTS-MSGS] whatsAppPhoneNumber ',this.whatsAppPhoneNumber)
+            }
+
+
+            if (this.request.lead.lead_id &&  this.request.lead.lead_id.startsWith('telegram-')) {
+              // console.log('[WS-REQUESTS-MSGS] lead_id ',this.request.lead.lead_id)
+              this.telegramPhoneNumber = this.request.lead.lead_id.slice(9);
+              // console.log('[WS-REQUESTS-MSGS] telegramPhoneNumber ',this.telegramPhoneNumber)
             }
 
             if (this.request.lead && this.request.lead.email) {
