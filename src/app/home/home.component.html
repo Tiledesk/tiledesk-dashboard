@@ -70,7 +70,7 @@
                 <ng-container *ngIf="isVisibleOPH && USER_ROLE !== 'agent'">
                   <button mat-mini-fab aria-label="date_range icon"
                     [ngClass]="{'oph-disabled': !OPERATING_HOURS_ACTIVE || DISPLAY_OPH_AS_DISABLED, 'oph-enabled': OPERATING_HOURS_ACTIVE && !DISPLAY_OPH_AS_DISABLED }"
-                    style="box-shadow: unset;margin-right: 16px;" [satPopoverAnchor]="editOperatingHours"
+                    style="box-shadow: unset;margin-right: 16px;    position: relative; top: -2px;" [satPopoverAnchor]="editOperatingHours"
                     (click)="editOperatingHours.toggle();">
                     <mat-icon style="color: #fff;">date_range</mat-icon>
                   </button>

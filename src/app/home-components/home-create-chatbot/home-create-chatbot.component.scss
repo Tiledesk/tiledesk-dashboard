@@ -55,86 +55,186 @@
 
 // Actions button
 
-.adminActions {
-  position: fixed;
-  bottom: 35px; right: 35px;
+// .adminActions {
+//   position: fixed;
+//   bottom: 35px; right: 35px;
+// }
+
+//   .adminButton {
+//     height: 60px;
+//     width: 60px;
+//     background-color: rgba(67, 83, 143, .8);
+//     border-radius: 50%;
+//     display: block;
+//     color: #fff;
+//     text-align: center;
+//     position: relative;
+//     z-index: 1;
+//   }
+
+//     .adminButton i {
+//       font-size: 22px;
+//     }
+
+//   .adminButtons {
+//     position: absolute;
+//     width: 100%;
+//     bottom: 120%;
+//     text-align: center;
+//   }
+
+//     .adminButtons a {
+//       display: block;
+//       width: 45px;
+//       height: 45px;
+//       border-radius: 50%;
+//       text-decoration: none;
+//       margin: 10px auto 0;
+//       line-height: 1.15;
+//       color: #fff;
+//       opacity: 0;
+//       visibility: hidden;
+//       position: relative;
+//       box-shadow: 0 0 5px 1px rgba(51, 51, 51, .3);
+//     }
+
+//       .adminButtons a:hover {
+//         transform: scale(1.05);
+//       }
+
+//       .adminButtons a:nth-child(1) {background-color: #ff5722; transition: opacity .2s ease-in-out .3s, transform .15s ease-in-out;}
+//       .adminButtons a:nth-child(2) {background-color: #03a9f4; transition: opacity .2s ease-in-out .25s, transform .15s ease-in-out;}
+//       .adminButtons a:nth-child(3) {background-color: #f44336; transition: opacity .2s ease-in-out .2s, transform .15s ease-in-out;}
+//       .adminButtons a:nth-child(4) {background-color: #4CAF50; transition: opacity .2s ease-in-out .15s, transform .15s ease-in-out;}
+
+//       .adminActions a i {
+//         position: absolute;
+//         top: 50%; left: 50%;
+//         transform: translate(-50%, -50%);
+//       }
+
+//   .adminToggle {
+//     -webkit-appearance: none;
+//     position: absolute;
+//     border-radius: 50%;
+//     top: 0; left: 0;
+//     margin: 0;
+//     width: 100%;
+//     height: 100%;
+//     cursor: pointer;
+//     background-color: transparent;
+//     border: none;
+//     outline: none;
+//     z-index: 2;
+//     transition: box-shadow .2s ease-in-out;
+//     box-shadow: 0 3px 5px 1px rgba(51, 51, 51, .3);
+//   }
+
+//     .adminToggle:hover {
+//       box-shadow: 0 3px 6px 2px rgba(51, 51, 51, .3);
+//     }
+
+//     .adminToggle:checked ~ .adminButtons a {
+//       opacity: 1;
+//       visibility: visible;
+//     }
+
+body {
+  background-color: #ededed;
 }
 
-  .adminButton {
-    height: 60px;
-    width: 60px;
-    background-color: rgba(67, 83, 143, .8);
-    border-radius: 50%;
-    display: block;
-    color: #fff;
-    text-align: center;
-    position: relative;
-    z-index: 1;
-  }
+.fab {
+  background-color: transparent;
+  height: 64px;
+  width: 64px;
+  border-radius: 32px;
+  transition: height 300ms;
+  transition-timing-function: ease;
+  position: absolute;
+  right: 50px;
+  bottom: 50px;
+  text-align: center;
+  overflow: hidden;
+}
 
-    .adminButton i {
-      font-size: 22px;
-    }
+.fab:hover {
+  height: 344px;
+}
 
-  .adminButtons {
-    position: absolute;
-    width: 100%;
-    bottom: 120%;
-    text-align: center;
-  }
+.fab:hover .mainop {
+  transform: rotate(180deg);
+}
 
-    .adminButtons a {
-      display: block;
-      width: 45px;
-      height: 45px;
-      border-radius: 50%;
-      text-decoration: none;
-      margin: 10px auto 0;
-      line-height: 1.15;
-      color: #fff;
-      opacity: 0;
-      visibility: hidden;
-      position: relative;
-      box-shadow: 0 0 5px 1px rgba(51, 51, 51, .3);
-    }
+.mainop {
+  margin: auto;
+  width: 64px;
+  height: 64px;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  transition: transform 300ms;
+  background-color: #f44336;
+  border-radius: 32px;
+  z-index: 6;
+}
 
-      .adminButtons a:hover {
-        transform: scale(1.05);
-      }
+.mainopShadow {
+  width: 64px;
+  height: 64px;
+  border-radius: 32px;
+  position: absolute;
+  right: 50px;
+  bottom: 50px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
 
-      .adminButtons a:nth-child(1) {background-color: #ff5722; transition: opacity .2s ease-in-out .3s, transform .15s ease-in-out;}
-      .adminButtons a:nth-child(2) {background-color: #03a9f4; transition: opacity .2s ease-in-out .25s, transform .15s ease-in-out;}
-      .adminButtons a:nth-child(3) {background-color: #f44336; transition: opacity .2s ease-in-out .2s, transform .15s ease-in-out;}
-      .adminButtons a:nth-child(4) {background-color: #4CAF50; transition: opacity .2s ease-in-out .15s, transform .15s ease-in-out;}
+.mainop i {
+  margin-top: 16px;
+  font-size: 32px;
+  color: #fff;
+}
 
-      .adminActions a i {
-        position: absolute;
-        top: 50%; left: 50%;
-        transform: translate(-50%, -50%);
-      }
+.minifab {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  border-radius: 24px;
+  z-index: 5;
+  float: left;
+  margin-bottom: 8px;
+  margin-left: 8px;
+  margin-right: 8px;
+  background-color: blue;
+  transition: box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+}
 
-  .adminToggle {
-    -webkit-appearance: none;
-    position: absolute;
-    border-radius: 50%;
-    top: 0; left: 0;
-    margin: 0;
-    width: 100%;
-    height: 100%;
-    cursor: pointer;
-    background-color: transparent;
-    border: none;
-    outline: none;
-    z-index: 2;
-    transition: box-shadow .2s ease-in-out;
-    box-shadow: 0 3px 5px 1px rgba(51, 51, 51, .3);
-  }
+.minifab:hover {
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
 
-    .adminToggle:hover {
-      box-shadow: 0 3px 6px 2px rgba(51, 51, 51, .3);
-    }
+.minifabIcon {
+  height: 24px;
+  width: 24px;
+  margin-top: 12px;
+}
 
-    .adminToggle:checked ~ .adminButtons a {
-      opacity: 1;
-      visibility: visible;
-    }
+.op1 {
+  background-color: #2f82fc;
+}
+
+.op2 {
+  background-color: #0f9d58;
+}
+
+.op3 {
+  background-color: #fb0;
+}
+
+.op4 {
+  background-color: #dd5145;
+}
+
+.op5 {
+  background-color: #673ab7;
+}

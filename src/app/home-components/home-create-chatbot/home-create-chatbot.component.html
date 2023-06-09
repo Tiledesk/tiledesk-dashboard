@@ -96,7 +96,8 @@
 
         <div class="home-block-description">
 
-            Build your chatbot from scratch or by selecting a Tiledesk chatbot template or selecting one from our community
+            Build your chatbot from scratch or by selecting a Tiledesk chatbot template or selecting one from our
+            community
 
 
         </div>
@@ -104,7 +105,7 @@
         <!-- <button type="button" class="btn btn-primary home-block-btn">
            Create
         </button> -->
-        <div class="adminActions">
+        <!-- <div class="adminActions">
             <input type="checkbox" name="adminToggle" class="adminToggle" />
             <a class="adminButton" href="#!"><i class="fa fa-cog"></i></a>
             <div class="adminButtons">
@@ -113,10 +114,59 @@
                 <a href="#" title="Add User"><i class="fa fa-user-plus"></i></a>
                 <a href="#" title="Edit User"><i class="fa fa-user-edit"></i></a>
             </div>
+        </div> -->
+      
+        <div class="action-btns-wpr">
+
+            <button mat-mini-fab aria-label="more_horiz icon" [matMenuTriggerFor]="menu"
+                style="box-shadow: unset;margin-right: 16px;    position: relative; top: -2px;background-color: #2196f3">
+                <mat-icon style="color: #fff;">more_horiz</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu" #aboveMenu="matMenu" yPosition="above">
+                <button mat-menu-item>
+                  <mat-icon>dialpad</mat-icon>
+                  <span>Redial</span>
+                </button>
+                <button mat-menu-item disabled>
+                  <mat-icon>voicemail</mat-icon>
+                  <span>Check voice mail</span>
+                </button>
+                <button mat-menu-item>
+                  <mat-icon>notifications_off</mat-icon>
+                  <span>Disable alerts</span>
+                </button>
+              </mat-menu>
+
+            <!-- <div class="mainopShadow"></div>
+            <div class="fab">
+                <div class="mainop">
+                    <i id="addIcon" class="material-icons">add</i>
+                </div>
+                <div id="forms" class="minifab op5">
+                    <img class="minifabIcon"
+                        src="https://vectr.com/doodleblu/a1y8gN8KKN.svg?width=64&height=64&select=a1y8gN8KKNpage0">
+                </div>
+                <div id="drawings" class="minifab op4">
+                    <img class="minifabIcon"
+                        src="https://vectr.com/doodleblu/b2DCtQvEHF.svg?width=64&height=64&select=b2DCtQvEHFpage0">
+                </div>
+                <div id="slides" class="minifab op3">
+                    <img class="minifabIcon"
+                        src="https://vectr.com/doodleblu/a12WZHDh0z.svg?width=64&height=64&select=a12WZHDh0zpage0">
+                </div>
+                <div id="sheets" class="minifab op2">
+                    <img class="minifabIcon"
+                        src="https://vectr.com/doodleblu/eoOhnACDe.svg?width=64&height=64&select=eoOhnACDepage0">
+                </div>
+                <div id="docs" class="minifab op1">
+                    <img class="minifabIcon"
+                        src="https://vectr.com/doodleblu/bo4WGZSAK.svg?width=64&height=64&select=bo4WGZSAKpage0">
+                </div>
+            </div>
+        </div> -->
+
         </div>
 
+
+
     </div>
-
-
-
-</div>
