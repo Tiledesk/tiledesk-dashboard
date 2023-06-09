@@ -4,7 +4,7 @@ var ty = 0;
 let scale = 1;
 let container;
 let drawer;
-let classDraggable = "ds-draggable";
+let classDraggable = "tds-draggable";
 // let element;
 
 
@@ -29,7 +29,7 @@ function zoom(event) {
       // console.log("zoom:", event);
       const dx = event.deltaX;
       const dy = event.deltaY;
-      getPositionNow();
+      // getPositionNow();
       if (event.ctrlKey === false) {
         // pan
         // console.log("pan");
@@ -147,7 +147,7 @@ function dragElement(elmnt) {
   }
 
   function elementDrag(e) {
-    //console.log("---------------------------", e.target.id);
+    console.log(" elementDrag  ---------------------------", e.target.id);
     e = e || window.event;
     e.preventDefault();
     // calculate the new cursor position:
@@ -171,10 +171,20 @@ function dragElement(elmnt) {
     pos_x = elmnt.offsetLeft + delta_x/ scale;//pos_mouse_x/ scale - e.clientX/ scale - shift_x; // logic
     pos_y = elmnt.offsetTop + delta_y / scale;//pos_mouse_y/ scale - e.clientY/ scale - shift_y;
     //pos_y = ( e_rect.top + delta_y)/ scale;//pos_mouse_y/ scale - e.clientY/ scale - shift_y;
-    console.log("pos_x:", pos_x, "pos_y:", pos_y);
+    // console.log("pos_x:", pos_x, "pos_y:", pos_y);
     // set the element's new position:
     elmnt.style.top = pos_y + "px";//(elmnt.offsetTop - pos_y) + "px";
     elmnt.style.left = pos_x + "px"; //(elmnt.offsetLeft - pos_x) + "px";
+    //connectors.moved(elmnt, pos_x, pos_y);
+
+    const moved_event = new CustomEvent("moved", {
+      detail: {
+        element: elmnt,
+        x: pos_x, 
+        y: pos_y
+      }
+    });
+    document.dispatchEvent(moved_event);
   }
 
   function closeDragElement() {

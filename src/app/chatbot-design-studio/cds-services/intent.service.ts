@@ -217,6 +217,7 @@ export class IntentService {
       });
     });
   }
+
   // END INTENT FUNCTIONS //
 
 

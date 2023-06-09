@@ -1,28 +1,32 @@
-<div class="panel-intent-content ds-draggable">
+<div class="panel-intent-content tds-draggable">
     
-    <div class="pic-header ds-draggable">
-        <div class="pic-header-title ds-draggable">
-            <div class="pic-header-title-input ds-draggable">
-                <div class="pic-title-text ds-draggable">
+    <div class="pic-header tds-draggable">
+        
+        <div class="pic-header-title tds-draggable">
+            <div class="pic-header-title-input tds-draggable">
+                <div class="pic-title-text tds-draggable">
                     {{ intentSelected.intent_display_name }}
                 </div>
+
                 <div class="sc-gTRrQi sc-ezLegt hnylmc eexGFU">
                     <div class="sc-kUYxwz alspn vf-canvas__port">
                         <div class="sc-guKdVK sc-jjRfBx gDikTU biGEuu"></div>
                     </div>
                 </div>
+
             </div>
         </div>
+
     </div>
 
-    <div class="button-intent button-intent-questions"
+    <div class="button-intent button-intent-questions tds-draggable"
         (click)="onSelectQuestion(HAS_SELECTED_TYPE.QUESTION)"
         [ngClass]="{
         'button-intent-active': idSelected === HAS_SELECTED_TYPE.QUESTION,
         'no-question': questionCount === 0 || !question
         }">
-        <img src="assets/cds/images/brain.svg" [title]="ACTIONS_LIST['REPLACE_BOT'].name"/>
-        <span> Train this block </span>
+        <img class="tds-draggable" src="assets/cds/images/brain.svg" [title]="ACTIONS_LIST['REPLACE_BOT'].name"/>
+        <span class="tds-draggable"> Train this block </span>
     </div>
 
     <div id="drop-actions"
@@ -55,12 +59,7 @@
                         </div>
                     </span>
 
-                    <div class="sc-cXkhKi fbZvAl">
-                        <div class="sc-kUYxwz alspn vf-canvas__port">
-                            <div class="sc-guKdVK sc-jjRfBx bHrIYh biGEuu"></div>
-                            <!-- <div class="sc-guKdVK sc-jjRfBx fQxrue fmbOyt"></div> -->
-                        </div>
-                    </div>
+                    
 
                 </div>
                 
@@ -70,13 +69,27 @@
                     [action]="action"
                     [intents]="listOfActions"
                 ></cds-action-intent>
+                
 
             </div>
 
 
             
 
+            
+
         </div>
     </div>
 
+    <div [id]="intentSelected.id+'/action2/out1'" class="fbZvAl2 tds_connectable">
+        <div class="sc-kUYxwz2 alspn2 vf-canvas__port2 ">
+            <div class="sc-guKdVK2 sc-jjRfBx2 bHrIYh2 biGEuu2 "></div>
+            <!-- <div class="sc-guKdVK sc-jjRfBx fQxrue fmbOyt"></div> -->
+        </div>
+    </div>
+    
+
 </div>
+
+
+

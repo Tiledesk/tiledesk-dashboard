@@ -103,28 +103,32 @@ $box-left-width: 250px;
       width: 100%;
       display: flex;
       padding-bottom: 15px;
-      .panel-intent {
-        position: relative;
-        display: inline-block;
-        height: auto;
-        max-height: 100%;
-        border-radius: 1em;
-        margin: 0 10px;
-        padding: 0px;
-        user-select: none; /* Standard syntax */
-      }
-      .panel-intent-detail-wrapper {
-        display: flex;
-        margin: 0;
-        background: rgba(34,48,74,.6);
-        inset: 0;
-        position: fixed;
-        top: 0;
-        left: 0;
-        padding: 85px 25px 25px 0;
-        z-index: 2;
-      }
     }
+    .panel-intent {
+      position: absolute;
+      margin: 0px;
+      padding: 10px;
+      // display: inline-block;
+      // height: auto;
+      // max-height: 100%;
+      // border-radius: 1em;
+      // margin: 0 10px;
+      // padding: 0px;
+      // user-select: none; /* Standard syntax */
+      user-select: none;
+    }
+    .panel-intent-detail-wrapper {
+      display: flex;
+      margin: 0;
+      background: rgba(34,48,74,.6);
+      inset: 0;
+      position: fixed;
+      top: 0;
+      left: 0;
+      padding: 85px 25px 25px 0;
+      z-index: 2;
+    }
+
   }
 }
 
@@ -144,35 +148,76 @@ $box-left-width: 250px;
 
 
 /*********** START Draggable  *************/
-.ds-drag-container {
-  position:relative;
+.tds-drag-container {
+  position: relative;
   display: block;
   background-size: 16px 16px;
   background-image: radial-gradient(rgb(218, 226, 226) 1.14286px, rgb(244, 246, 246) 1.14286px);
   background-position: 593.4px -230.4px;
 }
 
-.ds-drag-drawer {
-  position: static!important;
-  display: block!important;
-  width: 100px!important;
-  height: 100px!important;
-  // transition: transform 0.3s ease-in-out;
-  // background-color: coral;
-}
+// .tds-drag-drawer {
+//   position: static!important;
+//   display: block!important;
+//   width: 100px!important;
+//   height: 100px!important;
+// }
 
-.ds-draggable {
-  position: absolute!important;
-  display: table!important;
-  cursor: move!important;
-  margin: 0!important;
-  top: 0px;
-  left: 0px;
-  z-index: auto;
+.tds-draggable {
+  // position: absolute!important;
+  // display: table!important;
+  // cursor: move!important;
+  // margin: 0!important;
+  // margin: 0!important;
+  background-color: chartreuse;
+  // top: 0px;
+  // left: 0px;
+  // z-index: auto;
 }
 /*********** END Draggable  *************/
 
+@keyframes dash {
+  to {
+    stroke-dashoffset: 1000;
+  }
+}
 
+.path {
+  animation: dash 30s linear infinite;
+  stroke-dasharray: 18;
+  stroke-width: 8px;
+  stroke: gray;
+}
+
+
+
+.connector {
+  stroke: black;
+  stroke-width: 8px;
+}
+
+.connector_over {
+  stroke: gray;
+  stroke-width: 8px;
+}
+
+.connector_selected {
+  stroke: blue;
+  stroke-width: 8px;
+}
+
+.prevent-select {
+  -webkit-user-select: none;
+  /* Safari */
+  -ms-user-select: none;
+  /* IE 10 and IE 11 */
+  user-select: none;
+  /* Standard syntax */
+}
+
+svg:not(:root) {
+  display: block;
+}
 
 
 

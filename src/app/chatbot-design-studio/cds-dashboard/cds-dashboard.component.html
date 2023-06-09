@@ -60,7 +60,7 @@
             ></cds-panel-intent-list>
         </div>
 
-        <div id="ds_container" class="ds-drag-container box-right">
+        <div id="tds_container" class="tds-drag-container box-right">
 
             <div #receiver_elements_dropped_on_stage class="receiver-elements-dropped-on-stage" cdkDropList (cdkDropListDropped)="onDroppedElementToStage($event)"></div>
 
@@ -70,14 +70,13 @@
                 (addNewElement)="onAddNewElement()"
             ></cds-panel-elements>
 
-            <div #drawer_of_items_to_zoom_and_drag id="ds_drawer" class="ds-drag-drawer box-right-content">
+            <div #drawer_of_items_to_zoom_and_drag id="tds_drawer" class="tds-drag-drawer2 box-right-content2">
          
                 <cds-panel-intent *ngFor="let intent of listOfIntents;"
                     [id]="intent.id"
                     [style.top.px]="getIntentPosition(intent.id).y" 
                     [style.left.px]="getIntentPosition(intent.id).x" 
-                    draggable="true"
-                    class="panel-intent draggable ds-draggable"
+                    class="panel-intent tds-draggable tds_input_block"
                     [listOfActions]="listOfActions"
                     [idSelected]="idElementOfIntentSelected"
                     [intentSelected]="intent"
@@ -93,7 +92,15 @@
                     (intentForm)=onIntentFormSelected($event)
                     (dropAction)=onDropAction($event)
                 ></cds-panel-intent>
-  
+
+
+                <svg id="svgContainer" style="overflow: visible;left: 0px;top: 0px;position: absolute; z-index:-1"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <g id="svgConnectors" fill="white" stroke="black" stroke-width="2">
+                    </g>
+                </svg>
+                
+                
             </div>
 
         </div>

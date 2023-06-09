@@ -30,8 +30,12 @@ import { DragDropService } from 'app/chatbot-design-studio/cds-services/drag-dro
 import { IntentService } from 'app/chatbot-design-studio/cds-services/intent.service';
 
 // import { Subscription } from 'rxjs';
+// import { TiledeskDraft } from 'app/../assets/cds/js/tiledesk-draft.js';
+import { TiledeskConnectors } from 'app/../assets/cds/js/tiledesk-connectors.js';
+
 
 const swal = require('sweetalert');
+
 
 declare function setDrawer(el, drawer);
 declare function setDragElement(el);
@@ -42,6 +46,7 @@ declare function setDragElement(el);
   styleUrls: ['./cds-dashboard.component.scss']
 })
 export class CdsDashboardComponent implements OnInit {
+
 
   @ViewChild('receiver_elements_dropped_on_stage') receiverElementsDroppedOnStage: ElementRef;
   @ViewChild('drawer_of_items_to_zoom_and_drag') drawerOfItemsToZoomAndDrag: ElementRef;
@@ -122,6 +127,11 @@ export class CdsDashboardComponent implements OnInit {
   dashboardAttributes: any = {};
   // popup_visibility: string = 'none'
 
+
+  
+  tiledeskDraft: any; 
+  tiledeskConnectors: any;
+
   // isBetaUrl: boolean;
   constructor(
     private router: Router,
@@ -139,7 +149,7 @@ export class CdsDashboardComponent implements OnInit {
     // private multichannelService: MultichannelService,
     private el: ElementRef,
     public dialog: MatDialog,
-    private translate: TranslateService
+    private translate: TranslateService,
     // private notify: NotifyService,
     // public usersLocalDbService: LocalDbService,
   ) { 
@@ -149,7 +159,12 @@ export class CdsDashboardComponent implements OnInit {
       this.listOfIntents = value;
       this.setListOfActions();
     });
-  }
+
+
+    // this.tiledeskDraft = new TiledeskDraft('ds_container', 'ds_drawer', 'classDraggable');
+    
+  } 
+
 
   // SYSTEM FUNCTIONS //
   ngOnInit() {
@@ -157,28 +172,59 @@ export class CdsDashboardComponent implements OnInit {
     this.dashboardAttributes = this.intentService.getDashboardAttributes();
     console.log('dashboardAttributes::: ', this.dashboardAttributes);
     this.executeTailAsyncFunctions();
-    
-    // // if (this.router.url.indexOf('/createfaq') !== -1) {
-    // //   this.logger.log('[CDS DSHBRD] HAS CLICKED CREATE ');
-    // //   this.CREATE_VIEW = true;
-    // //   // this.createNewEmptyIntent();
-    // //   // this.getFaqKbId();
-    // // } else {
-    // //   this.logger.log('[CDS DSHBRD] HAS CLICKED EDIT ');
-    // //   this.EDIT_VIEW = true;
-    // //   // if (this.id_faq) {
-    // //   //   // this.getFaqById();
-    // //   //   //this.MOCK_getFaqById();
-    // //   // }
-    // // }
-    // // this.getDeptsByProjectId();
   }
 
 
   ngAfterViewInit(){
     console.log('ngAfterViewInit -------------> ');
     this.setDragConfig();
+    // this.tiledeskDraft.setDrawer();
     this.hideShowWidget('show');
+
+    
+    this.tiledeskConnectors = new TiledeskConnectors("tds_drawer", {"input_block": "tds_input_block"});
+    this.tiledeskConnectors.mousedown(document);
+
+    document.addEventListener(
+      "scaled",
+      (e:CustomEvent) => {
+        console.log("event:", e);
+        this.tiledeskConnectors.scale = e.detail.scale;
+        console.log("changing connectors scale:", this.tiledeskConnectors.scale);
+      },
+      false
+    );
+
+
+    document.addEventListener(
+      "moved",
+      (e:CustomEvent) => {
+        console.log("event:", e);
+        const el = e.detail.element;
+        const x = e.detail.x;
+        const y = e.detail.y;
+        this.tiledeskConnectors.moved(el, x, y);
+        console.log("changing connectors scale:", this.tiledeskConnectors.scale);
+      },
+      false
+    );
+
+    document.addEventListener(
+      "connector-draft-released",
+      (e:CustomEvent) => {
+        console.log("connector-draft-released:", e);
+        if (e.detail.target.classList.contains("tds_container")) {
+          console.log("connector-draft-released event, catched on 'stage'");
+          this.tiledeskConnectors.removeConnectorDraft();
+        }
+        else {
+          console.log("connector-draft-released event, catched but unsupported");
+          this.tiledeskConnectors.removeConnectorDraft();
+        }
+      },
+      true
+    );
+
   }
 
 
@@ -391,8 +437,8 @@ export class CdsDashboardComponent implements OnInit {
 
   /**  setDragConfig */
   private setDragConfig(){
-    const container = document.querySelector('#ds_container');
-    const drawer = document.querySelector('#ds_drawer');
+    const container = document.querySelector('#tds_container');
+    const drawer = document.querySelector('#tds_drawer');
     console.log('getElementById:: drawer',container,  drawer);
     setDrawer(container, drawer);
   }
@@ -413,11 +459,11 @@ export class CdsDashboardComponent implements OnInit {
       if(intent.id){
         try {
           setTimeout(() => {
+            // this.tiledeskDraft.setDragElement(intent.id);
             let elem = document.getElementById(intent.id);
             setDragElement(elem);
             // **************** !!!!!!!! aggiungo listner !!!!!!! *******************//
 
-            // Rimuovi l'event listener con i parametri
             elem.removeEventListener('mouseup', function() {
               that.onMouseUp(intent, elem);
             });
@@ -511,10 +557,11 @@ export class CdsDashboardComponent implements OnInit {
   }
 
   setIntentPosition(id, pos){
-    // console.log('setIntentPosition ----------->', id, pos);
+    
     // const intent = { key: id, value:  };
     this.dashboardAttributes[id] =  {'x': pos.x, 'y': pos.y};
-    console.log(this.dashboardAttributes);
+    console.log('setIntentPosition id ----------->', this.dashboardAttributes[id]);
+    // console.log(this.dashboardAttributes);
     this.intentService.setDashboardAttributes(this.dashboardAttributes);
   }
 

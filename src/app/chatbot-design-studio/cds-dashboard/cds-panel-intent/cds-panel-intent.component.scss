@@ -1,5 +1,10 @@
 @import "./src/assets/sass/cds/_variables.scss";
 
+.tds_connectable{
+  width: 30px;
+  height: 30px;
+  background-color: #ff4000;
+}
 .unselectable {
     -moz-user-select: -moz-none;
     -khtml-user-select: none;
@@ -99,7 +104,7 @@
     padding: 0px 10px 0px;
     background-color: rgb(235, 226, 198);
     position: relative;
-
+    margin:0px;
     // position: absolute;
     // transform: translateX(-50%);
     &::before {
@@ -141,7 +146,7 @@
         border-radius: 5px;
         font-size: 15px;
         font-weight: 600;
-        cursor: text;
+        // cursor: text;
         box-sizing: border-box;
         max-width: 100%;
         color: rgb(108, 104, 89);
