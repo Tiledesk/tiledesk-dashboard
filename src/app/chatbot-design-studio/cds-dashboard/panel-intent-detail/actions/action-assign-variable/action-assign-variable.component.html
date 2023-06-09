@@ -1,9 +1,4 @@
-<cds-action-description 
-    [actionType]="'ASSIGN_VARIABLE'"
-    [actionSelected]="action">
-</cds-action-description>
-
-<div class="content">
+<div class="content-panel-intent-detail">
 
     <div class="text-editor-wrapper">
         <div class="field-box">
@@ -22,6 +17,9 @@
         </div>
     </div>
     
-    <operation [operation] = "action.operation" (onAddOperator)="onSelectedOperator()"></operation>
+    <operation 
+    [operation] = "action.operation" 
+    [listOfFunctions] = "listOfFunctions"
+    (onAddOperator)="onSelectedOperator()"></operation>
 
 </div>

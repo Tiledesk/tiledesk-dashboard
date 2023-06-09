@@ -1,13 +1,28 @@
 @import "./src/assets/sass/cds/_variables.scss";
 
+.emoji-picker {
+    position: absolute;
+    right: 10px;
+    bottom: -4px;
+}
+
+.box-emoji-mart {
+    height: 1px;
+    visibility: hidden;
+    &.picker-visible {
+        height: auto;
+        visibility: visible;
+    }
+}
+
 .button-tab {
     z-index: 1;
     height: 100%;
     display: flex;
     flex-direction: column;
-    background-color: #1e293b;
-    border-left: solid 2px #3ea9f5;
-    box-shadow: 0px 0px 42px 2px rgb(0, 0, 0, .78);
+    background-color: #4d5e79;
+    border-left: solid 2px #b28e26;
+    box-shadow: 0 0 42px 2px #000000c7;
 }
 
 .button-header-tab:before {
@@ -21,10 +36,10 @@
     background-color: #6474913d;
 }
 
-.buttons-drawer-title{
+.buttons-drawer-title {
     font-size: 18px;
     font-weight: 400;
-    color: #9aa0a6;
+    color: #fff;
     text-align: left;
     padding-left: 20px;
     cursor: default;
@@ -36,14 +51,14 @@
     margin: 12px;
     position: absolute;
     top: 0;
-    right: 0;
+    left: -22px;
     cursor: pointer;
     em {
-        background: #1e293b;
-        border: 1px solid #394f5a!important;
+        background: #303f5c;
+        border: 2px solid #b28e26!important;
         border-radius: 50%;
-        width: 20px;
-        height: 20px;
+        width: 22px;
+        height: 22px;
         cursor: pointer;
         font-size: 18px;
         display: block;
@@ -84,10 +99,12 @@
             }
         }
         &.displayed {
-            padding: 1em 3em;
+            padding: 1em 2em;
             height: auto;
             opacity: 1;
             overflow: visible;
+            display: inline-block;
+            width: 100%;
         }
         &.titleField{
             padding: 0em 3em;

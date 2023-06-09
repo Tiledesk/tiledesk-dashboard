@@ -6,7 +6,7 @@
             Button
         </div>
         <div class="control-button" (click)="onCloseButtonPanel()">
-            <em class="material-icons">close</em>
+            <em class="material-icons">chevron_right</em>
         </div> 
         
     </div> 
@@ -19,13 +19,32 @@
                <label class="control-label ">
                     {{ 'Button title' | translate }}
                 </label>
-                <cds-text id="input_title" #input_title
+                <cds-text id="input_title" 
+                    #input_title
                     [text]="buttonLabel"
                     (onChange)="onChangeTitle($event)">
                 </cds-text>
+                <div *ngIf="emoijPikerBtn" class="emoji-picker">
+                    <div class="emoji-picker-button" (click)="isEmojiPickerVisible = !isEmojiPickerVisible;">
+                        <span class="material-icons" style="font-size: 16px;">
+                            emoji_emotions
+                        </span>
+                    </div>
+                </div>
             </div> 
-
+            <emoji-mart *ngIf="isEmojiPickerVisible"
+                class="box-emoji-mart"
+                [class.picker-visible] = "isEmojiPickerVisible"
+                [showPreview]="false" 
+                [perLine]="emojiPerLine" 
+                [include]="emojiiCategories"
+                [color]="emojiColor" 
+                [darkMode]="false"
+                [emojiSize] = "24"
+                (emojiSelect)="onAddEmoji($event)">
+            </emoji-mart>
         </div>
+
         
         <div class="section displayed">
             <div class="form-group ng-select">

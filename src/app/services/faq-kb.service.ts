@@ -515,16 +515,43 @@ export class FaqKbService {
     this.logger.log('update BOT - URL ', url);
 
     let body = {}
-    body = { 'name': name, 'url': urlfaqkb, 'type': bottype, 'description': faqKb_description };
+    body = { 
+      'name': name, 
+      'url': urlfaqkb, 
+      'type': bottype, 
+      'description': faqKb_description
+    };
+    
     if (bottype === 'internal' || bottype === 'tilebot') {
       body['webhook_enabled'] = webkookisenalbled;
       body['webhook_url'] = webhookurl
       body['language'] = resbotlanguage
     }
     this.logger.log('[FAQ-KB.SERV] updateFaqKb - BODY ', body);
-
     return this._httpClient
       .put(url, JSON.stringify(body), httpOptions)
+  }
+  // PROJECT_ID/faq_kb/FAQ_KB_ID/language/LANGUAGE
+
+  updateFaqKbLanguage (id: string, chatbotlanguage: string) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    let url = this.FAQKB_URL + id + '/language/' + chatbotlanguage;
+    console.log('update BOT LANG - URL ', url);
+
+  
+   const body = {  'language': chatbotlanguage };
+    
+    this.logger.log('[FAQ-KB.SERV] update BOT LANG - BODY ', body);
+    return this._httpClient
+      .put(url, JSON.stringify(body), httpOptions)
+
   }
 
   public updateChatbot(chatbot: Chatbot) {
@@ -540,8 +567,22 @@ export class FaqKbService {
     this.logger.log('update BOT - URL ', url);
     this.logger.log('[FAQ-KB.SERV] updateFaqKb - BODY ', chatbot);
 
-    return this._httpClient
-      .put(url, JSON.stringify(chatbot), httpOptions)
+    return this._httpClient.put(url, JSON.stringify(chatbot), httpOptions)
+  }
+
+  public getJWT(id: string) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    }
+
+    let url = this.FAQKB_URL + id + '/jwt';
+    this.logger.log('update BOT - URL ', url);
+
+    return this._httpClient.get(url, httpOptions)
   }
   // http://localhost:3000/63ea8812b48b3e22c9372f05/faq_kb/63ea8820b48b3e22c9372f83/publish
 

@@ -25,6 +25,7 @@ export class ActionWebRequestComponent implements OnInit {
 
   hasSelectedVariable: boolean = false;
   typeMethodAttribute = TYPE_METHOD_ATTRIBUTE;
+  assignments: {} = {}
 
   constructor(
     private logger: LoggerService
@@ -53,6 +54,7 @@ export class ActionWebRequestComponent implements OnInit {
       this.jsonBody = this.action.jsonBody;
       this.jsonBody = this.formatJSON(this.jsonBody, "\t");
     }
+    this.assignments = this.action.assignments
   }
 
   private setActionWebRequest(){
@@ -90,11 +92,21 @@ export class ActionWebRequestComponent implements OnInit {
     this.action.method = e;
   }
 
-  onChangeTextarea(e){
-    this.setActionWebRequest();
-    setTimeout(() => {
-      this.jsonIsValid = this.isValidJson(this.jsonBody);
-    }, 500);
+  onChangeTextarea(e, type: 'url' | 'jsonBody'){
+    this.logger.debug('onChangeTextarea:', e, type );
+    switch(type){
+      case 'jsonBody': {
+        this.jsonBody = e;
+        this.setActionWebRequest();
+        setTimeout(() => {
+          this.jsonIsValid = this.isValidJson(this.jsonBody);
+        }, 500);
+        break;
+      }
+      case 'url' : {
+        this.action.url = e
+      }
+    }
   }
 
   onChangeParamsButton(){
@@ -133,6 +145,11 @@ export class ActionWebRequestComponent implements OnInit {
   onSelectedAttribute(variableSelected: {name: string, value: string}, step: number){
     this.hasSelectedVariable = true;
     this.action.assignTo = variableSelected.value;
+  }
+
+
+  onChangeAttributesResponse(attributes:{[key: string]: string }){
+    this.action.assignments = attributes ;
   }
 
 }

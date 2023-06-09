@@ -1,55 +1,46 @@
 <div class="box-tilebot--form">
+    <!-- SPLASH SCREEN  -->
+    <div *ngIf="displayNewFormButton" class="splash-screen--form">
+        <div class="tpl-modal-header-text">
+            <span>Add a Form to ask user data</span>
+        </div>
 
-    <!-- <div class="more-info" (click)="goToFormMoreInfo()">
-        <em class="material-icons" mat-raised-button matTooltip="{{ 'MoreInfo' | translate }}"
-            aria-label="Button that displays a tooltip when focused or hovered over">info_outline</em>
-      
-    </div> -->
-
-    <!-- HEADER BUTTONS -->
-   <!-- > {{ displayNewFormButton }} -->
-   <div *ngIf="displayNewFormButton" class="splash-screen--form">
-
-            <div class="tpl-modal-header-text">
-                <span>Add a Form to ask user data</span>
+        <div class="tpl-info">
+            <div class="tpl-info-text">
+                <i class="material-icons-outlined tpl-info-icon">help_outline</i>
+                <a href="https://gethelp.tiledesk.com/articles/how-to-create-conversational-forms-with-chatbots/" target="_blank">More info: How to create conversational forms with chatbots</a>
             </div>
+        </div>
 
-            <div class="tpl-info">
-                <div class="tpl-info-text">
-                    <i class="material-icons-outlined tpl-info-icon">help_outline</i>
-                    <a href="https://gethelp.tiledesk.com/articles/how-to-create-conversational-forms-with-chatbots/" target="_blank">More info: How to create conversational forms with chatbots</a>
-                </div>
-            </div>
-
-            <button id="add-form-btn" class="btn btn-primary add-form" (click)="openBoxNewFormForm()">
-                <span class="icon-label opened">{{ "AddIntentPage.AddForm" | translate }}</span>
-                <span class="icon">
-                    <i class="material-icons">add_circle</i>
-                </span>
-            </button>
-
+        <button id="add-form-btn" class="btn btn-primary add-form" (click)="openBoxNewFormForm()">
+            <span class="icon">
+                <i class="material-icons">add_circle</i>
+            </span>
+            <span class="icon-label opened">{{ "AddIntentPage.AddForm" | translate }}</span>
+        </button>
     </div>
 
+    <!-- HEADER BUTTONS -->
     <div class="header-buttons--form">
-        <!-- (click)="openDeleteForm()" presenModalDeleteForm -->
+        
         <button id="delete-form-btn" *ngIf="!displayNewFormButton && intentFormSize > 0" class="btn btn-danger add-form" 
             (click)="openDeleteForm()">
-            <span class="icon-label">{{ "AddIntentPage.DeleteForm" | translate }}</span>
+            <!-- <span class="icon-label">{{ "AddIntentPage.DeleteForm" | translate }}</span> -->
             <span class="icon">
                 <i class="material-icons">delete</i>
             </span>
         </button>
+
         <!-- only-icon btn-settings -->
         <button id="open-setting-btn" *ngIf="displaySettingsButton" class="btn btn-primary add-form" (click)="openSettingsForm()">
-            <span class="icon-label">{{ "Settings" | translate }}</span>
+            <!-- <span class="icon-label">{{ "Settings" | translate }}</span> -->
             <span class="icon">
                 <i class="material-icons">settings</i>
             </span>
         </button>
 
         <!-- only-icon btn-settings -->
-        <button id="close-general-btn" *ngIf="displayCancelButton" class="btn btn-default add-form" (click)="closeGeneral()">
-            <span class="icon-label opened">{{ "Close" | translate }}</span>
+        <button id="close-general-btn" *ngIf="displayCancelButton && fields" class="btn btn-default add-form" (click)="closeGeneral()">
             <span class="icon">
                 <i class="material-icons">cancel</i>
             </span>
@@ -58,93 +49,91 @@
     </div>
 
 
-
-    <!-- NEW FORM -->
-    <!-- intentForm > {{ intentForm | json }} -->
-    <!-- <div *ngIf="displayBoxNewForm && !intentForm"> -->
-    <div *ngIf="displayBoxNewForm && intentFormSize === 0">
-        <div class="box--setting-form">
-            {{ "AddIntentPage.SelectTemplateForm" | translate }}
-        </div>
-        <div class="selectFormModel">
-            <ng-select [items]="modelsOfForm" bindLabel="name" bindValue="id" [clearable]=false
-                [(ngModel)]="selectedFormId" (change)="getFieldFromId(selectedFormId)">
-            </ng-select>
-            <p *ngIf=selectedForm?.fields>{{ "AddIntentPage.InfoTemplateForm" | translate: translateparam }}</p>
-        </div>
-        <div class="box-buttons">
-            <button id="create-intent-form" class="btn btn-primary" (click)="generateJsonIntentForm()">
-                <span>{{ "AddIntentPage.CreateForm" | translate }}</span>
-            </button>
-        </div>
-    </div>
-
     <!-- SETTINGS FORM -->
-    <!-- <div *ngIf="intentForm" class="box-settings-form"> -->
-    <div *ngIf="intentFormSize > 0" class="box-settings-form">
-        <div *ngIf="displaySettingForm" class="box--setting-form">
-            <!-- <div>{{ "AddIntentPage.NameForm" | translate }}: <span class="bold">{{selectedForm.name}}</span></div> -->
-            <div class="row-info">
-                <span class="bold">{{ "AddIntentPage.LabelCancel" | translate }}:</span>
-                <input type="text" class="input" [(ngModel)]="cancelCommandsString" (change)="setCancelCommands()" />
+    <div>
+        <div *ngIf="displayBoxNewForm && intentFormSize === 0">
+            <div class="box--setting-form">
+                {{ "AddIntentPage.SelectTemplateForm" | translate }}
             </div>
-            <div class="row-info">
-                <span class="bold">{{ "AddIntentPage.LabelReplay" | translate }}:</span>
-                <textarea type="text" class="input" [(ngModel)]="cancelReply" (change)="setCancelReplay()"
-                    rows="2"> </textarea>
+            <div class="selectFormModel">
+                <ng-select [items]="modelsOfForm" bindLabel="name" bindValue="id" [clearable]=false
+                    [(ngModel)]="selectedFormId" (change)="getFieldFromId(selectedFormId)">
+                </ng-select>
+                <p *ngIf=selectedForm?.description>{{ selectedForm?.description }}</p>
+            </div>
+            <div class="box-buttons">
+                <button id="create-intent-form" class="btn btn-primary" (click)="generateJsonIntentForm()">
+                    <span>{{ "AddIntentPage.CreateForm" | translate }}</span>
+                </button>
+            </div>
+        </div>
+    
+        <!-- SETTINGS FORM -->
+        <div *ngIf="intentFormSize > 0" class="box-settings-form">
+            <div *ngIf="displaySettingForm" class="box--setting-form">
+                <!-- <div>{{ "AddIntentPage.NameForm" | translate }}: <span class="bold">{{selectedForm.name}}</span></div> -->
+                <div class="row-info">
+                    <span class="bold">{{ "AddIntentPage.LabelCancel" | translate }}:</span>
+                    <input type="text" class="input" [(ngModel)]="cancelCommandsString" (change)="setCancelCommands()" />
+                </div>
+                <div class="row-info">
+                    <span class="bold">{{ "AddIntentPage.LabelReplay" | translate }}:</span>
+                    <textarea type="text" class="input" [(ngModel)]="cancelReply" (change)="setCancelReplay()"
+                        rows="2"> </textarea>
+                </div>
             </div>
         </div>
 
-        <!-- <div *ngIf="displaySettingForm" class="box-buttons"> -->
-        <!-- <button class="btn btn-default" (click)="closeSettingsForm()">
-                <span>{{ "Cancel" | translate }}</span>
-            </button> -->
-        <!-- <button class="btn btn-primary" >
-                <span>{{ "Save" | translate }}</span>
-            </button> -->
-        <!-- </div> -->
-
     </div>
-
-
-    <!-- ------------------------------ -->
-    <!-- @ FIELDS LIST -->
-    <!-- ------------------------------ -->
-    <appdashboard-form-field *ngIf="intentFormSize > 0" [fields]="fields"
-        (eventEditField)="eventEditField($event)" (eventDropField)="eventDropField($event)"
-        (openDeleteFieldModal)="openDeleteFieldModal($event)">
-    </appdashboard-form-field>
+    <!-- CONTENT FORM -->
+    <div *ngIf="intentFormSize > 0"  #scrollMe class="content-buttons--form scrollMe">
+        <!-- ------------------------------ -->
+        <!-- @ FIELDS LIST -->
+        <!-- ------------------------------ -->
+        <appdashboard-form-field
+            [fields]="fields"
+            (eventEditField)="eventEditField($event)" 
+            (eventDropField)="eventDropField($event)"
+            (openDeleteFieldModal)="openDeleteFieldModal($event)">
+        </appdashboard-form-field>
+    
+        <!-- ------------------------------ -->
+        <!-- @ ADD EDIT FIELD -->
+        <!-- ------------------------------ -->
+        <appdashboard-form-edit-add 
+            *ngIf="displayAddForm || displayEditForm" 
+            [field]="selectedField" 
+            [displayAddForm]="displayAddForm"
+            [displayEditForm]="displayEditForm" 
+            (scrollToBottom)="scrollToBottom()"
+            (changedFormFields)="onChangedFormFields($event)"
+            (saveAddEditForm)="saveAddEditForm($event)"
+            (closeAddEditForm)="closeAddEditForm()">
+        </appdashboard-form-edit-add>
+    </div>
 
     <!-- ------------------------------ -->
     <!-- @ BUTTON ADD FIELD  -->
     <!-- ------------------------------ -->
-    <!-- [disabled]="displayAddForm || displayEditForm || displaySettingForm" -->
-    <div class="header-list-form">
+    <div *ngIf="!displaySettingForm && !displayAddForm && !displayEditForm" class="header-list-form">
         <button *ngIf="displayTilebotAddEditForm && intentFormSize > 0"
             [ngClass]="{'hide':( displaySettingForm || displayAddForm || displayEditForm ) }"
-            class="btn btn-primary add-field btn-only-string" (click)="eventAddField()">
+            class="btn btn-primary add-field btn-only-string" 
+            (click)="eventAddField()">
             <span class="icon" style="padding-right: 4px;">
                 <i class="material-icons">add_circle</i>
             </span>
             <span>{{ "AddIntentPage.AddField" | translate }}</span>
         </button>
     </div>
-
-    <!-- ------------------------------ -->
-    <!-- @ ADD EDIT FIELD -->
-    <!-- ------------------------------ -->
-    <appdashboard-form-edit-add 
-    *ngIf="displayAddForm || displayEditForm" 
-    [displayAddForm]="displayAddForm"
-    [displayEditForm]="displayEditForm" [field]="selectedField" (saveAddEditForm)="saveAddEditForm($event)"
-    (closeAddEditForm)="closeAddEditForm()">
-    </appdashboard-form-edit-add>
-
     <!-- ------------------------------ -->
     <!-- @ DELETE MODAL -->
     <!-- ------------------------------ -->
-    <appdashboard-modal-window *ngIf="displayMODAL" [translateMap]="translateMap" [objectId]="selectedObjectId"
-        (confirmDeleteModal)="confirmDeleteModal($event)" (closeDeleteModal)="closeDeleteModal($event)">
+    <appdashboard-modal-window *ngIf="displayMODAL" 
+        [translateMap]="translateMap" 
+        [objectId]="selectedObjectId"
+        (confirmDeleteModal)="confirmDeleteModal($event)" 
+        (closeDeleteModal)="closeDeleteModal($event)">
     </appdashboard-modal-window>
 
 </div>

@@ -1,9 +1,4 @@
-<cds-action-description 
-    [actionType]="'ASSIGN_VARIABLE'"
-    [actionSelected]="action">
-</cds-action-description>
-
-<div class="content">
+<div class="content-panel-intent-detail">
 
     <div class="text-editor-wrapper">
         <div class="field-box">
@@ -15,21 +10,29 @@
                     [setAttributeBtn]="true"
                     [minRow]="1" [maxRow]="1"
                     [readonly]="true"
-                    [control]="actionAssignFormGroup.controls['destination']"
-                    (selectedAttribute)="onSelectedAttribute($event,1)">
+                    [text]="action.assignTo"
+                    (selectedAttribute)="onSelectedAttribute($event)">
                 </cds-textarea>
-                <!-- <input type="text" [formControlName]="conditionForm.value.operand2.type=='const'? 'value': 'name'" placeholder="Value" name="operand2"/> -->
-                <!-- <div class="flex tag" *ngIf="hasSelectedVariable">
-                    <span class="material-icons close" (click)="clearInput()">close</span>
-                    {{actionAssignFormGroup.value.destination}}
-                </div> -->
-                <cds-selected-variable  *ngIf="hasSelectedVariable"
-                    [text]="actionAssignFormGroup.value.destination"
-                    (clearInput)="onClearInput(i)"
-                ></cds-selected-variable>
             </div>
         </div>
     </div>
     
-    <operation [operation] = "action.operation" (onAddOperator)="onOperatorSelected()"></operation>
+
+    <label class="title-label">Value:</label>
+    <div class="block-wrp">
+        <div class="operand-wrp">
+            <div class="select-function">
+                <cds-select id="selectOperand"
+                    [items]="listOfFunctions"
+                    [bindLabelSelect]="'name'"
+                    [bindValueSelect]="'value'"
+                    [placeholder]="'Apply a function to the value'"
+                    [clearable]="true"
+                    [itemSelected]="action.functionName"
+                    (onSelected)="onSelectedFunction($event)">
+                </cds-select>
+            </div>
+        </div>
+    </div>
+
 </div>

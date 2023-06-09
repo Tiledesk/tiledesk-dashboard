@@ -1,68 +1,44 @@
 <div class="tilebot-add-edit-form" [ngClass]="{'active':showForm}">
+    
+    <button *ngIf="displayEditForm === true" 
+        id="edit-form-builder-field" 
+        class="btn btn-primary edit-form"
+        type="submit" (click)="close()">
+        <span class="icon-label">Close</span>
+        <span class="icon"><i class="material-icons">cancel</i></span>
+    </button>
+
     <div class="form-field container">
         <div class="row">
             <div class="col-md-12">
                 <div class="form-group" [ngClass]="{'is-error':nameResult === false}">
-                    <label class="control-label" style="top:-25px">
+                    <label class="control-label">
                         {{ 'AddIntentPage.ParameterName' | translate }}
                     </label>
-                    <!-- <input type="text" class="input form-control" [(ngModel)]="fieldName"
-                        (ngModelChange)="onChangeParameterName($event)" (focus)="displayMessage('field_name')"
-                        style="border-radius: 5px;" /> -->
                     <div class="value-wrp">
                         <cds-textarea id="assignTo"
                             [ngClass]="{'assigned' : fieldName}"
+                            [placeholder]="fieldName?'':'Choose an attribute'"
                             [text]="fieldName"
                             [textLimitBtn]="false"
                             [emoijPikerBtn]="false"
                             [setAttributeBtn]="hasSelectedVariable? false: true"
                             [minRow]="1" [maxRow]="1"
                             [readonly]="true"
-                            (clearSelectedAttribute)="clearSelectedAttributeParam()"
+                            (clearSelectedAttribute)="onClearSelectedAttributeParam()"
                             (selectedAttribute)="onSelectedAttributeParam($event)">
                         </cds-textarea>
-                        <!-- <div class="flex tag" *ngIf="hasSelectedVariable">
-                            <span class="material-icons close" (click)="onClearInput()">close</span>
-                            {{fieldName}}
-                        </div> -->
-                        <!-- <cds-selected-variable  *ngIf="hasSelectedVariable"
-                            [text]="fieldName"
-                            (clearInput)="onClearInput(i)"
-                        ></cds-selected-variable> -->
                     </div>
-
                 </div>
             </div>
-
-            <!-- <div style="display: none;" class="col-md-6">
-
-                <div class="form-group ng-select"
-                    [ngClass]="{'is-error':typeResult === false, 'is-placeholder':inputTypePlaceholderClass === true}">
-                    <label class="control-label">
-                        {{ 'Type' | translate }}
-                    </label>
-                    <div class="selectFormModel">
-                        <ng-select class="form-control-select" [items]="modelsOfType" bindLabel="label"
-                            bindValue="value" [searchable]=false [clearable]=false [(ngModel)]="fieldType"
-                            (blur)="displayPlaceholder(true)"
-                            (focus)="displayPlaceholder(false); displayMessage('field_type')"
-                            (change)="onChangeTypeField($event.value)">
-                        </ng-select>
-                    </div>
-                </div>
-            </div> -->
-
         </div>
 
         <div class="row">
             <div class="col-md-12">
                 <div class="form-group" [ngClass]="{'is-error':labelResult === false}">
-                    <label class="control-label" style="top:-19px">
+                    <label class="control-label">
                         {{ 'AddIntentPage.Label' | translate }}
                     </label>
-                    <!-- <textarea name="field_label" [(ngModel)]="fieldLabel" rows="1" style="resize: vertical;"
-                        class="form-control" type="text" (focus)="displayMessage('field_label')">
-                    </textarea> -->
                     <div class="value-wrp">
                         <cds-textarea 
                             class="form-control"
@@ -83,47 +59,53 @@
         <div class="row">
             <div class="col-md-12">
                 <mat-accordion>
-                    <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
-                        <mat-expansion-panel-header style="height: 40px !important;">
+                    <mat-expansion-panel (opened)="panelOpenState = true; onScrollToBottom()" (closed)="panelOpenState = false">
+                        <mat-expansion-panel-header>
                             <mat-panel-title>
-                                <h4 class="validation-field-title" >
+                                <p class="validation-field-title" >
                                     Validation field
-                                </h4>
+                                </p>
                             </mat-panel-title>
                         </mat-expansion-panel-header>
-                        <div *ngIf="showRegexField" class="field-validation" style="margin-top: 16px;">
-                            <div  class="col-md-4">
-
-                                <div class="form-group ng-select"
-                                [ngClass]="{'is-error':typeResult === false, 'is-placeholder':inputTypePlaceholderClass === true}">
-                                <label class="control-label custom-control-label">
-                                    {{ 'Type' | translate }}
-                                </label>
-                                <div class="selectFormModel">
-                                    <ng-select class="form-control-select" [items]="modelsOfType" bindLabel="label"
-                                        bindValue="value" [searchable]=false [clearable]=false [(ngModel)]="fieldType"
-                                        (blur)="displayPlaceholder(true)"
-                                        (focus)="displayPlaceholder(false); displayMessage('field_type')"
-                                        (change)="onChangeTypeField($event.value)" placeholder="Select field type">
-                                    </ng-select>
+                        <div *ngIf="showRegexField" class="field-validation">
+                            <div class="col-md-4">
+                                <div class="form-group ng-select" [ngClass]="{'is-error':typeResult === false, 'is-placeholder':inputTypePlaceholderClass === true}">
+                                    <label class="control-label custom-control-label">
+                                        {{ 'Type' | translate }}
+                                    </label>
+                                    <div class="selectFormModel">
+                                        <ng-select class="form-control-select" [items]="modelsOfType" bindLabel="label"
+                                            bindValue="value" 
+                                            [searchable]=false 
+                                            [clearable]=false 
+                                            [(ngModel)]="fieldType"
+                                            (blur)="displayPlaceholder(true); displayMessage()"
+                                            (focus)="displayPlaceholder(false); displayMessage('field_type')"
+                                            (change)="onChangeValidationType($event.value)" 
+                                            placeholder="Select field type">
+                                        </ng-select>
+                                    </div>
                                 </div>
                             </div>
 
-                            </div>
-                            <div  class="col-md-8">
-                                <div class="form-group"
-                                    [ngClass]="{'is-error':regexResult === false}">
+                            <div class="col-md-8">
+                                <div class="form-group" [ngClass]="{'is-error':regexResult === false}">
                                     <label class="control-label custom-control-label">
                                         {{ 'AddIntentPage.AddCustomRegex' | translate }}
                                     </label>
                                     <div class="input-prefix"> / </div>
-                                    <input type="text" class="input form-control" [(ngModel)]="fieldRegex"
+                                    <input type="text" 
+                                        class="input-regex form-control" 
+                                        [readonly]="fieldType!==typeField.CUSTOM" 
+                                        [(ngModel)]="fieldRegex"
+                                        (blur)="displayMessage()"
                                         (focus)="displayMessage('field_regex')"
-                                        placeholder="{{ 'AddIntentPage.AddCustomRegex' | translate }}" style="padding-left: 18px;
-                                    padding-right: 18px; border-radius: 5px;">
+                                        (input)="onChangeValidationRegex($event)"
+                                        placeholder="{{ 'AddIntentPage.AddCustomRegex' | translate }}">
                                     <div class="input-suffix"> / </div>
                                 </div>
                             </div>
+
                         </div>
 
 
@@ -132,55 +114,41 @@
                                 <label class="control-label custom-control-label">
                                     {{ 'AddIntentPage.ErrorMessage' | translate }}
                                 </label>
-                                <textarea type="text" class="input form-control" [(ngModel)]="fieldErrorLabel"
+                                <textarea type="text" 
+                                    class="input form-control" 
+                                    rows="3"
+                                    [(ngModel)]="fieldErrorLabel"
+                                    (blur)="displayMessage()"
                                     (focus)="displayMessage('field_error')"
-                                    style="border-radius: 5px;line-height: 14px;" rows="3"></textarea>
+                                    (input)="onChangeValidationErrorMessage($event)">
+                                </textarea>
                             </div>
                         </div>
                     </mat-expansion-panel>
                 </mat-accordion>
+
             </div>
         </div>
 
-
-        <div *ngIf="displayInfoMessage" class="row input-wrapper">
+        <div class="row input-wrapper info-message"
+            [ngStyle]="{'opacity':displayInfoMessage? '1' : '0' }">
             <div class="col-sm-12">
-                <div class="info-message">
-                    <em class="material-icons">info</em>
-                    <span [innerHTML]="infoMessage"></span>
-                </div>
+                <em class="material-icons">info</em>
+                <span [innerHTML]="infoMessage"></span>
             </div>
         </div>
 
 
+        <div *ngIf="displayAddForm === true" class="form-group form-footer">
+            <button  class="btn btn-light" type="button" (click)="close()">
+                {{ 'Cancel' | translate }}
+            </button>
+            <button class="btn btn-primary" type="submit" (click)="save()">
+                {{ 'Add' | translate}}
+            </button>
+        </div>
+
     </div>
 
-    <div class="form-group form-footer">
-        <button *ngIf="displayAddForm === true" class="btn btn-light" type="button" (click)="close()">
-            {{ 'Cancel' | translate }}
-        </button>
-        <button *ngIf="displayAddForm === true" class="btn btn-primary" type="submit" (click)="save()">
-            {{ 'Add' | translate}}
-        </button>
-
-        <button id="edit-form-builder-field" *ngIf="displayEditForm === true" class="btn btn-primary edit-form"
-            type="submit" (click)="save()">
-            <!-- {{ 'Edit' | translate}} -->
-            <span class="icon-label">Done</span>
-            <span class="icon">
-                <i class="material-icons">
-                    done
-                </i>
-            </span>
-        </button>
-
-        <!-- <button class="btn btn-primary edit-form">
-            <span class="icon-label">Done</span>
-            <span class="icon">
-                <i class="material-icons">
-                    done
-                </i>
-            </span>
-        </button> -->
-    </div>
+    
 </div>

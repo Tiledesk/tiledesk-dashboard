@@ -1,11 +1,12 @@
-<cds-action-description 
-    [actionType]="actionType"
-    [actionSelected]="reply"
-    [showTip]="intent_display_name==='start'"
-    [tipText]="'<b>Pro tip</b>: Turn this block into a programmed proactive message. <a href=https://www.youtube.com/embed/SgDGwvVoqWE target=_blank>Here is how!</a> '">
-</cds-action-description>
 
-<div class="box-sx">
+<div class="box-up">
+    <appdashboard-panel-reply-tools
+        class="panel-tools-response"
+        (addNewResponse) = onAddNewResponse($event)
+    ></appdashboard-panel-reply-tools>
+</div>
+
+<div class="box-dw">
     <div class="reply-info" *ngIf="typeAction === typeActions.RANDOM_REPLY">{{actionList.RANDOM_REPLY.description}}</div>
     <!-- [ngStyle]="{'transform': translateY}" -->
     <div #scrollMe id="scrollMe" 
@@ -20,10 +21,10 @@
             <div *ngIf="message.type === typeMessage.TEXT">
                 <div class="custom-placeholder" *cdkDragPlaceholder>
                     <appdashboard-text-response
-                    [index] = i
-                    [typeAction] = typeAction
-                    [response] = message
-                    ></appdashboard-text-response>
+                        [index] = i
+                        [typeAction] = typeAction
+                        [response] = message>
+                    </appdashboard-text-response>
                 </div>
                 
                 <div class="response">
@@ -35,16 +36,16 @@
                         cdkDragHandle>
                     </div> 
                     <appdashboard-text-response
-                    [index] = i
-                    [typeAction] = typeAction
-                    [response] = message
-                    (moveUpResponse) = onMoveUpResponse($event)
-                    (moveDownResponse) = onMoveDownResponse($event)
-                    (deleteResponse) = onDeleteResponse($event)
-                    (openButtonPanel) = onOpenButtonPanel($event)
-                    (changeDelayTimeReplyElement) = onChangeDelayTimeReplyElement()
-                    (changeReplyElement) = onChangeReplyElement()
-                    ></appdashboard-text-response>
+                        [index] = i
+                        [typeAction] = typeAction
+                        [response] = message
+                        (moveUpResponse) = onMoveUpResponse($event)
+                        (moveDownResponse) = onMoveDownResponse($event)
+                        (deleteResponse) = onDeleteResponse($event)
+                        (openButtonPanel) = onOpenButtonPanel($event)
+                        (changeDelayTimeReplyElement) = onChangeDelayTimeReplyElement()
+                        (changeReplyElement) = onChangeReplyElement()>
+                    </appdashboard-text-response>
                 </div>
             </div>
             
@@ -114,7 +115,10 @@
         </div>
     </div>
 
+</div>
 
+
+<div class="footer-panel-intent-detail">
     <div class="disable-input-message">
         <section class="disable-input-message-section">
             <mat-checkbox 
@@ -124,16 +128,8 @@
             </mat-checkbox>
         </section>
     </div>
-    
-
 </div>
 
-<div class="box-dx">
-    <appdashboard-panel-reply-tools
-        class="panel-tools-response"
-        (addNewResponse) = onAddNewResponse($event)
-    ></appdashboard-panel-reply-tools>
-</div>
 
 
 <div class="card-buttons" (focusout)="onFocusOutEvent($event)"

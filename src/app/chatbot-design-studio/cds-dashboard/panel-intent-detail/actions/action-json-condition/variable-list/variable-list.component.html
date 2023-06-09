@@ -10,20 +10,20 @@
         <div class="category-name" >USER DATA</div>
         <div *ngFor="let variable of filteredVariableList" (click)="onVariableSelected(variable)" class="category-row">
             <span class="material-icons">data_object</span>
-            <label class="category-row-name">{{variable?.name}}</label>
+            <label class="category-row-name ellips">{{variable?.name}}</label>
         </div>
     </div>
     <div id="data" *ngIf="filteredIntentVariableList && filteredIntentVariableList.length > 0">
         <div class="category-name" >SYSTEM ATTRIBUTES</div>
         <div *ngFor="let variable of filteredIntentVariableList" (click)="onVariableSelected(variable)" class="category-row">
             <span class="material-icons">{{variable?.icon}}</span>
-            <label class="category-row-name">{{variable?.name}}</label>
+            <label class="category-row-name ellips">{{variable?.name}}</label>
         </div>
     </div>
     <div id="no-data" *ngIf="filteredVariableList.length === 0 && filteredIntentVariableList.length == 0">
        <div class="no-result">
             <span class="material-icons">search</span>
-            <span class="text">Nothing found. Please consider changing your search query.</span>
+            <span class="text ellips">Nothing found. Please consider changing your search query.</span>
        </div>
     </div>
 </div>

@@ -1,7 +1,7 @@
 
 import { Component, OnInit, ViewChild, Input, Output, EventEmitter, Attribute } from '@angular/core';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
-import { MessageWithWait, Button, MessageAttributes } from '../../../../../../../models/intent-model';
+import { MessageWithWait, Button, MessageAttributes, Expression } from '../../../../../../../models/intent-model';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { TYPE_ACTION, TYPE_BUTTON, TYPE_URL, TEXT_CHARS_LIMIT, calculatingRemainingCharacters } from '../../../../../../utils';
 
@@ -38,13 +38,17 @@ export class TextResponseComponent implements OnInit {
 
   // Delay //
   delayTime: number;
+  // Filter // 
+  canShowFilter: boolean = true;
+  booleanOperators=[ { type: 'AND', operator: 'AND'},{ type: 'OR', operator: 'OR'},]
+ 
   buttons: Array<Button>;
 
   // Buttons //
   typeOfButton = TYPE_BUTTON;
   typeOfUrl = TYPE_URL;
 
- 
+  
   constructor() { }
 
   // SYSTEM FUNCTIONS //
@@ -118,11 +122,19 @@ export class TextResponseComponent implements OnInit {
     }, 500);
   }
 
+  onClickDelayTime(opened: boolean){
+    this.canShowFilter = !opened
+  }
   /** */
   onChangeDelayTime(value:number){
     this.delayTime = value;
     this.response.time = value*1000;
     this.changeDelayTimeReplyElement.emit();
+  }
+
+  onChangeExpression(expression: Expression){
+    this.response._tdJSONCondition = expression
+    this.changeReplyElement.emit();
   }
 
   /** */
@@ -134,7 +146,7 @@ export class TextResponseComponent implements OnInit {
         this.buttons = this.response.attributes.attachment.buttons;
       }
     } catch (error) {
-      // console.log('error: ', error);
+      console.log('error: ', error);
     }
     this.openButtonPanel.emit({button: button, refResponse: this.response});
   }

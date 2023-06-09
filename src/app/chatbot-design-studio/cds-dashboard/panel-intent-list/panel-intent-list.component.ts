@@ -22,7 +22,7 @@ export class PanelIntentListComponent implements OnInit {
   @Input() eventCreateIntent: Observable<any>;
   @Input() eventStartUpdatedIntent: Observable<any>;
   @Input() eventNewIntentFromSplashScreen: Observable<any>;
-  @Output() selected_intent = new EventEmitter();
+  @Output() selectIntent = new EventEmitter();
   @Output() returnListOfIntents = new EventEmitter();
   @Output() createIntent = new EventEmitter();
   @Output() deleteSelectedIntent = new EventEmitter();
@@ -35,6 +35,7 @@ export class PanelIntentListComponent implements OnInit {
   default_intents: Intent[] = [];
   filtered_intents: Intent[] = [];
 
+  idSelectedIntent: number;
   selectedIntent: Intent;
   addBtnDisabled: boolean = false;
 
@@ -88,7 +89,7 @@ export class PanelIntentListComponent implements OnInit {
         //this.preselectIntent()
         let index = this.filtered_intents.indexOf(this.filtered_intents.find(o => o.id == intent.id))
         this.logger.log("after creating intent --> index: ", index);
-        this.selectIntent(intent, index);
+        this.onSelectIntent(intent, index);
       })
     })
 
@@ -225,37 +226,40 @@ export class PanelIntentListComponent implements OnInit {
   //   this.selectIntent(intent, index)
   // }
 
-  selectIntent(intent: Intent, index: number) {
-    this.logger.log("[PANEL-INTENT-LIST] selectIntent - intent selected: ", intent);
-    this.logger.log("[PANEL-INTENT-LIST] selectIntent - index: ", index)
+  onSelectIntent(intent: Intent, index: number) {
+    console.log('onSelectIntent:: ', intent, index);
+    this.idSelectedIntent = index;
+    this.selectedIntent = intent;
+    this.selectIntent.emit(intent);
+    this.router.navigate(['project/' + this.projectID + '/cds/' + this.id_faq_kb + '/intent/' + this.selectedIntent.id], { replaceUrl: true })
+    // this.logger.log("[PANEL-INTENT-LIST] selectIntent - intent selected: ", intent);
+    // this.logger.log("[PANEL-INTENT-LIST] selectIntent - index: ", index)
+    // let elements = Array.from(document.getElementsByClassName('intent active'));
+    // elements.forEach((el) => {
+    //   el.classList.remove('active');
+    // })
+    // // Issue: the intent is not ready on DOM and is not possible to select it without timeout.
+    // // Warning: delete the timeout ASAP
+    // // Try to use MutationObserver for detect changes in the list.
+    // setTimeout(() => {
+    //   const element = document.getElementById('intent_' + index);
+    //   this.logger.log("[PANEL-INTENT-LIST] element: ", element);
+    //   if (element) {
+    //     element.classList.toggle("active")
+    //     //element.scrollIntoView();
+    //   }
+      
+    //   if (!this.selectedIntent || this.selectedIntent.id != intent.id) {
+    //     this.logger.log("[PANEL-INTENT-LIST]  select intent emit");
+    //     this.selectedIntent = intent;
+    //     this.selectIntent.emit(intent);
+    //     this.logger.log("[TEST-PANEL-INTENT-LIST] navigate");
+    //     this.router.navigate(['project/' + this.projectID + '/cds/' + this.id_faq_kb + '/intent/' + this.selectedIntent.id], { replaceUrl: true })
+    //   } else {
+    //     // this.selected_intent.emit(this.selectedIntent);
+    //   }
 
-    let elements = Array.from(document.getElementsByClassName('intent active'));
-    elements.forEach((el) => {
-      el.classList.remove('active');
-    })
-
-    // Issue: the intent is not ready on DOM and is not possible to select it without timeout.
-    // Warning: delete the timeout ASAP
-    // Try to use MutationObserver for detect changes in the list.
-    setTimeout(() => {
-      const element = document.getElementById('intent_' + index);
-      this.logger.log("[PANEL-INTENT-LIST] element: ", element);
-      if (element) {
-        element.classList.toggle("active")
-        //element.scrollIntoView();
-      }
-
-      if (!this.selectedIntent || this.selectedIntent.id != intent.id) {
-        this.logger.log("[PANEL-INTENT-LIST]  select intent emit");
-        this.selectedIntent = intent;
-        this.selected_intent.emit(intent);
-        this.logger.log("[TEST-PANEL-INTENT-LIST] navigate");
-        this.router.navigate(['project/' + this.projectID + '/cds/' + this.id_faq_kb + '/intent/' + this.selectedIntent.id], { replaceUrl: true })
-      } else {
-        // this.selected_intent.emit(this.selectedIntent);
-      }
-
-    }, 200);
+    // }, 200);
   }
 
   addNewIntent() {
@@ -263,10 +267,13 @@ export class PanelIntentListComponent implements OnInit {
     // elements.forEach((el) => {
     //   el.classList.remove('active');
     // })
+    this.idSelectedIntent = null;
     this.selectedIntent = null;
     this.createIntent.emit(true);
     // this.router.navigate(['project/' + this.projectID  + '/createfaq', this.id_faq_kb, 'tilebot', 'en']);
   }
+
+
 
   onDeleteButtonClicked(intent) {
     swal({
@@ -278,7 +285,6 @@ export class PanelIntentListComponent implements OnInit {
       dangerMode: true,
     }).then((WillDelete) => {
       if (WillDelete) {
-
         this.faqService.deleteFaq(intent.id).subscribe((data) => {
           this.logger.log('[PANEL-INTENT-LIST] delete intent swal RES ', data)
           //this.getAllIntents(this.id_faq_kb);

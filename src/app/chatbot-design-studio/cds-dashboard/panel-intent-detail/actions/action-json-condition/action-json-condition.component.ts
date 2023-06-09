@@ -146,4 +146,12 @@ export class ActionJsonConditionComponent implements OnInit {
   onChangeAttributesFalse(attributes:any){
     this.action.falseIntentAttributes = attributes;
   }
+
+  onStopConditionMeet() {
+    try {
+      this.action.stopOnConditionMet = !this.action.stopOnConditionMet;
+    } catch (error) {
+      this.logger.log("Error: ", error);
+    }
+  }
 }

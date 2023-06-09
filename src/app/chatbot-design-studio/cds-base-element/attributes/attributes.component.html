@@ -10,7 +10,19 @@
                     class="sx-input" 
                     (ngModelChange)="onChangeAttributes(attribute, i)">
                     
-                <input [(ngModel)]="attribute.value" type="text" placeholder="Value" class="dx-input" (ngModelChange)="onChangeAttributes(attribute, i)">
+                <cds-textarea id="value"
+                    class="value"
+                    [text]="attribute.value"
+                    [textLimitBtn]="false"
+                    [emoijPikerBtn]="false"
+                    [setAttributeBtn]="true"
+                    [minRow]="1" [maxRow]="1"
+                    [placeholder]="'Value'"
+                    (selectedAttribute)="onSelectedAttribute($event,i, 'value')"
+                    (changeTextarea)="onChangeTextarea($event, i)">
+                </cds-textarea>
+
+                <!-- <input [(ngModel)]="attribute.value" type="text" placeholder="Value" class="dx-input" (ngModelChange)="onChangeAttributes(attribute, i)"> -->
             </div>
         </div>
     </div>

@@ -93,7 +93,6 @@ export class VariableListComponent implements OnInit {
   }
 
   onVariableSelected(variableSelected: {name: string, value: string}){
-    // console.log('onVariableSelected');
     this.onSelected.emit(variableSelected);
   }
 

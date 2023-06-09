@@ -37,7 +37,7 @@ $max-height: 230px;
     display: block;
     margin-top: 0px;
     margin-left: 30px;
-    width: calc(100% - 40px);
+    width: calc(100% - 66px);
 }
 // .frame-panel {
 //     position: absolute;
@@ -91,14 +91,18 @@ $max-height: 230px;
     position: relative;
     width: 100%;
     height: auto;
-    margin: 0;
-    padding: 0;
-    .delay-wrapper {
+    margin: 27px 0px 0px 0px;
+    padding: 0px 33px;
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 5px;
+    column-gap: 5px;
+    .delay-wrapper,
+    .filter-wrapper {
         display: block;
         height: auto;
         width: auto;
-        margin: 27px 0px 0px 20px;
-        padding: 0em 0.75em 0;
+        // padding: 0em 0.75em 0;
     }
 }
 
@@ -177,7 +181,7 @@ $max-height: 230px;
                 margin: 0;
                 left: 0;
                 top: -30px;
-                color: $color-bck-gray-hex;
+                color: #dcdcdc;
                 cursor: grab;
             }
         }

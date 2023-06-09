@@ -1,9 +1,9 @@
-<cds-action-description 
+<!-- <cds-action-description 
     [actionType]="'WEB_REQUEST'"
     [actionSelected]="action">
-</cds-action-description>
+</cds-action-description> -->
 
-<div class="content">
+<div class="content" #scrollMe id="scrollMe" >
 
     <div class="input-group cds-input-group">
         <span class="input-group-addon">
@@ -18,7 +18,19 @@
                 (change) = "onChangeMethodButton($event)">
             </ng-select>
         </span>
-        <input [(ngModel)]="action.url" type="text" placeholder="Enter request URL" class="ng-untouched ng-pristine ng-valid"> 
+        <cds-textarea id="url"
+            class="text-editable-div"
+            [text]="action.url" 
+            [minRow]="1" [maxRow]="1"
+            popoverVerticalAlign="above"
+            [textLimitBtn]="false"
+            [emoijPikerBtn]="false"
+            [setAttributeBtn]="true"
+            [placeholder]="'Enter request URL'"
+            (changeTextarea)="onChangeTextarea($event, 'url')">
+        </cds-textarea>
+
+        <!-- <input [(ngModel)]="action.url" type="text" placeholder="Enter request URL" class="ng-untouched ng-pristine ng-valid">  -->
     </div>
 
     <div class="cds-web-request-row">
@@ -34,23 +46,26 @@
     </div>
     
     <div class="cds-web-request-row">
+
         <cds-attributes
             *ngIf="methodSelectedHeader"
             class="cds-attributes"
             [method]="typeMethodAttribute.INPUT"
             [attributes]="jsonHeader"
-            (changeAttributes)="onChangeAttributes($event)"
-        ></cds-attributes>
-        <textarea
-            *ngIf="methodSelectedBody"
+            (changeAttributes)="onChangeAttributes($event)">
+        </cds-attributes>
+
+        <cds-textarea *ngIf="methodSelectedBody"
             [ngClass]="{'jsonError': !jsonIsValid}"
             class = "text-editable-div"
-            [(ngModel)]="jsonBody"
-            [maxlength]="limitCharsText"
-            cdkAutosizeMinRows="5"
-            cdkAutosizeMaxRows="10"
-            (ngModelChange)="onChangeTextarea($event)">
-        </textarea>
+            [text]="jsonBody"
+            [textLimitBtn]="false"
+            [emoijPikerBtn]="false"
+            [setAttributeBtn]="true"
+            [minRow]="5" [maxRow]="10"
+            [readonly]="false"
+            (changeTextarea)="onChangeTextarea($event, 'jsonBody')">
+        </cds-textarea>
     </div>
 
     <div *ngIf="methodSelectedBody"
@@ -68,7 +83,16 @@
     <div class="text-editor-wrapper">
         <div class="field-box">
             <label class="title-label">Assign to:</label>
-            <div class="value-wrp">
+
+            <cds-attributes
+                class="cds-attributes"
+                [attributes]="assignments"
+                [method]="typeMethodAttribute.TEXT"
+                [openBlock]="true"
+                (changeAttributes)="onChangeAttributesResponse($event)">
+            </cds-attributes>
+
+            <!-- <div class="value-wrp">
                 <cds-textarea id="assignTo"
                     [ngClass]="{'assigned' : action.assignTo}"
                     [text]="action.assignTo"
@@ -80,16 +104,7 @@
                     (clearSelectedAttribute)="onClearSelectedAttribute()"
                     (selectedAttribute)="onSelectedAttribute($event,1)">
                 </cds-textarea>
-                <!-- <input type="text" [formControlName]="conditionForm.value.operand2.type=='const'? 'value': 'name'" placeholder="Value" name="operand2"/> -->
-                <!-- <div class="flex tag" *ngIf="hasSelectedVariable">
-                    <span class="material-icons close" (click)="onClearInput()">close</span>
-                    {{action.assignTo}}
-                </div> -->
-                <!-- <cds-selected-variable  *ngIf="hasSelectedVariable"
-                    [text]="action.assignTo"
-                    (clearInput)="onClearInput(i)"
-                ></cds-selected-variable> -->
-            </div>
+            </div> -->
         </div>
     </div>
     <!-- <div 

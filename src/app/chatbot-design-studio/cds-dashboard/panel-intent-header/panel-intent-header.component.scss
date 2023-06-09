@@ -9,9 +9,16 @@ $width-title: 80%;
     width: 100%;
     height: $height-header;
     max-height: $height-header;
-    // top: 0;
-    // left: 0;
     margin-top: 10px;
+    .onff-intent-webhook {
+      font-size: 13px;
+      line-height: normal;
+      color: #ffffffb3;
+      font-weight: normal;
+      font-family: 'Poppins','Roboto',Arial,sans-serif;
+    }
+    
+
     .i-priority-color-mark {
         background-color: $color-blue-hex;
         position: absolute;
@@ -26,8 +33,6 @@ $width-title: 80%;
         background-color: #ed2e19;
     }
     .form-group {
-        // position: absolute;
-        // display: block;
         width: 100%;
         margin: 0;
         padding: 0 30px;
@@ -48,7 +53,7 @@ $width-title: 80%;
             font-size: 1.4em;
             line-height: $height-header;
             color: $color-light-gray-hex;
-            z-index: 1;
+            // z-index: 1;
             &.noDisplay {
                 display: none;
             }
@@ -63,7 +68,7 @@ $width-title: 80%;
             padding: 0;
             color: $color-bck-light-gray-hex;
             font-size: 1.4em;
-            z-index: 2;
+            // z-index: 2;
             position: relative;
         }
         .btn-save {
@@ -377,9 +382,23 @@ $circle-size: 40px;
 
 .btns-wpr {
   display: flex;
-  background: #e8eaed;
-  padding-left: 10px;
+  background: rgba(255,255,255,.2392156863);
+  margin-top: 10px;
   margin-right: 12px;
-  border-radius: 4px;
-  gap: 20px;
+  padding: 10px;
+  border-radius: 30px;
+  height: 30px;
+  min-width: 190px;
+  justify-content: center;
+  // display: flex;
+  // background: #ffffff3d;
+  // padding-left: 10px;
+  // margin-right: 12px;
+  // border-radius: 4px;
+  // /* gap: 20px; */
+  // padding: 10px;
+  // border-radius: 30px;
+  // height: 30px;
+  // width: 200px;
+  // text-align: end;
 }

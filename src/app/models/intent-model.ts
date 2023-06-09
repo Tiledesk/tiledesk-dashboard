@@ -1,5 +1,6 @@
 import { TYPE_OPERATOR } from './../chatbot-design-studio/utils';
-import { TYPE_TD_ACTION_ID, TYPE_ACTION, TYPE_ATTACHMENT, TYPE_METHOD_REQUEST, TYPE_MATH_OPERATOR, TYPE_FUNCTION } from '../chatbot-design-studio/utils';
+import { TYPE_ACTION, TYPE_ATTACHMENT, TYPE_METHOD_REQUEST, TYPE_MATH_OPERATOR } from '../chatbot-design-studio/utils';
+import { v4 as uuidv4 } from 'uuid';
 
 export class Intent {
     webhook_enabled?: boolean;
@@ -28,7 +29,7 @@ export class Intent {
 export class Action {
     _tdActionType: string;
     _tdActionTitle: string = '';
-    _tdActionId: string = TYPE_TD_ACTION_ID.UUIDV4;
+    _tdActionId: any = uuidv4();
 }
 
 // export class ActionCondition extends Action {
@@ -61,7 +62,7 @@ export class Operation {
 export class Operand {
     value: string
     isVariable: boolean
-    function?: TYPE_FUNCTION
+    function?: any
 }
 
 export class ActionAssignVariable extends Action {
@@ -81,18 +82,12 @@ export class ActionAssignVariable extends Action {
 }
 
 export class ActionAssignFunction extends Action {
-    destination: string;
-    operation: Operation;
+    functionName: string;
+    assignTo: string;
     constructor() {
         super();
         this._tdActionType = TYPE_ACTION.ASSIGN_FUNCTION;
-        this.operation = {
-            operands: [{
-                value: '',
-                isVariable: false
-            }],
-            operators: []
-        };
+        this.assignTo = '';
     }
 }
 
@@ -175,12 +170,14 @@ export class ActionWebRequest extends Action {
     headersString: any;
     jsonBody: string;
     assignTo: string;
+    assignments: {}
     constructor(){
         super();
         this.url = '';
         this.headersString = {"Content-Type":"application/json", "Cache-Control":"no-cache", "User-Agent":"TiledeskBotRuntime", "Accept":"*/*"};
         this.jsonBody = JSON.stringify({});
         this.assignTo = '';
+        this.assignments = {};
         this.method = TYPE_METHOD_REQUEST.GET;
         this._tdActionType = TYPE_ACTION.WEB_REQUEST;
     }
@@ -288,20 +285,22 @@ export class Message {
     // time?: number;
     attributes?: MessageAttributes;
     metadata?: Metadata;
-    constructor(type: string, text: string) {
+    _tdJSONCondition?: Expression;
+    constructor(type: string, text: string, _tdJSONCondition?: Expression) {
         this.type = type;
         this.text = text;
+        if(_tdJSONCondition)
+            this._tdJSONCondition = _tdJSONCondition
     }
 }
 
 export class MessageWithWait extends Message {
     time?: number = 500;
-    constructor(type: string, text: string, time: number) {
-        super(type,text);
+    constructor(type: string, text: string, time: number, _tdJSONCondition?: Expression) {
+        super(type,text, _tdJSONCondition);
         this.time = time?time:500;
     }
 }
-
 
 
 export class MessageAttributes {
@@ -344,7 +343,7 @@ export class Form {
     id?: number;
     name?: string;
     fields?: Field[];
-
+    description?: string;
     to_JSON() {
         let json = {};
         if (this.cancelCommands) {
@@ -362,9 +361,7 @@ export class Form {
         if (this.fields) {
             json['fields'] = JSON.parse(JSON.stringify(this.fields));
         }
-
         return json;
-
     }
 
 }

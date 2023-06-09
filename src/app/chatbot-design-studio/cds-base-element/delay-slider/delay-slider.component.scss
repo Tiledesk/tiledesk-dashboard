@@ -25,7 +25,8 @@
     }
     .delay-slider{
         display: inline-block;
-        opacity: 0;
+        // opacity: 0;
+        visibility: hidden;
         width: 0;
         transition: opacity .2s;
     }
@@ -42,7 +43,8 @@
         }
         .delay-slider{
             width: 100%;
-            opacity: 1;
+            // opacity: 1;
+            visibility: visible;
         }
     }
 }

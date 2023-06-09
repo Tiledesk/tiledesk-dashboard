@@ -14,6 +14,7 @@
                 cdkAutosizeMaxRows="{{maxRow}}"
                 [(ngModel)]="text"
                 [readonly]="readonly"
+                (click)="onClickTextareaOpenSetAttributePopover();"
                 (ngModelChange)="onChangeTextArea($event)">
             </textarea>
         </mat-form-field>
@@ -47,23 +48,29 @@
     </div>
 </div>
 
-<sat-popover #addVariable id="addVariable"  horizontalAlign="center" verticalAlign="center"  hasBackdrop (backdropClicked)="addVariable.close()" panelClass="texarea-add-filter-panel"  interactiveClose="false">
+<sat-popover #addVariable id="addVariable"  
+    horizontalAlign="center" 
+    verticalAlign="center"  
+    hasBackdrop 
+    (backdropClicked)="addVariable.close()" 
+    panelClass="texarea-add-filter-panel"  
+    interactiveClose="false">
     <variable-list
         (onSelected)="onVariableSelected($event)">
     </variable-list>
 </sat-popover>
 
-<emoji-mart
-*ngIf="isEmojiPickerVisible"
-class="emoji-mart"
-[style.visibility]="isEmojiPickerVisible?'visible':'hidden'"
-[showPreview]="false" 
-[perLine]="emojiPerLine" 
-[include]="emojiiCategories"
-[color]="emojiColor" 
-[darkMode]="false"
-[emojiSize] = "24"
-(emojiSelect)="onAddEmoji($event)">
+<!--  [style.visibility]="isEmojiPickerVisible?'visible':'hidden'" -->
+<emoji-mart *ngIf="isEmojiPickerVisible"
+    class="box-emoji-mart"
+    [class.picker-visible] = "isEmojiPickerVisible"
+    [showPreview]="false" 
+    [perLine]="emojiPerLine" 
+    [include]="emojiiCategories"
+    [color]="emojiColor" 
+    [darkMode]="false"
+    [emojiSize] = "24"
+    (emojiSelect)="onAddEmoji($event)">
 </emoji-mart>
 
 

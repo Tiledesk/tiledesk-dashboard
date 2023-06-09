@@ -28,6 +28,11 @@ export enum TYPE_REGEX {
 export class FormEditAddComponent implements OnInit, OnChanges {
   @Output() closeAddEditForm = new EventEmitter();
   @Output() saveAddEditForm = new EventEmitter();
+  // @Output() editFormFields = new EventEmitter();
+
+  @Output() scrollToBottom = new EventEmitter();
+  @Output() changedFormFields = new EventEmitter();
+  
   @Input() displayAddForm: boolean;
   @Input() displayEditForm: boolean;
   @Input() field: any;
@@ -85,17 +90,14 @@ export class FormEditAddComponent implements OnInit, OnChanges {
     } else if (this.displayEditForm) {
       this.field.type = this.field.type.toUpperCase();
       // if(this.field.regex && this.field.type === TYPE_FIELD.CUSTOM){
-      //   this.customRGEX = this.field.regex;
-      //   // this.showRegexField = true;
+      //   this.fieldRegex = this.field.regex;
       // } 
       this.fieldName = this.field.name;
       if(this.fieldName && this.fieldName !== ''){
         this.hasSelectedVariable = true;
       }
       this.fieldType = this.field.type;
-      // this.logger.log('[FORM-EDIT-ADD] fieldType ', this.fieldType)
-      // this.fieldRegex = this.field.regex;
-      this.fieldRegex = '^.{1,}$'
+      this.fieldRegex = this.field.regex?this.field.regex:TYPE_REGEX.customRGEX;
       this.fieldLabel = this.field.label;
       this.fieldErrorLabel = this.field.errorLabel;
       this.inputTypePlaceholderClass = false;
@@ -109,7 +111,6 @@ export class FormEditAddComponent implements OnInit, OnChanges {
   ngOnChanges() {
     this.fieldType = "TEXT";
     this.fieldRegex = '^.{1,}$'
-    
     // this.logger.log('[FORM-EDIT-ADD] fieldType ', this.fieldType)
   }
 
@@ -134,28 +135,15 @@ export class FormEditAddComponent implements OnInit, OnChanges {
   }
 
   checkFields() {
-    // this.logger.log('checkFields') 
     this.nameResult = true;
     this.typeResult = true;
     this.labelResult = true;
     this.errorLabelResult = true;
     let status = true;
-    
-    // this.field.name = this.fieldName ? this.fieldName : '';
-    // // this.logger.log('[TILEBOT-EDIT-ADD] checkFields field.name ',  this.field.name)
-    // this.field.type = this.fieldType ? this.fieldType.toUpperCase() : null;
-    // // this.logger.log('[TILEBOT-EDIT-ADD] checkFields field.type ',  this.field.type)
-    // this.field.regex = this.fieldRegex ? this.fieldRegex : TYPE_REGEX.customRGEX;
-    // // this.logger.log('[TILEBOT-EDIT-ADD] checkFields field.regex ',  this.field.regex)
-    // this.field.label = this.fieldLabel ? this.fieldLabel.trim() : '';
-    // // this.logger.log('[TILEBOT-EDIT-ADD] checkFields field.label ',  this.field.label)
-    // this.field.errorLabel = this.fieldErrorLabel ? this.fieldErrorLabel.trim() : '';
-    // this.logger.log('[TILEBOT-EDIT-ADD] checkFields field.errorLabel ',  this.field.errorLabel)
     if (this.fieldType == null) {
       this.typeResult = false;
       status = false;
     }
-
     let REGEX = new RegExp(TYPE_REGEX.nameRGEX.replace(/\//gi, ''));
     // this.logger.log('[TILEBOT-EDIT-ADD] checkFields nameRGEX REGEX ', REGEX)
     this.nameResult = REGEX.test(this.fieldName);
@@ -194,7 +182,6 @@ export class FormEditAddComponent implements OnInit, OnChanges {
         break;
       case TYPE_FIELD.PHONE:
         this.field.regex = TYPE_REGEX.phoneRGEX;
-
         break;
       case TYPE_FIELD.CUSTOM:
         this.field.regex = TYPE_REGEX.customRGEX;
@@ -203,30 +190,16 @@ export class FormEditAddComponent implements OnInit, OnChanges {
         this.field.regex = TYPE_REGEX.textRGEX;
     }
     this.fieldRegex = this.field.regex;
+    console.log('setRegex:: ', this.field.type, this.fieldRegex);
   }
 
   // ON EVENT //
   /** */
   onChangeParameterName(parameterName) {
     parameterName.toString();
-    // console.log('onChangeParameterName', parameterName);
+    console.log('onChangeParameterName', parameterName);
     this.fieldName = parameterName.replace(/[^A-Z0-9_]+/ig, "");
   }
-
-  /** */
-  onChangeTypeField(typeFieldValue) {
-    // this.logger.log("onChange:: ", typeFieldValue);
-    if (typeFieldValue === TYPE_FIELD.CUSTOM) {
-      this.field.regex = TYPE_REGEX.customRGEX;
-      // this.showRegexField = true;
-    } else {
-      // this.field.regex = this.customRGEX;
-      // this.showRegexField = false;
-    }
-    this.field.type = typeFieldValue;
-    this.setRegex();
-  }
-
 
   displayPlaceholder(event) {
     if (event === true && this.fieldType) {
@@ -242,15 +215,11 @@ export class FormEditAddComponent implements OnInit, OnChanges {
   save() {
     // this.logger.log('[TILEBOT-EDIT-ADD] save ')
     if (this.checkFields()) {
-      // this.logger.log('[TILEBOT-EDIT-ADD] save checkFields ', this.checkFields())
       this.displayInfoMessage = false;
       this.showForm = false;
       this.field.name = this.fieldName ? this.fieldName : '';
-      // this.logger.log('[TILEBOT-EDIT-ADD] checkFields field.name ',  this.field.name)
       this.field.type = this.fieldType ? this.fieldType.toUpperCase() : null;
-      // this.logger.log('[TILEBOT-EDIT-ADD] checkFields field.type ',  this.field.type)
       this.field.regex = this.fieldRegex ? this.fieldRegex : TYPE_REGEX.customRGEX;
-      // this.logger.log('[TILEBOT-EDIT-ADD] checkFields field.regex ',  this.field.regex)
       if(!this.fieldLabel || this.fieldLabel.trim().length === 0){
         delete this.field.label
       } else {
@@ -261,11 +230,9 @@ export class FormEditAddComponent implements OnInit, OnChanges {
       } else {
         this.field.errorLabel = this.fieldErrorLabel.trim();
       }
-      // this.field.label = this.fieldLabel ? this.fieldLabel.trim() : '';
-      // this.logger.log('[TILEBOT-EDIT-ADD] checkFields field.label ',  this.field.label)
-      // this.field.errorLabel = this.fieldErrorLabel ? this.fieldErrorLabel.trim() : '';
-      this.fieldRegex = this.field.regex.toString();
-      this.logger.log('[TILEBOT-EDIT-ADD] checkFields field.errorLabel ',  this.field.errorLabel)
+      // this.fieldRegex = this.field.regex.toString();
+      this.logger.log('[TILEBOT-EDIT-ADD] checkFields field ',  this.field);
+      console.log("save*********** ", this.field);
       this.saveAddEditForm.emit(this.field);
     }
   }
@@ -278,42 +245,82 @@ export class FormEditAddComponent implements OnInit, OnChanges {
     this.closeAddEditForm.emit();
   }
 
-  /** START ACTIONS CDS-TEXTAREA */
+  onScrollToBottom(){
+    this.scrollToBottom.emit();
+  }
+
+
+
+
+
+
+
+
+
+
+  /** START EVENTS */
   onSelectedAttributeParam(variableSelected: {name: string, value: string}){
     this.hasSelectedVariable = true;
-    this.field.name = variableSelected.value;
     this.fieldName = variableSelected.value;
+    this.field.name = variableSelected.value;
+    if(this.displayAddForm === false){
+      this.changedFormFields.emit(this.field);
+      console.log('onSelectedAttributeParam:: ',  this.field);
+    }
   }
-  clearSelectedAttributeParam() {
+  onClearSelectedAttributeParam() {
     this.hasSelectedVariable = false;
     this.fieldName = '';
     this.field.name = '';
+    if(this.displayAddForm === false){
+      this.changedFormFields.emit(this.field);
+      console.log('clearSelectedAttributeParam:: ',  this.field);
+    }
   }
   onChangeTextAreaLabel(text: string){
     this.field.label = text;
     this.fieldLabel = text;
-    // console.log('onChangeTextAreaLabel:: ',  this.field.label, this.fieldLabel);
+    if(this.displayAddForm === false){
+      this.changedFormFields.emit(this.field);
+      console.log('onChangeTextAreaLabel:: ',  this.field);
+    }
+  }
+  onChangeValidationErrorMessage(errorLabel){
+    this.field.errorLabel = this.fieldErrorLabel.trim();
+    if(this.displayAddForm === false){
+      this.changedFormFields.emit(this.field);
+      console.log('onChangeValidationErrorMessage:: ', errorLabel.data,  this.fieldErrorLabel);
+    }
+  }
+  onChangeValidationRegex(regex){
+    this.field.regex = this.fieldRegex.trim();
+    if(this.displayAddForm === false){
+      this.changedFormFields.emit(this.field);
+      console.log('onChangeValidationRegex:: ', regex.data, this.fieldRegex);
+    }
+  }
+  /** */
+  onChangeValidationType(typeFieldValue) {
+    this.field.type = typeFieldValue;
+    this.setRegex();
+    if(this.displayAddForm === false){
+      this.changedFormFields.emit(this.field);
+    }
   }
   
-  // onSelectedAttributeLabel(variableSelected: {name: string, value: string}){
-  //   this.field.label = variableSelected.value;
-  //   this.fieldLabel = variableSelected.value;
-  // }
-
-  
-  displayMessage(field) {
-    if (this.infoMessages[field]) {
-      this.infoMessage = this.infoMessages[field];
-      this.displayInfoMessage = true;
+  displayMessage(field?) {
+    this.displayInfoMessage = false;
+    if(field){
+      if (this.infoMessages[field]) {
+        this.infoMessage = this.infoMessages[field];
+        this.displayInfoMessage = true;
+      }
+      if (field === 'field_label') {
+        this.infoMessage += " " + this.markbotLabel;
+      }
     }
-    if (field === 'field_label') {
-      this.infoMessage += " " + this.markbotLabel;
-    }
+    this.onScrollToBottom();
   }
   /** END ACTIONS CDS-TEXTAREA */
-
-
-  
-
 
 }

@@ -1,6 +1,6 @@
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Button, MessageAttributes, MessageWithWait } from '../../../../../../../models/intent-model';
+import { Button, Expression, MessageAttributes, MessageWithWait } from '../../../../../../../models/intent-model';
 import { TYPE_ACTION, TEXT_CHARS_LIMIT, calculatingRemainingCharacters } from '../../../../../../utils';
 
 @Component({
@@ -29,8 +29,10 @@ export class ImageResponseComponent implements OnInit {
   buttons: Array<Button>;
   // Delay //
   delayTime: number;
-
-
+  //Filter //
+  canShowFilter: boolean = true;
+  booleanOperators=[ { type: 'AND', operator: 'AND'},{ type: 'OR', operator: 'OR'},]
+  
   constructor() { }
 
   ngOnInit(): void {
@@ -66,13 +68,6 @@ export class ImageResponseComponent implements OnInit {
   /** */
   onMoveDownResponse(){
     this.moveDownResponse.emit(this.index);
-  }
-
-  /** */
-  onChangeDelayTime(value:number){
-    this.delayTime = value;
-    this.response.time = value*1000;
-    this.changeReplyElement.emit();
   }
 
   /** */
@@ -112,6 +107,22 @@ export class ImageResponseComponent implements OnInit {
     this.changeReplyElement.emit()
   }
 
+  onClickDelayTime(opened: boolean){
+    this.canShowFilter = !opened
+  }
+
+  /** */
+  onChangeDelayTime(value:number){
+    this.delayTime = value;
+    this.response.time = value*1000;
+    this.changeReplyElement.emit();
+  }
+
+  onChangeExpression(expression: Expression){
+    this.response._tdJSONCondition = expression;
+    this.changeReplyElement.emit();
+  }
+  
   onOpenButtonPanel(button?){
     // if(!button){
     //   button = this.addNewButton();

@@ -1,5 +1,10 @@
 import { AbstractControl } from "@angular/forms";
 import { ActionAssignVariable, Intent } from "app/models/intent-model";
+import { v4 as uuidv4 } from 'uuid';
+
+export enum EXTERNAL_URL {
+    getchatbotinfo = "https://tiledesk.com/community/getchatbotinfo/chatbotId/"
+}
 
 
 export enum TYPE_MATH_OPERATOR {
@@ -10,7 +15,7 @@ export enum TYPE_MATH_OPERATOR {
     divideAsNumber = "divideAsNumber"
 }
 
-export enum TYPE_FUNCTION {
+export enum TYPE_FUNCTION_VAR {
     upperCaseAsString = "upperCaseAsString",
     lowerCaseAsString = "lowerCaseAsString",
     capitalizeAsString = "capitalizeAsString",
@@ -18,6 +23,11 @@ export enum TYPE_FUNCTION {
     ceilAsNumber = "ceilAsNumber",
     floorAsNumber = "floorAsNumber",
     roundAsNumber = "roundAsNumber"
+}
+
+export enum TYPE_FUNCTION_FUNC {
+    isOpenNowAsStrings = "openNow",
+    availableAgentsAsStrings = "availableAgents"
 }
 
 
@@ -81,9 +91,9 @@ export enum TYPE_ACTION {
     JSON_CONDITION = 'jsoncondition'
 }
 
-export enum TYPE_TD_ACTION_ID {
-    UUIDV4 = 'UUIDV4'
-}
+// export enum TYPE_TD_ACTION_ID {
+//     UUIDV4 = uuidv4()
+// }
 
 export enum TYPE_OPERATOR {
     equalAsNumbers = "equalAsNumbers",
@@ -149,8 +159,32 @@ export function calculatingRemainingCharacters(text: string, limit: number): num
     }
 }
 
+export const ELEMENTS_LIST = [
+    { name: 'Reply', type: TYPE_ACTION.REPLY, src:"assets/cds/images/actions/reply.svg", description: '<b>Pro tip</b>: Turn this block into a programmed proactive message. <a href=https://www.youtube.com/embed/SgDGwvVoqWE target=_blank>Here is how!</a> '},
+    { name: 'Random Reply', type: TYPE_ACTION.RANDOM_REPLY, src:"assets/cds/images/actions/random_reply.svg", description: 'Create some replies that will be randomly selected'},
+    { name: 'Web Request', type: TYPE_ACTION.WEB_REQUEST, src:"assets/cds/images/actions/web_request.svg", description: ''},
+    { name: 'Agent Handoff', type: TYPE_ACTION.AGENT, src:"assets/cds/images/actions/agent_handoff.svg", description: 'This action replaces the current chatbot with an agent.<br>The upcoming agent is assigned to the conversation following the department rules'},
+    { name: 'Close', type: TYPE_ACTION.CLOSE, src:"assets/cds/images/actions/close.svg", description: 'This action instantly closes the current conversation'},
+    { name: 'Send email', type: TYPE_ACTION.EMAIL, src:"assets/cds/images/actions/send_email.svg", description: 'This action send an email to the specified users group or email addresses.<br>You can use a comma sepatated addresses list.<br>i.e. “andrea@tiledesk.com, gab@tiledesk.com"<br>You can use the special tag “@everyone” to send an email to each of the Tiledesk’s project teamates.<br><br>You can also use the name of a single user group using the group name. i.e. “sales”'},
+    { name: 'Wait', type: TYPE_ACTION.WAIT, src:"assets/cds/images/actions/wait.svg", description: 'This action waits the specified amount of milliseconds before moving to the next one along the block actions-pipeline'},
+    { name: 'Connect block', type: TYPE_ACTION.INTENT, src:"assets/cds/images/actions/connect_intent.svg", description: 'This action moves the flow to the specified block.<br> Keep in mind that if there are other actions in the current block actions-pipeline they will be executed too, generating a parallel-execution of all the branches affering to each block triggered through this Connect-block action.'},
+    { name: 'Set attribute', type: TYPE_ACTION.ASSIGN_VARIABLE, src: "assets/cds/images/actions/assign_var.svg"},
+    { name: 'Set function', type: TYPE_ACTION.ASSIGN_FUNCTION, src: "assets/cds/images/actions/assign_var.svg"},
+    { name: 'Delete attribute', type: TYPE_ACTION.DELETE_VARIABLE, src: "assets/cds/images/actions/delete_var.svg"},
+    { name: 'Replace bot', type: TYPE_ACTION.REPLACE_BOT, src: "assets/cds/images/actions/replace_bot.svg", description: "Choose a chatbot to replace the current one in the conversation"},
+    { name: 'Change dept', type: TYPE_ACTION.CHANGE_DEPARTMENT, src: "assets/cds/images/actions/change_department.svg"},
+    { name: 'If Online Agent', type: TYPE_ACTION.ONLINE_AGENTS, src: "assets/cds/images/actions/online_agents.svg", description: 'This action moves the flow to different blocks, based on the agents’ availability.<br>If there are agents available the <b>TRUE block</b> will be triggered.<br>If there are no agents available the <b>FALSE block</b> will be triggered.<br>One of the two options can be unset. The flow will optionally stop only when a block-populated condition is met.<br>To optionally stop the flow set “Stop on met condition”. To always continue unset Stop on met condition.' },
+    { name: 'If Operating Hours', type: TYPE_ACTION.OPEN_HOURS, src: "assets/cds/images/actions/open_hours.svg", description: 'This action moves the flow to different blocks, based on the operating hours status.<br>During working hours the <b>TRUE block</b> will be triggered.<br>During offline hours the <b>FALSE block</b> will be triggered.<br>One of the two options can be unset. The flow will optionally stop only when a block-populated condition is met.<br>To optionally stop the flow set “Stop on met condition”. To always continue unset the same option.'},
+    { name: 'Hidden message', type: TYPE_ACTION.HIDE_MESSSAGE, src: "assets/cds/images/actions/hidden_message.svg"},
+    { name: 'Condition', type: TYPE_ACTION.JSON_CONDITION, src: "assets/cds/images/actions/condition.svg"},
+    { name: 'Form', type: TYPE_INTENT_ELEMENT.FORM, src: "assets/cds/images/form.svg", description: "Add a Form to ask user data"},
+    { name: 'Answer', type: TYPE_INTENT_ELEMENT.ANSWER, src: "assets/cds/images/form.svg", description: "Add an Answer"},
+    { name: 'Question', type: TYPE_INTENT_ELEMENT.QUESTION, src: "assets/cds/images/form.svg", description: "Add a Question"},
+]
+
+
 export const ACTIONS_LIST= {
-    REPLY : { name: 'Reply', type: TYPE_ACTION.REPLY, src:"assets/cds/images/actions/reply.svg", description: ''},
+    REPLY : { name: 'Reply', type: TYPE_ACTION.REPLY, src:"assets/cds/images/actions/reply.svg", description: '<b>Pro tip</b>: Turn this block into a programmed proactive message. <a href=https://www.youtube.com/embed/SgDGwvVoqWE target=_blank>Here is how!</a> '},
     RANDOM_REPLY : { name: 'Random Reply', type: TYPE_ACTION.RANDOM_REPLY, src:"assets/cds/images/actions/random_reply.svg", description: 'Create some replies that will be randomly selected'},
     WEB_REQUEST : { name: 'Web Request', type: TYPE_ACTION.WEB_REQUEST, src:"assets/cds/images/actions/web_request.svg", description: ''},
     AGENT : { name: 'Agent Handoff', type: TYPE_ACTION.AGENT, src:"assets/cds/images/actions/agent_handoff.svg", description: 'This action replaces the current chatbot with an agent.<br>The upcoming agent is assigned to the conversation following the department rules'},
@@ -175,7 +209,7 @@ export const OPERATORS_LIST: { [key: string]: { name: string, type: TYPE_OPERATO
     "equalAsNumbers": { name: "equal As Numbers", type: TYPE_OPERATOR.equalAsNumbers, src: "assets/cds/images/operators/equal.svg" },
     "equalAsStrings": { name: "equal As Text", type: TYPE_OPERATOR.equalAsStrings, src: "assets/cds/images/operators/equal.svg" },
     "notEqualAsNumbers": { name: "not Equal As Numbers", type: TYPE_OPERATOR.notEqualAsNumbers, src: "assets/cds/images/operators/not-equal.svg" },
-    "notEqualAsStrings": { name: "not Equal As Strings", type: TYPE_OPERATOR.notEqualAsStrings, src: "assets/cds/images/operators/not-equal.svg" },
+    "notEqualAsStrings": { name: "not Equal As Text", type: TYPE_OPERATOR.notEqualAsStrings, src: "assets/cds/images/operators/not-equal.svg" },
     "greaterThan": { name: "greater Than", type: TYPE_OPERATOR.greaterThan, src: "assets/cds/images/operators/grather.svg" },
     "greaterThanOrEqual": { name: "greater Than Or Equal", type: TYPE_OPERATOR.greaterThanOrEqual, src: "assets/cds/images/operators/gratherEqual.svg" },
     "lessThan": { name: "less Than", type: TYPE_OPERATOR.lessThan, src: "assets/cds/images/operators/less.svg" },
@@ -197,15 +231,26 @@ export const TYPE_MATH_OPERATOR_LIST: { [key: string]: { name: string, type: TYP
     "divideAsNumbers": { name: "Divide", type: TYPE_MATH_OPERATOR.divideAsNumber, src: "assets/cds/images/operators/divide.svg" },
 }
 
-export const TYPE_FUNCTION_LIST: { [key: string]: { name: string, type: TYPE_FUNCTION, src?: string } } = {
-    "upperCaseAsStrings": { name: "Upper case", type: TYPE_FUNCTION.upperCaseAsString, src: "assets/cds/images/operators/upperCase.svg" },
-    "lowerCaseAsStrings": { name: "Lower case", type: TYPE_FUNCTION.lowerCaseAsString, src: "assets/cds/images/operators/lowerCase.svg" },
-    "capitalizeAsStrings": { name: "Capitalize", type: TYPE_FUNCTION.capitalizeAsString, src: "assets/cds/images/operators/capitalize.svg" },
-    "absAsNumbers": { name: "Absolute value", type: TYPE_FUNCTION.absAsNumber, src: "assets/cds/images/operators/abs.svg" },
-    "roundAsNumbers": { name: "Round", type: TYPE_FUNCTION.roundAsNumber, src: "assets/cds/images/operators/round.svg" },
-    "floorAsNumbers": { name: "Floor", type: TYPE_FUNCTION.floorAsNumber, src: "assets/cds/images/operators/floor.svg" },
-    "ceilAsNumbers": { name: "Ceil", type: TYPE_FUNCTION.ceilAsNumber, src: "assets/cds/images/operators/ceil.svg" },
+export const TYPE_FUNCTION_LIST_FOR_VARIABLES: { [key: string]: { name: string, type: TYPE_FUNCTION_VAR, src?: string } } = {
+    "upperCaseAsStrings": { name: "Upper case", type: TYPE_FUNCTION_VAR.upperCaseAsString, src: "assets/cds/images/operators/upperCase.svg" },
+    "lowerCaseAsStrings": { name: "Lower case", type: TYPE_FUNCTION_VAR.lowerCaseAsString, src: "assets/cds/images/operators/lowerCase.svg" },
+    "capitalizeAsStrings": { name: "Capitalize", type: TYPE_FUNCTION_VAR.capitalizeAsString, src: "assets/cds/images/operators/capitalize.svg" },
+    "absAsNumbers": { name: "Absolute value", type: TYPE_FUNCTION_VAR.absAsNumber, src: "assets/cds/images/operators/abs.svg" },
+    "roundAsNumbers": { name: "Round", type: TYPE_FUNCTION_VAR.roundAsNumber, src: "assets/cds/images/operators/round.svg" },
+    "floorAsNumbers": { name: "Floor", type: TYPE_FUNCTION_VAR.floorAsNumber, src: "assets/cds/images/operators/floor.svg" },
+    "ceilAsNumbers": { name: "Ceil", type: TYPE_FUNCTION_VAR.ceilAsNumber, src: "assets/cds/images/operators/ceil.svg" },
 }
+export const TYPE_FUNCTION_LIST_FOR_FUNCTIONS: { [key: string]: { name: string, type: TYPE_FUNCTION_FUNC, src?: string } } = {
+    "isOpenNowAsStrings": { name: "Is open now", type: TYPE_FUNCTION_FUNC.isOpenNowAsStrings, src: "" },
+    "availableAgentAsStrings": { name: "Available agents?", type: TYPE_FUNCTION_FUNC.availableAgentsAsStrings, src: "" },
+}
+
+export const CERTIFIED_TAGS: Array<{color: string, name: string}> = [
+    { "color": "#a16300", "name": "Lead-Gen" },
+    { "color": "#25833e", "name": "Support" }, 
+    // { "color": "#00699e", "name": "Pre-Sale" }, 
+    // { "color": "#0049bd", "name": "Self-serve" }, 
+]
 
 
 export function OperatorValidator(control: AbstractControl): { [key: string]: boolean } | null {
@@ -227,30 +272,29 @@ export function getEmbedUrl(url: string) {
 export var variableList = {
     userDefined: [],
     systemDefined: [
-        { name: 'Department ID', value: 'department_id', src: '', icon: 'domain' },
-        { name: 'Department name', value: 'department_name', src: '', icon: 'domain' },
-        { name: 'Project ID', value: 'project_id', src: '', icon: 'domain' },
-        { name: 'Last message ID', value: 'last_message_id', src: '', icon: 'textsms' },
-        { name: 'Conversation ID', value: 'conversation_id', src: '', icon: 'textsms' },
-        { name: 'Last user text', value: 'last_user_text', src: '', icon: 'send' },
-        { name: 'Chatbot Name', value: 'chatbot_name', src: '', icon: 'person' },
-        { name: 'User ID', value: 'user_id', src: '', icon: 'person' },
-        { name: 'User agent', value: 'user_agent', src: '', icon: 'person' },
-        { name: 'Source', value: 'user_source_page', src: '', icon: 'language' },
-        { name: 'Language', value: 'user_language', src: '', icon: 'language' },
-        { name: 'URL', value: 'chat_url', src: '', icon: 'laptop' },
-        { name: 'IP', value: 'user_ip_address', src: '', icon: 'laptop' },
-        { name: 'Country', value: 'user_country', src: '', icon: 'language' },
-        { name: 'City', value: 'user_city', src: '', icon: 'language' },
-
+        { name: 'department_id', value: 'department_id', src: '', icon: 'domain' },
+        { name: 'department_name', value: 'department_name', src: '', icon: 'domain' },
+        { name: 'project_id', value: 'project_id', src: '', icon: 'domain' },
+        { name: 'last_message_id', value: 'last_message_id', src: '', icon: 'textsms' },
+        { name: 'conversation_id', value: 'conversation_id', src: '', icon: 'textsms' },
+        { name: 'last_user_text', value: 'last_user_text', src: '', icon: 'send' },
+        { name: 'chatbot_name', value: 'chatbot_name', src: '', icon: 'person' },
+        { name: 'user_id', value: 'user_id', src: '', icon: 'person' },
+        { name: 'user_agent', value: 'user_agent', src: '', icon: 'person' },
+        { name: 'user_source_page', value: 'user_source_page', src: '', icon: 'language' },
+        { name: 'user_language', value: 'user_language', src: '', icon: 'language' },
+        { name: 'chat_url', value: 'chat_url', src: '', icon: 'laptop' },
+        { name: 'user_ip_address', value: 'user_ip_address', src: '', icon: 'laptop' },
+        { name: 'user_country', value: 'user_country', src: '', icon: 'language' },
+        { name: 'user_city', value: 'user_city', src: '', icon: 'language' }
     ]
 }
 
 
 export function patchActionId(action) {
     try {
-        if(!action._tdActionId){
-            action._tdActionId = TYPE_TD_ACTION_ID.UUIDV4;
+        if(!action._tdActionId || action._tdActionId == "UUIDV4"){
+            action._tdActionId = uuidv4();
         }
     } catch (error) {
        // error 

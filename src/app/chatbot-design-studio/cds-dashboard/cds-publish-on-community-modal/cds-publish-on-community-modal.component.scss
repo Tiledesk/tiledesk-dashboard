@@ -208,10 +208,28 @@ input[type="file"] {
     background: rgba(138, 180, 248, 0.8) !important;
 }
 
+
+
+
 .cds-publish-on-community-modal-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    h1 {
+        margin:0px;
+    }
+    mat-dialog-actions{
+        text-align: right;
+        padding: 0;
+        min-height: auto;
+        margin: 0;
+    }
+    button {
+        background: transparent;
+        border: unset;
+        position: relative;
+        padding: 0px;
+    }
 }
 
 .bot-description-note {
