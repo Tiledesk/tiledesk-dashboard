@@ -285,6 +285,23 @@
 
     .sm\:text-8xl {
         font-size: 64px !important;
-        color: #303f9f;
+        // color: #303f9f;
+        color: #1e293b;
     }
+}
+
+
+.text-lg {
+ font-size: 16px;
+}
+.analytics-indicator-badge {
+    background-color: rgba(148, 163, 184, 0.12);
+    border-radius: 9999px !important;
+    color: rgb(100, 116, 139);
+    padding-left: 9px;
+    padding-right: 9px;
+    font-weight: 400;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    font-size: 12px;
 }

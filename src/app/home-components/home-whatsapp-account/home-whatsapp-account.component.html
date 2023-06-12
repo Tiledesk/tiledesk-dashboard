@@ -61,15 +61,26 @@
     <div class="home-block-description-and-connect-btn-wpr">
 
         <div class="home-block-description">
-
             Connect your WhatsApp Business to easily receive and reply to WhatsApp messages from the Tiledesk chat
-             
         </div>
 
-        <button mat-mini-fab aria-label="more_horiz icon"
-                style="box-shadow: unset;margin-right: 16px;    position: relative; top: -2px;background-color: #2196f3">
-                <mat-icon style="color: #fff;">power</mat-icon>
+        <div class="actions-btn-wpr">
+            <button mat-mini-fab aria-label="more_horiz icon" (click)="unistallApp()" [disabled]="!whatsAppIsInstalled"
+                style="box-shadow: unset;margin-right: 16px; background-color:#f44336; position: relative; top: -2px;"
+                [ngClass]="{'unistall-app-btn-disabled': !whatsAppIsInstalled}">
+                <mat-icon style="color: #fff;">power_off</mat-icon>
             </button>
+         
+            <button mat-mini-fab aria-label="more_horiz icon" (click)="installOrOpenApp()"
+                [ngStyle]="{'background-color':whatsAppIsInstalled === true ? '#0d9488' : '#2196f3' }"
+                style="box-shadow: unset;margin-right: 16px; position: relative; top: -2px;">
+                <mat-icon *ngIf="!whatsAppIsInstalled" style="color: #fff;">power</mat-icon>
+                <mat-icon *ngIf="whatsAppIsInstalled" style="color: #fff;">input</mat-icon>
+            </button>
+
+        </div>
+
+
 
     </div>
 

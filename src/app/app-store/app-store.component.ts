@@ -376,9 +376,7 @@ export class AppStoreComponent implements OnInit {
     } else if (app && app.version === 'v2') {
       this.installV2App(this.projectId, appId)
     }
-
   }
-  
   
 
   presentModalFeautureAvailableFromBPlan() {
