@@ -196,20 +196,22 @@
     color: #fff;
 }
 .text-accent-link-on-black:hover .m-i-arrow-on-black {
-    transform: translateX(10%);
+    // transform: translateX(10%);
     color: #fff;
 }
 
 // ---
 .text-accent-link-on-white {
-    color: #673ab7;
+    // color: #673ab7;
+    color: #2196f3;
     font-weight: 400;
     cursor: pointer;
 }
 
 .text-accent-link-on-white .m-i-arrow-on-white {
     vertical-align: middle;
-    color: #673ab7;
+    // color: #673ab7;
+    color: #2196f3;
     margin-left: -4px;
     transition: 0.1s ease-in;
 }
@@ -217,7 +219,7 @@
     color: #0a2540;
 }
 .text-accent-link-on-white:hover .m-i-arrow-on-white {
-    transform: translateX(10%);
+    // transform: translateX(10%);
     color: #0a2540;
 }
 
@@ -300,8 +302,102 @@
     color: rgb(100, 116, 139);
     padding-left: 9px;
     padding-right: 9px;
-    font-weight: 400;
+    font-weight: 500;
     padding-top: 2px;
     padding-bottom: 2px;
     font-size: 12px;
 }
+
+
+// --------------------------------------------------
+// ANIMATED ARROW https://codepen.io/cbrst/pen/ebxwLJ
+// --------------------------------------------------
+.arrow-wrapper {
+    display: flex;
+    align-items: center;
+  }
+  
+  // https://stackoverflow.com/questions/4502633/how-to-affect-other-elements-when-one-element-is-hovered
+  .arrow-container:hover .arrow-wrapper .arrow span {
+    $size: 9px;
+    width: $size * 1.414 !important;
+    right: calc($size / 1.414) * -1;
+  }
+  
+  // .arrow-container:hover .arrow-wrapper .arrow span:before {
+  //   $size: 9px;
+  //   // width: $size * 1.414 !important;
+  //   right: $size / 1.414 * -1;
+  // }
+  
+  // .arrow-container:hover .arrow-wrapper .arrow span:after {
+  //   $size: 9px;
+  //   // width: $size * 1.414 !important;
+  //   right: $size / 1.414 * -1;
+  // }
+  
+  #arrow_1 .arrow {
+    $size: 9px;
+    $width: 2px;
+  
+    cursor: pointer;
+    display: block;
+    width: calc($size / 1.414);
+    height: calc($size / 1.414) * 2;
+    position: relative;
+  
+    & span,
+    &:before,
+    &:after {
+      // background: #fff;
+      background: #0f62ff;
+      content: "";
+      display: block;
+      width: $size;
+      height: $width;
+      position: absolute;
+      top: calc(50% - (#{$width} / 2));
+    }
+  
+    &:before {
+      transform: rotate(-45deg);
+    }
+    &:after {
+      transform: rotate(45deg);
+    }
+  
+    & span {
+      width: 0;
+    }
+    &:hover span {
+      width: $size * 1.414;
+    }
+  
+    @each $direction in "left" "right" {
+      &.arrow--#{$direction} {
+        & span,
+        &:before,
+        &:after {
+          #{$direction}: 0;
+          transform-origin: #{$direction} 50%;
+        }
+  
+        &:before,
+        &:after {
+          transition: #{$direction} 0.3s 0.05s;
+        }
+  
+        & span {
+          transition: width 0.3s, #{$direction} 0.3s 0.05s;
+        }
+  
+        &:hover {
+          & span,
+          &:before,
+          &:after {
+            #{$direction}: calc($size / 1.414) * -1;
+          }
+        }
+      }
+    }
+  }
