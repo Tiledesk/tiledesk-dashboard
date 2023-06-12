@@ -1801,6 +1801,8 @@
     "Last30DaysConversations": "Последњих 30 дана разговора",
     "Last7DaysConversations": "Последњих 7 дана разговора",
     "Last30DaysVisitors": "Јединствени посетиоци у последњих 30 дана",
+    "UniqueVisitors": "Јединствени посетиоци",
+    "30days":"30 дана",
     "Last30DaysEvents": "Догађаји у последњих 30 дана",
     "Last30DaysConversationsHandledByBots": "Конверзације у последњих 30 дана руковали су ботови",
     "Last30DaysConversationsHandledByBotsPercentage": "Проценат разговора у последњих 30 дана којима су управљали ботови",

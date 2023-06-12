@@ -1801,6 +1801,8 @@
     "Last30DaysConversations": "Senaste 30 dagarnas samtal",
     "Last7DaysConversations": "Senaste 7 dagarnas samtal",
     "Last30DaysVisitors": "Unika besökare under de senaste 30 dagarna",
+    "UniqueVisitors": "Unika besökare",
+    "30days":"30 dagar",
     "Last30DaysEvents": "Senaste 30 dagars händelser",
     "Last30DaysConversationsHandledByBots": "De senaste 30 dagarnas konversationer hanteras av bots",
     "Last30DaysConversationsHandledByBotsPercentage": "Procentandel senaste 30 dagarnas konversationer som hanterats av botar",

@@ -1801,6 +1801,8 @@
     "Last30DaysConversations": "محادثات الثلاثين يوما الماضية",
     "Last7DaysConversations": "محادثات الأيام السبعة الماضية",
     "Last30DaysVisitors": "الزوار الفريدون في آخر 30 يومًا",
+    "UniqueVisitors": "زائرين فريدين من نوعهم",
+    "30days":"30 يوما",
     "Last30DaysEvents": "أحداث آخر 30 يومًا",
     "Last30DaysConversationsHandledByBots": "آخر 30 يومًا من المحادثات التي تم التعامل معها بواسطة برامج الروبوت",
     "Last30DaysConversationsHandledByBotsPercentage": "النسبة المئوية للمحادثات التي تم إجراؤها في آخر 30 يومًا بواسطة برامج الروبوت",

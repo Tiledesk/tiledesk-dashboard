@@ -1801,6 +1801,8 @@
     "Last30DaysConversations": "Son 30 günlük danışıqlar",
     "Last7DaysConversations": "Son 7 günlük danışıqlar",
     "Last30DaysVisitors": "Son 30 gündə unikal ziyarətçilər",
+    "UniqueVisitors": "Unikal ziyarətçilər",
+    "30days":"30 gün",
     "Last30DaysEvents": "Son 30 gündə hadisələr",
     "Last30DaysConversationsHandledByBots": "Son 30 günlük söhbətlər botlar tərəfindən idarə olunur",
     "Last30DaysConversationsHandledByBotsPercentage": "Botlar tərəfindən idarə olunan son 30 günlük söhbətlərin faizi",

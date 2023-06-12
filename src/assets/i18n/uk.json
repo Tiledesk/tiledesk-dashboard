@@ -1801,6 +1801,8 @@
     "Last30DaysConversations": "Розмови за останні 30 днів",
     "Last7DaysConversations": "Розмови за останні 7 днів",
     "Last30DaysVisitors": "Унікальні відвідувачі за останні 30 днів",
+    "UniqueVisitors": "Унікальні відвідувачі",
+    "30days":"30 днів",
     "Last30DaysEvents": "Події за останні 30 днів",
     "Last30DaysConversationsHandledByBots": "Розмови за останні 30 днів обробляються ботами",
     "Last30DaysConversationsHandledByBotsPercentage": "Відсоток розмов за останні 30 днів, оброблених ботами",

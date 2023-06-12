@@ -1801,6 +1801,8 @@
     "Last30DaysConversations": "Conversaciones de los últimos 30 días",
     "Last7DaysConversations": "Conversaciones de los últimos 7 días",
     "Last30DaysVisitors": "Visitantes únicos en los últimos 30 días",
+    "UniqueVisitors": "Visitantes únicos",
+    "30days":"30 dias",
     "Last30DaysEvents": "Eventos de los últimos 30 días",
     "Last30DaysConversationsHandledByBots": "Conversaciones de los últimos 30 días gestionadas por bots",
     "Last30DaysConversationsHandledByBotsPercentage": "Porcentaje de conversaciones de los últimos 30 días manejadas por bots",
