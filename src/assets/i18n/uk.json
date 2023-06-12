@@ -1795,6 +1795,7 @@
     "OperatingHoursEnabled": "Робочі години ввімкнено",
     "AdjustOperatingHours": "Відрегулюйте години роботи",
     "TotalLeadsAcquired": "Загальна кількість залучених потенційних клієнтів",
+    "LeadsAcquired":"Придбані потенційні клієнти",
     "GoToContactList": "Перейти до списку контактів",
     "Last30DaysMessages": "Повідомлення за останні 30 днів",
     "Last30DaysConversations": "Розмови за останні 30 днів",

@@ -1795,6 +1795,7 @@
     "OperatingHoursEnabled": "Çalışma saatleri etkinleştirildi",
     "AdjustOperatingHours": "Çalışma saatlerini ayarlayın",
     "TotalLeadsAcquired": "Edinilen toplam potansiyel müşteri",
+    "LeadsAcquired":"Edinilen olası satışlar",
     "GoToContactList": "Kişi listesine git",
     "Last30DaysMessages": "Son 30 gün mesajları",
     "Last30DaysConversations": "Son 30 gün görüşmeleri",
