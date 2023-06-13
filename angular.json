@@ -73,8 +73,7 @@
               "node_modules/bootstrap-notify/bootstrap-notify.js",
               "node_modules/chartist/dist/chartist.js",
               "node_modules/apexcharts/dist/apexcharts.min.js",
-              "src/assets/cds/js/drag.js",
-              "src/assets/cds/js/tiledesk-draft.js"
+              "src/assets/cds/js/drag.js"
             ]
           },
           "configurations": {

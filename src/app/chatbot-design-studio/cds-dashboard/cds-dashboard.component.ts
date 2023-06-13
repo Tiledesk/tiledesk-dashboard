@@ -30,15 +30,15 @@ import { DragDropService } from 'app/chatbot-design-studio/cds-services/drag-dro
 import { IntentService } from 'app/chatbot-design-studio/cds-services/intent.service';
 
 // import { Subscription } from 'rxjs';
-// import { TiledeskDraft } from 'app/../assets/cds/js/tiledesk-draft.js';
+import { TiledeskDraft } from 'app/../assets/cds/js/tiledesk-draft.js';
 import { TiledeskConnectors } from 'app/../assets/cds/js/tiledesk-connectors.js';
 
 
 const swal = require('sweetalert');
 
 
-declare function setDrawer(el, drawer);
-declare function setDragElement(el);
+// declare function setDrawer(el, drawer);
+// declare function setDragElement(el);
 
 @Component({
   selector: 'appdashboard-cds-dashboard',
@@ -161,7 +161,7 @@ export class CdsDashboardComponent implements OnInit {
     });
 
 
-    // this.tiledeskDraft = new TiledeskDraft('ds_container', 'ds_drawer', 'classDraggable');
+    
     
   } 
 
@@ -177,11 +177,10 @@ export class CdsDashboardComponent implements OnInit {
 
   ngAfterViewInit(){
     console.log('ngAfterViewInit -------------> ');
+    this.tiledeskDraft = new TiledeskDraft('tds_container', 'tds_drawer', 'tds_draggable');
     this.setDragConfig();
-    // this.tiledeskDraft.setDrawer();
     this.hideShowWidget('show');
 
-    
     this.tiledeskConnectors = new TiledeskConnectors("tds_drawer", {"input_block": "tds_input_block"});
     this.tiledeskConnectors.mousedown(document);
 
@@ -437,10 +436,11 @@ export class CdsDashboardComponent implements OnInit {
 
   /**  setDragConfig */
   private setDragConfig(){
-    const container = document.querySelector('#tds_container');
-    const drawer = document.querySelector('#tds_drawer');
-    console.log('getElementById:: drawer',container,  drawer);
-    setDrawer(container, drawer);
+    this.tiledeskDraft.setDrawer();
+    // const container = document.querySelector('#tds_container');
+    // const drawer = document.querySelector('#tds_drawer');
+    // console.log('getElementById:: drawer',container,  drawer);
+    // setDrawer(container, drawer);
   }
 
   /** setDragAndListnerEventToElements */
@@ -461,7 +461,8 @@ export class CdsDashboardComponent implements OnInit {
           setTimeout(() => {
             // this.tiledeskDraft.setDragElement(intent.id);
             let elem = document.getElementById(intent.id);
-            setDragElement(elem);
+            // setDragElement(elem);
+            this.tiledeskDraft.setDragElement(intent.id);
             // **************** !!!!!!!! aggiungo listner !!!!!!! *******************//
 
             elem.removeEventListener('mouseup', function() {

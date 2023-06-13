@@ -4,12 +4,12 @@ var ty = 0;
 let scale = 1;
 let container;
 let drawer;
-let classDraggable = "tds-draggable";
+let classDraggable = "tds_draggable";
 // let element;
 
 
 function setDrawer(el,drawer) {
-  // console.log("setDrawer:", el, drawer);
+  console.log("setDrawer:", el, drawer);
   this.drawer = drawer;
   this.container = el;
   this.container.onwheel = zoom;

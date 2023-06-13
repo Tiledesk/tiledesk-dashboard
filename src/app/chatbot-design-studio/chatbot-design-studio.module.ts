@@ -119,6 +119,7 @@ import { CdsPanelElementsComponent } from './cds-dashboard/cds-panel-elements/cd
 import { CdsPanelDetailComponent } from './cds-dashboard/cds-panel-detail/cds-panel-detail.component';
 import { CdsPanelActionsComponent } from './cds-dashboard/cds-panel-actions/cds-panel-actions.component';
 import { CdsPanelIntentListComponent } from './cds-dashboard/cds-panel-intent-list/cds-panel-intent-list.component';
+import { CdsActionIntentComponent } from './cds-dashboard/actions/cds-action-intent/cds-action-intent.component';
 
 @NgModule({
   declarations: [
@@ -193,7 +194,8 @@ import { CdsPanelIntentListComponent } from './cds-dashboard/cds-panel-intent-li
     CdsPanelElementsComponent,
     CdsPanelDetailComponent,
     CdsPanelActionsComponent,
-    CdsPanelIntentListComponent
+    CdsPanelIntentListComponent,
+    CdsActionIntentComponent
   ],
   imports: [
     A11yModule,

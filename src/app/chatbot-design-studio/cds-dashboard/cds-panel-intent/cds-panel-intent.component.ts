@@ -7,8 +7,10 @@ import { LoggerService } from 'app/services/logger/logger.service';
 import { IntentService } from 'app/chatbot-design-studio/cds-services/intent.service'; 
 
 const swal = require('sweetalert');
+
 import {
   CdkDragDrop,
+  CdkDragHandle,
   CdkDrag,
   CdkDropList,
   CdkDropListGroup,
@@ -35,13 +37,15 @@ export class CdsPanelIntentComponent implements OnInit, OnChanges {
 
   arrayActionsForDrop = [];
   
-  @Input() listOfActions:  Array<{ name: string, value: string, icon?: string }>;
+  // @Input() listOfActions:  Array<{ name: string, value: string, icon?: string }>;
+  // id intent selezionato
+  // intent selezionato
+
   @Input() idSelected: string;
   @Input() intentSelected: Intent;
   @Input() isIntentElementSelected: boolean = false;
   @Input() isOpenActionDrawer: boolean = false;
 
-  
   @Output() openActionDrawer = new EventEmitter();
   @Output() questionSelected = new EventEmitter();
   @Output() answerSelected = new EventEmitter();
@@ -51,12 +55,14 @@ export class CdsPanelIntentComponent implements OnInit, OnChanges {
   @Output() dropAction = new EventEmitter();
 
 
+  intentActionList: Array<any>;
+
   HAS_SELECTED_TYPE = HAS_SELECTED_TYPE;
   TYPE_ACTION = TYPE_ACTION;
   ACTIONS_LIST = ACTIONS_LIST;
   form: Form;
   formSize: number;
-  actions: Array<any>;
+  
   question: any;
   answer: string;
   questionCount: number;
@@ -92,8 +98,8 @@ export class CdsPanelIntentComponent implements OnInit, OnChanges {
   }
   
   private patchAllActionsId(){
-    if(this.actions && this.actions.length>0){
-      this.actions.forEach(function(action, index, object) {
+    if(this.intentActionList && this.intentActionList.length>0){
+      this.intentActionList.forEach(function(action, index, object) {
         if(!action._tdActionId){
           object[index] = patchActionId(action);
         }
@@ -125,30 +131,23 @@ export class CdsPanelIntentComponent implements OnInit, OnChanges {
   
 
   private setIntentSelected(){
-    this.form = null;
-    this.formSize = 0;
-    this.actions = null;
-    this.answer = null;
-    this.question = null;
-    this.questionCount = 0;
-    // console.log('CdsPanelIntentComponent setIntentSelected-->', this.idSelected);
+    this.intentActionList = null;
+    // this.answer = null;
+    // this.question = null;
+    // this.questionCount = 0;
+    console.log('CdsPanelIntentComponent setIntentSelected-->', this.intentSelected);
     try {
       if (this.intentSelected) {
         this.patchAllActionsId();
-        this.form = this.intentSelected.form;
-        this.actions = this.intentSelected.actions;
-        this.answer = this.intentSelected.answer;
-        if (this.intentSelected.question) {
-          const question_segment = this.intentSelected.question.split(/\r?\n/).filter(element => element);
-          this.questionCount = question_segment.length;
-          this.question = this.intentSelected.question;
-        } 
+        this.intentActionList = this.intentSelected.actions;
+        // this.form = this.intentSelected.form;
+        // this.answer = this.intentSelected.answer;
+        // if (this.intentSelected.question) {
+        //   const question_segment = this.intentSelected.question.split(/\r?\n/).filter(element => element);
+        //   this.questionCount = question_segment.length;
+        //   this.question = this.intentSelected.question;
+        // } 
         // this.webhook_enabled = this.intentSelected.webhook_enabled;
-      }
-      if (this.form && this.form !== undefined) {
-        this.formSize = Object.keys(this.form).length;
-      } else {
-        this.formSize = 0;
       }
     } catch (error) {
       this.logger.error("error: ", error);
@@ -157,8 +156,8 @@ export class CdsPanelIntentComponent implements OnInit, OnChanges {
   }
 
   onDropAction(event: CdkDragDrop<string[]>) {
-    moveItemInArray(this.actions, event.previousIndex, event.currentIndex);
-    this.dropAction.emit(this.actions);
+    moveItemInArray(this.intentActionList, event.previousIndex, event.currentIndex);
+    this.dropAction.emit(this.intentActionList);
   }
 
   toggleActions(_displayActions: boolean) {
@@ -233,7 +232,7 @@ export class CdsPanelIntentComponent implements OnInit, OnChanges {
     // console.log('NN CAPISCO PERCHè 2 emit verifica !!! action: ', action);
     // this.actionSelected.emit(action);
     // this.logger.log('[PANEL INTENT] onActionSelected ', action)
-    this.actionSelected.emit({ action: action, index: index, maxLength: this.actions.length });
+    this.actionSelected.emit({ action: action, index: index, maxLength: this.intentActionList.length });
   }
 
 
@@ -279,20 +278,12 @@ export class CdsPanelIntentComponent implements OnInit, OnChanges {
     } else {
       try {
         let actionType: any = event.previousContainer.data[event.previousIndex];
-        // transferArrayItem(
-        //   event.previousContainer.data,
-        //   event.container.data,
-        //   event.previousIndex,
-        //   event.currentIndex
-        // );
-
-        let newAction = this.intentService.createAction(actionType.value.type)
-        // let newAction = CreateNewAction(actionType.value.type);
-        this.actions.splice(event.currentIndex, 0, newAction);
+        let newAction = this.intentService.createAction(actionType.value.type);
+        this.intentActionList.splice(event.currentIndex, 0, newAction);
+        console.log('intentActionList:', this.intentActionList);
       } catch (error) {
         console.error(error);
       }
-      
     }
   }
 

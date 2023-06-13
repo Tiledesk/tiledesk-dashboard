@@ -1,10 +1,10 @@
-<div class="panel-intent-content tds-draggable">
+<div class="panel-intent-content tds_draggable">
     
-    <div class="pic-header tds-draggable">
+    <div class="pic-header tds_draggable">
         
-        <div class="pic-header-title tds-draggable">
-            <div class="pic-header-title-input tds-draggable">
-                <div class="pic-title-text tds-draggable">
+        <div class="pic-header-title tds_draggable">
+            <div class="pic-header-title-input tds_draggable">
+                <div class="pic-title-text tds_draggable">
                     {{ intentSelected.intent_display_name }}
                 </div>
 
@@ -19,74 +19,59 @@
 
     </div>
 
-    <div class="button-intent button-intent-questions tds-draggable"
+    <div class="button-intent button-intent-questions tds_draggable"
         (click)="onSelectQuestion(HAS_SELECTED_TYPE.QUESTION)"
         [ngClass]="{
         'button-intent-active': idSelected === HAS_SELECTED_TYPE.QUESTION,
         'no-question': questionCount === 0 || !question
         }">
-        <img class="tds-draggable" src="assets/cds/images/brain.svg" [title]="ACTIONS_LIST['REPLACE_BOT'].name"/>
-        <span class="tds-draggable"> Train this block </span>
+        <img class="tds_draggable" src="assets/cds/images/brain.svg" [title]="ACTIONS_LIST['REPLACE_BOT'].name"/>
+        <span class="tds_draggable"> Train this block </span>
     </div>
+
+
 
     <div id="drop-actions"
         class="drag-actions target-container"
-        [cdkDropListData]="actions"
+        [cdkDropListData]="intentActionList"
         cdkDropList
         (cdkDropListDropped)="drop($event)">
-        <div *ngFor="let action of actions"
+        <div *ngFor="let action of intentActionList;let i = index"
             cdkDrag
             id="action_{{ i }}"
-            class="action--box2"
-            [ngSwitch]="action._tdActionType"
+            class="box-action"
             [ngClass]="{'cds-action-active': idSelected === 'action_' + i}"
             (click)="onActionSelected(action, i, 'action_' + i)">
-            <!-- 'action--box-first-no-title': !action._tdActionTitle && firstItem,
-                'action--box-first-with-title': action._tdActionTitle && firstItem,
-                'action--box-no-title': !action._tdActionTitle && !firstItem,
-                'action--box-with-title': action._tdActionTitle && !firstItem,
-                cdkDragLockAxis="y" -->
-            <div cdkDragHandle draggable="true" class="sc-ispOId sc-kcuKUB sc-kBOlNM gvYlug tfpks vf-canvas__step-item hLzrwM">
-                <div class="Lmxui">
-                    <div color="#718497" class="sc-ewnqHT sc-bYKpqt knWnJm cbNhVH">
-                        <span class="sc-ejWHKt dRtfnM vf-svg-icon vf-svg-icon--radar" size="18" color="currentColor">
-                            <img [src]="getActionParams(action).src" [title]="getActionParams(action).name" />
-                        </span>
-                    </div>
-                    <span class="sc-eywOmQ sc-dPwPAC sc-fFkRSK dkfzdg ezyJGE blRtEf">
-                        <div class="sc-irCEUn gzQaYi vf-canvas__step-item-label">
-                            {{ getActionParams(action).name }}
-                        </div>
-                    </span>
 
-                    
-
+            <div cdkDragHandle class="header-action">
+                <div class="icon-action">
+                    <img [src]="getActionParams(action).src" [title]="getActionParams(action).name" />
                 </div>
-                
-
-                <cds-action-intent 
-                    class="panel-response"
-                    [action]="action"
-                    [intents]="listOfActions"
-                ></cds-action-intent>
-                
-
+                <span class="label-action">
+                    <div class="sc-irCEUn gzQaYi vf-canvas__step-item-label">
+                        {{ getActionParams(action).name }}
+                    </div>
+                </span>
             </div>
 
-
             
-
-            
+            <div cdkDragDisabled class="body-action">
+                <cds-action-intent  *ngIf="action._tdActionType == 'intent'"
+                    class="panel-response"
+                    [IDintentSelected]="intentSelected.id"
+                    [action]="action"
+                ></cds-action-intent>
+            </div>
 
         </div>
     </div>
 
-    <div [id]="intentSelected.id+'/action2/out1'" class="fbZvAl2 tds_connectable">
+    <!-- <div [id]="intentSelected.id+'/action2/out1'" class="fbZvAl2 tds_connectable">
         <div class="sc-kUYxwz2 alspn2 vf-canvas__port2 ">
-            <div class="sc-guKdVK2 sc-jjRfBx2 bHrIYh2 biGEuu2 "></div>
-            <!-- <div class="sc-guKdVK sc-jjRfBx fQxrue fmbOyt"></div> -->
+            <div class="sc-guKdVK2 sc-jjRfBx2 bHrIYh2 biGEuu2"></div>
+            <! <div class="sc-guKdVK sc-jjRfBx fQxrue fmbOyt"></div> ->
         </div>
-    </div>
+    </div> -->
     
 
 </div>

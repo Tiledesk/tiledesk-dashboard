@@ -1,38 +1,39 @@
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { ActionIntentConnected } from 'app/models/intent-model';
+import { Action, ActionIntentConnected } from 'app/models/intent-model';
 import { Component, OnInit, Input } from '@angular/core';
-import { TEXT_CHARS_LIMIT } from './../../../../utils';
+import { TEXT_CHARS_LIMIT } from 'app/chatbot-design-studio/utils';
 import { LoggerService } from 'app/services/logger/logger.service';
+import {
+  CdkDragHandle,
+  CdkDragDrop,
+  CdkDrag,
+  CdkDropList,
+  CdkDropListGroup,
+  moveItemInArray,
+  transferArrayItem
+} from '@angular/cdk/drag-drop';
 
 @Component({
-  selector: 'cds-action-intent-2',
-  templateUrl: './action-intent.component.html',
-  styleUrls: ['./action-intent.component.scss']
+  selector: 'cds-action-intent',
+  templateUrl: './cds-action-intent.component.html',
+  styleUrls: ['./cds-action-intent.component.scss']
 })
-export class ActionIntentComponent implements OnInit {
+export class CdsActionIntentComponent implements OnInit {
 
-  //@Input() intents: Array<any>;
-  @Input() intents: Array<{name: string, value: string}>;
+  @Input() IDintentSelected: string;
   @Input() action: ActionIntentConnected;
 
+  // @Input() intents: Array<{name: string, value: string}>;
   actionIntentFormGroup: FormGroup;
-
-  //filtered_intents = []; 
-  //limitCharsText = TEXT_CHARS_LIMIT;
-
-  // to delete
-  //buttonAction: any;
+  idAction: string;
 
   constructor(
     private formBuilder: FormBuilder,
     private logger: LoggerService,
-    
     ) { }
 
   ngOnInit(): void {
-    //this.logger.log("[ACTION-INTENT] intents: ", this.intents)
-    //this.filtered_intents = this.intents;
-    this.logger.log("[ACTION-INTENT] elementSelected: ", this.action)
+    console.log("[ACTION-INTENT] elementSelected: ", this.action)
   }
 
   ngOnChanges() {
@@ -43,6 +44,8 @@ export class ActionIntentComponent implements OnInit {
   }
 
   private initialize() {
+    this.idAction = this.IDintentSelected+'/'+this.action._tdActionId;
+
     this.actionIntentFormGroup = this.buildForm();
     this.actionIntentFormGroup.valueChanges.subscribe(form => {
       this.logger.log('[ACTION-INTENT] form valueChanges-->', form)
@@ -75,7 +78,7 @@ export class ActionIntentComponent implements OnInit {
   onChangeSelect(event: {name: string, value: string}){
     this.action.intentName = event.value
     if(!this.action._tdActionTitle){
-      this.action._tdActionTitle = this.intents.find(intent => intent.value === event.value).name
+      // this.action._tdActionTitle = this.intents.find(intent => intent.value === event.value).name
     }
   }
 

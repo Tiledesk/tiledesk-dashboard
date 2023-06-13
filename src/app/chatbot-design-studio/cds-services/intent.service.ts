@@ -12,6 +12,7 @@ import {
   ActionDeleteVariable,
   ActionEmail, 
   ActionHideMessage, 
+  ActionIntentConnected,
   ActionJsonCondition,
   ActionOnlineAgent,
   ActionOpenHours,
@@ -23,6 +24,7 @@ import {
 
 import { FaqService } from 'app/services/faq.service';
 import { TYPE_ACTION, TYPE_COMMAND } from 'app/chatbot-design-studio/utils';
+import { ActionIntentComponent } from '../cds-dashboard/panel-intent-detail/actions/action-intent/action-intent.component';
 
 
 @Injectable({
@@ -253,6 +255,7 @@ export class IntentService {
       action = new ActionWait();
     }
     if(typeAction === TYPE_ACTION.INTENT) {
+      action = new ActionIntentConnected();
     }
     if(typeAction === TYPE_ACTION.EMAIL) {
       action = new ActionEmail();

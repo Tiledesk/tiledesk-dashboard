@@ -43,6 +43,40 @@ export class TiledeskConnectors {
       this.controlFront = { x: 0, y: 0 };
       this.selectedConnector = null;
     }
+
+
+
+    // Funzione per verificare se un elemento contiene la classe "pippo"
+    contienePippo(elemento, classe) {
+      return elemento.classList.contains(classe);
+    }
+
+    // Funzione per eseguire la verifica gerarchica
+    verificaGerarchica(elemento, classe) {
+        // console.log("verificaGerarchica elemento: --> ", elemento);
+        let genitore = elemento.parentElement;
+        // let contiene = false;
+        while (genitore !== null) {
+        //   console.log("verificaGerarchica: genitore ::: ", genitore); 
+            if (this.contienePippo(genitore, classe)) {
+              // contiene = true;
+              // console.log("L'elemento genitore contiene la classe 'pippo'.");
+              return true;
+            } 
+            if(genitore.parentElement){
+              // console.log("verificaGerarchica: genitore ::: ", genitore.parentElement);
+              genitore = genitore.parentElement;
+              
+            } else {
+              genitore = null;
+              // console.log("verificaGerarchica: genitore ::: ", genitore);
+            }
+        }
+        return false;
+        
+        // console.log("Nessun elemento genitore contiene la classe 'pippo'.");
+        // return false;
+    }
   
     /*add(connector) {
       this.connectors.push(connector)
@@ -118,9 +152,9 @@ export class TiledeskConnectors {
             console.log("mousedown   el.id:", event.target.id)
             let el = event.target;
             this.#removeSelection(el);
-            //   const classe = this.classes["connectable"];
-            //   console.log("class", classe);
-            //   console.log("el.classList.", el.classList);
+            let elConnectable = this.verificaGerarchica(el, this.classes["connectable"]);
+            console.log("connectable? ", elConnectable);
+            //if(elConnectable){
             if (el.classList.contains(this.classes["connectable"])) {
                 console.log("connectable");
                 this.fromId = event.target.id;
@@ -159,6 +193,9 @@ export class TiledeskConnectors {
       //console.log("move...", event.target.id);
       let mouse_pos_logic;
       const target = event.target;
+      // let isConnectable = this.verificaGerarchica(event.target, this.classes["input_block"]);
+      // console.log("connectable? ", isConnectable);
+      // if(isConnectable){
       if (target.classList.contains(this.classes["input_block"])) {
         const block_rect = target.getBoundingClientRect();
         let pos_x_phis = block_rect.left;
@@ -192,6 +229,11 @@ export class TiledeskConnectors {
         console.log("connector-draft-released fired!");
       }
       else */
+      console.log('handleMouseUp ------> ', event.target, event.srcElement);
+      // let isConnectable = this.verificaGerarchica(event.target, this.classes["input_block"]);
+      // console.log("connectable? ", isConnectable);
+      // if(isConnectable){
+      
       if (event.target.classList.contains(this.classes["input_block"])) {
         this.createConnector(this.fromId, event.target.id, this.drawingBack, this.toPoint);
       }
@@ -282,6 +324,10 @@ export class TiledeskConnectors {
         });
         connector.addEventListener('mouseleave', (e) => {
           //console.log("mouseleave e", e.currentTarget);
+          // let el = 
+          // let isConnectable = this.verificaGerarchica(e.target, this.classes["connector_selected"]);
+          // console.log("connectable? ", isConnectable);
+          // if(isConnectable){
           if (!e.currentTarget.classList.contains(this.classes["connector_selected"])) {
             e.currentTarget.setAttributeNS(null, "class", this.classes["connector"]);
           }

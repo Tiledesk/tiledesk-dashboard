@@ -7,63 +7,59 @@ export class TiledeskDraft {
     drawerId;
     container;
     drawer;
-    classDraggable = "tds-draggable";
+    classDraggable = "tds_draggable";
 
     constructor(containerId, drawerId, classDraggable) {
         this.containerId = containerId;
         this.drawerId = drawerId;
         this.classDraggable = classDraggable;
-    }
+        this.moveAndZoom = this.moveAndZoom.bind(this);
 
+        // this.dragMouseDown2 = this.dragMouseDown2.bind(this);
+        // this.closeDragElement = this.closeDragElement.bind(this);
+        // this.elementDrag = this.elementDrag.bind(this);
+    }
     
     setDrawer() {
         this.container = document.getElementById(this.containerId);
         this.drawer = document.getElementById(this.drawerId);
-
-        console.log("setDrawer:", this.container, this.drawer);
-        this.container.onwheel = this.moveAndZoom;
+        // console.log("setDrawer:", this.containerId, this.drawerId, this.container, this.drawer);
+        //this.container.onwheel = this.moveAndZoom;
+        this.container.addEventListener("wheel", this.moveAndZoom);
     }
 
     moveAndZoom(event) {
+        // console.log("moveAndZoom:", event, this.tx);
         event.preventDefault();
-        console.log("moveAndZoom:", event);
         const dx = event.deltaX;
         const dy = event.deltaY;
         // getPositionNow();
-        console.log("moveAndZoom:", this.drawer);
         if (event.ctrlKey === false) {
-            // pan
             // console.log("pan");
-            // translate(42px, 18px)
             let direction = -1;
             this.tx += event.deltaX * direction;
             this.ty += event.deltaY * direction;
-            transform();
+            this.transform();
         } else {
-            // zoom
             // console.log("zoom");
             this.scale += dy * -0.01;
-            // Restrict scale
-            this.scale = Math.min(Math.max(0.125, scale), 4);
-            // Apply scale transform
-            transform();
+            this.scale = Math.min(Math.max(0.125, this.scale), 4);
+            this.transform();
             const event = new CustomEvent("scaled", { detail: {scale: this.scale} });
             document.dispatchEvent(event);
         }
 
-        function transform() {
-            let tcmd = `translate(${this.tx}px, ${this.ty}px)`;
-            let scmd = `scale(${this.scale})`;
-            // console.log("tcmd:", tcmd);
-            // console.log("scmd:", scmd);
-            this.drawer.style.transform = tcmd + " " + scmd;
-        }
+        
     }
     
-  
-    
-
-
+    transform() {
+        // console.log("transform:", this.drawer, drawer, this.scale, scale);
+        let tcmd = `translate(${this.tx}px, ${this.ty}px)`;
+        let scmd = `scale(${this.scale})`;
+        // console.log("tcmd:", tcmd);
+        // console.log("scmd:", scmd);
+        this.drawer.style.transform = tcmd + " " + scmd;
+    }
     // getPositionNow(){
     //     if(window.getComputedStyle(this.drawer)){
     //         var computedStyle = window.getComputedStyle(this.drawer);
@@ -88,68 +84,104 @@ export class TiledeskDraft {
 
 
     setDragElement(elementId) {
-        var elmnt = document.getElementById(elementId);
-        /* otherwise, move the DIV from anywhere inside the DIV:*/
-        elmnt.onmousedown = dragMouseDown;
+        console.log('setDragElement', this.scale, elementId);
+        var element = document.getElementById(elementId);
+        let pos_mouse_x;
+        let pos_mouse_y;
+
+        let dragMouseDown3 = dragMouseDown.bind(this);
+        let elementDrag3 = elementDrag.bind(this);
+        let listenerMouseMove = (event) => elementDrag3(event, element);
+
+        // element.onmousedown = dragMouseDown2;
+        // element.addEventListener("mousedown", dragMouseDown3);
+
+        element.addEventListener("mousedown", (e)=> {
+            dragMouseDown3(e,element);
+        });
         
-        function dragMouseDown(e) {
-            console.log('dragMouseDown');
-            // console.log("classDraggable", classDraggable)
+
+        //console.log('setDragElement', element);
+        
+        // 
+
+
+        function dragMouseDown(e,element) {
+            console.log('dragMouseDown', e, this.classDraggable, element);
             if (!e.target.classList.contains(this.classDraggable)) {
                 return;
             }
             e = e || window.event;
             e.preventDefault();
-            // get the mouse cursor position at startup:
             pos_mouse_x = e.clientX;
             pos_mouse_y = e.clientY;
-            //const e_rect = e.target.getBoundingClientRect();
-            //console.log("e_rect.left:", e_rect.left, "e_rect.top:", e_rect.top);
-            //console.log("e_rect:", e_rect);
             console.log("pos_mouse_x:", pos_mouse_x, "pos_mouse_y:", pos_mouse_y);
+
+            // document.addEventListener("mouseup", ()=> {
+            //     closeDragElement();
+            // });
+            
+            
+            // document.addEventListener("mousemove", ()=> {
+            //     elementDrag(e, element);
+            // });
             document.onmouseup = closeDragElement;
-            // call a function whenever the cursor moves:
-            document.onmousemove = elementDrag;
+            // let listener = (event) => elementDrag3(e, element);
+            document.addEventListener("mousemove", listenerMouseMove, true);
+
+            // this.listener = (event) => this.closeDragElement(e, element);
+            // document.addEventListener("mousemove", elementDrag3, true );
+            // document.addEventListener("mousemove", (e)=> {
+            //     elementDrag3(e, element);
+            // }, true );
+            
+            // document.onmousemove = elementDrag3;
+        }
+
+
+        function closeDragElement() {
+            console.log('closeDragElement::: ', listenerMouseMove);
+            /* stop moving when mouse button is released:*/
+            document.removeEventListener("mousemove", listenerMouseMove, true);
+            // document.removeEventListener("mousemove", elementDrag3(e, element), true); // Succeeds
+            // document.removeEventListener("mousemove", elementDrag3(e, element), false); 
+            // document.removeEventListener("onmouseup", closeDragElement, true); // Succeeds
+            document.onmouseup = null;
+            // document.onmousemove = null;
+            // document.removeEventListener("onmouseup", closeDragElement(e, element), true); 
+            console.log('closeDragElement');
         }
       
-        function elementDrag(e) {
-            console.log('elementDrag');
+        function elementDrag(e, elmnt) {
+            // console.log('elementDrag', elmnt, this.scale);
             //console.log("---------------------------", e.target.id);
             e = e || window.event;
             e.preventDefault();
-            // calculate the new cursor position:
-            // const drawer = document.getElementById("drawer");
-            //var d_rect = drawer.getBoundingClientRect();
-            //const e_rect = e.target.getBoundingClientRect();
-            //console.log("e_rect.left:", e_rect.left, "e_rect.top:", e_rect.top);
-            //var shift_x = d_rect.left / scale
-            //var shift_y = d_rect.top / scale
-            //console.log("shift_x:", shift_x);
-            //var x = (e.clientX) / scale - shift_x
-            //var y = (e.clientY) / scale - shift_y
-            //console.log("scale:", scale);
-            //console.log("pos_mouse_x:", pos_mouse_x, "pos_mouse_y:", pos_mouse_y);
             const delta_x = e.clientX - pos_mouse_x; // phisical
             const delta_y = e.clientY - pos_mouse_y;  // phisical
             pos_mouse_x = e.clientX;
             pos_mouse_y = e.clientY;
-            //console.log("elmnt.style.left:", elmnt.style.left);
-            //console.log("delta_x:", delta_x);
-            pos_x = elmnt.offsetLeft + delta_x/ this.scale;//pos_mouse_x/ scale - e.clientX/ scale - shift_x; // logic
-            pos_y = elmnt.offsetTop + delta_y / this.scale;//pos_mouse_y/ scale - e.clientY/ scale - shift_y;
+            let pos_x = elmnt.offsetLeft + delta_x / this.scale;//pos_mouse_x/ scale - e.clientX/ scale - shift_x; // logic
+            let pos_y = elmnt.offsetTop + delta_y / this.scale;//pos_mouse_y/ scale - e.clientY/ scale - shift_y;
             //pos_y = ( e_rect.top + delta_y)/ scale;//pos_mouse_y/ scale - e.clientY/ scale - shift_y;
             console.log("pos_x:", pos_x, "pos_y:", pos_y);
             // set the element's new position:
             elmnt.style.top = pos_y + "px";//(elmnt.offsetTop - pos_y) + "px";
             elmnt.style.left = pos_x + "px"; //(elmnt.offsetLeft - pos_x) + "px";
+            const moved_event = new CustomEvent("moved", {
+                detail: {
+                    element: elmnt,
+                    x: pos_x, 
+                    y: pos_y
+                }
+            });
+            document.dispatchEvent(moved_event);
         }
-      
-        function closeDragElement() {
-          /* stop moving when mouse button is released:*/
-          document.onmouseup = null;
-          document.onmousemove = null;
-          console.log('closeDragElement');
-        }
-      }
+        
+    }
+
+
+
+
   
   }
