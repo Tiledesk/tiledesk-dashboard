@@ -84,7 +84,7 @@ export class AppStoreInstallComponent implements OnInit {
       this.projectId = params.projectid
       console.log('[APP-STORE-INSTALL] - GET ROUTE PARAMS ', params);
       if (params.calledby && params.calledby === 'h') {
-        this.calledBy === 'home'
+        this.calledBy = 'home'
       }
 
       this.appStoreService.getAppDetail(params.appid).subscribe((res) => {
@@ -240,7 +240,7 @@ export class AppStoreInstallComponent implements OnInit {
   }
 
   goBack() {
-    this.logger.log("[APP-STORE-INSTALL] - goBack to app store");
+    console.log("[APP-STORE-INSTALL] - goBack to app store calledBy ", this.calledBy);
     // this.location.back();
     if (this.calledBy === 'home') {
       this.router.navigate(['project/' + this.projectId + '/home'])

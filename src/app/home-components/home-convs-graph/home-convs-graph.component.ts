@@ -20,6 +20,7 @@ export class HomeConvsGraphComponent implements OnInit, OnChanges {
   private unsubscribe$: Subject<any> = new Subject<any>();
   @Input() public projectId: string;
   @Input() public USER_ROLE: string;
+  @Input() public displayAnalyticsConvsGraph: boolean;
   monthNames: any;
   numOfDays: number = 7;
   browserLang: string;
@@ -77,6 +78,8 @@ export class HomeConvsGraphComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     console.log('[HOME-CONVS-GRAPH] ngOnChanges changes ', changes)
     console.log('[HOME-CONVS-GRAPH] ngOnChanges changes projectId ', this.projectId)
+    console.log('[HOME-CONVS-GRAPH] ngOnChanges changes displayAnalyticsConvsGraph ', this.displayAnalyticsConvsGraph)
+    
 
     if (changes.projectId &&  changes.projectId.firstChange === false) {
       console.log('[HOME-CONVS-GRAPH] ngOnChanges changes changes.projectId.currentValue ', changes.projectId.currentValue)

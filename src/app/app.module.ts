@@ -341,6 +341,8 @@ import { HomeWhatsappAccountComponent } from './home-components/home-whatsapp-ac
 import { HomeCreateChatbotComponent } from './home-components/home-create-chatbot/home-create-chatbot.component';
 import { HomeNewsFeedComponent } from './home-components/home-news-feed/home-news-feed.component';
 import { HomeAnalyticsIndicatorComponent } from './home-components/home-analytics-indicator/home-analytics-indicator.component';
+import { HomeWhatsappAccountWizardComponent } from './home-components/home-whatsapp-account-wizard/home-whatsapp-account-wizard.component';
+
 
 
 
@@ -604,7 +606,8 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     HomeWhatsappAccountComponent,
     HomeCreateChatbotComponent,
     HomeNewsFeedComponent,
-    HomeAnalyticsIndicatorComponent
+    HomeAnalyticsIndicatorComponent,
+    HomeWhatsappAccountWizardComponent
   ],
   imports: [
     TooltipModule.forRoot(CutomTooltipOptions as TooltipOptions),

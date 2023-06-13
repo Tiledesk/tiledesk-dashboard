@@ -118,19 +118,19 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   appSumoProfile: string;
   project_plan_badge: boolean;
 
- 
+
 
   // dispayPromoBanner: boolean = true;
   // promoBannerContent: any;
   // promoBannerSyle: any;
   // resPromoBanner: any;
 
-   // HOME REVOLUTION 
-   displayAnalyticsConvsGraph: boolean = true;
-   displayAnalyticsIndicators: boolean = true;
-   displayConnectWhatsApp: boolean = true
-   displayCreateChatbot: boolean = true
-   displayNewsFeed: boolean = true
+  // HOME REVOLUTION 
+  displayAnalyticsConvsGraph: boolean = true;
+  displayAnalyticsIndicators: boolean = true;
+  displayConnectWhatsApp: boolean = true
+  displayCreateChatbot: boolean = true
+  displayNewsFeed: boolean = true
 
   constructor(
     public auth: AuthService,
@@ -348,7 +348,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
         this.appSumoProfile = APP_SUMO_PLAN_NAME[projectProfileData.extra3]
         console.log('[HOME] Find Current Project appSumoProfile ', this.appSumoProfile)
-       
+
       }
 
       // console.log('[HOME] - Find Current Project Among All - current_selected_prjct - prjct_name ', this.prjct_name);
@@ -528,24 +528,57 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     // console.log("[HOME] > CALLING INIT")
     // this.getDeptsByProjectId(); // USED FOR COUNT OF DEPTS FOR THE NEW HOME
     this.getImageStorageThenUserAndBots();
-    this.getLastMounthMessagesCount() // USED TO GET THE MESSAGES OF THE LAST 30 DAYS
-    this.getLastMounthRequestsCount(); // USED TO GET THE REQUESTS OF THE LAST 30 DAYS
-    this.getActiveContactsCount()  /// COUNT OF ACTIVE CONTACTS FOR THE NEW HOME
-    this.getVisitorsCount() /// COUNT OF VISITORS FOR THE NEW HOME
-    this.getCountAndPercentageOfRequestsHandledByBotsLastMonth() /// 
-    // this.getVisitorsByLastNDays(this.selectedDaysId); /// VISITOR GRAPH FOR THE NEW HOME
+    // this.getLastMounthMessagesCount() // USED TO GET THE MESSAGES OF THE LAST 30 DAYS
+    // this.getLastMounthRequestsCount(); // USED TO GET THE REQUESTS OF THE LAST 30 DAYS
+    // this.getActiveContactsCount()  /// COUNT OF ACTIVE CONTACTS FOR THE NEW HOME
+    // this.getVisitorsCount() /// COUNT OF VISITORS FOR THE NEW HOME
+    // this.getCountAndPercentageOfRequestsHandledByBotsLastMonth() /// 
+    // this.getVisitorsByLastNDays(this.selectedDaysId); /// VISITOR GRAPH FOR THE NEW HOME - NOT MORE USED - REPLACED WITH LAST 7 DAYS CONVERSATIONS GRAPH
     // this.initDay = moment().subtract(6, 'd').format('D/M/YYYY') /// VISITOR GRAPH FOR THE NEW HOME
     // this.endDay = moment().subtract(0, 'd').format('D/M/YYYY') /// VISITOR GRAPH FOR THE NEW HOME
     // this.logger.log("INIT", this.initDay, "END", this.endDay); /// VISITOR GRAPH FOR THE NEW HOME
-
     // this.getRequestByLast7Day()
 
+    this.getLast30daysConversations()
+
   }
+  getLast30daysConversations() {
+
+    this.analyticsService.requestsByDay(30)
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((convslast30: any) => {
+        console.log('[HOME] - GET LAST 30 DAYS CONVS ', convslast30);
+        let count = 0;
+        convslast30.forEach(conv => {
+          console.log('[HOME] - GET LAST 30 DAYS CONV COUNT ', conv.count);
+          count = count + conv.count
+        });
+
+        console.log('[HOME] - GET LAST 30 DAYS CONV TOTAL ', count);
+        if (count === 0) {
+          this.displayAnalyticsConvsGraph = false
+          this.displayAnalyticsConvsGraph = false
+        }
+
+
+      }, (error) => {
+        console.error('[HOME] GET LAST 30 DAYS CONVS - ERROR ', error);
+      }, () => {
+        console.log('[HOME] GET LAST 30 DAYS CONVS * COMPLETE *');
+       
+          
+      });
+    }
+
+
+
 
   diplayPopup() {
-    const hasClosedPopup = localStorage.getItem('dshbrd----hasclosedpopup')
+        const hasClosedPopup = localStorage.getItem('dshbrd----hasclosedpopup')
     // console.log('[HOME] hasClosedPopup', hasClosedPopup)
-    if (hasClosedPopup === null) {
+    if(hasClosedPopup === null) {
       this.popup_visibility = 'block'
       // console.log('[HOME] popup_visibility', this.popup_visibility)
     }
@@ -1262,7 +1295,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   goToPayment() {
     if (this.USER_ROLE === 'owner') {
       // if (this.prjct_profile_type === 'payment') {
-        this.router.navigate(['project/' + this.projectId + '/project-settings/payments']);
+      this.router.navigate(['project/' + this.projectId + '/project-settings/payments']);
       // }
     } else {
       this.presentModalOnlyOwnerCanManageTheAccountPlan()
@@ -1654,7 +1687,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         takeUntil(this.unsubscribe$)
       )
       .subscribe((requestsByDay: any) => {
-        this.logger.log('[HOME] - REQUESTS BY DAY ', requestsByDay);
+        console.log('[HOME] - REQUESTS BY DAY ', requestsByDay);
 
         // CREATES THE INITIAL ARRAY WITH THE LAST SEVEN DAYS (calculated with moment) AND REQUESTS COUNT = O
         const last7days_initarray = []
@@ -1970,7 +2003,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     })
   }
 
-  updateAppSumoLicenceTest(){
+  updateAppSumoLicenceTest() {
     this.projectService.updateAppSumoTier().subscribe((res) => {
       this.logger.log("[HOME] »» UPDATE APPSUMO TIER RES: ", res)
     }, (error) => {
@@ -1980,7 +2013,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     })
   }
 
-  downgradeAppSumoLicenceTest(){
+  downgradeAppSumoLicenceTest() {
     this.projectService.downgradeAppSumoTier().subscribe((res) => {
       this.logger.log("[HOME] »» UPDATE APPSUMO TIER RES: ", res)
     }, (error) => {
@@ -1991,7 +2024,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   }
 
-  refundAppSumoLicenceTest(){
+  refundAppSumoLicenceTest() {
     this.projectService.refundAppSumoTier().subscribe((res) => {
       this.logger.log("[HOME] »» UPDATE APPSUMO TIER RES: ", res)
     }, (error) => {
@@ -2046,7 +2079,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   // new dashbord
-  
+
   switchAnalyticsConvsGraph(event) {
     console.log('[HOME] SWITCH ANALYTICS OVERVIEW event ', event)
     this.displayAnalyticsConvsGraph = event
@@ -2057,18 +2090,18 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.displayAnalyticsIndicators = event
   }
 
-  
+
 
   switchConnectWhatsApp(event) {
     console.log('[HOME] SWITCH CNNECT WA event ', event)
     this.displayConnectWhatsApp = event
-  } 
+  }
 
   switchCreateChatbot(event) {
     console.log('[HOME] SWITCH CREATE CHATBOT event ', event)
     this.displayCreateChatbot = event
-  } 
-  switchNewsFeed (event) {
+  }
+  switchNewsFeed(event) {
     console.log('[HOME] SWITCH NEWS FEED event ', event)
     this.displayNewsFeed = event
   }

@@ -51,6 +51,7 @@ export class HomeWhatsappAccountComponent implements OnInit {
   runURL: string;
   appTitle: string;
   appVersion: string;
+  whatsAppLearnMoreURL: string;
 
   constructor(
     public appStoreService: AppStoreService,
@@ -200,6 +201,9 @@ export class HomeWhatsappAccountComponent implements OnInit {
           console.log('[HOME-WA] - appTitle ', this.appTitle)
           this.appVersion = app.version;
           console.log('[HOME-WA] - appVersion ', this.appVersion)
+
+          this.whatsAppLearnMoreURL = app.learnMore;
+          console.log('[HOME-WA] - whatsAppLearnMoreURL ', this.whatsAppLearnMoreURL)
         }
 
         console.log('[HOME-WA] - getApps APPS app ', app)
@@ -259,6 +263,21 @@ export class HomeWhatsappAccountComponent implements OnInit {
     return promise;
   }
 
+  gotToLearMoreOrManageApp() {
+    console.log('[HOME-WA] INSTALL OR OPEN APP ', this.whatsAppIsInstalled);
+    if (this.whatsAppIsInstalled === false) {
+      this.goToWhatsAppDetails()
+    } else {
+      this.openInAppStoreInstall()
+    }
+  }
+
+  goToWhatsAppDetails() {
+    this.router.navigate(['project/' + this.projectId + '/app-store-install/' + this.whatsAppAppId + '/detail/h'])
+  }
+
+
+
 
   installApp() {
     if ((this.appTitle === "WhatsApp Business" || this.appTitle === "Facebook Messenger" || this.appTitle === "Zapier" || this.appTitle === 'Help Center') &&
@@ -280,29 +299,11 @@ export class HomeWhatsappAccountComponent implements OnInit {
     console.log('[HOME-WA] app app version', this.appVersion)
     console.log('[HOME-WA] installationType ', this.installActionType);
 
-    this.installV2App(this.projectId, this.whatsAppAppId)
+    // this.installV2App(this.projectId, this.whatsAppAppId)
+
   }
 
-  installV2App(projectId, appId) {
-
-    this.appStoreService.installAppVersionTwo(projectId, appId).subscribe((res: any) => {
-      console.log('[HOME-WA] INSTALL V2 APP ', projectId, appId)
-
-    }, (error) => {
-      console.error('[HOME-WA] INSTALL V2 APP - ERROR  ', error);
-      this.notify.showWidgetStyleUpdateNotification("An error occurred while creating the app", 4, 'report_problem');
-    }, () => {
-      console.log('[HOME-WA] INSTALL V2 APP - COMPLETE');
-      this.notify.showWidgetStyleUpdateNotification("App installed successfully", 2, 'done');
-      // let index = this.apps.findIndex(x => x._id === appId);
-      // // this.apps[index].installed = false;
-      // // this.apps[index].version = 'v2';
-      // setTimeout(() => {
-      //   this.apps[index].installed = true;
-      // }, 1000);
-      this.whatsAppIsInstalled = true;
-    });
-  }
+ 
 
 
   openInAppStoreInstall() {
@@ -331,14 +332,7 @@ export class HomeWhatsappAccountComponent implements OnInit {
     // }
   }
 
-  installOrOpenApp() {
-    console.log('[HOME-WA] INSTALL OR OPEN APP ', this.whatsAppIsInstalled);
-    if (this.whatsAppIsInstalled === false) {
-      this.installApp()
-    } else {
-      this.openInAppStoreInstall()
-    }
-  }
+
 
   unistallApp() {
     console.log('[HOME-WA] UNINSTALL V2 APP - app_id', this.whatsAppAppId);
@@ -449,6 +443,25 @@ export class HomeWhatsappAccountComponent implements OnInit {
   }
 
 
+  installV2App(projectId, appId) {
 
+    this.appStoreService.installAppVersionTwo(projectId, appId).subscribe((res: any) => {
+      console.log('[HOME-WA] INSTALL V2 APP ', projectId, appId)
+
+    }, (error) => {
+      console.error('[HOME-WA] INSTALL V2 APP - ERROR  ', error);
+      this.notify.showWidgetStyleUpdateNotification("An error occurred while creating the app", 4, 'report_problem');
+    }, () => {
+      console.log('[HOME-WA] INSTALL V2 APP - COMPLETE');
+      this.notify.showWidgetStyleUpdateNotification("App installed successfully", 2, 'done');
+      // let index = this.apps.findIndex(x => x._id === appId);
+      // // this.apps[index].installed = false;
+      // // this.apps[index].version = 'v2';
+      // setTimeout(() => {
+      //   this.apps[index].installed = true;
+      // }, 1000);
+      this.whatsAppIsInstalled = true;
+    });
+  }
 
 }

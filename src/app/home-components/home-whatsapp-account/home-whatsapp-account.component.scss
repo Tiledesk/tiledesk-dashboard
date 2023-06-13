@@ -55,3 +55,20 @@
 .unistall-app-btn-disabled {
     opacity: .6 !important;
 }
+
+.mat-flat-button {
+    padding: 0 18px !important;
+    border-radius: 9999px !important;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    min-height: 40px;
+    max-height: 40px;
+    line-height: 1 !important;
+  }
+  
+  .mat-button .mat-button-wrapper > *,
+  .mat-flat-button .mat-button-wrapper > * {
+    vertical-align: middle;
+  }
