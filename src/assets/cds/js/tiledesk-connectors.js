@@ -126,6 +126,9 @@ export class TiledeskConnectors {
       console.log("connectors:", this.connectors);
       this.#drawConnector(id, fromPoint, toPoint);
       this.removeConnectorDraft();
+
+      const event = new CustomEvent("connector-created", { detail: {connector: connector} });
+      document.dispatchEvent(event);
     }
   
     createBlock(blockId) {

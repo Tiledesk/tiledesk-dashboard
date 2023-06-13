@@ -55,7 +55,9 @@
                 <cds-action-intent  *ngIf="action._tdActionType == 'intent'"
                     class="panel-response"
                     [IDintentSelected]="intent.id"
+                    [connector]="connector"
                     [action]="action"
+                    (editAction)="onEditAction($event)"
                 ></cds-action-intent>
             </div>
 

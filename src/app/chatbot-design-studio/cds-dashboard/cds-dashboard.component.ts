@@ -30,7 +30,7 @@ import { DragDropService } from 'app/chatbot-design-studio/cds-services/drag-dro
 import { IntentService } from 'app/chatbot-design-studio/cds-services/intent.service';
 
 // import { Subscription } from 'rxjs';
-import { TiledeskDraft } from 'app/../assets/cds/js/tiledesk-draft.js';
+import { TiledeskStage } from 'assets/cds/js/tiledesk-stage.js';
 import { TiledeskConnectors } from 'app/../assets/cds/js/tiledesk-connectors.js';
 
 
@@ -54,7 +54,9 @@ export class CdsDashboardComponent implements OnInit {
   // @Input() listOfIntents: Intent[] = [];
 
   updatePanelIntentList: boolean = true;
-  listOfIntents: Array<Intent>;
+  listOfIntents: Array<Intent> = [];
+  // updatedConnector: Array<any> = [];
+  connector: any;
 
   intentStart: Intent;
   intentDefaultFallback: Intent;
@@ -129,7 +131,7 @@ export class CdsDashboardComponent implements OnInit {
 
 
   
-  tiledeskDraft: any; 
+  TiledeskStage: any; 
   tiledeskConnectors: any;
 
   // isBetaUrl: boolean;
@@ -177,7 +179,7 @@ export class CdsDashboardComponent implements OnInit {
 
   ngAfterViewInit(){
     console.log('ngAfterViewInit -------------> ');
-    this.tiledeskDraft = new TiledeskDraft('tds_container', 'tds_drawer', 'tds_draggable');
+    this.TiledeskStage = new TiledeskStage('tds_container', 'tds_drawer', 'tds_draggable');
     this.setDragConfig();
     this.hideShowWidget('show');
 
@@ -214,15 +216,48 @@ export class CdsDashboardComponent implements OnInit {
         console.log("connector-draft-released:", e);
         if (e.detail.target.classList.contains("tds_container")) {
           console.log("connector-draft-released event, catched on 'stage'");
-          this.tiledeskConnectors.removeConnectorDraft();
+          // this.tiledeskConnectors.removeConnectorDraft();
         }
         else {
           console.log("connector-draft-released event, catched but unsupported");
-          this.tiledeskConnectors.removeConnectorDraft();
+          // this.tiledeskConnectors.removeConnectorDraft();
         }
       },
       true
     );
+
+
+    document.addEventListener(
+      "connector-created",
+      (e:CustomEvent) => {
+        this.connector = e.detail.connector;
+        // try {
+        //   const array = connector.fromId.split("/");
+        //   const idIntent= array[0];
+        //   const idAction= array[1];
+        //   let filteredIntent = null;
+        //   let filteredAction = null;
+        //   // recupero intent con id = idIntent
+        //   // filteredIntent = this.listOfIntents.find(obj => obj.id === idIntent);
+        //   const posIntent = this.listOfIntents.findIndex(obj => obj.id === idIntent);
+        //   if(posIntent != -1){
+        //     this.updatedConnector[idIntent] = connector;
+        //     //this.listOfIntents[posIntent] = this.updatedConnector;
+        //     // recupero action con id = idAction
+        //     // filteredAction = filteredIntent.actions.find(obj => obj._tdActionId === idAction);
+        //   }
+        //   // if(filteredAction){
+        //   //   filteredIntent.connector = this.updatedConnector;
+        //   // }
+        // } catch (error) {
+        //   console.error('error: ', error);
+        // }
+      },
+      true
+    );
+   
+
+    
 
   }
 
@@ -436,7 +471,7 @@ export class CdsDashboardComponent implements OnInit {
 
   /**  setDragConfig */
   private setDragConfig(){
-    this.tiledeskDraft.setDrawer();
+    this.TiledeskStage.setDrawer();
     // const container = document.querySelector('#tds_container');
     // const drawer = document.querySelector('#tds_drawer');
     // console.log('getElementById:: drawer',container,  drawer);
@@ -459,10 +494,10 @@ export class CdsDashboardComponent implements OnInit {
       if(intent.id){
         try {
           setTimeout(() => {
-            // this.tiledeskDraft.setDragElement(intent.id);
+            // this.TiledeskStage.setDragElement(intent.id);
             let elem = document.getElementById(intent.id);
             // setDragElement(elem);
-            this.tiledeskDraft.setDragElement(intent.id);
+            this.TiledeskStage.setDragElement(intent.id);
             // **************** !!!!!!!! aggiungo listner !!!!!!! *******************//
 
             elem.removeEventListener('mouseup', function() {

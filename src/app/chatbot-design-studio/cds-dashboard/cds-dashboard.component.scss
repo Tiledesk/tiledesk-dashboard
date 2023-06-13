@@ -8,6 +8,34 @@ $mdb-font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif !default;
 $mdb-font-family-poppins: 'Poppins', 'Roboto', Arial, sans-serif !default;
 $box-left-width: 250px;
 
+
+::ng-deep .tds_path {
+  animation: dash 30s linear infinite;
+  stroke-dasharray: 18;
+  stroke-width: 8px;
+  stroke: gray;
+}
+
+::ng-deep .tds_connector {
+  stroke: black;
+  stroke-width: 8px;
+}
+
+::ng-deep .tds_connector_over {
+  stroke: gray;
+  stroke-width: 8px;
+}
+
+::ng-deep .tds_connector_selected {
+  stroke: blue;
+  stroke-width: 8px;
+}
+
+
+
+
+
+
 .cds-header {
   height: 60px;
   font-family: $mdb-font-family-poppins;
@@ -182,38 +210,19 @@ $box-left-width: 250px;
   }
 }
 
-.path {
-  animation: dash 30s linear infinite;
-  stroke-dasharray: 18;
-  stroke-width: 8px;
-  stroke: gray;
-}
 
 
 
-.connector {
-  stroke: black;
-  stroke-width: 8px;
-}
 
-.connector_over {
-  stroke: gray;
-  stroke-width: 8px;
-}
 
-.connector_selected {
-  stroke: blue;
-  stroke-width: 8px;
-}
-
-.prevent-select {
-  -webkit-user-select: none;
-  /* Safari */
-  -ms-user-select: none;
-  /* IE 10 and IE 11 */
-  user-select: none;
-  /* Standard syntax */
-}
+// .prevent-select {
+//   -webkit-user-select: none;
+//   /* Safari */
+//   -ms-user-select: none;
+//   /* IE 10 and IE 11 */
+//   user-select: none;
+//   /* Standard syntax */
+// }
 
 svg:not(:root) {
   display: block;

@@ -31,7 +31,7 @@
     cursor: copy;
 }
 
-.point-connector {
+.point-connector-empty {
     box-shadow: none;
     border-radius: 50%;
     position: relative;
@@ -44,6 +44,29 @@
     &::before {
         inset: 1px;
         border: 4px solid rgb(255, 255, 255);
+        transition: inset 0.1s ease 0s, border 0.1s ease 0s;
+        position: absolute;
+        content: "";
+        border-radius: 50%;
+    }
+}
+
+
+
+
+.point-connector {
+    box-shadow: none;
+    border-radius: 50%;
+    position: relative;
+    box-sizing: border-box;
+    border: 2px solid rgb(255, 255, 255);
+    transition: width 0.1s ease 0s, height 0.1s ease 0s, background 0.1s ease 0s, border 0.1s ease 0s;
+    width: 14px;
+    height: 14px;
+    background: linear-gradient(rgba(98, 119, 140, 0.12), rgba(98, 119, 140, 0.24) 100%);
+    &::before {
+        inset: 0px;
+        border: 1px solid rgb(98, 119, 140);
         transition: inset 0.1s ease 0s, border 0.1s ease 0s;
         position: absolute;
         content: "";

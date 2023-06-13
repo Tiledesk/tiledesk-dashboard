@@ -34,6 +34,7 @@ export class CdsPanelIntentComponent implements OnInit, OnChanges {
   // @HostListener('window:keydown', ['$event'])
 
   @Input() intent: Intent;
+  @Input() connector: any;
   @Output() selectAction = new EventEmitter();
   @Output() saveIntent = new EventEmitter();
 
@@ -58,9 +59,31 @@ export class CdsPanelIntentComponent implements OnInit, OnChanges {
   ngAfterViewInit(){
     this.setIntentSelected();
   }
-  
+
+
+  ngOnDestroy() {
+  }
+
+
   ngOnChanges(changes: SimpleChanges){
-    // console.log('CdsPanelIntentComponent ngAfterViewInit-->');
+    console.log('CdsPanelIntentComponent ngOnChanges-->', this.connector);
+    // try {
+    //   const array = this.connector.fromId.split("/");
+    //   // const idIntent= array[0];
+    //   const idAction= array[1];
+    //   const posAction = this.intent.actions.findIndex(obj => obj._tdActionId === idAction);
+    //   if(posAction != -1){
+    //     this.connector[posAction] = this.connector;
+    //     //this.listOfIntents[posIntent] = this.updatedConnector;
+    //     // recupero action con id = idAction
+    //     // filteredAction = filteredIntent.actions.find(obj => obj._tdActionId === idAction);
+    //   }
+    //   // if(filteredAction){
+    //   //   filteredIntent.connector = this.updatedConnector;
+    //   // }
+    // } catch (error) {
+    //   console.error('error: ', error);
+    // }
   }
 
   /** CUSTOM FUNCTIONS  */
@@ -139,6 +162,11 @@ export class CdsPanelIntentComponent implements OnInit, OnChanges {
       this.saveIntent.emit(this.intent);
     }
   }
-  
+
+  onEditAction(event: any) {
+    console.log('onSaveAction:::: ' , event, this.intent.actions);
+    this.saveIntent.emit(this.intent);
+  }
+
 
 }

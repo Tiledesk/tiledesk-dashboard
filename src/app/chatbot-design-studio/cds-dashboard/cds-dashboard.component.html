@@ -78,6 +78,7 @@
                     [style.top.px]="getIntentPosition(intent.id).y" 
                     [style.left.px]="getIntentPosition(intent.id).x" 
                     [intent]="intent"
+                    [connector]="connector"
                     (selectAction)=onSelectAction($event)
                     (saveIntent)=onSaveIntent($event)
                 ></cds-panel-intent>
@@ -95,7 +96,7 @@
                 (actionDeleted)=onActionDeleted($event)
                 (intentForm)=onIntentFormSelected($event) -->
 
-                <svg id="svgContainer" style="overflow: visible;left: 0px;top: 0px;position: absolute; z-index:-1"
+                <svg id="svgContainer" class="tds_path" style="overflow: visible;left: 0px;top: 0px;position: absolute; z-index:-1"
                     xmlns="http://www.w3.org/2000/svg">
                     <g id="svgConnectors" fill="white" stroke="black" stroke-width="2">
                     </g>

@@ -1,4 +1,4 @@
-export class TiledeskDraft {
+export class TiledeskStage {
 
     tx = 0;
     ty = 0;
@@ -33,7 +33,7 @@ export class TiledeskDraft {
         event.preventDefault();
         const dx = event.deltaX;
         const dy = event.deltaY;
-        // getPositionNow();
+        this.getPositionNow();
         if (event.ctrlKey === false) {
             // console.log("pan");
             let direction = -1;
@@ -60,26 +60,28 @@ export class TiledeskDraft {
         // console.log("scmd:", scmd);
         this.drawer.style.transform = tcmd + " " + scmd;
     }
-    // getPositionNow(){
-    //     if(window.getComputedStyle(this.drawer)){
-    //         var computedStyle = window.getComputedStyle(this.drawer);
-    //         // console.log('computedStyle :', computedStyle);
-    //         var transformValue = computedStyle.getPropertyValue('transform');
-    //         // console.log('transformValue :', transformValue);
-    //         if(transformValue !== "none") {
-    //             var transformMatrix = transformValue.match(/matrix.*\((.+)\)/)[1].split(', ');
-    //             console.log('transformMatrix :', transformMatrix);
-    //             var translateX = parseFloat(transformMatrix[4]);
-    //             var translateY = parseFloat(transformMatrix[5]);
-    //             var scaleX = parseFloat(transformMatrix[0]);
-    //             console.log('Translate X:', translateX);
-    //             console.log('scaleX :', scaleX);
-    //             tx = translateX;
-    //             ty = translateY;
-    //             scale = scaleX;
-    //         }
-    //     }
-    // }
+
+
+    getPositionNow(){
+        if(window.getComputedStyle(this.drawer)){
+            var computedStyle = window.getComputedStyle(this.drawer);
+            // console.log('computedStyle :', computedStyle);
+            var transformValue = computedStyle.getPropertyValue('transform');
+            // console.log('transformValue :', transformValue);
+            if(transformValue !== "none") {
+                var transformMatrix = transformValue.match(/matrix.*\((.+)\)/)[1].split(', ');
+                // console.log('transformMatrix :', transformMatrix);
+                var translateX = parseFloat(transformMatrix[4]);
+                var translateY = parseFloat(transformMatrix[5]);
+                var scaleX = parseFloat(transformMatrix[0]);
+                // console.log('Translate X:', translateX);
+                // console.log('scaleX :', scaleX);
+                this.tx = translateX;
+                this.ty = translateY;
+                this.scale = scaleX;
+            }
+        }
+    }
 
 
 

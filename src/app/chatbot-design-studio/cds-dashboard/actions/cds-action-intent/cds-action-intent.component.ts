@@ -1,5 +1,5 @@
 import { ActionIntentConnected } from 'app/models/intent-model';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { LoggerService } from 'app/services/logger/logger.service';
 
 @Component({
@@ -11,12 +11,14 @@ export class CdsActionIntentComponent implements OnInit {
 
   @Input() IDintentSelected: string;
   @Input() action: ActionIntentConnected;
+  @Input() connector: any;
+  @Output() editAction = new EventEmitter();
 
   idAction: string;
 
   constructor(
     private logger: LoggerService,
-    ) { }
+  ) { }
 
   ngOnInit(): void {
     console.log("[ACTION-INTENT] elementSelected: ", this.action);
@@ -24,27 +26,30 @@ export class CdsActionIntentComponent implements OnInit {
   }
 
   ngOnChanges() {
-    if(this.action && this.action.intentName) {
-    }
+    console.log('CdsActionIntentComponent ngOnChanges:: ', this.connector);
+    this.updateConnector();
   }
 
-  ngAfterViewInit(){
-    console.log('ngAfterViewInit -------------> ');
-
-    // document.addEventListener(
-    //   "scaled",
-    //   (e:CustomEvent) => {
-    //     console.log("event:", e);
-    //     this.tiledeskConnectors.scale = e.detail.scale;
-    //     console.log("changing connectors scale:", this.tiledeskConnectors.scale);
-    //   },
-    //   false
-    // );
-  }
 
   private initialize() {
     this.idAction = this.IDintentSelected+'/'+this.action._tdActionId;
   }
+
+  private updateConnector(){
+    try {
+      const array = this.connector.fromId.split("/");
+      const idAction= array[1];
+      if(idAction === this.action._tdActionId){
+        console.log(' updateConnector :: ', this.connector.toId);
+        this.action.intentName = this.connector.toId;
+        this.editAction.emit();
+      }
+    } catch (error) {
+      console.log('error: ', error);
+    }
+  }
+  
+
 
 
 
