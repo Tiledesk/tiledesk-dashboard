@@ -510,23 +510,28 @@ export class CdsDashboardComponent implements OnInit {
   }
 
   onMouseUp(intent, element){
-    const x = element.offsetLeft; 
-    const y = element.offsetTop; 
+    // const x = element.offsetLeft; 
+    // const y = element.offsetTop; 
+    
+    let newPos = {'x':element.offsetLeft, 'y':element.offsetTop};
+    console.log("onMouseUp x:", newPos.x, " y: ", newPos.y);
     let pos = {'x':0, 'y':0};
     try {
       // posX = this.dashboardAttributes.intents[intent.id].pos['x'];
       // posY = this.dashboardAttributes.intents[intent.id].pos['y'];
       pos = this.getIntentPosition(intent.id);
+      console.log("getIntentPosition x:", pos.x, " y: ",pos.y);
     } catch (error) {
       console.error("ERROR: ", error);
     }
 
-    if(x != pos.x || y != pos.y){
+    if(newPos.x != pos.x || newPos.y != pos.y){
       element.style.zIndex = 'auto';
       // this.CREATE_VIEW = false;
       // this.saveIntent(intent);
       // let pos = {'x':x, 'y':y};
-      this.setIntentPosition(intent.id, pos);
+      console.log("getIntentPosition x:", pos.x, " y: ",pos.y);
+      this.setIntentPosition(intent.id, newPos);
       // this.intentService.setDashboardAttributes(this.dashboardAttributes);
     }
     this.isOpenPanelDetail = true;
@@ -557,10 +562,9 @@ export class CdsDashboardComponent implements OnInit {
     // }
   }
 
-  setIntentPosition(id, pos){
-    
+  setIntentPosition(id:string, newPos: any){
     // const intent = { key: id, value:  };
-    this.dashboardAttributes[id] =  {'x': pos.x, 'y': pos.y};
+    this.dashboardAttributes[id] =  {'x': newPos.x, 'y': newPos.y};
     console.log('setIntentPosition id ----------->', this.dashboardAttributes[id]);
     // console.log(this.dashboardAttributes);
     this.intentService.setDashboardAttributes(this.dashboardAttributes);
@@ -846,10 +850,10 @@ export class CdsDashboardComponent implements OnInit {
     let maxLength = this.intentSelected.actions.length;
     let index = maxLength-1;
     let intent_display_name = 'action_'+index;
-    let event = { action: action, index: index, maxLength: maxLength, intent_display_name: intent_display_name };
-    console.log('onAddNewAction', event);
+    // let event = { action: action, index: index, maxLength: maxLength, intent_display_name: intent_display_name };
+    console.log('onAddNewAction', action.id);
     this.idElementOfIntentSelected = intent_display_name;
-    this.actionSelected(event);
+    this.actionSelected(action.id);
   }
   /** END EVENTS PANEL ACTIONS */
 
@@ -979,10 +983,17 @@ export class CdsDashboardComponent implements OnInit {
     this.isOpenActionDrawer = _isOpenActioDrawer;
   }
 
-  onDropAction(actions){
-    this.intentSelected.actions = actions;
-    this.saveIntent(this.intentSelected);
-  }
+  // onDropAction(params: any){
+  //   try {
+  //     let intentID = params.intentID;
+  //     let actions = params.actions;
+  //     this.intentSelected = this.listOfIntents.find(obj => obj.id === intentID);
+  //     this.intentSelected.actions = actions;
+  //     this.saveIntent(this.intentSelected);
+  //   } catch (error) {
+  //     console.error('error: ', error);
+  //   }
+  // }
 
   onAnswerSelected(answer: string) {
     this.logger.log('[CDS DSBRD] onAnswerSelected - answer ', answer)
@@ -992,7 +1003,7 @@ export class CdsDashboardComponent implements OnInit {
     this.isIntentElementSelected = true;
   }
 
-  onActionSelected(event: { action: Action, index: number, maxLength: number, intent_display_name: string }) {
+  onSelectAction(actionID) {
     this.actionSelected(event);
   }
 
@@ -1247,6 +1258,7 @@ export class CdsDashboardComponent implements OnInit {
   /** START EVENTS INTENT HEADER */
   onSaveIntent(intent: Intent) {
     console.log('**** onSaveIntent:: ', intent);
+    this.saveIntent(intent);
     // this.CREATE_VIEW = true;
     // this.intentSelected = new Intent();
     // this.intentSelected.intent_display_name = this.intentService.setDisplayName(this.listOfIntents);
@@ -1326,22 +1338,23 @@ export class CdsDashboardComponent implements OnInit {
     console.log("********* el.id ********* ", this.CREATE_VIEW, intentNameAlreadyCreated, this.intentSelected.id);
     if (this.CREATE_VIEW && !intentNameAlreadyCreated) {
       // this.creatIntent(this.intentSelected);
-    } else if (this.EDIT_VIEW) {
+    } else {
       this.editIntent();
     }
   }
 
-  private actionSelected(event){
-    console.log('-----> actionSelected: ',event);
-    this.logger.log('[CDS DSBRD] onActionSelected from PANEL INTENT - action ', event.action, event.index)
-    this.elementIntentSelected = {};
-    this.elementIntentSelected['type'] = TYPE_INTENT_ELEMENT.ACTION;
-    this.elementIntentSelected['element'] = event.action
-    this.elementIntentSelected['index'] = event.index
-    this.elementIntentSelected['maxLength'] = event.maxLength
-    this.elementIntentSelected['intent_display_name'] = event.intent_display_name
-    this.isIntentElementSelected = true;
-    this.logger.log('[CDS DSBRD] onActionSelected from PANEL INTENT - this.elementIntentSelected ', this.elementIntentSelected)
+  private actionSelected(actionID){
+    
+    console.log('-----> actionSelected: ',actionID);
+    // this.logger.log('[CDS DSBRD] onActionSelected from PANEL INTENT - action ', event.action, event.index)
+    // this.elementIntentSelected = {};
+    // this.elementIntentSelected['type'] = TYPE_INTENT_ELEMENT.ACTION;
+    // this.elementIntentSelected['element'] = event.action
+    // this.elementIntentSelected['index'] = event.index
+    // this.elementIntentSelected['maxLength'] = event.maxLength
+    // this.elementIntentSelected['intent_display_name'] = event.intent_display_name
+    // this.isIntentElementSelected = true;
+    // this.logger.log('[CDS DSBRD] onActionSelected from PANEL INTENT - this.elementIntentSelected ', this.elementIntentSelected)
   }
 
   /** END CUSTOM FUNCTIONS */

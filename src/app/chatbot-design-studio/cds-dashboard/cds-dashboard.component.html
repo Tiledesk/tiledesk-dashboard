@@ -74,25 +74,26 @@
          
                 <cds-panel-intent *ngFor="let intent of listOfIntents;"
                     [id]="intent.id"
+                    class="panel-intent tds_input_block tds_draggable" 
                     [style.top.px]="getIntentPosition(intent.id).y" 
                     [style.left.px]="getIntentPosition(intent.id).x" 
-                    class="panel-intent tds_draggable tds_input_block"
-                    [listOfActions]="listOfActions"
-                    [idSelected]="idElementOfIntentSelected"
-                    [intentSelected]="intent"
-                    [isIntentElementSelected]="isIntentElementSelected"
-                    [isOpenActionDrawer]="isOpenActionDrawer"
-                    [eventUpadatedIntent]="upadatedIntent.asObservable()"
-                    [eventCreateIntent]="createIntent.asObservable()" 
-                    (openActionDrawer)=onOpenActionDrawer($event)
-                    (answerSelected)=onAnswerSelected($event) 
-                    (actionSelected)=onActionSelected($event)
-                    (questionSelected)=onQuestionSelected($event) 
-                    (actionDeleted)=onActionDeleted($event)
-                    (intentForm)=onIntentFormSelected($event)
-                    (dropAction)=onDropAction($event)
+                    [intent]="intent"
+                    (selectAction)=onSelectAction($event)
+                    (saveIntent)=onSaveIntent($event)
                 ></cds-panel-intent>
-
+                <!-- 
+                [listOfActions]="listOfActions"
+                [idSelected]="idElementOfIntentSelected"
+                [isIntentElementSelected]="isIntentElementSelected"
+                [isOpenActionDrawer]="isOpenActionDrawer"
+                [eventUpadatedIntent]="upadatedIntent.asObservable()"
+                [eventCreateIntent]="createIntent.asObservable()" 
+                (openActionDrawer)=onOpenActionDrawer($event)
+                (answerSelected)=onAnswerSelected($event) 
+                (actionSelected)=onActionSelected($event)
+                (questionSelected)=onQuestionSelected($event) 
+                (actionDeleted)=onActionDeleted($event)
+                (intentForm)=onIntentFormSelected($event) -->
 
                 <svg id="svgContainer" style="overflow: visible;left: 0px;top: 0px;position: absolute; z-index:-1"
                     xmlns="http://www.w3.org/2000/svg">

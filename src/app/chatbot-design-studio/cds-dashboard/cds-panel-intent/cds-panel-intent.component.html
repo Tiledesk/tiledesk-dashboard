@@ -5,29 +5,22 @@
         <div class="pic-header-title tds_draggable">
             <div class="pic-header-title-input tds_draggable">
                 <div class="pic-title-text tds_draggable">
-                    {{ intentSelected.intent_display_name }}
+                    {{ intent.intent_display_name }}
                 </div>
-
-                <div class="sc-gTRrQi sc-ezLegt hnylmc eexGFU">
-                    <div class="sc-kUYxwz alspn vf-canvas__port">
-                        <div class="sc-guKdVK sc-jjRfBx gDikTU biGEuu"></div>
-                    </div>
-                </div>
-
             </div>
         </div>
 
     </div>
 
-    <div class="button-intent button-intent-questions tds_draggable"
+    <!-- <div class="button-intent button-intent-questions tds_draggable"
         (click)="onSelectQuestion(HAS_SELECTED_TYPE.QUESTION)"
         [ngClass]="{
-        'button-intent-active': idSelected === HAS_SELECTED_TYPE.QUESTION,
+        'button-intent-active': idSelectedAction === HAS_SELECTED_TYPE.QUESTION,
         'no-question': questionCount === 0 || !question
         }">
         <img class="tds_draggable" src="assets/cds/images/brain.svg" [title]="ACTIONS_LIST['REPLACE_BOT'].name"/>
         <span class="tds_draggable"> Train this block </span>
-    </div>
+    </div> -->
 
 
 
@@ -35,13 +28,16 @@
         class="drag-actions target-container"
         [cdkDropListData]="intentActionList"
         cdkDropList
-        (cdkDropListDropped)="drop($event)">
-        <div *ngFor="let action of intentActionList;let i = index"
+        (cdkDropListDropped)="onDropAction($event)">
+         <!-- [id]="'action_'+i" -->
+        <div *ngFor="let action of intentActionList; let i = index"
             cdkDrag
-            id="action_{{ i }}"
+            [id]="action._tdActionId"
             class="box-action"
-            [ngClass]="{'cds-action-active': idSelected === 'action_' + i}"
-            (click)="onActionSelected(action, i, 'action_' + i)">
+            tabindex="0"
+            [ngClass]="{'cds-action-active': idSelectedAction === action._tdActionId}"
+            (keydown)="onDeleteAction($event)"
+            (click)="onSelectAction(action._tdActionId)">
 
             <div cdkDragHandle class="header-action">
                 <div class="icon-action">
@@ -58,7 +54,7 @@
             <div cdkDragDisabled class="body-action">
                 <cds-action-intent  *ngIf="action._tdActionType == 'intent'"
                     class="panel-response"
-                    [IDintentSelected]="intentSelected.id"
+                    [IDintentSelected]="intent.id"
                     [action]="action"
                 ></cds-action-intent>
             </div>

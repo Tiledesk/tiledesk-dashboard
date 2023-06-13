@@ -1,12 +1,9 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
-import { Form, Intent } from '../../../models/intent-model';
+import { Component, OnInit, HostListener, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { Form, Intent, Action } from '../../../models/intent-model';
 
-// import { Observable, Subscription } from 'rxjs';
 import { ACTIONS_LIST, TYPE_ACTION, patchActionId } from 'app/chatbot-design-studio/utils';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { IntentService } from 'app/chatbot-design-studio/cds-services/intent.service'; 
-
-const swal = require('sweetalert');
 
 import {
   CdkDragDrop,
@@ -34,69 +31,52 @@ export enum HAS_SELECTED_TYPE {
 })
 
 export class CdsPanelIntentComponent implements OnInit, OnChanges {
+  // @HostListener('window:keydown', ['$event'])
 
-  arrayActionsForDrop = [];
-  
-  // @Input() listOfActions:  Array<{ name: string, value: string, icon?: string }>;
-  // id intent selezionato
-  // intent selezionato
+  @Input() intent: Intent;
+  @Output() selectAction = new EventEmitter();
+  @Output() saveIntent = new EventEmitter();
 
-  @Input() idSelected: string;
-  @Input() intentSelected: Intent;
-  @Input() isIntentElementSelected: boolean = false;
-  @Input() isOpenActionDrawer: boolean = false;
-
-  @Output() openActionDrawer = new EventEmitter();
-  @Output() questionSelected = new EventEmitter();
-  @Output() answerSelected = new EventEmitter();
-  @Output() actionSelected = new EventEmitter();
-  @Output() intentForm = new EventEmitter();
-  @Output() actionDeleted = new EventEmitter();
-  @Output() dropAction = new EventEmitter();
-
-
+  idSelectedAction: string;
   intentActionList: Array<any>;
+  arrayActionsForDrop = [];
 
   HAS_SELECTED_TYPE = HAS_SELECTED_TYPE;
   TYPE_ACTION = TYPE_ACTION;
   ACTIONS_LIST = ACTIONS_LIST;
-  form: Form;
-  formSize: number;
   
-  question: any;
-  answer: string;
-  questionCount: number;
-  // webhook_enabled: boolean;
-  displayActions: boolean = true
-  // idSelected:  string;
-  isDeleting: boolean = false;
 
   constructor(
     private logger: LoggerService,
-    public intentService:IntentService
+    public intentService: IntentService
   ) { }
 
-  ngOnInit(): void {
-    // this.listenToIntentUpdates();
-    // console.log('CdsPanelIntentComponent ngOnInit-->', this.intentSelected)
-    // this.actions = this.intentSelected.actions
-    // setTimeout(() => {
-    //   let el = document.getElementById("panel-intent-content");
-    //   //document.getElementById("panel-intent-content").addEventListener("ondragstart", dragElement);
-    //   console.log('******** dragElement:: el', el);
-    //   setDragElement(el);
-    // }, 1000);
-
-    // imposto le coordinate
-    this.setIntentSelected();
-  }
-
-
-
-  ngAfterViewInit(){
+  ngOnInit(): void { 
     // console.log('CdsPanelIntentComponent ngAfterViewInit-->');
   }
+
+  ngAfterViewInit(){
+    this.setIntentSelected();
+  }
   
+  ngOnChanges(changes: SimpleChanges){
+    // console.log('CdsPanelIntentComponent ngAfterViewInit-->');
+  }
+
+  /** CUSTOM FUNCTIONS  */
+  private setIntentSelected(){
+    this.intentActionList = null;
+    // console.log('CdsPanelIntentComponent setIntentSelected-->', this.intent);
+    try {
+      if (this.intent) {
+        this.patchAllActionsId();
+        this.intentActionList = this.intent.actions;
+      }
+    } catch (error) {
+      this.logger.error("error: ", error);
+    }
+  }
+
   private patchAllActionsId(){
     if(this.intentActionList && this.intentActionList.length>0){
       this.intentActionList.forEach(function(action, index, object) {
@@ -105,188 +85,7 @@ export class CdsPanelIntentComponent implements OnInit, OnChanges {
         }
       });
     }
-    // console.log('patchAllActionsId:: ', this.actions);
   }
-
-  // listenToIntentUpdates() {
-  //   this.eventUpadatedIntent.subscribe((intent: Intent) => {
-  //     this.logger.log("[PANEL-INTENT] LISTEN TO INTENTS UPDATES ", intent)
-  //     this.intentSelected = intent; 
-  //   })
-  // }
-
-  // listenToIntentAdd() {
-  //   this.eventCreateIntent.subscribe((intent: Intent) => {
-  //     this.logger.log("[PANEL-INTENT] LISTEN TO INTENTS UPDATES ", intent)
-  //   })
-  // }
-
-
-
-
-  ngOnChanges(changes: SimpleChanges){
-    //this.setIntentSelected();
-  }
-
-  
-
-  private setIntentSelected(){
-    this.intentActionList = null;
-    // this.answer = null;
-    // this.question = null;
-    // this.questionCount = 0;
-    console.log('CdsPanelIntentComponent setIntentSelected-->', this.intentSelected);
-    try {
-      if (this.intentSelected) {
-        this.patchAllActionsId();
-        this.intentActionList = this.intentSelected.actions;
-        // this.form = this.intentSelected.form;
-        // this.answer = this.intentSelected.answer;
-        // if (this.intentSelected.question) {
-        //   const question_segment = this.intentSelected.question.split(/\r?\n/).filter(element => element);
-        //   this.questionCount = question_segment.length;
-        //   this.question = this.intentSelected.question;
-        // } 
-        // this.webhook_enabled = this.intentSelected.webhook_enabled;
-      }
-    } catch (error) {
-      this.logger.error("error: ", error);
-    }
-    // console.log('PanelIntentComponent questionCount , question -->', this.questionCount, this.question);
-  }
-
-  onDropAction(event: CdkDragDrop<string[]>) {
-    moveItemInArray(this.intentActionList, event.previousIndex, event.currentIndex);
-    this.dropAction.emit(this.intentActionList);
-  }
-
-  toggleActions(_displayActions: boolean) {
-    this.displayActions = _displayActions
-    this.logger.log('[PANEL INTENT] displayActions', this.displayActions)
-  }
-
-  openActionsDrawer() {
-    this.idSelected = null; 
-    this.isOpenActionDrawer = !this.isOpenActionDrawer
-    this.logger.log('[PANEL INTENT] isOpenActionDrawer', this.isOpenActionDrawer)
-    this.openActionDrawer.emit(this.isOpenActionDrawer);
-  }
-
-  onSelectQuestion(elementSelected) {
-    console.log('onSelectQuestion-->', elementSelected, this.intentSelected.question)
-    this.idSelected = elementSelected;
-    this.isIntentElementSelected = true;
-    this.questionSelected.emit(this.intentSelected.question);
-    // this.HAS_SELECTED_ANSWER = false
-    // this.HAS_SELECTED_QUESTION = true
-    // this.HAS_SELECTED_FORM = false
-    // this.HAS_SELECTED_ACTION = false
-    
-    // let elementsWithActiveClass = Array.from(document.getElementsByClassName('cds-action-active'));
-    // this.logger.log('[PANEL INTENT] onActionSelected elementsWithActiveClass', elementsWithActiveClass)
-    // if (elementsWithActiveClass.length != 0) {
-    //   elementsWithActiveClass.forEach((el) => {
-    //     el.classList.remove('cds-action-active');
-    //   })
-    // }
-  }
-
-
-  onSelectAnswer(elementSelected) {
-    this.idSelected = elementSelected;
-    this.isIntentElementSelected = true;
-    // this.HAS_SELECTED_ANSWER = true
-    // this.HAS_SELECTED_QUESTION = false
-    // this.HAS_SELECTED_FORM = false
-    // this.HAS_SELECTED_ACTION = false
-    this.answerSelected.emit(this.answer);
-  }
-
-
-
-  onActionSelected(action, index: number, idAction) {
-    console.log('onActionSelected action: ', action);
-    if(this.isDeleting){return;}
-    this.idSelected = idAction;
-    this.isIntentElementSelected = true;
-    // this.HAS_SELECTED_ANSWER = false
-    // this.HAS_SELECTED_QUESTION = false
-    // this.HAS_SELECTED_FORM = false
-    // this.HAS_SELECTED_ACTION = true
-   
-    // this.logger.log('[PANEL INTENT] onActionSelected action: ', action)
-    // this.logger.log('[PANEL INTENT] onActionSelected index', index)
-
-    // let elementsWithActiveClass = Array.from(document.getElementsByClassName('cds-action-active'));
-    // this.logger.log('[PANEL INTENT] onActionSelected elementsWithActiveClass', elementsWithActiveClass)
-    // if (elementsWithActiveClass.length != 0) {
-    //   elementsWithActiveClass.forEach((el) => {
-    //     el.classList.remove('cds-action-active');
-    //   })
-    // }
-
-    // const actionElement = <HTMLElement>document.querySelector(`#action_${index}`);
-    // this.logger.log('[PANEL INTENT] onActionSelected actionElement', actionElement)
-    // actionElement.classList.add("cds-action-active");
-
-    // console.log('NN CAPISCO PERCHè 2 emit verifica !!! action: ', action);
-    // this.actionSelected.emit(action);
-    // this.logger.log('[PANEL INTENT] onActionSelected ', action)
-    this.actionSelected.emit({ action: action, index: index, maxLength: this.intentActionList.length });
-  }
-
-
-  onDisplayForm(elementSelected) {
-    this.idSelected = elementSelected;
-    this.isIntentElementSelected = true;
-    if (this.intentSelected && !this.intentSelected.form) {
-      let newForm = new Form()
-      this.intentSelected.form = newForm;
-    }
-    this.intentForm.emit(this.intentSelected.form);
-  }
-
-  onDeleteAction(actionindex) {
-    this.isDeleting = true;
-    console.log('onDeleteAction:::: ' , actionindex);
-    swal({
-      title: "Are you sure",
-      text: "The action will be deleted",
-      icon: "warning",
-      buttons: ["Cancel", "Delete"],
-      dangerMode: false,
-    })
-    .then((willdelete) => {
-      this.logger.log('[PANEL INTENT] onDeleteAction willdelete', willdelete)
-      if (willdelete) {
-        this.logger.log('[PANEL INTENT] onDeleteAction index', actionindex);
-        this.logger.log('[PANEL INTENT] onDeleteAction intentSelected', this.intentSelected);
-        this.intentSelected.actions.splice(actionindex, 1);
-        this.actionDeleted.emit(true);
-        // this.saveIntent.emit(this.intentSelected);
-      }
-      this.isDeleting = false;
-    });
-  }
-
-
-
-  drop(event: CdkDragDrop<string[]>) {
-    console.log('event:', event, 'previousContainer:', event.previousContainer, 'event.container:', event.container);
-    if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-    } else {
-      try {
-        let actionType: any = event.previousContainer.data[event.previousIndex];
-        let newAction = this.intentService.createAction(actionType.value.type);
-        this.intentActionList.splice(event.currentIndex, 0, newAction);
-        console.log('intentActionList:', this.intentActionList);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-  }
-
 
   getActionParams(action){
     const enumKeys = Object.keys(TYPE_ACTION);
@@ -303,8 +102,42 @@ export class CdsPanelIntentComponent implements OnInit, OnChanges {
       console.error("ERROR: ", error);
       return;
     }
-    
     //const oggettoAzione = TYPE_ACTION.find(item => item.type === 'azione');
+  }
+
+
+  /** EVENTS  */
+  onDropAction(event: CdkDragDrop<string[]>) {
+    // console.log('event:', event, 'previousContainer:', event.previousContainer, 'event.container:', event.container);
+    if (event.previousContainer === event.container) {
+      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    } else {
+      try {
+        let actionType: any = event.previousContainer.data[event.previousIndex];
+        let newAction = this.intentService.createAction(actionType.value.type);
+        this.intentActionList.splice(event.currentIndex, 0, newAction);
+        // console.log('intentActionList:', this.intentActionList);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    this.intent.actions = this.intentActionList;
+    this.saveIntent.emit(this.intent);
+  }
+
+  onSelectAction(idAction) {
+    console.log('onSelectAction: ', idAction);
+    this.idSelectedAction = idAction;
+    this.selectAction.emit(idAction);
+  }
+  
+  onDeleteAction(event: any) {
+    console.log('onDeleteAction:::: ' , event, event.key);
+    if (event.key === 'Delete' || event.key === 'Backspace') {
+      this.intentActionList = this.intentActionList.filter(item => item._tdActionId !== this.idSelectedAction);
+      this.intent.actions = this.intentActionList;
+      this.saveIntent.emit(this.intent);
+    }
   }
   
 
