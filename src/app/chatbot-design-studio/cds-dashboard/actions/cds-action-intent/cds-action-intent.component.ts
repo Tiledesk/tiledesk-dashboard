@@ -40,8 +40,15 @@ export class CdsActionIntentComponent implements OnInit {
       const array = this.connector.fromId.split("/");
       const idAction= array[1];
       if(idAction === this.action._tdActionId){
-        console.log(' updateConnector :: ', this.connector.toId);
-        this.action.intentName = this.connector.toId;
+        if(this.connector.deleted){
+          // DELETE 
+          console.log(' deleteConnector :: ', this.connector.id);
+          this.action.intentName = null;
+        } else {
+          // ADD / EDIT
+          console.log(' updateConnector :: ', this.connector.toId);
+          this.action.intentName = this.connector.toId;
+        }
         this.editAction.emit();
       }
     } catch (error) {

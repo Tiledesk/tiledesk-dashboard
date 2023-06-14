@@ -86,7 +86,7 @@ export class TiledeskStage {
 
 
     setDragElement(elementId) {
-        console.log('setDragElement', this.scale, elementId);
+        // console.log('setDragElement', this.scale, elementId);
         var element = document.getElementById(elementId);
         let pos_mouse_x;
         let pos_mouse_y;

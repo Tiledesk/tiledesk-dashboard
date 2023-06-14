@@ -8,28 +8,36 @@ $mdb-font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif !default;
 $mdb-font-family-poppins: 'Poppins', 'Roboto', Arial, sans-serif !default;
 $box-left-width: 250px;
 
+::ng-deep #tds_svgConnectors{
+  path {
+    stroke: black;
+    stroke-width: 8px;
+  }
 
-::ng-deep .tds_path {
-  animation: dash 30s linear infinite;
-  stroke-dasharray: 18;
-  stroke-width: 8px;
-  stroke: gray;
+  .tds_path {
+    animation: dash 30s linear infinite;
+    stroke-dasharray: 18;
+    stroke-width: 8px;
+    stroke: gray;
+  }
+
+  .tds_connector {
+    stroke: black;
+    stroke-width: 8px;
+  }
+  
+  .tds_connector_over {
+    stroke: gray;
+    stroke-width: 8px;
+  }
+  
+  .tds_connector_selected {
+    stroke: blue;
+    stroke-width: 8px;
+  }
 }
 
-::ng-deep .tds_connector {
-  stroke: black;
-  stroke-width: 8px;
-}
 
-::ng-deep .tds_connector_over {
-  stroke: gray;
-  stroke-width: 8px;
-}
-
-::ng-deep .tds_connector_selected {
-  stroke: blue;
-  stroke-width: 8px;
-}
 
 
 
@@ -135,7 +143,7 @@ $box-left-width: 250px;
     .panel-intent {
       position: absolute;
       margin: 0px;
-      padding: 10px;
+      padding: 0px;
       // display: inline-block;
       // height: auto;
       // max-height: 100%;
