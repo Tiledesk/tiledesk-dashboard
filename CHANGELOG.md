@@ -4,6 +4,10 @@
 - Deploys in production
 - Improvements and bug fixing
 
+### 2.4.45
+- Deploys in production
+- Improvements and bug fixing
+
 ### 2.4.44
 - Deploys in production
 - Improvements and bug fixing
