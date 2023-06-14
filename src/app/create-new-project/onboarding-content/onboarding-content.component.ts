@@ -427,9 +427,9 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
 
   goToExitOnboarding() {
     // if (this.isFirstProject) {
-      this.router.navigate(['project/' + this.newProject.id + '/home'])
+    this.router.navigate(['project/' + this.newProject.id + '/home'])
     // } else {
-      // this.location.back();
+    // this.location.back();
     // }
   }
 
@@ -626,16 +626,16 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
     if (tranlatedLanguage.includes(this.browser_lang)) {
       const langName = this.getLanguageNameFromCode(this.browser_lang)
       // console.log('[WIZARD - CREATE-PRJCT] - langName ', langName)
-     
+
       this.temp_SelectedLangName = langName;
       this.temp_SelectedLangCode = this.browser_lang
     } else {
-      
+
       this.temp_SelectedLangName = 'English';
       this.temp_SelectedLangCode = 'en'
     }
 
-    this.addNewLanguage(this.temp_SelectedLangCode, this.temp_SelectedLangName )
+    this.addNewLanguage(this.temp_SelectedLangCode, this.temp_SelectedLangName)
 
   }
 
@@ -669,6 +669,10 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
 
   segment(pageName, trackName, trackAttr, segmentIdentifyAttributes) {
     // console.log('segment::: ', segmentIdentifyAttributes);
+
+    segmentIdentifyAttributes['name'] = this.user.firstname + ' ' + this.user.lastname;
+    segmentIdentifyAttributes['email'] = this.user.email;
+    segmentIdentifyAttributes['logins'] = 5;
     if (!isDevMode()) {
       try {
         window['analytics'].page(pageName, {
@@ -677,12 +681,16 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
         this.logger.error(pageName + ' error', err);
       }
       try {
-        window['analytics'].identify(this.user._id, {
-          name: this.user.firstname + ' ' + this.user.lastname,
-          email: this.user.email,
-          logins: 5,
+        window['analytics'].identify(this.user._id,
           segmentIdentifyAttributes
-        });
+          // {
+          //   name: this.user.firstname + ' ' + this.user.lastname,
+          //   email: this.user.email,
+          //   logins: 5,
+          //   segmentIdentifyAttributes
+          // }
+
+        );
       } catch (err) {
         this.logger.error(pageName + ' identify error', err);
       }
