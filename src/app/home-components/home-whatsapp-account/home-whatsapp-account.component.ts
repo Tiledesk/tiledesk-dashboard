@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from 'app/core/auth.service';
@@ -19,10 +19,12 @@ const swal = require('sweetalert');
   templateUrl: './home-whatsapp-account.component.html',
   styleUrls: ['./home-whatsapp-account.component.scss']
 })
-export class HomeWhatsappAccountComponent implements OnInit {
+export class HomeWhatsappAccountComponent implements OnInit, OnChanges {
   PLAN_NAME = PLAN_NAME;
   APP_SUMO_PLAN_NAME = APP_SUMO_PLAN_NAME;
   private unsubscribe$: Subject<any> = new Subject<any>();
+  @Input() whatsAppIsInstalled: boolean;
+  @Output() onClickOnGotToLearMoreOrManageApp = new EventEmitter();
   apps: any;
   projectId: string;
   subscription: Subscription;
@@ -37,7 +39,7 @@ export class HomeWhatsappAccountComponent implements OnInit {
   appSumoProfile: string;
   appSumoProfilefeatureAvailableFromBPlan: string;
   whatsAppAppId: string;
-  whatsAppIsInstalled: boolean;
+  // whatsAppIsInstalled: boolean;
   cancel: string;
   learnMoreAboutDefaultRoles: string;
   upgradePlan: string;
@@ -65,6 +67,13 @@ export class HomeWhatsappAccountComponent implements OnInit {
     public usersService: UsersService,
   ) { }
 
+  // -----------------------------------------------------------------------------------------------------
+  // @ Lifecycle hooks
+  // -----------------------------------------------------------------------------------------------------
+
+  /**
+   * On init
+   */
   ngOnInit(): void {
     this.getApps();
     this.getCurrentProject();
@@ -73,6 +82,15 @@ export class HomeWhatsappAccountComponent implements OnInit {
     this.getProjectUserRole();
     this.getOSCODE();
   }
+
+  /**
+   * On changes
+   */
+
+   ngOnChanges() {
+    console.log('[HOME-WA] ngOnChanges whatsAppIsInstalled ', this.whatsAppIsInstalled);
+
+   }
 
 
   getOSCODE() {
@@ -303,7 +321,7 @@ export class HomeWhatsappAccountComponent implements OnInit {
 
   }
 
- 
+
 
 
   openInAppStoreInstall() {

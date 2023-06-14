@@ -34,6 +34,7 @@ import {
   URL_google_tag_manager_add_tiledesk_to_your_sites
 } from '../utils/util';
 import { AnalyticsService } from 'app/analytics/analytics-service/analytics.service';
+import { AppStoreService } from 'app/services/app-store.service';
 
 const swal = require('sweetalert');
 @Component({
@@ -131,6 +132,13 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   displayConnectWhatsApp: boolean = true
   displayCreateChatbot: boolean = true
   displayNewsFeed: boolean = true
+  whatsAppIsInstalled: boolean;
+  apps: any;
+
+  whatsAppAppId: string;
+  installActionType: string;
+  appTitle: string;
+  appVersion: string;
 
   constructor(
     public auth: AuthService,
@@ -148,6 +156,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     private faqKbService: FaqKbService,
     private logger: LoggerService,
     private projectService: ProjectService,
+    public appStoreService: AppStoreService
   ) {
     const brand = brandService.getBrand();
     this.company_name = brand['company_name'];
@@ -195,6 +204,133 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     // this.startChabgelogAnimation()
     // this.pauseResumeLastUpdateSlider() // https://stackoverflow.com/questions/5804444/how-to-pause-and-resume-css3-animation-using-javascript
     // this.getPromoBanner()
+  }
+
+  getCurrentProjectAndInit() {
+    this.auth.project_bs
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((project) => {
+        console.log('[HOME] $UBSCIBE TO PUBLISHED PROJECT - RES  ', project)
+
+        if (project) {
+          this.project = project
+          this.projectId = this.project._id
+
+          const hasEmittedTrialEnded = localStorage.getItem('dshbrd----' + this.project._id)
+          this.logger.log('[HOME] - getCurrentProjectAndInit  ', hasEmittedTrialEnded, '  for project id', this.project._id)
+
+          this.OPERATING_HOURS_ACTIVE = this.project.operatingHours
+          this.logger.log('[HOME] > OPERATING_HOURS_ACTIVE', this.OPERATING_HOURS_ACTIVE)
+
+          this.findCurrentProjectAmongAll(this.projectId)
+          this.init()
+        }
+      }, (error) => {
+        this.logger.error('[HOME] $UBSCIBE TO PUBLISHED PROJECT - ERROR ', error);
+
+      }, () => {
+        this.logger.log('[HOME] $UBSCIBE TO PUBLISHED PROJECT * COMPLETE *');
+      });
+  }
+
+  init() {
+    // console.log("[HOME] > CALLING INIT")
+    // this.getDeptsByProjectId(); // USED FOR COUNT OF DEPTS FOR THE NEW HOME
+    this.getImageStorageThenUserAndBots();
+    // this.getLastMounthMessagesCount() // USED TO GET THE MESSAGES OF THE LAST 30 DAYS
+    // this.getLastMounthRequestsCount(); // USED TO GET THE REQUESTS OF THE LAST 30 DAYS
+    // this.getActiveContactsCount()  /// COUNT OF ACTIVE CONTACTS FOR THE NEW HOME
+    // this.getVisitorsCount() /// COUNT OF VISITORS FOR THE NEW HOME
+    // this.getCountAndPercentageOfRequestsHandledByBotsLastMonth() /// 
+    // this.getVisitorsByLastNDays(this.selectedDaysId); /// VISITOR GRAPH FOR THE NEW HOME - NOT MORE USED - REPLACED WITH LAST 7 DAYS CONVERSATIONS GRAPH
+    // this.initDay = moment().subtract(6, 'd').format('D/M/YYYY') /// VISITOR GRAPH FOR THE NEW HOME
+    // this.endDay = moment().subtract(0, 'd').format('D/M/YYYY') /// VISITOR GRAPH FOR THE NEW HOME
+    // this.logger.log("INIT", this.initDay, "END", this.endDay); /// VISITOR GRAPH FOR THE NEW HOME
+    // this.getRequestByLast7Day()
+
+    this.getLast30daysConvsCount()
+
+  }
+
+ 
+
+  getApps() {
+    this.appStoreService.getApps().subscribe((_apps: any) => {
+      this.apps = _apps.apps;
+      console.log('[HOME] - getApps APPS ', this.apps);
+      this.apps.forEach(app => {
+        if (app.title === "WhatsApp Business") {
+
+          this.whatsAppAppId = app._id;
+          console.log('[HOME] - whatsAppAppId ', this.whatsAppAppId)
+          this.installActionType = app.installActionType
+          console.log('[HOME] - installActionType ', this.installActionType)
+       
+          this.appTitle = app.title;
+          console.log('[HOME] - appTitle ', this.appTitle)
+          this.appVersion = app.version;
+          console.log('[HOME] - appVersion ', this.appVersion)
+
+          
+        }
+
+        console.log('[HOME] - getApps APPS app ', app)
+        if (app && app.version === "v2") {
+          if (app.installActionURL === "") {
+            // console.log('HOME - getApps APPS app installActionURL', app.installActionURL)
+            delete app.installActionURL
+          }
+        }
+      });
+
+
+    }, (error) => {
+      console.error('[HOME] - getApps ERROR  ', error);
+      // this.showSpinner = false;
+    }, () => {
+      console.log('[HOME] getApps * COMPLETE *');
+      this.getInstallations().then((res: any) => {
+        console.log("[HOME] getInstallations res: ", res)
+        if (res) {
+          if (res.length > 0) {
+            res.forEach(r => {
+              console.log("[HOME] getInstallations r: ", r)
+              if (r.app_id === this.whatsAppAppId) {
+                this.whatsAppIsInstalled = true;
+              } else {
+                this.whatsAppIsInstalled = false;
+              }
+            });
+          } else {
+            this.whatsAppIsInstalled = false;
+          }
+        } else {
+          this.whatsAppIsInstalled = false;
+        }
+
+        // this.showSpinner = false;
+      }).catch((err) => {
+        console.error("[HOME] getInstallations ERROR: ", err)
+        // this.showSpinner = false;
+      })
+
+      // this.showSpinner = false;
+    });
+  }
+
+  getInstallations() {
+    let promise = new Promise((resolve, reject) => {
+      this.appStoreService.getInstallation(this.projectId).then((res) => {
+        //  console.log("[HOME] Get Installation Response: ", res);
+        resolve(res);
+      }).catch((err) => {
+        // console.error("[HOME] Error getting installation: ", err);
+        reject(err);
+      })
+    })
+    return promise;
   }
 
   // getProjectPlan() {
@@ -299,34 +435,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       });
   }
 
-  getCurrentProjectAndInit() {
-    this.auth.project_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((project) => {
-        console.log('[HOME] $UBSCIBE TO PUBLISHED PROJECT - RES  ', project)
 
-        if (project) {
-          this.project = project
-          this.projectId = this.project._id
-
-          const hasEmittedTrialEnded = localStorage.getItem('dshbrd----' + this.project._id)
-          this.logger.log('[HOME] - getCurrentProjectAndInit  ', hasEmittedTrialEnded, '  for project id', this.project._id)
-
-          this.OPERATING_HOURS_ACTIVE = this.project.operatingHours
-          this.logger.log('[HOME] > OPERATING_HOURS_ACTIVE', this.OPERATING_HOURS_ACTIVE)
-
-          this.findCurrentProjectAmongAll(this.projectId)
-          this.init()
-        }
-      }, (error) => {
-        this.logger.error('[HOME] $UBSCIBE TO PUBLISHED PROJECT - ERROR ', error);
-
-      }, () => {
-        this.logger.log('[HOME] $UBSCIBE TO PUBLISHED PROJECT * COMPLETE *');
-      });
-  }
 
   findCurrentProjectAmongAll(projectId: string) {
 
@@ -524,25 +633,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       });
   }
 
-  init() {
-    // console.log("[HOME] > CALLING INIT")
-    // this.getDeptsByProjectId(); // USED FOR COUNT OF DEPTS FOR THE NEW HOME
-    this.getImageStorageThenUserAndBots();
-    // this.getLastMounthMessagesCount() // USED TO GET THE MESSAGES OF THE LAST 30 DAYS
-    // this.getLastMounthRequestsCount(); // USED TO GET THE REQUESTS OF THE LAST 30 DAYS
-    // this.getActiveContactsCount()  /// COUNT OF ACTIVE CONTACTS FOR THE NEW HOME
-    // this.getVisitorsCount() /// COUNT OF VISITORS FOR THE NEW HOME
-    // this.getCountAndPercentageOfRequestsHandledByBotsLastMonth() /// 
-    // this.getVisitorsByLastNDays(this.selectedDaysId); /// VISITOR GRAPH FOR THE NEW HOME - NOT MORE USED - REPLACED WITH LAST 7 DAYS CONVERSATIONS GRAPH
-    // this.initDay = moment().subtract(6, 'd').format('D/M/YYYY') /// VISITOR GRAPH FOR THE NEW HOME
-    // this.endDay = moment().subtract(0, 'd').format('D/M/YYYY') /// VISITOR GRAPH FOR THE NEW HOME
-    // this.logger.log("INIT", this.initDay, "END", this.endDay); /// VISITOR GRAPH FOR THE NEW HOME
-    // this.getRequestByLast7Day()
-
-    this.getLast30daysConversations()
-
-  }
-  getLast30daysConversations() {
+ 
+  getLast30daysConvsCount() {
 
     this.analyticsService.requestsByDay(30)
       .pipe(

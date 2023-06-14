@@ -197,7 +197,7 @@
         
         <appdashboard-home-analytics-indicator *ngIf="displayAnalyticsIndicators" [projectId]="projectId" [USER_ROLE]="USER_ROLE"> </appdashboard-home-analytics-indicator>
         
-        <appdashboard-home-whatsapp-account *ngIf="displayConnectWhatsApp"> </appdashboard-home-whatsapp-account>
+      <appdashboard-home-whatsapp-account [whatsAppIsInstalled]="whatsAppIsInstalled"  *ngIf="displayConnectWhatsApp"> </appdashboard-home-whatsapp-account>
 
         <appdashboard-home-create-chatbot *ngIf="displayCreateChatbot"> </appdashboard-home-create-chatbot>
 
