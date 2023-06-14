@@ -82,7 +82,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   showSpinner = true;
 
   subscription: Subscription;
-  isVisible: boolean;
+  isVisiblePay: boolean;
   installWidgetText: string;
 
   //** FOR THE NEW DASHBOARD **//
@@ -101,7 +101,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   projectUsers: any // TO DISPLAY THE PROJECT USERS IN THE NEW HOME HEADER
   storageBucket: string;
   baseUrl: string;
-  chatbots: any // TO DISPLAY THE CHATVOT IN THE NEW HOME HEADER
+  chatbots: any // TO DISPLAY THE CHATBOT IN THE NEW HOME HEADER
   DISPLAY_TEAMMATES: boolean = false;
   DISPLAY_CHATBOTS: boolean = false;
 
@@ -118,9 +118,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   popup_visibility: string = 'none';
   appSumoProfile: string;
   project_plan_badge: boolean;
-
-
-
+  featureAvailableFromBPlan: string;
+  appSumoProfilefeatureAvailableFromBPlan: string;
+  agentCannotManageAdvancedOptions: string;
+  tPlanParams: any;
   // dispayPromoBanner: boolean = true;
   // promoBannerContent: any;
   // promoBannerSyle: any;
@@ -139,7 +140,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   installActionType: string;
   appTitle: string;
   appVersion: string;
-
+  upgradePlan: string;
+  cancel: string;
   constructor(
     public auth: AuthService,
     private route: ActivatedRoute,
@@ -238,7 +240,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   init() {
     // console.log("[HOME] > CALLING INIT")
     // this.getDeptsByProjectId(); // USED FOR COUNT OF DEPTS FOR THE NEW HOME
-    this.getImageStorageThenUserAndBots();
+    this.getImageStorageThenUserAndBots(); // to comment -> moved in Home Create Chatbot
     // this.getLastMounthMessagesCount() // USED TO GET THE MESSAGES OF THE LAST 30 DAYS
     // this.getLastMounthRequestsCount(); // USED TO GET THE REQUESTS OF THE LAST 30 DAYS
     // this.getActiveContactsCount()  /// COUNT OF ACTIVE CONTACTS FOR THE NEW HOME
@@ -250,11 +252,12 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     // this.logger.log("INIT", this.initDay, "END", this.endDay); /// VISITOR GRAPH FOR THE NEW HOME
     // this.getRequestByLast7Day()
 
-    this.getLast30daysConvsCount()
+    this.getLast30daysConvsCount();
+    this.getApps();
 
   }
 
- 
+
 
   getApps() {
     this.appStoreService.getApps().subscribe((_apps: any) => {
@@ -267,13 +270,13 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           console.log('[HOME] - whatsAppAppId ', this.whatsAppAppId)
           this.installActionType = app.installActionType
           console.log('[HOME] - installActionType ', this.installActionType)
-       
+
           this.appTitle = app.title;
           console.log('[HOME] - appTitle ', this.appTitle)
           this.appVersion = app.version;
           console.log('[HOME] - appVersion ', this.appVersion)
 
-          
+
         }
 
         console.log('[HOME] - getApps APPS app ', app)
@@ -332,6 +335,219 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     })
     return promise;
   }
+
+
+  onClickOnGoToLearnMoreOrManageApp() {
+    console.log('HAS CLICKED GO TO LEARN MORE OR MANAGE APP whatsAppIsInstalled', this.whatsAppIsInstalled)
+    if (this.whatsAppIsInstalled === false) {
+      this.goToWhatsAppDetails()
+    } else {
+      this.openInAppStoreInstall()
+    }
+  }
+
+  goToWhatsAppDetails() {
+    if ((this.appTitle === "WhatsApp Business" || this.appTitle === "Facebook Messenger") &&
+      ((this.profile_name === PLAN_NAME.A) ||
+        (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
+        (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
+        (this.prjct_profile_type === 'free' && this.prjct_trial_expired === true))) {
+      // this.presentModalFeautureAvailableFromBPlan()
+      // return
+      if (!this.appSumoProfile) {
+        this.presentModalFeautureAvailableFromBPlan()
+        return
+      } else {
+        this.presentModalAppSumoFeautureAvailableFromBPlan()
+        return
+      }
+    }
+
+    if (this.appTitle === "WhatsApp Business" || this.appTitle === "Facebook Messenger") {
+      this.router.navigate(['project/' + this.projectId + '/app-store-install/' + this.whatsAppAppId + '/detail/h'])
+    }
+  }
+
+  openInAppStoreInstall() {
+    if ((this.appTitle === "WhatsApp Business" || this.appTitle === "Facebook Messenger") &&
+      ((this.profile_name === PLAN_NAME.A) ||
+        (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
+        (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
+        (this.prjct_profile_type === 'free' && this.prjct_trial_expired === true))) {
+      // this.presentModalFeautureAvailableFromBPlan()
+      // return
+      if (!this.appSumoProfile) {
+        this.presentModalFeautureAvailableFromBPlan()
+        return
+      } else {
+        this.presentModalAppSumoFeautureAvailableFromBPlan()
+        return
+      }
+
+    }
+
+    if (this.appTitle === "WhatsApp Business" || this.appTitle === "Facebook Messenger") {
+      this.router.navigate(['project/' + this.projectId + '/app-store-install/' + this.whatsAppAppId + '/connect/h'])
+    }
+
+  }
+
+
+  onClickOnUnistallApp() {
+    console.log('[HOME-WA] UNINSTALL V2 APP - app_id', this.whatsAppAppId);
+    this.appStoreService.unistallNewApp(this.projectId, this.whatsAppAppId).subscribe((res: any) => {
+      console.log('[HOME-WA] UNINSTALL V2 APP - app_id - RES', res);
+
+    }, (error) => {
+      console.error('[HOME-WA] UNINSTALL V2 APP - ERROR  ', error);
+      this.notify.showWidgetStyleUpdateNotification("An error occurred while uninstalling the app", 4, 'report_problem');
+    }, () => {
+      console.log('[HOME-WA] UNINSTALL V2 APP - COMPLETE');
+      this.notify.showWidgetStyleUpdateNotification("App uninstalled successfully", 2, 'done');
+
+      this.whatsAppIsInstalled = false
+      // let index = this.apps.findIndex(x => x._id === appId);
+      // // this.apps[index].installed = false;
+      // // this.apps[index].version = 'v2';
+      // setTimeout(() => {
+      //   this.apps[index].installed = false;
+      // }, 1000);
+
+    });
+  }
+
+  installApp() {
+    if ((this.appTitle === "WhatsApp Business" || this.appTitle === "Facebook Messenger" || this.appTitle === "Zapier" || this.appTitle === 'Help Center') &&
+      ((this.profile_name === PLAN_NAME.A) ||
+        (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
+        (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
+        (this.prjct_profile_type === 'free' && this.prjct_trial_expired === true))) {
+
+      if (!this.appSumoProfile) {
+        this.presentModalFeautureAvailableFromBPlan()
+        return
+      } else {
+        this.presentModalAppSumoFeautureAvailableFromBPlan()
+        return
+      }
+    }
+
+    console.log('[HOME-WA] appId ', this.whatsAppAppId)
+    console.log('[HOME-WA] app app version', this.appVersion)
+    console.log('[HOME-WA] installationType ', this.installActionType);
+
+    this.installV2App(this.projectId, this.whatsAppAppId)
+
+  }
+
+
+  installV2App(projectId, appId) {
+    this.appStoreService.installAppVersionTwo(projectId, appId).subscribe((res: any) => {
+      console.log('[HOME-WA] INSTALL V2 APP ', projectId, appId)
+
+    }, (error) => {
+      console.error('[HOME-WA] INSTALL V2 APP - ERROR  ', error);
+      this.notify.showWidgetStyleUpdateNotification("An error occurred while creating the app", 4, 'report_problem');
+    }, () => {
+      console.log('[HOME-WA] INSTALL V2 APP - COMPLETE');
+      this.notify.showWidgetStyleUpdateNotification("App installed successfully", 2, 'done');
+      // let index = this.apps.findIndex(x => x._id === appId);
+      // // this.apps[index].installed = false;
+      // // this.apps[index].version = 'v2';
+      // setTimeout(() => {
+      //   this.apps[index].installed = true;
+      // }, 1000);
+      this.whatsAppIsInstalled = true;
+    });
+  }
+
+  presentModalFeautureAvailableFromBPlan() {
+    const el = document.createElement('div')
+    el.innerHTML = this.featureAvailableFromBPlan
+    swal({
+      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
+      content: el,
+      icon: "info",
+      // buttons: true,
+      buttons: {
+        cancel: this.cancel,
+        catch: {
+          text: this.upgradePlan,
+          value: "catch",
+        },
+      },
+      dangerMode: false,
+    }).then((value) => {
+      if (value === 'catch') {
+        // console.log('featureAvailableFromPlanC value', value)
+        // console.log('[HOME-WA] prjct_profile_type', this.prjct_profile_type)
+        // console.log('[HOME-WA] subscription_is_active', this.subscription_is_active)
+        // console.log('[HOME-WA] prjct_profile_type', this.prjct_profile_type)
+        // console.log('[HOME-WA] trial_expired', this.trial_expired)
+        // console.log('[HOME-WA] isVisiblePAY', this.isVisiblePAY)
+        if (this.isVisiblePay) {
+          // console.log('[HOME-WA] HERE 1')
+          if (this.USER_ROLE === 'owner') {
+            // console.log('[HOME-WA] HERE 2')
+            if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
+              // console.log('[HOME-WA] HERE 3')
+              this.notify._displayContactUsModal(true, 'upgrade_plan');
+            } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true && this.profile_name === PLAN_NAME.A) {
+              this.notify._displayContactUsModal(true, 'upgrade_plan');
+            } else if (this.prjct_profile_type === 'free' && this.prjct_trial_expired === true) {
+              // console.log('[HOME-WA] HERE 4')
+              this.router.navigate(['project/' + this.projectId + '/pricing']);
+            }
+          } else {
+            // console.log('[HOME-WA] HERE 5')
+            this.presentModalAgentCannotManageAvancedSettings();
+          }
+        } else {
+          // console.log('[HOME-WA] HERE 6')
+          this.notify._displayContactUsModal(true, 'upgrade_plan');
+        }
+      }
+    });
+  }
+
+
+  presentModalAppSumoFeautureAvailableFromBPlan() {
+    const el = document.createElement('div')
+    el.innerHTML = 'Available from ' + this.appSumoProfilefeatureAvailableFromBPlan
+    swal({
+      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
+      content: el,
+      icon: "info",
+      // buttons: true,
+      buttons: {
+        cancel: this.cancel,
+        catch: {
+          text: this.upgradePlan,
+          value: "catch",
+        },
+      },
+      dangerMode: false,
+    }).then((value) => {
+      if (value === 'catch') {
+        if (this.USER_ROLE === 'owner') {
+          this.router.navigate(['project/' + this.projectId + '/project-settings/payments']);
+        } else {
+          // console.log('[HOME-WA] HERE 5')
+          this.presentModalAgentCannotManageAvancedSettings();
+        }
+      }
+    });
+
+  }
+
+
+  presentModalAgentCannotManageAvancedSettings() {
+    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.agentCannotManageAdvancedOptions, this.learnMoreAboutDefaultRoles)
+  }
+
+
+
+
 
   // getProjectPlan() {
   //   this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
@@ -455,10 +671,15 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       if (projectProfileData && projectProfileData.extra3) {
         console.log('[HOME] Find Current Project Among All extra3 ', projectProfileData.extra3)
 
-        this.appSumoProfile = APP_SUMO_PLAN_NAME[projectProfileData.extra3]
+        this.appSumoProfile = APP_SUMO_PLAN_NAME[projectProfileData.extra3];
+        this.appSumoProfilefeatureAvailableFromBPlan = APP_SUMO_PLAN_NAME['tiledesk_tier3']
         console.log('[HOME] Find Current Project appSumoProfile ', this.appSumoProfile)
-
+        this.tPlanParams = { 'plan_name': this.appSumoProfilefeatureAvailableFromBPlan }
+      } else if (!projectProfileData.extra3) {
+        this.tPlanParams = { 'plan_name': PLAN_NAME.B }
       }
+
+
 
       // console.log('[HOME] - Find Current Project Among All - current_selected_prjct - prjct_name ', this.prjct_name);
       // console.log('[HOME] - Find Current Project Among All - current_selected_prjct - prjct_profile_name ', this.prjct_profile_name);
@@ -633,7 +854,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       });
   }
 
- 
+
   getLast30daysConvsCount() {
 
     this.analyticsService.requestsByDay(30)
@@ -659,18 +880,16 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         console.error('[HOME] GET LAST 30 DAYS CONVS - ERROR ', error);
       }, () => {
         console.log('[HOME] GET LAST 30 DAYS CONVS * COMPLETE *');
-       
-          
       });
-    }
+  }
 
 
 
 
   diplayPopup() {
-        const hasClosedPopup = localStorage.getItem('dshbrd----hasclosedpopup')
+    const hasClosedPopup = localStorage.getItem('dshbrd----hasclosedpopup')
     // console.log('[HOME] hasClosedPopup', hasClosedPopup)
-    if(hasClosedPopup === null) {
+    if (hasClosedPopup === null) {
       this.popup_visibility = 'block'
       // console.log('[HOME] popup_visibility', this.popup_visibility)
     }
@@ -685,10 +904,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     // console.log('[HOME] closeEverythingStartsHerePopup popup_visibility ',  this.popup_visibility)
   }
 
-
-
-
-
   // pauseResumeLastUpdateSlider() {
   //   // var slide = document.querySelectorAll('.slide');
   //   // this.logger.log('HOME slide ', slide)
@@ -698,8 +913,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   //   const slideArray = Array.from(slide)
 
   //   for (var i = 0; i < slide.length; i++) {
-
-
   //     slide[i].onclick = this.toggleAnimation(slide);
   //     slide[i].style.animationPlayState = 'running';
   //   }
@@ -992,7 +1205,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         this.projectUsers.forEach(user => {
           let imgUrl = ''
           if (uploadEngineIsFirebase === true) {
-            // this.logger.log('[HOME] - CHECK IF USER HAS IMAGE - UPLOAD ENGINE IS FIREBASE ? ', uploadEngineIsFirebase);
+            // this.logger.log('[HOME] - CHECK IF csnUSER HAS IMAGE - UPLOAD ENGINE IS FIREBASE ? ', uploadEngineIsFirebase);
             // ------------------------------------------------------------------------------
             // Usecase uploadEngine Firebase 
             // ------------------------------------------------------------------------------
@@ -1040,10 +1253,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
-  // USED FOR COUNT OF BOTS FOR THE NEW HOME !!! *** Not used - replaced with GET LAST 30 DAYS MESSAGE COUNT ***
+  // USED FOR COUNT OF BOTS FOR THE NEW HOME !!!
   getAllFaqKbByProjectId(storage, uploadEngineIsFirebase) {
     this.faqKbService.getAllBotByProjectId().subscribe((faqKb: any) => {
-      this.logger.log('[HOME] - GET FAQKB RES', faqKb);
+      console.log('[HOME] - GET FAQKB RES', faqKb);
       if (faqKb) {
 
         // -----------------------------------------------------------
@@ -1132,9 +1345,9 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         let pay = key.split(":");
         // this.logger.log('[HOME] PUBLIC-KEY - pay key&value', pay);
         if (pay[1] === "F") {
-          this.isVisible = false;
+          this.isVisiblePay = false;
         } else {
-          this.isVisible = true;
+          this.isVisiblePay = true;
         }
       }
       if (key.includes("ANA")) {
@@ -2131,6 +2344,27 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   translateString() {
     this.translateInstallWidget();
     this.translateModalOnlyOwnerCanManageProjectAccount();
+
+    this.translate.get('AvailableFromThePlan', { plan_name: PLAN_NAME.B })
+      .subscribe((translation: any) => {
+        this.featureAvailableFromBPlan = translation;
+      });
+
+    this.translate.get('Pricing.UpgradePlan')
+      .subscribe((translation: any) => {
+        this.upgradePlan = translation;
+      });
+
+    this.translate.get('Cancel')
+      .subscribe((text: string) => {
+        this.cancel = text;
+      });
+
+    this.translate.get('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan')
+      .subscribe((translation: any) => {
+        this.agentCannotManageAdvancedOptions = translation;
+      });
+
   }
 
   translateInstallWidget() {

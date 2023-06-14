@@ -2,7 +2,7 @@
     <div class="home-block-header-wpr">
         <div class="home-block-header">
 
-            <div class="home-block-img-title-wpr">
+            <div *ngIf="chatbots && chatbots.length === 0 " class="home-block-img-title-wpr">
                 <div class="home-block-img">
 
                     <svg width="42" height="42" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
@@ -88,81 +88,144 @@
                     You don't have any chatbots yet!
                 </div>
             </div>
+
+            <div *ngIf="chatbots && chatbots.length > 0 " class="home-block-img-title-wpr">
+                <div class="home-block-title">
+                    Your chatbot
+                </div>
+
+            </div>
         </div>
     </div>
     <div style="height: 24px; width: 0px; flex: 0 0 auto;"></div>
 
     <div class="home-block-description-and-connect-btn-wpr">
 
-        <div class="home-block-description" style="padding-right: 55px;">
-            Create your chatbot from scratch with our brand new no-code Chatbot Design Studio or start by selecting a free ready-to-use template (pre-designed chatbot) that suits your needs
+        <div *ngIf="chatbots && chatbots.length === 0" class="home-block-description" style="padding-right: 55px;">
+            Create your chatbot from scratch with our brand new no-code Chatbot Design Studio or start by selecting a
+            free ready-to-use template (pre-designed chatbot) that suits your needs
         </div>
 
-        <!-- <button type="button" class="btn btn-primary home-block-btn">
-           Create
-        </button> -->
-        <!-- <div class="adminActions">
-            <input type="checkbox" name="adminToggle" class="adminToggle" />
-            <a class="adminButton" href="#!"><i class="fa fa-cog"></i></a>
-            <div class="adminButtons">
-                <a href="#" title="Add Company"><i class="fa fa-building"></i></a>
-                <a href="#" title="Edit Company"><i class="fa fa-pen"></i></a>
-                <a href="#" title="Add User"><i class="fa fa-user-plus"></i></a>
-                <a href="#" title="Edit User"><i class="fa fa-user-edit"></i></a>
-            </div>
-        </div> -->
-      
-        <div class="action-btns-wpr">
 
+
+
+        <div *ngIf="chatbots && chatbots.length === 0" class="action-btns-wpr">
             <button mat-mini-fab aria-label="more_horiz icon" [matMenuTriggerFor]="menu"
-                style="box-shadow: unset;margin-right: 16px;    position: relative; top: -2px;background-color: #2196f3">
+                style="box-shadow: unset;   position: relative; top: -2px;background-color: #2196f3">
                 <mat-icon style="color: #fff;">more_horiz</mat-icon>
             </button>
             <mat-menu #menu="matMenu" #aboveMenu="matMenu" yPosition="above">
                 <button mat-menu-item (click)="goToTemplates()">
-                  <mat-icon>class</mat-icon>
-                  <span>Tiledesk templates</span>
+                    <mat-icon>class</mat-icon>
+                    <span>Tiledesk templates</span>
                 </button>
-                <button mat-menu-item (click)="goToCommunityTemplates()">
+                <!-- <button mat-menu-item (click)="goToCommunityTemplates()">
                   <mat-icon>diversity_3</mat-icon>
                   <span>Community templates </span>
-                </button>
+                </button> -->
                 <button mat-menu-item (click)="goToAddBotFromScratch()">
-                  <mat-icon>add_circle_outline</mat-icon>
-                  <span>Create from scratch</span>
+                    <mat-icon>add_circle_outline</mat-icon>
+                    <span>Create from scratch</span>
                 </button>
-              </mat-menu>
+            </mat-menu>
+        </div>
+    </div>
 
-            <!-- <div class="mainopShadow"></div>
-            <div class="fab">
-                <div class="mainop">
-                    <i id="addIcon" class="material-icons">add</i>
-                </div>
-                <div id="forms" class="minifab op5">
-                    <img class="minifabIcon"
-                        src="https://vectr.com/doodleblu/a1y8gN8KKN.svg?width=64&height=64&select=a1y8gN8KKNpage0">
-                </div>
-                <div id="drawings" class="minifab op4">
-                    <img class="minifabIcon"
-                        src="https://vectr.com/doodleblu/b2DCtQvEHF.svg?width=64&height=64&select=b2DCtQvEHFpage0">
-                </div>
-                <div id="slides" class="minifab op3">
-                    <img class="minifabIcon"
-                        src="https://vectr.com/doodleblu/a12WZHDh0z.svg?width=64&height=64&select=a12WZHDh0zpage0">
-                </div>
-                <div id="sheets" class="minifab op2">
-                    <img class="minifabIcon"
-                        src="https://vectr.com/doodleblu/eoOhnACDe.svg?width=64&height=64&select=eoOhnACDepage0">
-                </div>
-                <div id="docs" class="minifab op1">
-                    <img class="minifabIcon"
-                        src="https://vectr.com/doodleblu/bo4WGZSAK.svg?width=64&height=64&select=bo4WGZSAKpage0">
+
+    <div class="your-chatbot-and-memu-wpr" *ngIf="chatbots && chatbots.length > 0" style="    display: flex;
+        justify-content: space-between;">
+        <div class="your-chatbot" style="display: flex;">
+            <div class="served-by-desktop-b" *ngFor="let bot of chatbots; let first = first;">
+                <div [ngClass]="{ 'first-served-by': first, 'disable-link-if-is-agent': USER_ROLE === 'agent' }"
+                    class="served-by-desktop-c tool_tip" (click)="goToBotProfile(bot?._id, bot?.type)">
+
+                    <div class="served-by-desktop-d">
+                        <div size="32" class="served-by-desktop-e">
+
+                            <!-- --------------------------------------------------- -->
+                            <!-- USECASE uploadEngine Firebase -->
+                            <!-- --------------------------------------------------- -->
+                            <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE"
+                                [ngClass]="{'bot-img-gray-bckgrnd': bot.hasImage === false}"
+                                src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{bot?._id}}%2Fphoto.jpg?alt=media"
+                                alt="" onerror="this.src='assets/img/avatar_bot_tiledesk_white.svg'"
+                                style="width: 32px;height: 32px;">
+
+                            <!-- --------------------------------------------------- -->
+                            <!-- USECASE uploadEngine Native -->
+                            <!-- --------------------------------------------------- -->
+                            <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE"
+                                [ngClass]="{'bot-img-gray-bckgrnd': bot.hasImage === false}"
+                                src="{{baseUrl}}images?path=uploads%2Fusers%2F{{bot?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                                alt="" onerror="this.src='assets/img/avatar_bot_tiledesk_white.svg'"
+                                style="width: 32px;height: 32px;">
+
+                        </div>
+
+                        <div *ngIf="bot.type === 'internal'">
+                            <img class="home-served-by-bot-type-logo" style="left: -1px;top: 3px;"
+                                src="assets/img/tiledesk_logo_no_text.png" />
+                        </div>
+                        <div *ngIf="bot.type === 'external'">
+                            <img class="home-served-by-bot-type-logo" style="left: -1px;top: 3px;"
+                                src="assets/img/external_bot_logo.png" />
+                        </div>
+                        <div *ngIf="bot.type === 'dialogflow'">
+                            <img class="home-served-by-bot-type-logo" style="left: -1px;top: 3px;"
+                                src="assets/img/Dialogflow_logo_no_text.png" />
+                        </div>
+                        <div *ngIf="bot.type === 'rasa'">
+                            <img class="home-served-by-bot-type-logo" style="left: -1px;top: 3px;"
+                                src="assets/img/rasa_bot_logo.png" />
+                        </div>
+
+                        <div *ngIf="bot.type === 'tilebot'">
+                            <img class="home-served-by-bot-type-logo" style="left: -1px;top: 3px;"
+                                src="assets/img/tilebot_logo_small.png" />
+                        </div>
+                    </div>
+
+
+                    <!-- -- verificare se viene usato -- -->
+                    <!-- // USECASE: THERE IS ONLY A CHATBOT e.g. the identity bot IN THIS CASE DISPLAY THE ICON ON "NO-BOT" -->
+                    <!-- <div class="served-by-desktop-d" *ngIf="bot?.type === 'identity' && chatbots?.length === 1">
+            <div size="32" class="served-by-desktop-e">
+              <img src="assets/img/bot_alt_slash_white.svg" alt="no-chatbot-icon"
+                style="width: 32px;height: 32px;background: #aaa !important">
+            </div>
+          </div> -->
+
+                    <span class="bottom-home-header">
+                        <span style="text-transform: capitalize;"> {{ bot?.name }} </span>
+                        <i></i>
+                    </span>
                 </div>
             </div>
-        </div> -->
-
         </div>
 
-
-
+        <!-- Menu -->
+        <div *ngIf="chatbots && chatbots.length > 0" class="action-btns-wpr">
+            <button mat-mini-fab aria-label="more_horiz icon" [matMenuTriggerFor]="menu"
+                style="box-shadow: unset;   position: relative; top: -2px;background-color: #2196f3">
+                <mat-icon style="color: #fff;">more_horiz</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu" #aboveMenu="matMenu" yPosition="above">
+                <button mat-menu-item (click)="goToTemplates()">
+                    <mat-icon>class</mat-icon>
+                    <span>Tiledesk templates</span>
+                </button>
+                <!-- <button mat-menu-item (click)="goToCommunityTemplates()">
+                  <mat-icon>diversity_3</mat-icon>
+                  <span>Community templates </span>
+                </button> -->
+                <button mat-menu-item (click)="goToAddBotFromScratch()">
+                    <mat-icon>add_circle_outline</mat-icon>
+                    <span>Create from scratch</span>
+                </button>
+            </mat-menu>
+        </div>
     </div>
+
+
+
+</div>

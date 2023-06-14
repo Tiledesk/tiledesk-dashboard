@@ -2418,10 +2418,10 @@
 }
 
 @media (min-width: 600px) {
-  .padding-l-r {
-    padding-left: 2rem !important;
-    padding-right: 2rem !important;
-  }
+  // .padding-l-r {
+  //   padding-left: 2rem !important;
+  //   padding-right: 2rem !important;
+  // }
   .sm-items-center {
     align-items: center !important;
   }
@@ -2443,7 +2443,7 @@
 }
 
 .max-w-screen-xl {
-  max-width: 1440px !important;
+  // max-width: 1440px !important;
 }
 
 .w-full {
@@ -2629,7 +2629,7 @@ img {
 }
 
 .a-plan-badge {
-  background-color: #19a95d
+  background-color: #19a95d;
 }
 
 .b-plan-badge {
@@ -2644,21 +2644,28 @@ img {
   background-color: #ed006b;
 }
 
-.project-plan-badge {
+.home-project-plan-badge {
   width: fit-content;
-  border-radius: 4px;
-  padding: 0px 5px;
+  // border-radius: 4px;
+  // padding: 0px 5px;
   color: #fff;
   text-transform: capitalize;
   font-size: 11px;
   font-weight: 400;
+  font-family: "Poppins", "Roboto", "Arial", sans-serif;
+  border-radius: 999px;
+  padding: 2px 8px;
 }
 
-
 .oph-disabled {
- background-color:  #f44336 !important; 
+  background-color: #f44336 !important;
 }
 
 .oph-enabled {
-  background-color:  #4caf50 !important; 
- }
+  background-color: #4caf50 !important;
+}
+
+.project---name {
+  display: flex;
+  align-items: center;
+}

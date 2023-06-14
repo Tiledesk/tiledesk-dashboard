@@ -24,7 +24,8 @@ export class HomeWhatsappAccountComponent implements OnInit, OnChanges {
   APP_SUMO_PLAN_NAME = APP_SUMO_PLAN_NAME;
   private unsubscribe$: Subject<any> = new Subject<any>();
   @Input() whatsAppIsInstalled: boolean;
-  @Output() onClickOnGotToLearMoreOrManageApp = new EventEmitter();
+  @Output() onClickOnGoToLearnMoreOrManageApp = new EventEmitter();
+  @Output() onClickOnUnistallApp  = new EventEmitter();
   apps: any;
   projectId: string;
   subscription: Subscription;
@@ -75,10 +76,10 @@ export class HomeWhatsappAccountComponent implements OnInit, OnChanges {
    * On init
    */
   ngOnInit(): void {
-    this.getApps();
+    // this.getApps();
     this.getCurrentProject();
-    this.getProjectPlan();
-    this.translateLabels();
+    // this.getProjectPlan();
+    // this.translateLabels();
     this.getProjectUserRole();
     this.getOSCODE();
   }
@@ -282,12 +283,13 @@ export class HomeWhatsappAccountComponent implements OnInit, OnChanges {
   }
 
   gotToLearMoreOrManageApp() {
-    console.log('[HOME-WA] INSTALL OR OPEN APP ', this.whatsAppIsInstalled);
-    if (this.whatsAppIsInstalled === false) {
-      this.goToWhatsAppDetails()
-    } else {
-      this.openInAppStoreInstall()
-    }
+    this.onClickOnGoToLearnMoreOrManageApp.emit()
+    // console.log('[HOME-WA] INSTALL OR OPEN APP ', this.whatsAppIsInstalled);
+    // if (this.whatsAppIsInstalled === false) {
+    //   this.goToWhatsAppDetails()
+    // } else {
+    //   this.openInAppStoreInstall()
+    // }
   }
 
   goToWhatsAppDetails() {
@@ -345,34 +347,34 @@ export class HomeWhatsappAccountComponent implements OnInit, OnChanges {
     if (this.appTitle === "WhatsApp Business" || this.appTitle === "Facebook Messenger") {
       this.router.navigate(['project/' + this.projectId + '/app-store-install/' + this.whatsAppAppId + '/connect/h'])
     }
-    // else {
-    //   this.router.navigate(['project/' + this.projectId + '/app-store-install/' + this.whatsAppAppId + '/run'])
-    // }
+  
   }
 
 
 
   unistallApp() {
-    console.log('[HOME-WA] UNINSTALL V2 APP - app_id', this.whatsAppAppId);
-    this.appStoreService.unistallNewApp(this.projectId, this.whatsAppAppId).subscribe((res: any) => {
-      console.log('[HOME-WA] UNINSTALL V2 APP - app_id - RES', res);
 
-    }, (error) => {
-      console.error('[HOME-WA] UNINSTALL V2 APP - ERROR  ', error);
-      this.notify.showWidgetStyleUpdateNotification("An error occurred while uninstalling the app", 4, 'report_problem');
-    }, () => {
-      console.log('[HOME-WA] UNINSTALL V2 APP - COMPLETE');
-      this.notify.showWidgetStyleUpdateNotification("App uninstalled successfully", 2, 'done');
+    this.onClickOnUnistallApp.emit()
+  //   console.log('[HOME-WA] UNINSTALL V2 APP - app_id', this.whatsAppAppId);
+    // this.appStoreService.unistallNewApp(this.projectId, this.whatsAppAppId).subscribe((res: any) => {
+    //   console.log('[HOME-WA] UNINSTALL V2 APP - app_id - RES', res);
 
-      this.whatsAppIsInstalled = false
-      // let index = this.apps.findIndex(x => x._id === appId);
-      // // this.apps[index].installed = false;
-      // // this.apps[index].version = 'v2';
-      // setTimeout(() => {
-      //   this.apps[index].installed = false;
-      // }, 1000);
+    // }, (error) => {
+    //   console.error('[HOME-WA] UNINSTALL V2 APP - ERROR  ', error);
+    //   this.notify.showWidgetStyleUpdateNotification("An error occurred while uninstalling the app", 4, 'report_problem');
+    // }, () => {
+    //   console.log('[HOME-WA] UNINSTALL V2 APP - COMPLETE');
+    //   this.notify.showWidgetStyleUpdateNotification("App uninstalled successfully", 2, 'done');
 
-    });
+    //   this.whatsAppIsInstalled = false
+    //   // let index = this.apps.findIndex(x => x._id === appId);
+    //   // // this.apps[index].installed = false;
+    //   // // this.apps[index].version = 'v2';
+    //   // setTimeout(() => {
+    //   //   this.apps[index].installed = false;
+    //   // }, 1000);
+
+    // });
   }
 
 
