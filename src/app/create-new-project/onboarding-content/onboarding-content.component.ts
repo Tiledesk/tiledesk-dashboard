@@ -673,7 +673,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
     segmentIdentifyAttributes['name'] = this.user.firstname + ' ' + this.user.lastname;
     segmentIdentifyAttributes['email'] = this.user.email;
     segmentIdentifyAttributes['logins'] = 5;
-    // if (!isDevMode()) {
+    if (!isDevMode()) {
       try {
         window['analytics'].page(pageName, {
         });
@@ -699,7 +699,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
       } catch (err) {
         this.logger.error(pageName + ' track error', err);
       }
-    // }
+    }
   }
 
   // ----------------- 1 : CREATE A BOT ------------------------ // 
