@@ -176,7 +176,7 @@ export class HomeCreateChatbotComponent implements OnInit {
       botType = 'tilebot'
       if (this.USER_ROLE !== 'agent') {
         // this.router.navigate(['project/' + this.project._id + '/tilebot/intents/', bot_id, botType]);
-        this.router.navigate(['project/' + this.projectId + '/cds/', bot_id, 'intent', '0']);
+        this.router.navigate(['project/' + this.projectId + '/cds/', bot_id, 'intent', '0', 'h']);
       }
     } else {
       botType = bot_type

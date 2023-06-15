@@ -1,57 +1,56 @@
 .home-block-wpr {
-    margin-top: 18px;
-    border-radius: 12px;
-    padding: 24px;
-    // box-shadow: 0 0 20px 4px rgb(154 161 177 / 15%), 0 4px 80px -8px rgb(36 40 47 / 25%),
-    //     0 4px 4px -2px rgb(91 94 105 / 15%);
-    box-shadow: 0 0 #0000, 0 0 #0000, 0 1px 3px #0000001a, 0 1px 2px -1px #0000001a;
+  margin-top: 18px;
+  border-radius: 12px;
+  padding: 24px;
+  // box-shadow: 0 0 20px 4px rgb(154 161 177 / 15%), 0 4px 80px -8px rgb(36 40 47 / 25%),
+  //     0 4px 4px -2px rgb(91 94 105 / 15%);
+  box-shadow: 0 0 #0000, 0 0 #0000, 0 1px 3px #0000001a, 0 1px 2px -1px #0000001a;
 }
 
 .home-block-header-wpr {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .home-block-header {
-    align-items: center;
-    flex-direction: row;
-    display: flex;
+  align-items: center;
+  flex-direction: row;
+  display: flex;
 }
 
 .home-block-img-title-wpr {
-    margin-right: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  margin-right: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .home-block-img {
-    width: 42px;
-    height: 42px;
-    margin-right: 8px;
+  width: 42px;
+  height: 42px;
+  margin-right: 8px;
 }
 
 .home-block-title {
-    font-size: 20px;
-    font-weight: 400;
-    font-family: "Poppins", "Roboto", "Arial", sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  font-family: "Poppins", "Roboto", "Arial", sans-serif;
 }
 
-.home-block-description-and-connect-btn-wpr {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
+.home-block-description-and-menu-btn-wpr {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .home-block-description {
-    color: #000000;
-    font-size: 15px;
-    font-weight: 400;
-    line-height: 20px;
-    margin: 0px;
+  color: #000000;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 20px;
+  margin: 0px;
 }
-
 
 // Actions button
 
@@ -239,7 +238,6 @@ body {
   background-color: #673ab7;
 }
 
-
 .home-served-by-bot-type-logo {
   width: 12px;
   height: auto;
@@ -255,4 +253,131 @@ body {
   // position: absolute;
   // left: 17px;
   // top: 21px;
+}
+
+::ng-deep .chatbot-details-popover {
+  box-shadow: 0 0 20px 4px rgb(154 161 177 / 15%), 0 4px 80px -8px rgb(36 40 47 / 25%),
+    0 4px 4px -2px rgb(91 94 105 / 15%);
+  background: #1c2333;
+  border-radius: 6px;
+  min-height: 48px;
+}
+
+.chatbot-popover-row {
+  display: flex;
+  flex-direction: row;
+  gap: 6px;
+  align-items: center;
+}
+
+.chatbot-name {
+  font-family: "Poppins", "Roboto", "Arial", sans-serif;
+  font-weight: 400;
+  color: #f5f9fc;
+}
+
+.chatbot-description {
+  margin-left: 22px;
+  font-size: 12px;
+  color: #9da2a6;
+  font-weight: 400;
+  max-width: 250px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* number of lines to show */
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.chatbot-language {
+  text-transform: uppercase;
+  color: #f5f9fc;
+  font-size: 12px;
+  margin-left: 2px;
+}
+
+.chatbot-language-flag {
+  width: 16px;
+  height: auto;
+  margin-left: 4px;
+}
+
+// --------------------------------------------------
+// ANIMATED ARROW https://codepen.io/cbrst/pen/ebxwLJ
+// --------------------------------------------------
+.arrow-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.arrow-container:hover .arrow-wrapper .arrow span {
+  $size: 9px;
+  width: $size * 1.414 !important;
+  right: calc($size / 1.414) * -1;
+}
+
+#arrow_1 .arrow {
+  $size: 9px;
+  $width: 2px;
+
+  cursor: pointer;
+  display: block;
+  width: calc($size / 1.414);
+  height: calc($size / 1.414) * 2;
+  position: relative;
+
+  & span,
+  &:before,
+  &:after {
+    // background: #fff;
+    background: #0f62ff;
+    content: "";
+    display: block;
+    width: $size;
+    height: $width;
+    position: absolute;
+    top: calc(50% - (#{$width} / 2));
+  }
+
+  &:before {
+    transform: rotate(-45deg);
+  }
+  &:after {
+    transform: rotate(45deg);
+  }
+
+  & span {
+    width: 0;
+  }
+  &:hover span {
+    width: $size * 1.414;
+  }
+
+  @each $direction in "left" "right" {
+    &.arrow--#{$direction} {
+      & span,
+      &:before,
+      &:after {
+        #{$direction}: 0;
+        transform-origin: #{$direction} 50%;
+      }
+
+      &:before,
+      &:after {
+        transition: #{$direction} 0.3s 0.05s;
+      }
+
+      & span {
+        transition: width 0.3s, #{$direction} 0.3s 0.05s;
+      }
+
+      &:hover {
+        & span,
+        &:before,
+        &:after {
+          #{$direction}: calc($size / 1.414) * -1;
+        }
+      }
+    }
+  }
 }

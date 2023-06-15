@@ -68,7 +68,7 @@ export class HomeConvsGraphComponent implements OnInit, OnChanges {
   
   inizializeHomeStatic() {
     this.getRequestByLastNDayMerge(this.numOfDays);
-    this.getLastMounthRequestsCount();
+    // this.getLastMounthRequestsCount();
     // this.getActiveContactsCount();
     // this.getVisitorsCount();
     // this.getLastMounthMessagesCount();
@@ -292,7 +292,7 @@ export class HomeConvsGraphComponent implements OnInit, OnChanges {
 
         // CREATES THE INITIAL ARRAY WITH THE LAST SEVEN DAYS (calculated with moment) AND REQUESTS COUNT = O
         const last7days_initarray = []
-        for (let i = 0; i < lastdays - 1; i++) {
+        for (let i = 0; i < lastdays ; i++) {
           // console.log('»» !!! ANALYTICS - LOOP INDEX', i);
           last7days_initarray.push({ 'count': 0, day: moment().subtract(i, 'd').format('D/M/YYYY') })
         }

@@ -91,27 +91,218 @@
 
             <div *ngIf="chatbots && chatbots.length > 0 " class="home-block-img-title-wpr">
                 <div class="home-block-title">
-                    Your chatbot
+                    Your chatbots
                 </div>
 
             </div>
         </div>
     </div>
     <div style="height: 24px; width: 0px; flex: 0 0 auto;"></div>
+    <!-- (click)="goToBotProfile(bot?._id, bot?.type)" (mouseenter)="chatbotDetails.open()"
+                (mouseleave)="chatbotDetails.close()" -->
+    <div *ngIf="chatbots && chatbots.length > 0" class="your-chatbots" style="display: flex;height: 45px; margin-bottom: 16px;">
+        <div class="served-by-desktop-b" *ngFor="let bot of chatbots | slice:0:10; let i=index; let first = first;">
+            <div [ngClass]="{ 'first-served-by': first, 'disable-link-if-is-agent': USER_ROLE === 'agent' }"
+                class="served-by-desktop-c">
 
-    <div class="home-block-description-and-connect-btn-wpr">
+                <div class="served-by-desktop-d" [satPopoverAnchor]="c" (click)="c.toggle()">
+                    <div size="45" class="served-by-desktop-e" style="width: 45px;">
 
-        <div *ngIf="chatbots && chatbots.length === 0" class="home-block-description" style="padding-right: 55px;">
+                        <!-- --------------------------------------------------- -->
+                        <!-- USECASE uploadEngine Firebase -->
+                        <!-- --------------------------------------------------- -->
+                        <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE"
+                            [ngClass]="{'bot-img-gray-bckgrnd': bot.hasImage === false}"
+                            src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{bot?._id}}%2Fphoto.jpg?alt=media"
+                            alt="" onerror="this.src='assets/img/avatar_bot_tiledesk.svg'"
+                            style="width: 45px;height: 45px;    border: 1px solid #eee;    background-color: #fff;">
+
+                        <!-- --------------------------------------------------- -->
+                        <!-- USECASE uploadEngine Native -->
+                        <!-- --------------------------------------------------- -->
+                        <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE"
+                            [ngClass]="{'bot-img-gray-bckgrnd': bot.hasImage === false}"
+                            src="{{baseUrl}}images?path=uploads%2Fusers%2F{{bot?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                            alt="" onerror="this.src='assets/img/avatar_bot_tiledesk.svg'"
+                            style="width: 45px;height: 45px; border: 1px solid #eee;  background-color: #fff;">
+
+                    </div>
+
+                    <div *ngIf="bot.type === 'internal'">
+                        <img class="home-served-by-bot-type-logo" style="left: -1px;top: 3px;"
+                            src="assets/img/tiledesk_logo_no_text.png" />
+                    </div>
+                    <div *ngIf="bot.type === 'external'">
+                        <img class="home-served-by-bot-type-logo" style="left: -1px;top: 3px;"
+                            src="assets/img/external_bot_logo.png" />
+                    </div>
+                    <div *ngIf="bot.type === 'dialogflow'">
+                        <img class="home-served-by-bot-type-logo" style="left: -1px;top: 3px;"
+                            src="assets/img/Dialogflow_logo_no_text.png" />
+                    </div>
+                    <div *ngIf="bot.type === 'rasa'">
+                        <img class="home-served-by-bot-type-logo" style="left: -1px;top: 3px;"
+                            src="assets/img/rasa_bot_logo.png" />
+                    </div>
+
+                    <div *ngIf="bot.type === 'tilebot'">
+                        <img class="home-served-by-bot-type-logo" style="left: -1px;top: 3px;"
+                            src="assets/img/tilebot_logo_small.png" />
+                    </div>
+                </div>
+
+                <sat-popover #c horizontalAlign="center" verticalAlign="center" hasBackdrop
+                    (backdropClicked)="c.close()" panelClass="chatbot-details-popover">
+
+                    <div class="chatbot-details-popover-wpr" style="padding: 12px;">
+
+                        <div class="chatbot-popover-row">
+
+                            <div class="left--col">
+
+                                <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE"
+                                    [ngClass]="{'bot-img-gray-bckgrnd': bot.hasImage === false}"
+                                    src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{bot?._id}}%2Fphoto.jpg?alt=media"
+                                    alt="" onerror="this.src='assets/img/avatar_bot_tiledesk_white.svg'" style="width: 24px;
+                            height: 24px;
+                            border-radius: 50%;
+                            border: 1px solid #2b3245;">
+
+                                <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE"
+                                    [ngClass]="{'bot-img-gray-bckgrnd': bot.hasImage === false}"
+                                    src="{{baseUrl}}images?path=uploads%2Fusers%2F{{bot?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                                    alt="" onerror="this.src='assets/img/avatar_bot_tiledesk_white.svg'" style="width: 24px;
+                            height: 24px;
+                            border-radius: 50%;
+                            border: 1px solid #2b3245;">
+                            </div>
+
+                            <div class="right--col chatbot-name">
+                                {{bot.name}}
+                            </div>
+
+                        </div>
+
+                        <div class="chatbot-popover-row">
+                            <div class="left--col"></div>
+
+                            <div class="right--col chatbot-description">
+                             <span *ngIf="bot.description"> {{bot.description}} </span>   
+                             <span *ngIf="!bot.description"> No description provided</span>  
+                                
+                            </div>
+
+                        </div>
+
+                        <!-- Note! display none  -->
+                        <div style="display: none !important;" class="chatbot-popover-row">
+                            <div class="left--col">
+                                <span *ngIf="bot.language === 'da'">
+                                    <img class="chatbot-language-flag" src="assets/img/language_flag/da.png">
+                                </span>
+                                <span *ngIf="bot.language === 'nl'">
+                                    <img class="chatbot-language-flag" src="assets/img/language_flag/nl.png">
+                                </span>
+                                <span *ngIf="bot.language === 'en'">
+                                    <img class="chatbot-language-flag" src="assets/img/language_flag/en.png">
+                                </span>
+                                <span *ngIf="bot.language === 'fi'">
+                                    <img class="chatbot-language-flag" src="assets/img/language_flag/fi.png">
+                                </span>
+                                <span *ngIf="bot.language === 'fr'">
+                                    <img class="chatbot-language-flag" src="assets/img/language_flag/fr.png">
+                                </span>
+                                <span *ngIf="bot.language === 'de'">
+                                    <img class="chatbot-language-flag" src="assets/img/language_flag/de.png">
+                                </span>
+                                <span *ngIf="bot.language === 'hu'">
+                                    <img class="chatbot-language-flag" src="assets/img/language_flag/hu.png">
+                                </span>
+                                <span *ngIf="bot.language === 'it'">
+                                    <img class="chatbot-language-flag" src="assets/img/language_flag/it.png">
+                                </span>
+                                <span *ngIf="bot.language === 'nb'">
+                                    <img class="chatbot-language-flag" src="assets/img/language_flag/no.png">
+                                </span>
+                                <span *ngIf="bot.language === 'pt'">
+                                    <img class="chatbot-language-flag" src="assets/img/language_flag/pt.png">
+                                </span>
+                                <span *ngIf="bot.language === 'ro'">
+                                    <img class="chatbot-language-flag" src="assets/img/language_flag/ro.png">
+                                </span>
+                                <span *ngIf="bot.language === 'ru'">
+                                    <img class="chatbot-language-flag" src="assets/img/language_flag/ru.png">
+                                </span>
+                                <span *ngIf="bot.language === 'es'">
+                                    <img class="chatbot-language-flag" src="assets/img/language_flag/es.png">
+                                </span>
+                                <span *ngIf="bot.language === 'sv'">
+                                    <img class="chatbot-language-flag" src="assets/img/language_flag/sv.png">
+                                </span>
+                                <span *ngIf="bot.language === 'tr'">
+                                    <img class="chatbot-language-flag" src="assets/img/language_flag/tr.png">
+                                </span>
+                            </div>
+
+
+                            <div class="right--col chatbot-language">
+                                {{bot.language}}
+                            </div>
+                        </div>
+
+                        <div class="view-detail-btn" style="text-align: center;">
+                            <div class="arrow-container" style="    display: flex;
+                            align-items: center;
+                            width: 100%;
+                            justify-content: center;
+                            color: #0f62ff;
+                            font-weight: 400;
+                            margin-top: 6px;
+                            cursor: pointer;" (click)="goToBotProfile(bot?._id, bot?.type)">
+                                <div id="arrow_1" class="arrow-wrapper">
+                                  <div class="text-block" style="margin-right: 16px;">
+                                    {{ 'ViewDetails' | translate }}
+                                  </div>
+                                  <div class="arrow arrow--right">
+                                    <span></span>
+                                  </div>
+                                </div>
+                              </div>
+
+                        </div>
+
+                    </div>
+                </sat-popover>
+
+            </div>
+        </div>
+
+        <div class="served-by-desktop-b">
+            <div class="served-by-desktop-d">
+              <div size="32" class="served-by-desktop-e-no-hover-effect">
+                <img src="assets/img/user_white.svg" style="width: 32px;height: 32px; padding: 5px;">
+              </div>
+            </div>
+          </div>
+
+
+    </div>
+
+
+
+    <div class="home-block-description-and-menu-btn-wpr">
+        <!-- *ngIf="chatbots && chatbots.length === 0" -->
+        <div class="home-block-description" style="padding-right: 55px;">
             Create your chatbot from scratch with our brand new no-code Chatbot Design Studio or start by selecting a
             free ready-to-use template (pre-designed chatbot) that suits your needs
         </div>
 
 
 
-
-        <div *ngIf="chatbots && chatbots.length === 0" class="action-btns-wpr">
+        <!-- *ngIf="chatbots && chatbots.length === 0" -->
+        <div class="action-btns-wpr">
             <button mat-mini-fab aria-label="more_horiz icon" [matMenuTriggerFor]="menu"
-                style="box-shadow: unset;   position: relative; top: -2px;background-color: #2196f3">
+                style="box-shadow: unset; background-color: #2196f3">
                 <mat-icon style="color: #fff;">more_horiz</mat-icon>
             </button>
             <mat-menu #menu="matMenu" #aboveMenu="matMenu" yPosition="above">
@@ -132,99 +323,7 @@
     </div>
 
 
-    <div class="your-chatbot-and-memu-wpr" *ngIf="chatbots && chatbots.length > 0" style="    display: flex;
-        justify-content: space-between;">
-        <div class="your-chatbot" style="display: flex;">
-            <div class="served-by-desktop-b" *ngFor="let bot of chatbots; let first = first;">
-                <div [ngClass]="{ 'first-served-by': first, 'disable-link-if-is-agent': USER_ROLE === 'agent' }"
-                    class="served-by-desktop-c tool_tip" (click)="goToBotProfile(bot?._id, bot?.type)">
 
-                    <div class="served-by-desktop-d">
-                        <div size="32" class="served-by-desktop-e">
-
-                            <!-- --------------------------------------------------- -->
-                            <!-- USECASE uploadEngine Firebase -->
-                            <!-- --------------------------------------------------- -->
-                            <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE"
-                                [ngClass]="{'bot-img-gray-bckgrnd': bot.hasImage === false}"
-                                src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{bot?._id}}%2Fphoto.jpg?alt=media"
-                                alt="" onerror="this.src='assets/img/avatar_bot_tiledesk_white.svg'"
-                                style="width: 32px;height: 32px;">
-
-                            <!-- --------------------------------------------------- -->
-                            <!-- USECASE uploadEngine Native -->
-                            <!-- --------------------------------------------------- -->
-                            <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE"
-                                [ngClass]="{'bot-img-gray-bckgrnd': bot.hasImage === false}"
-                                src="{{baseUrl}}images?path=uploads%2Fusers%2F{{bot?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
-                                alt="" onerror="this.src='assets/img/avatar_bot_tiledesk_white.svg'"
-                                style="width: 32px;height: 32px;">
-
-                        </div>
-
-                        <div *ngIf="bot.type === 'internal'">
-                            <img class="home-served-by-bot-type-logo" style="left: -1px;top: 3px;"
-                                src="assets/img/tiledesk_logo_no_text.png" />
-                        </div>
-                        <div *ngIf="bot.type === 'external'">
-                            <img class="home-served-by-bot-type-logo" style="left: -1px;top: 3px;"
-                                src="assets/img/external_bot_logo.png" />
-                        </div>
-                        <div *ngIf="bot.type === 'dialogflow'">
-                            <img class="home-served-by-bot-type-logo" style="left: -1px;top: 3px;"
-                                src="assets/img/Dialogflow_logo_no_text.png" />
-                        </div>
-                        <div *ngIf="bot.type === 'rasa'">
-                            <img class="home-served-by-bot-type-logo" style="left: -1px;top: 3px;"
-                                src="assets/img/rasa_bot_logo.png" />
-                        </div>
-
-                        <div *ngIf="bot.type === 'tilebot'">
-                            <img class="home-served-by-bot-type-logo" style="left: -1px;top: 3px;"
-                                src="assets/img/tilebot_logo_small.png" />
-                        </div>
-                    </div>
-
-
-                    <!-- -- verificare se viene usato -- -->
-                    <!-- // USECASE: THERE IS ONLY A CHATBOT e.g. the identity bot IN THIS CASE DISPLAY THE ICON ON "NO-BOT" -->
-                    <!-- <div class="served-by-desktop-d" *ngIf="bot?.type === 'identity' && chatbots?.length === 1">
-            <div size="32" class="served-by-desktop-e">
-              <img src="assets/img/bot_alt_slash_white.svg" alt="no-chatbot-icon"
-                style="width: 32px;height: 32px;background: #aaa !important">
-            </div>
-          </div> -->
-
-                    <span class="bottom-home-header">
-                        <span style="text-transform: capitalize;"> {{ bot?.name }} </span>
-                        <i></i>
-                    </span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Menu -->
-        <div *ngIf="chatbots && chatbots.length > 0" class="action-btns-wpr">
-            <button mat-mini-fab aria-label="more_horiz icon" [matMenuTriggerFor]="menu"
-                style="box-shadow: unset;   position: relative; top: -2px;background-color: #2196f3">
-                <mat-icon style="color: #fff;">more_horiz</mat-icon>
-            </button>
-            <mat-menu #menu="matMenu" #aboveMenu="matMenu" yPosition="above">
-                <button mat-menu-item (click)="goToTemplates()">
-                    <mat-icon>class</mat-icon>
-                    <span>Tiledesk templates</span>
-                </button>
-                <!-- <button mat-menu-item (click)="goToCommunityTemplates()">
-                  <mat-icon>diversity_3</mat-icon>
-                  <span>Community templates </span>
-                </button> -->
-                <button mat-menu-item (click)="goToAddBotFromScratch()">
-                    <mat-icon>add_circle_outline</mat-icon>
-                    <span>Create from scratch</span>
-                </button>
-            </mat-menu>
-        </div>
-    </div>
 
 
 

@@ -610,6 +610,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
       segmentTrackAttr["botId"] = this.botId;
       // let segmentTrackAttr = this.segmentAttributes;
       this.segment(segmentPageName, segmentTrackName, segmentTrackAttr, this.segmentIdentifyAttributes);
+      localStorage.setItem('onboarding_'+this.projectID, this.segmentIdentifyAttributes)
       // this.DISPLAY_SPINNER_SECTION = false;
       // this.DISPLAY_BOT = true;
       this.goToExitOnboarding();
