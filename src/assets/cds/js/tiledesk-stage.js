@@ -45,10 +45,14 @@ export class TiledeskStage {
             this.scale += dy * -0.01;
             this.scale = Math.min(Math.max(0.125, this.scale), 4);
             this.transform();
-            const event = new CustomEvent("scaled", { detail: {scale: this.scale} });
-            document.dispatchEvent(event);
+            // const event = new CustomEvent("scaled", { detail: {scale: this.scale} });
+            // document.dispatchEvent(event);
         }
 
+        setTimeout(() => {
+            const customEvent = new CustomEvent("moved-and-scaled", { detail: {scale: this.scale, x: this.tx, y: this.ty} });
+            document.dispatchEvent(customEvent);
+        }, 0)
         
     }
     
@@ -84,23 +88,41 @@ export class TiledeskStage {
     }
 
 
+    // NON è chiaro, non so se funziona da verificare!!!
+    // deleteRefDragElement(elementId){
+    
+    //     var element = document.getElementById(elementId);
+    //     let listenerMouseDown = dragMouseDown.bind(this);
+    //     let handleMouseDown = (event) => listenerMouseDown(event, element);
+    //     element.removeEventListener("mousedown", handleMouseDown, false);
+    // }
 
     setDragElement(elementId) {
-        // console.log('setDragElement', this.scale, elementId);
+        console.log('-----> setDragElement', elementId);
         var element = document.getElementById(elementId);
         let pos_mouse_x;
         let pos_mouse_y;
+        
+        // let elementDrag3 = elementDrag.bind(this);
+        // let listenerMouseMove = (event) => elementDrag3(event, element);
+        // let listenerMouseDown = (event) => dragMouseDown3(event, element);
 
-        let dragMouseDown3 = dragMouseDown.bind(this);
-        let elementDrag3 = elementDrag.bind(this);
-        let listenerMouseMove = (event) => elementDrag3(event, element);
 
-        // element.onmousedown = dragMouseDown2;
-        // element.addEventListener("mousedown", dragMouseDown3);
+        let listenerMouseMove = elementDrag.bind(this);
+        let handleMouseMove = (event) => listenerMouseMove(event, element);
 
-        element.addEventListener("mousedown", (e)=> {
-            dragMouseDown3(e,element);
-        });
+        let listenerMouseDown = dragMouseDown.bind(this);
+        let handleMouseDown = (event) => listenerMouseDown(event, element);
+
+
+        // element.removeEventListener("mousedown", handleMouseDown, false);
+        element.addEventListener("mousedown", handleMouseDown, false);
+
+        //
+        // element.addEventListener("mousedown", listenerMouseDown, true);
+        // element.addEventListener("mousedown", (e)=> {
+        //     dragMouseDown3(e,element);
+        // });
         
 
         //console.log('setDragElement', element);
@@ -108,7 +130,7 @@ export class TiledeskStage {
         // 
 
 
-        function dragMouseDown(e,element) {
+        function dragMouseDown(e, element) {
             console.log('dragMouseDown', e, this.classDraggable, element);
             if (!e.target.classList.contains(this.classDraggable)) {
                 return;
@@ -122,29 +144,26 @@ export class TiledeskStage {
             // document.addEventListener("mouseup", ()=> {
             //     closeDragElement();
             // });
-            
-            
             // document.addEventListener("mousemove", ()=> {
             //     elementDrag(e, element);
             // });
             document.onmouseup = closeDragElement;
             // let listener = (event) => elementDrag3(e, element);
-            document.addEventListener("mousemove", listenerMouseMove, true);
-
+            document.removeEventListener("mousemove", handleMouseMove, true);
+            document.addEventListener("mousemove", handleMouseMove, true);
             // this.listener = (event) => this.closeDragElement(e, element);
             // document.addEventListener("mousemove", elementDrag3, true );
             // document.addEventListener("mousemove", (e)=> {
             //     elementDrag3(e, element);
             // }, true );
-            
             // document.onmousemove = elementDrag3;
         }
 
 
         function closeDragElement() {
-            console.log('closeDragElement::: ', listenerMouseMove);
+            console.log('closeDragElement::: ', handleMouseMove);
             /* stop moving when mouse button is released:*/
-            document.removeEventListener("mousemove", listenerMouseMove, true);
+            document.removeEventListener("mousemove", handleMouseMove, true);
             // document.removeEventListener("mousemove", elementDrag3(e, element), true); // Succeeds
             // document.removeEventListener("mousemove", elementDrag3(e, element), false); 
             // document.removeEventListener("onmouseup", closeDragElement, true); // Succeeds
@@ -166,11 +185,11 @@ export class TiledeskStage {
             let pos_x = elmnt.offsetLeft + delta_x / this.scale;//pos_mouse_x/ scale - e.clientX/ scale - shift_x; // logic
             let pos_y = elmnt.offsetTop + delta_y / this.scale;//pos_mouse_y/ scale - e.clientY/ scale - shift_y;
             //pos_y = ( e_rect.top + delta_y)/ scale;//pos_mouse_y/ scale - e.clientY/ scale - shift_y;
-            console.log("pos_x:", pos_x, "pos_y:", pos_y);
+            // console.log("pos_x:", pos_x, "pos_y:", pos_y);
             // set the element's new position:
             elmnt.style.top = pos_y + "px";//(elmnt.offsetTop - pos_y) + "px";
             elmnt.style.left = pos_x + "px"; //(elmnt.offsetLeft - pos_x) + "px";
-            const moved_event = new CustomEvent("moved", {
+            const moved_event = new CustomEvent("dragged", {
                 detail: {
                     element: elmnt,
                     x: pos_x, 
@@ -182,6 +201,14 @@ export class TiledeskStage {
         
     }
 
+
+    physicPointCorrector(point){
+        const container = document.getElementById(this.containerId);
+        const container_rect = container.getBoundingClientRect();
+        const x = point.x - container_rect.left;
+        const y = point.y - container_rect.top;
+        return { x: x, y: y };
+      }
 
 
 

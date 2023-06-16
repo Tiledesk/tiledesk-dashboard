@@ -39,15 +39,15 @@ export class CdsPanelActionsComponent implements OnInit {
     console.log('ngOnChanges:: ', this.pos, this.menuType);
     switch (this.menuType) {
       case TYPE_OF_MENU.ACTION:
-        this.menuItemsList = [];
-        break;
-      case TYPE_OF_MENU.EVENT:
         this.menuItemsList = Object.keys(ACTIONS_LIST).map(key => {
           return {
             type: key,
             value: ACTIONS_LIST[key]
           };
         });
+        break;
+      case TYPE_OF_MENU.EVENT:
+        this.menuItemsList = [];
         break;
       case TYPE_OF_MENU.BLOCK:
         this.menuItemsList = [{

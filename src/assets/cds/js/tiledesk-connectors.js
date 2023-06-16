@@ -88,10 +88,11 @@ export class TiledeskConnectors {
 
 
     // PUBLIC FUNCTIONS //
+
   
     createConnector(fromId, toId, fromPoint, toPoint) {
       const id = fromId + "/" + toId;
-      console.log('createConnector: fromId-> ', fromId);
+      console.log('createConnector: fromId-> ', fromId, toId, fromPoint, toPoint);
       // condition example id
       // "start_blockID/actionID/(sub-action path, ex: true)/end_blockID"
       // fromId: "block1/action1/true"
@@ -127,10 +128,10 @@ export class TiledeskConnectors {
         this.blocks[inblock.id] = inblock;
       }
       inblock.inConnectors[connector.id] = connector.id;
-  
       //block.addConnector()
       console.log("blocks:", this.blocks);
       console.log("connectors:", this.connectors);
+
       this.#drawConnector(id, fromPoint, toPoint);
       this.removeConnectorDraft();
 
@@ -203,17 +204,12 @@ export class TiledeskConnectors {
 
 
     moved(element, x, y) {
-      console.log("moving ----> ", element.id, x, y);
-      // search all the connectors connected to blockID
-      // connectors 
-      //fromId: fromId
-      //toId: toId
-      // all connectors where fromId === blockId
-      // all connectors where toId === blockId
+      // console.log("moving ----> ", element.id, x, y);
       const blockId = element.id;
       let block = this.blocks[blockId];
-      console.log("block:", block)
+      // console.log("block:", block)
       if (!block) {
+        console.log("NO block:");
         return;
       }
       //block.outConnectors.forEach((conn_id, key) => {
@@ -322,11 +318,14 @@ export class TiledeskConnectors {
         mouse_pos_logic = this.#logicPoint({ x: pos_x_phis, y: pos_y_phis });
         mouse_pos_logic.y = mouse_pos_logic.y + 20;
         this.toPoint = mouse_pos_logic;
+        this.toPointPhis = { x: pos_x_phis, y: pos_y_phis };
       }
       else {
         let pos_x_phis = event.clientX;
         let pos_y_phis = event.clientY;
         mouse_pos_logic = this.#logicPoint({ x: pos_x_phis, y: pos_y_phis });
+        this.toPoint = mouse_pos_logic;
+        this.toPointPhis = { x: pos_x_phis, y: pos_y_phis };
       }
       this.drawingFront = mouse_pos_logic;
       this.#moveControlPoint();
@@ -348,12 +347,15 @@ export class TiledeskConnectors {
         //console.log("connector released on an unsupported element!");
         //this.removeConnectorDraft();
         const fire_event = new CustomEvent("connector-draft-released",
-          {
-            detail: {
-              point: this.toPoint,
-              target: event.target
-            }
-          });
+        {
+          detail: {
+            fromId: this.fromId,
+            fromPoint: this.drawingBack,
+            toPoint: this.toPoint,
+            menuPoint: this.toPointPhis,
+            target: event.target
+          }
+        });
         document.dispatchEvent(fire_event);
         console.log("connector-draft-released fired!");
       }
@@ -397,7 +399,7 @@ export class TiledeskConnectors {
   
     /** Creates or modify a connector in HTML */
     #drawConnector(id, backPoint, frontPoint) {
-      console.log(id, backPoint, frontPoint);
+      // console.log(id, backPoint, frontPoint);
       let connector = document.getElementById(id);
       if (!connector) {
         connector = document.createElementNS("http://www.w3.org/2000/svg", "path");
@@ -459,6 +461,8 @@ export class TiledeskConnectors {
   
 
     /** Measure from phisical to logical */
+
+
     #toLogicScale(measure) {
       return measure / this.scale;
     }

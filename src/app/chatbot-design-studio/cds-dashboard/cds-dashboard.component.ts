@@ -133,6 +133,9 @@ export class CdsDashboardComponent implements OnInit {
   
   TiledeskStage: any; 
   tiledeskConnectors: any;
+  isOpenFloatMenu: boolean = false;
+  positionFloatMenu: any = {'x':0, 'y':0};
+  connectorDraft: any = {};
 
   // isBetaUrl: boolean;
   constructor(
@@ -189,50 +192,61 @@ export class CdsDashboardComponent implements OnInit {
     this.tiledeskConnectors = new TiledeskConnectors("tds_drawer", {"input_block": "tds_input_block"}, this.connectors);
     this.tiledeskConnectors.mousedown(document);
 
+
     document.addEventListener(
-      "scaled",
-      (e:CustomEvent) => {
-        console.log("event:", e);
+      "moved-and-scaled", (e:CustomEvent) => {
+        // console.log("event:", e);
         this.tiledeskConnectors.scale = e.detail.scale;
-        console.log("changing connectors scale:", this.tiledeskConnectors.scale);
+        this.tiledeskConnectors.removeConnectorDraft();
+        this.isOpenFloatMenu = false;
+        // console.log("changing connectors scale:", this.tiledeskConnectors.scale);
       },
       false
     );
 
 
     document.addEventListener(
-      "moved",
-      (e:CustomEvent) => {
-        console.log("event:", e);
+      "dragged", (e:CustomEvent) => {
+        // console.log("event:", e);
         const el = e.detail.element;
         const x = e.detail.x;
         const y = e.detail.y;
         this.tiledeskConnectors.moved(el, x, y);
-        console.log("changing connectors scale:", this.tiledeskConnectors.scale);
+        // console.log("changing connectors dragged:", this.tiledeskConnectors.scale);
       },
       false
     );
 
     document.addEventListener(
-      "connector-draft-released",
-      (e:CustomEvent) => {
+      "connector-draft-released", (e:CustomEvent) => {
         console.log("connector-draft-released:", e);
         if (e.detail.target.classList.contains("tds_container")) {
           console.log("connector-draft-released event, catched on 'stage'");
           // this.tiledeskConnectors.removeConnectorDraft();
         }
         else {
-          console.log("connector-draft-released event, catched but unsupported");
+          // console.log("connector-draft-released event, catched but unsupported", e.detail);
+          this.positionFloatMenu = this.TiledeskStage.physicPointCorrector(e.detail.menuPoint);
+          this.isOpenFloatMenu = true;
+          this.connectorDraft = {
+            fromId: e.detail.fromId,
+            fromPoint: e.detail.fromPoint,
+            toPoint: e.detail.toPoint,
+            menuPoint: this.positionFloatMenu,
+            target: e.detail.target
+          }
           // this.tiledeskConnectors.removeConnectorDraft();
+          console.log('OPEN MENU', this.connectorDraft);
         }
       },
       true
     );
 
 
+
+
     document.addEventListener(
-      "connector-created",
-      (e:CustomEvent) => {
+      "connector-created", (e:CustomEvent) => {
         console.log("connector-created:", e);
         this.connector = e.detail.connector;
         console.log("connector-created:", this.connector);
@@ -247,8 +261,7 @@ export class CdsDashboardComponent implements OnInit {
 
 
     document.addEventListener(
-      "connector-deleted",
-      (e:CustomEvent) => {
+      "connector-deleted", (e:CustomEvent) => {
         console.log("connector-deleted:", e);
         this.connector = e.detail.connector;
         this.connector['deleted'] = true;
@@ -265,6 +278,8 @@ export class CdsDashboardComponent implements OnInit {
 
   }
 
+
+  
 
   setListOfActions(){
     this.listOfActions = this.listOfIntents.map(a => {
@@ -482,20 +497,9 @@ export class CdsDashboardComponent implements OnInit {
     // setDrawer(container, drawer);
   }
 
-  /** setDragAndListnerEventToElements */
-  private setDragAndListnerEventToElements(){
+  private setDragAndListnerEvent(intent){
     let that = this;
-    this.listOfIntents.forEach(intent => {
-      // try {
-      //   if(!intent.attributes){
-      //     intent.attributes = {'x':0, 'y':0};
-      //   }
-      // } catch (error) {
-      //   console.error('ERROR: ',error);
-      // }
-      // console.log('SET -----> ', intent);
-      
-      if(intent.id){
+    if(intent.id){
         try {
           setTimeout(() => {
             // this.TiledeskStage.setDragElement(intent.id);
@@ -503,7 +507,6 @@ export class CdsDashboardComponent implements OnInit {
             // setDragElement(elem);
             this.TiledeskStage.setDragElement(intent.id);
             // **************** !!!!!!!! aggiungo listner !!!!!!! *******************//
-
             elem.removeEventListener('mouseup', function() {
               that.onMouseUp(intent, elem);
             });
@@ -511,7 +514,6 @@ export class CdsDashboardComponent implements OnInit {
             elem.addEventListener('mouseup', function() {
               that.onMouseUp(intent, elem);
             });
-
             // Rimuovi l'event listener con i parametri
             elem.removeEventListener('mousedown', function() {
               that.onMouseDown(elem);
@@ -520,7 +522,6 @@ export class CdsDashboardComponent implements OnInit {
             elem.addEventListener('mousedown', function() {
               that.onMouseDown(elem);
             });
-
             // Rimuovi l'event listener con i parametri
             elem.removeEventListener('mousemove', function() {
               that.onMouseMove(elem);
@@ -529,15 +530,18 @@ export class CdsDashboardComponent implements OnInit {
             elem.addEventListener('mousemove', function() {
               that.onMouseMove(elem);
             });
-          
-           
           }, 500);
         } catch (error) {
           console.error('ERROR', error);
         }
-      }
-      
-      
+    }
+  }
+
+  /** setDragAndListnerEventToElements */
+  private setDragAndListnerEventToElements(){
+    this.listOfIntents.forEach(intent => {
+      // console.log('SET -----> ', intent);
+      this.setDragAndListnerEvent(intent);
     });
   }
 
@@ -604,7 +608,7 @@ export class CdsDashboardComponent implements OnInit {
   setIntentPosition(id:string, newPos: any){
     // const intent = { key: id, value:  };
     this.dashboardAttributes[id] =  {'x': newPos.x, 'y': newPos.y};
-    console.log('setIntentPosition id ----------->', this.dashboardAttributes[id]);
+    console.log('setIntentPosition id ----------->', id, this.dashboardAttributes[id]);
     // console.log(this.dashboardAttributes);
     this.intentService.setDashboardAttributes(this.dashboardAttributes);
   }
@@ -901,6 +905,25 @@ export class CdsDashboardComponent implements OnInit {
 
   /** START EVENTS PANEL INTENT */
 
+
+  async onAddingActionToStage(event) {
+    // console.log('onAddingActionToStage:: ', event);
+    const actionType = event.type;
+    const toPoint = this.connectorDraft.toPoint;
+    const fromPoint = this.connectorDraft.fromPoint;
+    const fromId = this.connectorDraft.fromId;
+    const toId = await this.addNewIntent(toPoint, actionType);
+    // console.log('onAddingActionToStage:: fromId: ', fromId);
+    // console.log('onAddingActionToStage:: toId: ', toId);
+    // console.log('onAddingActionToStage:: fromPoint: ', fromPoint);
+    // console.log('onAddingActionToStage:: toPoint: ', toPoint);
+    this.tiledeskConnectors.createConnector(fromId, toId, fromPoint, toPoint);
+    this.tiledeskConnectors.removeConnectorDraft();
+    this.isOpenFloatMenu = false;
+  }
+
+
+
   onDroppedElementToStage(event: CdkDragDrop<string[]>) {
     console.log('droppedElementOnStage!!!!!', event);
     let actionType = '';
@@ -912,7 +935,7 @@ export class CdsDashboardComponent implements OnInit {
     } catch (error) {
       console.error('ERROR: ', error);
     }
-    this.addNewIntent(pos, actionType);
+    const idNewIntent = this.addNewIntent(pos, actionType);
   }
  
   /** */
@@ -922,12 +945,15 @@ export class CdsDashboardComponent implements OnInit {
     this.intentSelected.id = 'new';
     this.setIntentPosition('new', pos);
     const idNewIntent = await this.intentService.addNewIntent(this.id_faq_kb, this.intentSelected);
+    this.intentSelected.id = idNewIntent;
     console.log('creatIntent: OK ', idNewIntent);
     if(idNewIntent){
       // !!! il valore di listOfIntents è bindato nel costructor con subscriptionListOfIntents !!! //
       this.setIntentPosition(idNewIntent, pos);
-      this.setDragAndListnerEventToElements();
+      this.setDragAndListnerEvent(this.intentSelected);
+      // this.TiledeskStage.setDragElement(idNewIntent);
     }
+    return idNewIntent;
   }
 
 
@@ -956,7 +982,10 @@ export class CdsDashboardComponent implements OnInit {
       this.elementIntentSelected['element'] = null;
       // !!! il valore di listOfIntents è bindato nel costructor con subscriptionListOfIntents !!! //
       // this.listOfIntents = this.intentService.intents.getValue();
-      this.setDragAndListnerEventToElements();
+      // this.setDragAndListnerEventToElements();
+    
+      // this.TiledeskStage.deleteRefDragElement(intentId);
+      
       swal(this.translate.instant('Done') + "!", this.translate.instant('FaqPage.AnswerSuccessfullyDeleted'), {
         icon: "success",
       }).then((okpressed) => {
@@ -1070,6 +1099,10 @@ export class CdsDashboardComponent implements OnInit {
     this.elementIntentSelected['element'] = null
     this.editIntent();
   }
+
+
+
+
   /** END EVENTS PANEL INTENT */
 
 
