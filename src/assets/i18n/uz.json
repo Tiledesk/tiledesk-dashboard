@@ -2322,6 +2322,7 @@
     "ViewedPages":"Koʻrilgan sahifalar",
     "IPAddress":"IP manzili",
     "NoTAGAssignedToThisContactYet":"Hozircha bu kontaktga TAG tayinlanmagan",
+    "StartBySelecting": "Ishga kirishish uchun {{template_category}} shablonlaridan foydalanishga tayyor bepulni tanlang yoki yangi kodsiz Chatbot Design Studio yordamida chatbotingizni noldan yarating.",
     "AddIntentPage": {
         "AddForm": "Shakl qo'shing",
         "SelectTemplateForm": "Tavsiya etilganlar orasida shakl turini tanlang yoki yangisini yarating",

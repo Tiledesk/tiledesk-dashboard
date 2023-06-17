@@ -2322,6 +2322,7 @@
     "ViewedPages":"Görüntülenen Sayfalar",
     "IPAddress":"IP adresi",
     "NoTAGAssignedToThisContactYet":"Bu kişiye henüz bir TAG atanmadı",
+    "StartBySelecting":"{{template_category}} şablonlarından ücretsiz, kullanıma hazır bir şablon seçerek başlayın veya yepyeni kodsuz Chatbot Tasarım Stüdyomuzla sohbet robotunuzu sıfırdan oluşturun",
     "AddIntentPage": {
         "AddForm": "Form ekle",
         "SelectTemplateForm": "Önerilenler arasında bir tür form seçin veya yeni bir form oluşturun",

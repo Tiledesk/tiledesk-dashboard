@@ -2322,6 +2322,7 @@
     "ViewedPages":"Pagine visualizzate",
     "IPAddress":"Indirizzo IP",
     "NoTAGAssignedToThisContactYet":"Nessun TAG ancora assegnato a questo contatto",
+    "StartBySelecting": "Inizia selezionando un modello gratuito pronto all'uso dai modelli {{template_category}} o crea il tuo chatbot da zero con il nostro nuovissimo Chatbot Design Studio senza codice",
     "AddIntentPage": {
         "AddForm": "Aggiungi form",
         "SelectTemplateForm": "Selezionare un tipo di form tra quelli suggeriti o crearne uno nuovo",
