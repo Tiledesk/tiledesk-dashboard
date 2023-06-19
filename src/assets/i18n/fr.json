@@ -2323,6 +2323,7 @@
     "IPAddress":"Adresse IP",
     "NoTAGAssignedToThisContactYet":"Aucun TAG attribué à ce contact pour le moment",
     "StartBySelecting":"Commencez par sélectionner un modèle gratuit prêt à l'emploi parmi les modèles {{template_category}} ou créez votre chatbot à partir de zéro avec notre tout nouveau studio de conception de chatbot sans code",
+    "NextStep":"Prochaine étape",
     "AddIntentPage": {
         "AddForm": "Ajouter le formulaire",
         "SelectTemplateForm": "Sélectionnez un type de forme parmi ceux suggérés, ou créez-en un nouveau",

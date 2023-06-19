@@ -2323,6 +2323,7 @@
     "IPAddress":"IP мекенжайы",
     "NoTAGAssignedToThisContactYet":"Бұл контактіге әлі бірде-бір TAG тағайындалмаған",
     "StartBySelecting":"{{template_category}} үлгілерінен пайдалануға дайын тегін таңдау арқылы бастаңыз немесе біздің жаңа кодсыз Chatbot Design Studio арқылы чатботыңызды нөлден жасаңыз.",
+    "NextStep":"Келесі қадам",
     "AddIntentPage": {
         "AddForm": "Пішін қосу",
         "SelectTemplateForm": "Ұсынылғандар арасында пішін түрін таңдаңыз немесе жаңасын жасаңыз",

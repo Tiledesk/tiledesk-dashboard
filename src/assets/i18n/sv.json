@@ -2323,6 +2323,7 @@
     "IPAddress":"IP-adress",
     "NoTAGAssignedToThisContactYet":"Ingen TAG har tilldelats den här kontakten ännu",
     "StartBySelecting":"Kom igång genom att välja en gratis färdig att använda från {{template_category}}-mallarna eller skapa din chatbot från grunden med vår helt nya no-code Chatbot Design Studio",
+    "NextStep":"Nästa steg",
     "AddIntentPage": {
         "AddForm": "Lägga till formulär",
         "SelectTemplateForm": "Välj en typ av formulär bland de föreslagna eller skapa en ny",

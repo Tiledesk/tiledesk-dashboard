@@ -2323,6 +2323,7 @@
 	"IPAddress":"IP Adresse",
 	"NoTAGAssignedToThisContactYet":"Diesem Kontakt wurde noch kein TAG zugeordnet",
 	"StartBySelecting":"Wählen Sie zunächst eine kostenlose, gebrauchsfertige Vorlage aus den {{template_category}}-Vorlagen aus oder erstellen Sie Ihren Chatbot von Grund auf mit unserem brandneuen Chatbot Design Studio ohne Code",
+	"NextStep":"Nächster Schritt",
 	"AddIntentPage": {
 		"AddForm": "Form hinzufügen",
 		"SelectTemplateForm": "Wählen Sie unter den vorgeschlagenen Form eine Art von Form aus oder erstellen Sie eine neue",

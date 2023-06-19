@@ -2321,6 +2321,7 @@
     "IPAddress":"IP Address",
     "NoTAGAssignedToThisContactYet":"No TAG assigned to this contact yet",
     "StartBySelecting":"Get started by selecting a free ready-to-use from the {{template_category}} templates or create your chatbot from scratch with our brand new no-code Chatbot Design Studio",
+    "NextStep":"Next step",
     "AddIntentPage": {
         "AddForm": "Add form",
         "SelectTemplateForm": "Select a type of form among those suggested, or create a new one",
