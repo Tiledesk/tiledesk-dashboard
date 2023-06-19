@@ -12,17 +12,6 @@
 
     </div>
 
-    <!-- <div class="button-intent button-intent-questions tds_draggable"
-        (click)="onSelectQuestion(HAS_SELECTED_TYPE.QUESTION)"
-        [ngClass]="{
-        'button-intent-active': idSelectedAction === HAS_SELECTED_TYPE.QUESTION,
-        'no-question': questionCount === 0 || !question
-        }">
-        <img class="tds_draggable" src="assets/cds/images/brain.svg" [title]="ACTIONS_LIST['REPLACE_BOT'].name"/>
-        <span class="tds_draggable"> Train this block </span>
-    </div> -->
-
-
 
     <div id="drop-actions"
         class="drag-actions target-container"
@@ -52,6 +41,7 @@
 
             
             <div cdkDragDisabled class="body-action">
+
                 <cds-action-intent  *ngIf="action._tdActionType == 'intent'"
                     class="panel-response"
                     [IDintentSelected]="intent.id"
@@ -59,17 +49,19 @@
                     [action]="action"
                     (editAction)="onEditAction($event)"
                 ></cds-action-intent>
+
+                <cds-action-reply  *ngIf="action._tdActionType == 'reply'"
+                    class="panel-response"
+                    [IDintentSelected]="intent.id"
+                    [connector]="connector"
+                    [action]="action"
+                    (editAction)="onEditAction($event)"
+                ></cds-action-reply>
+
             </div>
 
         </div>
     </div>
-
-    <!-- <div [id]="intentSelected.id+'/action2/out1'" class="fbZvAl2 tds_connectable">
-        <div class="sc-kUYxwz2 alspn2 vf-canvas__port2 ">
-            <div class="sc-guKdVK2 sc-jjRfBx2 bHrIYh2 biGEuu2"></div>
-            <! <div class="sc-guKdVK sc-jjRfBx fQxrue fmbOyt"></div> ->
-        </div>
-    </div> -->
     
 
 </div>

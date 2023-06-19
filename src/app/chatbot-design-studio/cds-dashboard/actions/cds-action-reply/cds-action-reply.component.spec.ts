@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CdsPanelIntentComponent } from './cds-panel-intent.component';
+import { CdsActionReplyComponent } from './cds-action-reply.component';
 
-describe('CdsPanelIntentComponent', () => {
-  let component: CdsPanelIntentComponent;
-  let fixture: ComponentFixture<CdsPanelIntentComponent>;
+describe('CdsActionReplyComponent', () => {
+  let component: CdsActionReplyComponent;
+  let fixture: ComponentFixture<CdsActionReplyComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CdsPanelIntentComponent ]
+      declarations: [ CdsActionReplyComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(CdsPanelIntentComponent);
+    fixture = TestBed.createComponent(CdsActionReplyComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

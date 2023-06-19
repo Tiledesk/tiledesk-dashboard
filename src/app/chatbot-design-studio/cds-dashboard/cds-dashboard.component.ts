@@ -291,6 +291,7 @@ export class CdsDashboardComponent implements OnInit {
         return { name: a.intent_display_name, value: '#' + a.intent_id, icon: 'label_important_outline' }
       }
     });
+    console.log('this.listOfActions: ', this.listOfActions);
   }
 
 

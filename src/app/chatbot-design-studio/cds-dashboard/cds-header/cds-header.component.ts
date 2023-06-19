@@ -12,7 +12,7 @@ import { FaqKbService } from 'app/services/faq-kb.service';
 
 import { Chatbot } from 'app/models/faq_kb-model';
 import { EXTERNAL_URL } from '../../utils';
-import { CdsPublishOnCommunityModalComponent } from '../cds-publish-on-community-modal/cds-publish-on-community-modal.component';
+import { CdsPublishOnCommunityModalComponent } from '../utils/cds-publish-on-community-modal/cds-publish-on-community-modal.component';
 
 const swal = require('sweetalert');
 

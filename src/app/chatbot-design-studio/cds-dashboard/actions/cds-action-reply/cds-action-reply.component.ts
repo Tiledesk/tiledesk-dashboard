@@ -1,26 +1,24 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { Button, Message, Command, ActionReply, MessageWithWait, MessageAttributes } from '../../../../../models/intent-model';
-import { ACTIONS_LIST, TYPE_ACTION, TYPE_COMMAND, TYPE_RESPONSE, TYPE_BUTTON, TYPE_URL, TYPE_MESSAGE } from '../../../../utils';
+import { Button, Message, Command, ActionReply, MessageWithWait, MessageAttributes } from 'app/models/intent-model';
+import { ELEMENTS_LIST, ACTIONS_LIST, TYPE_ACTION, TYPE_COMMAND, TYPE_RESPONSE, TYPE_BUTTON, TYPE_URL, TYPE_MESSAGE } from 'app/chatbot-design-studio/utils';
 import { LoggerService } from 'app/services/logger/logger.service';
 
 @Component({
-  selector: 'cds-action-reply-2',
-  templateUrl: './action-reply.component.html',
-  styleUrls: ['./action-reply.component.scss']
+  selector: 'cds-action-reply',
+  templateUrl: './cds-action-reply.component.html',
+  styleUrls: ['./cds-action-reply.component.scss']
 })
-export class ActionReplyComponent implements OnInit {
+export class CdsActionReplyComponent implements OnInit {
+
   @ViewChild('scrollMe', { static: false }) scrollContainer: ElementRef;
   translateY: string;
 
-  // @Output() openButtonPanel = new EventEmitter();
-  // @Output() saveIntent = new EventEmitter();
-  @Input() reply: ActionReply;
+  @Input() action: ActionReply;
   @Input() typeAction: string;
   @Input() listOfActions: Array<{ name: string, value: string, icon?: string }>;
   @Input() intent_display_name: string;
-  // @Input() showSpinner: boolean;
-  // @Input() openCardButton: boolean;
+
 
   response: MessageWithWait;
   openCardButton: boolean = false;
@@ -40,47 +38,47 @@ export class ActionReplyComponent implements OnInit {
 
   actionType: string;
 
+  element: any;
+  showTip: boolean = true;
+  descriptionTooltip: string = "";
+  dataInput: string;
+  tipText: string;
+  titlePlaceholder: string;
 
+  TypeMessage = TYPE_MESSAGE;
 
   constructor(
     private logger: LoggerService,
   ) { }
 
+  manageTooltip(){}
+  onChangeText(event){}
+  addElement(event){}
+
+
   // SYSTEM FUNCTIONS //
   ngOnInit(): void {
-    console.log('ActionReplyComponent ngOnInit', this.reply);
-    // console.log('ngOnInit panel-response::: ', this.typeAction);
-    this.actionType = (this.typeAction === TYPE_ACTION.RANDOM_REPLY ? 'RANDOM_REPLY' : 'REPLY');
+    console.log('ActionReplyComponent ngOnInit',this.typeAction, this.action);
+    // // console.log('ngOnInit panel-response::: ', this.typeAction);
+    // this.actionType = (this.typeAction === TYPE_ACTION.RANDOM_REPLY ? 'RANDOM_REPLY' : 'REPLY');
+    try {
+      this.element = ELEMENTS_LIST.find(item => item.type === this.action._tdActionType);
+      if(this.action._tdActionTitle && this.action._tdActionTitle != ""){
+        this.dataInput = this.action._tdActionTitle;
+      }
+      console.log('ActionDescriptionComponent action:: ', this.element);
+    } catch (error) {
+      this.logger.log("error ", error);
+    }
 
   }
 
   ngOnChanges() {
-    this.logger.log('ActionReplyComponent ngOnChanges', this.reply);
+    this.logger.log('ActionReplyComponent ngOnChanges', this.action);
     this.initialize();
     // this.generateCommandsOfElements();
     // this.elementIntentSelectedType = this.elementIntentSelected.type;
   }
-
-
-  /** */
-  // ngAfterContentChecked(){
-  //   this.logger.log('ActionReplyComponent ngAfterContentChecked');
-  //   setTimeout(() => {
-  //     this.generateCommandsOfElements();
-  //   }, 500); 
-  // }
-
-  // ngOnDestroy(){
-  //   this.logger.log('ActionReplyComponent ngOnDestroy');
-  //   setTimeout(() => {
-  //     this.generateCommandsOfElements();
-  //   }, 500); 
-  // }
-
-  // ngDoCheck(){
-  //   this.logger.log('ActionReplyComponent ngDoCheck');
-  // }
-
 
 
   // CUSTOM FUNCTIONS //
@@ -92,9 +90,9 @@ export class ActionReplyComponent implements OnInit {
     this.intentName = '';
     this.intentNameResult = true;
     this.textGrabbing = false;
-    if (this.reply) {
+    if (this.action) {
       try {
-        this.arrayResponses = this.reply.attributes.commands;
+        this.arrayResponses = this.action.attributes.commands;
       } catch (error) {
         this.logger.log('error:::', error);
       }
@@ -125,15 +123,13 @@ export class ActionReplyComponent implements OnInit {
       if(el._tdJSONCondition){
         elementMessage.message._tdJSONCondition = el._tdJSONCondition
       }
-
       replyArrayElements.push(elementMessage);
       if (el.text) {
         textConversation += el.text + '\r\n'
       }
     });
-    this.reply.text = textConversation;
-    this.reply.attributes.commands = replyArrayElements;
-    this.logger.log("replyArrayElements", replyArrayElements);
+    this.action.text = textConversation;
+    this.action.attributes.commands = replyArrayElements;
   }
 
   /** */
@@ -165,23 +161,6 @@ export class ActionReplyComponent implements OnInit {
       this.logger.log(error);
     }
   }
-
-  /** */
-  // private updateArrayResponse(){
-  //   let newArrayCommands = []; 
-  //   this.arrayResponses.forEach(element => {
-  //     if(element.type !== TYPE_COMMAND.WAIT){
-  //       let command =  new Command(TYPE_COMMAND.WAIT);
-  //       command.time = element.message.time;
-  //       newArrayCommands.push(command);
-  //       command =  new Command(element.type);
-  //       element.time = element.message.time;
-  //       command.message = element.message;
-  //       newArrayCommands.push(command);
-  //     }
-  //   });
-  //   this.arrayResponses = newArrayCommands;
-  // }
 
 
   /** */
@@ -289,22 +268,11 @@ export class ActionReplyComponent implements OnInit {
     this.intentNameResult = true;
   }
 
-  /** */
-  // onSaveIntent(){
-  //   //this.logger.log('onSaveIntent:: ', this.intent, this.arrayResponses);
-  //   this.intentNameResult = this.checkIntentName();
-  //   this.updateArrayResponse();
-  //   if(this.intentNameResult){
-  //     this.saveIntent.emit(this.intent);
-  //   }
-  // }
-
-
 
   /** */
   onDisableInputMessage() {
     try {
-      this.reply.attributes.disableInputMessage = !this.reply.attributes.disableInputMessage;
+      this.action.attributes.disableInputMessage = !this.action.attributes.disableInputMessage;
     } catch (error) {
       this.logger.log("Error: ", error);
     }
@@ -349,13 +317,6 @@ export class ActionReplyComponent implements OnInit {
 
   /** appdashboard-button-configuration-panel: Save button */
   onSaveButton(button) {
-    // if(this.newButton){
-    //   this.response.attributes.attachment.buttons.push(button);
-    // }
-    
-    // button.action = button.action + JSON.stringify(button.attributes);
-    // delete(button.attributes);
-    // console.log('button.action::: ', button.action);
     this.logger.log('onSaveButton :: ', button, this.response);
     this.generateCommandsWithWaitOfElements();
   }

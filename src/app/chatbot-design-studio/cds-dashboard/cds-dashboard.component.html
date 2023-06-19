@@ -72,7 +72,7 @@
 
             <div #drawer_of_items_to_zoom_and_drag id="tds_drawer" class="tds-drag-drawer2 box-right-content2">
          
-                <cds-panel-intent *ngFor="let intent of listOfIntents;"
+                <cds-drawer-of-intents *ngFor="let intent of listOfIntents;"
                     [id]="intent.id"
                     class="panel-intent tds_input_block tds_draggable" 
                     [style.top.px]="getIntentPosition(intent.id).y" 
@@ -81,7 +81,7 @@
                     [connector]="connector"
                     (selectAction)=onSelectAction($event)
                     (saveIntent)=onSaveIntent($event)
-                ></cds-panel-intent>
+                ></cds-drawer-of-intents>
                 <!-- 
                 [listOfActions]="listOfActions"
                 [idSelected]="idElementOfIntentSelected"

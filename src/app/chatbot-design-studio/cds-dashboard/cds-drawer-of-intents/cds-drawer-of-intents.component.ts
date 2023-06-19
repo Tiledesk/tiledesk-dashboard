@@ -25,12 +25,12 @@ export enum HAS_SELECTED_TYPE {
 
 // declare function setDragElement(el);
 @Component({
-  selector: 'cds-panel-intent',
-  templateUrl: './cds-panel-intent.component.html',
-  styleUrls: ['./cds-panel-intent.component.scss']
+  selector: 'cds-drawer-of-intents',
+  templateUrl: './cds-drawer-of-intents.component.html',
+  styleUrls: ['./cds-drawer-of-intents.component.scss']
 })
 
-export class CdsPanelIntentComponent implements OnInit, OnChanges {
+export class CdsDrawerOfIntentsComponent implements OnInit, OnChanges {
   // @HostListener('window:keydown', ['$event'])
 
   @Input() intent: Intent;

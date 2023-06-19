@@ -11,9 +11,8 @@
 
 .text-editable-div {
     display: block;
-    margin-top: 0px;
-    margin-left: 30px;
-    width: calc(100% - 66px);
+    margin: auto;
+    width: calc(100% - 20px);
 }
 .extensions-response {
     font-size: $font-size-base;
@@ -36,7 +35,7 @@
 }
 
 
-.text-area{
+.text-area {
     width: calc(100% - 40px);
     margin-left: 20px;
     display: flex;
@@ -58,7 +57,7 @@
         padding: 0;
         .response-controls {
             position: absolute;
-            top: 0px;
+            top: -10px;
             left: 0px;
             opacity: 0;
             transition: opacity 0.3s ease-in-out;
@@ -77,6 +76,9 @@
 
 /** response-controls **/
 .response-controls {
+    z-index: 1;
+    top: -6px;
+    left: 4px;
     .control-button {
         cursor: pointer;
         color: $color-bck-gray-hex;
@@ -109,7 +111,7 @@
 }
 
 /** box-textarea **/
-.box-textarea {
+.box-textarea ::ng-deep {
     width: calc(100% - 40px);
     margin-left: 20px;
     textarea {
@@ -118,12 +120,15 @@
         border: 1px solid $color-withe-hex;
         overflow-x: hidden;
         overflow-y: auto;
-        width: calc(100% - 2.5em);
-        padding: 20px 20px;
         color: $color-text-dark-hex;
         font-size: 1.15em;
         line-height: 25px;
         resize: vertical;
+
+        width: calc(100% - 20px);
+        padding: 10px;
+        padding-top: 5px;
+        padding-bottom: 20px;
     }
 }
 
@@ -169,12 +174,19 @@
 
 /** BUTTONS **/
 .buttons-response {
-    display: flex;
-    flex-wrap: wrap;
-    margin: 12px 0 0 0;
+    display: block;
+    margin: 12px 0 0;
     width: 100%;
-    font-size: $font-size-base;
-    padding: 0 25px;
+    font-size: 14px;
+    padding: 0 5px;
+    flex-direction: row;
+    float: right;
+
+    // flex-wrap: wrap;
+    // margin: 12px 0 0 0;
+    // width: 100%;
+    // font-size: $font-size-base;
+    // padding: 0 25px;
 }
 .custom-placeholder {
     background: #ccc;
@@ -183,6 +195,7 @@
     transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
 .button-reply {
+    float: right;
     position: relative;
     min-width: 100px;
     margin: 10px 5px 0;
@@ -226,6 +239,7 @@
     white-space: nowrap;
 }
 .button-reply-add {
+    float: right;
     user-select: none;
     box-sizing: border-box;
     outline: none;
