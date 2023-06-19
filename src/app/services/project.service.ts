@@ -15,7 +15,7 @@ export class ProjectService {
   user: any;
   currentUserID: string;
   projectID: string;
- 
+
   APP_SUMO_API_BASE_URL = "https://tiledesk-sumo.tiledesk.repl.co/"
 
   public myAvailabilityCount: BehaviorSubject<number> = new BehaviorSubject<number>(null);
@@ -292,30 +292,30 @@ export class ProjectService {
   // ----------------------------------------------------------
 
 
-    // -----------------------------------------------------------------
+  // -----------------------------------------------------------------
   // Used to update the project name - todo from put to patch
   // -----------------------------------------------------------------
   public updateAppSumoProject(
-    proiectid: string, 
-    projectProfileName: string, 
+    proiectid: string,
+    projectProfileName: string,
     agentNumber: number,
-    activationemail: string, 
-    licenseproductkeyuuid: string, 
-    plan_id: string, 
+    activationemail: string,
+    licenseproductkeyuuid: string,
+    plan_id: string,
     invoice_item_uuid: string) {
     // 'Authorization': this.TOKEN
     const httpOptions = {
       headers: new HttpHeaders({
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        
+
       })
     };
 
-    let url = this.APP_SUMO_API_BASE_URL+ 'updateproject';
+    let url = this.APP_SUMO_API_BASE_URL + 'updateproject';
     this.logger.log('[PROJECT-SERV] - UPDATE APPSUMO PRJECT - PUT URL ', url);
 
-    const body = { 'proiectid': proiectid, profileName: projectProfileName, seats: agentNumber, 'extra1': activationemail, 'extra2': licenseproductkeyuuid, 'extra3': plan_id, 'extra4': invoice_item_uuid};
+    const body = { 'proiectid': proiectid, profileName: projectProfileName, seats: agentNumber, 'extra1': activationemail, 'extra2': licenseproductkeyuuid, 'extra3': plan_id, 'extra4': invoice_item_uuid };
     this.logger.log('[PROJECT-SERV] - UPDATE APPSUMO PRJECT - PUT BODY ', body);
 
     return this._httpclient
@@ -753,6 +753,41 @@ export class ProjectService {
     return promise;
   }
 
+  updateProjectWithUserPreferences(segmentIdentifyAttributes) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    let url = this.SERVER_BASE_PATH + "projects/" + this.projectID + "/attributes"
+    console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH USER PREFERENCES - URL', url);
+    // var key = 'ccp_'+propertyName;
+    // const body = { [key]: propertyValue };
+    const body = { userPreferences: segmentIdentifyAttributes }
+    console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH USER PREFERENCES- BODY', body);
+    return this._httpclient
+      .patch(url, JSON.stringify(body), httpOptions)
+  }
+
+
+  updateProjectWithWAWizardFinished(wawizardcompleted: boolean) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    let url = this.SERVER_BASE_PATH + "projects/" + this.projectID + "/attributes"
+    console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD FINISHED - URL', url);
+    const body = { wawizardcompleted: wawizardcompleted }
+    console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD FINISHED - BODY', body);
+    return this._httpclient
+      .patch(url, JSON.stringify(body), httpOptions)
+  }
+
   // -------------------------------------
   // UPDATE SUBSCRIPTION !! Used for test
   // -------------------------------------
@@ -865,7 +900,7 @@ export class ProjectService {
       .get<[any]>(url, httpOptions)
   }
 
-    // --------------------------------
+  // --------------------------------
   //  APPSUMO TEST 
   // --------------------------------
   public activateAppSumoTier() {
@@ -874,7 +909,7 @@ export class ProjectService {
       headers: new HttpHeaders({
         'Accept': 'application/json',
         'Content-Type': 'application/x-www-form-urlencoded',
-        
+
       })
     };
 
@@ -892,7 +927,7 @@ export class ProjectService {
       headers: new HttpHeaders({
         'Accept': 'application/json',
         'Content-Type': 'application/x-www-form-urlencoded',
-        
+
       })
     };
 
@@ -910,7 +945,7 @@ export class ProjectService {
       headers: new HttpHeaders({
         'Accept': 'application/json',
         'Content-Type': 'application/x-www-form-urlencoded',
-        
+
       })
     };
 
@@ -928,7 +963,7 @@ export class ProjectService {
       headers: new HttpHeaders({
         'Accept': 'application/json',
         'Content-Type': 'application/x-www-form-urlencoded',
-        
+
       })
     };
 

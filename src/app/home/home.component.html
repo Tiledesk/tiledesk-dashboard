@@ -5,8 +5,11 @@
 <!-- -------------------------------------------------------------------------------- -->
 <!-- New home  -->
 <!-- -------------------------------------------------------------------------------- -->
-<div class="main-content" style="padding-top: 8px;margin-top: 0px;">
+<div class="overlay" style="display: none;" [ngStyle]="{ 'height': elemHomeMainContentHeight }"></div>
+<div class="main-content home-main-content" style="padding-top: 8px;margin-top: 0px;">
   <div class="container-fluid" style="max-width: 100%;">
+
+    
     <div class="home-project">
 
       <div class="flex flex-col flex-auto min-w-0">
@@ -189,18 +192,24 @@
             </div>
           </div>
         </div> <!-- ./ bg-card -->
-
+        <appdashboard-home-whatsapp-account-wizard style="margin-bottom: 18px;" *ngIf="displayWhatsappAccountWizard"
+          (goToConnectWA)="goToConnectWA()"> 
+        </appdashboard-home-whatsapp-account-wizard>
+        
         <appdashboard-home-convs-graph *ngIf="displayAnalyticsConvsGraph"  [displayAnalyticsConvsGraph]="displayAnalyticsConvsGraph" [projectId]="projectId" [USER_ROLE]="USER_ROLE"> </appdashboard-home-convs-graph>
         
         <appdashboard-home-analytics-indicator *ngIf="displayAnalyticsConvsGraph" [projectId]="projectId" [USER_ROLE]="USER_ROLE"> </appdashboard-home-analytics-indicator>
         
-        <appdashboard-home-whatsapp-account *ngIf="displayConnectWhatsApp" 
+        <appdashboard-home-whatsapp-account style=" z-index: 11;" #childComponent *ngIf="displayConnectWhatsApp" 
           (onClickOnUnistallApp)="onClickOnUnistallApp()" 
           (onClickOnGoToLearnMoreOrManageApp)="onClickOnGoToLearnMoreOrManageApp()" 
           [whatsAppIsInstalled]="whatsAppIsInstalled"> 
         </appdashboard-home-whatsapp-account>
 
-        <appdashboard-home-create-chatbot *ngIf="displayCreateChatbot"> </appdashboard-home-create-chatbot>
+        <appdashboard-home-create-chatbot *ngIf="displayCreateChatbot"
+          [use_case_for_child]="use_case_for_child" 
+          [solution_channel_for_child]="solution_channel_for_child"> 
+        </appdashboard-home-create-chatbot>
 
         <appdashboard-home-news-feed *ngIf="displayNewsFeed"> </appdashboard-home-news-feed>
 
@@ -226,12 +235,12 @@
 <!-- -------------------------------- -->
 <!-- Promo Banner -->
 <!-- -------------------------------- -->
-<appdashboard-home-promo-banner *ngIf="isVisibleHomeBanner" (showPromoBanner)='showPromoBanner()'>
-</appdashboard-home-promo-banner>
+<!-- <appdashboard-home-promo-banner *ngIf="isVisibleHomeBanner" (showPromoBanner)='showPromoBanner()'>
+</appdashboard-home-promo-banner> -->
 
-<appdashboard-home-promo-design-studio style="position: relative; display: none;" [user]="user"
+<!-- <appdashboard-home-promo-design-studio style="position: relative; display: none;" [user]="user"
   [ngStyle]="{'margin-top':isVisibleHomeBanner === true ? '0px' : '-5px' }">
-</appdashboard-home-promo-design-studio>
+</appdashboard-home-promo-design-studio> -->
 
 <div class="main-content" style="padding-top: 8px;margin-top: 0px;">
   <!-- ----------------------------------------------------------- -->
@@ -2035,8 +2044,8 @@
 			</p>
 		</div>
 
-  </div>
-</div> -->
+  </div> -->
+</div>
   <!-- ./end new-bckgrnd -->
 
 

@@ -34,7 +34,7 @@ ngAfterViewInit() {
       console.log('[HOME-NEWS-FEED] - GET NEWS FEED * COMPLETE *')
       setTimeout(() => {
         this.initCarousel()
-      }, 1000);
+      }, 1500);
       
     });
   }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'app/core/auth.service';
 import { AppConfigService } from 'app/services/app-config.service';
@@ -13,15 +13,19 @@ import { takeUntil } from 'rxjs/operators'
   templateUrl: './home-create-chatbot.component.html',
   styleUrls: ['./home-create-chatbot.component.scss']
 })
-export class HomeCreateChatbotComponent implements OnInit {
-
+export class HomeCreateChatbotComponent implements OnInit, OnChanges {
+  @Input() use_case_for_child: string;
+  @Input() solution_channel_for_child: string;
   private unsubscribe$: Subject<any> = new Subject<any>();
   projectId: string;
   UPLOAD_ENGINE_IS_FIREBASE: boolean;
   storageBucket: string;
   baseUrl: string;
-  chatbots: any; 
+  chatbots: any;
+  countOfChatbots: number;
+  numOfChabotNotDiplayed: number;
   USER_ROLE: string;
+  tparams:any; 
   constructor(
     public appConfigService: AppConfigService,
     public auth: AuthService,
@@ -35,6 +39,16 @@ export class HomeCreateChatbotComponent implements OnInit {
     this.getCurrentProjectAndGetChatbot();
   }
 
+  ngOnChanges(changes: SimpleChanges) {
+    console.log('[HOME-CREATE-CHATBOT] - ngOnChanges fires!  changes ', changes)
+    console.log('[HOME-CREATE-CHATBOT] - USER PREFERENCES USE CASE »»» ', this.use_case_for_child)
+    console.log('[HOME-CREATE-CHATBOT] - USER PREFERENCES SOLUTION CHANNEL »»» ', this.solution_channel_for_child)
+    if (this.use_case_for_child === 'solve_customer_problems') {
+      this.tparams = {template_category: 'Customer Satisfaction'} 
+    } else if (this.use_case_for_child === 'increase_online_sales') { 
+      this.tparams = {template_category: 'Increase Sales'} 
+    }
+  }
 
   getUserRole() {
     this.usersService.project_user_role_bs
@@ -43,7 +57,7 @@ export class HomeCreateChatbotComponent implements OnInit {
       )
       .subscribe((userRole) => {
 
-        this.logger.log('[HOME] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
+        this.logger.log('[HOME-CREATE-CHATBOT] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
         // used to display / hide 'WIDGET' and 'ANALITCS' in home.component.html
         this.USER_ROLE = userRole;
       })
@@ -58,7 +72,7 @@ export class HomeCreateChatbotComponent implements OnInit {
         console.log('[HOME-CREATE-CHATBOT] $UBSCIBE TO PUBLISHED PROJECT - RES  ', project)
 
         if (project) {
-          
+
           this.projectId = project._id
 
           this.getImageStorageThenUserAndBots();
@@ -143,8 +157,13 @@ export class HomeCreateChatbotComponent implements OnInit {
         this.chatbots = faqKb;
         console.log('[HOME-CREATE-CHATBOT] - GET FAQKB RES this.chatbots', this.chatbots);
 
-        // this.countOfBots = faqKb.length;
-        // this.logger.log('[HOME-CREATE-CHATBOT] - GET FAQKB RES', this.countOfBots);
+        this.countOfChatbots = faqKb.length;
+        console.log('[HOME-CREATE-CHATBOT] - COUNT OF CHATBOTS', this.countOfChatbots);
+        if (this.countOfChatbots > 10) {
+          this.numOfChabotNotDiplayed = this.countOfChatbots - 10;
+          console.log('[HOME-CREATE-CHATBOT] - NUM OF CHATBOTS NOT DISLAYED', this.numOfChabotNotDiplayed);
+        }
+
       }
     }, (error) => {
       console.error('[HOME-CREATE-CHATBOT] - GET FAQKB - ERROR ', error);
@@ -185,21 +204,26 @@ export class HomeCreateChatbotComponent implements OnInit {
         this.router.navigate(['project/' + this.projectId + '/bots', bot_id, botType]);
       }
     }
-
   }
 
-
-
   goToTemplates() {
-    this.router.navigate(['project/' + this.projectId + '/bots/templates/all']);
+    if (this.use_case_for_child === 'solve_customer_problems') {
+    this.router.navigate(['project/' + this.projectId + '/bots/templates/customer-satisfaction']);
+    } else if (this.use_case_for_child === 'increase_online_sales') {
+      this.router.navigate(['project/' + this.projectId + '/bots/templates/increase-sales']);
+    }
   }
 
   goToCommunityTemplates() {
     this.router.navigate(['project/' + this.projectId + '/bots/templates/community']);
   }
 
-  goToAddBotFromScratch() { 
+  goToAddBotFromScratch() {
     this.router.navigate(['project/' + this.projectId + '/bots/create/tilebot/blank']);
+  }
+
+  goToMyChatbots() {
+    this.router.navigate(['project/' + this.projectId + '/bots/my-chatbots/all']);
   }
 
 

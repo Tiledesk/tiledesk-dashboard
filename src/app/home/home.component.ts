@@ -26,7 +26,7 @@ import { FaqKbService } from '../services/faq-kb.service'; // USED FOR COUNT OF 
 import { APP_SUMO_PLAN_NAME, avatarPlaceholder, getColorBck, PLAN_NAME } from '../utils/util';
 import { LoggerService } from '../services/logger/logger.service';
 import { Subject } from 'rxjs';
-import { skip, takeUntil } from 'rxjs/operators'
+import { takeUntil } from 'rxjs/operators'
 import { ProjectService } from 'app/services/project.service';
 import {
   URL_getting_started_for_admins,
@@ -47,6 +47,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   APP_SUMO_PLAN_NAME = APP_SUMO_PLAN_NAME;
   private unsubscribe$: Subject<any> = new Subject<any>();
   @ViewChild('widgetsContent', { static: false, read: ElementRef }) public widgetsContent;
+
+  @ViewChild('childComponent', { static: false, read: ElementRef }) public childComponent;
   // company_name = brand.company_name;
   // tparams = brand;
   company_name: string;
@@ -133,7 +135,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   displayConnectWhatsApp: boolean = true
   displayCreateChatbot: boolean = true
   displayNewsFeed: boolean = true
-  whatsAppIsInstalled: boolean;
+  displayWhatsappAccountWizard = false;
+  whatsAppIsInstalled: boolean = false;
   apps: any;
 
   whatsAppAppId: string;
@@ -142,6 +145,13 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   appVersion: string;
   upgradePlan: string;
   cancel: string;
+
+  // User preferences after onboarding
+  solution_channel: string
+  use_case: string;
+  use_case_for_child: string = "";
+  solution_channel_for_child: string = "";
+  elemHomeMainContentHeight: any;
   constructor(
     public auth: AuthService,
     private route: ActivatedRoute,
@@ -237,428 +247,31 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       });
   }
 
-  init() {
-    // console.log("[HOME] > CALLING INIT")
-    // this.getDeptsByProjectId(); // USED FOR COUNT OF DEPTS FOR THE NEW HOME
-    this.getImageStorageThenUserAndBots(); // to comment -> moved in Home Create Chatbot
-    // this.getLastMounthMessagesCount() // USED TO GET THE MESSAGES OF THE LAST 30 DAYS
-    // this.getLastMounthRequestsCount(); // USED TO GET THE REQUESTS OF THE LAST 30 DAYS
-    // this.getActiveContactsCount()  /// COUNT OF ACTIVE CONTACTS FOR THE NEW HOME
-    // this.getVisitorsCount() /// COUNT OF VISITORS FOR THE NEW HOME
-    // this.getCountAndPercentageOfRequestsHandledByBotsLastMonth() /// 
-    // this.getVisitorsByLastNDays(this.selectedDaysId); /// VISITOR GRAPH FOR THE NEW HOME - NOT MORE USED - REPLACED WITH LAST 7 DAYS CONVERSATIONS GRAPH
-    // this.initDay = moment().subtract(6, 'd').format('D/M/YYYY') /// VISITOR GRAPH FOR THE NEW HOME
-    // this.endDay = moment().subtract(0, 'd').format('D/M/YYYY') /// VISITOR GRAPH FOR THE NEW HOME
-    // this.logger.log("INIT", this.initDay, "END", this.endDay); /// VISITOR GRAPH FOR THE NEW HOME
-    // this.getRequestByLast7Day()
-
-    this.getLast30daysConvsCount();
-    this.getApps();
-
-  }
-
-
-
-  getApps() {
-    this.appStoreService.getApps().subscribe((_apps: any) => {
-      this.apps = _apps.apps;
-      console.log('[HOME] - getApps APPS ', this.apps);
-      this.apps.forEach(app => {
-        if (app.title === "WhatsApp Business") {
-
-          this.whatsAppAppId = app._id;
-          console.log('[HOME] - whatsAppAppId ', this.whatsAppAppId)
-          this.installActionType = app.installActionType
-          console.log('[HOME] - installActionType ', this.installActionType)
-
-          this.appTitle = app.title;
-          console.log('[HOME] - appTitle ', this.appTitle)
-          this.appVersion = app.version;
-          console.log('[HOME] - appVersion ', this.appVersion)
-
-
-        }
-
-        console.log('[HOME] - getApps APPS app ', app)
-        if (app && app.version === "v2") {
-          if (app.installActionURL === "") {
-            // console.log('HOME - getApps APPS app installActionURL', app.installActionURL)
-            delete app.installActionURL
-          }
-        }
-      });
-
-
-    }, (error) => {
-      console.error('[HOME] - getApps ERROR  ', error);
-      // this.showSpinner = false;
-    }, () => {
-      console.log('[HOME] getApps * COMPLETE *');
-      this.getInstallations().then((res: any) => {
-        console.log("[HOME] getInstallations res: ", res)
-        if (res) {
-          if (res.length > 0) {
-            res.forEach(r => {
-              console.log("[HOME] getInstallations r: ", r)
-              if (r.app_id === this.whatsAppAppId) {
-                this.whatsAppIsInstalled = true;
-              } else {
-                this.whatsAppIsInstalled = false;
-              }
-            });
-          } else {
-            this.whatsAppIsInstalled = false;
-          }
-        } else {
-          this.whatsAppIsInstalled = false;
-        }
-
-        // this.showSpinner = false;
-      }).catch((err) => {
-        console.error("[HOME] getInstallations ERROR: ", err)
-        // this.showSpinner = false;
-      })
-
-      // this.showSpinner = false;
-    });
-  }
-
-  getInstallations() {
-    let promise = new Promise((resolve, reject) => {
-      this.appStoreService.getInstallation(this.projectId).then((res) => {
-        //  console.log("[HOME] Get Installation Response: ", res);
-        resolve(res);
-      }).catch((err) => {
-        // console.error("[HOME] Error getting installation: ", err);
-        reject(err);
-      })
-    })
-    return promise;
-  }
-
-
-  onClickOnGoToLearnMoreOrManageApp() {
-    console.log('HAS CLICKED GO TO LEARN MORE OR MANAGE APP whatsAppIsInstalled', this.whatsAppIsInstalled)
-    if (this.whatsAppIsInstalled === false) {
-      this.goToWhatsAppDetails()
-    } else {
-      this.openInAppStoreInstall()
-    }
-  }
-
-  goToWhatsAppDetails() {
-    if ((this.appTitle === "WhatsApp Business" || this.appTitle === "Facebook Messenger") &&
-      ((this.profile_name === PLAN_NAME.A) ||
-        (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
-        (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
-        (this.prjct_profile_type === 'free' && this.prjct_trial_expired === true))) {
-      // this.presentModalFeautureAvailableFromBPlan()
-      // return
-      if (!this.appSumoProfile) {
-        this.presentModalFeautureAvailableFromBPlan()
-        return
-      } else {
-        this.presentModalAppSumoFeautureAvailableFromBPlan()
-        return
-      }
-    }
-
-    if (this.appTitle === "WhatsApp Business" || this.appTitle === "Facebook Messenger") {
-      this.router.navigate(['project/' + this.projectId + '/app-store-install/' + this.whatsAppAppId + '/detail/h'])
-    }
-  }
-
-  openInAppStoreInstall() {
-    if ((this.appTitle === "WhatsApp Business" || this.appTitle === "Facebook Messenger") &&
-      ((this.profile_name === PLAN_NAME.A) ||
-        (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
-        (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
-        (this.prjct_profile_type === 'free' && this.prjct_trial_expired === true))) {
-      // this.presentModalFeautureAvailableFromBPlan()
-      // return
-      if (!this.appSumoProfile) {
-        this.presentModalFeautureAvailableFromBPlan()
-        return
-      } else {
-        this.presentModalAppSumoFeautureAvailableFromBPlan()
-        return
-      }
-
-    }
-
-    if (this.appTitle === "WhatsApp Business" || this.appTitle === "Facebook Messenger") {
-      this.router.navigate(['project/' + this.projectId + '/app-store-install/' + this.whatsAppAppId + '/connect/h'])
-    }
-
-  }
-
-
-  onClickOnUnistallApp() {
-    console.log('[HOME-WA] UNINSTALL V2 APP - app_id', this.whatsAppAppId);
-    this.appStoreService.unistallNewApp(this.projectId, this.whatsAppAppId).subscribe((res: any) => {
-      console.log('[HOME-WA] UNINSTALL V2 APP - app_id - RES', res);
-
-    }, (error) => {
-      console.error('[HOME-WA] UNINSTALL V2 APP - ERROR  ', error);
-      this.notify.showWidgetStyleUpdateNotification("An error occurred while uninstalling the app", 4, 'report_problem');
-    }, () => {
-      console.log('[HOME-WA] UNINSTALL V2 APP - COMPLETE');
-      this.notify.showWidgetStyleUpdateNotification("App uninstalled successfully", 2, 'done');
-
-      this.whatsAppIsInstalled = false
-      // let index = this.apps.findIndex(x => x._id === appId);
-      // // this.apps[index].installed = false;
-      // // this.apps[index].version = 'v2';
-      // setTimeout(() => {
-      //   this.apps[index].installed = false;
-      // }, 1000);
-
-    });
-  }
-
-  installApp() {
-    if ((this.appTitle === "WhatsApp Business" || this.appTitle === "Facebook Messenger" || this.appTitle === "Zapier" || this.appTitle === 'Help Center') &&
-      ((this.profile_name === PLAN_NAME.A) ||
-        (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
-        (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
-        (this.prjct_profile_type === 'free' && this.prjct_trial_expired === true))) {
-
-      if (!this.appSumoProfile) {
-        this.presentModalFeautureAvailableFromBPlan()
-        return
-      } else {
-        this.presentModalAppSumoFeautureAvailableFromBPlan()
-        return
-      }
-    }
-
-    console.log('[HOME-WA] appId ', this.whatsAppAppId)
-    console.log('[HOME-WA] app app version', this.appVersion)
-    console.log('[HOME-WA] installationType ', this.installActionType);
-
-    this.installV2App(this.projectId, this.whatsAppAppId)
-
-  }
-
-
-  installV2App(projectId, appId) {
-    this.appStoreService.installAppVersionTwo(projectId, appId).subscribe((res: any) => {
-      console.log('[HOME-WA] INSTALL V2 APP ', projectId, appId)
-
-    }, (error) => {
-      console.error('[HOME-WA] INSTALL V2 APP - ERROR  ', error);
-      this.notify.showWidgetStyleUpdateNotification("An error occurred while creating the app", 4, 'report_problem');
-    }, () => {
-      console.log('[HOME-WA] INSTALL V2 APP - COMPLETE');
-      this.notify.showWidgetStyleUpdateNotification("App installed successfully", 2, 'done');
-      // let index = this.apps.findIndex(x => x._id === appId);
-      // // this.apps[index].installed = false;
-      // // this.apps[index].version = 'v2';
-      // setTimeout(() => {
-      //   this.apps[index].installed = true;
-      // }, 1000);
-      this.whatsAppIsInstalled = true;
-    });
-  }
-
-  presentModalFeautureAvailableFromBPlan() {
-    const el = document.createElement('div')
-    el.innerHTML = this.featureAvailableFromBPlan
-    swal({
-      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
-      content: el,
-      icon: "info",
-      // buttons: true,
-      buttons: {
-        cancel: this.cancel,
-        catch: {
-          text: this.upgradePlan,
-          value: "catch",
-        },
-      },
-      dangerMode: false,
-    }).then((value) => {
-      if (value === 'catch') {
-        // console.log('featureAvailableFromPlanC value', value)
-        // console.log('[HOME-WA] prjct_profile_type', this.prjct_profile_type)
-        // console.log('[HOME-WA] subscription_is_active', this.subscription_is_active)
-        // console.log('[HOME-WA] prjct_profile_type', this.prjct_profile_type)
-        // console.log('[HOME-WA] trial_expired', this.trial_expired)
-        // console.log('[HOME-WA] isVisiblePAY', this.isVisiblePAY)
-        if (this.isVisiblePay) {
-          // console.log('[HOME-WA] HERE 1')
-          if (this.USER_ROLE === 'owner') {
-            // console.log('[HOME-WA] HERE 2')
-            if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
-              // console.log('[HOME-WA] HERE 3')
-              this.notify._displayContactUsModal(true, 'upgrade_plan');
-            } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true && this.profile_name === PLAN_NAME.A) {
-              this.notify._displayContactUsModal(true, 'upgrade_plan');
-            } else if (this.prjct_profile_type === 'free' && this.prjct_trial_expired === true) {
-              // console.log('[HOME-WA] HERE 4')
-              this.router.navigate(['project/' + this.projectId + '/pricing']);
-            }
-          } else {
-            // console.log('[HOME-WA] HERE 5')
-            this.presentModalAgentCannotManageAvancedSettings();
-          }
-        } else {
-          // console.log('[HOME-WA] HERE 6')
-          this.notify._displayContactUsModal(true, 'upgrade_plan');
-        }
-      }
-    });
-  }
-
-
-  presentModalAppSumoFeautureAvailableFromBPlan() {
-    const el = document.createElement('div')
-    el.innerHTML = 'Available from ' + this.appSumoProfilefeatureAvailableFromBPlan
-    swal({
-      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
-      content: el,
-      icon: "info",
-      // buttons: true,
-      buttons: {
-        cancel: this.cancel,
-        catch: {
-          text: this.upgradePlan,
-          value: "catch",
-        },
-      },
-      dangerMode: false,
-    }).then((value) => {
-      if (value === 'catch') {
-        if (this.USER_ROLE === 'owner') {
-          this.router.navigate(['project/' + this.projectId + '/project-settings/payments']);
-        } else {
-          // console.log('[HOME-WA] HERE 5')
-          this.presentModalAgentCannotManageAvancedSettings();
-        }
-      }
-    });
-
-  }
-
-
-  presentModalAgentCannotManageAvancedSettings() {
-    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.agentCannotManageAdvancedOptions, this.learnMoreAboutDefaultRoles)
-  }
-
-
-
-
-
-  // getProjectPlan() {
-  //   this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-  //     console.log('[HOME] - getProjectPlan project Profile Data', projectProfileData)
-  //     if (projectProfileData) {
-  //       this.prjct_profile_name = projectProfileData.profile_name;
-  //       this.profile_name = projectProfileData.profile_name;
-  //       this.prjct_trial_expired = projectProfileData.trial_expired;
-
-  //       this.prjct_profile_type = projectProfileData.profile_type;
-  //       this.subscription_end_date = projectProfileData.subscription_end_date;
-  //       this.subscription_is_active = projectProfileData.subscription_is_active;
-  //       // this.prjc_trial_days_left_percentage = ((this.prjc_trial_days_left *= -1) * 100) / 30
-
-  //       if() {
-
-  //       }
-
-
-  //     }
-  //   }, error => {
-  //     this.logger.error('[HOME] - getProjectPlan - ERROR', error);
-  //   }, () => {
-  //     this.logger.log('[HOME] - getProjectPlan - COMPLETE')
-  //   });
-  // }
-
-  // getPromoBanner() {
-  //   this.projectService.getPromoBanner().subscribe((res: any) => {
-  //     console.log('[HOME] GET PROMO BANNER res ', res);
-
-  //     if (res) {
-  //       this.resPromoBanner = res
-  //       this.resPromoBanner['link'] = res.link.replace('$project_id', this.projectId).replace('$app_id', '6319fe155f9ced0018413a06')
-  //       console.log('[HOME] GET PROMO BANNER resPromoBanner ', this.resPromoBanner) 
-  //       this.dispayPromoBanner = true
-  //       this.promoBannerContent = res['left-title']
-
-  //       console.log('[HOME] GET PROMO BANNER promoBannerContent', this.promoBannerContent);
-  //     }
-
-  //   }, error => {
-  //     console.error('[HOME] GET PROMO BANNER - ERROR ', error)
-  //     this.dispayPromoBanner = false
-  //   }, () => {
-  //     console.log('[HOME] GET PROMO BANNER - COMPLETE')
-  //   });
-  // }
-
-  // goToPromoBannerLink(promobannerlink, target) {
-  //   console.log('[HOME] GO TO PROMO BANNER LINK - promobannerlink', promobannerlink, ' target ' , target)
-  //   window.open(promobannerlink, target);
-  // }
-
-
-
-  ngAfterViewInit() {
-
-  }
-
-  ngOnDestroy() {
-    // console.log('HOME COMP - CALLING ON DESTROY')
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
-  }
-
-  getLoggedUser() {
-    this.auth.user_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((user) => {
-        this.logger.log('[HOME] - USER GET IN HOME ', user)
-        // tslint:disable-next-line:no-debugger
-        // debugger
-        this.user = user;
-
-        if (this.user) {
-          if (!isDevMode()) {
-            if (window['analytics']) {
-              try {
-                window['analytics'].identify(this.user._id, {
-                  name: this.user.firstname + ' ' + this.user.lastname,
-                  email: this.user.email,
-                  logins: 5,
-                  plan: this.profile_name_for_segment,
-
-                });
-              } catch (err) {
-                this.logger.error('identify Home error', err);
-              }
-            }
-          }
-
-          // !!!! NO MORE USED - MOVED IN USER SERVICE
-          // this.getAllUsersOfCurrentProject();
-          this.logger.log('[HOME] CALL -> getAllUsersOfCurrentProjectAndSaveInStorage')
-          this.usersService.getAllUsersOfCurrentProjectAndSaveInStorage();
-
-        }
-      });
-  }
-
-
-
   findCurrentProjectAmongAll(projectId: string) {
 
     this.projectService.getProjects().subscribe((projects: any) => {
 
       this.current_selected_prjct = projects.find(prj => prj.id_project.id === projectId);
       console.log('[HOME] - Find Current Project Among All - current_selected_prjct ', this.current_selected_prjct);
+
+
+      if (this.current_selected_prjct && this.current_selected_prjct.id_project && this.current_selected_prjct.id_project.attributes && this.current_selected_prjct.id_project.attributes.userPreferences) {
+        this.solution_channel = this.current_selected_prjct.id_project.attributes.userPreferences.solution_channel
+        this.use_case = this.current_selected_prjct.id_project.attributes.userPreferences.use_case
+
+        console.log('[HOME] - USER PREFERENCES  solution_channel', this.solution_channel);
+        console.log('[HOME] - USER PREFERENCES  use_case', this.use_case);
+      }
+
+      this.use_case_for_child = this.use_case;
+      this.solution_channel_for_child = this.solution_channel
+
+      if (this.solution_channel_for_child === 'whatsapp_fb_messenger') {
+        this.displayWhatsappAccountWizard = true;
+      }
+
+
+
       const projectProfileData = this.current_selected_prjct.id_project.profile
 
       this.prjct_name = this.current_selected_prjct.id_project.name;
@@ -839,8 +452,440 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.logger.error('[HOME] - Find Current Project Among All: ', error);
     }, () => {
       this.logger.log('[HOME] - Find Current Project Among All * COMPLETE * ');
+
+      this.getApps();
+
     });
   }
+
+  init() {
+    // console.log("[HOME] > CALLING INIT")
+    // this.getDeptsByProjectId(); // USED FOR COUNT OF DEPTS FOR THE NEW HOME
+    this.getImageStorageThenUserAndBots(); // to comment -> moved in Home Create Chatbot
+    // this.getLastMounthMessagesCount() // USED TO GET THE MESSAGES OF THE LAST 30 DAYS
+    // this.getLastMounthRequestsCount(); // USED TO GET THE REQUESTS OF THE LAST 30 DAYS
+    // this.getActiveContactsCount()  /// COUNT OF ACTIVE CONTACTS FOR THE NEW HOME
+    // this.getVisitorsCount() /// COUNT OF VISITORS FOR THE NEW HOME
+    // this.getCountAndPercentageOfRequestsHandledByBotsLastMonth() /// 
+    // this.getVisitorsByLastNDays(this.selectedDaysId); /// VISITOR GRAPH FOR THE NEW HOME - NOT MORE USED - REPLACED WITH LAST 7 DAYS CONVERSATIONS GRAPH
+    // this.initDay = moment().subtract(6, 'd').format('D/M/YYYY') /// VISITOR GRAPH FOR THE NEW HOME
+    // this.endDay = moment().subtract(0, 'd').format('D/M/YYYY') /// VISITOR GRAPH FOR THE NEW HOME
+    // this.logger.log("INIT", this.initDay, "END", this.endDay); /// VISITOR GRAPH FOR THE NEW HOME
+    // this.getRequestByLast7Day()
+
+    this.getLast30daysConvsCount();
+
+
+  }
+
+
+
+  getApps() {
+    this.appStoreService.getApps().subscribe((_apps: any) => {
+      this.apps = _apps.apps;
+      console.log('[HOME] - getApps APPS ', this.apps);
+      this.apps.forEach(app => {
+        if (app.title === "WhatsApp Business") {
+
+          this.whatsAppAppId = app._id;
+          console.log('[HOME] - whatsAppAppId ', this.whatsAppAppId)
+          this.installActionType = app.installActionType
+          console.log('[HOME] - installActionType ', this.installActionType)
+
+          this.appTitle = app.title;
+          console.log('[HOME] - appTitle ', this.appTitle)
+          this.appVersion = app.version;
+          console.log('[HOME] - appVersion ', this.appVersion)
+
+
+        }
+
+        console.log('[HOME] - getApps APPS app ', app)
+        if (app && app.version === "v2") {
+          if (app.installActionURL === "") {
+            // console.log('HOME - getApps APPS app installActionURL', app.installActionURL)
+            delete app.installActionURL
+          }
+        }
+      });
+
+
+    }, (error) => {
+      console.error('[HOME] - getApps ERROR  ', error);
+      // this.showSpinner = false;
+    }, () => {
+      console.log('[HOME] getApps * COMPLETE *');
+      this.getInstallations().then((res: any) => {
+        console.log("[HOME] getInstallations res: ", res)
+        if (res) {
+          console.log("[HOME] getInstallations whatsAppIsInstalled ", this.whatsAppIsInstalled, 'solution_channel ', this.solution_channel_for_child)
+          if (res.length === 0) {
+            if (this.solution_channel_for_child === 'whatsapp_fb_messenger') {
+              this.installApp()
+            }
+          }
+          if (res.length > 0) {
+            res.forEach(r => {
+              console.log("[HOME] getInstallations r: ", r)
+              if (r.app_id === this.whatsAppAppId) {
+                this.whatsAppIsInstalled = true;
+
+              } else {
+                this.whatsAppIsInstalled = false;
+
+                console.log("[HOME] getInstallations RUN INSTALL WA  whatsAppIsInstalled ", this.whatsAppIsInstalled, 'solution_channel ', this.solution_channel_for_child)
+
+                if (this.solution_channel_for_child === 'whatsapp_fb_messenger') {
+
+                  this.installApp()
+                }
+              }
+            });
+          } else {
+            this.whatsAppIsInstalled = false;
+          }
+        } else {
+          this.whatsAppIsInstalled = false;
+        }
+
+        // this.showSpinner = false;
+      }).catch((err) => {
+        console.error("[HOME] getInstallations ERROR: ", err)
+        // this.showSpinner = false;
+      })
+
+      // this.showSpinner = false;
+    });
+  }
+
+  getInstallations() {
+    let promise = new Promise((resolve, reject) => {
+      this.appStoreService.getInstallation(this.projectId).then((res) => {
+        //  console.log("[HOME] Get Installation Response: ", res);
+        resolve(res);
+      }).catch((err) => {
+        // console.error("[HOME] Error getting installation: ", err);
+        reject(err);
+      })
+    })
+    return promise;
+  }
+
+
+  onClickOnGoToLearnMoreOrManageApp() {
+    console.log('HAS CLICKED GO TO LEARN MORE OR MANAGE APP whatsAppIsInstalled', this.whatsAppIsInstalled)
+    if (this.whatsAppIsInstalled === false) {
+      this.goToWhatsAppDetails()
+    } else {
+      this.openInAppStoreInstall()
+    }
+  }
+
+  goToWhatsAppDetails() {
+    if ((this.appTitle === "WhatsApp Business" || this.appTitle === "Facebook Messenger") &&
+      ((this.profile_name === PLAN_NAME.A) ||
+        (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
+        (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
+        (this.prjct_profile_type === 'free' && this.prjct_trial_expired === true))) {
+      // this.presentModalFeautureAvailableFromBPlan()
+      // return
+      if (!this.appSumoProfile) {
+        this.presentModalFeautureAvailableFromBPlan()
+        return
+      } else {
+        this.presentModalAppSumoFeautureAvailableFromBPlan()
+        return
+      }
+    }
+
+    if (this.appTitle === "WhatsApp Business" || this.appTitle === "Facebook Messenger") {
+      this.router.navigate(['project/' + this.projectId + '/app-store-install/' + this.whatsAppAppId + '/detail/h'])
+    }
+  }
+
+  openInAppStoreInstall() {
+    if ((this.appTitle === "WhatsApp Business" || this.appTitle === "Facebook Messenger") &&
+      ((this.profile_name === PLAN_NAME.A) ||
+        (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
+        (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
+        (this.prjct_profile_type === 'free' && this.prjct_trial_expired === true))) {
+      // this.presentModalFeautureAvailableFromBPlan()
+      // return
+      if (!this.appSumoProfile) {
+        this.presentModalFeautureAvailableFromBPlan()
+        return
+      } else {
+        this.presentModalAppSumoFeautureAvailableFromBPlan()
+        return
+      }
+
+    }
+
+    if (this.appTitle === "WhatsApp Business" || this.appTitle === "Facebook Messenger") {
+      // this.router.navigate(['project/' + this.projectId + '/app-store-install/' + this.whatsAppAppId + '/connect/h'])
+
+      this.openAppStoreInPopupWindow()
+    }
+  }
+
+  openAppStoreInPopupWindow() {
+    const appsUrl =  this.appConfigService.getConfig().appsUrl;
+    const url = appsUrl.slice(0, appsUrl.lastIndexOf('/'));
+
+    console.log('[HOME] openAppStoreInPopupWindow appsUrl' , appsUrl)
+    console.log('[HOME] openAppStoreInPopupWindow url' , url)
+    console.log('[HOME] openAppStoreInPopupWindow projectId' , this.projectId)
+    console.log('[HOME] openAppStoreInPopupWindow user' , this.user)
+    console.log('[HOME] openAppStoreInPopupWindow whatsAppAppId' , this.whatsAppAppId)
+   
+    
+    
+    // const testItOutBaseUrl = this.TESTSITE_BASE_URL.substring(0, this.TESTSITE_BASE_URL.lastIndexOf('/'));
+    // const testItOutUrl = testItOutBaseUrl + '/chatbot-panel.html'
+
+    // const url = testItOutUrl + '?tiledesk_projectid=' + this.project._id + '&tiledesk_participants=bot_' + this.id_faq_kb + "&tiledesk_departmentID=" + this.defaultDepartmentId + '&td_draft=true'
+
+    // let params = `toolbar=no,menubar=no,width=815,height=727,left=100,top=100`;
+    // window.open(url, '_blank', params);
+  }
+
+  goToConnectWA() {
+    console.log('[HOME-WA] GO TO CONNECT WA childComponent', this.childComponent);
+    this.scrollToChild(this.childComponent)
+
+    // const elemOverlayDiv = <HTMLElement>document.querySelector('.overlay');
+    // console.log('[HOME-WA] GO TO CONNECT WA elemOverlayDiv', elemOverlayDiv);
+
+    // const elemHomeMainContent = <HTMLElement>document.querySelector('.home-main-content');
+    // console.log('[HOME-WA-WIZARD] elemHomeMainContent ', elemHomeMainContent)
+    // this.elemHomeMainContentHeight = elemHomeMainContent.offsetHeight + 'px';
+    // console.log('[HOME-WA-WIZARD] elemHomeMainContent Height', this.elemHomeMainContentHeight)
+
+  }
+
+  scrollToChild(el: ElementRef) {
+    el.nativeElement.scrollIntoView({ behavior: 'smooth' });
+    this.watsAppWizardCompleted()
+    setTimeout(() => {
+      // this.displayWhatsappAccountWizard = false; 
+    }, 1500);
+  }
+
+  watsAppWizardCompleted() {
+
+    this.projectService.updateProjectWithWAWizardFinished(true)
+      .subscribe((res: any) => {
+
+        console.log('[HOME-WA-WIZARD] - UPDATE PRJCT WITH WA WIZARD FINISHED - RES ', res);
+
+      }, error => {
+        console.error('[HOME-WA-WIZARD] - UPDATE PRJCT WITH WA WIZARD FINISHED - ERROR ', error)
+      }, () => {
+        console.log('[HOME-WA-WIZARD] - UPDATE PRJCT WITH WA WIZARD FINISHED * COMPLETE *')
+      });
+  }
+
+  onClickOnUnistallApp() {
+    console.log('[HOME-WA] UNINSTALL V2 APP - app_id', this.whatsAppAppId);
+    this.appStoreService.unistallNewApp(this.projectId, this.whatsAppAppId).subscribe((res: any) => {
+      console.log('[HOME-WA] UNINSTALL V2 APP - app_id - RES', res);
+
+    }, (error) => {
+      console.error('[HOME-WA] UNINSTALL V2 APP - ERROR  ', error);
+      this.notify.showWidgetStyleUpdateNotification("An error occurred while uninstalling the app", 4, 'report_problem');
+    }, () => {
+      console.log('[HOME-WA] UNINSTALL V2 APP - COMPLETE');
+      this.notify.showWidgetStyleUpdateNotification("App uninstalled successfully", 2, 'done');
+
+      this.whatsAppIsInstalled = false
+      // let index = this.apps.findIndex(x => x._id === appId);
+      // // this.apps[index].installed = false;
+      // // this.apps[index].version = 'v2';
+      // setTimeout(() => {
+      //   this.apps[index].installed = false;
+      // }, 1000);
+
+    });
+  }
+
+  installApp() {
+    if ((this.appTitle === "WhatsApp Business" || this.appTitle === "Facebook Messenger" || this.appTitle === "Zapier" || this.appTitle === 'Help Center') &&
+      ((this.profile_name === PLAN_NAME.A) ||
+        (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
+        (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
+        (this.prjct_profile_type === 'free' && this.prjct_trial_expired === true))) {
+
+      if (!this.appSumoProfile) {
+        this.presentModalFeautureAvailableFromBPlan()
+        return
+      } else {
+        this.presentModalAppSumoFeautureAvailableFromBPlan()
+        return
+      }
+    }
+
+    console.log('[HOME-WA] appId ', this.whatsAppAppId)
+    console.log('[HOME-WA] app app version', this.appVersion)
+    console.log('[HOME-WA] installationType ', this.installActionType);
+
+    this.installV2App(this.projectId, this.whatsAppAppId)
+
+  }
+
+
+  installV2App(projectId, appId) {
+    this.appStoreService.installAppVersionTwo(projectId, appId).subscribe((res: any) => {
+      console.log('[HOME-WA] INSTALL V2 APP ', projectId, appId)
+
+    }, (error) => {
+      console.error('[HOME-WA] INSTALL V2 APP - ERROR  ', error);
+      this.notify.showWidgetStyleUpdateNotification("An error occurred while creating the app", 4, 'report_problem');
+    }, () => {
+      console.log('[HOME-WA] INSTALL V2 APP - COMPLETE');
+      this.notify.showWidgetStyleUpdateNotification("App installed successfully", 2, 'done');
+      // let index = this.apps.findIndex(x => x._id === appId);
+      // // this.apps[index].installed = false;
+      // // this.apps[index].version = 'v2';
+      // setTimeout(() => {
+      //   this.apps[index].installed = true;
+      // }, 1000);
+      this.whatsAppIsInstalled = true;
+    });
+  }
+
+  presentModalFeautureAvailableFromBPlan() {
+    const el = document.createElement('div')
+    el.innerHTML = this.featureAvailableFromBPlan
+    swal({
+      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
+      content: el,
+      icon: "info",
+      // buttons: true,
+      buttons: {
+        cancel: this.cancel,
+        catch: {
+          text: this.upgradePlan,
+          value: "catch",
+        },
+      },
+      dangerMode: false,
+    }).then((value) => {
+      if (value === 'catch') {
+        // console.log('featureAvailableFromPlanC value', value)
+        // console.log('[HOME-WA] prjct_profile_type', this.prjct_profile_type)
+        // console.log('[HOME-WA] subscription_is_active', this.subscription_is_active)
+        // console.log('[HOME-WA] prjct_profile_type', this.prjct_profile_type)
+        // console.log('[HOME-WA] trial_expired', this.trial_expired)
+        // console.log('[HOME-WA] isVisiblePAY', this.isVisiblePAY)
+        if (this.isVisiblePay) {
+          // console.log('[HOME-WA] HERE 1')
+          if (this.USER_ROLE === 'owner') {
+            // console.log('[HOME-WA] HERE 2')
+            if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
+              // console.log('[HOME-WA] HERE 3')
+              this.notify._displayContactUsModal(true, 'upgrade_plan');
+            } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true && this.profile_name === PLAN_NAME.A) {
+              this.notify._displayContactUsModal(true, 'upgrade_plan');
+            } else if (this.prjct_profile_type === 'free' && this.prjct_trial_expired === true) {
+              // console.log('[HOME-WA] HERE 4')
+              this.router.navigate(['project/' + this.projectId + '/pricing']);
+            }
+          } else {
+            // console.log('[HOME-WA] HERE 5')
+            this.presentModalAgentCannotManageAvancedSettings();
+          }
+        } else {
+          // console.log('[HOME-WA] HERE 6')
+          this.notify._displayContactUsModal(true, 'upgrade_plan');
+        }
+      }
+    });
+  }
+
+
+  presentModalAppSumoFeautureAvailableFromBPlan() {
+    const el = document.createElement('div')
+    el.innerHTML = 'Available from ' + this.appSumoProfilefeatureAvailableFromBPlan
+    swal({
+      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
+      content: el,
+      icon: "info",
+      // buttons: true,
+      buttons: {
+        cancel: this.cancel,
+        catch: {
+          text: this.upgradePlan,
+          value: "catch",
+        },
+      },
+      dangerMode: false,
+    }).then((value) => {
+      if (value === 'catch') {
+        if (this.USER_ROLE === 'owner') {
+          this.router.navigate(['project/' + this.projectId + '/project-settings/payments']);
+        } else {
+          // console.log('[HOME-WA] HERE 5')
+          this.presentModalAgentCannotManageAvancedSettings();
+        }
+      }
+    });
+
+  }
+
+
+  presentModalAgentCannotManageAvancedSettings() {
+    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.agentCannotManageAdvancedOptions, this.learnMoreAboutDefaultRoles)
+  }
+
+
+  ngAfterViewInit() {
+
+  }
+
+  ngOnDestroy() {
+    // console.log('HOME COMP - CALLING ON DESTROY')
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
+  getLoggedUser() {
+    this.auth.user_bs
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((user) => {
+        this.logger.log('[HOME] - USER GET IN HOME ', user)
+        // tslint:disable-next-line:no-debugger
+        // debugger
+        this.user = user;
+
+        if (this.user) {
+          if (!isDevMode()) {
+            if (window['analytics']) {
+              try {
+                window['analytics'].identify(this.user._id, {
+                  name: this.user.firstname + ' ' + this.user.lastname,
+                  email: this.user.email,
+                  logins: 5,
+                  plan: this.profile_name_for_segment,
+
+                });
+              } catch (err) {
+                this.logger.error('identify Home error', err);
+              }
+            }
+          }
+
+          // !!!! NO MORE USED - MOVED IN USER SERVICE
+          // this.getAllUsersOfCurrentProject();
+          this.logger.log('[HOME] CALL -> getAllUsersOfCurrentProjectAndSaveInStorage')
+          this.usersService.getAllUsersOfCurrentProjectAndSaveInStorage();
+
+        }
+      });
+  }
+
+
 
   updatedProjectTrialEndedEmitted(hasemittetedtrialendend) {
     this.projectService.updateProjectName(this.projectId, hasemittetedtrialendend)

@@ -469,7 +469,7 @@ export class ContactsService {
     // var key = 'ccp_'+propertyName;
     // const body = { [key]: propertyValue };
     const body = { ccp: contactCustomPropertiesAssigned }
-    this.logger.log('[DEPTS-SERV] - ADD CUSTOM PROPERTY - BODY', body);
+    this.logger.log('[CONTACTS-SERV] - ADD CUSTOM PROPERTY - BODY', body);
 
     return this.httpClient
       .patch(url, JSON.stringify(body), httpOptions)

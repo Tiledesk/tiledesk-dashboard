@@ -283,12 +283,12 @@ export class HomeConvsGraphComponent implements OnInit, OnChanges {
 
   getRequestByLastNDayMerge(lastdays) {
 
-    console.log("[ANALYTICS - CONVS] GET REQUEST TYPE: Merged")
+    console.log("[HOME-CONVS-GRAPH] GET REQUEST TYPE: Merged")
     this.analyticsService.requestsByDay(lastdays).subscribe((requestsByDay: any) => {
-      console.log('[ANALYTICS - CONVS] - REQUESTS BY  N-DAY ', requestsByDay);
+      console.log('[HOME-CONVS-GRAPH] - REQUESTS BY  N-DAY ', requestsByDay);
 
       this.analyticsService.requestsByDayBotServed(lastdays).subscribe((requestsByDayBotServed: any) => {
-        console.log('[ANALYTICS - CONVS] - REQUESTS BY N-DAY BOT SERVED ', requestsByDayBotServed);
+        console.log('[HOME-CONVS-GRAPH] - REQUESTS BY N-DAY BOT SERVED ', requestsByDayBotServed);
 
         // CREATES THE INITIAL ARRAY WITH THE LAST SEVEN DAYS (calculated with moment) AND REQUESTS COUNT = O
         const last7days_initarray = []
@@ -298,7 +298,7 @@ export class HomeConvsGraphComponent implements OnInit, OnChanges {
         }
 
         last7days_initarray.reverse()
-        console.log('[ANALYTICS - CONVS] - REQUESTS BY lastDAY - MOMENT LAST N DATE (init array)', last7days_initarray);
+        console.log('[HOME-CONVS-GRAPH] - REQUESTS BY lastDAY - MOMENT LAST N DATE (init array)', last7days_initarray);
 
         const requestsByDay_series_array = [];
         const requestsByDay_labels_array = [];
@@ -322,8 +322,8 @@ export class HomeConvsGraphComponent implements OnInit, OnChanges {
           }
         }
 
-        console.log('[ANALYTICS - CONVS] - REQUESTS BY DAY FORMATTED ', requestsByDay_array);
-        console.log('[ANALYTICS - CONVS] - REQUESTS BY DAY BOT SERVED FORMATTED ', requestByDayBotServed_array);
+        console.log('[HOME-CONVS-GRAPH] - REQUESTS BY DAY FORMATTED ', requestsByDay_array);
+        console.log('[HOME-CONVS-GRAPH] - REQUESTS BY DAY BOT SERVED FORMATTED ', requestByDayBotServed_array);
 
         /**
          * MERGE THE ARRAY last7days_initarray WITH requestsByDay_array  */
@@ -332,10 +332,10 @@ export class HomeConvsGraphComponent implements OnInit, OnChanges {
         // If not, then the same element in last7days i.e. obj is returned.
         // human
         const requestByDays_final_array = last7days_initarray.map(obj => requestsByDay_array.find(o => o.day === obj.day) || obj);
-        console.log('[ANALYTICS - CONVS] - REQUESTS BY DAY - FINAL ARRAY ', requestByDays_final_array);
+        console.log('[HOME-CONVS-GRAPH] - REQUESTS BY DAY - FINAL ARRAY ', requestByDays_final_array);
         // bot
         const requestByDaysBotServed_final_array = last7days_initarray.map(obj => requestByDayBotServed_array.find(o => o.day === obj.day) || obj);
-        console.log('[ANALYTICS - CONVS] - REQUESTS BY DAY BOT SERVED - FINAL ARRAY ', requestByDaysBotServed_final_array);
+        console.log('[HOME-CONVS-GRAPH] - REQUESTS BY DAY BOT SERVED - FINAL ARRAY ', requestByDaysBotServed_final_array);
 
         // human
         const _requestsByDay_series_array = [];
@@ -363,15 +363,15 @@ export class HomeConvsGraphComponent implements OnInit, OnChanges {
         // console.log('[ANALYTICS - CONVS] - REQUESTS BY DAY - SERIES (ARRAY OF COUNT - to use for debug)', requestsByDay_series_array);
         // console.log('[ANALYTICS - CONVS] - REQUESTS BY DAY - LABELS (ARRAY OF DAY - to use for debug)', requestsByDay_labels_array);
 
-        console.log('[ANALYTICS - CONVS] - REQUESTS BY DAY (HUMAN SERVERVED) - SERIES ', _requestsByDay_series_array);
-        console.log('[ANALYTICS - CONVS] - REQUESTS BY DAY (BOT SERVERVED) - SERIES', _requestsByDayBotServed_series_array);
-        console.log('[ANALYTICS - CONVS] - REQUESTS BY DAY - LABELS (+ NEW + ARRAY OF DAY)', _requestsByDay_labels_array);
+        console.log('[HOME-CONVS-GRAPH] - REQUESTS BY DAY (HUMAN SERVERVED) - SERIES ', _requestsByDay_series_array);
+        console.log('[HOME-CONVS-GRAPH] - REQUESTS BY DAY (BOT SERVERVED) - SERIES', _requestsByDayBotServed_series_array);
+        console.log('[HOME-CONVS-GRAPH] - REQUESTS BY DAY - LABELS (+ NEW + ARRAY OF DAY)', _requestsByDay_labels_array);
 
         this.countOfLastSevenDaysRequests = _requestsByDay_series_array.reduce((partialSum, a) => partialSum + a, 0);
         this.countOfLastSevenDaysRequestsHandledByBot = _requestsByDayBotServed_series_array.reduce((partialSum, a) => partialSum + a, 0);
 
-        console.log('[ANALYTICS - CONVS] - REQUESTS BY N OF DAY', lastdays, ' - NUMB OF CONV HUMAN HANDLED ', this.countOfLastSevenDaysRequests);
-        console.log('[ANALYTICS - CONVS] - REQUESTS BY N OF DAY', lastdays, ' - NUMB OF CONV BOT HANDLED ', this.countOfLastSevenDaysRequestsHandledByBot);
+        console.log('[HOME-CONVS-GRAPH] - REQUESTS BY N OF DAY', lastdays, ' - NUMB OF CONV HUMAN HANDLED ', this.countOfLastSevenDaysRequests);
+        console.log('[HOME-CONVS-GRAPH] - REQUESTS BY N OF DAY', lastdays, ' - NUMB OF CONV BOT HANDLED ', this.countOfLastSevenDaysRequestsHandledByBot);
 
         if (this.countOfLastSevenDaysRequestsHandledByBot > 0 && this.countOfLastSevenDaysRequests) {
           const totalSevendaysConvs = this.countOfLastSevenDaysRequestsHandledByBot + this.countOfLastSevenDaysRequests
@@ -386,7 +386,7 @@ export class HomeConvsGraphComponent implements OnInit, OnChanges {
 
         //get higher value of xvalue array 
         const higherCount = this.getMaxOfArray(_requestsByDay_series_array);
-        console.log('[ANALYTICS - CONVS] - REQUESTS BY DAY - HIGHTER COUNT ', higherCount);
+        console.log('[HOME-CONVS-GRAPH] - REQUESTS BY DAY - HIGHTER COUNT ', higherCount);
 
         this.lineChart = new Chart('lastNdayChart', {
           type: 'line',
@@ -501,9 +501,9 @@ export class HomeConvsGraphComponent implements OnInit, OnChanges {
       })
 
     }, (error) => {
-      console.error('[ANALYTICS - CONVS] - REQUESTS BY DAY - ERROR ', error);
+      console.error('[HOME-CONVS-GRAPH - REQUESTS BY DAY - ERROR ', error);
     }, () => {
-      console.log('[ANALYTICS - CONVS] - REQUESTS BY DAY * COMPLETE *');
+      console.log('[HOME-CONVS-GRAPH] - REQUESTS BY DAY * COMPLETE *');
     });
   }
 

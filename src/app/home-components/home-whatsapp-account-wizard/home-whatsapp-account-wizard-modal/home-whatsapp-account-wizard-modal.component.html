@@ -1,0 +1,46 @@
+<mat-dialog-content class="mat-typography" style="min-height: 30px;">
+    <div class="connect-wa-first-step-modal">
+        <div class="connect-wa-first-step-modal-header">
+            <h2 class="connect-wa-first-step-modal-title">
+                
+                Connect your WhatsApp tutorials
+            </h2>
+        </div>
+        <div class="connect-wa-first-step-modal-content">
+   
+            <div class="connect-wa-first-step-link-title">
+              A guide on how to connect your WhatsApp Business number with Tiledesk
+            </div>
+
+            <div class="connect-wa-first-step-link">
+                <div>
+                    <a href="https://gethelp.tiledesk.com/articles/connect-tiledesk-with-whatsapp-business/" target="_blank">Connect Tiledesk with WhatsApp Business</a>
+
+                  </div>
+            </div>
+
+            <div class="connect-wa-first-step-link-title">
+                Not sure how to set up a business account? Take a look here
+              </div>
+  
+              <div class="connect-wa-first-step-link">
+                  <div>
+                    <a href="https://gethelp.tiledesk.com/articles/configure-a-whatsapp-business-account/" target="_blank">Configure a WhatsApp Business account</a>
+  
+                    </div>
+              </div>
+  
+
+        </div>
+    </div>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="center" class="contact-property-modal-action">
+    <button tabindex="-1" mat-button mat-dialog-close>
+        {{'Cancel' | translate}}
+    </button>
+    <button tabindex="-1" mat-button (click)="goToConnectWACard()" >
+        {{'NextStep' | translate}}
+    </button>
+</mat-dialog-actions>

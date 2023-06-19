@@ -100,7 +100,8 @@
     <div style="height: 24px; width: 0px; flex: 0 0 auto;"></div>
     <!-- (click)="goToBotProfile(bot?._id, bot?.type)" (mouseenter)="chatbotDetails.open()"
                 (mouseleave)="chatbotDetails.close()" -->
-    <div *ngIf="chatbots && chatbots.length > 0" class="your-chatbots" style="display: flex;height: 45px; margin-bottom: 16px;">
+    <div *ngIf="chatbots && chatbots.length > 0" class="your-chatbots"
+        style="display: flex;height: 45px; margin-bottom: 16px;">
         <div class="served-by-desktop-b" *ngFor="let bot of chatbots | slice:0:10; let i=index; let first = first;">
             <div [ngClass]="{ 'first-served-by': first, 'disable-link-if-is-agent': USER_ROLE === 'agent' }"
                 class="served-by-desktop-c">
@@ -187,9 +188,9 @@
                             <div class="left--col"></div>
 
                             <div class="right--col chatbot-description">
-                             <span *ngIf="bot.description"> {{bot.description}} </span>   
-                             <span *ngIf="!bot.description"> No description provided</span>  
-                                
+                                <span *ngIf="bot.description"> {{bot.description}} </span>
+                                <span *ngIf="!bot.description"> No description provided</span>
+
                             </div>
 
                         </div>
@@ -260,14 +261,14 @@
                             margin-top: 6px;
                             cursor: pointer;" (click)="goToBotProfile(bot?._id, bot?.type)">
                                 <div id="arrow_1" class="arrow-wrapper">
-                                  <div class="text-block" style="margin-right: 16px;">
-                                    {{ 'ViewDetails' | translate }}
-                                  </div>
-                                  <div class="arrow arrow--right">
-                                    <span></span>
-                                  </div>
+                                    <div class="text-block" style="margin-right: 16px;">
+                                        {{ 'ViewDetails' | translate }}
+                                    </div>
+                                    <div class="arrow arrow--right">
+                                        <span></span>
+                                    </div>
                                 </div>
-                              </div>
+                            </div>
 
                         </div>
 
@@ -277,13 +278,13 @@
             </div>
         </div>
 
-        <div class="served-by-desktop-b">
+        <div class="served-by-desktop-b" click="goToMyChatbots()">
             <div class="served-by-desktop-d">
-              <div size="32" class="served-by-desktop-e-no-hover-effect">
-                <img src="assets/img/user_white.svg" style="width: 32px;height: 32px; padding: 5px;">
-              </div>
+                <div style="height: 45px " class="other-chatbots">
+                    + {{numOfChabotNotDiplayed}}
+                </div>
             </div>
-          </div>
+        </div>
 
 
     </div>
@@ -293,8 +294,9 @@
     <div class="home-block-description-and-menu-btn-wpr">
         <!-- *ngIf="chatbots && chatbots.length === 0" -->
         <div class="home-block-description" style="padding-right: 55px;">
-            Create your chatbot from scratch with our brand new no-code Chatbot Design Studio or start by selecting a
-            free ready-to-use template (pre-designed chatbot) that suits your needs
+            <!-- Create your chatbot from scratch with our brand new no-code Chatbot Design Studio or start by selecting a
+            free ready-to-use template (pre-designed chatbot) that suits your needs -->
+            {{'StartBySelecting' | translate : tparams }}
         </div>
 
 

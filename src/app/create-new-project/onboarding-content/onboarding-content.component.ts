@@ -13,12 +13,12 @@ import { ProjectService } from 'app/services/project.service';
 import { BrandService } from 'app/services/brand.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { AuthService } from 'app/core/auth.service';
-import { emailDomainWhiteList } from 'app/utils/util';
+import { emailDomainWhiteList, tranlatedLanguage } from 'app/utils/util';
 import { FaqKbService } from 'app/services/faq-kb.service';
 import { BotLocalDbService } from 'app/services/bot-local-db.service';
 import { DepartmentService } from 'app/services/department.service';
 import { FaqService } from 'app/services/faq.service';
-
+import { WidgetService } from 'app/services/widget.service';
 
 export enum TYPE_STEP {
   NAME_PROJECT= "nameProject",
@@ -76,7 +76,8 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
 
   segmentIdentifyAttributes: any = {};
   isFirstProject: boolean = false;
-
+  selectedTranslationCode: string;
+  selectedTranslationLabel: string;
   constructor(
     private auth: AuthService,
     private router: Router,
@@ -92,6 +93,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
     private faqKbService: FaqKbService,
     private botLocalDbService: BotLocalDbService,
     private departmentService: DepartmentService,
+    private widgetService: WidgetService
   ) {
     super(translate);
     const brand = brandService.getBrand();
@@ -576,47 +578,152 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
   }
 
 
-  // -----------------  FUNCTION CALLBACK   ------------------------ //
-  callback(step:string, variable?: any){
-    if(step === 'createNewProject'){
-      this.createBot();
-    }
-    else if(step === 'createBot'){
-      this.hookBotToDept(variable);
-    }
-    else if(step === 'hookBotToDept'){
-      this.createDefaultFaqOnBot();
-    }
-    else if(step === 'uploadFaqFromCSV'){
-      //this.goToNextStep();
-      this.DISPLAY_SPINNER_SECTION = true;
-      this.DISPLAY_SPINNER = false;
+  // // -----------------  FUNCTION CALLBACK   ------------------------ //
+  // callback(step:string, variable?: any){
+  //   if(step === 'createNewProject'){
+  //     this.createBot();
+  //   }
+  //   else if(step === 'createBot'){
+  //     this.hookBotToDept(variable);
+  //   }
+  //   else if(step === 'hookBotToDept'){
+  //     this.createDefaultFaqOnBot();
+  //   }
+  //   else if(step === 'uploadFaqFromCSV'){
+  //     //this.goToNextStep();
+  //     this.DISPLAY_SPINNER_SECTION = true;
+  //     this.DISPLAY_SPINNER = false;
 
 
 
-      // this.segmentAttributes["projectId"] = this.projectID;
-      // this.segmentAttributes["projectName"] = this.projectName;
-      // this.segmentAttributes["userId"] = this.user._id;
-      // this.segmentAttributes["username"] = this.user.firstname + ' ' + this.user.lastname;
-      // this.segmentAttributes["botId"] = this.botId;
+  //     // this.segmentAttributes["projectId"] = this.projectID;
+  //     // this.segmentAttributes["projectName"] = this.projectName;
+  //     // this.segmentAttributes["userId"] = this.user._id;
+  //     // this.segmentAttributes["username"] = this.user.firstname + ' ' + this.user.lastname;
+  //     // this.segmentAttributes["botId"] = this.botId;
 
-      let segmentPageName = "Wizard, Onboarding";
-      let segmentTrackName = "Onboarding";
-      var segmentTrackAttr = {};
-      segmentTrackAttr["projectId"] = this.projectID;
-      segmentTrackAttr["projectName"] = this.projectName;
-      segmentTrackAttr["userId"] = this.user._id;
-      segmentTrackAttr["username"] = this.user.firstname + ' ' + this.user.lastname;
-      segmentTrackAttr["botId"] = this.botId;
-      // let segmentTrackAttr = this.segmentAttributes;
-      this.segment(segmentPageName, segmentTrackName, segmentTrackAttr, this.segmentIdentifyAttributes);
-      localStorage.setItem('onboarding_'+this.projectID, this.segmentIdentifyAttributes)
-      // this.DISPLAY_SPINNER_SECTION = false;
-      // this.DISPLAY_BOT = true;
-      this.goToExitOnboarding();
+  //     let segmentPageName = "Wizard, Onboarding";
+  //     let segmentTrackName = "Onboarding";
+  //     var segmentTrackAttr = {};
+  //     segmentTrackAttr["projectId"] = this.projectID;
+  //     segmentTrackAttr["projectName"] = this.projectName;
+  //     segmentTrackAttr["userId"] = this.user._id;
+  //     segmentTrackAttr["username"] = this.user.firstname + ' ' + this.user.lastname;
+  //     segmentTrackAttr["botId"] = this.botId;
+  //     // let segmentTrackAttr = this.segmentAttributes;
+  //     this.segment(segmentPageName, segmentTrackName, segmentTrackAttr, this.segmentIdentifyAttributes);
+  //     localStorage.setItem('onboarding_'+this.projectID, this.segmentIdentifyAttributes)
+  //     // this.DISPLAY_SPINNER_SECTION = false;
+  //     // this.DISPLAY_BOT = true;
+  //     this.goToExitOnboarding();
+  //   }
+  // }
+  // // -----------------  FUNCTION CALLBACK   ------------------------ //
+
+    // -----------------  FUNCTION CALLBACK   ------------------------ //
+    callback(step: string, variable?: any) {
+      if (step === 'createNewProject') {
+        //   this.createBot();
+        // }
+        // else if(step === 'createBot'){
+        //   this.hookBotToDept(variable);
+        // }
+        // else if(step === 'hookBotToDept'){
+        //   this.createDefaultFaqOnBot();
+        // }
+        // else if(step === 'uploadFaqFromCSV'){
+        //this.goToNextStep();
+        this.DISPLAY_SPINNER_SECTION = true;
+        this.DISPLAY_SPINNER = false;
+  
+        this.addWidgetDefaultLanguage()
+  
+  
+  
+        // this.segmentAttributes["projectId"] = this.projectID;
+        // this.segmentAttributes["projectName"] = this.projectName;
+        // this.segmentAttributes["userId"] = this.user._id;
+        // this.segmentAttributes["username"] = this.user.firstname + ' ' + this.user.lastname;
+        // this.segmentAttributes["botId"] = this.botId;
+  
+        let segmentPageName = "Wizard, Onboarding";
+        let segmentTrackName = "Onboarding";
+        var segmentTrackAttr = {};
+        segmentTrackAttr["projectId"] = this.projectID;
+        segmentTrackAttr["projectName"] = this.projectName;
+        segmentTrackAttr["userId"] = this.user._id;
+        segmentTrackAttr["username"] = this.user.firstname + ' ' + this.user.lastname;
+        segmentTrackAttr["botId"] = this.botId;
+        // let segmentTrackAttr = this.segmentAttributes;
+        this.segment(segmentPageName, segmentTrackName, segmentTrackAttr, this.segmentIdentifyAttributes);
+
+        console.log('[ONBOARDING-D]  segmentIdentifyAttributes ', this.segmentIdentifyAttributes) 
+        this.saveUserPreferences(this.segmentIdentifyAttributes)
+        // this.DISPLAY_SPINNER_SECTION = false;
+        // this.DISPLAY_BOT = true;
+        this.goToExitOnboarding();
+      }
     }
-  }
-  // -----------------  FUNCTION CALLBACK   ------------------------ //
+    // -----------------  FUNCTION CALLBACK   ------------------------ //
+
+
+    saveUserPreferences(segmentIdentifyAttributes) {
+      this.projectService.updateProjectWithUserPreferences(segmentIdentifyAttributes) 
+      .subscribe((res: any) => {
+      
+        this.logger.log('[ONBOARDING-D] - UPDATE PRJCT WITH USER PREFERENCES RES ', res);
+
+      }, error => {
+        this.logger.error('[ONBOARDING-D] - UPDATE PRJCT WITH USER PREFERENCES - ERROR ', error)
+      }, () => {
+        this.logger.log('[ONBOARDING-D] - UPDATE PRJCT WITH USER PREFERENCES * COMPLETE *')
+      });
+    }
+
+    addWidgetDefaultLanguage() {
+      this.browser_lang = this.translate.getBrowserLang();
+  
+      if (tranlatedLanguage.includes(this.browser_lang)) {
+        const langName = this.getLanguageNameFromCode(this.browser_lang)
+        // console.log('[WIZARD - CREATE-PRJCT] - langName ', langName)
+  
+        this.temp_SelectedLangName = langName;
+        this.temp_SelectedLangCode = this.browser_lang
+      } else {
+  
+        this.temp_SelectedLangName = 'English';
+        this.temp_SelectedLangCode = 'en'
+      }
+  
+      this.addNewLanguage(this.temp_SelectedLangCode, this.temp_SelectedLangName)
+  
+    }
+  
+  
+    addNewLanguage(langCode, langName) {
+      this.selectedTranslationCode = langCode;
+      this.selectedTranslationLabel = langName;
+      this.logger.log('[ONBOARDING-D] ADD-NEW-LANG selectedTranslationCode', this.selectedTranslationCode);
+      this.logger.log('[ONBOARDING-D] ADD-NEW-LANG selectedTranslationLabel', this.selectedTranslationLabel);
+  
+      this.widgetService.cloneLabel(this.temp_SelectedLangCode.toUpperCase())
+        .subscribe((res: any) => {
+          // this.logger.log('Multilanguage - addNewLanguage - CLONE LABEL RES ', res);
+          this.logger.log('[ONBOARDING-D] - ADD-NEW-LANG (clone-label) RES ', res.data);
+  
+        }, error => {
+          this.logger.error('[ONBOARDING-D] ADD-NEW-LANG (clone-label) - ERROR ', error)
+        }, () => {
+          this.logger.log('[ONBOARDING-D] ADD-NEW-LANG (clone-label) * COMPLETE *')
+        });
+  
+      // // ADD THE NEW LANGUAGE TO BOTTOM NAV
+      const newLang = { code: this.temp_SelectedLangCode, name: this.temp_SelectedLangName };
+      this.logger.log('[ONBOARDING-D] Multilanguage saveNewLanguage newLang objct ', newLang);
+  
+      this.availableTranslations.push(newLang)
+      this.logger.log('[ONBOARDING-D] Multilanguage saveNewLanguage availableTranslations ', this.availableTranslations)
+    }
 
 
 

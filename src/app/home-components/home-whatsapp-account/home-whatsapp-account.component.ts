@@ -466,7 +466,7 @@ export class HomeWhatsappAccountComponent implements OnInit, OnChanges {
   installV2App(projectId, appId) {
 
     this.appStoreService.installAppVersionTwo(projectId, appId).subscribe((res: any) => {
-      console.log('[HOME-WA] INSTALL V2 APP ', projectId, appId)
+      console.log('[HOME-WA] INSTALL V2 APP projectId ', projectId, 'appId ', appId)
 
     }, (error) => {
       console.error('[HOME-WA] INSTALL V2 APP - ERROR  ', error);

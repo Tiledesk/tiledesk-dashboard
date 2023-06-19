@@ -302,6 +302,23 @@ body {
   margin-left: 4px;
 }
 
+.other-chatbots {
+  height: 45px;
+  background: rgb(33, 150, 243);
+  width: 45px;
+  font-size: 16px;
+  text-align: center;
+  line-height: 2.9;
+  font-weight: 400;
+  color: #fff;
+  letter-spacing: -1px;
+  position: relative;
+  left: -5px;
+  cursor: pointer;
+  border-radius: 50%;
+  border: 1px solid #fff;
+}
+
 // --------------------------------------------------
 // ANIMATED ARROW https://codepen.io/cbrst/pen/ebxwLJ
 // --------------------------------------------------

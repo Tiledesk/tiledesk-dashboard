@@ -2413,8 +2413,8 @@
 }
 
 .padding-l-r {
-  padding-left: 1.5rem !important;
-  padding-right: 1.5rem !important;
+  padding-left: 20px !important;
+  padding-right: 20px !important;
 }
 
 @media (min-width: 600px) {
@@ -2668,4 +2668,14 @@ img {
 .project---name {
   display: flex;
   align-items: center;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  background-color: rgba(0, 0, 0, 0.4);
 }
