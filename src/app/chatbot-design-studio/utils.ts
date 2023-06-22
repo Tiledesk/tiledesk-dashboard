@@ -67,7 +67,8 @@ export enum TYPE_COMMAND {
 export enum TYPE_MESSAGE {
     TEXT = 'text',
     IMAGE = 'image',
-    FRAME = 'frame'
+    FRAME = 'frame',
+    GALLERY = 'gallery'
 }
 
 export enum TYPE_ACTION {

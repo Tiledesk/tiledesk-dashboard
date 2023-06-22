@@ -116,6 +116,7 @@ import { CDSDetailBotDetailComponent } from './cds-chatbot-details/detail/detail
 import { CDSDetailImportExportComponent } from './cds-chatbot-details/import-export/import-export.component';
 import { WsChatbotService } from 'app/services/websocket/ws-chatbot.service';
 import { ChangeBotLangModalComponent } from 'app/components/modals/change-bot-lang/change-bot-lang.component';
+import { GalleryResponseComponent } from './cds-dashboard/panel-intent-detail/actions/action-reply/reply-types/gallery-response/gallery-response.component';
 
 
 
@@ -125,13 +126,16 @@ import { ChangeBotLangModalComponent } from 'app/components/modals/change-bot-la
 @NgModule({
   declarations: [
     CdsDashboardComponent,
+    //ACTION-REPLY
     PanelReplyToolsComponent,
     ActionReplyComponent,
     TextResponseComponent,
     DelaySliderComponent,
     ImageResponseComponent,
     FrameResponseComponent,
+    GalleryResponseComponent,
     ImageUploadComponent,
+    
     PanelIntentListComponent,
     PanelIntentComponent,
     PanelActionsComponent,
@@ -196,7 +200,7 @@ import { ChangeBotLangModalComponent } from 'app/components/modals/change-bot-la
     CDSDetailBotDetailComponent,
     CDSDetailImportExportComponent,
     //DETAIL COMPONENT SECTION
-    ChangeBotLangModalComponent
+    ChangeBotLangModalComponent,
   ],
   imports: [
     A11yModule,

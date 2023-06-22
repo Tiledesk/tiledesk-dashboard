@@ -125,7 +125,6 @@ export class ActionReplyComponent implements OnInit {
       if(el._tdJSONCondition){
         elementMessage.message._tdJSONCondition = el._tdJSONCondition
       }
-
       replyArrayElements.push(elementMessage);
       if (el.text) {
         textConversation += el.text + '\r\n'
