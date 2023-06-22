@@ -19,11 +19,11 @@
             <div>Attribute name</div>
             <div class="operand-attribute">
                 <input #operand1
-                type="text" 
-                formControlName="operand1" 
-                placeholder="Attribute name" 
-                [readonly]="disableInput" 
-                name="operand1" />
+                    type="text" 
+                    formControlName="operand1" 
+                    placeholder="Attribute name" 
+                    [readonly]="disableInput" 
+                    name="operand1" />
                 <!-- (click)="openvariable-list()" <span class="material-icons close" (click)="onDeleteInputField()">close</span> -->
             </div>
         </section>
@@ -43,7 +43,7 @@
                 <!-- //[readonly]="conditionForm.value.operand2.name? true : false" -->
                 <cds-textarea id="operand2"
                     [textLimitBtn]="false"
-                    [emoijPikerBtn]="false"
+                    [emojiPikerBtn]="false"
                     [setAttributeBtn]="setAttributeBtnOperand2"
                     [minRow]="1" [maxRow]="1"
                     [readonly]="readonlyTextarea"

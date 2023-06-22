@@ -43,7 +43,7 @@ export class PanelButtonConfigurationComponent implements OnInit {
   buttonAttributes: any;
   openBlockAttributes: boolean = false;
 
-  emoijPikerBtn: boolean = true
+  emojiPikerBtn: boolean = true
   isEmojiPickerVisible: boolean = false;
   emojiPerLine: number = 8;
   emojiColor: string ="#ac8b2c";
