@@ -130,6 +130,7 @@ export class TextResponseComponent implements OnInit {
     this.delayTime = value;
     this.response.time = value*1000;
     this.changeDelayTimeReplyElement.emit();
+    this.canShowFilter = true;
   }
 
   onChangeExpression(expression: Expression){

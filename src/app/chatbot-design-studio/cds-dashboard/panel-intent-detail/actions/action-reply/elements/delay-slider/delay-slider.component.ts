@@ -37,6 +37,7 @@ export class DelaySliderComponent implements OnInit {
   }
 
   onValueChange(){
+    this.closeDelaySlider()
     this.changeDelayTime.emit(this.delayTime);
   }
 
