@@ -32,6 +32,10 @@
         </div>
 
     </div>
+
+    <div *ngIf="typeAction === typeActions.REPLY" class="text-editor-drop">
+        <em class="material-icons">drag_indicator</em>
+    </div>
    
 </div>
 
@@ -88,11 +92,9 @@
                                 <div *ngIf="galleryEl.preview.src" class="control-button delete" (click)="onDeleteImage(i)">
                                     <em class="material-icons">clear</em>
                                 </div>
-                            </div> 
-                            <!-- <div class="image"><img [src]="galleryEl.previewImage"></div> -->
+                            </div>
                         </div>
-                        <!-- (focusout)="activateEL[i].title=false" -->
-                        <div class="gallery-title" (click)="activateEL[i].title=true; onContentElementClicked($event, 'title', i)"> 
+                        <div class="gallery-title" (click)="initElement();activateEL[i].title=true"> 
                             <cds-textarea id="title"
                                 [textLimitBtn]="activateEL[i]['title']"
                                 [emojiPikerBtn]="activateEL[i]['title']"
@@ -106,8 +108,7 @@
                                 (changeTextarea)="onChangeText($event, 'title', i)">
                             </cds-textarea>
                         </div>
-                        <div class="gallery-description"
-                            (click)="activateEL[i]['description']=true; onContentElementClicked($event, 'description', i)"> 
+                        <div class="gallery-description" (click)="initElement();activateEL[i]['description']=true"> 
                             <cds-textarea id="description"
                                 [textLimitBtn]="activateEL[i]['description']"
                                 [emojiPikerBtn]="activateEL[i]['description']"

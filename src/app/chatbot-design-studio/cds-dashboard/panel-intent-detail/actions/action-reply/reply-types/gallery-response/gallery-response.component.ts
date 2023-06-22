@@ -151,12 +151,6 @@ export class GalleryResponseComponent implements OnInit {
     this.changeReplyElement.emit();
   }
 
-  onContentElementClicked(event, element: 'title' | 'description', index: number){
-    this.initElement()
-    this.activateEL[index][element]= true
-  }
-
-
   onSelectedAttribute(variableSelected: { name: string, value: string }, element: 'title' | 'description', index: number){
     this.activateEL[index][element] = false
   }
