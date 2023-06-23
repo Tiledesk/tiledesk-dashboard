@@ -2324,6 +2324,8 @@
     "NoTAGAssignedToThisContactYet":"Бұл контактіге әлі бірде-бір TAG тағайындалмаған",
     "StartBySelecting":"{{template_category}} үлгілерінен пайдалануға дайын тегін таңдау арқылы бастаңыз немесе біздің жаңа кодсыз Chatbot Design Studio арқылы чатботыңызды нөлден жасаңыз.",
     "NextStep":"Келесі қадам",
+    "WAWizardQuickTip1":"Оны жариялаған кезде оны {{select_dep}}, яғни WhatsApp Business қызметімен Tildesk қосылымын теңшеу кезінде таңдалған бөлімге қосыңыз.",
+    "WAWizardQuickTip2": "Жасалған бот {{select_dep}} ішінде белсендірілгеніне көз жеткізіңіз.",
     "AddIntentPage": {
         "AddForm": "Пішін қосу",
         "SelectTemplateForm": "Ұсынылғандар арасында пішін түрін таңдаңыз немесе жаңасын жасаңыз",

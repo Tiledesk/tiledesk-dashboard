@@ -2324,6 +2324,8 @@
     "NoTAGAssignedToThisContactYet":"لم يتم تعيين TAG لجهة الاتصال هذه حتى الآن",
     "StartBySelecting":"ابدأ باختيار برنامج مجاني جاهز للاستخدام من نماذج {{template_category}} أو أنشئ chatbot الخاص بك من البداية باستخدام Chatbot Design Studio الجديد الذي لا يحتوي على كود",
     "NextStep":"الخطوة المقبلة",
+    "WAWizardQuickTip1":"عند نشره ، اربطه بـ {{select_dep}} ، أي بالقسم نفسه المحدد عند تكوين اتصال Tildesk مع WhatsApp Business.",
+    "WAWizardQuickTip2": "تأكد من تنشيط الروبوت الذي تم إنشاؤه في {{select_dep}}",
     "AddIntentPage": {
         "AddForm": "أضف النموذج",
         "SelectTemplateForm": "حدد نوعًا من النماذج بين هؤلاء المقترحين ، أو إنشاء شكل جديد",

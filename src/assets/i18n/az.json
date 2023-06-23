@@ -2324,6 +2324,8 @@
     "NoTAGAssignedToThisContactYet":"Bu kontakta hələ heç bir TAG təyin edilməyib",
     "StartBySelecting":"{{template_category}} şablonlarından pulsuz istifadəyə hazır şablon seçərək başlayın və ya kodsuz yeni Chatbot Design Studio ilə sıfırdan chatbotunuzu yaradın.",
     "NextStep":"Növbəti addım",
+    "WAWizardQuickTip1":"Onu dərc etdiyiniz zaman onu {{select_dep}}-ə, yəni WhatsApp Business ilə Tildesk bağlantısını konfiqurasiya edərkən seçilmiş eyni şöbəyə bağlayın.",
+    "WAWizardQuickTip2": "Yaradılmış botun {{select_dep}}-də aktiv olduğundan əmin olun.",
     "AddIntentPage": {
         "AddForm": "Forma vermək",
         "SelectTemplateForm": "Təklif olunanlar arasında bir növ forma seçin və ya yenisini yaradın",

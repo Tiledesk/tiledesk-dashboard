@@ -2324,6 +2324,8 @@
 	"NoTAGAssignedToThisContactYet":"Diesem Kontakt wurde noch kein TAG zugeordnet",
 	"StartBySelecting":"Wählen Sie zunächst eine kostenlose, gebrauchsfertige Vorlage aus den {{template_category}}-Vorlagen aus oder erstellen Sie Ihren Chatbot von Grund auf mit unserem brandneuen Chatbot Design Studio ohne Code",
 	"NextStep":"Nächster Schritt",
+	"WAWizardQuickTip1":"Wenn Sie es veröffentlichen, verknüpfen Sie es mit {{select_dep}}, d. h. mit derselben Abteilung, die Sie bei der Konfiguration der Tildesk-Verbindung mit WhatsApp Business ausgewählt haben.",
+	"WAWizardQuickTip2": "Stellen Sie sicher, dass der erstellte Bot im {{select_dep}} aktiviert ist.",
 	"AddIntentPage": {
 		"AddForm": "Form hinzufügen",
 		"SelectTemplateForm": "Wählen Sie unter den vorgeschlagenen Form eine Art von Form aus oder erstellen Sie eine neue",

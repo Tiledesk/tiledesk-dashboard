@@ -2324,6 +2324,8 @@
     "NoTAGAssignedToThisContactYet":"Bu kişiye henüz bir TAG atanmadı",
     "StartBySelecting":"{{template_category}} şablonlarından ücretsiz, kullanıma hazır bir şablon seçerek başlayın veya yepyeni kodsuz Chatbot Tasarım Stüdyomuzla sohbet robotunuzu sıfırdan oluşturun",
     "NextStep":"Sonraki adım",
+    "WAWizardQuickTip1":"Yayınladığınızda, {{select_dep}}'ye, yani WhatsApp Business ile Tildesk bağlantısını yapılandırırken seçilen aynı departmana bağlayın.",
+    "WAWizardQuickTip2": "Oluşturulan botun {{select_dep}} içinde etkinleştirildiğinden emin olun",
     "AddIntentPage": {
         "AddForm": "Form ekle",
         "SelectTemplateForm": "Önerilenler arasında bir tür form seçin veya yeni bir form oluşturun",

@@ -2324,6 +2324,8 @@
     "NoTAGAssignedToThisContactYet":"Hozircha bu kontaktga TAG tayinlanmagan",
     "StartBySelecting": "Ishga kirishish uchun {{template_category}} shablonlaridan foydalanishga tayyor bepulni tanlang yoki yangi kodsiz Chatbot Design Studio yordamida chatbotingizni noldan yarating.",
     "NextStep":"Keyingi qadam",
+    "WAWizardQuickTip1":"Uni nashr qilganingizda, uni {{select_dep}} ga, ya'ni WhatsApp Business bilan Tildesk ulanishini sozlashda tanlangan bo'limga ulang.",
+    "WAWizardQuickTip2": "Yaratilgan bot {{select_dep}} da faollashtirilganligiga ishonch hosil qiling.",
     "AddIntentPage": {
         "AddForm": "Shakl qo'shing",
         "SelectTemplateForm": "Tavsiya etilganlar orasida shakl turini tanlang yoki yangisini yarating",
