@@ -193,22 +193,27 @@
           </div>
         </div> <!-- ./ bg-card -->
         <appdashboard-home-whatsapp-account-wizard style="margin-bottom: 18px;" *ngIf="displayWhatsappAccountWizard"
-          (goToConnectWA)="goToConnectWA()"> 
+          (goToConnectWA)="goToConnectWA()" 
+          (goToCreateChatbot)="goToCreateChatbot()"
+          [whatsAppIsConnected]="whatsAppIsConnected" 
+          [wadepartmentName]="wadepartmentName" 
+          [chatbotConnectedWithWA]='chatbotConnectedWithWA'> 
         </appdashboard-home-whatsapp-account-wizard>
         
         <appdashboard-home-convs-graph *ngIf="displayAnalyticsConvsGraph"  [displayAnalyticsConvsGraph]="displayAnalyticsConvsGraph" [projectId]="projectId" [USER_ROLE]="USER_ROLE"> </appdashboard-home-convs-graph>
         
         <appdashboard-home-analytics-indicator *ngIf="displayAnalyticsConvsGraph" [projectId]="projectId" [USER_ROLE]="USER_ROLE"> </appdashboard-home-analytics-indicator>
         
-        <appdashboard-home-whatsapp-account style=" z-index: 11;" #childComponent *ngIf="displayConnectWhatsApp" 
+        <appdashboard-home-whatsapp-account style=" z-index: 11;" #childWhatsappAccount *ngIf="displayConnectWhatsApp" 
           (onClickOnUnistallApp)="onClickOnUnistallApp()" 
           (onClickOnGoToLearnMoreOrManageApp)="onClickOnGoToLearnMoreOrManageApp()" 
           [whatsAppIsInstalled]="whatsAppIsInstalled"> 
         </appdashboard-home-whatsapp-account>
 
-        <appdashboard-home-create-chatbot *ngIf="displayCreateChatbot"
+        <appdashboard-home-create-chatbot #childCreateChatbot *ngIf="displayCreateChatbot"
           [use_case_for_child]="use_case_for_child" 
-          [solution_channel_for_child]="solution_channel_for_child"> 
+          [solution_channel_for_child]="solution_channel_for_child"
+          [waBotId]="waBotId"> 
         </appdashboard-home-create-chatbot>
 
         <appdashboard-home-news-feed *ngIf="displayNewsFeed"> </appdashboard-home-news-feed>

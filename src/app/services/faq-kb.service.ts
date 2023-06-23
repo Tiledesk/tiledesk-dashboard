@@ -183,9 +183,7 @@ export class FaqKbService {
 
   }
   /**
-   * READ (GET ALL FAQKB WITH THE CURRENT PROJECT ID)
-   * NOTE: chat21-api-node.js READ THE CURRENT PROJECT ID FROM THE URL SO IT SO NO LONGER NECESSARY TO PASS THE PROJECT 
-   * ID AS PARAMETER
+   * READ (GET ALL BOT WITH THE CURRENT PROJECT ID - NOTE: this REST call does not return the Identity bot)
    */
   public getFaqKbByProjectId(): Observable<FaqKb[]> {
     const httpOptions = {

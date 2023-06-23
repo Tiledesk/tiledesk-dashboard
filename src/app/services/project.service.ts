@@ -10,6 +10,7 @@ import { LoggerService } from '../services/logger/logger.service';
 export class ProjectService {
 
   SERVER_BASE_PATH: string;
+  WHATSAPP_API_URL: string;
   PROJECTS_URL: string;
   TOKEN: string;
   user: any;
@@ -46,6 +47,7 @@ export class ProjectService {
     this.logger.log('[PROJECT-SERV] - SERVER_BASE_PATH ', this.SERVER_BASE_PATH);
     this.PROJECTS_URL = this.SERVER_BASE_PATH + 'projects/';
     this.logger.log('[PROJECT-SERV] - PROJECTS URL ', this.PROJECTS_URL);
+    this.WHATSAPP_API_URL = this.appConfigService.getConfig().whatsappApiUrl;
   }
 
   countOfMyAvailability(numOfMyAvailability: number) {
@@ -771,8 +773,22 @@ export class ProjectService {
       .patch(url, JSON.stringify(body), httpOptions)
   }
 
+  checkWAConnection() {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+ 
+    let url = this.WHATSAPP_API_URL + "/ext/" + this.projectID
+    console.log('[PROJECT-SERV] -  CHECK-WA-CONNECTION - URL', url);
+  
+    return this._httpclient
+    .get(url, httpOptions)
+  }
 
-  updateProjectWithWAWizardFinished(wawizardcompleted: boolean) {
+  updateProjectWithWAWizardSteps(wastep) {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -781,9 +797,25 @@ export class ProjectService {
     };
 
     let url = this.SERVER_BASE_PATH + "projects/" + this.projectID + "/attributes"
-    console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD FINISHED - URL', url);
-    const body = { wawizardcompleted: wawizardcompleted }
-    console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD FINISHED - BODY', body);
+    console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD STEPS - URL', url);
+    const body = { wastep: wastep }
+    console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD STEPS - BODY', body);
+    return this._httpclient
+      .patch(url, JSON.stringify(body), httpOptions)
+  }
+
+  updateProjectWithWASettings(wasettings) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    let url = this.SERVER_BASE_PATH + "projects/" + this.projectID + "/attributes"
+    console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD STEPS - URL', url);
+    const body = { wasettings: wasettings }
+    console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD STEPS - BODY', body);
     return this._httpclient
       .patch(url, JSON.stringify(body), httpOptions)
   }

@@ -2,7 +2,7 @@
     <div class="home-block-header-wpr">
         <div class="home-block-header">
 
-            <div *ngIf="chatbots && chatbots.length === 0 " class="home-block-img-title-wpr">
+            <div *ngIf="chatbots && chatbots?.length === 0 " class="home-block-img-title-wpr">
                 <div class="home-block-img">
 
                     <svg width="42" height="42" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
@@ -89,7 +89,7 @@
                 </div>
             </div>
 
-            <div *ngIf="chatbots && chatbots.length > 0 " class="home-block-img-title-wpr">
+            <div *ngIf="chatbots && chatbots?.length > 0 " class="home-block-img-title-wpr">
                 <div class="home-block-title">
                     Your chatbots
                 </div>
@@ -100,7 +100,7 @@
     <div style="height: 24px; width: 0px; flex: 0 0 auto;"></div>
     <!-- (click)="goToBotProfile(bot?._id, bot?.type)" (mouseenter)="chatbotDetails.open()"
                 (mouseleave)="chatbotDetails.close()" -->
-    <div *ngIf="chatbots && chatbots.length > 0" class="your-chatbots"
+    <div *ngIf="chatbots && chatbots?.length > 0" class="your-chatbots"
         style="display: flex;height: 45px; margin-bottom: 16px;">
         <div class="served-by-desktop-b" *ngFor="let bot of chatbots | slice:0:10; let i=index; let first = first;">
             <div [ngClass]="{ 'first-served-by': first, 'disable-link-if-is-agent': USER_ROLE === 'agent' }"
@@ -150,32 +150,33 @@
                         <img class="home-served-by-bot-type-logo" style="left: -1px;top: 3px;"
                             src="assets/img/tilebot_logo_small.png" />
                     </div>
+
+                    <div *ngIf="bot.isConnectToWA === true">
+                        <img class="bot-wa-connected-logo" style="left: -1px;top: 3px;"
+                            src="assets/img/channel_icons/whatsapp-logo_green.svg" />
+                    </div>
                 </div>
 
-                <sat-popover #c horizontalAlign="center" verticalAlign="center" hasBackdrop
-                    (backdropClicked)="c.close()" panelClass="chatbot-details-popover">
+                <sat-popover #c horizontalAlign="end" verticalAlign="center" hasBackdrop (backdropClicked)="c.close()"
+                    panelClass="chatbot-details-popover">
 
                     <div class="chatbot-details-popover-wpr" style="padding: 12px;">
 
-                        <div class="chatbot-popover-row">
+                        <div class="chatbot-popover-row-fs">
 
                             <div class="left--col">
 
                                 <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE"
                                     [ngClass]="{'bot-img-gray-bckgrnd': bot.hasImage === false}"
+                                    class="img-in-bot-popover"
                                     src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{bot?._id}}%2Fphoto.jpg?alt=media"
-                                    alt="" onerror="this.src='assets/img/avatar_bot_tiledesk_white.svg'" style="width: 24px;
-                            height: 24px;
-                            border-radius: 50%;
-                            border: 1px solid #2b3245;">
+                                    alt="" onerror="this.src='assets/img/avatar_bot_tiledesk_white.svg'" style="">
 
                                 <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE"
                                     [ngClass]="{'bot-img-gray-bckgrnd': bot.hasImage === false}"
+                                    class="img-in-bot-popover"
                                     src="{{baseUrl}}images?path=uploads%2Fusers%2F{{bot?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
-                                    alt="" onerror="this.src='assets/img/avatar_bot_tiledesk_white.svg'" style="width: 24px;
-                            height: 24px;
-                            border-radius: 50%;
-                            border: 1px solid #2b3245;">
+                                    alt="" onerror="this.src='assets/img/avatar_bot_tiledesk_white.svg'" style="">
                             </div>
 
                             <div class="right--col chatbot-name">
@@ -185,7 +186,20 @@
                         </div>
 
                         <div class="chatbot-popover-row">
-                            <div class="left--col"></div>
+                            <div class="left--col">
+                                <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px"
+                                    viewBox="0 0 24 24" width="24px" fill="#000000">
+                                    <g>
+                                        <path d="M0,0h24v24H0V0z" fill="none" />
+                                    </g>
+                                    <g>
+                                        <g>
+                                            <path
+                                                d="M15,3H5C3.9,3,3.01,3.9,3.01,5L3,19c0,1.1,0.89,2,1.99,2H19c1.1,0,2-0.9,2-2V9L15,3z M5,19V5h9v5h5v9H5z M9,8 c0,0.55-0.45,1-1,1S7,8.55,7,8s0.45-1,1-1S9,7.45,9,8z M9,12c0,0.55-0.45,1-1,1s-1-0.45-1-1s0.45-1,1-1S9,11.45,9,12z M9,16 c0,0.55-0.45,1-1,1s-1-0.45-1-1s0.45-1,1-1S9,15.45,9,16z" />
+                                        </g>
+                                    </g>
+                                </svg>
+                            </div>
 
                             <div class="right--col chatbot-description">
                                 <span *ngIf="bot.description"> {{bot.description}} </span>
@@ -252,16 +266,9 @@
                         </div>
 
                         <div class="view-detail-btn" style="text-align: center;">
-                            <div class="arrow-container" style="    display: flex;
-                            align-items: center;
-                            width: 100%;
-                            justify-content: center;
-                            color: #0f62ff;
-                            font-weight: 400;
-                            margin-top: 6px;
-                            cursor: pointer;" (click)="goToBotProfile(bot?._id, bot?.type)">
-                                <div id="arrow_1" class="arrow-wrapper">
-                                    <div class="text-block" style="margin-right: 16px;">
+                            <div class="arrow-container" (click)="goToBotProfile(bot?._id, bot?.type)">
+                                <div id="arrow_2" class="arrow-wrapper">
+                                    <div class="text-block" style="margin-right: 16px; font-size: 13px;">
                                         {{ 'ViewDetails' | translate }}
                                     </div>
                                     <div class="arrow arrow--right">
@@ -278,7 +285,7 @@
             </div>
         </div>
 
-        <div class="served-by-desktop-b" click="goToMyChatbots()">
+        <div *ngIf="chatbots?.length > 10" class="served-by-desktop-b" click="goToMyChatbots()">
             <div class="served-by-desktop-d">
                 <div style="height: 45px " class="other-chatbots">
                     + {{numOfChabotNotDiplayed}}
@@ -296,7 +303,10 @@
         <div class="home-block-description" style="padding-right: 55px;">
             <!-- Create your chatbot from scratch with our brand new no-code Chatbot Design Studio or start by selecting a
             free ready-to-use template (pre-designed chatbot) that suits your needs -->
-            {{'StartBySelecting' | translate : tparams }}
+            <span *ngIf="displayDefaultDescription === false"> {{'StartBySelecting' | translate : tparams }} </span>
+            <span *ngIf="displayDefaultDescription === true"> Create your chatbot from scratch with our brand new
+                no-code Chatbot Design Studio or start by selecting a
+                free ready-to-use template (pre-designed chatbot) that suits your needs</span>
         </div>
 
 

@@ -16,6 +16,7 @@ import { takeUntil } from 'rxjs/operators'
 export class HomeCreateChatbotComponent implements OnInit, OnChanges {
   @Input() use_case_for_child: string;
   @Input() solution_channel_for_child: string;
+  @Input() waBotId: string;
   private unsubscribe$: Subject<any> = new Subject<any>();
   projectId: string;
   UPLOAD_ENGINE_IS_FIREBASE: boolean;
@@ -26,6 +27,7 @@ export class HomeCreateChatbotComponent implements OnInit, OnChanges {
   numOfChabotNotDiplayed: number;
   USER_ROLE: string;
   tparams:any; 
+  displayDefaultDescription = false
   constructor(
     public appConfigService: AppConfigService,
     public auth: AuthService,
@@ -36,10 +38,11 @@ export class HomeCreateChatbotComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnInit(): void {
-    this.getCurrentProjectAndGetChatbot();
+    // this.getCurrentProjectAndPrjctbots();
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    console.log('[HOME-CREATE-CHATBOT] - ngOnChanges waBotId  ', this.waBotId)
     console.log('[HOME-CREATE-CHATBOT] - ngOnChanges fires!  changes ', changes)
     console.log('[HOME-CREATE-CHATBOT] - USER PREFERENCES USE CASE »»» ', this.use_case_for_child)
     console.log('[HOME-CREATE-CHATBOT] - USER PREFERENCES SOLUTION CHANNEL »»» ', this.solution_channel_for_child)
@@ -47,7 +50,12 @@ export class HomeCreateChatbotComponent implements OnInit, OnChanges {
       this.tparams = {template_category: 'Customer Satisfaction'} 
     } else if (this.use_case_for_child === 'increase_online_sales') { 
       this.tparams = {template_category: 'Increase Sales'} 
+    } else if (this.use_case_for_child === undefined) {
+      console.log('[HOME-CREATE-CHATBOT] - USER PREFERENCES USE CASE »»» is undefined', this.use_case_for_child)
+      this.displayDefaultDescription = true
     }
+
+    this.getCurrentProjectAndPrjctbots();
   }
 
   getUserRole() {
@@ -63,7 +71,7 @@ export class HomeCreateChatbotComponent implements OnInit, OnChanges {
       })
   }
 
-  getCurrentProjectAndGetChatbot() {
+  getCurrentProjectAndPrjctbots() {
     this.auth.project_bs
       .pipe(
         takeUntil(this.unsubscribe$)
@@ -75,7 +83,7 @@ export class HomeCreateChatbotComponent implements OnInit, OnChanges {
 
           this.projectId = project._id
 
-          this.getImageStorageThenUserAndBots();
+          this.getImageStorageThenBots();
         }
       }, (error) => {
         this.logger.error('[HOME-CREATE-CHATBOT] $UBSCIBE TO PUBLISHED PROJECT - ERROR ', error);
@@ -85,7 +93,7 @@ export class HomeCreateChatbotComponent implements OnInit, OnChanges {
       });
   }
 
-  getImageStorageThenUserAndBots() {
+  getImageStorageThenBots() {
     if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
 
       this.UPLOAD_ENGINE_IS_FIREBASE = true;
@@ -94,7 +102,7 @@ export class HomeCreateChatbotComponent implements OnInit, OnChanges {
       this.logger.log('[HOME-CREATE-CHATBOT] - IMAGE STORAGE ', this.storageBucket, 'usecase firebase')
 
       // this.getAllUsersOfCurrentProject(this.storageBucket, this.UPLOAD_ENGINE_IS_FIREBASE)  // USED TO DISPLAY THE HUMAN AGENT FOR THE NEW HOME-CREATE-CHATBOT-CREATE-CHATBOT-CREATE-CHATBOT
-      this.getAllFaqKbByProjectId(this.storageBucket, this.UPLOAD_ENGINE_IS_FIREBASE) // USED FOR COUNT OF BOTS FOR THE NEW HOME-CREATE-CHATBOT-CREATE-CHATBOT-CREATE-CHATBOT
+      this.getProjectBots(this.storageBucket, this.UPLOAD_ENGINE_IS_FIREBASE) // USED FOR COUNT OF BOTS FOR THE NEW HOME-CREATE-CHATBOT-CREATE-CHATBOT-CREATE-CHATBOT
 
     } else {
 
@@ -102,15 +110,17 @@ export class HomeCreateChatbotComponent implements OnInit, OnChanges {
       this.baseUrl = this.appConfigService.getConfig().baseImageUrl;
       this.logger.log('[HOME-CREATE-CHATBOT] - IMAGE STORAGE ', this.baseUrl, 'usecase native')
       // this.getAllUsersOfCurrentProject(this.baseUrl, this.UPLOAD_ENGINE_IS_FIREBASE)  // USED TO DISPLAY THE HUMAN AGENT FOR THE NEW HOME-CREATE-CHATBOT-CREATE-CHATBOT-CREATE-CHATBOT
-      this.getAllFaqKbByProjectId(this.baseUrl, this.UPLOAD_ENGINE_IS_FIREBASE) // USED FOR COUNT OF BOTS FOR THE NEW HOME-CREATE-CHATBOT-CREATE-CHATBOT-CREATE-CHATBOT
+      this.getProjectBots(this.baseUrl, this.UPLOAD_ENGINE_IS_FIREBASE) // USED FOR COUNT OF BOTS FOR THE NEW HOME-CREATE-CHATBOT-CREATE-CHATBOT-CREATE-CHATBOT
     }
 
   }
 
 
-  getAllFaqKbByProjectId(storage, uploadEngineIsFirebase) {
-    this.faqKbService.getAllBotByProjectId().subscribe((faqKb: any) => {
+  getProjectBots(storage, uploadEngineIsFirebase) {
+    this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
       console.log('[HOME-CREATE-CHATBOT] - GET FAQKB RES', faqKb);
+      
+      
       if (faqKb) {
 
         // -----------------------------------------------------------
@@ -118,15 +128,21 @@ export class HomeCreateChatbotComponent implements OnInit, OnChanges {
         // -----------------------------------------------------------
         faqKb.forEach(bot => {
           console.log('[HOME-CREATE-CHATBOT] - GET FAQKB forEach bot: ', bot)
-
-          if (bot && bot['type'] === "identity") {
-
-            const index = faqKb.indexOf(bot);
-            console.log('[HOME-CREATE-CHATBOT] - GET FAQKB INDEX OF IDENTITY BOT', index);
-            if (index > -1) {
-              faqKb.splice(index, 1);
-            }
+          console.log('[HOME-CREATE-CHATBOT] - GET FAQKB forEach waBotId: ', this.waBotId)
+          if (bot._id === this.waBotId) {
+            bot.isConnectToWA = true
+          } else {
+            bot.isConnectToWA = false
           }
+
+          // if (bot && bot['type'] === "identity") {
+
+          //   const index = faqKb.indexOf(bot);
+          //   console.log('[HOME-CREATE-CHATBOT] - GET FAQKB INDEX OF IDENTITY BOT', index);
+          //   if (index > -1) {
+          //     faqKb.splice(index, 1);
+          //   }
+          // }
           let imgUrl = ''
           if (uploadEngineIsFirebase === true) {
 
@@ -211,7 +227,9 @@ export class HomeCreateChatbotComponent implements OnInit, OnChanges {
     this.router.navigate(['project/' + this.projectId + '/bots/templates/customer-satisfaction']);
     } else if (this.use_case_for_child === 'increase_online_sales') {
       this.router.navigate(['project/' + this.projectId + '/bots/templates/increase-sales']);
-    }
+    } else if (this.use_case_for_child === undefined) {
+      this.router.navigate(['project/' + this.projectId + '/bots/templates/all']);
+    } 
   }
 
   goToCommunityTemplates() {

@@ -1,0 +1,44 @@
+.wa-step-modal-title {
+    font-family: "Poppins", "Roboto", "Arial", sans-serif;
+}
+
+.connect-wa-first-step-modal-content .img-wpr {
+    text-align: center;
+    margin-bottom: 6px;
+    background-color: rgb(80, 255, 121, 0.5);
+    padding: 8px 0px;
+}
+
+.connect-wa-first-step-link-title {
+    font-size: 16px;
+    margin-top: 12px;
+    margin-bottom: 3px;
+}
+
+.connect-wa-first-step-link {
+    display: flex;
+    gap: 6px;
+    flex-direction: row;
+    align-items: flex-start;
+}
+
+.round--dot{
+    width: 22px;
+    height: 22px;
+    min-width: 22px;
+    background: #25d366;
+    border-radius: 50%;
+    text-align: center;
+}
+
+.round--dot span {
+    font-size: 14px;
+    vertical-align: middle;
+    color: #fff;
+}
+
+.wa-step-modal-quick-tip-wpr {
+    display: flex;
+    gap: 6px;
+    align-items: flex-start;
+}

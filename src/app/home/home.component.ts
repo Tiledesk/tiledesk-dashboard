@@ -35,6 +35,7 @@ import {
 } from '../utils/util';
 import { AnalyticsService } from 'app/analytics/analytics-service/analytics.service';
 import { AppStoreService } from 'app/services/app-store.service';
+import { DepartmentService } from 'app/services/department.service';
 
 const swal = require('sweetalert');
 @Component({
@@ -48,7 +49,9 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   private unsubscribe$: Subject<any> = new Subject<any>();
   @ViewChild('widgetsContent', { static: false, read: ElementRef }) public widgetsContent;
 
-  @ViewChild('childComponent', { static: false, read: ElementRef }) public childComponent;
+  @ViewChild('childWhatsappAccount', { static: false, read: ElementRef }) public childWhatsappAccount;
+  @ViewChild('childCreateChatbot', { static: false, read: ElementRef }) public childCreateChatbot;
+
   // company_name = brand.company_name;
   // tparams = brand;
   company_name: string;
@@ -152,6 +155,12 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   use_case_for_child: string = "";
   solution_channel_for_child: string = "";
   elemHomeMainContentHeight: any;
+  whatsAppIsConnected: boolean = false;
+  chatbotConnectedWithWA: boolean = false;
+  waWizardSteps = [{ step1: false, step2: false, step3: false }]
+  wadepartmentid: string;
+  wadepartmentName: string;
+  waBotId: string = '';
   constructor(
     public auth: AuthService,
     private route: ActivatedRoute,
@@ -168,7 +177,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     private faqKbService: FaqKbService,
     private logger: LoggerService,
     private projectService: ProjectService,
-    public appStoreService: AppStoreService
+    public appStoreService: AppStoreService,
+    private departmentService: DepartmentService,
   ) {
     const brand = brandService.getBrand();
     this.company_name = brand['company_name'];
@@ -216,6 +226,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     // this.startChabgelogAnimation()
     // this.pauseResumeLastUpdateSlider() // https://stackoverflow.com/questions/5804444/how-to-pause-and-resume-css3-animation-using-javascript
     // this.getPromoBanner()
+    this.waWizardSteps = [{ step1: false, step2: false, step3: false }]
+    // this.upadatedWatsAppWizard( this.waWizardSteps)
   }
 
   getCurrentProjectAndInit() {
@@ -270,6 +282,25 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         this.displayWhatsappAccountWizard = true;
       }
 
+
+      if (this.current_selected_prjct && this.current_selected_prjct.id_project && this.current_selected_prjct.id_project.attributes && this.current_selected_prjct.id_project.attributes.wastep) {
+        if (this.current_selected_prjct.id_project.attributes.wastep[0].step1 === false) {
+          this.whatsAppIsConnected = false
+          console.log('[HOME] - UPDATE PRJCT WITH WA WIZARD STEPS (onInit) - whatsAppIsConnected ', this.whatsAppIsConnected);
+        } else {
+          this.whatsAppIsConnected = true
+        }
+      } else {
+        this.whatsAppIsConnected = false
+      }
+      console.log('[HOME] - (onInit) - whatsAppIsConnected ', this.whatsAppIsConnected);
+
+
+      if (this.current_selected_prjct && this.current_selected_prjct.id_project && this.current_selected_prjct.id_project.attributes && this.current_selected_prjct.id_project.attributes.wasettings) {
+        console.log('[HOME] - (onInit) - wasettings ', this.current_selected_prjct.id_project.attributes.wasettings);
+        this.wadepartmentid = this.current_selected_prjct.id_project.attributes.wasettings.department_id
+        this.getDeptById(this.wadepartmentid)
+      }
 
 
       const projectProfileData = this.current_selected_prjct.id_project.profile
@@ -500,7 +531,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
         }
 
-        console.log('[HOME] - getApps APPS app ', app)
+        // console.log('[HOME] - getApps APPS app ', app)
         if (app && app.version === "v2") {
           if (app.installActionURL === "") {
             // console.log('HOME - getApps APPS app installActionURL', app.installActionURL)
@@ -629,29 +660,63 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   openAppStoreInPopupWindow() {
-    const appsUrl =  this.appConfigService.getConfig().appsUrl;
-    const url = appsUrl.slice(0, appsUrl.lastIndexOf('/'));
+    const whatsappUrl = this.appConfigService.getConfig().whatsappApiUrl;
 
-    console.log('[HOME] openAppStoreInPopupWindow appsUrl' , appsUrl)
-    console.log('[HOME] openAppStoreInPopupWindow url' , url)
-    console.log('[HOME] openAppStoreInPopupWindow projectId' , this.projectId)
-    console.log('[HOME] openAppStoreInPopupWindow user' , this.user)
-    console.log('[HOME] openAppStoreInPopupWindow whatsAppAppId' , this.whatsAppAppId)
-   
-    
-    
+
+    console.log('[HOME] openAppStoreInPopupWindow whatsappUrl', whatsappUrl)
+
+    console.log('[HOME] openAppStoreInPopupWindow projectId', this.projectId)
+    console.log('[HOME] openAppStoreInPopupWindow user', this.user)
+    console.log('[HOME] openAppStoreInPopupWindow whatsAppAppId', this.whatsAppAppId)
+
+    // + '&view=popup' // open connection window without link to documentation
+    const url = whatsappUrl + '/configure?project_id=' + this.projectId + '&app_id=' + this.whatsAppAppId + '&token=' + this.user.token
+
+
     // const testItOutBaseUrl = this.TESTSITE_BASE_URL.substring(0, this.TESTSITE_BASE_URL.lastIndexOf('/'));
     // const testItOutUrl = testItOutBaseUrl + '/chatbot-panel.html'
 
     // const url = testItOutUrl + '?tiledesk_projectid=' + this.project._id + '&tiledesk_participants=bot_' + this.id_faq_kb + "&tiledesk_departmentID=" + this.defaultDepartmentId + '&td_draft=true'
+    let left = (screen.width - 815) / 2;
+    var top = (screen.height - 727) / 4;
+    let params = `toolbar=no,menubar=no,width=815,height=727,left=${left},top=${top}`;
+    let popup = window.open(url, '_blank', params);
 
-    // let params = `toolbar=no,menubar=no,width=815,height=727,left=100,top=100`;
-    // window.open(url, '_blank', params);
+    var popupTick = setInterval(() => {
+      if (popup.closed) {
+        clearInterval(popupTick);
+        console.log('window closed!');
+        this.getIfWathsAppIsConnectedAndUpdateProject()
+      }
+    }, 500);
+  }
+
+  getIfWathsAppIsConnectedAndUpdateProject() {
+    this.projectService.checkWAConnection()
+      .subscribe((res: any) => {
+
+
+
+        console.log('[HOME-WA-WIZARD] - CHECK-WA-CONNECTION - RES ', res);
+        console.log('[HOME-WA-WIZARD] - CHECK-WA-CONNECTION - RES > success', res.success);
+
+        if (res.success === true) {
+          this.whatsAppIsConnected = true
+          this.waWizardSteps = [{ step1: true, step2: false, step3: false }]
+          this.upadatedWatsAppWizard(this.waWizardSteps)
+          this.updateProjectWithWASettings(res.settings)
+        }
+
+      }, error => {
+        console.error('[HOME-WA-WIZARD] - CHECK-WA-CONNECTION - ERROR ', error)
+      }, () => {
+        console.log('[HOME-WA-WIZARD] - CHECK-WA-CONNECTION * COMPLETE *')
+      });
   }
 
   goToConnectWA() {
-    console.log('[HOME-WA] GO TO CONNECT WA childComponent', this.childComponent);
-    this.scrollToChild(this.childComponent)
+    console.log('[HOME-WA] GO TO CONNECT WA childWhatsappAccount', this.childWhatsappAccount);
+    this.scrollToChild(this.childWhatsappAccount)
 
     // const elemOverlayDiv = <HTMLElement>document.querySelector('.overlay');
     // console.log('[HOME-WA] GO TO CONNECT WA elemOverlayDiv', elemOverlayDiv);
@@ -663,26 +728,127 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   }
 
+  goToCreateChatbot() {
+    console.log('[HOME-WA] GO TO CONNECT WA childCreateChatbot', this.childCreateChatbot);
+    this.scrollToChild(this.childCreateChatbot)
+  }
+
   scrollToChild(el: ElementRef) {
     el.nativeElement.scrollIntoView({ behavior: 'smooth' });
-    this.watsAppWizardCompleted()
+
     setTimeout(() => {
       // this.displayWhatsappAccountWizard = false; 
     }, 1500);
   }
 
-  watsAppWizardCompleted() {
+  upadatedWatsAppWizard(wasteps) {
 
-    this.projectService.updateProjectWithWAWizardFinished(true)
+    this.projectService.updateProjectWithWAWizardSteps(wasteps)
       .subscribe((res: any) => {
+        console.log('[HOME] - UPDATE PRJCT WITH WA WIZARD STEPS - RES ', res);
+        if (res && res.attributes && res.attributes.wastep) {
+          if (res.attributes.wastep[0].step1 === false) {
+            this.whatsAppIsConnected = false
+          } else {
+            this.whatsAppIsConnected = true
+          }
 
-        console.log('[HOME-WA-WIZARD] - UPDATE PRJCT WITH WA WIZARD FINISHED - RES ', res);
+        }
+
+        console.log('[HOME] - UPDATE PRJCT WITH WA WIZARD STEPS - whatsAppIsConnected ', this.whatsAppIsConnected);
 
       }, error => {
-        console.error('[HOME-WA-WIZARD] - UPDATE PRJCT WITH WA WIZARD FINISHED - ERROR ', error)
+        console.error('[HOME] - UPDATE PRJCT WITH WA WIZARD STEPS - ERROR ', error)
       }, () => {
-        console.log('[HOME-WA-WIZARD] - UPDATE PRJCT WITH WA WIZARD FINISHED * COMPLETE *')
+        console.log('[HOME] - UPDATE PRJCT WITH WA WIZARD STEPS * COMPLETE *')
       });
+  }
+
+
+
+  updateProjectWithWASettings(wasettings) {
+
+    this.projectService.updateProjectWithWASettings(wasettings)
+      .subscribe((res: any) => {
+        console.log('[HOME] - UPDATE PRJCT WITH WA SETTINGS - RES ', res);
+
+        if (res && res.attributes && res.attributes.wasettings && res.attributes.wasettings.department_id) {
+          this.wadepartmentid = res.attributes.wasettings.department_id
+          this.getDeptById(this.wadepartmentid)
+        }
+
+
+
+        // console.log('[HOME] - UPDATE PRJCT WITH WA WSETTINGS - whatsAppIsConnected ', this.whatsAppIsConnected);
+
+      }, error => {
+        console.error('[HOME] - UPDATE PRJCT WITH WA WSETTINGS  - ERROR ', error)
+      }, () => {
+        console.log('[HOME] - UPDATE PRJCT WITH WA WSETTINGS * COMPLETE *')
+      });
+  }
+
+  getDeptById(departmentid: string) {
+
+    this.departmentService.getDeptById(departmentid).subscribe((dept: any) => {
+      console.log('[HOME]- GET WA DEPT BY ID - RES ', dept);
+      this.wadepartmentName = dept.name;
+      this.waBotId = dept.id_bot;
+      console.log('[HOME]- GET WA DEPT BY ID - RES > dept name ',  this.wadepartmentName);
+    }, (error) => {
+      console.error('[HOME] - GET WA DEPT BY ID - ERROR ', error);
+
+    }, () => {
+
+      console.log('[HOME] - GET WA DEPT BY ID - COMPLETE ');
+      this.getBots() 
+    })
+  }
+
+  getBots() {
+  this.faqKbService.getFaqKbByProjectId().subscribe((bots: any) => {
+    console.log('[USER-SERV] - GET BOT BY PROJECT ID AND SAVE IN STORAGE - bots ', bots);
+    if (bots && bots !== null) {
+
+      bots.forEach(bot => {
+        console.log('[HOME] - GET BOT BY PROJECT ID  - BOT', bot);
+        console.log('[HOME] - GET BOT BY PROJECT ID  - BOT-ID', bot._id);
+        if (bot._id === this.waBotId) {
+          console.log('[HOME] - BOT CONNECTED WITH WA  - BOT-ID', bot._id);
+          this.chatbotConnectedWithWA = true
+        }
+    
+      });
+
+    }
+  }, (error) => {
+    console.error('[HOME] - GET BOT BY PROJECT ID  - ERROR ', error);
+  }, () => {
+    console.log('[HOME] - GET BOT BY PROJECT ID  * COMPLETE');
+
+  });
+}
+
+
+  getDeptsByProjectId() {
+    this.departmentService.getDeptsByProjectId().subscribe((departments: any) => {
+
+      console.log('[BOT-CREATE] ---> ALL DEPTS RES ', departments);
+
+      if (departments) {
+
+        departments.forEach(dept => {
+          console.log('[BOT-CREATE] ---> ALL DEPTS RES  > ', dept) 
+        });
+
+      }
+    }, error => {
+
+      this.logger.error('[BOT-CREATE --->  DEPTS RES - ERROR', error);
+    }, () => {
+      this.logger.log('[BOT-CREATE --->  DEPTS RES - COMPLETE')
+
+    });
   }
 
   onClickOnUnistallApp() {

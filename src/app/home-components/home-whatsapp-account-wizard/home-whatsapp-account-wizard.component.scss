@@ -7,7 +7,7 @@
     box-shadow: 0 0 #0000, 0 0 #0000, 0 1px 3px #0000001a, 0 1px 2px -1px #0000001a;
 }
 ._2vFcS {
-    margin: 22px 60px 0px 60px;
+    margin: 20px 50px;
     border-radius: 8px;
 }
 
@@ -28,7 +28,8 @@
 }
 
 ._2N7fw {
-    align-items: flex-start;
+    align-items: center;
+    height: 90px;
 }
 
 ._1fLoo {
@@ -39,13 +40,26 @@
     background-color: #0c172d;
     overflow: hidden;
     margin-top: 6px;
+    position: absolute;
+    left: -40px;
+    top: -18px;
+}
+
+.wa-step-description {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;  
+    overflow: hidden;
+}
+
+.step-completed {
+    background-color: #25d366;
 }
 
 .KJpMb {
     flex: auto;
     padding: 6px 0;
 }
-
 
 ._1aC9T {
     align-items: center;
@@ -69,12 +83,12 @@
     background-color: #208ef0;
 }
 
-._3pOpF {
-    min-width: 36px;
-    height: 36px;
-    border-radius: 4px;
-    // background-color: var(--cobaltSub);
-}
+// ._3pOpF {
+//     min-width: 36px;
+//     height: 36px;
+//     border-radius: 50%;
+//     // background-color: var(--cobaltSub);
+// }
 
 ._1e3oJ {
     justify-content: center;
@@ -117,19 +131,34 @@
 ._3pOpF {
     min-width: 36px;
     height: 36px;
-    border-radius: 4px;
+    border-radius: 50%;
     background-color: #2196f3;
 }
 
-
 .connect-whatsapp-wizard-title {
     font-size: 24px;
-    font-family: Poppins,Roboto, Arial, sans-serif;
-   
+    font-family: Poppins, Roboto, Arial, sans-serif;
     color: #e0f0ff;
-    padding: 0px 60px;
+    padding: 0px 1px;
     -webkit-font-smoothing: antialiased;
     -moz-font-smoothing: antialiased;
     -o-font-smoothing: antialiased;
     font-weight: 400;
+    height: 30px;
+}
+
+.activate-step-2 {
+    color: #e0f0ff !important;
+}
+
+.stepper-line {
+    width: 1px;
+    height: 80px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, .4);
+    overflow: hidden;
+    margin-top: 6px;
+    position: absolute;
+    left: -29px;
+    top: 11px;
 }
