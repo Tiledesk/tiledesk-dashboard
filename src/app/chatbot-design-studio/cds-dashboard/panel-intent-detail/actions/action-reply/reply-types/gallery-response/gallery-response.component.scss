@@ -323,7 +323,7 @@
     position: relative;
     -webkit-transition: opacity .3s;
     transition: opacity .3s;
-    width: 240px;
+    width: 220px;
 
 }
 
@@ -480,6 +480,53 @@
         pointer-events: auto;
         cursor: grabbing;
     }
+
+    &.single-button{
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        justify-content: center;
+        border-top: 1px solid $icon-color;
+        cursor: pointer;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        font-weight: 600;
+        // height: 45px;
+        // padding: 0 10px;
+        -webkit-transition: all .3s;
+        transition: all .3s;
+        width: 100%;
+        position: relative;
+
+        &:after {
+            content: "";
+            position: absolute;
+            width: 0;
+            height: 0;
+            top: 50%;
+            left: 50%;
+            transform-style: flat;
+            transform: translate3d(-50%,-50%,0);
+            background: rgba(white,.2);
+            border-radius: 100%;
+            transition: width .5s ease, height .5s ease;
+        }
+
+        &:hover{
+            .button-controls{
+                opacity: 1;
+            }
+        }
+
+    }
+}
+.drag-handle {
+    cursor: grab;
+}
+.draggable-element.cdk-drag-preview .drag-handle {
+    pointer-events: auto;
+    cursor: grabbing;
 }
 
 .cdk-drag-placeholder {
@@ -549,6 +596,12 @@
 ::ng-deep cds-textarea#title{
     textarea {
         font-weight: 600;
+    }
+}
+
+::ng-deep cds-textarea#description.noButtons {
+    textarea {
+        border-radius: 0px 0px $button-border-radius-base $button-border-radius-base;
     }
 }
 

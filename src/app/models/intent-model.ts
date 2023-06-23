@@ -320,8 +320,8 @@ export class Metadata {
 
 export class Attachment {
     type: string;
-    buttons: Button[];
-    gallery: GalleryElement[];
+    buttons?: Button[];
+    gallery?: GalleryElement[];
     constructor() {
         this.type = TYPE_ATTACHMENT.TEMPLATE;
         this.buttons = [];

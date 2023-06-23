@@ -110,6 +110,7 @@
                         </div>
                         <div class="gallery-description" (click)="initElement();activateEL[i]['description']=true"> 
                             <cds-textarea id="description"
+                                [class.noButtons]="galleryEl.buttons.length === 0"
                                 [textLimitBtn]="activateEL[i]['description']"
                                 [emojiPikerBtn]="activateEL[i]['description']"
                                 [setAttributeBtn]="activateEL[i]['description']"

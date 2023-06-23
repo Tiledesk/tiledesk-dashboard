@@ -80,7 +80,6 @@ export class PanelReplyToolsComponent implements OnInit {
               attributes: {
                 attachment: {
                     type: 'gallery',
-                    buttons: [],
                     gallery: [
                       {
                         preview: { src: ''},
