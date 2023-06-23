@@ -25,24 +25,13 @@
                     (onChange)="onChangeTitle($event)">
                 </cds-text>
                 <div *ngIf="emojiPikerBtn" class="emoji-picker">
-                    <div class="emoji-picker-button" (click)="isEmojiPickerVisible = !isEmojiPickerVisible;">
+                    <div class="emoji-picker-button" [satPopoverAnchor]="emojiPicker" (click)="emojiPicker.toggle();">
                         <span class="material-icons" style="font-size: 16px;">
                             emoji_emotions
                         </span>
                     </div>
                 </div>
             </div> 
-            <emoji-mart *ngIf="isEmojiPickerVisible"
-                class="box-emoji-mart"
-                [class.picker-visible] = "isEmojiPickerVisible"
-                [showPreview]="false" 
-                [perLine]="emojiPerLine" 
-                [include]="emojiiCategories"
-                [color]="emojiColor" 
-                [darkMode]="false"
-                [emojiSize] = "24"
-                (emojiSelect)="onAddEmoji($event)">
-            </emoji-mart>
         </div>
 
         
@@ -141,5 +130,21 @@
 </div>
 
 
-
+<sat-popover #emojiPicker id="emojiPicker"
+    horizontalAlign="center" 
+    verticalAlign="center"  
+    hasBackdrop 
+    (backdropClicked)="emojiPicker.close()"
+    interactiveClose="false">
+    <emoji-mart
+        class="box-emoji-mart"
+        [showPreview]="false" 
+        [perLine]="emojiPerLine" 
+        [include]="emojiiCategories"
+        [color]="emojiColor" 
+        [darkMode]="false"
+        [emojiSize] = "24"
+        (emojiSelect)="onAddEmoji($event)">
+    </emoji-mart>
+</sat-popover> 
 

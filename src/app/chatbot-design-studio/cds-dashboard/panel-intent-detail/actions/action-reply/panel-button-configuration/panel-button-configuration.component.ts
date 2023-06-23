@@ -4,6 +4,7 @@ import { Button } from 'app/models/intent-model';
 
 
 import { TYPE_BUTTON, TYPE_URL } from '../../../../../utils';
+import { SatPopover } from '@ncstate/sat-popover';
 
 @Component({
   selector: 'appdashboard-panel-button-configuration',
@@ -12,7 +13,8 @@ import { TYPE_BUTTON, TYPE_URL } from '../../../../../utils';
 })
 export class PanelButtonConfigurationComponent implements OnInit {
   @ViewChild('input_title', { static: true }) input_topic: CDSTextComponent;
-
+  @ViewChild("emojiPicker") emojiPicker: SatPopover;
+  
   @Input() listOfActions: Array<{name: string, value: string, icon?:string}>;
   @Input() button: Button;
   @Output() saveButton = new EventEmitter();
@@ -44,7 +46,6 @@ export class PanelButtonConfigurationComponent implements OnInit {
   openBlockAttributes: boolean = false;
 
   emojiPikerBtn: boolean = true
-  isEmojiPickerVisible: boolean = false;
   emojiPerLine: number = 8;
   emojiColor: string ="#ac8b2c";
   emojiiCategories = [ 'recent', 'people', 'nature', 'activity'];
@@ -263,7 +264,7 @@ export class PanelButtonConfigurationComponent implements OnInit {
 
   onAddEmoji(event){
     this.buttonLabel = `${this.buttonLabel}${event.emoji.native}`;
-    this.isEmojiPickerVisible = false;
+    this.emojiPicker.close();
   } 
 
   
