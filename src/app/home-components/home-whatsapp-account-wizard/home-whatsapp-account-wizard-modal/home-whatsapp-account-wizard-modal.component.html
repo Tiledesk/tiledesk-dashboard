@@ -1,8 +1,8 @@
 <ng-container [ngSwitch]="activeStep">
     <ng-container *ngSwitchCase="'step1'" [ngTemplateOutlet]="step1"></ng-container>
     <ng-container *ngSwitchCase="'step2'" [ngTemplateOutlet]="step2"></ng-container>
-    <!-- <ng-container *ngSwitchCase="'cds-sb-intents'" [ngTemplateOutlet]="intents"></ng-container>
-    <ng-container *ngSwitchCase="'cds-sb-fulfillment'" [ngTemplateOutlet]="fulfillment"></ng-container>
+    <ng-container *ngSwitchCase="'step3'" [ngTemplateOutlet]="step3"></ng-container>
+   <!--  <ng-container *ngSwitchCase="'cds-sb-fulfillment'" [ngTemplateOutlet]="fulfillment"></ng-container>
     <ng-container *ngSwitchCase="'cds-sb-training'" [ngTemplateOutlet]="training"></ng-container>
     <ng-container *ngSwitchCase="'cds-sb-rules'" [ngTemplateOutlet]="rules"></ng-container>
     <ng-container *ngSwitchDefault [ngTemplateOutlet]="intents"></ng-container> -->
@@ -120,6 +120,42 @@
         </button>
         <button tabindex="-1" mat-button (click)="goToConnectCreateChatbot()">
             {{'NextStep' | translate}}
+        </button>
+    </mat-dialog-actions>
+
+</ng-template>
+
+<!-- --------------------------------------------------------- -->
+<!-- @ Step 3 -->
+<!-- --------------------------------------------------------- -->
+<ng-template #step3 [ngOutletContext]="context">
+    <mat-dialog-content class="mat-typography" style="min-height: 30px;">
+        <div class="wa-steps-modal">
+            <div class="wa-step-modal-header">
+                <h2 class="wa-step-modal-title">
+                    Test your WhatsApp bot
+                </h2>
+
+                <h3 class="wa-step-modal-title">
+                    Enter your phone number and click the "Test it out" button.
+                </h3>
+            </div>
+            <div class="wa-step-modal-content">
+                <div class="wa-step-modal-enter-phone-number" style="margin-bottom: 12px;">
+                    <input [(ngModel)]="phoneNumber" (ngModelChange)="onChangePhoneNumber($event)" id="phone-number"
+                    class="form-control" style="max-width: 450px;">
+                </div>
+            </div>
+        </div>
+
+    </mat-dialog-content>
+    <mat-dialog-actions align="center" class="contact-property-modal-action">
+        <button tabindex="-1" mat-button mat-dialog-close>
+            {{'Cancel' | translate}}
+        </button>
+        <button tabindex="-1" mat-button (click)="testItOutWABot()">
+            <!-- {{'NextStep' | translate}} -->
+            Test it out
         </button>
     </mat-dialog-actions>
 

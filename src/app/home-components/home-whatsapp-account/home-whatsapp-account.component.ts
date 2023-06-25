@@ -24,6 +24,7 @@ export class HomeWhatsappAccountComponent implements OnInit, OnChanges {
   APP_SUMO_PLAN_NAME = APP_SUMO_PLAN_NAME;
   private unsubscribe$: Subject<any> = new Subject<any>();
   @Input() whatsAppIsInstalled: boolean;
+  @Input() whatsAppIsConnected: boolean;
   @Output() onClickOnGoToLearnMoreOrManageApp = new EventEmitter();
   @Output() onClickOnUnistallApp  = new EventEmitter();
   apps: any;
@@ -90,7 +91,8 @@ export class HomeWhatsappAccountComponent implements OnInit, OnChanges {
 
    ngOnChanges() {
     console.log('[HOME-WA] ngOnChanges whatsAppIsInstalled ', this.whatsAppIsInstalled);
-
+    console.log('[HOME-WA] ngOnChanges whatsAppIsConnected ', this.whatsAppIsConnected);
+    
    }
 
 

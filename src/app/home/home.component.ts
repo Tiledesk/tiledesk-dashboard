@@ -159,7 +159,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   chatbotConnectedWithWA: boolean = false;
   waWizardSteps = [{ step1: false, step2: false, step3: false }]
   wadepartmentid: string;
-  wadepartmentName: string;
+  wadepartmentName: string = '';
   waBotId: string = '';
   constructor(
     public auth: AuthService,

@@ -15,6 +15,7 @@ export class HomeWhatsappAccountWizardComponent implements OnInit, OnChanges {
   @Input() whatsAppIsConnected: boolean; 
   @Input() wadepartmentName: string; 
   @Input() chatbotConnectedWithWA: boolean; 
+  @Input() waBotId: string; 
   constructor(
     public dialog: MatDialog,
   ) { }
@@ -26,6 +27,7 @@ export class HomeWhatsappAccountWizardComponent implements OnInit, OnChanges {
     console.log('[HOME-WA-WIZARD] whatsAppIsConnected ', this.whatsAppIsConnected)
     console.log('[HOME-WA-WIZARD] wadepartmentName ', this.wadepartmentName)
     console.log('[HOME-WA-WIZARD] chatbotConnectedWithWA ', this.chatbotConnectedWithWA)
+    console.log('[HOME-WA-WIZARD] waBotId ', this.waBotId)
   }
 
   // background-color: rgba(0,0,0,.4);
@@ -71,6 +73,26 @@ export class HomeWhatsappAccountWizardComponent implements OnInit, OnChanges {
 
       if (result === 'go-to-next-step') {
         this.goToCreateChatbot.emit()
+      }
+    });
+  }
+
+
+  presentModalTestWABot() {
+    console.log('[HOME-WA-WIZARD] - presentModalTestWABot ');
+    const dialogRef = this.dialog.open(HomeWhatsappAccountWizardModalComponent, {
+      width: '600px',
+      data: {
+        calledBy: 'step3',
+        waBotId: this.waBotId
+      },
+    })
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result:`, result);
+
+      if (result === 'go-to-next-step') {
+        // this.goToCreateChatbot.emit()
       }
     });
   }

@@ -271,6 +271,7 @@ body {
 }
 
 
+
 .img-in-bot-popover {
   width: 35px;
   height: 35px;
@@ -285,11 +286,16 @@ body {
   align-items: center;
 }
 
+.flex-start {
+  align-items: flex-start !important;
+}
+
 .chatbot-name {
   font-family: "Poppins", "Roboto", "Arial", sans-serif;
   font-weight: 400;
   color: #f5f9fc;
   font-size: 12px;
+  margin-left: 1px;
 }
 
 .chatbot-description {
@@ -308,15 +314,17 @@ body {
 
 .chatbot-language {
   text-transform: uppercase;
-  color: #f5f9fc;
+  color: #9da2a6;
   font-size: 12px;
   margin-left: 2px;
 }
 
 .chatbot-language-flag {
-  width: 16px;
+  width: 15px;
   height: auto;
-  margin-left: 4px;
+  position: relative;
+  top: -1px;
+  // margin-left: 4px;
 }
 
 .other-chatbots {
@@ -493,8 +501,6 @@ body {
   }
 }
 
-
-
 .bot-wa-connected-logo {
   width: 14px;
   height: auto;
@@ -505,4 +511,3 @@ body {
   top: 28px !important;
   left: 32px !important;
 }
-

@@ -197,7 +197,8 @@
           (goToCreateChatbot)="goToCreateChatbot()"
           [whatsAppIsConnected]="whatsAppIsConnected" 
           [wadepartmentName]="wadepartmentName" 
-          [chatbotConnectedWithWA]='chatbotConnectedWithWA'> 
+          [chatbotConnectedWithWA]='chatbotConnectedWithWA'
+          [waBotId]="waBotId"> 
         </appdashboard-home-whatsapp-account-wizard>
         
         <appdashboard-home-convs-graph *ngIf="displayAnalyticsConvsGraph"  [displayAnalyticsConvsGraph]="displayAnalyticsConvsGraph" [projectId]="projectId" [USER_ROLE]="USER_ROLE"> </appdashboard-home-convs-graph>
@@ -207,14 +208,19 @@
         <appdashboard-home-whatsapp-account style=" z-index: 11;" #childWhatsappAccount *ngIf="displayConnectWhatsApp" 
           (onClickOnUnistallApp)="onClickOnUnistallApp()" 
           (onClickOnGoToLearnMoreOrManageApp)="onClickOnGoToLearnMoreOrManageApp()" 
-          [whatsAppIsInstalled]="whatsAppIsInstalled"> 
+          [whatsAppIsInstalled]="whatsAppIsInstalled"
+          [whatsAppIsConnected]="whatsAppIsConnected"> 
         </appdashboard-home-whatsapp-account>
 
         <appdashboard-home-create-chatbot #childCreateChatbot *ngIf="displayCreateChatbot"
           [use_case_for_child]="use_case_for_child" 
           [solution_channel_for_child]="solution_channel_for_child"
-          [waBotId]="waBotId"> 
+          [waBotId]="waBotId"
+          [wadepartmentName]="wadepartmentName"
+          [chatbotConnectedWithWA]="chatbotConnectedWithWA"> 
         </appdashboard-home-create-chatbot>
+
+        <appdashboard-home-customize-widget></appdashboard-home-customize-widget>
 
         <appdashboard-home-news-feed *ngIf="displayNewsFeed"> </appdashboard-home-news-feed>
 

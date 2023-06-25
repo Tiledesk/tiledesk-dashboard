@@ -36,12 +36,13 @@
     font-size: 20px;
     font-weight: 400;
     font-family: "Poppins", "Roboto", "Arial", sans-serif;
+    margin-right: 16px;
 }
 
 .home-block-description-and-connect-btn-wpr {
     display: flex;
     justify-content: space-between;
-    align-items: baseline;
+    align-items: center;
 }
 
 .home-block-description {
@@ -77,4 +78,36 @@
   .actions-btn-wpr {
     display: flex;
     align-self: center;
+  }
+
+  .wa-status-label {
+    font-family: "Poppins","Roboto", "Arial", sans-serif;
+    font-weight: 400;
+    font-size: 12px;
+  }
+
+  .wa-status-connection-status-wpr {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: #f1f2f6;
+    padding: 0px 10px;
+    border-radius: 9999px;
+    border: solid 1px #e7e0e0;
+    gap: 3px;
+  }
+
+  .wa-connection-status {
+    font-family: "Poppins","Roboto", "Arial", sans-serif;
+    font-weight: 500;
+    font-size: 12px;
+  }
+
+  .wa-status-indicator {
+    height: 14px;
+    width: 14px;
+    background-color: #25d366;
+    border-radius: 9999px;
+    position: relative;
+    top: 1px;
   }

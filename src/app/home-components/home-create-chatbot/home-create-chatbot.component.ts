@@ -2,6 +2,7 @@ import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/cor
 import { Router } from '@angular/router';
 import { AuthService } from 'app/core/auth.service';
 import { AppConfigService } from 'app/services/app-config.service';
+import { DepartmentService } from 'app/services/department.service';
 import { FaqKbService } from 'app/services/faq-kb.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { UsersService } from 'app/services/users.service';
@@ -17,6 +18,8 @@ export class HomeCreateChatbotComponent implements OnInit, OnChanges {
   @Input() use_case_for_child: string;
   @Input() solution_channel_for_child: string;
   @Input() waBotId: string;
+  @Input() wadepartmentName: string;
+  @Input() chatbotConnectedWithWA: string;
   private unsubscribe$: Subject<any> = new Subject<any>();
   projectId: string;
   UPLOAD_ENGINE_IS_FIREBASE: boolean;
@@ -35,14 +38,19 @@ export class HomeCreateChatbotComponent implements OnInit, OnChanges {
     private router: Router,
     private faqKbService: FaqKbService,
     private usersService: UsersService,
+    private departmentService: DepartmentService,
   ) { }
 
   ngOnInit(): void {
-    // this.getCurrentProjectAndPrjctbots();
+    // this.getCurrentProjectAndPrjctBots();
   }
 
   ngOnChanges(changes: SimpleChanges) {
     console.log('[HOME-CREATE-CHATBOT] - ngOnChanges waBotId  ', this.waBotId)
+    console.log('[HOME-CREATE-CHATBOT] - ngOnChanges wadepartmentName  ', this.wadepartmentName)
+    console.log('[HOME-CREATE-CHATBOT] - ngOnChanges chatbotConnectedWithWA  ', this.chatbotConnectedWithWA)
+    
+    
     console.log('[HOME-CREATE-CHATBOT] - ngOnChanges fires!  changes ', changes)
     console.log('[HOME-CREATE-CHATBOT] - USER PREFERENCES USE CASE »»» ', this.use_case_for_child)
     console.log('[HOME-CREATE-CHATBOT] - USER PREFERENCES SOLUTION CHANNEL »»» ', this.solution_channel_for_child)
@@ -55,7 +63,7 @@ export class HomeCreateChatbotComponent implements OnInit, OnChanges {
       this.displayDefaultDescription = true
     }
 
-    this.getCurrentProjectAndPrjctbots();
+    this.getCurrentProjectAndPrjctBots();
   }
 
   getUserRole() {
@@ -71,7 +79,7 @@ export class HomeCreateChatbotComponent implements OnInit, OnChanges {
       })
   }
 
-  getCurrentProjectAndPrjctbots() {
+  getCurrentProjectAndPrjctBots() {
     this.auth.project_bs
       .pipe(
         takeUntil(this.unsubscribe$)
@@ -119,10 +127,34 @@ export class HomeCreateChatbotComponent implements OnInit, OnChanges {
   getProjectBots(storage, uploadEngineIsFirebase) {
     this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
       console.log('[HOME-CREATE-CHATBOT] - GET FAQKB RES', faqKb);
+
+      
+      
+        this.departmentService.getDeptsByProjectId().subscribe((depts: any) => { 
+
+          console.log('[HOME-CREATE-CHATBOT] - GET DEPTS RES', depts);
+          if (depts) {
+            for (let i = 0; i < depts.length; i++) {
+              console.log('[HOME-CREATE-CHATBOT] - GET DEPTS RES depts[i]', depts[i]);
+              if (faqKb) {
+                for (let j = 0; j < faqKb.length; j++) { 
+                  console.log('[HOME-CREATE-CHATBOT] - GET DEPTS RES faqKb[j]', faqKb[j]);
+
+                  if (depts[i].hasBot === true) {
+                    console.log('[HOME-CREATE-CHATBOT] - HERE YES (depts[i].hasBot)');
+                    if (depts[i].id_bot ===  faqKb[j]._id) {
+                      console.log('[HOME-CREATE-CHATBOT] - Dept',faqKb[i].name ,' has bot with id ', faqKb[j]._id);
+                      faqKb[j]['deptName'] = depts[i].name
+                    }
+                  } 
+                }
+              }
+            }
+          }
+        }) 
       
       
       if (faqKb) {
-
         // -----------------------------------------------------------
         // CHECK IF USER HAS IMAGE (AFTER REMOVING THE "IDENTITY BOT")
         // -----------------------------------------------------------

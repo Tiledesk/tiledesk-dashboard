@@ -157,8 +157,8 @@
                     </div>
                 </div>
 
-                <sat-popover #c horizontalAlign="end" verticalAlign="center" hasBackdrop (backdropClicked)="c.close()"
-                    panelClass="chatbot-details-popover">
+                <sat-popover #c horizontalAlign="center" verticalAlign="center" hasBackdrop
+                    (backdropClicked)="c.close()" panelClass="chatbot-details-popover">
 
                     <div class="chatbot-details-popover-wpr" style="padding: 12px;">
 
@@ -184,11 +184,14 @@
                             </div>
 
                         </div>
-
-                        <div class="chatbot-popover-row">
+                        <!-- ----------------------------------- -->
+                        <!-- Bot Description -->
+                        <!-- ----------------------------------- -->
+                        <div class="chatbot-popover-row flex-start">
                             <div class="left--col">
-                                <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px"
-                                    viewBox="0 0 24 24" width="24px" fill="#000000">
+                                <svg style="vertical-align: middle; position: relative; top: -1px;"
+                                    xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="16px"
+                                    viewBox="0 0 24 24" width="16px" fill="#7d8590">
                                     <g>
                                         <path d="M0,0h24v24H0V0z" fill="none" />
                                     </g>
@@ -206,11 +209,11 @@
                                 <span *ngIf="!bot.description"> No description provided</span>
 
                             </div>
-
                         </div>
-
-                        <!-- Note! display none  -->
-                        <div style="display: none !important;" class="chatbot-popover-row">
+                        <!-- ------------------------------------ -->
+                        <!-- @ Language  -->
+                        <!-- ------------------------------------ -->
+                        <div style="margin-bottom: 3px;" class="chatbot-popover-row">
                             <div class="left--col">
                                 <span *ngIf="bot.language === 'da'">
                                     <img class="chatbot-language-flag" src="assets/img/language_flag/da.png">
@@ -259,27 +262,50 @@
                                 </span>
                             </div>
 
-
                             <div class="right--col chatbot-language">
                                 {{bot.language}}
                             </div>
                         </div>
 
-                        <div class="view-detail-btn" style="text-align: center;">
-                            <div class="arrow-container" (click)="goToBotProfile(bot?._id, bot?.type)">
-                                <div id="arrow_2" class="arrow-wrapper">
-                                    <div class="text-block" style="margin-right: 16px; font-size: 13px;">
-                                        {{ 'ViewDetails' | translate }}
+
+                        <!-- ----------------------------------- -->
+                        <!-- Bot Department -->
+                        <!-- ----------------------------------- -->
+                        <div class="chatbot-popover-row">
+                            <div class="left--col">
+          
+                                <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 0 24 24" width="16px"
+                                    fill="#7d8590" style="position: relative;top: 2px;">
+                                    <path d="M0 0h24v24H0V0z" fill="none" />
+                                    <path
+                                        d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z" />
+                                </svg>
+                            </div>
+
+                            <div class="right--col chatbot-description">
+                                <span *ngIf="bot.deptName"> {{bot?.deptName}} </span>
+                                <span *ngIf="!bot.deptName"> Not hooked to a department</span>
+
+                            </div>
+                        </div>
+
+
+
+                        <div class=" view-detail-btn" style="text-align: center;">
+                                    <div class="arrow-container" (click)="goToBotProfile(bot?._id, bot?.type)">
+                                        <div id="arrow_2" class="arrow-wrapper">
+                                            <div class="text-block" style="margin-right: 16px; font-size: 13px;">
+                                                {{ 'ViewDetails' | translate }}
+                                            </div>
+                                            <div class="arrow arrow--right">
+                                                <span></span>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="arrow arrow--right">
-                                        <span></span>
-                                    </div>
-                                </div>
+
                             </div>
 
                         </div>
-
-                    </div>
                 </sat-popover>
 
             </div>

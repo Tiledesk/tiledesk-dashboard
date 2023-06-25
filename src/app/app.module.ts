@@ -343,6 +343,8 @@ import { HomeNewsFeedComponent } from './home-components/home-news-feed/home-new
 import { HomeAnalyticsIndicatorComponent } from './home-components/home-analytics-indicator/home-analytics-indicator.component';
 import { HomeWhatsappAccountWizardComponent } from './home-components/home-whatsapp-account-wizard/home-whatsapp-account-wizard.component';
 import { HomeWhatsappAccountWizardModalComponent } from './home-components/home-whatsapp-account-wizard/home-whatsapp-account-wizard-modal/home-whatsapp-account-wizard-modal.component';
+import { HomeCustomizeWidgetComponent } from './home-components/home-customize-widget/home-customize-widget.component';
+
 
 
 
@@ -610,7 +612,8 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     HomeNewsFeedComponent,
     HomeAnalyticsIndicatorComponent,
     HomeWhatsappAccountWizardComponent,
-    HomeWhatsappAccountWizardModalComponent
+    HomeWhatsappAccountWizardModalComponent,
+    HomeCustomizeWidgetComponent
   ],
   imports: [
     TooltipModule.forRoot(CutomTooltipOptions as TooltipOptions),
