@@ -17,47 +17,32 @@
                 </div>
             </div>
         </header>
+
         <div class="sc-cBuMWM sc-gPEuOb iZOUDG hhBKxP">
-            
+
+            <!-- <cds-panel-button-configuration
+                [button] = elementSelected
+                (closeButtonPanel) = onClosePanel()
+                (saveButton) = onSaveElement($event)>
+            </cds-panel-button-configuration> -->
+
         </div>
+
+
     </section>
 
 
 
     <div class="panel-intent-detail" (click)="onClickInside()">
         <div class="header-panel">
-            <cds-action-description 
-                *ngIf="elementIntentSelectedType === typeIntentElement.ACTION"
-                [actionSelected]="elementSelected"
-                [showTip]="true"
-                (closeIntent)="onCloseIntent()"
-                (saveIntent)="onSaveIntent()">
-            </cds-action-description>
-            <cds-action-description 
-                *ngIf="elementIntentSelectedType === typeIntentElement.FORM"
-                [elementType]="typeIntentElement.FORM"
-                [showTip]="false"
-                (closeIntent)="onCloseIntent()"
-                (saveIntent)="onSaveIntent()">
-            </cds-action-description>
-            <cds-action-description 
-                *ngIf="elementIntentSelectedType === typeIntentElement.ANSWER"
-                [elementType]="typeIntentElement.ANSWER"
-                [showTip]="false"
-                (closeIntent)="onCloseIntent()"
-                (saveIntent)="onSaveIntent()">
-            </cds-action-description>
-            <cds-action-description 
-                *ngIf="elementIntentSelectedType === typeIntentElement.QUESTION"
-                [elementType]="typeIntentElement.QUESTION"
-                [showTip]="false"
-                (closeIntent)="onCloseIntent()"
-                (saveIntent)="onSaveIntent()">
-            </cds-action-description>
+           // header
         </div>
     
         <div id="content-panel" class="content-panel">
-            <div *ngIf="elementIntentSelectedType === typeIntentElement.ACTION" >
+
+            
+
+            <!-- <div *ngIf="elementIntentSelectedType === typeIntentElement.ACTION" >
                 <div *ngFor="let item of elementSelectedMaxLength, let i = index" >
                     <div *ngIf="i === elementSelectedIndex" [ngSwitch]="elementSelected._tdActionType">
         
@@ -145,31 +130,7 @@
         
                     </div>
                 </div>
-            </div>
-    
-    
-    
-            <div *ngIf="elementIntentSelectedType === typeIntentElement.QUESTION" class="panel-question">
-                <appdashboard-question 
-                    [intentSelected]="intentSelected"
-                    (updateIntentSelected)="onUpdateQuestionsIntentSelected($event)">
-                </appdashboard-question>
-            </div>
-        
-            <div *ngIf="elementIntentSelectedType === typeIntentElement.FORM" class="panel-form">
-                <appdashboard-form 
-                    [intentForm]="elementSelected" 
-                    [intentSelected]="intentSelected" 
-                    (updateIntentForm)="onUpdateFormIntentSelected($event)">
-                </appdashboard-form>
-            </div>
-        
-            <div *ngIf="elementIntentSelectedType === typeIntentElement.ANSWER" class="panel-answer">
-                <appdashboard-answer
-                    [intentSelected]="intentSelected"
-                    (updateAnswerIntentSelected)="onUpdateAnswerIntentSelected($event)">
-                </appdashboard-answer>
-            </div>
+            </div> -->
     
         </div>
     

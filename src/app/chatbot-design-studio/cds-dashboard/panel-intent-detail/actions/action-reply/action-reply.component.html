@@ -135,11 +135,11 @@
 
 <div class="card-buttons" (focusout)="onFocusOutEvent($event)"
     [ngClass]="{'active':openCardButton}">
-    <appdashboard-panel-button-configuration
+    <cds-panel-button-configuration
         *ngIf="openCardButton"
         [button] = buttonSelected
         [listOfActions] = listOfActions
         (closeButtonPanel) = onCloseButtonPanel()
         (saveButton) = onSaveButton($event)>
-    </appdashboard-panel-button-configuration>
+    </cds-panel-button-configuration>
 </div>

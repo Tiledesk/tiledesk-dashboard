@@ -1,18 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { CdsDrawerOfIntentsComponent } from './cds-drawer-of-intents.component';
+import { CdsIntentComponent } from './cds-intent.component';
 
 describe('CdsDrawerOfIntentsComponent', () => {
-  let component: CdsDrawerOfIntentsComponent;
-  let fixture: ComponentFixture<CdsDrawerOfIntentsComponent>;
+  let component: CdsIntentComponent;
+  let fixture: ComponentFixture<CdsIntentComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CdsDrawerOfIntentsComponent ]
+      declarations: [ CdsIntentComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(CdsDrawerOfIntentsComponent);
+    fixture = TestBed.createComponent(CdsIntentComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

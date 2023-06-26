@@ -1,18 +1,14 @@
 <div class="box-up">
 
-
     <div class="action_welcome">
         <div class="section">
-            
             <div *ngIf="showTip" class="action-description">
                 <div *ngIf="element?.description"
                     [satPopoverAnchor]="descriptionTooltip"
                     (click)="manageTooltip()">
                     <em class="material-icons">info</em>
                 </div>
-    
                 <div [innerHtml]="tipText"></div>
-    
                 <input class="action-input"
                     [ngModel]="dataInput"
                     [placeholder]="titlePlaceholder"
@@ -21,7 +17,8 @@
         </div>
     </div>
     
-    <!-- <sat-popover #descriptionTooltip id="descriptionTooltip" 
+    <!-- 
+    <sat-popover #descriptionTooltip id="descriptionTooltip" 
         hasBackdrop 
         verticalAlign="center" 
         horizontalAlign="after" 
@@ -31,28 +28,23 @@
             <div class="caret_tooltip"></div>
             <span [innerHTML]="element?.description"></span>
        </div>
-    </sat-popover> -->
+    </sat-popover> 
+    -->
     
-<!--     
+    <!--     
     <appdashboard-panel-reply-tools
         class="panel-tools-response"
-        (addNewResponse) = onAddNewResponse($event)
-    ></appdashboard-panel-reply-tools> -->
+        (addNewResponse) = onAddNewResponse($event)>
+    </appdashboard-panel-reply-tools> 
+    -->
 
     <div data-adding-allowed="true" class="add-responses">
-
         <div data-add-response-type="Type.TEXT" class="add-response" (click)="addElement(TypeMessage.TEXT)" ncdkDrag>
             <i class="material-icons">text_fields</i><span>{{'Text' | translate}}</span>
         </div>
-        <!-- <div data-add-response-type="Type.RANDOM_TEXT" class="add-response" cdkDrag>
-            <i class="material-icons">text_fields</i><span>Random text</span>
-        </div> -->
         <div data-add-response-type="Type.IMAGE" class="add-response" (click)="addElement(TypeMessage.IMAGE)" cdkDrag>
             <i class="material-icons">image</i><span>{{'Image' | translate}}</span>
         </div>
-        <!-- <div data-add-response-type="Type.FORM" class="add-response" cdkDrag>
-            <i class="material-icons">view_module</i><span>Form</span>
-        </div> -->
         <div data-add-response-type="Type.VIDEO" class="add-response" (click)="addElement(TypeMessage.FRAME)" cdkDrag>
             <i class="material-icons">play_circle</i><span>{{'Video' | translate}}</span>
         </div>
@@ -81,12 +73,14 @@
                     </div> 
                     <appdashboard-text-response
                         [index] = i
+                        [idAction] = idAction
                         [typeAction] = typeAction
                         [response] = message
                         (moveUpResponse) = onMoveUpResponse($event)
                         (moveDownResponse) = onMoveDownResponse($event)
                         (deleteResponse) = onDeleteResponse($event)
                         (openButtonPanel) = onOpenButtonPanel($event)
+                        (createNewButton) = onCreateNewButton($event)
                         (changeDelayTimeReplyElement) = onChangeDelayTimeReplyElement()
                         (changeReplyElement) = onChangeReplyElement()>
                     </appdashboard-text-response>

@@ -8,45 +8,17 @@
     (toggleSidebarWith)="onToggleSidebarWith($event)"> 
 </cds-header>
 
-<div class="chatboat-dashboard">
-
+<div class="chatboat-dashboard" [class.is_opened_sidebar]="IS_OPEN">
+<!-- [class.is_opened]="IS_OPEN" -->
     <cds-sidebar 
         class="cds-sidebar"
-        [class.is_opened]="IS_OPEN"
         [extendedWidth]="IS_OPEN" 
         [projectID]="projectID" 
         (onClickItemList)="onClickItemList($event)"
         (goToBck)="goBack()">
     </cds-sidebar>
 
-    <div class="cds-content">
-        <ng-container [ngSwitch]="activeSidebarSection">
-            <ng-container *ngSwitchCase="'cds-sb-settings'" [ngTemplateOutlet]="settings"></ng-container>
-            <ng-container *ngSwitchCase="'cds-sb-fulfillment'" [ngTemplateOutlet]="fulfillment"></ng-container>
-            <ng-container *ngSwitchCase="'cds-sb-training'" [ngTemplateOutlet]="training"></ng-container>
-            <ng-container *ngSwitchCase="'cds-sb-rules'" [ngTemplateOutlet]="rules"></ng-container>
-            <ng-container *ngSwitchCase="'cds-sb-intents'" [ngTemplateOutlet]="intents"></ng-container>
-            <ng-container *ngSwitchDefault [ngTemplateOutlet]="intents"></ng-container>
-        </ng-container>
-    </div>
-
-    <ng-template #settings>
-        <cds-chatbot-details [selectedChatbot]="selectedChatbot"></cds-chatbot-details>
-    </ng-template>
-
-    <ng-template #fulfillment>
-        <cds-fulfillment [chatbot]="selectedChatbot"></cds-fulfillment>
-    </ng-template>
-
-    <ng-template #training>
-        ... choice training...
-    </ng-template>
-
-    <ng-template #rules>
-        <cds-rules [listOfIntents]="listOfIntents" [selectedChatbot]="selectedChatbot"></cds-rules>
-    </ng-template>
-
-    <ng-template #intents cdkDropListGroup>
+    <div *ngIf="activeSidebarSection == 'cds-sb-intents'" class="cds-content">
         
         <div class="box-left">
             <cds-panel-intent-list 
@@ -60,9 +32,7 @@
             ></cds-panel-intent-list>
         </div>
 
-        <div id="tds_container" class="tds-drag-container box-right">
-
-            <div #receiver_elements_dropped_on_stage class="receiver-elements-dropped-on-stage" cdkDropList (cdkDropListDropped)="onDroppedElementToStage($event)"></div>
+        <div  id="tds_container" class="box-right tds-drag-container" cdkDropListGroup>
 
             <cds-panel-elements 
                 class="cds-panel-elements"
@@ -70,9 +40,10 @@
                 (addNewElement)="onAddNewElement()"
             ></cds-panel-elements>
 
-            <div #drawer_of_items_to_zoom_and_drag id="tds_drawer" class="tds-drag-drawer2 box-right-content2">
-         
-                <cds-drawer-of-intents *ngFor="let intent of listOfIntents;"
+            <div #receiver_elements_dropped_on_stage class="receiver-elements-dropped-on-stage" cdkDropList (cdkDropListDropped)="onDroppedElementToStage($event)"></div>
+            
+            <div #drawer_of_items_to_zoom_and_drag id="tds_drawer" class="tds-drag-drawer box-right-content">
+                <cds-intent *ngFor="let intent of listOfIntents;"
                     [id]="intent.id"
                     class="panel-intent tds_input_block tds_draggable" 
                     [style.top.px]="getIntentPosition(intent.id).y" 
@@ -81,32 +52,7 @@
                     [connector]="connector"
                     (selectAction)=onSelectAction($event)
                     (saveIntent)=onSaveIntent($event)
-                ></cds-drawer-of-intents>
-                <!-- 
-                [listOfActions]="listOfActions"
-                [idSelected]="idElementOfIntentSelected"
-                [isIntentElementSelected]="isIntentElementSelected"
-                [isOpenActionDrawer]="isOpenActionDrawer"
-                [eventUpadatedIntent]="upadatedIntent.asObservable()"
-                [eventCreateIntent]="createIntent.asObservable()" 
-                (openActionDrawer)=onOpenActionDrawer($event)
-                (answerSelected)=onAnswerSelected($event) 
-                (actionSelected)=onActionSelected($event)
-                (questionSelected)=onQuestionSelected($event) 
-                (actionDeleted)=onActionDeleted($event)
-                (intentForm)=onIntentFormSelected($event) -->
-
-                <!-- <svg id="svgContainer" class="tds_path2" style="overflow: visible;left: 0px;top: 0px;position: absolute; z-index:-1"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <g id="svgConnectors" fill="white" stroke="black" stroke-width="2">
-                    </g>
-                </svg> -->
-                
-                
-
-                
-
-
+                ></cds-intent>
             </div>
 
             <div #floatMenuElement id="floatMenuElement"
@@ -120,15 +66,37 @@
                 ></cds-floating-menu>
             </div>
 
-
         </div>
 
-        <cds-panel-detail
-            [isOpenPanelDetail] ="isOpenPanelDetail"
-        ></cds-panel-detail> 
+        <cds-panel-button-configuration
+            class="cds-generic-panel"
+            [isOpenPanel] = "isOpenPanelDetail"
+            [button] = elementInDetailPanel
+            [listOfActions] = listOfActions
+            (closeButtonPanel) = onClosePanel()
+            (saveButton) = onSaveElement($event)>
+        </cds-panel-button-configuration>
 
-    </ng-template>
+    </div>
 
+
+    <cds-chatbot-details *ngIf="activeSidebarSection == 'cds-sb-settings'" [selectedChatbot]="selectedChatbot"></cds-chatbot-details>
+
+    <cds-fulfillment *ngIf="activeSidebarSection == 'cds-sb-fulfillment'" [chatbot]="selectedChatbot"></cds-fulfillment>
+
+    <cds-rules *ngIf="activeSidebarSection == 'cds-sb-rules'" [listOfIntents]="listOfIntents" [selectedChatbot]="selectedChatbot"></cds-rules>
+
+            <!-- <ng-container [ngSwitch]="activeSidebarSection">
+            <ng-container *ngSwitchCase="'cds-sb-settings'" [ngTemplateOutlet]="settings"></ng-container>
+            <ng-container *ngSwitchCase="'cds-sb-fulfillment'" [ngTemplateOutlet]="fulfillment"></ng-container>
+            <ng-container *ngSwitchCase="'cds-sb-training'" [ngTemplateOutlet]="training"></ng-container>
+            <ng-container *ngSwitchCase="'cds-sb-rules'" [ngTemplateOutlet]="rules"></ng-container>
+            <ng-container *ngSwitchCase="'cds-sb-intents'" [ngTemplateOutlet]="intents"></ng-container>
+            <ng-container *ngSwitchDefault [ngTemplateOutlet]="intents"></ng-container>
+        </ng-container> -->
+    
+
+    
 </div>
 
 

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CdsFooterComponent } from './cds-footer.component';
+import { CdsConnectorComponent } from './cds-connector.component';
 
-describe('CdsFooterComponent', () => {
-  let component: CdsFooterComponent;
-  let fixture: ComponentFixture<CdsFooterComponent>;
+describe('CdsConnectorComponent', () => {
+  let component: CdsConnectorComponent;
+  let fixture: ComponentFixture<CdsConnectorComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CdsFooterComponent ]
+      declarations: [ CdsConnectorComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(CdsFooterComponent);
+    fixture = TestBed.createComponent(CdsConnectorComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

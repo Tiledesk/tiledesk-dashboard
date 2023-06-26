@@ -8,6 +8,17 @@ $mdb-font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif !default;
 $mdb-font-family-poppins: 'Poppins', 'Roboto', Arial, sans-serif !default;
 $box-left-width: 250px;
 
+
+
+.cds-generic-panel{
+  position: relative;
+  right: 0;
+  top: 0;
+  width: auto;
+  height: 100%;
+}
+
+
 ::ng-deep #tds_svgConnectors{
   path {
     stroke: black;
@@ -96,15 +107,13 @@ $box-left-width: 250px;
   width: 60px;
   transition: 0.3s;
   display: flex;
-  &.is_opened {
-      width: 175px;
-  }
 }
 
 .cds-content {
   display: flex;
-  width: 100%;
-  overflow-y: auto;
+  width: calc(100% - 60px);
+  // overflow-y: auto;
+  overflow: hidden;
   cds-rules,
   cds-chatbot-details,
   cds-fulfillment {
@@ -112,12 +121,26 @@ $box-left-width: 250px;
   }
 }
 
+.chatboat-dashboard {
+  &.is_opened_sidebar {
+    .cds-sidebar {
+      width: 175px;
+    }
+    .cds-content {
+      // width: calc(100% - 175px);
+    }
+  }
+}
+
+
+
 .cds-content {
   .box-left {
     width: $box-left-width;
     max-width: $box-left-width;
     min-width: $box-left-width;
     background-color: #394f5a;
+    z-index: 1;
     .panel-intent-list {
       position: relative;
       display: inline-flex;
@@ -146,22 +169,20 @@ $box-left-width: 250px;
 
 
   .box-right {
-    display: block;
+    display: inline-table;
     position: relative;
-    flex-grow: 1;
+    // flex-grow: 1;
     height: 100vh;
-    overflow: hidden;
-    overflow-y: scroll;
+    overflow: visible;
+    // overflow-y: scroll;
     max-height: 100%;
+    width: inherit;
+
     .box-right-header {
       width: 100%;
       height: 50px;
     }
-    .box-right-content {
-      width: 100%;
-      display: flex;
-      padding-bottom: 15px;
-    }
+
     .panel-intent {
       position: absolute;
       margin: 0px;
@@ -191,8 +212,11 @@ $box-left-width: 250px;
 }
 
 
+
+
 .receiver-elements-dropped-on-stage {
   position: absolute;
+  display: block;
   top: 0px;
   right: 0px;
   left: 0px;
@@ -214,11 +238,19 @@ $box-left-width: 250px;
   background-position: 593.4px -230.4px;
 }
 
-// .tds-drag-drawer {
-//   position: static!important;
-//   display: block!important;
-//   width: 100px!important;
-//   height: 100px!important;
+.tds-drag-drawer {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  display: block;
+  z-index: inherit;
+  width: 100px;
+  height: 100px;
+}
+// .box-right-content {
+//   width: 100%;
+//   display: flex;
+//   padding-bottom: 15px;
 // }
 
 .tds-draggable {

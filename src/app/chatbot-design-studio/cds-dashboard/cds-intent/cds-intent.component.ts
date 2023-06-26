@@ -3,7 +3,7 @@ import { Form, Intent, Action } from '../../../models/intent-model';
 
 import { ACTIONS_LIST, TYPE_ACTION, patchActionId } from 'app/chatbot-design-studio/utils';
 import { LoggerService } from 'app/services/logger/logger.service';
-import { IntentService } from 'app/chatbot-design-studio/cds-services/intent.service'; 
+import { IntentService } from 'app/chatbot-design-studio/services/intent.service'; 
 
 import {
   CdkDragDrop,
@@ -25,12 +25,12 @@ export enum HAS_SELECTED_TYPE {
 
 // declare function setDragElement(el);
 @Component({
-  selector: 'cds-drawer-of-intents',
-  templateUrl: './cds-drawer-of-intents.component.html',
-  styleUrls: ['./cds-drawer-of-intents.component.scss']
+  selector: 'cds-intent',
+  templateUrl: './cds-intent.component.html',
+  styleUrls: ['./cds-intent.component.scss']
 })
 
-export class CdsDrawerOfIntentsComponent implements OnInit, OnChanges {
+export class CdsIntentComponent implements OnInit, OnChanges {
   // @HostListener('window:keydown', ['$event'])
 
   @Input() intent: Intent;
@@ -163,10 +163,24 @@ export class CdsDrawerOfIntentsComponent implements OnInit, OnChanges {
     }
   }
 
+
+
+
+
+  // funzione chiamata da tutte le actions ogni volta che vengono modificate!
   onEditAction(event: any) {
     console.log('onSaveAction:::: ' , event, this.intent.actions);
-    this.saveIntent.emit(this.intent);
+    // this.saveIntent.emit(this.intent);
+    this.updateIntent();
   }
 
 
+
+
+  private async updateIntent(){
+    const response = await this.intentService.editIntent(this.intent);
+    if(response){
+      console.log('updateIntent: ', this.intent);
+    }
+  }
 }

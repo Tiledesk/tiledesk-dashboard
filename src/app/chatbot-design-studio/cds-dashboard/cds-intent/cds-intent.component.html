@@ -52,7 +52,7 @@
 
                 <cds-action-reply  *ngIf="action._tdActionType == 'reply'"
                     class="panel-response"
-                    [IDintentSelected]="intent.id"
+                    [intentSelected]="intent"
                     [connector]="connector"
                     [action]="action"
                     (editAction)="onEditAction($event)"

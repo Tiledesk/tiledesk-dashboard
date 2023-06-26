@@ -16,6 +16,9 @@
 }
 
 .button-tab {
+    position: absolute;
+    top:0;
+    right: 0;
     z-index: 1;
     height: 100%;
     display: flex;
@@ -23,9 +26,12 @@
     background-color: #4d5e79;
     border-left: solid 2px #b28e26;
     box-shadow: 0 0 42px 2px #000000c7;
+    animation: width 0.9s ease-in-out;
 }
 
-.button-header-tab:before {
+
+
+.button-tab-header:before {
     content: "";
     position: absolute;
     left: 0;
@@ -36,36 +42,7 @@
     background-color: #6474913d;
 }
 
-.buttons-drawer-title {
-    font-size: 18px;
-    font-weight: 400;
-    color: #fff;
-    text-align: left;
-    padding-left: 20px;
-    cursor: default;
-}
-
-.control-button {
-    display: flex;
-    justify-content: right;
-    margin: 12px;
-    position: absolute;
-    top: 0;
-    left: -22px;
-    cursor: pointer;
-    em {
-        background: #303f5c;
-        border: 2px solid #b28e26!important;
-        border-radius: 50%;
-        width: 22px;
-        height: 22px;
-        cursor: pointer;
-        font-size: 18px;
-        display: block;
-    }
-}
-
-.button-header-tab {
+.button-tab-header {
     position: relative;
     border-top-left-radius: 1em;
     border-top-right-radius: 1em;
@@ -75,10 +52,43 @@
     line-height: $height-header;
     min-height: $height-header;
     color: $color-txt-3-hex;
+    .button-tab-title {
+        font-size: 18px;
+        font-weight: 400;
+        color: #fff;
+        text-align: left;
+        padding-left: 20px;
+        cursor: default;
+    }
+    .button-tab-close {
+        display: flex;
+        justify-content: right;
+        margin: 12px;
+        position: absolute;
+        top: 0;
+        left: -22px;
+        cursor: pointer;
+        em {
+            background: #303f5c;
+            border: 2px solid #b28e26!important;
+            border-radius: 50%;
+            width: 22px;
+            height: 22px;
+            cursor: pointer;
+            font-size: 18px;
+            display: block;
+        }
+    }    
 }
 
 
-.button-content-tab {
+
+
+
+
+
+
+.button-tab-content {
     position: relative;
     flex: 1;
     min-height: 100px;
@@ -115,6 +125,10 @@
         display: block;
     }
 }
+
+
+
+
 
 
 

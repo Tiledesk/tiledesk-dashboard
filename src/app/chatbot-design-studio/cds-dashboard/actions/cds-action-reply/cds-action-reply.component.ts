@@ -1,8 +1,11 @@
-import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { Button, Message, Command, ActionReply, MessageWithWait, MessageAttributes } from 'app/models/intent-model';
-import { ELEMENTS_LIST, ACTIONS_LIST, TYPE_ACTION, TYPE_COMMAND, TYPE_RESPONSE, TYPE_BUTTON, TYPE_URL, TYPE_MESSAGE } from 'app/chatbot-design-studio/utils';
+import { Button, Message, Command, ActionReply, MessageWithWait, Intent } from 'app/models/intent-model';
+import { ELEMENTS_LIST, ACTIONS_LIST, TYPE_ACTION, TYPE_COMMAND, TYPE_RESPONSE, TYPE_BUTTON, TYPE_URL, TYPE_MESSAGE, generateShortUID } from 'app/chatbot-design-studio/utils';
 import { LoggerService } from 'app/services/logger/logger.service';
+
+import { ControllerService } from 'app/chatbot-design-studio/services/controller.service';
+import { IntentService } from 'app/chatbot-design-studio/services/intent.service';
 
 @Component({
   selector: 'cds-action-reply',
@@ -15,9 +18,22 @@ export class CdsActionReplyComponent implements OnInit {
   translateY: string;
 
   @Input() action: ActionReply;
-  @Input() typeAction: string;
-  @Input() listOfActions: Array<{ name: string, value: string, icon?: string }>;
-  @Input() intent_display_name: string;
+  @Input() intentSelected: Intent;
+  @Input() connector: any;
+  @Output() editAction = new EventEmitter();
+  
+
+  idIntentSelected: string;
+  idAction: string;
+  // @Input() typeAction: string;
+  // @Input() listOfActions: Array<{ name: string, value: string, icon?: string }>;
+  // @Input() intent_display_name: string;
+
+
+  // [intentSelected]="intent"
+  //                   [connector]="connector"
+  //                   [action]="action"
+  //                   (editAction)="onEditAction($event)"
 
 
   response: MessageWithWait;
@@ -49,6 +65,8 @@ export class CdsActionReplyComponent implements OnInit {
 
   constructor(
     private logger: LoggerService,
+    private controllerService: ControllerService,
+    private intentService: IntentService
   ) { }
 
   manageTooltip(){}
@@ -58,7 +76,7 @@ export class CdsActionReplyComponent implements OnInit {
 
   // SYSTEM FUNCTIONS //
   ngOnInit(): void {
-    console.log('ActionReplyComponent ngOnInit',this.typeAction, this.action);
+    console.log('ActionReplyComponent ngOnInit', this.action);
     // // console.log('ngOnInit panel-response::: ', this.typeAction);
     // this.actionType = (this.typeAction === TYPE_ACTION.RANDOM_REPLY ? 'RANDOM_REPLY' : 'REPLY');
     try {
@@ -71,19 +89,53 @@ export class CdsActionReplyComponent implements OnInit {
       this.logger.log("error ", error);
     }
 
+    this.initialize();
+
   }
+
+
+
 
   ngOnChanges() {
     this.logger.log('ActionReplyComponent ngOnChanges', this.action);
-    this.initialize();
-    // this.generateCommandsOfElements();
-    // this.elementIntentSelectedType = this.elementIntentSelected.type;
+    this.updateConnector();
   }
+
+
+
+  private updateConnector(){
+    try {
+      const array = this.connector.fromId.split("/");
+      // const idAction = array[1];
+      // if(idAction === this.idAction){
+      //   if(this.connector.deleted){
+      //     // DELETE 
+      //     console.log(' deleteConnector :: ', this.connector.id);
+      //     this.action.intentName = null;
+      //     this.isConnected = false;
+      //   } else {
+      //     // ADD / EDIT
+      //     console.log(' updateConnector :: ', this.connector.toId);
+      //     this.action.intentName = this.connector.toId;
+      //     this.isConnected = true;
+      //   }
+
+      //   // this.editAction.emit();
+      // }
+    } catch (error) {
+      console.log('error: ', error);
+    }
+  }
+
 
 
   // CUSTOM FUNCTIONS //
   /** */
   private initialize() {
+    this.idIntentSelected = this.intentSelected.id;
+    this.action._tdActionId = this.action._tdActionId?this.action._tdActionId:generateShortUID();
+    this.idAction = this.idIntentSelected+'/'+this.action._tdActionId;
+
     this.openCardButton = false;
     this.arrayResponses = [];
     this.arrayMessagesWithWait = [];
@@ -249,8 +301,10 @@ export class CdsActionReplyComponent implements OnInit {
 
   /**onChangeReplyElement */
   onChangeReplyElement() {
-    this.logger.log('onChangeReplyElement ************', this.arrayMessagesWithWait);
+    this.logger.log('onChangeReplyElement ************', this.intentSelected, this.arrayMessagesWithWait);
+    // this.intentService.editIntent(this.intentSelected);
     this.generateCommandsWithWaitOfElements();
+    this.editAction.emit();
   }
 
   /** */
@@ -279,10 +333,21 @@ export class CdsActionReplyComponent implements OnInit {
   }
 
 
+  onCreateNewButton(event){
+    this.response = event.refResponse;
+    this.newButton = true;
+    this.buttonSelected = this.createNewButton();
+    this.generateCommandsWithWaitOfElements();
+    this.editAction.emit();
+  }
 
 
   private createNewButton() {
-    this.buttonSelected = {
+    const idButton = generateShortUID();
+    const idActionConnector = this.idAction+'/'+idButton;
+    let buttonSelected = {
+      'id': idButton,
+      'idActionConnector': idActionConnector,
       'value': 'Button',
       'type': TYPE_BUTTON.TEXT,
       'target': TYPE_URL.BLANK,
@@ -290,8 +355,9 @@ export class CdsActionReplyComponent implements OnInit {
       'action': '',
       'show_echo': true
     };
-    this.response.attributes.attachment.buttons.push(this.buttonSelected);
-    this.logger.log('createNewButton :: ', this.buttonSelected);
+    this.response.attributes.attachment.buttons.push(buttonSelected);
+    this.logger.log('createNewButton :: ', buttonSelected);
+    return buttonSelected;
   }
 
   /** appdashboard-button-configuration-panel: onOpenButtonPanel */
@@ -301,18 +367,13 @@ export class CdsActionReplyComponent implements OnInit {
     if (!event.button) {
       this.logger.log('new button  :: ', event.button);
       this.newButton = true;
-      this.createNewButton();
+      this.buttonSelected = this.createNewButton();
     } else {
       this.newButton = false;
       this.buttonSelected = event.button;
     }
-
-    this.logger.log("listOfActions:: ", this.listOfActions);
-    if (this.openCardButton === true) {
-      this.onCloseButtonPanel();
-    }
-    this.openCardButton = true;
     this.logger.log('buttonSelected :: ', this.buttonSelected);
+    this.controllerService.openButtonPanel(this.buttonSelected);
   }
 
   /** appdashboard-button-configuration-panel: Save button */
@@ -331,8 +392,6 @@ export class CdsActionReplyComponent implements OnInit {
     // this.logger.log('onFocusOutEvent ::::::: ', event);
     // this.onCloseButtonPanel()
   }
-
-
 
 
 }

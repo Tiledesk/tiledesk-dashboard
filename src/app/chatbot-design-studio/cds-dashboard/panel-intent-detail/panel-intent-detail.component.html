@@ -31,6 +31,7 @@
     </div>
 
     <div id="content-panel" class="content-panel">
+        
         <div *ngIf="elementIntentSelectedType === typeIntentElement.ACTION" >
             <div *ngFor="let item of elementSelectedMaxLength, let i = index" >
                 <div *ngIf="i === elementSelectedIndex" [ngSwitch]="elementSelected._tdActionType">

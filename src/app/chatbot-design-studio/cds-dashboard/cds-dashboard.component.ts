@@ -26,8 +26,9 @@ import { Chatbot } from 'app/models/faq_kb-model';
 
 import { DialogYesNoComponent } from 'app/chatbot-design-studio/cds-base-element/dialog-yes-no/dialog-yes-no.component';
 import { MatDialog } from '@angular/material/dialog';
-import { DragDropService } from 'app/chatbot-design-studio/cds-services/drag-drop.service';
-import { IntentService } from 'app/chatbot-design-studio/cds-services/intent.service';
+import { DragDropService } from 'app/chatbot-design-studio/services/drag-drop.service';
+import { IntentService } from 'app/chatbot-design-studio/services/intent.service';
+import { ControllerService } from 'app/chatbot-design-studio/services/controller.service';
 
 // import { Subscription } from 'rxjs';
 import { TiledeskStage } from 'assets/cds/js/tiledesk-stage.js';
@@ -121,6 +122,9 @@ export class CdsDashboardComponent implements OnInit {
 
   
   isOpenPanelDetail: boolean = false;
+  elementInDetailPanel: any;
+
+
   isOpenPanelActions: boolean = true;
   positionPanelActions: any;
 
@@ -147,6 +151,7 @@ export class CdsDashboardComponent implements OnInit {
     private logger: LoggerService,
     private dragDropService:DragDropService,
     private intentService: IntentService,
+    private controllerService: ControllerService,
     private httpClient: HttpClient,
     private faqKbService: FaqKbService,
     // public appConfigService: AppConfigService,
@@ -162,9 +167,18 @@ export class CdsDashboardComponent implements OnInit {
       console.log("subscriptionListOfIntents********** ", value);
       this.updatePanelIntentList = !this.updatePanelIntentList;
       this.listOfIntents = value;
-      this.setListOfActions();
+      this.intentService.setListOfActions(this.listOfIntents);
+      this.listOfActions = this.intentService.getListOfActions();
     });
 
+    this.controllerService.isOpenButtonPanel$.subscribe((button: Button) => {
+      this.elementInDetailPanel = button;
+      if(button){
+        this.isOpenPanelDetail = true;
+      } else {
+        this.isOpenPanelDetail = false;
+      }
+    });
 
     
     
@@ -578,7 +592,7 @@ export class CdsDashboardComponent implements OnInit {
       this.setIntentPosition(intent.id, newPos);
       // this.intentService.setDashboardAttributes(this.dashboardAttributes);
     }
-    this.isOpenPanelDetail = true;
+    // this.isOpenPanelDetail = true;
   }
 
   onMouseMove(element){
@@ -1550,5 +1564,16 @@ export class CdsDashboardComponent implements OnInit {
   //   this.usersLocalDbService.setInStorage('hasclosedcdspopup', 'true')
   //   this.popup_visibility = 'none'
   // }
+
+
+  onClosePanel(){
+
+  }
+
+
+  onSaveElement(event){
+
+  }
+  
 
 }

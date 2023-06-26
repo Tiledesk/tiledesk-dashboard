@@ -1,18 +1,21 @@
-import { CDSTextComponent } from './../../../../../cds-base-element/text/text.component';
+import { CDSTextComponent } from '../../cds-base-element/text/text.component';
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { Button } from 'app/models/intent-model';
 
 
-import { TYPE_BUTTON, TYPE_URL } from '../../../../../utils';
+import { TYPE_BUTTON, TYPE_URL } from '../../utils';
+import { ControllerService } from 'app/chatbot-design-studio/services/controller.service';
 
 @Component({
-  selector: 'appdashboard-panel-button-configuration',
-  templateUrl: './panel-button-configuration.component.html',
-  styleUrls: ['./panel-button-configuration.component.scss']
+  selector: 'cds-panel-button-configuration',
+  templateUrl: './cds-panel-button-configuration.component.html',
+  styleUrls: ['./cds-panel-button-configuration.component.scss']
 })
-export class PanelButtonConfigurationComponent implements OnInit {
+export class CdsPanelButtonConfigurationComponent implements OnInit {
   @ViewChild('input_title', { static: true }) input_topic: CDSTextComponent;
 
+
+  @Input() isOpenPanel: boolean;
   @Input() listOfActions: Array<{name: string, value: string, icon?:string}>;
   @Input() button: Button;
   @Output() saveButton = new EventEmitter();
@@ -50,7 +53,9 @@ export class PanelButtonConfigurationComponent implements OnInit {
   emojiiCategories = [ 'recent', 'people', 'nature', 'activity'];
 
 
-  constructor() { }
+  constructor(
+    private controllerService: ControllerService
+  ) { }
 
 
   // SYSTEM FUNCTIONS //  
@@ -70,6 +75,7 @@ export class PanelButtonConfigurationComponent implements OnInit {
 
 
   private initialize(){
+    console.log('CdsPanelButtonConfigurationComponent: ', this.button);
     this.buttonLabelResult = true;
     this.errorUrl = false;
     this.buttonLabel = '';
@@ -233,7 +239,8 @@ export class PanelButtonConfigurationComponent implements OnInit {
 
   /** */
   onCloseButtonPanel() {
-    this.closeButtonPanel.emit();
+    this.controllerService.closeButtonPanel();
+    // this.closeButtonPanel.emit();
   }
 
   onChangeTitle(text: string) {

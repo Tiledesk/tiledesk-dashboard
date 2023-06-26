@@ -1,5 +1,5 @@
-import { ActionIntentConnected } from 'app/models/intent-model';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { ActionIntentConnected, Intent } from 'app/models/intent-model';
 import { LoggerService } from 'app/services/logger/logger.service';
 
 @Component({
@@ -9,12 +9,14 @@ import { LoggerService } from 'app/services/logger/logger.service';
 })
 export class CdsActionIntentComponent implements OnInit {
 
-  @Input() IDintentSelected: string;
+  @Input() intentSelected: Intent;
   @Input() action: ActionIntentConnected;
   @Input() connector: any;
   @Output() editAction = new EventEmitter();
 
+  idIntentSelected: string;
   idAction: string;
+  isConnected: boolean = false;
 
   constructor(
     private logger: LoggerService,
@@ -32,7 +34,8 @@ export class CdsActionIntentComponent implements OnInit {
 
 
   private initialize() {
-    this.idAction = this.IDintentSelected+'/'+this.action._tdActionId;
+    this.idIntentSelected = this.intentSelected.id;
+    this.idAction = this.idIntentSelected+'/'+this.action._tdActionId;
   }
 
   private updateConnector(){
@@ -44,10 +47,12 @@ export class CdsActionIntentComponent implements OnInit {
           // DELETE 
           console.log(' deleteConnector :: ', this.connector.id);
           this.action.intentName = null;
+          this.isConnected = false;
         } else {
           // ADD / EDIT
           console.log(' updateConnector :: ', this.connector.toId);
           this.action.intentName = this.connector.toId;
+          this.isConnected = true;
         }
         this.editAction.emit();
       }

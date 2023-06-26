@@ -12,10 +12,9 @@
         </div> 
         -->
     </div> 
-    <div class="action-connector" >
-        <div class="block-connector">
-            <div *ngIf="!action.intentName" [id]="idAction" class="point-connector-empty tds_connectable"></div>
-            <div *ngIf="action.intentName" [id]="idAction" class="point-connector"></div>
-        </div>
-    </div>
+
+    <cds-connector
+        [idAction] = "idAction"
+        [isConnected] = "isConnected">
+    </cds-connector>
 </div>

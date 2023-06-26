@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { TYPE_ACTION, ACTIONS_LIST, TYPE_OF_MENU } from 'app/chatbot-design-studio/utils';
 import { CdkDropList, CdkDragStart, CdkDragEnd, CdkDragMove } from '@angular/cdk/drag-drop';
-import { DragDropService } from 'app/chatbot-design-studio/cds-services/drag-drop.service';
+import { DragDropService } from 'app/chatbot-design-studio/services/drag-drop.service';
 
 @Component({
   selector: 'cds-panel-actions',

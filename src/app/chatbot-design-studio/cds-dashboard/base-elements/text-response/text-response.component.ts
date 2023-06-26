@@ -1,9 +1,12 @@
 
 import { Component, OnInit, ViewChild, Input, Output, EventEmitter, Attribute } from '@angular/core';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
-import { MessageWithWait, Button, MessageAttributes, Expression } from '../../../../../../../models/intent-model';
+import { MessageWithWait, Button, MessageAttributes, Expression } from '../../../../models/intent-model';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { TYPE_ACTION, TYPE_BUTTON, TYPE_URL, TEXT_CHARS_LIMIT, calculatingRemainingCharacters } from '../../../../../../utils';
+import { TYPE_ACTION, TYPE_BUTTON, TYPE_URL, TEXT_CHARS_LIMIT, calculatingRemainingCharacters } from '../../../utils';
+
+
+
 
 @Component({
   selector: 'appdashboard-text-response',
@@ -21,13 +24,17 @@ export class TextResponseComponent implements OnInit {
   @Output() deleteResponse = new EventEmitter();
   @Output() moveUpResponse = new EventEmitter();
   @Output() moveDownResponse = new EventEmitter();
+
   @Output() openButtonPanel = new EventEmitter();
+  @Output() createNewButton = new EventEmitter();
   
   
   
   @Input() response: MessageWithWait;
   @Input() index: number;
   @Input() typeAction: string;
+  @Input() idAction: string;
+
 
   // Textarea //
   typeActions = TYPE_ACTION;
@@ -139,7 +146,7 @@ export class TextResponseComponent implements OnInit {
 
   /** */
   onOpenButtonPanel(button?){
-    // console.log('onOpenButtonPanel: ', button, this.response);
+    console.log('onOpenButtonPanel: ', button, this.response);
     try {
       if(!this.response.attributes || !this.response.attributes.attachment.buttons){
         this.response.attributes = new MessageAttributes();
@@ -150,6 +157,20 @@ export class TextResponseComponent implements OnInit {
     }
     this.openButtonPanel.emit({button: button, refResponse: this.response});
   }
+
+
+  onCreateNewButton(){
+    try {
+      if(!this.response.attributes || !this.response.attributes.attachment.buttons){
+        this.response.attributes = new MessageAttributes();
+        this.buttons = this.response.attributes.attachment.buttons;
+      }
+    } catch (error) {
+      console.log('error: ', error);
+    }
+    this.createNewButton.emit({refResponse: this.response});
+  }
+
 
   onDeleteButton(index){
     this.buttons.splice(index, 1);

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PanelButtonConfigurationComponent } from './panel-button-configuration.component';
+import { CdsPanelButtonConfigurationComponent } from './cds-panel-button-configuration.component';
 
 describe('PanelButtonConfigurationComponent', () => {
-  let component: PanelButtonConfigurationComponent;
-  let fixture: ComponentFixture<PanelButtonConfigurationComponent>;
+  let component: CdsPanelButtonConfigurationComponent;
+  let fixture: ComponentFixture<CdsPanelButtonConfigurationComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PanelButtonConfigurationComponent ]
+      declarations: [ CdsPanelButtonConfigurationComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(PanelButtonConfigurationComponent);
+    fixture = TestBed.createComponent(CdsPanelButtonConfigurationComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -35,14 +35,14 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 
 //SERVICES
-import { DragDropService } from './cds-services/drag-drop.service';
+import { DragDropService } from './services/drag-drop.service';
 
 // import { SharedModule } from '../shared/shared.module';
 import { CdsDashboardComponent } from './cds-dashboard/cds-dashboard.component';
 import { PanelReplyToolsComponent } from './cds-dashboard/panel-intent-detail/actions/action-reply/panel-reply-tools/panel-reply-tools.component';
 import { ActionReplyComponent } from './cds-dashboard/panel-intent-detail/actions/action-reply/action-reply.component';
-import { TextResponseComponent } from './cds-dashboard/panel-intent-detail/actions/action-reply/reply-types/text-response/text-response.component';
-import { DelaySliderComponent } from './cds-dashboard/panel-intent-detail/actions/action-reply/elements/delay-slider/delay-slider.component';
+import { TextResponseComponent } from './cds-dashboard/base-elements/text-response/text-response.component';
+import { DelaySliderComponent } from './cds-dashboard/base-elements/delay-slider/delay-slider.component';
 // import { ButtonConfigurationPanelComponent } from './dashboard/button-configuration-panel/button-configuration-panel.component';
 import { ImageResponseComponent } from './cds-dashboard/panel-intent-detail/actions/action-reply/reply-types/image-response/image-response.component';
 import { FrameResponseComponent } from './cds-dashboard/panel-intent-detail/actions/action-reply/reply-types/frame-response/frame-response.component';
@@ -52,7 +52,7 @@ import { PanelIntentComponent } from './cds-dashboard/panel-intent/panel-intent.
 import { PanelActionsComponent } from './cds-dashboard/panel-actions/panel-actions.component';
 import { PanelIntentDetailComponent } from './cds-dashboard/panel-intent-detail/panel-intent-detail.component';
 import { PanelIntentHeaderComponent } from './cds-dashboard/panel-intent-header/panel-intent-header.component';
-import { PanelButtonConfigurationComponent } from './cds-dashboard/panel-intent-detail/actions/action-reply/panel-button-configuration/panel-button-configuration.component';
+import { CdsPanelButtonConfigurationComponent } from './cds-dashboard/cds-panel-button-configuration/cds-panel-button-configuration.component';
 import { ElementFromUrlComponent } from './cds-dashboard/panel-intent-detail/actions/action-reply/elements/element-from-url/element-from-url.component';
 import { QuestionComponent } from './cds-dashboard/panel-intent-detail/question/question.component';
 import { AnswerComponent } from './cds-dashboard/panel-intent-detail/answer/answer.component';
@@ -68,7 +68,7 @@ import { CdsFulfillmentComponent } from './cds-fulfillment/cds-fulfillment.compo
 //BASE-ELEMENT
 import { CDSTextComponent } from './cds-base-element/text/text.component';
 import { CDSDelaySliderComponent } from './cds-base-element/delay-slider/delay-slider.component';
-import { CDSTextareaComponent } from './cds-base-element/textarea/textarea.component';
+import { CDSTextareaComponent } from './cds-dashboard/base-elements/textarea/textarea.component';
 
 //RULES COMPONENT
 import { RulesComponent } from './cds-rules/rules/rules.component';
@@ -95,7 +95,7 @@ import { ActionAgentHandoffComponent } from './cds-dashboard/panel-intent-detail
 import { ActionJsonConditionComponent } from './cds-dashboard/panel-intent-detail/actions/action-json-condition/action-json-condition.component';
 
 import { CdsSplashScreenComponent } from './cds-dashboard/utils/cds-splash-screen/cds-splash-screen.component';
-import { CdsFooterComponent } from './cds-dashboard/cds-footer/cds-footer.component';
+// import { CdsFooterComponent } from './cds-dashboard/cds-footer/cds-footer.component';
 import { CdsPublishOnCommunityModalComponent } from './cds-dashboard/utils/cds-publish-on-community-modal/cds-publish-on-community-modal.component';
 import { SelectComponent } from './cds-base-element/select/select.component';
 import { BaseConditionRowComponent } from './cds-dashboard/panel-intent-detail/actions/action-json-condition/base-condition-row/base-condition-row.component';
@@ -113,8 +113,8 @@ import { DialogYesNoComponent } from './cds-base-element/dialog-yes-no/dialog-ye
 import { CDSFilterComponent } from './cds-base-element/filter/filter.component';
 import { CdsHeaderComponent } from './cds-dashboard/cds-header/cds-header.component';
 import { CdsPopupComponent } from './cds-dashboard/utils/cds-popup/cds-popup.component';
-import { CdsModalActivateBotComponent } from './cds-dashboard/cds-modal-activate-bot/cds-modal-activate-bot.component';
-import { CdsDrawerOfIntentsComponent } from './cds-dashboard/cds-drawer-of-intents/cds-drawer-of-intents.component';
+import { CdsModalActivateBotComponent } from './cds-dashboard/utils/cds-modal-activate-bot/cds-modal-activate-bot.component';
+import { CdsIntentComponent } from './cds-dashboard/cds-intent/cds-intent.component';
 import { CdsPanelElementsComponent } from './cds-dashboard/cds-panel-elements/cds-panel-elements.component';
 import { CdsPanelDetailComponent } from './cds-dashboard/cds-panel-detail/cds-panel-detail.component';
 import { CdsPanelActionsComponent } from './cds-dashboard/cds-panel-actions/cds-panel-actions.component';
@@ -122,6 +122,7 @@ import { CdsPanelIntentListComponent } from './cds-dashboard/cds-panel-intent-li
 import { CdsActionIntentComponent } from './cds-dashboard/actions/cds-action-intent/cds-action-intent.component';
 import { CdsFloatingMenuComponent } from './cds-dashboard/cds-floating-menu/cds-floating-menu.component';
 import { CdsActionReplyComponent } from './cds-dashboard/actions/cds-action-reply/cds-action-reply.component';
+import { CdsConnectorComponent } from './cds-dashboard/base-elements/cds-connector/cds-connector.component';
 
 @NgModule({
   declarations: [
@@ -138,7 +139,7 @@ import { CdsActionReplyComponent } from './cds-dashboard/actions/cds-action-repl
     PanelActionsComponent,
     PanelIntentDetailComponent,
     PanelIntentHeaderComponent,
-    PanelButtonConfigurationComponent,
+    CdsPanelButtonConfigurationComponent,
     ElementFromUrlComponent,
     QuestionComponent,
     AnswerComponent,
@@ -174,7 +175,7 @@ import { CdsActionReplyComponent } from './cds-dashboard/actions/cds-action-repl
     ActionCloseComponent,
     ActionAgentHandoffComponent,
     ActionJsonConditionComponent,
-    CdsFooterComponent,
+    // CdsFooterComponent,
     CdsPublishOnCommunityModalComponent,
     SelectComponent,
     BaseConditionRowComponent,
@@ -192,14 +193,15 @@ import { CdsActionReplyComponent } from './cds-dashboard/actions/cds-action-repl
     CdsHeaderComponent,
     CdsPopupComponent,
     CdsModalActivateBotComponent,
-    CdsDrawerOfIntentsComponent,
+    CdsIntentComponent,
     CdsPanelElementsComponent,
     CdsPanelDetailComponent,
     CdsPanelActionsComponent,
     CdsPanelIntentListComponent,
     CdsActionIntentComponent,
     CdsFloatingMenuComponent,
-    CdsActionReplyComponent
+    CdsActionReplyComponent,
+    CdsConnectorComponent
   ],
   imports: [
     A11yModule,

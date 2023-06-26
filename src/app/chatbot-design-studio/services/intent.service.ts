@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { 
   Intent, 
@@ -32,6 +33,7 @@ import { ActionIntentComponent } from '../cds-dashboard/panel-intent-detail/acti
 })
 export class IntentService {
   intents = new BehaviorSubject <Intent[]>([]);
+  listOfActions: Array<{ name: string, value: string, icon?: string }>;
 
   keyDashboardAttributes = 'Dashboard-Attributes';
   jsonDashboardAttributes: any;
@@ -289,6 +291,25 @@ export class IntentService {
       action = new ActionAssignFunction();
     }
     return action;
+  }
+
+
+  setListOfActions(intents){
+    // .pipe(map((response: any) => response.json()));
+    this.listOfActions = intents.map(a => {
+      if (a.intent_display_name.trim() === 'start') {
+        return { name: a.intent_display_name, value: '#' + a.intent_id, icon: 'rocket_launch' }
+      } else if (a.intent_display_name.trim() === 'defaultFallback') {
+        return { name: a.intent_display_name, value: '#' + a.intent_id, icon: 'undo' }
+      } else {
+        return { name: a.intent_display_name, value: '#' + a.intent_id, icon: 'label_important_outline' }
+      }
+    });
+    console.log('this.listOfActions: ', this.listOfActions); 
+  }
+
+  getListOfActions(){
+    return this.listOfActions;
   }
   // END ATTRIBUTE FUNCTIONS //
   

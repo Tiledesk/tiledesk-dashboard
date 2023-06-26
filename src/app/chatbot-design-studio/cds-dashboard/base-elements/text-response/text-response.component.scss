@@ -155,9 +155,9 @@
         font-size: 0.8em;
         // color: $color-text-box-hex;
         float: right;
-        &.error {
-            // background: $color-orange-hex;
-        }
+        // &.error {
+        //     // background: $color-orange-hex;
+        // }
     }
     .text-editor-insert-attribute {
         float: right;
@@ -173,20 +173,33 @@
 
 
 /** BUTTONS **/
+.connector {
+    position: absolute;
+    top: 6px;
+    right: -10px;
+}
+
+
 .buttons-response {
-    display: block;
+    // display: block;
+    // margin: 12px 0 0;
+    // width: 100%;
+    // font-size: 14px;
+    // padding: 0 5px;
+    // flex-direction: row;
+    // float: right;
+
+    display: flex;
     margin: 12px 0 0;
     width: 100%;
     font-size: 14px;
     padding: 0 5px;
-    flex-direction: row;
+    flex-direction: column;
     float: right;
-
-    // flex-wrap: wrap;
-    // margin: 12px 0 0 0;
-    // width: 100%;
-    // font-size: $font-size-base;
-    // padding: 0 25px;
+    justify-content: flex-start;
+    /* align-content: flex-end; */
+    flex-wrap: nowrap;
+    align-items: flex-end;
 }
 .custom-placeholder {
     background: #ccc;
