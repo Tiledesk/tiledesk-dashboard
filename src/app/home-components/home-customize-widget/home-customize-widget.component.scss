@@ -37,3 +37,38 @@
     font-family: "Poppins", "Roboto", "Arial", sans-serif;
     margin-right: 16px;
 }
+
+.home-block-description-and-action-btn-wpr {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.home-block-description {
+    color: #000000;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 20px;
+    margin: 0px;
+}
+
+.mat-flat-button {
+    padding: 0 18px !important;
+    border-radius: 9999px !important;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    min-height: 40px;
+    max-height: 40px;
+    line-height: 1 !important;
+  }
+  
+  .mat-button .mat-button-wrapper > *,
+  .mat-flat-button .mat-button-wrapper > * {
+    vertical-align: middle;
+  }
+
+  .actions-btn-wpr {
+    display: flex;
+    align-self: center;
+  }

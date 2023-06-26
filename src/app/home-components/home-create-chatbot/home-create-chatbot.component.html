@@ -170,13 +170,13 @@
                                     [ngClass]="{'bot-img-gray-bckgrnd': bot.hasImage === false}"
                                     class="img-in-bot-popover"
                                     src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{bot?._id}}%2Fphoto.jpg?alt=media"
-                                    alt="" onerror="this.src='assets/img/avatar_bot_tiledesk_white.svg'" style="">
+                                    alt="" onerror="this.src='assets/img/avatar_bot_tiledesk_white.svg'">
 
                                 <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE"
                                     [ngClass]="{'bot-img-gray-bckgrnd': bot.hasImage === false}"
                                     class="img-in-bot-popover"
                                     src="{{baseUrl}}images?path=uploads%2Fusers%2F{{bot?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
-                                    alt="" onerror="this.src='assets/img/avatar_bot_tiledesk_white.svg'" style="">
+                                    alt="" onerror="this.src='assets/img/avatar_bot_tiledesk_white.svg'">
                             </div>
 
                             <div class="right--col chatbot-name">
