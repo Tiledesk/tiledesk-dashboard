@@ -5563,6 +5563,11 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       });
   }
 
+  onClickTagConversation() {
+    console.log('[WS-REQUESTS-MSGS] - HAS CLICKED TAG CONVS');
+    this.hasSelectedTab1()
+  }
+
 
 
   hasSelectedTab0() {

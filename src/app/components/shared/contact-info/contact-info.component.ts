@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnDestroy, OnInit, HostListener, AfterViewInit } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, HostListener, AfterViewInit, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'app/core/auth.service';
 import { NotifyService } from 'app/core/notify.service';
@@ -19,6 +19,7 @@ import { LoggerService } from '../../../services/logger/logger.service';
 })
 export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit {
   @Input() contact_details: any;
+  @Output() onClickTagConversation = new EventEmitter();
   public CHAT_PANEL_MODE: boolean;
   public project_name: string;
   private unsubscribe$: Subject<any> = new Subject<any>();
@@ -106,16 +107,16 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
 
       if (this.contact_details._id) {
         this.requester_id = this.contact_details._id
-       this.logger.log('[CONTACT-INFO] requester_id ', this.requester_id)
+        this.logger.log('[CONTACT-INFO] requester_id ', this.requester_id)
       }
 
       if (this.contact_details.lead_id) {
         this.lead_id = this.contact_details.lead_id
-       this.logger.log('[CONTACT-INFO] lead_id ', this.lead_id)
-       if (this.lead_id.startsWith('wab-')) { 
-          this.whatsAppPhoneNumber =  this.lead_id.slice(4);
+        this.logger.log('[CONTACT-INFO] lead_id ', this.lead_id)
+        if (this.lead_id.startsWith('wab-')) {
+          this.whatsAppPhoneNumber = this.lead_id.slice(4);
           this.logger.log('[CONTACT-INFO] whatsAppPhoneNumber ', this.whatsAppPhoneNumber)
-       }
+        }
       }
 
 
@@ -345,7 +346,7 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
     }
   }
 
- 
+
 
   removePhoneAnUpdateContact() {
     this.contactPhone = ""
@@ -378,7 +379,7 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
 
   }
 
-    // -----------------------------------------------------
+  // -----------------------------------------------------
   // @ Lead Note
   // -----------------------------------------------------
   updateContactNote(contactid, contactnote) {
@@ -567,7 +568,7 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
   }
 
   editContactAddress() {
-    if (this.contactStreet && this.contactStreet.length > 0 )  {
+    if (this.contactStreet && this.contactStreet.length > 0) {
       this.contactStreet = this.contactStreet.trim();
       this.updateContactAddress();
     }
@@ -586,7 +587,7 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
       this.updateContactAddress();
     }
 
-    if (this.contactCountry && this.contactCountry.length > 0 ) {
+    if (this.contactCountry && this.contactCountry.length > 0) {
       this.contactCountry = this.contactCountry.trim().toUpperCase();
       this.updateContactAddress();
     }
@@ -1035,6 +1036,9 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
   //     document.appendChild(li);
   //   }
 
-
+  goToTicketTab() {
+    console.log('[CONTACT-INFO] -  GO TO TICKET TAB ');
+    this.onClickTagConversation.emit()
+  }
 
 }
