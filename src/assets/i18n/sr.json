@@ -2321,6 +2321,9 @@
     "IPAddress":"ИП Аддресс",
     "NoTAGAssignedToThisContactYet":"Овом контакту још увек није додељен ТАГ",
     "NoTAGAssignedYet":"Још увек није додељен ТАГ",
+    "WidgetVisibility": "Виџет видљивост",
+    "DisplayWidget": "Дисплаи Видгет",
+    "OnPageChange": "При промени странице", 
     "AddIntentPage": {
         "AddForm": "Додати образац",
         "SelectTemplateForm": "Изаберите врсту обрасца међу онима који су предложени или створили нови",

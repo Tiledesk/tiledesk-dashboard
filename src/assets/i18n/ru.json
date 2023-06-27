@@ -2321,6 +2321,9 @@
     "IPAddress":"IP-адрес",
     "NoTAGAssignedToThisContactYet":"Этому контакту еще не назначена ТЕГ",
     "NoTAGAssignedYet":"TAG еще не назначен",
+    "WidgetVisibility": "Видимость виджета",
+    "DisplayWidget": "Виджет отображения",
+    "OnPageChange": "На странице изменения", 
     "AddIntentPage": {
         "AddForm": "Добавить форму",
         "SelectTemplateForm": "Выберите тип формы среди предлагаемых или создайте новую",
