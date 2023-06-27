@@ -670,12 +670,15 @@ input[type="text"]:disabled {
 .single-conversation-content {
   display: flex;
   width: 100%;
+
 }
-.single-conversation-switch {
-  width: 200px;
-}
+
 .single-conversation-preview {
   flex: 1;
+}
+
+.single-conversation-switch {
+  width: 200px;
 }
 
 .on-off-singleconversation-switch-and-lbl-wpr {
@@ -694,6 +697,54 @@ input[type="text"]:disabled {
   position: relative;
   top: -4px;
 }
+
+
+/* Display widget
+/* ------------------------------ */
+.display-widget-switch {
+  width: 200px;
+}
+
+.on-off-display-widget-switch-and-lbl-wpr {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  // margin-left: 15px;
+  margin-top: 6px;
+}
+.on-off-display-widget-lbl-wpr {
+  color: #737376;
+  margin-left: 6px;
+  font-size: 13px;
+  font-weight: 400;
+  border-radius: 4px;
+  position: relative;
+  top: -4px;
+}
+
+.display-widget-wpr {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.display-widget-label {
+  margin-left: 15px;
+  font-size: 12px!important;
+  color: #566787!important;
+  text-align: left;
+  padding-bottom: 3px;
+  font-weight: 600!important;
+  letter-spacing: .2px;
+  min-width: 145px;
+}
+
+.on-page-change-widget-option {
+  width: 300px;
+}
+
+
+/* ------------------------------ */
 
 .pre-chat-form-field-div {
   padding: 8px;
@@ -2187,7 +2238,7 @@ button.buttonRounded:hover {
 
 // ./end widget accordion-----------------
 
-// --------- start new on-off btn logo ---------
+// --------- start new on-off  ---------
 .nw-onoffswitch {
   position: relative;
   width: 45px;

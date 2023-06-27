@@ -958,6 +958,153 @@
 									</div>
 								</div>
 
+								<!-- ---------------------------------------------------------------------------- -->
+								<!-- @ Widget visibility -->
+								<!-- ---------------------------------------------------------------------------- -->
+								<button type="button" class="widget-section-accordion widget-section-header">
+									<div class="widget-section-title">
+										<div class="widget-setting-icon-wrap">
+											<!-- <svg xmlns="http://www.w3.org/2000/svg" class="ionicon"
+												viewBox="0 0 512 512">
+												<title>Chatbox</title>
+												<path
+													d="M408 64H104a56.16 56.16 0 00-56 56v192a56.16 56.16 0 0056 56h40v80l93.72-78.14a8 8 0 015.13-1.86H408a56.16 56.16 0 0056-56V120a56.16 56.16 0 00-56-56z"
+													fill="none" stroke="currentColor" stroke-linejoin="round"
+													stroke-width="32" />
+											</svg> -->
+
+											<svg xmlns="http://www.w3.org/2000/svg" class="ionicon"
+												viewBox="0 0 512 512">
+												<path
+													d="M255.66 112c-77.94 0-157.89 45.11-220.83 135.33a16 16 0 00-.27 17.77C82.92 340.8 161.8 400 255.66 400c92.84 0 173.34-59.38 221.79-135.25a16.14 16.14 0 000-17.47C428.89 172.28 347.8 112 255.66 112z"
+													fill="none" stroke="currentColor" stroke-linecap="round"
+													stroke-linejoin="round" stroke-width="32" />
+												<circle cx="256" cy="256" r="80" fill="none" stroke="currentColor"
+													stroke-miterlimit="10" stroke-width="32" />
+											</svg>
+										</div>
+										<h4 class="widget-section-header__title-underlined">
+											<!-- Widget Visibility -->
+											{{'WidgetVisibility' | translate}}
+										</h4>
+									</div>
+									<div class="widget-section-arrow">
+										<i class="material-icons widget-section-arrow-icon">
+											keyboard_arrow_down
+										</i>
+									</div>
+								</button>
+								<div class="widget-section-container"
+									style="height: auto; transition-duration: 0.613s;">
+									<div class="section-offset">
+
+										<div class="form-group"
+											style="max-width: 640px; margin-left: -15px; 	margin-right: -15px;">
+
+											<!-- ----------------------------------------------------------- -->
+											<!-- @ Widget visibility desktop -->
+											<!-- ----------------------------------------------------------- -->
+											<div class="row" style="margin-left: 0px;">
+												<label
+													class="col-sm-12 control-label widget-settings-control-head-label"
+													style="padding-top:12px; padding-bottom: 2px;">
+													Desktop
+												</label>
+											</div>
+
+											<div class="display-widget-wpr" style="margin-bottom: 12px;">
+												<div class="display-widget-label">
+													<!-- Display Widget -->
+													{{ 'DisplayWidget' | translate}}
+												</div>
+												<div class="display-widget-switch">
+													<div class="on-off-display-widget-switch-and-lbl-wpr">
+														<div class="on-off-display-widget-switch-wpr">
+															<div class="nw-onoffswitch">
+																<input (change)="changeDesktopWidgetVisibility($event)"
+																	type="checkbox" name="nw-d-display-widget-switch"
+																	class="nw-onoffswitch-checkbox"
+																	id="nw-d-display-widget-switch" tabindex="0"
+																	[checked]="desktop_widget_is_visible">
+																<label class="nw-onoffswitch-label"
+																	for="nw-d-display-widget-switch"></label>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+
+											<div class="display-widget-wpr" style="margin-bottom: 12px;">
+												<div class="display-widget-label">
+													<!-- On page change -->
+													{{'OnPageChange' | translate}}
+												</div>
+												<div class="on-page-change-widget-option">
+													<ng-select id="desktop_widget_status" [clearable]="false"
+														[(ngModel)]="desktopWidgetStatus"
+														[items]="widget_status_on_page_change" bindLabel="name"
+														bindValue="id" appendTo="body"
+														(change)="onSelectDesktopWidgetStatus()"
+														[disabled]="!desktop_widget_is_visible">
+													</ng-select>
+												</div>
+											</div>
+
+
+											<!-- ----------------------------------------------------------- -->
+											<!-- @ Widget visibility mobile -->
+											<!-- ----------------------------------------------------------- -->
+											<div class="row" style="margin-left: 0px;">
+												<label
+													class="col-sm-12 control-label widget-settings-control-head-label"
+													style="padding-top:12px; padding-bottom: 2px;">
+													Mobile
+												</label>
+											</div>
+
+											<div class="display-widget-wpr" style="margin-bottom: 12px;">
+												<div class="display-widget-label">
+													<!-- Display Widget -->
+													{{ 'DisplayWidget' | translate}}
+												</div>
+												<div class="display-widget-switch">
+													<div class="on-off-display-widget-switch-and-lbl-wpr">
+														<div class="on-off-display-widget-switch-wpr">
+															<div class="nw-onoffswitch">
+																<input (change)="changeMobileWidgetVisibility($event)"
+																	type="checkbox" name="nw-m-display-widget-switch"
+																	class="nw-onoffswitch-checkbox"
+																	id="nw-m-display-widget-switch" tabindex="0"
+																	[checked]="mobile_widget_is_visible">
+																<label class="nw-onoffswitch-label"
+																	for="nw-m-display-widget-switch"></label>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+
+											<div class="display-widget-wpr">
+												<div class="display-widget-label">
+													<!-- On page change -->
+													{{'OnPageChange' | translate}}
+												</div>
+												<div class="on-page-change-widget-option">
+													<ng-select id="desktop_widget_status" [clearable]="false"
+														[(ngModel)]="mobileWidgetStatus"
+														[items]="widget_status_on_page_change" bindLabel="name"
+														bindValue="id" appendTo="body"
+														(change)="onSelectDesktopWidgetStatus()"
+														[disabled]="!mobile_widget_is_visible">
+													</ng-select>
+												</div>
+											</div>
+										</div>
+
+									</div> <!-- ./	section-offset -->
+								</div>
+
+
 
 								<!-- ---------------------------------------------------------------------------- -->
 								<!-- @ Single Conversation SECTION -->
@@ -1150,7 +1297,7 @@
 											</svg>
 										</div>
 										<h4 class="widget-section-header__title-underlined">
-											Unbranding 
+											Unbranding
 											<span class="from-b-plan-badge" *ngIf="featureIsAvailable === false">
 												{{'AvailableFromThePlan' | translate: t_params }}
 											</span>
@@ -1162,8 +1309,9 @@
 										</i>
 									</div>
 								</button>
-								<div class="widget-section-container" 
-								[ngClass]="{'feature-not-available' : featureIsAvailable === false}" style="height: auto; transition-duration: 0.613s;">
+								<div class="widget-section-container"
+									[ngClass]="{'feature-not-available' : featureIsAvailable === false}"
+									style="height: auto; transition-duration: 0.613s;">
 									<div class="section-offset">
 										<!-- ---------------------------------------------	 -->
 										<!-- Upgrade plan to get Unbranding features -->
@@ -1603,8 +1751,7 @@
 												<div class="wrapper-welcome-title" style="margin-top: 3px;">
 													<span class="active-language-label">{{selectedLangName}}
 													</span>
-													<input class="custom-input" id="welcome-title"
-														maxlength="30"
+													<input class="custom-input" id="welcome-title" maxlength="30"
 														[(ngModel)]="welcomeTitle" (focus)="onFocusWelcomeTitle()"
 														(ngModelChange)="welcomeTitleChange($event)"
 														style="font-weight: 400; margin-bottom:3px"
@@ -1649,8 +1796,7 @@
 													<span class="active-language-label">{{selectedLangName}}
 													</span>
 
-													<input class="custom-input" id="welcome-msg"
-														maxlength="30"
+													<input class="custom-input" id="welcome-msg" maxlength="30"
 														[(ngModel)]="welcomeMsg"
 														(ngModelChange)="welcomeMsgChange($event)"
 														(focus)="onFocusWelcomeMsg()"
