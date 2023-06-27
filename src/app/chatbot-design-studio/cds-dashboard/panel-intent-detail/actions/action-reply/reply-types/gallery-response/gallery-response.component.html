@@ -134,7 +134,7 @@
                                 <div class="button-controls action-button-controls">
 
                                     <div class="buttonsToMove">
-                                        <div class="control-button" (click)="$event.stopPropagation();" *ngIf="!firstBtn">
+                                        <div class="control-button" (click)="$event.stopPropagation();" *ngIf="galleryEl.buttons.length > 0">
                                             <!-- <em class="material-icons">expand_less</em>  onMoveTopButton(i,j) -->
                                             <em class="material-icons">import_export</em>
                                         </div> 
@@ -193,6 +193,7 @@
                     <div class="action--text csd-add-action-btn-wpr-element"> Add card </div>
                 </div>
             </div>
+            <div *ngIf="last" class="cards-scroll-spacer"></div>
         </div>
         
 

@@ -44,12 +44,12 @@ export class GalleryResponseComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log('messsageeeee', this.response)
     this.delayTime = this.response.time/1000;
     this.gallery = [];
     try {
       this.gallery = this.response.attributes.attachment.gallery;
-      this.initElement()
+      this.initElement();
+      this.scrollToLeft()
     } catch (error) {
       // console.log('there are no buttons');
     }
