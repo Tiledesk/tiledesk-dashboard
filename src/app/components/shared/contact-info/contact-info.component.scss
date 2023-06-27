@@ -239,7 +239,6 @@ textarea[type="text"] {
     align-items: center;
 }
 
-
 .lead-tag-content-wpr > svg {
     fill: #8796af;
     margin-right: 12px;
@@ -349,7 +348,7 @@ textarea[type="text"] {
     font-weight: 400;
     font-size: 14px;
     line-height: 18px;
-    letter-spacing: -.01em;
+    letter-spacing: -0.01em;
     padding: 3px 20px 4px 3px;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -399,8 +398,6 @@ textarea[type="text"] {
 .css-1hf9nkf:hover {
     background: rgb(248, 166, 178);
 }
-
-
 
 /* ./ Lead tag 
   /* ************************************ */
@@ -526,4 +523,99 @@ textarea[type="text"] {
     white-space: pre-line !important;
     text-align: center !important;
     line-height: 17px !important;
+}
+
+// --------------------------------------------------
+// ANIMATED ARROW https://codepen.io/cbrst/pen/ebxwLJ
+// --------------------------------------------------
+.arrow-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.arrow--container {
+    font-size: 14px;
+    color: #8796af;
+    font-weight: 400;
+    cursor: pointer;
+}
+
+.arrow--container:hover {
+    font-size: 14px;
+    color: #0f62ff;
+    font-weight: 400;
+    cursor: pointer;
+}
+
+.arrow--container:hover .arrow-wrapper .arrow span {
+    $size: 9px;
+    width: $size * 1.414 !important;
+    right: calc($size / 1.414) * -1;
+}
+
+#arrow_tag_conv .arrow {
+    $size: 6px;
+    $width: 2px;
+
+    cursor: pointer;
+    display: block;
+    width: calc($size / 1.414);
+    height: calc($size / 1.414) * 2;
+    position: relative;
+
+    & span,
+    &:before,
+    &:after {
+       
+        background: #8796af;
+        content: "";
+        display: block;
+        width: $size;
+        height: $width;
+        position: absolute;
+        top: calc(50% - (#{$width} / 2));
+    }
+
+    &:before {
+        transform: rotate(-45deg);
+    }
+    &:after {
+        transform: rotate(45deg);
+    }
+
+    & span {
+        width: 0;
+    }
+    &:hover span {
+        width: $size * 1.414;
+       
+    }
+
+    @each $direction in "left" "right" {
+        &.arrow--#{$direction} {
+            & span,
+            &:before,
+            &:after {
+                #{$direction}: 0;
+                transform-origin: #{$direction} 50%;
+            }
+
+            &:before,
+            &:after {
+                transition: #{$direction} 0.3s 0.05s;
+            }
+
+            & span {
+                transition: width 0.3s, #{$direction} 0.3s 0.05s;
+            }
+
+            &:hover {
+                & span,
+                &:before,
+                &:after {
+                    #{$direction}: calc($size / 1.414) * -1;
+                }
+            }
+        }
+    }
 }
