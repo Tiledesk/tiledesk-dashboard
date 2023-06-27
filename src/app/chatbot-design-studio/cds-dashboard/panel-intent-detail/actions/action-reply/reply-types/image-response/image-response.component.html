@@ -36,8 +36,8 @@
             <div class="response-image-uploader-wrapper">
                 <appdashboard-image-upload
                     class="image-upload"
-                    [metadata] = response.metadata
-                ></appdashboard-image-upload>
+                    [metadata] = response.metadata>
+                </appdashboard-image-upload>
                 <div *ngIf="response.metadata.src" class="control-button delete" (click)="onDeletePathElement()">
                     <em class="material-icons">clear</em>
                 </div>
