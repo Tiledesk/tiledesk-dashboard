@@ -687,7 +687,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
           //   name: this.user.firstname + ' ' + this.user.lastname,
           //   email: this.user.email,
           //   logins: 5,
-
+          //   segmentIdentifyAttributes
           // }
 
         );

@@ -44,7 +44,7 @@ import { isDevMode } from '@angular/core';
 export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, AfterViewInit, OnDestroy {
   PLAN_NAME = PLAN_NAME;
   APP_SUMO_PLAN_NAME = APP_SUMO_PLAN_NAME;
-  prjct_profile_name_for_segment:string;
+  prjct_profile_name_for_segment: string;
   public disabled = false;
   public color: ThemePalette = 'primary';
   public touchUi = false;
@@ -210,6 +210,24 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   upgradePlan: string;
   appSumoProfile: string;
   appSumoProfilefeatureAvailableFromBPlan: string;
+
+  desktop_widget_is_visible: boolean = true;
+  mobile_widget_is_visible: boolean = true;
+
+  widget_status_on_page_change = [
+    { id: 'open', name: 'Always open' },
+    { id: 'close', name: 'Always closed' },
+    { id: 'last', name: 'Last memorized status' },
+  ]
+
+  // mobile_widget_status_on_page_change = [
+  //   { id: 'm_always_open', name: 'Always open' },
+  //   { id: 'm_always_closed', name: 'Always closed' },
+  //   { id: 'm_as_last', name: 'Last memorized status' },
+  // ]
+
+  desktopWidgetStatus: string
+  mobileWidgetStatus: string
 
   en_missing_labels =
     {
@@ -398,6 +416,10 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.company_name = brand['company_name'];
     this.company_site_url = brand['company_site_url'];
     // this.t_params = { 'plan_name': PLAN_NAME.B }
+    this.desktopWidgetStatus = 'last'
+    this.mobileWidgetStatus = 'close'
+    // this.widgetObj['d_on_page_change'] = 'd_as_last';
+    // this.widgetObj['m_always_closed'] = 'm_always_closed';
   }
 
   ngOnInit() {
@@ -1892,6 +1914,57 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) CALLOUT-TIMER: ', this.calloutTimerSecondSelected, ' - IS DISABLED ', this.CALLOUT_IS_DISABLED);
 
         }
+
+        // ------------------------------------------------------------------------
+        // @ Display widget desktop and mobile
+        // WIDGET DEFINED
+        // ------------------------------------------------------------------------
+        // console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) project.widget.d_display 1: ', project.widget.d_display);
+        if (project.widget.d_display === false) {
+          // console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) project.widget.d_display 2: ', project.widget.d_display);
+          this.desktop_widget_is_visible = false
+          // console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) desktop_widget_is_visible : ', this.desktop_widget_is_visible);
+        }
+
+        // console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) project.widget.m_display 1 : ', project.widget.m_display);
+        if (project.widget.m_display === false) {
+          // console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) project.widget.m_display 2 : ', project.widget.m_display);
+          this.mobile_widget_is_visible = false
+          // console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) mobile_widget_is_visible : ', this.mobile_widget_is_visible);
+        }
+
+        // ------------------------------------------------------------------------
+        // @ Widget desktop status (open / closed)
+        // WIDGET DEFINED
+        // ------------------------------------------------------------------------
+
+        if (project.widget.d_on_page_change && project.widget.d_on_page_change === 'open') {
+          this.desktopWidgetStatus = 'open'
+        }
+
+        if (project.widget.d_on_page_change && project.widget.d_on_page_change === 'close') {
+          this.desktopWidgetStatus = 'close'
+        }
+
+        if (project.widget.d_on_page_change && project.widget.d_on_page_change === 'last') {
+          this.desktopWidgetStatus = 'last'
+        }
+
+        // ------------------------------------------------------------------------
+        // @ Widget mobile status (open / closed)
+        // WIDGET DEFINED
+        // ------------------------------------------------------------------------
+        if (project.widget.m_on_page_change && project.widget.m_on_page_change === 'open') {
+          this.mobileWidgetStatus = 'open'
+        }
+
+        if (project.widget.m_on_page_change && project.widget.m_on_page_change === 'close') {
+          this.mobileWidgetStatus = 'close'
+        }
+
+        if (project.widget.m_on_page_change && project.widget.m_on_page_change === 'last') {
+          this.mobileWidgetStatus = 'last'
+        }
         // ------------------------------------------------------------------------
         // @ poweredBy
         // WIDGET AND POWERED-BY DEFINED
@@ -2939,6 +3012,53 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       this.widgetService.updateWidgetProject(this.widgetObj)
 
     }
+  }
+
+  // --------------------------------------------------------------------------------------
+  //  @ Widget visibility
+  // --------------------------------------------------------------------------------------
+  changeDesktopWidgetVisibility(event) {
+    // console.log('[WIDGET-SET-UP] Widget visible / hidden on desktop - event', event.target.checked)
+    this.desktop_widget_is_visible = event.target.checked;
+
+    if (this.desktop_widget_is_visible === false) {
+
+      this.widgetObj['d_display'] = this.desktop_widget_is_visible;
+      delete this.widgetObj['d_on_page_change'];
+      this.widgetService.updateWidgetProject(this.widgetObj)
+
+    } else if (this.desktop_widget_is_visible === true) {
+
+      delete this.widgetObj['d_display'];
+      this.widgetService.updateWidgetProject(this.widgetObj)
+
+    }
+  }
+
+  changeMobileWidgetVisibility(event) {
+    // console.log('[WIDGET-SET-UP] Widget visible / hidden on mobile - event', event.target.checked)
+    this.mobile_widget_is_visible = event.target.checked
+
+    if (this.mobile_widget_is_visible === false) {
+      this.widgetObj['m_display'] = this.mobile_widget_is_visible;
+      delete this.widgetObj['m_on_page_change']
+      this.widgetService.updateWidgetProject(this.widgetObj)
+    } else if (this.mobile_widget_is_visible === true) {
+      delete this.widgetObj['m_display'];
+      this.widgetService.updateWidgetProject(this.widgetObj)
+    }
+  }
+
+  onSelectDesktopWidgetStatus() {
+    // console.log('[WIDGET-SET-UP] ON SELECT DESKTOP WIDGET STATUS ', this.desktopWidgetStatus)
+    this.widgetObj['d_on_page_change'] = this.desktopWidgetStatus;
+    this.widgetService.updateWidgetProject(this.widgetObj)
+  }
+
+  onSelectMobilepWidgetStatus() {
+    // console.log('[WIDGET-SET-UP] ON SELECT MOBILE WIDGET STATUS ', this.mobileWidgetStatus)
+    this.widgetObj['m_on_page_change'] = this.mobileWidgetStatus;
+    this.widgetService.updateWidgetProject(this.widgetObj)
   }
 
 

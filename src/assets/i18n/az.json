@@ -2321,6 +2321,9 @@
     "IPAddress":"IP Ünvan",
     "NoTAGAssignedToThisContactYet":"Bu kontakta hələ heç bir TAG təyin edilməyib",
     "NoTAGAssignedYet":"Hələ heç bir TAG təyin edilməyib",
+    "WidgetVisibility": "Vidcetin Görünmə qabiliyyəti",
+    "DisplayWidget": "Vidceti göstərin",
+    "OnPageChange": "Səhifə dəyişdikdə", 
     "AddIntentPage": {
         "AddForm": "Forma vermək",
         "SelectTemplateForm": "Təklif olunanlar arasında bir növ forma seçin və ya yenisini yaradın",

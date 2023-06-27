@@ -2321,6 +2321,9 @@
     "IPAddress":"IP мекенжайы",
     "NoTAGAssignedToThisContactYet":"Бұл контактіге әлі бірде-бір TAG тағайындалмаған",
     "NoTAGAssignedYet":"Әлі TAG тағайындалмаған",
+    "WidgetVisibility": "Виджеттің көрінуі",
+    "DisplayWidget": "Виджет көрсету",
+    "OnPageChange": "Бет өзгерген кезде", 
     "AddIntentPage": {
         "AddForm": "Пішін қосу",
         "SelectTemplateForm": "Ұсынылғандар арасында пішін түрін таңдаңыз немесе жаңасын жасаңыз",
