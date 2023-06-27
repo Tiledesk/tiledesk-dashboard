@@ -68,7 +68,8 @@ export enum TYPE_MESSAGE {
     TEXT = 'text',
     IMAGE = 'image',
     FRAME = 'frame',
-    GALLERY = 'gallery'
+    GALLERY = 'gallery',
+    REDIRECT = 'redirect'
 }
 
 export enum TYPE_ACTION {
@@ -106,6 +107,7 @@ export enum TYPE_OPERATOR {
     lessThan = "lessThan",
     lessThanOrEqual = "lessThanOrEqual",
     startsWith = "startsWith",
+    notStartsWith = 'notStartsWith',
     startsWithIgnoreCase = "startsWithIgnoreCase",
     contains = "contains",
     containsIgnoreCase = "containsIgnoreCase",
@@ -216,6 +218,7 @@ export const OPERATORS_LIST: { [key: string]: { name: string, type: TYPE_OPERATO
     "lessThan": { name: "less Than", type: TYPE_OPERATOR.lessThan, src: "assets/cds/images/operators/less.svg" },
     "lessThanOrEqual": { name: "less Than Or Equal", type: TYPE_OPERATOR.lessThanOrEqual, src: "assets/cds/images/operators/lessEqual.svg" },
     "startsWith": { name: "starts With", type: TYPE_OPERATOR.startsWith },
+    "notStartsWith": { name: "not starts With", type: TYPE_OPERATOR.notStartsWith },
     "startsWithIgnoreCase": { name: "starts With Ignore Case", type: TYPE_OPERATOR.startsWithIgnoreCase },
     "endsWith": { name: "ends With", type: TYPE_OPERATOR.endsWith },
     "contains": { name: "contains", type: TYPE_OPERATOR.contains },

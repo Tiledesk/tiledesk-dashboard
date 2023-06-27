@@ -30,7 +30,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatTabsModule } from '@angular/material/tabs';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
-
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
 
 // import { SharedModule } from '../shared/shared.module';
 import { CdsDashboardComponent } from './cds-dashboard/cds-dashboard.component';
@@ -117,6 +117,7 @@ import { CDSDetailImportExportComponent } from './cds-chatbot-details/import-exp
 import { WsChatbotService } from 'app/services/websocket/ws-chatbot.service';
 import { ChangeBotLangModalComponent } from 'app/components/modals/change-bot-lang/change-bot-lang.component';
 import { GalleryResponseComponent } from './cds-dashboard/panel-intent-detail/actions/action-reply/reply-types/gallery-response/gallery-response.component';
+import { RedirectResponseComponent } from './cds-dashboard/panel-intent-detail/actions/action-reply/reply-types/redirect-response/redirect-response.component';
 
 
 
@@ -135,7 +136,8 @@ import { GalleryResponseComponent } from './cds-dashboard/panel-intent-detail/ac
     FrameResponseComponent,
     GalleryResponseComponent,
     ImageUploadComponent,
-    
+    RedirectResponseComponent,
+
     PanelIntentListComponent,
     PanelIntentComponent,
     PanelActionsComponent,
@@ -219,6 +221,7 @@ import { GalleryResponseComponent } from './cds-dashboard/panel-intent-detail/ac
     MatGridListModule,
     MatAutocompleteModule,
     MatSlideToggleModule,
+    MatButtonToggleModule,
     MatListModule,
     MatButtonModule,
     MatIconModule,

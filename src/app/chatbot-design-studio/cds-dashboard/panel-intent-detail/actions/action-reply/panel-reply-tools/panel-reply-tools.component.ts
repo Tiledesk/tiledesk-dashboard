@@ -102,6 +102,19 @@ export class PanelReplyToolsComponent implements OnInit {
             },
           } 
           break;
+      case TYPE_MESSAGE.REDIRECT:
+            newElement = {
+              type: TYPE_COMMAND.MESSAGE,
+              message: {
+                text: '',
+                type: TYPE_MESSAGE.REDIRECT,
+                metadata: {
+                  src : '',
+                  target: TYPE_URL.BLANK
+                }
+              },
+            } 
+            break;
       default:
         break;
     }

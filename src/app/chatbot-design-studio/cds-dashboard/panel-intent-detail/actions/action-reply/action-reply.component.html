@@ -42,7 +42,6 @@
                         (moveUpResponse) = onMoveUpResponse($event)
                         (moveDownResponse) = onMoveDownResponse($event)
                         (deleteResponse) = onDeleteResponse($event)
-                        (openButtonPanel) = onOpenButtonPanel($event)
                         (changeDelayTimeReplyElement) = onChangeDelayTimeReplyElement()
                         (changeReplyElement) = onChangeReplyElement()>
                     </appdashboard-text-response>
@@ -142,6 +141,38 @@
                         (changeDelayTimeReplyElement) = onChangeDelayTimeReplyElement()
                         (changeReplyElement) = onChangeReplyElement()>
                     </appdashboard-gallery-response>
+                </div>
+            </div>
+
+
+            <div *ngIf="message.type === typeMessage.REDIRECT">
+                <div class="custom-placeholder" *cdkDragPlaceholder>
+                    <appdashboard-redirect-response
+                        [index] = i
+                        [typeAction] = typeAction
+                        [response] = message>
+                    </appdashboard-redirect-response>
+                </div>
+                
+                <div class="response">
+                    <div *ngIf="typeAction === typeActions.REPLY" 
+                        class="response-drop" 
+                        [ngClass]="{'grabbing':textGrabbing}"
+                        (mousedown)="mouseDown()" 
+                        (mouseup)="mouseUp()" 
+                        cdkDragHandle>
+                    </div> 
+                    <appdashboard-redirect-response
+                        [index] = i
+                        [typeAction] = typeAction
+                        [response] = message
+                        onChangeText
+                        (moveUpResponse) = onMoveUpResponse($event)
+                        (moveDownResponse) = onMoveDownResponse($event)
+                        (deleteResponse) = onDeleteResponse($event)
+                        (changeDelayTimeReplyElement) = onChangeDelayTimeReplyElement()
+                        (changeReplyElement) = onChangeReplyElement()>
+                    </appdashboard-redirect-response>
                 </div>
             </div>
     
