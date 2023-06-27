@@ -1198,6 +1198,8 @@
         "NoAgent": "Nenhum agente"
     },
     "Tags": {
+        "LeadTags": "Tags do contato",
+        "AddTagToContact": "Adicionar etiqueta ao contato",
         "Tags": "Etiquetas",
         "Tag": "Etiqueta",
         "TagName": "Nome da etiqueta",

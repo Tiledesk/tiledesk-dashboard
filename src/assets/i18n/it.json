@@ -1200,6 +1200,8 @@
         "NoAgent": "Nessun agente"
     },
     "Tags": {
+        "LeadTags": "Tag del contatto",
+        "AddTagToContact": "Aggiungi Tag al contatto",
         "Tags": "Tag",
         "Tag": "Tag",
         "TagName": "Nome tag",

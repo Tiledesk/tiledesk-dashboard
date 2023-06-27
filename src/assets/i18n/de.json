@@ -1199,6 +1199,8 @@
 		"NoAgent": "Kein Agent"
 	},
 	"Tags": {
+		"LeadTags": "Kontakt-Tags",
+		"AddTagToContact": "Tag zum Kontakt hinzufügen",
 		"Tags": "Tags",
 		"Tag": "Tag",
 		"TagName": "Tag-Name",

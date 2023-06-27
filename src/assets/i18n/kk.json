@@ -1198,6 +1198,8 @@
         "NoAgent": "Агент жоқ"
     },
     "Tags": {
+        "LeadTags": "контактінің TAG",
+        "AddTagToContact": "Байланысқа тег қосыңыз",
         "Tags": "Тегтер",
         "Tag": "Тег",
         "TagName": "Тег аты",
