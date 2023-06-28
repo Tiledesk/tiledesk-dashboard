@@ -1330,6 +1330,7 @@ export class AuthService {
   public siginUpWithGoogle() {
   
     const url = "https://eu.rtmv3.tiledesk.com/api/auth/google?redirect_url=%23%2Fcreate-project-gs"
+                
     // console.log('siginUpWithGoogle ', url)
     window.open(url, '_self');
 
