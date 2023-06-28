@@ -338,6 +338,9 @@ export class Attachment {
 }
 
 export interface Button {
+    uid: string,
+    idConnector: string,
+    isConnected: boolean,
     type: string,
     value: string,
     link?: string,

@@ -1,4 +1,4 @@
-<div *ngIf="typeAction === typeActions.REPLY" class="extensions-response">
+<div class="extensions-response">
     <div class="delay-wrapper" [ngStyle]="{width: canShowFilter? 'auto': '100%'}">
         <appdashboard-delay-slider
             [delayTime]="delayTime"
@@ -20,35 +20,18 @@
 <div class="text-editor-wrapper">
 
     <div class="text-editor">
-        
+
         <div class="response-controls">
-            <div class="control-button delete" (click)="onDeleteResponse()">
+            <div class="control-button delete" (click)="onDeleteActionReply()">
                 <em class="material-icons">delete</em>
             </div>
-            <div *ngIf="typeAction === typeActions.REPLY" class="control-button" (click)="onMoveUpResponse()">
+            <!-- <div *ngIf="typeAction === typeActions.REPLY" class="control-button" (click)="onMoveUpResponse()">
                 <em class="material-icons">expand_less</em>
             </div> 
             <div *ngIf="typeAction === typeActions.REPLY" class="control-button" (click)="onMoveDownResponse()">
                 <em class="material-icons">expand_more</em>
-            </div>
+            </div> -->
         </div>
-
-        <!-- <appdashboard-element-textarea
-            [limitCharsText]="limitCharsText"
-            [textMessage]="response.text"
-            (changeTextarea)="onChangeTextarea($event)"
-        ></appdashboard-element-textarea> -->
-        
-        <!-- <text-editable-div 
-            class = "text-editable-div"
-            [emoijPikerBtn]="true" 
-            [setAttributeBtn]="true" 
-            [textLimitBtn]="true" 
-            
-            [text]="response.text" 
-            [minHeightContent]="125"
-            (textChanged)="onChangeTextarea($event)"> 
-        </text-editable-div> -->
 
         <cds-textarea 
             class="text-editable-div"
@@ -59,44 +42,32 @@
             (changeTextarea)="onChangeTextarea($event)">
         </cds-textarea>
              
-        <div *ngIf="typeAction === typeActions.REPLY" class="text-editor-drop">
+        <!-- <div *ngIf="typeAction === typeActions.REPLY" class="text-editor-drop">
             <em class="material-icons">drag_indicator</em>
-        </div>
+        </div> -->
 
     </div>
-
-    <!-- <div class="editor-utils">
-        <div class="num-chars" [ngClass]="{'error' : alertCharsText}">{{leftCharsText}}</div>
-        <div class="text-editor-insert-attribute">
-            <em class="material-icons">code</em>
-        </div> 
-        <div class="emoji-picker">
-            <em class="material-icons">insert_emoticon</em>
-        </div> 
-    </div> -->
 
 </div> 
 
 
 
-<div class="buttons-response button-replies">
+<div class="buttons-response button-replies" cdkDropListOrientation="vertical" cdkDropList (cdkDropListDropped)="dropButtons($event)" >
     
-    <div *ngFor="let button of buttons; let i = index;" class="tpl-drop-down single-btn-reply"> 
+    <div *ngFor="let button of buttons; let i = index;" class="content-botton-reply" cdkDragBoundary=".button-replies" cdkDrag> 
+        <!-- tpl-drop-down2 single-btn-reply2 -->
+        <div class="button-reply custom-placeholder" *cdkDragPlaceholder>
+            <!-- <div class="button-reply-text">
+                {{button.value}}
+            </div> -->
+        </div>
 
-        <div class="button-reply">
+        <div class="button-reply" cdkDragHandle>
             <div class="button-reply-text single-btn-reply"
                 (click)="onOpenButtonPanel(button)">
                 {{button.value}}
             </div>
-
-            <cds-connector
-                class = "connector"
-                [idAction] = 'button.idActionConnector'
-                [isConnected] = false>
-            </cds-connector>
-
             <div class="button-controls">
-                
                 <!-- <div class="buttonsToMove">
                     <div class="control-button" (click)="onMoveLeftButton(i)">
                         <em class="material-icons">chevron_left</em>
@@ -105,17 +76,18 @@
                         <em class="material-icons">chevron_right</em>
                     </div>
                 </div> -->
-
                 <div class="control-button delete" (click)="onDeleteButton(i)">
                     <em class="material-icons">delete</em>
                 </div>
-
-
-                
-
-           </div>
+            </div>
         </div>
-        
+
+        <cds-connector
+            class = "connector"
+            cdkDragDisabled
+            [idConnector] = "button.idConnector"
+            [isConnected] = "button.isConnected">
+        </cds-connector>
 
     </div>
 

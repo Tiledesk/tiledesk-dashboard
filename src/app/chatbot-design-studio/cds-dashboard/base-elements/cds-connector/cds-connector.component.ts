@@ -6,7 +6,7 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./cds-connector.component.scss']
 })
 export class CdsConnectorComponent implements OnInit {
-  @Input() idAction: string;
+  @Input() idConnector: string;
   @Input() isConnected: boolean;
 
   constructor() { }

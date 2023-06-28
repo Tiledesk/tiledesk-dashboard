@@ -41,7 +41,7 @@ import { DragDropService } from './services/drag-drop.service';
 import { CdsDashboardComponent } from './cds-dashboard/cds-dashboard.component';
 import { PanelReplyToolsComponent } from './cds-dashboard/panel-intent-detail/actions/action-reply/panel-reply-tools/panel-reply-tools.component';
 import { ActionReplyComponent } from './cds-dashboard/panel-intent-detail/actions/action-reply/action-reply.component';
-import { TextResponseComponent } from './cds-dashboard/base-elements/text-response/text-response.component';
+import { CdsActionReplyTextComponent } from './cds-dashboard/actions/cds-action-reply/elements/cds-action-reply-text/cds-action-reply-text.component';
 import { DelaySliderComponent } from './cds-dashboard/base-elements/delay-slider/delay-slider.component';
 // import { ButtonConfigurationPanelComponent } from './dashboard/button-configuration-panel/button-configuration-panel.component';
 import { ImageResponseComponent } from './cds-dashboard/panel-intent-detail/actions/action-reply/reply-types/image-response/image-response.component';
@@ -123,13 +123,14 @@ import { CdsActionIntentComponent } from './cds-dashboard/actions/cds-action-int
 import { CdsFloatingMenuComponent } from './cds-dashboard/cds-floating-menu/cds-floating-menu.component';
 import { CdsActionReplyComponent } from './cds-dashboard/actions/cds-action-reply/cds-action-reply.component';
 import { CdsConnectorComponent } from './cds-dashboard/base-elements/cds-connector/cds-connector.component';
+import { CdsActionReplyToolsComponent } from './cds-dashboard/actions/cds-action-reply/elements/cds-action-reply-tools/cds-action-reply-tools.component';
 
 @NgModule({
   declarations: [
     CdsDashboardComponent,
     PanelReplyToolsComponent,
     ActionReplyComponent,
-    TextResponseComponent,
+    CdsActionReplyTextComponent,
     DelaySliderComponent,
     ImageResponseComponent,
     FrameResponseComponent,
@@ -201,7 +202,8 @@ import { CdsConnectorComponent } from './cds-dashboard/base-elements/cds-connect
     CdsActionIntentComponent,
     CdsFloatingMenuComponent,
     CdsActionReplyComponent,
-    CdsConnectorComponent
+    CdsConnectorComponent,
+    CdsActionReplyToolsComponent
   ],
   imports: [
     A11yModule,

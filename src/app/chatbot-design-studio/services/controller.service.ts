@@ -18,15 +18,12 @@ export class ControllerService {
   constructor() { }
 
 
-
   public openButtonPanel(button){
-    // this.isOpenButtonPanel = isOpenButtonPanel;
     console.log('openButtonPanel:: ', button);
     this.buttonSource.next(button);
   }
 
   public closeButtonPanel(){
-    // this.isOpenButtonPanel = isOpenButtonPanel;
     console.log('closeButtonPanel:: ');
     this.buttonSource.next();
   }

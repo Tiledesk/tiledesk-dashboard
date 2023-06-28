@@ -315,6 +315,9 @@ export class ActionReplyComponent implements OnInit {
 
   private createNewButton() {
     this.buttonSelected = {
+      'uid': '',
+      'idConnector': '',
+      'isConnected': false,
       'value': 'Button',
       'type': TYPE_BUTTON.TEXT,
       'target': TYPE_URL.BLANK,

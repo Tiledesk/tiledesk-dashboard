@@ -17,7 +17,7 @@
 
 .filter-row{
     display: grid;
-    grid-template-columns: minmax(0px, 1fr) 100px;
+    // grid-template-columns: minmax(0px, 1fr) 100px;
     grid-column-gap: 10px;
     grid-row-gap: 10px;
 }

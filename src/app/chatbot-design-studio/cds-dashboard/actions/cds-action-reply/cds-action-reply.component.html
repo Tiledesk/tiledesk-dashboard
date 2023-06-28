@@ -1,6 +1,6 @@
 <div class="box-up">
 
-    <div class="action_welcome">
+    <!-- <div class="action_welcome">
         <div class="section">
             <div *ngIf="showTip" class="action-description">
                 <div *ngIf="element?.description"
@@ -15,7 +15,7 @@
                     (input)="onChangeText($event.target.value)"/>
             </div>
         </div>
-    </div>
+    </div> -->
     
     <!-- 
     <sat-popover #descriptionTooltip id="descriptionTooltip" 
@@ -38,17 +38,10 @@
     </appdashboard-panel-reply-tools> 
     -->
 
-    <div data-adding-allowed="true" class="add-responses">
-        <div data-add-response-type="Type.TEXT" class="add-response" (click)="addElement(TypeMessage.TEXT)" ncdkDrag>
-            <i class="material-icons">text_fields</i><span>{{'Text' | translate}}</span>
-        </div>
-        <div data-add-response-type="Type.IMAGE" class="add-response" (click)="addElement(TypeMessage.IMAGE)" cdkDrag>
-            <i class="material-icons">image</i><span>{{'Image' | translate}}</span>
-        </div>
-        <div data-add-response-type="Type.VIDEO" class="add-response" (click)="addElement(TypeMessage.FRAME)" cdkDrag>
-            <i class="material-icons">play_circle</i><span>{{'Video' | translate}}</span>
-        </div>
-    </div>
+    <cds-action-reply-tools
+    (addNewActionReply) = onAddNewActionReply($event)
+    ></cds-action-reply-tools>
+    
 
 </div>
 
@@ -63,31 +56,28 @@
             
             <div *ngIf="message.type === typeMessage.TEXT">
 
-                <div class="response">
-                    <div *ngIf="typeAction === typeActions.REPLY"
-                        class="response-drop" 
-                        [ngClass]="{'grabbing':textGrabbing}"
-                        (mousedown)="mouseDown()" 
-                        (mouseup)="mouseUp()" 
-                        cdkDragHandle>
-                    </div> 
-                    <appdashboard-text-response
+                <!-- <div class="response"> -->
+
+                    <cds-action-reply-text
                         [index] = i
-                        [idAction] = idAction
-                        [typeAction] = typeAction
-                        [response] = message
-                        (moveUpResponse) = onMoveUpResponse($event)
-                        (moveDownResponse) = onMoveDownResponse($event)
-                        (deleteResponse) = onDeleteResponse($event)
+                        [idAction] = "idAction"
+                        [typeAction] = "typeAction"
+                        [response] = "message"
                         (openButtonPanel) = onOpenButtonPanel($event)
                         (createNewButton) = onCreateNewButton($event)
-                        (changeDelayTimeReplyElement) = onChangeDelayTimeReplyElement()
-                        (changeReplyElement) = onChangeReplyElement()>
-                    </appdashboard-text-response>
-                </div>
+                        (deleteButton) = onDeleteButton()
+                        (deleteActionReply) = onDeleteActionReply($event)
+                        (changeActionReply) = onChangeActionReply()>
+                    </cds-action-reply-text>
+                    <!-- 
+                        (changeDelayTimeReplyAction) = onChangeDelayTimeReplyAction() 
+                        (moveUpResponse) = onMoveUpResponse($event)
+                        (moveDownResponse) = onMoveDownResponse($event)
+                    -->
+                <!-- </div> -->
 
             </div>
         </div>
-
     </div>
+
 </div>

@@ -121,8 +121,8 @@ export class CdsDashboardComponent implements OnInit {
   translateparamBotName: any;
 
   
-  isOpenPanelDetail: boolean = false;
-  elementInDetailPanel: any;
+  isOpenPanelButtonConfig: boolean = false;
+  buttonSelected: any;
 
 
   isOpenPanelActions: boolean = true;
@@ -140,6 +140,8 @@ export class CdsDashboardComponent implements OnInit {
   isOpenFloatMenu: boolean = false;
   positionFloatMenu: any = {'x':0, 'y':0};
   connectorDraft: any = {};
+
+  isSaving: boolean = false;
 
   // isBetaUrl: boolean;
   constructor(
@@ -169,18 +171,23 @@ export class CdsDashboardComponent implements OnInit {
       this.listOfIntents = value;
       this.intentService.setListOfActions(this.listOfIntents);
       this.listOfActions = this.intentService.getListOfActions();
+
+      setTimeout(() => {
+        this.onSelectIntent(this.listOfIntents[0]);
+      }, 500);
+
+      
     });
 
     this.controllerService.isOpenButtonPanel$.subscribe((button: Button) => {
-      this.elementInDetailPanel = button;
+      this.buttonSelected = button;
       if(button){
-        this.isOpenPanelDetail = true;
+        this.isOpenPanelButtonConfig = true;
       } else {
-        this.isOpenPanelDetail = false;
+        this.isOpenPanelButtonConfig = false;
       }
+      console.log('isOpenButtonPanel ', this.isOpenPanelButtonConfig);
     });
-
-    
     
   } 
 
@@ -269,6 +276,7 @@ export class CdsDashboardComponent implements OnInit {
         this.dashboardAttributes['connectors'] = this.connectors;
         console.log("connector-created:", this.dashboardAttributes);
         this.intentService.setDashboardAttributes(this.dashboardAttributes);
+        this.intentService.onChangedConnector(this.connector);
       },
       true
     );
@@ -279,17 +287,22 @@ export class CdsDashboardComponent implements OnInit {
         console.log("connector-deleted:", e);
         this.connector = e.detail.connector;
         this.connector['deleted'] = true;
-        console.log("connector-deleted:", this.connector);
-        delete this.connectors[this.connector.id];
+        this.connector['toId'] = ''; // serve per farlo scattare sempre!!!
+        console.log("connector-deleted:", this.connector.id);
+        // delete this.connectors[this.connector.id];
         console.log("connector-deleted:", this.connectors);
         this.dashboardAttributes['connectors'] = this.connectors;
         console.log("connector-deleted:", this.dashboardAttributes);
         this.intentService.setDashboardAttributes(this.dashboardAttributes);
+        this.intentService.onChangedConnector(this.connector);
       },
       true
     );
     
 
+
+
+   
   }
 
 
@@ -637,16 +650,7 @@ export class CdsDashboardComponent implements OnInit {
   /** START CUSTOM FUNCTIONS 
   /** ************************* **/
 
-  
 
-
-  // onXXX(){
-  //   const editIntent = await this.intentService.editIntent(this.intentSelected);
-  //   console.log('editIntent:', editIntent);
-  //   if(editIntent){
-
-  //   }
-  // }
 
 
 
@@ -793,75 +797,91 @@ export class CdsDashboardComponent implements OnInit {
   // }
 
   /** EDIT INTENT  */
-  private editIntent() {
-    console.log('******** editIntent ******** ', this.intentSelected);
-    this.startUpdatedIntent.next(true)
-    this.logger.log('[CDS DSHBRD] editIntent intentSelected', this.intentSelected);
-    this.showSpinner = true;
-    let id = this.intentSelected.id;
-    let attributes = this.intentSelected.attributes;
-    let questionIntentSelected = this.intentSelected.question;
-    let answerIntentSelected = this.intentSelected.answer;
-    let displayNameIntentSelected = this.intentSelected.intent_display_name;
-    let formIntentSelected = {}
-    if (this.intentSelected.form !== null) {
-      formIntentSelected = this.intentSelected.form
+  private async updateIntent(){
+    if(this.isSaving === false){
+      setTimeout(async () => {
+        this.isSaving = true;
+        console.log('******** updateIntent ******** ', this.intentSelected);
+        const response = await this.intentService.updateIntent(this.intentSelected);
+        if(response){
+          this.isSaving = false;
+          console.log('updateIntent: OK', this.intentSelected);
+        }
+      }, 500);
     }
-    this.logger.log('[CDS DSHBRD] editIntent formIntentSelected', formIntentSelected)
-    let actionsIntentSelected = this.intentSelected.actions;
-    let webhookEnabledIntentSelected = this.intentSelected.webhook_enabled;
-
-    // const pendingClassName = 'loading-btn--pending';
-    // const successClassName = 'loading-btn--success';
-    // const failClassName = 'loading-btn--fail';
-    const stateDuration = 200;
-    // const button = this.el.nativeElement.querySelector('#cds-save-intent-btn')
-
-    //PENDING STATE
-    // button.classList.add(pendingClassName)
-    const that = this
-
-    this.faqService.updateIntent(
-      id,
-      attributes,
-      questionIntentSelected,
-      answerIntentSelected,
-      displayNameIntentSelected,
-      formIntentSelected,
-      actionsIntentSelected,
-      webhookEnabledIntentSelected
-    ).subscribe((upadatedIntent) => {
-      this.showSpinner = false;
-      this.logger.log('[CDS DSHBRD] editIntent - RES upadatedIntent', upadatedIntent);
-      if (upadatedIntent) {
-        //SUCCESS STATE
-        setTimeout(() => {
-          // button.classList.remove(pendingClassName);
-          // button.classList.add(successClassName);
-          window.setTimeout(() => {
-            // button.classList.remove(successClassName)
-            that.upadatedIntent.next(upadatedIntent);
-          }, stateDuration);
-        }, stateDuration);
-      }
-    }, (error) => {
-      this.showSpinner = false;
-      this.logger.error('[CDS DSHBRD] UPDATE FAQ - ERROR ', error);
-      // =========== NOTIFY ERROR ==========
-      //FAIL STATE
-      setTimeout(() => {
-        // button.classList.remove(pendingClassName);
-        // button.classList.add(failClassName);
-        // window.setTimeout(() => button.classList.remove(failClassName), stateDuration);
-      }, stateDuration);
-
-    }, () => {
-      this.showSpinner = false;
-      this.logger.log('[CDS DSHBRD] UPDATE FAQ * COMPLETE *');
-      // =========== NOTIFY SUCCESS===========
-      // this.notify.showWidgetStyleUpdateNotification(this.editFaqSuccessNoticationMsg, 2, 'done');
-    });
+    
   }
+
+
+  // private editIntent() {
+  //   console.log('******** editIntent ******** ', this.intentSelected);
+  //   this.startUpdatedIntent.next(true)
+  //   this.logger.log('[CDS DSHBRD] editIntent intentSelected', this.intentSelected);
+  //   this.showSpinner = true;
+  //   let id = this.intentSelected.id;
+  //   let attributes = this.intentSelected.attributes;
+  //   let questionIntentSelected = this.intentSelected.question;
+  //   let answerIntentSelected = this.intentSelected.answer;
+  //   let displayNameIntentSelected = this.intentSelected.intent_display_name;
+  //   let formIntentSelected = {}
+  //   if (this.intentSelected.form !== null) {
+  //     formIntentSelected = this.intentSelected.form
+  //   }
+  //   this.logger.log('[CDS DSHBRD] editIntent formIntentSelected', formIntentSelected)
+  //   let actionsIntentSelected = this.intentSelected.actions;
+  //   let webhookEnabledIntentSelected = this.intentSelected.webhook_enabled;
+
+  //   // const pendingClassName = 'loading-btn--pending';
+  //   // const successClassName = 'loading-btn--success';
+  //   // const failClassName = 'loading-btn--fail';
+  //   const stateDuration = 200;
+  //   // const button = this.el.nativeElement.querySelector('#cds-save-intent-btn')
+
+  //   //PENDING STATE
+  //   // button.classList.add(pendingClassName)
+  //   const that = this
+
+  //   this.faqService.updateIntent(
+  //     id,
+  //     attributes,
+  //     questionIntentSelected,
+  //     answerIntentSelected,
+  //     displayNameIntentSelected,
+  //     formIntentSelected,
+  //     actionsIntentSelected,
+  //     webhookEnabledIntentSelected
+  //   ).subscribe((upadatedIntent) => {
+  //     this.showSpinner = false;
+  //     this.logger.log('[CDS DSHBRD] editIntent - RES upadatedIntent', upadatedIntent);
+  //     if (upadatedIntent) {
+  //       //SUCCESS STATE
+  //       setTimeout(() => {
+  //         // button.classList.remove(pendingClassName);
+  //         // button.classList.add(successClassName);
+  //         window.setTimeout(() => {
+  //           // button.classList.remove(successClassName)
+  //           that.upadatedIntent.next(upadatedIntent);
+  //         }, stateDuration);
+  //       }, stateDuration);
+  //     }
+  //   }, (error) => {
+  //     this.showSpinner = false;
+  //     this.logger.error('[CDS DSHBRD] UPDATE FAQ - ERROR ', error);
+  //     // =========== NOTIFY ERROR ==========
+  //     //FAIL STATE
+  //     setTimeout(() => {
+  //       // button.classList.remove(pendingClassName);
+  //       // button.classList.add(failClassName);
+  //       // window.setTimeout(() => button.classList.remove(failClassName), stateDuration);
+  //     }, stateDuration);
+
+  //   }, () => {
+  //     this.showSpinner = false;
+  //     this.logger.log('[CDS DSHBRD] UPDATE FAQ * COMPLETE *');
+  //     // =========== NOTIFY SUCCESS===========
+  //     // this.notify.showWidgetStyleUpdateNotification(this.editFaqSuccessNoticationMsg, 2, 'done');
+  //   });
+  // }
 
 
 
@@ -1112,7 +1132,8 @@ export class CdsDashboardComponent implements OnInit {
     this.elementIntentSelected = {};
     this.elementIntentSelected['type'] = ''
     this.elementIntentSelected['element'] = null
-    this.editIntent();
+    // this.editIntent();
+    this.updateIntent();
   }
 
 
@@ -1426,7 +1447,8 @@ export class CdsDashboardComponent implements OnInit {
     if (this.CREATE_VIEW && !intentNameAlreadyCreated) {
       // this.creatIntent(this.intentSelected);
     } else {
-      this.editIntent();
+      // this.editIntent();
+      this.updateIntent();
     }
   }
 
@@ -1571,8 +1593,16 @@ export class CdsDashboardComponent implements OnInit {
   }
 
 
-  onSaveElement(event){
-
+  onSaveButton(button:Button){
+    
+    const arrayId = button.idConnector.split("/");
+    const idConnector = arrayId[0]?arrayId[0]:null;
+    console.log('onSaveButton: ', idConnector, button);
+    if(idConnector){
+      this.intentSelected = this.listOfIntents.find(obj => obj.id === idConnector);
+      console.log('onSaveButton: ', this.intentSelected);
+      this.updateIntent();
+    }
   }
   
 

@@ -3,8 +3,11 @@ import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angu
 import { Button } from 'app/models/intent-model';
 
 
-import { TYPE_BUTTON, TYPE_URL } from '../../utils';
+import { TYPE_BUTTON, TYPE_URL, BUTTON_TYPES, URL_TYPES } from '../../utils';
 import { ControllerService } from 'app/chatbot-design-studio/services/controller.service';
+import { IntentService } from 'app/chatbot-design-studio/services/intent.service';
+
+
 
 @Component({
   selector: 'cds-panel-button-configuration',
@@ -14,52 +17,45 @@ import { ControllerService } from 'app/chatbot-design-studio/services/controller
 export class CdsPanelButtonConfigurationComponent implements OnInit {
   @ViewChild('input_title', { static: true }) input_topic: CDSTextComponent;
 
-
   @Input() isOpenPanel: boolean;
-  @Input() listOfActions: Array<{name: string, value: string, icon?:string}>;
   @Input() button: Button;
   @Output() saveButton = new EventEmitter();
-  @Output() closeButtonPanel = new EventEmitter();
+  // @Output() closeButtonPanel = new EventEmitter();
 
-  buttonLabelResult: boolean;
-  buttonLabel: string;
+  listOfActions: Array<{name: string, value: string, icon?:string}>;
+  // buttonLabelResult: boolean;
+  
   typeOfButton = TYPE_BUTTON;
-  buttonTypes: Array<{ label: string, value: TYPE_BUTTON }> = [
-    { label: "text", value: this.typeOfButton.TEXT },
-    { label: "url", value: this.typeOfButton.URL },
-    { label: "go to block", value: this.typeOfButton.ACTION }
-  ]
-  buttonType: string;
-
   typeOfUrl = TYPE_URL;
-  urlTypes: Array<{ label: string, value: TYPE_URL }> = [
-    { label: "blank", value: this.typeOfUrl.BLANK },
-    { label: "parent", value: this.typeOfUrl.PARENT },
-    { label: "self", value: this.typeOfUrl.SELF },
-  ];
-  labelAction: string;
+  buttonTypes = BUTTON_TYPES;
+  urlTypes = URL_TYPES;
+
+  buttonLabel: string;
+  buttonType: string;
+  // labelAction: string;
   urlType: string;
   buttonUrl: string;
   errorUrl: boolean;
   buttonAction: string;
-  clickInside: boolean;
+  // clickInside: boolean;
   buttonAttributes: any;
   openBlockAttributes: boolean = false;
 
-  emoijPikerBtn: boolean = true
-  isEmojiPickerVisible: boolean = false;
-  emojiPerLine: number = 8;
-  emojiColor: string ="#ac8b2c";
-  emojiiCategories = [ 'recent', 'people', 'nature', 'activity'];
+  // emoijPikerBtn: boolean = true
+  // isEmojiPickerVisible: boolean = false;
+  // emojiPerLine: number = 8;
+  // emojiColor: string ="#ac8b2c";
+  // emojiiCategories = [ 'recent', 'people', 'nature', 'activity'];
 
 
   constructor(
-    private controllerService: ControllerService
+    private controllerService: ControllerService,
+    private intentService: IntentService,
   ) { }
 
 
   // SYSTEM FUNCTIONS //  
-  /** */
+
   ngOnInit(): void {
     // this.initialize();
   }
@@ -75,32 +71,35 @@ export class CdsPanelButtonConfigurationComponent implements OnInit {
 
 
   private initialize(){
-    console.log('CdsPanelButtonConfigurationComponent: ', this.button);
-    this.buttonLabelResult = true;
-    this.errorUrl = false;
-    this.buttonLabel = '';
-    this.buttonType = this.typeOfButton.TEXT;
-    this.urlType = this.typeOfUrl.BLANK;
-    this.buttonUrl = '';
-    this.buttonAction = null;
-    this.buttonAttributes = '';
-    try {
-      this.buttonLabel = this.button.value ? this.button.value : null;
-      this.buttonType = this.button.type ? this.button.type : null;
-      this.urlType = this.button.target ? this.button.target : null;
-      this.buttonUrl = this.button.link ? this.button.link : null; 
-      // this.buttonAttributes = this.button.attributes ? this.button.attributes : [];
-    } catch (error) {
-      // error
-    }
-    let intent = this.setAttributesFromAction(this.button.action);
-    if(intent && intent.action !== null){
-      this.buttonAction = intent.action;
-    }
-    if(intent && intent.attributes !== null){
-      // console.log('intent: ', intent);
-      this.buttonAttributes = intent.attributes;
-      // this.openBlockAttributes = true;
+    this.listOfActions = this.intentService.getListOfActions();
+    // console.log('CdsPanelButtonConfigurationComponent: ', this.button);
+    if(this.button){
+      // this.buttonLabelResult = true;
+      this.errorUrl = false;
+      this.buttonLabel = '';
+      this.buttonType = this.typeOfButton.TEXT;
+      this.urlType = this.typeOfUrl.BLANK;
+      this.buttonUrl = '';
+      this.buttonAction = null;
+      this.buttonAttributes = '';
+      try {
+        this.buttonLabel = this.button.value ? this.button.value : null;
+        this.buttonType = this.button.type ? this.button.type : null;
+        this.urlType = this.button.target ? this.button.target : null;
+        this.buttonUrl = this.button.link ? this.button.link : null; 
+        // this.buttonAttributes = this.button.attributes ? this.button.attributes : [];
+      } catch (error) {
+        // error
+      }
+      let intent = this.setAttributesFromAction(this.button.action);
+      if(intent && intent.action !== null){
+        this.buttonAction = intent.action;
+      }
+      if(intent && intent.attributes !== null){
+        // console.log('intent: ', intent);
+        this.buttonAttributes = intent.attributes;
+        // this.openBlockAttributes = true;
+      }
     }
     // console.log('buttonAction:: ', this.buttonAction); 
   }
@@ -153,7 +152,7 @@ export class CdsPanelButtonConfigurationComponent implements OnInit {
         this.buttonLabel = '';
       }
       this.button.value = this.buttonLabel;
-      this.buttonLabelResult = true;
+      // this.buttonLabelResult = true;
     } catch (error) {
       console.log('error: ', error);
     }
@@ -203,16 +202,17 @@ export class CdsPanelButtonConfigurationComponent implements OnInit {
   }
 
   // EVENTS FUNCTIONS //  
+
   /** */
-  onSaveButton() {
-    // console.log('onSaveButton: ');
-    this.checkAndSaveButton();
-    this.closeButtonPanel.emit();
+  onCloseButtonPanel() {
+    this.controllerService.closeButtonPanel();
+    // this.closeButtonPanel.emit();
   }
 
   /** */
-  onBlurButtonLabel(name: string) {
-    this.buttonLabelResult = true;
+  onChangeTitle(text: string) {
+    this.buttonLabel = text;
+    this.checkAndSaveButton();
   }
 
   /** */
@@ -221,13 +221,15 @@ export class CdsPanelButtonConfigurationComponent implements OnInit {
   }
 
   /** */
-  onChangeActionButton(actionButton) {
-    // console.log('onChangeActionButton: ', actionButton);
-    this.buttonAction = actionButton;
+  onChangeUrl(text: string) {
+    // console.log('onChangeUrl: ');
+    this.buttonUrl = text;
+    this.checkAndSaveButton();
   }
 
-  onChangeSelect(event: {name: string, value: string}){
-    // console.log('onChangeSelect: ', event);
+  /** */
+  onChangeGoToBlock(event: {name: string, value: string}){
+    console.log('onChangeGoToBlock: ', event);
     this.buttonAction = event.value;
     if(this.buttonAttributes && this.buttonAttributes !== '{}'){
       this.button.action = this.buttonAction + JSON.stringify(this.buttonAttributes);
@@ -235,26 +237,10 @@ export class CdsPanelButtonConfigurationComponent implements OnInit {
       this.button.action = this.buttonAction;
     }
     // this.openBlockAttributes = true;
+    this.checkAndSaveButton();
   }
 
   /** */
-  onCloseButtonPanel() {
-    this.controllerService.closeButtonPanel();
-    // this.closeButtonPanel.emit();
-  }
-
-  onChangeTitle(text: string) {
-    // console.log('onChangeTitle: ');
-    this.buttonLabel = text;
-    this.checkAndSaveButton();
-  }
-
-  onChangeUrl(text: string) {
-    // console.log('onChangeUrl: ');
-    this.buttonUrl = text;
-    this.checkAndSaveButton();
-  }
-
   onChangeAttributes(attributes:any){
     // console.log('attributes: ', this.button, attributes);
     this.button.attributes = attributes;
@@ -265,16 +251,35 @@ export class CdsPanelButtonConfigurationComponent implements OnInit {
     }
     // this.button.action = this.buttonAction + JSON.stringify(attributes);
     delete(this.button.attributes);
-    this.saveButton.emit(this.button);
+    this.checkAndSaveButton();
+    // this.saveButton.emit(this.button);
   }
 
-  onAddEmoji(event){
-    this.buttonLabel = `${this.buttonLabel}${event.emoji.native}`;
-    this.isEmojiPickerVisible = false;
-  } 
 
-  
-  
-  
+
+
+  /** */
+  // onBlurButtonLabel(name: string) {
+  //   this.buttonLabelResult = true;
+  // }
+
+  /** */
+  // onChangeActionButton(actionButton) {
+  //   // console.log('onChangeActionButton: ', actionButton);
+  //   this.buttonAction = actionButton;
+  // }
+
+  /** */
+  // onSave() {
+  //   this.checkAndSaveButton();
+  //   // this.closeButtonPanel.emit();
+  // }
+
+  /** */
+  // onAddEmoji(event){
+  //   this.buttonLabel = `${this.buttonLabel}${event.emoji.native}`;
+  //   this.isEmojiPickerVisible = false;
+  // } 
+
 
 }

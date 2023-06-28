@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
 import { BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -39,9 +40,21 @@ export class IntentService {
   jsonDashboardAttributes: any;
   preDisplayName: string = 'untitled_block_';
 
+
+  private changedConnector = new Subject<any>();
+  public isChangedConnector$ = this.changedConnector.asObservable();
+
   constructor(
     private faqService: FaqService
   ) { }
+
+
+
+  public onChangedConnector(connector){
+    console.log('onChangedConnector:: ', connector);
+    this.changedConnector.next(connector);
+  }
+
 
   getIntents() {
     return this.intents.asObservable();
@@ -168,19 +181,29 @@ export class IntentService {
     });
   }
 
-  public async editIntent(intent): Promise<boolean> { 
+
+  public async updateIntent(intent: Intent): Promise<boolean> { 
     return new Promise((resolve, reject) => {
       let id = intent.id;
-      let attributes = intent.attributes;
-      let questionIntent = intent.question;
-      let answerIntent = intent.answer;
-      let displayNameIntent = intent.intent_display_name;
+      let attributes = intent.attributes?intent.attributes:{};
+      let questionIntent = intent.question?intent.question:'';
+      let answerIntent = intent.answer?intent.answer:'';
+      let displayNameIntent = intent.intent_display_name?intent.intent_display_name:'';
       let formIntent = {};
       if (intent.form !== null) {
         formIntent = intent.form;
       }
-      let actionsIntent = intent.actions;
-      let webhookEnabledIntent = intent.webhook_enabled;
+      let actionsIntent = intent.actions?intent.actions:[];
+      let webhookEnabledIntent = intent.webhook_enabled?intent.webhook_enabled:false;
+      console.log('id: ', id);
+      console.log('attributes: ', attributes);
+      console.log('questionIntent: ', questionIntent);
+      console.log('answerIntent: ', answerIntent);
+      console.log('displayNameIntent: ', displayNameIntent);
+      console.log('formIntent: ', formIntent);
+      console.log('actionsIntent: ', actionsIntent);
+      console.log('webhookEnabledIntent: ', webhookEnabledIntent);
+
       this.faqService.updateIntent(
         id,
         attributes,

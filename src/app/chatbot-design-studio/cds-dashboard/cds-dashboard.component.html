@@ -49,7 +49,7 @@
                     [style.top.px]="getIntentPosition(intent.id).y" 
                     [style.left.px]="getIntentPosition(intent.id).x" 
                     [intent]="intent"
-                    [connector]="connector"
+                    [connectorChanged]="connectorChanged"
                     (selectAction)=onSelectAction($event)
                     (saveIntent)=onSaveIntent($event)
                 ></cds-intent>
@@ -70,12 +70,14 @@
 
         <cds-panel-button-configuration
             class="cds-generic-panel"
-            [isOpenPanel] = "isOpenPanelDetail"
-            [button] = elementInDetailPanel
-            [listOfActions] = listOfActions
-            (closeButtonPanel) = onClosePanel()
-            (saveButton) = onSaveElement($event)>
+            [isOpenPanel] = "isOpenPanelButtonConfig"
+            [button] = buttonSelected
+            (saveButton) = onSaveButton($event)>
         </cds-panel-button-configuration>
+        <!-- 
+            (closeButtonPanel) = onClosePanel() 
+            [listOfActions] = listOfActions
+        -->
 
     </div>
 

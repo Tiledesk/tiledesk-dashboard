@@ -255,6 +255,19 @@ export const TYPE_FUNCTION_LIST_FOR_FUNCTIONS: { [key: string]: { name: string, 
 }
 
 
+export const BUTTON_TYPES: Array<{ label: string, value: TYPE_BUTTON }> = [
+    { label: "text", value: TYPE_BUTTON.TEXT },
+    { label: "url", value: TYPE_BUTTON.URL },
+    { label: "go to block", value: TYPE_BUTTON.ACTION }
+]
+
+export const URL_TYPES: Array<{ label: string, value: TYPE_URL }> = [
+    { label: "blank", value: TYPE_URL.BLANK },
+    { label: "parent", value: TYPE_URL.PARENT },
+    { label: "self", value: TYPE_URL.SELF },
+]
+
+
 export function OperatorValidator(control: AbstractControl): { [key: string]: boolean } | null {
     if (control.value in TYPE_OPERATOR) {
         return null;

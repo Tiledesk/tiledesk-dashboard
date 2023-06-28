@@ -5,6 +5,8 @@ import { CdkDropList } from '@angular/cdk/drag-drop';
 })
 export class DragDropService {
     
+
+  
   private _connectedLists: CdkDropList[] = [];
   private _connectedIDLists: string[] = [];
 

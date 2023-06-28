@@ -4,6 +4,7 @@ import { Form, Intent, Action } from '../../../models/intent-model';
 import { ACTIONS_LIST, TYPE_ACTION, patchActionId } from 'app/chatbot-design-studio/utils';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { IntentService } from 'app/chatbot-design-studio/services/intent.service'; 
+import { ControllerService } from 'app/chatbot-design-studio/services/controller.service';
 
 import {
   CdkDragDrop,
@@ -34,10 +35,13 @@ export class CdsIntentComponent implements OnInit, OnChanges {
   // @HostListener('window:keydown', ['$event'])
 
   @Input() intent: Intent;
-  @Input() connector: any;
+  @Input() connectorChanged: boolean;
+  // @Input() connector: any;
   @Output() selectAction = new EventEmitter();
   @Output() saveIntent = new EventEmitter();
 
+
+  // connector: any;
   idSelectedAction: string;
   intentActionList: Array<any>;
   arrayActionsForDrop = [];
@@ -49,7 +53,8 @@ export class CdsIntentComponent implements OnInit, OnChanges {
 
   constructor(
     private logger: LoggerService,
-    public intentService: IntentService
+    public intentService: IntentService,
+    private controllerService: ControllerService,
   ) { }
 
   ngOnInit(): void { 
@@ -66,7 +71,11 @@ export class CdsIntentComponent implements OnInit, OnChanges {
 
 
   ngOnChanges(changes: SimpleChanges){
-    console.log('CdsPanelIntentComponent ngOnChanges-->', this.connector);
+    // if (changes.connectorChanged) {
+    //   // this.connector = 
+    //   console.log('CdsPanelIntentComponent ngOnChanges-->', this.connector);
+    // }
+   
     // try {
     //   const array = this.connector.fromId.split("/");
     //   // const idIntent= array[0];
@@ -154,22 +163,22 @@ export class CdsIntentComponent implements OnInit, OnChanges {
     this.selectAction.emit(idAction);
   }
   
-  onDeleteAction(event: any) {
-    console.log('onDeleteAction:::: ' , event, event.key);
-    if (event.key === 'Delete' || event.key === 'Backspace') {
-      this.intentActionList = this.intentActionList.filter(item => item._tdActionId !== this.idSelectedAction);
-      this.intent.actions = this.intentActionList;
-      this.saveIntent.emit(this.intent);
-    }
-  }
+  // onDeleteAction(event: any) {
+  //   console.log('onDeleteAction:::: ' , event, event.key);
+  //   if (event.key === 'Delete' || event.key === 'Backspace') {
+  //     this.intentActionList = this.intentActionList.filter(item => item._tdActionId !== this.idSelectedAction);
+  //     this.intent.actions = this.intentActionList;
+  //     this.saveIntent.emit(this.intent);
+  //   }
+  // }
 
 
 
 
 
   // funzione chiamata da tutte le actions ogni volta che vengono modificate!
-  onEditAction(event: any) {
-    console.log('onSaveAction:::: ' , event, this.intent.actions);
+  onUpdateAndSaveAction() {
+    console.log('onUpdateAndSaveAction:::: ' , this.intent, this.intent.actions);
     // this.saveIntent.emit(this.intent);
     this.updateIntent();
   }
@@ -178,7 +187,7 @@ export class CdsIntentComponent implements OnInit, OnChanges {
 
 
   private async updateIntent(){
-    const response = await this.intentService.editIntent(this.intent);
+    const response = await this.intentService.updateIntent(this.intent);
     if(response){
       console.log('updateIntent: ', this.intent);
     }

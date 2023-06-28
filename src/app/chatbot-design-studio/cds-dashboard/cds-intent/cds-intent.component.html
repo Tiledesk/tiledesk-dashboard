@@ -25,9 +25,8 @@
             class="box-action"
             tabindex="0"
             [ngClass]="{'cds-action-active': idSelectedAction === action._tdActionId}"
-            (keydown)="onDeleteAction($event)"
             (click)="onSelectAction(action._tdActionId)">
-
+            <!-- (keydown)="onDeleteAction($event)" -->
             <div cdkDragHandle class="header-action">
                 <div class="icon-action">
                     <img [src]="getActionParams(action).src" [title]="getActionParams(action).name" />
@@ -44,10 +43,10 @@
 
                 <cds-action-intent  *ngIf="action._tdActionType == 'intent'"
                     class="panel-response"
-                    [IDintentSelected]="intent.id"
-                    [connector]="connector"
+                    [intentSelected]="intent"
+                    [connectorChanged]="connectorChanged"
                     [action]="action"
-                    (editAction)="onEditAction($event)"
+                    (updateAndSaveAction)="onUpdateAndSaveAction($event)"
                 ></cds-action-intent>
 
                 <cds-action-reply  *ngIf="action._tdActionType == 'reply'"
@@ -55,7 +54,7 @@
                     [intentSelected]="intent"
                     [connector]="connector"
                     [action]="action"
-                    (editAction)="onEditAction($event)"
+                    (updateAndSaveAction)="onUpdateAndSaveAction($event)"
                 ></cds-action-reply>
 
             </div>

@@ -1,11 +1,11 @@
-import { Component, OnInit, Input, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Button, Message, Command, ActionReply, MessageWithWait, Intent } from 'app/models/intent-model';
 import { ELEMENTS_LIST, ACTIONS_LIST, TYPE_ACTION, TYPE_COMMAND, TYPE_RESPONSE, TYPE_BUTTON, TYPE_URL, TYPE_MESSAGE, generateShortUID } from 'app/chatbot-design-studio/utils';
 import { LoggerService } from 'app/services/logger/logger.service';
 
 import { ControllerService } from 'app/chatbot-design-studio/services/controller.service';
-import { IntentService } from 'app/chatbot-design-studio/services/intent.service';
+// import { IntentService } from 'app/chatbot-design-studio/services/intent.service';
 
 @Component({
   selector: 'cds-action-reply',
@@ -19,21 +19,11 @@ export class CdsActionReplyComponent implements OnInit {
 
   @Input() action: ActionReply;
   @Input() intentSelected: Intent;
-  @Input() connector: any;
-  @Output() editAction = new EventEmitter();
+  @Output() updateAndSaveAction = new EventEmitter();
   
 
   idIntentSelected: string;
   idAction: string;
-  // @Input() typeAction: string;
-  // @Input() listOfActions: Array<{ name: string, value: string, icon?: string }>;
-  // @Input() intent_display_name: string;
-
-
-  // [intentSelected]="intent"
-  //                   [connector]="connector"
-  //                   [action]="action"
-  //                   (editAction)="onEditAction($event)"
 
 
   response: MessageWithWait;
@@ -52,7 +42,7 @@ export class CdsActionReplyComponent implements OnInit {
   arrayResponses: Array<Command>;
   arrayMessagesWithWait: Array<MessageWithWait>;
 
-  actionType: string;
+  typeAction: string;
 
   element: any;
   showTip: boolean = true;
@@ -65,8 +55,7 @@ export class CdsActionReplyComponent implements OnInit {
 
   constructor(
     private logger: LoggerService,
-    private controllerService: ControllerService,
-    private intentService: IntentService
+    private controllerService: ControllerService
   ) { }
 
   manageTooltip(){}
@@ -78,7 +67,7 @@ export class CdsActionReplyComponent implements OnInit {
   ngOnInit(): void {
     console.log('ActionReplyComponent ngOnInit', this.action);
     // // console.log('ngOnInit panel-response::: ', this.typeAction);
-    // this.actionType = (this.typeAction === TYPE_ACTION.RANDOM_REPLY ? 'RANDOM_REPLY' : 'REPLY');
+    this.typeAction = (this.typeAction === TYPE_ACTION.RANDOM_REPLY ? 'RANDOM_REPLY' : 'REPLY');
     try {
       this.element = ELEMENTS_LIST.find(item => item.type === this.action._tdActionType);
       if(this.action._tdActionTitle && this.action._tdActionTitle != ""){
@@ -95,37 +84,15 @@ export class CdsActionReplyComponent implements OnInit {
 
 
 
-
-  ngOnChanges() {
-    this.logger.log('ActionReplyComponent ngOnChanges', this.action);
-    this.updateConnector();
+  ngOnChanges(changes: SimpleChanges): void {
+    // console.log('ActionReplyComponent ngOnChanges:: ', this.connector);
+    // if (changes.connector) {
+    //   this.updateConnector();
+    // }
   }
 
 
 
-  private updateConnector(){
-    try {
-      const array = this.connector.fromId.split("/");
-      // const idAction = array[1];
-      // if(idAction === this.idAction){
-      //   if(this.connector.deleted){
-      //     // DELETE 
-      //     console.log(' deleteConnector :: ', this.connector.id);
-      //     this.action.intentName = null;
-      //     this.isConnected = false;
-      //   } else {
-      //     // ADD / EDIT
-      //     console.log(' updateConnector :: ', this.connector.toId);
-      //     this.action.intentName = this.connector.toId;
-      //     this.isConnected = true;
-      //   }
-
-      //   // this.editAction.emit();
-      // }
-    } catch (error) {
-      console.log('error: ', error);
-    }
-  }
 
 
 
@@ -152,6 +119,10 @@ export class CdsActionReplyComponent implements OnInit {
     this.generateCommandsOfElements();
     this.scrollToBottom();
   }
+
+
+
+
 
 
   /** */
@@ -227,9 +198,10 @@ export class CdsActionReplyComponent implements OnInit {
     }, 300);
   }
 
-
-  onAddNewResponse(element) {
-    this.logger.log('onAddNewResponse:: ', element);
+  
+  /** */
+  onAddNewActionReply(element) {
+    this.logger.log('onAddNewActionReply: ', element);
     try {
       let message = new MessageWithWait(element.message.type, element.message.text, 500);
       if (element.message.attributes) {
@@ -245,6 +217,8 @@ export class CdsActionReplyComponent implements OnInit {
       this.logger.log('onAddNewResponse ERROR', error);
     }
   }
+
+  
 
 
 
@@ -267,11 +241,43 @@ export class CdsActionReplyComponent implements OnInit {
     this.generateCommandsWithWaitOfElements();
   }
 
-  /** */
-  onDeleteResponse(index: number) {
+
+  /** onChangingReplyAction */
+  onChangeActionReply() {
+    this.logger.log('onChangeActionReply ************', this.intentSelected, this.arrayMessagesWithWait);
+    this.generateCommandsWithWaitOfElements();
+    this.updateAndSaveAction.emit();
+  }
+
+  /** onChangeDelayTimeReplyAction */
+  // onChangeDelayTimeReplyAction() {
+  //   this.logger.log('onChangeDelayTimeReplyAction ************', this.arrayMessagesWithWait);
+  //   this.generateCommandsWithWaitOfElements();
+  //   this.updateAndSaveAction.emit();
+  // }
+
+  /** onDeleteActionReply */
+  onDeleteActionReply(index: number) {
+    console.log('onDeleteActionReply: ', index);
     this.arrayMessagesWithWait.splice(index, 1);
     this.generateCommandsWithWaitOfElements();
+    this.updateAndSaveAction.emit();
   }
+
+  /** onCreateNewButton */
+  onCreateNewButton(event){
+    this.response = event.refResponse;
+    this.newButton = true;
+    this.buttonSelected = this.createNewButton();
+    this.generateCommandsWithWaitOfElements();
+    this.updateAndSaveAction.emit();
+  }
+
+
+
+
+
+
 
   /** */
   onMoveUpResponse(index: number) {
@@ -293,19 +299,9 @@ export class CdsActionReplyComponent implements OnInit {
     }
   }
 
-  /** */
-  onChangeDelayTimeReplyElement() {
-    this.logger.log('onChangeDelayTimeReplyElement ************', this.arrayMessagesWithWait);
-    this.generateCommandsWithWaitOfElements();
-  }
 
-  /**onChangeReplyElement */
-  onChangeReplyElement() {
-    this.logger.log('onChangeReplyElement ************', this.intentSelected, this.arrayMessagesWithWait);
-    // this.intentService.editIntent(this.intentSelected);
-    this.generateCommandsWithWaitOfElements();
-    this.editAction.emit();
-  }
+
+
 
   /** */
   onChangeIntentName(name: string) {
@@ -333,21 +329,16 @@ export class CdsActionReplyComponent implements OnInit {
   }
 
 
-  onCreateNewButton(event){
-    this.response = event.refResponse;
-    this.newButton = true;
-    this.buttonSelected = this.createNewButton();
-    this.generateCommandsWithWaitOfElements();
-    this.editAction.emit();
-  }
+
 
 
   private createNewButton() {
     const idButton = generateShortUID();
     const idActionConnector = this.idAction+'/'+idButton;
     let buttonSelected = {
-      'id': idButton,
-      'idActionConnector': idActionConnector,
+      'uid': idButton,
+      'idConnector': idActionConnector,
+      'isConnected': false,
       'value': 'Button',
       'type': TYPE_BUTTON.TEXT,
       'target': TYPE_URL.BLANK,
@@ -360,19 +351,18 @@ export class CdsActionReplyComponent implements OnInit {
     return buttonSelected;
   }
 
+
+  onDeleteButton(){
+    this.updateAndSaveAction.emit();
+  }
+
   /** appdashboard-button-configuration-panel: onOpenButtonPanel */
   onOpenButtonPanel(event) {
-    this.logger.log('onOpenButtonPanel :: ', event);
+    console.log('onOpenButtonPanel 2 :: ', event);
     this.response = event.refResponse;
-    if (!event.button) {
-      this.logger.log('new button  :: ', event.button);
-      this.newButton = true;
-      this.buttonSelected = this.createNewButton();
-    } else {
-      this.newButton = false;
-      this.buttonSelected = event.button;
-    }
-    this.logger.log('buttonSelected :: ', this.buttonSelected);
+    this.newButton = false;
+    this.buttonSelected = event.button;
+    console.log('buttonSelected :: ', this.buttonSelected);
     this.controllerService.openButtonPanel(this.buttonSelected);
   }
 
@@ -394,4 +384,6 @@ export class CdsActionReplyComponent implements OnInit {
   }
 
 
+
+  
 }

@@ -1,5 +1,7 @@
 <div id="button-tab" class="button-tab" [style.width.px]="isOpenPanel?450:0" [style.opacity]="isOpenPanel?1:0">
 
+    
+
     <div class="button-tab-header">
         <div class="button-tab-title">
             Button
@@ -8,6 +10,7 @@
             <em class="material-icons">chevron_right</em>
         </div> 
     </div> 
+
 
 
     <div class="button-tab-content">
@@ -116,7 +119,7 @@
                     [bindLabelSelect]="'name'"
                     [bindValueSelect]="'value'"
                     [itemSelected]="buttonAction"
-                    (onSelected)="onChangeSelect($event)">
+                    (onSelected)="onChangeGoToBlock($event)">
                 </cds-select>
                 <cds-attributes
                     *ngIf="buttonAction"

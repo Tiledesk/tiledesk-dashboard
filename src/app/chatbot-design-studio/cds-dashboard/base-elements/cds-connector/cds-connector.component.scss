@@ -53,7 +53,7 @@
     transition: width 0.1s ease 0s, height 0.1s ease 0s, background-color 0.1s ease 0s, border 0.1s ease 0s;
     width: 14px;
     height: 14px;
-    background: linear-gradient(rgba(98, 119, 140, 0.12), rgba(98, 119, 140, 0.24) 100%);
+    background-color: rgb(221,221,221,1);
     &::before {
         inset: 0px;
         border: 1px solid rgb(98, 119, 140);
