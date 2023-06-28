@@ -56,8 +56,10 @@ export class HomeCreateChatbotComponent implements OnInit, OnChanges {
     console.log('[HOME-CREATE-CHATBOT] - USER PREFERENCES SOLUTION CHANNEL »»» ', this.solution_channel_for_child)
     if (this.use_case_for_child === 'solve_customer_problems') {
       this.tparams = {template_category: 'Customer Satisfaction'} 
+      this.displayDefaultDescription = false
     } else if (this.use_case_for_child === 'increase_online_sales') { 
       this.tparams = {template_category: 'Increase Sales'} 
+      this.displayDefaultDescription = false
     } else if (this.use_case_for_child === undefined) {
       console.log('[HOME-CREATE-CHATBOT] - USER PREFERENCES USE CASE »»» is undefined', this.use_case_for_child)
       this.displayDefaultDescription = true
@@ -255,6 +257,7 @@ export class HomeCreateChatbotComponent implements OnInit, OnChanges {
   }
 
   goToTemplates() {
+   
     if (this.use_case_for_child === 'solve_customer_problems') {
     this.router.navigate(['project/' + this.projectId + '/bots/templates/customer-satisfaction']);
     } else if (this.use_case_for_child === 'increase_online_sales') {
@@ -262,6 +265,7 @@ export class HomeCreateChatbotComponent implements OnInit, OnChanges {
     } else if (this.use_case_for_child === undefined) {
       this.router.navigate(['project/' + this.projectId + '/bots/templates/all']);
     } 
+    localStorage.setItem('wawizard', 'hookbot')
   }
 
   goToCommunityTemplates() {
@@ -270,6 +274,7 @@ export class HomeCreateChatbotComponent implements OnInit, OnChanges {
 
   goToAddBotFromScratch() {
     this.router.navigate(['project/' + this.projectId + '/bots/create/tilebot/blank']);
+    localStorage.setItem('wawizard', 'hookbot')
   }
 
   goToMyChatbots() {

@@ -16,6 +16,9 @@ export class HomeWhatsappAccountWizardComponent implements OnInit, OnChanges {
   @Input() wadepartmentName: string; 
   @Input() chatbotConnectedWithWA: boolean; 
   @Input() waBotId: string; 
+  @Input() use_case_for_child: string; 
+  @Input() solution_channel_for_child: string; 
+  @Input() solution_for_child: string; 
   constructor(
     public dialog: MatDialog,
   ) { }
@@ -28,6 +31,9 @@ export class HomeWhatsappAccountWizardComponent implements OnInit, OnChanges {
     console.log('[HOME-WA-WIZARD] wadepartmentName ', this.wadepartmentName)
     console.log('[HOME-WA-WIZARD] chatbotConnectedWithWA ', this.chatbotConnectedWithWA)
     console.log('[HOME-WA-WIZARD] waBotId ', this.waBotId)
+    console.log('[HOME-WA-WIZARD] use_case_for_child ', this.use_case_for_child)
+    console.log('[HOME-WA-WIZARD] solution_channel_for_child ', this.solution_channel_for_child)
+    console.log('[HOME-WA-WIZARD] solution_for_child ', this.solution_for_child)
   }
 
   // background-color: rgba(0,0,0,.4);
@@ -59,22 +65,23 @@ export class HomeWhatsappAccountWizardComponent implements OnInit, OnChanges {
   }
 
   presentModalCreateChatbotOnWaChannel() {
+    this.goToCreateChatbot.emit()
     console.log('[HOME-WA-WIZARD] - presentModalCreateChatbotOnWaChannel ');
-    const dialogRef = this.dialog.open(HomeWhatsappAccountWizardModalComponent, {
-      width: '600px',
-      data: {
-        calledBy: 'step2',
-        waDeptName: this.wadepartmentName
-      },
-    })
+    // const dialogRef = this.dialog.open(HomeWhatsappAccountWizardModalComponent, {
+    //   width: '600px',
+    //   data: {
+    //     calledBy: 'step2',
+    //     waDeptName: this.wadepartmentName
+    //   },
+    // })
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result:`, result);
+    // dialogRef.afterClosed().subscribe(result => {
+    //   console.log(`Dialog result:`, result);
 
-      if (result === 'go-to-next-step') {
-        this.goToCreateChatbot.emit()
-      }
-    });
+    //   if (result === 'go-to-next-step') {
+    //     this.goToCreateChatbot.emit()
+    //   }
+    // });
   }
 
 

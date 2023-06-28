@@ -24,22 +24,27 @@
                         <div class="_2qLvL _1aC9T">
                             <span data-testid="onbording-tour_tips-title" class=""
                                 style="color: #e0f0ff; font-size: 18px; font-weight: 500; line-height: 24px; margin: 0px;">
-                                Connect WhatsApp
+                                <!-- Connect WhatsApp -->
+                                Create a bot to use on your WhatsApp channel
                             </span>
                         </div>
                         <div style="height: 8px; width: 0px; flex: 0 0 auto;"></div>
                         <span data-testid="onbording-tour_tips-description" class="wa-step-description-wpr"
                             style="color: #e0f0ff; font-size: 15px; font-weight: 400; line-height: 20px; margin: 0px;">
                             <div class="wa-step-description">
-                                Connect your WhatsApp Business account to Tiledesk to seamlessly communicate with your
-                                customers, track conversations, and build stronger relationships
+                                <!-- Connect your WhatsApp Business account to Tiledesk to seamlessly communicate with your
+                                customers, track conversations, and build stronger relationships -->
+
+                                The bot will be used to reply to customers in chat on WhatsApp also using the use of
+                                artificial intelligence so as not to employ human resources
                             </div>
                         </span>
                     </div>
                     <div style="height: 0px; width: 0px; flex: 0 0 auto;"></div>
                     <div class="_2qLvL o_7eO _1aC9T" style="gap: 8px;">
+                        <!-- (click)="presentModalConnectWAfirstStep()" -->
                         <button data-testid="onbording_set-up_button" type="button" class="_1FEtf"
-                            (click)="presentModalConnectWAfirstStep()">
+                             (click)="presentModalCreateChatbotOnWaChannel()">
                             <div class="_2qLvL _3pOpF _2u1EA _2tIkX _1e3oJ _1aC9T">
                                 <span class="_3S-3- SHY5O _24ku1" style="color: #ffffff;">
                                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
@@ -89,12 +94,13 @@
                                     The bot will be used to reply to customers in chat on WhatsApp also using the use of
                                     artificial intelligence so as not to employ human resources
                                 </div>
-                                <!-- To connect the chatbot to WhatsApp make sure it is hooked up to the same department where you activate WhatsApp in the configuration phase -->
+                                
                             </span>
                         </div>
                         <div style="height: 0px; width: 0px; flex: 0 0 auto;"></div>
                         <div class="_2qLvL o_7eO _1aC9T" style="gap: 8px;">
-                            <button data-testid="onbording_set-up_button" [disabled]="!whatsAppIsConnected"
+                            <!-- [disabled]="!whatsAppIsConnected" -->
+                            <button data-testid="onbording_set-up_button" 
                                 type="button" class="_1FEtf" (click)="presentModalCreateChatbotOnWaChannel()">
                                 <div class="_2qLvL _3pOpF _2tIkX _1e3oJ _1aC9T">
                                     <span class="_3S-3- SHY5O _24ku1" style="color: #ffffff;">

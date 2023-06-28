@@ -222,6 +222,7 @@ export class CdsDashboardComponent implements OnInit {
       this.logger.log('[CDS DSHBRD] getUrlParams  BOT ID ', this.id_faq_kb);
       this.logger.log('[CDS DSHBRD] getUrlParams  FAQ ID ', this.id_faq);
       this.logger.log('[CDS DSHBRD] getUrlParams  FAQ ID ', this.intent_id);
+  
     });
   }
 
@@ -753,6 +754,9 @@ export class CdsDashboardComponent implements OnInit {
   }
 
   getDeptsByProjectId() {
+    const botCreatedFromHomeWAWizard = localStorage.getItem('wawizard')
+    console.log('[CDS DSHBRD] botCreatedFromHomeWAWizard ', botCreatedFromHomeWAWizard);
+   
     this.departmentService.getDeptsByProjectId().subscribe((departments: any) => {
       this.logger.log('[CDS DSBRD] - DEPT GET DEPTS ', departments);
       this.logger.log('[CDS DSBRD] - DEPT BOT ID ', this.id_faq_kb);
@@ -763,28 +767,34 @@ export class CdsDashboardComponent implements OnInit {
           // this.logger.log('[CDS DSBRD] - DEPT', dept);
           if (dept.default === true) {
             this.defaultDepartmentId = dept._id;
-            this.logger.log('[CDS DSBRD] - DEFAULT DEPT ID ', this.defaultDepartmentId);
+            console.log('[CDS DSBRD] - DEFAULT DEPT ID ', this.defaultDepartmentId);
           }
         })
 
         const depts_length = departments.length
-        this.logger.log('[CDS DSBRD] ---> GET DEPTS DEPTS LENGHT ', depts_length);
+        console.log('[CDS DSBRD] ---> GET DEPTS DEPTS LENGHT ', depts_length);
 
         if (depts_length === 1) {
           this.DISPLAY_SELECT_DEPTS_WITHOUT_BOT = false
           this.dept_id = departments[0]['_id']
 
+
+
           this.logger.log('[CDS DSBRD]  --->  DEFAULT DEPT HAS BOT ', departments[0].hasBot);
           if (departments[0].hasBot === true) {
 
-            this.logger.log('[CDS DSBRD] --->  DEFAULT DEPT HAS BOT ');
+           console.log('[CDS DSBRD] --->  DEFAULT DEPT HAS BOT ');
             // this.DISPLAY_BTN_ACTIVATE_BOT_FOR_NEW_CONV = false;
             // this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT = false
             // this.logger.log('Bot Create --->  DEFAULT DEPT HAS BOT DISPLAY_BTN_ACTIVATE_BOT_FOR_NEW_CONV ', this.DISPLAY_BTN_ACTIVATE_BOT_FOR_NEW_CONV);
             this.logger.log('[CDS DSBRD] --->  DEFAULT DEPT HAS BOT PRESENTS_MODAL_ATTACH_BOT_TO_DEPT ', this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT);
           } else {
             this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT = true;
-            this.logger.log('[CDS DSBRD] --->  DEFAULT DEPT HAS BOT PRESENTS_MODAL_ATTACH_BOT_TO_DEPT ', this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT);
+            console.log('[CDS DSBRD] --->  DEFAULT DEP NOT HAS BOT PRESENTS_MODAL_ATTACH_BOT_TO_DEPT ', this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT);
+            if (botCreatedFromHomeWAWizard && botCreatedFromHomeWAWizard === 'hookbot') {
+              console.log('[CDS DSBRD] ---> HERE HOOK ');
+              this.hookBotToDept()
+            }
           }
         }
 
@@ -799,7 +809,7 @@ export class CdsDashboardComponent implements OnInit {
 
               this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT = true;
 
-              this.logger.log('[CDS DSBRD] --->  DEPT HAS BOT PRESENTS_MODAL_ATTACH_BOT_TO_DEPT ', this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT);
+              console.log('[CDS DSBRD] --->  DEPT HAS BOT PRESENTS_MODAL_ATTACH_BOT_TO_DEPT ', this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT);
 
               this.depts_without_bot_array.push({ id: dept._id, name: dept.name })
             }

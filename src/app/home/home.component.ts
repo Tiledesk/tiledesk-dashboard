@@ -150,10 +150,12 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   cancel: string;
 
   // User preferences after onboarding
+  solution: string
   solution_channel: string
   use_case: string;
   use_case_for_child: string = "";
   solution_channel_for_child: string = "";
+  solution_for_child: string = "";
   elemHomeMainContentHeight: any;
   whatsAppIsConnected: boolean = false;
   chatbotConnectedWithWA: boolean = false;
@@ -270,17 +272,34 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       if (this.current_selected_prjct && this.current_selected_prjct.id_project && this.current_selected_prjct.id_project.attributes && this.current_selected_prjct.id_project.attributes.userPreferences) {
         this.solution_channel = this.current_selected_prjct.id_project.attributes.userPreferences.solution_channel
         this.use_case = this.current_selected_prjct.id_project.attributes.userPreferences.use_case
+        this.solution = this.current_selected_prjct.id_project.attributes.userPreferences.solution
 
         console.log('[HOME] - USER PREFERENCES  solution_channel', this.solution_channel);
         console.log('[HOME] - USER PREFERENCES  use_case', this.use_case);
+        console.log('[HOME] - USER PREFERENCES  solution', this.solution);
+        this.use_case_for_child = this.use_case;
+        this.solution_channel_for_child = this.solution_channel
+        this.solution_for_child = this.solution
+        if (this.solution_channel_for_child === 'whatsapp_fb_messenger') {
+          this.displayWhatsappAccountWizard = true;
+        }
+      } else {
+        console.log('[HOME] - USER PREFERENCES  (NO ATTRIBUTES) solution_channel', this.solution_channel);
+        console.log('[HOME] - USER PREFERENCES  (NO ATTRIBUTES) use_case', this.use_case);
+        this.use_case_for_child = undefined;
+        this.solution_channel_for_child = undefined;
+        this.solution_for_child = undefined;
+        if (this.solution_channel_for_child === undefined) {
+          this.displayWhatsappAccountWizard = false;
+          console.log('[HOME] - USER PREFERENCES  (NO ATTRIBUTES) displayWhatsappAccountWizard', this.displayWhatsappAccountWizard);
+        }
       }
 
-      this.use_case_for_child = this.use_case;
-      this.solution_channel_for_child = this.solution_channel
 
-      if (this.solution_channel_for_child === 'whatsapp_fb_messenger') {
-        this.displayWhatsappAccountWizard = true;
-      }
+
+    
+
+     
 
 
       if (this.current_selected_prjct && this.current_selected_prjct.id_project && this.current_selected_prjct.id_project.attributes && this.current_selected_prjct.id_project.attributes.wastep) {
@@ -1083,7 +1102,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         console.log('[HOME] - GET LAST 30 DAYS CONV TOTAL ', count);
         if (count === 0) {
           this.displayAnalyticsConvsGraph = false
-          this.displayAnalyticsConvsGraph = false
+        } else if (count > 0) {
+          this.displayAnalyticsConvsGraph = true
         }
 
 
