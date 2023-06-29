@@ -3,9 +3,9 @@
     <div class="search-box">
 
         <div class="input-box" style="border: 1px solid #5f6368;
-        width: 100%;
-        height: 30px;
-        border-radius:20px">
+            width: 100%;
+            height: 30px;
+            border-radius:20px">
             <input class="custom-input" placeholder="search a block..." (input)="livesearch($event.target.value);">
         </div>
 
@@ -29,7 +29,11 @@
 
          <div class="default-intents">
 
-            <div id="intent_-1" *ngIf="intent_start" class="intent" (click)="selectIntent(intent_start, -1)">
+            <div *ngIf="intent_start" 
+                id="intent_-1" 
+                class="intent" 
+                [ngClass]="{'active': idSelectedIntent === -1}"
+                (click)="onSelectIntent(intent_start, -1)">
                 <div class="icon-container">
                     <span class="material-icons rocket-launch-icon">rocket_launch</span>
                 </div>
@@ -62,8 +66,11 @@
             </div> -->
 
 
-            <div id="intent_-2" *ngIf="intent_defaultFallback" class="intent"
-                (click)="selectIntent(intent_defaultFallback, -2)">
+            <div *ngIf="intent_defaultFallback" 
+                id="intent_-2"
+                class="intent"
+                [ngClass]="{'active': idSelectedIntent === -2}"
+                (click)="onSelectIntent(intent_defaultFallback, -2)">
                 <div class="icon-container">
                     <span class="material-icons undo-icon">undo</span>
                 </div>
@@ -106,8 +113,11 @@
 
         <div class="intents" id="intents-list">
 
-            <div *ngFor="let intent of filtered_intents; let id = index" id="intent_{{id}}" class="intent"
-                style="padding-left: 10px;" value="intent.id" (click)="selectIntent(intent, id)">
+            <div *ngFor="let intent of filtered_intents; let id = index" 
+                id="intent_{{id}}" 
+                class="intent"
+                [ngClass]="{'active': idSelectedIntent === id}"
+                style="padding-left: 10px;" value="intent.id" (click)="onSelectIntent(intent, id)">
 
                 
                 <!-- <div *ngIf="intent.intent_display_name === 'start'" class="icon-container">

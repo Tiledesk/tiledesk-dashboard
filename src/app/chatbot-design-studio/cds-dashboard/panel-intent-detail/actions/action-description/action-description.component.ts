@@ -1,7 +1,8 @@
-import { ACTIONS_LIST } from './../../../../utils';
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { Action } from 'app/models/intent-model';
+import { ELEMENTS_LIST, TYPE_INTENT_ELEMENT } from './../../../../utils';
+import { Component, Input, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
+import { Action, Form } from 'app/models/intent-model';
 import { SatPopover } from '@ncstate/sat-popover';
+import { LoggerService } from 'app/services/logger/logger.service';
 
 @Component({
   selector: 'cds-action-description',
@@ -11,37 +12,63 @@ import { SatPopover } from '@ncstate/sat-popover';
 export class ActionDescriptionComponent implements OnInit {
 
   @ViewChild("descriptionTooltip") popover : SatPopover;
-  
-  @Input() actionType: string;
-  @Input() actionSelected: Action;
-  @Input() showTip: boolean = false;
-  @Input() tipText: string;
-  constructor() { }
 
-  titlePlaceholder: string = 'set a title to your action...'
-  action = ACTIONS_LIST
-  
-  ngOnInit(): void {
-    
+  @Input() actionSelected: Action;
+  @Input() elementType: string;
+  @Input() showTip: boolean = false;
+
+  @Output() closeIntent = new EventEmitter();
+  @Output() saveIntent = new EventEmitter();
+
+  constructor(
+    private logger: LoggerService
+  ) { 
   }
 
-  ngOnChanges(){
-    // if(this.actionSelected && this.actionSelected._tdActionTitle === ''){
-    //   this.titlePlaceholder = 'set a title to your action...'
+  titlePlaceholder: string = 'set a title to your action...';
+  element: any;
+  dataInput: string;
+  
+  ngOnInit(): void {
+    console.log('ActionDescriptionComponent ngOnInit:: ', this.actionSelected);
+    // if(this.elementSelected){
+    //   this.elementType = TYPE_INTENT_ELEMENT.FORM;
+    // } else {
+    //   this.elementType = this.actionSelected._tdActionType;
     // }
-    // console.log('showtipppp', this.showTip, this.tipText)
+    if(this.actionSelected){
+      this.elementType = this.actionSelected._tdActionType;
+    }
+    try {
+      this.element = ELEMENTS_LIST.find(item => item.type === this.elementType);
+      if(this.actionSelected._tdActionTitle && this.actionSelected._tdActionTitle != ""){
+        this.dataInput = this.actionSelected._tdActionTitle;
+      }
+      console.log('ActionDescriptionComponent action:: ', this.element);
+    } catch (error) {
+      this.logger.log("error ", error);
+    }
   }
 
   onChangeText(text: string){
-   this.actionSelected._tdActionTitle = text
-    // this.actionSel._tdActionTitle = text
+    console.log('ActionDescriptionComponent onChangeText:: ', text);
+    this.actionSelected._tdActionTitle = text;
   }
+
 
   manageTooltip(){
     this.popover.toggle()
-    setTimeout(() => {
-      // this.popover.close()
-    }, 3000);
+    // setTimeout(() => {
+    //   // this.popover.close()
+    // }, 3000);
+  }
+
+  onCloseIntent(){
+    this.closeIntent.emit();
+  }
+
+  onSaveIntent(){
+    this.saveIntent.emit();
   }
 
 }

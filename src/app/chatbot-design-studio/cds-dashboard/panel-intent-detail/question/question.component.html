@@ -1,84 +1,45 @@
-<!-- <div class="box--textarea-wpr">
- 
-    <mat-form-field class="box--textarea" >
-        <textarea matInput cdkTextareaAutosize [(ngModel)]="question" #autosize="cdkTextareaAutosize"
-            cdkAutosizeMinRows="1" cdkAutosizeMaxRows="8" (ngModelChange)="onChangeText($event)">
-        </textarea>
-    </mat-form-field>
-</div> -->
-
-<!-- <div class="text-editor-wrapper">
-    <div class="text-editor">
-        <mat-form-field class="box-textarea" appearance="fill">
-            <textarea matInput cdkTextareaAutosize [(ngModel)]="question" #autosize="cdkTextareaAutosize"
-                cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5" (ngModelChange)="onChangeText($event)">
-            </textarea>
-        </mat-form-field>
-    </div>
-
-</div> -->
-
-
 <div class="cds-questions-main-content">
 
-
     <div class="cds-add-question-container">
-        <!-- <mat-form-field class="box-textarea" appearance="fill"> -->
-
-        <!-- <input   class="cds-question" value="{{q}}"
-                    (ngModelChange)="onChangeText($event)" /> -->
         <h4>
             When a user says something similar to a training phrase, Tiledesk matches it to the block
         </h4>            
-
         <div class="input-group cds-input-group">
             <span class="input-group-addon cds-group-addon-left">
                 <span class="material-icons">
                     format_quote
                 </span>
             </span>
-            <!-- -->
-            <!-- (ngModelChange)="onChangeText($event)"  [(ngModel)]="questions_array[index]" -->
-            <input [(ngModel)]="newQuestion" (keydown.enter)='addQuestion()'type="text" class="cds-add-question-input"
-                aria-label="question" placeholder="Add user expression and press enter or click ADD">
-
-                <span class="input-group-addon cds-group-addon-question-right" (click)="addQuestion()" [ngClass]="{'add-question-btn-disabled': !newQuestion || newQuestion?.length === 0}">
-                  <span class="cds-group-addon-question-right-btn-text"> ADD </span>  
-                    <span class="material-icons cds-group-addon-question-right-btn-icon">
-                        add
-                    </span>
+            <input [(ngModel)]="newQuestion" 
+                (keydown.enter)='onAddQuestion()'
+                type="text" 
+                class="cds-add-question-input"
+                aria-label="question" 
+                placeholder="Add user expression and press enter or click ADD">
+            <span class="input-group-addon cds-group-addon-question-right" (click)="onAddQuestion()" [ngClass]="{'add-question-btn-disabled': !newQuestion || newQuestion?.length === 0}">
+                <span class="cds-group-addon-question-right-btn-text"> ADD </span>  
+                <span class="material-icons cds-group-addon-question-right-btn-icon">
+                    add
                 </span>
-          
+            </span>
         </div>
    
-
     </div>
 
-
-    <div class="cds-questions-container" *ngFor="let q of questions_array;let index = index;trackBy:trackByIndex;">
-        <!-- <mat-form-field class="box-textarea" appearance="fill"> -->
-
-        <!-- <input   class="cds-question" value="{{q}}"
-                    (ngModelChange)="onChangeText($event)" /> -->
-
+    <div class="cds-questions-container" *ngFor="let q of questions_array;let index = index; trackBy:trackByIndex;">
         <div class="input-group cds-input-group">
             <span class="input-group-addon cds-group-addon-left">
                 <span class="material-icons">
                     format_quote
                 </span>
             </span>
-            <!-- -->
-            <!-- (ngModelChange)="onChangeText($event)" (change)="onChangeText($event)" [(ngModel)]="questions_array[index]" -->
-            <input [value]="q" (input)="onChangeText($event.target.value, index)" type="text" class="cds-question-input"
-                aria-label="question">
-            <span class="input-group-addon cds-group-addon-right" (click)="removeQuestion(index)">
+            <input [value]="q" (input)="onChangeText($event.target.value, index)" type="text" class="cds-question-input" aria-label="question">
+            <span class="input-group-addon cds-group-addon-right" (click)="onRemoveQuestion(index)">
                 <span class="material-icons cds-group-addon-right-icon">
                     delete
                 </span>
             </span>
         </div>
-        <!-- </mat-form-field> -->
-
     </div>
 
 </div>

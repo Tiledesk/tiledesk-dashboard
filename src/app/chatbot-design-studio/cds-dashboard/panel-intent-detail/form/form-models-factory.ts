@@ -13,6 +13,7 @@ export class FormModelsFactory {
         form_base.id = 1
         form_base.cancelCommands = [];
         form_base.cancelReply = "";
+        form_base.description = '"Base" model contains the following fields: user fullname, user email';
         form_base.fields = new Array() as Field[];
         // first nested JSON
         let field0 = new Field()
@@ -37,6 +38,7 @@ export class FormModelsFactory {
         form_advanced.id = 2
         form_advanced.cancelCommands = [];
         form_advanced.cancelReply = "";
+        form_advanced.description = '"Advanced" model contains the following fields: user fullname, company name, user phone, user email';
         form_advanced.fields = new Array() as Field[];
         let field2 = new Field()
         field2.name = 'userFullname';
@@ -67,6 +69,7 @@ export class FormModelsFactory {
         form_custom.id = 3
         form_custom.cancelCommands = [];
         form_custom.cancelReply = "";
+        form_custom.description = '"Custom" model is empty';
         form_custom.fields = new Array() as Field[];
 
 

@@ -1,12 +1,7 @@
 <div class="cds-publish-on-community-modal-header">
-    <h1 mat-dialog-title style="margin:0px">Publish your chatbot on the tiledesk community</h1>
-    <mat-dialog-actions align="end" style="min-height: 24px;">
-        <button mat-button mat-dialog-close style="background: transparent;
-        border: unset;
-        width: 24px;
-        height: 24px;
-        position: relative;
-        top: -26px;">
+    <h1 mat-dialog-title>Publish your chatbot on the tiledesk community</h1>
+    <mat-dialog-actions>
+        <button mat-button mat-dialog-close>
             <span class="material-icons">
                 close
             </span>
@@ -16,24 +11,16 @@
 </div>
 
 <mat-dialog-content class="mat-typography" style="min-height: 30px; height: 400px;">
-    <mat-tab-group #tabGroup>
-        <mat-tab label="Basic">
+    <mat-tab-group #tabGroup [(selectedIndex)]="selectedIndex">
+        <!-- <mat-tab label="Basic">
 
             <div class="basic-info-wpr">
-
-                <!-- <div class="row" style="margin-right: 0px; margin-left: 0px;">
-                    <div class="col-xs-12">
-                        <h3 style="margin-bottom: 12px;"> Publish your chatbot on the tiledesk community </h3>
-                    </div>
-
-                </div> -->
-
-                <!-- ------------------------------------------------------------------------------------------- -->
-                <!-- Bot name  -->
-                <!-- ------------------------------------------------------------------------------------------- -->
+                <!- - ------------------------------------------------------------------------------------------- - ->
+                <!- - Bot name  - ->
+                <!- - ------------------------------------------------------------------------------------------- - ->
                 <div class="row" style="margin-right: 0px; margin-left: 0px;">
                     <label class="col-xs-12 cds-custom-label">
-                        <!-- {{ "BotsAddEditPage.BotName" | translate }} -->
+                        <!- - {{ "BotsAddEditPage.BotName" | translate }} - ->
                         Name
                     </label>
                     <div class="col-xs-12">
@@ -42,12 +29,12 @@
                     </div>
                 </div>
 
-                <!-- ------------------------------------------------------------------------------------------- -->
-                <!-- Description  -->
-                <!-- ------------------------------------------------------------------------------------------- -->
+                <!- - ------------------------------------------------------------------------------------------- - ->
+                <!- - Description  - ->
+                <!- - ------------------------------------------------------------------------------------------- - ->
                 <div class="row" style="margin-right: 0px; margin-left: 0px;">
                     <label class="col-xs-12 cds-custom-label">
-                        <!-- {{ 'Description' | translate }} -->
+                        <!- - {{ 'Description' | translate }} - ->
                         Description
                     </label>
                     <div class="col-xs-12">
@@ -55,20 +42,20 @@
                             style="resize: vertical;margin-bottom: 4px;" class="input" type="text"
                             placeholder="{{ 'Description' | translate }}"> </textarea>
                         <span class="bot-description-note">
-                            Markdown supported - use the Markdown language to enrich your text
+                            Markup supported - use the Markup language to enrich your text
                         </span>
                     </div>
                 </div>
 
-                <!-- ------------------------------------------------------------------------------------------- -->
-                <!-- Update button  -->
-                <!-- ------------------------------------------------------------------------------------------- -->
+                <!- - ------------------------------------------------------------------------------------------- - ->
+                <!- - Update button  - ->
+                <!- - ------------------------------------------------------------------------------------------- - ->
                 <div class="row" style="margin-right: 0px; margin-left: 0px;">
 
                     <div class="col-xs-12">
                         <button id="csd-update-bot-btn" #editbotbtn class="btn btn-primary pull-left"
                             (click)="editBot()" [disabled]="faqKb_name?.length === 0">
-                            <!-- {{ "BotsAddEditPage.UpdateBotName" | translate }} -->
+                            <!- - {{ "BotsAddEditPage.UpdateBotName" | translate }} - ->
                             Update bot
                         </button>
                     </div>
@@ -78,7 +65,6 @@
             </div>
             <div class="button-wpr">
                 <button id="cds-navigation-btn" class="btn btn-primary pull-right" (click)="tabGroup.selectedIndex = 1">
-
                     Next
                     <span class="material-icons">
                         arrow_forward
@@ -86,17 +72,17 @@
                 </button>
             </div>
 
-        </mat-tab>
+        </mat-tab> -->
 
-        <mat-tab label="Icon">
+        <!-- <mat-tab label="Icon">
 
             <div class="upload-chatbot-image">
-                <!-- -------------------------------- -->
-                <!-- @ Bot avatar -->
-                <!-- -------------------------------- -->
+                <!- - -------------------------------- - ->
+                <!- - @ Bot avatar - ->
+                <!- - -------------------------------- - ->
                 <div class="row" style="margin-right: 0px; margin-left: 0px;margin-bottom: 8px;margin-top: 30px;">
                     <div class="col-sm-12">
-                        <!-- [ngStyle]="{'margin-left':botType === 'dialogflow' ? '35px' : 0 }" -->
+                        <!- - [ngStyle]="{'margin-left':botType === 'dialogflow' ? '35px' : 0 }" - ->
                         <div class="card-avatar"
                             style="display: flex;align-items: center;margin-bottom: 12px;justify-content: center;">
                             <div class="bot_avatar" style="width: 80px; height: 80px;margin-right: 20px;">
@@ -116,10 +102,10 @@
                                 <label for="modal-file-upload" class="custom-file-upload">
                                     <span *ngIf="!showSpinnerInUploadImageBtn">
                                         <i class="fa fa-cloud-upload"></i> Upload image
-                                        <!-- {{ "UserProfile.UploadImage" | translate }} -->
+                                        <!- - {{ "UserProfile.UploadImage" | translate }} - ->
                                     </span>
                                     <span *ngIf="showSpinnerInUploadImageBtn">
-                                        <!-- {{ 'VisitorsPage.Loading' | translate }} -->
+                                        <!- - {{ 'VisitorsPage.Loading' | translate }} - ->
                                         Loading
                                         <i class="fa fa-spinner fa-spin"></i>
                                     </span>
@@ -135,7 +121,7 @@
 
                                     <span class="bottom"
                                         style="min-width: fit-content;padding: 5px;border-radius: 3px; text-transform: none;">
-                                        <!-- {{'RemovePhoto' | translate}} -->
+                                        <!- - {{'RemovePhoto' | translate}} - ->
                                         Remove Image
                                         <i></i>
                                     </span>
@@ -147,7 +133,7 @@
             </div>
             <div class="button-wpr">
 
-                <button id="cds-navigation-btn" class="btn btn-primary pull-right" (click)="tabGroup.selectedIndex = 2"
+                <button id="cds-navigation-btn" class="btn btn-primary pull-right" (click)="tabGroup.selectedIndex = 1"
                     style="margin-left: 12px;">
 
                     Next
@@ -162,15 +148,14 @@
                     Back
                 </button>
             </div>
-        </mat-tab>
+        </mat-tab> -->
 
 
         <!-- -------------------------- -->
         <!-- Tags  -->
         <!-- -------------------------- -->
-        <mat-tab label="Tags">
+        <!-- <mat-tab label="Tags">
             <div class="cds-select-chatbot-tags-wpr">
-                <!-- (change)="addTag()" -->
                 <ng-select class="ng-select-tags" id="select-tag" #ngSelect [items]="tagsList" bindLabel="tag"
                     bindValue="_id" [clearable]="false" [clearSearchOnAdd]="true" [hideSelected]="true"
                     placeholder="Type to create a tag and press enter" [(ngModel)]="tag" addTagText="Create New"
@@ -197,16 +182,6 @@
 
                     <div class="cds-chatbot-tag-delete-icon-wpr" (click)="removeTag(tag)">
                         <i class="material-icons" style="font-size: 12px;"> close </i>
-                        <!-- <svg style="width: 13px; height: auto;position:absolute;margin-top: 6px;"
-                    aria-hidden="true" focusable="false" data-prefix="fas" data-icon="tag"
-                    class="svg-inline--fa-tag-icon fa-tag fa-w-16" role="img"
-                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-
-                    <path class="tag_icon_in_ws_msgs"
-                      d="M0 252.118V48C0 21.49 21.49 0 48 0h204.118a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882 0L14.059 286.059A48 48 0 0 1 0 252.118zM112 64c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z">
-                    </path>
-                  </svg> -->
-
                     </div>
                 </div>
             </div>
@@ -228,7 +203,7 @@
                 </button>
 
             </div>
-        </mat-tab>
+        </mat-tab> -->
 
 
         <!-- <mat-tab label="Icon"> Content 3 </mat-tab> -->
@@ -266,7 +241,7 @@
                 </div>
             </div>
 
-            <button id="cds-navigation-btn" class="btn btn-primary pull-left" (click)="tabGroup.selectedIndex = 2">
+            <button id="cds-navigation-btn" class="btn btn-primary pull-left" (click)="tabGroup.selectedIndex = 0">
                 <span class="material-icons">
                     arrow_back
                 </span>

@@ -1,6 +1,7 @@
 @import "./src/assets/sass/cds/_variables.scss";
 
 .tilebot-add-edit-form {
+    background: #425575;
     height: auto;
     max-height: 0;
     overflow: hidden;
@@ -15,34 +16,84 @@
         padding: 8px 16px;
         margin: 0px;
     }
+    button.edit-form {
+        border-radius: 20px;
+        padding-right: 20px;
+        padding-top: 10px;
+        color: #fff;
+        min-height: 30px;
+        background-color: transparent;
+        box-shadow: none;
+        float: right;
+    }
+    button.edit-form .icon-label {
+        vertical-align: text-top;
+        display: inline-block;
+        overflow: hidden;
+        margin-right: 10px;
+        width: auto;
+    }
+
+
+
+    
+
+
+
 
     .mat-expansion-panel {
         box-shadow: none;
-        background: #293445;
-        border: 1px solid #5f6368;
+        background: #51627e;
+        border: 0px solid #5f6368;
         overflow: visible;
     }
     .mat-expansion-panel-header {
         padding: 0 12px;
     }
+    .validation-field-title {
+        font-size: 16px;
+        margin: 0;
+        font-weight: 400;
+        color: #e8eaed;
+    }
+
+    ::ng-deep .mat-expansion-indicator:after {
+        color: #f2f2f2;
+        margin-top: -4px;
+    }
+    mat-expansion-panel {
+        box-shadow: none;
+        background: rgb(48 63 92);
+        border: 1px solid #5f6368;
+        overflow: visible;
+        &.open-block {
+            pointer-events: none;
+        }
+        mat-expansion-panel-header {
+            height: 40px;
+        }
+        &.mat-expanded {
+            ::ng-deep .mat-expansion-panel-body {
+                opacity: 1;
+            }
+        }
+        ::ng-deep .mat-expansion-panel-body {
+            opacity: 0;
+        }
+    }
 
 
 
     ::ng-deep .mat-expansion-panel-body {
-        // padding: 20px 0px 16px;
-        padding: 0px 0px 0px;
+        padding: 0;
+        margin-top: 20px;
     }
     .mat-expansion-panel-content > .mat-expansion-panel-body {
         // padding: 20px 0px 16px!important;
         padding: 0px 0px 0px !important;
     }
-
-    #mat-expansion-panel-header-1 > span.mat-expansion-indicator:after  {
-        color: $light-blue;
-    }
-
     .input-wrapper {
-        margin-top: 20px;
+        margin: 10px 0 0 0;
     }
 }
 
@@ -50,8 +101,11 @@
     background-color: #fff;
     border: 1px solid #e8f0f5;
     box-shadow: none;
-    padding: 10px;
+    padding: 10px 0;
     display: flex;
+    border-radius: 6px;
+    font-size: 14px;
+    min-height: 64px;
     em.material-icons {
         vertical-align: middle;
         display: inline-flex;
@@ -65,8 +119,7 @@
 }
 
 .form-field {
-    // background-color: #fff;
-    padding: 20px 20px 0;
+    padding: 20px;
     width: 100%;
     margin: 0px auto;
     border-radius: 4px;
@@ -79,13 +132,14 @@
     .form-control {
         margin-bottom: 7px;
         height: auto;
+        padding: 0;
         background-image: none;
     }
-    &.is-focused {
-        .form-control {
-            background-image: linear-gradient(#3ea9f5, #3ea9f5), linear-gradient(#d2d2d200, #d2d2d200);
-        }
-    }
+    // &.is-focused {
+    //     .form-control {
+    //         background-image: linear-gradient(#3ea9f5, #3ea9f5), linear-gradient(#d2d2d200, #d2d2d200);
+    //     }
+    // }
     label {
         font-size: 12px;
         line-height: normal;
@@ -99,14 +153,18 @@
             background-position: center bottom, center calc(100% - 1px);
         }
     }
+    .input-regex{
+        background-color: #fff;
+    }
 }
 
 .form-group.is-focused textarea.form-control {
-    background-size: 100% 2px, 100% 0px;
-    box-shadow: none;
-    transition-duration: 0.3s;
-    background-image: linear-gradient(#3ea9f5, #3ea9f5), linear-gradient(#d2d2d200, #d2d2d200);
-    background-position: center bottom,center calc(100% - 1px);
+    background-image:none;
+    // background-size: 100% 2px, 100% 0px;
+    // box-shadow: none;
+    // transition-duration: 0.3s;
+    // background-image: linear-gradient(#3ea9f5, #3ea9f5), linear-gradient(#d2d2d200, #d2d2d200);
+    // background-position: center bottom,center calc(100% - 1px);
 }
 
 textarea.form-control,
@@ -137,25 +195,25 @@ input.form-control {
     }
 }
 
-.form-group.is-error {
-    .form-control {
-        outline: none;
-        background-image: linear-gradient(#ed2e19, #ed2e19), linear-gradient(#d2d2d2, #d2d2d2);
-        background-size: 100% 2px, 100% 1px;
-        box-shadow: none;
-        transition-duration: 0.3s;
-    }
-    .ng-select {
-        &.form-control-select ::ng-deep .ng-select-container {
-            display: flex;
-            outline: none;
-            background-image: linear-gradient(#ed2e19, #ed2e19), linear-gradient(#d2d2d2, #d2d2d2);
-            background-size: 100% 2px, 100% 1px;
-            box-shadow: none;
-            transition-duration: 0.3s;
-        }
-    }
-}
+// .form-group.is-error {
+//     .form-control {
+//         outline: none;
+//         background-image: linear-gradient(#ed2e19, #ed2e19), linear-gradient(#d2d2d2, #d2d2d2);
+//         background-size: 100% 2px, 100% 1px;
+//         box-shadow: none;
+//         transition-duration: 0.3s;
+//     }
+//     .ng-select {
+//         &.form-control-select ::ng-deep .ng-select-container {
+//             display: flex;
+//             outline: none;
+//             background-image: linear-gradient(#ed2e19, #ed2e19), linear-gradient(#d2d2d2, #d2d2d2);
+//             background-size: 100% 2px, 100% 1px;
+//             box-shadow: none;
+//             transition-duration: 0.3s;
+//         }
+//     }
+// }
 
 .form-group label.control-label {
     top: -20px;
@@ -164,45 +222,42 @@ input.form-control {
     padding: 0;
     line-height: normal;
     position: absolute;
+    font-weight: 400;
+    font-size: 13px;
+    white-space: normal;
+    word-wrap: break-word;
+    color: #e8eaed;
 }
-.form-group.is-empty label.control-label {
-    font-size: 14px;
-    line-height: normal;
-    position: absolute;
-    color: #aaa;
-    z-index: 1;
-    pointer-events: none;
-}
+// .form-group.is-empty label.control-label {
+//     z-index: 1;
+//     pointer-events: none;
+// }
 
-.form-group.is-focused label.control-label {    
-    font-size: 11px;
-    line-height: normal;
-    position: absolute;
-    pointer-events: none;
-    transition: 0.3s ease all;
-    color: #3c4858;
-}
+// .form-group.is-focused label.control-label {    
+//     pointer-events: none;
+//     transition: 0.3s ease all;
+// }
 
-.form-group.ng-select {
-    label.control-label {
-        font-size: 11px;
-        line-height: normal;
-        position: absolute;
-        pointer-events: none;
-        transition: 0.3s ease all;
-        color: #3c4858;
-    }
-    &.is-placeholder {
-        label.control-label {
-            font-size: 14px;
-            line-height: normal;
-            position: absolute;
-            color: #aaa;
-            z-index: 1;
-            pointer-events: none;
-        }
-    }
-}
+// .form-group.ng-select {
+//     label.control-label {
+//         font-size: 11px;
+//         line-height: normal;
+//         position: absolute;
+//         pointer-events: none;
+//         transition: 0.3s ease all;
+//         color: #fff;
+//     }
+//     &.is-placeholder {
+//         label.control-label {
+//             font-size: 14px;
+//             line-height: normal;
+//             position: absolute;
+//             color: #fff;
+//             z-index: 1;
+//             pointer-events: none;
+//         }
+//     }
+// }
 
 .input-prefix {
     position: absolute;
@@ -220,41 +275,14 @@ input.form-control {
     font-weight: 800;
 }
 
-.edit-form {
-    border-radius: 20px;
-    padding-right: 8.5px !important;
-    padding-left: 8.5px !important;
-    color: #fff;
-    min-height: 30px;
-}
-
-.edit-form .icon-label {
-    vertical-align: text-top;
-    display: inline-block;
-    overflow: hidden;
-    margin-left: 0;
-    width: auto;
-    max-width: 0px;
-}
-
-.edit-form:hover .icon-label {
-    transition: max-width 0.1s ease-in;
-    margin-right: 3px;
-    max-width: 100px;
-    margin-left: 5px;
-}
+// .control-label {
+//     transition: unset;
+//     font-size: 15px !important;
+//     color: #fff !important;
+//     left: 6px !important;
+// }
 
 
-.control-label {
-    transition: unset;
-    font-size: 15px !important;
-    color: #aaa !important;
-    left: 6px !important;
-}
-
-.validation-field-title {
-    color: $light-blue;
-}
 
 
 /** CSS textarea */

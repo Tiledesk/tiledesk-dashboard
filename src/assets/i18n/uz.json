@@ -2322,6 +2322,9 @@
     "IPAddress":"IP manzili",
     "NoTAGAssignedToThisContactYet":"Hozircha bu kontaktga TAG tayinlanmagan",
     "NoTAGAssignedYet":"TAG hali tayinlanmagan",
+    "WidgetVisibility": "Vidjet ko‘rinishi",
+    "DisplayWidget": "Displey vidjeti",
+    "OnPageChange": "Sahifa o'zgarganida", 
     "AddIntentPage": {
         "AddForm": "Shakl qo'shing",
         "SelectTemplateForm": "Tavsiya etilganlar orasida shakl turini tanlang yoki yangisini yarating",

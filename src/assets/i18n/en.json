@@ -2321,6 +2321,9 @@
     "IPAddress":"IP Address",
     "NoTAGAssignedToThisContactYet":"No TAG assigned to this contact yet",
     "NoTAGAssignedYet":"No TAG assigned yet",
+    "WidgetVisibility": "Widget Visibility",
+    "DisplayWidget": "Display Widget",
+    "OnPageChange": "On page change", 
     "AddIntentPage": {
         "AddForm": "Add form",
         "SelectTemplateForm": "Select a type of form among those suggested, or create a new one",

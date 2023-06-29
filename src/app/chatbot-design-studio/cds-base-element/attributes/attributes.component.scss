@@ -41,7 +41,7 @@
     }
     mat-expansion-panel {
         box-shadow: none;
-        background: #293445;
+        background: rgb(48 63 92);
         border: 1px solid #5f6368;
         overflow: visible;
         &.open-block {
@@ -112,7 +112,8 @@
         width: 50%;
     }
 
-    ::ng-deep cds-textarea#assignTo {
+    ::ng-deep cds-textarea#assignTo,
+    ::ng-deep cds-textarea#value {
         display: flex;
         &.assigned {
             textarea {
@@ -120,6 +121,14 @@
                 padding: 0!important;
                 border: 0!important;
                 outline: 0!important;
+            }
+        }
+        &.value {
+            textarea {
+                padding: 0 0 0 10px !important;
+                border: 0!important;
+                outline: 0!important;
+                border-radius: 0 4px 4px 0;
             }
         }
         .editor-utils {

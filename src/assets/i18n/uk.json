@@ -2323,6 +2323,9 @@
     "IPAddress":"IP-адреса",
     "NoTAGAssignedToThisContactYet":"Цього контакту ще не призначено TAG",
     "NoTAGAssignedYet":"Теги ще не призначені",
+    "WidgetVisibility": "Віджет Видимість",
+    "DisplayWidget": "Віджет дисплея",
+    "OnPageChange": "На сторінці зміни", 
     "AddIntentPage": {
         "AddForm": "Додати форму",
         "SelectTemplateForm": "Виберіть тип форми серед запропонованих або створіть новий",

@@ -43,7 +43,7 @@ export class BaseConditionRowComponent implements OnInit {
       this.setFormValue()
       this.step = 1;
     }
-    // console.log('******* ngOnChanges-->', this.condition);
+    console.log('******* ngOnChanges-->', this.condition);
   }
 
   createConditionGroup(): FormGroup{
@@ -74,7 +74,6 @@ export class BaseConditionRowComponent implements OnInit {
 
 /** START EVENTS cds-textarea **/
   onChangeTextArea(text: string){
-    // console.log('******* onChangeTextArea-->', text);
     this.logger.log('textttt', text, text.match(new RegExp(/(?<=\$\{)(.*)(?=\})/g)));
     if(text){
       this.disableSubmit = false;
@@ -92,7 +91,6 @@ export class BaseConditionRowComponent implements OnInit {
   }
 
   onSelectedAttribute(variableSelected: {name: string, value: string}, step: number){ 
-    // console.log('******* onVariableSelected-->', step, variableSelected);   
     this.logger.log('1 onVariableSelected-->', step, this.conditionForm, variableSelected);
     if(step === 0){
       this.conditionForm.patchValue({ operand1: variableSelected.value}, {emitEvent: false})
@@ -104,11 +102,11 @@ export class BaseConditionRowComponent implements OnInit {
       this.readonlyTextarea = true;
       this.setAttributeBtnOperand2 = false;
     }
-    // console.log('******* onVariableSelected-->', step, variableSelected);
+    console.log('******* onVariableSelected-->', step, variableSelected);
   }
 
   onClearSelectedAttribute(){
-    // console.log('onClearSelectedAttribute-->');   
+    console.log('onClearSelectedAttribute-->');   
     this.conditionForm.patchValue({ operand2: {type: 'var', name: ''}}, {emitEvent: false});
     this.disableSubmit = true;
     this.readonlyTextarea = false;

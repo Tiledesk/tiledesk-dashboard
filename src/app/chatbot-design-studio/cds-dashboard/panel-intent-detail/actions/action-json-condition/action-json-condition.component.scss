@@ -1,10 +1,25 @@
 @import "./src/assets/sass/cds/_variables.scss";
 
+
+::-webkit-scrollbar {
+    width: 0px;
+}
+
+#scrollMe {
+    scroll-behavior: smooth;
+    // padding: 0;
+    // margin: 0;
+    // margin-bottom: 30px;
+    padding-bottom: 140px;
+}
+
 .content {
     //padding: 10px 30px;
     padding: 20px 0px;
-    margin-left: 30px;
-    margin-right: 30px;
+    padding-left: 30px;
+    padding-right: 30px;
+    overflow: auto;
+    max-height: calc(100vh - 200px);
 }
 
 .text-editor-wrapper {

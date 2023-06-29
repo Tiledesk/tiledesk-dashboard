@@ -32,7 +32,7 @@
         <div class="action-box-wpr">
           <div class="action-box">
             <div class="action-btn-icon">
-              <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.REPLY)">
+              <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="onActionSelected(TYPE_ACTION.REPLY)">
                 <img [src]="ACTIONS_LIST['REPLY'].src" [title]="ACTIONS_LIST['REPLY'].name">
               </button>
             </div>
@@ -42,7 +42,7 @@
         <div class="action-box-wpr">
           <div class="action-box">
             <div class="action-btn-icon">
-              <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.AGENT)">
+              <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="onActionSelected(TYPE_ACTION.AGENT)">
                 <img [src]="ACTIONS_LIST['AGENT'].src" [title]="ACTIONS_LIST['AGENT'].name">
               </button>
             </div>
@@ -59,7 +59,7 @@
         <div class="action-box-wpr">
           <div class="action-box">
             <div class="action-btn-icon">
-              <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.RANDOM_REPLY)">
+              <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="onActionSelected(TYPE_ACTION.RANDOM_REPLY)">
                 <img [src]="ACTIONS_LIST['RANDOM_REPLY'].src" [title]="ACTIONS_LIST['RANDOM_REPLY'].name">
               </button>
             </div>
@@ -69,7 +69,7 @@
         <div class="action-box-wpr">
           <div class="action-box">
             <div class="action-btn-icon">
-              <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.CLOSE)">
+              <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="onActionSelected(TYPE_ACTION.CLOSE)">
                 <img [src]="ACTIONS_LIST['CLOSE'].src" [title]="ACTIONS_LIST['CLOSE'].name">
               </button>
             </div>
@@ -85,7 +85,7 @@
         <div class="action-box-wpr">
           <div class="action-box">
             <div class="action-btn-icon">
-              <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.OPEN_HOURS)">
+              <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="onActionSelected(TYPE_ACTION.OPEN_HOURS)">
                 <img [src]="ACTIONS_LIST['OPEN_HOURS'].src" [title]="ACTIONS_LIST['OPEN_HOURS'].name">
               </button>
             </div>
@@ -95,7 +95,7 @@
         <div class="action-box-wpr">
           <div class="action-box">
             <div class="action-btn-icon">
-              <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.ONLINE_AGENTS)">
+              <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="onActionSelected(TYPE_ACTION.ONLINE_AGENTS)">
                 <img [src]="ACTIONS_LIST['ONLINE_AGENTS'].src" [title]="ACTIONS_LIST['ONLINE_AGENTS'].name">
               </button>
             </div>
@@ -118,7 +118,7 @@
         <div class="action-box-wpr">
           <div class="action-box">
             <div class="action-btn-icon">
-              <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.JSON_CONDITION)">
+              <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="onActionSelected(TYPE_ACTION.JSON_CONDITION)">
                 <img [src]="ACTIONS_LIST['JSON_CONDITION'].src" [title]="ACTIONS_LIST['JSON_CONDITION'].name">
               </button>
             </div>
@@ -128,7 +128,7 @@
         <div class="action-box-wpr">
           <div class="action-box">
             <div class="action-btn-icon">
-              <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.INTENT)">
+              <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="onActionSelected(TYPE_ACTION.INTENT)">
                 <img [src]="ACTIONS_LIST['INTENT'].src" [title]="ACTIONS_LIST['INTENT'].name">
               </button>
             </div>
@@ -145,7 +145,7 @@
         <div class="action-box-wpr">
           <div class="action-box">
             <div class="action-btn-icon">
-              <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.ASSIGN_VARIABLE)">
+              <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="onActionSelected(TYPE_ACTION.ASSIGN_VARIABLE)">
                 <img [src]="ACTIONS_LIST['ASSIGN_VARIABLE'].src" [title]="ACTIONS_LIST['ASSIGN_VARIABLE'].name">
               </button>
             </div>
@@ -155,7 +155,7 @@
         <div class="action-box-wpr">
           <div class="action-box">
             <div class="action-btn-icon">
-              <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.DELETE_VARIABLE)">
+              <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="onActionSelected(TYPE_ACTION.DELETE_VARIABLE)">
                 <img [src]="ACTIONS_LIST['DELETE_VARIABLE'].src" [title]="ACTIONS_LIST['DELETE_VARIABLE'].name">
               </button>
             </div>
@@ -172,7 +172,7 @@
         <div class="action-box-wpr">
           <div class="action-box">
             <div class="action-btn-icon">
-              <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.REPLACE_BOT)">
+              <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="onActionSelected(TYPE_ACTION.REPLACE_BOT)">
                 <img [src]="ACTIONS_LIST['REPLACE_BOT'].src" [title]="ACTIONS_LIST['REPLACE_BOT'].name">
               </button>
             </div>
@@ -182,7 +182,7 @@
         <div class="action-box-wpr">
           <div class="action-box">
             <div class="action-btn-icon">
-              <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.WAIT)">
+              <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="onActionSelected(TYPE_ACTION.WAIT)">
                 <img [src]="ACTIONS_LIST['WAIT'].src" [title]="ACTIONS_LIST['WAIT'].name">
               </button>
             </div>
@@ -204,7 +204,7 @@
         <div class="action-box-wpr">
           <div class="action-box">
             <div class="action-btn-icon">
-              <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.WEB_REQUEST)">
+              <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="onActionSelected(TYPE_ACTION.WEB_REQUEST)">
                 <img [src]="ACTIONS_LIST['WEB_REQUEST'].src" [title]="ACTIONS_LIST['WEB_REQUEST'].name">
               </button>
             </div>
@@ -214,7 +214,7 @@
         <div class="action-box-wpr">
           <div class="action-box">
             <div class="action-btn-icon">
-              <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.EMAIL)">
+              <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="onActionSelected(TYPE_ACTION.EMAIL)">
                 <img [src]="ACTIONS_LIST['EMAIL'].src" [title]="ACTIONS_LIST['EMAIL'].name">
               </button>
             </div>
@@ -235,7 +235,7 @@
         <div class="action-box-wpr">
           <div class="action-box">
             <div class="action-btn-icon">
-              <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.HIDE_MESSSAGE)">
+              <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="onActionSelected(TYPE_ACTION.HIDE_MESSSAGE)">
                 <img [src]="ACTIONS_LIST['HIDE_MESSSAGE'].src" [title]="ACTIONS_LIST['HIDE_MESSSAGE'].name">
               </button>
             </div>
@@ -245,7 +245,7 @@
         <div class="action-box-wpr">
           <div class="action-box">
             <div class="action-btn-icon">
-              <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.CHANGE_DEPARTMENT)">
+              <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="onActionSelected(TYPE_ACTION.CHANGE_DEPARTMENT)">
                 <img [src]="ACTIONS_LIST['CHANGE_DEPARTMENT'].src" [title]="ACTIONS_LIST['CHANGE_DEPARTMENT'].name">
               </button>
             </div>
@@ -257,17 +257,17 @@
     </section>
 
 
-    <!-- <section>
-      <div class="section-title">New</div>
-      <!- - ---------------------------------- -->
+    <section>
+      <div class="section-title">new</div>
+      <!-- ---------------------------------- -->
       <!-- First row -->
-      <!-- ---------------------------------- - ->
+      <!-- ---------------------------------- -->
       <div class="actions-btns-wpr">
       
         <div class="action-box-wpr">
           <div class="action-box">
             <div class="action-btn-icon">
-              <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected(TYPE_ACTION.ASSIGN_FUNCTION)">
+              <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="onActionSelected(TYPE_ACTION.ASSIGN_FUNCTION)">
                 <img [src]="ACTIONS_LIST['ASSIGN_FUNCTION'].src" [title]="ACTIONS_LIST['ASSIGN_FUNCTION'].name">
               </button>
             </div>
@@ -276,7 +276,7 @@
         </div>
   
       </div>
-    </section> -->
+    </section>
 
 
     <!-- ---------------------------------- -->
@@ -357,7 +357,7 @@
     <div class="action-box-wpr">
       <div class="action-box">
         <div class="action-btn-icon">
-          <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="actionSelected('helpcenter')" disabled>
+          <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="onActionSelected('helpcenter')" disabled>
             <svg aria-label="HelpCenter" xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24"
               height="24px" viewBox="0 0 24 24" width="24px" fill="#fff">
               <g>

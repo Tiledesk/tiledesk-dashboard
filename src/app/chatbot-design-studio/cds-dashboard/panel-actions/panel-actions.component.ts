@@ -23,6 +23,7 @@ export class PanelActionsComponent implements OnInit, OnChanges {
   // @Input() isOpenActionDrawer: boolean;
   @Input() intentSelected: Intent
   @Output() openActionDrawer = new EventEmitter();
+  @Output() addNewAction = new EventEmitter();
 
   TYPE_ACTION = TYPE_ACTION
   ACTIONS_LIST = ACTIONS_LIST
@@ -52,10 +53,8 @@ export class PanelActionsComponent implements OnInit, OnChanges {
     if (this.eRef.nativeElement.contains(event.target)) {
       // this.logger.log("clicked inside")
     } else {
-
       // const elSidebarUserDtls = <HTMLElement>document.querySelector('#user-details');
       // this.logger.log('[SIDEBAR-USER-DETAILS] clicked outside elSidebarUserDtls ', elSidebarUserDtls)
-
       //this.logger.log('[SIDEBAR-USER-DETAILS] HAS_CLICKED_OPEN_USER_DETAIL ', this.HAS_CLICKED_OPEN_USER_DETAIL)
       // && (!event.target.classList.contains('ng-option'))
       // clicked_element_id !== 'a0da04ac7772' && 
@@ -89,97 +88,76 @@ export class PanelActionsComponent implements OnInit, OnChanges {
     this.openActionDrawer.emit(false);
   }
 
-  actionSelected(typeAction: TYPE_ACTION) {
-    this.logger.log('[PANEL ACTION] actionSelected ', typeAction);
+  onActionSelected(typeAction: TYPE_ACTION) {
+    console.log('[PANEL ACTION] actionSelected ', typeAction);
+    let action: any;
     if(typeAction === TYPE_ACTION.REPLY){
-      let action = new ActionReply();
+      action = new ActionReply();
       let commandWait = new Command(TYPE_COMMAND.WAIT);
       action.attributes.commands.push(commandWait);
       let command = new Command(TYPE_COMMAND.MESSAGE);
       command.message = new Message('text', 'A chat message will be sent to the visitor');
-      this.logger.log('1 action:  ', action)
-      this.logger.log('2 command:  ', command)
       action.attributes.commands.push(command);
-      this.intentSelected.actions.push(action);
     }
     if(typeAction === TYPE_ACTION.RANDOM_REPLY){
-      let action = new ActionRandomReply();
+      action = new ActionRandomReply();
       let commandWait = new Command(TYPE_COMMAND.WAIT);
       action.attributes.commands.push(commandWait);
       let command = new Command(TYPE_COMMAND.MESSAGE);
       command.message = new Message('text', 'A chat message will be sent to the visitor');
-      this.logger.log('1 action:  ', action)
-      this.logger.log('2 command:  ', command)
       action.attributes.commands.push(command);
-      this.intentSelected.actions.push(action);
     }
     if(typeAction === TYPE_ACTION.WEB_REQUEST){
-      let action = new ActionWebRequest();
-      this.intentSelected.actions.push(action);
+      action = new ActionWebRequest();
     }
     if(typeAction === TYPE_ACTION.AGENT){
-      let action = new ActionAgent();
-      this.intentSelected.actions.push(action);
+      action = new ActionAgent();
     }
     if(typeAction === TYPE_ACTION.CLOSE){
-      let action = new ActionClose();
-      this.intentSelected.actions.push(action);
+      action = new ActionClose();
     }
     if(typeAction === TYPE_ACTION.WAIT){
-      let action = new ActionWait();
-      this.intentSelected.actions.push(action);
+      action = new ActionWait();
     }
     if(typeAction === TYPE_ACTION.INTENT) {
-      let action = new ActionIntentConnected()
-      this.intentSelected.actions.push(action)
+      action = new ActionIntentConnected()
     }
     if(typeAction === TYPE_ACTION.EMAIL) {
-      let action = new ActionEmail()
-      this.intentSelected.actions.push(action);
+      action = new ActionEmail();
     }
-    // if(typeAction === TYPE_ACTION.CONDITION){
-    //   let action = new ActionCondition();
-    //   this.intentSelected.actions.push(action);
-    // }
     if(typeAction === TYPE_ACTION.ASSIGN_VARIABLE){
-      let action = new ActionAssignVariable();
-      this.intentSelected.actions.push(action);
+      action = new ActionAssignVariable();
     }
     if(typeAction === TYPE_ACTION.DELETE_VARIABLE){
-      let action = new ActionDeleteVariable();
-      this.intentSelected.actions.push(action);
+      action = new ActionDeleteVariable();
     }
     if(typeAction === TYPE_ACTION.ONLINE_AGENTS){
-      let action = new ActionOnlineAgent();
-      this.intentSelected.actions.push(action);
+      action = new ActionOnlineAgent();
     }
     if(typeAction === TYPE_ACTION.OPEN_HOURS){
-      let action = new ActionOpenHours();
-      this.intentSelected.actions.push(action);
+      action = new ActionOpenHours();
     }
     if(typeAction === TYPE_ACTION.REPLACE_BOT){
-      let action = new  ActionReplaceBot();
-      this.intentSelected.actions.push(action);
+      action = new  ActionReplaceBot();
     }
     if(typeAction === TYPE_ACTION.CHANGE_DEPARTMENT) {
-      let action = new  ActionChangeDepartment();
-      this.intentSelected.actions.push(action);
+      action = new  ActionChangeDepartment();
     }
     if(typeAction === TYPE_ACTION.HIDE_MESSSAGE){
-      let action = new ActionHideMessage();
-      this.intentSelected.actions.push(action);
+      action = new ActionHideMessage();
     }
     if(typeAction === TYPE_ACTION.JSON_CONDITION){
-      let action = new ActionJsonCondition();
-      action.groups.push( new Expression())
-      this.logger.log('actionnnnn', action)
-      this.intentSelected.actions.push(action);
+      action = new ActionJsonCondition();
+      action.groups.push( new Expression());
     }
     if(typeAction === TYPE_ACTION.ASSIGN_FUNCTION){
-      let action = new ActionAssignFunction();
-      this.intentSelected.actions.push(action);
+      action = new ActionAssignFunction();
     }
-    
+    if(typeAction === TYPE_ACTION.ASSIGN_FUNCTION){
+      action = new ActionAssignFunction();
+    }
+    // this.intentSelected.actions.push(action);
+    this.addNewAction.emit(action);
   }
 
 }

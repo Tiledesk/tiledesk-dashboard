@@ -4,6 +4,7 @@ import { Button } from 'app/models/intent-model';
 
 
 import { TYPE_BUTTON, TYPE_URL } from '../../../../../utils';
+import { SatPopover } from '@ncstate/sat-popover';
 
 @Component({
   selector: 'appdashboard-panel-button-configuration',
@@ -12,7 +13,8 @@ import { TYPE_BUTTON, TYPE_URL } from '../../../../../utils';
 })
 export class PanelButtonConfigurationComponent implements OnInit {
   @ViewChild('input_title', { static: true }) input_topic: CDSTextComponent;
-
+  @ViewChild("emojiPicker") emojiPicker: SatPopover;
+  
   @Input() listOfActions: Array<{name: string, value: string, icon?:string}>;
   @Input() button: Button;
   @Output() saveButton = new EventEmitter();
@@ -42,6 +44,12 @@ export class PanelButtonConfigurationComponent implements OnInit {
   clickInside: boolean;
   buttonAttributes: any;
   openBlockAttributes: boolean = false;
+
+  emojiPikerBtn: boolean = true
+  emojiPerLine: number = 8;
+  emojiColor: string ="#ac8b2c";
+  emojiiCategories = [ 'recent', 'people', 'nature', 'activity'];
+
 
   constructor() { }
 
@@ -118,7 +126,7 @@ export class PanelButtonConfigurationComponent implements OnInit {
         // console.log('intent 5', intent);
       }
       catch (err) {
-        // console.log("error on intent.parameters = JSON.parse(json_string)", err);
+        console.log("error on intent.parameters = JSON.parse(json_string)", err);
       }            
     }
     return intent;
@@ -142,7 +150,7 @@ export class PanelButtonConfigurationComponent implements OnInit {
       this.button.value = this.buttonLabel;
       this.buttonLabelResult = true;
     } catch (error) {
-      // console.log('error: ', error);
+      console.log('error: ', error);
     }
     return true;
   }
@@ -254,6 +262,10 @@ export class PanelButtonConfigurationComponent implements OnInit {
     this.saveButton.emit(this.button);
   }
 
+  onAddEmoji(event){
+    this.buttonLabel = `${this.buttonLabel}${event.emoji.native}`;
+    this.emojiPicker.close();
+  } 
 
   
   

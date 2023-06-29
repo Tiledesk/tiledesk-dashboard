@@ -2,12 +2,10 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 import { Message, Command } from '../../../../../../models/intent-model';
 import { 
+  TYPE_BUTTON,
   TYPE_COMMAND, 
-  TYPE_MESSAGE, 
-  TYPE_BUTTON, 
-  TIME_WAIT_DEFAULT,
-  MESSAGE_METADTA_WIDTH,
-  MESSAGE_METADTA_HEIGHT 
+  TYPE_MESSAGE,
+  TYPE_URL,
 } from '../../../../../utils';
 
 @Component({
@@ -73,6 +71,50 @@ export class PanelReplyToolsComponent implements OnInit {
           },
         } 
         break;
+      case TYPE_MESSAGE.GALLERY:
+          newElement = {
+            type: TYPE_COMMAND.MESSAGE,
+            message: {
+              text: '',
+              type: TYPE_MESSAGE.GALLERY,
+              attributes: {
+                attachment: {
+                    type: 'gallery',
+                    gallery: [
+                      {
+                        preview: { src: ''},
+                        title: 'Place title',
+                        description: 'Place description',
+                        buttons: [
+                          {
+                            'value': 'Button',
+                            'type': TYPE_BUTTON.TEXT,
+                            'target': TYPE_URL.BLANK,
+                            'link': '',
+                            'action': '',
+                            'show_echo': true
+                          }
+                        ]
+                      }
+                    ]
+                }
+              }
+            },
+          } 
+          break;
+      case TYPE_MESSAGE.REDIRECT:
+            newElement = {
+              type: TYPE_COMMAND.MESSAGE,
+              message: {
+                text: '',
+                type: TYPE_MESSAGE.REDIRECT,
+                metadata: {
+                  src : '',
+                  target: TYPE_URL.BLANK
+                }
+              },
+            } 
+            break;
       default:
         break;
     }

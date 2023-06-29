@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { Button, Message, Command, ActionReply, MessageWithWait, MessageAttributes } from '../../../../../models/intent-model';
+import { Button, Message, Command, ActionReply, MessageWithWait} from '../../../../../models/intent-model';
 import { ACTIONS_LIST, TYPE_ACTION, TYPE_COMMAND, TYPE_RESPONSE, TYPE_BUTTON, TYPE_URL, TYPE_MESSAGE } from '../../../../utils';
 import { LoggerService } from 'app/services/logger/logger.service';
 
@@ -48,13 +48,14 @@ export class ActionReplyComponent implements OnInit {
 
   // SYSTEM FUNCTIONS //
   ngOnInit(): void {
+    console.log('ActionReplyComponent ngOnInit', this.reply);
     // console.log('ngOnInit panel-response::: ', this.typeAction);
     this.actionType = (this.typeAction === TYPE_ACTION.RANDOM_REPLY ? 'RANDOM_REPLY' : 'REPLY');
 
   }
 
   ngOnChanges() {
-    this.logger.log('ActionReplyComponent ngOnChanges');
+    this.logger.log('ActionReplyComponent ngOnChanges', this.reply);
     this.initialize();
     // this.generateCommandsOfElements();
     // this.elementIntentSelectedType = this.elementIntentSelected.type;
@@ -121,6 +122,9 @@ export class ActionReplyComponent implements OnInit {
       if (el.metadata) {
         elementMessage.message.metadata = el.metadata;
       }
+      if(el._tdJSONCondition){
+        elementMessage.message._tdJSONCondition = el._tdJSONCondition
+      }
       replyArrayElements.push(elementMessage);
       if (el.text) {
         textConversation += el.text + '\r\n'
@@ -146,6 +150,9 @@ export class ActionReplyComponent implements OnInit {
           }
           if (element.message.metadata) {
             message.metadata = element.message.metadata;
+          }
+          if(element.message._tdJSONCondition){
+            message._tdJSONCondition = element.message._tdJSONCondition
           }
           this.logger.log('MessageWithWait:::', message);
           this.arrayMessagesWithWait.push(message);
@@ -203,12 +210,9 @@ export class ActionReplyComponent implements OnInit {
       // this.reply.attributes.commands.push(element);
       this.scrollToBottom();
     } catch (error) {
-      this.logger.log('onAddNewResponse ERROR', error);
+      this.logger.error('onAddNewResponse ERROR', error);
     }
   }
-
-
-
 
   // EVENT FUNCTIONS //
   /** */

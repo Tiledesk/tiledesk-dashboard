@@ -7,11 +7,12 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 })
 export class DelaySliderComponent implements OnInit {
   
-  @Output() changeDelayTime = new EventEmitter();
   @Input() delayTime: number;
   @Input() step : number = 0.1;
   @Input() min: number = 0;
   @Input() max: number = 10;
+  @Output() changeDelayTime = new EventEmitter();
+  @Output() clickDelayTime = new EventEmitter();
 
   delayOpen: boolean;
   focusSlider: boolean;
@@ -36,6 +37,7 @@ export class DelaySliderComponent implements OnInit {
   }
 
   onValueChange(){
+    this.closeDelaySlider()
     this.changeDelayTime.emit(this.delayTime);
   }
 
@@ -61,8 +63,7 @@ export class DelaySliderComponent implements OnInit {
     } else {
       this.delayOpen = true;
     }
+    this.clickDelayTime.emit(this.delayOpen);
   }
-
-
 
 }

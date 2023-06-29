@@ -1,15 +1,10 @@
-<cds-action-description 
-    [actionType]="'JSON_CONDITION'"
-    [actionSelected]="action">
-</cds-action-description>
-
-<div class="content">
+<div class="content" #scrollMe id="scrollMe" >
 
     <form [formGroup]="actionJsonConditionFormGroup">
         <!-- formArrayName="groups" -->
         <div > 
             <!-- [formGroupName]="i" -->
-            <div  class="text-editor-wrapper" *ngFor="let group of action?.groups; let i = index; let last = last">
+            <div class="text-editor-wrapper" *ngFor="let group of action?.groups; let i = index; let last = last">
                 <!-- EXPRESSION [i]-->
                 <div *ngIf="i%2 === 0" class="base-filter">
                     <div class="control-buttons" *ngIf="group?.conditions && group?.conditions.length > 0 || i!==0">
@@ -93,18 +88,31 @@
             ></cds-attributes>
         </div>
     
-        <div class="text-editor-wrapper checkbox-condition">
-            <div class="field-box">
-                <!-- <label class="title-label">if <b style="color: red">FALSE</b> go to:</label> -->
-                <mat-checkbox 
-                    [formControl]="actionJsonConditionFormGroup.controls['stopOnConditionMet']">
-                    {{"Stop on condition met" | translate}}
-                </mat-checkbox>
-            </div>
-        </div>
+        
 
     </form>
 
     
 
+</div>
+
+<div class="footer-panel-intent-detail">
+    <!-- <div class="text-editor-wrapper checkbox-condition">
+        <div class="field-box">
+            <mat-checkbox 
+                [formControl]="actionJsonConditionFormGroup.controls['stopOnConditionMet']">
+                {{"Stop on condition met" | translate}}
+            </mat-checkbox>
+        </div>
+    </div> -->
+
+    <div class="disable-input-message">
+        <section class="disable-input-message-section">
+            <mat-checkbox 
+                [checked]="action.stopOnConditionMet"
+                (change)="onStopConditionMeet()">
+                {{"Stop on condition met" | translate}}
+            </mat-checkbox>
+        </section>
+    </div>
 </div>

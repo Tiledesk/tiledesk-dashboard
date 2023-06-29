@@ -1,28 +1,26 @@
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'appdashboard-answer',
   templateUrl: './answer.component.html',
   styleUrls: ['./answer.component.scss']
 })
-export class AnswerComponent implements OnInit , OnChanges{
+export class AnswerComponent implements OnInit {
   @Input() intentSelected: any;
+  @Output() updateAnswerIntentSelected = new EventEmitter();
+  
   public answer: string;
 
   constructor() { }
 
   ngOnInit(): void {
+    // this.answer = JSON.parse(JSON.stringify(this.intentSelected.answer));
     this.answer = this.intentSelected.answer
   }
 
-  ngOnChanges() {
-    // console.log('[INTENT-ANSWER] intentSelected ' ,this.intentSelected) 
-
-  }
-
   onChangeText(_answer:string) { 
-    // console.log('[INTENT-ANSWER] onChangeText text' , _answer) 
-    this.intentSelected.answer = _answer
+    console.log('onChangeText:: _answer:: ', _answer);
+    this.updateAnswerIntentSelected.emit(_answer);
   }
 
 }

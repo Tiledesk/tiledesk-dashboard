@@ -30,7 +30,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatTabsModule } from '@angular/material/tabs';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
-
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
 
 // import { SharedModule } from '../shared/shared.module';
 import { CdsDashboardComponent } from './cds-dashboard/cds-dashboard.component';
@@ -58,7 +58,6 @@ import { ModalWindowComponent } from './cds-dashboard/panel-intent-detail/form/m
 import { CdsSidebarComponent } from './cds-sidebar/cds-sidebar.component';
 
 import { ElementTextareaComponent } from './cds-dashboard/panel-intent-detail/actions/action-reply/elements/element-textarea/element-textarea.component';
-import { CdsChatbotDetailsComponent } from './cds-chatbot-details/cds-chatbot-details.component';
 import { CdsFulfillmentComponent } from './cds-fulfillment/cds-fulfillment.component';
 
 //BASE-ELEMENT
@@ -73,6 +72,10 @@ import { RulesListComponent } from './cds-rules/rules-list/rules-list.component'
 import { ConditionComponent } from './cds-rules/rules-add/condition/condition.component';
 import { ActionComponent } from './cds-rules/rules-add/action/action.component';
 
+//SETTINGS COMPONENT
+import { CdsChatbotDetailsComponent } from './cds-chatbot-details/cds-chatbot-details.component';
+import { CDSDetailCommunityComponent } from './cds-chatbot-details/community/community.component';
+import { CDSDetailDeveloperComponent } from './cds-chatbot-details/developer/developer.component';
 
 //intent ACTIONS
 import { ActionWaitComponent } from './cds-dashboard/panel-intent-detail/actions/action-wait/action-wait.component';
@@ -107,17 +110,34 @@ import { OperandComponent } from './cds-dashboard/panel-intent-detail/actions/ac
 import { OperatorComponent } from './cds-dashboard/panel-intent-detail/actions/action-assign-variable/operator/operator.component';
 import { DialogComponent } from './cds-base-element/dialog/dialog.component';
 import { ActionAssignFunctionComponent } from './cds-dashboard/panel-intent-detail/actions/action-assign-function/action-assign-function.component';
+import { DialogYesNoComponent } from './cds-base-element/dialog-yes-no/dialog-yes-no.component';
+import { CDSFilterComponent } from './cds-base-element/filter/filter.component';
+import { CDSDetailBotDetailComponent } from './cds-chatbot-details/detail/detail.component';
+import { CDSDetailImportExportComponent } from './cds-chatbot-details/import-export/import-export.component';
+import { WsChatbotService } from 'app/services/websocket/ws-chatbot.service';
+import { ChangeBotLangModalComponent } from 'app/components/modals/change-bot-lang/change-bot-lang.component';
+import { GalleryResponseComponent } from './cds-dashboard/panel-intent-detail/actions/action-reply/reply-types/gallery-response/gallery-response.component';
+import { RedirectResponseComponent } from './cds-dashboard/panel-intent-detail/actions/action-reply/reply-types/redirect-response/redirect-response.component';
+
+
+
+
+
 
 @NgModule({
   declarations: [
     CdsDashboardComponent,
+    //ACTION-REPLY
     PanelReplyToolsComponent,
     ActionReplyComponent,
     TextResponseComponent,
     DelaySliderComponent,
     ImageResponseComponent,
     FrameResponseComponent,
+    GalleryResponseComponent,
     ImageUploadComponent,
+    RedirectResponseComponent,
+
     PanelIntentListComponent,
     PanelIntentComponent,
     PanelActionsComponent,
@@ -139,12 +159,13 @@ import { ActionAssignFunctionComponent } from './cds-dashboard/panel-intent-deta
     CdsFulfillmentComponent,
     ConditionComponent,
     ActionComponent,
-    CdsChatbotDetailsComponent,
+    
     CdsSplashScreenComponent,
     ActionWaitComponent,
     //BASE-ELEMENT
     CDSTextComponent,
     CDSDelaySliderComponent,
+    CDSFilterComponent,
     CDSTextareaComponent,
     ActionDeleteVariableComponent,
     ActionAssignVariableComponent,
@@ -172,7 +193,16 @@ import { ActionAssignFunctionComponent } from './cds-dashboard/panel-intent-deta
     OperandComponent,
     OperatorComponent,
     DialogComponent,
-    ActionAssignFunctionComponent
+    ActionAssignFunctionComponent,
+    DialogYesNoComponent,
+    //SETTINGS COMPONENTS
+    CdsChatbotDetailsComponent,
+    CDSDetailDeveloperComponent,
+    CDSDetailCommunityComponent,
+    CDSDetailBotDetailComponent,
+    CDSDetailImportExportComponent,
+    //DETAIL COMPONENT SECTION
+    ChangeBotLangModalComponent,
   ],
   imports: [
     A11yModule,
@@ -191,6 +221,7 @@ import { ActionAssignFunctionComponent } from './cds-dashboard/panel-intent-deta
     MatGridListModule,
     MatAutocompleteModule,
     MatSlideToggleModule,
+    MatButtonToggleModule,
     MatListModule,
     MatButtonModule,
     MatIconModule,
@@ -211,6 +242,9 @@ import { ActionAssignFunctionComponent } from './cds-dashboard/panel-intent-deta
         deps: [HttpClient],
       },
     })
+  ],
+  providers: [
+    WsChatbotService
   ]
 })
 export class ChatbotDesignStudioModule { }

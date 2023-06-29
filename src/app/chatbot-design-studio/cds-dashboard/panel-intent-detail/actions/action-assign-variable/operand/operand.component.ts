@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { TYPE_FUNCTION_LIST } from 'app/chatbot-design-studio/utils';
 import { Operand } from 'app/models/intent-model';
 
 
@@ -12,9 +11,10 @@ import { Operand } from 'app/models/intent-model';
 export class OperandComponent implements OnInit {
 
     @Input() operand: Operand;
+    @Input() listOfFunctions: Array<{name: string, value: string, icon?:string}>;
     
     operandForm: FormGroup;
-    listOfFunctions: Array<{name: string, value: string, icon?:string}> = [];
+    // listOfFunctions: Array<{name: string, value: string, icon?:string}> = [];
     openSlectFunction: boolean;
     placeholder: string;
 
@@ -22,9 +22,9 @@ export class OperandComponent implements OnInit {
 
     ngOnInit(): void {
         this.openSlectFunction = false;
-        for (let key in TYPE_FUNCTION_LIST) {
-            this.listOfFunctions.push({name: TYPE_FUNCTION_LIST[key].name, value: TYPE_FUNCTION_LIST[key].type})
-        }
+        // for (let key in TYPE_FUNCTION_LIST) {
+        //     this.listOfFunctions.push({name: TYPE_FUNCTION_LIST[key].name, value: TYPE_FUNCTION_LIST[key].type})
+        // }
     }
 
     ngOnChanges() {

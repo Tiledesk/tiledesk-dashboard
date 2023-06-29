@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser'
-import { MessageWithWait } from '../../../../../../../models/intent-model';
+import { Expression, MessageWithWait } from '../../../../../../../models/intent-model';
 import { TYPE_ACTION, TYPE_MESSAGE, TEXT_CHARS_LIMIT, MESSAGE_METADTA_WIDTH, MESSAGE_METADTA_HEIGHT, calculatingRemainingCharacters } from '../../../../../../utils';
 
 @Component({
@@ -35,6 +35,9 @@ export class FrameResponseComponent implements OnInit {
 
   // Delay //
   delayTime: number;
+  // Filter // 
+  canShowFilter: boolean = true;
+  booleanOperators=[ { type: 'AND', operator: 'AND'},{ type: 'OR', operator: 'OR'},]
 
 
   constructor(
@@ -89,13 +92,23 @@ export class FrameResponseComponent implements OnInit {
   //   this.response.text = text;
   // }
 
+  onClickDelayTime(opened: boolean){
+    this.canShowFilter = !opened
+  }
+
   /** */
   onChangeDelayTime(value:number){
     this.delayTime = value;
     this.response.time = value*1000;
     this.changeDelayTimeReplyElement.emit();
+    this.canShowFilter = true;
   }
 
+  onChangeExpression(expression: Expression){
+    this.response._tdJSONCondition = expression;
+    this.changeReplyElement.emit();
+  }
+  
   /** */
   onCloseFramePanel(event){
     //if(event.url){
