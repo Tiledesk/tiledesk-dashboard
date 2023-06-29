@@ -203,7 +203,8 @@
           [use_case_for_child]="use_case_for_child" 
           [solution_channel_for_child]="solution_channel_for_child"
           [solution_for_child]="solution_for_child"
-          [testBotOnWA]="testBotOnWA"> 
+          [testBotOnWA]="testBotOnWA"
+          [botIdForTestWA]="botIdForTestWA"> 
         </appdashboard-home-whatsapp-account-wizard>
      
         <appdashboard-home-convs-graph *ngIf="displayAnalyticsConvsGraph"  
@@ -220,7 +221,7 @@
           [whatsAppIsInstalled]="whatsAppIsInstalled"
           [whatsAppIsConnected]="whatsAppIsConnected"> 
         </appdashboard-home-whatsapp-account>
-        <!-- (botHookedToDefaultDept)="botHookedToDefaultDept($event)" -->
+
         <appdashboard-home-create-chatbot #childCreateChatbot *ngIf="displayCreateChatbot"
           [use_case_for_child]="use_case_for_child" 
           [solution_channel_for_child]="solution_channel_for_child"

@@ -25,6 +25,7 @@ export class HomeWhatsappAccountWizardComponent implements OnInit, OnChanges {
   @Input() solution_channel_for_child: string;
   @Input() solution_for_child: string;
   @Input() testBotOnWA: boolean;
+  @Input() botIdForTestWA: string;
   
   public thereIsALeastOneBot: boolean = false;
   public projectID: string;
@@ -51,6 +52,8 @@ export class HomeWhatsappAccountWizardComponent implements OnInit, OnChanges {
     console.log('[HOME-WA-WIZARD] solution_channel_for_child ', this.solution_channel_for_child)
     console.log('[HOME-WA-WIZARD] solution_for_child ', this.solution_for_child)
     console.log('[HOME-WA-WIZARD] testBotOnWA ', this.testBotOnWA)
+    console.log('[HOME-WA-WIZARD] botIdForTestWA ', this.botIdForTestWA)
+    
   }
 
   getCurrentProject() {
@@ -163,7 +166,7 @@ export class HomeWhatsappAccountWizardComponent implements OnInit, OnChanges {
     console.log('[HOME-WHATSAPP-ACCOUNT-WIZARD] TEST IT OUT ' )
     let info = {
       project_id: this.projectID,
-      bot_id: this.waBotId
+      bot_id: this.botIdForTestWA
     }
 
     console.log("[HOME-WHATSAPP-ACCOUNT-WIZARD] TEST IT OUT WA BOT: ", info)

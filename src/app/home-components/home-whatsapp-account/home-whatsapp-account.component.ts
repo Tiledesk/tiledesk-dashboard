@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from 'app/core/auth.service';
@@ -89,7 +89,8 @@ export class HomeWhatsappAccountComponent implements OnInit, OnChanges {
    * On changes
    */
 
-   ngOnChanges() {
+   ngOnChanges(changes: SimpleChanges) {
+    console.log('[HOME-WA] ngOnChanges changes ', changes);
     console.log('[HOME-WA] ngOnChanges whatsAppIsInstalled ', this.whatsAppIsInstalled);
     console.log('[HOME-WA] ngOnChanges whatsAppIsConnected ', this.whatsAppIsConnected);
     

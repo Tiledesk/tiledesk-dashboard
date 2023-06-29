@@ -164,6 +164,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   wadepartmentName: string = '';
   waBotId: string = '';
   testBotOnWA: boolean = false;
+  botIdForTestWA: string = '';
   constructor(
     public auth: AuthService,
     private route: ActivatedRoute,
@@ -644,6 +645,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   botHookedToDefaultDept(event){
     console.log('[HOME] BOT ID HOOKED TO DEFAULT DEPT', event);
+    this.botIdForTestWA = event;
   }
 
 

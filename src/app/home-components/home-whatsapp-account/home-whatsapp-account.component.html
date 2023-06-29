@@ -58,7 +58,7 @@
 
                     <!-- <div class="wa-status-label">Status: </div> -->
                     <div class="wa-status-indicator"
-                        [ngStyle]="{' background-color':whatsAppIsConnected ? '#25d366' : '#f44336' }"></div>
+                    [ngClass]="{'background-wa-disconnected': whatsAppIsConnected === false, 'background-wa-connected': whatsAppIsConnected === true}"></div>
                     <div class="wa-connection-status">
 
                         <span *ngIf="whatsAppIsConnected">
