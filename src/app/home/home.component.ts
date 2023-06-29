@@ -163,6 +163,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   wadepartmentid: string;
   wadepartmentName: string = '';
   waBotId: string = '';
+  testBotOnWA: boolean = false;
   constructor(
     public auth: AuthService,
     private route: ActivatedRoute,
@@ -295,25 +296,29 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         }
       }
 
-
-
-    
-
-     
-
-
-      if (this.current_selected_prjct && this.current_selected_prjct.id_project && this.current_selected_prjct.id_project.attributes && this.current_selected_prjct.id_project.attributes.wastep) {
-        if (this.current_selected_prjct.id_project.attributes.wastep[0].step1 === false) {
+      if (this.current_selected_prjct && 
+          this.current_selected_prjct.id_project && 
+          this.current_selected_prjct.id_project.attributes &&
+          this.current_selected_prjct.id_project.attributes.wastep) {
+        if (this.current_selected_prjct.id_project.attributes.wastep[0].step2 === false) {
+          this.testBotOnWA = false
+          console.log('[HOME] - GET WA WIZARD STEPS (onInit) - whatsAppIsConnected ', this.whatsAppIsConnected);
+        } else {
+          this.testBotOnWA = true
+        }
+      
+        if (this.current_selected_prjct.id_project.attributes.wastep[0].step3 === false) {
           this.whatsAppIsConnected = false
-          console.log('[HOME] - UPDATE PRJCT WITH WA WIZARD STEPS (onInit) - whatsAppIsConnected ', this.whatsAppIsConnected);
+          console.log('[HOME] - GET WA WIZARD STEPS (onInit) - whatsAppIsConnected ', this.whatsAppIsConnected);
         } else {
           this.whatsAppIsConnected = true
         }
       } else {
         this.whatsAppIsConnected = false
+        this.testBotOnWA = false
       }
       console.log('[HOME] - (onInit) - whatsAppIsConnected ', this.whatsAppIsConnected);
-
+      console.log('[HOME] - (onInit) - testBotOnWA ', this.testBotOnWA);
 
       if (this.current_selected_prjct && this.current_selected_prjct.id_project && this.current_selected_prjct.id_project.attributes && this.current_selected_prjct.id_project.attributes.wasettings) {
         console.log('[HOME] - (onInit) - wasettings ', this.current_selected_prjct.id_project.attributes.wasettings);
@@ -621,6 +626,55 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     return promise;
   }
 
+  scrollToChild(el: ElementRef) {
+    el.nativeElement.scrollIntoView({ behavior: 'smooth' });
+
+    setTimeout(() => {
+      // this.displayWhatsappAccountWizard = false; 
+    }, 1500);
+  }
+
+  // -------------------------------------------
+  // STEP 1
+  // -------------------------------------------
+  goToCreateChatbot() {
+    console.log('[HOME] GO TO CONNECT WA childCreateChatbot', this.childCreateChatbot);
+    this.scrollToChild(this.childCreateChatbot)
+  }
+
+  botHookedToDefaultDept(event){
+    console.log('[HOME] BOT ID HOOKED TO DEFAULT DEPT', event);
+  }
+
+
+   // -------------------------------------------
+  // STEP 2
+  // -------------------------------------------
+ 
+  hasTestedBotOnWa() {
+    this.waWizardSteps = [{ step1: true, step2: true, step3: false }]
+    this.upadatedWatsAppWizard(this.waWizardSteps)
+  }
+
+
+
+
+  // -------------------------------------------
+  // STEP 3
+  // -------------------------------------------
+  goToConnectWA() {
+    console.log('[HOME] GO TO CONNECT WA childWhatsappAccount', this.childWhatsappAccount);
+    this.scrollToChild(this.childWhatsappAccount)
+
+    // const elemOverlayDiv = <HTMLElement>document.querySelector('.overlay');
+    // console.log('[HOME] GO TO CONNECT WA elemOverlayDiv', elemOverlayDiv);
+
+    // const elemHomeMainContent = <HTMLElement>document.querySelector('.home-main-content');
+    // console.log('[HOME] elemHomeMainContent ', elemHomeMainContent)
+    // this.elemHomeMainContentHeight = elemHomeMainContent.offsetHeight + 'px';
+    // console.log('[HOME] elemHomeMainContent Height', this.elemHomeMainContentHeight)
+
+  }
 
   onClickOnGoToLearnMoreOrManageApp() {
     console.log('HAS CLICKED GO TO LEARN MORE OR MANAGE APP whatsAppIsInstalled', this.whatsAppIsInstalled)
@@ -678,6 +732,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
+
   openAppStoreInPopupWindow() {
     const whatsappUrl = this.appConfigService.getConfig().whatsappApiUrl;
 
@@ -714,54 +769,33 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.projectService.checkWAConnection()
       .subscribe((res: any) => {
 
-
-
-        console.log('[HOME-WA-WIZARD] - CHECK-WA-CONNECTION - RES ', res);
-        console.log('[HOME-WA-WIZARD] - CHECK-WA-CONNECTION - RES > success', res.success);
+        console.log('[HOME] - CHECK-WA-CONNECTION - RES ', res);
+        console.log('[HOME] - CHECK-WA-CONNECTION - RES > success', res.success);
 
         if (res.success === true) {
           this.whatsAppIsConnected = true
-          this.waWizardSteps = [{ step1: true, step2: false, step3: false }]
+          this.waWizardSteps = [{ step1: true, step2: true, step3: true }]
           this.upadatedWatsAppWizard(this.waWizardSteps)
           this.updateProjectWithWASettings(res.settings)
+        } else if (res.success === false) {
+          this.waWizardSteps = [{ step1: true, step2: true, step3: false }]
+          this.upadatedWatsAppWizard(this.waWizardSteps)
+          this.updateProjectByDeletingWASettings()
         }
 
       }, error => {
-        console.error('[HOME-WA-WIZARD] - CHECK-WA-CONNECTION - ERROR ', error)
+        console.error('[HOME] - CHECK-WA-CONNECTION - ERROR ', error)
       }, () => {
-        console.log('[HOME-WA-WIZARD] - CHECK-WA-CONNECTION * COMPLETE *')
+        console.log('[HOME] - CHECK-WA-CONNECTION * COMPLETE *')
       });
   }
 
-  goToConnectWA() {
-    console.log('[HOME-WA] GO TO CONNECT WA childWhatsappAccount', this.childWhatsappAccount);
-    this.scrollToChild(this.childWhatsappAccount)
+  // /. --- step 3
 
-    // const elemOverlayDiv = <HTMLElement>document.querySelector('.overlay');
-    // console.log('[HOME-WA] GO TO CONNECT WA elemOverlayDiv', elemOverlayDiv);
 
-    // const elemHomeMainContent = <HTMLElement>document.querySelector('.home-main-content');
-    // console.log('[HOME-WA-WIZARD] elemHomeMainContent ', elemHomeMainContent)
-    // this.elemHomeMainContentHeight = elemHomeMainContent.offsetHeight + 'px';
-    // console.log('[HOME-WA-WIZARD] elemHomeMainContent Height', this.elemHomeMainContentHeight)
 
-  }
-
-  goToCreateChatbot() {
-    console.log('[HOME-WA] GO TO CONNECT WA childCreateChatbot', this.childCreateChatbot);
-    this.scrollToChild(this.childCreateChatbot)
-  }
-
-  scrollToChild(el: ElementRef) {
-    el.nativeElement.scrollIntoView({ behavior: 'smooth' });
-
-    setTimeout(() => {
-      // this.displayWhatsappAccountWizard = false; 
-    }, 1500);
-  }
 
   upadatedWatsAppWizard(wasteps) {
-
     this.projectService.updateProjectWithWAWizardSteps(wasteps)
       .subscribe((res: any) => {
         console.log('[HOME] - UPDATE PRJCT WITH WA WIZARD STEPS - RES ', res);
@@ -771,7 +805,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           } else {
             this.whatsAppIsConnected = true
           }
-
         }
 
         console.log('[HOME] - UPDATE PRJCT WITH WA WIZARD STEPS - whatsAppIsConnected ', this.whatsAppIsConnected);
@@ -786,6 +819,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   updateProjectWithWASettings(wasettings) {
+    console.log('[HOME] updateProjectWithWASettings', wasettings)
 
     this.projectService.updateProjectWithWASettings(wasettings)
       .subscribe((res: any) => {
@@ -795,9 +829,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           this.wadepartmentid = res.attributes.wasettings.department_id
           this.getDeptById(this.wadepartmentid)
         }
-
-
-
         // console.log('[HOME] - UPDATE PRJCT WITH WA WSETTINGS - whatsAppIsConnected ', this.whatsAppIsConnected);
 
       }, error => {
@@ -807,46 +838,65 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       });
   }
 
+  updateProjectByDeletingWASettings() {
+    console.log('[HOME] updateProjectByDeletingWASettings');
+    this.projectService.updateProjectRemoveWASettings()
+    .subscribe((res: any) => {
+      console.log('[HOME] - UPDATE PRJCT WITH WA SETTINGS - RES ', res);
+
+      
+        this.wadepartmentid = undefined
+        this.whatsAppIsConnected = false
+     
+      // console.log('[HOME] - UPDATE PRJCT WITH WA WSETTINGS - whatsAppIsConnected ', this.whatsAppIsConnected);
+
+    }, error => {
+      console.error('[HOME] - UPDATE PRJCT WITH WA WSETTINGS  - ERROR ', error)
+    }, () => {
+      console.log('[HOME] - UPDATE PRJCT WITH WA WSETTINGS * COMPLETE *')
+    });
+  } 
+
   getDeptById(departmentid: string) {
 
     this.departmentService.getDeptById(departmentid).subscribe((dept: any) => {
       console.log('[HOME]- GET WA DEPT BY ID - RES ', dept);
       this.wadepartmentName = dept.name;
       this.waBotId = dept.id_bot;
-      console.log('[HOME]- GET WA DEPT BY ID - RES > dept name ',  this.wadepartmentName);
+      console.log('[HOME]- GET WA DEPT BY ID - RES > dept name ', this.wadepartmentName);
     }, (error) => {
       console.error('[HOME] - GET WA DEPT BY ID - ERROR ', error);
 
     }, () => {
 
       console.log('[HOME] - GET WA DEPT BY ID - COMPLETE ');
-      this.getBots() 
+      this.getBots()
     })
   }
 
   getBots() {
-  this.faqKbService.getFaqKbByProjectId().subscribe((bots: any) => {
-    console.log('[USER-SERV] - GET BOT BY PROJECT ID AND SAVE IN STORAGE - bots ', bots);
-    if (bots && bots !== null) {
+    this.faqKbService.getFaqKbByProjectId().subscribe((bots: any) => {
+      console.log('[USER-SERV] - GET BOT BY PROJECT ID AND SAVE IN STORAGE - bots ', bots);
+      if (bots && bots !== null) {
 
-      bots.forEach(bot => {
-        console.log('[HOME] - GET BOT BY PROJECT ID  - BOT', bot);
-        console.log('[HOME] - GET BOT BY PROJECT ID  - BOT-ID', bot._id);
-        if (bot._id === this.waBotId) {
-          console.log('[HOME] - BOT CONNECTED WITH WA  - BOT-ID', bot._id);
-          this.chatbotConnectedWithWA = true
-        }
-    
-      });
+        bots.forEach(bot => {
+          console.log('[HOME] - GET BOT BY PROJECT ID  - BOT', bot);
+          console.log('[HOME] - GET BOT BY PROJECT ID  - BOT-ID', bot._id);
+          if (bot._id === this.waBotId) {
+            console.log('[HOME] - BOT CONNECTED WITH WA  - BOT-ID', bot._id);
+            this.chatbotConnectedWithWA = true
+          }
 
-    }
-  }, (error) => {
-    console.error('[HOME] - GET BOT BY PROJECT ID  - ERROR ', error);
-  }, () => {
-    console.log('[HOME] - GET BOT BY PROJECT ID  * COMPLETE');
+        });
 
-  });
-}
+      }
+    }, (error) => {
+      console.error('[HOME] - GET BOT BY PROJECT ID  - ERROR ', error);
+    }, () => {
+      console.log('[HOME] - GET BOT BY PROJECT ID  * COMPLETE');
+
+    });
+  }
 
 
   getDeptsByProjectId() {
@@ -857,7 +907,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       if (departments) {
 
         departments.forEach(dept => {
-          console.log('[BOT-CREATE] ---> ALL DEPTS RES  > ', dept) 
+          console.log('[BOT-CREATE] ---> ALL DEPTS RES  > ', dept)
         });
 
       }
@@ -871,15 +921,15 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   onClickOnUnistallApp() {
-    console.log('[HOME-WA] UNINSTALL V2 APP - app_id', this.whatsAppAppId);
+    console.log('[HOME] UNINSTALL V2 APP - app_id', this.whatsAppAppId);
     this.appStoreService.unistallNewApp(this.projectId, this.whatsAppAppId).subscribe((res: any) => {
-      console.log('[HOME-WA] UNINSTALL V2 APP - app_id - RES', res);
+      console.log('[HOME] UNINSTALL V2 APP - app_id - RES', res);
 
     }, (error) => {
-      console.error('[HOME-WA] UNINSTALL V2 APP - ERROR  ', error);
+      console.error('[HOME] UNINSTALL V2 APP - ERROR  ', error);
       this.notify.showWidgetStyleUpdateNotification("An error occurred while uninstalling the app", 4, 'report_problem');
     }, () => {
-      console.log('[HOME-WA] UNINSTALL V2 APP - COMPLETE');
+      console.log('[HOME] UNINSTALL V2 APP - COMPLETE');
       this.notify.showWidgetStyleUpdateNotification("App uninstalled successfully", 2, 'done');
 
       this.whatsAppIsInstalled = false
@@ -909,9 +959,9 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     }
 
-    console.log('[HOME-WA] appId ', this.whatsAppAppId)
-    console.log('[HOME-WA] app app version', this.appVersion)
-    console.log('[HOME-WA] installationType ', this.installActionType);
+    console.log('[HOME] appId ', this.whatsAppAppId)
+    console.log('[HOME] app app version', this.appVersion)
+    console.log('[HOME] installationType ', this.installActionType);
 
     this.installV2App(this.projectId, this.whatsAppAppId)
 
@@ -920,13 +970,13 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   installV2App(projectId, appId) {
     this.appStoreService.installAppVersionTwo(projectId, appId).subscribe((res: any) => {
-      console.log('[HOME-WA] INSTALL V2 APP ', projectId, appId)
+      console.log('[HOME] INSTALL V2 APP ', projectId, appId)
 
     }, (error) => {
-      console.error('[HOME-WA] INSTALL V2 APP - ERROR  ', error);
+      console.error('[HOME] INSTALL V2 APP - ERROR  ', error);
       this.notify.showWidgetStyleUpdateNotification("An error occurred while creating the app", 4, 'report_problem');
     }, () => {
-      console.log('[HOME-WA] INSTALL V2 APP - COMPLETE');
+      console.log('[HOME] INSTALL V2 APP - COMPLETE');
       this.notify.showWidgetStyleUpdateNotification("App installed successfully", 2, 'done');
       // let index = this.apps.findIndex(x => x._id === appId);
       // // this.apps[index].installed = false;
@@ -957,30 +1007,30 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     }).then((value) => {
       if (value === 'catch') {
         // console.log('featureAvailableFromPlanC value', value)
-        // console.log('[HOME-WA] prjct_profile_type', this.prjct_profile_type)
-        // console.log('[HOME-WA] subscription_is_active', this.subscription_is_active)
-        // console.log('[HOME-WA] prjct_profile_type', this.prjct_profile_type)
-        // console.log('[HOME-WA] trial_expired', this.trial_expired)
-        // console.log('[HOME-WA] isVisiblePAY', this.isVisiblePAY)
+        // console.log('[HOME] prjct_profile_type', this.prjct_profile_type)
+        // console.log('[HOME] subscription_is_active', this.subscription_is_active)
+        // console.log('[HOME] prjct_profile_type', this.prjct_profile_type)
+        // console.log('[HOME] trial_expired', this.trial_expired)
+        // console.log('[HOME] isVisiblePAY', this.isVisiblePAY)
         if (this.isVisiblePay) {
-          // console.log('[HOME-WA] HERE 1')
+          // console.log('[HOME] HERE 1')
           if (this.USER_ROLE === 'owner') {
-            // console.log('[HOME-WA] HERE 2')
+            // console.log('[HOME] HERE 2')
             if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
-              // console.log('[HOME-WA] HERE 3')
+              // console.log('[HOME] HERE 3')
               this.notify._displayContactUsModal(true, 'upgrade_plan');
             } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true && this.profile_name === PLAN_NAME.A) {
               this.notify._displayContactUsModal(true, 'upgrade_plan');
             } else if (this.prjct_profile_type === 'free' && this.prjct_trial_expired === true) {
-              // console.log('[HOME-WA] HERE 4')
+              // console.log('[HOME] HERE 4')
               this.router.navigate(['project/' + this.projectId + '/pricing']);
             }
           } else {
-            // console.log('[HOME-WA] HERE 5')
+            // console.log('[HOME] HERE 5')
             this.presentModalAgentCannotManageAvancedSettings();
           }
         } else {
-          // console.log('[HOME-WA] HERE 6')
+          // console.log('[HOME] HERE 6')
           this.notify._displayContactUsModal(true, 'upgrade_plan');
         }
       }

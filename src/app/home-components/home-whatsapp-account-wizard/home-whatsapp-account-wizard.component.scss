@@ -150,6 +150,9 @@
 .activate-step-2 {
     color: #e0f0ff !important;
 }
+.activate-step-3 {
+    color: #e0f0ff !important;
+}
 
 .stepper-line {
     width: 1px;
@@ -161,4 +164,26 @@
     position: absolute;
     left: -29px;
     top: 11px;
+}
+
+.wa-wizard-connect-support-icon {
+height: 40px;
+}
+
+.wa-wizard-connect-support-text {
+    font-size: 18px;
+    color: #2196f3;
+    cursor: pointer;
+    font-family: Poppins,Roboto,Arial,sans-serif;
+    font-weight: 400;
+
+}
+
+.wa-wizard-connect-support {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    height: 40px;
+    margin-top: 12px;
 }

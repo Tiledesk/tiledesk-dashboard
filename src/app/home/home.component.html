@@ -195,13 +195,15 @@
         <appdashboard-home-whatsapp-account-wizard style="margin-bottom: 18px;" *ngIf="displayWhatsappAccountWizard"
           (goToConnectWA)="goToConnectWA()" 
           (goToCreateChatbot)="goToCreateChatbot()"
+          (hasTestedBotOnWa)="hasTestedBotOnWa()" 
           [whatsAppIsConnected]="whatsAppIsConnected" 
           [wadepartmentName]="wadepartmentName" 
           [chatbotConnectedWithWA]='chatbotConnectedWithWA'
           [waBotId]="waBotId"
           [use_case_for_child]="use_case_for_child" 
           [solution_channel_for_child]="solution_channel_for_child"
-          [solution_for_child]="solution_for_child"> 
+          [solution_for_child]="solution_for_child"
+          [testBotOnWA]="testBotOnWA"> 
         </appdashboard-home-whatsapp-account-wizard>
      
         <appdashboard-home-convs-graph *ngIf="displayAnalyticsConvsGraph"  
@@ -218,13 +220,14 @@
           [whatsAppIsInstalled]="whatsAppIsInstalled"
           [whatsAppIsConnected]="whatsAppIsConnected"> 
         </appdashboard-home-whatsapp-account>
-
+        <!-- (botHookedToDefaultDept)="botHookedToDefaultDept($event)" -->
         <appdashboard-home-create-chatbot #childCreateChatbot *ngIf="displayCreateChatbot"
           [use_case_for_child]="use_case_for_child" 
           [solution_channel_for_child]="solution_channel_for_child"
           [waBotId]="waBotId"
           [wadepartmentName]="wadepartmentName"
-          [chatbotConnectedWithWA]="chatbotConnectedWithWA"> 
+          [chatbotConnectedWithWA]="chatbotConnectedWithWA" 
+          (botHookedToDefaultDept)="botHookedToDefaultDept($event)"> 
         </appdashboard-home-create-chatbot>
 
         <appdashboard-home-customize-widget></appdashboard-home-customize-widget>

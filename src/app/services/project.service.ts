@@ -820,6 +820,22 @@ export class ProjectService {
       .patch(url, JSON.stringify(body), httpOptions)
   }
 
+  updateProjectRemoveWASettings() {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    let url = this.SERVER_BASE_PATH + "projects/" + this.projectID + "/attributes"
+    console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD STEPS - URL', url);
+    const body = { wasettings: {} }
+    console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD STEPS - BODY', body);
+    return this._httpclient
+      .patch(url, JSON.stringify(body), httpOptions)
+  }
+
   // -------------------------------------
   // UPDATE SUBSCRIPTION !! Used for test
   // -------------------------------------

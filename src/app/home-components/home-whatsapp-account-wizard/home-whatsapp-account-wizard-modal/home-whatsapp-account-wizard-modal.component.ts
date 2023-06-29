@@ -64,28 +64,28 @@ export class HomeWhatsappAccountWizardModalComponent implements OnInit {
   }
 
 
-  testItOutWABot() {
-    this.dialogRef.close()
-    console.log('[HOME-WHATSAPP-ACCOUNT-WIZARD-MODAL] TEST IT OUT ' )
-    let info = {
-      project_id: this.projectID,
-      bot_id: this.waBotId
-    }
+  // testItOutWABot() {
+  //   this.dialogRef.close()
+  //   console.log('[HOME-WHATSAPP-ACCOUNT-WIZARD-MODAL] TEST IT OUT ' )
+  //   let info = {
+  //     project_id: this.projectID,
+  //     bot_id: this.waBotId
+  //   }
 
-    console.log("[HOME-WHATSAPP-ACCOUNT-WIZARD-MODAL] TEST IT OUT WA BOT: ", info)
+  //   console.log("[HOME-WHATSAPP-ACCOUNT-WIZARD-MODAL] TEST IT OUT WA BOT: ", info)
 
-    this.multichannelService.getCodeForWhatsappTest(info).then((response: any) => {
-      console.log("[HOME-WHATSAPP-ACCOUNT-WIZARD-MODAL]  GET CODE FOR WA TEST : ", response);
-      // let code = "%23td" + response.short_uid;
-      let text = "%23td" + response.short_uid + " Send me to start testing your bot";
-      const testItOutOnWhatsappUrl = `https://api.whatsapp.com/send/?phone=${this.phoneNumber}&text=${text}&type=phone_number&app_absent=0`
-      let left = (screen.width - 815) / 2;
-      var top = (screen.height - 727) / 4;
-      let params = `toolbar=no,menubar=no,width=815,height=727,left=${left},top=${top}`;
-      window.open(testItOutOnWhatsappUrl, 'blank', params);
-    }).catch((err) => {
-     console.error("[HOME-WHATSAPP-ACCOUNT-WIZARD-MODAL] error getting testing code from whatsapp: ", err);
-    })
-  }
+  //   this.multichannelService.getCodeForWhatsappTest(info).then((response: any) => {
+  //     console.log("[HOME-WHATSAPP-ACCOUNT-WIZARD-MODAL]  GET CODE FOR WA TEST : ", response);
+  //     // let code = "%23td" + response.short_uid;
+  //     let text = "%23td" + response.short_uid + " Send me to start testing your bot";
+  //     const testItOutOnWhatsappUrl = `https://api.whatsapp.com/send/?phone=${this.phoneNumber}&text=${text}&type=phone_number&app_absent=0`
+  //     let left = (screen.width - 815) / 2;
+  //     var top = (screen.height - 727) / 4;
+  //     let params = `toolbar=no,menubar=no,width=815,height=727,left=${left},top=${top}`;
+  //     window.open(testItOutOnWhatsappUrl, 'blank', params);
+  //   }).catch((err) => {
+  //    console.error("[HOME-WHATSAPP-ACCOUNT-WIZARD-MODAL] error getting testing code from whatsapp: ", err);
+  //   })
+  // }
 
 }

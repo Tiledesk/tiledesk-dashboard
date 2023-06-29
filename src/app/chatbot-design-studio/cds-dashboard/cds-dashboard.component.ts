@@ -841,6 +841,12 @@ export class CdsDashboardComponent implements OnInit {
   }
 
   hookBotToDept() {
+    const botCreatedFromHomeWAWizard = localStorage.getItem('wawizard')
+    console.log('[CDS DSHBRD] botCreatedFromHomeWAWizard ', botCreatedFromHomeWAWizard);
+    if (botCreatedFromHomeWAWizard ) {
+      localStorage.removeItem('wawizard')
+    }
+
     this.HAS_CLICKED_HOOK_BOOT_TO_DEPT = true;
     this.departmentService.updateExistingDeptWithSelectedBot(this.dept_id, this.selectedChatbot._id).subscribe((res) => {
       this.logger.log('[BOT-CREATE] Bot Create - UPDATE EXISTING DEPT WITH SELECED BOT - RES ', res);

@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, Output, SimpleChanges,EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'app/core/auth.service';
 import { AppConfigService } from 'app/services/app-config.service';
@@ -6,6 +6,7 @@ import { DepartmentService } from 'app/services/department.service';
 import { FaqKbService } from 'app/services/faq-kb.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { UsersService } from 'app/services/users.service';
+
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
 
@@ -20,6 +21,7 @@ export class HomeCreateChatbotComponent implements OnInit, OnChanges {
   @Input() waBotId: string;
   @Input() wadepartmentName: string;
   @Input() chatbotConnectedWithWA: string;
+  @Output() botHookedToDefaultDept = new EventEmitter()
   private unsubscribe$: Subject<any> = new Subject<any>();
   projectId: string;
   UPLOAD_ENGINE_IS_FIREBASE: boolean;
@@ -145,8 +147,12 @@ export class HomeCreateChatbotComponent implements OnInit, OnChanges {
                   if (depts[i].hasBot === true) {
                     console.log('[HOME-CREATE-CHATBOT] - HERE YES (depts[i].hasBot)');
                     if (depts[i].id_bot ===  faqKb[j]._id) {
-                      console.log('[HOME-CREATE-CHATBOT] - Dept',faqKb[i].name ,' has bot with id ', faqKb[j]._id);
+                      console.log('[HOME-CREATE-CHATBOT] - Dept',depts[i].name ,' has bot with id ', faqKb[j]._id);
                       faqKb[j]['deptName'] = depts[i].name
+                      if (depts[i].default === true) {
+                        console.log('[HOME-CREATE-CHATBOT] - Dept',depts[i].name ,'is default', depts[i].default , 'has bot with id ', faqKb[j]._id);
+                        this.botHookedToDefaultDept.emit(faqKb[j]._id)
+                      }
                     }
                   } 
                 }
@@ -257,7 +263,6 @@ export class HomeCreateChatbotComponent implements OnInit, OnChanges {
   }
 
   goToTemplates() {
-   
     if (this.use_case_for_child === 'solve_customer_problems') {
     this.router.navigate(['project/' + this.projectId + '/bots/templates/customer-satisfaction']);
     } else if (this.use_case_for_child === 'increase_online_sales') {
