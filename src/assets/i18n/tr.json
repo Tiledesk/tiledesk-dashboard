@@ -1198,6 +1198,8 @@
         "NoAgent": "Temsilci yok"
     },
     "Tags": {
+        "LeadTags": "İletişim Etiketleri",
+        "AddTagToContact": "Kişiye Etiket Ekle",
         "Tags": "Etiketler",
         "Tag": "Etiket",
         "TagName": "Etiket adı",

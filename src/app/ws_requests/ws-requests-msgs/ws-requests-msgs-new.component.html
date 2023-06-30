@@ -1673,7 +1673,7 @@
                   </div>
                 </div>
 
-                <appdashboard-contact-info *ngIf="tab0" [contact_details]="contact_details">
+                <appdashboard-contact-info *ngIf="tab0" [contact_details]="contact_details" (onClickTagConversation)="onClickTagConversation()">
                 </appdashboard-contact-info>
                 <div *ngIf="tab0" class="ul-wpr tab0-card1B"
                   [ngClass]="{'tab0-card1B-ticket': request?.subject, 'ul-wpr-chat': CHAT_PANEL_MODE === true }"

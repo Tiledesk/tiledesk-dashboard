@@ -1,5 +1,19 @@
 # tiledesk-dashboard
 
+### 2.4.48
+- Deploys in production
+- Adds filters to "Reply" type actions
+- Adds the auto save features to the intents editing 
+- Adds the ability to publish your chatbot to the community
+- Adds the ability to change the chatbot language
+- Adds ability to generate chatbot token in chatbot settings tab (developer only)
+- Adds the ability to sign up and to sign in with Google
+
+
+### 2.4.47
+- Deploys in production
+- Improvements and bug fixing
+
 ### 2.4.46
 - Deploys in production
 - Improvements and bug fixing

@@ -287,9 +287,16 @@ export class SigninComponent implements OnInit {
               this.logger.error('Signin page error', err);
             }
 
+            let userFullname = ''
+            if (user.firstname && user.lastname)  {
+              userFullname = user.firstname + ' ' + user.lastname
+            } else if (user.firstname && !user.lastname) {
+              userFullname = user.firstname
+            }
+
             try {
               window['analytics'].identify(user._id, {
-                name: user.firstname + ' ' + user.lastname,
+                name: userFullname,
                 email: user.email,
                 logins: 5,
 
@@ -300,7 +307,7 @@ export class SigninComponent implements OnInit {
             // Segments
             try {
               window['analytics'].track('Signed In', {
-                "username": user.firstname + ' ' + user.lastname,
+                "username": userFullname,
                 "userId": user._id
               });
             } catch (err) {

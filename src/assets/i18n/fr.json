@@ -1198,6 +1198,8 @@
         "NoAgent": "Aucun agent"
     },
     "Tags": {
+        "LeadTags": "Balises du contact",
+        "AddTagToContact": "Ajouter un tag au contact",
         "Tags": "Balises",
         "Tag": "Balise",
         "TagName": "Nom de la balise",

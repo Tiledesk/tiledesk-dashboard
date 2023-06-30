@@ -1198,6 +1198,7 @@
         "NoAgent": "Agent yo'q"
     },
     "Tags": {
+        "LeadTags": "Kontakt teglari",
         "Tags": "Teglar",
         "Tag": "teg",
         "TagName": "Teg nomi",

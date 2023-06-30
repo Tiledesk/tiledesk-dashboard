@@ -250,9 +250,16 @@ export class PaymentSuccessPageComponent implements OnInit, AfterViewInit {
 
         if (!isDevMode()) {
           if (window['analytics']) {
+            let userFullname = ''
+            if (this.currentUser.firstname && this.currentUser.lastname)  {
+              userFullname = this.currentUser.firstname + ' ' + this.currentUser.lastname
+            } else if (this.currentUser.firstname && !this.currentUser.lastname) {
+              userFullname = this.currentUser.firstname
+            }
+
             try {
               window['analytics'].identify(this.currentUser._id, {
-                name: this.currentUser.firstname + ' ' + this.currentUser.lastname,
+                name: userFullname,
                 email: this.currentUser.user.email,
                 logins: 5,
               });

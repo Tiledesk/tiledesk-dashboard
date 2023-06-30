@@ -1035,9 +1035,17 @@ export class AuthService {
         // console.log('[AUTH-SERV] projectProfileName ', projectProfileName)
         if (!isDevMode()) {
           if (window['analytics']) {
+
+            let userFullname = ''
+            if (storedUserParsed.firstname && storedUserParsed.lastname)  {
+              userFullname = storedUserParsed.firstname + ' ' + storedUserParsed.lastname
+            } else if (storedUserParsed.firstname && !storedUserParsed.lastname) {
+              userFullname = storedUserParsed.firstname
+            }
+
             try {
               window['analytics'].identify(storedUserParsed._id, {
-                name: storedUserParsed.firstname + ' ' + storedUserParsed.lastname,
+                name: userFullname,
                 email: storedUserParsed.email,
                 logins: 5,
                 plan: this.prjct_profile_name_for_segment
@@ -1048,7 +1056,7 @@ export class AuthService {
 
             try {
               window['analytics'].track('Signed Out', {
-                "username": storedUserParsed.firstname + ' ' + storedUserParsed.lastname,
+                "username": userFullname,
                 "userId": storedUserParsed._id,
               }, {
                 "context": {
@@ -1074,9 +1082,17 @@ export class AuthService {
       if (!projectId) {
         if (!isDevMode()) {
           if (window['analytics']) {
+
+            let userFullname = ''
+            if (storedUserParsed.firstname && storedUserParsed.lastname)  {
+              userFullname = storedUserParsed.firstname + ' ' + storedUserParsed.lastname
+            } else if (storedUserParsed.firstname && !storedUserParsed.lastname) {
+              userFullname = storedUserParsed.firstname
+            }
+
             try {
               window['analytics'].identify(storedUserParsed._id, {
-                name: storedUserParsed.firstname + ' ' + storedUserParsed.lastname,
+                name: userFullname,
                 email: storedUserParsed.email,
                 logins: 5,
                 plan: 'not project selected'
@@ -1087,7 +1103,7 @@ export class AuthService {
 
             try {
               window['analytics'].track('Signed Out', {
-                "username": storedUserParsed.firstname + ' ' + storedUserParsed.lastname,
+                "username": userFullname,
                 "userId": storedUserParsed._id
               });
             } catch (err) {
@@ -1325,11 +1341,54 @@ export class AuthService {
     const url = "https://eu.rtmv3.tiledesk.com/api/auth/google"
     window.open(url, '_self');
 
+    let storedUser = localStorage.getItem('user')
+    let user = JSON.parse(storedUser);
+
+    if (!isDevMode()) {
+      if (window['analytics']) {
+        try {
+          window['analytics'].page("Auth Page, Sign in with Google", {
+
+          });
+        } catch (err) {
+          this.logger.error('Sign in with Google page error', err);
+        }
+
+        let userFullname = ''
+        if (user.firstname && user.lastname)  {
+          userFullname = user.firstname + ' ' + user.lastname
+        } else if (user.firstname && !user.lastname) {
+          userFullname = user.firstname
+        }
+
+        try {
+          window['analytics'].identify(user._id, {
+            name: userFullname,
+            email: user.email,
+            logins: 5,
+
+          });
+        } catch (err) {
+          this.logger.error('identify Sign in with Google event error', err);
+        }
+        // Segments
+        try {
+          window['analytics'].track('Signed In Sign in with Google', {
+            "username": userFullname,
+            "userId": user._id
+          });
+        } catch (err) {
+          this.logger.error('track Sign in with Google event error', err);
+        }
+      }
+    }
+
   }
 
   public siginUpWithGoogle() {
   
     const url = "https://eu.rtmv3.tiledesk.com/api/auth/google?redirect_url=%23%2Fcreate-project-gs"
+                
     // console.log('siginUpWithGoogle ', url)
     window.open(url, '_self');
 

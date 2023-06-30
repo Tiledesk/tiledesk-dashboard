@@ -1198,6 +1198,8 @@
         "NoAgent": "Agent yoxdur"
     },
     "Tags": {
+        "LeadTags": "Əlaqə Teqləri",
+        "AddTagToContact": "Əlaqəyə etiket əlavə edin",
         "Tags": "Teqlər",
         "Tag": "Tag",
         "TagName": "Tag adı",

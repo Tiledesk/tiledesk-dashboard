@@ -1198,6 +1198,8 @@
         "NoAgent": "Ingen agent"
     },
     "Tags": {
+        "LeadTags": "Kontakters Taggar",
+        "AddTagToContact": "Lägg till tagg till kontakt",
         "Tags": "Taggar",
         "Tag": "Märka",
         "TagName": "Taggnamn",
