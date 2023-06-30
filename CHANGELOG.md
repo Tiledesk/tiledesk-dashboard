@@ -2,7 +2,7 @@
 
 ### 2.4.48
 - Deploys in production
-- Adds filters to the Reply actions
+- Adds filters to "Reply" type actions
 - Adds the auto save features to the intents editing 
 - Adds the ability to publish your chatbot to the community
 - Adds the ability to change the chatbot language
