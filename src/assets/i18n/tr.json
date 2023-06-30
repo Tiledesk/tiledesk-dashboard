@@ -2327,6 +2327,9 @@
     "DisplayWidget": "Widget'ı Görüntüle",
     "OnPageChange": "Sayfa değişikliğinde", 
     "OnPageLoad": "Sayfa yüklemesinde", 
+    "Always opened":"Her zaman açılır",
+    "Always Closed":"Her zaman kapalı",
+    "As last status": "Son durum olarak",
     "AddIntentPage": {
         "AddForm": "Form ekle",
         "SelectTemplateForm": "Önerilenler arasında bir tür form seçin veya yeni bir form oluşturun",

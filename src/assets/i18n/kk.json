@@ -2327,6 +2327,9 @@
     "DisplayWidget": "Виджет көрсету",
     "OnPageChange": "Бет өзгерген кезде", 
     "OnPageLoad": "Бет жүктелуде", 
+    "Always opened":"Әрқашан ашылды",
+    "Always Closed":"Әрқашан жабық",
+    "As last status": "Соңғы мәртебе ретінде",
     "AddIntentPage": {
         "AddForm": "Пішін қосу",
         "SelectTemplateForm": "Ұсынылғандар арасында пішін түрін таңдаңыз немесе жаңасын жасаңыз",

@@ -2327,6 +2327,9 @@
     "DisplayWidget": "Widget de visualización",
     "OnPageChange": "En el cambio de página", 
     "OnPageLoad": "Al cargar la página", 
+    "Always opened":"Siempre abierto",
+    "Always Closed":"Siempre Cerrado",
+    "As last status": "Como último estado",
     "AddIntentPage": {
         "AddForm": "Agregar forma",
         "SelectTemplateForm": "Seleccione un tipo de formulario entre los sugeridos o cree uno nuevo",
