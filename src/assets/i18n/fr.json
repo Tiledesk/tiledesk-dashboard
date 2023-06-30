@@ -2324,6 +2324,7 @@
     "WidgetVisibility": "Visibilité des widgets",
     "DisplayWidget": "Afficher le widget",
     "OnPageChange": "Au changement de page", 
+    "OnPageLoad": "Au chargement de la page", 
     "AddIntentPage": {
         "AddForm": "Ajouter le formulaire",
         "SelectTemplateForm": "Sélectionnez un type de forme parmi ceux suggérés, ou créez-en un nouveau",

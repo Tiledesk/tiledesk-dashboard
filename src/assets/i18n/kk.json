@@ -2324,6 +2324,7 @@
     "WidgetVisibility": "Виджеттің көрінуі",
     "DisplayWidget": "Виджет көрсету",
     "OnPageChange": "Бет өзгерген кезде", 
+    "OnPageLoad": "Бет жүктелуде", 
     "AddIntentPage": {
         "AddForm": "Пішін қосу",
         "SelectTemplateForm": "Ұсынылғандар арасында пішін түрін таңдаңыз немесе жаңасын жасаңыз",

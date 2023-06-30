@@ -2324,6 +2324,7 @@
     "WidgetVisibility": "Widgetsynlighet",
     "DisplayWidget": "Visningswidget",
     "OnPageChange": "På sidbyte", 
+    "OnPageLoad": "Vid sidladdning", 
     "AddIntentPage": {
         "AddForm": "Lägga till formulär",
         "SelectTemplateForm": "Välj en typ av formulär bland de föreslagna eller skapa en ny",

@@ -2324,6 +2324,7 @@
     "WidgetVisibility": "Vidcetin Görünmə qabiliyyəti",
     "DisplayWidget": "Vidceti göstərin",
     "OnPageChange": "Səhifə dəyişdikdə", 
+    "OnPageLoad": "Səhifə yüklədikdə", 
     "AddIntentPage": {
         "AddForm": "Forma vermək",
         "SelectTemplateForm": "Təklif olunanlar arasında bir növ forma seçin və ya yenisini yaradın",
