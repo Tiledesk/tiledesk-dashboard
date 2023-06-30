@@ -512,9 +512,16 @@ export class SignupComponent implements OnInit, AfterViewInit {
 
           if (!isDevMode()) {
             if (window['analytics']) {
+              let userFullname = ''
+              if (signupResponse.user.firstname && signupResponse.user.lastname)  {
+                userFullname = signupResponse.user.firstname + ' ' + signupResponse.user.lastname
+              } else if (signupResponse.user.firstname && !signupResponse.user.lastname) {
+                userFullname = signupResponse.user.firstname
+              }
+  
               try {
                 window['analytics'].identify(signupResponse.user._id, {
-                  name: signupResponse.user.firstname + ' ' + signupResponse.user.lastname,
+                  name: userFullname,
                   email: signupResponse.user.email,
                   logins: 5,
                 });
@@ -546,6 +553,9 @@ export class SignupComponent implements OnInit, AfterViewInit {
               // }
               // this.logger.log('[SIGN-UP] Signed Up button clicked event ', event)
 
+           
+  
+
               try {
                 window['analytics'].track("Signed Up", {
                   "type": "organic",
@@ -554,7 +564,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
                   "first_name": signupResponse.user.firstname,
                   "last_name": signupResponse.user.lastname,
                   "email": signupResponse.user.email,
-                  "username": signupResponse.user.firstname + ' ' + signupResponse.user.lastname,
+                  "username": userFullname,
                   'userId': signupResponse.user._id
                 });
               } catch (err) {
@@ -732,9 +742,16 @@ export class SignupComponent implements OnInit, AfterViewInit {
               this.logger.error('Signup Create project page error', err);
             }
 
+            let userFullname = ''
+            if (signupResponse.user.firstname && signupResponse.user.lastname)  {
+              userFullname = signupResponse.user.firstname + ' ' + signupResponse.user.lastname
+            } else if (signupResponse.user.firstname && !signupResponse.user.lastname) {
+              userFullname = signupResponse.user.firstname
+            }
+
             try {
               window['analytics'].identify(signupResponse.user._id, {
-                name: signupResponse.user.firstname + ' ' + signupResponse.user.lastname,
+                name: userFullname,
                 email: signupResponse.user.email,
                 logins: 5,
                 plan: "Scale (trial)"

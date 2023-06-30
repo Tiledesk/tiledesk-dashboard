@@ -302,9 +302,17 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
           this.notify.showWidgetStyleUpdateNotification(this.subscriptionCanceledSuccessfully, 2, 'done');
           if (!isDevMode()) {
             if (window['analytics']) {
+
+              let userFullname = ''
+              if (this.currentUser.firstname && this.currentUser.lastname)  {
+                userFullname = this.currentUser.firstname + ' ' + this.currentUser.lastname
+              } else if (this.currentUser.firstname && !this.currentUser.lastname) {
+                userFullname = this.currentUser.firstname
+              }
+
               try {
                 window['analytics'].identify(this.currentUser._id, {
-                  name: this.currentUser.firstname + ' ' + this.currentUser.lastname,
+                  name: userFullname,
                   email: this.currentUser.email,
                   logins: 5,
                   plan: this.profile_name_for_segment,

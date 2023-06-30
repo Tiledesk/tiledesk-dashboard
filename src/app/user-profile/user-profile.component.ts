@@ -215,36 +215,36 @@ export class UserProfileComponent implements OnInit {
         if (projectProfileData.profile_type === 'free') {
           if (projectProfileData.trial_expired === false) {
             this.prjct_profile_name = PLAN_NAME.B + " plan (trial)"
-       
+
           } else {
             this.prjct_profile_name = "Free plan";
-           
+
           }
         } else if (projectProfileData.profile_type === 'payment') {
-         
-            if (projectProfileData.profile_name === PLAN_NAME.A) {
-              if (!this.appSumoProfile) {
-                this.prjct_profile_name = PLAN_NAME.A + " plan";
-      
-              } else {
-                this.prjct_profile_name = PLAN_NAME.A + " plan " + '(' + this.appSumoProfile + ')';
-              }
-            } else if (projectProfileData.profile_name === PLAN_NAME.B) {
-              if (!this.appSumoProfile) {
-                this.prjct_profile_name = PLAN_NAME.B + " plan";
-             
-              } else {
-                this.prjct_profile_name = PLAN_NAME.B + " plan " + '(' + this.appSumoProfile + ')';;
-           
-              }
-            } else if (projectProfileData.profile_name === PLAN_NAME.C) {
-              this.prjct_profile_name = PLAN_NAME.C + " plan";
+
+          if (projectProfileData.profile_name === PLAN_NAME.A) {
+            if (!this.appSumoProfile) {
+              this.prjct_profile_name = PLAN_NAME.A + " plan";
+
+            } else {
+              this.prjct_profile_name = PLAN_NAME.A + " plan " + '(' + this.appSumoProfile + ')';
             }
+          } else if (projectProfileData.profile_name === PLAN_NAME.B) {
+            if (!this.appSumoProfile) {
+              this.prjct_profile_name = PLAN_NAME.B + " plan";
+
+            } else {
+              this.prjct_profile_name = PLAN_NAME.B + " plan " + '(' + this.appSumoProfile + ')';;
+
+            }
+          } else if (projectProfileData.profile_name === PLAN_NAME.C) {
+            this.prjct_profile_name = PLAN_NAME.C + " plan";
+          }
         }
 
         // if (projectProfileData.profile_type === 'free') {
         //   if (projectProfileData.trial_expired === false) {
-           
+
         //     this.prjct_profile_name = PLAN_NAME.B + " plan (trial)"
         //   } else {
 
@@ -255,17 +255,17 @@ export class UserProfileComponent implements OnInit {
 
         //   if (projectProfileData.profile_name === PLAN_NAME.A) {
         //     this.prjct_profile_name = PLAN_NAME.A + " plan";
-           
+
         //     // console.log('[USER-PROFILE] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.A)
 
         //   } else if (projectProfileData.profile_name === PLAN_NAME.B) {
         //     this.prjct_profile_name = PLAN_NAME.B + " plan";
-           
+
         //     // console.log('[USER-PROFILE] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.B)
 
         //   } else if (projectProfileData.profile_name === PLAN_NAME.C) {
         //     this.prjct_profile_name = PLAN_NAME.C + " plan";
-           
+
         //     // console.log('[USER-PROFILE] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.C)
         //   }
 
@@ -709,9 +709,17 @@ export class UserProfileComponent implements OnInit {
               this.logger.error('User Profile page error', err);
             }
 
+            let userFullname = ''
+            if (this.user.firstname && this.user.lastname) {
+              userFullname = this.user.firstname + ' ' + this.user.lastname
+            } else if (this.user.firstname && !this.user.lastname) {
+              userFullname = this.user.firstname
+            }
+
+
             try {
               window['analytics'].identify(this.user._id, {
-                name: this.userFirstname + ' ' + this.userLastname,
+                name: userFullname,
                 email: this.user.email,
                 plan: this.prjct_profile_name
 
