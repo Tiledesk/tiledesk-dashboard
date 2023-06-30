@@ -2322,6 +2322,7 @@
     "WidgetVisibility": "Widget Visibility",
     "DisplayWidget": "Display Widget",
     "OnPageChange": "On page change", 
+    "OnPageLoad": "On page load", 
     "AddIntentPage": {
         "AddForm": "Add form",
         "SelectTemplateForm": "Select a type of form among those suggested, or create a new one",

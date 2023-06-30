@@ -2324,6 +2324,7 @@
     "WidgetVisibility": "رؤية القطعة",
     "DisplayWidget": "اعرض القطعة",
     "OnPageChange": "عند تغيير الصفحة", 
+    "OnPageLoad": "عند تحميل الصفحة", 
     "AddIntentPage": {
         "AddForm": "أضف النموذج",
         "SelectTemplateForm": "حدد نوعًا من النماذج بين هؤلاء المقترحين ، أو إنشاء شكل جديد",

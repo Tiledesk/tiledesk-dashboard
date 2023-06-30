@@ -2324,6 +2324,7 @@
 	"WidgetVisibility": "Widget-Sichtbarkeit",
 	"DisplayWidget": "Anzeige-Widget",
 	"OnPageChange": "Wenn sich die Seite ändert", 
+	"OnPageLoad": "Beim Laden der Seite", 
 	"AddIntentPage": {
 		"AddForm": "Form hinzufügen",
 		"SelectTemplateForm": "Wählen Sie unter den vorgeschlagenen Form eine Art von Form aus oder erstellen Sie eine neue",

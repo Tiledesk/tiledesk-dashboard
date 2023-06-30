@@ -2324,6 +2324,7 @@
     "WidgetVisibility": "Видимость виджета",
     "DisplayWidget": "Виджет отображения",
     "OnPageChange": "На странице изменения", 
+    "OnPageLoad": "При загрузке страницы", 
     "AddIntentPage": {
         "AddForm": "Добавить форму",
         "SelectTemplateForm": "Выберите тип формы среди предлагаемых или создайте новую",
