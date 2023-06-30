@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.4.49
+- Deploys in production
+- Fixes the bug: on the "Monitor" page the filter for "Conversation type" doesn't show the options
+
 ### 2.4.48
 - Deploys in production
 - Adds filters to "Reply" type actions
