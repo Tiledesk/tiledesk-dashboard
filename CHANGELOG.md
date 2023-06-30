@@ -1,6 +1,7 @@
 # tiledesk-dashboard
 
 ### 2.4.48
+- Deploys in production
 - Adds filters to the Reply actions
 - Adds the auto save features to the intents editing 
 - Adds the ability to publish your chatbot to the community
