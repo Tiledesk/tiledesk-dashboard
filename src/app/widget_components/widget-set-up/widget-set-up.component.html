@@ -1037,7 +1037,7 @@
 											<div class="display-widget-wpr" style="margin-bottom: 12px;">
 												<div class="display-widget-label">
 													<!-- On page change -->
-													{{'OnPageChange' | translate}}
+													{{'OnPageLoad' | translate}}
 												</div>
 												<div class="on-page-change-widget-option">
 													<ng-select id="desktop_widget_status" [clearable]="false"
@@ -1087,14 +1087,14 @@
 											<div class="display-widget-wpr">
 												<div class="display-widget-label">
 													<!-- On page change -->
-													{{'OnPageChange' | translate}}
+													{{'OnPageLoad' | translate}}
 												</div>
 												<div class="on-page-change-widget-option">
 													<ng-select id="desktop_widget_status" [clearable]="false"
 														[(ngModel)]="mobileWidgetStatus"
 														[items]="widget_status_on_page_change" bindLabel="name"
 														bindValue="id" appendTo="body"
-														(change)="onSelectDesktopWidgetStatus()"
+														(change)="onSelectMobilepWidgetStatus()"
 														[disabled]="!mobile_widget_is_visible">
 													</ng-select>
 												</div>

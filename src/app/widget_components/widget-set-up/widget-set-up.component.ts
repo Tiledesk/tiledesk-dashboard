@@ -418,7 +418,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     // this.t_params = { 'plan_name': PLAN_NAME.B }
     this.desktopWidgetStatus = 'last'
     this.mobileWidgetStatus = 'close'
-    // this.widgetObj['d_on_page_change'] = 'd_as_last';
+    // this.widgetObj['d_on_page_load'] = 'd_as_last';
     // this.widgetObj['m_always_closed'] = 'm_always_closed';
   }
 
@@ -1938,15 +1938,15 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         // WIDGET DEFINED
         // ------------------------------------------------------------------------
 
-        if (project.widget.d_on_page_change && project.widget.d_on_page_change === 'open') {
+        if (project.widget.d_on_page_load && project.widget.d_on_page_load === 'open') {
           this.desktopWidgetStatus = 'open'
         }
 
-        if (project.widget.d_on_page_change && project.widget.d_on_page_change === 'close') {
+        if (project.widget.d_on_page_load && project.widget.d_on_page_load === 'close') {
           this.desktopWidgetStatus = 'close'
         }
 
-        if (project.widget.d_on_page_change && project.widget.d_on_page_change === 'last') {
+        if (project.widget.d_on_page_load && project.widget.d_on_page_load === 'last') {
           this.desktopWidgetStatus = 'last'
         }
 
@@ -1954,15 +1954,15 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         // @ Widget mobile status (open / closed)
         // WIDGET DEFINED
         // ------------------------------------------------------------------------
-        if (project.widget.m_on_page_change && project.widget.m_on_page_change === 'open') {
+        if (project.widget.m_on_page_load && project.widget.m_on_page_load === 'open') {
           this.mobileWidgetStatus = 'open'
         }
 
-        if (project.widget.m_on_page_change && project.widget.m_on_page_change === 'close') {
+        if (project.widget.m_on_page_load && project.widget.m_on_page_load === 'close') {
           this.mobileWidgetStatus = 'close'
         }
 
-        if (project.widget.m_on_page_change && project.widget.m_on_page_change === 'last') {
+        if (project.widget.m_on_page_load && project.widget.m_on_page_load === 'last') {
           this.mobileWidgetStatus = 'last'
         }
         // ------------------------------------------------------------------------
@@ -3024,11 +3024,11 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     if (this.desktop_widget_is_visible === false) {
 
       this.widgetObj['d_display'] = this.desktop_widget_is_visible;
-      delete this.widgetObj['d_on_page_change'];
+      delete this.widgetObj['d_on_page_load'];
       this.widgetService.updateWidgetProject(this.widgetObj)
 
     } else if (this.desktop_widget_is_visible === true) {
-
+      this.widgetObj['d_on_page_load'] = this.desktopWidgetStatus;
       delete this.widgetObj['d_display'];
       this.widgetService.updateWidgetProject(this.widgetObj)
 
@@ -3041,9 +3041,10 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
     if (this.mobile_widget_is_visible === false) {
       this.widgetObj['m_display'] = this.mobile_widget_is_visible;
-      delete this.widgetObj['m_on_page_change']
+      delete this.widgetObj['m_on_page_load']
       this.widgetService.updateWidgetProject(this.widgetObj)
     } else if (this.mobile_widget_is_visible === true) {
+      this.widgetObj['m_on_page_load'] = this.mobileWidgetStatus;
       delete this.widgetObj['m_display'];
       this.widgetService.updateWidgetProject(this.widgetObj)
     }
@@ -3051,13 +3052,13 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
   onSelectDesktopWidgetStatus() {
     // console.log('[WIDGET-SET-UP] ON SELECT DESKTOP WIDGET STATUS ', this.desktopWidgetStatus)
-    this.widgetObj['d_on_page_change'] = this.desktopWidgetStatus;
+    this.widgetObj['d_on_page_load'] = this.desktopWidgetStatus;
     this.widgetService.updateWidgetProject(this.widgetObj)
   }
 
   onSelectMobilepWidgetStatus() {
     // console.log('[WIDGET-SET-UP] ON SELECT MOBILE WIDGET STATUS ', this.mobileWidgetStatus)
-    this.widgetObj['m_on_page_change'] = this.mobileWidgetStatus;
+    this.widgetObj['m_on_page_load'] = this.mobileWidgetStatus;
     this.widgetService.updateWidgetProject(this.widgetObj)
   }
 
