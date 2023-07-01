@@ -42,28 +42,6 @@ export class Action {
     _tdActionId: any = uuidv4();
 }
 
-// export class ActionCondition extends Action {
-//     condition: string;
-//     trueIntent: string;
-//     falseIntent: string;
-//     stopOnConditionMet: boolean;
-//     constructor() {
-//         super();
-//         this._tdActionType = TYPE_ACTION.CONDITION;
-//     }
-// }
-/*
-export class ActionAssignVariable extends Action {
-    expression: string;
-    assignTo: string;
-    constructor() {
-        super();
-        this._tdActionType = TYPE_ACTION.ASSIGN_VARIABLE;
-    }
-}
-*/
-
-
 export class Operation {
     operators?: Array<TYPE_MATH_OPERATOR>
     operands: Array<Operand>
@@ -416,3 +394,12 @@ export class Condition {
 
 
 
+export class StageAttributes {
+    positions: any;
+    connectors: any;
+    constructor(){
+        this.positions = {};
+        this.connectors = {};
+    }
+
+}

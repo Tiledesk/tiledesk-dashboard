@@ -626,4 +626,19 @@ export class FaqKbService {
       .get(url, httpOptions)
   }
 
+
+
+  public patchAttributes(id: string, attributes: any): Observable<FaqKb> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+    let url = this.SERVER_BASE_PATH + this.project._id + '/faq_kb/' + id + '/attributes';
+    let body = JSON.stringify(attributes);
+    console.log('[FAQ-KB.SERV] updateFaqKb - BODY ', url, body);
+    return this._httpClient.patch(url, body, httpOptions)
+  }
+
 }

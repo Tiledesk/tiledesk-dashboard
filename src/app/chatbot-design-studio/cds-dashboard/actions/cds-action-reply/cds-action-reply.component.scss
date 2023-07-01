@@ -89,15 +89,22 @@ $margin-bottom: 15px;
 // }
 
 .box-up {
-    display: inline-block;
-    padding: 5px;
-    // background: #ddd5ba;
-    position: absolute;
-    top: 0;
+    display: flex;
+    padding: 0 5px;
+    position: relative;
+    /* top: 0; */
     width: 100%;
+    flex-direction: column;
+    align-content: flex-end;
+    align-items: flex-end;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    // background: aquamarine;
+
 }
 
 .box-dw {
+    display: flex;
     .reply-info{
         color: aliceblue;
         padding: 10px;

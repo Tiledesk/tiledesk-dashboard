@@ -66,7 +66,9 @@ export class CdsPanelButtonConfigurationComponent implements OnInit {
 
 
   ngAfterViewInit() {
-    this.input_topic.myInput.nativeElement.focus();
+    if(this.input_topic){
+      this.input_topic.myInput.nativeElement.focus();
+    }
   }
 
 
@@ -151,7 +153,9 @@ export class CdsPanelButtonConfigurationComponent implements OnInit {
       if (!this.buttonLabel || this.buttonLabel.length === 0) {
         this.buttonLabel = '';
       }
-      this.button.value = this.buttonLabel;
+      if(this.button){
+        this.button.value = this.buttonLabel;
+      }
       // this.buttonLabelResult = true;
     } catch (error) {
       console.log('error: ', error);

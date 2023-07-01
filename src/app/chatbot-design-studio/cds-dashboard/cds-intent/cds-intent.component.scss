@@ -1,5 +1,10 @@
 @import "./src/assets/sass/cds/_variables.scss";
 
+.body-action {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
 
 .box-action {
   position: relative;
@@ -775,7 +780,7 @@
   //width: 200px;
   // border: 1px solid #ccc;
   //padding: 10px;
-  padding-top: 15px;
+  padding-top: 0px;
 }
 
 .source-item,

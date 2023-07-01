@@ -22,9 +22,11 @@ import {
   ActionReplaceBot,
   ActionWait,
   ActionWebRequest,
-  Command, Message, Expression } from 'app/models/intent-model';
+  Command, Message, Expression, StageAttributes } from 'app/models/intent-model';
 
 import { FaqService } from 'app/services/faq.service';
+import { FaqKbService } from 'app/services/faq-kb.service';
+
 import { TYPE_ACTION, TYPE_COMMAND } from 'app/chatbot-design-studio/utils';
 import { ActionIntentComponent } from '../cds-dashboard/panel-intent-detail/actions/action-intent/action-intent.component';
 
@@ -36,17 +38,21 @@ export class IntentService {
   intents = new BehaviorSubject <Intent[]>([]);
   listOfActions: Array<{ name: string, value: string, icon?: string }>;
 
-  keyDashboardAttributes = 'Dashboard-Attributes';
-  jsonDashboardAttributes: any;
+  // keyDashboardAttributes = 'stage';//'Dashboard-Attributes';
+  // jsonDashboardAttributes: any;
   preDisplayName: string = 'untitled_block_';
+  stageAttributes: StageAttributes;
 
 
   private changedConnector = new Subject<any>();
   public isChangedConnector$ = this.changedConnector.asObservable();
 
   constructor(
-    private faqService: FaqService
-  ) { }
+    private faqService: FaqService,
+    private faqKbService: FaqKbService
+  ) { 
+    this.stageAttributes = new StageAttributes();
+  }
 
 
 
@@ -65,23 +71,36 @@ export class IntentService {
   }
 
   // START DASHBOARD FUNCTIONS //
-
-  setDashboardAttributes(data){
-    let key = this.keyDashboardAttributes;
-    this.setFromLocalStorage(key, data);
+  setPositionsInDashboardAttributes(idBot, json){
+    // let key = this.keyDashboardAttributes;
+    // this.setFromLocalStorage(key, json);
+    this.stageAttributes.positions = json;
+    this.patchAttributes(idBot, this.stageAttributes);
   }
 
-  getDashboardAttributes(){
-    let key = this.keyDashboardAttributes;
-    const savedData = this.getFromLocalStorage(key);
-    if(savedData){
-      this.jsonDashboardAttributes = savedData;
-    } else {
-      this.jsonDashboardAttributes = {
-      }
+  setConnectorsInDashboardAttributes(idBot, json){
+    // let key = this.keyDashboardAttributes;
+    // this.setFromLocalStorage(key, json);
+    this.stageAttributes.connectors = json;
+    this.patchAttributes(idBot, this.stageAttributes);
+  }
+
+  setDashboardAttributes(attributes){
+    if(attributes){
+      this.stageAttributes = attributes;
     }
-    return this.jsonDashboardAttributes;
+    // let key = this.keyDashboardAttributes;
+    // // const savedData = this.getFromLocalStorage(key);
+    // const savedData = attributes[key];
+    // console.log("-------------> getDashboardAttributes:: ", attributes, key, savedData);
+    // if(savedData){
+    //   this.jsonDashboardAttributes = savedData;
+    // } else {
+    //   this.jsonDashboardAttributes = {positions: {}, connections: {}}
+    // }
+    // return this.jsonDashboardAttributes;
   }
+
 
   private setFromLocalStorage(key, data){
     const json = JSON.stringify(data);
@@ -142,6 +161,7 @@ export class IntentService {
       return this.preDisplayName+1;
     }
   }
+  
   
   public async addNewIntent(id_faq_kb, newIntent): Promise<any> { 
     let newIntents = this.intents.getValue();
@@ -336,4 +356,20 @@ export class IntentService {
   }
   // END ATTRIBUTE FUNCTIONS //
   
+
+
+  patchAttributes(idBot: string, attributes: any) {
+    console.log('-----------> patchAttributes, ', idBot);
+    this.faqKbService.patchAttributes(idBot, attributes).subscribe((data) => {
+        if (data) {
+          console.log('data:   ', data);
+        }
+      }, (error) => {
+        console.log('error:   ', error);
+      }, () => {
+
+      });
+
+  }
+
 }
