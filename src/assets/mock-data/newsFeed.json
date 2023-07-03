@@ -1,24 +1,30 @@
 [
     {
         "tag": "Feature",
-        "title": "How to connect Tiledesk with Telegram",
-        "image": "https://tiledesk.com/wp-content/uploads/2023/06/Getting-started-for-admin.png",
+        "title": "How to create & send a WhatsApp Template",
+        "image": "https://tiledesk.com/wp-content/uploads/2023/07/How_create_and_send_WhatsApp_Template.jpg",
         "description": "",
-        "learnmore": "https://docs.tiledesk.com/knowledge-base/telegram/"
+        "learnmore": "https://www.youtube.com/embed/K4IMJWI291s",
+        "type": "video",
+        "highlighted": true
     },
     {
         "tag": "Academy",
         "title": "Developer docs",
         "image": "https://tiledesk.com/wp-content/uploads/2023/06/Developer-docs.png",
         "description": "",
-        "learnmore": "https://developer.tiledesk.com/"
+        "learnmore": "https://developer.tiledesk.com/",
+        "type": "article",
+        "highlighted": false
     },
     {
         "tag": "Academy",
         "title": "Getting started for admin",
         "image": "https://tiledesk.com/wp-content/uploads/2023/06/Getting-started-for-admin_v2.png",
         "description": "",
-        "learnmore": "https://gethelp.tiledesk.com/categories/getting-started-for-admins/"
+        "learnmore": "https://gethelp.tiledesk.com/categories/getting-started-for-admins/",
+        "type": "article",
+        "highlighted": false
     
     },
     {
@@ -26,7 +32,9 @@
         "title": "Getting started for agents",
         "image": "https://tiledesk.com/wp-content/uploads/2023/06/Getting-started-for-agent.png",
         "description": "",
-        "learnmore": "https://gethelp.tiledesk.com/categories/getting-started-for-agents/"
+        "learnmore": "https://gethelp.tiledesk.com/categories/getting-started-for-agents/",
+        "type": "article",
+        "highlighted": false
        
     },
     {
@@ -34,21 +42,27 @@
         "title": "How to connect Tiledesk with Telegram",
         "image": "https://tiledesk.com/wp-content/uploads/2023/06/Getting-started-for-admin.png",
         "description": "",
-        "learnmore": "https://docs.tiledesk.com/knowledge-base/telegram/"
+        "learnmore": "https://docs.tiledesk.com/knowledge-base/telegram/",
+        "type": "article",
+        "highlighted": false
     },
     {
         "tag": "Academy",
         "title": "Developer docs",
         "image": "https://tiledesk.com/wp-content/uploads/2023/06/Getting-started-for-admin.png",
         "description": "",
-        "learnmore": "https://developer.tiledesk.com/"
+        "learnmore": "https://developer.tiledesk.com/",
+        "type": "article",
+        "highlighted": false
     },
     {
         "tag": "Academy",
         "title": "Getting started for admin",
         "image": "https://tiledesk.com/wp-content/uploads/2023/06/Getting-started-for-admin.png",
         "description": "",
-        "learnmore": "https://gethelp.tiledesk.com/categories/getting-started-for-admins/"
+        "learnmore": "https://gethelp.tiledesk.com/categories/getting-started-for-admins/",
+        "type": "article",
+        "highlighted": false
     
     },
     {
@@ -56,7 +70,9 @@
         "title": "Getting started for agents",
         "image": "https://tiledesk.com/wp-content/uploads/2023/06/Getting-started-for-admin.png",
         "description": "",
-        "learnmore": "https://gethelp.tiledesk.com/categories/getting-started-for-agents/"
+        "learnmore": "https://gethelp.tiledesk.com/categories/getting-started-for-agents/",
+        "type": "article",
+        "highlighted": false
        
     }
 

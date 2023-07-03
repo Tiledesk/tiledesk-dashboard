@@ -43,7 +43,7 @@
     left: -22px;
 }
 .news-wrapper i:last-child {
-    right: -22px;
+    right: 3px;
 }
 .news-wrapper .carousel {
     // display: grid;
@@ -116,9 +116,10 @@
 .carousel .news-card h2 {
     font-weight: 500;
     font-size: 1.56rem;
-    margin: 30px 5px 5px 5px;
+    margin: 30px 25px 5px 25px;
     font-family: Poppins, Roboto, Arial, sans-serif;
     height: 48px;
+    text-align: center;
 }
 .carousel .news-card div {
     color: #6a6d78;
@@ -172,3 +173,98 @@
         grid-auto-columns: 100%;
     }
 }
+
+
+/*
+ * Card ribbon 
+ * *********************************** */
+.ribbon {
+    width: 150px !important;
+    height: 150px !important;
+    overflow: hidden !important;
+    position: absolute !important;
+  }
+  .ribbon::before,
+  .ribbon::after {
+    position: absolute !important;
+    // z-index: -1;
+    content: '';
+    display: block;
+    border: 5px solid #2980b9 !important;
+  }
+  .ribbon span {
+    position: absolute !important;
+    display: block !important;
+    width: 225px;
+    padding: 15px 0 !important;
+    background-color: #3498db !important;
+    box-shadow: 0 5px 10px rgba(0,0,0,.1) !important;
+    color: #fff !important;
+    font: 700 18px/1 'Lato', sans-serif !important;
+    text-shadow: 0 1px 1px rgba(0,0,0,.2) !important;
+    text-transform: uppercase !important;
+    text-align: center !important;
+  }
+  
+
+  /* top right*/
+  .ribbon-top-right {
+    top: -10px !important;
+    right: -10px!important ;
+  }
+  .ribbon-top-right::before,
+  .ribbon-top-right::after {
+    border-top-color: transparent;
+    border-right-color: transparent;
+  }
+  .ribbon-top-right::before {
+    top: 0 !important;
+    left: 0 !important;
+  }
+  .ribbon-top-right::after {
+    bottom: 0 !important;
+    right: 0 !important;
+  }
+  .ribbon-top-right span {
+    left: -25px !important;
+    top: 30px !important;
+    transform: rotate(45deg) !important;
+  }
+
+//   .news-card::before{
+//     position: absolute;
+//     content: '';
+//     background: #283593;
+//     height: 28px;
+//     width: 28px;
+//   }
+  
+  .highlighted-card::before{
+    position: absolute;
+    content: '';
+    background: #f18876;
+    height: 28px;
+    width: 28px;
+    top:2rem;
+    right:-0.5rem;
+    transform : rotate(45deg);
+  }
+
+  .highlighted-card::after{
+    position: absolute;
+    content: 'New';
+    top: 3px;
+    right: -11px;
+    padding: 0.5rem;
+    width: 10rem;
+    background: #f18876;
+    color: white;
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+    box-shadow: 4px 4px 15px rgba(26, 35, 126, 0.2);
+  }
+  
+
+
+
+

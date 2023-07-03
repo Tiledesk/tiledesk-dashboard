@@ -1,0 +1,114 @@
+.home-block-wpr {
+    margin-top: 18px;
+    border-radius: 12px;
+    padding: 24px;
+    // box-shadow: 0 0 20px 4px rgb(154 161 177 / 15%), 0 4px 80px -8px rgb(36 40 47 / 25%),
+    //     0 4px 4px -2px rgb(91 94 105 / 15%);
+    box-shadow: 0 0 #0000, 0 0 #0000, 0 1px 3px #0000001a, 0 1px 2px -1px #0000001a;
+    background-color: #fff;
+}
+
+.home-block-header-wpr {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.home-block-header {
+    align-items: center;
+    flex-direction: row;
+    display: flex;
+}
+
+.home-block-title {
+    font-size: 20px;
+    font-weight: 400;
+    font-family: "Poppins", "Roboto", "Arial", sans-serif;
+}
+
+.project-teammates {
+    display: flex;
+    height: 45px;
+    margin-bottom: 16px;
+}
+
+::ng-deep .teammate-details-popover {
+    box-shadow: 0 0 20px 4px rgb(154 161 177 / 15%), 0 4px 80px -8px rgb(36 40 47 / 25%),
+        0 4px 4px -2px rgb(91 94 105 / 15%);
+    background: #1c2333;
+    border-radius: 6px;
+    min-height: 48px;
+}
+
+.teammate-popover-row-flex-start {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    align-items: flex-start;
+}
+
+.img-in-teammate-popover {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    border: 1px solid #2b3245;
+}
+
+.tmt-altenative-avatar-wrap {
+    border-radius: 50%;
+    border: 1px solid #eee;
+    margin-left: 3px;
+    width: 45px;
+    height: 45px;
+}
+
+.tmt-altenative--avatar {
+    color: #fff;
+    margin: auto;
+    display: block;
+    font-weight: 400;
+    text-align: center;
+    line-height: 46px;
+    font-size: 16px;
+}
+
+.temmate-name {
+    font-family: "Poppins", "Roboto", "Arial", sans-serif;
+    font-weight: 400;
+    color: #f5f9fc;
+    font-size: 12px;
+    margin-left: 1px;
+}
+
+.tmt-altenative-avatar-wrap-in-po {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    border: 1px solid #2b3245;
+    text-align: center;
+}
+
+.tmt-altenative-avatar-in-po-initials {
+    color: #fff;
+    text-align: center;
+    font-weight: 400;
+    line-height: 32px;
+    font-size: 14px;
+}
+
+.tmt-popover-row {
+    display: flex;
+    flex-direction: row;
+    gap: 6px;
+    align-items: center;
+}
+
+.flex-start {
+    align-items: flex-start !important;
+}
+
+.tmt-email {
+    color: #9da2a6;
+    font-size: 12px;
+    margin-left: 2px;
+}

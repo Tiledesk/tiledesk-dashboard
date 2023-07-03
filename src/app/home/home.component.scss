@@ -2410,6 +2410,7 @@
 .bg-card {
   opacity: 1;
   background-color: #fff;
+  margin-top: -5px
 }
 
 .padding-l-r {
@@ -2678,4 +2679,30 @@ img {
   height: 100%;
   z-index: 10;
   background-color: rgba(0, 0, 0, 0.4);
+}
+
+.change-project-menu-wpr {
+  border-top-left-radius: 0.75rem !important;
+  border-top-right-radius: 0.75rem !important;
+  padding-bottom: 8px !important;
+  padding-top: 8px !important;
+  padding-left: 1.25rem !important;
+  padding-right: 1rem !important;
+  border-bottom-width: 0px !important;
+  border-width: 1px !important;
+  border-top-left-radius: 0.75rem !important;
+  border-top-right-radius: 0.75rem !important;
+  overflow: hidden !important;
+  align-self: flex-start !important;
+  cursor: pointer !important;
+  display: flex !important;
+  position: relative !important;
+  background-color: rgb(241, 245, 249);
+  border-top: 1px solid rgb(226, 232, 240);
+  border-left: 1px solid rgb(226, 232, 240);
+  border-right: 1px solid rgb(226, 232, 240);
+}
+
+.mat-ripple:not(:empty) {
+  transform: translateZ(0);
 }

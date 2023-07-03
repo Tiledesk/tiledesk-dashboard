@@ -1,0 +1,143 @@
+<div class="home-block-wpr">
+    <div class="home-block-header-wpr">
+        <div class="home-block-header">
+            <div class="home-block-title">
+                {{'Teammates' | translate}}
+            </div>
+        </div>
+    </div>
+    <div style="height: 24px; width: 0px; flex: 0 0 auto;"></div>
+
+    <div *ngIf="projectUsers && projectUsers?.length > 0" class="project-teammates">
+        <div class="served-by-desktop-b"
+            *ngFor="let projectUser of projectUsers | slice:0:10; let i=index; let first = first;">
+            <div class="served-by-desktop-c">
+                <div class="served-by-desktop-d" [satPopoverAnchor]="t" (click)="t.toggle()">
+                    <div size="45" class="served-by-desktop-e" style="width: 45px;">
+
+                        <!-- --------------------------------------------------------------- -->
+                        <!-- USECASE uploadEngine Firebase -->
+                        <!-- --------------------------------------------------------------- -->
+                        <img *ngIf="projectUser?.hasImage && UPLOAD_ENGINE_IS_FIREBASE"
+                            src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{projectUser?.id_user?._id}}%2Fphoto.jpg?alt=media"
+                            alt="" onerror="this.src='assets/img/no_image_user.png'" style="width: 45px;height: 45px;">
+
+                        <!-- --------------------------------------------------------------- -->
+                        <!-- USECASE uploadEngine Native -->
+                        <!-- --------------------------------------------------------------- -->
+                        <img *ngIf="projectUser?.hasImage && !UPLOAD_ENGINE_IS_FIREBASE"
+                            src="{{baseUrl}}images?path=uploads%2Fusers%2F{{projectUser?.id_user?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                            alt="" onerror="this.src='assets/img/no_image_user.png'" style="width: 45px;height: 45px;">
+                        <!-- --------------------------------------------------------------- -->
+                        <!-- AVATAR WITH USER NAME INITIALS IF DOES NOT EXIST PROFILE IMAGE -->
+                        <!-- --------------------------------------------------------------- -->
+                        <div *ngIf="!projectUser.hasImage" class="tmt-altenative-avatar-wrap"
+                            [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + projectUser?.fillColour + ')'}"
+                            style="">
+                            <span class="tmt-altenative--avatar">
+                                {{ projectUser?.fullname_initial }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+
+                <sat-popover #t horizontalAlign="center" verticalAlign="center" hasBackdrop
+                    (backdropClicked)="t.close()" panelClass="teammate-details-popover">
+
+                    <div class="teammate-details-popover-wpr" style="padding: 12px;">
+                        <div class="teammate-popover-row-flex-start">
+                            <div class="left--col">
+                                <!-- --------------------------------------------------------------- -->
+                                <!-- USECASE uploadEngine Firebase -->
+                                <!-- --------------------------------------------------------------- -->
+                                <img *ngIf="projectUser?.hasImage && UPLOAD_ENGINE_IS_FIREBASE"
+                                    src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{projectUser?.id_user?._id}}%2Fphoto.jpg?alt=media"
+                                    alt="" onerror="this.src='assets/img/no_image_user.png'"
+                                    class="img-in-teammate-popover">
+
+                                <!-- --------------------------------------------------------------- -->
+                                <!-- USECASE uploadEngine Native -->
+                                <!-- --------------------------------------------------------------- -->
+                                <img *ngIf="projectUser?.hasImage && !UPLOAD_ENGINE_IS_FIREBASE"
+                                    src="{{baseUrl}}images?path=uploads%2Fusers%2F{{projectUser?.id_user?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                                    alt="" onerror="this.src='assets/img/no_image_user.png'"
+                                    class="img-in-teammate-popover">
+
+                                <!-- --------------------------------------------------------------- -->
+                                <!-- AVATAR WITH USER NAME INITIALS IF DOES NOT EXIST PROFILE IMAGE -->
+                                <!-- --------------------------------------------------------------- -->
+                                <div *ngIf="!projectUser.hasImage" class="tmt-altenative-avatar-wrap-in-po"
+                                    [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + projectUser?.fillColour + ')'}">
+                                    <span class="tmt-altenative-avatar-in-po-initials">
+                                        {{ projectUser?.fullname_initial }}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="right--col temmate-name">
+                                {{projectUser.id_user.firstname}} {{projectUser.id_user.lastname}}
+                            </div>
+
+                        </div>
+
+                        <!-- ----------------------------------- -->
+                        <!-- Teammate email -->
+                        <!-- ----------------------------------- -->
+                        <div class="tmt-popover-row flex-start">
+                            <div class="left--col">
+                                <svg style="vertical-align: middle; position: relative; top: -1px;"
+                                    xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 0 24 24" width="16px"
+                                    fill="#7d8590">
+                                    <path d="M0 0h24v24H0V0z" fill="none" />
+                                    <path
+                                        d="M12 1.95c-5.52 0-10 4.48-10 10s4.48 10 10 10h5v-2h-5c-4.34 0-8-3.66-8-8s3.66-8 8-8 8 3.66 8 8v1.43c0 .79-.71 1.57-1.5 1.57s-1.5-.78-1.5-1.57v-1.43c0-2.76-2.24-5-5-5s-5 2.24-5 5 2.24 5 5 5c1.38 0 2.64-.56 3.54-1.47.65.89 1.77 1.47 2.96 1.47 1.97 0 3.5-1.6 3.5-3.57v-1.43c0-5.52-4.48-10-10-10zm0 13c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3z" />
+                                </svg>
+                            </div>
+
+                            <div class="right--col tmt-email">
+                                {{ projectUser.id_user.email }}
+                            </div>
+                        </div>
+
+                        <!-- ----------------------------------- -->
+                        <!-- Teammate role -->
+                        <!-- ----------------------------------- -->
+                        <div class="tmt-popover-row flex-start">
+                            <div class="left--col">
+                                <!-- <svg style="vertical-align: middle; position: relative; top: -1px;"
+                                    xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 0 24 24" width="16px"
+                                    fill="#7d8590">
+                                    <path d="M0 0h24v24H0V0z" fill="none" />
+                                    <path
+                                        d="M12 1.95c-5.52 0-10 4.48-10 10s4.48 10 10 10h5v-2h-5c-4.34 0-8-3.66-8-8s3.66-8 8-8 8 3.66 8 8v1.43c0 .79-.71 1.57-1.5 1.57s-1.5-.78-1.5-1.57v-1.43c0-2.76-2.24-5-5-5s-5 2.24-5 5 2.24 5 5 5c1.38 0 2.64-.56 3.54-1.47.65.89 1.77 1.47 2.96 1.47 1.97 0 3.5-1.6 3.5-3.57v-1.43c0-5.52-4.48-10-10-10zm0 13c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3z" />
+                                </svg> -->
+
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" height="16px" width="16px"
+                                fill="#7d8590"  style="vertical-align: middle; position: relative; top: -2px;">
+
+                                    <path
+                                        d="M309 106c11.4-7 19-19.7 19-34c0-22.1-17.9-40-40-40s-40 17.9-40 40c0 14.4 7.6 27 19 34L209.7 220.6c-9.1 18.2-32.7 23.4-48.6 10.7L72 160c5-6.7 8-15 8-24c0-22.1-17.9-40-40-40S0 113.9 0 136s17.9 40 40 40c.2 0 .5 0 .7 0L86.4 427.4c5.5 30.4 32 52.6 63 52.6H426.6c30.9 0 57.4-22.1 63-52.6L535.3 176c.2 0 .5 0 .7 0c22.1 0 40-17.9 40-40s-17.9-40-40-40s-40 17.9-40 40c0 9 3 17.3 8 24l-89.1 71.3c-15.9 12.7-39.5 7.5-48.6-10.7L309 106z" />
+                                </svg>
+
+
+                            </div>
+
+                            <div class="right--col tmt-email">
+                                {{ projectUser.role | translate }}
+                            </div>
+                        </div>
+
+
+
+                    </div>
+
+                </sat-popover>
+            </div>
+
+
+        </div>
+    </div>
+
+
+
+</div>

@@ -344,9 +344,7 @@ import { HomeAnalyticsIndicatorComponent } from './home-components/home-analytic
 import { HomeWhatsappAccountWizardComponent } from './home-components/home-whatsapp-account-wizard/home-whatsapp-account-wizard.component';
 import { HomeWhatsappAccountWizardModalComponent } from './home-components/home-whatsapp-account-wizard/home-whatsapp-account-wizard-modal/home-whatsapp-account-wizard-modal.component';
 import { HomeCustomizeWidgetComponent } from './home-components/home-customize-widget/home-customize-widget.component';
-
-
-
+import { HomeCreateTeammateComponent } from './home-components/home-create-teammate/home-create-teammate.component';
 
 
 
@@ -613,7 +611,8 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     HomeAnalyticsIndicatorComponent,
     HomeWhatsappAccountWizardComponent,
     HomeWhatsappAccountWizardModalComponent,
-    HomeCustomizeWidgetComponent
+    HomeCustomizeWidgetComponent,
+    HomeCreateTeammateComponent
   ],
   imports: [
     TooltipModule.forRoot(CutomTooltipOptions as TooltipOptions),

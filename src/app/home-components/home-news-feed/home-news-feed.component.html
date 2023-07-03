@@ -8,9 +8,27 @@
             navigate_before
         </i>
         <ul class="carousel">
-            <li class="news-card" *ngFor="let news of newsFeedList">
-                <div class="img">
+            <!--  -->
+            <li class="news-card" [ngClass]="{'highlighted-card': news?.highlighted }" style="position: relative;"  *ngFor="let news of newsFeedList" (click)="openNewsLink(news?.learnmore)">
+                
+                <!-- <div class="box"> -->
+                    <!-- <div class="ribbon ribbon-top-right">
+                        <span>ribbon</span>
+                    </div> -->
+                <!-- </div> -->
+
+                <div class="img" style="position: relative;">
                     <img [src]="news?.image" alt="img" draggable="false">
+
+                    <!-- YouTube button  -->
+                    <div *ngIf="news?.type === 'video'" class="ytb">
+                        <svg height="auto" version="1.1" viewBox="0 0 68 48" width="40px" style="position: absolute;left: 117px;bottom: 0;">
+                            <path class="ytp-large-play-button-bg"
+                                d="M66.52,7.74c-0.78-2.93-2.49-5.41-5.42-6.19C55.79,.13,34,0,34,0S12.21,.13,6.9,1.55 C3.97,2.33,2.27,4.81,1.48,7.74C0.06,13.05,0,24,0,24s0.06,10.95,1.48,16.26c0.78,2.93,2.49,5.41,5.42,6.19 C12.21,47.87,34,48,34,48s21.79-0.13,27.1-1.55c2.93-0.78,4.64-3.26,5.42-6.19C67.94,34.95,68,24,68,24S67.94,13.05,66.52,7.74z"
+                                fill="#f00"></path>
+                            <path d="M 45,24 27,14 27,34" fill="#fff"></path>
+                        </svg>
+                    </div>
                 </div>
                 <div class="news-tag">
                     <span *ngIf="news?.tag === 'Academy'" class="news-tag-icon">
@@ -43,7 +61,8 @@
                         {{news?.tag}}
     
                     </div> -->
-                    <svg style="position: absolute;top: -26px; left: 0px" height="30" viewBox="0 0 137 30" width="137" xmlns="http://www.w3.org/2000/svg">
+                    <svg style="position: absolute;top: -26px; left: 0px" height="30" viewBox="0 0 137 30" width="137"
+                        xmlns="http://www.w3.org/2000/svg">
                         <path
                             d="m137 146.822306v.177694h-137v-8.133761c4.35695074-2.216475 8.42072398-4.86895 12.0925645-7.92295l9.5477997-7.954631c4.7738998-3.992439 11.0834598-5.988658 17.3596358-5.988658s12.585736 1.996219 17.3596358 5.988658l9.5811836 7.954631c12.2185129 10.162571 28.7769348 15.879017 46.0364186 15.879017z"
                             fill="#fff" fill-rule="evenodd" transform="translate(0 -117)" />
@@ -52,9 +71,21 @@
 
                 <h2>{{news?.title}}</h2>
 
-                <div class="news-link" (click)="openNewsLink(news?.learnmore)">
+                <div class="news-link-wpr" (click)="openNewsLink(news?.learnmore)">
 
-                    Read more
+                    <div class="news-link" *ngIf="news?.tag === 'Feature' && news?.type === 'article'"  >
+                        Read more
+                    </div>
+                    <div class="news-link" *ngIf="news?.tag === 'Academy' && news?.type === 'article'"  >
+                        Learn more
+                    </div>
+                    <div class="news-link" *ngIf="news?.tag === 'Academy' && news?.type === 'video'"  >
+                        View video
+                    </div>
+                    <div class="news-link" *ngIf="news?.tag === 'Feature' && news?.type === 'video'"  >
+                        View video
+                    </div>
+                   
                 </div>
             </li>
 

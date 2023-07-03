@@ -5,6 +5,7 @@
   // box-shadow: 0 0 20px 4px rgb(154 161 177 / 15%), 0 4px 80px -8px rgb(36 40 47 / 25%),
   //     0 4px 4px -2px rgb(91 94 105 / 15%);
   box-shadow: 0 0 #0000, 0 0 #0000, 0 1px 3px #0000001a, 0 1px 2px -1px #0000001a;
+  background-color: #fff;
 }
 
 .home-block-header-wpr {
@@ -50,6 +51,12 @@
   font-weight: 400;
   line-height: 20px;
   margin: 0px;
+}
+
+.your-chatbots {
+  display: flex;
+  height: 45px;
+  margin-bottom: 16px;
 }
 
 // Actions button
@@ -263,14 +270,12 @@ body {
   min-height: 48px;
 }
 
-.chatbot-popover-row-fs {
+.chatbot-popover-row-flex-start {
   display: flex;
   flex-direction: column;
   gap: 2px;
   align-items: flex-start;
 }
-
-
 
 .img-in-bot-popover {
   width: 35px;

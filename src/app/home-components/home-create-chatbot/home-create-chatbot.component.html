@@ -100,8 +100,7 @@
     <div style="height: 24px; width: 0px; flex: 0 0 auto;"></div>
     <!-- (click)="goToBotProfile(bot?._id, bot?.type)" (mouseenter)="chatbotDetails.open()"
                 (mouseleave)="chatbotDetails.close()" -->
-    <div *ngIf="chatbots && chatbots?.length > 0" class="your-chatbots"
-        style="display: flex;height: 45px; margin-bottom: 16px;">
+    <div *ngIf="chatbots && chatbots?.length > 0" class="your-chatbots">
         <div class="served-by-desktop-b" *ngFor="let bot of chatbots | slice:0:10; let i=index; let first = first;">
             <div [ngClass]="{ 'first-served-by': first, 'disable-link-if-is-agent': USER_ROLE === 'agent' }"
                 class="served-by-desktop-c">
@@ -162,7 +161,7 @@
 
                     <div class="chatbot-details-popover-wpr" style="padding: 12px;">
 
-                        <div class="chatbot-popover-row-fs">
+                        <div class="chatbot-popover-row-flex-start">
 
                             <div class="left--col">
 
@@ -207,7 +206,6 @@
                             <div class="right--col chatbot-description">
                                 <span *ngIf="bot.description"> {{bot.description}} </span>
                                 <span *ngIf="!bot.description"> No description provided</span>
-
                             </div>
                         </div>
                         <!-- ------------------------------------ -->
@@ -304,7 +302,6 @@
                                     </div>
 
                             </div>
-
                         </div>
                 </sat-popover>
 
