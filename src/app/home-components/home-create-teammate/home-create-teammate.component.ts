@@ -115,11 +115,13 @@ export class HomeCreateTeammateComponent implements OnInit {
 
         this.groupsService.getGroupsByProjectId().subscribe((groups: any) => {
           console.log('[HOME-CREATE-TEAMMATE] - GET GROUPS BY PROJECT ID ', groups);
-          // let group = []
+          let group = []
           if (groups && groups.length > 0) {
             for (let i = 0; i < groups.length; i++) {
               console.log('[HOME-CREATE-TEAMMATE] - GET GROUPS BY PROJECT ID > GROUP NAME ', groups[i].name)
               console.log('[HOME-CREATE-TEAMMATE] - GET GROUPS BY PROJECT ID > GROUP MEMBERS ', groups[i].members)
+               group.push({groupName:  groups[i].name, groupMembers:  groups[i].members}) 
+              console.log('[HOME-CREATE-TEAMMATE] - GET GROUPS BY PROJECT ID > GROUP ARRAY ', group)
               if (groups[i].members && groups[i].members.length > 0) {
                 for (let j = 0; j < groups[i].members.length; j++) {
                   console.log('[HOME-CREATE-TEAMMATE] - GET GROUPS BY PROJECT ID > GROUP MEMBERS > MEMBER', groups[i].members[j])
