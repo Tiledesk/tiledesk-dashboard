@@ -2325,7 +2325,11 @@
     "NoTAGAssignedYet":"Теги ще не призначені",
     "WidgetVisibility": "Віджет Видимість",
     "DisplayWidget": "Віджет дисплея",
-    "OnPageChange": "На сторінці зміни", 
+    "OnPageChange": "На сторінці зміни",
+    "OnPageLoad": "При завантаженні сторінки",
+    "Always opened":"Завжди відкрита",
+    "Always Closed":"Завжди закрито",
+    "As last status": "Як останній статус",  
     "AddIntentPage": {
         "AddForm": "Додати форму",
         "SelectTemplateForm": "Виберіть тип форми серед запропонованих або створіть новий",

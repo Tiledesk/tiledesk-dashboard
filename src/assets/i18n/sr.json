@@ -2325,7 +2325,11 @@
     "NoTAGAssignedYet":"Још увек није додељен ТАГ",
     "WidgetVisibility": "Виџет видљивост",
     "DisplayWidget": "Дисплаи Видгет",
-    "OnPageChange": "При промени странице", 
+    "OnPageChange": "При промени странице",
+    "OnPageLoad": "При учитавању странице", 
+    "Always opened":"Увек отворен",
+    "Always Closed":"Увек затворено",
+    "As last status": "Као задњи статус",
     "AddIntentPage": {
         "AddForm": "Додати образац",
         "SelectTemplateForm": "Изаберите врсту обрасца међу онима који су предложени или створили нови",

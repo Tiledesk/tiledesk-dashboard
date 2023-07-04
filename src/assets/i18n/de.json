@@ -2326,6 +2326,10 @@
 	"WidgetVisibility": "Widget-Sichtbarkeit",
 	"DisplayWidget": "Anzeige-Widget",
 	"OnPageChange": "Wenn sich die Seite ändert", 
+	"OnPageLoad": "Beim Laden der Seite", 
+	"Always opened":"Immer geöffnet",
+    "Always Closed":"Immer geschlossen",
+    "As last status": "Als letzter Status",
 	"AddIntentPage": {
 		"AddForm": "Form hinzufügen",
 		"SelectTemplateForm": "Wählen Sie unter den vorgeschlagenen Form eine Art von Form aus oder erstellen Sie eine neue",

@@ -2326,6 +2326,10 @@
     "WidgetVisibility": "رؤية القطعة",
     "DisplayWidget": "اعرض القطعة",
     "OnPageChange": "عند تغيير الصفحة", 
+    "OnPageLoad": "عند تحميل الصفحة", 
+    "Always opened":"دائما مفتوح",
+    "Always Closed":"مغلق دائما",
+    "As last status": "كالوضع الأخير",
     "AddIntentPage": {
         "AddForm": "أضف النموذج",
         "SelectTemplateForm": "حدد نوعًا من النماذج بين هؤلاء المقترحين ، أو إنشاء شكل جديد",

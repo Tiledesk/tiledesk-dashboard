@@ -965,9 +965,16 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
       this.getPendingInvitation();
       if (!isDevMode()) {
         if (window['analytics']) {
+          let userFullname = ''
+          if (this.CURRENT_USER.firstname && this.CURRENT_USER.lastname)  {
+            userFullname = this.CURRENT_USER.firstname + ' ' + this.CURRENT_USER.lastname
+          } else if (this.CURRENT_USER.firstname && !this.CURRENT_USER.lastname) {
+            userFullname = this.CURRENT_USER.firstname
+          }
+
           try {
             window['analytics'].identify(this.CURRENT_USER._id, {
-              name: this.CURRENT_USER.firstname + ' ' + this.CURRENT_USER.lastname,
+              name: userFullname,
               email: this.CURRENT_USER.email,
               plan: this.profile_name_for_segment
 

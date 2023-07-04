@@ -498,9 +498,17 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
           } catch (err) {
             this.logger.error('Wizard Create project page error', err);
           }
+
+          let userFullname = ''
+          if (this.user.firstname && this.user.lastname)  {
+            userFullname = this.user.firstname + ' ' + this.user.lastname
+          } else if (this.user.firstname && !this.user.lastname) {
+            userFullname = this.user.firstname
+          }
+
           try {
             window['analytics'].identify(this.user._id, {
-              name: this.user.firstname + ' ' + this.user.lastname,
+              name: userFullname,
               email: this.user.email,
               logins: 5,
               plan: "Scale (trial)"

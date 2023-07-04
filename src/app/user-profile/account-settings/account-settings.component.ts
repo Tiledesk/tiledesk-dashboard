@@ -321,9 +321,17 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
               this.logger.error('Account Deleted page error', err);
             }
 
+            let userFullname = ''
+            if (this.currentUser.firstname && this.currentUser.lastname)  {
+              userFullname = this.currentUser.firstname + ' ' + this.currentUser.lastname
+            } else if (this.currentUser.firstname && !this.currentUser.lastname) {
+              userFullname = this.currentUser.firstname
+            }
+
+
             try {
               window['analytics'].identify(this.currentUser._id, {
-                name: this.currentUser.firstname + ' ' + this.currentUser.lastname,
+                name: userFullname,
                 email: this.currentUser.email,
                 plan: this.prjct_profile_name
 
