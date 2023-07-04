@@ -11,7 +11,8 @@
     <div *ngIf="projectUsers && projectUsers?.length > 0" class="project-teammates">
         <div class="served-by-desktop-b"
             *ngFor="let projectUser of projectUsers | slice:0:10; let i=index; let first = first;">
-            <div class="served-by-desktop-c">
+            <div class="served-by-desktop-c"
+                [ngClass]="{ 'first-served-by': first, 'disable-link-if-is-agent': USER_ROLE === 'agent' }">
                 <div class="served-by-desktop-d" [satPopoverAnchor]="t" (click)="t.toggle()">
                     <div size="45" class="served-by-desktop-e" style="width: 45px;">
 
@@ -20,20 +21,21 @@
                         <!-- --------------------------------------------------------------- -->
                         <img *ngIf="projectUser?.hasImage && UPLOAD_ENGINE_IS_FIREBASE"
                             src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{projectUser?.id_user?._id}}%2Fphoto.jpg?alt=media"
-                            alt="" onerror="this.src='assets/img/no_image_user.png'" style="width: 45px;height: 45px;">
+                            alt="" onerror="this.src='assets/img/no_image_user.png'"
+                            style="width: 45px;height: 45px; border: 1px solid #eee;">
 
                         <!-- --------------------------------------------------------------- -->
                         <!-- USECASE uploadEngine Native -->
                         <!-- --------------------------------------------------------------- -->
                         <img *ngIf="projectUser?.hasImage && !UPLOAD_ENGINE_IS_FIREBASE"
                             src="{{baseUrl}}images?path=uploads%2Fusers%2F{{projectUser?.id_user?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
-                            alt="" onerror="this.src='assets/img/no_image_user.png'" style="width: 45px;height: 45px;">
+                            alt="" onerror="this.src='assets/img/no_image_user.png'"
+                            style="width: 45px;height: 45px; border: 1px solid #eee;">
                         <!-- --------------------------------------------------------------- -->
                         <!-- AVATAR WITH USER NAME INITIALS IF DOES NOT EXIST PROFILE IMAGE -->
                         <!-- --------------------------------------------------------------- -->
                         <div *ngIf="!projectUser.hasImage" class="tmt-altenative-avatar-wrap"
-                            [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + projectUser?.fillColour + ')'}"
-                            style="">
+                            [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + projectUser?.fillColour + ')'}">
                             <span class="tmt-altenative--avatar">
                                 {{ projectUser?.fullname_initial }}
                             </span>
@@ -104,25 +106,31 @@
                         <!-- ----------------------------------- -->
                         <div class="tmt-popover-row flex-start">
                             <div class="left--col">
-                                <!-- <svg style="vertical-align: middle; position: relative; top: -1px;"
-                                    xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 0 24 24" width="16px"
-                                    fill="#7d8590">
-                                    <path d="M0 0h24v24H0V0z" fill="none" />
-                                    <path
-                                        d="M12 1.95c-5.52 0-10 4.48-10 10s4.48 10 10 10h5v-2h-5c-4.34 0-8-3.66-8-8s3.66-8 8-8 8 3.66 8 8v1.43c0 .79-.71 1.57-1.5 1.57s-1.5-.78-1.5-1.57v-1.43c0-2.76-2.24-5-5-5s-5 2.24-5 5 2.24 5 5 5c1.38 0 2.64-.56 3.54-1.47.65.89 1.77 1.47 2.96 1.47 1.97 0 3.5-1.6 3.5-3.57v-1.43c0-5.52-4.48-10-10-10zm0 13c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3z" />
-                                </svg> -->
 
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" height="16px" width="16px"
-                                fill="#7d8590"  style="vertical-align: middle; position: relative; top: -2px;">
-
+                                <svg *ngIf="projectUser.role === 'owner'" xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 576 512" height="16px" width="16px" fill="#7d8590"
+                                    style="vertical-align: middle; position: relative; top: -2px;">
                                     <path
                                         d="M309 106c11.4-7 19-19.7 19-34c0-22.1-17.9-40-40-40s-40 17.9-40 40c0 14.4 7.6 27 19 34L209.7 220.6c-9.1 18.2-32.7 23.4-48.6 10.7L72 160c5-6.7 8-15 8-24c0-22.1-17.9-40-40-40S0 113.9 0 136s17.9 40 40 40c.2 0 .5 0 .7 0L86.4 427.4c5.5 30.4 32 52.6 63 52.6H426.6c30.9 0 57.4-22.1 63-52.6L535.3 176c.2 0 .5 0 .7 0c22.1 0 40-17.9 40-40s-17.9-40-40-40s-40 17.9-40 40c0 9 3 17.3 8 24l-89.1 71.3c-15.9 12.7-39.5 7.5-48.6-10.7L309 106z" />
                                 </svg>
 
+                                <svg *ngIf="projectUser.role === 'admin'" xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 448 512" height="14px" width="16px" fill="#7d8590"
+                                    style="vertical-align: middle; position: relative; top: -2px;">
+                                    <path
+                                        d="M224 256A128 128 0 1 1 224 0a128 128 0 1 1 0 256zM209.1 359.2l-18.6-31c-6.4-10.7 1.3-24.2 13.7-24.2H224h19.7c12.4 0 20.1 13.6 13.7 24.2l-18.6 31 33.4 123.9 36-146.9c2-8.1 9.8-13.4 17.9-11.3c70.1 17.6 121.9 81 121.9 156.4c0 17-13.8 30.7-30.7 30.7H285.5c-2.1 0-4-.4-5.8-1.1l.3 1.1H168l.3-1.1c-1.8 .7-3.8 1.1-5.8 1.1H30.7C13.8 512 0 498.2 0 481.3c0-75.5 51.9-138.9 121.9-156.4c8.1-2 15.9 3.3 17.9 11.3l36 146.9 33.4-123.9z" />
+                                </svg>
+
+                                <svg *ngIf="projectUser.role === 'agent'" xmlns="http://www.w3.org/2000/svg" 
+                                    viewBox="0 0 512 512" height="14px" width="16px" fill="#7d8590"
+                                    style="vertical-align: middle; position: relative; top: -2px;">
+                                    <path
+                                        d="M256 48C141.1 48 48 141.1 48 256v40c0 13.3-10.7 24-24 24s-24-10.7-24-24V256C0 114.6 114.6 0 256 0S512 114.6 512 256V400.1c0 48.6-39.4 88-88.1 88L313.6 488c-8.3 14.3-23.8 24-41.6 24H240c-26.5 0-48-21.5-48-48s21.5-48 48-48h32c17.8 0 33.3 9.7 41.6 24l110.4 .1c22.1 0 40-17.9 40-40V256c0-114.9-93.1-208-208-208zM144 208h16c17.7 0 32 14.3 32 32V352c0 17.7-14.3 32-32 32H144c-35.3 0-64-28.7-64-64V272c0-35.3 28.7-64 64-64zm224 0c35.3 0 64 28.7 64 64v48c0 35.3-28.7 64-64 64H352c-17.7 0-32-14.3-32-32V240c0-17.7 14.3-32 32-32h16z" />
+                                </svg>
 
                             </div>
 
-                            <div class="right--col tmt-email">
+                            <div class="right--col tmt-role">
                                 {{ projectUser.role | translate }}
                             </div>
                         </div>
@@ -135,6 +143,43 @@
             </div>
 
 
+        </div>
+        <div *ngIf="projectUsers?.length > 10" class="served-by-desktop-b" (click)="goToTeammates()">
+            <div class="served-by-desktop-d">
+                <div style="height: 45px " class="other-teammates">
+                    + {{numOfTeammatesNotDiplayed}}
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="home-block-description-and-menu-btn-wpr">
+
+        <div class="home-block-description" style="padding-right: 55px;">
+            Brings the rest of your team to help you talking with customers
+
+            <!-- <span *ngIf="displayDefaultDescription === false"> {{'StartBySelecting' | translate : tparams }} </span>
+            <span *ngIf="displayDefaultDescription === true"> Create your chatbot from scratch with our brand new
+                no-code Chatbot Design Studio or start by selecting a
+                free ready-to-use template (pre-designed chatbot) that suits your needs</span> -->
+        </div>
+
+        <div class="action-btns-wpr">
+            <button mat-mini-fab aria-label="more_horiz icon" [matMenuTriggerFor]="menu"
+                style="box-shadow: unset; background-color: #2196f3">
+                <mat-icon style="color: #fff;">more_horiz</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu" #aboveMenu="matMenu" yPosition="above">
+                <button mat-menu-item (click)="goToTeammates()">
+                    <mat-icon>group_add</mat-icon>
+                    <span>Invite teammates</span>
+                </button>
+                <!-- <button mat-menu-item (click)="goToAddBotFromScratch()">
+                    <mat-icon>add_circle_outline</mat-icon>
+                    <span>Create from scratch</span>
+                </button> -->
+            </mat-menu>
         </div>
     </div>
 

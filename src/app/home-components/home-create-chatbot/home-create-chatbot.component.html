@@ -102,8 +102,7 @@
                 (mouseleave)="chatbotDetails.close()" -->
     <div *ngIf="chatbots && chatbots?.length > 0" class="your-chatbots">
         <div class="served-by-desktop-b" *ngFor="let bot of chatbots | slice:0:10; let i=index; let first = first;">
-            <div [ngClass]="{ 'first-served-by': first, 'disable-link-if-is-agent': USER_ROLE === 'agent' }"
-                class="served-by-desktop-c">
+            <div class="served-by-desktop-c" [ngClass]="{ 'first-served-by': first, 'disable-link-if-is-agent': USER_ROLE === 'agent' }">
 
                 <div class="served-by-desktop-d" [satPopoverAnchor]="c" (click)="c.toggle()">
                     <div size="45" class="served-by-desktop-e" style="width: 45px;">

@@ -112,3 +112,40 @@
     font-size: 12px;
     margin-left: 2px;
 }
+
+.tmt-role {
+    color: #9da2a6;
+    font-size: 12px;
+    margin-left: 2px;
+}
+
+.home-block-description-and-menu-btn-wpr {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.home-block-description {
+    color: #000000;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 20px;
+    margin: 0px;
+}
+
+.other-teammates {
+    height: 45px;
+    background: rgb(33, 150, 243);
+    width: 45px;
+    font-size: 16px;
+    text-align: center;
+    line-height: 2.9;
+    font-weight: 400;
+    color: #fff;
+    letter-spacing: -1px;
+    position: relative;
+    left: -5px;
+    cursor: pointer;
+    border-radius: 50%;
+    border: 1px solid #eee;
+}

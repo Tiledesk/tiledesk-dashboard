@@ -73,9 +73,10 @@
       <li [ngClass]="{'active-item': TEAMMATES_ROUTE_IS_ACTIVE || GROUPS_ROUTE_IS_ACTIVE}" (click)="goToTeammates()"
         matTooltipClass="custom-mat-tooltip-in-settings-sidebar" matTooltip="{{ teammatates_and_groups_lbl }}"
         #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100" [matTooltipDisabled]="IS_OPEN">
+        <!-- supervisor_account -->
         <a>
           <i *ngIf="IS_OPEN === true || IS_OPEN === false"
-            class="material-icons settings-sidebar-icons">supervisor_account</i>
+            class="material-icons settings-sidebar-icons">groups</i>
           <p *ngIf="IS_OPEN === true" class="custom_paragraph">
             <span *ngIf="isVisibleGRO">
               {{ 'UsersAndGroups' | translate }}

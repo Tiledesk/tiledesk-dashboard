@@ -1,6 +1,8 @@
 import { Component, OnInit, SimpleChanges } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService } from 'app/core/auth.service';
 import { AppConfigService } from 'app/services/app-config.service';
+import { GroupService } from 'app/services/group.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { UsersService } from 'app/services/users.service';
 import { avatarPlaceholder, getColorBck } from 'app/utils/util';
@@ -20,16 +22,38 @@ export class HomeCreateTeammateComponent implements OnInit {
   projectId: string;
   UPLOAD_ENGINE_IS_FIREBASE: boolean;
   USER_ROLE: string;
+  numOfTeammatesNotDiplayed: number;
+  countOfTeammates: number;
   constructor(
     public auth: AuthService,
     private logger: LoggerService,
     public appConfigService: AppConfigService,
     private usersService: UsersService,
+    private groupsService: GroupService,
+    public router: Router,
   ) { }
 
   ngOnInit(): void {
     console.log('[HOME-CREATE-TEAMMATE] OnInit  ')
     this.getCurrentProjectAndPrjctTeammates();
+    // this.getGroupsByProjectId();
+  }
+
+
+  getGroupsByProjectId() {
+    this.groupsService.getGroupsByProjectId().subscribe((groups: any) => {
+      console.log('[HOME-CREATE-TEAMMATE] - GET GROUPS BY PROJECT ID ', groups);
+
+      // this.groupsList = groups;
+
+
+    }, (error) => {
+      console.error('[HOME-CREATE-TEAMMATE] GET GROUPS - ERROR ', error);
+      // this.showSpinner = false;
+    }, () => {
+      // this.showSpinner = false;
+      console.log('[HOME-CREATE-TEAMMATE] GET GROUPS * COMPLETE');
+    });
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -83,6 +107,39 @@ export class HomeCreateTeammateComponent implements OnInit {
 
       if (projectUsers) {
         this.projectUsers = projectUsers
+        this.countOfTeammates = projectUsers.length;
+        if (this.countOfTeammates > 10) {
+          this.numOfTeammatesNotDiplayed = this.countOfTeammates - 10
+
+        }
+
+        this.groupsService.getGroupsByProjectId().subscribe((groups: any) => {
+          console.log('[HOME-CREATE-TEAMMATE] - GET GROUPS BY PROJECT ID ', groups);
+          // let group = []
+          if (groups && groups.length > 0) {
+            for (let i = 0; i < groups.length; i++) {
+              console.log('[HOME-CREATE-TEAMMATE] - GET GROUPS BY PROJECT ID > GROUP NAME ', groups[i].name)
+              console.log('[HOME-CREATE-TEAMMATE] - GET GROUPS BY PROJECT ID > GROUP MEMBERS ', groups[i].members)
+              if (groups[i].members && groups[i].members.length > 0) {
+                for (let j = 0; j < groups[i].members.length; j++) {
+                  console.log('[HOME-CREATE-TEAMMATE] - GET GROUPS BY PROJECT ID > GROUP MEMBERS > MEMBER', groups[i].members[j])
+                  
+                  if (projectUsers && projectUsers.length > 0) {
+                    for (let x = 0; x < projectUsers.length; x++) {
+                      // console.log('[HOME-CREATE-TEAMMATE] - GET GROUPS BY PROJECT ID > PU > USER ID', projectUsers[x].id_user._id)
+                      if (groups[i].members[j] === projectUsers[x].id_user._id) {
+                        // group.push(groups[i].name)
+                        projectUsers[x]['group'] = groups[i].name
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        })
+
+
 
         // ------------------------
         // CHECK IF USER HAS IMAGE
@@ -150,7 +207,10 @@ export class HomeCreateTeammateComponent implements OnInit {
     imageData.src = imageUrl;
   }
 
-
+  goToTeammates() {
+    console.log('[HOME-CREATE-TEAMMATE] - goToTeammates clicked')
+    this.router.navigate(['project/' + this.projectId + '/users'])
+  }
 
 
 }
