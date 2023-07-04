@@ -232,6 +232,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     // this.upadatedWatsAppWizard( this.waWizardSteps)
   }
 
+ 
+
   getCurrentProjectAndInit() {
     this.auth.project_bs
       .pipe(
@@ -322,6 +324,12 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           console.log('[HOME] - GET WA WIZARD STEPS (onInit) - whatsAppIsConnected ', this.whatsAppIsConnected);
         } else {
           this.whatsAppIsConnected = true
+        }
+
+        if (this.current_selected_prjct.id_project.attributes.wastep[0].step1 === true &&
+          this.current_selected_prjct.id_project.attributes.wastep[0].step2 === true &&
+          this.current_selected_prjct.id_project.attributes.wastep[0].step3 === true) {
+            this.displayWhatsappAccountWizard = false
         }
       } else {
         this.whatsAppIsConnected = false
@@ -647,6 +655,16 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   // -------------------------------------------
   // STEP 1
   // -------------------------------------------
+  hasCreatedChatbot(event) {
+    console.log('[HOME] hasCreatedChatbot  ', event)
+    if (event === true) {
+      this.waWizardSteps = [{ step1: true, step2: true, step3: false }]
+      this.upadatedWatsAppWizard(this.waWizardSteps)
+    } 
+  }
+ 
+
+
   goToCreateChatbot() {
     console.log('[HOME] GO TO CONNECT WA childCreateChatbot', this.childCreateChatbot);
     this.scrollToChild(this.childCreateChatbot)
@@ -840,6 +858,13 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           this.wadepartmentid = res.attributes.wasettings.department_id
           this.getDeptById(this.wadepartmentid)
         }
+
+        if (res && res.attributes && res.attributes.wastep) {
+          if (res.attributes.wastep[0].step1 === true && res.attributes.wastep[0].step2 === true && res.attributes.wastep[0].step3 === true)  {
+            this.displayWhatsappAccountWizard = false;
+              this.presentModalWaSuccessfullyConnected()
+          }
+        }
         // console.log('[HOME] - UPDATE PRJCT WITH WA WSETTINGS - whatsAppIsConnected ', this.whatsAppIsConnected);
 
       }, error => {
@@ -847,6 +872,28 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       }, () => {
         console.log('[HOME] - UPDATE PRJCT WITH WA WSETTINGS * COMPLETE *')
       });
+  }
+
+
+  presentModalWaSuccessfullyConnected() {
+
+    swal("Good job!", "WhatsApp connected successfully!", "success");
+    // const el = document.createElement('div')
+    // el.innerHTML = this.featureAvailableFromBPlan
+    // swal({
+    //   // title: this.onlyOwnerCanManageTheAccountPlanMsg,
+    //   content: el,
+    //   icon: "success",
+    //   // buttons: true,
+    //   buttons: {
+    //     cancel: this.cancel,
+    //     catch: {
+    //       text: this.upgradePlan,
+    //       value: "catch",
+    //     },
+    //   },
+    //   dangerMode: false,
+    // })
   }
 
   updateProjectByDeletingWASettings() {

@@ -2410,7 +2410,7 @@
 .bg-card {
   opacity: 1;
   background-color: #fff;
-  margin-top: -5px
+  margin-top: -5px;
 }
 
 .padding-l-r {
@@ -2705,4 +2705,31 @@ img {
 
 .mat-ripple:not(:empty) {
   transform: translateZ(0);
+}
+
+.home-blocks-wpr {
+  border-top: 1px solid rgb(226, 232, 240);
+  margin-top: -1px;
+  background-color: rgb(241, 245, 249);
+  padding-right: 80px;
+  padding-left: 80px;
+  padding-top: 35px;
+  padding-bottom: 18px;
+  max-width: 874px;
+  margin: auto;
+}
+
+// // overwrite the checkbox background
+// ::ng-deep .mat-checkbox-checked .mat-checkbox-background, 
+// .mat-checkbox-indeterminate .mat-checkbox-background {
+//   background-color: black !important;
+// }
+
+// // overwrite the ripple overlay on hover and click
+// ::ng-deep .mat-checkbox:not(.mat-checkbox-disabled) .mat-checkbox-ripple .mat-ripple-element {
+//   background-color: black !important;
+// }
+
+.home-settings-checkbox {
+  margin: 0 12px;
 }

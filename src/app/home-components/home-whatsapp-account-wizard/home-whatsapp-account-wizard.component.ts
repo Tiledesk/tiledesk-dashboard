@@ -17,6 +17,7 @@ export class HomeWhatsappAccountWizardComponent implements OnInit, OnChanges {
   @Output() goToConnectWA = new EventEmitter();
   @Output() goToCreateChatbot = new EventEmitter();
   @Output() hasTestedBotOnWa = new EventEmitter();
+  @Output() hasCreatedChatbot = new EventEmitter();
   @Input() whatsAppIsConnected: boolean;
   @Input() wadepartmentName: string;
   @Input() chatbotConnectedWithWA: boolean;
@@ -72,11 +73,12 @@ export class HomeWhatsappAccountWizardComponent implements OnInit, OnChanges {
       if (bots) {
         if (bots.length > 0) {
           this.thereIsALeastOneBot = true;
+          this.hasCreatedChatbot.emit(true)
           console.log('[HOME-WA-WIZARD] - GET BOTS (OnInit) THERE IS AT LEAST ONE BOT', this.thereIsALeastOneBot);
         } else {
           this.thereIsALeastOneBot = false;
           console.log('[HOME-WA-WIZARD] - GET BOTS (OnInit) THERE IS AT LEAST ONE BOT', this.thereIsALeastOneBot);
-          
+          this.hasCreatedChatbot.emit(false)
         }
       }
 

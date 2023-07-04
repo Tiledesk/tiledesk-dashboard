@@ -115,29 +115,43 @@ export class HomeCreateTeammateComponent implements OnInit {
 
         this.groupsService.getGroupsByProjectId().subscribe((groups: any) => {
           console.log('[HOME-CREATE-TEAMMATE] - GET GROUPS BY PROJECT ID ', groups);
-          let group = []
+          let groupArray = []
+          let groupArrayGrouped = []
           if (groups && groups.length > 0) {
             for (let i = 0; i < groups.length; i++) {
               console.log('[HOME-CREATE-TEAMMATE] - GET GROUPS BY PROJECT ID > GROUP NAME ', groups[i].name)
               console.log('[HOME-CREATE-TEAMMATE] - GET GROUPS BY PROJECT ID > GROUP MEMBERS ', groups[i].members)
-               group.push({groupName:  groups[i].name, groupMembers:  groups[i].members}) 
-              console.log('[HOME-CREATE-TEAMMATE] - GET GROUPS BY PROJECT ID > GROUP ARRAY ', group)
-              if (groups[i].members && groups[i].members.length > 0) {
-                for (let j = 0; j < groups[i].members.length; j++) {
-                  console.log('[HOME-CREATE-TEAMMATE] - GET GROUPS BY PROJECT ID > GROUP MEMBERS > MEMBER', groups[i].members[j])
-                  
-                  if (projectUsers && projectUsers.length > 0) {
-                    for (let x = 0; x < projectUsers.length; x++) {
-                      // console.log('[HOME-CREATE-TEAMMATE] - GET GROUPS BY PROJECT ID > PU > USER ID', projectUsers[x].id_user._id)
-                      if (groups[i].members[j] === projectUsers[x].id_user._id) {
-                        // group.push(groups[i].name)
-                        projectUsers[x]['group'] = groups[i].name
-                      }
-                    }
-                  }
-                }
-              }
+              groupArray.push({ groupName: groups[i].name, groupMembers: groups[i].members })
+              console.log('[HOME-CREATE-TEAMMATE] - GET GROUPS BY PROJECT ID > GROUP ARRAY ', groupArray)
+
+             
+        
+              //   if (groups[i].members && groups[i].members.length > 0) {
+              //     for (let j = 0; j < groups[i].members.length; j++) {
+              //       console.log('[HOME-CREATE-TEAMMATE] - GET GROUPS BY PROJECT ID > GROUP MEMBERS > MEMBER', groups[i].members[j])
+
+              //       if (projectUsers && projectUsers.length > 0) {
+              //         for (let x = 0; x < projectUsers.length; x++) {
+              //           // console.log('[HOME-CREATE-TEAMMATE] - GET GROUPS BY PROJECT ID > PU > USER ID', projectUsers[x].id_user._id)
+              //           if (groups[i].members[j] === projectUsers[x].id_user._id) {
+              //             // group.push(groups[i].name)
+              //             projectUsers[x]['group'] = groups[i].name
+              //           }
+              //         }
+              //       }
+              //     }
+              //   }
+              // }
             }
+
+            // if (groupArray && groupArray['groupMembers'] && groupArray['groupMembers'].length > 0) {
+            //   groupArray['groupMembers'].forEach(member => {
+            //     groupArrayGrouped.push({memberId:member , groupName: groupArray['groupName']} ) 
+            //   });
+            //   console.log('[HOME-CREATE-TEAMMATE] - GET GROUPS BY PROJECT ID > groupArrayGrouped ', groupArrayGrouped)
+            // }
+
+          
           }
         })
 
