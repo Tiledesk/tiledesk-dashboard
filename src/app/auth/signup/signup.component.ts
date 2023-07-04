@@ -98,6 +98,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
       'required': 'Password is required.',
       'pattern': 'Password must be include at one letter and one number.',
       'minlength': 'Password must be at least 8 characters long.',
+      'maxlength': 'Password is too long.',
 
     },
     'firstName': {
@@ -162,6 +163,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
       ]],
       'password': ['', [
         // Validators.pattern('^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$'),
+        Validators.maxLength(512),
         Validators.minLength(8),
         Validators.required,
 
