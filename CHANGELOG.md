@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.4.50
+- Deploys in production
+- Adds the ability in the widget settings page to show or hide the widget and to manage its status when the page loads
+
 ### 2.4.49
 - Deploys in production
 - Fixes the bug: on the "Monitor" page the filter for "Conversation type" doesn't show the options
