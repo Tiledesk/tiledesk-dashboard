@@ -2327,6 +2327,9 @@
     "DisplayWidget": "Vidceti göstərin",
     "OnPageChange": "Səhifə dəyişdikdə", 
     "OnPageLoad": "Səhifə yüklədikdə", 
+    "Always opened":"Həmişə açıq",
+    "Always Closed":"Həmişə Bağlıdır",
+    "As last status": "Son status kimi",
     "AddIntentPage": {
         "AddForm": "Forma vermək",
         "SelectTemplateForm": "Təklif olunanlar arasında bir növ forma seçin və ya yenisini yaradın",

@@ -2325,6 +2325,9 @@
     "DisplayWidget": "Display Widget",
     "OnPageChange": "On page change", 
     "OnPageLoad": "On page load", 
+    "Always opened":"Always opened",
+    "Always Closed":"Always Closed",
+    "As last status": "As last status",
     "AddIntentPage": {
         "AddForm": "Add form",
         "SelectTemplateForm": "Select a type of form among those suggested, or create a new one",

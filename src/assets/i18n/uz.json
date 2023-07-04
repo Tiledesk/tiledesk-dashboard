@@ -2326,6 +2326,9 @@
     "DisplayWidget": "Displey vidjeti",
     "OnPageChange": "Sahifa o'zgarganida",
     "OnPageLoad": "Sahifa yuklanishida",   
+    "Always opened":"Har doim ochilgan",
+    "Always Closed":"Har doim yopiq",
+    "As last status": "Oxirgi holat sifatida",
     "AddIntentPage": {
         "AddForm": "Shakl qo'shing",
         "SelectTemplateForm": "Tavsiya etilganlar orasida shakl turini tanlang yoki yangisini yarating",

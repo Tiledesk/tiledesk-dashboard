@@ -2327,6 +2327,9 @@
     "DisplayWidget": "Виджет отображения",
     "OnPageChange": "На странице изменения", 
     "OnPageLoad": "При загрузке страницы", 
+    "Always opened":"Всегда открыто",
+    "Always Closed":"Всегда закрыто",
+    "As last status": "Как последний статус",
     "AddIntentPage": {
         "AddForm": "Добавить форму",
         "SelectTemplateForm": "Выберите тип формы среди предлагаемых или создайте новую",

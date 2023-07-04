@@ -33,6 +33,7 @@ const swal = require('sweetalert');
 import { AbstractControl, FormControl } from '@angular/forms';
 import { ThemePalette } from '@angular/material/core';
 import { isDevMode } from '@angular/core';
+import { SelectOptionsTranslatePipe } from '../../selectOptionsTranslate.pipe';
 
 @Component({
   selector: 'appdashboard-widget-set-up',
@@ -214,10 +215,16 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   desktop_widget_is_visible: boolean = true;
   mobile_widget_is_visible: boolean = true;
 
+  // widget_status_on_page_change = [
+  //   { id: 'open', name: 'OnPageLoad' },
+  //   { id: 'close', name: 'DisplayWidget' },
+  //   { id: 'last', name: 'WidgetVisibility' },
+  // ]
+
   widget_status_on_page_change = [
-    { id: 'open', name: 'OnPageLoad' },
-    { id: 'close', name: 'DisplayWidget' },
-    { id: 'last', name: 'WidgetVisibility' },
+    { id: 'open', name: 'Always opened' },
+    { id: 'close', name: 'Always Closed' },
+    { id: 'last', name: 'As last status' }
   ]
 
   desktopWidgetStatus: 'open' | 'close' | 'last' = 'close'
@@ -401,7 +408,8 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     private usersService: UsersService,
     private prjctPlanService: ProjectPlanService,
     private uploadImageService: UploadImageService,
-    private uploadImageNativeService: UploadImageNativeService
+    private uploadImageNativeService: UploadImageNativeService,
+    public selectOptionsTranslatePipe: SelectOptionsTranslatePipe,
   ) {
     super(translate);
     const brand = brandService.getBrand();
