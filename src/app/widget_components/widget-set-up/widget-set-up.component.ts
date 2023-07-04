@@ -220,7 +220,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     { id: 'last', name: 'WidgetVisibility' },
   ]
 
-  desktopWidgetStatus: 'open' | 'close' | 'last' = 'last'
+  desktopWidgetStatus: 'open' | 'close' | 'last' = 'close'
   mobileWidgetStatus: 'open' | 'close' | 'last' = 'close'
 
   en_missing_labels =
