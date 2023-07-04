@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.4.51
+- Deploys in production
+- Improvements and bug fixing
+
 ### 2.4.50
 - Deploys in production
 - Adds the ability in the widget settings page to show or hide the widget and to manage its status when the page loads
