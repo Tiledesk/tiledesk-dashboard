@@ -172,20 +172,66 @@
                                     </div>
                                 </button>
                             </div>
-                            <!-- <div class="_2_Qkq">
-                            <svg width="42" height="3002" viewBox="0 0 42 3002" fill="none"
-                                class="_2v8KF _1Bb0M">
-                                <path d="M0 3000v0c22.091 0 40-17.91 40-40V0" stroke="inherit" stroke-width="4">
-
-                                </path>
-                            </svg>
-                        </div> -->
+                       
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </ng-container>
+
+    <ng-container *ngIf="solution_channel_for_child === 'whatsapp_fb_messenger' && solution_for_child === 'want_to_talk_to_customers'">
+        <div class="connect-watsapp-wizard-wrp" style="display: flex; flex-direction: column;">
+            <div class="_2qLvL _2vFcS _2iqgV" style="gap: 4px;">
+                <div style="z-index: 0;">
+                    <div class="_2qLvL cKPgl _2N7fw">
+                        <!-- <div class="stepper-wpr" style="position:relative">
+                            <div class="_1fLoo" [ngClass]="{'step-completed': chatbotConnectedWithWA}">
+                                <div></div>
+                            </div>
+                            <span class="stepper-line" style="display: none;"></span>
+                        </div> -->
+                        <div class="_2qLvL KJpMb _2iqgV">
+                            <div class="_2qLvL _1aC9T">
+                                <span data-testid="onbording-tour_tips-title"
+                                    style="color: #e0f0ff; font-size: 18px; font-weight: 500; line-height: 24px; margin: 0px;">
+                                    Connect WhatsApp
+                                </span>
+                            </div>
+                            <div style="height: 8px; width: 0px; flex: 0 0 auto;"></div>
+                            <span
+                                data-testid="onbording-tour_tips-description" class="wa-step-description"
+                                style="color: #e0f0ff; font-size: 15px; font-weight: 400; line-height: 20px; margin: 0px;">
+                                <div class="wa-step-description">
+                                    Connect your WhatsApp Business account to Tiledesk to seamlessly communicate
+                                    with your customers, track conversations, and build stronger relationships
+                                </div>
+                            </span>
+                        </div>
+                        <div style="height: 0px; width: 0px; flex: 0 0 auto;"></div>
+                        <div class="_2qLvL o_7eO _1aC9T" style="gap: 8px;">
+                            <button data-testid="onbording_set-up_button" (click)="presentModalConnectWAfirstStep()"
+                                type="button" class="_1FEtf">
+                                <div class="_2qLvL _3pOpF _2tIkX _1e3oJ _1aC9T">
+                                    <span class="_3S-3- SHY5O _24ku1" style="color: #ffffff">
+                                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
+                                            id="icon_8O9xRJVhbZOMA9mtdzzJc" class="_3S-3-">
+                                            <path d="M8 16l1.41-1.41L3.83 9H16V7H3.83l5.59-5.58L8 0 0 8l8 8z"
+                                                fill="currentColor">
+                                            </path>
+                                        </svg>
+                                    </span>
+                                </div>
+                            </button>
+                        </div>
+                   
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+
+
     <div class="wa-wizard-connect-support">
         <div class="wa-wizard-connect-support-icon">
             <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="40px" viewBox="0 0 24 24"

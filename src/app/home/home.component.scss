@@ -2411,6 +2411,7 @@
   opacity: 1;
   background-color: #fff;
   margin-top: -5px;
+  border-bottom: 1px solid rgb(226, 232, 240);
 }
 
 .padding-l-r {
@@ -2708,28 +2709,37 @@ img {
 }
 
 .home-blocks-wpr {
-  border-top: 1px solid rgb(226, 232, 240);
+  // border-top: 1px solid rgb(226, 232, 240);
   margin-top: -1px;
   background-color: rgb(241, 245, 249);
   padding-right: 80px;
   padding-left: 80px;
-  padding-top: 35px;
+  padding-top: 45px;
   padding-bottom: 18px;
-  max-width: 874px;
+  max-width: 994px;
   margin: auto;
+  // margin-top: -1px;
 }
 
-// // overwrite the checkbox background
-// ::ng-deep .mat-checkbox-checked .mat-checkbox-background, 
-// .mat-checkbox-indeterminate .mat-checkbox-background {
-//   background-color: black !important;
-// }
 
-// // overwrite the ripple overlay on hover and click
-// ::ng-deep .mat-checkbox:not(.mat-checkbox-disabled) .mat-checkbox-ripple .mat-ripple-element {
-//   background-color: black !important;
-// }
+
+// overwrite the checkbox background
+::ng-deep .mat-checkbox-checked .mat-checkbox-background, 
+.mat-checkbox-indeterminate .mat-checkbox-background {
+  background-color: #2196f3 !important;
+}
+
+// overwrite the ripple overlay on hover and click
+::ng-deep .mat-checkbox:not(.mat-checkbox-disabled) .mat-checkbox-ripple .mat-ripple-element {
+  background-color: #2196f3 !important;
+}
 
 .home-settings-checkbox {
   margin: 0 12px;
+}
+
+.button-dashlet-settings {
+  font-size: 15px;
+  position: relative;
+  left: -2px;
 }

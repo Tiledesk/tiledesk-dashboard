@@ -6,7 +6,8 @@
 <!-- New home  -->
 <!-- -------------------------------------------------------------------------------- -->
 <div class="overlay" style="display: none;" [ngStyle]="{ 'height': elemHomeMainContentHeight }"></div>
-<div class="main-content home-main-content" style="padding-top: 8px; padding-left: 0px ; padding-right: 0px;margin-top: 0px; background: rgb(241,245,249);">
+<div class="main-content home-main-content"
+  style="padding-top: 8px; padding-left: 0px ; padding-right: 0px;margin-top: 0px; background: rgb(241,245,249);">
   <div class="container-fluid " style="max-width: 100%;padding-right: 0px; padding-left: 0px;   ">
 
     <div class="home-project">
@@ -135,9 +136,7 @@
                         </path>
                       </svg>
                     </mat-icon>
-                    <span class="ml-2" style="font-size: 15px;
-                    position: relative;
-                    left: -2px;">
+                    <span class="ml-2 button-dashlet-settings" style="">
                       Settings
                     </span>
                   </span>
@@ -149,34 +148,37 @@
 
                 <mat-menu #dashletMenu="matMenu">
                   <!-- *ngIf="displayAnalyticsConvsGraph" -->
-                  <button  mat-menu-item  (click) = "$event.stopPropagation()">
+                  <button mat-menu-item (click)="$event.stopPropagation()">
                     <mat-checkbox class="home-settings-checkbox" [checked]="displayAnalyticsConvsGraph"
                       (change)="switchAnalyticsConvsGraph($event.checked)"></mat-checkbox>
-                    <!-- <mat-icon>dialpad</mat-icon> -->
                     <span>Conversations chart</span>
                   </button>
                   <!-- *ngIf="displayAnalyticsIndicators" -->
-                  <button mat-menu-item>
-                    <mat-checkbox class="home-settings-checkbox"
-                      [checked]="displayAnalyticsIndicators" (change)="switchAnalyticsIndicators($event.checked)">
+                  <button mat-menu-item (click)="$event.stopPropagation()">
+                    <mat-checkbox class="home-settings-checkbox" [checked]="displayAnalyticsIndicators"
+                      (change)="switchAnalyticsIndicators($event.checked)">
                     </mat-checkbox>
-                    <!-- <mat-icon>dialpad</mat-icon> -->
+
                     <span>Analitcs Overview</span>
                   </button>
 
-                  <button mat-menu-item>
+                  <button mat-menu-item (click)="$event.stopPropagation()">
                     <mat-checkbox class="home-settings-checkbox" [checked]="displayConnectWhatsApp"
                       (change)="switchConnectWhatsApp($event.checked)"></mat-checkbox>
-                    <!-- <mat-icon>voicemail</mat-icon> -->
+
                     <span>Connect WhatsApp </span>
                   </button>
-                  <button mat-menu-item>
+                  <button mat-menu-item (click)="$event.stopPropagation()">
                     <mat-checkbox class="home-settings-checkbox" [checked]="displayCreateChatbot"
                       (change)="switchCreateChatbot($event.checked)"></mat-checkbox>
-                    <!-- <mat-icon>notifications_off</mat-icon> -->
                     <span>Create Chatbot</span>
                   </button>
-                  <button mat-menu-item>
+                  <button mat-menu-item (click)="$event.stopPropagation()">
+                    <mat-checkbox class="home-settings-checkbox" [checked]="displayInviteTeammate"
+                      (change)="switchInviteTeammate($event.checked)"></mat-checkbox>
+                    <span>Invite teammate</span>
+                  </button>
+                  <button mat-menu-item (click)="$event.stopPropagation()">
                     <mat-checkbox class="home-settings-checkbox" [checked]="displayNewsFeed"
                       (change)="switchNewsFeed($event.checked)"></mat-checkbox>
                     <!-- <mat-icon>notifications_off</mat-icon> -->
@@ -185,10 +187,13 @@
                 </mat-menu>
               </div>
             </div>
-            <div aria-haspopup="true" matripple=""
-              class="change-project-menu-wpr mat-ripple mat-menu-trigger relative flex self-start pt-2 pb-1 pl-5 pr-4 cursor-pointer overflow-hidden rounded-t-xl border border-b-0 bg-default"
-              style="">
-              <div [matMenuTriggerFor]="projectsMenu" class="flex items-center" style="align-items: center !important;display: flex !important;">
+            <!-- -------------------------------------- -->
+            <!-- New Menu to change project  -->
+            <!-- -------------------------------------- -->
+            <div style="display: none !important; " aria-haspopup="true" matripple=""
+              class="change-project-menu-wpr mat-ripple mat-menu-trigger relative flex self-start pt-2 pb-1 pl-5 pr-4 cursor-pointer overflow-hidden rounded-t-xl border border-b-0 bg-default">
+              <div [matMenuTriggerFor]="projectsMenu" class="flex items-center"
+                style="align-items: center !important;display: flex !important;">
                 <div class="overflow-hidden" style="    overflow: hidden !important;">
                   <div class="font-medium leading-6 truncate" style="    line-height: 1.5rem !important; font-weight: 500 !important;    overflow: hidden !important;
                   text-overflow: ellipsis !important;
@@ -221,8 +226,7 @@
               </mat-menu>
 
               <mat-menu #recentProjects="matMenu">
-                <button *ngFor="let prjct of projects?.slice() | slice:0:5; let i=index" mat-menu-item
-                (click)="goToHome(
+                <button *ngFor="let prjct of projects?.slice() | slice:0:5; let i=index" mat-menu-item (click)="goToHome(
                   prjct,
                   prjct?.id_project?._id, prjct?.id_project?.name,
                   prjct?.id_project?.profile?.name, 
@@ -233,8 +237,7 @@
                 </button>
               </mat-menu>
               <mat-menu #otherProjects="matMenu" *ngIf="projects?.length > 5">
-                <button *ngFor="let prjct of projects?.slice() | slice:5:10; let i=index" mat-menu-item
-                (click)="goToHome(
+                <button *ngFor="let prjct of projects?.slice() | slice:5:10; let i=index" mat-menu-item (click)="goToHome(
                   prjct,
                   prjct?.id_project?._id, prjct?.id_project?.name,
                   prjct?.id_project?.profile?.name, 
@@ -244,64 +247,51 @@
                   {{ prjct?.id_project?.name }}
                 </button>
               </mat-menu>
-              
+
             </div>
           </div>
         </div> <!-- ./ bg-card -->
         <div class="home-blocks-wpr">
-     
+          <div class="home--blocks">
 
-          <!-- *ngIf="displayAnalyticsConvsGraph" -->
-          <appdashboard-home-convs-graph 
-            [displayAnalyticsConvsGraph]="displayAnalyticsConvsGraph" 
-            [projectId]="projectId" 
-            [USER_ROLE]="USER_ROLE">
-          </appdashboard-home-convs-graph>
+            <appdashboard-home-convs-graph *ngIf="displayAnalyticsConvsGraph"
+              [displayAnalyticsConvsGraph]="displayAnalyticsConvsGraph" [projectId]="projectId" [USER_ROLE]="USER_ROLE">
+            </appdashboard-home-convs-graph>
 
-          <!-- *ngIf="displayAnalyticsConvsGraph" -->
-          <appdashboard-home-analytics-indicator  
-            [projectId]="projectId" 
-            [USER_ROLE]="USER_ROLE"> 
-          </appdashboard-home-analytics-indicator>
 
-          <appdashboard-home-whatsapp-account-wizard style="margin-bottom: 18px;" *ngIf="displayWhatsappAccountWizard"
-          (goToConnectWA)="goToConnectWA()" 
-          (goToCreateChatbot)="goToCreateChatbot()"
-          (hasTestedBotOnWa)="hasTestedBotOnWa()" 
-          [whatsAppIsConnected]="whatsAppIsConnected"
-          [wadepartmentName]="wadepartmentName" 
-          [chatbotConnectedWithWA]='chatbotConnectedWithWA' 
-          [waBotId]="waBotId"
-          [use_case_for_child]="use_case_for_child" 
-          [solution_channel_for_child]="solution_channel_for_child"
-          [solution_for_child]="solution_for_child" 
-          [testBotOnWA]="testBotOnWA" 
-          [botIdForTestWA]="botIdForTestWA"
-          (hasCreatedChatbot)="hasCreatedChatbot($event)">
-        </appdashboard-home-whatsapp-account-wizard>
+            <appdashboard-home-analytics-indicator *ngIf="displayAnalyticsIndicators" [projectId]="projectId"
+              [USER_ROLE]="USER_ROLE">
+            </appdashboard-home-analytics-indicator>
 
-          <appdashboard-home-whatsapp-account style=" z-index: 11;" #childWhatsappAccount *ngIf="displayConnectWhatsApp"
-            (onClickOnUnistallApp)="onClickOnUnistallApp()"
-            (onClickOnGoToLearnMoreOrManageApp)="onClickOnGoToLearnMoreOrManageApp()"
-            [whatsAppIsInstalled]="whatsAppIsInstalled" 
-            [whatsAppIsConnected]="whatsAppIsConnected">
-          </appdashboard-home-whatsapp-account>
+            <appdashboard-home-whatsapp-account-wizard style="margin-bottom: 18px;" *ngIf="displayWhatsappAccountWizard"
+              (goToConnectWA)="goToConnectWA()" (goToCreateChatbot)="goToCreateChatbot()"
+              (hasTestedBotOnWa)="hasTestedBotOnWa()" [whatsAppIsConnected]="whatsAppIsConnected"
+              [wadepartmentName]="wadepartmentName" [chatbotConnectedWithWA]='chatbotConnectedWithWA'
+              [waBotId]="waBotId" [use_case_for_child]="use_case_for_child"
+              [solution_channel_for_child]="solution_channel_for_child" [solution_for_child]="solution_for_child"
+              [testBotOnWA]="testBotOnWA" [botIdForTestWA]="botIdForTestWA"
+              (hasCreatedChatbot)="hasCreatedChatbot($event)">
+            </appdashboard-home-whatsapp-account-wizard>
 
-          <appdashboard-home-create-chatbot #childCreateChatbot *ngIf="displayCreateChatbot"
-            [use_case_for_child]="use_case_for_child" 
-            [solution_channel_for_child]="solution_channel_for_child"
-            [waBotId]="waBotId" 
-            [wadepartmentName]="wadepartmentName" 
-            [chatbotConnectedWithWA]="chatbotConnectedWithWA"
-            (botHookedToDefaultDept)="botHookedToDefaultDept($event)">
-          </appdashboard-home-create-chatbot>
+            <appdashboard-home-whatsapp-account style=" z-index: 11;" #childWhatsappAccount
+              *ngIf="displayConnectWhatsApp" (onClickOnUnistallApp)="onClickOnUnistallApp()"
+              (onClickOnGoToLearnMoreOrManageApp)="onClickOnGoToLearnMoreOrManageApp()"
+              [whatsAppIsInstalled]="whatsAppIsInstalled" [whatsAppIsConnected]="whatsAppIsConnected">
+            </appdashboard-home-whatsapp-account>
 
-          <appdashboard-home-create-teammate></appdashboard-home-create-teammate>
+            <appdashboard-home-create-chatbot #childCreateChatbot *ngIf="displayCreateChatbot"
+              [use_case_for_child]="use_case_for_child" [solution_channel_for_child]="solution_channel_for_child"
+              [waBotId]="waBotId" [wadepartmentName]="wadepartmentName"
+              [chatbotConnectedWithWA]="chatbotConnectedWithWA"
+              (botHookedToDefaultDept)="botHookedToDefaultDept($event)">
+            </appdashboard-home-create-chatbot>
 
-          <appdashboard-home-customize-widget></appdashboard-home-customize-widget>
+            <appdashboard-home-create-teammate *ngIf="displayInviteTeammate"></appdashboard-home-create-teammate>
 
-          
+            <appdashboard-home-customize-widget></appdashboard-home-customize-widget>
 
+
+          </div>
         </div>
         <div class="news-feed-wpr" style="    background-color: rgb(241,245,249);     padding-left: 30px;">
           <appdashboard-home-news-feed *ngIf="displayNewsFeed"> </appdashboard-home-news-feed>

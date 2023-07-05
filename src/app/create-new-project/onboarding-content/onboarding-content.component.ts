@@ -201,7 +201,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
         this.projects = projects;
       }
       if (projects.length>0) {
-        this.isFirstProject = false;
+        this.isFirstProject = true;
       }
       // console.log('getProjects:: ', projects, this.isFirstProject);
       this.getLoggedUser();

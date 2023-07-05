@@ -780,12 +780,12 @@ export class ProjectService {
         'Authorization': this.TOKEN
       })
     };
- 
+
     let url = this.WHATSAPP_API_URL + "/ext/" + this.projectID
     console.log('[PROJECT-SERV] -  CHECK-WA-CONNECTION - URL', url);
-  
+
     return this._httpclient
-    .get(url, httpOptions)
+      .get(url, httpOptions)
   }
 
   updateProjectWithWAWizardSteps(wastep) {
@@ -804,7 +804,7 @@ export class ProjectService {
       .patch(url, JSON.stringify(body), httpOptions)
   }
 
-  updateProjectWithWASettings(wasettings) {
+  updateProjectWithWAOneStepWizard(oneStepWizard) {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -814,8 +814,24 @@ export class ProjectService {
 
     let url = this.SERVER_BASE_PATH + "projects/" + this.projectID + "/attributes"
     console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD STEPS - URL', url);
-    const body = { wasettings: wasettings }
+    const body = {oneStepWizard: oneStepWizard}
     console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD STEPS - BODY', body);
+    return this._httpclient
+      .patch(url, JSON.stringify(body), httpOptions)
+  }
+
+  updateProjectWithWASettings(wasettings) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    let url = this.SERVER_BASE_PATH + "projects/" + this.projectID + "/attributes"
+    console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA SETTINGS - URL', url);
+    const body = { wasettings: wasettings }
+    console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA SETTINGS - BODY', body);
     return this._httpclient
       .patch(url, JSON.stringify(body), httpOptions)
   }
@@ -832,6 +848,39 @@ export class ProjectService {
     console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD STEPS - URL', url);
     const body = { wasettings: {} }
     console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD STEPS - BODY', body);
+    return this._httpclient
+      .patch(url, JSON.stringify(body), httpOptions)
+  }
+
+  updateDashletsPreferences(
+    displayAnalyticsConvsGraph: boolean,
+    displayAnalyticsIndicators: boolean,
+    displayConnectWhatsApp: boolean,
+    displayCreateChatbot: boolean,
+    displayInviteTeammate: boolean,
+    displayNewsFeed: boolean) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    let url = this.SERVER_BASE_PATH + "projects/" + this.projectID + "/attributes"
+    console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH DASHLET PREFERENCES - URL', url);
+    const body =
+    {
+      dashlets:
+      {
+        convsGraph: displayAnalyticsConvsGraph,
+        analyticsIndicators: displayAnalyticsIndicators,
+        connectWhatsApp: displayConnectWhatsApp,
+        createChatbot: displayCreateChatbot,
+        inviteTeammate: displayInviteTeammate,
+        newsFeed: displayNewsFeed
+      }
+    }
+    console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH DASHLET PREFERENCES - BODY', body);
     return this._httpclient
       .patch(url, JSON.stringify(body), httpOptions)
   }

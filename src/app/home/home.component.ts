@@ -135,6 +135,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   displayAnalyticsIndicators: boolean = true;
   displayConnectWhatsApp: boolean = true
   displayCreateChatbot: boolean = true
+  displayInviteTeammate: boolean = true
   displayNewsFeed: boolean = true
   displayWhatsappAccountWizard = false;
   whatsAppIsInstalled: boolean = false;
@@ -158,11 +159,14 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   whatsAppIsConnected: boolean = false;
   chatbotConnectedWithWA: boolean = false;
   waWizardSteps = [{ step1: false, step2: false, step3: false }]
+  oneStepWizard: any
   wadepartmentid: string;
   wadepartmentName: string = '';
   waBotId: string = '';
   testBotOnWA: boolean = false;
   botIdForTestWA: string = '';
+  // dashletsPreferences = [{ convsGraph: true, analyticsIndicators: true, connectWhatsApp: true, createChatbot: true, inviteTeammate: true }]
+  dashletsPreferences: any;
   constructor(
     public auth: AuthService,
     private route: ActivatedRoute,
@@ -229,10 +233,19 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     // this.pauseResumeLastUpdateSlider() // https://stackoverflow.com/questions/5804444/how-to-pause-and-resume-css3-animation-using-javascript
     // this.getPromoBanner()
     this.waWizardSteps = [{ step1: false, step2: false, step3: false }]
+    this.oneStepWizard = {watsAppConnected: false}
     // this.upadatedWatsAppWizard( this.waWizardSteps)
   }
 
- 
+  ngAfterViewInit() {
+
+  }
+
+  ngOnDestroy() {
+    // console.log('HOME COMP - CALLING ON DESTROY')
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
 
   getCurrentProjectAndInit() {
     this.auth.project_bs
@@ -282,7 +295,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       console.log('[HOME] - Find Current Project Among All - current_selected_prjct ', this.current_selected_prjct);
 
 
-      if (this.current_selected_prjct && this.current_selected_prjct.id_project && this.current_selected_prjct.id_project.attributes && this.current_selected_prjct.id_project.attributes.userPreferences) {
+      if (this.current_selected_prjct &&
+        this.current_selected_prjct.id_project &&
+        this.current_selected_prjct.id_project.attributes &&
+        this.current_selected_prjct.id_project.attributes.userPreferences) {
         this.solution_channel = this.current_selected_prjct.id_project.attributes.userPreferences.solution_channel
         this.use_case = this.current_selected_prjct.id_project.attributes.userPreferences.use_case
         this.solution = this.current_selected_prjct.id_project.attributes.userPreferences.solution
@@ -296,6 +312,32 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         if (this.solution_channel_for_child === 'whatsapp_fb_messenger') {
           this.displayWhatsappAccountWizard = true;
         }
+        console.log('[HOME] - USE CASE solution_channel (0)' , this.solution_channel_for_child , ' solution ', this.solution_for_child);
+        if (this.solution_channel_for_child === 'whatsapp_fb_messenger' && this.solution_for_child === 'want_to_automate_conversations') {
+          if (this.current_selected_prjct && this.current_selected_prjct.id_project && this.current_selected_prjct.id_project.attributes && this.current_selected_prjct.id_project.attributes.wastep) {
+            if (this.current_selected_prjct.id_project.attributes.wastep[0].step1 === true &&
+              this.current_selected_prjct.id_project.attributes.wastep[0].step2 === true &&
+              this.current_selected_prjct.id_project.attributes.wastep[0].step3 === true) {
+              this.displayWhatsappAccountWizard = false
+              console.log('[HOME] - USE CASE solution_channel ' , this.solution_channel_for_child , ' solution ', this.solution_for_child);
+              console.log('[HOME] - USE CASE step3 ',  this.current_selected_prjct.id_project.attributes.wastep[0].step3);
+              console.log('[HOME] - displayWhatsappAccountWizard ',  this.displayWhatsappAccountWizard);
+            }
+          }
+        } else if (this.solution_channel_for_child === 'whatsapp_fb_messenger' && this.solution_for_child === 'want_to_talk_to_customers') {
+          console.log('[HOME] - USE CASE solution_channel (1)' , this.solution_channel_for_child , ' solution ', this.solution_for_child);
+          if (this.current_selected_prjct && this.current_selected_prjct.id_project && this.current_selected_prjct.id_project.attributes && this.current_selected_prjct.id_project.attributes.wastep) {
+            console.log('[HOME] - HERE 3');
+            console.log('[HOME] - USE CASE step3 ',  this.current_selected_prjct.id_project.attributes.wastep[0].step3);
+            if (this.current_selected_prjct.id_project.attributes.wastep[0].step3 === true) {
+              this.displayWhatsappAccountWizard = false
+              console.log('[HOME] - USE CASE solution_channel ' , this.solution_channel_for_child , ' solution ', this.solution_for_child);
+              console.log('[HOME] - USE CASE step3 ',  this.current_selected_prjct.id_project.attributes.wastep[0].step3);
+              console.log('[HOME] - displayWhatsappAccountWizard ',  this.displayWhatsappAccountWizard);
+            }
+          }
+        }
+
       } else {
         console.log('[HOME] - USER PREFERENCES  (NO ATTRIBUTES) solution_channel', this.solution_channel);
         console.log('[HOME] - USER PREFERENCES  (NO ATTRIBUTES) use_case', this.use_case);
@@ -308,28 +350,22 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         }
       }
 
-      if (this.current_selected_prjct && 
-          this.current_selected_prjct.id_project && 
-          this.current_selected_prjct.id_project.attributes &&
-          this.current_selected_prjct.id_project.attributes.wastep) {
+      if (this.current_selected_prjct &&
+        this.current_selected_prjct.id_project &&
+        this.current_selected_prjct.id_project.attributes &&
+        this.current_selected_prjct.id_project.attributes.wastep) {
         if (this.current_selected_prjct.id_project.attributes.wastep[0].step2 === false) {
           this.testBotOnWA = false
           console.log('[HOME] - GET WA WIZARD STEPS (onInit) - whatsAppIsConnected ', this.whatsAppIsConnected);
         } else {
           this.testBotOnWA = true
         }
-      
+
         if (this.current_selected_prjct.id_project.attributes.wastep[0].step3 === false) {
           this.whatsAppIsConnected = false
           console.log('[HOME] - GET WA WIZARD STEPS (onInit) - whatsAppIsConnected ', this.whatsAppIsConnected);
         } else {
           this.whatsAppIsConnected = true
-        }
-
-        if (this.current_selected_prjct.id_project.attributes.wastep[0].step1 === true &&
-          this.current_selected_prjct.id_project.attributes.wastep[0].step2 === true &&
-          this.current_selected_prjct.id_project.attributes.wastep[0].step3 === true) {
-            this.displayWhatsappAccountWizard = false
         }
       } else {
         this.whatsAppIsConnected = false
@@ -342,6 +378,22 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         console.log('[HOME] - (onInit) - wasettings ', this.current_selected_prjct.id_project.attributes.wasettings);
         this.wadepartmentid = this.current_selected_prjct.id_project.attributes.wasettings.department_id
         this.getDeptById(this.wadepartmentid)
+      }
+
+
+      if (this.current_selected_prjct &&
+        this.current_selected_prjct.id_project &&
+        this.current_selected_prjct.id_project.attributes &&
+        this.current_selected_prjct.id_project.attributes.dashlets) {
+        console.log('[HOME] - (onInit) - DASHLETS PREFERENCES ', this.current_selected_prjct.id_project.attributes.dashlets);
+        const dashlets = this.current_selected_prjct.id_project.attributes.dashlets;
+
+        this.displayAnalyticsConvsGraph = dashlets.convsGraph
+        this.displayAnalyticsIndicators = dashlets.analyticsIndicators
+        this.displayConnectWhatsApp = dashlets.connectWhatsApp
+        this.displayCreateChatbot = dashlets.createChatbot
+        this.displayInviteTeammate = dashlets.inviteTeammate
+        this.displayNewsFeed = dashlets.newsFeed
       }
 
 
@@ -520,11 +572,11 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       }
 
 
-      this.logger.log('[HOME] - Find Current Project Among All - projects ', projects);
+      console.log('[HOME] - Find Current Project Among All - projects ', projects);
     }, error => {
-      this.logger.error('[HOME] - Find Current Project Among All: ', error);
+      console.error('[HOME] - Find Current Project Among All: ', error);
     }, () => {
-      this.logger.log('[HOME] - Find Current Project Among All * COMPLETE * ');
+      console.log('[HOME] - Find Current Project Among All * COMPLETE * ');
 
       this.getApps();
 
@@ -658,11 +710,11 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   hasCreatedChatbot(event) {
     console.log('[HOME] hasCreatedChatbot  ', event)
     if (event === true) {
-      this.waWizardSteps = [{ step1: true, step2: true, step3: false }]
+      this.waWizardSteps = [{ step1: true, step2: false, step3: false }]
       this.upadatedWatsAppWizard(this.waWizardSteps)
-    } 
+    }
   }
- 
+
 
 
   goToCreateChatbot() {
@@ -670,16 +722,16 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.scrollToChild(this.childCreateChatbot)
   }
 
-  botHookedToDefaultDept(event){
+  botHookedToDefaultDept(event) {
     console.log('[HOME] BOT ID HOOKED TO DEFAULT DEPT', event);
     this.botIdForTestWA = event;
   }
 
 
-   // -------------------------------------------
+  // -------------------------------------------
   // STEP 2
   // -------------------------------------------
- 
+
   hasTestedBotOnWa() {
     this.waWizardSteps = [{ step1: true, step2: true, step3: false }]
     this.upadatedWatsAppWizard(this.waWizardSteps)
@@ -715,6 +767,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   goToWhatsAppDetails() {
+    console.log('goToWhatsAppDetails appTitle ', this.appTitle)
     if ((this.appTitle === "WhatsApp Business" || this.appTitle === "Facebook Messenger") &&
       ((this.profile_name === PLAN_NAME.A) ||
         (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
@@ -737,6 +790,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   openInAppStoreInstall() {
+
     if ((this.appTitle === "WhatsApp Business" || this.appTitle === "Facebook Messenger") &&
       ((this.profile_name === PLAN_NAME.A) ||
         (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
@@ -804,10 +858,14 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         if (res.success === true) {
           this.whatsAppIsConnected = true
           this.waWizardSteps = [{ step1: true, step2: true, step3: true }]
+          this.oneStepWizard = {watsAppConnected: true}
+          this.upadatedProjectWithOneStepWizard(this.oneStepWizard) 
           this.upadatedWatsAppWizard(this.waWizardSteps)
           this.updateProjectWithWASettings(res.settings)
         } else if (res.success === false) {
           this.waWizardSteps = [{ step1: true, step2: true, step3: false }]
+          this.oneStepWizard = {watsAppConnected: true}
+          this.upadatedProjectWithOneStepWizard(this.oneStepWizard) 
           this.upadatedWatsAppWizard(this.waWizardSteps)
           this.updateProjectByDeletingWASettings()
         }
@@ -818,21 +876,26 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         console.log('[HOME] - CHECK-WA-CONNECTION * COMPLETE *')
       });
   }
-
   // /. --- step 3
 
 
-
-
   upadatedWatsAppWizard(wasteps) {
+    console.log('upadatedWatsAppWizard ', wasteps) 
     this.projectService.updateProjectWithWAWizardSteps(wasteps)
       .subscribe((res: any) => {
         console.log('[HOME] - UPDATE PRJCT WITH WA WIZARD STEPS - RES ', res);
         if (res && res.attributes && res.attributes.wastep) {
-          if (res.attributes.wastep[0].step1 === false) {
+          if (res.attributes.wastep[0].step3 === false) {
             this.whatsAppIsConnected = false
           } else {
             this.whatsAppIsConnected = true
+          }
+        }
+
+        if (res && res.attributes && res.attributes.wastep) {
+          if (res.attributes.wastep[0].step1 === true && res.attributes.wastep[0].step2 === true && res.attributes.wastep[0].step3 === true) {
+            this.displayWhatsappAccountWizard = false;
+            this.presentModalWaSuccessfullyConnected()
           }
         }
 
@@ -842,6 +905,29 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         console.error('[HOME] - UPDATE PRJCT WITH WA WIZARD STEPS - ERROR ', error)
       }, () => {
         console.log('[HOME] - UPDATE PRJCT WITH WA WIZARD STEPS * COMPLETE *')
+      });
+  }
+
+
+  upadatedProjectWithOneStepWizard(oneStepWizard) {
+    console.log('[HOME] upadatedProjectWithOneStepWizard', oneStepWizard)
+
+    this.projectService.updateProjectWithWAOneStepWizard(oneStepWizard)
+      .subscribe((res: any) => {
+        console.log('[HOME] - UPDATE PRJCT WITH ONE STEP WIZARD - RES ', res);
+
+        // if (res && res.attributes && res.attributes.wasettings && res.attributes.wasettings.department_id) {
+        //   this.wadepartmentid = res.attributes.wasettings.department_id
+        //   this.getDeptById(this.wadepartmentid)
+        // }
+
+       
+        // console.log('[HOME] - UPDATE PRJCT WITH WA WSETTINGS - whatsAppIsConnected ', this.whatsAppIsConnected);
+
+      }, error => {
+        console.error('[HOME] - UPDATE PRJCT WITH ONE STEP WIZARD  - ERROR ', error)
+      }, () => {
+        console.log('[HOME] - UPDATE PRJCT WITH ONE STEP WIZARD * COMPLETE *')
       });
   }
 
@@ -859,12 +945,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           this.getDeptById(this.wadepartmentid)
         }
 
-        if (res && res.attributes && res.attributes.wastep) {
-          if (res.attributes.wastep[0].step1 === true && res.attributes.wastep[0].step2 === true && res.attributes.wastep[0].step3 === true)  {
-            this.displayWhatsappAccountWizard = false;
-              this.presentModalWaSuccessfullyConnected()
-          }
-        }
+       
         // console.log('[HOME] - UPDATE PRJCT WITH WA WSETTINGS - whatsAppIsConnected ', this.whatsAppIsConnected);
 
       }, error => {
@@ -899,21 +980,21 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   updateProjectByDeletingWASettings() {
     console.log('[HOME] updateProjectByDeletingWASettings');
     this.projectService.updateProjectRemoveWASettings()
-    .subscribe((res: any) => {
-      console.log('[HOME] - UPDATE PRJCT WITH WA SETTINGS - RES ', res);
+      .subscribe((res: any) => {
+        console.log('[HOME] - UPDATE PRJCT WITH WA SETTINGS - RES ', res);
 
-      
+
         this.wadepartmentid = undefined
         this.whatsAppIsConnected = false
-     
-      // console.log('[HOME] - UPDATE PRJCT WITH WA WSETTINGS - whatsAppIsConnected ', this.whatsAppIsConnected);
 
-    }, error => {
-      console.error('[HOME] - UPDATE PRJCT WITH WA WSETTINGS  - ERROR ', error)
-    }, () => {
-      console.log('[HOME] - UPDATE PRJCT WITH WA WSETTINGS * COMPLETE *')
-    });
-  } 
+        // console.log('[HOME] - UPDATE PRJCT WITH WA WSETTINGS - whatsAppIsConnected ', this.whatsAppIsConnected);
+
+      }, error => {
+        console.error('[HOME] - UPDATE PRJCT WITH WA WSETTINGS  - ERROR ', error)
+      }, () => {
+        console.log('[HOME] - UPDATE PRJCT WITH WA WSETTINGS * COMPLETE *')
+      });
+  }
 
   getDeptById(departmentid: string) {
 
@@ -1122,7 +1203,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         }
       }
     });
-
   }
 
 
@@ -1130,16 +1210,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.agentCannotManageAdvancedOptions, this.learnMoreAboutDefaultRoles)
   }
 
-
-  ngAfterViewInit() {
-
-  }
-
-  ngOnDestroy() {
-    // console.log('HOME COMP - CALLING ON DESTROY')
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
-  }
 
   getLoggedUser() {
     this.auth.user_bs
@@ -1194,7 +1264,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   getLast30daysConvsCount() {
-
     this.analyticsService.requestsByDay(30)
       .pipe(
         takeUntil(this.unsubscribe$)
@@ -1209,9 +1278,9 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
         console.log('[HOME] - GET LAST 30 DAYS CONV TOTAL ', count);
         if (count === 0) {
-          this.displayAnalyticsConvsGraph = false
+          // this.displayAnalyticsConvsGraph = false
         } else if (count > 0) {
-          this.displayAnalyticsConvsGraph = true
+          // this.displayAnalyticsConvsGraph = true
         }
 
 
@@ -1221,8 +1290,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         console.log('[HOME] GET LAST 30 DAYS CONVS * COMPLETE *');
       });
   }
-
-
 
 
   diplayPopup() {
@@ -1236,6 +1303,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.popup_visibility = 'none'
     }
   }
+
   closeEverythingStartsHerePopup() {
     // console.log('[HOME] closeEverythingStartsHerePopup')
     localStorage.setItem('dshbrd----hasclosedpopup', 'true')
@@ -2744,35 +2812,59 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   // new dashbord
-
   switchAnalyticsConvsGraph(event) {
     console.log('[HOME] SWITCH ANALYTICS OVERVIEW event ', event)
     this.displayAnalyticsConvsGraph = event
+    this.updatesDashletsPreferences()
   }
 
   switchAnalyticsIndicators(event) {
     console.log('[HOME] SWITCH ANALYTICS OVERVIEW event ', event)
     this.displayAnalyticsIndicators = event
+    this.updatesDashletsPreferences()
   }
-
-
 
   switchConnectWhatsApp(event) {
     console.log('[HOME] SWITCH CNNECT WA event ', event)
-    this.displayConnectWhatsApp = event
+    this.displayConnectWhatsApp = event;
+    this.updatesDashletsPreferences()
   }
 
   switchCreateChatbot(event) {
     console.log('[HOME] SWITCH CREATE CHATBOT event ', event)
-    this.displayCreateChatbot = event
+    this.displayCreateChatbot = event;
+    this.updatesDashletsPreferences()
   }
+
+  switchInviteTeammate(event) {
+    console.log('[HOME] SWITCH INVITE TEAMMATES event ', event)
+    this.displayInviteTeammate = event;
+    this.updatesDashletsPreferences()
+  }
+
   switchNewsFeed(event) {
     console.log('[HOME] SWITCH NEWS FEED event ', event)
-    this.displayNewsFeed = event
+    this.displayNewsFeed = event;
+    this.updatesDashletsPreferences()
   }
 
+  updatesDashletsPreferences() {
+    this.projectService.updateDashletsPreferences(
+      this.displayAnalyticsConvsGraph,
+      this.displayAnalyticsIndicators,
+      this.displayConnectWhatsApp,
+      this.displayCreateChatbot,
+      this.displayInviteTeammate,
+      this.displayNewsFeed)
+      .subscribe((res: any) => {
+        console.log('[HOME] - UPDATE PRJCT WITH DASHLET PREFERENCES - RES ', res);
 
-  // Change project menu
+      }, error => {
+        console.error('[HOME] - UPDATE PRJCT WITH DASHLET PREFERENCES - ERROR ', error)
+      }, () => {
+        console.log('[HOME] - UPDATE PRJCT WITH DASHLET PREFERENCES * COMPLETE *')
+      });
+  }
 
 
 
@@ -2826,7 +2918,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         operatingHours: activeOperatingHours
       }
       this.auth.projectSelected(project)
-     console.log('[HOME] !!! GO TO HOME - PROJECT ', project)
+      console.log('[HOME] !!! GO TO HOME - PROJECT ', project)
     }
   }
 
