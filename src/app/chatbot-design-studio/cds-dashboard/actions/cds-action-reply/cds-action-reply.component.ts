@@ -99,7 +99,7 @@ export class CdsActionReplyComponent implements OnInit {
   // CUSTOM FUNCTIONS //
   /** */
   private initialize() {
-    this.idIntentSelected = this.intentSelected.id;
+    this.idIntentSelected = this.intentSelected.intent_id;
     this.action._tdActionId = this.action._tdActionId?this.action._tdActionId:generateShortUID();
     this.idAction = this.idIntentSelected+'/'+this.action._tdActionId;
 
@@ -198,7 +198,7 @@ export class CdsActionReplyComponent implements OnInit {
     }, 300);
   }
 
-  
+
   /** */
   onAddNewActionReply(element) {
     this.logger.log('onAddNewActionReply: ', element);

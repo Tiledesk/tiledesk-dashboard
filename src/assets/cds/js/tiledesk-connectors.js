@@ -65,17 +65,20 @@ export class TiledeskConnectors {
 
     
     deleteConnector(event) {
-      // console.log('onDeleteConnector:::: ' , event.key, this.selectedConnector);
+      console.log('onDeleteConnector:::: ' , event.key, this.selectedConnector);
       if (event.key === 'Delete' || event.key === 'Backspace' && this.selectedConnector) {
         let connector = document.getElementById(this.selectedConnector.id);
         if (connector) {
           connector.remove();
           const connectorDeleted = this.connectors[this.selectedConnector.id];
-          const parentBlockId = connectorDeleted.fromId.split("/")[0];
-          const destBlockId = connectorDeleted.toId.split("/")[0];
+          delete this.connectors[this.selectedConnector.id];
+
+          // const parentBlockId = connectorDeleted.fromId.split("/")[0];
+          // const destBlockId = connectorDeleted.toId.split("/")[0];
           // delete this.connectors[this.selectedConnector.id];
           // delete this.blocks[parentBlockId];
           // delete this.blocks[destBlockId];
+
           console.log('this.connectors: ', this.connectors, connectorDeleted);
           const customEvent = new CustomEvent("connector-deleted", { detail: {connector: connectorDeleted} });
           document.dispatchEvent(customEvent);
@@ -204,7 +207,7 @@ export class TiledeskConnectors {
 
 
     moved(element, x, y) {
-      // console.log("moving ----> ", element.id, x, y);
+      console.log("moving ----> ", element.id, x, y);
       const blockId = element.id;
       let block = this.blocks[blockId];
       // console.log("block:", block)
@@ -245,6 +248,7 @@ export class TiledeskConnectors {
     /** createSvgContainer */
     #createSvgContainer(){
       const drawer = document.getElementById(this.drawerId);
+      if(!drawer)return;
       let svgContainer = document.createElementNS("http://www.w3.org/2000/svg", "svg");
       svgContainer.id = this.svgContainerId;
       svgContainer.style.overflow = "visible";
@@ -258,6 +262,7 @@ export class TiledeskConnectors {
       gElement.setAttribute("stroke", "black");
       gElement.setAttribute("stroke-width", "2");
       svgContainer.appendChild(gElement);
+      
       drawer.appendChild(svgContainer);
       this.svgContainer = document.getElementById(this.svgConnectorsId);
     }
@@ -294,7 +299,7 @@ export class TiledeskConnectors {
 
     /** removeSelection */
     #removeSelection(target) {
-      console.log("resetting connector selection?")
+      console.log("resetting connector selection?", this.selectedConnector, target)
       if (this.selectedConnector) {
         if (!target.id || (this.selectedConnector.id !== target.id)) {
           this.selectedConnector.setAttributeNS(null, "class", "connector");
@@ -495,6 +500,35 @@ export class TiledeskConnectors {
       //console.log("center_y:", center_y);
       return { x: center_x, y: center_y };
     }
+
+    #elementLogicTopLeft(element) {
+      let elConnectable = this.#searchClassInParents(element, this.classes["input_block"]);
+      if(elConnectable){
+        const block_rect = elConnectable.getBoundingClientRect();
+        let pos_x_phis = block_rect.left;
+        let pos_y_phis = block_rect.top;
+        let mouse_pos_logic = this.#logicPoint({ x: pos_x_phis, y: pos_y_phis });
+        mouse_pos_logic.y = mouse_pos_logic.y + 20;
+        // console.log("toPoint? ", elConnectable);
+        // console.log("mouse_pos_logic? ", mouse_pos_logic);
+        // console.log("pos_y_phis? ", pos_y_phis);
+        return mouse_pos_logic;
+      }
+    }
   
   
+
+
+
+    createConnectorFromId(fromId, toId){
+      const fromEle = document.getElementById(fromId);
+      const toEle = document.getElementById(toId);
+      // console.log("fromEle:", fromEle);
+      // console.log("toEle:", toEle);
+      const fromPoint = this.#elementLogicCenter(fromEle);
+      const toPoint = this.#elementLogicTopLeft(toEle);
+      // console.log("toPoint:", toPoint);
+      // console.log("fromPoint:", fromPoint);
+      this.createConnector(fromId, toId, fromPoint, toPoint);
+    }
   }

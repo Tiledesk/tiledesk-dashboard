@@ -6,7 +6,7 @@ import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import { MessageWithWait, Button, MessageAttributes, Expression } from 'app/models/intent-model';
 import { TYPE_ACTION, TYPE_BUTTON, TYPE_URL, generateShortUID, calculatingRemainingCharacters } from 'app/chatbot-design-studio/utils';
 import { IntentService } from 'app/chatbot-design-studio/services/intent.service';
-
+import { ConnectorService } from 'app/chatbot-design-studio/services/connector.service';
 
 
 @Component({
@@ -55,7 +55,9 @@ export class CdsActionReplyTextComponent implements OnInit {
   // Buttons //
   buttons: Array<Button>;
 
+
   constructor(
+    private connectorService: ConnectorService,
     private intentService: IntentService
   ) { }
 
@@ -213,6 +215,7 @@ export class CdsActionReplyTextComponent implements OnInit {
   /** */
   dropButtons(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.buttons, event.previousIndex, event.currentIndex);
+    this.connectorService.movedConnector(event);
     this.changeActionReply.emit();
   }
 

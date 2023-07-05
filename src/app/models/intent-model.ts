@@ -394,12 +394,12 @@ export class Condition {
 
 
 
-export class StageAttributes {
-    positions: any;
-    connectors: any;
-    constructor(){
-        this.positions = {};
-        this.connectors = {};
-    }
+// export class StageAttributes {
+//     positions: any;
+//     connectors: any;
+//     constructor(){
+//         this.positions = {};
+//         this.connectors = {};
+//     }
 
-}
+// }

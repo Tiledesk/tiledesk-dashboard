@@ -13,7 +13,7 @@ import { LoggerService } from '../../services/logger/logger.service';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 
 import { HttpClient } from "@angular/common/http";
-import { Intent, Button, Action, Form, ActionReply, Command, Message, ActionAssignVariable, Attributes, StageAttributes } from '../../models/intent-model';
+import { Intent, Button, Action, Form, ActionReply, Command, Message, ActionAssignVariable, Attributes } from '../../models/intent-model';
 import { TYPE_COMMAND, TYPE_INTENT_ELEMENT, EXTERNAL_URL, TYPE_MESSAGE, TIME_WAIT_DEFAULT, convertJsonToArray } from '../utils';
 import { Subject } from 'rxjs';
 import { FaqKbService } from 'app/services/faq-kb.service';
@@ -29,6 +29,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DragDropService } from 'app/chatbot-design-studio/services/drag-drop.service';
 import { IntentService } from 'app/chatbot-design-studio/services/intent.service';
 import { ControllerService } from 'app/chatbot-design-studio/services/controller.service';
+import { ConnectorService } from 'app/chatbot-design-studio/services/connector.service';
 
 // import { Subscription } from 'rxjs';
 import { TiledeskStage } from 'assets/cds/js/tiledesk-stage.js';
@@ -56,8 +57,8 @@ export class CdsDashboardComponent implements OnInit {
   updatePanelIntentList: boolean = true;
   listOfIntents: Array<Intent> = [];
   // updatedConnector: Array<any> = [];
-  connector: any;
-  connectors: any = {};
+  // connector: any;
+  // connectors: any = {};
 
   intentStart: Intent;
   intentDefaultFallback: Intent;
@@ -130,14 +131,13 @@ export class CdsDashboardComponent implements OnInit {
 
 
 
-  dashboardAttributes: StageAttributes;
   // connectorsDashboardAttributes: any = {};
   // popup_visibility: string = 'none'
 
 
   
   TiledeskStage: any; 
-  tiledeskConnectors: any;
+  // tiledeskConnectors: any;
   isOpenFloatMenu: boolean = false;
   positionFloatMenu: any = {'x':0, 'y':0};
   connectorDraft: any = {};
@@ -155,6 +155,7 @@ export class CdsDashboardComponent implements OnInit {
     private dragDropService:DragDropService,
     private intentService: IntentService,
     private controllerService: ControllerService,
+    private connectorService: ConnectorService,
     private httpClient: HttpClient,
     private faqKbService: FaqKbService,
     // public appConfigService: AppConfigService,
@@ -173,12 +174,17 @@ export class CdsDashboardComponent implements OnInit {
       this.intentService.setListOfActions(this.listOfIntents);
       this.listOfActions = this.intentService.getListOfActions();
 
+
+      setTimeout(() => {
+        this.setDragAndListnerEventToElements();
+        this.connectorService.createConnectors(this.listOfIntents);
+      }, 0);
+
       // trovare una patch per abuilitare la visualizzazione dei connectors alla partenza
       // setTimeout(() => {
       //   this.onSelectIntent(this.listOfIntents[0]);
       // }, 500);
 
-      
     });
 
     this.controllerService.isOpenButtonPanel$.subscribe((button: Button) => {
@@ -202,39 +208,39 @@ export class CdsDashboardComponent implements OnInit {
     // if(this.dashboardAttributes.connectors){
     //   this.connectors = this.dashboardAttributes.connectors;
     // }
-    this.executeTailAsyncFunctions();
+    // this.executeAsyncFunctionsInSequence();
   }
 
 
   ngAfterViewInit(){
+    this.executeAsyncFunctionsInSequence();
     console.log('ngAfterViewInit -------------> ');
     this.TiledeskStage = new TiledeskStage('tds_container', 'tds_drawer', 'tds_draggable');
     this.setDragConfig();
     this.hideShowWidget('show');
+    this.connectorService.initializeConnectors();
+    // this.tiledeskConnectors = new TiledeskConnectors("tds_drawer", {"input_block": "tds_input_block"}, this.connectors);
+    // this.tiledeskConnectors.mousedown(document);
 
-    this.tiledeskConnectors = new TiledeskConnectors("tds_drawer", {"input_block": "tds_input_block"}, this.connectors);
-    this.tiledeskConnectors.mousedown(document);
-
+    let that = this;
 
     document.addEventListener(
       "moved-and-scaled", (e:CustomEvent) => {
         // console.log("event:", e);
-        this.tiledeskConnectors.scale = e.detail.scale;
-        this.tiledeskConnectors.removeConnectorDraft();
-        this.isOpenFloatMenu = false;
-        // console.log("changing connectors scale:", this.tiledeskConnectors.scale);
+        this.connectorService.tiledeskConnectors.scale = e.detail.scale;
+        this.removeConnectorDraftAndCloseFloatMenu();
       },
       false
     );
 
-
     document.addEventListener(
       "dragged", (e:CustomEvent) => {
-        console.log("dragged:", e);
+        // console.log("dragged:", e);
         const el = e.detail.element;
         const x = e.detail.x;
         const y = e.detail.y;
-        this.tiledeskConnectors.moved(el, x, y);
+        this.connectorService.tiledeskConnectors.moved(el, x, y);
+        this.removeConnectorDraftAndCloseFloatMenu();
         // this.intentService.setDashboardAttributes(this.id_faq, this.dashboardAttributes);
         // console.log("changing connectors dragged:", this.tiledeskConnectors.scale);
       },
@@ -272,14 +278,14 @@ export class CdsDashboardComponent implements OnInit {
     document.addEventListener(
       "connector-created", (e:CustomEvent) => {
         console.log("connector-created:", e);
-        this.connector = e.detail.connector;
-        console.log("connector-created:", this.connector);
-        this.connectors[this.connector.id] = this.connector;
-        console.log("connector-created:", this.connectors);
-        this.dashboardAttributes.connectors = this.connectors;
-        console.log("connector-created:", this.dashboardAttributes, this.id_faq);
-        this.intentService.setConnectorsInDashboardAttributes(this.id_faq_kb, this.dashboardAttributes.connectors);
-        this.intentService.onChangedConnector(this.connector);
+        const connector = e.detail.connector;
+        console.log("connector-created:", connector);
+        //this.connectors[this.connector.id] = this.connector;
+        // console.log("connector-created:", this.connectors);
+        this.connectorService.addConnector(connector);
+        // this.intentService.setConnectorsInDashboardAttributes(this.connectors);
+        // this.connectors = this.intentService.botAttributes.connectors;
+        this.intentService.onChangedConnector(connector);
       },
       true
     );
@@ -288,16 +294,17 @@ export class CdsDashboardComponent implements OnInit {
     document.addEventListener(
       "connector-deleted", (e:CustomEvent) => {
         console.log("connector-deleted:", e);
-        this.connector = e.detail.connector;
-        this.connector['deleted'] = true;
-        this.connector['toId'] = ''; // serve per farlo scattare sempre!!!
-        console.log("connector-deleted:", this.connector.id);
+        const connector = e.detail.connector;
+        connector['deleted'] = true;
+        // this.connector['toId'] = ''; // serve per farlo scattare sempre!!!
+        console.log("connector-deleted:", connector.id);
         // delete this.connectors[this.connector.id];
-        console.log("connector-deleted:", this.connectors);
-        this.dashboardAttributes.connectors = this.connectors;
-        console.log("connector-deleted:", this.dashboardAttributes, this.id_faq);
-        this.intentService.setConnectorsInDashboardAttributes(this.id_faq_kb, this.dashboardAttributes);
-        this.intentService.onChangedConnector(this.connector);
+        // console.log("connector-deleted:", this.connectors);
+        // delete this.connectors[this.connector.id];
+        this.connectorService.deleteConnector(connector.id);
+        // this.connectors = this.intentService.botAttributes.connectors;
+        // this.intentService.setConnectorsInDashboardAttributes(this.id_faq_kb, this.connectors);
+        this.intentService.onChangedConnector(connector);
       },
       true
     );
@@ -305,9 +312,30 @@ export class CdsDashboardComponent implements OnInit {
 
 
 
-   
+
+    // EVENTI PER CHIUDERE IL MENU FLOAT
+    /** mouseup */
+    document.addEventListener('mouseup', function() {
+      if (that.isOpenFloatMenu) {
+        that.removeConnectorDraftAndCloseFloatMenu();
+      }
+    });
+
+    /** keydown */
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'Backspace' || event.key === 'Escape' || event.key === 'Canc' && that.isOpenFloatMenu) {
+        that.removeConnectorDraftAndCloseFloatMenu();
+      }
+    });
+
+  
   }
 
+
+  removeConnectorDraftAndCloseFloatMenu(){
+    this.connectorService.tiledeskConnectors.removeConnectorDraft();
+    this.isOpenFloatMenu = false;
+  }
 
   
 
@@ -343,7 +371,8 @@ export class CdsDashboardComponent implements OnInit {
 
 
   
-  async executeTailAsyncFunctions() {
+  async executeAsyncFunctionsInSequence() {
+    console.log('executeAsyncFunctionsInSequence -------------> ');
     // Le funzioni asincrone sono state eseguite in coda
     try {
       const GetTranslations = await this.getTranslations();
@@ -357,18 +386,19 @@ export class CdsDashboardComponent implements OnInit {
           this.configChatbotSelected();
         }
       }
-     
       const getCurrentProject = await this.getCurrentProject();
       console.log('Risultato 4:', getCurrentProject);
       const getBrowserVersion = await this.getBrowserVersion();
       console.log('Risultato 5:', getBrowserVersion);
       const getAllIntents = await this.intentService.getAllIntents(this.id_faq_kb);
-      console.log('Risultato 6: getAllIntents', getAllIntents );
+      console.log('Risultato 6:', getAllIntents );
       if(getAllIntents){
         // !!! il valore di listOfIntents è bindato nel costructor con subscriptionListOfIntents !!! //
-        setTimeout(() => {
-          this.setDragAndListnerEventToElements();
-        }, 1000);
+        // setTimeout(() => {
+        //   this.setDragAndListnerEventToElements();
+        //   this.connectorService.createConnectors(this.listOfIntents);
+        // }, 1000);
+        
       }
       // this.setDragConfig();
     } catch (errore) {
@@ -382,24 +412,13 @@ export class CdsDashboardComponent implements OnInit {
   // CUSTOM FUNCTIONS //
 
   /** configChatbotSelected */
+  /** recupero le posizioni degli intent sullo stage */
   private configChatbotSelected(){
-    this.dashboardAttributes = new StageAttributes();
+    let attributes = {}
     if(this.selectedChatbot.attributes){
-      this.dashboardAttributes = this.selectedChatbot.attributes;
+      attributes = this.selectedChatbot.attributes;
     }
-    this.intentService.setDashboardAttributes(this.dashboardAttributes);
-    if(this.dashboardAttributes.connectors){
-     
-      this.connectors = this.dashboardAttributes.connectors;
-      console.log('Risultato connectors:',this.connectors);
-      const arrayConnectors = Object.values(this.connectors);
-      console.log('arrayConnectors:', arrayConnectors);
-      arrayConnectors.forEach(connector => {
-        
-        this.tiledeskConnectors.createConnector(connector['fromId'], connector['toId'], connector['fromPoint'], connector['toPoint']);
-      });
-      
-    }
+    this.intentService.setDashboardAttributes(this.id_faq_kb, attributes);
   }
 
   /** GET TRANSLATIONS */
@@ -463,7 +482,6 @@ export class CdsDashboardComponent implements OnInit {
           if (this.selectedChatbot && this.selectedChatbot.attributes && this.selectedChatbot.attributes.variables) {
             variableList.userDefined = convertJsonToArray(this.selectedChatbot.attributes.variables);
           }
-          // console.log('ok: funzioneAsincrona3');
           resolve(true);
           //console.log('variableList.userDefined:: ', this.selectedChatbot.attributes.variables);
         }
@@ -552,13 +570,13 @@ export class CdsDashboardComponent implements OnInit {
 
   private setDragAndListnerEvent(intent){
     let that = this;
-    if(intent.id){
+    if(intent.intent_id){
         try {
           setTimeout(() => {
             // this.TiledeskStage.setDragElement(intent.id);
-            let elem = document.getElementById(intent.id);
+            let elem = document.getElementById(intent.intent_id);
             // setDragElement(elem);
-            this.TiledeskStage.setDragElement(intent.id);
+            this.TiledeskStage.setDragElement(intent.intent_id);
             // **************** !!!!!!!! aggiungo listner !!!!!!! *******************//
             elem.removeEventListener('mouseup', function() {
               that.onMouseUp(intent, elem);
@@ -627,27 +645,26 @@ export class CdsDashboardComponent implements OnInit {
 
   getIntentPosition(id: string){
     let pos = {'x':0, 'y':0};
-    if(!this.dashboardAttributes)return pos;
-    if(this.dashboardAttributes.positions && this.dashboardAttributes.positions[id]){
-      return this.dashboardAttributes.positions[id];
+    const positions = this.intentService.listOfPositions;
+    if(!positions)return pos;
+    if(positions && positions[id]){
+      return positions[id];
     }
     return pos;
   }
 
   /** Imposto la posizione di un intent */
   setIntentPosition(id:string, newPos: any){
-    if(!this.dashboardAttributes.positions){
-      this.dashboardAttributes.positions = {};
-    }
-    console.log('setIntentPosition id ----------->', id, this.dashboardAttributes);
-    if(this.dashboardAttributes){
-      if(!newPos && this.dashboardAttributes.positions[id]){
-        this.dashboardAttributes.positions[id].remove();
+    const positions = this.intentService.listOfPositions;
+    console.log('setIntentPosition id ----------->', id, positions);
+    if(positions){
+      if(!newPos && positions[id]){
+        positions[id].remove();
       } else {
-        this.dashboardAttributes.positions[id] =  {'x': newPos.x, 'y': newPos.y};
+        positions[id] =  {'x': newPos.x, 'y': newPos.y};
         // console.log('setIntentPosition id ----------->', id, this.dashboardAttributes.positions[id]);
       }
-      this.intentService.setPositionsInDashboardAttributes(this.id_faq_kb, this.dashboardAttributes.positions);
+      this.intentService.setPositionsInDashboardAttributes(positions);
     }
   }
 
@@ -958,13 +975,8 @@ export class CdsDashboardComponent implements OnInit {
     const fromPoint = this.connectorDraft.fromPoint;
     const fromId = this.connectorDraft.fromId;
     const toId = await this.addNewIntent(toPoint, actionType);
-    // console.log('onAddingActionToStage:: fromId: ', fromId);
-    // console.log('onAddingActionToStage:: toId: ', toId);
-    // console.log('onAddingActionToStage:: fromPoint: ', fromPoint);
-    // console.log('onAddingActionToStage:: toPoint: ', toPoint);
-    this.tiledeskConnectors.createConnector(fromId, toId, fromPoint, toPoint);
-    this.tiledeskConnectors.removeConnectorDraft();
-    this.isOpenFloatMenu = false;
+    this.connectorService.tiledeskConnectors.createConnector(fromId, toId, fromPoint, toPoint);
+    this.removeConnectorDraftAndCloseFloatMenu();
   }
 
 
@@ -988,7 +1000,7 @@ export class CdsDashboardComponent implements OnInit {
     this.CREATE_VIEW = true;
     this.intentSelected = this.intentService.createIntent(this.id_faq_kb, actionType);
     this.intentSelected.id = 'new';
-    // this.setIntentPosition('new', pos);
+    this.setIntentPosition('new', pos);
     const idNewIntent = await this.intentService.addNewIntent(this.id_faq_kb, this.intentSelected);
     this.intentSelected.id = idNewIntent;
     console.log('creatIntent: OK ', idNewIntent);
@@ -1605,12 +1617,11 @@ export class CdsDashboardComponent implements OnInit {
 
 
   onSaveButton(button:Button){
-    
     const arrayId = button.idConnector.split("/");
     const idConnector = arrayId[0]?arrayId[0]:null;
-    console.log('onSaveButton: ', idConnector, button);
+    console.log('onSaveButton: ', idConnector, this.listOfIntents);
     if(idConnector){
-      this.intentSelected = this.listOfIntents.find(obj => obj.id === idConnector);
+      this.intentSelected = this.listOfIntents.find(obj => obj.intent_id === idConnector);
       console.log('onSaveButton: ', this.intentSelected);
       this.updateIntent();
     }

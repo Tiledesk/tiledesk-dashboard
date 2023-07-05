@@ -40,7 +40,7 @@ export class CdsActionIntentComponent implements OnInit {
 
   private initialize() {
     // this.isConnected = false;
-    this.idIntentSelected = this.intentSelected.id;
+    this.idIntentSelected = this.intentSelected.intent_id;
     this.idConnector = this.idIntentSelected+'/'+this.action._tdActionId;
   }
 

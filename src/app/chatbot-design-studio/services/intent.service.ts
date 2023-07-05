@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
-import { BehaviorSubject } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Subject, BehaviorSubject } from 'rxjs';
+
 
 import { 
   Intent, 
@@ -22,27 +21,30 @@ import {
   ActionReplaceBot,
   ActionWait,
   ActionWebRequest,
-  Command, Message, Expression, StageAttributes } from 'app/models/intent-model';
-
+  Command, Message, Expression } from 'app/models/intent-model';
 import { FaqService } from 'app/services/faq.service';
 import { FaqKbService } from 'app/services/faq-kb.service';
-
 import { TYPE_ACTION, TYPE_COMMAND } from 'app/chatbot-design-studio/utils';
-import { ActionIntentComponent } from '../cds-dashboard/panel-intent-detail/actions/action-intent/action-intent.component';
 
+
+/** CLASSE DI SERVICES PER TUTTE LE AZIONI RIFERITE AD OGNI SINGOLO INTENT **/
 
 @Injectable({
   providedIn: 'root'
 })
 export class IntentService {
+  idBot: string;
   intents = new BehaviorSubject <Intent[]>([]);
   listOfActions: Array<{ name: string, value: string, icon?: string }>;
 
   // keyDashboardAttributes = 'stage';//'Dashboard-Attributes';
   // jsonDashboardAttributes: any;
-  preDisplayName: string = 'untitled_block_';
-  stageAttributes: StageAttributes;
 
+  preDisplayName: string = 'untitled_block_';
+
+  botAttributes: any = {};
+  // listOfConnectors: any = {};
+  listOfPositions: any = {};
 
   private changedConnector = new Subject<any>();
   public isChangedConnector$ = this.changedConnector.asObservable();
@@ -51,9 +53,8 @@ export class IntentService {
     private faqService: FaqService,
     private faqKbService: FaqKbService
   ) { 
-    this.stageAttributes = new StageAttributes();
-  }
 
+  }
 
 
   public onChangedConnector(connector){
@@ -71,35 +72,40 @@ export class IntentService {
   }
 
   // START DASHBOARD FUNCTIONS //
-  setPositionsInDashboardAttributes(idBot, json){
-    // let key = this.keyDashboardAttributes;
-    // this.setFromLocalStorage(key, json);
-    this.stageAttributes.positions = json;
-    this.patchAttributes(idBot, this.stageAttributes);
-  }
 
-  setConnectorsInDashboardAttributes(idBot, json){
-    // let key = this.keyDashboardAttributes;
-    // this.setFromLocalStorage(key, json);
-    this.stageAttributes.connectors = json;
-    this.patchAttributes(idBot, this.stageAttributes);
-  }
-
-  setDashboardAttributes(attributes){
-    if(attributes){
-      this.stageAttributes = attributes;
+  /** */
+  setDashboardAttributes(idBot, attributes){
+    this.botAttributes = attributes;
+    this.idBot = idBot;
+    if(attributes && attributes['positions']){
+      this.listOfPositions = attributes['positions'];
     }
-    // let key = this.keyDashboardAttributes;
-    // // const savedData = this.getFromLocalStorage(key);
-    // const savedData = attributes[key];
-    // console.log("-------------> getDashboardAttributes:: ", attributes, key, savedData);
-    // if(savedData){
-    //   this.jsonDashboardAttributes = savedData;
-    // } else {
-    //   this.jsonDashboardAttributes = {positions: {}, connections: {}}
+    // if(attributes && attributes['connectors']){
+    //   this.listOfConnectors = attributes['connectors'];
     // }
-    // return this.jsonDashboardAttributes;
   }
+
+  /** */
+  setPositionsInDashboardAttributes(json){
+    // let key = this.keyDashboardAttributes;
+    // this.setFromLocalStorage(key, json);
+    this.listOfPositions = json;
+    this.botAttributes['positions'] = this.listOfPositions;
+    this.patchAttributes(this.botAttributes);
+  }
+
+  /** */
+  // setConnectorsInDashboardAttributes(json){
+  //   // let key = this.keyDashboardAttributes;
+  //   // this.setFromLocalStorage(key, json);
+  //   this.listOfConnectors = json;
+  //   this.botAttributes['connectors'] = this.listOfConnectors;
+  //   this.patchAttributes(this.botAttributes);
+  // }
+
+
+
+  
 
 
   private setFromLocalStorage(key, data){
@@ -358,9 +364,9 @@ export class IntentService {
   
 
 
-  patchAttributes(idBot: string, attributes: any) {
-    console.log('-----------> patchAttributes, ', idBot);
-    this.faqKbService.patchAttributes(idBot, attributes).subscribe((data) => {
+  patchAttributes(attributes: any) {
+    console.log('-----------> patchAttributes, ', this.idBot);
+    this.faqKbService.patchAttributes(this.idBot, attributes).subscribe((data) => {
         if (data) {
           console.log('data:   ', data);
         }
