@@ -21,6 +21,7 @@
          <!-- [id]="'action_'+i" -->
         <div *ngFor="let action of intentActionList; let i = index"
             cdkDrag
+            (cdkDragReleased)="onDragEnded($event)"
             [id]="action._tdActionId"
             class="box-action"
             tabindex="0"

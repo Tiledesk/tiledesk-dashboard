@@ -95,7 +95,9 @@ export class TiledeskConnectors {
   
     createConnector(fromId, toId, fromPoint, toPoint) {
       const id = fromId + "/" + toId;
-      console.log('createConnector: fromId-> ', fromId, toId, fromPoint, toPoint);
+      console.log('createConnector: fromId-> ', fromId);
+      console.log('createConnector: toId-> ', toId);
+      console.log('createConnector: point-> ', fromPoint, toPoint);
       // condition example id
       // "start_blockID/actionID/(sub-action path, ex: true)/end_blockID"
       // fromId: "block1/action1/true"
@@ -174,7 +176,7 @@ export class TiledeskConnectors {
             if(elConnectable){
               // console.log("connectable", elConnectable.id);
               this.fromId = elConnectable.id;
-              this.drawingBack = this.#elementLogicCenter(elConnectable);
+              this.drawingBack = this.elementLogicCenter(elConnectable);
               this.ref_handleMouseMove;
               this.ref_handleMouseUp;
               target.addEventListener("mousemove", this.ref_handleMouseMove = this.#handleMouseMove.bind(this), false);
@@ -210,23 +212,26 @@ export class TiledeskConnectors {
       console.log("moving ----> ", element.id, x, y);
       const blockId = element.id;
       let block = this.blocks[blockId];
-      // console.log("block:", block)
       if (!block) {
         console.log("NO block:");
         return;
       }
+      console.log("block:---> ", block)
       //block.outConnectors.forEach((conn_id, key) => {
       for (const [key, conn_id] of Object.entries(block.outConnectors)) {
-        //for (k in block.outConnectors.keys) {
-        //c_id = block.outConnectors[k];
+        // for (k in block.outConnectors.keys) {
+        // c_id = block.outConnectors[k];
         let conn = this.connectors[conn_id];
+
+        console.log("OUT :---> ", conn);
         if(conn){
           const el = document.getElementById(conn.fromId);
-          conn.fromPoint = this.#elementLogicCenter(el);
+          conn.fromPoint = this.elementLogicCenter(el);
+          console.log("conn.fromPoint :---> ", conn.fromPoint);
           this.#drawConnector(conn.id, conn.fromPoint, conn.toPoint);
         }
       };
-      //block.inConnectors.forEach((conn_id, key) => {
+      // block.inConnectors.forEach((conn_id, key) => {
       for (const [key, conn_id] of Object.entries(block.inConnectors)) {
         //for (k in block.inConnectors.keys) {
         //c_id = block.inConnectors[k]
@@ -485,7 +490,7 @@ export class TiledeskConnectors {
     }
   
     /** elementLogicCenter */
-    #elementLogicCenter(element) {
+    elementLogicCenter(element) {
       const rect = element.getBoundingClientRect();
       //console.log("Logic center of phisical rect:", rect);
       let logic_rect_pos = this.#logicPoint({ x: rect.left, y: rect.top })
@@ -501,7 +506,7 @@ export class TiledeskConnectors {
       return { x: center_x, y: center_y };
     }
 
-    #elementLogicTopLeft(element) {
+    elementLogicTopLeft(element) {
       let elConnectable = this.#searchClassInParents(element, this.classes["input_block"]);
       if(elConnectable){
         const block_rect = elConnectable.getBoundingClientRect();
@@ -523,12 +528,75 @@ export class TiledeskConnectors {
     createConnectorFromId(fromId, toId){
       const fromEle = document.getElementById(fromId);
       const toEle = document.getElementById(toId);
-      // console.log("fromEle:", fromEle);
-      // console.log("toEle:", toEle);
-      const fromPoint = this.#elementLogicCenter(fromEle);
-      const toPoint = this.#elementLogicTopLeft(toEle);
-      // console.log("toPoint:", toPoint);
-      // console.log("fromPoint:", fromPoint);
+      console.log("fromEle:", fromEle);
+      console.log("toEle:", toEle);
+      const fromPoint = this.elementLogicCenter(fromEle);
+      const toPoint = this.elementLogicTopLeft(toEle);
+      console.log("toPoint:", toPoint);
+      console.log("fromPoint:", fromPoint);
       this.createConnector(fromId, toId, fromPoint, toPoint);
     }
+
+
+
+    updateConnectorsOutOfItent(element) {
+      console.log("updateConnectorsOutOfItent ----> ", element.id);
+      const blockId = element.id;
+      let block = this.blocks[blockId];
+      if (!block) {return;}
+      for (const [key, conn_id] of Object.entries(block.outConnectors)) {
+        let conn = this.connectors[conn_id];
+        console.log("OUT :---> ", conn.fromPoint);
+        if(conn){
+          const el = document.getElementById(conn.fromId);
+          conn.fromPoint = this.elementLogicCenter(el);
+          console.log("conn.fromPoint :---> ", el, conn.fromId, conn.fromPoint);
+          this.#drawConnector(conn.id, conn.fromPoint, conn.toPoint);
+        }
+      };
+    }
+
+
+    deleteConnectorFromAction(blockId, connId) {
+      console.log("deleteConnectorFromAction ----> ", connId, blockId);
+      console.log("blocks :---> ", this.blocks);
+      console.log("connectors :---> ", this.connectors);
+      let block = this.blocks[blockId];
+      if(!block)return;
+      for (var connectorKey in block.outConnectors) {
+        if (connectorKey.startsWith(connId)) {
+          delete block.outConnectors[connectorKey];
+          let connector = document.getElementById(connectorKey);
+          if (connector) {
+            connector.remove();
+            delete this.connectors[connectorKey];
+          }
+        }
+      }
+    }
+
+
+    deleteConnectorsOfBlock(blockId) {
+      console.log("deleteConnectors ----> ", blockId);
+      const blockToDelete = this.blocks[blockId];
+      for (const [key, conn_id] of Object.entries(blockToDelete.outConnectors)) {
+        let connector = document.getElementById(conn_id);
+        if (connector) {
+          connector.remove();
+          delete this.connectors[conn_id];
+        }
+      }
+      delete this.blocks[blockId];
+      console.log("blocks :---> ", this.blocks);
+      console.log("connectors :---> ", this.connectors);
+      for (var key in this.blocks) {
+        var node = this.blocks[key];
+        for (var connectorKey in node.inConnectors) {
+          if (connectorKey.startsWith(blockId)) {
+            delete node.inConnectors[connectorKey];
+          }
+        }
+      }
+    }
+    
   }

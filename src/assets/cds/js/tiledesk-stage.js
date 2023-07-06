@@ -88,26 +88,14 @@ export class TiledeskStage {
     }
 
 
-    // NON è chiaro, non so se funziona da verificare!!!
-    // deleteRefDragElement(elementId){
-    
-    //     var element = document.getElementById(elementId);
-    //     let listenerMouseDown = dragMouseDown.bind(this);
-    //     let handleMouseDown = (event) => listenerMouseDown(event, element);
-    //     element.removeEventListener("mousedown", handleMouseDown, false);
-    // }
-
     setDragElement(elementId) {
         console.log('-----> setDragElement', elementId);
         var element = document.getElementById(elementId);
         let pos_mouse_x;
         let pos_mouse_y;
-        
         // let elementDrag3 = elementDrag.bind(this);
         // let listenerMouseMove = (event) => elementDrag3(event, element);
         // let listenerMouseDown = (event) => dragMouseDown3(event, element);
-
-
         let listenerMouseMove = elementDrag.bind(this);
         let handleMouseMove = (event) => listenerMouseMove(event, element);
 

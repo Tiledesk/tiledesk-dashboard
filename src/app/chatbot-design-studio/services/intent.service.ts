@@ -67,9 +67,9 @@ export class IntentService {
     return this.intents.asObservable();
   }
 
-  updateIntents(newIntents: Intent[]) {
-    this.intents.next(newIntents);
-  }
+  // updateIntents(newIntents: Intent[]) {
+  //   this.intents.next(newIntents);
+  // }
 
   // START DASHBOARD FUNCTIONS //
 
@@ -87,11 +87,11 @@ export class IntentService {
 
   /** */
   setPositionsInDashboardAttributes(json){
-    // let key = this.keyDashboardAttributes;
-    // this.setFromLocalStorage(key, json);
     this.listOfPositions = json;
     this.botAttributes['positions'] = this.listOfPositions;
     this.patchAttributes(this.botAttributes);
+    // let key = this.keyDashboardAttributes;
+    // this.setFromLocalStorage(key, json);
   }
 
   /** */
@@ -104,20 +104,41 @@ export class IntentService {
   // }
 
 
-
-  
-
-
-  private setFromLocalStorage(key, data){
-    const json = JSON.stringify(data);
-    localStorage.setItem(key, json);
+  /** Get Intent position */    
+  getIntentPosition(id: string){
+    let pos = {'x':0, 'y':0};
+    const positions = this.listOfPositions;
+    if(!positions)return pos;
+    if(positions && positions[id]){
+      return positions[id];
+    }
+    return pos;
   }
 
-  private getFromLocalStorage(key){
-    const savedJson = localStorage.getItem(key);
-    const savedData = JSON.parse(savedJson);
-    return savedData;
+  /** Set intent position */
+  setIntentPosition(id:string, newPos: any){
+    const positions = this.listOfPositions;
+    if(positions){
+      if(!newPos && positions[id]){
+        positions[id].remove();
+      } else {
+        positions[id] =  {'x': newPos.x, 'y': newPos.y};
+      }
+      this.setPositionsInDashboardAttributes(positions);
+    }
   }
+
+
+  // private setFromLocalStorage(key, data){
+  //   const json = JSON.stringify(data);
+  //   localStorage.setItem(key, json);
+  // }
+
+  // private getFromLocalStorage(key){
+  //   const savedJson = localStorage.getItem(key);
+  //   const savedData = JSON.parse(savedJson);
+  //   return savedData;
+  // }
 
   // END DASHBOARD FUNCTIONS //
 
@@ -133,7 +154,8 @@ export class IntentService {
         if (faqs) {
           // console.log('getAllIntents: ', faqs);
           let arrayOfIntents = JSON.parse(JSON.stringify(faqs));
-          this.updateIntents(arrayOfIntents);
+          // this.updateIntents(arrayOfIntents);
+          this.intents.next(arrayOfIntents);
           // resolve(true);
         } 
       }, (error) => {
@@ -373,7 +395,7 @@ export class IntentService {
       }, (error) => {
         console.log('error:   ', error);
       }, () => {
-
+        console.log('complete');
       });
 
   }

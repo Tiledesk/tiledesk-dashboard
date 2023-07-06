@@ -5,6 +5,8 @@ import { ACTIONS_LIST, TYPE_ACTION, patchActionId } from 'app/chatbot-design-stu
 import { LoggerService } from 'app/services/logger/logger.service';
 import { IntentService } from 'app/chatbot-design-studio/services/intent.service'; 
 import { ControllerService } from 'app/chatbot-design-studio/services/controller.service';
+import { ConnectorService } from 'app/chatbot-design-studio/services/connector.service';
+
 
 import {
   CdkDragDrop,
@@ -36,12 +38,13 @@ export class CdsIntentComponent implements OnInit, OnChanges {
 
   @Input() intent: Intent;
   @Input() connectorChanged: boolean;
-  // @Input() connector: any;
+
   @Output() selectAction = new EventEmitter();
   @Output() saveIntent = new EventEmitter();
 
 
   // connector: any;
+  intentElement: any;
   idSelectedAction: string;
   intentActionList: Array<any>;
   arrayActionsForDrop = [];
@@ -55,6 +58,7 @@ export class CdsIntentComponent implements OnInit, OnChanges {
     private logger: LoggerService,
     public intentService: IntentService,
     private controllerService: ControllerService,
+    private connectorService: ConnectorService
   ) { }
 
   ngOnInit(): void { 
@@ -71,6 +75,7 @@ export class CdsIntentComponent implements OnInit, OnChanges {
 
 
   ngOnChanges(changes: SimpleChanges){
+
     // if (changes.connectorChanged) {
     //   // this.connector = 
     //   console.log('CdsPanelIntentComponent ngOnChanges-->', this.connector);
@@ -109,6 +114,7 @@ export class CdsIntentComponent implements OnInit, OnChanges {
     }
   }
 
+
   private patchAllActionsId(){
     if(this.intentActionList && this.intentActionList.length>0){
       this.intentActionList.forEach(function(action, index, object) {
@@ -137,12 +143,20 @@ export class CdsIntentComponent implements OnInit, OnChanges {
     //const oggettoAzione = TYPE_ACTION.find(item => item.type === 'azione');
   }
 
+  onDragEnded(event){
+    console.log('onDragEnded: ', event);
+    const fromEle = document.getElementById(this.intent.intent_id);
+    this.connectorService.movedConnector(fromEle);
+  }
+
 
   /** EVENTS  */
   onDropAction(event: CdkDragDrop<string[]>) {
     // console.log('event:', event, 'previousContainer:', event.previousContainer, 'event.container:', event.container);
     if (event.previousContainer === event.container) {
+      console.log('onDropAction: ', event);
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+
     } else {
       try {
         let actionType: any = event.previousContainer.data[event.previousIndex];
@@ -184,6 +198,16 @@ export class CdsIntentComponent implements OnInit, OnChanges {
   }
 
 
+
+
+  // (mousemove)="onMouseMove($event)"
+  //  onMouseMove(event){
+  //     var x = event.clientX;
+  //     var y = event.clientY;
+  //     console.log('Coordinate x assolute:', x);
+  //     console.log('Coordinate y assolute:', y);
+  //     // this.connectorService.movedConnector( this.intentElement);
+  // }
 
 
   private async updateIntent(){

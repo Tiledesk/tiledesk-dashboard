@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { TiledeskConnectors } from 'app/../assets/cds/js/tiledesk-connectors.js';
+import { StageService } from 'app/chatbot-design-studio/services/stage.service';
 import { TYPE_ACTION, TYPE_BUTTON } from 'app/chatbot-design-studio/utils';
 import { 
   Intent, 
@@ -32,7 +33,9 @@ export class ConnectorService {
   listOfConnectors: any = {};
   tiledeskConnectors: any;
 
-  constructor() {}
+  constructor(
+    private stageService: StageService
+  ) {}
 
   initializeConnectors(){
     this.tiledeskConnectors = new TiledeskConnectors("tds_drawer", {"input_block": "tds_input_block"}, []);
@@ -74,7 +77,9 @@ export class ConnectorService {
                 }
                 console.log('idConnectorFrom', idConnectorFrom);
                 console.log('idConnectorTo', idConnectorTo);
-                this.tiledeskConnectors.createConnectorFromId(idConnectorFrom, idConnectorTo);
+                if(idConnectorFrom && idConnectorTo){
+                  this.tiledeskConnectors.createConnectorFromId(idConnectorFrom, idConnectorTo);
+                }
               }
             });
           }
@@ -125,13 +130,20 @@ export class ConnectorService {
     delete this.listOfConnectors[connectorID];
   }
 
+  deleteConnectorsOfBlock(intent_id){
+    this.tiledeskConnectors.deleteConnectorsOfBlock(intent_id);
+  }
 
-  movedConnector(e){
-    console.log('movedConnector: ', e);
-    const el = e.detail.element;
-    const x = e.detail.x;
-    const y = e.detail.y;
-    this.tiledeskConnectors.moved(el, x, y);
+  deleteConnectorFromAction(actionId, connId){
+    this.tiledeskConnectors.deleteConnectorFromAction(actionId, connId);
+  }
+  
+
+  movedConnector(elem){
+    console.log('movedConnector: ', elem);
+    setTimeout(() => {
+      this.tiledeskConnectors.updateConnectorsOutOfItent(elem);
+    }, 500);
   }
 
 

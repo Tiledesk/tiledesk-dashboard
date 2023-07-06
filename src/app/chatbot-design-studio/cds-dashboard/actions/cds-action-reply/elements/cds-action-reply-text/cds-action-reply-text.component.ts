@@ -37,6 +37,7 @@ export class CdsActionReplyTextComponent implements OnInit {
   @Input() index: number;
   @Input() typeAction: string;
 
+  idIntent: string;
   // Connector //
   connector: any;
 
@@ -79,6 +80,8 @@ export class CdsActionReplyTextComponent implements OnInit {
       this.updateConnector();
     });
     this.patchButtons();
+
+    this.idIntent = this.idAction.split('/')[0];
   }
 
 
@@ -208,14 +211,18 @@ export class CdsActionReplyTextComponent implements OnInit {
 
   /** onDeleteButton */
   onDeleteButton(index: number){
+    let button = this.buttons[index];
     this.buttons.splice(index, 1);
+    var intentId = this.idAction.substring(0, this.idAction.indexOf('/'));
+    this.connectorService.deleteConnectorFromAction(intentId, button.idConnector);
     this.deleteButton.emit();
   }
 
   /** */
   dropButtons(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.buttons, event.previousIndex, event.currentIndex);
-    this.connectorService.movedConnector(event);
+    const elem = document.getElementById(this.idIntent);
+    this.connectorService.movedConnector(elem);
     this.changeActionReply.emit();
   }
 

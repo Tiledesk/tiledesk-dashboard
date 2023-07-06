@@ -14,5 +14,4 @@ export class CdsConnectorComponent implements OnInit {
   ngOnInit(): void {
     
   }
-
 }
