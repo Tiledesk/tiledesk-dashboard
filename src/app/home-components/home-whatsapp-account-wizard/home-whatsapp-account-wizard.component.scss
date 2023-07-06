@@ -5,6 +5,7 @@
     // box-shadow: 0 0 20px 4px rgb(154 161 177 / 15%), 0 4px 80px -8px rgb(36 40 47 / 25%),
     //     0 4px 4px -2px rgb(91 94 105 / 15%);
     box-shadow: 0 0 #0000, 0 0 #0000, 0 1px 3px #0000001a, 0 1px 2px -1px #0000001a;
+    margin-bottom: 18px;
 }
 ._2vFcS {
     margin: 20px 50px;
@@ -187,3 +188,94 @@ height: 40px;
     height: 40px;
     margin-top: 12px;
 }
+
+// --------------------------------------------------
+// ANIMATED ARROW https://codepen.io/cbrst/pen/ebxwLJ
+// --------------------------------------------------
+.arrow-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: center;
+    color: #0f62ff;
+    font-weight: 400;
+    margin-top: 6px;
+    cursor: pointer;
+  }
+  
+  .arrow-wrapper {
+    display: flex;
+    align-items: center;
+  }
+  
+  .arrow-container:hover .arrow-wrapper .arrow span {
+    $size: 9px;
+    width: $size * 1.414 !important;
+    right: calc($size / 1.414) * -1;
+  }
+  
+  #arrow_1 .arrow {
+    $size: 9px;
+    $width: 2px;
+  
+    cursor: pointer;
+    display: block;
+    width: calc($size / 1.414);
+    height: calc($size / 1.414) * 2;
+    position: relative;
+  
+    & span,
+    &:before,
+    &:after {
+      // background: #fff;
+      background: #0f62ff;
+      content: "";
+      display: block;
+      width: $size;
+      height: $width;
+      position: absolute;
+      top: calc(50% - (#{$width} / 2));
+    }
+  
+    &:before {
+      transform: rotate(-45deg);
+    }
+    &:after {
+      transform: rotate(45deg);
+    }
+  
+    & span {
+      width: 0;
+    }
+    &:hover span {
+      width: $size * 1.414;
+    }
+  
+    @each $direction in "left" "right" {
+      &.arrow--#{$direction} {
+        & span,
+        &:before,
+        &:after {
+          #{$direction}: 0;
+          transform-origin: #{$direction} 50%;
+        }
+  
+        &:before,
+        &:after {
+          transition: #{$direction} 0.3s 0.05s;
+        }
+  
+        & span {
+          transition: width 0.3s, #{$direction} 0.3s 0.05s;
+        }
+  
+        &:hover {
+          & span,
+          &:before,
+          &:after {
+            #{$direction}: calc($size / 1.414) * -1;
+          }
+        }
+      }
+    }
+  }

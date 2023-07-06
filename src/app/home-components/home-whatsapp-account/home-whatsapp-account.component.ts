@@ -77,7 +77,7 @@ export class HomeWhatsappAccountComponent implements OnInit, OnChanges {
    * On init
    */
   ngOnInit(): void {
-    // this.getApps();
+    // 
     this.getCurrentProject();
     // this.getProjectPlan();
     // this.translateLabels();
@@ -93,7 +93,7 @@ export class HomeWhatsappAccountComponent implements OnInit, OnChanges {
     console.log('[HOME-WA] ngOnChanges changes ', changes);
     console.log('[HOME-WA] ngOnChanges whatsAppIsInstalled ', this.whatsAppIsInstalled);
     console.log('[HOME-WA] ngOnChanges whatsAppIsConnected ', this.whatsAppIsConnected);
-    
+    this.getApps();
    }
 
 

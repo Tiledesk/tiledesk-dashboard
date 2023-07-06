@@ -102,7 +102,8 @@
                 (mouseleave)="chatbotDetails.close()" -->
     <div *ngIf="chatbots && chatbots?.length > 0" class="your-chatbots">
         <div class="served-by-desktop-b" *ngFor="let bot of chatbots | slice:0:10; let i=index; let first = first;">
-            <div class="served-by-desktop-c" [ngClass]="{ 'first-served-by': first, 'disable-link-if-is-agent': USER_ROLE === 'agent' }">
+            <div class="served-by-desktop-c"
+                [ngClass]="{ 'first-served-by': first, 'disable-link-if-is-agent': USER_ROLE === 'agent' }">
 
                 <div class="served-by-desktop-d" [satPopoverAnchor]="c" (click)="c.toggle()">
                     <div size="45" class="served-by-desktop-e" style="width: 45px;">
@@ -270,7 +271,7 @@
                         <!-- ----------------------------------- -->
                         <div class="chatbot-popover-row">
                             <div class="left--col">
-          
+
                                 <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 0 24 24" width="16px"
                                     fill="#7d8590" style="position: relative;top: 2px;">
                                     <path d="M0 0h24v24H0V0z" fill="none" />
@@ -289,19 +290,19 @@
 
 
                         <div class=" view-detail-btn" style="text-align: center;">
-                                    <div class="arrow-container" (click)="goToBotProfile(bot?._id, bot?.type)">
-                                        <div id="arrow_2" class="arrow-wrapper">
-                                            <div class="text-block" style="margin-right: 16px; font-size: 13px;">
-                                                {{ 'ViewDetails' | translate }}
-                                            </div>
-                                            <div class="arrow arrow--right">
-                                                <span></span>
-                                            </div>
-                                        </div>
+                            <div class="arrow-container" (click)="goToBotProfile(bot?._id, bot?.type)">
+                                <div id="arrow_2" class="arrow-wrapper">
+                                    <div class="text-block" style="margin-right: 16px; font-size: 13px;">
+                                        {{ 'ViewDetails' | translate }}
                                     </div>
-
+                                    <div class="arrow arrow--right">
+                                        <span></span>
+                                    </div>
+                                </div>
                             </div>
+
                         </div>
+                    </div>
                 </sat-popover>
 
             </div>

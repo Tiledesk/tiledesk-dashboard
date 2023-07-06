@@ -87,7 +87,9 @@
             <button *ngIf="whatsAppIsInstalled" mat-mini-fab aria-label="more_horiz icon" (click)="unistallApp()"
                 [disabled]="!whatsAppIsInstalled"
                 style="box-shadow: unset;margin-right: 16px; background-color:#f44336; position: relative;"
-                [ngClass]="{'unistall-app-btn-disabled': !whatsAppIsInstalled}">
+                [ngClass]="{'unistall-app-btn-disabled': !whatsAppIsInstalled}" matTooltipClass="custom-mat-tooltip"
+                matTooltip="{{'Uninstall' | translate}}" #tooltip="matTooltip" matTooltipPosition='below'
+                matTooltipHideDelay="100">
 
                 <mat-icon style="color: #fff;">
                     <!-- <svg xmlns="http://www.w3.org/2000/svg" height="22px" viewBox="0 0 24 24" width="22px"
@@ -128,7 +130,7 @@
             </button> -->
 
             <button mat-flat-button=""
-                class="mat-focus-indicator fuse-mat-button-rounded mat-flat-button mat-button-base"
+                class="mat-focus-indicator mat-flat-button mat-button-base"
                 [ngStyle]="{'background-color':whatsAppIsInstalled === true ? '#0d9488' : '#2196f3' }"
                 style=" color: #fff;" (click)="gotToLearMoreOrManageApp()">
                 <span class="mat-button-wrapper">

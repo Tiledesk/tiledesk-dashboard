@@ -70,7 +70,9 @@
                   <button mat-mini-fab aria-label="date_range icon"
                     [ngClass]="{'oph-disabled': !OPERATING_HOURS_ACTIVE || DISPLAY_OPH_AS_DISABLED, 'oph-enabled': OPERATING_HOURS_ACTIVE && !DISPLAY_OPH_AS_DISABLED }"
                     style="box-shadow: unset;margin-right: 16px;    position: relative;"
-                    [satPopoverAnchor]="editOperatingHours" (click)="editOperatingHours.toggle();">
+                    [satPopoverAnchor]="editOperatingHours" (click)="editOperatingHours.toggle();" matTooltipClass="custom-mat-tooltip"
+                    matTooltip="{{'AdjustOperatingHours' | translate}}" #tooltip="matTooltip" matTooltipPosition='below'
+                    matTooltipHideDelay="100">
                     <mat-icon style="color: #fff;position: relative;top: -2px;">date_range</mat-icon>
                   </button>
 
@@ -94,16 +96,16 @@
                           style="overflow: hidden;padding-right: 12px;display: flex;flex-direction: column;align-items: center;justify-content: center;">
 
                           <div style="color: rgba(0, 0, 0, 0.87);font-weight: 500;font-size: 14px;">
-                            Operating Hours
+                            {{'Hours' | translate}}
                           </div>
 
                           <div style="font-size: 12px;font-weight: 500;text-transform: uppercase;">
                             <span *ngIf="!OPERATING_HOURS_ACTIVE || DISPLAY_OPH_AS_DISABLED">
-                              Disabled
+                              {{'Disabled' | translate}}
                             </span>
 
                             <span *ngIf="OPERATING_HOURS_ACTIVE && !DISPLAY_OPH_AS_DISABLED">
-                              Enabled
+                               {{'Enabled' | translate}}
                             </span>
                           </div>
                         </div>
@@ -120,7 +122,7 @@
                 <!-- Settings  mat-primary ng-reflect-color="primary"  -->
                 <!-- ------------------------------------ -->
                 <button mat-flat-button="" [matMenuTriggerFor]="dashletMenu"
-                  class="mat-focus-indicator fuse-mat-button-rounded mat-flat-button mat-button-base"
+                  class="mat-focus-indicato mat-flat-button mat-button-base"
                   style="background-color: #2196f3; color: #fff;margin-right: 4px;">
                   <span class="mat-button-wrapper">
                     <mat-icon role="img" class="mat-icon notranslate icon-size-5 mat-icon-no-color" aria-hidden="true"
@@ -137,7 +139,7 @@
                       </svg>
                     </mat-icon>
                     <span class="ml-2 button-dashlet-settings" style="">
-                      Settings
+                       {{'Settings' | translate}}
                     </span>
                   </span>
                   <span matripple="" class="mat-ripple mat-button-ripple" ng-reflect-disabled="false"
@@ -178,6 +180,14 @@
                       (change)="switchInviteTeammate($event.checked)"></mat-checkbox>
                     <span>Invite teammate</span>
                   </button>
+
+                  <button mat-menu-item (click)="$event.stopPropagation()">
+                    <mat-checkbox class="home-settings-checkbox" [checked]="displayCustomizeWidget"
+                      (change)="switchCustomizeWidget($event.checked)"></mat-checkbox>
+                    <span>Customize widget</span>
+                  </button>
+
+                 
                   <button mat-menu-item (click)="$event.stopPropagation()">
                     <mat-checkbox class="home-settings-checkbox" [checked]="displayNewsFeed"
                       (change)="switchNewsFeed($event.checked)"></mat-checkbox>
@@ -254,33 +264,45 @@
         <div class="home-blocks-wpr">
           <div class="home--blocks">
 
-            <appdashboard-home-convs-graph *ngIf="displayAnalyticsConvsGraph"
-              [displayAnalyticsConvsGraph]="displayAnalyticsConvsGraph" [projectId]="projectId" [USER_ROLE]="USER_ROLE">
-            </appdashboard-home-convs-graph>
-
-
-            <appdashboard-home-analytics-indicator *ngIf="displayAnalyticsIndicators" [projectId]="projectId"
-              [USER_ROLE]="USER_ROLE">
-            </appdashboard-home-analytics-indicator>
-
             <appdashboard-home-whatsapp-account-wizard style="margin-bottom: 18px;" *ngIf="displayWhatsappAccountWizard"
-              (goToConnectWA)="goToConnectWA()" (goToCreateChatbot)="goToCreateChatbot()"
-              (hasTestedBotOnWa)="hasTestedBotOnWa()" [whatsAppIsConnected]="whatsAppIsConnected"
-              [wadepartmentName]="wadepartmentName" [chatbotConnectedWithWA]='chatbotConnectedWithWA'
-              [waBotId]="waBotId" [use_case_for_child]="use_case_for_child"
-              [solution_channel_for_child]="solution_channel_for_child" [solution_for_child]="solution_for_child"
-              [testBotOnWA]="testBotOnWA" [botIdForTestWA]="botIdForTestWA"
+              (goToConnectWA)="goToConnectWA()" 
+              (goToCreateChatbot)="goToCreateChatbot()"
+              (hasTestedBotOnWa)="hasTestedBotOnWa()"
+              [whatsAppIsConnected]="whatsAppIsConnected"
+              [wadepartmentName]="wadepartmentName" 
+              [chatbotConnectedWithWA]='chatbotConnectedWithWA'
+              [waBotId]="waBotId" 
+              [use_case_for_child]="use_case_for_child"
+              [solution_channel_for_child]="solution_channel_for_child" 
+              [solution_for_child]="solution_for_child"
+              [testBotOnWA]="testBotOnWA" 
+              [botIdForTestWA]="botIdForTestWA"
               (hasCreatedChatbot)="hasCreatedChatbot($event)">
             </appdashboard-home-whatsapp-account-wizard>
 
-            <appdashboard-home-whatsapp-account style=" z-index: 11;" #childWhatsappAccount
-              *ngIf="displayConnectWhatsApp" (onClickOnUnistallApp)="onClickOnUnistallApp()"
+
+            <appdashboard-home-convs-graph *ngIf="displayAnalyticsConvsGraph"
+              [displayAnalyticsConvsGraph]="displayAnalyticsConvsGraph" 
+              [projectId]="projectId" 
+              [USER_ROLE]="USER_ROLE">
+            </appdashboard-home-convs-graph>
+
+
+            <appdashboard-home-analytics-indicator *ngIf="displayAnalyticsIndicators" 
+              [projectId]="projectId"
+              [USER_ROLE]="USER_ROLE">
+            </appdashboard-home-analytics-indicator>
+
+            <appdashboard-home-whatsapp-account *ngIf="displayConnectWhatsApp" style=" z-index: 11;" #childWhatsappAccount
+              (onClickOnUnistallApp)="onClickOnUnistallApp()"
               (onClickOnGoToLearnMoreOrManageApp)="onClickOnGoToLearnMoreOrManageApp()"
-              [whatsAppIsInstalled]="whatsAppIsInstalled" [whatsAppIsConnected]="whatsAppIsConnected">
+              [whatsAppIsInstalled]="whatsAppIsInstalled" 
+              [whatsAppIsConnected]="whatsAppIsConnected">
             </appdashboard-home-whatsapp-account>
 
             <appdashboard-home-create-chatbot #childCreateChatbot *ngIf="displayCreateChatbot"
-              [use_case_for_child]="use_case_for_child" [solution_channel_for_child]="solution_channel_for_child"
+              [use_case_for_child]="use_case_for_child" 
+              [solution_channel_for_child]="solution_channel_for_child"
               [waBotId]="waBotId" [wadepartmentName]="wadepartmentName"
               [chatbotConnectedWithWA]="chatbotConnectedWithWA"
               (botHookedToDefaultDept)="botHookedToDefaultDept($event)">
@@ -288,7 +310,7 @@
 
             <appdashboard-home-create-teammate *ngIf="displayInviteTeammate"></appdashboard-home-create-teammate>
 
-            <appdashboard-home-customize-widget></appdashboard-home-customize-widget>
+            <appdashboard-home-customize-widget *ngIf="displayCustomizeWidget"></appdashboard-home-customize-widget>
 
 
           </div>

@@ -852,12 +852,29 @@ export class ProjectService {
       .patch(url, JSON.stringify(body), httpOptions)
   }
 
+  updateProjectUserHasRemovedWA() {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    let url = this.SERVER_BASE_PATH + "projects/" + this.projectID + "/attributes"
+    console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH USER HAS UNISTALLED WA - URL', url);
+    const body = { userHasReMovedWA: true }
+    console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH USER HAS UNISTALLED WA - BODY', body);
+    return this._httpclient
+      .patch(url, JSON.stringify(body), httpOptions)
+  }
+
   updateDashletsPreferences(
     displayAnalyticsConvsGraph: boolean,
     displayAnalyticsIndicators: boolean,
     displayConnectWhatsApp: boolean,
     displayCreateChatbot: boolean,
     displayInviteTeammate: boolean,
+    displayCustomizeWidget: boolean = true,
     displayNewsFeed: boolean) {
     const httpOptions = {
       headers: new HttpHeaders({
@@ -877,6 +894,7 @@ export class ProjectService {
         connectWhatsApp: displayConnectWhatsApp,
         createChatbot: displayCreateChatbot,
         inviteTeammate: displayInviteTeammate,
+        customizeWidget: displayCustomizeWidget,
         newsFeed: displayNewsFeed
       }
     }

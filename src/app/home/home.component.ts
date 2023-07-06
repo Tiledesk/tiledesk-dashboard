@@ -136,9 +136,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   displayConnectWhatsApp: boolean = true
   displayCreateChatbot: boolean = true
   displayInviteTeammate: boolean = true
+  displayCustomizeWidget: boolean = true
   displayNewsFeed: boolean = true
   displayWhatsappAccountWizard = false;
-  whatsAppIsInstalled: boolean = false;
+  whatsAppIsInstalled: boolean = null;
   apps: any;
 
   whatsAppAppId: string;
@@ -167,6 +168,13 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   botIdForTestWA: string = '';
   // dashletsPreferences = [{ convsGraph: true, analyticsIndicators: true, connectWhatsApp: true, createChatbot: true, inviteTeammate: true }]
   dashletsPreferences: any;
+
+  areYouSureMsg: string;
+  appWillBeDeletedMsg: string;
+  appHasBeenDeletedMsg: string;
+  errorWhileDeletingApp: string;
+  done_msg: string;
+  userHasUnistalledWa: boolean = false
   constructor(
     public auth: AuthService,
     private route: ActivatedRoute,
@@ -233,8 +241,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     // this.pauseResumeLastUpdateSlider() // https://stackoverflow.com/questions/5804444/how-to-pause-and-resume-css3-animation-using-javascript
     // this.getPromoBanner()
     this.waWizardSteps = [{ step1: false, step2: false, step3: false }]
-    this.oneStepWizard = {watsAppConnected: false}
-    // this.upadatedWatsAppWizard( this.waWizardSteps)
+    this.oneStepWizard = { watsAppConnected: false }
+  
   }
 
   ngAfterViewInit() {
@@ -279,9 +287,11 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   findCurrentProjectAmongAll(projectId: string) {
 
     this.projectService.getProjects().subscribe((projects: any) => {
+      // this.projectService.getProjectById(projectId).subscribe((project: any) => {
 
+      // console.log('[HOME] getProjects By id project', project);
       if (projects) {
-        // this.projects = projects;
+        this.projects = projects;
 
         this.projects = projects.filter((project: any) => {
           // this.logger.log('[NAVBAR] getProjects PROJECTS status ', project.id_project.status);
@@ -292,8 +302,18 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       }
 
       this.current_selected_prjct = projects.find(prj => prj.id_project.id === projectId);
-      console.log('[HOME] - Find Current Project Among All - current_selected_prjct ', this.current_selected_prjct);
+      console.log('[HOME] - CURRENT PROJECT - current_selected_prjct ', this.current_selected_prjct);
 
+
+
+      if (this.current_selected_prjct &&
+        this.current_selected_prjct.id_project &&
+        this.current_selected_prjct.id_project.attributes &&
+        this.current_selected_prjct.id_project.attributes.userHasReMovedWA) {
+        if (this.current_selected_prjct.id_project.attributes.userHasReMovedWA === true) {
+          this.userHasUnistalledWa = true
+        }
+      }
 
       if (this.current_selected_prjct &&
         this.current_selected_prjct.id_project &&
@@ -311,29 +331,34 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         this.solution_for_child = this.solution
         if (this.solution_channel_for_child === 'whatsapp_fb_messenger') {
           this.displayWhatsappAccountWizard = true;
+          this.displayCustomizeWidget = false;
         }
-        console.log('[HOME] - USE CASE solution_channel (0)' , this.solution_channel_for_child , ' solution ', this.solution_for_child);
+        console.log('[HOME] - USE CASE solution_channel (0)', this.solution_channel_for_child, ' solution ', this.solution_for_child);
         if (this.solution_channel_for_child === 'whatsapp_fb_messenger' && this.solution_for_child === 'want_to_automate_conversations') {
           if (this.current_selected_prjct && this.current_selected_prjct.id_project && this.current_selected_prjct.id_project.attributes && this.current_selected_prjct.id_project.attributes.wastep) {
             if (this.current_selected_prjct.id_project.attributes.wastep[0].step1 === true &&
               this.current_selected_prjct.id_project.attributes.wastep[0].step2 === true &&
               this.current_selected_prjct.id_project.attributes.wastep[0].step3 === true) {
               this.displayWhatsappAccountWizard = false
-              console.log('[HOME] - USE CASE solution_channel ' , this.solution_channel_for_child , ' solution ', this.solution_for_child);
-              console.log('[HOME] - USE CASE step3 ',  this.current_selected_prjct.id_project.attributes.wastep[0].step3);
-              console.log('[HOME] - displayWhatsappAccountWizard ',  this.displayWhatsappAccountWizard);
+              console.log('[HOME] - USE CASE solution_channel ', this.solution_channel_for_child, ' solution ', this.solution_for_child);
+              console.log('[HOME] - USE CASE step3 ', this.current_selected_prjct.id_project.attributes.wastep[0].step3);
+              console.log('[HOME] - displayWhatsappAccountWizard ', this.displayWhatsappAccountWizard);
             }
           }
         } else if (this.solution_channel_for_child === 'whatsapp_fb_messenger' && this.solution_for_child === 'want_to_talk_to_customers') {
-          console.log('[HOME] - USE CASE solution_channel (1)' , this.solution_channel_for_child , ' solution ', this.solution_for_child);
-          if (this.current_selected_prjct && this.current_selected_prjct.id_project && this.current_selected_prjct.id_project.attributes && this.current_selected_prjct.id_project.attributes.wastep) {
+          console.log('[HOME] - USE CASE solution_channel (1)', this.solution_channel_for_child, ' solution ', this.solution_for_child);
+
+          if (this.current_selected_prjct && this.current_selected_prjct.id_project && this.current_selected_prjct.id_project.attributes && this.current_selected_prjct.id_project.attributes.oneStepWizard) {
             console.log('[HOME] - HERE 3');
-            console.log('[HOME] - USE CASE step3 ',  this.current_selected_prjct.id_project.attributes.wastep[0].step3);
-            if (this.current_selected_prjct.id_project.attributes.wastep[0].step3 === true) {
-              this.displayWhatsappAccountWizard = false
-              console.log('[HOME] - USE CASE solution_channel ' , this.solution_channel_for_child , ' solution ', this.solution_for_child);
-              console.log('[HOME] - USE CASE step3 ',  this.current_selected_prjct.id_project.attributes.wastep[0].step3);
-              console.log('[HOME] - displayWhatsappAccountWizard ',  this.displayWhatsappAccountWizard);
+            console.log('[HOME] - USE CASE step3 oneStepWizard watsAppConnected', this.current_selected_prjct.id_project.attributes.oneStepWizard.watsAppConnected);
+            if (this.current_selected_prjct.id_project.attributes.oneStepWizard.watsAppConnected === true) {
+              this.displayWhatsappAccountWizard = false;
+              this.whatsAppIsConnected = true
+              console.log('[HOME] - USE CASE solution_channel ', this.solution_channel_for_child, ' solution ', this.solution_for_child);
+              console.log('[HOME] - displayWhatsappAccountWizard ', this.displayWhatsappAccountWizard);
+            }
+            else {
+              this.whatsAppIsConnected = false
             }
           }
         }
@@ -393,6 +418,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         this.displayConnectWhatsApp = dashlets.connectWhatsApp
         this.displayCreateChatbot = dashlets.createChatbot
         this.displayInviteTeammate = dashlets.inviteTeammate
+        this.displayCustomizeWidget = dashlets.customizeWidget
         this.displayNewsFeed = dashlets.newsFeed
       }
 
@@ -572,7 +598,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       }
 
 
-      console.log('[HOME] - Find Current Project Among All - projects ', projects);
+      console.log('[HOME] - Find Current Project Among All - projects ', this.projects);
     }, error => {
       console.error('[HOME] - Find Current Project Among All: ', error);
     }, () => {
@@ -646,7 +672,14 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           console.log("[HOME] getInstallations whatsAppIsInstalled ", this.whatsAppIsInstalled, 'solution_channel ', this.solution_channel_for_child)
           if (res.length === 0) {
             if (this.solution_channel_for_child === 'whatsapp_fb_messenger') {
-              this.installApp()
+              console.log("[HOME] GET APPS - BEFORE TO INSTALL WA solution_channel_for_child ", this.solution_channel_for_child) 
+              console.log("[HOME] GET APPS - BEFORE TO INSTALL WA userHasUnistalledWa ", this.userHasUnistalledWa) 
+              console.log("[HOME] GET APPS - BEFORE TO INSTALL WA whatsAppIsInstalled ", this.whatsAppIsInstalled) 
+              if (this.userHasUnistalledWa === false) {
+                if (this.whatsAppIsInstalled === false || this.whatsAppIsInstalled === null ) {
+                  this.installApp()
+                }
+              }
             }
           }
           if (res.length > 0) {
@@ -696,6 +729,98 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     return promise;
   }
 
+
+
+
+  installApp() {
+    if ((this.appTitle === "WhatsApp Business" || this.appTitle === "Facebook Messenger" || this.appTitle === "Zapier" || this.appTitle === 'Help Center') &&
+      ((this.profile_name === PLAN_NAME.A) ||
+        (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
+        (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
+        (this.prjct_profile_type === 'free' && this.prjct_trial_expired === true))) {
+
+      if (!this.appSumoProfile) {
+        this.presentModalFeautureAvailableFromBPlan()
+        return
+      } else {
+        this.presentModalAppSumoFeautureAvailableFromBPlan()
+        return
+      }
+    }
+
+    console.log('[HOME] appId ', this.whatsAppAppId)
+    console.log('[HOME] app app version', this.appVersion)
+    console.log('[HOME] installationType ', this.installActionType);
+
+    this.installV2App(this.projectId, this.whatsAppAppId)
+
+  }
+
+
+  installV2App(projectId, appId) {
+    this.appStoreService.installAppVersionTwo(projectId, appId).subscribe((res: any) => {
+      console.log('[HOME] INSTALL V2 APP ', projectId, appId)
+
+    }, (error) => {
+      console.error('[HOME] INSTALL V2 APP - ERROR  ', error);
+      this.notify.showWidgetStyleUpdateNotification("An error occurred while creating the app", 4, 'report_problem');
+    }, () => {
+      console.log('[HOME] INSTALL V2 APP - COMPLETE');
+      this.notify.showWidgetStyleUpdateNotification("App installed successfully", 2, 'done');
+      // let index = this.apps.findIndex(x => x._id === appId);
+      // // this.apps[index].installed = false;
+      // // this.apps[index].version = 'v2';
+      // setTimeout(() => {
+      //   this.apps[index].installed = true;
+      // }, 1000);
+      this.whatsAppIsInstalled = true;
+    });
+  }
+
+
+  onClickOnUnistallApp() {
+    this.presentModalConfirmUnistallWatsApp()
+  }
+
+  presentModalConfirmUnistallWatsApp() {
+    swal({
+      title: this.areYouSureMsg,
+      text: this.appWillBeDeletedMsg,
+      icon: "warning",
+      buttons: ["Cancel", "Delete"],
+      dangerMode: true,
+    })
+      .then((WillDelete) => {
+        if (WillDelete) {
+          console.log('[HOME] UNINSTALL WA APP - app_id', this.whatsAppAppId);
+          this.appStoreService.unistallNewApp(this.projectId, this.whatsAppAppId).subscribe((res: any) => {
+            console.log('[HOME] UNINSTALL WA APP - app_id - RES', res);
+            if (res.success === true) {
+              this.whatsAppIsInstalled = false
+              this.updatedProjectWithUserHasUnistalledWA()
+            }
+
+          }, (error) => {
+            console.error('[HOME] UNINSTALL WA APP - ERROR  ', error);
+            this.notify.showWidgetStyleUpdateNotification(this.errorWhileDeletingApp, 4, 'report_problem');
+          }, () => {
+            this.logger.log('[HOME] UNINSTALL WA APP * COMPLETE *');
+
+
+
+
+            swal(this.done_msg + "!", this.appHasBeenDeletedMsg, {
+              icon: "success",
+            }).then((okpressed) => {
+
+            });
+          });
+        } else {
+          this.logger.log('[HOME] UNINSTALL WA APP swal WillDelete (else)')
+        }
+      });
+  }
+
   scrollToChild(el: ElementRef) {
     el.nativeElement.scrollIntoView({ behavior: 'smooth' });
 
@@ -711,7 +836,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     console.log('[HOME] hasCreatedChatbot  ', event)
     if (event === true) {
       this.waWizardSteps = [{ step1: true, step2: false, step3: false }]
-      this.upadatedWatsAppWizard(this.waWizardSteps)
+      this.upadatedWatsAppWizard(this.waWizardSteps , 'hasCreatedChatbot')
     }
   }
 
@@ -734,7 +859,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   hasTestedBotOnWa() {
     this.waWizardSteps = [{ step1: true, step2: true, step3: false }]
-    this.upadatedWatsAppWizard(this.waWizardSteps)
+    this.upadatedWatsAppWizard(this.waWizardSteps, 'hasTestedBotOnWa')
   }
 
 
@@ -786,11 +911,11 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
     if (this.appTitle === "WhatsApp Business" || this.appTitle === "Facebook Messenger") {
       this.router.navigate(['project/' + this.projectId + '/app-store-install/' + this.whatsAppAppId + '/detail/h'])
+      // this.openWADetailsInPopup()
     }
   }
 
   openInAppStoreInstall() {
-
     if ((this.appTitle === "WhatsApp Business" || this.appTitle === "Facebook Messenger") &&
       ((this.profile_name === PLAN_NAME.A) ||
         (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
@@ -815,6 +940,16 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
+  openWADetailsInPopup() {
+    const whatsappProdlUrl = "https://tiledesk-whatsapp-prod.herokuapp.com"
+    const url = whatsappProdlUrl + "/detail?project_id=" + this.projectId + '&app_id=' + this.whatsAppAppId + '&token=' + this.user.token
+
+    let left = (screen.width - 815) / 2;
+    let top = (screen.height - 727) / 4;
+    let params = `toolbar=no,menubar=no,width=815,height=727,left=${left},top=${top}`;
+    window.open(url, '_blank', params);
+  }
+
 
   openAppStoreInPopupWindow() {
     const whatsappUrl = this.appConfigService.getConfig().whatsappApiUrl;
@@ -835,11 +970,11 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // const url = testItOutUrl + '?tiledesk_projectid=' + this.project._id + '&tiledesk_participants=bot_' + this.id_faq_kb + "&tiledesk_departmentID=" + this.defaultDepartmentId + '&td_draft=true'
     let left = (screen.width - 815) / 2;
-    var top = (screen.height - 727) / 4;
+    let top = (screen.height - 727) / 4;
     let params = `toolbar=no,menubar=no,width=815,height=727,left=${left},top=${top}`;
     let popup = window.open(url, '_blank', params);
 
-    var popupTick = setInterval(() => {
+    let popupTick = setInterval(() => {
       if (popup.closed) {
         clearInterval(popupTick);
         console.log('window closed!');
@@ -858,15 +993,15 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         if (res.success === true) {
           this.whatsAppIsConnected = true
           this.waWizardSteps = [{ step1: true, step2: true, step3: true }]
-          this.oneStepWizard = {watsAppConnected: true}
-          this.upadatedProjectWithOneStepWizard(this.oneStepWizard) 
-          this.upadatedWatsAppWizard(this.waWizardSteps)
+          this.oneStepWizard = { watsAppConnected: true }
+          this.upadatedProjectWithOneStepWizard(this.oneStepWizard)
+          this.upadatedWatsAppWizard(this.waWizardSteps , 'checkWAConnection success')
           this.updateProjectWithWASettings(res.settings)
         } else if (res.success === false) {
           this.waWizardSteps = [{ step1: true, step2: true, step3: false }]
-          this.oneStepWizard = {watsAppConnected: true}
-          this.upadatedProjectWithOneStepWizard(this.oneStepWizard) 
-          this.upadatedWatsAppWizard(this.waWizardSteps)
+          this.oneStepWizard = { watsAppConnected: true }
+          this.upadatedProjectWithOneStepWizard(this.oneStepWizard )
+          this.upadatedWatsAppWizard(this.waWizardSteps ,'checkWAConnection unsuccess')
           this.updateProjectByDeletingWASettings()
         }
 
@@ -879,8 +1014,9 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   // /. --- step 3
 
 
-  upadatedWatsAppWizard(wasteps) {
-    console.log('upadatedWatsAppWizard ', wasteps) 
+  upadatedWatsAppWizard(wasteps, calledBy) {
+    console.log('upadatedWatsAppWizard calledBy ', calledBy)
+    console.log('upadatedWatsAppWizard calledBy', wasteps)
     this.projectService.updateProjectWithWAWizardSteps(wasteps)
       .subscribe((res: any) => {
         console.log('[HOME] - UPDATE PRJCT WITH WA WIZARD STEPS - RES ', res);
@@ -895,7 +1031,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         if (res && res.attributes && res.attributes.wastep) {
           if (res.attributes.wastep[0].step1 === true && res.attributes.wastep[0].step2 === true && res.attributes.wastep[0].step3 === true) {
             this.displayWhatsappAccountWizard = false;
-            this.presentModalWaSuccessfullyConnected()
+            if (this.whatsAppIsConnected === false) {
+              this.presentModalWaSuccessfullyConnected()
+            }
+
           }
         }
 
@@ -908,6 +1047,12 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       });
   }
 
+  presentModalWaSuccessfullyConnected() {
+
+    swal("Good job!", "WhatsApp connected successfully!", "success");
+
+  }
+
 
   upadatedProjectWithOneStepWizard(oneStepWizard) {
     console.log('[HOME] upadatedProjectWithOneStepWizard', oneStepWizard)
@@ -915,14 +1060,11 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.projectService.updateProjectWithWAOneStepWizard(oneStepWizard)
       .subscribe((res: any) => {
         console.log('[HOME] - UPDATE PRJCT WITH ONE STEP WIZARD - RES ', res);
-
-        // if (res && res.attributes && res.attributes.wasettings && res.attributes.wasettings.department_id) {
-        //   this.wadepartmentid = res.attributes.wasettings.department_id
-        //   this.getDeptById(this.wadepartmentid)
-        // }
-
-       
-        // console.log('[HOME] - UPDATE PRJCT WITH WA WSETTINGS - whatsAppIsConnected ', this.whatsAppIsConnected);
+        if (res && res.attributes && res.attributes.oneStepWizard) {
+          if (res.attributes.oneStepWizard.watsAppConnected === true) {
+            this.displayWhatsappAccountWizard = false;
+          }
+        }
 
       }, error => {
         console.error('[HOME] - UPDATE PRJCT WITH ONE STEP WIZARD  - ERROR ', error)
@@ -930,7 +1072,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         console.log('[HOME] - UPDATE PRJCT WITH ONE STEP WIZARD * COMPLETE *')
       });
   }
-
 
 
   updateProjectWithWASettings(wasettings) {
@@ -945,9 +1086,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           this.getDeptById(this.wadepartmentid)
         }
 
-       
-        // console.log('[HOME] - UPDATE PRJCT WITH WA WSETTINGS - whatsAppIsConnected ', this.whatsAppIsConnected);
-
       }, error => {
         console.error('[HOME] - UPDATE PRJCT WITH WA WSETTINGS  - ERROR ', error)
       }, () => {
@@ -955,27 +1093,21 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       });
   }
 
+  updatedProjectWithUserHasUnistalledWA() {
+    this.projectService.updateProjectUserHasRemovedWA()
+      .subscribe((res: any) => {
+        console.log('[HOME] - USER HAS UNISTALLED WA - RES ', res);
 
-  presentModalWaSuccessfullyConnected() {
 
-    swal("Good job!", "WhatsApp connected successfully!", "success");
-    // const el = document.createElement('div')
-    // el.innerHTML = this.featureAvailableFromBPlan
-    // swal({
-    //   // title: this.onlyOwnerCanManageTheAccountPlanMsg,
-    //   content: el,
-    //   icon: "success",
-    //   // buttons: true,
-    //   buttons: {
-    //     cancel: this.cancel,
-    //     catch: {
-    //       text: this.upgradePlan,
-    //       value: "catch",
-    //     },
-    //   },
-    //   dangerMode: false,
-    // })
+      }, error => {
+        console.error('[HOME] - USER HAS UNISTALLED WA  - ERROR ', error)
+      }, () => {
+        console.log('[HOME] - USER HAS UNISTALLED WA * COMPLETE *')
+      });
   }
+
+
+
 
   updateProjectByDeletingWASettings() {
     console.log('[HOME] updateProjectByDeletingWASettings');
@@ -1059,73 +1191,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
-  onClickOnUnistallApp() {
-    console.log('[HOME] UNINSTALL V2 APP - app_id', this.whatsAppAppId);
-    this.appStoreService.unistallNewApp(this.projectId, this.whatsAppAppId).subscribe((res: any) => {
-      console.log('[HOME] UNINSTALL V2 APP - app_id - RES', res);
 
-    }, (error) => {
-      console.error('[HOME] UNINSTALL V2 APP - ERROR  ', error);
-      this.notify.showWidgetStyleUpdateNotification("An error occurred while uninstalling the app", 4, 'report_problem');
-    }, () => {
-      console.log('[HOME] UNINSTALL V2 APP - COMPLETE');
-      this.notify.showWidgetStyleUpdateNotification("App uninstalled successfully", 2, 'done');
-
-      this.whatsAppIsInstalled = false
-      // let index = this.apps.findIndex(x => x._id === appId);
-      // // this.apps[index].installed = false;
-      // // this.apps[index].version = 'v2';
-      // setTimeout(() => {
-      //   this.apps[index].installed = false;
-      // }, 1000);
-
-    });
-  }
-
-  installApp() {
-    if ((this.appTitle === "WhatsApp Business" || this.appTitle === "Facebook Messenger" || this.appTitle === "Zapier" || this.appTitle === 'Help Center') &&
-      ((this.profile_name === PLAN_NAME.A) ||
-        (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
-        (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
-        (this.prjct_profile_type === 'free' && this.prjct_trial_expired === true))) {
-
-      if (!this.appSumoProfile) {
-        this.presentModalFeautureAvailableFromBPlan()
-        return
-      } else {
-        this.presentModalAppSumoFeautureAvailableFromBPlan()
-        return
-      }
-    }
-
-    console.log('[HOME] appId ', this.whatsAppAppId)
-    console.log('[HOME] app app version', this.appVersion)
-    console.log('[HOME] installationType ', this.installActionType);
-
-    this.installV2App(this.projectId, this.whatsAppAppId)
-
-  }
-
-
-  installV2App(projectId, appId) {
-    this.appStoreService.installAppVersionTwo(projectId, appId).subscribe((res: any) => {
-      console.log('[HOME] INSTALL V2 APP ', projectId, appId)
-
-    }, (error) => {
-      console.error('[HOME] INSTALL V2 APP - ERROR  ', error);
-      this.notify.showWidgetStyleUpdateNotification("An error occurred while creating the app", 4, 'report_problem');
-    }, () => {
-      console.log('[HOME] INSTALL V2 APP - COMPLETE');
-      this.notify.showWidgetStyleUpdateNotification("App installed successfully", 2, 'done');
-      // let index = this.apps.findIndex(x => x._id === appId);
-      // // this.apps[index].installed = false;
-      // // this.apps[index].version = 'v2';
-      // setTimeout(() => {
-      //   this.apps[index].installed = true;
-      // }, 1000);
-      this.whatsAppIsInstalled = true;
-    });
-  }
 
   presentModalFeautureAvailableFromBPlan() {
     const el = document.createElement('div')
@@ -1502,10 +1568,12 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         this.logger.log('[HOME] - GET LAST 30 DAYS MESSAGE COUNT RES', msgscount);
         if (msgscount && msgscount.length > 0) {
           this.countOfLastMonthMsgs = msgscount[0]['totalCount']
+          this.displayAnalyticsIndicators = true
 
           this.logger.log('[HOME] - GET LAST 30 DAYS MESSAGE COUNT ', this.countOfLastMonthMsgs);
         } else {
           this.countOfLastMonthMsgs = 0;
+          this.displayAnalyticsIndicators = false
         }
       }, (error) => {
         this.logger.error('[HOME] - GET LAST 30 DAYS MESSAGE - ERROR ', error);
@@ -2213,7 +2281,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       }, (error) => {
         this.logger.error('[HOME] - GET projectUser by USER-ID - ERROR ', error);
       }, () => {
-        this.logger.log('[] - GET projectUser by USER-ID * COMPLETE *');
+        this.logger.log('[HOME] - GET projectUser by USER-ID * COMPLETE *');
       });
   }
 
@@ -2772,7 +2840,44 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         this.agentCannotManageAdvancedOptions = translation;
       });
 
+
+    this.translateAreYouSure()
+    this.translateAppWillBeDeleted()
+    this.translateAppHasBeenDeleted()
+    this.translateAnErrorOccurreWhileDeletingTheApp()
+    this.translateDone()
+
   }
+
+  translateAreYouSure() {
+    this.translate.get('AreYouSure').subscribe((text: string) => {
+      this.areYouSureMsg = text;
+    });
+  }
+
+  translateAppWillBeDeleted() {
+    this.translate.get('TheAppWillBeDeleted').subscribe((text: string) => {
+      this.appWillBeDeletedMsg = text;
+    });
+  }
+
+  translateAppHasBeenDeleted() {
+    this.translate.get('TheAppHasBeenDeleted').subscribe((text: string) => {
+      this.appHasBeenDeletedMsg = text;
+    });
+  }
+  translateAnErrorOccurreWhileDeletingTheApp() {
+    this.translate.get('AnErrorOccurreWhileDeletingTheApp').subscribe((text: string) => {
+      this.errorWhileDeletingApp = text;
+    });
+  }
+
+  translateDone() {
+    this.translate.get('Done').subscribe((text: string) => {
+      this.done_msg = text;
+    });
+  }
+
 
   translateInstallWidget() {
     this.translate.get('InstallTiledeskNowAndStartChatting', this.tparams)
@@ -2841,6 +2946,11 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.displayInviteTeammate = event;
     this.updatesDashletsPreferences()
   }
+  switchCustomizeWidget(event) {
+    console.log('[HOME] SWITCH CUSTOMIZE WIDGET event ', event)
+    this.displayCustomizeWidget = event;
+    this.updatesDashletsPreferences()
+  }
 
   switchNewsFeed(event) {
     console.log('[HOME] SWITCH NEWS FEED event ', event)
@@ -2855,6 +2965,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.displayConnectWhatsApp,
       this.displayCreateChatbot,
       this.displayInviteTeammate,
+      this.displayCustomizeWidget,
       this.displayNewsFeed)
       .subscribe((res: any) => {
         console.log('[HOME] - UPDATE PRJCT WITH DASHLET PREFERENCES - RES ', res);

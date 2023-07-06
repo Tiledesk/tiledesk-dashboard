@@ -228,5 +228,28 @@ export class HomeCreateTeammateComponent implements OnInit {
     this.router.navigate(['project/' + this.projectId + '/users'])
   }
 
+  goToAgentProfile(member_id) {
+    this.logger.log('[HOME] - goToAgentProfile (AFTER GETTING PROJECT USER ID) ', member_id)
+    // this.router.navigate(['project/' + this.projectId + '/member/' + member_id]);
+
+    this.getProjectuserbyUseridAndGoToEditProjectuser(member_id);
+  }
+
+  getProjectuserbyUseridAndGoToEditProjectuser(member_id: string) {
+    this.usersService.getProjectUserByUserId(member_id)
+      .subscribe((projectUser: any) => {
+        this.logger.log('[HOME-CREATE-TEAMMATE] - GET projectUser by USER-ID ', projectUser)
+        if (projectUser) {
+          this.logger.log('[HOME-CREATE-TEAMMATE] - GET projectUser > projectUser id', projectUser[0]._id);
+
+          this.router.navigate(['project/' + this.projectId + '/user/edit/' + projectUser[0]._id]);
+        }
+      }, (error) => {
+        this.logger.error('[HOME-CREATE-TEAMMATE] - GET projectUser by USER-ID - ERROR ', error);
+      }, () => {
+        this.logger.log('[HOME-CREATE-TEAMMATE] - GET projectUser by USER-ID * COMPLETE *');
+      });
+  }
+
 
 }

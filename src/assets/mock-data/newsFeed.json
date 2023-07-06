@@ -9,12 +9,12 @@
         "highlighted": true
     },
     {
-        "tag": "Academy",
-        "title": "Developer docs",
-        "image": "https://tiledesk.com/wp-content/uploads/2023/06/Developer-docs.png",
+        "tag": "Feature",
+        "title": "Create a lead-generation chatbot",
+        "image": "https://tiledesk.com/wp-content/uploads/2022/10/Merge-all-the-most-important-messaging-channels-in-a-single-Communication-Hub-2048x948.png",
         "description": "",
-        "learnmore": "https://developer.tiledesk.com/",
-        "type": "article",
+        "learnmore": "https://youtu.be/ZUvjXZBc_Qw",
+        "type": "video",
         "highlighted": false
     },
     {
