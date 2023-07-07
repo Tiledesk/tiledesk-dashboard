@@ -347,7 +347,6 @@ export class CdsActionReplyComponent implements OnInit {
       'show_echo': true
     };
     this.response.attributes.attachment.buttons.push(buttonSelected);
-    this.logger.log('createNewButton :: ', buttonSelected);
     return buttonSelected;
   }
 

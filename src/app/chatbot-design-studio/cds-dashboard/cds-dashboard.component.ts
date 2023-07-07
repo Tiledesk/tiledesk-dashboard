@@ -13,7 +13,7 @@ import { FaqKbService } from 'app/services/faq-kb.service';
 import { FaqService } from 'app/services/faq.service';
 import { AuthService } from 'app/core/auth.service';
 import { LoggerService } from 'app/services/logger/logger.service';
-import { DragDropService } from 'app/chatbot-design-studio/services/drag-drop.service';
+// import { DragDropService } from 'app/chatbot-design-studio/services/drag-drop.service';
 import { IntentService } from 'app/chatbot-design-studio/services/intent.service';
 import { ControllerService } from 'app/chatbot-design-studio/services/controller.service';
 import { ConnectorService } from 'app/chatbot-design-studio/services/connector.service';
@@ -115,7 +115,7 @@ export class CdsDashboardComponent implements OnInit {
     private auth: AuthService,
     public location: Location,
     private logger: LoggerService,
-    private dragDropService:DragDropService,
+    // private dragDropService:DragDropService,
     private intentService: IntentService,
     private controllerService: ControllerService,
     private connectorService: ConnectorService,
@@ -526,6 +526,7 @@ export class CdsDashboardComponent implements OnInit {
 
   /** */
   onMouseDownIntent(element): void{
+    console.log("onMouseDownIntent:  element: ",element);
     const x = element.offsetLeft; 
     const y = element.offsetTop; 
     element.style.zIndex = 2;
@@ -534,12 +535,13 @@ export class CdsDashboardComponent implements OnInit {
 
   /** */
   onMouseUpIntent(intent:any, element:any){
+    console.log("onMouseUpIntent: ", intent, " element: ",element);
     let newPos = {'x':element.offsetLeft, 'y':element.offsetTop};
-    let pos = this.intentService.getIntentPosition(intent.id);
+    let pos = this.intentService.getIntentPosition(intent.intent_id);
     if(newPos.x != pos.x || newPos.y != pos.y){
       element.style.zIndex = 'auto';
       // console.log("setIntentPosition x:", newPos.x, " y: ",newPos.y);
-      this.intentService.setIntentPosition(intent.id, newPos);
+      this.intentService.setIntentPosition(intent.intent_id, newPos);
       // this.intentService.setDashboardAttributes(this.dashboardAttributes);
     }
     // this.isOpenPanelDetail = true;
@@ -555,31 +557,6 @@ export class CdsDashboardComponent implements OnInit {
     return this.intentService.getIntentPosition(id);
   }
 
-  // getIntentPosition(id: string){
-  //   let pos = {'x':0, 'y':0};
-  //   const positions = this.intentService.listOfPositions;
-  //   if(!positions)return pos;
-  //   if(positions && positions[id]){
-  //     return positions[id];
-  //   }
-  //   return pos;
-  // }
-
-  // /** Imposto la posizione di un intent */
-  // setIntentPosition(id:string, newPos: any){
-  //   const positions = this.intentService.listOfPositions;
-  //   console.log('setIntentPosition id ----------->', id, positions);
-  //   if(positions){
-  //     if(!newPos && positions[id]){
-  //       positions[id].remove();
-  //     } else {
-  //       positions[id] =  {'x': newPos.x, 'y': newPos.y};
-  //       // console.log('setIntentPosition id ----------->', id, this.dashboardAttributes.positions[id]);
-  //     }
-  //     this.intentService.setPositionsInDashboardAttributes(positions);
-  //   }
-  // }
-
 
   /** */
   private async addNewIntent(pos, actionType){
@@ -587,16 +564,18 @@ export class CdsDashboardComponent implements OnInit {
     this.intentSelected = this.intentService.createIntent(this.id_faq_kb, actionType);
     this.intentSelected.id = 'new';
     this.intentService.setIntentPosition('new', pos);
-    const idNewIntent = await this.intentService.addNewIntent(this.id_faq_kb, this.intentSelected);
-    this.intentSelected.id = idNewIntent;
-    console.log('creatIntent: OK ', idNewIntent);
-    if(idNewIntent){
+    const newIntent = await this.intentService.addNewIntent(this.id_faq_kb, this.intentSelected);
+    this.intentSelected.id = newIntent.id;
+    console.log('creatIntent: OK ', newIntent);
+    if(newIntent){
+      // aggiungo la action all'intent
+
       // !!! il valore di listOfIntents è bindato nel costructor con subscriptionListOfIntents !!! //
-      this.intentService.setIntentPosition(idNewIntent, pos);
+      this.intentService.setIntentPosition(newIntent.intent_id, pos);
       this.setDragAndListnerEvent(this.intentSelected);
       // this.TiledeskStage.setDragElement(idNewIntent);
     }
-    return idNewIntent;
+    return newIntent;
   }
 
   /** deleteIntent */
@@ -614,7 +593,6 @@ export class CdsDashboardComponent implements OnInit {
       this.connectorService.deleteConnectorsOfBlock(intent.intent_id);
 
       // !!! chiama patch positioni !!!!
-      
       swal(this.translate.instant('Done') + "!", this.translate.instant('FaqPage.AnswerSuccessfullyDeleted'), {
         icon: "success",
       }).then(() => {
@@ -776,13 +754,14 @@ export class CdsDashboardComponent implements OnInit {
 
   /** START EVENTS PANEL INTENT */
   async onAddingActionToStage(event) {
-    // console.log('onAddingActionToStage:: ', event);
+    console.log('onAddingActionToStage:: ', event);
     const actionType = event.type;
     const toPoint = this.connectorDraft.toPoint;
     const fromPoint = this.connectorDraft.fromPoint;
     const fromId = this.connectorDraft.fromId;
-    const toId = await this.addNewIntent(toPoint, actionType);
-    if(toId){
+    const newIntent = await this.addNewIntent(toPoint, actionType);
+    if(newIntent){
+      const toId = newIntent.intent_id;
       this.connectorService.tiledeskConnectors.createConnector(fromId, toId, fromPoint, toPoint);
     }
     this.removeConnectorDraftAndCloseFloatMenu();
@@ -790,18 +769,21 @@ export class CdsDashboardComponent implements OnInit {
 
 
 
-  onDroppedElementToStage(event: CdkDragDrop<string[]>) {
+  async onDroppedElementToStage(event: CdkDragDrop<string[]>) {
     console.log('droppedElementOnStage!!!!!', event);
     let actionType = '';
-    let pos = this.dragDropService.positionElementOnStage(event.dropPoint, this.receiverElementsDroppedOnStage, this.drawerOfItemsToZoomAndDrag);
+    let pos = this.connectorService.tiledeskConnectors.logicPoint(event.dropPoint);
+    // let pos = this.dragDropService.positionElementOnStage(event.dropPoint, this.receiverElementsDroppedOnStage, this.drawerOfItemsToZoomAndDrag);
+    console.log('pos::: ', pos);
     try {
       let action: any = event.previousContainer.data[event.previousIndex];
       actionType = action.value.type;
-      // console.log('actionType::: ', actionType);
+      console.log('actionType::: ', actionType);
     } catch (error) {
       console.error('ERROR: ', error);
     }
-    const idNewIntent = this.addNewIntent(pos, actionType);
+    await this.addNewIntent(pos, actionType);
+    // const idNewIntent = this.addNewIntent(pos, actionType);
   }
  
 

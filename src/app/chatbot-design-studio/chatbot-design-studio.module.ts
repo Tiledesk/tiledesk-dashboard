@@ -35,7 +35,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 
 //SERVICES
-import { DragDropService } from './services/drag-drop.service';
+// import { DragDropService } from './services/drag-drop.service';
 
 // import { SharedModule } from '../shared/shared.module';
 import { CdsDashboardComponent } from './cds-dashboard/cds-dashboard.component';
@@ -246,7 +246,7 @@ import { CdsActionReplyToolsComponent } from './cds-dashboard/actions/cds-action
     })
   ],
   providers: [
-    DragDropService
+    // DragDropService
   ]
 })
 export class ChatbotDesignStudioModule { }

@@ -325,7 +325,7 @@ export class TiledeskConnectors {
         const block_rect = elConnectable.getBoundingClientRect();
         let pos_x_phis = block_rect.left;
         let pos_y_phis = block_rect.top;
-        mouse_pos_logic = this.#logicPoint({ x: pos_x_phis, y: pos_y_phis });
+        mouse_pos_logic = this.logicPoint({ x: pos_x_phis, y: pos_y_phis });
         mouse_pos_logic.y = mouse_pos_logic.y + 20;
         this.toPoint = mouse_pos_logic;
         this.toPointPhis = { x: pos_x_phis, y: pos_y_phis };
@@ -333,7 +333,7 @@ export class TiledeskConnectors {
       else {
         let pos_x_phis = event.clientX;
         let pos_y_phis = event.clientY;
-        mouse_pos_logic = this.#logicPoint({ x: pos_x_phis, y: pos_y_phis });
+        mouse_pos_logic = this.logicPoint({ x: pos_x_phis, y: pos_y_phis });
         this.toPoint = mouse_pos_logic;
         this.toPointPhis = { x: pos_x_phis, y: pos_y_phis };
       }
@@ -478,7 +478,7 @@ export class TiledeskConnectors {
     }
   
     /** Coordinate from phisical to logical */
-    #logicPoint(coords) {
+    logicPoint(coords) {
       const drawer = document.getElementById(this.drawerId);
       var drawer_rect = drawer.getBoundingClientRect();
       // https://stackoverflow.com/questions/24883585/mouse-coordinates-dont-match-after-scaling-and-panning-canvas
@@ -493,7 +493,7 @@ export class TiledeskConnectors {
     elementLogicCenter(element) {
       const rect = element.getBoundingClientRect();
       //console.log("Logic center of phisical rect:", rect);
-      let logic_rect_pos = this.#logicPoint({ x: rect.left, y: rect.top })
+      let logic_rect_pos = this.logicPoint({ x: rect.left, y: rect.top })
       //console.log("center: logic_rect_pos:", logic_rect_pos);
       const logic_width = this.#toLogicScale(rect.width);
       //console.log("center: logic_width:", logic_width);
@@ -512,7 +512,7 @@ export class TiledeskConnectors {
         const block_rect = elConnectable.getBoundingClientRect();
         let pos_x_phis = block_rect.left;
         let pos_y_phis = block_rect.top;
-        let mouse_pos_logic = this.#logicPoint({ x: pos_x_phis, y: pos_y_phis });
+        let mouse_pos_logic = this.logicPoint({ x: pos_x_phis, y: pos_y_phis });
         mouse_pos_logic.y = mouse_pos_logic.y + 20;
         // console.log("toPoint? ", elConnectable);
         // console.log("mouse_pos_logic? ", mouse_pos_logic);
@@ -577,9 +577,10 @@ export class TiledeskConnectors {
 
 
     deleteConnectorsOfBlock(blockId) {
-      console.log("deleteConnectors ----> ", blockId);
+      console.log("deleteConnectors ----> ", this.blocks, blockId);
       const blockToDelete = this.blocks[blockId];
-      for (const [key, conn_id] of Object.entries(blockToDelete.outConnectors)) {
+      if(!blockToDelete)return;
+      for (const [key, conn_id] of Object.entries(blockToDelete?.outConnectors)) {
         let connector = document.getElementById(conn_id);
         if (connector) {
           connector.remove();

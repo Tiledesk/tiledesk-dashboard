@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { TYPE_ACTION, ACTIONS_LIST, TYPE_OF_MENU } from 'app/chatbot-design-studio/utils';
 import { CdkDropList, CdkDragStart, CdkDragEnd, CdkDragMove } from '@angular/cdk/drag-drop';
-import { DragDropService } from 'app/chatbot-design-studio/services/drag-drop.service';
+// import { DragDropService } from 'app/chatbot-design-studio/services/drag-drop.service';
 
 @Component({
   selector: 'cds-panel-actions',
@@ -22,12 +22,12 @@ export class CdsPanelActionsComponent implements OnInit {
   isDragging: any = false;
   indexDrag: number;
   // dropList: CdkDropList;
-  connectedLists: CdkDropList[];
-  connectedIDLists: string[];
+  // connectedLists: CdkDropList[];
+  // connectedIDLists: string[];
   
 
   constructor(
-    public dragDropService: DragDropService
+    // public dragDropService: DragDropService
   ) { }
 
   ngOnInit(): void {
@@ -75,14 +75,14 @@ export class CdsPanelActionsComponent implements OnInit {
 
 
   ngAfterViewInit(){
-    this.dragDropService.addConnectedIDList('action_list_drop_connect');
-    // this.dragDropService.addConnectedIDList('cds-box-right-content');
-    this.dragDropService.addConnectedList(this.actionListDropConnect);
-    this.connectedLists = this.dragDropService.connectedLists;
-    this.connectedIDLists = this.dragDropService.connectedIDLists;
-    // ['action_list_drop_connect','drop-actions'];
-    // this.dragDropService.connectedIDLists;
-    console.log("connectedLists--------------------> ",this.connectedIDLists);
+    // this.dragDropService.addConnectedIDList('action_list_drop_connect');
+    // // this.dragDropService.addConnectedIDList('cds-box-right-content');
+    // this.dragDropService.addConnectedList(this.actionListDropConnect);
+    // this.connectedLists = this.dragDropService.connectedLists;
+    // this.connectedIDLists = this.dragDropService.connectedIDLists;
+    // // ['action_list_drop_connect','drop-actions'];
+    // // this.dragDropService.connectedIDLists;
+    // console.log("connectedLists--------------------> ",this.connectedIDLists);
   }
 
   onDragStarted(event:CdkDragStart, currentIndex: number) {

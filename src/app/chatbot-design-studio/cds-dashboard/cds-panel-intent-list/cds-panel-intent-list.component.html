@@ -16,7 +16,7 @@
                     id="intent_{{id}}" 
                     class="intent"
                     [ngClass]="{'active': idSelectedIntent === 'int-'+id}" 
-                    [value]="intent.id" 
+                    [value]="intent.intent_id" 
                     (click)="onSelectIntent(intent, 'int-'+id)">
 
                     <div class="icon-container" 
@@ -61,7 +61,7 @@
                 class="intent"
                 [ngClass]="{'active': idSelectedIntent === 'fil-'+id}"
                 style="padding-left: 10px;" 
-                value="intent.id" 
+                value="intent.intent_id" 
                 (click)="onSelectIntent(intent, 'fil-'+id)">
                 
                 <div class="icon-container" 

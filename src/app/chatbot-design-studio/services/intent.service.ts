@@ -120,7 +120,7 @@ export class IntentService {
     const positions = this.listOfPositions;
     if(positions){
       if(!newPos && positions[id]){
-        positions[id].remove();
+        delete positions[id];
       } else {
         positions[id] =  {'x': newPos.x, 'y': newPos.y};
       }
@@ -218,7 +218,7 @@ export class IntentService {
         newIntents[newIntents.length-1] = intent;
         this.intents.next(newIntents);
         console.log('ADDED');
-        resolve(intent.id);
+        resolve(intent);
       }, (error) => {
         console.error('ERROR: ', error);
         reject(false);

@@ -67,11 +67,11 @@ export class CdsActionReplyTextComponent implements OnInit {
     console.log('typeAction: ', this.typeAction);
     // this.limitCharsText = TEXT_CHARS_LIMIT;
     this.delayTime = this.response.time/1000;
-    this.buttons = [];
-    try {
-      this.buttons = this.response.attributes.attachment.buttons;
-    } catch (error) {
-      console.log('error: ', error);
+
+    if(this.response?.attributes?.attachment?.buttons){
+      this.buttons = this.response?.attributes?.attachment?.buttons;
+    } else {
+      this.buttons = [];
     }
   
     this.intentService.isChangedConnector$.subscribe((connector: any) => {
@@ -87,8 +87,9 @@ export class CdsActionReplyTextComponent implements OnInit {
 
 
   private patchButtons(){
-    let buttons = this.response.attributes.attachment.buttons;
     console.log('patchButtons:: ', this.response);
+    let buttons = this.response?.attributes?.attachment?.buttons;
+    if(!buttons)return;
     buttons.forEach(button => {
       if(!button.uid || button.uid === undefined){
         const idButton = generateShortUID();

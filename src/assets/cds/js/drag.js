@@ -127,6 +127,7 @@ function dragElement(elmnt) {
 
   /* otherwise, move the DIV from anywhere inside the DIV:*/
   elmnt.onmousedown = dragMouseDown;
+  
   function dragMouseDown(e) {
     // console.log("classDraggable", classDraggable)
     if (!e.target.classList.contains(classDraggable)) {

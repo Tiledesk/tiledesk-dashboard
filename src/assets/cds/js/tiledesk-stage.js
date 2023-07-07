@@ -23,12 +23,309 @@ export class TiledeskStage {
     setDrawer() {
         this.container = document.getElementById(this.containerId);
         this.drawer = document.getElementById(this.drawerId);
-        // console.log("setDrawer:", this.containerId, this.drawerId, this.container, this.drawer);
-        //this.container.onwheel = this.moveAndZoom;
         this.container.addEventListener("wheel", this.moveAndZoom);
     }
 
-    moveAndZoom(event) {
+    setupDivMouseDrag(divId) {
+        var div = document.getElementById(divId);
+        
+        div.onmousedown = function(event) {
+          var initialX = event.clientX;
+          var initialY = event.clientY;
+          
+          document.onmousemove = function(event) {
+            var deltaX = event.clientX - initialX;
+            var deltaY = event.clientY - initialY;
+            
+            div.style.left = (div.offsetLeft + deltaX) + 'px';
+            div.style.top = (div.offsetTop + deltaY) + 'px';
+          };
+          
+          document.onmouseup = function() {
+            document.onmousemove = null;
+            document.onmouseup = null;
+          };
+        };
+      }
+     
+    
+      
+      
+      
+      
+      
+      
+
+    setDragElement(elementId) {
+        console.log('-----> setDragElement', elementId);
+        var element = document.getElementById(elementId);
+        let pos_mouse_x;
+        let pos_mouse_y;
+        element.onmousedown = (function(event) {
+            console.log('dragMouseDown', event, this.classDraggable, element);
+            if (!event.target.classList.contains(this.classDraggable)) {
+                return;
+            }
+            event = event || window.event;
+            event.preventDefault();
+            pos_mouse_x = event.clientX;
+            pos_mouse_y = event.clientY;
+            console.log("pos_mouse_x:", pos_mouse_x, "pos_mouse_y:", pos_mouse_y);
+
+            document.onmousemove = (function(event) {
+                console.log('elementDrag', element, this.scale);
+                event = event || window.event;
+                event.preventDefault();
+                const delta_x = event.clientX - pos_mouse_x;
+                const delta_y = event.clientY - pos_mouse_y;
+                pos_mouse_x = event.clientX;
+                pos_mouse_y = event.clientY;
+                let pos_x = element.offsetLeft + delta_x / this.scale;
+                let pos_y = element.offsetTop + delta_y / this.scale;
+                element.style.top = pos_y + "px";
+                element.style.left = pos_x + "px";
+                const moved_event = new CustomEvent("dragged", {
+                    detail: {
+                        element: element,
+                        x: pos_x, 
+                        y: pos_y
+                    }
+                });
+                document.dispatchEvent(moved_event);
+            }).bind(this);
+              
+            document.onmouseup = function() {
+                document.onmousemove = null;
+                document.onmouseup = null;
+            };
+
+        }).bind(this);
+       
+
+        // let listenerMouseMove = elementDrag.bind(this);
+        // let handleMouseMove = (event) => listenerMouseMove(event, element);
+
+        // let listenerMouseDown = dragMouseDown.bind(this);
+        // let handleMouseDown = (event) => listenerMouseDown(event, element);
+
+        // let listenerMouseUp = closeDragElement.bind(this);
+        // let handleMouseUp = (event) => listenerMouseUp(event, element);
+
+
+        // // element.removeEventListener("mousedown", handleMouseDown, false);
+        // element.addEventListener("mousedown", handleMouseDown, false);
+
+        //
+        // element.addEventListener("mousedown", listenerMouseDown, true);
+        // element.addEventListener("mousedown", (e)=> {
+        //     dragMouseDown3(e,element);
+        // });
+        
+
+        //console.log('setDragElement', element);
+        
+        // 
+
+
+        // function dragMouseDown(e, element) {
+        //     console.log('dragMouseDown', e, this.classDraggable, element);
+        //     if (!e.target.classList.contains(this.classDraggable)) {
+        //         return;
+        //     }
+        //     e = e || window.event;
+        //     e.preventDefault();
+        //     pos_mouse_x = e.clientX;
+        //     pos_mouse_y = e.clientY;
+        //     console.log("pos_mouse_x:", pos_mouse_x, "pos_mouse_y:", pos_mouse_y);
+
+        //     element.addEventListener("mouseup", closeDragElement(element), true);
+        //     element.addEventListener("mousemove", handleMouseMove, true);
+
+        //     //element.onmouseup = handleMouseUp;
+
+        //     // const success = document.removeEventListener("mousemove", handleMouseMove, true);
+        //     // if (success) {
+        //     //     console.log("L'ascoltatore dell'evento è stato rimosso con successo.");
+        //     // } else {
+        //     //     console.log("Impossibile rimuovere l'ascoltatore dell'evento.");
+        //     // }
+            
+
+
+        //     // this.listener = (event) => this.closeDragElement(e, element);
+        //     // document.addEventListener("mousemove", elementDrag3, true );
+        //     // document.addEventListener("mousemove", (e)=> {
+        //     //     elementDrag3(e, element);
+        //     // }, true );
+        //     // document.onmousemove = elementDrag3;
+        // }
+
+
+        // function closeDragElement(element) {
+        //     console.log('closeDragElement::: ', element);
+        //     /* stop moving when mouse button is released:*/
+        //     const success = element.removeEventListener("mousemove", handleMouseMove, true);
+        //     if (success) {
+        //         console.log("L'ascoltatore dell'evento è stato rimosso con successo.");
+        //     } else {
+        //         console.log("Impossibile rimuovere l'ascoltatore dell'evento.");
+        //     }
+        //     // document.onmouseup = null;
+        //     element.onmousemove = null;
+        //     // document.removeEventListener("onmouseup", closeDragElement(e, element), true); 
+        //     console.log('closeDragElement', element.onmousemove);
+        // }
+      
+        // function elementDrag(e, elmnt) {
+        //     console.log('elementDrag', elmnt, this.scale);
+        //     //console.log("---------------------------", e.target.id);
+        //     e = e || window.event;
+        //     e.preventDefault();
+        //     const delta_x = e.clientX - pos_mouse_x; // phisical
+        //     const delta_y = e.clientY - pos_mouse_y;  // phisical
+        //     pos_mouse_x = e.clientX;
+        //     pos_mouse_y = e.clientY;
+        //     let pos_x = elmnt.offsetLeft + delta_x / this.scale;//pos_mouse_x/ scale - e.clientX/ scale - shift_x; // logic
+        //     let pos_y = elmnt.offsetTop + delta_y / this.scale;//pos_mouse_y/ scale - e.clientY/ scale - shift_y;
+        //     //pos_y = ( e_rect.top + delta_y)/ scale;//pos_mouse_y/ scale - e.clientY/ scale - shift_y;
+        //     // console.log("pos_x:", pos_x, "pos_y:", pos_y);
+        //     // set the element's new position:
+        //     elmnt.style.top = pos_y + "px";//(elmnt.offsetTop - pos_y) + "px";
+        //     elmnt.style.left = pos_x + "px"; //(elmnt.offsetLeft - pos_x) + "px";
+        //     const moved_event = new CustomEvent("dragged", {
+        //         detail: {
+        //             element: elmnt,
+        //             x: pos_x, 
+        //             y: pos_y
+        //         }
+        //     });
+        //     document.dispatchEvent(moved_event);
+        // }
+        
+    }
+    
+
+
+    // setDragElement(elementId) {
+    //     console.log('-----> setDragElement', elementId);
+    //     var element = document.getElementById(elementId);
+    //     let pos_mouse_x;
+    //     let pos_mouse_y;
+
+    //     let listenerMouseMove = elementDrag.bind(this);
+    //     let handleMouseMove = (event) => listenerMouseMove(event, element);
+
+    //     let listenerMouseDown = dragMouseDown.bind(this);
+    //     let handleMouseDown = (event) => listenerMouseDown(event, element);
+
+    //     let listenerMouseUp = closeDragElement.bind(this);
+    //     let handleMouseUp = (event) => listenerMouseUp(event, element);
+
+
+    //     // element.removeEventListener("mousedown", handleMouseDown, false);
+    //     element.addEventListener("mousedown", handleMouseDown, false);
+
+    //     //
+    //     // element.addEventListener("mousedown", listenerMouseDown, true);
+    //     // element.addEventListener("mousedown", (e)=> {
+    //     //     dragMouseDown3(e,element);
+    //     // });
+        
+
+    //     //console.log('setDragElement', element);
+        
+    //     // 
+
+
+    //     function dragMouseDown(e, element) {
+    //         console.log('dragMouseDown', e, this.classDraggable, element);
+    //         if (!e.target.classList.contains(this.classDraggable)) {
+    //             return;
+    //         }
+    //         e = e || window.event;
+    //         e.preventDefault();
+    //         pos_mouse_x = e.clientX;
+    //         pos_mouse_y = e.clientY;
+    //         console.log("pos_mouse_x:", pos_mouse_x, "pos_mouse_y:", pos_mouse_y);
+
+    //         element.addEventListener("mouseup", closeDragElement(element), true);
+    //         element.addEventListener("mousemove", handleMouseMove, true);
+
+    //         //element.onmouseup = handleMouseUp;
+
+    //         // const success = document.removeEventListener("mousemove", handleMouseMove, true);
+    //         // if (success) {
+    //         //     console.log("L'ascoltatore dell'evento è stato rimosso con successo.");
+    //         // } else {
+    //         //     console.log("Impossibile rimuovere l'ascoltatore dell'evento.");
+    //         // }
+            
+
+
+    //         // this.listener = (event) => this.closeDragElement(e, element);
+    //         // document.addEventListener("mousemove", elementDrag3, true );
+    //         // document.addEventListener("mousemove", (e)=> {
+    //         //     elementDrag3(e, element);
+    //         // }, true );
+    //         // document.onmousemove = elementDrag3;
+    //     }
+
+
+    //     function closeDragElement(element) {
+    //         console.log('closeDragElement::: ', element);
+    //         /* stop moving when mouse button is released:*/
+    //         const success = element.removeEventListener("mousemove", handleMouseMove, true);
+    //         if (success) {
+    //             console.log("L'ascoltatore dell'evento è stato rimosso con successo.");
+    //         } else {
+    //             console.log("Impossibile rimuovere l'ascoltatore dell'evento.");
+    //         }
+    //         // document.onmouseup = null;
+    //         element.onmousemove = null;
+    //         // document.removeEventListener("onmouseup", closeDragElement(e, element), true); 
+    //         console.log('closeDragElement', element.onmousemove);
+    //     }
+      
+    //     function elementDrag(e, elmnt) {
+    //         console.log('elementDrag', elmnt, this.scale);
+    //         //console.log("---------------------------", e.target.id);
+    //         e = e || window.event;
+    //         e.preventDefault();
+    //         const delta_x = e.clientX - pos_mouse_x; // phisical
+    //         const delta_y = e.clientY - pos_mouse_y;  // phisical
+    //         pos_mouse_x = e.clientX;
+    //         pos_mouse_y = e.clientY;
+    //         let pos_x = elmnt.offsetLeft + delta_x / this.scale;//pos_mouse_x/ scale - e.clientX/ scale - shift_x; // logic
+    //         let pos_y = elmnt.offsetTop + delta_y / this.scale;//pos_mouse_y/ scale - e.clientY/ scale - shift_y;
+    //         //pos_y = ( e_rect.top + delta_y)/ scale;//pos_mouse_y/ scale - e.clientY/ scale - shift_y;
+    //         // console.log("pos_x:", pos_x, "pos_y:", pos_y);
+    //         // set the element's new position:
+    //         elmnt.style.top = pos_y + "px";//(elmnt.offsetTop - pos_y) + "px";
+    //         elmnt.style.left = pos_x + "px"; //(elmnt.offsetLeft - pos_x) + "px";
+    //         const moved_event = new CustomEvent("dragged", {
+    //             detail: {
+    //                 element: elmnt,
+    //                 x: pos_x, 
+    //                 y: pos_y
+    //             }
+    //         });
+    //         document.dispatchEvent(moved_event);
+    //     }
+        
+    // }
+
+
+    physicPointCorrector(point){
+        const container = document.getElementById(this.containerId);
+        const container_rect = container.getBoundingClientRect();
+        const x = point.x - container_rect.left;
+        const y = point.y - container_rect.top;
+        return { x: x, y: y };
+      }
+
+
+
+      moveAndZoom(event) {
         // console.log("moveAndZoom:", event, this.tx);
         event.preventDefault();
         const dx = event.deltaX;
@@ -86,119 +383,5 @@ export class TiledeskStage {
             }
         }
     }
-
-
-    setDragElement(elementId) {
-        console.log('-----> setDragElement', elementId);
-        var element = document.getElementById(elementId);
-        let pos_mouse_x;
-        let pos_mouse_y;
-        // let elementDrag3 = elementDrag.bind(this);
-        // let listenerMouseMove = (event) => elementDrag3(event, element);
-        // let listenerMouseDown = (event) => dragMouseDown3(event, element);
-        let listenerMouseMove = elementDrag.bind(this);
-        let handleMouseMove = (event) => listenerMouseMove(event, element);
-
-        let listenerMouseDown = dragMouseDown.bind(this);
-        let handleMouseDown = (event) => listenerMouseDown(event, element);
-
-
-        // element.removeEventListener("mousedown", handleMouseDown, false);
-        element.addEventListener("mousedown", handleMouseDown, false);
-
-        //
-        // element.addEventListener("mousedown", listenerMouseDown, true);
-        // element.addEventListener("mousedown", (e)=> {
-        //     dragMouseDown3(e,element);
-        // });
-        
-
-        //console.log('setDragElement', element);
-        
-        // 
-
-
-        function dragMouseDown(e, element) {
-            console.log('dragMouseDown', e, this.classDraggable, element);
-            if (!e.target.classList.contains(this.classDraggable)) {
-                return;
-            }
-            e = e || window.event;
-            e.preventDefault();
-            pos_mouse_x = e.clientX;
-            pos_mouse_y = e.clientY;
-            console.log("pos_mouse_x:", pos_mouse_x, "pos_mouse_y:", pos_mouse_y);
-
-            // document.addEventListener("mouseup", ()=> {
-            //     closeDragElement();
-            // });
-            // document.addEventListener("mousemove", ()=> {
-            //     elementDrag(e, element);
-            // });
-            document.onmouseup = closeDragElement;
-            // let listener = (event) => elementDrag3(e, element);
-            document.removeEventListener("mousemove", handleMouseMove, true);
-            document.addEventListener("mousemove", handleMouseMove, true);
-            // this.listener = (event) => this.closeDragElement(e, element);
-            // document.addEventListener("mousemove", elementDrag3, true );
-            // document.addEventListener("mousemove", (e)=> {
-            //     elementDrag3(e, element);
-            // }, true );
-            // document.onmousemove = elementDrag3;
-        }
-
-
-        function closeDragElement() {
-            console.log('closeDragElement::: ', handleMouseMove);
-            /* stop moving when mouse button is released:*/
-            document.removeEventListener("mousemove", handleMouseMove, true);
-            // document.removeEventListener("mousemove", elementDrag3(e, element), true); // Succeeds
-            // document.removeEventListener("mousemove", elementDrag3(e, element), false); 
-            // document.removeEventListener("onmouseup", closeDragElement, true); // Succeeds
-            document.onmouseup = null;
-            // document.onmousemove = null;
-            // document.removeEventListener("onmouseup", closeDragElement(e, element), true); 
-            console.log('closeDragElement');
-        }
-      
-        function elementDrag(e, elmnt) {
-            // console.log('elementDrag', elmnt, this.scale);
-            //console.log("---------------------------", e.target.id);
-            e = e || window.event;
-            e.preventDefault();
-            const delta_x = e.clientX - pos_mouse_x; // phisical
-            const delta_y = e.clientY - pos_mouse_y;  // phisical
-            pos_mouse_x = e.clientX;
-            pos_mouse_y = e.clientY;
-            let pos_x = elmnt.offsetLeft + delta_x / this.scale;//pos_mouse_x/ scale - e.clientX/ scale - shift_x; // logic
-            let pos_y = elmnt.offsetTop + delta_y / this.scale;//pos_mouse_y/ scale - e.clientY/ scale - shift_y;
-            //pos_y = ( e_rect.top + delta_y)/ scale;//pos_mouse_y/ scale - e.clientY/ scale - shift_y;
-            // console.log("pos_x:", pos_x, "pos_y:", pos_y);
-            // set the element's new position:
-            elmnt.style.top = pos_y + "px";//(elmnt.offsetTop - pos_y) + "px";
-            elmnt.style.left = pos_x + "px"; //(elmnt.offsetLeft - pos_x) + "px";
-            const moved_event = new CustomEvent("dragged", {
-                detail: {
-                    element: elmnt,
-                    x: pos_x, 
-                    y: pos_y
-                }
-            });
-            document.dispatchEvent(moved_event);
-        }
-        
-    }
-
-
-    physicPointCorrector(point){
-        const container = document.getElementById(this.containerId);
-        const container_rect = container.getBoundingClientRect();
-        const x = point.x - container_rect.left;
-        const y = point.y - container_rect.top;
-        return { x: x, y: y };
-      }
-
-
-
   
   }
