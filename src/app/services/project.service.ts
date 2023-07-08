@@ -801,8 +801,57 @@ export class ProjectService {
     const body = { wastep: wastep }
     console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD STEPS - BODY', body);
     return this._httpclient
-      .patch(url, JSON.stringify(body), httpOptions)
+      .patch(url, body, httpOptions)
   }
+
+  updateProjectWithWAWizardStep1(step1) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    let url = this.SERVER_BASE_PATH + "projects/" + this.projectID + "/attributes"
+    console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD STEP 1 - URL', url);
+    const body = { wastep1: step1 }
+    console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD STEP 1 - BODY', body);
+    return this._httpclient
+      .patch(url, body, httpOptions)
+  }
+
+  updateProjectWithWAWizardStep2(step2) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    let url = this.SERVER_BASE_PATH + "projects/" + this.projectID + "/attributes"
+    console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD STEP 2 - URL', url);
+    const body = { wastep2: step2 }
+    console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD STEP 2 - BODY', body);
+    return this._httpclient
+      .patch(url, body, httpOptions)
+  }
+
+  updateProjectWithWAWizardStep3(step3) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    let url = this.SERVER_BASE_PATH + "projects/" + this.projectID + "/attributes"
+    console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD STEP 3 - URL', url);
+    const body = { wastep3: step3 }
+    console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD STEP 3 - BODY', body);
+    return this._httpclient
+      .patch(url, body, httpOptions)
+  }
+
 
   updateProjectWithWAOneStepWizard(oneStepWizard) {
     const httpOptions = {
@@ -817,7 +866,7 @@ export class ProjectService {
     const body = {oneStepWizard: oneStepWizard}
     console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD STEPS - BODY', body);
     return this._httpclient
-      .patch(url, JSON.stringify(body), httpOptions)
+      .patch(url, body, httpOptions)
   }
 
   updateProjectWithWASettings(wasettings) {
@@ -833,7 +882,7 @@ export class ProjectService {
     const body = { wasettings: wasettings }
     console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA SETTINGS - BODY', body);
     return this._httpclient
-      .patch(url, JSON.stringify(body), httpOptions)
+      .patch(url, body, httpOptions)
   }
 
   updateProjectRemoveWASettings() {
@@ -849,8 +898,26 @@ export class ProjectService {
     const body = { wasettings: {} }
     console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD STEPS - BODY', body);
     return this._httpclient
-      .patch(url, JSON.stringify(body), httpOptions)
+      .patch(url, body, httpOptions)
   }
+
+
+  updateProjectWithWAWizardCompleted() {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    let url = this.SERVER_BASE_PATH + "projects/" + this.projectID + "/attributes"
+    console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD COMPLETED - URL', url);
+    const body = { wizardCompleted: true }
+    console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD COMPLETED - BODY', body);
+    return this._httpclient
+      .patch(url, body, httpOptions)
+  }
+
 
   updateProjectUserHasRemovedWA() {
     const httpOptions = {
@@ -898,9 +965,10 @@ export class ProjectService {
         newsFeed: displayNewsFeed
       }
     }
+    // JSON.stringify()
     console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH DASHLET PREFERENCES - BODY', body);
     return this._httpclient
-      .patch(url, JSON.stringify(body), httpOptions)
+      .patch(url, body, httpOptions)
   }
 
   // -------------------------------------

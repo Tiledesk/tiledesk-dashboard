@@ -2628,23 +2628,49 @@ img {
 .free-plan-badge {
   // background-color: #faba3e;
   background-color: #ff9f05;
+  fill: #ff9f05;
+  transition: width 1s;
 }
 
 .a-plan-badge {
   background-color: #19a95d;
+  fill:  #19a95d;
+  transition: width 1s;
 }
 
 .b-plan-badge {
   background-color: #00a1c2;
+  fill: #00a1c2;
+  transition: width 1s;
 }
 
 .c-plan-badge {
   background-color: #9966ff;
+  fill: #9966ff;
+  transition: width 1s;
 }
 
 .unsupported-plan-badge {
   background-color: #ed006b;
+  fill: #ed006b;
+  transition: width 1s;
 }
+
+.td--logo:hover .running{
+  width: 200px;
+
+}
+
+// .running {
+//   transform-box: fill-box;
+//   transform-origin: 50% 50%;
+//   animation: spin 3s linear infinite;
+//   }
+
+//   @keyframes spin {
+//   0% { transform: rotate(0deg); }
+//   100% { transform: rotate(-360deg); }
+//   }
 
 .home-project-plan-badge {
   width: fit-content;
@@ -2670,6 +2696,7 @@ img {
 .project---name {
   display: flex;
   align-items: center;
+  gap: 6px;
 }
 
 .overlay {

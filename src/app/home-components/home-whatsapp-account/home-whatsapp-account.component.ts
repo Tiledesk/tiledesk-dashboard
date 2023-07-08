@@ -12,6 +12,7 @@ import { APP_SUMO_PLAN_NAME, PLAN_NAME } from 'app/utils/util';
 import { Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
 import { Subject } from 'rxjs';
+import { ProjectService } from 'app/services/project.service';
 const swal = require('sweetalert');
 
 @Component({
@@ -67,6 +68,7 @@ export class HomeWhatsappAccountComponent implements OnInit, OnChanges {
     private translate: TranslateService,
     public appConfigService: AppConfigService,
     public usersService: UsersService,
+    private projectService: ProjectService,
   ) { }
 
   // -----------------------------------------------------------------------------------------------------
@@ -83,8 +85,11 @@ export class HomeWhatsappAccountComponent implements OnInit, OnChanges {
     // this.translateLabels();
     this.getProjectUserRole();
     this.getOSCODE();
+   
   }
 
+
+  
   /**
    * On changes
    */
@@ -228,7 +233,7 @@ export class HomeWhatsappAccountComponent implements OnInit, OnChanges {
           console.log('[HOME-WA] - whatsAppLearnMoreURL ', this.whatsAppLearnMoreURL)
         }
 
-        console.log('[HOME-WA] - getApps APPS app ', app)
+        // console.log('[HOME-WA] - getApps APPS app ', app)
         if (app && app.version === "v2") {
           if (app.installActionURL === "") {
             // console.log('HOME-WA - getApps APPS app installActionURL', app.installActionURL)
