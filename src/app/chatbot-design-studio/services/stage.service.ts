@@ -15,7 +15,4 @@ export class StageService {
     this.tiledeskStage = new TiledeskStage('tds_container', 'tds_drawer', 'tds_draggable');
   }
 
-  elementDrag(event, elem){
-    this.tiledeskStage.elementDrag(event, elem);
-  }
 }

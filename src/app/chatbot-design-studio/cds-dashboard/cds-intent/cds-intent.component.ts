@@ -156,7 +156,6 @@ export class CdsIntentComponent implements OnInit, OnChanges {
     if (event.previousContainer === event.container) {
       console.log('onDropAction: ', event);
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-
     } else {
       try {
         let actionType: any = event.previousContainer.data[event.previousIndex];
@@ -168,6 +167,9 @@ export class CdsIntentComponent implements OnInit, OnChanges {
       }
     }
     this.intent.actions = this.intentActionList;
+
+    const fromEle = document.getElementById(this.intent.intent_id);
+    this.connectorService.movedConnector(fromEle);
     this.saveIntent.emit(this.intent);
   }
 
@@ -194,6 +196,8 @@ export class CdsIntentComponent implements OnInit, OnChanges {
   onUpdateAndSaveAction() {
     console.log('onUpdateAndSaveAction:::: ' , this.intent, this.intent.actions);
     // this.saveIntent.emit(this.intent);
+    const fromEle = document.getElementById(this.intent.intent_id);
+    this.connectorService.movedConnector(fromEle);
     this.updateIntent();
   }
 

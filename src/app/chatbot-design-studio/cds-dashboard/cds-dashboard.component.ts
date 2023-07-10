@@ -129,7 +129,7 @@ export class CdsDashboardComponent implements OnInit {
     this.subscriptionListOfIntents = this.intentService.getIntents().subscribe(intents => {
       /* 
       * variabile booleana aggiunta per far scattare l'onchange nei componenti importati dalla dashboard
-      * ngOnChanges funziona sugli @import degli elementi primitivi!!!  
+      * ngOnChanges funziona bene solo sugli @import degli elementi primitivi!!!  
       */
       this.updatePanelIntentList = !this.updatePanelIntentList;
       this.listOfIntents = intents;
@@ -251,7 +251,7 @@ export class CdsDashboardComponent implements OnInit {
         // delete this.connectors[this.connector.id];
         // console.log("connector-deleted:", this.connectors);
         // delete this.connectors[this.connector.id];
-        this.connectorService.deleteConnector(connector.id);
+        this.connectorService.onConnectorDeleted(connector.id);
         // this.connectors = this.intentService.botAttributes.connectors;
         // this.intentService.setConnectorsInDashboardAttributes(this.id_faq_kb, this.connectors);
         this.intentService.onChangedConnector(connector);
@@ -475,7 +475,7 @@ export class CdsDashboardComponent implements OnInit {
   private setDragAndListnerEvent(intent){
     let that = this;
     if(intent.intent_id){
-      this.removeDragAndListnerEventToElements(intent);
+      this.removeListnerEventToElements(intent);
         try {
           let elem = document.getElementById(intent.intent_id);  
           this.tiledeskStage.setDragElement(intent.intent_id);
@@ -501,7 +501,7 @@ export class CdsDashboardComponent implements OnInit {
   }
 
   /** */
-  private removeDragAndListnerEventToElements(intent){
+  private removeListnerEventToElements(intent){
     let that = this;
     try {
       let elem = document.getElementById(intent.intent_id);
@@ -588,7 +588,7 @@ export class CdsDashboardComponent implements OnInit {
       this.elementIntentSelected['type'] = '';
       this.elementIntentSelected['element'] = null;
       // !!! il valore di listOfIntents è bindato nel costructor con subscriptionListOfIntents !!! //
-      this.removeDragAndListnerEventToElements(intent);
+      this.removeListnerEventToElements(intent);
       // cancello tutti i connettori dell'intent
       this.connectorService.deleteConnectorsOfBlock(intent.intent_id);
 
@@ -596,7 +596,7 @@ export class CdsDashboardComponent implements OnInit {
       swal(this.translate.instant('Done') + "!", this.translate.instant('FaqPage.AnswerSuccessfullyDeleted'), {
         icon: "success",
       }).then(() => {
-        this.intentService.setIntentPosition(intent.intent_id, null);
+        // this.intentService.setIntentPosition(intent.intent_id, null);
       })
     } else {
       swal(this.translate.instant('AnErrorOccurredWhilDeletingTheAnswer'), {

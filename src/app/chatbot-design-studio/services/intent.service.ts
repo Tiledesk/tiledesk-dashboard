@@ -118,6 +118,8 @@ export class IntentService {
   /** Set intent position */
   setIntentPosition(id:string, newPos: any){
     const positions = this.listOfPositions;
+    // console.log('positions: ', positions);
+    // console.log('positions: ', id, newPos);
     if(positions){
       if(!newPos && positions[id]){
         delete positions[id];

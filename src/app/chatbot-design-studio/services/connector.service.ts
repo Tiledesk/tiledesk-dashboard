@@ -2,26 +2,7 @@ import { Injectable } from '@angular/core';
 import { TiledeskConnectors } from 'app/../assets/cds/js/tiledesk-connectors.js';
 import { StageService } from 'app/chatbot-design-studio/services/stage.service';
 import { TYPE_ACTION, TYPE_BUTTON } from 'app/chatbot-design-studio/utils';
-import { 
-  Intent, 
-  ActionReply, 
-  ActionAgent,
-  ActionAssignFunction, 
-  ActionAssignVariable,
-  ActionChangeDepartment,
-  ActionClose,
-  ActionDeleteVariable,
-  ActionEmail, 
-  ActionHideMessage, 
-  ActionIntentConnected,
-  ActionJsonCondition,
-  ActionOnlineAgent,
-  ActionOpenHours,
-  ActionRandomReply,
-  ActionReplaceBot,
-  ActionWait,
-  ActionWebRequest,
-  Command, Message, Expression } from 'app/models/intent-model';
+import { Intent } from 'app/models/intent-model';
 /** CLASSE DI SERVICES PER GESTIRE I CONNETTORI **/
 
 
@@ -84,9 +65,6 @@ export class ConnectorService {
             });
           }
 
-
-
-
         });
       }
     });
@@ -120,15 +98,34 @@ export class ConnectorService {
   }
 
   /** */
+  createNewConnector(fromId:string, toId:string){
+    const elFrom = document.getElementById(fromId);
+    const elTo = document.getElementById(toId);
+    if (elFrom && elTo) { 
+      const fromPoint = this.tiledeskConnectors.elementLogicCenter(elFrom);
+      const toPoint = this.tiledeskConnectors.elementLogicTopLeft(elTo);
+      this.tiledeskConnectors.createConnector(fromId, toId, fromPoint,toPoint);
+    }
+  }
+  
+   /** */
+   deleteConnector(connectorID){
+    // elimino connector dai connectors e dai blocks
+    // elimino connector fisicamente
+    // elimino connector dall'array di connectors
+    this.tiledeskConnectors.deleteConnector(connectorID);
+  }
+
+  onConnectorDeleted(connectorID){
+    delete this.listOfConnectors[connectorID];
+  }
+
   addConnector(connector){
     this.listOfConnectors[connector.id] = connector;
   }
   
 
-  /** */
-  deleteConnector(connectorID){
-    delete this.listOfConnectors[connectorID];
-  }
+ 
 
   deleteConnectorsOfBlock(intent_id){
     this.tiledeskConnectors.deleteConnectorsOfBlock(intent_id);
