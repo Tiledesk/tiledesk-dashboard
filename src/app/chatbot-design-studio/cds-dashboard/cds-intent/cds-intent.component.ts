@@ -103,11 +103,12 @@ export class CdsIntentComponent implements OnInit, OnChanges {
   /** CUSTOM FUNCTIONS  */
   private setIntentSelected(){
     this.intentActionList = null;
-    // console.log('CdsPanelIntentComponent setIntentSelected-->', this.intent);
+    console.log('CdsPanelIntentComponent setIntentSelected --> intent', this.intent);
     try {
       if (this.intent) {
         this.patchAllActionsId();
         this.intentActionList = this.intent.actions;
+        console.log('CdsPanelIntentComponent intentActionList -->', this.intentActionList);
       }
     } catch (error) {
       this.logger.error("error: ", error);

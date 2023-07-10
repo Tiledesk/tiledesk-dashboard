@@ -47,16 +47,24 @@
                     [intentSelected]="intent"
                     [connectorChanged]="connectorChanged"
                     [action]="action"
-                    (updateAndSaveAction)="onUpdateAndSaveAction($event)"
-                ></cds-action-intent>
+                    (updateAndSaveAction)="onUpdateAndSaveAction($event)">
+                </cds-action-intent>
 
                 <cds-action-reply  *ngIf="action._tdActionType == 'reply'"
                     class="panel-response"
                     [intentSelected]="intent"
                     [connector]="connector"
                     [action]="action"
-                    (updateAndSaveAction)="onUpdateAndSaveAction($event)"
-                ></cds-action-reply>
+                    (updateAndSaveAction)="onUpdateAndSaveAction($event)">
+                </cds-action-reply>
+
+                <cds-action-email *ngIf="action._tdActionType == 'email'"
+                    class="panel-response"
+                    [intentSelected]="intent"
+                    [connector]="connector"
+                    [action]="action"
+                    (updateAndSaveAction)="onUpdateAndSaveAction($event)">
+                </cds-action-email>
 
             </div>
 

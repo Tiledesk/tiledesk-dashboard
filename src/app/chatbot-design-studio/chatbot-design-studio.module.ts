@@ -124,6 +124,7 @@ import { CdsFloatingMenuComponent } from './cds-dashboard/cds-floating-menu/cds-
 import { CdsActionReplyComponent } from './cds-dashboard/actions/cds-action-reply/cds-action-reply.component';
 import { CdsConnectorComponent } from './cds-dashboard/base-elements/cds-connector/cds-connector.component';
 import { CdsActionReplyToolsComponent } from './cds-dashboard/actions/cds-action-reply/elements/cds-action-reply-tools/cds-action-reply-tools.component';
+import { CdsActionEmailComponent } from './cds-dashboard/actions/cds-action-email/cds-action-email.component';
 
 
 @NgModule({
@@ -204,7 +205,8 @@ import { CdsActionReplyToolsComponent } from './cds-dashboard/actions/cds-action
     CdsFloatingMenuComponent,
     CdsActionReplyComponent,
     CdsConnectorComponent,
-    CdsActionReplyToolsComponent
+    CdsActionReplyToolsComponent,
+    CdsActionEmailComponent
   ],
   imports: [
     A11yModule,
