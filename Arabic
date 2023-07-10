@@ -1203,14 +1203,14 @@
         "Tags": "العلامات",
         "Tag": "بطاقة شعار",
         "TagName": "اسم العلامة",
-        "ManageTags": "Manage the TAGS of the Conversations/Tickets",
-        "ConversationsTAG": "Conversations' TAGS",
+        "ManageTags": "إدارة TAGS للمحادثات / التذاكر",
+        "ConversationsTAG": "TAGS المحادثات",
         "AddTags": "إضافة علامة",
         "DeleteLabel": "حذف العلامة",
         "TypeALabelAndPressEnter": "اكتب علامة واضغط على Enter",
         "YouHaveNotAddedAnyTags": "لم تقم بإضافة أي علامات",
         "DoYouReallyWantToCancelTheTag": "هل تريد حقًا حذف العلامة",
-        "SelectTag": "Select a TAG",
+        "SelectTag": "حدد TAG",
         "SearchByTAG": "Search by TAG",
         "TagsAreLabelsThatYouCanAddToConversationsAndTicket": "Conversations TAGS are labels that you can add to conversations and Tickets. They help you categorize and organize all your customer communications. To tag a conversation or ticket, in the conversation details sidebar, select the TICKET tab, then click Select TAG or create a new one",
         "Color": {
@@ -2382,7 +2382,7 @@
             "الأحد"
         ],
         "LABEL_SEND": "إرسال",
-        "LABEL_CHAT": "Chat",
+        "LABEL_CHAT": "محادثة",
         "ID_CONVERSATION": "معرف محادثة",
         "LABEL_CREATED_THE": "تم إنشاء المجموعة في",
         "LABEL_INFO_ATTRIBUTE": "صفات",
@@ -2433,7 +2433,7 @@
         "INFO_SUPPORT_MEMBER_LEFT_GROUP": "removed from group",
         "INFO_SUPPORT_MEMBER_ABANDONED_GROUP": "has left the conversation",
         "INFO_A_NEW_SUPPORT_REQUEST_HAS_BEEN_ASSIGNED_TO_YOU": "تم تعيين طلب دعم جديد لك",
-        "INFO_SUPPORT_LIVE_PAGE": "Moved to",
+        "INFO_SUPPORT_LIVE_PAGE": "انتقل الى",
         "LABEL_PROFILE": "الملف الشخصي",
         "LABEL_CLOSE": "مغلق",
         "LABEL_DISCONNECT": "قطع الاتصال",
@@ -2592,16 +2592,16 @@
         "Settings": "إعدادات",
         "Resolve": "حل",
         "Archive": "أرشيف",
-        "JOIN_CONVERSATION": "Join conversation",
-        "COPY": "Copy",
-        "COPY_MESSAGE_TOAST": "<b> Copied to clipboard!</b> Paste it wherever you like.",
+        "JOIN_CONVERSATION": "انضم إلى المحادثة",
+        "COPY": "ينسخ",
+        "COPY_MESSAGE_TOAST": "<b> نسخ إلى الحافظة!</b> الصقها أينما تريد.",
         "ActionNotAllowed": "الإجراء غير مسموح به",
         "YouAreNoLongerAmongTheTeammatesManagingThisConversation": "لم تعد من بين زملائك في الفريق الذين يديرون هذه المحادثة",
         "TicketSuccessfullyCreated": "تم إنشاء التذكرة بنجاح",
         "Continue": "يكمل",
         "ViewArchivedConversations": "المحادثات المؤرشفة",
         "ViewContactsList": "قائمة جهات الاتصال",
-        "ViewedPage": "Viewed Page",
+        "ViewedPage": "الصفحة المعروضة",
         "AddAsCannedResponse": "إضافة كإجابة جاهزة",
         "AddNewCannedResponse": "إضافة رد جاهز جديد",
         "TitleIsRequired": "العنوان مطلوب",
@@ -2636,41 +2636,41 @@
         "WriteMsgToSendToYourVisitors": "اكتب رسالة رد جاهزة لإرسالها إلى زوار موقعك",
         "EditProfile": "تعديل الملف الشخصي",
         "NAVBAR": {
-            "SIMULATE_VISITOR": "Simulate visitor",
-            "PROJECT_SETTINGS": "Project settings",
-            "VIEW_ALL_PROJECTS": "View all projects",
-            "ADD_PROJECT": "Add project",
-            "RECENT_PROJECTS": "Recent projects",
-            "OTHER_PROJECTS": "Other projects"
+            "SIMULATE_VISITOR": "محاكاة الزائر",
+            "PROJECT_SETTINGS": "إعدادات المشروع",
+            "VIEW_ALL_PROJECTS": "عرض جميع المشاريع",
+            "ADD_PROJECT": "أضف المشروع",
+            "RECENT_PROJECTS": "مشاريع حديثه",
+            "OTHER_PROJECTS": "مشاريع أخرى"
         },
-        "JSON_RESPONSE": "JSON Response",
-        "LIVE": "Live",
+        "JSON_RESPONSE": "استجابة JSON",
+        "LIVE": "يعيش",
         "WHATSAPP": {
-            "LABEL_TEMPLATES": "Templates",
-            "LABEL_TOOLTIP": "Reply using an approved Whatsapp template",
-            "SELECT_MESSAGE_TEMPLATE": "Select a message template",
-            "ERROR_WHATSAPP_NOT_INSTALLED": "Install Whatsapp from the App Store to use templates",
-            "ERROR_WHATSAPP_GENERIC_ERROR": "A problem occurred while getting templates from whatsapp.\nCheck your configuration or contact your administrator."
+            "LABEL_TEMPLATES": "القوالب",
+            "LABEL_TOOLTIP": "قم بالرد باستخدام نموذج Whatsapp المعتمد",
+            "SELECT_MESSAGE_TEMPLATE": "حدد قالب رسالة",
+            "ERROR_WHATSAPP_NOT_INSTALLED": "قم بتثبيت Whatsapp من App Store لاستخدام القوالب",
+            "ERROR_WHATSAPP_GENERIC_ERROR": "حدثت مشكلة أثناء الحصول على القوالب من whatsapp.\nتحقق من التكوين الخاص بك أو اتصل بالمسؤول."
         },
         "EMAIL": {
-            "LABEL_TOOLTIP": "Reply with an email",
-            "EMAIL_OFFLINE_TIP": "Warning: user is offline! The message will be sent by email",
-            "EMAIL_PLACEHOLDER": "Draft available here - click to edit",
-            "EMAIL_NOT_FOUND_PLACEHOLDER": "This user has not provided an email address. Update the visitor's address to send an email",
-            "SUBJECT": "Subject",
-            "MESSAGE": "Message",
-            "MESSAGE_PLACEHOLDER": "Type your message...",
-            "SEND_EMAIL_SUCCESS": "Email successfully sent ✌🏻",
-            "SEND_EMAIL_ERROR": "⚠️ ATTENTION ⚠️ Error occurred while sending email. Please retry again",
-            "SUBJECT_OFFLINE_MESSAGE": "Tiledesk Offline message  💬",
-            "SEND_EMAIL_SUCCESS_OFFLINE_MESSAGE": "Message also sent by email 📩"
+            "LABEL_TOOLTIP": "الرد برسالة بريد إلكتروني",
+            "EMAIL_OFFLINE_TIP": "تحذير: المستخدم غير متصل! سيتم إرسال الرسالة عبر البريد الإلكتروني",
+            "EMAIL_PLACEHOLDER": "المسودة متوفرة هنا - انقر للتحرير",
+            "EMAIL_NOT_FOUND_PLACEHOLDER": "لم يقدم هذا المستخدم عنوان بريد إلكتروني. قم بتحديث عنوان الزائر لإرسال بريد إلكتروني",
+            "SUBJECT": "موضوع",
+            "MESSAGE": "رسالة",
+            "MESSAGE_PLACEHOLDER": "اكتب رسالتك ...",
+            "SEND_EMAIL_SUCCESS": "تم إرسال البريد الإلكتروني بنجاح ✌🏻",
+            "SEND_EMAIL_ERROR": "⚠️ تنبيه ⚠️ حدث خطأ أثناء إرسال البريد الإلكتروني. يرجى المحاولة مرة أخرى",
+            "SUBJECT_OFFLINE_MESSAGE": "رسالة Tiledesk غير متصل 💬",
+            "SEND_EMAIL_SUCCESS_OFFLINE_MESSAGE": "تم إرسال الرسالة أيضًا عبر البريد الإلكتروني 📩"
         }
     },
     "WIDGET": {
         "LABEL_TU": "",
         "LABEL_PLACEHOLDER": "اكتب رسالتك ..",
         "LABEL_START_NW_CONV": "محادثة جديدة",
-        "LABEL_WHATSAPP": "Message us",
+        "LABEL_WHATSAPP": "راسلنا",
         "LABEL_SELECT_TOPIC": "اختر عنوانا",
         "LABEL_COMPLETE_FORM": "أكمل النموذج لبدء محادثة مع الوكيل المتاح التالي.",
         "LABEL_FIELD_NAME": "اسم",
@@ -2679,16 +2679,16 @@
         "LABEL_ERROR_FIELD_EMAIL": "أدخل عنوان بريد إلكتروني صالح.",
         "LABEL_ERROR_FIELD_REQUIRED": "يتطلب حقلا",
         "LABEL_WRITING": "يكتب...",
-        "LABEL_SEND_NEW_MESSAGE": "Send a new message",
+        "LABEL_SEND_NEW_MESSAGE": "أرسل رسالة جديدة",
         "AGENT_NOT_AVAILABLE": " غير متصل على الانترنت",
         "AGENT_AVAILABLE": " متصل",
         "GUEST_LABEL": "زائر",
         "ALL_AGENTS_OFFLINE_LABEL": "جميع المشغلين غير متصلون في الوقت الحالي",
         "LABEL_LOADING": "جار التحميل...",
-        "CALLOUT_TITLE_PLACEHOLDER": "Need Help?",
+        "CALLOUT_TITLE_PLACEHOLDER": "تحتاج مساعدة؟",
         "CALLOUT_MSG_PLACEHOLDER": "انقر هنا وابدأ الدردشة معنا!",
         "CUSTOMER_SATISFACTION": "رضا العملاء",
-        "YOUR_OPINION_ON_OUR_CUSTOMER_SERVICE": "your opinion on our customer service",
+        "YOUR_OPINION_ON_OUR_CUSTOMER_SERVICE": "رأيك في خدمة العملاء لدينا",
         "DOWNLOAD_TRANSCRIPT": "تنزيل النص",
         "BACK": "خلف",
         "CONTINUE": "متابعة",
@@ -2706,11 +2706,11 @@
         "WELLCOME_TITLE": "مرحبًا ، مرحبًا بك في Tiledesk 👋",
         "WELLCOME_MSG": "كيف يمكن أن نساعد؟",
         "OPTIONS": "والخيارات",
-        "SOUND_OFF": "Sound off",
-        "SOUND_ON": "Sound on",
-        "LOGOUT": "Logout",
+        "SOUND_OFF": "الصوت مقفل",
+        "SOUND_ON": "الصوت مفعل",
+        "LOGOUT": "تسجيل خروج",
         "CLOSE": "قريب",
-        "RESTART": "Restart",
+        "RESTART": "إعادة تشغيل",
         "PREV_CONVERSATIONS": "محادثاتك",
         "YOU": "أنت",
         "SHOW_ALL_CONV": "عرض الكل",
@@ -2719,20 +2719,20 @@
         "SEE_PREVIOUS": "انظر السابق",
         "WAITING_TIME_FOUND": "يرد الفريق عادةً بـ $reply_time",
         "WAITING_TIME_NOT_FOUND": "سيقوم الفريق بالرد في أقرب وقت ممكن",
-        "CLOSED": "CLOSED",
-        "CLOSE_CHAT": "Close chat",
-        "MINIMIZE": "Minimize",
-        "MAXIMIZE": "Maximize",
+        "CLOSED": "مغلق",
+        "CLOSE_CHAT": "إغلاق الدردشة",
+        "MINIMIZE": "تصغير",
+        "MAXIMIZE": "تحقيق أقصى قدر",
         "INFO_SUPPORT_USER_ADDED_SUBJECT": "أنت",
-        "INFO_SUPPORT_USER_ADDED_YOU_VERB": "have been added to ",
-        "INFO_SUPPORT_USER_ADDED_COMPLEMENT": "joined",
-        "INFO_SUPPORT_USER_ADDED_VERB": "the chat",
+        "INFO_SUPPORT_USER_ADDED_YOU_VERB": "تمت إضافته إلى ",
+        "INFO_SUPPORT_USER_ADDED_COMPLEMENT": "انضم",
+        "INFO_SUPPORT_USER_ADDED_VERB": "المحادثة",
         "INFO_SUPPORT_CHAT_REOPENED": "تمت إعادة فتح الدردشة",
         "INFO_SUPPORT_CHAT_CLOSED": "الدردشة مغلقة",
-        "INFO_SUPPORT_LEAD_UPDATED": "Lead updated",
-        "INFO_SUPPORT_MEMBER_LEFT_GROUP": "removed from group",
-        "INFO_SUPPORT_MEMBER_ABANDONED_GROUP": "has left the conversation",
-        "INFO_A_NEW_SUPPORT_REQUEST_HAS_BEEN_ASSIGNED_TO_YOU": "A new support request has been assigned to you",
+        "INFO_SUPPORT_LEAD_UPDATED": "تحديث الرصاص",
+        "INFO_SUPPORT_MEMBER_LEFT_GROUP": "تمت إزالته من المجموعة",
+        "INFO_SUPPORT_MEMBER_ABANDONED_GROUP": "وقد غادر المحادثة",
+        "INFO_A_NEW_SUPPORT_REQUEST_HAS_BEEN_ASSIGNED_TO_YOU": "تم تعيين طلب دعم جديد لك",
         "LABEL_PRECHAT_USER_FULLNAME": "الاسم الكامل",
         "LABEL_PRECHAT_USER_EMAIL": "البريد الإلكتروني",
         "LABEL_PRECHAT_USER_EMAIL_ERROR": "عنوان البريد الإلكتروني غير صالح",
@@ -2742,7 +2742,7 @@
         "LABEL_PRECHAT_STATIC_TERMS_PRIVACY": "قبل متابعة المحادثة ، يرجى الموافقة على سياسة الخصوصية الخاصة بشروط <a href='https://tiledesk.com/termsofservice/' target='_blank'></a> و <a href='https://tiledesk.com/privacy.html' target='_blank'></a>",
         "LABEL_PRECHAT_ACCEPT_TERMS_PRIVACY": "أنا موافق",
         "PRECHAT_REQUIRED_ERROR": "هذه الخانة مطلوبه",
-        "LABEL_TODAY": "today",
+        "LABEL_TODAY": "اليوم",
         "LABEL_TOMORROW": "yesterday",
         "LABEL_LAST_ACCESS": "last access",
         "LABEL_TO": "at",
