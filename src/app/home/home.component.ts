@@ -175,6 +175,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   errorWhileDeletingApp: string;
   done_msg: string;
   userHasUnistalledWa: boolean = false
+  chatbotCreated: boolean
   constructor(
     public auth: AuthService,
     private route: ActivatedRoute,
@@ -242,7 +243,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     // this.getPromoBanner()
     this.waWizardSteps = [{ step1: false, step2: false, step3: false }]
     this.oneStepWizard = { watsAppConnected: false }
-  
+
   }
 
   ngAfterViewInit() {
@@ -306,14 +307,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
 
-      if (this.current_selected_prjct &&
-        this.current_selected_prjct.id_project &&
-        this.current_selected_prjct.id_project.attributes &&
-        this.current_selected_prjct.id_project.attributes.userHasReMovedWA) {
-        if (this.current_selected_prjct.id_project.attributes.userHasReMovedWA === true) {
-          this.userHasUnistalledWa = true
-        }
-      }
+
 
       if (this.current_selected_prjct &&
         this.current_selected_prjct.id_project &&
@@ -330,25 +324,68 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         this.solution_channel_for_child = this.solution_channel
         this.solution_for_child = this.solution
         if (this.solution_channel_for_child === 'whatsapp_fb_messenger') {
-          this.displayWhatsappAccountWizard = true;
+          if (this.current_selected_prjct.id_project.attributes.userHasReMovedWA === true) {
+            this.displayWhatsappAccountWizard = true;
+          }
           this.displayCustomizeWidget = false;
+          // if (this.current_selected_prjct.id_project.attributes &&
+          //   this.current_selected_prjct.id_project.attributes.wizardCompleted &&
+          //   this.current_selected_prjct.id_project.attributes.wizardCompleted === true) {
+          //   this.displayWhatsappAccountWizard = false;
+          // }
+
         }
         console.log('[HOME] - USE CASE solution_channel (0)', this.solution_channel_for_child, ' solution ', this.solution_for_child);
         if (this.solution_channel_for_child === 'whatsapp_fb_messenger' && this.solution_for_child === 'want_to_automate_conversations') {
-          if (this.current_selected_prjct && this.current_selected_prjct.id_project && this.current_selected_prjct.id_project.attributes && this.current_selected_prjct.id_project.attributes.wastep) {
-            if (this.current_selected_prjct.id_project.attributes.wastep[0].step1 === true &&
-              this.current_selected_prjct.id_project.attributes.wastep[0].step2 === true &&
-              this.current_selected_prjct.id_project.attributes.wastep[0].step3 === true) {
-              this.displayWhatsappAccountWizard = false
-              console.log('[HOME] - USE CASE solution_channel ', this.solution_channel_for_child, ' solution ', this.solution_for_child);
-              console.log('[HOME] - USE CASE step3 ', this.current_selected_prjct.id_project.attributes.wastep[0].step3);
-              console.log('[HOME] - displayWhatsappAccountWizard ', this.displayWhatsappAccountWizard);
+          if (this.current_selected_prjct &&
+            this.current_selected_prjct.id_project &&
+            this.current_selected_prjct.id_project.attributes) {
+
+            const waWizardstep1 = this.current_selected_prjct.id_project.attributes.wastep1;
+            const waWizardstep2 = this.current_selected_prjct.id_project.attributes.wastep2;
+            const waWizardstep3 = this.current_selected_prjct.id_project.attributes.wastep3;
+
+            if (waWizardstep1 === false) {
+              this.chatbotCreated = false
+            } else {
+              this.chatbotCreated = true
             }
+
+            if (waWizardstep2 === false) {
+              this.testBotOnWA = false
+
+            } else {
+              this.testBotOnWA = true
+            }
+
+            if (waWizardstep3 === false) {
+              this.whatsAppIsConnected = false
+            } else {
+              this.whatsAppIsConnected = true
+            }
+
+            if (waWizardstep1 === true && waWizardstep2 === true && waWizardstep3 === true) {
+              this.displayWhatsappAccountWizard = false;
+              this.whatsAppIsConnected = true;
+
+              console.log('[HOME] - USE CASE solution_channel ', this.solution_channel_for_child, ' solution ', this.solution_for_child);
+              console.log('[HOME] - USE CASE step3 ', this.current_selected_prjct.id_project.attributes.wastep3);
+              console.log('[HOME] - USE CASE displayWhatsappAccountWizard ', this.displayWhatsappAccountWizard);
+              console.log('[HOME] - USE CASE whatsAppIsConnected ', this.whatsAppIsConnected);
+            }
+          } else {
+            this.displayWhatsappAccountWizard = true;
+            // this.chatbotCreated = true;
+            this.testBotOnWA = false;
+            this.whatsAppIsConnected = false;
           }
         } else if (this.solution_channel_for_child === 'whatsapp_fb_messenger' && this.solution_for_child === 'want_to_talk_to_customers') {
           console.log('[HOME] - USE CASE solution_channel (1)', this.solution_channel_for_child, ' solution ', this.solution_for_child);
 
-          if (this.current_selected_prjct && this.current_selected_prjct.id_project && this.current_selected_prjct.id_project.attributes && this.current_selected_prjct.id_project.attributes.oneStepWizard) {
+          if (this.current_selected_prjct &&
+            this.current_selected_prjct.id_project &&
+            this.current_selected_prjct.id_project.attributes &&
+            this.current_selected_prjct.id_project.attributes.oneStepWizard) {
             console.log('[HOME] - HERE 3');
             console.log('[HOME] - USE CASE step3 oneStepWizard watsAppConnected', this.current_selected_prjct.id_project.attributes.oneStepWizard.watsAppConnected);
             if (this.current_selected_prjct.id_project.attributes.oneStepWizard.watsAppConnected === true) {
@@ -356,10 +393,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
               this.whatsAppIsConnected = true
               console.log('[HOME] - USE CASE solution_channel ', this.solution_channel_for_child, ' solution ', this.solution_for_child);
               console.log('[HOME] - displayWhatsappAccountWizard ', this.displayWhatsappAccountWizard);
-            }
-            else {
+            } else {
               this.whatsAppIsConnected = false
             }
+
           }
         }
 
@@ -375,34 +412,69 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         }
       }
 
+
       if (this.current_selected_prjct &&
         this.current_selected_prjct.id_project &&
         this.current_selected_prjct.id_project.attributes &&
-        this.current_selected_prjct.id_project.attributes.wastep) {
-        if (this.current_selected_prjct.id_project.attributes.wastep[0].step2 === false) {
-          this.testBotOnWA = false
-          console.log('[HOME] - GET WA WIZARD STEPS (onInit) - whatsAppIsConnected ', this.whatsAppIsConnected);
-        } else {
-          this.testBotOnWA = true
-        }
+        this.current_selected_prjct.id_project.attributes.userHasReMovedWA) {
+        if (this.current_selected_prjct.id_project.attributes.userHasReMovedWA === true) {
+          this.userHasUnistalledWa = true;
+          this.displayWhatsappAccountWizard = false;
 
-        if (this.current_selected_prjct.id_project.attributes.wastep[0].step3 === false) {
-          this.whatsAppIsConnected = false
-          console.log('[HOME] - GET WA WIZARD STEPS (onInit) - whatsAppIsConnected ', this.whatsAppIsConnected);
-        } else {
-          this.whatsAppIsConnected = true
         }
-      } else {
-        this.whatsAppIsConnected = false
-        this.testBotOnWA = false
       }
-      console.log('[HOME] - (onInit) - whatsAppIsConnected ', this.whatsAppIsConnected);
-      console.log('[HOME] - (onInit) - testBotOnWA ', this.testBotOnWA);
 
-      if (this.current_selected_prjct && this.current_selected_prjct.id_project && this.current_selected_prjct.id_project.attributes && this.current_selected_prjct.id_project.attributes.wasettings) {
+
+
+      // if (this.current_selected_prjct &&
+      //   this.current_selected_prjct.id_project &&
+      //   this.current_selected_prjct.id_project.attributes) {
+
+      //   console.log('[HOME] - WA WIZARD (onInit) - wastep1  ',this.current_selected_prjct.id_project.attributes.wastep1);
+      //   console.log('[HOME] - WA WIZARD (onInit) - wastep2  ',this.current_selected_prjct.id_project.attributes.wastep2);
+      //   console.log('[HOME] - WA WIZARD (onInit) - wastep3  ',this.current_selected_prjct.id_project.attributes.wastep3);
+      //   if (this.current_selected_prjct.id_project.attributes.wastep1 === false) {
+      //     this.chatbotCreated = false
+      //   } else {
+      //     this.chatbotCreated = true
+      //   }
+
+      //   if (this.current_selected_prjct.id_project.attributes.wastep2 === false) {
+      //     this.testBotOnWA = false
+
+      //   } else {
+      //     this.testBotOnWA = true
+      //   }
+
+
+      //   if (this.current_selected_prjct.id_project.attributes.wastep3 === false) {
+      //     this.whatsAppIsConnected = false
+      //   } else {
+      //     this.whatsAppIsConnected = true
+      //   }
+
+
+      // } else {
+      //   this.whatsAppIsConnected = false
+      //   this.testBotOnWA = false
+      // }
+
+      // console.log('[HOME] - WA WIZARD (onInit) - chatbotCreated ', this.chatbotCreated);
+      // console.log('[HOME] - WA WIZARD (onInit) - testBotOnWA ', this.testBotOnWA);
+      // console.log('[HOME] - WA WIZARD (onInit) - whatsAppIsConnected ', this.whatsAppIsConnected);
+
+
+
+
+      if (this.current_selected_prjct &&
+        this.current_selected_prjct.id_project &&
+        this.current_selected_prjct.id_project.attributes &&
+        this.current_selected_prjct.id_project.attributes.wasettings) {
         console.log('[HOME] - (onInit) - wasettings ', this.current_selected_prjct.id_project.attributes.wasettings);
         this.wadepartmentid = this.current_selected_prjct.id_project.attributes.wasettings.department_id
         this.getDeptById(this.wadepartmentid)
+      } else {
+        console.log('[HOME] - (onInit) - wasettings', this.current_selected_prjct.id_project.attributes.wasettings)
       }
 
 
@@ -672,11 +744,11 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           console.log("[HOME] getInstallations whatsAppIsInstalled ", this.whatsAppIsInstalled, 'solution_channel ', this.solution_channel_for_child)
           if (res.length === 0) {
             if (this.solution_channel_for_child === 'whatsapp_fb_messenger') {
-              console.log("[HOME] GET APPS - BEFORE TO INSTALL WA solution_channel_for_child ", this.solution_channel_for_child) 
-              console.log("[HOME] GET APPS - BEFORE TO INSTALL WA userHasUnistalledWa ", this.userHasUnistalledWa) 
-              console.log("[HOME] GET APPS - BEFORE TO INSTALL WA whatsAppIsInstalled ", this.whatsAppIsInstalled) 
+              console.log("[HOME] GET APPS - BEFORE TO INSTALL WA solution_channel_for_child ", this.solution_channel_for_child)
+              console.log("[HOME] GET APPS - BEFORE TO INSTALL WA userHasUnistalledWa ", this.userHasUnistalledWa)
+              console.log("[HOME] GET APPS - BEFORE TO INSTALL WA whatsAppIsInstalled ", this.whatsAppIsInstalled)
               if (this.userHasUnistalledWa === false) {
-                if (this.whatsAppIsInstalled === false || this.whatsAppIsInstalled === null ) {
+                if (this.whatsAppIsInstalled === false || this.whatsAppIsInstalled === null) {
                   this.installApp()
                 }
               }
@@ -797,6 +869,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
             console.log('[HOME] UNINSTALL WA APP - app_id - RES', res);
             if (res.success === true) {
               this.whatsAppIsInstalled = false
+              this.displayWhatsappAccountWizard = false
               this.updatedProjectWithUserHasUnistalledWA()
             }
 
@@ -835,9 +908,28 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   hasCreatedChatbot(event) {
     console.log('[HOME] hasCreatedChatbot  ', event)
     if (event === true) {
-      this.waWizardSteps = [{ step1: true, step2: false, step3: false }]
-      this.upadatedWatsAppWizard(this.waWizardSteps , 'hasCreatedChatbot')
+      // if (this.chatbotCreated === false) {
+      // this.waWizardSteps = [{ step1: true, step2: false, step3: false }]
+      // this.upadatedWatsAppWizard(this.waWizardSteps, 'hasCreatedChatbot')
+      this.upadatedWatsAppWizardStep1(true, 'hasCreatedChatbot')
+      // }
     }
+
+  }
+
+  upadatedWatsAppWizardStep1(step1, calledBy) {
+    console.log('upadatedWatsAppWizardStep1 step  1  ', step1)
+    console.log('upadatedWatsAppWizardStep1 calledBy', calledBy)
+    this.projectService.updateProjectWithWAWizardStep1(step1)
+      .subscribe((res: any) => {
+        console.log('[HOME] - UPDATE PRJCT WITH WA WIZARD STEP 1 - RES ', res);
+
+
+      }, error => {
+        console.error('[HOME] - UPDATE PRJCT WITH WA WIZARD STEP 1 - ERROR ', error)
+      }, () => {
+        console.log('[HOME] - UPDATE PRJCT WITH WA WIZARD STEP 1 * COMPLETE *')
+      });
   }
 
 
@@ -853,17 +945,32 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
 
+
+
   // -------------------------------------------
   // STEP 2
   // -------------------------------------------
 
   hasTestedBotOnWa() {
-    this.waWizardSteps = [{ step1: true, step2: true, step3: false }]
-    this.upadatedWatsAppWizard(this.waWizardSteps, 'hasTestedBotOnWa')
+    // this.waWizardSteps = [{ step1: true, step2: true, step3: false }]
+    // this.upadatedWatsAppWizard(this.waWizardSteps, 'hasTestedBotOnWa')
+    this.upadatedWatsAppWizardStep2(true, 'hasTestedBotOnWa')
   }
 
+  upadatedWatsAppWizardStep2(step2, calledBy) {
+    console.log('upadatedWatsAppWizardStep2 step  2  ', step2)
+    console.log('upadatedWatsApupadatedWatsAppWizardStep2 Wizard calledBy', calledBy)
+    this.projectService.updateProjectWithWAWizardStep2(step2)
+      .subscribe((res: any) => {
+        console.log('[HOME] - UPDATE PRJCT WITH WA WIZARD STEP 2 - RES ', res);
 
 
+      }, error => {
+        console.error('[HOME] - UPDATE PRJCT WITH WA WIZARD STEP 2 - ERROR ', error)
+      }, () => {
+        console.log('[HOME] - UPDATE PRJCT WITH WA WIZARD STEPS 2 * COMPLETE *')
+      });
+  }
 
   // -------------------------------------------
   // STEP 3
@@ -950,13 +1057,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     window.open(url, '_blank', params);
   }
 
-
   openAppStoreInPopupWindow() {
     const whatsappUrl = this.appConfigService.getConfig().whatsappApiUrl;
 
-
     console.log('[HOME] openAppStoreInPopupWindow whatsappUrl', whatsappUrl)
-
     console.log('[HOME] openAppStoreInPopupWindow projectId', this.projectId)
     console.log('[HOME] openAppStoreInPopupWindow user', this.user)
     console.log('[HOME] openAppStoreInPopupWindow whatsAppAppId', this.whatsAppAppId)
@@ -983,6 +1087,9 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     }, 500);
   }
 
+  // ---------------------------------------------------------------------
+  // Get WA settings when the winndow "Connect to WA" is closed
+  // ---------------------------------------------------------------------
   getIfWathsAppIsConnectedAndUpdateProject() {
     this.projectService.checkWAConnection()
       .subscribe((res: any) => {
@@ -991,18 +1098,30 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         console.log('[HOME] - CHECK-WA-CONNECTION - RES > success', res.success);
 
         if (res.success === true) {
-          this.whatsAppIsConnected = true
-          this.waWizardSteps = [{ step1: true, step2: true, step3: true }]
-          this.oneStepWizard = { watsAppConnected: true }
-          this.upadatedProjectWithOneStepWizard(this.oneStepWizard)
-          this.upadatedWatsAppWizard(this.waWizardSteps , 'checkWAConnection success')
-          this.updateProjectWithWASettings(res.settings)
+          this.whatsAppIsConnected = true;
+          // this.waWizardSteps = [{ step1: true, step2: true, step3: true }]
+          // this.upadatedWatsAppWizard(this.waWizardSteps, 'checkWAConnection success')
+          this.presentModalWaSuccessfullyConnected()
+
+          const calledBy = 'connected'
+          this.updateProjectWithStep3AndWASettings(res.settings, true, calledBy)
+          // this.updateProjectWithHasCompletedWAWizard()
+
+          // this.upadatedWatsAppWizardStep3(true, 'connected')
+
+
         } else if (res.success === false) {
-          this.waWizardSteps = [{ step1: true, step2: true, step3: false }]
-          this.oneStepWizard = { watsAppConnected: true }
-          this.upadatedProjectWithOneStepWizard(this.oneStepWizard )
-          this.upadatedWatsAppWizard(this.waWizardSteps ,'checkWAConnection unsuccess')
-          this.updateProjectByDeletingWASettings()
+          this.whatsAppIsConnected = false;
+          // this.waWizardSteps = [{ step1: true, step2: true, step3: false }]
+          // this.upadatedWatsAppWizard(this.waWizardSteps, 'checkWAConnection unsuccess')
+          // this.oneStepWizard = { watsAppConnected: false }
+          // this.upadatedProjectWithOneStepWizard(this.oneStepWizard)
+
+          // this.updateProjectByDeletingWASettings()
+
+          // this.upadatedWatsAppWizardStep3(false, 'disconnected')
+          const calledBy = 'disconnected'
+          this.updateProjectWithStep3AndRemoveWASettings(false, calledBy)
         }
 
       }, error => {
@@ -1011,75 +1130,18 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         console.log('[HOME] - CHECK-WA-CONNECTION * COMPLETE *')
       });
   }
-  // /. --- step 3
 
 
-  upadatedWatsAppWizard(wasteps, calledBy) {
-    console.log('upadatedWatsAppWizard calledBy ', calledBy)
-    console.log('upadatedWatsAppWizard calledBy', wasteps)
-    this.projectService.updateProjectWithWAWizardSteps(wasteps)
-      .subscribe((res: any) => {
-        console.log('[HOME] - UPDATE PRJCT WITH WA WIZARD STEPS - RES ', res);
-        if (res && res.attributes && res.attributes.wastep) {
-          if (res.attributes.wastep[0].step3 === false) {
-            this.whatsAppIsConnected = false
-          } else {
-            this.whatsAppIsConnected = true
-          }
-        }
-
-        if (res && res.attributes && res.attributes.wastep) {
-          if (res.attributes.wastep[0].step1 === true && res.attributes.wastep[0].step2 === true && res.attributes.wastep[0].step3 === true) {
-            this.displayWhatsappAccountWizard = false;
-            if (this.whatsAppIsConnected === false) {
-              this.presentModalWaSuccessfullyConnected()
-            }
-
-          }
-        }
-
-        console.log('[HOME] - UPDATE PRJCT WITH WA WIZARD STEPS - whatsAppIsConnected ', this.whatsAppIsConnected);
-
-      }, error => {
-        console.error('[HOME] - UPDATE PRJCT WITH WA WIZARD STEPS - ERROR ', error)
-      }, () => {
-        console.log('[HOME] - UPDATE PRJCT WITH WA WIZARD STEPS * COMPLETE *')
-      });
-  }
-
-  presentModalWaSuccessfullyConnected() {
-
-    swal("Good job!", "WhatsApp connected successfully!", "success");
-
-  }
-
-
-  upadatedProjectWithOneStepWizard(oneStepWizard) {
-    console.log('[HOME] upadatedProjectWithOneStepWizard', oneStepWizard)
-
-    this.projectService.updateProjectWithWAOneStepWizard(oneStepWizard)
-      .subscribe((res: any) => {
-        console.log('[HOME] - UPDATE PRJCT WITH ONE STEP WIZARD - RES ', res);
-        if (res && res.attributes && res.attributes.oneStepWizard) {
-          if (res.attributes.oneStepWizard.watsAppConnected === true) {
-            this.displayWhatsappAccountWizard = false;
-          }
-        }
-
-      }, error => {
-        console.error('[HOME] - UPDATE PRJCT WITH ONE STEP WIZARD  - ERROR ', error)
-      }, () => {
-        console.log('[HOME] - UPDATE PRJCT WITH ONE STEP WIZARD * COMPLETE *')
-      });
-  }
-
-
-  updateProjectWithWASettings(wasettings) {
+  updateProjectWithStep3AndWASettings(wasettings, isConnected, calledBy) {
     console.log('[HOME] updateProjectWithWASettings', wasettings)
 
     this.projectService.updateProjectWithWASettings(wasettings)
       .subscribe((res: any) => {
         console.log('[HOME] - UPDATE PRJCT WITH WA SETTINGS - RES ', res);
+
+        if (res) {
+          this.upadatedWatsAppWizardStep3(isConnected, calledBy)
+        }
 
         if (res && res.attributes && res.attributes.wasettings && res.attributes.wasettings.department_id) {
           this.wadepartmentid = res.attributes.wasettings.department_id
@@ -1090,7 +1152,100 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         console.error('[HOME] - UPDATE PRJCT WITH WA WSETTINGS  - ERROR ', error)
       }, () => {
         console.log('[HOME] - UPDATE PRJCT WITH WA WSETTINGS * COMPLETE *')
+
+
       });
+  }
+
+
+  updateProjectWithStep3AndRemoveWASettings(isConnected, calledBy) {
+    console.log('[HOME] - WA W updateProjectByDeletingWASettings');
+    this.projectService.updateProjectRemoveWASettings()
+      .subscribe((res: any) => {
+        console.log('[HOME] - WA W - UPDATE PRJCT WITH WA SETTINGS - RES ', res);
+
+
+        this.wadepartmentid = undefined
+        this.whatsAppIsConnected = false;
+        this.waBotId = undefined
+        // this.getDeptById(this.wadepartmentid)
+        // console.log('[HOME] - UPDATE PRJCT WITH WA WSETTINGS - whatsAppIsConnected ', this.whatsAppIsConnected);
+
+      }, error => {
+        console.error('[HOME] - WA W - UPDATE PRJCT WITH WA WSETTINGS  - ERROR ', error)
+      }, () => {
+        console.log('[HOME] - WA W - UPDATE PRJCT WITH WA WSETTINGS * COMPLETE *')
+        this.upadatedWatsAppWizardStep3(isConnected, calledBy)
+      });
+  }
+
+
+  upadatedWatsAppWizardStep3(step3, calledBy) {
+    console.log('upadatedWatsAppWizardStep3 step  3  ', step3)
+    console.log('upadatedWatsAppWizardStep3 calledBy', calledBy)
+    this.projectService.updateProjectWithWAWizardStep3(step3)
+      .subscribe((res: any) => {
+        console.log('[HOME] - WA W - UPDATE PRJCT WITH WA WIZARD STEP 3 - RES ', res);
+        // if (res && res.attributes && res.attributes.wastep) {
+        //   if (res.attributes.wastep3 === false) {
+        //     this.whatsAppIsConnected = false
+        //   } else {
+        //     this.whatsAppIsConnected = true
+        //   }
+        // }
+        console.log('[HOME] - WA W - UPDATE PRJCT WITH WA WIZARD STEP 3 - whatsAppIsConnected ', this.whatsAppIsConnected);
+
+      }, error => {
+        console.error('[HOME] - WA W - UPDATE PRJCT WITH WA WIZARD STEP 3 - ERROR ', error)
+      }, () => {
+        console.log('[HOME] - WA W - UPDATE PRJCT WITH WA WIZARD STEPS 3 * COMPLETE *')
+
+        if (calledBy === 'connected') {
+          this.oneStepWizard = { watsAppConnected: true }
+          this.upadatedProjectWithWAWizardOnlyOneStep(this.oneStepWizard)
+        } else if (calledBy === 'disconnected') {
+          this.oneStepWizard = { watsAppConnected: false }
+          this.upadatedProjectWithWAWizardOnlyOneStep(this.oneStepWizard)
+        }
+      });
+  }
+
+  upadatedProjectWithWAWizardOnlyOneStep(oneStepWizard) {
+    console.log('[HOME] - WA W - upadatedProjectWithOneStepWizard', oneStepWizard)
+
+    this.projectService.updateProjectWithWAOneStepWizard(oneStepWizard)
+      .subscribe((res: any) => {
+        console.log('[HOME] - WA W - UPDATE PRJCT WITH ONE STEP WIZARD - RES ', res);
+        if (res && res.attributes && res.attributes.oneStepWizard) {
+          if (res.attributes.oneStepWizard.watsAppConnected === true) {
+            this.displayWhatsappAccountWizard = false;
+          }
+        }
+
+      }, error => {
+        console.error('[HOME] - WA W - UPDATE PRJCT WITH ONE STEP WIZARD  - ERROR ', error)
+      }, () => {
+        console.log('[HOME]  - WA W - UPDATE PRJCT WITH ONE STEP WIZARD * COMPLETE *')
+      });
+  }
+  // /. --- step 3
+
+
+  presentModalWaSuccessfullyConnected() {
+    swal("Good job!", "WhatsApp connected successfully!", "success");
+  }
+
+
+  updateProjectWithHasCompletedWAWizard() {
+    this.projectService.updateProjectWithWAWizardCompleted()
+      .subscribe((res: any) => {
+        console.log('[HOME] - UPDATE PRJCT WITH WA WIZARD COMPLETED - RES ', res);
+      }, error => {
+        console.error('[HOME] - UPDATE PRJCT WITH WA WIZARD  - ERROR ', error)
+      }, () => {
+        console.log('[HOME] - UPDATE PRJCT WITH WA WIZARD * COMPLETE *')
+      });
+
   }
 
   updatedProjectWithUserHasUnistalledWA() {
@@ -1107,26 +1262,33 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
 
-
-
-  updateProjectByDeletingWASettings() {
-    console.log('[HOME] updateProjectByDeletingWASettings');
-    this.projectService.updateProjectRemoveWASettings()
+  // -------------------------------
+  // NO MORE USED
+  // -------------------------------
+  upadatedWatsAppWizard(wasteps, calledBy) {
+    console.log('upadatedWatsAppWizard calledBy ', calledBy)
+    console.log('upadatedWatsAppWizard calledBy', wasteps)
+    this.projectService.updateProjectWithWAWizardSteps(wasteps)
       .subscribe((res: any) => {
-        console.log('[HOME] - UPDATE PRJCT WITH WA SETTINGS - RES ', res);
+        console.log('[HOME] - UPDATE PRJCT WITH WA WIZARD STEPS - RES ', res);
+        if (res && res.attributes && res.attributes.wastep) {
+          if (res.attributes.wastep[0].step3 === false) {
+            this.whatsAppIsConnected = false
+          } else {
+            this.whatsAppIsConnected = true
+          }
+        }
+        console.log('[HOME] - UPDATE PRJCT WITH WA WIZARD STEPS - whatsAppIsConnected ', this.whatsAppIsConnected);
 
-
-        this.wadepartmentid = undefined
-        this.whatsAppIsConnected = false
-
-        // console.log('[HOME] - UPDATE PRJCT WITH WA WSETTINGS - whatsAppIsConnected ', this.whatsAppIsConnected);
 
       }, error => {
-        console.error('[HOME] - UPDATE PRJCT WITH WA WSETTINGS  - ERROR ', error)
+        console.error('[HOME] - UPDATE PRJCT WITH WA WIZARD STEPS - ERROR ', error)
       }, () => {
-        console.log('[HOME] - UPDATE PRJCT WITH WA WSETTINGS * COMPLETE *')
+        console.log('[HOME] - UPDATE PRJCT WITH WA WIZARD STEPS * COMPLETE *')
       });
   }
+
+
 
   getDeptById(departmentid: string) {
 

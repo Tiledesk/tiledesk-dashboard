@@ -235,7 +235,7 @@ export class AppStoreService {
 
   unistallNewApp(projectId: string, appId: string) {
     let url = this.APPS_BASE_URL + "api/installation/" + projectId + '/' + appId
-    this.logger.log('[APP-STORE-SERVICE] UNINSTALL NEW APP URL ', url);
+    console.log('[APP-STORE-SERVICE] UNINSTALL NEW APP URL ', url);
 
     const httpOptions = {
       headers: new HttpHeaders({
