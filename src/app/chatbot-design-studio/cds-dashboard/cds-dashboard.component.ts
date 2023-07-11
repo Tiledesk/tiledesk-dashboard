@@ -246,14 +246,8 @@ export class CdsDashboardComponent implements OnInit {
         console.log("connector-deleted:", e);
         const connector = e.detail.connector;
         connector['deleted'] = true;
-        // this.connector['toId'] = ''; // serve per farlo scattare sempre!!!
         console.log("connector-deleted:", connector.id);
-        // delete this.connectors[this.connector.id];
-        // console.log("connector-deleted:", this.connectors);
-        // delete this.connectors[this.connector.id];
         this.connectorService.onConnectorDeleted(connector.id);
-        // this.connectors = this.intentService.botAttributes.connectors;
-        // this.intentService.setConnectorsInDashboardAttributes(this.id_faq_kb, this.connectors);
         this.intentService.onChangedConnector(connector);
       },
       true
@@ -539,7 +533,7 @@ export class CdsDashboardComponent implements OnInit {
     let newPos = {'x':element.offsetLeft, 'y':element.offsetTop};
     let pos = this.intentService.getIntentPosition(intent.intent_id);
     if(newPos.x != pos.x || newPos.y != pos.y){
-      element.style.zIndex = 'auto';
+      element.style.zIndex = '1';
       // console.log("setIntentPosition x:", newPos.x, " y: ",newPos.y);
       this.intentService.setIntentPosition(intent.intent_id, newPos);
       // this.intentService.setDashboardAttributes(this.dashboardAttributes);

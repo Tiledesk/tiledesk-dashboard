@@ -121,8 +121,8 @@ export class CdsActionReplyTextComponent implements OnInit {
           // DELETE 
           console.log(' deleteConnector :: ', this.connector.fromId);
           buttonChanged.isConnected = false;
-          buttonChanged.idConnector = null;
-          buttonChanged.action = null;
+          buttonChanged.idConnector = this.connector.fromId;
+          buttonChanged.action = '';
           buttonChanged.type = TYPE_BUTTON.TEXT;
         } else {
           // ADD / EDIT

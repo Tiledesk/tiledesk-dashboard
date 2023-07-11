@@ -48,7 +48,7 @@ export class TiledeskConnectors {
       this.drawingFront = { x: 0, y: 0 };
       this.controlFront = { x: 0, y: 0 };
       this.selectedConnector = null;
-
+      // this.connectorSelectedId = null;
 
       this.#createSvgContainer();
       this.#createConnectors();
@@ -58,8 +58,13 @@ export class TiledeskConnectors {
 
 
     #setEventListners(){
-      this.deleteConnector = this.deleteConnector.bind(this);
-      document.addEventListener('keydown',this.deleteConnectorOnKeyPress);
+      document.addEventListener('keydown',this.onKeyPressDeleteConnector.bind(this));
+      // Rimuovi l'event listener
+      // document.removeEventListener('keydown', onKeyPressDeleteConnector);
+      // document.removeEventListener('keydown', this.onKeyPressDeleteConnector);
+      // document.removeEventListener('keydown', this.onKeyPressDeleteConnector.bind(this));
+      // document.removeEventListener(this.onKeyPressDeleteConnector.bind(this));
+      // document.removeEventListener(this.onKeyPressDeleteConnector);
     }
 
 
@@ -127,22 +132,24 @@ export class TiledeskConnectors {
       console.log('connectorId: ', connectorId);
       console.log('this.blocks: ', this.blocks);
       console.log('this.connectors: ', this.connectors);
-      let connector = document.getElementById(connectorId);
-      if (connector) {
-        connector.remove();
+      let connectorElement = document.getElementById(connectorId);
+      console.log('this.connectorElement: ', connectorElement);
+      if (connectorElement) {
+        connectorElement.remove();
         const connectorDeleted = this.connectors[connectorId];
-        const customEvent = new CustomEvent("connector-deleted", { detail: {connector: connectorDeleted} });
-        document.dispatchEvent(customEvent);
-        delete this.connectors[connectorId];
+        if(connectorDeleted){
+          const customEvent = new CustomEvent("connector-deleted", { detail: {connector: connectorDeleted} });
+          document.dispatchEvent(customEvent);
+          delete this.connectors[connectorId];
+        }
         this.deleteConnectorInBlock(connectorId);
       }
     }
 
-    deleteConnectorOnKeyPress(event){
-      console.log('onDeleteConnector:::: ' , event, this.selectedConnector);
-      if (event.key === 'Delete' || event.key === 'Backspace' && this.selectedConnector) {
-        console.log('onDeleteConnector:::: ' , event, this.selectedConnector.id);
-        deleteConnector(this.selectedConnector.id);
+    onKeyPressDeleteConnector(event){
+      console.log('1 onDeleteConnector:::: ' , event, this.selectedConnector);
+      if (event.key === 'Delete' || event.key === 'Backspace' && this.selectedConnector) {        
+        this.deleteConnector(this.selectedConnector.id);
       }
     }
 
@@ -196,7 +203,7 @@ export class TiledeskConnectors {
 
       if (target.addEventListener) {
         target.addEventListener("mousedown", (event) => {
-            // console.log("mousedown  el.id:", event.target.id);
+            console.log("mousedown  el.id:", event.target.id);
             let el = event.target;
             this.#removeSelection(el);
             let elConnectable = this.#searchClassInParents(el, this.classes["connectable"]);
@@ -287,7 +294,7 @@ export class TiledeskConnectors {
       svgContainer.style.left = "0px";
       svgContainer.style.top = "0px";
       svgContainer.style.position = "absolute";
-      svgContainer.style.zIndex = "-1";
+      svgContainer.style.zIndex = "inherit";
       var gElement = document.createElementNS("http://www.w3.org/2000/svg", "g");
       gElement.id = this.svgConnectorsId;
       gElement.setAttribute("fill", "white");
@@ -437,6 +444,7 @@ export class TiledeskConnectors {
     /** Creates or modify a connector in HTML */
     #drawConnector(id, backPoint, frontPoint) {
       // console.log(id, backPoint, frontPoint);
+      const that = this;
       let connector = document.getElementById(id);
       if (!connector) {
         connector = document.createElementNS("http://www.w3.org/2000/svg", "path");
@@ -445,29 +453,37 @@ export class TiledeskConnectors {
         connector.setAttributeNS(null, "class", this.classes["connector"]);
         connector.setAttributeNS(null, "pointer-events", "stroke");
         connector.addEventListener('mouseover', (e) => {
-          console.log("mouseover e", e.currentTarget);
-          if (this.selectedConnector !== null) { // jump highlighting current selection
-            if (this.selectedConnector.id !== e.currentTarget.id) {
-              e.currentTarget.setAttributeNS(null, "class", this.classes["connector_over"]);
+          // console.log("mouseover e", e.currentTarget);
+          if (that.selectedConnector !== null) { // jump highlighting current selection
+            if (that.selectedConnector.id !== e.currentTarget.id) {
+              e.currentTarget.setAttributeNS(null, "class", that.classes["connector_over"]);
             }
           }
           else {
-            e.currentTarget.setAttributeNS(null, "class", this.classes["connector_over"]);
+            e.currentTarget.setAttributeNS(null, "class", that.classes["connector_over"]);
           }
         });
         connector.addEventListener('mouseleave', (e) => {
-          console.log("mouseleave e", e.currentTarget);
-          if (!e.currentTarget.classList.contains(this.classes["connector_selected"])) {
-            e.currentTarget.setAttributeNS(null, "class", this.classes["connector"]);
+          console.log("mouseleave e", e);
+          if (!e.currentTarget.classList.contains(that.classes["connector_selected"])) {
+            e.currentTarget.setAttributeNS(null, "class", that.classes["connector"]);
           }
         });
         connector.addEventListener('click', (e) => {
-          if (this.selectedConnector) {
-            this.selectedConnector.setAttributeNS(null, "class", this.classes["connector"]);
+
+          // that.#setEventListners();
+
+         
+
+          console.log("clicked -> ", e, that);
+          if (that.selectedConnector) {
+            that.selectedConnector.setAttributeNS(null, "class", that.classes["connector"]);
+            console.log("ripristino  class connector -> ", that.selectedConnector);
           }
-          this.selectedConnector = e.currentTarget;
-          this.selectedConnector.setAttributeNS(null, "class", this.classes["connector_selected"]);
-          console.log("clicked -> ", this.selectedConnector);
+          that.selectedConnector = e.currentTarget;
+          console.log("new selectedConnector -> ", that.selectedConnector.id);
+          that.selectedConnector.setAttributeNS(null, "class", that.classes["connector_selected"]);
+          console.log("connector_selected class ", that.selectedConnector);
         });
         this.svgContainer.appendChild(connector);
       }

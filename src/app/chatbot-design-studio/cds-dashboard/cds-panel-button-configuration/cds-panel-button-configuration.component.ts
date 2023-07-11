@@ -245,11 +245,11 @@ export class CdsPanelButtonConfigurationComponent implements OnInit {
     // this.openBlockAttributes = true;
     const fromId = this.button.idConnector;
     let toId = '';
-    const posId = this.buttonAction.indexOf("#");
+    const posId = this.button.action.indexOf("#");
     if (posId !== -1) {
-      toId = this.buttonAction.slice(posId+1);
+      toId = this.button.action.slice(posId+1);
     }
-    // console.log('createNewConnector: ', fromId, toId);
+    console.log('createNewConnector: ', fromId, toId);
     this.connectorService.deleteConnector(fromId);
     this.connectorService.createNewConnector(fromId, toId);
     this.checkAndSaveButton();

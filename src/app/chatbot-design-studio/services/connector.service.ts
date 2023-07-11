@@ -73,6 +73,7 @@ export class ConnectorService {
 
   private findButtons(obj) {
     var buttons = [];
+    if(!obj) return buttons;
     // Verifica se l'oggetto corrente è un array
     if (Array.isArray(obj)) {
       // Itera sugli elementi dell'array
@@ -99,8 +100,10 @@ export class ConnectorService {
 
   /** */
   createNewConnector(fromId:string, toId:string){
+    console.log('createNewConnector:: fromId:', fromId, 'toId:', toId);
     const elFrom = document.getElementById(fromId);
     const elTo = document.getElementById(toId);
+    console.log('createNewConnector:: ', elFrom, elTo);
     if (elFrom && elTo) { 
       const fromPoint = this.tiledeskConnectors.elementLogicCenter(elFrom);
       const toPoint = this.tiledeskConnectors.elementLogicTopLeft(elTo);
@@ -110,9 +113,6 @@ export class ConnectorService {
   
    /** */
    deleteConnector(connectorID){
-    // elimino connector dai connectors e dai blocks
-    // elimino connector fisicamente
-    // elimino connector dall'array di connectors
     this.tiledeskConnectors.deleteConnector(connectorID);
   }
 
