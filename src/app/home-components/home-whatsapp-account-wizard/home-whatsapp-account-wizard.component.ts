@@ -27,6 +27,7 @@ export class HomeWhatsappAccountWizardComponent implements OnInit, OnChanges {
   @Input() solution_for_child: string;
   @Input() testBotOnWA: boolean;
   @Input() botIdForTestWA: string;
+
   
   public thereIsALeastOneBot: boolean = false;
   public projectID: string;
@@ -54,6 +55,8 @@ export class HomeWhatsappAccountWizardComponent implements OnInit, OnChanges {
     console.log('[HOME-WA-WIZARD] solution_for_child ', this.solution_for_child)
     console.log('[HOME-WA-WIZARD] testBotOnWA ', this.testBotOnWA)
     console.log('[HOME-WA-WIZARD] botIdForTestWA ', this.botIdForTestWA)
+    
+    
     
   }
 

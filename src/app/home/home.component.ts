@@ -37,6 +37,7 @@ import { AnalyticsService } from 'app/analytics/analytics-service/analytics.serv
 import { AppStoreService } from 'app/services/app-store.service';
 import { DepartmentService } from 'app/services/department.service';
 
+
 const swal = require('sweetalert');
 @Component({
   selector: 'home',
@@ -51,6 +52,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @ViewChild('childWhatsappAccount', { static: false, read: ElementRef }) public childWhatsappAccount;
   @ViewChild('childCreateChatbot', { static: false, read: ElementRef }) public childCreateChatbot;
+
 
   // company_name = brand.company_name;
   // tparams = brand;
@@ -176,6 +178,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   done_msg: string;
   userHasUnistalledWa: boolean = false
   chatbotCreated: boolean
+  userHasClickedDisplayWAWizard: boolean = false
   constructor(
     public auth: AuthService,
     private route: ActivatedRoute,
@@ -193,7 +196,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     private logger: LoggerService,
     private projectService: ProjectService,
     public appStoreService: AppStoreService,
-    private departmentService: DepartmentService,
+    private departmentService: DepartmentService
   ) {
     const brand = brandService.getBrand();
     this.company_name = brand['company_name'];
@@ -304,7 +307,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
       this.current_selected_prjct = projects.find(prj => prj.id_project.id === projectId);
       console.log('[HOME] - CURRENT PROJECT - current_selected_prjct ', this.current_selected_prjct);
-
+      console.log('[HOME] - CURRENT PROJECT - current_selected_prjct  > attributes', this.current_selected_prjct.id_project.attributes);
 
 
 
@@ -323,10 +326,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         this.use_case_for_child = this.use_case;
         this.solution_channel_for_child = this.solution_channel
         this.solution_for_child = this.solution
-        if (this.solution_channel_for_child === 'whatsapp_fb_messenger') {
-          if (this.current_selected_prjct.id_project.attributes.userHasReMovedWA === true) {
-            this.displayWhatsappAccountWizard = true;
-          }
+        if (this.solution_channel_for_child === 'whatsapp_fb_messenger' || (this.solution_channel_for_child === 'web_mobile' && this.current_selected_prjct.id_project.attributes.displayWAWizard === true) ) {
+          // if (this.current_selected_prjct.id_project.attributes.userHasReMovedWA === true) {
+          this.displayWhatsappAccountWizard = true;
+          // }
           this.displayCustomizeWidget = false;
           // if (this.current_selected_prjct.id_project.attributes &&
           //   this.current_selected_prjct.id_project.attributes.wizardCompleted &&
@@ -335,44 +338,68 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           // }
 
         }
+        // if (this.solution_channel_for_child === 'web_mobile' &&
+        //   this.current_selected_prjct &&
+        //   this.current_selected_prjct.id_project &&
+        //   this.current_selected_prjct.id_project.attributes && this.current_selected_prjct.id_project.attributes.displayWAWizard) {
+        //   if (this.current_selected_prjct.id_project.attributes.wizardCompleted !== true) {
+        //     if (this.current_selected_prjct.id_project.attributes && this.current_selected_prjct.id_project.attributes.displayWAWizard === true) {
+        //       this.displayWhatsappAccountWizard = true;
+        //       this.userHasClickedDisplayWAWizard = true;
+        //     }
+        //   }
+        // }
         console.log('[HOME] - USE CASE solution_channel (0)', this.solution_channel_for_child, ' solution ', this.solution_for_child);
-        if (this.solution_channel_for_child === 'whatsapp_fb_messenger' && this.solution_for_child === 'want_to_automate_conversations') {
+        if ((this.solution_channel_for_child === 'whatsapp_fb_messenger' && this.solution_for_child === 'want_to_automate_conversations') 
+          || (this.solution_channel_for_child === 'web_mobile' && this.current_selected_prjct.id_project.attributes.displayWAWizard === true)){
           if (this.current_selected_prjct &&
             this.current_selected_prjct.id_project &&
             this.current_selected_prjct.id_project.attributes) {
-
+            this.userHasClickedDisplayWAWizard = true;
             const waWizardstep1 = this.current_selected_prjct.id_project.attributes.wastep1;
             const waWizardstep2 = this.current_selected_prjct.id_project.attributes.wastep2;
             const waWizardstep3 = this.current_selected_prjct.id_project.attributes.wastep3;
 
-            if (waWizardstep1 === false) {
+            console.log('[HOME] - waWizardstep1 ', waWizardstep1);
+            console.log('[HOME] - waWizardstep2 ', waWizardstep2);
+            console.log('[HOME] - waWizardstep3 ', waWizardstep3);
+            console.log('[HOME] - userHasClickedDisplayWAWizard ', this.userHasClickedDisplayWAWizard);
+
+
+            if (waWizardstep1 === false || waWizardstep1 === undefined) {
               this.chatbotCreated = false
-            } else {
+            } else if (waWizardstep1 === true) {
               this.chatbotCreated = true
             }
 
-            if (waWizardstep2 === false) {
+            if (waWizardstep2 === false || waWizardstep2 === undefined) {
               this.testBotOnWA = false
 
-            } else {
+            } else if (waWizardstep2 === true) {
               this.testBotOnWA = true
             }
 
-            if (waWizardstep3 === false) {
+            if (waWizardstep3 === false || waWizardstep3 === undefined) {
               this.whatsAppIsConnected = false
-            } else {
+            } else if (waWizardstep3 === true) {
               this.whatsAppIsConnected = true
             }
+            console.log('[HOME] - USE CASE 2 solution_channel ', this.solution_channel_for_child, ' solution ', this.solution_for_child);
+            console.log('[HOME] - USE CASE 2 chatbotCreated ', this.chatbotCreated);
+            console.log('[HOME] - USE CASE 2 testBotOnWA ', this.testBotOnWA);
+            console.log('[HOME] - USE CASE 2 whatsAppIsConnected ', this.whatsAppIsConnected);
+
 
             if (waWizardstep1 === true && waWizardstep2 === true && waWizardstep3 === true) {
               this.displayWhatsappAccountWizard = false;
               this.whatsAppIsConnected = true;
-
-              console.log('[HOME] - USE CASE solution_channel ', this.solution_channel_for_child, ' solution ', this.solution_for_child);
-              console.log('[HOME] - USE CASE step3 ', this.current_selected_prjct.id_project.attributes.wastep3);
-              console.log('[HOME] - USE CASE displayWhatsappAccountWizard ', this.displayWhatsappAccountWizard);
-              console.log('[HOME] - USE CASE whatsAppIsConnected ', this.whatsAppIsConnected);
+            } else if (waWizardstep1 === true && waWizardstep2 === true && waWizardstep3 === false) {
+              this.whatsAppIsConnected = false;
+              if (this.current_selected_prjct.id_project.attributes.wizardCompleted === true) {
+                this.displayWhatsappAccountWizard = false;
+              }
             }
+
           } else {
             this.displayWhatsappAccountWizard = true;
             // this.chatbotCreated = true;
@@ -393,8 +420,12 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
               this.whatsAppIsConnected = true
               console.log('[HOME] - USE CASE solution_channel ', this.solution_channel_for_child, ' solution ', this.solution_for_child);
               console.log('[HOME] - displayWhatsappAccountWizard ', this.displayWhatsappAccountWizard);
-            } else {
+            } else if (this.current_selected_prjct.id_project.attributes.oneStepWizard.watsAppConnected === false) {
               this.whatsAppIsConnected = false
+              if (this.current_selected_prjct.id_project.attributes.wizardCompleted === true) {
+                this.displayWhatsappAccountWizard = false;
+              }
+
             }
 
           }
@@ -420,7 +451,24 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         if (this.current_selected_prjct.id_project.attributes.userHasReMovedWA === true) {
           this.userHasUnistalledWa = true;
           this.displayWhatsappAccountWizard = false;
+        }
+        else {
+          this.userHasUnistalledWa = false;
+          if (this.current_selected_prjct &&
+            this.current_selected_prjct.id_project &&
+            this.current_selected_prjct.id_project.attributes) {
 
+            const waWizardstep1 = this.current_selected_prjct.id_project.attributes.wastep1;
+            const waWizardstep2 = this.current_selected_prjct.id_project.attributes.wastep2;
+            const waWizardstep3 = this.current_selected_prjct.id_project.attributes.wastep3;
+            if ((this.solution_channel_for_child === 'whatsapp_fb_messenger') &&
+              (this.solution_for_child === 'want_to_talk_to_customers') ||
+              (this.solution_for_child === 'want_to_automate_conversations')) {
+              if (waWizardstep1 === undefined && waWizardstep2 === undefined && waWizardstep3 === undefined) {
+                this.displayWhatsappAccountWizard = true;
+              }
+            }
+          }
         }
       }
 
@@ -703,6 +751,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
 
+
   getApps() {
     this.appStoreService.getApps().subscribe((_apps: any) => {
       this.apps = _apps.apps;
@@ -759,6 +808,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
               console.log("[HOME] getInstallations r: ", r)
               if (r.app_id === this.whatsAppAppId) {
                 this.whatsAppIsInstalled = true;
+                this.updatedProjectWithUserHasUnistalledWA(false)
 
               } else {
                 this.whatsAppIsInstalled = false;
@@ -870,7 +920,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
             if (res.success === true) {
               this.whatsAppIsInstalled = false
               this.displayWhatsappAccountWizard = false
-              this.updatedProjectWithUserHasUnistalledWA()
+              this.updatedProjectWithUserHasUnistalledWA(true)
             }
 
           }, (error) => {
@@ -1186,13 +1236,17 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.projectService.updateProjectWithWAWizardStep3(step3)
       .subscribe((res: any) => {
         console.log('[HOME] - WA W - UPDATE PRJCT WITH WA WIZARD STEP 3 - RES ', res);
-        // if (res && res.attributes && res.attributes.wastep) {
-        //   if (res.attributes.wastep3 === false) {
-        //     this.whatsAppIsConnected = false
-        //   } else {
-        //     this.whatsAppIsConnected = true
-        //   }
-        // }
+        if (res && res.attributes && res.attributes) {
+          if (res.attributes.wastep3 === false) {
+            this.whatsAppIsConnected = false
+            // if ((this.solution_channel_for_child === 'whatsapp_fb_messenger') &&
+            //   (this.solution_for_child === 'want_to_talk_to_customers') ||
+            //   (this.solution_for_child === 'want_to_automate_conversations')) {
+            //   this.displayWhatsappAccountWizard = true;
+            // }
+          }
+
+        }
         console.log('[HOME] - WA W - UPDATE PRJCT WITH WA WIZARD STEP 3 - whatsAppIsConnected ', this.whatsAppIsConnected);
 
       }, error => {
@@ -1219,7 +1273,15 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         if (res && res.attributes && res.attributes.oneStepWizard) {
           if (res.attributes.oneStepWizard.watsAppConnected === true) {
             this.displayWhatsappAccountWizard = false;
+            this.updateProjectWithHasCompletedWAWizard()
           }
+          // else if (res.attributes.oneStepWizard.watsAppConnected === false) {
+          //   if ((this.solution_channel_for_child === 'whatsapp_fb_messenger') &&
+          //     (this.solution_for_child === 'want_to_talk_to_customers') ||
+          //     (this.solution_for_child === 'want_to_automate_conversations')) {
+          //     this.displayWhatsappAccountWizard = true;
+          //   }
+          // }
         }
 
       }, error => {
@@ -1248,8 +1310,31 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   }
 
-  updatedProjectWithUserHasUnistalledWA() {
-    this.projectService.updateProjectUserHasRemovedWA()
+  updatedProjectWithUserHasUnistalledWA(hasuninstalled) {
+    this.projectService.updateProjectUserHasRemovedWA(hasuninstalled)
+      .subscribe((res: any) => {
+        console.log('[HOME] - USER HAS UNISTALLED WA - RES ', res);
+
+
+      }, error => {
+        console.error('[HOME] - USER HAS UNISTALLED WA  - ERROR ', error)
+      }, () => {
+        console.log('[HOME] - USER HAS UNISTALLED WA * COMPLETE *')
+      });
+  }
+
+  onClickOnDisplayWhatsAppWizard() {
+
+    this.displayWhatsappAccountWizard = true;
+    this.userHasClickedDisplayWAWizard = true;
+    // this.scrollToChild(this.childWhatsAppWizard)
+    // this.scroll.scrollToPosition([0,0]);
+    // this.homeBlocks.scrollIntoView();
+    const homeBlocksEl = <HTMLElement>document.querySelector('#homeBlocks');
+    homeBlocksEl.scrollIntoView({
+      behavior: 'smooth'
+    });
+    this.projectService.updateProjectWithDisplayWAWizard(this.displayWhatsappAccountWizard)
       .subscribe((res: any) => {
         console.log('[HOME] - USER HAS UNISTALLED WA - RES ', res);
 

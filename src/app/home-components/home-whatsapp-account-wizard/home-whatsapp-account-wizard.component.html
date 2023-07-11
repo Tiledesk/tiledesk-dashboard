@@ -3,8 +3,9 @@
     <div class="connect-whatsapp-wizard-title">
         Boost Customer Engagement with Whatsapp
     </div>
-    <!-- padding: 10px 50px; -->
-    <ng-container *ngIf="solution_channel_for_child === 'whatsapp_fb_messenger' && solution_for_child === 'want_to_automate_conversations'">
+    <!-- padding: 10px 50px;  (solution_for_child === 'want_to_talk_to_customers') && -->
+    <ng-container *ngIf="(solution_channel_for_child === 'whatsapp_fb_messenger' && solution_for_child === 'want_to_automate_conversations') || 
+        (solution_channel_for_child === 'web_mobile')">
         <div class="connect-watsapp-wizard-wrp" style="display: flex; flex-direction: column;">
             <div class="_2qLvL _2vFcS _2iqgV" style="gap: 4px;">
                 <!-- <span class="stepper-line"></span> -->
@@ -129,7 +130,7 @@
                     <div style="z-index: 0;">
                         <div class="_2qLvL cKPgl _2N7fw">
                             <div class="stepper-wpr" style="position:relative">
-                                <div class="_1fLoo" [ngClass]="{'step-completed': chatbotConnectedWithWA}">
+                                <div class="_1fLoo" [ngClass]="{'step-completed': whatsAppIsConnected}">
                                     <div></div>
                                 </div>
                                 <span class="stepper-line" style="display: none;"></span>

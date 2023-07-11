@@ -79,7 +79,14 @@
         <div class="home-block-description" style="padding-right:55px">
             Connect your WhatsApp Business to organize your campaign and to easily receive and reply to WhatsApp
             messages from the Tiledesk chat
+            <span class="home-block-display-wa-wizard" 
+            *ngIf="(solution_channel_for_child === 'web_mobile' && whatsAppIsInstalled && userHasClickedDisplayWAWizard !== true)"
+            (click)="displayWhatsAppWizard()">
+                Display the wizard to connect WhatsApp
+            </span>
         </div>
+ 
+
 
         <div class="actions-btn-wpr">
             <!-- whatsAppIsInstalled >   {{whatsAppIsInstalled }} -->

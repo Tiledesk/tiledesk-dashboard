@@ -26,8 +26,12 @@ export class HomeWhatsappAccountComponent implements OnInit, OnChanges {
   private unsubscribe$: Subject<any> = new Subject<any>();
   @Input() whatsAppIsInstalled: boolean;
   @Input() whatsAppIsConnected: boolean;
+  @Input() solution_channel_for_child : string;
+  @Input() solution_for_child : string;
+  @Input() userHasClickedDisplayWAWizard:boolean;
   @Output() onClickOnGoToLearnMoreOrManageApp = new EventEmitter();
   @Output() onClickOnUnistallApp  = new EventEmitter();
+  @Output() onClickOnDisplayWhatsAppWizard  = new EventEmitter();
   apps: any;
   projectId: string;
   subscription: Subscription;
@@ -98,6 +102,9 @@ export class HomeWhatsappAccountComponent implements OnInit, OnChanges {
     console.log('[HOME-WA] ngOnChanges changes ', changes);
     console.log('[HOME-WA] ngOnChanges whatsAppIsInstalled ', this.whatsAppIsInstalled);
     console.log('[HOME-WA] ngOnChanges whatsAppIsConnected ', this.whatsAppIsConnected);
+    console.log('[HOME-WA] ngOnChanges solution_channel_for_child ', this.solution_channel_for_child);
+    console.log('[HOME-WA] ngOnChanges solution_for_child ', this.solution_for_child);
+    console.log('[HOME-WA] userHasClickedDisplayWAWizard ', this.userHasClickedDisplayWAWizard)
     this.getApps();
    }
 
@@ -300,11 +307,13 @@ export class HomeWhatsappAccountComponent implements OnInit, OnChanges {
     // }
   }
 
-  goToWhatsAppDetails() {
-    this.router.navigate(['project/' + this.projectId + '/app-store-install/' + this.whatsAppAppId + '/detail/h'])
+  // goToWhatsAppDetails() {
+  //   this.router.navigate(['project/' + this.projectId + '/app-store-install/' + this.whatsAppAppId + '/detail/h'])
+  // }
+
+  displayWhatsAppWizard() {
+    this.onClickOnDisplayWhatsAppWizard.emit()
   }
-
-
 
 
   installApp() {

@@ -78,7 +78,7 @@
 
                   </div>
 
-                  <!-- <div class="flex items-center">
+                   <div class="flex items-center">
                     <div *ngIf="project_plan_badge" class="home-project-plan-badge" [ngClass]="{
                       'free-plan-badge': current_selected_prjct?.plan_badge_background_type === 'free_plan_badge', 
                       'a-plan-badge':  current_selected_prjct?.plan_badge_background_type === 'a_plan_badge',
@@ -88,7 +88,7 @@
                       }">
                       {{ prjct_profile_name }}
                     </div>
-                  </div> -->
+                  </div> 
                 </div>
               </div>
               <!-- ---------------------------------- -->
@@ -295,37 +295,55 @@
           </div>
         </div> <!-- ./ bg-card -->
         <div class="home-blocks-wpr">
-          <div class="home--blocks">
+          <div class="home--blocks" id="homeBlocks">
 
             <appdashboard-home-whatsapp-account-wizard style="margin-bottom: 18px;" *ngIf="displayWhatsappAccountWizard"
-              (goToConnectWA)="goToConnectWA()" (goToCreateChatbot)="goToCreateChatbot()"
-              (hasTestedBotOnWa)="hasTestedBotOnWa()" [whatsAppIsConnected]="whatsAppIsConnected"
-              [wadepartmentName]="wadepartmentName" [chatbotConnectedWithWA]='chatbotConnectedWithWA'
-              [waBotId]="waBotId" [use_case_for_child]="use_case_for_child"
-              [solution_channel_for_child]="solution_channel_for_child" [solution_for_child]="solution_for_child"
-              [testBotOnWA]="testBotOnWA" [botIdForTestWA]="botIdForTestWA"
+              
+              (goToConnectWA)="goToConnectWA()" 
+              (goToCreateChatbot)="goToCreateChatbot()"
+              (hasTestedBotOnWa)="hasTestedBotOnWa()" 
+              [whatsAppIsConnected]="whatsAppIsConnected"
+              [wadepartmentName]="wadepartmentName" 
+              [chatbotConnectedWithWA]='chatbotConnectedWithWA'
+              [waBotId]="waBotId" 
+              [use_case_for_child]="use_case_for_child"
+              [solution_channel_for_child]="solution_channel_for_child" 
+              [solution_for_child]="solution_for_child"
+              [testBotOnWA]="testBotOnWA" 
+              [botIdForTestWA]="botIdForTestWA"
               (hasCreatedChatbot)="hasCreatedChatbot($event)">
             </appdashboard-home-whatsapp-account-wizard>
 
 
             <appdashboard-home-convs-graph *ngIf="displayAnalyticsConvsGraph"
-              [displayAnalyticsConvsGraph]="displayAnalyticsConvsGraph" [projectId]="projectId" [USER_ROLE]="USER_ROLE">
+              [displayAnalyticsConvsGraph]="displayAnalyticsConvsGraph" 
+              [projectId]="projectId" 
+              [USER_ROLE]="USER_ROLE">
             </appdashboard-home-convs-graph>
 
 
-            <appdashboard-home-analytics-indicator *ngIf="displayAnalyticsIndicators" [projectId]="projectId"
+            <appdashboard-home-analytics-indicator *ngIf="displayAnalyticsIndicators" 
+              [projectId]="projectId"
               [USER_ROLE]="USER_ROLE">
             </appdashboard-home-analytics-indicator>
 
             <appdashboard-home-whatsapp-account *ngIf="displayConnectWhatsApp" style=" z-index: 11;"
-              #childWhatsappAccount (onClickOnUnistallApp)="onClickOnUnistallApp()"
+              #childWhatsappAccount 
+              (onClickOnUnistallApp)="onClickOnUnistallApp()"
               (onClickOnGoToLearnMoreOrManageApp)="onClickOnGoToLearnMoreOrManageApp()"
-              [whatsAppIsInstalled]="whatsAppIsInstalled" [whatsAppIsConnected]="whatsAppIsConnected">
+              (onClickOnDisplayWhatsAppWizard)="onClickOnDisplayWhatsAppWizard()"
+              [whatsAppIsInstalled]="whatsAppIsInstalled" 
+              [whatsAppIsConnected]="whatsAppIsConnected"
+              [solution_channel_for_child]="solution_channel_for_child" 
+              [solution_for_child]="solution_for_child"
+              [userHasClickedDisplayWAWizard]="userHasClickedDisplayWAWizard">
             </appdashboard-home-whatsapp-account>
 
             <appdashboard-home-create-chatbot #childCreateChatbot *ngIf="displayCreateChatbot"
-              [use_case_for_child]="use_case_for_child" [solution_channel_for_child]="solution_channel_for_child"
-              [waBotId]="waBotId" [wadepartmentName]="wadepartmentName"
+              [use_case_for_child]="use_case_for_child" 
+              [solution_channel_for_child]="solution_channel_for_child"
+              [waBotId]="waBotId" 
+              [wadepartmentName]="wadepartmentName"
               [chatbotConnectedWithWA]="chatbotConnectedWithWA"
               (botHookedToDefaultDept)="botHookedToDefaultDept($event)">
             </appdashboard-home-create-chatbot>

@@ -919,7 +919,7 @@ export class ProjectService {
   }
 
 
-  updateProjectUserHasRemovedWA() {
+  updateProjectUserHasRemovedWA(hasuninstalled) {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -929,8 +929,25 @@ export class ProjectService {
 
     let url = this.SERVER_BASE_PATH + "projects/" + this.projectID + "/attributes"
     console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH USER HAS UNISTALLED WA - URL', url);
-    const body = { userHasReMovedWA: true }
+    const body = { userHasReMovedWA: hasuninstalled }
     console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH USER HAS UNISTALLED WA - BODY', body);
+    return this._httpclient
+      .patch(url, JSON.stringify(body), httpOptions)
+  }
+
+
+  updateProjectWithDisplayWAWizard(displaywawizard) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    let url = this.SERVER_BASE_PATH + "projects/" + this.projectID + "/attributes"
+    console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH DISPLAY WA WIZARD - URL', url);
+    const body = { displayWAWizard: displaywawizard }
+    console.log('[PROJECT-SERV] - UPDATE PRJCT WITH DISPLAY WA WIZARD - BODY', body);
     return this._httpclient
       .patch(url, JSON.stringify(body), httpOptions)
   }
