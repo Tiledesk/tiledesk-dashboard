@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.4.52
+- Deploys in production
+- Adds the actions "WhatsApp Static" and "WhatsApp by attribute"
+
 ### 2.4.51
 - Deploys in production
 - Improvements and bug fixing
