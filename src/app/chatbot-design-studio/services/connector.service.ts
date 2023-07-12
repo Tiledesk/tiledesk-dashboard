@@ -111,8 +111,8 @@ export class ConnectorService {
     }
   }
   
-   /** */
-   deleteConnector(connectorID){
+  /** */
+  deleteConnector(connectorID){
     this.tiledeskConnectors.deleteConnector(connectorID);
   }
 
@@ -134,7 +134,6 @@ export class ConnectorService {
   deleteConnectorFromAction(actionId, connId){
     this.tiledeskConnectors.deleteConnectorFromAction(actionId, connId);
   }
-  
 
   movedConnector(elem){
     console.log('movedConnector: ', elem);

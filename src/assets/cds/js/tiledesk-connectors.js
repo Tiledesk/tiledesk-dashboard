@@ -464,18 +464,14 @@ export class TiledeskConnectors {
           }
         });
         connector.addEventListener('mouseleave', (e) => {
-          console.log("mouseleave e", e);
+          // console.log("mouseleave e", e);
           if (!e.currentTarget.classList.contains(that.classes["connector_selected"])) {
             e.currentTarget.setAttributeNS(null, "class", that.classes["connector"]);
           }
         });
         connector.addEventListener('click', (e) => {
 
-          // that.#setEventListners();
-
-         
-
-          console.log("clicked -> ", e, that);
+          // console.log("clicked -> ", e, that);
           if (that.selectedConnector) {
             that.selectedConnector.setAttributeNS(null, "class", that.classes["connector"]);
             console.log("ripristino  class connector -> ", that.selectedConnector);

@@ -152,22 +152,33 @@ export class CdsIntentComponent implements OnInit, OnChanges {
 
   /** EVENTS  */
   onDropAction(event: CdkDragDrop<string[]>) {
+    console.log('onDropAction: ', event);
     // console.log('event:', event, 'previousContainer:', event.previousContainer, 'event.container:', event.container);
     if (event.previousContainer === event.container) {
-      console.log('onDropAction: ', event);
+      // moving action in the same intent
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
       try {
-        let actionType: any = event.previousContainer.data[event.previousIndex];
-        let newAction = this.intentService.createAction(actionType.value.type);
-        this.intentActionList.splice(event.currentIndex, 0, newAction);
-        // console.log('intentActionList:', this.intentActionList);
+        let action: any = event.previousContainer.data[event.previousIndex];
+        if(action._tdActionType){
+          // moving action from another intent
+          event.previousContainer.data.splice(event.previousIndex, 1);
+          this.intentActionList.splice(event.currentIndex, 0, action);
+          // delete connectors
+          // elimino connettori 
+        //  passo id action
+        //  var intentId = this.idAction.substring(0, this.idAction.indexOf('/'));
+        //  this.connectorService.deleteConnectorFromAction(intentId, idConnector);
+        } else if(action.value && action.value.type) {
+          // moving new action in intent from panel elements
+          let newAction = this.intentService.createAction(action.value.type);
+          this.intentActionList.splice(event.currentIndex, 0, newAction);
+        }
       } catch (error) {
         console.error(error);
       }
     }
     this.intent.actions = this.intentActionList;
-
     const fromEle = document.getElementById(this.intent.intent_id);
     this.connectorService.movedConnector(fromEle);
     this.saveIntent.emit(this.intent);

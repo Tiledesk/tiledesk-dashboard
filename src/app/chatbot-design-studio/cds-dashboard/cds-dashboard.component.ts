@@ -520,7 +520,7 @@ export class CdsDashboardComponent implements OnInit {
 
   /** */
   onMouseDownIntent(element): void{
-    console.log("onMouseDownIntent:  element: ",element);
+    // console.log("onMouseDownIntent:  element: ",element);
     const x = element.offsetLeft; 
     const y = element.offsetTop; 
     element.style.zIndex = 2;
@@ -556,18 +556,15 @@ export class CdsDashboardComponent implements OnInit {
   private async addNewIntent(pos, actionType){
     this.CREATE_VIEW = true;
     this.intentSelected = this.intentService.createIntent(this.id_faq_kb, actionType);
-    this.intentSelected.id = 'new';
-    this.intentService.setIntentPosition('new', pos);
+    this.intentSelected.intent_id = 'new';
+    this.intentService.setIntentPosition(this.intentSelected.intent_id, pos);
     const newIntent = await this.intentService.addNewIntent(this.id_faq_kb, this.intentSelected);
     this.intentSelected.id = newIntent.id;
-    console.log('creatIntent: OK ', newIntent);
+    console.log('creatIntent: OK ', newIntent, pos);
     if(newIntent){
-      // aggiungo la action all'intent
-
       // !!! il valore di listOfIntents è bindato nel costructor con subscriptionListOfIntents !!! //
       this.intentService.setIntentPosition(newIntent.intent_id, pos);
       this.setDragAndListnerEvent(this.intentSelected);
-      // this.TiledeskStage.setDragElement(idNewIntent);
     }
     return newIntent;
   }
@@ -767,18 +764,34 @@ export class CdsDashboardComponent implements OnInit {
     console.log('droppedElementOnStage!!!!!', event);
     let actionType = '';
     let pos = this.connectorService.tiledeskConnectors.logicPoint(event.dropPoint);
-    // let pos = this.dragDropService.positionElementOnStage(event.dropPoint, this.receiverElementsDroppedOnStage, this.drawerOfItemsToZoomAndDrag);
-    console.log('pos::: ', pos);
+    pos.x = pos.x - 132;
+    // console.log('pos::: ', pos);
     try {
       let action: any = event.previousContainer.data[event.previousIndex];
       actionType = action.value.type;
-      console.log('actionType::: ', actionType);
+      // console.log('actionType::: ', actionType);
     } catch (error) {
       console.error('ERROR: ', error);
     }
     await this.addNewIntent(pos, actionType);
-    // const idNewIntent = this.addNewIntent(pos, actionType);
   }
+
+  // async onDroppedElementFromIntentToStage(event: CdkDragDrop<string[]>) {
+  //   console.log('onDroppedElementFromIntentToStage!!!!!', event);
+  //   let actionType = '';
+  //   let pos = this.connectorService.tiledeskConnectors.logicPoint(event.dropPoint);
+  //   // let pos = this.dragDropService.positionElementOnStage(event.dropPoint, this.receiverElementsDroppedOnStage, this.drawerOfItemsToZoomAndDrag);
+  //   console.log('pos::: ', pos);
+  //   try {
+  //     let action: any = event.previousContainer.data[event.previousIndex];
+  //     actionType = action.value.type;
+  //     console.log('actionType::: ', actionType);
+  //   } catch (error) {
+  //     console.error('ERROR: ', error);
+  //   }
+  //   await this.addNewIntent(pos, actionType);
+  //   // const idNewIntent = this.addNewIntent(pos, actionType);
+  // }
  
 
 
