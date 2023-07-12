@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ActionEmailComponent } from './action-email.component';
+import { CdsActionEmailComponent } from './cds-action-email.component';
 
-describe('ActionEmailComponent', () => {
-  let component: ActionEmailComponent;
+describe('CdsActionEmailComponent', () => {
+  let component: CdsActionEmailComponent;
   let fixture: ComponentFixture<ActionEmailComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ActionEmailComponent ]
+      declarations: [ CdsActionEmailComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ActionEmailComponent);
+    fixture = TestBed.createComponent(CdsActionEmailComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

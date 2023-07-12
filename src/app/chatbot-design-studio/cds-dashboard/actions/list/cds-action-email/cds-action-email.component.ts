@@ -76,11 +76,6 @@ export class CdsActionEmailComponent implements OnInit, OnChanges {
   // http://jsfiddle.net/timdown/jwvha/527/
 
 
-  onOpenActionDetails() {
-    console.log( 'onOpenActionDetails' )
-    this.controllerService.openActionDetailPanel('email');
-  }
-
 
 
 }
