@@ -1,18 +1,18 @@
-<div class="content-panel-intent-detail">
+<div *ngIf="previewMode" class="cds-action-content" (click)="onOpenActionDetails()">
+
+
+</div>
+
+<div *ngIf="!previewMode" class="content-panel-intent-detail" (click)="onOpenActionDetails()">
 
     <div class="text-editor-wrapper">
         <div class="text-editor">
             <div class="email-field-box">
                 <label class="title-label">To</label>
                 <!-- <div class="text-editor-wpr" style="position: relative;"> -->
-                    <!-- [limitCharsText]="150"  -->
-                    <cds-textarea class="to-text-area" 
-                    [emoijPikerBtn]="false"
-                    [textLimitBtn]="false"
-                    [text]="actionTo" 
-                    [minRow]="1"
-                    [maxRow]="1"
-                    popoverVerticalAlign="above" 
+                <!-- [limitCharsText]="150"  -->
+                <cds-textarea class="to-text-area" [emoijPikerBtn]="false" [textLimitBtn]="false" [text]="actionTo"
+                    [minRow]="1" [maxRow]="1" popoverVerticalAlign="above"
                     (changeTextarea)="onEditableDivTextChange($event, 'to')">
                 </cds-textarea>
 
@@ -21,7 +21,7 @@
                     <mat-hint *ngIf="email_error">Email must be valid</mat-hint>
                 </mat-form-field> -->
 
-          
+
             </div>
         </div>
     </div>
@@ -32,13 +32,8 @@
                 <label class="title-label">Subject</label>
 
 
-                <cds-textarea class="subject-text-area" 
-                    [emoijPikerBtn]="false"
-                    [limitCharsText]="150" 
-                    [text]="actionSubject" 
-                    [minRow]="1"
-                    [maxRow]="1"
-                    popoverVerticalAlign="above" 
+                <cds-textarea class="subject-text-area" [emoijPikerBtn]="false" [limitCharsText]="150"
+                    [text]="actionSubject" [minRow]="1" [maxRow]="1" popoverVerticalAlign="above"
                     (changeTextarea)="onEditableDivTextChange($event, 'subject')">
                 </cds-textarea>
             </div>
@@ -53,12 +48,8 @@
         <!-- -->
         <!-- <text-editable-div class="editable-div" [minHeightContent]="110" [emoijPikerBtn]="true" [setAttributeBtn]="true"  [text]="actionBody" [textLimitBtn]="false" [textLimit]="1024"  (textChanged)="onEditableDivTextChange($event, 'text')"> </text-editable-div> -->
 
-        <cds-textarea class="body-text-area" 
-            [limitCharsText]="1024" 
-            [emoijPikerBtn]="false"
-            [text]="actionBody" 
-            [minRow]="4"
-            (changeTextarea)="onEditableDivTextChange($event, 'text')">
+        <cds-textarea class="body-text-area" [limitCharsText]="1024" [emoijPikerBtn]="false" [text]="actionBody"
+            [minRow]="4" (changeTextarea)="onEditableDivTextChange($event, 'text')">
         </cds-textarea>
     </div>
 

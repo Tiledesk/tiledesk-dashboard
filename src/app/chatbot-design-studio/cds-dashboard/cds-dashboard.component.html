@@ -74,6 +74,20 @@
             [button] = buttonSelected
             (saveButton) = onSaveButton($event)>
         </cds-panel-button-configuration>
+
+
+        <cds-action-detail *ngIf=isIntentElementSelected
+            class="panel-intent-detail-wrapper cds-generic-panel"
+            (click)="onClickPanelIntentDetail()"
+            [class.sidebar-opened]="IS_OPEN"
+            [isOpenPanel] = "isOpenPanelButtonConfig"
+            [listOfActions]="listOfActions" 
+            [elementIntentSelected]="elementIntentSelected"
+            [intentSelected]="intentSelected" 
+            [showSpinner]="showSpinner"
+            (closeAndSavePanelIntentDetail)="onCloseAndSavePanelIntentDetail($event)"
+            (clickedInsidePanelIntentDetail)="onClickedInsidePanelIntentDetail()">
+        </cds-action-detail>
         <!-- 
             (closeButtonPanel) = onClosePanel() 
             [listOfActions] = listOfActions

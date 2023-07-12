@@ -4,11 +4,14 @@
   position: relative;
   display: flex;
   flex-direction: column;
+  width: 100%;
 }
 
 .box-action {
   position: relative;
-  display: block;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 100%;
   min-height: 30px;
   margin-bottom: 10px;
@@ -154,9 +157,6 @@
         border-radius: 5px;
         overflow-x: hidden;
         margin: auto 0;
-    }
-    .pic-header-title-input {
-        width: 240px;
     }
     .pic-title-text:hover {
         background: rgb(221, 212, 183);

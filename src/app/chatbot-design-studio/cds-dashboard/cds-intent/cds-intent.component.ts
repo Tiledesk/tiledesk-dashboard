@@ -45,6 +45,7 @@ export class CdsIntentComponent implements OnInit, OnChanges {
 
   // connector: any;
   intentElement: any;
+  listOfIntents: Array<Intent>
   idSelectedAction: string;
   intentActionList: Array<any>;
   arrayActionsForDrop = [];
@@ -67,6 +68,7 @@ export class CdsIntentComponent implements OnInit, OnChanges {
 
   ngAfterViewInit(){
     this.setIntentSelected();
+    this.listOfIntents = this.intentService.intents.value
   }
 
 

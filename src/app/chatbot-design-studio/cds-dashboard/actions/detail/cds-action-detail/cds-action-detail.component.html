@@ -1,5 +1,6 @@
 <div class="panel-intent-detail" (click)="onClickInside()">
     <div class="header-panel">
+        
         <cds-action-description-2 
             *ngIf="elementIntentSelectedType === typeIntentElement.ACTION"
             [actionSelected]="elementSelected"
@@ -7,6 +8,7 @@
             (closeIntent)="onCloseIntent()"
             (saveIntent)="onSaveIntent()">
         </cds-action-description-2>
+       
         <cds-action-description-2 
             *ngIf="elementIntentSelectedType === typeIntentElement.FORM"
             [elementType]="typeIntentElement.FORM"
@@ -14,6 +16,7 @@
             (closeIntent)="onCloseIntent()"
             (saveIntent)="onSaveIntent()">
         </cds-action-description-2>
+       
         <cds-action-description-2 
             *ngIf="elementIntentSelectedType === typeIntentElement.ANSWER"
             [elementType]="typeIntentElement.ANSWER"
@@ -21,6 +24,7 @@
             (closeIntent)="onCloseIntent()"
             (saveIntent)="onSaveIntent()">
         </cds-action-description-2>
+       
         <cds-action-description-2 
             *ngIf="elementIntentSelectedType === typeIntentElement.QUESTION"
             [elementType]="typeIntentElement.QUESTION"
@@ -66,11 +70,11 @@
                         [intents]="listOfActions">
                     </cds-action-intent-2>
             
-                    <!-- <cds-action-email *ngSwitchCase="typeAction.EMAIL"
+                    <cds-action-email-2 *ngSwitchCase="typeAction.EMAIL"
                         class="panel-response"
                         [action]="elementSelected"
                         [previewMode]="false">
-                    </cds-action-email> -->
+                    </cds-action-email-2>
                 
                     <cds-action-json-condition *ngSwitchCase="typeAction.JSON_CONDITION"
                         [action]="elementSelected"

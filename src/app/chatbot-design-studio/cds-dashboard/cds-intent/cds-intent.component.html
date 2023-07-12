@@ -9,6 +9,10 @@
                 </div>
             </div>
         </div>
+        <!-- <appdashboard-panel-intent-header
+            [intentSelected]="intent"
+            [listOfIntents]="listOfIntents">
+        </appdashboard-panel-intent-header> -->
 
     </div>
 
@@ -28,21 +32,25 @@
             [ngClass]="{'cds-action-active': idSelectedAction === action._tdActionId}"
             (click)="onSelectAction(action._tdActionId)">
             <!-- (keydown)="onDeleteAction($event)" -->
-            <div cdkDragHandle class="header-action">
-                <div class="icon-action">
+            <!-- <div cdkDragHandle class="header-action"> -->
+                <!-- <div class="icon-action">
                     <img [src]="getActionParams(action).src" [title]="getActionParams(action).name" />
                 </div>
                 <span class="label-action">
                     <div class="sc-irCEUn gzQaYi vf-canvas__step-item-label">
                         {{ getActionParams(action).name }}
                     </div>
-                </span>
-            </div>
+                </span> -->
+                <cds-action-description cdkDragHandle class="header-action"
+                    [elementType]="action._tdActionType">
+                </cds-action-description>
+
+            <!-- </div> -->
 
             
-            <div cdkDragDisabled class="body-action">
+            <div cdkDragDisabled class="body-action" [ngSwitch]="action._tdActionType">
 
-                <cds-action-intent  *ngIf="action._tdActionType == 'intent'"
+                <cds-action-intent  *ngSwitchCase="TYPE_ACTION.INTENT"
                     class="panel-response"
                     [intentSelected]="intent"
                     [connectorChanged]="connectorChanged"
@@ -50,7 +58,7 @@
                     (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-intent>
 
-                <cds-action-reply  *ngIf="action._tdActionType == 'reply'"
+                <cds-action-reply  *ngSwitchCase="TYPE_ACTION.REPLY"
                     class="panel-response"
                     [intentSelected]="intent"
                     [connector]="connector"
@@ -58,13 +66,23 @@
                     (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-reply>
 
-                <cds-action-email *ngIf="action._tdActionType == 'email'"
+                <!-- (openActionDetailPanel) = onOpenActionDetailsPanel($event) -->
+                <cds-action-email  *ngSwitchCase="TYPE_ACTION.EMAIL"
                     class="panel-response"
                     [intentSelected]="intent"
-                    [connector]="connector"
+                    [previewMode]="true"
                     [action]="action"
                     (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-email>
+
+                <cds-action-online-agents *ngSwitchCase="TYPE_ACTION.ONLINE_AGENTS"
+                    class="panel-response"
+                    [intentSelected]="intent"
+                    [connectorChanged]="connectorChanged"
+                    [listOfActions] = "listOfActions"    
+                    [action]="action"
+                    (updateAndSaveAction)="onUpdateAndSaveAction($event)">
+                </cds-action-online-agents>
 
             </div>
 
