@@ -202,9 +202,17 @@ export class TemplateDetailComponent implements OnInit {
       this.goToBotDetails()
       if (!isDevMode()) {
         if (window['analytics']) {
+
+          let userFullname = ''
+          if (this.user.firstname && this.user.lastname)  {
+            userFullname = this.user.firstname + ' ' + this.user.lastname
+          } else if (this.user.firstname && !this.user.lastname) {
+            userFullname = this.user.firstname
+          }
+
           try {
             window['analytics'].track('Use template', {
-              "username": this.user.firstname + ' ' + this.user.lastname,
+              "username": userFullname,
               "userId": this.user._id,
               "chatbotName": this.botname
             });
@@ -214,7 +222,7 @@ export class TemplateDetailComponent implements OnInit {
 
           try {
             window['analytics'].identify(this.user._id, {
-              name: this.user.firstname + ' ' + this.user.lastname,
+              name: userFullname,
               email: this.user.email,
               logins: 5,
 

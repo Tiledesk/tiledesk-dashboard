@@ -26,19 +26,66 @@ export class CreateProjectGsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.getLoggedUser()
+    this.getLoggedUserAndProjects()
   }
 
-
-  getLoggedUser() {
+  getLoggedUserAndProjects() {
     this.auth.user_bs.subscribe((user) => {
       if (user) {
+        this.getProjects(user)
         this.logger.log('[CREATE-PROJECT-GOOGLE-AUTH] USER  ', user)
         this.user = user
         // this.createNewProject(user)
         this.router.navigate(['/create-new-project']);
       }
     })
+  }
+
+
+  getProjects(user) {
+   
+    this.projectService.getProjects().subscribe((projects: any) => {
+      this.logger.log('[CREATE-PROJECT-GOOGLE-AUTH] getProjects PROJECTS ', projects);
+
+      if (projects && projects.length === 0) {
+        this.logger.log('[CREATE-PROJECT-GOOGLE-AUTH] THERE IS NOT PROJECTS ');
+
+        if (!isDevMode()) {
+          if (window['analytics']) {
+            try {
+              window['analytics'].page("Google sign up, onboarding", {
+    
+              });
+            } catch (err) {
+              this.logger.error('Google sign up, onboarding - error', err);
+            }
+            let userFullname = ''
+            if (user.firstname && user.lastname)  {
+              userFullname = user.firstname + ' ' + user.lastname
+            } else if (user.firstname && !user.lastname) {
+              userFullname = user.firstname
+            }
+            try {
+              window['analytics'].identify(user._id, {
+                name: userFullname,
+                email: user.email,
+                logins: 5,
+                plan: "Scale (trial)"
+              });
+            } catch (err) {
+              this.logger.error('Google sign up identify error', err);
+            }
+      
+          }
+        }
+       
+  
+      }
+    }, error => {
+      this.logger.error('[CREATE-PROJECT-GOOGLE-AUTH getProjects - ERROR ', error)
+    }, () => {
+      this.logger.log('[CREATE-PROJECT-GOOGLE-AUTH] getProjects - COMPLETE')
+    });
   }
 
 
@@ -113,9 +160,15 @@ export class CreateProjectGsComponent implements OnInit {
              this.logger.error('Google Auth project page error', err);
             }
 
+            let userFullname = ''
+            if (user.firstname && user.lastname)  {
+              userFullname = user.firstname + ' ' + user.lastname
+            } else if (user.firstname && !user.lastname) {
+              userFullname = user.firstname
+            }
             try {
               window['analytics'].identify(user._id, {
-                name: user.firstname + ' ' + user.lastname,
+                name: userFullname,
                 email: user.email,
                 logins: 5,
                 plan: "Scale (trial)"

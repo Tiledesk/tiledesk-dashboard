@@ -14,6 +14,7 @@ export class CDSTextareaComponent implements OnInit {
 
   @ViewChild('autosize') autosize: CdkTextareaAutosize;
   @ViewChild("addVariable") addVariable: SatPopover;
+  @ViewChild("emojiPicker") emojiPicker: SatPopover;
 
   @Input() placeholder: string = '';
   @Input() text: string = '';
@@ -21,7 +22,7 @@ export class CDSTextareaComponent implements OnInit {
   // @Input() textMessage: string;
   @Input() control: FormControl<string> = new FormControl();
   @Input() showUtils: boolean = true;
-  @Input() emoijPikerBtn: boolean = true;
+  @Input() emojiPikerBtn: boolean = true;
   @Input() setAttributeBtn: boolean = true;
   @Input() textLimitBtn: boolean = true;
   @Input() minRow: number = 2;
@@ -32,6 +33,7 @@ export class CDSTextareaComponent implements OnInit {
 
   @Output() changeTextarea = new EventEmitter();
   @Output() selectedAttribute = new EventEmitter();
+  @Output() selectedEmoji = new EventEmitter();
   @Output() clearSelectedAttribute = new EventEmitter();
 
   // Textarea //
@@ -46,7 +48,6 @@ export class CDSTextareaComponent implements OnInit {
   // strPlaceholder: string;
 
   public textArea: string = '';
-  public isEmojiPickerVisible: boolean = false;
   IS_ON_MOBILE_DEVICE = false;
   emojiPerLine: number = 8;
   emojiColor: string ="#ac8b2c";
@@ -145,6 +146,7 @@ export class CDSTextareaComponent implements OnInit {
   }
 
   openSetAttributePopover() {
+    // this.emojiPicker.toggle()
     this.elTextarea = this.autosize['_textareaElement'] as HTMLInputElement;
     this.elTextarea.focus()
   }
@@ -164,17 +166,14 @@ export class CDSTextareaComponent implements OnInit {
     elem.selectionEnd = cursor_pos + txt_to_add.length;
   }
 
-  onShowEmojiPicker(){
-    
-  }
-
   onAddEmoji(event){
     if(this.text){
       this.text = `${this.text}${event.emoji.native}`;
     } else {
       this.text = `${event.emoji.native}`;
     }
-    this.isEmojiPickerVisible = false;
+    this.emojiPicker.close();
+    this.selectedEmoji.emit(event)
   }
   
 

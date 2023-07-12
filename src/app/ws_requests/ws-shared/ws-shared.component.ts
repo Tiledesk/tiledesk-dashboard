@@ -430,11 +430,22 @@ export class WsSharedComponent implements OnInit {
   getConversationTypeInRequests(ws_requests) {
     this.conversationTypeInRequests = [];
     ws_requests.forEach(request => {
-      this.logger.log('[WS-SHARED] getConversationTypeInRequests request ', request)
+    // console.log('[WS-SHARED] getConversationTypeInRequests request ', request)
       let channelObjct = {}
+      // (request.channel.name !== '' || request.channel.name !== '' || request.channel.name === 'telegram' || request.channel.name === 'whatsapp' || request.channel.name === 'messenger' || request.channel.name === 'chat21')
+    
+  
       if (request.channel.name === 'chat21') {
         channelObjct['id'] =  "chat21";
         channelObjct['name'] =  "Chat";
+      }
+      if (request.channel.name === 'whatsapp') {
+        channelObjct['id'] =  "whatsapp";
+        channelObjct['name'] =  "WhatsApp";
+      }
+      if (request.channel.name === 'messenger') {
+        channelObjct['id'] =  "messenger";
+        channelObjct['name'] =  "Messenger";
       }
       if (request.channel.name === 'telegram') {
         channelObjct['id'] =  "telegram";
@@ -456,10 +467,10 @@ export class WsSharedComponent implements OnInit {
         if (index === -1) {
         this.conversationTypeInRequests.push(channelObjct)
       } else {
-        this.logger.log('[WS-SHARED] the element already exist')
+      //  console.log('[WS-SHARED] the element already exist')
       }
     })
-    this.logger.log('[WS-SHARED] getConversationTypeInRequests array ', this.conversationTypeInRequests)
+    // console.log('[WS-SHARED] getConversationTypeInRequests array ', this.conversationTypeInRequests)
   }
 
   getParticipantsInRequests(ws_requests) {

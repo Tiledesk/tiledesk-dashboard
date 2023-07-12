@@ -1198,6 +1198,8 @@
         "NoAgent": "لا وكيل"
     },
     "Tags": {
+        "LeadTags": "علامات جهة الاتصال",
+        "AddTagToContact": "إضافة علامة للاتصال",
         "Tags": "العلامات",
         "Tag": "بطاقة شعار",
         "TagName": "اسم العلامة",
@@ -2321,6 +2323,13 @@
     "IPAddress":"عنوان IP",
     "NoTAGAssignedToThisContactYet":"لم يتم تعيين TAG لجهة الاتصال هذه حتى الآن",
     "NoTAGAssignedYet":"لم يتم تعيين TAG حتى الآن",
+    "WidgetVisibility": "رؤية القطعة",
+    "DisplayWidget": "اعرض القطعة",
+    "OnPageChange": "عند تغيير الصفحة", 
+    "OnPageLoad": "عند تحميل الصفحة", 
+    "Always opened":"دائما مفتوح",
+    "Always Closed":"مغلق دائما",
+    "As last status": "كالوضع الأخير",
     "AddIntentPage": {
         "AddForm": "أضف النموذج",
         "SelectTemplateForm": "حدد نوعًا من النماذج بين هؤلاء المقترحين ، أو إنشاء شكل جديد",

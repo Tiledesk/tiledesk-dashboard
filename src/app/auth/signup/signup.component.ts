@@ -98,6 +98,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
       'required': 'Password is required.',
       'pattern': 'Password must be include at one letter and one number.',
       'minlength': 'Password must be at least 8 characters long.',
+      'maxlength': 'Password is too long.',
 
     },
     'firstName': {
@@ -162,6 +163,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
       ]],
       'password': ['', [
         // Validators.pattern('^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$'),
+        Validators.maxLength(512),
         Validators.minLength(8),
         Validators.required,
 
@@ -512,9 +514,16 @@ export class SignupComponent implements OnInit, AfterViewInit {
 
           if (!isDevMode()) {
             if (window['analytics']) {
+              let userFullname = ''
+              if (signupResponse.user.firstname && signupResponse.user.lastname)  {
+                userFullname = signupResponse.user.firstname + ' ' + signupResponse.user.lastname
+              } else if (signupResponse.user.firstname && !signupResponse.user.lastname) {
+                userFullname = signupResponse.user.firstname
+              }
+  
               try {
                 window['analytics'].identify(signupResponse.user._id, {
-                  name: signupResponse.user.firstname + ' ' + signupResponse.user.lastname,
+                  name: userFullname,
                   email: signupResponse.user.email,
                   logins: 5,
                 });
@@ -546,6 +555,9 @@ export class SignupComponent implements OnInit, AfterViewInit {
               // }
               // this.logger.log('[SIGN-UP] Signed Up button clicked event ', event)
 
+           
+  
+
               try {
                 window['analytics'].track("Signed Up", {
                   "type": "organic",
@@ -554,7 +566,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
                   "first_name": signupResponse.user.firstname,
                   "last_name": signupResponse.user.lastname,
                   "email": signupResponse.user.email,
-                  "username": signupResponse.user.firstname + ' ' + signupResponse.user.lastname,
+                  "username": userFullname,
                   'userId': signupResponse.user._id
                 });
               } catch (err) {
@@ -732,9 +744,16 @@ export class SignupComponent implements OnInit, AfterViewInit {
               this.logger.error('Signup Create project page error', err);
             }
 
+            let userFullname = ''
+            if (signupResponse.user.firstname && signupResponse.user.lastname)  {
+              userFullname = signupResponse.user.firstname + ' ' + signupResponse.user.lastname
+            } else if (signupResponse.user.firstname && !signupResponse.user.lastname) {
+              userFullname = signupResponse.user.firstname
+            }
+
             try {
               window['analytics'].identify(signupResponse.user._id, {
-                name: signupResponse.user.firstname + ' ' + signupResponse.user.lastname,
+                name: userFullname,
                 email: signupResponse.user.email,
                 logins: 5,
                 plan: "Scale (trial)"

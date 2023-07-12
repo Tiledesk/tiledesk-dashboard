@@ -1198,6 +1198,8 @@
         "NoAgent": "Агент жоқ"
     },
     "Tags": {
+        "LeadTags": "контактінің TAG",
+        "AddTagToContact": "Байланысқа тег қосыңыз",
         "Tags": "Тегтер",
         "Tag": "Тег",
         "TagName": "Тег аты",
@@ -2321,6 +2323,13 @@
     "IPAddress":"IP мекенжайы",
     "NoTAGAssignedToThisContactYet":"Бұл контактіге әлі бірде-бір TAG тағайындалмаған",
     "NoTAGAssignedYet":"Әлі TAG тағайындалмаған",
+    "WidgetVisibility": "Виджеттің көрінуі",
+    "DisplayWidget": "Виджет көрсету",
+    "OnPageChange": "Бет өзгерген кезде", 
+    "OnPageLoad": "Бет жүктелуде", 
+    "Always opened":"Әрқашан ашылды",
+    "Always Closed":"Әрқашан жабық",
+    "As last status": "Соңғы мәртебе ретінде",
     "AddIntentPage": {
         "AddForm": "Пішін қосу",
         "SelectTemplateForm": "Ұсынылғандар арасында пішін түрін таңдаңыз немесе жаңасын жасаңыз",

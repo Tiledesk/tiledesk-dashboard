@@ -6,7 +6,7 @@
             <div class="value-wrp">
                 <cds-textarea id="assignTo"
                     [textLimitBtn]="false"
-                    [emoijPikerBtn]="false"
+                    [emojiPikerBtn]="false"
                     [setAttributeBtn]="true"
                     [minRow]="1" [maxRow]="1"
                     [readonly]="true"
@@ -18,8 +18,9 @@
     </div>
     
     <operation 
-    [operation] = "action.operation" 
-    [listOfFunctions] = "listOfFunctions"
-    (onAddOperator)="onSelectedOperator()"></operation>
+        [operation] = "action.operation" 
+        [listOfFunctions] = "listOfFunctions"
+        (onAddOperator)="onSelectedOperator()">
+    </operation>
 
 </div>

@@ -1198,6 +1198,8 @@
         "NoAgent": "No agent"
     },
     "Tags": {
+        "LeadTags": "Lead Tags",
+        "AddTagToContact": "Add Tag to contact",
         "Tags": "Tags",
         "Tag": "Tag",
         "TagName": "Tag name",
@@ -2319,6 +2321,13 @@
     "IPAddress":"IP Address",
     "NoTAGAssignedToThisContactYet":"No TAG assigned to this contact yet",
     "NoTAGAssignedYet":"No TAG assigned yet",
+    "WidgetVisibility": "Widget Visibility",
+    "DisplayWidget": "Display Widget",
+    "OnPageChange": "On page change", 
+    "OnPageLoad": "On page load", 
+    "Always opened":"Always opened",
+    "Always Closed":"Always Closed",
+    "As last status": "As last status",
     "AddIntentPage": {
         "AddForm": "Add form",
         "SelectTemplateForm": "Select a type of form among those suggested, or create a new one",

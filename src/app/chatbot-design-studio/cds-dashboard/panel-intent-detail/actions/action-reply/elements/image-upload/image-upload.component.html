@@ -21,7 +21,7 @@
     
 </div>
 
-<div *ngIf="metadata.src">
+<div *ngIf="metadata.src" class="image-wrp">
     <img *ngIf="!isImageSvg" #imageUploaded id="imageUploaded" [src]="metadata.src" (change)="getDimensionImage()">
     <!-- <img *ngIf="isImageSvg" #imageUploaded id="imageUploaded" [src]="sanitizerUrlImage()" (change)="getDimensionImage()"> -->
 </div>

@@ -1198,6 +1198,8 @@
         "NoAgent": "Ingen agent"
     },
     "Tags": {
+        "LeadTags": "Kontakters Taggar",
+        "AddTagToContact": "Lägg till tagg till kontakt",
         "Tags": "Taggar",
         "Tag": "Märka",
         "TagName": "Taggnamn",
@@ -2321,6 +2323,13 @@
     "IPAddress":"IP-adress",
     "NoTAGAssignedToThisContactYet":"Ingen TAG har tilldelats den här kontakten ännu",
     "NoTAGAssignedYet":"Ingen TAG tilldelad än",
+    "WidgetVisibility": "Widgetsynlighet",
+    "DisplayWidget": "Visningswidget",
+    "OnPageChange": "På sidbyte", 
+    "OnPageLoad": "Vid sidladdning", 
+    "Always opened":"Alltid öppet",
+    "Always Closed":"Alltid stängt",
+    "As last status": "Som senaste status",
     "AddIntentPage": {
         "AddForm": "Lägga till formulär",
         "SelectTemplateForm": "Välj en typ av formulär bland de föreslagna eller skapa en ny",

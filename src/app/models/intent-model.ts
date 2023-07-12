@@ -1,4 +1,4 @@
-import { TYPE_OPERATOR } from './../chatbot-design-studio/utils';
+import { TYPE_BUTTON, TYPE_OPERATOR, TYPE_URL } from './../chatbot-design-studio/utils';
 import { TYPE_ACTION, TYPE_ATTACHMENT, TYPE_METHOD_REQUEST, TYPE_MATH_OPERATOR } from '../chatbot-design-studio/utils';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -329,7 +329,6 @@ export class MessageWithWait extends Message {
     }
 }
 
-
 export class MessageAttributes {
     attachment: Attachment;
     constructor() {
@@ -343,11 +342,13 @@ export class Metadata {
     width?: number | string;
     height?: number | string; 
     type?: string;
+    target?: string;
 }
 
 export class Attachment {
     type: string;
-    buttons: Button[];
+    buttons?: Button[];
+    gallery?: GalleryElement[];
     constructor() {
         this.type = TYPE_ATTACHMENT.TEMPLATE;
         this.buttons = [];
@@ -362,6 +363,13 @@ export interface Button {
     action?: string,
     attributes?: any,
     show_echo?: boolean
+}
+
+export interface GalleryElement{
+    preview: Metadata;
+    title: string;
+    description: string;
+    buttons: Button[]
 }
 
 export class Form {

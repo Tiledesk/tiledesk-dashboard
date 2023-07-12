@@ -1198,6 +1198,8 @@
         "NoAgent": "Aucun agent"
     },
     "Tags": {
+        "LeadTags": "Balises du contact",
+        "AddTagToContact": "Ajouter un tag au contact",
         "Tags": "Balises",
         "Tag": "Balise",
         "TagName": "Nom de la balise",
@@ -2321,6 +2323,13 @@
     "IPAddress":"Adresse IP",
     "NoTAGAssignedToThisContactYet":"Aucun TAG attribué à ce contact pour le moment",
     "NoTAGAssignedYet":"Aucun TAG n'a encore été attribué",
+    "WidgetVisibility": "Visibilité des widgets",
+    "DisplayWidget": "Afficher le widget",
+    "OnPageChange": "Au changement de page", 
+    "OnPageLoad": "Au chargement de la page", 
+    "Always opened":"Toujours ouvert",
+    "Always Closed":"Toujours fermé",
+    "As last status": "Comme dernier statut",
     "AddIntentPage": {
         "AddForm": "Ajouter le formulaire",
         "SelectTemplateForm": "Sélectionnez un type de forme parmi ceux suggérés, ou créez-en un nouveau",

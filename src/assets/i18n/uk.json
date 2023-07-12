@@ -1198,6 +1198,8 @@
         "NoAgent": "Немає агента"
     },
     "Tags": {
+        "LeadTags": "Теги контакту",
+        "AddTagToContact": "Додати тег до контакту",
         "Tags": "Мітки",
         "Tag": "Мітка",
         "TagName": "Ім'я тега",
@@ -2321,6 +2323,13 @@
     "IPAddress":"IP-адреса",
     "NoTAGAssignedToThisContactYet":"Цього контакту ще не призначено TAG",
     "NoTAGAssignedYet":"Теги ще не призначені",
+    "WidgetVisibility": "Віджет Видимість",
+    "DisplayWidget": "Віджет дисплея",
+    "OnPageChange": "На сторінці зміни",
+    "OnPageLoad": "При завантаженні сторінки",
+    "Always opened":"Завжди відкрита",
+    "Always Closed":"Завжди закрито",
+    "As last status": "Як останній статус",  
     "AddIntentPage": {
         "AddForm": "Додати форму",
         "SelectTemplateForm": "Виберіть тип форми серед запропонованих або створіть новий",

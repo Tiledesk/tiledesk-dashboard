@@ -906,9 +906,16 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
           this.logger.error('track [NAVBAR] Update plan error', err);
         }
 
+        let userFullname = ''
+        if (this.user.firstname && this.user.lastname)  {
+          userFullname = this.user.firstname + ' ' + this.user.lastname
+        } else if (this.user.firstname && !this.user.lastname) {
+          userFullname = this.user.firstname
+        }
+
         try {
           window['analytics'].identify(this.user._id, {
-            name: this.user.firstname + ' ' + this.user.lastname,
+            name: userFullname,
             email: this.user.email,
             logins: 5,
             plan: this.prjct_profile_name_for_segment,
