@@ -75,9 +75,7 @@ export class CdsIntentComponent implements OnInit, OnChanges {
   ngOnDestroy() {
   }
 
-  test() {
-    console.log('HEY !!!!!! ')
-  }
+
   ngOnChanges(changes: SimpleChanges){
 
     // if (changes.connectorChanged) {
