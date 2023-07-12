@@ -69,6 +69,17 @@
                         class="panel-response"
                         [action]="elementSelected">
                     </cds-action-email>
+
+                    <cds-action-whatsapp-static *ngSwitchCase="typeAction.WHATSAPP_STATIC"
+                        class="panel-response"
+                        [action]="elementSelected"
+                        [project_id]="project_id">
+                    </cds-action-whatsapp-static>
+
+                    <cds-action-whatsapp-attribute *ngSwitchCase="typeAction.WHATSAPP_ATTRIBUTE"
+                        class="panel-response"
+                        [action]="elementSelected">
+                    </cds-action-whatsapp-attribute>
                 
                     <cds-action-json-condition *ngSwitchCase="typeAction.JSON_CONDITION"
                         [action]="elementSelected"

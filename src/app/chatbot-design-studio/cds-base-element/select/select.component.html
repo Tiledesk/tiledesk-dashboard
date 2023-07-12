@@ -1,31 +1,55 @@
 <div class="select-bot-box">
-    <ng-select 
-        #ngSelect
-        class = "form-control-select" 
-        appendTo="body"
-        [searchable] = true
-        [editableSearchTerm]= false
+    <ng-select #ngSelect 
+        class="form-control-select" 
+        appendTo="body" 
+        [searchable]=true 
+        [editableSearchTerm]=false
         [clearable]="clearable" 
-        [items] = "items" 
-        [bindLabel]="bindLabelSelect"
+        [items]="items" 
+        [bindLabel]="bindLabelSelect" 
         [bindValue]="bindValueSelect"
-        [(ngModel)] = "itemSelected"
-        [placeholder]="placeholder"
-        (clear)="onResetValue()"
+        [(ngModel)]="itemSelected" 
+        [placeholder]="placeholder" 
+        (clear)="onResetValue()" 
         (open)="onOpen()"
-        (close)="onClose()"
-        (change) = "onChangeActionButton($event)">
+        (close)="onClose()" 
+        (change)="onChangeActionButton($event)">
         <ng-template ng-label-tmp let-item="item">
-            <span class="material-icons" *ngIf="item['icon']"
+
+            <div style="width: 100%; display: flex; flex-direction: column;">
+                <div style="width: 100%; display: flex; flex-direction: row;">
+                    <span class="material-icons" *ngIf="item['icon']"
+                        [class.intent-start]="item[bindLabelSelect] === 'start'"
+                        [class.intent-defaultFallback]="item[bindLabelSelect] === 'defaultFallback'">{{item['icon']}}</span>
+                    <span class="label-select">{{item[bindLabelSelect]}}</span>
+                    <span *ngIf="optionalBindAdditionalText" class="label-select-option">{{item[optionalBindAdditionalText]}}</span>
+                </div>
+            </div>
+            <!-- <span class="material-icons" *ngIf="item['icon']"
             [class.intent-start]="item[bindLabelSelect] === 'start'"
             [class.intent-defaultFallback]="item[bindLabelSelect] === 'defaultFallback'">{{item['icon']}}</span>
-            <span>  {{item[bindLabelSelect]}} </span>
+            <span>  {{item[bindLabelSelect]}} </span> -->
         </ng-template>
         <ng-template ng-option-tmp let-item="item" let-index="index">
+
+            <div style="width: 100%; display: flex; flex-direction: column;">
+                <div style="width: 100%; display: flex; flex-direction: row;">
+                    <span class="material-icons" *ngIf="item['icon']"
+                        [class.intent-start]="item[bindLabelSelect] === 'start'"
+                        [class.intent-defaultFallback]="item[bindLabelSelect] === 'defaultFallback'">{{item['icon']}}</span>
+                    <span class="label-select">{{item[bindLabelSelect]}}</span>
+                    <span *ngIf="optionalBindAdditionalText" class="label-select-option">{{item[optionalBindAdditionalText]}}</span>
+                </div>
+                <div style="width: 100%; display: flex; flex-direction: row;">
+                    <!-- <span *ngIf="item.description" class="description">{{ item.description }}</span> -->
+                    <span *ngIf="optionalBindDescription" class="label-select-option description">{{item[optionalBindDescription]}}</span>
+                </div>
+            </div>
+            <!--             
             <span class="material-icons" *ngIf="item['icon']"
                 [class.intent-start]="item[bindLabelSelect] === 'start'"
                 [class.intent-defaultFallback]="item[bindLabelSelect] === 'defaultFallback'">{{item['icon']}}</span>
-            <span>  {{item[bindLabelSelect]}} </span>
+            <span>  {{item[bindLabelSelect]}} </span> -->
         </ng-template>
     </ng-select>
     <!-- <ng-select 

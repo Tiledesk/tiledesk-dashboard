@@ -10,7 +10,7 @@ import { ActivitiesService } from './activities/activities-service/activities.se
 import { MapRequestComponent } from './map-request/map-request.component';
 import { MetricsComponent } from './analytics/metrics/metrics.component';
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, APP_INITIALIZER } from '@angular/core';
+import { NgModule, APP_INITIALIZER, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 
 import { RouterModule } from '@angular/router';
@@ -713,7 +713,8 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
   ],
   bootstrap: [
     AppComponent
-  ]
+  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AppModule {
   // constructor() {
