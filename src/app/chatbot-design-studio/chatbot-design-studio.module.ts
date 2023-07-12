@@ -41,7 +41,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { CdsDashboardComponent } from './cds-dashboard/cds-dashboard.component';
 import { PanelReplyToolsComponent } from './cds-dashboard/panel-intent-detail/actions/action-reply/panel-reply-tools/panel-reply-tools.component';
 import { ActionReplyComponent } from './cds-dashboard/panel-intent-detail/actions/action-reply/action-reply.component';
-import { CdsActionReplyTextComponent } from './cds-dashboard/actions/cds-action-reply/elements/cds-action-reply-text/cds-action-reply-text.component';
+import { CdsActionReplyTextComponent } from './cds-dashboard/actions/list/cds-action-reply/elements/cds-action-reply-text/cds-action-reply-text.component';
 import { DelaySliderComponent } from './cds-dashboard/base-elements/delay-slider/delay-slider.component';
 // import { ButtonConfigurationPanelComponent } from './dashboard/button-configuration-panel/button-configuration-panel.component';
 import { ImageResponseComponent } from './cds-dashboard/panel-intent-detail/actions/action-reply/reply-types/image-response/image-response.component';
@@ -119,11 +119,13 @@ import { CdsPanelElementsComponent } from './cds-dashboard/cds-panel-elements/cd
 import { CdsPanelDetailComponent } from './cds-dashboard/cds-panel-detail/cds-panel-detail.component';
 import { CdsPanelActionsComponent } from './cds-dashboard/cds-panel-actions/cds-panel-actions.component';
 import { CdsPanelIntentListComponent } from './cds-dashboard/cds-panel-intent-list/cds-panel-intent-list.component';
-import { CdsActionIntentComponent } from './cds-dashboard/actions/cds-action-intent/cds-action-intent.component';
+import { CdsActionIntentComponent } from './cds-dashboard/actions/list/cds-action-intent/cds-action-intent.component';
 import { CdsFloatingMenuComponent } from './cds-dashboard/cds-floating-menu/cds-floating-menu.component';
-import { CdsActionReplyComponent } from './cds-dashboard/actions/cds-action-reply/cds-action-reply.component';
+import { CdsActionReplyComponent } from './cds-dashboard/actions/list/cds-action-reply/cds-action-reply.component';
 import { CdsConnectorComponent } from './cds-dashboard/base-elements/cds-connector/cds-connector.component';
-import { CdsActionReplyToolsComponent } from './cds-dashboard/actions/cds-action-reply/elements/cds-action-reply-tools/cds-action-reply-tools.component';
+import { CdsActionReplyToolsComponent } from './cds-dashboard/actions/list/cds-action-reply/elements/cds-action-reply-tools/cds-action-reply-tools.component';
+import { CdsActionOnlineAgentsComponent } from './cds-dashboard/actions/list/cds-action-online-agents/cds-action-online-agents.component';
+import { CdsActionDescriptionComponent } from './cds-dashboard/actions/list/cds-action-description/cds-action-description.component';
 
 
 @NgModule({
@@ -195,6 +197,8 @@ import { CdsActionReplyToolsComponent } from './cds-dashboard/actions/cds-action
     CdsHeaderComponent,
     CdsPopupComponent,
     CdsModalActivateBotComponent,
+    
+    
     CdsIntentComponent,
     CdsPanelElementsComponent,
     CdsPanelDetailComponent,
@@ -204,7 +208,9 @@ import { CdsActionReplyToolsComponent } from './cds-dashboard/actions/cds-action
     CdsFloatingMenuComponent,
     CdsActionReplyComponent,
     CdsConnectorComponent,
-    CdsActionReplyToolsComponent
+    CdsActionReplyToolsComponent,
+    CdsActionOnlineAgentsComponent,
+    CdsActionDescriptionComponent
   ],
   imports: [
     A11yModule,
