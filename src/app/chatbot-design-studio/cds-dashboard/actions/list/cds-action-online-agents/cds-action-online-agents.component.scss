@@ -1,21 +1,29 @@
 @import "./src/assets/sass/cds/_variables.scss";
 
 .cds-action-content{
+  // position: relative;
+  padding: 0px 10px;
+}
+
+.previewContent{
   position: relative;
-  padding: 10px;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: flex-end;
+
+  .title-label{
+   color: #6c6859;
+   font-size: 12px; 
+  }
 }
 
-cds-connector.connector-true{
-  position: absolute;
-  right: -15px;
-  top: calc(25% - 10px);
-}
-
+cds-connector.connector-true,
 cds-connector.connector-false{
   position: absolute;
-  right: -15px;
-  bottom: calc(25% - 10px);
+  right: -25px;
+  top: calc(50% - 10px);
 }
+
 
 .content-action {
     margin-top: 10px;

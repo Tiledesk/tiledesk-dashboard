@@ -3,16 +3,23 @@
     <!-- <cds-action-description
         [elementType]="action._tdActionType">
     </cds-action-description> -->
+    <div class="previewContent">
+        <label class="title-label">if <b style="color: green">TRUE</b> go to:</label>
+        <cds-connector class="connector-true"
+            [idConnector] = "idConnectorTrue"
+            [isConnected] = "isConnectedTrue">
+        </cds-connector>
+        
+    </div>
 
-    <cds-connector class="connector-true"
-        [idConnector] = "idConnectorTrue"
-        [isConnected] = "isConnectedTrue">
-    </cds-connector>
-
-    <cds-connector class="connector-false"
-        [idConnector] = "idConnectorFalse"
-        [isConnected] = "isConnectedFalse">
-    </cds-connector>
+    <div class="previewContent">
+       <label class="title-label">if <b style="color: red">FALSE</b> go to:</label>
+        <cds-connector class="connector-false"
+            [idConnector] = "idConnectorFalse"
+            [isConnected] = "isConnectedFalse">
+        </cds-connector>
+    </div>
+    
 
 </div>
 

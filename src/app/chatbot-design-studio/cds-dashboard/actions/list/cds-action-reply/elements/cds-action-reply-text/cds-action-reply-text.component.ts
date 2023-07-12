@@ -22,14 +22,14 @@ export class CdsActionReplyTextComponent implements OnInit {
 
   @Output() changeActionReply = new EventEmitter();
   // @Output() changeDelayTimeReplyAction = new EventEmitter();
-  @Output() deleteActionReply = new EventEmitter();
   @Output() openButtonPanel = new EventEmitter();
-
+  
   @Output() createNewButton = new EventEmitter();
   @Output() deleteButton = new EventEmitter();
-
-  // @Output() moveUpResponse = new EventEmitter();
-  // @Output() moveDownResponse = new EventEmitter();
+  
+  @Output() deleteActionReply = new EventEmitter();
+  @Output() moveUpResponse = new EventEmitter();
+  @Output() moveDownResponse = new EventEmitter();
 
   
   @Input() idAction: string;
@@ -174,6 +174,12 @@ export class CdsActionReplyTextComponent implements OnInit {
   onDeleteActionReply(){
     this.deleteActionReply.emit(this.index);
   }
+  onMoveUpResponse(){
+    this.moveUpResponse.emit(this.index);
+  }
+  onMoveDownResponse(){
+    this.moveDownResponse.emit(this.index);
+  }
 
   /** onChangeTextarea */
   onChangeTextarea(text:string) {
@@ -225,16 +231,5 @@ export class CdsActionReplyTextComponent implements OnInit {
     const elem = document.getElementById(this.idIntent);
     this.connectorService.movedConnector(elem);
     this.changeActionReply.emit();
-  }
-
-
-  // /** */
-  // onMoveUpResponse(){
-  //   this.moveUpResponse.emit(this.index);
-  // }
-  // /** */
-  // onMoveDownResponse(){
-  //   this.moveDownResponse.emit(this.index);
-  // }
-  
+  }  
 }

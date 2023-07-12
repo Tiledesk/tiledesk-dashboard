@@ -14,10 +14,14 @@
         color: #718497;
         opacity: .85;
         background: #6c6859;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
         img {
             // width: 18px;
             // margin: auto 6px auto 4px;
-            height: auto;
+            height: 16px;
         }
       }
       

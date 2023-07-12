@@ -5,65 +5,41 @@
 
     <div class="box-up">
 
-        <!-- <div class="action_welcome">
-            <div class="section">
-                <div *ngIf="showTip" class="action-description">
-                    <div *ngIf="element?.description"
-                        [satPopoverAnchor]="descriptionTooltip"
-                        (click)="manageTooltip()">
-                        <em class="material-icons">info</em>
-                    </div>
-                    <div [innerHtml]="tipText"></div>
-                    <input class="action-input"
-                        [ngModel]="dataInput"
-                        [placeholder]="titlePlaceholder"
-                        (input)="onChangeText($event.target.value)"/>
-                </div>
-            </div>
-        </div> -->
-        
-        <!-- 
-        <sat-popover #descriptionTooltip id="descriptionTooltip" 
-            hasBackdrop 
-            verticalAlign="center" 
-            horizontalAlign="after" 
-            (backdropClicked)="descriptionTooltip.close()" 
-            panelClass="description-tooltip">
-            <div class="tooltip-wrp">
-                <div class="caret_tooltip"></div>
-                <span [innerHTML]="element?.description"></span>
-        </div>
-        </sat-popover> 
-        -->
-        
-        <!--     
-        <appdashboard-panel-reply-tools
-            class="panel-tools-response"
-            (addNewResponse) = onAddNewResponse($event)>
-        </appdashboard-panel-reply-tools> 
-        -->
-
         <cds-action-reply-tools
             (addNewActionReply) = onAddNewActionReply($event)>
-        </cds-action-reply-tools>
-        
+        </cds-action-reply-tools>        
 
     </div>
 
     <div class="box-dw">
 
-        <div #scrollMe id="scrollMe" class="content draggable-list">
-            <div *ngFor="let message of arrayMessagesWithWait; let i = index;">
+        <div #scrollMe id="scrollMe" 
+            class="content draggable-list"
+            cdkDropList 
+            (cdkDropListDropped)="drop($event)">
+            <div *ngFor="let message of arrayMessagesWithWait; let i = index;"
+                class="draggable-box" 
+                [ngStyle]="{'margin-top':typeAction === typeActions.RANDOM_REPLY?'20px':'0px', 'margin-bottom':typeAction === typeActions.RANDOM_REPLY?'30px':'0px'}" 
+                cdkDrag>
                 
                 <div *ngIf="message.type === typeMessage.TEXT">
 
-                    <!-- <div class="response"> -->
+                    <div class="response">
+                        <div *ngIf="typeAction === typeActions.REPLY"
+                            class="response-drop" 
+                            [ngClass]="{'grabbing':textGrabbing}"
+                            (mousedown)="mouseDown()" 
+                            (mouseup)="mouseUp()" 
+                            cdkDragHandle>
+                        </div>
 
                         <cds-action-reply-text
                             [index] = i
                             [idAction] = "idAction"
                             [typeAction] = "typeAction"
                             [response] = "message"
+                            (moveUpResponse) = onMoveUpResponse($event)
+                            (moveDownResponse) = onMoveDownResponse($event)
                             (openButtonPanel) = onOpenButtonPanel($event)
                             (createNewButton) = onCreateNewButton($event)
                             (deleteButton) = onDeleteButton()
@@ -75,7 +51,7 @@
                             (moveUpResponse) = onMoveUpResponse($event)
                             (moveDownResponse) = onMoveDownResponse($event)
                         -->
-                    <!-- </div> -->
+                    </div>
 
                 </div>
             </div>
