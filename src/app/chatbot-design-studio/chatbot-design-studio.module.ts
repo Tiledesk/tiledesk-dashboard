@@ -116,6 +116,10 @@ import { CDSDetailBotDetailComponent } from './cds-chatbot-details/detail/detail
 import { CDSDetailImportExportComponent } from './cds-chatbot-details/import-export/import-export.component';
 import { WsChatbotService } from 'app/services/websocket/ws-chatbot.service';
 import { ChangeBotLangModalComponent } from 'app/components/modals/change-bot-lang/change-bot-lang.component';
+import { ActionWhatsappStaticComponent } from './cds-dashboard/panel-intent-detail/actions/action-whatsapp-static/action-whatsapp-static.component';
+import { ActionWhatsappAttributeComponent } from './cds-dashboard/panel-intent-detail/actions/action-whatsapp-attribute/action-whatsapp-attribute.component';
+import { ActionWhatsappSegmentComponent } from './cds-dashboard/panel-intent-detail/actions/action-whatsapp-segment/action-whatsapp-segment.component';
+import { WhatsappReceiverComponent } from './cds-dashboard/panel-intent-detail/actions/action-whatsapp-static/whatsapp-receiver/whatsapp-receiver.component';
 import { GalleryResponseComponent } from './cds-dashboard/panel-intent-detail/actions/action-reply/reply-types/gallery-response/gallery-response.component';
 import { RedirectResponseComponent } from './cds-dashboard/panel-intent-detail/actions/action-reply/reply-types/redirect-response/redirect-response.component';
 
@@ -203,6 +207,10 @@ import { RedirectResponseComponent } from './cds-dashboard/panel-intent-detail/a
     CDSDetailImportExportComponent,
     //DETAIL COMPONENT SECTION
     ChangeBotLangModalComponent,
+    WhatsappReceiverComponent,
+    ActionWhatsappStaticComponent,
+    ActionWhatsappAttributeComponent,
+    ActionWhatsappSegmentComponent
   ],
   imports: [
     A11yModule,

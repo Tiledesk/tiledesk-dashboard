@@ -7,7 +7,7 @@ import { ActionAgent, ActionClose, ActionWebRequest,
          Message, ActionIntentConnected, ActionEmail, 
          ActionWait, ActionAssignVariable, ActionDeleteVariable, 
          ActionOnlineAgent, ActionOpenHours, ActionReplaceBot, 
-         ActionChangeDepartment, ActionHideMessage, ActionJsonCondition, Expression, ActionAssignFunction } from 'app/models/intent-model';
+         ActionChangeDepartment, ActionHideMessage, ActionJsonCondition, Expression, ActionAssignFunction, ActionWhatsappStatic, ActionWhatsappAttribute } from 'app/models/intent-model';
 import { LoggerService } from 'app/services/logger/logger.service';
 
 
@@ -155,6 +155,12 @@ export class PanelActionsComponent implements OnInit, OnChanges {
     }
     if(typeAction === TYPE_ACTION.ASSIGN_FUNCTION){
       action = new ActionAssignFunction();
+    }
+    if(typeAction === TYPE_ACTION.WHATSAPP_STATIC) {
+      action = new ActionWhatsappStatic();
+    }
+    if(typeAction === TYPE_ACTION.WHATSAPP_ATTRIBUTE) {
+      action = new ActionWhatsappAttribute();
     }
     // this.intentSelected.actions.push(action);
     this.addNewAction.emit(action);

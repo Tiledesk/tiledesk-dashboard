@@ -11,6 +11,7 @@
     
             span.material-icons{
                 font-size: 20px;
+                padding: 0px 4px;
                 color: $icon-color;
 
                 &.intent-start{
@@ -20,6 +21,23 @@
                     color: #ff4000
                 }
             }
+            
+            span.label-select {
+                margin-right: 4px;
+            }
+
+            span.label-select-option {
+                color: #a8a8a8;
+            }
+
+            span.description {
+                width: 80%;
+                font-size: 12px;
+                margin-bottom: 0px;
+                color: #a8a8a8;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
 
             &.ng-option-marked {
                 background-color: rgba(#545454, .23) !important;
@@ -27,6 +45,14 @@
 
             &.ng-option-selected{
                 background-color: rgba(#545454, .43) !important;
+
+                span.label-select-option {
+                    color: #848484;
+                }
+
+                span.description {
+                    color: #848484;
+                }
             }
             
         }
@@ -40,15 +66,23 @@
     
             span.material-icons{
                 font-size: 20px;
+                padding: 0px 4px;
                 color: $icon-color;
 
                 &.intent-start{
                     color: #0aae10;
                 }
-
                 &.intent-defaultFallback{
                     color: #ff4000
                 }
+            }
+            
+            span.label-select {
+                margin-right: 4px;
+            }
+
+            span.label-select-option {
+                color: #a8a8a8;
             }
         }
 

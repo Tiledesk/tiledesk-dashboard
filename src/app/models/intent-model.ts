@@ -253,6 +253,33 @@ export class ActionEmail extends Action {
     }
 }
 
+export class ActionWhatsappAttribute extends Action {
+    attributeName: string;
+    constructor() {
+        super();
+        this._tdActionType = TYPE_ACTION.WHATSAPP_ATTRIBUTE;
+    }
+}
+
+export class ActionWhatsappStatic extends Action {
+    templateName: string;
+    payload: WhatsappBroadcast;
+    constructor() {
+        super();
+        this._tdActionType = TYPE_ACTION.WHATSAPP_STATIC;
+    }
+}
+
+export class WhatsappBroadcast {
+    id_project: string;
+    phone_number_id: string;
+    template: {
+        language: string;
+        name: string;
+    }
+    receiver_list: Array<any>;
+}
+
 export class ActionAgent extends Action{
     constructor() {
         super();

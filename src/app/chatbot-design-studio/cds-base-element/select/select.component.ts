@@ -14,6 +14,8 @@ export class SelectComponent implements OnInit {
   @Input() items: []
   @Input() itemSelected: any
   @Input() bindLabelSelect: string;
+  @Input() optionalBindAdditionalText: string; 
+  @Input() optionalBindDescription: string; 
   @Input() bindValueSelect: string;
   @Input() clearable: boolean = false;
   @Input() placeholder: string = 'Select an option'

@@ -223,6 +223,35 @@
         </div>
   
       </div>
+
+      <!-- ---------------------------------- -->
+      <!-- Second row -->
+      <!-- ---------------------------------- -->
+      <div class="actions-btns-wpr">
+      
+        <div class="action-box-wpr">
+          <div class="action-box">
+            <div class="action-btn-icon">
+              <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="onActionSelected(TYPE_ACTION.WHATSAPP_STATIC)">
+                <img [src]="ACTIONS_LIST['WHATSAPP_STATIC'].src" [title]="ACTIONS_LIST['WHATSAPP_STATIC'].name">
+              </button>
+            </div>
+            <div class="action-btn-text">{{ACTIONS_LIST['WHATSAPP_STATIC'].name}}</div>
+          </div>
+        </div>
+        <div class="action-box-wpr">
+          <div class="action-box">
+            <div class="action-btn-icon">
+              <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="onActionSelected(TYPE_ACTION.WHATSAPP_ATTRIBUTE)">
+                <img [src]="ACTIONS_LIST['WHATSAPP_ATTRIBUTE'].src" [title]="ACTIONS_LIST['WHATSAPP_ATTRIBUTE'].name">
+              </button>
+            </div>
+            <div class="action-btn-text">{{ACTIONS_LIST['WHATSAPP_ATTRIBUTE'].name}}</div>
+          </div>
+        </div>
+  
+      </div>
+
     </section>
 
     <section>

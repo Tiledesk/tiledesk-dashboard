@@ -340,6 +340,61 @@
                                 </div>
                             </div>
 
+
+                            <!-- ----------------------------- -->
+                            <!-- @ Action WhatsApp Static -->
+                            <!-- ----------------------------- -->
+                            <div class="action-wpr" *ngSwitchCase="TYPE_ACTION.WHATSAPP_STATIC" cdkDragHandle>
+                                <div class="cds-action-title" *ngIf="action._tdActionTitle">
+                                    {{ action._tdActionTitle }}
+                                </div>
+                                <div class="cds-action-icon-wpr">
+                                    <img [src]="ACTIONS_LIST['WHATSAPP_STATIC'].src" [title]="ACTIONS_LIST['WHATSAPP_STATIC'].name">
+                                </div>
+                                <div class="cds-action-name-wpr">{{ACTIONS_LIST['WHATSAPP_STATIC'].name}}</div>
+                                <div class="cds-action-arrow" *ngIf="!lastItem">
+                                    <span class="material-icons">
+                                        keyboard_backspace
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- ----------------------------- -->
+                            <!-- @ Action WhatsApp by Attribute -->
+                            <!-- ----------------------------- -->
+                            <div class="action-wpr" *ngSwitchCase="TYPE_ACTION.WHATSAPP_ATTRIBUTE" cdkDragHandle>
+                                <div class="cds-action-title" *ngIf="action._tdActionTitle">
+                                    {{ action._tdActionTitle }}
+                                </div>
+                                <div class="cds-action-icon-wpr">
+                                    <img [src]="ACTIONS_LIST['WHATSAPP_ATTRIBUTE'].src" [title]="ACTIONS_LIST['WHATSAPP_ATTRIBUTE'].name">
+                                </div>
+                                <div class="cds-action-name-wpr">{{ACTIONS_LIST['WHATSAPP_ATTRIBUTE'].name}}</div>
+                                <div class="cds-action-arrow" *ngIf="!lastItem">
+                                    <span class="material-icons">
+                                        keyboard_backspace
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- ----------------------------- -->
+                            <!-- @ Action WhatsApp by Segment -->
+                            <!-- ----------------------------- -->
+                            <div class="action-wpr" *ngSwitchCase="TYPE_ACTION.WHATSAPP_SEGMENT" cdkDragHandle>
+                                <div class="cds-action-title" *ngIf="action._tdActionTitle">
+                                    {{ action._tdActionTitle }}
+                                </div>
+                                <div class="cds-action-icon-wpr">
+                                    <img [src]="ACTIONS_LIST['WHATSAPP_SEGMENT'].src" [title]="ACTIONS_LIST['WHATSAPP_SEGMENT'].name">
+                                </div>
+                                <div class="cds-action-name-wpr">{{ACTIONS_LIST['WHATSAPP_SEGMENT'].name}}</div>
+                                <div class="cds-action-arrow" *ngIf="!lastItem">
+                                    <span class="material-icons">
+                                        keyboard_backspace
+                                    </span>
+                                </div>
+                            </div>
+
                             <!-- ----------------------------- -->
                             <!-- @ Action Online Agent -->
                             <!-- ----------------------------- -->
