@@ -30,6 +30,7 @@ export class CdsHeaderComponent implements OnInit {
   @Input() selectedChatbot: Chatbot;
   @Output() toggleSidebarWith = new EventEmitter();
   @Output() goToBck = new EventEmitter();
+  @Output() onTestItOut = new EventEmitter();
   @Output() goToGetBotById = new EventEmitter();
   // @Output() toggleSidebarWith = new EventEmitter();
 
@@ -209,11 +210,12 @@ export class CdsHeaderComponent implements OnInit {
 
 
   openTestSiteInPopupWindow() {
-    const testItOutBaseUrl = this.TESTSITE_BASE_URL.substring(0, this.TESTSITE_BASE_URL.lastIndexOf('/'));
-    const testItOutUrl = testItOutBaseUrl + '/chatbot-panel.html'
-    const url = testItOutUrl + '?tiledesk_projectid=' + this.projectID + '&tiledesk_participants=bot_' + this.id_faq_kb + "&tiledesk_departmentID=" + this.defaultDepartmentId + '&td_draft=true'
-    let params = `toolbar=no,menubar=no,width=815,height=727,left=100,top=100`;
-    window.open(url, '_blank', params);
+    // const testItOutBaseUrl = this.TESTSITE_BASE_URL.substring(0, this.TESTSITE_BASE_URL.lastIndexOf('/'));
+    // const testItOutUrl = testItOutBaseUrl + '/chatbot-panel.html'
+    // const url = testItOutUrl + '?tiledesk_projectid=' + this.projectID + '&tiledesk_participants=bot_' + this.id_faq_kb + "&tiledesk_departmentID=" + this.defaultDepartmentId + '&td_draft=true'
+    // let params = `toolbar=no,menubar=no,width=815,height=727,left=100,top=100`;
+    // window.open(url, '_blank', params);
+    this.onTestItOut.emit(true)
   }
 
 }

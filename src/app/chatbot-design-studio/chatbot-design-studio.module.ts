@@ -126,6 +126,7 @@ import { CdsConnectorComponent } from './cds-dashboard/base-elements/cds-connect
 import { CdsActionReplyToolsComponent } from './cds-dashboard/actions/list/cds-action-reply/elements/cds-action-reply-tools/cds-action-reply-tools.component';
 import { CdsActionOnlineAgentsComponent } from './cds-dashboard/actions/list/cds-action-online-agents/cds-action-online-agents.component';
 import { CdsActionDescriptionComponent } from './cds-dashboard/actions/list/cds-action-description/cds-action-description.component';
+import { CdsPanelWidgetComponent } from './cds-dashboard/cds-panel-widget/cds-panel-widget.component';
 
 
 @NgModule({
@@ -210,7 +211,8 @@ import { CdsActionDescriptionComponent } from './cds-dashboard/actions/list/cds-
     CdsConnectorComponent,
     CdsActionReplyToolsComponent,
     CdsActionOnlineAgentsComponent,
-    CdsActionDescriptionComponent
+    CdsActionDescriptionComponent,
+    CdsPanelWidgetComponent
   ],
   imports: [
     A11yModule,

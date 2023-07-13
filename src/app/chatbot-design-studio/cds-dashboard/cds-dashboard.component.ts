@@ -87,7 +87,9 @@ export class CdsDashboardComponent implements OnInit {
   selectedChatbot: Chatbot
   activeSidebarSection: string;
   spinnerCreateIntent: boolean = false;
+
   IS_OPEN: boolean = false;
+  IS_OPEN_PANEL_WIDGET: boolean = false;
   public TESTSITE_BASE_URL: string;
 
   // Attach bot to dept
@@ -720,18 +722,21 @@ export class CdsDashboardComponent implements OnInit {
     this.activeSidebarSection = event;
   }
 
-  onToggleSidebarWith(IS_OPEN) {
-    this.IS_OPEN = IS_OPEN;
-  }
-
-
+  // ------- HEADER EVENTS: start ------- //
   /** Go back to previous page */
   goBack() {
     console.log('goBack    -----> ');
     this.router.navigate(['project/' + this.project._id + '/bots/my-chatbots/all']);
     this.hideShowWidget('show');
   }
-
+  onTestItOut(status){
+    console.log('onTestItOut    -----> ');
+    this.IS_OPEN_PANEL_WIDGET = status
+  }
+  onToggleSidebarWith(IS_OPEN) {
+    this.IS_OPEN = IS_OPEN;
+  }
+// ------- HEADER EVENTS: end ------- //
 
   /** START EVENTS PANEL ACTIONS */
   onAddNewAction(action){

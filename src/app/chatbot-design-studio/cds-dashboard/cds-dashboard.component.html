@@ -5,6 +5,7 @@
     [defaultDepartmentId]=""
     [selectedChatbot]="selectedChatbot"
     (goToBck)="goBack()"
+    (onTestItOut)="onTestItOut($event)"
     (toggleSidebarWith)="onToggleSidebarWith($event)"> 
 </cds-header>
 
@@ -74,6 +75,11 @@
             [button] = buttonSelected
             (saveButton) = onSaveButton($event)>
         </cds-panel-button-configuration>
+
+
+        <cds-panel-widget *ngIf="IS_OPEN_PANEL_WIDGET"
+            class="cds-generic-panel">
+        </cds-panel-widget>
         <!-- 
             (closeButtonPanel) = onClosePanel() 
             [listOfActions] = listOfActions
