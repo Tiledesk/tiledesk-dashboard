@@ -4,7 +4,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { LoggerService } from 'app/services/logger/logger.service';
 
 @Component({
-  selector: 'cds-action-online-agents',
+  selector: 'cds-action-online-agents-2',
   templateUrl: './action-online-agents.component.html',
   styleUrls: ['./action-online-agents.component.scss']
 })

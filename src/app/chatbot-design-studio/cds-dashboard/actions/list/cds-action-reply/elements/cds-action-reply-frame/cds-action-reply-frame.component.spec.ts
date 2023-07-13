@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FrameResponseComponent } from './frame-response.component';
+import { CdsActionReplyFrameComponent } from './cds-action-reply-frame.component';
 
-describe('FrameResponseComponent', () => {
-  let component: FrameResponseComponent;
-  let fixture: ComponentFixture<FrameResponseComponent>;
+describe('CdsActionReplyFrameComponent', () => {
+  let component: CdsActionReplyFrameComponent;
+  let fixture: ComponentFixture<CdsActionReplyFrameComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ FrameResponseComponent ]
+      declarations: [ CdsActionReplyFrameComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(FrameResponseComponent);
+    fixture = TestBed.createComponent(CdsActionReplyFrameComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

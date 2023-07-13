@@ -1,4 +1,4 @@
-<div *ngIf="typeAction === typeActions.REPLY" class="extensions-response">
+<div class="extensions-response">
     <div class="delay-wrapper" [ngStyle]="{width: canShowFilter? 'auto': '100%'}">
         <appdashboard-delay-slider
             [delayTime]="delayTime"
@@ -15,8 +15,6 @@
     </div>
 </div>
 
-
-<div class="frame-response">
     
     <div class="text-editor-wrapper">
         <div class="text-editor">
@@ -32,7 +30,7 @@
                     </div>
                 </div>
 
-                <div *ngIf="response.type === typeMessage.FRAME" class="content-frame">
+                <div class="content-frame">
                     <iframe 
                         *ngIf="framePath"
                         id="contentFrame" 
@@ -53,13 +51,13 @@
             </div>
 
             <div class="response-controls">
-                 <div class="control-button delete" (click)="onDeleteResponse()">
+                 <div class="control-button delete" (click)="onDeleteActionReply()">
                     <em class="material-icons">delete</em>
                 </div>
-                <div *ngIf="typeAction === typeActions.REPLY" class="control-button" (click)="onMoveUpResponse()">
+                <div class="control-button" (click)="onMoveUpResponse()">
                     <em class="material-icons">expand_less</em>
                 </div> 
-                <div *ngIf="typeAction === typeActions.REPLY" class="control-button" (click)="onMoveDownResponse()">
+                <div class="control-button" (click)="onMoveDownResponse()">
                     <em class="material-icons">expand_more</em>
                 </div>
             </div>
@@ -69,25 +67,13 @@
                 [text]="response.text" 
                 [minRow]="1"
                 popoverVerticalAlign="above"
-                [emojiPikerBtn]="true"
                 (changeTextarea)="onChangeTextarea($event)">
             </cds-textarea>
             
-            <div *ngIf="typeAction === typeActions.REPLY" class="text-editor-drop">
+            <div class="text-editor-drop">
                 <em class="material-icons">drag_indicator</em>
             </div> 
         </div>
-        <!-- 
-        <div class="editor-utils">
-            <div class="num-chars" [ngClass]="{'error' : alertCharsText}">{{leftCharsText}}</div>
-            <!- <div class="text-editor-insert-attribute">
-                <em class="material-icons">code</em>
-            </div> 
-            <div class="emoji-picker">
-                <em class="material-icons">insert_emoticon</em>
-            </div>  ->
-        </div> -->
 
     </div> 
 
-</div>

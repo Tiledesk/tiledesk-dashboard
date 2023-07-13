@@ -123,7 +123,7 @@ import { CdsConnectorComponent } from './cds-dashboard/base-elements/cds-connect
 import { CdsActionReplyToolsComponent } from './cds-dashboard/actions/list/cds-action-reply/elements/cds-action-reply-tools/cds-action-reply-tools.component';
 import { CdsActionReplyTextComponent } from './cds-dashboard/actions/list/cds-action-reply/elements/cds-action-reply-text/cds-action-reply-text.component';
 import { CdsActionReplyImageComponent } from './cds-dashboard/actions/list/cds-action-reply/elements/cds-action-reply-image/cds-action-reply-image.component';
-
+import { CdsActionReplyFrameComponent } from './cds-dashboard/actions/list/cds-action-reply/elements/cds-action-reply-frame/cds-action-reply-frame.component';
 
 //CDS- ACTIONS
 import { CdsActionDescriptionComponent } from './cds-dashboard/actions/list/cds-action-description/cds-action-description.component';
@@ -216,6 +216,7 @@ import { CdsActionOnlineAgentsComponent } from './cds-dashboard/actions/list/cds
     CdsActionReplyToolsComponent,
     CdsActionReplyTextComponent,
     CdsActionReplyImageComponent,
+    CdsActionReplyFrameComponent,
     
     CDSTextareaComponent,
     CDSDelaySliderComponent,

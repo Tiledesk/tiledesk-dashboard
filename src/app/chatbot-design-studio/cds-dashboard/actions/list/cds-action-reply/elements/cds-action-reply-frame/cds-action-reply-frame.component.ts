@@ -4,21 +4,23 @@ import { Expression, MessageWithWait } from '../../../../../../../models/intent-
 import { TYPE_ACTION, TYPE_MESSAGE, TEXT_CHARS_LIMIT, MESSAGE_METADTA_WIDTH, MESSAGE_METADTA_HEIGHT, calculatingRemainingCharacters } from '../../../../../../utils';
 
 @Component({
-  selector: 'appdashboard-frame-response',
-  templateUrl: './frame-response.component.html',
-  styleUrls: ['./frame-response.component.scss']
+  selector: 'cds-action-reply-frame',
+  templateUrl: './cds-action-reply-frame.component.html',
+  styleUrls: ['./cds-action-reply-frame.component.scss']
 })
-export class FrameResponseComponent implements OnInit {
-  @Output() changeDelayTimeReplyElement = new EventEmitter();
-  @Output() changeReplyElement = new EventEmitter();
-  @Output() deleteResponse = new EventEmitter();
+export class CdsActionReplyFrameComponent implements OnInit {
+
+  // @Output() changeDelayTimeReplyElement = new EventEmitter();
+  @Output() changeActionReply = new EventEmitter();
+  @Output() deleteActionReply = new EventEmitter();
   @Output() moveUpResponse = new EventEmitter();
   @Output() moveDownResponse = new EventEmitter();
   @Output() openButtonPanel = new EventEmitter();
   
+  @Input() idAction: string;
   @Input() response: MessageWithWait;
   @Input() index: number;
-  @Input() typeAction: string;
+
   
   // frame //
   typeActions = TYPE_ACTION;
@@ -28,13 +30,14 @@ export class FrameResponseComponent implements OnInit {
   typeMessage =  TYPE_MESSAGE;
 
   // Textarea //
-  limitCharsText: number;
-  leftCharsText: number;
-  textMessage: string;
-  alertCharsText: boolean;
+  // limitCharsText: number;
+  // leftCharsText: number;
+  // textMessage: string;
+  // alertCharsText: boolean;
 
   // Delay //
   delayTime: number;
+
   // Filter // 
   canShowFilter: boolean = true;
   booleanOperators=[ { type: 'AND', operator: 'AND'},{ type: 'OR', operator: 'OR'},]
@@ -45,68 +48,52 @@ export class FrameResponseComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.delayTime = this.response.time/1000;
+
     this.frameWidth = this.response.metadata.width?this.response.metadata.width:MESSAGE_METADTA_WIDTH;
     this.frameHeight = this.response.metadata.height?this.response.metadata.height:MESSAGE_METADTA_HEIGHT;
     if(this.response.metadata.src){
       this.framePath = this.sanitizer.bypassSecurityTrustResourceUrl(this.response.metadata.src?this.response.metadata.src:null);
-    }
-
-    this.limitCharsText = TEXT_CHARS_LIMIT;
-    this.delayTime = this.response.time/1000;
-    this.textMessage = this.response.text;
-    this.leftCharsText = calculatingRemainingCharacters(this.textMessage, this.limitCharsText);
-    if(this.leftCharsText<(TEXT_CHARS_LIMIT/10)){
-      this.alertCharsText = true;
-    } else {
-      this.alertCharsText = false;
-    }
-     
+    }     
   }
 
   // EVENT FUNCTIONS //
   /** */
-  onChangeTextarea(text:string) {
-    this.response.text = text;
-    // console.log('onChangeTextarea:: ', this.response);
-    this.changeReplyElement.emit();
-    
+   /** onClickDelayTime */
+   onClickDelayTime(opened: boolean){
+    this.canShowFilter = !opened
   }
 
-  /** */
-  onDeleteResponse(){
-    this.deleteResponse.emit(this.index);
+  /** onChangeDelayTime */
+  onChangeDelayTime(value:number){
+    this.delayTime = value;
+    this.response.time = value*1000;
+    this.changeActionReply.emit();
+    this.canShowFilter = true;
   }
 
-  /** */
+  /** onChangeExpression */
+  onChangeExpression(expression: Expression){
+    this.response._tdJSONCondition = expression;
+    this.changeActionReply.emit();
+  }
+
+  /** onDeleteActionReply */
+  onDeleteActionReply(){
+    this.deleteActionReply.emit(this.index);
+  }
+
   onMoveUpResponse(){
     this.moveUpResponse.emit(this.index);
   }
-
-  /** */
   onMoveDownResponse(){
     this.moveDownResponse.emit(this.index);
   }
 
-  /** */
-  // onChangeText(text:string) {
-  //   this.response.text = text;
-  // }
-
-  onClickDelayTime(opened: boolean){
-    this.canShowFilter = !opened
-  }
-
-  /** */
-  onChangeDelayTime(value:number){
-    this.delayTime = value;
-    this.response.time = value*1000;
-    this.changeDelayTimeReplyElement.emit();
-    this.canShowFilter = true;
-  }
-
-  onChangeExpression(expression: Expression){
-    this.response._tdJSONCondition = expression;
-    this.changeReplyElement.emit();
+  /** onChangeTextarea */
+  onChangeTextarea(text:string) {
+    this.response.text = text;
+    this.changeActionReply.emit();
   }
   
   /** */
@@ -137,7 +124,7 @@ export class FrameResponseComponent implements OnInit {
     try {
       this.framePath = this.sanitizer.bypassSecurityTrustResourceUrl(this.response.metadata.src);
       // console.log('onLoadPathElement:: ', this.framePath, this.response.metadata);
-      this.changeReplyElement.emit();
+      this.changeActionReply.emit();
     } catch (error) {
       // console.log('error:: ', error);
     }
