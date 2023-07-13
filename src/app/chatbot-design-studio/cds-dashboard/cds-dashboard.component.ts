@@ -152,15 +152,10 @@ export class CdsDashboardComponent implements OnInit {
       }
       // console.log('isOpenButtonPanel ', this.isOpenPanelButtonConfig);
     });
-    this.listenToSwitchActionPanel()
+
   } 
 
-  listenToSwitchActionPanel() {
-    this.controllerService.isOpenActionPanel$.subscribe((actiontype) => { 
-      console.log('listenToSwitchActionPanel actiontype' , actiontype)
-      // this.isOpenPanelButtonConfig = true;
-    })
-  }
+
 
   // SYSTEM FUNCTIONS //
   ngOnInit() {

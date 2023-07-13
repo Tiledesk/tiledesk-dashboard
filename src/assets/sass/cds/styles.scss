@@ -1,6 +1,5 @@
+@import "./src/assets/sass/cds/_variables.scss";
 /** GENERIC **/
-
-
 
 /*
 Ellips text
@@ -11,8 +10,6 @@ Ellips text
     white-space: nowrap;
     overflow: hidden !important;
 }
-
-
 
 /* PANEL INTENT DETAIL */
 .content-panel-intent-detail {
@@ -35,22 +32,19 @@ Ellips text
     height: 42px;
     margin: auto 0;
     padding: 7px 20px;
-    border-top: 2px solid rgb(66,85,117);
+    border-top: 2px solid rgb(66, 85, 117);
 }
-
 
 .cds-custom-tooltip {
     background-color: #fff;
     color: #555555;
     font-size: 12px;
     border-radius: 2px;
-    font-family: 'Poppins';
-    padding-top:8px;
-    padding-bottom:8px;
+    font-family: "Poppins";
+    padding-top: 8px;
+    padding-bottom: 8px;
     border: 1px solid #e5effe;
 }
-
-
 
 emoji-mart {
     border: 0;
@@ -75,7 +69,30 @@ emoji-mart {
         color: #647283;
         &:hover {
             background: #006cff;
-            color:#fff ;
+            color: #fff;
         }
     }
+}
+
+.cds-action-preview {
+    padding: 3px 16px;
+}
+.action-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.action-row-left {
+    height: 16px;
+}
+
+.action-row-right {
+    font-size: 14px;
+    font-weight: 400;
+    color: $brown-85;
+}
+
+.cds-action-preview .action-row .action-row-left svg {
+    fill: $brown-85;
 }

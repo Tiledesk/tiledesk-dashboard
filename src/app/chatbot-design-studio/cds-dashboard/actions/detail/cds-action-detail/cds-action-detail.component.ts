@@ -17,6 +17,7 @@ export class CdsActionDetail implements OnInit, OnChanges {
   @Input() elementIntentSelected: any;
   @Input() showSpinner: boolean;
   @Input() intentSelected: Intent;
+  @Input() isOpenDetailActionPanel: boolean
   
   typeIntentElement = TYPE_INTENT_ELEMENT;
   typeAction = TYPE_ACTION;
@@ -32,29 +33,30 @@ export class CdsActionDetail implements OnInit, OnChanges {
   ) { }
 
   ngOnInit(): void {
-    this.logger.log('[PANEL-INTENT-DETAIL] (ngOnInit) @Input elementIntentSelected ', this.elementIntentSelected);
+    this.logger.log('[CDS-ACTION-DTLS] (ngOnInit) @Input elementIntentSelected ', this.elementIntentSelected);
     try {
       this.elementSelected = JSON.parse(JSON.stringify(this.elementIntentSelected.element));
       this.elementIntentSelectedType = this.elementIntentSelected.type;
-      this.logger.log('[PANEL-INTENT-DETAIL] (OnInit) elementSelected ', this.elementSelected);
+      this.logger.log('[CDS-ACTION-DTLS] (OnInit) elementSelected ', this.elementSelected);
     } catch (error) {
-      this.logger.log('[PANEL-INTENT-DETAIL] (OnInit) ERROR', error);
+      this.logger.log('[CDS-ACTION-DTLS] (OnInit) ERROR', error);
     }
   }
 
   ngOnChanges() {
-    this.logger.log('[PANEL-INTENT-DETAIL] (OnChanges) @Input elementIntentSelected ', this.elementIntentSelected);
+    console.log('[CDS-ACTION-DTLS] isOpenDetailActionPanel ', this.isOpenDetailActionPanel) 
+    console.log('[CDS-ACTION-DTLS] (OnChanges) @Input elementIntentSelected ', this.elementIntentSelected);
     try{
       this.elementIntentSelectedType = this.elementIntentSelected.type;
       this.elementSelected = this.elementIntentSelected.element;
       this.elementSelected = JSON.parse(JSON.stringify(this.elementIntentSelected.element));
       this.elementSelectedIndex = this.elementIntentSelected.index
       this.elementSelectedMaxLength = [...Array(this.elementIntentSelected.maxLength).keys()]
-      this.logger.log('[PANEL-INTENT-DETAIL] (OnChanges) elementIntentSelectedType ', this.elementIntentSelectedType);
-      this.logger.log('[PANEL-INTENT-DETAIL] (OnChanges) elementSelected ', this.elementSelected);
-      this.logger.log('[PANEL-INTENT-DETAIL] (OnChanges) intentSelected ', this.intentSelected);
+      console.log('[CDS-ACTION-DTLS] (OnChanges) elementIntentSelectedType ', this.elementIntentSelectedType);
+      console.log('[CDS-ACTION-DTLS] (OnChanges) elementSelected ', this.elementSelected);
+      console.log('[CDS-ACTION-DTLS] (OnChanges) intentSelected ', this.intentSelected);
     }catch(error){
-      this.logger.log('[PANEL-INTENT-DETAIL] (ngOnChanges) ERROR', error);
+      console.log('[CDS-ACTION-DTLS] (ngOnChanges) ERROR', error);
     }
   }
 

@@ -26,7 +26,7 @@ export class ControllerService {
   constructor() { }
  // Actions
   public openActionDetailPanel(actiontype) {
-    console.log('openActionDetailPanel:: action type ', actiontype);
+    console.log('[CONTROLLER-SERVICE] openActionDetailPanel:: action type ', actiontype);
     this.actionType.next(actiontype)
   }
 

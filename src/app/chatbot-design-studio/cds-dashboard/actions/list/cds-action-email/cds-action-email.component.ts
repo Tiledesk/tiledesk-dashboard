@@ -30,7 +30,7 @@ export class CdsActionEmailComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnInit(): void {
-   this.logger.log("[ACTION-EMAIL] elementSelected: ", this.action)
+  console.log("[ACTION-EMAIL] elementSelected: ", this.action)
     this.actionTo = this.action.to
     this.actionSubject = this.action.subject
     this.actionBody = this.action.text
@@ -76,6 +76,10 @@ export class CdsActionEmailComponent implements OnInit, OnChanges {
   // http://jsfiddle.net/timdown/jwvha/527/
 
 
+  // onOpenActionDetails() {
+  //   console.log( '[CDS-ACTION-EMAIL] onOpenActionDetails' )
+  //   this.controllerService.openActionDetailPanel('email');
+  // }
 
 
 }
