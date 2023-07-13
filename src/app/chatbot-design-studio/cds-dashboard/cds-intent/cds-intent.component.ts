@@ -45,6 +45,7 @@ export class CdsIntentComponent implements OnInit, OnChanges {
 
   // connector: any;
   intentElement: any;
+  listOfIntents: Array<Intent>
   idSelectedAction: string;
   intentActionList: Array<any>;
   arrayActionsForDrop = [];
@@ -67,6 +68,8 @@ export class CdsIntentComponent implements OnInit, OnChanges {
 
   ngAfterViewInit(){
     this.setIntentSelected();
+    this.listOfIntents = this.intentService.intents.value
+    console.log('listtttttttt', this.listOfIntents)
   }
 
 
@@ -152,33 +155,22 @@ export class CdsIntentComponent implements OnInit, OnChanges {
 
   /** EVENTS  */
   onDropAction(event: CdkDragDrop<string[]>) {
-    console.log('onDropAction: ', event);
     // console.log('event:', event, 'previousContainer:', event.previousContainer, 'event.container:', event.container);
     if (event.previousContainer === event.container) {
-      // moving action in the same intent
+      console.log('onDropAction: ', event);
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
       try {
-        let action: any = event.previousContainer.data[event.previousIndex];
-        if(action._tdActionType){
-          // moving action from another intent
-          event.previousContainer.data.splice(event.previousIndex, 1);
-          this.intentActionList.splice(event.currentIndex, 0, action);
-          // delete connectors
-          // elimino connettori 
-        //  passo id action
-        //  var intentId = this.idAction.substring(0, this.idAction.indexOf('/'));
-        //  this.connectorService.deleteConnectorFromAction(intentId, idConnector);
-        } else if(action.value && action.value.type) {
-          // moving new action in intent from panel elements
-          let newAction = this.intentService.createAction(action.value.type);
-          this.intentActionList.splice(event.currentIndex, 0, newAction);
-        }
+        let actionType: any = event.previousContainer.data[event.previousIndex];
+        let newAction = this.intentService.createAction(actionType.value.type);
+        this.intentActionList.splice(event.currentIndex, 0, newAction);
+        // console.log('intentActionList:', this.intentActionList);
       } catch (error) {
         console.error(error);
       }
     }
     this.intent.actions = this.intentActionList;
+
     const fromEle = document.getElementById(this.intent.intent_id);
     this.connectorService.movedConnector(fromEle);
     this.saveIntent.emit(this.intent);

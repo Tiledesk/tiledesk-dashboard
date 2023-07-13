@@ -9,26 +9,18 @@
 // $button-border-color: $icon-color;
 // $button-background-color: $icon-color-backgroud;
 
-.text-editable-div {
-    display: block;
-    margin: auto;
-    width: calc(100% - 20px);
-}
 .extensions-response {
     font-size: $font-size-base;
     position: relative;
     width: 100%;
     height: auto;
-    margin: 27px 0 0 0;
-    padding: 0 10px;
+    margin: 0;
+    padding: 0 0 0 25px;
     display: flex;
     flex-wrap: wrap;
     row-gap: 5px;
     column-gap: 5px;
-    flex-direction: row;
     align-content: center;
-    justify-content: space-between;
-    align-items: flex-start;
     .delay-wrapper,
     .filter-wrapper {
         display: block;
@@ -39,21 +31,12 @@
 }
 
 
-.text-area {
-    width: calc(100% - 40px);
-    margin-left: 20px;
-    display: flex;
-    padding: 0 0.75em 0 0.75em;
-}
-
-
-
 .text-editor-wrapper {
     font-size: $font-size-base;
     position: relative;
     width: 100%;
     height: auto;
-    margin: 10px 0 0 0;
+    margin: 5px 0 0 0;
     padding: 0;
     .text-editor {
         position: relative;
@@ -114,40 +97,16 @@
     }
 }
 
-/** box-textarea **/
-.box-textarea ::ng-deep {
-    width: calc(100% - 40px);
-    margin-left: 20px;
-    textarea {
-        border-radius: 8px;
-        background: $color-withe-hex;
-        border: 1px solid $color-withe-hex;
-        overflow-x: hidden;
-        overflow-y: auto;
-        color: $color-text-dark-hex;
-        font-size: 1.15em;
-        line-height: 25px;
-        resize: vertical;
-
-        width: calc(100% - 20px);
-        padding: 10px;
-        padding-top: 5px;
-        padding-bottom: 20px;
-    }
-}
-
-/** text-editor-drop **/
 .text-editor-drop {
     position: absolute;
     display: inline-flex;
     margin: 0;
     left: 0;
-    top: -40px;
+    top: -35px;
     color: #dcdcdc;
     cursor: grab;
 }
 
-/** editor-utils **/
 .editor-utils {
     position: relative;
     margin: -20px 50px 0px 0px;
@@ -172,23 +131,20 @@
 }
 
 
-
-
-
-
-/** BUTTONS **/
-.connector {
-    position: absolute;
-    /* display: flex; */
-    top: 12px;
-    right: -4px;
-}
-
 .content-botton-reply {
     position:relative;
 }
 
+//** CONNECTOR **//
+.connector {
+    position: absolute;
+    /* display: flex; */
+    top: calc(50% - 10px);
+    right: -4px;
+}
 
+
+/** BUTTONS **/
 .buttons-response {
     // display: block;
     // margin: 12px 0 0;
@@ -216,8 +172,9 @@
     display: flex;
     position: relative;
     min-width: 100px;
-    margin: 5px 5px;
-    padding: 0 16px;
+    text-align: center;
+    margin: 5px 5px 0px; //10px 5px 0;
+    padding: 0 10px;
     user-select: none;
     box-sizing: border-box;
     outline: none;
@@ -226,10 +183,9 @@
     border-radius: $button-border-radius-base;
     color: $color-blue-hex;
     cursor: pointer;
-    font-size: 1em;
+    font-size: 0.7em;
     font-weight: 500;
     line-height: $button-height-base;
-    text-align: center;
     transition: all .3s;
     &.custom-placeholder {
         margin: 10px 5px;
@@ -270,16 +226,17 @@
     outline: none;
     border: 1px dashed $color-txt-2-hex;
     border-radius: $button-border-radius-base;
-    color: $color-withe-hex;
+    color: $color-txt-2-hex;//$color-withe-hex;
     cursor: pointer;
-    font-size: 1em;
+    font-size: 0.7em;
     font-weight: 400;
     line-height: $button-height-base;
-    margin: 10px 5px 0;
+    margin: 5px 5px 0;
     order: 1;
-    padding: 0 16px;
+    padding: 0 10px;
     transition: all .3s;
     min-width: 100px;
+    text-align: center;
     width: fit-content;
 }
 
@@ -329,6 +286,19 @@
 }
 
 
+/** box-textarea **/
+cds-textarea.text-editable-div ::ng-deep{
+    display: block;
+    margin: auto;
+    width: calc(100% - 20px);
+    // margin-left: 20px;
+    textarea {
+        line-height: 20px !important; 
+        width: calc(100% - 20px) !important;
+        font-size: 0.9em !important;
+        line-height: 20px !important;
+    }
+}
 
 /** TEXT AREA **/
 mat-form-field.mat-focused ::ng-deep {

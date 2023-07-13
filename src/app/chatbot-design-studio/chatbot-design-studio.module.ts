@@ -41,9 +41,6 @@ import { MatMenuModule } from '@angular/material/menu';
 import { CdsDashboardComponent } from './cds-dashboard/cds-dashboard.component';
 import { PanelReplyToolsComponent } from './cds-dashboard/panel-intent-detail/actions/action-reply/panel-reply-tools/panel-reply-tools.component';
 import { ActionReplyComponent } from './cds-dashboard/panel-intent-detail/actions/action-reply/action-reply.component';
-import { CdsActionReplyTextComponent } from './cds-dashboard/actions/list/cds-action-reply/elements/cds-action-reply-text/cds-action-reply-text.component';
-import { DelaySliderComponent } from './cds-dashboard/base-elements/delay-slider/delay-slider.component';
-// import { ButtonConfigurationPanelComponent } from './dashboard/button-configuration-panel/button-configuration-panel.component';
 import { ImageResponseComponent } from './cds-dashboard/panel-intent-detail/actions/action-reply/reply-types/image-response/image-response.component';
 import { FrameResponseComponent } from './cds-dashboard/panel-intent-detail/actions/action-reply/reply-types/frame-response/frame-response.component';
 import { ImageUploadComponent } from './cds-dashboard/panel-intent-detail/actions/action-reply/elements/image-upload/image-upload.component';
@@ -67,8 +64,9 @@ import { CdsFulfillmentComponent } from './cds-fulfillment/cds-fulfillment.compo
 
 //BASE-ELEMENT
 import { CDSTextComponent } from './cds-base-element/text/text.component';
-import { CDSDelaySliderComponent } from './cds-base-element/delay-slider/delay-slider.component';
 import { CDSTextareaComponent } from './cds-dashboard/base-elements/textarea/textarea.component';
+import { CDSDelaySliderComponent } from './cds-dashboard/base-elements/delay-slider/delay-slider.component';
+import { CDSImageUploadComponent } from './cds-dashboard/base-elements/image-upload/image-upload.component';
 
 //RULES COMPONENT
 import { RulesComponent } from './cds-rules/rules/rules.component';
@@ -123,13 +121,16 @@ import { CdsFloatingMenuComponent } from './cds-dashboard/cds-floating-menu/cds-
 
 import { CdsConnectorComponent } from './cds-dashboard/base-elements/cds-connector/cds-connector.component';
 import { CdsActionReplyToolsComponent } from './cds-dashboard/actions/list/cds-action-reply/elements/cds-action-reply-tools/cds-action-reply-tools.component';
+import { CdsActionReplyTextComponent } from './cds-dashboard/actions/list/cds-action-reply/elements/cds-action-reply-text/cds-action-reply-text.component';
+import { CdsActionReplyImageComponent } from './cds-dashboard/actions/list/cds-action-reply/elements/cds-action-reply-image/cds-action-reply-image.component';
 
 
 //CDS- ACTIONS
+import { CdsActionDescriptionComponent } from './cds-dashboard/actions/list/cds-action-description/cds-action-description.component';
 import { CdsActionIntentComponent } from './cds-dashboard/actions/list/cds-action-intent/cds-action-intent.component';
 import { CdsActionReplyComponent } from './cds-dashboard/actions/list/cds-action-reply/cds-action-reply.component';
 import { CdsActionOnlineAgentsComponent } from './cds-dashboard/actions/list/cds-action-online-agents/cds-action-online-agents.component';
-import { CdsActionDescriptionComponent } from './cds-dashboard/actions/list/cds-action-description/cds-action-description.component';
+
 
 @NgModule({
   declarations: [
@@ -137,7 +138,6 @@ import { CdsActionDescriptionComponent } from './cds-dashboard/actions/list/cds-
     PanelReplyToolsComponent,
     ActionReplyComponent,
     
-    DelaySliderComponent,
     ImageResponseComponent,
     FrameResponseComponent,
     ImageUploadComponent,
@@ -165,10 +165,6 @@ import { CdsActionDescriptionComponent } from './cds-dashboard/actions/list/cds-
     CdsChatbotDetailsComponent,
     CdsSplashScreenComponent,
     ActionWaitComponent,
-    CDSTextComponent,
-    CDSDelaySliderComponent,
-    CDSFilterComponent,
-    CDSTextareaComponent,
     ActionDeleteVariableComponent,
     ActionAssignVariableComponent,
     ActionIntentComponent,
@@ -208,12 +204,22 @@ import { CdsActionDescriptionComponent } from './cds-dashboard/actions/list/cds-
     CdsFloatingMenuComponent,
     CdsConnectorComponent,
 
+
+    //BASE ELEMENT
+    CDSTextComponent,
+    CDSFilterComponent,
+    CDSTextareaComponent,
     // ------ CDS-ACTIONS ------ //
     CdsActionDescriptionComponent,
     CdsActionReplyComponent,
     // action REPLY elements: start //
     CdsActionReplyToolsComponent,
     CdsActionReplyTextComponent,
+    CdsActionReplyImageComponent,
+    
+    CDSTextareaComponent,
+    CDSDelaySliderComponent,
+    CDSImageUploadComponent,
     // action REPLY elements: end //
     CdsActionIntentComponent,
     CdsActionOnlineAgentsComponent,

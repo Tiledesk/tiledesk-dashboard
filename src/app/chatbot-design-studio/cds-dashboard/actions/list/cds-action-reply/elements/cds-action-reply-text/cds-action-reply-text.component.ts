@@ -21,21 +21,17 @@ export class CdsActionReplyTextComponent implements OnInit {
   
 
   @Output() changeActionReply = new EventEmitter();
-  // @Output() changeDelayTimeReplyAction = new EventEmitter();
   @Output() deleteActionReply = new EventEmitter();
+  @Output() moveUpResponse = new EventEmitter();
+  @Output() moveDownResponse = new EventEmitter();
+  // @Output() changeDelayTimeReplyAction = new EventEmitter();
   @Output() openButtonPanel = new EventEmitter();
-
   @Output() createNewButton = new EventEmitter();
   @Output() deleteButton = new EventEmitter();
 
-  // @Output() moveUpResponse = new EventEmitter();
-  // @Output() moveDownResponse = new EventEmitter();
-
-  
   @Input() idAction: string;
   @Input() response: MessageWithWait;
   @Input() index: number;
-  @Input() typeAction: string;
 
   idIntent: string;
   // Connector //
@@ -64,7 +60,6 @@ export class CdsActionReplyTextComponent implements OnInit {
 
   // SYSTEM FUNCTIONS //
   ngOnInit(): void {
-    console.log('typeAction: ', this.typeAction);
     // this.limitCharsText = TEXT_CHARS_LIMIT;
     this.delayTime = this.response.time/1000;
 
@@ -174,6 +169,12 @@ export class CdsActionReplyTextComponent implements OnInit {
   onDeleteActionReply(){
     this.deleteActionReply.emit(this.index);
   }
+  onMoveUpResponse(){
+    this.moveUpResponse.emit(this.index);
+  }
+  onMoveDownResponse(){
+    this.moveDownResponse.emit(this.index);
+  }
 
   /** onChangeTextarea */
   onChangeTextarea(text:string) {
@@ -185,7 +186,7 @@ export class CdsActionReplyTextComponent implements OnInit {
 
   /** onOpenButtonPanel */
   onOpenButtonPanel(button: Button){
-    // console.log('onOpenButtonPanel: 1 ', button, this.response);
+    console.log('onOpenButtonPanel: 1 ', button, this.response);
     try {
       if(!this.response.attributes || !this.response.attributes.attachment.buttons){
         this.response.attributes = new MessageAttributes();
@@ -225,16 +226,5 @@ export class CdsActionReplyTextComponent implements OnInit {
     const elem = document.getElementById(this.idIntent);
     this.connectorService.movedConnector(elem);
     this.changeActionReply.emit();
-  }
-
-
-  // /** */
-  // onMoveUpResponse(){
-  //   this.moveUpResponse.emit(this.index);
-  // }
-  // /** */
-  // onMoveDownResponse(){
-  //   this.moveDownResponse.emit(this.index);
-  // }
-  
+  }  
 }

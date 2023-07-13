@@ -4,15 +4,18 @@
   position: relative;
   display: flex;
   flex-direction: column;
+  width: 100%;
 }
 
 .box-action {
   position: relative;
-  display: block;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 100%;
   min-height: 30px;
-  margin-bottom: 10px;
   border-radius: 6px;
+  padding: 5px 0px;
   background-color: #ffffff80;
   box-shadow: #0000000f 0 0 0 1px;
 }
@@ -21,12 +24,13 @@
 .header-action{
   position: relative;
   min-height: 54px;
-  padding: 16px 16px 16px 16px;
+  padding: 0px 10px;
   width: 100%;
   position: relative;
   display: flex;
+  align-items: center;
   // flex-direction: column;
-  min-height: 40px;
+  min-height: 25px;
   // border-radius: 6px;
   // background-color: rgb(255 255 255 / 50%);
   // box-shadow: rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
@@ -122,7 +126,7 @@
     border-radius: 10px;
     cursor: pointer;
     border: 2px solid rgb(255, 255, 255);
-    padding: 0px 10px 0px;
+    padding: 0 10px 10px 10px;
     background-color: rgb(235, 226, 198);
     position: relative;
     margin:0px;
@@ -154,9 +158,6 @@
         border-radius: 5px;
         overflow-x: hidden;
         margin: auto 0;
-    }
-    .pic-header-title-input {
-        width: 240px;
     }
     .pic-title-text:hover {
         background: rgb(221, 212, 183);
@@ -776,6 +777,7 @@
 .target-container {
   display: flex;
   flex-direction: column;
+  gap: 10px;
   //min-height: 200px;
   //width: 200px;
   // border: 1px solid #ccc;

@@ -5,7 +5,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
   templateUrl: './delay-slider.component.html',
   styleUrls: ['./delay-slider.component.scss']
 })
-export class DelaySliderComponent implements OnInit {
+export class CDSDelaySliderComponent implements OnInit {
   
   @Input() delayTime: number;
   @Input() step : number = 0.1;

@@ -7,6 +7,10 @@ $action-description-height: 100px;
 $margin-bottom: 15px;
 
 
+.cds-action-content{
+    // position: relative;
+    // padding: 0px 10px;
+}
 
 
 /**header**/
@@ -90,7 +94,8 @@ $margin-bottom: 15px;
 
 .box-up {
     display: flex;
-    padding: 0 5px;
+    padding: 5px 10px;
+    background: #dcdcdc;
     position: relative;
     /* top: 0; */
     width: 100%;
@@ -99,8 +104,6 @@ $margin-bottom: 15px;
     align-items: flex-end;
     flex-wrap: nowrap;
     justify-content: flex-start;
-    // background: aquamarine;
-
 }
 
 .box-dw {
@@ -180,8 +183,9 @@ $margin-bottom: 15px;
 }
 .content {
     position: relative;
-    display: block;
-    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
     width: 100%;
     // min-height: $min-height-content;
     margin-top: 0px;

@@ -14,6 +14,7 @@ export class CDSTextareaComponent implements OnInit {
 
   @ViewChild('autosize') autosize: CdkTextareaAutosize;
   @ViewChild("addVariable") addVariable: SatPopover;
+  @ViewChild("emojiPicker") emojiPicker: SatPopover;
 
   @Input() placeholder: string = '';
   @Input() text: string = '';
@@ -21,7 +22,7 @@ export class CDSTextareaComponent implements OnInit {
   // @Input() textMessage: string;
   @Input() control: FormControl<string> = new FormControl();
   @Input() showUtils: boolean = true;
-  @Input() emoijPikerBtn: boolean = true;
+  @Input() emojiPikerBtn: boolean = true;
   @Input() setAttributeBtn: boolean = true;
   @Input() textLimitBtn: boolean = true;
   @Input() minRow: number = 2;
@@ -32,6 +33,7 @@ export class CDSTextareaComponent implements OnInit {
 
   @Output() changeTextarea = new EventEmitter();
   @Output() selectedAttribute = new EventEmitter();
+  @Output() selectedEmoji = new EventEmitter();
   @Output() clearSelectedAttribute = new EventEmitter();
 
   // Textarea //
@@ -174,7 +176,8 @@ export class CDSTextareaComponent implements OnInit {
     } else {
       this.text = `${event.emoji.native}`;
     }
-    this.isEmojiPickerVisible = false;
+    this.emojiPicker.close();
+    this.selectedEmoji.emit(event)
   }
   
 

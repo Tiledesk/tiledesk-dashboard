@@ -67,7 +67,7 @@ export class CdsActionReplyComponent implements OnInit {
   ngOnInit(): void {
     console.log('ActionReplyComponent ngOnInit', this.action);
     // // console.log('ngOnInit panel-response::: ', this.typeAction);
-    this.typeAction = (this.typeAction === TYPE_ACTION.RANDOM_REPLY ? 'RANDOM_REPLY' : 'REPLY');
+    this.typeAction = (this.typeAction === TYPE_ACTION.RANDOM_REPLY ? TYPE_ACTION.RANDOM_REPLY : TYPE_ACTION.REPLY);
     try {
       this.element = ELEMENTS_LIST.find(item => item.type === this.action._tdActionType);
       if(this.action._tdActionTitle && this.action._tdActionTitle != ""){
