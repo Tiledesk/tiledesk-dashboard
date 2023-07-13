@@ -1,33 +1,33 @@
 <div class="panel-intent-detail" (click)="onClickInside()">
     <div class="header-panel">
-        <cds-action-description 
+        <cds-action-description-2
             *ngIf="elementIntentSelectedType === typeIntentElement.ACTION"
             [actionSelected]="elementSelected"
             [showTip]="true"
             (closeIntent)="onCloseIntent()"
             (saveIntent)="onSaveIntent()">
-        </cds-action-description>
-        <cds-action-description 
+        </cds-action-description-2>
+        <cds-action-description-2 
             *ngIf="elementIntentSelectedType === typeIntentElement.FORM"
             [elementType]="typeIntentElement.FORM"
             [showTip]="false"
             (closeIntent)="onCloseIntent()"
             (saveIntent)="onSaveIntent()">
-        </cds-action-description>
-        <cds-action-description 
+        </cds-action-description-2>
+        <cds-action-description-2 
             *ngIf="elementIntentSelectedType === typeIntentElement.ANSWER"
             [elementType]="typeIntentElement.ANSWER"
             [showTip]="false"
             (closeIntent)="onCloseIntent()"
             (saveIntent)="onSaveIntent()">
-        </cds-action-description>
-        <cds-action-description 
+        </cds-action-description-2>
+        <cds-action-description-2 
             *ngIf="elementIntentSelectedType === typeIntentElement.QUESTION"
             [elementType]="typeIntentElement.QUESTION"
             [showTip]="false"
             (closeIntent)="onCloseIntent()"
             (saveIntent)="onSaveIntent()">
-        </cds-action-description>
+        </cds-action-description-2>
     </div>
 
     <div id="content-panel" class="content-panel">
