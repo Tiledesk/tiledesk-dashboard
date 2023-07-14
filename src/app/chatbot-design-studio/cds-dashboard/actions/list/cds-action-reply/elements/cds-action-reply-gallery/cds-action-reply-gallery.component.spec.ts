@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { GalleryResponseComponent } from './gallery-response.component';
+import { CdsActionReplyGalleryComponent } from './cds-action-reply-gallery.component';
 
 describe('GalleryResponseComponent', () => {
-  let component: GalleryResponseComponent;
-  let fixture: ComponentFixture<GalleryResponseComponent>;
+  let component: CdsActionReplyGalleryComponent;
+  let fixture: ComponentFixture<CdsActionReplyGalleryComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ GalleryResponseComponent ]
+      declarations: [ CdsActionReplyGalleryComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(GalleryResponseComponent);
+    fixture = TestBed.createComponent(CdsActionReplyGalleryComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

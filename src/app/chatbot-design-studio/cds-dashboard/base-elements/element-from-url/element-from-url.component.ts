@@ -1,14 +1,14 @@
 import { Component, OnInit, ViewChild, ElementRef, Output, EventEmitter, Input } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser'
 import { getEmbedUrl } from 'app/chatbot-design-studio/utils';
-import { Metadata } from '../../../../../../../models/intent-model';
+import { Metadata } from 'app/models/intent-model';
 
 @Component({
-  selector: 'appdashboard-element-from-url',
+  selector: 'cds-element-from-url',
   templateUrl: './element-from-url.component.html',
   styleUrls: ['./element-from-url.component.scss']
 })
-export class ElementFromUrlComponent implements OnInit {
+export class CDSElementFromUrlComponent implements OnInit {
   @ViewChild('imageUploaded', { static: false }) myIdentifier: ElementRef;
   @Output() loadPathElement = new EventEmitter();
   @Input() metadata: Metadata;

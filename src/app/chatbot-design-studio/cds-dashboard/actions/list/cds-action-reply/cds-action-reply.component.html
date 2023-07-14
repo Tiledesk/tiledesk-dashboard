@@ -6,6 +6,7 @@
     <div class="box-up">
 
         <cds-action-reply-tools
+            [idAction]="idAction"
             (addNewActionReply) = onAddNewActionReply($event)>
         </cds-action-reply-tools>        
 
@@ -113,6 +114,68 @@
                             (deleteActionReply) = onDeleteActionReply($event)
                             (changeActionReply) = onChangeActionReply()>
                         </cds-action-reply-frame>
+                    </div>
+                </div>
+
+                <!-- REDIRECT RESPONSE -->
+                <div *ngIf="message.type === typeMessage.REDIRECT">
+                    <!-- <div class="custom-placeholder" *cdkDragPlaceholder>
+                        <cds-action-reply-redirect
+                            [index] = i
+                            [typeAction] = typeAction
+                            [response] = message>
+                        </cds-action-reply-redirect>
+                    </div> -->
+                    
+                    <div class="response">
+                        <div *ngIf="typeAction === typeActions.REPLY" 
+                            class="response-drop" 
+                            [ngClass]="{'grabbing':textGrabbing}"
+                            (mousedown)="mouseDown()" 
+                            (mouseup)="mouseUp()" 
+                            cdkDragHandle>
+                        </div> 
+                        <cds-action-reply-redirect
+                            [index] = i
+                            [idAction] = "idAction"
+                            [response] = message
+                            (moveUpResponse) = onMoveUpResponse($event)
+                            (moveDownResponse) = onMoveDownResponse($event)
+                            (deleteActionReply) = onDeleteActionReply($event)
+                            (changeActionReply) = onChangeActionReply()>
+                        </cds-action-reply-redirect>
+                    </div>
+                </div>
+
+                <!-- GALLERY RESPONSE -->
+                <div *ngIf="message.type === typeMessage.GALLERY">
+                    <!-- <div class="custom-placeholder" *cdkDragPlaceholder>
+                        <cds-action-reply-gallery
+                            [index] = i
+                            [typeAction] = typeAction
+                            [response] = message>
+                        </cds-action-reply-gallery>
+                    </div> -->
+                    
+                    <div class="response">
+                        <div *ngIf="typeAction === typeActions.REPLY" 
+                            class="response-drop" 
+                            [ngClass]="{'grabbing':textGrabbing}"
+                            (mousedown)="mouseDown()" 
+                            (mouseup)="mouseUp()" 
+                            cdkDragHandle>
+                        </div> 
+                        <cds-action-reply-gallery
+                            [index] = i
+                            [idAction] = "idAction"
+                            [response] = message
+                            (moveUpResponse) = onMoveUpResponse($event)
+                            (moveDownResponse) = onMoveDownResponse($event)
+                            (deleteResponse) = onDeleteResponse($event)
+                            (openButtonPanel) = onOpenButtonPanel($event)
+                            (changeDelayTimeReplyElement) = onChangeDelayTimeReplyElement()
+                            (changeReplyElement) = onChangeReplyElement()>
+                        </cds-action-reply-gallery>
                     </div>
                 </div>
 

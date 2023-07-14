@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RedirectResponseComponent } from './redirect-response.component';
+import { CdsActionReplyRedirectComponent } from './cds-action-reply-redirect.component';
 
-describe('RedirectResponseComponent', () => {
-  let component: RedirectResponseComponent;
-  let fixture: ComponentFixture<RedirectResponseComponent>;
+describe('CdsActionReplyRedirectComponent', () => {
+  let component: CdsActionReplyRedirectComponent;
+  let fixture: ComponentFixture<CdsActionReplyRedirectComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ RedirectResponseComponent ]
+      declarations: [ CdsActionReplyRedirectComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(RedirectResponseComponent);
+    fixture = TestBed.createComponent(CdsActionReplyRedirectComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

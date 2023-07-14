@@ -48,6 +48,7 @@
             left: 0px;
             opacity: 0;
             transition: opacity 0.3s ease-in-out;
+            z-index: 1;
         }
     }
 }
@@ -63,7 +64,6 @@
 
 /** response-controls **/
 .response-controls {
-    z-index: 1;
     top: -6px;
     left: 4px;
     .control-button {
@@ -138,8 +138,8 @@
 //** CONNECTOR **//
 .connector {
     position: absolute;
-    /* display: flex; */
-    top: calc(50% - 10px);
+    // top: calc(50% - 10px);
+    top: 0;
     right: -4px;
 }
 
@@ -156,6 +156,7 @@
 
     display: flex;
     margin: 12px 0 0;
+    gap: 5px;
     width: 100%;
     font-size: 14px;
     padding: 0 5px;
@@ -173,7 +174,7 @@
     position: relative;
     min-width: 100px;
     text-align: center;
-    margin: 5px 5px 0px; //10px 5px 0;
+    margin: 0px 5px 0px; //10px 5px 0;
     padding: 0 10px;
     user-select: none;
     box-sizing: border-box;
@@ -231,7 +232,7 @@
     font-size: 0.7em;
     font-weight: 400;
     line-height: $button-height-base;
-    margin: 5px 5px 0;
+    margin: 0px 5px 0;
     order: 1;
     padding: 0 10px;
     transition: all .3s;
@@ -296,7 +297,6 @@ cds-textarea.text-editable-div ::ng-deep{
         line-height: 20px !important; 
         width: calc(100% - 20px) !important;
         font-size: 0.9em !important;
-        line-height: 20px !important;
     }
 }
 

@@ -3,23 +3,20 @@ import { TYPE_ACTION } from 'app/chatbot-design-studio/utils';
 import { Expression, MessageWithWait, Metadata } from 'app/models/intent-model';
 
 @Component({
-  selector: 'appdashboard-redirect-response',
-  templateUrl: './redirect-response.component.html',
-  styleUrls: ['./redirect-response.component.scss']
+  selector: 'cds-action-reply-redirect',
+  templateUrl: './cds-action-reply-redirect.component.html',
+  styleUrls: ['./cds-action-reply-redirect.component.scss']
 })
-export class RedirectResponseComponent implements OnInit {
+export class CdsActionReplyRedirectComponent implements OnInit {
 
-  @Output() changeDelayTimeReplyElement = new EventEmitter();
-  @Output() changeReplyElement = new EventEmitter();
-  
-  @Output() deleteResponse = new EventEmitter();
+  @Output() changeActionReply = new EventEmitter();
+  @Output() deleteActionReply = new EventEmitter();
   @Output() moveUpResponse = new EventEmitter();
   @Output() moveDownResponse = new EventEmitter();
   
-
+  @Input() idAction: string;
   @Input() response: MessageWithWait;
   @Input() index: number;
-  @Input() typeAction: string;
   
   // Delay //onMoveTopButton
   delayTime: number;
@@ -34,7 +31,6 @@ export class RedirectResponseComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    console.log('responseeeeeee', this.response)
     this.delayTime = this.response.time/1000;
     try {
       this.metadata = this.response.metadata;
@@ -43,42 +39,43 @@ export class RedirectResponseComponent implements OnInit {
     }
   }
 
-
-  /** */
-  onDeleteResponse(){
-    this.deleteResponse.emit(this.index);
+  // EVENT FUNCTIONS //
+  
+  /** onClickDelayTime */
+  onClickDelayTime(opened: boolean){
+    this.canShowFilter = !opened
   }
 
-  /** */
+  /** onChangeDelayTime */
+  onChangeDelayTime(value:number){
+    this.delayTime = value;
+    this.response.time = value*1000;
+    this.changeActionReply.emit();
+    this.canShowFilter = true;
+  }
+
+   /** onChangeExpression */
+  onChangeExpression(expression: Expression){
+    this.response._tdJSONCondition = expression
+    this.changeActionReply.emit();
+  }
+
+  /** onDeleteActionReply */
+  onDeleteActionReply(){
+    this.deleteActionReply.emit(this.index);
+  }
   onMoveUpResponse(){
     this.moveUpResponse.emit(this.index);
   }
-
-  /** */
   onMoveDownResponse(){
     this.moveDownResponse.emit(this.index);
   }
 
-  onClickDelayTime(opened: boolean){
-    this.canShowFilter = !opened
-  }
-  /** */
-  onChangeDelayTime(value:number){
-    this.delayTime = value;
-    this.response.time = value*1000;
-    this.changeDelayTimeReplyElement.emit();
-    this.canShowFilter = true;
-  }
-
-  onChangeExpression(expression: Expression){
-    this.response._tdJSONCondition = expression
-    this.changeReplyElement.emit();
-  }
-
+  /** onChangeTextarea */
   onChangeTextarea(text:string) {
     this.metadata.src = text;
     setTimeout(() => {
-      this.changeReplyElement.emit();
+      this.changeActionReply.emit();
     }, 500);
   }
 

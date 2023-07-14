@@ -1,30 +1,30 @@
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { TYPE_ACTION, TYPE_BUTTON, TYPE_URL } from 'app/chatbot-design-studio/utils';
+import { TYPE_ACTION, TYPE_BUTTON, TYPE_URL, generateShortUID } from 'app/chatbot-design-studio/utils';
 import { Button, Expression, GalleryElement, MessageAttributes, MessageWithWait, Metadata } from 'app/models/intent-model';
 import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
 
 @Component({
-  selector: 'appdashboard-gallery-response',
-  templateUrl: './gallery-response.component.html',
-  styleUrls: ['./gallery-response.component.scss']
+  selector: 'cds-action-reply-gallery',
+  templateUrl: './cds-action-reply-gallery.component.html',
+  styleUrls: ['./cds-action-reply-gallery.component.scss']
 })
-export class GalleryResponseComponent implements OnInit {
+export class CdsActionReplyGalleryComponent implements OnInit {
 
   @ViewChild('scrollMe', { static: false }) scrollContainer: ElementRef;
   
-  @Output() changeDelayTimeReplyElement = new EventEmitter();
-  @Output() changeReplyElement = new EventEmitter();
-  
-  @Output() deleteResponse = new EventEmitter();
+  @Output() changeActionReply = new EventEmitter();
+  @Output() deleteActionReply = new EventEmitter();
   @Output() moveUpResponse = new EventEmitter();
   @Output() moveDownResponse = new EventEmitter();
   @Output() openButtonPanel = new EventEmitter();
+  @Output() createNewButton = new EventEmitter();
+  @Output() deleteButton = new EventEmitter();
   
-
+  @Input() idAction: string;
   @Input() response: MessageWithWait;
   @Input() index: number;
-  @Input() typeAction: string;
+ 
   
   // Delay //onMoveTopButton
   delayTime: number;
@@ -81,7 +81,12 @@ export class GalleryResponseComponent implements OnInit {
   }
 
   newButton(): Button{
+    const idButton = generateShortUID();
+    const idActionConnector = this.idAction+'/'+idButton;
     return {
+      'uid': idButton,
+      'idConnector': idActionConnector,
+      'isConnected': false,
       'value': 'Button',
       'type': TYPE_BUTTON.TEXT,
       'target': TYPE_URL.BLANK,
@@ -110,7 +115,36 @@ export class GalleryResponseComponent implements OnInit {
 
 
   // EVENT FUNCTIONS //
-  /** */
+  /** onClickDelayTime */
+  onClickDelayTime(opened: boolean){
+    this.canShowFilter = !opened;
+  }
+
+  /** onChangeDelayTime */
+  onChangeDelayTime(value:number){
+    this.delayTime = value;
+    this.response.time = value*1000;
+    this.changeActionReply.emit();
+    this.canShowFilter = true;
+  }
+
+  /** onChangeExpression */
+  onChangeExpression(expression: Expression){
+    this.response._tdJSONCondition = expression
+    this.changeActionReply.emit();
+  }
+
+  /** onDeleteActionReply */
+  onDeleteActionReply(){
+    this.deleteActionReply.emit(this.index);
+  }
+  onMoveUpResponse(){
+    this.moveUpResponse.emit(this.index);
+  }
+  onMoveDownResponse(){
+    this.moveDownResponse.emit(this.index);
+  }
+
   drop(event: CdkDragDrop<string[]>) {
     // this.textGrabbing = false;
     moveItemInArray(this.gallery, event.previousIndex, event.currentIndex);
@@ -120,36 +154,9 @@ export class GalleryResponseComponent implements OnInit {
     // this.textGrabbing = false;
     moveItemInArray(this.gallery[index].buttons, event.previousIndex, event.currentIndex);
   }
-  /** */
-  onDeleteResponse(){
-    this.deleteResponse.emit(this.index);
-  }
 
-  /** */
-  onMoveUpResponse(){
-    this.moveUpResponse.emit(this.index);
-  }
 
-  /** */
-  onMoveDownResponse(){
-    this.moveDownResponse.emit(this.index);
-  }
-
-  onClickDelayTime(opened: boolean){
-    this.canShowFilter = !opened
-  }
-  /** */
-  onChangeDelayTime(value:number){
-    this.delayTime = value;
-    this.response.time = value*1000;
-    this.changeDelayTimeReplyElement.emit();
-    this.canShowFilter = true;
-  }
-
-  onChangeExpression(expression: Expression){
-    this.response._tdJSONCondition = expression
-    this.changeReplyElement.emit();
-  }
+  
 
   onSelectedAttribute(variableSelected: { name: string, value: string }, element: 'title' | 'description', index: number){
     this.activateEL[index][element] = false
@@ -161,7 +168,7 @@ export class GalleryResponseComponent implements OnInit {
     this.response.attributes.attachment.gallery = this.gallery
     // this.activateEL[index][element] = false
     setTimeout(() => {
-      this.changeReplyElement.emit();
+      this.changeActionReply.emit();
     }, 500);
   }
 

@@ -14,8 +14,6 @@ import { ConnectorService } from 'app/chatbot-design-studio/services/connector.s
   templateUrl: './cds-action-reply-text.component.html',
   styleUrls: ['./cds-action-reply-text.component.scss']
 })
-
-
 export class CdsActionReplyTextComponent implements OnInit {
   @ViewChild('autosize') autosize: CdkTextareaAutosize;
   

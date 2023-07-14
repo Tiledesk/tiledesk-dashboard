@@ -1,5 +1,5 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { TYPE_MESSAGE, TYPE_COMMAND } from 'app/chatbot-design-studio/utils';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import { TYPE_MESSAGE, TYPE_COMMAND, generateShortUID, TYPE_BUTTON, TYPE_URL } from 'app/chatbot-design-studio/utils';
 import { Message, Command } from 'app/models/intent-model';
 
 @Component({
@@ -9,6 +9,7 @@ import { Message, Command } from 'app/models/intent-model';
 })
 export class CdsActionReplyToolsComponent implements OnInit {
 
+  @Input() idAction: string;
   @Output() addNewActionReply = new EventEmitter();
 
   TypeMessage = TYPE_MESSAGE;
@@ -56,6 +57,55 @@ export class CdsActionReplyToolsComponent implements OnInit {
               src: '',
               // width: MESSAGE_METADTA_WIDTH,
               // height: MESSAGE_METADTA_HEIGHT
+            }
+          },
+        } 
+        break;
+      case TYPE_MESSAGE.GALLERY:
+        const idButton = generateShortUID();
+        const idActionConnector = this.idAction+'/'+idButton;
+        newElement = {
+          type: TYPE_COMMAND.MESSAGE,
+          message: {
+            text: '',
+            type: TYPE_MESSAGE.GALLERY,
+            attributes: {
+              attachment: {
+                  type: 'gallery',
+                  gallery: [
+                    {
+                      preview: { src: ''},
+                      title: 'Place title',
+                      description: 'Place description',
+                      buttons: [
+                        {
+                          'uid': idButton,
+                          'idConnector': idActionConnector,
+                          'isConnected': false,
+                          'value': 'Button',
+                          'type': TYPE_BUTTON.TEXT,
+                          'target': TYPE_URL.BLANK,
+                          'link': '',
+                          'action': '',
+                          'show_echo': true
+                        }
+                      ]
+                    }
+                  ]
+              }
+            }
+          },
+        } 
+        break;
+      case TYPE_MESSAGE.REDIRECT:
+        newElement = {
+          type: TYPE_COMMAND.MESSAGE,
+          message: {
+            text: '',
+            type: TYPE_MESSAGE.REDIRECT,
+            metadata: {
+              src : '',
+              target: TYPE_URL.BLANK
             }
           },
         } 

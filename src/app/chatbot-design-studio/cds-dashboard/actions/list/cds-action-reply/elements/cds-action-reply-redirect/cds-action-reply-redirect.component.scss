@@ -1,24 +1,18 @@
 @import "./src/assets/sass/cds/_variables.scss";
 
 
-.text-editable-div {
-    display: block;
-    margin-top: 0px;
-    // margin-left: 30px;
-    width: calc(100% - 66px);
-}
-
 .extensions-response {
     font-size: $font-size-base;
     position: relative;
     width: 100%;
     height: auto;
-    margin: 27px 0px 0px 0px;
-    padding: 0px 33px;
+    margin: 0;
+    padding: 0 0 0 25px;
     display: flex;
     flex-wrap: wrap;
     row-gap: 5px;
     column-gap: 5px;
+    align-content: center;
     .delay-wrapper,
     .filter-wrapper {
         display: block;
@@ -33,7 +27,7 @@
     position: relative;
     width: 100%;
     height: auto;
-    margin: 10px 0 0 0;
+    margin: 5px 0 0 0;
     padding: 0;
     .text-editor {
         position: relative;
@@ -41,10 +35,11 @@
         padding: 0;
         .response-controls {
             position: absolute;
-            top: 0px;
+            top: -10px;
             left: 0px;
             opacity: 0;
             transition: opacity 0.3s ease-in-out;
+            z-index: 1;
         }
     }
 }
@@ -127,9 +122,9 @@
 
 .url-wrp{
     display: flex;
-    margin-left: 30px;
+    margin: 5px 0 0 0;
     align-items: center;
-    gap: 10px;
+    gap: 5px;
 
     .form-check{
         display: flex;
@@ -153,6 +148,27 @@
     font-weight: 300;
 }
 
+
+/** box-textarea **/
+cds-textarea.text-editable-div#url ::ng-deep{
+    display: block;
+    margin: auto;
+    width: calc(100% - 20px);
+    // margin-left: 20px;
+    textarea {
+        line-height: 20px !important; 
+        width: calc(100% - 20px) !important;
+        font-size: 0.9em !important;
+
+        border: 1px solid rgb(118, 118, 118) !important;
+        resize: none !important; 
+        padding: 8px 20px !important;
+
+        height: 20px !important;
+        min-height: 20px !important;
+    }
+}
+
 mat-button-toggle ::ng-deep{
     .mat-button-toggle-button{
         span {
@@ -167,17 +183,4 @@ mat-button-toggle-group {
 mat-button-toggle.mat-button-toggle-checked{
     background-color: $icon-color;
     color: white;
-}
-
-
-::ng-deep cds-textarea#url {
-    display: flex;
-    textarea {
-        border: 1px solid rgb(118, 118, 118) !important;
-        resize: none !important; 
-        padding: 8px 20px !important;
-
-        height: 25px !important;
-        min-height: 25px !important;
-    }
 }

@@ -33,6 +33,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
 
 //SERVICES
 // import { DragDropService } from './services/drag-drop.service';
@@ -67,6 +68,7 @@ import { CDSTextComponent } from './cds-base-element/text/text.component';
 import { CDSTextareaComponent } from './cds-dashboard/base-elements/textarea/textarea.component';
 import { CDSDelaySliderComponent } from './cds-dashboard/base-elements/delay-slider/delay-slider.component';
 import { CDSImageUploadComponent } from './cds-dashboard/base-elements/image-upload/image-upload.component';
+import { CDSElementFromUrlComponent } from './cds-dashboard/base-elements/element-from-url/element-from-url.component';
 
 //RULES COMPONENT
 import { RulesComponent } from './cds-rules/rules/rules.component';
@@ -120,10 +122,14 @@ import { CdsPanelIntentListComponent } from './cds-dashboard/cds-panel-intent-li
 import { CdsFloatingMenuComponent } from './cds-dashboard/cds-floating-menu/cds-floating-menu.component';
 
 import { CdsConnectorComponent } from './cds-dashboard/base-elements/cds-connector/cds-connector.component';
+
+//ACTION REPLY: elements
 import { CdsActionReplyToolsComponent } from './cds-dashboard/actions/list/cds-action-reply/elements/cds-action-reply-tools/cds-action-reply-tools.component';
 import { CdsActionReplyTextComponent } from './cds-dashboard/actions/list/cds-action-reply/elements/cds-action-reply-text/cds-action-reply-text.component';
 import { CdsActionReplyImageComponent } from './cds-dashboard/actions/list/cds-action-reply/elements/cds-action-reply-image/cds-action-reply-image.component';
 import { CdsActionReplyFrameComponent } from './cds-dashboard/actions/list/cds-action-reply/elements/cds-action-reply-frame/cds-action-reply-frame.component';
+import { CdsActionReplyRedirectComponent } from './cds-dashboard/actions/list/cds-action-reply/elements/cds-action-reply-redirect/cds-action-reply-redirect.component';
+import { CdsActionReplyGalleryComponent } from './cds-dashboard/actions/list/cds-action-reply/elements/cds-action-reply-gallery/cds-action-reply-gallery.component';
 
 //CDS- ACTIONS
 import { CdsActionDescriptionComponent } from './cds-dashboard/actions/list/cds-action-description/cds-action-description.component';
@@ -217,10 +223,13 @@ import { CdsActionOnlineAgentsComponent } from './cds-dashboard/actions/list/cds
     CdsActionReplyTextComponent,
     CdsActionReplyImageComponent,
     CdsActionReplyFrameComponent,
+    CdsActionReplyRedirectComponent,
+    CdsActionReplyGalleryComponent,
     
     CDSTextareaComponent,
     CDSDelaySliderComponent,
     CDSImageUploadComponent,
+    CDSElementFromUrlComponent,
     // action REPLY elements: end //
     CdsActionIntentComponent,
     CdsActionOnlineAgentsComponent,
@@ -245,6 +254,7 @@ import { CdsActionOnlineAgentsComponent } from './cds-dashboard/actions/list/cds
     MatListModule,
     MatButtonModule,
     MatIconModule,
+    MatButtonToggleModule,
     RouterModule,
     TranslateModule,
     FormsModule,

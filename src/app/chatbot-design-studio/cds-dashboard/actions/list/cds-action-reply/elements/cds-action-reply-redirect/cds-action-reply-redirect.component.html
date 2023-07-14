@@ -1,4 +1,4 @@
-<div *ngIf="typeAction === typeActions.REPLY" class="extensions-response">
+<div class="extensions-response">
     <div class="delay-wrapper" [ngStyle]="{width: canShowFilter? 'auto': '100%'}">
         <appdashboard-delay-slider
             [delayTime]="delayTime"
@@ -20,13 +20,13 @@
     <div class="text-editor">
 
         <div class="response-controls">
-            <div class="control-button delete" (click)="onDeleteResponse()">
+            <div class="control-button delete" (click)="onDeleteActionReply()">
                 <em class="material-icons">delete</em>
             </div>
-            <div *ngIf="typeAction === typeActions.REPLY" class="control-button" (click)="onMoveUpResponse()">
+            <div class="control-button" (click)="onMoveUpResponse()">
                 <em class="material-icons">expand_less</em>
             </div> 
-            <div *ngIf="typeAction === typeActions.REPLY" class="control-button" (click)="onMoveDownResponse()">
+            <div class="control-button" (click)="onMoveDownResponse()">
                 <em class="material-icons">expand_more</em>
             </div>
         </div>
@@ -53,7 +53,7 @@
         </div>
         
 
-        <div *ngIf="typeAction === typeActions.REPLY" class="text-editor-drop">
+        <div class="text-editor-drop">
             <em class="material-icons">drag_indicator</em>
         </div>
 

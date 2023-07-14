@@ -23,10 +23,10 @@
                 [ngStyle]="{'width':framePath? 'auto' : '100%' }">
                 <div *ngIf="!framePath" class="response-frame-panel">              
                     <div class="frame-panel">
-                        <appdashboard-element-from-url
+                        <cds-element-from-url
                             [metadata] = response.metadata
-                            (loadPathElement)="onLoadPathElement()"
-                        ></appdashboard-element-from-url>
+                            (loadPathElement)="onLoadPathElement()">
+                        </cds-element-from-url>
                     </div>
                 </div>
 

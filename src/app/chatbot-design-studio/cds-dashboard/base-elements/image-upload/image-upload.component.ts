@@ -5,7 +5,7 @@ import { LoggerService } from 'app/services/logger/logger.service';
 import { Metadata } from 'app/models/intent-model';
 
 @Component({
-  selector: 'appdashboard-image-upload',
+  selector: 'cds-image-upload',
   templateUrl: './image-upload.component.html',
   styleUrls: ['./image-upload.component.scss']
 })
