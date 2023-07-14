@@ -128,6 +128,10 @@ import { CdsActionReplyToolsComponent } from './cds-dashboard/actions/list/cds-a
 import { CdsActionOnlineAgentsComponent } from './cds-dashboard/actions/list/cds-action-online-agents/cds-action-online-agents.component';
 import { CdsActionDescriptionComponent } from './cds-dashboard/actions/list/cds-action-description/cds-action-description.component';
 import { CdsActionDetail } from './cds-dashboard/actions/detail/cds-action-detail/cds-action-detail.component';
+import { CdsActionControlsComponent } from './cds-dashboard/actions/shared/cds-action-controls/cds-action-controls.component';
+import { CdsActionAgentHandoffComponent } from './cds-dashboard/actions/list/cds-action-agent-handoff/cds-action-agent-handoff.component';
+import { CdsActionWaitComponent } from './cds-dashboard/actions/list/cds-action-wait/cds-action-wait.component';
+import { CdsActionChangeDepartmentComponent } from './cds-dashboard/actions/list/cds-action-change-department/cds-action-change-department.component';
 
 
 @NgModule({
@@ -210,9 +214,13 @@ import { CdsActionDetail } from './cds-dashboard/actions/detail/cds-action-detai
     CdsConnectorComponent,
     CdsActionReplyToolsComponent,
     CdsActionEmailComponent,
+    CdsActionAgentHandoffComponent,
     CdsActionOnlineAgentsComponent,
     CdsActionDescriptionComponent,
-    CdsActionDetail
+    CdsActionDetail,
+    CdsActionControlsComponent,
+    CdsActionWaitComponent,
+    CdsActionChangeDepartmentComponent
   ],
   imports: [
     A11yModule,

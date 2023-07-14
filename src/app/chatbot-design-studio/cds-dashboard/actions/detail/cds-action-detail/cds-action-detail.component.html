@@ -61,7 +61,9 @@
                     </cds-action-web-request>
             
                     <cds-action-wait *ngSwitchCase="typeAction.WAIT"
-                        [action]="elementSelected">
+                        class="panel-response"
+                        [action]="elementSelected"
+                        [previewMode]="false">
                     </cds-action-wait>
             
                     <cds-action-intent-2 *ngSwitchCase="typeAction.INTENT"
@@ -75,6 +77,18 @@
                         [action]="elementSelected"
                         [previewMode]="false">
                     </cds-action-email>
+
+                    <cds-action-agent *ngSwitchCase="typeAction.AGENT"
+                        class="panel-response"
+                        [action]="elementSelected"
+                        [previewMode]="false">
+                    </cds-action-agent>
+
+                    <cds-action-change-department *ngSwitchCase="typeAction.CHANGE_DEPARTMENT"
+                        class="panel-response"
+                        [action]="elementSelected"
+                        [previewMode]="false">
+                    </cds-action-change-department>
                 
                     <cds-action-json-condition *ngSwitchCase="typeAction.JSON_CONDITION"
                         [action]="elementSelected"
@@ -111,13 +125,8 @@
                         [action]="elementSelected">
                     </cds-action-replace-bot>
     
-                    <cds-action-change-department *ngSwitchCase="typeAction.CHANGE_DEPARTMENT"
-                        [action]="elementSelected">
-                    </cds-action-change-department>
-    
-                    <cds-action-agent *ngSwitchCase="typeAction.AGENT"
-                        [action]="elementSelected">
-                    </cds-action-agent>
+                   
+
     
                     <cds-action-close *ngSwitchCase="typeAction.CLOSE"
                         [action]="elementSelected">
