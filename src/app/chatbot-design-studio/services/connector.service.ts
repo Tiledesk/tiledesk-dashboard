@@ -135,6 +135,10 @@ export class ConnectorService {
     this.tiledeskConnectors.deleteConnectorFromAction(actionId, connId);
   }
 
+  deleteConnectorsFromActionByActionId(actionId){
+    this.tiledeskConnectors.deleteConnectorsFromActionByActionId(actionId);
+  }
+
   movedConnector(elem){
     console.log('movedConnector: ', elem);
     setTimeout(() => {

@@ -137,13 +137,17 @@ export class TiledeskConnectors {
       if (connectorElement) {
         connectorElement.remove();
         const connectorDeleted = this.connectors[connectorId];
-        if(connectorDeleted){
-          const customEvent = new CustomEvent("connector-deleted", { detail: {connector: connectorDeleted} });
-          document.dispatchEvent(customEvent);
-          delete this.connectors[connectorId];
-        }
+        delete this.connectors[connectorId];
         this.deleteConnectorInBlock(connectorId);
+        if(connectorDeleted){
+          this.#removeConnector(connectorDeleted);
+        }
       }
+    }
+
+    #removeConnector(connectorDeleted){
+      const customEvent = new CustomEvent("connector-deleted", { detail: {connector: connectorDeleted} });
+      document.dispatchEvent(customEvent);
     }
 
     onKeyPressDeleteConnector(event){
@@ -609,6 +613,33 @@ export class TiledeskConnectors {
           if (connector) {
             connector.remove();
             delete this.connectors[connectorKey];
+            console.log("connectors deleted!!!", connectorKey, this.connectors);
+          }
+        }
+      }
+    }
+
+    deleteConnectorsFromActionByActionId(actionId) {
+      console.log("deleteConnectorsFromActionByActionId ----> ", actionId);
+      console.log("blocks :---> ", this.blocks);
+      console.log("connectors :---> ", this.connectors);
+      for (var key in this.blocks) {
+        var node = this.blocks[key];
+        console.log('outConnectors: ', node, key); 
+        for (var connectorKey in node.outConnectors) {
+          console.log('connectorKey: ', connectorKey);
+          if (connectorKey.includes(actionId)) {
+            console.log('CANCELLO : ', node.outConnectors[connectorKey]);
+            delete node.outConnectors[connectorKey];
+            let connector = document.getElementById(connectorKey);
+            if (connector) {
+              connector.remove();
+              const connectorDeleted = this.connectors[connectorKey];
+              delete this.connectors[connectorKey];
+              if(connectorDeleted){
+                this.#removeConnector(connectorDeleted);
+              }
+            }
           }
         }
       }

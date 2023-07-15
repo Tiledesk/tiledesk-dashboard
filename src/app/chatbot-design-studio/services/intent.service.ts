@@ -25,6 +25,7 @@ import {
 import { FaqService } from 'app/services/faq.service';
 import { FaqKbService } from 'app/services/faq-kb.service';
 import { TYPE_ACTION, TYPE_COMMAND } from 'app/chatbot-design-studio/utils';
+import { ConnectorService } from 'app/chatbot-design-studio/services/connector.service';
 
 
 /** CLASSE DI SERVICES PER TUTTE LE AZIONI RIFERITE AD OGNI SINGOLO INTENT **/
@@ -36,7 +37,7 @@ export class IntentService {
   idBot: string;
   intents = new BehaviorSubject <Intent[]>([]);
   listOfActions: Array<{ name: string, value: string, icon?: string }>;
-
+  previousIntentId: string = '';
   // keyDashboardAttributes = 'stage';//'Dashboard-Attributes';
   // jsonDashboardAttributes: any;
 
@@ -51,7 +52,8 @@ export class IntentService {
 
   constructor(
     private faqService: FaqService,
-    private faqKbService: FaqKbService
+    private faqKbService: FaqKbService,
+    private connectorService: ConnectorService
   ) { 
 
   }
@@ -94,6 +96,10 @@ export class IntentService {
     // this.setFromLocalStorage(key, json);
   }
 
+
+  setPreviousIntentId(intentId){
+    this.previousIntentId = intentId;
+  }
   /** */
   // setConnectorsInDashboardAttributes(json){
   //   // let key = this.keyDashboardAttributes;
@@ -170,11 +176,10 @@ export class IntentService {
     });
   }
 
-  public createIntent(id_faq_kb: string, actionType: TYPE_ACTION){
+  public createNewIntent(id_faq_kb: string, action: any){
     let intent = new Intent();
     intent.id_faq_kb = id_faq_kb;
     intent.intent_display_name = this.setDisplayName();
-    let action = this.createAction(actionType);
     intent.actions.push(action);
     return intent;
     //this.creatIntent(this.intent);
@@ -299,7 +304,70 @@ export class IntentService {
 
 
   // START ATTRIBUTE FUNCTIONS //
-  public createAction(typeAction: TYPE_ACTION) {
+  // moving new action in intent from panel elements
+  public moveNewActionIntoIntent(event, action, currentIntentId){
+    let newAction = this.createNewAction(action.value.type);
+    let listOfIntents = this.intents.getValue();
+    let currentIntent = listOfIntents.find(function(obj) {
+      return obj.intent_id === currentIntentId;
+    });
+    currentIntent.actions.splice(event.currentIndex, 0, newAction);
+    setTimeout(async () => {
+      const responseCurrentIntent = await this.updateIntent(currentIntent);
+      if(responseCurrentIntent){
+        // console.log('update current Intent: OK');
+      }
+    }, 0);
+  }
+
+
+  // on move action from different intents
+  public moveActionBetweenDifferentIntents(event, action, currentIntentId){
+    const that = this;
+    // console.log('moving action from another intent - action: ', event, action);
+    let listOfIntents = this.intents.getValue();
+    let currentIntent = listOfIntents.find(function(obj) {
+      return obj.intent_id === currentIntentId;
+    });
+    let previousIntent = listOfIntents.find(function(obj) {
+      return obj.intent_id === that.previousIntentId;
+    });
+    console.log('moveActionBetweenDifferentIntents: ', event, listOfIntents, currentIntentId, currentIntent, previousIntent);
+    currentIntent.actions.splice(event.currentIndex, 0, action);
+    previousIntent.actions.splice(event.previousIndex, 1);
+    this.connectorService.deleteConnectorsFromActionByActionId(action._tdActionId);
+    setTimeout(async () => {
+      const responseCurrentIntent = await this.updateIntent(currentIntent);
+      if(responseCurrentIntent){
+        console.log('update current Intent: OK');
+      }
+      const responsePreviousIntent = await this.updateIntent(previousIntent);
+      if(responsePreviousIntent){
+        console.log('update previous Intent: OK');
+      }
+    }, 0);
+  }
+
+  
+  // on move action from different intents
+  public moveActionFromIntentToStage(event, action){
+    const that = this;
+    let listOfIntents = this.intents.getValue();
+    let previousIntent = listOfIntents.find(function(obj) {
+      return obj.intent_id === that.previousIntentId;
+    });
+    console.log('moveActionFromIntentToStage: ', event, listOfIntents, previousIntent);
+    previousIntent.actions.splice(event.previousIndex, 1);
+    this.connectorService.deleteConnectorsFromActionByActionId(action._tdActionId);
+    setTimeout(async () => {
+      const responsePreviousIntent = await this.updateIntent(previousIntent);
+      if(responsePreviousIntent){
+        console.log('update previous Intent: OK');
+      }
+    }, 0);
+  }
+
+  public createNewAction(typeAction: TYPE_ACTION) {
     let action: any;
     if(typeAction === TYPE_ACTION.REPLY){
       action = new ActionReply();
@@ -365,6 +433,7 @@ export class IntentService {
     }
     return action;
   }
+
 
 
   setListOfActions(intents){
