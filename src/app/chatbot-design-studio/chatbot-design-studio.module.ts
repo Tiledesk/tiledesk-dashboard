@@ -135,11 +135,15 @@ import { CdsActionDescriptionComponent } from './cds-dashboard/actions/list/cds-
 import { CdsActionIntentComponent } from './cds-dashboard/actions/list/cds-action-intent/cds-action-intent.component';
 import { CdsActionReplyComponent } from './cds-dashboard/actions/list/cds-action-reply/cds-action-reply.component';
 import { CdsActionOnlineAgentsComponent } from './cds-dashboard/actions/list/cds-action-online-agents/cds-action-online-agents.component';
+import { CdsActionEmailComponent } from './cds-dashboard/actions/list/cds-action-email/cds-action-email.component';
 
 //CDS PANELS
 import { CdsActionDetailPanelComponent } from './cds-dashboard/actions/detail/cds-action-detail/cds-panel-action-detail.component';
 import { CdsPanelWidgetComponent } from './cds-dashboard/cds-panel-widget/cds-panel-widget.component';
 import { CdsPanelButtonConfigurationComponent } from './cds-dashboard/cds-panel-button-configuration/cds-panel-button-configuration.component';
+import { CdsActionControlsComponent } from './cds-dashboard/actions/shared/cds-action-controls/cds-action-controls.component';
+
+
 
 
 @NgModule({
@@ -218,6 +222,7 @@ import { CdsPanelButtonConfigurationComponent } from './cds-dashboard/cds-panel-
     CDSTextComponent,
     CDSFilterComponent,
     CDSTextareaComponent,
+    CdsActionControlsComponent,
     // ------ CDS-ACTIONS: start ------ //
     CdsActionDescriptionComponent,
     CdsActionReplyComponent,
@@ -236,6 +241,7 @@ import { CdsPanelButtonConfigurationComponent } from './cds-dashboard/cds-panel-
     // action REPLY elements: end //
     CdsActionIntentComponent,
     CdsActionOnlineAgentsComponent,
+    CdsActionEmailComponent,
     // ------ CDS-ACTIONS: end ------ //
 
     // ------ CDS PANELS ------ //

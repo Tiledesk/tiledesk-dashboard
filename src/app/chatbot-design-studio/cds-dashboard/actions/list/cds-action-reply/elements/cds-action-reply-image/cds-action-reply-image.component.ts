@@ -23,7 +23,8 @@ export class CdsActionReplyImageComponent implements OnInit {
   @Input() idAction: string;
   @Input() response: MessageWithWait;
   @Input() index: number;
-
+  @Input() previewMode: boolean = true
+  
   idIntent: string;
   // Connector //
   connector: any;

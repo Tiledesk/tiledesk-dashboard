@@ -1,4 +1,4 @@
-<div class="extensions-response">
+<div class="extensions-response" [class.previewMode]="previewMode">
     <div class="delay-wrapper" [ngStyle]="{width: canShowFilter? 'auto': '100%'}">
         <appdashboard-delay-slider
             [delayTime]="delayTime"
@@ -17,7 +17,7 @@
 
 
     
-<div class="image-editor-wrapper">
+<div class="image-editor-wrapper" [class.previewMode]="previewMode">
         
         <div class="image-editor">
         
@@ -75,7 +75,7 @@
 
 </div>
 
-<div class="buttons-response button-replies" cdkDropListOrientation="vertical" cdkDropList (cdkDropListDropped)="dropButtons($event)" >
+<div class="buttons-response button-replies" [class.previewMode]="previewMode" cdkDropListOrientation="vertical" cdkDropList (cdkDropListDropped)="dropButtons($event)" >
     
     <div *ngFor="let button of buttons; let i = index;" class="tpl-drop-down content-botton-reply" cdkDragBoundary=".button-replies" cdkDrag> 
    

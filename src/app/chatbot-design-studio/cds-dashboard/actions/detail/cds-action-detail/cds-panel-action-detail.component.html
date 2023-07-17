@@ -46,6 +46,12 @@
                         [action]="elementSelected"
                         [previewMode]="false">
                     </cds-action-reply>
+
+                    <cds-action-email *ngSwitchCase="typeAction.EMAIL"
+                        class="panel-response"
+                        [action]="elementSelected"
+                        [previewMode]="false">
+                    </cds-action-email>
     
                     <!-- <cds-action-reply *ngSwitchCase="typeAction.RANDOM_REPLY"
                         class="panel-response"
@@ -68,11 +74,6 @@
                         [action]="elementSelected"
                         [intents]="listOfActions">
                     </cds-action-intent>
-            
-                    <cds-action-email *ngSwitchCase="typeAction.EMAIL"
-                        class="panel-response"
-                        [action]="elementSelected">
-                    </cds-action-email>
                 
                     <cds-action-json-condition *ngSwitchCase="typeAction.JSON_CONDITION"
                         [action]="elementSelected"

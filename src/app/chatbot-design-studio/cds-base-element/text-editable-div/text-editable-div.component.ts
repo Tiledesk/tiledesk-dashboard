@@ -14,7 +14,7 @@ export class TextEditableDivComponent implements OnInit, OnChanges {
 
   @Input() text: string;
   @Output() textChanged = new EventEmitter();
-  @Input() emoijPikerBtn: boolean;
+  @Input() emojiPikerBtn: boolean;
   @Input() setAttributeBtn: boolean;
   @Input() textLimitBtn: boolean;
   @Input() textLimit: number = TEXT_CHARS_LIMIT;
