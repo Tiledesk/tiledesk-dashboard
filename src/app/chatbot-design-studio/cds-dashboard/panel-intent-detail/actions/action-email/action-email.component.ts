@@ -4,7 +4,7 @@ import { LoggerService } from 'app/services/logger/logger.service';
 
 
 @Component({
-  selector: 'cds-action-email',
+  selector: 'action-email',
   templateUrl: './action-email.component.html',
   styleUrls: ['./action-email.component.scss']
 })

@@ -48,6 +48,7 @@ export class CdsDashboardComponent implements OnInit {
 
   updatePanelIntentList: boolean = true;
   listOfIntents: Array<Intent> = [];
+  intentsChanged: boolean = false;
 
   intentStart: Intent;
   intentDefaultFallback: Intent;
@@ -134,15 +135,17 @@ export class CdsDashboardComponent implements OnInit {
       * variabile booleana aggiunta per far scattare l'onchange nei componenti importati dalla dashboard
       * ngOnChanges funziona bene solo sugli @import degli elementi primitivi!!!  
       */
-      this.updatePanelIntentList = !this.updatePanelIntentList;
-      this.listOfIntents = intents;
-      this.intentService.setListOfActions(this.listOfIntents);
-      this.listOfActions = this.intentService.getListOfActions();
-      /** SET DRAG STAGE AND CREATE CONNECTORS */
-      setTimeout(() => {
-        this.setDragAndListnerEventToElements();
-        this.connectorService.createConnectors(this.listOfIntents);
-      }, 0);
+
+        this.updatePanelIntentList = !this.updatePanelIntentList;
+        this.listOfIntents = intents;
+        this.intentService.setListOfActions(this.listOfIntents);
+        this.listOfActions = this.intentService.getListOfActions();
+        /** SET DRAG STAGE AND CREATE CONNECTORS */
+        setTimeout(() => {
+          this.setDragAndListnerEventToElements();
+          this.connectorService.createConnectors(this.listOfIntents);
+        }, 0);
+      
     });
 
     /** SUBSCRIBE TO THE STATE BUTTON PANEL */
@@ -168,10 +171,12 @@ export class CdsDashboardComponent implements OnInit {
   } 
 
 
+
   // SYSTEM FUNCTIONS //
   ngOnInit() {
     this.auth.checkRoleForCurrentProject();
     this.executeAsyncFunctionsInSequence();
+
   }
 
   ngAfterViewInit(){
@@ -264,6 +269,15 @@ export class CdsDashboardComponent implements OnInit {
       },
       true
     );
+
+    document.addEventListener(
+      "connector-selected", (e:CustomEvent) => {
+        console.log("connector-selected:", e);
+        this.intentService.unselectAction();
+      },
+      true
+    );
+    
     
 
     /** LISTNER OF FLOAT MENU */
@@ -278,6 +292,7 @@ export class CdsDashboardComponent implements OnInit {
     document.addEventListener('keydown', function(event) {
       if (event.key === 'Backspace' || event.key === 'Escape' || event.key === 'Canc' && that.isOpenFloatMenu) {
         that.removeConnectorDraftAndCloseFloatMenu();
+        that.intentService.deleteSelectedAction();
       }
     });
   }
@@ -565,12 +580,15 @@ export class CdsDashboardComponent implements OnInit {
 
 
   /** */
-  private async addNewIntent(pos, actionType){
+  
+  private async createNewIntentWithNewAction(pos, actionType){
     this.CREATE_VIEW = true;
-    this.intentSelected = this.intentService.createIntent(this.id_faq_kb, actionType);
+    console.log('createNewIntentWithNewAction: OK ');
+    const action = this.intentService.createNewAction(actionType);
+    this.intentSelected = this.intentService.createNewIntent(this.id_faq_kb, action);
     this.intentSelected.intent_id = 'new';
     this.intentService.setIntentPosition(this.intentSelected.intent_id, pos);
-    const newIntent = await this.intentService.addNewIntent(this.id_faq_kb, this.intentSelected);
+    const newIntent = await this.intentService.saveNewIntent(this.id_faq_kb, this.intentSelected);
     this.intentSelected.id = newIntent.id;
     console.log('creatIntent: OK ', newIntent, pos);
     if(newIntent){
@@ -580,6 +598,26 @@ export class CdsDashboardComponent implements OnInit {
     }
     return newIntent;
   }
+
+  private async createNewIntentFromMovedAction(event, pos, action){
+    // move action into the stage
+    this.CREATE_VIEW = true;
+    this.intentSelected = this.intentService.createNewIntent(this.id_faq_kb, action);
+    this.intentSelected.intent_id = 'new';
+    this.intentService.setIntentPosition(this.intentSelected.intent_id, pos);
+    const newIntent = await this.intentService.saveNewIntent(this.id_faq_kb, this.intentSelected);
+    if(newIntent){
+      this.intentSelected.id = newIntent.id;
+      this.intentSelected.intent_id = newIntent.intent_id;
+      this.intentService.moveActionFromIntentToStage(event, action);
+      // !!! il valore di listOfIntents è bindato nel costructor con subscriptionListOfIntents !!! //
+      this.intentService.setIntentPosition(newIntent.intent_id, pos);
+      this.setDragAndListnerEvent(this.intentSelected);
+      
+    }
+    return newIntent;
+  }
+
 
   /** deleteIntent */
   private async deleteIntent(intent) {
@@ -733,13 +771,15 @@ export class CdsDashboardComponent implements OnInit {
 
 
   /** START EVENTS PANEL INTENT */
+  /** chiamata quando trascino un connettore sullo stage e creo un intent al volo */
   async onAddingActionToStage(event) {
     console.log('onAddingActionToStage:: ', event);
     const actionType = event.type;
     const toPoint = this.connectorDraft.toPoint;
+    toPoint.x = toPoint.x - 132;
     const fromPoint = this.connectorDraft.fromPoint;
     const fromId = this.connectorDraft.fromId;
-    const newIntent = await this.addNewIntent(toPoint, actionType);
+    const newIntent = await this.createNewIntentWithNewAction(toPoint, actionType);
     if(newIntent){
       const toId = newIntent.intent_id;
       this.connectorService.tiledeskConnectors.createConnector(fromId, toId, fromPoint, toPoint);
@@ -748,21 +788,21 @@ export class CdsDashboardComponent implements OnInit {
   }
 
 
-
+  /** chiamata quando droppo una action sullo stage (la sposto da un altro intent sullo stage oppure la aggiungo da panel element)  */
   async onDroppedElementToStage(event: CdkDragDrop<string[]>) {
-    console.log('droppedElementOnStage!!!!!', event);
-    let actionType = '';
+    console.log('droppedElementOnStage:: ', event);
+    // recuperare la posizione
     let pos = this.connectorService.tiledeskConnectors.logicPoint(event.dropPoint);
     pos.x = pos.x - 132;
-    // console.log('pos::: ', pos);
-    try {
-      let action: any = event.previousContainer.data[event.previousIndex];
-      actionType = action.value.type;
-      // console.log('actionType::: ', actionType);
-    } catch (error) {
-      console.error('ERROR: ', error);
+    let action: any = event.previousContainer.data[event.previousIndex];
+    if( action.value && action.value.type){
+      // dragging a new action into the stage
+      const actionType = action.value.type;
+      await this.createNewIntentWithNewAction(pos, actionType);
+    } else if(action){
+      // dragging an action from another intent, into the stage
+      await this.createNewIntentFromMovedAction(event, pos, action);
     }
-    await this.addNewIntent(pos, actionType);
   }
 
   // async onDroppedElementFromIntentToStage(event: CdkDragDrop<string[]>) {

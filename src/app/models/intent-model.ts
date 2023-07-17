@@ -89,6 +89,7 @@ export class ActionDeleteVariable extends Action {
 }
 
 export class ActionOnlineAgent extends Action {
+    intentName: string;
     trueIntent: string;
     falseIntent: string;
     trueIntentAttributes?: string;

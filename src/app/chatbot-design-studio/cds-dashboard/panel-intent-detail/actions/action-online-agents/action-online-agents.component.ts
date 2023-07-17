@@ -1,4 +1,4 @@
-import { ActionOnlineAgent } from './../../../../../models/intent-model';
+import { ActionOnlineAgent } from '../../../../../models/intent-model';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { LoggerService } from 'app/services/logger/logger.service';

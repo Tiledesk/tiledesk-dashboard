@@ -50,6 +50,7 @@
                     [style.top.px]="getIntentPosition(intent.intent_id).y" 
                     [style.left.px]="getIntentPosition(intent.intent_id).x" 
                     [intent]="intent"
+                    [intentsChanged]="intentsChanged"
                     [connectorChanged]="connectorChanged"
 
                     (answerSelected)=onAnswerSelected($event) 
@@ -58,6 +59,7 @@
 
                     (saveIntent)=onSaveIntent($event)
                 ></cds-intent>
+                <!-- (selectAction)=onSelectAction($event) -->
             </div>
 
             <div #floatMenuElement id="floatMenuElement"
@@ -79,6 +81,20 @@
             [button] = buttonSelected
             (saveButton) = onSaveButton($event)>
         </cds-panel-button-configuration>
+
+
+        <cds-action-detail *ngIf=isIntentElementSelected
+            class="panel-intent-detail-wrapper cds-generic-panel"
+            (click)="onClickPanelIntentDetail()"
+            [class.sidebar-opened]="IS_OPEN"
+            [isOpenPanel] = "isOpenPanelButtonConfig"
+            [listOfActions]="listOfActions" 
+            [elementIntentSelected]="elementIntentSelected"
+            [intentSelected]="intentSelected" 
+            [showSpinner]="showSpinner"
+            (closeAndSavePanelIntentDetail)="onCloseAndSavePanelIntentDetail($event)"
+            (clickedInsidePanelIntentDetail)="onClickedInsidePanelIntentDetail()">
+        </cds-action-detail>
         <!-- 
             (closeButtonPanel) = onClosePanel() 
             [listOfActions] = listOfActions

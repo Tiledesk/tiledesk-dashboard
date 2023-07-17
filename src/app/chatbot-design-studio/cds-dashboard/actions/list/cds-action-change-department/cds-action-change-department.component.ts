@@ -1,17 +1,18 @@
 import { DepartmentService } from 'app/services/department.service';
 import { ActionChangeDepartment } from 'app/models/intent-model';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Department } from 'app/models/department-model';
 import { LoggerService } from 'app/services/logger/logger.service';
 
 @Component({
-  selector: 'action-change-department',
-  templateUrl: './action-change-department.component.html',
-  styleUrls: ['./action-change-department.component.scss']
+  selector: 'cds-action-change-department',
+  templateUrl: './cds-action-change-department.component.html',
+  styleUrls: ['./cds-action-change-department.component.scss']
 })
-export class ActionChangeDepartmentComponent implements OnInit {
+export class CdsActionChangeDepartmentComponent implements OnInit {
 
-  @Input() action: ActionChangeDepartment
+  @Input() action: ActionChangeDepartment;
+  @Output() updateAndSaveAction = new EventEmitter();
 
   deps_name_list: string[] = [];
   dep_selected: Department;

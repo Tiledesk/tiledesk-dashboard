@@ -137,13 +137,17 @@ export class TiledeskConnectors {
       if (connectorElement) {
         connectorElement.remove();
         const connectorDeleted = this.connectors[connectorId];
-        if(connectorDeleted){
-          const customEvent = new CustomEvent("connector-deleted", { detail: {connector: connectorDeleted} });
-          document.dispatchEvent(customEvent);
-          delete this.connectors[connectorId];
-        }
+        delete this.connectors[connectorId];
         this.deleteConnectorInBlock(connectorId);
+        if(connectorDeleted){
+          this.#removeConnector(connectorDeleted);
+        }
       }
+    }
+
+    #removeConnector(connectorDeleted){
+      const customEvent = new CustomEvent("connector-deleted", { detail: {connector: connectorDeleted} });
+      document.dispatchEvent(customEvent);
     }
 
     onKeyPressDeleteConnector(event){
@@ -318,12 +322,12 @@ export class TiledeskConnectors {
 
     /** searchClassInParents */ 
     #searchClassInParents(el, keyClass) {
-      if(el.classList.contains(keyClass)){
+      if(el.classList && el.classList.contains(keyClass)){
         return el;
       }
       let parent = el.parentElement;
       while (parent !== null) {
-        if(parent.classList.contains(keyClass)){
+        if(parent.classList && parent.classList.contains(keyClass)){
           return parent;
         } 
         if(parent.parentElement){
@@ -470,7 +474,6 @@ export class TiledeskConnectors {
           }
         });
         connector.addEventListener('click', (e) => {
-
           // console.log("clicked -> ", e, that);
           if (that.selectedConnector) {
             that.selectedConnector.setAttributeNS(null, "class", that.classes["connector"]);
@@ -480,6 +483,9 @@ export class TiledeskConnectors {
           console.log("new selectedConnector -> ", that.selectedConnector.id);
           that.selectedConnector.setAttributeNS(null, "class", that.classes["connector_selected"]);
           console.log("connector_selected class ", that.selectedConnector);
+          
+          const event = new CustomEvent("connector-selected", { detail: {connector: connector} });
+          document.dispatchEvent(event);
         });
         this.svgContainer.appendChild(connector);
       }
@@ -609,6 +615,33 @@ export class TiledeskConnectors {
           if (connector) {
             connector.remove();
             delete this.connectors[connectorKey];
+            console.log("connectors deleted!!!", connectorKey, this.connectors);
+          }
+        }
+      }
+    }
+
+    deleteConnectorsFromActionByActionId(actionId) {
+      console.log("deleteConnectorsFromActionByActionId ----> ", actionId);
+      console.log("blocks :---> ", this.blocks);
+      console.log("connectors :---> ", this.connectors);
+      for (var key in this.blocks) {
+        var node = this.blocks[key];
+        console.log('outConnectors: ', node, key); 
+        for (var connectorKey in node.outConnectors) {
+          console.log('connectorKey: ', connectorKey);
+          if (connectorKey.includes(actionId)) {
+            console.log('CANCELLO : ', node.outConnectors[connectorKey]);
+            delete node.outConnectors[connectorKey];
+            let connector = document.getElementById(connectorKey);
+            if (connector) {
+              connector.remove();
+              const connectorDeleted = this.connectors[connectorKey];
+              delete this.connectors[connectorKey];
+              if(connectorDeleted){
+                this.#removeConnector(connectorDeleted);
+              }
+            }
           }
         }
       }

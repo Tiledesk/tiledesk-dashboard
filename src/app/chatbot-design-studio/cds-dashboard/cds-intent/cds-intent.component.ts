@@ -1,10 +1,10 @@
-import { Component, OnInit, HostListener, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
-import { Form, Intent, Action } from '../../../models/intent-model';
+import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges} from '@angular/core';
+import { Form, Intent } from 'app/models/intent-model';
 
 import { ACTIONS_LIST, TYPE_ACTION, patchActionId } from 'app/chatbot-design-studio/utils';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { IntentService } from 'app/chatbot-design-studio/services/intent.service'; 
-import { ControllerService } from 'app/chatbot-design-studio/services/controller.service';
+// import { ControllerService } from 'app/chatbot-design-studio/services/controller.service';
 import { ConnectorService } from 'app/chatbot-design-studio/services/connector.service';
 
 
@@ -33,14 +33,12 @@ export enum HAS_SELECTED_TYPE {
   styleUrls: ['./cds-intent.component.scss']
 })
 
-export class CdsIntentComponent implements OnInit, OnChanges {
-  // @HostListener('window:keydown', ['$event'])
-
+export class CdsIntentComponent implements OnInit {
   @Input() intent: Intent;
-  @Input() connectorChanged: boolean;
 
-  @Output() selectAction = new EventEmitter();
-  @Output() saveIntent = new EventEmitter();
+  // intentElement: any;
+  // idSelectedAction: string;
+  // arrayActionsForDrop = [];
 
   @Output() questionSelected = new EventEmitter();
   @Output() answerSelected = new EventEmitter();
@@ -57,8 +55,6 @@ export class CdsIntentComponent implements OnInit, OnChanges {
   answer: string;
   questionCount: number;
   intentActionList: Array<any>;
-  arrayActionsForDrop = [];
-
   HAS_SELECTED_TYPE = HAS_SELECTED_TYPE;
   TYPE_ACTION = TYPE_ACTION;
   ACTIONS_LIST = ACTIONS_LIST;
@@ -67,9 +63,19 @@ export class CdsIntentComponent implements OnInit, OnChanges {
   constructor(
     private logger: LoggerService,
     public intentService: IntentService,
-    private controllerService: ControllerService,
     private connectorService: ConnectorService
-  ) { }
+    // private controllerService: ControllerService,
+    
+  ) {
+    /** SUBSCRIBE TO THE INTENT CREATED OR UPDATED */
+    this.intentService.intent.subscribe(intent => {
+      if(intent && this.intent && intent.intent_id === this.intent.intent_id ){
+        this.intent = intent;
+        this.intentActionList = this.intent.actions;
+        console.log('intent created / updated ::: ',  this.intent);
+      }
+    });
+   }
 
   ngOnInit(): void { 
     // console.log('CdsPanelIntentComponent ngAfterViewInit-->');
@@ -116,7 +122,6 @@ export class CdsIntentComponent implements OnInit, OnChanges {
   /** CUSTOM FUNCTIONS  */
   private setIntentSelected(){
     this.intentActionList = null;
-    // console.log('CdsPanelIntentComponent setIntentSelected-->', this.intent);
     try {
       if (this.intent) {
         this.patchAllActionsId();
@@ -140,6 +145,10 @@ export class CdsIntentComponent implements OnInit, OnChanges {
   }
 
 
+  /** patchAllActionsId
+   * retrocompatibility patch.
+   * Check if the action has a ._tdActionId attribute
+   * otherwise it generates it on the fly */
   private patchAllActionsId(){
     if(this.intentActionList && this.intentActionList.length>0){
       this.intentActionList.forEach(function(action, index, object) {
@@ -150,6 +159,9 @@ export class CdsIntentComponent implements OnInit, OnChanges {
     }
   }
 
+  /** getActionParams
+   * Get action parameters from a map to create the header (title, icon) 
+   * */
   getActionParams(action){
     const enumKeys = Object.keys(TYPE_ACTION);
     let keyAction = '';
@@ -165,74 +177,12 @@ export class CdsIntentComponent implements OnInit, OnChanges {
       console.error("ERROR: ", error);
       return;
     }
-    //const oggettoAzione = TYPE_ACTION.find(item => item.type === 'azione');
   }
 
-  onDragEnded(event){
-    console.log('onDragEnded: ', event);
-    const fromEle = document.getElementById(this.intent.intent_id);
-    this.connectorService.movedConnector(fromEle);
-  }
-
-
-  /** EVENTS  */
-  onDropAction(event: CdkDragDrop<string[]>) {
-    // console.log('event:', event, 'previousContainer:', event.previousContainer, 'event.container:', event.container);
-    if (event.previousContainer === event.container) {
-      console.log('onDropAction: ', event);
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-    } else {
-      try {
-        let actionType: any = event.previousContainer.data[event.previousIndex];
-        let newAction = this.intentService.createAction(actionType.value.type);
-        this.intentActionList.splice(event.currentIndex, 0, newAction);
-        // console.log('intentActionList:', this.intentActionList);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    this.intent.actions = this.intentActionList;
-
-    const fromEle = document.getElementById(this.intent.intent_id);
-    this.connectorService.movedConnector(fromEle);
-    this.saveIntent.emit(this.intent);
-  }
-  
-  // onDeleteAction(event: any) {
-  //   console.log('onDeleteAction:::: ' , event, event.key);
-  //   if (event.key === 'Delete' || event.key === 'Backspace') {
-  //     this.intentActionList = this.intentActionList.filter(item => item._tdActionId !== this.idSelectedAction);
-  //     this.intent.actions = this.intentActionList;
-  //     this.saveIntent.emit(this.intent);
-  //   }
-  // }
-
-
-
-
-
-  // funzione chiamata da tutte le actions ogni volta che vengono modificate!
-  onUpdateAndSaveAction() {
-    console.log('onUpdateAndSaveAction:::: ' , this.intent, this.intent.actions);
-    // this.saveIntent.emit(this.intent);
-    const fromEle = document.getElementById(this.intent.intent_id);
-    this.connectorService.movedConnector(fromEle);
-    this.updateIntent();
-  }
-
-
-
-
-  // (mousemove)="onMouseMove($event)"
-  //  onMouseMove(event){
-  //     var x = event.clientX;
-  //     var y = event.clientY;
-  //     console.log('Coordinate x assolute:', x);
-  //     console.log('Coordinate y assolute:', y);
-  //     // this.connectorService.movedConnector( this.intentElement);
-  // }
-
-
+  /** updateIntent 
+   * service updateIntent is async
+   * !!! the response from the service is NOT handled!!!
+  */
   private async updateIntent(){
     const response = await this.intentService.updateIntent(this.intent);
     if(response){
@@ -287,6 +237,72 @@ export class CdsIntentComponent implements OnInit, OnChanges {
     // this.actionSelected.emit(action);
     // this.logger.log('[PANEL INTENT] onActionSelected ', action)
     this.actionSelected.emit({ action: action, index: index, maxLength: this.intentActionList.length });
+
+    this.intentService.selectAction(this.intent.intent_id, idAction);
+  }
+  /*********************************************/
+
+
+  /** EVENTS  */
+
+  /** !!! IMPORTANT 
+   * when the drag of an action starts, I save the starting intent. 
+   * Useful in case I move an action between different intents 
+  * */ 
+  onDragStarted(event, previousIntentId){
+    console.log('onDragStarted: ', previousIntentId);
+    this.intentService.setPreviousIntentId(previousIntentId);
+  }
+
+  /** onDragEnded
+   * get the action moved and update its connectors */
+  onDragEnded(event){
+    console.log('onDragEnded: ', event);
+    const fromEle = document.getElementById(this.intent.intent_id);
+    this.connectorService.movedConnector(fromEle);
+  }
+
+  /** on Drop Action check the three possible cases:
+   * 1 - moving action in the same intent 
+   * 2 - moving action from another intent
+   * 3 - moving new action in intent from panel elements
+   */
+  async onDropAction(event: CdkDragDrop<string[]>) {
+    console.log('onDropAction: ', event);
+    // console.log('event:', event, 'previousContainer:', event.previousContainer, 'event.container:', event.container);
+    if (event.previousContainer === event.container) {
+      // moving action in the same intent
+      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+      const response = await this.intentService.updateIntent(this.intent);
+      // if(response) console.log('updateIntent: OK', this.intent);
+    } else {
+      try {
+        let action: any = event.previousContainer.data[event.previousIndex];
+        if(action._tdActionType){
+          // moving action from another intent
+          this.intentService.moveActionBetweenDifferentIntents(event, action, this.intent.intent_id);
+        } else if(action.value && action.value.type) {
+          // moving new action in intent from panel elements
+          this.intentService.moveNewActionIntoIntent(event, action, this.intent.intent_id);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    // update the intent connectors
+    const fromEle = document.getElementById(this.intent.intent_id);
+    this.connectorService.movedConnector(fromEle);
+  }  
+  /**  onUpdateAndSaveAction: 
+   * function called by all actions in @output whenever they are modified!
+   * 1 - update connectors
+   * 2 - update intent
+   * */
+  onUpdateAndSaveAction() {
+    console.log('onUpdateAndSaveAction:::: ' , this.intent, this.intent.actions);
+    const fromEle = document.getElementById(this.intent.intent_id);
+    this.connectorService.movedConnector(fromEle);
+    this.updateIntent();
   }
 
 }

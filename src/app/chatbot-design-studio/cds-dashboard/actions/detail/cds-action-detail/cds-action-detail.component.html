@@ -1,12 +1,14 @@
 <div class="panel-intent-detail" (click)="onClickInside()">
-    <div class="header-panel">
-        <cds-action-description-2
+    <div  class="header-panel">
+        
+        <cds-action-description-2 
             *ngIf="elementIntentSelectedType === typeIntentElement.ACTION"
             [actionSelected]="elementSelected"
             [showTip]="true"
             (closeIntent)="onCloseIntent()"
             (saveIntent)="onSaveIntent()">
         </cds-action-description-2>
+       
         <cds-action-description-2 
             *ngIf="elementIntentSelectedType === typeIntentElement.FORM"
             [elementType]="typeIntentElement.FORM"
@@ -14,6 +16,7 @@
             (closeIntent)="onCloseIntent()"
             (saveIntent)="onSaveIntent()">
         </cds-action-description-2>
+       
         <cds-action-description-2 
             *ngIf="elementIntentSelectedType === typeIntentElement.ANSWER"
             [elementType]="typeIntentElement.ANSWER"
@@ -21,6 +24,7 @@
             (closeIntent)="onCloseIntent()"
             (saveIntent)="onSaveIntent()">
         </cds-action-description-2>
+       
         <cds-action-description-2 
             *ngIf="elementIntentSelectedType === typeIntentElement.QUESTION"
             [elementType]="typeIntentElement.QUESTION"
@@ -56,9 +60,11 @@
                         [action]="elementSelected">
                     </cds-action-web-request>
             
-                    <!-- <cds-action-wait *ngSwitchCase="typeAction.WAIT"
-                        [action]="elementSelected">
-                    </cds-action-wait> -->
+                    <cds-action-wait *ngSwitchCase="typeAction.WAIT"
+                        class="panel-response"
+                        [action]="elementSelected"
+                        [previewMode]="false">
+                    </cds-action-wait>
             
                     <cds-action-intent-2 *ngSwitchCase="typeAction.INTENT"
                         class="panel-response"
@@ -66,11 +72,23 @@
                         [intents]="listOfActions">
                     </cds-action-intent-2>
             
-                    <!-- <cds-action-email *ngSwitchCase="typeAction.EMAIL"
+                    <cds-action-email *ngSwitchCase="typeAction.EMAIL"
                         class="panel-response"
                         [action]="elementSelected"
                         [previewMode]="false">
-                    </cds-action-email> -->
+                    </cds-action-email>
+
+                    <cds-action-agent *ngSwitchCase="typeAction.AGENT"
+                        class="panel-response"
+                        [action]="elementSelected"
+                        [previewMode]="false">
+                    </cds-action-agent>
+
+                    <cds-action-change-department *ngSwitchCase="typeAction.CHANGE_DEPARTMENT"
+                        class="panel-response"
+                        [action]="elementSelected"
+                        [previewMode]="false">
+                    </cds-action-change-department>
                 
                     <cds-action-json-condition *ngSwitchCase="typeAction.JSON_CONDITION"
                         [action]="elementSelected"
@@ -107,13 +125,8 @@
                         [action]="elementSelected">
                     </cds-action-replace-bot>
     
-                    <!-- <cds-action-change-department *ngSwitchCase="typeAction.CHANGE_DEPARTMENT"
-                        [action]="elementSelected">
-                    </cds-action-change-department> -->
-    
-                    <!-- <cds-action-agent *ngSwitchCase="typeAction.AGENT"
-                        [action]="elementSelected">
-                    </cds-action-agent> -->
+                   
+
     
                     <cds-action-close *ngSwitchCase="typeAction.CLOSE"
                         [action]="elementSelected">

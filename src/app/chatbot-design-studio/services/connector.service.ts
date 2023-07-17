@@ -64,6 +64,22 @@ export class ConnectorService {
               }
             });
           }
+          if(action._tdActionType === TYPE_ACTION.ONLINE_AGENTS){
+            if(action.trueIntent && action.trueIntent !== ''){
+              const idConnectorFrom = intent.intent_id+'/'+action._tdActionId + '/true';
+              const idConnectorTo = action.trueIntent;
+              console.log('idConnectorFrom', idConnectorFrom);
+              console.log('idConnectorTo', idConnectorTo);
+              this.tiledeskConnectors.createConnectorFromId(idConnectorFrom, idConnectorTo);
+            }
+            if(action.falseIntent && action.falseIntent !== ''){
+              const idConnectorFrom = intent.intent_id+'/'+action._tdActionId + '/false';
+              const idConnectorTo = action.falseIntent;
+              console.log('idConnectorFrom', idConnectorFrom);
+              console.log('idConnectorTo', idConnectorTo);
+              this.tiledeskConnectors.createConnectorFromId(idConnectorFrom, idConnectorTo);
+            }
+          }
 
         });
       }
@@ -133,6 +149,10 @@ export class ConnectorService {
 
   deleteConnectorFromAction(actionId, connId){
     this.tiledeskConnectors.deleteConnectorFromAction(actionId, connId);
+  }
+
+  deleteConnectorsFromActionByActionId(actionId){
+    this.tiledeskConnectors.deleteConnectorsFromActionByActionId(actionId);
   }
 
   movedConnector(elem){
