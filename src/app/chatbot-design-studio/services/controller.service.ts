@@ -13,16 +13,29 @@ export class ControllerService {
   isOpenButtonPanel: boolean = false;
   buttonSelected: Button;
 
+  // Actions
+  private actionType = new Subject<Button>();
+  public isOpenActionPanel$ = this.actionType.asObservable();
 
-
+  // Buttons 
   private buttonSource = new Subject<Button>();
   public isOpenButtonPanel$ = this.buttonSource.asObservable();
 
-  constructor() {
-    
+
+
+  constructor() { }
+ // Actions
+  public openActionDetailPanel(actiontype) {
+    console.log('[CONTROLLER-SERVICE] openActionDetailPanel:: action type ', actiontype);
+    this.actionType.next(actiontype)
   }
 
+  public closeActionDetailPanel(){
+    console.log('closeActionDetailPanel:: ');
+    this.actionType.next();
+  }
 
+   // Buttons 
   public openButtonPanel(button){
     console.log('openButtonPanel:: ', button);
     this.buttonSource.next(button);

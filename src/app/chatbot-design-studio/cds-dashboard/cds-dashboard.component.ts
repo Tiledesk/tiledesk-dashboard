@@ -155,14 +155,16 @@ export class CdsDashboardComponent implements OnInit {
       }
       // console.log('isOpenButtonPanel ', this.isOpenPanelButtonConfig);
     });
-    
+
   } 
+
 
 
   // SYSTEM FUNCTIONS //
   ngOnInit() {
     this.auth.checkRoleForCurrentProject();
     this.executeAsyncFunctionsInSequence();
+
   }
 
   ngAfterViewInit(){

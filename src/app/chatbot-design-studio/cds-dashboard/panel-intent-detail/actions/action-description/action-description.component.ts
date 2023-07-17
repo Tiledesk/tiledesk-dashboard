@@ -5,7 +5,7 @@ import { SatPopover } from '@ncstate/sat-popover';
 import { LoggerService } from 'app/services/logger/logger.service';
 
 @Component({
-  selector: 'cds-action-description',
+  selector: 'cds-action-description-2',
   templateUrl: './action-description.component.html',
   styleUrls: ['./action-description.component.scss']
 })
