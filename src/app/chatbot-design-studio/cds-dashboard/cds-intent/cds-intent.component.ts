@@ -1,5 +1,5 @@
-import { Component, OnInit, Input} from '@angular/core';
-import { Intent } from 'app/models/intent-model';
+import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges} from '@angular/core';
+import { Form, Intent } from 'app/models/intent-model';
 
 import { ACTIONS_LIST, TYPE_ACTION, patchActionId } from 'app/chatbot-design-studio/utils';
 import { LoggerService } from 'app/services/logger/logger.service';
@@ -40,11 +40,25 @@ export class CdsIntentComponent implements OnInit {
   // idSelectedAction: string;
   // arrayActionsForDrop = [];
 
+  @Output() questionSelected = new EventEmitter();
+  @Output() answerSelected = new EventEmitter();
+  @Output() actionSelected = new EventEmitter();
+
+  // connector: any;
+  intentElement: any;
+  listOfIntents: Array<Intent>
+  idSelectedAction: string;
+
+  form: Form;
+  formSize: number;
+  question: any;
+  answer: string;
+  questionCount: number;
   intentActionList: Array<any>;
   HAS_SELECTED_TYPE = HAS_SELECTED_TYPE;
   TYPE_ACTION = TYPE_ACTION;
   ACTIONS_LIST = ACTIONS_LIST;
-  
+  elementTypeSelected: HAS_SELECTED_TYPE
 
   constructor(
     private logger: LoggerService,
@@ -69,10 +83,40 @@ export class CdsIntentComponent implements OnInit {
 
   ngAfterViewInit(){
     this.setIntentSelected();
+    this.listOfIntents = this.intentService.intents.value
+    console.log('listtttttttt', this.listOfIntents)
   }
 
 
   ngOnDestroy() {
+  }
+
+
+  ngOnChanges(changes: SimpleChanges){
+    console.log('listtttttttt ngOnChanges', this.listOfIntents)
+    this.listOfIntents = this.intentService.intents.value
+    // if (changes.connectorChanged) {
+    //   // this.connector = 
+    //   console.log('CdsPanelIntentComponent ngOnChanges-->', this.connector);
+    // }
+   
+    // try {
+    //   const array = this.connector.fromId.split("/");
+    //   // const idIntent= array[0];
+    //   const idAction= array[1];
+    //   const posAction = this.intent.actions.findIndex(obj => obj._tdActionId === idAction);
+    //   if(posAction != -1){
+    //     this.connector[posAction] = this.connector;
+    //     //this.listOfIntents[posIntent] = this.updatedConnector;
+    //     // recupero action con id = idAction
+    //     // filteredAction = filteredIntent.actions.find(obj => obj._tdActionId === idAction);
+    //   }
+    //   // if(filteredAction){
+    //   //   filteredIntent.connector = this.updatedConnector;
+    //   // }
+    // } catch (error) {
+    //   console.error('error: ', error);
+    // }
   }
 
   /** CUSTOM FUNCTIONS  */
@@ -82,6 +126,18 @@ export class CdsIntentComponent implements OnInit {
       if (this.intent) {
         this.patchAllActionsId();
         this.intentActionList = this.intent.actions;
+        this.form = this.intent.form;
+        this.answer = this.intent.answer;
+        if (this.intent.question) {
+          const question_segment = this.intent.question.split(/\r?\n/).filter(element => element);
+          this.questionCount = question_segment.length;
+          this.question = this.intent.question;
+        }
+        if (this.form && this.form !== undefined) {
+          this.formSize = Object.keys(this.form).length;
+        } else {
+          this.formSize = 0;
+        }
       }
     } catch (error) {
       this.logger.error("error: ", error);
@@ -134,6 +190,56 @@ export class CdsIntentComponent implements OnInit {
     }
   }
 
+
+  onSelectAnswer(elementSelected) {
+    this.elementTypeSelected = elementSelected;
+    // this.isIntentElementSelected = true;
+    this.answerSelected.emit(this.answer);
+  }
+
+  onSelectQuestion(elementSelected) {
+    console.log('onSelectQuestion-->', elementSelected, this.intent.question)
+    this.elementTypeSelected = elementSelected;
+    // this.isIntentElementSelected = true;
+    this.questionSelected.emit(this.intent.question);
+    
+    // let elementsWithActiveClass = Array.from(document.getElementsByClassName('cds-action-active'));
+    // this.logger.log('[PANEL INTENT] onActionSelected elementsWithActiveClass', elementsWithActiveClass)
+    // if (elementsWithActiveClass.length != 0) {
+    //   elementsWithActiveClass.forEach((el) => {
+    //     el.classList.remove('cds-action-active');
+    //   })
+    // }
+  }
+
+  onActionSelected(action, index: number, idAction) {
+    console.log('onActionSelected action: ', action);
+    // if(this.isDeleting){return;}
+    this.elementTypeSelected = idAction;
+    // this.isIntentElementSelected = true;
+   
+    // this.logger.log('[PANEL INTENT] onActionSelected action: ', action)
+    // this.logger.log('[PANEL INTENT] onActionSelected index', index)
+
+    // let elementsWithActiveClass = Array.from(document.getElementsByClassName('cds-action-active'));
+    // this.logger.log('[PANEL INTENT] onActionSelected elementsWithActiveClass', elementsWithActiveClass)
+    // if (elementsWithActiveClass.length != 0) {
+    //   elementsWithActiveClass.forEach((el) => {
+    //     el.classList.remove('cds-action-active');
+    //   })
+    // }
+
+    // const actionElement = <HTMLElement>document.querySelector(`#action_${index}`);
+    // this.logger.log('[PANEL INTENT] onActionSelected actionElement', actionElement)
+    // actionElement.classList.add("cds-action-active");
+
+    // console.log('NN CAPISCO PERCHè 2 emit verifica !!! action: ', action);
+    // this.actionSelected.emit(action);
+    // this.logger.log('[PANEL INTENT] onActionSelected ', action)
+    this.actionSelected.emit({ action: action, index: index, maxLength: this.intentActionList.length });
+
+    this.intentService.selectAction(this.intent.intent_id, idAction);
+  }
   /*********************************************/
 
 
@@ -186,15 +292,7 @@ export class CdsIntentComponent implements OnInit {
     // update the intent connectors
     const fromEle = document.getElementById(this.intent.intent_id);
     this.connectorService.movedConnector(fromEle);
-  }
-
-
-  /** onSelectAction */
-  onSelectAction(idAction) {
-    console.log('onSelectAction: ', idAction);
-    this.intentService.selectAction(this.intent.intent_id, idAction);
-  }
-  
+  }  
   /**  onUpdateAndSaveAction: 
    * function called by all actions in @output whenever they are modified!
    * 1 - update connectors

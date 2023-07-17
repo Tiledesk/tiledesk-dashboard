@@ -5,7 +5,7 @@ import { Department } from 'app/models/department-model';
 import { LoggerService } from 'app/services/logger/logger.service';
 
 @Component({
-  selector: 'cds-action-change-department',
+  selector: 'action-change-department',
   templateUrl: './action-change-department.component.html',
   styleUrls: ['./action-change-department.component.scss']
 })

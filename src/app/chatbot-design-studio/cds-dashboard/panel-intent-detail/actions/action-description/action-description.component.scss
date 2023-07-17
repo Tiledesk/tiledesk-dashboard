@@ -7,31 +7,7 @@
     gap: 10px;
     padding: 30px 20px 20px;
     border-bottom: 2px solid $action-item-background;
-    .edit-mode-header-buttons {
-        float: right;
-        display: flex;
-        position: absolute;
-        right: 15px;
-        top: 15px;
-        cursor: pointer;
-        z-index: 1;
-        .control-button {
-            align-items: center;
-            background: #dcdcdc;
-            border-radius: 4px;
-            color: #475e7a;
-            cursor: pointer;
-            display: flex;
-            flex-grow: 1;
-            flex-shrink: 0;
-            font-size: 13px;
-            height: 30px;
-            justify-content: center;
-            margin: 0 5px;
-            transition: all .3s;
-            width: 30px;
-        }
-    }
+    
 
     .section{
         display: flex;

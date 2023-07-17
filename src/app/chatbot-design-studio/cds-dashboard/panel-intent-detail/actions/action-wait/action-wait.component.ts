@@ -2,7 +2,7 @@ import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { ActionWait } from 'app/models/intent-model';
 
 @Component({
-  selector: 'cds-action-wait',
+  selector: 'action-wait',
   templateUrl: './action-wait.component.html',
   styleUrls: ['./action-wait.component.scss']
 })

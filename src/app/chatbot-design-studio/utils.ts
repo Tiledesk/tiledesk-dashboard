@@ -1,5 +1,5 @@
 import { AbstractControl } from "@angular/forms";
-// import { ActionAssignVariable, Intent } from "app/models/intent-model";
+import { ActionAssignVariable, Intent } from "app/models/intent-model";
 import { v4 as uuidv4 } from 'uuid';
 
 export enum EXTERNAL_URL {
@@ -67,7 +67,9 @@ export enum TYPE_COMMAND {
 export enum TYPE_MESSAGE {
     TEXT = 'text',
     IMAGE = 'image',
-    FRAME = 'frame'
+    FRAME = 'frame',
+    GALLERY = 'gallery',
+    REDIRECT = 'redirect'
 }
 
 export enum TYPE_ACTION {
@@ -77,6 +79,9 @@ export enum TYPE_ACTION {
     AGENT = 'agent',
     CLOSE = 'close',
     EMAIL = 'email',
+    WHATSAPP_STATIC = 'whatsapp_static',
+    WHATSAPP_ATTRIBUTE = 'whatsapp_attribute',
+    WHATSAPP_SEGMENT = 'whatsapp_segment',
     WAIT = 'wait',
     INTENT = 'intent',
     // CONDITION = 'condition',
@@ -105,6 +110,7 @@ export enum TYPE_OPERATOR {
     lessThan = "lessThan",
     lessThanOrEqual = "lessThanOrEqual",
     startsWith = "startsWith",
+    notStartsWith = 'notStartsWith',
     startsWithIgnoreCase = "startsWithIgnoreCase",
     contains = "contains",
     containsIgnoreCase = "containsIgnoreCase",
@@ -140,8 +146,6 @@ export enum TYPE_METHOD_ATTRIBUTE {
     INPUT = 'input'
 }
 
-
-
 export enum TYPE_OF_MENU {
     EVENT = 'event',
     BLOCK = 'block',
@@ -176,6 +180,9 @@ export const ELEMENTS_LIST = [
     { name: 'Agent Handoff', type: TYPE_ACTION.AGENT, src:"assets/cds/images/actions/agent_handoff.svg", description: 'This action replaces the current chatbot with an agent.<br>The upcoming agent is assigned to the conversation following the department rules'},
     { name: 'Close', type: TYPE_ACTION.CLOSE, src:"assets/cds/images/actions/close.svg", description: 'This action instantly closes the current conversation'},
     { name: 'Send email', type: TYPE_ACTION.EMAIL, src:"assets/cds/images/actions/send_email.svg", description: 'This action send an email to the specified users group or email addresses.<br>You can use a comma sepatated addresses list.<br>i.e. “andrea@tiledesk.com, gab@tiledesk.com"<br>You can use the special tag “@everyone” to send an email to each of the Tiledesk’s project teamates.<br><br>You can also use the name of a single user group using the group name. i.e. “sales”'},
+    { name: 'WhatsApp Static', type: TYPE_ACTION.WHATSAPP_STATIC, src: "assets/cds/images/actions/whatsapp.svg", description: 'This action send an approved WhatsApp template' },
+    { name: 'WhatsApp by Attribute', type: TYPE_ACTION.WHATSAPP_ATTRIBUTE, src: "assets/cds/images/actions/whatsapp.svg", description: 'This action send an approved WhatsApp template' },
+    { name: 'WhatsApp by Segment', type: TYPE_ACTION.WHATSAPP_SEGMENT, src: "assets/cds/images/actions/whatsapp.svg", description: 'This action send an approved WhatsApp template' },
     { name: 'Wait', type: TYPE_ACTION.WAIT, src:"assets/cds/images/actions/wait.svg", description: 'This action waits the specified amount of milliseconds before moving to the next one along the block actions-pipeline'},
     { name: 'Connect block', type: TYPE_ACTION.INTENT, src:"assets/cds/images/actions/connect_intent.svg", description: 'This action moves the flow to the specified block.<br> Keep in mind that if there are other actions in the current block actions-pipeline they will be executed too, generating a parallel-execution of all the branches affering to each block triggered through this Connect-block action.'},
     { name: 'Set attribute', type: TYPE_ACTION.ASSIGN_VARIABLE, src: "assets/cds/images/actions/assign_var.svg"},
@@ -193,13 +200,16 @@ export const ELEMENTS_LIST = [
 ]
 
 
-export const ACTIONS_LIST = {
+export const ACTIONS_LIST= {
     REPLY : { name: 'Reply', type: TYPE_ACTION.REPLY, src:"assets/cds/images/actions/reply.svg", description: '<b>Pro tip</b>: Turn this block into a programmed proactive message. <a href=https://www.youtube.com/embed/SgDGwvVoqWE target=_blank>Here is how!</a> '},
     RANDOM_REPLY : { name: 'Random Reply', type: TYPE_ACTION.RANDOM_REPLY, src:"assets/cds/images/actions/random_reply.svg", description: 'Create some replies that will be randomly selected'},
     WEB_REQUEST : { name: 'Web Request', type: TYPE_ACTION.WEB_REQUEST, src:"assets/cds/images/actions/web_request.svg", description: ''},
     AGENT : { name: 'Agent Handoff', type: TYPE_ACTION.AGENT, src:"assets/cds/images/actions/agent_handoff.svg", description: 'This action replaces the current chatbot with an agent.<br>The upcoming agent is assigned to the conversation following the department rules'},
     CLOSE : { name: 'Close', type: TYPE_ACTION.CLOSE, src:"assets/cds/images/actions/close.svg", description: 'This action instantly closes the current conversation'},
     EMAIL : { name: 'Send email', type: TYPE_ACTION.EMAIL, src:"assets/cds/images/actions/send_email.svg", description: 'This action send an email to the specified users group or email addresses.<br>You can use a comma sepatated addresses list.<br>i.e. “andrea@tiledesk.com, gab@tiledesk.com"<br>You can use the special tag “@everyone” to send an email to each of the Tiledesk’s project teamates.<br><br>You can also use the name of a single user group using the group name. i.e. “sales”'},
+    WHATSAPP_STATIC: { name: 'WhatsApp Static', type: TYPE_ACTION.WHATSAPP_STATIC, src: "assets/cds/images/actions/whatsapp.svg", description: 'This action send an approved WhatsApp template' },
+    WHATSAPP_ATTRIBUTE: { name: 'WhatsApp by Attribute', type: TYPE_ACTION.WHATSAPP_ATTRIBUTE, src: "assets/cds/images/actions/whatsapp.svg", description: 'This action send an approved WhatsApp template' },
+    WHATSAPP_SEGMENT: { name: 'WhatsApp by Segment', type: TYPE_ACTION.WHATSAPP_SEGMENT, src: "assets/cds/images/actions/whatsapp.svg", description: 'This action send an approved WhatsApp template' },
     WAIT : { name: 'Wait', type: TYPE_ACTION.WAIT, src:"assets/cds/images/actions/wait.svg", description: 'This action waits the specified amount of milliseconds before moving to the next one along the block actions-pipeline'},
     INTENT : { name: 'Connect block', type: TYPE_ACTION.INTENT, src:"assets/cds/images/actions/connect_intent.svg", description: 'This action moves the flow to the specified block.<br> Keep in mind that if there are other actions in the current block actions-pipeline they will be executed too, generating a parallel-execution of all the branches affering to each block triggered through this Connect-block action.'},
     // CONDITION : { name: 'Condition', type: TYPE_ACTION.CONDITION, src:"assets/cds/images/actions/condition.svg"},
@@ -219,12 +229,13 @@ export const OPERATORS_LIST: { [key: string]: { name: string, type: TYPE_OPERATO
     "equalAsNumbers": { name: "equal As Numbers", type: TYPE_OPERATOR.equalAsNumbers, src: "assets/cds/images/operators/equal.svg" },
     "equalAsStrings": { name: "equal As Text", type: TYPE_OPERATOR.equalAsStrings, src: "assets/cds/images/operators/equal.svg" },
     "notEqualAsNumbers": { name: "not Equal As Numbers", type: TYPE_OPERATOR.notEqualAsNumbers, src: "assets/cds/images/operators/not-equal.svg" },
-    "notEqualAsStrings": { name: "not Equal As Strings", type: TYPE_OPERATOR.notEqualAsStrings, src: "assets/cds/images/operators/not-equal.svg" },
+    "notEqualAsStrings": { name: "not Equal As Text", type: TYPE_OPERATOR.notEqualAsStrings, src: "assets/cds/images/operators/not-equal.svg" },
     "greaterThan": { name: "greater Than", type: TYPE_OPERATOR.greaterThan, src: "assets/cds/images/operators/grather.svg" },
     "greaterThanOrEqual": { name: "greater Than Or Equal", type: TYPE_OPERATOR.greaterThanOrEqual, src: "assets/cds/images/operators/gratherEqual.svg" },
     "lessThan": { name: "less Than", type: TYPE_OPERATOR.lessThan, src: "assets/cds/images/operators/less.svg" },
     "lessThanOrEqual": { name: "less Than Or Equal", type: TYPE_OPERATOR.lessThanOrEqual, src: "assets/cds/images/operators/lessEqual.svg" },
     "startsWith": { name: "starts With", type: TYPE_OPERATOR.startsWith },
+    "notStartsWith": { name: "not starts With", type: TYPE_OPERATOR.notStartsWith },
     "startsWithIgnoreCase": { name: "starts With Ignore Case", type: TYPE_OPERATOR.startsWithIgnoreCase },
     "endsWith": { name: "ends With", type: TYPE_OPERATOR.endsWith },
     "contains": { name: "contains", type: TYPE_OPERATOR.contains },
@@ -255,6 +266,12 @@ export const TYPE_FUNCTION_LIST_FOR_FUNCTIONS: { [key: string]: { name: string, 
     "availableAgentAsStrings": { name: "Available agents?", type: TYPE_FUNCTION_FUNC.availableAgentsAsStrings, src: "" },
 }
 
+export const CERTIFIED_TAGS: Array<{color: string, name: string}> = [
+    { "color": "#a16300", "name": "Lead-Gen" },
+    { "color": "#25833e", "name": "Support" }, 
+    // { "color": "#00699e", "name": "Pre-Sale" }, 
+    // { "color": "#0049bd", "name": "Self-serve" }, 
+]
 
 export const BUTTON_TYPES: Array<{ label: string, value: TYPE_BUTTON }> = [
     { label: "text", value: TYPE_BUTTON.TEXT },
@@ -267,7 +284,6 @@ export const URL_TYPES: Array<{ label: string, value: TYPE_URL }> = [
     { label: "parent", value: TYPE_URL.PARENT },
     { label: "self", value: TYPE_URL.SELF },
 ]
-
 
 export function OperatorValidator(control: AbstractControl): { [key: string]: boolean } | null {
     if (control.value in TYPE_OPERATOR) {
@@ -318,7 +334,6 @@ export function patchActionId(action) {
     return action;
 }
 
-
 export function generateShortUID() {
     const timestamp = Date.now().toString(36); // Converti l'orario corrente in base 36
     // const randomChars = Math.random().toString(36).substr(2, 5); // Genera una stringa casuale di 5 caratteri in base 36
@@ -330,74 +345,6 @@ export function convertJsonToArray(jsonData:any){
     const arrayOfObjs = Object.entries(jsonData).map(([key, value]) => ({ 'name': key, 'value': value }))
     return arrayOfObjs;
 }
-
-
-// export function CreateNewAction(typeAction: TYPE_ACTION) {
-//     console.log('[PANEL ACTION] actionSelected ', typeAction);
-//     let action: any;
-//     if(typeAction === TYPE_ACTION.REPLY){
-//       action = new ActionReply();
-//       let commandWait = new Command(TYPE_COMMAND.WAIT);
-//       action.attributes.commands.push(commandWait);
-//       let command = new Command(TYPE_COMMAND.MESSAGE);
-//       command.message = new Message('text', 'A chat message will be sent to the visitor');
-//       action.attributes.commands.push(command);
-//     }
-//     if(typeAction === TYPE_ACTION.RANDOM_REPLY){
-//       action = new ActionRandomReply();
-//       let commandWait = new Command(TYPE_COMMAND.WAIT);
-//       action.attributes.commands.push(commandWait);
-//       let command = new Command(TYPE_COMMAND.MESSAGE);
-//       command.message = new Message('text', 'A chat message will be sent to the visitor');
-//       action.attributes.commands.push(command);
-//     }
-//     if(typeAction === TYPE_ACTION.WEB_REQUEST){
-//       action = new ActionWebRequest();
-//     }
-//     if(typeAction === TYPE_ACTION.AGENT){
-//       action = new ActionAgent();
-//     }
-//     if(typeAction === TYPE_ACTION.CLOSE){
-//       action = new ActionClose();
-//     }
-//     if(typeAction === TYPE_ACTION.WAIT){
-//       action = new ActionWait();
-//     }
-//     if(typeAction === TYPE_ACTION.INTENT) {
-//     }
-//     if(typeAction === TYPE_ACTION.EMAIL) {
-//       action = new ActionEmail();
-//     }
-//     if(typeAction === TYPE_ACTION.ASSIGN_VARIABLE){
-//       action = new ActionAssignVariable();
-//     }
-//     if(typeAction === TYPE_ACTION.DELETE_VARIABLE){
-//       action = new ActionDeleteVariable();
-//     }
-//     if(typeAction === TYPE_ACTION.ONLINE_AGENTS){
-//       action = new ActionOnlineAgent();
-//     }
-//     if(typeAction === TYPE_ACTION.OPEN_HOURS){
-//       action = new ActionOpenHours();
-//     }
-//     if(typeAction === TYPE_ACTION.REPLACE_BOT){
-//       action = new  ActionReplaceBot();
-//     }
-//     if(typeAction === TYPE_ACTION.CHANGE_DEPARTMENT) {
-//       action = new  ActionChangeDepartment();
-//     }
-//     if(typeAction === TYPE_ACTION.HIDE_MESSAGE){
-//       action = new ActionHideMessage();
-//     }
-//     if(typeAction === TYPE_ACTION.JSON_CONDITION){
-//       action = new ActionJsonCondition();
-//       action.groups.push( new Expression());
-//     }
-//     if(typeAction === TYPE_ACTION.ASSIGN_FUNCTION){
-//       action = new ActionAssignFunction();
-//     }
-//     return action;
-//   }
 
 // export function retriveListOfVariables(intents: Array<Intent>) {
 //     variableList.userDefined = []

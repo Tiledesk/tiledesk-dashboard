@@ -88,7 +88,9 @@ export class CdsDashboardComponent implements OnInit {
   selectedChatbot: Chatbot
   activeSidebarSection: string;
   spinnerCreateIntent: boolean = false;
+
   IS_OPEN: boolean = false;
+  IS_OPEN_PANEL_WIDGET: boolean = false;
   public TESTSITE_BASE_URL: string;
 
   // Attach bot to dept
@@ -97,6 +99,7 @@ export class CdsDashboardComponent implements OnInit {
 
   
   isOpenPanelButtonConfig: boolean = false;
+  isOpenPanelActionDetail: boolean = false;
   buttonSelected: any;
 
   isOpenPanelActions: boolean = true;
@@ -154,14 +157,25 @@ export class CdsDashboardComponent implements OnInit {
       }
       // console.log('isOpenButtonPanel ', this.isOpenPanelButtonConfig);
     });
+
+    /** SUBSCRIBE TO THE STATE ACTION DETAIL PANEL */
+    this.controllerService.isOpenActionDetailPanel$.subscribe((action: Action) => {
+      if(action){
+        this.isOpenPanelActionDetail = true;
+      } else {
+        this.isOpenPanelActionDetail = false;
+      }
+    });
     
   } 
+
 
 
   // SYSTEM FUNCTIONS //
   ngOnInit() {
     this.auth.checkRoleForCurrentProject();
     this.executeAsyncFunctionsInSequence();
+
   }
 
   ngAfterViewInit(){
@@ -711,30 +725,6 @@ export class CdsDashboardComponent implements OnInit {
   /** END DRAG DROP FUNCTIONS 
   /** ************************* **/
 
-
-  
-
-
-
-
-
-
-  // private actionSelected(actionID){
-    
-  //   console.log('-----> actionSelected: ',actionID);
-  //   // this.logger.log('[CDS DSBRD] onActionSelected from PANEL INTENT - action ', event.action, event.index)
-  //   // this.elementIntentSelected = {};
-  //   // this.elementIntentSelected['type'] = TYPE_INTENT_ELEMENT.ACTION;
-  //   // this.elementIntentSelected['element'] = event.action
-  //   // this.elementIntentSelected['index'] = event.index
-  //   // this.elementIntentSelected['maxLength'] = event.maxLength
-  //   // this.elementIntentSelected['intent_display_name'] = event.intent_display_name
-  //   // this.isIntentElementSelected = true;
-  //   // this.logger.log('[CDS DSBRD] onActionSelected from PANEL INTENT - this.elementIntentSelected ', this.elementIntentSelected)
-  // }
-
-
-
   // EVENTS //
 
   onShowPanelActions(pos){
@@ -748,10 +738,6 @@ export class CdsDashboardComponent implements OnInit {
     this.activeSidebarSection = event;
   }
 
-  onToggleSidebarWith(IS_OPEN) {
-    this.IS_OPEN = IS_OPEN;
-  }
-
 
   /** Go back to previous page */
   goBack() {
@@ -759,7 +745,13 @@ export class CdsDashboardComponent implements OnInit {
     this.router.navigate(['project/' + this.project._id + '/bots/my-chatbots/all']);
     this.hideShowWidget('show');
   }
-
+  onTestItOut(status){
+    console.log('onTestItOut    -----> ');
+    this.IS_OPEN_PANEL_WIDGET = status
+  }
+  onToggleSidebarWith(IS_OPEN) {
+    this.IS_OPEN = IS_OPEN;
+  }
 
   /** START EVENTS PANEL ACTIONS */
   onAddNewAction(action){
@@ -772,7 +764,6 @@ export class CdsDashboardComponent implements OnInit {
     // let event = { action: action, index: index, maxLength: maxLength, intent_display_name: intent_display_name };
     console.log('onAddNewAction', action.id);
     this.idElementOfIntentSelected = intent_display_name;
-    // this.actionSelected(action.id);
   }
   
   /** END EVENTS PANEL ACTIONS */
@@ -863,6 +854,24 @@ export class CdsDashboardComponent implements OnInit {
     this.elementIntentSelected['type'] = TYPE_INTENT_ELEMENT.ANSWER;
     this.elementIntentSelected['element'] = answer
     this.isIntentElementSelected = true;
+  }
+
+
+  onActionSelected(event){
+    
+    console.log('-----> actionSelected: ',event);
+
+    this.controllerService.openActionDetailPanel(this.buttonSelected);
+    this.logger.log('[CDS DSBRD] onActionSelected from PANEL INTENT - action ', event.action, event.index)
+    this.elementIntentSelected = {};
+    this.elementIntentSelected['type'] = TYPE_INTENT_ELEMENT.ACTION;
+    this.elementIntentSelected['element'] = event.action
+    this.elementIntentSelected['index'] = event.index
+    this.elementIntentSelected['maxLength'] = event.maxLength
+    this.elementIntentSelected['intent_display_name'] = event.intent_display_name
+    this.isIntentElementSelected = true;
+    this.logger.log('[CDS DSBRD] onActionSelected from PANEL INTENT - this.elementIntentSelected ', this.elementIntentSelected)
+    this.controllerService.openActionDetailPanel(this.elementIntentSelected['element'])
   }
 
   onQuestionSelected(intent) {
@@ -1002,6 +1011,7 @@ export class CdsDashboardComponent implements OnInit {
       } else {
         that.isIntentElementSelected = true;
       }
+      this.controllerService.closeActionDetailPanel();
       console.log('afterClosed:: ', this.idElementOfIntentSelected);
     });
   }

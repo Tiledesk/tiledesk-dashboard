@@ -9,7 +9,7 @@ $width-title: 80%;
     width: 100%;
     height: $height-header;
     max-height: $height-header;
-    margin-top: 10px;
+    // margin-top: 10px;
     .onff-intent-webhook {
       font-size: 13px;
       line-height: normal;
@@ -35,12 +35,13 @@ $width-title: 80%;
     .form-group {
         width: 100%;
         margin: 0;
-        padding: 0 30px;
+        padding: 0;
         .form-control {
             border: 0;
             background-size: 0 2px, 100% 0px;
             background-image: linear-gradient($color-light-gray-hex, $color-light-gray-hex);
             transition-duration: 0.2s;
+            height: $height-header;
         }
         label.title {
             position: absolute;
@@ -48,9 +49,9 @@ $width-title: 80%;
             width: $width-title;
             top: 0;
             margin: 0;
-            padding: 0;
+            padding: 0 0 0 10px;
             font-weight: 400;
-            font-size: 1.4em;
+            font-size: 1.0em;
             line-height: $height-header;
             color: $color-light-gray-hex;
             // z-index: 1;
@@ -64,12 +65,17 @@ $width-title: 80%;
             // width: $width-title;
             top: 0;
             // left: 30px;
-            margin-top: 6px;
-            padding: 0;
-            color: $color-bck-light-gray-hex;
-            font-size: 1.4em;
+            // margin-top: 6px;
+            padding: 0; //0 0 0 10px;
+            color: $color-text-dark-hex;
+            font-size: 1.0em;
             // z-index: 2;
             position: relative;
+
+            // &:hover{
+            //   background-color: $color-light-gray-hex;
+            //   border-radius: 5px;
+            // }
         }
         .btn-save {
             position: absolute;

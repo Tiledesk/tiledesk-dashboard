@@ -46,6 +46,8 @@ $color-txt-3-rgb: 204 204 204;
 $color-txt-4-rgb: 255 255 255;
 
 
+
+
 $color-bck-light-gray-hex: #e7f3ff;
 $color-bck-gray-hex: #647283;
 $color-text-box-hex: #566787;
@@ -60,9 +62,13 @@ $bg-color-dark-hex: #0F172A;
 $bg-color-bck-hex: #1E293B;
 $bg-color-card-hex: #293445;
 
+
+
 $bg-opacity-full: 1;
 $bg-opacity-halfway: 0.5;
 $bg-opacity-empty: 0.2;
+
+$brown-85: #6c6859d9;
 
 
 // Typography elements
@@ -70,11 +76,11 @@ $mdb-font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif !default;
 $mdb-font-family-poppins: "Poppins", "Roboto", Arial, sans-serif !default;
 $font-size-base: 14px;
 
-$height-header: 50px;
+$height-header: 25px;
 $padding-base: 15px !default;
 $margin-base: 15px !default;
 
-$button-height-base: 32px;
+$button-height-base: 20px; //32px;
 $button-max-width-base: 240px;
 $button-border-radius-base: 16px;
 

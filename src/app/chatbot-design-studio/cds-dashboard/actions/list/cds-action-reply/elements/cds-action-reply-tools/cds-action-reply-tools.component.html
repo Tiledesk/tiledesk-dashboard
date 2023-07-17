@@ -1,0 +1,22 @@
+<div data-adding-allowed="true" class="add-responses">
+    <div class="add-response" (click)="addElement(TypeMessage.TEXT)">
+        <i class="material-icons">text_fields</i>
+        <!-- <span>{{'Text' | translate}}</span> -->
+    </div>
+    <div class="add-response" (click)="addElement(TypeMessage.IMAGE)">
+        <i class="material-icons">image</i>
+        <!-- <span>{{'Image' | translate}}</span> -->
+    </div>
+    <div class="add-response" (click)="addElement(TypeMessage.FRAME)">
+        <i class="material-icons">play_circle</i>
+        <!-- <span>{{'Frame' | translate}}</span> -->
+    </div>
+    <div data-add-response-type="Type.GALLERY" class="add-response" (click)="addElement(TypeMessage.GALLERY)">
+        <i class="material-icons">view_carousel</i>
+        <!-- <span>{{'Gallery' | translate}}</span> -->
+    </div>
+    <div data-add-response-type="Type.REDIRECT" class="add-response" (click)="addElement(TypeMessage.REDIRECT)">
+        <i class="material-icons">launch</i>
+        <!-- <span>{{'Redirect' | translate}}</span> -->
+    </div>
+</div>
