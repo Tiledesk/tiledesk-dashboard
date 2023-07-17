@@ -149,6 +149,7 @@ export enum TYPE_OF_MENU {
     FORM = 'form'
 }
 
+export const NEW_POSITION_ID = 'new';
 
 export const MESSAGE_METADTA_WIDTH = '100%';
 export const MESSAGE_METADTA_HEIGHT = 230;

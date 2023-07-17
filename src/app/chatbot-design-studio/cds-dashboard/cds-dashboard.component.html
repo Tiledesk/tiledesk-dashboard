@@ -46,13 +46,15 @@
                 <cds-intent *ngFor="let intent of listOfIntents;"
                     [id]="intent.intent_id"
                     class="panel-intent tds_input_block tds_draggable" 
-                    [style.top.px]="getIntentPosition(intent.intent_id).y" 
-                    [style.left.px]="getIntentPosition(intent.intent_id).x" 
+                    [style.top.px]="getIntentPosition(intent.id).y" 
+                    [style.left.px]="getIntentPosition(intent.id).x" 
                     [intent]="intent"
                     [intentsChanged]="intentsChanged"
                     (saveIntent)=onSaveIntent($event)
                 ></cds-intent>
-                <!-- (selectAction)=onSelectAction($event) -->
+                <!-- 
+                   
+                    (selectAction)=onSelectAction($event) -->
             </div>
 
             <div #floatMenuElement id="floatMenuElement"

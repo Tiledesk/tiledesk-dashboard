@@ -27,11 +27,9 @@ export class Intent {
     }
 }
 export class IntentAttributes {
-    x: number;
-    y: number;
+    position?: any;
     constructor() {
-        this.x = 0;
-        this.y = 0;
+        this.position = {x:0, y:0};
     }
 }
 
