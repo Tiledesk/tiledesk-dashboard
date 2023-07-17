@@ -26,9 +26,10 @@
             [id]="action._tdActionId"
             class="box-action"
             tabindex="0"
-            [ngClass]="{'cds-action-active': idSelectedAction === action._tdActionId}"
+            [ngClass]="{'cds-action-active': intentService.actionSelectedID === action._tdActionId}"
             (click)="onSelectAction(action._tdActionId)">
-            <!-- (keydown)="onDeleteAction($event)" -->
+            <!-- (keydown)="onDeleteAction($event)"
+             -->
             <div cdkDragHandle class="header-action">
                 <div class="icon-action">
                     <img [src]="getActionParams(action).src" [title]="getActionParams(action).name" />
@@ -46,7 +47,6 @@
                 <cds-action-intent  *ngIf="action._tdActionType == 'intent'"
                     class="panel-response"
                     [intentSelected]="intent"
-                    [connectorChanged]="connectorChanged"
                     [action]="action"
                     (updateAndSaveAction)="onUpdateAndSaveAction($event)"
                 ></cds-action-intent>

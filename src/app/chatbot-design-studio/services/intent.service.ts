@@ -36,15 +36,16 @@ import { ConnectorService } from 'app/chatbot-design-studio/services/connector.s
 export class IntentService {
   idBot: string;
   intents = new BehaviorSubject <Intent[]>([]);
-  listOfActions: Array<{ name: string, value: string, icon?: string }>;
-  previousIntentId: string = '';
-  // keyDashboardAttributes = 'stage';//'Dashboard-Attributes';
-  // jsonDashboardAttributes: any;
+  intent= new BehaviorSubject <Intent>(null);
 
+  previousIntentId: string = '';
   preDisplayName: string = 'untitled_block_';
 
+  listOfActions: Array<{ name: string, value: string, icon?: string }>;
+  actionSelectedID: string;
+  intentSelectedID: string;
+  
   botAttributes: any = {};
-  // listOfConnectors: any = {};
   listOfPositions: any = {};
 
   private changedConnector = new Subject<any>();
@@ -69,45 +70,32 @@ export class IntentService {
     return this.intents.asObservable();
   }
 
-  // updateIntents(newIntents: Intent[]) {
-  //   this.intents.next(newIntents);
-  // }
+
 
   // START DASHBOARD FUNCTIONS //
 
-  /** */
+  //** recupero le posizioni degli intent sullo stage */
   setDashboardAttributes(idBot, attributes){
     this.botAttributes = attributes;
     this.idBot = idBot;
     if(attributes && attributes['positions']){
       this.listOfPositions = attributes['positions'];
     }
-    // if(attributes && attributes['connectors']){
-    //   this.listOfConnectors = attributes['connectors'];
-    // }
   }
 
-  /** */
+
+  /** imposta le posizioni degli elementi sullo stage */
   setPositionsInDashboardAttributes(json){
     this.listOfPositions = json;
     this.botAttributes['positions'] = this.listOfPositions;
     this.patchAttributes(this.botAttributes);
-    // let key = this.keyDashboardAttributes;
-    // this.setFromLocalStorage(key, json);
   }
 
 
+  /** imposta quello che è l'intent di partenza quando inizia un drag su una action dell'intent */
   setPreviousIntentId(intentId){
     this.previousIntentId = intentId;
   }
-  /** */
-  // setConnectorsInDashboardAttributes(json){
-  //   // let key = this.keyDashboardAttributes;
-  //   // this.setFromLocalStorage(key, json);
-  //   this.listOfConnectors = json;
-  //   this.botAttributes['connectors'] = this.listOfConnectors;
-  //   this.patchAttributes(this.botAttributes);
-  // }
 
 
   /** Get Intent position */    
@@ -124,8 +112,6 @@ export class IntentService {
   /** Set intent position */
   setIntentPosition(id:string, newPos: any){
     const positions = this.listOfPositions;
-    // console.log('positions: ', positions);
-    // console.log('positions: ', id, newPos);
     if(positions){
       if(!newPos && positions[id]){
         delete positions[id];
@@ -135,19 +121,6 @@ export class IntentService {
       this.setPositionsInDashboardAttributes(positions);
     }
   }
-
-
-  // private setFromLocalStorage(key, data){
-  //   const json = JSON.stringify(data);
-  //   localStorage.setItem(key, json);
-  // }
-
-  // private getFromLocalStorage(key){
-  //   const savedJson = localStorage.getItem(key);
-  //   const savedData = JSON.parse(savedJson);
-  //   return savedData;
-  // }
-
   // END DASHBOARD FUNCTIONS //
 
   
@@ -164,7 +137,7 @@ export class IntentService {
           let arrayOfIntents = JSON.parse(JSON.stringify(faqs));
           // this.updateIntents(arrayOfIntents);
           this.intents.next(arrayOfIntents);
-          // resolve(true);
+          resolve(true);
         } 
       }, (error) => {
         console.error('ERROR: ', error);
@@ -176,15 +149,17 @@ export class IntentService {
     });
   }
 
+
+  /** create a new intent when drag an action on the stage */
   public createNewIntent(id_faq_kb: string, action: any){
     let intent = new Intent();
     intent.id_faq_kb = id_faq_kb;
     intent.intent_display_name = this.setDisplayName();
     intent.actions.push(action);
     return intent;
-    //this.creatIntent(this.intent);
   }
 
+  /** generate display name of intent */
   public setDisplayName(){
     let listOfIntents = this.intents.getValue();
     const filteredArray = listOfIntents.filter((element) => element.intent_display_name.startsWith(this.preDisplayName));
@@ -197,12 +172,11 @@ export class IntentService {
     }
   }
   
-  
-  public async addNewIntent(id_faq_kb, newIntent): Promise<any> { 
+  /** save a New Intent, created on drag action on stage */
+  public async saveNewIntent(id_faq_kb, newIntent): Promise<any> { 
     let newIntents = this.intents.getValue();
     newIntents.push(newIntent); 
     console.log("Aggiungo un intent all'array in ultima posizione con id fake");
-    // this.updateIntents(newIntents);
     return new Promise((resolve, reject) => {
       let questionIntentSelected = newIntent.question;
       let answerIntentSelected = newIntent.answer;
@@ -224,19 +198,19 @@ export class IntentService {
         let newIntents = this.intents.getValue();
         newIntents[newIntents.length-1] = intent;
         this.intents.next(newIntents);
-        console.log('ADDED');
         resolve(intent);
       }, (error) => {
         console.error('ERROR: ', error);
         reject(false);
       }, () => {
-        console.log('COMPLETE ');
+        // console.log('COMPLETE ');
         resolve(false);
       });
     });
   }
 
 
+  /** updateIntent */
   public async updateIntent(intent: Intent): Promise<boolean> { 
     return new Promise((resolve, reject) => {
       let id = intent.id;
@@ -250,15 +224,6 @@ export class IntentService {
       }
       let actionsIntent = intent.actions?intent.actions:[];
       let webhookEnabledIntent = intent.webhook_enabled?intent.webhook_enabled:false;
-      console.log('id: ', id);
-      console.log('attributes: ', attributes);
-      console.log('questionIntent: ', questionIntent);
-      console.log('answerIntent: ', answerIntent);
-      console.log('displayNameIntent: ', displayNameIntent);
-      console.log('formIntent: ', formIntent);
-      console.log('actionsIntent: ', actionsIntent);
-      console.log('webhookEnabledIntent: ', webhookEnabledIntent);
-
       this.faqService.updateIntent(
         id,
         attributes,
@@ -269,41 +234,44 @@ export class IntentService {
         actionsIntent,
         webhookEnabledIntent
       ).subscribe((intent) => {
-        console.log('EDIT ', intent);
+        // console.log('EDIT ', intent);
+        // this.intent.next(intent);
         resolve(true);
       }, (error) => {
         console.error('ERROR: ', error);
         reject(false);
       }, () => {
-        console.log('COMPLETE ');
+        // console.log('COMPLETE ');
         resolve(true);
       });
     });
   }
 
-
+  /** deleteIntent */
   public async deleteIntent(intentId: string): Promise<boolean> { 
     return new Promise((resolve, reject) => {
       this.faqService.deleteFaq(intentId).subscribe((data) => {
         let newIntents = this.intents.getValue();
         newIntents = newIntents.filter(obj => obj.id !== intentId);
         this.intents.next(newIntents);
-        console.log('DELETE ', intentId);
         resolve(true);
       }, (error) => {
         console.error('ERROR: ', error);
         reject(false);
       }, () => {
-        console.log('COMPLETE ');
+        // console.log('COMPLETE ');
         resolve(true);
       });
     });
   }
-
   // END INTENT FUNCTIONS //
 
 
-  // START ATTRIBUTE FUNCTIONS //
+
+
+
+  // START ACTION FUNCTIONS //
+
   // moving new action in intent from panel elements
   public moveNewActionIntoIntent(event, action, currentIntentId){
     let newAction = this.createNewAction(action.value.type);
@@ -311,6 +279,7 @@ export class IntentService {
     let currentIntent = listOfIntents.find(function(obj) {
       return obj.intent_id === currentIntentId;
     });
+    console.log('currentIntentId: ', currentIntentId);
     currentIntent.actions.splice(event.currentIndex, 0, newAction);
     setTimeout(async () => {
       const responseCurrentIntent = await this.updateIntent(currentIntent);
@@ -319,7 +288,6 @@ export class IntentService {
       }
     }, 0);
   }
-
 
   // on move action from different intents
   public moveActionBetweenDifferentIntents(event, action, currentIntentId){
@@ -349,7 +317,7 @@ export class IntentService {
   }
 
   
-  // on move action from different intents
+  // on move action from intent to stage
   public moveActionFromIntentToStage(event, action){
     const that = this;
     let listOfIntents = this.intents.getValue();
@@ -367,8 +335,78 @@ export class IntentService {
     }, 0);
   }
 
+
+  /** setListOfActions */
+  public setListOfActions(intents){
+    this.listOfActions = intents.map(a => {
+      if (a.intent_display_name.trim() === 'start') {
+        return { name: a.intent_display_name, value: '#' + a.intent_id, icon: 'rocket_launch' }
+      } else if (a.intent_display_name.trim() === 'defaultFallback') {
+        return { name: a.intent_display_name, value: '#' + a.intent_id, icon: 'undo' }
+      } else {
+        return { name: a.intent_display_name, value: '#' + a.intent_id, icon: 'label_important_outline' }
+      }
+    });
+    console.log('this.listOfActions: ', this.listOfActions); 
+  }
+
+  /** getListOfActions */
+  public getListOfActions(){
+    return this.listOfActions;
+  }
+
+  /** selectAction */
+  public selectAction(intentID, actionId){
+    this.actionSelectedID = actionId;
+    this.intentSelectedID = intentID;
+  }
+
+  /** unselectAction */
+  public unselectAction(){
+    this.actionSelectedID = null;
+    this.intentSelectedID = null;
+  }
+
+  /** deleteSelectedAction */
+  public deleteSelectedAction(){
+    console.log('deleteSelectedAction', this.intentSelectedID, this.actionSelectedID);
+    if(this.intentSelectedID && this.actionSelectedID){
+      let listOfIntents = this.intents.getValue();
+      let intentToUpdate = listOfIntents.find((intent) => intent.intent_id === this.intentSelectedID);
+      intentToUpdate.actions = intentToUpdate.actions.filter((action: any) => action._tdActionId !== this.actionSelectedID);
+      listOfIntents = listOfIntents.map((intent) => {
+        if (intent.intent_id === this.intentSelectedID) {
+          return intentToUpdate;
+        }
+        return intent;
+      });
+
+      this.connectorService.deleteConnectorsFromActionByActionId(this.actionSelectedID);
+      setTimeout(async () => {
+        const responseIntent = await this.updateIntent(intentToUpdate);
+        if(responseIntent){
+          // console.log('update Intent: OK');
+        }
+      }, 0);
+      this.unselectAction();
+      this.setListOfActions(listOfIntents);
+      console.log('deleteSelectedAction', intentToUpdate);
+      this.intent.next(intentToUpdate);
+    }
+  } 
+
+
+  /** createNewAction */
   public createNewAction(typeAction: TYPE_ACTION) {
     let action: any;
+
+  //   switch (typeAction) {
+  //     case TYPE_ACTION.REPLY:
+  //         return '';
+  //     default:
+  //         return '';
+  // }
+
     if(typeAction === TYPE_ACTION.REPLY){
       action = new ActionReply();
       let commandWait = new Command(TYPE_COMMAND.WAIT);
@@ -433,29 +471,13 @@ export class IntentService {
     }
     return action;
   }
-
-
-
-  setListOfActions(intents){
-    // .pipe(map((response: any) => response.json()));
-    this.listOfActions = intents.map(a => {
-      if (a.intent_display_name.trim() === 'start') {
-        return { name: a.intent_display_name, value: '#' + a.intent_id, icon: 'rocket_launch' }
-      } else if (a.intent_display_name.trim() === 'defaultFallback') {
-        return { name: a.intent_display_name, value: '#' + a.intent_id, icon: 'undo' }
-      } else {
-        return { name: a.intent_display_name, value: '#' + a.intent_id, icon: 'label_important_outline' }
-      }
-    });
-    console.log('this.listOfActions: ', this.listOfActions); 
-  }
-
-  getListOfActions(){
-    return this.listOfActions;
-  }
   // END ATTRIBUTE FUNCTIONS //
   
 
+
+
+
+  
 
   patchAttributes(attributes: any) {
     console.log('-----------> patchAttributes, ', this.idBot);

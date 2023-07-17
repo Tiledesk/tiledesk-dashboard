@@ -322,12 +322,12 @@ export class TiledeskConnectors {
 
     /** searchClassInParents */ 
     #searchClassInParents(el, keyClass) {
-      if(el.classList.contains(keyClass)){
+      if(el.classList && el.classList.contains(keyClass)){
         return el;
       }
       let parent = el.parentElement;
       while (parent !== null) {
-        if(parent.classList.contains(keyClass)){
+        if(parent.classList && parent.classList.contains(keyClass)){
           return parent;
         } 
         if(parent.parentElement){
@@ -474,7 +474,6 @@ export class TiledeskConnectors {
           }
         });
         connector.addEventListener('click', (e) => {
-
           // console.log("clicked -> ", e, that);
           if (that.selectedConnector) {
             that.selectedConnector.setAttributeNS(null, "class", that.classes["connector"]);
@@ -484,6 +483,9 @@ export class TiledeskConnectors {
           console.log("new selectedConnector -> ", that.selectedConnector.id);
           that.selectedConnector.setAttributeNS(null, "class", that.classes["connector_selected"]);
           console.log("connector_selected class ", that.selectedConnector);
+          
+          const event = new CustomEvent("connector-selected", { detail: {connector: connector} });
+          document.dispatchEvent(event);
         });
         this.svgContainer.appendChild(connector);
       }

@@ -48,6 +48,7 @@ export class CdsDashboardComponent implements OnInit {
 
   updatePanelIntentList: boolean = true;
   listOfIntents: Array<Intent> = [];
+  intentsChanged: boolean = false;
 
   intentStart: Intent;
   intentDefaultFallback: Intent;
@@ -131,15 +132,17 @@ export class CdsDashboardComponent implements OnInit {
       * variabile booleana aggiunta per far scattare l'onchange nei componenti importati dalla dashboard
       * ngOnChanges funziona bene solo sugli @import degli elementi primitivi!!!  
       */
-      this.updatePanelIntentList = !this.updatePanelIntentList;
-      this.listOfIntents = intents;
-      this.intentService.setListOfActions(this.listOfIntents);
-      this.listOfActions = this.intentService.getListOfActions();
-      /** SET DRAG STAGE AND CREATE CONNECTORS */
-      setTimeout(() => {
-        this.setDragAndListnerEventToElements();
-        this.connectorService.createConnectors(this.listOfIntents);
-      }, 0);
+
+        this.updatePanelIntentList = !this.updatePanelIntentList;
+        this.listOfIntents = intents;
+        this.intentService.setListOfActions(this.listOfIntents);
+        this.listOfActions = this.intentService.getListOfActions();
+        /** SET DRAG STAGE AND CREATE CONNECTORS */
+        setTimeout(() => {
+          this.setDragAndListnerEventToElements();
+          this.connectorService.createConnectors(this.listOfIntents);
+        }, 0);
+      
     });
 
     /** SUBSCRIBE TO THE STATE BUTTON PANEL */
@@ -252,6 +255,15 @@ export class CdsDashboardComponent implements OnInit {
       },
       true
     );
+
+    document.addEventListener(
+      "connector-selected", (e:CustomEvent) => {
+        console.log("connector-selected:", e);
+        this.intentService.unselectAction();
+      },
+      true
+    );
+    
     
 
     /** LISTNER OF FLOAT MENU */
@@ -266,6 +278,7 @@ export class CdsDashboardComponent implements OnInit {
     document.addEventListener('keydown', function(event) {
       if (event.key === 'Backspace' || event.key === 'Escape' || event.key === 'Canc' && that.isOpenFloatMenu) {
         that.removeConnectorDraftAndCloseFloatMenu();
+        that.intentService.deleteSelectedAction();
       }
     });
   }
@@ -561,7 +574,7 @@ export class CdsDashboardComponent implements OnInit {
     this.intentSelected = this.intentService.createNewIntent(this.id_faq_kb, action);
     this.intentSelected.intent_id = 'new';
     this.intentService.setIntentPosition(this.intentSelected.intent_id, pos);
-    const newIntent = await this.intentService.addNewIntent(this.id_faq_kb, this.intentSelected);
+    const newIntent = await this.intentService.saveNewIntent(this.id_faq_kb, this.intentSelected);
     this.intentSelected.id = newIntent.id;
     console.log('creatIntent: OK ', newIntent, pos);
     if(newIntent){
@@ -578,7 +591,7 @@ export class CdsDashboardComponent implements OnInit {
     this.intentSelected = this.intentService.createNewIntent(this.id_faq_kb, action);
     this.intentSelected.intent_id = 'new';
     this.intentService.setIntentPosition(this.intentSelected.intent_id, pos);
-    const newIntent = await this.intentService.addNewIntent(this.id_faq_kb, this.intentSelected);
+    const newIntent = await this.intentService.saveNewIntent(this.id_faq_kb, this.intentSelected);
     if(newIntent){
       this.intentSelected.id = newIntent.id;
       this.intentSelected.intent_id = newIntent.intent_id;
@@ -705,19 +718,19 @@ export class CdsDashboardComponent implements OnInit {
 
 
 
-  private actionSelected(actionID){
+  // private actionSelected(actionID){
     
-    console.log('-----> actionSelected: ',actionID);
-    // this.logger.log('[CDS DSBRD] onActionSelected from PANEL INTENT - action ', event.action, event.index)
-    // this.elementIntentSelected = {};
-    // this.elementIntentSelected['type'] = TYPE_INTENT_ELEMENT.ACTION;
-    // this.elementIntentSelected['element'] = event.action
-    // this.elementIntentSelected['index'] = event.index
-    // this.elementIntentSelected['maxLength'] = event.maxLength
-    // this.elementIntentSelected['intent_display_name'] = event.intent_display_name
-    // this.isIntentElementSelected = true;
-    // this.logger.log('[CDS DSBRD] onActionSelected from PANEL INTENT - this.elementIntentSelected ', this.elementIntentSelected)
-  }
+  //   console.log('-----> actionSelected: ',actionID);
+  //   // this.logger.log('[CDS DSBRD] onActionSelected from PANEL INTENT - action ', event.action, event.index)
+  //   // this.elementIntentSelected = {};
+  //   // this.elementIntentSelected['type'] = TYPE_INTENT_ELEMENT.ACTION;
+  //   // this.elementIntentSelected['element'] = event.action
+  //   // this.elementIntentSelected['index'] = event.index
+  //   // this.elementIntentSelected['maxLength'] = event.maxLength
+  //   // this.elementIntentSelected['intent_display_name'] = event.intent_display_name
+  //   // this.isIntentElementSelected = true;
+  //   // this.logger.log('[CDS DSBRD] onActionSelected from PANEL INTENT - this.elementIntentSelected ', this.elementIntentSelected)
+  // }
 
 
 
@@ -758,7 +771,7 @@ export class CdsDashboardComponent implements OnInit {
     // let event = { action: action, index: index, maxLength: maxLength, intent_display_name: intent_display_name };
     console.log('onAddNewAction', action.id);
     this.idElementOfIntentSelected = intent_display_name;
-    this.actionSelected(action.id);
+    // this.actionSelected(action.id);
   }
   
   /** END EVENTS PANEL ACTIONS */
@@ -849,10 +862,6 @@ export class CdsDashboardComponent implements OnInit {
     this.elementIntentSelected['type'] = TYPE_INTENT_ELEMENT.ANSWER;
     this.elementIntentSelected['element'] = answer
     this.isIntentElementSelected = true;
-  }
-
-  onSelectAction(actionID) {
-    this.actionSelected(event);
   }
 
   onQuestionSelected(intent) {
