@@ -30,7 +30,7 @@
             class="box-action"
             tabindex="0"
             [ngClass]="{'cds-action-active': idSelectedAction === action._tdActionId}"
-            (click)="onSelectAction(action._tdActionId)">
+            (click)="onActionSelected(action, i, action._tdActionId)">
             <!-- (keydown)="onDeleteAction($event)" -->
             <!-- <div cdkDragHandle class="header-action"> -->
                 <!-- <div class="icon-action">

@@ -5,6 +5,7 @@
     [defaultDepartmentId]=""
     [selectedChatbot]="selectedChatbot"
     (goToBck)="goBack()"
+    (onTestItOut)="onTestItOut($event)"
     (toggleSidebarWith)="onToggleSidebarWith($event)"> 
 </cds-header>
 
@@ -28,8 +29,8 @@
                 [listOfIntents] = "listOfIntents"
                 [intent_id]="intent_id"
                 (selectIntent)=onSelectIntent($event)
-                (deleteIntent)="onDeleteIntent($event)"
-            ></cds-panel-intent-list>
+                (deleteIntent)="onDeleteIntent($event)">
+            </cds-panel-intent-list>
         </div>
 
         <div  id="tds_container" class="box-right tds-drag-container" cdkDropListGroup>
@@ -50,7 +51,11 @@
                     [style.left.px]="getIntentPosition(intent.intent_id).x" 
                     [intent]="intent"
                     [connectorChanged]="connectorChanged"
-                    (selectAction)=onSelectAction($event)
+
+                    (answerSelected)=onAnswerSelected($event) 
+                    (actionSelected)=onActionSelected($event)
+                    (questionSelected)=onQuestionSelected($event) 
+
                     (saveIntent)=onSaveIntent($event)
                 ></cds-intent>
             </div>
@@ -78,6 +83,21 @@
             (closeButtonPanel) = onClosePanel() 
             [listOfActions] = listOfActions
         -->
+
+        <cds-panel-widget *ngIf="IS_OPEN_PANEL_WIDGET"
+            class="cds-generic-panel">
+        </cds-panel-widget>
+
+        <cds-panel-action-detail *ngIf="isOpenPanelActionDetail"
+            class="cds-generic-panel"
+            [isOpenPanel] = "isOpenPanelActionDetail"
+            [intentSelected]="intentSelected" 
+            [listOfActions]="listOfActions"
+            [project_id]="projectID"
+            [elementIntentSelected]="elementIntentSelected"
+            (closeAndSavePanelIntentDetail)="onCloseAndSavePanelIntentDetail($event)"
+            (clickedInsidePanelIntentDetail)="onClickedInsidePanelIntentDetail()">
+        </cds-panel-action-detail>
 
     </div>
 

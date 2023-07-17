@@ -50,7 +50,6 @@ import { PanelIntentComponent } from './cds-dashboard/panel-intent/panel-intent.
 import { PanelActionsComponent } from './cds-dashboard/panel-actions/panel-actions.component';
 import { PanelIntentDetailComponent } from './cds-dashboard/panel-intent-detail/panel-intent-detail.component';
 import { PanelIntentHeaderComponent } from './cds-dashboard/panel-intent-header/panel-intent-header.component';
-import { CdsPanelButtonConfigurationComponent } from './cds-dashboard/cds-panel-button-configuration/cds-panel-button-configuration.component';
 import { ElementFromUrlComponent } from './cds-dashboard/panel-intent-detail/actions/action-reply/elements/element-from-url/element-from-url.component';
 import { QuestionComponent } from './cds-dashboard/panel-intent-detail/question/question.component';
 import { AnswerComponent } from './cds-dashboard/panel-intent-detail/answer/answer.component';
@@ -137,6 +136,11 @@ import { CdsActionIntentComponent } from './cds-dashboard/actions/list/cds-actio
 import { CdsActionReplyComponent } from './cds-dashboard/actions/list/cds-action-reply/cds-action-reply.component';
 import { CdsActionOnlineAgentsComponent } from './cds-dashboard/actions/list/cds-action-online-agents/cds-action-online-agents.component';
 
+//CDS PANELS
+import { CdsActionDetailPanelComponent } from './cds-dashboard/actions/detail/cds-action-detail/cds-panel-action-detail.component';
+import { CdsPanelWidgetComponent } from './cds-dashboard/cds-panel-widget/cds-panel-widget.component';
+import { CdsPanelButtonConfigurationComponent } from './cds-dashboard/cds-panel-button-configuration/cds-panel-button-configuration.component';
+
 
 @NgModule({
   declarations: [
@@ -152,7 +156,6 @@ import { CdsActionOnlineAgentsComponent } from './cds-dashboard/actions/list/cds
     PanelActionsComponent,
     PanelIntentDetailComponent,
     PanelIntentHeaderComponent,
-    CdsPanelButtonConfigurationComponent,
     ElementFromUrlComponent,
     QuestionComponent,
     AnswerComponent,
@@ -215,7 +218,7 @@ import { CdsActionOnlineAgentsComponent } from './cds-dashboard/actions/list/cds
     CDSTextComponent,
     CDSFilterComponent,
     CDSTextareaComponent,
-    // ------ CDS-ACTIONS ------ //
+    // ------ CDS-ACTIONS: start ------ //
     CdsActionDescriptionComponent,
     CdsActionReplyComponent,
     // action REPLY elements: start //
@@ -233,6 +236,12 @@ import { CdsActionOnlineAgentsComponent } from './cds-dashboard/actions/list/cds
     // action REPLY elements: end //
     CdsActionIntentComponent,
     CdsActionOnlineAgentsComponent,
+    // ------ CDS-ACTIONS: end ------ //
+
+    // ------ CDS PANELS ------ //
+    CdsActionDetailPanelComponent,
+    CdsPanelButtonConfigurationComponent,
+    CdsPanelWidgetComponent
   ],
   imports: [
     A11yModule,

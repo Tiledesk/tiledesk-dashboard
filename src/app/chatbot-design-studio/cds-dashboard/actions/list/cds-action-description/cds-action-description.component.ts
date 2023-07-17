@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ELEMENTS_LIST } from 'app/chatbot-design-studio/utils';
 import { Action } from 'app/models/intent-model';
 import { LoggerService } from 'app/services/logger/logger.service';
@@ -12,7 +12,14 @@ export class CdsActionDescriptionComponent implements OnInit {
 
   @Input() actionSelected: Action;
   @Input() elementType: string;
+  @Input() previewMode: boolean = true
+  @Input() showTip: boolean = false;
+
+
+  @Output() closeIntent = new EventEmitter();
+  @Output() saveIntent = new EventEmitter();
   
+  titlePlaceholder: string = 'set a title to your action...';
   element: any;
   dataInput: string;
 
@@ -21,12 +28,17 @@ export class CdsActionDescriptionComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log('ActionDescriptionComponent ngOnInit:: ', this.actionSelected, this.elementType);
+    // console.log('ActionDescriptionComponent ngOnInit:: ', this.actionSelected, this.elementType);
     // if(this.elementSelected){
     //   this.elementType = TYPE_INTENT_ELEMENT.FORM;
     // } else {
     //   this.elementType = this.actionSelected._tdActionType;
     // }
+    
+  }
+
+  ngOnChanges(){
+    this.logger.log('ActionDescriptionComponent ngOnChanges:: ', this.actionSelected, this.elementType);
     if(this.actionSelected){
       this.elementType = this.actionSelected._tdActionType;
     }
@@ -35,10 +47,23 @@ export class CdsActionDescriptionComponent implements OnInit {
       if(this.actionSelected._tdActionTitle && this.actionSelected._tdActionTitle != ""){
         this.dataInput = this.actionSelected._tdActionTitle;
       }
-      console.log('ActionDescriptionComponent action:: ', this.element);
+      this.logger.log('ActionDescriptionComponent action:: ', this.element);
     } catch (error) {
       this.logger.log("error ", error);
     }
+  }
+
+  onCloseIntent(){
+    this.closeIntent.emit();
+  }
+
+  onSaveIntent(){
+    this.saveIntent.emit();
+  }
+
+  onChangeText(text: string){
+    console.log('ActionDescriptionComponent onChangeText:: ', text);
+    this.actionSelected._tdActionTitle = text;
   }
 
 }

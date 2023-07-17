@@ -1,3 +1,68 @@
+@import "./src/assets/sass/cds/_variables.scss";
+
+
+.action_wrp{
+    position: relative;
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 30px 20px 20px;
+    border-bottom: 2px solid $action-item-background;
+}
+
+.preview{
+    padding: 5px !important;
+    border-bottom: 0 !important;
+    .label-action {
+        color: #6c6859 !important;
+    }
+    .icon-action{
+        background: #6c6859 !important;
+        img {
+            width: 18px;
+            margin: auto 6px auto 4px;
+            height: auto;
+        }
+    }   
+}
+
+
+
+.edit-mode-header-buttons {
+    float: right;
+    display: flex;
+    position: absolute;
+    right: 15px;
+    top: 15px;
+    cursor: pointer;
+    z-index: 1;
+    .control-button {
+        align-items: center;
+        background: #dcdcdc;
+        border-radius: 4px;
+        color: #475e7a;
+        cursor: pointer;
+        display: flex;
+        flex-grow: 1;
+        flex-shrink: 0;
+        font-size: 13px;
+        height: 30px;
+        justify-content: center;
+        margin: 0 5px;
+        transition: all .3s;
+        width: 30px;
+    }
+}
+
+
+.section{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+}
+
 .action-title {
     display: flex;
     align-items: center;
@@ -13,7 +78,7 @@
         align-self: start;
         color: #718497;
         opacity: .85;
-        background: #6c6859;
+        background: none;
 
         display: flex;
         align-items: center;
@@ -23,13 +88,47 @@
             // margin: auto 6px auto 4px;
             height: 16px;
         }
-      }
+    }
       
-      .label-action {
-          overflow-x: clip;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-          font-size: 14px;
-          margin: 0;
-      }
+    .label-action {
+        overflow-x: clip;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        font-size: 14px;
+        margin: 0;
+        color: #fff;
+    }
 }
+
+.action-description{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    font-size: 11px;
+    color: $action-item-color;
+    line-height: 1.5;
+    em {
+        display: flex;
+        margin-right: 10px;
+    }
+    &:hover{
+        cursor: pointer;
+    }
+}
+
+div.action-description::ng-deep a {
+    word-break: break-word;
+}
+
+input.action-input {
+    width: 100%;
+    border-radius: 4px;
+    border: 0;
+    padding: 5px 10px;
+    color: #22272d;
+    font-size: 1.15em;
+    line-height: 16px;
+} 
+
+

@@ -1,4 +1,4 @@
-<div class="extensions-response">
+<div class="extensions-response" [class.previewMode]="previewMode">
     <div class="delay-wrapper" [ngStyle]="{width: canShowFilter? 'auto': '100%'}">
         <appdashboard-delay-slider
             [delayTime]="delayTime"
@@ -17,7 +17,7 @@
 
 
 
-<div class="text-editor-wrapper">
+<div class="text-editor-wrapper" [class.previewMode]="previewMode">
 
     <div class="text-editor">
 
@@ -81,7 +81,7 @@
             </div>
         </div>
 
-        <cds-connector
+        <cds-connector *ngIf="previewMode"
             class = "connector"
             cdkDragDisabled
             [idConnector] = "button.idConnector"

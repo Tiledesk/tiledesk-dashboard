@@ -14,8 +14,8 @@
     position: relative;
     width: 100%;
     height: auto;
-    margin: 0;
-    padding: 0 0 0 25px;
+    margin: 27px 0px 0px 0px;
+    padding: 0px 33px;
     display: flex;
     flex-wrap: wrap;
     row-gap: 5px;
@@ -28,8 +28,29 @@
         width: auto;
         // padding: 0em 0.75em 0;
     }
+
 }
 
+
+.previewMode{
+    &.extensions-response{
+        margin: 0;
+        padding: 0 0 0 25px;
+    }
+
+    &.text-editor-wrapper{
+        // padding: 0;
+        cds-textarea.text-editable-div{
+            width: calc(100% - 20px);
+            margin: 5px auto;
+        }
+    }
+
+    &.buttons-response{
+        padding: 0 5px;
+        flex-direction: column;
+    }
+}
 
 .text-editor-wrapper {
     font-size: $font-size-base;
@@ -37,7 +58,7 @@
     width: 100%;
     height: auto;
     margin: 5px 0 0 0;
-    padding: 0;
+    // padding: 0px 33px;
     .text-editor {
         position: relative;
         margin: 0;
@@ -159,8 +180,8 @@
     gap: 5px;
     width: 100%;
     font-size: 14px;
-    padding: 0 5px;
-    flex-direction: column;
+    padding: 0 25px;
+    flex-direction: row;
     float: right;
     justify-content: flex-start;
     /* align-content: flex-end; */
@@ -290,8 +311,8 @@
 /** box-textarea **/
 cds-textarea.text-editable-div ::ng-deep{
     display: block;
-    margin: auto;
-    width: calc(100% - 20px);
+    margin-left: 30px;
+    width: calc(100% - 66px);
     // margin-left: 20px;
     textarea {
         line-height: 20px !important; 

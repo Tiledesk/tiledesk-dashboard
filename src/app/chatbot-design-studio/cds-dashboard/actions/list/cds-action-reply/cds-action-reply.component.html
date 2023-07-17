@@ -18,6 +18,7 @@
             class="content draggable-list"
             cdkDropList 
             (cdkDropListDropped)="drop($event)">
+            
             <div *ngFor="let message of arrayMessagesWithWait; let i = index;"
                 class="draggable-box" 
                 [ngStyle]="{'margin-top':typeAction === typeActions.RANDOM_REPLY?'20px':'0px', 'margin-bottom':typeAction === typeActions.RANDOM_REPLY?'30px':'0px'}" 
@@ -38,6 +39,7 @@
                             [index] = i
                             [idAction] = "idAction"
                             [response] = "message"
+                            [previewMode] = "previewMode"
                             (moveUpResponse) = onMoveUpResponse($event)
                             (moveDownResponse) = onMoveDownResponse($event)
                             (openButtonPanel) = onOpenButtonPanel($event)

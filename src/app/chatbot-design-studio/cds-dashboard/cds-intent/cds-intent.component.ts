@@ -42,18 +42,27 @@ export class CdsIntentComponent implements OnInit, OnChanges {
   @Output() selectAction = new EventEmitter();
   @Output() saveIntent = new EventEmitter();
 
+  @Output() questionSelected = new EventEmitter();
+  @Output() answerSelected = new EventEmitter();
+  @Output() actionSelected = new EventEmitter();
 
   // connector: any;
   intentElement: any;
   listOfIntents: Array<Intent>
   idSelectedAction: string;
+
+  form: Form;
+  formSize: number;
+  question: any;
+  answer: string;
+  questionCount: number;
   intentActionList: Array<any>;
   arrayActionsForDrop = [];
 
   HAS_SELECTED_TYPE = HAS_SELECTED_TYPE;
   TYPE_ACTION = TYPE_ACTION;
   ACTIONS_LIST = ACTIONS_LIST;
-  
+  elementTypeSelected: HAS_SELECTED_TYPE
 
   constructor(
     private logger: LoggerService,
@@ -78,7 +87,8 @@ export class CdsIntentComponent implements OnInit, OnChanges {
 
 
   ngOnChanges(changes: SimpleChanges){
-
+    console.log('listtttttttt ngOnChanges', this.listOfIntents)
+    this.listOfIntents = this.intentService.intents.value
     // if (changes.connectorChanged) {
     //   // this.connector = 
     //   console.log('CdsPanelIntentComponent ngOnChanges-->', this.connector);
@@ -111,6 +121,18 @@ export class CdsIntentComponent implements OnInit, OnChanges {
       if (this.intent) {
         this.patchAllActionsId();
         this.intentActionList = this.intent.actions;
+        this.form = this.intent.form;
+        this.answer = this.intent.answer;
+        if (this.intent.question) {
+          const question_segment = this.intent.question.split(/\r?\n/).filter(element => element);
+          this.questionCount = question_segment.length;
+          this.question = this.intent.question;
+        }
+        if (this.form && this.form !== undefined) {
+          this.formSize = Object.keys(this.form).length;
+        } else {
+          this.formSize = 0;
+        }
       }
     } catch (error) {
       this.logger.error("error: ", error);
@@ -175,12 +197,6 @@ export class CdsIntentComponent implements OnInit, OnChanges {
     this.connectorService.movedConnector(fromEle);
     this.saveIntent.emit(this.intent);
   }
-
-  onSelectAction(idAction) {
-    console.log('onSelectAction: ', idAction);
-    this.idSelectedAction = idAction;
-    this.selectAction.emit(idAction);
-  }
   
   // onDeleteAction(event: any) {
   //   console.log('onDeleteAction:::: ' , event, event.key);
@@ -223,4 +239,54 @@ export class CdsIntentComponent implements OnInit, OnChanges {
       console.log('updateIntent: ', this.intent);
     }
   }
+
+
+  onSelectAnswer(elementSelected) {
+    this.elementTypeSelected = elementSelected;
+    // this.isIntentElementSelected = true;
+    this.answerSelected.emit(this.answer);
+  }
+
+  onSelectQuestion(elementSelected) {
+    console.log('onSelectQuestion-->', elementSelected, this.intent.question)
+    this.elementTypeSelected = elementSelected;
+    // this.isIntentElementSelected = true;
+    this.questionSelected.emit(this.intent.question);
+    
+    // let elementsWithActiveClass = Array.from(document.getElementsByClassName('cds-action-active'));
+    // this.logger.log('[PANEL INTENT] onActionSelected elementsWithActiveClass', elementsWithActiveClass)
+    // if (elementsWithActiveClass.length != 0) {
+    //   elementsWithActiveClass.forEach((el) => {
+    //     el.classList.remove('cds-action-active');
+    //   })
+    // }
+  }
+
+  onActionSelected(action, index: number, idAction) {
+    console.log('onActionSelected action: ', action);
+    // if(this.isDeleting){return;}
+    this.elementTypeSelected = idAction;
+    // this.isIntentElementSelected = true;
+   
+    // this.logger.log('[PANEL INTENT] onActionSelected action: ', action)
+    // this.logger.log('[PANEL INTENT] onActionSelected index', index)
+
+    // let elementsWithActiveClass = Array.from(document.getElementsByClassName('cds-action-active'));
+    // this.logger.log('[PANEL INTENT] onActionSelected elementsWithActiveClass', elementsWithActiveClass)
+    // if (elementsWithActiveClass.length != 0) {
+    //   elementsWithActiveClass.forEach((el) => {
+    //     el.classList.remove('cds-action-active');
+    //   })
+    // }
+
+    // const actionElement = <HTMLElement>document.querySelector(`#action_${index}`);
+    // this.logger.log('[PANEL INTENT] onActionSelected actionElement', actionElement)
+    // actionElement.classList.add("cds-action-active");
+
+    // console.log('NN CAPISCO PERCHè 2 emit verifica !!! action: ', action);
+    // this.actionSelected.emit(action);
+    // this.logger.log('[PANEL INTENT] onActionSelected ', action)
+    this.actionSelected.emit({ action: action, index: index, maxLength: this.intentActionList.length });
+  }
+
 }
