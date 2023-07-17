@@ -51,7 +51,7 @@
 
 
 
-<div class="buttons-response button-replies" cdkDropListOrientation="vertical" cdkDropList (cdkDropListDropped)="dropButtons($event)" >
+<div class="buttons-response button-replies" [class.previewMode]="previewMode" cdkDropListOrientation="vertical" cdkDropList (cdkDropListDropped)="dropButtons($event)" >
     
     <div *ngFor="let button of buttons; let i = index;" class="content-botton-reply" cdkDragBoundary=".button-replies" cdkDrag> 
         <!-- tpl-drop-down2 single-btn-reply2 -->
@@ -90,7 +90,7 @@
 
     </div>
 
-    <div class="button-reply-add single-btn-reply" (click)="onCreateNewButton()">
+    <div class="button-reply-add single-btn-reply" (click)="onCreateNewButton();$event.stopPropagation()">
     + Add button
     </div>
 </div>
