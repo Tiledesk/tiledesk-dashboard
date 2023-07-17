@@ -3,6 +3,8 @@ export class TiledeskStage {
     tx = 0;
     ty = 0;
     scale = 1;
+    torigin = `0 0`;
+
     containerId;
     drawerId;
     container;
@@ -23,6 +25,7 @@ export class TiledeskStage {
     setDrawer() {
         this.container = document.getElementById(this.containerId);
         this.drawer = document.getElementById(this.drawerId);
+        this.drawer.style.transformOrigin = this.torigin;
         this.container.addEventListener("wheel", this.moveAndZoom);
     }
 
@@ -338,10 +341,32 @@ export class TiledeskStage {
             this.ty += event.deltaY * direction;
             this.transform();
         } else {
-            // console.log("zoom");
+            var originRec = this.container.getBoundingClientRect();            
+            // zoom
+            var zoom_target = {x:0,y:0}
+            var zoom_point = {x:0,y:0}
+            zoom_point.x = event.pageX - this.drawer.offsetLeft-originRec.x;
+            zoom_point.y = event.pageY - this.drawer.offsetTop-originRec.y;
+            zoom_target.x = (zoom_point.x - this.tx)/this.scale;
+            zoom_target.y = (zoom_point.y - this.ty)/this.scale;
+            // console.log('drawer: ', this.drawer);
             this.scale += dy * -0.01;
+            // Restrict scale
             this.scale = Math.min(Math.max(0.125, this.scale), 4);
+            this.tx = -zoom_target.x * this.scale + zoom_point.x
+            this.ty = -zoom_target.y * this.scale + zoom_point.y
+            // Apply scale transform
             this.transform();
+            // const scale_event = new CustomEvent("scaled", {detail: {scale: scale}});
+            // document.dispatchEvent(scale_event);
+
+
+
+
+            // console.log("zoom");
+            // this.scale += dy * -0.01;
+            // this.scale = Math.min(Math.max(0.125, this.scale), 4);
+            // this.transform();
             // const event = new CustomEvent("scaled", { detail: {scale: this.scale} });
             // document.dispatchEvent(event);
         }
@@ -357,9 +382,10 @@ export class TiledeskStage {
         // console.log("transform:", this.drawer, drawer, this.scale, scale);
         let tcmd = `translate(${this.tx}px, ${this.ty}px)`;
         let scmd = `scale(${this.scale})`;
+        const cmd = tcmd + " " + scmd;
+        this.drawer.style.transform = cmd;
         // console.log("tcmd:", tcmd);
         // console.log("scmd:", scmd);
-        this.drawer.style.transform = tcmd + " " + scmd;
     }
 
 

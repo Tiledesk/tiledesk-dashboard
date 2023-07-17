@@ -135,15 +135,15 @@ export class CdsDashboardComponent implements OnInit {
       * variabile booleana aggiunta per far scattare l'onchange nei componenti importati dalla dashboard
       * ngOnChanges funziona bene solo sugli @import degli elementi primitivi!!!  
       */
-        this.updatePanelIntentList = !this.updatePanelIntentList;
-        this.listOfIntents = intents;
-        this.intentService.setListOfActions(this.listOfIntents);
-        this.listOfActions = this.intentService.getListOfActions();
-        /** SET DRAG STAGE AND CREATE CONNECTORS */
-        setTimeout(() => {
-          this.setDragAndListnerEventToElements();
-          this.connectorService.createConnectors(this.listOfIntents);
-        }, 0);
+        // this.updatePanelIntentList = !this.updatePanelIntentList;
+        // this.listOfIntents = intents;
+        // this.intentService.setListOfActions(this.listOfIntents);
+        // this.listOfActions = this.intentService.getListOfActions();
+        // /** SET DRAG STAGE AND CREATE CONNECTORS */
+        // setTimeout(() => {
+        //   this.setDragAndListnerEventToElements();
+        //   this.connectorService.createConnectors(this.listOfIntents);
+        // }, 0);
       
     });
 
@@ -324,6 +324,16 @@ export class CdsDashboardComponent implements OnInit {
       const getAllIntents = await this.intentService.getAllIntents(this.id_faq_kb);
       console.log('Risultato 6:', getAllIntents );
       if(getAllIntents){
+        // this.updatePanelIntentList = !this.updatePanelIntentList;
+        this.listOfIntents =  this.intentService.intents.value;
+        console.log('this.intentService.intents 6:', this.listOfIntents, this.intentService.intents );
+        this.intentService.setListOfActions(this.listOfIntents);
+        this.listOfActions = this.intentService.getListOfActions();
+        /** SET DRAG STAGE AND CREATE CONNECTORS */
+        setTimeout(() => {
+          this.setDragAndListnerEventToElements();
+          this.connectorService.createConnectors(this.listOfIntents);
+        }, 0);
         // !!! il valore di listOfIntents è bindato nel costructor con subscriptionListOfIntents !!! // 
       }
     } catch (error) {
