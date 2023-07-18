@@ -21,10 +21,10 @@ import {
   ActionReplaceBot,
   ActionWait,
   ActionWebRequest,
-  Command, Message, Expression } from 'app/models/intent-model';
+  Command, Message, Expression, Attributes } from 'app/models/intent-model';
 import { FaqService } from 'app/services/faq.service';
 import { FaqKbService } from 'app/services/faq-kb.service';
-import { TYPE_ACTION, TYPE_COMMAND } from 'app/chatbot-design-studio/utils';
+import { NEW_POSITION_ID, TYPE_ACTION, TYPE_COMMAND } from 'app/chatbot-design-studio/utils';
 import { ConnectorService } from 'app/chatbot-design-studio/services/connector.service';
 
 
@@ -48,6 +48,8 @@ export class IntentService {
   botAttributes: any = {};
   listOfPositions: any = {};
 
+  // newPosition: any = {'x':0, 'y':0};
+
   private changedConnector = new Subject<any>();
   public isChangedConnector$ = this.changedConnector.asObservable();
 
@@ -55,18 +57,25 @@ export class IntentService {
     private faqService: FaqService,
     private faqKbService: FaqKbService,
     private connectorService: ConnectorService
-  ) { 
-
-  }
+  ) { }
 
 
+  /**
+   * onChangedConnector
+   * funzione chiamata sul 'connector-created', 'connector-deleted'
+   * per notificare alle actions che i connettori sono cambiati
+   */
   public onChangedConnector(connector){
     console.log('onChangedConnector:: ', connector);
     this.changedConnector.next(connector);
   }
 
 
+  /** 
+   * restituisce tutti gli intents
+   */
   getIntents() {
+    console.log('getIntents: ',  this.intents);
     return this.intents.asObservable();
   }
 
@@ -74,52 +83,72 @@ export class IntentService {
 
   // START DASHBOARD FUNCTIONS //
 
-  //** recupero le posizioni degli intent sullo stage */
-  setDashboardAttributes(idBot, attributes){
-    this.botAttributes = attributes;
-    this.idBot = idBot;
-    if(attributes && attributes['positions']){
-      this.listOfPositions = attributes['positions'];
-    }
-  }
+  // //** recupero le posizioni degli intent sullo stage */
+  // setDashboardAttributes(idBot, attributes){
+  //   this.botAttributes = attributes;
+  //   this.idBot = idBot;
+  //   if(attributes && attributes['positions']){
+  //     this.listOfPositions = attributes['positions'];
+  //   }
+  // }
 
 
-  /** imposta le posizioni degli elementi sullo stage */
-  setPositionsInDashboardAttributes(json){
-    this.listOfPositions = json;
-    this.botAttributes['positions'] = this.listOfPositions;
-    this.patchAttributes(this.botAttributes);
-  }
+  // /** imposta le posizioni degli elementi sullo stage */
+  // setPositionsInDashboardAttributes(json){
+  //   this.listOfPositions = json;
+  //   this.botAttributes['positions'] = this.listOfPositions;
+  //   // this.patchAttributes(this.botAttributes);
+  // }
 
 
-  /** imposta quello che è l'intent di partenza quando inizia un drag su una action dell'intent */
+  /** setPreviousIntentId
+   * imposta quello che è l'intent di partenza quando inizia un drag su una action dell'intent 
+   * */
   setPreviousIntentId(intentId){
     this.previousIntentId = intentId;
   }
 
 
-  /** Get Intent position */    
-  getIntentPosition(id: string){
+  // /** Get Intent position */    
+  // OLD_getIntentPosition(id: string){
+  //   let pos = {'x':0, 'y':0};
+  //   const positions = this.listOfPositions;
+  //   if(!positions)return pos;
+  //   if(positions && positions[id]){
+  //     return positions[id];
+  //   }
+  //   return pos;
+  // }
+
+  getIntentPosition(intentId: string){
     let pos = {'x':0, 'y':0};
-    const positions = this.listOfPositions;
-    if(!positions)return pos;
-    if(positions && positions[id]){
-      return positions[id];
-    }
-    return pos;
+    let listOfIntents = this.intents.getValue();
+    let intent = listOfIntents.find((intent) => intent.id === intentId);
+    if(!intent.attributes || !intent.attributes.position)return pos;
+    return intent.attributes.position;
   }
 
-  /** Set intent position */
-  setIntentPosition(id:string, newPos: any){
-    const positions = this.listOfPositions;
-    if(positions){
-      if(!newPos && positions[id]){
-        delete positions[id];
-      } else {
-        positions[id] =  {'x': newPos.x, 'y': newPos.y};
-      }
-      this.setPositionsInDashboardAttributes(positions);
-    }
+  // /** Set intent position */
+  // OLD_setIntentPosition(id:string, newPos: any){
+  //   const positions = this.listOfPositions;
+  //   if(positions){
+  //     if(!newPos && positions[id]){
+  //       delete positions[id];
+  //     } else {
+  //       positions[id] =  {'x': newPos.x, 'y': newPos.y};
+  //     }
+  //     this.setPositionsInDashboardAttributes(positions);
+  //   }
+  // }
+
+  setIntentPosition(intentId:string, newPos: any){
+    console.log('setIntentPosition:: ',intentId, newPos);
+    let listOfIntents = this.intents.getValue();
+    let intentToUpdate = listOfIntents.find((intent) => intent.id === intentId);
+    if(!intentToUpdate)return; 
+    // if(!intentToUpdate.attributes){intentToUpdate.attributes = {};
+    intentToUpdate['attributes']['position'] = {'x': newPos.x, 'y': newPos.y};
+    this.patchAttributes(intentId, intentToUpdate.attributes);
   }
   // END DASHBOARD FUNCTIONS //
 
@@ -135,7 +164,6 @@ export class IntentService {
         if (faqs) {
           // console.log('getAllIntents: ', faqs);
           let arrayOfIntents = JSON.parse(JSON.stringify(faqs));
-          // this.updateIntents(arrayOfIntents);
           this.intents.next(arrayOfIntents);
           resolve(true);
         } 
@@ -184,9 +212,11 @@ export class IntentService {
       let formIntentSelected = newIntent.form;
       let actionsIntentSelected = newIntent.actions;
       let webhookEnabledIntentSelected = newIntent.webhook_enabled;
+      let attributes = newIntent.attributes;
       const that = this;
       this.faqService.addIntent(
         id_faq_kb,
+        attributes,
         questionIntentSelected,
         answerIntentSelected,
         displayNameIntentSelected,
@@ -479,9 +509,23 @@ export class IntentService {
 
   
 
-  patchAttributes(attributes: any) {
+  OLD_patchAttributes(attributes: any) {
     console.log('-----------> patchAttributes, ', this.idBot);
     this.faqKbService.patchAttributes(this.idBot, attributes).subscribe((data) => {
+        if (data) {
+          console.log('data:   ', data);
+        }
+      }, (error) => {
+        console.log('error:   ', error);
+      }, () => {
+        console.log('complete');
+      });
+
+  }
+
+  patchAttributes(intentID: string, attributes: any) {
+    console.log('-----------> patchAttributes, ', intentID, attributes);
+    this.faqService.patchAttributes(intentID, attributes).subscribe((data) => {
         if (data) {
           console.log('data:   ', data);
         }

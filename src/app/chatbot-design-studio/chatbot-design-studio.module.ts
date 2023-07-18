@@ -136,6 +136,10 @@ import { CdsActionIntentComponent } from './cds-dashboard/actions/list/cds-actio
 import { CdsActionReplyComponent } from './cds-dashboard/actions/list/cds-action-reply/cds-action-reply.component';
 import { CdsActionOnlineAgentsComponent } from './cds-dashboard/actions/list/cds-action-online-agents/cds-action-online-agents.component';
 import { CdsActionEmailComponent } from './cds-dashboard/actions/list/cds-action-email/cds-action-email.component';
+import { CdsActionWaitComponent } from './cds-dashboard/actions/list/cds-action-wait/cds-action-wait.component';
+import { CdsActionAgentHandoffComponent } from './cds-dashboard/actions/list/cds-action-agent-handoff/cds-action-agent-handoff.component';
+import { CdsActionChangeDepartmentComponent } from './cds-dashboard/actions/list/cds-action-change-department/cds-action-change-department.component';
+
 
 //CDS PANELS
 import { CdsActionDetailPanelComponent } from './cds-dashboard/actions/detail/cds-action-detail/cds-panel-action-detail.component';
@@ -145,13 +149,11 @@ import { CdsActionControlsComponent } from './cds-dashboard/actions/shared/cds-a
 
 
 
-
 @NgModule({
   declarations: [
     CdsDashboardComponent,
     PanelReplyToolsComponent,
     ActionReplyComponent,
-    
     ImageResponseComponent,
     FrameResponseComponent,
     ImageUploadComponent,
@@ -216,8 +218,7 @@ import { CdsActionControlsComponent } from './cds-dashboard/actions/shared/cds-a
     CdsPanelIntentListComponent,
     CdsFloatingMenuComponent,
     CdsConnectorComponent,
-
-
+   
     //BASE ELEMENT
     CDSTextComponent,
     CDSFilterComponent,
@@ -229,6 +230,12 @@ import { CdsActionControlsComponent } from './cds-dashboard/actions/shared/cds-a
     // ------ CDS-ACTIONS: start ------ //
     CdsActionDescriptionComponent,
     CdsActionReplyComponent,
+    CdsActionWaitComponent,
+    CdsActionAgentHandoffComponent,
+    CdsActionOnlineAgentsComponent,
+    CdsActionEmailComponent,
+    CdsActionIntentComponent,
+    CdsActionChangeDepartmentComponent,
     // action REPLY elements: start //
     CdsActionReplyToolsComponent,
     CdsActionReplyTextComponent,
@@ -237,9 +244,8 @@ import { CdsActionControlsComponent } from './cds-dashboard/actions/shared/cds-a
     CdsActionReplyRedirectComponent,
     CdsActionReplyGalleryComponent,
     // action REPLY elements: end //
-    CdsActionIntentComponent,
-    CdsActionOnlineAgentsComponent,
-    CdsActionEmailComponent,
+   
+   
     // ------ CDS-ACTIONS: end ------ //
 
     // ------ CDS PANELS ------ //
