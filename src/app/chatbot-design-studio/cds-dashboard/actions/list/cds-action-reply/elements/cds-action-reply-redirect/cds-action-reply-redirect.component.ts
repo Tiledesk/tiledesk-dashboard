@@ -17,6 +17,7 @@ export class CdsActionReplyRedirectComponent implements OnInit {
   @Input() idAction: string;
   @Input() response: MessageWithWait;
   @Input() index: number;
+  @Input() previewMode: boolean = true
   
   // Delay //onMoveTopButton
   delayTime: number;

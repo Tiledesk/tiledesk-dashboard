@@ -17,7 +17,9 @@
     </div>
 
 
-    <div id="drop-actions" class="drag-actions target-container" [cdkDropListData]="intentActionList" cdkDropList
+    <div class="drag-actions target-container"
+        [cdkDropListData]="intentActionList"
+        cdkDropList
         (cdkDropListDropped)="onDropAction($event)">
          <!-- [id]="'action_'+i" -->
         <div *ngFor="let action of intentActionList; let i = index"
@@ -51,6 +53,7 @@
                 <cds-action-intent  *ngSwitchCase="TYPE_ACTION.INTENT"
                     class="panel-response"
                     [intentSelected]="intent"
+                    [connectorChanged]="connectorChanged"
                     [action]="action" 
                     (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-intent>
@@ -98,8 +101,7 @@
                 <cds-action-online-agents *ngSwitchCase="TYPE_ACTION.ONLINE_AGENTS"
                     class="panel-response"
                     [intentSelected]="intent"
-                    [connectorChanged]="connectorChanged"
-                    [listOfActions] = "listOfActions"    
+                    [connectorChanged]="connectorChanged"    
                     [action]="action"
                     (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-online-agents>

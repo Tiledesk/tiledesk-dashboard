@@ -22,13 +22,13 @@
     <div class="text-editor">
 
         <div class="response-controls">
-            <div class="control-button delete" (click)="onDeleteActionReply()">
+            <div class="control-button delete" (click)="$event.stopPropagation();onDeleteActionReply()">
                 <em class="material-icons">delete</em>
             </div>
-            <div class="control-button" (click)="onMoveUpResponse()">
+            <div class="control-button" (click)="$event.stopPropagation();onMoveUpResponse()">
                 <em class="material-icons">expand_less</em>
             </div> 
-            <div class="control-button" (click)="onMoveDownResponse()">
+            <div class="control-button" (click)="$event.stopPropagation();onMoveDownResponse()">
                 <em class="material-icons">expand_more</em>
             </div>
         </div>
@@ -75,7 +75,7 @@
                         <em class="material-icons">chevron_right</em>
                     </div>
                 </div> -->
-                <div class="control-button delete" (click)="onDeleteButton(i)">
+                <div class="control-button delete" (click)="$event.stopPropagation();onDeleteButton(i)">
                     <em class="material-icons">delete</em>
                 </div>
             </div>
@@ -90,7 +90,7 @@
 
     </div>
 
-    <div class="button-reply-add single-btn-reply" (click)="onCreateNewButton();$event.stopPropagation()">
+    <div class="button-reply-add single-btn-reply" (click)="$event.stopPropagation();onCreateNewButton()">
     + Add button
     </div>
 </div>
