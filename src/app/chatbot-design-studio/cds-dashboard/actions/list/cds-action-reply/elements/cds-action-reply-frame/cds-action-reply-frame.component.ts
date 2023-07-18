@@ -20,7 +20,7 @@ export class CdsActionReplyFrameComponent implements OnInit {
   @Input() idAction: string;
   @Input() response: MessageWithWait;
   @Input() index: number;
-
+  @Input() previewMode: boolean = true
   
   // frame //
   typeActions = TYPE_ACTION;

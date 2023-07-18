@@ -10,14 +10,16 @@
             </div>
         </div> -->
         <appdashboard-panel-intent-header class="pic-title-text tds_draggable"
-            [intentSelected]="intent" 
-            [listOfIntents]="listOfIntents">
+            [intentSelected]="intent">
+            <!-- [listOfIntents]="listOfIntents"> -->
         </appdashboard-panel-intent-header>
 
     </div>
 
 
-    <div id="drop-actions" class="drag-actions target-container" [cdkDropListData]="intentActionList" cdkDropList
+    <div class="drag-actions target-container"
+        [cdkDropListData]="intentActionList"
+        cdkDropList
         (cdkDropListDropped)="onDropAction($event)">
          <!-- [id]="'action_'+i" -->
         <div *ngFor="let action of intentActionList; let i = index, let last = last;"
@@ -28,6 +30,7 @@
             class="box-action"
             tabindex="0"
             [ngClass]="{'cds-action-active': intentService.actionSelectedID === action._tdActionId}"
+            (keydown)="onKeydown($event)"
             (click)="onActionSelected(action, i, action._tdActionId)">
             <!-- (keydown)="onDeleteAction($event)" -->
             <!-- <div cdkDragHandle class="header-action"> -->
@@ -106,8 +109,7 @@
                 <cds-action-online-agents *ngSwitchCase="TYPE_ACTION.ONLINE_AGENTS"
                     class="panel-response"
                     [intentSelected]="intent"
-                    [connectorChanged]="connectorChanged"
-                    [listOfActions] = "listOfActions"    
+                    [connectorChanged]="connectorChanged"    
                     [action]="action"
                     [last]="last"
                     [previewMode]="true"

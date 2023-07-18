@@ -227,6 +227,9 @@ import { CdsActionControlsComponent } from './cds-dashboard/actions/shared/cds-a
     CDSTextareaComponent,
     CdsActionControlsComponent,
     CdsActionArrowComponent,
+    CDSDelaySliderComponent,
+    CDSImageUploadComponent,
+    CDSElementFromUrlComponent,
     // ------ CDS-ACTIONS: start ------ //
     CdsActionDescriptionComponent,
     CdsActionReplyComponent,
@@ -243,12 +246,6 @@ import { CdsActionControlsComponent } from './cds-dashboard/actions/shared/cds-a
     CdsActionReplyFrameComponent,
     CdsActionReplyRedirectComponent,
     CdsActionReplyGalleryComponent,
-    
-    CDSTextareaComponent,
-    CDSDelaySliderComponent,
-    CDSImageUploadComponent,
-    CDSElementFromUrlComponent,
-   // CdsActionAddActionComponent,
     // action REPLY elements: end //
    
    

@@ -10,6 +10,7 @@
         <appdashboard-filter
             [expression]="response._tdJSONCondition"
             [booleanOperators]="booleanOperators"
+            [previewMode]="previewMode"
             (onChangeExpression)="onChangeExpression($event)">
         </appdashboard-filter>
     </div>
@@ -22,13 +23,13 @@
         <div class="image-editor">
         
             <div class="response-controls">
-                <div class="control-button delete" (click)="onDeleteActionReply()">
+                <div class="control-button delete" (click)="$event.stopPropagation();onDeleteActionReply()">
                    <em class="material-icons">delete</em>
                </div>
-               <div class="control-button" (click)="onMoveUpResponse()">
+               <div class="control-button" (click)="$event.stopPropagation();onMoveUpResponse()">
                    <em class="material-icons">expand_less</em>
                </div> 
-               <div class="control-button" (click)="onMoveDownResponse()">
+               <div class="control-button" (click)="$event.stopPropagation();onMoveDownResponse()">
                    <em class="material-icons">expand_more</em>
                </div>
             </div>
@@ -38,7 +39,7 @@
                     class="image-upload"
                     [metadata] = response.metadata>
                 </cds-image-upload>
-                <div *ngIf="response.metadata.src" class="control-button delete" (click)="onDeletePathElement()">
+                <div *ngIf="response.metadata.src" class="control-button delete" (click)="$event.stopPropagation();onDeletePathElement()">
                     <em class="material-icons">clear</em>
                 </div>
             </div>
@@ -101,14 +102,14 @@
                     </div>
                 </div> -->
 
-                <div class="control-button delete" (click)="onDeleteButton(i)">
+                <div class="control-button delete" (click)="$event.stopPropagation();onDeleteButton(i)">
                     <em class="material-icons">delete</em>
                 </div>
 
            </div>
         </div>
 
-        <cds-connector
+        <cds-connector *ngIf="previewMode"
             class = "connector"
             cdkDragDisabled
             [idConnector] = "button.idConnector"
@@ -118,7 +119,7 @@
 
     </div>
 
-    <div class="button-reply-add single-btn-reply" (click)="onCreateNewButton()">
+    <div class="button-reply-add single-btn-reply" (click)="$event.stopPropagation();onCreateNewButton()">
     + Add button
     </div>
 </div>

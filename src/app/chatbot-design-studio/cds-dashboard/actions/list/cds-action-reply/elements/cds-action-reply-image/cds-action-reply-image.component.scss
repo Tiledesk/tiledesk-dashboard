@@ -6,8 +6,8 @@
     position: relative;
     width: 100%;
     height: auto;
-    margin: 0px; //27px 0 0 0;
-    padding: 0 0px 0px 25px;
+    margin: 27px 0 0 0;
+    padding: 0px 33px;
     display: flex;
     flex-wrap: wrap;
     row-gap: 5px;
@@ -24,7 +24,7 @@
 .previewMode{
     &.extensions-response{
         margin: 0;
-        padding: 0 0 0 25px;
+        padding: 0 10px 0px 25px;
     }
 
     &.image-editor-wrapper{
@@ -43,6 +43,12 @@
     &.buttons-response{
         padding: 0 5px;
         flex-direction: column;
+        flex-wrap: nowrap;
+
+        .button-reply-add{
+            color: $color-txt-2-hex;
+            border-color: $color-txt-2-hex;
+        }
     }
 }
 
@@ -200,7 +206,7 @@
     display: block;
     border-radius: 8px; 
     margin-left: 30px;
-    margin-top: 10px;
+    // margin-top: 10px;
     margin-bottom: 10px;
     padding: 0px;
     background: rgba(255, 255, 255, 0.383);
@@ -257,7 +263,7 @@
     // padding: 0 25px;
 
     display: flex;
-    margin: 12px 0 0;
+    margin: 15px 0 0;
     gap: 5px;
     width: 100%;
     font-size: 14px;
@@ -266,7 +272,7 @@
     float: right;
     justify-content: flex-start;
     /* align-content: flex-end; */
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     align-items: flex-end;
 
 }
@@ -276,7 +282,7 @@
     position: relative;
     min-width: 100px;
     text-align: center;
-    margin: 0px 5px 0px; //10px 5px 0;
+    // margin: 0px 5px 0px; //10px 5px 0;
     padding: 0 10px;
     user-select: none;
     box-sizing: border-box;
@@ -327,14 +333,14 @@
     user-select: none;
     box-sizing: border-box;
     outline: none;
-    border: 1px dashed $color-txt-2-hex;
+    border: 1px dashed $color-withe-hex;
     border-radius: $button-border-radius-base;
-    color: $color-txt-2-hex;//$color-withe-hex;
+    color: $color-withe-hex;
     cursor: pointer;
     font-size: 0.7em;
     font-weight: 400;
     line-height: $button-height-base;
-    margin: 0px 5px 0;
+    // margin: 0px 5px 0;
     order: 1;
     padding: 0 10px;
     transition: all .3s;

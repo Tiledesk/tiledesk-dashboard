@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges, ChangeDetectorRef, TemplateRef, ViewContainerRef } from '@angular/core';
+import { IntentService } from 'app/chatbot-design-studio/services/intent.service';
 import { TYPE_ACTION, TYPE_INTENT_ELEMENT } from 'app/chatbot-design-studio/utils';
 import { Intent } from 'app/models/intent-model';
 import { LoggerService } from 'app/services/logger/logger.service';
@@ -11,7 +12,6 @@ import { LoggerService } from 'app/services/logger/logger.service';
 export class CdsActionDetailPanelComponent implements OnInit, OnChanges {
   @Output() closeAndSavePanelIntentDetail = new EventEmitter();
   @Output() clickedInsidePanelIntentDetail = new EventEmitter();
-  @Input() listOfActions: Array<string>;
   @Input() elementIntentSelected: any;
   @Input() showSpinner: boolean;
   @Input() intentSelected: Intent;
@@ -25,8 +25,11 @@ export class CdsActionDetailPanelComponent implements OnInit, OnChanges {
   elementIntentSelectedType: string;
   openCardButton = false;
 
+  listOfActions: Array<{name: string, value: string, icon?:string}>;
+
   constructor(
-    private logger: LoggerService
+    private logger: LoggerService,
+    private intentService: IntentService
   ) { }
 
   ngOnInit(): void {
@@ -43,6 +46,7 @@ export class CdsActionDetailPanelComponent implements OnInit, OnChanges {
   ngOnChanges() {
     console.log('[PANEL-INTENT-DETAIL] (OnChanges) @Input elementIntentSelected ', this.elementIntentSelected);
     try{
+      this.listOfActions = this.intentService.getListOfActions();
       this.elementIntentSelectedType = this.elementIntentSelected.type;
       this.elementSelected = this.elementIntentSelected.element;
       this.elementSelected = JSON.parse(JSON.stringify(this.elementIntentSelected.element));

@@ -15,6 +15,7 @@ export class CDSFilterComponent implements OnInit {
 
   @Input() expression: Expression = new Expression();
   @Input() booleanOperators: {}
+  @Input() previewMode: boolean = true
   @Output() onChangeExpression = new EventEmitter<Expression>()
   @Output() onDeleteGroup = new EventEmitter()
 

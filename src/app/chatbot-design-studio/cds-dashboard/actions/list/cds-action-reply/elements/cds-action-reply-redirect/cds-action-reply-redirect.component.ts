@@ -17,6 +17,7 @@ export class CdsActionReplyRedirectComponent implements OnInit {
   @Input() idAction: string;
   @Input() response: MessageWithWait;
   @Input() index: number;
+  @Input() previewMode: boolean = true
   
   // Delay //onMoveTopButton
   delayTime: number;
@@ -25,7 +26,6 @@ export class CdsActionReplyRedirectComponent implements OnInit {
   booleanOperators=[ { type: 'AND', operator: 'AND'},{ type: 'OR', operator: 'OR'},]
  
   typeActions = TYPE_ACTION;
-  
 
   metadata: Metadata
   constructor() { }

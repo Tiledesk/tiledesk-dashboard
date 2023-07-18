@@ -1,4 +1,4 @@
-<div class="extensions-response">
+<div class="extensions-response" [class.previewMode]="previewMode">
     <div class="delay-wrapper" [ngStyle]="{width: canShowFilter? 'auto': '100%'}">
         <appdashboard-delay-slider
             [delayTime]="delayTime"
@@ -10,12 +10,13 @@
         <appdashboard-filter
             [expression]="response._tdJSONCondition"
             [booleanOperators]="booleanOperators"
+            [previewMode]="previewMode"
             (onChangeExpression)="onChangeExpression($event)">
         </appdashboard-filter>
     </div>
 </div>
 
-<div class="text-editor-wrapper">
+<div class="text-editor-wrapper" [class.previewMode]="previewMode">
     
     <div class="text-editor">
 

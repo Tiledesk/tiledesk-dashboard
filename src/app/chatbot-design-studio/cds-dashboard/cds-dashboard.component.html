@@ -47,19 +47,19 @@
                 <cds-intent *ngFor="let intent of listOfIntents;"
                     [id]="intent.intent_id"
                     class="panel-intent tds_input_block tds_draggable" 
-                    [style.top.px]="getIntentPosition(intent.intent_id).y" 
-                    [style.left.px]="getIntentPosition(intent.intent_id).x" 
+                    [style.top.px]="getIntentPosition(intent.id).y" 
+                    [style.left.px]="getIntentPosition(intent.id).x" 
                     [intent]="intent"
+                    (actionSelected)=onActionSelected($event)
+                ></cds-intent>
+                <!-- 
+                    (selectAction)=onSelectAction($event) 
                     [intentsChanged]="intentsChanged"
                     [connectorChanged]="connectorChanged"
-
                     (answerSelected)=onAnswerSelected($event) 
-                    (actionSelected)=onActionSelected($event)
-                    (questionSelected)=onQuestionSelected($event) 
-
+                    (questionSelected)=onQuestionSelected($event)
                     (saveIntent)=onSaveIntent($event)
-                ></cds-intent>
-                <!-- (selectAction)=onSelectAction($event) -->
+                -->
             </div>
 
             <div #floatMenuElement id="floatMenuElement"
@@ -107,8 +107,7 @@
         <cds-panel-action-detail *ngIf="isOpenPanelActionDetail"
             class="cds-generic-panel"
             [isOpenPanel] = "isOpenPanelActionDetail"
-            [intentSelected]="intentSelected" 
-            [listOfActions]="listOfActions"
+            [intentSelected]="intentSelected"
             [project_id]="projectID"
             [elementIntentSelected]="elementIntentSelected"
             (closeAndSavePanelIntentDetail)="onCloseAndSavePanelIntentDetail($event)"

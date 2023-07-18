@@ -7,8 +7,8 @@ $max-height: 230px;
     position: relative;
     width: 100%;
     height: auto;
-    margin: 0;
-    padding: 0 0 0 25px;
+    margin: 27px 0 0 0;
+    padding: 0px 33px;
     display: flex;
     flex-wrap: wrap;
     row-gap: 5px;
@@ -23,14 +23,62 @@ $max-height: 230px;
     }
 }
 
+.previewMode{
+    &.extensions-response{
+        margin: 0;
+        padding: 0 10px 0px 25px;
+    }
+
+    &.text-editor-wrapper{
+        // padding: 0;
+        cds-textarea.text-editable-div{
+            width: calc(100% - 20px);
+            margin: 5px auto;
+        }
+    }
+
+    .response-frame-panel{
+        margin: 0;
+        max-width: 100%;
+        border-color: #647283;
+        margin: 5px auto;
+        max-width: calc(100% - 20px);
+
+        cds-element-from-url::ng-deep {
+            .row-upload{
+                .control-label{
+                    font-size: .7em;
+                    color: #647283;
+                }
+                .btn-save{
+                    font-size: .7em;
+                    padding: 4px;
+                    margin: 0;
+                }
+            }
+
+            .row-dimension{
+                .control-label{
+                    font-size: .8em;
+                    color: #647283;
+                }
+
+                .row-info{
+                    flex-basis: 80px;
+                }
+            }
+        }
+    }
+}
+
 .text-editor-wrapper {
     font-size: $font-size-base;
     position: relative;
     width: 100%;
     height: auto;
     margin: 5px 0 0 0;
-    padding: 0;
-    max-width: 100%;
+    // padding: 0;
+    // max-width: 100%;
     .text-editor {
         position: relative;
         margin: 0;
@@ -118,11 +166,16 @@ $max-height: 230px;
     border: 2px dashed #eeeef1;
     border-radius: 6px;
     display: flex;
+    justify-content: center;
     font-size: 16px;
     padding: 10px; //10px 20px 20px;
     text-align: center;
-    margin: 0;
+    margin-left: 30px;
+    // margin-top: 10px;
+    margin-bottom: 15px;
     position: relative;
+    max-width: calc(100% - 60px);
+    width: auto;
     // width: calc(100% - 30px);
 }
 
@@ -218,8 +271,8 @@ $max-height: 230px;
 /** box-textarea **/
 cds-textarea.text-editable-div ::ng-deep{
     display: block;
-    margin: auto;
-    width: calc(100% - 20px);
+    margin-left: 30px;
+    width: calc(100% - 66px);
     // margin-left: 20px;
     textarea {
         line-height: 20px !important; 

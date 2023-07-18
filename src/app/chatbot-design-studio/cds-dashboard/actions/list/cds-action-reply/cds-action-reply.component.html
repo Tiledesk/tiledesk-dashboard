@@ -12,7 +12,7 @@
 
     </div>
 
-    <div class="box-dw">
+    <div class="box-dw" [class.previewMode]="previewMode">
 
         <div #scrollMe id="scrollMe" 
             class="content draggable-list"
@@ -111,6 +111,7 @@
                             [index] = i
                             [idAction] = "idAction"
                             [response] = message
+                            [previewMode] = "previewMode"
                             (moveUpResponse) = onMoveUpResponse($event)
                             (moveDownResponse) = onMoveDownResponse($event)
                             (openButtonPanel) = onOpenButtonPanel($event)
@@ -142,6 +143,7 @@
                             [index] = i
                             [idAction] = "idAction"
                             [response] = message
+                            [previewMode] = "previewMode"
                             (moveUpResponse) = onMoveUpResponse($event)
                             (moveDownResponse) = onMoveDownResponse($event)
                             (deleteActionReply) = onDeleteActionReply($event)

@@ -6,8 +6,8 @@
     position: relative;
     width: 100%;
     height: auto;
-    margin: 0;
-    padding: 0 0 0 25px;
+    margin: 27px 0px 0px 0px;
+    padding: 0px 33px;
     display: flex;
     flex-wrap: wrap;
     row-gap: 5px;
@@ -20,6 +20,40 @@
         width: auto;
         // padding: 0em 0.75em 0;
     }
+}
+
+.previewMode{
+    &.extensions-response{
+        margin: 0;
+        padding: 0 10px 0px 25px;
+    }
+
+    &.text-editor-wrapper{
+        // padding: 0;
+        cds-textarea.text-editable-div{
+            width: calc(100% - 20px);
+            margin: 0px auto;
+        }
+
+        .control-label{
+            margin: 0px 10px;
+            font-size: 0.8em;
+            color: $color-bck-gray-hex;
+        }
+
+        mat-button-toggle-group{
+            margin: 0px 10px;
+        }
+
+        mat-button-toggle ::ng-deep {
+            span{
+                font-size: 0.7em;
+                line-height: 25px;
+            }
+        }
+    }
+
+
 }
 
 .text-editor-wrapper {
@@ -122,8 +156,9 @@
 
 .url-wrp{
     display: flex;
+    flex-direction: column;
     margin: 5px 0 0 0;
-    align-items: center;
+    align-items: flex-start;
     gap: 5px;
 
     .form-check{
@@ -146,23 +181,26 @@
     font-size: 14px;
     box-sizing: border-box;
     font-weight: 300;
+
+    margin-left: 30px;
+    // margin-top: 10px;
+    // margin-bottom: 10px;
 }
 
 
 /** box-textarea **/
-cds-textarea.text-editable-div#url ::ng-deep{
+cds-textarea.text-editable-div ::ng-deep{
     display: block;
-    margin: auto;
-    width: calc(100% - 20px);
+    margin-left: 30px;
+    width: calc(100% - 66px);
     // margin-left: 20px;
     textarea {
         line-height: 20px !important; 
         width: calc(100% - 20px) !important;
         font-size: 0.9em !important;
 
-        border: 1px solid rgb(118, 118, 118) !important;
         resize: none !important; 
-        padding: 8px 20px !important;
+        padding: 5px 10px 5px !important;
 
         height: 20px !important;
         min-height: 20px !important;
@@ -179,6 +217,7 @@ mat-button-toggle ::ng-deep{
 
 mat-button-toggle-group {
     border: none;
+    margin-left: 30px;
 }
 mat-button-toggle.mat-button-toggle-checked{
     background-color: $icon-color;
