@@ -47,7 +47,7 @@ export class CdsIntentComponent implements OnInit {
   // form: Form;
   // formSize: number;
   // question: any;
-  // answer: string;
+  answer: string; // !!! SI PUO' ELIMINARE
   // questionCount: number;
   intentActionList: Array<any>;
   HAS_SELECTED_TYPE = HAS_SELECTED_TYPE;
