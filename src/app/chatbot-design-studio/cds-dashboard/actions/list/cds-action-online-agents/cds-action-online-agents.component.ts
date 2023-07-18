@@ -27,6 +27,7 @@ export class CdsActionOnlineAgentsComponent implements OnInit {
   isConnectedTrue: boolean = false;
   isConnectedFalse: boolean = false;
   connector: any;
+  listOfActions: Array<{name: string, value: string, icon?:string}>;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -99,6 +100,7 @@ export class CdsActionOnlineAgentsComponent implements OnInit {
     })
     this.trueIntentAttributes = this.action.trueIntentAttributes;
     this.falseIntentAttributes = this.action.falseIntentAttributes;
+    this.listOfActions = this.intentService.getListOfActions()
   }
 
 
