@@ -1,4 +1,4 @@
-<div class="content element">
+<div class="content element" [class.previewMode]="previewMode" >
     
     <div class="filter-row" *ngIf="expression?.conditions.length === 0">
         <div class="add-filter-btn" 
@@ -33,7 +33,7 @@
 
             <!-- OPERATOR [i]-->
             <div *ngIf="i%2 === 1">
-                <cds-select
+                <cds-select *ngIf="!previewMode"
                     class="filter-operator"
                     [items]="booleanOperators"
                     [bindLabelSelect]="'operator'"
@@ -41,11 +41,15 @@
                     [itemSelected]="group?.operator"
                     (onSelected)="onChangeOperator($event, i)">
                 </cds-select>
+
+                <span class="filter-operator-preview" *ngIf="previewMode">
+                    <b>{{group?.operator}}</b>
+                </span>
             </div>
 
         </div>
 
-        <div class="basic-filter-wrp">
+        <div class="basic-filter-wrp" *ngIf="!previewMode">
             <div class="add-filter-button" 
                 [satPopoverAnchor]="addConditionFilter" 
                 (click)="addConditionFilter.toggle()">

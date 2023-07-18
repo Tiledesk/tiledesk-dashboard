@@ -26,7 +26,7 @@ $max-height: 230px;
 .previewMode{
     &.extensions-response{
         margin: 0;
-        padding: 0 0 0 25px;
+        padding: 0 10px 0px 25px;
     }
 
     &.text-editor-wrapper{
@@ -40,6 +40,34 @@ $max-height: 230px;
     .response-frame-panel{
         margin: 0;
         max-width: 100%;
+        border-color: #647283;
+        margin: 5px auto;
+        max-width: calc(100% - 20px);
+
+        cds-element-from-url::ng-deep {
+            .row-upload{
+                .control-label{
+                    font-size: .7em;
+                    color: #647283;
+                }
+                .btn-save{
+                    font-size: .7em;
+                    padding: 4px;
+                    margin: 0;
+                }
+            }
+
+            .row-dimension{
+                .control-label{
+                    font-size: .8em;
+                    color: #647283;
+                }
+
+                .row-info{
+                    flex-basis: 80px;
+                }
+            }
+        }
     }
 }
 

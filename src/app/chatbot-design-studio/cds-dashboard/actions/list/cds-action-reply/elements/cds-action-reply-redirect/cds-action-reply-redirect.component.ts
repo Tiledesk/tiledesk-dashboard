@@ -26,7 +26,6 @@ export class CdsActionReplyRedirectComponent implements OnInit {
   booleanOperators=[ { type: 'AND', operator: 'AND'},{ type: 'OR', operator: 'OR'},]
  
   typeActions = TYPE_ACTION;
-  
 
   metadata: Metadata
   constructor() { }

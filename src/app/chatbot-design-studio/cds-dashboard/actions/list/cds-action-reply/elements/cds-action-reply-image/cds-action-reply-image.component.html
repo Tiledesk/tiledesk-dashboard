@@ -10,6 +10,7 @@
         <appdashboard-filter
             [expression]="response._tdJSONCondition"
             [booleanOperators]="booleanOperators"
+            [previewMode]="previewMode"
             (onChangeExpression)="onChangeExpression($event)">
         </appdashboard-filter>
     </div>
