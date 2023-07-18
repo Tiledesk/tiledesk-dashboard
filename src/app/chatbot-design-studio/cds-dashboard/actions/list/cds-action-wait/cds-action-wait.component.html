@@ -1,13 +1,19 @@
-<!-- <cds-action-description 
-    [actionType]="'WAIT'"
-    [actionSelected]="action">
-</cds-action-description> -->
 
-<div class="cds-action-preview">
+<div *ngIf ="previewMode" class="cds-action-preview" style="position: relative;">
     <cds-action-controls [action]="action"> </cds-action-controls>
     <div class="action-delay-preview"> 
         <em class="delay--icon material-icons">timelapse</em>
         <div class="delay--time">+{{delayTime}}s delay</div>
+    </div>
+
+    <div  class="cds-action-arrow-down" style="position: absolute;
+    text-align: center;
+    width: 100%;
+    bottom: -30px;
+    left: 0px;">
+        <span class="material-icons" style="transform: rotate(90deg);color: #6c6859;">
+            arrow_right_alt
+        </span>
     </div>
 
 </div>
@@ -15,7 +21,7 @@
 
 
 
-<div class="content">
+<div *ngIf ="!previewMode" class="content">
 
     <div class="text-editor-wrapper">
         <div class="field-box">

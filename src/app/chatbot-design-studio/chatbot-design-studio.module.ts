@@ -145,7 +145,8 @@ import { CdsActionChangeDepartmentComponent } from './cds-dashboard/actions/list
 import { CdsActionDetailPanelComponent } from './cds-dashboard/actions/detail/cds-action-detail/cds-panel-action-detail.component';
 import { CdsPanelWidgetComponent } from './cds-dashboard/cds-panel-widget/cds-panel-widget.component';
 import { CdsPanelButtonConfigurationComponent } from './cds-dashboard/cds-panel-button-configuration/cds-panel-button-configuration.component';
-import { CdsActionControlsComponent } from './cds-dashboard/actions/shared/cds-action-controls/cds-action-controls.component';
+import { CdsActionArrowComponent } from './cds-dashboard/actions/shared/cds-action-controls/cds-action-arrow/cds-action-arrow.component';
+import { CdsActionControlsComponent } from './cds-dashboard/actions/shared/cds-action-controls/cds-action-controls/cds-action-controls.component';
 
 
 
@@ -224,6 +225,7 @@ import { CdsActionControlsComponent } from './cds-dashboard/actions/shared/cds-a
     CDSFilterComponent,
     CDSTextareaComponent,
     CdsActionControlsComponent,
+    CdsActionArrowComponent,
     // ------ CDS-ACTIONS: start ------ //
     CdsActionDescriptionComponent,
     CdsActionReplyComponent,

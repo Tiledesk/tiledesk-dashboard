@@ -10,7 +10,8 @@ export class CdsActionWaitComponent implements OnInit, OnChanges {
 
   @Input() action: ActionWait;
   @Output() updateAndSaveAction = new EventEmitter();
-  
+  @Input() previewMode: boolean = true;
+  @Input() last: any;
   delayTime: number;
 
   constructor() { }
@@ -20,7 +21,9 @@ export class CdsActionWaitComponent implements OnInit, OnChanges {
   ngOnChanges() {
     // console.log('[ACTION-WAIT] wait this.actionwait.millis ', this.action.millis)
     const waitInSec = this.action.millis / 1000
-    this.delayTime = waitInSec
+    this.delayTime = waitInSec;
+    console.log('[ACTION-WAIT] is last ', this.last)
+
   }
 
   formatLabel(value: number) {

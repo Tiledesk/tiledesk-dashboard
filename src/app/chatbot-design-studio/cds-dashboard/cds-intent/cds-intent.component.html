@@ -20,7 +20,7 @@
     <div id="drop-actions" class="drag-actions target-container" [cdkDropListData]="intentActionList" cdkDropList
         (cdkDropListDropped)="onDropAction($event)">
          <!-- [id]="'action_'+i" -->
-        <div *ngFor="let action of intentActionList; let i = index"
+        <div *ngFor="let action of intentActionList; let i = index, let last = last;"
             cdkDrag
             (cdkDragStarted)="onDragStarted($event, intent.intent_id)"
             (cdkDragReleased)="onDragEnded($event)"
@@ -83,6 +83,7 @@
                     class="panel-response" 
                     [intentSelected]="intent"
                     [action]="action" 
+                    [last]="last"
                     [previewMode]="true" 
                     (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-wait>
@@ -103,6 +104,8 @@
                     [action]="action"
                     (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-online-agents>
+
+               
 
             </div>
 
