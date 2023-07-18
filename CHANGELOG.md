@@ -1,5 +1,10 @@
 # tiledesk-dashboard
 
+### 2.4.52
+- Deploys in production
+- Adds the redirect type in the "Reply" action
+- Improvements and bug fixing
+
 ### 2.4.52-rc1
 - Deploys in production
 - Adds the actions "WhatsApp Static" and "WhatsApp by attribute"
