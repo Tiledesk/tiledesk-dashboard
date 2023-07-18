@@ -10,8 +10,8 @@
             </div>
         </div> -->
         <appdashboard-panel-intent-header class="pic-title-text tds_draggable"
-            [intentSelected]="intent" 
-            [listOfIntents]="listOfIntents">
+            [intentSelected]="intent">
+            <!-- [listOfIntents]="listOfIntents"> -->
         </appdashboard-panel-intent-header>
 
     </div>
@@ -28,6 +28,7 @@
             class="box-action"
             tabindex="0"
             [ngClass]="{'cds-action-active': intentService.actionSelectedID === action._tdActionId}"
+            (keydown)="onKeydown($event)"
             (click)="onActionSelected(action, i, action._tdActionId)">
             <!-- (keydown)="onDeleteAction($event)" -->
             <!-- <div cdkDragHandle class="header-action"> -->

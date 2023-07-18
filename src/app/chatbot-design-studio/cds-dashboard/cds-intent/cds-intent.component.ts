@@ -33,27 +33,22 @@ export enum HAS_SELECTED_TYPE {
   styleUrls: ['./cds-intent.component.scss']
 })
 
+
 export class CdsIntentComponent implements OnInit {
   @Input() intent: Intent;
 
+  // @Output() questionSelected = new EventEmitter(); // !!! SI PUO' ELIMINARE
+  // @Output() answerSelected = new EventEmitter(); // !!! SI PUO' ELIMINARE
+  @Output() actionSelected = new EventEmitter(); // !!! SI PUO' ELIMINARE
+
   // intentElement: any;
+  listOfIntents: Array<Intent> // !!! SI PUO' ELIMINARE
   // idSelectedAction: string;
-  // arrayActionsForDrop = [];
-
-  @Output() questionSelected = new EventEmitter();
-  @Output() answerSelected = new EventEmitter();
-  @Output() actionSelected = new EventEmitter();
-
-  // connector: any;
-  intentElement: any;
-  listOfIntents: Array<Intent>
-  idSelectedAction: string;
-
-  form: Form;
-  formSize: number;
-  question: any;
-  answer: string;
-  questionCount: number;
+  // form: Form;
+  // formSize: number;
+  // question: any;
+  // answer: string;
+  // questionCount: number;
   intentActionList: Array<any>;
   HAS_SELECTED_TYPE = HAS_SELECTED_TYPE;
   TYPE_ACTION = TYPE_ACTION;
@@ -79,44 +74,20 @@ export class CdsIntentComponent implements OnInit {
 
   ngOnInit(): void { 
     // console.log('CdsPanelIntentComponent ngAfterViewInit-->');
+    this.setIntentSelected();
   }
+
 
   ngAfterViewInit(){
-    this.setIntentSelected();
-    this.listOfIntents = this.intentService.intents.value
-    console.log('listtttttttt', this.listOfIntents)
+    
+    this.listOfIntents = this.intentService.intents.value;
   }
 
 
-  ngOnDestroy() {
-  }
-
-
+  // SI PUO' ELIMINARE !
   ngOnChanges(changes: SimpleChanges){
-    console.log('listtttttttt ngOnChanges', this.listOfIntents)
-    this.listOfIntents = this.intentService.intents.value
-    // if (changes.connectorChanged) {
-    //   // this.connector = 
-    //   console.log('CdsPanelIntentComponent ngOnChanges-->', this.connector);
-    // }
-   
-    // try {
-    //   const array = this.connector.fromId.split("/");
-    //   // const idIntent= array[0];
-    //   const idAction= array[1];
-    //   const posAction = this.intent.actions.findIndex(obj => obj._tdActionId === idAction);
-    //   if(posAction != -1){
-    //     this.connector[posAction] = this.connector;
-    //     //this.listOfIntents[posIntent] = this.updatedConnector;
-    //     // recupero action con id = idAction
-    //     // filteredAction = filteredIntent.actions.find(obj => obj._tdActionId === idAction);
-    //   }
-    //   // if(filteredAction){
-    //   //   filteredIntent.connector = this.updatedConnector;
-    //   // }
-    // } catch (error) {
-    //   console.error('error: ', error);
-    // }
+    // console.log('listtttttttt ngOnChanges', this.listOfIntents)
+    this.listOfIntents = this.intentService.intents.value;
   }
 
   /** CUSTOM FUNCTIONS  */
@@ -125,19 +96,20 @@ export class CdsIntentComponent implements OnInit {
     try {
       if (this.intent) {
         this.patchAllActionsId();
+        this.patchAttributesPosition();
         this.intentActionList = this.intent.actions;
-        this.form = this.intent.form;
-        this.answer = this.intent.answer;
-        if (this.intent.question) {
-          const question_segment = this.intent.question.split(/\r?\n/).filter(element => element);
-          this.questionCount = question_segment.length;
-          this.question = this.intent.question;
-        }
-        if (this.form && this.form !== undefined) {
-          this.formSize = Object.keys(this.form).length;
-        } else {
-          this.formSize = 0;
-        }
+        // this.form = this.intent.form;
+        // this.answer = this.intent.answer;
+        // if (this.intent.question) {
+        //   const question_segment = this.intent.question.split(/\r?\n/).filter(element => element);
+        //   this.questionCount = question_segment.length;
+        //   this.question = this.intent.question;
+        // }
+        // if (this.form && this.form !== undefined) {
+        //   this.formSize = Object.keys(this.form).length;
+        // } else {
+        //   this.formSize = 0;
+        // }
       }
     } catch (error) {
       this.logger.error("error: ", error);
@@ -158,6 +130,20 @@ export class CdsIntentComponent implements OnInit {
       });
     }
   }
+
+  /**
+   * patchAttributesPosition
+   * retrocompatibility patch.
+   */
+  private patchAttributesPosition(){
+    if(!this.intent.attributes || !this.intent.attributes.position){
+      this.intent['attributes'] = {};
+    }
+    if(!this.intent.attributes.position){
+      this.intent.attributes['position'] = {'x': 0, 'y':0};
+    }
+  }
+
 
   /** getActionParams
    * Get action parameters from a map to create the header (title, icon) 
@@ -190,60 +176,41 @@ export class CdsIntentComponent implements OnInit {
     }
   }
 
-
-  onSelectAnswer(elementSelected) {
-    this.elementTypeSelected = elementSelected;
-    // this.isIntentElementSelected = true;
-    this.answerSelected.emit(this.answer);
-  }
-
-  onSelectQuestion(elementSelected) {
-    console.log('onSelectQuestion-->', elementSelected, this.intent.question)
-    this.elementTypeSelected = elementSelected;
-    // this.isIntentElementSelected = true;
-    this.questionSelected.emit(this.intent.question);
-    
-    // let elementsWithActiveClass = Array.from(document.getElementsByClassName('cds-action-active'));
-    // this.logger.log('[PANEL INTENT] onActionSelected elementsWithActiveClass', elementsWithActiveClass)
-    // if (elementsWithActiveClass.length != 0) {
-    //   elementsWithActiveClass.forEach((el) => {
-    //     el.classList.remove('cds-action-active');
-    //   })
-    // }
-  }
-
-  onActionSelected(action, index: number, idAction) {
-    console.log('onActionSelected action: ', action);
-    // if(this.isDeleting){return;}
-    this.elementTypeSelected = idAction;
-    // this.isIntentElementSelected = true;
-   
-    // this.logger.log('[PANEL INTENT] onActionSelected action: ', action)
-    // this.logger.log('[PANEL INTENT] onActionSelected index', index)
-
-    // let elementsWithActiveClass = Array.from(document.getElementsByClassName('cds-action-active'));
-    // this.logger.log('[PANEL INTENT] onActionSelected elementsWithActiveClass', elementsWithActiveClass)
-    // if (elementsWithActiveClass.length != 0) {
-    //   elementsWithActiveClass.forEach((el) => {
-    //     el.classList.remove('cds-action-active');
-    //   })
-    // }
-
-    // const actionElement = <HTMLElement>document.querySelector(`#action_${index}`);
-    // this.logger.log('[PANEL INTENT] onActionSelected actionElement', actionElement)
-    // actionElement.classList.add("cds-action-active");
-
-    // console.log('NN CAPISCO PERCHè 2 emit verifica !!! action: ', action);
-    // this.actionSelected.emit(action);
-    // this.logger.log('[PANEL INTENT] onActionSelected ', action)
-    this.actionSelected.emit({ action: action, index: index, maxLength: this.intentActionList.length });
-
-    this.intentService.selectAction(this.intent.intent_id, idAction);
-  }
   /*********************************************/
 
 
   /** EVENTS  */
+
+  onActionSelected(action, index: number, idAction) {
+    console.log('onActionSelected action: ', action);
+    this.elementTypeSelected = idAction;
+    this.actionSelected.emit({ action: action, index: index, maxLength: this.intentActionList.length });
+    this.intentService.selectAction(this.intent.intent_id, idAction);
+  }
+
+  // onSelectAnswer(elementSelected) {
+  //   this.elementTypeSelected = elementSelected;
+  //   // this.isIntentElementSelected = true;
+  //   this.answerSelected.emit(this.answer);
+  // }
+
+  // onSelectQuestion(elementSelected) {
+  //   console.log('onSelectQuestion-->', elementSelected, this.intent.question)
+  //   this.elementTypeSelected = elementSelected;
+  //   // this.isIntentElementSelected = true;
+  //   this.questionSelected.emit(this.intent.question);
+  // }
+
+  /**
+   * onKeydown
+   * delete selected action by keydown backspace
+   * */
+  onKeydown(event){
+    console.log('onKeydown: ', event);
+    if (event.key === 'Backspace' || event.key === 'Escape' || event.key === 'Canc') {
+      this.intentService.deleteSelectedAction();
+    }
+  }
 
   /** !!! IMPORTANT 
    * when the drag of an action starts, I save the starting intent. 
@@ -293,6 +260,7 @@ export class CdsIntentComponent implements OnInit {
     const fromEle = document.getElementById(this.intent.intent_id);
     this.connectorService.movedConnector(fromEle);
   }  
+
   /**  onUpdateAndSaveAction: 
    * function called by all actions in @output whenever they are modified!
    * 1 - update connectors

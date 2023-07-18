@@ -57,18 +57,25 @@ export class IntentService {
     private faqService: FaqService,
     private faqKbService: FaqKbService,
     private connectorService: ConnectorService
-  ) { 
-
-  }
+  ) { }
 
 
+  /**
+   * onChangedConnector
+   * funzione chiamata sul 'connector-created', 'connector-deleted'
+   * per notificare alle actions che i connettori sono cambiati
+   */
   public onChangedConnector(connector){
     console.log('onChangedConnector:: ', connector);
     this.changedConnector.next(connector);
   }
 
 
+  /** 
+   * restituisce tutti gli intents
+   */
   getIntents() {
+    console.log('getIntents: ',  this.intents);
     return this.intents.asObservable();
   }
 
@@ -94,7 +101,9 @@ export class IntentService {
   // }
 
 
-  /** imposta quello che è l'intent di partenza quando inizia un drag su una action dell'intent */
+  /** setPreviousIntentId
+   * imposta quello che è l'intent di partenza quando inizia un drag su una action dell'intent 
+   * */
   setPreviousIntentId(intentId){
     this.previousIntentId = intentId;
   }
@@ -134,16 +143,11 @@ export class IntentService {
 
   setIntentPosition(intentId:string, newPos: any){
     console.log('setIntentPosition:: ',intentId, newPos);
-    // if(intentId === NEW_POSITION_ID){
-    //   this.newPosition = newPos;
-    //   return;
-    // }
     let listOfIntents = this.intents.getValue();
     let intentToUpdate = listOfIntents.find((intent) => intent.id === intentId);
-    
-    if(!intentToUpdate)return;
-    if(!intentToUpdate.attributes)intentToUpdate.attributes = {};
-    intentToUpdate.attributes['position'] = {'x': newPos.x, 'y': newPos.y};
+    if(!intentToUpdate)return; 
+    // if(!intentToUpdate.attributes){intentToUpdate.attributes = {};
+    intentToUpdate['attributes']['position'] = {'x': newPos.x, 'y': newPos.y};
     this.patchAttributes(intentId, intentToUpdate.attributes);
   }
   // END DASHBOARD FUNCTIONS //
@@ -160,7 +164,6 @@ export class IntentService {
         if (faqs) {
           // console.log('getAllIntents: ', faqs);
           let arrayOfIntents = JSON.parse(JSON.stringify(faqs));
-          // this.updateIntents(arrayOfIntents);
           this.intents.next(arrayOfIntents);
           resolve(true);
         } 

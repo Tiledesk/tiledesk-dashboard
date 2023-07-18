@@ -50,18 +50,16 @@
                     [style.top.px]="getIntentPosition(intent.id).y" 
                     [style.left.px]="getIntentPosition(intent.id).x" 
                     [intent]="intent"
-                    [intentsChanged]="intentsChanged"
-                    [connectorChanged]="connectorChanged"
-
-                    (answerSelected)=onAnswerSelected($event) 
                     (actionSelected)=onActionSelected($event)
-                    (questionSelected)=onQuestionSelected($event) 
-
-                    (saveIntent)=onSaveIntent($event)
                 ></cds-intent>
                 <!-- 
-                   
-                    (selectAction)=onSelectAction($event) -->
+                    (selectAction)=onSelectAction($event) 
+                    [intentsChanged]="intentsChanged"
+                    [connectorChanged]="connectorChanged"
+                    (answerSelected)=onAnswerSelected($event) 
+                    (questionSelected)=onQuestionSelected($event)
+                    (saveIntent)=onSaveIntent($event)
+                -->
             </div>
 
             <div #floatMenuElement id="floatMenuElement"
