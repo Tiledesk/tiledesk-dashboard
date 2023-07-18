@@ -26,7 +26,7 @@ import { Intent, Button, Action, Form, ActionReply, Command, Message, ActionAssi
 
 
 // UTILS //
-import { TYPE_ACTION, TYPE_COMMAND, TYPE_INTENT_ELEMENT, EXTERNAL_URL, TYPE_MESSAGE, TIME_WAIT_DEFAULT, variableList, convertJsonToArray } from 'app/chatbot-design-studio/utils';
+import { NEW_POSITION_ID, TYPE_ACTION, TYPE_COMMAND, TYPE_INTENT_ELEMENT, EXTERNAL_URL, TYPE_MESSAGE, TIME_WAIT_DEFAULT, variableList, convertJsonToArray } from 'app/chatbot-design-studio/utils';
 const swal = require('sweetalert');
 
 // COMPONENTS //
@@ -119,7 +119,6 @@ export class CdsDashboardComponent implements OnInit {
     private auth: AuthService,
     public location: Location,
     private logger: LoggerService,
-    // private dragDropService:DragDropService,
     private intentService: IntentService,
     private controllerService: ControllerService,
     private connectorService: ConnectorService,
@@ -130,23 +129,18 @@ export class CdsDashboardComponent implements OnInit {
   ) { 
 
     /** SUBSCRIBE TO THE INTENT LIST */
+    /**
+     * Creo una sottoscrizione all'array di INTENT per averlo sempre aggiornato
+     * ad ogni modifica (aggiunta eliminazione di un intent)
+     */
     this.subscriptionListOfIntents = this.intentService.getIntents().subscribe(intents => {
-      /* 
-      * variabile booleana aggiunta per far scattare l'onchange nei componenti importati dalla dashboard
-      * ngOnChanges funziona bene solo sugli @import degli elementi primitivi!!!  
-      */
-
-        this.updatePanelIntentList = !this.updatePanelIntentList;
-        this.listOfIntents = intents;
-        this.intentService.setListOfActions(this.listOfIntents);
-        this.listOfActions = this.intentService.getListOfActions();
-        /** SET DRAG STAGE AND CREATE CONNECTORS */
-        setTimeout(() => {
-          this.setDragAndListnerEventToElements();
-          this.connectorService.createConnectors(this.listOfIntents);
-        }, 0);
-      
+      this.listOfIntents = intents;
+      this.updatePanelIntentList = !this.updatePanelIntentList;
+      /* variabile booleana aggiunta per far scattare l'onchange nei componenti importati dalla dashboard
+      * ngOnChanges funziona bene solo sugli @import degli elementi primitivi!!!  */
+      this.refreshIntents();
     });
+
 
     /** SUBSCRIBE TO THE STATE BUTTON PANEL */
     this.controllerService.isOpenButtonPanel$.subscribe((button: Button) => {
@@ -169,7 +163,6 @@ export class CdsDashboardComponent implements OnInit {
     });
     
   } 
-
 
 
   // SYSTEM FUNCTIONS //
@@ -292,7 +285,7 @@ export class CdsDashboardComponent implements OnInit {
     document.addEventListener('keydown', function(event) {
       if (event.key === 'Backspace' || event.key === 'Escape' || event.key === 'Canc' && that.isOpenFloatMenu) {
         that.removeConnectorDraftAndCloseFloatMenu();
-        that.intentService.deleteSelectedAction();
+        // that.intentService.deleteSelectedAction();
       }
     });
   }
@@ -303,28 +296,28 @@ export class CdsDashboardComponent implements OnInit {
 
 
   
+  /**
+   * execute Async Functions In Sequence
+   * Le funzioni async sono gestite in maniera sincrona ed eseguite in coda
+   * da aggiungere un loader durante il processo e se tutte vanno a buon fine 
+   * possiamo visualizzare lo stage completo
+   */
   async executeAsyncFunctionsInSequence() {
     console.log('executeAsyncFunctionsInSequence -------------> ');
-    // Le funzioni asincrone sono state eseguite in coda
     try {
-      const GetTranslations = await this.getTranslations();
-      console.log('Risultato 1:', GetTranslations);
-      const GetUrlParams = await this.getUrlParams();
-      console.log('Risultato 2:', GetUrlParams, this.id_faq_kb);
-      if (this.id_faq_kb) {
-        const GetBotById = await this.getBotById(this.id_faq_kb);
-        console.log('Risultato 3:', GetBotById, this.selectedChatbot);
-        if(this.selectedChatbot){
-          this.configChatbotSelected();
-        }
-      }
+      const getTranslations = await this.getTranslations();
+      console.log('Risultato 1:', getTranslations);
+      const getUrlParams = await this.getUrlParams();
+      console.log('Risultato 2:', getUrlParams, this.id_faq_kb);
+      const getBotById = await this.getBotById(this.id_faq_kb);
+      console.log('Risultato 3:', getBotById, this.selectedChatbot);
       const getCurrentProject = await this.getCurrentProject();
       console.log('Risultato 4:', getCurrentProject);
       const getBrowserVersion = await this.getBrowserVersion();
       console.log('Risultato 5:', getBrowserVersion);
       const getAllIntents = await this.intentService.getAllIntents(this.id_faq_kb);
-      console.log('Risultato 6:', getAllIntents );
-      if(getAllIntents){
+      console.log('Risultato 6:', getAllIntents);
+      if(getTranslations && getUrlParams && getBotById && getCurrentProject && getBrowserVersion && getAllIntents){
         // !!! il valore di listOfIntents è bindato nel costructor con subscriptionListOfIntents !!! // 
       }
     } catch (error) {
@@ -334,9 +327,27 @@ export class CdsDashboardComponent implements OnInit {
 
 
 
+
+
   /** ************************* **/
   /** START CUSTOM FUNCTIONS 
   /** ************************* **/
+
+   /** refreshIntents
+   * update list of intents, 
+   * update list of actions, 
+   * set drag and listner on intents, 
+   * create connectors
+   */
+   private refreshIntents(){
+    this.intentService.setListOfActions(this.listOfIntents);
+    this.listOfActions = this.intentService.getListOfActions();
+    /** SET DRAG STAGE AND CREATE CONNECTORS */
+    setTimeout(() => {
+      this.setDragAndListnerEventToElements();
+      this.connectorService.createConnectors(this.listOfIntents);
+    }, 0);
+  }
 
   /** */
   private removeConnectorDraftAndCloseFloatMenu(){
@@ -344,15 +355,6 @@ export class CdsDashboardComponent implements OnInit {
     this.isOpenFloatMenu = false;
   }
 
-  /** configChatbotSelected */
-  /** recupero le posizioni degli intent sullo stage */
-  private configChatbotSelected(){
-    let attributes = {}
-    if(this.selectedChatbot.attributes){
-      attributes = this.selectedChatbot.attributes;
-    }
-    this.intentService.setDashboardAttributes(this.id_faq_kb, attributes);
-  }
 
   /** GET TRANSLATIONS */
   private async getTranslations(): Promise<boolean> { 
@@ -558,11 +560,11 @@ export class CdsDashboardComponent implements OnInit {
   onMouseUpIntent(intent:any, element:any){
     console.log("onMouseUpIntent: ", intent, " element: ",element);
     let newPos = {'x':element.offsetLeft, 'y':element.offsetTop};
-    let pos = this.intentService.getIntentPosition(intent.intent_id);
+    let pos = intent.attributes.position; // this.intentService.getIntentPosition(intent.id);
     if(newPos.x != pos.x || newPos.y != pos.y){
       element.style.zIndex = '1';
       // console.log("setIntentPosition x:", newPos.x, " y: ",newPos.y);
-      this.intentService.setIntentPosition(intent.intent_id, newPos);
+      this.intentService.setIntentPosition(intent.id, newPos);
       // this.intentService.setDashboardAttributes(this.dashboardAttributes);
     }
     // this.isOpenPanelDetail = true;
@@ -574,8 +576,8 @@ export class CdsDashboardComponent implements OnInit {
 
 
   /** getIntentPosition: call from html */
-  getIntentPosition(id: string){
-    return this.intentService.getIntentPosition(id);
+  getIntentPosition(intentId: string){
+    return this.intentService.getIntentPosition(intentId);
   }
 
 
@@ -586,14 +588,15 @@ export class CdsDashboardComponent implements OnInit {
     console.log('createNewIntentWithNewAction: OK ');
     const action = this.intentService.createNewAction(actionType);
     this.intentSelected = this.intentService.createNewIntent(this.id_faq_kb, action);
-    this.intentSelected.intent_id = 'new';
-    this.intentService.setIntentPosition(this.intentSelected.intent_id, pos);
+    this.intentSelected.id = NEW_POSITION_ID;
+    this.intentSelected.attributes.position = pos;
+    // this.intentService.setIntentPosition(NEW_POSITION_ID, pos);
     const newIntent = await this.intentService.saveNewIntent(this.id_faq_kb, this.intentSelected);
     this.intentSelected.id = newIntent.id;
     console.log('creatIntent: OK ', newIntent, pos);
     if(newIntent){
       // !!! il valore di listOfIntents è bindato nel costructor con subscriptionListOfIntents !!! //
-      this.intentService.setIntentPosition(newIntent.intent_id, pos);
+      // this.intentService.setIntentPosition(newIntent.id, pos);
       this.setDragAndListnerEvent(this.intentSelected);
     }
     return newIntent;
@@ -603,15 +606,16 @@ export class CdsDashboardComponent implements OnInit {
     // move action into the stage
     this.CREATE_VIEW = true;
     this.intentSelected = this.intentService.createNewIntent(this.id_faq_kb, action);
-    this.intentSelected.intent_id = 'new';
-    this.intentService.setIntentPosition(this.intentSelected.intent_id, pos);
+    this.intentSelected.id = NEW_POSITION_ID;
+    this.intentSelected.attributes.position = pos;
+    // this.intentService.setIntentPosition(NEW_POSITION_ID, pos);
     const newIntent = await this.intentService.saveNewIntent(this.id_faq_kb, this.intentSelected);
     if(newIntent){
       this.intentSelected.id = newIntent.id;
       this.intentSelected.intent_id = newIntent.intent_id;
       this.intentService.moveActionFromIntentToStage(event, action);
       // !!! il valore di listOfIntents è bindato nel costructor con subscriptionListOfIntents !!! //
-      this.intentService.setIntentPosition(newIntent.intent_id, pos);
+      // this.intentService.setIntentPosition(newIntent.id, pos);
       this.setDragAndListnerEvent(this.intentSelected);
       
     }
