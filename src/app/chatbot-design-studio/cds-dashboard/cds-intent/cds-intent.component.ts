@@ -236,9 +236,8 @@ export class CdsIntentComponent implements OnInit {
     // console.log('NN CAPISCO PERCHè 2 emit verifica !!! action: ', action);
     // this.actionSelected.emit(action);
     // this.logger.log('[PANEL INTENT] onActionSelected ', action)
-    this.actionSelected.emit({ action: action, index: index, maxLength: this.intentActionList.length });
-
     this.intentService.selectAction(this.intent.intent_id, idAction);
+    this.actionSelected.emit({ action: action, index: index, maxLength: this.intentActionList.length });
   }
   /*********************************************/
 

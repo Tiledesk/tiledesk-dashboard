@@ -870,6 +870,7 @@ export class CdsDashboardComponent implements OnInit {
     this.elementIntentSelected['intent_display_name'] = event.intent_display_name
     this.isIntentElementSelected = true;
     this.logger.log('[CDS DSBRD] onActionSelected from PANEL INTENT - this.elementIntentSelected ', this.elementIntentSelected)
+    this.intentSelected = this.listOfIntents.find(el => el.intent_id === this.intentService.intentSelectedID)
     this.controllerService.openActionDetailPanel(this.elementIntentSelected['element'])
   }
 
