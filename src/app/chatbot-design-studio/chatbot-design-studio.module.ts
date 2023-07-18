@@ -147,6 +147,7 @@ import { CdsPanelWidgetComponent } from './cds-dashboard/cds-panel-widget/cds-pa
 import { CdsPanelButtonConfigurationComponent } from './cds-dashboard/cds-panel-button-configuration/cds-panel-button-configuration.component';
 import { CdsActionArrowComponent } from './cds-dashboard/actions/shared/cds-action-controls/cds-action-arrow/cds-action-arrow.component';
 import { CdsActionControlsComponent } from './cds-dashboard/actions/shared/cds-action-controls/cds-action-controls/cds-action-controls.component';
+// import { CdsActionAddActionComponent } from './cds-dashboard/actions/shared/cds-action-controls/cds-action-add-action/cds-action-add-action.component';
 
 
 
@@ -247,6 +248,7 @@ import { CdsActionControlsComponent } from './cds-dashboard/actions/shared/cds-a
     CDSDelaySliderComponent,
     CDSImageUploadComponent,
     CDSElementFromUrlComponent,
+   // CdsActionAddActionComponent,
     // action REPLY elements: end //
    
    

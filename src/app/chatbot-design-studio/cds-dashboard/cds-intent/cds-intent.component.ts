@@ -299,7 +299,7 @@ export class CdsIntentComponent implements OnInit {
    * 2 - update intent
    * */
   onUpdateAndSaveAction() {
-    console.log('onUpdateAndSaveAction:::: ' , this.intent, this.intent.actions);
+    console.log('[CDS-INTENT] onUpdateAndSaveAction:::: ' , this.intent, this.intent.actions);
     const fromEle = document.getElementById(this.intent.intent_id);
     this.connectorService.movedConnector(fromEle);
     this.updateIntent();

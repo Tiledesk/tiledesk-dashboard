@@ -1,9 +1,7 @@
 <!--  -->
-<div *ngIf="previewMode" class="cds-action-preview" style="position: relative;">
-
+<div *ngIf="previewMode" class="cds-action-preview">
 
     <cds-action-controls [action]="action"> </cds-action-controls>
-
 
     <div class="action-row">
         <div class="action-row-left">
@@ -47,11 +45,14 @@
         </div>
     </div>
 
+    <cds-action-arrow *ngIf="!last"></cds-action-arrow>
+
+    
 </div>
 
 
 <!--  -->
-<div *ngIf ="!previewMode" class="content-panel-intent-detail">
+<div *ngIf ="!previewMode" class="content-panel-intent-detail email-action-detail">
 
     <div class="text-editor-wrapper">
         <div class="text-editor">

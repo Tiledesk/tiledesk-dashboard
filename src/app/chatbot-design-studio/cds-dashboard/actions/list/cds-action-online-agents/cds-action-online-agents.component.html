@@ -1,8 +1,7 @@
-<div *ngIf="previewMode" class="cds-action-content">
+<div *ngIf="previewMode" class="cds-action-content cds-action-preview">
     
-    <!-- <cds-action-description
-        [elementType]="action._tdActionType">
-    </cds-action-description> -->
+    <cds-action-controls [action]="action"> </cds-action-controls>
+
     <div class="previewContent">
         <label class="title-label">if <b style="color: green">TRUE</b> go to:</label>
         <cds-connector class="connector-true"
@@ -20,6 +19,7 @@
         </cds-connector>
     </div>
     
+    <cds-action-arrow *ngIf="!last"></cds-action-arrow>
 
 </div>
 

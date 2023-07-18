@@ -13,7 +13,8 @@ export class CdsActionChangeDepartmentComponent implements OnInit {
 
   @Input() action: ActionChangeDepartment;
   @Output() updateAndSaveAction = new EventEmitter();
-
+  @Input() last: boolean;
+  @Input() previewMode: boolean = true;
   deps_name_list: string[] = [];
   dep_selected: Department;
 

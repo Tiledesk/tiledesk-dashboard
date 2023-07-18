@@ -12,6 +12,7 @@ export class CdsActionAgentHandoffComponent implements OnInit {
   @Input() action: ActionAgent;
   @Output() updateAndSaveAction = new EventEmitter();
   @Input() previewMode: boolean = true;
+  @Input() last: boolean;
   actions = ACTIONS_LIST
 
   constructor() { }

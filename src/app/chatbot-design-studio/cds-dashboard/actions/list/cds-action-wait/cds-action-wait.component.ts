@@ -11,7 +11,7 @@ export class CdsActionWaitComponent implements OnInit, OnChanges {
   @Input() action: ActionWait;
   @Output() updateAndSaveAction = new EventEmitter();
   @Input() previewMode: boolean = true;
-  @Input() last: any;
+  @Input() last: boolean;
   delayTime: number;
 
   constructor() { }

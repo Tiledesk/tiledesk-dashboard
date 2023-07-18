@@ -48,24 +48,29 @@
             
             <div cdkDragDisabled class="body-action" [ngSwitch]="action._tdActionType">
 
-                <cds-action-intent  *ngSwitchCase="TYPE_ACTION.INTENT"
-                    class="panel-response"
-                    [intentSelected]="intent"
-                    [action]="action" 
-                    (updateAndSaveAction)="onUpdateAndSaveAction($event)">
-                </cds-action-intent>
-
                 <cds-action-reply *ngSwitchCase="TYPE_ACTION.REPLY" 
                     class="panel-response" 
                     [intentSelected]="intent"
+                    [last]="last"
+                    [previewMode]="true"
                     [connector]="connector" 
                     [action]="action" 
                     (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-reply>
 
+                <cds-action-intent  *ngSwitchCase="TYPE_ACTION.INTENT"
+                    class="panel-response"
+                    [intentSelected]="intent"
+                    [last]="last"
+                    [previewMode]="true"
+                    [action]="action" 
+                    (updateAndSaveAction)="onUpdateAndSaveAction($event)">
+                </cds-action-intent>
+
                 <cds-action-email *ngSwitchCase="TYPE_ACTION.EMAIL" 
                     class="panel-response" 
                     [intentSelected]="intent"
+                    [last]="last"
                     [previewMode]="true" 
                     [action]="action" 
                     (updateAndSaveAction)="onUpdateAndSaveAction($event)">
@@ -74,6 +79,7 @@
                 <cds-action-agent *ngSwitchCase="TYPE_ACTION.AGENT" 
                     class="panel-response" 
                     [intentSelected]="intent"
+                    [last]="last"
                     [previewMode]="true" 
                     [action]="action" 
                     (updateAndSaveAction)="onUpdateAndSaveAction($event)">
@@ -92,6 +98,7 @@
                     class="panel-response"
                     [intentSelected]="intent" 
                     [action]="action" 
+                    [last]="last"
                     [previewMode]="true"
                     (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-change-department>
@@ -102,6 +109,8 @@
                     [connectorChanged]="connectorChanged"
                     [listOfActions] = "listOfActions"    
                     [action]="action"
+                    [last]="last"
+                    [previewMode]="true"
                     (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-online-agents>
 

@@ -15,6 +15,7 @@ export class CdsActionOnlineAgentsComponent implements OnInit {
   @Input() intentSelected: Intent;
   @Input() action: ActionOnlineAgent;
   @Input() previewMode: boolean = true;
+  @Input() last: boolean;
   @Output() updateAndSaveAction = new EventEmitter();
   
   actionOnlineAgentsFormGroup: FormGroup

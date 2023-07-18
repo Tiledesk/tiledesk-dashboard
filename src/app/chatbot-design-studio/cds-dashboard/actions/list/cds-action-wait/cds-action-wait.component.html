@@ -1,20 +1,13 @@
 
-<div *ngIf ="previewMode" class="cds-action-preview" style="position: relative;">
+<div *ngIf ="previewMode" class="cds-action-preview">
     <cds-action-controls [action]="action"> </cds-action-controls>
+   
     <div class="action-delay-preview"> 
         <em class="delay--icon material-icons">timelapse</em>
         <div class="delay--time">+{{delayTime}}s delay</div>
     </div>
 
-    <div  class="cds-action-arrow-down" style="position: absolute;
-    text-align: center;
-    width: 100%;
-    bottom: -30px;
-    left: 0px;">
-        <span class="material-icons" style="transform: rotate(90deg);color: #6c6859;">
-            arrow_right_alt
-        </span>
-    </div>
+    <cds-action-arrow *ngIf="!last"></cds-action-arrow>
 
 </div>
 

@@ -1,5 +1,13 @@
+<div *ngIf="previewMode" class="cds-action-preview">
+
+    <cds-action-controls [action]="action"> </cds-action-controls>
+
+    <cds-action-arrow *ngIf="!last"></cds-action-arrow>
+</div>
+
 <div class="cds-action-content">
-    
+    <cds-action-controls [action]="action"> </cds-action-controls>
+
     <!-- <cds-action-description
         [elementType]="action._tdActionType">
     </cds-action-description> -->

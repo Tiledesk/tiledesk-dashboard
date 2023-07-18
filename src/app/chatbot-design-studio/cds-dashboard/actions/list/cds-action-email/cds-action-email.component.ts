@@ -14,6 +14,7 @@ export class CdsActionEmailComponent implements OnInit, OnChanges {
   @Input() action: ActionEmail;
   @Input() previewMode: boolean = true;
   @Output() updateAndSaveAction = new EventEmitter();
+  @Input() last: boolean;
   email_error: boolean = false;
   actionTo: string = ''
   actionSubject: string = ''
@@ -36,19 +37,20 @@ export class CdsActionEmailComponent implements OnInit, OnChanges {
     this.actionBody = this.action.text
   }
 
+  ngOnChanges() {
+    this.logger.log("[CDS-ACTION-EMAIL] ngOnChanges: this.action", this.action)
+  }
+
 
   onEditableDivTextChange($event: string, property: string) {
 
-    this.logger.log("[CDS-ACTION-EMAIL] onEditableDivTextChange event", $event)
-    this.logger.log("[CDS-ACTION-EMAIL] onEditableDivTextChange property", property)
+    console.log("[CDS-ACTION-EMAIL] onEditableDivTextChange event", $event)
+    console.log("[CDS-ACTION-EMAIL] onEditableDivTextChange property", property)
     this.action[property] = $event
+    // this.updateAndSaveAction.emit();
   }
 
-  ngOnChanges() {
-    this.logger.log("[CDS-ACTION-EMAIL] ngOnChanges: this.action", this.action)
-  
 
-  }
 
   // placeCaretAtEnd(el) {
   //   el.focus();
@@ -68,7 +70,7 @@ export class CdsActionEmailComponent implements OnInit, OnChanges {
   }
 
   onToChange(event) {
-    this.logger.log("[CDS-ACTION-EMAIL] onToChange event: ", event);
+    console.log("[CDS-ACTION-EMAIL] onToChange event: ", event);
     this.action.to = event;
   }
 
