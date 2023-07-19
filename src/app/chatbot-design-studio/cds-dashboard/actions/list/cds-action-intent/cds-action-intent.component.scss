@@ -1,9 +1,24 @@
 @import "./src/assets/sass/cds/_variables.scss";
 
 .cds-action-content{
+    // position: relative;
+    padding: 0px 10px;
+  }
+
+.previewContent{
     position: relative;
-    padding: 10px;
-}
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: flex-end;
+    gap: 5px;
+    padding: 3px 0px;
+    
+    .title-label{
+     color: #6c6859;
+     font-size: 12px; 
+    }
+  }
 
 .content-panel-intent-detail{
     float: right;
@@ -15,6 +30,12 @@
     // right: -15px;
     // top: calc(50% - 10px);
 }    
+
+cds-connector.connector{
+  position: absolute;
+  right: -25px;
+  top: calc(50% - 10px);
+}
 
 // .action-connector {
 //     display: flex;

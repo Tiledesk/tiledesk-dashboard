@@ -1,10 +1,7 @@
-<div *ngIf="previewMode"  class="cds-action-preview">
-        <cds-action-controls [action]="action"> </cds-action-controls>
-        <div class="action-description" [innerHTML]="actions['AGENT']?.description"></div>
-        <!-- <cds-action-arrow *ngIf="!last"></cds-action-arrow> -->
-</div>
-
-<div *ngIf="!previewMode"  class="content-panel-intent-detail">
+<div class="content-panel-intent-detail" [class.cds-action-preview]="previewMode">
+        <cds-action-controls *ngIf="previewMode" 
+                [action]="action">
+        </cds-action-controls>
         <div class="action-description" [innerHTML]="actions['AGENT']?.description"></div>
 </div>
 

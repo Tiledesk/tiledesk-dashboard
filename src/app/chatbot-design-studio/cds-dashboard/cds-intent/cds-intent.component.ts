@@ -43,7 +43,6 @@ export class CdsIntentComponent implements OnInit {
 
   @Output() showPanelActions = new EventEmitter(); // nk
   // intentElement: any;
-  listOfIntents: Array<Intent> // !!! SI PUO' ELIMINARE
   // idSelectedAction: string;
   // form: Form;
   // formSize: number;
@@ -85,19 +84,6 @@ export class CdsIntentComponent implements OnInit {
     this.setIntentSelected();
     this.positionMenu['x'] = "10px"
     this.positionMenu['y'] = "10px"
-  }
-
-
-  ngAfterViewInit(){
-    
-    this.listOfIntents = this.intentService.intents.value;
-  }
-
-
-  // SI PUO' ELIMINARE !
-  ngOnChanges(changes: SimpleChanges){
-    // console.log('listtttttttt ngOnChanges', this.listOfIntents)
-    this.listOfIntents = this.intentService.intents.value;
   }
 
   /** CUSTOM FUNCTIONS  */
