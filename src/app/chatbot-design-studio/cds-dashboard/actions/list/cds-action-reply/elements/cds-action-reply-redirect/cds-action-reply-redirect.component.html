@@ -1,4 +1,22 @@
 <div class="extensions-response" [class.previewMode]="previewMode">
+    
+    <div class="text-editor-drop">
+        <em class="material-icons">drag_indicator</em>
+    </div>
+
+    <div class="response-controls">
+        <div class="control-button delete" (click)="onDeleteActionReply()">
+            <em class="material-icons">delete</em>
+        </div>
+        <div class="control-button" (click)="onMoveUpResponse()">
+            <em class="material-icons">expand_less</em>
+        </div> 
+        <div class="control-button" (click)="onMoveDownResponse()">
+            <em class="material-icons">expand_more</em>
+        </div>
+    </div>
+    
+
     <div class="delay-wrapper" [ngStyle]="{width: canShowFilter? 'auto': '100%'}">
         <appdashboard-delay-slider
             [delayTime]="delayTime"
@@ -19,18 +37,6 @@
 <div class="text-editor-wrapper" [class.previewMode]="previewMode">
     
     <div class="text-editor">
-
-        <div class="response-controls">
-            <div class="control-button delete" (click)="onDeleteActionReply()">
-                <em class="material-icons">delete</em>
-            </div>
-            <div class="control-button" (click)="onMoveUpResponse()">
-                <em class="material-icons">expand_less</em>
-            </div> 
-            <div class="control-button" (click)="onMoveDownResponse()">
-                <em class="material-icons">expand_more</em>
-            </div>
-        </div>
 
         <div class="url-wrp">
             <span class="control-label">{{ 'url' | translate }}:</span>
@@ -54,9 +60,7 @@
         </div>
         
 
-        <div class="text-editor-drop">
-            <em class="material-icons">drag_indicator</em>
-        </div>
+        
 
     </div>
 

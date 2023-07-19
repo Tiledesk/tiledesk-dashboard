@@ -1,4 +1,22 @@
 <div class="extensions-response" [class.previewMode]="previewMode">
+    
+    <div class="text-editor-drop">
+        <em class="material-icons">drag_indicator</em>
+    </div>
+
+    <div class="response-controls">
+        <div class="control-button delete" (click)="$event.stopPropagation();onDeleteActionReply()">
+            <em class="material-icons">delete</em>
+        </div>
+        <div class="control-button" (click)="$event.stopPropagation();onMoveUpResponse()">
+            <em class="material-icons">expand_less</em>
+        </div> 
+        <div class="control-button" (click)="$event.stopPropagation();onMoveDownResponse()">
+            <em class="material-icons">expand_more</em>
+        </div>
+    </div>
+
+    
     <div class="delay-wrapper" [ngStyle]="{width: canShowFilter? 'auto': '100%'}">
         <appdashboard-delay-slider
             [delayTime]="delayTime"
@@ -20,33 +38,13 @@
 
 <div class="text-editor-wrapper" [class.previewMode]="previewMode">
 
-    <div class="text-editor">
-
-        <div class="response-controls">
-            <div class="control-button delete" (click)="$event.stopPropagation();onDeleteActionReply()">
-                <em class="material-icons">delete</em>
-            </div>
-            <div class="control-button" (click)="$event.stopPropagation();onMoveUpResponse()">
-                <em class="material-icons">expand_less</em>
-            </div> 
-            <div class="control-button" (click)="$event.stopPropagation();onMoveDownResponse()">
-                <em class="material-icons">expand_more</em>
-            </div>
-        </div>
-
-        <cds-textarea 
-            class="text-editable-div"
-            [text]="response.text" 
-            [minRow]="1"
-            popoverVerticalAlign="above"
-            (changeTextarea)="onChangeTextarea($event)">
-        </cds-textarea>
-             
-        <div class="text-editor-drop">
-            <em class="material-icons">drag_indicator</em>
-        </div>
-
-    </div>
+    <cds-textarea 
+        class="text-editable-div"
+        [text]="response.text" 
+        [minRow]="1"
+        popoverVerticalAlign="above"
+        (changeTextarea)="onChangeTextarea($event)">
+    </cds-textarea>    
 
 </div> 
 
