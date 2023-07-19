@@ -1,5 +1,22 @@
 <div class="extensions-response" [class.previewMode]="previewMode">
     <div class="delay-wrapper" [ngStyle]="{width: canShowFilter? 'auto': '100%'}">
+
+        <div class="text-editor-drop">
+            <em class="material-icons">drag_indicator</em>
+        </div> 
+
+        <div class="response-controls">
+            <div class="control-button delete" (click)="$event.stopPropagation();onDeleteActionReply()">
+               <em class="material-icons">delete</em>
+           </div>
+           <div class="control-button" (click)="$event.stopPropagation();onMoveUpResponse()">
+               <em class="material-icons">expand_less</em>
+           </div> 
+           <div class="control-button" (click)="$event.stopPropagation();onMoveDownResponse()">
+               <em class="material-icons">expand_more</em>
+           </div>
+        </div>
+
         <appdashboard-delay-slider
             [delayTime]="delayTime"
             (changeDelayTime)="onChangeDelayTime($event)"
@@ -21,19 +38,7 @@
 <div class="image-editor-wrapper" [class.previewMode]="previewMode">
         
         <div class="image-editor">
-        
-            <div class="response-controls">
-                <div class="control-button delete" (click)="$event.stopPropagation();onDeleteActionReply()">
-                   <em class="material-icons">delete</em>
-               </div>
-               <div class="control-button" (click)="$event.stopPropagation();onMoveUpResponse()">
-                   <em class="material-icons">expand_less</em>
-               </div> 
-               <div class="control-button" (click)="$event.stopPropagation();onMoveDownResponse()">
-                   <em class="material-icons">expand_more</em>
-               </div>
-            </div>
-
+    
             <div class="response-image-uploader-wrapper">
                 <cds-image-upload
                     class="image-upload"
@@ -43,26 +48,6 @@
                     <em class="material-icons">clear</em>
                 </div>
             </div>
-
-            <div class="text-editor-drop">
-                <em class="material-icons">drag_indicator</em>
-            </div> 
-
-            <!-- <appdashboard-element-textarea
-                [limitCharsText]="limitCharsText"
-                [textMessage]="response.text"
-                (changeTextarea)="onChangeTextarea($event)"
-            ></appdashboard-element-textarea> -->
-
-            <!-- <text-editable-div 
-                class = "text-editable-div"
-                [emojiPikerBtn]="true" 
-                [setAttributeBtn]="true" 
-                [textLimitBtn]="true" 
-                [textLimit]="limitCharsText" 
-                [text]="response.text" 
-                (textChanged)="onChangeTextarea($event)"> 
-            </text-editable-div> -->
 
             <cds-textarea 
                 class="text-editable-div"

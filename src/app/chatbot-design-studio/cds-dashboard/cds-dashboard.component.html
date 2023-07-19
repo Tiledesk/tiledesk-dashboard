@@ -38,8 +38,8 @@
             <cds-panel-elements 
                 class="cds-panel-elements"
                 (showPanelActions)="onShowPanelActions($event)"
-                (addNewElement)="onAddNewElement()"
-            ></cds-panel-elements>
+                (addNewElement)="onAddNewElement()">
+            </cds-panel-elements>
 
             <div #receiver_elements_dropped_on_stage class="receiver-elements-dropped-on-stage" cdkDropList (cdkDropListDropped)="onDroppedElementToStage($event)"></div>
             
@@ -50,9 +50,8 @@
                     [style.top.px]="getIntentPosition(intent.id).y" 
                     [style.left.px]="getIntentPosition(intent.id).x" 
                     [intent]="intent"
-                    (actionSelected)=onActionSelected($event)
-                    (showPanelActions)="onShowPanelActions($event)"
-                ></cds-intent>
+                    (actionSelected)=onActionSelected($event)>
+                </cds-intent>
                 <!-- 
                     (selectAction)=onSelectAction($event) 
                     [intentsChanged]="intentsChanged"

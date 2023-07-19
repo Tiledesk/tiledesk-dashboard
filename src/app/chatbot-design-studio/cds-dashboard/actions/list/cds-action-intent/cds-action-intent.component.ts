@@ -15,6 +15,7 @@ export class CdsActionIntentComponent implements OnInit {
   @Input() previewMode: boolean = true;
   @Output() updateAndSaveAction = new EventEmitter();
 
+  intents: Intent[];
   idIntentSelected: string;
   idConnector: string;
   isConnected: boolean = false;
@@ -43,6 +44,9 @@ export class CdsActionIntentComponent implements OnInit {
     // this.isConnected = false;
     this.idIntentSelected = this.intentSelected.intent_id;
     this.idConnector = this.idIntentSelected+'/'+this.action._tdActionId;
+
+    this.intents = this.intentService.intents.value;
+    console.log('intenttttttt', this.intents)
   }
 
   private updateConnector(){
