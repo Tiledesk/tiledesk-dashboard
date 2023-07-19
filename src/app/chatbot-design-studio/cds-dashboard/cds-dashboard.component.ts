@@ -219,6 +219,7 @@ export class CdsDashboardComponent implements OnInit {
         else {
           // console.log("connector-draft-released event, catched but unsupported", e.detail);
           this.positionFloatMenu = this.tiledeskStage.physicPointCorrector(e.detail.menuPoint);
+          console.log('this.positionFloatMenu ', this.positionFloatMenu)
           this.isOpenFloatMenu = true;
           this.connectorDraft = {
             fromId: e.detail.fromId,
@@ -731,7 +732,7 @@ export class CdsDashboardComponent implements OnInit {
   // EVENTS //
 
   onShowPanelActions(pos){
-    console.log('onShowPanelActions:: ', pos);
+    console.log('onShowPanelActions pos:: ', pos);
     this.positionPanelActions = pos;
   }
 

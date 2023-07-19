@@ -732,6 +732,7 @@
 
 .csd-add-action-btn-wpr {
   height: 32px;
+  text-align: center;
 }
 
 .csd-action-dot-and-btn-wpr {
@@ -747,19 +748,23 @@
   padding: 4px;
   border-radius: 50%;
   box-shadow: unset;
+  background: #6c6859;
+  
   // z-index: 2;
   // background-color: $icon-color-background;
 }
 
 .cds-add-action-btn>span {
   font-size: 24px;
-  color: $icon-color;
+  // color: $icon-color;
+  color: #fff;
   position: relative;
   top: 0px;
 }
 
 .cds-add-action-btn:hover>span {
-  color: rgba($icon-color, 0.8);
+  // color: rgba($icon-color, 0.8);
+  color:#3ea9f5
 }
 
 .action--text {
@@ -776,19 +781,6 @@
 .action--text:hover {
   color: rgba($icon-color, 0.8);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 .source-container,

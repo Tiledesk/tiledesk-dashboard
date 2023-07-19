@@ -1,7 +1,7 @@
 <div class="panel-intent-content tds_draggable">
 
     <div class="pic-header tds_draggable">
-        
+
         <!-- <div class="pic-header-title tds_draggable">
             <div class="pic-header-title-input tds_draggable">
                 <div class="pic-title-text tds_draggable">
@@ -9,32 +9,24 @@
                 </div>
             </div>
         </div> -->
-        <appdashboard-panel-intent-header class="pic-title-text tds_draggable"
-            [intentSelected]="intent">
+        <appdashboard-panel-intent-header class="pic-title-text tds_draggable" [intentSelected]="intent">
             <!-- [listOfIntents]="listOfIntents"> -->
         </appdashboard-panel-intent-header>
 
     </div>
 
 
-    <div class="drag-actions target-container"
-        [cdkDropListData]="intentActionList"
-        cdkDropList
+    <div class="drag-actions target-container" [cdkDropListData]="intentActionList" cdkDropList
         (cdkDropListDropped)="onDropAction($event)">
-         <!-- [id]="'action_'+i" -->
-        <div *ngFor="let action of intentActionList; let i = index, let last = last;"
-            cdkDrag
-            (cdkDragStarted)="onDragStarted($event, intent.intent_id)"
-            (cdkDragReleased)="onDragEnded($event)"
-            [id]="action._tdActionId"
-            class="box-action"
-            tabindex="0"
+        <!-- [id]="'action_'+i" -->
+        <div *ngFor="let action of intentActionList; let i = index, let last = last;" cdkDrag
+            (cdkDragStarted)="onDragStarted($event, intent.intent_id)" (cdkDragReleased)="onDragEnded($event)"
+            [id]="action._tdActionId" class="box-action" tabindex="0"
             [ngClass]="{'cds-action-active': intentService.actionSelectedID === action._tdActionId}"
-            (keydown)="onKeydown($event)"
-            (click)="onActionSelected(action, i, action._tdActionId)">
+            (keydown)="onKeydown($event)" (click)="onActionSelected(action, i, action._tdActionId)">
             <!-- (keydown)="onDeleteAction($event)" -->
             <!-- <div cdkDragHandle class="header-action"> -->
-                <!-- <div class="icon-action">
+            <!-- <div class="icon-action">
                     <img [src]="getActionParams(action).src" [title]="getActionParams(action).name" />
                 </div>
                 <span class="label-action">
@@ -42,86 +34,79 @@
                         {{ getActionParams(action).name }}
                     </div>
                 </span> -->
-                <cds-action-description cdkDragHandle class="header-action"
-                    [elementType]="action._tdActionType">
-                </cds-action-description>
+            <cds-action-description cdkDragHandle class="header-action" [elementType]="action._tdActionType">
+            </cds-action-description>
 
             <!-- </div> -->
 
-            
+
             <div cdkDragDisabled class="body-action" [ngSwitch]="action._tdActionType">
 
-                <cds-action-reply *ngSwitchCase="TYPE_ACTION.REPLY" 
-                    class="panel-response" 
-                    [intentSelected]="intent"
-                    [last]="last"
-                    [previewMode]="true"
-                    [connector]="connector" 
-                    [action]="action" 
+                <cds-action-reply *ngSwitchCase="TYPE_ACTION.REPLY" class="panel-response" [intentSelected]="intent"
+                    [last]="last" [previewMode]="true" [connector]="connector" [action]="action"
                     (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-reply>
 
-                <cds-action-intent  *ngSwitchCase="TYPE_ACTION.INTENT"
-                    class="panel-response"
-                    [intentSelected]="intent"
-                    [last]="last"
-                    [previewMode]="true"
-                    [action]="action" 
+                <cds-action-intent *ngSwitchCase="TYPE_ACTION.INTENT" class="panel-response" [intentSelected]="intent"
+                    [last]="last" [previewMode]="true" [action]="action"
                     (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-intent>
 
-                <cds-action-email *ngSwitchCase="TYPE_ACTION.EMAIL" 
-                    class="panel-response" 
-                    [intentSelected]="intent"
-                    [last]="last"
-                    [previewMode]="true" 
-                    [action]="action" 
+                <cds-action-email *ngSwitchCase="TYPE_ACTION.EMAIL" class="panel-response" [intentSelected]="intent"
+                    [last]="last" [previewMode]="true" [action]="action"
                     (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-email>
 
-                <cds-action-agent *ngSwitchCase="TYPE_ACTION.AGENT" 
-                    class="panel-response" 
-                    [intentSelected]="intent"
-                    [last]="last"
-                    [previewMode]="true" 
-                    [action]="action" 
+                <cds-action-agent *ngSwitchCase="TYPE_ACTION.AGENT" class="panel-response" [intentSelected]="intent"
+                    [last]="last" [previewMode]="true" [action]="action"
                     (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-agent>
 
-                <cds-action-wait *ngSwitchCase="TYPE_ACTION.WAIT" 
-                    class="panel-response" 
-                    [intentSelected]="intent"
-                    [action]="action" 
-                    [last]="last"
-                    [previewMode]="true" 
+                <cds-action-wait *ngSwitchCase="TYPE_ACTION.WAIT" class="panel-response" [intentSelected]="intent"
+                    [action]="action" [last]="last" [previewMode]="true"
                     (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-wait>
 
-                <cds-action-change-department *ngSwitchCase="TYPE_ACTION.CHANGE_DEPARTMENT" 
-                    class="panel-response"
-                    [intentSelected]="intent" 
-                    [action]="action" 
-                    [last]="last"
-                    [previewMode]="true"
+                <cds-action-change-department *ngSwitchCase="TYPE_ACTION.CHANGE_DEPARTMENT" class="panel-response"
+                    [intentSelected]="intent" [action]="action" [last]="last" [previewMode]="true"
                     (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-change-department>
 
-                <cds-action-online-agents *ngSwitchCase="TYPE_ACTION.ONLINE_AGENTS"
-                    class="panel-response"
-                    [intentSelected]="intent"
-                    [connectorChanged]="connectorChanged"    
-                    [action]="action"
-                    [last]="last"
-                    [previewMode]="true"
-                    (updateAndSaveAction)="onUpdateAndSaveAction($event)">
+                <cds-action-online-agents *ngSwitchCase="TYPE_ACTION.ONLINE_AGENTS" class="panel-response"
+                    [intentSelected]="intent" [connectorChanged]="connectorChanged" [action]="action" [last]="last"
+                    [previewMode]="true" (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-online-agents>
 
-               
+
 
             </div>
 
-            
+            <cds-action-arrow *ngIf="!last"></cds-action-arrow>
         </div>
+
+
+
+        <div class="csd-add-action-btn-wpr csd-add-action-btn-wpr-element">
+            <button (click)="openActionMenu()" class="btn cds-add-action-btn csd-add-action-btn-wpr-element">
+                <span class="material-icons csd-add-action-btn-wpr-element">
+                    add
+                </span>
+            </button>
+            <!-- <div _ngcontent-sce-c292="" class="action--text csd-add-action-btn-wpr-element"> Add action </div> -->
+        </div>
+
+        <!-- (mouseover)="onOverMenu()"  -->
+            <!-- (mouseleave)="onLeaveMenu()" -->
+            <!-- [style.top.px]="positionMenu.y" -->
+            <!-- [style.left.px]="positionMenu.x"  -->
+        <!-- <div #menuElement id="menuElement" 
+            [style.display]="isOpen?'block':'none'" 
+            [style.top.px]="10"
+            [style.left.px]="10">
+            <cds-panel-actions 
+                [menuType]="menuType">
+            </cds-panel-actions>
+        </div> -->
     </div>
 
 
