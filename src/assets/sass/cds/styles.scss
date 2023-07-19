@@ -12,16 +12,19 @@ Ellips text
 }
 
 /* PANEL INTENT DETAIL */
-.content-panel-intent-detail {
-    padding: 0;
-    margin: 0;
-}
-
 // .content-panel-intent-detail {
-//     padding: 20px 0 30px;
-//     margin-left: 30px;
-//     margin-right: 30px;
+//     padding: 0;
+//     margin: 0;
 // }
+
+.content-panel-intent-detail {
+    padding: 20px 0 30px;
+    margin-left: 30px;
+    margin-right: 30px;
+    overflow: auto;
+    max-height: calc(100vh - 200px);
+
+}
 .footer-panel-intent-detail {
     position: absolute;
     bottom: 0;
@@ -77,6 +80,7 @@ emoji-mart {
 .cds-action-preview {
     /* padding: 3px 16px 16px; */
     padding: 16px;
+    margin: 0px;;
     position: relative;
 }
 .action-row {
