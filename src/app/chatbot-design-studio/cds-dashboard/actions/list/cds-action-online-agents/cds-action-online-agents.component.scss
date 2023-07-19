@@ -8,8 +8,16 @@
 .previewContent{
   position: relative;
   display: flex;
-  flex-direction: row-reverse;
+  flex-direction: row;
   align-items: flex-end;
+  justify-content: flex-end;
+  gap: 5px;
+  padding: 3px 0px;
+
+  span.icon{
+    width: 15px;
+    display: flex;
+  }
 
   .title-label{
    color: #6c6859;
