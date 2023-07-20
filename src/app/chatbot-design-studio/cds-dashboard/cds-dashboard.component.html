@@ -22,8 +22,7 @@
     <div *ngIf="activeSidebarSection == 'cds-sb-intents'" class="cds-content">
         
         <div class="box-left">
-            <cds-panel-intent-list 
-                *ngIf="listOfIntents"
+            <cds-panel-intent-list  *ngIf="listOfIntents"
                 class="panel-intent-list" 
                 [updatePanelIntentList] = "updatePanelIntentList"
                 [listOfIntents] = "listOfIntents"
@@ -81,24 +80,6 @@
             [button] = buttonSelected
             (saveButton) = onSaveButton($event)>
         </cds-panel-button-configuration>
-
-
-        <cds-action-detail *ngIf=isIntentElementSelected
-            class="panel-intent-detail-wrapper cds-generic-panel"
-            (click)="onClickPanelIntentDetail()"
-            [class.sidebar-opened]="IS_OPEN"
-            [isOpenPanel] = "isOpenPanelButtonConfig"
-            [listOfActions]="listOfActions" 
-            [elementIntentSelected]="elementIntentSelected"
-            [intentSelected]="intentSelected" 
-            [showSpinner]="showSpinner"
-            (closeAndSavePanelIntentDetail)="onCloseAndSavePanelIntentDetail($event)"
-            (clickedInsidePanelIntentDetail)="onClickedInsidePanelIntentDetail()">
-        </cds-action-detail>
-        <!-- 
-            (closeButtonPanel) = onClosePanel() 
-            [listOfActions] = listOfActions
-        -->
 
         <cds-panel-widget *ngIf="IS_OPEN_PANEL_WIDGET"
             class="cds-generic-panel">

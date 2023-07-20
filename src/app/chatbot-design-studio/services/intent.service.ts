@@ -21,7 +21,7 @@ import {
   ActionReplaceBot,
   ActionWait,
   ActionWebRequest,
-  Command, Message, Expression, Attributes } from 'app/models/intent-model';
+  Command, Message, Expression, Attributes, Action } from 'app/models/intent-model';
 import { FaqService } from 'app/services/faq.service';
 import { FaqKbService } from 'app/services/faq-kb.service';
 import { NEW_POSITION_ID, TYPE_ACTION, TYPE_COMMAND } from 'app/chatbot-design-studio/utils';
@@ -36,7 +36,7 @@ import { ConnectorService } from 'app/chatbot-design-studio/services/connector.s
 export class IntentService {
   idBot: string;
   intents = new BehaviorSubject <Intent[]>([]);
-  intent= new BehaviorSubject <Intent>(null);
+  intent = new BehaviorSubject <Intent>(null);
 
   previousIntentId: string = '';
   preDisplayName: string = 'untitled_block_';
@@ -49,6 +49,10 @@ export class IntentService {
   listOfPositions: any = {};
 
   // newPosition: any = {'x':0, 'y':0};
+
+  selectedIntent: Intent;
+  listActions: Array<Action>;
+  selectedAction: Action;
 
   private changedConnector = new Subject<any>();
   public isChangedConnector$ = this.changedConnector.asObservable();
@@ -366,9 +370,14 @@ export class IntentService {
   }
 
 
-  /** setListOfActions */
-  public setListOfActions(intents){
-    this.listOfActions = intents.map(a => {
+  /** getListOfActions */
+  public getListOfActions(){
+    return this.listActions;
+  }
+
+
+  public getListOfIntents(): Array<{name: string, value: string, icon?:string}>{
+    return this.intents.getValue().map(a => {
       if (a.intent_display_name.trim() === 'start') {
         return { name: a.intent_display_name, value: '#' + a.intent_id, icon: 'rocket_launch' }
       } else if (a.intent_display_name.trim() === 'defaultFallback') {
@@ -377,19 +386,29 @@ export class IntentService {
         return { name: a.intent_display_name, value: '#' + a.intent_id, icon: 'label_important_outline' }
       }
     });
-    console.log('this.listOfActions: ', this.listOfActions); 
-  }
-
-  /** getListOfActions */
-  public getListOfActions(){
-    return this.listOfActions;
   }
 
   /** selectAction */
   public selectAction(intentID, actionId){
     this.actionSelectedID = actionId;
     this.intentSelectedID = intentID;
+
+    this.selectedIntent = this.intents.getValue().find(intent => intent.intent_id === intentID);
+    this.listActions = this.selectedIntent.actions;
+    this.selectedAction = this.listActions.find(action => action._tdActionId === actionId);
   }
+
+  public selectIntent(intentID){
+    this.intentSelectedID = intentID;
+    this.actionSelectedID = null;
+
+    this.selectedIntent = this.intents.getValue().find(intent => intent.intent_id === intentID);
+    console.log('[INTENT SERVICE] --> selectIntent', this.selectedIntent)
+    this.listActions = this.selectedIntent.actions;
+    this.selectedAction = null;
+    this.intent.next(this.selectedIntent)
+  }
+
 
   /** unselectAction */
   public unselectAction(){
@@ -419,7 +438,6 @@ export class IntentService {
         }
       }, 0);
       this.unselectAction();
-      this.setListOfActions(listOfIntents);
       console.log('deleteSelectedAction', intentToUpdate);
       this.intent.next(intentToUpdate);
     }

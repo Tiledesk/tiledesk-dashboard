@@ -23,7 +23,7 @@ export class CdsPanelButtonConfigurationComponent implements OnInit {
   @Output() saveButton = new EventEmitter();
   // @Output() closeButtonPanel = new EventEmitter();
 
-  listOfActions: Array<{name: string, value: string, icon?:string}>;
+  listOfIntents: Array<{name: string, value: string, icon?:string}>;
   // buttonLabelResult: boolean;
   
   typeOfButton = TYPE_BUTTON;
@@ -75,7 +75,7 @@ export class CdsPanelButtonConfigurationComponent implements OnInit {
 
 
   private initialize(){
-    this.listOfActions = this.intentService.getListOfActions();
+    this.listOfIntents = this.intentService.getListOfIntents();
     // console.log('CdsPanelButtonConfigurationComponent: ', this.button);
     if(this.button){
       // this.buttonLabelResult = true;

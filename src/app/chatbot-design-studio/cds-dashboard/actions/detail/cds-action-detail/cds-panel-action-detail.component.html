@@ -49,8 +49,8 @@
 
                     <cds-action-intent *ngSwitchCase="typeAction.INTENT"
                         class="panel-response"
+                        [intentSelected]="intentSelected"
                         [action]="elementSelected"
-                        [intents]="listOfActions"
                         [previewMode]="false">
                     </cds-action-intent>
 
@@ -79,8 +79,7 @@
                     </cds-action-change-department>
 
                     <cds-action-online-agents *ngSwitchCase="typeAction.ONLINE_AGENTS"
-                        class="panel-response" 
-                        [listOfActions] = "listOfActions"    
+                        class="panel-response"   
                         [action]="elementSelected"
                         [previewMode]="false">
                     </cds-action-online-agents>

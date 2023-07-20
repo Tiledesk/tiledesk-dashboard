@@ -1,6 +1,6 @@
 <div *ngIf="previewMode" class="cds-action-content cds-action-preview">
     
-    <cds-action-controls [action]="action"> </cds-action-controls>
+    <cds-action-controls></cds-action-controls>
 
     <div class="previewContent">
         
@@ -38,7 +38,7 @@
                 <ul>
                     <li style="background-color: green;"></li>
                     <cds-select id="text-condition"
-                        [items]="listOfActions"
+                        [items]="listOfIntents"
                         [bindLabelSelect]="'name'"
                         [bindValueSelect]="'value'"
                         [itemSelected]="action?.trueIntent"
