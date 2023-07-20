@@ -73,7 +73,8 @@
                     <cds-action-whatsapp-static *ngSwitchCase="typeAction.WHATSAPP_STATIC"
                         class="panel-response"
                         [action]="elementSelected"
-                        [project_id]="project_id">
+                        [project_id]="project_id"
+                        [intentName]="intentSelected.intent_display_name">
                     </cds-action-whatsapp-static>
 
                     <cds-action-whatsapp-attribute *ngSwitchCase="typeAction.WHATSAPP_ATTRIBUTE"

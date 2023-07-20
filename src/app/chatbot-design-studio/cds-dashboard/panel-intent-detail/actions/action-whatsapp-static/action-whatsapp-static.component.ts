@@ -1,4 +1,4 @@
-import { element } from 'protractor';
+import { v4 as uuidv4 } from 'uuid';
 import { Component, ElementRef, Input, OnInit } from '@angular/core';
 import { ActionWhatsappStatic } from 'app/models/intent-model';
 import { LoggerService } from 'app/services/logger/logger.service';
@@ -13,13 +13,15 @@ export class ActionWhatsappStaticComponent implements OnInit {
 
   @Input() action: ActionWhatsappStatic;
   @Input() project_id: string;
+  @Input() intentName: string;
 
-  templates_list = []; 
+  templates_list = [];
   // receiver_list = [];
 
   phone_number_id: string;
   showLoader: Boolean = false;
   selected_template: any;
+  payload: any;
 
   constructor(
     private whatsapp: WhatsappService,
@@ -49,12 +51,13 @@ export class ActionWhatsappStaticComponent implements OnInit {
         t.description = t.components.find(c => c.type === 'BODY').text;
         return t;
       })
-      
+
     }, (error) => {
       this.showLoader = false;
       this.logger.log("[ACTION WHATSAPP STATIC] error get templates: ", error);
     }, () => {
       this.logger.log("[ACTION WHATSAPP STATIC] get templates completed: ");
+      this.updateJsonPreview();
       if (this.action.templateName) {
         this.selected_template = this.templates_list.find(t => t.name === this.action.templateName);
       }
@@ -71,7 +74,7 @@ export class ActionWhatsappStaticComponent implements OnInit {
       if (this.action.payload.phone_number_id) {
         this.phone_number_id = this.action.payload.phone_number_id;
       }
-      this.updateJsonPreview();
+      //this.updateJsonPreview();
       // if (this.action.payload.receiver_list) {
       //   this.receiver_list = this.action.payload.receiver_list;
       // }
@@ -150,10 +153,28 @@ export class ActionWhatsappStaticComponent implements OnInit {
   }
 
   updateJsonPreview() {
-    var str = JSON.stringify(this.action.payload, undefined, 4);
-    let element =  document.getElementById('json');
+    // var str = JSON.stringify(this.action.payload, undefined, 4);
+
+    let json = {
+      payload: {
+        text: "/" + this.intentName,
+        id_project: this.project_id,
+        request: {
+          request_id: uuidv4()
+        },
+        attributes: {
+          payload: {
+            whatsapp_attribute: this.action.payload
+          }
+        }
+      },
+      token: "YOUR_CHATBOT_TOKEN_HERE"
+    }
+    var str = JSON.stringify(json, undefined, 2);
+    let element = document.getElementById('json');
     if (element) {
       element.innerHTML = this.syntaxHighlight(str);
+      //element.innerHTML = str;
     }
   }
 
@@ -175,9 +196,24 @@ export class ActionWhatsappStaticComponent implements OnInit {
       return '<span class="' + cls + '">' + match + '</span>';
     });
   }
-  
+
   copyToClipboard() {
-    var str = JSON.stringify(this.action.payload, undefined, 4);
+    let json = {
+      payload: {
+        text: "/" + this.intentName,
+        id_project: this.project_id,
+        request: {
+          request_id: uuidv4()
+        },
+        attributes: {
+          payload: {
+            whatsapp_attribute: this.action.payload
+          }
+        }
+      },
+      token: "YOUR_CHATBOT_TOKEN_HERE"
+    }
+    var str = JSON.stringify(json, undefined, 2);
     navigator.clipboard.writeText(str);
   }
 

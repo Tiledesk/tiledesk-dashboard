@@ -28,7 +28,7 @@ export class WhatsappReceiverComponent implements OnInit {
   body_component_temp: any;
   body_params = [];
   header_params = [];
-  url_buttons_params = [];
+  buttons_params = [];
   previsioning_url: string;
   sanitizedUrl: any;
   fileUploadAccept: string = "image/*";
@@ -86,9 +86,9 @@ export class WhatsappReceiverComponent implements OnInit {
       })
     }
 
-    if (this.receiver.url_buttons_params) {
-      this.url_buttons_params.forEach((ubp, i) => {
-        ubp.text = this.receiver.url_buttons_params[i].text
+    if (this.receiver.buttons_params) {
+      this.buttons_params.forEach((ubp, i) => {
+        ubp.text = this.receiver.buttons_params[i].text
       })
 
     }
@@ -123,8 +123,8 @@ export class WhatsappReceiverComponent implements OnInit {
       }
     })
 
-    this.url_buttons_params.forEach((param, i) => {
-      //console.log("url_buttons_params - param: ", param);
+    this.buttons_params.forEach((param, i) => {
+      //console.log("buttons_params - param: ", param);
       let index = i + 1;
       let regex = '{{' + index + '}}';
       if (param.text) {
@@ -197,7 +197,7 @@ export class WhatsappReceiverComponent implements OnInit {
       this.url_button_component_temp = JSON.parse(JSON.stringify(this.url_button_component));
       if (this.url_button_component.example) {
         this.url_button_component.example.forEach((p, i) => {
-          this.url_buttons_params.push({ index: i + 1, type: "text", text: null })
+          this.buttons_params.push({ index: i + 1, type: "text", text: null })
           this.previsioning_url = this.url_button_component.url;
         })
       }
@@ -254,8 +254,8 @@ export class WhatsappReceiverComponent implements OnInit {
 
   onParamButtonChange(event, param_num) {
     this.url_button_component = JSON.parse(JSON.stringify(this.url_button_component_temp));
-    this.url_buttons_params[param_num - 1].text = event;
-    this.url_buttons_params.forEach((param, i) => {
+    this.buttons_params[param_num - 1].text = event;
+    this.buttons_params.forEach((param, i) => {
       let index = i + 1;
       let regex = '{{' + index + '}}';
       if (param.text) {
@@ -272,7 +272,7 @@ export class WhatsappReceiverComponent implements OnInit {
     let text_header_result = this.header_params.find(p => !p.text || p.text == '');
     let media_header_result = this.header_params.find(p => (p.image && (!p.image.link || p.image.link == '')) || (p.document && (!p.document.link || p.document.link == '')) || (p.location && (!p.location.name || !p.location.address || !p.location.latitude || !p.location.longitude)));
     let body_result = this.body_params.find(p => !p.text || p.text == '');
-    let url_buttton_result = this.url_buttons_params.find(p => !p.text || p.text == '');
+    let url_buttton_result = this.buttons_params.find(p => !p.text || p.text == '');
 
     if ((!text_header_result || !media_header_result) && !body_result && !url_buttton_result) {
       if (this.invalidUrl === false) {
@@ -293,24 +293,30 @@ export class WhatsappReceiverComponent implements OnInit {
   emitParams() {
     const new_header_params = this.header_params.map(({ index, ...keepAttrs }) => keepAttrs)
     const new_body_params = this.body_params.map(({ index, ...keepAttrs }) => keepAttrs)
-    const new_buttons_param = this.url_buttons_params.map(({ index, ...keepAttrs }) => keepAttrs)
+    const new_buttons_param = this.buttons_params.map(({ index, ...keepAttrs }) => keepAttrs)
 
-    let receiver_out:any = {
+    this.body_params.forEach(param => {
+      console.log("param: ", param);
+    });
+
+
+    let receiver_out: any = {
       phone_number: this.phone_number,
       // header_params: new_header_params,
       // body_params: new_body_params,
-      // url_buttons_params: new_buttons_param
+      // buttons_params: new_buttons_param
     }
 
     if (new_header_params.length > 0) {
       receiver_out.header_params = new_header_params;
     }
     if (new_body_params.length > 0) {
-      receiver_out.body_params = new_body_params; 
-     }
-     if (new_buttons_param.length > 0) {
-      receiver_out.url_buttons_params = new_buttons_param; 
-     }
+      receiver_out.body_params = new_body_params;
+    }
+    if (new_buttons_param.length > 0) {
+      receiver_out.buttons_params = new_buttons_param;
+    }
+    console.log("receiver_out: ", receiver_out);
     this.receiverValue.emit(receiver_out);
   }
 

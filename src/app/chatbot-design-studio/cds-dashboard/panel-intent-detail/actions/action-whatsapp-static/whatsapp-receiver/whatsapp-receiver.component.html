@@ -214,7 +214,7 @@
         <!-- // Body parameters - END -->
 
 
-        <div *ngIf="body_params.length == 0 && header_params.length == 0 && url_buttons_params.length == 0">
+        <div *ngIf="body_params.length == 0 && header_params.length == 0 && buttons_params.length == 0">
             <p style="font-style: italic; color: #a3a3a3;">No parameters</p>
         </div>
 
@@ -227,7 +227,7 @@
                     <span>{{ i + 1 }}</span>
                 </div>
                 <div class="field-wrapper large">
-                    <input type="text" placeholder="Insert a valid URL" value="{{url_buttons_params[i].text}}"
+                    <input type="text" placeholder="Insert a valid URL" value="{{buttons_params[i].text}}"
                         (input)="onParamButtonChange($event.target.value, i+1)" (blur)="onBlur()" (focus)="onFocus()">
                 </div>
 
