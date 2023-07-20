@@ -183,7 +183,7 @@ $margin-bottom: 15px;
     }
     .content{
         min-height: unset;
-        max-height: calc(100vh);
+        max-height: unset;
     }
     .draggable-box{
         border-bottom: 3px solid #ebe2c6

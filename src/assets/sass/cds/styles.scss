@@ -139,7 +139,7 @@ emoji-mart {
 }
 /* Action Controls
 /* ------------------------ */
-.cds-action-preview > cds-action-controls > .action-controls {
+.body-action > cds-action-controls > .action-controls {
     opacity: 0;
     padding: 5px 10px 5px 5px;
     pointer-events: none;
@@ -153,8 +153,7 @@ emoji-mart {
     z-index: 1;
     display: inline-flex;
 }
-
-.cds-action-preview:hover > cds-action-controls > .action-controls {
+.body-action:hover > cds-action-controls > .action-controls {
     opacity: 1;
     pointer-events: auto;
     -webkit-transform: translateX(-10px);
