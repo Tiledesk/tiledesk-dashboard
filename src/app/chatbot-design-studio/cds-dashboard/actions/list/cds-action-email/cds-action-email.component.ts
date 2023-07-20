@@ -14,7 +14,6 @@ export class CdsActionEmailComponent implements OnInit, OnChanges {
   @Input() action: ActionEmail;
   @Input() previewMode: boolean = true;
   @Output() updateAndSaveAction = new EventEmitter();
-  @Input() last: boolean;
   email_error: boolean = false;
   actionTo: string = ''
   actionSubject: string = ''

@@ -42,6 +42,7 @@ export class CdsIntentComponent implements OnInit {
   @Output() answerSelected = new EventEmitter(); // !!! SI PUO' ELIMINARE
   @Output() actionSelected = new EventEmitter(); // !!! SI PUO' ELIMINARE
 
+  @Output() showPanelActions = new EventEmitter(); // nk
   // intentElement: any;
   // idSelectedAction: string;
   // form: Form;
@@ -55,12 +56,19 @@ export class CdsIntentComponent implements OnInit {
   TYPE_ACTION = TYPE_ACTION;
   ACTIONS_LIST = ACTIONS_LIST;
   elementTypeSelected: HAS_SELECTED_TYPE
+  isOpen: boolean = true;
+  menuType: string = 'action';
+  positionMenu: any;
+  
+
 
   constructor(
     private logger: LoggerService,
     public intentService: IntentService,
     private connectorService: ConnectorService
     // private controllerService: ControllerService,
+
+    
     
   ) {
     /** SUBSCRIBE TO THE INTENT CREATED OR UPDATED */
@@ -82,6 +90,8 @@ export class CdsIntentComponent implements OnInit {
   ngOnInit(): void { 
     // console.log('CdsPanelIntentComponent ngAfterViewInit-->');
     this.setIntentSelected();
+    this.positionMenu['x'] = "10px"
+    this.positionMenu['y'] = "10px"
   }
 
   /** CUSTOM FUNCTIONS  */
@@ -286,6 +296,12 @@ export class CdsIntentComponent implements OnInit {
     const fromEle = document.getElementById(this.intent.intent_id);
     this.connectorService.movedConnector(fromEle);
     this.updateIntent();
+  }
+
+
+  openActionMenu() {
+    let pos = {'x': -100, 'y': -100 }
+    this.showPanelActions.emit(pos);
   }
 
 }

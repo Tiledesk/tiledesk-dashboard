@@ -34,7 +34,7 @@ export class CdsPanelElementsComponent implements OnInit {
 
   onOpenMenu(e, type) {
     setTimeout(() => {
-      console.log('onOpenMenu: ', type);
+      console.log('onOpenMenu: menu type ', type);
       this.menuType = type;
       //this.menuTrigger.openMenu();
       // let x = e.offsetLeft;
