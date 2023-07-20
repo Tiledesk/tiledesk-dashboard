@@ -226,6 +226,15 @@ export class CdsIntentComponent implements OnInit {
   //   this.questionSelected.emit(this.intent.question);
   // }
 
+  onClickControl(event: 'delete' | 'edit'){
+    console.log('[CDS-INTENT] onClickControl', event)
+    if(event === 'edit'){
+      //TODO: aggiungere codice per edit e aprire pannello dettaglio
+    }else if(event === 'delete'){
+      this.intentService.deleteSelectedAction();
+    }
+  }
+
   /**
    * onKeydown
    * delete selected action by keydown backspace

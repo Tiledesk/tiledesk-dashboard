@@ -51,6 +51,11 @@
             
             <div cdkDragDisabled class="body-action" [ngSwitch]="action._tdActionType">
 
+                <cds-action-controls
+                    (onClickControl)="$event.stopPropagation();onClickControl($event)">
+                </cds-action-controls>
+
+
                 <cds-action-reply *ngSwitchCase="TYPE_ACTION.REPLY" 
                     class="panel-response" 
                     [intentSelected]="intent"
@@ -110,14 +115,33 @@
                     (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-online-agents>
 
-               
 
             </div>
 
-            
+            <cds-action-arrow *ngIf="!last"></cds-action-arrow>
         </div>
 
+        <div class="csd-add-action-btn-wpr csd-add-action-btn-wpr-element">
+            <button (click)="openActionMenu()" class="btn cds-add-action-btn csd-add-action-btn-wpr-element">
+                <span class="material-icons csd-add-action-btn-wpr-element">
+                    add
+                </span>
+            </button>
+            <!-- <div _ngcontent-sce-c292="" class="action--text csd-add-action-btn-wpr-element"> Add action </div> -->
+        </div>
 
+        <!-- (mouseover)="onOverMenu()"  -->
+            <!-- (mouseleave)="onLeaveMenu()" -->
+            <!-- [style.top.px]="positionMenu.y" -->
+            <!-- [style.left.px]="positionMenu.x"  -->
+        <!-- <div #menuElement id="menuElement" 
+            [style.display]="isOpen?'block':'none'" 
+            [style.top.px]="10"
+            [style.left.px]="10">
+            <cds-panel-actions 
+                [menuType]="menuType">
+            </cds-panel-actions>
+        </div> -->
     </div>
 
 
