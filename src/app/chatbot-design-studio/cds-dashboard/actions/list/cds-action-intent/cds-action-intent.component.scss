@@ -1,9 +1,5 @@
 @import "./src/assets/sass/cds/_variables.scss";
 
-.cds-action-content{
-    // position: relative;
-    padding: 0px 10px;
-  }
 
 .previewContent{
     position: relative;
@@ -18,18 +14,7 @@
      color: #6c6859;
      font-size: 12px; 
     }
-  }
-
-.content-panel-intent-detail{
-    float: right;
-    // // margin-top: -20px;
-    // // margin-right: 7px;
-    margin-top: -36px;
-    margin-right: 2px;
-    // position: absolute;
-    // right: -15px;
-    // top: calc(50% - 10px);
-}    
+}
 
 cds-connector.connector{
   position: absolute;

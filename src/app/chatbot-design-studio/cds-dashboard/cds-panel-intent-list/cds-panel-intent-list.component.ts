@@ -10,6 +10,7 @@ import { Intent } from 'app/models/intent-model';
 })
 
 export class CdsPanelIntentListComponent implements OnInit, OnChanges {
+
   @Input() listOfIntents: Intent[];
   @Input() intent_id: string;
   @Input() updatePanelIntentList: boolean;
@@ -42,7 +43,7 @@ export class CdsPanelIntentListComponent implements OnInit, OnChanges {
 
   // ngOnChanges funziona con gli @input bindati in html
   ngOnChanges(changes: SimpleChanges) {
-    // console.log('ngOnChanges:: CdsPanelIntentListComponent');
+    console.log('[CdsPanelIntentListComponent] ngOnChanges::', this.listOfIntents);
     // console.log(changes);
     setTimeout(() => {
       this.initialize();
@@ -59,11 +60,12 @@ export class CdsPanelIntentListComponent implements OnInit, OnChanges {
   }
 
   private setDefaultIntents(){
-    this.internalIntents = this.listOfIntents.filter(obj => obj.topic === this.TOPIC_INTERNAL);
-    this.defaultIntents = this.listOfIntents.filter(obj => obj.topic !== this.TOPIC_INTERNAL);
+    this.internalIntents = this.listOfIntents.filter(obj => ( obj.intent_display_name.trim() === this.DISPLAY_NAME_START || obj.intent_display_name.trim() === this.DISPLAY_NAME_DEFAULT_FALLBACK));
+    this.defaultIntents = this.listOfIntents.filter(obj => ( obj.intent_display_name.trim() !== this.DISPLAY_NAME_START && obj.intent_display_name.trim() !== this.DISPLAY_NAME_DEFAULT_FALLBACK));
     this.internalIntents = this.moveItemToPosition(this.internalIntents, this.DISPLAY_NAME_START, 0);
     this.internalIntents = this.moveItemToPosition(this.internalIntents, this.DISPLAY_NAME_DEFAULT_FALLBACK, 1);
     this.filteredIntents = this.defaultIntents;
+    
   }
 
   private moveItemToPosition(array, DISPLAY_NAME, position) {

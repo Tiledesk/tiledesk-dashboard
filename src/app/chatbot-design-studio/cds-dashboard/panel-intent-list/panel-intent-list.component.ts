@@ -55,7 +55,7 @@ export class PanelIntentListComponent implements OnInit {
   }
 
   ngOnChanges() {
-    console.log('ngOnChanges:: ');
+    console.log('[PANEL-INTENT-LIST] ngOnChanges:: ');
     setTimeout(() => {
       this.initialize();
     },0);
@@ -87,15 +87,15 @@ export class PanelIntentListComponent implements OnInit {
       this.intent_defaultFallback = this.filtered_intents.splice(this.filtered_intents.indexOf(this.filtered_intents.find(o => o.intent_display_name.trim() === 'defaultFallback')), 1)[0];
       this.default_intents.push(this.intent_defaultFallback);
     }
-    this.listOfActions = this.filtered_intents.map(a => {
-      if (a.intent_display_name.trim() === 'start') {
-        return { name: a.intent_display_name, value: '#' + a.intent_id, icon: 'rocket_launch' }
-      } else if (a.intent_display_name.trim() === 'defaultFallback') {
-        return { name: a.intent_display_name, value: '#' + a.intent_id, icon: 'undo' }
-      } else {
-        return { name: a.intent_display_name, value: '#' + a.intent_id, icon: 'label_important_outline' }
-      }
-    });
+    // this.listOfActions = this.filtered_intents.map(a => {
+    //   if (a.intent_display_name.trim() === 'start') {
+    //     return { name: a.intent_display_name, value: '#' + a.intent_id, icon: 'rocket_launch' }
+    //   } else if (a.intent_display_name.trim() === 'defaultFallback') {
+    //     return { name: a.intent_display_name, value: '#' + a.intent_id, icon: 'undo' }
+    //   } else {
+    //     return { name: a.intent_display_name, value: '#' + a.intent_id, icon: 'label_important_outline' }
+    //   }
+    // });
   }
 
 

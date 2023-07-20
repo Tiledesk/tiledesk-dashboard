@@ -15,7 +15,7 @@ export class CdsActionIntentComponent implements OnInit {
   @Input() previewMode: boolean = true;
   @Output() updateAndSaveAction = new EventEmitter();
 
-  intents: Intent[];
+  intents: Array<{name: string, value: string, icon?:string}>
   idIntentSelected: string;
   idConnector: string;
   isConnected: boolean = false;
@@ -26,9 +26,11 @@ export class CdsActionIntentComponent implements OnInit {
     private intentService: IntentService,
   ) {
     
-   }
+  }
+
 
   ngOnInit(): void {
+    console.log("[ACTION-INTENT] elementSelected: ", this.action, this.intents)
     this.intentService.isChangedConnector$.subscribe((connector: any) => {
       console.log('CdsActionIntentComponent isChangedConnector-->', connector);
       this.connector = connector;
@@ -38,6 +40,7 @@ export class CdsActionIntentComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    
   }
 
   private initialize() {
@@ -45,8 +48,7 @@ export class CdsActionIntentComponent implements OnInit {
     this.idIntentSelected = this.intentSelected.intent_id;
     this.idConnector = this.idIntentSelected+'/'+this.action._tdActionId;
 
-    this.intents = this.intentService.intents.value;
-    console.log('intenttttttt', this.intents)
+    this.intents = this.intentService.getListOfIntents();
   }
 
   private updateConnector(){
@@ -70,6 +72,14 @@ export class CdsActionIntentComponent implements OnInit {
       }
     } catch (error) {
       console.log('error: ', error);
+    }
+  }
+
+
+  onChangeSelect(event: {name: string, value: string}){
+    this.action.intentName = event.value
+    if(!this.action._tdActionTitle){
+      this.action._tdActionTitle = this.intents.find(intent => intent.value === event.value).name
     }
   }
   
