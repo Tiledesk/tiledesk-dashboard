@@ -125,9 +125,6 @@ import { RedirectResponseComponent } from './cds-dashboard/panel-intent-detail/a
 
 
 
-
-
-
 @NgModule({
   declarations: [
     CdsDashboardComponent,
