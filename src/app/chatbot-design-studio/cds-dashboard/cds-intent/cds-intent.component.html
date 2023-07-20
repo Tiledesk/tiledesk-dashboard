@@ -10,18 +10,19 @@
             </div>
         </div> -->
         <appdashboard-panel-intent-header class="pic-title-text tds_draggable"
-            [intentSelected]="intent">
+            [intentSelected]="intent"
+            [listOfIntents]="listOfIntents">
         </appdashboard-panel-intent-header>
 
     </div>
 
 
     <div class="drag-actions target-container"
-        [cdkDropListData]="intentActionList"
+        [cdkDropListData]="listOfActions"
         cdkDropList
         (cdkDropListDropped)="onDropAction($event)">
          <!-- [id]="'action_'+i" -->
-        <div *ngFor="let action of intentActionList; let i = index, let last = last;"
+        <div *ngFor="let action of listOfActions; let i = index, let last = last;"
             cdkDrag
             (cdkDragStarted)="onDragStarted($event, intent.intent_id)"
             (cdkDragReleased)="onDragEnded($event)"
@@ -53,18 +54,14 @@
                 <cds-action-reply *ngSwitchCase="TYPE_ACTION.REPLY" 
                     class="panel-response" 
                     [intentSelected]="intent"
-                    [last]="last"
-                    [previewMode]="true"
                     [connector]="connector" 
                     [action]="action" 
                     (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-reply>
 
-                <cds-action-intent  *ngSwitchCase="TYPE_ACTION.INTENT"
+                <cds-action-intent *ngSwitchCase="TYPE_ACTION.INTENT"
                     class="panel-response"
                     [intentSelected]="intent"
-                    [last]="last"
-                    [previewMode]="true"
                     [action]="action" 
                     (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-intent>
@@ -72,8 +69,6 @@
                 <cds-action-email *ngSwitchCase="TYPE_ACTION.EMAIL" 
                     class="panel-response" 
                     [intentSelected]="intent"
-                    [last]="last"
-                    [previewMode]="true" 
                     [action]="action" 
                     (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-email>

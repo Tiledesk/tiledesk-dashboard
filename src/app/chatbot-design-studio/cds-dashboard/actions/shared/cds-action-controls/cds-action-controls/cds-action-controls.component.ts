@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'cds-action-controls',
@@ -6,10 +6,16 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./cds-action-controls.component.scss']
 })
 export class CdsActionControlsComponent implements OnInit {
-  @Input() action: any
+  
+  @Output() onClickControl = new EventEmitter<'delete' | 'edit'>()
+  
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  onClickAction(actionControl: 'delete' | 'edit'){
+    this.onClickControl.emit(actionControl)
   }
 
 }

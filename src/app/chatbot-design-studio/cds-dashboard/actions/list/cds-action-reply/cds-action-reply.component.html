@@ -1,7 +1,8 @@
-<div class="cds-action-content">
+<div class="cds-action-content" [class.cds-action-preview]="previewMode">
     <!-- <cds-action-description
         [elementType]="action._tdActionType">
     </cds-action-description> -->
+    <cds-action-controls *ngIf="previewMode"></cds-action-controls>
 
     <div class="box-up">
 
