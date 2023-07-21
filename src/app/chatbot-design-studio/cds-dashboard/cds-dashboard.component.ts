@@ -917,7 +917,7 @@ export class CdsDashboardComponent implements OnInit {
       this.elementIntentSelected['element'] = null;
     }
     this.posCenterIntentSelected(intent);
-    this.intentService.selectIntent(this.intent_id)
+    this.intentService.selectIntent(intent.intent_id)
     // this.router.navigate(['project/' + this.projectID + '/cds/' + this.id_faq_kb + '/intent/' + this.intentSelected.id], { replaceUrl: true })
   }
 

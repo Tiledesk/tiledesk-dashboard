@@ -403,7 +403,6 @@ export class IntentService {
     this.actionSelectedID = null;
 
     this.selectedIntent = this.intents.getValue().find(intent => intent.intent_id === intentID);
-    console.log('[INTENT SERVICE] --> selectIntent', this.selectedIntent)
     this.listActions = this.selectedIntent.actions;
     this.selectedAction = null;
     this.intent.next(this.selectedIntent)
