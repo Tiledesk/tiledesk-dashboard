@@ -12,9 +12,9 @@ import { LoggerService } from 'app/services/logger/logger.service';
 export class CdsActionChangeDepartmentComponent implements OnInit {
 
   @Input() action: ActionChangeDepartment;
-  @Output() updateAndSaveAction = new EventEmitter();
-  @Input() last: boolean;
   @Input() previewMode: boolean = true;
+  @Output() updateAndSaveAction = new EventEmitter();
+  
   deps_name_list: string[] = [];
   dep_selected: Department;
 

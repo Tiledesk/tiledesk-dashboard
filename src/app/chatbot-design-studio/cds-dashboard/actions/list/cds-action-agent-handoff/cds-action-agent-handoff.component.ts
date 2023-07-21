@@ -10,9 +10,9 @@ import { ActionAgent } from 'app/models/intent-model';
 export class CdsActionAgentHandoffComponent implements OnInit {
 
   @Input() action: ActionAgent;
-  @Output() updateAndSaveAction = new EventEmitter();
   @Input() previewMode: boolean = true;
-  @Input() last: boolean;
+  @Output() updateAndSaveAction = new EventEmitter();
+  
   actions = ACTIONS_LIST
 
   constructor() { }

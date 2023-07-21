@@ -9,14 +9,15 @@ import { ActionWait } from 'app/models/intent-model';
 export class CdsActionWaitComponent implements OnInit, OnChanges {
 
   @Input() action: ActionWait;
-  @Output() updateAndSaveAction = new EventEmitter();
   @Input() previewMode: boolean = true;
+  @Output() updateAndSaveAction = new EventEmitter();
   delayTime: number;
 
   constructor() { }
 
   ngOnInit(): void {
   }
+  
   ngOnChanges() {
     // console.log('[ACTION-WAIT] wait this.actionwait.millis ', this.action.millis)
     const waitInSec = this.action.millis / 1000
