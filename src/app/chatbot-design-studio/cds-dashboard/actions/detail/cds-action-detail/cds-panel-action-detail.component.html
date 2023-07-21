@@ -60,6 +60,13 @@
                         [previewMode]="false">
                     </cds-action-email>
 
+                    <cds-action-online-agents *ngSwitchCase="typeAction.ONLINE_AGENTS"
+                        class="panel-response"
+                        [intentSelected]="intentSelected"   
+                        [action]="elementSelected"
+                        [previewMode]="false">
+                    </cds-action-online-agents>
+
                     <cds-action-agent *ngSwitchCase="typeAction.AGENT"
                         class="panel-response"    
                         [action]="elementSelected"
@@ -78,11 +85,7 @@
                         [previewMode]="false">
                     </cds-action-change-department>
 
-                    <cds-action-online-agents *ngSwitchCase="typeAction.ONLINE_AGENTS"
-                        class="panel-response"   
-                        [action]="elementSelected"
-                        [previewMode]="false">
-                    </cds-action-online-agents>
+                    
 
     
                     <!-- <cds-action-reply *ngSwitchCase="typeAction.RANDOM_REPLY"
