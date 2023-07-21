@@ -52,19 +52,19 @@ export class CdsActionIntentComponent implements OnInit {
   }
 
   private updateConnector(){
-    console.log('1- updateConnector :: ');
+    console.log('[ACTION-INTENT-COMP] 1- updateConnector :: ');
     try {
       const array = this.connector.fromId.split("/");
       const idAction= array[1];
       if(idAction === this.action._tdActionId){
         if(this.connector.deleted){
           // DELETE 
-          console.log(' deleteConnector :: ', this.connector.id);
+          console.log('[ACTION-INTENT-COMP] deleteConnector :: ', this.connector.id);
           this.action.intentName = null;
           this.isConnected = false;
         } else {
           // ADD / EDIT
-          console.log(' updateConnector :: ', this.connector.toId);
+          console.log('[ACTION-INTENT-COMP] updateConnector :: ', this.connector.toId);
           this.action.intentName = this.connector.toId;
           this.isConnected = true;
         }
@@ -77,6 +77,7 @@ export class CdsActionIntentComponent implements OnInit {
 
 
   onChangeSelect(event: {name: string, value: string}){
+    console.log('onChangeSelect-->', event)
     this.action.intentName = event.value
     if(!this.action._tdActionTitle){
       this.action._tdActionTitle = this.intents.find(intent => intent.value === event.value).name
