@@ -322,13 +322,14 @@ export class TiledeskConnectors {
 
     /** searchClassInParents */ 
     #searchClassInParents(el, keyClass) {
-      if(el.classList && el.classList.contains(keyClass)){
+      if(el && el.classList && el.classList.contains(keyClass)){
         return el;
-      }
+      } 
+      console.log('[TILEDESK-CONNECTORS] searchClassInParents')
       let parent = el.parentElement;
       while (parent !== null) {
-        if(parent.classList && parent.classList.contains(keyClass)){
-          return parent;
+        if(parent && parent.classList && parent.classList.contains(keyClass)){
+           return parent;
         } 
         if(parent.parentElement){
           parent = parent.parentElement;

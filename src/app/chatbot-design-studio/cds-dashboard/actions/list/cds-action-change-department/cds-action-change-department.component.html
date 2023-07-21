@@ -11,8 +11,11 @@
             </svg>
         </div>
 
-        <div class="action-row-right">
+        <div *ngIf="action?.depName" class="action-row-right">
             {{action?.depName}}
+        </div>
+        <div *ngIf="!action?.depName" class="action-row-right empty">
+            Select a department
         </div>
     </div>
 

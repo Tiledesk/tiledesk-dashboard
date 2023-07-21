@@ -29,7 +29,7 @@
             [id]="action._tdActionId"
             class="box-action"
             tabindex="0"
-            [ngClass]="{'cds-action-active': intentService.actionSelectedID === action._tdActionId}"
+            [ngClass]="{'cds-action-active': intentService.actionSelectedID === action._tdActionId, 'cds-no-featured-action': action._tdActionType !== TYPE_ACTION.REPLY}"
             (keydown)="onKeydown($event)">
             <!-- (click)="onActionSelected(action, i, action._tdActionId)" -->
             <!-- (keydown)="onDeleteAction($event)" -->
@@ -138,29 +138,18 @@
             </div>
 
             <cds-action-arrow *ngIf="!last"></cds-action-arrow>
+
         </div>
 
         <div class="csd-add-action-btn-wpr csd-add-action-btn-wpr-element">
-            <button (click)="openActionMenu()" class="btn cds-add-action-btn csd-add-action-btn-wpr-element">
+            <button #openActionMenuBtn (click)="openActionMenu(intent)" class="btn cds-add-action-btn csd-add-action-btn-wpr-element">
                 <span class="material-icons csd-add-action-btn-wpr-element">
                     add
                 </span>
             </button>
-            <!-- <div _ngcontent-sce-c292="" class="action--text csd-add-action-btn-wpr-element"> Add action </div> -->
         </div>
 
-        <!-- (mouseover)="onOverMenu()"  -->
-            <!-- (mouseleave)="onLeaveMenu()" -->
-            <!-- [style.top.px]="positionMenu.y" -->
-            <!-- [style.left.px]="positionMenu.x"  -->
-        <!-- <div #menuElement id="menuElement" 
-            [style.display]="isOpen?'block':'none'" 
-            [style.top.px]="10"
-            [style.left.px]="10">
-            <cds-panel-actions 
-                [menuType]="menuType">
-            </cds-panel-actions>
-        </div> -->
+  
     </div>
 
 

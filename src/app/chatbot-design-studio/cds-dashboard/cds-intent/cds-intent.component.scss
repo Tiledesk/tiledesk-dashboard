@@ -27,6 +27,13 @@
   background-color: rgb(235, 226, 198);
 }
 
+// .cds-featured-action {
+//   background-color: #e3e1f1;
+// }
+.cds-no-featured-action {
+  background-color: $light-brown;
+}
+
 
 .header-action {
   position: relative;
@@ -154,7 +161,8 @@
     border-radius: 10px;
     border: 2px solid rgb(255, 255, 255);
     padding: 0 10px 10px 10px;
-    background-color: rgb(235, 226, 198);
+    // background-color: rgb(235, 226, 198);
+    background-color: $deep-brown;
   }
 
   .pic-header-title {
@@ -787,7 +795,8 @@
 .target-container {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  // gap: 10px; // nk
+  gap: 18px; // nk
   //min-height: 200px;
   //width: 200px;
   // border: 1px solid #ccc;

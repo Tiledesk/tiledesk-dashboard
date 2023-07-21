@@ -445,6 +445,7 @@ export class IntentService {
 
   /** createNewAction */
   public createNewAction(typeAction: TYPE_ACTION) {
+    console.log('[INTENT-SERV] createNewAction typeAction ', typeAction)
     let action: any;
 
   //   switch (typeAction) {
