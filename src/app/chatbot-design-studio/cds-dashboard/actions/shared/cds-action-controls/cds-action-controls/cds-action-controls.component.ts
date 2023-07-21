@@ -14,7 +14,8 @@ export class CdsActionControlsComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onClickAction(actionControl: 'delete' | 'edit'){
+  onClickAction(actionControl: 'delete' | 'edit', event: Event){
+    event.stopPropagation();
     this.onClickControl.emit(actionControl)
   }
 
