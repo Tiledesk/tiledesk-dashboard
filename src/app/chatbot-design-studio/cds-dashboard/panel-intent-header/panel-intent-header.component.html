@@ -6,7 +6,7 @@
             {{ 'EnterIntentName' | translate }}
         </label>
         <!-- (blur)="onBlurIntentName($event)" -->
-        <input type="text" [(ngModel)]="intentName" class="input form-control" 
+        <input type="text" [(ngModel)]="intentName" [disabled]="intentName === 'start' || intentName === 'defaultFallback' " class="input form-control" 
             (ngModelChange)="onChangeIntentName($event)" (keydown.enter)="onEnterButtonPressed($event)">
         <div *ngIf="intentNameAlreadyExist" class="error---msg"> The block name must be unique </div>
         <div *ngIf="intentNameNotHasSpecialCharacters === false" class="error---msg"> The block name cannot contain

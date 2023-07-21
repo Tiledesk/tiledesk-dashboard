@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges, ViewChild, ElementRef, OnChanges } from '@angular/core';
-import { Form, Intent } from 'app/models/intent-model';
+import { Action, Form, Intent } from 'app/models/intent-model';
 
 import { ACTIONS_LIST, TYPE_ACTION, patchActionId } from 'app/chatbot-design-studio/utils';
 import { LoggerService } from 'app/services/logger/logger.service';
@@ -50,7 +50,8 @@ export class CdsIntentComponent implements OnInit, OnChanges {
   // question: any;
   answer: string; // !!! SI PUO' ELIMINARE
   // questionCount: number;
-  intentActionList: Array<any>;
+  listOfIntents: Intent[]
+  listOfActions: Action[];
   HAS_SELECTED_TYPE = HAS_SELECTED_TYPE;
   TYPE_ACTION = TYPE_ACTION;
   ACTIONS_LIST = ACTIONS_LIST;
@@ -74,11 +75,17 @@ export class CdsIntentComponent implements OnInit, OnChanges {
     this.intentService.intent.subscribe(intent => {
       if (intent && this.intent && intent.intent_id === this.intent.intent_id) {
         this.intent = intent;
-        this.intentActionList = this.intent.actions;
-        console.log('intent created / updated ::: ', this.intent);
+        this.listOfActions = this.intent.actions;
+        console.log('intent created / updated ::: ',  this.intent);
       }
     });
-  }
+
+    this.intentService.intents.subscribe(intents => {
+      if(intents){
+        this.listOfIntents = intents
+      }
+    })
+   }
 
   ngOnInit(): void {
     // console.log('CdsPanelIntentComponent ngAfterViewInit-->');
@@ -90,13 +97,13 @@ export class CdsIntentComponent implements OnInit, OnChanges {
   }
 
   /** CUSTOM FUNCTIONS  */
-  private setIntentSelected() {
-    this.intentActionList = null;
+  private setIntentSelected(){
+    this.listOfActions = null;
     try {
       if (this.intent) {
         this.patchAllActionsId();
         this.patchAttributesPosition();
-        this.intentActionList = this.intent.actions;
+        this.listOfActions = this.intent.actions;
         // this.form = this.intent.form;
         // this.answer = this.intent.answer;
         // if (this.intent.question) {
@@ -120,10 +127,10 @@ export class CdsIntentComponent implements OnInit, OnChanges {
    * retrocompatibility patch.
    * Check if the action has a ._tdActionId attribute
    * otherwise it generates it on the fly */
-  private patchAllActionsId() {
-    if (this.intentActionList && this.intentActionList.length > 0) {
-      this.intentActionList.forEach(function (action, index, object) {
-        if (!action._tdActionId) {
+  private patchAllActionsId(){
+    if(this.listOfActions && this.listOfActions.length>0){
+      this.listOfActions.forEach(function(action, index, object) {
+        if(!action._tdActionId){
           object[index] = patchActionId(action);
         }
       });
@@ -205,7 +212,7 @@ export class CdsIntentComponent implements OnInit, OnChanges {
     console.log('onActionSelected action: ', action);
     this.elementTypeSelected = idAction;
     this.intentService.selectAction(this.intent.intent_id, idAction);
-    this.actionSelected.emit({ action: action, index: index, maxLength: this.intentActionList.length });
+    this.actionSelected.emit({ action: action, index: index, maxLength: this.listOfActions.length });
   }
 
   // onSelectAnswer(elementSelected) {
@@ -220,6 +227,16 @@ export class CdsIntentComponent implements OnInit, OnChanges {
   //   // this.isIntentElementSelected = true;
   //   this.questionSelected.emit(this.intent.question);
   // }
+
+  onClickControl(event: 'delete' | 'edit', action: Action, index: number){
+    console.log('[CDS-INTENT] onClickControl', event)
+    if(event === 'edit'){
+      this.onActionSelected(action, index, action._tdActionId)
+    }else if(event === 'delete'){
+      this.intentService.selectAction(this.intent.intent_id, action._tdActionId)
+      this.intentService.deleteSelectedAction();
+    }
+  }
 
   /**
    * onKeydown

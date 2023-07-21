@@ -58,8 +58,6 @@ export class CdsDashboardComponent implements OnInit {
   intentSelected: Intent;
   elementIntentSelected: any;
 
-
-  listOfActions: Array<{ name: string, value: string, icon?: string }>;
   listOfVariables: { userDefined: Array<any>, systemDefined: Array<any> };
 
   newIntentName: string;
@@ -300,9 +298,7 @@ export class CdsDashboardComponent implements OnInit {
   ngOnDestroy() {
     this.subscriptionListOfIntents.unsubscribe();
   }
-
-
-
+  
   /**
    * execute Async Functions In Sequence
    * Le funzioni async sono gestite in maniera sincrona ed eseguite in coda
@@ -340,15 +336,11 @@ export class CdsDashboardComponent implements OnInit {
   /** START CUSTOM FUNCTIONS 
   /** ************************* **/
 
-  /** refreshIntents
-  * update list of intents, 
-  * update list of actions, 
-  * set drag and listner on intents, 
-  * create connectors
-  */
-  private refreshIntents() {
-    this.intentService.setListOfActions(this.listOfIntents);
-    this.listOfActions = this.intentService.getListOfActions();
+   /** refreshIntents
+   * set drag and listner on intents, 
+   * create connectors
+   */
+   private refreshIntents(){
     /** SET DRAG STAGE AND CREATE CONNECTORS */
     setTimeout(() => {
       this.setDragAndListnerEventToElements();
@@ -959,6 +951,7 @@ export class CdsDashboardComponent implements OnInit {
       this.elementIntentSelected['element'] = null;
     }
     this.posCenterIntentSelected(intent);
+    this.intentService.selectIntent(intent.intent_id)
     // this.router.navigate(['project/' + this.projectID + '/cds/' + this.id_faq_kb + '/intent/' + this.intentSelected.id], { replaceUrl: true })
   }
 

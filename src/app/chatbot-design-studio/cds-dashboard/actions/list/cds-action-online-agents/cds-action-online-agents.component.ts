@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { IntentService } from 'app/chatbot-design-studio/services/intent.service';
 import { ActionOnlineAgent, Intent } from 'app/models/intent-model';
@@ -27,7 +27,8 @@ export class CdsActionOnlineAgentsComponent implements OnInit {
   isConnectedTrue: boolean = false;
   isConnectedFalse: boolean = false;
   connector: any;
-  listOfActions: Array<{name: string, value: string, icon?:string}>;
+  
+  listOfIntents: Array<{name: string, value: string, icon?:string}>;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -41,7 +42,16 @@ export class CdsActionOnlineAgentsComponent implements OnInit {
       this.connector = connector;
       this.updateConnector();
     });
-    this.initializeConnector();
+  }
+
+  ngOnChanges() {
+    this.initialize();
+    if(this.intentSelected){
+      this.initializeConnector();
+    }
+    if (this.action && this.action.trueIntent) {
+      this.setFormValue();
+    }
   }
 
   private initializeConnector() {
@@ -49,7 +59,8 @@ export class CdsActionOnlineAgentsComponent implements OnInit {
     this.idIntentSelected = this.intentSelected.intent_id;
     this.idConnectorTrue = this.idIntentSelected+'/'+this.action._tdActionId + '/true';
     this.idConnectorFalse = this.idIntentSelected+'/'+this.action._tdActionId + '/false';
-    console.log('intentttttt connectorrrr', this.idIntentSelected, this.idConnectorTrue)
+
+    this.listOfIntents = this.intentService.getListOfIntents()
   }
 
   private updateConnector(){
@@ -84,12 +95,7 @@ export class CdsActionOnlineAgentsComponent implements OnInit {
   }
   
 
-  ngOnChanges() {
-    this.initialize()
-    if (this.action && this.action.trueIntent) {
-      this.setFormValue();
-    }
-  }
+  
 
   private initialize() {
     this.actionOnlineAgentsFormGroup = this.buildForm();
@@ -100,7 +106,6 @@ export class CdsActionOnlineAgentsComponent implements OnInit {
     })
     this.trueIntentAttributes = this.action.trueIntentAttributes;
     this.falseIntentAttributes = this.action.falseIntentAttributes;
-    this.listOfActions = this.intentService.getListOfActions()
   }
 
 

@@ -1,7 +1,7 @@
 <div class="panel-intent-content tds_draggable">
 
     <div class="pic-header tds_draggable">
-
+        
         <!-- <div class="pic-header-title tds_draggable">
             <div class="pic-header-title-input tds_draggable">
                 <div class="pic-title-text tds_draggable">
@@ -10,25 +10,32 @@
             </div>
         </div> -->
         <appdashboard-panel-intent-header class="pic-title-text tds_draggable"
-            [intentSelected]="intent">
+            [intentSelected]="intent"
+            [listOfIntents]="listOfIntents">
         </appdashboard-panel-intent-header>
 
     </div>
 
 
-    <div class="drag-actions target-container" [cdkDropListData]="intentActionList" cdkDropList
+    <div class="drag-actions target-container"
+        [cdkDropListData]="listOfActions"
+        cdkDropList
         (cdkDropListDropped)="onDropAction($event)">
-        <!-- [id]="'action_'+i" -->
-        <div *ngFor="let action of intentActionList; let i = index, let last = last;" cdkDrag
-            (cdkDragStarted)="onDragStarted($event, intent.intent_id)" (cdkDragReleased)="onDragEnded($event)"
-            [id]="action._tdActionId" class="box-action" tabindex="0"
-            [ngClass]="{'cds-action-active': intentService.actionSelectedID === action._tdActionId, 
-            'cds-featured-action': action._tdActionType === TYPE_ACTION.REPLY,
-            'cds-no-featured-action': action._tdActionType !== TYPE_ACTION.REPLY }"
-            (keydown)="onKeydown($event)" (click)="onActionSelected(action, i, action._tdActionId)">
+         <!-- [id]="'action_'+i" -->
+        <div *ngFor="let action of listOfActions; let i = index, let last = last;"
+            cdkDrag
+            (cdkDragStarted)="onDragStarted($event, intent.intent_id)"
+            (cdkDragReleased)="onDragEnded($event)"
+            [id]="action._tdActionId"
+            class="box-action"
+            tabindex="0"
+            [ngClass]="{'cds-action-active': intentService.actionSelectedID === action._tdActionId,
+            'cds-no-featured-action': action._tdActionType !== TYPE_ACTION.REPLY}"
+            (keydown)="onKeydown($event)"
+            (click)="onActionSelected(action, i, action._tdActionId)">
             <!-- (keydown)="onDeleteAction($event)" -->
             <!-- <div cdkDragHandle class="header-action"> -->
-            <!-- <div class="icon-action">
+                <!-- <div class="icon-action">
                     <img [src]="getActionParams(action).src" [title]="getActionParams(action).name" />
                 </div>
                 <span class="label-action">
@@ -36,48 +43,48 @@
                         {{ getActionParams(action).name }}
                     </div>
                 </span> -->
-            <cds-action-description cdkDragHandle class="header-action" [elementType]="action._tdActionType">
-            </cds-action-description>
+                <cds-action-description cdkDragHandle class="header-action"
+                    [elementType]="action._tdActionType">
+                </cds-action-description>
 
             <!-- </div> -->
 
+            
+            <div cdkDragDisabled class="body-action" [ngSwitch]="action._tdActionType">
 
-            <div cdkDragDisabled class="body-action"  [ngSwitch]="action._tdActionType">
+                <cds-action-controls
+                    (onClickControl)="onClickControl($event, action, i)">
+                </cds-action-controls>
+
 
                 <cds-action-reply *ngSwitchCase="TYPE_ACTION.REPLY" 
                     class="panel-response" 
                     [intentSelected]="intent"
-                    [last]="last" 
-                    [previewMode]="true" 
                     [connector]="connector" 
-                    [action]="action"
+                    [action]="action" 
                     (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-reply>
 
-                <cds-action-intent *ngSwitchCase="TYPE_ACTION.INTENT" 
-                    class="panel-response" 
+                <cds-action-intent *ngSwitchCase="TYPE_ACTION.INTENT"
+                    class="panel-response"
                     [intentSelected]="intent"
-                    [last]="last" 
-                    [previewMode]="true" 
-                    [action]="action"
+                    [action]="action" 
                     (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-intent>
 
                 <cds-action-email *ngSwitchCase="TYPE_ACTION.EMAIL" 
                     class="panel-response" 
                     [intentSelected]="intent"
-                    [last]="last" 
-                    [previewMode]="true" 
-                    [action]="action"
+                    [action]="action" 
                     (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-email>
 
                 <cds-action-agent *ngSwitchCase="TYPE_ACTION.AGENT" 
                     class="panel-response" 
                     [intentSelected]="intent"
-                    [last]="last" 
+                    [last]="last"
                     [previewMode]="true" 
-                    [action]="action"
+                    [action]="action" 
                     (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-agent>
 
@@ -85,8 +92,8 @@
                     class="panel-response" 
                     [intentSelected]="intent"
                     [action]="action" 
-                    [last]="last" 
-                    [previewMode]="true"
+                    [last]="last"
+                    [previewMode]="true" 
                     (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-wait>
 
@@ -94,18 +101,18 @@
                     class="panel-response"
                     [intentSelected]="intent" 
                     [action]="action" 
-                    [last]="last" 
+                    [last]="last"
                     [previewMode]="true"
                     (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-change-department>
 
-                <cds-action-online-agents *ngSwitchCase="TYPE_ACTION.ONLINE_AGENTS" 
+                <cds-action-online-agents *ngSwitchCase="TYPE_ACTION.ONLINE_AGENTS"
                     class="panel-response"
-                    [intentSelected]="intent" 
-                    [connectorChanged]="connectorChanged" 
-                    [action]="action" 
+                    [intentSelected]="intent"
+                    [connectorChanged]="connectorChanged"    
+                    [action]="action"
                     [last]="last"
-                    [previewMode]="true" 
+                    [previewMode]="true"
                     (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-online-agents>
 
@@ -115,8 +122,6 @@
             <cds-action-arrow *ngIf="!last"></cds-action-arrow>
 
         </div>
-
-
 
         <div class="csd-add-action-btn-wpr csd-add-action-btn-wpr-element">
             <button #openActionMenuBtn (click)="openActionMenu(intent)" class="btn cds-add-action-btn csd-add-action-btn-wpr-element">

@@ -49,8 +49,8 @@
 
                     <cds-action-intent *ngSwitchCase="typeAction.INTENT"
                         class="panel-response"
+                        [intentSelected]="intentSelected"
                         [action]="elementSelected"
-                        [intents]="listOfActions"
                         [previewMode]="false">
                     </cds-action-intent>
 
@@ -59,6 +59,13 @@
                         [action]="elementSelected"
                         [previewMode]="false">
                     </cds-action-email>
+
+                    <cds-action-online-agents *ngSwitchCase="typeAction.ONLINE_AGENTS"
+                        class="panel-response"
+                        [intentSelected]="intentSelected"   
+                        [action]="elementSelected"
+                        [previewMode]="false">
+                    </cds-action-online-agents>
 
                     <cds-action-agent *ngSwitchCase="typeAction.AGENT"
                         class="panel-response"    
@@ -78,12 +85,7 @@
                         [previewMode]="false">
                     </cds-action-change-department>
 
-                    <cds-action-online-agents *ngSwitchCase="typeAction.ONLINE_AGENTS"
-                        class="panel-response" 
-                        [listOfActions] = "listOfActions"    
-                        [action]="elementSelected"
-                        [previewMode]="false">
-                    </cds-action-online-agents>
+                    
 
                   
 

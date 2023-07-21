@@ -25,8 +25,6 @@ export class CdsActionDetailPanelComponent implements OnInit, OnChanges {
   elementIntentSelectedType: string;
   openCardButton = false;
 
-  listOfActions: Array<{name: string, value: string, icon?:string}>;
-
   constructor(
     private logger: LoggerService,
     private intentService: IntentService
@@ -46,7 +44,6 @@ export class CdsActionDetailPanelComponent implements OnInit, OnChanges {
   ngOnChanges() {
     console.log('[PANEL-INTENT-DETAIL] (OnChanges) @Input elementIntentSelected ', this.elementIntentSelected);
     try{
-      this.listOfActions = this.intentService.getListOfActions();
       this.elementIntentSelectedType = this.elementIntentSelected.type;
       this.elementSelected = this.elementIntentSelected.element;
       this.elementSelected = JSON.parse(JSON.stringify(this.elementIntentSelected.element));
