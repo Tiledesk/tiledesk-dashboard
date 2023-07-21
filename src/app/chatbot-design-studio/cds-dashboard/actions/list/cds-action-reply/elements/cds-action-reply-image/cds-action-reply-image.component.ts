@@ -134,6 +134,7 @@ export class CdsActionReplyImageComponent implements OnInit {
     this.delayTime = value;
     this.response.time = value*1000;
     this.changeActionReply.emit();
+    this.canShowFilter = true;
   }
 
   /** onChangeExpression */
