@@ -815,7 +815,7 @@ export class CdsDashboardComponent implements OnInit {
      console.log('HERE YES')
      const newAction = this.intentService.createNewAction(event.type)
      console.log('[CDS-DSHBRD] newAction:: ', newAction);
-     console.log('[CDS-DSHBRD] this.intentSelected:: ', this.intentSelected);
+     console.log('[CDS-DSHBRD] this.intentToAddAction:: ', this.intentToAddAction);
      this.intentToAddAction.actions.push(newAction);
      this.updateIntent()
     //  this.intentSelected.actions.push(newAction);
