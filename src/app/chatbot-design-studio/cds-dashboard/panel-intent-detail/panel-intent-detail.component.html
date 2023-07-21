@@ -72,10 +72,10 @@
                         [previewMode]="false">
                     </cds-action-email> -->
                 
-                    <cds-action-json-condition *ngSwitchCase="typeAction.JSON_CONDITION"
+                    <cds-action-json-condition-2 *ngSwitchCase="typeAction.JSON_CONDITION"
                         [action]="elementSelected"
                         [listOfActions]="listOfActions">
-                    </cds-action-json-condition>
+                    </cds-action-json-condition-2>
             
                     <cds-action-assign-variable *ngSwitchCase="typeAction.ASSIGN_VARIABLE"
                         [action]="elementSelected">

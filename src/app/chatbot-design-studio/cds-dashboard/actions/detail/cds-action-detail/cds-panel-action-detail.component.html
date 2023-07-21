@@ -105,6 +105,13 @@
                         [previewMode]="false">
                     </cds-action-close>
 
+                    <cds-action-json-condition *ngSwitchCase="typeAction.JSON_CONDITION"
+                        class="panel-response"
+                        [intentSelected]="intent"
+                        [action]="elementSelected"
+                        [previewMode]="false">
+                    </cds-action-json-condition>
+                    
                     <!-- <cds-action-web-request *ngSwitchCase="typeAction.WEB_REQUEST"
                         [action]="elementSelected">
                     </cds-action-web-request>
@@ -126,12 +133,7 @@
                     <cds-action-delete-variable *ngSwitchCase="typeAction.DELETE_VARIABLE"
                         [action]="elementSelected">
                     </cds-action-delete-variable>
-                
-            
-                    <cds-action-open-hours *ngSwitchCase="typeAction.OPEN_HOURS"
-                        [listOfActions] = "listOfActions"
-                        [action]="elementSelected">
-                    </cds-action-open-hours>
+
                 
                     <cds-action-hide-message *ngSwitchCase="typeAction.HIDE_MESSAGE"
                         [action]="elementSelected">
@@ -139,15 +141,7 @@
     
                     <cds-action-replace-bot *ngSwitchCase="typeAction.REPLACE_BOT"
                         [action]="elementSelected">
-                    </cds-action-replace-bot>
-    
-                    <cds-action-change-department *ngSwitchCase="typeAction.CHANGE_DEPARTMENT"
-                        [action]="elementSelected">
-                    </cds-action-change-department>
-    
-                    <cds-action-agent *ngSwitchCase="typeAction.AGENT"
-                        [action]="elementSelected">
-                    </cds-action-agent> -->
+                    </cds-action-replace-bot> -->
     
                 </div>
             </div>

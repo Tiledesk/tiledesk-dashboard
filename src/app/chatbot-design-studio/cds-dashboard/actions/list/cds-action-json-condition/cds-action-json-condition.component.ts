@@ -1,42 +1,102 @@
 import { OperatorValidator } from '../../../../utils';
-import { Expression, Operator, Condition } from '../../../../../models/intent-model';
+import { Expression, Operator, Condition, Intent } from '../../../../../models/intent-model';
 import { ActionJsonCondition } from '../../../../../models/intent-model';
-import { Component, Host, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Host, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { SatPopover } from '@ncstate/sat-popover';
 import { LoggerService } from 'app/services/logger/logger.service';
+import { IntentService } from 'app/chatbot-design-studio/services/intent.service';
 
 @Component({
-  selector: 'cds-action-json-condition-2',
-  templateUrl: './action-json-condition.component.html',
-  styleUrls: ['./action-json-condition.component.scss']
+  selector: 'cds-action-json-condition',
+  templateUrl: './cds-action-json-condition.component.html',
+  styleUrls: ['./cds-action-json-condition.component.scss']
 })
-export class ActionJsonConditionComponent implements OnInit {
+export class CdsActionJsonConditionComponent implements OnInit {
 
   @ViewChild("addFilter", {static: false}) myPopover : SatPopover;
   
+  @Input() intentSelected: Intent;
   @Input() action: ActionJsonCondition;
-  @Input() listOfActions: Array<{name: string, value: string, icon?:string}>;
-
+  @Input() previewMode: boolean = true;
+  @Output() updateAndSaveAction = new EventEmitter();
+  
   actionJsonConditionFormGroup: FormGroup
-  booleanOperators=[ { type: 'AND', operator: 'AND'},{ type: 'OR', operator: 'OR'},]
-
   trueIntentAttributes: string = "";
   falseIntentAttributes: string = "";
+  booleanOperators=[ { type: 'AND', operator: 'AND'},{ type: 'OR', operator: 'OR'},]
+
+  idIntentSelected: string;
+  idConnectorTrue: string;
+  idConnectorFalse: string;
+  isConnectedTrue: boolean = false;
+  isConnectedFalse: boolean = false;
+  connector: any;
+  
+  listOfIntents: Array<{name: string, value: string, icon?:string}>;
 
   constructor(
     private formBuilder: FormBuilder,
-    private logger: LoggerService
+    private logger: LoggerService,
+    private intentService: IntentService,
     ) { }
 
   ngOnInit(): void {
+    this.intentService.isChangedConnector$.subscribe((connector: any) => {
+      // console.log('CdsActionIntentComponent isChangedConnector-->', connector);
+      this.connector = connector;
+      this.updateConnector();
+    });
   }
 
   ngOnChanges() {
     this.initialize();
+    if(this.intentSelected){
+      this.initializeConnector();
+    }
     this.logger.log('[ACTION-JSON-CONDITION] actionnn-->', this.action)
     if (this.action) {
       this.setFormValue()
+    }
+  }
+
+  private initializeConnector() {
+    // this.isConnected = false;
+    this.idIntentSelected = this.intentSelected.intent_id;
+    this.idConnectorTrue = this.idIntentSelected+'/'+this.action._tdActionId + '/true';
+    this.idConnectorFalse = this.idIntentSelected+'/'+this.action._tdActionId + '/false';
+
+    this.listOfIntents = this.intentService.getListOfIntents()
+  }
+
+  private updateConnector(){
+    try {
+      const array = this.connector.fromId.split("/");
+      const idAction= array[1];
+      if(idAction === this.action._tdActionId){
+        if(this.connector.deleted){ //TODO: verificare quale dei due connettori è stato eliminato e impostare isConnected a false
+          // DELETE 
+          // console.log(' deleteConnector :: ', this.connector.id);
+          // this.action.intentName = null;
+          this.isConnectedTrue = false;
+          this.isConnectedFalse = false;
+        } else { //TODO: verificare quale dei due connettori è stato aggiunto (controllare il valore della action corrispondente al true/false intent)
+          // ADD / EDIT
+          console.log(' updateConnector :: onlineagents', this.connector.toId, this.connector.fromId ,this.action, array[array.length-1]);
+          if(array[array.length -1] === 'true'){
+            this.action.trueIntent = this.connector.toId;
+            this.isConnectedTrue = true
+          }        
+          if(array[array.length -1] === 'false'){
+            this.action.falseIntent = this.connector.toId;
+            this.isConnectedFalse = true;
+          }
+        }
+
+        this.updateAndSaveAction.emit();
+      }
+    } catch (error) {
+      console.log('error: ', error);
     }
   }
 

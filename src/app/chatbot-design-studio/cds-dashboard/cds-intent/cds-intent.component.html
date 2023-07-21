@@ -123,7 +123,12 @@
                     [action]="action">
                 </cds-action-close>
 
-                
+                <cds-action-json-condition *ngSwitchCase="TYPE_ACTION.JSON_CONDITION"
+                    class="panel-response"
+                    [intentSelected]="intent"
+                    [action]="action"
+                    (updateAndSaveAction)="onUpdateAndSaveAction($event)">
+                </cds-action-json-condition>
 
                 
 
