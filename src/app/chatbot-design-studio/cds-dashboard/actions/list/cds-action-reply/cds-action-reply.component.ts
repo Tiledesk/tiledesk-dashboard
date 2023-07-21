@@ -68,7 +68,7 @@ export class CdsActionReplyComponent implements OnInit {
   ngOnInit(): void {
     console.log('ActionReplyComponent ngOnInit 2222222', this.action, this.intentSelected);
     // // console.log('ngOnInit panel-response::: ', this.typeAction);
-    this.typeAction = (this.typeAction === TYPE_ACTION.RANDOM_REPLY ? TYPE_ACTION.RANDOM_REPLY : TYPE_ACTION.REPLY);
+    this.typeAction = (this.action._tdActionType === TYPE_ACTION.RANDOM_REPLY ? TYPE_ACTION.RANDOM_REPLY : TYPE_ACTION.REPLY);
     try {
       this.element = ELEMENTS_LIST.find(item => item.type === this.action._tdActionType);
       if(this.action._tdActionTitle && this.action._tdActionTitle != ""){
@@ -112,11 +112,9 @@ export class CdsActionReplyComponent implements OnInit {
     this.intentName = '';
     this.intentNameResult = true;
     this.textGrabbing = false;
-    console.log('actionnnnnnnnnn-->', this.action)
     if (this.action) {
       try {
         this.arrayResponses = this.action.attributes.commands;
-        console.log('arraaaaayyyyy', this.arrayResponses)
       } catch (error) {
         this.logger.log('error:::', error);
       }
@@ -179,7 +177,6 @@ export class CdsActionReplyComponent implements OnInit {
           if(element.message._tdJSONCondition){
             message._tdJSONCondition = element.message._tdJSONCondition
           }
-          console.log('MessageWithWait:::', message);
           this.arrayMessagesWithWait.push(message);
 
           time = 0;

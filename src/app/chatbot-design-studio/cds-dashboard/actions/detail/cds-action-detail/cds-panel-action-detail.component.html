@@ -47,6 +47,13 @@
                         [previewMode]="false">
                     </cds-action-reply>
 
+                    <cds-action-reply *ngSwitchCase="typeAction.RANDOM_REPLY"
+                        class="panel-response"
+                        [intentSelected]="intent"
+                        [action]="action"
+                        [previewMode]="false">
+                    </cds-action-reply>
+
                     <cds-action-intent *ngSwitchCase="typeAction.INTENT"
                         class="panel-response"
                         [intentSelected]="intentSelected"
@@ -85,28 +92,11 @@
                         [previewMode]="false">
                     </cds-action-change-department>
 
-                    
-
-    
-                    <!-- <cds-action-reply *ngSwitchCase="typeAction.RANDOM_REPLY"
-                        class="panel-response"
-                        [typeAction]="typeAction.RANDOM_REPLY"
-                        [reply]="elementSelected"
-                        [intent_display_name]="elementIntentSelected.intent_display_name"
-                        [listOfActions]="listOfActions">
-                    </cds-action-reply> -->
     
                     <!-- <cds-action-web-request *ngSwitchCase="typeAction.WEB_REQUEST"
                         [action]="elementSelected">
                     </cds-action-web-request>
             
-                    
-            
-                    <cds-action-intent *ngSwitchCase="typeAction.INTENT"
-                        class="panel-response"
-                        [action]="elementSelected"
-                        [intents]="listOfActions">
-                    </cds-action-intent>
                 
                     <cds-action-json-condition *ngSwitchCase="typeAction.JSON_CONDITION"
                         [action]="elementSelected"
@@ -125,10 +115,6 @@
                         [action]="elementSelected">
                     </cds-action-delete-variable>
                 
-                    <cds-action-online-agents *ngSwitchCase="typeAction.ONLINE_AGENTS"
-                        [listOfActions] = "listOfActions"    
-                        [action]="elementSelected">
-                    </cds-action-online-agents>
             
                     <cds-action-open-hours *ngSwitchCase="typeAction.OPEN_HOURS"
                         [listOfActions] = "listOfActions"

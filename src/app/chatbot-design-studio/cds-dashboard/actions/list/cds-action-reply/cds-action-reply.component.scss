@@ -121,58 +121,6 @@ $margin-bottom: 15px;
 }
 
 
-/*
-.box-sx {
-    position: relative;
-    display: inline-flex;
-    vertical-align: top;
-    flex-direction: column;
-    width: calc(100% - 100px);
-    max-height: 100%;
-    // height: calc(100vh - 145px);
-    max-height: calc(100% - 130px - $action-description-height - $margin-bottom);
-    overflow: hidden;
-    border-radius: 0.6em;
-    // background-color: rgb($bg-color-card-rgb);
-    margin-left: $margin-left;
-    font-family: 'Poppins','Roboto', 'Arial', sans-serif;
-    color: #394f5a; 
-    font-size: 1em;
-    padding: $padding;
-    .reply-info{
-        color: aliceblue;
-        padding: 10px;
-        font-size: 14px;
-        text-align: center;
-        border: 2px solid #0F172A;
-        border-radius: 10px;
-        margin: 0px 5px 0px;
-        background: #425575;
-    }
-}
-
-.box-dx {
-    display: inline-flex;
-    padding-top: $padding;
-    .panel-tools-response {
-        position: relative;
-        display: inline-flex;
-        vertical-align: top;
-        width: auto;
-        margin-left: 10px;
-        max-height: 100%;
-        height: fit-content;
-        overflow: hidden;
-        border-radius: 0.6em;
-        background-color: $color-withe-hex;
-        font-family: 'Poppins','Roboto', 'Arial', sans-serif;
-        color: $bg-color-dark-hex;
-        font-size: 1em;
-        padding: $padding;
-    }
-}
-
-*/
 .previewMode{
     #scrollMe{
         padding: 0;
@@ -188,6 +136,13 @@ $margin-bottom: 15px;
     .draggable-box{
         padding-bottom: 10px;
         border-bottom: 3px solid #ebe2c6
+    }
+    .reply-info{
+        max-width: calc(100% - 20px);
+        margin: 5px auto;
+        padding: 5px;
+        font-size: .7em;
+        line-height: 16px;
     }
 }
 
@@ -317,4 +272,19 @@ cds-action-reply-redirect,
 cds-action-reply-gallery{
     display: flex;
     flex-direction: column;
+}
+
+
+/*  REMOVE DROP AND MOVE_UP/MOVE_DOWN INDICATORS for RANDOM_REPLY type only */
+cds-action-reply-text.no-controls ::ng-deep,
+cds-action-reply-image.no-controls ::ng-deep,
+cds-action-reply-frame.no-controls ::ng-deep,
+cds-action-reply-redirect.no-controls ::ng-deep,
+cds-action-reply-gallery.no-controls ::ng-deep{
+    .text-editor-drop{
+        display: none;
+    }
+    .control-button:not(.delete){
+        display: none;
+    }
 }
