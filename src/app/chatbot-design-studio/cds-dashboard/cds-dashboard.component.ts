@@ -61,7 +61,7 @@ export class CdsDashboardComponent implements OnInit {
 
   listOfActions: Array<{ name: string, value: string, icon?: string }>;
   listOfVariables: { userDefined: Array<any>, systemDefined: Array<any> };
-  
+
   newIntentName: string;
 
   CREATE_VIEW = false;
@@ -97,7 +97,7 @@ export class CdsDashboardComponent implements OnInit {
   dept_id: string;
   translateparamBotName: any;
 
-  
+
   isOpenPanelButtonConfig: boolean = false;
   isOpenPanelActionDetail: boolean = false;
   buttonSelected: any;
@@ -105,13 +105,13 @@ export class CdsDashboardComponent implements OnInit {
   isOpenPanelActions: boolean = true;
   positionPanelActions: any;
 
-  tiledeskStage: any; 
+  tiledeskStage: any;
   isOpenFloatMenu: boolean = false;
-  positionFloatMenu: any = {'x':0, 'y':0};
+  positionFloatMenu: any = { 'x': 0, 'y': 0 };
   connectorDraft: any = {};
 
   isSaving: boolean = false;
-
+  intentToAddAction: any;
   // isBetaUrl: boolean;
   constructor(
     private router: Router,
@@ -126,7 +126,7 @@ export class CdsDashboardComponent implements OnInit {
     private faqKbService: FaqKbService,
     public dialog: MatDialog,
     private translate: TranslateService
-  ) { 
+  ) {
 
     /** SUBSCRIBE TO THE INTENT LIST */
     /**
@@ -135,6 +135,12 @@ export class CdsDashboardComponent implements OnInit {
      */
     this.subscriptionListOfIntents = this.intentService.getIntents().subscribe(intents => {
       this.listOfIntents = intents;
+      intents.forEach(intent => {
+
+        if (intent.actions) {
+          intent.actions = intent.actions.filter(obj => obj !== null); // patch if action is null
+        }
+      });
       this.updatePanelIntentList = !this.updatePanelIntentList;
       /* variabile booleana aggiunta per far scattare l'onchange nei componenti importati dalla dashboard
       * ngOnChanges funziona bene solo sugli @import degli elementi primitivi!!!  */
@@ -145,7 +151,7 @@ export class CdsDashboardComponent implements OnInit {
     /** SUBSCRIBE TO THE STATE BUTTON PANEL */
     this.controllerService.isOpenButtonPanel$.subscribe((button: Button) => {
       this.buttonSelected = button;
-      if(button){
+      if (button) {
         this.isOpenPanelButtonConfig = true;
       } else {
         this.isOpenPanelButtonConfig = false;
@@ -155,14 +161,14 @@ export class CdsDashboardComponent implements OnInit {
 
     /** SUBSCRIBE TO THE STATE ACTION DETAIL PANEL */
     this.controllerService.isOpenActionDetailPanel$.subscribe((action: Action) => {
-      if(action){
+      if (action) {
         this.isOpenPanelActionDetail = true;
       } else {
         this.isOpenPanelActionDetail = false;
       }
     });
-    
-  } 
+
+  }
 
 
   // SYSTEM FUNCTIONS //
@@ -172,7 +178,7 @@ export class CdsDashboardComponent implements OnInit {
 
   }
 
-  ngAfterViewInit(){
+  ngAfterViewInit() {
     this.stageService.initializeStage();
     this.tiledeskStage = this.stageService.tiledeskStage;
     this.tiledeskStage.setDrawer();
@@ -185,12 +191,12 @@ export class CdsDashboardComponent implements OnInit {
 
 
   /** */
-  addEventListener(){
+  addEventListener() {
     let that = this;
 
     /** LISTNER OF TILEDESK STAGE */
     document.addEventListener(
-      "moved-and-scaled", (e:CustomEvent) => {
+      "moved-and-scaled", (e: CustomEvent) => {
         this.connectorService.tiledeskConnectors.scale = e.detail.scale;
         this.removeConnectorDraftAndCloseFloatMenu();
       },
@@ -198,7 +204,7 @@ export class CdsDashboardComponent implements OnInit {
     );
 
     document.addEventListener(
-      "dragged", (e:CustomEvent) => {
+      "dragged", (e: CustomEvent) => {
         const el = e.detail.element;
         const x = e.detail.x;
         const y = e.detail.y;
@@ -211,8 +217,8 @@ export class CdsDashboardComponent implements OnInit {
 
     /** LISTNER OF TILEDESK CONNECTORS */
     document.addEventListener(
-      "connector-draft-released", (e:CustomEvent) => {
-        if (e.detail.target.classList.contains("tds_container")) {
+      "connector-draft-released", (e: CustomEvent) => {
+        if (e && e.detail && e.detail.target && e.detail.target.classList.contains("tds_container")) {
           // console.log("connector-draft-released event, catched on 'stage'");
           // this.tiledeskConnectors.removeConnectorDraft();
         }
@@ -237,7 +243,7 @@ export class CdsDashboardComponent implements OnInit {
 
 
     document.addEventListener(
-      "connector-created", (e:CustomEvent) => {
+      "connector-created", (e: CustomEvent) => {
         console.log("connector-created:", e);
         const connector = e.detail.connector;
         console.log("connector-created:", connector);
@@ -253,7 +259,7 @@ export class CdsDashboardComponent implements OnInit {
 
 
     document.addEventListener(
-      "connector-deleted", (e:CustomEvent) => {
+      "connector-deleted", (e: CustomEvent) => {
         console.log("connector-deleted:", e);
         const connector = e.detail.connector;
         connector['deleted'] = true;
@@ -265,25 +271,25 @@ export class CdsDashboardComponent implements OnInit {
     );
 
     document.addEventListener(
-      "connector-selected", (e:CustomEvent) => {
+      "connector-selected", (e: CustomEvent) => {
         console.log("connector-selected:", e);
         this.intentService.unselectAction();
       },
       true
     );
-    
-    
+
+
 
     /** LISTNER OF FLOAT MENU */
     /** mouseup */
-    document.addEventListener('mouseup', function() {
+    document.addEventListener('mouseup', function () {
       if (that.isOpenFloatMenu) {
         that.removeConnectorDraftAndCloseFloatMenu();
       }
     });
 
     /** keydown */
-    document.addEventListener('keydown', function(event) {
+    document.addEventListener('keydown', function (event) {
       if (event.key === 'Backspace' || event.key === 'Escape' || event.key === 'Canc' && that.isOpenFloatMenu) {
         that.removeConnectorDraftAndCloseFloatMenu();
         // that.intentService.deleteSelectedAction();
@@ -296,7 +302,7 @@ export class CdsDashboardComponent implements OnInit {
   }
 
 
-  
+
   /**
    * execute Async Functions In Sequence
    * Le funzioni async sono gestite in maniera sincrona ed eseguite in coda
@@ -318,7 +324,7 @@ export class CdsDashboardComponent implements OnInit {
       console.log('Risultato 5:', getBrowserVersion);
       const getAllIntents = await this.intentService.getAllIntents(this.id_faq_kb);
       console.log('Risultato 6:', getAllIntents);
-      if(getTranslations && getUrlParams && getBotById && getCurrentProject && getBrowserVersion && getAllIntents){
+      if (getTranslations && getUrlParams && getBotById && getCurrentProject && getBrowserVersion && getAllIntents) {
         // !!! il valore di listOfIntents è bindato nel costructor con subscriptionListOfIntents !!! // 
       }
     } catch (error) {
@@ -334,13 +340,13 @@ export class CdsDashboardComponent implements OnInit {
   /** START CUSTOM FUNCTIONS 
   /** ************************* **/
 
-   /** refreshIntents
-   * update list of intents, 
-   * update list of actions, 
-   * set drag and listner on intents, 
-   * create connectors
-   */
-   private refreshIntents(){
+  /** refreshIntents
+  * update list of intents, 
+  * update list of actions, 
+  * set drag and listner on intents, 
+  * create connectors
+  */
+  private refreshIntents() {
     this.intentService.setListOfActions(this.listOfIntents);
     this.listOfActions = this.intentService.getListOfActions();
     /** SET DRAG STAGE AND CREATE CONNECTORS */
@@ -351,14 +357,14 @@ export class CdsDashboardComponent implements OnInit {
   }
 
   /** */
-  private removeConnectorDraftAndCloseFloatMenu(){
+  private removeConnectorDraftAndCloseFloatMenu() {
     this.connectorService.tiledeskConnectors.removeConnectorDraft();
     this.isOpenFloatMenu = false;
   }
 
 
   /** GET TRANSLATIONS */
-  private async getTranslations(): Promise<boolean> { 
+  private async getTranslations(): Promise<boolean> {
     return new Promise((resolve, reject) => {
       // this.translateCreateFaqSuccessMsg();
       // this.translateCreateFaqErrorMsg();
@@ -379,7 +385,7 @@ export class CdsDashboardComponent implements OnInit {
    * THE FAQ ID - WHEN THE CALLBACK IS COMPLETED RUN GET-FAQ-BY-ID THAT RETURN THE OBJECT FAQ
    * AND THE FAQ KB ID (THEN USED IN THE GOBACK)
   */
-  private async getUrlParams(): Promise<boolean> { 
+  private async getUrlParams(): Promise<boolean> {
     return new Promise((resolve, reject) => {
       this.route.params.subscribe((params) => {
         this.id_faq_kb = params.faqkbid;
@@ -401,7 +407,7 @@ export class CdsDashboardComponent implements OnInit {
   }
 
   /** GET BOT BY ID */
-  private async getBotById(botid: string): Promise<boolean> { 
+  private async getBotById(botid: string): Promise<boolean> {
     return new Promise((resolve, reject) => {
       this.showSpinner = true;
       this.faqKbService.getBotById(botid).subscribe((chatbot: Chatbot) => {
@@ -444,7 +450,7 @@ export class CdsDashboardComponent implements OnInit {
   }
 
   /** getCurrentProject */
-  private async getCurrentProject(): Promise<boolean> { 
+  private async getCurrentProject(): Promise<boolean> {
     return new Promise((resolve, reject) => {
       this.auth.project_bs.subscribe((project) => {
         if (project) {
@@ -463,7 +469,7 @@ export class CdsDashboardComponent implements OnInit {
   }
 
   /** getBrowserVersion */
-  private async getBrowserVersion(): Promise<boolean> { 
+  private async getBrowserVersion(): Promise<boolean> {
     return new Promise((resolve, reject) => {
       this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
         this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
@@ -489,57 +495,57 @@ export class CdsDashboardComponent implements OnInit {
   /** ************************* **/
 
   /** setDragAndListnerEventToElements */
-  private setDragAndListnerEventToElements(){
+  private setDragAndListnerEventToElements() {
     this.listOfIntents.forEach(intent => {
       this.setDragAndListnerEvent(intent);
     });
   }
 
   /** setDragAndListnerEvent */
-  private setDragAndListnerEvent(intent){
+  private setDragAndListnerEvent(intent) {
     let that = this;
-    if(intent.intent_id){
+    if (intent.intent_id) {
       this.removeListnerEventToElements(intent);
-        try {
-          let elem = document.getElementById(intent.intent_id);  
-          this.tiledeskStage.setDragElement(intent.intent_id);
-          setTimeout(() => {
-            // **************** !!!!!!!! aggiungo listner !!!!!!! *******************//
-            // Aggiungi l'event listener con i parametri
-            elem.addEventListener('mouseup', function() {
-              that.onMouseUpIntent(intent, elem);
-            });
-            // Aggiungi l'event listener con i parametri
-            elem.addEventListener('mousedown', function() {
-              that.onMouseDownIntent(elem);
-            });
-            // Aggiungi l'event listener con i parametri
-            elem.addEventListener('mousemove', function() {
-              that.onMouseMoveIntent(elem);
-            });
-          }, 500);
-        } catch (error) {
-          console.error('ERROR', error);
-        }
+      try {
+        let elem = document.getElementById(intent.intent_id);
+        this.tiledeskStage.setDragElement(intent.intent_id);
+        setTimeout(() => {
+          // **************** !!!!!!!! aggiungo listner !!!!!!! *******************//
+          // Aggiungi l'event listener con i parametri
+          elem.addEventListener('mouseup', function () {
+            that.onMouseUpIntent(intent, elem);
+          });
+          // Aggiungi l'event listener con i parametri
+          elem.addEventListener('mousedown', function () {
+            that.onMouseDownIntent(elem);
+          });
+          // Aggiungi l'event listener con i parametri
+          elem.addEventListener('mousemove', function () {
+            that.onMouseMoveIntent(elem);
+          });
+        }, 500);
+      } catch (error) {
+        console.error('ERROR', error);
+      }
     }
   }
 
   /** */
-  private removeListnerEventToElements(intent){
+  private removeListnerEventToElements(intent) {
     let that = this;
     try {
       let elem = document.getElementById(intent.intent_id);
       setTimeout(() => {
         // **************** !!!!!!!! aggiungo listner !!!!!!! *******************//
-        elem.removeEventListener('mouseup', function() {
+        elem.removeEventListener('mouseup', function () {
           that.onMouseUpIntent(intent, elem);
         });
         // Rimuovi l'event listener con i parametri
-        elem.removeEventListener('mousedown', function() {
+        elem.removeEventListener('mousedown', function () {
           that.onMouseDownIntent(elem);
         });
         // Rimuovi l'event listener con i parametri
-        elem.removeEventListener('mousemove', function() {
+        elem.removeEventListener('mousemove', function () {
           that.onMouseMoveIntent(elem);
         });
       }, 500);
@@ -549,20 +555,20 @@ export class CdsDashboardComponent implements OnInit {
   }
 
   /** */
-  onMouseDownIntent(element): void{
+  onMouseDownIntent(element): void {
     // console.log("onMouseDownIntent:  element: ",element);
-    const x = element.offsetLeft; 
-    const y = element.offsetTop; 
+    const x = element.offsetLeft;
+    const y = element.offsetTop;
     element.style.zIndex = 2;
     // console.log("CHIAMA ON mouseDown x:", x, " y: ",y);
   }
 
   /** */
-  onMouseUpIntent(intent:any, element:any){
-    console.log("onMouseUpIntent: ", intent, " element: ",element);
-    let newPos = {'x':element.offsetLeft, 'y':element.offsetTop};
+  onMouseUpIntent(intent: any, element: any) {
+    console.log("onMouseUpIntent: ", intent, " element: ", element);
+    let newPos = { 'x': element.offsetLeft, 'y': element.offsetTop };
     let pos = intent.attributes.position; // this.intentService.getIntentPosition(intent.id);
-    if(newPos.x != pos.x || newPos.y != pos.y){
+    if (newPos.x != pos.x || newPos.y != pos.y) {
       element.style.zIndex = '1';
       // console.log("setIntentPosition x:", newPos.x, " y: ",newPos.y);
       this.intentService.setIntentPosition(intent.id, newPos);
@@ -572,19 +578,19 @@ export class CdsDashboardComponent implements OnInit {
   }
 
   /** */
-  onMouseMoveIntent(element: any){
+  onMouseMoveIntent(element: any) {
   }
 
 
   /** getIntentPosition: call from html */
-  getIntentPosition(intentId: string){
+  getIntentPosition(intentId: string) {
     return this.intentService.getIntentPosition(intentId);
   }
 
 
   /** */
-  
-  private async createNewIntentWithNewAction(pos, actionType){
+
+  private async createNewIntentWithNewAction(pos, actionType) {
     this.CREATE_VIEW = true;
     console.log('createNewIntentWithNewAction: OK ');
     const action = this.intentService.createNewAction(actionType);
@@ -595,7 +601,7 @@ export class CdsDashboardComponent implements OnInit {
     const newIntent = await this.intentService.saveNewIntent(this.id_faq_kb, this.intentSelected);
     this.intentSelected.id = newIntent.id;
     console.log('creatIntent: OK ', newIntent, pos);
-    if(newIntent){
+    if (newIntent) {
       // !!! il valore di listOfIntents è bindato nel costructor con subscriptionListOfIntents !!! //
       // this.intentService.setIntentPosition(newIntent.id, pos);
       this.setDragAndListnerEvent(this.intentSelected);
@@ -603,7 +609,7 @@ export class CdsDashboardComponent implements OnInit {
     return newIntent;
   }
 
-  private async createNewIntentFromMovedAction(event, pos, action){
+  private async createNewIntentFromMovedAction(event, pos, action) {
     // move action into the stage
     this.CREATE_VIEW = true;
     this.intentSelected = this.intentService.createNewIntent(this.id_faq_kb, action);
@@ -611,14 +617,14 @@ export class CdsDashboardComponent implements OnInit {
     this.intentSelected.attributes.position = pos;
     // this.intentService.setIntentPosition(NEW_POSITION_ID, pos);
     const newIntent = await this.intentService.saveNewIntent(this.id_faq_kb, this.intentSelected);
-    if(newIntent){
+    if (newIntent) {
       this.intentSelected.id = newIntent.id;
       this.intentSelected.intent_id = newIntent.intent_id;
       this.intentService.moveActionFromIntentToStage(event, action);
       // !!! il valore di listOfIntents è bindato nel costructor con subscriptionListOfIntents !!! //
       // this.intentService.setIntentPosition(newIntent.id, pos);
       this.setDragAndListnerEvent(this.intentSelected);
-      
+
     }
     return newIntent;
   }
@@ -627,7 +633,7 @@ export class CdsDashboardComponent implements OnInit {
   /** deleteIntent */
   private async deleteIntent(intent) {
     const deleteIntent = await this.intentService.deleteIntent(intent.id);
-    if(deleteIntent){
+    if (deleteIntent) {
       console.log('deleteIntent:: ', deleteIntent, intent.id);
       this.intentSelected = null;
       this.elementIntentSelected = {};
@@ -652,13 +658,13 @@ export class CdsDashboardComponent implements OnInit {
   }
 
   /** EDIT INTENT  */
-  private async updateIntent(){
-    if(this.isSaving === false){
+  private async updateIntent() {
+    if (this.isSaving === false) {
       setTimeout(async () => {
         this.isSaving = true;
         console.log('******** updateIntent ******** ', this.intentSelected);
         const response = await this.intentService.updateIntent(this.intentSelected);
-        if(response){
+        if (response) {
           this.isSaving = false;
           console.log('updateIntent: OK', this.intentSelected);
         }
@@ -667,23 +673,34 @@ export class CdsDashboardComponent implements OnInit {
   }
 
 
- /** STAR CUSTOM FUNCTIONS */
- private saveIntent(intent: Intent){
-  console.log("********* saveIntent ********* ", intent);
-  this.intentSelected = intent;
-  const intentNameAlreadyCreated = this.listOfIntents.some((el) => {
-    return el.id === this.intentSelected.id;
-  });
-  console.log("********* el.id ********* ", this.CREATE_VIEW, intentNameAlreadyCreated, this.intentSelected.id);
-  if (this.CREATE_VIEW && !intentNameAlreadyCreated) {
-    // this.creatIntent(this.intentSelected);
-  } else {
-    // this.editIntent();
-    this.updateIntent();
+  /** STAR CUSTOM FUNCTIONS */
+  private saveIntent(intent: Intent) {
+    console.log("********* saveIntent ********* ", intent);
+    this.intentSelected = intent;
+    const intentNameAlreadyCreated = this.listOfIntents.some((el) => {
+      return el.id === this.intentSelected.id;
+    });
+    console.log("********* el.id ********* ", this.CREATE_VIEW, intentNameAlreadyCreated, this.intentSelected.id);
+    if (this.CREATE_VIEW && !intentNameAlreadyCreated) {
+      // this.creatIntent(this.intentSelected);
+    } else {
+      // this.editIntent();
+      this.updateIntent();
+    }
   }
-}
 
-  posCenterIntentSelected(intent){
+  showPanelActions(event) {
+    console.log('[CDS DSHBRD] showPanelActions event:: ', event);
+    this.isOpenFloatMenu = true;
+    const pos = {'x': event.x, 'y':event.y}
+    // this.connectorService.tiledeskConnectors.logicPoint(event.dropPoint);
+    this.intentToAddAction = event.intent;
+    this.positionFloatMenu = pos
+    console.log('[CDS DSHBRD] showPanelActions intentToAddAction ', this.intentToAddAction);
+    console.log('[CDS DSHBRD] showPanelActions positionFloatMenu ', this.positionFloatMenu)
+  }
+
+  posCenterIntentSelected(intent) {
     // add class animation
     var stageElement = document.getElementById(intent.intent_id);
     var w = stageElement.offsetWidth;
@@ -707,10 +724,10 @@ export class CdsDashboardComponent implements OnInit {
     // console.log('drop X:', posDrawerElement.left);
     // console.log('drop Y:', posDrawerElement.top);
 
-    let newX = (posDropElement.width/2)-(x+w/2);
+    let newX = (posDropElement.width / 2) - (x + w / 2);
     // console.log('newX:', newX);
 
-    let newY = (posDropElement.height/2)-(y+h/2);
+    let newY = (posDropElement.height / 2) - (y + h / 2);
     // console.log('newX:', newY);
 
     let tcmd = `translate(${newX}px, ${newY}px)`;
@@ -725,16 +742,18 @@ export class CdsDashboardComponent implements OnInit {
     }, 300);
   }
 
-  /** ************************* **/ 
+  /** ************************* **/
   /** END DRAG DROP FUNCTIONS 
   /** ************************* **/
 
   // EVENTS //
 
-  onShowPanelActions(pos){
+  onShowPanelActions(pos) {
     console.log('onShowPanelActions pos:: ', pos);
     this.positionPanelActions = pos;
   }
+
+
 
   /** SIDEBAR OUTPUT EVENTS */
   onClickItemList(event: string) {
@@ -749,7 +768,7 @@ export class CdsDashboardComponent implements OnInit {
     this.router.navigate(['project/' + this.project._id + '/bots/my-chatbots/all']);
     this.hideShowWidget('show');
   }
-  onTestItOut(status){
+  onTestItOut(status) {
     console.log('onTestItOut    -----> ');
     this.IS_OPEN_PANEL_WIDGET = status
   }
@@ -758,18 +777,18 @@ export class CdsDashboardComponent implements OnInit {
   }
 
   /** START EVENTS PANEL ACTIONS */
-  onAddNewAction(action){
+  onAddNewAction(action) {
     this.logger.log('[CDS DSBRD] onAddNewAction ', action)
     this.isOpenActionDrawer = false;
     this.intentSelected.actions.push(action);
     let maxLength = this.intentSelected.actions.length;
-    let index = maxLength-1;
-    let intent_display_name = 'action_'+index;
+    let index = maxLength - 1;
+    let intent_display_name = 'action_' + index;
     // let event = { action: action, index: index, maxLength: maxLength, intent_display_name: intent_display_name };
     console.log('onAddNewAction', action.id);
     this.idElementOfIntentSelected = intent_display_name;
   }
-  
+
   /** END EVENTS PANEL ACTIONS */
 
 
@@ -778,18 +797,33 @@ export class CdsDashboardComponent implements OnInit {
   /** START EVENTS PANEL INTENT */
   /** chiamata quando trascino un connettore sullo stage e creo un intent al volo */
   async onAddingActionToStage(event) {
-    console.log('onAddingActionToStage:: ', event);
+    console.log('[CDS-DSHBRD] onAddingActionToStage:: ', event);
     const actionType = event.type;
-    const toPoint = this.connectorDraft.toPoint;
-    toPoint.x = toPoint.x - 132;
-    const fromPoint = this.connectorDraft.fromPoint;
-    const fromId = this.connectorDraft.fromId;
-    const newIntent = await this.createNewIntentWithNewAction(toPoint, actionType);
-    if(newIntent){
-      const toId = newIntent.intent_id;
-      this.connectorService.tiledeskConnectors.createConnector(fromId, toId, fromPoint, toPoint);
+    if (this.connectorDraft.toPoint) {
+      const toPoint = this.connectorDraft.toPoint;
+      toPoint.x = toPoint.x - 132;
+      const fromPoint = this.connectorDraft.fromPoint;
+      const fromId = this.connectorDraft.fromId;
+      const newIntent = await this.createNewIntentWithNewAction(toPoint, actionType);
+      if (newIntent) {
+        const toId = newIntent.intent_id;
+        this.connectorService.tiledeskConnectors.createConnector(fromId, toId, fromPoint, toPoint);
+      }
+      this.removeConnectorDraftAndCloseFloatMenu();
+    } 
+    else {
+     console.log('HERE YES')
+     const newAction = this.intentService.createNewAction(event.type)
+     console.log('[CDS-DSHBRD] newAction:: ', newAction);
+     console.log('[CDS-DSHBRD] this.intentSelected:: ', this.intentSelected);
+     this.intentToAddAction.actions.push(newAction);
+     this.updateIntent()
+    //  this.intentSelected.actions.push(newAction);
+  
+    // //  crea nuova action
+    // // add array di action dell'intent
+    // // update intent
     }
-    this.removeConnectorDraftAndCloseFloatMenu();
   }
 
 
@@ -800,11 +834,11 @@ export class CdsDashboardComponent implements OnInit {
     let pos = this.connectorService.tiledeskConnectors.logicPoint(event.dropPoint);
     pos.x = pos.x - 132;
     let action: any = event.previousContainer.data[event.previousIndex];
-    if( action.value && action.value.type){
+    if (action.value && action.value.type) {
       // dragging a new action into the stage
       const actionType = action.value.type;
       await this.createNewIntentWithNewAction(pos, actionType);
-    } else if(action){
+    } else if (action) {
       // dragging an action from another intent, into the stage
       await this.createNewIntentFromMovedAction(event, pos, action);
     }
@@ -826,7 +860,7 @@ export class CdsDashboardComponent implements OnInit {
   //   await this.addNewIntent(pos, actionType);
   //   // const idNewIntent = this.addNewIntent(pos, actionType);
   // }
- 
+
 
 
 
@@ -845,7 +879,7 @@ export class CdsDashboardComponent implements OnInit {
     })
   }
 
- 
+
 
   onOpenActionDrawer(_isOpenActioDrawer: boolean) {
     this.logger.log('[CDS DSBRD] onOpenActionDrawer - isOpenActioDrawer ', _isOpenActioDrawer)
@@ -861,9 +895,9 @@ export class CdsDashboardComponent implements OnInit {
   }
 
 
-  onActionSelected(event){
-    
-    console.log('-----> actionSelected: ',event);
+  onActionSelected(event) {
+
+    console.log('-----> actionSelected: ', event);
 
     this.controllerService.openActionDetailPanel(this.buttonSelected);
     this.logger.log('[CDS DSBRD] onActionSelected from PANEL INTENT - action ', event.action, event.index)
@@ -910,7 +944,7 @@ export class CdsDashboardComponent implements OnInit {
 
 
   /** START EVENTS PANEL INTENT LIST */
-  onSelectIntent(intent: Intent) { 
+  onSelectIntent(intent: Intent) {
     console.log('onSelectIntent::: ', intent);
     this.EDIT_VIEW = true;
     this.intentSelected = intent;
@@ -928,7 +962,7 @@ export class CdsDashboardComponent implements OnInit {
     // this.router.navigate(['project/' + this.projectID + '/cds/' + this.id_faq_kb + '/intent/' + this.intentSelected.id], { replaceUrl: true })
   }
 
-  
+
 
 
   onCreateIntentBtnClicked() {
@@ -976,10 +1010,10 @@ export class CdsDashboardComponent implements OnInit {
 
 
 
-   
+
   /** START EVENTS PANEL INTENT DETAIL */
-  onCloseAndSavePanelIntentDetail(intentSelected: any){
-    if(intentSelected && intentSelected != null){
+  onCloseAndSavePanelIntentDetail(intentSelected: any) {
+    if (intentSelected && intentSelected != null) {
       this.onSaveIntent(intentSelected);
       this.isIntentElementSelected = false;
     } else {
@@ -988,13 +1022,13 @@ export class CdsDashboardComponent implements OnInit {
     // this.isIntentElementSelected = false;
   }
 
-  onClickedInsidePanelIntentDetail(){
+  onClickedInsidePanelIntentDetail() {
     this.isClickedInsidePanelIntentDetail = true;
   }
 
-  onClickPanelIntentDetail(){
+  onClickPanelIntentDetail() {
     // console.log('dismiss panel intent detail', this.isClickedInsidePanelIntentDetail);
-    if(this.isClickedInsidePanelIntentDetail === false){
+    if (this.isClickedInsidePanelIntentDetail === false) {
       // this.isIntentElementSelected = false;
       this.onOpenDialog();
     } else {
@@ -1002,16 +1036,16 @@ export class CdsDashboardComponent implements OnInit {
     }
   }
 
-  onOpenDialog() { 
+  onOpenDialog() {
     var that = this;
     const dialogRef = this.dialog.open(DialogYesNoComponent, {
       panelClass: 'custom-dialog-container',
-      data: {title: 'Unsaved changes', text:'Are you sure you want to leave without saving your changes?', yes:'Leave', no:'Cancel'}
+      data: { title: 'Unsaved changes', text: 'Are you sure you want to leave without saving your changes?', yes: 'Leave', no: 'Cancel' }
     });
     dialogRef.afterClosed().subscribe(result => {
       // console.log(`Dialog result: ${result}`);
       this.idElementOfIntentSelected = null;
-      if(result && result !== undefined && result !== false){
+      if (result && result !== undefined && result !== false) {
         that.isIntentElementSelected = false;
       } else {
         that.isIntentElementSelected = true;
@@ -1022,32 +1056,32 @@ export class CdsDashboardComponent implements OnInit {
   }
   /** END EVENTS PANEL INTENT DETAIL  */
 
-  
-  
 
- 
 
- 
+
+
+
+
 
   /** END CUSTOM FUNCTIONS */
 
 
 
-  onClosePanel(){
+  onClosePanel() {
 
   }
 
 
-  onSaveButton(button:Button){
+  onSaveButton(button: Button) {
     const arrayId = button.idConnector.split("/");
-    const idConnector = arrayId[0]?arrayId[0]:null;
+    const idConnector = arrayId[0] ? arrayId[0] : null;
     console.log('onSaveButton: ', idConnector, this.listOfIntents);
-    if(idConnector){
+    if (idConnector) {
       this.intentSelected = this.listOfIntents.find(obj => obj.intent_id === idConnector);
       console.log('onSaveButton: ', this.intentSelected);
       this.updateIntent();
     }
   }
-  
+
 
 }

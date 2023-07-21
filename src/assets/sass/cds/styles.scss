@@ -87,6 +87,8 @@ emoji-mart {
     display: flex;
     align-items: center;
     gap: 6px;
+    height: 21px;
+    flex-direction: row;
 }
 
 .action-row-left {
@@ -94,10 +96,18 @@ emoji-mart {
 }
 
 .action-row-right {
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 400;
     color: $brown-85;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
+
+.action-row-right.empty {
+    color: #ff4000
+}
+
 .action-row .action-row-left svg {
     fill: $brown-85;
 }

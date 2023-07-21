@@ -1,9 +1,9 @@
-import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges} from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges, ViewChild, ElementRef, OnChanges } from '@angular/core';
 import { Form, Intent } from 'app/models/intent-model';
 
 import { ACTIONS_LIST, TYPE_ACTION, patchActionId } from 'app/chatbot-design-studio/utils';
 import { LoggerService } from 'app/services/logger/logger.service';
-import { IntentService } from 'app/chatbot-design-studio/services/intent.service'; 
+import { IntentService } from 'app/chatbot-design-studio/services/intent.service';
 // import { ControllerService } from 'app/chatbot-design-studio/services/controller.service';
 import { ConnectorService } from 'app/chatbot-design-studio/services/connector.service';
 
@@ -34,7 +34,7 @@ export enum HAS_SELECTED_TYPE {
 })
 
 
-export class CdsIntentComponent implements OnInit {
+export class CdsIntentComponent implements OnInit, OnChanges {
   @Input() intent: Intent;
 
   @Output() questionSelected = new EventEmitter(); // !!! SI PUO' ELIMINARE
@@ -42,6 +42,7 @@ export class CdsIntentComponent implements OnInit {
   @Output() actionSelected = new EventEmitter(); // !!! SI PUO' ELIMINARE
 
   @Output() showPanelActions = new EventEmitter(); // nk
+  @ViewChild('openActionMenuBtn', { static: false }) openActionMenuBtnRef: ElementRef;
   // intentElement: any;
   // idSelectedAction: string;
   // form: Form;
@@ -57,7 +58,7 @@ export class CdsIntentComponent implements OnInit {
   isOpen: boolean = true;
   menuType: string = 'action';
   positionMenu: any;
-  
+
 
 
   constructor(
@@ -66,28 +67,30 @@ export class CdsIntentComponent implements OnInit {
     private connectorService: ConnectorService
     // private controllerService: ControllerService,
 
-    
-    
+
+
   ) {
     /** SUBSCRIBE TO THE INTENT CREATED OR UPDATED */
     this.intentService.intent.subscribe(intent => {
-      if(intent && this.intent && intent.intent_id === this.intent.intent_id ){
+      if (intent && this.intent && intent.intent_id === this.intent.intent_id) {
         this.intent = intent;
         this.intentActionList = this.intent.actions;
-        console.log('intent created / updated ::: ',  this.intent);
+        console.log('intent created / updated ::: ', this.intent);
       }
     });
-   }
+  }
 
-  ngOnInit(): void { 
+  ngOnInit(): void {
     // console.log('CdsPanelIntentComponent ngAfterViewInit-->');
     this.setIntentSelected();
-    this.positionMenu['x'] = "10px"
-    this.positionMenu['y'] = "10px"
+  }
+
+  ngOnChanges() {
+    console.log('[CDS-INTENT] intent ', this.intent)
   }
 
   /** CUSTOM FUNCTIONS  */
-  private setIntentSelected(){
+  private setIntentSelected() {
     this.intentActionList = null;
     try {
       if (this.intent) {
@@ -117,10 +120,10 @@ export class CdsIntentComponent implements OnInit {
    * retrocompatibility patch.
    * Check if the action has a ._tdActionId attribute
    * otherwise it generates it on the fly */
-  private patchAllActionsId(){
-    if(this.intentActionList && this.intentActionList.length>0){
-      this.intentActionList.forEach(function(action, index, object) {
-        if(!action._tdActionId){
+  private patchAllActionsId() {
+    if (this.intentActionList && this.intentActionList.length > 0) {
+      this.intentActionList.forEach(function (action, index, object) {
+        if (!action._tdActionId) {
           object[index] = patchActionId(action);
         }
       });
@@ -131,12 +134,12 @@ export class CdsIntentComponent implements OnInit {
    * patchAttributesPosition
    * retrocompatibility patch.
    */
-  private patchAttributesPosition(){
-    if(!this.intent.attributes || !this.intent.attributes.position){
+  private patchAttributesPosition() {
+    if (!this.intent.attributes || !this.intent.attributes.position) {
       this.intent['attributes'] = {};
     }
-    if(!this.intent.attributes.position){
-      this.intent.attributes['position'] = {'x': 0, 'y':0};
+    if (!this.intent.attributes.position) {
+      this.intent.attributes['position'] = { 'x': 0, 'y': 0 };
     }
   }
 
@@ -144,7 +147,7 @@ export class CdsIntentComponent implements OnInit {
   /** getActionParams
    * Get action parameters from a map to create the header (title, icon) 
    * */
-  getActionParams(action){
+  getActionParams(action) {
     const enumKeys = Object.keys(TYPE_ACTION);
     let keyAction = '';
     try {
@@ -165,9 +168,9 @@ export class CdsIntentComponent implements OnInit {
    * service updateIntent is async
    * !!! the response from the service is NOT handled!!!
   */
-  private async updateIntent(){
+  private async updateIntent() {
     const response = await this.intentService.updateIntent(this.intent);
-    if(response){
+    if (response) {
       console.log('updateIntent: ', this.intent);
     }
   }
@@ -184,7 +187,7 @@ export class CdsIntentComponent implements OnInit {
     this.elementTypeSelected = elementSelected;
     // this.isIntentElementSelected = true;
     this.questionSelected.emit(this.intent.question);
-    
+
     // let elementsWithActiveClass = Array.from(document.getElementsByClassName('cds-action-active'));
     // this.logger.log('[PANEL INTENT] onActionSelected elementsWithActiveClass', elementsWithActiveClass)
     // if (elementsWithActiveClass.length != 0) {
@@ -222,7 +225,7 @@ export class CdsIntentComponent implements OnInit {
    * onKeydown
    * delete selected action by keydown backspace
    * */
-  onKeydown(event){
+  onKeydown(event) {
     console.log('onKeydown: ', event);
     if (event.key === 'Backspace' || event.key === 'Escape' || event.key === 'Canc') {
       this.intentService.deleteSelectedAction();
@@ -232,15 +235,15 @@ export class CdsIntentComponent implements OnInit {
   /** !!! IMPORTANT 
    * when the drag of an action starts, I save the starting intent. 
    * Useful in case I move an action between different intents 
-  * */ 
-  onDragStarted(event, previousIntentId){
+  * */
+  onDragStarted(event, previousIntentId) {
     console.log('onDragStarted: ', previousIntentId);
     this.intentService.setPreviousIntentId(previousIntentId);
   }
 
   /** onDragEnded
    * get the action moved and update its connectors */
-  onDragEnded(event){
+  onDragEnded(event) {
     console.log('onDragEnded: ', event);
     const fromEle = document.getElementById(this.intent.intent_id);
     this.connectorService.movedConnector(fromEle);
@@ -262,10 +265,10 @@ export class CdsIntentComponent implements OnInit {
     } else {
       try {
         let action: any = event.previousContainer.data[event.previousIndex];
-        if(action._tdActionType){
+        if (action._tdActionType) {
           // moving action from another intent
           this.intentService.moveActionBetweenDifferentIntents(event, action, this.intent.intent_id);
-        } else if(action.value && action.value.type) {
+        } else if (action.value && action.value.type) {
           // moving new action in intent from panel elements
           this.intentService.moveNewActionIntoIntent(event, action, this.intent.intent_id);
         }
@@ -276,7 +279,7 @@ export class CdsIntentComponent implements OnInit {
     // update the intent connectors
     const fromEle = document.getElementById(this.intent.intent_id);
     this.connectorService.movedConnector(fromEle);
-  }  
+  }
 
   /**  onUpdateAndSaveAction: 
    * function called by all actions in @output whenever they are modified!
@@ -284,16 +287,24 @@ export class CdsIntentComponent implements OnInit {
    * 2 - update intent
    * */
   onUpdateAndSaveAction() {
-    console.log('[CDS-INTENT] onUpdateAndSaveAction:::: ' , this.intent, this.intent.actions);
+    console.log('[CDS-INTENT] onUpdateAndSaveAction:::: ', this.intent, this.intent.actions);
     const fromEle = document.getElementById(this.intent.intent_id);
     this.connectorService.movedConnector(fromEle);
     this.updateIntent();
   }
 
 
-  openActionMenu() {
-    let pos = {'x': -100, 'y': -100 }
-    this.showPanelActions.emit(pos);
+  openActionMenu(intent) {
+
+    console.log('[CDS-INTENT] openActionMenu > intent ', intent)
+    const openActionMenuElm = this.openActionMenuBtnRef.nativeElement.getBoundingClientRect()
+    let buttonXposition = openActionMenuElm.x - 370
+    let buttonYposition = openActionMenuElm.y
+    console.log('[CDS-INTENT] openActionMenu > openActionMenuBtnRef ', openActionMenuElm)
+    console.log('[CDS-INTENT] openActionMenu > buttonXposition ', buttonXposition)
+    const data = { 'x': buttonXposition, 'y': buttonYposition, 'intent': intent};
+    this.showPanelActions.emit(data);
+
   }
 
 }

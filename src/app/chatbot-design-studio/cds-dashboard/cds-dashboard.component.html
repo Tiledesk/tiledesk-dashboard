@@ -50,7 +50,8 @@
                     [style.top.px]="getIntentPosition(intent.id).y" 
                     [style.left.px]="getIntentPosition(intent.id).x" 
                     [intent]="intent"
-                    (actionSelected)=onActionSelected($event)>
+                    (actionSelected)=onActionSelected($event)
+                    (showPanelActions)="showPanelActions($event)">
                 </cds-intent>
                 <!-- 
                     (selectAction)=onSelectAction($event) 
