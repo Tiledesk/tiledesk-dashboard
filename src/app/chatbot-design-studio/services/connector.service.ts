@@ -29,9 +29,10 @@ export class ConnectorService {
     intents.forEach(intent => {
       if(intent.actions){
         intent.actions.forEach(action => {
-
+          console.log('createConnectors:: ACTION ', action);
           /**  INTENT */
           if(action._tdActionType === TYPE_ACTION.INTENT){
+            console.log('intent_display_name', intent.intent_display_name);
             if(action.intentName && action.intentName !== ''){
               const idConnectorFrom = intent.intent_id+'/'+action._tdActionId;
               const idConnectorTo = action.intentName;

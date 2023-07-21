@@ -678,6 +678,11 @@ export class CdsDashboardComponent implements OnInit {
   posCenterIntentSelected(intent){
     // add class animation
     var stageElement = document.getElementById(intent.intent_id);
+    // let pos = {'x': stageElement.offsetLeft, 'y': stageElement.offsetTop };
+    // console.log('posCenterIntentSelected::: ', pos);
+    this.stageService.centerStageOnPosition(stageElement);
+    return;
+
     var w = stageElement.offsetWidth;
     var h = stageElement.offsetHeight;
     var x = stageElement.offsetLeft;
@@ -916,8 +921,9 @@ export class CdsDashboardComponent implements OnInit {
       this.elementIntentSelected['type'] = '';
       this.elementIntentSelected['element'] = null;
     }
+    
+    this.intentService.selectIntent(intent.intent_id);
     this.posCenterIntentSelected(intent);
-    this.intentService.selectIntent(this.intent_id)
     // this.router.navigate(['project/' + this.projectID + '/cds/' + this.id_faq_kb + '/intent/' + this.intentSelected.id], { replaceUrl: true })
   }
 
