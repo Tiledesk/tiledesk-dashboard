@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ActionClose } from 'app/models/intent-model';
 
 @Component({
-  selector: 'cds-action-close',
+  selector: 'cds-action-close-2',
   templateUrl: './action-close.component.html',
   styleUrls: ['./action-close.component.scss']
 })

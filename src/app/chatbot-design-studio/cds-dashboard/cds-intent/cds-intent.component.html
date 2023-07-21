@@ -56,7 +56,7 @@
                     (onClickControl)="onClickControl($event, action, i)">
                 </cds-action-controls>
 
-                
+
                 <cds-action-reply *ngSwitchCase="TYPE_ACTION.REPLY" 
                     class="panel-response" 
                     [intentSelected]="intent"
@@ -111,7 +111,9 @@
                     (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-wait>
 
-                
+                <cds-action-close *ngSwitchCase="TYPE_ACTION.CLOSE"
+                    [action]="action">
+                </cds-action-close>
 
                 
 

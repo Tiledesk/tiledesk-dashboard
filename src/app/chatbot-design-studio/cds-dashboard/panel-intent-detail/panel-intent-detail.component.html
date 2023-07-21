@@ -36,21 +36,21 @@
             <div *ngFor="let item of elementSelectedMaxLength, let i = index" >
                 <div *ngIf="i === elementSelectedIndex" [ngSwitch]="elementSelected._tdActionType">
     
-                    <cds-action-reply *ngSwitchCase="typeAction.REPLY"
+                    <cds-action-reply-2 *ngSwitchCase="typeAction.REPLY"
                         class="panel-response"
                         [typeAction]="typeAction.REPLY"
                         [reply]="elementSelected"
                         [intent_display_name]="elementIntentSelected.intent_display_name"
                         [listOfActions]="listOfActions">
-                    </cds-action-reply>
+                    </cds-action-reply-2>
     
-                    <cds-action-reply *ngSwitchCase="typeAction.RANDOM_REPLY"
+                    <cds-action-reply-2 *ngSwitchCase="typeAction.RANDOM_REPLY"
                         class="panel-response"
                         [typeAction]="typeAction.RANDOM_REPLY"
                         [reply]="elementSelected"
                         [intent_display_name]="elementIntentSelected.intent_display_name"
                         [listOfActions]="listOfActions">
-                    </cds-action-reply>
+                    </cds-action-reply-2>
     
                     <cds-action-web-request *ngSwitchCase="typeAction.WEB_REQUEST"
                         [action]="elementSelected">
@@ -115,9 +115,9 @@
                         [action]="elementSelected">
                     </cds-action-agent> -->
     
-                    <cds-action-close *ngSwitchCase="typeAction.CLOSE"
+                    <cds-action-close-2 *ngSwitchCase="typeAction.CLOSE"
                         [action]="elementSelected">
-                    </cds-action-close>
+                    </cds-action-close-2>
     
                 </div>
             </div>

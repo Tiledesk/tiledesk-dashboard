@@ -92,7 +92,12 @@
                         [previewMode]="false">
                     </cds-action-change-department>
 
-    
+                    <cds-action-close *ngSwitchCase="typeAction.CLOSE"
+                        class="panel-response"    
+                        [action]="elementSelected"
+                        [previewMode]="false">
+                    </cds-action-close>
+
                     <!-- <cds-action-web-request *ngSwitchCase="typeAction.WEB_REQUEST"
                         [action]="elementSelected">
                     </cds-action-web-request>
@@ -135,11 +140,7 @@
     
                     <cds-action-agent *ngSwitchCase="typeAction.AGENT"
                         [action]="elementSelected">
-                    </cds-action-agent>
-    
-                    <cds-action-close *ngSwitchCase="typeAction.CLOSE"
-                        [action]="elementSelected">
-                    </cds-action-close> -->
+                    </cds-action-agent> -->
     
                 </div>
             </div>

@@ -139,12 +139,14 @@ import { CdsActionEmailComponent } from './cds-dashboard/actions/list/cds-action
 import { CdsActionWaitComponent } from './cds-dashboard/actions/list/cds-action-wait/cds-action-wait.component';
 import { CdsActionAgentHandoffComponent } from './cds-dashboard/actions/list/cds-action-agent-handoff/cds-action-agent-handoff.component';
 import { CdsActionChangeDepartmentComponent } from './cds-dashboard/actions/list/cds-action-change-department/cds-action-change-department.component';
+import { CdsActionCloseComponent } from './cds-dashboard/actions/list/cds-action-close/cds-action-close.component';
 
 
 //CDS PANELS
 import { CdsActionDetailPanelComponent } from './cds-dashboard/actions/detail/cds-action-detail/cds-panel-action-detail.component';
 import { CdsPanelWidgetComponent } from './cds-dashboard/cds-panel-widget/cds-panel-widget.component';
 import { CdsPanelButtonConfigurationComponent } from './cds-dashboard/cds-panel-button-configuration/cds-panel-button-configuration.component';
+
 import { CdsActionArrowComponent } from './cds-dashboard/actions/shared/cds-action-controls/cds-action-arrow/cds-action-arrow.component';
 import { CdsActionControlsComponent } from './cds-dashboard/actions/shared/cds-action-controls/cds-action-controls/cds-action-controls.component';
 // import { CdsActionAddActionComponent } from './cds-dashboard/actions/shared/cds-action-controls/cds-action-add-action/cds-action-add-action.component';
@@ -239,6 +241,7 @@ import { CdsActionControlsComponent } from './cds-dashboard/actions/shared/cds-a
     CdsActionEmailComponent,
     CdsActionIntentComponent,
     CdsActionChangeDepartmentComponent,
+    CdsActionCloseComponent,
     // action REPLY elements: start //
     CdsActionReplyToolsComponent,
     CdsActionReplyTextComponent,
