@@ -140,6 +140,7 @@ import { CdsActionWaitComponent } from './cds-dashboard/actions/list/cds-action-
 import { CdsActionAgentHandoffComponent } from './cds-dashboard/actions/list/cds-action-agent-handoff/cds-action-agent-handoff.component';
 import { CdsActionChangeDepartmentComponent } from './cds-dashboard/actions/list/cds-action-change-department/cds-action-change-department.component';
 import { CdsActionCloseComponent } from './cds-dashboard/actions/list/cds-action-close/cds-action-close.component';
+import { CdsActionOpenHoursComponent } from './cds-dashboard/actions/list/cds-action-open-hours/cds-action-open-hours.component';
 
 
 //CDS PANELS
@@ -242,6 +243,7 @@ import { CdsActionControlsComponent } from './cds-dashboard/actions/shared/cds-a
     CdsActionIntentComponent,
     CdsActionChangeDepartmentComponent,
     CdsActionCloseComponent,
+    CdsActionOpenHoursComponent,
     // action REPLY elements: start //
     CdsActionReplyToolsComponent,
     CdsActionReplyTextComponent,

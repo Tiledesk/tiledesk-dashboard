@@ -74,6 +74,13 @@
                         [previewMode]="false">
                     </cds-action-online-agents>
 
+                    <cds-action-open-hours *ngSwitchCase="typeAction.OPEN_HOURS"
+                        class="panel-response"   
+                        [intentSelected]="intent"
+                        [action]="elementSelected"
+                        [previewMode]="false">
+                    </cds-action-open-hours>
+
                     <cds-action-agent *ngSwitchCase="typeAction.AGENT"
                         class="panel-response"    
                         [action]="elementSelected"

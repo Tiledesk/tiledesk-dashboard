@@ -4,7 +4,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { LoggerService } from 'app/services/logger/logger.service';
 
 @Component({
-  selector: 'cds-action-open-hours',
+  selector: 'cds-action-open-hours-2',
   templateUrl: './action-open-hours.component.html',
   styleUrls: ['./action-open-hours.component.scss']
 })

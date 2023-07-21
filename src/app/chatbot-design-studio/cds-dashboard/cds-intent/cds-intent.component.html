@@ -105,6 +105,14 @@
                     (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-online-agents>
 
+                <cds-action-open-hours *ngSwitchCase="TYPE_ACTION.OPEN_HOURS"
+                    class="panel-response"
+                    [connectorChanged]="connectorChanged"    
+                    [intentSelected]="intent"
+                    [action]="action"
+                    (updateAndSaveAction)="onUpdateAndSaveAction($event)">
+                </cds-action-open-hours>
+
                 <cds-action-wait *ngSwitchCase="TYPE_ACTION.WAIT" 
                     class="panel-response"
                     [action]="action" 
