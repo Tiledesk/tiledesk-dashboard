@@ -162,15 +162,18 @@ export class IntentService {
   // START INTENT FUNCTIONS //
 
   /** GET ALL INTENTS  */
-  public async getAllIntents(id_faq_kb): Promise<boolean> { 
+  public async getAllIntents(id_faq_kb): Promise<boolean> {
     return new Promise((resolve, reject) => {
       this.faqService._getAllFaqByFaqKbId(id_faq_kb).subscribe((faqs: Intent[]) => {
+        // console.log('getAllIntents: ', faqs);
         if (faqs) {
-          // console.log('getAllIntents: ', faqs);
           let arrayOfIntents = JSON.parse(JSON.stringify(faqs));
           this.intents.next(arrayOfIntents);
           resolve(true);
-        } 
+        } else {
+          // console.log('EMPTY: ', faqs);
+          this.intents.next([]);
+        }
       }, (error) => {
         console.error('ERROR: ', error);
         reject(false);

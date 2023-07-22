@@ -23,8 +23,13 @@ export class ConnectorService {
     this.tiledeskConnectors.mousedown(document);
   }
 
+  resetConnectors(){
+
+  }
+
   /**  create Connectors */
   createConnectors(intents){
+    // this.deleteAllConnectors();
     console.log('-----> createConnectors::: ', intents);
     intents.forEach(intent => {
       if(intent.actions){
@@ -128,6 +133,12 @@ export class ConnectorService {
     }
   }
   
+
+  /** */
+  deleteAllConnectors(){
+    console.log('deleteAllConnectors:: ');
+    this.tiledeskConnectors.deleteAllConnectors();
+  }
   /** */
   deleteConnector(connectorID){
     this.tiledeskConnectors.deleteConnector(connectorID);

@@ -128,6 +128,15 @@ export class TiledeskConnectors {
 
     }
 
+
+    deleteAllConnectors() {
+      console.log('deleteAllConnectors::: ',  this.connectors);
+      for (const [key, connector] of Object.entries(this.connectors)) {
+        this.deleteConnector(connector.id);
+      };
+    }
+    
+
     deleteConnector(connectorId) {
       console.log('connectorId: ', connectorId);
       console.log('this.blocks: ', this.blocks);

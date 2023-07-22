@@ -290,7 +290,9 @@ export class CdsDashboardComponent implements OnInit {
   }
 
   ngOnDestroy() {
+    console.log("•••• On Destroy ••••")
     this.subscriptionListOfIntents.unsubscribe();
+    this.connectorService.deleteAllConnectors();
   }
   
   /**
@@ -312,6 +314,7 @@ export class CdsDashboardComponent implements OnInit {
       console.log('Risultato 4:', getCurrentProject);
       const getBrowserVersion = await this.getBrowserVersion();
       console.log('Risultato 5:', getBrowserVersion);
+      this.listOfIntents = [];
       const getAllIntents = await this.intentService.getAllIntents(this.id_faq_kb);
       console.log('Risultato 6:', getAllIntents);
       if(getTranslations && getUrlParams && getBotById && getCurrentProject && getBrowserVersion && getAllIntents){
