@@ -162,15 +162,18 @@ export class IntentService {
   // START INTENT FUNCTIONS //
 
   /** GET ALL INTENTS  */
-  public async getAllIntents(id_faq_kb): Promise<boolean> { 
+  public async getAllIntents(id_faq_kb): Promise<boolean> {
     return new Promise((resolve, reject) => {
       this.faqService._getAllFaqByFaqKbId(id_faq_kb).subscribe((faqs: Intent[]) => {
+        // console.log('getAllIntents: ', faqs);
         if (faqs) {
-          // console.log('getAllIntents: ', faqs);
           let arrayOfIntents = JSON.parse(JSON.stringify(faqs));
           this.intents.next(arrayOfIntents);
           resolve(true);
-        } 
+        } else {
+          // console.log('EMPTY: ', faqs);
+          this.intents.next([]);
+        }
       }, (error) => {
         console.error('ERROR: ', error);
         reject(false);
@@ -403,7 +406,11 @@ export class IntentService {
     this.actionSelectedID = null;
 
     this.selectedIntent = this.intents.getValue().find(intent => intent.intent_id === intentID);
-    this.listActions = this.selectedIntent.actions;
+    
+    console.log('[INTENT SERVICE] --> intentID', intentID)
+    console.log('[INTENT SERVICE] --> selectIntent', this.selectedIntent)
+    if(!this.selectedIntent)return;
+    this.listActions = this.selectedIntent.actions?this.selectedIntent.actions:null;
     this.selectedAction = null;
     this.intent.next(this.selectedIntent)
   }

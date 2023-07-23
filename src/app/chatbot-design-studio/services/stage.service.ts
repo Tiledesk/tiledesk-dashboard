@@ -16,6 +16,11 @@ export class StageService {
   }
 
 
+  centerStageOnPosition(pos){
+    this.tiledeskStage.centerStageOnPosition(pos);
+  }
+
+
   // getScale(){
   //   return this.tiledeskStage.scale;
   // }

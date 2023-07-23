@@ -296,7 +296,9 @@ export class CdsDashboardComponent implements OnInit {
   }
 
   ngOnDestroy() {
+    console.log("•••• On Destroy ••••")
     this.subscriptionListOfIntents.unsubscribe();
+    this.connectorService.deleteAllConnectors();
   }
   
   /**
@@ -318,6 +320,7 @@ export class CdsDashboardComponent implements OnInit {
       console.log('Risultato 4:', getCurrentProject);
       const getBrowserVersion = await this.getBrowserVersion();
       console.log('Risultato 5:', getBrowserVersion);
+      this.listOfIntents = [];
       const getAllIntents = await this.intentService.getAllIntents(this.id_faq_kb);
       console.log('Risultato 6:', getAllIntents);
       if (getTranslations && getUrlParams && getBotById && getCurrentProject && getBrowserVersion && getAllIntents) {
@@ -695,6 +698,11 @@ export class CdsDashboardComponent implements OnInit {
   posCenterIntentSelected(intent) {
     // add class animation
     var stageElement = document.getElementById(intent.intent_id);
+    // let pos = {'x': stageElement.offsetLeft, 'y': stageElement.offsetTop };
+    // console.log('posCenterIntentSelected::: ', pos);
+    this.stageService.centerStageOnPosition(stageElement);
+    return;
+
     var w = stageElement.offsetWidth;
     var h = stageElement.offsetHeight;
     var x = stageElement.offsetLeft;
@@ -950,6 +958,7 @@ export class CdsDashboardComponent implements OnInit {
       this.elementIntentSelected['type'] = '';
       this.elementIntentSelected['element'] = null;
     }
+    
     this.posCenterIntentSelected(intent);
     this.intentService.selectIntent(intent.intent_id)
     // this.router.navigate(['project/' + this.projectID + '/cds/' + this.id_faq_kb + '/intent/' + this.intentSelected.id], { replaceUrl: true })
