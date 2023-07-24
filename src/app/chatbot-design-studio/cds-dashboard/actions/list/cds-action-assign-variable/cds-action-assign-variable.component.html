@@ -1,0 +1,48 @@
+<div *ngIf="previewMode" class="cds-action-preview">
+
+
+    <div class="set-attribute-destination-wpr">
+        <div class="set-attribute-label">Assign to:</div>
+        <div class="set-attribute-value"> 
+            <span>  {{ action?.destination}} </span>
+        </div>
+    </div>
+
+    <div class="set-attribute-operations-wpr" style="margin-top: 3px;">
+        <div class="set-attribute-label">Operations:</div>
+        <div class="set-attribute-operands" *ngFor="let operand of action?.operation?.operands">
+
+            <div class="set-attribute-label-and-value-wpr">
+                <div class="set-attribute-label"> Value </div>
+                <div class="set-attribute-value">
+                    <span>{{ operand?.value}} </span> 
+                </div>
+            </div>
+            <div class="operand-function"> {{ operand?.function}} </div>
+
+        </div>
+    </div>
+
+
+    <operation [operation]="action.operation" [listOfFunctions]="listOfFunctions"
+        (onAddOperator)="onSelectedOperator()"></operation>
+</div>
+
+
+<div *ngIf="!previewMode" class="content-panel-intent-detail">
+    <div class="text-editor-wrapper">
+        <div class="field-box">
+            <label class="title-label">Assign to:</label>
+            <div class="value-wrp">
+                <cds-textarea id="assignTo" [textLimitBtn]="false" [emojiPikerBtn]="false" [setAttributeBtn]="true"
+                    [minRow]="1" [maxRow]="1" [readonly]="true" [text]="action.destination"
+                    (selectedAttribute)="onSelectedAttribute($event)">
+                </cds-textarea>
+            </div>
+        </div>
+    </div>
+
+    <operation [operation]="action.operation" [listOfFunctions]="listOfFunctions"
+        (onAddOperator)="onSelectedOperator()"></operation>
+
+</div>

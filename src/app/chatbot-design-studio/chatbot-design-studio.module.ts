@@ -142,16 +142,16 @@ import { CdsActionChangeDepartmentComponent } from './cds-dashboard/actions/list
 import { CdsActionCloseComponent } from './cds-dashboard/actions/list/cds-action-close/cds-action-close.component';
 import { CdsActionOpenHoursComponent } from './cds-dashboard/actions/list/cds-action-open-hours/cds-action-open-hours.component';
 import { CdsActionJsonConditionComponent } from './cds-dashboard/actions/list/cds-action-json-condition/cds-action-json-condition.component';
-
+import { CdsActionReplaceBotComponent } from './cds-dashboard/actions/list/cds-action-replace-bot/cds-action-replace-bot.component';
+import { CdsActionAssignVariableComponent } from './cds-dashboard/actions/list/cds-action-assign-variable/cds-action-assign-variable.component';
 
 //CDS PANELS
 import { CdsActionDetailPanelComponent } from './cds-dashboard/actions/detail/cds-action-detail/cds-panel-action-detail.component';
 import { CdsPanelWidgetComponent } from './cds-dashboard/cds-panel-widget/cds-panel-widget.component';
 import { CdsPanelButtonConfigurationComponent } from './cds-dashboard/cds-panel-button-configuration/cds-panel-button-configuration.component';
-
 import { CdsActionArrowComponent } from './cds-dashboard/actions/shared/cds-action-controls/cds-action-arrow/cds-action-arrow.component';
 import { CdsActionControlsComponent } from './cds-dashboard/actions/shared/cds-action-controls/cds-action-controls/cds-action-controls.component';
-import { CdsActionReplaceBotComponent } from './cds-dashboard/actions/list/cds-action-replace-bot/cds-action-replace-bot.component';
+
 // import { CdsActionAddActionComponent } from './cds-dashboard/actions/shared/cds-action-controls/cds-action-add-action/cds-action-add-action.component';
 
 
@@ -248,6 +248,7 @@ import { CdsActionReplaceBotComponent } from './cds-dashboard/actions/list/cds-a
     CdsActionOpenHoursComponent,
     CdsActionJsonConditionComponent,
     CdsActionReplaceBotComponent,
+    CdsActionAssignVariableComponent,
     // action REPLY elements: start //
     CdsActionReplyToolsComponent,
     CdsActionReplyTextComponent,
