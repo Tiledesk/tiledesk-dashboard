@@ -1,4 +1,4 @@
-import { OperatorValidator } from '../../../../utils';
+import { OPERATORS_LIST, OperatorValidator } from '../../../../utils';
 import { Expression, Operator, Condition, Intent } from '../../../../../models/intent-model';
 import { ActionJsonCondition } from '../../../../../models/intent-model';
 import { Component, EventEmitter, Host, Input, OnInit, Output, ViewChild } from '@angular/core';
@@ -25,7 +25,8 @@ export class CdsActionJsonConditionComponent implements OnInit {
   trueIntentAttributes: string = "";
   falseIntentAttributes: string = "";
   booleanOperators=[ { type: 'AND', operator: 'AND'},{ type: 'OR', operator: 'OR'},]
-
+  OPERATORS_LIST = OPERATORS_LIST;
+  
   idIntentSelected: string;
   idConnectorTrue: string;
   idConnectorFalse: string;

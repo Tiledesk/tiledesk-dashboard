@@ -23,7 +23,7 @@
                 <div class="filter-icon">
                     <span class="material-icons">data_object</span>
                 </div>
-                <div class="filer-text no-ellips">
+                <div class="filter-text no-ellips">
                     <b>{{group?.operand1}}</b> 
                     {{OPERATORS_LIST[group?.operator].name}}
                     <b *ngIf="group?.operand2.type === 'const'">{{group?.operand2?.value}}</b>
