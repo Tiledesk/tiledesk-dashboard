@@ -62,7 +62,7 @@
 
         <div class="button-reply" cdkDragHandle>
             <div class="button-reply-text single-btn-reply"
-                (click)="onOpenButtonPanel(button)">
+                (click)="$event.stopPropagation(); onOpenButtonPanel(button)">
                 {{button.value}}
             </div>
             <div class="button-controls">
@@ -74,7 +74,7 @@
                         <em class="material-icons">chevron_right</em>
                     </div>
                 </div> -->
-                <div class="control-button delete" (click)="$event.stopPropagation();onDeleteButton(i)">
+                <div class="control-button delete" (click)="$event.stopPropagation(); onDeleteButton(i)">
                     <em class="material-icons">delete</em>
                 </div>
             </div>

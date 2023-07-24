@@ -159,6 +159,26 @@ export class ConnectorService {
     console.log('deleteAllConnectors:: ');
     this.tiledeskConnectors.deleteAllConnectors();
   }
+
+
+  /** deleteConnectorWithIDStartingWith 
+   * elimino il connettore creato in precedenza sul sullo stesso punto
+   * e lo sostituisco con il nuovo
+  */
+  deleteConnectorWithIDStartingWith(connectorID){
+    // console.log('deleteConnectorWithIDStartingWith:: ', this.tiledeskConnectors.connectors);
+    const listOfConnectors = Object.keys(this.tiledeskConnectors.connectors)
+    .filter(key => key.startsWith(connectorID))
+    .reduce((filteredMap, key) => {
+      filteredMap[key] = this.tiledeskConnectors.connectors[key];
+      return filteredMap;
+    }, {});
+    for (const [key, connector] of Object.entries(listOfConnectors)) {
+      // console.log('delete connector :: ', key );
+      this.tiledeskConnectors.deleteConnector(key);
+    };
+  }
+
   /** */
   deleteConnector(connectorID){
     this.tiledeskConnectors.deleteConnector(connectorID);

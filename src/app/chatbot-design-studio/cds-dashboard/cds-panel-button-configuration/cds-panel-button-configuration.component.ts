@@ -249,8 +249,8 @@ export class CdsPanelButtonConfigurationComponent implements OnInit {
     if (posId !== -1) {
       toId = this.button.action.slice(posId+1);
     }
-    console.log('createNewConnector: ', fromId, toId);
-    this.connectorService.deleteConnector(fromId);
+    console.log('createNewConnector: ', fromId);
+    this.connectorService.deleteConnectorWithIDStartingWith(fromId);
     this.connectorService.createNewConnector(fromId, toId);
     this.checkAndSaveButton();
   }
