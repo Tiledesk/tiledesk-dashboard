@@ -111,16 +111,16 @@
                         [action]="elementSelected"
                         [previewMode]="false">
                     </cds-action-json-condition>
+
+                    <cds-action-delete-variable *ngSwitchCase="typeAction.DELETE_VARIABLE"
+                        class="panel-response"
+                        [action]="elementSelected"
+                        [previewMode]="false">
+                    </cds-action-delete-variable>
                     
                     <!-- <cds-action-web-request *ngSwitchCase="typeAction.WEB_REQUEST"
                         [action]="elementSelected">
                     </cds-action-web-request>
-            
-                
-                    <cds-action-json-condition *ngSwitchCase="typeAction.JSON_CONDITION"
-                        [action]="elementSelected"
-                        [listOfActions]="listOfActions">
-                    </cds-action-json-condition>
             
                     <cds-action-assign-variable *ngSwitchCase="typeAction.ASSIGN_VARIABLE"
                         [action]="elementSelected">
@@ -129,11 +129,6 @@
                     <cds-action-assign-function *ngSwitchCase="typeAction.ASSIGN_FUNCTION"
                         [action]="elementSelected">
                     </cds-action-assign-function>
-                
-                    <cds-action-delete-variable *ngSwitchCase="typeAction.DELETE_VARIABLE"
-                        [action]="elementSelected">
-                    </cds-action-delete-variable>
-
                 
                     <cds-action-hide-message *ngSwitchCase="typeAction.HIDE_MESSAGE"
                         [action]="elementSelected">

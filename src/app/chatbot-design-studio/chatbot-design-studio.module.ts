@@ -142,6 +142,7 @@ import { CdsActionChangeDepartmentComponent } from './cds-dashboard/actions/list
 import { CdsActionCloseComponent } from './cds-dashboard/actions/list/cds-action-close/cds-action-close.component';
 import { CdsActionOpenHoursComponent } from './cds-dashboard/actions/list/cds-action-open-hours/cds-action-open-hours.component';
 import { CdsActionJsonConditionComponent } from './cds-dashboard/actions/list/cds-action-json-condition/cds-action-json-condition.component';
+import { CdsActionDeleteVariableComponent } from './cds-dashboard/actions/list/cds-action-delete-variable/cds-action-delete-variable.component';
 
 
 //CDS PANELS
@@ -246,6 +247,7 @@ import { CdsActionControlsComponent } from './cds-dashboard/actions/shared/cds-a
     CdsActionCloseComponent,
     CdsActionOpenHoursComponent,
     CdsActionJsonConditionComponent,
+    CdsActionDeleteVariableComponent,
     // action REPLY elements: start //
     CdsActionReplyToolsComponent,
     CdsActionReplyTextComponent,

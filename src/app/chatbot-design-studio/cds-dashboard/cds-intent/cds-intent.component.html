@@ -130,7 +130,10 @@
                     (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-json-condition>
 
-                
+                <cds-action-delete-variable *ngSwitchCase="TYPE_ACTION.DELETE_VARIABLE"
+                    class="panel-response"
+                    [action]="elementSelected">
+                </cds-action-delete-variable>
 
                 
 
