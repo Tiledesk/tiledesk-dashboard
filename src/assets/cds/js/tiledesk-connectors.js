@@ -585,11 +585,15 @@ export class TiledeskConnectors {
       const toEle = document.getElementById(toId);
       console.log("fromEle:", fromEle);
       console.log("toEle:", toEle);
-      const fromPoint = this.elementLogicCenter(fromEle);
-      const toPoint = this.elementLogicTopLeft(toEle);
-      console.log("toPoint:", toPoint);
-      console.log("fromPoint:", fromPoint);
-      this.createConnector(fromId, toId, fromPoint, toPoint);
+      if(toEle && fromEle){
+        const fromPoint = this.elementLogicCenter(fromEle);
+        const toPoint = this.elementLogicTopLeft(toEle);
+        console.log("toPoint:", toPoint);
+        console.log("fromPoint:", fromPoint);
+        this.createConnector(fromId, toId, fromPoint, toPoint);
+      }
+     
+      
     }
 
 
