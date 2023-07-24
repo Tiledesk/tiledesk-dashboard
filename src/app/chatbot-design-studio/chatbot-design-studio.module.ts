@@ -151,6 +151,7 @@ import { CdsPanelButtonConfigurationComponent } from './cds-dashboard/cds-panel-
 
 import { CdsActionArrowComponent } from './cds-dashboard/actions/shared/cds-action-controls/cds-action-arrow/cds-action-arrow.component';
 import { CdsActionControlsComponent } from './cds-dashboard/actions/shared/cds-action-controls/cds-action-controls/cds-action-controls.component';
+import { CdsActionReplaceBotComponent } from './cds-dashboard/actions/list/cds-action-replace-bot/cds-action-replace-bot.component';
 // import { CdsActionAddActionComponent } from './cds-dashboard/actions/shared/cds-action-controls/cds-action-add-action/cds-action-add-action.component';
 
 
@@ -246,6 +247,7 @@ import { CdsActionControlsComponent } from './cds-dashboard/actions/shared/cds-a
     CdsActionCloseComponent,
     CdsActionOpenHoursComponent,
     CdsActionJsonConditionComponent,
+    CdsActionReplaceBotComponent,
     // action REPLY elements: start //
     CdsActionReplyToolsComponent,
     CdsActionReplyTextComponent,
