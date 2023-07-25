@@ -631,7 +631,7 @@
 
 
                 <!-- --- new ---- -->
-                <div class="conv-info-sidebar-wpr">
+                <div class="conv-info-sidebar-wpr" [ngClass]="{'conv-info-sidebar-wpr-sidebar-open': OPEN_RIGHT_SIDEBAR === true }">
                   <div class="conv-info-sidebar-header-wpr"
                     [ngClass]="{'conv-info-sidebar-header-wpr-chat': CHAT_PANEL_MODE === true}">
                     <!-- [ngClass]="{'chat-right-sidebar-actions' : CHAT_PANEL_MODE === true}" -->
