@@ -531,7 +531,7 @@ export class CdsDashboardComponent implements OnInit {
     try {
       let elem = document.getElementById(intent.intent_id);
       setTimeout(() => {
-        // **************** !!!!!!!! aggiungo listner !!!!!!! *******************//
+        // **************** !!!!!!!! rimuovo listner !!!!!!! *******************//
         elem.removeEventListener('mouseup', function () {
           that.onMouseUpIntent(intent, elem);
         });
@@ -638,8 +638,7 @@ export class CdsDashboardComponent implements OnInit {
       this.removeListnerEventToElements(intent);
       // cancello tutti i connettori dell'intent
       this.connectorService.deleteConnectorsOfBlock(intent.intent_id);
-
-      // !!! chiama patch positioni !!!!
+      // !!! chiama patch positions !!!!
       swal(this.translate.instant('Done') + "!", this.translate.instant('FaqPage.AnswerSuccessfullyDeleted'), {
         icon: "success",
       }).then(() => {

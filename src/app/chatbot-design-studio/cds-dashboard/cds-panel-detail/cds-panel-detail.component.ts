@@ -45,8 +45,7 @@ export class CdsPanelDetailComponent implements OnInit {
   }
 
   ngOnChanges() {
-    console.log('ngOnChanges:: ', this.elementSelected);
-    
+    // console.log('ngOnChanges:: ', this.elementSelected);
   }
 
   @HostListener('document:mousedown', ['$event'])

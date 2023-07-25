@@ -353,10 +353,10 @@
 .button-controls {
     justify-content: space-between;
     display: inline-flex;
-    width: 100%;
+    width: 28px;
     height: 24px;
     position: absolute;
-    right: 0;
+    left: 0;
     top: -40%;
     opacity: 0;
     transition: opacity 0.3s ease-in-out;
