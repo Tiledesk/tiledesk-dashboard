@@ -312,7 +312,7 @@ export class CdsIntentComponent implements OnInit, OnChanges {
 
 
   openActionMenu(intent) {
-
+   
     console.log('[CDS-INTENT] openActionMenu > intent ', intent)
     const openActionMenuElm = this.openActionMenuBtnRef.nativeElement.getBoundingClientRect()
     let buttonXposition = openActionMenuElm.x - 370

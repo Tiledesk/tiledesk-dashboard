@@ -5,13 +5,14 @@ import { Component, OnInit, Input } from '@angular/core';
 import { LoggerService } from 'app/services/logger/logger.service';
 
 @Component({
-  selector: 'cds-action-replace-bot',
+  selector: 'action-replace-bot',
   templateUrl: './action-replace-bot.component.html',
   styleUrls: ['./action-replace-bot.component.scss']
 })
 export class ActionReplaceBotComponent implements OnInit {
 
   @Input() action: ActionReplaceBot;
+  @Input() previewMode: boolean = true;
 
   //bots: Chatbot[] = [];
   chatbots_name_list: Array<{name: string, value: string, icon?:string}>;
@@ -23,7 +24,7 @@ export class ActionReplaceBotComponent implements OnInit {
     ) { }
 
   ngOnInit(): void {
-    this.logger.log("[ACTION REPLACE BOT] action: ", this.action)
+    console.log("[ACTION REPLACE BOT] action: ", this.action)
     this.getAllBots();
   }
 

@@ -1,31 +1,45 @@
 <div *ngIf="previewMode" class="cds-action-preview">
+    <!-- {{ action | json }} -->
 
-
-    <div class="set-attribute-destination-wpr">
+    <div *ngIf="action?.destination" class="set-attribute-destination-label-and-value-wpr">
         <div class="set-attribute-label">Assign to:</div>
-        <div class="set-attribute-value"> 
-            <span>  {{ action?.destination}} </span>
+        <div *ngIf="action?.destination" class="set-attribute-value">
+            <span> {{ action?.destination}} </span>
         </div>
     </div>
 
-    <div class="set-attribute-operations-wpr" style="margin-top: 3px;">
+    <div *ngIf="!action?.destination" class="no-value-setted">
+        <div class="set-attribute">Set attribute</div>
+    </div>
+
+    <div *ngIf="displaySetOperationPlaceholder" class="set-attribute-operations-wpr" style="margin-top: 3px;">
         <div class="set-attribute-label">Operations:</div>
         <div class="set-attribute-operands" *ngFor="let operand of action?.operation?.operands">
-
-            <div class="set-attribute-label-and-value-wpr">
-                <div class="set-attribute-label"> Value </div>
-                <div class="set-attribute-value">
-                    <span>{{ operand?.value}} </span> 
+            <div class="set-attribute-operands-wpr">
+                <div class="set-attribute-label-and-value-wpr">
+                    <div class="set-attribute-label"> Value </div>
+                    <div class="set-attribute-value">
+                        <span>{{ operand?.value}} </span>
+                    </div>
+                </div>
+                <div *ngIf="operand?.function" class="set-attribute-label-and-value-wpr">
+                    <div class="set-attribute-label"> Function: </div>
+                    <div class="set-attribute-function">
+                        <span> {{ operand?.functionName}} </span>
+                    </div>
                 </div>
             </div>
-            <div class="operand-function"> {{ operand?.function}} </div>
 
+            <div class="set-attribute-operator" *ngIf="operand?.operator">
+                <span> {{ operand?.operator}} </span>
+            </div>
         </div>
+
     </div>
 
 
-    <operation [operation]="action.operation" [listOfFunctions]="listOfFunctions"
-        (onAddOperator)="onSelectedOperator()"></operation>
+    <!-- <operation [operation]="action.operation" [listOfFunctions]="listOfFunctions"
+        (onAddOperator)="onSelectedOperator()"></operation> -->
 </div>
 
 
@@ -43,6 +57,7 @@
     </div>
 
     <operation [operation]="action.operation" [listOfFunctions]="listOfFunctions"
-        (onAddOperator)="onSelectedOperator()"></operation>
+        (onAddOperator)="onSelectedOperator()">
+    </operation>
 
 </div>

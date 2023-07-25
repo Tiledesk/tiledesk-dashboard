@@ -111,6 +111,18 @@
                         [action]="elementSelected"
                         [previewMode]="false">
                     </cds-action-json-condition>
+
+                    <cds-action-replace-bot *ngSwitchCase="typeAction.REPLACE_BOT"
+                        class="panel-response"
+                        [action]="elementSelected"
+                        [previewMode]="false">
+                    </cds-action-replace-bot>
+
+                    <cds-action-assign-variable *ngSwitchCase="typeAction.ASSIGN_VARIABLE"
+                        class="panel-response"
+                        [action]="elementSelected"
+                        [previewMode]="false">
+                    </cds-action-assign-variable>
                     
                     <!-- <cds-action-web-request *ngSwitchCase="typeAction.WEB_REQUEST"
                         [action]="elementSelected">
