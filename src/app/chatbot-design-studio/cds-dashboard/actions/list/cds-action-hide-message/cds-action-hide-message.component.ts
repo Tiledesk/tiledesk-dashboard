@@ -3,13 +3,14 @@ import { LoggerService } from 'app/services/logger/logger.service';
 import { ActionHideMessage } from 'app/models/intent-model';
 
 @Component({
-  selector: 'action-hide-message',
-  templateUrl: './action-hide-message.component.html',
-  styleUrls: ['./action-hide-message.component.scss']
+  selector: 'cds-action-hide-message',
+  templateUrl: './cds-action-hide-message.component.html',
+  styleUrls: ['./cds-action-hide-message.component.scss']
 })
-export class ActionHideMessageComponent implements OnInit {
+export class CdsActionHideMessageComponent implements OnInit {
   
   @Input() action: ActionHideMessage;
+  @Input() previewMode: boolean = true;
   text: string;
 
   constructor(

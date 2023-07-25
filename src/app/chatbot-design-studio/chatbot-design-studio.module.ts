@@ -144,6 +144,7 @@ import { CdsActionOpenHoursComponent } from './cds-dashboard/actions/list/cds-ac
 import { CdsActionJsonConditionComponent } from './cds-dashboard/actions/list/cds-action-json-condition/cds-action-json-condition.component';
 import { CdsActionReplaceBotComponent } from './cds-dashboard/actions/list/cds-action-replace-bot/cds-action-replace-bot.component';
 import { CdsActionAssignVariableComponent } from './cds-dashboard/actions/list/cds-action-assign-variable/cds-action-assign-variable.component';
+import { CdsActionHideMessageComponent } from './cds-dashboard/actions/list/cds-action-hide-message/cds-action-hide-message.component';
 
 //CDS PANELS
 import { CdsActionDetailPanelComponent } from './cds-dashboard/actions/detail/cds-action-detail/cds-panel-action-detail.component';
@@ -249,6 +250,7 @@ import { CdsActionControlsComponent } from './cds-dashboard/actions/shared/cds-a
     CdsActionJsonConditionComponent,
     CdsActionReplaceBotComponent,
     CdsActionAssignVariableComponent,
+    CdsActionHideMessageComponent,
     // action REPLY elements: start //
     CdsActionReplyToolsComponent,
     CdsActionReplyTextComponent,

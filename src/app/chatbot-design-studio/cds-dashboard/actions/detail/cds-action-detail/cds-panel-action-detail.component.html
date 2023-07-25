@@ -123,6 +123,12 @@
                         [action]="elementSelected"
                         [previewMode]="false">
                     </cds-action-assign-variable>
+
+                    <cds-action-hide-message *ngSwitchCase="typeAction.HIDE_MESSAGE"
+                        class="panel-response"   
+                        [action]="elementSelected"
+                        [previewMode]="false">
+                    </cds-action-hide-message>
                     
                     <!-- <cds-action-web-request *ngSwitchCase="typeAction.WEB_REQUEST"
                         [action]="elementSelected">
