@@ -147,7 +147,7 @@
                 <cds-action-hide-message *ngSwitchCase="TYPE_ACTION.HIDE_MESSAGE"
                     class="panel-response"   
                     [action]="action"
-                    [(updateAndSaveAction)="onUpdateAndSaveAction($event)">
+                    (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-hide-message>
 
 
