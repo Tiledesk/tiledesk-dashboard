@@ -54,11 +54,13 @@ $box-left-width: 250px;
   min-width: 100px;
   max-width: 400px;
   min-height: 100px;
-  max-height: 400px;
+  // max-height: 400px; // nk
+  height: 612px; // nk
   width: 148px;
   color: #132144;
   font-size: 15px;
-  line-height: 18px;
+  // line-height: 18px;
+  line-height: 12px;
   list-style: none;
   overflow: hidden;
   padding: 0;

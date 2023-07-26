@@ -143,15 +143,16 @@ import { CdsActionCloseComponent } from './cds-dashboard/actions/list/cds-action
 import { CdsActionOpenHoursComponent } from './cds-dashboard/actions/list/cds-action-open-hours/cds-action-open-hours.component';
 import { CdsActionJsonConditionComponent } from './cds-dashboard/actions/list/cds-action-json-condition/cds-action-json-condition.component';
 import { CdsActionDeleteVariableComponent } from './cds-dashboard/actions/list/cds-action-delete-variable/cds-action-delete-variable.component';
-
+import { CdsActionReplaceBotComponent } from './cds-dashboard/actions/list/cds-action-replace-bot/cds-action-replace-bot.component';
+import { CdsActionAssignVariableComponent } from './cds-dashboard/actions/list/cds-action-assign-variable/cds-action-assign-variable.component';
 
 //CDS PANELS
 import { CdsActionDetailPanelComponent } from './cds-dashboard/actions/detail/cds-action-detail/cds-panel-action-detail.component';
 import { CdsPanelWidgetComponent } from './cds-dashboard/cds-panel-widget/cds-panel-widget.component';
 import { CdsPanelButtonConfigurationComponent } from './cds-dashboard/cds-panel-button-configuration/cds-panel-button-configuration.component';
-
 import { CdsActionArrowComponent } from './cds-dashboard/actions/shared/cds-action-controls/cds-action-arrow/cds-action-arrow.component';
 import { CdsActionControlsComponent } from './cds-dashboard/actions/shared/cds-action-controls/cds-action-controls/cds-action-controls.component';
+
 // import { CdsActionAddActionComponent } from './cds-dashboard/actions/shared/cds-action-controls/cds-action-add-action/cds-action-add-action.component';
 
 
@@ -248,6 +249,8 @@ import { CdsActionControlsComponent } from './cds-dashboard/actions/shared/cds-a
     CdsActionOpenHoursComponent,
     CdsActionJsonConditionComponent,
     CdsActionDeleteVariableComponent,
+    CdsActionReplaceBotComponent,
+    CdsActionAssignVariableComponent,
     // action REPLY elements: start //
     CdsActionReplyToolsComponent,
     CdsActionReplyTextComponent,

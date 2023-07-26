@@ -29,7 +29,9 @@
             [id]="action._tdActionId"
             class="box-action"
             tabindex="0"
-            [ngClass]="{'cds-action-active': intentService.actionSelectedID === action._tdActionId, 'cds-no-featured-action': action._tdActionType !== TYPE_ACTION.REPLY}"
+            [ngClass]="{
+            'cds-action-active': intentService.actionSelectedID === action._tdActionId, 
+            'cds-no-featured-action': action._tdActionType !== TYPE_ACTION.REPLY}"
             (keydown)="onKeydown($event)">
             <!-- (click)="onActionSelected(action, i, action._tdActionId)" -->
             <!-- (keydown)="onDeleteAction($event)" -->
@@ -134,6 +136,17 @@
                     class="panel-response"
                     [action]="elementSelected">
                 </cds-action-delete-variable>
+                <cds-action-replace-bot *ngSwitchCase="TYPE_ACTION.REPLACE_BOT" 
+                    class="panel-response"
+                    [action]="action" 
+                    (updateAndSaveAction)="onUpdateAndSaveAction($event)">
+                </cds-action-replace-bot>
+
+                <cds-action-assign-variable *ngSwitchCase="TYPE_ACTION.ASSIGN_VARIABLE"
+                    class="panel-response"
+                    [action]="action"
+                    (updateAndSaveAction)="onUpdateAndSaveAction($event)">
+                </cds-action-assign-variable>
 
                 
 

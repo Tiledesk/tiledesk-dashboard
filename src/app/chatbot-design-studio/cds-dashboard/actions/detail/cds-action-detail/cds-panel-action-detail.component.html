@@ -117,14 +117,22 @@
                         [action]="elementSelected"
                         [previewMode]="false">
                     </cds-action-delete-variable>
+
+                    <cds-action-replace-bot *ngSwitchCase="typeAction.REPLACE_BOT"
+                        class="panel-response"
+                        [action]="elementSelected"
+                        [previewMode]="false">
+                    </cds-action-replace-bot>
+
+                    <cds-action-assign-variable *ngSwitchCase="typeAction.ASSIGN_VARIABLE"
+                        class="panel-response"
+                        [action]="elementSelected"
+                        [previewMode]="false">
+                    </cds-action-assign-variable>
                     
                     <!-- <cds-action-web-request *ngSwitchCase="typeAction.WEB_REQUEST"
                         [action]="elementSelected">
                     </cds-action-web-request>
-            
-                    <cds-action-assign-variable *ngSwitchCase="typeAction.ASSIGN_VARIABLE"
-                        [action]="elementSelected">
-                    </cds-action-assign-variable>
     
                     <cds-action-assign-function *ngSwitchCase="typeAction.ASSIGN_FUNCTION"
                         [action]="elementSelected">
@@ -132,11 +140,7 @@
                 
                     <cds-action-hide-message *ngSwitchCase="typeAction.HIDE_MESSAGE"
                         [action]="elementSelected">
-                    </cds-action-hide-message>
-    
-                    <cds-action-replace-bot *ngSwitchCase="typeAction.REPLACE_BOT"
-                        [action]="elementSelected">
-                    </cds-action-replace-bot> -->
+                    </cds-action-hide-message>-->
     
                 </div>
             </div>

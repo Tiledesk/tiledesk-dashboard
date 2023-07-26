@@ -532,7 +532,7 @@ export class CdsDashboardComponent implements OnInit {
     try {
       let elem = document.getElementById(intent.intent_id);
       setTimeout(() => {
-        // **************** !!!!!!!! aggiungo listner !!!!!!! *******************//
+        // **************** !!!!!!!! rimuovo listner !!!!!!! *******************//
         elem.removeEventListener('mouseup', function () {
           that.onMouseUpIntent(intent, elem);
         });
@@ -639,8 +639,7 @@ export class CdsDashboardComponent implements OnInit {
       this.removeListnerEventToElements(intent);
       // cancello tutti i connettori dell'intent
       this.connectorService.deleteConnectorsOfBlock(intent.intent_id);
-
-      // !!! chiama patch positioni !!!!
+      // !!! chiama patch positions !!!!
       swal(this.translate.instant('Done') + "!", this.translate.instant('FaqPage.AnswerSuccessfullyDeleted'), {
         icon: "success",
       }).then(() => {
@@ -690,7 +689,8 @@ export class CdsDashboardComponent implements OnInit {
     this.isOpenFloatMenu = true;
     const pos = {'x': event.x, 'y':event.y}
     // this.connectorService.tiledeskConnectors.logicPoint(event.dropPoint);
-    this.intentToAddAction = event.intent;
+    // this.intentToAddAction = event.intent;
+    this.intentSelected = event.intent; //this.intentToAddAction // patch
     this.positionFloatMenu = pos
     console.log('[CDS DSHBRD] showPanelActions intentToAddAction ', this.intentToAddAction);
     console.log('[CDS DSHBRD] showPanelActions positionFloatMenu ', this.positionFloatMenu)
@@ -816,8 +816,8 @@ export class CdsDashboardComponent implements OnInit {
      console.log('HERE YES')
      const newAction = this.intentService.createNewAction(event.type)
      console.log('[CDS-DSHBRD] newAction:: ', newAction);
-     console.log('[CDS-DSHBRD] this.intentToAddAction:: ', this.intentToAddAction);
-     this.intentToAddAction.actions.push(newAction);
+     console.log('[CDS-DSHBRD] this.intentToAddAction:: ', this.intentSelected);
+     this.intentSelected.actions.push(newAction);
      this.updateIntent()
     //  this.intentSelected.actions.push(newAction);
   

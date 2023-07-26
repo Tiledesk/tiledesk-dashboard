@@ -4,7 +4,7 @@ import { LoggerService } from 'app/services/logger/logger.service';
 import { TYPE_MATH_OPERATOR, TYPE_FUNCTION_LIST_FOR_VARIABLES } from 'app/chatbot-design-studio/utils';
 
 @Component({
-    selector: 'cds-action-assign-variable',
+    selector: 'action-assign-variable',
     templateUrl: './action-assign-variable.component.html',
     styleUrls: ['./action-assign-variable.component.scss']
 })

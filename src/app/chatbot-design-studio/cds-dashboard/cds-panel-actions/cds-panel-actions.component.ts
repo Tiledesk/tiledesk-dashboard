@@ -36,7 +36,7 @@ export class CdsPanelActionsComponent implements OnInit {
   }
 
   ngOnChanges() {
-    console.log('ngOnChanges:: ', this.pos, this.menuType);
+    console.log('cds-panel-actions ngOnChanges:: ', this.pos, this.menuType);
     switch (this.menuType) {
       case TYPE_OF_MENU.ACTION:
         this.menuItemsList = Object.keys(ACTIONS_LIST).map(key => {
