@@ -112,12 +112,6 @@
                         [previewMode]="false">
                     </cds-action-json-condition>
 
-                    <cds-action-delete-variable *ngSwitchCase="typeAction.DELETE_VARIABLE"
-                        class="panel-response"
-                        [action]="elementSelected"
-                        [previewMode]="false">
-                    </cds-action-delete-variable>
-
                     <cds-action-replace-bot *ngSwitchCase="typeAction.REPLACE_BOT"
                         class="panel-response"
                         [action]="elementSelected"
@@ -130,6 +124,12 @@
                         [previewMode]="false">
                     </cds-action-assign-variable>
                     
+                    <cds-action-delete-variable *ngSwitchCase="typeAction.DELETE_VARIABLE"
+                        class="panel-response"
+                        [action]="elementSelected"
+                        [previewMode]="false">
+                    </cds-action-delete-variable>
+
                     <!-- <cds-action-web-request *ngSwitchCase="typeAction.WEB_REQUEST"
                         [action]="elementSelected">
                     </cds-action-web-request>
