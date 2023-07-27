@@ -32,7 +32,7 @@
             </cds-panel-intent-list>
         </div>
 
-        <div  id="tds_container" class="box-right tds-drag-container" cdkDropListGroup>
+        <div id="tds_container" class="box-right tds-drag-container" cdkDropListGroup>
 
             <cds-panel-elements 
                 class="cds-panel-elements"
@@ -75,18 +75,22 @@
 
         </div>
 
+
+        <cds-panel-widget *ngIf="IS_OPEN_PANEL_WIDGET"
+            id="widget-preview"
+            class="cds-generic-panel">
+        </cds-panel-widget>
+
         <cds-panel-button-configuration
+            id="button-configuration"
             class="cds-generic-panel"
             [isOpenPanel] = "isOpenPanelButtonConfig"
             [button] = buttonSelected
             (saveButton) = onSaveButton($event)>
         </cds-panel-button-configuration>
 
-        <cds-panel-widget *ngIf="IS_OPEN_PANEL_WIDGET"
-            class="cds-generic-panel">
-        </cds-panel-widget>
-
         <cds-panel-action-detail *ngIf="isOpenPanelActionDetail"
+            id="action-detail"
             class="cds-generic-panel"
             [isOpenPanel] = "isOpenPanelActionDetail"
             [intentSelected]="intentSelected"
@@ -105,7 +109,7 @@
 
     <cds-rules *ngIf="activeSidebarSection == 'cds-sb-rules'" [listOfIntents]="listOfIntents" [selectedChatbot]="selectedChatbot"></cds-rules>
 
-            <!-- <ng-container [ngSwitch]="activeSidebarSection">
+        <!-- <ng-container [ngSwitch]="activeSidebarSection">
             <ng-container *ngSwitchCase="'cds-sb-settings'" [ngTemplateOutlet]="settings"></ng-container>
             <ng-container *ngSwitchCase="'cds-sb-fulfillment'" [ngTemplateOutlet]="fulfillment"></ng-container>
             <ng-container *ngSwitchCase="'cds-sb-training'" [ngTemplateOutlet]="training"></ng-container>
