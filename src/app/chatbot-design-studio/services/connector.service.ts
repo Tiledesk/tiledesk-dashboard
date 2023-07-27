@@ -62,8 +62,8 @@ export class ConnectorService {
                 if(endIndex>-1){
                   idConnectorTo = button.action.substring(startIndex, endIndex);
                 }
-                console.log('idConnectorFrom', idConnectorFrom);
-                console.log('idConnectorTo', idConnectorTo);
+                console.log('[ACTION-REPLY] -> idConnectorFrom', idConnectorFrom);
+                console.log('[ACTION-REPLY] ->idConnectorTo', idConnectorTo);
                 if(idConnectorFrom && idConnectorTo){
                   this.tiledeskConnectors.createConnectorFromId(idConnectorFrom, idConnectorTo);
                 }
@@ -76,15 +76,15 @@ export class ConnectorService {
             if(action.trueIntent && action.trueIntent !== ''){
               const idConnectorFrom = intent.intent_id+'/'+action._tdActionId + '/true';
               const idConnectorTo = action.trueIntent;
-              console.log('idConnectorFrom', idConnectorFrom);
-              console.log('idConnectorTo', idConnectorTo);
+              console.log('[ACTION- ONLINE_AGENTS] -> idConnectorFrom', idConnectorFrom);
+              console.log('[ACTION- ONLINE_AGENTS] -> idConnectorTo', idConnectorTo);
               this.tiledeskConnectors.createConnectorFromId(idConnectorFrom, idConnectorTo);
             }
             if(action.falseIntent && action.falseIntent !== ''){
               const idConnectorFrom = intent.intent_id+'/'+action._tdActionId + '/false';
               const idConnectorTo = action.falseIntent;
-              console.log('idConnectorFrom', idConnectorFrom);
-              console.log('idConnectorTo', idConnectorTo);
+              console.log('[ACTION- ONLINE_AGENTS] -> idConnectorFrom', idConnectorFrom);
+              console.log('[ACTION- ONLINE_AGENTS] -> idConnectorTo', idConnectorTo);
               this.tiledeskConnectors.createConnectorFromId(idConnectorFrom, idConnectorTo);
             }
           }
@@ -94,15 +94,33 @@ export class ConnectorService {
             if(action.trueIntent && action.trueIntent !== ''){
               const idConnectorFrom = intent.intent_id+'/'+action._tdActionId + '/true';
               const idConnectorTo = action.trueIntent;
-              console.log('idConnectorFrom', idConnectorFrom);
-              console.log('idConnectorTo', idConnectorTo);
+              console.log('[ACTION- OPEN_HOURS] -> idConnectorFrom', idConnectorFrom);
+              console.log('[ACTION- OPEN_HOURS] -> idConnectorTo', idConnectorTo);
               this.tiledeskConnectors.createConnectorFromId(idConnectorFrom, idConnectorTo);
             }
             if(action.falseIntent && action.falseIntent !== ''){
               const idConnectorFrom = intent.intent_id+'/'+action._tdActionId + '/false';
               const idConnectorTo = action.falseIntent;
-              console.log('idConnectorFrom', idConnectorFrom);
-              console.log('idConnectorTo', idConnectorTo);
+              console.log('[ACTION- OPEN_HOURS] -> idConnectorFrom', idConnectorFrom);
+              console.log('[ACTION- OPEN_HOURS] -> idConnectorTo', idConnectorTo);
+              this.tiledeskConnectors.createConnectorFromId(idConnectorFrom, idConnectorTo);
+            }
+          }
+
+          /**  JSON-CONDITION */
+          if(action._tdActionType === TYPE_ACTION.JSON_CONDITION){
+            if(action.trueIntent && action.trueIntent !== ''){
+              const idConnectorFrom = intent.intent_id+'/'+action._tdActionId + '/true';
+              const idConnectorTo = action.trueIntent;
+              console.log('[ACTION- JSON_CONDITION] -> idConnectorFrom', idConnectorFrom);
+              console.log('[ACTION- JSON_CONDITION] -> idConnectorTo', idConnectorTo);
+              this.tiledeskConnectors.createConnectorFromId(idConnectorFrom, idConnectorTo);
+            }
+            if(action.falseIntent && action.falseIntent !== ''){
+              const idConnectorFrom = intent.intent_id+'/'+action._tdActionId + '/false';
+              const idConnectorTo = action.falseIntent;
+              console.log('[ACTION- JSON_CONDITION] -> idConnectorFrom', idConnectorFrom);
+              console.log('[ACTION- JSON_CONDITION] -> idConnectorTo', idConnectorTo);
               this.tiledeskConnectors.createConnectorFromId(idConnectorFrom, idConnectorTo);
             }
           }
