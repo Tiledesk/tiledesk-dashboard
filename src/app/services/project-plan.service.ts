@@ -132,7 +132,7 @@ export class ProjectPlanService {
         }
 
 
-        console.log('[PROJECT-PLAN-SERV] - FIND CURRENT PROJECT AMONG ALL - projectPlanData ', projectPlanData) 
+        this.logger.log('[PROJECT-PLAN-SERV] - FIND CURRENT PROJECT AMONG ALL - projectPlanData ', projectPlanData) 
 
         this.projectPlan$.next(projectPlanData);
       } else {

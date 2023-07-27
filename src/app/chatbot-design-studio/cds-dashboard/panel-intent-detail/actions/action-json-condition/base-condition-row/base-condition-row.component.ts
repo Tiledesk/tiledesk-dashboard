@@ -43,7 +43,7 @@ export class BaseConditionRowComponent implements OnInit {
       this.setFormValue()
       this.step = 1;
     }
-    console.log('******* ngOnChanges-->', this.condition);
+    this.logger.log('******* ngOnChanges-->', this.condition);
   }
 
   createConditionGroup(): FormGroup{
@@ -102,11 +102,11 @@ export class BaseConditionRowComponent implements OnInit {
       this.readonlyTextarea = true;
       this.setAttributeBtnOperand2 = false;
     }
-    console.log('******* onVariableSelected-->', step, variableSelected);
+    this.logger.log('******* onVariableSelected-->', step, variableSelected);
   }
 
   onClearSelectedAttribute(){
-    console.log('onClearSelectedAttribute-->');   
+    this.logger.log('onClearSelectedAttribute-->');   
     this.conditionForm.patchValue({ operand2: {type: 'var', name: ''}}, {emitEvent: false});
     this.disableSubmit = true;
     this.readonlyTextarea = false;

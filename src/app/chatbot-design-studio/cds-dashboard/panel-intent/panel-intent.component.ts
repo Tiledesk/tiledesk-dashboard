@@ -57,7 +57,7 @@ export class PanelIntentComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     // this.listenToIntentUpdates();
-    console.log('PanelIntentComponent ngOnInit-->', this.intentSelected)
+    this.logger.log('PanelIntentComponent ngOnInit-->', this.intentSelected)
     // this.actions = this.intentSelected.actions
     this.setIntentSelected();
   }
@@ -102,7 +102,7 @@ export class PanelIntentComponent implements OnInit, OnChanges {
     this.answer = null;
     this.question = null;
     this.questionCount = 0;
-    console.log('PanelIntentComponent ngOnChanges-->', this.idSelected);
+    this.logger.log('PanelIntentComponent ngOnChanges-->', this.idSelected);
     try {
       if (this.intentSelected) {
         this.patchAllActionsId();
@@ -144,7 +144,7 @@ export class PanelIntentComponent implements OnInit, OnChanges {
   }
 
   onSelectQuestion(elementSelected) {
-    console.log('onSelectQuestion-->', elementSelected, this.intentSelected.question)
+    this.logger.log('[PANEL INTENT] onSelectQuestion-->', elementSelected, this.intentSelected.question)
     this.idSelected = elementSelected;
     this.isIntentElementSelected = true;
     this.questionSelected.emit(this.intentSelected.question);
@@ -176,7 +176,7 @@ export class PanelIntentComponent implements OnInit, OnChanges {
 
 
   onActionSelected(action, index: number, idAction) {
-    console.log('onActionSelected action: ', action);
+    this.logger.log('[PANEL INTENT] onActionSelected action: ', action);
     if(this.isDeleting){return;}
     this.idSelected = idAction;
     this.isIntentElementSelected = true;
@@ -230,7 +230,7 @@ export class PanelIntentComponent implements OnInit, OnChanges {
 
   onDeleteAction(actionindex) {
     this.isDeleting = true;
-    console.log('onDeleteAction:::: ' , actionindex);
+    this.logger.log('[PANEL INTENT] onDeleteAction:::: ' , actionindex);
     swal({
       title: "Are you sure",
       text: "The action will be deleted",

@@ -19,7 +19,7 @@ export class AnswerComponent implements OnInit {
   }
 
   onChangeText(_answer:string) { 
-    console.log('onChangeText:: _answer:: ', _answer);
+    // console.log('onChangeText:: _answer:: ', _answer);
     this.updateAnswerIntentSelected.emit(_answer);
   }
 

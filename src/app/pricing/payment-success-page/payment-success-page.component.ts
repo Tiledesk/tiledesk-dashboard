@@ -237,7 +237,7 @@ export class PaymentSuccessPageComponent implements OnInit, AfterViewInit {
       if (user) {
         this.currentUser = user
 
-        console.log('[PRICING - PAYMENT-SUCCESS] currentUser email ', this.currentUser.email)
+        this.logger.log('[PRICING - PAYMENT-SUCCESS] currentUser email ', this.currentUser.email)
 
         window['rewardful']('ready', () => {
           // console.log('[PRICING - PAYMENT-SUCCESS] Rewardful Ready!')

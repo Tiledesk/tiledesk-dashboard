@@ -1037,7 +1037,7 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
   //   }
 
   goToTicketTab() {
-    console.log('[CONTACT-INFO] -  GO TO TICKET TAB ');
+    this.logger.log('[CONTACT-INFO] -  GO TO TICKET TAB ');
     this.onClickTagConversation.emit()
   }
 

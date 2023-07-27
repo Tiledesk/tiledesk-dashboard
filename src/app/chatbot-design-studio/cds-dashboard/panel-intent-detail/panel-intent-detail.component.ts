@@ -54,7 +54,7 @@ export class PanelIntentDetailComponent implements OnInit, OnChanges {
       this.logger.log('[PANEL-INTENT-DETAIL] (OnChanges) elementSelected ', this.elementSelected);
       this.logger.log('[PANEL-INTENT-DETAIL] (OnChanges) intentSelected ', this.intentSelected);
     }catch(error){
-      this.logger.log('[PANEL-INTENT-DETAIL] (ngOnChanges) ERROR', error);
+      this.logger.error('[PANEL-INTENT-DETAIL] (ngOnChanges) ERROR', error);
     }
   }
   // EVENT FUNCTIONS //
@@ -90,12 +90,12 @@ export class PanelIntentDetailComponent implements OnInit, OnChanges {
     } else if(this.elementIntentSelectedType === this.typeIntentElement.FORM){
       this.intentSelected.form = this.elementSelected;
     }
-    console.log('----> onSaveIntent:: ', this.elementIntentSelectedType, this.intentSelected);
+    this.logger.log('[PANEL-INTENT-DETAIL] ----> onSaveIntent:: ', this.elementIntentSelectedType, this.intentSelected);
     this.closeAndSavePanelIntentDetail.emit(this.intentSelected);
   }
 
   onCloseIntent(){
-    console.log('----> onCloseIntent:: ', this.elementIntentSelectedType, this.intentSelected);
+    this.logger.log('[PANEL-INTENT-DETAIL] ----> onCloseIntent:: ', this.elementIntentSelectedType, this.intentSelected);
     this.closeAndSavePanelIntentDetail.emit();
   }
 

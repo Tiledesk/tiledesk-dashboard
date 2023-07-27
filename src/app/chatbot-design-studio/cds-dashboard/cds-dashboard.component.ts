@@ -240,7 +240,7 @@ export class CdsDashboardComponent implements OnInit {
     this.logger.log('getFaqById');
     this.showSpinner = true;
     this.faqKbService.getBotById(botid).subscribe((chatbot: Chatbot) => {
-      console.log('[CDS DSHBRD] - GET BOT BY ID RES - chatbot', chatbot);
+      this.logger.log('[CDS DSHBRD] - GET BOT BY ID RES - chatbot', chatbot);
       if (chatbot) {
         this.selectedChatbot = chatbot;
         this.translateparamBotName = { bot_name: this.selectedChatbot.name }
@@ -250,7 +250,7 @@ export class CdsDashboardComponent implements OnInit {
         if(this.selectedChatbot.intentsEngine == 'tiledesk-ai'){
           // this.wsChatbotService.subsToAITrain_ByBot_id(this.selectedChatbot._id)
         }
-        //console.log('variableList.userDefined:: ', this.selectedChatbot.attributes.variables);
+        // console.log('variableList.userDefined:: ', this.selectedChatbot.attributes.variables);
       }
     }, (error) => {
       this.logger.error('[CDS DSHBRD] - GET BOT BY ID RES - ERROR ', error);
@@ -262,7 +262,7 @@ export class CdsDashboardComponent implements OnInit {
   }
 
   private convertJsonToArray(jsonData) {
-    console.log('convertJsonToArray  jsonData ', jsonData)
+    this.logger.log('convertJsonToArray  jsonData ', jsonData)
     const arrayOfObjs = Object.entries(jsonData).map(([key, value]) => ({ 'name': key, 'value': value }))
     return arrayOfObjs;
   }
@@ -374,7 +374,7 @@ export class CdsDashboardComponent implements OnInit {
 
   /** ADD INTENT  */
   private creatIntent() {
-    console.log('creatIntent');
+    this.logger.log('creatIntent');
     this.spinnerCreateIntent = true
     this.logger.log('[CDS DSHBRD] creatIntent spinnerCreateIntent ', this.spinnerCreateIntent)
     this.startUpdatedIntent.next(true)
@@ -479,7 +479,7 @@ export class CdsDashboardComponent implements OnInit {
 
   /** EDIT INTENT  */
   private editIntent() {
-    console.log('editIntent');
+    this.logger.log('editIntent');
     this.startUpdatedIntent.next(true)
     this.logger.log('[CDS DSHBRD] editIntent intentSelected', this.intentSelected);
     this.showSpinner = true;
@@ -592,7 +592,7 @@ export class CdsDashboardComponent implements OnInit {
     let index = maxLength-1;
     let intent_display_name = 'action_'+index;
     let event = { action: action, index: index, maxLength: maxLength, intent_display_name: intent_display_name };
-    console.log('onAddNewAction', event);
+    this.logger.log('onAddNewAction', event);
     this.idElementOfIntentSelected = intent_display_name;
     this.actionSelected(event);
   }
@@ -625,11 +625,11 @@ export class CdsDashboardComponent implements OnInit {
   }
 
   onQuestionSelected(intent) {
-    console.log('[CDS DSBRD] onQuestionSelected from PANEL INTENT - intent ', intent)
+    this.logger.log('[CDS DSBRD] onQuestionSelected from PANEL INTENT - intent ', intent)
     this.elementIntentSelected = {};
     this.elementIntentSelected['type'] = TYPE_INTENT_ELEMENT.QUESTION;
     this.elementIntentSelected['element'] = intent
-    console.log('[CDS DSBRD] onQuestionSelected from PANEL INTENT - this.elementIntentSelected ', this.elementIntentSelected)
+    this.logger.log('[CDS DSBRD] onQuestionSelected from PANEL INTENT - this.elementIntentSelected ', this.elementIntentSelected)
     this.isIntentElementSelected = true;
   }
 
@@ -656,7 +656,7 @@ export class CdsDashboardComponent implements OnInit {
 
   /** START EVENTS PANEL INTENT LIST */
   onSelectIntent(intent: Intent) { 
-    console.log('onSelectIntent::: ', intent);
+    this.logger.log('onSelectIntent::: ', intent);
     this.EDIT_VIEW = true;
     this.intentSelected = intent;
     this.isIntentElementSelected = false;
@@ -779,7 +779,7 @@ export class CdsDashboardComponent implements OnInit {
       } else {
         that.isIntentElementSelected = true;
       }
-      console.log('afterClosed:: ', this.idElementOfIntentSelected);
+      this.logger.log('afterClosed:: ', this.idElementOfIntentSelected);
     });
   }
   /** END EVENTS PANEL INTENT DETAIL  */
@@ -805,7 +805,7 @@ export class CdsDashboardComponent implements OnInit {
   }
 
   private actionSelected(event){
-    console.log('-----> actionSelected: ',event);
+    this.logger.log('[CDS DSBRD] -----> actionSelected: ',event);
     this.logger.log('[CDS DSBRD] onActionSelected from PANEL INTENT - action ', event.action, event.index)
     this.elementIntentSelected = {};
     this.elementIntentSelected['type'] = TYPE_INTENT_ELEMENT.ACTION;
@@ -991,7 +991,7 @@ export class CdsDashboardComponent implements OnInit {
 
   subscribeToChatbotAI(){
     this.wsChatbotService.wsChatbotTraining$.subscribe((train)=>{
-      console.log('[CDS DSBRD] TRAIN CHATBOT--> ',train)
+      this.logger.log('[CDS DSBRD] TRAIN CHATBOT--> ',train)
     })
   }
 

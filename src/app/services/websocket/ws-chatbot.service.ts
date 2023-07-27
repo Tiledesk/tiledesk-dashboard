@@ -82,7 +82,7 @@ export class WsChatbotService {
     this.webSocketJs.ref(path, 'subsToAITrain_ByBot_id',
       function (data, notification) {
         self.logger.log("[WS-CHATBOT-SERV] -SUBSCRIBE TO AI TRAIN BY BOT ID - CREATE data", data);
-        console.log("[WS-CHATBOT-SERV] -SUBSCRIBE TO AI TRAIN BY BOT ID - CREATE data", data)
+        // console.log("[WS-CHATBOT-SERV] -SUBSCRIBE TO AI TRAIN BY BOT ID - CREATE data", data)
 
         // --------------------------------------------------------------------------
         // Check if upcoming messages already exist in the messasges list (1° METHOD)
@@ -109,14 +109,14 @@ export class WsChatbotService {
         // }
 
       }, function (data, notification) {
-        console.log("[WS-MSGS-SERV] - SUBSCRIBE TO MSGS BY REQUESTS ID - UPDATE data", data);
+        // console.log("[WS-MSGS-SERV] - SUBSCRIBE TO MSGS BY REQUESTS ID - UPDATE data", data);
 
         // self.updateWsMsg(data)
 
       }, function (data, notification) {
 
         if (data) {
-          console.log("[WS-MSGS-SERV] - SUBSCRIBE TO MSGS BY REQUESTS ID - ON-DATA - data", data);
+          // console.log("[WS-MSGS-SERV] - SUBSCRIBE TO MSGS BY REQUESTS ID - ON-DATA - data", data);
           self.wsChatbotTraining$.next(data);
         }
       }

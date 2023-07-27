@@ -126,7 +126,7 @@ export class PanelButtonConfigurationComponent implements OnInit {
         // console.log('intent 5', intent);
       }
       catch (err) {
-        console.log("error on intent.parameters = JSON.parse(json_string)", err);
+        // console.log("error on intent.parameters = JSON.parse(json_string)", err);
       }            
     }
     return intent;

@@ -173,7 +173,7 @@ export class GalleryResponseComponent implements OnInit {
         this.gallery[indexGallery].buttons = this.response.attributes.attachment.buttons;
       }
     } catch (error) {
-      console.log('error: ', error);
+      // console.log('error: ', error);
     }
     this.openButtonPanel.emit({button: button, refResponse: this.response});
   }
