@@ -434,7 +434,7 @@ export class SigninComponent implements OnInit {
   // }
   goToSignupPage() {
     const storedUser = localStorage.getItem('user');
-    console.log('[SIGN-IN] GO TO SIGNUO PAGE STORED USER ',storedUser) 
+    this.logger.log('[SIGN-IN] GO TO SIGNUP PAGE STORED USER ',storedUser) 
     if(storedUser) {
       // localStorage.removeItem('user')
       this.auth.signOut('signin');
