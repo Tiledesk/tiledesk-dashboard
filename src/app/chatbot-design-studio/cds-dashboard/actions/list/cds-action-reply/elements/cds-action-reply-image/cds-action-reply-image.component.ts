@@ -1,6 +1,6 @@
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Button, Expression, MessageAttributes, MessageWithWait } from '../../../../../../../models/intent-model';
+import { Button, Expression, MessageAttributes, MessageWithWait, Metadata } from '../../../../../../../models/intent-model';
 import { TYPE_ACTION, TEXT_CHARS_LIMIT, calculatingRemainingCharacters, TYPE_BUTTON, generateShortUID } from '../../../../../../utils';
 import { ConnectorService } from 'app/chatbot-design-studio/services/connector.service';
 import { IntentService } from 'app/chatbot-design-studio/services/intent.service';
@@ -140,6 +140,12 @@ export class CdsActionReplyImageComponent implements OnInit {
   /** onChangeExpression */
   onChangeExpression(expression: Expression){
     this.response._tdJSONCondition = expression;
+    this.changeActionReply.emit();
+  }
+
+  /**onChangeMetadata */
+  onChangeMetadata(metadata: Metadata){
+    this.response.metadata = metadata;
     this.changeActionReply.emit();
   }
 
