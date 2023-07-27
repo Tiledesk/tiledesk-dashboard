@@ -1,4 +1,21 @@
-<div  class="extensions-response">
+<div  class="extensions-response" [class.previewMode]="previewMode">
+    
+    <div class="text-editor-drop">
+        <em class="material-icons">drag_indicator</em>
+    </div>
+
+    <div class="response-controls">
+        <div class="control-button delete" (click)="onDeleteActionReply()">
+            <em class="material-icons">delete</em>
+        </div>
+        <div class="control-button" (click)="onMoveUpResponse()">
+            <em class="material-icons">expand_less</em>
+        </div> 
+        <div class="control-button" (click)="onMoveDownResponse()">
+            <em class="material-icons">expand_more</em>
+        </div>
+    </div>
+    
     <div class="delay-wrapper" [ngStyle]="{width: canShowFilter? 'auto': '100%'}">
         <appdashboard-delay-slider
             [delayTime]="delayTime"
@@ -15,31 +32,13 @@
     </div>
 </div>
 
-<div class="text-editor-wrapper">
-    
-    <div class="text-editor">
-
-        <div class="response-controls">
-            <div class="control-button delete" (click)="onDeleteActionReply()">
-                <em class="material-icons">delete</em>
-            </div>
-            <div class="control-button" (click)="onMoveUpResponse()">
-                <em class="material-icons">expand_less</em>
-            </div> 
-            <div class="control-button" (click)="onMoveDownResponse()">
-                <em class="material-icons">expand_more</em>
-            </div>
-        </div>
-
-    </div>
-
-    <div class="text-editor-drop">
-        <em class="material-icons">drag_indicator</em>
-    </div>
-   
+<div *ngIf="previewMode">
+    preview galleryyyy
 </div>
 
-<div class="gallery-response gallery-replies" 
+
+<div *ngIf="!previewMode" 
+    class="gallery-response gallery-replies" 
     #scrollMe id="scrollMe"         
     cdkDropListOrientation="horizontal" 
     cdkDropList (cdkDropListDropped)="drop($event)" >
@@ -87,7 +86,8 @@
                                 <cds-image-upload
                                     class="image-upload"
                                     [index]="i"
-                                    [metadata] = galleryEl.preview>
+                                    [metadata] = galleryEl.preview
+                                    (onChangeMetadata)="onChangeMetadata($event, i)">
                                 </cds-image-upload>
                                 <div *ngIf="galleryEl.preview.src" class="control-button delete" (click)="onDeleteImage(i)">
                                     <em class="material-icons">clear</em>

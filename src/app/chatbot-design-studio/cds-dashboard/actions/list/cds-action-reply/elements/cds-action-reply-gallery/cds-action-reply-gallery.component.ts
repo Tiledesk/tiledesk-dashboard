@@ -24,7 +24,7 @@ export class CdsActionReplyGalleryComponent implements OnInit {
   @Input() idAction: string;
   @Input() response: MessageWithWait;
   @Input() index: number;
- 
+  @Input() previewMode: boolean = true
   
   // Delay //onMoveTopButton
   delayTime: number;
@@ -131,6 +131,12 @@ export class CdsActionReplyGalleryComponent implements OnInit {
   /** onChangeExpression */
   onChangeExpression(expression: Expression){
     this.response._tdJSONCondition = expression
+    this.changeActionReply.emit();
+  }
+
+  onChangeMetadata(metadata: Metadata, index: number){
+    this.gallery[index].preview = metadata;
+    this.response.attributes.attachment.gallery = this.gallery
     this.changeActionReply.emit();
   }
 
