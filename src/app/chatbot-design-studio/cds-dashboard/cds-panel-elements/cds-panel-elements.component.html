@@ -1,16 +1,22 @@
 <div class="cds-panel-elements" (mouseover)="onOverMenu()" (mouseleave)="onLeaveMenu()">
 
 
-    <div size="4" class="cds-elements" mat-button >
-        
-        
+    <div size="4" class="cds-elements" mat-button>
 
-        <div class="cds-element" (click)="onAddNewElement()" (mouseleave)="onCloseMenu()" (mouseover)="onOpenMenu(div1, TYPE_OF_MENU.EVENT)" #div1>
+
+
+        <div class="cds-element" (click)="onAddNewElement()" (mouseleave)="onCloseMenu()"
+            (mouseover)="onOpenMenu(div1, TYPE_OF_MENU.EVENT)" #div1>
             <div class="cds-button-element">
                 <div class="cds-box-button">
                     <span class="box-img">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 22">
+                        <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 22">
                             <path fill="currentColor" d="M4.086 2.445a11 11 0 0 1 14.683.768l.008.008A11 11 0 0 1 4.086 19.555a.825.825 0 0 1 1.037-1.283A9.35 9.35 0 0 0 17.618 4.395l-.008-.007a9.35 9.35 0 0 0-12.487-.66.825.825 0 0 1-1.037-1.283zM5.5 5.5a5.5 5.5 0 1 1 0 11 5.5 5.5 0 0 1 0-11zm9.934.243A7.442 7.442 0 0 1 17.6 11a7.442 7.442 0 0 1-2.166 5.257.825.825 0 1 1-1.168-1.164A5.793 5.793 0 0 0 15.95 11a5.793 5.793 0 0 0-1.684-4.093.825.825 0 1 1 1.168-1.164zM5.5 7.15a3.85 3.85 0 1 0 0 7.7 3.85 3.85 0 0 0 0-7.7zm7.893.907c.572.838.907 1.853.907 2.943a5.204 5.204 0 0 1-.91 2.947.825.825 0 1 1-1.362-.931A3.555 3.555 0 0 0 12.65 11c0-.748-.229-1.44-.62-2.013a.825.825 0 1 1 1.363-.93z"></path>
+                        </svg> -->
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px"
+                            fill="currentColor">
+                            <path d="M0 0h24v24H0z" fill="none" />
+                            <path d="M7 2v11h3v9l7-12h-4l4-8z" />
                         </svg>
                     </span>
                     <span class="box-title">Event</span>
@@ -31,12 +37,19 @@
             </div>
         </div> -->
 
-        <div class="cds-element" (click)="onAddNewElement()" (mouseleave)="onCloseMenu()" (mouseover)="onOpenMenu(div3, TYPE_OF_MENU.ACTION)" #div3>
+        <div class="cds-element" (click)="onAddNewElement()" (mouseleave)="onCloseMenu()"
+            (mouseover)="onOpenMenu(div3, TYPE_OF_MENU.ACTION)" #div3>
             <div class="cds-button-element">
                 <div class="cds-box-button">
                     <span class="box-img">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 22">
+                        <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 22">
                             <path fill="currentColor" d="M9.02 1.63A.825.825 0 0 0 8.657.02C3.7 1.146 0 5.577 0 10.874c0 1.986.521 3.853 1.435 5.47a.34.34 0 0 1 .039.276L.042 20.914a.825.825 0 0 0 1.044 1.044l4.295-1.432a.346.346 0 0 1 .277.04A11.081 11.081 0 0 0 11.128 22c5.296 0 9.727-3.7 10.852-8.655a.825.825 0 1 0-1.61-.366c-.957 4.221-4.733 7.371-9.242 7.371a9.43 9.43 0 0 1-4.658-1.22 1.994 1.994 0 0 0-1.611-.168l-1.686.562c-.455.152-.683.228-.803.107-.12-.12-.044-.347.107-.803l.562-1.686a1.994 1.994 0 0 0-.168-1.61 9.43 9.43 0 0 1-1.22-4.658 9.48 9.48 0 0 1 7.37-9.243zM13.6.02a.825.825 0 1 0-.365 1.61 9.492 9.492 0 0 1 7.136 7.136.825.825 0 0 0 1.609-.366A11.142 11.142 0 0 0 13.6.02zm-3.297 5.13c0-.456.369-.825.825-.825a6.549 6.549 0 0 1 6.548 6.548.825.825 0 1 1-1.65 0 4.899 4.899 0 0 0-4.898-4.898.825.825 0 0 1-.825-.825zm.825 3.754a.825.825 0 1 0 0 1.65.32.32 0 0 1 .32.32.825.825 0 1 0 1.65 0 1.97 1.97 0 0 0-1.97-1.97z"></path>
+                        </svg> -->
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px"
+                            fill="currentColor">
+                            <path d="M0 0h24v24H0z" fill="none" />
+                            <path
+                                d="M19 9l1.25-2.75L23 5l-2.75-1.25L19 1l-1.25 2.75L15 5l2.75 1.25L19 9zm-7.5.5L9 4 6.5 9.5 1 12l5.5 2.5L9 20l2.5-5.5L17 12l-5.5-2.5zM19 15l-1.25 2.75L15 19l2.75 1.25L19 23l1.25-2.75L23 19l-2.75-1.25L19 15z" />
                         </svg>
                     </span>
                     <span class="box-title">Action</span>
@@ -44,12 +57,21 @@
             </div>
         </div>
 
-        <div class="cds-element" (click)="onAddNewElement()" (mouseleave)="onCloseMenu()" (mouseover)="onOpenMenu(div4, TYPE_OF_MENU.FORM)" #div4>
+        <div class="cds-element" (click)="onAddNewElement()" (mouseleave)="onCloseMenu()"
+            (mouseover)="onOpenMenu(div4, TYPE_OF_MENU.FORM)" #div4>
             <div class="cds-button-element">
                 <div class="cds-box-button">
                     <span class="box-img">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 22">
-                            <path fill="currentColor" d="M9.02 1.63A.825.825 0 0 0 8.657.02C3.7 1.146 0 5.577 0 10.874c0 1.986.521 3.853 1.435 5.47a.34.34 0 0 1 .039.276L.042 20.914a.825.825 0 0 0 1.044 1.044l4.295-1.432a.346.346 0 0 1 .277.04A11.081 11.081 0 0 0 11.128 22c5.296 0 9.727-3.7 10.852-8.655a.825.825 0 1 0-1.61-.366c-.957 4.221-4.733 7.371-9.242 7.371a9.43 9.43 0 0 1-4.658-1.22 1.994 1.994 0 0 0-1.611-.168l-1.686.562c-.455.152-.683.228-.803.107-.12-.12-.044-.347.107-.803l.562-1.686a1.994 1.994 0 0 0-.168-1.61 9.43 9.43 0 0 1-1.22-4.658 9.48 9.48 0 0 1 7.37-9.243zM13.6.02a.825.825 0 1 0-.365 1.61 9.492 9.492 0 0 1 7.136 7.136.825.825 0 0 0 1.609-.366A11.142 11.142 0 0 0 13.6.02zm-3.297 5.13c0-.456.369-.825.825-.825a6.549 6.549 0 0 1 6.548 6.548.825.825 0 1 1-1.65 0 4.899 4.899 0 0 0-4.898-4.898.825.825 0 0 1-.825-.825zm.825 3.754a.825.825 0 1 0 0 1.65.32.32 0 0 1 .32.32.825.825 0 1 0 1.65 0 1.97 1.97 0 0 0-1.97-1.97z"></path>
+                        <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 22">
+                            <path fill="currentColor"
+                                d="M9.02 1.63A.825.825 0 0 0 8.657.02C3.7 1.146 0 5.577 0 10.874c0 1.986.521 3.853 1.435 5.47a.34.34 0 0 1 .039.276L.042 20.914a.825.825 0 0 0 1.044 1.044l4.295-1.432a.346.346 0 0 1 .277.04A11.081 11.081 0 0 0 11.128 22c5.296 0 9.727-3.7 10.852-8.655a.825.825 0 1 0-1.61-.366c-.957 4.221-4.733 7.371-9.242 7.371a9.43 9.43 0 0 1-4.658-1.22 1.994 1.994 0 0 0-1.611-.168l-1.686.562c-.455.152-.683.228-.803.107-.12-.12-.044-.347.107-.803l.562-1.686a1.994 1.994 0 0 0-.168-1.61 9.43 9.43 0 0 1-1.22-4.658 9.48 9.48 0 0 1 7.37-9.243zM13.6.02a.825.825 0 1 0-.365 1.61 9.492 9.492 0 0 1 7.136 7.136.825.825 0 0 0 1.609-.366A11.142 11.142 0 0 0 13.6.02zm-3.297 5.13c0-.456.369-.825.825-.825a6.549 6.549 0 0 1 6.548 6.548.825.825 0 1 1-1.65 0 4.899 4.899 0 0 0-4.898-4.898.825.825 0 0 1-.825-.825zm.825 3.754a.825.825 0 1 0 0 1.65.32.32 0 0 1 .32.32.825.825 0 1 0 1.65 0 1.97 1.97 0 0 0-1.97-1.97z">
+                            </path>
+                        </svg> -->
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px"
+                            fill="#000000">
+                            <path d="M0 0h24v24H0z" fill="none" />
+                            <path
+                                d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9H9V9h10v2zm-4 4H9v-2h6v2zm4-8H9V5h10v2z" />
                         </svg>
                     </span>
                     <span class="box-title">Form</span>
@@ -59,15 +81,9 @@
 
 
 
-        <div #menuElement id="menuElement"
-            [style.display]="isOpen?'block':'none'"
-            [style.top.px]="positionMenu.y"
-            [style.left.px]="positionMenu.x"
-            (mouseover)="onOverMenu()"
-            (mouseleave)="onLeaveMenu()">
-            <cds-panel-actions
-                [menuType] = "menuType"
-            ></cds-panel-actions>
+        <div #menuElement id="menuElement" [style.display]="isOpen?'block':'none'" [style.top.px]="positionMenu.y"
+            [style.left.px]="positionMenu.x" (mouseover)="onOverMenu()" (mouseleave)="onLeaveMenu()">
+            <cds-panel-actions [menuType]="menuType"></cds-panel-actions>
         </div>
 
     </div>

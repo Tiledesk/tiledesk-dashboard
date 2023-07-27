@@ -22,7 +22,7 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
   intentNameNotHasSpecialCharacters: boolean = true;
 
   id_faq_kb: string;
-
+  IS_START_INTENT: boolean = false
 
   constructor(
     private logger: LoggerService,
@@ -32,6 +32,9 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     this.showSpinner = false;
     console.log("[PANEL-INTENT-HEADER] intentSelected: ", this.intentSelected)
+    if (this.intentSelected) {
+      this.getStartIntent(this.intentSelected)
+    }
     try {
       this.intentName = this.intentSelected.intent_display_name;
     } catch (error) {
@@ -40,7 +43,10 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    this.logger.log("[PANEL-INTENT-HEADER] header OnChanges intentSelected: ", this.intentSelected)
+    console.log("[PANEL-INTENT-HEADER] header OnChanges intentSelected: ", this.intentSelected)
+    if (this.intentSelected) {
+      this.getStartIntent(this.intentSelected)
+    }
     this.logger.log("[PANEL-INTENT-HEADER] header OnChanges intentSelected intent_display_name: ", this.intentSelected.intent_display_name)
     console.log("[PANEL-INTENT-HEADER] header OnChanges listOfIntents: ", this.listOfIntents)
     const untitledIntents = this.listOfIntents.filter((el) => {
@@ -55,14 +61,14 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
     } else if (this.intentSelected.intent_display_name === undefined && untitledIntents.length > 0) {
       let lastUntitledIntent = untitledIntents[untitledIntents.length - 1].intent_display_name
       this.logger.log("[PANEL-INTENT-HEADER] OnChanges lastUntitledIntent: ", lastUntitledIntent)
-     
-      const lastUntitledIntentSegment =  lastUntitledIntent.split("_")
+
+      const lastUntitledIntentSegment = lastUntitledIntent.split("_")
       this.logger.log("[PANEL-INTENT-HEADER] OnChanges lastUntitledIntentSegment: ", lastUntitledIntentSegment)
       const lastUntitledIntentNumb = +lastUntitledIntentSegment[2]
       this.logger.log("[PANEL-INTENT-HEADER] OnChanges lastUntitledIntentNumb: ", lastUntitledIntentNumb)
       const nextUntitledIntentNumb = lastUntitledIntentNumb + 1
       this.logger.log("[PANEL-INTENT-HEADER] OnChanges nextUntitledIntentNumb: ", nextUntitledIntentNumb)
-      this.intentSelected.intent_display_name = 'untitled_block_'+ nextUntitledIntentNumb;
+      this.intentSelected.intent_display_name = 'untitled_block_' + nextUntitledIntentNumb;
       this.saveIntent.emit(this.intentSelected);
       // this.listOfIntents.push(this.intentSelected) 
     }
@@ -81,6 +87,15 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
     } catch (error) {
       this.logger.log('[PANEL-INTENT-HEADER] intent selected ', error);
     }
+  }
+
+  getStartIntent(intentSelected) {
+    console.log('[PANEL-INTENT-HEADER] GET IF IS THE INTENT START ', intentSelected);
+    if (intentSelected.question === "\\start") {
+      this.IS_START_INTENT = true
+    }
+    
+
   }
 
   // CUSTOM FUNCTIONS //
@@ -103,7 +118,7 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
     this.checkIntentName(name);
   }
 
-  private checkIntentName(name: string){
+  private checkIntentName(name: string) {
     if (name !== this.intentSelected.intent_display_name) {
       this.intentNameAlreadyExist = this.listOfIntents.some((el) => {
         return el.intent_display_name === name;
@@ -127,7 +142,7 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
   }
 
   /** ENTER KEYBOARD EVENT*/
-  onEnterButtonPressed(event){
+  onEnterButtonPressed(event) {
     console.log('[PANEL-INTENT-HEADER] Intent name: onEnterButtonPressed event', event)
     this.checkIntentName(this.intentName);
     this.onSaveIntent();
@@ -200,6 +215,6 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
   //   window.open(url, '_blank', params);
   // }
 
-  
+
 
 }

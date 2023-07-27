@@ -185,8 +185,8 @@
 </ng-template>
 
 <ng-template #galleryElement [ngOutletContext]="context">
-    <div class="gallery-preview-wrp" *ngFor="let galleryEl of gallery; let last= last"
-        [ngStyle]="{border-bottom: last? 'unset'; 'border-bottom: 1px solid #dcd5ba'}">
+    <div class="gallery-preview-wrp" *ngFor="let galleryEl of gallery; let last = last"
+        [ngStyle]="{ 'border-bottom' : last? 'unset' : 'border-bottom: 1px solid #dcd5ba'}">
         <div class="image">
             <img src="{{galleryEl.preview.src}}" alt="{{galleryEl.preview.name}}">
         </div>
