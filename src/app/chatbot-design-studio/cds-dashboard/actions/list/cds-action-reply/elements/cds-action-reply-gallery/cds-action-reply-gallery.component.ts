@@ -48,8 +48,9 @@ export class CdsActionReplyGalleryComponent implements OnInit {
     this.gallery = [];
     try {
       this.gallery = this.response.attributes.attachment.gallery;
+      console.log('galleryyyyyy', this.gallery, this.response)
       this.initElement();
-      this.scrollToLeft()
+      if(!this.previewMode) this.scrollToLeft()
     } catch (error) {
       // console.log('there are no buttons');
     }
@@ -102,13 +103,14 @@ export class CdsActionReplyGalleryComponent implements OnInit {
   }
 
   scrollToLeft(): void {
+    const that = this
     setTimeout(() => {
       try {
         // this.scrollContainer.nativeElement.scrollLeft = this.scrollContainer.nativeElement.scrollWidth;
         // this.scrollContainer.nativeElement.animate({ scrollLeft: 0 }, '1000');
-        this.scrollContainer.nativeElement.scrollTo({ left: (this.scrollContainer.nativeElement.scrollWidth ), behavior: 'smooth' });
+        that.scrollContainer.nativeElement.scrollTo({ left: (that.scrollContainer.nativeElement.scrollWidth ), behavior: 'smooth' });
       } catch (error) {
-        this.logger.log('scrollToBottom ERROR: ', error);
+        that.logger.log('scrollToBottom ERROR: ', error);
       }
     }, 300);
   }

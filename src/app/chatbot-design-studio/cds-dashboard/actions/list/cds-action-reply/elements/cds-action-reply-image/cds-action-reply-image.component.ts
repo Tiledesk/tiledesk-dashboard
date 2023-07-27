@@ -186,12 +186,9 @@ export class CdsActionReplyImageComponent implements OnInit {
   }
 
   /** */
-  onChangeImageSelected(event){
-
-  }
-  /** */
   onDeletePathElement(){
     this.response.metadata.src = null;
+    this.changeActionReply.emit();
     // console.log('onDeletePathElement::: ', this.response.metadata);
   }
   

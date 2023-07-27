@@ -27,7 +27,7 @@
 
     .response-controls {
         position: absolute;
-        top: 0px;
+        top: 26px;
         left: 0px;
         opacity: 0;
         transition: opacity 0.3s ease-in-out;
@@ -45,6 +45,49 @@
         margin: 0;
         padding: 0 10px 0px 25px;
     }
+
+    .gallery-preview-wrp{
+        display: flex;
+        -webkit-box-align: center;
+        align-items: center;
+        padding: 16px 16px 16px 22px;
+        width: 100%;
+        gap: 10px;
+
+        .image{
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            box-shadow: rgba(0, 0, 0, 0.12) 0px -1px 0px 0px inset;
+            display: flex;
+
+            img {
+                max-height: 100%;
+                max-width: 100%;
+            }
+        }
+
+        .content{
+            display: flex;
+            flex-direction: column;
+            -webkit-box-align: center;
+            align-items: flex-start;
+
+            .text{
+                overflow-x: clip;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                font-size: 13px;
+                font-weight: 500;
+            }
+
+            .description{
+                font-size: 11px;
+            }
+        }
+    }
+
+    
 }
 
 /** response-controls **/

@@ -35,10 +35,6 @@ export class CDSImageUploadComponent implements OnInit {
     this.initializeApp();
   }
 
-  ngOnChanges(changes: SimpleChanges){
-    console.log('iamge-upload--> changessssss', changes)
-  }
-
   initializeApp(){
     try {
       if(this.metadata.src){

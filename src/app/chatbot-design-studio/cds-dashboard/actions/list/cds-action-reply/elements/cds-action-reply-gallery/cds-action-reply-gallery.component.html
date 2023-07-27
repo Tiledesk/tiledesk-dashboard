@@ -32,51 +32,21 @@
     </div>
 </div>
 
-<div *ngIf="previewMode">
-    preview galleryyyy
+
+<div *ngIf="previewMode" [class.previewMode]="previewMode">
+    <ng-container *ngIf="gallery.length === 1 && gallery[0].preview.src === ''" [ngTemplateOutlet]="placeholder"></ng-container>
+    <ng-container *ngIf="(gallery.length === 1 && gallery[0].preview.src !== '') ||  gallery.length > 1" [ngTemplateOutlet]="galleryElement"></ng-container>
 </div>
 
 
-<div *ngIf="!previewMode" 
+<div *ngIf="!previewMode"
     class="gallery-response gallery-replies" 
     #scrollMe id="scrollMe"         
     cdkDropListOrientation="horizontal" 
     cdkDropList (cdkDropListDropped)="drop($event)" >
     
     <div *ngFor="let galleryEl of gallery; let i = index; let last= last" class="tpl-drop-down single-btn-reply" cdkDragBoundary=".gallery-replies" cdkDrag> 
-   
-        <!-- <div class="button-reply custom-placeholder" *cdkDragPlaceholder>
-            <div class="gallery-reply-card single-btn-reply">
-                <div class="gallery-image">
-                    <div class="image-overlay">
-                        <appdashboard-image-upload
-                            class="image-upload"
-                            [index]="i"
-                            [metadata] = galleryEl.preview>
-                        </appdashboard-image-upload>
-                    </div>
-                </div>
-                <div class="gallery-title"> 
-                    <cds-textarea id="title"
-                        [textLimitBtn]="false"
-                        [emojiPikerBtn]="false"
-                        [setAttributeBtn]="false"
-                        [minRow]="1"
-                        [text]="galleryEl.title">
-                    </cds-textarea>
-                </div> 
-                <div class="gallery-description"> 
-                    <cds-textarea id="description"
-                        [textLimitBtn]="false"
-                        [emojiPikerBtn]="false"
-                        [setAttributeBtn]="false"
-                        [minRow]="1"
-                        [text]="galleryEl.description">
-                    </cds-textarea>
-                </div>
-            </div>
-        </div> -->
-
+        galleryyyy
         <div style="display: flex;">
             <div>
                 <div class="button-reply">
@@ -200,3 +170,32 @@
     </div>
 
 </div>
+
+
+<ng-template #placeholder [ngOutletContext]="context">
+    <div class="gallery-preview-wrp" id="placeholder">
+        <div class="image">
+            <img src="/src/assets/cds/images/img-preview.jpg">
+        </div>
+        <div class="content">
+            <span class="text">Card Title</span>
+            <span class="text description">Card Description</span>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #galleryElement [ngOutletContext]="context">
+    <div class="gallery-preview-wrp" *ngFor="let galleryEl of gallery; let last= last"
+        [ngStyle]="{border-bottom: last? 'unset'; 'border-bottom: 1px solid #dcd5ba'}">
+        <div class="image">
+            <img src="{{galleryEl.preview.src}}" alt="{{galleryEl.preview.name}}">
+        </div>
+        <div class="content">
+            <span class="text"> {{galleryEl.title}}</span>
+            <span class="text description"> {{galleryEl.description}}</span>
+        </div>
+        <div class="buttons">
+
+        </div> 
+    </div>
+</ng-template>
