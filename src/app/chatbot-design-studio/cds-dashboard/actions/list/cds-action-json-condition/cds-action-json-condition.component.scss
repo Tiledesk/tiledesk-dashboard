@@ -14,9 +14,15 @@
     gap: 5px;
     padding: 3px 0px;
   
-    span.icon{
-      width: 15px;
+    &:first-child {
+        border-bottom: 2px solid $light-brown;
+    }
+    
+    span.icon {
+      width: 20px;
       display: flex;
+      align-self: flex-start;
+      margin-top: 5px;
     }
   
     .title-label{
@@ -326,3 +332,64 @@ ul {
   }
 
 // _________________ TRUE/FALSE/STOP::: END ___________________________
+
+
+
+#conditions{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .group{ 
+        display: flex;
+        width: 100%;
+        justify-content: center;
+    }
+    .group-operator{
+        font-size: 9px;
+        align-self: center;
+        justify-self: center;
+    }
+
+    .expression{
+        font-size: 9px;
+        line-height: 15px;
+        background-color: $light-brown;
+        padding: 3px;
+        border-radius: 4px;
+        width: 100%;
+    }
+
+    .condition-group{
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        background: rgb(245, 245, 245);
+        border-radius: 3px;
+        padding: 2px; 
+    }
+
+    div.filter-icon {
+        -webkit-box-align: center;
+        -webkit-box-pack: center;
+        align-items: center;
+        color: $icon-color;
+        display: flex;
+        font-size: 15px;
+        justify-content: center;
+        width: 15px;
+        transition: color 0.3s ease 0s;
+        span.material-icons{
+            font-size: 15px;
+            color: $icon-color;
+        }
+    }
+
+    .ellips{
+        line-height: 20px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        transition: color 0.3s ease 0s;
+        overflow: hidden !important;
+    }
+}

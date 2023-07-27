@@ -4,13 +4,15 @@ import { ActionDeleteVariable } from 'app/models/intent-model';
 import { LoggerService } from 'app/services/logger/logger.service';
 
 @Component({
-  selector: 'cds-action-delete-variable-2',
-  templateUrl: './action-delete-variable.component.html',
-  styleUrls: ['./action-delete-variable.component.scss']
+  selector: 'cds-action-delete-variable',
+  templateUrl: './cds-action-delete-variable.component.html',
+  styleUrls: ['./cds-action-delete-variable.component.scss']
 })
-export class ActionDeleteVariableComponent implements OnInit {
+export class CdsActionDeleteVariableComponent implements OnInit {
 
   @Input() action: ActionDeleteVariable;
+  @Input() previewMode: boolean = true;
+  
   variableListUserDefined: Array<{name: string, value: string}>;
   
   constructor(

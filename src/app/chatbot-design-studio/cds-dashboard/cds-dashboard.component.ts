@@ -132,6 +132,7 @@ export class CdsDashboardComponent implements OnInit {
      * ad ogni modifica (aggiunta eliminazione di un intent)
      */
     this.subscriptionListOfIntents = this.intentService.getIntents().subscribe(intents => {
+      console.log('intentsssssss', intents)
       this.listOfIntents = intents;
       intents.forEach(intent => {
 
@@ -1018,6 +1019,7 @@ export class CdsDashboardComponent implements OnInit {
     if (intentSelected && intentSelected != null) {
       this.onSaveIntent(intentSelected);
       this.isIntentElementSelected = false;
+      this.controllerService.closeActionDetailPanel();
     } else {
       this.onOpenDialog();
     }

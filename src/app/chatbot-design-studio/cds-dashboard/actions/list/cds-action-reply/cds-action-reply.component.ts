@@ -246,7 +246,7 @@ export class CdsActionReplyComponent implements OnInit {
 
   /** onChangingReplyAction */
   onChangeActionReply() {
-    this.logger.log('onChangeActionReply ************', this.intentSelected, this.arrayMessagesWithWait);
+    console.log('onChangeActionReply ************', this.intentSelected, this.arrayMessagesWithWait);
     this.generateCommandsWithWaitOfElements();
     this.updateAndSaveAction.emit();
   }
