@@ -1,8 +1,9 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef, SimpleChange, SimpleChanges } from '@angular/core';
 import { UploadImageNativeService } from 'app/services/upload-image-native.service';
 import { DomSanitizer} from '@angular/platform-browser';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { Metadata } from 'app/models/intent-model';
+import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   selector: 'cds-image-upload',
@@ -10,13 +11,18 @@ import { Metadata } from 'app/models/intent-model';
   styleUrls: ['./image-upload.component.scss']
 })
 export class CDSImageUploadComponent implements OnInit {
-  @Input() metadata: Metadata;
+  
   @ViewChild('imageUploaded', { static: false }) myIdentifier: ElementRef;
+  
+  @Input() metadata: Metadata;
+  @Output() onChangeMetadata = new EventEmitter<Metadata>();
 
   isHovering: boolean = false;
   dropEvent: any;
   existAnAttacment: boolean = false;
   isImageSvg = false;
+
+  uuid: string = uuidv4()
   
   constructor(
     private uploadImageNativeService: UploadImageNativeService,
@@ -27,6 +33,10 @@ export class CDSImageUploadComponent implements OnInit {
   // SYSTEM FUNCTIONS //
   ngOnInit(): void {
     this.initializeApp();
+  }
+
+  ngOnChanges(changes: SimpleChanges){
+    console.log('iamge-upload--> changessssss', changes)
   }
 
   initializeApp(){
@@ -108,6 +118,7 @@ export class CDSImageUploadComponent implements OnInit {
           this.metadata.height = img.height;
           this.metadata.name = uploadedFiles.name
           this.metadata.type = uploadedFiles.type
+          this.onChangeMetadata.emit(this.metadata)
       };
     };
     // setTimeout(() => {
