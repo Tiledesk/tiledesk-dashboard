@@ -1,13 +1,15 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, isDevMode } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { NgSelectComponent } from '@ng-select/ng-select';
 import { CdsPublishOnCommunityModalComponent } from 'app/chatbot-design-studio/cds-dashboard/cds-publish-on-community-modal/cds-publish-on-community-modal.component';
 import { CERTIFIED_TAGS } from 'app/chatbot-design-studio/utils';
+import { AuthService } from 'app/core/auth.service';
 import { NotifyService } from 'app/core/notify.service';
 import { Chatbot } from 'app/models/faq_kb-model';
 import { Project } from 'app/models/project-model';
 import { FaqKbService } from 'app/services/faq-kb.service';
 import { LoggerService } from 'app/services/logger/logger.service';
+import { UsersService } from 'app/services/users.service';
 const swal = require('sweetalert');
 
 @Component({
@@ -34,23 +36,74 @@ export class CDSDetailCommunityComponent implements OnInit {
   certifiedTagNotSelected: boolean;
   titleIsEmpty: boolean;
   shortDescriptionIsEmpty: boolean;
+  userWebsite: string;
+  userPlublicEmail: string;
+  userDescription: string;
+  user: any;
 
   constructor(
     private logger: LoggerService,
     public dialog: MatDialog,
     private faqKbService: FaqKbService,
     private notify: NotifyService,
+    private usersService: UsersService,
+    private auth: AuthService,
   ) { }
 
   ngOnInit(): void {
-    console.log('[CDS-DETAIL-COMMUNITY] onInit-->', this.selectedChatbot)
+    this.logger.log('[CDS-DETAIL-COMMUNITY] onInit-->', this.selectedChatbot)
     if (this.selectedChatbot && this.selectedChatbot.tags) {
       this.tagsList = this.selectedChatbot.tags
     }
     if (this.selectedChatbot && this.selectedChatbot.certifiedTags && this.selectedChatbot.certifiedTags.length > 0) {
       this.certifiedTag = this.selectedChatbot.certifiedTags[0]
     }
-    console.log('[CDS-DETAIL-COMMUNITY] onInit-->', this.certifiedTag)
+    this.logger.log('[CDS-DETAIL-COMMUNITY] onInit-->', this.certifiedTag)
+
+    this.getLoggedUserAndUserCommunityProfile()
+  }
+
+  getLoggedUserAndUserCommunityProfile() {
+    this.auth.user_bs.subscribe((user) => {
+      this.logger.log('[CDS-DETAIL-COMMUNITY] - GET LOGGED USER - USER', user)
+
+      if (user) {
+        this.user = user;
+        this.getUserCommunityProfile(this.user._id)
+      }
+    })
+
+  }
+
+  getUserCommunityProfile(user_id: string) {
+    this.usersService.getCurrentUserCommunityProfile(user_id)
+      .subscribe((userCmntyProfile) => {
+        this.logger.log('[CDS-DETAIL-COMMUNITY] GET CURRENT  USER CMNTY PROFILE RES ', userCmntyProfile)
+        if (userCmntyProfile) {
+          if (userCmntyProfile['description']) {
+            this.userDescription = userCmntyProfile['description'];
+            this.logger.log('[CDS-DETAIL-COMMUNITY] GET CURRENT  USER CMNTY PROFILE > description ', this.userDescription)
+          }
+
+          if (userCmntyProfile['public_email']) {
+            this.userPlublicEmail = userCmntyProfile['public_email'];
+            this.logger.log('[CDS-DETAIL-COMMUNITY] GET CURRENT  USER CMNTY PROFILE > public_email ', this.userPlublicEmail)
+          }
+
+          if (userCmntyProfile['public_website']) {
+            this.userWebsite = userCmntyProfile['public_website'];
+            this.logger.log('[CDS-DETAIL-COMMUNITY] GET CURRENT  USER CMNTY PROFILE > userWebsite ', this.userWebsite)
+          }
+        }
+
+
+      }, (error) => {
+        this.logger.error('[CDS-DETAIL-COMMUNITY] GET CURRENT USER CMNTY PROFILE -  ERROR ', error);
+
+
+      }, () => {
+        this.logger.log('[CDS-CHATBOT-DTLS] GET CURRENT USER PROFILE - * COMPLETE *');
+      })
   }
 
 
@@ -104,8 +157,81 @@ export class CDSDetailCommunityComponent implements OnInit {
       },
     });
     dialogRef.afterClosed().subscribe(result => {
-      // this.logger.log(`Dialog result: ${result}`);
+      this.logger.log(`Dialog result: ${result}`);
+
+
+      if (result === 'has-published-on-cmnty') {
+        if (!isDevMode()) {
+          try {
+            window['analytics'].track("Publish on community", {
+              "type": "organic",
+              "first_name": this.user.firstname,
+              "last_name": this.user.lastname,
+              "email": this.user.email,
+              'userId': this.user._id,
+              'botId': this.selectedChatbot._id,
+              'bot_name': this.selectedChatbot.name,
+            });
+          } catch (err) {
+            this.logger.error('track signup event error', err);
+          }
+        }
+      }
     });
+
+  }
+
+  removeFromCommunity() {
+
+    swal({
+      title: "Are you sure",
+      text: 'You are about to remove the chatbot from the community',
+      icon: "warning",
+      buttons: ["Cancel", 'Remove'],
+      dangerMode: false,
+    })
+      .then((WillRemove) => {
+        if (WillRemove) {
+          this.logger.log('[CDS DSBRD] removeFromCommunity swal WillRemove', WillRemove)
+          this.selectedChatbot.public = false
+          this.faqKbService.updateChatbot(this.selectedChatbot).subscribe((data) => {
+            this.logger.log('[CDS DSBRD] removeFromCommunity - RES ', data)
+          }, (error) => {
+            swal('An error has occurred', {
+              icon: "error",
+            });
+            this.logger.error('[CDS DSBRD] removeFromCommunity ERROR ', error);
+          }, () => {
+            this.logger.log('[CDS DSBRD] removeFromCommunity * COMPLETE *');
+            if (!isDevMode()) {
+              try {
+                window['analytics'].track("Removed from community", {
+                  "type": "organic",
+                  "first_name": this.user.firstname,
+                  "last_name": this.user.lastname,
+                  "email": this.user.email,
+                  'userId': this.user._id,
+                  'botId': this.selectedChatbot._id,
+                  'bot_name': this.selectedChatbot.name,
+                });
+              } catch (err) {
+                this.logger.error('track signup event error', err);
+              }
+            }
+
+            swal("Done!", "The Chatbot has been removed from the community", {
+              icon: "success",
+
+
+            }).then((okpressed) => {
+
+            });
+          });
+        } else {
+          this.logger.log('[CDS DSBRD] removeFromCommunity (else)')
+        }
+      });
+
   }
 
   _publishOnCommunity() {
@@ -142,43 +268,10 @@ export class CDSDetailCommunityComponent implements OnInit {
   }
 
 
-  removeFromCommunity() {
 
-    swal({
-      title: "Are you sure",
-      text: 'You are about to remove the chatbot from the community',
-      icon: "warning",
-      buttons: ["Cancel", 'Remove'],
-      dangerMode: false,
-    })
-      .then((WillRemove) => {
-        if (WillRemove) {
-          this.logger.log('[CDS DSBRD] removeFromCommunity swal WillRemove', WillRemove)
-          this.selectedChatbot.public = false
-          this.faqKbService.updateChatbot(this.selectedChatbot).subscribe((data) => {
-            this.logger.log('[CDS DSBRD] removeFromCommunity - RES ', data)
-          }, (error) => {
-            swal('An error has occurred', {
-              icon: "error",
-            });
-            this.logger.error('[CDS DSBRD] removeFromCommunity ERROR ', error);
-          }, () => {
-            this.logger.log('[CDS DSBRD] removeFromCommunity * COMPLETE *');
-            swal("Done!", "The Chatbot has been removed from the community", {
-              icon: "success",
-            }).then((okpressed) => {
-
-            });
-          });
-        } else {
-          this.logger.log('[CDS DSBRD] removeFromCommunity (else)')
-        }
-      });
-
-  }
 
   addMainCategory(category) {
-    console.log('[CDS-DETAIL-COMMUNITY] addMainCategory -->', category)
+    this.logger.log('[CDS-DETAIL-COMMUNITY] addMainCategory -->', category)
     if (category) {
       this.selectedChatbot.certifiedTags = [category]
       this.certifiedTagNotSelected = false
@@ -186,7 +279,7 @@ export class CDSDetailCommunityComponent implements OnInit {
   }
 
   onChangeTitle(event) {
-    console.log('[CDS-DETAIL-COMMUNITY] onChangeTitle > event', event)
+    this.logger.log('[CDS-DETAIL-COMMUNITY] onChangeTitle > event', event)
     if (event.length > 0) {
       this.titleIsEmpty = false
     } else {
@@ -196,7 +289,7 @@ export class CDSDetailCommunityComponent implements OnInit {
   }
 
   onChangeShortDescription(event) {
-    console.log('[CDS-DETAIL-COMMUNITY] onChangeShortDescription > event', event)
+    this.logger.log('[CDS-DETAIL-COMMUNITY] onChangeShortDescription > event', event)
     if (event.length > 0) {
       this.shortDescriptionIsEmpty = false
     } else {
@@ -215,19 +308,16 @@ export class CDSDetailCommunityComponent implements OnInit {
       this.titleIsEmpty = true
     }
 
-    if (!this.selectedChatbot.short_description ){
+    if (!this.selectedChatbot.short_description) {
       this.shortDescriptionIsEmpty = true
     }
-    
+
     if (!this.certifiedTag || !this.selectedChatbot.title || !this.selectedChatbot.short_description) {
       return
     }
-
-   
-
-    console.log('[CDS-DETAIL-COMMUNITY] updateDataOnCommunity chatbot -->', this.selectedChatbot)
+    this.logger.log('[CDS-DETAIL-COMMUNITY] updateDataOnCommunity chatbot -->', this.selectedChatbot)
     this.faqKbService.updateChatbot(this.selectedChatbot).subscribe((chatbot) => {
-      console.log('responseeeeeee--> ', chatbot)
+      this.logger.log('[CDS-DETAIL-COMMUNITY] UPDATE CHATBOT DATA ON CMNTY RES ', chatbot)
     }, (error) => {
       this.logger.error('[CDS-CHATBOT-DTLS] EDIT BOT -  ERROR ', error);
 
@@ -241,6 +331,38 @@ export class CDSDetailCommunityComponent implements OnInit {
       this.notify.showWidgetStyleUpdateNotification(this.translationsMap.get('UpdateBotSuccess'), 2, 'done');
       this.selectedChatbot.name
     })
+  }
+  // -----------------------------------
+  // User community info
+  // -----------------------------------
+  onChangeUserWebsite(event) {
+    this.logger.log('[CDS-DETAIL-COMMUNITY] onChangeUserWebsite > event', event)
+  }
+
+
+  updateUserProfile() {
+    this.logger.log('[CDS-DETAIL-COMMUNITY] UPDATE USER PROFILE, ')
+    this.usersService.updateUserWithCommunityProfile(this.userWebsite, this.userPlublicEmail, this.userDescription)
+      .subscribe((userProfile) => {
+
+        const user = localStorage.getItem('user')
+        if (user) {
+          this.logger.log('[CDS-DETAIL-COMMUNITY] UPDATE USER PROFILE stored user  ', user)
+        }
+        // this.auth.publishUpdatedUser(userProfile)
+        this.logger.log('[CDS-DETAIL-COMMUNITY] UPDATE USER PROFILE RES ', userProfile)
+      }, (error) => {
+        this.logger.error('[CDS-DETAIL-COMMUNITY] UPDATE USER PROFILE -  ERROR ', error);
+        // =========== NOTIFY ERROR ===========
+        this.notify.showWidgetStyleUpdateNotification('An error occurred while updating your user profile', 4, 'report_problem');
+
+      }, () => {
+        this.logger.log('[CDS-CHATBOT-DTLS] UPDATE USER PROFILE - * COMPLETE *');
+        // =========== NOTIFY SUCCESS===========
+        this.notify.showWidgetStyleUpdateNotification(this.translationsMap.get('User profile updated successfully'), 2, 'done');
+
+      })
+
   }
 
 

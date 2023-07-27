@@ -299,7 +299,7 @@ export class CdsPublishOnCommunityModalComponent implements OnInit {
 
       this.logger.log('[PUBLISH-ON-COMMUNITY-MODAL-COMPONENT] publishOnCommunity * COMPLETE * ');
       this.notify.showWidgetStyleUpdateNotification('Successfully deployed', 2, 'done');
-      this.dialogRef.close();
+      this.dialogRef.close('has-published-on-cmnty');
 
     });
   }
