@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.4.55
+- Deploys in production
+- Adds the "Closed" option to the "Change conversation status" triggers action
+
 ### 2.4.54
 - Deploys in production
 - Improvements and bug fixing
