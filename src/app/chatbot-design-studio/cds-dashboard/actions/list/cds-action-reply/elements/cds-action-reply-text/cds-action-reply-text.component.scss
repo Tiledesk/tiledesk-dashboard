@@ -165,11 +165,11 @@
 }
 
 //** CONNECTOR **//
-.connector {
+cds-connector.connector {
     position: absolute;
     // top: calc(50% - 10px);
-    top: 0;
-    right: -4px;
+    top: 0px;
+    right: -8px;
 }
 
 

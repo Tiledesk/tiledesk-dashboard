@@ -49,7 +49,7 @@
 
                     <cds-action-reply *ngSwitchCase="typeAction.RANDOM_REPLY"
                         class="panel-response"
-                        [intentSelected]="intent"
+                        [intentSelected]="intentSelected"
                         [action]="elementSelected"
                         [previewMode]="false">
                     </cds-action-reply>
@@ -76,7 +76,7 @@
 
                     <cds-action-open-hours *ngSwitchCase="typeAction.OPEN_HOURS"
                         class="panel-response"   
-                        [intentSelected]="intent"
+                        [intentSelected]="intentSelected"
                         [action]="elementSelected"
                         [previewMode]="false">
                     </cds-action-open-hours>
@@ -107,7 +107,7 @@
 
                     <cds-action-json-condition *ngSwitchCase="typeAction.JSON_CONDITION"
                         class="panel-response"
-                        [intentSelected]="intent"
+                        [intentSelected]="intentSelected"
                         [action]="elementSelected"
                         [previewMode]="false">
                     </cds-action-json-condition>
@@ -140,7 +140,7 @@
                 
                     <cds-action-hide-message *ngSwitchCase="typeAction.HIDE_MESSAGE"
                         [action]="elementSelected">
-                    </cds-action-hide-message>-->
+                    </cds-action-hide-message> -->
     
                 </div>
             </div>
