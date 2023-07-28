@@ -40,7 +40,10 @@ export class CDSDetailCommunityComponent implements OnInit {
   userPlublicEmail: string;
   userDescription: string;
   user: any;
-
+  userCmntyInfo = false;
+  seeAll: any;
+  seeUserCmntyInfo: boolean = false;
+  hasPersonalCmntyInfo: boolean = false;
   constructor(
     private logger: LoggerService,
     public dialog: MatDialog,
@@ -49,6 +52,15 @@ export class CDSDetailCommunityComponent implements OnInit {
     private usersService: UsersService,
     private auth: AuthService,
   ) { }
+
+  displayUserCommunityInfo(seeUserCmntyInfo) {
+    this.logger.log('displayUserCommunityInfo ', seeUserCmntyInfo)
+    if (seeUserCmntyInfo === false) {
+      this.userCmntyInfo = false;
+    } else {
+      this.userCmntyInfo = true;
+    }
+  }
 
   ngOnInit(): void {
     this.logger.log('[CDS-DETAIL-COMMUNITY] onInit-->', this.selectedChatbot)
@@ -83,18 +95,33 @@ export class CDSDetailCommunityComponent implements OnInit {
           if (userCmntyProfile['description']) {
             this.userDescription = userCmntyProfile['description'];
             this.logger.log('[CDS-DETAIL-COMMUNITY] GET CURRENT  USER CMNTY PROFILE > description ', this.userDescription)
+            this.hasPersonalCmntyInfo = true;
+          } else {
+            this.userDescription = undefined
           }
 
           if (userCmntyProfile['public_email']) {
             this.userPlublicEmail = userCmntyProfile['public_email'];
             this.logger.log('[CDS-DETAIL-COMMUNITY] GET CURRENT  USER CMNTY PROFILE > public_email ', this.userPlublicEmail)
+            this.hasPersonalCmntyInfo = true;
+          } else {
+            this.userPlublicEmail = undefined
           }
 
           if (userCmntyProfile['public_website']) {
             this.userWebsite = userCmntyProfile['public_website'];
             this.logger.log('[CDS-DETAIL-COMMUNITY] GET CURRENT  USER CMNTY PROFILE > userWebsite ', this.userWebsite)
+            this.hasPersonalCmntyInfo = true;
+          } else {
+            this.userWebsite = undefined
           }
         }
+
+        if (this.userDescription === undefined && this.userPlublicEmail=== undefined && this.userWebsite === undefined) {
+          this.logger.log('[CDS-DETAIL-COMMUNITY] hasPersonalCmntyInfo (1)' ,  this.hasPersonalCmntyInfo)
+          this.hasPersonalCmntyInfo = false;
+        }
+
 
 
       }, (error) => {
@@ -147,13 +174,15 @@ export class CDSDetailCommunityComponent implements OnInit {
 
   }
 
-
+  // are you sure to publish on the community without your Personal information
   publishOnCommunity() {
+    this.logger.log('[CDS-DETAIL-COMMUNITY] hasPersonalCmntyInfo (2)' ,  this.hasPersonalCmntyInfo)
     this.logger.log('openDialog')
     const dialogRef = this.dialog.open(CdsPublishOnCommunityModalComponent, {
       data: {
         chatbot: this.selectedChatbot,
-        projectId: this.project._id
+        projectId: this.project._id,
+        personalCmntyInfo: this.hasPersonalCmntyInfo
       },
     });
     dialogRef.afterClosed().subscribe(result => {
@@ -267,9 +296,6 @@ export class CDSDetailCommunityComponent implements OnInit {
       });
   }
 
-
-
-
   addMainCategory(category) {
     this.logger.log('[CDS-DETAIL-COMMUNITY] addMainCategory -->', category)
     if (category) {
@@ -344,12 +370,10 @@ export class CDSDetailCommunityComponent implements OnInit {
     this.logger.log('[CDS-DETAIL-COMMUNITY] UPDATE USER PROFILE, ')
     this.usersService.updateUserWithCommunityProfile(this.userWebsite, this.userPlublicEmail, this.userDescription)
       .subscribe((userProfile) => {
-
-        const user = localStorage.getItem('user')
-        if (user) {
-          this.logger.log('[CDS-DETAIL-COMMUNITY] UPDATE USER PROFILE stored user  ', user)
+        if(userProfile['description'] === "" && userProfile['public_email'] === "" &&  userProfile['public_website'] === "") {
+          this.hasPersonalCmntyInfo = false;
         }
-        // this.auth.publishUpdatedUser(userProfile)
+
         this.logger.log('[CDS-DETAIL-COMMUNITY] UPDATE USER PROFILE RES ', userProfile)
       }, (error) => {
         this.logger.error('[CDS-DETAIL-COMMUNITY] UPDATE USER PROFILE -  ERROR ', error);
@@ -359,7 +383,7 @@ export class CDSDetailCommunityComponent implements OnInit {
       }, () => {
         this.logger.log('[CDS-CHATBOT-DTLS] UPDATE USER PROFILE - * COMPLETE *');
         // =========== NOTIFY SUCCESS===========
-        this.notify.showWidgetStyleUpdateNotification(this.translationsMap.get('User profile updated successfully'), 2, 'done');
+        this.notify.showWidgetStyleUpdateNotification('User profile updated successfully', 2, 'done');
 
       })
 

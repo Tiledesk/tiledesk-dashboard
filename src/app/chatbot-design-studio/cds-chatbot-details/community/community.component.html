@@ -2,19 +2,39 @@
 
     <div class="row">
         <div class="col-sm-10 col-md-10 title-buttons">
-            <h3 class="card_title__underlined" style="color: #e8eaed;">
+            <!-- <h3 class="card_title__underlined" style="color: #e8eaed;">
                 <span class="card_title__underline buttons-inside">
-
-                    <!-- {{ "UserProfile.Profile" | translate }} -->
                     Setup Community info
                 </span>
-            </h3>
+            </h3> -->
+            <!-- displayBtnLabelSeeYourRequets
+            displayBtnLabelSeeYourRequets
+            displayBtnLabelSeeYourRequets -->
+            <div class="community-tab">
+                <div (click)="displayUserCommunityInfo(seeUserCmntyInfo = !seeUserCmntyInfo)" class="btn-with-border--effect" [ngClass]="
+                { 'disabled-li' : seeUserCmntyInfo === false, 
+                    'border-from-center' : seeUserCmntyInfo === true,
+                    'li-active' : seeUserCmntyInfo === false
+                }">
+
+                    <a style="position: relative;top: 20px;" href="javascript:;" role="button"> Chatbot info</a>
+                </div>
+
+                <div (click)="displayUserCommunityInfo(seeUserCmntyInfo = !seeUserCmntyInfo)" class="btn-with-border--effect" [ngClass]="
+                    { 'disabled-li' : seeUserCmntyInfo === true, 
+                        'border-from-center' : seeUserCmntyInfo === false, 
+                        'li-active' : seeUserCmntyInfo === true
+                    }">
+                    <a style="position: relative;top: 20px;" href="javascript:;" role="button"> Personal info </a>
+                </div>
+            </div>
             <div class="cds-community-btns-wrp">
 
                 <button *ngIf="selectedChatbot?.public === false" id="csd-update-bot-btn" #editbotbtn
-                    class="btn btn-primary pull-left cds-blue-button" (click)="publishOnCommunity()"
-                    [disabled]="(!selectedChatbot.hasOwnProperty('short_description') || selectedChatbot.short_description === '') || 
-                                                                (!selectedChatbot.hasOwnProperty('title') || selectedChatbot.title === '') || !certifiedTag ">
+                    class="btn btn-primary pull-left cds-blue-button" (click)="publishOnCommunity()" [disabled]="(
+                        !selectedChatbot.hasOwnProperty('short_description') ||
+                        selectedChatbot.short_description === '') ||
+                        (!selectedChatbot.hasOwnProperty('title') || selectedChatbot.title === '') || !certifiedTag ">
                     Go live on Community
                 </button>
                 <button *ngIf="selectedChatbot?.public === true" id="csd-update-bot-btn" #editbotbtn
@@ -39,7 +59,7 @@
     <!-- ------------------------------------------------------------------------------------------- -->
 
     <div class="row">
-        <div class="col-xs-6">
+        <div *ngIf="!userCmntyInfo" class="col-xs-6">
             <!-- style="margin-bottom: 16px;" -->
             <div class="row">
 
@@ -194,7 +214,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-xs-6">
+        <div *ngIf="userCmntyInfo" class="col-xs-6">
             <div class="row">
 
                 <label class="col-xs-12 cds--custom-label" style="font-size: 18px;">
@@ -215,7 +235,8 @@
                 <div class="col-xs-12">
                     <input id="user-website" name="user_website" [(ngModel)]="userWebsite"
                         (ngModelChange)="onChangeUserWebsite($event)" class="input csd-chatbot-dtls-input" type="text"
-                        style="margin-bottom: 0px; color:#808080; position: relative;top: -1px;" placeholder="Your Website">
+                        style="margin-bottom: 0px; color:#808080; position: relative;top: -1px;"
+                        placeholder="Your Website">
                 </div>
             </div>
             <div class="row" style="margin-bottom: 16px;">
@@ -238,13 +259,12 @@
                     <textarea id="user-description" name="user_description" [(ngModel)]="userDescription"
                         class="input csd-chatbot-dtls-input" type="text"
                         style="margin-bottom: 0px; color:#808080; position: relative;top: -1px;"
-                        placeholder="Your description"
-                        rows="4">
+                        placeholder="Your description" rows="4">
                     </textarea>
                 </div>
             </div>
 
-              <!-- ------------------------------------------------------------------------------------------- -->
+            <!-- ------------------------------------------------------------------------------------------- -->
             <!-- Update user profile btn  -->
             <!-- ------------------------------------------------------------------------------------------- -->
             <div class="row" style="margin-bottom: 16px;">
@@ -252,7 +272,7 @@
                 <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
                     <button id="csd-update-bot-btn" #editbotbtn class="btn btn-primary pull-left cds-blue-button"
                         (click)="updateUserProfile()">
-                       Update your profile
+                        Update your profile
                     </button>
                 </div>
             </div>

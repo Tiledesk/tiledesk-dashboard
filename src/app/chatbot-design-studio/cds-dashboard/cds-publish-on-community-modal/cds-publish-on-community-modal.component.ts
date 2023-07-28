@@ -34,6 +34,7 @@ export class CdsPublishOnCommunityModalComponent implements OnInit {
   botProfileImageurl: string;
   timeStamp: any;
   selectedIndex = 1;
+  hasPersonalCmntyInfo: boolean;
   @ViewChild('cdsfileInputBotProfileImage', { static: false }) cdsfileInputBotProfileImage: any;
   @ViewChild('editbotbtn', { static: false }) private elementRef: ElementRef;
 
@@ -51,6 +52,8 @@ export class CdsPublishOnCommunityModalComponent implements OnInit {
     this.logger.log('[PUBLISH-ON-COMMUNITY-MODAL-COMPONENT] data ', data)
     this.selectedChatbot = data.chatbot;
     this.projectId = data.projectId;
+    this.hasPersonalCmntyInfo = data.personalCmntyInfo;
+    this.logger.log('[PUBLISH-ON-COMMUNITY-MODAL-COMPONENT] hasPersonalCmntyInfo ', this.hasPersonalCmntyInfo)
     this.logger.log('[PUBLISH-ON-COMMUNITY-MODAL-COMPONENT] selectedChatbot ', this.selectedChatbot)
     this.logger.log('[PUBLISH-ON-COMMUNITY-MODAL-COMPONENT] projectId ', this.projectId)
     if (this.selectedChatbot) {
@@ -61,7 +64,7 @@ export class CdsPublishOnCommunityModalComponent implements OnInit {
 
       this.faqKb_description = this.selectedChatbot.description;
       this.logger.log('[PUBLISH-ON-COMMUNITY-MODAL-COMPONENT] - faqKb_description ', this.faqKb_description);
-      
+
       this.tagsList = this.selectedChatbot.tags
       this.checkBotImageExist()
     }
@@ -96,7 +99,7 @@ export class CdsPublishOnCommunityModalComponent implements OnInit {
     const imageUrl = 'https://firebasestorage.googleapis.com/v0/b/' + this.storageBucket + '/o/profiles%2F' + this.id_faq_kb + '%2Fphoto.jpg?alt=media';
 
     const self = this;
-  
+
     this.verifyImageURL(imageUrl, function (imageExists) {
 
       if (imageExists === true) {
