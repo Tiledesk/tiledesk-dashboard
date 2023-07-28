@@ -22,7 +22,6 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
   intentNameNotHasSpecialCharacters: boolean = true;
 
   id_faq_kb: string;
-  IS_START_INTENT: boolean = false
 
   constructor(
     private logger: LoggerService,
@@ -32,9 +31,6 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     this.showSpinner = false;
     console.log("[PANEL-INTENT-HEADER] intentSelected: ", this.intentSelected)
-    if (this.intentSelected) {
-      this.getStartIntent(this.intentSelected)
-    }
     try {
       this.intentName = this.intentSelected.intent_display_name;
     } catch (error) {
@@ -44,9 +40,6 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
 
   ngOnChanges() {
     console.log("[PANEL-INTENT-HEADER] header OnChanges intentSelected: ", this.intentSelected)
-    if (this.intentSelected) {
-      this.getStartIntent(this.intentSelected)
-    }
     this.logger.log("[PANEL-INTENT-HEADER] header OnChanges intentSelected intent_display_name: ", this.intentSelected.intent_display_name)
     console.log("[PANEL-INTENT-HEADER] header OnChanges listOfIntents: ", this.listOfIntents)
     const untitledIntents = this.listOfIntents.filter((el) => {
@@ -87,15 +80,6 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
     } catch (error) {
       this.logger.log('[PANEL-INTENT-HEADER] intent selected ', error);
     }
-  }
-
-  getStartIntent(intentSelected) {
-    console.log('[PANEL-INTENT-HEADER] GET IF IS THE INTENT START ', intentSelected);
-    if (intentSelected.question === "\\start") {
-      this.IS_START_INTENT = true
-    }
-    
-
   }
 
   // CUSTOM FUNCTIONS //
