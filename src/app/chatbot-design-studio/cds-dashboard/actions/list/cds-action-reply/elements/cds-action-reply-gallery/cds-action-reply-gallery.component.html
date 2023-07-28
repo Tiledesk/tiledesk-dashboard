@@ -46,7 +46,6 @@
     cdkDropList (cdkDropListDropped)="drop($event)" >
     
     <div *ngFor="let galleryEl of gallery; let i = index; let last= last" class="tpl-drop-down single-btn-reply" cdkDragBoundary=".gallery-replies" cdkDrag> 
-        galleryyyy
         <div style="display: flex;">
             <div>
                 <div class="button-reply">
@@ -175,7 +174,7 @@
 <ng-template #placeholder [ngOutletContext]="context">
     <div class="gallery-preview-wrp" id="placeholder">
         <div class="image">
-            <img src="/src/assets/cds/images/img-preview.jpg">
+            <img src="/assets/cds/images/img-preview.jpg">
         </div>
         <div class="content">
             <span class="text">Card Title</span>
@@ -185,17 +184,47 @@
 </ng-template>
 
 <ng-template #galleryElement [ngOutletContext]="context">
-    <div class="gallery-preview-wrp" *ngFor="let galleryEl of gallery; let last = last"
-        [ngStyle]="{ 'border-bottom' : last? 'unset' : 'border-bottom: 1px solid #dcd5ba'}">
-        <div class="image">
-            <img src="{{galleryEl.preview.src}}" alt="{{galleryEl.preview.name}}">
-        </div>
-        <div class="content">
-            <span class="text"> {{galleryEl.title}}</span>
-            <span class="text description"> {{galleryEl.description}}</span>
-        </div>
-        <div class="buttons">
-
+    <div *ngFor="let galleryEl of gallery; let i = index; let last = last" class="galleryElement">
+       <div class="gallery-preview-wrp" [ngStyle]="{ 'border-bottom' : last? 'unset' : 'border-bottom: 1px solid #dcd5ba'}">
+            <div class="image">
+                <img src="{{galleryEl.preview.src}}" alt="{{galleryEl.preview.name}}">
+            </div>
+            <div class="content">
+                <span class="text"> {{galleryEl.title}}</span>
+                <span class="text description"> {{galleryEl.description}}</span>
+            </div>
+       </div>
+        <div class="buttons-response button-replies">
+            <div *ngFor="let button of galleryEl.buttons; let j= index;" class="content-botton-reply"> 
+                <div class="button-reply">
+                    <div class="button-reply-text single-btn-reply"
+                        (click)="$event.stopPropagation(); onOpenButtonPanel(i, j, button)">
+                        {{button.value}}
+                    </div>
+                    <div class="button-controls">
+                        <!-- <div class="buttonsToMove">
+                            <div class="control-button" (click)="onMoveLeftButton(i)">
+                                <em class="material-icons">chevron_left</em>
+                            </div> 
+                            <div class="control-button" (click)="onMoveRightButton(i)">
+                                <em class="material-icons">chevron_right</em>
+                            </div>
+                        </div> -->
+                        <div class="control-button delete" (click)="$event.stopPropagation(); onDeleteButton(i)">
+                            <em class="material-icons">delete</em>
+                        </div>
+                    </div>
+                </div>
+        
+                <cds-connector
+                    class = "connector"
+                    cdkDragDisabled
+                    [idConnector] = "button.idConnector"
+                    [isConnected] = "button.isConnected">
+                </cds-connector>
+        
+            </div>
         </div> 
+        <div class="gallery-divider"></div>
     </div>
 </ng-template>

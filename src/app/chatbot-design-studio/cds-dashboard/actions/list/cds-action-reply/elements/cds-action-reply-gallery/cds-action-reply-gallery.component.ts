@@ -1,5 +1,7 @@
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { ConnectorService } from 'app/chatbot-design-studio/services/connector.service';
+import { IntentService } from 'app/chatbot-design-studio/services/intent.service';
 import { TYPE_ACTION, TYPE_BUTTON, TYPE_URL, generateShortUID } from 'app/chatbot-design-studio/utils';
 import { Button, Expression, GalleryElement, MessageAttributes, MessageWithWait, Metadata } from 'app/models/intent-model';
 import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
@@ -26,6 +28,10 @@ export class CdsActionReplyGalleryComponent implements OnInit {
   @Input() index: number;
   @Input() previewMode: boolean = true
   
+  idIntent: string;
+  // Connector //
+  connector: any;
+
   // Delay //onMoveTopButton
   delayTime: number;
   // Filter // 
@@ -40,6 +46,8 @@ export class CdsActionReplyGalleryComponent implements OnInit {
   activateEL: { [key: number]: {title: boolean, description: boolean} } = {}
   constructor(
     private el: ElementRef,
+    private connectorService: ConnectorService,
+    private intentService: IntentService,
     private logger: LoggerService,
   ) { }
 
@@ -51,16 +59,78 @@ export class CdsActionReplyGalleryComponent implements OnInit {
       console.log('galleryyyyyy', this.gallery, this.response)
       this.initElement();
       if(!this.previewMode) this.scrollToLeft()
+
+      this.intentService.isChangedConnector$.subscribe((connector: any) => {
+        console.log('CdsActionReplyGalleryComponent isChangedConnector-->', connector);
+        this.connector = connector;
+        this.updateConnector();
+      });
+      // this.patchButtons();
+      this.idIntent = this.idAction.split('/')[0];
+
     } catch (error) {
       // console.log('there are no buttons');
     }
   }
 
 
+  private patchButtons(element: GalleryElement, index: number){
+    console.log('patchButtons:: ', this.response);
+    let buttons = this.response?.attributes?.attachment?.gallery[index].buttons;
+    if(!buttons)return;
+    buttons.forEach(button => {
+      if(!button.uid || button.uid === undefined){
+        const idButton = generateShortUID();
+        const idActionConnector = this.idAction+'/'+idButton;
+        button.uid = idButton;
+        button.idConnector = idActionConnector;
+        if(button.action && button.action !== ''){
+          button.isConnected = true;
+        } else {
+          button.isConnected = false;
+        }
+      }
+    }); 
+  }
+  
+  private updateConnector(){
+    try {
+      const array = this.connector.fromId.split("/");
+      const idButton = array[array.length - 1];
+      const idConnector = this.idAction+'/'+idButton;
+      console.log(' [REPLY-GALLERY] updateConnector :: connector.fromId: ', this.connector.fromId);
+      console.log(' [REPLY-GALLERY] updateConnector :: idConnector: ', idConnector);
+      console.log(' [REPLY-GALLERY] updateConnector :: idButton: ', idButton);
+      console.log(' [REPLY-GALLERY] updateConnector :: connector.id: ', this.connector.id);
+      // if(idConnector === this.connector.fromId){
+      //   const buttonChanged = this.buttons.find(obj => obj.uid === idButton);
+      //   if(this.connector.deleted){
+      //     // DELETE 
+      //     console.log(' deleteConnector :: ', this.connector.fromId);
+      //     buttonChanged.isConnected = false;
+      //     buttonChanged.idConnector = this.connector.fromId;
+      //     buttonChanged.action = '';
+      //     buttonChanged.type = TYPE_BUTTON.TEXT;
+      //   } else {
+      //     // ADD / EDIT
+      //     buttonChanged.isConnected = true;
+      //     buttonChanged.idConnector = this.connector.fromId;
+      //     buttonChanged.action = '#' + this.connector.toId;
+      //     buttonChanged.type = TYPE_BUTTON.ACTION;
+      //     console.log(' updateConnector :: ', this.buttons);
+      //   }
+      //   this.changeActionReply.emit();
+      // }
+    } catch (error) {
+      console.log('error: ', error);
+    }
+  }
+
   initElement(){
     if(this.gallery && this.gallery.length > 0){
       this.gallery.forEach((el, index)=> {
         this.activateEL[index]= {title: false, description: false}
+        this.patchButtons(el, index);
       })
     }
   }
@@ -181,11 +251,11 @@ export class CdsActionReplyGalleryComponent implements OnInit {
   }
 
   onOpenButtonPanel(indexGallery: number, indexButton: number, button?){
-    // console.log('onOpenButtonPanel: ', button, this.response);
+    // console.log('onOpenButtonPanel: ', button, indexGallery, indexButton, this.response);
     try {
       if(!this.response.attributes || !this.gallery[indexGallery].buttons){
         this.response.attributes.attachment.gallery[indexGallery].buttons[indexButton] = this.newButton();
-        this.gallery[indexGallery].buttons = this.response.attributes.attachment.buttons;
+        // this.gallery[indexGallery].buttons = this.response.attributes.attachment.gallery[indexGallery].buttons;
       }
     } catch (error) {
       console.log('error: ', error);

@@ -60,7 +60,7 @@ export class CdsActionReplyImageComponent implements OnInit {
     }
 
     this.intentService.isChangedConnector$.subscribe((connector: any) => {
-      console.log('CdsActionReplyTextComponent isChangedConnector-->', connector);
+      console.log('CdsActionReplyImageComponent isChangedConnector-->', connector);
       this.connector = connector;
       this.updateConnector();
     });
