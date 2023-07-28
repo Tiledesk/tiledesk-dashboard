@@ -370,11 +370,16 @@ export class CDSDetailCommunityComponent implements OnInit {
     this.logger.log('[CDS-DETAIL-COMMUNITY] UPDATE USER PROFILE, ')
     this.usersService.updateUserWithCommunityProfile(this.userWebsite, this.userPlublicEmail, this.userDescription)
       .subscribe((userProfile) => {
-        if(userProfile['description'] === "" && userProfile['public_email'] === "" &&  userProfile['public_website'] === "") {
+        this.logger.log('[CDS-DETAIL-COMMUNITY] UPDATE USER PROFILE RES ', userProfile)
+        if(userProfile['updatedUser']['description'] === "" && userProfile['updatedUser']['public_email'] === "" &&  userProfile['updatedUser']['public_website'] === "") {
           this.hasPersonalCmntyInfo = false;
+          this.logger.log('[CDS-DETAIL-COMMUNITY] UPDATE USER PROFILE RES > hasPersonalCmntyInfo', this.hasPersonalCmntyInfo)
+        } else {
+          this.hasPersonalCmntyInfo = true;
+          this.logger.log('[CDS-DETAIL-COMMUNITY] UPDATE USER PROFILE RES > hasPersonalCmntyInfo', this.hasPersonalCmntyInfo)
         }
 
-        this.logger.log('[CDS-DETAIL-COMMUNITY] UPDATE USER PROFILE RES ', userProfile)
+      
       }, (error) => {
         this.logger.error('[CDS-DETAIL-COMMUNITY] UPDATE USER PROFILE -  ERROR ', error);
         // =========== NOTIFY ERROR ===========

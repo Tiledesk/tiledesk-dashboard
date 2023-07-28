@@ -223,7 +223,7 @@
                                 community.
                             </h3>
                         </div>
-                        <div class="no-user-cmnty-info">
+                        <div *ngIf="!hasPersonalCmntyInfo"  class="no-user-cmnty-info">
                             <h3 style=" margin-bottom: 0px;">
                                 Be Heard, Be Known: complete the form available in the Personal info before publishing!
                             </h3>

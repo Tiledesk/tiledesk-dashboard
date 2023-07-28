@@ -252,10 +252,11 @@ input[type="file"] {
 }
 
 .no-user-cmnty-info {
-    background: linear-gradient(130deg,#ff7a18,#af002d 41.07%,#319197 76.05%);
+    background: #e7f3ff;
     padding: 9px;
     border-radius: 4px;
     text-align: center;
-    color: #fff;
+    color: #000 !important;
     margin-bottom: 24px;
+    font-weight: 400;
 }
