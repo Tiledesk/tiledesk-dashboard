@@ -149,7 +149,7 @@ export class InstallTemplateComponent extends WidgetSetUpBaseComponent implement
         projects.forEach(project => {
           // this.logger.log('[INSTALL-TEMPLATE] - GET PROJECTS  project ', project);
           if (project.id_project.id === projectid) {
-            console.log('[INSTALL-TEMPLATE] - GET PROJECTS selected project ', project);
+            this.logger.log('[INSTALL-TEMPLATE] - GET PROJECTS selected project ', project);
             this.project = project.id_project
             this.projectName = project.id_project.name;
             this.projectPlan = project.id_project.profile.name
@@ -157,7 +157,7 @@ export class InstallTemplateComponent extends WidgetSetUpBaseComponent implement
             if (project.id_project.profile.extra3) {
               
               this.appSumoProfile = APP_SUMO_PLAN_NAME[project.id_project.profile.extra3]
-              console.log('[INSTALL-TEMPLATE] Find Current Project appSumoProfile ', this.appSumoProfile)
+              this.logger.log('[INSTALL-TEMPLATE] Find Current Project appSumoProfile ', this.appSumoProfile)
             }
 
 

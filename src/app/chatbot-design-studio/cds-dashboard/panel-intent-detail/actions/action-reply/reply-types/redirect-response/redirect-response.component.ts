@@ -34,7 +34,7 @@ export class RedirectResponseComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    console.log('responseeeeeee', this.response)
+    // console.log('responseeeeeee', this.response)
     this.delayTime = this.response.time/1000;
     try {
       this.metadata = this.response.metadata;
@@ -83,9 +83,9 @@ export class RedirectResponseComponent implements OnInit {
   }
 
   onButtonToogleChange(event){
-    console.log('onButtonToogleChange::: event', event)
+    // console.log('onButtonToogleChange::: event', event)
     this.metadata.target = event.value
-    console.log('onButtonToogleChange::: response', this.response)
+    // console.log('onButtonToogleChange::: response', this.response)
   }
 
 }

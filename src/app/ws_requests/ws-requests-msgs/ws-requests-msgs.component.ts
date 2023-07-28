@@ -1592,7 +1592,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       )
       .subscribe((wsrequest) => {
 
-        console.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** ', wsrequest)
+        this.logger.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** ', wsrequest)
         this.request = wsrequest;
 
         if (this.request) {
@@ -5564,7 +5564,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   onClickTagConversation() {
-    console.log('[WS-REQUESTS-MSGS] - HAS CLICKED TAG CONVS');
+    this.logger.log('[WS-REQUESTS-MSGS] - HAS CLICKED TAG CONVS');
     this.hasSelectedTab1()
   }
 

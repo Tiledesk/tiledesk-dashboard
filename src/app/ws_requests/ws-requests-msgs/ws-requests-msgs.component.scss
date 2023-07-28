@@ -488,6 +488,7 @@
 
 button.close {
   -webkit-appearance: none;
+  appearance: none;
   padding: 0;
   cursor: pointer;
   background: 0 0;
@@ -1321,6 +1322,7 @@ span .conv-svg-icon {
   width: 100%;
   margin-top: 6px;
   -webkit-appearance: none;
+  appearance: none;
   background: #fff;
   border: 1px solid #d9d9d9;
   padding: 0 8px;
@@ -3347,6 +3349,7 @@ span .conv-svg-icon {
   box-sizing: border-box;
   color: #3c4858;
   -webkit-appearance: none;
+  appearance: none;
 }
 
 .send-chat-msg-btn {
@@ -3468,6 +3471,7 @@ span .conv-svg-icon {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
+  user-select: none;
 }
 .nw-onoffswitch-checkbox {
   position: absolute;
@@ -4123,7 +4127,8 @@ label {
 
 .served-by-avatar--img {
   height: 26px;
-  border: 2px solid rgb(239, 242, 246);
+  // border: 2px solid rgb(239, 242, 246);
+  border: 1px solid #dfe1e6;
   margin-right: -7px;
   position: relative;
   border-radius: 50%;
@@ -4147,7 +4152,7 @@ label {
 
 .served-by-avatar--others-agents {
   height: 26px;
-  border: 2px solid rgb(239, 242, 246);
+  // border: 2px solid rgb(239, 242, 246);
   margin-right: 0px;
   position: relative;
   border-radius: 50%;
@@ -4156,7 +4161,7 @@ label {
   width: 26px;
   text-align: center;
   font-weight: 400;
-  line-height: 22px;
+  line-height: 26px;
   background-color: rgb(223, 225, 230);
   color: rgb(122, 134, 154);
   cursor: pointer;

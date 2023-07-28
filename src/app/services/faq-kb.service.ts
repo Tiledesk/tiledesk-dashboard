@@ -543,7 +543,7 @@ export class FaqKbService {
     };
 
     let url = this.FAQKB_URL + id + '/language/' + chatbotlanguage;
-    console.log('update BOT LANG - URL ', url);
+    this.logger.log('update BOT LANG - URL ', url);
 
   
    const body = {  'language': chatbotlanguage };

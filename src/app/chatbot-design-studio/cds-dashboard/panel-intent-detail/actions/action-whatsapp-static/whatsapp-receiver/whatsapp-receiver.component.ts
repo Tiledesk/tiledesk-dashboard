@@ -296,7 +296,7 @@ export class WhatsappReceiverComponent implements OnInit {
     const new_buttons_param = this.buttons_params.map(({ index, ...keepAttrs }) => keepAttrs)
 
     this.body_params.forEach(param => {
-      console.log("param: ", param);
+      // console.log("param: ", param);
     });
 
 
@@ -316,7 +316,7 @@ export class WhatsappReceiverComponent implements OnInit {
     if (new_buttons_param.length > 0) {
       receiver_out.buttons_params = new_buttons_param;
     }
-    console.log("receiver_out: ", receiver_out);
+    // console.log("receiver_out: ", receiver_out);
     this.receiverValue.emit(receiver_out);
   }
 

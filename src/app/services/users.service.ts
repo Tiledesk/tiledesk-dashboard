@@ -249,6 +249,23 @@ export class UsersService {
       .get<User[]>(url, httpOptions)
   }
 
+  public getCurrentUserCommunityProfile(userid): Observable<User[]> {
+
+    const url = this.SERVER_BASE_PATH + 'users_util/' + userid;
+    this.logger.log('[USER-SERV] - GET CURRENT USER CMNTY PROFILE - URL', url);
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      })
+    };
+
+    return this._httpClient
+      .get<User[]>(url, httpOptions)
+  }
+
+  // https://tiledesk-server-pre.herokuapp.com/users_util/5fb3a3c84eff0000345282ef
+
   // ---------------------------------------------------------
   // Delete user account 
   // ---------------------------------------------------------
@@ -1051,6 +1068,7 @@ export class UsersService {
         });
   }
 
+
   createUserAvatarAndPublishUpdatedUser(user) {
     this.logger.log('[USER-PROFILE] - createProjectUserAvatar ', user)
     let fullname = ''
@@ -1068,6 +1086,28 @@ export class UsersService {
     }
     /* PUBLISH THE UPDATED USER CURRENT USER */
     this.auth.publishUpdatedUser(user)
+  }
+
+
+  public updateUserWithCommunityProfile(userWebsite: string, userPublicEmail: string, userDescription: string) {
+    const url = this.UPDATE_USER_URL;
+    this.logger.log('[USER-SERV] - UPDATE USER WITH COMMUNITY PROFILE (PUT) URL ', url);
+
+   const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    const body = { 'public_website': userWebsite, 'public_email': userPublicEmail, 'description': userDescription  };
+
+    this.logger.log('[USER-SERV] - UPDATE USER WITH COMMUNITY PROFILE - BODY ', body);
+
+    return this._httpClient
+      .put(url, JSON.stringify(body), httpOptions)
+
   }
 
   /**

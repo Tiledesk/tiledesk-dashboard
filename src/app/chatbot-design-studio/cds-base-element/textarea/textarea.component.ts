@@ -90,7 +90,7 @@ export class CDSTextareaComponent implements OnInit {
 
   /** */
   onClickTextareaOpenSetAttributePopover(){
-    console.log('onClickTextareaOpenSetAttributePopover', this.readonly, this.setAttributeBtn);
+    this.logger.log('onClickTextareaOpenSetAttributePopover', this.readonly, this.setAttributeBtn);
     if(this.readonly === true  && this.setAttributeBtn == true){
       this.addVariable.toggle();
       this.openSetAttributePopover();
@@ -117,7 +117,7 @@ export class CDSTextareaComponent implements OnInit {
 
   onVariableSelected(variableSelected: { name: string, value: string }) {
     this.isSelected = true;
-    console.log('onVariableSelected:: ', this.elTextarea.placeholder);
+    this.logger.log('onVariableSelected:: ', this.elTextarea.placeholder);
     let valueTextArea = {name: '', value: ''};
     if (this.elTextarea) {
       this.elTextarea.focus();
@@ -138,7 +138,7 @@ export class CDSTextareaComponent implements OnInit {
   }
 
   onClearSelectedAttribute() {
-    console.log('onClearSelectedAttribute:: ', this.elTextarea.placeholder);
+    this.logger.log('onClearSelectedAttribute:: ', this.elTextarea.placeholder);
     this.textTag = '';
     this.isSelected = false;
     this.elTextarea.placeholder = this.placeholder;

@@ -1,7 +1,7 @@
 <div class="cds-publish-on-community-modal-header">
     <h1 mat-dialog-title>Publish your chatbot on the tiledesk community</h1>
     <mat-dialog-actions>
-        <button mat-button mat-dialog-close>
+        <button  mat-button mat-dialog-close>
             <span class="material-icons">
                 close
             </span>
@@ -223,6 +223,11 @@
                                 community.
                             </h3>
                         </div>
+                        <div *ngIf="!hasPersonalCmntyInfo"  class="no-user-cmnty-info">
+                            <h3 style=" margin-bottom: 0px;">
+                                Be Heard, Be Known: complete the form available in the Personal info before publishing!
+                            </h3>
+                        </div>
                     </div>
                 </div>
 
@@ -241,13 +246,12 @@
                 </div>
             </div>
 
-            <button id="cds-navigation-btn" class="btn btn-primary pull-left" (click)="tabGroup.selectedIndex = 0">
+            <!-- <button id="cds-navigation-btn" class="btn btn-primary pull-left" (click)="tabGroup.selectedIndex = 0">
                 <span class="material-icons">
                     arrow_back
                 </span>
                 Back
-
-            </button>
+            </button> -->
 
         </mat-tab>
     </mat-tab-group>

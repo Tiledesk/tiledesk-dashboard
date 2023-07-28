@@ -63,7 +63,7 @@ export class AttributesComponent implements OnInit {
   }
 
   onChangeTextarea(event, index){
-    console.log('onChangeTextarea-->', event)
+    // console.log('onChangeTextarea-->', event)
     if(event){
       this.newAttributes[index].value = event
     }
@@ -137,7 +137,7 @@ export class AttributesComponent implements OnInit {
     }
 
     this.setChangedAttributes();
-    console.log('[ATTRIBUTES] onSelectedAttribute: newAttributes', this.newAttributes)
+    // console.log('[ATTRIBUTES] onSelectedAttribute: newAttributes', this.newAttributes)
   }
 
 }
