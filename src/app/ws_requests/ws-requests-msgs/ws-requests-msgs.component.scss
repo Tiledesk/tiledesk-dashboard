@@ -488,6 +488,7 @@
 
 button.close {
   -webkit-appearance: none;
+  appearance: none;
   padding: 0;
   cursor: pointer;
   background: 0 0;
@@ -1321,6 +1322,7 @@ span .conv-svg-icon {
   width: 100%;
   margin-top: 6px;
   -webkit-appearance: none;
+  appearance: none;
   background: #fff;
   border: 1px solid #d9d9d9;
   padding: 0 8px;
@@ -3253,6 +3255,7 @@ span .conv-svg-icon {
   box-sizing: border-box;
   color: #3c4858;
   -webkit-appearance: none;
+  appearance: none;
 }
 
 .send-chat-msg-btn {
@@ -3374,6 +3377,7 @@ span .conv-svg-icon {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
+  user-select: none;
 }
 .nw-onoffswitch-checkbox {
   position: absolute;

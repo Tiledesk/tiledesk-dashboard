@@ -20,7 +20,8 @@
 }
 
 .actions-btns-wpr {
-    width: 136px;
+    // width: 136px; // dp
+    width: 100%; // nk
     height: 30px;
     border-radius: 6px;
     display: flex;

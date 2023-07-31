@@ -282,6 +282,7 @@ export class CdsDashboardComponent implements OnInit {
     /** LISTNER OF FLOAT MENU */
     /** mouseup */
     document.addEventListener('mouseup', function () {
+      console.log('[CDS DSHBRD] MOUSE UP CLOSE FLOAT MENU')
       if (that.isOpenFloatMenu) {
         that.removeConnectorDraftAndCloseFloatMenu();
       }
@@ -289,12 +290,20 @@ export class CdsDashboardComponent implements OnInit {
 
     /** keydown */
     document.addEventListener('keydown', function (event) {
+      console.log('[CDS DSHBRD] MOUSE KEYDOWN CLOSE FLOAT MENU')
       if (event.key === 'Backspace' || event.key === 'Escape' || event.key === 'Canc' && that.isOpenFloatMenu) {
         that.removeConnectorDraftAndCloseFloatMenu();
+       
         // that.intentService.deleteSelectedAction();
       }
     });
   }
+
+    /** */
+    private removeConnectorDraftAndCloseFloatMenu() {
+      this.connectorService.tiledeskConnectors.removeConnectorDraft();
+      this.isOpenFloatMenu = false;
+    }
 
   ngOnDestroy() {
     console.log("•••• On Destroy ••••")
@@ -352,11 +361,7 @@ export class CdsDashboardComponent implements OnInit {
     }, 0);
   }
 
-  /** */
-  private removeConnectorDraftAndCloseFloatMenu() {
-    this.connectorService.tiledeskConnectors.removeConnectorDraft();
-    this.isOpenFloatMenu = false;
-  }
+
 
 
   /** GET TRANSLATIONS */
