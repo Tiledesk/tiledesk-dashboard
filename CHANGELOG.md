@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.4.57
+- Deploys in production
+- Improvements and bug fixing
+
 ### 2.4.56
 - Deploys in production
 - Adds, in Chat design studio > General > Community tab, the ability to add the user's public email, description and website
