@@ -136,6 +136,12 @@
                         [previewMode]="false">
                     </cds-action-delete-variable>
 
+                    <cds-action-web-request *ngSwitchCase="typeAction.WEB_REQUEST"
+                        class="panel-response"
+                        [action]="elementSelected"
+                        [previewMode]="false">
+                    </cds-action-web-request>
+
                     <!-- <cds-action-web-request *ngSwitchCase="typeAction.WEB_REQUEST"
                         [action]="elementSelected">
                     </cds-action-web-request>

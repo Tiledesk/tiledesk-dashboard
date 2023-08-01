@@ -146,6 +146,7 @@ import { CdsActionDeleteVariableComponent } from './cds-dashboard/actions/list/c
 import { CdsActionReplaceBotComponent } from './cds-dashboard/actions/list/cds-action-replace-bot/cds-action-replace-bot.component';
 import { CdsActionAssignVariableComponent } from './cds-dashboard/actions/list/cds-action-assign-variable/cds-action-assign-variable.component';
 import { CdsActionHideMessageComponent } from './cds-dashboard/actions/list/cds-action-hide-message/cds-action-hide-message.component';
+import { CdsActionWebRequestComponent } from './cds-dashboard/actions/list/cds-action-web-request/cds-action-web-request.component';
 
 //CDS PANELS
 import { CdsActionDetailPanelComponent } from './cds-dashboard/actions/detail/cds-action-detail/cds-panel-action-detail.component';
@@ -154,6 +155,7 @@ import { CdsPanelButtonConfigurationComponent } from './cds-dashboard/cds-panel-
 import { CdsActionArrowComponent } from './cds-dashboard/actions/shared/cds-action-controls/cds-action-arrow/cds-action-arrow.component';
 import { CdsActionControlsComponent } from './cds-dashboard/actions/shared/cds-action-controls/cds-action-controls/cds-action-controls.component';
 import { CdsAddActionMenuComponent } from './cds-dashboard/actions/shared/cds-add-action-menu/cds-add-action-menu.component';
+
 
 
 // import { CdsActionAddActionComponent } from './cds-dashboard/actions/shared/cds-action-controls/cds-action-add-action/cds-action-add-action.component';
@@ -230,6 +232,7 @@ import { CdsAddActionMenuComponent } from './cds-dashboard/actions/shared/cds-ad
     CdsFloatingMenuComponent,
     CdsAddActionMenuComponent,
     CdsConnectorComponent,
+    CdsActionWebRequestComponent,
     //BASE ELEMENT
     CDSTextComponent,
     CDSFilterComponent,

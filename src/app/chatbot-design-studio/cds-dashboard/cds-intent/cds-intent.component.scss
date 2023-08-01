@@ -731,13 +731,20 @@
   color: #d2e3fc;
 }
 
-.csd-add-action-btn-wpr {
+.csd-open-action-menu-btn-wpr {
   height: 32px;
   text-align: center;
   position: absolute;
-  bottom: -35px;
+  bottom: -45px;
 }
 
+.cds-last-action>.csd-open-action-menu-btn-wpr {
+  opacity: 0;
+}
+
+.cds-last-action:hover>.csd-open-action-menu-btn-wpr {
+  opacity: 1;
+}
 // .cds-last-action + div {
 //   opacity: 0;
 // }
@@ -746,15 +753,6 @@
 // .cds-last-action:hover + div {
 //   opacity: 1;
 // }
-
-.cds-last-action>.csd-add-action-btn-wpr {
-  opacity: 0;
-}
-
-.cds-last-action:hover>.csd-add-action-btn-wpr {
-  opacity: 1;
-}
-
 
 
 .csd-action-dot-and-btn-wpr {

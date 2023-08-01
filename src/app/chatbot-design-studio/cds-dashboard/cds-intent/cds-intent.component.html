@@ -157,12 +157,18 @@
                     (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-hide-message>
 
+                <cds-action-web-request *ngSwitchCase="TYPE_ACTION.WEB_REQUEST"
+                    class="panel-response"   
+                    [action]="action"
+                    (updateAndSaveAction)="onUpdateAndSaveAction($event)">
+                </cds-action-web-request>
+
 
             </div>
 
             <cds-action-arrow *ngIf="!last"></cds-action-arrow>
 
-            <div *ngIf="last" class="csd-add-action-btn-wpr csd-add-action-btn-wpr-element">
+            <div *ngIf="last" class="csd-open-action-menu-btn-wpr csd-add-action-btn-wpr-element">
                 <button #openActionMenuBtn (click)="openActionMenu(intent)" class="btn cds-add-action-btn csd-add-action-btn-wpr-element">
                     <span class="material-icons csd-add-action-btn-wpr-element">
                         add
