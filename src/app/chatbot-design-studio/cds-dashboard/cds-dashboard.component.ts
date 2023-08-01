@@ -132,10 +132,8 @@ export class CdsDashboardComponent implements OnInit {
      * ad ogni modifica (aggiunta eliminazione di un intent)
      */
     this.subscriptionListOfIntents = this.intentService.getIntents().subscribe(intents => {
-      console.log('intentsssssss', intents)
       this.listOfIntents = intents;
       intents.forEach(intent => {
-
         if (intent.actions) {
           intent.actions = intent.actions.filter(obj => obj !== null); // patch if action is null
         }
@@ -413,6 +411,8 @@ export class CdsDashboardComponent implements OnInit {
           this.translateparamBotName = { bot_name: this.selectedChatbot.name }
           if (this.selectedChatbot && this.selectedChatbot.attributes && this.selectedChatbot.attributes.variables) {
             variableList.userDefined = convertJsonToArray(this.selectedChatbot.attributes.variables);
+          }else {
+            variableList.userDefined = []
           }
           resolve(true);
           //console.log('variableList.userDefined:: ', this.selectedChatbot.attributes.variables);

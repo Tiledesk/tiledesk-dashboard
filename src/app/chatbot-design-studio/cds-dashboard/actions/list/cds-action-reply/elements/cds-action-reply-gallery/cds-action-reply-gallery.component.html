@@ -1,4 +1,4 @@
-<div  class="extensions-response" [class.previewMode]="previewMode">
+<div  class="extensions-response" *ngIf="!previewMode">
     
     <div class="text-editor-drop">
         <em class="material-icons">drag_indicator</em>
@@ -225,6 +225,6 @@
         
             </div>
         </div> 
-        <div class="gallery-divider"></div>
+        <!-- <div class="gallery-divider"></div> -->
     </div>
 </ng-template>

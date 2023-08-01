@@ -1,4 +1,4 @@
-<div class="extensions-response" [class.previewMode]="previewMode">
+<div class="extensions-response" *ngIf="!previewMode" >
     
     <div class="text-editor-drop">
         <em class="material-icons">drag_indicator</em>
@@ -15,7 +15,6 @@
             <em class="material-icons">expand_more</em>
         </div>
     </div>
-
     
     <div class="delay-wrapper" [ngStyle]="{width: canShowFilter? 'auto': '100%'}">
         <appdashboard-delay-slider
@@ -34,9 +33,13 @@
     </div>
 </div>
 
+<div *ngIf="previewMode" class="text-editor-wrapper previewMode">
+    <div class="response-wrp" *ngIf="response.text">{{response.text}}</div>
+    <div class="response-wrp no-text" *ngIf="!response.text">Click to add text ...</div>
+</div> 
 
 
-<div class="text-editor-wrapper" [class.previewMode]="previewMode">
+<div  *ngIf="!previewMode" class="text-editor-wrapper">
 
     <cds-textarea 
         class="text-editable-div"
@@ -55,9 +58,9 @@
     <div *ngFor="let button of buttons; let i = index;" class="content-botton-reply" cdkDragBoundary=".button-replies" cdkDrag> 
         <!-- tpl-drop-down2 single-btn-reply2 -->
         <div class="button-reply custom-placeholder" *cdkDragPlaceholder>
-            <!-- <div class="button-reply-text">
+            <div class="button-reply-text">
                 {{button.value}}
-            </div> -->
+            </div>
         </div>
 
         <div class="button-reply" cdkDragHandle>

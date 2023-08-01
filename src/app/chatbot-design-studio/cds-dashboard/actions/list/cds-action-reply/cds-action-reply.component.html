@@ -2,7 +2,7 @@
     <!-- <cds-action-description
         [elementType]="action._tdActionType">
     </cds-action-description> -->
-    <div class="box-up">
+    <div class="box-up" *ngIf="!previewMode">
 
         <cds-action-reply-tools
             [idAction]="idAction"
@@ -182,7 +182,7 @@
                             (moveUpResponse) = onMoveUpResponse($event)
                             (moveDownResponse) = onMoveDownResponse($event)
                             (openButtonPanel) = onOpenButtonPanel($event)
-                            (changeActionReply) = onDeleteActionReply()
+                            (changeActionReply) = onChangeActionReply()
                             (deleteActionReply) = onDeleteActionReply($event)>
                         </cds-action-reply-gallery>
                     </div>

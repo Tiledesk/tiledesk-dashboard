@@ -1,4 +1,4 @@
-<div class="extensions-response" [class.previewMode]="previewMode">
+<div class="extensions-response" *ngIf="!previewMode">
     
     <div class="text-editor-drop">
         <em class="material-icons">drag_indicator</em>
@@ -34,7 +34,24 @@
     </div>
 </div>
 
-<div class="text-editor-wrapper" [class.previewMode]="previewMode">
+<div class="previewMode text-editor-wrapper" *ngIf="previewMode">
+
+    <div class="text-editor">
+        <div class="url-wrp">
+            <span class="control-label">{{ 'url' | translate }}:</span>
+            <div class="response-wrp" *ngIf="metadata.src">{{metadata.src}}</div>
+            <div class="response-wrp no-text" *ngIf="!metadata.src">Click to add url ...</div>
+        </div>
+        <div class="url-wrp">
+            <span class="control-label">{{ 'Open in' | translate }}:</span>
+            <span class="control-label" *ngIf="metadata.target === 'parent'"><b>Same widget window</b></span>
+            <span class="control-label"  *ngIf="metadata.target === 'blank'"><b>New Tab window</b></span>
+        </div>
+    </div>
+</div>
+
+
+<div class="text-editor-wrapper" *ngIf="!previewMode">
     
     <div class="text-editor">
 

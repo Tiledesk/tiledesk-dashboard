@@ -95,32 +95,34 @@ export class CdsActionReplyGalleryComponent implements OnInit {
   
   private updateConnector(){
     try {
-      const array = this.connector.fromId.split("/");
-      const idButton = array[array.length - 1];
-      const idConnector = this.idAction+'/'+idButton;
-      console.log(' [REPLY-GALLERY] updateConnector :: connector.fromId: ', this.connector.fromId);
-      console.log(' [REPLY-GALLERY] updateConnector :: idConnector: ', idConnector);
-      console.log(' [REPLY-GALLERY] updateConnector :: idButton: ', idButton);
-      console.log(' [REPLY-GALLERY] updateConnector :: connector.id: ', this.connector.id);
-      // if(idConnector === this.connector.fromId){
-      //   const buttonChanged = this.buttons.find(obj => obj.uid === idButton);
-      //   if(this.connector.deleted){
-      //     // DELETE 
-      //     console.log(' deleteConnector :: ', this.connector.fromId);
-      //     buttonChanged.isConnected = false;
-      //     buttonChanged.idConnector = this.connector.fromId;
-      //     buttonChanged.action = '';
-      //     buttonChanged.type = TYPE_BUTTON.TEXT;
-      //   } else {
-      //     // ADD / EDIT
-      //     buttonChanged.isConnected = true;
-      //     buttonChanged.idConnector = this.connector.fromId;
-      //     buttonChanged.action = '#' + this.connector.toId;
-      //     buttonChanged.type = TYPE_BUTTON.ACTION;
-      //     console.log(' updateConnector :: ', this.buttons);
-      //   }
-      //   this.changeActionReply.emit();
-      // }
+      this.gallery.forEach((el, index)=> {
+        const array = this.connector.fromId.split("/");
+        const idButton = array[array.length - 1];
+        const idConnector = this.idAction+'/'+idButton;
+        console.log('[REPLY-GALLERY] updateConnector :: connector.fromId: ', this.connector.fromId);
+        console.log('[REPLY-GALLERY] updateConnector :: idConnector: ', idConnector);
+        console.log('[REPLY-GALLERY] updateConnector :: idButton: ', idButton);
+        console.log('[REPLY-GALLERY] updateConnector :: connector.id: ', this.connector.id);
+        if(idConnector === this.connector.fromId){
+          const buttonChanged = el.buttons.find(obj => obj.uid === idButton);
+          if(this.connector.deleted){
+            // DELETE 
+            console.log(' deleteConnector :: ', this.connector.fromId);
+            buttonChanged.isConnected = false;
+            buttonChanged.idConnector = this.connector.fromId;
+            buttonChanged.action = '';
+            buttonChanged.type = TYPE_BUTTON.TEXT;
+          } else {
+            // ADD / EDIT
+            buttonChanged.isConnected = true;
+            buttonChanged.idConnector = this.connector.fromId;
+            buttonChanged.action = '#' + this.connector.toId;
+            buttonChanged.type = TYPE_BUTTON.ACTION;
+            console.log('updateConnector :: ', el.buttons);
+          }
+          this.changeActionReply.emit();
+        }
+      });
     } catch (error) {
       console.log('error: ', error);
     }

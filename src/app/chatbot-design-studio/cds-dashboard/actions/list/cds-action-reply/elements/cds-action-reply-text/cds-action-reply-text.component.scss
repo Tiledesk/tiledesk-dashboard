@@ -60,10 +60,32 @@
             width: calc(100% - 20px);
             margin: 0px auto;
         }
+
+        .response-wrp{
+            border-radius: 8px;
+            background: #ffffff;
+            border: 1px solid #ffffff;
+            overflow-x: hidden;
+            overflow-y: auto;
+            color: #22272d;
+            font-size: 1.15em;
+            line-height: 25px;
+            width: calc(100% - 20px);
+            padding: 8px 10px;
+    
+            line-height: 20px;
+            font-size: .8em;
+            margin: auto;
+    
+            &.no-text{
+                color: rgb(141, 162, 181)
+            }
+        }
     }
 
     &.buttons-response{
         padding: 0 5px;
+        margin: 5px 0 0;
         flex-direction: column;
         flex-wrap: nowrap;
 

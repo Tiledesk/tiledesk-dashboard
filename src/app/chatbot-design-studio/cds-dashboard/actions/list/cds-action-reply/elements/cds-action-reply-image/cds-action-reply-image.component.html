@@ -1,22 +1,22 @@
-<div class="extensions-response" [class.previewMode]="previewMode">
+<div class="extensions-response" *ngIf="!previewMode">
+
+    <div class="text-editor-drop">
+        <em class="material-icons">drag_indicator</em>
+    </div> 
+
+    <div class="response-controls">
+        <div class="control-button delete" (click)="$event.stopPropagation();onDeleteActionReply()">
+           <em class="material-icons">delete</em>
+       </div>
+       <div class="control-button" (click)="$event.stopPropagation();onMoveUpResponse()">
+           <em class="material-icons">expand_less</em>
+       </div> 
+       <div class="control-button" (click)="$event.stopPropagation();onMoveDownResponse()">
+           <em class="material-icons">expand_more</em>
+       </div>
+    </div>
+
     <div class="delay-wrapper" [ngStyle]="{width: canShowFilter? 'auto': '100%'}">
-
-        <div class="text-editor-drop">
-            <em class="material-icons">drag_indicator</em>
-        </div> 
-
-        <div class="response-controls">
-            <div class="control-button delete" (click)="$event.stopPropagation();onDeleteActionReply()">
-               <em class="material-icons">delete</em>
-           </div>
-           <div class="control-button" (click)="$event.stopPropagation();onMoveUpResponse()">
-               <em class="material-icons">expand_less</em>
-           </div> 
-           <div class="control-button" (click)="$event.stopPropagation();onMoveDownResponse()">
-               <em class="material-icons">expand_more</em>
-           </div>
-        </div>
-
         <appdashboard-delay-slider
             [delayTime]="delayTime"
             (changeDelayTime)="onChangeDelayTime($event)"
@@ -33,9 +33,31 @@
     </div>
 </div>
 
-
+<div class="previewMode image-editor-wrapper" *ngIf="previewMode">
     
-<div class="image-editor-wrapper" [class.previewMode]="previewMode">
+    <div class="image-editor">
+        <div *ngIf="!response.metadata.src" class="response-image-uploader-wrapper no-image">
+            <div class="image"><img src="/assets/cds/images/img-preview.jpg"></div>
+            <div class="text">Click to add image</div>
+        </div>
+        <div *ngIf="response.metadata.src" class="response-image-uploader-wrapper">
+            <cds-image-upload
+                class="image-upload"
+                [metadata] = response.metadata
+                (onChangeMetadata)="onChangeMetadata($event)">
+            </cds-image-upload>
+        </div>
+
+        <div>
+            <div class="response-wrp" *ngIf="response.text">{{response.text}}</div>
+            <div class="response-wrp no-text" *ngIf="!response.text">Click to add text ...</div>
+        </div>
+
+    </div>
+
+</div>
+    
+<div class="image-editor-wrapper" *ngIf="!previewMode">
         
         <div class="image-editor">
     
@@ -74,7 +96,7 @@
 
         <div class="button-reply" cdkDragHandle>
             <div class="button-reply-text single-btn-reply"
-                (click)="onOpenButtonPanel(button)">
+                (click)="$event.stopPropagation(); onOpenButtonPanel(button)">
                 {{button.value}}
             </div>
             <div class="button-controls">
@@ -102,7 +124,6 @@
             [isConnected] = "button.isConnected">
         </cds-connector>
         
-
     </div>
 
     <div class="button-reply-add single-btn-reply" (click)="$event.stopPropagation();onCreateNewButton()">

@@ -53,6 +53,7 @@
             margin: 0px 10px;
             font-size: 0.8em;
             color: $color-bck-gray-hex;
+
         }
 
         mat-button-toggle-group{
@@ -63,6 +64,38 @@
             span{
                 font-size: 0.7em;
                 line-height: 25px;
+            }
+        }
+
+        .url-wrp{
+            flex-direction: row;
+            align-items: center;
+            margin: 5px 5px;
+            span.control-label:first-child{
+                width: 50px;
+                margin: 0;
+                text-align: end;
+            }
+        }
+
+        .response-wrp{
+            border-radius: 8px;
+            background: #ffffff;
+            border: 1px solid #ffffff;
+            overflow-x: hidden;
+            overflow-y: auto;
+            color: #22272d;
+            font-size: 1.15em;
+            line-height: 25px;
+            width: calc(100% - 20px);
+            padding: 8px 10px;
+    
+            line-height: 20px;
+            font-size: .8em;
+            margin: auto;
+    
+            &.no-text{
+                color: rgb(141, 162, 181)
             }
         }
     }

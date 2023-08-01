@@ -1,4 +1,4 @@
-<div class="extensions-response" [class.previewMode]="previewMode">
+<div class="extensions-response" *ngIf="!previewMode">
     
     <div class="text-editor-drop">
         <em class="material-icons">drag_indicator</em>
@@ -33,8 +33,37 @@
     </div>
 </div>
 
+<div class="previewMode text-editor-wrapper" *ngIf="previewMode">
     
-<div class="text-editor-wrapper" [class.previewMode]="previewMode">
+    <div class="text-editor">
+        <div class="response-frame-wrapper">
+            <div *ngIf="!framePath" class="response-frame-panel no-image">
+                <div class="image"><img src="/assets/cds/images/img-preview.jpg"></div>
+                <div class="text">Click to add frame</div>
+            </div>
+            <div *ngIf="framePath" class="content-frame">
+                <iframe
+                    id="contentFrame" 
+                    #iframe allowfullscreen
+                    style= "border:none;"
+                    [width]="frameWidth"
+                    [height]="frameHeight"
+                    [src]="framePath">
+                </iframe>
+            </div>
+    
+            <div>
+                <div class="response-wrp" *ngIf="response.text">{{response.text}}</div>
+                <div class="response-wrp no-text" *ngIf="!response.text">Click to add text ...</div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+    
+<div class="text-editor-wrapper" *ngIf="!previewMode">
     <div class="text-editor">
     
         <div class="response-frame-wrapper"

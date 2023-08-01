@@ -127,14 +127,15 @@ $margin-bottom: 15px;
         margin: 10px 0; 
         display: flex;
         flex-direction: column;
-        gap: 10px;
+        gap: 5px;
     }
     .content{
         min-height: unset;
         max-height: unset;
+        overflow: unset;
     }
     .draggable-box{
-        padding-bottom: 10px;
+        padding-bottom: 5px;
         border-bottom: 3px solid #ebe2c6
     }
     .reply-info{
