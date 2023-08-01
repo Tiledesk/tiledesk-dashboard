@@ -32,7 +32,8 @@
             [ngClass]="{
             'cds-action-active': intentService.actionSelectedID === action._tdActionId, 
             'cds-no-featured-action': action._tdActionType !== TYPE_ACTION.REPLY}"
-            (keydown)="onKeydown($event)">
+            (keydown)="onKeydown($event)"
+            (click)="onActionSelected(action, i, action._tdActionId)">
             <!-- (click)="onActionSelected(action, i, action._tdActionId)" -->
             <!-- (keydown)="onDeleteAction($event)" -->
             
