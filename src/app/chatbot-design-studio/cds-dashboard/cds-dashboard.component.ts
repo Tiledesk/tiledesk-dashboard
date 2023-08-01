@@ -41,8 +41,11 @@ import { DialogYesNoComponent } from 'app/chatbot-design-studio/cds-base-element
 export class CdsDashboardComponent implements OnInit {
 
 
-  @ViewChild('receiver_elements_dropped_on_stage') receiverElementsDroppedOnStage: ElementRef;
-  @ViewChild('drawer_of_items_to_zoom_and_drag') drawerOfItemsToZoomAndDrag: ElementRef;
+  @ViewChild('receiver_elements_dropped_on_stage', { static: false }) receiverElementsDroppedOnStage: ElementRef;
+  @ViewChild('drawer_of_items_to_zoom_and_drag', { static: false }) drawerOfItemsToZoomAndDrag: ElementRef;
+  // @ViewChild('tds_container', { static: false }) tdsContainer: ElementRef;
+  // @ViewChild('chatboat_dashboard', { static: false }) chatbotDashboard: ElementRef;
+
 
   private subscriptionListOfIntents: Subscription;
 
@@ -105,11 +108,13 @@ export class CdsDashboardComponent implements OnInit {
 
   tiledeskStage: any;
   isOpenFloatMenu: boolean = false;
+  isOpenAddActionsMenu: boolean = false;
   positionFloatMenu: any = { 'x': 0, 'y': 0 };
   connectorDraft: any = {};
 
   isSaving: boolean = false;
   intentToAddAction: any;
+  tdsContainerEleHeight: number = 0;
   // isBetaUrl: boolean;
   constructor(
     private router: Router,
@@ -168,9 +173,9 @@ export class CdsDashboardComponent implements OnInit {
     });
 
   }
-
-
-  // SYSTEM FUNCTIONS //
+  // ---------------------------------------------------------
+  // Life hooks
+  // ---------------------------------------------------------
   ngOnInit() {
     this.auth.checkRoleForCurrentProject();
     this.executeAsyncFunctionsInSequence();
@@ -188,16 +193,33 @@ export class CdsDashboardComponent implements OnInit {
     this.addEventListener();
   }
 
+  ngOnDestroy() {
+    console.log("•••• On Destroy ••••")
+    this.subscriptionListOfIntents.unsubscribe();
+    this.connectorService.deleteAllConnectors();
+  }
 
-  /** */
+  clickedOutOfAddActionMenu(event) {
+    console.log('[CDS DSHBRD] clickedOutOfAddActionMenu ', event)
+    if (event === true) {
+      this.isOpenAddActionsMenu = false // nk
+    }
+  }
+
+
+  // ---------------------------------------------------------
+  // Event listener
+  // ---------------------------------------------------------
   addEventListener() {
     let that = this;
 
-    /** LISTNER OF TILEDESK STAGE */
+    /** LISTENER OF TILEDESK STAGE */
     document.addEventListener(
       "moved-and-scaled", (e: CustomEvent) => {
+        // console.log('[CDS DSHBRD] moved-and-scaled ' ) 
         this.connectorService.tiledeskConnectors.scale = e.detail.scale;
         this.removeConnectorDraftAndCloseFloatMenu();
+        this.isOpenAddActionsMenu = false // nk
       },
       false
     );
@@ -224,7 +246,7 @@ export class CdsDashboardComponent implements OnInit {
         else {
           // console.log("connector-draft-released event, catched but unsupported", e.detail);
           this.positionFloatMenu = this.tiledeskStage.physicPointCorrector(e.detail.menuPoint);
-          console.log('this.positionFloatMenu ', this.positionFloatMenu)
+          console.log('[CDS DSHBRD] this.positionFloatMenu ', this.positionFloatMenu)
           this.isOpenFloatMenu = true;
           this.connectorDraft = {
             fromId: e.detail.fromId,
@@ -234,7 +256,7 @@ export class CdsDashboardComponent implements OnInit {
             target: e.detail.target
           }
           // this.tiledeskConnectors.removeConnectorDraft();
-          console.log('OPEN MENU', this.connectorDraft);
+          console.log('[CDS DSHBRD] OPEN MENU', this.connectorDraft);
         }
       },
       true
@@ -243,9 +265,9 @@ export class CdsDashboardComponent implements OnInit {
 
     document.addEventListener(
       "connector-created", (e: CustomEvent) => {
-        console.log("connector-created:", e);
+        console.log("[CDS DSHBRD] connector-created:", e);
         const connector = e.detail.connector;
-        console.log("connector-created:", connector);
+        console.log("[CDS DSHBRD] connector-created:", connector);
         //this.connectors[this.connector.id] = this.connector;
         // console.log("connector-created:", this.connectors);
         this.connectorService.addConnector(connector);
@@ -259,10 +281,10 @@ export class CdsDashboardComponent implements OnInit {
 
     document.addEventListener(
       "connector-deleted", (e: CustomEvent) => {
-        console.log("connector-deleted:", e);
+        console.log("[CDS DSHBRD] connector-deleted:", e);
         const connector = e.detail.connector;
         connector['deleted'] = true;
-        console.log("connector-deleted:", connector.id);
+        console.log("[CDS DSHBRD] connector-deleted:", connector.id);
         this.connectorService.onConnectorDeleted(connector.id);
         this.intentService.onChangedConnector(connector);
       },
@@ -293,24 +315,22 @@ export class CdsDashboardComponent implements OnInit {
       console.log('[CDS DSHBRD] MOUSE KEYDOWN CLOSE FLOAT MENU')
       if (event.key === 'Backspace' || event.key === 'Escape' || event.key === 'Canc' && that.isOpenFloatMenu) {
         that.removeConnectorDraftAndCloseFloatMenu();
-       
+
         // that.intentService.deleteSelectedAction();
       }
     });
   }
 
-    /** */
-    private removeConnectorDraftAndCloseFloatMenu() {
-      this.connectorService.tiledeskConnectors.removeConnectorDraft();
-      this.isOpenFloatMenu = false;
-    }
+  /** */
+  private removeConnectorDraftAndCloseFloatMenu() {
+    this.connectorService.tiledeskConnectors.removeConnectorDraft();
+    this.isOpenFloatMenu = false;
 
-  ngOnDestroy() {
-    console.log("•••• On Destroy ••••")
-    this.subscriptionListOfIntents.unsubscribe();
-    this.connectorService.deleteAllConnectors();
+    // this.isOpenAddActionsMenu = false // nk
   }
-  
+
+
+
   /**
    * execute Async Functions In Sequence
    * Le funzioni async sono gestite in maniera sincrona ed eseguite in coda
@@ -349,11 +369,11 @@ export class CdsDashboardComponent implements OnInit {
   /** START CUSTOM FUNCTIONS 
   /** ************************* **/
 
-   /** refreshIntents
-   * set drag and listner on intents, 
-   * create connectors
-   */
-   private refreshIntents(){
+  /** refreshIntents
+  * set drag and listner on intents, 
+  * create connectors
+  */
+  private refreshIntents() {
     /** SET DRAG STAGE AND CREATE CONNECTORS */
     setTimeout(() => {
       this.setDragAndListnerEventToElements();
@@ -689,16 +709,36 @@ export class CdsDashboardComponent implements OnInit {
     }
   }
 
+  // nk
   showPanelActions(event) {
     console.log('[CDS DSHBRD] showPanelActions event:: ', event);
-    this.isOpenFloatMenu = true;
-    const pos = {'x': event.x, 'y':event.y}
+    this.isOpenAddActionsMenu = true;
+    // this.isOpenFloatMenu = true;
+    const pos = { 'x': event.x, 'y': event.y }
     // this.connectorService.tiledeskConnectors.logicPoint(event.dropPoint);
     // this.intentToAddAction = event.intent;
     this.intentSelected = event.intent; //this.intentToAddAction // patch
     this.positionFloatMenu = pos
     console.log('[CDS DSHBRD] showPanelActions intentToAddAction ', this.intentToAddAction);
     console.log('[CDS DSHBRD] showPanelActions positionFloatMenu ', this.positionFloatMenu)
+
+    this.getTdsContainerHeight()
+    // this.getChatbotDashbordHeight()
+  }
+
+  // getChatbotDashbordHeight() {
+  //   this.chatbotDashboardEle = <HTMLElement>document.querySelector('#tds_container')
+  //   console.log('[CDS DSHBRD] Chat bot Dashbord Ele ', this.chatbotDashboardEle)
+  //   console.log('[CDS DSHBRD] Chat bot Dashbord Height ', this.chatbotDashboardEle.offsetHeight)
+
+  // }
+
+  getTdsContainerHeight() {
+    let tdsContainerEle = <HTMLElement>document.querySelector('#tds_container')
+    console.log('[CDS DSHBRD] tdsContainerEle ', tdsContainerEle)
+
+    this.tdsContainerEleHeight = tdsContainerEle.offsetHeight - 35;
+    console.log('[CDS DSHBRD] tdsContainerEle Height', this.tdsContainerEleHeight)
   }
 
   posCenterIntentSelected(intent) {
@@ -804,6 +844,8 @@ export class CdsDashboardComponent implements OnInit {
   /** chiamata quando trascino un connettore sullo stage e creo un intent al volo */
   async onAddingActionToStage(event) {
     console.log('[CDS-DSHBRD] onAddingActionToStage:: ', event);
+    this.isOpenAddActionsMenu = false; // nk
+
     const actionType = event.type;
     if (this.connectorDraft.toPoint) {
       const toPoint = this.connectorDraft.toPoint;
@@ -816,19 +858,19 @@ export class CdsDashboardComponent implements OnInit {
         this.connectorService.tiledeskConnectors.createConnector(fromId, toId, fromPoint, toPoint);
       }
       this.removeConnectorDraftAndCloseFloatMenu();
-    } 
+    }
     else {
-     console.log('HERE YES')
-     const newAction = this.intentService.createNewAction(event.type)
-     console.log('[CDS-DSHBRD] newAction:: ', newAction);
-     console.log('[CDS-DSHBRD] this.intentToAddAction:: ', this.intentSelected);
-     this.intentSelected.actions.push(newAction);
-     this.updateIntent()
-    //  this.intentSelected.actions.push(newAction);
-  
-    // //  crea nuova action
-    // // add array di action dell'intent
-    // // update intent
+      console.log('HERE YES')
+      const newAction = this.intentService.createNewAction(event.type)
+      console.log('[CDS-DSHBRD] newAction:: ', newAction);
+      console.log('[CDS-DSHBRD] this.intentToAddAction:: ', this.intentSelected);
+      this.intentSelected.actions.push(newAction);
+      this.updateIntent()
+      //  this.intentSelected.actions.push(newAction);
+
+      // //  crea nuova action
+      // // add array di action dell'intent
+      // // update intent
     }
   }
 
@@ -964,7 +1006,7 @@ export class CdsDashboardComponent implements OnInit {
       this.elementIntentSelected['type'] = '';
       this.elementIntentSelected['element'] = null;
     }
-    
+
     this.posCenterIntentSelected(intent);
     this.intentService.selectIntent(intent.intent_id)
     // this.router.navigate(['project/' + this.projectID + '/cds/' + this.id_faq_kb + '/intent/' + this.intentSelected.id], { replaceUrl: true })
@@ -1067,13 +1109,7 @@ export class CdsDashboardComponent implements OnInit {
 
 
 
-
-
-
-
-
   /** END CUSTOM FUNCTIONS */
-
 
 
   onClosePanel() {

@@ -1,10 +1,7 @@
 <div *ngIf="menuItemsList.length>0" id="panel_actions_div" class="actions-drawer" >
 
     <div class="action-list" id="action_list_drop_connect">
-    
-
         <div class="menu-dragging">
-
             <div class="action-box" *ngFor="let item of menuItemsList; let i = index;" (click)="onAddingActionToStage(item)">
                 <div class="actions-btns-wpr">
                     <div *ngIf="item.value.src && item.value.name" class="action-btn-icon">
@@ -15,10 +12,7 @@
                     <div *ngIf="item.value.name" class="action-btn-text">{{item.value.name}}</div>
                 </div>
             </div>
-
         </div>
-
-
     </div>
    
 </div>

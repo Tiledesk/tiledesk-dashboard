@@ -189,3 +189,29 @@ emoji-mart {
 .action-control-btn:hover svg {
     fill: #3ea9f5;
 }
+
+/* Add action menu
+/* ****************************************** */
+.menu-context-add {
+    -webkit-touch-callout: none;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    background: hsla(0,0%,100%,.95);
+    border-radius: 5px;
+    -webkit-box-shadow: 0 6px 24px 0 rgba(0,0,0,.3);
+    box-shadow: 0 6px 24px 0 rgba(0,0,0,.3);
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    // overflow-y: auto;
+    pointer-events: all;
+    position: absolute;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    width: 270px;
+    z-index: 1;
+}

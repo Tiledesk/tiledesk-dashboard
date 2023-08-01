@@ -315,8 +315,8 @@ export class CdsIntentComponent implements OnInit, OnChanges {
    
     console.log('[CDS-INTENT] openActionMenu > intent ', intent)
     const openActionMenuElm = this.openActionMenuBtnRef.nativeElement.getBoundingClientRect()
-    let buttonXposition = openActionMenuElm.x - 415
-    let buttonYposition = openActionMenuElm.y - 10
+    let buttonXposition = openActionMenuElm.x + 157 // - 415
+    let buttonYposition = openActionMenuElm.y // - 10
     console.log('[CDS-INTENT] openActionMenu > openActionMenuBtnRef ', openActionMenuElm)
     console.log('[CDS-INTENT] openActionMenu > buttonXposition ', buttonXposition)
     const data = { 'x': buttonXposition, 'y': buttonYposition, 'intent': intent};
