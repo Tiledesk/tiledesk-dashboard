@@ -392,7 +392,7 @@ export class TiledeskConnectors {
   
     /** handleMouseUp */
     #handleMouseUp(event) {
-      //console.log("mouse up event...", event);
+      console.log("mouse up event...", event);
       this.target.removeEventListener("mousemove", this.ref_handleMouseMove, false);
       this.target.removeEventListener("mouseup", this.ref_handleMouseUp, false);
       console.log('handleMouseUp ------> ', event.target, event.srcElement);

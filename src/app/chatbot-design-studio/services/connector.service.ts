@@ -208,10 +208,10 @@ export class ConnectorService {
   }
 
   movedConnector(elem){
-    console.log('movedConnector: ', elem);
+    console.log('aggiorno i connettori: ', elem);
     setTimeout(() => {
       this.tiledeskConnectors.updateConnectorsOutOfItent(elem);
-    }, 500);
+    }, 0);
   }
 
 
