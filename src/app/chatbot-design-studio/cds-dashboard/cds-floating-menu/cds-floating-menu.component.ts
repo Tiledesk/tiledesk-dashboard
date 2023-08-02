@@ -21,7 +21,7 @@ export class CdsFloatingMenuComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    console.log('cds-floating-menu ngOnChanges:: ', this.menuType);
+    console.log('cds-floating-menu ngOnInit:: ', this.menuType);
     switch (this.menuType) {
       case TYPE_OF_MENU.ACTION:
         this.menuItemsList = Object.keys(ACTIONS_LIST).map(key => {

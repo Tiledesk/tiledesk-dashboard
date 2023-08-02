@@ -1,55 +1,45 @@
-<cds-header class="cds-header"
-    [IS_OPEN]="IS_OPEN"
-    [projectID]="projectID"
-    [id_faq_kb]="id_faq_kb"
-    [defaultDepartmentId]=""
-    [selectedChatbot]="selectedChatbot"
-    (goToBck)="goBack()"
-    (onTestItOut)="onTestItOut($event)"
-    (toggleSidebarWith)="onToggleSidebarWith($event)"> 
+<cds-header class="cds-header" [IS_OPEN]="IS_OPEN" [projectID]="projectID" [id_faq_kb]="id_faq_kb"
+    [defaultDepartmentId]="" [selectedChatbot]="selectedChatbot" (goToBck)="goBack()"
+    (onTestItOut)="onTestItOut($event)" (toggleSidebarWith)="onToggleSidebarWith($event)">
 </cds-header>
 
-<div class="chatboat-dashboard" [class.is_opened_sidebar]="IS_OPEN">
-<!-- [class.is_opened]="IS_OPEN" -->
-    <cds-sidebar 
-        class="cds-sidebar"
-        [extendedWidth]="IS_OPEN" 
-        [projectID]="projectID" 
-        (onClickItemList)="onClickItemList($event)"
-        (goToBck)="goBack()">
+<div id="chatbot--dashboard" class="chatboat-dashboard" [class.is_opened_sidebar]="IS_OPEN">
+    <!-- [class.is_opened]="IS_OPEN" -->
+    <cds-sidebar class="cds-sidebar" [extendedWidth]="IS_OPEN" [projectID]="projectID"
+        (onClickItemList)="onClickItemList($event)" (goToBck)="goBack()">
     </cds-sidebar>
 
     <div *ngIf="activeSidebarSection == 'cds-sb-intents'" class="cds-content">
-        
+
         <div class="box-left">
-            <cds-panel-intent-list  *ngIf="listOfIntents"
-                class="panel-intent-list" 
-                [updatePanelIntentList] = "updatePanelIntentList"
-                [listOfIntents] = "listOfIntents"
+            <cds-panel-intent-list *ngIf="listOfIntents"
+                 class="panel-intent-list"
+                [updatePanelIntentList]="updatePanelIntentList" 
+                [listOfIntents]="listOfIntents" 
                 [intent_id]="intent_id"
-                (selectIntent)=onSelectIntent($event)
+                (selectIntent)=onSelectIntent($event) 
                 (deleteIntent)="onDeleteIntent($event)">
             </cds-panel-intent-list>
         </div>
 
         <div id="tds_container" class="box-right tds-drag-container" cdkDropListGroup>
 
-            <cds-panel-elements 
-                class="cds-panel-elements"
+            <cds-panel-elements class="cds-panel-elements" 
                 (showPanelActions)="onShowPanelActions($event)"
                 (addNewElement)="onAddNewElement()">
             </cds-panel-elements>
 
-            <div #receiver_elements_dropped_on_stage class="receiver-elements-dropped-on-stage" cdkDropList (cdkDropListDropped)="onDroppedElementToStage($event)"></div>
-            
+            <div #receiver_elements_dropped_on_stage class="receiver-elements-dropped-on-stage" cdkDropList
+                (cdkDropListDropped)="onDroppedElementToStage($event)"></div>
+
             <div #drawer_of_items_to_zoom_and_drag id="tds_drawer" class="tds-drag-drawer box-right-content">
-                <cds-intent *ngFor="let intent of listOfIntents;"
+                <cds-intent *ngFor="let intent of listOfIntents;" 
                     [id]="intent.intent_id"
                     class="panel-intent tds_input_block tds_draggable" 
-                    [style.top.px]="getIntentPosition(intent.id).y" 
+                    [style.top.px]="getIntentPosition(intent.id).y"
                     [style.left.px]="getIntentPosition(intent.id).x" 
                     [intent]="intent"
-                    (actionSelected)=onActionSelected($event)
+                    (actionSelected)=onActionSelected($event) 
                     (showPanelActions)="showPanelActions($event)">
                 </cds-intent>
                 <!-- 
@@ -62,38 +52,45 @@
                 -->
             </div>
 
-            <div #floatMenuElement id="floatMenuElement"
+            <!-- [style.display]="isOpenFloatMenu?'block':'none'" -->
+            <div #floatMenuElement id="floatMenuElement" 
                 [style.display]="isOpenFloatMenu?'block':'none'"
-                [style.top.px]="positionFloatMenu.y"
+                [style.top.px]="positionFloatMenu.y" 
                 [style.left.px]="positionFloatMenu.x">
-                <cds-floating-menu
-                    [menuType] = "action"
-                    [menuPoint] = "positionFloatMenu"
-                    (addingActionToStage) = "onAddingActionToStage($event)"
-                ></cds-floating-menu>
+                <cds-floating-menu 
+                    [menuType]="action" 
+                    [menuPoint]="positionFloatMenu"
+                    (addingActionToStage)="onAddingActionToStage($event)">
+                </cds-floating-menu>
             </div>
-
         </div>
 
+        <cds-add-action-menu class="menu-context-add" 
+            [style.top.px]="15" 
+            [style.left.px]="positionFloatMenu.x"
+            [style.height.px]="tdsContainerEleHeight"
+            [tdsContainerEleHeight]="tdsContainerEleHeight"
+            [style.display]="isOpenAddActionsMenu?'block':'none'"
+            [menuType]="action" 
+            (addingActionToStage)="onAddingActionToStage($event)"
+            (clickedOutOfAddActionMenu)="clickedOutOfAddActionMenu($event)" >
+        </cds-add-action-menu>
 
-        <cds-panel-widget *ngIf="IS_OPEN_PANEL_WIDGET"
-            id="widget-preview"
+
+        <cds-panel-widget *ngIf="IS_OPEN_PANEL_WIDGET" 
+            id="widget-preview" 
             class="cds-generic-panel">
         </cds-panel-widget>
 
-        <cds-panel-button-configuration
-            id="button-configuration"
-            class="cds-generic-panel"
-            [isOpenPanel] = "isOpenPanelButtonConfig"
-            [button] = buttonSelected
-            (saveButton) = onSaveButton($event)>
+        <cds-panel-button-configuration id="button-configuration" class="cds-generic-panel"
+            [isOpenPanel]="isOpenPanelButtonConfig" 
+            [button]=buttonSelected 
+            (saveButton)=onSaveButton($event)>
         </cds-panel-button-configuration>
 
-        <cds-panel-action-detail *ngIf="isOpenPanelActionDetail"
-            id="action-detail"
-            class="cds-generic-panel"
-            [isOpenPanel] = "isOpenPanelActionDetail"
-            [intentSelected]="intentSelected"
+        <cds-panel-action-detail *ngIf="isOpenPanelActionDetail" id="action-detail" class="cds-generic-panel"
+            [isOpenPanel]="isOpenPanelActionDetail" 
+            [intentSelected]="intentSelected" 
             [project_id]="projectID"
             [elementIntentSelected]="elementIntentSelected"
             (closeAndSavePanelIntentDetail)="onCloseAndSavePanelIntentDetail($event)"
@@ -103,13 +100,20 @@
     </div>
 
 
-    <cds-chatbot-details *ngIf="activeSidebarSection == 'cds-sb-settings'" [selectedChatbot]="selectedChatbot"></cds-chatbot-details>
+    <cds-chatbot-details *ngIf="activeSidebarSection == 'cds-sb-settings'"
+        [selectedChatbot]="selectedChatbot">
+    </cds-chatbot-details>
 
-    <cds-fulfillment *ngIf="activeSidebarSection == 'cds-sb-fulfillment'" [chatbot]="selectedChatbot"></cds-fulfillment>
+    <cds-fulfillment *ngIf="activeSidebarSection == 'cds-sb-fulfillment'" 
+        [chatbot]="selectedChatbot">
+    </cds-fulfillment>
 
-    <cds-rules *ngIf="activeSidebarSection == 'cds-sb-rules'" [listOfIntents]="listOfIntents" [selectedChatbot]="selectedChatbot"></cds-rules>
+    <cds-rules *ngIf="activeSidebarSection == 'cds-sb-rules'" 
+        [listOfIntents]="listOfIntents"
+        [selectedChatbot]="selectedChatbot">
+    </cds-rules>
 
-        <!-- <ng-container [ngSwitch]="activeSidebarSection">
+    <!-- <ng-container [ngSwitch]="activeSidebarSection">
             <ng-container *ngSwitchCase="'cds-sb-settings'" [ngTemplateOutlet]="settings"></ng-container>
             <ng-container *ngSwitchCase="'cds-sb-fulfillment'" [ngTemplateOutlet]="fulfillment"></ng-container>
             <ng-container *ngSwitchCase="'cds-sb-training'" [ngTemplateOutlet]="training"></ng-container>
@@ -117,17 +121,16 @@
             <ng-container *ngSwitchCase="'cds-sb-intents'" [ngTemplateOutlet]="intents"></ng-container>
             <ng-container *ngSwitchDefault [ngTemplateOutlet]="intents"></ng-container>
         </ng-container> -->
-    
 
-    
+
+
 </div>
 
 
 
 
 
-<cds-modal-activate-bot
-    [selectedChatbot]="selectedChatbot">
+<cds-modal-activate-bot [selectedChatbot]="selectedChatbot">
 </cds-modal-activate-bot>
 
 <cds-popup></cds-popup>

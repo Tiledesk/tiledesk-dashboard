@@ -4,13 +4,14 @@ import { LoggerService } from 'app/services/logger/logger.service';
 import { TYPE_METHOD_ATTRIBUTE, TYPE_METHOD_REQUEST, TEXT_CHARS_LIMIT } from '../../../../utils';
 
 @Component({
-  selector: 'action-web-request',
-  templateUrl: './action-web-request.component.html',
-  styleUrls: ['./action-web-request.component.scss']
+  selector: 'cds-action-web-request',
+  templateUrl: './cds-action-web-request.component.html',
+  styleUrls: ['./cds-action-web-request.component.scss']
 })
-export class ActionWebRequestComponent implements OnInit {
+export class CdsActionWebRequestComponent implements OnInit {
 
   @Input() action: ActionWebRequest;
+  @Input() previewMode: boolean = true;
   methods: Array<string>;
   pattern = "^[a-zA-Z_]*[a-zA-Z_]+[a-zA-Z0-9_]*$";
 
@@ -39,6 +40,7 @@ export class ActionWebRequestComponent implements OnInit {
   ngOnChanges() {
     // on change
     this.initialize();
+    console.log('CDS-ACTION-WEB-REQUEST ACTION' , this.action )
     if (this.action && this.action.assignTo) {
       this.hasSelectedVariable = true
     }

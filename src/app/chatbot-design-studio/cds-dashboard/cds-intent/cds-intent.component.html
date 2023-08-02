@@ -31,7 +31,9 @@
             tabindex="0"
             [ngClass]="{
             'cds-action-active': intentService.actionSelectedID === action._tdActionId, 
-            'cds-no-featured-action': action._tdActionType !== TYPE_ACTION.REPLY}"
+            'cds-no-featured-action': action._tdActionType !== TYPE_ACTION.REPLY,
+            'cds-last-action': last
+            }"
             (keydown)="onKeydown($event)"
             (click)="onActionSelected(action, i, action._tdActionId)">
             <!-- (click)="onActionSelected(action, i, action._tdActionId)" -->
@@ -156,19 +158,25 @@
                     (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-hide-message>
 
+                <cds-action-web-request *ngSwitchCase="TYPE_ACTION.WEB_REQUEST"
+                    class="panel-response"   
+                    [action]="action"
+                    (updateAndSaveAction)="onUpdateAndSaveAction($event)">
+                </cds-action-web-request>
+
 
             </div>
 
             <cds-action-arrow *ngIf="!last"></cds-action-arrow>
 
-        </div>
+            <div *ngIf="last" class="csd-open-action-menu-btn-wpr csd-add-action-btn-wpr-element">
+                <button #openActionMenuBtn (click)="$event.stopPropagation();openActionMenu(intent)" class="btn cds-add-action-btn csd-add-action-btn-wpr-element">
+                    <span class="material-icons csd-add-action-btn-wpr-element">
+                        add
+                    </span>
+                </button>
+            </div>
 
-        <div class="csd-add-action-btn-wpr csd-add-action-btn-wpr-element">
-            <button #openActionMenuBtn (click)="openActionMenu(intent)" class="btn cds-add-action-btn csd-add-action-btn-wpr-element">
-                <span class="material-icons csd-add-action-btn-wpr-element">
-                    add
-                </span>
-            </button>
         </div>
 
   
