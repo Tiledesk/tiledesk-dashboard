@@ -15,11 +15,11 @@
         <!-- (blur)="onBlurIntentName($event)" -->
         <input type="text" 
             class="input form-control"
+            [class.tds_draggable]="intentName === 'start' || intentName === 'defaultFallback' " 
             [(ngModel)]="intentName"
             [disabled]="intentName === 'start' || intentName === 'defaultFallback' " 
             (ngModelChange)="onChangeIntentName($event)" 
-            (keydown.enter)="onEnterButtonPressed($event)"
-            (keydown)="onKeyDown($event)">
+            (keydown.enter)="onEnterButtonPressed($event)">
         <div *ngIf="intentNameAlreadyExist" class="error---msg"> The block name must be unique </div>
         <div *ngIf="intentNameNotHasSpecialCharacters === false" class="error---msg"> The block name cannot contain
             special characters </div>

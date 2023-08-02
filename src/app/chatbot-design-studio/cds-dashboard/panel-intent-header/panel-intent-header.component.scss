@@ -42,6 +42,9 @@ $width-title: 80%;
             background-image: linear-gradient($color-light-gray-hex, $color-light-gray-hex);
             transition-duration: 0.2s;
             /*  height: $height-header;*/
+            &[disabled]{
+              cursor: grab;
+            }
         }
         label.title {
             position: absolute;

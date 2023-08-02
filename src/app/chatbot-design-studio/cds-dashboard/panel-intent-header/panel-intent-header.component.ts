@@ -133,10 +133,6 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
     event.target.blur()
   }
 
-  onKeyDown(event){
-    console.log('eventttttttttt', event)
-  }
-
   /** */
   onSaveIntent() {
     this.logger.log('[PANEL-INTENT-HEADER] this.intentName ', this.intentName)

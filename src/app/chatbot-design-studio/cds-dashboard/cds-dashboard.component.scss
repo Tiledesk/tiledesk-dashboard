@@ -276,6 +276,11 @@ $box-left-width: 250px;
   // left: 0px;
   // z-index: auto;
 }
+
+.cdk-drag-placehoder{
+  pointer-events: auto;
+  cursor: grabbing;
+}
 /*********** END Draggable  *************/
 
 @keyframes dash {
