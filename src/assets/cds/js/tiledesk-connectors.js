@@ -334,7 +334,6 @@ export class TiledeskConnectors {
       if(el && el.classList && el.classList.contains(keyClass)){
         return el;
       } 
-
       console.log('[TILEDESK-CONNECTORS] searchClassInParents ->', keyClass);
       let parent = el.parentElement;
       while (parent !== null) {
@@ -606,8 +605,8 @@ export class TiledeskConnectors {
       if (!block) {return;}
       for (const [key, conn_id] of Object.entries(block.outConnectors)) {
         let conn = this.connectors[conn_id];
-        console.log("OUT :---> ", conn.fromPoint);
         if(conn){
+          console.log("OUT :---> ", conn.fromPoint);
           const el = document.getElementById(conn.fromId);
           conn.fromPoint = this.elementLogicCenter(el);
           console.log("conn.fromPoint :---> ", el, conn.fromId, conn.fromPoint);

@@ -83,6 +83,8 @@ export class CdsIntentComponent implements OnInit, OnChanges {
           console.log("Aggiorno le actions dell'intent");
           this.listOfActions = this.intent.actions;
           this.intentService.updateIntent(this.intent);
+          // const fromEle = document.getElementById(this.intent.intent_id);
+          // this.connectorService.movedConnector(fromEle);
         }
         // } else {
         //   console.log("l'intent è vuoto quindi lo elimino  ::: ", this.intent.id);

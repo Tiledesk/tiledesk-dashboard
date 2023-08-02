@@ -683,7 +683,7 @@ export class CdsDashboardComponent implements OnInit {
       // 1 - rimuovo tutti i listner dell'intent
       // this.removeListnerEventToElements(intent); ---> se l'intent è stato eliminato dallo stage nn c'è bisogno di eliminare i listner
       // 2 - cancello tutti i connettori dell'intent
-      // this.connectorService.deleteConnectorsOfBlock(intent.intent_id);
+      this.connectorService.deleteConnectorsOfBlock(intent.intent_id);
       // !!! chiama patch positions !!!!
       swal(this.translate.instant('Done') + "!", this.translate.instant('FaqPage.AnswerSuccessfullyDeleted'), {
         icon: "success",

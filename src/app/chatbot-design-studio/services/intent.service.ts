@@ -402,6 +402,7 @@ export class IntentService {
         console.log("l'intent è vuoto quindi lo elimino  ::: ", intentToUpdate.id);
         const resp = this.deleteIntent(intentToUpdate.id);
       }
+      this.connectorService.deleteConnectorsFromActionByActionId(action._tdActionId);
     }
     
    
