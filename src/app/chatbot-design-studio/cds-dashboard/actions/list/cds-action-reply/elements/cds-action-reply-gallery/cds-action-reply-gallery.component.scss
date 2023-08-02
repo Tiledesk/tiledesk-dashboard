@@ -549,7 +549,7 @@
 .button-controls {
     justify-content: space-between;
     display: inline-flex;
-    width: 28px;
+    // width: 28px;
     height: 24px;
     position: absolute;
     left: 0;
@@ -594,7 +594,6 @@
 .action-button-controls {
     top: -12px;
     opacity: 0;
-
     .control-button:not(.delete){
         cursor: grab;
     }

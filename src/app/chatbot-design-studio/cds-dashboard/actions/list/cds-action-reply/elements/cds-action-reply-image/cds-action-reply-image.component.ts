@@ -98,8 +98,8 @@ export class CdsActionReplyImageComponent implements OnInit {
       console.log(' updateConnector :: idConnector: ', idConnector);
       console.log(' updateConnector :: idButton: ', idButton);
       console.log(' updateConnector :: connector.id: ', this.connector.id);
-      if(idConnector === this.connector.fromId){
-        const buttonChanged = this.buttons.find(obj => obj.uid === idButton);
+      const buttonChanged = this.buttons.find(obj => obj.uid === idButton);
+      if(idConnector === this.connector.fromId && buttonChanged){
         if(this.connector.deleted){
           // DELETE 
           console.log(' deleteConnector :: ', this.connector.fromId);
