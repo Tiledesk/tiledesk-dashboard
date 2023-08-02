@@ -94,11 +94,11 @@ export class CdsActionReplyImageComponent implements OnInit {
       const array = this.connector.fromId.split("/");
       const idButton = array[array.length - 1];
       const idConnector = this.idAction+'/'+idButton;
-      console.log(' updateConnector :: connector.fromId: ', this.connector.fromId);
-      console.log(' updateConnector :: idConnector: ', idConnector);
-      console.log(' updateConnector :: idButton: ', idButton);
-      console.log(' updateConnector :: connector.id: ', this.connector.id);
       if(idConnector === this.connector.fromId){
+        console.log(' updateConnector :: connector.fromId: ', this.connector.fromId);
+        console.log(' updateConnector :: idConnector: ', idConnector);
+        console.log(' updateConnector :: idButton: ', idButton);
+        console.log(' updateConnector :: connector.id: ', this.connector.id);
         const buttonChanged = this.buttons.find(obj => obj.uid === idButton);
         if(this.connector.deleted){
           // DELETE 

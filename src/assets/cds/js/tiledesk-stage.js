@@ -151,13 +151,14 @@ export class TiledeskStage {
 
 
     setDragElement(elementId) {
-        // console.log('-----> setDragElement', elementId);
         var element = document.getElementById(elementId);
+        if(!element)return;
+        console.log('-----> setDragElement', elementId);
         let pos_mouse_x;
         let pos_mouse_y;
         element.onmousedown = (function(event) {
             this.isDraggingElement = true;
-            // console.log('dragMouseDown', event, this.classDraggable, element);
+            console.log('dragMouseDown', event, this.classDraggable, element);
             if (!event.target.classList.contains(this.classDraggable)) {
                 return;
             }

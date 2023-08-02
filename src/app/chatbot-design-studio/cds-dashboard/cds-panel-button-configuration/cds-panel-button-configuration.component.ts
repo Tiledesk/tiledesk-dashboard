@@ -96,11 +96,12 @@ export class CdsPanelButtonConfigurationComponent implements OnInit {
         // error
       }
       let intent = this.setAttributesFromAction(this.button.action);
+      // console.log('*** intent: ', intent);
       if(intent && intent.action !== null){
         this.buttonAction = intent.action;
       }
       if(intent && intent.attributes !== null){
-        // console.log('intent: ', intent);
+        
         this.buttonAttributes = intent.attributes;
         // this.openBlockAttributes = true;
       }
@@ -224,6 +225,14 @@ export class CdsPanelButtonConfigurationComponent implements OnInit {
   /** */
   onChangeTypeButton(typeOfButton: { label: string, value: TYPE_BUTTON }) {
     this.button.type = typeOfButton.value;
+    if(this.button.idConnector){
+      let parts = this.button.idConnector.split('/');
+      if(parts && parts.length>1){
+        let actionId = parts[1];
+        console.log('deleteConnectorsFromActionByActionId: ', actionId);
+        this.connectorService.deleteConnectorsFromActionByActionId(actionId);
+      }
+    }
   }
 
   /** */

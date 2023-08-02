@@ -90,8 +90,7 @@ export class CdsActionReplyComponent implements OnInit {
     // if (changes.connector) {
     //   this.updateConnector();
     // }
-    if(this.action)
-      this.initialize();
+    if(this.action)this.initialize();
   }
 
 

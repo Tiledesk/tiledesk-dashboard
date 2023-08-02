@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges, ViewChild, ElementRef, OnChanges } from '@angular/core';
 import { Action, Form, Intent } from 'app/models/intent-model';
+import { Subscription } from 'rxjs';
 
 import { ACTIONS_LIST, TYPE_ACTION, patchActionId } from 'app/chatbot-design-studio/utils';
 import { LoggerService } from 'app/services/logger/logger.service';
@@ -17,6 +18,7 @@ import {
   moveItemInArray,
   transferArrayItem
 } from '@angular/cdk/drag-drop';
+import { Observable } from 'rxjs';
 
 
 export enum HAS_SELECTED_TYPE {
@@ -43,6 +45,8 @@ export class CdsIntentComponent implements OnInit, OnChanges {
 
   @Output() showPanelActions = new EventEmitter(); // nk
   @ViewChild('openActionMenuBtn', { static: false }) openActionMenuBtnRef: ElementRef;
+
+  subscriptionBehaviorIntent: Subscription;
   // intentElement: any;
   // idSelectedAction: string;
   // form: Form;
@@ -61,7 +65,6 @@ export class CdsIntentComponent implements OnInit, OnChanges {
   positionMenu: any;
 
 
-
   constructor(
     private logger: LoggerService,
     public intentService: IntentService,
@@ -72,19 +75,33 @@ export class CdsIntentComponent implements OnInit, OnChanges {
 
   ) {
     /** SUBSCRIBE TO THE INTENT CREATED OR UPDATED */
-    this.intentService.intent.subscribe(intent => {
+    this.subscriptionBehaviorIntent = this.intentService.behaviorIntent.subscribe(intent => {
       if (intent && this.intent && intent.intent_id === this.intent.intent_id) {
         this.intent = intent;
-        this.listOfActions = this.intent.actions;
-        console.log('intent created / updated ::: ',  this.intent);
+        console.log("modifico l'intent: ",  this.intent);
+        if(this.intent.actions && this.intent.actions.length>0){
+          console.log("Aggiorno le actions dell'intent");
+          this.listOfActions = this.intent.actions;
+          this.intentService.updateIntent(this.intent);
+          // const fromEle = document.getElementById(this.intent.intent_id);
+          // this.connectorService.movedConnector(fromEle);
+        }
+        // } else {
+        //   console.log("l'intent è vuoto quindi lo elimino  ::: ", this.intent.id);
+        //   const resp = this.intentService.deleteIntent(this.intent.id);
+        //   if(resp){
+        //     // this.behaviorIntents.next(this.listOfIntents);
+        //     // this.intentService.refreshIntents();
+        //   }
+        // }
       }
     });
 
-    this.intentService.intents.subscribe(intents => {
-      if(intents){
-        this.listOfIntents = intents
-      }
-    })
+    // this.intentService.behaviorIntents.subscribe(intents => {
+    //   if(intents){
+    //     this.listOfIntents = intents
+    //   }
+    // })
    }
 
   ngOnInit(): void {
@@ -93,7 +110,17 @@ export class CdsIntentComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    console.log('[CDS-INTENT] intent ', this.intent)
+    // console.log('[CDS-INTENT] intent ', this.intent)
+    
+  }
+  ngOnDestroy(){
+    this.unsubscribe(); 
+  }
+
+  unsubscribe() {
+    if (this.subscriptionBehaviorIntent) {
+      this.subscriptionBehaviorIntent.unsubscribe();
+    }
   }
 
   /** CUSTOM FUNCTIONS  */
@@ -263,10 +290,11 @@ export class CdsIntentComponent implements OnInit, OnChanges {
   onDragEnded(event) {
     console.log('onDragEnded: ', event);
     const fromEle = document.getElementById(this.intent.intent_id);
-    this.connectorService.movedConnector(fromEle);
+    // this.connectorService.movedConnector(fromEle);
   }
 
   /** on Drop Action check the three possible cases:
+   * chaimata quando muovo la action in un intent
    * 1 - moving action in the same intent 
    * 2 - moving action from another intent
    * 3 - moving new action in intent from panel elements
@@ -278,7 +306,11 @@ export class CdsIntentComponent implements OnInit, OnChanges {
       // moving action in the same intent
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
       const response = await this.intentService.updateIntent(this.intent);
-      // if(response) console.log('updateIntent: OK', this.intent);
+      if(response){
+        // update the intent connectors
+        const fromEle = document.getElementById(this.intent.intent_id);
+        this.connectorService.movedConnector(fromEle);
+      }
     } else {
       try {
         let action: any = event.previousContainer.data[event.previousIndex];
@@ -293,9 +325,6 @@ export class CdsIntentComponent implements OnInit, OnChanges {
         console.error(error);
       }
     }
-    // update the intent connectors
-    const fromEle = document.getElementById(this.intent.intent_id);
-    this.connectorService.movedConnector(fromEle);
   }
 
   /**  onUpdateAndSaveAction: 
@@ -303,16 +332,21 @@ export class CdsIntentComponent implements OnInit, OnChanges {
    * 1 - update connectors
    * 2 - update intent
    * */
-  onUpdateAndSaveAction() {
+  public async onUpdateAndSaveAction() {
     console.log('[CDS-INTENT] onUpdateAndSaveAction:::: ', this.intent, this.intent.actions);
-    const fromEle = document.getElementById(this.intent.intent_id);
-    this.connectorService.movedConnector(fromEle);
-    this.updateIntent();
+    const response = await this.intentService.updateIntent(this.intent);
+    if (response) {
+      console.log('updateIntent: ', this.intent);
+    }
+    // const fromEle = document.getElementById(this.intent.intent_id);
+    // if(fromEle){
+    //   this.connectorService.movedConnector(fromEle);
+    //   this.updateIntent();
+    // }
   }
 
 
   openActionMenu(intent) {
-   
     console.log('[CDS-INTENT] openActionMenu > intent ', intent)
     const openActionMenuElm = this.openActionMenuBtnRef.nativeElement.getBoundingClientRect()
     let buttonXposition = openActionMenuElm.x + 157 // - 415
@@ -321,7 +355,6 @@ export class CdsIntentComponent implements OnInit, OnChanges {
     console.log('[CDS-INTENT] openActionMenu > buttonXposition ', buttonXposition)
     const data = { 'x': buttonXposition, 'y': buttonYposition, 'intent': intent};
     this.showPanelActions.emit(data);
-
   }
 
 }

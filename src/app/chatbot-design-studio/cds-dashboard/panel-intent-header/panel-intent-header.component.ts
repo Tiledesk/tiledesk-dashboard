@@ -3,6 +3,7 @@ import { LoggerService } from 'app/services/logger/logger.service';
 
 
 import { Intent } from '../../../models/intent-model';
+import { IntentService } from 'app/chatbot-design-studio/services/intent.service';
 
 @Component({
   selector: 'appdashboard-panel-intent-header',
@@ -14,8 +15,9 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
   // @Output() changeIntentName = new EventEmitter();
   @Input() intentSelected: Intent;
   @Input() showSpinner: boolean;
-  @Input() listOfIntents: Intent[];
+  // @Input() listOfIntents: Intent[];
 
+  listOfIntents: Intent[];
   intentName: string;
   intentNameResult: boolean = true;
   intentNameAlreadyExist: boolean = false
@@ -25,7 +27,14 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
 
   constructor(
     private logger: LoggerService,
-  ) { }
+    public intentService: IntentService
+  ) { 
+    this.intentService.behaviorIntents.subscribe(intents => {
+      if(intents){
+        this.listOfIntents = intents
+      }
+    })
+  }
 
   // SYSTEM FUNCTIONS //
   ngOnInit(): void {
