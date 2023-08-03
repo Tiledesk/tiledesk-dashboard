@@ -1,5 +1,5 @@
 <div id="panel-tab">
-    <div id="preloader">
+    <div id="preloader" *ngIf="loading">
         <div class="logo"></div>
     </div>
 
@@ -8,7 +8,12 @@
             close
         </div>
         <div class="content">
-            <p>cds-panel-widget works!</p>
+           <iframe allowfullscreen
+                style= "border:none;"
+                width = "100%" height = "100%"
+                [src]="widgetTestSiteUrl"
+                (load)="onLoaded($event)">
+            </iframe>
         </div>
     </div>
     
