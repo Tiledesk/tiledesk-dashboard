@@ -223,8 +223,8 @@ export class CdsActionReplyTextComponent implements OnInit {
   /** */
   dropButtons(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.buttons, event.previousIndex, event.currentIndex);
-    const elem = document.getElementById(this.idIntent);
-    this.connectorService.movedConnector(elem);
+    // const elem = document.getElementById(this.idIntent);
+    this.connectorService.movedConnector(this.idIntent);
     this.changeActionReply.emit();
   }  
 }

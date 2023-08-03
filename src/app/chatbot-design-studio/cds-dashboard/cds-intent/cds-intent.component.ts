@@ -77,23 +77,17 @@ export class CdsIntentComponent implements OnInit, OnChanges {
     /** SUBSCRIBE TO THE INTENT CREATED OR UPDATED */
     this.subscriptionBehaviorIntent = this.intentService.behaviorIntent.subscribe(intent => {
       if (intent && this.intent && intent.intent_id === this.intent.intent_id) {
+        console.log("sto modifico l'intent: ",  this.intent , " con : ", intent );
         this.intent = intent;
-        console.log("modifico l'intent: ",  this.intent);
-        if(this.intent.actions && this.intent.actions.length>0){
-          console.log("Aggiorno le actions dell'intent");
+        if(intent['attributesChanged']){
+          console.log("ho solo cambiato la posizione sullo stage");
+          delete intent['attributesChanged'];
+        } else { // if(this.intent.actions.length !== intent.actions.length && intent.actions.length>0)
+          console.log("aggiorno le actions dell'intent");
           this.listOfActions = this.intent.actions;
-          this.intentService.updateIntent(this.intent);
-          // const fromEle = document.getElementById(this.intent.intent_id);
-          // this.connectorService.movedConnector(fromEle);
+          // AGGIORNO I CONNETTORI
+          // this.intentService.updateIntent(this.intent); /// DEVO ELIMINARE UPDATE DA QUI!!!!!
         }
-        // } else {
-        //   console.log("l'intent è vuoto quindi lo elimino  ::: ", this.intent.id);
-        //   const resp = this.intentService.deleteIntent(this.intent.id);
-        //   if(resp){
-        //     // this.behaviorIntents.next(this.listOfIntents);
-        //     // this.intentService.refreshIntents();
-        //   }
-        // }
       }
     });
 
@@ -289,7 +283,7 @@ export class CdsIntentComponent implements OnInit, OnChanges {
    * get the action moved and update its connectors */
   onDragEnded(event) {
     console.log('onDragEnded: ', event);
-    const fromEle = document.getElementById(this.intent.intent_id);
+    // const fromEle = document.getElementById(this.intent.intent_id);
     // this.connectorService.movedConnector(fromEle);
   }
 
@@ -304,22 +298,26 @@ export class CdsIntentComponent implements OnInit, OnChanges {
     // console.log('event:', event, 'previousContainer:', event.previousContainer, 'event.container:', event.container);
     if (event.previousContainer === event.container) {
       // moving action in the same intent
+      console.log("sto spostando una action all'interno dello stesso intent: ", event);
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+      console.log("aggiorno l'intent");
       const response = await this.intentService.updateIntent(this.intent);
       if(response){
-        // update the intent connectors
-        const fromEle = document.getElementById(this.intent.intent_id);
-        this.connectorService.movedConnector(fromEle);
+        this.connectorService.movedConnector(this.intent.intent_id);
       }
     } else {
       try {
         let action: any = event.previousContainer.data[event.previousIndex];
-        if (action._tdActionType) {
-          // moving action from another intent
-          this.intentService.moveActionBetweenDifferentIntents(event, action, this.intent.intent_id);
-        } else if (action.value && action.value.type) {
-          // moving new action in intent from panel elements
-          this.intentService.moveNewActionIntoIntent(event, action, this.intent.intent_id);
+        if(event.previousContainer.data.length>1){
+          if (action._tdActionType) {
+            // moving action from another intent
+            console.log("sposto la action tra 2 intent differenti");
+            this.intentService.moveActionBetweenDifferentIntents(event, action, this.intent.intent_id);
+          } else if (action.value && action.value.type) {
+            // moving new action in intent from panel elements
+            console.log("aggiungo una nuovo action all'intent da panel elements");
+            this.intentService.moveNewActionIntoIntent(event, action, this.intent.intent_id);
+          }
         }
       } catch (error) {
         console.error(error);

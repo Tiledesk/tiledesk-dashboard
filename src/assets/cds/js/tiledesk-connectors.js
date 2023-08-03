@@ -593,7 +593,9 @@ export class TiledeskConnectors {
         console.log("toPoint:", toPoint);
         console.log("fromPoint:", fromPoint);
         this.createConnector(fromId, toId, fromPoint, toPoint);
+        return true;
       }
+      return false;
     }
 
 

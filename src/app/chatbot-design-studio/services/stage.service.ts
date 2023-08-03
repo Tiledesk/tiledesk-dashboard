@@ -21,6 +21,14 @@ export class StageService {
   }
 
 
+  setDragElement(elementId:string) {
+    const element = document.getElementById(elementId);
+    console.log("imposto il drag sull'elemento ", element);
+    this.tiledeskStage.setDragElement(element);
+  }
+  
+
+
   // getScale(){
   //   return this.tiledeskStage.scale;
   // }

@@ -577,7 +577,7 @@ public _getAllFaqByFaqKbId(id_faq_kb: string): Observable<Intent[]> {
 
 
 
-  public patchAttributes(id: string, attributes: any): Observable<Faq[]> {
+  public patchAttributes(id: string, attributes: any): Observable<Intent> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -588,7 +588,7 @@ public _getAllFaqByFaqKbId(id_faq_kb: string): Observable<Intent[]> {
     let body = JSON.stringify(attributes);
     console.log('[FAQ.SERV] updateFaq - BODY ', url, body);
     return this._httpClient
-    .patch<Faq[]>(url, body, httpOptions)
+    .patch<Intent>(url, body, httpOptions)
     // return this._httpClient.patch(url, body, httpOptions)
   }
 
