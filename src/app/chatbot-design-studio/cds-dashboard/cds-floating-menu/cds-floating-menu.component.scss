@@ -50,11 +50,15 @@
     .btn-tdblu-no-boxshadow {
         margin: 0;
         padding: 0!important;
-        background: #3ea9f5!important;
+        background: #394f5a!important;
         font-size: 12px;
-        width: 20px;
-        height: 20px;
+        width: 25px;
+        height: 25px;
     }
+}
+
+.action--btn img {
+    width: 16px;
 }
 
 .action-btn-text{

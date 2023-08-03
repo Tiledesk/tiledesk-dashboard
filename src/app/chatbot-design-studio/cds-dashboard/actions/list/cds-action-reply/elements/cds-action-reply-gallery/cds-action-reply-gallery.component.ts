@@ -99,7 +99,6 @@ export class CdsActionReplyGalleryComponent implements OnInit {
         const array = this.connector.fromId.split("/");
         const idButton = array[array.length - 1];
         const idConnector = this.idAction+'/'+idButton;
-        console.log('buttonsssssssss--> ', el.buttons)
         console.log('[REPLY-GALLERY] updateConnector :: connector.fromId: ', this.connector.fromId);
         console.log('[REPLY-GALLERY] updateConnector :: idConnector: ', idConnector);
         console.log('[REPLY-GALLERY] updateConnector :: idButton: ', idButton);

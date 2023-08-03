@@ -11,8 +11,18 @@
         </div> -->
         <appdashboard-panel-intent-header class="pic-title-text tds_draggable"
             [intentSelected]="intent">
-            <!-- [listOfIntents]="listOfIntents"> -->
         </appdashboard-panel-intent-header>
+
+        <div class="cds-intent-options">
+            <div class="option" (click)="onSelectQuestion(HAS_SELECTED_TYPE.QUESTION)"
+                [attr.active]="questionCount > 0">
+                <img src="assets/cds/images/brain.svg" title="Question">
+            </div>
+            <div class="option" (click)="onSelectForm(HAS_SELECTED_TYPE.FORM)"
+                [attr.active]="formSize > 0">
+                <img src="assets/cds/images/form.svg" title="Form">
+            </div>
+        </div>
 
     </div>
 
@@ -35,8 +45,7 @@
             'cds-last-action': last
             }"
             (keydown)="onKeydown($event)"
-            (click)="onActionSelected(action, i, action._tdActionId)">
-            <!-- (click)="onActionSelected(action, i, action._tdActionId)" -->
+            (click)="onSelectAction(action, i, action._tdActionId)">
             <!-- (keydown)="onDeleteAction($event)" -->
             
             <!-- <div cdkDragHandle class="header-action"> -->

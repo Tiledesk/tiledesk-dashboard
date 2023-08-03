@@ -24,7 +24,8 @@
 // }
 
 .actions-btns-wpr {
-    width: 136px;
+    // width: 136px; // dp
+    width: 100%; // nk
     height: 30px;
     border-radius: 6px;
     display: flex;
@@ -53,7 +54,7 @@
     .btn-tdblu-no-boxshadow {
         margin: 0;
         padding: 0!important;
-        background: #3ea9f5!important;
+        background: #394f5a!important;
         font-size: 12px;
         width: 20px;
         height: 20px;

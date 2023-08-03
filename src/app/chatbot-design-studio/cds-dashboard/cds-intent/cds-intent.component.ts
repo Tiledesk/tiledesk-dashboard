@@ -41,6 +41,7 @@ export class CdsIntentComponent implements OnInit, OnChanges {
 
   @Output() questionSelected = new EventEmitter(); // !!! SI PUO' ELIMINARE
   @Output() answerSelected = new EventEmitter(); // !!! SI PUO' ELIMINARE
+  @Output() formSelected = new EventEmitter(); // !!! SI PUO' ELIMINARE
   @Output() actionSelected = new EventEmitter(); // !!! SI PUO' ELIMINARE
 
   @Output() showPanelActions = new EventEmitter(); // nk
@@ -50,11 +51,11 @@ export class CdsIntentComponent implements OnInit, OnChanges {
   // intentElement: any;
   // idSelectedAction: string;
   // form: Form;
-  // formSize: number;
+  formSize: number = 0;
   // question: any;
-  answer: string; // !!! SI PUO' ELIMINARE
-  // questionCount: number;
-  listOfIntents: Intent[]
+  // answer: string; // !!! SI PUO' ELIMINARE
+  questionCount: number = 0;
+
   listOfActions: Action[];
   HAS_SELECTED_TYPE = HAS_SELECTED_TYPE;
   TYPE_ACTION = TYPE_ACTION;
@@ -126,23 +127,26 @@ export class CdsIntentComponent implements OnInit, OnChanges {
   /** CUSTOM FUNCTIONS  */
   private setIntentSelected(){
     this.listOfActions = null;
+    this.formSize = 0;
+    this.questionCount = 0;
     try {
       if (this.intent) {
         this.patchAllActionsId();
         this.patchAttributesPosition();
         this.listOfActions = this.intent.actions;
         // this.form = this.intent.form;
+        // this.actions = this.intent.actions;
         // this.answer = this.intent.answer;
-        // if (this.intent.question) {
-        //   const question_segment = this.intent.question.split(/\r?\n/).filter(element => element);
-        //   this.questionCount = question_segment.length;
-        //   this.question = this.intent.question;
-        // }
-        // if (this.form && this.form !== undefined) {
-        //   this.formSize = Object.keys(this.form).length;
-        // } else {
-        //   this.formSize = 0;
-        // }
+        if (this.intent.question) {
+          const question_segment = this.intent.question.split(/\r?\n/).filter(element => element);
+          this.questionCount = question_segment.length;
+          // this.question = this.intent.question;
+        } 
+      }
+      if (this.intent && this.intent.form !== undefined) {
+        this.formSize = Object.keys(this.intent.form).length;
+      } else {
+        this.formSize = 0;
       }
     } catch (error) {
       this.logger.error("error: ", error);
@@ -209,33 +213,12 @@ export class CdsIntentComponent implements OnInit, OnChanges {
     }
   }
 
-
-  onSelectAnswer(elementSelected) {
-    this.elementTypeSelected = elementSelected;
-    // this.isIntentElementSelected = true;
-    this.answerSelected.emit(this.answer);
-  }
-
-  onSelectQuestion(elementSelected) {
-    console.log('onSelectQuestion-->', elementSelected, this.intent.question)
-    this.elementTypeSelected = elementSelected;
-    // this.isIntentElementSelected = true;
-    this.questionSelected.emit(this.intent.question);
-
-    // let elementsWithActiveClass = Array.from(document.getElementsByClassName('cds-action-active'));
-    // this.logger.log('[PANEL INTENT] onActionSelected elementsWithActiveClass', elementsWithActiveClass)
-    // if (elementsWithActiveClass.length != 0) {
-    //   elementsWithActiveClass.forEach((el) => {
-    //     el.classList.remove('cds-action-active');
-    //   })
-    // }
-  }
   /*********************************************/
 
 
   /** EVENTS  */
 
-  onActionSelected(action, index: number, idAction) {
+  onSelectAction(action, index: number, idAction) {
     console.log('onActionSelected action: ', action);
     this.elementTypeSelected = idAction;
     this.intentService.selectAction(this.intent.intent_id, idAction);
@@ -248,17 +231,29 @@ export class CdsIntentComponent implements OnInit, OnChanges {
   //   this.answerSelected.emit(this.answer);
   // }
 
-  // onSelectQuestion(elementSelected) {
-  //   console.log('onSelectQuestion-->', elementSelected, this.intent.question)
-  //   this.elementTypeSelected = elementSelected;
-  //   // this.isIntentElementSelected = true;
-  //   this.questionSelected.emit(this.intent.question);
-  // }
+  onSelectQuestion(elementSelected) {
+    console.log('onSelectQuestion-->', elementSelected, this.intent.question)
+    this.elementTypeSelected = elementSelected;
+    this.intentService.selectIntent(this.intent.intent_id)
+    // this.isIntentElementSelected = true;
+    this.questionSelected.emit(this.intent.question);
+  }
+
+  onSelectForm(elementSelected) {
+    // this.isIntentElementSelected = true;
+    this.elementTypeSelected = elementSelected;
+    this.intentService.selectIntent(this.intent.intent_id)
+    if (this.intent && !this.intent.form) {
+      let newForm = new Form()
+      this.intent.form = newForm;
+    }
+    this.formSelected.emit(this.intent.form);
+  }
 
   onClickControl(event: 'delete' | 'edit', action: Action, index: number){
     console.log('[CDS-INTENT] onClickControl', event)
     if(event === 'edit'){
-      this.onActionSelected(action, index, action._tdActionId)
+      this.onSelectAction(action, index, action._tdActionId)
     }else if(event === 'delete'){
       this.intentService.selectAction(this.intent.intent_id, action._tdActionId)
       this.intentService.deleteSelectedAction();
