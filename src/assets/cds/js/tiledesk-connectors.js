@@ -364,11 +364,16 @@ export class TiledeskConnectors {
 
     /** handleMouseMove */
     #handleMouseMove(event) {
-      //console.log("move...", event.target.id);
+      // console.log("move...", event.target.id);
       let mouse_pos_logic;
       const target = event.target;
       let elConnectable = this.#searchClassInParents(target, this.classes["input_block"]);
-      console.log("connectable? ", elConnectable);
+      if(elConnectable && elConnectable.id && this.fromId){
+        console.log("1 connectable? ", this.fromId, elConnectable.id);
+        if(this.fromId.startsWith( elConnectable.id)){
+          elConnectable = null;
+        }
+      }
       if(elConnectable){
         const block_rect = elConnectable.getBoundingClientRect();
         let pos_x_phis = block_rect.left;
@@ -396,7 +401,12 @@ export class TiledeskConnectors {
       this.target.removeEventListener("mouseup", this.ref_handleMouseUp, false);
       console.log('handleMouseUp ------> ', event.target, event.srcElement);
       let elConnectable = this.#searchClassInParents(event.target, this.classes["input_block"]);
-      console.log("connectable? ", elConnectable);
+      if(elConnectable && elConnectable.id && this.fromId){
+        console.log("2 connectable? ", this.fromId, elConnectable.id);
+        if(this.fromId.startsWith( elConnectable.id)){
+          elConnectable = null;
+        }
+      }
       if(elConnectable){
       //if (event.target.classList.contains(this.classes["input_block"])) {
         this.createConnector(this.fromId, elConnectable.id, this.drawingBack, this.toPoint);

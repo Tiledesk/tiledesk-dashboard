@@ -395,13 +395,15 @@ export class IntentService {
       return obj.intent_id === currentIntentId;
     });
     currentIntent.actions.splice(event.currentIndex, 0, newAction);
+    this.behaviorIntent.next(currentIntent);
+    this.connectorService.movedConnector(currentIntent.intent_id);
     setTimeout(async () => {
       const responseCurrentIntent = await this.updateIntent(currentIntent);
       if(responseCurrentIntent){
         // const fromEle = document.getElementById(currentIntent.intent_id);
-        this.connectorService.movedConnector(currentIntent.intent_id);
+        // this.connectorService.movedConnector(currentIntent.intent_id);
         console.log('update current Intent: OK');
-        this.behaviorIntent.next(currentIntent);
+        //this.behaviorIntent.next(currentIntent);
       }
     }, 0);
   }
@@ -413,31 +415,33 @@ export class IntentService {
     let currentIntent = this.listOfIntents.find(function(obj) {
       return obj.intent_id === currentIntentId;
     });
-    
     let previousIntent = this.listOfIntents.find(function(obj) {
       return obj.intent_id === that.previousIntentId;
     });
     console.log('moveActionBetweenDifferentIntents: ', event, this.listOfIntents, currentIntentId, currentIntent, previousIntent);
     currentIntent.actions.splice(event.currentIndex, 0, action);
     previousIntent.actions.splice(event.previousIndex, 1);
+
+    this.behaviorIntent.next(currentIntent);
+    this.behaviorIntent.next(previousIntent);
+    this.connectorService.movedConnector(currentIntent.intent_id);
+    this.connectorService.movedConnector(previousIntent.intent_id);
     this.connectorService.deleteConnectorsFromActionByActionId(action._tdActionId);
     setTimeout(async () => {
       const responseCurrentIntent = await this.updateIntent(currentIntent);
       if(responseCurrentIntent){
         // update the intent connectors
-        // const fromEle = document.getElementById(currentIntent.intent_id);
-        this.connectorService.movedConnector(currentIntent.intent_id);
-        console.log('update current Intent: OK');
-        this.behaviorIntent.next(currentIntent);
+        // this.connectorService.movedConnector(currentIntent.intent_id);
+        // console.log('update current Intent: OK');
+        // this.behaviorIntent.next(currentIntent);
       }
       if( previousIntent.actions.length>0){
         const responsePreviousIntent = await this.updateIntent(previousIntent);
         if(responsePreviousIntent){
           // update the intent connectors
-          // const fromEle = document.getElementById(previousIntent.intent_id);
-          this.connectorService.movedConnector(previousIntent.intent_id);
-          console.log('update previous Intent: OK');
-          this.behaviorIntent.next(previousIntent);
+          // this.connectorService.movedConnector(previousIntent.intent_id);
+          // console.log('update previous Intent: OK');
+          // this.behaviorIntent.next(previousIntent);
         }
       } else {
         const responsePreviousIntent = await this.deleteIntent(previousIntent.id);
@@ -467,6 +471,7 @@ export class IntentService {
         console.log('aggiorno intent di partenza', intentToUpdate);
         const responseIntent = this.updateIntent(intentToUpdate);
         if(responseIntent){
+          this.connectorService.movedConnector(intentToUpdate.intent_id);
           console.log('update Intent: OK');
           this.behaviorIntent.next(intentToUpdate);
          // this.connectorService.deleteConnectorsFromActionByActionId(action._tdActionId);
@@ -569,6 +574,7 @@ export class IntentService {
   public deleteSelectedAction(){
     console.log('deleteSelectedAction', this.intentSelectedID, this.actionSelectedID);
     if(this.intentSelectedID && this.actionSelectedID){
+      this.connectorService.deleteConnectorsFromActionByActionId(this.actionSelectedID);
       let intentToUpdate = this.listOfIntents.find((intent) => intent.intent_id === this.intentSelectedID);
       intentToUpdate.actions = intentToUpdate.actions.filter((action: any) => action._tdActionId !== this.actionSelectedID);
       this.listOfIntents = this.listOfIntents.map((intent) => {
@@ -581,6 +587,7 @@ export class IntentService {
       setTimeout(async () => {
         const responseIntent = await this.updateIntent(intentToUpdate);
         if(responseIntent){
+          this.connectorService.movedConnector(intentToUpdate.intent_id);
           console.log('update Intent: OK');
           this.behaviorIntent.next(intentToUpdate);
         }

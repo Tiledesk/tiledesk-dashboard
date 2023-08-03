@@ -315,7 +315,7 @@ export class CdsIntentComponent implements OnInit, OnChanges {
             this.intentService.moveActionBetweenDifferentIntents(event, action, this.intent.intent_id);
           } else if (action.value && action.value.type) {
             // moving new action in intent from panel elements
-            console.log("aggiungo una nuovo action all'intent da panel elements");
+            console.log("aggiungo una nuova action all'intent da panel elements");
             this.intentService.moveNewActionIntoIntent(event, action, this.intent.intent_id);
           }
         }
