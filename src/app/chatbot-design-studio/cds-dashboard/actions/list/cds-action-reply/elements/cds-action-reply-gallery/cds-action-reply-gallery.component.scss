@@ -88,16 +88,22 @@
         }
 
         
+        
+    }
+
+    .button-reply{
+        min-width: 200px;
+        padding: 2px 10px;
     }
 
     .content-botton-reply {
         position:relative;
+
     }
     //** CONNECTOR **//
     cds-connector.connector {
         position: absolute;
-        // top: calc(50% - 10px);
-        top: 0px;
+        top: calc(50% - 10px);
         right: -8px;
     }
 
