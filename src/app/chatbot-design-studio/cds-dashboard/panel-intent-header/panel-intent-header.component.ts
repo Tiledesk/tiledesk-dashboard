@@ -42,7 +42,7 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
   // SYSTEM FUNCTIONS //
   ngOnInit(): void {
     this.showSpinner = false;
-    console.log("[PANEL-INTENT-HEADER] intentSelected: ", this.intentSelected)
+    // console.log("[PANEL-INTENT-HEADER] intentSelected: ", this.intentSelected)
     try {
       this.intentName = this.intentSelected.intent_display_name;
     } catch (error) {
@@ -51,9 +51,9 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    console.log("[PANEL-INTENT-HEADER] header OnChanges intentSelected: ", this.intentSelected)
-    this.logger.log("[PANEL-INTENT-HEADER] header OnChanges intentSelected intent_display_name: ", this.intentSelected.intent_display_name)
-    console.log("[PANEL-INTENT-HEADER] header OnChanges listOfIntents: ", this.listOfIntents)
+    // console.log("[PANEL-INTENT-HEADER] header OnChanges intentSelected: ", this.intentSelected)
+    // this.logger.log("[PANEL-INTENT-HEADER] header OnChanges intentSelected intent_display_name: ", this.intentSelected.intent_display_name)
+    // console.log("[PANEL-INTENT-HEADER] header OnChanges listOfIntents: ", this.listOfIntents)
     const untitledIntents = this.listOfIntents.filter((el) => {
       return el.intent_display_name.indexOf('untitled_block') > -1;
     });
@@ -115,7 +115,7 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
   }
 
   onMouseUpInput(){
-    console.log("[PANEL-INTENT-HEADER] onMouseUpInput");
+    // console.log("[PANEL-INTENT-HEADER] onMouseUpInput");
     this.myInput.nativeElement.focus();
   }
 

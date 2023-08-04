@@ -17,8 +17,17 @@ export class StageService {
 
 
   centerStageOnPosition(pos){
-    this.tiledeskStage.centerStageOnPosition(pos);
+    let intervalId = setInterval(async () => {
+      const result = await this.tiledeskStage.centerStageOnPosition(pos);
+      if (result === true) {
+        clearInterval(intervalId);
+      }
+    }, 100);
+    setTimeout(() => {
+      clearInterval(intervalId);
+    }, 1000);
   }
+
 
 
   setDragElement(elementId:string) {
