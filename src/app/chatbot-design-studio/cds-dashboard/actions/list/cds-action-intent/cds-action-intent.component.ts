@@ -11,6 +11,7 @@ import { IntentService } from 'app/chatbot-design-studio/services/intent.service
 export class CdsActionIntentComponent implements OnInit {
 
   @Input() intentSelected: Intent;
+  @Input() isStart: boolean;
   @Input() action: ActionIntentConnected;
   @Input() previewMode: boolean = true;
   @Output() updateAndSaveAction = new EventEmitter();

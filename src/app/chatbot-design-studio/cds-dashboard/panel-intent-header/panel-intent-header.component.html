@@ -13,11 +13,12 @@
             {{ 'EnterIntentName' | translate }}
         </label>
         <!-- (blur)="onBlurIntentName($event)" -->
-        <input type="text" 
+        <input #myInput type="text" 
             class="input form-control"
             [class.tds_draggable]="intentName === 'start' || intentName === 'defaultFallback' " 
             [(ngModel)]="intentName"
             [disabled]="intentName === 'start' || intentName === 'defaultFallback' " 
+            (mouseup)="onMouseUpInput()"
             (ngModelChange)="onChangeIntentName($event)" 
             (keydown.enter)="onEnterButtonPressed($event)">
         <div *ngIf="intentNameAlreadyExist" class="error---msg"> The block name must be unique </div>

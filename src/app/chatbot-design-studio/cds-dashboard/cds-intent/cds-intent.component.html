@@ -1,6 +1,8 @@
 <div class="panel-intent-content tds_draggable">
 
-    <div class="pic-header tds_draggable">
+    
+
+    <div class="pic-header tds_draggable" [ngClass]="{'cds-start': isStart}">
         
         <!-- <div class="pic-header-title tds_draggable">
             <div class="pic-header-title-input tds_draggable">
@@ -9,9 +11,11 @@
                 </div>
             </div>
         </div> -->
+
         <appdashboard-panel-intent-header class="pic-title-text tds_draggable"
-            [intentSelected]="intent">
+        [intentSelected]="intent">
         </appdashboard-panel-intent-header>
+        
 
         <div class="cds-intent-options">
             <div class="option" (click)="onSelectQuestion(HAS_SELECTED_TYPE.QUESTION)"
@@ -26,8 +30,17 @@
 
     </div>
 
+    <div *ngIf="isStart" class="cds-start-content">
+        <cds-action-intent
+            class="panel-response"
+            [isStart]="isStart"
+            [intentSelected]="intent"
+            [action]="listOfActions[0]" 
+            (updateAndSaveAction)="onUpdateAndSaveAction($event)">
+        </cds-action-intent>
+    </div>
 
-    <div class="drag-actions target-container"
+    <div *ngIf="!isStart" class="drag-actions target-container"
         [cdkDropListData]="listOfActions"
         cdkDropList
         (cdkDropListDropped)="onDropAction($event)">
@@ -190,6 +203,8 @@
 
   
     </div>
+
+
 
 
 </div>

@@ -151,8 +151,6 @@ export class TiledeskStage {
 
 
     setDragElement(element) {
-        // var element = document.getElementById(elementId);
-        // if(!element)return false;
         let pos_mouse_x;
         let pos_mouse_y;
         element.onmousedown = (function(event) {

@@ -167,6 +167,31 @@
     background-color: $deep-brown;
   }
 
+  .cds-start {
+    transition: box-shadow 0.15s ease 0s, background-color 0.15s ease 0s;
+    position: relative;
+    box-shadow: rgba(0, 0, 0, 0.32) 0px -1px 0px 0px inset;
+    background-color: rgb(56, 118, 66);
+    border-radius: 22px;
+    cursor: pointer;
+    opacity: 1;
+    .cds-intent-options {
+      margin-right: 30px;
+    }
+  }
+  .cds-start-content {
+    margin-top: 0px;
+    margin-right: 0px;
+    width: 30px;
+    height: 42px;
+    position: absolute;
+    right: 20px;
+    top: 4px;
+    .title-label {
+      display: none;
+    }
+  }
+
   .pic-header-title {
     border-radius: 5px;
     overflow-x: hidden;

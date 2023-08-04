@@ -28,7 +28,6 @@ export enum HAS_SELECTED_TYPE {
   ACTION = "HAS_SELECTED_ACTION",
 }
 
-// declare function setDragElement(el);
 @Component({
   selector: 'cds-intent',
   templateUrl: './cds-intent.component.html',
@@ -64,6 +63,8 @@ export class CdsIntentComponent implements OnInit {
   isOpen: boolean = true;
   menuType: string = 'action';
   positionMenu: any;
+
+  isStart = false;
 
 
   constructor(
@@ -113,6 +114,9 @@ export class CdsIntentComponent implements OnInit {
   ngOnInit(): void {
     // console.log('CdsPanelIntentComponent ngAfterViewInit-->');
     this.setIntentSelected();
+    if(this.intent.actions && this.intent.actions.length === 1 && this.intent.actions[0]._tdActionType === TYPE_ACTION.INTENT && this.intent.intent_display_name === 'start'){
+      this.isStart = true;
+    }
   }
 
   ngOnDestroy(){

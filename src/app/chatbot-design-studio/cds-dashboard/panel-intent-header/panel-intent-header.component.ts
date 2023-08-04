@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, ViewChild, ElementRef } from '@angular/core';
 import { LoggerService } from 'app/services/logger/logger.service';
 
 
@@ -11,6 +11,9 @@ import { IntentService } from 'app/chatbot-design-studio/services/intent.service
   styleUrls: ['./panel-intent-header.component.scss']
 })
 export class PanelIntentHeaderComponent implements OnInit, OnChanges {
+  @ViewChild('myInput', { static: true }) myInput!: ElementRef<HTMLInputElement>;
+
+
   @Output() saveIntent = new EventEmitter();
   // @Output() changeIntentName = new EventEmitter();
   @Input() intentSelected: Intent;
@@ -111,6 +114,11 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
     this.checkIntentName(name);
   }
 
+  onMouseUpInput(){
+    console.log("[PANEL-INTENT-HEADER] onMouseUpInput");
+    this.myInput.nativeElement.focus();
+  }
+
   private checkIntentName(name: string) {
     if (name !== this.intentSelected.intent_display_name) {
       this.intentNameAlreadyExist = this.listOfIntents.some((el) => {
@@ -130,13 +138,14 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
 
   /** BLUR EVENT*/
   onBlurIntentName(event) {
+    console.log('[PANEL-INTENT-HEADER] onBlurIntentName Intent name: onEnterButtonPressed event', event)
     this.checkIntentName(this.intentName);
     this.onSaveIntent();
   }
 
   /** ENTER KEYBOARD EVENT*/
   onEnterButtonPressed(event) {
-    console.log('[PANEL-INTENT-HEADER] Intent name: onEnterButtonPressed event', event)
+    console.log('[PANEL-INTENT-HEADER] onEnterButtonPressed Intent name: onEnterButtonPressed event', event)
     this.checkIntentName(this.intentName);
     this.onSaveIntent();
     event.target.blur()
