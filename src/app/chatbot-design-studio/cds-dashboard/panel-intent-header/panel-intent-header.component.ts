@@ -27,6 +27,7 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
   intentNameNotHasSpecialCharacters: boolean = true;
 
   id_faq_kb: string;
+  isFocused: boolean = false;
 
   constructor(
     private logger: LoggerService,
@@ -116,8 +117,14 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
 
   onMouseUpInput(){
     // console.log("[PANEL-INTENT-HEADER] onMouseUpInput");
+    this.isFocused = true;
     this.myInput.nativeElement.focus();
   }
+
+  // onMouseBlur(){
+  //   console.log("[PANEL-INTENT-HEADER] onMouseBlur");
+  //   this.isFocused = false;
+  // }
 
   private checkIntentName(name: string) {
     if (name !== this.intentSelected.intent_display_name) {

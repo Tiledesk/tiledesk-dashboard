@@ -12,12 +12,14 @@
         <label class="control-label title" [ngClass]="{'noDisplay':(intentName && intentName.length>0)}">
             {{ 'EnterIntentName' | translate }}
         </label>
-        <!-- (blur)="onBlurIntentName($event)" -->
+        <!-- (blur)="onBlurIntentName($event)" 
+         
+    -->
         <input #myInput type="text" 
             class="input form-control"
             [class.tds_draggable]="intentName === 'start' || intentName === 'defaultFallback' " 
             [(ngModel)]="intentName"
-            [disabled]="intentName === 'start' || intentName === 'defaultFallback' " 
+            [disabled]="intentName === 'start' || intentName === 'defaultFallback'"
             (mouseup)="onMouseUpInput()"
             (ngModelChange)="onChangeIntentName($event)" 
             (keydown.enter)="onEnterButtonPressed($event)">

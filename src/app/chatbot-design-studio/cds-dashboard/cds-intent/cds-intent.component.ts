@@ -65,6 +65,7 @@ export class CdsIntentComponent implements OnInit {
   positionMenu: any;
 
   isStart = false;
+  startAction: any;
 
 
   constructor(
@@ -72,9 +73,6 @@ export class CdsIntentComponent implements OnInit {
     public intentService: IntentService,
     private connectorService: ConnectorService
     // private controllerService: ControllerService,
-
-
-
   ) {
     /** SUBSCRIBE TO THE INTENT CREATED OR UPDATED */
     this.subscriptionBehaviorIntent = this.intentService.behaviorIntent.subscribe(intent => {
@@ -115,6 +113,11 @@ export class CdsIntentComponent implements OnInit {
     // console.log('CdsPanelIntentComponent ngAfterViewInit-->');
     this.setIntentSelected();
     if(this.intent.actions && this.intent.actions.length === 1 && this.intent.actions[0]._tdActionType === TYPE_ACTION.INTENT && this.intent.intent_display_name === 'start'){
+      this.startAction = this.intent.actions[0];
+      if(!this.startAction._tdActionId){
+        this.startAction = patchActionId(this.intent.actions[0]);
+        this.intent.actions = [this.startAction];
+      }
       this.isStart = true;
     }
   }
