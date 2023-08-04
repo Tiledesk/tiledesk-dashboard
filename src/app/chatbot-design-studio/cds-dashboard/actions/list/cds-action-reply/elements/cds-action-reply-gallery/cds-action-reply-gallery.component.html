@@ -187,7 +187,7 @@
     <div *ngFor="let galleryEl of gallery; let i = index; let last = last" class="galleryElement">
        <div class="gallery-preview-wrp" [ngStyle]="{ 'border-bottom' : last? 'unset' : 'border-bottom: 1px solid #dcd5ba'}">
             <div class="image">
-                <img src="{{galleryEl.preview.src}}" alt="{{galleryEl.preview.name}}">
+                <img [src]="sanitizerUrlImage(galleryEl.preview.src)" alt="{{galleryEl.preview.name}}">
             </div>
             <div class="content">
                 <span class="text"> {{galleryEl.title}}</span>

@@ -44,6 +44,8 @@
 
     &.text-editor-wrapper{
         // padding: 0;
+        margin: 0px;
+
         cds-textarea.text-editable-div{
             width: calc(100% - 20px);
             margin: 0px auto;
@@ -70,7 +72,7 @@
         .url-wrp{
             flex-direction: row;
             align-items: center;
-            margin: 5px 5px;
+            margin: 0px 10px;
             span.control-label:first-child{
                 width: 50px;
                 margin: 0;
