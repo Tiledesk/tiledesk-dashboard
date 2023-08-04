@@ -66,7 +66,7 @@ export class CdsActionIntentComponent implements OnInit {
         } else {
           // ADD / EDIT
           console.log('[ACTION-INTENT-COMP] updateConnector :: ', this.connector.toId);
-          this.action.intentName = this.connector.toId;
+          this.action.intentName = "#"+this.connector.toId;
           this.isConnected = true;
         }
         this.updateAndSaveAction.emit();
