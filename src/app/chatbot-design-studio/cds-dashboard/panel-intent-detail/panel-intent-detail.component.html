@@ -81,6 +81,11 @@
                         class="panel-response"
                         [action]="elementSelected">
                     </cds-action-whatsapp-attribute>
+
+                    <cds-action-askgpt *ngSwitchCase="typeAction.ASKGPT"
+                        class="panel-response"
+                        [action]="elementSelected">
+                    </cds-action-askgpt>
                 
                     <cds-action-json-condition *ngSwitchCase="typeAction.JSON_CONDITION"
                         [action]="elementSelected"

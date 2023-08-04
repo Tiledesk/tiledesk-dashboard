@@ -122,6 +122,7 @@ import { ActionWhatsappSegmentComponent } from './cds-dashboard/panel-intent-det
 import { WhatsappReceiverComponent } from './cds-dashboard/panel-intent-detail/actions/action-whatsapp-static/whatsapp-receiver/whatsapp-receiver.component';
 import { GalleryResponseComponent } from './cds-dashboard/panel-intent-detail/actions/action-reply/reply-types/gallery-response/gallery-response.component';
 import { RedirectResponseComponent } from './cds-dashboard/panel-intent-detail/actions/action-reply/reply-types/redirect-response/redirect-response.component';
+import { ActionAskgptComponent } from './cds-dashboard/panel-intent-detail/actions/action-askgpt/action-askgpt.component';
 
 
 
@@ -207,7 +208,8 @@ import { RedirectResponseComponent } from './cds-dashboard/panel-intent-detail/a
     WhatsappReceiverComponent,
     ActionWhatsappStaticComponent,
     ActionWhatsappAttributeComponent,
-    ActionWhatsappSegmentComponent
+    ActionWhatsappSegmentComponent,
+    ActionAskgptComponent
   ],
   imports: [
     A11yModule,

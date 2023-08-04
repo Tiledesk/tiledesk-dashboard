@@ -280,6 +280,19 @@ export class WhatsappBroadcast {
     receiver_list: Array<any>;
 }
 
+export class ActionAskGPT extends Action {
+    question: string;
+    kbid: string;
+    gptkey: string;
+    assignReplyTo: string;
+    assignSourceTo: string;
+    assignSuccessTo: string;
+    constructor() {
+        super();
+        this._tdActionType = TYPE_ACTION.ASKGPT
+    }
+}
+
 export class ActionAgent extends Action{
     constructor() {
         super();

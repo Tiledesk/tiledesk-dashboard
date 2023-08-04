@@ -2,12 +2,16 @@ import { ACTIONS_LIST } from './../../utils';
 import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild, HostListener } from '@angular/core';
 
 import { TYPE_ACTION, TYPE_COMMAND } from '../../utils';
-import { ActionAgent, ActionClose, ActionWebRequest,
-         ActionReply, ActionRandomReply, Intent, Command, 
-         Message, ActionIntentConnected, ActionEmail, 
-         ActionWait, ActionAssignVariable, ActionDeleteVariable, 
-         ActionOnlineAgent, ActionOpenHours, ActionReplaceBot, 
-         ActionChangeDepartment, ActionHideMessage, ActionJsonCondition, Expression, ActionAssignFunction, ActionWhatsappStatic, ActionWhatsappAttribute } from 'app/models/intent-model';
+import {
+  ActionAgent, ActionClose, ActionWebRequest,
+  ActionReply, ActionRandomReply, Intent, Command,
+  Message, ActionIntentConnected, ActionEmail,
+  ActionWait, ActionAssignVariable, ActionDeleteVariable,
+  ActionOnlineAgent, ActionOpenHours, ActionReplaceBot,
+  ActionChangeDepartment, ActionHideMessage, ActionJsonCondition, 
+  Expression, ActionAssignFunction, ActionWhatsappStatic, 
+  ActionWhatsappAttribute, ActionAskGPT
+} from 'app/models/intent-model';
 import { LoggerService } from 'app/services/logger/logger.service';
 
 
@@ -37,7 +41,7 @@ export class PanelActionsComponent implements OnInit, OnChanges {
 
   }
 
-  ngAfterViewInit(){
+  ngAfterViewInit() {
     this.logger.log('focussss', this.panel_actions_div)
     this.panel_actions_div.nativeElement.focus();
   }
@@ -66,8 +70,8 @@ export class PanelActionsComponent implements OnInit, OnChanges {
     }
   }
 
-  onFocusOut(event){
-    this.logger.log('onFocusOut eventttttttt',event)
+  onFocusOut(event) {
+    this.logger.log('onFocusOut Event', event)
   }
 
   ngOnChanges() {
@@ -91,7 +95,7 @@ export class PanelActionsComponent implements OnInit, OnChanges {
   onActionSelected(typeAction: TYPE_ACTION) {
     console.log('[PANEL ACTION] actionSelected ', typeAction);
     let action: any;
-    if(typeAction === TYPE_ACTION.REPLY){
+    if (typeAction === TYPE_ACTION.REPLY) {
       action = new ActionReply();
       let commandWait = new Command(TYPE_COMMAND.WAIT);
       action.attributes.commands.push(commandWait);
@@ -99,7 +103,7 @@ export class PanelActionsComponent implements OnInit, OnChanges {
       command.message = new Message('text', 'A chat message will be sent to the visitor');
       action.attributes.commands.push(command);
     }
-    if(typeAction === TYPE_ACTION.RANDOM_REPLY){
+    if (typeAction === TYPE_ACTION.RANDOM_REPLY) {
       action = new ActionRandomReply();
       let commandWait = new Command(TYPE_COMMAND.WAIT);
       action.attributes.commands.push(commandWait);
@@ -107,60 +111,63 @@ export class PanelActionsComponent implements OnInit, OnChanges {
       command.message = new Message('text', 'A chat message will be sent to the visitor');
       action.attributes.commands.push(command);
     }
-    if(typeAction === TYPE_ACTION.WEB_REQUEST){
+    if (typeAction === TYPE_ACTION.WEB_REQUEST) {
       action = new ActionWebRequest();
     }
-    if(typeAction === TYPE_ACTION.AGENT){
+    if (typeAction === TYPE_ACTION.AGENT) {
       action = new ActionAgent();
     }
-    if(typeAction === TYPE_ACTION.CLOSE){
+    if (typeAction === TYPE_ACTION.CLOSE) {
       action = new ActionClose();
     }
-    if(typeAction === TYPE_ACTION.WAIT){
+    if (typeAction === TYPE_ACTION.WAIT) {
       action = new ActionWait();
     }
-    if(typeAction === TYPE_ACTION.INTENT) {
+    if (typeAction === TYPE_ACTION.INTENT) {
       action = new ActionIntentConnected()
     }
-    if(typeAction === TYPE_ACTION.EMAIL) {
+    if (typeAction === TYPE_ACTION.EMAIL) {
       action = new ActionEmail();
     }
-    if(typeAction === TYPE_ACTION.ASSIGN_VARIABLE){
+    if (typeAction === TYPE_ACTION.ASSIGN_VARIABLE) {
       action = new ActionAssignVariable();
     }
-    if(typeAction === TYPE_ACTION.DELETE_VARIABLE){
+    if (typeAction === TYPE_ACTION.DELETE_VARIABLE) {
       action = new ActionDeleteVariable();
     }
-    if(typeAction === TYPE_ACTION.ONLINE_AGENTS){
+    if (typeAction === TYPE_ACTION.ONLINE_AGENTS) {
       action = new ActionOnlineAgent();
     }
-    if(typeAction === TYPE_ACTION.OPEN_HOURS){
+    if (typeAction === TYPE_ACTION.OPEN_HOURS) {
       action = new ActionOpenHours();
     }
-    if(typeAction === TYPE_ACTION.REPLACE_BOT){
-      action = new  ActionReplaceBot();
+    if (typeAction === TYPE_ACTION.REPLACE_BOT) {
+      action = new ActionReplaceBot();
     }
-    if(typeAction === TYPE_ACTION.CHANGE_DEPARTMENT) {
-      action = new  ActionChangeDepartment();
+    if (typeAction === TYPE_ACTION.CHANGE_DEPARTMENT) {
+      action = new ActionChangeDepartment();
     }
-    if(typeAction === TYPE_ACTION.HIDE_MESSSAGE){
+    if (typeAction === TYPE_ACTION.HIDE_MESSSAGE) {
       action = new ActionHideMessage();
     }
-    if(typeAction === TYPE_ACTION.JSON_CONDITION){
+    if (typeAction === TYPE_ACTION.JSON_CONDITION) {
       action = new ActionJsonCondition();
-      action.groups.push( new Expression());
+      action.groups.push(new Expression());
     }
-    if(typeAction === TYPE_ACTION.ASSIGN_FUNCTION){
+    if (typeAction === TYPE_ACTION.ASSIGN_FUNCTION) {
       action = new ActionAssignFunction();
     }
-    if(typeAction === TYPE_ACTION.ASSIGN_FUNCTION){
+    if (typeAction === TYPE_ACTION.ASSIGN_FUNCTION) {
       action = new ActionAssignFunction();
     }
-    if(typeAction === TYPE_ACTION.WHATSAPP_STATIC) {
+    if (typeAction === TYPE_ACTION.WHATSAPP_STATIC) {
       action = new ActionWhatsappStatic();
     }
-    if(typeAction === TYPE_ACTION.WHATSAPP_ATTRIBUTE) {
+    if (typeAction === TYPE_ACTION.WHATSAPP_ATTRIBUTE) {
       action = new ActionWhatsappAttribute();
+    }
+    if (typeAction === TYPE_ACTION.ASKGPT) {
+      action = new ActionAskGPT();
     }
     // this.intentSelected.actions.push(action);
     this.addNewAction.emit(action);

@@ -252,6 +252,25 @@
   
       </div>
 
+      <!-- ---------------------------------- -->
+      <!-- Third row -->
+      <!-- ---------------------------------- -->
+      <div class="actions-btns-wpr">
+      
+        <div class="action-box-wpr">
+          <div class="action-box">
+            <div class="action-btn-icon">
+              <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="onActionSelected(TYPE_ACTION.ASKGPT)">
+                <img [src]="ACTIONS_LIST['ASKGPT'].src" [title]="ACTIONS_LIST['ASKGPT'].name">
+              </button>
+            </div>
+            <div class="action-btn-text">{{ACTIONS_LIST['ASKGPT'].name}}</div>
+          </div>
+        </div>
+       
+  
+      </div>
+
     </section>
 
     <section>
