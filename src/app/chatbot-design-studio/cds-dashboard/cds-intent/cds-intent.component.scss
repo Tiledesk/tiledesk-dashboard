@@ -168,11 +168,13 @@
   }
 
   .cds-start {
-    transition: box-shadow 0.15s ease 0s, background-color 0.15s ease 0s;
-    position: relative;
-    box-shadow: rgba(0, 0, 0, 0.32) 0px -1px 0px 0px inset;
-    background-color: rgb(56, 118, 66);
+    transition: box-shadow .15s ease 0s,background-color .15s ease 0s;
+    position: absolute;
+    box-shadow: #00000052 0 -1px inset;
+    background-color: #4b5052;
     border-radius: 22px;
+    max-width: 160px;
+    right: 0;
     cursor: pointer;
     opacity: 1;
     .cds-intent-options {
@@ -181,12 +183,13 @@
   }
   .cds-start-content {
     margin-top: 0px;
-    margin-right: 0px;
+    padding: 2px 0px;
+    margin-right: 0;
     width: 30px;
-    height: 42px;
+    height: 43px;
     position: absolute;
     right: 20px;
-    top: 4px;
+    top: 12px;
     .title-label {
       display: none;
     }

@@ -112,11 +112,13 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
 
   // EVENT FUNCTIONS //
   onChangeIntentName(name: string) {
-    this.checkIntentName(name);
+    console.log("[PANEL-INTENT-HEADER] onChangeIntentName");
+    this.checkIntentName(name)
+    this.onSaveIntent();
   }
 
   onMouseUpInput(){
-    // console.log("[PANEL-INTENT-HEADER] onMouseUpInput");
+    console.log("[PANEL-INTENT-HEADER] onMouseUpInput");
     this.isFocused = true;
     this.myInput.nativeElement.focus();
   }
@@ -137,6 +139,7 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
     if (!this.intentName || this.intentName.trim().length === 0) {
       this.intentNameResult = false;
     }
+    return this.intentNameResult;
     // console.log('checkIntentName:: ', name);
     // console.log('intentNameNotHasSpecialCharacters:: ', this.intentNameNotHasSpecialCharacters);
     // console.log('intentNameResult:: ', this.intentNameResult);
@@ -160,14 +163,17 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
 
   /** */
   onSaveIntent() {
-    this.logger.log('[PANEL-INTENT-HEADER] this.intentName ', this.intentName)
-    this.logger.log('[PANEL-INTENT-HEADER] intentNameResult ', this.intentNameResult)
-    this.logger.log('[PANEL-INTENT-HEADER] intentNameAlreadyExist ', this.intentNameAlreadyExist)
-    this.logger.log('[PANEL-INTENT-HEADER] intentNameNotHasSpecialCharacters ', this.intentNameNotHasSpecialCharacters)
-    // this.intentNameResult = this.checkIntentName();
+    // console.log('[PANEL-INTENT-HEADER] this.intentName ', this.intentName)
+    // console.log('[PANEL-INTENT-HEADER] intentNameResult ', this.intentNameResult)
+    // console.log('[PANEL-INTENT-HEADER] intentNameAlreadyExist ', this.intentNameAlreadyExist)
+    // console.log('[PANEL-INTENT-HEADER] intentNameNotHasSpecialCharacters ', this.intentNameNotHasSpecialCharacters)
+    // // this.intentNameResult = this.checkIntentName();
+    // console.log("[PANEL-INTENT-HEADER] onSaveIntent");
     if (this.intentNameResult && !this.intentNameAlreadyExist && this.intentNameNotHasSpecialCharacters === true) {
+      console.log("[PANEL-INTENT-HEADER] SALVO!!!");
       this.intentSelected.intent_display_name = this.intentName.trim();
-      this.saveIntent.emit(this.intentSelected);
+      this.intentService.updateIntent(this.intentSelected)
+      // this.saveIntent.emit(this.intentSelected);
     }
   }
 

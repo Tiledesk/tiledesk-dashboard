@@ -6,28 +6,30 @@
         <span class="material-icons undo ">undo</span>
     </div>
 
-    <div class="form-group" [ngClass]="{'is-error':intentNameResult === false || intentNameAlreadyExist}">
-        <!-- <i class="i-priority-color-mark"
-            [ngClass]="{'has--error': intentNameResult === false || intentNameAlreadyExist }"></i> -->
+    <div class="form-group" 
+        [ngClass]="{'is-error':intentNameResult === false || intentNameAlreadyExist}">
         <label class="control-label title" [ngClass]="{'noDisplay':(intentName && intentName.length>0)}">
             {{ 'EnterIntentName' | translate }}
         </label>
-        <!-- (blur)="onBlurIntentName($event)" 
-         
-    -->
-        <input #myInput type="text" 
-            class="input form-control"
-            [class.tds_draggable]="intentName === 'start' || intentName === 'defaultFallback' " 
+
+        <!-- 
+           
+            [class.tds_draggable]="intentName === 'start' || intentName === 'defaultFallback' || !isFocused"
+        -->
+
+        <input 
+            #myInput type="text" 
+            class="input form-control tds_draggable"
             [(ngModel)]="intentName"
-            [disabled]="intentName === 'start' || intentName === 'defaultFallback'"
             (mouseup)="onMouseUpInput()"
+            [disabled]="intentName === 'start' || intentName === 'defaultFallback'"
             (ngModelChange)="onChangeIntentName($event)" 
-            (keydown.enter)="onEnterButtonPressed($event)">
+            (keydown.enter)="onEnterButtonPressed($event)" >
         <div *ngIf="intentNameAlreadyExist" class="error---msg"> The block name must be unique </div>
         <div *ngIf="intentNameNotHasSpecialCharacters === false" class="error---msg"> The block name cannot contain
             special characters </div>
 
-    </div>
+    </div> 
 
     <!-- <div class="btns-wpr">
         <div class="onff-intent-webhook">
