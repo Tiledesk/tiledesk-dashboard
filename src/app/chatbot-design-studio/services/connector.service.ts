@@ -211,6 +211,18 @@ export class ConnectorService {
   }
   
 
+
+  createConnectorFromId(fromId, toId){
+    let intervalId = setInterval(async () => {
+      const result = await this.tiledeskConnectors.createConnectorFromId(fromId, toId);
+      if (result === true) {
+        clearInterval(intervalId);
+      }
+    }, 100);
+    setTimeout(() => {
+      clearInterval(intervalId);
+    }, 1000);
+  }
  
 
   deleteConnectorsOfBlock(intent_id){
@@ -225,11 +237,14 @@ export class ConnectorService {
     this.tiledeskConnectors.deleteConnectorsFromActionByActionId(actionId);
   }
 
-  movedConnector(elem){
-    console.log('aggiorno i connettori: ', elem);
-    setTimeout(() => {
-      this.tiledeskConnectors.updateConnectorsOutOfItent(elem);
-    }, 0);
+  movedConnector(elementID){
+    const elem = document.getElementById(elementID);
+    if(elem){
+      console.log('aggiorno i connettori: ', elem);
+      setTimeout(() => {
+        this.tiledeskConnectors.updateConnectorsOutOfItent(elem);
+      }, 0);
+    }
   }
 
 

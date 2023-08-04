@@ -347,6 +347,16 @@ export function convertJsonToArray(jsonData:any){
     return arrayOfObjs;
 }
 
+
+export function checkIFElementExists(elementId:string){
+    var element = document.getElementById(elementId);
+    if(!element){
+      return false;
+    } else {
+      return true;
+    }
+  }
+
 // export function retriveListOfVariables(intents: Array<Intent>) {
 //     variableList.userDefined = []
 //     intents.forEach(intent => {
