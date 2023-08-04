@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, ViewChild, ElementRef } from '@angular/core';
 import { LoggerService } from 'app/services/logger/logger.service';
 
 
@@ -11,6 +11,9 @@ import { IntentService } from 'app/chatbot-design-studio/services/intent.service
   styleUrls: ['./panel-intent-header.component.scss']
 })
 export class PanelIntentHeaderComponent implements OnInit, OnChanges {
+  @ViewChild('myInput', { static: true }) myInput!: ElementRef<HTMLInputElement>;
+
+
   @Output() saveIntent = new EventEmitter();
   // @Output() changeIntentName = new EventEmitter();
   @Input() intentSelected: Intent;
@@ -111,12 +114,9 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
     this.checkIntentName(name);
   }
 
-  onFocusInput(){
-    console.log("[PANEL-INTENT-HEADER] onFocusInput");
-  }
- 
   onMouseUpInput(){
     console.log("[PANEL-INTENT-HEADER] onMouseUpInput");
+    this.myInput.nativeElement.focus();
   }
 
   private checkIntentName(name: string) {
