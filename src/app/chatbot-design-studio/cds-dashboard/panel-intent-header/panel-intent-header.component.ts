@@ -111,6 +111,14 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
     this.checkIntentName(name);
   }
 
+  onFocusInput(){
+    console.log("[PANEL-INTENT-HEADER] onFocusInput");
+  }
+ 
+  onMouseUpInput(){
+    console.log("[PANEL-INTENT-HEADER] onMouseUpInput");
+  }
+
   private checkIntentName(name: string) {
     if (name !== this.intentSelected.intent_display_name) {
       this.intentNameAlreadyExist = this.listOfIntents.some((el) => {
@@ -130,13 +138,14 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
 
   /** BLUR EVENT*/
   onBlurIntentName(event) {
+    console.log('[PANEL-INTENT-HEADER] onBlurIntentName Intent name: onEnterButtonPressed event', event)
     this.checkIntentName(this.intentName);
     this.onSaveIntent();
   }
 
   /** ENTER KEYBOARD EVENT*/
   onEnterButtonPressed(event) {
-    console.log('[PANEL-INTENT-HEADER] Intent name: onEnterButtonPressed event', event)
+    console.log('[PANEL-INTENT-HEADER] onEnterButtonPressed Intent name: onEnterButtonPressed event', event)
     this.checkIntentName(this.intentName);
     this.onSaveIntent();
     event.target.blur()
