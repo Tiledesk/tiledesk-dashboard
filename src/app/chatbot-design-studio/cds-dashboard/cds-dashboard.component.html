@@ -2,7 +2,7 @@
     [IS_OPEN]="IS_OPEN" 
     [projectID]="projectID" 
     [id_faq_kb]="id_faq_kb"
-    [defaultDepartmentId]="" 
+    [defaultDepartmentId]="defaultDepartmentId" 
     [selectedChatbot]="selectedChatbot" 
     (goToBck)="goBack()"
     (onTestItOut)="onTestItOut($event)" 
@@ -92,7 +92,7 @@
             class="cds-generic-panel"
             [projectID]="projectID" 
             [id_faq_kb]="id_faq_kb"
-            [defaultDepartmentId]="">
+            [defaultDepartmentId]="defaultDepartmentId">
         </cds-panel-widget>
 
         <cds-panel-button-configuration id="button-configuration" class="cds-generic-panel"

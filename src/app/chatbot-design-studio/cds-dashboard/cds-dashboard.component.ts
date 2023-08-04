@@ -31,6 +31,7 @@ const swal = require('sweetalert');
 
 // COMPONENTS //
 import { DialogYesNoComponent } from 'app/chatbot-design-studio/cds-base-element/dialog-yes-no/dialog-yes-no.component';
+import { DepartmentService } from 'app/services/department.service';
 // import { setInterval } from 'timers';
 
 
@@ -79,6 +80,7 @@ export class CdsDashboardComponent implements OnInit {
 
   project: Project;
   projectID: string;
+  defaultDepartmentId: string;
 
   isChromeVerGreaterThan100: boolean;
   isOpenActionDrawer: boolean;
@@ -128,6 +130,7 @@ export class CdsDashboardComponent implements OnInit {
     private connectorService: ConnectorService,
     private stageService: StageService,
     private faqKbService: FaqKbService,
+    private departmentService: DepartmentService,
     public dialog: MatDialog,
     private translate: TranslateService
   ) {
@@ -171,6 +174,7 @@ export class CdsDashboardComponent implements OnInit {
     this.auth.checkRoleForCurrentProject();
     this.executeAsyncFunctionsInSequence();
     this.initListOfIntents();
+    this.getDeptsByProjectId();
   }
 
   initListOfIntents(){
@@ -455,6 +459,31 @@ export class CdsDashboardComponent implements OnInit {
         // console.log('COMPLETE: funzioneAsincrona3');
         resolve(true);
       });
+    });
+  }
+
+
+  getDeptsByProjectId() {
+    this.departmentService.getDeptsByProjectId().subscribe((departments: any) => {
+      this.logger.log('[CDS DSBRD] - DEPT GET DEPTS ', departments);
+      this.logger.log('[CDS DSBRD] - DEPT BOT ID ', this.id_faq_kb);
+
+      if (departments) {
+
+        departments.forEach((dept: any) => {
+          // this.logger.log('[CDS DSBRD] - DEPT', dept);
+          if (dept.default === true) {
+            this.defaultDepartmentId = dept._id;
+            this.logger.log('[CDS DSBRD] - DEFAULT DEPT ID ', this.defaultDepartmentId);
+          }
+        })
+        const depts_length = departments.length
+        this.logger.log('[CDS DSBRD] ---> GET DEPTS DEPTS LENGHT ', depts_length);
+      }
+    }, error => {
+      this.logger.error('[CDS DSBRD] - DEPT - GET DEPTS  - ERROR', error);
+    }, () => {
+      this.logger.log('[CDS DSBRD] - DEPT - GET DEPTS - COMPLETE')
     });
   }
 
