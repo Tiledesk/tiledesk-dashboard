@@ -41,6 +41,10 @@
 }
 
 .previewMode{
+    display: flex;
+    flex-direction: column;
+    gap: $padding-base-preview;
+
     &.extensions-response{
         margin: 0;
         padding: 0 10px 0px 25px;
