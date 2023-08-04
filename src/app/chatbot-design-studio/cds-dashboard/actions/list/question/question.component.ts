@@ -37,7 +37,7 @@ export class CdsQuestionComponent implements OnInit {
       this.questions_array = this.intentSelected.question.split(/\r?\n/).filter(element => element);
     } catch (error) {
       // error
-      console.log('errorrrrrrr', error)
+      this.logger.log('[INTENT-QUESTION] error initialize::', error)
     }
   }
 

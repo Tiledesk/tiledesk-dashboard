@@ -36,7 +36,7 @@ export enum HAS_SELECTED_TYPE {
 })
 
 
-export class CdsIntentComponent implements OnInit, OnChanges {
+export class CdsIntentComponent implements OnInit {
   @Input() intent: Intent;
 
   @Output() questionSelected = new EventEmitter(); // !!! SI PUO' ELIMINARE
@@ -80,6 +80,7 @@ export class CdsIntentComponent implements OnInit, OnChanges {
       if (intent && this.intent && intent.intent_id === this.intent.intent_id) {
         console.log("sto modifico l'intent: ",  this.intent , " con : ", intent );
         this.intent = intent;
+
         if(intent['attributesChanged']){
           console.log("ho solo cambiato la posizione sullo stage");
           delete intent['attributesChanged'];
@@ -89,14 +90,24 @@ export class CdsIntentComponent implements OnInit, OnChanges {
           // AGGIORNO I CONNETTORI
           // this.intentService.updateIntent(this.intent); /// DEVO ELIMINARE UPDATE DA QUI!!!!!
         }
+
+        //UPDATE QUESTIONS
+        if (this.intent.question) {
+          const question_segment = this.intent.question.split(/\r?\n/).filter(element => element);
+          this.questionCount = question_segment.length;
+          // this.question = this.intent.question;
+        } else{
+          this.questionCount = 0
+        }
+        //UPDATE FORM
+        if (this.intent && this.intent.form !== undefined) {
+          this.formSize = Object.keys(this.intent.form).length;
+        } else {
+          this.formSize = 0;
+        }
       }
     });
 
-    // this.intentService.behaviorIntents.subscribe(intents => {
-    //   if(intents){
-    //     this.listOfIntents = intents
-    //   }
-    // })
    }
 
   ngOnInit(): void {
@@ -104,10 +115,6 @@ export class CdsIntentComponent implements OnInit, OnChanges {
     this.setIntentSelected();
   }
 
-  ngOnChanges() {
-    // console.log('[CDS-INTENT] intent ', this.intent)
-    
-  }
   ngOnDestroy(){
     this.unsubscribe(); 
   }

@@ -58,7 +58,14 @@
         font-size: 12px;
         width: 20px;
         height: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
+}
+
+.action-btn img {
+    width: 16px;
 }
 
 .action-btn-text{

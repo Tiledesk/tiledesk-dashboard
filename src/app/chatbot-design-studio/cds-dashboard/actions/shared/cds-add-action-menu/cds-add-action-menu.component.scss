@@ -87,10 +87,13 @@
         font-size: 12px;
         width: 25px;
         height: 25px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 }
 
-.action--btn img {
+.action-btn img {
     width: 18px;
 }
 
