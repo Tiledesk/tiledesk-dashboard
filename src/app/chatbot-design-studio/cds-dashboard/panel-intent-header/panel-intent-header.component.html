@@ -18,7 +18,6 @@
             [class.tds_draggable]="intentName === 'start' || intentName === 'defaultFallback' " 
             [(ngModel)]="intentName"
             [disabled]="intentName === 'start' || intentName === 'defaultFallback' " 
-            (focus)="onFocusInput()"
             (mouseup)="onMouseUpInput()"
             (ngModelChange)="onChangeIntentName($event)" 
             (keydown.enter)="onEnterButtonPressed($event)">
