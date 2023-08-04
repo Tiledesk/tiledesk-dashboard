@@ -155,8 +155,8 @@ export class CdsDashboardComponent implements OnInit {
     });
 
     /** SUBSCRIBE TO THE STATE ACTION DETAIL PANEL */
-    this.controllerService.isOpenActionDetailPanel$.subscribe((action: Action) => {
-      if (action) {
+    this.controllerService.isOpenActionDetailPanel$.subscribe((element : {type: TYPE_INTENT_ELEMENT, element: Action | string | Form }) => {
+      if (element.type) {
         this.isOpenPanelActionDetail = true;
       } else {
         this.isOpenPanelActionDetail = false;
@@ -920,7 +920,7 @@ export class CdsDashboardComponent implements OnInit {
 
     console.log('-----> actionSelected: ', event);
 
-    this.controllerService.openActionDetailPanel(this.buttonSelected);
+    // this.controllerService.openActionDetailPanel(this.buttonSelected);
     this.logger.log('[CDS DSBRD] onActionSelected from PANEL INTENT - action ', event.action, event.index)
     this.elementIntentSelected = {};
     this.elementIntentSelected['type'] = TYPE_INTENT_ELEMENT.ACTION;
@@ -931,16 +931,18 @@ export class CdsDashboardComponent implements OnInit {
     this.isIntentElementSelected = true;
     this.logger.log('[CDS DSBRD] onActionSelected from PANEL INTENT - this.elementIntentSelected ', this.elementIntentSelected)
     this.intentSelected = this.listOfIntents.find(el => el.intent_id === this.intentService.intentSelectedID)
-    this.controllerService.openActionDetailPanel(this.elementIntentSelected['element'])
+    this.controllerService.openActionDetailPanel(TYPE_INTENT_ELEMENT.ACTION, this.elementIntentSelected['element'])
   }
 
-  onQuestionSelected(intent) {
-    console.log('[CDS DSBRD] onQuestionSelected from PANEL INTENT - intent ', intent)
+  onQuestionSelected(question: string) {
+    console.log('[CDS DSBRD] onQuestionSelected from PANEL INTENT - question ', question)
     this.elementIntentSelected = {};
     this.elementIntentSelected['type'] = TYPE_INTENT_ELEMENT.QUESTION;
-    this.elementIntentSelected['element'] = intent
+    this.elementIntentSelected['element'] = question
     console.log('[CDS DSBRD] onQuestionSelected from PANEL INTENT - this.elementIntentSelected ', this.elementIntentSelected)
     this.isIntentElementSelected = true;
+    this.intentSelected = this.listOfIntents.find(el => el.intent_id === this.intentService.intentSelectedID)
+    this.controllerService.openActionDetailPanel(TYPE_INTENT_ELEMENT.QUESTION, this.elementIntentSelected['element'])
   }
 
   onIntentFormSelected(intentform: Form) {
@@ -950,6 +952,8 @@ export class CdsDashboardComponent implements OnInit {
     this.elementIntentSelected['element'] = intentform
     this.logger.log('[CDS DSBRD] onIntentFormSelected - from PANEL INTENT - this.elementIntentSelected ', this.elementIntentSelected)
     this.isIntentElementSelected = true;
+    this.intentSelected = this.listOfIntents.find(el => el.intent_id === this.intentService.intentSelectedID)
+    this.controllerService.openActionDetailPanel(TYPE_INTENT_ELEMENT.FORM, this.elementIntentSelected['element'])
   }
 
   onActionDeleted(event) {

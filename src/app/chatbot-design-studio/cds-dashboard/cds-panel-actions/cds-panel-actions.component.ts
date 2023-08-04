@@ -61,8 +61,27 @@ export class CdsPanelActionsComponent implements OnInit {
         }];
         break;
       case TYPE_OF_MENU.FORM:
-        this.menuItemsList = [];
+        this.menuItemsList = [{
+          "type": "FORM",
+          "value": {
+            "name": "Form",
+            "type": "FORM",
+            "src": "assets/cds/images/form.svg",
+            "description": ""
+          }
+        }];
         break;
+      case TYPE_OF_MENU.QUESTION:
+          this.menuItemsList = [{
+            "type": "QUESTION",
+            "value": {
+              "name": "Train",
+              "type": "QUESTION",
+              "src": "assets/cds/images/brain.svg",
+              "description": ""
+            }
+          }];
+          break;
       default:
         this.menuItemsList = [];
         break;

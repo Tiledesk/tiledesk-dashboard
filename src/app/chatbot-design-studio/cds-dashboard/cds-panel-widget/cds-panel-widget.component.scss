@@ -56,3 +56,12 @@
 @-webkit-keyframes blink {0%{opacity:1;} 50%{opacity:0;} 100%{opacity:1;}} /* Webkit */
 @-ms-keyframes blink {0%{opacity:1;} 50%{opacity:0;} 100%{opacity:1;}} /* IE */
 @keyframes blink {0%{opacity:1;} 50%{opacity:0;} 100%{opacity:1;}} /* Opera and prob css3 final iteration */
+
+
+.widget-wrp{
+    height: 100%;
+}
+.content{
+    width: 100%;
+    height: 100%;
+}

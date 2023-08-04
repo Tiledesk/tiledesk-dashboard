@@ -157,9 +157,8 @@ import { CdsActionControlsComponent } from './cds-dashboard/actions/shared/cds-a
 import { CdsAddActionMenuComponent } from './cds-dashboard/actions/shared/cds-add-action-menu/cds-add-action-menu.component';
 
 
-
-// import { CdsActionAddActionComponent } from './cds-dashboard/actions/shared/cds-action-controls/cds-action-add-action/cds-action-add-action.component';
-
+import { CdsFormComponent } from './cds-dashboard/actions/list/form/form.component';
+import { CdsQuestionComponent } from './cds-dashboard/actions/list/question/question.component';
 
 
 @NgModule({
@@ -232,7 +231,7 @@ import { CdsAddActionMenuComponent } from './cds-dashboard/actions/shared/cds-ad
     CdsFloatingMenuComponent,
     CdsAddActionMenuComponent,
     CdsConnectorComponent,
-    CdsActionWebRequestComponent,
+    
     //BASE ELEMENT
     CDSTextComponent,
     CDSFilterComponent,
@@ -258,6 +257,7 @@ import { CdsAddActionMenuComponent } from './cds-dashboard/actions/shared/cds-ad
     CdsActionReplaceBotComponent,
     CdsActionAssignVariableComponent,
     CdsActionHideMessageComponent,
+    CdsActionWebRequestComponent,
     // action REPLY elements: start //
     CdsActionReplyToolsComponent,
     CdsActionReplyTextComponent,
@@ -269,6 +269,9 @@ import { CdsAddActionMenuComponent } from './cds-dashboard/actions/shared/cds-ad
    
    
     // ------ CDS-ACTIONS: end ------ //
+
+    CdsFormComponent,
+    CdsQuestionComponent,
 
     // ------ CDS PANELS ------ //
     CdsActionDetailPanelComponent,

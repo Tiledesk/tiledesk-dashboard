@@ -103,8 +103,8 @@ export class CdsActionReplyGalleryComponent implements OnInit {
         console.log('[REPLY-GALLERY] updateConnector :: idConnector: ', idConnector);
         console.log('[REPLY-GALLERY] updateConnector :: idButton: ', idButton);
         console.log('[REPLY-GALLERY] updateConnector :: connector.id: ', this.connector.id);
-        if(idConnector === this.connector.fromId){
-          const buttonChanged = el.buttons.find(obj => obj.uid === idButton);
+        const buttonChanged = el.buttons.find(obj => obj.uid === idButton);
+        if(idConnector === this.connector.fromId && buttonChanged){
           if(this.connector.deleted){
             // DELETE 
             console.log(' deleteConnector :: ', this.connector.fromId);

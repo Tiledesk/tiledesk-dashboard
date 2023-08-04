@@ -1,4 +1,6 @@
-import { Component, ElementRef, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit } from '@angular/core';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { AppConfigService } from 'app/services/app-config.service';
 
 function getWindow(): any {
   return window;
@@ -11,16 +13,40 @@ function getWindow(): any {
 })
 export class CdsPanelWidgetComponent implements OnInit {
 
+  @Input() projectID: string;
+  @Input() id_faq_kb: string;
+  @Input() defaultDepartmentId: string;
   private window;
-  private initialized = false;
+  public loading:boolean = true;
 
-  constructor( private elementRef: ElementRef) { 
+  TESTSITE_BASE_URL: string = ''
+  widgetTestSiteUrl: SafeResourceUrl = null
+  constructor( 
+    public appConfigService: AppConfigService,
+    private sanitizer: DomSanitizer,
+    private elementRef: ElementRef) { 
     this.window = getWindow();
     
   }
 
   ngOnInit(): void {
     // this.initTiledesk();
+    this.setIframeUrl()
+  }
+
+
+  setIframeUrl(){
+    this.TESTSITE_BASE_URL = this.appConfigService.getConfig().testsiteBaseUrl;
+    const testItOutBaseUrl = this.TESTSITE_BASE_URL.substring(0, this.TESTSITE_BASE_URL.lastIndexOf('/'));
+    const testItOutUrl = testItOutBaseUrl + '/chatbot-panel.html'
+    const url = testItOutUrl + '?tiledesk_projectid=' + this.projectID + '&tiledesk_participants=bot_' + this.id_faq_kb + "&tiledesk_departmentID=" + this.defaultDepartmentId + '&tiledesk_fullscreenMode=true&td_draft=true'
+    this.widgetTestSiteUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url)
+    let params = `toolbar=no,menubar=no,width=815,height=727,left=100,top=100`;
+    // window.open(url, '_blank', params);
+  }
+
+  onLoaded(event){
+    this.loading= false
   }
 
   initTiledesk() {

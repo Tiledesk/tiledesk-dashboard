@@ -1,33 +1,9 @@
 <div class="panel-intent-detail" (click)="onClickInside()">
     <div class="header-panel">
         <cds-action-description
-            *ngIf="elementIntentSelectedType === typeIntentElement.ACTION"
-            [actionSelected]="elementSelected"
-            [showTip]="true"
-            [previewMode]="false"
-            (closeIntent)="onCloseIntent()"
-            (saveIntent)="onSaveIntent()">
-        </cds-action-description>
-        <cds-action-description 
-            *ngIf="elementIntentSelectedType === typeIntentElement.FORM"
-            [elementType]="typeIntentElement.FORM"
-            [showTip]="false"
-            [previewMode]="false"
-            (closeIntent)="onCloseIntent()"
-            (saveIntent)="onSaveIntent()">
-        </cds-action-description>
-        <cds-action-description 
-            *ngIf="elementIntentSelectedType === typeIntentElement.ANSWER"
-            [elementType]="typeIntentElement.ANSWER"
-            [showTip]="false"
-            [previewMode]="false"
-            (closeIntent)="onCloseIntent()"
-            (saveIntent)="onSaveIntent()">
-        </cds-action-description>
-        <cds-action-description
-            *ngIf="elementIntentSelectedType === typeIntentElement.QUESTION"
-            [elementType]="typeIntentElement.QUESTION"
-            [showTip]="false"
+            [actionSelected]="elementIntentSelectedType === typeIntentElement.ACTION? elementSelected : null"
+            [elementType]="elementIntentSelectedType"
+            [showTip]="elementIntentSelectedType === typeIntentElement.ACTION? true : false"
             [previewMode]="false"
             (closeIntent)="onCloseIntent()"
             (saveIntent)="onSaveIntent()">
@@ -153,18 +129,18 @@
 
 
         <div *ngIf="elementIntentSelectedType === typeIntentElement.QUESTION" class="panel-question">
-            <appdashboard-question 
+            <cds-question 
                 [intentSelected]="intentSelected"
                 (updateIntentSelected)="onUpdateQuestionsIntentSelected($event)">
-            </appdashboard-question>
+            </cds-question>
         </div>
     
         <div *ngIf="elementIntentSelectedType === typeIntentElement.FORM" class="panel-form">
-            <appdashboard-form 
+            <cds-form 
                 [intentForm]="elementSelected" 
                 [intentSelected]="intentSelected" 
                 (updateIntentForm)="onUpdateFormIntentSelected($event)">
-            </appdashboard-form>
+            </cds-form>
         </div>
     
         <div *ngIf="elementIntentSelectedType === typeIntentElement.ANSWER" class="panel-answer">

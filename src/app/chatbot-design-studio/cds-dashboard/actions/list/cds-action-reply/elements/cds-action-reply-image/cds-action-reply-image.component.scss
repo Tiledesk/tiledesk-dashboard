@@ -124,6 +124,11 @@
             border-color: $color-txt-2-hex;
         }
     }
+
+    .button-reply{
+        min-width: 200px;
+        padding: 2px 10px;
+    }
 }
 
 
@@ -302,15 +307,15 @@
     }
 }
 
-//** CONNECTOR **//
+
 .content-botton-reply {
     position:relative;
 }
 
+//** CONNECTOR **//
 cds-connector.connector {
     position: absolute;
-    // top: calc(50% - 10px);
-    top: 0px;
+    top: calc(50% - 10px);
     right: -8px;
 }
 
@@ -344,7 +349,7 @@ cds-connector.connector {
     min-width: 100px;
     text-align: center;
     // margin: 0px 5px 0px; //10px 5px 0;
-    padding: 0 10px;
+    padding: 0px 10px;
     user-select: none;
     box-sizing: border-box;
     outline: none;

@@ -126,10 +126,10 @@
 
 
         <div *ngIf="elementIntentSelectedType === typeIntentElement.QUESTION" class="panel-question">
-            <appdashboard-question 
+            <cds-question 
                 [intentSelected]="intentSelected"
                 (updateIntentSelected)="onUpdateQuestionsIntentSelected($event)">
-            </appdashboard-question>
+            </cds-question>
         </div>
     
         <div *ngIf="elementIntentSelectedType === typeIntentElement.FORM" class="panel-form">

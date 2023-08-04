@@ -1,12 +1,21 @@
-<cds-header class="cds-header" [IS_OPEN]="IS_OPEN" [projectID]="projectID" [id_faq_kb]="id_faq_kb"
-    [defaultDepartmentId]="" [selectedChatbot]="selectedChatbot" (goToBck)="goBack()"
-    (onTestItOut)="onTestItOut($event)" (toggleSidebarWith)="onToggleSidebarWith($event)">
+<cds-header class="cds-header" 
+    [IS_OPEN]="IS_OPEN" 
+    [projectID]="projectID" 
+    [id_faq_kb]="id_faq_kb"
+    [defaultDepartmentId]="" 
+    [selectedChatbot]="selectedChatbot" 
+    (goToBck)="goBack()"
+    (onTestItOut)="onTestItOut($event)" 
+    (toggleSidebarWith)="onToggleSidebarWith($event)">
 </cds-header>
 
 <div id="chatbot--dashboard" class="chatboat-dashboard" [class.is_opened_sidebar]="IS_OPEN">
     <!-- [class.is_opened]="IS_OPEN" -->
-    <cds-sidebar class="cds-sidebar" [extendedWidth]="IS_OPEN" [projectID]="projectID"
-        (onClickItemList)="onClickItemList($event)" (goToBck)="goBack()">
+    <cds-sidebar class="cds-sidebar" 
+        [extendedWidth]="IS_OPEN" 
+        [projectID]="projectID"
+        (onClickItemList)="onClickItemList($event)" 
+        (goToBck)="goBack()">
     </cds-sidebar>
 
     <div *ngIf="activeSidebarSection == 'cds-sb-intents'" class="cds-content">
@@ -39,16 +48,16 @@
                     [style.top.px]="getIntentPosition(intent.id).y"
                     [style.left.px]="getIntentPosition(intent.id).x" 
                     [intent]="intent"
-                    (actionSelected)=onActionSelected($event) 
+                    (actionSelected)=onActionSelected($event)
+                    (questionSelected)=onQuestionSelected($event)
+                    (formSelected)=onIntentFormSelected($event)
                     (showPanelActions)="showPanelActions($event)">
                 </cds-intent>
                 
                 <!-- 
-                    (selectAction)=onSelectAction($event) 
                     [intentsChanged]="intentsChanged"
                     [connectorChanged]="connectorChanged"
                     (answerSelected)=onAnswerSelected($event) 
-                    (questionSelected)=onQuestionSelected($event)
                     (saveIntent)=onSaveIntent($event)
                 -->
             </div>
@@ -80,7 +89,10 @@
 
         <cds-panel-widget *ngIf="IS_OPEN_PANEL_WIDGET" 
             id="widget-preview" 
-            class="cds-generic-panel">
+            class="cds-generic-panel"
+            [projectID]="projectID" 
+            [id_faq_kb]="id_faq_kb"
+            [defaultDepartmentId]="">
         </cds-panel-widget>
 
         <cds-panel-button-configuration id="button-configuration" class="cds-generic-panel"

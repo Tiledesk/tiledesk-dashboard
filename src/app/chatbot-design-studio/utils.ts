@@ -150,7 +150,8 @@ export enum TYPE_OF_MENU {
     EVENT = 'event',
     BLOCK = 'block',
     ACTION = 'action',
-    FORM = 'form'
+    FORM = 'form',
+    QUESTION = 'question'
 }
 
 export const NEW_POSITION_ID = 'new';
