@@ -17,7 +17,7 @@
         </appdashboard-panel-intent-header>
         
 
-        <div class="cds-intent-options">
+        <div *ngIf="!isStart" class="cds-intent-options">
             <div class="option" (click)="onSelectQuestion(HAS_SELECTED_TYPE.QUESTION)"
                 [attr.active]="questionCount > 0">
                 <img src="assets/cds/images/brain.svg" title="Question">

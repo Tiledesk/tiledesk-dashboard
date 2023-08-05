@@ -27,6 +27,7 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
   intentNameNotHasSpecialCharacters: boolean = true;
 
   id_faq_kb: string;
+  isFocused: boolean = false;
 
   constructor(
     private logger: LoggerService,
@@ -42,7 +43,7 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
   // SYSTEM FUNCTIONS //
   ngOnInit(): void {
     this.showSpinner = false;
-    console.log("[PANEL-INTENT-HEADER] intentSelected: ", this.intentSelected)
+    // console.log("[PANEL-INTENT-HEADER] intentSelected: ", this.intentSelected)
     try {
       this.intentName = this.intentSelected.intent_display_name;
     } catch (error) {
@@ -51,9 +52,9 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    console.log("[PANEL-INTENT-HEADER] header OnChanges intentSelected: ", this.intentSelected)
-    this.logger.log("[PANEL-INTENT-HEADER] header OnChanges intentSelected intent_display_name: ", this.intentSelected.intent_display_name)
-    console.log("[PANEL-INTENT-HEADER] header OnChanges listOfIntents: ", this.listOfIntents)
+    // console.log("[PANEL-INTENT-HEADER] header OnChanges intentSelected: ", this.intentSelected)
+    // this.logger.log("[PANEL-INTENT-HEADER] header OnChanges intentSelected intent_display_name: ", this.intentSelected.intent_display_name)
+    // console.log("[PANEL-INTENT-HEADER] header OnChanges listOfIntents: ", this.listOfIntents)
     const untitledIntents = this.listOfIntents.filter((el) => {
       return el.intent_display_name.indexOf('untitled_block') > -1;
     });
@@ -111,13 +112,21 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
 
   // EVENT FUNCTIONS //
   onChangeIntentName(name: string) {
-    this.checkIntentName(name);
+    console.log("[PANEL-INTENT-HEADER] onChangeIntentName");
+    this.checkIntentName(name)
+    this.onSaveIntent();
   }
 
   onMouseUpInput(){
     console.log("[PANEL-INTENT-HEADER] onMouseUpInput");
+    this.isFocused = true;
     this.myInput.nativeElement.focus();
   }
+
+  // onMouseBlur(){
+  //   console.log("[PANEL-INTENT-HEADER] onMouseBlur");
+  //   this.isFocused = false;
+  // }
 
   private checkIntentName(name: string) {
     if (name !== this.intentSelected.intent_display_name) {
@@ -130,6 +139,7 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
     if (!this.intentName || this.intentName.trim().length === 0) {
       this.intentNameResult = false;
     }
+    return this.intentNameResult;
     // console.log('checkIntentName:: ', name);
     // console.log('intentNameNotHasSpecialCharacters:: ', this.intentNameNotHasSpecialCharacters);
     // console.log('intentNameResult:: ', this.intentNameResult);
@@ -153,14 +163,17 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
 
   /** */
   onSaveIntent() {
-    this.logger.log('[PANEL-INTENT-HEADER] this.intentName ', this.intentName)
-    this.logger.log('[PANEL-INTENT-HEADER] intentNameResult ', this.intentNameResult)
-    this.logger.log('[PANEL-INTENT-HEADER] intentNameAlreadyExist ', this.intentNameAlreadyExist)
-    this.logger.log('[PANEL-INTENT-HEADER] intentNameNotHasSpecialCharacters ', this.intentNameNotHasSpecialCharacters)
-    // this.intentNameResult = this.checkIntentName();
+    // console.log('[PANEL-INTENT-HEADER] this.intentName ', this.intentName)
+    // console.log('[PANEL-INTENT-HEADER] intentNameResult ', this.intentNameResult)
+    // console.log('[PANEL-INTENT-HEADER] intentNameAlreadyExist ', this.intentNameAlreadyExist)
+    // console.log('[PANEL-INTENT-HEADER] intentNameNotHasSpecialCharacters ', this.intentNameNotHasSpecialCharacters)
+    // // this.intentNameResult = this.checkIntentName();
+    // console.log("[PANEL-INTENT-HEADER] onSaveIntent");
     if (this.intentNameResult && !this.intentNameAlreadyExist && this.intentNameNotHasSpecialCharacters === true) {
+      console.log("[PANEL-INTENT-HEADER] SALVO!!!");
       this.intentSelected.intent_display_name = this.intentName.trim();
-      this.saveIntent.emit(this.intentSelected);
+      this.intentService.updateIntent(this.intentSelected)
+      // this.saveIntent.emit(this.intentSelected);
     }
   }
 

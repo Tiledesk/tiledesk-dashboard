@@ -40,7 +40,7 @@ export class ConnectorService {
             console.log('intent_display_name', intent.intent_display_name);
             if(action.intentName && action.intentName !== ''){
               const idConnectorFrom = intent.intent_id+'/'+action._tdActionId;
-              const idConnectorTo = action.intentName;
+              const idConnectorTo = action.intentName.replace("#", ""); ;
               console.log('[ACTION-INTENT] -> idConnectorFrom', idConnectorFrom);
               console.log('[ACTION-INTENT] -> idConnectorTo', idConnectorTo);
               this.tiledeskConnectors.createConnectorFromId(idConnectorFrom, idConnectorTo);
