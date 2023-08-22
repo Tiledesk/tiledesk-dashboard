@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { MatMenuTrigger } from '@angular/material/menu';
-import { TYPE_ACTION, ACTIONS_LIST, TYPE_OF_MENU } from 'app/chatbot-design-studio/utils';
+import { TYPE_ACTION, ACTIONS_LIST, TYPE_OF_MENU, TYPE_ACTION_CATEGORY, ACTION_CATEGORY } from 'app/chatbot-design-studio/utils';
 
 
 @Component({
@@ -23,8 +23,12 @@ export class CdsPanelElementsComponent implements OnInit {
   positionMenu: any = {'x': 80, 'y': 0 };
   isDraggingMenuElement: boolean = false;
   menuType: string;
+  menuCategory: string;
   TYPE_OF_MENU = TYPE_OF_MENU;
 
+  TYPE_ACTION_CATEGORY = TYPE_ACTION_CATEGORY;
+  ACTION_CATEGORY = ACTION_CATEGORY
+  
   constructor() { }
 
   ngOnInit(): void {
@@ -32,10 +36,11 @@ export class CdsPanelElementsComponent implements OnInit {
 
 
 
-  onOpenMenu(e, type) {
+  onOpenMenu(e, type, category?: string) {
     setTimeout(() => {
       console.log('onOpenMenu: menu type ', type);
       this.menuType = type;
+      this.menuCategory = category;
       //this.menuTrigger.openMenu();
       // let x = e.offsetLeft;
       let y = e.offsetTop;

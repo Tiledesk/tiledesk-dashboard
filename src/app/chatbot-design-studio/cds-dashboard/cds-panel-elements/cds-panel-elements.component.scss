@@ -10,6 +10,10 @@ $bck_color_2: rgba(238, 244, 246, 0.85);
     border-radius: 10px;
     background-color: $bck_color_1;
     z-index: 10;
+
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
 }
 svg {
     overflow: hidden;
@@ -58,10 +62,11 @@ svg {
     size:22px;
 }
 
-.box-img > svg {
+.box-img > img {
     display: block;
     width: inherit;
     height: inherit;
+    filter: brightness(0) saturate(100%) invert(28%) sepia(8%) saturate(1693%) hue-rotate(156deg) brightness(93%) contrast(87%);
 }
 
 .box-title {

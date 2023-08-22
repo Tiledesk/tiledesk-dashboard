@@ -1,5 +1,6 @@
+import { TYPE_ACTION_CATEGORY } from './../../utils';
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
-import { TYPE_ACTION, ACTIONS_LIST, TYPE_OF_MENU } from 'app/chatbot-design-studio/utils';
+import { TYPE_ACTION, ACTIONS_LIST, TYPE_OF_MENU, ELEMENTS_LIST } from 'app/chatbot-design-studio/utils';
 import { CdkDropList, CdkDragStart, CdkDragEnd, CdkDragMove } from '@angular/cdk/drag-drop';
 // import { DragDropService } from 'app/chatbot-design-studio/services/drag-drop.service';
 
@@ -12,10 +13,11 @@ export class CdsPanelActionsComponent implements OnInit {
   @ViewChild('action_list_drop_connect') actionListDropConnect: CdkDropList;
 
   @Input() menuType: string;
+  @Input() menuCategory: string;
   @Input() pos: any;
   @Output() isDraggingMenuElement = new EventEmitter();
 
-  TYPE_ACTION = TYPE_ACTION;
+  TYPE_ACTION_CATEGORY = TYPE_ACTION_CATEGORY;
   TYPE_OF_MENU = TYPE_OF_MENU;
 
   menuItemsList: any;
@@ -36,13 +38,13 @@ export class CdsPanelActionsComponent implements OnInit {
   }
 
   ngOnChanges() {
-    console.log('cds-panel-actions ngOnChanges:: ', this.pos, this.menuType);
+    console.log('cds-panel-actions ngOnChanges:: ', this.pos, this.menuType, this.menuCategory);
     switch (this.menuType) {
       case TYPE_OF_MENU.ACTION:
-        this.menuItemsList = Object.keys(ACTIONS_LIST).map(key => {
+        this.menuItemsList = ELEMENTS_LIST.filter(el => el.category === TYPE_ACTION_CATEGORY[this.menuCategory]).map(element => {
           return {
-            type: key,
-            value: ACTIONS_LIST[key]
+            type: TYPE_OF_MENU.ACTION,
+            value: element
           };
         });
         break;
@@ -51,7 +53,7 @@ export class CdsPanelActionsComponent implements OnInit {
         break;
       case TYPE_OF_MENU.BLOCK:
         this.menuItemsList = [{
-          "type": "BLOCK",
+          "type": TYPE_OF_MENU.BLOCK,
           "value": {
             "name": "Block",
             "type": "BLOCK",
@@ -62,7 +64,7 @@ export class CdsPanelActionsComponent implements OnInit {
         break;
       case TYPE_OF_MENU.FORM:
         this.menuItemsList = [{
-          "type": "FORM",
+          "type": TYPE_OF_MENU.FORM,
           "value": {
             "name": "Form",
             "type": "FORM",
@@ -73,7 +75,7 @@ export class CdsPanelActionsComponent implements OnInit {
         break;
       case TYPE_OF_MENU.QUESTION:
           this.menuItemsList = [{
-            "type": "QUESTION",
+            "type": TYPE_OF_MENU.QUESTION,
             "value": {
               "name": "Train",
               "type": "QUESTION",
