@@ -106,10 +106,10 @@ export enum TYPE_ACTION_CATEGORY {
 
 export const ACTION_CATEGORY =[
     { type: getKeyByValue(TYPE_ACTION_CATEGORY.MOST_USED, TYPE_ACTION_CATEGORY), name: TYPE_ACTION_CATEGORY.MOST_USED, src: 'assets/cds/images/actions_category/most_used.svg'},
-    { type: getKeyByValue(TYPE_ACTION_CATEGORY.FLOW, TYPE_ACTION_CATEGORY), name: TYPE_ACTION_CATEGORY.FLOW, src: 'assets/cds/images/actions_category'},
-    { type: getKeyByValue(TYPE_ACTION_CATEGORY.INTEGRATIONS, TYPE_ACTION_CATEGORY), name: TYPE_ACTION_CATEGORY.INTEGRATIONS, src: 'assets/cds/images/actions_category'},
-    { type: getKeyByValue(TYPE_ACTION_CATEGORY.SPECIAL, TYPE_ACTION_CATEGORY), name: TYPE_ACTION_CATEGORY.SPECIAL, src: 'assets/cds/images/actions_category'},
-    { type: getKeyByValue(TYPE_ACTION_CATEGORY.NEW, TYPE_ACTION_CATEGORY), name: TYPE_ACTION_CATEGORY.NEW, src: 'assets/cds/images/actions_category'}
+    { type: getKeyByValue(TYPE_ACTION_CATEGORY.FLOW, TYPE_ACTION_CATEGORY), name: TYPE_ACTION_CATEGORY.FLOW, src: 'assets/cds/images/actions_category/flow.svg'},
+    { type: getKeyByValue(TYPE_ACTION_CATEGORY.INTEGRATIONS, TYPE_ACTION_CATEGORY), name: TYPE_ACTION_CATEGORY.INTEGRATIONS, src: 'assets/cds/images/actions_category/integrations.svg'},
+    { type: getKeyByValue(TYPE_ACTION_CATEGORY.SPECIAL, TYPE_ACTION_CATEGORY), name: TYPE_ACTION_CATEGORY.SPECIAL, src: 'assets/cds/images/actions_category/special.svg'},
+    { type: getKeyByValue(TYPE_ACTION_CATEGORY.NEW, TYPE_ACTION_CATEGORY), name: TYPE_ACTION_CATEGORY.NEW, src: 'assets/cds/images/actions_category/new.svg'}
 ]
 
 export function getKeyByValue(value, keys) {
