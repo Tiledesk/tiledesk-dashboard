@@ -117,11 +117,17 @@ export class CdsAddActionMenuComponent implements OnInit, OnChanges {
 
   onAddingActionToStage(item){
     console.log('[CDS-ADD-ACTION-MENU] ON ADDING ACTION - TO STAGE - item: ', item);
-    
+    console.log('[CDS-ADD-ACTION-MENU] ON ADDING ACTION - TO STAGE - actionToSearch 1: ',this.actionToSearch);
     let event = { 
       'type': item.value.type
     }
+    
+      
+   
     this.addingActionToStage.emit(event);
+    this.actionToSearch = undefined;
+    this.filterMenuItemsList = this.menuItemsList;
+    console.log('[CDS-ADD-ACTION-MENU] ON ADDING ACTION - TO STAGE - actionToSearch 2: ',this.actionToSearch);
   }
 
 }

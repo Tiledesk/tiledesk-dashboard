@@ -20,8 +20,7 @@
 }
 
 .actions-btns-wpr {
-    // width: 136px; // dp
-    width: 100%; // nk
+    width: 136px;
     height: 30px;
     border-radius: 6px;
     display: flex;
@@ -35,7 +34,6 @@
 ::ng-deep .cdk-drag-preview {
     .actions-btns-wpr  {
         background-color: #ffffff;
-        cursor: grabbing;
         // transform: rotate(-5deg)!important;
         box-shadow: #1321440a 0 12px 24px, #1321440a 0 8px 12px, #13214405 0 4px 4px, #13214403 0 2px 2px, #13214403 0 1px 1px, #11316008 0 0, #1131600f 0 0 0 1px;
     }
@@ -51,18 +49,11 @@
     .btn-tdblu-no-boxshadow {
         margin: 0;
         padding: 0!important;
-        background: #394f5a!important;
+        background: #3ea9f5!important;
         font-size: 12px;
-        width: 25px;
-        height: 25px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        width: 20px;
+        height: 20px;
     }
-}
-
-.action-btn img {
-    width: 16px;
 }
 
 .action-btn-text{

@@ -360,7 +360,7 @@ export class CdsIntentComponent implements OnInit {
     let buttonYposition = openActionMenuElm.y // - 10
     console.log('[CDS-INTENT] openActionMenu > openActionMenuBtnRef ', openActionMenuElm)
     console.log('[CDS-INTENT] openActionMenu > buttonXposition ', buttonXposition)
-    const data = { 'x': buttonXposition, 'y': buttonYposition, 'intent': intent};
+    const data = { 'x': buttonXposition, 'y': buttonYposition, 'intent': intent, 'addAction': true};
     this.showPanelActions.emit(data);
   }
 
