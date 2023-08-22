@@ -20,15 +20,27 @@
 
     <div *ngIf="activeSidebarSection == 'cds-sb-intents'" class="cds-content">
 
-        <div class="box-left">
+        <div class="box-left" [class.is_closed]="!IS_OPEN_INTENTS_LIST">
             <cds-panel-intent-list *ngIf="listOfIntents"
-                 class="panel-intent-list"
+                [IS_OPEN]="IS_OPEN_INTENTS_LIST"
+                class="panel-intent-list"
                 [updatePanelIntentList]="updatePanelIntentList" 
                 [listOfIntents]="listOfIntents" 
                 [intent_id]="intent_id"
                 (selectIntent)=onSelectIntent($event) 
                 (deleteIntent)="onDeleteIntent($event)">
             </cds-panel-intent-list>
+
+            <div class="toggle-setting-sidebar-icon-wpr" [class.is_opened]="IS_OPEN_INTENTS_LIST"
+                (click)="onToogleSidebarIntentsList(IS_OPEN_INTENTS_LIST = !IS_OPEN_INTENTS_LIST)">
+                <span *ngIf="IS_OPEN_INTENTS_LIST" class="material-icons toggle-setting-sidebar-icon">
+                    chevron_left
+                </span>
+                <span *ngIf="!IS_OPEN_INTENTS_LIST" class="material-icons toggle-setting-sidebar-icon">
+                    chevron_right
+                </span>
+            </div>
+
         </div>
 
         <div id="tds_container" class="box-right tds-drag-container" cdkDropListGroup>

@@ -94,6 +94,7 @@ export class CdsDashboardComponent implements OnInit {
   spinnerCreateIntent: boolean = false;
 
   IS_OPEN: boolean = false;
+  IS_OPEN_INTENTS_LIST: boolean = true;
   IS_OPEN_PANEL_WIDGET: boolean = false;
   public TESTSITE_BASE_URL: string;
 
@@ -810,6 +811,9 @@ export class CdsDashboardComponent implements OnInit {
   }
   onToggleSidebarWith(IS_OPEN) {
     this.IS_OPEN = IS_OPEN;
+  }
+  onToogleSidebarIntentsList(IS_OPEN){
+    this.IS_OPEN_INTENTS_LIST = IS_OPEN
   }
 
   /** START EVENTS PANEL ACTIONS */

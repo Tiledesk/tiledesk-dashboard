@@ -23,16 +23,15 @@ const swal = require('sweetalert');
 })
 export class CdsHeaderComponent implements OnInit {
  
-  @Input() IS_OPEN;
-  @Input() projectID;
-  @Input() defaultDepartmentId;
-  @Input() id_faq_kb;
+  @Input() IS_OPEN: boolean;
+  @Input() projectID: string;
+  @Input() defaultDepartmentId: string;
+  @Input() id_faq_kb: string;
   @Input() selectedChatbot: Chatbot;
   @Output() toggleSidebarWith = new EventEmitter();
   @Output() goToBck = new EventEmitter();
   @Output() onTestItOut = new EventEmitter();
   @Output() goToGetBotById = new EventEmitter();
-  // @Output() toggleSidebarWith = new EventEmitter();
 
   PRESENTS_MODAL_ATTACH_BOT_TO_DEPT: boolean = false;
   isBetaUrl: boolean;
