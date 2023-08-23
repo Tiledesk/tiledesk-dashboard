@@ -1,6 +1,11 @@
-<cds-header class="cds-header" [IS_OPEN]="IS_OPEN" [projectID]="projectID" [id_faq_kb]="id_faq_kb"
-    [defaultDepartmentId]="defaultDepartmentId" [selectedChatbot]="selectedChatbot" (goToBck)="goBack()"
-    (onTestItOut)="onTestItOut($event)" (toggleSidebarWith)="onToggleSidebarWith($event)">
+<cds-header class="cds-header" 
+    [IS_OPEN]="IS_OPEN" 
+    [projectID]="projectID" [id_faq_kb]="id_faq_kb"
+    [defaultDepartmentId]="defaultDepartmentId" 
+    [selectedChatbot]="selectedChatbot" 
+    (goToBck)="goBack()"
+    (onTestItOut)="onTestItOut($event)" 
+    (toggleSidebarWith)="onToggleSidebarWith($event)">
 </cds-header>
 
 <div id="chatbot--dashboard" class="chatboat-dashboard" [class.is_opened_sidebar]="IS_OPEN">
@@ -28,11 +33,17 @@
                 (cdkDropListDropped)="onDroppedElementToStage($event)"></div>
 
             <div #drawer_of_items_to_zoom_and_drag id="tds_drawer" class="tds-drag-drawer box-right-content">
-                <cds-intent *ngFor="let intent of listOfIntents;" [id]="intent.intent_id"
-                    class="panel-intent tds_input_block tds_draggable" [style.top.px]="getIntentPosition(intent.id).y"
-                    [style.left.px]="getIntentPosition(intent.id).x" [intent]="intent"
-                    (actionSelected)=onActionSelected($event) (questionSelected)=onQuestionSelected($event)
-                    (formSelected)=onIntentFormSelected($event) (showPanelActions)="showPanelActions($event)">
+                <cds-intent *ngFor="let intent of listOfIntents;" 
+                    [id]="intent.intent_id"
+                    class="panel-intent tds_input_block tds_draggable" 
+                    [style.top.px]="getIntentPosition(intent.id).y"
+                    [style.left.px]="getIntentPosition(intent.id).x" 
+                    [intent]="intent"
+                    (actionSelected)=onActionSelected($event) 
+                    (questionSelected)=onQuestionSelected($event)
+                    (formSelected)=onIntentFormSelected($event) 
+                    (showPanelActions)="showPanelActions($event)"
+                    (onTestItOut)="onTestItOut($event)">
                 </cds-intent>
 
                 <!-- 
