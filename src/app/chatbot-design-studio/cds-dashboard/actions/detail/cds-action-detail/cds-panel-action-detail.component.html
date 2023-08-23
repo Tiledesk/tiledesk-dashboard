@@ -118,6 +118,24 @@
                         [previewMode]="false">
                     </cds-action-web-request>
 
+                    <cds-action-whatsapp-attribute *ngSwitchCase="typeAction.WHATSAPP_ATTRIBUTE"
+                        class="panel-response"
+                        [action]="elementSelected"
+                        [previewMode]="false">
+                    </cds-action-whatsapp-attribute>
+
+                    <cds-action-whatsapp-static *ngSwitchCase="typeAction.WHATSAPP_STATIC"
+                        class="panel-response"
+                        [action]="elementSelected"
+                        [previewMode]="false">
+                    </cds-action-whatsapp-static>
+                    
+                    <cds-action-askgpt *ngSwitchCase="typeAction.ASKGPT"
+                        class="panel-response"
+                        [action]="elementSelected"
+                        [previewMode]="false">
+                    </cds-action-askgpt>
+                    
                     <!-- <cds-action-assign-function *ngSwitchCase="typeAction.ASSIGN_FUNCTION"
                         [action]="elementSelected">
                     </cds-action-assign-function> -->

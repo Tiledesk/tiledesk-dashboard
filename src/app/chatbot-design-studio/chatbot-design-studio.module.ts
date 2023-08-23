@@ -159,6 +159,10 @@ import { CdsAddActionMenuComponent } from './cds-dashboard/actions/shared/cds-ad
 
 import { CdsFormComponent } from './cds-dashboard/actions/list/form/form.component';
 import { CdsQuestionComponent } from './cds-dashboard/actions/list/question/question.component';
+import { CdsActionAskgptComponent } from './cds-dashboard/actions/list/cds-action-askgpt/action-askgpt.component';
+import { CdsActionWhatsappAttributeComponent } from './cds-dashboard/actions/list/cds-action-whatsapp-attribute/action-whatsapp-attribute.component';
+import { CdsActionWhatsappStaticComponent } from './cds-dashboard/actions/list/cds-action-whatsapp-static/action-whatsapp-static.component';
+import { CdsWhatsappReceiverComponent } from './cds-dashboard/actions/list/cds-action-whatsapp-static/whatsapp-receiver/whatsapp-receiver.component';
 
 
 @NgModule({
@@ -258,6 +262,10 @@ import { CdsQuestionComponent } from './cds-dashboard/actions/list/question/ques
     CdsActionAssignVariableComponent,
     CdsActionHideMessageComponent,
     CdsActionWebRequestComponent,
+    CdsActionWhatsappAttributeComponent,
+    CdsActionWhatsappStaticComponent,
+    CdsWhatsappReceiverComponent,
+    CdsActionAskgptComponent,
     // action REPLY elements: start //
     CdsActionReplyToolsComponent,
     CdsActionReplyTextComponent,

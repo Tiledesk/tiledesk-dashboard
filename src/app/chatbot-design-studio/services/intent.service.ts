@@ -21,7 +21,7 @@ import {
   ActionReplaceBot,
   ActionWait,
   ActionWebRequest,
-  Command, Message, Expression, Attributes, Action } from 'app/models/intent-model';
+  Command, Message, Expression, Attributes, Action, ActionAskGPT, ActionWhatsappAttribute, ActionWhatsappStatic } from 'app/models/intent-model';
 import { FaqService } from 'app/services/faq.service';
 import { FaqKbService } from 'app/services/faq-kb.service';
 import { NEW_POSITION_ID, TYPE_ACTION, TYPE_COMMAND } from 'app/chatbot-design-studio/utils';
@@ -664,6 +664,19 @@ export class IntentService {
     }
     if(typeAction === TYPE_ACTION.ASSIGN_FUNCTION){
       action = new ActionAssignFunction();
+    }
+    if(typeAction === TYPE_ACTION.WHATSAPP_ATTRIBUTE){
+      action = new ActionWhatsappAttribute();
+    }
+    if(typeAction === TYPE_ACTION.WHATSAPP_STATIC){
+      action = new ActionWhatsappStatic();
+    }
+    if(typeAction === TYPE_ACTION.ASKGPT){
+      action = new ActionAskGPT();
+      action.question = '${last_user_text}'
+      action.assignReplyTo = 'gpt_reply';
+      action.assignSourceTo = 'gpt_source';
+      action.assignSuccessTo = 'gpt_success';
     }
     console.log('ho creato nuova action ', action);
     return action;
