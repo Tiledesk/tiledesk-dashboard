@@ -11,6 +11,7 @@ import { Intent } from 'app/models/intent-model';
 
 export class CdsPanelIntentListComponent implements OnInit, OnChanges {
 
+  @Input() IS_OPEN: boolean;
   @Input() listOfIntents: Intent[];
   @Input() intent_id: string;
   @Input() updatePanelIntentList: boolean;
