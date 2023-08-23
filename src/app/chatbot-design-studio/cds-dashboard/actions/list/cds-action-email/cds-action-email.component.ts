@@ -43,11 +43,12 @@ export class CdsActionEmailComponent implements OnInit, OnChanges {
 
 
   onEditableDivTextChange($event: string, property: string) {
-
-    console.log("[CDS-ACTION-EMAIL] onEditableDivTextChange event", $event)
-    console.log("[CDS-ACTION-EMAIL] onEditableDivTextChange property", property)
-    this.action[property] = $event
-    // this.updateAndSaveAction.emit();
+    if($event){
+      console.log("[CDS-ACTION-EMAIL] onEditableDivTextChange event", $event)
+      console.log("[CDS-ACTION-EMAIL] onEditableDivTextChange property", property)
+      this.action[property] = $event
+      this.updateAndSaveAction.emit();
+    }
   }
 
 
