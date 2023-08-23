@@ -54,7 +54,7 @@
     .btn-tdblu-no-boxshadow {
         margin: 0;
         padding: 0!important;
-        background: #394f5a!important;
+        background: transparent !important;
         font-size: 12px;
         width: 20px;
         height: 20px;
@@ -66,6 +66,7 @@
 
 .action-btn img {
     width: 16px;
+    filter: brightness(0) saturate(100%) invert(28%) sepia(8%) saturate(1693%) hue-rotate(156deg) brightness(93%) contrast(87%);
 }
 
 .action-btn-text{

@@ -177,6 +177,24 @@
                     (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-web-request>
 
+                <cds-action-whatsapp-attribute *ngSwitchCase="TYPE_ACTION.WHATSAPP_ATTRIBUTE"
+                    class="panel-response"
+                    [action]="action"
+                    (updateAndSaveAction)="onUpdateAndSaveAction($event)">
+                </cds-action-whatsapp-attribute>
+
+                <cds-action-whatsapp-static *ngSwitchCase="TYPE_ACTION.WHATSAPP_STATIC"
+                    class="panel-response"
+                    [action]="action"
+                    (updateAndSaveAction)="onUpdateAndSaveAction($event)">
+                </cds-action-whatsapp-static>
+
+                <cds-action-askgpt *ngSwitchCase="TYPE_ACTION.ASKGPT"
+                    class="panel-response"
+                    [action]="action"
+                    (updateAndSaveAction)="onUpdateAndSaveAction($event)">
+                </cds-action-askgpt>
+
 
             </div>
 

@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CdsActionWebRequestComponent } from './cds-action-web-request.component';
 
-describe('ActionWebRequestComponent', () => {
+describe('CdsActionWebRequestComponent', () => {
   let component: CdsActionWebRequestComponent;
   let fixture: ComponentFixture<CdsActionWebRequestComponent>;
 
