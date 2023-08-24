@@ -104,7 +104,8 @@
                         {{ getActionParams(action).name }}
                     </div>
                 </span> -->
-            <cds-action-description cdkDragHandle class="header-action" [elementType]="action._tdActionType">
+            <cds-action-description cdkDragHandle class="header-action" 
+                [elementType]="action._tdActionType">
             </cds-action-description>
 
             <!-- </div> -->
@@ -112,61 +113,91 @@
 
             <div cdkDragDisabled class="body-action" [ngSwitch]="action._tdActionType">
 
-                <cds-action-controls (onClickControl)="onClickControl($event, action, i)">
+                <cds-action-controls 
+                    (onClickControl)="onClickControl($event, action, i)">
                 </cds-action-controls>
 
-
-                <cds-action-reply *ngSwitchCase="TYPE_ACTION.REPLY" class="panel-response" [intentSelected]="intent"
-                    [connector]="connector" [action]="action" (updateAndSaveAction)="onUpdateAndSaveAction($event)">
+                <cds-action-reply *ngSwitchCase="TYPE_ACTION.REPLY" 
+                    class="panel-response" [intentSelected]="intent"
+                    [connector]="connector" 
+                    [action]="action" 
+                    (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-reply>
 
-                <cds-action-reply *ngSwitchCase="TYPE_ACTION.RANDOM_REPLY" class="panel-response"
-                    [intentSelected]="intent" [action]="action" (updateAndSaveAction)="onUpdateAndSaveAction($event)">
+                <cds-action-reply *ngSwitchCase="TYPE_ACTION.RANDOM_REPLY" 
+                    class="panel-response"
+                    [intentSelected]="intent" 
+                    [action]="action" 
+                    (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-reply>
 
-                <cds-action-intent *ngSwitchCase="TYPE_ACTION.INTENT" class="panel-response" [intentSelected]="intent"
-                    [action]="action" (updateAndSaveAction)="onUpdateAndSaveAction($event)">
+                <cds-action-intent *ngSwitchCase="TYPE_ACTION.INTENT"
+                     class="panel-response" [intentSelected]="intent"
+                    [action]="action" 
+                    (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-intent>
 
-                <cds-action-change-department *ngSwitchCase="TYPE_ACTION.CHANGE_DEPARTMENT" class="panel-response"
-                    [action]="action" (updateAndSaveAction)="onUpdateAndSaveAction($event)">
+                <cds-action-change-department *ngSwitchCase="TYPE_ACTION.CHANGE_DEPARTMENT"     
+                    class="panel-response"
+                    [action]="action" 
+                    (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-change-department>
 
-                <cds-action-email *ngSwitchCase="TYPE_ACTION.EMAIL" class="panel-response" [action]="action"
+                <cds-action-email *ngSwitchCase="TYPE_ACTION.EMAIL" 
+                    class="panel-response" 
+                    [action]="action"
                     (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-email>
 
-                <cds-action-agent *ngSwitchCase="TYPE_ACTION.AGENT" class="panel-response" [action]="action"
+                <cds-action-agent *ngSwitchCase="TYPE_ACTION.AGENT" 
+                    class="panel-response" 
+                    [action]="action"
                     (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-agent>
 
-                <cds-action-online-agents *ngSwitchCase="TYPE_ACTION.ONLINE_AGENTS" class="panel-response"
-                    [connectorChanged]="connectorChanged" [intentSelected]="intent" [action]="action"
+                <cds-action-online-agents *ngSwitchCase="TYPE_ACTION.ONLINE_AGENTS" 
+                    class="panel-response"
+                    [connectorChanged]="connectorChanged" 
+                    [intentSelected]="intent" 
+                    [action]="action"
                     (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-online-agents>
 
-                <cds-action-open-hours *ngSwitchCase="TYPE_ACTION.OPEN_HOURS" class="panel-response"
-                    [connectorChanged]="connectorChanged" [intentSelected]="intent" [action]="action"
+                <cds-action-open-hours *ngSwitchCase="TYPE_ACTION.OPEN_HOURS" 
+                    class="panel-response"
+                    [connectorChanged]="connectorChanged" 
+                    [intentSelected]="intent" 
+                    [action]="action"
                     (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-open-hours>
 
-                <cds-action-wait *ngSwitchCase="TYPE_ACTION.WAIT" class="panel-response" [action]="action"
+                <cds-action-wait *ngSwitchCase="TYPE_ACTION.WAIT" 
+                    class="panel-response" 
+                    [action]="action"
                     (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-wait>
 
-                <cds-action-close *ngSwitchCase="TYPE_ACTION.CLOSE" [action]="action">
+                <cds-action-close *ngSwitchCase="TYPE_ACTION.CLOSE" 
+                    [action]="action">
                 </cds-action-close>
 
-                <cds-action-json-condition *ngSwitchCase="TYPE_ACTION.JSON_CONDITION" class="panel-response"
-                    [intentSelected]="intent" [action]="action" (updateAndSaveAction)="onUpdateAndSaveAction($event)">
+                <cds-action-json-condition *ngSwitchCase="TYPE_ACTION.JSON_CONDITION" 
+                    class="panel-response"
+                    [intentSelected]="intent" 
+                    [action]="action" 
+                    (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-json-condition>
 
-                <cds-action-replace-bot *ngSwitchCase="TYPE_ACTION.REPLACE_BOT" class="panel-response" [action]="action"
+                <cds-action-replace-bot *ngSwitchCase="TYPE_ACTION.REPLACE_BOT" 
+                    class="panel-response" 
+                    [action]="action"
                     (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-replace-bot>
 
-                <cds-action-assign-variable *ngSwitchCase="TYPE_ACTION.ASSIGN_VARIABLE" class="panel-response"
-                    [action]="action" (updateAndSaveAction)="onUpdateAndSaveAction($event)">
+                <cds-action-assign-variable *ngSwitchCase="TYPE_ACTION.ASSIGN_VARIABLE" 
+                    class="panel-response"
+                    [action]="action" 
+                    (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-assign-variable>
 
                 <cds-action-delete-variable *ngSwitchCase="TYPE_ACTION.DELETE_VARIABLE"
@@ -174,26 +205,35 @@
                     [action]="action">
                 </cds-action-delete-variable>
 
-                <cds-action-hide-message *ngSwitchCase="TYPE_ACTION.HIDE_MESSAGE" class="panel-response"
-                    [action]="action" (updateAndSaveAction)="onUpdateAndSaveAction($event)">
+                <cds-action-hide-message *ngSwitchCase="TYPE_ACTION.HIDE_MESSAGE" 
+                    class="panel-response"
+                    [action]="action" 
+                    (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-hide-message>
 
-                <cds-action-web-request *ngSwitchCase="TYPE_ACTION.WEB_REQUEST" class="panel-response" [action]="action"
+                <cds-action-web-request *ngSwitchCase="TYPE_ACTION.WEB_REQUEST" 
+                    class="panel-response" 
+                    [action]="action"
                     (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-web-request>
 
-                <cds-action-whatsapp-attribute *ngSwitchCase="TYPE_ACTION.WHATSAPP_ATTRIBUTE" class="panel-response"
-                    [action]="action" (updateAndSaveAction)="onUpdateAndSaveAction($event)">
+                <cds-action-whatsapp-attribute *ngSwitchCase="TYPE_ACTION.WHATSAPP_ATTRIBUTE" 
+                    class="panel-response"
+                    [action]="action" 
+                    (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-whatsapp-attribute>
 
-                <cds-action-whatsapp-static *ngSwitchCase="TYPE_ACTION.WHATSAPP_STATIC" class="panel-response"
-                    [action]="action" (updateAndSaveAction)="onUpdateAndSaveAction($event)">
+                <cds-action-whatsapp-static *ngSwitchCase="TYPE_ACTION.WHATSAPP_STATIC" 
+                    class="panel-response"
+                    [action]="action" 
+                    (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-whatsapp-static>
 
-                <cds-action-askgpt *ngSwitchCase="TYPE_ACTION.ASKGPT" class="panel-response" [action]="action"
+                <cds-action-askgpt *ngSwitchCase="TYPE_ACTION.ASKGPT" 
+                    class="panel-response" 
+                    [action]="action"
                     (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-askgpt>
-
 
             </div>
 
@@ -210,10 +250,6 @@
 
         </div>
 
-
     </div>
-
-
-
 
 </div>
