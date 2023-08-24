@@ -271,6 +271,36 @@ $box-left-width-closed: 50px;
   }
 }
 
+.panel-action-backdrop {
+  display: flex;
+  margin: 0;
+  // background: rgba(34,48,74,.6);
+  background: transparent;
+  inset: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  // padding: 85px 25px 25px 0;
+  padding-top: 60px; // nk
+  z-index: 2;
+  justify-content: flex-end; // nk
+}
+
+.panel-button-backdrop {
+  display: flex;
+  margin: 0;
+  // background: rgba(34,48,74,.6);
+  background: transparent;
+  inset: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  // padding: 85px 25px 25px 0;
+  padding-top: 60px; // nk
+  z-index: 2;
+  justify-content: flex-end; // nk
+}
+
 
 
 

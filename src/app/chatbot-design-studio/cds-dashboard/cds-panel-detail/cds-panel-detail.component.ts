@@ -75,10 +75,7 @@ export class CdsPanelDetailComponent implements OnInit {
     // console.log("onUpdateQuestionsIntentSelected:::: ", $event);
   }
 
-  onClickInside(){
-    // console.log("----> onClickInside:::: ");
-    // this.clickedInsidePanelIntentDetail.emit();
-  }
+
 
 
   onSaveIntent(){

@@ -1,5 +1,5 @@
 import { Subscription, Subject } from 'rxjs';
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, HostListener } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
@@ -71,7 +71,7 @@ export class CdsDashboardComponent implements OnInit {
   EDIT_VIEW = false;
   showSpinner = false;
   isIntentElementSelected: boolean = false;
-  isClickedInsidePanelIntentDetail: boolean = false;
+ 
   id_faq_kb: string;
 
   id_faq: string;
@@ -209,17 +209,38 @@ export class CdsDashboardComponent implements OnInit {
     this.connectorService.deleteAllConnectors();
   }
 
-  clickedOutOfAddActionMenu(event) {
-    console.log('[CDS DSHBRD] clickedOutOfAddActionMenu ', event)
-    if (event === true) {
-      this.isOpenAddActionsMenu = false // nk
-    }
-  }
+  // clickedOutOfAddActionMenu(event) {
+  //   console.log('[CDS DSHBRD] clickedOutOfAddActionMenu ', event)
+  //   if (event === true) {
+  //     this.isOpenAddActionsMenu = false // nk
+  //   }
+  // }
 
 
   // ---------------------------------------------------------
   // Event listener
   // ---------------------------------------------------------
+
+  @HostListener('document:click', ['$event'])
+  documentClick(event: any): void {
+    console.log('[CDS DSHBRD] DOCUMENT CLICK event: ', event.target.id);
+    if (event.target.id ==='cdk-drop-list-0') {
+      this.isOpenAddActionsMenu = false // nk
+    }
+
+    if (event.target.id ==='action-detail') {
+      
+      this.controllerService.closeActionDetailPanel();
+    }
+
+    if (event.target.id ==='button-configuration') {
+      this.controllerService.closeButtonPanel();
+    }
+
+    
+  }
+
+
   addEventListener() {
     let that = this;
 
@@ -1014,7 +1035,7 @@ export class CdsDashboardComponent implements OnInit {
 
   /** START EVENTS PANEL INTENT LIST */
   onSelectIntent(intent: Intent) {
-    console.log('onSelectIntent::: ', intent);
+    console.log('[CDS DSBRD] onSelectIntent::: ', intent);
     this.EDIT_VIEW = true;
     this.intentSelected = intent;
     this.isIntentElementSelected = false;
@@ -1084,6 +1105,7 @@ export class CdsDashboardComponent implements OnInit {
 
   /** START EVENTS PANEL INTENT DETAIL */
   onCloseAndSavePanelIntentDetail(intentSelected: any) {
+    console.log('[CDS DSHBRD] onCloseAndSavePanelIntentDetail intentSelected ', intentSelected)
     if (intentSelected && intentSelected != null) {
       this.onSaveIntent(intentSelected);
       this.isIntentElementSelected = false;
@@ -1094,19 +1116,7 @@ export class CdsDashboardComponent implements OnInit {
     // this.isIntentElementSelected = false;
   }
 
-  onClickedInsidePanelIntentDetail() {
-    this.isClickedInsidePanelIntentDetail = true;
-  }
 
-  onClickPanelIntentDetail() {
-    // console.log('dismiss panel intent detail', this.isClickedInsidePanelIntentDetail);
-    if (this.isClickedInsidePanelIntentDetail === false) {
-      // this.isIntentElementSelected = false;
-      this.onOpenDialog();
-    } else {
-      this.isClickedInsidePanelIntentDetail = false;
-    }
-  }
 
   onOpenDialog() {
     var that = this;

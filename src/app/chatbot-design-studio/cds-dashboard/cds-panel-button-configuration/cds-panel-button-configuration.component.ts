@@ -212,6 +212,7 @@ export class CdsPanelButtonConfigurationComponent implements OnInit {
 
   /** */
   onCloseButtonPanel() {
+    console.log('[CDS-PANEL-BTN-CONFIG] onCloseButtonPanel'  )
     this.controllerService.closeButtonPanel();
     // this.closeButtonPanel.emit();
   }

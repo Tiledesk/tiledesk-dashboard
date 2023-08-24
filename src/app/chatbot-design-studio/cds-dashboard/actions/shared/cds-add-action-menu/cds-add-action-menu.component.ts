@@ -16,7 +16,7 @@ export class CdsAddActionMenuComponent implements OnInit, OnChanges {
   filterMenuItemsList: any;
   contentHeight : any;
   actionToSearch: string;
-  @Output() clickedOutOfAddActionMenu= new EventEmitter();
+  // @Output() clickedOutOfAddActionMenu= new EventEmitter();
   constructor() { }
 
   ngOnInit(): void {
@@ -74,13 +74,13 @@ export class CdsAddActionMenuComponent implements OnInit, OnChanges {
     }
   }
 
-  @HostListener('document:click', ['$event'])
-  documentClick(event: any): void {
-    console.log('[CDS-ADD-ACTION-MENU] DOCUMENT CLICK event: ', event.target.id);
-    if (event.target.id ==='cdk-drop-list-0') {
-      this.clickedOutOfAddActionMenu.emit(true)
-    }
-  }
+  // @HostListener('document:click', ['$event'])
+  // documentClick(event: any): void {
+  //   console.log('[CDS-ADD-ACTION-MENU] DOCUMENT CLICK event: ', event.target.id);
+  //   if (event.target.id ==='cdk-drop-list-0') {
+  //     this.clickedOutOfAddActionMenu.emit(true)
+  //   }
+  // }
 
   onSearchAction(searchText) {
     console.log('[CDS-ADD-ACTION-MENU] ON SEARCH ACTION searchText: ', searchText);

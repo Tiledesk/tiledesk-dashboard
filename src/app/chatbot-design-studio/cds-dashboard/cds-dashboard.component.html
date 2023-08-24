@@ -85,6 +85,7 @@
 
 
         <!-- [style.display]="isOpenAddActionsMenu?'block':'none' -->
+       <!--  (clickedOutOfAddActionMenu)="clickedOutOfAddActionMenu($event)" -->
         <cds-add-action-menu class="menu-context-add" 
             [style.top.px]="15" 
             [style.left.px]="positionFloatMenu.x"
@@ -93,33 +94,33 @@
             [style.display]="isOpenAddActionsMenu?'block':'none'" 
             [menuType]="action" 
             [menuPoint]="positionFloatMenu"
-            (addingActionToStage)="onAddingActionToStage($event)"
-            (clickedOutOfAddActionMenu)="clickedOutOfAddActionMenu($event)">
+            (addingActionToStage)="onAddingActionToStage($event)">
         </cds-add-action-menu>
 
-        <!-- <cds-add-action-menu class="menu-context-add" 
-            [style.top.px]="15" 
-            [style.left.px]="positionFloatMenu.x"
-            [style.height.px]="tdsContainerEleHeight"   
-            [tdsContainerEleHeight]="tdsContainerEleHeight"
-            [style.display]="isOpenFloatMenu?'block':'none'"   
-            [menuType]="action" 
-            [menuPoint]="positionFloatMenu"
-            (addingActionToStage)="onAddingActionToStage($event)"
-            (clickedOutOfAddActionMenu)="clickedOutOfAddActionMenu($event)">
-        </cds-add-action-menu> -->
+     
 
 
-        <cds-panel-widget *ngIf="IS_OPEN_PANEL_WIDGET" id="widget-preview" class="cds-generic-panel"
-            [projectID]="projectID" [id_faq_kb]="id_faq_kb" [defaultDepartmentId]="defaultDepartmentId">
+        <cds-panel-widget *ngIf="IS_OPEN_PANEL_WIDGET" 
+            id="widget-preview" 
+            class="cds-generic-panel"
+            [projectID]="projectID" 
+            [id_faq_kb]="id_faq_kb" 
+            [defaultDepartmentId]="defaultDepartmentId">
         </cds-panel-widget>
 
-        <cds-panel-button-configuration id="button-configuration" class="cds-generic-panel"
-            [isOpenPanel]="isOpenPanelButtonConfig" [button]=buttonSelected (saveButton)=onSaveButton($event)>
+        <cds-panel-button-configuration  *ngIf="isOpenPanelButtonConfig" 
+            id="button-configuration" 
+            class="cds-generic-panel panel-button-backdrop"
+            [isOpenPanel]="isOpenPanelButtonConfig" 
+            [button]=buttonSelected 
+            (saveButton)=onSaveButton($event)>
         </cds-panel-button-configuration>
 
-        <cds-panel-action-detail *ngIf="isOpenPanelActionDetail" id="action-detail" class="cds-generic-panel"
-            [isOpenPanel]="isOpenPanelActionDetail" [intentSelected]="intentSelected" [project_id]="projectID"
+        <cds-panel-action-detail *ngIf="isOpenPanelActionDetail" 
+            id="action-detail" 
+            class="cds-generic-panel panel-action-backdrop"
+            [isOpenPanel]="isOpenPanelActionDetail" 
+            [intentSelected]="intentSelected" [project_id]="projectID"
             [elementIntentSelected]="elementIntentSelected"
             (closeAndSavePanelIntentDetail)="onCloseAndSavePanelIntentDetail($event)"
             (clickedInsidePanelIntentDetail)="onClickedInsidePanelIntentDetail()">
