@@ -19,7 +19,7 @@ export class CdsActionDescriptionComponent implements OnInit {
   @Output() closeIntent = new EventEmitter();
   @Output() saveIntent = new EventEmitter();
   
-  titlePlaceholder: string = 'set a title to your action...';
+  titlePlaceholder: string = 'Set a title';
   element: any;
   dataInput: string;
 

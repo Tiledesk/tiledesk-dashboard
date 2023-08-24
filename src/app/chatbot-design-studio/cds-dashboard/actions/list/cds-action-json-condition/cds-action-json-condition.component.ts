@@ -68,6 +68,7 @@ export class CdsActionJsonConditionComponent implements OnInit {
     this.idConnectorFalse = this.idIntentSelected+'/'+this.action._tdActionId + '/false';
 
     this.listOfIntents = this.intentService.getListOfIntents()
+    console.log('listttttt', this.listOfIntents)
   }
 
   private updateConnector(){
@@ -79,17 +80,23 @@ export class CdsActionJsonConditionComponent implements OnInit {
           // DELETE 
           // console.log(' deleteConnector :: ', this.connector.id);
           // this.action.intentName = null;
-          this.isConnectedTrue = false;
-          this.isConnectedFalse = false;
+          if(array[array.length -1] === 'true'){
+            this.action.trueIntent = null
+            this.isConnectedTrue = false
+          }        
+          if(array[array.length -1] === 'false'){
+            this.action.falseIntent = null
+            this.isConnectedFalse = false;
+          }
         } else { //TODO: verificare quale dei due connettori è stato aggiunto (controllare il valore della action corrispondente al true/false intent)
           // ADD / EDIT
           console.log(' updateConnector :: onlineagents', this.connector.toId, this.connector.fromId ,this.action, array[array.length-1]);
           if(array[array.length -1] === 'true'){
-            this.action.trueIntent = this.connector.toId;
+            this.action.trueIntent = '#'+this.connector.toId;
             this.isConnectedTrue = true
           }        
           if(array[array.length -1] === 'false'){
-            this.action.falseIntent = this.connector.toId;
+            this.action.falseIntent = '#'+this.connector.toId;
             this.isConnectedFalse = true;
           }
         }

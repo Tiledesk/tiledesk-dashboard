@@ -169,8 +169,9 @@
                     [action]="action" (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-assign-variable>
 
-                <cds-action-delete-variable *ngSwitchCase="TYPE_ACTION.DELETE_VARIABLE" class="panel-response"
-                    [action]="elementSelected">
+                <cds-action-delete-variable *ngSwitchCase="TYPE_ACTION.DELETE_VARIABLE"
+                    class="panel-response"
+                    [action]="action">
                 </cds-action-delete-variable>
 
                 <cds-action-hide-message *ngSwitchCase="TYPE_ACTION.HIDE_MESSAGE" class="panel-response"
