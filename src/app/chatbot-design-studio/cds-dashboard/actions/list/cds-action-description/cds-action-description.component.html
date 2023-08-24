@@ -17,6 +17,23 @@
         </div> 
     </div>
 
+    <!-- <div class="custom-action-title">
+        <div class="custom-icon-action">
+            <img [src]="element?.src" [title]="element?.name">
+        </div>
+        <div class="custom-action-info-container">
+            <div class="custom-action-info">
+                <p>{{element?.name}}</p>
+                <input *ngIf="showTip" class="action-input"
+                    [ngModel]="dataInput"
+                    [placeholder]="titlePlaceholder"
+                    (input)="onChangeText($event.target.value)"/>    
+                </div>
+                <span *ngIf="showTip" class="material-icons-outlined custom-icon">more_vert</span>
+        </div>
+    </div> -->
+
+
     <div class="section">
         <div class="action-title">
             <div class="icon-action">
