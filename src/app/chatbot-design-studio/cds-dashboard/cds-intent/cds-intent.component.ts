@@ -354,10 +354,15 @@ export class CdsIntentComponent implements OnInit {
   }
 
 
-  openActionMenu(intent) {
+  openActionMenu(intent: any, calleBy: string) {
     console.log('[CDS-INTENT] openActionMenu > intent ', intent)
+    console.log('[CDS-INTENT] openActionMenu > calleBy ', calleBy)
     const openActionMenuElm = this.openActionMenuBtnRef.nativeElement.getBoundingClientRect()
-    let buttonXposition = openActionMenuElm.x + 157 // - 415
+    let xOffSet = 157
+    if (calleBy === 'add-action-placeholder') {
+     xOffSet = 277
+    }
+    let buttonXposition = openActionMenuElm.x + xOffSet // 157 
     let buttonYposition = openActionMenuElm.y // - 10
     console.log('[CDS-INTENT] openActionMenu > openActionMenuBtnRef ', openActionMenuElm)
     console.log('[CDS-INTENT] openActionMenu > buttonXposition ', buttonXposition)

@@ -24,20 +24,15 @@
 
     <div class="test-intent-play-container">
 
-        <div class="test-intent-play">
-
-            <span class="svg-icon--play" 
-                (click)="openTestSiteInPopupWindow()"
-                matTooltipClass="custom-mat-tooltip" 
-                matTooltip="Start test from here"
-                #tooltip="matTooltip" 
-                matTooltipPosition='above' 
+        <div *ngIf="listOfActions?.length > 0" class="test-intent-play">
+            <span class="svg-icon--play" (click)="openTestSiteInPopupWindow()" matTooltipClass="custom-mat-tooltip"
+                matTooltip="Start test from here" #tooltip="matTooltip" matTooltipPosition='above'
                 matTooltipHideDelay="100">
-                    <svg xmlns="http://www.w3.org/2000/svg" height="28px" viewBox="0 0 24 24" width="28px" fill="#6c6859"
-                        style="position: relative;top: 9px;">
-                        <path d="M0 0h24v24H0z" fill="none" />
-                        <path d="M8 5v14l11-7z" />
-                    </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" height="28px" viewBox="0 0 24 24" width="28px" fill="#6c6859"
+                    style="position: relative;top: 9px;">
+                    <path d="M0 0h24v24H0z" fill="none" />
+                    <path d="M8 5v14l11-7z" />
+                </svg>
             </span>
         </div>
 
@@ -66,12 +61,7 @@
                 <img src="assets/cds/images/form.svg" title="Form">
             </div>
         </div>
-
-
     </div>
-
-
-
 
     <div *ngIf="isStart" class="cds-start-content">
         <cds-action-intent class="panel-response" [isStart]="isStart" [intentSelected]="intent"
@@ -79,9 +69,23 @@
         </cds-action-intent>
     </div>
 
+    <!-- ---------------------------------------------- -->
+    <!-- Add block placeholder -->
+    <!-- ---------------------------------------------- -->
+    <div #openActionMenuBtn class="add--action-placeholder" *ngIf="listOfActions?.length === 0" 
+        (click)="$event.stopPropagation();openActionMenu(intent, 'add-action-placeholder')">
+        <div class="add--action-placeholder-add-icon">
+            <span class="material-icons"> add </span>
+        </div>
+        <div class="add--action-placeholder-text">
+            Add an action to this block
+        </div>
+    </div>
+
     <div *ngIf="!isStart" class="drag-actions target-container" [cdkDropListData]="listOfActions" cdkDropList
         (cdkDropListDropped)="onDropAction($event)">
         <!-- [id]="'action_'+i" -->
+
         <div *ngFor="let action of listOfActions; let i = index, let last = last;" cdkDrag
             (cdkDragStarted)="onDragStarted($event, intent.intent_id)" (cdkDragReleased)="onDragEnded($event)"
             [id]="action._tdActionId" class="box-action" tabindex="0" [ngClass]="{
@@ -177,21 +181,15 @@
                     (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-web-request>
 
-                <cds-action-whatsapp-attribute *ngSwitchCase="TYPE_ACTION.WHATSAPP_ATTRIBUTE"
-                    class="panel-response"
-                    [action]="action"
-                    (updateAndSaveAction)="onUpdateAndSaveAction($event)">
+                <cds-action-whatsapp-attribute *ngSwitchCase="TYPE_ACTION.WHATSAPP_ATTRIBUTE" class="panel-response"
+                    [action]="action" (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-whatsapp-attribute>
 
-                <cds-action-whatsapp-static *ngSwitchCase="TYPE_ACTION.WHATSAPP_STATIC"
-                    class="panel-response"
-                    [action]="action"
-                    (updateAndSaveAction)="onUpdateAndSaveAction($event)">
+                <cds-action-whatsapp-static *ngSwitchCase="TYPE_ACTION.WHATSAPP_STATIC" class="panel-response"
+                    [action]="action" (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-whatsapp-static>
 
-                <cds-action-askgpt *ngSwitchCase="TYPE_ACTION.ASKGPT"
-                    class="panel-response"
-                    [action]="action"
+                <cds-action-askgpt *ngSwitchCase="TYPE_ACTION.ASKGPT" class="panel-response" [action]="action"
                     (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-askgpt>
 
@@ -201,7 +199,7 @@
             <cds-action-arrow *ngIf="!last"></cds-action-arrow>
 
             <div *ngIf="last" class="csd-open-action-menu-btn-wpr csd-add-action-btn-wpr-element">
-                <button #openActionMenuBtn (click)="$event.stopPropagation();openActionMenu(intent)"
+                <button #openActionMenuBtn (click)="$event.stopPropagation();openActionMenu(intent, 'add-action-btn')"
                     class="btn cds-add-action-btn csd-add-action-btn-wpr-element">
                     <span class="material-icons csd-add-action-btn-wpr-element">
                         add

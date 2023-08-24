@@ -1053,3 +1053,34 @@
   padding-top: 8px !important;
   padding-bottom: 8px !important;
 }
+
+.add--action-placeholder {
+  position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    min-height: 30px;
+    border-radius: 10px;
+    border: 2px solid #6c6859;
+    padding: 12px;
+    border-style: dashed;
+    background: rgba(62, 169, 245, 0.1);
+}
+
+.add--action-placeholder-add-icon span {
+  color: #6c6859;
+  font-size: 30px;
+}
+.add--action-placeholder-text {
+  font-weight: 400;
+  color: #6c6859;
+}
+
+.add--action-placeholder:hover .add--action-placeholder-add-icon span {
+  color: #3ea9f5;
+}
+
+.add--action-placeholder:hover .add--action-placeholder-text {
+  color: #3ea9f5;
+}
