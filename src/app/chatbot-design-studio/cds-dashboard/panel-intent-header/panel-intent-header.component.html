@@ -8,9 +8,9 @@
 
     <div class="form-group" 
         [ngClass]="{'is-error':intentNameResult === false || intentNameAlreadyExist}">
-        <label class="control-label title" [ngClass]="{'noDisplay':(intentName && intentName.length>0)}">
+        <!-- <label class="control-label title" [ngClass]="{'noDisplay':(intentName && intentName.length>0)}">
             {{ 'EnterIntentName' | translate }}
-        </label>
+        </label> -->
 
         <!-- 
            
@@ -24,7 +24,8 @@
             (mouseup)="onMouseUpInput()"
             [disabled]="intentName === 'start' || intentName === 'defaultFallback'"
             (ngModelChange)="onChangeIntentName($event)" 
-            (keydown.enter)="onEnterButtonPressed($event)" >
+            (keydown.enter)="onEnterButtonPressed($event)"
+            [placeholder]="'EnterIntentName' | translate">
         <div *ngIf="intentNameAlreadyExist" class="error---msg"> The block name must be unique </div>
         <div *ngIf="intentNameNotHasSpecialCharacters === false" class="error---msg"> The block name cannot contain
             special characters </div>
