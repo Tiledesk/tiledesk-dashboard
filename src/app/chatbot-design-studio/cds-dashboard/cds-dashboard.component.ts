@@ -232,7 +232,9 @@ export class CdsDashboardComponent implements OnInit {
   @HostListener('document:click', ['$event'])
   documentClick(event: any): void {
     console.log('[CDS DSHBRD] DOCUMENT CLICK event: ', event.target.id);
-    if (event.target.id ==='cdk-drop-list-0') {
+    // if (event.target.id ==='cdk-drop-list-0') {
+    if (event.target.id.startsWith("cdk-drop-list-")) {
+      
       this.isOpenAddActionsMenu = false // nk
       this.controllerService.closeActionDetailPanel();
       this.controllerService.closeButtonPanel();
@@ -313,10 +315,13 @@ export class CdsDashboardComponent implements OnInit {
         // - actions context menu (float)
         // @ Close WHEN CONNECTOR IS RELEASED
         // - test widget
+        // - action detail panel
+        // - button configuration panel
         // -------------------------------------------------------
           this.isOpenAddActionsMenu = true;
           this.hasClickedAddAction = false;
           this.IS_OPEN_PANEL_WIDGET = false;
+          this.controllerService.closeActionDetailPanel();
 
           this.connectorDraft = {
             fromId: e.detail.fromId,
@@ -540,25 +545,25 @@ export class CdsDashboardComponent implements OnInit {
   // ----------------------------------------------------------
   getDeptsByProjectId() {
     this.departmentService.getDeptsByProjectId().subscribe((departments: any) => {
-      this.logger.log('[CDS DSBRD] - DEPT GET DEPTS ', departments);
-      this.logger.log('[CDS DSBRD] - DEPT BOT ID ', this.id_faq_kb);
+      this.logger.log('[CDS DSHBRD] - DEPT GET DEPTS ', departments);
+      this.logger.log('[CDS DSHBRD] - DEPT BOT ID ', this.id_faq_kb);
 
       if (departments) {
 
         departments.forEach((dept: any) => {
-          // this.logger.log('[CDS DSBRD] - DEPT', dept);
+          // this.logger.log('[CDS DSHBRD] - DEPT', dept);
           if (dept.default === true) {
             this.defaultDepartmentId = dept._id;
-            this.logger.log('[CDS DSBRD] - DEFAULT DEPT ID ', this.defaultDepartmentId);
+            this.logger.log('[CDS DSHBRD] - DEFAULT DEPT ID ', this.defaultDepartmentId);
           }
         })
         const depts_length = departments.length
-        this.logger.log('[CDS DSBRD] ---> GET DEPTS DEPTS LENGHT ', depts_length);
+        this.logger.log('[CDS DSHBRD] ---> GET DEPTS DEPTS LENGHT ', depts_length);
       }
     }, error => {
-      this.logger.error('[CDS DSBRD] - DEPT - GET DEPTS  - ERROR', error);
+      this.logger.error('[CDS DSHBRD] - DEPT - GET DEPTS  - ERROR', error);
     }, () => {
-      this.logger.log('[CDS DSBRD] - DEPT - GET DEPTS - COMPLETE')
+      this.logger.log('[CDS DSHBRD] - DEPT - GET DEPTS - COMPLETE')
     });
   }
 
@@ -784,10 +789,14 @@ export class CdsDashboardComponent implements OnInit {
   // - actions static context menu
   // @ Close
   // - test widget
+  // - detail action panel
+  // - button configuration panel 
   // -------------------------------------------------------
   showPanelActions(event) {
     console.log('[CDS DSHBRD] showPanelActions event:: ', event);
     this.isOpenAddActionsMenu = true;
+    this.controllerService.closeActionDetailPanel();
+    this.controllerService.closeButtonPanel();
     this.hasClickedAddAction = event.addAction;
     console.log('[CDS DSHBRD] showPanelActions hasClickedAddAction:: ', this.hasClickedAddAction);
     this.IS_OPEN_PANEL_WIDGET = false;
@@ -877,7 +886,7 @@ export class CdsDashboardComponent implements OnInit {
 
   /** Go back to previous page */
   goBack() {
-    console.log('[CDS DSBRD] goBack ');
+    console.log('[CDS DSHBRD] goBack ');
     this.router.navigate(['project/' + this.project._id + '/bots/my-chatbots/all']);
     this.hideShowWidget('show');
   }
@@ -886,13 +895,18 @@ export class CdsDashboardComponent implements OnInit {
   // - test widget
   // @ Close
   // - detail action panel
-  // - button configuration panel 
+  // - actions context menu' (static & float),
+  // - button configuration panel  
   // -------------------------------------------------------
   onTestItOut(status) {
-    console.log('[CDS DSBRD] onTestItOut  status ', status);
+    console.log('[CDS DSHBRD] onTestItOut  status ', status);
     this.IS_OPEN_PANEL_WIDGET = status
     this.controllerService.closeActionDetailPanel();
     this.controllerService.closeButtonPanel();
+    this.isOpenAddActionsMenu = false;
+    if (!this.hasClickedAddAction) {
+      this.removeConnectorDraftAndCloseFloatMenu();
+    }
   }
 
   onToggleSidebarWith(IS_OPEN) {
@@ -904,7 +918,7 @@ export class CdsDashboardComponent implements OnInit {
 
   /** START EVENTS PANEL ACTIONS */
   onAddNewAction(action) {
-    this.logger.log('[CDS DSBRD] onAddNewAction ', action)
+    this.logger.log('[CDS DSHBRD] onAddNewAction ', action)
     this.isOpenActionDrawer = false;
     this.intentSelected.actions.push(action);
     let maxLength = this.intentSelected.actions.length;
@@ -925,13 +939,13 @@ export class CdsDashboardComponent implements OnInit {
   /** OPPURE */
   /** chiamata quando premo + sull'intent per aggiungere una nuova action */
   async onAddingActionToStage(event) {
-    console.log('[CDS-DSBRD] onAddingActionToStage:: ', event);
+    console.log('[CDS-DSHBRD] onAddingActionToStage:: ', event);
     // -------------------------------------------------------------------------
     // @ Close WHEN AN ACTION IS ADDED ON THE STAGE FROM THE ACTIONS CONTEX MENU
     // - actions context menu (static & float)
     // -------------------------------------------------------------------------
     this.isOpenAddActionsMenu = false; // nk
-    console.log('[CDS-DSBRD] trascino connettore sullo stage ', event);
+    console.log('[CDS-DSHBRD] trascino connettore sullo stage ', event);
     if (this.connectorDraft.toPoint) {
       const toPoint = this.connectorDraft.toPoint;
       toPoint.x = toPoint.x - 132;
@@ -940,16 +954,16 @@ export class CdsDashboardComponent implements OnInit {
       const newIntent = await this.createNewIntentWithAnAction(toPoint, newAction);
       if (newIntent) {
         const toId = newIntent.intent_id;
-        console.log('[CDS-DSBRD] sto per creare il connettore ');
+        console.log('[CDS-DSHBRD] sto per creare il connettore ');
         this.connectorService.createConnectorFromId(fromId, toId);
         this.removeConnectorDraftAndCloseFloatMenu();
       }
     } else {
-      console.log("[CDS-DSBRD] ho premuto + quindi creo una nuova action e la aggiungo all'intent");
+      console.log("[CDS-DSHBRD] ho premuto + quindi creo una nuova action e la aggiungo all'intent");
       const newAction = this.intentService.createNewAction(event.type);
-      console.log("[CDS-DSBRD] nuova action creata ", newAction);
+      console.log("[CDS-DSHBRD] nuova action creata ", newAction);
       this.intentSelected.actions.push(newAction);
-      console.log("[CDS-DSBRD] nuova action aggiunta all'intent ", this.intentSelected);
+      console.log("[CDS-DSHBRD] nuova action aggiunta all'intent ", this.intentSelected);
       this.updateIntent();
     }
   }
@@ -960,28 +974,28 @@ export class CdsDashboardComponent implements OnInit {
    * oppure 
    * chiamata quando aggiungo (droppandola) una action sullo stage spostandola da un altro intent  */
   async onDroppedElementToStage(event: CdkDragDrop<string[]>) {
-    console.log('[CDS DSBRD] droppedElementOnStage:: ', event);
+    console.log('[CDS DSHBRD] droppedElementOnStage:: ', event);
     // recuperare la posizione
     let pos = this.connectorService.tiledeskConnectors.logicPoint(event.dropPoint);
     pos.x = pos.x - 132;
     let action: any = event.previousContainer.data[event.previousIndex];
     if (action.value && action.value.type) {
       // dragging a new action into the stage
-      console.log('[CDS DSBRD] ho draggato una action da panel element sullo stage');
+      console.log('[CDS DSHBRD] ho draggato una action da panel element sullo stage');
       const newAction = this.intentService.createNewAction(action.value.type);
       const newIntent = await this.createNewIntentWithAnAction(pos, newAction);
 
     } else if (action) {
       // dragging an action from another intent, into the stage
-      console.log('[CDS DSBRD] ho draggato una action da un intent sullo stage');
+      console.log('[CDS DSHBRD] ho draggato una action da un intent sullo stage');
       const resp = this.intentService.deleteActionFromPreviousIntentOnMovedAction(event, action);
       if (resp) {
         const newIntent = await this.createNewIntentWithAnAction(pos, action);
         if (newIntent) {
-          console.log('[CDS DSBRD] cancello i connettori della action draggata');
+          console.log('[CDS DSHBRD] cancello i connettori della action draggata');
           this.connectorService.deleteConnectorsFromActionByActionId(action._tdActionId);
           const elementID = this.intentService.previousIntentId;
-          console.log("[CDS DSBRD] aggiorno i connettori dell'intent", elementID);
+          console.log("[CDS DSHBRD] aggiorno i connettori dell'intent", elementID);
           this.connectorService.movedConnector(elementID);
         }
       }
@@ -1024,12 +1038,12 @@ export class CdsDashboardComponent implements OnInit {
 
 
   onOpenActionDrawer(_isOpenActioDrawer: boolean) {
-    this.logger.log('[CDS DSBRD] onOpenActionDrawer - isOpenActioDrawer ', _isOpenActioDrawer)
+    this.logger.log('[CDS DSHBRD] onOpenActionDrawer - isOpenActioDrawer ', _isOpenActioDrawer)
     this.isOpenActionDrawer = _isOpenActioDrawer;
   }
 
   onAnswerSelected(answer: string) {
-    this.logger.log('[CDS DSBRD] onAnswerSelected - answer ', answer)
+    this.logger.log('[CDS DSHBRD] onAnswerSelected - answer ', answer)
     this.elementIntentSelected = {};
     this.elementIntentSelected['type'] = TYPE_INTENT_ELEMENT.ANSWER;
     this.elementIntentSelected['element'] = answer
@@ -1038,7 +1052,7 @@ export class CdsDashboardComponent implements OnInit {
 
 
   onActionSelected(event) {
-    console.log('[CDS DSBRD] onActionSelected from PANEL INTENT - action ',  event.action, ' - index ', event.index)
+    console.log('[CDS DSHBRD] onActionSelected from PANEL INTENT - action ',  event.action, ' - index ', event.index)
     // -------------------------------------------------------
     // @ Close WHEN AN ACTION IS SELECTED FROM AN INTENT
     // - actions context menu (static & float)
@@ -1063,28 +1077,57 @@ export class CdsDashboardComponent implements OnInit {
     this.elementIntentSelected['maxLength'] = event.maxLength
     this.elementIntentSelected['intent_display_name'] = event.intent_display_name
     this.isIntentElementSelected = true;
-    this.logger.log('[CDS DSBRD] onActionSelected from PANEL INTENT - this.elementIntentSelected ', this.elementIntentSelected)
+    this.logger.log('[CDS DSHBRD] onActionSelected from PANEL INTENT - this.elementIntentSelected ', this.elementIntentSelected)
     this.intentSelected = this.listOfIntents.find(el => el.intent_id === this.intentService.intentSelectedID)
     this.controllerService.openActionDetailPanel(TYPE_INTENT_ELEMENT.ACTION, this.elementIntentSelected['element'])
   }
 
   onQuestionSelected(question: string) {
-    console.log('[CDS DSBRD] onQuestionSelected from PANEL INTENT - question ', question)
+    console.log('[CDS DSHBRD] onQuestionSelected from PANEL INTENT - question ', question)
+    // -------------------------------------------------------
+    // @ Close WHEN THE QUESTION DETAIL PANEL IS OPENED
+    // - actions context menu (static & float)
+    // - button configuration panel 
+    // - test widget
+    // -------------------------------------------------------
+    this.isOpenAddActionsMenu = false;
+    this.controllerService.closeButtonPanel();
+    this.IS_OPEN_PANEL_WIDGET = false;
+
+    // @ Remove connectors of the float context menu
+    if (!this.hasClickedAddAction) {
+      this.removeConnectorDraftAndCloseFloatMenu();
+    }
+    
     this.elementIntentSelected = {};
     this.elementIntentSelected['type'] = TYPE_INTENT_ELEMENT.QUESTION;
     this.elementIntentSelected['element'] = question
-    console.log('[CDS DSBRD] onQuestionSelected from PANEL INTENT - this.elementIntentSelected ', this.elementIntentSelected)
+    console.log('[CDS DSHBRD] onQuestionSelected from PANEL INTENT - this.elementIntentSelected ', this.elementIntentSelected)
     this.isIntentElementSelected = true;
     this.intentSelected = this.listOfIntents.find(el => el.intent_id === this.intentService.intentSelectedID)
     this.controllerService.openActionDetailPanel(TYPE_INTENT_ELEMENT.QUESTION, this.elementIntentSelected['element'])
   }
 
   onIntentFormSelected(intentform: Form) {
-    this.logger.log('[CDS DSBRD] onIntentFormSelected - from PANEL INTENT intentform ', intentform)
+    // -------------------------------------------------------
+    // @ Close WHEN THE FORM DETAIL PANEL IS OPENED
+    // - actions context menu (static & float)
+    // - button configuration panel 
+    // - test widget
+    // -------------------------------------------------------
+    this.isOpenAddActionsMenu = false;
+    this.controllerService.closeButtonPanel();
+    this.IS_OPEN_PANEL_WIDGET = false;
+
+    // @ Remove connectors of the float context menu
+    if (!this.hasClickedAddAction) {
+      this.removeConnectorDraftAndCloseFloatMenu();
+    }
+    this.logger.log('[CDS DSHBRD] onIntentFormSelected - from PANEL INTENT intentform ', intentform)
     this.elementIntentSelected = {};
     this.elementIntentSelected['type'] = TYPE_INTENT_ELEMENT.FORM;
     this.elementIntentSelected['element'] = intentform
-    this.logger.log('[CDS DSBRD] onIntentFormSelected - from PANEL INTENT - this.elementIntentSelected ', this.elementIntentSelected)
+    this.logger.log('[CDS DSHBRD] onIntentFormSelected - from PANEL INTENT - this.elementIntentSelected ', this.elementIntentSelected)
     this.isIntentElementSelected = true;
     this.intentSelected = this.listOfIntents.find(el => el.intent_id === this.intentService.intentSelectedID)
     this.controllerService.openActionDetailPanel(TYPE_INTENT_ELEMENT.FORM, this.elementIntentSelected['element'])
@@ -1103,13 +1146,13 @@ export class CdsDashboardComponent implements OnInit {
 
   /** START EVENTS PANEL INTENT LIST */
   onSelectIntent(intent: Intent) {
-    console.log('[CDS DSBRD] onSelectIntent::: ', intent);
+    console.log('[CDS DSHBRD] onSelectIntent::: ', intent);
     this.EDIT_VIEW = true;
     this.intentSelected = intent;
     this.isIntentElementSelected = false;
     // this.MOCK_getFaqIntent();
     if (this.intentSelected.actions && this.intentSelected.actions.length > 0) {
-      this.logger.log('[CDS DSBRD] onSelectIntent elementIntentSelected Exist actions', this.intentSelected.actions[0]);
+      this.logger.log('[CDS DSHBRD] onSelectIntent elementIntentSelected Exist actions', this.intentSelected.actions[0]);
       // this.onActionSelected({ action: this.intentSelected.actions[0], index: 0, maxLength: 1, intent_display_name: this.intentSelected.intent_display_name })
     } else {
       this.elementIntentSelected = {};
