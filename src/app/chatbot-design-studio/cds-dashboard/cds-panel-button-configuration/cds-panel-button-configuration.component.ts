@@ -81,7 +81,7 @@ export class CdsPanelButtonConfigurationComponent implements OnInit {
       // this.buttonLabelResult = true;
       this.errorUrl = false;
       this.buttonLabel = '';
-      this.button.type = this.typeOfButton.TEXT;
+      // this.buttonType = this.typeOfButton.TEXT;
       this.urlType = this.typeOfUrl.BLANK;
       this.buttonUrl = '';
       this.buttonAction = null;
