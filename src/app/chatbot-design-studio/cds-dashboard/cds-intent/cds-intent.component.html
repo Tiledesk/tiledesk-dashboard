@@ -38,7 +38,7 @@
 
     </div>
 
-    <div class="pic-header tds_draggable" [ngClass]="{'cds-start': isStart}">
+    <div class="pic-header tds_draggable" [ngClass]="{'cds-start': isStart, 'placeholder-block-header':listOfActions?.length === 0}">
 
         <!-- <div class="pic-header-title tds_draggable">
             <div class="pic-header-title-input tds_draggable">
@@ -78,13 +78,22 @@
         <!-- ---------------------------------------------- -->
         <!-- Add block placeholder -->
         <!-- ---------------------------------------------- -->
-        <div #openActionMenuBtn class="add--action-placeholder" *ngIf="listOfActions?.length === 0"
-            (click)="$event.stopPropagation();openActionMenu(intent, 'add-action-placeholder')">
-            <div class="add--action-placeholder-add-icon">
+        <div class="add--action-placeholder" *ngIf="listOfActions?.length === 0">
+            <!-- add-action-placeholder  -->
+            <!-- <div class="add--action-placeholder-add-icon">
                 <span class="material-icons"> add </span>
-            </div>
+            </div> -->
             <div class="add--action-placeholder-text">
                 Add an action to this block
+            </div>
+
+            <div class="add-action-from-placeholder-btn-wpr"> 
+                <button #openActionMenuBtn (click)="$event.stopPropagation();openActionMenu(intent, 'add-action-btn')"
+                class="btn cds-add-action-btn csd-add-action-btn-wpr-element">
+                    <span class="material-icons csd-add-action-btn-wpr-element">
+                        add
+                    </span>
+                </button>
             </div>
         </div>
 
@@ -95,18 +104,8 @@
             'cds-no-featured-action': action._tdActionType !== TYPE_ACTION.REPLY,
             'cds-last-action': last
             }" (keydown)="onKeydown($event)" (click)="onSelectAction(action, i, action._tdActionId)">
-            <!-- (keydown)="onDeleteAction($event)" -->
+        
 
-            <!-- <div cdkDragHandle class="header-action"> -->
-            <!-- <div class="icon-action">
-                    <img [src]="getActionParams(action).src" [title]="getActionParams(action).name" />
-                </div>
-                <span class="label-action">
-                    <div class="sc-irCEUn gzQaYi vf-canvas__step-item-label">
-                        {{ getActionParams(action).name }}
-                    </div>
-                </span>
-               </div> -->
             
             <cds-action-description cdkDragHandle 
                 class="header-action" 

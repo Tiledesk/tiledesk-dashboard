@@ -167,6 +167,10 @@
     background-color: $deep-brown;
   }
 
+  .placeholder-block-header {
+    border: 1px solid rgb(255, 255, 255);
+  }
+
   .cds-start {
     transition: box-shadow .15s ease 0s, background-color .15s ease 0s;
     position: absolute;
@@ -770,11 +774,21 @@
   bottom: -45px;
 }
 
-.cds-last-action>.csd-open-action-menu-btn-wpr {
+.cds-last-action > .csd-open-action-menu-btn-wpr {
   opacity: 0;
 }
 
-.cds-last-action:hover>.csd-open-action-menu-btn-wpr {
+.cds-last-action:hover > .csd-open-action-menu-btn-wpr {
+  opacity: 1;
+}
+
+.add--action-placeholder > .add-action-from-placeholder-btn-wpr{
+  opacity: 0;
+  position: absolute;
+  top: 58px;
+}
+
+.add--action-placeholder:hover > .add-action-from-placeholder-btn-wpr{
   opacity: 1;
 }
 
@@ -1022,17 +1036,18 @@
 }
 
 .add--action-placeholder {
-  position: relative;
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
     min-height: 30px;
     border-radius: 10px;
-    border: 2px solid #6c6859;
-    padding: 12px;
+    border: 1px solid #6c6859;
+    padding: 12px 6px;
     border-style: dashed;
-    background: rgba(62, 169, 245, 0.1);
+    // background: rgba(62, 169, 245, 0.1);
+    background: rgba(221, 228, 234, .8);
 }
 
 .add--action-placeholder-add-icon span {
@@ -1042,6 +1057,7 @@
 .add--action-placeholder-text {
   font-weight: 400;
   color: #6c6859;
+  font-size: 14px;
 }
 
 .add--action-placeholder:hover .add--action-placeholder-add-icon span {
@@ -1050,4 +1066,9 @@
 
 .add--action-placeholder:hover .add--action-placeholder-text {
   color: #3ea9f5;
+}
+
+.add--action-placeholder:hover {
+  border: 1px solid #3ea9f5;
+  border-style: dashed;
 }
