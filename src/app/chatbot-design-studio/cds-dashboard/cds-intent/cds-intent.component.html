@@ -48,7 +48,8 @@
             </div>
         </div> -->
 
-        <appdashboard-panel-intent-header class="pic-title-text tds_draggable" [intentSelected]="intent">
+        <appdashboard-panel-intent-header class="pic-title-text tds_draggable" 
+            [intentSelected]="intent">
         </appdashboard-panel-intent-header>
 
 
@@ -64,8 +65,11 @@
     </div>
 
     <div *ngIf="isStart" class="cds-start-content">
-        <cds-action-intent class="panel-response" [isStart]="isStart" [intentSelected]="intent"
-            [action]="listOfActions[0]" (updateAndSaveAction)="onUpdateAndSaveAction($event)">
+        <cds-action-intent class="panel-response" 
+            [isStart]="isStart" 
+            [intentSelected]="intent"
+            [action]="listOfActions[0]"
+            (updateAndSaveAction)="onUpdateAndSaveAction($event)">
         </cds-action-intent>
     </div>
 
@@ -114,7 +118,8 @@
 
             <div cdkDragDisabled class="body-action" [ngSwitch]="action._tdActionType">
 
-                <cds-action-controls (onClickControl)="onClickControl($event, action, i)">
+                <cds-action-controls 
+                    (onClickControl)="onClickControl($event, action, i)">
                 </cds-action-controls>
 
 
@@ -126,7 +131,8 @@
                     (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-reply>
 
-                <cds-action-reply *ngSwitchCase="TYPE_ACTION.RANDOM_REPLY" class="panel-response"
+                <cds-action-reply *ngSwitchCase="TYPE_ACTION.RANDOM_REPLY" 
+                    class="panel-response"
                     [intentSelected]="intent" 
                     [action]="action" 
                     (updateAndSaveAction)="onUpdateAndSaveAction($event)">
@@ -160,7 +166,7 @@
 
                 <cds-action-online-agents *ngSwitchCase="TYPE_ACTION.ONLINE_AGENTS" 
                     class="panel-response"
-                    [connectorChanged]="connectorChanged"   
+                    [connectorChanged]="connectorChanged" 
                     [intentSelected]="intent" 
                     [action]="action"
                     (updateAndSaveAction)="onUpdateAndSaveAction($event)">
@@ -213,7 +219,7 @@
                     [action]="action" 
                     (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-hide-message>
-    
+                
                 <cds-action-web-request *ngSwitchCase="TYPE_ACTION.WEB_REQUEST" 
                     class="panel-response" 
                     [action]="action"

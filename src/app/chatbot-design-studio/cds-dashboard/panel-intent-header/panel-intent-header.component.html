@@ -22,7 +22,7 @@
             class="input form-control tds_draggable"
             [(ngModel)]="intentName"
             (mouseup)="onMouseUpInput()"
-            [disabled]="intentName === 'start' || intentName === 'defaultFallback'"
+            [readonly]="intentName === 'start' || intentName === 'defaultFallback'"
             (ngModelChange)="onChangeIntentName($event)" 
             (keydown.enter)="onEnterButtonPressed($event)"
             [placeholder]="'EnterIntentName' | translate">

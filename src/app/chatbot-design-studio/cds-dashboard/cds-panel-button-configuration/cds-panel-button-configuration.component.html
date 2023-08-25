@@ -62,36 +62,31 @@
                     {{ 'Type' | translate }}
                 </label>
                 <div class="selectFormModel class-test-select">
-                    <ng-select 
-                        class = "form-control-select" 
-                        [items] = "buttonTypes" 
-                        bindLabel="label"
-                        bindValue="value"
-                        [searchable] = false
-                        [clearable] = false
-                        [(ngModel)] = "buttonType"
-                        (change) = "onChangeTypeButton($event)">
-                    </ng-select>
+                    <cds-select #select_action id="select-action"
+                        [items]="buttonTypes"
+                        [bindLabelSelect]="'label'"
+                        [bindValueSelect]="'value'"
+                        [itemSelected]="button.type"
+                        (onSelected)="onChangeTypeButton($event)">
+                    </cds-select>
                 </div>
             </div>
         </div>
 
-        <div class="section" [ngClass]="{'displayed':buttonType === typeOfButton.URL}">
+        <div class="section" [ngClass]="{'displayed':button.type === typeOfButton.URL}">
 
             <div class="form-group ng-select">
                 <label class="control-label">
                     {{ 'Open in' | translate }}
                 </label>
                 <div class="selectFormModel class-test-select">
-                    <ng-select 
-                        class = "form-control-select" 
-                        [items] = "urlTypes" 
-                        bindLabel="label"
-                        bindValue="value"
-                        [searchable] = false
-                        [clearable] = false
-                        [(ngModel)] = "urlType">
-                    </ng-select>
+                    <cds-select #select_action id="select-action"
+                        [items]="urlTypes"
+                        [bindLabelSelect]="'label'"
+                        [bindValueSelect]="'value'"
+                        [itemSelected]="urlType"
+                        (onSelected)="onChangeOpenIn($event)">
+                    </cds-select>
                 </div>
             </div>
 
@@ -109,7 +104,7 @@
         
 
         <div class="section" 
-            [ngClass]="{'displayed':buttonType === typeOfButton.ACTION}">
+            [ngClass]="{'displayed':button.type === typeOfButton.ACTION}">
             <div class="form-group ng-select">
                 <label class="control-label">
                     {{ 'Go to block' | translate }}
