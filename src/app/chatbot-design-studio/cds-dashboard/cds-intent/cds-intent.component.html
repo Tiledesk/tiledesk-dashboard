@@ -71,8 +71,10 @@
     </div>
 
     <div *ngIf="isStart" class="cds-start-content">
-        <cds-action-intent class="panel-response" [isStart]="isStart" [intentSelected]="intent"
-            [action]="listOfActions[0]" (updateAndSaveAction)="onUpdateAndSaveAction($event)">
+        <cds-action-intent class="panel-response" 
+            [isStart]="isStart" [intentSelected]="intent"
+            [action]="listOfActions[0]" 
+            (updateAndSaveAction)="onUpdateAndSaveAction($event)">
         </cds-action-intent>
     </div>
 
@@ -89,7 +91,9 @@
         </div>
     </div>
 
-    <div *ngIf="!isStart" class="drag-actions target-container" [cdkDropListData]="listOfActions" cdkDropList
+    <div *ngIf="!isStart" class="drag-actions target-container" 
+        [cdkDropListData]="listOfActions" 
+        cdkDropList
         (cdkDropListDropped)="onDropAction($event)">
         <!-- [id]="'action_'+i" -->
 
