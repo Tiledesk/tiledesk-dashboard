@@ -33,7 +33,7 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
     private logger: LoggerService,
     public intentService: IntentService
   ) { 
-    this.intentService.behaviorIntents.subscribe(intents => {
+    this.intentService.getIntents().subscribe(intents => {
       if(intents){
         this.listOfIntents = intents
       }
@@ -43,6 +43,7 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
   // SYSTEM FUNCTIONS //
   ngOnInit(): void {
     this.showSpinner = false;
+    this.listOfIntents = this.intentService.listOfIntents 
     // console.log("[PANEL-INTENT-HEADER] intentSelected: ", this.intentSelected)
     try {
       this.intentName = this.intentSelected.intent_display_name;
@@ -129,6 +130,7 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
   // }
 
   private checkIntentName(name: string) {
+    this.intentNameAlreadyExist = false;
     if (name !== this.intentSelected.intent_display_name) {
       this.intentNameAlreadyExist = this.listOfIntents.some((el) => {
         return el.intent_display_name === name;
@@ -140,10 +142,6 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
       this.intentNameResult = false;
     }
     return this.intentNameResult;
-    // console.log('checkIntentName:: ', name);
-    // console.log('intentNameNotHasSpecialCharacters:: ', this.intentNameNotHasSpecialCharacters);
-    // console.log('intentNameResult:: ', this.intentNameResult);
-    // console.log('intentNameAlreadyExist:: ', this.intentNameAlreadyExist);
   }
 
   /** BLUR EVENT*/
