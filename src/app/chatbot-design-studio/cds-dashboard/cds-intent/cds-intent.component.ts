@@ -78,14 +78,14 @@ export class CdsIntentComponent implements OnInit {
     /** SUBSCRIBE TO THE INTENT CREATED OR UPDATED */
     this.subscriptionBehaviorIntent = this.intentService.behaviorIntent.subscribe(intent => {
       if (intent && this.intent && intent.intent_id === this.intent.intent_id) {
-        console.log("sto modifico l'intent: ",  this.intent , " con : ", intent );
+        console.log("[CDS-INTENT] sto modifico l'intent: ",  this.intent , " con : ", intent );
         this.intent = intent;
 
         if(intent['attributesChanged']){
-          console.log("ho solo cambiato la posizione sullo stage");
+          console.log("[CDS-INTENT] ho solo cambiato la posizione sullo stage");
           delete intent['attributesChanged'];
         } else { // if(this.intent.actions.length !== intent.actions.length && intent.actions.length>0)
-          console.log("aggiorno le actions dell'intent");
+          console.log("[CDS-INTENT] aggiorno le actions dell'intent");
           this.listOfActions = this.intent.actions;
           // AGGIORNO I CONNETTORI
           // this.intentService.updateIntent(this.intent); /// DEVO ELIMINARE UPDATE DA QUI!!!!!
@@ -206,7 +206,7 @@ export class CdsIntentComponent implements OnInit {
       }
       return;
     } catch (error) {
-      console.error("ERROR: ", error);
+      console.error("[CDS-INTENT] getActionParams ERROR: ", error);
       return;
     }
   }
@@ -228,7 +228,7 @@ export class CdsIntentComponent implements OnInit {
   /** EVENTS  */
 
   onSelectAction(action, index: number, idAction) {
-    console.log('onActionSelected action: ', action);
+    console.log('[CDS-INTENT] onActionSelected action: ', action);
     this.elementTypeSelected = idAction;
     this.intentService.selectAction(this.intent.intent_id, idAction);
     this.actionSelected.emit({ action: action, index: index, maxLength: this.listOfActions.length });
@@ -241,7 +241,7 @@ export class CdsIntentComponent implements OnInit {
   // }
 
   onSelectQuestion(elementSelected) {
-    console.log('onSelectQuestion-->', elementSelected, this.intent.question)
+    console.log('[CDS-INTENT] onSelectQuestion-->', elementSelected, this.intent.question)
     this.elementTypeSelected = elementSelected;
     this.intentService.selectIntent(this.intent.intent_id)
     // this.isIntentElementSelected = true;
@@ -354,10 +354,15 @@ export class CdsIntentComponent implements OnInit {
   }
 
 
-  openActionMenu(intent) {
+  openActionMenu(intent: any, calleBy: string) {
     console.log('[CDS-INTENT] openActionMenu > intent ', intent)
+    console.log('[CDS-INTENT] openActionMenu > calleBy ', calleBy)
     const openActionMenuElm = this.openActionMenuBtnRef.nativeElement.getBoundingClientRect()
-    let buttonXposition = openActionMenuElm.x + 157 // - 415
+    let xOffSet = 157
+    if (calleBy === 'add-action-placeholder') {
+     xOffSet = 277
+    }
+    let buttonXposition = openActionMenuElm.x + xOffSet // 157 
     let buttonYposition = openActionMenuElm.y // - 10
     console.log('[CDS-INTENT] openActionMenu > openActionMenuBtnRef ', openActionMenuElm)
     console.log('[CDS-INTENT] openActionMenu > buttonXposition ', buttonXposition)

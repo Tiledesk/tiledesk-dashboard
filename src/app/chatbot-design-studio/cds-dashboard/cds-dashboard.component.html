@@ -41,8 +41,10 @@
 
         <div id="tds_container" class="box-right tds-drag-container" cdkDropListGroup>
 
-            <cds-panel-elements class="cds-panel-elements" (showPanelActions)="onShowPanelActions($event)"
-                (addNewElement)="onAddNewElement()">
+            <cds-panel-elements class="cds-panel-elements" 
+                (showPanelActions)="onShowPanelActions($event)"
+                (addNewElement)="onAddNewElement()"
+                (onMouseOverActionMenuSx)="onMouseOverActionMenuSx($event)">
             </cds-panel-elements>
 
             <div #receiver_elements_dropped_on_stage class="receiver-elements-dropped-on-stage" cdkDropList
@@ -96,10 +98,7 @@
             [menuPoint]="positionFloatMenu"
             (addingActionToStage)="onAddingActionToStage($event)">
         </cds-add-action-menu>
-
-     
-
-
+        
         <cds-panel-widget *ngIf="IS_OPEN_PANEL_WIDGET" 
             id="widget-preview" 
             class="cds-generic-panel"
@@ -108,17 +107,19 @@
             [defaultDepartmentId]="defaultDepartmentId">
         </cds-panel-widget>
 
+        <!-- panel-button-backdrop -->
         <cds-panel-button-configuration  *ngIf="isOpenPanelButtonConfig" 
             id="button-configuration" 
-            class="cds-generic-panel panel-button-backdrop"
+            class="cds-generic-panel"
             [isOpenPanel]="isOpenPanelButtonConfig" 
             [button]=buttonSelected 
             (saveButton)=onSaveButton($event)>
         </cds-panel-button-configuration>
 
+        <!-- panel-action-backdrop -->
         <cds-panel-action-detail *ngIf="isOpenPanelActionDetail" 
             id="action-detail" 
-            class="cds-generic-panel panel-action-backdrop"
+            class="cds-generic-panel"
             [isOpenPanel]="isOpenPanelActionDetail" 
             [intentSelected]="intentSelected" [project_id]="projectID"
             [elementIntentSelected]="elementIntentSelected"
@@ -129,13 +130,16 @@
     </div>
 
 
-    <cds-chatbot-details *ngIf="activeSidebarSection == 'cds-sb-settings'" [selectedChatbot]="selectedChatbot">
+    <cds-chatbot-details *ngIf="activeSidebarSection == 'cds-sb-settings'" 
+        [selectedChatbot]="selectedChatbot">
     </cds-chatbot-details>
 
-    <cds-fulfillment *ngIf="activeSidebarSection == 'cds-sb-fulfillment'" [chatbot]="selectedChatbot">
+    <cds-fulfillment *ngIf="activeSidebarSection == 'cds-sb-fulfillment'" 
+        [chatbot]="selectedChatbot">
     </cds-fulfillment>
 
-    <cds-rules *ngIf="activeSidebarSection == 'cds-sb-rules'" [listOfIntents]="listOfIntents"
+    <cds-rules *ngIf="activeSidebarSection == 'cds-sb-rules'" 
+        [listOfIntents]="listOfIntents"
         [selectedChatbot]="selectedChatbot">
     </cds-rules>
 
@@ -156,7 +160,8 @@
 
 
 
-<cds-modal-activate-bot [selectedChatbot]="selectedChatbot">
+<cds-modal-activate-bot 
+    [selectedChatbot]="selectedChatbot">
 </cds-modal-activate-bot>
 
 <cds-popup></cds-popup>
