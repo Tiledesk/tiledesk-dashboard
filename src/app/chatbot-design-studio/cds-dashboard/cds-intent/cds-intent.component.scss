@@ -986,45 +986,6 @@
 }
 
 
-
-// Play Widget
-.panel-intent-content:hover .sc-kOFvkO {
-  padding: 0px 8px 0px 16px;
-}
-
-.ivRJLM {
-  transition: padding 0.15s ease 0s;
-  display: flex;
-  // margin-top: 18px;
-  padding: 0px;
-}
-
-.panel-intent-content:hover .sc-crntcq {
-  max-width: 16px;
-  opacity: 1;
-  height: 45px;
-}
-
-.oLzyR {
-  transition: max-width 0.12s ease 0s, margin-right 0.12s ease 0s, opacity 0.12s ease 0s;
-  max-width: 0px;
-  margin-right: 0px;
-  opacity: 0;
-  overflow: clip;
-}
-
-.vKQWr {
-  transition: opacity 0.15s ease 0s, background 0.15s ease 0s, color 0.15s ease 0s, transform 0.15s ease 0s;
-  box-sizing: content-box;
-  width: 16px;
-  height: 16px;
-  color: #62778c;
-  background: transparent;
-  display: block;
-  cursor: pointer;
-  opacity: 0.85;
-}
-
 // Play Widget 2
 .test-intent-play-container {
   position: absolute;
@@ -1040,10 +1001,16 @@
   transition: 0.25s all ease-in-out;
 }
 
+.test-intent-play-container-on-start {
+  top: 10px;
+}
+
 .panel-intent-content:hover .test-intent-play-container {
   opacity: 1;
   transform: translate3d(0, 0, 0);
 }
+
+
 
 ::ng-deep .custom-mat-tooltip {
   background-color: #2d323e !important;

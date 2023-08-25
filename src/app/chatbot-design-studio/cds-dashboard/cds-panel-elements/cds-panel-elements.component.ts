@@ -17,7 +17,7 @@ export class CdsPanelElementsComponent implements OnInit {
 
   @Output() addNewElement = new EventEmitter();
   @Output() showPanelActions = new EventEmitter();
-  
+  @Output() onMouseOverActionMenuSx = new EventEmitter();
   isOpen: boolean = false;
   isOverMenu: boolean = false;
   positionMenu: any = {'x': 80, 'y': 0 };
@@ -37,6 +37,7 @@ export class CdsPanelElementsComponent implements OnInit {
 
 
   onOpenMenu(e, type, category?: string) {
+    this.onMouseOverActionMenuSx.emit(true)
     setTimeout(() => {
       console.log('onOpenMenu: menu type ', type);
       this.menuType = type;
@@ -44,7 +45,7 @@ export class CdsPanelElementsComponent implements OnInit {
       //this.menuTrigger.openMenu();
       // let x = e.offsetLeft;
       let y = e.offsetTop;
-      // console.log(':::: CdsPanelElementsComponent onMouseOverElement :::: ', y, this.isDraggingMenuElement);
+      console.log(':::: CdsPanelElementsComponent onMouseOverElement :::: ', y, this.isDraggingMenuElement);
       this.isOpen = true;
       if(this.isDraggingMenuElement == false){
         this.positionMenu = {'x': 80, 'y': y }

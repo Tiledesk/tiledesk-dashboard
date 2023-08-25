@@ -22,11 +22,16 @@
         </div>
     </div> -->
 
-    <div class="test-intent-play-container">
+    <div class="test-intent-play-container" [ngClass]="{'test-intent-play-container-on-start': isStart}">
 
-        <div *ngIf="listOfActions?.length > 0" class="test-intent-play">
-            <span class="svg-icon--play" (click)="openTestSiteInPopupWindow()" matTooltipClass="custom-mat-tooltip"
-                matTooltip="Start test from here" #tooltip="matTooltip" matTooltipPosition='above'
+        <div *ngIf="listOfActions?.length > 0" 
+            class="test-intent-play">
+            <span class="svg-icon--play" 
+                (click)="openTestSiteInPopupWindow()" 
+                matTooltipClass="custom-mat-tooltip"
+                matTooltip="Start test from here"
+                #tooltip="matTooltip" 
+                matTooltipPosition='above'
                 matTooltipHideDelay="100">
                 <svg xmlns="http://www.w3.org/2000/svg" height="28px" viewBox="0 0 24 24" width="28px" fill="#6c6859"
                     style="position: relative;top: 9px;">
@@ -48,7 +53,9 @@
             </div>
         </div> -->
 
-        <appdashboard-panel-intent-header class="pic-title-text tds_draggable" [intentSelected]="intent">
+        <appdashboard-panel-intent-header 
+            class="pic-title-text tds_draggable" 
+            [intentSelected]="intent">
         </appdashboard-panel-intent-header>
 
 
@@ -64,8 +71,10 @@
     </div>
 
     <div *ngIf="isStart" class="cds-start-content">
-        <cds-action-intent class="panel-response" [isStart]="isStart" [intentSelected]="intent"
-            [action]="listOfActions[0]" (updateAndSaveAction)="onUpdateAndSaveAction($event)">
+        <cds-action-intent class="panel-response" 
+            [isStart]="isStart" [intentSelected]="intent"
+            [action]="listOfActions[0]" 
+            (updateAndSaveAction)="onUpdateAndSaveAction($event)">
         </cds-action-intent>
     </div>
 
@@ -82,7 +91,9 @@
         </div>
     </div>
 
-    <div *ngIf="!isStart" class="drag-actions target-container" [cdkDropListData]="listOfActions" cdkDropList
+    <div *ngIf="!isStart" class="drag-actions target-container" 
+        [cdkDropListData]="listOfActions" 
+        cdkDropList
         (cdkDropListDropped)="onDropAction($event)">
         <!-- [id]="'action_'+i" -->
 
@@ -105,6 +116,7 @@
                     </div>
                 </span>
                </div> -->
+            
             <cds-action-description cdkDragHandle 
                 class="header-action" 
                 [elementType]="action._tdActionType">
@@ -132,20 +144,20 @@
                     (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-reply>
 
-                <cds-action-intent *ngSwitchCase="TYPE_ACTION.INTENT" 
-                    class="panel-response" 
-                    [intentSelected]="intent"
+                <cds-action-intent *ngSwitchCase="TYPE_ACTION.INTENT"
+                     class="panel-response" 
+                     [intentSelected]="intent"
                     [action]="action" 
                     (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-intent>
 
-                <cds-action-change-department *ngSwitchCase="TYPE_ACTION.CHANGE_DEPARTMENT" 
+                <cds-action-change-department *ngSwitchCase="TYPE_ACTION.CHANGE_DEPARTMENT"     
                     class="panel-response"
                     [action]="action" 
                     (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-change-department>
-
-                <cds-action-email *ngSwitchCase="TYPE_ACTION.EMAIL"     
+    
+                <cds-action-email *ngSwitchCase="TYPE_ACTION.EMAIL" 
                     class="panel-response" 
                     [action]="action"
                     (updateAndSaveAction)="onUpdateAndSaveAction($event)">
@@ -212,8 +224,8 @@
                     [action]="action" 
                     (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-hide-message>
-
-                <cds-action-web-request *ngSwitchCase="TYPE_ACTION.WEB_REQUEST"     
+    
+                <cds-action-web-request *ngSwitchCase="TYPE_ACTION.WEB_REQUEST" 
                     class="panel-response" 
                     [action]="action"
                     (updateAndSaveAction)="onUpdateAndSaveAction($event)">
@@ -236,6 +248,7 @@
                     [action]="action"
                     (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-askgpt>
+
             </div>
 
             <cds-action-arrow *ngIf="!last"></cds-action-arrow>
@@ -251,10 +264,6 @@
 
         </div>
 
-
     </div>
-
-
-
 
 </div>
