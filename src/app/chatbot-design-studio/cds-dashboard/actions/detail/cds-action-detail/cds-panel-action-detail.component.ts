@@ -14,8 +14,10 @@ export class CdsActionDetailPanelComponent implements OnInit, OnChanges {
   @Output() clickedInsidePanelIntentDetail = new EventEmitter();
   @Input() elementIntentSelected: any;
   @Input() showSpinner: boolean;
-  @Input() intentSelected: Intent;
+  // @Input() intentSelected: Intent;
   
+
+  intentSelected: Intent;
   typeIntentElement = TYPE_INTENT_ELEMENT;
   typeAction = TYPE_ACTION;
   
@@ -42,21 +44,25 @@ export class CdsActionDetailPanelComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    console.log('[PANEL-INTENT-DETAIL] (OnChanges) @Input elementIntentSelected ', this.elementIntentSelected);
+    this.initialize();
+  }
+
+  initialize(){
+    this.intentSelected = this.intentService.intentSelected;
+    console.log('[PANEL-INTENT-DETAIL] (OnChanges) @Input elementIntentSelected ', this.intentSelected, this.elementIntentSelected);
     try{
       this.elementIntentSelectedType = this.elementIntentSelected.type;
       this.elementSelected = this.elementIntentSelected.element;
-      this.elementSelected = JSON.parse(JSON.stringify(this.elementIntentSelected.element));
-      this.elementSelectedIndex = this.elementIntentSelected.index
-      this.elementSelectedMaxLength = [...Array(this.elementIntentSelected.maxLength).keys()]
-      console.log('[PANEL-INTENT-DETAIL] (OnChanges) elementIntentSelectedType ', this.elementIntentSelectedType);
-      console.log('[PANEL-INTENT-DETAIL] (OnChanges) elementSelected ', this.elementSelected);
-      console.log('[PANEL-INTENT-DETAIL] (OnChanges) intentSelected ', this.intentSelected);
+      // this.elementSelected = JSON.parse(JSON.stringify(this.elementIntentSelected.element));
+      // this.elementSelectedIndex = this.elementIntentSelected.index
+      // this.elementSelectedMaxLength = [...Array(this.elementIntentSelected.maxLength).keys()]
+      // console.log('[PANEL-INTENT-DETAIL] (OnChanges) elementIntentSelectedType ', this.elementIntentSelectedType);
+      // console.log('[PANEL-INTENT-DETAIL] (OnChanges) elementSelected ', this.elementSelected);
+      // console.log('[PANEL-INTENT-DETAIL] (OnChanges) intentSelected ', this.intentSelected);
     }catch(error){
       this.logger.log('[PANEL-INTENT-DETAIL] (ngOnChanges) ERROR', error);
     }
   }
-
 
   // private setDragConfig(){
   //   // drag study

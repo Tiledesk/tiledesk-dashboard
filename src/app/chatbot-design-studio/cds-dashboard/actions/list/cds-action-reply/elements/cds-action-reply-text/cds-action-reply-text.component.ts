@@ -3,7 +3,7 @@ import { Component, OnInit, ViewChild, Input, Output, EventEmitter, Attribute } 
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 
-import { MessageWithWait, Button, MessageAttributes, Expression } from 'app/models/intent-model';
+import { Message, Wait, MessageWithWait, Button, MessageAttributes, Expression } from 'app/models/intent-model';
 import { TYPE_ACTION, TYPE_BUTTON, TYPE_URL, generateShortUID, calculatingRemainingCharacters } from 'app/chatbot-design-studio/utils';
 import { IntentService } from 'app/chatbot-design-studio/services/intent.service';
 import { ConnectorService } from 'app/chatbot-design-studio/services/connector.service';
@@ -24,11 +24,13 @@ export class CdsActionReplyTextComponent implements OnInit {
   @Output() moveDownResponse = new EventEmitter();
   // @Output() changeDelayTimeReplyAction = new EventEmitter();
   @Output() openButtonPanel = new EventEmitter();
+  
   @Output() createNewButton = new EventEmitter();
   @Output() deleteButton = new EventEmitter();
 
   @Input() idAction: string;
-  @Input() response: MessageWithWait;
+  @Input() response: Message; //MessageWithWait;
+  @Input() wait: Wait;
   @Input() index: number;
   @Input() previewMode: boolean = true
 
@@ -59,15 +61,13 @@ export class CdsActionReplyTextComponent implements OnInit {
 
   // SYSTEM FUNCTIONS //
   ngOnInit(): void {
-    // this.limitCharsText = TEXT_CHARS_LIMIT;
-    this.delayTime = this.response.time/1000;
-
+    // this.delayTime = this.response.time/1000;
+    this.delayTime = this.wait.time/1000;
     if(this.response?.attributes?.attachment?.buttons){
       this.buttons = this.response?.attributes?.attachment?.buttons;
     } else {
       this.buttons = [];
     }
-  
     this.intentService.isChangedConnector$.subscribe((connector: any) => {
       console.log('CdsActionReplyTextComponent isChangedConnector-->', connector);
       this.connector = connector;
@@ -154,7 +154,8 @@ export class CdsActionReplyTextComponent implements OnInit {
   /** onChangeDelayTime */
   onChangeDelayTime(value:number){
     this.delayTime = value;
-    this.response.time = value*1000;
+    // this.response.time = value*1000;
+    this.wait.time = value*1000;
     this.changeActionReply.emit();
     this.canShowFilter = true;
   }
@@ -178,11 +179,15 @@ export class CdsActionReplyTextComponent implements OnInit {
 
   /** onChangeTextarea */
   onChangeTextarea(text:string) {
-    this.response.text = text;
-    setTimeout(() => {
-      this.changeActionReply.emit();
-    }, 500);
+    if(!this.previewMode){
+      console.log('onChangeTextarea:');
+      this.response.text = text;
+      setTimeout(() => {
+        this.changeActionReply.emit();
+      }, 500);
+    }
   }
+
 
   /** onOpenButtonPanel */
   onOpenButtonPanel(button){

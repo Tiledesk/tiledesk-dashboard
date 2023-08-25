@@ -101,7 +101,6 @@ export class CdsPanelButtonConfigurationComponent implements OnInit {
         this.buttonAction = intent.action;
       }
       if(intent && intent.attributes !== null){
-        
         this.buttonAttributes = intent.attributes;
         // this.openBlockAttributes = true;
       }
@@ -159,7 +158,6 @@ export class CdsPanelButtonConfigurationComponent implements OnInit {
       if(this.button){
         this.button.value = this.buttonLabel;
       }
-      // this.buttonLabelResult = true;
     } catch (error) {
       console.log('error: ', error);
     }

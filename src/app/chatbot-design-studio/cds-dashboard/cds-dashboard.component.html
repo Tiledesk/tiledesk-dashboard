@@ -48,12 +48,12 @@
                     [style.top.px]="getIntentPosition(intent.id).y"
                     [style.left.px]="getIntentPosition(intent.id).x" 
                     [intent]="intent"
-                    (actionSelected)=onActionSelected($event)
+                   
                     (questionSelected)=onQuestionSelected($event)
                     (formSelected)=onIntentFormSelected($event)
                     (showPanelActions)="showPanelActions($event)">
                 </cds-intent>
-                
+                <!-- (actionSelected)=onActionSelected($event) -->
                 <!-- 
                     [intentsChanged]="intentsChanged"
                     [connectorChanged]="connectorChanged"
@@ -103,7 +103,6 @@
 
         <cds-panel-action-detail *ngIf="isOpenPanelActionDetail" id="action-detail" class="cds-generic-panel"
             [isOpenPanel]="isOpenPanelActionDetail" 
-            [intentSelected]="intentSelected" 
             [project_id]="projectID"
             [elementIntentSelected]="elementIntentSelected"
             (closeAndSavePanelIntentDetail)="onCloseAndSavePanelIntentDetail($event)"

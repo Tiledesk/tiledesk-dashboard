@@ -1,4 +1,5 @@
 <div class="panel-intent-detail" (click)="onClickInside()">
+    
     <div class="header-panel">
         <cds-action-description
             [actionSelected]="elementIntentSelectedType === typeIntentElement.ACTION? elementSelected : null"
@@ -11,16 +12,20 @@
     </div>
 
     <div id="content-panel" class="content-panel">
-        
         <div *ngIf="elementIntentSelectedType === typeIntentElement.ACTION" >
-            <div *ngFor="let item of elementSelectedMaxLength, let i = index" >
-                <div *ngIf="i === elementSelectedIndex" [ngSwitch]="elementSelected._tdActionType">
-    
+           
+            <!-- <div *ngFor="let item of elementSelectedMaxLength, let i = index" > 
+                 *ngIf="i === elementSelectedIndex" 
+                -->
+                
+                <div [ngSwitch]="elementSelected._tdActionType">
+
                     <cds-action-reply *ngSwitchCase="typeAction.REPLY"
                         class="panel-response"
                         [intentSelected]="intentSelected"
                         [action]="elementSelected"
-                        [previewMode]="false">
+                        [previewMode]="false"
+                        (changeTextarea)="onChangeTitle($event)">
                     </cds-action-reply>
 
                     <cds-action-reply *ngSwitchCase="typeAction.RANDOM_REPLY"
@@ -123,7 +128,7 @@
                     </cds-action-assign-function> -->
     
                 </div>
-            </div>
+            <!-- </div> -->
         </div>
 
 

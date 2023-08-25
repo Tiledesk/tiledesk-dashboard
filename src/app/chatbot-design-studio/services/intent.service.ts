@@ -52,7 +52,7 @@ export class IntentService {
   listOfPositions: any = {};
 
   // newPosition: any = {'x':0, 'y':0};
-
+  intentSelected: Intent;
   selectedIntent: Intent;
   listActions: Array<Action>;
   selectedAction: Action;
@@ -78,6 +78,9 @@ export class IntentService {
   }
 
 
+  public setIntentSelected(intent){
+    this.intentSelected = intent;
+  }
 
   /** setDragAndListnerEvent */
   public setListnerEvent(intent) {

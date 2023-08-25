@@ -1,11 +1,11 @@
 import { Component, OnInit, Input, ViewChild, ElementRef, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { Button, Message, Command, ActionReply, MessageWithWait, Intent } from 'app/models/intent-model';
-import { ELEMENTS_LIST, ACTIONS_LIST, TYPE_ACTION, TYPE_COMMAND, TYPE_RESPONSE, TYPE_BUTTON, TYPE_URL, TYPE_MESSAGE, generateShortUID } from 'app/chatbot-design-studio/utils';
+import { Wait, Button, Message, Command, ActionReply, MessageWithWait, Intent } from 'app/models/intent-model';
+import { TYPE_INTENT_ELEMENT, ELEMENTS_LIST, ACTIONS_LIST, TYPE_ACTION, TYPE_COMMAND, TYPE_RESPONSE, TYPE_BUTTON, TYPE_URL, TYPE_MESSAGE, generateShortUID } from 'app/chatbot-design-studio/utils';
 import { LoggerService } from 'app/services/logger/logger.service';
 
 import { ControllerService } from 'app/chatbot-design-studio/services/controller.service';
-// import { IntentService } from 'app/chatbot-design-studio/services/intent.service';
+import { IntentService } from 'app/chatbot-design-studio/services/intent.service';
 
 @Component({
   selector: 'cds-action-reply',
@@ -27,7 +27,7 @@ export class CdsActionReplyComponent implements OnInit {
   idAction: string;
 
 
-  response: MessageWithWait;
+  // response: MessageWithWait;
   openCardButton: boolean = false;
   buttonSelected: Button;
   newButton: boolean = false;
@@ -41,7 +41,7 @@ export class CdsActionReplyComponent implements OnInit {
   intentNameResult: boolean;
   textGrabbing: boolean;
   arrayResponses: Array<Command>;
-  arrayMessagesWithWait: Array<MessageWithWait>;
+  // arrayMessagesWithWait: Array<MessageWithWait>;
 
   typeAction: string;
 
@@ -56,6 +56,7 @@ export class CdsActionReplyComponent implements OnInit {
 
   constructor(
     private logger: LoggerService,
+    private intentService: IntentService,
     private controllerService: ControllerService
   ) { }
 
@@ -107,7 +108,7 @@ export class CdsActionReplyComponent implements OnInit {
 
     this.openCardButton = false;
     this.arrayResponses = [];
-    this.arrayMessagesWithWait = [];
+    // this.arrayMessagesWithWait = [];
     this.intentName = '';
     this.intentNameResult = true;
     this.textGrabbing = false;
@@ -118,7 +119,10 @@ export class CdsActionReplyComponent implements OnInit {
         this.logger.log('error:::', error);
       }
     }
-    this.generateCommandsOfElements();
+    // this.generateCommandsOfElements();
+
+
+    console.log('initialize:::: ', this.arrayResponses);
     this.scrollToBottom();
   }
 
@@ -128,63 +132,63 @@ export class CdsActionReplyComponent implements OnInit {
 
 
   /** */
-  private generateCommandsWithWaitOfElements() {
-    let replyArrayElements: Array<Command> = [];
-    let textConversation: string = '';
-    this.arrayMessagesWithWait.forEach(el => {
-      if (el.time && el.time > 0) {
-        let elementWait = new Command(TYPE_COMMAND.WAIT);
-        elementWait.time = el.time;
-        replyArrayElements.push(elementWait);
-      }
-      let elementMessage = new Command(TYPE_COMMAND.MESSAGE);
-      elementMessage.message = new Message(el.type, el.text);
-      if (el.attributes) {
-        elementMessage.message.attributes = el.attributes;
-      }
-      if (el.metadata) {
-        elementMessage.message.metadata = el.metadata;
-      }
-      if(el._tdJSONCondition){
-        elementMessage.message._tdJSONCondition = el._tdJSONCondition
-      }
-      replyArrayElements.push(elementMessage);
-      if (el.text) {
-        textConversation += el.text + '\r\n'
-      }
-    });
-    this.action.text = textConversation;
-    this.action.attributes.commands = replyArrayElements;
-  }
+  // private generateCommandsWithWaitOfElements() {
+  //   let replyArrayElements: Array<Command> = [];
+  //   let textConversation: string = '';
+  //   this.arrayMessagesWithWait.forEach(el => {
+  //     if (el.time && el.time > 0) {
+  //       let elementWait = new Command(TYPE_COMMAND.WAIT);
+  //       elementWait.time = el.time;
+  //       replyArrayElements.push(elementWait);
+  //     }
+  //     let elementMessage = new Command(TYPE_COMMAND.MESSAGE);
+  //     elementMessage.message = new Message(el.type, el.text);
+  //     if (el.attributes) {
+  //       elementMessage.message.attributes = el.attributes;
+  //     }
+  //     if (el.metadata) {
+  //       elementMessage.message.metadata = el.metadata;
+  //     }
+  //     if(el._tdJSONCondition){
+  //       elementMessage.message._tdJSONCondition = el._tdJSONCondition
+  //     }
+  //     replyArrayElements.push(elementMessage);
+  //     if (el.text) {
+  //       textConversation += el.text + '\r\n'
+  //     }
+  //   });
+  //   this.action.text = textConversation;
+  //   this.action.attributes.commands = replyArrayElements;
+  // }
 
   /** */
-  private generateCommandsOfElements() {
-    var time = 500;
-    try {
-      this.arrayResponses.forEach(element => {
-        if (element.type === TYPE_COMMAND.WAIT) {
-          time = element.time;
-        }
-        if (element.type === TYPE_COMMAND.MESSAGE) {
-          let message = new MessageWithWait(element.message.type, element.message.text, time);
-          if (element.message.attributes) {
-            message.attributes = element.message.attributes;
-          }
-          if (element.message.metadata) {
-            message.metadata = element.message.metadata;
-          }
-          if(element.message._tdJSONCondition){
-            message._tdJSONCondition = element.message._tdJSONCondition
-          }
-          this.arrayMessagesWithWait.push(message);
+  // private generateCommandsOfElements() {
+  //   var time = 500;
+  //   try {
+  //     this.arrayResponses.forEach(element => {
+  //       if (element.type === TYPE_COMMAND.WAIT) {
+  //         time = element.time;
+  //       }
+  //       if (element.type === TYPE_COMMAND.MESSAGE) {
+  //         let message = new MessageWithWait(element.message.type, element.message.text, time);
+  //         if (element.message.attributes) {
+  //           message.attributes = element.message.attributes;
+  //         }
+  //         if (element.message.metadata) {
+  //           message.metadata = element.message.metadata;
+  //         }
+  //         if(element.message._tdJSONCondition){
+  //           message._tdJSONCondition = element.message._tdJSONCondition
+  //         }
+  //         this.arrayMessagesWithWait.push(message);
 
-          time = 0;
-        }
-      });
-    } catch (error) {
-      this.logger.log(error);
-    }
-  }
+  //         time = 0;
+  //       }
+  //     });
+  //   } catch (error) {
+  //     this.logger.log(error);
+  //   }
+  // }
 
 
   /** */
@@ -202,18 +206,22 @@ export class CdsActionReplyComponent implements OnInit {
 
   /** */
   onAddNewActionReply(element) {
-    this.logger.log('onAddNewActionReply: ', element);
+    console.log('onAddNewActionReply: ', element);
     try {
-      let message = new MessageWithWait(element.message.type, element.message.text, 500);
+      let message = new Message(element.message.type, element.message.text);
       if (element.message.attributes) {
         message.attributes = element.message.attributes;
       }
       if (element.message.metadata) {
         message.metadata = element.message.metadata;
       }
-      this.arrayMessagesWithWait.push(message);
-      // this.reply.attributes.commands.push(element);
+      const wait = new Wait();
+      let command = new Command(element.type);
+      command.message = message;
+      this.arrayResponses.push(wait);
+      this.arrayResponses.push(command);
       this.scrollToBottom();
+      this.onUpdateAndSaveAction();
     } catch (error) {
       this.logger.log('onAddNewResponse ERROR', error);
     }
@@ -238,16 +246,29 @@ export class CdsActionReplyComponent implements OnInit {
   /** */
   drop(event: CdkDragDrop<string[]>) {
     this.textGrabbing = false;
-    moveItemInArray(this.arrayMessagesWithWait, event.previousIndex, event.currentIndex);
-    this.generateCommandsWithWaitOfElements();
+    // moveItemInArray(this.arrayMessagesWithWait, event.previousIndex, event.currentIndex);
+    // this.generateCommandsWithWaitOfElements();
   }
 
 
   /** onChangingReplyAction */
-  onChangeActionReply() {
-    console.log('onChangeActionReply ************', this.intentSelected, this.arrayMessagesWithWait);
-    this.generateCommandsWithWaitOfElements();
-    this.updateAndSaveAction.emit();
+  onChangeActionReply(event) {
+    console.log('onChangeActionReply ************', event, this.intentSelected);
+    this.onUpdateAndSaveAction();
+  }
+
+
+  /**  onUpdateAndSaveAction: 
+   * function called by all actions in @output whenever they are modified!
+   * 1 - update connectors
+   * 2 - update intent
+   * */
+  public async onUpdateAndSaveAction() {
+    console.log('[CDS-INTENT] onUpdateAndSaveAction:::: ', this.intentSelected, this.intentSelected.actions);
+    const response = await this.intentService.updateIntent(this.intentSelected);
+    if (response) {
+      console.log('updateIntent: ', this.intentSelected);
+    }
   }
 
   /** onChangeDelayTimeReplyAction */
@@ -260,18 +281,21 @@ export class CdsActionReplyComponent implements OnInit {
   /** onDeleteActionReply */
   onDeleteActionReply(index: number) {
     console.log('onDeleteActionReply: ', index);
-    this.arrayMessagesWithWait.splice(index, 1);
-    this.generateCommandsWithWaitOfElements();
+    // this.arrayMessagesWithWait.splice(index, 1);
+    // this.generateCommandsWithWaitOfElements();
     this.updateAndSaveAction.emit();
   }
 
   /** onCreateNewButton */
   onCreateNewButton(event){
-    this.response = event.refResponse;
+    // this.action = event.refResponse;
+    console.log('onCreateNewButton: ', event);
     this.newButton = true;
     this.buttonSelected = this.createNewButton();
-    this.generateCommandsWithWaitOfElements();
-    this.updateAndSaveAction.emit();
+    event.attributes.attachment.buttons.push(this.buttonSelected);
+    // this.generateCommandsWithWaitOfElements();
+    // this.onUpdateAndSaveAction();
+    // this.updateAndSaveAction.emit();
   }
 
 
@@ -285,19 +309,19 @@ export class CdsActionReplyComponent implements OnInit {
     if (index > 0) {
       let to = index - 1;
       let from = index;
-      this.arrayMessagesWithWait.splice(to, 0, this.arrayMessagesWithWait.splice(from, 1)[0]);
-      this.generateCommandsWithWaitOfElements();
+      // this.arrayMessagesWithWait.splice(to, 0, this.arrayMessagesWithWait.splice(from, 1)[0]);
+      // this.generateCommandsWithWaitOfElements();
     }
   }
 
   /** */
   onMoveDownResponse(index: number) {
-    if (index < this.arrayMessagesWithWait.length - 1) {
-      let to = index + 1;
-      let from = index;
-      this.arrayMessagesWithWait.splice(to, 0, this.arrayMessagesWithWait.splice(from, 1)[0]);
-      this.generateCommandsWithWaitOfElements();
-    }
+    // if (index < this.arrayMessagesWithWait.length - 1) {
+    //   let to = index + 1;
+    //   let from = index;
+    //   this.arrayMessagesWithWait.splice(to, 0, this.arrayMessagesWithWait.splice(from, 1)[0]);
+    //   this.generateCommandsWithWaitOfElements();
+    // }
   }
 
 
@@ -347,7 +371,7 @@ export class CdsActionReplyComponent implements OnInit {
       'action': '',
       'show_echo': true
     };
-    this.response.attributes.attachment.buttons.push(buttonSelected);
+    // this.response.attributes.attachment.buttons.push(buttonSelected);
     return buttonSelected;
   }
 
@@ -359,17 +383,22 @@ export class CdsActionReplyComponent implements OnInit {
   /** appdashboard-button-configuration-panel: onOpenButtonPanel */
   onOpenButtonPanel(event) {
     console.log('onOpenButtonPanel 2 :: ', event);
-    this.response = event.refResponse;
+    // this.response = event.refResponse;
     this.newButton = false;
     this.buttonSelected = event.button;
     console.log('buttonSelected :: ', this.buttonSelected);
     this.controllerService.openButtonPanel(this.buttonSelected);
   }
 
+  onOpenPanelActionDetail(event){
+    console.log('onOpenPanelActionDetail :: ', this.action);
+    this.intentService.setIntentSelected(this.intentSelected);
+    this.controllerService.openActionDetailPanel(TYPE_INTENT_ELEMENT.ACTION, this.action);
+  }
   /** appdashboard-button-configuration-panel: Save button */
   onSaveButton(button) {
-    this.logger.log('onSaveButton :: ', button, this.response);
-    this.generateCommandsWithWaitOfElements();
+    // this.logger.log('onSaveButton :: ', button, this.response);
+    // this.generateCommandsWithWaitOfElements();
   }
 
   /** appdashboard-button-configuration-panel: Close button panel */

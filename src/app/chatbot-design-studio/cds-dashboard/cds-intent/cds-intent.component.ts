@@ -339,8 +339,8 @@ export class CdsIntentComponent implements OnInit {
    * 1 - update connectors
    * 2 - update intent
    * */
-  public async onUpdateAndSaveAction() {
-    console.log('[CDS-INTENT] onUpdateAndSaveAction:::: ', this.intent, this.intent.actions);
+  public async onUpdateAndSaveAction(event) {
+    console.log('[CDS-INTENT] onUpdateAndSaveAction:::: ', event, this.intent, this.intent.actions);
     const response = await this.intentService.updateIntent(this.intent);
     if (response) {
       console.log('updateIntent: ', this.intent);

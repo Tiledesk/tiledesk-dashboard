@@ -1,4 +1,4 @@
-import { TYPE_OPERATOR } from './../chatbot-design-studio/utils';
+import { TYPE_COMMAND, TYPE_OPERATOR } from './../chatbot-design-studio/utils';
 import { TYPE_ACTION, TYPE_ATTACHMENT, TYPE_METHOD_REQUEST, TYPE_MATH_OPERATOR } from '../chatbot-design-studio/utils';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -263,13 +263,19 @@ export class ActionWait extends Action {
     }
 }
 
-
+export class Wait {
+    time: number;
+    type: string;
+    constructor() {
+        this.type = TYPE_COMMAND.WAIT;
+        this.time = 500;
+    }
+}
 
 
 export class Message {
     text: string;
     type: string;
-    // time?: number;
     attributes?: MessageAttributes;
     metadata?: Metadata;
     _tdJSONCondition?: Expression;
