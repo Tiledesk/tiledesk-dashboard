@@ -58,15 +58,15 @@
 
                 </div>
 
-                <!-- IMAGE RESPONSE ->
-                <div *ngIf="message.type === typeMessage.IMAGE">
-                    <!- <div class="custom-placeholder" *cdkDragPlaceholder>
+                <!-- IMAGE RESPONSE -->
+                <div *ngIf="command.message?.type === typeMessage.IMAGE">
+                    <!-- <div class="custom-placeholder" *cdkDragPlaceholder>
                         <cds-action-reply-image
                             [index] = i
                             [typeAction] = typeAction
                             [response] = message>
                         </cds-action-reply-image>
-                    </div> ->
+                    </div> -->
                     
                     <div class="response">
                         <div *ngIf="typeAction === typeActions.REPLY"
@@ -80,28 +80,30 @@
                             [class.no-controls]="typeAction === typeActions.RANDOM_REPLY"
                             [index] = i
                             [idAction] = "idAction"
-                            [response] = message
+                            [response] = "command.message"
+                            [wait] = "arrayResponses[i-1]"
                             [previewMode] = "previewMode"
                             (moveUpResponse) = onMoveUpResponse($event)
                             (moveDownResponse) = onMoveDownResponse($event)
                             (openButtonPanel) = onOpenButtonPanel($event)
                             (createNewButton) = onCreateNewButton($event)
-                            (deleteButton) = onDeleteButton()
+                            (deleteButton) = onDeleteButton($event)
                             (deleteActionReply) = onDeleteActionReply($event)
-                            (changeActionReply) = onChangeActionReply()>
+                            (changeActionReply) = onChangeActionReply($event)>
                         </cds-action-reply-image>
                     </div>
                 </div>
+                
 
-                <!- FRAME RESPONSE ->
-                <div *ngIf="message.type === typeMessage.FRAME">
-                    <!- <div class="custom-placeholder" *cdkDragPlaceholder>
+                <!-- FRAME RESPONSE -->
+                <div *ngIf="command.message?.type === typeMessage.FRAME">
+                    <!-- <div class="custom-placeholder" *cdkDragPlaceholder>
                         <cds-action-reply-frame
                             [index] = i
                             [typeAction] = typeAction
                             [response] = message>
                         </cds-action-reply-frame>
-                    </div> ->
+                    </div> -->
                     
                     <div class="response">
                         <div *ngIf="typeAction === typeActions.REPLY" 
@@ -115,26 +117,28 @@
                             [class.no-controls]="typeAction === typeActions.RANDOM_REPLY"
                             [index] = i
                             [idAction] = "idAction"
-                            [response] = message
+                            [response] = "command.message"
+                            [wait] = "arrayResponses[i-1]"
                             [previewMode] = "previewMode"
                             (moveUpResponse) = onMoveUpResponse($event)
                             (moveDownResponse) = onMoveDownResponse($event)
                             (openButtonPanel) = onOpenButtonPanel($event)
                             (deleteActionReply) = onDeleteActionReply($event)
-                            (changeActionReply) = onChangeActionReply()>
+                            (changeActionReply) = onChangeActionReply($event)>
                         </cds-action-reply-frame>
                     </div>
                 </div>
 
-                <!- REDIRECT RESPONSE ->
-                <div *ngIf="message.type === typeMessage.REDIRECT">
-                    <!- <div class="custom-placeholder" *cdkDragPlaceholder>
+                
+                <!-- REDIRECT RESPONSE -->
+                <div *ngIf="command.message?.type === typeMessage.REDIRECT">
+                    <!-- <div class="custom-placeholder" *cdkDragPlaceholder>
                         <cds-action-reply-redirect
                             [index] = i
                             [typeAction] = typeAction
                             [response] = message>
                         </cds-action-reply-redirect>
-                    </div> ->
+                    </div> -->
                     
                     <div class="response">
                         <div *ngIf="typeAction === typeActions.REPLY" 
@@ -148,25 +152,26 @@
                             [class.no-controls]="typeAction === typeActions.RANDOM_REPLY"
                             [index] = i
                             [idAction] = "idAction"
-                            [response] = message
+                            [response] = "command.message"
+                            [wait] = "arrayResponses[i-1]"
                             [previewMode] = "previewMode"
                             (moveUpResponse) = onMoveUpResponse($event)
                             (moveDownResponse) = onMoveDownResponse($event)
                             (deleteActionReply) = onDeleteActionReply($event)
-                            (changeActionReply) = onChangeActionReply()>
+                            (changeActionReply) = onChangeActionReply($event)>
                         </cds-action-reply-redirect>
                     </div>
                 </div>
 
-                <!- GALLERY RESPONSE ->
-                <div *ngIf="message.type === typeMessage.GALLERY">
-                    <!- <div class="custom-placeholder" *cdkDragPlaceholder>
+                <!--  GALLERY RESPONSE -->
+                <div *ngIf="command.message?.type === typeMessage.GALLERY">
+                    <!-- <div class="custom-placeholder" *cdkDragPlaceholder>
                         <cds-action-reply-gallery
                             [index] = i
                             [typeAction] = typeAction
                             [response] = message>
                         </cds-action-reply-gallery>
-                    </div> ->
+                    </div> -->
                     
                     <div class="response">
                         <div *ngIf="typeAction === typeActions.REPLY" 
@@ -180,18 +185,19 @@
                             [class.no-controls]="typeAction === typeActions.RANDOM_REPLY"
                             [index] = i
                             [idAction] = "idAction"
-                            [response] = message
+                            [response] = "command.message"
+                            [wait] = "arrayResponses[i-1]"
                             [previewMode] = "previewMode"
                             (moveUpResponse) = onMoveUpResponse($event)
                             (moveDownResponse) = onMoveDownResponse($event)
                             (openButtonPanel) = onOpenButtonPanel($event)
-                            (changeActionReply) = onChangeActionReply()
+                            (changeActionReply) = onChangeActionReply($event)
                             (deleteActionReply) = onDeleteActionReply($event)>
                         </cds-action-reply-gallery>
                     </div>
                 </div>
 
-            -->
+            
             </div>
         </div>
 

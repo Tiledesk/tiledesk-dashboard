@@ -1,7 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser'
-import { Expression, MessageWithWait } from '../../../../../../../models/intent-model';
-import { TYPE_ACTION, TYPE_MESSAGE, TEXT_CHARS_LIMIT, MESSAGE_METADTA_WIDTH, MESSAGE_METADTA_HEIGHT, calculatingRemainingCharacters } from '../../../../../../utils';
+import { Expression, Message, Wait } from 'app/models/intent-model';
+import { TYPE_ACTION, TYPE_MESSAGE, MESSAGE_METADTA_WIDTH, MESSAGE_METADTA_HEIGHT } from 'app/chatbot-design-studio/utils';
+import { LoggerService } from 'app/services/logger/logger.service';
 
 @Component({
   selector: 'cds-action-reply-frame',
@@ -10,46 +11,46 @@ import { TYPE_ACTION, TYPE_MESSAGE, TEXT_CHARS_LIMIT, MESSAGE_METADTA_WIDTH, MES
 })
 export class CdsActionReplyFrameComponent implements OnInit {
 
-  // @Output() changeDelayTimeReplyElement = new EventEmitter();
   @Output() changeActionReply = new EventEmitter();
   @Output() deleteActionReply = new EventEmitter();
   @Output() moveUpResponse = new EventEmitter();
   @Output() moveDownResponse = new EventEmitter();
+  @Output() createNewButton = new EventEmitter();
+  @Output() deleteButton = new EventEmitter();
   @Output() openButtonPanel = new EventEmitter();
-  
+
   @Input() idAction: string;
-  @Input() response: MessageWithWait;
+  @Input() response: Message;
+  @Input() wait: Wait;
   @Input() index: number;
-  @Input() previewMode: boolean = true
-  
+  @Input() previewMode: boolean = true;
+
   // frame //
   typeActions = TYPE_ACTION;
   framePath: any;
   frameWidth: number | string;
   frameHeight: number | string;
   typeMessage =  TYPE_MESSAGE;
-
   // Textarea //
-  // limitCharsText: number;
-  // leftCharsText: number;
-  // textMessage: string;
-  // alertCharsText: boolean;
-
   // Delay //
   delayTime: number;
-
   // Filter // 
   canShowFilter: boolean = true;
   booleanOperators=[ { type: 'AND', operator: 'AND'},{ type: 'OR', operator: 'OR'},]
 
 
   constructor(
+    private logger: LoggerService,
     private sanitizer: DomSanitizer
   ) { }
 
   ngOnInit(): void {
-    this.delayTime = this.response.time/1000;
+    this.initialize();
+  }
 
+
+  private initialize(){
+    this.delayTime = this.wait.time/1000;
     this.frameWidth = this.response.metadata.width?this.response.metadata.width:MESSAGE_METADTA_WIDTH;
     this.frameHeight = this.response.metadata.height?this.response.metadata.height:MESSAGE_METADTA_HEIGHT;
     if(this.response.metadata.src){
@@ -57,19 +58,21 @@ export class CdsActionReplyFrameComponent implements OnInit {
     }     
   }
 
+
+
   // EVENT FUNCTIONS //
   /** */
-   /** onClickDelayTime */
-   onClickDelayTime(opened: boolean){
-    this.canShowFilter = !opened
+  onClickDelayTime(opened: boolean){
+    this.canShowFilter = !opened;
   }
+
 
   /** onChangeDelayTime */
   onChangeDelayTime(value:number){
     this.delayTime = value;
-    this.response.time = value*1000;
-    this.changeActionReply.emit();
+    this.wait.time = value*1000;
     this.canShowFilter = true;
+    this.changeActionReply.emit();
   }
 
   /** onChangeExpression */
@@ -83,18 +86,25 @@ export class CdsActionReplyFrameComponent implements OnInit {
     this.deleteActionReply.emit(this.index);
   }
 
+  /** onMoveUpResponse */
   onMoveUpResponse(){
     this.moveUpResponse.emit(this.index);
   }
+
+  /** onMoveDownResponse */
   onMoveDownResponse(){
     this.moveDownResponse.emit(this.index);
   }
 
   /** onChangeTextarea */
   onChangeTextarea(text:string) {
-    this.response.text = text;
-    this.changeActionReply.emit();
+    if(!this.previewMode){
+      this.response.text = text;
+      this.changeActionReply.emit();
+    }
   }
+
+  
   
   /** */
   onCloseFramePanel(event){
@@ -123,10 +133,9 @@ export class CdsActionReplyFrameComponent implements OnInit {
   onLoadPathElement(){
     try {
       this.framePath = this.sanitizer.bypassSecurityTrustResourceUrl(this.response.metadata.src);
-      // console.log('onLoadPathElement:: ', this.framePath, this.response.metadata);
       this.changeActionReply.emit();
     } catch (error) {
-      // console.log('error:: ', error);
+      this.logger.log('onAddNewResponse ERROR', error);
     }
   }
 

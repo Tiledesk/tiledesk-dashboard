@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ViewChild, ElementRef, Output, EventEmitter, SimpleChanges } from '@angular/core';
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { Wait, Button, Message, Command, ActionReply, MessageAttributes, Intent } from 'app/models/intent-model';
 import { TYPE_INTENT_ELEMENT, ELEMENTS_LIST, ACTIONS_LIST, TYPE_ACTION, TYPE_COMMAND, TYPE_RESPONSE, TYPE_BUTTON, TYPE_URL, TYPE_MESSAGE, generateShortUID } from 'app/chatbot-design-studio/utils';
 import { LoggerService } from 'app/services/logger/logger.service';
@@ -43,9 +43,6 @@ export class CdsActionReplyComponent implements OnInit {
   intentNameResult: boolean;
   textGrabbing: boolean;
   arrayResponses: Array<Command>;
-
-  // arrayMessagesWithWait: Array<MessageWithWait>;
-
   typeAction: string;
 
   element: any;

@@ -3,7 +3,7 @@ import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild }
 import { ConnectorService } from 'app/chatbot-design-studio/services/connector.service';
 import { IntentService } from 'app/chatbot-design-studio/services/intent.service';
 import { TYPE_ACTION, TYPE_BUTTON, TYPE_URL, generateShortUID } from 'app/chatbot-design-studio/utils';
-import { Button, Expression, GalleryElement, MessageAttributes, MessageWithWait, Metadata } from 'app/models/intent-model';
+import { Button, Expression, GalleryElement, Message, Wait, Metadata, MessageAttributes } from 'app/models/intent-model';
 import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
 
 @Component({
@@ -12,67 +12,89 @@ import { LoggerService } from 'app/services/chat21-core/providers/abstract/logge
   styleUrls: ['./cds-action-reply-gallery.component.scss']
 })
 export class CdsActionReplyGalleryComponent implements OnInit {
-
   @ViewChild('scrollMe', { static: false }) scrollContainer: ElementRef;
   
   @Output() changeActionReply = new EventEmitter();
   @Output() deleteActionReply = new EventEmitter();
   @Output() moveUpResponse = new EventEmitter();
   @Output() moveDownResponse = new EventEmitter();
-  @Output() openButtonPanel = new EventEmitter();
   @Output() createNewButton = new EventEmitter();
   @Output() deleteButton = new EventEmitter();
-  
-  @Input() idAction: string;
-  @Input() response: MessageWithWait;
-  @Input() index: number;
-  @Input() previewMode: boolean = true
-  
-  idIntent: string;
-  // Connector //
-  connector: any;
+  @Output() openButtonPanel = new EventEmitter();
 
-  // Delay //onMoveTopButton
+  @Input() idAction: string;
+  @Input() response: Message;
+  @Input() wait: Wait;
+  @Input() index: number;
+  @Input() previewMode: boolean = true;
+  
+  // Connector //
+  idIntent: string;
+  connector: any;
+  // Delay //
   delayTime: number;
   // Filter // 
   canShowFilter: boolean = true;
   booleanOperators=[ { type: 'AND', operator: 'AND'},{ type: 'OR', operator: 'OR'},]
- 
   typeActions = TYPE_ACTION;
-  
   gallery: Array<GalleryElement>;
-
   // Textarea //
-  activateEL: { [key: number]: {title: boolean, description: boolean} } = {}
+  activateEL: { [key: number]: {title: boolean, description: boolean} } = {};
+  // Buttons //
+  buttons: Array<Button>;
+
   constructor(
+    private logger: LoggerService,
     private el: ElementRef,
     private connectorService: ConnectorService,
     private intentService: IntentService,
-    private logger: LoggerService,
   ) { }
 
+
   ngOnInit(): void {
-    this.delayTime = this.response.time/1000;
+    this.initialize();
+  }
+
+  private initialize(){
+    this.delayTime = this.wait.time/1000;
     this.gallery = [];
     try {
       this.gallery = this.response.attributes.attachment.gallery;
-      console.log('galleryyyyyy', this.gallery, this.response)
       this.initElement();
-      if(!this.previewMode) this.scrollToLeft()
-
+      if(!this.previewMode) this.scrollToLeft();
       this.intentService.isChangedConnector$.subscribe((connector: any) => {
         console.log('CdsActionReplyGalleryComponent isChangedConnector-->', connector);
         this.connector = connector;
         this.updateConnector();
       });
-      // this.patchButtons();
       this.idIntent = this.idAction.split('/')[0];
-
     } catch (error) {
-      // console.log('there are no buttons');
+      this.logger.log('onAddNewResponse ERROR', error);
+    }
+    this.idIntent = this.idAction.split('/')[0];
+  }
+
+  private initElement(){
+    if(this.gallery && this.gallery.length > 0){
+      this.gallery.forEach((el, index)=> {
+        this.activateEL[index]= {title: false, description: false};
+        this.checkButtons(el, index);
+        this.patchButtons(el, index);
+      })
     }
   }
 
+
+  private checkButtons(element: GalleryElement, index: number){
+    if(!this.response.attributes || !this.response.attributes.attachment){
+      this.response.attributes = new MessageAttributes();
+    }
+    if(this.response?.attributes?.attachment?.gallery[index].buttons){
+      this.buttons = this.response?.attributes?.attachment?.gallery[index].buttons;
+    } else {
+      this.buttons = [];
+    }
+  }
 
   private patchButtons(element: GalleryElement, index: number){
     console.log('patchButtons:: ', this.response);
@@ -128,20 +150,12 @@ export class CdsActionReplyGalleryComponent implements OnInit {
     }
   }
 
-  initElement(){
-    if(this.gallery && this.gallery.length > 0){
-      this.gallery.forEach((el, index)=> {
-        this.activateEL[index]= {title: false, description: false}
-        this.patchButtons(el, index);
-      })
-    }
-  }
+
 
   onAdd(){
     this.gallery.push( this.newGalleryElement() )
     this.initElement()
     this.scrollToLeft()
-
   }
 
   newGalleryElement(){
@@ -188,7 +202,10 @@ export class CdsActionReplyGalleryComponent implements OnInit {
   }
 
 
+
+
   // EVENT FUNCTIONS //
+
   /** onClickDelayTime */
   onClickDelayTime(opened: boolean){
     this.canShowFilter = !opened;
@@ -197,20 +214,14 @@ export class CdsActionReplyGalleryComponent implements OnInit {
   /** onChangeDelayTime */
   onChangeDelayTime(value:number){
     this.delayTime = value;
-    this.response.time = value*1000;
-    this.changeActionReply.emit();
+    this.wait.time = value*1000;
     this.canShowFilter = true;
+    this.changeActionReply.emit();
   }
 
   /** onChangeExpression */
   onChangeExpression(expression: Expression){
-    this.response._tdJSONCondition = expression
-    this.changeActionReply.emit();
-  }
-
-  onChangeMetadata(metadata: Metadata, index: number){
-    this.gallery[index].preview = metadata;
-    this.response.attributes.attachment.gallery = this.gallery
+    this.response._tdJSONCondition = expression;
     this.changeActionReply.emit();
   }
 
@@ -218,12 +229,88 @@ export class CdsActionReplyGalleryComponent implements OnInit {
   onDeleteActionReply(){
     this.deleteActionReply.emit(this.index);
   }
+
+  /** onMoveUpResponse */
   onMoveUpResponse(){
     this.moveUpResponse.emit(this.index);
   }
+
+  /** onMoveDownResponse */
   onMoveDownResponse(){
     this.moveDownResponse.emit(this.index);
   }
+
+  /** onChangeTextarea */
+  // onChangeTextarea(text:string) {
+  //   if(!this.previewMode){
+  //     this.response.text = text;
+  //     this.changeActionReply.emit();
+  //   }
+  // }
+
+  onChangeText(text: string, element: 'title' | 'description', index: number) {
+    this.gallery[index][element] = text;
+    this.response.attributes.attachment.gallery = this.gallery;
+    this.changeActionReply.emit();
+  }
+
+
+  /** onOpenButtonPanel */
+  // onOpenButtonPanel(button){
+  //   this.openButtonPanel.emit(button);
+  // }
+
+  onOpenButtonPanel(indexGallery: number, indexButton: number, button?){
+    try {
+      if(!this.response.attributes || !this.gallery[indexGallery].buttons){
+        this.response.attributes.attachment.gallery[indexGallery].buttons[indexButton] = this.newButton();
+        // this.gallery[indexGallery].buttons = this.response.attributes.attachment.gallery[indexGallery].buttons;
+      }
+    } catch (error) {
+      console.log('error: ', error);
+    }
+    this.openButtonPanel.emit({button: button, refResponse: this.response});
+  }
+
+
+  /** onCreateNewButton */
+  onCreateNewButton(){
+    this.createNewButton.emit(this.index);
+  }
+
+  /** onDeleteButton */
+  // onDeleteButton(index: number){
+  //   this.deleteButton.emit({index: index, buttons: this.buttons});
+  // }
+
+  onDeleteButton(indexGallery: number, index){
+    this.gallery[indexGallery].buttons.splice(index, 1);
+    this.changeActionReply.emit();
+  }
+
+  /** dropButtons */
+  dropButtons(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.buttons, event.previousIndex, event.currentIndex);
+    this.connectorService.movedConnector(this.idIntent);
+    this.changeActionReply.emit();
+  }  
+
+
+  onChangeMetadata(metadata: Metadata, index: number){
+    this.gallery[index].preview = metadata;
+    this.response.attributes.attachment.gallery = this.gallery
+    this.changeActionReply.emit();
+  }
+  // EVENT FUNCTIONS //
+
+
+
+
+
+
+
+
+
 
   drop(event: CdkDragDrop<string[]>) {
     // this.textGrabbing = false;
@@ -242,28 +329,10 @@ export class CdsActionReplyGalleryComponent implements OnInit {
     this.activateEL[index][element] = false
   }
 
-  onChangeText(text: string, element: 'title' | 'description', index: number) {
-    // this.response.text = text;
-    this.gallery[index][element] = text;
-    this.response.attributes.attachment.gallery = this.gallery
-    // this.activateEL[index][element] = false
-    setTimeout(() => {
-      this.changeActionReply.emit();
-    }, 500);
-  }
 
-  onOpenButtonPanel(indexGallery: number, indexButton: number, button?){
-    // console.log('onOpenButtonPanel: ', button, indexGallery, indexButton, this.response);
-    try {
-      if(!this.response.attributes || !this.gallery[indexGallery].buttons){
-        this.response.attributes.attachment.gallery[indexGallery].buttons[indexButton] = this.newButton();
-        // this.gallery[indexGallery].buttons = this.response.attributes.attachment.gallery[indexGallery].buttons;
-      }
-    } catch (error) {
-      console.log('error: ', error);
-    }
-    this.openButtonPanel.emit({button: button, refResponse: this.response});
-  }
+
+
+
 
   onDeleteImage(index){
     this.gallery[index].preview = { src: ''}
@@ -320,12 +389,7 @@ export class CdsActionReplyGalleryComponent implements OnInit {
     this.arraymove(this.gallery[indexGallery].buttons, fromIndex, toIndex);
   }
 
-  onDeleteButton(indexGallery: number, index){
-    this.gallery[indexGallery].buttons.splice(index, 1);
-    // if(this.buttons.length === 0){
-    //   delete this.response.attributes.attachment
-    // } 
-  }
+
    // ----- BUTTONS INSIDE GALLERY ELEMENT: end
 
 }

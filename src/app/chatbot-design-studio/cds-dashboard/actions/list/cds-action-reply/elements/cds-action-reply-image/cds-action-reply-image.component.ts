@@ -1,6 +1,6 @@
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Button, Expression, MessageAttributes, MessageWithWait, Metadata } from '../../../../../../../models/intent-model';
+import { Button, Expression, MessageAttributes, Message, Wait, Metadata } from '../../../../../../../models/intent-model';
 import { TYPE_ACTION, TEXT_CHARS_LIMIT, calculatingRemainingCharacters, TYPE_BUTTON, generateShortUID } from '../../../../../../utils';
 import { ConnectorService } from 'app/chatbot-design-studio/services/connector.service';
 import { IntentService } from 'app/chatbot-design-studio/services/intent.service';
@@ -16,12 +16,13 @@ export class CdsActionReplyImageComponent implements OnInit {
   @Output() deleteActionReply = new EventEmitter();
   @Output() moveUpResponse = new EventEmitter();
   @Output() moveDownResponse = new EventEmitter();
-  @Output() openButtonPanel = new EventEmitter();
   @Output() createNewButton = new EventEmitter();
   @Output() deleteButton = new EventEmitter();
+  @Output() openButtonPanel = new EventEmitter();
 
   @Input() idAction: string;
-  @Input() response: MessageWithWait;
+  @Input() response: Message;
+  @Input() wait: Wait;
   @Input() index: number;
   @Input() previewMode: boolean = true
   
@@ -50,23 +51,36 @@ export class CdsActionReplyImageComponent implements OnInit {
     private intentService: IntentService
   ) { }
 
-  ngOnInit(): void {
-    this.delayTime = this.response.time/1000;
-    
-    if(this.response?.attributes?.attachment?.buttons){
-      this.buttons = this.response?.attributes?.attachment?.buttons;
-    } else {
-      this.buttons = [];
-    }
 
+  ngOnInit(): void {
+    this.initialize();
+  }
+
+
+  // PRIVATE FUNCTIONS //
+
+  private initialize(){
+    this.delayTime = this.wait.time/1000;
+    this.checkButtons();
     this.intentService.isChangedConnector$.subscribe((connector: any) => {
       console.log('CdsActionReplyImageComponent isChangedConnector-->', connector);
       this.connector = connector;
       this.updateConnector();
     });
     this.patchButtons();
-
     this.idIntent = this.idAction.split('/')[0];
+  }
+
+
+  private checkButtons(){
+    if(!this.response.attributes || !this.response.attributes.attachment){
+      this.response.attributes = new MessageAttributes();
+    }
+    if(this.response?.attributes?.attachment?.buttons){
+      this.buttons = this.response?.attributes?.attachment?.buttons;
+    } else {
+      this.buttons = [];
+    }
   }
 
   private patchButtons(){
@@ -122,19 +136,21 @@ export class CdsActionReplyImageComponent implements OnInit {
     }
   }
   
+
+
   // EVENT FUNCTIONS //
-  /** */
+
   /** onClickDelayTime */
   onClickDelayTime(opened: boolean){
-    this.canShowFilter = !opened
+    this.canShowFilter = !opened;
   }
 
   /** onChangeDelayTime */
   onChangeDelayTime(value:number){
     this.delayTime = value;
-    this.response.time = value*1000;
-    this.changeActionReply.emit();
+    this.wait.time = value*1000;
     this.canShowFilter = true;
+    this.changeActionReply.emit();
   }
 
   /** onChangeExpression */
@@ -142,7 +158,7 @@ export class CdsActionReplyImageComponent implements OnInit {
     this.response._tdJSONCondition = expression;
     this.changeActionReply.emit();
   }
-
+  
   /**onChangeMetadata */
   onChangeMetadata(metadata: Metadata){
     this.response.metadata = metadata;
@@ -154,22 +170,61 @@ export class CdsActionReplyImageComponent implements OnInit {
     this.deleteActionReply.emit(this.index);
   }
 
+  /** onMoveUpResponse */
   onMoveUpResponse(){
     this.moveUpResponse.emit(this.index);
   }
+
+  /** onMoveDownResponse */
   onMoveDownResponse(){
     this.moveDownResponse.emit(this.index);
   }
 
   /** onChangeTextarea */
   onChangeTextarea(text:string) {
-    this.response.text = text;
-    this.changeActionReply.emit();
+    if(!this.previewMode){
+      this.response.text = text;
+      this.changeActionReply.emit();
+    }
   }
+
+  /** onOpenButtonPanel */
+  onOpenButtonPanel(button){
+    this.openButtonPanel.emit(button);
+  }
+
+  /** onCreateNewButton */
+  onCreateNewButton(){
+    this.createNewButton.emit(this.index);
+  }
+
+  /** onDeleteButton */
+  onDeleteButton(index: number){
+    this.deleteButton.emit({index: index, buttons: this.buttons});
+  }
+
+  /** dropButtons */
+  dropButtons(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.buttons, event.previousIndex, event.currentIndex);
+    this.connectorService.movedConnector(this.idIntent);
+    this.changeActionReply.emit();
+  }  
+
+  // EVENT FUNCTIONS //
+  /** */
+
+
+
+
+
+  
+
+
+
+
 
   /** */
   onCloseImagePanel(event){
-    
     //if(event.url){
       //this.imagePath = event.url;
       this.response.metadata.src = event.url;
@@ -189,57 +244,13 @@ export class CdsActionReplyImageComponent implements OnInit {
   onDeletePathElement(){
     this.response.metadata.src = null;
     this.changeActionReply.emit();
-    // console.log('onDeletePathElement::: ', this.response.metadata);
   }
   
-
-  onOpenButtonPanel(button?){
-    console.log('onOpenButtonPanel: 1 ', button, this.response);
-    try {
-      if(!this.response.attributes || !this.response.attributes.attachment.buttons){
-        this.response.attributes = new MessageAttributes();
-        this.buttons = this.response.attributes.attachment.buttons;
-      }
-    } catch (error) {
-      console.log('error: ', error);
-    }
-
-    this.openButtonPanel.emit({button: button, refResponse: this.response});
-  }
-
-  /** onCreateNewButton */
-  onCreateNewButton(){
-    try {
-      if(!this.response.attributes || !this.response.attributes.attachment.buttons){
-        this.response.attributes = new MessageAttributes();
-        this.buttons = this.response.attributes.attachment.buttons;
-      }
-    } catch (error) {
-      console.log('error: ', error);
-    }
-    this.createNewButton.emit({refResponse: this.response});
-  }
-
-  /** onDeleteButton */
-  onDeleteButton(index: number){
-    let button = this.buttons[index];
-    this.buttons.splice(index, 1);
-    var intentId = this.idAction.substring(0, this.idAction.indexOf('/'));
-    this.connectorService.deleteConnectorFromAction(intentId, button.idConnector);
-    this.deleteButton.emit();
-  }
 
 
 
   // EVENT FUNCTIONS //
   /** */
-  dropButtons(event: CdkDragDrop<string[]>) {
-    moveItemInArray(this.buttons, event.previousIndex, event.currentIndex);
-    // const elem = document.getElementById(this.idIntent);
-    this.connectorService.movedConnector(this.idIntent);
-    this.changeActionReply.emit();
-  } 
-
   onMoveLeftButton(fromIndex){
     let toIndex = fromIndex-1;
     if(toIndex<0){

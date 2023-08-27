@@ -1,10 +1,10 @@
 
-import { Component, OnInit, ViewChild, Input, Output, EventEmitter, Attribute, SimpleChanges } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 
-import { Message, Wait, MessageWithWait, Button, MessageAttributes, Expression } from 'app/models/intent-model';
-import { TYPE_ACTION, TYPE_BUTTON, TYPE_URL, generateShortUID, calculatingRemainingCharacters } from 'app/chatbot-design-studio/utils';
+import { Message, Wait, Button, MessageAttributes, Expression } from 'app/models/intent-model';
+import { TYPE_BUTTON, generateShortUID } from 'app/chatbot-design-studio/utils';
 import { IntentService } from 'app/chatbot-design-studio/services/intent.service';
 import { ConnectorService } from 'app/chatbot-design-studio/services/connector.service';
 
@@ -17,7 +17,6 @@ import { ConnectorService } from 'app/chatbot-design-studio/services/connector.s
 export class CdsActionReplyTextComponent implements OnInit {
   @ViewChild('autosize') autosize: CdkTextareaAutosize;
   
-
   @Output() changeActionReply = new EventEmitter();
   @Output() deleteActionReply = new EventEmitter();
   @Output() moveUpResponse = new EventEmitter();
@@ -27,26 +26,20 @@ export class CdsActionReplyTextComponent implements OnInit {
   @Output() openButtonPanel = new EventEmitter();
 
   @Input() idAction: string;
-  @Input() response: Message; //MessageWithWait;
+  @Input() response: Message;
   @Input() wait: Wait;
   @Input() index: number;
-  @Input() previewMode: boolean = true
-
-  idIntent: string;
+  @Input() previewMode: boolean = true;
 
   // Connector //
+  idIntent: string;
   connector: any;
-
   // Textarea //
-
-
   // Delay //
   delayTime: number;
-
   // Filter // 
   canShowFilter: boolean = true;
   booleanOperators = [ { type: 'AND', operator: 'AND'},{ type: 'OR', operator: 'OR'},];
-
   // Buttons //
   buttons: Array<Button>;
 
@@ -169,9 +162,13 @@ export class CdsActionReplyTextComponent implements OnInit {
   onDeleteActionReply(){
     this.deleteActionReply.emit(this.index);
   }
+
+  /** onMoveUpResponse */
   onMoveUpResponse(){
     this.moveUpResponse.emit(this.index);
   }
+
+  /** onMoveDownResponse */
   onMoveDownResponse(){
     this.moveDownResponse.emit(this.index);
   }
@@ -183,7 +180,6 @@ export class CdsActionReplyTextComponent implements OnInit {
       this.changeActionReply.emit();
     }
   }
-
 
   /** onOpenButtonPanel */
   onOpenButtonPanel(button){
