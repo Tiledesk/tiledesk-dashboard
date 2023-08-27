@@ -1,5 +1,5 @@
 
-import { Component, OnInit, ViewChild, Input, Output, EventEmitter, Attribute } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, Output, EventEmitter, Attribute, SimpleChanges } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 
@@ -22,11 +22,9 @@ export class CdsActionReplyTextComponent implements OnInit {
   @Output() deleteActionReply = new EventEmitter();
   @Output() moveUpResponse = new EventEmitter();
   @Output() moveDownResponse = new EventEmitter();
-  // @Output() changeDelayTimeReplyAction = new EventEmitter();
-  @Output() openButtonPanel = new EventEmitter();
-  
   @Output() createNewButton = new EventEmitter();
   @Output() deleteButton = new EventEmitter();
+  @Output() openButtonPanel = new EventEmitter();
 
   @Input() idAction: string;
   @Input() response: Message; //MessageWithWait;
@@ -35,13 +33,12 @@ export class CdsActionReplyTextComponent implements OnInit {
   @Input() previewMode: boolean = true
 
   idIntent: string;
+
   // Connector //
   connector: any;
 
   // Textarea //
-  // limitCharsText: number;
-  // leftCharsText: number;
-  // alertCharsText: boolean;
+
 
   // Delay //
   delayTime: number;
@@ -61,24 +58,37 @@ export class CdsActionReplyTextComponent implements OnInit {
 
   // SYSTEM FUNCTIONS //
   ngOnInit(): void {
-    // this.delayTime = this.response.time/1000;
+    this.initialize();
+  }
+
+  // ngOnChanges(changes: SimpleChanges): void {
+  //   console.log('CdsActionReplyTextComponent ngOnChanges:: ', this.response);
+  // }
+
+  // PRIVATE FUNCTIONS //
+
+  private initialize(){
     this.delayTime = this.wait.time/1000;
-    if(this.response?.attributes?.attachment?.buttons){
-      this.buttons = this.response?.attributes?.attachment?.buttons;
-    } else {
-      this.buttons = [];
-    }
+    this.checkButtons();
     this.intentService.isChangedConnector$.subscribe((connector: any) => {
       console.log('CdsActionReplyTextComponent isChangedConnector-->', connector);
       this.connector = connector;
       this.updateConnector();
     });
     this.patchButtons();
-
     this.idIntent = this.idAction.split('/')[0];
   }
 
-
+  private checkButtons(){
+    if(!this.response.attributes || !this.response.attributes.attachment){
+      this.response.attributes = new MessageAttributes();
+    }
+    if(this.response?.attributes?.attachment?.buttons){
+      this.buttons = this.response?.attributes?.attachment?.buttons;
+    } else {
+      this.buttons = [];
+    }
+  }
 
   private patchButtons(){
     console.log('patchButtons:: ', this.response);
@@ -98,7 +108,6 @@ export class CdsActionReplyTextComponent implements OnInit {
       }
     }); 
   }
-
 
   private updateConnector(){
     try {
@@ -134,15 +143,6 @@ export class CdsActionReplyTextComponent implements OnInit {
   }
 
 
-  
-  // PRIVATE FUNCTIONS //
-  /** */
-  private arraymove(buttons, fromIndex, toIndex) {
-    var element = buttons[fromIndex];
-    buttons.splice(fromIndex, 1);
-    buttons.splice(toIndex, 0, element);
-  }
-
 
   // EVENT FUNCTIONS //
 
@@ -154,15 +154,14 @@ export class CdsActionReplyTextComponent implements OnInit {
   /** onChangeDelayTime */
   onChangeDelayTime(value:number){
     this.delayTime = value;
-    // this.response.time = value*1000;
     this.wait.time = value*1000;
-    this.changeActionReply.emit();
     this.canShowFilter = true;
+    this.changeActionReply.emit();
   }
 
   /** onChangeExpression */
   onChangeExpression(expression: Expression){
-    this.response._tdJSONCondition = expression
+    this.response._tdJSONCondition = expression;
     this.changeActionReply.emit();
   }
 
@@ -180,55 +179,30 @@ export class CdsActionReplyTextComponent implements OnInit {
   /** onChangeTextarea */
   onChangeTextarea(text:string) {
     if(!this.previewMode){
-      console.log('onChangeTextarea:');
       this.response.text = text;
-      setTimeout(() => {
-        this.changeActionReply.emit();
-      }, 500);
+      this.changeActionReply.emit();
     }
   }
 
 
   /** onOpenButtonPanel */
   onOpenButtonPanel(button){
-    console.log('onOpenButtonPanel: 1 ', button, this.response);
-    try {
-      if(!this.response.attributes || !this.response.attributes.attachment.buttons){
-        this.response.attributes = new MessageAttributes();
-        this.buttons = this.response.attributes.attachment.buttons;
-      }
-    } catch (error) {
-      console.log('error: ', error);
-    }
-    this.openButtonPanel.emit({button: button, refResponse: this.response});
+    this.openButtonPanel.emit(button);
   }
 
   /** onCreateNewButton */
   onCreateNewButton(){
-    try {
-      if(!this.response.attributes || !this.response.attributes.attachment.buttons){
-        this.response.attributes = new MessageAttributes();
-        this.buttons = this.response.attributes.attachment.buttons;
-      }
-    } catch (error) {
-      console.log('error: ', error);
-    }
-    this.createNewButton.emit({refResponse: this.response});
+    this.createNewButton.emit(this.index);
   }
 
   /** onDeleteButton */
   onDeleteButton(index: number){
-    let button = this.buttons[index];
-    this.buttons.splice(index, 1);
-    var intentId = this.idAction.substring(0, this.idAction.indexOf('/'));
-    this.connectorService.deleteConnectorFromAction(intentId, button.idConnector);
-    this.deleteButton.emit();
+    this.deleteButton.emit({index: index, buttons: this.buttons});
   }
 
-  /** */
+  /** dropButtons */
   dropButtons(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.buttons, event.previousIndex, event.currentIndex);
-    // const elem = document.getElementById(this.idIntent);
     this.connectorService.movedConnector(this.idIntent);
     this.changeActionReply.emit();
   }  

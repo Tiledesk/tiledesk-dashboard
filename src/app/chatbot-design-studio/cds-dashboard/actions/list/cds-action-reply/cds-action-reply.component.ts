@@ -1,11 +1,13 @@
 import { Component, OnInit, Input, ViewChild, ElementRef, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { Wait, Button, Message, Command, ActionReply, MessageWithWait, Intent } from 'app/models/intent-model';
+import { Wait, Button, Message, Command, ActionReply, MessageAttributes, Intent } from 'app/models/intent-model';
 import { TYPE_INTENT_ELEMENT, ELEMENTS_LIST, ACTIONS_LIST, TYPE_ACTION, TYPE_COMMAND, TYPE_RESPONSE, TYPE_BUTTON, TYPE_URL, TYPE_MESSAGE, generateShortUID } from 'app/chatbot-design-studio/utils';
 import { LoggerService } from 'app/services/logger/logger.service';
 
 import { ControllerService } from 'app/chatbot-design-studio/services/controller.service';
 import { IntentService } from 'app/chatbot-design-studio/services/intent.service';
+import { ConnectorService } from 'app/chatbot-design-studio/services/connector.service';
+
 
 @Component({
   selector: 'cds-action-reply',
@@ -25,9 +27,8 @@ export class CdsActionReplyComponent implements OnInit {
 
   idIntentSelected: string;
   idAction: string;
+  setTimeoutConversationsEvent: any;
 
-
-  // response: MessageWithWait;
   openCardButton: boolean = false;
   buttonSelected: Button;
   newButton: boolean = false;
@@ -37,10 +38,12 @@ export class CdsActionReplyComponent implements OnInit {
   typeMessage = TYPE_MESSAGE;
   typeActions = TYPE_ACTION;
   actionList = ACTIONS_LIST;
+
   intentName: string;
   intentNameResult: boolean;
   textGrabbing: boolean;
   arrayResponses: Array<Command>;
+
   // arrayMessagesWithWait: Array<MessageWithWait>;
 
   typeAction: string;
@@ -52,17 +55,16 @@ export class CdsActionReplyComponent implements OnInit {
   tipText: string;
   titlePlaceholder: string;
 
-  TypeMessage = TYPE_MESSAGE;
-
   constructor(
     private logger: LoggerService,
     private intentService: IntentService,
-    private controllerService: ControllerService
+    private controllerService: ControllerService,
+    private connectorService: ConnectorService
   ) { }
 
-  manageTooltip(){}
-  onChangeText(event){}
-  addElement(event){}
+  // manageTooltip(){}
+  // onChangeText(event){}
+  // addElement(event){}
 
 
   // SYSTEM FUNCTIONS //
@@ -88,9 +90,6 @@ export class CdsActionReplyComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges): void {
     console.log('ActionReplyComponent ngOnChanges:: ', this.action);
-    // if (changes.connector) {
-    //   this.updateConnector();
-    // }
     if(this.action)this.initialize();
   }
 
@@ -102,13 +101,14 @@ export class CdsActionReplyComponent implements OnInit {
   // CUSTOM FUNCTIONS //
   /** */
   private initialize() {
+    console.log('initialize:::: ', this.arrayResponses);
     this.idIntentSelected = this.intentSelected.intent_id;
     this.action._tdActionId = this.action._tdActionId?this.action._tdActionId:generateShortUID();
     this.idAction = this.idIntentSelected+'/'+this.action._tdActionId;
 
     this.openCardButton = false;
     this.arrayResponses = [];
-    // this.arrayMessagesWithWait = [];
+
     this.intentName = '';
     this.intentNameResult = true;
     this.textGrabbing = false;
@@ -119,76 +119,8 @@ export class CdsActionReplyComponent implements OnInit {
         this.logger.log('error:::', error);
       }
     }
-    // this.generateCommandsOfElements();
-
-
-    console.log('initialize:::: ', this.arrayResponses);
     this.scrollToBottom();
   }
-
-
-
-
-
-
-  /** */
-  // private generateCommandsWithWaitOfElements() {
-  //   let replyArrayElements: Array<Command> = [];
-  //   let textConversation: string = '';
-  //   this.arrayMessagesWithWait.forEach(el => {
-  //     if (el.time && el.time > 0) {
-  //       let elementWait = new Command(TYPE_COMMAND.WAIT);
-  //       elementWait.time = el.time;
-  //       replyArrayElements.push(elementWait);
-  //     }
-  //     let elementMessage = new Command(TYPE_COMMAND.MESSAGE);
-  //     elementMessage.message = new Message(el.type, el.text);
-  //     if (el.attributes) {
-  //       elementMessage.message.attributes = el.attributes;
-  //     }
-  //     if (el.metadata) {
-  //       elementMessage.message.metadata = el.metadata;
-  //     }
-  //     if(el._tdJSONCondition){
-  //       elementMessage.message._tdJSONCondition = el._tdJSONCondition
-  //     }
-  //     replyArrayElements.push(elementMessage);
-  //     if (el.text) {
-  //       textConversation += el.text + '\r\n'
-  //     }
-  //   });
-  //   this.action.text = textConversation;
-  //   this.action.attributes.commands = replyArrayElements;
-  // }
-
-  /** */
-  // private generateCommandsOfElements() {
-  //   var time = 500;
-  //   try {
-  //     this.arrayResponses.forEach(element => {
-  //       if (element.type === TYPE_COMMAND.WAIT) {
-  //         time = element.time;
-  //       }
-  //       if (element.type === TYPE_COMMAND.MESSAGE) {
-  //         let message = new MessageWithWait(element.message.type, element.message.text, time);
-  //         if (element.message.attributes) {
-  //           message.attributes = element.message.attributes;
-  //         }
-  //         if (element.message.metadata) {
-  //           message.metadata = element.message.metadata;
-  //         }
-  //         if(element.message._tdJSONCondition){
-  //           message._tdJSONCondition = element.message._tdJSONCondition
-  //         }
-  //         this.arrayMessagesWithWait.push(message);
-
-  //         time = 0;
-  //       }
-  //     });
-  //   } catch (error) {
-  //     this.logger.log(error);
-  //   }
-  // }
 
 
   /** */
@@ -204,7 +136,63 @@ export class CdsActionReplyComponent implements OnInit {
   }
 
 
+  // EVENT FUNCTIONS //
+
+
+  // on drag //
   /** */
+  mouseDown() {
+    this.textGrabbing = true;
+  }
+
+  /** */
+  mouseUp() {
+    this.textGrabbing = false;
+  }
+
+  /** */
+  drop(event: CdkDragDrop<string[]>) {
+    // this.textGrabbing = false;
+    // moveItemInArray(this.arrayResponses, event.previousIndex, event.currentIndex);
+    // this.onUpdateAndSaveAction();
+  }
+
+
+  // on action //
+  /** */
+  onMoveUpResponse(index: number) {
+    try {
+      let from = index - 1;
+      let to = from - 2;
+      this.arrayResponses.splice(to, 0, this.arrayResponses.splice(from, 1)[0]); 
+      from = index;
+      to = from - 2;
+      this.arrayResponses.splice(to, 0, this.arrayResponses.splice(from, 1)[0]);
+      // console.log( 'onMoveUpResponse ---> ', this.arrayResponses);
+      this.onUpdateAndSaveAction();
+    } catch (error) {
+      this.logger.log('onAddNewResponse ERROR', error);
+    }
+  }
+
+  /** */
+  onMoveDownResponse(index: number) {
+    try {
+      let from = index;
+      let to = from + 2;
+      this.arrayResponses.splice(to, 0, this.arrayResponses.splice(from, 1)[0]); 
+      from = index - 1;
+      to = from + 2;
+      this.arrayResponses.splice(to, 0, this.arrayResponses.splice(from, 1)[0]);
+      // console.log( 'onMoveUpResponse ---> ', this.arrayResponses);
+      this.onUpdateAndSaveAction();
+    } catch (error) {
+      this.logger.log('onAddNewResponse ERROR', error);
+    }
+  }
+
+
+  /** onAddNewActionReply */
   onAddNewActionReply(element) {
     console.log('onAddNewActionReply: ', element);
     try {
@@ -227,135 +215,56 @@ export class CdsActionReplyComponent implements OnInit {
     }
   }
 
-  
 
-
-
-
-  // EVENT FUNCTIONS //
-  /** */
-  mouseDown() {
-    this.textGrabbing = true;
-  }
-
-  /** */
-  mouseUp() {
-    this.textGrabbing = false;
-  }
-
-  /** */
-  drop(event: CdkDragDrop<string[]>) {
-    this.textGrabbing = false;
-    // moveItemInArray(this.arrayMessagesWithWait, event.previousIndex, event.currentIndex);
-    // this.generateCommandsWithWaitOfElements();
+  /** onDeleteActionReply */
+  onDeleteActionReply(index: number) {
+    // console.log('onDeleteActionReply: ', this.arrayResponses[index]);
+    try {
+      let buttons = this.arrayResponses[index].message.attributes.attachment.buttons;
+      buttons.forEach(button => {
+        if(button.isConnected){
+          this.connectorService.deleteConnector(button.idConnector);
+        }
+      });
+    } catch (error) {
+      this.logger.log('onAddNewResponse ERROR', error);
+    }
+    const wait = this.arrayResponses[index-1];
+    if( wait && wait.type === this.typeCommand.WAIT){
+      this.arrayResponses.splice(index-1, 2); 
+    } else {
+      this.arrayResponses.splice(index, 1); 
+    }
+    // console.log('onDeleteActionReply', this.arrayResponses);
+    this.onUpdateAndSaveAction();
   }
 
 
   /** onChangingReplyAction */
   onChangeActionReply(event) {
-    console.log('onChangeActionReply ************', event, this.intentSelected);
+    // console.log('onChangeActionReply ************', event);
     this.onUpdateAndSaveAction();
   }
+  
 
 
-  /**  onUpdateAndSaveAction: 
-   * function called by all actions in @output whenever they are modified!
-   * 1 - update connectors
-   * 2 - update intent
-   * */
-  public async onUpdateAndSaveAction() {
-    console.log('[CDS-INTENT] onUpdateAndSaveAction:::: ', this.intentSelected, this.intentSelected.actions);
-    const response = await this.intentService.updateIntent(this.intentSelected);
-    if (response) {
-      console.log('updateIntent: ', this.intentSelected);
-    }
-  }
-
-  /** onChangeDelayTimeReplyAction */
-  // onChangeDelayTimeReplyAction() {
-  //   this.logger.log('onChangeDelayTimeReplyAction ************', this.arrayMessagesWithWait);
-  //   this.generateCommandsWithWaitOfElements();
-  //   this.updateAndSaveAction.emit();
-  // }
-
-  /** onDeleteActionReply */
-  onDeleteActionReply(index: number) {
-    console.log('onDeleteActionReply: ', index);
-    // this.arrayMessagesWithWait.splice(index, 1);
-    // this.generateCommandsWithWaitOfElements();
-    this.updateAndSaveAction.emit();
-  }
+  // on button action //
 
   /** onCreateNewButton */
-  onCreateNewButton(event){
-    // this.action = event.refResponse;
-    console.log('onCreateNewButton: ', event);
-    this.newButton = true;
+  onCreateNewButton(index){
+    console.log('onCreateNewButton: ', index);
+    try {
+      if(!this.arrayResponses[index].message.attributes || !this.arrayResponses[index].message.attributes.attachment){
+        this.arrayResponses[index].message.attributes = new MessageAttributes();
+      }
+    } catch (error) {
+      console.log('error: ', error);
+    }
     this.buttonSelected = this.createNewButton();
-    event.attributes.attachment.buttons.push(this.buttonSelected);
-    // this.generateCommandsWithWaitOfElements();
-    // this.onUpdateAndSaveAction();
-    // this.updateAndSaveAction.emit();
+    this.arrayResponses[index].message.attributes.attachment.buttons.push(this.buttonSelected);
+    console.log('onCreateNewButton: ', this.arrayResponses);
+    this.onUpdateAndSaveAction();
   }
-
-
-
-
-
-
-
-  /** */
-  onMoveUpResponse(index: number) {
-    if (index > 0) {
-      let to = index - 1;
-      let from = index;
-      // this.arrayMessagesWithWait.splice(to, 0, this.arrayMessagesWithWait.splice(from, 1)[0]);
-      // this.generateCommandsWithWaitOfElements();
-    }
-  }
-
-  /** */
-  onMoveDownResponse(index: number) {
-    // if (index < this.arrayMessagesWithWait.length - 1) {
-    //   let to = index + 1;
-    //   let from = index;
-    //   this.arrayMessagesWithWait.splice(to, 0, this.arrayMessagesWithWait.splice(from, 1)[0]);
-    //   this.generateCommandsWithWaitOfElements();
-    // }
-  }
-
-
-
-
-
-  /** */
-  onChangeIntentName(name: string) {
-    name.toString();
-    try {
-      this.intentName = name.replace(/[^A-Z0-9_]+/ig, "");
-    } catch (error) {
-      this.logger.log('name is not a string', error)
-    }
-  }
-
-  /** */
-  onBlurIntentName(name: string) {
-    this.intentNameResult = true;
-  }
-
-
-  /** */
-  onDisableInputMessage() {
-    try {
-      this.action.attributes.disableInputMessage = !this.action.attributes.disableInputMessage;
-    } catch (error) {
-      this.logger.log("Error: ", error);
-    }
-  }
-
-
-
-
 
   private createNewButton() {
     const idButton = generateShortUID();
@@ -371,21 +280,89 @@ export class CdsActionReplyComponent implements OnInit {
       'action': '',
       'show_echo': true
     };
-    // this.response.attributes.attachment.buttons.push(buttonSelected);
     return buttonSelected;
   }
 
-
-  onDeleteButton(){
+  /** onDeleteButton */
+  onDeleteButton(event){
+    let button = event.buttons[event.index];
+    event.buttons.splice(event.index, 1);
+    var intentId = this.idAction.substring(0, this.idAction.indexOf('/'));
+    this.connectorService.deleteConnectorFromAction(intentId, button.idConnector);
     this.updateAndSaveAction.emit();
   }
+
+
+  /**  onUpdateAndSaveAction: 
+   * function called by all actions in @output whenever they are modified!
+   * 1 - update connectors
+   * 2 - update intent
+   * */
+  public async onUpdateAndSaveAction() {
+    console.log('[CDS-INTENT] onUpdateAndSaveAction:::: ', this.intentSelected, this.intentSelected.actions);
+    this.connectorService.movedConnector(this.intentSelected.intent_id);
+    const that = this;
+    clearTimeout(this.setTimeoutConversationsEvent);
+    this.setTimeoutConversationsEvent = setTimeout(() => {
+      const response = this.intentService.updateIntent(this.intentSelected);
+      if (response) {
+        console.log('updateIntent: ', this.intentSelected);
+      }
+    }, 1000);
+  }
+
+
+
+
+
+  
+
+
+
+
+
+
+  // on intent name //
+
+  /** onChangeIntentName */
+  onChangeIntentName(name: string) {
+    name.toString();
+    try {
+      this.intentName = name.replace(/[^A-Z0-9_]+/ig, "");
+    } catch (error) {
+      this.logger.log('name is not a string', error)
+    }
+  }
+
+  /** onBlurIntentName */
+  onBlurIntentName(name: string) {
+    this.intentNameResult = true;
+  }
+
+  /** onDisableInputMessage */
+  onDisableInputMessage() {
+    try {
+      this.action.attributes.disableInputMessage = !this.action.attributes.disableInputMessage;
+    } catch (error) {
+      this.logger.log("Error: ", error);
+    }
+  }
+
+
+
+
+
+
+
+
+
 
   /** appdashboard-button-configuration-panel: onOpenButtonPanel */
   onOpenButtonPanel(event) {
     console.log('onOpenButtonPanel 2 :: ', event);
     // this.response = event.refResponse;
     this.newButton = false;
-    this.buttonSelected = event.button;
+    this.buttonSelected = event;
     console.log('buttonSelected :: ', this.buttonSelected);
     this.controllerService.openButtonPanel(this.buttonSelected);
   }
@@ -395,6 +372,9 @@ export class CdsActionReplyComponent implements OnInit {
     this.intentService.setIntentSelected(this.intentSelected);
     this.controllerService.openActionDetailPanel(TYPE_INTENT_ELEMENT.ACTION, this.action);
   }
+
+
+
   /** appdashboard-button-configuration-panel: Save button */
   onSaveButton(button) {
     // this.logger.log('onSaveButton :: ', button, this.response);
