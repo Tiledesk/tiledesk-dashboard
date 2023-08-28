@@ -66,14 +66,14 @@
                         [items]="buttonTypes"
                         [bindLabelSelect]="'label'"
                         [bindValueSelect]="'value'"
-                        [itemSelected]="button.type"
+                        [itemSelected]="buttonType"
                         (onSelected)="onChangeTypeButton($event)">
                     </cds-select>
                 </div>
             </div>
         </div>
 
-        <div class="section" [ngClass]="{'displayed':button.type === typeOfButton.URL}">
+        <div class="section" [ngClass]="{'displayed':buttonType === typeOfButton.URL}">
 
             <div class="form-group ng-select">
                 <label class="control-label">
