@@ -12,6 +12,7 @@ export class CdsAddActionMenuComponent implements OnInit, OnChanges {
   @Input() menuType: string;
   @Input() tdsContainerEleHeight: any;
   @Output() addingActionToStage = new EventEmitter();
+  // ACTIONS_LIST = ACTIONS_LIST
   menuItemsList: any;
   filterMenuItemsList: any;
   contentHeight : any;
@@ -21,8 +22,15 @@ export class CdsAddActionMenuComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
 
+    // this.menuItemsList = Object.keys(ACTIONS_LIST).map(key => {
+    //   return {
+    //     type: key,
+    //     value: ACTIONS_LIST[key]
+    //   };
+    // });
+
   
-    
+    console.log('[CDS-ADD-ACTION-MENU] menuItemsList (oninit): ', this.menuItemsList);
     console.log('[CDS-ADD-ACTION-MENU] contentHeight (oninit): ', this.contentHeight);
     console.log('[CDS-ADD-ACTION-MENU] menuType (on init) ', this.menuType)
     switch (this.menuType) {
@@ -63,6 +71,14 @@ export class CdsAddActionMenuComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+
+
+    this.menuItemsList = Object.keys(ACTIONS_LIST).map(key => {
+      return {
+        type: key,
+        value: ACTIONS_LIST[key]
+      };
+    });
    
     console.log('[CDS-ADD-ACTION-MENU] tdsContainerEleHeight (onchanges): ', this.tdsContainerEleHeight);
     this.contentHeight = this.tdsContainerEleHeight - 40;
