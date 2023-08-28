@@ -22,6 +22,7 @@ export class Intent {
     id?: string;
     attributes?: IntentAttributes;
     constructor() {
+        this.intent_id = uuidv4();
         this.actions = [];
         this.attributes = new IntentAttributes();
     }

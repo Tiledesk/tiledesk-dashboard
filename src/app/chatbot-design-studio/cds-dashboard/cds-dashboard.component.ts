@@ -236,6 +236,8 @@ export class CdsDashboardComponent implements OnInit {
     // if (event.target.id ==='cdk-drop-list-0') {
     if (event.target.id.startsWith("cdk-drop-list-")) {
       
+      this.removeConnectorDraftAndCloseFloatMenu();
+      
       this.isOpenAddActionsMenu = false // nk
       this.controllerService.closeActionDetailPanel();
       this.controllerService.closeButtonPanel();
@@ -285,11 +287,11 @@ export class CdsDashboardComponent implements OnInit {
 
     document.addEventListener(
       "dragged", (e: CustomEvent) => {
-        console.log('[CDS DSHBRD] dragged ' ) 
+        console.log('[CDS DSHBRD] dragged ', e );
         const el = e.detail.element;
         const x = e.detail.x;
         const y = e.detail.y;
-        this.connectorService.tiledeskConnectors.moved(el, x, y);
+        this.connectorService.moved(el, x, y);
         // @ Remove connectors of the float context menu
         this.removeConnectorDraftAndCloseFloatMenu();
       },
@@ -311,19 +313,18 @@ export class CdsDashboardComponent implements OnInit {
           console.log('[CDS DSHBRD] this.positionFloatMenu x 1', this.positionFloatMenu.x)
           this.positionFloatMenu.x = this.positionFloatMenu.x + 300
           console.log('[CDS DSHBRD] this.positionFloatMenu x 2', this.positionFloatMenu.x)
-         // -------------------------------------------------------
-        // @ Open WHEN CONNECTOR IS RELEASED
-        // - actions context menu (float)
-        // @ Close WHEN CONNECTOR IS RELEASED
-        // - test widget
-        // - action detail panel
-        // - button configuration panel
-        // -------------------------------------------------------
+          // -------------------------------------------------------
+          // @ Open WHEN CONNECTOR IS RELEASED
+          // - actions context menu (float)
+          // @ Close WHEN CONNECTOR IS RELEASED
+          // - test widget
+          // - action detail panel
+          // - button configuration panel
+          // -------------------------------------------------------
           this.isOpenAddActionsMenu = true;
           this.hasClickedAddAction = false;
           this.IS_OPEN_PANEL_WIDGET = false;
           this.controllerService.closeActionDetailPanel();
-
           this.connectorDraft = {
             fromId: e.detail.fromId,
             fromPoint: e.detail.fromPoint,
@@ -382,9 +383,9 @@ export class CdsDashboardComponent implements OnInit {
       console.log('[CDS DSHBRD] MOUSE UP CLOSE FLOAT MENU')
       
       // @ Remove connectors of the float context menu
-      if (!that.hasClickedAddAction) {
-        that.removeConnectorDraftAndCloseFloatMenu();
-      }
+      // if (!that.hasClickedAddAction) {
+      //   that.removeConnectorDraftAndCloseFloatMenu();
+      // }
     });
 
     /** keydown */
@@ -681,13 +682,20 @@ export class CdsDashboardComponent implements OnInit {
     this.intentSelected = this.intentService.createNewIntent(this.id_faq_kb, action, pos);
     this.intentSelected.id = NEW_POSITION_ID;
     this.intentService.addNewIntentToListOfIntents(this.intentSelected);
+      
+      const fromId = this.connectorDraft.fromId;
+      const toId = this.intentSelected.intent_id;
+      console.log('[CDS-DSHBRD] sto per creare il connettore ', fromId, toId);
+      this.connectorService.createConnectorFromId(fromId, toId);
+      this.removeConnectorDraftAndCloseFloatMenu();
+    
     const newIntent = await this.intentService.saveNewIntent(this.id_faq_kb, this.intentSelected);
     if (newIntent) {
       this.intentSelected.id = newIntent.id;
-      this.intentSelected.intent_id = newIntent.intent_id;
+      // this.intentSelected.intent_id = newIntent.intent_id;
       console.log('Intent salvato correttamente: ', newIntent, this.listOfIntents);
-      this.intentService.replaceNewIntentToListOfIntents(this.intentSelected);
-      console.log('Intent salvato correttamente: ', newIntent, this.listOfIntents);
+      this.intentService.replaceNewIntentToListOfIntents(newIntent);
+      // console.log('Intent salvato correttamente: ', newIntent, this.listOfIntents);
       // !!! il valore di listOfIntents è bindato nel costructor con subscriptionListOfIntents !!! //
       this.setDragAndListnerToElement(this.intentSelected);
       return newIntent;
@@ -949,15 +957,15 @@ export class CdsDashboardComponent implements OnInit {
     console.log('[CDS-DSHBRD] trascino connettore sullo stage ', event);
     if (this.connectorDraft.toPoint) {
       const toPoint = this.connectorDraft.toPoint;
-      toPoint.x = toPoint.x - 132;
+      // toPoint.x = toPoint.x - 132;
       const fromId = this.connectorDraft.fromId;
       const newAction = this.intentService.createNewAction(event.type);
       const newIntent = await this.createNewIntentWithAnAction(toPoint, newAction);
       if (newIntent) {
-        const toId = newIntent.intent_id;
-        console.log('[CDS-DSHBRD] sto per creare il connettore ');
-        this.connectorService.createConnectorFromId(fromId, toId);
-        this.removeConnectorDraftAndCloseFloatMenu();
+        // const toId = newIntent.intent_id;
+        // console.log('[CDS-DSHBRD] sto per creare il connettore ', fromId, toId);
+        // this.connectorService.createConnectorFromId(fromId, toId);
+        // this.removeConnectorDraftAndCloseFloatMenu();
       }
     } else {
       console.log("[CDS-DSHBRD] ho premuto + quindi creo una nuova action e la aggiungo all'intent");

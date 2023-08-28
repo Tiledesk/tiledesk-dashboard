@@ -299,23 +299,24 @@ export class IntentService {
     // newIntents.push(newIntent); 
     // console.log("Aggiungo un intent all'array in ultima posizione con id fake");
     return new Promise((resolve, reject) => {
-      let questionIntentSelected = newIntent.question;
-      let answerIntentSelected = newIntent.answer;
-      let displayNameIntentSelected = newIntent.intent_display_name;
-      let formIntentSelected = newIntent.form;
-      let actionsIntentSelected = newIntent.actions;
-      let webhookEnabledIntentSelected = newIntent.webhook_enabled;
-      let attributes = newIntent.attributes;
+      // let questionIntentSelected = newIntent.question;
+      // let answerIntentSelected = newIntent.answer;
+      // let displayNameIntentSelected = newIntent.intent_display_name;
+      // let formIntentSelected = newIntent.form;
+      // let actionsIntentSelected = newIntent.actions;
+      // let webhookEnabledIntentSelected = newIntent.webhook_enabled;
+      // let attributes = newIntent.attributes;
       const that = this;
       this.faqService.addIntent(
         id_faq_kb,
-        attributes,
-        questionIntentSelected,
-        answerIntentSelected,
-        displayNameIntentSelected,
-        formIntentSelected,
-        actionsIntentSelected,
-        webhookEnabledIntentSelected
+        newIntent.attributes,
+        newIntent.question,
+        newIntent.answer,
+        newIntent.intent_display_name,
+        newIntent.intent_id,
+        newIntent.form,
+        newIntent.actions,
+        newIntent.webhook_enabled
       ).subscribe((intent:any) => {
         // console.log("addIntent: sostituisto l'ultimo elemento dell'array aggiunto in precedenza, con quello salvato con un id valido");
         // this.listOfIntents[this.listOfIntents.length-1] = intent;
