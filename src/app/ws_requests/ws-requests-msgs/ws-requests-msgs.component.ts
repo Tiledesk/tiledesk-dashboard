@@ -391,6 +391,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   onlyAvailableWithEnterprisePlan: string;
   cPlanOnly: string
   learnMoreAboutDefaultRoles: string;
+  onlyUserWithOwnerRoleCanManageAdvancedProjectSettings: string;
   displayChatRatings: boolean = true;
   onlyOwnerCanManageTheAccountPlanMsg: string;
   DASHBORD_BASE_URL: string;
@@ -4215,11 +4216,16 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       }
     } else {
       // this.logger.log('displayModalBanVisitor HERE 5 ')
-      this.presentModalAgentCannotManageAvancedSettings()
+      // this.presentModalAgentCannotManageAvancedSettings()
+      this.presentModalOnlyOwnerCanManageAdvancedProjectSettings();
     }
 
   }
 
+
+  presentModalOnlyOwnerCanManageAdvancedProjectSettings() {
+    this.notify.presentModalOnlyOwnerCanManageAdvancedProjectSettings(this.onlyUserWithOwnerRoleCanManageAdvancedProjectSettings, this.learnMoreAboutDefaultRoles)
+  }
 
   banVisitors(leadid: string, ipaddress: string) {
     const index = this.bannedVisitorsArray.findIndex((v) => v.id === leadid);
@@ -4851,6 +4857,11 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       .subscribe((translation: any) => {
 
         this.learnMoreAboutDefaultRoles = translation;
+      });
+
+      this.translate.get('OnlyUserWithOwnerRoleCanManageAdvancedProjectSettings')
+      .subscribe((translation: any) => {
+        this.onlyUserWithOwnerRoleCanManageAdvancedProjectSettings = translation;
       });
 
 
