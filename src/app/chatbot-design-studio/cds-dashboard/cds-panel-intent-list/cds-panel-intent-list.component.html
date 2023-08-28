@@ -1,11 +1,10 @@
-<div class="content" >
+<div class="content">
 
     <div class="search-box">
         <div class="input-box">
-            <input class="custom-input" placeholder="search a block..." (input)="onLivesearch($event.target.value);">
+            <input class="custom-input truncate" placeholder="search a block..." (input)="onLivesearch($event.target.value);">
         </div>
     </div>
-
 
     <div class="intents-list">
 
@@ -24,7 +23,7 @@
                         <span class="material-icons">{{onGetIconForName(intent.intent_display_name)}}</span>
                     </div>
 
-                    <div class="item-box">
+                    <div class="item-box" *ngIf="IS_OPEN">
                         <div>
                             <p class="intent-display-name truncate">{{intent.intent_display_name}}</p>
                             <div class="icon-list">
@@ -69,7 +68,7 @@
                     <span class="material-icons">{{onGetIconForName(intent.intent_display_name)}}</span>
                 </div>
 
-                <div class="item-box">
+                <div class="item-box" *ngIf="IS_OPEN">
                     <div>
                         <p class="intent-display-name">{{intent.intent_display_name}}</p>
                         <div class="icon-list">

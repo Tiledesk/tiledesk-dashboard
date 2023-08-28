@@ -45,6 +45,8 @@ $max-height: 230px;
 
     &.text-editor-wrapper{
         // padding: 0;
+        margin: 0px;
+        
         cds-textarea.text-editable-div{
             width: calc(100% - 20px);
             margin: 5px auto;

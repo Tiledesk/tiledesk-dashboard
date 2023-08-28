@@ -42,8 +42,9 @@ $width-title: 80%;
             background-image: linear-gradient($color-light-gray-hex, $color-light-gray-hex);
             transition-duration: 0.2s;
             /*  height: $height-header;*/
-            &[disabled]{
+            &[readonly]{
               cursor: grab;
+              background-image: none !important;
             }
         }
         label.title {
@@ -88,6 +89,7 @@ $width-title: 80%;
             right: 10px;
             padding: 8px;
         }
+
     }
 
     .form-group {

@@ -1,5 +1,6 @@
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { ConnectorService } from 'app/chatbot-design-studio/services/connector.service';
 import { IntentService } from 'app/chatbot-design-studio/services/intent.service';
 import { TYPE_ACTION, TYPE_BUTTON, TYPE_URL, generateShortUID } from 'app/chatbot-design-studio/utils';
@@ -46,6 +47,7 @@ export class CdsActionReplyGalleryComponent implements OnInit {
   constructor(
     private logger: LoggerService,
     private el: ElementRef,
+    private sanitizer: DomSanitizer,
     private connectorService: ConnectorService,
     private intentService: IntentService,
   ) { }
@@ -199,6 +201,10 @@ export class CdsActionReplyGalleryComponent implements OnInit {
         that.logger.log('scrollToBottom ERROR: ', error);
       }
     }, 300);
+  }
+
+  sanitizerUrlImage(url){
+    return this.sanitizer.bypassSecurityTrustUrl(url);
   }
 
 

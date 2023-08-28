@@ -84,8 +84,8 @@
     }
 
     &.buttons-response{
-        padding: 0 5px;
-        margin: 5px 0 0;
+        padding: 0 $padding-base-preview;
+        margin: 0;
         flex-direction: column;
         flex-wrap: nowrap;
 
@@ -106,7 +106,7 @@
     position: relative;
     width: 100%;
     height: auto;
-    margin: 5px 0 0 0;
+    margin: 0px; //5px 0 0 0;
     // padding: 0px 33px;
 }
     

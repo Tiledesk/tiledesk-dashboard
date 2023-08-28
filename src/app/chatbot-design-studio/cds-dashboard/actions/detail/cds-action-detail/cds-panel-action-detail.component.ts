@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges, ChangeDetectorRef, TemplateRef, ViewContainerRef } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, ChangeDetectorRef, TemplateRef, ViewContainerRef, HostListener } from '@angular/core';
 import { IntentService } from 'app/chatbot-design-studio/services/intent.service';
 import { TYPE_ACTION, TYPE_INTENT_ELEMENT } from 'app/chatbot-design-studio/utils';
 import { Intent } from 'app/models/intent-model';
@@ -11,7 +11,6 @@ import { LoggerService } from 'app/services/logger/logger.service';
 })
 export class CdsActionDetailPanelComponent implements OnInit, OnChanges {
   @Output() closeAndSavePanelIntentDetail = new EventEmitter();
-  @Output() clickedInsidePanelIntentDetail = new EventEmitter();
   @Input() elementIntentSelected: any;
   @Input() showSpinner: boolean;
   // @Input() intentSelected: Intent;
@@ -60,7 +59,7 @@ export class CdsActionDetailPanelComponent implements OnInit, OnChanges {
       // console.log('[PANEL-INTENT-DETAIL] (OnChanges) elementSelected ', this.elementSelected);
       // console.log('[PANEL-INTENT-DETAIL] (OnChanges) intentSelected ', this.intentSelected);
     }catch(error){
-      this.logger.log('[PANEL-INTENT-DETAIL] (ngOnChanges) ERROR', error);
+      this.logger.log('[CDS-PANEL-INTENT-DETAIL] (ngOnChanges) ERROR', error);
     }
   }
 
@@ -90,10 +89,7 @@ export class CdsActionDetailPanelComponent implements OnInit, OnChanges {
     // console.log("onUpdateQuestionsIntentSelected:::: ", $event);
   }
 
-  onClickInside(){
-    // console.log("----> onClickInside:::: ");
-    this.clickedInsidePanelIntentDetail.emit();
-  }
+ 
 
 
   onSaveIntent(){

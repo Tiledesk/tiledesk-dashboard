@@ -378,6 +378,8 @@ export class CdsActionReplyComponent implements OnInit {
     // this.generateCommandsWithWaitOfElements();
   }
 
+ 
+
   /** appdashboard-button-configuration-panel: Close button panel */
   onCloseButtonPanel() {
     this.logger.log('onCloseButtonPanel :: ');

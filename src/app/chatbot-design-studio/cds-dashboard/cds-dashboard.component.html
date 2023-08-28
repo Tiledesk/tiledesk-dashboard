@@ -1,7 +1,6 @@
 <cds-header class="cds-header" 
     [IS_OPEN]="IS_OPEN" 
-    [projectID]="projectID" 
-    [id_faq_kb]="id_faq_kb"
+    [projectID]="projectID" [id_faq_kb]="id_faq_kb"
     [defaultDepartmentId]="defaultDepartmentId" 
     [selectedChatbot]="selectedChatbot" 
     (goToBck)="goBack()"
@@ -11,31 +10,41 @@
 
 <div id="chatbot--dashboard" class="chatboat-dashboard" [class.is_opened_sidebar]="IS_OPEN">
     <!-- [class.is_opened]="IS_OPEN" -->
-    <cds-sidebar class="cds-sidebar" 
-        [extendedWidth]="IS_OPEN" 
-        [projectID]="projectID"
-        (onClickItemList)="onClickItemList($event)" 
-        (goToBck)="goBack()">
+    <cds-sidebar class="cds-sidebar" [extendedWidth]="IS_OPEN" [projectID]="projectID"
+        (onClickItemList)="onClickItemList($event)" (goToBck)="goBack()">
     </cds-sidebar>
 
     <div *ngIf="activeSidebarSection == 'cds-sb-intents'" class="cds-content">
 
-        <div class="box-left">
+        <div class="box-left" [class.is_closed]="!IS_OPEN_INTENTS_LIST">
             <cds-panel-intent-list *ngIf="listOfIntents"
-                 class="panel-intent-list"
+                [IS_OPEN]="IS_OPEN_INTENTS_LIST"
+                class="panel-intent-list"
                 [updatePanelIntentList]="updatePanelIntentList" 
                 [listOfIntents]="listOfIntents" 
                 [intent_id]="intent_id"
                 (selectIntent)=onSelectIntent($event) 
                 (deleteIntent)="onDeleteIntent($event)">
             </cds-panel-intent-list>
+
+            <div class="toggle-setting-sidebar-icon-wpr" [class.is_opened]="IS_OPEN_INTENTS_LIST"
+                (click)="onToogleSidebarIntentsList(IS_OPEN_INTENTS_LIST = !IS_OPEN_INTENTS_LIST)">
+                <span *ngIf="IS_OPEN_INTENTS_LIST" class="material-icons toggle-setting-sidebar-icon">
+                    chevron_left
+                </span>
+                <span *ngIf="!IS_OPEN_INTENTS_LIST" class="material-icons toggle-setting-sidebar-icon">
+                    chevron_right
+                </span>
+            </div>
+
         </div>
 
         <div id="tds_container" class="box-right tds-drag-container" cdkDropListGroup>
 
             <cds-panel-elements class="cds-panel-elements" 
                 (showPanelActions)="onShowPanelActions($event)"
-                (addNewElement)="onAddNewElement()">
+                (addNewElement)="onAddNewElement()"
+                (onMouseOverActionMenuSx)="onMouseOverActionMenuSx($event)">
             </cds-panel-elements>
 
             <div #receiver_elements_dropped_on_stage class="receiver-elements-dropped-on-stage" cdkDropList
@@ -48,10 +57,11 @@
                     [style.top.px]="getIntentPosition(intent.id).y"
                     [style.left.px]="getIntentPosition(intent.id).x" 
                     [intent]="intent"
-                   
+                    (actionSelected)=onActionSelected($event) 
                     (questionSelected)=onQuestionSelected($event)
-                    (formSelected)=onIntentFormSelected($event)
-                    (showPanelActions)="showPanelActions($event)">
+                    (formSelected)=onIntentFormSelected($event) 
+                    (showPanelActions)="showPanelActions($event)"
+                    (onTestItOut)="onTestItOut($event)">
                 </cds-intent>
                 <!-- (actionSelected)=onActionSelected($event) -->
                 <!-- 
@@ -63,7 +73,7 @@
             </div>
 
             <!-- [style.display]="isOpenFloatMenu?'block':'none'" -->
-            <div #floatMenuElement id="floatMenuElement" 
+            <!-- <div #floatMenuElement id="floatMenuElement" 
                 [style.display]="isOpenFloatMenu?'block':'none'"
                 [style.top.px]="positionFloatMenu.y" 
                 [style.left.px]="positionFloatMenu.x">
@@ -72,36 +82,44 @@
                     [menuPoint]="positionFloatMenu"
                     (addingActionToStage)="onAddingActionToStage($event)">
                 </cds-floating-menu>
-            </div>
+            </div> -->
         </div>
 
-        <cds-add-action-menu class="menu-context-add" 
+
+        <!-- [style.display]="isOpenAddActionsMenu?'block':'none' -->
+       <!--  (clickedOutOfAddActionMenu)="clickedOutOfAddActionMenu($event)" -->
+        <cds-add-action-menu class="menu--context--add" 
             [style.top.px]="15" 
             [style.left.px]="positionFloatMenu.x"
-            [style.height.px]="tdsContainerEleHeight"
+            [style.height.px]="tdsContainerEleHeight"   
             [tdsContainerEleHeight]="tdsContainerEleHeight"
-            [style.display]="isOpenAddActionsMenu?'block':'none'"
+            [style.display]="isOpenAddActionsMenu?'block':'none'" 
             [menuType]="action" 
-            (addingActionToStage)="onAddingActionToStage($event)"
-            (clickedOutOfAddActionMenu)="clickedOutOfAddActionMenu($event)" >
+            [menuPoint]="positionFloatMenu"
+            (addingActionToStage)="onAddingActionToStage($event)">
         </cds-add-action-menu>
-
-
+        
         <cds-panel-widget *ngIf="IS_OPEN_PANEL_WIDGET" 
             id="widget-preview" 
             class="cds-generic-panel"
             [projectID]="projectID" 
-            [id_faq_kb]="id_faq_kb"
+            [id_faq_kb]="id_faq_kb" 
             [defaultDepartmentId]="defaultDepartmentId">
         </cds-panel-widget>
 
-        <cds-panel-button-configuration id="button-configuration" class="cds-generic-panel"
+        <!-- panel-button-backdrop -->
+        <cds-panel-button-configuration  *ngIf="isOpenPanelButtonConfig" 
+            id="button-configuration" 
+            class="cds-generic-panel"
             [isOpenPanel]="isOpenPanelButtonConfig" 
             [button]=buttonSelected 
             (saveButton)=onSaveButton($event)>
         </cds-panel-button-configuration>
 
-        <cds-panel-action-detail *ngIf="isOpenPanelActionDetail" id="action-detail" class="cds-generic-panel"
+        <!-- panel-action-backdrop -->
+        <cds-panel-action-detail *ngIf="isOpenPanelActionDetail" 
+            id="action-detail" 
+            class="cds-generic-panel"
             [isOpenPanel]="isOpenPanelActionDetail" 
             [project_id]="projectID"
             [elementIntentSelected]="elementIntentSelected"
@@ -112,7 +130,7 @@
     </div>
 
 
-    <cds-chatbot-details *ngIf="activeSidebarSection == 'cds-sb-settings'"
+    <cds-chatbot-details *ngIf="activeSidebarSection == 'cds-sb-settings'" 
         [selectedChatbot]="selectedChatbot">
     </cds-chatbot-details>
 
@@ -142,7 +160,8 @@
 
 
 
-<cds-modal-activate-bot [selectedChatbot]="selectedChatbot">
+<cds-modal-activate-bot 
+    [selectedChatbot]="selectedChatbot">
 </cds-modal-activate-bot>
 
 <cds-popup></cds-popup>

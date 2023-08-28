@@ -32,7 +32,7 @@ export class CdsPanelButtonConfigurationComponent implements OnInit {
   urlTypes = URL_TYPES;
 
   buttonLabel: string;
-  buttonType: string;
+  // buttonType: string;
   // labelAction: string;
   urlType: string;
   buttonUrl: string;
@@ -81,17 +81,17 @@ export class CdsPanelButtonConfigurationComponent implements OnInit {
       // this.buttonLabelResult = true;
       this.errorUrl = false;
       this.buttonLabel = '';
-      this.buttonType = this.typeOfButton.TEXT;
+      // this.buttonType = this.typeOfButton.TEXT;
       this.urlType = this.typeOfUrl.BLANK;
       this.buttonUrl = '';
       this.buttonAction = null;
       this.buttonAttributes = '';
       try {
         this.buttonLabel = this.button.value ? this.button.value : null;
-        this.buttonType = this.button.type ? this.button.type : null;
+        // this.buttonType = this.button.type ? this.button.type : null;
         this.urlType = this.button.target ? this.button.target : null;
         this.buttonUrl = this.button.link ? this.button.link : null; 
-        // this.buttonAttributes = this.button.attributes ? this.button.attributes : [];
+        this.buttonAttributes = this.button.attributes ? this.button.attributes : [];
       } catch (error) {
         // error
       }
@@ -165,11 +165,11 @@ export class CdsPanelButtonConfigurationComponent implements OnInit {
   }
 
   private checkTypeButton() {
-    if (this.buttonType === this.typeOfButton.TEXT) {
+    if (this.button.type === this.typeOfButton.TEXT) {
       return true;
-    } else if (this.buttonType === this.typeOfButton.URL) {
+    } else if (this.button.type === this.typeOfButton.URL) {
       return this.checkUrl(this.buttonUrl);
-    } else if (this.buttonType === this.typeOfButton.ACTION) {
+    } else if (this.button.type === this.typeOfButton.ACTION) {
       return this.checkAction(this.buttonAction);
     }
     return false;
@@ -210,6 +210,7 @@ export class CdsPanelButtonConfigurationComponent implements OnInit {
 
   /** */
   onCloseButtonPanel() {
+    console.log('[CDS-PANEL-BTN-CONFIG] onCloseButtonPanel'  )
     this.controllerService.closeButtonPanel();
     // this.closeButtonPanel.emit();
   }
@@ -223,6 +224,7 @@ export class CdsPanelButtonConfigurationComponent implements OnInit {
   /** */
   onChangeTypeButton(typeOfButton: { label: string, value: TYPE_BUTTON }) {
     this.button.type = typeOfButton.value;
+    console.log('onChangeTypeButton-->', typeOfButton, this.button)
     if(this.button.idConnector){
       let parts = this.button.idConnector.split('/');
       if(parts && parts.length>1){
@@ -259,6 +261,12 @@ export class CdsPanelButtonConfigurationComponent implements OnInit {
     console.log('createNewConnector: ', fromId);
     this.connectorService.deleteConnectorWithIDStartingWith(fromId);
     this.connectorService.createNewConnector(fromId, toId);
+    this.checkAndSaveButton();
+  }
+
+  onChangeOpenIn(event: {name: string, value: string}){
+    console.log('onChangeOpenIn: ', event);
+    this.urlType = event.value;
     this.checkAndSaveButton();
   }
 
