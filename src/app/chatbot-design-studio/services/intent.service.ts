@@ -24,7 +24,7 @@ import {
   Command, Message, Expression, Attributes, Action, ActionAskGPT, ActionWhatsappAttribute, ActionWhatsappStatic } from 'app/models/intent-model';
 import { FaqService } from 'app/services/faq.service';
 import { FaqKbService } from 'app/services/faq-kb.service';
-import { NEW_POSITION_ID, TYPE_ACTION, TYPE_COMMAND } from 'app/chatbot-design-studio/utils';
+import { NEW_POSITION_ID, TYPE_ACTION, TYPE_COMMAND, removeNodesStartingWith } from 'app/chatbot-design-studio/utils';
 import { ConnectorService } from 'app/chatbot-design-studio/services/connector.service';
 
 
@@ -334,8 +334,14 @@ export class IntentService {
   }
 
 
+
+
+
   /** updateIntent */
-  public async updateIntent(intent: Intent): Promise<boolean> { 
+  public async updateIntent(originalIntent: Intent): Promise<boolean> { 
+    let intent = JSON.parse(JSON.stringify(originalIntent));
+    intent = removeNodesStartingWith(intent, '__');
+
     return new Promise((resolve, reject) => {
       let id = intent.id;
       let attributes = intent.attributes?intent.attributes:{};

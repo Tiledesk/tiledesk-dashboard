@@ -1,6 +1,6 @@
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { TYPE_MESSAGE, TYPE_COMMAND, generateShortUID, TYPE_BUTTON, TYPE_URL } from 'app/chatbot-design-studio/utils';
-import { Message, Command } from 'app/models/intent-model';
+import { Message, Command, Button } from 'app/models/intent-model';
 
 @Component({
   selector: 'cds-action-reply-tools',
@@ -78,17 +78,30 @@ export class CdsActionReplyToolsComponent implements OnInit {
                       title: 'Place title',
                       description: 'Place description',
                       buttons: [
-                        {
-                          'uid': idButton,
-                          'idConnector': idActionConnector,
-                          'isConnected': false,
-                          'value': 'Button',
-                          'type': TYPE_BUTTON.TEXT,
-                          'target': TYPE_URL.BLANK,
-                          'link': '',
-                          'action': '',
-                          'show_echo': true
-                        }
+
+                        new Button(
+                          idButton,
+                          idActionConnector,
+                          false,
+                          TYPE_BUTTON.TEXT,
+                          'Button',
+                          '',
+                          TYPE_URL.BLANK,
+                          '',
+                          '',
+                          true
+                        )
+                        // {
+                        //   'uid': idButton,
+                        //   'idConnector': idActionConnector,
+                        //   'isConnected': false,
+                        //   'value': 'Button',
+                        //   'type': TYPE_BUTTON.TEXT,
+                        //   'target': TYPE_URL.BLANK,
+                        //   'link': '',
+                        //   'action': '',
+                        //   'show_echo': true
+                        // }
                       ]
                     }
                   ]

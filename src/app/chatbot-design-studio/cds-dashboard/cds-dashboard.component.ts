@@ -1265,7 +1265,7 @@ export class CdsDashboardComponent implements OnInit {
 
 
   onSaveButton(button: Button) {
-    const arrayId = button.idConnector.split("/");
+    const arrayId = button.__idConnector.split("/");
     const idConnector = arrayId[0] ? arrayId[0] : null;
     console.log('onSaveButton: ', idConnector, this.listOfIntents);
     if (idConnector) {
