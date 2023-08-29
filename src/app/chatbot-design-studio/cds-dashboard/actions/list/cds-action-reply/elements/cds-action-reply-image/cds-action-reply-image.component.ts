@@ -125,7 +125,7 @@ export class CdsActionReplyImageComponent implements OnInit {
           // ADD / EDIT
           buttonChanged.__isConnected = true;
           buttonChanged.__idConnector = this.connector.fromId;
-          buttonChanged.action = '#' + this.connector.toId;
+          buttonChanged.action = buttonChanged.action? buttonChanged.action : '#' + this.connector.toId;
           buttonChanged.type = TYPE_BUTTON.ACTION;
           console.log(' updateConnector :: ', this.buttons);
         }

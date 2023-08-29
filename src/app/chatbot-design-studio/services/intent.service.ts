@@ -39,23 +39,21 @@ export class IntentService {
   behaviorIntent = new BehaviorSubject <Intent>(null);
 
   listOfIntents: Array<Intent> = [];
-  intent: Intent;
-  // intentSelected: Intent;
+  selectedIntent: Intent;
+  listActions: Array<Action>;
+  selectedAction: Action;
+
+  actionSelectedID: string;
+  intentSelectedID: string;
 
   previousIntentId: string = '';
   preDisplayName: string = 'untitled_block_';
-  listOfActions: Array<{ name: string, value: string, icon?: string }>;
-  actionSelectedID: string;
-  intentSelectedID: string;
   
   botAttributes: any = {};
   listOfPositions: any = {};
 
   // newPosition: any = {'x':0, 'y':0};
-  intentSelected: Intent;
-  selectedIntent: Intent;
-  listActions: Array<Action>;
-  selectedAction: Action;
+  
 
   private changedConnector = new Subject<any>();
   public isChangedConnector$ = this.changedConnector.asObservable();
@@ -79,7 +77,7 @@ export class IntentService {
 
 
   public setIntentSelected(intent){
-    this.intentSelected = intent;
+    this.selectedIntent = intent;
   }
 
   /** setDragAndListnerEvent */
@@ -556,6 +554,7 @@ export class IntentService {
     this.intentSelectedID = intentID;
 
     this.selectedIntent = this.listOfIntents.find(intent => intent.intent_id === intentID);
+
     this.listActions = this.selectedIntent.actions;
     this.selectedAction = this.listActions.find(action => action._tdActionId === actionId);
   }
