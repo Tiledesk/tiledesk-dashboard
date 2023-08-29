@@ -248,4 +248,8 @@ export class ConnectorService {
   }
 
 
+  moved(element, x, y){
+    this.tiledeskConnectors.moved(element, x, y);
+  }
+
 }

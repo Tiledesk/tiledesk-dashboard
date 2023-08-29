@@ -2,6 +2,7 @@ import { AbstractControl } from "@angular/forms";
 import { ActionAssignVariable, Intent } from "app/models/intent-model";
 import { v4 as uuidv4 } from 'uuid';
 
+
 export enum EXTERNAL_URL {
     getchatbotinfo = "https://tiledesk.com/community/getchatbotinfo/chatbotId/"
 }
@@ -353,6 +354,7 @@ export function patchActionId(action) {
     }
     return action;
 }
+
 
 export function generateShortUID() {
     const timestamp = Date.now().toString(36); // Converti l'orario corrente in base 36

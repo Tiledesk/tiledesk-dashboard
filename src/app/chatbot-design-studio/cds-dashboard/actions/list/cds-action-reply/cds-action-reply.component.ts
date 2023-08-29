@@ -25,13 +25,13 @@ export class CdsActionReplyComponent implements OnInit {
   @Output() updateAndSaveAction = new EventEmitter();
   
 
-  idIntentSelected: string;
+  // idIntentSelected: string;
   idAction: string;
   setTimeoutConversationsEvent: any;
 
   openCardButton: boolean = false;
-  buttonSelected: Button;
-  newButton: boolean = false;
+  // buttonSelected: Button;
+  // newButton: boolean = false;
 
   typeCommand = TYPE_COMMAND;
   typeResponse = TYPE_RESPONSE;
@@ -66,7 +66,7 @@ export class CdsActionReplyComponent implements OnInit {
 
   // SYSTEM FUNCTIONS //
   ngOnInit(): void {
-    console.log('ActionReplyComponent ngOnInit 2222222', this.action, this.intentSelected);
+    console.log('ActionReplyComponent ngOnInit', this.action, this.intentSelected);
     // // console.log('ngOnInit panel-response::: ', this.typeAction);
     this.typeAction = (this.action._tdActionType === TYPE_ACTION.RANDOM_REPLY ? TYPE_ACTION.RANDOM_REPLY : TYPE_ACTION.REPLY);
     try {
@@ -98,10 +98,9 @@ export class CdsActionReplyComponent implements OnInit {
   // CUSTOM FUNCTIONS //
   /** */
   private initialize() {
-    console.log('initialize:::: ', this.arrayResponses);
-    this.idIntentSelected = this.intentSelected.intent_id;
+    console.log('initialize:::: ', this.intentSelected);
     this.action._tdActionId = this.action._tdActionId?this.action._tdActionId:generateShortUID();
-    this.idAction = this.idIntentSelected+'/'+this.action._tdActionId;
+    this.idAction =this.intentSelected.intent_id+'/'+this.action._tdActionId;
 
     this.openCardButton = false;
     this.arrayResponses = [];
@@ -257,27 +256,36 @@ export class CdsActionReplyComponent implements OnInit {
     } catch (error) {
       console.log('error: ', error);
     }
-    this.buttonSelected = this.createNewButton();
-    this.arrayResponses[index].message.attributes.attachment.buttons.push(this.buttonSelected);
-    console.log('onCreateNewButton: ', this.arrayResponses);
-    this.onUpdateAndSaveAction();
+
+    let buttonSelected = this.createNewButton();
+    if(buttonSelected){
+      this.arrayResponses[index].message.attributes.attachment.buttons.push(buttonSelected);
+      console.log('onCreateNewButton: ', this.arrayResponses);
+      this.onUpdateAndSaveAction();
+    }
   }
 
   private createNewButton() {
     const idButton = generateShortUID();
-    const idActionConnector = this.idAction+'/'+idButton;
-    let buttonSelected = {
-      'uid': idButton,
-      'idConnector': idActionConnector,
-      'isConnected': false,
-      'value': 'Button',
-      'type': TYPE_BUTTON.TEXT,
-      'target': TYPE_URL.BLANK,
-      'link': '',
-      'action': '',
-      'show_echo': true
-    };
-    return buttonSelected;
+    if(this.intentSelected.intent_id){
+      this.idAction = this.intentSelected.intent_id+'/'+this.action._tdActionId;
+      const idActionConnector = this.idAction+'/'+idButton;
+      console.log('createNewButton: ', this.intentSelected);
+      let buttonSelected = {
+        'uid': idButton,
+        'idConnector': idActionConnector,
+        'isConnected': false,
+        'value': 'Button',
+        'type': TYPE_BUTTON.TEXT,
+        'target': TYPE_URL.BLANK,
+        'link': '',
+        'action': '',
+        'show_echo': true
+      };
+      return buttonSelected;
+    }
+    return null;
+    
   }
 
   /** onDeleteButton */
@@ -355,13 +363,11 @@ export class CdsActionReplyComponent implements OnInit {
 
 
   /** appdashboard-button-configuration-panel: onOpenButtonPanel */
-  onOpenButtonPanel(event) {
-    console.log('onOpenButtonPanel 2 :: ', event);
+  onOpenButtonPanel(buttonSelected) {
+    console.log('onOpenButtonPanel 2 :: ', buttonSelected);
     // this.response = event.refResponse;
-    this.newButton = false;
-    this.buttonSelected = event;
-    console.log('buttonSelected :: ', this.buttonSelected);
-    this.controllerService.openButtonPanel(this.buttonSelected);
+    console.log('buttonSelected :: ', buttonSelected);
+    this.controllerService.openButtonPanel(buttonSelected);
   }
 
   onOpenPanelActionDetail(event){
