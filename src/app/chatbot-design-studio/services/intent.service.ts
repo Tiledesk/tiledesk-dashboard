@@ -37,6 +37,7 @@ export class IntentService {
   idBot: string;
   behaviorIntents = new BehaviorSubject <Intent[]>([]);
   behaviorIntent = new BehaviorSubject <Intent>(null);
+  public newActionCreated$: BehaviorSubject<Action> = new BehaviorSubject<Action>(null)
 
   listOfIntents: Array<Intent> = [];
   intent: Intent;
@@ -683,6 +684,7 @@ export class IntentService {
       action.assignSuccessTo = 'gpt_success';
     }
     console.log('ho creato nuova action ', action);
+    this.newActionCreated$.next(action)
     return action;
   }
   // END ATTRIBUTE FUNCTIONS //
