@@ -32,7 +32,7 @@ export class CdsPanelButtonConfigurationComponent implements OnInit {
   urlTypes = URL_TYPES;
 
   buttonLabel: string;
-  // buttonType: string;
+  buttonType: string;
   // labelAction: string;
   urlType: string;
   buttonUrl: string;
@@ -81,26 +81,27 @@ export class CdsPanelButtonConfigurationComponent implements OnInit {
       // this.buttonLabelResult = true;
       this.errorUrl = false;
       this.buttonLabel = '';
-      // this.buttonType = this.typeOfButton.TEXT;
+      this.buttonType = this.typeOfButton.TEXT;
       this.urlType = this.typeOfUrl.BLANK;
       this.buttonUrl = '';
       this.buttonAction = null;
       this.buttonAttributes = '';
       try {
         this.buttonLabel = this.button.value ? this.button.value : null;
-        // this.buttonType = this.button.type ? this.button.type : null;
+        this.buttonType = this.button.type ? this.button.type : null;
         this.urlType = this.button.target ? this.button.target : null;
         this.buttonUrl = this.button.link ? this.button.link : null; 
-        this.buttonAttributes = this.button.attributes ? this.button.attributes : [];
+        this.buttonAttributes = this.button.attributes ? this.button.attributes : '';
       } catch (error) {
         // error
       }
+
       let intent = this.setAttributesFromAction(this.button.action);
       // console.log('*** intent: ', intent);
       if(intent && intent.action !== null){
         this.buttonAction = intent.action;
       }
-      if(intent && intent.attributes !== null){
+      if(intent && (intent.attributes !== null && intent.attributes !== undefined)){
         this.buttonAttributes = intent.attributes;
         // this.openBlockAttributes = true;
       }
@@ -223,15 +224,17 @@ export class CdsPanelButtonConfigurationComponent implements OnInit {
 
   /** */
   onChangeTypeButton(typeOfButton: { label: string, value: TYPE_BUTTON }) {
-    this.button.type = typeOfButton.value;
+    this.buttonType = this.button.type = typeOfButton.value;
     console.log('onChangeTypeButton-->', typeOfButton, this.button)
     if(this.button.idConnector){
-      let parts = this.button.idConnector.split('/');
-      if(parts && parts.length>1){
-        let actionId = parts[1];
-        console.log('deleteConnectorsFromActionByActionId: ', actionId);
-        this.connectorService.deleteConnectorsFromActionByActionId(actionId);
-      }
+      const fromId = this.button.idConnector;
+      this.connectorService.deleteConnectorWithIDStartingWith(fromId);
+      // let parts = this.button.idConnector.split('/');
+      // if(parts && parts.length>1){
+      //   let actionId = parts[1];
+      //   console.log('deleteConnectorsFromActionByActionId: ', actionId);
+      //   this.connectorService.deleteConnectorsFromActionByActionId(actionId);
+      // }
     }
   }
 

@@ -64,7 +64,7 @@ export class CdsActionReplyTextComponent implements OnInit {
     this.delayTime = this.wait.time/1000;
     this.checkButtons();
     this.intentService.isChangedConnector$.subscribe((connector: any) => {
-      console.log('CdsActionReplyTextComponent isChangedConnector-->', connector);
+      console.log('[CdsActionReplyTextComponent] isChangedConnector-->', connector);
       this.connector = connector;
       this.updateConnector();
     });
@@ -107,10 +107,10 @@ export class CdsActionReplyTextComponent implements OnInit {
       const array = this.connector.fromId.split("/");
       const idButton = array[array.length - 1];
       const idConnector = this.idAction+'/'+idButton;
-      console.log(' updateConnector :: connector.fromId: ', this.connector.fromId);
-      console.log(' updateConnector :: idConnector: ', idConnector);
-      console.log(' updateConnector :: idButton: ', idButton);
-      console.log(' updateConnector :: connector.id: ', this.connector.id);
+      console.log(' updateConnector [CdsActionReplyTextComponent]:: connector.fromId: ', this.connector.fromId);
+      console.log(' updateConnector [CdsActionReplyTextComponent]:: idConnector: ', idConnector);
+      console.log(' updateConnector [CdsActionReplyTextComponent]:: idButton: ', idButton);
+      console.log(' updateConnector [CdsActionReplyTextComponent]:: connector.id: ', this.connector.id);
       const buttonChanged = this.buttons.find(obj => obj.uid === idButton);
       if(idConnector === this.connector.fromId && buttonChanged){
         if(this.connector.deleted){
@@ -124,7 +124,7 @@ export class CdsActionReplyTextComponent implements OnInit {
           // ADD / EDIT
           buttonChanged.isConnected = true;
           buttonChanged.idConnector = this.connector.fromId;
-          buttonChanged.action = '#' + this.connector.toId;
+          // buttonChanged.action = '#' + this.connector.toId;
           buttonChanged.type = TYPE_BUTTON.ACTION;
           console.log(' updateConnector :: ', this.buttons);
         }

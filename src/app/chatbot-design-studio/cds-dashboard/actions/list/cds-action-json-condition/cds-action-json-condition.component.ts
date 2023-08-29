@@ -44,7 +44,7 @@ export class CdsActionJsonConditionComponent implements OnInit {
 
   ngOnInit(): void {
     this.intentService.isChangedConnector$.subscribe((connector: any) => {
-      // console.log('CdsActionIntentComponent isChangedConnector-->', connector);
+      console.log('CdsActionJsonConditionComponent isChangedConnector-->', connector);
       this.connector = connector;
       this.updateConnector();
     });
@@ -68,7 +68,6 @@ export class CdsActionJsonConditionComponent implements OnInit {
     this.idConnectorFalse = this.idIntentSelected+'/'+this.action._tdActionId + '/false';
 
     this.listOfIntents = this.intentService.getListOfIntents()
-    console.log('listttttt', this.listOfIntents)
   }
 
   private updateConnector(){
@@ -90,7 +89,7 @@ export class CdsActionJsonConditionComponent implements OnInit {
           }
         } else { //TODO: verificare quale dei due connettori è stato aggiunto (controllare il valore della action corrispondente al true/false intent)
           // ADD / EDIT
-          console.log(' updateConnector :: onlineagents', this.connector.toId, this.connector.fromId ,this.action, array[array.length-1]);
+          console.log(' updateConnector :: json-condition', this.connector.toId, this.connector.fromId ,this.action, array[array.length-1]);
           if(array[array.length -1] === 'true'){
             this.action.trueIntent = '#'+this.connector.toId;
             this.isConnectedTrue = true

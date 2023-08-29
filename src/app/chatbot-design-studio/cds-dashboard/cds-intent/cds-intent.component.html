@@ -1,29 +1,9 @@
 <div class="panel-intent-content tds_draggable">
 
-
-    <!-- <div class="sc-kOFvkO ivRJLM" style=" position: absolute; top: 0px; z-index: 10; right: -30px;">
-        <div class="sc-crntcq oLzyR">
-            <div class="vf-tooltip" 
-            matTooltipClass="custom-mat-tooltip"
-            matTooltip="Start test from here" 
-            #tooltip="matTooltip" 
-            matTooltipPosition='above' 
-            matTooltipHideDelay="100">
-
-                <span class="sc-ejWHKt vKQWr vf-svg-icon vf-svg-icon--play" size="16" color="#62778C"
-                    style="transform: scale(1.2);">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" style="position: relative;top: 12px;">
-                        <path fill="currentColor"
-                            d="M3 5.778c0-2.042 0-3.063.617-3.513a1.56 1.56 0 0 1 .339-.187c.713-.286 1.62.234 3.431 1.273l3.874 2.222c1.755 1.007 2.633 1.51 2.727 2.24.016.125.016.25 0 .373-.094.73-.972 1.234-2.727 2.24L7.387 12.65c-1.812 1.04-2.718 1.56-3.431 1.273a1.558 1.558 0 0 1-.339-.187C3 13.285 3 12.264 3 10.222V5.778Z">
-                        </path>
-                    </svg>
-                </span>
-            </div>
-        </div>
-    </div> -->
-
     <div class="test-intent-play-container" [ngClass]="{'test-intent-play-container-on-start': isStart}">
-
+        <!-- ------------------------------- -->
+        <!-- Test intent play btn  -->
+        <!-- ------------------------------- -->
         <div *ngIf="listOfActions?.length > 0" class="test-intent-play">
             <span class="svg-icon--play" (click)="openTestSiteInPopupWindow()" matTooltipClass="custom-mat-tooltip"
                 matTooltip="Start test from here" #tooltip="matTooltip" matTooltipPosition='above'
@@ -35,7 +15,6 @@
                 </svg>
             </span>
         </div>
-
     </div>
 
     <div class="pic-header tds_draggable" [ngClass]="{'cds-start': isStart, 'placeholder-block-header':listOfActions?.length === 0}">
@@ -75,8 +54,8 @@
 
 
 
-    <div *ngIf="!isStart" class="drag-actions target-container" [cdkDropListData]="listOfActions" cdkDropList
-        (cdkDropListDropped)="onDropAction($event)">
+    <div *ngIf="!isStart" class="actions-list-wpr" 
+        [cdkDropListData]="listOfActions" cdkDropList (cdkDropListDropped)="onDropAction($event)">
         <!-- [id]="'action_'+i" -->
 
         <!-- ---------------------------------------------- -->
@@ -102,14 +81,19 @@
         </div>
 
         <div *ngFor="let action of listOfActions; let i = index, let last = last;" cdkDrag
-            (cdkDragStarted)="onDragStarted($event, intent.intent_id)" (cdkDragReleased)="onDragEnded($event)"
-            [id]="action._tdActionId" class="box-action" tabindex="0" [ngClass]="{
+            (cdkDragStarted)="onDragStarted($event, intent.intent_id)" 
+            (cdkDragReleased)="onDragEnded($event)"
+            [id]="action._tdActionId" 
+            class="box-action" 
+            tabindex="0" 
+            [ngClass]="{
             'cds-action-active': intentService.actionSelectedID === action._tdActionId, 
             'cds-no-featured-action': action._tdActionType !== TYPE_ACTION.REPLY,
             'cds-last-action': last
             }" (keydown)="onKeydown($event)" (click)="onSelectAction(action, i, action._tdActionId)">
-        
-
+            <!-- [ngClass]="{'hide-drag-action-palceholder': hideActionDragPlaceholder}" -->
+           
+            <div [ngStyle]="{'opacity':hideActionDragPlaceholder === true ? '1' : '0' }"  class="action-drag-placeholder" *cdkDragPlaceholder></div>
             
             <cds-action-description cdkDragHandle 
                 class="header-action" 

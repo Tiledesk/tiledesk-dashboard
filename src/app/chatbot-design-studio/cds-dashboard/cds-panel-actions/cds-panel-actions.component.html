@@ -19,7 +19,10 @@
 
 
         <div [style.display]="isDragging?'none':'block'" class="menu-dragging">
-            <div class="action-box" *ngFor="let item of menuItemsList; let i = index;" cdkDrag (cdkDragStarted)="onDragStarted($event, i)" (cdkDragMoved)="onDragMoved($event)" (cdkDragEnded)="onDragEnd($event)">
+            <div class="action-box" *ngFor="let item of menuItemsList; let i = index;" 
+            cdkDrag (cdkDragStarted)="onDragStarted($event, i)" 
+            (cdkDragMoved)="onDragMoved($event)" 
+            (cdkDragEnded)="onDragEnd($event)">
 
                 <div class="actions-btns-wpr">
                     <div *ngIf="item.value.src && item.value.name" class="action-btn-icon">

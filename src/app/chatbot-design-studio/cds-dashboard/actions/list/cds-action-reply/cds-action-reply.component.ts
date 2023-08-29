@@ -87,7 +87,7 @@ export class CdsActionReplyComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges): void {
     console.log('ActionReplyComponent ngOnChanges:: ', this.action);
-    if(this.action)this.initialize();
+    if(this.action && this.intentSelected)this.initialize();
   }
 
 
@@ -378,7 +378,6 @@ export class CdsActionReplyComponent implements OnInit {
   onOpenButtonPanel(buttonSelected) {
     console.log('onOpenButtonPanel 2 :: ', buttonSelected);
     // this.response = event.refResponse;
-    console.log('buttonSelected :: ', buttonSelected);
     this.controllerService.openButtonPanel(buttonSelected);
   }
 
