@@ -127,12 +127,14 @@ export class CdsActionReplyFrameComponent implements OnInit {
   onDeletePathElement(){
     this.framePath = null;
     this.response.metadata.src = '';
+    this.changeActionReply.emit();
   }
 
   /** */
   onLoadPathElement(){
     try {
       this.framePath = this.sanitizer.bypassSecurityTrustResourceUrl(this.response.metadata.src);
+      console.log('responseeeeeeeee', this.response, this.framePath)
       this.changeActionReply.emit();
     } catch (error) {
       this.logger.log('onAddNewResponse ERROR', error);
