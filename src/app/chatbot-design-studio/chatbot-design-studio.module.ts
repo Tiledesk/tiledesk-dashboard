@@ -163,6 +163,7 @@ import { CdsActionAskgptComponent } from './cds-dashboard/actions/list/cds-actio
 import { CdsActionWhatsappAttributeComponent } from './cds-dashboard/actions/list/cds-action-whatsapp-attribute/action-whatsapp-attribute.component';
 import { CdsActionWhatsappStaticComponent } from './cds-dashboard/actions/list/cds-action-whatsapp-static/action-whatsapp-static.component';
 import { CdsWhatsappReceiverComponent } from './cds-dashboard/actions/list/cds-action-whatsapp-static/whatsapp-receiver/whatsapp-receiver.component';
+import { AddkbDialogComponent } from './cds-dashboard/actions/list/cds-action-askgpt/addkb-dialog/addkb-dialog.component';
 
 
 @NgModule({
@@ -284,7 +285,8 @@ import { CdsWhatsappReceiverComponent } from './cds-dashboard/actions/list/cds-a
     // ------ CDS PANELS ------ //
     CdsActionDetailPanelComponent,
     CdsPanelButtonConfigurationComponent,
-    CdsPanelWidgetComponent
+    CdsPanelWidgetComponent,
+    AddkbDialogComponent
   ],
   imports: [
     A11yModule,

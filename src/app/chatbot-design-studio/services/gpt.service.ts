@@ -15,8 +15,9 @@ export class GptService {
     private logger: LoggerService,
     private appConfigService: AppConfigService
   ) { 
-    //this.GPT_API_URL = this.appConfigService.getConfig().gptApiUrl;
-    this.GPT_API_URL = "https://tiledesk-playground.azurewebsites.net/api";
+    // this.GPT_API_URL = this.appConfigService.getConfig().gptApiUrl;
+    // this.GPT_API_URL = "https://tiledesk-playground.azurewebsites.net/api";
+    this.GPT_API_URL = "http://tiledesk-backend.h8dahhe4edc7cahh.francecentral.azurecontainer.io:8000/api"
   }
 
   startScraping(data) {

@@ -131,12 +131,15 @@
                     <cds-action-whatsapp-static *ngSwitchCase="typeAction.WHATSAPP_STATIC"
                         class="panel-response"
                         [action]="elementSelected"
+                        [project_id]="project_id"
+                        [intentName]="intentSelected.intent_display_name"
                         [previewMode]="false">
                     </cds-action-whatsapp-static>
                     
                     <cds-action-askgpt *ngSwitchCase="typeAction.ASKGPT"
                         class="panel-response"
                         [action]="elementSelected"
+                        [project_id]="project_id"
                         [previewMode]="false">
                     </cds-action-askgpt>
                     

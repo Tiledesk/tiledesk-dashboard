@@ -13,10 +13,11 @@ export class CdsActionDetailPanelComponent implements OnInit, OnChanges {
   @Output() closeAndSavePanelIntentDetail = new EventEmitter();
   @Input() elementIntentSelected: any;
   @Input() showSpinner: boolean;
+  @Input() project_id: string;
   // @Input() intentSelected: Intent;
   
-
   intentSelected: Intent;
+
   typeIntentElement = TYPE_INTENT_ELEMENT;
   typeAction = TYPE_ACTION;
   
