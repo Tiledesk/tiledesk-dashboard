@@ -172,17 +172,29 @@ export class CdsActionReplyGalleryComponent implements OnInit {
   newButton(): Button{
     const idButton = generateShortUID();
     const idActionConnector = this.idAction+'/'+idButton;
-    return {
-      'uid': idButton,
-      'idConnector': idActionConnector,
-      'isConnected': false,
-      'value': 'Button',
-      'type': TYPE_BUTTON.TEXT,
-      'target': TYPE_URL.BLANK,
-      'link': '',
-      'action': '',
-      'show_echo': true
-    }
+    return new Button(
+      idButton,
+      idActionConnector,
+      false,
+      'Button',
+      TYPE_BUTTON.TEXT,
+      TYPE_URL.BLANK,
+      '',
+      '',
+      true
+    )
+    
+    // return {
+    //   'uid': idButton,
+    //   'idConnector': idActionConnector,
+    //   'isConnected': false,
+    //   'value': 'Button',
+    //   'type': TYPE_BUTTON.TEXT,
+    //   'target': TYPE_URL.BLANK,
+    //   'link': '',
+    //   'action': '',
+    //   'show_echo': true
+    // }
   }
 
   onAddButton(index){

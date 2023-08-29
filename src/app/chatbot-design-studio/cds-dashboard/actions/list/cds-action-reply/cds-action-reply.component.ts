@@ -271,17 +271,29 @@ export class CdsActionReplyComponent implements OnInit {
       this.idAction = this.intentSelected.intent_id+'/'+this.action._tdActionId;
       const idActionConnector = this.idAction+'/'+idButton;
       console.log('createNewButton: ', this.intentSelected);
-      let buttonSelected = {
-        'uid': idButton,
-        'idConnector': idActionConnector,
-        'isConnected': false,
-        'value': 'Button',
-        'type': TYPE_BUTTON.TEXT,
-        'target': TYPE_URL.BLANK,
-        'link': '',
-        'action': '',
-        'show_echo': true
-      };
+      let buttonSelected = new Button(
+        idButton,
+        idActionConnector,
+        false,
+        'Button',
+        TYPE_BUTTON.TEXT,
+        TYPE_URL.BLANK,
+        '',
+        '',
+        true
+      );
+
+      // let buttonSelected = {
+      //   'uid': idButton,
+      //   'idConnector': idActionConnector,
+      //   'isConnected': false,
+      //   'value': 'Button',
+      //   'type': TYPE_BUTTON.TEXT,
+      //   'target': TYPE_URL.BLANK,
+      //   'link': '',
+      //   'action': '',
+      //   'show_echo': true
+      // };
       return buttonSelected;
     }
     return null;

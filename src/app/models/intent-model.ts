@@ -362,17 +362,58 @@ export class Attachment {
     }
 }
 
-export interface Button {
-    uid: string,
-    idConnector: string,
-    isConnected: boolean,
-    type: string,
-    value: string,
-    link?: string,
-    target?: string,
-    action?: string,
-    attributes?: any,
-    show_echo?: boolean
+export class Button {
+    uid: string;
+    idConnector: string;
+    isConnected: boolean;
+    type: string;
+    value: string;
+    link?: string;
+    target?: string;
+    action?: string;
+    attributes?: any;
+    show_echo?: boolean;
+
+    constructor(
+        uid: string,
+        idConnector: string,
+        isConnected: boolean,
+        type: string,
+        value: string,
+        link?: string,
+        target?: string,
+        action?: string,
+        attributes?: any,
+        show_echo?: boolean
+    ) {
+        this.uid = uid;
+        this.idConnector = idConnector;
+        this.isConnected = isConnected;
+        this.type = type;
+        this.value = value;
+        this.link = link;
+        this.target = target;
+        this.action = action;
+        this.attributes = attributes;
+        this.show_echo = show_echo;
+    }
+
+    getAttributesExceptIdAndConnected() {
+        const { idConnector, isConnected, ...otherAttributes } = this;
+        return otherAttributes;
+    }
+
+    // to_JSON() {
+    //     let json = {};
+    //     json['uid'] = this.uid;
+    //     json['type'] = this.type;
+    //     json['value'] = this.value;
+    //     json['link'] = this.link;
+    //     json['target'] = this.target;
+    //     json['action'] = this.action;
+    //     json['show_echo'] = this.show_echo;
+    //     return json;
+    // }
 }
 
 export interface GalleryElement{
