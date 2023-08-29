@@ -218,8 +218,8 @@ export class CdsActionReplyComponent implements OnInit {
     try {
       let buttons = this.arrayResponses[index].message.attributes.attachment.buttons;
       buttons.forEach(button => {
-        if(button.isConnected){
-          this.connectorService.deleteConnector(button.idConnector);
+        if(button.__isConnected){
+          this.connectorService.deleteConnector(button.__idConnector);
         }
       });
     } catch (error) {
@@ -275,8 +275,9 @@ export class CdsActionReplyComponent implements OnInit {
         idButton,
         idActionConnector,
         false,
-        'Button',
         TYPE_BUTTON.TEXT,
+        'Button',
+        '',
         TYPE_URL.BLANK,
         '',
         '',
@@ -305,7 +306,7 @@ export class CdsActionReplyComponent implements OnInit {
     let button = event.buttons[event.index];
     event.buttons.splice(event.index, 1);
     var intentId = this.idAction.substring(0, this.idAction.indexOf('/'));
-    this.connectorService.deleteConnectorFromAction(intentId, button.idConnector);
+    this.connectorService.deleteConnectorFromAction(intentId, button.__idConnector);
     this.updateAndSaveAction.emit();
   }
 

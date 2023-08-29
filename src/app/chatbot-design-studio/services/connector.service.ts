@@ -55,7 +55,7 @@ export class ConnectorService {
             buttons.forEach(button => {
               console.log('button   ----- > ', button);
               if(button.type === TYPE_BUTTON.ACTION && button.action){
-                const idConnectorFrom = button.idConnector;
+                const idConnectorFrom = button.__idConnector;
                 var startIndex = button.action.indexOf('#') + 1;
                 var endIndex = button.action.indexOf('{');
                 let idConnectorTo = button.action.substring(startIndex);

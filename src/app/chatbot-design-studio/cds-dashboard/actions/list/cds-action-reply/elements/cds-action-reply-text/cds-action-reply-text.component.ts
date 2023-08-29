@@ -89,16 +89,18 @@ export class CdsActionReplyTextComponent implements OnInit {
     if(!buttons)return;
     buttons.forEach(button => {
       if(!button.uid || button.uid === undefined){
-        const idButton = generateShortUID();
-        const idActionConnector = this.idAction+'/'+idButton;
-        button.uid = idButton;
-        button.idConnector = idActionConnector;
-        if(button.action && button.action !== ''){
-          button.isConnected = true;
-        } else {
-          button.isConnected = false;
-        }
+        button.uid = generateShortUID();
       }
+
+      const idActionConnector = this.idAction+'/'+button.uid;
+      button.__idConnector = idActionConnector;
+      if(button.action && button.action !== ''){
+        button.__isConnected = true;
+      } else {
+        button.__isConnected = false;
+      }
+      // button.__isConnected = true;
+      
     }); 
   }
 
@@ -116,17 +118,17 @@ export class CdsActionReplyTextComponent implements OnInit {
         if(this.connector.deleted){
           // DELETE 
           console.log(' deleteConnector :: ', this.connector.fromId);
-          buttonChanged.isConnected = false;
-          buttonChanged.idConnector = this.connector.fromId;
+          buttonChanged.__isConnected = false;
+          buttonChanged.__idConnector = this.connector.fromId;
           buttonChanged.action = '';
           buttonChanged.type = TYPE_BUTTON.TEXT;
         } else {
           // ADD / EDIT
-          buttonChanged.isConnected = true;
-          buttonChanged.idConnector = this.connector.fromId;
-          // buttonChanged.action = '#' + this.connector.toId;
+          buttonChanged.__isConnected = true;
+          buttonChanged.__idConnector = this.connector.fromId;
+          buttonChanged.action = '#' + this.connector.toId;
           buttonChanged.type = TYPE_BUTTON.ACTION;
-          console.log(' updateConnector :: ', this.buttons);
+          console.log(' -> updateConnector :: ', this.buttons);
         }
         this.changeActionReply.emit();
       }

@@ -378,6 +378,17 @@ export function checkIFElementExists(elementId:string){
     }
   }
 
+export function removeNodesStartingWith(obj, start) {
+    for (const key in obj) {
+        if (key.startsWith(start)) {
+            delete obj[key];
+        } else if (typeof obj[key] === 'object') {
+            removeNodesStartingWith(obj[key], start);
+        }
+    }
+    return obj;
+}
+
 // export function retriveListOfVariables(intents: Array<Intent>) {
 //     variableList.userDefined = []
 //     intents.forEach(intent => {

@@ -364,8 +364,8 @@ export class Attachment {
 
 export class Button {
     uid: string;
-    idConnector: string;
-    isConnected: boolean;
+    __idConnector: string;
+    __isConnected: boolean;
     type: string;
     value: string;
     link?: string;
@@ -387,8 +387,8 @@ export class Button {
         show_echo?: boolean
     ) {
         this.uid = uid;
-        this.idConnector = idConnector;
-        this.isConnected = isConnected;
+        this.__idConnector = idConnector;
+        this.__isConnected = isConnected;
         this.type = type;
         this.value = value;
         this.link = link;
@@ -398,21 +398,9 @@ export class Button {
         this.show_echo = show_echo;
     }
 
-    getAttributesExceptIdAndConnected() {
-        const { idConnector, isConnected, ...otherAttributes } = this;
-        return otherAttributes;
-    }
-
-    // to_JSON() {
-    //     let json = {};
-    //     json['uid'] = this.uid;
-    //     json['type'] = this.type;
-    //     json['value'] = this.value;
-    //     json['link'] = this.link;
-    //     json['target'] = this.target;
-    //     json['action'] = this.action;
-    //     json['show_echo'] = this.show_echo;
-    //     return json;
+    // getAttributesExceptIdAndConnected() {
+    //     const { idConnector, isConnected, ...otherAttributes } = this;
+    //     return otherAttributes;
     // }
 }
 

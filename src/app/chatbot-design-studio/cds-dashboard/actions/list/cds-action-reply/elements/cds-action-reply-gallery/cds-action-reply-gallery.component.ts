@@ -107,11 +107,11 @@ export class CdsActionReplyGalleryComponent implements OnInit {
         const idButton = generateShortUID();
         const idActionConnector = this.idAction+'/'+idButton;
         button.uid = idButton;
-        button.idConnector = idActionConnector;
+        button.__idConnector = idActionConnector;
         if(button.action && button.action !== ''){
-          button.isConnected = true;
+          button.__isConnected = true;
         } else {
-          button.isConnected = false;
+          button.__isConnected = false;
         }
       }
     }); 
@@ -132,14 +132,14 @@ export class CdsActionReplyGalleryComponent implements OnInit {
           if(this.connector.deleted){
             // DELETE 
             console.log(' deleteConnector :: ', this.connector.fromId);
-            buttonChanged.isConnected = false;
-            buttonChanged.idConnector = this.connector.fromId;
+            buttonChanged.__isConnected = false;
+            buttonChanged.__idConnector = this.connector.fromId;
             buttonChanged.action = '';
             buttonChanged.type = TYPE_BUTTON.TEXT;
           } else {
             // ADD / EDIT
-            buttonChanged.isConnected = true;
-            buttonChanged.idConnector = this.connector.fromId;
+            buttonChanged.__isConnected = true;
+            buttonChanged.__idConnector = this.connector.fromId;
             buttonChanged.action = '#' + this.connector.toId;
             buttonChanged.type = TYPE_BUTTON.ACTION;
             console.log('updateConnector :: ', el.buttons);
@@ -176,8 +176,9 @@ export class CdsActionReplyGalleryComponent implements OnInit {
       idButton,
       idActionConnector,
       false,
-      'Button',
       TYPE_BUTTON.TEXT,
+      'Button',
+      '',
       TYPE_URL.BLANK,
       '',
       '',
