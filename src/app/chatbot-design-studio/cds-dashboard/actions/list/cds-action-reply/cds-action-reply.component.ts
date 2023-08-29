@@ -87,7 +87,6 @@ export class CdsActionReplyComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges): void {
     console.log('ActionReplyComponent ngOnChanges:: ', this.action);
-
     if(this.action)this.initialize();
   }
 
