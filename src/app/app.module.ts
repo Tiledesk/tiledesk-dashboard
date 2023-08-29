@@ -315,6 +315,7 @@ import { CommunityTemplateDtlsComponent } from './bots/templates/community-templ
 import { HomePromoDesignStudioComponent } from './home-promo-design-studio/home-promo-design-studio.component';
 import { PasswordStrengthComponent } from './auth/signup/password-strength/password-strength.component';
 import { CloneBotComponent } from './bots/bots-list/clone-bot/clone-bot.component';
+import { OpenaikbsService } from './services/openaikbs.service';
 
 // NOTE: Eliminazione del local storage produce inconsistenza delle instances Firebase. Si salta il logout.
 
@@ -665,6 +666,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     FilterArrayPipe,
     MarkerService,
     // LoggerInstance,
+    OpenaikbsService,
     PopupService,
     NotificationService,
     { provide: LocationStrategy, useClass: HashLocationStrategy }

@@ -2,11 +2,11 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ActionAskGPT } from 'app/models/intent-model';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { variableList } from 'app/chatbot-design-studio/utils';
-import { OpenaikbsService } from 'app/services/openaikbs.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AddkbDialogComponent } from './addkb-dialog/addkb-dialog.component';
 import { GptService } from 'app/chatbot-design-studio/services/gpt.service';
 import { DialogYesNoComponent } from 'app/chatbot-design-studio/cds-base-element/dialog-yes-no/dialog-yes-no.component';
+import { OpenaikbsService } from 'app/services/openaikbs.service';
 
 
 @Component({
