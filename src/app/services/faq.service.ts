@@ -391,7 +391,7 @@ public _getAllFaqByFaqKbId(id_faq_kb: string): Observable<Intent[]> {
    * @param webhook_enabled 
    * @returns 
    */
-   public addIntent(id_faq_kb: string, attributes: any, question: any, answer: string, intent_display_name: string, intent_form: any, intent_actions: any, webhook_enabled: boolean) {
+   public addIntent(id_faq_kb: string, attributes: any, question: any, answer: string, intent_display_name: string, intent_id: string, intent_form: any, intent_actions: any, webhook_enabled: boolean) {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -406,6 +406,7 @@ public _getAllFaqByFaqKbId(id_faq_kb: string): Observable<Intent[]> {
       'question': question, 
       'answer': answer, 
       'intent_display_name': intent_display_name, 
+      'intent_id': intent_id,
       'form': intent_form,
       'actions': intent_actions,
       'webhook_enabled': webhook_enabled 
