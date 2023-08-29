@@ -816,15 +816,12 @@ export class CdsDashboardComponent implements OnInit {
     this.positionFloatMenu = pos;
     console.log('[CDS DSHBRD] showPanelActions intentSelected ', this.intentSelected);
     console.log('[CDS DSHBRD] showPanelActions positionFloatMenu ', this.positionFloatMenu)
-
     this.getTdsContainerHeight()
-
   }
 
   getTdsContainerHeight() {
     let tdsContainerEle = <HTMLElement>document.querySelector('#tds_container')
     console.log('[CDS DSHBRD] tdsContainerEle ', tdsContainerEle)
-
     this.tdsContainerEleHeight = tdsContainerEle.offsetHeight - 35;
     console.log('[CDS DSHBRD] tdsContainerEle Height', this.tdsContainerEleHeight)
   }
@@ -954,8 +951,8 @@ export class CdsDashboardComponent implements OnInit {
     // - actions context menu (static & float)
     // -------------------------------------------------------------------------
     this.isOpenAddActionsMenu = false; // nk
-    console.log('[CDS-DSHBRD] trascino connettore sullo stage ', event);
-    if (this.connectorDraft.toPoint) {
+    console.log('[CDS-DSHBRD] trascino connettore sullo stage ', event, this.connectorDraft.toPoint, this.hasClickedAddAction);
+    if (this.connectorDraft.toPoint && !this.hasClickedAddAction) {
       const toPoint = this.connectorDraft.toPoint;
       // toPoint.x = toPoint.x - 132;
       const fromId = this.connectorDraft.fromId;
@@ -967,7 +964,7 @@ export class CdsDashboardComponent implements OnInit {
         // this.connectorService.createConnectorFromId(fromId, toId);
         // this.removeConnectorDraftAndCloseFloatMenu();
       }
-    } else {
+    } else if(this.hasClickedAddAction) {
       console.log("[CDS-DSHBRD] ho premuto + quindi creo una nuova action e la aggiungo all'intent");
       const newAction = this.intentService.createNewAction(event.type);
       console.log("[CDS-DSHBRD] nuova action creata ", newAction);

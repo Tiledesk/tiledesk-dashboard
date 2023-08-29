@@ -167,6 +167,96 @@ export class TiledeskConnectors {
     }
 
 
+    deleteConnectorFromAction(blockId, connId) {
+      console.log("deleteConnectorFromAction ----> ", connId, blockId);
+      console.log("blocks :---> ", this.blocks);
+      console.log("connectors :---> ", this.connectors);
+      let block = this.blocks[blockId];
+      if(!block)return;
+      for (var connectorKey in block.outConnectors) {
+        if (connectorKey.startsWith(connId)) {
+          delete block.outConnectors[connectorKey];
+          this.deleteConnector(connectorKey);
+          // let connector = document.getElementById(connectorKey);
+          // if (connector) {
+          //   connector.remove();
+          //   delete this.connectors[connectorKey];
+          //   console.log("connectors deleted!!!", connectorKey, this.connectors);
+          // }
+        }
+      }
+    }
+
+
+    deleteConnectorsFromActionByActionId(actionId) {
+      console.log("deleteConnectorsFromActionByActionId ----> ", actionId);
+      console.log("blocks :---> ", this.blocks);
+      console.log("connectors :---> ", this.connectors);
+      for (var key in this.blocks) {
+        var node = this.blocks[key];
+        console.log('outConnectors: ', node, key); 
+        for (var connectorKey in node.outConnectors) {
+          console.log('connectorKey: ', connectorKey);
+          if (connectorKey.includes(actionId)) {
+            console.log('CANCELLO : ', node.outConnectors[connectorKey]);
+            delete node.outConnectors[connectorKey];
+            this.deleteConnector(connectorKey);
+            // let connector = document.getElementById(connectorKey);
+            // if (connector) {
+            //   connector.remove();
+            //   const connectorDeleted = this.connectors[connectorKey];
+            //   delete this.connectors[connectorKey];
+            //   if(connectorDeleted){
+            //     this.#removeConnector(connectorDeleted);
+            //   }
+            // }
+          }
+        }
+      }
+    }
+
+
+    deleteConnectorsOfBlock(blockId) {
+      console.log("deleteConnectors ----> ", blockId);
+      for (var connectorId in this.connectors) {
+        if (connectorId.includes(blockId)) {
+          this.deleteConnector(connectorId);
+          // let connector = document.getElementById(connectorId);
+          // if (connector) {
+          //   connector.remove();
+          //   delete this.connectors[connectorId];
+          // }
+        }
+      }
+      delete this.blocks[blockId];
+      console.log("blocks :---> ", this.blocks);
+      console.log("connectors :---> ", this.connectors);
+    }
+
+
+    deleteConnectorInBlock(connectorId) {
+      console.log("deleteConnectorInBlock ----> ", this.blocks, connectorId, this.selectedConnector);
+      for (var key in this.blocks) {
+        var node = this.blocks[key];
+
+        for (var connectorKey in node.outConnectors) {
+          console.log('connectorKey: ', connectorKey);
+          if (connectorKey === connectorId) {
+            console.log('CANCELLO : ', node.outConnectors[connectorKey]);
+            delete node.outConnectors[connectorKey];
+          }
+        }
+        for (var connectorKey in node.inConnectors) {
+          console.log('connectorKey: ', connectorKey);
+          if (connectorKey === connectorId) {
+            console.log('CANCELLO : ', node.inConnectors[connectorKey]);
+            delete node.inConnectors[connectorKey];
+          }
+        }
+        
+      }
+    }
+
 
     // deleteConnector(event) {
      
@@ -628,131 +718,7 @@ export class TiledeskConnectors {
     }
 
 
-    deleteConnectorFromAction(blockId, connId) {
-      console.log("deleteConnectorFromAction ----> ", connId, blockId);
-      console.log("blocks :---> ", this.blocks);
-      console.log("connectors :---> ", this.connectors);
-      let block = this.blocks[blockId];
-      if(!block)return;
-      for (var connectorKey in block.outConnectors) {
-        if (connectorKey.startsWith(connId)) {
-          delete block.outConnectors[connectorKey];
-          let connector = document.getElementById(connectorKey);
-          if (connector) {
-            connector.remove();
-            delete this.connectors[connectorKey];
-            console.log("connectors deleted!!!", connectorKey, this.connectors);
-          }
-        }
-      }
-    }
-
-    deleteConnectorsFromActionByActionId(actionId) {
-      console.log("deleteConnectorsFromActionByActionId ----> ", actionId);
-      console.log("blocks :---> ", this.blocks);
-      console.log("connectors :---> ", this.connectors);
-      for (var key in this.blocks) {
-        var node = this.blocks[key];
-        console.log('outConnectors: ', node, key); 
-        for (var connectorKey in node.outConnectors) {
-          console.log('connectorKey: ', connectorKey);
-          if (connectorKey.includes(actionId)) {
-            console.log('CANCELLO : ', node.outConnectors[connectorKey]);
-            delete node.outConnectors[connectorKey];
-            let connector = document.getElementById(connectorKey);
-            if (connector) {
-              connector.remove();
-              const connectorDeleted = this.connectors[connectorKey];
-              delete this.connectors[connectorKey];
-              if(connectorDeleted){
-                this.#removeConnector(connectorDeleted);
-              }
-            }
-          }
-        }
-      }
-    }
-
-
-    deleteConnectorsOfBlock(blockId) {
-      console.log("deleteConnectors ----> ", blockId);
-      // const blockToDelete = this.blocks[blockId];
-
- 
-      // if(blockToDelete){
-        // for (const [key, conn_id] of Object.entries(blockToDelete?.outConnectors)) {
-        //   let connector = document.getElementById(conn_id);
-        //   if (connector) {
-        //     connector.remove();
-        //     delete this.connectors[conn_id];
-        //   }
-        // }
-        // for (const [key, conn_id] of Object.entries(blockToDelete?.inConnectors)) {
-        //   if (conn_id.includes(blockId)) {
-        //     let connector = document.getElementById(conn_id);
-        //     if (connector) {
-        //       connector.remove();
-        //       delete this.connectors[conn_id];
-        //     }
-        //   }
-        // }
-        
-        // for (var key in this.blocks) {
-        //   var node = this.blocks[key];
-        //   console.log('outConnectors: ', node, key); 
-        //   for (var connectorKey in node.outConnectors) {
-        //     console.log('connectorKey: ', connectorKey, ' - termina con: ', blockId);
-        //     if (connectorKey.endsWith(blockId)) {
-        //       console.log('CANCELLO : ', node.outConnectors[connectorKey]);
-        //       delete node.outConnectors[connectorKey];
-        //       let connector = document.getElementById(conn_id);
-        //       if (connector) {
-        //         connector.remove();
-        //         delete this.connectors[conn_id];
-        //       }
-        //     }
-        //   }
-        // }
-        // delete this.blocks[blockId];
-      // }
-
-      for (var connectorId in this.connectors) {
-        if (connectorId.includes(blockId)) {
-          let connector = document.getElementById(connectorId);
-          if (connector) {
-            connector.remove();
-            delete this.connectors[connectorId];
-          }
-        }
-      }
-      delete this.blocks[blockId];
-      console.log("blocks :---> ", this.blocks);
-      console.log("connectors :---> ", this.connectors);
-    }
-
-
-    deleteConnectorInBlock(connectorId) {
-      console.log("deleteConnectorInBlock ----> ", this.blocks, connectorId, this.selectedConnector);
-      for (var key in this.blocks) {
-        var node = this.blocks[key];
-
-        for (var connectorKey in node.outConnectors) {
-          console.log('connectorKey: ', connectorKey);
-          if (connectorKey === connectorId) {
-            console.log('CANCELLO : ', node.outConnectors[connectorKey]);
-            delete node.outConnectors[connectorKey];
-          }
-        }
-        for (var connectorKey in node.inConnectors) {
-          console.log('connectorKey: ', connectorKey);
-          if (connectorKey === connectorId) {
-            console.log('CANCELLO : ', node.inConnectors[connectorKey]);
-            delete node.inConnectors[connectorKey];
-          }
-        }
-        
-      }
-    }
+    
     
     
   }
