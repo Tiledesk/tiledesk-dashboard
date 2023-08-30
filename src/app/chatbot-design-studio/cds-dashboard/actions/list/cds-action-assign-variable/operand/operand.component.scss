@@ -52,7 +52,7 @@ div.operand-wrp {
     }
 }
 
-::ng-deep cds-textarea#operand {
+cds-textarea#operand ::ng-deep {
     display: flex;
     width: 100%;
     textarea {
@@ -70,7 +70,7 @@ div.operand-wrp {
 }
 
 
-::ng-deep cds-select#selectOperand {
+cds-select#selectOperand ::ng-deep {
     .ng-value-container{
         font-family: 'Poppins','Roboto',Arial,sans-serif;
         .ng-placeholder {

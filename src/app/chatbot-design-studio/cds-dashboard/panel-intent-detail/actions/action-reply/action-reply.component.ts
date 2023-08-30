@@ -314,17 +314,29 @@ export class ActionReplyComponent implements OnInit {
 
 
   private createNewButton() {
-    this.buttonSelected = {
-      'uid': '',
-      'idConnector': '',
-      'isConnected': false,
-      'value': 'Button',
-      'type': TYPE_BUTTON.TEXT,
-      'target': TYPE_URL.BLANK,
-      'link': '',
-      'action': '',
-      'show_echo': true
-    };
+    this.buttonSelected = new Button(
+      '',
+      '',
+      false,
+      TYPE_BUTTON.TEXT,
+      'Button',
+      '',
+      TYPE_URL.BLANK,
+      '',
+      '',
+      true
+    )
+    // this.buttonSelected = {
+    //   'uid': '',
+    //   'idConnector': '',
+    //   'isConnected': false,
+    //   'value': 'Button',
+    //   'type': TYPE_BUTTON.TEXT,
+    //   'target': TYPE_URL.BLANK,
+    //   'link': '',
+    //   'action': '',
+    //   'show_echo': true
+    // };
     this.response.attributes.attachment.buttons.push(this.buttonSelected);
     this.logger.log('createNewButton :: ', this.buttonSelected);
   }

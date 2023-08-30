@@ -112,25 +112,30 @@
         width: 50%;
     }
 
-    ::ng-deep cds-textarea#assignTo,
-    ::ng-deep cds-textarea#value {
+    cds-textarea#value.value ::ng-deep{
         display: flex;
-        &.assigned {
-            textarea {
-                background: transparent;
-                padding: 0!important;
-                border: 0!important;
-                outline: 0!important;
-            }
+        textarea {
+            padding: 0 0 0 10px !important;
+            border: 0!important;
+            outline: 0!important;
+            border-radius: 0 4px 4px 0;
         }
-        &.value {
-            textarea {
-                padding: 0 0 0 10px !important;
-                border: 0!important;
-                outline: 0!important;
-                border-radius: 0 4px 4px 0;
-            }
+    }
+
+    cds-textarea#assignTo.assigned ::ng-deep {
+        display: flex;
+        textarea {
+            background: transparent;
+            padding: 0!important;
+            border: 0!important;
+            outline: 0!important;
         }
+    }
+
+
+    cds-textarea#assignTo ::ng-deep ,
+    cds-textarea#value ::ng-deep  {
+        display: flex;
         .editor-utils {
             display: flex;
             align-items: center;

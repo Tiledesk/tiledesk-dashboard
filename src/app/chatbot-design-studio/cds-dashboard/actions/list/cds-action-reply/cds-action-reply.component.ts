@@ -218,8 +218,8 @@ export class CdsActionReplyComponent implements OnInit {
     try {
       let buttons = this.arrayResponses[index].message.attributes.attachment.buttons;
       buttons.forEach(button => {
-        if(button.isConnected){
-          this.connectorService.deleteConnector(button.idConnector);
+        if(button.__isConnected){
+          this.connectorService.deleteConnector(button.__idConnector);
         }
       });
     } catch (error) {
@@ -271,17 +271,30 @@ export class CdsActionReplyComponent implements OnInit {
       this.idAction = this.intentSelected.intent_id+'/'+this.action._tdActionId;
       const idActionConnector = this.idAction+'/'+idButton;
       console.log('createNewButton: ', this.intentSelected);
-      let buttonSelected = {
-        'uid': idButton,
-        'idConnector': idActionConnector,
-        'isConnected': false,
-        'value': 'Button',
-        'type': TYPE_BUTTON.TEXT,
-        'target': TYPE_URL.BLANK,
-        'link': '',
-        'action': '',
-        'show_echo': true
-      };
+      let buttonSelected = new Button(
+        idButton,
+        idActionConnector,
+        false,
+        TYPE_BUTTON.TEXT,
+        'Button',
+        '',
+        TYPE_URL.BLANK,
+        '',
+        '',
+        true
+      );
+
+      // let buttonSelected = {
+      //   'uid': idButton,
+      //   'idConnector': idActionConnector,
+      //   'isConnected': false,
+      //   'value': 'Button',
+      //   'type': TYPE_BUTTON.TEXT,
+      //   'target': TYPE_URL.BLANK,
+      //   'link': '',
+      //   'action': '',
+      //   'show_echo': true
+      // };
       return buttonSelected;
     }
     return null;
@@ -293,7 +306,7 @@ export class CdsActionReplyComponent implements OnInit {
     let button = event.buttons[event.index];
     event.buttons.splice(event.index, 1);
     var intentId = this.idAction.substring(0, this.idAction.indexOf('/'));
-    this.connectorService.deleteConnectorFromAction(intentId, button.idConnector);
+    this.connectorService.deleteConnectorFromAction(intentId, button.__idConnector);
     this.updateAndSaveAction.emit();
   }
 

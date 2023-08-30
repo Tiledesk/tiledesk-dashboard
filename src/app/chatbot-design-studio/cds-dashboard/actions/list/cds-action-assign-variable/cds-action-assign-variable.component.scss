@@ -92,7 +92,7 @@ div.value-wrp {
     }
 }
 
-::ng-deep cds-textarea#assignTo {
+cds-textarea#assignTo ::ng-deep {
     display: flex;
 
     textarea {

@@ -516,7 +516,7 @@
 
 }
 
-::ng-deep cds-image-upload{
+cds-image-upload ::ng-deep {
     div.dropUploadImage{
         min-height: unset !important;
     }
@@ -681,8 +681,8 @@
 
 ////////////////////////////
 /** TEXT AREA: start **/
-::ng-deep cds-textarea#title,
-::ng-deep cds-textarea#description {
+cds-textarea#title ::ng-deep,
+cds-textarea#description ::ng-deep {
 
     // .text-editor-wrapper{
     //     margin: 5px 0px;
@@ -724,13 +724,13 @@
     }
 }
 
-::ng-deep cds-textarea#title{
+cds-textarea#title ::ng-deep{
     textarea {
         font-weight: 600;
     }
 }
 
-::ng-deep cds-textarea#description.noButtons {
+cds-textarea#description.noButtons ::ng-deep{
     textarea {
         border-radius: 0px 0px $button-border-radius-base $button-border-radius-base;
     }

@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CdsActionWhatsappStaticComponent } from './action-whatsapp-static.component';
+import { CdsActionWhatsappStaticComponent } from './cds-action-whatsapp-static.component';
 
 describe('ActionWhatsappStaticComponent', () => {
   let component: CdsActionWhatsappStaticComponent;

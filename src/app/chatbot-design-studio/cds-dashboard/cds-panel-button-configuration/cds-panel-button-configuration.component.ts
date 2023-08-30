@@ -226,8 +226,8 @@ export class CdsPanelButtonConfigurationComponent implements OnInit {
   onChangeTypeButton(typeOfButton: { label: string, value: TYPE_BUTTON }) {
     this.buttonType = this.button.type = typeOfButton.value;
     console.log('onChangeTypeButton-->', typeOfButton, this.button)
-    if(this.button.idConnector){
-      const fromId = this.button.idConnector;
+    if(this.button.__idConnector){
+      const fromId = this.button.__idConnector;
       this.connectorService.deleteConnectorWithIDStartingWith(fromId);
       // let parts = this.button.idConnector.split('/');
       // if(parts && parts.length>1){
@@ -255,7 +255,7 @@ export class CdsPanelButtonConfigurationComponent implements OnInit {
       this.button.action = this.buttonAction;
     }
     // this.openBlockAttributes = true;
-    const fromId = this.button.idConnector;
+    const fromId = this.button.__idConnector;
     let toId = '';
     const posId = this.button.action.indexOf("#");
     if (posId !== -1) {

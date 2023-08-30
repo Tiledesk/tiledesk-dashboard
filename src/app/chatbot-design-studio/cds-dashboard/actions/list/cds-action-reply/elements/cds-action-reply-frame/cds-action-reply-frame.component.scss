@@ -116,6 +116,14 @@ $max-height: 230px;
 
     }
 
+    .content-frame{
+        margin: 0;
+        max-width: 100%;
+        border-color: #647283;
+        margin: 5px auto;
+        max-width: calc(100% - 20px);
+    }
+
     .response-wrp{
         border-radius: 8px;
         background: #ffffff;
@@ -207,20 +215,6 @@ $max-height: 230px;
 }
 
 
-
-// .response-frame-wrapper {
-//     position: relative;
-//     display: inline-block;
-//     border-radius: 8px;
-//     margin-left: 30px;
-//     margin-top: 10px;
-//     margin-bottom: 15px;
-//     padding: 0;
-//     overflow: visible;
-//     max-width: calc(100% - 40px);
-//     width: auto;
-//     min-height: 140px;
-// }
 .response-frame-panel {
     border: 2px dashed #eeeef1;
     border-radius: 6px;
@@ -301,6 +295,15 @@ $max-height: 230px;
 
 .content-frame {
     display: flex;
+    justify-content: center;
+    font-size: 16px;
+    text-align: center;
+    margin-left: 30px;
+    margin-bottom: 15px;
+    position: relative;
+    max-width: calc(100% - 60px);
+    width: auto;
+
     #contentFrame {
         position: relative;
         border-radius: 6px;

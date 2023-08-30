@@ -147,6 +147,10 @@ import { CdsActionReplaceBotComponent } from './cds-dashboard/actions/list/cds-a
 import { CdsActionAssignVariableComponent } from './cds-dashboard/actions/list/cds-action-assign-variable/cds-action-assign-variable.component';
 import { CdsActionHideMessageComponent } from './cds-dashboard/actions/list/cds-action-hide-message/cds-action-hide-message.component';
 import { CdsActionWebRequestComponent } from './cds-dashboard/actions/list/cds-action-web-request/cds-action-web-request.component';
+import { CdsActionAskgptComponent } from './cds-dashboard/actions/list/cds-action-askgpt/cds-action-askgpt.component';
+import { CdsActionWhatsappAttributeComponent } from './cds-dashboard/actions/list/cds-action-whatsapp-attribute/cds-action-whatsapp-attribute.component';
+import { CdsWhatsappReceiverComponent } from './cds-dashboard/actions/list/cds-action-whatsapp-static/whatsapp-receiver/whatsapp-receiver.component';
+import { CdsActionWhatsappStaticComponent } from './cds-dashboard/actions/list/cds-action-whatsapp-static/cds-action-whatsapp-static.component';
 
 //CDS PANELS
 import { CdsActionDetailPanelComponent } from './cds-dashboard/actions/detail/cds-action-detail/cds-panel-action-detail.component';
@@ -156,13 +160,10 @@ import { CdsActionArrowComponent } from './cds-dashboard/actions/shared/cds-acti
 import { CdsActionControlsComponent } from './cds-dashboard/actions/shared/cds-action-controls/cds-action-controls/cds-action-controls.component';
 import { CdsAddActionMenuComponent } from './cds-dashboard/actions/shared/cds-add-action-menu/cds-add-action-menu.component';
 
-
 import { CdsFormComponent } from './cds-dashboard/actions/list/form/form.component';
 import { CdsQuestionComponent } from './cds-dashboard/actions/list/question/question.component';
-import { CdsActionAskgptComponent } from './cds-dashboard/actions/list/cds-action-askgpt/action-askgpt.component';
-import { CdsActionWhatsappAttributeComponent } from './cds-dashboard/actions/list/cds-action-whatsapp-attribute/action-whatsapp-attribute.component';
-import { CdsActionWhatsappStaticComponent } from './cds-dashboard/actions/list/cds-action-whatsapp-static/action-whatsapp-static.component';
-import { CdsWhatsappReceiverComponent } from './cds-dashboard/actions/list/cds-action-whatsapp-static/whatsapp-receiver/whatsapp-receiver.component';
+
+import { AddkbDialogComponent } from './cds-dashboard/actions/list/cds-action-askgpt/addkb-dialog/addkb-dialog.component';
 
 
 @NgModule({
@@ -284,7 +285,8 @@ import { CdsWhatsappReceiverComponent } from './cds-dashboard/actions/list/cds-a
     // ------ CDS PANELS ------ //
     CdsActionDetailPanelComponent,
     CdsPanelButtonConfigurationComponent,
-    CdsPanelWidgetComponent
+    CdsPanelWidgetComponent,
+    AddkbDialogComponent
   ],
   imports: [
     A11yModule,

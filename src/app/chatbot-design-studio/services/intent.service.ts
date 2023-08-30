@@ -21,10 +21,10 @@ import {
   ActionReplaceBot,
   ActionWait,
   ActionWebRequest,
-  Command, Message, Expression, Attributes, Action, ActionAskGPT, ActionWhatsappAttribute, ActionWhatsappStatic } from 'app/models/intent-model';
+  Command, Wait, Message, Expression, Attributes, Action, ActionAskGPT, ActionWhatsappAttribute, ActionWhatsappStatic } from 'app/models/intent-model';
 import { FaqService } from 'app/services/faq.service';
 import { FaqKbService } from 'app/services/faq-kb.service';
-import { NEW_POSITION_ID, TYPE_ACTION, TYPE_COMMAND } from 'app/chatbot-design-studio/utils';
+import { NEW_POSITION_ID, TYPE_ACTION, TYPE_COMMAND, removeNodesStartingWith } from 'app/chatbot-design-studio/utils';
 import { ConnectorService } from 'app/chatbot-design-studio/services/connector.service';
 
 
@@ -40,23 +40,21 @@ export class IntentService {
   public newActionCreated$: BehaviorSubject<Action> = new BehaviorSubject<Action>(null)
 
   listOfIntents: Array<Intent> = [];
-  intent: Intent;
-  // intentSelected: Intent;
+  selectedIntent: Intent;
+  listActions: Array<Action>;
+  selectedAction: Action;
+
+  actionSelectedID: string;
+  intentSelectedID: string;
 
   previousIntentId: string = '';
   preDisplayName: string = 'untitled_block_';
-  listOfActions: Array<{ name: string, value: string, icon?: string }>;
-  actionSelectedID: string;
-  intentSelectedID: string;
   
   botAttributes: any = {};
   listOfPositions: any = {};
 
   // newPosition: any = {'x':0, 'y':0};
-  intentSelected: Intent;
-  selectedIntent: Intent;
-  listActions: Array<Action>;
-  selectedAction: Action;
+  
 
   private changedConnector = new Subject<any>();
   public isChangedConnector$ = this.changedConnector.asObservable();
@@ -80,7 +78,7 @@ export class IntentService {
 
 
   public setIntentSelected(intent){
-    this.intentSelected = intent;
+    this.selectedIntent = intent;
   }
 
   /** setDragAndListnerEvent */
@@ -335,8 +333,14 @@ export class IntentService {
   }
 
 
+
+
+
   /** updateIntent */
-  public async updateIntent(intent: Intent): Promise<boolean> { 
+  public async updateIntent(originalIntent: Intent): Promise<boolean> { 
+    let intent = JSON.parse(JSON.stringify(originalIntent));
+    intent = removeNodesStartingWith(intent, '__');
+
     return new Promise((resolve, reject) => {
       let id = intent.id;
       let attributes = intent.attributes?intent.attributes:{};
@@ -551,6 +555,7 @@ export class IntentService {
     this.intentSelectedID = intentID;
 
     this.selectedIntent = this.listOfIntents.find(intent => intent.intent_id === intentID);
+
     this.listActions = this.selectedIntent.actions;
     this.selectedAction = this.listActions.find(action => action._tdActionId === actionId);
   }
@@ -610,7 +615,7 @@ export class IntentService {
 
     if(typeAction === TYPE_ACTION.REPLY){
       action = new ActionReply();
-      let commandWait = new Command(TYPE_COMMAND.WAIT);
+      let commandWait = new Wait();
       action.attributes.commands.push(commandWait);
       let command = new Command(TYPE_COMMAND.MESSAGE);
       command.message = new Message('text', 'A chat message will be sent to the visitor');
@@ -618,7 +623,7 @@ export class IntentService {
     }
     if(typeAction === TYPE_ACTION.RANDOM_REPLY){
       action = new ActionRandomReply();
-      let commandWait = new Command(TYPE_COMMAND.WAIT);
+      let commandWait = new Wait();
       action.attributes.commands.push(commandWait);
       let command = new Command(TYPE_COMMAND.MESSAGE);
       command.message = new Message('text', 'A chat message will be sent to the visitor');

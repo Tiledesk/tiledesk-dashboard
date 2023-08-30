@@ -4,8 +4,8 @@ import { LoggerService } from 'app/services/logger/logger.service';
 
 @Component({
   selector: 'cds-action-whatsapp-attribute',
-  templateUrl: './action-whatsapp-attribute.component.html',
-  styleUrls: ['./action-whatsapp-attribute.component.scss']
+  templateUrl: './cds-action-whatsapp-attribute.component.html',
+  styleUrls: ['./cds-action-whatsapp-attribute.component.scss']
 })
 export class CdsActionWhatsappAttributeComponent implements OnInit {
 

@@ -13,10 +13,11 @@ export class CdsActionDetailPanelComponent implements OnInit, OnChanges {
   @Output() closeAndSavePanelIntentDetail = new EventEmitter();
   @Input() elementIntentSelected: any;
   @Input() showSpinner: boolean;
+  @Input() project_id: string;
   // @Input() intentSelected: Intent;
   
-
   intentSelected: Intent;
+
   typeIntentElement = TYPE_INTENT_ELEMENT;
   typeAction = TYPE_ACTION;
   
@@ -47,7 +48,7 @@ export class CdsActionDetailPanelComponent implements OnInit, OnChanges {
   }
 
   initialize(){
-    this.intentSelected = this.intentService.intentSelected;
+    this.intentSelected = this.intentService.selectedIntent;
     console.log('[PANEL-INTENT-DETAIL] (OnChanges) @Input elementIntentSelected ', this.intentSelected, this.elementIntentSelected);
     try{
       this.elementIntentSelectedType = this.elementIntentSelected.type;

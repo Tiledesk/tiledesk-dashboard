@@ -707,12 +707,15 @@ export class TiledeskConnectors {
       if (!block) {return;}
       for (const [key, conn_id] of Object.entries(block.outConnectors)) {
         let conn = this.connectors[conn_id];
+        console.log("OUT :---> ", conn, conn.fromPoint);
         if(conn){
-          console.log("OUT :---> ", conn.fromPoint);
+          
           const el = document.getElementById(conn.fromId);
-          conn.fromPoint = this.elementLogicCenter(el);
-          console.log("conn.fromPoint :---> ", el, conn.fromId, conn.fromPoint);
-          this.#drawConnector(conn.id, conn.fromPoint, conn.toPoint);
+          if(el){
+            conn.fromPoint = this.elementLogicCenter(el);
+            console.log("conn.fromPoint :---> ", el, conn.fromId, conn.fromPoint);
+            this.#drawConnector(conn.id, conn.fromPoint, conn.toPoint);
+          }
         }
       };
     }

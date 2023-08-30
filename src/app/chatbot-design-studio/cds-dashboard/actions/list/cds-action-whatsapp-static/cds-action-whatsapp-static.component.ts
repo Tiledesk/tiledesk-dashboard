@@ -6,8 +6,8 @@ import { WhatsappService } from 'app/services/whatsapp.service';
 
 @Component({
   selector: 'cds-action-whatsapp-static',
-  templateUrl: './action-whatsapp-static.component.html',
-  styleUrls: ['./action-whatsapp-static.component.scss']
+  templateUrl: './cds-action-whatsapp-static.component.html',
+  styleUrls: ['./cds-action-whatsapp-static.component.scss']
 })
 export class CdsActionWhatsappStaticComponent implements OnInit {
 
@@ -16,6 +16,7 @@ export class CdsActionWhatsappStaticComponent implements OnInit {
   @Input() intentName: string;
   @Input() previewMode: boolean = true;
 
+  // project_id: "123457";
   templates_list = [];
   // receiver_list = [];
 

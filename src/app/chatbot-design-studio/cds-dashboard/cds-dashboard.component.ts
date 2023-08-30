@@ -169,6 +169,7 @@ export class CdsDashboardComponent implements OnInit {
     /** SUBSCRIBE TO THE STATE ACTION DETAIL PANEL */
     this.controllerService.isOpenActionDetailPanel$.subscribe((element: { type: TYPE_INTENT_ELEMENT, element: Action | string | Form }) => {
       this.elementIntentSelected = element;
+      console.log('isOpenActionDetailPanel elementIntentSelected ', this.elementIntentSelected);
       if (element.type) {
         this.isOpenPanelActionDetail = true;
       } else {
@@ -649,14 +650,15 @@ export class CdsDashboardComponent implements OnInit {
   private setDragAndListnerEventToElements() {
     console.log("2 --- AGGIORNO ELENCO LISTNER");
     this.listOfIntents.forEach(intent => {
+      this.setDragAndListnerEventToElement(intent);
       // this.setDragAndListnerToElement(intent);
-      this.stageService.setDragElement(intent.intent_id);
-      this.intentService.setListnerEvent(intent);
+      // this.stageService.setDragElement(intent.intent_id);
+      // this.intentService.setListnerEvent(intent);
     });
   }
 
 
-  private setDragAndListnerToElement(intent) {
+  private setDragAndListnerEventToElement(intent) {
     let intervalId = setInterval(async () => {
       const result = checkIFElementExists(intent.intent_id);
       if (result === true) {
@@ -666,12 +668,14 @@ export class CdsDashboardComponent implements OnInit {
         clearInterval(intervalId);
       }
     }, 100); // Chiamiamo la funzione ogni 100 millisecondi (0.1 secondo)
-    // Termina l'intervallo dopo 1 secondo (1000 millisecondi)
+    // Termina l'intervallo dopo 2 secondi (2000 millisecondi)
     setTimeout(() => {
       console.log('Timeout: 1 secondo scaduto.');
       clearInterval(intervalId);
-    }, 1000);
+    }, 2000);
   }
+
+
 
 
   /** getIntentPosition: call from html */
@@ -708,7 +712,8 @@ export class CdsDashboardComponent implements OnInit {
       this.intentService.replaceNewIntentToListOfIntents(newIntent);
       // console.log('Intent salvato correttamente: ', newIntent, this.listOfIntents);
       // !!! il valore di listOfIntents è bindato nel costructor con subscriptionListOfIntents !!! //
-      this.setDragAndListnerToElement(this.intentSelected);
+      this.setDragAndListnerEventToElement(this.intentSelected);
+      this.setDragAndListnerEventToElements();
       return newIntent;
     } else {
       return null;
@@ -1276,7 +1281,7 @@ export class CdsDashboardComponent implements OnInit {
 
 
   onSaveButton(button: Button) {
-    const arrayId = button.idConnector.split("/");
+    const arrayId = button.__idConnector.split("/");
     const idConnector = arrayId[0] ? arrayId[0] : null;
     console.log('onSaveButton: ', idConnector, this.listOfIntents);
     if (idConnector) {
