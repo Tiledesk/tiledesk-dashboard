@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ActionWhatsappAttributeComponent } from './action-whatsapp-attribute.component';
+import { CdsActionWhatsappAttributeComponent } from './cds-action-whatsapp-attribute.component';
 
 describe('ActionWhatsappAttributeComponent', () => {
-  let component: ActionWhatsappAttributeComponent;
-  let fixture: ComponentFixture<ActionWhatsappAttributeComponent>;
+  let component: CdsActionWhatsappAttributeComponent;
+  let fixture: ComponentFixture<CdsActionWhatsappAttributeComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ActionWhatsappAttributeComponent ]
+      declarations: [ CdsActionWhatsappAttributeComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ActionWhatsappAttributeComponent);
+    fixture = TestBed.createComponent(CdsActionWhatsappAttributeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
