@@ -169,6 +169,7 @@ export class CdsDashboardComponent implements OnInit {
     /** SUBSCRIBE TO THE STATE ACTION DETAIL PANEL */
     this.controllerService.isOpenActionDetailPanel$.subscribe((element : {type: TYPE_INTENT_ELEMENT, element: Action | string | Form }) => {
       this.elementIntentSelected = element;
+      console.log('isOpenActionDetailPanel elementIntentSelected ', this.elementIntentSelected);
       if (element.type) {
         this.isOpenPanelActionDetail = true;
       } else {
