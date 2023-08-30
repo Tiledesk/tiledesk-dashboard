@@ -11,35 +11,40 @@
             {{question}}
         </div>
         <div *ngIf="!question" class="action-row-right empty">
-            <!-- Enter the question you want to submit to chatgpt -->
             Enter the question
         </div>
     </div>
-    <!-- <cds-action-arrow *ngIf="!last"></cds-action-arrow> -->
+    <div class="action-row">
+        <div class="action-row-left">
+            <span class="material-icons-outlined" style="color: #827e71; font-size: 20px;">school</span>
+        </div>
+        <div *ngIf="kb_selected_name" class="action-row-right">
+            {{kb_selected_name}}
+        </div>
+        <div *ngIf="!kb_selected_name" class="action-row-right">
+            Select Knowledge Base
+        </div>
+    </div>
 </div>
 
 <div *ngIf="!previewMode" class="content">
 
 
     <div class="textarea-editor-wrapper">
-        <!-- <div class="field-box"> -->
-            <label class="title-label">Question</label>
-            <!-- <div class="value-wrp"> -->
-                <cds-textarea id="question"
-                    class = "text-editable-div"
-                    [textLimitBtn]="false"
-                    [emojiPikerBtn]="false"
-                    [setAttributeBtn]="true"
-                    [minRow]="2" [maxRow]="4"
-                    [text]="question"
-                    [placeholder]="'Question to submit'"
-                    (changeTextarea)="changeTextarea($event, 'question')">
-                </cds-textarea>
-            <!-- </div> -->
-        <!-- </div> -->
+        <label class="title-label">Question</label>
+        <cds-textarea id="question"
+            [textLimitBtn]="false" 
+            [emojiPikerBtn]="false" 
+            [setAttributeBtn]="true" 
+            [minRow]="2"
+            [maxRow]="4" 
+            [text]="question" 
+            [placeholder]="'Question to submit'"
+            (changeTextarea)="changeTextarea($event, 'question')">
+        </cds-textarea>
     </div>
 
-    <div class="text-editor-wrapper">
+    <!-- <div class="text-editor-wrapper">
         <div class="field-box">
             <label class="title-label">Knowledge Base ID</label>
             <div class="value-wrp">
@@ -54,6 +59,42 @@
                 </cds-textarea>
             </div>
         </div>
+    </div> -->
+
+    <div class="select-box">
+        <div style="display: flex; flex-direction: row; align-items: center; justify-content: space-between;">
+            <label class="title-label">Knowledge Base ID</label>
+            <div *ngIf="status_code === 0 && !spinner" class="play-button" style="color: #cbcbcb;" (click)="startKbIndexing()">
+                <span class="material-icons custom-icon play-icon">play_arrow</span>
+                <span class="button-text">Start indexing</span>
+            </div>
+            <div *ngIf="status_code === 1 && !spinner" class="sync-div" style="color: #cbcbcb;">
+                <span class="material-icons-outlined custom-icon animated-icon">sync</span>
+                <span>Indexing...</span>
+            </div>
+            <div *ngIf="status_code === 2 && !spinner" class="play-button" style="color: #cbcbcb;">
+                <span class="material-icons-outlined custom-icon play-icon">restart_alt</span>
+                <span class="button-text">Indexed</span>
+            </div>
+            <div *ngIf="spinner" style="color: #cbcbcb;">
+                <span class="material-icons-outlined custom-icon animated-icon">sync</span>
+            </div>
+        </div>
+        <cds-select id="text-condition" 
+            [items]="kbs_list"
+            [itemSelected]="kb_selected_id"
+            [bindLabelSelect]="'name'"
+            [bindValueSelect]="'_id'" 
+            [optionalBindDescription]="'url'"
+            [deleteButton]="true"
+            [footerButton]="true"
+            [footerButtonDisabled]="buttonDisabled"
+            [footerButtonIcon]="buttonIcon"
+            [footerButtonText]="buttonText"
+            (onSelected)="onChangeSelect($event)"
+            (onDeleted)="onDeleteSelect($event)">
+        </cds-select>
+        <span *ngIf="indexing_hint && !spinner" class="indexing-hint">*{{indexing_hint}}</span>
     </div>
 
     <div class="text-editor-wrapper">
@@ -61,8 +102,8 @@
             <label class="title-label">GPT Key</label>
             <div class="value-wrp">
                 <cds-textarea id="assignTo"
-                    [textLimitBtn]="false"
-                    [emojiPikerBtn]="false"
+                    [textLimitBtn]="false" 
+                    [emojiPikerBtn]="false" 
                     [setAttributeBtn]="true"
                     [minRow]="1" [maxRow]="3"
                     [text]="gptkey"
@@ -79,12 +120,13 @@
         <div class="field-box">
             <label class="title-label">GPT Reply</label>
             <div class="value-wrp">
-                <cds-textarea id="assignTo"
-                    [textLimitBtn]="false"
-                    [emojiPikerBtn]="false"
+                <cds-textarea id="assignTo" 
+                    [textLimitBtn]="false" 
+                    [emojiPikerBtn]="false" 
                     [setAttributeBtn]="true"
-                    [minRow]="1" [maxRow]="1"
-                    [readonly]="true"
+                    [minRow]="1" 
+                    [maxRow]="1" 
+                    [readonly]="true" 
                     [text]="action.assignReplyTo"
                     (selectedAttribute)="onSelectedAttribute($event, 'assignReplyTo')"
                     (clearSelectedAttribute)="onSelectedAttribute($event, 'assignReplyTo')">
@@ -97,12 +139,13 @@
         <div class="field-box">
             <label class="title-label">GPT Source</label>
             <div class="value-wrp">
-                <cds-textarea id="assignTo"
-                    [textLimitBtn]="false"
-                    [emojiPikerBtn]="false"
+                <cds-textarea id="assignTo" 
+                    [textLimitBtn]="false" 
+                    [emojiPikerBtn]="false" 
                     [setAttributeBtn]="true"
-                    [minRow]="1" [maxRow]="1"
-                    [readonly]="true"
+                    [minRow]="1" 
+                    [maxRow]="1" 
+                    [readonly]="true" 
                     [text]="action.assignSourceTo"
                     (selectedAttribute)="onSelectedAttribute($event, 'assignSourceTo')"
                     (clearSelectedAttribute)="onSelectedAttribute($event, 'assignSourceTo')">
@@ -115,12 +158,13 @@
         <div class="field-box">
             <label class="title-label">GPT Success</label>
             <div class="value-wrp">
-                <cds-textarea id="assignTo"
-                    [textLimitBtn]="false"
-                    [emojiPikerBtn]="false"
+                <cds-textarea id="assignTo" 
+                    [textLimitBtn]="false" 
+                    [emojiPikerBtn]="false" 
                     [setAttributeBtn]="true"
-                    [minRow]="1" [maxRow]="1"
-                    [readonly]="true"
+                    [minRow]="1" 
+                    [maxRow]="1" 
+                    [readonly]="true" 
                     [text]="action.assignSuccessTo"
                     (selectedAttribute)="onSelectedAttribute($event, 'assignSuccessTo')"
                     (clearSelectedAttribute)="onSelectedAttribute($event, 'assignSuccessTo')">

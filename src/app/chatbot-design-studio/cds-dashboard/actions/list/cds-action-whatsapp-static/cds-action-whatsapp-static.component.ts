@@ -16,6 +16,7 @@ export class CdsActionWhatsappStaticComponent implements OnInit {
   @Input() intentName: string;
   @Input() previewMode: boolean = true;
 
+  // project_id: "123457";
   templates_list = [];
   // receiver_list = [];
 

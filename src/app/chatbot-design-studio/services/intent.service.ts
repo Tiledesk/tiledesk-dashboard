@@ -21,7 +21,7 @@ import {
   ActionReplaceBot,
   ActionWait,
   ActionWebRequest,
-  Command, Message, Expression, Attributes, Action, ActionAskGPT, ActionWhatsappAttribute, ActionWhatsappStatic } from 'app/models/intent-model';
+  Command, Wait, Message, Expression, Attributes, Action, ActionAskGPT, ActionWhatsappAttribute, ActionWhatsappStatic } from 'app/models/intent-model';
 import { FaqService } from 'app/services/faq.service';
 import { FaqKbService } from 'app/services/faq-kb.service';
 import { NEW_POSITION_ID, TYPE_ACTION, TYPE_COMMAND, removeNodesStartingWith } from 'app/chatbot-design-studio/utils';
@@ -614,7 +614,7 @@ export class IntentService {
 
     if(typeAction === TYPE_ACTION.REPLY){
       action = new ActionReply();
-      let commandWait = new Command(TYPE_COMMAND.WAIT);
+      let commandWait = new Wait();
       action.attributes.commands.push(commandWait);
       let command = new Command(TYPE_COMMAND.MESSAGE);
       command.message = new Message('text', 'A chat message will be sent to the visitor');
@@ -622,7 +622,7 @@ export class IntentService {
     }
     if(typeAction === TYPE_ACTION.RANDOM_REPLY){
       action = new ActionRandomReply();
-      let commandWait = new Command(TYPE_COMMAND.WAIT);
+      let commandWait = new Wait();
       action.attributes.commands.push(commandWait);
       let command = new Command(TYPE_COMMAND.MESSAGE);
       command.message = new Message('text', 'A chat message will be sent to the visitor');

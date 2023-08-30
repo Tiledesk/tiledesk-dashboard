@@ -230,8 +230,9 @@ export class CdsIntentComponent implements OnInit {
   /** EVENTS  */
 
   onSelectAction(action, index: number, idAction) {
-    console.log('[CDS-INTENT] onActionSelected action: ', action);
+    console.log('[CDS-INTENT] onActionSelected action: ', action, );
     this.elementTypeSelected = idAction;
+    this.intentService.setIntentSelected(this.intent);
     this.intentService.selectAction(this.intent.intent_id, idAction);
     this.actionSelected.emit({ action: action, index: index, maxLength: this.listOfActions.length });
   }

@@ -163,6 +163,8 @@ import { CdsAddActionMenuComponent } from './cds-dashboard/actions/shared/cds-ad
 import { CdsFormComponent } from './cds-dashboard/actions/list/form/form.component';
 import { CdsQuestionComponent } from './cds-dashboard/actions/list/question/question.component';
 
+import { AddkbDialogComponent } from './cds-dashboard/actions/list/cds-action-askgpt/addkb-dialog/addkb-dialog.component';
+
 
 @NgModule({
   declarations: [
@@ -283,7 +285,8 @@ import { CdsQuestionComponent } from './cds-dashboard/actions/list/question/ques
     // ------ CDS PANELS ------ //
     CdsActionDetailPanelComponent,
     CdsPanelButtonConfigurationComponent,
-    CdsPanelWidgetComponent
+    CdsPanelWidgetComponent,
+    AddkbDialogComponent
   ],
   imports: [
     A11yModule,

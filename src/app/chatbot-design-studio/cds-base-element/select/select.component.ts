@@ -15,11 +15,21 @@ export class SelectComponent implements OnInit {
   @Input() itemSelected: any
   @Input() bindLabelSelect: string;
   @Input() bindValueSelect: string;
+  @Input() optionalBindAdditionalText: string; 
+  @Input() optionalBindDescription: string; 
+  
+  @Input() footerButton: boolean = false;
+  @Input() footerButtonDisabled: boolean = false;
+  @Input() footerButtonIcon: string;
+  @Input() footerButtonText: string;
+
+  @Input() deleteButton: boolean = false;
   @Input() clearable: boolean = false;
   @Input() placeholder: string = 'Select an option'
   @Input() formGroup: FormGroup = new FormGroup({ select: new FormControl()});
   @Input() formControlName: string = 'select';
-  @Output() onSelected = new EventEmitter()
+  @Output() onSelected = new EventEmitter();
+  @Output() onDeleted = new EventEmitter();
 
   valueFormGroup: FormGroup 
   
@@ -51,6 +61,16 @@ export class SelectComponent implements OnInit {
   }
 
   onOpen(){
+  }
+
+  onFooterButtonClick(event) {
+    console.log("NG SELECT onFooterButtonClick event: ", event);
+    this.onSelected.emit({ clickEvent: 'footer'});
+  }
+
+  onDeleteButtonClick(event) {
+    console.log("NG SELECT onDeleteButtonClick event: ", event);
+    this.onDeleted.emit(event);
   }
 
   onClose(){
