@@ -266,19 +266,14 @@ mat-form-field.box-textarea ::ng-deep {
     color: white;
 }
 
-// ::ng-deep cds-textarea .subject-text-area {
-//     textarea {
-//         resize: none !important;
-//     }
-// }
 
-::ng-deep cds-textarea.subject-text-area {
+cds-textarea.subject-text-area ::ng-deep  {
     textarea {
         resize: none !important;
     }
 }
 
-::ng-deep cds-textarea.to-text-area {
+cds-textarea.to-text-area ::ng-deep  {
     textarea {
         resize: none !important;
     }

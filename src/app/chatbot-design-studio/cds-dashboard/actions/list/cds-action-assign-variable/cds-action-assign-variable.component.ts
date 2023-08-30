@@ -16,6 +16,9 @@ export class CdsActionAssignVariableComponent implements OnInit, OnChanges {
     variables: Array<string> = [];
     listOfFunctions: Array<{ name: string, value: string, icon?: string }> = [];
 
+    TYPE_FUNCTION_LIST_FOR_VARIABLES = TYPE_FUNCTION_LIST_FOR_VARIABLES
+    TYPE_MATH_OPERATOR_LIST = TYPE_MATH_OPERATOR_LIST
+
     constructor(
         private logger: LoggerService
     ) { }
@@ -30,71 +33,40 @@ export class CdsActionAssignVariableComponent implements OnInit, OnChanges {
         const operators = this.action.operation.operators
         console.log('[CDS-ACTION-ASSIGN-VARIABLE] operands ', operands)
         console.log('[CDS-ACTION-ASSIGN-VARIABLE] operators ', operators)
+        console.log('[CDS-ACTION-ASSIGN-VARIABLE] list  ', TYPE_MATH_OPERATOR_LIST['addAsStrings'])
+        
         for (let i = 0; i < operands.length; i++) {
-            for (let key in TYPE_FUNCTION_LIST_FOR_VARIABLES) {
-                let _function = operands[i].function
-                // console.log('[CDS-ACTION-ASSIGN-VARIABLE] operand _function (2)' , _function)
-                // console.log('[CDS-ACTION-ASSIGN-VARIABLE]  TYPE_FUNCTION_LIST_FOR_VARIABLES key ' ,TYPE_FUNCTION_LIST_FOR_VARIABLES[key])
-                if (_function === TYPE_FUNCTION_LIST_FOR_VARIABLES[key].type) {
-                    console.log('[CDS-ACTION-ASSIGN-VARIABLE] >>>>>> operand  ', operands[i])
-                    operands[i]['functionName'] = TYPE_FUNCTION_LIST_FOR_VARIABLES[key].name
-                }
-            }
-            console.log('[CDS-ACTION-ASSIGN-VARIABLE] operands -xx', operands[i])
-            if (operands[i].value === '') {
-                this.displaySetOperationPlaceholder = false
-                console.log('[CDS-ACTION-ASSIGN-VARIABLE] displaySetOperationPlaceholder -xx', this.displaySetOperationPlaceholder)
-            }
-            for (let j = 0; j < operators.length; j++) {
-                // console.log('[CDS-ACTION-ASSIGN-VARIABLE] operator ---xx>', operators)
-                if (operands.length - 1) {
-                    console.log('[CDS-ACTION-ASSIGN-VARIABLE] operators j -xx>', operators[j])
-                    console.log('[CDS-ACTION-ASSIGN-VARIABLE] operators i -xx>', operators[i])
-                    console.log('[CDS-ACTION-ASSIGN-VARIABLE] operators i  TYPE_MATH_OPERATOR[operators[i]] -xx>', TYPE_MATH_OPERATOR[operators[i]])
-                    // operands[i]['operator'] = TYPE_MATH_OPERATOR[operators[j]]
-                    for (let key in TYPE_MATH_OPERATOR_LIST) {
-                        if (operators[i] === TYPE_MATH_OPERATOR_LIST[key].type) {
-                            operands[i]['operator'] = TYPE_MATH_OPERATOR_LIST[key].name
-                        }
-                    }
+            // for (let key in TYPE_FUNCTION_LIST_FOR_VARIABLES) {
+            //     let _function = operands[i].function
+            //     // console.log('[CDS-ACTION-ASSIGN-VARIABLE] operand _function (2)' , _function)
+            //     // console.log('[CDS-ACTION-ASSIGN-VARIABLE]  TYPE_FUNCTION_LIST_FOR_VARIABLES key ' ,TYPE_FUNCTION_LIST_FOR_VARIABLES[key])
+            //     if (_function === TYPE_FUNCTION_LIST_FOR_VARIABLES[key].type) {
+            //         console.log('[CDS-ACTION-ASSIGN-VARIABLE] >>>>>> operand  ', operands[i])
+            //         operands[i]['functionName'] = TYPE_FUNCTION_LIST_FOR_VARIABLES[key].name
+            //     }
+            // }
+            // console.log('[CDS-ACTION-ASSIGN-VARIABLE] operands -xx', operands[i])
+            // if (operands[i].value === '') {
+            //     this.displaySetOperationPlaceholder = false
+            //     console.log('[CDS-ACTION-ASSIGN-VARIABLE] displaySetOperationPlaceholder -xx', this.displaySetOperationPlaceholder)
+            // }
+            // for (let j = 0; j < operators.length; j++) {
+            //     // console.log('[CDS-ACTION-ASSIGN-VARIABLE] operator ---xx>', operators)
+            //     if (operands.length - 1) {
+            //         console.log('[CDS-ACTION-ASSIGN-VARIABLE] operators j -xx>', operators[j])
+            //         console.log('[CDS-ACTION-ASSIGN-VARIABLE] operators i -xx>', operators[i])
+            //         console.log('[CDS-ACTION-ASSIGN-VARIABLE] operators i  TYPE_MATH_OPERATOR[operators[i]] -xx>', TYPE_MATH_OPERATOR[operators[i]])
+            //         // operands[i]['operator'] = TYPE_MATH_OPERATOR[operators[j]]
+            //         for (let key in TYPE_MATH_OPERATOR_LIST) {
+            //             if (operators[i] === TYPE_MATH_OPERATOR_LIST[key].type) {
+            //                 operands[i]['operator'] = TYPE_MATH_OPERATOR_LIST[key].name
+            //             }
+            //         }
 
-                }
-            }
+            //     }
+            // }
         }
 
-        // operands.forEach(operand => {
-        //     let _function = operand.function
-        //     // console.log('[CDS-ACTION-ASSIGN-VARIABLE] operand _function (1) ',_function)
-        //     // console.log('[CDS-ACTION-ASSIGN-VARIABLE] operand TYPE_FUNCTION_LIST_FOR_VARIABLES',TYPE_FUNCTION_LIST_FOR_VARIABLES)
-        //     // console.log('xx',`TYPE_FUNCTION_LIST_FOR_VARIABLES.${_function}`)
-        //     for (let key in TYPE_FUNCTION_LIST_FOR_VARIABLES) {
-        //         // console.log('[CDS-ACTION-ASSIGN-VARIABLE] operand _function (2)' , _function)
-        //         // console.log('[CDS-ACTION-ASSIGN-VARIABLE]  TYPE_FUNCTION_LIST_FOR_VARIABLES key ' ,TYPE_FUNCTION_LIST_FOR_VARIABLES[key])
-        //         if (_function === TYPE_FUNCTION_LIST_FOR_VARIABLES[key].type) {
-        //             console.log('[CDS-ACTION-ASSIGN-VARIABLE] >>>>>> operand  ', operand)
-        //             operand['functionName'] = TYPE_FUNCTION_LIST_FOR_VARIABLES[key].name
-        //         }
-        //     }
-        // });
-
-        // for (let i = 0; i < operators.length; i++) {
-        //     console.log('[CDS-ACTION-ASSIGN-VARIABLE] operators', operators[i])
-        //     for (let j = 0; j < operands.length; j++) {
-        //         console.log('[CDS-ACTION-ASSIGN-VARIABLE] operators', operands[j])
-        //         if(operands.length - 1) {
-        //             operands[j]['operator'] = operators[i]
-        //         }
-        //     }
-        // }
-
-
-
-        // for (let i = 0; i < operators; i++) {
-
-        //     if (i < operation.operands.length - 1) {
-        //         this.list.push(operation.operators[i]);
-        //     }
-        // }
     }
 
     initialize() {

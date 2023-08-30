@@ -292,7 +292,7 @@ input.form-control {
     font-size: 18px;
 }
 
-::ng-deep cds-textarea#assignTo {
+cds-textarea#assignTo ::ng-deep {
     display: flex;
     // &.assigned {
     //     textarea {
