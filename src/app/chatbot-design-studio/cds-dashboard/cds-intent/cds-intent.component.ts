@@ -72,6 +72,7 @@ export class CdsIntentComponent implements OnInit {
   actionDragPlaceholderWidth: number;
   hideActionDragPlaceholder: boolean;
   newActionCreated: Action;
+  dragDisabled: boolean = true;
 
   constructor(
     private logger: LoggerService,
@@ -317,26 +318,29 @@ export class CdsIntentComponent implements OnInit {
     // actionArrowElem.style.display = 'none';
     // console.log('[CDS-INTENT] onDragStarted actionArrowElem', actionArrowElem)
 
-    const actionDragPlaceholder = <HTMLElement>document.querySelector('.action-drag-placeholder');
-    console.log('[CDS-INTENT] onDragStarted actionDragPlaceholder', actionDragPlaceholder)
-   
     // const actionDragPlaceholderWidth = actionDragPlaceholder.offsetWidth;
     // console.log('[CDS-INTENT] onDragStarted actionDragPlaceholderWidth', actionDragPlaceholderWidth)
+    
+    // --------------------------------------------------------------------------------------------------
+    // Bug fix: When an action is dragged, the "drag placeholder" moves up and changes size to full width
+    // --------------------------------------------------------------------------------------------------
+    const actionDragPlaceholder = <HTMLElement>document.querySelector('.action-drag-placeholder');
+    console.log('[CDS-INTENT] onDragStarted actionDragPlaceholder', actionDragPlaceholder)
     const myObserver = new ResizeObserver(entries => {
       // this will get called whenever div dimension changes
        entries.forEach(entry => {
         this.actionDragPlaceholderWidth  = entry.contentRect.width
-         console.log('[CDS-INTENT] width', this.actionDragPlaceholderWidth);
+         console.log('[CDS-INTENT] width actionDragPlaceholderWidth', this.actionDragPlaceholderWidth);
         if (this.actionDragPlaceholderWidth === 258) {
           this.hideActionDragPlaceholder = false;
           console.log('[CDS-INTENT] Hide action drag placeholder', this.hideActionDragPlaceholder);
           actionDragPlaceholder.style.opacity = '1';
-          // actionDragPlaceholder.classList.add("cdk-action-placeholder");
+         
         }  else {
           this.hideActionDragPlaceholder = true;
           console.log('[CDS-INTENT] Hide action drag placeholder', this.hideActionDragPlaceholder);
           actionDragPlaceholder.style.opacity = '0';
-          // actionDragPlaceholder.classList.remove("cdk-action-placeholder");
+       
         }
 
         //  console.log('height', entry.contentRect.height);
@@ -376,11 +380,20 @@ export class CdsIntentComponent implements OnInit {
       const addActionPlaceholderEl = <HTMLElement>document.querySelector('.add--action-placeholder');
       console.log('[CDS-INTENT] mouseOverAddActionPlaceholder addActionPlaceholderEl ', addActionPlaceholderEl)
       addActionPlaceholderEl.style.opacity = '0'
+      this.dragDisabled = false;
     }
   }
 
   mouseOutAddActionPlaceholder(event) {
     console.log('[CDS-INTENT] mouseOutAddActionPlaceholder ', event)
+  }
+
+  drop(event) {
+    console.log('[CDS-INTENT] drop  event', event)
+  }
+
+  allowDrop(event) {
+    console.log('[CDS-INTENT] allowDrop  event', event)
   }
 
 

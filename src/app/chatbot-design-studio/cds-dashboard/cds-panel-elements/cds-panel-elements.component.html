@@ -1,10 +1,10 @@
 
 
-<div class="cds-panel-elements" (mouseover)="onOverMenu()" (mouseleave)="onLeaveMenu()">
+<div class="cds-panel-elements" (mouseover)="onOverMenu()" (mouseout)="onCloseMenu()" (mouseleave)="onLeaveMenu()">
 
     <div size="4" class="cds-elements" mat-button>
         <!-- EVENT -->
-        <div class="cds-element" (click)="onAddNewElement()" (mouseleave)="onCloseMenu()"
+        <div class="cds-element" (click)="onAddNewElement()" (mouseout)="onCloseMenu()" (mouseleave)="onCloseMenu()"
             (mouseover)="onOpenMenu(div1, TYPE_OF_MENU.EVENT)" #div1>
             <div class="cds-button-element">
                 <div class="cds-box-button">
@@ -27,7 +27,7 @@
     <div size="4" class="cds-elements" mat-button>
 
         <!-- ACTIONS -->
-        <div *ngFor="let actionCategory of ACTION_CATEGORY" class="cds-element" (click)="onAddNewElement()" (mouseleave)="onCloseMenu()"
+        <div *ngFor="let actionCategory of ACTION_CATEGORY" class="cds-element" (click)="onAddNewElement()"  (mouseout)="onCloseMenu()" (mouseleave)="onCloseMenu()"
             (mouseover)="onOpenMenu(div3, TYPE_OF_MENU.ACTION, actionCategory.type)" #div3>
             <div class="cds-button-element">
                 <div class="cds-box-button">
@@ -88,7 +88,8 @@
         (mouseleave)="onLeaveMenu()">
         <cds-panel-actions 
             [menuType]="menuType" 
-            [menuCategory]="menuCategory">
+            [menuCategory]="menuCategory"
+            (isDraggingMenuElement)="onDraggingMenuElement($event)">
         </cds-panel-actions>
     </div>
     

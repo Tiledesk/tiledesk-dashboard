@@ -62,7 +62,7 @@
         <!-- Add block placeholder -->
         <!-- ---------------------------------------------- -->
         <div (mouseover)="mouseOverAddActionPlaceholder($event)" (mouseout)="mouseOutAddActionPlaceholder($event)"  
-            class="add--action-placeholder" *ngIf="listOfActions?.length === 0">
+            class="add--action-placeholder" *ngIf="listOfActions?.length === 0" cdkDrag [cdkDragDisabled]="dragDisabled">
             <!-- add-action-placeholder  -->
             <!-- <div class="add--action-placeholder-add-icon">
                 <span class="material-icons"> add </span>
@@ -94,6 +94,7 @@
             }" (keydown)="onKeydown($event)" (click)="onSelectAction(action, i, action._tdActionId)">
             <!-- [ngClass]="{'hide-drag-action-palceholder': hideActionDragPlaceholder}" -->
             <!-- [ngStyle]="{'opacity':hideActionDragPlaceholder === true ? '1' : '0' }" -->
+            
             <div class="action-drag-placeholder" *cdkDragPlaceholder></div>
             
             <cds-action-description cdkDragHandle 

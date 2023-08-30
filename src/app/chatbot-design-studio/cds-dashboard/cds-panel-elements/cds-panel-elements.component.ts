@@ -35,17 +35,23 @@ export class CdsPanelElementsComponent implements OnInit {
   }
 
 
+  onDraggingMenuElement(event) {
+    console.log('[CDS-PANEL-ELEMENTS] onDraggingMenuElement event', event);
+    if (event === true) {
+      this.isOpen = false;
+    }
+  } 
 
   onOpenMenu(e, type, category?: string) {
     this.onMouseOverActionMenuSx.emit(true)
     setTimeout(() => {
-      console.log('onOpenMenu: menu type ', type);
+      console.log('[CDS-PANEL-ELEMENTS] onOpenMenu: menu type ', type);
       this.menuType = type;
       this.menuCategory = category;
       //this.menuTrigger.openMenu();
       // let x = e.offsetLeft;
       let y = e.offsetTop;
-      console.log(':::: CdsPanelElementsComponent onMouseOverElement :::: ', y, this.isDraggingMenuElement);
+      console.log('[CDS-PANEL-ELEMENTS] onMouseOverElement :::: ', y, this.isDraggingMenuElement);
       this.isOpen = true;
       if(this.isDraggingMenuElement == false){
         this.positionMenu = {'x': 80, 'y': y }
@@ -90,6 +96,7 @@ export class CdsPanelElementsComponent implements OnInit {
   }
 
   onIsDraggingMenuElement(event: boolean){
+    console.log('[CDS-PANEL-ELEMENTS] onIsDraggingMenuElement event' , event)
     this.isDraggingMenuElement = event;
     if(event === false){
       this.onCloseMenu();
