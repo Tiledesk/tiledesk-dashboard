@@ -85,25 +85,25 @@ div.value-wrp{
     }
 }
 
-::ng-deep cds-textarea#assignTo {
+cds-textarea#assignTo ::ng-deep{
     display: flex;
     textarea {
         border: 1px solid rgb(118, 118, 118) !important;
         resize: none !important; 
-        padding: 8px 20px !important;
-        height: 25px !important;
-        min-height: 25px !important;
+        // padding: 8px 20px !important;
+        // height: 25px !important;
+        // min-height: 25px !important;
     }
 }
 
-::ng-deep cds-textarea#question {
+ cds-textarea#question ::ng-deep{
     display: flex;
     textarea {
         border: 1px solid rgb(118, 118, 118) !important;
         resize: none !important; 
-        padding: 8px 20px !important;
-        min-height: 50px !important;
-        max-height: 130px !important;
+        // padding: 8px 20px !important;
+        // min-height: 50px !important;
+        // max-height: 130px !important;
     }
 }
 

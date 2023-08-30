@@ -8,8 +8,8 @@ import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'cds-action-askgpt',
-  templateUrl: './action-askgpt.component.html',
-  styleUrls: ['./action-askgpt.component.scss']
+  templateUrl: './cds-action-askgpt.component.html',
+  styleUrls: ['./cds-action-askgpt.component.scss']
 })
 export class CdsActionAskgptComponent implements OnInit {
 

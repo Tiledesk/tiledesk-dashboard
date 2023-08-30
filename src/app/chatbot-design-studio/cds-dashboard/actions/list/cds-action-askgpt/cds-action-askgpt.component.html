@@ -26,6 +26,7 @@
             <label class="title-label">Question</label>
             <!-- <div class="value-wrp"> -->
                 <cds-textarea id="question"
+                    class = "text-editable-div"
                     [textLimitBtn]="false"
                     [emojiPikerBtn]="false"
                     [setAttributeBtn]="true"
@@ -63,7 +64,7 @@
                     [textLimitBtn]="false"
                     [emojiPikerBtn]="false"
                     [setAttributeBtn]="true"
-                    [minRow]="1" [maxRow]="1"
+                    [minRow]="1" [maxRow]="3"
                     [text]="gptkey"
                     [placeholder]="'Your ChatGPT API key'"
                     (changeTextarea)="changeTextarea($event, 'gptkey')">

@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CdsActionAskgptComponent } from './action-askgpt.component';
+import { CdsActionAskgptComponent } from './cds-action-askgpt.component';
 
 describe('ActionAskgptComponent', () => {
   let component: CdsActionAskgptComponent;
