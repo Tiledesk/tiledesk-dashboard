@@ -160,10 +160,10 @@ export class ConnectorService {
 
   /** */
   createNewConnector(fromId:string, toId:string){
-    console.log('createNewConnector:: fromId:', fromId, 'toId:', toId);
+    console.log('[CONNECTOR-SERV] createNewConnector:: fromId:', fromId, 'toId:', toId);
     const elFrom = document.getElementById(fromId);
     const elTo = document.getElementById(toId);
-    console.log('createNewConnector:: ', elFrom, elTo);
+    console.log('[CONNECTOR-SERV] createNewConnector:: ', elFrom, elTo);
     if (elFrom && elTo) { 
       const fromPoint = this.tiledeskConnectors.elementLogicCenter(elFrom);
       const toPoint = this.tiledeskConnectors.elementLogicTopLeft(elTo);
@@ -174,7 +174,7 @@ export class ConnectorService {
 
   /** */
   deleteAllConnectors(){
-    console.log('deleteAllConnectors:: ');
+    console.log('[CONNECTOR-SERV] deleteAllConnectors:: ');
     this.tiledeskConnectors.deleteAllConnectors();
   }
 
@@ -184,7 +184,7 @@ export class ConnectorService {
    * e lo sostituisco con il nuovo
   */
   deleteConnectorWithIDStartingWith(connectorID){
-    // console.log('deleteConnectorWithIDStartingWith:: ', this.tiledeskConnectors.connectors);
+    console.log('[CONNECTOR-SERV] deleteConnectorWithIDStartingWith:: ', this.tiledeskConnectors.connectors);
     const listOfConnectors = Object.keys(this.tiledeskConnectors.connectors)
     .filter(key => key.startsWith(connectorID))
     .reduce((filteredMap, key) => {
@@ -199,20 +199,24 @@ export class ConnectorService {
 
   /** */
   deleteConnector(connectorID){
+    console.log('[CONNECTOR-SERV] deleteConnector::  connectorID ', connectorID)
     this.tiledeskConnectors.deleteConnector(connectorID);
   }
 
   onConnectorDeleted(connectorID){
+    console.log('[CONNECTOR-SERV] onConnectorDeleted::  connectorID ', connectorID)
     delete this.listOfConnectors[connectorID];
   }
 
   addConnector(connector){
     this.listOfConnectors[connector.id] = connector;
+    console.log('[CONNECTOR-SERV] addConnector::  connector ', connector)
   }
   
 
 
   createConnectorFromId(fromId, toId){
+    console.log('[CONNECTOR-SERV] createConnectorFromId fromId ', fromId, ' toId ', toId)
     let intervalId = setInterval(async () => {
       const result = await this.tiledeskConnectors.createConnectorFromId(fromId, toId);
       if (result === true) {
@@ -227,17 +231,21 @@ export class ConnectorService {
 
   deleteConnectorsOfBlock(intent_id){
     this.tiledeskConnectors.deleteConnectorsOfBlock(intent_id);
+    console.log('[CONNECTOR-SERV] deleteConnectorsOfBlock intent_id ' ,intent_id)
   }
 
   deleteConnectorFromAction(actionId, connId){
     this.tiledeskConnectors.deleteConnectorFromAction(actionId, connId);
+    console.log('[CONNECTOR-SERV] deleteConnectorFromAction actionId ' ,actionId ,' connId ', connId)
   }
 
   deleteConnectorsFromActionByActionId(actionId){
     this.tiledeskConnectors.deleteConnectorsFromActionByActionId(actionId);
+    console.log('[CONNECTOR-SERV] deleteConnectorsFromActionByActionId actionId ' ,actionId )
   }
 
   movedConnector(elementID){
+    console.log('[CONNECTOR-SERV] movedConnector elementID ' ,elementID )
     const elem = document.getElementById(elementID);
     if(elem){
       console.log('aggiorno i connettori: ', elem);
@@ -250,6 +258,7 @@ export class ConnectorService {
 
   moved(element, x, y){
     this.tiledeskConnectors.moved(element, x, y);
+    console.log('[CONNECTOR-SERV] moved element ' ,element , ' x ' , x ,  'y ',  y )
   }
 
 }
