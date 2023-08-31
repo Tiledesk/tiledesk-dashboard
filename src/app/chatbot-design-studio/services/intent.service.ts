@@ -473,7 +473,7 @@ export class IntentService {
     let intentToUpdate = this.listOfIntents.find((intent) => intent.intent_id === this.previousIntentId);
     if(intentToUpdate){
       const actions = intentToUpdate.actions.filter((action: any) => action._tdActionId !== actionId);
-      if(actions && actions.length>0){
+      if(actions){ // && actions.length>0
         intentToUpdate.actions = actions;
         // this.listOfIntents = this.listOfIntents.map((intent) => (intent.intent_id !== this.previousIntentId ? intent : intentToUpdate));
         // console.log("aggiorno la lista degli intents sostituendo l'intent al quale è stata eliminata la action ", this.listOfIntents);

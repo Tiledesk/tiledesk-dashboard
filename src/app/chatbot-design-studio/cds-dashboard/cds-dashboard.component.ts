@@ -1006,7 +1006,6 @@ export class CdsDashboardComponent implements OnInit {
       console.log('[CDS DSHBRD] ho draggato una action da panel element sullo stage');
       const newAction = this.intentService.createNewAction(action.value.type);
       const newIntent = await this.createNewIntentWithAnAction(pos, newAction);
-
     } else if (action) {
       // dragging an action from another intent, into the stage
       console.log('[CDS DSHBRD] ho draggato una action da un intent sullo stage');

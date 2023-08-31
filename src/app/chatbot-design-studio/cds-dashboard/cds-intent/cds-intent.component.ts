@@ -310,7 +310,6 @@ export class CdsIntentComponent implements OnInit {
     console.log('[CDS-INTENT] onDragStarted index ', index);
     this.intentService.setPreviousIntentId(previousIntentId);
     this.isDragging = true
-    
     console.log('[CDS-INTENT] isDragging - onDragStarted', this.isDragging)
     // ----------------------------------
     // Hide action arrow on drag started 
@@ -336,18 +335,14 @@ export class CdsIntentComponent implements OnInit {
           this.hideActionDragPlaceholder = false;
           console.log('[CDS-INTENT] Hide action drag placeholder', this.hideActionDragPlaceholder);
           actionDragPlaceholder.style.opacity = '1';
-         
         }  else {
           this.hideActionDragPlaceholder = true;
           console.log('[CDS-INTENT] Hide action drag placeholder', this.hideActionDragPlaceholder);
           actionDragPlaceholder.style.opacity = '0';
-       
         }
-
         //  console.log('height', entry.contentRect.height);
        });
      });
-  
      myObserver.observe(actionDragPlaceholder);
   }
 
@@ -422,7 +417,7 @@ export class CdsIntentComponent implements OnInit {
     } else {
       try {
         let action: any = event.previousContainer.data[event.previousIndex];
-        if(event.previousContainer.data.length>1){
+        if(event.previousContainer.data.length>0){
           if (action._tdActionType) {
             // moving action from another intent
             console.log("[CDS-INTENT] onDropAction sposto la action tra 2 intent differenti");
