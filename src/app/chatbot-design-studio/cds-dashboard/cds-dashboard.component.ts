@@ -914,6 +914,7 @@ export class CdsDashboardComponent implements OnInit {
     this.IS_OPEN_PANEL_WIDGET = status
     this.controllerService.closeActionDetailPanel();
     this.controllerService.closeButtonPanel();
+    this.intentService.setLiveActiveIntent(null);
     this.isOpenAddActionsMenu = false;
     if (!this.hasClickedAddAction) {
       this.removeConnectorDraftAndCloseFloatMenu();
