@@ -500,6 +500,20 @@ export class TiledeskConnectors {
       if(elConnectable){
       //if (event.target.classList.contains(this.classes["input_block"])) {
         this.createConnector(this.fromId, elConnectable.id, this.drawingBack, this.toPoint);
+        const connectorReleaseOnIntent = new CustomEvent("connector-release-on-intent",
+        {
+          detail: {
+            fromId: this.fromId,
+            toId: elConnectable.id,
+            fromPoint: this.drawingBack,
+            toPoint: this.toPoint,
+            menuPoint: this.toPointPhis,
+            target: event.target
+          }
+        });
+        document.dispatchEvent(connectorReleaseOnIntent);
+        console.log("connector-release-on-intent fired!");
+      
       }
       else {
         //console.log("connector released on an unsupported element!");

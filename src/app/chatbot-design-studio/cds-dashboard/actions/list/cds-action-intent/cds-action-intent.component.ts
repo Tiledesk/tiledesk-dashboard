@@ -16,6 +16,7 @@ export class CdsActionIntentComponent implements OnInit {
   @Input() previewMode: boolean = true;
   @Output() updateAndSaveAction = new EventEmitter();
 
+
   intents: Array<{name: string, value: string, icon?:string}>
   idIntentSelected: string;
   idConnector: string;
@@ -31,9 +32,9 @@ export class CdsActionIntentComponent implements OnInit {
 
 
   ngOnInit(): void {
-    console.log("[ACTION-INTENT] elementSelected: ", this.action, this.intentSelected)
+    console.log("[CDS-ACTION-INTENT] elementSelected: ", this.action, this.intentSelected)
     this.intentService.isChangedConnector$.subscribe((connector: any) => {
-      console.log('CdsActionIntentComponent isChangedConnector-->', connector);
+      console.log('[CDS-ACTION-INTENT] - subcribe to isChangedConnector$ >>', connector);
       this.connector = connector;
       this.updateConnector();
     });
@@ -49,23 +50,26 @@ export class CdsActionIntentComponent implements OnInit {
     this.idIntentSelected = this.intentSelected.intent_id;
     this.idConnector = this.idIntentSelected+'/'+this.action._tdActionId;
     this.intents = this.intentService.getListOfIntents();
+    console.log('[CDS-ACTION-INTENT] - initialize - idIntentSelected ', this.idIntentSelected);
+    console.log('[CDS-ACTION-INTENT] - initialize - idConnector ', this.idConnector);
+    console.log('[CDS-ACTION-INTENT] - initialize - intents ', this.intents);
   }
 
   private updateConnector(){
-    console.log('[ACTION-INTENT-COMP] 1- updateConnector :: ');
+    console.log('[CDS-ACTION-INTENT] 1- updateConnector :: ');
     try {
       const array = this.connector.fromId.split("/");
       const idAction= array[1];
-      console.log('[ACTION-INTENT-COMP] 2 - updateConnector :: ', idAction, this.action._tdActionId);
+      console.log('[CDS-ACTION-INTENT] 2 - updateConnector :: ', idAction, this.action._tdActionId);
       if(idAction === this.action._tdActionId){
         if(this.connector.deleted){
           // DELETE 
-          console.log('[ACTION-INTENT-COMP] deleteConnector :: ', this.connector.id);
+          console.log('[CDS-ACTION-INTENT] deleteConnector :: ', this.connector.id);
           this.action.intentName = null;
           this.isConnected = false;
         } else {
           // ADD / EDIT
-          console.log('[ACTION-INTENT-COMP] updateConnector :: ', this.connector.toId);
+          console.log('[CDS-ACTION-INTENT] updateConnector :: ', this.connector.toId);
           this.action.intentName = "#"+this.connector.toId;
           this.isConnected = true;
         }
@@ -78,7 +82,7 @@ export class CdsActionIntentComponent implements OnInit {
 
 
   onChangeSelect(event: {name: string, value: string}){
-    console.log('onChangeSelect-->', event)
+    console.log('CDS-ACTION-INTENT onChangeSelect-->', event)
     this.action.intentName = event.value
     if(!this.action._tdActionTitle){
       this.action._tdActionTitle = this.intents.find(intent => intent.value === event.value).name

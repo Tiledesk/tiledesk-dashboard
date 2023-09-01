@@ -120,6 +120,8 @@ export class CdsDashboardComponent implements OnInit {
   // intentToAddAction: any;
   tdsContainerEleHeight: number = 0;
   hasClickedAddAction: boolean = false;
+  hideActionPlaceholderOfActionPanel: boolean;
+
   // isBetaUrl: boolean;
 
   constructor(
@@ -209,12 +211,18 @@ export class CdsDashboardComponent implements OnInit {
     this.connectorService.initializeConnectors();
 
     this.addEventListener();
+ 
   }
 
   ngOnDestroy() {
     console.log("•••• On Destroy ••••")
     this.subscriptionListOfIntents.unsubscribe();
     this.connectorService.deleteAllConnectors();
+  }
+
+  onHideActionPlaceholderOfActionPanel(event){
+    console.log('[CDS DSHBRD] onHideActionPlaceholderOfActionPanel event : ', event);
+    this.hideActionPlaceholderOfActionPanel = event
   }
 
   // clickedOutOfAddActionMenu(event) {
@@ -314,12 +322,13 @@ export class CdsDashboardComponent implements OnInit {
     /** LISTNER OF TILEDESK CONNECTORS */
     document.addEventListener(
       "connector-draft-released", (e: CustomEvent) => {
+        console.log("[CDS DSHBRD] connector-draft-released (1) event",e );
         if (e && e.detail && e.detail.target && e.detail.target.classList.contains("tds_container")) {
-          console.log("connector-draft-released event, catched on 'stage'");
+          console.log("[CDS DSHBRD] connector-draft-released event, catched on 'stage'");
           // this.tiledeskConnectors.removeConnectorDraft();
         }
         else {
-          console.log("connector-draft-released event, catched but unsupported", e.detail);
+          console.log("[CDS DSHBRD] connector-draft-released event, catched but unsupported e.detail", e.detail);
           this.positionFloatMenu = this.tiledeskStage.physicPointCorrector(e.detail.menuPoint);
           console.log('[CDS DSHBRD] this.positionFloatMenu ', this.positionFloatMenu)
           console.log('[CDS DSHBRD] this.positionFloatMenu x 1', this.positionFloatMenu.x)
