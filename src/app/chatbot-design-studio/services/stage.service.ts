@@ -49,6 +49,10 @@ export class StageService {
   }
   
 
+  physicPointCorrector(point){
+    return this.tiledeskStage.physicPointCorrector(point);
+  }
+  
 
   // getScale(){
   //   return this.tiledeskStage.scale;

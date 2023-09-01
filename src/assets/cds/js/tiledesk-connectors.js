@@ -501,9 +501,11 @@ export class TiledeskConnectors {
       //if (event.target.classList.contains(this.classes["input_block"])) {
         this.createConnector(this.fromId, elConnectable.id, this.drawingBack, this.toPoint);
       }
-      else {
-        //console.log("connector released on an unsupported element!");
-        //this.removeConnectorDraft();
+      else if(this.drawingBack && this.toPoint){
+        // quando rilascio il connector sullo stage e apro il float menu
+        // quando rilascio il connector in un altro punto qualsiasi
+        // console.log("connector released on an unsupported element!");
+        // this.removeConnectorDraft();
         const fire_event = new CustomEvent("connector-draft-released",
         {
           detail: {

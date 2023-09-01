@@ -107,14 +107,49 @@ export class CdsPanelActionsComponent implements OnInit {
   }
 
   onDragStarted(event:CdkDragStart, currentIndex: number) {
-    console.log('Drag started!', event, currentIndex);
+    console.log('[CDS-PANEL-ACTIONS] Drag started!', event, currentIndex);
     this.isDragging = true;
     this.indexDrag = currentIndex;
+    
     this.isDraggingMenuElement.emit(this.isDragging);
+
+    // --------------------------------------------------------------------------------------------------
+    // Bug fix: When an action is dragged, the "drag placeholder" moves up and changes size to full width
+    // --------------------------------------------------------------------------------------------------
+    const actionDragPlaceholder = <HTMLElement>document.querySelector('.action-drag-placeholder');
+    console.log('[CDS-PANEL-ACTIONS] onDragStarted actionDragPlaceholder', actionDragPlaceholder)
+ 
+ 
+    const myObserver = new ResizeObserver(entries => {
+      // this will get called whenever div dimension changes
+       entries.forEach(entry => {
+        const actionDragPlaceholderWidth  = entry.contentRect.width
+        console.log('[CDS-PANEL-ACTIONS] actionDragPlaceholderWidth width', actionDragPlaceholderWidth);
+        
+        let hideActionDragPlaceholder = null;
+        
+        if (actionDragPlaceholderWidth === 258) {
+          hideActionDragPlaceholder = false;
+          console.log('[CDS-PANEL-ACTIONS] Hide action drag placeholder', hideActionDragPlaceholder);
+          actionDragPlaceholder.style.opacity = '1';
+         
+        } else {
+          hideActionDragPlaceholder = true;
+          console.log('[CDS-PANEL-ACTIONS] Hide action drag placeholder', hideActionDragPlaceholder);
+          actionDragPlaceholder.style.opacity = '0';
+       
+        }
+
+        //  console.log('height', entry.contentRect.height);
+       });
+     });
+  
+     myObserver.observe(actionDragPlaceholder);
+ 
   }
 
   onDragEnd(event: CdkDragEnd) {
-    console.log('Drag End!', event);
+    console.log('[CDS-PANEL-ACTIONS] Drag End!', event);
     this.isDragging = false;
     this.indexDrag = null;
     this.isDraggingMenuElement.emit(this.isDragging);

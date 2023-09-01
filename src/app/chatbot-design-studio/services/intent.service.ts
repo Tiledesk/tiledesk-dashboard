@@ -403,7 +403,7 @@ export class IntentService {
   // START ACTION FUNCTIONS //
 
   // moving new action in intent from panel elements
-  public moveNewActionIntoIntent(event, action, currentIntentId){
+  public moveNewActionIntoIntent(event, action, currentIntentId): any {
     let newAction = this.createNewAction(action.value.type);
     let currentIntent = this.listOfIntents.find(function(obj) {
       return obj.intent_id === currentIntentId;
@@ -417,9 +417,11 @@ export class IntentService {
         // const fromEle = document.getElementById(currentIntent.intent_id);
         // this.connectorService.movedConnector(currentIntent.intent_id);
         console.log('update current Intent: OK');
+        
         //this.behaviorIntent.next(currentIntent);
       }
     }, 0);
+    return newAction
   }
 
   // on move action from different intents
@@ -478,7 +480,7 @@ export class IntentService {
     let intentToUpdate = this.listOfIntents.find((intent) => intent.intent_id === this.previousIntentId);
     if(intentToUpdate){
       const actions = intentToUpdate.actions.filter((action: any) => action._tdActionId !== actionId);
-      if(actions && actions.length>0){
+      if(actions){ // && actions.length>0
         intentToUpdate.actions = actions;
         // this.listOfIntents = this.listOfIntents.map((intent) => (intent.intent_id !== this.previousIntentId ? intent : intentToUpdate));
         // console.log("aggiorno la lista degli intents sostituendo l'intent al quale è stata eliminata la action ", this.listOfIntents);

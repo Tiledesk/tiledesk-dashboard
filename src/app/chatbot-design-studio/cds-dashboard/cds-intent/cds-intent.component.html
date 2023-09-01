@@ -62,7 +62,8 @@
         <!-- ---------------------------------------------- -->
         <!-- Add block placeholder -->
         <!-- ---------------------------------------------- -->
-        <div class="add--action-placeholder" *ngIf="listOfActions?.length === 0">
+        <div (mouseover)="mouseOverAddActionPlaceholder($event)" (mouseout)="mouseOutAddActionPlaceholder($event)"  
+            class="add--action-placeholder" *ngIf="listOfActions?.length === 0" cdkDrag [cdkDragDisabled]="dragDisabled">
             <!-- add-action-placeholder  -->
             <!-- <div class="add--action-placeholder-add-icon">
                 <span class="material-icons"> add </span>
@@ -71,7 +72,7 @@
                 Add an action to this block
             </div>
 
-            <div class="add-action-from-placeholder-btn-wpr"> 
+            <div  class="add-action-from-placeholder-btn-wpr"> 
                 <button #openActionMenuBtn (click)="$event.stopPropagation();openActionMenu(intent, 'add-action-btn')"
                 class="btn cds-add-action-btn csd-add-action-btn-wpr-element">
                     <span class="material-icons csd-add-action-btn-wpr-element">
@@ -82,8 +83,8 @@
         </div>
 
         <div *ngFor="let action of listOfActions; let i = index, let last = last;" cdkDrag
-            (cdkDragStarted)="onDragStarted($event, intent.intent_id)" 
-            (cdkDragReleased)="onDragEnded($event)"
+            (cdkDragStarted)="onDragStarted($event, intent.intent_id, i)" 
+            (cdkDragReleased)="onDragEnded($event, i)"
             [id]="action._tdActionId" 
             class="box-action" 
             tabindex="0" 
@@ -93,8 +94,9 @@
             'cds-last-action': last
             }" (keydown)="onKeydown($event)" (click)="onSelectAction(action, i, action._tdActionId)">
             <!-- [ngClass]="{'hide-drag-action-palceholder': hideActionDragPlaceholder}" -->
-           
-            <div [ngStyle]="{'opacity':hideActionDragPlaceholder === true ? '1' : '0' }"  class="action-drag-placeholder" *cdkDragPlaceholder></div>
+            <!-- [ngStyle]="{'opacity':hideActionDragPlaceholder === true ? '1' : '0' }" -->
+            
+            <div class="action-drag-placeholder" *cdkDragPlaceholder></div>
             
             <cds-action-description cdkDragHandle 
                 class="header-action" 
@@ -232,8 +234,9 @@
 
             </div>
 
-            <cds-action-arrow *ngIf="!last"></cds-action-arrow>
-
+            <!-- [ngStyle]="{'display':isDragging === false ? 'block' : 'none' }" -->
+            <cds-action-arrow id="action-arrow-{{i}}" *ngIf="!last"></cds-action-arrow>
+           
             <div *ngIf="last" class="csd-open-action-menu-btn-wpr csd-add-action-btn-wpr-element">
                 <button #openActionMenuBtn (click)="$event.stopPropagation();openActionMenu(intent, 'add-action-btn')"
                     class="btn cds-add-action-btn csd-add-action-btn-wpr-element">

@@ -257,6 +257,25 @@ $margin-bottom: 15px;
     }
 }
 
+
+.add--action-placeholder {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 30px;
+    border-radius: 8px;
+    border: 1px dashed #6c6859;
+    padding: 12px 6px;
+    background: rgba(255,255,255,.8);
+    margin: 12px;
+    .add--action-placeholder-text {
+        font-weight: 400;
+        color: #6c6859;
+        font-size: 14px;
+    }
+}
+
 // cds-action-description {
 //     padding: 10px 0;
 //     margin-left: 10px;
