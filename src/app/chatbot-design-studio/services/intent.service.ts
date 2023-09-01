@@ -37,6 +37,7 @@ export class IntentService {
   idBot: string;
   behaviorIntents = new BehaviorSubject <Intent[]>([]);
   behaviorIntent = new BehaviorSubject <Intent>(null);
+  liveActiveIntent = new BehaviorSubject<Intent>(null);
 
   listOfIntents: Array<Intent> = [];
   selectedIntent: Intent;
@@ -78,6 +79,11 @@ export class IntentService {
 
   public setIntentSelected(intent){
     this.selectedIntent = intent;
+  }
+
+  public setLiveActiveIntent(intentID){
+    let intent = this.listOfIntents.find((intent) => intent.intent_id === intentID);
+    this.liveActiveIntent.next(intent)
   }
 
   /** setDragAndListnerEvent */

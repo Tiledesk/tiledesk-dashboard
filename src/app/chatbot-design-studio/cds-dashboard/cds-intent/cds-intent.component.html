@@ -17,7 +17,8 @@
         </div>
     </div>
 
-    <div class="pic-header tds_draggable" [ngClass]="{'cds-start': isStart, 'placeholder-block-header':listOfActions?.length === 0}">
+    <div class="pic-header tds_draggable" 
+    [ngClass]="{'cds-start': isStart, 'placeholder-block-header':listOfActions?.length === 0, 'live-active-intent': isLiveActive}">
 
         <!-- <div class="pic-header-title tds_draggable">
             <div class="pic-header-title-input tds_draggable">

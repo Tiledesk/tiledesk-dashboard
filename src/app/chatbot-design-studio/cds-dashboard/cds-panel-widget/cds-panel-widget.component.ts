@@ -1,6 +1,9 @@
-import { Component, ElementRef, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { IntentService } from 'app/chatbot-design-studio/services/intent.service';
 import { AppConfigService } from 'app/services/app-config.service';
+import { ENETDOWN } from 'constants';
+import { ObserveOnMessage } from 'rxjs/internal/operators/observeOn';
 
 function getWindow(): any {
   return window;
@@ -13,9 +16,13 @@ function getWindow(): any {
 })
 export class CdsPanelWidgetComponent implements OnInit {
 
+  @ViewChild('widgetIframe', {static:true}) widgetIframe:ElementRef;
+  
   @Input() projectID: string;
   @Input() id_faq_kb: string;
   @Input() defaultDepartmentId: string;
+
+  public iframeVisibility: boolean = false
   private window;
   public loading:boolean = true;
 
@@ -24,7 +31,8 @@ export class CdsPanelWidgetComponent implements OnInit {
   constructor( 
     public appConfigService: AppConfigService,
     private sanitizer: DomSanitizer,
-    private elementRef: ElementRef) { 
+    private elementRef: ElementRef,
+    private intentService: IntentService) { 
     this.window = getWindow();
     
   }
@@ -39,7 +47,12 @@ export class CdsPanelWidgetComponent implements OnInit {
     this.TESTSITE_BASE_URL = this.appConfigService.getConfig().testsiteBaseUrl;
     const testItOutBaseUrl = this.TESTSITE_BASE_URL.substring(0, this.TESTSITE_BASE_URL.lastIndexOf('/'));
     const testItOutUrl = testItOutBaseUrl + '/chatbot-panel.html'
-    const url = testItOutUrl + '?tiledesk_projectid=' + this.projectID + '&tiledesk_participants=bot_' + this.id_faq_kb + "&tiledesk_departmentID=" + this.defaultDepartmentId + '&tiledesk_fullscreenMode=true&td_draft=true'
+    const url = testItOutUrl + '?tiledesk_projectid=' + this.projectID + 
+                                '&tiledesk_participants=bot_' + this.id_faq_kb + 
+                                "&tiledesk_departmentID=" + this.defaultDepartmentId + 
+                                "&tiledesk_hideHeaderCloseButton=false" +
+                                '&tiledesk_fullscreenMode=true&td_draft=true'
+
     this.widgetTestSiteUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url)
     let params = `toolbar=no,menubar=no,width=815,height=727,left=100,top=100`;
     // window.open(url, '_blank', params);
@@ -47,6 +60,33 @@ export class CdsPanelWidgetComponent implements OnInit {
 
   onLoaded(event){
     this.loading= false
+    // console.log('iframeeeeeee', this.elementRef.nativeElement.querySelector('.content'))
+    window.addEventListener('message', (event_data)=> {
+      if(event_data && event_data.origin.includes('widget')){
+        let message = event_data.data.message
+        if(message && message.attributes && message.attributes.action){
+          let intentIDselected = this.getIntentId(message.attributes.action)
+          this.intentService.setLiveActiveIntent(intentIDselected)
+        }else{
+          this.intentService.setLiveActiveIntent(null)
+        }
+      }
+    })
+  }
+
+  startTest(){
+    this.iframeVisibility = !this.iframeVisibility
+  }
+  getIntentId(action): string{
+    let parts = action.split("{");
+    if (parts.length > 0 && parts[0].startsWith("{")) {
+      return null; // invalid intent
+    } else {
+      // console.log('intent 2', actionAndParameters);
+      parts = parts[0];
+      // console.log('intent 3', intent);
+    }
+    return parts.substring(1)
   }
 
   initTiledesk() {

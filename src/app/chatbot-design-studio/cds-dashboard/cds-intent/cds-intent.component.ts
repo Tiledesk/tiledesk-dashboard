@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges, ViewChild, ElementRef, OnChanges } from '@angular/core';
 import { Action, Form, Intent } from 'app/models/intent-model';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 
 import { ACTIONS_LIST, TYPE_ACTION, patchActionId } from 'app/chatbot-design-studio/utils';
 import { LoggerService } from 'app/services/logger/logger.service';
@@ -19,6 +19,8 @@ import {
   transferArrayItem
 } from '@angular/cdk/drag-drop';
 import { Observable } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { StageService } from 'app/chatbot-design-studio/services/stage.service';
 
 
 export enum HAS_SELECTED_TYPE {
@@ -47,7 +49,9 @@ export class CdsIntentComponent implements OnInit {
   @Output() onTestItOut = new EventEmitter();
   @ViewChild('openActionMenuBtn', { static: false }) openActionMenuBtnRef: ElementRef;
 
-  subscriptionBehaviorIntent: Subscription;
+  // subscriptionBehaviorIntent: Subscription;
+  subscriptions: Array<{key: string, value: Subscription}> = [];
+  private unsubscribe$: Subject<any> = new Subject<any>();
   // intentElement: any;
   // idSelectedAction: string;
   // form: Form;
@@ -68,49 +72,81 @@ export class CdsIntentComponent implements OnInit {
   isStart = false;
   startAction: any;
   isDragging: boolean = false;
+  isLiveActive: boolean = false;
   actionDragPlaceholderWidth: number;
   hideActionDragPlaceholder: boolean;
 
   constructor(
     private logger: LoggerService,
     public intentService: IntentService,
-    private connectorService: ConnectorService
+    private connectorService: ConnectorService,
+    private stageService: StageService
     // private controllerService: ControllerService,
   ) {
-    /** SUBSCRIBE TO THE INTENT CREATED OR UPDATED */
-    this.subscriptionBehaviorIntent = this.intentService.behaviorIntent.subscribe(intent => {
-      if (intent && this.intent && intent.intent_id === this.intent.intent_id) {
-        console.log("[CDS-INTENT] sto modifico l'intent: ",  this.intent , " con : ", intent );
-        this.intent = intent;
-
-        if(intent['attributesChanged']){
-          console.log("[CDS-INTENT] ho solo cambiato la posizione sullo stage");
-          delete intent['attributesChanged'];
-        } else { // if(this.intent.actions.length !== intent.actions.length && intent.actions.length>0)
-          console.log("[CDS-INTENT] aggiorno le actions dell'intent");
-          this.listOfActions = this.intent.actions;
-          // AGGIORNO I CONNETTORI
-          // this.intentService.updateIntent(this.intent); /// DEVO ELIMINARE UPDATE DA QUI!!!!!
-        }
-
-        //UPDATE QUESTIONS
-        if (this.intent.question) {
-          const question_segment = this.intent.question.split(/\r?\n/).filter(element => element);
-          this.questionCount = question_segment.length;
-          // this.question = this.intent.question;
-        } else{
-          this.questionCount = 0
-        }
-        //UPDATE FORM
-        if (this.intent && this.intent.form !== undefined) {
-          this.formSize = Object.keys(this.intent.form).length;
-        } else {
-          this.formSize = 0;
-        }
-      }
-    });
-
+      this.initSubscriptions()
    }
+
+  initSubscriptions(){
+
+    let subscribtion: any;
+    let subscribtionKey: string;
+
+    /** SUBSCRIBE TO THE INTENT CREATED OR UPDATED */
+    subscribtionKey = 'behaviorIntent';
+    subscribtion = this.subscriptions.find(item => item.key === subscribtionKey);
+    if(!subscribtion){
+      subscribtion = this.intentService.behaviorIntent.pipe(takeUntil(this.unsubscribe$)).subscribe(intent => {
+        if (intent && this.intent && intent.intent_id === this.intent.intent_id) {
+          console.log("[CDS-INTENT] sto modifico l'intent: ",  this.intent , " con : ", intent );
+          this.intent = intent;
+  
+          if(intent['attributesChanged']){
+            console.log("[CDS-INTENT] ho solo cambiato la posizione sullo stage");
+            delete intent['attributesChanged'];
+          } else { // if(this.intent.actions.length !== intent.actions.length && intent.actions.length>0)
+            console.log("[CDS-INTENT] aggiorno le actions dell'intent");
+            this.listOfActions = this.intent.actions;
+            // AGGIORNO I CONNETTORI
+            // this.intentService.updateIntent(this.intent); /// DEVO ELIMINARE UPDATE DA QUI!!!!!
+          }
+  
+          //UPDATE QUESTIONS
+          if (this.intent.question) {
+            const question_segment = this.intent.question.split(/\r?\n/).filter(element => element);
+            this.questionCount = question_segment.length;
+            // this.question = this.intent.question;
+          } else{
+            this.questionCount = 0
+          }
+          //UPDATE FORM
+          if (this.intent && this.intent.form !== undefined) {
+            this.formSize = Object.keys(this.intent.form).length;
+          } else {
+            this.formSize = 0;
+          }
+        }
+      });
+      const subscribe = {key: subscribtionKey, value: subscribtion };
+      this.subscriptions.push(subscribe);
+    }
+
+    /** SUBSCRIBE TO THE INTENT LIVE SELECTED FROM TEST SITE */
+    subscribtionKey = 'intentLiveActive';
+    subscribtion = this.subscriptions.find(item => item.key === subscribtionKey);
+    if(!subscribtion){
+      subscribtion = this.intentService.liveActiveIntent.pipe(takeUntil(this.unsubscribe$)).subscribe(intent => {
+        this.isLiveActive = false
+        if (intent && this.intent && intent.intent_id === this.intent.intent_id) {
+          var stageElement = document.getElementById(intent.intent_id);
+          this.isLiveActive = true
+          this.stageService.centerStageOnPosition(stageElement)
+        }
+      });
+      const subscribe = {key: subscribtionKey, value: subscribtion };
+      this.subscriptions.push(subscribe);
+    }
+
+  }
 
   ngOnInit(): void {
     // console.log('CdsPanelIntentComponent ngAfterViewInit-->');
@@ -130,9 +166,11 @@ export class CdsIntentComponent implements OnInit {
   }
 
   unsubscribe() {
-    if (this.subscriptionBehaviorIntent) {
-      this.subscriptionBehaviorIntent.unsubscribe();
-    }
+    // if (this.subscriptionBehaviorIntent) {
+    //   this.subscriptionBehaviorIntent.unsubscribe();
+    // }
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   /** CUSTOM FUNCTIONS  */
