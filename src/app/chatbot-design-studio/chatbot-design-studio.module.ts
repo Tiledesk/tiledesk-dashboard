@@ -63,7 +63,7 @@ import { CdsChatbotDetailsComponent } from './cds-chatbot-details/cds-chatbot-de
 import { CdsFulfillmentComponent } from './cds-fulfillment/cds-fulfillment.component';
 
 //BASE-ELEMENT
-import { CDSTextComponent } from './cds-base-element/text/text.component';
+import { CDSTextComponent } from './cds-dashboard/base-elements/text/text.component';
 import { CDSTextareaComponent } from './cds-dashboard/base-elements/textarea/textarea.component';
 import { CDSDelaySliderComponent } from './cds-dashboard/base-elements/delay-slider/delay-slider.component';
 import { CDSImageUploadComponent } from './cds-dashboard/base-elements/image-upload/image-upload.component';
