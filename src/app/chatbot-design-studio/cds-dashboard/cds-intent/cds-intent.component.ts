@@ -139,7 +139,7 @@ export class CdsIntentComponent implements OnInit {
         if (intent && this.intent && intent.intent_id === this.intent.intent_id) {
           var stageElement = document.getElementById(intent.intent_id);
           this.isLiveActive = true
-          this.stageService.centerStageOnPosition(stageElement)
+          this.stageService.centerStageOnTopPosition(stageElement)
         }
       });
       const subscribe = {key: subscribtionKey, value: subscribtion };

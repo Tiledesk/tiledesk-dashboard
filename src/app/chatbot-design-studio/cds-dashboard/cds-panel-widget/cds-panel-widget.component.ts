@@ -64,9 +64,9 @@ export class CdsPanelWidgetComponent implements OnInit {
     window.addEventListener('message', (event_data)=> {
       if(event_data && event_data.origin.includes('widget')){
         let message = event_data.data.message
-        if(message && message.attributes && message.attributes.action){
-          let intentIDselected = this.getIntentId(message.attributes.action)
-          this.intentService.setLiveActiveIntent(intentIDselected)
+        if(message && message.attributes && message.attributes.intentName){
+          let intentName = message.attributes.intentName
+          this.intentService.setLiveActiveIntent(intentName)
         }else{
           this.intentService.setLiveActiveIntent(null)
         }
@@ -76,17 +76,6 @@ export class CdsPanelWidgetComponent implements OnInit {
 
   startTest(){
     this.iframeVisibility = !this.iframeVisibility
-  }
-  getIntentId(action): string{
-    let parts = action.split("{");
-    if (parts.length > 0 && parts[0].startsWith("{")) {
-      return null; // invalid intent
-    } else {
-      // console.log('intent 2', actionAndParameters);
-      parts = parts[0];
-      // console.log('intent 3', intent);
-    }
-    return parts.substring(1)
   }
 
   initTiledesk() {

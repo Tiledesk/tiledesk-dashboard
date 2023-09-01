@@ -81,8 +81,8 @@ export class IntentService {
     this.selectedIntent = intent;
   }
 
-  public setLiveActiveIntent(intentID){
-    let intent = this.listOfIntents.find((intent) => intent.intent_id === intentID);
+  public setLiveActiveIntent(intentName: string){
+    let intent = this.listOfIntents.find((intent) => intent.intent_display_name === intentName);
     this.liveActiveIntent.next(intent)
   }
 
