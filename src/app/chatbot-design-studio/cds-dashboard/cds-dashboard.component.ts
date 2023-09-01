@@ -120,6 +120,8 @@ export class CdsDashboardComponent implements OnInit {
   // intentToAddAction: any;
   tdsContainerEleHeight: number = 0;
   hasClickedAddAction: boolean = false;
+  hideActionPlaceholderOfActionPanel: boolean;
+
   // isBetaUrl: boolean;
 
   constructor(
@@ -209,12 +211,18 @@ export class CdsDashboardComponent implements OnInit {
     this.connectorService.initializeConnectors();
 
     this.addEventListener();
+ 
   }
 
   ngOnDestroy() {
     console.log("•••• On Destroy ••••")
     this.subscriptionListOfIntents.unsubscribe();
     this.connectorService.deleteAllConnectors();
+  }
+
+  onHideActionPlaceholderOfActionPanel(event){
+    console.log('[CDS DSHBRD] onHideActionPlaceholderOfActionPanel event : ', event);
+    this.hideActionPlaceholderOfActionPanel = event
   }
 
   // clickedOutOfAddActionMenu(event) {

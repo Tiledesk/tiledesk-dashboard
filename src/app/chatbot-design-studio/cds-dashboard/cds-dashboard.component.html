@@ -44,12 +44,13 @@
             <cds-panel-elements class="cds-panel-elements" 
                 (showPanelActions)="onShowPanelActions($event)"
                 (addNewElement)="onAddNewElement()"
-                (onMouseOverActionMenuSx)="onMouseOverActionMenuSx($event)">
+                (onMouseOverActionMenuSx)="onMouseOverActionMenuSx($event)"
+                (hideActionPlaceholderOfActionPanel)="onHideActionPlaceholderOfActionPanel($event)">
             </cds-panel-elements>
 
             <div #receiver_elements_dropped_on_stage class="receiver-elements-dropped-on-stage" cdkDropList
                 (cdkDropListDropped)="onDroppedElementToStage($event)"></div>
-
+    
             <div #drawer_of_items_to_zoom_and_drag id="tds_drawer" class="tds-drag-drawer box-right-content">
                 <cds-intent *ngFor="let intent of listOfIntents;" 
                     [id]="intent.intent_id"
@@ -57,6 +58,7 @@
                     [style.top.px]="getIntentPosition(intent.id).y"
                     [style.left.px]="getIntentPosition(intent.id).x" 
                     [intent]="intent"
+                    [hideActionPlaceholderOfActionPanel]="hideActionPlaceholderOfActionPanel"
                     (actionSelected)=onActionSelected($event) 
                     (questionSelected)=onQuestionSelected($event)
                     (formSelected)=onIntentFormSelected($event) 

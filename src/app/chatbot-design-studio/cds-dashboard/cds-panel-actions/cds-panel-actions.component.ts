@@ -16,6 +16,7 @@ export class CdsPanelActionsComponent implements OnInit {
   @Input() menuCategory: string;
   @Input() pos: any;
   @Output() isDraggingMenuElement = new EventEmitter();
+  @Output() hideActionPlaceholderOfActionPanel = new EventEmitter();
 
   TYPE_ACTION_CATEGORY = TYPE_ACTION_CATEGORY;
   TYPE_OF_MENU = TYPE_OF_MENU;
@@ -130,11 +131,13 @@ export class CdsPanelActionsComponent implements OnInit {
         
         if (actionDragPlaceholderWidth === 258) {
           hideActionDragPlaceholder = false;
+          this.hideActionPlaceholderOfActionPanel.emit(false)
           console.log('[CDS-PANEL-ACTIONS] Hide action drag placeholder', hideActionDragPlaceholder);
           actionDragPlaceholder.style.opacity = '1';
          
         } else {
           hideActionDragPlaceholder = true;
+          this.hideActionPlaceholderOfActionPanel.emit(true)
           console.log('[CDS-PANEL-ACTIONS] Hide action drag placeholder', hideActionDragPlaceholder);
           actionDragPlaceholder.style.opacity = '0';
        
