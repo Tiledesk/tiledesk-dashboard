@@ -1,4 +1,4 @@
-import { CDSTextComponent } from '../../cds-base-element/text/text.component';
+import { CDSTextComponent } from '../base-elements/text/text.component';
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { Button } from 'app/models/intent-model';
 
@@ -225,6 +225,7 @@ export class CdsPanelButtonConfigurationComponent implements OnInit {
   /** */
   onChangeTypeButton(typeOfButton: { label: string, value: TYPE_BUTTON }) {
     this.buttonType = this.button.type = typeOfButton.value;
+    this.buttonAction = null
     console.log('onChangeTypeButton-->', typeOfButton, this.button)
     if(this.button.__idConnector){
       const fromId = this.button.__idConnector;

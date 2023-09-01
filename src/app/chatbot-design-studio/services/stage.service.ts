@@ -28,6 +28,18 @@ export class StageService {
     }, 1000);
   }
 
+  centerStageOnTopPosition(pos){
+    let intervalId = setInterval(async () => {
+      const result = await this.tiledeskStage.centerStageOnTopPosition(pos);
+      if (result === true) {
+        clearInterval(intervalId);
+      }
+    }, 100);
+    setTimeout(() => {
+      clearInterval(intervalId);
+    }, 1000);
+  }
+
 
 
   setDragElement(elementId:string) {
@@ -37,6 +49,10 @@ export class StageService {
   }
   
 
+  physicPointCorrector(point){
+    return this.tiledeskStage.physicPointCorrector(point);
+  }
+  
 
   // getScale(){
   //   return this.tiledeskStage.scale;

@@ -8,7 +8,22 @@
             close
         </div> -->
         <div class="content">
-           <iframe allowfullscreen
+
+            <div class="btn-wrp" [style.visibility]="iframeVisibility? 'hidden':'visible'">
+                <img src="/assets/cds/images/chatbot.png" width="80">
+                <div id="text" class="title"> Test your Chatbot</div>
+                <div id="text" class="description"> Start trying your chatbot and interact with it</div>
+                <button id="cds-play-btn" class="btn btn-primary" type="button" style="margin-left: 14px;" (click)="startTest()"
+                    matTooltipClass="custom-mat-tooltip" matTooltip="Test it" #tooltip="matTooltip" 
+                    matTooltipPosition='below' matTooltipHideDelay="100">
+                    <span class="material-icons">
+                        play_arrow
+                    </span>
+                    Test it
+                </button>
+            </div>
+           <iframe allowfullscreen [style.visibility]="iframeVisibility? 'visible':'hidden'"
+                #widgetIframe
                 id="widgetIframe"
                 style= "border:none;"
                 width = "100%" height = "100%"

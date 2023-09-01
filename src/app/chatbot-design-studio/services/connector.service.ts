@@ -13,6 +13,7 @@ import { Intent } from 'app/models/intent-model';
 export class ConnectorService {
   listOfConnectors: any = {};
   tiledeskConnectors: any;
+  connectorDraft: any = {};
 
   constructor(
     private stageService: StageService
@@ -26,6 +27,27 @@ export class ConnectorService {
   resetConnectors(){
 
   }
+
+
+
+  createConnectorDraft(detail){
+    this.connectorDraft = {
+      fromId: detail.fromId,
+      fromPoint: detail.fromPoint,
+      toPoint: detail.toPoint,
+      menuPoint: detail.menuPoint,
+      target: detail.target
+    }
+
+  }
+
+  removeConnectorDraft(){
+    this.connectorDraft = null;
+    this.tiledeskConnectors.removeConnectorDraft();
+  }
+
+
+
 
   /**  create Connectors */
   createConnectors(intents){

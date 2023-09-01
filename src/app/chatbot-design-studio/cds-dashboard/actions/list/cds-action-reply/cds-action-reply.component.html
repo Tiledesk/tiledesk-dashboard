@@ -11,6 +11,16 @@
 
     </div>
 
+    <!-- ---------------------------------------------- -->
+    <!-- Add block placeholder -->
+    <!-- ---------------------------------------------- -->
+    <div *ngIf="arrayResponses?.length === 0"
+        class="add--action-placeholder">
+        <div class="add--action-placeholder-text">
+            Add contents to this Reply
+        </div>
+    </div>
+
     <div class="box-dw" [class.previewMode]="previewMode">
 
         <div class="reply-info" *ngIf="typeAction === typeActions.RANDOM_REPLY">{{actionList.RANDOM_REPLY.description}}</div>
