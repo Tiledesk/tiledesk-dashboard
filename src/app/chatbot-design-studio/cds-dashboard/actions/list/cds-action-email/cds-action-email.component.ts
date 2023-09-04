@@ -16,10 +16,6 @@ export class CdsActionEmailComponent implements OnInit, OnChanges {
   @Output() updateAndSaveAction = new EventEmitter();
   
   email_error: boolean = false;
-  actionTo: string = ''
-  actionSubject: string = ''
-  actionBody: string = ''
-
   // isOpenSetAttributesPanel: boolean = false
   // intents = ['uno', 'due', 'tre'];
 
@@ -31,10 +27,7 @@ export class CdsActionEmailComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnInit(): void {
-  console.log("[ACTION-EMAIL] elementSelected: ", this.action)
-    this.actionTo = this.action.to
-    this.actionSubject = this.action.subject
-    this.actionBody = this.action.text
+    console.log("[ACTION-EMAIL] elementSelected: ", this.action)
   }
 
   ngOnChanges() {
@@ -42,7 +35,7 @@ export class CdsActionEmailComponent implements OnInit, OnChanges {
   }
 
 
-  onEditableDivTextChange($event: string, property: string) {
+  onChangeTextarea($event: string, property: string) {
     if($event){
       console.log("[CDS-ACTION-EMAIL] onEditableDivTextChange event", $event)
       console.log("[CDS-ACTION-EMAIL] onEditableDivTextChange property", property)
