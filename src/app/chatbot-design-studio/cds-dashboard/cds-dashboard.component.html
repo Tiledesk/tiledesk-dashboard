@@ -126,8 +126,7 @@
             [isOpenPanel]="isOpenPanelActionDetail" 
             [project_id]="projectID"
             [elementIntentSelected]="elementIntentSelected"
-            (closeAndSavePanelIntentDetail)="onCloseAndSavePanelIntentDetail($event)"
-            (clickedInsidePanelIntentDetail)="onClickedInsidePanelIntentDetail()">
+            (onUpdateIntent)="onSavePanelIntentDetail($event)">
         </cds-panel-action-detail>
 
     </div>

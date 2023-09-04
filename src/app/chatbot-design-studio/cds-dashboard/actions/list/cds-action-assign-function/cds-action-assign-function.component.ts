@@ -1,5 +1,5 @@
 import { ActionAssignFunction } from '../../../../../models/intent-model';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { TYPE_FUNCTION_LIST_FOR_FUNCTIONS } from 'app/chatbot-design-studio/utils';
 
@@ -9,8 +9,10 @@ import { TYPE_FUNCTION_LIST_FOR_FUNCTIONS } from 'app/chatbot-design-studio/util
   styleUrls: ['./cds-action-assign-function.component.scss']
 })
 export class CdsActionAssignFunctionComponent implements OnInit {
+  
   @Input() action: ActionAssignFunction;
-
+  @Output() updateAndSaveAction = new EventEmitter();
+  
   listOfFunctions: Array<{name: string, value: string, icon?:string}> = [];
   openSlectFunction: boolean = true;
 
@@ -35,11 +37,13 @@ export class CdsActionAssignFunctionComponent implements OnInit {
   onSelectedFunction(event: any) {
     // console.log("onSelectedFunction::: ", event);
     this.action.functionName = event.value;
+    this.updateAndSaveAction.emit()
   }
 
   onSelectedAttribute(event: any){
     // console.log("onSelectedAttribute::: ", event);
     this.action.assignTo = event.name;
+    this.updateAndSaveAction.emit()
   }
   
 }

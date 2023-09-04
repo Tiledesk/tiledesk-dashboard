@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { ActionHideMessage } from 'app/models/intent-model';
 
@@ -11,24 +11,21 @@ export class CdsActionHideMessageComponent implements OnInit {
   
   @Input() action: ActionHideMessage;
   @Input() previewMode: boolean = true;
-  text: string;
+  @Output() updateAndSaveAction = new EventEmitter();
+
 
   constructor(
     private logger: LoggerService
   ) { }
 
-  ngOnInit(): void { 
-    this.initialize();
-  }
-
-  private initialize(){
-    this.text = this.action.text;
+  ngOnInit(): void {
   }
 
   onChangeTextArea(text:string) {
     setTimeout(() => {
       // console.log('onChangeTextarea:: ', text);
       this.action.text = text;
+      this.updateAndSaveAction.emit()
     }, 500);
   }
 }

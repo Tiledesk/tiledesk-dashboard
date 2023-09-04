@@ -42,7 +42,8 @@
                         </div>
                         <base-filter *ngIf="i%2 === 0"
                             [expression]="group"
-                            [booleanOperators]="booleanOperators">
+                            [booleanOperators]="booleanOperators"
+                            (onChangeExpression)="onChangeExpression($event)">
                         </base-filter>
                     </div>
     

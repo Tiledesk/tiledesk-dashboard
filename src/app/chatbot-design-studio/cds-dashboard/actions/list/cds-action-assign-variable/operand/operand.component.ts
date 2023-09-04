@@ -65,10 +65,8 @@ export class OperandComponent implements OnInit {
             this.onChangeOperand.emit(this.operand)
         }
         if(text){
-            console.log('textttttttttttt', text)
             this.onChangeOperand.emit(this.operand)
         }
-        // this.onChangeOperand.emit(this.operand)
        
     }   
     onSelectedAttribute(variableSelected: { name: string, value: string }){

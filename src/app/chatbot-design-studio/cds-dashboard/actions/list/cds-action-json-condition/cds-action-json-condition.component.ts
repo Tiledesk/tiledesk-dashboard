@@ -6,6 +6,7 @@ import { AbstractControl, FormBuilder, FormGroup, Validators, FormArray } from '
 import { SatPopover } from '@ncstate/sat-popover';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { IntentService } from 'app/chatbot-design-studio/services/intent.service';
+import { ConnectorService } from 'app/chatbot-design-studio/services/connector.service';
 
 @Component({
   selector: 'cds-action-json-condition',
@@ -20,6 +21,7 @@ export class CdsActionJsonConditionComponent implements OnInit {
   @Input() action: ActionJsonCondition;
   @Input() previewMode: boolean = true;
   @Output() updateAndSaveAction = new EventEmitter();
+  @Output() onCreateUpdateConnector = new EventEmitter<{fromId: string, toId: string}>()
   
   actionJsonConditionFormGroup: FormGroup
   trueIntentAttributes: string = "";
@@ -39,7 +41,7 @@ export class CdsActionJsonConditionComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private logger: LoggerService,
-    private intentService: IntentService,
+    private intentService: IntentService
     ) { }
 
   ngOnInit(): void {
@@ -176,6 +178,7 @@ export class CdsActionJsonConditionComponent implements OnInit {
     // let groups = this.actionJsonConditionFormGroup.get('groups') as FormArray
     // groups.push(this.createOperatorGroup(), {emitEvent: false})
     // groups.push(this.createExpressionGroup(), {emitEvent: false})
+    this.updateAndSaveAction.emit();
   }
 
   onDeleteGroup(index: number, last: boolean){
@@ -192,33 +195,52 @@ export class CdsActionJsonConditionComponent implements OnInit {
       // let groups = this.actionJsonConditionFormGroup.get('groups') as FormArray
       // groups.push(this.createExpressionGroup(), {emitEvent: false})
     }
+    this.updateAndSaveAction.emit();
   }
 
   onChangeOperator(event, index: number){
     (this.action.groups[index] as Operator).operator= event['type']
     this.logger.log('onChangeOperator actionsss', this.action, this.actionJsonConditionFormGroup)
+    this.updateAndSaveAction.emit();
   }
 
-  onChangeForm(event:{name: string, value: string}, type){
-    if(event.value){
+  onChangeForm(event:{name: string, value: string}, type : 'trueIntent' | 'falseIntent'){
+    if(event){
       this.action[type]=event.value
-    }else {
-      this.action[type] = event
     }
+
+    switch(type){
+      case 'trueIntent':
+        this.onCreateUpdateConnector.emit({ fromId: this.idConnectorTrue, toId: this.action.trueIntent})
+        break;
+      case 'falseIntent':
+        this.onCreateUpdateConnector.emit({fromId: this.idConnectorFalse, toId: this.action.falseIntent})
+        break;
+    }
+    this.updateAndSaveAction.emit();
   }
+
+  onChangeExpression(event){
+    this.updateAndSaveAction.emit();
+  }
+
   onChangeAttributesTrue(attributes:any){
     this.action.trueIntentAttributes = attributes;
+    this.updateAndSaveAction.emit();
   }
 
   onChangeAttributesFalse(attributes:any){
     this.action.falseIntentAttributes = attributes;
+    this.updateAndSaveAction.emit();
   }
 
   onStopConditionMeet() {
     try {
       this.action.stopOnConditionMet = !this.action.stopOnConditionMet;
+      this.updateAndSaveAction.emit();
     } catch (error) {
       this.logger.log("Error: ", error);
     }
   }
+
 }
