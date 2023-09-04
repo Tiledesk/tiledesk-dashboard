@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ActionWebRequest } from 'app/models/intent-model';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { TYPE_METHOD_ATTRIBUTE, TYPE_METHOD_REQUEST, TEXT_CHARS_LIMIT } from '../../../../utils';
@@ -12,7 +12,9 @@ export class CdsActionWebRequestComponent implements OnInit {
 
   @Input() action: ActionWebRequest;
   @Input() previewMode: boolean = true;
-  methods: Array<string>;
+  @Output() updateAndSaveAction = new EventEmitter();
+  
+  methods: Array<{label: string, value: string}>;
   pattern = "^[a-zA-Z_]*[a-zA-Z_]+[a-zA-Z0-9_]*$";
 
   limitCharsText = TEXT_CHARS_LIMIT;
@@ -49,7 +51,9 @@ export class CdsActionWebRequestComponent implements OnInit {
   
   // CUSTOM FUNCTIONS //
   private initialize(){
-    this.methods = Object.values(TYPE_METHOD_REQUEST);
+    this.methods = Object.keys(TYPE_METHOD_REQUEST).map((key, index) => {
+      return { label: key, value: key }
+    })
     this.jsonHeader = this.action.headersString;
     this.jsonIsValid = this.isValidJson(this.action.jsonBody);
     if(this.jsonIsValid){
@@ -61,6 +65,7 @@ export class CdsActionWebRequestComponent implements OnInit {
 
   private setActionWebRequest(){
     this.action.jsonBody = this.jsonBody;
+    this.updateAndSaveAction.emit()
   }
 
   private formatJSON(input, indent) {
@@ -90,8 +95,9 @@ export class CdsActionWebRequestComponent implements OnInit {
 
 
   // EVENT FUNCTIONS //
-  onChangeMethodButton(e){
-    this.action.method = e;
+  onChangeMethodButton(e: {label: string, value: string}){
+    this.action.method = e.value;
+    this.updateAndSaveAction.emit()
   }
 
   onChangeTextarea(e, type: 'url' | 'jsonBody'){
@@ -102,13 +108,16 @@ export class CdsActionWebRequestComponent implements OnInit {
         this.setActionWebRequest();
         setTimeout(() => {
           this.jsonIsValid = this.isValidJson(this.jsonBody);
+          this.updateAndSaveAction.emit()
         }, 500);
         break;
       }
       case 'url' : {
         this.action.url = e
+        this.updateAndSaveAction.emit()
       }
     }
+
   }
 
   onChangeParamsButton(){
@@ -136,22 +145,26 @@ export class CdsActionWebRequestComponent implements OnInit {
   onChangeAttributes(attributes:any){
     // console.log('onChangeAttributes');
     this.action.headersString = attributes;
+    this.updateAndSaveAction.emit()
     // this.jsonHeader = attributes;
   }
 
   onClearSelectedAttribute(){
     this.action.assignTo = '';
     this.hasSelectedVariable = false;
+    this.updateAndSaveAction.emit()
   }
   
   onSelectedAttribute(variableSelected: {name: string, value: string}, step: number){
     this.hasSelectedVariable = true;
     this.action.assignTo = variableSelected.value;
+    this.updateAndSaveAction.emit()
   }
 
 
   onChangeAttributesResponse(attributes:{[key: string]: string }){
     this.action.assignments = attributes ;
+    this.updateAndSaveAction.emit()
   }
 
 }

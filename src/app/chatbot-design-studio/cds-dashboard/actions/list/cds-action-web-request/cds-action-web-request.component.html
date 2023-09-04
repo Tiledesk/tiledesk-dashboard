@@ -22,18 +22,13 @@
 <div *ngIf="!previewMode" class="content" #scrollMe id="scrollMe" >
 
     <div class="input-group cds-input-group">
-        <span class="input-group-addon">
-            <ng-select 
-                class = "form-control-select" 
-                [items] = "methods" 
-                bindLabel="label"
-                bindValue="value"
-                [searchable] = false
-                [clearable] = false
-                [(ngModel)] = "action.method"
-                (change) = "onChangeMethodButton($event)">
-            </ng-select>
-        </span>
+        <cds-select id="method"
+            [items]="methods"
+            [bindLabelSelect]="'label'"
+            [bindValueSelect]="'value'"
+            [itemSelected]="action?.method"
+            (onSelected)="onChangeMethodButton($event)">
+        </cds-select>
         <cds-textarea id="url"
             class="text-editable-div"
             [text]="action.url" 
@@ -93,7 +88,6 @@
     <div class="text-editor-wrapper">
         <div class="field-box">
             <label class="title-label">Assign to:</label>
-
             <cds-attributes
                 class="cds-attributes"
                 [attributes]="assignments"
