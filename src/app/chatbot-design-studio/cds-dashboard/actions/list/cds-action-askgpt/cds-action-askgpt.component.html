@@ -32,14 +32,8 @@
 
     <div class="textarea-editor-wrapper">
         <label class="title-label">Question</label>
-        <cds-textarea id="question"
-            [textLimitBtn]="false" 
-            [emojiPikerBtn]="false" 
-            [setAttributeBtn]="true" 
-            [minRow]="2"
-            [maxRow]="4" 
-            [text]="question" 
-            [placeholder]="'Question to submit'"
+        <cds-textarea id="question" [textLimitBtn]="false" [emojiPikerBtn]="false" [setAttributeBtn]="true" [minRow]="2"
+            [maxRow]="4" [text]="question" [placeholder]="'Question to submit'"
             (changeTextarea)="changeTextarea($event, 'question')">
         </cds-textarea>
     </div>
@@ -64,7 +58,8 @@
     <div class="select-box">
         <div style="display: flex; flex-direction: row; align-items: center; justify-content: space-between;">
             <label class="title-label">Knowledge Base ID</label>
-            <div *ngIf="status_code === 0 && !spinner" class="play-button" style="color: #cbcbcb;" (click)="startKbIndexing()">
+            <div *ngIf="status_code === 0 && !spinner" class="play-button" style="color: #cbcbcb;"
+                (click)="startKbIndexing()">
                 <span class="material-icons custom-icon play-icon">play_arrow</span>
                 <span class="button-text">Start indexing</span>
             </div>
@@ -80,24 +75,17 @@
                 <span class="material-icons-outlined custom-icon animated-icon">sync</span>
             </div>
         </div>
-        <cds-select id="text-condition" 
-            [items]="kbs_list"
-            [itemSelected]="kb_selected_id"
-            [bindLabelSelect]="'name'"
-            [bindValueSelect]="'_id'" 
-            [optionalBindDescription]="'url'"
-            [deleteButton]="true"
-            [footerButton]="true"
-            [footerButtonDisabled]="buttonDisabled"
-            [footerButtonIcon]="buttonIcon"
-            [footerButtonText]="buttonText"
-            (onSelected)="onChangeSelect($event)"
-            (onDeleted)="onDeleteSelect($event)">
+        <cds-select id="text-condition" [items]="kbs_list" [itemSelected]="kb_selected_id" [bindLabelSelect]="'name'"
+            [bindValueSelect]="'_id'" [deleteButton]="true" [footerButton]="true"
+            [footerButtonDisabled]="buttonDisabled" [footerButtonIcon]="buttonIcon" [footerButtonText]="buttonText"
+            (onSelected)="onChangeSelect($event)" (onDeleted)="onDeleteSelect($event)">
         </cds-select>
+        <!-- [optionalBindDescription]="'url'" -->
         <span *ngIf="indexing_hint && !spinner" class="indexing-hint">*{{indexing_hint}}</span>
     </div>
 
-    <div class="text-editor-wrapper">
+    <!-- // HIDED: included in Knowledge base -->
+    <!-- <div class="text-editor-wrapper">
         <div class="field-box">
             <label class="title-label">GPT Key</label>
             <div class="value-wrp">
@@ -112,7 +100,7 @@
                 </cds-textarea>
             </div>
         </div>
-    </div>
+    </div> -->
 
     <hr class="custom-divider">
 
@@ -120,14 +108,8 @@
         <div class="field-box">
             <label class="title-label">GPT Reply</label>
             <div class="value-wrp">
-                <cds-textarea id="assignTo" 
-                    [textLimitBtn]="false" 
-                    [emojiPikerBtn]="false" 
-                    [setAttributeBtn]="true"
-                    [minRow]="1" 
-                    [maxRow]="1" 
-                    [readonly]="true" 
-                    [text]="action.assignReplyTo"
+                <cds-textarea id="assignTo" [textLimitBtn]="false" [emojiPikerBtn]="false" [setAttributeBtn]="true"
+                    [minRow]="1" [maxRow]="1" [readonly]="true" [text]="action.assignReplyTo"
                     (selectedAttribute)="onSelectedAttribute($event, 'assignReplyTo')"
                     (clearSelectedAttribute)="onSelectedAttribute($event, 'assignReplyTo')">
                 </cds-textarea>
@@ -139,14 +121,8 @@
         <div class="field-box">
             <label class="title-label">GPT Source</label>
             <div class="value-wrp">
-                <cds-textarea id="assignTo" 
-                    [textLimitBtn]="false" 
-                    [emojiPikerBtn]="false" 
-                    [setAttributeBtn]="true"
-                    [minRow]="1" 
-                    [maxRow]="1" 
-                    [readonly]="true" 
-                    [text]="action.assignSourceTo"
+                <cds-textarea id="assignTo" [textLimitBtn]="false" [emojiPikerBtn]="false" [setAttributeBtn]="true"
+                    [minRow]="1" [maxRow]="1" [readonly]="true" [text]="action.assignSourceTo"
                     (selectedAttribute)="onSelectedAttribute($event, 'assignSourceTo')"
                     (clearSelectedAttribute)="onSelectedAttribute($event, 'assignSourceTo')">
                 </cds-textarea>
@@ -158,19 +134,107 @@
         <div class="field-box">
             <label class="title-label">GPT Success</label>
             <div class="value-wrp">
-                <cds-textarea id="assignTo" 
-                    [textLimitBtn]="false" 
-                    [emojiPikerBtn]="false" 
-                    [setAttributeBtn]="true"
-                    [minRow]="1" 
-                    [maxRow]="1" 
-                    [readonly]="true" 
-                    [text]="action.assignSuccessTo"
+                <cds-textarea id="assignTo" [textLimitBtn]="false" [emojiPikerBtn]="false" [setAttributeBtn]="true"
+                    [minRow]="1" [maxRow]="1" [readonly]="true" [text]="action.assignSuccessTo"
                     (selectedAttribute)="onSelectedAttribute($event, 'assignSuccessTo')"
                     (clearSelectedAttribute)="onSelectedAttribute($event, 'assignSuccessTo')">
                 </cds-textarea>
             </div>
         </div>
     </div>
+
+    <hr class="custom-divider">
+
+    <div style="margin-bottom: 20px;">
+
+        <div class="condition-container">
+            <span class="icon">
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 20 20">
+                    <g fill="#ffffff" fill-rule="evenodd">
+                        <use xlink:href="#if-v2_svg__a" fill="currentColor"></use>
+                        <path id="if-v2_svg__a"
+                            d="M2.066 9.259c.47.602 1.185 1.32 2.27 2.406 1.085 1.084 1.803 1.8 2.406 2.27.574.449.882.544 1.116.56.095.007.19.007.285 0 .233-.016.542-.111 1.116-.56.602-.47 1.32-1.186 2.406-2.27 1.084-1.085 1.8-1.804 2.27-2.406.449-.574.544-.883.56-1.116.007-.095.007-.19 0-.285-.016-.234-.111-.542-.56-1.116-.47-.603-1.186-1.321-2.27-2.406-1.085-1.085-1.804-1.8-2.406-2.27-.574-.449-.883-.544-1.116-.56a2 2 0 0 0-.285 0c-.234.016-.542.111-1.116.56-.603.47-1.321 1.185-2.406 2.27-1.085 1.085-1.8 1.803-2.27 2.406-.449.574-.544.882-.56 1.116a2 2 0 0 0 0 .285c.016.233.111.542.56 1.116ZM7.75.009c-1.302.093-2.36 1.15-4.476 3.266C1.16 5.391.102 6.45.01 7.751a3.5 3.5 0 0 0 0 .499c.093 1.302 1.15 2.36 3.266 4.475 2.116 2.116 3.174 3.174 4.476 3.267.166.011.333.011.499 0 1.302-.093 2.36-1.151 4.475-3.267 2.116-2.115 3.174-3.173 3.267-4.475a3.52 3.52 0 0 0 0-.5c-.093-1.301-1.151-2.36-3.267-4.475C10.61 1.16 9.552.102 8.25.01a3.5 3.5 0 0 0-.5 0ZM5 5.75a.75.75 0 0 1 1.5 0v4.5a.75.75 0 0 1-1.5 0v-4.5ZM10.75 5H10c-.944 0-1.415 0-1.708.293C8 5.586 8 6.057 8 7v3.25a.75.75 0 0 0 1.5 0V9h.75a.75.75 0 0 0 0-1.5H9.5c0-.471 0-.707.147-.853.146-.147.382-.147.853-.147h.25a.75.75 0 0 0 0-1.5Z">
+                        </path>
+                    </g>
+                </svg>
+            </span>
+            <span class="condition-text">Success</span>
+        </div>
+
+        <div class="select-box" id="intentSelect">
+            <cds-select id="text-condition" [items]="listOfIntents" [bindLabelSelect]="'name'"
+                [bindValueSelect]="'value'" [itemSelected]="action?.falseIntent" [placeholder]="'Select a block'"
+                [clearable]="true" (onSelected)="onChangeForm($event, 'trueIntent')">
+            </cds-select>
+        </div>
+        <cds-attributes class="cds-attributes" [attributes]="falseIntentAttributes"
+            (changeAttributes)="onChangeAttributesTrue($event)">
+        </cds-attributes>
+
+    </div>
+    <div>
+
+        <div class="condition-container">
+            <span class="condition-text">Else</span>
+        </div>
+
+        <div class="select-box" id="intentSelect">
+            <cds-select id="text-condition" [items]="listOfIntents" [bindLabelSelect]="'name'"
+                [bindValueSelect]="'value'" [itemSelected]="action?.falseIntent" [placeholder]="'Select a block'"
+                [clearable]="true" (onSelected)="onChangeForm($event, 'falseIntent')">
+            </cds-select>
+        </div>
+        <cds-attributes class="cds-attributes" [attributes]="falseIntentAttributes"
+            (changeAttributes)="onChangeAttributesFalse($event)">
+        </cds-attributes>
+
+    </div>
+
+
+    <!-- <div class="text-editor-wrapper">
+        <div class="field-box">
+            <label class="title-label">if <b style="color: green">TRUE</b> go to:</label>
+            <ul>
+                <li style="background-color: green;"></li>
+                <cds-select id="text-condition"
+                    [items]="listOfIntents"
+                    [bindLabelSelect]="'name'"
+                    [bindValueSelect]="'value'"
+                    [itemSelected]="action?.trueIntent"
+                    [placeholder]="'Select a block'"
+                    [clearable]="true"
+                    (onSelected)="onChangeForm($event, 'trueIntent')">
+                </cds-select>
+            </ul> 
+        </div>
+        <cds-attributes
+            class="cds-attributes"
+            [attributes]="trueIntentAttributes"
+            (changeAttributes)="onChangeAttributesTrue($event)">
+        </cds-attributes>
+    </div>
+
+    <div class="text-editor-wrapper">
+        <div class="field-box">
+            <label class="title-label">if <b style="color: red">FALSE</b> go to:</label>
+            <ul>
+                <li style="background-color: red;"></li>
+                <cds-select id="text-condition"
+                    [items]="listOfIntents"
+                    [bindLabelSelect]="'name'"
+                    [bindValueSelect]="'value'"
+                    [itemSelected]="action?.falseIntent"
+                    [placeholder]="'Select a block'"
+                    [clearable]="true"
+                    (onSelected)="onChangeForm($event, 'falseIntent')">
+                </cds-select>
+            </ul>
+        </div>
+        <cds-attributes
+            class="cds-attributes"
+            [attributes]="falseIntentAttributes"
+            (changeAttributes)="onChangeAttributesFalse($event)">
+        </cds-attributes>
+    </div> -->
 
 </div>

@@ -8,10 +8,10 @@
 }
 
 .custom-divider {
-     margin-top: 40x;
-     margin-bottom: 20px;
-     border: 0;
-     border-top: 1px solid #eeeeee1c;
+    margin-top: 40x;
+    margin-bottom: 20px;
+    border: 0;
+    border-top: 1px solid #eeeeee1c;
 }
 
 .text-editor-wrapper {
@@ -21,7 +21,7 @@
     //height: auto;
     margin: 0;
     padding: 0;
-    margin-bottom: 30px;    
+    margin-bottom: 30px;
 }
 
 .field-box {
@@ -42,9 +42,14 @@
     margin-bottom: 24px;
 }
 
-div.value-wrp{
+.select-box#intentSelect {
+    margin-bottom: 10px;
+}
+
+div.value-wrp {
     position: relative;
-    .flex{
+
+    .flex {
         position: absolute;
         top: 0px;
         bottom: 0px;
@@ -53,7 +58,7 @@ div.value-wrp{
         align-items: center;
         justify-content: center;
 
-        .close{
+        .close {
             // height: 16px;
             width: 17px;
             top: -7px;
@@ -67,14 +72,15 @@ div.value-wrp{
             justify-content: center;
             align-items: center;
             opacity: 1;
-            &:hover{
+
+            &:hover {
                 background: #ecb606;
                 color: white;
             }
         }
     }
 
-    div.tag{
+    div.tag {
         position: absolute;
         top: 0;
         bottom: 0;
@@ -89,10 +95,23 @@ div.value-wrp{
     }
 }
 
-cds-textarea#assignTo ::ng-deep{
-    display: flex;
+::ng-deep cds-textarea#gptquestion {
     textarea {
         border: 1px solid rgb(118, 118, 118) !important;
+        resize: none !important; 
+        padding: 8px 20px !important;
+        // height: 25px !important;
+        // min-height: 25px !important;
+    }
+}
+
+::ng-deep cds-textarea#assignTo {
+    display: flex;
+
+    textarea {
+        border: 1px solid rgb(118, 118, 118) !important;
+        resize: none !important;
+        padding: 8px 20px !important;
         resize: none !important; 
         // padding: 8px 20px !important;
         // height: 25px !important;
@@ -102,10 +121,23 @@ cds-textarea#assignTo ::ng-deep{
 
  cds-textarea#question ::ng-deep{
     display: flex;
+
     textarea {
         border: 1px solid rgb(118, 118, 118) !important;
-        resize: none !important; 
-        // padding: 8px 20px !important;
+        resize: none !important;
+        padding: 8px 20px !important;
+        // height: 25px !important;
+        // min-height: 25px !important;
+    }
+}
+
+::ng-deep cds-textarea#question {
+    display: flex;
+
+    textarea {
+        border: 1px solid rgb(118, 118, 118) !important;
+        resize: none !important;
+        padding: 8px 20px !important;
         // min-height: 50px !important;
         // max-height: 130px !important;
     }
@@ -128,6 +160,7 @@ cds-textarea#assignTo ::ng-deep{
     margin: 0;
     padding: 0;
     margin-bottom: 24px;
+
     .text-editor {
         position: relative;
         margin: 0;
@@ -139,11 +172,13 @@ cds-textarea#assignTo ::ng-deep{
             left: 0px;
             opacity: 0;
             transition: opacity 0.3s ease-in-out;
+
             .control-button {
                 cursor: pointer;
                 color: $color-bck-gray-hex;
                 transition: color 0.3s;
                 height: 20px;
+
                 &.delete {
                     height: 24px;
                     width: 24px;
@@ -152,6 +187,7 @@ cds-textarea#assignTo ::ng-deep{
                     display: flex;
                     align-items: center;
                     justify-content: center;
+
                     em {
                         font-size: 1.15em;
                         color: $color-withe-hex;
@@ -159,10 +195,13 @@ cds-textarea#assignTo ::ng-deep{
                     }
                 }
             }
+
             .control-button:hover {
                 color: $color-withe-hex;
+
                 &.delete {
                     box-shadow: 0 2px 6px 0 rgb(255 255 255 / 15%);
+
                     em {
                         color: $color-red-hex;
                     }
@@ -171,6 +210,7 @@ cds-textarea#assignTo ::ng-deep{
         }
 
         .box-textarea {
+
             // width: calc(100% - 40px);
             // margin-left: 20px;
             input {
@@ -225,6 +265,7 @@ cds-textarea#assignTo ::ng-deep{
         position: relative;
         margin: -20px 50px 0px 0px;
         float: right;
+
         .num-chars {
             background: $color-light-gray-hex;
             padding: 0px 8px;
@@ -232,13 +273,16 @@ cds-textarea#assignTo ::ng-deep{
             font-size: 0.8em;
             color: $color-text-box-hex;
             float: right;
+
             &.error {
                 background: $color-orange-hex;
             }
         }
+
         .text-editor-insert-attribute {
             float: right;
         }
+
         .moji-picker {
             float: right;
         }
@@ -254,6 +298,7 @@ cds-textarea#assignTo ::ng-deep{
     margin: 0;
     padding: 0;
     margin-bottom: 24px;
+
     .text-editor {
         position: relative;
         margin: 0;
@@ -265,11 +310,13 @@ cds-textarea#assignTo ::ng-deep{
             left: 0px;
             opacity: 0;
             transition: opacity 0.3s ease-in-out;
+
             .control-button {
                 cursor: pointer;
                 color: $color-bck-gray-hex;
                 transition: color 0.3s;
                 height: 20px;
+
                 &.delete {
                     height: 24px;
                     width: 24px;
@@ -278,6 +325,7 @@ cds-textarea#assignTo ::ng-deep{
                     display: flex;
                     align-items: center;
                     justify-content: center;
+
                     em {
                         font-size: 1.15em;
                         color: $color-withe-hex;
@@ -285,10 +333,13 @@ cds-textarea#assignTo ::ng-deep{
                     }
                 }
             }
+
             .control-button:hover {
                 color: $color-withe-hex;
+
                 &.delete {
                     box-shadow: 0 2px 6px 0 rgb(255 255 255 / 15%);
+
                     em {
                         color: $color-red-hex;
                     }
@@ -297,6 +348,7 @@ cds-textarea#assignTo ::ng-deep{
         }
 
         .box-textarea {
+
             // width: calc(100% - 40px);
             // margin-left: 20px;
             input {
@@ -351,6 +403,7 @@ cds-textarea#assignTo ::ng-deep{
         position: relative;
         margin: -20px 50px 0px 0px;
         float: right;
+
         .num-chars {
             background: $color-light-gray-hex;
             padding: 0px 8px;
@@ -358,13 +411,16 @@ cds-textarea#assignTo ::ng-deep{
             font-size: 0.8em;
             color: $color-text-box-hex;
             float: right;
+
             &.error {
                 background: $color-orange-hex;
             }
         }
+
         .text-editor-insert-attribute {
             float: right;
         }
+
         .moji-picker {
             float: right;
         }
@@ -383,8 +439,8 @@ cds-textarea#assignTo ::ng-deep{
     border-radius: 10px;
 }
 
-#cds-addkb-btn:hover { 
-    opacity: .8!important;
+#cds-addkb-btn:hover {
+    opacity: .8 !important;
 }
 
 .custom-icon {
@@ -397,8 +453,8 @@ cds-textarea#assignTo ::ng-deep{
 }
 
 @keyframes rotate {
-    to { 
-        transform: rotate(360deg); 
+    to {
+        transform: rotate(360deg);
     }
 }
 
@@ -411,9 +467,11 @@ cds-textarea#assignTo ::ng-deep{
 
 .play-button:hover {
     cursor: pointer;
+
     .button-text {
         text-decoration: underline;
     }
+
     .play-icon {
         font-size: 17px;
     }
@@ -430,4 +488,37 @@ cds-textarea#assignTo ::ng-deep{
     color: #ff4e4e;
     font-size: 14px;
     filter: drop-shadow(2px 2px 6px black);
+}
+
+span.icon {
+    width: 26px;
+    height: 26px;
+    display: flex;
+    align-self: flex-start;
+    margin-top: 6px;
+    margin-right: 6px;
+}
+
+.variable-container {
+    display: flex;
+    height: 35px;
+    flex-direction: row;
+    align-items: center;
+    border: solid 1px black;
+    background-color: white;
+    padding: 0px 20px;
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+.condition-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 4px;
+}
+
+.condition-text {
+    font-size: 14px;
+    font-weight: 600;
+    color: white;
 }

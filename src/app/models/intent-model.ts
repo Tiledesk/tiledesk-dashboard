@@ -306,6 +306,10 @@ export class ActionAskGPT extends Action {
     assignReplyTo: string;
     assignSourceTo: string;
     assignSuccessTo: string;
+    trueIntent?: string;
+    falseIntent?: string;
+    trueIntentAttributes?: string;
+    falseIntentAttributes?: string;
     constructor() {
         super();
         this._tdActionType = TYPE_ACTION.ASKGPT

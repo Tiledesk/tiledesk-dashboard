@@ -7,6 +7,7 @@ import { AddkbDialogComponent } from './addkb-dialog/addkb-dialog.component';
 import { GptService } from 'app/chatbot-design-studio/services/gpt.service';
 import { DialogYesNoComponent } from 'app/chatbot-design-studio/cds-base-element/dialog-yes-no/dialog-yes-no.component';
 import { OpenaikbsService } from 'app/services/openaikbs.service';
+import { IntentService } from 'app/chatbot-design-studio/services/intent.service';
 
 
 @Component({
@@ -20,6 +21,7 @@ export class CdsActionAskgptComponent implements OnInit {
   @Input() previewMode: boolean = true;
   @Input() project_id: string;
   @Output() updateAndSaveAction = new EventEmitter;
+  listOfIntents: Array<{name: string, value: string, icon?:string}>;
 
   kbs_list = [];
   kb_selected_id: null;
@@ -42,7 +44,8 @@ export class CdsActionAskgptComponent implements OnInit {
     private logger: LoggerService,
     private openaikbService: OpenaikbsService,
     public dialog: MatDialog,
-    private gptService: GptService
+    private gptService: GptService,
+    private intentService: IntentService
   ) { }
 
   ngOnInit(): void {
@@ -53,6 +56,11 @@ export class CdsActionAskgptComponent implements OnInit {
 
     this.getAllOpenaiKbs();
     this.initializeAttributes();
+    this.initializeConnector();
+  }
+
+  initializeConnector() {
+    this.listOfIntents = this.intentService.getListOfIntents()
   }
 
   getAllOpenaiKbs() {
@@ -116,16 +124,23 @@ export class CdsActionAskgptComponent implements OnInit {
   }
 
   onChangeSelect(event) {
+    console.log("kbid change event: ", event);
     if (event.clickEvent === 'footer') {
       this.openAddKbDialog();
     } else {
       this.action.kbid = event.url;
+      this.action.gptkey = event.gptkey;
       this.kb_selected_id = this.kbs_list.find(k => k.url === this.action.kbid)._id;
       this.checkKbStatus(this.action.kbid);
       this.logger.log("[ACTION-ASKGPT] updated action", this.action);
+      console.log("[ACTION-ASKGPT] updated action", this.action);
     }
   }
 
+  onChangeForm(event, target) {
+    console.log("onChangeForm event: ", event)
+    console.log("onChangeForm target: ", target)
+  }
   onDeleteSelect(id) {
     this.openDeleteDialog(id);
   }
