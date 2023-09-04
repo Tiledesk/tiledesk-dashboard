@@ -34,6 +34,7 @@ export class CdsActionWaitComponent implements OnInit, OnChanges {
     const msvalue = event.value * 1000
 
     this.action.millis = msvalue
+    this.updateAndSaveAction.emit()
     // this.delayTime  = msvalue
     // console.log('[ACTION-WAIT] formatLabel msvalue ', msvalue)
   }
