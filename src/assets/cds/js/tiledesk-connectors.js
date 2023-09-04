@@ -4,14 +4,27 @@ export class TiledeskConnectors {
       //this.connectors = [];
       this.svgContainerId = "tds_svgContainer";
       this.svgConnectorsId = "tds_svgConnectors";
+      this.ids = {
+        "arrow": "tds_arrow",
+        "arrow_draft": "tds_arrow_draft",
+        "arrow_over": "tds_arrow_over",
+        "arrow_selected": "tds_arrow_selected"
+      }
       this.classes = {
         "connector_selected": "tds_connector_selected",
         "input_block": "tds_input_block",
         "connectable": "tds_connectable",
         "connector": "tds_connector",
         "connector_over": "tds_connector_over",
-        "path": "tds_path"
+        "path": "tds_path",
+        "connector_draft": "tds_connector_draft",
       }
+      this.colors = {
+        "black": "black",
+        "gray": "gray",
+        "blu": "blu"
+      }
+
       if (classes && classes["connector_selected"]) {
         this.classes["connector_selected"] = classes["connector_selected"];
       }
@@ -49,6 +62,13 @@ export class TiledeskConnectors {
       this.controlFront = { x: 0, y: 0 };
       this.selectedConnector = null;
       // this.connectorSelectedId = null;
+
+      this.markers = [
+        { id: this.ids['arrow'], fill: this.colors['black'], class: this.classes['tds_connector'] },
+        { id: this.ids['arrow_draft'], fill:  this.colors['gray'], class: this.classes['tds_connector_draft'] },
+        { id: this.ids['arrow_over'], fill:  this.colors['gray'], class: this.classes['tds_connector_over'] },
+        { id: this.ids['arrow_selected'], fill:  this.colors['blue'], class: this.classes['tds_connector_selected'] }
+      ]
 
       this.#createSvgContainer();
       this.#createConnectors();
@@ -389,6 +409,7 @@ export class TiledeskConnectors {
 
     /** createSvgContainer */
     #createSvgContainer(){
+
       const drawer = document.getElementById(this.drawerId);
       if(!drawer)return;
       let svgContainer = document.createElementNS("http://www.w3.org/2000/svg", "svg");
@@ -398,14 +419,43 @@ export class TiledeskConnectors {
       svgContainer.style.top = "0px";
       svgContainer.style.position = "absolute";
       svgContainer.style.zIndex = "inherit";
-      var gElement = document.createElementNS("http://www.w3.org/2000/svg", "g");
+    
+      // Create the `<defs>` element and attributes
+      const defsElement = document.createElementNS("http://www.w3.org/2000/svg", "defs");
+      this.markers.forEach(element => {
+        // Create `<marker>` element and attributes
+        const markerElement = document.createElementNS("http://www.w3.org/2000/svg", "marker");
+        markerElement.setAttribute("id", element.id);
+        markerElement.setAttribute("markerWidth", "10");
+        markerElement.setAttribute("markerHeight", "20");
+        markerElement.setAttribute("refX", "10");
+        markerElement.setAttribute("refY", "10");
+        markerElement.setAttribute("markerUnits", "userSpaceOnUse");
+        markerElement.setAttribute("orient", "auto");
+        // Create `<polygon>` element and attributes
+        const polygonElement = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+        polygonElement.setAttribute("fill", element.fill);
+        polygonElement.setAttribute("class", element.class);
+        polygonElement.setAttribute("points", "10 6, 10 14, 2 10");
+        // Add the `<polygon>` element as a child of `<marker>`
+        markerElement.appendChild(polygonElement);
+        // Add the `<marker>` element as a child of `<defs>`
+        defsElement.appendChild(markerElement);
+      });
+      // Add the `<defs>` come figlio di <svg>
+      svgContainer.appendChild(defsElement);
+
+      // Create `<g>` element and attributes
+      const gElement = document.createElementNS("http://www.w3.org/2000/svg", "g");
       gElement.id = this.svgConnectorsId;
       gElement.setAttribute("fill", "white");
       gElement.setAttribute("stroke", "black");
       gElement.setAttribute("stroke-width", "2");
       svgContainer.appendChild(gElement);
-      
+
+      // Add the `<g>` come figlio di <svg>
       drawer.appendChild(svgContainer);
+
       this.svgContainer = document.getElementById(this.svgConnectorsId);
     }
 
@@ -555,7 +605,8 @@ export class TiledeskConnectors {
       this.controlFront.y = this.drawingFront.y;
       this.controlBack.y = this.drawingBack.y;
     }
-   
+
+
     /** drawConnectorDraft */
     #drawConnectorDraft() {
       let connector = document.getElementById("connectorDraft");
@@ -565,80 +616,160 @@ export class TiledeskConnectors {
         connector.setAttributeNS(null, "id", "connectorDraft");
         this.svgContainer.appendChild(connector);
       }
-      let d = "M" + this.drawingFront.x + " " + this.drawingFront.y + " " + "C " + this.controlFront.x + " " + this.controlFront.y + " " + this.controlBack.x + " " + this.controlBack.y + " " + this.drawingBack.x + " " + this.drawingBack.y;
+      let controlFront = { x: 0, y: 0 };
+      let controlBack = { x: 0, y: 0 };
+      controlFront.x = this.drawingFront.x - 100;
+      controlFront.y = this.drawingFront.y;
+      controlBack.x = this.drawingBack.x + 100;
+      controlBack.y = this.drawingBack.y;
+      let d = "M" + (this.drawingFront.x - 10) + " " + this.drawingFront.y + " " + "C " + controlFront.x + " " + controlFront.y + " " + controlBack.x + " " + controlBack.y + " " + this.drawingBack.x + " " + this.drawingBack.y;
       connector.setAttributeNS(null, "d", d);
+      connector.setAttributeNS(null, "marker-start", "url(#"+this.ids['arrow_draft']+")");
       connector.setAttributeNS(null, "class", this.classes["path"]);
-      
     }
+   
+    /** drawConnectorDraft */
+    // #drawConnectorDraft_OLD() {
+    //   let connector = document.getElementById("connectorDraft");
+    //   if (!connector) {
+    //     connector = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    //     connector.setAttributeNS(null, "fill", "transparent");
+    //     connector.setAttributeNS(null, "id", "connectorDraft");
+    //     this.svgContainer.appendChild(connector);
+    //   }
+    //   let d = "M" + this.drawingFront.x + " " + this.drawingFront.y + " " + "C " + this.controlFront.x + " " + this.controlFront.y + " " + this.controlBack.x + " " + this.controlBack.y + " " + this.drawingBack.x + " " + this.drawingBack.y;
+    //   connector.setAttributeNS(null, "d", d);
+    //   connector.setAttributeNS(null, "class", this.classes["path"]);
+    // }
   
-    /** Creates or modify a connector in HTML */
+
+
+    /** 
+     * Creates or modify a connector in HTML
+     */
     #drawConnector(id, backPoint, frontPoint) {
-      // console.log(id, backPoint, frontPoint);
-      const that = this;
       let connector = document.getElementById(id);
       if (!connector) {
         connector = document.createElementNS("http://www.w3.org/2000/svg", "path");
         connector.setAttributeNS(null, "fill", "transparent");
         connector.setAttributeNS(null, "id", id);
-        connector.setAttributeNS(null, "class", this.classes["connector"]);
+        connector.setAttributeNS(null, "class", "connector");
         connector.setAttributeNS(null, "pointer-events", "stroke");
         connector.addEventListener('mouseover', (e) => {
-          // console.log("mouseover e", e.currentTarget);
-          if (that.selectedConnector !== null) { // jump highlighting current selection
-            if (that.selectedConnector.id !== e.currentTarget.id) {
-              e.currentTarget.setAttributeNS(null, "class", that.classes["connector_over"]);
+          //console.log("mouseover e", e.currentTarget);
+          if (this.selectedConnector !== null) { // jump highlighting current selection
+            if (this.selectedConnector.id !== e.currentTarget.id) {
+              e.currentTarget.setAttributeNS(null, "class", this.classes["connector_over"]);
+              connector.setAttributeNS(null, "marker-start", "url(#"+this.ids['arrow_over']+")");
             }
           }
           else {
-            e.currentTarget.setAttributeNS(null, "class", that.classes["connector_over"]);
+            e.currentTarget.setAttributeNS(null, "class", this.classes["connector_over"]);
+            connector.setAttributeNS(null, "marker-start", "url(#"+this.ids['arrow_over']+")");
           }
         });
         connector.addEventListener('mouseleave', (e) => {
-          // console.log("mouseleave e", e);
-          if (!e.currentTarget.classList.contains(that.classes["connector_selected"])) {
-            e.currentTarget.setAttributeNS(null, "class", that.classes["connector"]);
+          //console.log("mouseleave e", e.currentTarget);
+          if (!e.currentTarget.classList.contains(this.classes["connector_selected"])) {
+            e.currentTarget.setAttributeNS(null, "class", this.classes["connector"]);
+            connector.setAttributeNS(null, "marker-start", "url(#"+this.ids['arrow']+")");
           }
         });
         connector.addEventListener('click', (e) => {
-          // console.log("clicked -> ", e, that);
-          if (that.selectedConnector) {
-            that.selectedConnector.setAttributeNS(null, "class", that.classes["connector"]);
-            console.log("ripristino  class connector -> ", that.selectedConnector);
+          // console.log("clicked e", e.currentTarget);
+          if (this.selectedConnector) {
+            this.selectedConnector.setAttributeNS(null, "class", this.classes["connector"]);
+            this.selectedConnector.setAttributeNS(null, "marker-start", "url(#"+this.ids['arrow']+")");
           }
-          that.selectedConnector = e.currentTarget;
-          console.log("new selectedConnector -> ", that.selectedConnector.id);
-          that.selectedConnector.setAttributeNS(null, "class", that.classes["connector_selected"]);
-          console.log("connector_selected class ", that.selectedConnector);
-          
+          this.selectedConnector = e.currentTarget;
+          this.selectedConnector.setAttributeNS(null, "class", this.classes["connector_selected"]);
+          this.selectedConnector.setAttributeNS(null, "marker-start", "url(#"+this.ids['arrow_selected']+")");
+
           const event = new CustomEvent("connector-selected", { detail: {connector: connector} });
           document.dispatchEvent(event);
         });
         this.svgContainer.appendChild(connector);
       }
-
       // control points
       let controlFront = { x: 0, y: 0 };
       let controlBack = { x: 0, y: 0 };
-      if (frontPoint.x < backPoint.x) {
-        const front_back_dist_x = backPoint.x - frontPoint.x;
-        controlFront.x = frontPoint.x - (front_back_dist_x);
-        controlBack.x = backPoint.x + (front_back_dist_x);
-      }
-      else {
-        const front_back_half_dist = Math.round((frontPoint.x - backPoint.x) / 2);
-        controlFront.x = backPoint.x + front_back_half_dist;
-        controlBack.x = backPoint.x + front_back_half_dist;
-      }
+      controlFront.x = frontPoint.x - 100;
       controlFront.y = frontPoint.y;
+      controlBack.x = backPoint.x + 100;
       controlBack.y = backPoint.y;
-      let d = "M" + frontPoint.x + " " + frontPoint.y + " " + "C " + controlFront.x + " " + controlFront.y + " " + controlBack.x + " " + controlBack.y + " " + backPoint.x + " " + backPoint.y;
+      let d = "M" + (frontPoint.x - 10) + " " + frontPoint.y + " " + "C " + controlFront.x + " " + controlFront.y + " " + controlBack.x + " " + controlBack.y + " " + backPoint.x + " " + backPoint.y;// + " marker-end=\"url(#arrowhead)\"";
       connector.setAttributeNS(null, "d", d);
-
-      // connector.setAttributeNS(null, "tabindex", "0");
-      // connector.setAttributeNS(null, "keydown", "deleteConnector(event)");
-      //connector.setAttributeNS(null, "stroke", "#FF0000");
-      //connector.setAttributeNS(null, "stroke-width", "1px");
+      connector.setAttributeNS(null, "marker-start", "url(#"+this.ids['arrow']+")");
     }
+
+    /** Creates or modify a connector in HTML */
+    // #drawConnector_OLD(id, backPoint, frontPoint) {
+    //   // console.log(id, backPoint, frontPoint);
+    //   const that = this;
+    //   let connector = document.getElementById(id);
+    //   if (!connector) {
+    //     connector = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    //     connector.setAttributeNS(null, "fill", "transparent");
+    //     connector.setAttributeNS(null, "id", id);
+    //     connector.setAttributeNS(null, "class", this.classes["connector"]);
+    //     connector.setAttributeNS(null, "pointer-events", "stroke");
+    //     connector.addEventListener('mouseover', (e) => {
+    //       // console.log("mouseover e", e.currentTarget);
+    //       if (that.selectedConnector !== null) { // jump highlighting current selection
+    //         if (that.selectedConnector.id !== e.currentTarget.id) {
+    //           e.currentTarget.setAttributeNS(null, "class", that.classes["connector_over"]);
+    //         }
+    //       }
+    //       else {
+    //         e.currentTarget.setAttributeNS(null, "class", that.classes["connector_over"]);
+    //       }
+    //     });
+    //     connector.addEventListener('mouseleave', (e) => {
+    //       // console.log("mouseleave e", e);
+    //       if (!e.currentTarget.classList.contains(that.classes["connector_selected"])) {
+    //         e.currentTarget.setAttributeNS(null, "class", that.classes["connector"]);
+    //       }
+    //     });
+    //     connector.addEventListener('click', (e) => {
+    //       // console.log("clicked -> ", e, that);
+    //       if (that.selectedConnector) {
+    //         that.selectedConnector.setAttributeNS(null, "class", that.classes["connector"]);
+    //         console.log("ripristino  class connector -> ", that.selectedConnector);
+    //       }
+    //       that.selectedConnector = e.currentTarget;
+    //       console.log("new selectedConnector -> ", that.selectedConnector.id);
+    //       that.selectedConnector.setAttributeNS(null, "class", that.classes["connector_selected"]);
+    //       console.log("connector_selected class ", that.selectedConnector);
+          
+    //       const event = new CustomEvent("connector-selected", { detail: {connector: connector} });
+    //       document.dispatchEvent(event);
+    //     });
+    //     this.svgContainer.appendChild(connector);
+    //   }
+
+    //   // control points
+    //   let controlFront = { x: 0, y: 0 };
+    //   let controlBack = { x: 0, y: 0 };
+    //   if (frontPoint.x < backPoint.x) {
+    //     const front_back_dist_x = backPoint.x - frontPoint.x;
+    //     controlFront.x = frontPoint.x - (front_back_dist_x);
+    //     controlBack.x = backPoint.x + (front_back_dist_x);
+    //   }
+    //   else {
+    //     const front_back_half_dist = Math.round((frontPoint.x - backPoint.x) / 2);
+    //     controlFront.x = backPoint.x + front_back_half_dist;
+    //     controlBack.x = backPoint.x + front_back_half_dist;
+    //   }
+    //   controlFront.y = frontPoint.y;
+    //   controlBack.y = backPoint.y;
+    //   let d = "M" + frontPoint.x + " " + frontPoint.y + " " + "C " + controlFront.x + " " + controlFront.y + " " + controlBack.x + " " + controlBack.y + " " + backPoint.x + " " + backPoint.y;
+    //   connector.setAttributeNS(null, "d", d);
+
+    //   // connector.setAttributeNS(null, "tabindex", "0");
+    //   // connector.setAttributeNS(null, "keydown", "deleteConnector(event)");
+    //   //connector.setAttributeNS(null, "stroke", "#FF0000");
+    //   //connector.setAttributeNS(null, "stroke-width", "1px");
+    // }
   
 
     /** Measure from phisical to logical */
