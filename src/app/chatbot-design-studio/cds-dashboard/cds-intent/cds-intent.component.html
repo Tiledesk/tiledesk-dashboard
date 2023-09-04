@@ -17,7 +17,8 @@
         </div>
     </div>
 
-    <div class="pic-header tds_draggable" [ngClass]="{'cds-start': isStart, 'placeholder-block-header':listOfActions?.length === 0}">
+    <div class="pic-header tds_draggable"  [id]="'block-header-'+ intent?.intent_id"
+    [ngClass]="{'cds-start': isStart, 'placeholder-block-header':listOfActions?.length === 0, 'live-active-intent': isLiveActive}">
 
         <!-- <div class="pic-header-title tds_draggable">
             <div class="pic-header-title-input tds_draggable">
@@ -58,10 +59,10 @@
         [cdkDropListData]="listOfActions" cdkDropList (cdkDropListDropped)="onDropAction($event)">
         <!-- [id]="'action_'+i" -->
 
-        <!-- ---------------------------------------------- -->
-        <!-- Add block placeholder -->
-        <!-- ---------------------------------------------- -->
-        <div (mouseover)="mouseOverAddActionPlaceholder($event)" (mouseout)="mouseOutAddActionPlaceholder($event)"  
+        <!-- ------------------------------------------------------------------------------------------------------------------------- -->
+        <!-- Add block placeholder (mouseover)="mouseOverAddActionPlaceholder($event)" (mouseout)="mouseOutAddActionPlaceholder($event)"  -->
+        <!-- ------------------------------------------------------------------------------------------------------------------------- -->
+        <div   
             class="add--action-placeholder" *ngIf="listOfActions?.length === 0" cdkDrag [cdkDragDisabled]="dragDisabled">
             <!-- add-action-placeholder  -->
             <!-- <div class="add--action-placeholder-add-icon">
@@ -69,6 +70,10 @@
             </div> -->
             <div class="add--action-placeholder-text">
                 Add an action to this block
+
+                <span style="display: block;font-size: 12px;">
+                    Actions are executed in sequence starting from the top block action
+                </span>
             </div>
 
             <div  class="add-action-from-placeholder-btn-wpr"> 

@@ -120,6 +120,8 @@ export class CdsDashboardComponent implements OnInit {
   // intentToAddAction: any;
   tdsContainerEleHeight: number = 0;
   hasClickedAddAction: boolean = false;
+  hideActionPlaceholderOfActionPanel: boolean;
+
   // isBetaUrl: boolean;
 
   constructor(
@@ -209,12 +211,18 @@ export class CdsDashboardComponent implements OnInit {
     this.connectorService.initializeConnectors();
 
     this.addEventListener();
+ 
   }
 
   ngOnDestroy() {
     console.log("•••• On Destroy ••••")
     this.subscriptionListOfIntents.unsubscribe();
     this.connectorService.deleteAllConnectors();
+  }
+
+  onHideActionPlaceholderOfActionPanel(event){
+    console.log('[CDS DSHBRD] onHideActionPlaceholderOfActionPanel event : ', event);
+    this.hideActionPlaceholderOfActionPanel = event
   }
 
   // clickedOutOfAddActionMenu(event) {
@@ -870,45 +878,14 @@ export class CdsDashboardComponent implements OnInit {
     // let pos = {'x': stageElement.offsetLeft, 'y': stageElement.offsetTop };
     // console.log('posCenterIntentSelected::: ', pos);
     this.stageService.centerStageOnPosition(stageElement);
-    return;
+  }
 
-    var w = stageElement.offsetWidth;
-    var h = stageElement.offsetHeight;
-    var x = stageElement.offsetLeft;
-    var y = stageElement.offsetTop;
-    // console.log("position : ", w,h,x,y);
-    const dropElement = this.receiverElementsDroppedOnStage.nativeElement;
-    const posDropElement = dropElement.getBoundingClientRect();
-    // console.log('drop W:', posDropElement.width);
-    // console.log('drop H:', posDropElement.height);
-    // console.log('drop X:', posDropElement.left);
-    // console.log('drop Y:', posDropElement.top);
-
-    const drawerElement = this.drawerOfItemsToZoomAndDrag.nativeElement;
-    drawerElement.style.transition = "transform 0.3s ease-in-out";
-
-    const posDrawerElement = drawerElement.getBoundingClientRect();
-    // console.log('drop W:', posDrawerElement.width);
-    // console.log('drop H:', posDrawerElement.height);
-    // console.log('drop X:', posDrawerElement.left);
-    // console.log('drop Y:', posDrawerElement.top);
-
-    let newX = (posDropElement.width / 2) - (x + w / 2);
-    // console.log('newX:', newX);
-
-    let newY = (posDropElement.height / 2) - (y + h / 2);
-    // console.log('newX:', newY);
-
-    let tcmd = `translate(${newX}px, ${newY}px)`;
-    // let scmd = `scale(${1})`;
-    // console.log("tcmd:", tcmd);
-    // console.log("transform:", tcmd);
-    drawerElement.style.transform = tcmd;
-
-    setTimeout(() => {
-      drawerElement.style.removeProperty('transition');
-      // remove class animation
-    }, 300);
+  posCenterTopIntentSelected(intent) {
+    // add class animation
+    var stageElement = document.getElementById(intent.intent_id);
+    // let pos = {'x': stageElement.offsetLeft, 'y': stageElement.offsetTop };
+    // console.log('posCenterIntentSelected::: ', pos);
+    this.stageService.centerStageOnTopPosition(stageElement);
   }
 
   /** ************************* **/
@@ -947,6 +924,7 @@ export class CdsDashboardComponent implements OnInit {
     this.IS_OPEN_PANEL_WIDGET = status
     this.controllerService.closeActionDetailPanel();
     this.controllerService.closeButtonPanel();
+    this.intentService.setLiveActiveIntent(null);
     // this.isOpenAddActionsMenu = false;
     if (!this.hasClickedAddAction) {
       this.removeConnectorDraftAndCloseFloatMenu();

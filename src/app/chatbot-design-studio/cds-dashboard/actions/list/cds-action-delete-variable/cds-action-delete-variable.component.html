@@ -11,7 +11,7 @@
         <div *ngIf="action?.variableName" class="action-row-right">
             {{action?.variableName}}
         </div>
-        <div *ngIf="!actionTo" class="action-row-right empty">
+        <div *ngIf="!action?.variableName" class="action-row-right empty">
             Set variable to delete
         </div>
     </div>

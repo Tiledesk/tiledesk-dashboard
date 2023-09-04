@@ -18,6 +18,7 @@ export class CdsPanelElementsComponent implements OnInit {
   @Output() addNewElement = new EventEmitter();
   @Output() showPanelActions = new EventEmitter();
   @Output() onMouseOverActionMenuSx = new EventEmitter();
+  @Output() hideActionPlaceholderOfActionPanel = new EventEmitter();
   isOpen: boolean = false;
   isOverMenu: boolean = false;
   positionMenu: any = {'x': 80, 'y': 0 };
@@ -34,6 +35,10 @@ export class CdsPanelElementsComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  onHideActionPlaceholderOfActionPanel(event) {
+    console.log('[CDS-PANEL-ELEMENTS] onHideActionPlaceholderOfActionPanel event', event)
+    this.hideActionPlaceholderOfActionPanel.emit(event)
+  }
 
   onDraggingMenuElement(event) {
     console.log('[CDS-PANEL-ELEMENTS] onDraggingMenuElement event', event);
