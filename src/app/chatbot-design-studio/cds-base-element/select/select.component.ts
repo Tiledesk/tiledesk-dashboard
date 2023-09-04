@@ -25,6 +25,7 @@ export class SelectComponent implements OnInit {
 
   @Input() deleteButton: boolean = false;
   @Input() clearable: boolean = false;
+  @Input() searchable: boolean = false;
   @Input() placeholder: string = 'Select an option'
   @Input() formGroup: FormGroup = new FormGroup({ select: new FormControl()});
   @Input() formControlName: string = 'select';
