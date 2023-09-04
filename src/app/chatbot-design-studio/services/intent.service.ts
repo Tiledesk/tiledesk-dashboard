@@ -53,6 +53,8 @@ export class IntentService {
   botAttributes: any = {};
   listOfPositions: any = {};
 
+  setTimeoutChangeEvent: any
+
   // newPosition: any = {'x':0, 'y':0};
   
 
@@ -358,25 +360,30 @@ export class IntentService {
       }
       let actionsIntent = intent.actions?intent.actions:[];
       let webhookEnabledIntent = intent.webhook_enabled?intent.webhook_enabled:false;
-      this.faqService.updateIntent(
-        id,
-        attributes,
-        questionIntent,
-        answerIntent,
-        displayNameIntent,
-        formIntent,
-        actionsIntent,
-        webhookEnabledIntent
-      ).subscribe((intent: Intent) => {
-        console.log('EDIT ', intent.id);
-        resolve(true);
-      }, (error) => {
-        console.error('ERROR: ', error);
-        reject(false);
-      }, () => {
-        // console.log('COMPLETE ');
-        resolve(true);
-      });
+
+      clearTimeout(this.setTimeoutChangeEvent);
+      this.setTimeoutChangeEvent = setTimeout(() => {
+        this.faqService.updateIntent(
+          id,
+          attributes,
+          questionIntent,
+          answerIntent,
+          displayNameIntent,
+          formIntent,
+          actionsIntent,
+          webhookEnabledIntent
+        ).subscribe((intent: Intent) => {
+          console.log('EDIT ', intent.id);
+          resolve(true);
+        }, (error) => {
+          console.error('ERROR: ', error);
+          reject(false);
+        }, () => {
+          // console.log('COMPLETE ');
+          resolve(true);
+        });
+      }, 2000);
+
     });
   }
 
