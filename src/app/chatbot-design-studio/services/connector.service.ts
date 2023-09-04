@@ -224,11 +224,11 @@ export class ConnectorService {
     this.tiledeskConnectors.deleteConnector(connectorID);
   }
 
-  onConnectorDeleted(connectorID){
+  deleteConnectorToList(connectorID){
     delete this.listOfConnectors[connectorID];
   }
 
-  addConnector(connector){
+  addConnectorToList(connector){
     this.listOfConnectors[connector.id] = connector;
   }
   
