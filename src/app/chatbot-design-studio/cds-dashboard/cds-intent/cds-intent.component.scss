@@ -23,6 +23,19 @@
     content: "";
     transition: box-shadow 0.15s ease 0s;
   }
+  &.outline-border {
+    outline: 2px solid #6c6859;
+    border-radius: 10px;
+  }
+  &.ripple-effect {
+    animation-name: ripple_effect;
+    animation-duration: 1s;
+    animation-iteration-count: 1s;
+    border-radius: 10px;
+  }
+
+
+
 
   .pic-header {
     display: flex;
@@ -39,324 +52,74 @@
     // background-color: rgb(235, 226, 198);
     background-color: $deep-brown;
   }
-// -------------------------------------
-// https://stackoverflow.com/questions/69286006/how-to-animate-border-so-that-it-displays-slowly-from-start-to-finish
-  .movingBorder {
-    // width: 60vw;
-    // height: 60vh;
-    // border: solid 5px lime;
-    // position: relative;
-    // background: pink;
-    animation: changeBorders 5s linear;
+
+  // --------------------------------
+  // https://stackoverflow.com/questions/9476923/css3-animate-border-color
+
+  .flashBorder {
+    // border: 3px solid #fff;
+    animation-name: flash_border;
+    animation-duration: 2s;
+    animation-timing-function: linear;
+    animation-iteration-count: 2s; //infinite;
+    -webkit-animation-name: flash_border;
+    -webkit-animation-duration: 2s;
+    -webkit-animation-timing-function: linear;
+    -webkit-animation-iteration-count: 2s; //infinite;
+    -moz-animation-name: flash_border;
+    -moz-animation-duration: 2s;
+    -moz-animation-timing-function: linear;
+    -moz-animation-iteration-count: 2s //infinite;
   }
-  
-  @keyframes changeBorders {
+
+
+  @keyframes flash_border {
     0% {
-      border: solid 5px white;
-      border-left: solid 5px lime;
+      border-color: #006cff // #f0806f;
     }
-    25% {
-      border: solid 5px white;
-      border-left: solid 5px lime;
-    }
-    25.02% {
-      border: solid 5px white;
-      border-left: solid 5px lime;
-      border-bottom: solid 5px lime;
-    }
-    50% {
-      border: solid 5px white;
-      border-left: solid 5px lime;
-      border-bottom: solid 5px lime;
-    }
-    50.02% {
-      border: solid 5px white;
-      border-left: solid 5px lime;
-      border-bottom: solid 5px lime;
-      border-right: solid 5px lime;
-    }
-    75% {
-      border: solid 5px white;
-      border-left: solid 5px lime;
-      border-bottom: solid 5px lime;
-      border-right: solid 5px lime;
-    }
-    75.02% {
-      border: solid 5px lime;
+
+    // 50% {
+    //   border-color: #fff;
+    // }
+    100% {
+      // border-color: #f0806f;
+      border-color: #fff;
     }
   }
-  
-  .movingBorder::after {
-    width: 5px;
-    background-color: white;
-    height: 0px;
-    position: absolute;
-    bottom: 0;
-    left: -5px;
-    z-index: 1;
-    animation: movedown 5s linear;
-    animation-fill-mode: forwards;
-    content: '';
-    display: inline-block;
-  }
-  
-  @keyframes movedown {
+
+  @-webkit-keyframes flash_border {
     0% {
-      height: calc(100% + 10px);
-      width: 5px;
-      bottom: -5px;
-      left: -5px;
+      border-color: #006cff // #f0806f;
+
     }
-    25% {
-      height: 5px;
-      width: 5px;
-      bottom: -5px;
-      left: -5px;
-    }
-    25.01% {
-      height: 5px;
-      width: calc(100% + 10px);
-      bottom: -5px;
-      left: -5px;
-    }
-    50% {
-      height: 5px;
-      width: 0%;
-      left: 100%;
-      bottom: -5px;
-    }
-    50.01% {
-      height: calc(100% + 10px);
-      width: 5px;
-      left: 100%;
-      bottom: -5px;
-    }
-    75% {
-      height: 0;
-      width: 5px;
-      left: 100%;
-      bottom: 100%;
-    }
-    75.01% {
-      height: 5px;
-      width: calc(100% + 10px);
-      left: 0%;
-      bottom: 100%;
-    }
-    99.01% {
-      height: 5px;
-      width: 0;
-      left: 0;
-      bottom: 100%;
+
+    // 50% {
+    //   border-color: #fff;
+
+    // }
+    100% {
+      // border-color: #f0806f;
+      border-color: #fff;
     }
   }
-// --------------------------------
-// https://stackoverflow.com/questions/9476923/css3-animate-border-color
 
-.flashBorder {
-  // border: 3px solid #fff;
-  animation-name: flash_border;
-  animation-duration: 2s;
-  animation-timing-function: linear;
-  animation-iteration-count: 2s; //infinite;
-  -webkit-animation-name: flash_border;
-  -webkit-animation-duration: 2s;
-  -webkit-animation-timing-function: linear;
-  -webkit-animation-iteration-count: 2s; //infinite;
-  -moz-animation-name: flash_border;
-  -moz-animation-duration: 2s;
-  -moz-animation-timing-function: linear;
-  -moz-animation-iteration-count: 2s //infinite;
-}
+  @-moz-keyframes flash_border {
+    0% {
+      border-color: #006cff //  #f0806f;//  ;
 
+    }
 
-@keyframes flash_border {
-  0% {
-    border-color:  #006cff // #f0806f;
+    // 50% {
+    //   border-color: #fff;
+
+    // }
+    100% {
+      //border-color:  #006cff; // #f0806f;
+      border-color: #fff;
+
+    }
   }
-  // 50% {
-  //   border-color: #fff;
-  // }
-  100% {
-    // border-color: #f0806f;
-    border-color: #fff;
-  }
-}
 
-@-webkit-keyframes flash_border {
-  0% {
-    border-color: #006cff // #f0806f;
-
-  }
-  // 50% {
-  //   border-color: #fff;
-
-  // }
-  100% {
-    // border-color: #f0806f;
-    border-color: #fff;
-  }
-}
-
-@-moz-keyframes flash_border {
-  0% {
-    border-color: #006cff //  #f0806f;//  ;
-  
-  }
-  // 50% {
-  //   border-color: #fff;
-   
-  // }
-  100% {
-    //border-color:  #006cff; // #f0806f;
-    border-color: #fff;
-    
-  }
-}
-
-// -------------------------------------------------------------------
-// https://codepen.io/michellebarker/pen/gOMBPQj
---d: 2500ms;
---angle: 90deg;
---gradX: 100%;
---gradY: 50%;
---c1: rgba(168, 239, 255, 1);
---c2: rgba(168, 239, 255, 0.1);
-.gradientBorderAnimation {
-	// font-size: 3vw;
-	margin: max(1rem, 3vw);
-	border: 2px solid;
-	padding: 3vw;
-	border-image: conic-gradient(from var(--angle), var(--c2), var(--c1) 0.1turn, var(--c1) 0.15turn, var(--c2) 0.25turn) 30;
-	animation: borderRotate var(--d) linear infinite forwards;
-}
-
-.gradientBorderAnimation:nth-child(2) {
-	border-image: radial-gradient(ellipse at var(--gradX) var(--gradY), var(--c1), var(--c1) 10%, var(--c2) 40%) 30;
-	animation: borderRadial var(--d) linear infinite forwards;
-}
-
-@keyframes borderRotate {
-	100% {
-		--angle: 420deg;
-	}
-}
-
-@keyframes borderRadial {
-	20% {
-		--gradX: 100%;
-		--gradY: 50%;
-	}
-	40% {
-		--gradX: 100%;
-		--gradY: 100%;
-	}
-	60% {
-		--gradX: 50%;
-		--gradY: 100%;
-	}
-	80% {
-		--gradX: 0%;
-		--gradY: 50%;
-	}
-	100% {
-		--gradX: 50%;
-		--gradY: 0%;
-	}
-}
-
-
-// -------------------------------------------------------------------
-
-// .movingBorder {
-//   --border-width: 3px;
-
- 
-//   border-radius: var(--border-width);
-
-//   &::after {
-//     position: absolute;
-//     content: "";
-//     top: calc(-1 * var(--border-width));
-//     left: calc(-1 * var(--border-width));
-//     z-index: -1;
-//     width: calc(100% + var(--border-width) * 2);
-//     height: calc(100% + var(--border-width) * 2);
-//     background: linear-gradient(
-//       60deg,
-//       hsl(224, 85%, 66%),
-//       hsl(269, 85%, 66%),
-//       hsl(314, 85%, 66%),
-//       hsl(359, 85%, 66%),
-//       hsl(44, 85%, 66%),
-//       hsl(89, 85%, 66%),
-//       hsl(134, 85%, 66%),
-//       hsl(179, 85%, 66%)
-//     );
-//     background-size: 300% 300%;
-//     background-position: 0 50%;
-//     border-radius: calc(2 * var(--border-width));
-//     animation: moveGradient 4s alternate infinite;
-//   }
-// }
-
-// @keyframes moveGradient {
-//   50% {
-//     background-position: 100% 50%;
-//   }
-// }
-// --------------------------------
-  // .border-top,
-  // .border-bottom {
-  //   width: 0%;
-  //   height: 3px;
-  //   background: #e72;
-  //   position: absolute;
-  //   transition: all .3s ease;
-  // }
-
-  // .border-top {
-  //   top: 0;
-  //   left: 0;
-  // }
-
-  // .border-bottom {
-  //   bottom: 0;
-  //   right: 0;
-  // }
-
-  // .pic-header:hover .border-top,
-  // .pic-header:hover .border-bottom {
-  //   width: 100%;
-  // }
-
-  // .border-right,
-  // .border-left {
-  //   width: 3px;
-  //   height: 0%;
-  //   background: #e72;
-  //   position: absolute;
-  //   transition: all .3s ease .3s;
-  // }
-
-  // /* a .3 second delay causes our right/left borders to draw after our top/bottom borders */
-
-
-  // /* Changing the top/bottom zero point will change where the transition starts from */
-  // .border-right {
-  //   top: 0;
-  //   right: 0;
-  // }
-
-  // .border-left {
-  //   bottom: 0;
-  //   left: 0;
-  // }
-
-  // .pic-header:hover .border-right,
-  // .pic-header:hover .border-left {
-  //   height: 100%;
-  // }
 
   .placeholder-block-header {
     border: 1px solid rgb(255, 255, 255);
@@ -365,7 +128,7 @@
   // .live-active-intent {
   //   // border: 3px solid red;
   //   -webkit-animation: blink-2 0.9s infinite both;
-	//         animation: blink-2 0.9s infinite both;
+  //         animation: blink-2 0.9s infinite both;
   // }
 
   .live-active-intent {
@@ -376,8 +139,9 @@
     box-shadow: 0 0 0 rgba(204, 169, 44, 0.4);
     animation: pulse 1s infinite;
     // position: relative;
- }
- .live-active-intent::before {
+  }
+
+  .live-active-intent::before {
     content: '';
     box-shadow: 0 0 0 rgba(204, 169, 44, 0.4);
     animation: pulse2 1s infinite;
@@ -389,11 +153,12 @@
     // top: 0;
     // bottom: 0;
     // margin: auto;
- }
- .live-active-intent:hover {
+  }
+
+  .live-active-intent:hover {
     animation: none;
- }
- 
+  }
+
 
   .cds-start {
     transition: box-shadow .15s ease 0s, background-color .15s ease 0s;
@@ -526,9 +291,9 @@
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
 
-.box-action:last-child {
-  border: none;
-}
+// .box-action:last-child {
+//   border: none;
+// }
 
 .actions-list-wpr.cdk-drop-list-dragging .box-action:not(.cdk-drag-placeholder) {
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);

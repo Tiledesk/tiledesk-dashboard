@@ -977,7 +977,7 @@ export class CdsDashboardComponent implements OnInit {
     // -------------------------------------------------------------------------
     this.isOpenAddActionsMenu = false; // nk
     const connectorDraft = this.connectorService.connectorDraft;
-    console.log('[CDS-DSHBRD] trascino connettore sullo stage ', event, connectorDraft.toPoint, this.hasClickedAddAction);
+    // console.log('[CDS-DSHBRD] trascino connettore sullo stage ', event, connectorDraft.toPoint, this.hasClickedAddAction);
 
     if (connectorDraft && connectorDraft.toPoint && !this.hasClickedAddAction) {
       const toPoint = connectorDraft.toPoint;
