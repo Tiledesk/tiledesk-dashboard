@@ -15,7 +15,7 @@ export class CdsActionChangeDepartmentComponent implements OnInit {
   @Input() previewMode: boolean = true;
   @Output() updateAndSaveAction = new EventEmitter();
   
-  deps_name_list: string[] = [];
+  deps_name_list: Array<{name: string, value: string, icon?:string}>;
   dep_selected: Department;
 
   constructor(
@@ -31,7 +31,7 @@ export class CdsActionChangeDepartmentComponent implements OnInit {
   getAllDepartments() {
     this.departmentService.getDeptsByProjectId().subscribe((deps) => {
       this.logger.log("[ACTION CHANGE DEPARTMENT] deps: ", deps);
-      this.deps_name_list = deps.map(a => a.name);
+      this.deps_name_list = deps.map(a => ({ name: a.name, value: a.name }));
     }, (error) => {
       this.logger.error("[ACTION CHANGE DEPARTMENT] error get deps: ", error);
     }, () => {
@@ -39,9 +39,9 @@ export class CdsActionChangeDepartmentComponent implements OnInit {
     })
   }
 
-  onChangeActionButton(event) {
+  onChangeSelect(event: {name: string, value: string}) {
     //this.logger.log("[ACTION REPLACE BOT] onChangeActionButton event: ", event)
-    this.action.depName = event;
+    this.action.depName = event.value;
     this.updateAndSaveAction.emit()
     this.logger.log("[ACTION REPLACE BOT] action edited: ", this.action)
   }

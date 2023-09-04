@@ -1,7 +1,7 @@
 import { Chatbot } from 'app/models/faq_kb-model';
 import { ActionReplaceBot } from 'app/models/intent-model';
 import { FaqKbService } from 'app/services/faq-kb.service';
-import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { LoggerService } from 'app/services/logger/logger.service';
 
 @Component({
@@ -13,6 +13,7 @@ export class CdsActionReplaceBotComponent implements OnInit, OnChanges {
 
   @Input() action: ActionReplaceBot;
   @Input() previewMode: boolean = true;
+  @Output() updateAndSaveAction = new EventEmitter();
 
   //bots: Chatbot[] = [];
   chatbots_name_list: Array<{name: string, value: string, icon?:string}>;
@@ -45,9 +46,10 @@ export class CdsActionReplaceBotComponent implements OnInit, OnChanges {
     })
   }
 
-  onChangeSelect(event) {
+  onChangeSelect(event: {name: string, value: string}) {
     //this.logger.log("[ACTION REPLACE BOT] onChangeActionButton event: ", event)
     this.action.botName = event.value;
+    this.updateAndSaveAction.emit()
     console.log("[ACTION REPLACE BOT] action edited: ", this.action)
   }
 
