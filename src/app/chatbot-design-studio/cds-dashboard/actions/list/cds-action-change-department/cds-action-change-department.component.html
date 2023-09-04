@@ -29,8 +29,12 @@
         <div class="field-box">
             <label class="title-label">Choose a department</label>
             <div class="select-bot-box">
-                <ng-select class="form-control-select" appendTo="body" [items]="deps_name_list" [searchable]=true
-                    [editableSearchTerm]=false [clearable]=false [(ngModel)]="action.depName"
+                <ng-select class="form-control-select" appendTo="body" 
+                    [items]="deps_name_list" 
+                    [searchable]=true
+                    [editableSearchTerm]=false 
+                    [clearable]=false 
+                    [(ngModel)]="action.depName"
                     (change)="onChangeActionButton($event)">
                 </ng-select>
             </div>
