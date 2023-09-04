@@ -93,14 +93,14 @@ export class CdsActionAssignVariableComponent implements OnInit, OnChanges {
 
     onSelectedAttribute(variableSelected: { name: string, value: string }) {
         this.action.destination = variableSelected.value;
-        // this.updateAndSaveAction.emit()
+        this.updateAndSaveAction.emit()
     }
 
-    onSelectedOperator() {
-        let temp = this.action.operation;
-        this.action.operation.operators.push(TYPE_MATH_OPERATOR['addAsNumber']);
-        this.action.operation.operands.push(new Operand());
-        this.action.operation = Object.assign({}, temp);
-        // this.updateAndSaveAction.emit()
+    onChangeOperation(event) {
+        // let temp = this.action.operation;
+        // this.action.operation.operators.push(TYPE_MATH_OPERATOR['addAsNumber']);
+        // this.action.operation.operands.push(new Operand());
+        // this.action.operation = Object.assign({}, temp);
+        this.updateAndSaveAction.emit()
     }
 }

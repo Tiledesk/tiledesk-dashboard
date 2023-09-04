@@ -12,8 +12,7 @@ export class OperationComponent implements OnInit {
 
     @Input() operation: Operation;
     @Input() listOfFunctions: Array<{name: string, value: string, icon?:string}>;
-    
-    @Output() onAddOperator = new EventEmitter<any>();
+    @Output() onChangeOperation = new EventEmitter<any>();
 
     list: Array< TYPE_MATH_OPERATOR | Operand | ''> = [];
 
@@ -40,13 +39,21 @@ export class OperationComponent implements OnInit {
     }
 
     onClickOperator() {
-        this.onAddOperator.emit();
+        this.operation.operators.push(TYPE_MATH_OPERATOR['addAsNumber']);
+        this.operation.operands.push(new Operand());
+        this.setList(this.operation)
+        this.onChangeOperation.emit();
     }
 
     onSelectedOperator(event: any, index: number) {
         this.list[index] = TYPE_MATH_OPERATOR[event.value];
         index = Math.floor(index / 2);
         this.operation.operators[index] = TYPE_MATH_OPERATOR[event.value];
+        this.onChangeOperation.emit();
+    }
+
+    onChangeOperand(event) {
+        this.onChangeOperation.emit();
     }
 
     trackByIndex(index: number, obj: any): any {
@@ -65,5 +72,6 @@ export class OperationComponent implements OnInit {
             }
         }
         this.setList(this.operation)
+        this.onChangeOperation.emit();
     }
 }

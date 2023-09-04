@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Operand } from 'app/models/intent-model';
 
@@ -12,7 +12,8 @@ export class OperandComponent implements OnInit {
 
     @Input() operand: Operand;
     @Input() listOfFunctions: Array<{name: string, value: string, icon?:string}>;
-    
+    @Output() onChangeOperand = new EventEmitter<Operand>();
+
     operandForm: FormGroup;
     // listOfFunctions: Array<{name: string, value: string, icon?:string}> = [];
     openSlectFunction: boolean;
@@ -61,16 +62,24 @@ export class OperandComponent implements OnInit {
             text = text.replace(text, text.match(new RegExp(/(?<=\$\{)(.*)(?=\})/g))[0]);
             this.operandForm.get('value').setValue(text);
             this.operandForm.get('isVariable').setValue(true);
+            this.onChangeOperand.emit(this.operand)
         }
+        if(text){
+            console.log('textttttttttttt', text)
+            this.onChangeOperand.emit(this.operand)
+        }
+        // this.onChangeOperand.emit(this.operand)
        
     }   
     onSelectedAttribute(variableSelected: { name: string, value: string }){
         this.operandForm.get('isVariable').setValue(true);
         this.operandForm.get('value').setValue(variableSelected.name);
+        this.onChangeOperand.emit(this.operand)
     }
     onClearSelectedAttribute(){
         this.operandForm.get('value').setValue('');
         this.operandForm.get('isVariable').setValue(false);
+        this.onChangeOperand.emit(this.operand)
     }
     /** END EVENTS TEXTAREA */
 
@@ -81,6 +90,7 @@ export class OperandComponent implements OnInit {
         } else {
             this.operandForm.get('function').setValue(null);
         }
+        this.onChangeOperand.emit(this.operand)
     }
 
     onToggleSelectFunction(){
