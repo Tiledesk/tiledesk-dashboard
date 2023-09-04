@@ -4,7 +4,7 @@ import { Operand } from 'app/models/intent-model';
 
 
 @Component({
-    selector: 'operand',
+    selector: 'operand-2',
     templateUrl: './operand.component.html',
     styleUrls: ['./operand.component.scss']
 })
