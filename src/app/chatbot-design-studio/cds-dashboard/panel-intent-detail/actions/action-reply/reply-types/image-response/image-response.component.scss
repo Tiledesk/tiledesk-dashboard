@@ -313,12 +313,13 @@
     font-size: 1em;
     font-weight: 400;
     line-height: $button-height-base;
-    margin: 10px 5px 0;
+    // margin: 10px 5px 0;
     order: 1;
     padding: 0 16px;
     transition: all .3s;
     min-width: 100px;
     width: fit-content;
+    margin-right: 10px;
 }
 .button-controls {
     justify-content: space-between;
