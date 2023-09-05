@@ -22,7 +22,7 @@ export class TiledeskConnectors {
     this.colors = {
       "black": "black",
       "gray": "gray",
-      "blu": "blu"
+      "blue": "#3ea9f5"
     }
 
     if (classes && classes["connector_selected"]) {
@@ -643,9 +643,9 @@ export class TiledeskConnectors {
     }
     let controlFront = { x: 0, y: 0 };
     let controlBack = { x: 0, y: 0 };
-    controlFront.x = this.drawingFront.x - 100;
+    controlFront.x = this.drawingFront.x - 200;
     controlFront.y = this.drawingFront.y;
-    controlBack.x = this.drawingBack.x + 100;
+    controlBack.x = this.drawingBack.x + 200;
     controlBack.y = this.drawingBack.y;
     let d = "M" + (this.drawingFront.x - 10) + " " + this.drawingFront.y + " " + "C " + controlFront.x + " " + controlFront.y + " " + controlBack.x + " " + controlBack.y + " " + this.drawingBack.x + " " + this.drawingBack.y;
     connector.setAttributeNS(null, "d", d);
@@ -718,9 +718,9 @@ export class TiledeskConnectors {
     // control points
     let controlFront = { x: 0, y: 0 };
     let controlBack = { x: 0, y: 0 };
-    controlFront.x = frontPoint.x - 100;
+    controlFront.x = frontPoint.x - 200;
     controlFront.y = frontPoint.y;
-    controlBack.x = backPoint.x + 100;
+    controlBack.x = backPoint.x + 200;
     controlBack.y = backPoint.y;
     let d = "M" + (frontPoint.x - 10) + " " + frontPoint.y + " " + "C " + controlFront.x + " " + controlFront.y + " " + controlBack.x + " " + controlBack.y + " " + backPoint.x + " " + backPoint.y;// + " marker-end=\"url(#arrowhead)\"";
     connector.setAttributeNS(null, "d", d);
