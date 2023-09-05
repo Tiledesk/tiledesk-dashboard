@@ -27,7 +27,6 @@ export class CdsActionReplyComponent implements OnInit {
 
   // idIntentSelected: string;
   idAction: string;
-  setTimeoutConversationsEvent: any;
 
   openCardButton: boolean = false;
   // buttonSelected: Button;
@@ -319,14 +318,7 @@ export class CdsActionReplyComponent implements OnInit {
   public async onUpdateAndSaveAction() {
     console.log('[CDS-INTENT] onUpdateAndSaveAction:::: ', this.intentSelected, this.intentSelected.actions);
     this.connectorService.movedConnector(this.intentSelected.intent_id);
-    const that = this;
-    clearTimeout(this.setTimeoutConversationsEvent);
-    this.setTimeoutConversationsEvent = setTimeout(() => {
-      const response = this.intentService.updateIntent(this.intentSelected);
-      if (response) {
-        console.log('updateIntent: ', this.intentSelected);
-      }
-    }, 1000);
+    this.updateAndSaveAction.emit();
   }
 
 
