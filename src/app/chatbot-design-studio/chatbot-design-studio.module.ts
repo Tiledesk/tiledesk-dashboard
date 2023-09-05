@@ -103,9 +103,6 @@ import { VariableListComponent } from './cds-dashboard/panel-intent-detail/actio
 import { TextEditableDivComponent } from './cds-base-element/text-editable-div/text-editable-div.component';
 import { ActionWebRequestComponent } from './cds-dashboard/panel-intent-detail/actions/action-web-request/action-web-request.component';
 import { AttributesComponent } from './cds-base-element/attributes/attributes.component';
-import { OperationComponent } from './cds-dashboard/panel-intent-detail/actions/action-assign-variable/operation/operation.component';
-import { OperandComponent } from './cds-dashboard/panel-intent-detail/actions/action-assign-variable/operand/operand.component';
-import { OperatorComponent } from './cds-dashboard/panel-intent-detail/actions/action-assign-variable/operator/operator.component';
 import { DialogComponent } from './cds-base-element/dialog/dialog.component';
 import { ActionAssignFunctionComponent } from './cds-dashboard/panel-intent-detail/actions/action-assign-function/action-assign-function.component';
 import { DialogYesNoComponent } from './cds-base-element/dialog-yes-no/dialog-yes-no.component';
@@ -129,6 +126,11 @@ import { CdsActionReplyImageComponent } from './cds-dashboard/actions/list/cds-a
 import { CdsActionReplyFrameComponent } from './cds-dashboard/actions/list/cds-action-reply/elements/cds-action-reply-frame/cds-action-reply-frame.component';
 import { CdsActionReplyRedirectComponent } from './cds-dashboard/actions/list/cds-action-reply/elements/cds-action-reply-redirect/cds-action-reply-redirect.component';
 import { CdsActionReplyGalleryComponent } from './cds-dashboard/actions/list/cds-action-reply/elements/cds-action-reply-gallery/cds-action-reply-gallery.component';
+
+//ACTION ASSIGN-VARIABLE: elements
+import { OperatorComponent } from './cds-dashboard/actions/list/cds-action-assign-variable/operator/operator.component';
+import { OperationComponent } from './cds-dashboard/actions/list/cds-action-assign-variable/operation/operation.component';
+import { OperandComponent } from './cds-dashboard/actions/list/cds-action-assign-variable/operand/operand.component';
 
 //CDS- ACTIONS
 import { CdsActionDescriptionComponent } from './cds-dashboard/actions/list/cds-action-description/cds-action-description.component';
@@ -164,7 +166,6 @@ import { CdsFormComponent } from './cds-dashboard/actions/list/form/form.compone
 import { CdsQuestionComponent } from './cds-dashboard/actions/list/question/question.component';
 
 import { AddkbDialogComponent } from './cds-dashboard/actions/list/cds-action-askgpt/addkb-dialog/addkb-dialog.component';
-
 
 @NgModule({
   declarations: [
@@ -219,9 +220,6 @@ import { AddkbDialogComponent } from './cds-dashboard/actions/list/cds-action-as
     TextEditableDivComponent,
     ActionWebRequestComponent,
     AttributesComponent,
-    OperationComponent,
-    OperandComponent,
-    OperatorComponent,
     DialogComponent,
     ActionAssignFunctionComponent,
     DialogYesNoComponent,
@@ -275,10 +273,14 @@ import { AddkbDialogComponent } from './cds-dashboard/actions/list/cds-action-as
     CdsActionReplyRedirectComponent,
     CdsActionReplyGalleryComponent,
     // action REPLY elements: end //
+    // action ASSIGN-VARIABLE elements: start //
+    OperationComponent,
+    OperatorComponent,
+    OperandComponent,
+    // action ASSIGN-VARIABLE elements: end //
    
    
     // ------ CDS-ACTIONS: end ------ //
-
     CdsFormComponent,
     CdsQuestionComponent,
 

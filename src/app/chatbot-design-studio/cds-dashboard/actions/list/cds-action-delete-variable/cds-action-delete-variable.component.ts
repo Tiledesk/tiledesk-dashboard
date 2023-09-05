@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { variableList } from 'app/chatbot-design-studio/utils';
 import { ActionDeleteVariable } from 'app/models/intent-model';
 import { LoggerService } from 'app/services/logger/logger.service';
@@ -12,6 +12,7 @@ export class CdsActionDeleteVariableComponent implements OnInit {
 
   @Input() action: ActionDeleteVariable;
   @Input() previewMode: boolean = true;
+  @Output() updateAndSaveAction = new EventEmitter();
   
   variableListUserDefined: Array<{name: string, value: string}>;
   
@@ -34,6 +35,7 @@ export class CdsActionDeleteVariableComponent implements OnInit {
   onChangeSelect(variableSelected: {name: string, value: string}){
     // console.log('changeeeeee', variableSelected);
     this.action.variableName = variableSelected.name;
+    this.updateAndSaveAction.emit()
   }
 
 }

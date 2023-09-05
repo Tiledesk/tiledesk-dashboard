@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges, ChangeDetectorRef, TemplateRef, ViewContainerRef, HostListener } from '@angular/core';
+import { ConnectorService } from 'app/chatbot-design-studio/services/connector.service';
 import { IntentService } from 'app/chatbot-design-studio/services/intent.service';
 import { TYPE_ACTION, TYPE_INTENT_ELEMENT } from 'app/chatbot-design-studio/utils';
 import { Intent } from 'app/models/intent-model';
@@ -10,10 +11,10 @@ import { LoggerService } from 'app/services/logger/logger.service';
   styleUrls: ['./cds-panel-action-detail.component.scss']
 })
 export class CdsActionDetailPanelComponent implements OnInit, OnChanges {
-  @Output() closeAndSavePanelIntentDetail = new EventEmitter();
   @Input() elementIntentSelected: any;
   @Input() showSpinner: boolean;
   @Input() project_id: string;
+  @Output() onUpdateIntent = new EventEmitter();
   // @Input() intentSelected: Intent;
   
   intentSelected: Intent;
@@ -26,10 +27,11 @@ export class CdsActionDetailPanelComponent implements OnInit, OnChanges {
   elementSelectedMaxLength: number[] = [];
   elementIntentSelectedType: string;
   openCardButton = false;
-
+  
   constructor(
     private logger: LoggerService,
-    private intentService: IntentService
+    private intentService: IntentService,
+    private connectorService: ConnectorService
   ) { }
 
   ngOnInit(): void {
@@ -90,9 +92,6 @@ export class CdsActionDetailPanelComponent implements OnInit, OnChanges {
     // console.log("onUpdateQuestionsIntentSelected:::: ", $event);
   }
 
- 
-
-
   onSaveIntent(){
     if(this.elementIntentSelectedType === this.typeIntentElement.ACTION){
       this.intentSelected.actions[this.elementSelectedIndex] = this.elementSelected;
@@ -104,12 +103,25 @@ export class CdsActionDetailPanelComponent implements OnInit, OnChanges {
       this.intentSelected.form = this.elementSelected;
     }
     console.log('----> onSaveIntent:: ', this.elementIntentSelectedType, this.intentSelected);
-    this.closeAndSavePanelIntentDetail.emit(this.intentSelected);
+    this.onUpdateIntent.emit(this.intentSelected);
   }
 
   onCloseIntent(){
     console.log('----> onCloseIntent:: ', this.elementIntentSelectedType, this.intentSelected);
-    this.closeAndSavePanelIntentDetail.emit();
+    // this.closeAndSavePanelIntentDetail.emit();
+  }
+
+
+  createOrUpdateConnector(idConnector: string, toIntentId: string){
+    const fromId = idConnector;
+    let toId = '';
+    const posId = toIntentId.indexOf("#");
+    if (posId !== -1) {
+      toId = toIntentId.slice(posId+1);
+    }
+    console.log('createNewConnector: ', fromId);
+    this.connectorService.deleteConnectorWithIDStartingWith(fromId);
+    this.connectorService.createNewConnector(fromId, toId);
   }
 
 }

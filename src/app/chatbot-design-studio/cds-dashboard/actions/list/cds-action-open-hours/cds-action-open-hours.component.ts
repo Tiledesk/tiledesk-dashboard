@@ -15,7 +15,8 @@ export class CdsActionOpenHoursComponent implements OnInit {
   @Input() action: ActionOpenHours;
   @Input() previewMode: boolean = true;
   @Output() updateAndSaveAction = new EventEmitter();
-  
+  @Output() onCreateUpdateConnector = new EventEmitter<{fromId: string, toId: string}>()
+
   actionOpenHoursFormGroup: FormGroup
   trueIntentAttributes: any = "";
   falseIntentAttributes: any = "";
@@ -72,17 +73,23 @@ export class CdsActionOpenHoursComponent implements OnInit {
           // DELETE 
           // console.log(' deleteConnector :: ', this.connector.id);
           // this.action.intentName = null;
-          this.isConnectedTrue = false;
-          this.isConnectedFalse = false;
+          if(array[array.length -1] === 'true'){
+            this.action.trueIntent = null
+            this.isConnectedTrue = false
+          }        
+          if(array[array.length -1] === 'false'){
+            this.action.falseIntent = null
+            this.isConnectedFalse = false;
+          }
         } else { //TODO: verificare quale dei due connettori è stato aggiunto (controllare il valore della action corrispondente al true/false intent)
           // ADD / EDIT
           console.log(' updateConnector :: onlineagents', this.connector.toId, this.connector.fromId ,this.action, array[array.length-1]);
           if(array[array.length -1] === 'true'){
-            this.action.trueIntent = this.connector.toId;
+            this.action.trueIntent = '#'+this.connector.toId;
             this.isConnectedTrue = true
           }        
           if(array[array.length -1] === 'false'){
-            this.action.falseIntent = this.connector.toId;
+            this.action.falseIntent = '#'+this.connector.toId;
             this.isConnectedFalse = true;
           }
         }
@@ -121,8 +128,20 @@ export class CdsActionOpenHoursComponent implements OnInit {
     })
   }
 
-  onChangeSelect(event:{name: string, value: string}, type){
-    this.action[type]=event.value
+  onChangeSelect(event:{name: string, value: string}, type : 'trueIntent' | 'falseIntent'){
+    if(event){
+      this.action[type]=event.value
+    }
+
+    switch(type){
+      case 'trueIntent':
+        this.onCreateUpdateConnector.emit({ fromId: this.idConnectorTrue, toId: this.action.trueIntent})
+        break;
+      case 'falseIntent':
+        this.onCreateUpdateConnector.emit({fromId: this.idConnectorFalse, toId: this.action.falseIntent})
+        break;
+    }
+    this.updateAndSaveAction.emit();
   }
 
   onChangeAttributesTrue(attributes:any){

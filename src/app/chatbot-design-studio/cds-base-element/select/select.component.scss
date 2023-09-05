@@ -92,6 +92,12 @@
 
     } 
 
+    .ng-value-container .ng-input{
+        display: flex;
+        top: 0px !important;
+        height: 43px;
+    }
+
     .ng-clear-wrapper{
         height: 17px;
         width: 17px;
@@ -101,6 +107,7 @@
         border-top: 1px solid #ededed;
         padding: 0px !important;
     }
+
     
 }
 

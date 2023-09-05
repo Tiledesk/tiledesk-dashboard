@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import { Component, ElementRef, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ActionWhatsappStatic } from 'app/models/intent-model';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { WhatsappService } from 'app/services/whatsapp.service';
@@ -15,7 +15,8 @@ export class CdsActionWhatsappStaticComponent implements OnInit {
   @Input() project_id: string;
   @Input() intentName: string;
   @Input() previewMode: boolean = true;
-
+  @Output() updateAndSaveAction = new EventEmitter();
+  
   // project_id: "123457";
   templates_list = [];
   // receiver_list = [];
@@ -106,6 +107,7 @@ export class CdsActionWhatsappStaticComponent implements OnInit {
     this.action.payload.receiver_list = [];
     this.updateJsonPreview();
     this.addReceiver();
+    this.updateAndSaveAction.emit()
   }
 
   addReceiver() {
@@ -116,6 +118,7 @@ export class CdsActionWhatsappStaticComponent implements OnInit {
     // update receiver
     this.action.payload.receiver_list[index] = event;
     this.logger.log("[ACTION WHATSAPP] Action updated ", this.action.payload);
+    this.updateAndSaveAction.emit()
     this.updateJsonPreview();
 
     // if (this.action.payload.receiver_list.find(r => r.phone_number === event.phone_number)) {
@@ -134,7 +137,7 @@ export class CdsActionWhatsappStaticComponent implements OnInit {
   onReceiverDeleteEmitted(event, index) {
     this.logger.debug("delete event: ", event);
     this.action.payload.receiver_list.splice(index, 1);
-
+    this.updateAndSaveAction.emit()
     this.updateJsonPreview();
   }
 
@@ -147,10 +150,10 @@ export class CdsActionWhatsappStaticComponent implements OnInit {
       element.classList.add('highlighted');
     } else {
       this.action.payload.phone_number_id = this.phone_number_id;
+      this.updateAndSaveAction.emit();
     }
 
     this.logger.debug("[ACTION WHATSAPP] Action updated ", this.action.payload);
-
     this.updateJsonPreview();
   }
 

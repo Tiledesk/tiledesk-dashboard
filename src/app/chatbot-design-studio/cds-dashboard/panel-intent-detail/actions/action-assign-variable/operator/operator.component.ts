@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { TYPE_MATH_OPERATOR, TYPE_MATH_OPERATOR_LIST } from 'app/chatbot-design-studio/utils';
 
 @Component({
-    selector: 'operator',
+    selector: 'operator-2',
     templateUrl: './operator.component.html',
     styleUrls: ['./operator.component.scss']
 })

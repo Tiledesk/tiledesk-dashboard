@@ -4,7 +4,7 @@ import { Operand, Operation } from 'app/models/intent-model';
 import { LoggerService } from 'app/services/logger/logger.service';
 
 @Component({
-    selector: 'operation',
+    selector: 'operation-2',
     templateUrl: './operation.component.html',
     styleUrls: ['./operation.component.scss']
 })

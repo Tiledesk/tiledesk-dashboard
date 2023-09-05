@@ -250,15 +250,15 @@ export class TiledeskStage {
             var h = stageElement.offsetHeight;
             var x = stageElement.offsetLeft;
             var y = stageElement.offsetTop;
-            console.log('orginREc', originRec)
+
             this.drawer.style.transition = "transform 0.3s ease-in-out";
             var originRec = this.container.getBoundingClientRect();
 
             let newX = (originRec.width/2)-(x+w/2);
-            console.log('newX:', newX);
+            // console.log('newX:', newX);
 
             let newY = (20)-(y);
-            console.log('newX:', newY);
+            // console.log('newX:', newY);
 
             let tcmd = `translate(${newX}px, ${newY}px)`;
             let scmd = `scale(${1})`;

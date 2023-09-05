@@ -29,15 +29,10 @@ $box-left-width-closed: 50px;
 
 
 ::ng-deep #tds_svgConnectors{
-  path {
-    stroke: black;
-    stroke-width: 8px;
-  }
-
   .tds_path {
     animation: dash 30s linear infinite;
-    stroke-dasharray: 18;
-    stroke-width: 8px;
+    stroke-dasharray: 6;
+    stroke-width: 2px;
     stroke: gray;
   }
 
@@ -48,7 +43,7 @@ $box-left-width-closed: 50px;
   
   .tds_connector_over {
     stroke: gray;
-    stroke-width: 6px;
+    stroke-width: 2px;
   }
   
   .tds_connector_selected {

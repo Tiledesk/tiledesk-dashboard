@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges } from '@
 import { ActionIntentConnected, Intent } from 'app/models/intent-model';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { IntentService } from 'app/chatbot-design-studio/services/intent.service';
+import { ConnectorService } from 'app/chatbot-design-studio/services/connector.service';
 
 @Component({
   selector: 'cds-action-intent',
@@ -15,7 +16,7 @@ export class CdsActionIntentComponent implements OnInit {
   @Input() action: ActionIntentConnected;
   @Input() previewMode: boolean = true;
   @Output() updateAndSaveAction = new EventEmitter();
-
+  @Output() onCreateUpdateConnector = new EventEmitter<{fromId: string, toId: string}>()
 
   intents: Array<{name: string, value: string, icon?:string}>
   idIntentSelected: string;
@@ -25,7 +26,7 @@ export class CdsActionIntentComponent implements OnInit {
 
   constructor(
     private logger: LoggerService,
-    private intentService: IntentService,
+    private intentService: IntentService
   ) {
     
   }
@@ -87,6 +88,8 @@ export class CdsActionIntentComponent implements OnInit {
     if(!this.action._tdActionTitle){
       this.action._tdActionTitle = this.intents.find(intent => intent.value === event.value).name
     }
+    this.onCreateUpdateConnector.emit({fromId: this.idConnector, toId: this.action.intentName})
+    this.updateAndSaveAction.emit();
   }
   
 }
