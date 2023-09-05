@@ -221,3 +221,18 @@ emoji-mart {
     width: 270px;
     z-index: 1;
 }
+
+  // https://www.codewithrandom.com/2023/05/01/ripple-effect-css/
+  @keyframes ripple_effect {
+    0% {
+      box-shadow: 0 0 0 0 #a09e9e44, 0 0 0 0 #a09e9e44;
+    }
+
+    80% {
+      box-shadow: 0 0 0 20px #fff0, 0 0 0 40px #fff0;
+    }
+
+    100% {
+      box-shadow: 0 0 0 0 #fff0, 0 0 0 0 #fff0;
+    }
+  }

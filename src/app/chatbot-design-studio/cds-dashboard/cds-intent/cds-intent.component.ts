@@ -50,9 +50,9 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
   @ViewChild('openActionMenuBtn', { static: false }) openActionMenuBtnRef: ElementRef;
 
 
-  subscriptions: Array<{key: string, value: Subscription}> = [];
+  subscriptions: Array<{ key: string, value: Subscription }> = [];
   private unsubscribe$: Subject<any> = new Subject<any>();
-  
+
   // intentElement: any;
   // idSelectedAction: string;
   // form: Form;
@@ -78,6 +78,7 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
   hideActionDragPlaceholder: boolean;
   newActionCreated: Action;
   dragDisabled: boolean = true;
+  connectorIsOverAnIntent: boolean = false;
 
   constructor(
     private logger: LoggerService,
@@ -86,10 +87,10 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
     private stageService: StageService
     // private controllerService: ControllerService,
   ) {
-      this.initSubscriptions()
-   }
+    this.initSubscriptions()
+  }
 
-  initSubscriptions(){
+  initSubscriptions() {
 
     let subscribtion: any;
     let subscribtionKey: string;
@@ -97,13 +98,13 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
     /** SUBSCRIBE TO THE INTENT CREATED OR UPDATED */
     subscribtionKey = 'behaviorIntent';
     subscribtion = this.subscriptions.find(item => item.key === subscribtionKey);
-    if(!subscribtion){
+    if (!subscribtion) {
       subscribtion = this.intentService.behaviorIntent.pipe(takeUntil(this.unsubscribe$)).subscribe(intent => {
         if (intent && this.intent && intent.intent_id === this.intent.intent_id) {
-          console.log("[CDS-INTENT] sto modifico l'intent: ",  this.intent , " con : ", intent );
+          console.log("[CDS-INTENT] sto modifico l'intent: ", this.intent, " con : ", intent);
           this.intent = intent;
-  
-          if(intent['attributesChanged']){
+
+          if (intent['attributesChanged']) {
             console.log("[CDS-INTENT] ho solo cambiato la posizione sullo stage");
             delete intent['attributesChanged'];
           } else { // if(this.intent.actions.length !== intent.actions.length && intent.actions.length>0)
@@ -112,31 +113,31 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
             // AGGIORNO I CONNETTORI
             // this.intentService.updateIntent(this.intent); /// DEVO ELIMINARE UPDATE DA QUI!!!!!
           }
-  
+
           //UPDATE QUESTIONS
           if (this.intent.question) {
             const question_segment = this.intent.question.split(/\r?\n/).filter(element => element);
             this.questionCount = question_segment.length;
             // this.question = this.intent.question;
-          } else{
+          } else {
             this.questionCount = 0
           }
           //UPDATE FORM
-          if (this.intent && this.intent.form !== undefined) {
+          if (this.intent && this.intent.form && (this.intent.form !== null)) {
             this.formSize = Object.keys(this.intent.form).length;
           } else {
             this.formSize = 0;
           }
         }
       });
-      const subscribe = {key: subscribtionKey, value: subscribtion };
+      const subscribe = { key: subscribtionKey, value: subscribtion };
       this.subscriptions.push(subscribe);
     }
 
     /** SUBSCRIBE TO THE INTENT LIVE SELECTED FROM TEST SITE */
     subscribtionKey = 'intentLiveActive';
     subscribtion = this.subscriptions.find(item => item.key === subscribtionKey);
-    if(!subscribtion){
+    if (!subscribtion) {
       subscribtion = this.intentService.liveActiveIntent.pipe(takeUntil(this.unsubscribe$)).subscribe(intent => {
         this.isLiveActive = false
         if (intent && this.intent && intent.intent_id === this.intent.intent_id) {
@@ -145,7 +146,7 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
           this.stageService.centerStageOnTopPosition(stageElement)
         }
       });
-      const subscribe = {key: subscribtionKey, value: subscribtion };
+      const subscribe = { key: subscribtionKey, value: subscribtion };
       this.subscriptions.push(subscribe);
     }
 
@@ -175,7 +176,7 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
       if (addActionPlaceholderEl) {
         addActionPlaceholderEl.style.opacity = '0';
       }
-      
+
     } else if (this.hideActionPlaceholderOfActionPanel === true) {
       const addActionPlaceholderEl = <HTMLElement>document.querySelector('.add--action-placeholder');
       console.log('[CDS-INTENT] HERE 2 !!!! addActionPlaceholderEl ', addActionPlaceholderEl);
@@ -190,10 +191,10 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
     this.unsubscribe();
   }
 
-  unsubscribe() { 
+  unsubscribe() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
-   
+
   }
 
   // ---------------------------------------------------------
@@ -211,18 +212,72 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
         // movingBorder
         // flashBorder
         if (e.detail.toId === this.intent.intent_id) {
+          const intentContentEl = <HTMLElement>document.querySelector(`#intent-content-${e.detail.toId}`);
           const blockHeaderEl = <HTMLElement>document.querySelector(`#block-header-${e.detail.toId}`);
+          console.log('[CDS-INTENT] Connector released on intent -  intentContentEl', intentContentEl)
           console.log('[CDS-INTENT] Connector released on intent -  blockHeaderEl', blockHeaderEl)
-          blockHeaderEl.classList.add("flashBorder")
+          intentContentEl.classList.remove("outline-border")
+          intentContentEl.classList.add("ripple-effect")
+          // , "rippleEffect"
           setTimeout(() => {
-            blockHeaderEl.classList.remove("flashBorder")
+            intentContentEl.classList.remove("ripple-effect")
           }, 2000);
 
         }
       },
       true
     );
+
+
+    document.addEventListener(
+      "connector-moved-over-intent", (e: CustomEvent) => {
+        console.log('[CDS-INTENT] Connector Moved over intent e ', e)
+
+        // console.log('[CDS-INTENT] Connector Moved over intent - e.detail.toId', e.detail.toId)
+        // console.log('[CDS-INTENT] Connector Moved over intent - this.intent ', this.intent)
+
+        // movingBorder
+        // flashBorder
+        if (e.detail.toId === this.intent.intent_id) {
+          console.log('[CDS-INTENT] Connector Moved over intent here yes 1 ', this.intent.intent_id)
+          this.connectorIsOverAnIntent = true;
+          console.log('[CDS-INTENT] Connector Moved over intent connectorIsOverAnIntent ', this.connectorIsOverAnIntent)
+          const intentContentEl = <HTMLElement>document.querySelector(`#intent-content-${e.detail.toId}`);
+          console.log('[CDS-INTENT] Connector Moved over intent -  intentContentEl', intentContentEl)
+          intentContentEl.classList.add("outline-border")
+          // const blockHeaderEl = <HTMLElement>document.querySelector(`#block-header-${e.detail.toId}`);
+          // console.log('[CDS-INTENT] Connector released on intent -  intentContentEl', intentContentEl)
+          // console.log('[CDS-INTENT] Connector released on intent -  blockHeaderEl', blockHeaderEl)
+          // blockHeaderEl.classList.add("flashBorderAndRipple")
+          // // , "rippleEffect"
+          // setTimeout(() => {
+          //   blockHeaderEl.classList.remove("flashBorderAndRipple")
+          // }, 2000);
+
+        } else {
+          console.log('[CDS-INTENT] Connector Moved over intent here yes 2 ')
+        }
+      },
+      true
+    );
+
+    document.addEventListener(
+      "connector-moved-out-of-intent", (e: CustomEvent) => {
+        console.log('[CDS-INTENT] Connector Moved out of intent e ', e)
+        if (e.detail.toId === this.intent.intent_id) {
+          console.log('[CDS-INTENT] Connector Moved out of intent e id ', e.detail.toId)
+          const intentContentEl = <HTMLElement>document.querySelector(`#intent-content-${e.detail.toId}`);
+          console.log('[CDS-INTENT] Connector Moved over intent -  intentContentEl', intentContentEl)
+          intentContentEl.classList.remove("outline-border")
+        }
+        this.connectorIsOverAnIntent = false;
+        console.log('[CDS-INTENT] Connector Moved out of intent connectorIsOverAnIntent ', this.connectorIsOverAnIntent)
+      },
+      true
+    );
   }
+
+
 
 
   /** CUSTOM FUNCTIONS  */
@@ -244,7 +299,7 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
           // this.question = this.intent.question;
         }
       }
-      if (this.intent && this.intent.form !== undefined) {
+      if (this.intent && this.intent.form && (this.intent.form !== null)) {
         this.formSize = Object.keys(this.intent.form).length;
       } else {
         this.formSize = 0;
@@ -425,11 +480,11 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
           actionDragPlaceholder.style.opacity = '0';
           addActionPlaceholderEl.style.opacity = '1';
           console.log('[CDS-INTENT] HERE 2 !!!! ');
-        } 
+        }
         //  console.log('height', entry.contentRect.height);
-       });
-     });
-     myObserver.observe(actionDragPlaceholder);
+      });
+    });
+    myObserver.observe(actionDragPlaceholder);
   }
 
 
@@ -505,7 +560,7 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
     } else {
       try {
         let action: any = event.previousContainer.data[event.previousIndex];
-        if(event.previousContainer.data.length>0){
+        if (event.previousContainer.data.length > 0) {
           if (action._tdActionType) {
             // moving action from another intent
             console.log("[CDS-INTENT] onDropAction sposto la action tra 2 intent differenti");

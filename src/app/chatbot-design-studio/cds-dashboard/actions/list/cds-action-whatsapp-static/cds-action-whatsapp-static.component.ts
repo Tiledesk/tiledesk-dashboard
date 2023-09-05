@@ -66,7 +66,9 @@ export class CdsActionWhatsappStaticComponent implements OnInit {
       }
       this.showLoader = false;
       let preview = document.getElementById('json-preview-container');
-      preview.style.display = 'block';
+      if(preview){
+        preview.style.display = 'block';
+      }
       this.initialize();
     })
   }

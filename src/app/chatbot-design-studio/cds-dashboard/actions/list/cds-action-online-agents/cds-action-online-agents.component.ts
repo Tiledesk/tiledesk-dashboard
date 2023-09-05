@@ -147,13 +147,16 @@ export class CdsActionOnlineAgentsComponent implements OnInit {
   }
 
 
-  onChangeAttributesTrue(attributes:any){
-    this.action.trueIntentAttributes = attributes;
+  onChangeAttributes(attributes:any, type: 'trueIntent' | 'falseIntent'){
+    if(type === 'trueIntent'){
+      this.action.trueIntentAttributes = attributes;
+    }
+    if(type === 'falseIntent'){
+      this.action.falseIntentAttributes = attributes;
+    }
+    this.updateAndSaveAction.emit();
   }
-
-  onChangeAttributesFalse(attributes:any){
-    this.action.falseIntentAttributes = attributes;
-  }
+  
 
   /** */
   onStopConditionMeet() {

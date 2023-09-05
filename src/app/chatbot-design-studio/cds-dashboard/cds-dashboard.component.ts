@@ -299,7 +299,7 @@ export class CdsDashboardComponent implements OnInit {
     */
     document.addEventListener(
       "moved-and-scaled", (e: CustomEvent) => {
-        console.log('[CDS DSHBRD] moved-and-scaled ', e)
+        // console.log('[CDS DSHBRD] moved-and-scaled ', e)
         this.connectorService.tiledeskConnectors.scale = e.detail.scale;
         // this.isOpenAddActionsMenu = false;
         this.removeConnectorDraftAndCloseFloatMenu();

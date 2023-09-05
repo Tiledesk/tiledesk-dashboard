@@ -224,13 +224,13 @@ export class CdsActionJsonConditionComponent implements OnInit {
     this.updateAndSaveAction.emit();
   }
 
-  onChangeAttributesTrue(attributes:any){
-    this.action.trueIntentAttributes = attributes;
-    this.updateAndSaveAction.emit();
-  }
-
-  onChangeAttributesFalse(attributes:any){
-    this.action.falseIntentAttributes = attributes;
+  onChangeAttributes(attributes:any, type: 'trueIntent' | 'falseIntent'){
+    if(type === 'trueIntent'){
+      this.action.trueIntentAttributes = attributes;
+    }
+    if(type === 'falseIntent'){
+      this.action.falseIntentAttributes = attributes;
+    }
     this.updateAndSaveAction.emit();
   }
 

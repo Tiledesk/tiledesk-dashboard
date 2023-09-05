@@ -126,7 +126,8 @@ export class PanelIntentComponent implements OnInit, OnChanges {
         } 
         // this.webhook_enabled = this.intentSelected.webhook_enabled;
       }
-      if (this.form && this.form !== undefined) {
+      console.error('formmmmmmm', this.form)
+      if (this.form && (this.form !== undefined || this.form !== null)) {
         this.formSize = Object.keys(this.form).length;
       } else {
         this.formSize = 0;

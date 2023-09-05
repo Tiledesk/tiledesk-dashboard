@@ -24,9 +24,9 @@ export class CdsFormComponent implements OnInit, OnChanges {
   @ViewChild('scrollMe', { static: false }) scrollContainer: ElementRef;
 
   // @Output() passJsonIntentForm = new EventEmitter();
-  @Output() updateIntentForm = new EventEmitter();
   @Input() intentForm: Form;
   @Input() intentSelected: Intent;
+  @Output() updateIntentForm = new EventEmitter();
 
   langBot: string;
   fields = new Array() as Field[];;

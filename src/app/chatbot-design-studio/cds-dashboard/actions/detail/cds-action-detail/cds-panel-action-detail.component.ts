@@ -79,6 +79,7 @@ export class CdsActionDetailPanelComponent implements OnInit, OnChanges {
 
   onUpdateFormIntentSelected($event){
     this.elementSelected = $event;
+    this.onSaveIntent()
     // console.log("onUpdateFormIntentSelected:::: ", $event);
   }
 
@@ -89,6 +90,7 @@ export class CdsActionDetailPanelComponent implements OnInit, OnChanges {
 
   onUpdateQuestionsIntentSelected($event){
     this.elementSelected = $event;
+    this.onSaveIntent()
     // console.log("onUpdateQuestionsIntentSelected:::: ", $event);
   }
 

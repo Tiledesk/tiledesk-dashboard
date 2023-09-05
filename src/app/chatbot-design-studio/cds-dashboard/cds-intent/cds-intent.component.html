@@ -1,4 +1,4 @@
-<div class="panel-intent-content tds_draggable">
+<div class="panel-intent-content tds_draggable" [id]="'intent-content-'+ intent?.intent_id">
 
     <div class="test-intent-play-container" [ngClass]="{'test-intent-play-container-on-start': isStart}">
         <!-- ------------------------------- -->
@@ -17,16 +17,11 @@
         </div>
     </div>
 
-    <div class="pic-header tds_draggable"  [id]="'block-header-'+ intent?.intent_id"
-    [ngClass]="{'cds-start': isStart, 'placeholder-block-header':listOfActions?.length === 0, 'live-active-intent': isLiveActive}">
-
-        <!-- <div class="pic-header-title tds_draggable">
-            <div class="pic-header-title-input tds_draggable">
-                <div class="pic-title-text tds_draggable">
-                    {{ intent.intent_display_name }}
-                </div>
-            </div>
-        </div> -->
+    <div class="pic-header tds_draggable"  
+        [id]="'block-header-'+ intent?.intent_id"
+        [ngClass]="{'cds-start': isStart, 
+                    'placeholder-block-header':listOfActions?.length === 0, 
+                    'live-active-intent': isLiveActive}">
 
         <appdashboard-panel-intent-header class="pic-title-text tds_draggable" 
             [intentSelected]="intent">
@@ -48,8 +43,7 @@
         <cds-action-intent class="panel-response" 
             [isStart]="isStart" 
             [intentSelected]="intent"
-            [action]="listOfActions[0]"
-            (updateAndSaveAction)="onUpdateAndSaveAction($event)">
+            [action]="listOfActions[0]">
         </cds-action-intent>
     </div>
 
@@ -62,8 +56,7 @@
         <!-- ------------------------------------------------------------------------------------------------------------------------- -->
         <!-- Add block placeholder (mouseover)="mouseOverAddActionPlaceholder($event)" (mouseout)="mouseOutAddActionPlaceholder($event)"  -->
         <!-- ------------------------------------------------------------------------------------------------------------------------- -->
-        <div   
-            class="add--action-placeholder" *ngIf="listOfActions?.length === 0" cdkDrag [cdkDragDisabled]="dragDisabled">
+        <div class="add--action-placeholder" *ngIf="listOfActions?.length === 0" cdkDrag [cdkDragDisabled]="dragDisabled">
             <!-- add-action-placeholder  -->
             <!-- <div class="add--action-placeholder-add-icon">
                 <span class="material-icons"> add </span>
@@ -118,7 +111,7 @@
                     class="panel-response" 
                     [intentSelected]="intent"
                     [connector]="connector" 
-                    [action]="action" 
+                    [action]="action"
                     (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-reply>
 
@@ -126,49 +119,52 @@
                     class="panel-response"
                     [intentSelected]="intent" 
                     [connector]="connector" 
-                    [action]="action" 
+                    [action]="action"
                     (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-reply>
 
                 <cds-action-intent *ngSwitchCase="TYPE_ACTION.INTENT" 
                     class="panel-response" 
                     [intentSelected]="intent"
-                    [action]="action">
+                    [action]="action"
+                    (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-intent>
-
-                <cds-action-change-department *ngSwitchCase="TYPE_ACTION.CHANGE_DEPARTMENT" 
-                    class="panel-response"
-                    [action]="action">
-                </cds-action-change-department>
     
                 <cds-action-email *ngSwitchCase="TYPE_ACTION.EMAIL" 
                     class="panel-response" 
                     [action]="action">
                 </cds-action-email>
 
-                <cds-action-agent *ngSwitchCase="TYPE_ACTION.AGENT" 
-                    class="panel-response" 
-                    [action]="action">
-                </cds-action-agent>
-
                 <cds-action-online-agents *ngSwitchCase="TYPE_ACTION.ONLINE_AGENTS" 
                     class="panel-response"
                     [connectorChanged]="connectorChanged" 
                     [intentSelected]="intent" 
-                    [action]="action">
+                    [action]="action"
+                    (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-online-agents>
 
                 <cds-action-open-hours *ngSwitchCase="TYPE_ACTION.OPEN_HOURS" 
                     class="panel-response"
                     [connectorChanged]="connectorChanged" 
                     [intentSelected]="intent" 
-                    [action]="action">
+                    [action]="action"
+                    (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-open-hours>
+
+                <cds-action-agent *ngSwitchCase="TYPE_ACTION.AGENT" 
+                    class="panel-response" 
+                    [action]="action">
+                </cds-action-agent>
 
                 <cds-action-wait *ngSwitchCase="TYPE_ACTION.WAIT" 
                     class="panel-response" 
                     [action]="action">
                 </cds-action-wait>
+
+                <cds-action-change-department *ngSwitchCase="TYPE_ACTION.CHANGE_DEPARTMENT" 
+                    class="panel-response"
+                    [action]="action">
+                </cds-action-change-department>
 
                 <cds-action-close *ngSwitchCase="TYPE_ACTION.CLOSE" 
                     [action]="action">
@@ -177,7 +173,8 @@
                 <cds-action-json-condition *ngSwitchCase="TYPE_ACTION.JSON_CONDITION" 
                     class="panel-response"
                     [intentSelected]="intent" 
-                    [action]="action">
+                    [action]="action"
+                    (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-json-condition>
 
                 <cds-action-replace-bot *ngSwitchCase="TYPE_ACTION.REPLACE_BOT" 
