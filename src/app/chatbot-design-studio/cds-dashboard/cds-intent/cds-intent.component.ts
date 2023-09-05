@@ -122,7 +122,7 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
             this.questionCount = 0
           }
           //UPDATE FORM
-          if (this.intent && this.intent.form !== undefined) {
+          if (this.intent && (this.intent.form !== null)) {
             this.formSize = Object.keys(this.intent.form).length;
           } else {
             this.formSize = 0;
@@ -244,7 +244,7 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
           // this.question = this.intent.question;
         }
       }
-      if (this.intent && this.intent.form !== undefined) {
+      if (this.intent && (this.intent.form !== undefined || this.intent.form !== null)) {
         this.formSize = Object.keys(this.intent.form).length;
       } else {
         this.formSize = 0;
