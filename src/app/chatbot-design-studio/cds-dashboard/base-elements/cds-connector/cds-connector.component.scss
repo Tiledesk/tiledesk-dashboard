@@ -8,6 +8,21 @@
     margin: 0;
 }
 
+.block-line {
+    .pre-line{
+        position: absolute;
+        fill: red;
+        width: 10px;
+        background-color: black;
+        height: 2px;
+        z-index: 9999;
+        right: -8px;
+        top: 46%;
+        display: block;
+    }
+}
+
+
 .block-connector {
     display: flex;
     width: 100%;
@@ -63,3 +78,5 @@
         border-radius: 50%;
     }
 }
+
+

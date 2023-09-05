@@ -84,7 +84,7 @@
     }
 
     &.buttons-response{
-        padding: 0 $padding-base-preview;
+        padding: 5px 0px 2px 5px;
         margin: 0;
         flex-direction: column;
         flex-wrap: nowrap;
@@ -189,13 +189,14 @@
 
 .content-botton-reply {
     position:relative;
+    height: 26px;
 }
 
 //** CONNECTOR **//
 cds-connector.connector {
     position: absolute;
     top: calc(50% - 10px);
-    right: -8px;
+    right: -13px;
 }
 
 
@@ -211,7 +212,7 @@ cds-connector.connector {
 
     display: flex;
     margin: 15px 0 0;
-    gap: 5px;
+    gap: 6px;
     width: 100%;
     font-size: 14px;
     padding: 0 25px;
@@ -295,6 +296,7 @@ cds-connector.connector {
     min-width: 100px;
     text-align: center;
     width: fit-content;
+    margin-right: 10px;
 }
 
 .button-controls {
