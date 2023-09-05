@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.4.60
+- Deploys in production
+- Adds the ability in the actions menu of the right side panel of the conversation details page to send the chat transcript via email
+
 ### 2.4.59
 - Deploys in production
 - Improvements and bug fixing
