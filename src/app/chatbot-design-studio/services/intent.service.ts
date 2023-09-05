@@ -493,8 +493,8 @@ export class IntentService {
         // console.log("aggiorno la lista degli intents sostituendo l'intent al quale è stata eliminata la action ", this.listOfIntents);
         console.log('aggiorno intent di partenza', intentToUpdate);
         const responseIntent = this.updateIntent(intentToUpdate);
+        this.connectorService.deleteConnectorsFromActionByActionId(actionId);
         if(responseIntent){
-          this.connectorService.movedConnector(intentToUpdate.intent_id);
           console.log('update Intent: OK');
           this.behaviorIntent.next(intentToUpdate);
          // this.connectorService.deleteConnectorsFromActionByActionId(action._tdActionId);
@@ -610,13 +610,15 @@ export class IntentService {
         }
         return intent;
       });
+      this.behaviorIntent.next(intentToUpdate);
+      this.connectorService.movedConnector(intentToUpdate.intent_id);
       // this.connectorService.deleteConnectorsFromActionByActionId(this.actionSelectedID);
       setTimeout(async () => {
         const responseIntent = await this.updateIntent(intentToUpdate);
         if(responseIntent){
-          this.connectorService.movedConnector(intentToUpdate.intent_id);
+          // this.connectorService.movedConnector(intentToUpdate.intent_id);
           console.log('update Intent: OK');
-          this.behaviorIntent.next(intentToUpdate);
+          // this.behaviorIntent.next(intentToUpdate);
         }
         this.unselectAction();
         console.log('deleteSelectedAction', intentToUpdate);
