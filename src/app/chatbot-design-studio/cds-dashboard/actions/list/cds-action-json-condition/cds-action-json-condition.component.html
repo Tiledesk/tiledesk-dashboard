@@ -92,7 +92,7 @@
                 <cds-attributes
                     class="cds-attributes"
                     [attributes]="trueIntentAttributes"
-                    (changeAttributes)="onChangeAttributesTrue($event)">
+                    (changeAttributes)="onChangeAttributes($event, 'trueIntent')">
                 </cds-attributes>
             </div>
         
@@ -115,7 +115,7 @@
                 <cds-attributes
                     class="cds-attributes"
                     [attributes]="falseIntentAttributes"
-                    (changeAttributes)="onChangeAttributesFalse($event)">
+                    (changeAttributes)="onChangeAttributes($event, 'falseIntent')">
                 </cds-attributes>
             </div>
         
