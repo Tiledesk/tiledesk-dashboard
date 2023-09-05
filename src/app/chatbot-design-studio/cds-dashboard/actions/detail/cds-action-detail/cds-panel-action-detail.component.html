@@ -4,9 +4,7 @@
             [actionSelected]="elementIntentSelectedType === typeIntentElement.ACTION? elementSelected : null"
             [elementType]="elementIntentSelectedType"
             [showTip]="elementIntentSelectedType === typeIntentElement.ACTION? true : false"
-            [previewMode]="false"
-            (closeIntent)="onCloseIntent()"
-            (saveIntent)="onSaveIntent()">
+            [previewMode]="false">
         </cds-action-description>
     </div>
 
@@ -24,14 +22,15 @@
                         [intentSelected]="intentSelected"
                         [action]="elementSelected"
                         [previewMode]="false"
-                        (changeTextarea)="onChangeTitle($event)">
+                        (updateAndSaveAction)="onSaveIntent($event)">
                     </cds-action-reply>
 
                     <cds-action-reply *ngSwitchCase="typeAction.RANDOM_REPLY"
                         class="panel-response"
                         [intentSelected]="intentSelected"
                         [action]="elementSelected"
-                        [previewMode]="false">
+                        [previewMode]="false"
+                        (updateAndSaveAction)="onSaveIntent($event)">
                     </cds-action-reply>
 
                     <cds-action-intent *ngSwitchCase="typeAction.INTENT"

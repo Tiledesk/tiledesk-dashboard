@@ -14,10 +14,8 @@ export class CdsActionDescriptionComponent implements OnInit {
   @Input() elementType: string;
   @Input() previewMode: boolean = true
   @Input() showTip: boolean = false;
-
-
-  @Output() closeIntent = new EventEmitter();
-  @Output() saveIntent = new EventEmitter();
+  // @Output() closeIntent = new EventEmitter();
+  // @Output() saveIntent = new EventEmitter();
   
   titlePlaceholder: string = 'Set a title';
   element: any;
@@ -27,14 +25,7 @@ export class CdsActionDescriptionComponent implements OnInit {
     private logger: LoggerService
   ) { }
 
-  ngOnInit(): void {
-    // console.log('ActionDescriptionComponent ngOnInit:: ', this.actionSelected, this.elementType);
-    // if(this.elementSelected){
-    //   this.elementType = TYPE_INTENT_ELEMENT.FORM;
-    // } else {
-    //   this.elementType = this.actionSelected._tdActionType;
-    // }
-    
+  ngOnInit(): void {    
   }
 
   ngOnChanges(){
@@ -53,13 +44,13 @@ export class CdsActionDescriptionComponent implements OnInit {
     }
   }
 
-  onCloseIntent(){
-    this.closeIntent.emit();
-  }
+  // onCloseIntent(){
+  //   this.closeIntent.emit();
+  // }
 
-  onSaveIntent(){
-    this.saveIntent.emit();
-  }
+  // onSaveIntent(){
+  //   this.saveIntent.emit();
+  // }
 
   onChangeText(text: string){
     console.log('ActionDescriptionComponent onChangeText:: ', text);
