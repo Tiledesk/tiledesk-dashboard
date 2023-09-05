@@ -2328,6 +2328,10 @@
     "Always opened":"Always opened",
     "Always Closed":"Always Closed",
     "As last status": "As last status",
+    "SendByEmail": "Send by email",
+    "ViewAsHTML":"View as HTML",
+    "DownloadAsPDF":"Download as PDF",
+    "DownloadAsCSV": "Download as CSV",
     "AddIntentPage": {
         "AddForm": "Add form",
         "SelectTemplateForm": "Select a type of form among those suggested, or create a new one",

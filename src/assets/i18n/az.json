@@ -2330,6 +2330,10 @@
     "Always opened":"Həmişə açıq",
     "Always Closed":"Həmişə Bağlıdır",
     "As last status": "Son status kimi",
+    "SendByEmail": "E-poçtla göndərin",
+    "ViewAsHTML":"HTML kimi baxın",
+    "DownloadAsPDF":"PDF olaraq yükləyin",
+    "DownloadAsCSV": "CSV olaraq yükləyin",
     "AddIntentPage": {
         "AddForm": "Forma vermək",
         "SelectTemplateForm": "Təklif olunanlar arasında bir növ forma seçin və ya yenisini yaradın",

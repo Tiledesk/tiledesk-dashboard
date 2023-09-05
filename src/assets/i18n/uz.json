@@ -2329,6 +2329,10 @@
     "Always opened":"Har doim ochilgan",
     "Always Closed":"Har doim yopiq",
     "As last status": "Oxirgi holat sifatida",
+    "SendByEmail": "Email orqali yuboring",
+    "ViewAsHTML":"HTML sifatida ko'rish",
+    "DownloadAsPDF":"PDF sifatida yuklab oling",
+    "DownloadAsCSV": "CSV sifatida yuklab oling",
     "AddIntentPage": {
         "AddForm": "Shakl qo'shing",
         "SelectTemplateForm": "Tavsiya etilganlar orasida shakl turini tanlang yoki yangisini yarating",

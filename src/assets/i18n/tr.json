@@ -2330,6 +2330,10 @@
     "Always opened":"Her zaman açılır",
     "Always Closed":"Her zaman kapalı",
     "As last status": "Son durum olarak",
+    "SendByEmail": "E-postayla gönder",
+    "ViewAsHTML":"HTML olarak görüntüle",
+    "DownloadAsPDF":"PDF olarak indir",
+    "DownloadAsCSV": "CSV olarak indir",
     "AddIntentPage": {
         "AddForm": "Form ekle",
         "SelectTemplateForm": "Önerilenler arasında bir tür form seçin veya yeni bir form oluşturun",
