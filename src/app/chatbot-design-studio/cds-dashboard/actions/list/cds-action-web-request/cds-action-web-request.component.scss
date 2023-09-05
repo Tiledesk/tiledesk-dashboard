@@ -58,7 +58,8 @@
     padding: 6px 0;
 }
 .cds-input-group {
-    margin: 10px 11px;
+    margin: 10px 10px;
+    display: flex;
     input {
         border: 0;
         background: #fff;
@@ -198,6 +199,15 @@
 .material-icons {
     color: #ecb606b0;
     font-size: 18px;
+}
+
+cds-select#method ::ng-deep{
+    padding: 6px 0;
+    min-width:120px;
+    .ng-select-container{
+        height: 32px;
+        border-radius: 8px 0px 0px 8px;
+    }
 }
 
 cds-textarea#assignTo ::ng-deep {

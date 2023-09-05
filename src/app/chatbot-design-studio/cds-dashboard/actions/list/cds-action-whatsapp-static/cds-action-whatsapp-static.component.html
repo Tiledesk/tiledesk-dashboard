@@ -39,16 +39,23 @@
         <!-- // Phone number id -->
         <div class="phone-number-id-container">
             <label class="title-label">Phone number id</label>
-            <input id="phone-number-id" type="text" placeholder="109***********67" value="{{phone_number_id}}"
+            <input id="phone-number-id" 
+                type="text" 
+                placeholder="109***********67" 
+                value="{{phone_number_id}}"
                 (input)="onPhoneNumberIdChange($event)">
         </div>
 
         <!-- // Select template -->
         <div class="select-template-container">
             <label class="title-label" style="margin-top: 6px;">Choose a template</label>
-            <cds-select id="template-select" [items]="templates_list" [bindLabelSelect]="'name'"
-                [bindValueSelect]="'name'" [optionalBindAdditionalText]="'language'"
-                [optionalBindDescription]="'description'" [itemSelected]="action?.templateName"
+            <cds-select id="template-select" 
+                [items]="templates_list" 
+                [bindLabelSelect]="'name'"
+                [bindValueSelect]="'name'" 
+                [optionalBindAdditionalText]="'language'"
+                [optionalBindDescription]="'description'" 
+                [itemSelected]="action?.templateName"
                 (onSelected)="onChangeSelect($event)">
             </cds-select>
         </div>
@@ -92,7 +99,10 @@
 
         <div *ngIf="action.payload.receiver_list.length > 0">
             <div *ngFor="let rcv of action.payload.receiver_list; let id = index">
-                <cds-whatsapp-receiver [template]="selected_template" [receiver]="rcv" [index]=id
+                <cds-whatsapp-receiver 
+                    [template]="selected_template" 
+                    [receiver]="rcv" 
+                    [index]=id
                     (receiverValue)="onReceiverEmitted($event, id)"
                     (deleteReceiver)="onReceiverDeleteEmitted($event, id)">
                 </cds-whatsapp-receiver>

@@ -1,5 +1,5 @@
 import { ActionAssignVariable, Operand } from '../../../../../models/intent-model';
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { TYPE_MATH_OPERATOR, TYPE_FUNCTION_LIST_FOR_VARIABLES, TYPE_MATH_OPERATOR_LIST } from 'app/chatbot-design-studio/utils';
 
@@ -11,6 +11,8 @@ import { TYPE_MATH_OPERATOR, TYPE_FUNCTION_LIST_FOR_VARIABLES, TYPE_MATH_OPERATO
 export class CdsActionAssignVariableComponent implements OnInit, OnChanges {
     @Input() action: ActionAssignVariable;
     @Input() previewMode: boolean = true;
+    @Output() updateAndSaveAction = new EventEmitter();
+    
     displaySetOperationPlaceholder:boolean = true
 
     listOfMathOperators: Array<{ name: string, value: string, src?: string }> = [];
@@ -91,12 +93,14 @@ export class CdsActionAssignVariableComponent implements OnInit, OnChanges {
 
     onSelectedAttribute(variableSelected: { name: string, value: string }) {
         this.action.destination = variableSelected.value;
+        this.updateAndSaveAction.emit()
     }
 
-    onSelectedOperator() {
-        let temp = this.action.operation;
-        this.action.operation.operators.push(TYPE_MATH_OPERATOR['addAsNumber']);
-        this.action.operation.operands.push(new Operand());
-        this.action.operation = Object.assign({}, temp);
+    onChangeOperation(event) {
+        // let temp = this.action.operation;
+        // this.action.operation.operators.push(TYPE_MATH_OPERATOR['addAsNumber']);
+        // this.action.operation.operands.push(new Operand());
+        // this.action.operation = Object.assign({}, temp);
+        this.updateAndSaveAction.emit()
     }
 }

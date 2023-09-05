@@ -968,6 +968,7 @@ export class CdsDashboardComponent implements OnInit {
     // -------------------------------------------------------------------------
     // this.isOpenAddActionsMenu = false; // nk
     const connectorDraft = this.connectorService.connectorDraft;
+    
     if (connectorDraft && connectorDraft.toPoint && !this.hasClickedAddAction) {
       console.log('[CDS-DSHBRD] trascino connettore sullo stage ', event, connectorDraft.toPoint, this.hasClickedAddAction);
       const toPoint = connectorDraft.toPoint;
@@ -1241,13 +1242,13 @@ export class CdsDashboardComponent implements OnInit {
 
 
   /** START EVENTS PANEL INTENT DETAIL */
-  onCloseAndSavePanelIntentDetail(intentSelected: any) {
-    console.log('[CDS DSHBRD] onCloseAndSavePanelIntentDetail intentSelected ', intentSelected)
+  onSavePanelIntentDetail(intentSelected: any) {
+    console.log('[CDS DSHBRD] onSavePanelIntentDetail intentSelected ', intentSelected)
     if (intentSelected && intentSelected != null) {
       this.onSaveIntent(intentSelected);
       this.isIntentElementSelected = false;
 
-      this.controllerService.closeActionDetailPanel();
+      // this.controllerService.closeActionDetailPanel();
     } else {
       this.onOpenDialog();
     }

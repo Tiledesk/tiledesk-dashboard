@@ -38,27 +38,34 @@
                         class="panel-response"
                         [intentSelected]="intentSelected"
                         [action]="elementSelected"
-                        [previewMode]="false">
+                        [previewMode]="false"
+                        (updateAndSaveAction)="onSaveIntent($event)"
+                        (onCreateUpdateConnector)="createOrUpdateConnector($event.fromId, $event.toId)">
                     </cds-action-intent>
 
                     <cds-action-email *ngSwitchCase="typeAction.EMAIL"
                         class="panel-response"
                         [action]="elementSelected"
-                        [previewMode]="false">
+                        [previewMode]="false"
+                        (updateAndSaveAction)="onSaveIntent($event)">
                     </cds-action-email>
 
                     <cds-action-online-agents *ngSwitchCase="typeAction.ONLINE_AGENTS"
                         class="panel-response"
                         [intentSelected]="intentSelected"   
                         [action]="elementSelected"
-                        [previewMode]="false">
+                        [previewMode]="false"
+                        (updateAndSaveAction)="onSaveIntent($event)"
+                        (onCreateUpdateConnector)="createOrUpdateConnector($event.fromId, $event.toId)">
                     </cds-action-online-agents>
 
                     <cds-action-open-hours *ngSwitchCase="typeAction.OPEN_HOURS"
                         class="panel-response"   
                         [intentSelected]="intentSelected"
                         [action]="elementSelected"
-                        [previewMode]="false">
+                        [previewMode]="false"
+                        (updateAndSaveAction)="onSaveIntent($event)"
+                        (onCreateUpdateConnector)="createOrUpdateConnector($event.fromId, $event.toId)">
                     </cds-action-open-hours>
 
                     <cds-action-agent *ngSwitchCase="typeAction.AGENT"
@@ -70,13 +77,15 @@
                     <cds-action-wait *ngSwitchCase="typeAction.WAIT"
                         class="panel-response"
                         [action]="elementSelected"
-                        [previewMode]="false">
+                        [previewMode]="false"
+                        (updateAndSaveAction)="onSaveIntent($event)">
                     </cds-action-wait>
 
                     <cds-action-change-department *ngSwitchCase="typeAction.CHANGE_DEPARTMENT"
                         class="panel-response"    
                         [action]="elementSelected"
-                        [previewMode]="false">
+                        [previewMode]="false"
+                        (updateAndSaveAction)="onSaveIntent($event)">
                     </cds-action-change-department>
 
                     <cds-action-close *ngSwitchCase="typeAction.CLOSE"
@@ -89,43 +98,51 @@
                         class="panel-response"
                         [intentSelected]="intentSelected"
                         [action]="elementSelected"
-                        [previewMode]="false">
+                        [previewMode]="false"
+                        (updateAndSaveAction)="onSaveIntent($event)"
+                        (onCreateUpdateConnector)="createOrUpdateConnector($event.fromId, $event.toId)">
                     </cds-action-json-condition>
 
                     <cds-action-replace-bot *ngSwitchCase="typeAction.REPLACE_BOT"
                         class="panel-response"
                         [action]="elementSelected"
-                        [previewMode]="false">
+                        [previewMode]="false"
+                        (updateAndSaveAction)="onSaveIntent($event)">
                     </cds-action-replace-bot>
 
                     <cds-action-assign-variable *ngSwitchCase="typeAction.ASSIGN_VARIABLE"
                         class="panel-response"
                         [action]="elementSelected"
-                        [previewMode]="false">
+                        [previewMode]="false"
+                        (updateAndSaveAction)="onSaveIntent($event)">
                     </cds-action-assign-variable>
+
+                    <cds-action-delete-variable *ngSwitchCase="typeAction.DELETE_VARIABLE"
+                        class="panel-response"
+                        [action]="elementSelected"
+                        [previewMode]="false"
+                        (updateAndSaveAction)="onSaveIntent($event)">
+                    </cds-action-delete-variable>
 
                     <cds-action-hide-message *ngSwitchCase="typeAction.HIDE_MESSAGE"
                         class="panel-response"   
                         [action]="elementSelected"
-                        [previewMode]="false">
+                        [previewMode]="false"
+                        (updateAndSaveAction)="onSaveIntent($event)">
                     </cds-action-hide-message>
-                    
-                    <cds-action-delete-variable *ngSwitchCase="typeAction.DELETE_VARIABLE"
-                        class="panel-response"
-                        [action]="elementSelected"
-                        [previewMode]="false">
-                    </cds-action-delete-variable>
 
                     <cds-action-web-request *ngSwitchCase="typeAction.WEB_REQUEST"
                         class="panel-response"
                         [action]="elementSelected"
-                        [previewMode]="false">
+                        [previewMode]="false"
+                        (updateAndSaveAction)="onSaveIntent($event)">
                     </cds-action-web-request>
 
                     <cds-action-whatsapp-attribute *ngSwitchCase="typeAction.WHATSAPP_ATTRIBUTE"
                         class="panel-response"
                         [action]="elementSelected"
-                        [previewMode]="false">
+                        [previewMode]="false"
+                        (updateAndSaveAction)="onSaveIntent($event)">
                     </cds-action-whatsapp-attribute>
 
                     <cds-action-whatsapp-static *ngSwitchCase="typeAction.WHATSAPP_STATIC"
@@ -133,7 +150,8 @@
                         [action]="elementSelected"
                         [project_id]="project_id"
                         [intentName]="intentSelected.intent_display_name"
-                        [previewMode]="false">
+                        [previewMode]="false"
+                        (updateAndSaveAction)="onSaveIntent($event)">
                     </cds-action-whatsapp-static>
                     
                     <cds-action-askgpt *ngSwitchCase="typeAction.ASKGPT"

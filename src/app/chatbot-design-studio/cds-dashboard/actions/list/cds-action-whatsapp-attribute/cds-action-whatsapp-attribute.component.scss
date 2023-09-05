@@ -82,3 +82,39 @@ cds-textarea#assignTo ::ng-deep {
         min-height: 25px !important;
     }
 }
+
+.set-attribute-destination-label-and-value-wpr {
+    // background: #e8e6dd;
+    // padding: 3px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.set-attribute-label {
+    color: #6c6859d9;
+    font-size: 12px;
+    margin-bottom: 0;
+    font-weight: 400;
+    // background: #e8e6dd;
+    padding: 0px 3px;
+}
+
+.set-attribute-value {
+    font-size: 10px;
+    font-weight: 400;
+    background: #ecb606;
+    width: fit-content;
+    padding: 0px 6px;
+    border-radius: 4px;
+    color: #fff;
+    // height: 18px;
+    line-height: 1.5;
+
+}
+
+.empty{
+    background: none;
+    color: red;
+    font-size: 12px;
+}

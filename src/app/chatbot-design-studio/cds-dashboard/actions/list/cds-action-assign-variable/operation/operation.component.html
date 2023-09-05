@@ -8,7 +8,8 @@
             </div>
             <operand 
                 [operand]="op"
-                [listOfFunctions]="listOfFunctions">
+                [listOfFunctions]="listOfFunctions"
+                (onChangeOperand)="onChangeOperand($event)">
             </operand>
         </div>
 
