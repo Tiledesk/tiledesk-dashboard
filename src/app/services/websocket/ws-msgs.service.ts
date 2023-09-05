@@ -25,7 +25,7 @@ export class WsMsgsService {
   CURRENT_USER_ID: string;
 
   constructor(
- 
+
     public auth: AuthService,
     public webSocketJs: WebSocketJs,
     private logger: LoggerService,
@@ -41,7 +41,7 @@ export class WsMsgsService {
 
   getAppConfig() {
     this.SERVER_BASE_PATH = this.appConfigService.getConfig().SERVER_BASE_URL;
-    // console.log('[WS-MSGS-SERV] getAppConfig SERVER_BASE_PATH', this.SERVER_BASE_PATH);
+    // this.logger.log('[WS-MSGS-SERV] getAppConfig SERVER_BASE_PATH', this.SERVER_BASE_PATH);
   }
 
   getUserTokenAndUserId() {
@@ -49,7 +49,7 @@ export class WsMsgsService {
       if (user) {
         this.TOKEN = user.token;
         this.CURRENT_USER_ID = user._id
-        // console.log('[WS-MSGS-SERV] TOKEN ',   this.TOKEN)
+        // this.logger.log('[WS-MSGS-SERV] TOKEN ',   this.TOKEN)
       }
     });
   }
@@ -175,14 +175,14 @@ export class WsMsgsService {
 
 
   public sendChatMessage(projectid: string, convid: string, chatmsg: string, replytypedid: number, requesterid: string, iscurrentuserjoined: boolean, msgmetadata: any, msgTipe: string) {
-    // console.log('[WS-MSGS-SERV] replytypedid ', replytypedid ) 
+    // this.logger.log('[WS-MSGS-SERV] replytypedid ', replytypedid ) 
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         'Authorization': this.TOKEN
       })
     };
-   
+
     const url = this.SERVER_BASE_PATH + projectid + '/requests/' + convid + '/messages'
     this.logger.log('[WS-MSGS-SERV] SEND CHAT MSG URL', this.SERVER_BASE_PATH)
     let body = {}
@@ -250,7 +250,7 @@ export class WsMsgsService {
         'Authorization': this.TOKEN
       })
     };
-                  
+
     // const body = {'smartAssignmentEnabled': smartassigment };
     const body = { 'smartAssignment': smartassigment };
 
@@ -260,5 +260,22 @@ export class WsMsgsService {
       .patch(url, JSON.stringify(body), httpOptions)
 
   }
-     
+
+  public getTranscriptAsText(request_id) {
+    const url = this.SERVER_BASE_PATH + 'public/requests/' + request_id + '/messages.txt'
+    this.logger.log('[WS-MSGS-SERV] - GET TRANSCRIPT AS TXT URL ', url);
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      }),
+      responseType: 'text' as 'json'
+    };
+
+    return this._httpClient
+      .get(url, httpOptions);
+
+  }
+
 }
