@@ -524,7 +524,8 @@ export class IntentService {
   addNewIntentToListOfIntents(intent){
     console.log("aggiungo l'intent alla lista di intent");
     this.listOfIntents.push(intent);
-    this.behaviorIntents.next(this.listOfIntents);
+    this.refreshIntents();
+    // this.behaviorIntents.next(this.listOfIntents);
   }
 
   replaceNewIntentToListOfIntents(intent){
@@ -535,13 +536,15 @@ export class IntentService {
       return obj;
     });
     console.log("sostituisco l'intent con id NEW con l'intent salvato nella lista degli intent");
-    this.behaviorIntents.next(this.listOfIntents);
+    // this.behaviorIntents.next(this.listOfIntents);
+    this.refreshIntents();
   }
 
   deleteIntentToListOfIntents(intentId){
     console.log("elimino l'intent alla lista di intent", intentId);
     this.listOfIntents = this.listOfIntents.filter((intent: any) => intent.intent_id !== intentId);
-    this.behaviorIntents.next(this.listOfIntents);
+    // this.behaviorIntents.next(this.listOfIntents);
+    this.refreshIntents();
   }
 
 
