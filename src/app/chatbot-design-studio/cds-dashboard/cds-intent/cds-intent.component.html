@@ -111,55 +111,60 @@
                     class="panel-response" 
                     [intentSelected]="intent"
                     [connector]="connector" 
-                    [action]="action" >
+                    [action]="action"
+                    (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-reply>
 
                 <cds-action-reply *ngSwitchCase="TYPE_ACTION.RANDOM_REPLY" 
                     class="panel-response"
                     [intentSelected]="intent" 
                     [connector]="connector" 
-                    [action]="action">
+                    [action]="action"
+                    (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-reply>
 
                 <cds-action-intent *ngSwitchCase="TYPE_ACTION.INTENT" 
                     class="panel-response" 
                     [intentSelected]="intent"
-                    [action]="action">
+                    [action]="action"
+                    (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-intent>
-
-                <cds-action-change-department *ngSwitchCase="TYPE_ACTION.CHANGE_DEPARTMENT" 
-                    class="panel-response"
-                    [action]="action">
-                </cds-action-change-department>
     
                 <cds-action-email *ngSwitchCase="TYPE_ACTION.EMAIL" 
                     class="panel-response" 
                     [action]="action">
                 </cds-action-email>
 
-                <cds-action-agent *ngSwitchCase="TYPE_ACTION.AGENT" 
-                    class="panel-response" 
-                    [action]="action">
-                </cds-action-agent>
-
                 <cds-action-online-agents *ngSwitchCase="TYPE_ACTION.ONLINE_AGENTS" 
                     class="panel-response"
                     [connectorChanged]="connectorChanged" 
                     [intentSelected]="intent" 
-                    [action]="action">
+                    [action]="action"
+                    (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-online-agents>
 
                 <cds-action-open-hours *ngSwitchCase="TYPE_ACTION.OPEN_HOURS" 
                     class="panel-response"
                     [connectorChanged]="connectorChanged" 
                     [intentSelected]="intent" 
-                    [action]="action">
+                    [action]="action"
+                    (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-open-hours>
+
+                <cds-action-agent *ngSwitchCase="TYPE_ACTION.AGENT" 
+                    class="panel-response" 
+                    [action]="action">
+                </cds-action-agent>
 
                 <cds-action-wait *ngSwitchCase="TYPE_ACTION.WAIT" 
                     class="panel-response" 
                     [action]="action">
                 </cds-action-wait>
+
+                <cds-action-change-department *ngSwitchCase="TYPE_ACTION.CHANGE_DEPARTMENT" 
+                    class="panel-response"
+                    [action]="action">
+                </cds-action-change-department>
 
                 <cds-action-close *ngSwitchCase="TYPE_ACTION.CLOSE" 
                     [action]="action">
@@ -168,7 +173,8 @@
                 <cds-action-json-condition *ngSwitchCase="TYPE_ACTION.JSON_CONDITION" 
                     class="panel-response"
                     [intentSelected]="intent" 
-                    [action]="action">
+                    [action]="action"
+                    (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-json-condition>
 
                 <cds-action-replace-bot *ngSwitchCase="TYPE_ACTION.REPLACE_BOT" 
