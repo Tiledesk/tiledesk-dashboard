@@ -24,11 +24,7 @@ export class ConnectorService {
     this.tiledeskConnectors.mousedown(document);
   }
 
-  resetConnectors(){
-
-  }
-
-
+  resetConnectors(){}
 
   createConnectorDraft(detail){
     this.connectorDraft = {
@@ -38,7 +34,6 @@ export class ConnectorService {
       menuPoint: detail.menuPoint,
       target: detail.target
     }
-
   }
 
   removeConnectorDraft(){
@@ -189,7 +184,7 @@ export class ConnectorService {
     if (elFrom && elTo) { 
       const fromPoint = this.tiledeskConnectors.elementLogicCenter(elFrom);
       const toPoint = this.tiledeskConnectors.elementLogicTopLeft(elTo);
-      this.tiledeskConnectors.createConnector(fromId, toId, fromPoint,toPoint);
+      this.tiledeskConnectors.createConnector(fromId, toId, fromPoint, toPoint);
     }
   }
   

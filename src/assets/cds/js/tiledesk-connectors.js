@@ -4,6 +4,7 @@ export class TiledeskConnectors {
       //this.connectors = [];
       this.svgContainerId = "tds_svgContainer";
       this.svgConnectorsId = "tds_svgConnectors";
+
       this.ids = {
         "arrow": "tds_arrow",
         "arrow_draft": "tds_arrow_draft",
@@ -11,28 +12,28 @@ export class TiledeskConnectors {
         "arrow_selected": "tds_arrow_selected"
       }
       this.classes = {
-        "connector_selected": "tds_connector_selected",
         "input_block": "tds_input_block",
         "connectable": "tds_connectable",
+        "path": "tds_path",
         "connector": "tds_connector",
         "connector_over": "tds_connector_over",
-        "path": "tds_path",
         "connector_draft": "tds_connector_draft",
+        "connector_selected": "tds_connector_selected",
       }
       this.colors = {
         "black": "black",
         "gray": "gray",
-        "blu": "blu"
+        "blue": "blue"
       }
-
-      if (classes && classes["connector_selected"]) {
-        this.classes["connector_selected"] = classes["connector_selected"];
-      }
+     
       if (classes && classes["input_block"]) {
         this.classes["input_block"] = classes["input_block"];
       }
       if (classes && classes["connectable"]) {
         this.classes["connectable"] = classes["connectable"];
+      }
+      if (classes && classes["path"]) {
+        this.classes["path"] = classes["path"];
       }
       if (classes && classes["connector"]) {
         this.classes["connector"] = classes["connector"];
@@ -40,10 +41,13 @@ export class TiledeskConnectors {
       if (classes && classes["connector_over"]) {
         this.classes["connector_over"] = classes["connector_over"];
       }
-      if (classes && classes["path"]) {
-        this.classes["path"] = classes["path"];
+      if (classes && classes["connector_draft"]) {
+        this.classes["connector_draft"] = classes["connector_draft"];
       }
-
+      if (classes && classes["connector_selected"]) {
+        this.classes["connector_selected"] = classes["connector_selected"];
+      }
+      
       if(connectors){
         this.connectors = connectors;
       } else {
@@ -64,10 +68,10 @@ export class TiledeskConnectors {
       // this.connectorSelectedId = null;
 
       this.markers = [
-        { id: this.ids['arrow'], fill: this.colors['black'], class: this.classes['tds_connector'] },
-        { id: this.ids['arrow_draft'], fill:  this.colors['gray'], class: this.classes['tds_connector_draft'] },
-        { id: this.ids['arrow_over'], fill:  this.colors['gray'], class: this.classes['tds_connector_over'] },
-        { id: this.ids['arrow_selected'], fill:  this.colors['blue'], class: this.classes['tds_connector_selected'] }
+        { id: this.ids['arrow'], fill: this.colors['black'], class: this.classes['connector'] },
+        { id: this.ids['arrow_draft'], fill: this.colors['gray'], class: this.classes['connector_draft'] },
+        { id: this.ids['arrow_over'], fill: this.colors['gray'], class: this.classes['connector_over'] },
+        { id: this.ids['arrow_selected'], fill: this.colors['blue'], class: this.classes['connector_selected'] }
       ]
 
       this.#createSvgContainer();
@@ -618,9 +622,9 @@ export class TiledeskConnectors {
       }
       let controlFront = { x: 0, y: 0 };
       let controlBack = { x: 0, y: 0 };
-      controlFront.x = this.drawingFront.x - 100;
+      controlFront.x = this.drawingFront.x - 200;
       controlFront.y = this.drawingFront.y;
-      controlBack.x = this.drawingBack.x + 100;
+      controlBack.x = this.drawingBack.x + 200;
       controlBack.y = this.drawingBack.y;
       let d = "M" + (this.drawingFront.x - 10) + " " + this.drawingFront.y + " " + "C " + controlFront.x + " " + controlFront.y + " " + controlBack.x + " " + controlBack.y + " " + this.drawingBack.x + " " + this.drawingBack.y;
       connector.setAttributeNS(null, "d", d);
@@ -693,9 +697,9 @@ export class TiledeskConnectors {
       // control points
       let controlFront = { x: 0, y: 0 };
       let controlBack = { x: 0, y: 0 };
-      controlFront.x = frontPoint.x - 100;
+      controlFront.x = frontPoint.x - 200;
       controlFront.y = frontPoint.y;
-      controlBack.x = backPoint.x + 100;
+      controlBack.x = backPoint.x + 200;
       controlBack.y = backPoint.y;
       let d = "M" + (frontPoint.x - 10) + " " + frontPoint.y + " " + "C " + controlFront.x + " " + controlFront.y + " " + controlBack.x + " " + controlBack.y + " " + backPoint.x + " " + backPoint.y;// + " marker-end=\"url(#arrowhead)\"";
       connector.setAttributeNS(null, "d", d);
