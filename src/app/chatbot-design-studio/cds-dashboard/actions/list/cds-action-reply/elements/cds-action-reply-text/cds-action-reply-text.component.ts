@@ -183,6 +183,11 @@ export class CdsActionReplyTextComponent implements OnInit {
     }
   }
 
+  onSelectedAttribute(variableSelected: {name: string, value: string}){
+    // console.log('atttttttttt', variableSelected)
+    // console.log('textttttttt', this.checkForVariablesInsideText(this.response.text))
+  }
+
   /** onOpenButtonPanel */
   onOpenButtonPanel(button){
     this.openButtonPanel.emit(button);
@@ -204,4 +209,12 @@ export class CdsActionReplyTextComponent implements OnInit {
     this.connectorService.movedConnector(this.idIntent);
     this.changeActionReply.emit();
   }  
+
+  checkForVariablesInsideText(text: string){
+    text.match(new RegExp(/(?<=\$\{)(.*)(?=\})/g, 'g')).forEach(match => {
+      let createTag = '<span class="tag">' + match + '</span>'
+      text = text.replace('{' + match + '}',createTag)
+    });
+    return text
+  }
 }

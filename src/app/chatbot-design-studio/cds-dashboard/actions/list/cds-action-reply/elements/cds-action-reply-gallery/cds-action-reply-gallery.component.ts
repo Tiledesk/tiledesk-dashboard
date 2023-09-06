@@ -19,8 +19,6 @@ export class CdsActionReplyGalleryComponent implements OnInit {
   @Output() deleteActionReply = new EventEmitter();
   @Output() moveUpResponse = new EventEmitter();
   @Output() moveDownResponse = new EventEmitter();
-  @Output() createNewButton = new EventEmitter();
-  @Output() deleteButton = new EventEmitter();
   @Output() openButtonPanel = new EventEmitter();
 
   @Input() idAction: string;
@@ -73,7 +71,6 @@ export class CdsActionReplyGalleryComponent implements OnInit {
     } catch (error) {
       this.logger.log('onAddNewResponse ERROR', error);
     }
-    this.idIntent = this.idAction.split('/')[0];
   }
 
   private initElement(){
@@ -201,6 +198,7 @@ export class CdsActionReplyGalleryComponent implements OnInit {
   onAddButton(index){
     let buttonSelected = this.newButton();
     this.gallery[index].buttons.push(buttonSelected)
+    this.changeActionReply.emit();
   }
 
   scrollToLeft(): void {
@@ -280,27 +278,9 @@ export class CdsActionReplyGalleryComponent implements OnInit {
   // }
 
   onOpenButtonPanel(indexGallery: number, indexButton: number, button?){
-    try {
-      if(!this.response.attributes || !this.gallery[indexGallery].buttons){
-        this.response.attributes.attachment.gallery[indexGallery].buttons[indexButton] = this.newButton();
-        // this.gallery[indexGallery].buttons = this.response.attributes.attachment.gallery[indexGallery].buttons;
-      }
-    } catch (error) {
-      console.log('error: ', error);
-    }
-    this.openButtonPanel.emit({button: button, refResponse: this.response});
+    this.openButtonPanel.emit(button);
   }
 
-
-  /** onCreateNewButton */
-  onCreateNewButton(){
-    this.createNewButton.emit(this.index);
-  }
-
-  /** onDeleteButton */
-  // onDeleteButton(index: number){
-  //   this.deleteButton.emit({index: index, buttons: this.buttons});
-  // }
 
   onDeleteButton(indexGallery: number, index){
     this.gallery[indexGallery].buttons.splice(index, 1);

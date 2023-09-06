@@ -15,9 +15,6 @@ export class CdsActionReplyFrameComponent implements OnInit {
   @Output() deleteActionReply = new EventEmitter();
   @Output() moveUpResponse = new EventEmitter();
   @Output() moveDownResponse = new EventEmitter();
-  @Output() createNewButton = new EventEmitter();
-  @Output() deleteButton = new EventEmitter();
-  @Output() openButtonPanel = new EventEmitter();
 
   @Input() idAction: string;
   @Input() response: Message;

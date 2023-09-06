@@ -46,7 +46,8 @@
         [text]="response.text" 
         [minRow]="1"
         popoverVerticalAlign="above"
-        (changeTextarea)="onChangeTextarea($event)">
+        (changeTextarea)="onChangeTextarea($event)"
+        (selectedAttribute)="onSelectedAttribute($event)">
     </cds-textarea>    
 
 </div> 
