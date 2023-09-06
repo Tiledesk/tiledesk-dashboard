@@ -815,10 +815,10 @@ export class CdsDashboardComponent implements OnInit {
         if (response) {
           this.isSaving = false;
           console.log('updateIntent: OK', this.intentSelected);
-          console.log('propago aggiornamento intent');
-          this.intentService.behaviorIntent.next(this.intentSelected);
+          // console.log('propago aggiornamento intent');
+          // this.intentService.behaviorIntent.next(this.intentSelected);
         }
-      }, 500);
+      }, 0);
     }
   }
 
@@ -986,6 +986,8 @@ export class CdsDashboardComponent implements OnInit {
       const newAction = this.intentService.createNewAction(event.type);
       console.log("[CDS-DSHBRD] nuova action creata ", newAction);
       this.intentSelected.actions.push(newAction);
+      console.log('propago aggiornamento intent');
+      this.intentService.refreshIntent(this.intentSelected);
       console.log("[CDS-DSHBRD] nuova action aggiunta all'intent ", this.intentSelected);
       this.updateIntent();
     }

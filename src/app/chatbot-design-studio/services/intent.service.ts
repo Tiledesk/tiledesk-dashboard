@@ -186,6 +186,12 @@ export class IntentService {
     this.behaviorIntents.next(this.listOfIntents);
   }
 
+  refreshIntent(intentSelected){
+    console.log("aggiorno singolo intent")
+    this.behaviorIntent.next(intentSelected);
+  }
+  
+
   /** setPreviousIntentId
    * imposta quello che è l'intent di partenza quando inizia un drag su una action dell'intent 
    * */
