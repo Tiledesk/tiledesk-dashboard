@@ -41,11 +41,22 @@ cds-connector.connector-false{
 cds-connector.connector-true ::ng-deep{
 
     .point-connector-empty{
-        border: 2px solid rgba(44, 191, 35, 1);
-        background: rgba(44, 191, 35, 1);
+        border: 2px solid $success-connector;
+        background: $success-connector;
     }
     .point-connector{
-        background: rgba(44, 191, 35, 1);
+        background: $success-connector;
+    }
+}
+
+cds-connector.connector-false ::ng-deep{
+
+    .point-connector-empty{
+        border: 2px solid $failure-connector;
+        background: $failure-connector;
+    }
+    .point-connector{
+        background: $failure-connector;
     }
 }
 

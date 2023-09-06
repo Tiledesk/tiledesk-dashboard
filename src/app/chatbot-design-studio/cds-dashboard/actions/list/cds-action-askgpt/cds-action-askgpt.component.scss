@@ -40,6 +40,28 @@ cds-connector.connector-false{
     top: calc(50% - 10px);
 }
 
+cds-connector.connector-true ::ng-deep{
+
+    .point-connector-empty{
+        border: 2px solid $success-connector;
+        background: $success-connector;
+    }
+    .point-connector{
+        background: $success-connector;
+    }
+}
+
+cds-connector.connector-false ::ng-deep{
+
+    .point-connector-empty{
+        border: 2px solid $failure-connector;
+        background: $failure-connector;
+    }
+    .point-connector{
+        background: $failure-connector;
+    }
+}
+
 .content {
     max-height: calc(100vh - 200px);
     padding: 20px 40px;
@@ -521,8 +543,10 @@ cds-textarea#assignTo ::ng-deep {
 
 .condition-container {
     display: flex;
+    flex-direction: row;
     align-items: center;
-    margin-bottom: 4px;
+    gap: 5px;
+    padding: 3px 0px;
 }
 
 .condition-text {
