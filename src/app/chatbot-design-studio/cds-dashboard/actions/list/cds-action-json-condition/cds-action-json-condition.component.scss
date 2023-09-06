@@ -38,6 +38,17 @@ cds-connector.connector-false{
     top: calc(50% - 10px);
 }
 
+cds-connector.connector-true ::ng-deep{
+
+    .point-connector-empty{
+        border: 2px solid rgba(44, 191, 35, 1);
+        background: rgba(44, 191, 35, 1);
+    }
+    .point-connector{
+        background: rgba(44, 191, 35, 1);
+    }
+}
+
 .content {
     //padding: 10px 30px;
     padding: 20px 0px;
