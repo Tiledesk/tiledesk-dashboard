@@ -101,17 +101,17 @@ export class CdsActionReplyGalleryComponent implements OnInit {
     if(!buttons)return;
     buttons.forEach(button => {
       if(!button.uid || button.uid === undefined){
-        const idButton = generateShortUID();
-        const idActionConnector = this.idAction+'/'+idButton;
-        button.uid = idButton;
-        button.__idConnector = idActionConnector;
-        if(button.action && button.action !== ''){
-          button.__isConnected = true;
-        } else {
-          button.__isConnected = false;
-        }
+        button.uid = generateShortUID();
       }
-    }); 
+
+      const idActionConnector = this.idAction+'/'+button.uid;
+      button.__idConnector = idActionConnector;
+      if(button.action && button.action !== ''){
+        button.__isConnected = true;
+      } else {
+        button.__isConnected = false;
+      }
+    });
   }
   
   private updateConnector(){

@@ -88,13 +88,15 @@
             flex-direction: column;
             -webkit-box-align: center;
             align-items: flex-start;
+            width: calc(100% - 50px);
 
             .text{
-                overflow-x: clip;
                 white-space: nowrap;
                 text-overflow: ellipsis;
+                overflow: hidden;
                 font-size: 13px;
                 font-weight: 500;
+                width: 100%;
             }
 
             .description{
@@ -700,6 +702,11 @@ cds-textarea#description ::ng-deep {
     // }
     .text-editor{
         display: flex;
+    }
+
+    textarea {
+        line-height: 20px !important;
+        font-size: 0.9em !important;
     }
 
     // mat-form-field{
