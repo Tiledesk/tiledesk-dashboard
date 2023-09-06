@@ -186,6 +186,12 @@ export class IntentService {
     this.behaviorIntents.next(this.listOfIntents);
   }
 
+  refreshIntent(intentSelected){
+    console.log("aggiorno singolo intent")
+    this.behaviorIntent.next(intentSelected);
+  }
+  
+
   /** setPreviousIntentId
    * imposta quello che è l'intent di partenza quando inizia un drag su una action dell'intent 
    * */
@@ -493,8 +499,8 @@ export class IntentService {
         // console.log("aggiorno la lista degli intents sostituendo l'intent al quale è stata eliminata la action ", this.listOfIntents);
         console.log('aggiorno intent di partenza', intentToUpdate);
         const responseIntent = this.updateIntent(intentToUpdate);
+        this.connectorService.deleteConnectorsFromActionByActionId(actionId);
         if(responseIntent){
-          this.connectorService.movedConnector(intentToUpdate.intent_id);
           console.log('update Intent: OK');
           this.behaviorIntent.next(intentToUpdate);
          // this.connectorService.deleteConnectorsFromActionByActionId(action._tdActionId);
@@ -524,7 +530,8 @@ export class IntentService {
   addNewIntentToListOfIntents(intent){
     console.log("aggiungo l'intent alla lista di intent");
     this.listOfIntents.push(intent);
-    this.behaviorIntents.next(this.listOfIntents);
+    this.refreshIntents();
+    // this.behaviorIntents.next(this.listOfIntents);
   }
 
   replaceNewIntentToListOfIntents(intent){
@@ -535,13 +542,15 @@ export class IntentService {
       return obj;
     });
     console.log("sostituisco l'intent con id NEW con l'intent salvato nella lista degli intent");
-    this.behaviorIntents.next(this.listOfIntents);
+    // this.behaviorIntents.next(this.listOfIntents);
+    this.refreshIntents();
   }
 
   deleteIntentToListOfIntents(intentId){
     console.log("elimino l'intent alla lista di intent", intentId);
     this.listOfIntents = this.listOfIntents.filter((intent: any) => intent.intent_id !== intentId);
-    this.behaviorIntents.next(this.listOfIntents);
+    // this.behaviorIntents.next(this.listOfIntents);
+    this.refreshIntents();
   }
 
 
@@ -607,13 +616,15 @@ export class IntentService {
         }
         return intent;
       });
+      this.behaviorIntent.next(intentToUpdate);
+      this.connectorService.movedConnector(intentToUpdate.intent_id);
       // this.connectorService.deleteConnectorsFromActionByActionId(this.actionSelectedID);
       setTimeout(async () => {
         const responseIntent = await this.updateIntent(intentToUpdate);
         if(responseIntent){
-          this.connectorService.movedConnector(intentToUpdate.intent_id);
+          // this.connectorService.movedConnector(intentToUpdate.intent_id);
           console.log('update Intent: OK');
-          this.behaviorIntent.next(intentToUpdate);
+          // this.behaviorIntent.next(intentToUpdate);
         }
         this.unselectAction();
         console.log('deleteSelectedAction', intentToUpdate);

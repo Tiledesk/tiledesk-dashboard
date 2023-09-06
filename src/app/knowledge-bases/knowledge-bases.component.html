@@ -1,0 +1,320 @@
+<span class="navbar-brand navbar-brand-sidebar-settings"
+  [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }"
+  [ngClass]="{'is_opened':IS_OPEN_SETTINGS_SIDEBAR, 'is_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
+
+  <i class="material-icons">settings</i>
+
+  <span *ngIf="IS_OPEN_SETTINGS_SIDEBAR">{{ 'Settings' | translate }} </span>
+</span>
+
+
+<div class="main-content" style="padding-top:0px; padding-left: 5px;padding-right: 5px;">
+  <div class="container-fluid" style="padding-left: 5px;padding-right: 5px;">
+
+    <div class="content-wpr" style="display: flex;">
+      <appdashboard-settings-sidebar style="border-right:1px solid #e5effe !important"> </appdashboard-settings-sidebar>
+      <div class="teplate-content" style="flex: 1 1 auto; margin: 0 20px;">
+
+        <loading-spinner *ngIf="showSpinner"></loading-spinner>
+
+        <div class="card-content" *ngIf="!showSpinner" style="padding-top: 10px;">
+
+          <div class="add-kb-div">
+            <button class="btn btn-primary" (click)="openAddKnowledgeBaseModal()" [disabled]="addButtonDisabled">
+              {{ 'KbPage.AddKb' | translate }}
+            </button>
+          </div>
+
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>
+                  <span class="column-th-span">
+                    {{ 'Name' | translate }}
+                  </span>
+                </th>
+
+                <th style="width: 80px;">
+                  <span class="column-th-span">
+                    {{ 'Type' | translate }}
+                  </span>
+                </th>
+
+                <th style="width: 80px;">
+                  <span class="column-th-span">
+                    {{ 'Status' | translate }}
+                  </span>
+                </th>
+
+                <th>
+                  <span class="column-th-span">
+                    {{ 'Date' | translate }}
+                  </span>
+                </th>
+
+                <th>
+                  <span class="column-th-span">
+                    <!-- Actions -->
+                  </span>
+                </th>
+
+              </tr>
+            </thead>
+
+
+            <tbody class="custom-body">
+              <tr *ngIf="kbsList && kbsList.length === 0">
+                <td colspan="4" style="text-align: center; padding-top: 24px;">
+                  <p style="font-size:1em; margin-bottom: 0px; color:#7695a5; font-weight: 400">
+                    <i class="material-icons" style="vertical-align: middle; margin-bottom: 2px;color: #00bcd4;">info</i>
+                    {{ 'KbPage.NoKbAdded' | translate }}
+                  </p>
+                </td>
+              </tr>
+
+              <tr *ngFor="let kb of kbsList; let i = index">
+
+                <!-- Knowledge Base name -->
+                <td>
+                  <p class="title">{{ kb.name }}</p>
+                </td>
+
+                <!-- Knowledge Base type -->
+                <td>
+                  URL
+                </td>
+
+                <!-- Knowledge Base status -->
+                <td>
+                  <loading-spinner *ngIf="kb.status != 0 && kb.status != 1 && kb.status != 2" class="custom-spinner"></loading-spinner>
+
+                  <span *ngIf="kb.status == 2" id="done" class="material-icons-outlined status-icon"
+                    matTooltipClass="custom-mat-tooltip" matTooltip="Indexed" #tooltip="matTooltip"
+                    matTooltipPosition='right' matTooltipHideDelay="100">done</span>
+
+                  <span *ngIf="kb.status == 1" id="cached" class="material-icons-outlined status-icon animated-icon"
+                    matTooltipClass="custom-mat-tooltip" matTooltip="Indexing..." #tooltip="matTooltip"
+                    matTooltipPosition='right' matTooltipHideDelay="100">cached</span>
+
+                  <span *ngIf="kb.status == 0" id="close" class="material-icons-outlined status-icon"
+                    matTooltipClass="custom-mat-tooltip" matTooltip="Not indexed" #tooltip="matTooltip"
+                    matTooltipPosition='right' matTooltipHideDelay="100">close</span>
+                </td>
+
+                <!-- Created at -->
+                <td>
+                  {{ kb.createdAt | amTimeAgo }}
+                </td>
+
+                <!-- Actions -->
+                <td style="text-align: end;">
+
+                  <div
+                    style="width: 100%; display: flex; flex-direction: row; align-items: center; justify-content: flex-end;">
+                    <button class="preview-button" (click)="openPreviewKnowledgeBaseModal(kb)">
+                      <span class="material-icon material-icons-round">play_arrow</span>
+                      Preview
+                    </button>
+
+                    <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Actions">
+                      <mat-icon>more_vert</mat-icon>
+                    </button>
+                    <mat-menu #menu="matMenu" xPosition="before" class="custom-menu">
+                      <button mat-menu-item (click)="runIndexing(kb)">
+                        <mat-icon>play_arrow</mat-icon>
+                        <span>{{ 'KbPage.RunIndexing' | translate }}</span>
+                      </button>
+                      <button mat-menu-item (click)="openDeleteKnowledgeBaseModal(kb)">
+                        <mat-icon>close</mat-icon>
+                        <span>{{ 'Delete' | translate }}</span>
+                      </button>
+                    </mat-menu>
+                  </div>
+
+                </td>
+
+              </tr>
+            </tbody>
+
+
+          </table>
+
+          <div class="counter-box">
+            <p>
+              {{ 'KbPage.KbCounterFooter' | translate: { counter: kbsList?.length } }}
+            </p>
+          </div>
+
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+</div>
+
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{display: addKnowledgeBaseModal}"
+  style="background-color: rgba(90,90,90,0.5);">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="closeAddKnowledgeBaseModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+
+        <h4 class="modal-title">
+          <span style="vertical-align: middle;">
+            {{ 'KbPage.AddKb' | translate }}
+          </span>
+        </h4>
+      </div>
+
+      <div class="modal-body">
+        <div class="info-container">
+          <i class="material-icons-outlined info-icon">help_outline</i>
+          <div class="info-text">
+            <p>{{ 'KbPage.AddKbInfoFirstText' | translate }}</p>
+            <p>{{ 'KbPage.AddKbInfoSecondText' | translate }}</p>
+          </div>
+        </div>
+
+        <div class="form-container">
+          <form [formGroup]="kbForm">
+
+            <div class="input-container">
+              <span class="input-label">URL</span>
+              <input type="url" name="url" class="custom-input" [(ngModel)]="newKb.url" formControlName="url"
+                placeholder="{{ 'KbPage.TypeKbUrlPlaceholder' | translate }}" (input)="onChangeInput($event)"
+                [class.invalid]="(kbForm.controls.url.errors?.pattern || kbForm.controls.url.errors?.required) && kbForm.controls.url.touched">
+            </div>
+
+            <div class="input-container">
+              <span class="input-label">GPT Key</span>
+              <input type="text" name="gptkey" class="custom-input" [(ngModel)]="newKb.gptkey" formControlName="gptkey"
+                placeholder="{{ 'KbPage.TypeKbKeyPlaceholder' | translate }}" (input)="onChangeInput($event)"
+                [class.invalid]="kbForm.controls.gptkey.errors?.required && kbForm.controls.gptkey.touched">
+            </div>
+
+          </form>
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-white" style="padding:12px 16px;" (click)="closeAddKnowledgeBaseModal()">
+          {{ "Cancel" | translate }}
+        </button>
+        <button id="addkb-btn" class="btn btn-primary" [disabled]="buttonDisabled" (click)="saveKnowledgeBase()">
+          {{ 'KbPage.Add' | translate }}
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{display: deleteKnowledgeBaseModal}"
+  style="background-color: rgba(90,90,90,0.5);">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="closeDeleteKnowledgeBaseModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+
+        <h4 class="modal-title">
+          <span style="vertical-align: middle;">
+            {{ 'KbPage.DeleteKb' | translate }}
+          </span>
+        </h4>
+      </div>
+
+      <div class="modal-body">
+        <div class="info-container">
+          <i class="material-icons-outlined info-icon">help_outline</i>
+          <div class="info-text">
+            <p>{{ 'KbPage.DeleteKbInfoFirstText' | translate }}</p>
+          </div>
+        </div>
+
+        <div class="form-container">
+          <p>{{ 'KbPage.SureToDelete' | translate: { name: kbid_selected?.name } }}</p>
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-white" style="padding:12px 16px;" (click)="closeDeleteKnowledgeBaseModal()">
+          {{ "Cancel" | translate }}
+        </button>
+        <button id="addkb-btn" class="btn btn-primary" (click)="deleteKnowledgeBase(kbid_selected._id)">
+          {{ 'Delete' | translate }}
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{display: previewKnowledgeBaseModal}"
+  style="background-color: rgba(90,90,90,0.5);">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="closePreviewKnowledgeBaseModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+
+        <h4 class="modal-title">
+          <span style="vertical-align: middle;">
+            Preview Knowledge Base
+          </span>
+        </h4>
+      </div>
+
+      <div class="modal-body">
+
+        <div class="kb-container">
+          <span class="material-icons-round">school</span>
+          <p>{{ kbid_selected?.url }}</p>
+        </div>
+
+        <div class="form-container">
+          <div class="fake-input">
+            <div class="fake-input-inner">
+              <input type="text" placeholder="{{ 'KbPage.AskQuestionPlaceholder' | translate }}" [(ngModel)]="question" (input)="onInputPreviewChange()"
+                (keyup.enter)="submitQuestion()">
+              <div id="enter-button" class="enter-button" (click)="submitQuestion()">{{ 'KbPage.Enter' | translate }}</div>
+            </div>
+          </div>
+        </div>
+
+
+        <div *ngIf="searching" class="search-placeholder">
+          <div class="fake-input">
+            <loading-spinner class="custom-spinner"></loading-spinner>
+            <span style="margin-left: 8px;">{{ 'KbPage.SearchingAnswer' | translate }}</span>
+          </div>
+        </div>
+
+        <div *ngIf="show_answer" class="form-container" style="margin-bottom: 0px;">
+
+          <div id="answer" class="answer">
+            <p *ngIf="answer" class="answer-title">{{ 'KbPage.Answer' | translate }}</p>
+            {{ answer }}
+
+            <span *ngIf="error_answer">{{ 'KbPage.NoAnswerFound' | translate }}</span>
+            <hr *ngIf="source_url">
+            <span *ngIf="source_url">{{ 'KbPage.Source' | translate }}: {{ source_url }}</span>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>

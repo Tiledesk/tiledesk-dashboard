@@ -148,6 +148,7 @@ export class CdsDashboardComponent implements OnInit {
     this.subscriptionListOfIntents = this.intentService.getIntents().subscribe(intents => {
       console.log("1 --- AGGIORNATO ELENCO INTENTS", intents);
       this.listOfIntents = intents;
+      this.updatePanelIntentList = !this.updatePanelIntentList;
     });
 
 
@@ -722,7 +723,7 @@ export class CdsDashboardComponent implements OnInit {
     this.setDragAndListnerEventToElements();
     this.intentSelected.id = NEW_POSITION_ID;
     this.intentService.addNewIntentToListOfIntents(this.intentSelected);
-
+    
     /** chiamata quando trascino un connettore sullo stage e creo un intent al volo  */
     const connectorDraft = this.connectorService.connectorDraft;
     if(connectorDraft){
@@ -776,6 +777,11 @@ export class CdsDashboardComponent implements OnInit {
 
   // Delete Intent 
   private async deleteIntent(intent) {
+    // 1 - rimuovo l'intent dallo stage
+    // 2 - cancello tutti i connettori dell'intent
+    this.connectorService.deleteConnectorsOfBlock(intent.intent_id);
+    this.intentService.deleteIntentToListOfIntents(intent.intent_id);
+
     const deleteIntent = await this.intentService.deleteIntent(intent.id);
     if (deleteIntent) {
       console.log('deleteIntent:: ', deleteIntent, intent.id);
@@ -784,18 +790,11 @@ export class CdsDashboardComponent implements OnInit {
       this.elementIntentSelected['type'] = '';
       this.elementIntentSelected['element'] = null;
       // !!! il valore di listOfIntents è bindato nel costructor con subscriptionListOfIntents !!! //
-      // 1 - rimuovo tutti i listner dell'intent
-      // this.removeListnerEventToElements(intent); ---> se l'intent è stato eliminato dallo stage nn c'è bisogno di eliminare i listner
-      // 2 - cancello tutti i connettori dell'intent
-      this.connectorService.deleteConnectorsOfBlock(intent.intent_id);
-
-      this.intentService.deleteIntentToListOfIntents(intent.intent_id);
       // !!! chiama patch positions !!!!
       swal(this.translate.instant('Done') + "!", this.translate.instant('FaqPage.AnswerSuccessfullyDeleted'), {
         icon: "success",
       }).then(() => {
         // this.intentService.setIntentPosition(intent.intent_id, null);
-
       })
     } else {
       swal(this.translate.instant('AnErrorOccurredWhilDeletingTheAnswer'), {
@@ -815,10 +814,10 @@ export class CdsDashboardComponent implements OnInit {
         if (response) {
           this.isSaving = false;
           console.log('updateIntent: OK', this.intentSelected);
-          console.log('propago aggiornamento intent');
-          this.intentService.behaviorIntent.next(this.intentSelected);
+          // console.log('propago aggiornamento intent');
+          // this.intentService.behaviorIntent.next(this.intentSelected);
         }
-      }, 500);
+      }, 0);
     }
   }
 
@@ -986,6 +985,8 @@ export class CdsDashboardComponent implements OnInit {
       const newAction = this.intentService.createNewAction(event.type);
       console.log("[CDS-DSHBRD] nuova action creata ", newAction);
       this.intentSelected.actions.push(newAction);
+      console.log('propago aggiornamento intent');
+      this.intentService.refreshIntent(this.intentSelected);
       console.log("[CDS-DSHBRD] nuova action aggiunta all'intent ", this.intentSelected);
       this.updateIntent();
     }

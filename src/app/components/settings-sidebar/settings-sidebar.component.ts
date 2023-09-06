@@ -33,6 +33,7 @@ export class SettingsSidebarComponent implements OnInit {
   isVisibleLBS: boolean;
   isVisibleAPP: boolean;
   isVisibleETK: boolean;
+  isVisibleKNB: boolean;
   TAG_ROUTE_IS_ACTIVE: boolean;
   EMAIL_TICKETING_ROUTE_IS_ACTIVE: boolean;
   CANNED_RESPONSES_ROUTE_IS_ACTIVE: boolean;
@@ -45,6 +46,7 @@ export class SettingsSidebarComponent implements OnInit {
   CHATBOT_ROUTE_IS_ACTIVE: boolean;
   PROJECT_SETTINGS_ROUTE_IS_ACTIVE: boolean;
   OPERATING_HOURS_ROUTE_IS_ACTIVE: boolean;
+  KNOWLEDGE_BASES_ROUTE_IS_ACTIVE: boolean;
   public_Key: string;
   USER_ROLE: any;
   CHAT_BASE_URL: string;
@@ -270,6 +272,16 @@ export class SettingsSidebarComponent implements OnInit {
           this.isVisibleETK = true;
         }
       }
+
+      if (key.includes('KNB')) {
+        let etk = key.split(':')
+        if (etk[1] === 'F') {
+          //this.isVisibleKNB = false;  // <---- CHANGE CHANGE CHANGE CHANGE
+          this.isVisibleKNB = true;     // <---- CHANGE CHANGE CHANGE CHANGE
+        } else {
+          this.isVisibleKNB = true;
+        }
+      }
     })
 
     if (!this.public_Key.includes('CAR')) {
@@ -378,6 +390,11 @@ export class SettingsSidebarComponent implements OnInit {
   goToOperatingHours() {
     // routerLink="project/{{ project._id }}/hours"
     this.router.navigate(['project/' + this.project._id + '/hours'])
+  }
+
+  goToKnowledgeBases() {
+    console.log("goToKnowledgeBases -----> project._id: ", this.project._id);
+    this.router.navigate(['project/' + this.project._id + '/knowledge-bases'])
   }
 
   goToProjectSettings() {

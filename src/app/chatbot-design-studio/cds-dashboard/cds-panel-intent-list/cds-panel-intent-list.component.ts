@@ -48,7 +48,7 @@ export class CdsPanelIntentListComponent implements OnInit, OnChanges {
     // console.log(changes);
     setTimeout(() => {
       this.initialize();
-    },100);
+    },0);
   }
 
   private initialize(){

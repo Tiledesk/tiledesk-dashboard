@@ -142,6 +142,24 @@ export class ConnectorService {
             }
           }
 
+          /**  ASKGPT */
+          if(action._tdActionType === TYPE_ACTION.ASKGPT){
+            if(action.trueIntent && action.trueIntent !== ''){
+              const idConnectorFrom = intent.intent_id+'/'+action._tdActionId + '/true';
+              const idConnectorTo =  action.trueIntent.replace("#", "");
+              console.log('[CONNECTOR-SERV] - ASKGPT ACTION -> idConnectorFrom', idConnectorFrom);
+              console.log('[CONNECTOR-SERV] - ASKGPT ACTION -> idConnectorTo', idConnectorTo);
+              this.tiledeskConnectors.createConnectorFromId(idConnectorFrom, idConnectorTo);
+            }
+            if(action.falseIntent && action.falseIntent !== ''){
+              const idConnectorFrom = intent.intent_id+'/'+action._tdActionId + '/false';
+              const idConnectorTo = action.falseIntent.replace("#", "");
+              console.log('[CONNECTOR-SERV] - ASKGPT ACTION -> idConnectorFrom', idConnectorFrom);
+              console.log('[CONNECTOR-SERV] - ASKGPT ACTION -> idConnectorTo', idConnectorTo);
+              this.tiledeskConnectors.createConnectorFromId(idConnectorFrom, idConnectorTo);
+            }
+          }
+
         });
       }
     });

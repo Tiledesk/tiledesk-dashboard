@@ -134,6 +134,7 @@ import { ContactsComponent } from './contacts/contacts.component';
 import { CdsDashboardComponent } from './chatbot-design-studio/cds-dashboard/cds-dashboard.component';
 import { CreateChatbotComponent } from './bots/create-chatbot/create-chatbot.component';
 import { CommunityTemplateDtlsComponent } from './bots/templates/community-template-dtls/community-template-dtls.component';
+import { KnowledgeBasesComponent } from './knowledge-bases/knowledge-bases.component';
 
 
 
@@ -422,6 +423,9 @@ const routes: Routes = [
   // HOURS
   { path: 'project/:projectid/hours', component: HoursComponent, canActivate: [AuthGuard, ProjectProfileGuard] },
   { path: 'project/:projectid/hours-demo', component: HoursStaticComponent, canActivate: [AuthGuard] },
+
+  // KNOWLEDGE BASES
+  { path: 'project/:projectid/knowledge-bases', component: KnowledgeBasesComponent, canActivate: [AuthGuard]},
 
   // RESET PASSORD (i.e. page forgot psw & reset psw )
   { path: 'forgotpsw', component: ResetPswComponent },

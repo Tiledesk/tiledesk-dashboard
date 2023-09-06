@@ -48,8 +48,11 @@
                 (hideActionPlaceholderOfActionPanel)="onHideActionPlaceholderOfActionPanel($event)">
             </cds-panel-elements>
 
-            <div #receiver_elements_dropped_on_stage class="receiver-elements-dropped-on-stage" cdkDropList
-                (cdkDropListDropped)="onDroppedElementToStage($event)"></div>
+            <div #receiver_elements_dropped_on_stage 
+                class="receiver-elements-dropped-on-stage" 
+                cdkDropList
+                (cdkDropListDropped)="onDroppedElementToStage($event)"
+            ></div>
     
             <div #drawer_of_items_to_zoom_and_drag id="tds_drawer" class="tds-drag-drawer box-right-content">
                 <cds-intent *ngFor="let intent of listOfIntents;" 
