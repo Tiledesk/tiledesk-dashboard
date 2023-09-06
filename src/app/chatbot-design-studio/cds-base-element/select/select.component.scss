@@ -83,6 +83,15 @@
                     color: #ff4000
                 }
             }
+
+            span.label-select {
+                margin-right: 4px;
+            }
+
+            span.label-select-option {
+                color: #a8a8a8;
+            }
+            
         }
 
         .ng-clear-wrapper{
@@ -135,7 +144,7 @@
     display: none;
     justify-content: center;
     align-items: center;
-    padding: 4px;
+    //padding: 4px;
 
     .custom-icon {
         color: #ff400060;

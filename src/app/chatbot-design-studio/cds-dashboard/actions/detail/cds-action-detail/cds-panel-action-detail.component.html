@@ -155,6 +155,7 @@
                     
                     <cds-action-askgpt *ngSwitchCase="typeAction.ASKGPT"
                         class="panel-response"
+                        [intentSelected]="intentSelected"
                         [action]="elementSelected"
                         [project_id]="project_id"
                         [previewMode]="false">

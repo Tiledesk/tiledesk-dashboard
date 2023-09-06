@@ -11,6 +11,7 @@ export class OpenaikbsService {
 
   SERVER_BASE_PATH: string;
   TOKEN: string;
+  GPT_API_URL: string;
   user: any;
   project_id: any;
 
@@ -29,6 +30,7 @@ export class OpenaikbsService {
     });
     this.getCurrentProject();
     this.getAppConfig();
+    this.GPT_API_URL = "http://tiledesk-backend.h8dahhe4edc7cahh.francecentral.azurecontainer.io:8000/api";
   }
 
   checkIfUserExistAndGetToken() {
@@ -44,8 +46,15 @@ export class OpenaikbsService {
   }
 
   getCurrentProject() {
+    console.log("get current project")
     this.auth.project_bs.subscribe((project) => {
-      this.project_id = project._id
+      if (project) {
+        this.project_id = project._id
+      }
+    }, (error) => {
+      console.log("get current project ERROR: ", error)
+    }, () => {
+      console.log("*COMPLETE*")
     });
   }
 
@@ -58,7 +67,7 @@ export class OpenaikbsService {
     }
 
     const url = this.SERVER_BASE_PATH + this.project_id + "/openai_kbs";
-    console.log('[OPENAIKBS.SERVICE] - url ', url);
+    console.log('[OPENAIKBS.SERVICE] getAllOpenaikbs - url ', url);
 
     return this.httpClient.get(url, httpOptions);
   }
@@ -72,7 +81,7 @@ export class OpenaikbsService {
     }
 
     const url = this.SERVER_BASE_PATH + this.project_id + "/openai_kbs";
-    console.log('[OPENAIKBS.SERVICE] - url ', url);
+    console.log('[OPENAIKBS.SERVICE] addOpenaiKb - url ', url);
 
     return this.httpClient.post(url, openaikb, httpOptions);
   } 
@@ -86,10 +95,59 @@ export class OpenaikbsService {
     }
 
     const url = this.SERVER_BASE_PATH + this.project_id + "/openai_kbs/" + kbid;
-    console.log('[OPENAIKBS.SERVICE] - url ', url);
+    console.log('[OPENAIKBS.SERVICE] deleteOpenaiKb - url ', url);
 
     return this.httpClient.delete(url, httpOptions);
   }
 
 
+  ////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////////////
+
+  askGpt(data) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    }
+
+    const url = this.GPT_API_URL + "/qa"
+    console.log('[GPT.SERV] - GET *ALL* TEMPLATES - URL', url);
+    console.log("data: ", data);
+
+    return this.httpClient.post(url, data, httpOptions);
+  }
+
+  startScraping(data) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    }
+
+    const url = this.GPT_API_URL + "/scrape";
+    console.log('[GPT.SERV] - GET *ALL* TEMPLATES - URL', url);
+    console.log("data: ", data);
+
+    return this.httpClient.post(url, data, httpOptions);
+
+  }
+
+  checkScrapingStatus(data) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    }
+
+    const url = this.GPT_API_URL + "/scrape/status";
+    console.log('[GPT.SERV] - GET *ALL* TEMPLATES - URL', url);
+    console.log("data: ", data);
+
+    return this.httpClient.post(url, data, httpOptions);
+  }
+
+  
 }

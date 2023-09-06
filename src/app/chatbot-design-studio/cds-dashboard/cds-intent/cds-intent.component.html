@@ -215,7 +215,9 @@
 
                 <cds-action-askgpt *ngSwitchCase="TYPE_ACTION.ASKGPT" 
                     class="panel-response" 
-                    [action]="action">
+                    [action]="action"
+                    [intentSelected]="intent" 
+                    (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-askgpt>
 
             </div>
