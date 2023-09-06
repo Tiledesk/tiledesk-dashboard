@@ -13,20 +13,20 @@
     gap: 5px;
     padding: 3px 0px;
     
-    span.icon {
-      width: 20px;
-      display: flex;
-      align-self: flex-start;
-      //margin-top: 5px;
-      margin-top: 0px;
-    }  
-    
     .title-preview-label{
      color: #6c6859;
      font-size: 12px; 
      margin: 0px;
     }
 }
+
+span.icon {
+    width: 20px;
+    display: flex;
+    align-self: flex-start;
+    //margin-top: 5px;
+    margin-top: 0px;
+  }  
 
 .preview-divider {
     margin: 0;
@@ -36,7 +36,7 @@
 cds-connector.connector-true,
 cds-connector.connector-false{
     position: absolute;
-    right: -25px;
+    right: -31px;
     top: calc(50% - 10px);
 }
 
@@ -135,51 +135,28 @@ div.value-wrp {
     }
 }
 
-::ng-deep cds-textarea#gptquestion {
-    textarea {
-        border: 1px solid rgb(118, 118, 118) !important;
-        resize: none !important; 
-        padding: 8px 20px !important;
-        // height: 25px !important;
-        // min-height: 25px !important;
-    }
-}
 
-::ng-deep cds-textarea#assignTo {
+cds-textarea#question ::ng-deep {
     display: flex;
 
     textarea {
         border: 1px solid rgb(118, 118, 118) !important;
         resize: none !important;
         padding: 8px 20px !important;
-        resize: none !important; 
-        // padding: 8px 20px !important;
-        // height: 25px !important;
-        // min-height: 25px !important;
+        height: 25px !important;
+        min-height: 25px !important;
     }
 }
 
- cds-textarea#question ::ng-deep{
+cds-textarea#assignTo ::ng-deep {
     display: flex;
 
     textarea {
         border: 1px solid rgb(118, 118, 118) !important;
         resize: none !important;
         padding: 8px 20px !important;
-        // height: 25px !important;
-        // min-height: 25px !important;
-    }
-}
-
-::ng-deep cds-textarea#question {
-    display: flex;
-
-    textarea {
-        border: 1px solid rgb(118, 118, 118) !important;
-        resize: none !important;
-        padding: 8px 20px !important;
-        // min-height: 50px !important;
-        // max-height: 130px !important;
+        height: 25px !important;
+        min-height: 25px !important;
     }
 }
 
@@ -528,15 +505,6 @@ div.value-wrp {
     color: #ff4e4e;
     font-size: 14px;
     filter: drop-shadow(2px 2px 6px black);
-}
-
-span.icon {
-    width: 26px;
-    height: 26px;
-    display: flex;
-    align-self: flex-start;
-    margin-top: 6px;
-    margin-right: 6px;
 }
 
 .variable-container {

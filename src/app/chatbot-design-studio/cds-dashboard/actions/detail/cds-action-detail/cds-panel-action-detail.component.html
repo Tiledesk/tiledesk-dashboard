@@ -158,7 +158,8 @@
                         [intentSelected]="intentSelected"
                         [action]="elementSelected"
                         [project_id]="project_id"
-                        [previewMode]="false">
+                        [previewMode]="false"
+                        (onCreateUpdateConnector)="createOrUpdateConnector($event.fromId, $event.toId)">
                     </cds-action-askgpt>
                     
                     <!-- <cds-action-assign-function *ngSwitchCase="typeAction.ASSIGN_FUNCTION"

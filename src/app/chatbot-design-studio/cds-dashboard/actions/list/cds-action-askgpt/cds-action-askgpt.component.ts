@@ -22,6 +22,8 @@ export class CdsActionAskgptComponent implements OnInit {
   @Input() previewMode: boolean = true;
   @Input() project_id: string;
   @Output() updateAndSaveAction = new EventEmitter;
+  @Output() onCreateUpdateConnector = new EventEmitter<{fromId: string, toId: string}>()
+  
   listOfIntents: Array<{name: string, value: string, icon?:string}>;
 
   // Connectors
@@ -180,12 +182,20 @@ export class CdsActionAskgptComponent implements OnInit {
     }
   }
 
-  onChangeBlockSelect(event, target) {
-    if(event.value){
-      this.action[target] = event.value
-    } else {
-      this.action[target] = event
+  onChangeBlockSelect(event:{name: string, value: string}, type: 'trueIntent' | 'falseIntent') {
+    if(event){
+      this.action[type]=event.value
     }
+
+    switch(type){
+      case 'trueIntent':
+        this.onCreateUpdateConnector.emit({ fromId: this.idConnectorTrue, toId: this.action.trueIntent})
+        break;
+      case 'falseIntent':
+        this.onCreateUpdateConnector.emit({fromId: this.idConnectorFalse, toId: this.action.falseIntent})
+        break;
+    }
+    this.updateAndSaveAction.emit();
   }
   
   onChangeAttributes(attributes:any, type:'trueIntent' | 'falseIntent'){
