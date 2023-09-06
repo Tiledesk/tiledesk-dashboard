@@ -1,5 +1,45 @@
 @import "./src/assets/sass/cds/_variables.scss";
 
+.cds-action-content{
+    padding: 10px 16px 0px 16px;
+}
+
+.previewContent{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 5px;
+    padding: 3px 0px;
+    
+    span.icon {
+      width: 20px;
+      display: flex;
+      align-self: flex-start;
+      //margin-top: 5px;
+      margin-top: 0px;
+    }  
+    
+    .title-preview-label{
+     color: #6c6859;
+     font-size: 12px; 
+     margin: 0px;
+    }
+}
+
+.preview-divider {
+    margin: 0;
+    border-top: 2px solid $light-brown;
+}
+
+cds-connector.connector-true,
+cds-connector.connector-false{
+    position: absolute;
+    right: -25px;
+    top: calc(50% - 10px);
+}
+
 .content {
     max-height: calc(100vh - 200px);
     padding: 20px 40px;

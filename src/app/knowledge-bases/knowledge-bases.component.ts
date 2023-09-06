@@ -16,6 +16,7 @@ export class KnowledgeBasesComponent implements OnInit {
 
   addKnowledgeBaseModal = 'none';
   previewKnowledgeBaseModal = 'none';
+  deleteKnowledgeBaseModal = 'none';
   showSpinner: boolean = true;
   buttonDisabled: boolean = true;
   addButtonDisabled: boolean = false;
@@ -70,23 +71,18 @@ export class KnowledgeBasesComponent implements OnInit {
   // --------------------
 
   getKnowledgeBases() {
-    console.log("get all")
     this.openaikbService.getAllOpenaikbs().subscribe((kbs: any[]) => {
       this.kbsList = kbs;
-      console.log("KBS List: ", this.kbsList);
-      console.log("KBS List length: ", this.kbsList.length);
-
       if (this.kbsList.length === 3) {
-        console.log("disabilita bottone")
         this.addButtonDisabled = true;
       } else {
         this.addButtonDisabled = false
       }
       this.checkAllStatuses();
     }, (error) => {
-      console.error("[KNOWLEDGE BASES COMP] ERROR get all kbs");
+      this.logger.error("[KNOWLEDGE BASES COMP] ERROR get all kbs");
     }, () => {
-      console.log("[KNOWLEDGE BASES COMP] get all kbs *COMPLETE*");
+      this.logger.info("[KNOWLEDGE BASES COMP] get all kbs *COMPLETE*");
       this.showSpinner = false;
     })
   }
@@ -100,10 +96,8 @@ export class KnowledgeBasesComponent implements OnInit {
 
   onChangeInput(event): void {
     if (this.kbForm.valid) {
-      console.log("valid")
       this.buttonDisabled = false;
     } else {
-      console.log("not valid")
       this.buttonDisabled = true;
     }
   }
@@ -115,10 +109,6 @@ export class KnowledgeBasesComponent implements OnInit {
     } else {
       element.style.display = 'none';
     }
-  }
-
-  updateProject() {
-    console.log("update Project")
   }
 
   saveKnowledgeBase() {
@@ -138,8 +128,6 @@ export class KnowledgeBasesComponent implements OnInit {
     }
     this.newKb.name = this.newKb.url.substring(split_index);
 
-    console.log("Kb to be added: ", this.newKb);
-
     this.openaikbService.addOpenaiKb(this.newKb).subscribe((savedKb) => {
       this.getKnowledgeBases();
       this.closeAddKnowledgeBaseModal();
@@ -152,12 +140,12 @@ export class KnowledgeBasesComponent implements OnInit {
 
   deleteKnowledgeBase(id) {
     this.openaikbService.deleteOpenaiKb(id).subscribe((response) => {
-      console.log("[KNOWLEDGE BASES COMP] delete kb response: ", response);
       this.getKnowledgeBases();
+      this.closeDeleteKnowledgeBaseModal();
     }, (error) => {
-      console.error("[KNOWLEDGE BASES COMP] ERROR delete kb: ", error);
+      this.logger.error("[KNOWLEDGE BASES COMP] ERROR delete kb: ", error);
     }, () => {
-      console.log("[KNOWLEDGE BASES COMP] delete kb *COMPLETE*: ");
+      this.logger.info("[KNOWLEDGE BASES COMP] delete kb *COMPLETE*: ");
     })
   }
 
@@ -177,9 +165,7 @@ export class KnowledgeBasesComponent implements OnInit {
 
   checkAllStatuses() {
     let promises = [];
-
     this.kbsList.forEach((kb) => {
-
       promises.push(this.checkStatus(kb).then((status_code) => {
         console.log("kb " + kb.url + " status: " + status_code);
         kb.status = status_code;
@@ -191,8 +177,6 @@ export class KnowledgeBasesComponent implements OnInit {
     Promise.all(promises).then((res) => {
       console.log("Promise all COMPLETED");
     })
-
-
   }
 
   checkStatus(kb) {
@@ -201,7 +185,7 @@ export class KnowledgeBasesComponent implements OnInit {
     }
     return new Promise((resolve, reject) => {
       this.openaikbService.checkScrapingStatus(data).subscribe((response: any) => {
-        console.log("-----> response <----- : ", response);
+        console.log("checkScrapingStatus response ----> : ", response);
         resolve(response.status_code);
       }, (error) => {
         reject(null)
@@ -210,22 +194,18 @@ export class KnowledgeBasesComponent implements OnInit {
   }
 
   submitQuestion() {
-    console.log("question: ", this.question);
-
     let data = {
       question: this.question,
       kbid: this.kbid_selected.url,
       gptkey: this.kbid_selected.gptkey
     }
-    console.log("data to submit: ", data);
 
     this.searching = true;
     this.show_answer = false;
 
     this.openaikbService.askGpt(data).subscribe((response: any) => {
-      console.log("ask gpt response: ", response)
       if (response.success == false) {
-        this.error_answer = true; 
+        this.error_answer = true;
       } else {
         this.answer = response.answer;
         this.source_url = response.source_url;
@@ -235,14 +215,13 @@ export class KnowledgeBasesComponent implements OnInit {
       this.searching = false;
       setTimeout(() => {
         let element = document.getElementById("answer");
-        console.log("element: ", element);
         element.classList.add('answer-active');
       }, (200));
     }, (error) => {
-      console.error("ERROR ask gpt: ", error);
+      this.logger.error("ERROR ask gpt: ", error);
       this.searching = false;
     }, () => {
-      console.log("ask gpt *COMPLETE*")
+      this.logger.info("ask gpt *COMPLETE*")
       this.searching = false;
     })
   }
@@ -252,16 +231,26 @@ export class KnowledgeBasesComponent implements OnInit {
   }
 
   openPreviewKnowledgeBaseModal(kb) {
-    console.log("preview on kbid: ", kb);
     this.kbid_selected = kb;
     this.previewKnowledgeBaseModal = 'block';
   }
 
+  openDeleteKnowledgeBaseModal(kb) {
+    this.kbid_selected = kb;
+    this.deleteKnowledgeBaseModal = 'block';
+  }
+
   closeAddKnowledgeBaseModal() {
     this.addKnowledgeBaseModal = 'none';
+    this.newKb = { name: '', url: '', gptkey: ''}
   }
 
   closePreviewKnowledgeBaseModal() {
     this.previewKnowledgeBaseModal = 'none';
   }
+
+  closeDeleteKnowledgeBaseModal() {
+    this.deleteKnowledgeBaseModal = 'none';
+  }
+
 }

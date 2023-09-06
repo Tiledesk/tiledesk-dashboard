@@ -305,9 +305,8 @@ export class ActionAskGPT extends Action {
     gptkey: string;
     assignReplyTo: string;
     assignSourceTo: string;
-    assignSuccessTo: string;
-    trueIntent?: string;
-    falseIntent?: string;
+    trueIntent: string;
+    falseIntent: string;
     trueIntentAttributes?: string;
     falseIntentAttributes?: string;
     constructor() {

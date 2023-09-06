@@ -1,5 +1,5 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ActionAskGPT } from 'app/models/intent-model';
+import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
+import { ActionAskGPT, Intent } from 'app/models/intent-model';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { variableList } from 'app/chatbot-design-studio/utils';
 import { MatDialog } from '@angular/material/dialog';
@@ -17,11 +17,20 @@ import { IntentService } from 'app/chatbot-design-studio/services/intent.service
 })
 export class CdsActionAskgptComponent implements OnInit {
 
+  @Input() intentSelected: Intent;
   @Input() action: ActionAskGPT;
   @Input() previewMode: boolean = true;
   @Input() project_id: string;
   @Output() updateAndSaveAction = new EventEmitter;
   listOfIntents: Array<{name: string, value: string, icon?:string}>;
+
+  // Connectors
+  idIntentSelected: string;
+  idConnectorTrue: string;
+  idConnectorFalse: string;
+  isConnectedTrue: boolean = false;
+  isConnectedFalse: boolean = false;
+  connector: any;
 
   kbs_list = [];
   kb_selected_id: null;
@@ -54,13 +63,63 @@ export class CdsActionAskgptComponent implements OnInit {
     this.kbid = this.action.kbid;
     this.gptkey = this.action.gptkey;
 
+    this.intentService.isChangedConnector$.subscribe((connector: any) => {
+      this.logger.debug('[ACTION-ASKGPT] isChangedConnector -->', connector);
+      this.connector = connector;
+      this.updateConnector();
+    });
+
     this.getAllOpenaiKbs();
     this.initializeAttributes();
-    this.initializeConnector();
+  }
+
+  ngOnChanges() {
+    if(this.intentSelected){
+      this.initializeConnector();
+    }
   }
 
   initializeConnector() {
+    this.idIntentSelected = this.intentSelected.intent_id;
+    this.idConnectorTrue = this.idIntentSelected+'/'+this.action._tdActionId + '/true';
+    this.idConnectorFalse = this.idIntentSelected+'/'+this.action._tdActionId + '/false';
+
     this.listOfIntents = this.intentService.getListOfIntents()
+  }
+
+  private updateConnector(){
+    try {
+      const array = this.connector.fromId.split("/");
+      const idAction= array[1];
+      if(idAction === this.action._tdActionId){
+        if(this.connector.deleted){ //TODO: verificare quale dei due connettori è stato eliminato e impostare isConnected a false
+          // DELETE 
+          if(array[array.length -1] === 'true'){
+            this.action.trueIntent = null
+            this.isConnectedTrue = false
+          }        
+          if(array[array.length -1] === 'false'){
+            this.action.falseIntent = null
+            this.isConnectedFalse = false;
+          }
+        } else { //TODO: verificare quale dei due connettori è stato aggiunto (controllare il valore della action corrispondente al true/false intent)
+          // ADD / EDIT
+          this.logger.debug('[ACTION-ASKGPT] updateConnector', this.connector.toId, this.connector.fromId ,this.action, array[array.length-1]);
+          if(array[array.length -1] === 'true'){
+            this.action.trueIntent = '#'+this.connector.toId;
+            this.isConnectedTrue = true
+          }        
+          if(array[array.length -1] === 'false'){
+            this.action.falseIntent = '#'+this.connector.toId;
+            this.isConnectedFalse = true;
+          }
+        }
+
+        this.updateAndSaveAction.emit();
+      }
+    } catch (error) {
+      this.logger.error('[ACTION-ASKGPT] updateConnector error: ', error);
+    }
   }
 
   getAllOpenaiKbs() {
@@ -69,31 +128,17 @@ export class CdsActionAskgptComponent implements OnInit {
         t.icon = "language"
         return t;
       })
-      console.log("kbid: ", this.action.kbid);
       if (this.action.kbid) {
         this.kb_selected_id = this.kbs_list.find(k => k.url === this.action.kbid)._id;
         this.kb_selected_name = this.kbs_list.find(k => k.url === this.action.kbid).name;
-        this.checkKbStatus(this.action.kbid);
+        //this.checkKbStatus(this.action.kbid);
       }
-      this.checkLimit();
+      //this.checkLimit();
     }, (error) => {
       this.logger.error("[ACTION ASKGPT] ERROR get openai kbs: ", error);
     }, () => {
       this.logger.info("[ACTION ASKGPT] get openai kbs *COMPLETED*");
     })
-  }
-
-  checkLimit() {
-    console.log("checking limit...")
-    if (this.kbs_list.length >= 3) {
-      this.buttonDisabled = true;
-      this.buttonIcon = null;
-      this.buttonText = "Maximum number of Knwoledge Bases reached"
-    } else {
-      this.buttonDisabled = false;
-      this.buttonIcon = "add";
-      this.buttonText = "Add Knowledge Bases"
-    }
   }
 
   private initializeAttributes() {
@@ -108,7 +153,7 @@ export class CdsActionAskgptComponent implements OnInit {
       new_attributes.push({ name: "gpt_success", value: "gpt_success" });
     }
     variableList.userDefined = [ ...variableList.userDefined, ...new_attributes];
-    this.logger.debug("Initialized variableList.userDefined: ", variableList.userDefined);
+    this.logger.debug("[ACTION ASKGPT] Initialized variableList.userDefined: ", variableList.userDefined);
   }
 
   changeTextarea($event: string, property: string) {
@@ -124,118 +169,157 @@ export class CdsActionAskgptComponent implements OnInit {
   }
 
   onChangeSelect(event) {
-    console.log("kbid change event: ", event);
     if (event.clickEvent === 'footer') {
-      this.openAddKbDialog();
+      // this.openAddKbDialog();  moved in knowledge base settings
     } else {
       this.action.kbid = event.url;
       this.action.gptkey = event.gptkey;
       this.kb_selected_id = this.kbs_list.find(k => k.url === this.action.kbid)._id;
-      this.checkKbStatus(this.action.kbid);
+      //this.checkKbStatus(this.action.kbid);
       this.logger.log("[ACTION-ASKGPT] updated action", this.action);
-      console.log("[ACTION-ASKGPT] updated action", this.action);
     }
   }
 
-  onChangeForm(event, target) {
-    console.log("onChangeForm event: ", event)
-    console.log("onChangeForm target: ", target)
-  }
-  onDeleteSelect(id) {
-    this.openDeleteDialog(id);
-  }
-
-  openDeleteDialog(id) {
-    const dialogRef = this.dialog.open(DialogYesNoComponent, {
-      panelClass: 'custom-dialog-container',
-      data: { title: 'Delete Knowledge base', text: 'Are you sure you want to delete permanently this Knwoledge base?', yes: 'Delete', no: 'Cancel' }
-    })
-    dialogRef.afterClosed().subscribe(result => {
-      if (result && result !== undefined && result !== false) {
-        this.deleteKb(id);
-      }
-    })
-  }
-
-  deleteKb(id: string) {
-    if (this.kb_selected_id === id) {
-      this.action.kbid = null;
-      this.kb_selected_id = null;
-      this.status_code = null;
-    }
-    this.openaikbService.deleteOpenaiKb(id).subscribe((deletedKb) => {
-      this.logger.info("deletedKb response ", deletedKb);
-      console.log("deletedKb response ", deletedKb);
-      this.getAllOpenaiKbs();
-    }, (error) => {
-      this.logger.error("[ACTION ASKGPT] ERROR delete kb: ", error);
-    }, () => {
-      this.logger.info("[ACTION ASKGPT] delete kb *COMPLETE*");
-    })
-  }
-
-  openAddKbDialog() {
-    const dialogRef = this.dialog.open(AddkbDialogComponent, {
-      panelClass: 'custom-dialog-container',
-      data: { name: '', url: '' }
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      this.logger.info("[ACTION ASKGPT] Dialog result - new openai kb: ", result);
-      if (result && result.name && result.url) {
-        this.saveOpenaiKb(result);
-      }
-    });
-  }
-
-  saveOpenaiKb(new_kb) {
-    this.openaikbService.addOpenaiKb(new_kb).subscribe((savedKb) => {
-      this.getAllOpenaiKbs();
-    }, (error) => {
-      this.logger.error("[ACTION ASKGPT] ERROR add new kb: ", error);
-    }, () => {
-      this.logger.info("[ACTION ASKGPT] add new kb *COMPLETED*");
-    })
-  }
-
-  startKbIndexing() {
-
-    this.spinner = true;
-    if (!this.action.gptkey) {
-      this.indexing_hint = "Missing GPT Key"
-      this.spinner = false;
+  onChangeBlockSelect(event, target) {
+    if(event.value){
+      this.action[target] = event.value
     } else {
-      let data = {
-        full_url: this.action.kbid,
-        gptkey: this.action.gptkey
-      }
+      this.action[target] = event
+    }
+  }
+  
+  onChangeAttributes(attributes:any, type:'trueIntent' | 'falseIntent'){
+    console.log("type: ", type)
+    console.log("attributes: ", attributes)
+    if (type === 'trueIntent') {
+      this.action.trueIntentAttributes = attributes;
+    }
+    if (type === 'falseIntent') {
+      this.action.falseIntentAttributes = attributes;
+    }
+    console.log("action updated: ", this.action)
+  }
 
-      this.gptService.startScraping(data).subscribe((response: any) => {
-        if (response.message === 'Invalid Openai API key') {
-          this.indexing_hint = response.message;
-        }
-        this.checkKbStatus(this.action.kbid);
-      }, (error) => {
-        this.logger.error("[ACTION ASKGPT] error start indexing: ", error);
-        this.indexing_hint = error.message;
-        this.spinner = false;
-      }, () => {
-        this.logger.log("[ACTION ASKGPT] start indexing *COMPLETE*");
-      })
+  @HostListener('document:visibilitychange')
+  visibilitychange() {
+    if (!document.hidden) {
+      this.getAllOpenaiKbs();
     }
   }
 
-  checkKbStatus(kbid) {
-    let data = {
-      full_url: kbid 
-    }
-    this.gptService.checkScrapingStatus(data).subscribe((status: any) => {
-      this.spinner = false;
-      this.logger.log("[ACTION ASKGPT] Scraping status: ", status);
-      this.status_code = status.status_code;;
-    }, (error) => {
-      this.logger.error("[ACTION ASKGPT] error getting scraping status: ", error);
-    }, () => {
-      this.logger.log("[ACTION ASKGPT] get scraping status *COMPLETE*")
-    })
-  }
+
+  // -----------------
+  // TO CHECK / DELETE
+  // -----------------
+
+  // openAddKbDialog() {
+  //   const dialogRef = this.dialog.open(AddkbDialogComponent, {
+  //     panelClass: 'custom-dialog-container',
+  //     data: { name: '', url: '' }
+  //   });
+  //   dialogRef.afterClosed().subscribe(result => {
+  //     this.logger.info("[ACTION ASKGPT] Dialog result - new openai kb: ", result);
+  //     if (result && result.name && result.url) {
+  //       this.saveOpenaiKb(result);
+  //     }
+  //   });
+  // }
+
+  // saveOpenaiKb(new_kb) {
+  //   this.openaikbService.addOpenaiKb(new_kb).subscribe((savedKb) => {
+  //     this.getAllOpenaiKbs();
+  //   }, (error) => {
+  //     this.logger.error("[ACTION ASKGPT] ERROR add new kb: ", error);
+  //   }, () => {
+  //     this.logger.info("[ACTION ASKGPT] add new kb *COMPLETED*");
+  //   })
+  // }
+
+  // onDeleteSelect(id) {
+  //   this.openDeleteDialog(id);
+  // }
+
+  // openDeleteDialog(id) {
+  //   const dialogRef = this.dialog.open(DialogYesNoComponent, {
+  //     panelClass: 'custom-dialog-container',
+  //     data: { title: 'Delete Knowledge base', text: 'Are you sure you want to delete permanently this Knwoledge base?', yes: 'Delete', no: 'Cancel' }
+  //   })
+  //   dialogRef.afterClosed().subscribe(result => {
+  //     if (result && result !== undefined && result !== false) {
+  //       this.deleteKb(id);
+  //     }
+  //   })
+  // }
+
+  // deleteKb(id: string) {
+  //   if (this.kb_selected_id === id) {
+  //     this.action.kbid = null;
+  //     this.kb_selected_id = null;
+  //     this.status_code = null;
+  //   }
+  //   this.openaikbService.deleteOpenaiKb(id).subscribe((deletedKb) => {
+  //     this.logger.info("deletedKb response ", deletedKb);
+  //     console.log("deletedKb response ", deletedKb);
+  //     this.getAllOpenaiKbs();
+  //   }, (error) => {
+  //     this.logger.error("[ACTION ASKGPT] ERROR delete kb: ", error);
+  //   }, () => {
+  //     this.logger.info("[ACTION ASKGPT] delete kb *COMPLETE*");
+  //   })
+  // }
+
+  // checkKbStatus(kbid) {
+  //   let data = {
+  //     full_url: kbid 
+  //   }
+  //   this.gptService.checkScrapingStatus(data).subscribe((status: any) => {
+  //     this.spinner = false;
+  //     this.logger.log("[ACTION ASKGPT] Scraping status: ", status);
+  //     this.status_code = status.status_code;;
+  //   }, (error) => {
+  //     this.logger.error("[ACTION ASKGPT] error getting scraping status: ", error);
+  //   }, () => {
+  //     this.logger.log("[ACTION ASKGPT] get scraping status *COMPLETE*")
+  //   })
+  // }
+
+  // startKbIndexing() {
+
+  //   this.spinner = true;
+  //   if (!this.action.gptkey) {
+  //     this.indexing_hint = "Missing GPT Key"
+  //     this.spinner = false;
+  //   } else {
+  //     let data = {
+  //       full_url: this.action.kbid,
+  //       gptkey: this.action.gptkey
+  //     }
+
+  //     this.gptService.startScraping(data).subscribe((response: any) => {
+  //       if (response.message === 'Invalid Openai API key') {
+  //         this.indexing_hint = response.message;
+  //       }
+  //       this.checkKbStatus(this.action.kbid);
+  //     }, (error) => {
+  //       this.logger.error("[ACTION ASKGPT] error start indexing: ", error);
+  //       this.indexing_hint = error.message;
+  //       this.spinner = false;
+  //     }, () => {
+  //       this.logger.log("[ACTION ASKGPT] start indexing *COMPLETE*");
+  //     })
+  //   }
+  // }
+
+  // checkLimit() {
+  //   if (this.kbs_list.length >= 3) {
+  //     this.buttonDisabled = true;
+  //     this.buttonIcon = null;
+  //     this.buttonText = "Maximum number of Knwoledge Bases reached"
+  //   } else {
+  //     this.buttonDisabled = false;
+  //     this.buttonIcon = "add";
+  //     this.buttonText = "Add Knowledge Bases"
+  //   }
+  // }
+
 }
