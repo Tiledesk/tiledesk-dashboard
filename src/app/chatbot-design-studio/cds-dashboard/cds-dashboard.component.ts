@@ -499,7 +499,6 @@ export class CdsDashboardComponent implements OnInit {
   private removeConnectorDraftAndCloseFloatMenu() {
     this.connectorService.removeConnectorDraft();
     this.isOpenAddActionsMenu = false;
-    console.log('ho rimosso il connettore tratteggiato e ho chiuso il float menu');
   }
 
 

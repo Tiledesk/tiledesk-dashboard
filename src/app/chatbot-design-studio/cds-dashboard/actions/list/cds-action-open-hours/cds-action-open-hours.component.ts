@@ -108,7 +108,6 @@ export class CdsActionOpenHoursComponent implements OnInit {
       if (form && (form.trueIntent !== ''))
         this.action = Object.assign(this.action, this.actionOpenHoursFormGroup.value);
     })
-    console.log('attributesssssss--->', this.action)
     this.trueIntentAttributes = this.action.trueIntentAttributes;
     this.falseIntentAttributes = this.action.falseIntentAttributes;
   }
