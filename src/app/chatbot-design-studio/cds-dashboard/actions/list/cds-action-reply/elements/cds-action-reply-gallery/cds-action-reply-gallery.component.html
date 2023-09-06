@@ -137,7 +137,7 @@
                     </div>
                 </div>
                 <!-- NEW BUTTON ADD-->
-                <div class="gallery-buttons-add">
+                <div *ngIf="galleryEl.buttons.length < 3"class="gallery-buttons-add">
                     <div class="gallery-buttons-add-lines"></div>
                     <div class="csd-add-button-btn-wpr csd-add-button-btn-wpr-element" (click)="onAddButton(i)">
                         <button class="btn btn-white cds-add-action-btn csd-add-action-btn-wpr-element">
@@ -223,6 +223,9 @@
                     [isConnected] = "button.__isConnected">
                 </cds-connector>
         
+            </div>
+            <div *ngIf="galleryEl.buttons.length < 3" class="button-reply-add single-btn-reply" (click)="$event.stopPropagation();onAddButton(i)">
+                + Add button
             </div>
         </div> 
         <!-- <div class="gallery-divider"></div> -->

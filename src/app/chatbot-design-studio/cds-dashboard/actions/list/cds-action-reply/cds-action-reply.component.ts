@@ -321,17 +321,6 @@ export class CdsActionReplyComponent implements OnInit {
     this.updateAndSaveAction.emit();
   }
 
-
-
-
-
-  
-
-
-
-
-
-
   // on intent name //
 
   /** onChangeIntentName */
@@ -357,14 +346,6 @@ export class CdsActionReplyComponent implements OnInit {
       this.logger.log("Error: ", error);
     }
   }
-
-
-
-
-
-
-
-
 
 
   /** appdashboard-button-configuration-panel: onOpenButtonPanel */
@@ -400,8 +381,5 @@ export class CdsActionReplyComponent implements OnInit {
     // this.logger.log('onFocusOutEvent ::::::: ', event);
     // this.onCloseButtonPanel()
   }
-
-
-
   
 }
