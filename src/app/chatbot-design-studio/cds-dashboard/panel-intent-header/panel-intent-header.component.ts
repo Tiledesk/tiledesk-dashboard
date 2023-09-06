@@ -113,19 +113,24 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
 
   // EVENT FUNCTIONS //
   onChangeIntentName(name: string) {
-    console.log("[PANEL-INTENT-HEADER] onChangeIntentName");
+    // this.logger.log("[PANEL-INTENT-HEADER] onChangeIntentName");
     this.checkIntentName(name)
     this.onSaveIntent();
   }
 
   onMouseUpInput(){
-    console.log("[PANEL-INTENT-HEADER] onMouseUpInput");
+    // this.logger.log("[PANEL-INTENT-HEADER] onMouseUpInput");
     this.isFocused = true;
     this.myInput.nativeElement.focus();
   }
 
+  doubleClickFunction(event){
+    // this.logger.log("[PANEL-INTENT-HEADER] doubleClickFunction");
+    this.myInput.nativeElement.select()
+  }
+
   // onMouseBlur(){
-  //   console.log("[PANEL-INTENT-HEADER] onMouseBlur");
+  //   this.logger.log("[PANEL-INTENT-HEADER] onMouseBlur");
   //   this.isFocused = false;
   // }
 

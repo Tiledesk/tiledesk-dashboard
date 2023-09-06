@@ -25,6 +25,7 @@
             [readonly]="intentName === 'start' || intentName === 'defaultFallback'"
             (ngModelChange)="onChangeIntentName($event)" 
             (keydown.enter)="onEnterButtonPressed($event)"
+            (dblclick)="doubleClickFunction($event)"
             [placeholder]="'EnterIntentName' | translate">
         <div *ngIf="intentNameAlreadyExist" class="error---msg"> The block name must be unique </div>
         <div *ngIf="intentNameNotHasSpecialCharacters === false" class="error---msg"> The block name cannot contain
