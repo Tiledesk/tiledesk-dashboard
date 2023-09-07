@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter, OnChanges, ChangeDetect
 import { ConnectorService } from 'app/chatbot-design-studio/services/connector.service';
 import { IntentService } from 'app/chatbot-design-studio/services/intent.service';
 import { TYPE_ACTION, TYPE_INTENT_ELEMENT } from 'app/chatbot-design-studio/utils';
-import { Intent } from 'app/models/intent-model';
+import { Action, Form, Intent } from 'app/models/intent-model';
 import { LoggerService } from 'app/services/logger/logger.service';
 
 @Component({
@@ -23,8 +23,8 @@ export class CdsActionDetailPanelComponent implements OnInit, OnChanges {
   typeAction = TYPE_ACTION;
   
   elementSelected: any;
-  elementSelectedIndex: number;
-  elementSelectedMaxLength: number[] = [];
+  // elementSelectedIndex: number;
+  // elementSelectedMaxLength: number[] = [];
   elementIntentSelectedType: string;
   openCardButton = false;
   
@@ -96,7 +96,8 @@ export class CdsActionDetailPanelComponent implements OnInit, OnChanges {
 
   onSaveIntent(){
     if(this.elementIntentSelectedType === this.typeIntentElement.ACTION){
-      this.intentSelected.actions[this.elementSelectedIndex] = this.elementSelected;
+      const index = this.intentSelected.actions.findIndex(el => el._tdActionId = this.elementSelected._tdActionId)
+      this.intentSelected.actions[index] = this.elementSelected;
     } else if(this.elementIntentSelectedType === this.typeIntentElement.ANSWER){
       this.intentSelected.answer = this.elementSelected;
     } else if(this.elementIntentSelectedType === this.typeIntentElement.QUESTION){

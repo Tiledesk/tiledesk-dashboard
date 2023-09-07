@@ -19,10 +19,10 @@
         <div class="action-row-left">
             <span class="material-icons-outlined" style="color: #827e71; font-size: 20px;">school</span>
         </div>
-        <div *ngIf="kb_selected_name" class="action-row-right">
-            {{kb_selected_name}}
+        <div *ngIf="action?.kbid" class="action-row-right">
+            {{getValue('name')}}
         </div>
-        <div *ngIf="!kb_selected_name" class="action-row-right">
+        <div *ngIf="!action?.kbid" class="action-row-right">
             Select Knowledge Base
         </div>
     </div>

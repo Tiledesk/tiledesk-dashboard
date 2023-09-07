@@ -1,4 +1,4 @@
-import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { ActionAskGPT, Intent } from 'app/models/intent-model';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { variableList } from 'app/chatbot-design-studio/utils';
@@ -35,8 +35,8 @@ export class CdsActionAskgptComponent implements OnInit {
   connector: any;
 
   kbs_list = [];
-  kb_selected_id: null;
-  kb_selected_name: null;
+  kb_selected_id: string = '';
+  kb_selected_name: string = '';
   status_code: number;
   indexing_hint: string = null;
 
@@ -75,10 +75,11 @@ export class CdsActionAskgptComponent implements OnInit {
     this.initializeAttributes();
   }
 
-  ngOnChanges() {
+  ngOnChanges(changes: SimpleChanges) {
     if(this.intentSelected){
       this.initializeConnector();
     }
+    console.log('changessssssss', this.previewMode, this.action)
   }
 
   initializeConnector() {
@@ -162,12 +163,14 @@ export class CdsActionAskgptComponent implements OnInit {
     this.logger.log("[ACTION-ASKGPT] onEditableDivTextChange event", $event)
     this.logger.log("[ACTION-ASKGPT] onEditableDivTextChange property", property)
     this.action[property] = $event
+    this.updateAndSaveAction.emit();
   }
 
   onSelectedAttribute(event, property) {
     this.logger.log("[ACTION-ASKGPT] onEditableDivTextChange event", event)
     this.logger.log("[ACTION-ASKGPT] onEditableDivTextChange property", property)
     this.action[property] = event.value;
+    this.updateAndSaveAction.emit();
   }
 
   onChangeSelect(event) {
@@ -177,8 +180,10 @@ export class CdsActionAskgptComponent implements OnInit {
       this.action.kbid = event.url;
       this.action.gptkey = event.gptkey;
       this.kb_selected_id = this.kbs_list.find(k => k.url === this.action.kbid)._id;
+      this.kb_selected_name = this.kbs_list.find(k => k.url === this.action.kbid).name;
       //this.checkKbStatus(this.action.kbid);
-      this.logger.log("[ACTION-ASKGPT] updated action", this.action);
+      console.log("[ACTION-ASKGPT] updated action", this.action, this.kb_selected_name);
+      this.updateAndSaveAction.emit();
     }
   }
 
@@ -208,6 +213,14 @@ export class CdsActionAskgptComponent implements OnInit {
       this.action.falseIntentAttributes = attributes;
     }
     console.log("action updated: ", this.action)
+  }
+
+
+  getValue(key: string): string{
+    let value = ''
+    if(this.kbs_list && this.kbs_list.length > 0)
+      value = this.kbs_list.find(el => el.url === this.action.kbid)[key]
+    return value   
   }
 
   @HostListener('document:visibilitychange')
