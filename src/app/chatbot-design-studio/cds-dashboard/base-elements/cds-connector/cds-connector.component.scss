@@ -41,7 +41,7 @@
     border-radius: 50%;
     position: relative;
     box-sizing: border-box;
-    border: 2px solid rgb(255, 255, 255);
+    border: 1px solid rgb(255, 255, 255);
     transition: width 0.1s ease 0s, height 0.1s ease 0s, background-color 0.1s ease 0s, border 0.1s ease 0s;
     width: 18px;
     height: 18px;
@@ -66,8 +66,8 @@
     box-sizing: border-box;
     border: 2px solid rgb(255, 255, 255);
     transition: width 0.1s ease 0s, height 0.1s ease 0s, background-color 0.1s ease 0s, border 0.1s ease 0s;
-    width: 14px;
-    height: 14px;
+    width: 16px; //14px
+    height: 16px; //14px
     background-color: rgb(221,221,221,1);
     &::before {
         inset: 0px;

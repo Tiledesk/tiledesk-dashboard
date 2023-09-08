@@ -223,7 +223,7 @@
             </div>
 
             <!-- [ngStyle]="{'display':isDragging === false ? 'block' : 'none' }" -->
-            <cds-action-arrow id="action-arrow-{{i}}" *ngIf="!last"></cds-action-arrow>
+            <cds-action-arrow id="action-arrow-{{i}}" *ngIf="!last" class="cds-action-arrow"></cds-action-arrow>
            
             <div *ngIf="last" class="csd-open-action-menu-btn-wpr csd-add-action-btn-wpr-element">
                 <button #openActionMenuBtn (click)="$event.stopPropagation();openActionMenu(intent, 'add-action-btn')"

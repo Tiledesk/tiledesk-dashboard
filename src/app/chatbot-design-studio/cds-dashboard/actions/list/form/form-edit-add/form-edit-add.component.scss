@@ -292,24 +292,24 @@ input.form-control {
     font-size: 18px;
 }
 
-cds-textarea#assignTo ::ng-deep {
-    display: flex;
-    // &.assigned {
-    //     textarea {
-    //         background: transparent;
-    //         padding: 0!important;
-    //         border: 0!important;
-    //         outline: 0!important;
-    //     }
-    // }
-    textarea {
-        border: 1px solid rgb(118, 118, 118) !important;
-        resize: none !important; 
-        padding: 8px 20px !important;
-        height: 25px !important;
-        min-height: 25px !important;
-    }
-}
+// cds-textarea#assignTo ::ng-deep {
+//     display: flex;
+//     // &.assigned {
+//     //     textarea {
+//     //         background: transparent;
+//     //         padding: 0!important;
+//     //         border: 0!important;
+//     //         outline: 0!important;
+//     //     }
+//     // }
+//     textarea {
+//         border: 1px solid rgb(118, 118, 118) !important;
+//         resize: none !important; 
+//         padding: 8px 20px !important;
+//         height: 25px !important;
+//         min-height: 25px !important;
+//     }
+// }
 
 div.value-wrp {
     position: relative;

@@ -79,7 +79,6 @@ export class CdsActionAskgptComponent implements OnInit {
     if(this.intentSelected){
       this.initializeConnector();
     }
-    console.log('changessssssss', this.previewMode, this.action)
   }
 
   initializeConnector() {

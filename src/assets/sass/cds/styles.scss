@@ -26,10 +26,11 @@ Ellips text
 
 }
 .footer-panel-intent-detail {
+    width: 100%;
     position: absolute;
     bottom: 0;
-    left: 0;
-    right: 0;
+    // left: 0;
+    // right: 0;
     background-color: #51627e;
     z-index: 2;
     height: 42px;
@@ -236,3 +237,40 @@ emoji-mart {
       box-shadow: 0 0 0 0 #fff0, 0 0 0 0 #fff0;
     }
   }
+
+
+/** CONNECTOR TRUE/FALSE **/
+cds-connector.connector-true{
+
+    .point-connector-empty{
+      border-color: $success-connector;
+      background: $success-connector;
+    }
+    .point-connector{
+      background: $success-connector;
+    }
+}
+  
+cds-connector.connector-false{
+  
+    .point-connector-empty{
+      border-color: $failure-connector;
+      background: $failure-connector;
+    }
+    .point-connector{
+      background: $failure-connector;
+    }
+}
+
+cds-connector.connector {
+    position: absolute;
+    top: calc(50% - 10px);
+    right: -15px;
+}
+
+cds-connector.connector-true,
+cds-connector.connector-false{
+    position: absolute;
+    right: -25px;
+    top: calc(50% - 10px);
+}

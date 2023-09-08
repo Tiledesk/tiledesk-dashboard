@@ -20,6 +20,7 @@ export class CdsPanelWidgetComponent implements OnInit {
   
   @Input() projectID: string;
   @Input() id_faq_kb: string;
+  @Input() intentName: string;
   @Input() defaultDepartmentId: string;
 
   public iframeVisibility: boolean = false
@@ -42,6 +43,10 @@ export class CdsPanelWidgetComponent implements OnInit {
     this.setIframeUrl()
   }
 
+  ngOnChanges(){
+
+  }
+
 
   setIframeUrl(){
     this.TESTSITE_BASE_URL = this.appConfigService.getConfig().testsiteBaseUrl;
@@ -50,8 +55,9 @@ export class CdsPanelWidgetComponent implements OnInit {
     const url = testItOutUrl + '?tiledesk_projectid=' + this.projectID + 
                                 '&tiledesk_participants=bot_' + this.id_faq_kb + 
                                 "&tiledesk_departmentID=" + this.defaultDepartmentId + 
-                                "&tiledesk_hideHeaderCloseButton=false" +
-                                '&tiledesk_fullscreenMode=true&td_draft=true'
+                                "&tiledesk_hideHeaderCloseButton=true" +
+                                '&tiledesk_fullscreenMode=true&td_draft=true' + 
+                                '&tiledesk_hiddenMessage=\\'+ this.intentName
 
     this.widgetTestSiteUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url)
     let params = `toolbar=no,menubar=no,width=815,height=727,left=100,top=100`;
@@ -60,6 +66,10 @@ export class CdsPanelWidgetComponent implements OnInit {
 
   onLoaded(event){
     this.loading= false
+
+    this.widgetIframe.nativeElement.contentWindow.postMessage(this.intentName, "*");
+    
+    console.log('widgettttttt', this.widgetIframe)
     // console.log('iframeeeeeee', this.elementRef.nativeElement.querySelector('.content'))
     window.addEventListener('message', (event_data)=> {
       if(event_data && event_data.origin.includes('widget')){

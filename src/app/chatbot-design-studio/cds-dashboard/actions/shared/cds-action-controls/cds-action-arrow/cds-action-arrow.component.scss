@@ -1,18 +1,4 @@
-// .cds-action-arrow-down-icon-wpr {
-//     position: absolute;
-//     text-align: center;
-//     width: 100%;
-//     // bottom: -30px;
-//     bottom: -25px;
-//     left: 0px;
-//     z-index: 1;
-// }
-
-// .cds-action-arrow-icon {
-//     transform: rotate(90deg);
-//     color: #6c6859;
-// }
-
+ /** ---- V1 ---- **/
 .cds-action-arrow-down-icon-wpr {
     transition: width 0.15s ease 0s, color 0.15s ease 0s;
     width: 9px;
@@ -48,4 +34,21 @@
     border-radius: 50%;
     background: currentcolor;
     content: "";
+}
+
+
+/** ---- V2 ---- **/
+.cds-action-arrow-drop-down-icon-wpr{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    height: 6px;
+    position: relative;
+    overflow: hidden;
+    // top: 24px;
+}
+
+.cds-action-arrow-icon{
+    font-size: 25px;
+    color: #6c6859;
 }

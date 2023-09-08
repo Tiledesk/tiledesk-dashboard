@@ -1,19 +1,19 @@
 <div *ngIf="previewMode" class="cds-action-content cds-action-preview">
     
     <div class="previewContent">
-        
-        <span class="icon">
-            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 16 16"><g fill="none" fill-rule="evenodd"><use xlink:href="#if-v2_svg__a" fill="currentColor"></use><path id="if-v2_svg__a" d="M2.066 9.259c.47.602 1.185 1.32 2.27 2.406 1.085 1.084 1.803 1.8 2.406 2.27.574.449.882.544 1.116.56.095.007.19.007.285 0 .233-.016.542-.111 1.116-.56.602-.47 1.32-1.186 2.406-2.27 1.084-1.085 1.8-1.804 2.27-2.406.449-.574.544-.883.56-1.116.007-.095.007-.19 0-.285-.016-.234-.111-.542-.56-1.116-.47-.603-1.186-1.321-2.27-2.406-1.085-1.085-1.804-1.8-2.406-2.27-.574-.449-.883-.544-1.116-.56a2 2 0 0 0-.285 0c-.234.016-.542.111-1.116.56-.603.47-1.321 1.185-2.406 2.27-1.085 1.085-1.8 1.803-2.27 2.406-.449.574-.544.882-.56 1.116a2 2 0 0 0 0 .285c.016.233.111.542.56 1.116ZM7.75.009c-1.302.093-2.36 1.15-4.476 3.266C1.16 5.391.102 6.45.01 7.751a3.5 3.5 0 0 0 0 .499c.093 1.302 1.15 2.36 3.266 4.475 2.116 2.116 3.174 3.174 4.476 3.267.166.011.333.011.499 0 1.302-.093 2.36-1.151 4.475-3.267 2.116-2.115 3.174-3.173 3.267-4.475a3.52 3.52 0 0 0 0-.5c-.093-1.301-1.151-2.36-3.267-4.475C10.61 1.16 9.552.102 8.25.01a3.5 3.5 0 0 0-.5 0ZM5 5.75a.75.75 0 0 1 1.5 0v4.5a.75.75 0 0 1-1.5 0v-4.5ZM10.75 5H10c-.944 0-1.415 0-1.708.293C8 5.586 8 6.057 8 7v3.25a.75.75 0 0 0 1.5 0V9h.75a.75.75 0 0 0 0-1.5H9.5c0-.471 0-.707.147-.853.146-.147.382-.147.853-.147h.25a.75.75 0 0 0 0-1.5Z"></path></g></svg>
-        </span>
+        <div class="icon-action">
+            <img src="assets/cds/images/icons/if_condition.svg">
+        </div>
         <label class="title-label">
-            <b style="color: green">TRUE</b>
+            <b>ONLINE</b>
         </label>
         <cds-connector class="connector-true"
             [idConnector] = "idConnectorTrue"
             [isConnected] = "isConnectedTrue">
-        </cds-connector>
-        
+        </cds-connector> 
     </div>
+
+    <hr class="preview-divider">
 
     <div class="previewContent">
        <label class="title-label">else</label>
@@ -28,46 +28,61 @@
 <div *ngIf="!previewMode">
     <div class="content-panel-intent-detail">
 
-        <div class="text-editor-wrapper">
-            <div class="field-box">
-                <label class="title-label">if <b style="color: green">TRUE</b> go to:</label>
-                <ul>
-                    <li style="background-color: green;"></li>
-                    <cds-select id="text-condition"
-                        [items]="listOfIntents"
-                        [bindLabelSelect]="'name'"
-                        [bindValueSelect]="'value'"
-                        [itemSelected]="action?.trueIntent"
-                        (onSelected)="onChangeSelect($event, 'trueIntent')">
-                    </cds-select>
-                </ul> 
+         <!-- trueIntent -->
+         <div style="margin-bottom: 20px;">
+
+            <div class="condition-container">
+                <div class="icon-action">
+                    <img src="assets/cds/images/icons/if_condition.svg">
+                </div>
+                <span class="condition-text">ONLINE</span>
             </div>
-            <!-- <cds-attributes
-                class="cds-attributes"
+    
+            <div class="select-box" id="intentSelect">
+                <cds-select 
+                    id="text-condition" 
+                    [items]="listOfIntents" 
+                    [bindLabelSelect]="'name'"
+                    [bindValueSelect]="'value'" 
+                    [itemSelected]="action?.trueIntent" 
+                    [placeholder]="'Select a block'"
+                    [clearable]="true" 
+                    (onSelected)="onChangeSelect($event, 'trueIntent')">
+                </cds-select>
+            </div>
+            <!-- <cds-attributes 
+                class="cds-attributes" 
                 [attributes]="trueIntentAttributes"
                 (changeAttributes)="onChangeAttributes($event, 'trueIntent')">
             </cds-attributes> -->
+    
         </div>
     
-        <div class="text-editor-wrapper">
-            <div class="field-box">
-                <label class="title-label">if <b style="color: red">FALSE</b> go to:</label>
-                <ul>
-                    <li style="background-color: red;"></li>
-                    <cds-select id="text-condition"
-                        [items]="listOfIntents"
-                        [bindLabelSelect]="'name'"
-                        [bindValueSelect]="'value'"
-                        [itemSelected]="action?.falseIntent"
-                        (onSelected)="onChangeSelect($event, 'falseIntent')">
-                    </cds-select>
-                </ul>
+        <!-- falseIntent -->
+        <div>
+
+            <div class="condition-container">
+                <span class="condition-text">Else</span>
             </div>
-            <!-- <cds-attributes
-                class="cds-attributes"
-                [attributes]="falseIntentAttributes"
-                (changeAttributes)="onChangeAttributes($event, 'trueIntent')">
+    
+            <div class="select-box" id="intentSelect">
+                <cds-select 
+                    id="text-condition" 
+                    [items]="listOfIntents" 
+                    [bindLabelSelect]="'name'"
+                    [bindValueSelect]="'value'" 
+                    [itemSelected]="action?.falseIntent" 
+                    [placeholder]="'Select a block'"
+                    [clearable]="true" 
+                    (onSelected)="onChangeSelect($event, 'falseIntent')">
+                </cds-select>
+            </div>
+            <!-- <cds-attributes 
+                class="cds-attributes" 
+                [attributes]="action.falseIntentAttributes"
+                (changeAttributes)="onChangeAttributes($event, 'falseIntent')">
             </cds-attributes> -->
+    
         </div>
     
     </div>

@@ -1,7 +1,7 @@
 @import "./src/assets/sass/cds/_variables.scss";
 
 .cds-action-content{
-    padding: 10px 16px 0px 16px;
+    padding: 0px 10px;
 }
 
 .previewContent{
@@ -18,49 +18,32 @@
      font-size: 12px; 
      margin: 0px;
     }
+
+    .icon-action img{
+        height: 16px;
+        filter: brightness(0) saturate(100%) invert(42%) sepia(2%) saturate(2720%) hue-rotate(9deg) brightness(91%) contrast(81%);
+    }
 }
 
-span.icon {
-    width: 20px;
+.icon-action {
+    transition: opacity .15s ease 0s;
+    opacity: .85;
+    background: none;
+
     display: flex;
-    align-self: flex-start;
-    //margin-top: 5px;
-    margin-top: 0px;
-  }  
+    align-items: center;
+    justify-content: center;
+
+    img {
+        height: 20px;
+    }
+}  
 
 .preview-divider {
     margin: 0;
     border-top: 2px solid $light-brown;
 }
 
-cds-connector.connector-true,
-cds-connector.connector-false{
-    position: absolute;
-    right: -31px;
-    top: calc(50% - 10px);
-}
-
-cds-connector.connector-true ::ng-deep{
-
-    .point-connector-empty{
-        border: 2px solid $success-connector;
-        background: $success-connector;
-    }
-    .point-connector{
-        background: $success-connector;
-    }
-}
-
-cds-connector.connector-false ::ng-deep{
-
-    .point-connector-empty{
-        border: 2px solid $failure-connector;
-        background: $failure-connector;
-    }
-    .point-connector{
-        background: $failure-connector;
-    }
-}
 
 .content {
     max-height: calc(100vh - 200px);
@@ -158,38 +141,30 @@ div.value-wrp {
 }
 
 
-cds-textarea#question ::ng-deep {
-    display: flex;
+// cds-textarea#question ::ng-deep,
+// cds-textarea#assignTo ::ng-deep {
+//     display: flex;
 
-    textarea {
-        border: 1px solid rgb(118, 118, 118) !important;
-        resize: none !important;
-        padding: 8px 20px !important;
-        height: 25px !important;
-        min-height: 25px !important;
-    }
-}
+//     textarea {
+//         border: 1px solid rgb(118, 118, 118) !important;
+//         resize: none !important;
+//         padding: 8px 20px !important;
+//         height: 25px !important;
+//         min-height: 25px !important;
+//     }
+// }
 
-cds-textarea#assignTo ::ng-deep {
-    display: flex;
+// cds-textarea#assignTo ::ng-deep {
+//     display: flex;
 
-    textarea {
-        border: 1px solid rgb(118, 118, 118) !important;
-        resize: none !important;
-        padding: 8px 20px !important;
-        height: 25px !important;
-        min-height: 25px !important;
-    }
-}
-
-::ng-deep {
-
-    .ng-select.ng-select-single .ng-select-container {
-        height: 43px;
-        border-radius: 8px;
-    }
-
-}
+//     textarea {
+//         border: 1px solid rgb(118, 118, 118) !important;
+//         resize: none !important;
+//         padding: 8px 20px !important;
+//         height: 25px !important;
+//         min-height: 25px !important;
+//     }
+// }
 
 .textarea-editor-wrapper {
     font-size: $font-size-base;

@@ -21,7 +21,9 @@
 
 .cds-web-request-row {
     margin: 10px 0px;
+    padding: 0px 2px;
     display: flex;
+    gap: 10px;
     position: relative;
     &.center{
         display: flex;
@@ -58,7 +60,7 @@
     padding: 6px 0;
 }
 .cds-input-group {
-    margin: 10px 10px;
+    // margin: 10px 10px;
     display: flex;
     input {
         border: 0;
@@ -103,7 +105,6 @@
     cursor: pointer;
     box-sizing: border-box;
     outline: none;
-    margin: 0 0 0 14px;
     padding: 0;
     span {
         align-items: center;
@@ -115,7 +116,6 @@
         color: $action-item-color;
         border-radius: 6px;
         height: 40px;
-        margin: 0 10px 0 0;
         font-size: 0.8em;
         border: 1px solid #0F172A;
         font-weight: 400;
@@ -188,7 +188,7 @@
 .cds-attributes {
     display: block;
     width: 100%;
-    margin: 6px 15px;
+    // margin: 6px 15px;
 }
 
 
@@ -210,16 +210,16 @@ cds-select#method ::ng-deep{
     }
 }
 
-cds-textarea#assignTo ::ng-deep {
-    display: flex;
-    textarea {
-        border: 1px solid rgb(118, 118, 118) !important;
-        resize: none !important; 
-        padding: 8px 20px !important;
-        height: 25px !important;
-        min-height: 25px !important;
-    }
-}
+// cds-textarea#assignTo ::ng-deep {
+//     display: flex;
+//     textarea {
+//         border: 1px solid rgb(118, 118, 118) !important;
+//         resize: none !important; 
+//         padding: 8px 20px !important;
+//         height: 25px !important;
+//         min-height: 25px !important;
+//     }
+// }
 
 cds-textarea#url ::ng-deep {
     display: flex;

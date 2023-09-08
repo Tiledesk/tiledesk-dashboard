@@ -72,16 +72,16 @@ div.value-wrp{
     }
 }
 
-cds-textarea#assignTo ::ng-deep {
-    display: flex;
-    textarea {
-        border: 1px solid rgb(118, 118, 118) !important;
-        resize: none !important; 
-        padding: 8px 20px !important;
-        height: 25px !important;
-        min-height: 25px !important;
-    }
-}
+// cds-textarea#assignTo ::ng-deep {
+//     display: flex;
+//     textarea {
+//         border: 1px solid rgb(118, 118, 118) !important;
+//         resize: none !important; 
+//         padding: 8px 20px !important;
+//         height: 25px !important;
+//         min-height: 25px !important;
+//     }
+// }
 
 .set-attribute-destination-label-and-value-wpr {
     // background: #e8e6dd;
