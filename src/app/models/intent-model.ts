@@ -171,6 +171,25 @@ export class ActionWebRequest extends Action {
     }
 }
 
+export class ActionWebRequestV2 extends Action {
+    method: string;
+    url: string;
+    headersString: any;
+    jsonBody: string;
+    assignTo: string;
+    assignments: {}
+    constructor(){
+        super();
+        this.url = '';
+        this.headersString = {"Content-Type":"application/json", "Cache-Control":"no-cache", "User-Agent":"TiledeskBotRuntime", "Accept":"*/*"};
+        this.jsonBody = JSON.stringify({});
+        this.assignTo = '';
+        this.assignments = {};
+        this.method = TYPE_METHOD_REQUEST.GET;
+        this._tdActionType = TYPE_ACTION.WEB_REQUEST;
+    }
+}
+
 export class ActionReplaceBot extends Action {
     botName: string;
     constructor(){

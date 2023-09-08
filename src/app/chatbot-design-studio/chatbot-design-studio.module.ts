@@ -149,6 +149,7 @@ import { CdsActionReplaceBotComponent } from './cds-dashboard/actions/list/cds-a
 import { CdsActionAssignVariableComponent } from './cds-dashboard/actions/list/cds-action-assign-variable/cds-action-assign-variable.component';
 import { CdsActionHideMessageComponent } from './cds-dashboard/actions/list/cds-action-hide-message/cds-action-hide-message.component';
 import { CdsActionWebRequestComponent } from './cds-dashboard/actions/list/cds-action-web-request/cds-action-web-request.component';
+import { CdsActionWebRequestV2Component } from './cds-dashboard/actions/list/cds-action-web-request-v2/cds-action-web-request-v2.component';
 import { CdsActionAskgptComponent } from './cds-dashboard/actions/list/cds-action-askgpt/cds-action-askgpt.component';
 import { CdsActionWhatsappAttributeComponent } from './cds-dashboard/actions/list/cds-action-whatsapp-attribute/cds-action-whatsapp-attribute.component';
 import { CdsWhatsappReceiverComponent } from './cds-dashboard/actions/list/cds-action-whatsapp-static/whatsapp-receiver/whatsapp-receiver.component';
@@ -164,6 +165,7 @@ import { CdsAddActionMenuComponent } from './cds-dashboard/actions/shared/cds-ad
 
 import { CdsFormComponent } from './cds-dashboard/actions/list/form/form.component';
 import { CdsQuestionComponent } from './cds-dashboard/actions/list/question/question.component';
+import { CdsAnswerComponent } from './cds-dashboard/actions/list/answer/answer.component';
 
 import { AddkbDialogComponent } from './cds-dashboard/actions/list/cds-action-askgpt/addkb-dialog/addkb-dialog.component';
 
@@ -261,6 +263,7 @@ import { AddkbDialogComponent } from './cds-dashboard/actions/list/cds-action-as
     CdsActionAssignVariableComponent,
     CdsActionHideMessageComponent,
     CdsActionWebRequestComponent,
+    CdsActionWebRequestV2Component,
     CdsActionWhatsappAttributeComponent,
     CdsActionWhatsappStaticComponent,
     CdsWhatsappReceiverComponent,
@@ -283,7 +286,8 @@ import { AddkbDialogComponent } from './cds-dashboard/actions/list/cds-action-as
     // ------ CDS-ACTIONS: end ------ //
     CdsFormComponent,
     CdsQuestionComponent,
-
+    CdsAnswerComponent,
+    
     // ------ CDS PANELS ------ //
     CdsActionDetailPanelComponent,
     CdsPanelButtonConfigurationComponent,
