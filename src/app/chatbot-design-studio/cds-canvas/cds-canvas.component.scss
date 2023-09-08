@@ -2,11 +2,6 @@
 @import "./src/assets/sass/cds/styles.scss";
 
 
-
-
-
-
-
 $width-card-tools: 160px;
 $margin-left-card: 30px;
 $margin-top-card: 30px;
@@ -125,6 +120,7 @@ $box-left-width-closed: 50px;
 .cds-content {
   display: flex;
   width: calc(100% - 60px);
+  // overflow-y: auto;
   overflow: hidden;
   cds-rules,
   cds-chatbot-details,
@@ -143,7 +139,7 @@ $box-left-width-closed: 50px;
 
 
 
-.cds-content {
+
   .box-left {
     width: $box-left-width;
     max-width: $box-left-width;
@@ -247,13 +243,6 @@ $box-left-width-closed: 50px;
       margin: 0px;
       padding: 0px;
       z-index: 1;
-      // display: inline-block;
-      // height: auto;
-      // max-height: 100%;
-      // border-radius: 1em;
-      // margin: 0 10px;
-      // padding: 0px;
-      // user-select: none; /* Standard syntax */
       user-select: none;
     }
     .panel-intent-detail-wrapper {
@@ -269,7 +258,7 @@ $box-left-width-closed: 50px;
     }
 
   }
-}
+
 
 .panel-action-backdrop {
   display: flex;
@@ -300,9 +289,6 @@ $box-left-width-closed: 50px;
   z-index: 2;
   justify-content: flex-end; // nk
 }
-
-
-
 
 .receiver-elements-dropped-on-stage {
   position: absolute;
@@ -338,22 +324,8 @@ $box-left-width-closed: 50px;
   height: 100px;
 }
 
-// .box-right-content {
-//   width: 100%;
-//   display: flex;
-//   padding-bottom: 15px;
-// }
-
 .tds-draggable {
-  // position: absolute!important;
-  // display: table!important;
-  // cursor: move!important;
-  // margin: 0!important;
-  // margin: 0!important;
   background-color: chartreuse;
-  // top: 0px;
-  // left: 0px;
-  // z-index: auto;
 }
 
 .cdk-drag-placehoder{
@@ -372,271 +344,6 @@ $box-left-width-closed: 50px;
   }
 }
 
-
-
-
-
-
-// .prevent-select {
-//   -webkit-user-select: none;
-//   /* Safari */
-//   -ms-user-select: none;
-//   /* IE 10 and IE 11 */
-//   user-select: none;
-//   /* Standard syntax */
-// }
-
 svg:not(:root) {
   display: block;
 }
-
-
-
-
-// .prevent-select {
-//   user-select: none; /* Standard syntax */
-// }
-
-
-
-
-
-
-
-
-
-
-
-
-
-// .cds-panel-actions {
-//   z-index: 10;
-//   position: absolute;
-//   padding: 4px;
-// }
-// #cds-panel-intent {
-//   background-color: #0f172a;
-// }
-
-
-
-
-// .beta-icon {
-//   position: absolute;
-//   background: #cc0700;
-//   right: 0px;
-//   top: 50px;
-//   padding: 0 10px;
-//   margin: auto;
-//   text-align: center;
-//   vertical-align: middle;
-//   line-height: 20px;
-//   font-size: 12px;
-//   font-weight: 500;
-//   z-index: 1;
-//   color: white;
-//   cursor: auto;
-// }
-
-
-
-// .navbar-brand {
-//     z-index: 1050;
-//     position: absolute;
-//     left: 0;
-//     top: 6px;
-//     .btn-back {
-//         vertical-align: middle;
-//         cursor: pointer;
-//     }
-// }
-// .cds-btn-back {
-//     font-size: 33px;
-//     vertical-align: middle;
-//     cursor: pointer;
-// }
-
-
-
-// .cds-close-btn {
-//     padding: 3px !important;
-//     border-radius: 50% !important;
-//     background-color: transparent !important;
-//     box-shadow: unset !important;
-//     color: #e8eaed !important;
-// }
-
-// .cds-close-btn:hover {
-//     color: #9aa0a6 !important;
-// }
-
-// .cds-close-btn-icon {
-//     font-size: 40px !important;
-// }
-
-
-// .intent-detail-wpr {
-//     width: 100%;
-//     margin-right: 21px;
-// }
-
-// .cds--footer {
-//     position: fixed;
-//     bottom: 0;
-//     background: aliceblue;
-//     width: 100%;
-// }
-
-// .cds-test-it-wab-out {
-//     background-color: #45c351 !important;
-//     color: white !important;
-//     border-color: white !important;
-
-//     img {
-//         margin-top: 1px;
-//         margin-right: 6px;
-//     }
-// }
-
-// #cds-publish-btn {
-//     background: #006cff;
-//     // border: 1px solid #006cff;
-//     color: #fff;
-//     box-shadow: none;
-//     font-weight: 500;
-//     font-family: $mdb-font-family-poppins;
-//     text-transform: capitalize;
-//     font-size: 14px;
-//     padding: 6px 12px;
-// }
-
-// #cds-publish-btn:hover { 
-//     opacity: .8!important;
-// }
-
-// #cds-publish-btn-option {
-//     background: #006cff;
-//     color: #fff;
-//     box-shadow: none;
-//     font-weight: 500;
-//     font-family: $mdb-font-family-poppins;
-//     text-transform: capitalize;
-//     font-size: 14px;
-//     padding: 6px 12px;
-//     margin-left: 2px;
-// } 
-
-// #cds-publish-btn-option:hover {
-//     opacity: .8!important;
-// }
-
-// .custom---anchor:hover {
-//     box-shadow: unset !important;
-//     background-color:unset !important; 
-//     color: unset !important
-// }
-
-
-// .custom---anchor-community {
-//   .btn-in-dropdown {
-//     background: transparent;
-//     color: #8ab4f8;
-//     text-align: center;
-//     opacity: .6;
-//     text-decoration: underline; 
-//   }
-//   .btn-in-dropdown:hover { 
-//     opacity: 1!important;
-//   }
-// }
-
-// .dropdown-menu li a.custom---anchor-community:hover, .dropdown-menu li a.custom---anchor-community:focus, .dropdown-menu li a.custom---anchor-community:active {
-//   background-color: transparent;
-//   color: #8ab4f8;
-//   box-shadow: none;
-//   opacity: 1;
-// }
-
-// // .custom---anchor-community:hover {
-// //   box-shadow: unset !important;
-// //   background-color:unset !important; 
-// //   color: unset !important
-// // }
-
-// .btn-in-dropdown {
-//     background: #8ab4f8;
-//     color: #202124;
-//     box-shadow: none;
-//     font-weight: 500;
-//     font-size: 14px;
-//     padding: 6px 12px;
-//     border-radius: 4px;
-//     cursor: pointer;
-// }
-
-// .btn-in-dropdown:hover { 
-//     opacity: .8!important;
-// }
-
-
-// // ------------------------------------------------
-// // for the svg in the modal Hook The Bot
-// // ------------------------------------------------
-// .path {
-//     stroke-dasharray: 1000;
-//     stroke-dashoffset: 0;
-//     &.circle {
-//       -webkit-animation: dash 0.9s ease-in-out;
-//       animation: dash 0.9s ease-in-out;
-//     }
-//     &.line {
-//       stroke-dashoffset: 1000;
-//       -webkit-animation: dash 0.9s 0.35s ease-in-out forwards;
-//       animation: dash 0.9s 0.35s ease-in-out forwards;
-//     }
-//     &.check {
-//       stroke-dashoffset: -100;
-//       -webkit-animation: dash-check 0.9s 0.35s ease-in-out forwards;
-//       animation: dash-check 0.9s 0.35s ease-in-out forwards;
-//     }
-//   }
-  
-//   @-webkit-keyframes dash {
-//     0% {
-//       stroke-dashoffset: 1000;
-//     }
-//     100% {
-//       stroke-dashoffset: 0;
-//     }
-//   }
-  
-//   @keyframes dash {
-//     0% {
-//       stroke-dashoffset: 1000;
-//     }
-//     100% {
-//       stroke-dashoffset: 0;
-//     }
-//   }
-  
-//   @-webkit-keyframes dash-check {
-//     0% {
-//       stroke-dashoffset: -100;
-//     }
-//     100% {
-//       stroke-dashoffset: 900;
-//     }
-//   }
-  
-//   @keyframes dash-check {
-//     0% {
-//       stroke-dashoffset: -100;
-//     }
-//     100% {
-//       stroke-dashoffset: 900;
-//     }
-//   }
-
-
-
-

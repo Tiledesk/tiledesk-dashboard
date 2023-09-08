@@ -3,6 +3,13 @@ import { ActionAssignVariable, Intent } from "app/models/intent-model";
 import { v4 as uuidv4 } from 'uuid';
 
 
+export enum SIDEBAR_PAGES {
+    INTENTS = 'cds-sb-intents',
+    SETTINGS = 'cds-sb-settings',
+    FULFILLMENT = 'cds-sb-fulfillment',
+    RULES = 'cds-sb-rules'
+}
+
 export enum EXTERNAL_URL {
     getchatbotinfo = "https://tiledesk.com/community/getchatbotinfo/chatbotId/"
 }
@@ -401,3 +408,17 @@ export function removeNodesStartingWith(obj, start) {
 //         }))
 //     })
 // }
+
+export function moveItemToPosition(array, DISPLAY_NAME, position) {
+    if (position < 0 || position >= array.length) {
+        return array;
+    }
+    const startIndex = array.findIndex(item => item.intent_display_name.trim() === DISPLAY_NAME);
+    if (startIndex === -1 || startIndex === position) {
+        return array;
+    }
+    const itemToMove = array[startIndex];
+    array.splice(startIndex, 1);
+    array.splice(position, 0, itemToMove);
+    return array;
+}

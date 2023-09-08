@@ -5,6 +5,8 @@ import { LoggerService } from 'app/services/logger/logger.service';
 import { UsersService } from 'app/services/users.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+// UTILS //
+import { SIDEBAR_PAGES } from 'app/chatbot-design-studio/utils';
 
 @Component({
   selector: 'cds-sidebar',
@@ -14,10 +16,12 @@ import { takeUntil } from 'rxjs/operators';
 export class CdsSidebarComponent implements OnInit {
 
   @Input() extendedWidth: boolean;
-  @Input() projectID: string
-  @Output() onClickItemList = new EventEmitter<string>()
-  USER_ROLE:any
-  IS_OPEN: boolean = true
+  @Input() projectID: string;
+  @Output() onClickItemList = new EventEmitter<string>();
+
+  SIDEBAR_PAGES = SIDEBAR_PAGES;
+  USER_ROLE: any;
+  IS_OPEN: boolean = true;
 
   private unsubscribe$: Subject<any> = new Subject<any>();
   
@@ -30,7 +34,7 @@ export class CdsSidebarComponent implements OnInit {
 
   ngOnInit(): void {
     this.getUserRole();
-    this.goTo('cds-sb-intents')
+    this.goTo(SIDEBAR_PAGES.INTENTS);
   }
 
 
@@ -55,7 +59,7 @@ export class CdsSidebarComponent implements OnInit {
   }
 
 
-  goTo(section: "cds-sb-intents" | "cds-sb-fulfillment" | "cds-sb-training" | "cds-sb-rules" | "cds-sb-settings") {
+  goTo(section: SIDEBAR_PAGES) {
     // console.log('[CDS-SIDEBAR] goTo item ', section)
 
     // let elements = Array.from(document.getElementsByClassName('section is_active'));

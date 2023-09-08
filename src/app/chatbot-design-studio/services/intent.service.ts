@@ -182,7 +182,7 @@ export class IntentService {
 
 
   refreshIntents(){
-    console.log("aggiorno elenco intent")
+    console.log("aggiorno elenco intent: ", this.listOfIntents);
     this.behaviorIntents.next(this.listOfIntents);
   }
 
@@ -263,12 +263,11 @@ export class IntentService {
         // console.log('getAllIntents: ', faqs);
         if (faqs) {
           this.listOfIntents = JSON.parse(JSON.stringify(faqs));;
-          // this.behaviorIntents.next(this.listOfIntents);
         } else {
           // console.log('EMPTY: ', faqs);
           this.listOfIntents = [];
-          // this.behaviorIntents.next([]);
         }
+        this.refreshIntents();
         resolve(true);
       }, (error) => {
         console.error('ERROR: ', error);

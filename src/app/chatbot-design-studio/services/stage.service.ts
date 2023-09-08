@@ -15,6 +15,9 @@ export class StageService {
     this.tiledeskStage = new TiledeskStage('tds_container', 'tds_drawer', 'tds_draggable');
   }
 
+  setDrawer(){
+    this.tiledeskStage.setDrawer();
+  }
 
   centerStageOnPosition(pos){
     let intervalId = setInterval(async () => {

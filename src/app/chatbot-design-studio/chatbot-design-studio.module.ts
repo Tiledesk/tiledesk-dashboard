@@ -110,11 +110,11 @@ import { CDSFilterComponent } from './cds-base-element/filter/filter.component';
 import { CdsHeaderComponent } from './cds-dashboard/cds-header/cds-header.component';
 import { CdsPopupComponent } from './cds-dashboard/utils/cds-popup/cds-popup.component';
 import { CdsModalActivateBotComponent } from './cds-dashboard/utils/cds-modal-activate-bot/cds-modal-activate-bot.component';
-import { CdsIntentComponent } from './cds-dashboard/cds-intent/cds-intent.component';
-import { CdsPanelElementsComponent } from './cds-dashboard/cds-panel-elements/cds-panel-elements.component';
+import { CdsIntentComponent } from './cds-canvas/cds-intent/cds-intent.component';
+import { CdsPanelElementsComponent } from './cds-canvas/cds-panel-elements/cds-panel-elements.component';
 import { CdsPanelDetailComponent } from './cds-dashboard/cds-panel-detail/cds-panel-detail.component';
 import { CdsPanelActionsComponent } from './cds-dashboard/cds-panel-actions/cds-panel-actions.component';
-import { CdsPanelIntentListComponent } from './cds-dashboard/cds-panel-intent-list/cds-panel-intent-list.component';
+import { CdsPanelIntentListComponent } from './cds-canvas/cds-panel-intent-list/cds-panel-intent-list.component';
 import { CdsFloatingMenuComponent } from './cds-dashboard/cds-floating-menu/cds-floating-menu.component';
 
 import { CdsConnectorComponent } from './cds-dashboard/base-elements/cds-connector/cds-connector.component';
@@ -166,6 +166,7 @@ import { CdsFormComponent } from './cds-dashboard/actions/list/form/form.compone
 import { CdsQuestionComponent } from './cds-dashboard/actions/list/question/question.component';
 
 import { AddkbDialogComponent } from './cds-dashboard/actions/list/cds-action-askgpt/addkb-dialog/addkb-dialog.component';
+import { CdsCanvasComponent } from './cds-canvas/cds-canvas.component';
 
 @NgModule({
   declarations: [
@@ -288,7 +289,8 @@ import { AddkbDialogComponent } from './cds-dashboard/actions/list/cds-action-as
     CdsActionDetailPanelComponent,
     CdsPanelButtonConfigurationComponent,
     CdsPanelWidgetComponent,
-    AddkbDialogComponent
+    AddkbDialogComponent,
+    CdsCanvasComponent
   ],
   imports: [
     A11yModule,

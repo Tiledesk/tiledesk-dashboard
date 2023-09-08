@@ -34,6 +34,7 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
     public intentService: IntentService
   ) { 
     this.intentService.getIntents().subscribe(intents => {
+      console.log("[panel-intent-header] --- AGGIORNATO ELENCO INTENTS", intents);
       if(intents){
         this.listOfIntents = intents
       }
