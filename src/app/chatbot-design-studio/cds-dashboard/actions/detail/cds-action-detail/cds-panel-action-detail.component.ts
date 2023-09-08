@@ -96,7 +96,7 @@ export class CdsActionDetailPanelComponent implements OnInit, OnChanges {
 
   onSaveIntent(){
     if(this.elementIntentSelectedType === this.typeIntentElement.ACTION){
-      const index = this.intentSelected.actions.findIndex(el => el._tdActionId = this.elementSelected._tdActionId)
+      const index = this.intentSelected.actions.findIndex(el => el._tdActionId === this.elementSelected._tdActionId)
       this.intentSelected.actions[index] = this.elementSelected;
     } else if(this.elementIntentSelectedType === this.typeIntentElement.ANSWER){
       this.intentSelected.answer = this.elementSelected;
