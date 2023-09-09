@@ -10,6 +10,11 @@ $mdb-font-family-poppins: 'Poppins', 'Roboto', Arial, sans-serif !default;
 $box-left-width: 250px;
 $box-left-width-closed: 50px;
 
+
+.menu--context--add{
+  height: auto;
+}
+
 .cds-generic-panel{
   position: absolute;
   right: 0;

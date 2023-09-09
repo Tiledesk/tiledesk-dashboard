@@ -3,6 +3,10 @@
     border-bottom: 1px solid #e8eef3;
     // margin-bottom: 15px;
 }
+.actions-drawer{
+    overflow-y: scroll;
+    max-height: calc(100vh - 130px);
+}
 
 .action-menu-search span {
     color: rgba(155, 164, 197, .8);

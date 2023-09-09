@@ -1,4 +1,4 @@
-import { CDSTextComponent } from '../base-elements/text/text.component';
+import { CDSTextComponent } from '../../cds-dashboard/base-elements/text/text.component';
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { Button } from 'app/models/intent-model';
 

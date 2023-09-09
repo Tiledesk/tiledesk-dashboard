@@ -141,45 +141,44 @@ export class CdsDashboardComponent implements OnInit {
     private translate: TranslateService
   ) {
 
-    /** SUBSCRIBE TO THE INTENT LIST */
-    /**
-     * Creo una sottoscrizione all'array di INTENT per averlo sempre aggiornato
-     * ad ogni modifica (aggiunta eliminazione di un intent)
-     */
-    this.subscriptionListOfIntents = this.intentService.getIntents().subscribe(intents => {
-      console.log("[cds-dashboard] --- AGGIORNATO ELENCO INTENTS", intents);
-      this.listOfIntents = intents;
-      this.updatePanelIntentList = !this.updatePanelIntentList;
-    });
+    // /** SUBSCRIBE TO THE INTENT LIST */
+    // /**
+    //  * Creo una sottoscrizione all'array di INTENT per averlo sempre aggiornato
+    //  * ad ogni modifica (aggiunta eliminazione di un intent)
+    //  */
+    // this.subscriptionListOfIntents = this.intentService.getIntents().subscribe(intents => {
+    //   console.log("[cds-dashboard] --- AGGIORNATO ELENCO INTENTS", intents);
+    //   this.listOfIntents = intents;
+    //   this.updatePanelIntentList = !this.updatePanelIntentList;
+    // });
 
 
-    /** SUBSCRIBE TO THE STATE BUTTON PANEL */
-    this.controllerService.isOpenButtonPanel$.subscribe((button: Button) => {
+    // /** SUBSCRIBE TO THE STATE BUTTON PANEL */
+    // this.controllerService.isOpenButtonPanel$.subscribe((button: Button) => {
+    //   this.buttonSelected = button;
+    //   if (button) {
+    //     this.isOpenPanelButtonConfig = true;
+    //     // -------------------------------------------------------
+    //     // @ Close WHEN THE BUTTON CONFIGURATION PANEL IS OPENED
+    //     // - test widget
+    //     // -------------------------------------------------------
+    //     this.IS_OPEN_PANEL_WIDGET = false;
+    //   } else {
+    //     this.isOpenPanelButtonConfig = false;
+    //   }
+    //   // console.log('isOpenButtonPanel ', this.isOpenPanelButtonConfig);
+    // });
 
-      this.buttonSelected = button;
-      if (button) {
-        this.isOpenPanelButtonConfig = true;
-        // -------------------------------------------------------
-        // @ Close WHEN THE BUTTON CONFIGURATION PANEL IS OPENED
-        // - test widget
-        // -------------------------------------------------------
-        this.IS_OPEN_PANEL_WIDGET = false;
-      } else {
-        this.isOpenPanelButtonConfig = false;
-      }
-      // console.log('isOpenButtonPanel ', this.isOpenPanelButtonConfig);
-    });
-
-    /** SUBSCRIBE TO THE STATE ACTION DETAIL PANEL */
-    this.controllerService.isOpenActionDetailPanel$.subscribe((element: { type: TYPE_INTENT_ELEMENT, element: Action | string | Form }) => {
-      this.elementIntentSelected = element;
-      console.log('isOpenActionDetailPanel elementIntentSelected ', this.elementIntentSelected);
-      if (element.type) {
-        this.isOpenPanelActionDetail = true;
-      } else {
-        this.isOpenPanelActionDetail = false;
-      }
-    });
+    // /** SUBSCRIBE TO THE STATE ACTION DETAIL PANEL */
+    // this.controllerService.isOpenActionDetailPanel$.subscribe((element: { type: TYPE_INTENT_ELEMENT, element: Action | string | Form }) => {
+    //   this.elementIntentSelected = element;
+    //   console.log('isOpenActionDetailPanel elementIntentSelected ', this.elementIntentSelected);
+    //   if (element.type) {
+    //     this.isOpenPanelActionDetail = true;
+    //   } else {
+    //     this.isOpenPanelActionDetail = false;
+    //   }
+    // });
 
   }
   // ---------------------------------------------------------
@@ -233,23 +232,23 @@ export class CdsDashboardComponent implements OnInit {
   //   }
   // }
 
-  // -------------------------------------------------------
-  // @ Close WHEN THE STAGE IS CLICKED 
-  // - actions context menu' (static & float),
-  // - detail action panel, 
-  // - button configuration panel
-  // - test widget
-  // -------------------------------------------------------
-  @HostListener('document:click', ['$event'])
-  documentClick(event: any): void {
-    console.log('[CDS DSHBRD] DOCUMENT CLICK event: ', event.target.id);
-    if (event.target.id.startsWith("cdk-drop-list-")) {
-      this.removeConnectorDraftAndCloseFloatMenu();
-      this.controllerService.closeActionDetailPanel();
-      this.controllerService.closeButtonPanel();
-      this.IS_OPEN_PANEL_WIDGET = false;
-    }
-  }
+  // // -------------------------------------------------------
+  // // @ Close WHEN THE STAGE IS CLICKED 
+  // // - actions context menu' (static & float),
+  // // - detail action panel, 
+  // // - button configuration panel
+  // // - test widget
+  // // -------------------------------------------------------
+  // @HostListener('document:click', ['$event'])
+  // documentClick(event: any): void {
+  //   console.log('[CDS DSHBRD] DOCUMENT CLICK event: ', event.target.id);
+  //   if (event.target.id.startsWith("cdk-drop-list-")) {
+  //     this.removeConnectorDraftAndCloseFloatMenu();
+  //     this.controllerService.closeActionDetailPanel();
+  //     this.controllerService.closeButtonPanel();
+  //     this.IS_OPEN_PANEL_WIDGET = false;
+  //   }
+  // }
 
   // -------------------------------------------------------
   // @ Close WHEN THE ACTION LEFT MENU IS CLICKED
@@ -858,12 +857,12 @@ export class CdsDashboardComponent implements OnInit {
   //   this.getTdsContainerHeight()
   // }
 
-  getTdsContainerHeight() {
-    let tdsContainerEle = <HTMLElement>document.querySelector('#tds_container')
-    console.log('[CDS DSHBRD] tdsContainerEle ', tdsContainerEle)
-    this.tdsContainerEleHeight = tdsContainerEle.offsetHeight - 35;
-    console.log('[CDS DSHBRD] tdsContainerEle Height', this.tdsContainerEleHeight)
-  }
+  // getTdsContainerHeight() {
+  //   let tdsContainerEle = <HTMLElement>document.querySelector('#tds_container')
+  //   console.log('[CDS DSHBRD] tdsContainerEle ', tdsContainerEle)
+  //   this.tdsContainerEleHeight = tdsContainerEle.offsetHeight - 35;
+  //   console.log('[CDS DSHBRD] tdsContainerEle Height', this.tdsContainerEleHeight)
+  // }
 
   posCenterIntentSelected(intent) {
     // add class animation
@@ -1240,19 +1239,19 @@ export class CdsDashboardComponent implements OnInit {
 
 
 
-  /** START EVENTS PANEL INTENT DETAIL */
-  onSavePanelIntentDetail(intentSelected: any) {
-    console.log('[CDS DSHBRD] onSavePanelIntentDetail intentSelected ', intentSelected)
-    if (intentSelected && intentSelected != null) {
-      this.onSaveIntent(intentSelected);
-      this.isIntentElementSelected = false;
+  // /** START EVENTS PANEL INTENT DETAIL */
+  // onSavePanelIntentDetail(intentSelected: any) {
+  //   console.log('[CDS DSHBRD] onSavePanelIntentDetail intentSelected ', intentSelected)
+  //   if (intentSelected && intentSelected != null) {
+  //     this.onSaveIntent(intentSelected);
+  //     this.isIntentElementSelected = false;
 
-      // this.controllerService.closeActionDetailPanel();
-    } else {
-      this.onOpenDialog();
-    }
-    // this.isIntentElementSelected = false;
-  }
+  //     // this.controllerService.closeActionDetailPanel();
+  //   } else {
+  //     this.onOpenDialog();
+  //   }
+  //   // this.isIntentElementSelected = false;
+  // }
 
 
 
@@ -1286,16 +1285,16 @@ export class CdsDashboardComponent implements OnInit {
   }
 
 
-  onSaveButton(button: Button) {
-    const arrayId = button.__idConnector.split("/");
-    const idConnector = arrayId[0] ? arrayId[0] : null;
-    console.log('onSaveButton: ', idConnector, this.listOfIntents);
-    if (idConnector) {
-      this.intentSelected = this.listOfIntents.find(obj => obj.intent_id === idConnector);
-      console.log('onSaveButton: ', this.intentSelected);
-      this.updateIntent();
-    }
-  }
+  // onSaveButton(button: Button) {
+  //   const arrayId = button.__idConnector.split("/");
+  //   const idConnector = arrayId[0] ? arrayId[0] : null;
+  //   console.log('onSaveButton: ', idConnector, this.listOfIntents);
+  //   if (idConnector) {
+  //     this.intentSelected = this.listOfIntents.find(obj => obj.intent_id === idConnector);
+  //     console.log('onSaveButton: ', this.intentSelected);
+  //     this.updateIntent();
+  //   }
+  // }
 
 
 }

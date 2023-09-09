@@ -367,28 +367,27 @@ export class IntentService {
       let webhookEnabledIntent = intent.webhook_enabled?intent.webhook_enabled:false;
 
       clearTimeout(this.setTimeoutChangeEvent);
-      this.setTimeoutChangeEvent = setTimeout(() => {
-        this.faqService.updateIntent(
-          id,
-          attributes,
-          questionIntent,
-          answerIntent,
-          displayNameIntent,
-          formIntent,
-          actionsIntent,
-          webhookEnabledIntent
-        ).subscribe((intent: Intent) => {
-          console.log('EDIT ', intent.id);
-          resolve(true);
-        }, (error) => {
-          console.error('ERROR: ', error);
-          reject(false);
-        }, () => {
-          // console.log('COMPLETE ');
-          resolve(true);
-        });
-      }, 2000);
-
+        this.setTimeoutChangeEvent = setTimeout(() => {
+          this.faqService.updateIntent(
+            id,
+            attributes,
+            questionIntent,
+            answerIntent,
+            displayNameIntent,
+            formIntent,
+            actionsIntent,
+            webhookEnabledIntent
+          ).subscribe((intent: Intent) => {
+            console.log('EDIT ', intent.id);
+            resolve(true);
+          }, (error) => {
+            console.error('ERROR: ', error);
+            reject(false);
+          }, () => {
+            // console.log('COMPLETE ');
+            resolve(true);
+          });
+        }, 2000);
     });
   }
 

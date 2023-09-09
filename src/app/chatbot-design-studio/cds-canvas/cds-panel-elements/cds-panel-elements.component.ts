@@ -16,7 +16,7 @@ export class CdsPanelElementsComponent implements OnInit {
 
 
   @Output() addNewElement = new EventEmitter();
-  @Output() showPanelActions = new EventEmitter();
+  // @Output() showPanelActions = new EventEmitter();
   @Output() onMouseOverActionMenuSx = new EventEmitter();
   @Output() hideActionPlaceholderOfActionPanel = new EventEmitter();
   isOpen: boolean = false;
@@ -74,17 +74,17 @@ export class CdsPanelElementsComponent implements OnInit {
     }, 0);
   }
 
-  onMouseOverElement(e){
-    // console.log(':::: CdsPanelElementsComponent onMouseOverElement :::: ', e, e.target.offsetLeft);
-    // let pos = {'x': e.target.offsetLeft+e.target.offsetWidth+20, 'y': e.target.offsetTop+12 }
-    // this.showPanelActions.emit(pos);
-  }
+  // onMouseOverElement(e){
+  //   // console.log(':::: CdsPanelElementsComponent onMouseOverElement :::: ', e, e.target.offsetLeft);
+  //   // let pos = {'x': e.target.offsetLeft+e.target.offsetWidth+20, 'y': e.target.offsetTop+12 }
+  //   // this.showPanelActions.emit(pos);
+  // }
 
-  onMouseLeaveElement(e){
-    // console.log(':::: CdsPanelElementsComponent onMouseOverElement :::: ', e, e.target.offsetLeft);
-    let pos = {'x': -100, 'y': -100 }
-    this.showPanelActions.emit(pos);
-  }
+  // onMouseLeaveElement(e){
+  //   // console.log(':::: CdsPanelElementsComponent onMouseOverElement :::: ', e, e.target.offsetLeft);
+  //   // let pos = {'x': -100, 'y': -100 }
+  //   // this.showPanelActions.emit(pos);
+  // }
 
   onAddNewElement(){
     // console.log(':::: CdsPanelElementsComponent onAddNewElement :::: ');

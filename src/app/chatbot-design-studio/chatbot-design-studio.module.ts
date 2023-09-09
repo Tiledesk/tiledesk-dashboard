@@ -120,52 +120,52 @@ import { CdsFloatingMenuComponent } from './cds-dashboard/cds-floating-menu/cds-
 import { CdsConnectorComponent } from './cds-dashboard/base-elements/cds-connector/cds-connector.component';
 
 //ACTION REPLY: elements
-import { CdsActionReplyToolsComponent } from './cds-dashboard/actions/list/cds-action-reply/elements/cds-action-reply-tools/cds-action-reply-tools.component';
-import { CdsActionReplyTextComponent } from './cds-dashboard/actions/list/cds-action-reply/elements/cds-action-reply-text/cds-action-reply-text.component';
-import { CdsActionReplyImageComponent } from './cds-dashboard/actions/list/cds-action-reply/elements/cds-action-reply-image/cds-action-reply-image.component';
-import { CdsActionReplyFrameComponent } from './cds-dashboard/actions/list/cds-action-reply/elements/cds-action-reply-frame/cds-action-reply-frame.component';
-import { CdsActionReplyRedirectComponent } from './cds-dashboard/actions/list/cds-action-reply/elements/cds-action-reply-redirect/cds-action-reply-redirect.component';
-import { CdsActionReplyGalleryComponent } from './cds-dashboard/actions/list/cds-action-reply/elements/cds-action-reply-gallery/cds-action-reply-gallery.component';
+import { CdsActionReplyToolsComponent } from './cds-canvas/actions/list/cds-action-reply/elements/cds-action-reply-tools/cds-action-reply-tools.component';
+import { CdsActionReplyTextComponent } from './cds-canvas/actions/list/cds-action-reply/elements/cds-action-reply-text/cds-action-reply-text.component';
+import { CdsActionReplyImageComponent } from './cds-canvas/actions/list/cds-action-reply/elements/cds-action-reply-image/cds-action-reply-image.component';
+import { CdsActionReplyFrameComponent } from './cds-canvas/actions/list/cds-action-reply/elements/cds-action-reply-frame/cds-action-reply-frame.component';
+import { CdsActionReplyRedirectComponent } from './cds-canvas/actions/list/cds-action-reply/elements/cds-action-reply-redirect/cds-action-reply-redirect.component';
+import { CdsActionReplyGalleryComponent } from './cds-canvas/actions/list/cds-action-reply/elements/cds-action-reply-gallery/cds-action-reply-gallery.component';
 
 //ACTION ASSIGN-VARIABLE: elements
-import { OperatorComponent } from './cds-dashboard/actions/list/cds-action-assign-variable/operator/operator.component';
-import { OperationComponent } from './cds-dashboard/actions/list/cds-action-assign-variable/operation/operation.component';
-import { OperandComponent } from './cds-dashboard/actions/list/cds-action-assign-variable/operand/operand.component';
+import { OperatorComponent } from './cds-canvas/actions/list/cds-action-assign-variable/operator/operator.component';
+import { OperationComponent } from './cds-canvas/actions/list/cds-action-assign-variable/operation/operation.component';
+import { OperandComponent } from './cds-canvas/actions/list/cds-action-assign-variable/operand/operand.component';
 
 //CDS- ACTIONS
-import { CdsActionDescriptionComponent } from './cds-dashboard/actions/list/cds-action-description/cds-action-description.component';
-import { CdsActionIntentComponent } from './cds-dashboard/actions/list/cds-action-intent/cds-action-intent.component';
-import { CdsActionReplyComponent } from './cds-dashboard/actions/list/cds-action-reply/cds-action-reply.component';
-import { CdsActionOnlineAgentsComponent } from './cds-dashboard/actions/list/cds-action-online-agents/cds-action-online-agents.component';
-import { CdsActionEmailComponent } from './cds-dashboard/actions/list/cds-action-email/cds-action-email.component';
-import { CdsActionWaitComponent } from './cds-dashboard/actions/list/cds-action-wait/cds-action-wait.component';
-import { CdsActionAgentHandoffComponent } from './cds-dashboard/actions/list/cds-action-agent-handoff/cds-action-agent-handoff.component';
-import { CdsActionChangeDepartmentComponent } from './cds-dashboard/actions/list/cds-action-change-department/cds-action-change-department.component';
-import { CdsActionCloseComponent } from './cds-dashboard/actions/list/cds-action-close/cds-action-close.component';
-import { CdsActionOpenHoursComponent } from './cds-dashboard/actions/list/cds-action-open-hours/cds-action-open-hours.component';
-import { CdsActionJsonConditionComponent } from './cds-dashboard/actions/list/cds-action-json-condition/cds-action-json-condition.component';
-import { CdsActionDeleteVariableComponent } from './cds-dashboard/actions/list/cds-action-delete-variable/cds-action-delete-variable.component';
-import { CdsActionReplaceBotComponent } from './cds-dashboard/actions/list/cds-action-replace-bot/cds-action-replace-bot.component';
-import { CdsActionAssignVariableComponent } from './cds-dashboard/actions/list/cds-action-assign-variable/cds-action-assign-variable.component';
-import { CdsActionHideMessageComponent } from './cds-dashboard/actions/list/cds-action-hide-message/cds-action-hide-message.component';
-import { CdsActionWebRequestComponent } from './cds-dashboard/actions/list/cds-action-web-request/cds-action-web-request.component';
-import { CdsActionAskgptComponent } from './cds-dashboard/actions/list/cds-action-askgpt/cds-action-askgpt.component';
-import { CdsActionWhatsappAttributeComponent } from './cds-dashboard/actions/list/cds-action-whatsapp-attribute/cds-action-whatsapp-attribute.component';
-import { CdsWhatsappReceiverComponent } from './cds-dashboard/actions/list/cds-action-whatsapp-static/whatsapp-receiver/whatsapp-receiver.component';
-import { CdsActionWhatsappStaticComponent } from './cds-dashboard/actions/list/cds-action-whatsapp-static/cds-action-whatsapp-static.component';
+import { CdsActionDescriptionComponent } from './cds-canvas/actions/list/cds-action-description/cds-action-description.component';
+import { CdsActionIntentComponent } from './cds-canvas/actions/list/cds-action-intent/cds-action-intent.component';
+import { CdsActionReplyComponent } from './cds-canvas/actions/list/cds-action-reply/cds-action-reply.component';
+import { CdsActionOnlineAgentsComponent } from './cds-canvas/actions/list/cds-action-online-agents/cds-action-online-agents.component';
+import { CdsActionEmailComponent } from './cds-canvas/actions/list/cds-action-email/cds-action-email.component';
+import { CdsActionWaitComponent } from './cds-canvas/actions/list/cds-action-wait/cds-action-wait.component';
+import { CdsActionAgentHandoffComponent } from './cds-canvas/actions/list/cds-action-agent-handoff/cds-action-agent-handoff.component';
+import { CdsActionChangeDepartmentComponent } from './cds-canvas/actions/list/cds-action-change-department/cds-action-change-department.component';
+import { CdsActionCloseComponent } from './cds-canvas/actions/list/cds-action-close/cds-action-close.component';
+import { CdsActionOpenHoursComponent } from './cds-canvas/actions/list/cds-action-open-hours/cds-action-open-hours.component';
+import { CdsActionJsonConditionComponent } from './cds-canvas/actions/list/cds-action-json-condition/cds-action-json-condition.component';
+import { CdsActionDeleteVariableComponent } from './cds-canvas/actions/list/cds-action-delete-variable/cds-action-delete-variable.component';
+import { CdsActionReplaceBotComponent } from './cds-canvas/actions/list/cds-action-replace-bot/cds-action-replace-bot.component';
+import { CdsActionAssignVariableComponent } from './cds-canvas/actions/list/cds-action-assign-variable/cds-action-assign-variable.component';
+import { CdsActionHideMessageComponent } from './cds-canvas/actions/list/cds-action-hide-message/cds-action-hide-message.component';
+import { CdsActionWebRequestComponent } from './cds-canvas/actions/list/cds-action-web-request/cds-action-web-request.component';
+import { CdsActionAskgptComponent } from './cds-canvas/actions/list/cds-action-askgpt/cds-action-askgpt.component';
+import { CdsActionWhatsappAttributeComponent } from './cds-canvas/actions/list/cds-action-whatsapp-attribute/cds-action-whatsapp-attribute.component';
+import { CdsWhatsappReceiverComponent } from './cds-canvas/actions/list/cds-action-whatsapp-static/whatsapp-receiver/whatsapp-receiver.component';
+import { CdsActionWhatsappStaticComponent } from './cds-canvas/actions/list/cds-action-whatsapp-static/cds-action-whatsapp-static.component';
 
 //CDS PANELS
-import { CdsActionDetailPanelComponent } from './cds-dashboard/actions/detail/cds-action-detail/cds-panel-action-detail.component';
+import { CdsActionDetailPanelComponent } from './cds-canvas/cds-panel-action-detail/cds-panel-action-detail.component';
 import { CdsPanelWidgetComponent } from './cds-dashboard/cds-panel-widget/cds-panel-widget.component';
-import { CdsPanelButtonConfigurationComponent } from './cds-dashboard/cds-panel-button-configuration/cds-panel-button-configuration.component';
-import { CdsActionArrowComponent } from './cds-dashboard/actions/shared/cds-action-controls/cds-action-arrow/cds-action-arrow.component';
-import { CdsActionControlsComponent } from './cds-dashboard/actions/shared/cds-action-controls/cds-action-controls/cds-action-controls.component';
-import { CdsAddActionMenuComponent } from './cds-dashboard/actions/shared/cds-add-action-menu/cds-add-action-menu.component';
+import { CdsPanelButtonConfigurationComponent } from './cds-canvas/cds-panel-button-configuration/cds-panel-button-configuration.component';
+import { CdsActionArrowComponent } from './cds-canvas/actions/shared/cds-action-controls/cds-action-arrow/cds-action-arrow.component';
+import { CdsActionControlsComponent } from './cds-canvas/actions/shared/cds-action-controls/cds-action-controls/cds-action-controls.component';
+import { CdsAddActionMenuComponent } from './cds-canvas/actions/shared/cds-add-action-menu/cds-add-action-menu.component';
 
-import { CdsFormComponent } from './cds-dashboard/actions/list/form/form.component';
-import { CdsQuestionComponent } from './cds-dashboard/actions/list/question/question.component';
+import { CdsFormComponent } from './cds-canvas/actions/list/form/form.component';
+import { CdsQuestionComponent } from './cds-canvas/actions/list/question/question.component';
 
-import { AddkbDialogComponent } from './cds-dashboard/actions/list/cds-action-askgpt/addkb-dialog/addkb-dialog.component';
+import { AddkbDialogComponent } from './cds-canvas/actions/list/cds-action-askgpt/addkb-dialog/addkb-dialog.component';
 import { CdsCanvasComponent } from './cds-canvas/cds-canvas.component';
 
 @NgModule({

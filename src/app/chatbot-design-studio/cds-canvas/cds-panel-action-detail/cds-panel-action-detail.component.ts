@@ -15,7 +15,6 @@ export class CdsActionDetailPanelComponent implements OnInit, OnChanges {
   @Input() showSpinner: boolean;
   @Input() project_id: string;
   @Output() onUpdateIntent = new EventEmitter();
-  // @Input() intentSelected: Intent;
   
   intentSelected: Intent;
 

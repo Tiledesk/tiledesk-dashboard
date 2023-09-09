@@ -614,6 +614,7 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
     const data = { 'x': buttonXposition, 'y': buttonYposition, 'intent': intent, 'addAction': true };
     this.showPanelActions.emit(data);
   }
+  
 
   openTestSiteInPopupWindow() {
     this.onTestItOut.emit(true)

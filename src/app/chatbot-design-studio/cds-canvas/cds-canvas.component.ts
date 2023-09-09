@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { TranslateService } from '@ngx-translate/core';
@@ -14,7 +14,7 @@ import { ControllerService } from 'app/chatbot-design-studio/services/controller
 import { Intent, Button, Action, Form, ActionReply, Command, Message, ActionAssignVariable, Attributes } from 'app/models/intent-model';
 
 // UTILS //
-import { checkIFElementExists, TYPE_INTENT_ELEMENT } from 'app/chatbot-design-studio/utils';
+import { checkIFElementExists, TYPE_INTENT_ELEMENT, TYPE_OF_MENU } from 'app/chatbot-design-studio/utils';
 
 const swal = require('sweetalert');
 
@@ -30,16 +30,37 @@ export class CdsCanvasComponent implements OnInit {
 
   @Input() id_faq_kb: string;
 
-  IS_OPEN_INTENTS_LIST: boolean = true;
+  TYPE_OF_MENU = TYPE_OF_MENU;
   private subscriptionListOfIntents: Subscription;
   listOfIntents: Array<Intent> = [];
-  updatePanelIntentList: boolean = true;
-
-
+  
   intentSelected: Intent;
   intent_id: string;
   hasClickedAddAction: boolean = false;
   hideActionPlaceholderOfActionPanel: boolean;
+
+
+  // panel list of intent
+  IS_OPEN_INTENTS_LIST: boolean = true;
+  // updatePanelIntentList: boolean = true;
+
+  // panel float menu
+  IS_OPEN_ADD_ACTIONS_MENU: boolean = false;
+  positionFloatMenu: any = { 'x': 0, 'y': 0 };
+  tdsContainerEleHeight: number = 0;
+
+  // panel action detail
+  IS_OPEN_PANEL_ACTION_DETAIL: boolean = false;
+  elementIntentSelected: any;
+  private subscriptionOpenDetailPanel: Subscription;
+
+  // panel reply button configuaration
+  IS_OPEN_PANEL_BUTTON_CONFIG: boolean = false;
+  buttonSelected: any;
+
+  // panel widget
+  IS_OPEN_PANEL_WIDGET: boolean = false;
+  
 
   constructor(
     private intentService: IntentService,
@@ -54,6 +75,15 @@ export class CdsCanvasComponent implements OnInit {
   ngOnInit(): void {
     console.log("[CdsCanvasComponent] •••• ngOnInit ••••", this.id_faq_kb);
     this.initialize();
+  }
+
+  ngOnDestroy() {
+    if (this.subscriptionListOfIntents) {
+      this.subscriptionListOfIntents.unsubscribe();
+    }
+    if (this.subscriptionOpenDetailPanel) {
+      this.subscriptionOpenDetailPanel.unsubscribe();
+    }
   }
 
   ngAfterViewInit() {
@@ -75,16 +105,38 @@ export class CdsCanvasComponent implements OnInit {
     return this.intentService.getIntentPosition(intentId);
   }
 
+  /** SUBSCRIBE TO THE INTENT LIST */
   private setSubscriptions(){
-    /** SUBSCRIBE TO THE INTENT LIST */
     /**
      * Creo una sottoscrizione all'array di INTENT per averlo sempre aggiornato
      * ad ogni modifica (aggiunta eliminazione di un intent)
-     */
+    */
     this.subscriptionListOfIntents = this.intentService.getIntents().subscribe(intents => {
-      console.log("[cds-canvas] --- AGGIORNATO ELENCO INTENTS", intents);
-      // this.listOfIntents = intents;
+      console.log("[CDS-CANVAS] --- AGGIORNATO ELENCO INTENTS", intents);
+      this.listOfIntents = intents;
       // this.updatePanelIntentList = !this.updatePanelIntentList;
+    });
+
+    /** SUBSCRIBE TO THE STATE ACTION DETAIL PANEL */
+    this.subscriptionOpenDetailPanel = this.controllerService.isOpenActionDetailPanel$.subscribe((element: { type: TYPE_INTENT_ELEMENT, element: Action | string | Form }) => {
+      this.elementIntentSelected = element;
+      // console.log('isOpenActionDetailPanel elementIntentSelected ', this.elementIntentSelected);
+      if (element.type) {
+        this.IS_OPEN_PANEL_ACTION_DETAIL = true;
+      } else {
+        this.IS_OPEN_PANEL_ACTION_DETAIL = false;
+      }
+    });
+
+    /** SUBSCRIBE TO THE STATE ACTION REPLY BUTTON PANEL */
+    this.controllerService.isOpenButtonPanel$.subscribe((button: Button) => {
+      this.buttonSelected = button;
+      if (button) {
+        // CHIUDI TUTTI I PANNELLI!!!
+        this.IS_OPEN_PANEL_BUTTON_CONFIG = true;
+      } else {
+        this.IS_OPEN_PANEL_BUTTON_CONFIG = false;
+      }
     });
   }
 
@@ -104,7 +156,7 @@ export class CdsCanvasComponent implements OnInit {
         intent.actions = intent.actions.filter(obj => obj !== null); // patch if action is null
       }
     });
-    this.updatePanelIntentList = !this.updatePanelIntentList;
+    // this.updatePanelIntentList = !this.updatePanelIntentList;
     /* variabile booleana aggiunta per far scattare l'onchange nei componenti importati dalla dashboard
     * ngOnChanges funziona bene solo sugli @import degli elementi primitivi!!!  */
     this.refreshIntents();
@@ -137,9 +189,9 @@ export class CdsCanvasComponent implements OnInit {
     */
     document.addEventListener(
       "moved-and-scaled", (e: CustomEvent) => {
-        // console.log('[CDS DSHBRD] moved-and-scaled ', e)
+        // console.log('[CDS-CANVAS] moved-and-scaled ', e)
         this.connectorService.tiledeskConnectors.scale = e.detail.scale;
-        // this.removeConnectorDraftAndCloseFloatMenu();
+        this.removeConnectorDraftAndCloseFloatMenu();
       },
       false
     );
@@ -151,7 +203,7 @@ export class CdsCanvasComponent implements OnInit {
     */
     document.addEventListener(
       "dragged", (e: CustomEvent) => {
-        console.log('[CDS DSHBRD] dragged ', e);
+        console.log('[CDS-CANVAS] dragged ', e);
         const el = e.detail.element;
         const x = e.detail.x;
         const y = e.detail.y;
@@ -193,7 +245,7 @@ export class CdsCanvasComponent implements OnInit {
     */
     document.addEventListener(
       "connector-created", (e: CustomEvent) => {
-        console.log("[CDS DSHBRD] connector-created:", e);
+        console.log("[CDS-CANVAS] connector-created:", e);
         const connector = e.detail.connector;
         this.connectorService.addConnectorToList(connector);
         this.intentService.onChangedConnector(connector);
@@ -208,7 +260,7 @@ export class CdsCanvasComponent implements OnInit {
     */
     document.addEventListener(
       "connector-deleted", (e: CustomEvent) => {
-        console.log("[CDS DSHBRD] connector-deleted:", e);
+        console.log("[CDS-CANVAS] connector-deleted:", e);
         const connector = e.detail.connector;
         connector['deleted'] = true;
         this.connectorService.deleteConnectorToList(connector.id);
@@ -223,7 +275,7 @@ export class CdsCanvasComponent implements OnInit {
     */
     document.addEventListener(
       "connector-selected", (e: CustomEvent) => {
-        console.log("[CDS DSHBRD] connector-selected:", e);
+        console.log("[CDS-CANVAS] connector-selected:", e);
         this.intentService.unselectAction();
       },
       true
@@ -232,16 +284,16 @@ export class CdsCanvasComponent implements OnInit {
     /** LISTNER OF FLOAT MENU */
     /** mouseup */
     document.addEventListener('mouseup', function () {
-      console.log('[CDS DSHBRD] MOUSE UP CLOSE FLOAT MENU')
+      console.log('[CDS-CANVAS] MOUSE UP CLOSE FLOAT MENU', that.hasClickedAddAction)
       // @ Remove connectors of the float context menu
-      // if (!that.hasClickedAddAction) {
-      //   that.removeConnectorDraftAndCloseFloatMenu();
-      // }
+      if (!that.hasClickedAddAction) {
+        that.removeConnectorDraftAndCloseFloatMenu();
+      }
     });
 
     /** keydown */
     document.addEventListener('keydown', function (event) {
-      console.log('[CDS DSHBRD] MOUSE KEYDOWN CLOSE FLOAT MENU hasClickedAddAction ', that.hasClickedAddAction)
+      console.log('[CDS-CANVAS] MOUSE KEYDOWN CLOSE FLOAT MENU hasClickedAddAction ', that.hasClickedAddAction)
       if (event.key === 'Backspace' || event.key === 'Escape' || event.key === 'Canc' && !that.hasClickedAddAction) {
         // --------------------------------------------------------------------
         // @ Close WHEN ARE CLICKED THE KEYBOARD KEYS Backspace, Escape or Canc
@@ -250,12 +302,30 @@ export class CdsCanvasComponent implements OnInit {
         // that.isOpenAddActionsMenu = false;
         // @ Remove connectors of the float context menu
         if (!that.hasClickedAddAction) {
-          // that.removeConnectorDraftAndCloseFloatMenu();
+          that.removeConnectorDraftAndCloseFloatMenu();
         }
       }
     });
 
   } // close addEventListener
+
+  // -------------------------------------------------------
+  // @ Close WHEN THE STAGE IS CLICKED 
+  // - actions context menu' (static & float),
+  // - detail action panel, 
+  // - button configuration panel
+  // - test widget
+  // -------------------------------------------------------
+  @HostListener('document:click', ['$event'])
+  documentClick(event: any): void {
+    console.log('[CDS CANVAS] DOCUMENT CLICK event: ', event.target.id);
+    if (event.target.id.startsWith("cdk-drop-list-")) {
+      this.removeConnectorDraftAndCloseFloatMenu();
+      this.controllerService.closeActionDetailPanel();
+      this.controllerService.closeButtonPanel();
+      // this.IS_OPEN_PANEL_WIDGET = false;
+    }
+  }
 
 
 
@@ -297,7 +367,7 @@ export class CdsCanvasComponent implements OnInit {
 /** removeConnectorDraftAndCloseFloatMenu */
  private removeConnectorDraftAndCloseFloatMenu() {
   this.connectorService.removeConnectorDraft();
-  // this.isOpenAddActionsMenu = false;
+  this.IS_OPEN_ADD_ACTIONS_MENU = false;
 }
 
 
@@ -310,14 +380,14 @@ private posCenterIntentSelected(intent) {
 
   // EVENTS //
 
-  onShowPanelActions(pos) {
-    console.log('onShowPanelActions pos:: ', pos);
-    // this.positionPanelActions = pos;
-  }
+  // onShowPanelActions(pos) {
+  //   console.log('onShowPanelActions pos:: ', pos);
+  //   // this.positionPanelActions = pos;
+  // }
 
 
   onHideActionPlaceholderOfActionPanel(event){
-    console.log('[CDS DSHBRD] onHideActionPlaceholderOfActionPanel event : ', event);
+    console.log('[CDS-CANVAS] onHideActionPlaceholderOfActionPanel event : ', event);
     // this.hideActionPlaceholderOfActionPanel = event
   }
 
@@ -327,7 +397,7 @@ private posCenterIntentSelected(intent) {
   // - test widget
   // -------------------------------------------------------
   onMouseOverActionMenuSx(event: boolean) {
-    console.log('[CDS DSHBRD] onMouseOverActionMenuSx ', event)
+    console.log('[CDS-CANVAS] onMouseOverActionMenuSx ', event)
     // if (event === true) {
     //   this.IS_OPEN_PANEL_WIDGET = false;
     //   // this.isOpenAddActionsMenu = false
@@ -340,7 +410,7 @@ private posCenterIntentSelected(intent) {
 
   /** START EVENTS PANEL INTENT LIST */
   onSelectIntent(intent: Intent) {
-    // console.log('[cds-canvas] onSelectIntent::: ', intent);
+    // console.log('[CDS-CANVAS] onSelectIntent::: ', intent);
     if (!this.hasClickedAddAction) {
       this.removeConnectorDraftAndCloseFloatMenu();
     }
@@ -393,27 +463,27 @@ private posCenterIntentSelected(intent) {
    * oppure 
    * chiamata quando aggiungo (droppandola) una action sullo stage spostandola da un altro intent  */
   async onDroppedElementToStage(event: CdkDragDrop<string[]>) {
-    console.log('[CDS DSHBRD] droppedElementOnStage:: ', event);
+    console.log('[CDS-CANVAS] droppedElementOnStage:: ', event);
     // recuperare la posizione
     // let pos = this.connectorService.tiledeskConnectors.logicPoint(event.dropPoint);
     // pos.x = pos.x - 132;
     // let action: any = event.previousContainer.data[event.previousIndex];
     // if (action.value && action.value.type) {
     //   // dragging a new action into the stage
-    //   console.log('[CDS DSHBRD] ho draggato una action da panel element sullo stage');
+    //   console.log('[CDS-CANVAS] ho draggato una action da panel element sullo stage');
     //   const newAction = this.intentService.createNewAction(action.value.type);
     //   const newIntent = await this.createNewIntentWithAnAction(pos, newAction);
     // } else if (action) {
     //   // dragging an action from another intent, into the stage
-    //   console.log('[CDS DSHBRD] ho draggato una action da un intent sullo stage');
+    //   console.log('[CDS-CANVAS] ho draggato una action da un intent sullo stage');
     //   const resp = this.intentService.deleteActionFromPreviousIntentOnMovedAction(event, action);
     //   if (resp) {
     //     const newIntent = await this.createNewIntentWithAnAction(pos, action);
     //     if (newIntent) {
-    //       console.log('[CDS DSHBRD] cancello i connettori della action draggata');
+    //       console.log('[CDS-CANVAS] cancello i connettori della action draggata');
     //       this.connectorService.deleteConnectorsFromActionByActionId(action._tdActionId);
     //       const elementID = this.intentService.previousIntentId;
-    //       console.log("[CDS DSHBRD] aggiorno i connettori dell'intent", elementID);
+    //       console.log("[CDS-CANVAS] aggiorno i connettori dell'intent", elementID);
     //       this.connectorService.movedConnector(elementID);
     //     }
     //   }
@@ -421,7 +491,9 @@ private posCenterIntentSelected(intent) {
   }
 
 
-  // EVENT > INTENT //
+  // --------------------------------------------------------- // 
+  // START EVENT > INTENT
+  // --------------------------------------------------------- //
   /** onActionSelected  **
    * @ Close WHEN AN ACTION IS SELECTED FROM AN INTENT
    * - actions context menu (static & float)
@@ -429,15 +501,14 @@ private posCenterIntentSelected(intent) {
    * - test widget
   */
   onActionSelected(event) {
-    console.log('[cds-canvas] onActionSelected from PANEL INTENT - action ', event.action, ' - index ', event.index)
-    // this.isOpenAddActionsMenu = false;
-    // this.controllerService.closeButtonPanel();
-    // this.IS_OPEN_PANEL_WIDGET = false;
+    console.log('[CDS-CANVAS] onActionSelected from PANEL INTENT - action ', event.action, ' - index ', event.index);
     // CHIUDI TUTTI I PANNELLI APERTI
-
     if (!this.hasClickedAddAction) {
       this.removeConnectorDraftAndCloseFloatMenu();
     }
+    // this.isOpenAddActionsMenu = false;
+    // this.controllerService.closeButtonPanel();
+    // this.IS_OPEN_PANEL_WIDGET = false;
     //// this.controllerService.openActionDetailPanel(this.buttonSelected);
     // this.elementIntentSelected = {};
     // this.elementIntentSelected['type'] = TYPE_INTENT_ELEMENT.ACTION;
@@ -446,61 +517,57 @@ private posCenterIntentSelected(intent) {
     // this.elementIntentSelected['maxLength'] = event.maxLength
     // this.elementIntentSelected['intent_display_name'] = event.intent_display_name;
     // this.isIntentElementSelected = true;
-    // this.logger.log('[CDS DSHBRD] onActionSelected from PANEL INTENT - this.elementIntentSelected ', this.elementIntentSelected)
+    // this.logger.log('[CDS-CANVAS] onActionSelected from PANEL INTENT - this.elementIntentSelected ', this.elementIntentSelected)
     this.intentSelected = this.listOfIntents.find(el => el.intent_id === this.intentService.intentSelectedID);
     this.controllerService.openActionDetailPanel(TYPE_INTENT_ELEMENT.ACTION, event.action);
   }
 
-
+  /** onActionSelected  **
+   * @ Close WHEN THE QUESTION DETAIL PANEL IS OPENED
+   * - actions context menu (static & float)
+   * - button configuration panel 
+   * - test widget
+  */
   onQuestionSelected(question: string) {
-    console.log('[CDS DSHBRD] onQuestionSelected from PANEL INTENT - question ', question)
-    // -------------------------------------------------------
-    // @ Close WHEN THE QUESTION DETAIL PANEL IS OPENED
-    // - actions context menu (static & float)
-    // - button configuration panel 
-    // - test widget
-    // -------------------------------------------------------
+    console.log('[CDS-CANVAS] onQuestionSelected from PANEL INTENT - question ', question);
+    // CHIUDI TUTTI I PANNELLI APERTI
+    if (!this.hasClickedAddAction) {
+      this.removeConnectorDraftAndCloseFloatMenu();
+    }
     // this.isOpenAddActionsMenu = false;
     // this.controllerService.closeButtonPanel();
     // this.IS_OPEN_PANEL_WIDGET = false;
-
-    // // @ Remove connectors of the float context menu
-    // if (!this.hasClickedAddAction) {
-    //   this.removeConnectorDraftAndCloseFloatMenu();
-    // }
-
     // this.elementIntentSelected = {};
     // this.elementIntentSelected['type'] = TYPE_INTENT_ELEMENT.QUESTION;
     // this.elementIntentSelected['element'] = question
-    // console.log('[CDS DSHBRD] onQuestionSelected from PANEL INTENT - this.elementIntentSelected ', this.elementIntentSelected)
+    // console.log('[CDS-CANVAS] onQuestionSelected from PANEL INTENT - this.elementIntentSelected ', this.elementIntentSelected)
     // this.isIntentElementSelected = true;
-    // this.intentSelected = this.listOfIntents.find(el => el.intent_id === this.intentService.intentSelectedID)
-    // this.controllerService.openActionDetailPanel(TYPE_INTENT_ELEMENT.QUESTION, this.elementIntentSelected['element'])
+    this.intentSelected = this.listOfIntents.find(el => el.intent_id === this.intentService.intentSelectedID);
+    this.controllerService.openActionDetailPanel(TYPE_INTENT_ELEMENT.QUESTION, question);
   }
 
+  /** onActionSelected  **
+   * @ Close WHEN THE FORM DETAIL PANEL IS OPENED
+   * - actions context menu (static & float)
+   * - button configuration panel 
+   * - test widget
+  */
   onIntentFormSelected(intentform: Form) {
-    // -------------------------------------------------------
-    // @ Close WHEN THE FORM DETAIL PANEL IS OPENED
-    // - actions context menu (static & float)
-    // - button configuration panel 
-    // - test widget
-    // -------------------------------------------------------
+    // CHIUDI TUTTI I PANNELLI APERTI
+    if (!this.hasClickedAddAction) {
+      this.removeConnectorDraftAndCloseFloatMenu();
+    }
     // this.isOpenAddActionsMenu = false;
     // this.controllerService.closeButtonPanel();
     // this.IS_OPEN_PANEL_WIDGET = false;
-
-    // // @ Remove connectors of the float context menu
-    // if (!this.hasClickedAddAction) {
-    //   this.removeConnectorDraftAndCloseFloatMenu();
-    // }
-    // this.logger.log('[CDS DSHBRD] onIntentFormSelected - from PANEL INTENT intentform ', intentform)
+    // this.logger.log('[CDS-CANVAS] onIntentFormSelected - from PANEL INTENT intentform ', intentform)
     // this.elementIntentSelected = {};
     // this.elementIntentSelected['type'] = TYPE_INTENT_ELEMENT.FORM;
     // this.elementIntentSelected['element'] = intentform
-    // this.logger.log('[CDS DSHBRD] onIntentFormSelected - from PANEL INTENT - this.elementIntentSelected ', this.elementIntentSelected)
+    // this.logger.log('[CDS-CANVAS] onIntentFormSelected - from PANEL INTENT - this.elementIntentSelected ', this.elementIntentSelected)
     // this.isIntentElementSelected = true;
-    // this.intentSelected = this.listOfIntents.find(el => el.intent_id === this.intentService.intentSelectedID)
-    // this.controllerService.openActionDetailPanel(TYPE_INTENT_ELEMENT.FORM, this.elementIntentSelected['element'])
+    this.intentSelected = this.listOfIntents.find(el => el.intent_id === this.intentService.intentSelectedID);
+    this.controllerService.openActionDetailPanel(TYPE_INTENT_ELEMENT.FORM, intentform);
   }
 
   // -------------------------------------------------------
@@ -511,25 +578,31 @@ private posCenterIntentSelected(intent) {
   // - detail action panel
   // - button configuration panel 
   // -------------------------------------------------------
-  showPanelActions(event) {
-    console.log('[CDS DSHBRD] showPanelActions event:: ', event);
-    // this.isOpenAddActionsMenu = true;
-    // this.controllerService.closeActionDetailPanel();
-    // this.controllerService.closeButtonPanel();
-    // this.hasClickedAddAction = event.addAction;
-    // console.log('[CDS DSHBRD] showPanelActions hasClickedAddAction:: ', this.hasClickedAddAction);
+  onShowPanelActions(event) {
+    console.log('[CDS-CANVAS] showPanelActions event:: ', event);
+    this.IS_OPEN_ADD_ACTIONS_MENU = true;
+    this.controllerService.closeActionDetailPanel();
+    this.controllerService.closeButtonPanel();
+    this.hasClickedAddAction = event.addAction;
+    console.log('[CDS-CANVAS] showPanelActions hasClickedAddAction:: ', this.hasClickedAddAction);
     // this.IS_OPEN_PANEL_WIDGET = false;
-    // // this.isOpenFloatMenu = true;
-    // const pos = { 'x': event.x, 'y': event.y }
-    // // this.connectorService.tiledeskConnectors.logicPoint(event.dropPoint);
-    // this.intentSelected = event.intent;
-    // this.positionFloatMenu = pos;
-    // console.log('[CDS DSHBRD] showPanelActions intentSelected ', this.intentSelected);
-    // console.log('[CDS DSHBRD] showPanelActions positionFloatMenu ', this.positionFloatMenu)
-    // this.getTdsContainerHeight()
+    const pos = { 'x': event.x, 'y': event.y }
+    this.intentSelected = event.intent;
+    this.positionFloatMenu = pos;
+    console.log('[CDS-CANVAS] showPanelActions intentSelected ', this.intentSelected);
+    console.log('[CDS-CANVAS] showPanelActions positionFloatMenu ', this.positionFloatMenu)
+    // this.getTdsContainerHeight();
   }
 
-   // -------------------------------------------------------
+
+  // getTdsContainerHeight() {
+  //   let tdsContainerEle = <HTMLElement>document.querySelector('#tds_container')
+  //   console.log('[CDS DSHBRD] tdsContainerEle ', tdsContainerEle)
+  //   this.tdsContainerEleHeight = tdsContainerEle.offsetHeight - 35;
+  //   console.log('[CDS DSHBRD] tdsContainerEle Height', this.tdsContainerEleHeight)
+  // }
+
+  // -------------------------------------------------------
   // @ Open WHEN THE PLAY BUTTON IS CLICKED
   // - test widget
   // @ Close
@@ -538,7 +611,7 @@ private posCenterIntentSelected(intent) {
   // - button configuration panel  
   // -------------------------------------------------------
   onTestItOut(status) {
-    console.log('[CDS DSHBRD] onTestItOut  status ', status);
+    console.log('[CDS-CANVAS] onTestItOut  status ', status);
     // this.IS_OPEN_PANEL_WIDGET = status
     // this.controllerService.closeActionDetailPanel();
     // this.controllerService.closeButtonPanel();
@@ -549,6 +622,9 @@ private posCenterIntentSelected(intent) {
     // }
   }
 
+  /** onActionDeleted ** 
+   * 
+  */
   onActionDeleted(event) {
     // this.elementIntentSelected = {};
     // this.elementIntentSelected['type'] = ''
@@ -556,4 +632,104 @@ private posCenterIntentSelected(intent) {
     // // this.editIntent()
     // this.updateIntent();
   }
+  // --------------------------------------------------------- //
+
+
+
+
+  // --------------------------------------------------------- // 
+  // EVENT > PANEL BUTTON CONFIGURATION 
+  // --------------------------------------------------------- //
+  /** onSaveButton */
+  onSaveButton(button: Button) {
+    const arrayId = button.__idConnector.split("/");
+    const idConnector = arrayId[0] ? arrayId[0] : null;
+    console.log('onSaveButton: ', idConnector, this.listOfIntents);
+    if (idConnector) {
+      this.intentSelected = this.listOfIntents.find(obj => obj.intent_id === idConnector);
+      this.updateIntent();
+    }
+  }
+  // --------------------------------------------------------- //
+
+
+  // --------------------------------------------------------- // 
+  // EVENT > PANEL ACTION DETAIL
+  // --------------------------------------------------------- //
+  /** onSavePanelIntentDetail */
+  onSavePanelIntentDetail(intentSelected: any) {
+    console.log('[CDS-CANVAS] onSavePanelIntentDetail intentSelected ', intentSelected)
+    if (intentSelected && intentSelected != null) {
+      this.intentSelected = intentSelected;
+      this.updateIntent();
+    } else {
+      // this.onOpenDialog();
+    }
+  }
+  // --------------------------------------------------------- //
+
+
+  // --------------------------------------------------------- // 
+  // EVENT > ADD ACTION MENU
+  // --------------------------------------------------------- //
+  /** START EVENTS PANEL INTENT */
+  /** chiamata quando trascino un connettore sullo stage e creo un intent al volo */
+  /** OPPURE */
+  /** chiamata quando premo + sull'intent per aggiungere una nuova action */
+  async onAddingActionToStage(event) {
+    console.log('[CDS-CANVAS] onAddingActionToStage:: ', event);
+    this.IS_OPEN_ADD_ACTIONS_MENU = true;
+    const connectorDraft = this.connectorService.connectorDraft;
+
+    if (connectorDraft && connectorDraft.toPoint && !this.hasClickedAddAction) {
+      console.log('[CDS-DSHBRD] trascino connettore sullo stage ', event, connectorDraft.toPoint, this.hasClickedAddAction);
+      const toPoint = connectorDraft.toPoint;
+      const fromId = connectorDraft.fromId;
+      const newAction = this.intentService.createNewAction(event.type);
+      // const newIntent = await this.createNewIntentWithAnAction(toPoint, newAction);
+      // if (newIntent) {
+      //   console.log('[CDS-DSHBRD] ho creato un nuovo intent co la action trascinata');
+      // }
+    } else if (this.hasClickedAddAction) {
+      console.log("[CDS-DSHBRD] ho premuto + quindi creo una nuova action e la aggiungo all'intent");
+      const newAction = this.intentService.createNewAction(event.type);
+      this.intentSelected.actions.push(newAction);
+      this.intentService.refreshIntent(this.intentSelected);
+      this.updateIntent();
+    }
+    this.removeConnectorDraftAndCloseFloatMenu();
+  }
+  // --------------------------------------------------------- //
+
+
+
+  // Save Intent
+  // private saveIntent(intent: Intent) {
+  //   console.log("********* saveIntent ********* ", intent);
+  //   this.intentSelected = intent;
+  //   const intentNameAlreadyCreated = this.listOfIntents.some((el) => {
+  //     return el.id === this.intentSelected.id;
+  //   });
+  //   console.log("********* el.id ********* ", this.CREATE_VIEW, intentNameAlreadyCreated, this.intentSelected.id);
+  //   if (this.CREATE_VIEW && !intentNameAlreadyCreated) {
+  //     // this.creatIntent(this.intentSelected);
+  //   } else {
+  //     // this.editIntent();
+  //     this.updateIntent();
+  //   }
+  // }
+
+  // Edit Intent 
+  private async updateIntent() {
+    const response = await this.intentService.updateIntent(this.intentSelected);
+    if (response) {
+      console.log('[CDS-CANVAS] OK: intent aggiornato con successo sul server', this.intentSelected);
+    } else {
+      console.log("[CDS-CANVAS] ERRORE: aggiornamento intent sul server non riuscito", this.intentSelected);
+    }
+  }
+
+
+  
+
 }

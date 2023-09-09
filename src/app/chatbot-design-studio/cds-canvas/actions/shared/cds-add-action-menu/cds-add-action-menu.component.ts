@@ -10,7 +10,7 @@ import { ACTIONS_LIST, TYPE_OF_MENU } from 'app/chatbot-design-studio/utils';
 export class CdsAddActionMenuComponent implements OnInit, OnChanges {
 
   @Input() menuType: string;
-  @Input() tdsContainerEleHeight: any;
+  // @Input() tdsContainerEleHeight: any;
   @Output() addingActionToStage = new EventEmitter();
   // ACTIONS_LIST = ACTIONS_LIST
   menuItemsList: any;
@@ -71,18 +71,16 @@ export class CdsAddActionMenuComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-
-
     this.menuItemsList = Object.keys(ACTIONS_LIST).map(key => {
       return {
         type: key,
         value: ACTIONS_LIST[key]
       };
     });
-   
-    console.log('[CDS-ADD-ACTION-MENU] tdsContainerEleHeight (onchanges): ', this.tdsContainerEleHeight);
-    this.contentHeight = this.tdsContainerEleHeight - 40;
-    console.log('[CDS-ADD-ACTION-MENU] contentHeight (onchanges): ', this.contentHeight);
+
+    // console.log('[CDS-ADD-ACTION-MENU] tdsContainerEleHeight (onchanges): ', this.tdsContainerEleHeight);
+    // this.contentHeight = this.tdsContainerEleHeight - 40;
+    // console.log('[CDS-ADD-ACTION-MENU] contentHeight (onchanges): ', this.contentHeight);
 
     if(this.menuItemsList){
       this.filterMenuItemsList = this.menuItemsList;
