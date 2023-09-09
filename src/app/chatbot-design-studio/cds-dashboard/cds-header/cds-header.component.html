@@ -1,14 +1,14 @@
-<div class="header-left" [class.is_opened]="IS_OPEN">
-    <img *ngIf="!IS_OPEN" src="assets/img/logos/tiledesk_logo_white_small.svg">
-    <img *ngIf="IS_OPEN" src="assets/img/logos/tiledesk-logo_new_white.svg">
+<div class="header-left" [class.is_opened]="IS_OPEN_SIDEBAR">
+    <img *ngIf="!IS_OPEN_SIDEBAR" src="assets/img/logos/tiledesk_logo_white_small.svg">
+    <img *ngIf="IS_OPEN_SIDEBAR" src="assets/img/logos/tiledesk-logo_new_white.svg">
 </div>
 <div class="header-right">
-    <div class="toggle-setting-sidebar-icon-wpr" [class.is_opened]="IS_OPEN"
-        (click)="onToggleSidebarWith(IS_OPEN = !IS_OPEN)">
-        <span *ngIf="IS_OPEN" class="material-icons toggle-setting-sidebar-icon">
+    <div class="toggle-setting-sidebar-icon-wpr" [class.is_opened]="IS_OPEN_SIDEBAR"
+        (click)="onToggleSidebarWith(IS_OPEN_SIDEBAR = !IS_OPEN_SIDEBAR)">
+        <span *ngIf="IS_OPEN_SIDEBAR" class="material-icons toggle-setting-sidebar-icon">
             chevron_left
         </span>
-        <span *ngIf="!IS_OPEN" class="material-icons toggle-setting-sidebar-icon">
+        <span *ngIf="!IS_OPEN_SIDEBAR" class="material-icons toggle-setting-sidebar-icon">
             chevron_right
         </span>
     </div>

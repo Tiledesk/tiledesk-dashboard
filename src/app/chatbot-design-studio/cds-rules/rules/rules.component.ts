@@ -5,6 +5,9 @@ import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { FaqKbService } from 'app/services/faq-kb.service';
 import { Rule } from 'app/models/rule-model';
 
+// SERVICES //
+import { IntentService } from 'app/chatbot-design-studio/services/intent.service';
+
 @Component({
   selector: 'cds-rules',
   templateUrl: './rules.component.html',
@@ -13,14 +16,19 @@ import { Rule } from 'app/models/rule-model';
 export class RulesComponent implements OnInit {
 
   @Input() selectedChatbot: Chatbot;
-  @Input() listOfIntents: Intent[];
+  // @Input() listOfIntents: Intent[];
 
+  listOfIntents: Intent[];
   addClicked: boolean = false;
   showWelcome: boolean = false;
   listOfRules: Rule[]=[];
-  constructor(private logger: LoggerService) { }
+  constructor(
+    private logger: LoggerService,
+    private intentService: IntentService,
+    ) { }
 
   ngOnInit(): void {
+    this.listOfIntents = this.intentService.listOfIntents;
   }
 
   ngOnChanges(changes: SimpleChanges){

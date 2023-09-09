@@ -25,7 +25,7 @@ export class ControllerService {
   }
 
 
-  // Buttons 
+  // Buttons s
   public openButtonPanel(button){
     console.log('openButtonPanel:: ', button);
     this.buttonSource.next(button);

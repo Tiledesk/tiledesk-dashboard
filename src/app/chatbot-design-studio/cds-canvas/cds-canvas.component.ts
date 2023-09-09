@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild, ElementRef, HostListener } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef, HostListener, Output, EventEmitter } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { TranslateService } from '@ngx-translate/core';
@@ -9,6 +9,7 @@ import { IntentService } from 'app/chatbot-design-studio/services/intent.service
 import { StageService } from 'app/chatbot-design-studio/services/stage.service';
 import { ConnectorService } from 'app/chatbot-design-studio/services/connector.service';
 import { ControllerService } from 'app/chatbot-design-studio/services/controller.service';
+import { DashboardService } from 'app/chatbot-design-studio/services/dashboard.service';
 
 // MODEL //
 import { Intent, Button, Action, Form, ActionReply, Command, Message, ActionAssignVariable, Attributes } from 'app/models/intent-model';
@@ -28,7 +29,12 @@ export class CdsCanvasComponent implements OnInit {
   @ViewChild('receiver_elements_dropped_on_stage', { static: false }) receiverElementsDroppedOnStage: ElementRef;
   @ViewChild('drawer_of_items_to_zoom_and_drag', { static: false }) drawerOfItemsToZoomAndDrag: ElementRef;
 
-  @Input() id_faq_kb: string;
+
+  // @Input() id_faq_kb: string;
+  @Output() testItOut = new EventEmitter();
+  @Output() closePanelWidget = new EventEmitter();
+
+  id_faq_kb: string;
 
   TYPE_OF_MENU = TYPE_OF_MENU;
   private subscriptionListOfIntents: Subscription;
@@ -67,7 +73,8 @@ export class CdsCanvasComponent implements OnInit {
     private stageService: StageService,
     private connectorService: ConnectorService,
     private controllerService: ControllerService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private dashboardService: DashboardService
   ) {
     this.setSubscriptions();
   }
@@ -141,6 +148,7 @@ export class CdsCanvasComponent implements OnInit {
   }
 
   private async initialize(){
+    this.id_faq_kb = this.dashboardService.id_faq_kb;
     this.listOfIntents = [];
     const getAllIntents = await this.intentService.getAllIntents(this.id_faq_kb);
     console.log('Risultato 6:', getAllIntents);
@@ -323,7 +331,8 @@ export class CdsCanvasComponent implements OnInit {
       this.removeConnectorDraftAndCloseFloatMenu();
       this.controllerService.closeActionDetailPanel();
       this.controllerService.closeButtonPanel();
-      // this.IS_OPEN_PANEL_WIDGET = false;
+
+      this.closePanelWidget.next();
     }
   }
 
@@ -612,6 +621,7 @@ private posCenterIntentSelected(intent) {
   // -------------------------------------------------------
   onTestItOut(status) {
     console.log('[CDS-CANVAS] onTestItOut  status ', status);
+    this.testItOut.emit(true);
     // this.IS_OPEN_PANEL_WIDGET = status
     // this.controllerService.closeActionDetailPanel();
     // this.controllerService.closeButtonPanel();

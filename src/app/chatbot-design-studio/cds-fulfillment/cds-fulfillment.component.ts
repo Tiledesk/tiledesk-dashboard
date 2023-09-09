@@ -13,7 +13,7 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class CdsFulfillmentComponent implements OnInit {
 
-  @Input() chatbot: Chatbot;
+  @Input() selectedChatbot: Chatbot;
 
   //webhook_is_enabled: Boolean = false;
   //webhookUrl: string;
@@ -47,7 +47,7 @@ export class CdsFulfillmentComponent implements OnInit {
     // ???
     //this.elementRef.nativeElement.blur();
 
-    this.faqKbService.updateChatbot(this.chatbot).subscribe((udpatedChatbot) => {
+    this.faqKbService.updateChatbot(this.selectedChatbot).subscribe((udpatedChatbot) => {
       // console.log('[CDS-FULFILLMENT] EDIT BOT - CHATBOT UPDATED ', udpatedChatbot);
       this.logger.log('[CDS-FULFILLMENT] EDIT BOT - CHATBOT UPDATED ', udpatedChatbot);
     }, (error) => {
@@ -72,17 +72,17 @@ export class CdsFulfillmentComponent implements OnInit {
 
   toggleWebhook(event) {
     this.logger.log('[TILEBOT] toggleWebhook ', event.target.checked);
-    this.chatbot.webhook_enabled = event.target.checked;
+    this.selectedChatbot.webhook_enabled = event.target.checked;
 
-    this.validateUrl(this.chatbot.webhook_url)
+    this.validateUrl(this.selectedChatbot.webhook_url)
 
     this.logger.log('[TILEBOT] validateUrl URL WEBHOOK_URL_IS_EMPTY (toggleWebhook) ', this.WEBHOOK_URL_IS_EMPTY);
     this.logger.log('[TILEBOT] validateUrl URL WEBHOOK_URL_IS_HTTPS (toggleWebhook) ', this.WEBHOOK_URL_IS_HTTPS);
     this.logger.log('[TILEBOT] validateUrl URL WEBHOOK_URL_IS_VALID (toggleWebhook) ', this.WEBHOOK_URL_IS_VALID);
-    if (this.chatbot.webhook_enabled === false && this.WEBHOOK_URL_IS_EMPTY === false) {
+    if (this.selectedChatbot.webhook_enabled === false && this.WEBHOOK_URL_IS_EMPTY === false) {
 
       if (this.WEBHOOK_URL_HAS_ERROR === true) {
-        this.chatbot.webhook_url = '';
+        this.selectedChatbot.webhook_url = '';
       }
     }
   }

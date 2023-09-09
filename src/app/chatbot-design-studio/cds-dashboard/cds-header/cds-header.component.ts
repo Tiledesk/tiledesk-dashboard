@@ -9,6 +9,8 @@ import { LoggerService } from 'app/services/logger/logger.service';
 import { AppConfigService } from 'app/services/app-config.service';
 import { FaqKbService } from 'app/services/faq-kb.service';
 
+// SERVICES //
+import { DashboardService } from 'app/chatbot-design-studio/services/dashboard.service';
 
 import { Chatbot } from 'app/models/faq_kb-model';
 import { EXTERNAL_URL } from '../../utils';
@@ -23,15 +25,23 @@ const swal = require('sweetalert');
 })
 export class CdsHeaderComponent implements OnInit {
  
-  @Input() IS_OPEN: boolean;
-  @Input() projectID: string;
-  @Input() defaultDepartmentId: string;
-  @Input() id_faq_kb: string;
-  @Input() selectedChatbot: Chatbot;
+  @Input() IS_OPEN_SIDEBAR: boolean;
+  // @Input() projectID: string;
+  // @Input() defaultDepartmentId: string;
+  // @Input() id_faq_kb: string;
+  // @Input() selectedChatbot: Chatbot;
   @Output() toggleSidebarWith = new EventEmitter();
   @Output() goToBck = new EventEmitter();
   @Output() onTestItOut = new EventEmitter();
   @Output() goToGetBotById = new EventEmitter();
+
+
+  id_faq_kb: string;
+  projectID: string;
+  defaultDepartmentId: string;
+  selectedChatbot: Chatbot;
+
+
 
   PRESENTS_MODAL_ATTACH_BOT_TO_DEPT: boolean = false;
   isBetaUrl: boolean;
@@ -50,9 +60,15 @@ export class CdsHeaderComponent implements OnInit {
     public appConfigService: AppConfigService,
     private multichannelService: MultichannelService,
     private notify: NotifyService,
+    private dashboardService: DashboardService
   ) { }
 
   ngOnInit(): void {
+    this.id_faq_kb = this.dashboardService.id_faq_kb;
+    this.projectID = this.dashboardService.projectID;
+    this.defaultDepartmentId = this.dashboardService.defaultDepartmentId;
+    this.selectedChatbot = this.dashboardService.selectedChatbot;
+
     this.getTestSiteUrl();
     this.getOSCODE();
     this.isBetaUrl = false;
@@ -98,7 +114,7 @@ export class CdsHeaderComponent implements OnInit {
   }
 
   onToggleSidebarWith(IS_OPEN) {
-    this.IS_OPEN = IS_OPEN;
+    this.IS_OPEN_SIDEBAR = IS_OPEN;
     this.toggleSidebarWith.emit(IS_OPEN);
   }
 

@@ -46,7 +46,7 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
   @Output() actionSelected = new EventEmitter(); // !!! SI PUO' ELIMINARE
   @Output() actionDeleted = new EventEmitter();
   @Output() showPanelActions = new EventEmitter(); // nk
-  @Output() onTestItOut = new EventEmitter();
+  @Output() testItOut = new EventEmitter();
   @ViewChild('openActionMenuBtn', { static: false }) openActionMenuBtnRef: ElementRef;
 
 
@@ -614,10 +614,10 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
     const data = { 'x': buttonXposition, 'y': buttonYposition, 'intent': intent, 'addAction': true };
     this.showPanelActions.emit(data);
   }
-  
+
 
   openTestSiteInPopupWindow() {
-    this.onTestItOut.emit(true)
+    this.testItOut.emit(true);
   }
 
 }

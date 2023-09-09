@@ -49,7 +49,7 @@ import { PanelIntentListComponent } from './cds-dashboard/panel-intent-list/pane
 import { PanelIntentComponent } from './cds-dashboard/panel-intent/panel-intent.component';
 import { PanelActionsComponent } from './cds-dashboard/panel-actions/panel-actions.component';
 import { PanelIntentDetailComponent } from './cds-dashboard/panel-intent-detail/panel-intent-detail.component';
-import { PanelIntentHeaderComponent } from './cds-dashboard/panel-intent-header/panel-intent-header.component';
+import { PanelIntentHeaderComponent } from './cds-canvas/cds-intent/panel-intent-header/panel-intent-header.component';
 import { ElementFromUrlComponent } from './cds-dashboard/panel-intent-detail/actions/action-reply/elements/element-from-url/element-from-url.component';
 import { QuestionComponent } from './cds-dashboard/panel-intent-detail/question/question.component';
 import { AnswerComponent } from './cds-dashboard/panel-intent-detail/answer/answer.component';
@@ -63,11 +63,11 @@ import { CdsChatbotDetailsComponent } from './cds-chatbot-details/cds-chatbot-de
 import { CdsFulfillmentComponent } from './cds-fulfillment/cds-fulfillment.component';
 
 //BASE-ELEMENT
-import { CDSTextComponent } from './cds-dashboard/base-elements/text/text.component';
-import { CDSTextareaComponent } from './cds-dashboard/base-elements/textarea/textarea.component';
-import { CDSDelaySliderComponent } from './cds-dashboard/base-elements/delay-slider/delay-slider.component';
-import { CDSImageUploadComponent } from './cds-dashboard/base-elements/image-upload/image-upload.component';
-import { CDSElementFromUrlComponent } from './cds-dashboard/base-elements/element-from-url/element-from-url.component';
+import { CDSTextComponent } from './cds-canvas/base-elements/text/text.component';
+import { CDSTextareaComponent } from './cds-canvas/base-elements/textarea/textarea.component';
+import { CDSDelaySliderComponent } from './cds-canvas/base-elements/delay-slider/delay-slider.component';
+import { CDSImageUploadComponent } from './cds-canvas/base-elements/image-upload/image-upload.component';
+import { CDSElementFromUrlComponent } from './cds-canvas/base-elements/element-from-url/element-from-url.component';
 
 //RULES COMPONENT
 import { RulesComponent } from './cds-rules/rules/rules.component';
@@ -117,7 +117,7 @@ import { CdsPanelActionsComponent } from './cds-dashboard/cds-panel-actions/cds-
 import { CdsPanelIntentListComponent } from './cds-canvas/cds-panel-intent-list/cds-panel-intent-list.component';
 import { CdsFloatingMenuComponent } from './cds-dashboard/cds-floating-menu/cds-floating-menu.component';
 
-import { CdsConnectorComponent } from './cds-dashboard/base-elements/cds-connector/cds-connector.component';
+import { CdsConnectorComponent } from './cds-canvas/base-elements/cds-connector/cds-connector.component';
 
 //ACTION REPLY: elements
 import { CdsActionReplyToolsComponent } from './cds-canvas/actions/list/cds-action-reply/elements/cds-action-reply-tools/cds-action-reply-tools.component';

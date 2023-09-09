@@ -5,6 +5,9 @@ import { AppConfigService } from 'app/services/app-config.service';
 import { ENETDOWN } from 'constants';
 import { ObserveOnMessage } from 'rxjs/internal/operators/observeOn';
 
+// SERVICES //
+import { DashboardService } from 'app/chatbot-design-studio/services/dashboard.service';
+
 function getWindow(): any {
   return window;
 }
@@ -18,9 +21,12 @@ export class CdsPanelWidgetComponent implements OnInit {
 
   @ViewChild('widgetIframe', {static:true}) widgetIframe:ElementRef;
   
-  @Input() projectID: string;
-  @Input() id_faq_kb: string;
-  @Input() defaultDepartmentId: string;
+  // @Input() projectID: string;
+  // @Input() id_faq_kb: string;
+  // @Input() defaultDepartmentId: string;
+  projectID: string;
+  id_faq_kb: string;
+  defaultDepartmentId: string;
 
   public iframeVisibility: boolean = false
   private window;
@@ -32,13 +38,18 @@ export class CdsPanelWidgetComponent implements OnInit {
     public appConfigService: AppConfigService,
     private sanitizer: DomSanitizer,
     private elementRef: ElementRef,
-    private intentService: IntentService) { 
+    private intentService: IntentService,
+    private dashboardService: DashboardService
+  ) { 
     this.window = getWindow();
     
   }
 
   ngOnInit(): void {
     // this.initTiledesk();
+    this.projectID = this.dashboardService.projectID;
+    this.id_faq_kb = this.dashboardService.id_faq_kb;
+    this.defaultDepartmentId = this.dashboardService.defaultDepartmentId;
     this.setIframeUrl()
   }
 

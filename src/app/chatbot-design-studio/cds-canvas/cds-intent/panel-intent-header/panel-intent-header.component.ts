@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter, OnChanges, ViewChild, E
 import { LoggerService } from 'app/services/logger/logger.service';
 
 
-import { Intent } from '../../../models/intent-model';
+import { Intent } from '../../../../models/intent-model';
 import { IntentService } from 'app/chatbot-design-studio/services/intent.service';
 
 @Component({

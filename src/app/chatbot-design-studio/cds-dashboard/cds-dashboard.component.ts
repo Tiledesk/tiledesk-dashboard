@@ -18,6 +18,7 @@ import { IntentService } from 'app/chatbot-design-studio/services/intent.service
 import { ControllerService } from 'app/chatbot-design-studio/services/controller.service';
 import { ConnectorService } from 'app/chatbot-design-studio/services/connector.service';
 import { StageService } from 'app/chatbot-design-studio/services/stage.service';
+import { DashboardService } from 'app/chatbot-design-studio/services/dashboard.service';
 
 // MODEL //
 import { Project } from 'app/models/project-model';
@@ -74,10 +75,12 @@ export class CdsDashboardComponent implements OnInit {
   isIntentElementSelected: boolean = false;
 
   id_faq_kb: string;
-
   id_faq: string;
   botType: string;
   intent_id: string;
+
+
+
 
   project: Project;
   projectID: string;
@@ -94,7 +97,7 @@ export class CdsDashboardComponent implements OnInit {
   activeSidebarSection: string;
   spinnerCreateIntent: boolean = false;
 
-  IS_OPEN: boolean = false;
+  IS_OPEN_SIDEBAR: boolean = false;
   IS_OPEN_INTENTS_LIST: boolean = true;
   IS_OPEN_PANEL_WIDGET: boolean = false;
   public TESTSITE_BASE_URL: string;
@@ -131,6 +134,7 @@ export class CdsDashboardComponent implements OnInit {
     private auth: AuthService,
     public location: Location,
     private logger: LoggerService,
+    private dashboardService: DashboardService,
     private intentService: IntentService,
     private controllerService: ControllerService,
     private connectorService: ConnectorService,
@@ -189,7 +193,7 @@ export class CdsDashboardComponent implements OnInit {
     this.auth.checkRoleForCurrentProject();
     this.executeAsyncFunctionsInSequence();
     // this.initListOfIntents();
-    this.getDeptsByProjectId();
+    // this.getDeptsByProjectId();
   }
 
   ngAfterViewInit() {
@@ -204,14 +208,14 @@ export class CdsDashboardComponent implements OnInit {
 
   ngOnDestroy() {
     console.log("•••• On Destroy ••••");
-    this.subscriptionListOfIntents.unsubscribe();
-    this.connectorService.deleteAllConnectors();
+    // this.subscriptionListOfIntents.unsubscribe();
+    // this.connectorService.deleteAllConnectors();
   }
 
-  onHideActionPlaceholderOfActionPanel(event){
-    console.log('[CDS DSHBRD] onHideActionPlaceholderOfActionPanel event : ', event);
-    this.hideActionPlaceholderOfActionPanel = event
-  }
+  // onHideActionPlaceholderOfActionPanel(event){
+  //   console.log('[CDS DSHBRD] onHideActionPlaceholderOfActionPanel event : ', event);
+  //   this.hideActionPlaceholderOfActionPanel = event
+  // }
 
   // private initListOfIntents() {
   //   this.listOfIntents.forEach(intent => {
@@ -425,19 +429,19 @@ export class CdsDashboardComponent implements OnInit {
 
 
 
-  private openFloatMenuOnConnectorDraftReleased(detail){
-        console.log("ho rilasciato in un punto qualsiasi dello stage e quindi apro il float menu", detail);
-        this.positionFloatMenu = this.tiledeskStage.physicPointCorrector(detail.menuPoint);
-        this.positionFloatMenu.x = this.positionFloatMenu.x + 300;
-        detail.menuPoint = this.positionFloatMenu;
-        console.log('[CDS DSHBRD] this.positionFloatMenu', this.positionFloatMenu);
-        this.isOpenAddActionsMenu = true;
-        this.hasClickedAddAction = false;
-        this.IS_OPEN_PANEL_WIDGET = false;
-        this.controllerService.closeActionDetailPanel();
-        this.connectorService.createConnectorDraft(detail);
-        console.log('[CDS DSHBRD] OPEN MENU hasClickedAddAction', this.hasClickedAddAction);
-  }
+  // private openFloatMenuOnConnectorDraftReleased(detail){
+  //       console.log("ho rilasciato in un punto qualsiasi dello stage e quindi apro il float menu", detail);
+  //       this.positionFloatMenu = this.tiledeskStage.physicPointCorrector(detail.menuPoint);
+  //       this.positionFloatMenu.x = this.positionFloatMenu.x + 300;
+  //       detail.menuPoint = this.positionFloatMenu;
+  //       console.log('[CDS DSHBRD] this.positionFloatMenu', this.positionFloatMenu);
+  //       this.isOpenAddActionsMenu = true;
+  //       this.hasClickedAddAction = false;
+  //       this.IS_OPEN_PANEL_WIDGET = false;
+  //       this.controllerService.closeActionDetailPanel();
+  //       this.connectorService.createConnectorDraft(detail);
+  //       console.log('[CDS DSHBRD] OPEN MENU hasClickedAddAction', this.hasClickedAddAction);
+  // }
 
   /**
    * execute Async Functions In Sequence
@@ -451,13 +455,16 @@ export class CdsDashboardComponent implements OnInit {
       const getTranslations = await this.getTranslations();
       console.log('Risultato 1:', getTranslations);
       const getUrlParams = await this.getUrlParams();
-      console.log('Risultato 2:', getUrlParams, this.id_faq_kb);
-      const getBotById = await this.getBotById(this.id_faq_kb);
+      console.log('Risultato 2:', getUrlParams);
+      const getBotById = await this.dashboardService.getBotById();
       console.log('Risultato 3:', getBotById, this.selectedChatbot);
-      const getCurrentProject = await this.getCurrentProject();
+      const getCurrentProject = await this.dashboardService.getCurrentProject();
       console.log('Risultato 4:', getCurrentProject);
-      const getBrowserVersion = await this.getBrowserVersion();
+      const getBrowserVersion = await this.dashboardService.getBrowserVersion();
       console.log('Risultato 5:', getBrowserVersion);
+      const getDefaultDepartmentId = this.dashboardService.getDeptsByProjectId();
+      console.log('Risultato 6:', getDefaultDepartmentId);
+
       // this.listOfIntents = [];
       // const getAllIntents = await this.intentService.getAllIntents(this.id_faq_kb);
       // console.log('Risultato 6:', getAllIntents);
@@ -465,8 +472,11 @@ export class CdsDashboardComponent implements OnInit {
       //   this.listOfIntents = this.intentService.listOfIntents;
       //   this.initListOfIntents();
       // }
-      if (getTranslations && getUrlParams && getBotById && getCurrentProject && getBrowserVersion) {
+      if (getTranslations && getUrlParams && getBotById && getCurrentProject && getBrowserVersion && getDefaultDepartmentId) {
         // !!! il valore di listOfIntents è bindato nel costructor con subscriptionListOfIntents !!! // 
+        console.log('Ho finito di inizializzare la dashboard');
+        this.project = this.dashboardService.project;
+        this.selectedChatbot = this.dashboardService.selectedChatbot;
         this.initFinished = true;
       }
     } catch (error) {
@@ -527,10 +537,11 @@ export class CdsDashboardComponent implements OnInit {
         this.id_faq = params.faqid;
         this.botType = params.bottype;
         this.intent_id = params.intent_id;
-        this.logger.log('[CDS DSHBRD] getUrlParams  PARAMS', params);
-        this.logger.log('[CDS DSHBRD] getUrlParams  BOT ID ', this.id_faq_kb);
-        this.logger.log('[CDS DSHBRD] getUrlParams  FAQ ID ', this.id_faq);
-        this.logger.log('[CDS DSHBRD] getUrlParams  FAQ ID ', this.intent_id);
+        // this.logger.log('[CDS DSHBRD] getUrlParams  PARAMS', params);
+        // this.logger.log('[CDS DSHBRD] getUrlParams  BOT ID ', this.id_faq_kb);
+        // this.logger.log('[CDS DSHBRD] getUrlParams  FAQ ID ', this.id_faq);
+        // this.logger.log('[CDS DSHBRD] getUrlParams  FAQ ID ', this.intent_id);
+        this.dashboardService.setParams(params);
         resolve(true);
       }, (error) => {
         this.logger.error('ERROR: ', error);
@@ -544,60 +555,57 @@ export class CdsDashboardComponent implements OnInit {
   // ----------------------------------------------------------
   // Get bot by id
   // ----------------------------------------------------------
-  private async getBotById(botid: string): Promise<boolean> {
-    return new Promise((resolve, reject) => {
-      this.showSpinner = true;
-      this.faqKbService.getBotById(botid).subscribe((chatbot: Chatbot) => {
-        console.log('[CDS DSHBRD] - GET BOT BY ID RES - chatbot', chatbot);
-        if (chatbot) {
-          this.selectedChatbot = chatbot;
-          this.translateparamBotName = { bot_name: this.selectedChatbot.name }
-          if (this.selectedChatbot && this.selectedChatbot.attributes && this.selectedChatbot.attributes.variables) {
-            variableList.userDefined = convertJsonToArray(this.selectedChatbot.attributes.variables);
-          } else {
-            variableList.userDefined = []
-          }
-          resolve(true);
-          //console.log('variableList.userDefined:: ', this.selectedChatbot.attributes.variables);
-        }
-      }, (error) => {
-        this.logger.error('ERROR: ', error);
-        // console.log('ERROR: funzioneAsincrona3');
-        reject(false);
-      }, () => {
-        this.logger.log('COMPLETE ');
-        // console.log('COMPLETE: funzioneAsincrona3');
-        resolve(true);
-      });
-    });
-  }
+  // private async getBotById(botid: string): Promise<boolean> {
+  //   return new Promise((resolve, reject) => {
+  //     this.showSpinner = true;
+  //     this.faqKbService.getBotById(botid).subscribe((chatbot: Chatbot) => {
+  //       console.log('[CDS DSHBRD] - GET BOT BY ID RES - chatbot', chatbot);
+  //       if (chatbot) {
+  //         this.selectedChatbot = chatbot;
+  //         this.translateparamBotName = { bot_name: this.selectedChatbot.name }
+  //         if (this.selectedChatbot && this.selectedChatbot.attributes && this.selectedChatbot.attributes.variables) {
+  //           variableList.userDefined = convertJsonToArray(this.selectedChatbot.attributes.variables);
+  //         } else {
+  //           variableList.userDefined = []
+  //         }
+  //         resolve(true);
+  //         //console.log('variableList.userDefined:: ', this.selectedChatbot.attributes.variables);
+  //       }
+  //     }, (error) => {
+  //       this.logger.error('ERROR: ', error);
+  //       // console.log('ERROR: funzioneAsincrona3');
+  //       reject(false);
+  //     }, () => {
+  //       this.logger.log('COMPLETE ');
+  //       // console.log('COMPLETE: funzioneAsincrona3');
+  //       resolve(true);
+  //     });
+  //   });
+  // }
 
-  // ----------------------------------------------------------
-  // Get depts
-  // ----------------------------------------------------------
-  getDeptsByProjectId() {
-    this.departmentService.getDeptsByProjectId().subscribe((departments: any) => {
-      this.logger.log('[CDS DSHBRD] - DEPT GET DEPTS ', departments);
-      this.logger.log('[CDS DSHBRD] - DEPT BOT ID ', this.id_faq_kb);
-
-      if (departments) {
-
-        departments.forEach((dept: any) => {
-          // this.logger.log('[CDS DSHBRD] - DEPT', dept);
-          if (dept.default === true) {
-            this.defaultDepartmentId = dept._id;
-            this.logger.log('[CDS DSHBRD] - DEFAULT DEPT ID ', this.defaultDepartmentId);
-          }
-        })
-        const depts_length = departments.length
-        this.logger.log('[CDS DSHBRD] ---> GET DEPTS DEPTS LENGHT ', depts_length);
-      }
-    }, error => {
-      this.logger.error('[CDS DSHBRD] - DEPT - GET DEPTS  - ERROR', error);
-    }, () => {
-      this.logger.log('[CDS DSHBRD] - DEPT - GET DEPTS - COMPLETE')
-    });
-  }
+  // // ----------------------------------------------------------
+  // // Get depts
+  // // ----------------------------------------------------------
+  // getDeptsByProjectId() {
+  //   this.departmentService.getDeptsByProjectId().subscribe((departments: any) => {
+  //     this.logger.log('[CDS DSHBRD] - DEPT GET DEPTS ', departments);
+  //     if (departments) {
+  //       departments.forEach((dept: any) => {
+  //         // this.logger.log('[CDS DSHBRD] - DEPT', dept);
+  //         if (dept.default === true) {
+  //           this.defaultDepartmentId = dept._id;
+  //           this.logger.log('[CDS DSHBRD] - DEFAULT DEPT ID ', this.defaultDepartmentId);
+  //         }
+  //       })
+  //       const depts_length = departments.length
+  //       this.logger.log('[CDS DSHBRD] ---> GET DEPTS DEPTS LENGHT ', depts_length);
+  //     }
+  //   }, error => {
+  //     this.logger.error('[CDS DSHBRD] - DEPT - GET DEPTS  - ERROR', error);
+  //   }, () => {
+  //     this.logger.log('[CDS DSHBRD] - DEPT - GET DEPTS - COMPLETE')
+  //   });
+  // }
 
   /** hideShowWidget ???? */
   private hideShowWidget(status: "hide" | "show") {
@@ -636,7 +644,7 @@ export class CdsDashboardComponent implements OnInit {
     });
   }
 
-  // ----------------------------------------------------------
+  // // ----------------------------------------------------------
   // Get browser version
   // ----------------------------------------------------------
   private async getBrowserVersion(): Promise<boolean> {
@@ -653,6 +661,8 @@ export class CdsDashboardComponent implements OnInit {
       });
     });
   }
+
+
   /** ************************* **/
   /** END CUSTOM FUNCTIONS 
   /** ************************* **/
@@ -901,35 +911,48 @@ export class CdsDashboardComponent implements OnInit {
     this.activeSidebarSection = event;
   }
 
+  
+ 
+
+  //-------------------------------//
+  /** START EVENTS HEADER */
+  //-------------------------------//
+
+  /** onToggleSidebarWith */
+  onToggleSidebarWith(IS_OPEN) {
+    this.IS_OPEN_SIDEBAR = IS_OPEN;
+  }
+
   /** Go back to previous page */
   goBack() {
     console.log('[CDS DSHBRD] goBack ');
     this.router.navigate(['project/' + this.project._id + '/bots/my-chatbots/all']);
     this.hideShowWidget('show');
   }
-  // -------------------------------------------------------
-  // @ Open WHEN THE PLAY BUTTON IS CLICKED
-  // - test widget
-  // @ Close
-  // - detail action panel
-  // - actions context menu' (static & float),
-  // - button configuration panel  
-  // -------------------------------------------------------
+
+  /** onTestItOut **
+   * Open WHEN THE PLAY BUTTON IS CLICKED
+   * - test widget
+   * @ Close
+   * - detail action panel
+   * - actions context menu' (static & float),
+   * - button configuration panel  
+  */
   onTestItOut(status) {
     console.log('[CDS DSHBRD] onTestItOut  status ', status);
-    this.IS_OPEN_PANEL_WIDGET = status
+    this.IS_OPEN_PANEL_WIDGET = status;
     this.controllerService.closeActionDetailPanel();
     this.controllerService.closeButtonPanel();
     this.intentService.setLiveActiveIntent(null);
-    // this.isOpenAddActionsMenu = false;
+    this.isOpenAddActionsMenu = false;
     if (!this.hasClickedAddAction) {
       this.removeConnectorDraftAndCloseFloatMenu();
     }
   }
+  //-------------------------------//
 
-  onToggleSidebarWith(IS_OPEN) {
-    this.IS_OPEN = IS_OPEN;
-  }
+
+
   onToogleSidebarIntentsList(IS_OPEN) {
     this.IS_OPEN_INTENTS_LIST = IS_OPEN
   }
@@ -953,6 +976,10 @@ export class CdsDashboardComponent implements OnInit {
 
 
   /** START EVENTS PANEL INTENT */
+  onClosePanelWidget(){
+    this.IS_OPEN_PANEL_WIDGET = false;
+  }
+
   /** chiamata quando trascino un connettore sullo stage e creo un intent al volo */
   /** OPPURE */
   /** chiamata quando premo + sull'intent per aggiungere una nuova action */

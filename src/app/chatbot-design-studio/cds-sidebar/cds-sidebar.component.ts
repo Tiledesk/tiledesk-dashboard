@@ -5,6 +5,10 @@ import { LoggerService } from 'app/services/logger/logger.service';
 import { UsersService } from 'app/services/users.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
+// SERVICES //
+import { DashboardService } from 'app/chatbot-design-studio/services/dashboard.service';
+
 // UTILS //
 import { SIDEBAR_PAGES } from 'app/chatbot-design-studio/utils';
 
@@ -15,10 +19,11 @@ import { SIDEBAR_PAGES } from 'app/chatbot-design-studio/utils';
 })
 export class CdsSidebarComponent implements OnInit {
 
-  @Input() extendedWidth: boolean;
-  @Input() projectID: string;
+  @Input() IS_OPEN_SIDEBAR: boolean;
+  // @Input() projectID: string;
   @Output() onClickItemList = new EventEmitter<string>();
 
+  projectID: string;
   SIDEBAR_PAGES = SIDEBAR_PAGES;
   USER_ROLE: any;
   IS_OPEN: boolean = true;
@@ -29,10 +34,12 @@ export class CdsSidebarComponent implements OnInit {
     private logger: LoggerService,
     private auth: AuthService,
     private usersService: UsersService,
-    private el: ElementRef
+    private el: ElementRef,
+    private dashboardService: DashboardService
   ) { }
 
   ngOnInit(): void {
+    this.projectID = this.dashboardService.projectID;
     this.getUserRole();
     this.goTo(SIDEBAR_PAGES.INTENTS);
   }

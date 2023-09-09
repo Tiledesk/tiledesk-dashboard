@@ -40,7 +40,7 @@
             (questionSelected)=onQuestionSelected($event)
             (formSelected)=onIntentFormSelected($event) 
             (showPanelActions)="onShowPanelActions($event)"
-            (onTestItOut)="onTestItOut($event)"
+            (testItOut)="onTestItOut($event)"
             (actionDeleted)="actionDeleted($event)">
         </cds-intent>
     </div> 
@@ -60,16 +60,6 @@
     (addingActionToStage)="onAddingActionToStage($event)">
 </cds-add-action-menu>
 
-<!-- 
-<cds-panel-widget *ngIf="IS_OPEN_PANEL_WIDGET" 
-    id="widget-preview" 
-    class="cds-generic-panel"
-    [projectID]="projectID" 
-    [id_faq_kb]="id_faq_kb" 
-    [defaultDepartmentId]="defaultDepartmentId">
-</cds-panel-widget>
--->
-
 
 <cds-panel-button-configuration  *ngIf="IS_OPEN_PANEL_BUTTON_CONFIG" 
     id="button-configuration" 
@@ -88,3 +78,11 @@
     [elementIntentSelected]="elementIntentSelected"
     (onUpdateIntent)="onSavePanelIntentDetail($event)">
 </cds-panel-action-detail> 
+
+<!-- <cds-panel-widget *ngIf="IS_OPEN_PANEL_WIDGET" 
+    id="widget-preview" 
+    class="cds-generic-panel"
+    [projectID]="projectID" 
+    [id_faq_kb]="id_faq_kb" 
+    [defaultDepartmentId]="defaultDepartmentId">
+</cds-panel-widget> -->
