@@ -113,7 +113,7 @@ import { CdsModalActivateBotComponent } from './cds-dashboard/utils/cds-modal-ac
 import { CdsIntentComponent } from './cds-canvas/cds-intent/cds-intent.component';
 import { CdsPanelElementsComponent } from './cds-canvas/cds-panel-elements/cds-panel-elements.component';
 import { CdsPanelDetailComponent } from './cds-dashboard/cds-panel-detail/cds-panel-detail.component';
-import { CdsPanelActionsComponent } from './cds-dashboard/cds-panel-actions/cds-panel-actions.component';
+import { CdsPanelActionsComponent } from './cds-canvas/cds-panel-elements/cds-panel-actions/cds-panel-actions.component';
 import { CdsPanelIntentListComponent } from './cds-canvas/cds-panel-intent-list/cds-panel-intent-list.component';
 import { CdsFloatingMenuComponent } from './cds-dashboard/cds-floating-menu/cds-floating-menu.component';
 

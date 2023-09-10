@@ -212,6 +212,30 @@ export class CdsDashboardComponent implements OnInit {
     // this.connectorService.deleteAllConnectors();
   }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
   // onHideActionPlaceholderOfActionPanel(event){
   //   console.log('[CDS DSHBRD] onHideActionPlaceholderOfActionPanel event : ', event);
   //   this.hideActionPlaceholderOfActionPanel = event
@@ -712,47 +736,47 @@ export class CdsDashboardComponent implements OnInit {
   }
 
 
-  /** createNewIntentWithNewAction
-  * chiamata quando trascino un connettore sullo stage e creo un intent al volo 
-  * oppure
-  * chiamata quando aggiungo (droppandola) una action sullo stage da panel element
-  * oppure
-  * chiamata quando aggiungo (droppandola) una action sullo stage spostandola da un altro intent
- */
-  private async createNewIntentWithAnAction(pos, action) {
-    this.CREATE_VIEW = true;
-    console.log('sto per creare un nuovo intent con pos e action::: ', pos, action);
-    this.intentSelected = this.intentService.createNewIntent(this.id_faq_kb, action, pos);
-    // this.setDragAndListnerEventToElement(this.intentSelected);
-    // this.setDragAndListnerEventToElements();
-    this.intentSelected.id = NEW_POSITION_ID;
-    this.intentService.addNewIntentToListOfIntents(this.intentSelected);
+//   /** createNewIntentWithNewAction
+//   * chiamata quando trascino un connettore sullo stage e creo un intent al volo 
+//   * oppure
+//   * chiamata quando aggiungo (droppandola) una action sullo stage da panel element
+//   * oppure
+//   * chiamata quando aggiungo (droppandola) una action sullo stage spostandola da un altro intent
+//  */
+//   private async createNewIntentWithAnAction(pos, action) {
+//     this.CREATE_VIEW = true;
+//     console.log('sto per creare un nuovo intent con pos e action::: ', pos, action);
+//     this.intentSelected = this.intentService.createNewIntent(this.id_faq_kb, action, pos);
+//     // this.setDragAndListnerEventToElement(this.intentSelected);
+//     // this.setDragAndListnerEventToElements();
+//     this.intentSelected.id = NEW_POSITION_ID;
+//     this.intentService.addNewIntentToListOfIntents(this.intentSelected);
     
-    /** chiamata quando trascino un connettore sullo stage e creo un intent al volo  */
-    const connectorDraft = this.connectorService.connectorDraft;
-    if(connectorDraft){
-      const fromId = connectorDraft.fromId;
-      const toId = this.intentSelected.intent_id;
-      console.log('[CDS-DSHBRD] sto per creare il connettore ', connectorDraft, fromId, toId);
-      this.connectorService.createConnectorFromId(fromId, toId);
-      this.removeConnectorDraftAndCloseFloatMenu();
-    }
+//     /** chiamata quando trascino un connettore sullo stage e creo un intent al volo  */
+//     const connectorDraft = this.connectorService.connectorDraft;
+//     if(connectorDraft){
+//       const fromId = connectorDraft.fromId;
+//       const toId = this.intentSelected.intent_id;
+//       console.log('[CDS-DSHBRD] sto per creare il connettore ', connectorDraft, fromId, toId);
+//       this.connectorService.createConnectorFromId(fromId, toId);
+//       this.removeConnectorDraftAndCloseFloatMenu();
+//     }
 
-    const newIntent = await this.intentService.saveNewIntent(this.id_faq_kb, this.intentSelected);
-    if (newIntent) {
-      this.intentSelected.id = newIntent.id;
-      // this.intentSelected.intent_id = newIntent.intent_id;
-      console.log('Intent salvato correttamente: ', newIntent, this.listOfIntents);
-      this.intentService.replaceNewIntentToListOfIntents(newIntent);
-      // console.log('Intent salvato correttamente: ', newIntent, this.listOfIntents);
-      // !!! il valore di listOfIntents è bindato nel costructor con subscriptionListOfIntents !!! //
-      // this.setDragAndListnerEventToElement(this.intentSelected);
-      // this.setDragAndListnerEventToElements();
-      return newIntent;
-    } else {
-      return null;
-    }
-  }
+//     const newIntent = await this.intentService.saveNewIntent(this.id_faq_kb, this.intentSelected);
+//     if (newIntent) {
+//       this.intentSelected.id = newIntent.id;
+//       // this.intentSelected.intent_id = newIntent.intent_id;
+//       console.log('Intent salvato correttamente: ', newIntent, this.listOfIntents);
+//       this.intentService.replaceNewIntentToListOfIntents(newIntent);
+//       // console.log('Intent salvato correttamente: ', newIntent, this.listOfIntents);
+//       // !!! il valore di listOfIntents è bindato nel costructor con subscriptionListOfIntents !!! //
+//       // this.setDragAndListnerEventToElement(this.intentSelected);
+//       // this.setDragAndListnerEventToElements();
+//       return newIntent;
+//     } else {
+//       return null;
+//     }
+//   }
 
   // /** 
   //  * chiamata quando aggiungo (droppandola) una action sullo stage spostandola da un altro intent  
@@ -985,37 +1009,37 @@ export class CdsDashboardComponent implements OnInit {
   /** chiamata quando premo + sull'intent per aggiungere una nuova action */
   async onAddingActionToStage(event) {
     console.log('[CDS-DSHBRD] onAddingActionToStage:: ', event);
-    // -------------------------------------------------------------------------
-    // @ Close WHEN AN ACTION IS ADDED ON THE STAGE FROM THE ACTIONS CONTEX MENU
-    // - actions context menu (static & float)
-    // -------------------------------------------------------------------------
-    // this.isOpenAddActionsMenu = false; // nk
-    const connectorDraft = this.connectorService.connectorDraft;
+    // // -------------------------------------------------------------------------
+    // // @ Close WHEN AN ACTION IS ADDED ON THE STAGE FROM THE ACTIONS CONTEX MENU
+    // // - actions context menu (static & float)
+    // // -------------------------------------------------------------------------
+    // // this.isOpenAddActionsMenu = false; // nk
+    // const connectorDraft = this.connectorService.connectorDraft;
     
-    if (connectorDraft && connectorDraft.toPoint && !this.hasClickedAddAction) {
-      console.log('[CDS-DSHBRD] trascino connettore sullo stage ', event, connectorDraft.toPoint, this.hasClickedAddAction);
-      const toPoint = connectorDraft.toPoint;
-      // toPoint.x = toPoint.x - 132;
-      const fromId = connectorDraft.fromId;
-      const newAction = this.intentService.createNewAction(event.type);
-      const newIntent = await this.createNewIntentWithAnAction(toPoint, newAction);
-      if (newIntent) {
-        // const toId = newIntent.intent_id;
-        // console.log('[CDS-DSHBRD] sto per creare il connettore ', fromId, toId);
-        // this.connectorService.createConnectorFromId(fromId, toId);
-        // this.removeConnectorDraftAndCloseFloatMenu();
-      }
-    } else if (this.hasClickedAddAction) {
-      console.log("[CDS-DSHBRD] ho premuto + quindi creo una nuova action e la aggiungo all'intent");
-      const newAction = this.intentService.createNewAction(event.type);
-      console.log("[CDS-DSHBRD] nuova action creata ", newAction);
-      this.intentSelected.actions.push(newAction);
-      console.log('propago aggiornamento intent');
-      this.intentService.refreshIntent(this.intentSelected);
-      console.log("[CDS-DSHBRD] nuova action aggiunta all'intent ", this.intentSelected);
-      this.updateIntent();
-    }
-    this.removeConnectorDraftAndCloseFloatMenu();
+    // if (connectorDraft && connectorDraft.toPoint && !this.hasClickedAddAction) {
+    //   console.log('[CDS-DSHBRD] trascino connettore sullo stage ', event, connectorDraft.toPoint, this.hasClickedAddAction);
+    //   const toPoint = connectorDraft.toPoint;
+    //   // toPoint.x = toPoint.x - 132;
+    //   const fromId = connectorDraft.fromId;
+    //   const newAction = this.intentService.createNewAction(event.type);
+    //   const newIntent = await this.createNewIntentWithAnAction(toPoint, newAction);
+    //   if (newIntent) {
+    //     // const toId = newIntent.intent_id;
+    //     // console.log('[CDS-DSHBRD] sto per creare il connettore ', fromId, toId);
+    //     // this.connectorService.createConnectorFromId(fromId, toId);
+    //     // this.removeConnectorDraftAndCloseFloatMenu();
+    //   }
+    // } else if (this.hasClickedAddAction) {
+    //   console.log("[CDS-DSHBRD] ho premuto + quindi creo una nuova action e la aggiungo all'intent");
+    //   const newAction = this.intentService.createNewAction(event.type);
+    //   console.log("[CDS-DSHBRD] nuova action creata ", newAction);
+    //   this.intentSelected.actions.push(newAction);
+    //   console.log('propago aggiornamento intent');
+    //   this.intentService.refreshIntent(this.intentSelected);
+    //   console.log("[CDS-DSHBRD] nuova action aggiunta all'intent ", this.intentSelected);
+    //   this.updateIntent();
+    // }
+    // this.removeConnectorDraftAndCloseFloatMenu();
   }
 
 

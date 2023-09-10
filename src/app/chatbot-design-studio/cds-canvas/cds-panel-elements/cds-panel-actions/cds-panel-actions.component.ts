@@ -1,4 +1,4 @@
-import { TYPE_ACTION_CATEGORY } from './../../utils';
+import { TYPE_ACTION_CATEGORY } from '../../../utils';
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { TYPE_ACTION, ACTIONS_LIST, TYPE_OF_MENU, ELEMENTS_LIST } from 'app/chatbot-design-studio/utils';
 import { CdkDropList, CdkDragStart, CdkDragEnd, CdkDragMove } from '@angular/cdk/drag-drop';

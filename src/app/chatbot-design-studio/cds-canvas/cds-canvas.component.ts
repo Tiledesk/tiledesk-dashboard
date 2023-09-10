@@ -15,7 +15,7 @@ import { DashboardService } from 'app/chatbot-design-studio/services/dashboard.s
 import { Intent, Button, Action, Form, ActionReply, Command, Message, ActionAssignVariable, Attributes } from 'app/models/intent-model';
 
 // UTILS //
-import { checkIFElementExists, TYPE_INTENT_ELEMENT, TYPE_OF_MENU } from 'app/chatbot-design-studio/utils';
+import { checkIFElementExists, TYPE_INTENT_ELEMENT, TYPE_OF_MENU, NEW_POSITION_ID } from 'app/chatbot-design-studio/utils';
 
 const swal = require('sweetalert');
 
@@ -236,11 +236,11 @@ export class CdsCanvasComponent implements OnInit {
         const detail = e.detail;
         const arrayOfClass = detail.target.classList.value.split(' ');
         if (detail.target && arrayOfClass.includes("receiver-elements-dropped-on-stage") && detail.toPoint && detail.menuPoint) {
-          console.log("ho rilasciato il connettore tratteggiato nello stage (nell'elemento con classe 'receiver_elements_dropped_on_stage') e quindi apro il float menu");
-          // this.openFloatMenuOnConnectorDraftReleased(detail);
+          console.log("[CDS-CANVAS] ho rilasciato il connettore tratteggiato nello stage (nell'elemento con classe 'receiver_elements_dropped_on_stage') e quindi apro il float menu");
+          this.openFloatMenuOnConnectorDraftReleased(detail);
         } else {
-          console.log("ho rilasciato in un punto qualsiasi del DS ma non sullo stage quindi non devo aprire il menu", detail);
-          // this.removeConnectorDraftAndCloseFloatMenu();
+          console.log("[CDS-CANVAS] ho rilasciato in un punto qualsiasi del DS ma non sullo stage quindi non devo aprire il menu", detail);
+          this.removeConnectorDraftAndCloseFloatMenu();
         }
       },
       true
@@ -294,9 +294,9 @@ export class CdsCanvasComponent implements OnInit {
     document.addEventListener('mouseup', function () {
       console.log('[CDS-CANVAS] MOUSE UP CLOSE FLOAT MENU', that.hasClickedAddAction)
       // @ Remove connectors of the float context menu
-      if (!that.hasClickedAddAction) {
-        that.removeConnectorDraftAndCloseFloatMenu();
-      }
+      // if (!that.hasClickedAddAction) {
+      //   that.removeConnectorDraftAndCloseFloatMenu();
+      // }
     });
 
     /** keydown */
@@ -331,7 +331,6 @@ export class CdsCanvasComponent implements OnInit {
       this.removeConnectorDraftAndCloseFloatMenu();
       this.controllerService.closeActionDetailPanel();
       this.controllerService.closeButtonPanel();
-
       this.closePanelWidget.next();
     }
   }
@@ -342,6 +341,19 @@ export class CdsCanvasComponent implements OnInit {
   // @ START DRAG DROP FUNCTIONS 
   // ------------------------------------------
  
+  private openFloatMenuOnConnectorDraftReleased(detail){
+        console.log("[CDS CANVAS] ho rilasciato in un punto qualsiasi dello stage e quindi apro il float menu", detail);
+        this.positionFloatMenu = this.stageService.physicPointCorrector(detail.menuPoint);
+        this.positionFloatMenu.x = this.positionFloatMenu.x + 300;
+        detail.menuPoint = this.positionFloatMenu;
+        this.IS_OPEN_ADD_ACTIONS_MENU = true;
+        this.hasClickedAddAction = false;
+        this.IS_OPEN_PANEL_WIDGET = false;
+        this.controllerService.closeActionDetailPanel();
+        this.connectorService.createConnectorDraft(detail);
+        console.log('[CDS CANVAS] OPEN MENU hasClickedAddAction', this.hasClickedAddAction);
+  }
+
   /** setDragAndListnerEventToElements */
   private setDragAndListnerEventToElements() {
     console.log("2 --- AGGIORNO ELENCO LISTNER");
@@ -354,15 +366,15 @@ export class CdsCanvasComponent implements OnInit {
     let intervalId = setInterval(async () => {
       const result = checkIFElementExists(intent.intent_id);
       if (result === true) {
-        console.log('Condition is true!');
-        this.stageService.setDragElement(intent.intent_id);
-        this.intentService.setListnerEvent(intent);
+        console.log('[CDS CANVAS] Condition is true ', intent.intent_id);
+        this.stageService.setDragElement(intent.intent_id); // 
+        // this.intentService.setListnerEvent(intent);
         clearInterval(intervalId);
       }
     }, 100); // Chiamiamo la funzione ogni 100 millisecondi (0.1 secondo)
     // Termina l'intervallo dopo 2 secondi (2000 millisecondi)
     setTimeout(() => {
-      console.log('Timeout: 1 secondo scaduto.');
+      console.log('Timeout: 2 secondo scaduto.');
       clearInterval(intervalId);
     }, 2000);
   }
@@ -470,33 +482,69 @@ private posCenterIntentSelected(intent) {
   /** 
    * chiamata quando aggiungo (droppandola) una action sullo stage da panel element
    * oppure 
-   * chiamata quando aggiungo (droppandola) una action sullo stage spostandola da un altro intent  */
+   * chiamata quando aggiungo (droppandola) una action sullo stage spostandola da un altro intent  
+   * */
   async onDroppedElementToStage(event: CdkDragDrop<string[]>) {
     console.log('[CDS-CANVAS] droppedElementOnStage:: ', event);
-    // recuperare la posizione
-    // let pos = this.connectorService.tiledeskConnectors.logicPoint(event.dropPoint);
-    // pos.x = pos.x - 132;
-    // let action: any = event.previousContainer.data[event.previousIndex];
-    // if (action.value && action.value.type) {
-    //   // dragging a new action into the stage
-    //   console.log('[CDS-CANVAS] ho draggato una action da panel element sullo stage');
-    //   const newAction = this.intentService.createNewAction(action.value.type);
-    //   const newIntent = await this.createNewIntentWithAnAction(pos, newAction);
-    // } else if (action) {
-    //   // dragging an action from another intent, into the stage
-    //   console.log('[CDS-CANVAS] ho draggato una action da un intent sullo stage');
-    //   const resp = this.intentService.deleteActionFromPreviousIntentOnMovedAction(event, action);
-    //   if (resp) {
-    //     const newIntent = await this.createNewIntentWithAnAction(pos, action);
-    //     if (newIntent) {
-    //       console.log('[CDS-CANVAS] cancello i connettori della action draggata');
-    //       this.connectorService.deleteConnectorsFromActionByActionId(action._tdActionId);
-    //       const elementID = this.intentService.previousIntentId;
-    //       console.log("[CDS-CANVAS] aggiorno i connettori dell'intent", elementID);
-    //       this.connectorService.movedConnector(elementID);
-    //     }
-    //   }
-    // }
+    let pos = this.connectorService.tiledeskConnectors.logicPoint(event.dropPoint);
+    pos.x = pos.x - 132;
+    let action: any = event.previousContainer.data[event.previousIndex];
+    if (action.value && action.value.type) {
+      // dragging a new action into the stage
+      console.log('[CDS-CANVAS] ho draggato una action da panel element sullo stage');
+      const newAction = this.intentService.createNewAction(action.value.type);
+      const newIntent = await this.createNewIntentWithAnAction(pos, newAction);
+     
+    } else if (action) {
+      // dragging an action from another intent, into the stage
+      console.log('[CDS-CANVAS] ho draggato una action da un intent sullo stage');
+      const resp = this.intentService.deleteActionFromPreviousIntentOnMovedAction(event, action);
+      if (resp) {
+        const newIntent = await this.createNewIntentWithAnAction(pos, action);
+        if (newIntent) {
+          console.log('[CDS-CANVAS] cancello i connettori della action draggata');
+          this.connectorService.deleteConnectorsFromActionByActionId(action._tdActionId);
+          const elementID = this.intentService.previousIntentId;
+          console.log("[CDS-CANVAS] aggiorno i connettori dell'intent", elementID);
+          this.connectorService.movedConnector(elementID);
+        }
+      }
+    }
+  }
+
+
+  /** createNewIntentWithNewAction
+  * chiamata quando trascino un connettore sullo stage e creo un intent al volo 
+  * oppure
+  * chiamata quando aggiungo (droppandola) una action sullo stage da panel element
+  * oppure
+  * chiamata quando aggiungo (droppandola) una action sullo stage spostandola da un altro intent
+ */
+  private async createNewIntentWithAnAction(pos, action) {
+    console.log('[CDS-CANVAS] sto per creare un nuovo intent con pos e action ::: ', pos, action);
+    this.intentSelected = this.intentService.createNewIntent(this.id_faq_kb, action, pos);
+    this.intentSelected.id = NEW_POSITION_ID;
+    this.intentService.addNewIntentToListOfIntents(this.intentSelected);
+    this.setDragAndListnerEventToElement(this.intentSelected);
+
+    /** chiamata quando trascino un connettore sullo stage e creo un intent al volo  */
+    const connectorDraft = this.connectorService.connectorDraft;
+    if(connectorDraft){
+      const fromId = connectorDraft.fromId;
+      const toId = this.intentSelected.intent_id;
+      console.log('[CDS-CANVAS] sto per creare il connettore ', connectorDraft, fromId, toId);
+      this.connectorService.createConnectorFromId(fromId, toId);
+      this.removeConnectorDraftAndCloseFloatMenu();
+    }
+    const newIntent = await this.intentService.saveNewIntent(this.id_faq_kb, this.intentSelected);
+    if (newIntent) {
+      this.intentSelected.id = newIntent.id;
+      console.log('[CDS-CANVAS] Intent salvato correttamente: ', newIntent, this.listOfIntents);
+      this.intentService.replaceNewIntentToListOfIntents(newIntent);
+      return newIntent;
+    } else {
+      return null;
+    }
   }
 
 
@@ -690,18 +738,17 @@ private posCenterIntentSelected(intent) {
     console.log('[CDS-CANVAS] onAddingActionToStage:: ', event);
     this.IS_OPEN_ADD_ACTIONS_MENU = true;
     const connectorDraft = this.connectorService.connectorDraft;
-
     if (connectorDraft && connectorDraft.toPoint && !this.hasClickedAddAction) {
-      console.log('[CDS-DSHBRD] trascino connettore sullo stage ', event, connectorDraft.toPoint, this.hasClickedAddAction);
+      console.log('[CDS-CANVAS] trascino connettore sullo stage ', event, connectorDraft.toPoint, this.hasClickedAddAction);
       const toPoint = connectorDraft.toPoint;
       const fromId = connectorDraft.fromId;
       const newAction = this.intentService.createNewAction(event.type);
-      // const newIntent = await this.createNewIntentWithAnAction(toPoint, newAction);
-      // if (newIntent) {
-      //   console.log('[CDS-DSHBRD] ho creato un nuovo intent co la action trascinata');
-      // }
+      const newIntent = await this.createNewIntentWithAnAction(toPoint, newAction);
+      if (newIntent) {
+        console.log('[CDS-DSHBRD] ho creato un nuovo intent co la action trascinata');
+      }
     } else if (this.hasClickedAddAction) {
-      console.log("[CDS-DSHBRD] ho premuto + quindi creo una nuova action e la aggiungo all'intent");
+      console.log("[CDS-CANVAS] ho premuto + quindi creo una nuova action e la aggiungo all'intent");
       const newAction = this.intentService.createNewAction(event.type);
       this.intentSelected.actions.push(newAction);
       this.intentService.refreshIntent(this.intentSelected);
