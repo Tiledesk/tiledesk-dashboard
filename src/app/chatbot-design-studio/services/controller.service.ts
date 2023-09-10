@@ -20,6 +20,9 @@ export class ControllerService {
   private actionSource = new Subject<{type: TYPE_INTENT_ELEMENT, element: Action | string | Form}>();
   public isOpenActionDetailPanel$ = this.actionSource.asObservable();
 
+  private addActionMenu = new Subject<any>();
+  public isOpenAddActionMenu$ = this.addActionMenu.asObservable();
+
   constructor() {
     
   }
@@ -48,5 +51,11 @@ export class ControllerService {
   }
 
 
+
+  /** closeAddActionMenu */
+  public closeAddActionMenu(){
+    console.log('closeAddActionMenu:: ');
+    this.addActionMenu.next();
+  }
 
 }

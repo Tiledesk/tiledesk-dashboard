@@ -455,20 +455,16 @@ export class AuthService {
     } else {
       project_id = this.selected_project_id
     }
-
     const storedProjectJson = localStorage.getItem(project_id)
     this.logger.log('[AUTH-SERV] - CHECK ROLE - JSON OF STORED PROJECT iD', project_id)
     this.logger.log('[AUTH-SERV] - CHECK ROLE - JSON OF STORED PROJECT', storedProjectJson)
     if (storedProjectJson) {
       const storedProjectObject = JSON.parse(storedProjectJson)
       this.logger.log('[AUTH-SERV] - CHECK ROLE - OBJECT OF STORED PROJECT', storedProjectObject)
-
       this._user_role = storedProjectObject['role']
-
       if (this._user_role) {
         if (this._user_role === 'agent' || this._user_role === undefined) {
           this.logger.log('[AUTH-SERV] - CHECK ROLE (GOT FROM STORAGE) »»» ', this._user_role)
-
           this.router.navigate([`project/${project_id}/unauthorized`])
           // this.router.navigate(['/unauthorized']);
         } else {

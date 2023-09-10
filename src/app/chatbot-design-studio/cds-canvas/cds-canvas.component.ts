@@ -145,6 +145,16 @@ export class CdsCanvasComponent implements OnInit {
         this.IS_OPEN_PANEL_BUTTON_CONFIG = false;
       }
     });
+
+    /** SUBSCRIBE TO THE STATE ACTION DETAIL PANEL */
+    this.controllerService.isOpenAddActionMenu$.subscribe((menu: any) => {
+      if (menu) {
+        this.IS_OPEN_ADD_ACTIONS_MENU = true;
+      } else {
+        this.IS_OPEN_ADD_ACTIONS_MENU = false;
+      }
+    });
+
   }
 
   private async initialize(){
