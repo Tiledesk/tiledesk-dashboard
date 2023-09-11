@@ -47,7 +47,7 @@ export class CdsActionReplyFrameComponent implements OnInit {
 
 
   private initialize(){
-    this.delayTime = this.wait.time/1000;
+    this.delayTime = this.wait.time? (this.wait.time/1000) : 500;
     this.frameWidth = this.response.metadata.width?this.response.metadata.width:MESSAGE_METADTA_WIDTH;
     this.frameHeight = this.response.metadata.height?this.response.metadata.height:MESSAGE_METADTA_HEIGHT;
     if(this.response.metadata.src){

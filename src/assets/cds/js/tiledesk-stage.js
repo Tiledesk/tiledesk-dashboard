@@ -163,6 +163,14 @@ export class TiledeskStage {
             event.preventDefault();
             pos_mouse_x = event.clientX;
             pos_mouse_y = event.clientY;
+
+            const custom_event = new CustomEvent("start-dragging", {
+                detail: {
+                    element: element
+                }
+            });
+            document.dispatchEvent(custom_event);
+
             // console.log("pos_mouse_x:", pos_mouse_x, "pos_mouse_y:", pos_mouse_y);
             document.onmousemove = (function(event) {
                 console.log('elementDrag', element, this.scale);
@@ -176,20 +184,26 @@ export class TiledeskStage {
                 let pos_y = element.offsetTop + delta_y / this.scale;
                 element.style.top = pos_y + "px";
                 element.style.left = pos_x + "px";
-                const moved_event = new CustomEvent("dragged", {
+                const custom_event = new CustomEvent("dragged", {
                     detail: {
                         element: element,
                         x: pos_x, 
                         y: pos_y
                     }
                 });
-                document.dispatchEvent(moved_event);
+                document.dispatchEvent(custom_event);
             }).bind(this);
 
             document.onmouseup = (function() {
                 document.onmousemove = null;
                 document.onmouseup = null;
                 this.isDraggingElement = false;
+                const custom_event = new CustomEvent("end-dragging", {
+                    detail: {
+                        element: element
+                    }
+                });
+                document.dispatchEvent(custom_event);
             }).bind(this);
 
         }).bind(this);

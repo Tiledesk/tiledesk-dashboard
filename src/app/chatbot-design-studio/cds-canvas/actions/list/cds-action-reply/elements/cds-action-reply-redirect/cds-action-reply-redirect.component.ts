@@ -41,7 +41,7 @@ export class CdsActionReplyRedirectComponent implements OnInit {
   }
 
   private initialize(){
-    this.delayTime = this.wait.time/1000;
+    this.delayTime = (this.wait && this.wait.time)? (this.wait.time/1000) : 500;
     try {
       this.metadata = this.response.metadata;
     } catch (error) {

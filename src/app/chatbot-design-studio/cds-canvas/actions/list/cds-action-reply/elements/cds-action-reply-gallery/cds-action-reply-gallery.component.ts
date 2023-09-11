@@ -56,7 +56,7 @@ export class CdsActionReplyGalleryComponent implements OnInit {
   }
 
   private initialize(){
-    this.delayTime = this.wait.time/1000;
+    this.delayTime = (this.wait && this.wait.time)? (this.wait.time/1000) : 500;
     this.gallery = [];
     try {
       this.gallery = this.response.attributes.attachment.gallery;

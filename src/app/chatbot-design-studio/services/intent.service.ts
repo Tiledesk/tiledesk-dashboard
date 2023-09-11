@@ -89,66 +89,66 @@ export class IntentService {
   }
 
   /** setDragAndListnerEvent */
-  public setListnerEvent(intent) {
-    let that = this;
-    let elem = document.getElementById(intent.intent_id);
-    if(elem){
-      const panelIntentContent = elem.getElementsByClassName('panel-intent-content')[0];
-      const picHeader = panelIntentContent.getElementsByClassName('pic-header')[0];
-      if(picHeader){
-        console.log("imposto il listner per la selezione/deselezione dell'elemento ");
-        // **************** !!!!!!!! aggiungo listner !!!!!!! *******************//
-        // Aggiungi l'event listener con i parametri
-        // console.log("2.1 --- hasListenerMouseup -> ", elem.dataset.hasListenerMouseup ,intent.intent_id);
-        if (elem.dataset.hasListenerMouseup !== 'true') {
-          picHeader.addEventListener('mouseup', function () {
-            elem.dataset.hasListenerMouseup = 'true';
-            that.onMouseUpIntent(intent, elem);
-          });
-        }
-        // Aggiungi l'event listener con i parametri
-        // console.log("2.2 --- hasListenerMousedown -> ",elem.dataset.hasListenerMousedown, intent.intent_id);
-        if (elem.dataset.hasListenerMousedown !== 'true') {
-          picHeader.addEventListener('mousedown', function () {
-            elem.dataset.hasListenerMousedown = 'true';
-            that.onMouseDownIntent(elem);
-          });
-        }
-        // Aggiungi l'event listener con i parametri
-        // console.log("2.3 --- hasListenerMousemove -> ",elem.dataset.hasListenerMousemove, intent.intent_id);
-        if (elem.dataset.hasListenerMousemove !== 'true') {
-          picHeader.addEventListener('mousemove', function () {
-            elem.dataset.hasListenerMousemove = 'true';
-            that.onMouseMoveIntent(elem);
-          });
-        }
-      }
-    }
-  }
+  // public setListnerEvent(intent) {
+  //   let that = this;
+  //   let elem = document.getElementById(intent.intent_id);
+  //   if(elem){
+  //     const panelIntentContent = elem.getElementsByClassName('panel-intent-content')[0];
+  //     const picHeader = panelIntentContent.getElementsByClassName('pic-header')[0];
+  //     if(picHeader){
+  //       console.log("imposto il listner per la selezione/deselezione dell'elemento ");
+  //       // **************** !!!!!!!! aggiungo listner !!!!!!! *******************//
+  //       // Aggiungi l'event listener con i parametri
+  //       // console.log("2.1 --- hasListenerMouseup -> ", elem.dataset.hasListenerMouseup ,intent.intent_id);
+  //       if (elem.dataset.hasListenerMouseup !== 'true') {
+  //         picHeader.addEventListener('mouseup', function () {
+  //           elem.dataset.hasListenerMouseup = 'true';
+  //           that.onMouseUpIntent(intent, elem);
+  //         });
+  //       }
+  //       // Aggiungi l'event listener con i parametri
+  //       // console.log("2.2 --- hasListenerMousedown -> ",elem.dataset.hasListenerMousedown, intent.intent_id);
+  //       if (elem.dataset.hasListenerMousedown !== 'true') {
+  //         picHeader.addEventListener('mousedown', function () {
+  //           elem.dataset.hasListenerMousedown = 'true';
+  //           that.onMouseDownIntent(elem);
+  //         });
+  //       }
+  //       // Aggiungi l'event listener con i parametri
+  //       // console.log("2.3 --- hasListenerMousemove -> ",elem.dataset.hasListenerMousemove, intent.intent_id);
+  //       if (elem.dataset.hasListenerMousemove !== 'true') {
+  //         picHeader.addEventListener('mousemove', function () {
+  //           elem.dataset.hasListenerMousemove = 'true';
+  //           that.onMouseMoveIntent(elem);
+  //         });
+  //       }
+  //     }
+  //   }
+  // }
 
-  /** */
-  onMouseDownIntent(element): void {
-    // console.log("onMouseDownIntent:  element: ",element);
-    const x = element.offsetLeft;
-    const y = element.offsetTop;
-    element.style.zIndex = 2;
-  }
+  // /** */
+  // onMouseDownIntent(element): void {
+  //   // console.log("onMouseDownIntent:  element: ",element);
+  //   const x = element.offsetLeft;
+  //   const y = element.offsetTop;
+  //   element.style.zIndex = 2;
+  // }
 
-  /** */
-  onMouseUpIntent(intent: any, element: any) {
-    console.log("onMouseUpIntent: ", intent, " element: ", element);
-    let newPos = { 'x': element.offsetLeft, 'y': element.offsetTop };
-    let pos = intent.attributes.position; // this.intentService.getIntentPosition(intent.id);
-    if (newPos.x != pos.x || newPos.y != pos.y) {
-      element.style.zIndex = '1';
-      // console.log("setIntentPosition x:", newPos.x, " y: ",newPos.y);
-      this.setIntentPosition(intent.id, newPos);
-    }
-  }
+  // /** */
+  // onMouseUpIntent(intent: any, element: any) {
+  //   console.log("onMouseUpIntent: ", intent, " element: ", element);
+  //   let newPos = { 'x': element.offsetLeft, 'y': element.offsetTop };
+  //   let pos = intent.attributes.position; // this.intentService.getIntentPosition(intent.id);
+  //   if (newPos.x != pos.x || newPos.y != pos.y) {
+  //     element.style.zIndex = '1';
+  //     // console.log("setIntentPosition x:", newPos.x, " y: ",newPos.y);
+  //     this.setIntentPosition(intent.id, newPos);
+  //   }
+  // }
 
-  /** */
-  onMouseMoveIntent(element: any) {
-  }
+  // /** */
+  // onMouseMoveIntent(element: any) {
+  // }
 
 
   /** 
@@ -736,16 +736,15 @@ export class IntentService {
   // }
 
   patchAttributes(intentID: string, attributes: any) {
-    console.log('-----------> patchAttributes, ', intentID, attributes);
-    this.faqService.patchAttributes(intentID, attributes).subscribe((data) => {
+    
+    clearTimeout(this.setTimeoutChangeEvent);
+    this.setTimeoutChangeEvent = setTimeout(() => {
+      console.log('[INTENT SERVICE] -> patchAttributes, ', intentID, attributes);
+      this.faqService.patchAttributes(intentID, attributes).subscribe((data) => {
         if (data) {
           this.listOfIntents = this.listOfIntents.map((obj) => (obj.id === intentID ? data : obj));
-          // const indexToUpdate = this.listOfIntents.findIndex((obj) => obj.id === intentID);
-          // if (indexToUpdate !== -1) {
-          //   this.listOfIntents[indexToUpdate] = data;
-          // }
-          data['attributesChanged']=true;
-          console.log('data:   ', data);
+          data['attributesChanged'] = true;
+          console.log('[INTENT SERVICE] patchAttributes OK: ', data);
           this.behaviorIntent.next(data);
         }
       }, (error) => {
@@ -753,7 +752,8 @@ export class IntentService {
       }, () => {
         console.log('complete');
       });
-
+    }, 1000);
   }
+
 
 }

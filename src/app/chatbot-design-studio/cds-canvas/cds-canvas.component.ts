@@ -214,10 +214,23 @@ export class CdsCanvasComponent implements OnInit {
       false
     );
 
+    /** start-dragging */
+    document.addEventListener(
+      "start-dragging", (e: CustomEvent) => {
+        const el = e.detail.element;
+        this.removeConnectorDraftAndCloseFloatMenu();
+        this.intentSelected = this.listOfIntents.find((intent) => intent.intent_id === el.id);
+        el.style.zIndex = 2;
+        console.log('[CDS-CANVAS] start-dragging ', el, this.listOfIntents, this.intentSelected);
+      },
+      false
+    );
+
     /** dragged **
      * l'evento scatta quando muovo un intent sullo stage:
      * - muovo i connettori collegati all'intent
      * - rimuovo eventuali connectors tratteggiati e chiudo il float menu se è aperto
+     * - aggiorno la posizione dell'intent selected
     */
     document.addEventListener(
       "dragged", (e: CustomEvent) => {
@@ -226,10 +239,23 @@ export class CdsCanvasComponent implements OnInit {
         const x = e.detail.x;
         const y = e.detail.y;
         this.connectorService.moved(el, x, y);
-        // this.removeConnectorDraftAndCloseFloatMenu();
+        this.intentSelected['attributes']['position'] = {'x': el.offsetLeft, 'y': el.offsetTop};
       },
       false
     );
+
+    /** end-dragging */
+    document.addEventListener(
+      "end-dragging", (e: CustomEvent) => {
+        console.log('[CDS-CANVAS] end-dragging ', e);
+        const el = e.detail.element;
+        el.style.zIndex = 1;
+        this.intentService.patchAttributes(this.intentSelected.id, this.intentSelected.attributes);
+      },
+      false
+    );
+
+    
 
     /** LISTNER OF TILEDESK CONNECTORS */
      

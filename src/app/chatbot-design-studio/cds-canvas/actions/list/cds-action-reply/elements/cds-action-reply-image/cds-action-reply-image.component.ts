@@ -60,7 +60,7 @@ export class CdsActionReplyImageComponent implements OnInit {
   // PRIVATE FUNCTIONS //
 
   private initialize(){
-    this.delayTime = this.wait.time/1000;
+    this.delayTime = (this.wait && this.wait.time)? (this.wait.time/1000) : 500;
     this.checkButtons();
     this.intentService.isChangedConnector$.subscribe((connector: any) => {
       console.log('CdsActionReplyImageComponent isChangedConnector-->', connector);
