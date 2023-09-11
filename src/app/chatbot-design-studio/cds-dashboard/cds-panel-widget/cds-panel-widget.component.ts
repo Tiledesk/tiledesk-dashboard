@@ -40,24 +40,27 @@ export class CdsPanelWidgetComponent implements OnInit {
 
   ngOnInit(): void {
     // this.initTiledesk();
-    this.setIframeUrl()
+    
   }
 
   ngOnChanges(){
-
+    console.log('intentttttt', this.intentName)
+    this.setIframeUrl()
   }
 
 
   setIframeUrl(){
     this.TESTSITE_BASE_URL = this.appConfigService.getConfig().testsiteBaseUrl;
     const testItOutBaseUrl = this.TESTSITE_BASE_URL.substring(0, this.TESTSITE_BASE_URL.lastIndexOf('/'));
-    const testItOutUrl = testItOutBaseUrl + '/chatbot-panel.html'
-    const url = testItOutUrl + '?tiledesk_projectid=' + this.projectID + 
+    // const testItOutUrl = testItOutBaseUrl + '/chatbot-panel.html'
+    const testItOutUrl = 'http://localhost:4203/assets/twp'+ '/chatbot-panel.html'
+    let url = testItOutUrl + '?tiledesk_projectid=' + this.projectID + 
                                 '&tiledesk_participants=bot_' + this.id_faq_kb + 
                                 "&tiledesk_departmentID=" + this.defaultDepartmentId + 
                                 "&tiledesk_hideHeaderCloseButton=true" +
-                                '&tiledesk_fullscreenMode=true&td_draft=true' + 
-                                '&tiledesk_hiddenMessage=\\'+ this.intentName
+                                '&tiledesk_fullscreenMode=true&td_draft=true' 
+    if(this.intentName && this.intentName !== '') 
+      url += '&tiledesk_hiddenMessage=' + this.intentName
 
     this.widgetTestSiteUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url)
     let params = `toolbar=no,menubar=no,width=815,height=727,left=100,top=100`;

@@ -2,7 +2,7 @@
 
 .cds-action-content{
     // position: relative;
-    padding: 0px 10px;
+    padding: 5px 10px;
 }
 
 .previewContent{
@@ -19,9 +19,10 @@
         filter: brightness(0) saturate(100%) invert(42%) sepia(2%) saturate(2720%) hue-rotate(9deg) brightness(91%) contrast(81%);
     }
   
-    .title-label{
-     color: #6c6859;
-     font-size: 12px; 
+    .title-preview-label{
+        color: #6c6859;
+        font-size: 12px; 
+        margin: 0px;
     }
 }
 .preview-divider {

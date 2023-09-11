@@ -96,7 +96,7 @@ export class CdsDashboardComponent implements OnInit {
   IS_OPEN: boolean = false;
   IS_OPEN_INTENTS_LIST: boolean = true;
   IS_OPEN_PANEL_WIDGET: boolean = false;
-  public TESTSITE_BASE_URL: string;
+  INTENT_DISPLAY_NAME_PANEL_WIDGET: string = '';
 
   // Attach bot to dept
   dept_id: string;
@@ -917,9 +917,14 @@ export class CdsDashboardComponent implements OnInit {
   // - actions context menu' (static & float),
   // - button configuration panel  
   // -------------------------------------------------------
-  onTestItOut(status) {
-    console.log('[CDS DSHBRD] onTestItOut  status ', status);
-    this.IS_OPEN_PANEL_WIDGET = status
+  onTestItOut(event: Intent | boolean) {
+    console.log('[CDS DSHBRD] onTestItOut intent ', status);
+    if(typeof status === "boolean"){
+      this.IS_OPEN_PANEL_WIDGET = true
+    }else {
+      this.IS_OPEN_PANEL_WIDGET = !this.IS_OPEN_PANEL_WIDGET
+      this.INTENT_DISPLAY_NAME_PANEL_WIDGET = (event as Intent).intent_display_name
+    }
     this.controllerService.closeActionDetailPanel();
     this.controllerService.closeButtonPanel();
     this.intentService.setLiveActiveIntent(null);
