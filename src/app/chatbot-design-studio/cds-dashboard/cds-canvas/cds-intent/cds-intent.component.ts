@@ -46,9 +46,9 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
   @Output() actionSelected = new EventEmitter(); // !!! SI PUO' ELIMINARE
   @Output() actionDeleted = new EventEmitter();
   @Output() showPanelActions = new EventEmitter(); // nk
-  @Output() testItOut = new EventEmitter();
-  @ViewChild('openActionMenuBtn', { static: false }) openActionMenuBtnRef: ElementRef;
+  @Output() testItOut = new EventEmitter<Intent>();
 
+  @ViewChild('openActionMenuBtn', { static: false }) openActionMenuBtnRef: ElementRef;
 
   subscriptions: Array<{ key: string, value: Subscription }> = [];
   private unsubscribe$: Subject<any> = new Subject<any>();
@@ -618,7 +618,8 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
 
 
   openTestSiteInPopupWindow() {
-    this.testItOut.emit(true);
+
+    this.testItOut.emit(this.intent)
   }
 
 }

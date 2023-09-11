@@ -20,10 +20,13 @@ function getWindow(): any {
 export class CdsPanelWidgetComponent implements OnInit {
 
   @ViewChild('widgetIframe', {static:true}) widgetIframe:ElementRef;
-  
+
   // @Input() projectID: string;
   // @Input() id_faq_kb: string;
   // @Input() defaultDepartmentId: string;
+  // @Input() intentName: string;
+
+  intentName: string;
   projectID: string;
   id_faq_kb: string;
   defaultDepartmentId: string;
@@ -47,6 +50,7 @@ export class CdsPanelWidgetComponent implements OnInit {
 
   ngOnInit(): void {
     // this.initTiledesk();
+    this.intentName = this.intentService.selectedIntent.intent_display_name;
     this.projectID = this.dashboardService.projectID;
     this.id_faq_kb = this.dashboardService.id_faq_kb;
     this.defaultDepartmentId = this.dashboardService.defaultDepartmentId;
@@ -58,12 +62,16 @@ export class CdsPanelWidgetComponent implements OnInit {
     this.TESTSITE_BASE_URL = this.appConfigService.getConfig().testsiteBaseUrl;
     const testItOutBaseUrl = this.TESTSITE_BASE_URL.substring(0, this.TESTSITE_BASE_URL.lastIndexOf('/'));
     const testItOutUrl = testItOutBaseUrl + '/chatbot-panel.html'
-    const url = testItOutUrl + '?tiledesk_projectid=' + this.projectID + 
+    // const testItOutUrl = 'http://localhost:4203/assets/twp'+ '/chatbot-panel.html'
+    let url = testItOutUrl + '?tiledesk_projectid=' + this.projectID + 
+    // const url = testItOutUrl + '?tiledesk_projectid=' + this.projectID + 
                                 '&tiledesk_participants=bot_' + this.id_faq_kb + 
                                 "&tiledesk_departmentID=" + this.defaultDepartmentId + 
-                                "&tiledesk_hideHeaderCloseButton=false" +
+                                "&tiledesk_hideHeaderCloseButton=true" +
                                 '&tiledesk_fullscreenMode=true&td_draft=true'
-
+                                if(this.intentName && this.intentName !== '') 
+                                url += '&tiledesk_hiddenMessage=' + this.intentName
+                          
     this.widgetTestSiteUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url)
     let params = `toolbar=no,menubar=no,width=815,height=727,left=100,top=100`;
     // window.open(url, '_blank', params);
@@ -71,6 +79,8 @@ export class CdsPanelWidgetComponent implements OnInit {
 
   onLoaded(event){
     this.loading= false
+    this.widgetIframe.nativeElement.contentWindow.postMessage(this.intentName, "*");
+    console.log('widgettttttt', this.widgetIframe)
     // console.log('iframeeeeeee', this.elementRef.nativeElement.querySelector('.content'))
     window.addEventListener('message', (event_data)=> {
       if(event_data && event_data.origin.includes('widget')){

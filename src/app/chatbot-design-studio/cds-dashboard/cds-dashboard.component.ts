@@ -14,6 +14,8 @@ import { DashboardService } from 'app/chatbot-design-studio/services/dashboard.s
 // MODEL //
 import { Project } from 'app/models/project-model';
 import { Chatbot } from 'app/models/faq_kb-model';
+import { Intent } from 'app/models/intent-model';
+
 
 // UTILS //
 import { SIDEBAR_PAGES } from 'app/chatbot-design-studio/utils';
@@ -194,18 +196,22 @@ export class CdsDashboardComponent implements OnInit {
    * - actions context menu' (static & float),
    * - button configuration panel  
   */
-  onTestItOut(status) {
-    console.log('[CDS DSHBRD] onTestItOut  status ', status);
-    this.IS_OPEN_PANEL_WIDGET = status;
-    this.controllerService.closeActionDetailPanel();
-    this.controllerService.closeButtonPanel();
-    this.intentService.setLiveActiveIntent(null);
-    // this.isOpenAddActionsMenu = false;
-    // if (!this.hasClickedAddAction) {
-      // this.removeConnectorDraftAndCloseFloatMenu();
+
+  onTestItOut(event: Intent | boolean) {
+    console.log('[CDS DSHBRD] onTestItOut intent ', event);
+    if(typeof event === "boolean"){
+      this.IS_OPEN_PANEL_WIDGET = true;
+    } else {
+      this.intentService.setIntentSelected(event);
+      this.IS_OPEN_PANEL_WIDGET = !this.IS_OPEN_PANEL_WIDGET
+    }
+    if(this.IS_OPEN_PANEL_WIDGET){
+      this.controllerService.closeActionDetailPanel();
+      this.controllerService.closeButtonPanel();
+      this.intentService.setLiveActiveIntent(null);
       this.controllerService.closeAddActionMenu();
       this.connectorService.removeConnectorDraft();
-    // }
+    }
   }
   //-------------------------------//
 

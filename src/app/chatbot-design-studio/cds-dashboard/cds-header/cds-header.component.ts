@@ -230,7 +230,7 @@ export class CdsHeaderComponent implements OnInit {
     // const url = testItOutUrl + '?tiledesk_projectid=' + this.projectID + '&tiledesk_participants=bot_' + this.id_faq_kb + "&tiledesk_departmentID=" + this.defaultDepartmentId + '&td_draft=true'
     // let params = `toolbar=no,menubar=no,width=815,height=727,left=100,top=100`;
     // window.open(url, '_blank', params);
-    this.onTestItOut.emit(true)
+    this.onTestItOut.emit(true);
   }
 
 }

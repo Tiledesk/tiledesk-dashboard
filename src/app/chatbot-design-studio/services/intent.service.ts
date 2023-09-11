@@ -21,7 +21,7 @@ import {
   ActionReplaceBot,
   ActionWait,
   ActionWebRequest,
-  Command, Wait, Message, Expression, Attributes, Action, ActionAskGPT, ActionWhatsappAttribute, ActionWhatsappStatic } from 'app/models/intent-model';
+  Command, Wait, Message, Expression, Attributes, Action, ActionAskGPT, ActionWhatsappAttribute, ActionWhatsappStatic, ActionWebRequestV2 } from 'app/models/intent-model';
 import { FaqService } from 'app/services/faq.service';
 import { FaqKbService } from 'app/services/faq-kb.service';
 import { NEW_POSITION_ID, TYPE_ACTION, TYPE_COMMAND, removeNodesStartingWith } from 'app/chatbot-design-studio/utils';
@@ -78,6 +78,9 @@ export class IntentService {
     this.changedConnector.next(connector);
   }
 
+  public setDefaultIntentSelected(intent){
+    this.selectedIntent = intent;
+  }
 
   public setIntentSelected(intent){
     this.selectedIntent = intent;
@@ -262,7 +265,7 @@ export class IntentService {
       this.faqService._getAllFaqByFaqKbId(id_faq_kb).subscribe((faqs: Intent[]) => {
         // console.log('getAllIntents: ', faqs);
         if (faqs) {
-          this.listOfIntents = JSON.parse(JSON.stringify(faqs));;
+          this.listOfIntents = JSON.parse(JSON.stringify(faqs));
         } else {
           // console.log('EMPTY: ', faqs);
           this.listOfIntents = [];
@@ -639,6 +642,9 @@ export class IntentService {
     }
     if(typeAction === TYPE_ACTION.WEB_REQUEST){
       action = new ActionWebRequest();
+    }
+    if(typeAction === TYPE_ACTION.WEB_REQUESTV2){
+      action = new ActionWebRequestV2();
     }
     if(typeAction === TYPE_ACTION.AGENT){
       action = new ActionAgent();

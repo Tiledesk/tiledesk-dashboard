@@ -30,8 +30,8 @@
     
     .auto-suggest-group {
         display: flex;
-        max-width: 400px;
-        width: 100%;
+        // max-width: 400px;
+        // width: 100%;
     }
     
 
@@ -114,6 +114,7 @@
 
     cds-textarea#value.value ::ng-deep{
         display: flex;
+        width: calc(50% - 2px);
         textarea {
             padding: 0 0 0 10px !important;
             border: 0!important;

@@ -144,6 +144,7 @@ import { CdsActionReplaceBotComponent } from './cds-dashboard/cds-canvas/actions
 import { CdsActionAssignVariableComponent } from './cds-dashboard/cds-canvas/actions/list/cds-action-assign-variable/cds-action-assign-variable.component';
 import { CdsActionHideMessageComponent } from './cds-dashboard/cds-canvas/actions/list/cds-action-hide-message/cds-action-hide-message.component';
 import { CdsActionWebRequestComponent } from './cds-dashboard/cds-canvas/actions/list/cds-action-web-request/cds-action-web-request.component';
+import { CdsActionWebRequestV2Component } from './cds-dashboard/cds-canvas/actions/list/cds-action-web-request-v2/cds-action-web-request-v2.component';
 import { CdsActionAskgptComponent } from './cds-dashboard/cds-canvas/actions/list/cds-action-askgpt/cds-action-askgpt.component';
 import { CdsActionWhatsappAttributeComponent } from './cds-dashboard/cds-canvas/actions/list/cds-action-whatsapp-attribute/cds-action-whatsapp-attribute.component';
 import { CdsWhatsappReceiverComponent } from './cds-dashboard/cds-canvas/actions/list/cds-action-whatsapp-static/whatsapp-receiver/whatsapp-receiver.component';
@@ -156,10 +157,9 @@ import { CdsPanelButtonConfigurationComponent } from './cds-dashboard/cds-canvas
 import { CdsActionArrowComponent } from './cds-dashboard/cds-canvas/actions/shared/cds-action-controls/cds-action-arrow/cds-action-arrow.component';
 import { CdsActionControlsComponent } from './cds-dashboard/cds-canvas/actions/shared/cds-action-controls/cds-action-controls/cds-action-controls.component';
 import { CdsAddActionMenuComponent } from './cds-dashboard/cds-canvas/actions/shared/cds-add-action-menu/cds-add-action-menu.component';
-
 import { CdsFormComponent } from './cds-dashboard/cds-canvas/actions/list/form/form.component';
 import { CdsQuestionComponent } from './cds-dashboard/cds-canvas/actions/list/question/question.component';
-
+import { CdsAnswerComponent } from './cds-dashboard/cds-canvas/actions/list/answer/answer.component';
 import { AddkbDialogComponent } from './cds-dashboard/cds-canvas/actions/list/cds-action-askgpt/addkb-dialog/addkb-dialog.component';
 import { CdsCanvasComponent } from './cds-dashboard/cds-canvas/cds-canvas.component';
 
@@ -252,6 +252,7 @@ import { CdsCanvasComponent } from './cds-dashboard/cds-canvas/cds-canvas.compon
     CdsActionAssignVariableComponent,
     CdsActionHideMessageComponent,
     CdsActionWebRequestComponent,
+    CdsActionWebRequestV2Component,
     CdsActionWhatsappAttributeComponent,
     CdsActionWhatsappStaticComponent,
     CdsWhatsappReceiverComponent,
@@ -274,6 +275,7 @@ import { CdsCanvasComponent } from './cds-dashboard/cds-canvas/cds-canvas.compon
     // ------ CDS-ACTIONS: end ------ //
     CdsFormComponent,
     CdsQuestionComponent,
+    CdsAnswerComponent,
 
     // ------ CDS PANELS ------ //
     CdsActionDetailPanelComponent,

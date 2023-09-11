@@ -91,6 +91,7 @@ export class CdsPanelIntentListComponent implements OnInit, OnChanges {
     this.filteredIntents = this.defaultIntents;
     if(!this.listOfIntents || this.listOfIntents.length == 0){
       this.idSelectedIntent = this.internalIntents[0].intent_id;
+      this.intentService.setDefaultIntentSelected(this.internalIntents[0]);
     } 
     this.listOfIntents = intents;
     const resp = this.listOfIntents.find((intent) => intent.intent_id === this.idSelectedIntent);
