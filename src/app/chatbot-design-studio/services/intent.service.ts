@@ -349,7 +349,8 @@ export class IntentService {
 
 
   /** updateIntent */
-  public async updateIntent(originalIntent: Intent): Promise<boolean> { 
+  public async updateIntent(originalIntent: Intent, timeout?: number): Promise<boolean> { 
+    if(!timeout)timeout = 2000;
     let intent = JSON.parse(JSON.stringify(originalIntent));
     intent = removeNodesStartingWith(intent, '__');
 
@@ -387,7 +388,7 @@ export class IntentService {
             // console.log('COMPLETE ');
             resolve(true);
           });
-        }, 2000);
+        }, timeout);
     });
   }
 
@@ -487,41 +488,25 @@ export class IntentService {
   // cancello la action dall'intent che la conteneva precedentemente
   public deleteActionFromPreviousIntentOnMovedAction(event, action){
     const actionId = action._tdActionId;
-    console.log("elimino la action dall'intent che la conteneva",actionId, this.previousIntentId);
+   
     let intentToUpdate = this.listOfIntents.find((intent) => intent.intent_id === this.previousIntentId);
     if(intentToUpdate){
       const actions = intentToUpdate.actions.filter((action: any) => action._tdActionId !== actionId);
-      if(actions){ // && actions.length>0
-        intentToUpdate.actions = actions;
-        // this.listOfIntents = this.listOfIntents.map((intent) => (intent.intent_id !== this.previousIntentId ? intent : intentToUpdate));
-        // console.log("aggiorno la lista degli intents sostituendo l'intent al quale è stata eliminata la action ", this.listOfIntents);
-        console.log('aggiorno intent di partenza', intentToUpdate);
-        const responseIntent = this.updateIntent(intentToUpdate);
-        this.connectorService.deleteConnectorsFromActionByActionId(actionId);
-        if(responseIntent){
-          console.log('update Intent: OK');
-          this.behaviorIntent.next(intentToUpdate);
-         // this.connectorService.deleteConnectorsFromActionByActionId(action._tdActionId);
-        }
+      intentToUpdate.actions = actions;
+      console.log("[CDS-INTENT] ho eliminato la action dall'intent che la conteneva ",actionId, intentToUpdate);
+      this.connectorService.deleteConnectorsFromActionByActionId(actionId);
+      console.log('[CDS-INTENT] aggiorno intent di partenza', intentToUpdate);
+      const responseIntent = this.updateIntent(intentToUpdate,0);
+      if(responseIntent){
+        console.log('[CDS-INTENT] update Intent: OK');
+        this.behaviorIntent.next(intentToUpdate);
         return true;
       } else {
-        // // NON HA SENSO ELIMINARE L'ULTIMA ACTION QUINDI ANNULLO L'AZIONE!!!
-        // console.log("l'intent è vuoto quindi lo elimino  ::: ", intentToUpdate.id);
-        // const responseIntent = this.deleteIntent(intentToUpdate.id);
-        // if(responseIntent){
-        //   console.log('delete Intent: OK');
-        //   this.listOfIntents = this.listOfIntents.filter(obj => obj.id !== intentToUpdate.id && obj.actions.length>0);
-        //   console.log("ho eliminato l'intent da remoto, quindi aggiorno l'array degli intent e propago l'azione");
-        //   this.behaviorIntents.next(this.listOfIntents);
-        // }
-        // return false;
+        return false;
       }
+    } else {
       return false;
-      // console.log("propago la lista di intents"); 
-      // this.behaviorIntents.next(this.listOfIntents);
     }
-    return false;
-    // return this.listOfIntents;
   }
 
 
