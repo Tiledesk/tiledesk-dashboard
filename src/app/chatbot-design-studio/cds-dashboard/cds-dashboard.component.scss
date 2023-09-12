@@ -116,15 +116,15 @@ $box-left-width: 250px;
   display: flex;
 }
 
+cds-rules,
+cds-chatbot-details,
+cds-fulfillment {
+    width: 100%;
+}
 .cds-content {
   display: flex;
   width: calc(100% - 60px);
   overflow: hidden;
-  cds-rules,
-  cds-chatbot-details,
-  cds-fulfillment {
-      width: 100%;
-  }
 }
 
 .chatboat-dashboard {

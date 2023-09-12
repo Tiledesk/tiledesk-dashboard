@@ -97,7 +97,6 @@ import { CdsSplashScreenComponent } from './cds-dashboard/utils/cds-splash-scree
 // import { CdsFooterComponent } from './cds-dashboard/cds-footer/cds-footer.component';
 import { CdsPublishOnCommunityModalComponent } from './cds-dashboard/utils/cds-publish-on-community-modal/cds-publish-on-community-modal.component';
 import { SelectComponent } from './cds-base-element/select/select.component';
-// import { BaseFilterComponent } from './cds-dashboard/panel-intent-detail/actions/action-json-condition/base-filter/base-filter.component';
 // import { VariableListComponent } from './cds-dashboard/cds-canvas/panel-intent-detail/actions/action-json-condition/variable-list/variable-list.component';
 import { TextEditableDivComponent } from './cds-base-element/text-editable-div/text-editable-div.component';
 // import { ActionWebRequestComponent } from './cds-dashboard/panel-intent-detail/actions/action-web-request/action-web-request.component';
@@ -180,6 +179,7 @@ import { AddkbDialogComponent } from './cds-dashboard/cds-canvas/actions/list/cd
 import { CdsCanvasComponent } from './cds-dashboard/cds-canvas/cds-canvas.component';
 import { BaseConditionRowComponent } from './cds-dashboard/cds-canvas/actions/list/cds-action-json-condition/base-condition-row/base-condition-row.component';
 import { VariableListComponent } from './cds-dashboard/cds-canvas/actions/list/cds-action-json-condition/variable-list/variable-list.component';
+import { BaseFilterComponent } from './cds-dashboard/cds-canvas/actions/list/cds-action-json-condition/base-filter/base-filter.component';
 
 @NgModule({
   declarations: [
@@ -233,7 +233,7 @@ import { VariableListComponent } from './cds-dashboard/cds-canvas/actions/list/c
     CdsPublishOnCommunityModalComponent,
     SelectComponent,
     BaseConditionRowComponent,
-    // BaseFilterComponent,
+    BaseFilterComponent,
     VariableListComponent,
     TextEditableDivComponent,
     // ActionWebRequestComponent,
@@ -320,8 +320,8 @@ import { VariableListComponent } from './cds-dashboard/cds-canvas/actions/list/c
     CdsActionDetailPanelComponent,
     CdsPanelButtonConfigurationComponent,
     CdsPanelWidgetComponent,
-    AddkbDialogComponent,
-    CdsCanvasComponent
+    CdsCanvasComponent,
+    AddkbDialogComponent
   ],
   imports: [
     A11yModule,
