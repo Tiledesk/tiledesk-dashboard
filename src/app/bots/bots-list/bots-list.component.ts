@@ -335,7 +335,6 @@ export class BotListComponent implements OnInit {
   translateTrashBotSuccessMsg() {
     this.translate.get('TrashBotSuccessNoticationMsg')
       .subscribe((text: string) => {
-
         this.trashBotSuccessNoticationMsg = text;
         // this.logger.log('+ + + TrashBotSuccessNoticationMsg', text)
       });

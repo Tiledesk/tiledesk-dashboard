@@ -15,6 +15,7 @@ export class CDSFilterComponent implements OnInit {
 
   @Input() expression: Expression = new Expression();
   @Input() booleanOperators: {}
+  @Input() previewMode: boolean = true
   @Output() onChangeExpression = new EventEmitter<Expression>()
   @Output() onDeleteGroup = new EventEmitter()
 
@@ -34,7 +35,7 @@ export class CDSFilterComponent implements OnInit {
   }
 
   ngOnChanges(){
-    this.logger.log('[BASE_FILTER] expression selected-->', this.expression)
+    console.log('[BASE_FILTER] expression selected-->', this.expression)
   }
 
   onOpenConditionDetail(index: number){
@@ -61,11 +62,11 @@ export class CDSFilterComponent implements OnInit {
     if(condition){
       this.logger.log('onDismiss popover condition', condition)
       this.logger.log('onDismiss popover condition', condition, this.selectedCondition, this.selectedIndex, this.expression)
+      console.log('onDismiss popover condition', condition)
       //if condition already exist --> do not push new condition
       //else push new operaor and condition  
       if(this.selectedCondition){
         this.expression.conditions[this.selectedIndex] = condition;
-        this.selectedCondition = null
       }else {
         if(this.expression.conditions.length === 0){
           this.expression.conditions.push(condition);

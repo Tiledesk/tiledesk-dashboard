@@ -32,6 +32,7 @@ export class TagsService {
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
       this.logger.log('[TAGS-SERV] - SUBSCRIBE TO THE PROJECT PUBLISHED BY AUTH SERVICE ', project)
+      console.log('[TAGS-SERV] - SUBSCRIBE TO THE PROJECT PUBLISHED BY AUTH SERVICE ', project)
       if (project) {
         this.projectId = project._id
       }

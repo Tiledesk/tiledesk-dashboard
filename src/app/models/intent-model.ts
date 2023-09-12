@@ -1,4 +1,4 @@
-import { TYPE_BUTTON, TYPE_OPERATOR, TYPE_URL } from './../chatbot-design-studio/utils';
+import { TYPE_COMMAND, TYPE_OPERATOR } from './../chatbot-design-studio/utils';
 import { TYPE_ACTION, TYPE_ATTACHMENT, TYPE_METHOD_REQUEST, TYPE_MATH_OPERATOR } from '../chatbot-design-studio/utils';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -20,8 +20,17 @@ export class Intent {
     createdAt?: Date;
     updatedAt?: Date;
     id?: string;
+    attributes?: IntentAttributes;
     constructor() {
+        this.intent_id = uuidv4();
         this.actions = [];
+        this.attributes = new IntentAttributes();
+    }
+}
+export class IntentAttributes {
+    position?: any;
+    constructor() {
+        this.position = {x:0, y:0};
     }
 }
 
@@ -31,28 +40,6 @@ export class Action {
     _tdActionTitle: string = '';
     _tdActionId: any = uuidv4();
 }
-
-// export class ActionCondition extends Action {
-//     condition: string;
-//     trueIntent: string;
-//     falseIntent: string;
-//     stopOnConditionMet: boolean;
-//     constructor() {
-//         super();
-//         this._tdActionType = TYPE_ACTION.CONDITION;
-//     }
-// }
-/*
-export class ActionAssignVariable extends Action {
-    expression: string;
-    assignTo: string;
-    constructor() {
-        super();
-        this._tdActionType = TYPE_ACTION.ASSIGN_VARIABLE;
-    }
-}
-*/
-
 
 export class Operation {
     operators?: Array<TYPE_MATH_OPERATOR>
@@ -101,6 +88,7 @@ export class ActionDeleteVariable extends Action {
 }
 
 export class ActionOnlineAgent extends Action {
+    intentName: string;
     trueIntent: string;
     falseIntent: string;
     trueIntentAttributes?: string;
@@ -131,7 +119,7 @@ export class ActionHideMessage extends Action {
     attributes: {};
     constructor() {
         super();
-        this._tdActionType = TYPE_ACTION.HIDE_MESSSAGE;
+        this._tdActionType = TYPE_ACTION.HIDE_MESSAGE;
         this.attributes = {  subtype: "info"}
     }
 }
@@ -165,6 +153,25 @@ export class ActionRandomReply extends Action {
 }
 
 export class ActionWebRequest extends Action {
+    method: string;
+    url: string;
+    headersString: any;
+    jsonBody: string;
+    assignTo: string;
+    assignments: {}
+    constructor(){
+        super();
+        this.url = '';
+        this.headersString = {"Content-Type":"application/json", "Cache-Control":"no-cache", "User-Agent":"TiledeskBotRuntime", "Accept":"*/*"};
+        this.jsonBody = JSON.stringify({});
+        this.assignTo = '';
+        this.assignments = {};
+        this.method = TYPE_METHOD_REQUEST.GET;
+        this._tdActionType = TYPE_ACTION.WEB_REQUEST;
+    }
+}
+
+export class ActionWebRequestV2 extends Action {
     method: string;
     url: string;
     headersString: any;
@@ -270,28 +277,19 @@ export class ActionWhatsappStatic extends Action {
     }
 }
 
-export class WhatsappBroadcast {
-    id_project: string;
-    phone_number_id: string;
-    template: {
-        language: string;
-        name: string;
-    }
-    receiver_list: Array<any>;
-}
 
-export class ActionAskGPT extends Action {
-    question: string;
-    kbid: string;
-    gptkey: string;
-    assignReplyTo: string;
-    assignSourceTo: string;
-    assignSuccessTo: string;
-    constructor() {
-        super();
-        this._tdActionType = TYPE_ACTION.ASKGPT
-    }
-}
+// export class ActionAskGPT extends Action {
+//     question: string;
+//     kbid: string;
+//     gptkey: string;
+//     assignReplyTo: string;
+//     assignSourceTo: string;
+//     assignSuccessTo: string;
+//     constructor() {
+//         super();
+//         this._tdActionType = TYPE_ACTION.ASKGPT
+//     }
+// }
 
 export class ActionAgent extends Action{
     constructor() {
@@ -316,13 +314,46 @@ export class ActionWait extends Action {
     }
 }
 
+export class Wait {
+    time: number;
+    type: string;
+    constructor() {
+        this.type = TYPE_COMMAND.WAIT;
+        this.time = 500;
+    }
+}
 
+
+export class WhatsappBroadcast {
+    id_project: string;
+    phone_number_id: string;
+    template: {
+        language: string;
+        name: string;
+    }
+    receiver_list: Array<any>;
+}
+
+export class ActionAskGPT extends Action {
+    question: string;
+    kbid: string;
+    gptkey: string;
+    assignReplyTo: string;
+    assignSourceTo: string;
+    trueIntent: string;
+    falseIntent: string;
+    trueIntentAttributes?: string;
+    falseIntentAttributes?: string;
+    constructor() {
+        super();
+        this._tdActionType = TYPE_ACTION.ASKGPT
+    }
+}
 
 
 export class Message {
     text: string;
     type: string;
-    // time?: number;
     attributes?: MessageAttributes;
     metadata?: Metadata;
     _tdJSONCondition?: Expression;
@@ -368,14 +399,53 @@ export class Attachment {
     }
 }
 
-export interface Button {
-    type: string,
-    value: string,
-    link?: string,
-    target?: string,
-    action?: string,
-    attributes?: any,
-    show_echo?: boolean
+export class Button {
+    uid: string;
+    __idConnector: string;
+    __isConnected: boolean;
+    type: string;
+    value: string;
+    link?: string;
+    target?: string;
+    action?: string;
+    attributes?: any;
+    show_echo?: boolean;
+
+    constructor(
+        uid: string,
+        idConnector: string,
+        isConnected: boolean,
+        type: string,
+        value: string,
+        link?: string,
+        target?: string,
+        action?: string,
+        attributes?: any,
+        show_echo?: boolean
+    ) {
+        this.uid = uid;
+        this.__idConnector = idConnector;
+        this.__isConnected = isConnected;
+        this.type = type;
+        this.value = value;
+        this.link = link;
+        this.target = target;
+        this.action = action;
+        this.attributes = attributes;
+        this.show_echo = show_echo;
+    }
+
+    // getAttributesExceptIdAndConnected() {
+    //     const { idConnector, isConnected, ...otherAttributes } = this;
+    //     return otherAttributes;
+    // }
+}
+
+export interface GalleryElement{
+    preview: Metadata;
+    title: string;
+    description: string;
+    buttons: Button[]
 }
 
 export interface GalleryElement{
@@ -451,3 +521,12 @@ export class Condition {
 
 
 
+// export class StageAttributes {
+//     positions: any;
+//     connectors: any;
+//     constructor(){
+//         this.positions = {};
+//         this.connectors = {};
+//     }
+
+// }

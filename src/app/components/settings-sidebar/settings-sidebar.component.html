@@ -195,6 +195,23 @@
 
 
     <!-- -------------------------------------------------------- -->
+    <!--  Knowledge Bases  -->
+    <!-- -------------------------------------------------------- -->
+    <ng-container *ngIf="isVisibleKNB && USER_ROLE !== 'agent'">
+      <li [ngClass]="{'active-item': KNOWLEDGE_BASES_ROUTE_IS_ACTIVE}" (click)="goToKnowledgeBases()"
+        matTooltipClass="custom-mat-tooltip-in-settings-sidebar" matTooltip="{{ 'KnowledgeBases' | translate }}"
+        #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100" [matTooltipDisabled]="IS_OPEN">
+        <a>
+          <i *ngIf="IS_OPEN === true || IS_OPEN === false" class="material-icons settings-sidebar-icons">school</i>
+          <p *ngIf="IS_OPEN === true" class="custom_paragraph">
+            {{ 'KnowledgeBases' | translate }}
+          </p>
+        </a>
+      </li>
+    </ng-container>
+
+
+    <!-- -------------------------------------------------------- -->
     <!--  Project Settings  -->
     <!-- -------------------------------------------------------- -->
     <ng-container *ngIf="USER_ROLE !== 'agent'">

@@ -339,6 +339,8 @@ import { CreateProjectGsComponent } from './create-project-wizard/create-project
 
 
 
+import { OpenaikbsService } from './services/openaikbs.service';
+import { KnowledgeBasesComponent } from './knowledge-bases/knowledge-bases.component';
 
 // NOTE: Eliminazione del local storage produce inconsistenza delle instances Firebase. Si salta il logout.
 
@@ -594,7 +596,8 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     ActivateAppsumoProductComponent,
     ContactCustomPropertiesComponent,
     ContactInfoComponent,
-    CreateProjectGsComponent
+    CreateProjectGsComponent,
+    KnowledgeBasesComponent
   ],
   imports: [
     TooltipModule.forRoot(CutomTooltipOptions as TooltipOptions),
@@ -707,6 +710,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     FilterArrayPipe,
     MarkerService,
     // LoggerInstance,
+    OpenaikbsService,
     PopupService,
     NotificationService,
     { provide: LocationStrategy, useClass: HashLocationStrategy }
