@@ -209,16 +209,16 @@ export class TiledeskConnectors {
 
 
   deleteConnectorsFromActionByActionId(actionId) {
-    console.log("deleteConnectorsFromActionByActionId ----> ", actionId);
-    console.log("blocks :---> ", this.blocks);
-    console.log("connectors :---> ", this.connectors);
+    // console.log("deleteConnectorsFromActionByActionId ----> ", actionId);
+    // console.log("blocks :---> ", this.blocks);
+    // console.log("connectors :---> ", this.connectors);
     for (var key in this.blocks) {
       var node = this.blocks[key];
-      console.log('outConnectors: ', node, key);
+      // console.log('outConnectors: ', node, key);
       for (var connectorKey in node.outConnectors) {
-        console.log('connectorKey: ', connectorKey);
+        // console.log('connectorKey: ', connectorKey);
         if (connectorKey.includes(actionId)) {
-          console.log('CANCELLO : ', node.outConnectors[connectorKey]);
+          // console.log('CANCELLO : ', node.outConnectors[connectorKey]);
           delete node.outConnectors[connectorKey];
           this.deleteConnector(connectorKey);
           // let connector = document.getElementById(connectorKey);

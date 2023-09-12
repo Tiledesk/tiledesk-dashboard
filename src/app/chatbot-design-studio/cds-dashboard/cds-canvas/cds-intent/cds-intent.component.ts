@@ -364,12 +364,12 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
    * service updateIntent is async
    * !!! the response from the service is NOT handled!!!
   */
-  private async updateIntent() {
-    const response = await this.intentService.updateIntent(this.intent);
-    if (response) {
-      console.log('updateIntent: ', this.intent);
-    }
-  }
+  // private async updateIntent() {
+  //   const response = await this.intentService.updateIntent(this.intent);
+  //   if (response) {
+  //     console.log('updateIntent: ', this.intent);
+  //   }
+  // }
 
   /*********************************************/
 

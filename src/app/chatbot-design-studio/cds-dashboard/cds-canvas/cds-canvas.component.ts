@@ -212,8 +212,8 @@ export class CdsCanvasComponent implements OnInit {
     */
     document.addEventListener(
       "moved-and-scaled", (e: CustomEvent) => {
-        const el = e.detail.element;
-        console.log('[CDS-CANVAS] moved-and-scaled ', el)
+        const el = e.detail;
+        // console.log('[CDS-CANVAS] moved-and-scaled ', el)
         this.connectorService.tiledeskConnectors.scale = e.detail.scale;
         this.removeConnectorDraftAndCloseFloatMenu();
       },
@@ -241,7 +241,7 @@ export class CdsCanvasComponent implements OnInit {
     document.addEventListener(
       "dragged", (e: CustomEvent) => {
         const el = e.detail.element;
-        console.log('[CDS-CANVAS] dragged ', el);
+        // console.log('[CDS-CANVAS] dragged ', el);
         const x = e.detail.x;
         const y = e.detail.y;
         this.connectorService.moved(el, x, y);
@@ -437,9 +437,13 @@ export class CdsCanvasComponent implements OnInit {
     this.stageService.centerStageOnPosition(stageElement);
   }
 
-  /**  updateIntent */
-  private async updateIntent() {
-    const response = await this.intentService.updateIntent(this.intentSelected);
+  /**  updateIntent 
+   * chiamata da cds-panel-action-detail
+   * quando modifico un intent da pannello ex: cambio il testo, aggiungo un bottone ecc.
+  */
+  private async updateIntent(time?) {
+    if(!time)time = 0;
+    const response = await this.intentService.updateIntent(this.intentSelected, time);
     if (response) {
       console.log('[CDS-CANVAS] OK: intent aggiornato con successo sul server', this.intentSelected);
     } else {
@@ -703,7 +707,7 @@ export class CdsCanvasComponent implements OnInit {
     console.log('onSaveButton: ', idConnector, this.listOfIntents);
     if (idConnector) {
       this.intentSelected = this.listOfIntents.find(obj => obj.intent_id === idConnector);
-      this.updateIntent();
+      this.updateIntent(2000);
     }
   }
   // --------------------------------------------------------- //
@@ -717,7 +721,7 @@ export class CdsCanvasComponent implements OnInit {
     console.log('[CDS-CANVAS] onSavePanelIntentDetail intentSelected ', intentSelected)
     if (intentSelected && intentSelected != null) {
       this.intentSelected = intentSelected;
-      this.updateIntent();
+      this.updateIntent(2000);
     } else {
       // this.onOpenDialog();
     }
@@ -747,10 +751,10 @@ export class CdsCanvasComponent implements OnInit {
       }
     } else if (this.hasClickedAddAction) {
       console.log("[CDS-CANVAS] ho premuto + quindi creo una nuova action e la aggiungo all'intent");
+      this.updateIntent(0);
       const newAction = this.intentService.createNewAction(event.type);
       this.intentSelected.actions.push(newAction);
       this.intentService.refreshIntent(this.intentSelected);
-      this.updateIntent();
     }
     this.removeConnectorDraftAndCloseFloatMenu();
   }
