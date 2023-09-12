@@ -302,7 +302,6 @@ export class WhatsappBroadcast {
 export class ActionAskGPT extends Action {
     question: string;
     kbid: string;
-    gptkey: string;
     assignReplyTo: string;
     assignSourceTo: string;
     trueIntent: string;

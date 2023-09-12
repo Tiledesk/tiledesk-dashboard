@@ -1556,13 +1556,14 @@
     },
     "KbPage": {
         "AddKb": "Aggiungi Knowledge Base",
+        "Secrets": "Secrets",
         "Add": "Aggiungi",
         "Enter": "Invia",
         "NoKbAdded": "Non hai ancora aggiunto nessuna Knowledge Base",
         "RunIndexing": "Indicizza",
         "Date": "Data",
         "KbCounterFooter": "{{ counter }} di 3 Knowledge Base aggiunte",
-        "AddKbInfoFirstText": "Imposta un URL valido per la Knwoledge Base e una GPT key.",
+        "AddKbInfoFirstText": "Imposta un URL valido per la Knowledge Base e una GPT key.",
         "AddKbInfoSecondText": "Nota: puoi aggiungere massimo 3 Knwoledge Bases.",
         "SearchingAnswer": "Cerco una risposta appropriata...",
         "Answer": "Risposta",
@@ -1573,7 +1574,8 @@
         "AskQuestionPlaceholder": "Fai una domanda",
         "DeleteKb": "Elimina Knowledge Base",
         "DeleteKbInfoFirstText": "Non sarai più in grado di utilizzare l'AI su questa Knowledge Base",
-        "SureToDelete": "Sei sicuro di voler eliminare la Knowledge Base {{ name }}?"
+        "SureToDelete": "Sei sicuro di voler eliminare la Knowledge Base <b>{{ name }}</b>?",
+        "GptKeyInfo": "Inserisci la tua GPT Key per poter utilizzare le tue Knowledge Base"
     },
     "Sunday": "Domenica",
     "Monday": "Lunedì",
