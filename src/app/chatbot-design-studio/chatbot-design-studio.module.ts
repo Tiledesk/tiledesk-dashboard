@@ -36,11 +36,38 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 
+
+
+import { CdsDashboardComponent } from './cds-dashboard/cds-dashboard.component';
+import { CdsSidebarComponent } from './cds-dashboard/cds-sidebar/cds-sidebar.component';
+import { CdsHeaderComponent } from './cds-dashboard/cds-header/cds-header.component';
+import { CdsSplashScreenComponent } from './cds-dashboard/utils/cds-splash-screen/cds-splash-screen.component';
+
+//FULLFILLMENT 
+import { CdsFulfillmentComponent } from './cds-dashboard/cds-fulfillment/cds-fulfillment.component';
+
+//RULES COMPONENT
+import { RulesComponent } from './cds-dashboard/cds-rules/rules/rules.component';
+import { RulesAddComponent } from './cds-dashboard/cds-rules/rules-add/rules-add.component';
+import { RulesListComponent } from './cds-dashboard/cds-rules/rules-list/rules-list.component';
+import { ConditionComponent } from './cds-dashboard/cds-rules/rules-add/condition/condition.component';
+import { ActionComponent } from './cds-dashboard/cds-rules/rules-add/action/action.component';
+
+//SETTINGS COMPONENT
+import { CdsChatbotDetailsComponent } from './cds-dashboard/cds-chatbot-details/cds-chatbot-details.component';
+import { CDSDetailCommunityComponent } from './cds-chatbot-details/community/community.component';
+import { CDSDetailDeveloperComponent } from './cds-chatbot-details/developer/developer.component';
+
+//CDS CANVAS
+import { CdsCanvasComponent } from './cds-dashboard/cds-canvas/cds-canvas.component';
+
+
+
 //SERVICES
 // import { DragDropService } from './services/drag-drop.service';
 
 // import { SharedModule } from '../shared/shared.module';
-import { CdsDashboardComponent } from './cds-dashboard/cds-dashboard.component';
+
 // import { PanelReplyToolsComponent } from './cds-dashboard/panel-intent-detail/actions/action-reply/panel-reply-tools/panel-reply-tools.component';
 // import { ActionReplyComponent } from './cds-dashboard/panel-intent-detail/actions/action-reply/action-reply.component';
 // import { ImageResponseComponent } from './cds-dashboard/panel-intent-detail/actions/action-reply/reply-types/image-response/image-response.component';
@@ -54,9 +81,9 @@ import { PanelIntentHeaderComponent } from './cds-dashboard/cds-canvas/cds-inten
 // import { FormFieldComponent } from './cds-dashboard/panel-intent-detail/form/form-field/form-field.component';
 // import { FormEditAddComponent } from './cds-dashboard/panel-intent-detail/form/form-edit-add/form-edit-add.component';
 // import { ModalWindowComponent } from './cds-dashboard/panel-intent-detail/form/modal-window/modal-window.component';
-import { CdsSidebarComponent } from './cds-dashboard/cds-sidebar/cds-sidebar.component';
+
 // import { ElementTextareaComponent } from './cds-dashboard/panel-intent-detail/actions/action-reply/elements/element-textarea/element-textarea.component';
-import { CdsFulfillmentComponent } from './cds-dashboard/cds-fulfillment/cds-fulfillment.component';
+
 
 //BASE-ELEMENT
 import { CDSTextComponent } from './cds-dashboard/cds-canvas/base-elements/text/text.component';
@@ -65,17 +92,7 @@ import { CDSDelaySliderComponent } from './cds-dashboard/cds-canvas/base-element
 import { CDSImageUploadComponent } from './cds-dashboard/cds-canvas/base-elements/image-upload/image-upload.component';
 import { CDSElementFromUrlComponent } from './cds-dashboard/cds-canvas/base-elements/element-from-url/element-from-url.component';
 
-//RULES COMPONENT
-import { RulesComponent } from './cds-dashboard/cds-rules/rules/rules.component';
-import { RulesAddComponent } from './cds-dashboard/cds-rules/rules-add/rules-add.component';
-import { RulesListComponent } from './cds-dashboard/cds-rules/rules-list/rules-list.component';
-import { ConditionComponent } from './cds-dashboard/cds-rules/rules-add/condition/condition.component';
-import { ActionComponent } from './cds-dashboard/cds-rules/rules-add/action/action.component';
 
-//SETTINGS COMPONENT
-import { CdsChatbotDetailsComponent } from './cds-dashboard/cds-chatbot-details/cds-chatbot-details.component';
-import { CDSDetailCommunityComponent } from './cds-chatbot-details/community/community.component';
-import { CDSDetailDeveloperComponent } from './cds-chatbot-details/developer/developer.component';
 
 //INTENT ACTIONS
 // import { ActionWaitComponent } from './cds-dashboard/panel-intent-detail/actions/action-wait/action-wait.component';
@@ -93,7 +110,6 @@ import { CDSDetailDeveloperComponent } from './cds-chatbot-details/developer/dev
 // import { ActionAgentHandoffComponent } from './cds-dashboard/panel-intent-detail/actions/action-agent-handoff/action-agent-handoff.component';
 // import { ActionJsonConditionComponent } from './cds-dashboard/panel-intent-detail/actions/action-json-condition/action-json-condition.component';
 
-import { CdsSplashScreenComponent } from './cds-dashboard/utils/cds-splash-screen/cds-splash-screen.component';
 // import { CdsFooterComponent } from './cds-dashboard/cds-footer/cds-footer.component';
 import { CdsPublishOnCommunityModalComponent } from './cds-dashboard/utils/cds-publish-on-community-modal/cds-publish-on-community-modal.component';
 import { SelectComponent } from './cds-base-element/select/select.component';
@@ -118,7 +134,7 @@ import { ChangeBotLangModalComponent } from 'app/components/modals/change-bot-la
 // import { ActionAskgptComponent } from './cds-dashboard/panel-intent-detail/actions/action-askgpt/action-askgpt.component';
 
 
-import { CdsHeaderComponent } from './cds-dashboard/cds-header/cds-header.component';
+
 import { CdsPopupComponent } from './cds-dashboard/utils/cds-popup/cds-popup.component';
 import { CdsModalActivateBotComponent } from './cds-dashboard/utils/cds-modal-activate-bot/cds-modal-activate-bot.component';
 import { CdsIntentComponent } from './cds-dashboard/cds-canvas/cds-intent/cds-intent.component';
@@ -141,6 +157,11 @@ import { CdsActionReplyGalleryComponent } from './cds-dashboard/cds-canvas/actio
 import { OperatorComponent } from './cds-dashboard/cds-canvas/actions/list/cds-action-assign-variable/operator/operator.component';
 import { OperationComponent } from './cds-dashboard/cds-canvas/actions/list/cds-action-assign-variable/operation/operation.component';
 import { OperandComponent } from './cds-dashboard/cds-canvas/actions/list/cds-action-assign-variable/operand/operand.component';
+
+//ACTION JSON-CONDITION: elements
+import { BaseConditionRowComponent } from './cds-dashboard/cds-canvas/actions/list/cds-action-json-condition/base-condition-row/base-condition-row.component';
+import { VariableListComponent } from './cds-dashboard/cds-canvas/actions/list/cds-action-json-condition/variable-list/variable-list.component';
+import { BaseFilterComponent } from './cds-dashboard/cds-canvas/actions/list/cds-action-json-condition/base-filter/base-filter.component';
 
 //CDS- ACTIONS
 import { CdsActionDescriptionComponent } from './cds-dashboard/cds-canvas/actions/list/cds-action-description/cds-action-description.component';
@@ -167,8 +188,10 @@ import { CdsActionWhatsappStaticComponent } from './cds-dashboard/cds-canvas/act
 
 //CDS PANELS
 import { CdsActionDetailPanelComponent } from './cds-dashboard/cds-canvas/cds-panel-action-detail/cds-panel-action-detail.component';
-import { CdsPanelWidgetComponent } from './cds-dashboard/cds-panel-widget/cds-panel-widget.component';
+import { CdsPanelWidgetComponent } from './cds-dashboard/cds-canvas/cds-panel-widget/cds-panel-widget.component';
 import { CdsPanelButtonConfigurationComponent } from './cds-dashboard/cds-canvas/cds-panel-button-configuration/cds-panel-button-configuration.component';
+
+
 import { CdsActionArrowComponent } from './cds-dashboard/cds-canvas/actions/shared/cds-action-controls/cds-action-arrow/cds-action-arrow.component';
 import { CdsActionControlsComponent } from './cds-dashboard/cds-canvas/actions/shared/cds-action-controls/cds-action-controls/cds-action-controls.component';
 import { CdsAddActionMenuComponent } from './cds-dashboard/cds-canvas/actions/shared/cds-add-action-menu/cds-add-action-menu.component';
@@ -176,152 +199,132 @@ import { CdsFormComponent } from './cds-dashboard/cds-canvas/actions/list/form/f
 import { CdsQuestionComponent } from './cds-dashboard/cds-canvas/actions/list/question/question.component';
 import { CdsAnswerComponent } from './cds-dashboard/cds-canvas/actions/list/answer/answer.component';
 import { AddkbDialogComponent } from './cds-dashboard/cds-canvas/actions/list/cds-action-askgpt/addkb-dialog/addkb-dialog.component';
-import { CdsCanvasComponent } from './cds-dashboard/cds-canvas/cds-canvas.component';
-import { BaseConditionRowComponent } from './cds-dashboard/cds-canvas/actions/list/cds-action-json-condition/base-condition-row/base-condition-row.component';
-import { VariableListComponent } from './cds-dashboard/cds-canvas/actions/list/cds-action-json-condition/variable-list/variable-list.component';
-import { BaseFilterComponent } from './cds-dashboard/cds-canvas/actions/list/cds-action-json-condition/base-filter/base-filter.component';
+
 
 @NgModule({
   declarations: [
     CdsDashboardComponent,
-    //ACTION-REPLY
-    // PanelReplyToolsComponent,
-    // ActionReplyComponent,
-    // ImageResponseComponent,
-    // FrameResponseComponent,
-    // GalleryResponseComponent,
-    // ImageUploadComponent,
-    // RedirectResponseComponent,
-    PanelIntentHeaderComponent,
-    // ElementFromUrlComponent,
-    // QuestionComponent,
-    // AnswerComponent,
-    // FormComponent,
-    // FormFieldComponent,
-    // FormEditAddComponent,
-    // ModalWindowComponent,
     CdsSidebarComponent,
-    // ElementTextareaComponent,
+    CdsHeaderComponent,
+    //CDS-ROOT-ELEMENTS: init
+    CdsCanvasComponent,
     RulesComponent,
-    RulesAddComponent,
-    RulesListComponent,
     CdsFulfillmentComponent,
-    ConditionComponent,
-    ActionComponent,
-    
-    CdsSplashScreenComponent,
-    // ActionWaitComponent,
-    //BASE-ELEMENT
-    CDSTextComponent,
-    CDSDelaySliderComponent,
-    CDSFilterComponent,
-    CDSTextareaComponent,
-    // ActionDeleteVariableComponent,
-    // ActionAssignVariableComponent,
-    // ActionIntentComponent,
-    // ActionEmailComponent,
-    // ActionReplaceBotComponent,
-    // ActionChangeDepartmentComponent,
-    // ActionOnlineAgentsComponent,
-    // ActionOpenHoursComponent,
-    // ActionHideMessageComponent,
-    // ActionDescriptionComponent,
-    // ActionCloseComponent,
-    // ActionAgentHandoffComponent,
-    // ActionJsonConditionComponent,
-    // CdsFooterComponent,
-    CdsPublishOnCommunityModalComponent,
-    SelectComponent,
-    BaseConditionRowComponent,
-    BaseFilterComponent,
-    VariableListComponent,
-    TextEditableDivComponent,
-    // ActionWebRequestComponent,
+    CdsChatbotDetailsComponent,
+    //CDS-ROOT-ELEMENTS: end
+
     AttributesComponent,
     DialogComponent,
-    // ActionAssignFunctionComponent,
     DialogYesNoComponent,
-    //SETTINGS COMPONENTS
-    CdsChatbotDetailsComponent,
-    CDSDetailDeveloperComponent,
-    CDSDetailCommunityComponent,
+    CDSFilterComponent,
+    SelectComponent,
+    TextEditableDivComponent,
+
+    // ******* CDS CANVAS:: start *******
+      //BASE-ELEMENT
+      CdsConnectorComponent,
+      CDSDelaySliderComponent,
+      CDSElementFromUrlComponent,
+      CDSImageUploadComponent,
+      CDSTextComponent,
+      CDSTextareaComponent,
+
+      //CDS INTENT
+      CdsIntentComponent,
+      PanelIntentHeaderComponent,
+
+      //CDS PANEL ELEMENTS
+      CdsPanelElementsComponent,
+      CdsPanelActionsComponent,
+
+      //CDS PANEL ACTION DETAIL
+      CdsActionDetailPanelComponent,
+
+      //CDS PANEL BUTTON CONFIGURATION
+      CdsPanelButtonConfigurationComponent,
+      
+      //CDS PANEL WIDGET
+      CdsPanelWidgetComponent,
+
+      CdsPanelIntentListComponent,
+
+      //ACTIONS
+        //SHARED
+        CdsActionControlsComponent,
+        CdsActionArrowComponent,
+        CdsAddActionMenuComponent,
+        //LIST
+        CdsFormComponent,
+        CdsQuestionComponent,
+        CdsAnswerComponent,
+        CdsActionDescriptionComponent,
+        CdsActionReplyComponent,
+        CdsActionWaitComponent,
+        CdsActionAgentHandoffComponent,
+        CdsActionOnlineAgentsComponent,
+        CdsActionEmailComponent,
+        CdsActionIntentComponent,
+        CdsActionChangeDepartmentComponent,
+        CdsActionCloseComponent,
+        CdsActionOpenHoursComponent,
+        CdsActionJsonConditionComponent,
+        CdsActionDeleteVariableComponent,
+        CdsActionReplaceBotComponent,
+        CdsActionAssignVariableComponent,
+        CdsActionHideMessageComponent,
+        CdsActionWebRequestComponent,
+        CdsActionWebRequestV2Component,
+        CdsActionWhatsappAttributeComponent,
+        CdsActionWhatsappStaticComponent,
+        CdsWhatsappReceiverComponent,
+        CdsActionAskgptComponent,
+        // action REPLY elements: start //
+        CdsActionReplyToolsComponent,
+        CdsActionReplyTextComponent,
+        CdsActionReplyImageComponent,
+        CdsActionReplyFrameComponent,
+        CdsActionReplyRedirectComponent,
+        CdsActionReplyGalleryComponent,
+        // action REPLY elements: end //
+        // action ASSIGN-VARIABLE elements: start //
+        OperationComponent,
+        OperatorComponent,
+        OperandComponent,
+        // action ASSIGN-VARIABLE elements: end //
+        // action JSON-CONDITION elements: start //
+        BaseConditionRowComponent,
+        BaseFilterComponent,
+        VariableListComponent,
+        // action JSON-CONDITION elements: end //
+        // action ASKGPT elements: start //
+        AddkbDialogComponent,
+        // action ASKGPT elements: end //
+
+    // ******* CDS CANVAS:: end *******
+
+    // ******* CDS RULES:: start *******
+    RulesAddComponent,
+    RulesListComponent,
+    ConditionComponent,
+    ActionComponent,
+    // ******* CDS RULES:: end *******
+
+    // ******* CDS FULLFILLMENT:: start *******
+    // ******* CDS FULLFILLMENT:: end *******
+
+    // ******* CDS CHATBOT DETAIL:: start *******
     CDSDetailBotDetailComponent,
     CDSDetailImportExportComponent,
-    //DETAIL COMPONENT SECTION
+    CDSDetailCommunityComponent,
+    CDSDetailDeveloperComponent,
     ChangeBotLangModalComponent,
-    // WhatsappReceiverComponent,
-    // ActionWhatsappStaticComponent,
-    // ActionWhatsappAttributeComponent,
-    // ActionWhatsappSegmentComponent,
-    // ActionAskgptComponent,
-    CdsHeaderComponent,
+    // ******* CDS CHATBOT DETAIL:: end *******
+
+    //UTILS
     CdsPopupComponent,
     CdsModalActivateBotComponent,
-    CdsIntentComponent,
-    CdsPanelElementsComponent,
-    CdsPanelDetailComponent,
-    CdsPanelActionsComponent,
-    CdsPanelIntentListComponent,
-    CdsAddActionMenuComponent,
-    CdsConnectorComponent,
-    
-    //BASE ELEMENT
-    CDSTextComponent,
-    CDSFilterComponent,
-    CDSTextareaComponent,
-    CdsActionControlsComponent,
-    CdsActionArrowComponent,
-    CDSDelaySliderComponent,
-    CDSImageUploadComponent,
-    CDSElementFromUrlComponent,
-    // ------ CDS-ACTIONS: start ------ //
-    CdsActionDescriptionComponent,
-    CdsActionReplyComponent,
-    CdsActionWaitComponent,
-    CdsActionAgentHandoffComponent,
-    CdsActionOnlineAgentsComponent,
-    CdsActionEmailComponent,
-    CdsActionIntentComponent,
-    CdsActionChangeDepartmentComponent,
-    CdsActionCloseComponent,
-    CdsActionOpenHoursComponent,
-    CdsActionJsonConditionComponent,
-    CdsActionDeleteVariableComponent,
-    CdsActionReplaceBotComponent,
-    CdsActionAssignVariableComponent,
-    CdsActionHideMessageComponent,
-    CdsActionWebRequestComponent,
-    CdsActionWebRequestV2Component,
-    CdsActionWhatsappAttributeComponent,
-    CdsActionWhatsappStaticComponent,
-    CdsWhatsappReceiverComponent,
-    CdsActionAskgptComponent,
-    // action REPLY elements: start //
-    CdsActionReplyToolsComponent,
-    CdsActionReplyTextComponent,
-    CdsActionReplyImageComponent,
-    CdsActionReplyFrameComponent,
-    CdsActionReplyRedirectComponent,
-    CdsActionReplyGalleryComponent,
-    // action REPLY elements: end //
-    // action ASSIGN-VARIABLE elements: start //
-    OperationComponent,
-    OperatorComponent,
-    OperandComponent,
-    // action ASSIGN-VARIABLE elements: end //
-   
-   
-    // ------ CDS-ACTIONS: end ------ //
-    CdsFormComponent,
-    CdsQuestionComponent,
-    CdsAnswerComponent,
-
-    // ------ CDS PANELS ------ //
-    CdsActionDetailPanelComponent,
-    CdsPanelButtonConfigurationComponent,
-    CdsPanelWidgetComponent,
-    CdsCanvasComponent,
-    AddkbDialogComponent
+    CdsPublishOnCommunityModalComponent,
+    CdsSplashScreenComponent,
   ],
   imports: [
     A11yModule,
