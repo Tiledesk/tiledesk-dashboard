@@ -160,8 +160,8 @@ export class CdsActionReplyGalleryComponent implements OnInit {
   newGalleryElement(){
     return {
       preview: { src: ''}, //https://i.imgur.com/Py2UyiT.png
-      title: 'Place title',
-      description: 'Place description',
+      title: 'Type title',
+      description: 'Type description',
       buttons: [ this.newButton() ]
     }
   }

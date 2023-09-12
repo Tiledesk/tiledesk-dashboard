@@ -471,7 +471,9 @@ export class CdsCanvasComponent implements OnInit {
 
   /** onToogleSidebarIntentsList */
   onToogleSidebarIntentsList() {
+    console.log('[CDS-CANVAS] onToogleSidebarIntentsList  ')
     this.IS_OPEN_INTENTS_LIST = !this.IS_OPEN_INTENTS_LIST;
+    console.log('[CDS-CANVAS] onToogleSidebarIntentsList   this.IS_OPEN_INTENTS_LIST ',  this.IS_OPEN_INTENTS_LIST)
   }
 
   /** onDroppedElementToStage **

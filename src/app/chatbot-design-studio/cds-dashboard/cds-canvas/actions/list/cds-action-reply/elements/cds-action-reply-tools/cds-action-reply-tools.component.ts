@@ -75,8 +75,8 @@ export class CdsActionReplyToolsComponent implements OnInit {
                   gallery: [
                     {
                       preview: { src: ''},
-                      title: 'Place title',
-                      description: 'Place description',
+                      title: 'Type title',
+                      description: 'Type description',
                       buttons: [
 
                         new Button(

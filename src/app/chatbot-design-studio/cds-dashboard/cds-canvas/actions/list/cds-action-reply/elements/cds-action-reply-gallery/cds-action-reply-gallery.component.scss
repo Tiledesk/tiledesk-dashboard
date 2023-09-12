@@ -76,11 +76,27 @@
             box-shadow: rgba(0, 0, 0, 0.12) 0px -1px 0px 0px inset;
             display: flex;
 
+            
             img {
                 max-height: 100%;
                 max-width: 100%;
                 border-radius: inherit;
+                object-fit: cover;
             }
+        }
+        .no-image,
+        &#placeholder{
+            align-items: center;
+            justify-content: center;
+            border-radius: unset;
+            box-shadow: unset;
+
+            img {
+                max-height: 90%;
+                max-width: 90%;
+                border-radius: inherit;
+            }
+
         }
 
         .content{
@@ -524,6 +540,13 @@
 cds-image-upload ::ng-deep {
     div.dropUploadImage{
         min-height: unset !important;
+    }
+    div.image{
+        height: 20px !important;
+        width: 20px !important;
+        img{
+            filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(7500%) hue-rotate(187deg) brightness(113%) contrast(117%);
+        }
     }
     div.labelDropUploadImage{
         font-size: 12px;

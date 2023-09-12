@@ -6,7 +6,7 @@
     (dragleave)="drag($event)">    
 
     <label class="inputUploadImage" [for]="'uploadImage_'+ uuid">
-        <em class="material-icons">photo_camera</em>
+        <div class="image"><img src="assets/cds/images/icons/add_image.svg"></div>
         <input style="display:none" type="file" [id]="'uploadImage_'+ uuid" accept=".jpg, .JPEG, .png, .gif, .webp" (change)="selectFile($event)" />
     </label>
 

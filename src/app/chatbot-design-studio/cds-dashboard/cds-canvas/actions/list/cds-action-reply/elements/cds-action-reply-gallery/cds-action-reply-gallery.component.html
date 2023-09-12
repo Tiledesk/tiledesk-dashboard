@@ -172,13 +172,13 @@
 
 
 <ng-template #placeholder [ngOutletContext]="context">
-    <div class="gallery-preview-wrp" id="placeholder">
+    <div class="gallery-preview-wrp " id="placeholder">
         <div class="image">
-            <img src="/assets/cds/images/img-preview.jpg">
+            <img src="assets/cds/images/icons/add_image.svg">
         </div>
         <div class="content">
-            <span class="text">Card Title</span>
-            <span class="text description">Card Description</span>
+            <span class="text">Type Title</span>
+            <span class="text description">Type Description</span>
         </div>
     </div>
 </ng-template>
@@ -186,8 +186,9 @@
 <ng-template #galleryElement [ngOutletContext]="context">
     <div *ngFor="let galleryEl of gallery; let i = index; let last = last" class="galleryElement">
        <div class="gallery-preview-wrp" [ngStyle]="{ 'border-bottom' : last? 'unset' : 'border-bottom: 1px solid #dcd5ba'}">
-            <div class="image">
-                <img [src]="sanitizerUrlImage(galleryEl.preview.src)" alt="{{galleryEl.preview.name}}">
+            <div class="image" [class.no-image]="galleryEl.preview.src === ''">
+                <img *ngIf="galleryEl.preview.src !== '' " [src]="sanitizerUrlImage(galleryEl.preview.src)" alt="{{galleryEl.preview.name}}">
+                <img *ngIf="galleryEl.preview.src === '' "src="assets/cds/images/icons/add_image.svg">
             </div>
             <div class="content">
                 <span class="text"> {{galleryEl.title}}</span>

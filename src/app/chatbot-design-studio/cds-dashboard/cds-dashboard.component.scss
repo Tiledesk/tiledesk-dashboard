@@ -1,19 +1,13 @@
 @import "./src/assets/sass/cds/_variables.scss";
 @import "./src/assets/sass/cds/styles.scss";
 
-
-
-
-
-
-
 $width-card-tools: 160px;
 $margin-left-card: 30px;
 $margin-top-card: 30px;
 $mdb-font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif !default;
 $mdb-font-family-poppins: 'Poppins', 'Roboto', Arial, sans-serif !default;
 $box-left-width: 250px;
-$box-left-width-closed: 50px;
+// $box-left-width-closed: 50px;
 
 .cds-generic-panel{
   position: absolute;
@@ -122,15 +116,15 @@ $box-left-width-closed: 50px;
   display: flex;
 }
 
+cds-rules,
+cds-chatbot-details,
+cds-fulfillment {
+    width: 100%;
+}
 .cds-content {
   display: flex;
   width: calc(100% - 60px);
   overflow: hidden;
-  cds-rules,
-  cds-chatbot-details,
-  cds-fulfillment {
-      width: 100%;
-  }
 }
 
 .chatboat-dashboard {
@@ -176,11 +170,11 @@ $box-left-width-closed: 50px;
       border-radius: 3px;
     }
 
-    &.is_closed{
-      width: $box-left-width-closed;
-      max-width: $box-left-width-closed;
-      min-width: $box-left-width-closed;
-    }
+    // &.is_closed{
+    //   // width: $box-left-width-closed;
+    //   // max-width: $box-left-width-closed;
+    //   // min-width: $box-left-width-closed;
+    // }
 
 
     $toogle-sidebar-width: 22px;
