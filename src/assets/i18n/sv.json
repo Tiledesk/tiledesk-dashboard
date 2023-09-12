@@ -2330,6 +2330,10 @@
     "Always opened":"Alltid öppet",
     "Always Closed":"Alltid stängt",
     "As last status": "Som senaste status",
+    "SendByEmail": "Skicka via e-post",
+    "ViewAsHTML":"Visa som HTML",
+    "DownloadAsPDF":"Ladda ner som PDF",
+    "DownloadAsCSV": "Ladda ner som CSV",
     "AddIntentPage": {
         "AddForm": "Lägga till formulär",
         "SelectTemplateForm": "Välj en typ av formulär bland de föreslagna eller skapa en ny",

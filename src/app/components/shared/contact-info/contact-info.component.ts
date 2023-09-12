@@ -20,6 +20,7 @@ import { LoggerService } from '../../../services/logger/logger.service';
 export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit {
   @Input() contact_details: any;
   @Output() onClickTagConversation = new EventEmitter();
+  @Output() contactEmailChanged = new EventEmitter();
   public CHAT_PANEL_MODE: boolean;
   public project_name: string;
   private unsubscribe$: Subject<any> = new Subject<any>();
@@ -123,7 +124,8 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
 
       if (this.contact_details.email) {
         this.contactNewEmail = this.contact_details.email
-        this.logger.log('[CONTACT-INFO] contactNewEmail ', this.contactNewEmail)
+        this.logger.log('[CONTACT-INFO] contactNewEmail ', this.contactNewEmail);
+        this.contactEmailChanged.emit(this.contactNewEmail)
       }
 
       if (this.contact_details.company) {
@@ -275,6 +277,7 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
     this.logger.log('[CONTACT-INFO] editContactEmail contactNewEmail', this.contactNewEmail)
     if (this.EMAIL_IS_VALID && this.contactNewEmail !== undefined) {
       this.updateContactemail(this.contact_details._id, this.contactNewEmail);
+      this.contactEmailChanged.emit(this.contactNewEmail)
     }
   }
 
@@ -282,6 +285,7 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
     this.contactNewEmail = ''
     this.logger.log('[CONTACT-INFO] removeEmailAnUpdateContact contactNewEmail', this.contactNewEmail)
     this.updateContactemail(this.contact_details._id, this.contactNewEmail);
+    this.contactEmailChanged.emit(this.contactNewEmail)
   }
 
 
@@ -555,7 +559,7 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
     contactAddressTemp = contactAddressTemp.filter((element) => {
       return element !== undefined && element !== '';
     });
-    // console.log('contactAddressTemp ', contactAddressTemp)
+    // this.logger.log('contactAddressTemp ', contactAddressTemp)
     if (contactAddressTemp.length > 0) {
       contactAddressTemp.join(", ")
       const contactAddressTempString = contactAddressTemp.toString()
@@ -1037,7 +1041,7 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
   //   }
 
   goToTicketTab() {
-    console.log('[CONTACT-INFO] -  GO TO TICKET TAB ');
+    this.logger.log('[CONTACT-INFO] -  GO TO TICKET TAB ');
     this.onClickTagConversation.emit()
   }
 

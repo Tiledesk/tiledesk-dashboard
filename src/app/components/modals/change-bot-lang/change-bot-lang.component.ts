@@ -15,14 +15,14 @@ export class ChangeBotLangModalComponent extends BotsBaseComponent implements On
     public dialogRef: MatDialogRef<ChangeBotLangModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any) {
     super();
-    console.log('[CHANGE-BOT-LANG] DATA ', data)
+    // console.log('[CHANGE-BOT-LANG] DATA ', data)
     this.botDefaultSelectedLangCode = data.chatbot.language;
     this.selectedDefaultBotLang = this.botDefaultLanguages[this.getIndexOfbotDefaultLanguages(data.chatbot.language)].name;
     this.intentsEngine = data.chatbot.intentsEngine
   }
 
   ngOnInit(): void {
-    console.log('[CHANGE-BOT-LANG] DATA ', this.botDefaultLanguages)
+    // console.log('[CHANGE-BOT-LANG] DATA ', this.botDefaultLanguages)
 
   }
 
@@ -32,11 +32,11 @@ export class ChangeBotLangModalComponent extends BotsBaseComponent implements On
 
 
   onSelectBotDefaultlang(selectedDefaultBotLang) {
-    console.log('onSelectBotDefaultlang > selectedDefaultBotLang ', selectedDefaultBotLang)
+    // console.log('onSelectBotDefaultlang > selectedDefaultBotLang ', selectedDefaultBotLang)
     if (selectedDefaultBotLang) {
       this.selectedDefaultBotLang = selectedDefaultBotLang.name;
       this.botDefaultSelectedLangCode = selectedDefaultBotLang.code;
-      console.log('[CHANGE-BOT-LANG] onSelectBotDefaultlang > selectedDefaultBotLang > lang', this.selectedDefaultBotLang)
+      // console.log('[CHANGE-BOT-LANG] onSelectBotDefaultlang > selectedDefaultBotLang > lang', this.selectedDefaultBotLang)
     }
   }
 

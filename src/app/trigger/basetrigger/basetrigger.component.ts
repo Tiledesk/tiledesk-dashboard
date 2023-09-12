@@ -1125,7 +1125,8 @@ export class BasetriggerComponent implements OnInit {
         'request.bot.launch': this.botsWithoutIdentityBotArray,
         'request.status.update': [
           { id: 100, label_key: 'Pooled' },
-          { id: 200, label_key: 'Assigned' }
+          { id: 200, label_key: 'Assigned' },
+          { id: 1000, label_key: 'Closed' }
         ],
         'request.create': this.departments
       },

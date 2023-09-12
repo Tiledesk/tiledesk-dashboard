@@ -75,6 +75,19 @@ export class CreateProjectGsComponent implements OnInit {
             } catch (err) {
               this.logger.error('Google sign up identify error', err);
             }
+
+            try {
+              window['analytics'].track("Signed Up with Google ", {
+                "type": "organic",
+                "first_name": user.firstname,
+                "last_name": user.lastname,
+                "email": user.email,
+                "username": userFullname,
+                'userId': user._id
+              });
+            } catch (err) {
+              this.logger.error('track signup event error', err);
+            }
       
           }
         }

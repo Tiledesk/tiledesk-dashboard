@@ -1,5 +1,59 @@
 # tiledesk-dashboard
 
+### 2.4.60
+- Deploys in production
+- Adds the ability in the actions menu of the right side panel of the conversation details page to send the chat transcript via email
+
+### 2.4.59
+- Deploys in production
+- Improvements and bug fixing
+
+### 2.4.58
+- Deploys in production
+- Improvements and bug fixing
+
+### 2.4.57
+- Deploys in production
+- Improvements and bug fixing
+
+### 2.4.56
+- Deploys in production
+- Adds, in Chat design studio > General > Community tab, the ability to add the user's public email, description and website
+
+
+### 2.4.55
+- Deploys in production
+- Adds the "Closed" option to the "Change conversation status" triggers action
+
+### 2.4.54
+- Deploys in production
+- Improvements and bug fixing
+
+### 2.4.53
+- Deploys in production
+- Adds the actions "WhatsApp Static" and "WhatsApp by attribute"
+
+### 2.4.52
+- Deploys in production
+- Adds the redirect type in the "Reply" action
+- Improvements and bug fixing
+
+### 2.4.52-rc1
+- Deploys in production
+- Adds the actions "WhatsApp Static" and "WhatsApp by attribute"
+
+### 2.4.51
+- Deploys in production
+- Improvements and bug fixing
+
+### 2.4.50
+- Deploys in production
+- Adds the ability in the widget settings page to show or hide the widget and to manage its status when the page loads
+
+### 2.4.49
+- Deploys in production
+- Fixes the bug: on the "Monitor" page the filter for "Conversation type" doesn't show the options
+
 ### 2.4.48
 - Deploys in production
 - Adds filters to "Reply" type actions

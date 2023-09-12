@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, ElementRef, ViewChild, HostListener, OnDestroy } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ElementRef, ViewChild, HostListener, OnDestroy, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Router, RoutesRecognized } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { WsRequestsService } from '../../services/websocket/ws-requests.service';
@@ -391,12 +391,15 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   onlyAvailableWithEnterprisePlan: string;
   cPlanOnly: string
   learnMoreAboutDefaultRoles: string;
+  onlyUserWithOwnerRoleCanManageAdvancedProjectSettings: string;
   displayChatRatings: boolean = true;
   onlyOwnerCanManageTheAccountPlanMsg: string;
   DASHBORD_BASE_URL: string;
   contact_details: any;
   whatsAppPhoneNumber: string;
   telegramPhoneNumber: string;
+  mailtoBody: any;
+
   /**
    * Constructor
    * @param router 
@@ -555,6 +558,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
     // this.getClickOutEditContactFullname()
   }
+
+  
 
   getProjectPlan() {
     this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
@@ -1592,7 +1597,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       )
       .subscribe((wsrequest) => {
 
-        console.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** ', wsrequest)
+        this.logger.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** ', wsrequest)
         this.request = wsrequest;
 
         if (this.request) {
@@ -1912,20 +1917,20 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           if (this.request.lead) {
             this.requester_id = this.request.lead.lead_id;
             this.contact_details = this.request.lead;
-            // console.log('[WS-REQUESTS-MSGS] - contact_details ', this.contact_details)
+            // this.logger.log('[WS-REQUESTS-MSGS] - contact_details ', this.contact_details)
             this.logger.log('[WS-REQUESTS-MSGS] - requester_id ', this.requester_id)
             // this.logger.log('this.request.lead ' , this.request.lead)
             if (this.request.lead.lead_id && this.request.lead.lead_id.startsWith('wab-')) {
-              // console.log('[WS-REQUESTS-MSGS] lead_id ',this.request.lead.lead_id)
+              this.logger.log('[WS-REQUESTS-MSGS] lead_id ',this.request.lead.lead_id)
               this.whatsAppPhoneNumber = this.request.lead.lead_id.slice(4);
-              // console.log('[WS-REQUESTS-MSGS] whatsAppPhoneNumber ',this.whatsAppPhoneNumber)
+              this.logger.log('[WS-REQUESTS-MSGS] whatsAppPhoneNumber ',this.whatsAppPhoneNumber)
             }
 
 
-            if (this.request.lead.lead_id &&  this.request.lead.lead_id.startsWith('telegram-')) {
-              // console.log('[WS-REQUESTS-MSGS] lead_id ',this.request.lead.lead_id)
+            if (this.request.lead.lead_id && this.request.lead.lead_id.startsWith('telegram-')) {
+              this.logger.log('[WS-REQUESTS-MSGS] lead_id ',this.request.lead.lead_id)
               this.telegramPhoneNumber = this.request.lead.lead_id.slice(9);
-              // console.log('[WS-REQUESTS-MSGS] telegramPhoneNumber ',this.telegramPhoneNumber)
+              this.logger.log('[WS-REQUESTS-MSGS] telegramPhoneNumber ',this.telegramPhoneNumber)
             }
 
             if (this.request.lead && this.request.lead.email) {
@@ -1933,7 +1938,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
               // used to set as initial value the existing emai in the input displayed in the chat used to change the email on flyt
               this.contactNewEmail = this.request.lead.email
-              this.logger.log('contactNewEmail ', this.contactNewEmail)
+              this.logger.log('[WS-REQUESTS-MSGS] contactNewEmail ', this.contactNewEmail)
             }
             this.getRequesterAvailabilityStatus(this.requester_id);
           } else {
@@ -2243,7 +2248,11 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       }, () => {
         this.logger.log('[WS-REQUESTS-MSGS] - getWsRequestById$ * COMPLETE *')
       });
+  }
 
+  onChangeContactEmail(event) {
+    this.logger.log('[WS-REQUESTS-MSGS] - ON CHANGE CONTACT EMAIL event ', event )
+   this.contactNewEmail = event;
   }
 
   goToEditContact() {
@@ -2381,7 +2390,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
             }
             if (message.attributes && message.attributes.sourceTitle && message.attributes.sourcePage) {
               const index = this.viewedPages.findIndex((e) => e.viewedPageLink === message.attributes.sourcePage);
-              // console.log('[WS-REQUESTS-MSGS] viewedPage index ', index )
+              this.logger.log('[WS-REQUESTS-MSGS] viewedPage index ', index )
               if (index === -1) {
                 this.viewedPages.push({ viewedPageTitle: viewedPageTitleValue, viewedPageLink: message.attributes.sourcePage })
               }
@@ -4032,11 +4041,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   // -----------------------------------------------------------------------------------------------------
 
 
-  openTranscriptAsHtml() {
-    const url = this.SERVER_BASE_PATH + 'public/requests/' + this.id_request + '/messages.html';
-    this.logger.log('[WS-REQUESTS-MSGS] openTranscript url ', url);
-    window.open(url, '_blank');
-  }
+
 
   displayModalDownloadTranscript() {
     if (this.isVisiblePaymentTab) {
@@ -4076,30 +4081,53 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.displayModalTranscript = 'none'
   }
 
-  onChangeTranscriptDownloadPreference(value) {
-    // this.logger.log(" Value is : ", value);
-    this.transcriptDwnldPreference = value
+  openTranscriptAsHtml() {
+    this.closeModalTranscript();
+    const url = this.SERVER_BASE_PATH + 'public/requests/' + this.id_request + '/messages.html';
+    this.logger.log('[WS-REQUESTS-MSGS] openTranscript url ', url);
+    window.open(url, '_blank');
   }
 
-  downloadTranscript() {
+  sendTranscriptByEmail() {
     this.closeModalTranscript();
-    // this.logger.log('transcriptDwnldPreference', this.transcriptDwnldPreference)
-    if (this.transcriptDwnldPreference === 'CSV') {
-      this.exportTranscriptToCSV()
+    this.wsMsgsService.getTranscriptAsText(this.id_request).subscribe((emailBody) => {
+      this.logger.log('[WS-REQUESTS-MSGS] - GET TRANSCRIPT AS TXT emailBody:', emailBody);
+      if (emailBody) {
+        this.sendTrancriptEmail(emailBody)
+      }
+     
+      this.logger.log('[WS-REQUESTS-MSGS] - GET TRANSCRIPT AS TXT emailBody type of', typeof emailBody);
+      // let emailBodyStingify = JSON.stringify(emailBody)
+      
+    }, error => {
+      this.logger.error('[WS-REQUESTS-MSGS] - GET TRANSCRIPT AS TXT ERROR', error);
+    }, () => {
+      
+      this.logger.log('[WS-REQUESTS-MSGS] - GET TRANSCRIPT AS TXT - COMPLETE');
+    });
+  }
+
+  sendTrancriptEmail(emailBody) {
+    const date = moment().format('ll');
+    this.logger.log('[WS-REQUESTS-MSGS] SEND TRANSCRIT EMAIL - date ',   date)
+    this.logger.log('[WS-REQUESTS-MSGS] SEND TRANSCRIT EMAIL - CONTACT EMAIL ',   this.contactNewEmail)
+    this.mailtoBody = emailBody
+    let contactEmail = ""
+    if(this.contactNewEmail){
+      contactEmail = this.contactNewEmail
     }
+    window.open(`mailto:` +  contactEmail + `?subject=Chat transcript&body=` + encodeURIComponent(this.mailtoBody))
+  }
 
-    if (this.transcriptDwnldPreference === 'PDF') {
-      // this.logger.log('[WS-REQUESTS-MSGS - HERE 1');
-      // this.exportTranscriptToPDF()
-      const url = this.SERVER_BASE_PATH + 'public/requests/' + this.id_request + '/messages.pdf'
-      window.open(url, '_blank');
-    }
+  downloadTranscriptAsPDF() {
+    this.closeModalTranscript();
+    const url = this.SERVER_BASE_PATH + 'public/requests/' + this.id_request + '/messages.pdf'
+    window.open(url, '_blank');
+  }
 
-
-    // if (this.transcriptDwnldPreference === 'TEXT') {
-    //   const url = this.SERVER_BASE_PATH + 'public/requests/' + this.id_request + '/messages.html'
-    //   window.open(url, '_blank');
-    // }
+  downloadTranscriptAsCSV() {
+    this.closeModalTranscript();
+    this.exportTranscriptToCSV()
   }
 
   exportTranscriptToCSV() {
@@ -4114,23 +4142,6 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       // this.logger.log('[WS-REQUESTS-MSGS - EXPORT TRANSCRIPT TO CSV * COMPLETE *');
     });
   }
-
-  exportTranscriptToPDF() {
-    // this.logger.log('[WS-REQUESTS-MSGS - HERE 2');
-    this.wsRequestsService.exportTranscriptAsPDFFile(this.id_request).subscribe((res: any) => {
-      // this.logger.log('[WS-REQUESTS-MSGS - EXPORT TRANSCRIPT TO PDF', res);
-      if (res) {
-        this.downloadTranscriptAsPDFFile(res)
-      }
-    }, (error) => {
-      // this.logger.error('[WS-REQUESTS-MSGS - EXPORT TRANSCRIPT TO PDF - ERROR  ', error);
-    }, () => {
-      // this.logger.log('[WS-REQUESTS-MSGS - EXPORT TRANSCRIPT TO PDF * COMPLETE *');
-    });
-
-
-  }
-
 
   downloadTranscriptAsCSVFile(data) {
     const blob = new Blob(['\ufeff' + data], { type: 'text/csv;charset=utf-8;' });
@@ -4148,8 +4159,67 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     document.body.removeChild(dwldLink);
   }
 
-  downloadTranscriptAsPDFFile(data) {
+  // No more used
+  onChangeTranscriptDownloadPreference(value) {
+    this.logger.log(" Value is : ", value);
+    this.transcriptDwnldPreference = value
+  }
+ // No more used
+  downloadTranscript() {
+    this.closeModalTranscript();
+    // this.logger.log('transcriptDwnldPreference', this.transcriptDwnldPreference)
+    if (this.transcriptDwnldPreference === 'CSV') {
+      this.exportTranscriptToCSV()
+    }
 
+    if (this.transcriptDwnldPreference === 'PDF') {
+      this.logger.log('[WS-REQUESTS-MSGS] - PDF HERE 1');
+      // this.exportTranscriptToPDF()
+      const url = this.SERVER_BASE_PATH + 'public/requests/' + this.id_request + '/messages.pdf'
+      window.open(url, '_blank');
+    }
+
+    if (this.transcriptDwnldPreference === 'TXT') {
+      this.logger.log('[WS-REQUESTS-MSGS] - TXT HERE 1');
+      this.logger.log('[WS-REQUESTS-MSGS] - TXT HERE this.request.lead.email ', this.request.lead.email);
+
+      // this.exportTranscriptToPDF()
+      // const url = this.SERVER_BASE_PATH + 'public/requests/' + this.id_request + '/messages.txt'
+      // window.open(url, '_blank');
+      this.wsMsgsService.getTranscriptAsText(this.id_request).subscribe((emailBody) => {
+        this.logger.log('[WS-REQUESTS-MSGS] - GET TRANSCRIPT AS TXT emailBody:', emailBody);
+        if (emailBody) {
+          this.sendTrancriptEmail(emailBody)
+        }
+       
+        this.logger.log('[WS-REQUESTS-MSGS] - GET TRANSCRIPT AS TXT emailBody type of', typeof emailBody);
+        // let emailBodyStingify = JSON.stringify(emailBody)
+        
+      }, error => {
+        this.logger.error('[WS-REQUESTS-MSGS] - GET TRANSCRIPT AS TXT ERROR', error);
+      }, () => {
+        
+        this.logger.log('[WS-REQUESTS-MSGS] - GET TRANSCRIPT AS TXT - COMPLETE');
+      });
+    }
+
+  }
+ // No more used
+  exportTranscriptToPDF() {
+    this.logger.log('[WS-REQUESTS-MSGS - PDF HERE 2');
+    this.wsRequestsService.exportTranscriptAsPDFFile(this.id_request).subscribe((res: any) => {
+      // this.logger.log('[WS-REQUESTS-MSGS - EXPORT TRANSCRIPT TO PDF', res);
+      if (res) {
+        this.downloadTranscriptAsPDFFile(res)
+      }
+    }, (error) => {
+      // this.logger.error('[WS-REQUESTS-MSGS - EXPORT TRANSCRIPT TO PDF - ERROR  ', error);
+    }, () => {
+      // this.logger.log('[WS-REQUESTS-MSGS - EXPORT TRANSCRIPT TO PDF * COMPLETE *');
+    });
+  }
+ // No more used
+  downloadTranscriptAsPDFFile(data) {
     const blob = new Blob([data], { type: 'application/pdf' });
     const dwldLink = document.createElement('a');
     const url = URL.createObjectURL(blob);
@@ -4163,8 +4233,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     document.body.appendChild(dwldLink);
     dwldLink.click();
     document.body.removeChild(dwldLink);
-
   }
+
   // ---------------------------
   // Ban Visitor
   // ---------------------------
@@ -4215,11 +4285,16 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       }
     } else {
       // this.logger.log('displayModalBanVisitor HERE 5 ')
-      this.presentModalAgentCannotManageAvancedSettings()
+      // this.presentModalAgentCannotManageAvancedSettings()
+      this.presentModalOnlyOwnerCanManageAdvancedProjectSettings();
     }
 
   }
 
+
+  presentModalOnlyOwnerCanManageAdvancedProjectSettings() {
+    this.notify.presentModalOnlyOwnerCanManageAdvancedProjectSettings(this.onlyUserWithOwnerRoleCanManageAdvancedProjectSettings, this.learnMoreAboutDefaultRoles)
+  }
 
   banVisitors(leadid: string, ipaddress: string) {
     const index = this.bannedVisitorsArray.findIndex((v) => v.id === leadid);
@@ -4853,6 +4928,11 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         this.learnMoreAboutDefaultRoles = translation;
       });
 
+    this.translate.get('OnlyUserWithOwnerRoleCanManageAdvancedProjectSettings')
+      .subscribe((translation: any) => {
+        this.onlyUserWithOwnerRoleCanManageAdvancedProjectSettings = translation;
+      });
+
 
     this.translate.get('Pricing.UpgradePlan')
       .subscribe((translation: any) => {
@@ -4890,7 +4970,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     const elemDropDownEditEmail = <HTMLElement>document.querySelector('.dropdown__menu_edit_email');
     this.logger.log('elemDropDownEditEmail ', elemDropDownEditEmail)
     elemDropDownEditEmail.classList.add("dropdown__menu_edit_email--active");
-    // this.contactNewEmail = undefined;
+   
   }
 
   closeDropdown() {
@@ -4903,15 +4983,15 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     elemDropDown.classList.remove("dropdown__menu_edit_email--active");
   }
 
-  updateContactEmail() {
-    const elemDropDown = <HTMLElement>document.querySelector('.dropdown__menu_edit_email');
-    elemDropDown.classList.remove("dropdown__menu_edit_email--active");
-    this.logger.log('[WS-REQUESTS-MSGS] saveContactFullName  contactNewEmail', this.contactNewEmail)
-    this.logger.log('[WS-REQUESTS-MSGS] saveContactFullName  request', this.request)
-    this.request.lead.email = this.contactNewEmail
+  // updateContactEmail() {
+  //   const elemDropDown = <HTMLElement>document.querySelector('.dropdown__menu_edit_email');
+  //   elemDropDown.classList.remove("dropdown__menu_edit_email--active");
+  //   this.logger.log('[WS-REQUESTS-MSGS] saveContactFullName  contactNewEmail', this.contactNewEmail)
+  //   this.logger.log('[WS-REQUESTS-MSGS] saveContactFullName  request', this.request)
+  //   this.request.lead.email = this.contactNewEmail
 
-    this.updateContactemail(this.request.lead._id, this.contactNewEmail);
-  }
+  //   this.updateContactemail(this.request.lead._id, this.contactNewEmail);
+  // }
 
 
   formatBytes(bytes, decimals) {
@@ -5564,7 +5644,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   onClickTagConversation() {
-    console.log('[WS-REQUESTS-MSGS] - HAS CLICKED TAG CONVS');
+    this.logger.log('[WS-REQUESTS-MSGS] - HAS CLICKED TAG CONVS');
     this.hasSelectedTab1()
   }
 
@@ -5647,48 +5727,43 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     }
   }
 
-  emailChange(event) {
-    this.EMAIL_IS_VALID = this.validateEmail(event)
-    this.logger.log('ON EMAIL CHANGE EMAIL_IS_VALID ', this.EMAIL_IS_VALID)
+  // emailChange(event) {
+  //   this.EMAIL_IS_VALID = this.validateEmail(event)
+  //   this.logger.log('ON EMAIL CHANGE EMAIL_IS_VALID ', this.EMAIL_IS_VALID)
+  //   // this.getTagContainerElementHeight()
+  // }
+  // validateEmail(email) {
+  //   const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  //   return re.test(String(email).toLowerCase());
+  // }
 
-    // this.getTagContainerElementHeight()
+  // editContactEmail() {
+  //   this.logger.log('editContactEmail contactNewEmail', this.contactNewEmail)
+  //   if (this.EMAIL_IS_VALID && this.contactNewEmail !== undefined) {
+  //     this.updateContactemail(this.request.lead._id, this.contactNewEmail);
+  //   }
+  // }
 
-  }
+  // updateContactemail(lead_id, lead_email) {
+  //   this.contactsService.updateLeadEmail(lead_id, lead_email)
+  //     .subscribe((contact) => {
+  //       this.logger.log('[WS-REQUESTS-MSGS] - UPDATED CONTACT ', contact);
+  //     }, (error) => {
+  //       this.logger.error('[WS-REQUESTS-MSGS] - UPDATE CONTACT - ERROR ', error);
+  //       // =========== NOTIFY ERROR ===========
+  //       // this.notify.showNotification('An error occurred while updating contact', 4, 'report_problem');
+  //     }, () => {
+  //       this.logger.log('[WS-REQUESTS-MSGS] - UPDATE CONTACT * COMPLETE *');
+  //       // =========== NOTIFY SUCCESS===========
+  //       this.notify.showWidgetStyleUpdateNotification('Contact successfully updated', 2, 'done')
+  //     });
+  // }
 
-
-  validateEmail(email) {
-    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
-    return re.test(String(email).toLowerCase());
-  }
-
-  editContactEmail() {
-    this.logger.log('editContactEmail contactNewEmail', this.contactNewEmail)
-    if (this.EMAIL_IS_VALID && this.contactNewEmail !== undefined) {
-      this.updateContactemail(this.request.lead._id, this.contactNewEmail);
-    }
-  }
-
-  updateContactemail(lead_id, lead_email) {
-    this.contactsService.updateLeadEmail(lead_id, lead_email)
-      .subscribe((contact) => {
-        this.logger.log('[WS-REQUESTS-MSGS] - UPDATED CONTACT ', contact);
-      }, (error) => {
-        this.logger.error('[WS-REQUESTS-MSGS] - UPDATE CONTACT - ERROR ', error);
-        // =========== NOTIFY ERROR ===========
-        // this.notify.showNotification('An error occurred while updating contact', 4, 'report_problem');
-      }, () => {
-        this.logger.log('[WS-REQUESTS-MSGS] - UPDATE CONTACT * COMPLETE *');
-        // =========== NOTIFY SUCCESS===========
-        this.notify.showWidgetStyleUpdateNotification('Contact successfully updated', 2, 'done')
-      });
-  }
-
-  removeEmailAnUpdateContact() {
-    this.contactNewEmail = ''
-    this.logger.log('removeEmailAnUpdateContact contactNewEmail', this.contactNewEmail)
-    this.updateContactemail(this.request.lead._id, this.contactNewEmail);
-  }
+  // removeEmailAnUpdateContact() {
+  //   this.contactNewEmail = ''
+  //   this.logger.log('removeEmailAnUpdateContact contactNewEmail', this.contactNewEmail)
+  //   this.updateContactemail(this.request.lead._id, this.contactNewEmail);
+  // }
 
   openSourcePage(sorurcePageURL) {
     this.logger.log('openSourcePage sorurcePageURL ', sorurcePageURL)

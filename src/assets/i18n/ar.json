@@ -2330,6 +2330,10 @@
     "Always opened":"دائما مفتوح",
     "Always Closed":"مغلق دائما",
     "As last status": "كالوضع الأخير",
+    "SendByEmail": "إرسال عن طريق البريد الإلكتروني",
+    "ViewAsHTML":"عرض كـ HTML",
+    "DownloadAsPDF":"تحميل بصيغة PDF",
+    "DownloadAsCSV": "قم بالتنزيل كملف CSV",
     "AddIntentPage": {
         "AddForm": "أضف النموذج",
         "SelectTemplateForm": "حدد نوعًا من النماذج بين هؤلاء المقترحين ، أو إنشاء شكل جديد",

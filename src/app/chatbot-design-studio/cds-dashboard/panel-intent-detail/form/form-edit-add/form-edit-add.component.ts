@@ -190,14 +190,14 @@ export class FormEditAddComponent implements OnInit, OnChanges {
         this.field.regex = TYPE_REGEX.textRGEX;
     }
     this.fieldRegex = this.field.regex;
-    console.log('setRegex:: ', this.field.type, this.fieldRegex);
+    this.logger.log('setRegex:: ', this.field.type, this.fieldRegex);
   }
 
   // ON EVENT //
   /** */
   onChangeParameterName(parameterName) {
     parameterName.toString();
-    console.log('onChangeParameterName', parameterName);
+    this.logger.log('onChangeParameterName', parameterName);
     this.fieldName = parameterName.replace(/[^A-Z0-9_]+/ig, "");
   }
 
@@ -231,8 +231,8 @@ export class FormEditAddComponent implements OnInit, OnChanges {
         this.field.errorLabel = this.fieldErrorLabel.trim();
       }
       // this.fieldRegex = this.field.regex.toString();
-      this.logger.log('[TILEBOT-EDIT-ADD] checkFields field ',  this.field);
-      console.log("save*********** ", this.field);
+      this.logger.log('[FORM-EDIT-ADD] SAVE > checkFields field ',  this.field);
+      
       this.saveAddEditForm.emit(this.field);
     }
   }
@@ -250,14 +250,6 @@ export class FormEditAddComponent implements OnInit, OnChanges {
   }
 
 
-
-
-
-
-
-
-
-
   /** START EVENTS */
   onSelectedAttributeParam(variableSelected: {name: string, value: string}){
     this.hasSelectedVariable = true;
@@ -265,7 +257,7 @@ export class FormEditAddComponent implements OnInit, OnChanges {
     this.field.name = variableSelected.value;
     if(this.displayAddForm === false){
       this.changedFormFields.emit(this.field);
-      console.log('onSelectedAttributeParam:: ',  this.field);
+      this.logger.log('FORM-EDIT-ADD] onSelectedAttributeParam:: ',  this.field);
     }
   }
   onClearSelectedAttributeParam() {
@@ -274,7 +266,7 @@ export class FormEditAddComponent implements OnInit, OnChanges {
     this.field.name = '';
     if(this.displayAddForm === false){
       this.changedFormFields.emit(this.field);
-      console.log('clearSelectedAttributeParam:: ',  this.field);
+      this.logger.log('FORM-EDIT-ADD] clearSelectedAttributeParam:: ',  this.field);
     }
   }
   onChangeTextAreaLabel(text: string){
@@ -282,21 +274,21 @@ export class FormEditAddComponent implements OnInit, OnChanges {
     this.fieldLabel = text;
     if(this.displayAddForm === false){
       this.changedFormFields.emit(this.field);
-      console.log('onChangeTextAreaLabel:: ',  this.field);
+      this.logger.log('FORM-EDIT-ADD] onChangeTextAreaLabel:: ',  this.field);
     }
   }
   onChangeValidationErrorMessage(errorLabel){
     this.field.errorLabel = this.fieldErrorLabel.trim();
     if(this.displayAddForm === false){
       this.changedFormFields.emit(this.field);
-      console.log('onChangeValidationErrorMessage:: ', errorLabel.data,  this.fieldErrorLabel);
+      this.logger.log('FORM-EDIT-ADD]  onChangeValidationErrorMessage:: ', errorLabel.data,  this.fieldErrorLabel);
     }
   }
   onChangeValidationRegex(regex){
     this.field.regex = this.fieldRegex.trim();
     if(this.displayAddForm === false){
       this.changedFormFields.emit(this.field);
-      console.log('onChangeValidationRegex:: ', regex.data, this.fieldRegex);
+      this.logger.log('FORM-EDIT-ADD] onChangeValidationRegex:: ', regex.data, this.fieldRegex);
     }
   }
   /** */

@@ -93,7 +93,7 @@ export class PanelActionsComponent implements OnInit, OnChanges {
   }
 
   onActionSelected(typeAction: TYPE_ACTION) {
-    console.log('[PANEL ACTION] actionSelected ', typeAction);
+    this.logger.log('[PANEL ACTION] actionSelected ', typeAction);
     let action: any;
     if (typeAction === TYPE_ACTION.REPLY) {
       action = new ActionReply();

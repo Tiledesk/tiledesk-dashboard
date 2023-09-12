@@ -7,6 +7,9 @@ export interface User {
   firstname?: string;
   lastname?: string;
   token?: string;
+  description?: string;
+  public_email?: string;
+  public_website?: string;
 
   _id?: string;
   password?: string;

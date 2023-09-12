@@ -2330,6 +2330,10 @@
     "Always opened":"Әрқашан ашылды",
     "Always Closed":"Әрқашан жабық",
     "As last status": "Соңғы мәртебе ретінде",
+    "SendByEmail": "Электрондық поштамен жіберу",
+    "ViewAsHTML":"HTML ретінде көру",
+    "DownloadAsPDF":"PDF ретінде жүктеп алыңыз",
+    "DownloadAsCSV": "CSV ретінде жүктеп алыңыз",
     "AddIntentPage": {
         "AddForm": "Пішін қосу",
         "SelectTemplateForm": "Ұсынылғандар арасында пішін түрін таңдаңыз немесе жаңасын жасаңыз",

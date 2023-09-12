@@ -30,7 +30,7 @@ export class ActionDescriptionComponent implements OnInit {
   dataInput: string;
   
   ngOnInit(): void {
-    console.log('ActionDescriptionComponent ngOnInit:: ', this.actionSelected);
+    this.logger.log('ActionDescriptionComponent ngOnInit:: ', this.actionSelected);
     // if(this.elementSelected){
     //   this.elementType = TYPE_INTENT_ELEMENT.FORM;
     // } else {
@@ -44,14 +44,14 @@ export class ActionDescriptionComponent implements OnInit {
       if(this.actionSelected._tdActionTitle && this.actionSelected._tdActionTitle != ""){
         this.dataInput = this.actionSelected._tdActionTitle;
       }
-      console.log('ActionDescriptionComponent action:: ', this.element);
+      this.logger.log('ActionDescriptionComponent action:: ', this.element);
     } catch (error) {
       this.logger.log("error ", error);
     }
   }
 
   onChangeText(text: string){
-    console.log('ActionDescriptionComponent onChangeText:: ', text);
+    this.logger.log('ActionDescriptionComponent onChangeText:: ', text);
     this.actionSelected._tdActionTitle = text;
   }
 

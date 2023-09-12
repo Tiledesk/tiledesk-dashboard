@@ -111,7 +111,8 @@ export class WsSharedComponent implements OnInit {
     this.logger.log('[WS-SHARED] openChatToTheSelectedConversation chatTabCount ', chatTabCount)
 
     let baseUrl = CHAT_BASE_URL + '#/conversation-detail/'
-    let url = baseUrl + requestid + '/' + requester_fullanme + '/active'
+    let url = baseUrl + requestid + '/' + requester_fullanme.trim() + '/active'
+    this.logger.log('[WS-SHARED] openChatToTheSelectedConversation url ', url)
     const myWindow = window.open(url, '_self', 'Tiledesk - Open Source Live Chat');
     myWindow.focus();
     // if (chatTabCount) {
@@ -174,18 +175,48 @@ export class WsSharedComponent implements OnInit {
           this.logger.log('[WS-SHARED][WS-REQUESTS-MSGS] - CREATE-AGENT-ARRAY-FROM-PARTICIPANTS-ID - MEMBER ', member_id)
 
           // l'utente è salvato nello storage
-          const user = this.usersLocalDbService.getMemberFromStorage(member_id);
+          const storeduser = this.usersLocalDbService.getMemberFromStorage(member_id);
 
-          if (user) {
-            this.logger.log('[WS-SHARED][WS-REQUESTS-MSGS] - STORED USER user', user)
-            this.logger.log('[WS-SHARED][WS-REQUESTS-MSGS] - STORED USER user id', user['_id'])
-            this.logger.log('[WS-SHARED][WS-REQUESTS-MSGS] - member_id ', member_id)
-            if (member_id === user['_id']) {
+          if (storeduser) {
+            // console.log('[WS-SHARED][WS-REQUESTS-MSGS] - STORED USER user', storeduser)
+            this.logger.log('[WS-SHARED][WS-REQUESTS-MSGS] - STORED USER user id', storeduser['_id'])
+            // console.log('[WS-SHARED][WS-REQUESTS-MSGS] - member_id ', member_id)
+            if (member_id === storeduser['_id']) {
 
-              this.agents_array.push({ '_id': user['_id'], 'firstname': user['firstname'], 'lastname': user['lastname'], 'isBot': false, 'hasImage': user['hasImage'], 'userfillColour': user['fillColour'], 'userFullname': user['fullname_initial'] })
+              let imgUrl = ''
+              if (isFirebaseUploadEngine === true) {
+                // ------------------------------------------------------------------------------
+                // Usecase uploadEngine Firebase 
+                // ------------------------------------------------------------------------------
+                imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + imageStorage + "/o/profiles%2F" + member_id + "%2Fphoto.jpg?alt=media"
+
+              } else {
+                // ------------------------------------------------------------------------------
+                // Usecase uploadEngine Native 
+                // ------------------------------------------------------------------------------
+                imgUrl = imageStorage + "images?path=uploads%2Fusers%2F" + member_id + "%2Fimages%2Fthumbnails_200_200-photo.jpg"
+              }
+
+              this.checkImageExists(imgUrl, (existsImage) => {
+                if (existsImage == true) {
+                  storeduser['hasImage'] = true
+                  // console.log('HERE Y1 USER ', storeduser)
+                  this.createAgentAvatar(storeduser)
+                  this.agents_array.push({ '_id': storeduser['_id'], 'firstname': storeduser['firstname'], 'lastname': storeduser['lastname'], 'isBot': false, 'hasImage': storeduser['hasImage'], 'userfillColour': storeduser['fillColour'], 'userFullname': storeduser['fullname_initial'] })
+
+                }
+                else {
+                  storeduser['hasImage'] = false
+                  // console.log('HERE Y2 USER ', storeduser)
+                  this.createAgentAvatar(storeduser)
+                  this.agents_array.push({ '_id': storeduser['_id'], 'firstname': storeduser['firstname'], 'lastname': storeduser['lastname'], 'isBot': false, 'hasImage': storeduser['hasImage'], 'userfillColour': storeduser['fillColour'], 'userFullname': storeduser['fullname_initial'] })
+
+                }
+              });
+
 
             } else {
-              this.logger.log('[WS-SHARED][WS-REQUESTS-MSGS] - member_id =! from ', user['_id'])
+            //  console.log('[WS-SHARED][WS-REQUESTS-MSGS] - member_id =! from ', storeduser['_id'])
             }
           } else {
             this.logger.log('[WS-SHARED][WS-REQUESTS-MSGS] - there is not stored user with id ', member_id)
@@ -193,7 +224,7 @@ export class WsSharedComponent implements OnInit {
             this.usersService.getProjectUserById(member_id)
             .subscribe((projectuser) => {
              
-              this.logger.log('[WS-SHARED][WS-REQUESTS-MSGS] - USER IS NOT IN STORAGE GET PROJECT-USER BY ID - RES', projectuser);
+              // console.log('[WS-SHARED][WS-REQUESTS-MSGS] - USER IS NOT IN STORAGE GET PROJECT-USER BY ID - RES', projectuser);
               const user: any = projectuser[0].id_user;
            
 
@@ -237,7 +268,7 @@ export class WsSharedComponent implements OnInit {
       }
     });
 
-    this.logger.log('[WS-SHARED][WS-REQUESTS-MSGS] - CREATE-AGENT-ARRAY-FROM-PARTICIPANTS-ID - AGENT ARRAY ', this.agents_array)
+    // console.log('[WS-SHARED][WS-REQUESTS-MSGS] - CREATE-AGENT-ARRAY-FROM-PARTICIPANTS-ID - AGENT ARRAY ', this.agents_array)
   }
 
 
@@ -392,7 +423,6 @@ export class WsSharedComponent implements OnInit {
       agent['fullname_initial'] = 'N/A';
       agent['fillColour'] = 'rgb(98, 100, 167)';
     }
-
   }
 
   checkImageExists(imageUrl, callBack) {
