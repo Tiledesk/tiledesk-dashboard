@@ -16,7 +16,6 @@ import { Project } from 'app/models/project-model';
 import { Chatbot } from 'app/models/faq_kb-model';
 import { Intent } from 'app/models/intent-model';
 
-
 // UTILS //
 import { SIDEBAR_PAGES } from 'app/chatbot-design-studio/utils';
 
@@ -32,47 +31,38 @@ export class CdsDashboardComponent implements OnInit {
   IS_OPEN_SIDEBAR: boolean = false;
   IS_OPEN_INTENTS_LIST: boolean = true;
   IS_OPEN_PANEL_WIDGET: boolean = false;
-  // isOpenAddActionsMenu: boolean = false;
-  // hasClickedAddAction: boolean = false;
 
-  id_faq_kb:string;
-  id_faq:string;
-  botType:string;
-  intent_id:string;
-  project:Project;
-  projectID:string;
-  defaultDepartmentId:string;
-  selectedChatbot:Chatbot
-  activeSidebarSection:string;
-
+  id_faq_kb: string;
+  id_faq: string;
+  botType: string;
+  intent_id: string;
+  project: Project;
+  projectID: string;
+  defaultDepartmentId: string;
+  selectedChatbot: Chatbot
+  activeSidebarSection: string;
   isBetaUrl: boolean = false;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private auth: AuthService,
-    // public location: Location,
     private logger: LoggerService,
     private dashboardService: DashboardService,
     private intentService: IntentService,
     private controllerService: ControllerService,
     private connectorService: ConnectorService,
-    // private stageService: StageService,
-    // private faqKbService: FaqKbService,
-    // private departmentService: DepartmentService,
-    // public dialog: MatDialog,
     // private translate: TranslateService
   ) {}
-  // ---------------------------------------------------------
-  // Life hooks
-  // ---------------------------------------------------------
+
   ngOnInit() {
     console.log("•••• [CDS DSHBRD] ngOnInit ••••");
     this.auth.checkRoleForCurrentProject();
     this.executeAsyncFunctionsInSequence();
   }
 
-  // CUSTOM FUNCTIONS //
-  /**
+  /**************** CUSTOM FUNCTIONS ****************/
+  /** 
    * execute Async Functions In Sequence
    * Le funzioni async sono gestite in maniera sincrona ed eseguite in coda
    * da aggiungere un loader durante il processo e se tutte vanno a buon fine 
@@ -94,7 +84,6 @@ export class CdsDashboardComponent implements OnInit {
       const getDefaultDepartmentId = this.dashboardService.getDeptsByProjectId();
       console.log('[CDS DSHBRD] Risultato 6:', getDefaultDepartmentId);
       if (getTranslations && getUrlParams && getBotById && getCurrentProject && getBrowserVersion && getDefaultDepartmentId) {
-        // !!! il valore di listOfIntents è bindato nel costructor con subscriptionListOfIntents !!! // 
         console.log('[CDS DSHBRD] Ho finito di inizializzare la dashboard');
         this.project = this.dashboardService.project;
         this.selectedChatbot = this.dashboardService.selectedChatbot;
@@ -122,13 +111,6 @@ export class CdsDashboardComponent implements OnInit {
     });
   }
 
-  // /** removeConnectorDraftAndCloseFloatMenu */
-  // private removeConnectorDraftAndCloseFloatMenu() {
-  //   this.connectorService.removeConnectorDraft();
-  //   this.isOpenAddActionsMenu = false;
-  // }
-
-
   /** getUrlParams **
    * GET FROM ROUTE PARAMS (PASSED FROM FAQ COMPONENT):
    * THE FAQ ID - WHEN THE CALLBACK IS COMPLETED RUN GET-FAQ-BY-ID THAT RETURN THE OBJECT FAQ
@@ -152,7 +134,6 @@ export class CdsDashboardComponent implements OnInit {
     });
   }
 
-
   /** hideShowWidget */
   private hideShowWidget(status: "hide" | "show") {
     try {
@@ -170,11 +151,7 @@ export class CdsDashboardComponent implements OnInit {
   }
 
 
- 
-
-  //-------------------------------//
-  /** START EVENTS HEADER */
-  //-------------------------------//
+  /**************** START EVENTS HEADER ****************/
 
   /** onToggleSidebarWith */
   onToggleSidebarWith(IS_OPEN) {
@@ -196,7 +173,6 @@ export class CdsDashboardComponent implements OnInit {
    * - actions context menu' (static & float),
    * - button configuration panel  
   */
-
   onTestItOut(event: Intent | boolean) {
     console.log('[CDS DSHBRD] onTestItOut intent ', event);
     if(typeof event === "boolean"){
@@ -213,12 +189,10 @@ export class CdsDashboardComponent implements OnInit {
       this.connectorService.removeConnectorDraft();
     }
   }
-  //-------------------------------//
+  /*****************************************************/
 
 
-  //-------------------------------//
-  /** START EVENTS PANEL INTENT */
-  //-------------------------------//
+  /**************** START EVENTS PANEL INTENT ****************/
 
   /** onClosePanelWidget */
   onClosePanelWidget(){
@@ -234,6 +208,6 @@ export class CdsDashboardComponent implements OnInit {
     // }
     this.activeSidebarSection = event;
   }
-  //-------------------------------//
+  /*****************************************************/ 
 
 }

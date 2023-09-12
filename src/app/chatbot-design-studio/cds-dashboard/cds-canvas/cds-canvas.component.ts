@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild, ElementRef, HostListener, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, HostListener, Output, EventEmitter } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { TranslateService } from '@ngx-translate/core';
@@ -33,39 +33,36 @@ export class CdsCanvasComponent implements OnInit {
 
   id_faq_kb: string;
   TYPE_OF_MENU = TYPE_OF_MENU;
-  private subscriptionListOfIntents: Subscription;
 
+  private subscriptionListOfIntents: Subscription;
   listOfIntents: Array<Intent> = [];
-  
   intentSelected: Intent;
   intent_id: string;
   hasClickedAddAction: boolean = false;
   hideActionPlaceholderOfActionPanel: boolean;
 
-
-  // panel list of intent
+  /** panel list of intent */ 
   IS_OPEN_INTENTS_LIST: boolean = true;
 
-  // panel add action menu
+  /** panel add action menu */
   private subscriptionOpenAddActionMenu: Subscription;
   IS_OPEN_ADD_ACTIONS_MENU: boolean = false;
   positionFloatMenu: any = { 'x': 0, 'y': 0 };
   tdsContainerEleHeight: number = 0;
 
-  // panel action detail
+  /** panel action detail */
   private subscriptionOpenDetailPanel: Subscription;
   IS_OPEN_PANEL_ACTION_DETAIL: boolean = false;
   elementIntentSelected: any;
   
-  // panel reply button configuaration
+  /** panel reply button configuaration */
   private subscriptionOpenButtonPanel: Subscription;
   IS_OPEN_PANEL_BUTTON_CONFIG: boolean = false;
   buttonSelected: any;
 
-  // panel widget
+  /** panel widget */
   IS_OPEN_PANEL_WIDGET: boolean = false;
   
-
   constructor(
     private intentService: IntentService,
     private stageService: StageService,
@@ -82,6 +79,7 @@ export class CdsCanvasComponent implements OnInit {
     this.initialize();
   }
 
+  /** */
   ngOnDestroy() {
     if (this.subscriptionListOfIntents) {
       this.subscriptionListOfIntents.unsubscribe();
@@ -97,6 +95,7 @@ export class CdsCanvasComponent implements OnInit {
     }
   }
 
+  /** */
   ngAfterViewInit() {
     console.log("[CDS-CANVAS]  •••• ngAfterViewInit ••••");
     this.stageService.initializeStage();
