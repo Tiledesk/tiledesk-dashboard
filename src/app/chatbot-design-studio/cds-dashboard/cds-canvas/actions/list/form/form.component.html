@@ -16,7 +16,10 @@
             <span class="icon">
                 <i class="material-icons">add_circle</i>
             </span>
-            <span class="icon-label opened">{{ "AddIntentPage.AddForm" | translate }}</span>
+            <span class="icon-label opened">
+                <!-- {{ "AddIntentPage.AddForm" | translate }} -->
+                Add form
+            </span>
         </button>
     </div>
 
@@ -53,7 +56,8 @@
     <div>
         <div *ngIf="displayBoxNewForm && intentFormSize === 0">
             <div class="box--setting-form">
-                {{ "AddIntentPage.SelectTemplateForm" | translate }}
+                <!-- {{ "AddIntentPage.SelectTemplateForm" | translate }} -->
+                Select a type of form among those suggested, or create a new one
             </div>
             <div class="selectFormModel">
                 <ng-select [items]="modelsOfForm" bindLabel="name" bindValue="id" [clearable]=false
@@ -63,7 +67,9 @@
             </div>
             <div class="box-buttons">
                 <button id="create-intent-form" class="btn btn-primary" (click)="generateJsonIntentForm()">
-                    <span>{{ "AddIntentPage.CreateForm" | translate }}</span>
+                    <!-- <span>{{ "AddIntentPage.CreateForm" | translate }}</span> -->
+                    <span> Create form</span>
+                   
                 </button>
             </div>
         </div>
@@ -73,11 +79,14 @@
             <div *ngIf="displaySettingForm" class="box--setting-form">
                 <!-- <div>{{ "AddIntentPage.NameForm" | translate }}: <span class="bold">{{selectedForm.name}}</span></div> -->
                 <div class="row-info">
-                    <span class="bold">{{ "AddIntentPage.LabelCancel" | translate }}:</span>
+                    <!-- <span class="bold">{{ "AddIntentPage.LabelCancel" | translate }}:</span> -->
+                    <span class="bold">Command to cancel form:</span>
                     <input type="text" class="input" [(ngModel)]="cancelCommandsString" (change)="setCancelCommands()" />
                 </div>
                 <div class="row-info">
-                    <span class="bold">{{ "AddIntentPage.LabelReplay" | translate }}:</span>
+                    <!-- <span class="bold">{{ "AddIntentPage.LabelReplay" | translate }}:</span> -->
+                    <span class="bold">Response to form cancelled:</span>
+                    
                     <textarea type="text" class="input" [(ngModel)]="cancelReply" (change)="setCancelReplay()"
                         rows="2"> </textarea>
                 </div>
@@ -123,7 +132,9 @@
             <span class="icon" style="padding-right: 4px;">
                 <i class="material-icons">add_circle</i>
             </span>
-            <span>{{ "AddIntentPage.AddField" | translate }}</span>
+            <!-- <span>{{ "AddIntentPage.AddField" | translate }}</span> -->
+            <span>Add field</span>
+            
         </button>
     </div>
     <!-- ------------------------------ -->
