@@ -49,7 +49,7 @@ export class CdsActionDetailPanelComponent implements OnInit, OnChanges {
   }
 
   initialize(){
-    this.intentSelected = this.intentService.selectedIntent;
+    this.intentSelected = this.intentService.intentSelected;
     console.log('[PANEL-INTENT-DETAIL] (OnChanges) @Input elementIntentSelected ', this.intentSelected, this.elementIntentSelected);
     try{
       this.elementIntentSelectedType = this.elementIntentSelected.type;
