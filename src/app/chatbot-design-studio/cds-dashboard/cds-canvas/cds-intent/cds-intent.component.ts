@@ -21,6 +21,7 @@ import {
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { StageService } from 'app/chatbot-design-studio/services/stage.service';
+import { ControllerService } from 'app/chatbot-design-studio/services/controller.service';
 
 
 export enum HAS_SELECTED_TYPE {
@@ -84,8 +85,8 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
     private logger: LoggerService,
     public intentService: IntentService,
     private connectorService: ConnectorService,
-    private stageService: StageService
-    // private controllerService: ControllerService,
+    private stageService: StageService,
+    private controllerService: ControllerService,
   ) {
     this.initSubscriptions()
   }
@@ -173,14 +174,14 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
     if (this.hideActionPlaceholderOfActionPanel === false) {
       const addActionPlaceholderEl = <HTMLElement>document.querySelector('.add--action-placeholder');
       console.log('[CDS-INTENT] HERE 1 !!!! addActionPlaceholderEl ', addActionPlaceholderEl);
-      if (addActionPlaceholderEl) {
+      if (addActionPlaceholderEl !== null) {
         addActionPlaceholderEl.style.opacity = '0';
       }
 
     } else if (this.hideActionPlaceholderOfActionPanel === true) {
       const addActionPlaceholderEl = <HTMLElement>document.querySelector('.add--action-placeholder');
       console.log('[CDS-INTENT] HERE 2 !!!! addActionPlaceholderEl ', addActionPlaceholderEl);
-      if (addActionPlaceholderEl) {
+      if (addActionPlaceholderEl !== null) {
         addActionPlaceholderEl.style.opacity = '1';
       }
 
@@ -438,6 +439,8 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
    * Useful in case I move an action between different intents 
   * */
   onDragStarted(event, previousIntentId, index) {
+
+    this.controllerService.closeActionDetailPanel();
     console.log('[CDS-INTENT] onDragStarted event ', event, 'previousIntentId ', previousIntentId);
     console.log('[CDS-INTENT] onDragStarted index ', index);
     this.intentService.setPreviousIntentId(previousIntentId);
@@ -494,14 +497,18 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
           this.hideActionDragPlaceholder = false;
           console.log('[CDS-INTENT] Hide action drag placeholder', this.hideActionDragPlaceholder);
           actionDragPlaceholder.style.opacity = '1';
-          addActionPlaceholderEl.style.opacity = '0';
+          if (addActionPlaceholderEl) {
+            addActionPlaceholderEl.style.opacity = '0';
+          }
           console.log('[CDS-INTENT] HERE 1 !!!! ');
 
         } else {
           this.hideActionDragPlaceholder = true;
           console.log('[CDS-INTENT] Hide action drag placeholder', this.hideActionDragPlaceholder);
           actionDragPlaceholder.style.opacity = '0';
-          addActionPlaceholderEl.style.opacity = '1';
+          if (addActionPlaceholderEl) {
+            addActionPlaceholderEl.style.opacity = '1';
+          }
           console.log('[CDS-INTENT] HERE 2 !!!! ');
         }
         //  console.log('height', entry.contentRect.height);

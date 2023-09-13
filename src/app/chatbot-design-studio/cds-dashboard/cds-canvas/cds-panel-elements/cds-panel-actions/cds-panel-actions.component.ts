@@ -2,6 +2,7 @@ import { TYPE_ACTION_CATEGORY } from '../../../../utils';
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { TYPE_ACTION, ACTIONS_LIST, TYPE_OF_MENU, ELEMENTS_LIST } from 'app/chatbot-design-studio/utils';
 import { CdkDropList, CdkDragStart, CdkDragEnd, CdkDragMove } from '@angular/cdk/drag-drop';
+import { ControllerService } from 'app/chatbot-design-studio/services/controller.service';
 // import { DragDropService } from 'app/chatbot-design-studio/services/drag-drop.service';
 
 @Component({
@@ -30,6 +31,7 @@ export class CdsPanelActionsComponent implements OnInit {
   
 
   constructor(
+    private controllerService: ControllerService,
     // public dragDropService: DragDropService
   ) { }
 
@@ -111,6 +113,7 @@ export class CdsPanelActionsComponent implements OnInit {
 
   onDragStarted(event:CdkDragStart, currentIndex: number) {
     console.log('[CDS-PANEL-ACTIONS] Drag started!', event, currentIndex);
+    this.controllerService.closeActionDetailPanel();
     this.isDragging = true;
     this.indexDrag = currentIndex;
     
@@ -122,7 +125,9 @@ export class CdsPanelActionsComponent implements OnInit {
     const actionDragPlaceholder = <HTMLElement>document.querySelector('.action-drag-placeholder');
     console.log('[CDS-PANEL-ACTIONS] onDragStarted actionDragPlaceholder', actionDragPlaceholder)
  
- 
+    const addActionPlaceholderEl = <HTMLElement>document.querySelector('.add--action-placeholder');
+    console.log('[CDS-PANEL-ACTIONS] onDragStarted addActionPlaceholderEl ', addActionPlaceholderEl)
+
     const myObserver = new ResizeObserver(entries => {
       // this will get called whenever div dimension changes
        entries.forEach(entry => {
@@ -136,13 +141,15 @@ export class CdsPanelActionsComponent implements OnInit {
           this.hideActionPlaceholderOfActionPanel.emit(false)
           console.log('[CDS-PANEL-ACTIONS] Hide action drag placeholder', hideActionDragPlaceholder);
           actionDragPlaceholder.style.opacity = '1';
-         
+          if (addActionPlaceholderEl) {
+            addActionPlaceholderEl.style.opacity = '0';
+          }
         } else {
           hideActionDragPlaceholder = true;
           this.hideActionPlaceholderOfActionPanel.emit(true)
           console.log('[CDS-PANEL-ACTIONS] Hide action drag placeholder', hideActionDragPlaceholder);
           actionDragPlaceholder.style.opacity = '0';
-       
+          addActionPlaceholderEl.style.opacity = '1';
         }
 
         //  console.log('height', entry.contentRect.height);
