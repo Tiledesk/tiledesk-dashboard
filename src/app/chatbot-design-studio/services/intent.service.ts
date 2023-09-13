@@ -720,7 +720,7 @@ export class IntentService {
     }
     if(typeAction === TYPE_ACTION.ASKGPT){
       action = new ActionAskGPT();
-      action.question = '${last_user_text}'
+      action.question = '{{last_user_text}}'
       action.assignReplyTo = 'gpt_reply';
       action.assignSourceTo = 'gpt_source';
     }

@@ -122,7 +122,7 @@ export class CDSTextareaComponent implements OnInit {
     let valueTextArea = {name: '', value: ''};
     if (this.elTextarea) {
       this.elTextarea.focus();
-      this.insertAtCursorPos(this.elTextarea, '${' + variableSelected.value + '}');
+      this.insertAtCursorPos(this.elTextarea, '{{' + variableSelected.value + '}}');
       valueTextArea.name = this.elTextarea.value;
       valueTextArea.value = this.elTextarea.value;
     }
