@@ -61,8 +61,8 @@ export class CdsPanelWidgetComponent implements OnInit {
   setIframeUrl(){
     this.TESTSITE_BASE_URL = this.appConfigService.getConfig().testsiteBaseUrl;
     const testItOutBaseUrl = this.TESTSITE_BASE_URL.substring(0, this.TESTSITE_BASE_URL.lastIndexOf('/'));
-    const testItOutUrl = testItOutBaseUrl + '/chatbot-panel.html'
-    // const testItOutUrl = 'http://localhost:4203/assets/twp'+ '/chatbot-panel.html'
+    // const testItOutUrl = testItOutBaseUrl + '/chatbot-panel.html'
+    const testItOutUrl = 'http://localhost:4203/assets/twp'+ '/chatbot-panel.html'
     let url = testItOutUrl + '?tiledesk_projectid=' + this.projectID + 
     // const url = testItOutUrl + '?tiledesk_projectid=' + this.projectID + 
                                 '&tiledesk_participants=bot_' + this.id_faq_kb + 
@@ -79,8 +79,7 @@ export class CdsPanelWidgetComponent implements OnInit {
 
   onLoaded(event){
     this.loading= false
-    this.widgetIframe.nativeElement.contentWindow.postMessage(this.intentName, "*");
-    console.log('widgettttttt', this.widgetIframe)
+    // this.widgetIframe.nativeElement.contentWindow.postMessage(this.intentName, "*");
     // console.log('iframeeeeeee', this.elementRef.nativeElement.querySelector('.content'))
     window.addEventListener('message', (event_data)=> {
       if(event_data && event_data.origin.includes('widget')){
