@@ -57,7 +57,7 @@
 
 
     <div class="textarea-editor-wrapper">
-        <label class="title-label">Question</label>
+        <label class="title-label">Prompt</label>
         <cds-textarea id="question" 
             [textLimitBtn]="false" 
             [emojiPikerBtn]="false" 
@@ -71,45 +71,6 @@
     </div>
 
     <div class="select-box">
-
-        <!-- // HIDDEN PART: included in Knowledge base - START -->
-        <!-- <div style="display: flex; flex-direction: row; align-items: center; justify-content: space-between;">
-            <label class="title-label">Knowledge Base ID</label>
-            <div *ngIf="status_code === 0 && !spinner" class="play-button" style="color: #cbcbcb;"
-                (click)="startKbIndexing()">
-                <span class="material-icons custom-icon play-icon">play_arrow</span>
-                <span class="button-text">Start indexing</span>
-            </div>
-            <div *ngIf="status_code === 1 && !spinner" class="sync-div" style="color: #cbcbcb;">
-                <span class="material-icons-outlined custom-icon animated-icon">sync</span>
-                <span>Indexing...</span>
-            </div>
-            <div *ngIf="status_code === 2 && !spinner" class="play-button" style="color: #cbcbcb;">
-                <span class="material-icons-outlined custom-icon play-icon">restart_alt</span>
-                <span class="button-text">Indexed</span>
-            </div>
-            <div *ngIf="spinner" style="color: #cbcbcb;">
-                <span class="material-icons-outlined custom-icon animated-icon">sync</span>
-            </div>
-        </div> -->
-        <!-- <cds-select 
-            id="text-condition" 
-            [items]="kbs_list" 
-            [itemSelected]="kb_selected_id" 
-            [bindLabelSelect]="'name'"
-            [bindValueSelect]="'_id'" 
-            [optionalBindDescription]="'url'"
-            [deleteButton]="true" 
-            [footerButton]="true"
-            [footerButtonDisabled]="buttonDisabled" 
-            [footerButtonIcon]="buttonIcon" 
-            [footerButtonText]="buttonText"
-            (onSelected)="onChangeSelect($event)" 
-            (onDeleted)="onDeleteSelect($event)">
-        </cds-select> -->
-        <!-- // HIDDEN PART: included in Knowledge base - END -->
-
-
         <label class="title-label">Knowledge Base ID</label>
         <cds-select 
             id="text-condition" 
@@ -119,35 +80,10 @@
             [bindValueSelect]="'_id'" 
             (onSelected)="onChangeSelect($event)" >
         </cds-select>
-        
-        <!-- <span *ngIf="indexing_hint && !spinner" class="indexing-hint">*{{indexing_hint}}</span> -->
     </div>
 
     <a routerLink="/project/{{ project_id }}/knowledge-bases" routerLinkActive="router-link-active" target="_blank">Manage Knowledge Bases</a>
     
-    
-    <!-- // HIDDEN PART: included in Knowledge base - START -->
-    <!-- <span class="custom-link" (click)="goToKbSettings()">
-        Manage Knowledge Bases
-      </span> -->
-    <!-- <div class="text-editor-wrapper">
-        <div class="field-box">
-            <label class="title-label">GPT Key</label>
-            <div class="value-wrp">
-                <cds-textarea id="assignTo"
-                    [textLimitBtn]="false" 
-                    [emojiPikerBtn]="false" 
-                    [setAttributeBtn]="true"
-                    [minRow]="1" [maxRow]="3"
-                    [text]="gptkey"
-                    [placeholder]="'Your ChatGPT API key'"
-                    (changeTextarea)="changeTextarea($event, 'gptkey')">
-                </cds-textarea>
-            </div>
-        </div>
-    </div> -->
-    <!-- // HIDDEN PART: included in Knowledge base - END -->
-
     <hr class="custom-divider">
 
     <div class="text-editor-wrapper">
@@ -188,32 +124,14 @@
         </div>
     </div>
 
-
-    <!-- // HIDDEN PART: included in condition - START -->
-    <!-- <div class="text-editor-wrapper">
-        <div class="field-box">
-            <label class="title-label">GPT Success</label>
-            <div class="value-wrp">
-                <cds-textarea id="assignTo" [textLimitBtn]="false" [emojiPikerBtn]="false" [setAttributeBtn]="true"
-                    [minRow]="1" [maxRow]="1" [readonly]="true" [text]="action.assignSuccessTo"
-                    (selectedAttribute)="onSelectedAttribute($event, 'assignSuccessTo')"
-                    (clearSelectedAttribute)="onSelectedAttribute($event, 'assignSuccessTo')">
-                </cds-textarea>
-            </div>
-        </div>
-    </div> -->
-    <!-- // HIDDEN PART: included in condition - END -->
-
     <hr class="custom-divider">
 
-    <!-- trueIntent -->
     <div style="margin-bottom: 20px;">
 
         <div class="condition-container">
             <div class="icon-action">
                 <img src="assets/cds/images/icons/if_condition.svg">
             </div>
-
             <span class="condition-text">Success</span>
         </div>
 
@@ -236,8 +154,6 @@
         </cds-attributes> -->
 
     </div>
-    <!-- falseIntent -->
-
     <div>
 
         <div class="condition-container">

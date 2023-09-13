@@ -50,7 +50,9 @@ export class CdsPanelActionsComponent implements OnInit {
         });
         break;
       case TYPE_OF_MENU.EVENT:
-        this.menuItemsList = [];
+        this.menuItemsList = [
+          { text: 'Coming Soon'}
+        ];
         break;
       case TYPE_OF_MENU.BLOCK:
         this.menuItemsList = [{

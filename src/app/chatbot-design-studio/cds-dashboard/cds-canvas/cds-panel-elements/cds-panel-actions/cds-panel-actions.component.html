@@ -1,6 +1,6 @@
 <div *ngIf="menuItemsList.length>0" id="panel_actions_div" class="actions-drawer" #panel_actions_div >
 
-    <div class="action-list" id="action_list_drop_connect" #action_list_drop_connect 
+    <div *ngIf="menuType === TYPE_OF_MENU.ACTION" class="action-list" id="action_list_drop_connect" #action_list_drop_connect 
         cdkDropList 
         [cdkDropListData]="menuItemsList">
         
@@ -40,6 +40,11 @@
             </div>
         </div>
 
+    </div>
+
+
+    <div *ngIf="menuType === TYPE_OF_MENU.EVENT" class="coming-soon">
+        {{menuItemsList[0].text}}
     </div>
    
 </div>

@@ -277,20 +277,6 @@ export class ActionWhatsappStatic extends Action {
     }
 }
 
-
-// export class ActionAskGPT extends Action {
-//     question: string;
-//     kbid: string;
-//     gptkey: string;
-//     assignReplyTo: string;
-//     assignSourceTo: string;
-//     assignSuccessTo: string;
-//     constructor() {
-//         super();
-//         this._tdActionType = TYPE_ACTION.ASKGPT
-//     }
-// }
-
 export class ActionAgent extends Action{
     constructor() {
         super();
@@ -337,7 +323,6 @@ export class WhatsappBroadcast {
 export class ActionAskGPT extends Action {
     question: string;
     kbid: string;
-    gptkey: string;
     assignReplyTo: string;
     assignSourceTo: string;
     trueIntent: string;

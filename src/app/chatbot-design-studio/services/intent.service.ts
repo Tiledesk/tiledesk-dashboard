@@ -721,7 +721,6 @@ export class IntentService {
       action.question = '${last_user_text}'
       action.assignReplyTo = 'gpt_reply';
       action.assignSourceTo = 'gpt_source';
-      action.assignSuccessTo = 'gpt_success';
     }
     console.log('ho creato nuova action ', action);
     return action;
