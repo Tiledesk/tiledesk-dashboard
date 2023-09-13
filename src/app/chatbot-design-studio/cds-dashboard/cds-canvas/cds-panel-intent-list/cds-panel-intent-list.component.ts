@@ -87,7 +87,11 @@ export class CdsPanelIntentListComponent implements OnInit, OnChanges {
     /** SUBSCRIBE TO THE INTENT SELECTED */
     this.subscriptionIntent = this.intentService.behaviorIntent.subscribe((intent: Intent) => {
       console.log('[cds-panel-intent-list] --- AGGIORNATO INTENT ',intent);
-      if(intent)this.idSelectedIntent = intent.intent_id;
+      if (intent) {
+        if (!intent['attributesChanged']) {
+          this.idSelectedIntent = intent.intent_id;
+        }
+      }
     });
   }
 
