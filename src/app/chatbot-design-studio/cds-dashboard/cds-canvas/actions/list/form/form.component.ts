@@ -138,10 +138,10 @@ export class CdsFormComponent implements OnInit, OnChanges {
 
 
   getFieldFromId(idForm: number) {
-    this.logger.log('[FORM-COMP] getFieldFromId idForm ', idForm)
+    console.log('[FORM-COMP] getFieldFromId idForm ', idForm)
     // this.selectedForm = new FormModelsFactory().getModels()[0]
     this.selectedForm = new FormModelsFactory().getModels().find(({ id }) => id === idForm);
-    this.logger.log('[FORM-COMP] getFieldFromId selectedForm ', this.selectedForm)
+    console.log('[FORM-COMP] getFieldFromId selectedForm ', this.selectedForm)
     // this.translateparam = { selectedFormName: this.selectedForm.name, description_key: this.selectedForm.description_key };
   }
 

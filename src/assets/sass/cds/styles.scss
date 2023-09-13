@@ -171,14 +171,16 @@ emoji-mart {
 
 .action-control-btns-wpr {
     z-index: 10;
-    background-color: #ebe2c6;
+    // background-color: #ebe2c6; 
+    background-color: rgb(255, 255, 255);
+    box-shadow: rgba(0, 27, 71, 0.08) 0px 3px 8px;
     display: flex;
     align-items: center;
     justify-content: center;
-
     padding: 2px 10px;
     padding: 2px 6px;
-    border-radius: 15px;
+    border-radius: 14px;
+    height: 25px;
     // gap: 8px;
 }
 
@@ -187,10 +189,11 @@ emoji-mart {
 }
 .action-control-btn {
     cursor: pointer;
-    border-left: solid 1px white;
+    border-left: solid 1px $border-light;
     padding: 0 6px;
+    height: 16px;
     // width: 13px;
-    // height: 13px;
+  
 }
 
 .action-control-btn:hover svg {
