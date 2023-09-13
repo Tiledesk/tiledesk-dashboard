@@ -177,7 +177,7 @@ $margin-bottom: 15px;
             width: 24px;
             height: 26px;
             left: 0px;
-            top: 0px;
+            top: 27px;
             margin: 0;
             color: $color-bck-gray-hex;
             cursor: grab;
@@ -258,7 +258,7 @@ $margin-bottom: 15px;
 }
 
 
-.add--action-placeholder {
+.reply--action-placeholder {
     position: relative;
     display: flex;
     flex-direction: column;
@@ -269,7 +269,7 @@ $margin-bottom: 15px;
     padding: 12px 6px;
     background: rgba(255,255,255,.8);
     margin: 12px;
-    .add--action-placeholder-text {
+    .reply--action-placeholder-text {
         font-weight: 400;
         color: #6c6859;
         font-size: 14px;

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ViewChild, ElementRef, Output, EventEmitter, SimpleChanges } from '@angular/core';
-import { CdkDragDrop } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Wait, Button, Message, Command, ActionReply, MessageAttributes, Intent } from 'app/models/intent-model';
 import { TYPE_INTENT_ELEMENT, ELEMENTS_LIST, ACTIONS_LIST, TYPE_ACTION, TYPE_COMMAND, TYPE_RESPONSE, TYPE_BUTTON, TYPE_URL, TYPE_MESSAGE, generateShortUID } from 'app/chatbot-design-studio/utils';
 import { LoggerService } from 'app/services/logger/logger.service';
@@ -147,9 +147,9 @@ export class CdsActionReplyComponent implements OnInit {
 
   /** */
   drop(event: CdkDragDrop<string[]>) {
-    // this.textGrabbing = false;
-    // moveItemInArray(this.arrayResponses, event.previousIndex, event.currentIndex);
-    // this.onUpdateAndSaveAction();
+    this.textGrabbing = false;
+    moveItemInArray(this.arrayResponses, event.previousIndex, event.currentIndex);
+    this.onUpdateAndSaveAction();
   }
 
 
@@ -164,6 +164,7 @@ export class CdsActionReplyComponent implements OnInit {
       to = from - 2;
       this.arrayResponses.splice(to, 0, this.arrayResponses.splice(from, 1)[0]);
       // console.log( 'onMoveUpResponse ---> ', this.arrayResponses);
+      this.connectorService.movedConnector(this.intentSelected.id);
       this.onUpdateAndSaveAction();
     } catch (error) {
       this.logger.log('onAddNewResponse ERROR', error);
@@ -180,6 +181,7 @@ export class CdsActionReplyComponent implements OnInit {
       to = from + 2;
       this.arrayResponses.splice(to, 0, this.arrayResponses.splice(from, 1)[0]);
       // console.log( 'onMoveUpResponse ---> ', this.arrayResponses);
+      this.connectorService.movedConnector(this.intentSelected.id);
       this.onUpdateAndSaveAction();
     } catch (error) {
       this.logger.log('onAddNewResponse ERROR', error);
@@ -213,7 +215,7 @@ export class CdsActionReplyComponent implements OnInit {
 
   /** onDeleteActionReply */
   onDeleteActionReply(index: number) {
-    // console.log('onDeleteActionReply: ', this.arrayResponses[index]);
+    console.log('onDeleteActionReply: ', this.arrayResponses[index]);
     try {
       let buttons = this.arrayResponses[index].message.attributes.attachment.buttons;
       buttons.forEach(button => {

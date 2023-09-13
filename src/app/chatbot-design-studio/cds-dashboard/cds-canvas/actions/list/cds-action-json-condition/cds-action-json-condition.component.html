@@ -168,7 +168,7 @@
         <div *ngFor="let group of action?.groups; let i = index;" class="group">
             
             <!-- EXPRESSION [i]-->
-            <div *ngIf="i%2 === 0" class="expression">
+            <div *ngIf="i%2 === 0 && group?.conditions && group?.conditions.length > 0" class="expression">
                 <div *ngFor="let condition of group.conditions; let j = index;" >
                     <div *ngIf="j%2 === 0" class="condition-group">
                         <div class="filter-icon">
