@@ -1043,8 +1043,11 @@
   color: rgba($icon-color, 0.8);
 }
 
-
-
+cds-action-description.header-action ::ng-deep{
+  .action-title{
+    max-width: 100%
+  }
+}
 
 
 
