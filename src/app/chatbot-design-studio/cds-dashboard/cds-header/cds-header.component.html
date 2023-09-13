@@ -1,9 +1,14 @@
-<div class="header-left" [class.is_opened]="IS_OPEN_SIDEBAR">
+<div class="header-left" [class.is_opened]="IS_OPEN_SIDEBAR" (click)="goToBack()" style="cursor:pointer"
+matTooltip="Go back to dashboard" 
+matTooltipClass="custom-mat-tooltip"
+matTooltipHideDelay="100"
+matTooltipPosition='below'
+#tooltip="matTooltip" >
     <img *ngIf="!IS_OPEN_SIDEBAR" src="assets/img/logos/tiledesk_logo_white_small.svg">
     <img *ngIf="IS_OPEN_SIDEBAR" src="assets/img/logos/tiledesk-logo_new_white.svg">
 </div>
 <div class="header-right">
-    <div class="toggle-setting-sidebar-icon-wpr" [class.is_opened]="IS_OPEN_SIDEBAR"
+    <!-- <div class="toggle-setting-sidebar-icon-wpr" [class.is_opened]="IS_OPEN_SIDEBAR"
         (click)="onToggleSidebarWith(IS_OPEN_SIDEBAR = !IS_OPEN_SIDEBAR)">
         <span *ngIf="IS_OPEN_SIDEBAR" class="material-icons toggle-setting-sidebar-icon">
             chevron_left
@@ -11,7 +16,7 @@
         <span *ngIf="!IS_OPEN_SIDEBAR" class="material-icons toggle-setting-sidebar-icon">
             chevron_right
         </span>
-    </div>
+    </div> -->
     <!-- <i class="material-icons cds-btn-back" (click)="goBack()">keyboard_arrow_left</i> -->
     <div class="header-title">{{ selectedChatbot?.name }}</div>
     <div class="right-opts">
@@ -72,7 +77,7 @@
                 Try on WhatsApp
             </button>
         </div>
-        <div>
+        <div class="cds-test-it-out-btn-wpr" style="margin-right: 12px;">
             <button id="cds-test-it-out-btn" class="btn btn-primary pull-right cds-blue-button cds-test-it-out"
                 type="button" (click)="openTestSiteInPopupWindow()"
                 matTooltipClass="custom-mat-tooltip"
@@ -83,7 +88,7 @@
                 </span>
             </button>
         </div>
-        <div class="cds-close-btn-wpr">
+        <!-- <div class="cds-close-btn-wpr">
 
             <button class="btn pull-right cds-close-btn" (click)="goToBack()">
                 <span class="material-icons cds-close-btn-icon">
@@ -91,6 +96,6 @@
                 </span>
             </button>
 
-        </div>
+        </div> -->
     </div>
 </div>

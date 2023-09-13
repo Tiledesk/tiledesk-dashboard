@@ -57,6 +57,7 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
     // console.log("[PANEL-INTENT-HEADER] header OnChanges intentSelected: ", this.intentSelected)
     // this.logger.log("[PANEL-INTENT-HEADER] header OnChanges intentSelected intent_display_name: ", this.intentSelected.intent_display_name)
     // console.log("[PANEL-INTENT-HEADER] header OnChanges listOfIntents: ", this.listOfIntents)
+    
     const untitledIntents = this.listOfIntents.filter((el) => {
       return el.intent_display_name.indexOf('untitled_block') > -1;
     });

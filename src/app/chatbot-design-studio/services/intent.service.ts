@@ -24,7 +24,7 @@ import {
   Command, Wait, Message, Expression, Attributes, Action, ActionAskGPT, ActionWhatsappAttribute, ActionWhatsappStatic, ActionWebRequestV2 } from 'app/models/intent-model';
 import { FaqService } from 'app/services/faq.service';
 import { FaqKbService } from 'app/services/faq-kb.service';
-import { NEW_POSITION_ID, TYPE_ACTION, TYPE_COMMAND, removeNodesStartingWith } from 'app/chatbot-design-studio/utils';
+import { TYPE_INTENT_NAME, NEW_POSITION_ID, TYPE_ACTION, TYPE_COMMAND, removeNodesStartingWith } from 'app/chatbot-design-studio/utils';
 import { ConnectorService } from 'app/chatbot-design-studio/services/connector.service';
 
 
@@ -80,12 +80,23 @@ export class IntentService {
     this.changedConnector.next(connector);
   }
 
-  public setDefaultIntentSelected(intent){
-    this.selectedIntent = intent;
+  public setDefaultIntentSelected(){
+    if(this.listOfIntents && this.listOfIntents.length > 0){
+      let startIntent = this.listOfIntents.filter(obj => ( obj.intent_display_name.trim() === TYPE_INTENT_NAME.DISPLAY_NAME_START));
+      // console.log('setDefaultIntentSelected: ', startIntent, startIntent[0]);
+      if(startIntent && startIntent.length>0){
+        this.intentSelectedID = startIntent[0].intent_id;
+        this.selectedIntent = startIntent[0];
+      }
+    }
+    this.behaviorIntent.next(this.selectedIntent);
+    //this.liveActiveIntent.next(this.selectedIntent);
   }
 
   public setIntentSelected(intent){
     this.selectedIntent = intent;
+    this.behaviorIntent.next(this.selectedIntent);
+    //this.liveActiveIntent.next(this.selectedIntent);
   }
 
   public setLiveActiveIntent(intentName: string){

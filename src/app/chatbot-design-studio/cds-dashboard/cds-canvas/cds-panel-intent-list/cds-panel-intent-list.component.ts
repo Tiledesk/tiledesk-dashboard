@@ -9,7 +9,7 @@ import { LoggerService } from 'app/services/logger/logger.service';
 import { Intent } from 'app/models/intent-model';
 
 // UTILS //
-import { moveItemToPosition } from 'app/chatbot-design-studio/utils';
+import { moveItemToPosition, TYPE_INTENT_NAME } from 'app/chatbot-design-studio/utils';
 
 @Component({
   selector: 'cds-panel-intent-list',
@@ -37,12 +37,10 @@ export class CdsPanelIntentListComponent implements OnInit, OnChanges {
   idSelectedIntent: string;
 
 
-  TOPIC_INTERNAL = 'internal';
-  DISPLAY_NAME_START = "start";
-  DISPLAY_NAME_DEFAULT_FALLBACK = "defaultFallback";
   ICON_DEFAULT = 'label_important_outline';
   ICON_ROCKET = 'rocket_launch';
   ICON_UNDO = 'undo';
+
 
   constructor(
     private logger: LoggerService,
@@ -84,14 +82,14 @@ export class CdsPanelIntentListComponent implements OnInit, OnChanges {
 
   /** initialize */
   private initialize(intents){
-    this.internalIntents = intents.filter(obj => ( obj.intent_display_name.trim() === this.DISPLAY_NAME_START || obj.intent_display_name.trim() === this.DISPLAY_NAME_DEFAULT_FALLBACK));
-    this.defaultIntents = intents.filter(obj => ( obj.intent_display_name.trim() !== this.DISPLAY_NAME_START && obj.intent_display_name.trim() !== this.DISPLAY_NAME_DEFAULT_FALLBACK));
-    this.internalIntents = moveItemToPosition(this.internalIntents, this.DISPLAY_NAME_START, 0);
-    this.internalIntents = moveItemToPosition(this.internalIntents, this.DISPLAY_NAME_DEFAULT_FALLBACK, 1);
+    this.internalIntents = intents.filter(obj => ( obj.intent_display_name.trim() === TYPE_INTENT_NAME.DISPLAY_NAME_START || obj.intent_display_name.trim() === TYPE_INTENT_NAME.DISPLAY_NAME_DEFAULT_FALLBACK));
+    this.defaultIntents = intents.filter(obj => ( obj.intent_display_name.trim() !== TYPE_INTENT_NAME.DISPLAY_NAME_START && obj.intent_display_name.trim() !== TYPE_INTENT_NAME.DISPLAY_NAME_DEFAULT_FALLBACK));
+    this.internalIntents = moveItemToPosition(this.internalIntents, TYPE_INTENT_NAME.DISPLAY_NAME_START, 0);
+    this.internalIntents = moveItemToPosition(this.internalIntents, TYPE_INTENT_NAME.DISPLAY_NAME_DEFAULT_FALLBACK, 1);
     this.filteredIntents = this.defaultIntents;
-    if(!this.listOfIntents || this.listOfIntents.length == 0){
-      this.idSelectedIntent = this.internalIntents[0].intent_id;
-      this.intentService.setDefaultIntentSelected(this.internalIntents[0]);
+    if(!this.defaultIntents || this.defaultIntents.length == 0){
+      this.intentService.setDefaultIntentSelected();
+      this.idSelectedIntent = this.intentService.intentSelectedID;
     } 
     this.listOfIntents = intents;
     const resp = this.listOfIntents.find((intent) => intent.intent_id === this.idSelectedIntent);
@@ -106,9 +104,9 @@ export class CdsPanelIntentListComponent implements OnInit, OnChanges {
   /** onGetIconForName */
   onGetIconForName(name: string){
     let icon = this.ICON_DEFAULT;
-    if (name.trim() === this.DISPLAY_NAME_START) {
+    if (name.trim() === TYPE_INTENT_NAME.DISPLAY_NAME_START) {
       icon = this.ICON_ROCKET;
-    } else if (name.trim() === this.DISPLAY_NAME_DEFAULT_FALLBACK) {
+    } else if (name.trim() === TYPE_INTENT_NAME.DISPLAY_NAME_DEFAULT_FALLBACK) {
       icon = this.ICON_UNDO;
     }
     return icon;

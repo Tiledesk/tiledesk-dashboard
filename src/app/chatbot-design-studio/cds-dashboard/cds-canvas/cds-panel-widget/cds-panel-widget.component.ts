@@ -50,7 +50,12 @@ export class CdsPanelWidgetComponent implements OnInit {
 
   ngOnInit(): void {
     // this.initTiledesk();
+    if(!this.intentService.selectedIntent){
+      this.intentService.setDefaultIntentSelected();
+    }
     this.intentName = this.intentService.selectedIntent.intent_display_name;
+    // this.intentService.setLiveActiveIntent(this.intentName);
+    // console.log('****[cds-panel-widget] ngOnInit **** ',this.intentName, this.widgetIframe)
     this.projectID = this.dashboardService.projectID;
     this.id_faq_kb = this.dashboardService.id_faq_kb;
     this.defaultDepartmentId = this.dashboardService.defaultDepartmentId;
