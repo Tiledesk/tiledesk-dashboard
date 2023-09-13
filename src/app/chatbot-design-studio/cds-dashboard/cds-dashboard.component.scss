@@ -28,6 +28,12 @@ $mdb-font-family-poppins: 'Poppins', 'Roboto', Arial, sans-serif !default;
   font-size: 16px;
 }
 
+cds-rules,
+cds-chatbot-details,
+cds-fulfillment {
+    width: 100%;
+}
+
 .is_opened_sidebar {
   .cds-sidebar {
     width: 175px;

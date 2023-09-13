@@ -1,14 +1,11 @@
-
 import { Component, EventEmitter, HostListener, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { ActionAskGPT, Intent } from 'app/models/intent-model';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { variableList } from 'app/chatbot-design-studio/utils';
 import { MatDialog } from '@angular/material/dialog';
-import { AddkbDialogComponent } from './addkb-dialog/addkb-dialog.component';
-import { GptService } from 'app/chatbot-design-studio/services/gpt.service';
-import { DialogYesNoComponent } from 'app/chatbot-design-studio/cds-base-element/dialog-yes-no/dialog-yes-no.component';
 import { OpenaikbsService } from 'app/services/openaikbs.service';
 import { IntentService } from 'app/chatbot-design-studio/services/intent.service';
+import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
 
 
 @Component({
@@ -36,15 +33,14 @@ export class CdsActionAskgptComponent implements OnInit {
   connector: any;
 
   kbs_list = [];
-  kb_selected_id: string = '';
+  kb_selected_id: string = null;
   kb_selected_name: string = '';
-
   status_code: number;
   indexing_hint: string = null;
 
   question: string = "";
   kbid: string = "";
-  gptkey: string = "";
+  // gptkey: string = "";
   buttonDisabled: boolean = false;
   buttonIcon: string = "add"
   buttonText: string = "Add Knowledge Base";
@@ -56,8 +52,8 @@ export class CdsActionAskgptComponent implements OnInit {
   constructor(
     private logger: LoggerService,
     private openaikbService: OpenaikbsService,
+    private kbService: KnowledgeBaseService,
     public dialog: MatDialog,
-    private gptService: GptService,
     private intentService: IntentService
   ) { }
 
@@ -65,7 +61,6 @@ export class CdsActionAskgptComponent implements OnInit {
     this.logger.debug("[ACTION-ASKGPT] action detail: ", this.action);
     this.question = this.action.question;
     this.kbid = this.action.kbid;
-    this.gptkey = this.action.gptkey;
 
     this.intentService.isChangedConnector$.subscribe((connector: any) => {
       this.logger.debug('[ACTION-ASKGPT] isChangedConnector -->', connector);
@@ -73,7 +68,8 @@ export class CdsActionAskgptComponent implements OnInit {
       this.updateConnector();
     });
 
-    this.getAllOpenaiKbs();
+    // this.getAllOpenaiKbs();
+    this.getKnowledgeBaseSettings();
     this.initializeAttributes();
   }
 
@@ -126,22 +122,21 @@ export class CdsActionAskgptComponent implements OnInit {
     }
   }
 
-  getAllOpenaiKbs() {
-    this.openaikbService.getAllOpenaikbs().subscribe((kbs: any[]) => {
-      this.kbs_list = kbs.map(t => {
+  getKnowledgeBaseSettings() {
+    this.kbService.getKbSettings().subscribe((kbSettings: any) => {
+      this.logger.debug("[ACTION-ASKGPT] get kbSettings: ", kbSettings);
+      this.kbs_list = kbSettings.kbs.map(t => {
         t.icon = "language"
         return t;
       })
       if (this.action.kbid) {
-        this.kb_selected_id = this.kbs_list.find(k => k.url === this.action.kbid)._id;
-        this.kb_selected_name = this.kbs_list.find(k => k.url === this.action.kbid).name;
-        //this.checkKbStatus(this.action.kbid);
+        this.kb_selected_id = kbSettings.kbs.find(k => k.url === this.action.kbid)._id;
+        this.kb_selected_name = kbSettings.kbs.find(k => k.url === this.action.kbid).name;
       }
-      //this.checkLimit();
     }, (error) => {
-      this.logger.error("[ACTION ASKGPT] ERROR get openai kbs: ", error);
+      this.logger.error("[ACTION-ASKGPT] ERROR get kbSettings: ", error);
     }, () => {
-      this.logger.info("[ACTION ASKGPT] get openai kbs *COMPLETED*");
+      this.logger.info("[ACTION-ASKGPT] get kbSettings *COMPLETE*");
     })
   }
 
@@ -153,9 +148,6 @@ export class CdsActionAskgptComponent implements OnInit {
     if (!variableList.userDefined.some(v => v.name === 'gpt_source')) {
       new_attributes.push({ name: "gpt_source", value: "gpt_source" });
     }
-    if (!variableList.userDefined.some(v => v.name === 'gpt_success')) {
-      new_attributes.push({ name: "gpt_success", value: "gpt_success" });
-    }
     variableList.userDefined = [ ...variableList.userDefined, ...new_attributes];
     this.logger.debug("[ACTION ASKGPT] Initialized variableList.userDefined: ", variableList.userDefined);
   }
@@ -163,7 +155,7 @@ export class CdsActionAskgptComponent implements OnInit {
   changeTextarea($event: string, property: string) {
     this.logger.log("[ACTION-ASKGPT] onEditableDivTextChange event", $event)
     this.logger.log("[ACTION-ASKGPT] onEditableDivTextChange property", property)
-    this.action[property] = $event;
+    this.action[property] = $event
     this.updateAndSaveAction.emit();
   }
 
@@ -179,9 +171,9 @@ export class CdsActionAskgptComponent implements OnInit {
       // this.openAddKbDialog();  moved in knowledge base settings
     } else {
       this.action.kbid = event.url;
-      this.action.gptkey = event.gptkey;
       this.kb_selected_id = this.kbs_list.find(k => k.url === this.action.kbid)._id;
       this.kb_selected_name = this.kbs_list.find(k => k.url === this.action.kbid).name;
+      //this.checkKbStatus(this.action.kbid);
       console.log("[ACTION-ASKGPT] updated action", this.action, this.kb_selected_name);
       this.updateAndSaveAction.emit();
     }
@@ -223,11 +215,10 @@ export class CdsActionAskgptComponent implements OnInit {
     return value   
   }
 
-
   @HostListener('document:visibilitychange')
   visibilitychange() {
     if (!document.hidden) {
-      this.getAllOpenaiKbs();
+      this.getKnowledgeBaseSettings();
     }
   }
 
@@ -235,6 +226,26 @@ export class CdsActionAskgptComponent implements OnInit {
   // -----------------
   // TO CHECK / DELETE
   // -----------------
+
+
+  // getAllOpenaiKbs() {
+  //   this.openaikbService.getAllOpenaikbs().subscribe((kbs: any[]) => {
+  //     this.kbs_list = kbs.map(t => {
+  //       t.icon = "language"
+  //       return t;
+  //     })
+  //     if (this.action.kbid) {
+  //       this.kb_selected_id = this.kbs_list.find(k => k.url === this.action.kbid)._id;
+  //       this.kb_selected_name = this.kbs_list.find(k => k.url === this.action.kbid).name;
+  //       //this.checkKbStatus(this.action.kbid);
+  //     }
+  //     //this.checkLimit();
+  //   }, (error) => {
+  //     this.logger.error("[ACTION ASKGPT] ERROR get openai kbs: ", error);
+  //   }, () => {
+  //     this.logger.info("[ACTION ASKGPT] get openai kbs *COMPLETED*");
+  //   })
+  // }
 
   // openAddKbDialog() {
   //   const dialogRef = this.dialog.open(AddkbDialogComponent, {
