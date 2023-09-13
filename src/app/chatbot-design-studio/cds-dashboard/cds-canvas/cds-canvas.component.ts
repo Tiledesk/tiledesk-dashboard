@@ -621,7 +621,7 @@ export class CdsCanvasComponent implements OnInit {
     if (!this.hasClickedAddAction) {
       this.removeConnectorDraftAndCloseFloatMenu();
     }
-    this.intentSelected = this.listOfIntents.find(el => el.intent_id === this.intentService.intentSelectedID);
+    this.intentSelected = this.listOfIntents.find(el => el.intent_id === this.intentService.intentSelected.intent_id);
     this.controllerService.openActionDetailPanel(TYPE_INTENT_ELEMENT.ACTION, event.action);
   }
 
@@ -637,7 +637,7 @@ export class CdsCanvasComponent implements OnInit {
     if (!this.hasClickedAddAction) {
       this.removeConnectorDraftAndCloseFloatMenu();
     }
-    this.intentSelected = this.listOfIntents.find(el => el.intent_id === this.intentService.intentSelectedID);
+    this.intentSelected = this.listOfIntents.find(el => el.intent_id === this.intentService.intentSelected.intent_id);
     this.controllerService.openActionDetailPanel(TYPE_INTENT_ELEMENT.QUESTION, question);
   }
 
@@ -652,7 +652,7 @@ export class CdsCanvasComponent implements OnInit {
     if (!this.hasClickedAddAction) {
       this.removeConnectorDraftAndCloseFloatMenu();
     }
-    this.intentSelected = this.listOfIntents.find(el => el.intent_id === this.intentService.intentSelectedID);
+    this.intentSelected = this.listOfIntents.find(el => el.intent_id === this.intentService.intentSelected.intent_id);
     this.controllerService.openActionDetailPanel(TYPE_INTENT_ELEMENT.FORM, intentform);
   }
 

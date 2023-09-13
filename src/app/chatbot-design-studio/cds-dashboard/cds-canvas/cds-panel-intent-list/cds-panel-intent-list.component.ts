@@ -20,7 +20,8 @@ import { moveItemToPosition, TYPE_INTENT_NAME } from 'app/chatbot-design-studio/
 export class CdsPanelIntentListComponent implements OnInit, OnChanges {
 
   private subscriptionListOfIntents: Subscription;
-
+  private subscriptionIntent: Subscription;
+  
   
   @Input() IS_OPEN: boolean;
   @Input() intent_id: string;
@@ -63,6 +64,10 @@ export class CdsPanelIntentListComponent implements OnInit, OnChanges {
     if (this.subscriptionListOfIntents) {
       this.subscriptionListOfIntents.unsubscribe();
     }
+    if (this.subscriptionIntent) {
+      this.subscriptionIntent.unsubscribe();
+    }
+    
   }
 
 
@@ -78,6 +83,12 @@ export class CdsPanelIntentListComponent implements OnInit, OnChanges {
         this.initialize(intents);
       }
     });
+
+    /** SUBSCRIBE TO THE INTENT SELECTED */
+    this.subscriptionIntent = this.intentService.behaviorIntent.subscribe((intent: Intent) => {
+      console.log('[cds-panel-intent-list] --- AGGIORNATO INTENT ',intent);
+      if(intent)this.idSelectedIntent = intent.intent_id;
+    });
   }
 
   /** initialize */
@@ -89,7 +100,7 @@ export class CdsPanelIntentListComponent implements OnInit, OnChanges {
     this.filteredIntents = this.defaultIntents;
     if(!this.defaultIntents || this.defaultIntents.length == 0){
       this.intentService.setDefaultIntentSelected();
-      this.idSelectedIntent = this.intentService.intentSelectedID;
+      this.idSelectedIntent = this.intentService.intentSelected.intent_id;
     } 
     this.listOfIntents = intents;
     const resp = this.listOfIntents.find((intent) => intent.intent_id === this.idSelectedIntent);
