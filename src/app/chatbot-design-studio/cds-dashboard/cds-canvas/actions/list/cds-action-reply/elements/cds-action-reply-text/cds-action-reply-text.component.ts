@@ -110,9 +110,9 @@ export class CdsActionReplyTextComponent implements OnInit {
       const idButton = array[array.length - 1];
       const idConnector = this.idAction+'/'+idButton;
       console.log(' updateConnector [CdsActionReplyTextComponent]:: connector.fromId: ', this.connector.fromId);
-      console.log(' updateConnector [CdsActionReplyTextComponent]:: idConnector: ', idConnector);
-      console.log(' updateConnector [CdsActionReplyTextComponent]:: idButton: ', idButton);
-      console.log(' updateConnector [CdsActionReplyTextComponent]:: connector.id: ', this.connector.id);
+      // console.log(' updateConnector [CdsActionReplyTextComponent]:: idConnector: ', idConnector);
+      // console.log(' updateConnector [CdsActionReplyTextComponent]:: idButton: ', idButton);
+      // console.log(' updateConnector [CdsActionReplyTextComponent]:: connector.id: ', this.connector.id);
       const buttonChanged = this.buttons.find(obj => obj.uid === idButton);
       if(idConnector === this.connector.fromId && buttonChanged){
         if(this.connector.deleted){
