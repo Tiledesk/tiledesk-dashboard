@@ -77,11 +77,6 @@ import { PanelIntentHeaderComponent } from './cds-dashboard/cds-canvas/cds-inten
 // import { ElementFromUrlComponent } from './cds-dashboard/panel-intent-detail/actions/action-reply/elements/element-from-url/element-from-url.component';
 // import { QuestionComponent } from './cds-dashboard/panel-intent-detail/question/question.component';
 // import { AnswerComponent } from './cds-dashboard/panel-intent-detail/answer/answer.component';
-// import { FormComponent } from './cds-dashboard/panel-intent-detail/form/form.component';
-// import { FormFieldComponent } from './cds-dashboard/panel-intent-detail/form/form-field/form-field.component';
-// import { FormEditAddComponent } from './cds-dashboard/panel-intent-detail/form/form-edit-add/form-edit-add.component';
-// import { ModalWindowComponent } from './cds-dashboard/panel-intent-detail/form/modal-window/modal-window.component';
-
 // import { ElementTextareaComponent } from './cds-dashboard/panel-intent-detail/actions/action-reply/elements/element-textarea/element-textarea.component';
 
 
@@ -139,7 +134,7 @@ import { CdsPopupComponent } from './cds-dashboard/utils/cds-popup/cds-popup.com
 import { CdsModalActivateBotComponent } from './cds-dashboard/utils/cds-modal-activate-bot/cds-modal-activate-bot.component';
 import { CdsIntentComponent } from './cds-dashboard/cds-canvas/cds-intent/cds-intent.component';
 import { CdsPanelElementsComponent } from './cds-dashboard/cds-canvas/cds-panel-elements/cds-panel-elements.component';
-import { CdsPanelDetailComponent } from './cds-dashboard/cds-panel-detail/cds-panel-detail.component';
+// import { CdsPanelDetailComponent } from './cds-dashboard/cds-panel-detail/cds-panel-detail.component';
 import { CdsPanelActionsComponent } from './cds-dashboard/cds-canvas/cds-panel-elements/cds-panel-actions/cds-panel-actions.component';
 import { CdsPanelIntentListComponent } from './cds-dashboard/cds-canvas/cds-panel-intent-list/cds-panel-intent-list.component';
 
@@ -191,11 +186,16 @@ import { CdsActionDetailPanelComponent } from './cds-dashboard/cds-canvas/cds-pa
 import { CdsPanelWidgetComponent } from './cds-dashboard/cds-canvas/cds-panel-widget/cds-panel-widget.component';
 import { CdsPanelButtonConfigurationComponent } from './cds-dashboard/cds-canvas/cds-panel-button-configuration/cds-panel-button-configuration.component';
 
+//FORM
+import { CdsFormComponent } from './cds-dashboard/cds-canvas/actions/list/form/form.component';
+import { FormFieldComponent } from './cds-dashboard/cds-canvas/actions/list/form/form-field/form-field.component';
+import { FormEditAddComponent } from './cds-dashboard/cds-canvas/actions/list/form/form-edit-add/form-edit-add.component';
+import { ModalWindowComponent } from './cds-dashboard/cds-canvas/actions/list/form/modal-window/modal-window.component';
+
 
 import { CdsActionArrowComponent } from './cds-dashboard/cds-canvas/actions/shared/cds-action-controls/cds-action-arrow/cds-action-arrow.component';
 import { CdsActionControlsComponent } from './cds-dashboard/cds-canvas/actions/shared/cds-action-controls/cds-action-controls/cds-action-controls.component';
 import { CdsAddActionMenuComponent } from './cds-dashboard/cds-canvas/actions/shared/cds-add-action-menu/cds-add-action-menu.component';
-import { CdsFormComponent } from './cds-dashboard/cds-canvas/actions/list/form/form.component';
 import { CdsQuestionComponent } from './cds-dashboard/cds-canvas/actions/list/question/question.component';
 import { CdsAnswerComponent } from './cds-dashboard/cds-canvas/actions/list/answer/answer.component';
 import { AddkbDialogComponent } from './cds-dashboard/cds-canvas/actions/list/cds-action-askgpt/addkb-dialog/addkb-dialog.component';
@@ -255,6 +255,10 @@ import { AddkbDialogComponent } from './cds-dashboard/cds-canvas/actions/list/cd
         CdsAddActionMenuComponent,
         //LIST
         CdsFormComponent,
+          //FORM components
+          FormFieldComponent,
+          FormEditAddComponent,
+          ModalWindowComponent,
         CdsQuestionComponent,
         CdsAnswerComponent,
         CdsActionDescriptionComponent,
