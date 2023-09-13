@@ -20,6 +20,9 @@
         <div class="card-content" *ngIf="!showSpinner" style="padding-top: 10px;">
 
           <div class="add-kb-div">
+            <button class="btn btn-primary" (click)="openSecretsModal()">
+              {{ 'KbPage.Secrets' | translate }}
+            </button>
             <button class="btn btn-primary" (click)="openAddKnowledgeBaseModal()" [disabled]="addButtonDisabled">
               {{ 'KbPage.AddKb' | translate }}
             </button>
@@ -63,16 +66,19 @@
 
 
             <tbody class="custom-body">
-              <tr *ngIf="kbsList && kbsList.length === 0">
+              <!-- <tr *ngIf="kbsList && kbsList.length === 0"> -->
+              <tr *ngIf="kbSettings.kbs && kbSettings.kbs.length === 0">
+
                 <td colspan="4" style="text-align: center; padding-top: 24px;">
                   <p style="font-size:1em; margin-bottom: 0px; color:#7695a5; font-weight: 400">
-                    <i class="material-icons" style="vertical-align: middle; margin-bottom: 2px;color: #00bcd4;">info</i>
+                    <i class="material-icons"
+                      style="vertical-align: middle; margin-bottom: 2px;color: #00bcd4;">info</i>
                     {{ 'KbPage.NoKbAdded' | translate }}
                   </p>
                 </td>
               </tr>
 
-              <tr *ngFor="let kb of kbsList; let i = index">
+              <tr *ngFor="let kb of kbSettings.kbs; let i = index">
 
                 <!-- Knowledge Base name -->
                 <td>
@@ -86,7 +92,8 @@
 
                 <!-- Knowledge Base status -->
                 <td>
-                  <loading-spinner *ngIf="kb.status != 0 && kb.status != 1 && kb.status != 2" class="custom-spinner"></loading-spinner>
+                  <loading-spinner *ngIf="kb.status != 0 && kb.status != 1 && kb.status != 2"
+                    class="custom-spinner"></loading-spinner>
 
                   <span *ngIf="kb.status == 2" id="done" class="material-icons-outlined status-icon"
                     matTooltipClass="custom-mat-tooltip" matTooltip="Indexed" #tooltip="matTooltip"
@@ -141,7 +148,7 @@
 
           <div class="counter-box">
             <p>
-              {{ 'KbPage.KbCounterFooter' | translate: { counter: kbsList?.length } }}
+              {{ 'KbPage.KbCounterFooter' | translate: { counter: kbSettings?.kbs?.length } }}
             </p>
           </div>
 
@@ -189,12 +196,12 @@
                 [class.invalid]="(kbForm.controls.url.errors?.pattern || kbForm.controls.url.errors?.required) && kbForm.controls.url.touched">
             </div>
 
-            <div class="input-container">
+            <!-- <div class="input-container">
               <span class="input-label">GPT Key</span>
               <input type="text" name="gptkey" class="custom-input" [(ngModel)]="newKb.gptkey" formControlName="gptkey"
                 placeholder="{{ 'KbPage.TypeKbKeyPlaceholder' | translate }}" (input)="onChangeInput($event)"
                 [class.invalid]="kbForm.controls.gptkey.errors?.required && kbForm.controls.gptkey.touched">
-            </div>
+            </div> -->
 
           </form>
         </div>
@@ -240,7 +247,8 @@
         </div>
 
         <div class="form-container">
-          <p>{{ 'KbPage.SureToDelete' | translate: { name: kbid_selected?.name } }}</p>
+          <p [innerHTML]="'KbPage.SureToDelete' | translate: { name: kbid_selected?.name }"></p>
+          <!-- <p>{{ 'KbPage.SureToDelete' | translate: { name: kbid_selected?.name } }}</p> -->
         </div>
 
       </div>
@@ -277,17 +285,21 @@
 
       <div class="modal-body">
 
-        <div class="kb-container">
-          <span class="material-icons-round">school</span>
-          <p>{{ kbid_selected?.url }}</p>
+        <div class="form-container">
+          <div class="kb-container">
+            <span class="material-icons-round">school</span>
+            <p>{{ kbid_selected?.url }}</p>
+          </div>
         </div>
 
         <div class="form-container">
           <div class="fake-input">
             <div class="fake-input-inner">
-              <input type="text" placeholder="{{ 'KbPage.AskQuestionPlaceholder' | translate }}" [(ngModel)]="question" (input)="onInputPreviewChange()"
-                (keyup.enter)="submitQuestion()">
-              <div id="enter-button" class="enter-button" (click)="submitQuestion()">{{ 'KbPage.Enter' | translate }}</div>
+              <input type="text" placeholder="{{ 'KbPage.AskQuestionPlaceholder' | translate }}" [(ngModel)]="question"
+                (input)="onInputPreviewChange()" (keyup.enter)="submitQuestion()">
+              <!-- // non scommentare fin quando non viene sistemata la grafica del bottone Enter -->
+              <!-- <div id="enter-button" class="enter-button" (click)="submitQuestion()">{{ 'KbPage.Enter' | translate }}</div> -->
+              <div id="enter-button" class="enter-button" (click)="submitQuestion()">Enter</div>
             </div>
           </div>
         </div>
@@ -314,6 +326,64 @@
         </div>
 
       </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{display: secretsModal}"
+  style="background-color: rgba(90,90,90,0.5);">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="closeSecretsModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+
+        <h4 class="modal-title">
+          <span style="vertical-align: middle;">
+            {{ 'KbPage.Secrets' | translate }}
+          </span>
+        </h4>
+      </div>
+
+      <div class="modal-body">
+
+        <div class="info-container">
+          <i class="material-icons-outlined info-icon">help_outline</i>
+          <div class="info-text">
+            <p>{{ 'KbPage.GptKeyInfo' | translate }}</p>
+          </div>
+        </div>
+
+        <div class="form-container">
+          <span class="input-label">GPT Key</span>
+          <div class="fake-input">
+            <div class="fake-input-inner">
+              <input id="gptkey-key" class="input-bold" type="text"
+                placeholder="{{ 'KbPage.TypeKbKeyPlaceholder' | translate }}" [(ngModel)]="kbSettings.gptkey">
+              <div class="show-hide-button" (click)="showHideSecret('gptkey-key')">
+                <span *ngIf="gptkeyVisible" class="material-icons-outlined">visibility_off</span>
+                <span *ngIf="!gptkeyVisible" class="material-icons-outlined">visibility</span>
+                <!-- <span *ngIf="!key_visible" class="material-icons-outlined">visibility</span> -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-white" style="padding:12px 16px;" (click)="closeSecretsModal()">
+          {{ "Cancel" | translate }}
+        </button>
+        <button id="addkb-btn" class="btn btn-primary" (click)="saveKnowledgeBaseSettings()">
+          {{ 'Save' | translate }}
+        </button>
+      </div>
+
 
     </div>
   </div>

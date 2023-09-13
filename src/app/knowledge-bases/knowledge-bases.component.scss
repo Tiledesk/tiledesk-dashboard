@@ -260,6 +260,10 @@ td {
         border: transparent;
     }
 
+    .input-bold {
+        font-weight: 400;
+    }
+
     .enter-button {
         display: none;
         transition: background-color 0.15s ease 0s, color 0.15s ease 0s;
@@ -365,4 +369,25 @@ table {
     padding-top: 8px !important;
     padding-bottom: 8px !important;
     border: 1px solid #e5effe !important;
+}
+
+.show-hide-button {
+    cursor: pointer;
+    display: flex;
+
+    .material-icons-outlined {
+        font-size: 20px;
+        color: grey;
+    }
+
+    &:hover {
+        .material-icons-outlined {
+            font-size: 20px;
+            color: black;
+        }
+    }
+}
+
+.bold {
+    font-weight: 500;
 }
