@@ -74,7 +74,7 @@ export class BaseConditionRowComponent implements OnInit {
 
 /** START EVENTS cds-textarea **/
   onChangeTextArea(text: string){
-    this.logger.log('textttt', text, text.match(new RegExp(/(?<=\$\{)(.*)(?=\})/g)));
+    this.logger.log('textttt', text, text.match(new RegExp(/(?<=\{\{)(.*)(?=\}\})/g)));
     if(text){
       this.disableSubmit = false;
       this.setAttributeBtnOperand2 = false;
@@ -83,7 +83,7 @@ export class BaseConditionRowComponent implements OnInit {
       this.setAttributeBtnOperand2 = true;
     }
     if(text && text.match(new RegExp(/(?<=\$\{)(.*)(?=\})/g))){
-      text.match(new RegExp(/(?<=\$\{)(.*)(?=\})/g)).forEach(match => {
+      text.match(new RegExp(/(?<=\{\{)(.*)(?=\}\})/g)).forEach(match => {
         text = text.replace(text,match)
         this.conditionForm.patchValue({ operand2: {type: 'const', name: text}}, {emitEvent: false})
       });
