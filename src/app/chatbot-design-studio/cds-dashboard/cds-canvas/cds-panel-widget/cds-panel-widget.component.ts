@@ -66,14 +66,13 @@ export class CdsPanelWidgetComponent implements OnInit {
   setIframeUrl(){
     this.TESTSITE_BASE_URL = this.appConfigService.getConfig().testsiteBaseUrl;
     const testItOutBaseUrl = this.TESTSITE_BASE_URL.substring(0, this.TESTSITE_BASE_URL.lastIndexOf('/'));
-    // const testItOutUrl = testItOutBaseUrl + '/chatbot-panel.html'
-    const testItOutUrl = 'http://localhost:4203/assets/twp'+ '/chatbot-panel.html'
+    const testItOutUrl = testItOutBaseUrl + '/chatbot-panel.html'
+    // const testItOutUrl = 'http://localhost:4203/assets/twp'+ '/chatbot-panel.html'
     let url = testItOutUrl + '?tiledesk_projectid=' + this.projectID + 
-    // const url = testItOutUrl + '?tiledesk_projectid=' + this.projectID + 
-                                '&tiledesk_participants=bot_' + this.id_faq_kb + 
-                                "&tiledesk_departmentID=" + this.defaultDepartmentId + 
-                                "&tiledesk_hideHeaderCloseButton=true" +
-                                '&tiledesk_fullscreenMode=true&td_draft=true'
+                              '&tiledesk_participants=bot_' + this.id_faq_kb + 
+                              "&tiledesk_departmentID=" + this.defaultDepartmentId + 
+                              "&tiledesk_hideHeaderCloseButton=true" +
+                              '&tiledesk_fullscreenMode=true&td_draft=true'
     if(this.intentName && this.intentName !== '') 
       url += '&tiledesk_hiddenMessage=' + this.intentName
                           
