@@ -53,7 +53,9 @@ export class IntentService {
   botAttributes: any = {};
   listOfPositions: any = {};
 
-  setTimeoutChangeEvent: any
+  setTimeoutChangeEvent: any;
+  idIntentUpdating: string;
+
 
   // newPosition: any = {'x':0, 'y':0};
   
@@ -353,7 +355,7 @@ export class IntentService {
 
   /** updateIntent */
   public async updateIntent(originalIntent: Intent, timeout?: number): Promise<boolean> { 
-    if(!timeout)timeout = 2000;
+    if(!timeout)timeout = 0;
     let intent = JSON.parse(JSON.stringify(originalIntent));
     intent = removeNodesStartingWith(intent, '__');
 
@@ -370,28 +372,32 @@ export class IntentService {
       let actionsIntent = intent.actions?intent.actions:[];
       let webhookEnabledIntent = intent.webhook_enabled?intent.webhook_enabled:false;
 
-      clearTimeout(this.setTimeoutChangeEvent);
-        this.setTimeoutChangeEvent = setTimeout(() => {
-          this.faqService.updateIntent(
-            id,
-            attributes,
-            questionIntent,
-            answerIntent,
-            displayNameIntent,
-            formIntent,
-            actionsIntent,
-            webhookEnabledIntent
-          ).subscribe((intent: Intent) => {
-            console.log('EDIT ', intent.id);
-            resolve(true);
-          }, (error) => {
-            console.error('ERROR: ', error);
-            reject(false);
-          }, () => {
-            // console.log('COMPLETE ');
-            resolve(true);
-          });
-        }, timeout);
+      if(this.idIntentUpdating == intent.intent_id){
+        clearTimeout(this.setTimeoutChangeEvent);
+      } else {
+        this.idIntentUpdating = intent.intent_id;
+      }
+      this.setTimeoutChangeEvent = setTimeout(() => {
+        this.faqService.updateIntent(
+          id,
+          attributes,
+          questionIntent,
+          answerIntent,
+          displayNameIntent,
+          formIntent,
+          actionsIntent,
+          webhookEnabledIntent
+        ).subscribe((intent: Intent) => {
+          console.log('>>>>>>>> UPDATED ', intent.id);
+          resolve(true);
+        }, (error) => {
+          console.error('ERROR: ', error);
+          reject(false);
+        }, () => {
+          // console.log('COMPLETE ');
+          resolve(true);
+        });
+      }, timeout);
     });
   }
 
@@ -458,31 +464,38 @@ export class IntentService {
     this.connectorService.movedConnector(currentIntent.intent_id);
     this.connectorService.movedConnector(previousIntent.intent_id);
     this.connectorService.deleteConnectorsFromActionByActionId(action._tdActionId);
-    setTimeout(async () => {
-      const responseCurrentIntent = await this.updateIntent(currentIntent);
+
+
+      const responseCurrentIntent = this.updateIntent(currentIntent);
       if(responseCurrentIntent){
-        // update the intent connectors
         // this.connectorService.movedConnector(currentIntent.intent_id);
-        // console.log('update current Intent: OK');
+        console.log('update current Intent: OK');
         // this.behaviorIntent.next(currentIntent);
       }
-      if( previousIntent.actions.length>0){
-        const responsePreviousIntent = await this.updateIntent(previousIntent);
-        if(responsePreviousIntent){
-          // update the intent connectors
-          // this.connectorService.movedConnector(previousIntent.intent_id);
-          // console.log('update previous Intent: OK');
-          // this.behaviorIntent.next(previousIntent);
-        }
-      } else {
-        const responsePreviousIntent = await this.deleteIntent(previousIntent.id);
-        if(responsePreviousIntent){
-          console.log('delete previous Intent: OK');
-          // this.refreshIntents();
-        }
+
+      const responsePreviousIntent = this.updateIntent(previousIntent);
+      if(responsePreviousIntent){
+        console.log('update previous Intent: OK');
       }
+
+
+
+      // if( previousIntent.actions.length>0){
+      //   const responsePreviousIntent = await this.updateIntent(previousIntent);
+      //   if(responsePreviousIntent){
+      //     // update the intent connectors
+      //     // this.connectorService.movedConnector(previousIntent.intent_id);
+      //     // console.log('update previous Intent: OK');
+      //     // this.behaviorIntent.next(previousIntent);
+      //   }
+      // } else {
+      //   const responsePreviousIntent = await this.deleteIntent(previousIntent.id);
+      //   if(responsePreviousIntent){
+      //     console.log('delete previous Intent: OK');
+      //     // this.refreshIntents();
+      //   }
+      // }
       
-    }, 0);
   }
 
   
@@ -491,7 +504,6 @@ export class IntentService {
   // cancello la action dall'intent che la conteneva precedentemente
   public deleteActionFromPreviousIntentOnMovedAction(event, action){
     const actionId = action._tdActionId;
-   
     let intentToUpdate = this.listOfIntents.find((intent) => intent.intent_id === this.previousIntentId);
     if(intentToUpdate){
       const actions = intentToUpdate.actions.filter((action: any) => action._tdActionId !== actionId);
@@ -499,7 +511,7 @@ export class IntentService {
       console.log("[CDS-INTENT] ho eliminato la action dall'intent che la conteneva ",actionId, intentToUpdate);
       this.connectorService.deleteConnectorsFromActionByActionId(actionId);
       console.log('[CDS-INTENT] aggiorno intent di partenza', intentToUpdate);
-      const responseIntent = this.updateIntent(intentToUpdate,0);
+      const responseIntent = this.updateIntent(intentToUpdate);
       if(responseIntent){
         console.log('[CDS-INTENT] update Intent: OK');
         this.behaviorIntent.next(intentToUpdate);
@@ -726,7 +738,6 @@ export class IntentService {
   // }
 
   patchAttributes(intentID: string, attributes: any) {
-    
     clearTimeout(this.setTimeoutChangeEvent);
     this.setTimeoutChangeEvent = setTimeout(() => {
       console.log('[INTENT SERVICE] -> patchAttributes, ', intentID, attributes);

@@ -1,6 +1,7 @@
 <div *ngIf="initFinished">
 
-    <cds-header class="cds-header" 
+    <cds-header 
+        class="cds-header" 
         [IS_OPEN_SIDEBAR]="IS_OPEN_SIDEBAR" 
         [selectedChatbot]="selectedChatbot"
         (goToBck)="goBack()"
@@ -8,9 +9,12 @@
         (toggleSidebarWith)="onToggleSidebarWith($event)">
     </cds-header>
 
-    <div id="chatbot--dashboard" class="chatboat-dashboard" [class.is_opened_sidebar]="IS_OPEN_SIDEBAR">
+    <div id="chatbot--dashboard" 
+        class="chatboat-dashboard" 
+        [class.is_opened_sidebar]="IS_OPEN_SIDEBAR">
        
-        <cds-sidebar class="cds-sidebar" 
+        <cds-sidebar 
+            class="cds-sidebar" 
             [IS_OPEN_SIDEBAR]="IS_OPEN_SIDEBAR" 
             (onClickItemList)="onClickItemList($event)" 
             (goToBck)="goBack()">
@@ -41,12 +45,7 @@
         
     </div>
 
-
-
-    <cds-modal-activate-bot 
-        [selectedChatbot]="selectedChatbot">
-    </cds-modal-activate-bot>
-
+    <cds-modal-activate-bot [selectedChatbot]="selectedChatbot"></cds-modal-activate-bot>
     <cds-popup></cds-popup>
 
 </div>

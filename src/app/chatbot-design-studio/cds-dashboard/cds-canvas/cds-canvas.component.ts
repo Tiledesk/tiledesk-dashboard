@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild, ElementRef, HostListener, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, HostListener, Output, EventEmitter } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { TranslateService } from '@ngx-translate/core';
@@ -33,39 +33,36 @@ export class CdsCanvasComponent implements OnInit {
 
   id_faq_kb: string;
   TYPE_OF_MENU = TYPE_OF_MENU;
-  private subscriptionListOfIntents: Subscription;
 
+  private subscriptionListOfIntents: Subscription;
   listOfIntents: Array<Intent> = [];
-  
   intentSelected: Intent;
   intent_id: string;
   hasClickedAddAction: boolean = false;
   hideActionPlaceholderOfActionPanel: boolean;
 
-
-  // panel list of intent
+  /** panel list of intent */ 
   IS_OPEN_INTENTS_LIST: boolean = true;
 
-  // panel add action menu
+  /** panel add action menu */
   private subscriptionOpenAddActionMenu: Subscription;
   IS_OPEN_ADD_ACTIONS_MENU: boolean = false;
   positionFloatMenu: any = { 'x': 0, 'y': 0 };
   tdsContainerEleHeight: number = 0;
 
-  // panel action detail
+  /** panel action detail */
   private subscriptionOpenDetailPanel: Subscription;
   IS_OPEN_PANEL_ACTION_DETAIL: boolean = false;
   elementIntentSelected: any;
   
-  // panel reply button configuaration
+  /** panel reply button configuaration */
   private subscriptionOpenButtonPanel: Subscription;
   IS_OPEN_PANEL_BUTTON_CONFIG: boolean = false;
   buttonSelected: any;
 
-  // panel widget
+  /** panel widget */
   IS_OPEN_PANEL_WIDGET: boolean = false;
   
-
   constructor(
     private intentService: IntentService,
     private stageService: StageService,
@@ -82,6 +79,7 @@ export class CdsCanvasComponent implements OnInit {
     this.initialize();
   }
 
+  /** */
   ngOnDestroy() {
     if (this.subscriptionListOfIntents) {
       this.subscriptionListOfIntents.unsubscribe();
@@ -97,6 +95,7 @@ export class CdsCanvasComponent implements OnInit {
     }
   }
 
+  /** */
   ngAfterViewInit() {
     console.log("[CDS-CANVAS]  •••• ngAfterViewInit ••••");
     this.stageService.initializeStage();
@@ -212,8 +211,8 @@ export class CdsCanvasComponent implements OnInit {
     */
     document.addEventListener(
       "moved-and-scaled", (e: CustomEvent) => {
-        const el = e.detail.element;
-        console.log('[CDS-CANVAS] moved-and-scaled ', el)
+        const el = e.detail;
+        // console.log('[CDS-CANVAS] moved-and-scaled ', el)
         this.connectorService.tiledeskConnectors.scale = e.detail.scale;
         this.removeConnectorDraftAndCloseFloatMenu();
       },
@@ -241,7 +240,7 @@ export class CdsCanvasComponent implements OnInit {
     document.addEventListener(
       "dragged", (e: CustomEvent) => {
         const el = e.detail.element;
-        console.log('[CDS-CANVAS] dragged ', el);
+        // console.log('[CDS-CANVAS] dragged ', el);
         const x = e.detail.x;
         const y = e.detail.y;
         this.connectorService.moved(el, x, y);
@@ -437,9 +436,13 @@ export class CdsCanvasComponent implements OnInit {
     this.stageService.centerStageOnPosition(stageElement);
   }
 
-  /**  updateIntent */
-  private async updateIntent() {
-    const response = await this.intentService.updateIntent(this.intentSelected);
+  /**  updateIntent 
+   * chiamata da cds-panel-action-detail
+   * quando modifico un intent da pannello ex: cambio il testo, aggiungo un bottone ecc.
+  */
+  private async updateIntent(time?) {
+    if(!time)time = 0;
+    const response = await this.intentService.updateIntent(this.intentSelected, time);
     if (response) {
       console.log('[CDS-CANVAS] OK: intent aggiornato con successo sul server', this.intentSelected);
     } else {
@@ -705,7 +708,7 @@ export class CdsCanvasComponent implements OnInit {
     console.log('onSaveButton: ', idConnector, this.listOfIntents);
     if (idConnector) {
       this.intentSelected = this.listOfIntents.find(obj => obj.intent_id === idConnector);
-      this.updateIntent();
+      this.updateIntent(2000);
     }
   }
   // --------------------------------------------------------- //
@@ -719,8 +722,8 @@ export class CdsCanvasComponent implements OnInit {
     console.log('[CDS-CANVAS] onSavePanelIntentDetail intentSelected ', intentSelected)
     if (intentSelected && intentSelected != null) {
       this.intentSelected = intentSelected;
-      this.intentService.refreshIntent(this.intentSelected); 
-      this.updateIntent();
+      // this.intentService.refreshIntent(this.intentSelected);
+      this.updateIntent(2000);
     } else {
       // this.onOpenDialog();
     }
@@ -750,10 +753,10 @@ export class CdsCanvasComponent implements OnInit {
       }
     } else if (this.hasClickedAddAction) {
       console.log("[CDS-CANVAS] ho premuto + quindi creo una nuova action e la aggiungo all'intent");
+      this.updateIntent(0);
       const newAction = this.intentService.createNewAction(event.type);
       this.intentSelected.actions.push(newAction);
       this.intentService.refreshIntent(this.intentSelected);
-      this.updateIntent();
     }
     this.removeConnectorDraftAndCloseFloatMenu();
   }
