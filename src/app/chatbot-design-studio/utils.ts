@@ -3,6 +3,12 @@ import { ActionAssignVariable, Intent } from "app/models/intent-model";
 import { v4 as uuidv4 } from 'uuid';
 
 
+export enum TYPE_INTENT_NAME {
+    TOPIC_INTERNAL = 'internal',
+    DISPLAY_NAME_START = "start",
+    DISPLAY_NAME_DEFAULT_FALLBACK = "defaultFallback",
+}
+
 export enum SIDEBAR_PAGES {
     INTENTS = 'cds-sb-intents',
     SETTINGS = 'cds-sb-settings',

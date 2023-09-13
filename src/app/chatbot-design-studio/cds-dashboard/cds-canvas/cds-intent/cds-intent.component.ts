@@ -618,7 +618,7 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
 
 
   openTestSiteInPopupWindow() {
-
+    this.intentService.setIntentSelected(this.intent);
     this.testItOut.emit(this.intent)
   }
 
