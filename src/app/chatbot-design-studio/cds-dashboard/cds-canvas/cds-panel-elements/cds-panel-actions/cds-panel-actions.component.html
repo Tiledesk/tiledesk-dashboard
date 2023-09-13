@@ -44,7 +44,10 @@
 
 
     <div *ngIf="menuType === TYPE_OF_MENU.EVENT" class="coming-soon">
-        {{menuItemsList[0].text}}
+        <div class="actions-btns-wpr">
+            <span class="material-icons action-btn-icon">lightbulb</span>
+            <span class="action-btn-text">{{menuItemsList[0].text}}</span>
+        </div>
     </div>
    
 </div>
