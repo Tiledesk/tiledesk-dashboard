@@ -463,9 +463,30 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
     console.log('[CDS-INTENT] onDragStarted addActionPlaceholderEl ', addActionPlaceholderEl)
 
 
+    // const myObserver = new ResizeObserver(entries => {
+    //   // this will get called whenever div dimension changes
+    //   if(!actionDragPlaceholder || !addActionPlaceholderEl)return;
+    //   entries.forEach(entry => {
+    //     this.actionDragPlaceholderWidth = entry.contentRect.width
+    //     console.log('[CDS-INTENT] width actionDragPlaceholderWidth', this.actionDragPlaceholderWidth);
+    //     if (this.actionDragPlaceholderWidth === 258) {
+    //       this.hideActionDragPlaceholder = false;
+    //       console.log('[CDS-INTENT] Hide action drag placeholder', this.hideActionDragPlaceholder);
+    //       actionDragPlaceholder.style.opacity = '1';
+    //       addActionPlaceholderEl.style.opacity = '0';
+    //       console.log('[CDS-INTENT] HERE 1 !!!! ');
+    //     } else {
+    //       this.hideActionDragPlaceholder = true;
+    //       console.log('[CDS-INTENT] Hide action drag placeholder', this.hideActionDragPlaceholder);
+    //       actionDragPlaceholder.style.opacity = '0';
+    //       addActionPlaceholderEl.style.opacity = '1';
+    //       console.log('[CDS-INTENT] HERE 2 !!!! ');
+    //     }
+    //     //  console.log('height', entry.contentRect.height);
+    //   });
+    // });
     const myObserver = new ResizeObserver(entries => {
       // this will get called whenever div dimension changes
-      if(!actionDragPlaceholder || !addActionPlaceholderEl)return;
       entries.forEach(entry => {
         this.actionDragPlaceholderWidth = entry.contentRect.width
         console.log('[CDS-INTENT] width actionDragPlaceholderWidth', this.actionDragPlaceholderWidth);
@@ -475,6 +496,7 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
           actionDragPlaceholder.style.opacity = '1';
           addActionPlaceholderEl.style.opacity = '0';
           console.log('[CDS-INTENT] HERE 1 !!!! ');
+
         } else {
           this.hideActionDragPlaceholder = true;
           console.log('[CDS-INTENT] Hide action drag placeholder', this.hideActionDragPlaceholder);
