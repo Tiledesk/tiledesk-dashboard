@@ -74,8 +74,8 @@ export class CdsPanelWidgetComponent implements OnInit {
                                 "&tiledesk_departmentID=" + this.defaultDepartmentId + 
                                 "&tiledesk_hideHeaderCloseButton=true" +
                                 '&tiledesk_fullscreenMode=true&td_draft=true'
-                                if(this.intentName && this.intentName !== '') 
-                                url += '&tiledesk_hiddenMessage=' + this.intentName
+    if(this.intentName && this.intentName !== '') 
+      url += '&tiledesk_hiddenMessage=' + this.intentName
                           
     this.widgetTestSiteUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url)
     let params = `toolbar=no,menubar=no,width=815,height=727,left=100,top=100`;
