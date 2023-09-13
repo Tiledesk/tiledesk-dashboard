@@ -40,12 +40,13 @@ export class IntentService {
   liveActiveIntent = new BehaviorSubject<Intent>(null);
 
   listOfIntents: Array<Intent> = [];
-  selectedIntent: Intent;
+  // selectedIntent: Intent;
+  intentSelected: Intent;
   listActions: Array<Action>;
   selectedAction: Action;
 
   actionSelectedID: string;
-  intentSelectedID: string;
+  // intentSelectedID: string;
 
   previousIntentId: string = '';
   preDisplayName: string = 'untitled_block_';
@@ -85,17 +86,16 @@ export class IntentService {
       let startIntent = this.listOfIntents.filter(obj => ( obj.intent_display_name.trim() === TYPE_INTENT_NAME.DISPLAY_NAME_START));
       // console.log('setDefaultIntentSelected: ', startIntent, startIntent[0]);
       if(startIntent && startIntent.length>0){
-        this.intentSelectedID = startIntent[0].intent_id;
-        this.selectedIntent = startIntent[0];
+        this.intentSelected = startIntent[0];
       }
     }
-    this.behaviorIntent.next(this.selectedIntent);
-    //this.liveActiveIntent.next(this.selectedIntent);
+    this.behaviorIntent.next(this.intentSelected);
+    //this.liveActiveIntent.next(this.intentSelected);
   }
 
   public setIntentSelected(intent){
-    this.selectedIntent = intent;
-    this.behaviorIntent.next(this.selectedIntent);
+    this.intentSelected = intent;
+    this.behaviorIntent.next(this.intentSelected);
     //this.liveActiveIntent.next(this.selectedIntent);
   }
 
@@ -584,22 +584,22 @@ export class IntentService {
   /** selectAction */
   public selectAction(intentID, actionId){
     this.actionSelectedID = actionId;
-    this.intentSelectedID = intentID;
+    // this.intentSelectedID = intentID;
 
-    this.selectedIntent = this.listOfIntents.find(intent => intent.intent_id === intentID);
+    this.intentSelected = this.listOfIntents.find(intent => intent.intent_id === intentID);
 
-    this.listActions = this.selectedIntent.actions;
+    this.listActions = this.intentSelected.actions;
     this.selectedAction = this.listActions.find(action => action._tdActionId === actionId);
   }
 
   public selectIntent(intentID){
-    this.intentSelectedID = intentID;
+    // this.intentSelectedID = intentID;
     this.actionSelectedID = null;
-    this.selectedIntent = this.listOfIntents.find(intent => intent.intent_id === intentID);
+    this.intentSelected = this.listOfIntents.find(intent => intent.intent_id === intentID);
     console.log('[INTENT SERVICE] --> intentID', intentID)
-    console.log('[INTENT SERVICE] --> selectIntent', this.selectedIntent)
-    if(!this.selectedIntent)return;
-    this.listActions = this.selectedIntent.actions?this.selectedIntent.actions:null;
+    console.log('[INTENT SERVICE] --> selectIntent', this.intentSelected)
+    if(!this.intentSelected)return;
+    this.listActions = this.intentSelected.actions?this.intentSelected.actions:null;
     this.selectedAction = null;
     // this.behaviorIntent.next(this.selectedIntent)
   }
@@ -608,19 +608,19 @@ export class IntentService {
   /** unselectAction */
   public unselectAction(){
     this.actionSelectedID = null;
-    this.intentSelectedID = null;
+    // this.intentSelectedID = null;
   }
 
   /** deleteSelectedAction 
   */
   public deleteSelectedAction(){
-    console.log('deleteSelectedAction', this.intentSelectedID, this.actionSelectedID);
-    if(this.intentSelectedID && this.actionSelectedID){
+    console.log('deleteSelectedAction', this.intentSelected.intent_id, this.actionSelectedID);
+    if(this.intentSelected.intent_id && this.actionSelectedID){
       this.connectorService.deleteConnectorsFromActionByActionId(this.actionSelectedID);
-      let intentToUpdate = this.listOfIntents.find((intent) => intent.intent_id === this.intentSelectedID);
+      let intentToUpdate = this.listOfIntents.find((intent) => intent.intent_id === this.intentSelected.intent_id);
       intentToUpdate.actions = intentToUpdate.actions.filter((action: any) => action._tdActionId !== this.actionSelectedID);
       this.listOfIntents = this.listOfIntents.map((intent) => {
-        if (intent.intent_id === this.intentSelectedID) {
+        if (intent.intent_id === this.intentSelected.intent_id) {
           return intentToUpdate;
         }
         return intent;
