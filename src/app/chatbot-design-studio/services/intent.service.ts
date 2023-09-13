@@ -89,12 +89,14 @@ export class IntentService {
         this.selectedIntent = startIntent[0];
       }
     }
-    this.liveActiveIntent.next(this.selectedIntent);
+    this.behaviorIntent.next(this.selectedIntent);
+    //this.liveActiveIntent.next(this.selectedIntent);
   }
 
   public setIntentSelected(intent){
     this.selectedIntent = intent;
-    this.liveActiveIntent.next(this.selectedIntent);
+    this.behaviorIntent.next(this.selectedIntent);
+    //this.liveActiveIntent.next(this.selectedIntent);
   }
 
   public setLiveActiveIntent(intentName: string){
