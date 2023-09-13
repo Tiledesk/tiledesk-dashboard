@@ -104,7 +104,7 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
         if (intent && this.intent && intent.intent_id === this.intent.intent_id) {
           console.log("[CDS-INTENT] sto modifico l'intent: ", this.intent, " con : ", intent);
           this.intent = intent;
-
+          
           if (intent['attributesChanged']) {
             console.log("[CDS-INTENT] ho solo cambiato la posizione sullo stage");
             delete intent['attributesChanged'];
@@ -121,8 +121,9 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
             this.questionCount = question_segment.length;
             // this.question = this.intent.question;
           } else {
-            this.questionCount = 0
+            this.questionCount = 0;
           }
+
           //UPDATE FORM
           if (this.intent && this.intent.form && (this.intent.form !== null)) {
             this.formSize = Object.keys(this.intent.form).length;
@@ -647,7 +648,7 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
 
 
   openTestSiteInPopupWindow() {
-
+    this.intentService.setIntentSelected(this.intent);
     this.testItOut.emit(this.intent)
   }
 

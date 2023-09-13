@@ -178,13 +178,12 @@ export class CdsDashboardComponent implements OnInit {
     if(typeof event === "boolean"){
       this.IS_OPEN_PANEL_WIDGET = true;
     } else {
-      this.intentService.setIntentSelected(event);
-      this.IS_OPEN_PANEL_WIDGET = !this.IS_OPEN_PANEL_WIDGET
+      this.IS_OPEN_PANEL_WIDGET = !this.IS_OPEN_PANEL_WIDGET;
     }
     if(this.IS_OPEN_PANEL_WIDGET){
       this.controllerService.closeActionDetailPanel();
       this.controllerService.closeButtonPanel();
-      this.intentService.setLiveActiveIntent(null);
+      // this.intentService.setLiveActiveIntent(null);
       this.controllerService.closeAddActionMenu();
       this.connectorService.removeConnectorDraft();
     }
