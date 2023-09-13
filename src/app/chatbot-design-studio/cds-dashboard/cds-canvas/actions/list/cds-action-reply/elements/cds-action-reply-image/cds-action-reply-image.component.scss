@@ -331,13 +331,14 @@
     gap: 6px;
     width: 100%;
     font-size: 14px;
-    padding: 0 25px;
+    padding: 0 30px;
     flex-direction: row;
     float: right;
     justify-content: flex-start;
     /* align-content: flex-end; */
     flex-wrap: wrap;
-    align-items: flex-end;
+    // align-items: flex-end;
+    align-items: baseline;
 
 }
 .button-reply {

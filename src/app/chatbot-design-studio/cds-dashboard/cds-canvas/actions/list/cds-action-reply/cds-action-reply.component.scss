@@ -107,6 +107,7 @@ $margin-bottom: 15px;
 
 .box-dw {
     // display: flex;
+    margin: 0px 5px;
     .reply-info{
         color: aliceblue;
         padding: 10px;
@@ -150,7 +151,7 @@ $margin-bottom: 15px;
 #scrollMe {
     scroll-behavior: smooth;
     margin-bottom: 30px;
-    padding-bottom: 140px;
+    padding-bottom: 40px;
 }
 .content {
     position: relative;

@@ -249,7 +249,7 @@
     margin: 0;
     width: 100%;
     font-size: $font-size-base;
-    padding: 0 25px;
+    padding: 0 32px 32px 32px;
 }
 
 .button-reply {
@@ -595,7 +595,8 @@ cds-image-upload ::ng-deep {
     height: 24px;
     position: absolute;
     left: 0;
-    top: -5%;
+    // top: -5%;
+    top: 0;
     opacity: 0;
     transition: opacity 0.3s ease-in-out;
     .buttonsToMove{
