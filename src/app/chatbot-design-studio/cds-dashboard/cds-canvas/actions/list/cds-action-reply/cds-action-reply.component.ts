@@ -148,8 +148,38 @@ export class CdsActionReplyComponent implements OnInit {
   /** */
   drop(event: CdkDragDrop<string[]>) {
     this.textGrabbing = false;
-    moveItemInArray(this.arrayResponses, event.previousIndex, event.currentIndex);
-    this.onUpdateAndSaveAction();
+    // moveItemInArray(this.arrayResponses, event.previousIndex, event.currentIndex);
+    // this.onUpdateAndSaveAction();
+    try {
+      const newPos1 = this.arrayResponses[event.currentIndex];
+      const newPos0 = this.arrayResponses[event.currentIndex-1];
+      const oldPos1 = this.arrayResponses[event.previousIndex];
+      const oldPos0 = this.arrayResponses[event.previousIndex-1];
+      this.arrayResponses[event.currentIndex-1] = oldPos0;
+      this.arrayResponses[event.currentIndex] = oldPos1;
+      this.arrayResponses[event.previousIndex-1] = newPos0;
+      this.arrayResponses[event.previousIndex] = newPos1;
+      // console.log( 'DROP REPLY ---> ', this.arrayResponses);
+      this.connectorService.movedConnector(this.intentSelected.id);
+      this.onUpdateAndSaveAction();
+    } catch (error) {
+      this.logger.log('drop ERROR', error);
+    }
+    return
+    // try {
+    //   let from = event.previousIndex;
+    //   let to = event.currentIndex;
+
+    //   this.arrayResponses.splice(to, 0, this.arrayResponses.splice(from, 1)[0]); 
+    //   from = index;
+    //   to = from - 2;
+    //   this.arrayResponses.splice(to, 0, this.arrayResponses.splice(from, 1)[0]);
+    //   // console.log( 'onMoveUpResponse ---> ', this.arrayResponses);
+    //   this.connectorService.movedConnector(this.intentSelected.id);
+    //   this.onUpdateAndSaveAction();
+    // } catch (error) {
+    //   this.logger.log('onAddNewResponse ERROR', error);
+    // }
   }
 
 
@@ -216,23 +246,33 @@ export class CdsActionReplyComponent implements OnInit {
   /** onDeleteActionReply */
   onDeleteActionReply(index: number) {
     console.log('onDeleteActionReply: ', this.arrayResponses[index]);
+    // !!! cancello tutti i connettori di una action
+    var intentId = this.idAction.substring(0, this.idAction.indexOf('/'));
     try {
       let buttons = this.arrayResponses[index].message.attributes.attachment.buttons;
       buttons.forEach(button => {
+        console.log('button: ', button);
         if(button.__isConnected){
-          this.connectorService.deleteConnector(button.__idConnector);
+          this.connectorService.deleteConnectorFromAction(intentId, button.__idConnector);
+          // this.connectorService.deleteConnector(button.__idConnector);
         }
       });
     } catch (error) {
       this.logger.log('onAddNewResponse ERROR', error);
     }
+
+    // cancello l'elemento wait precedente 
+    console.log('**** arrayResponses: ', this.arrayResponses, 'index-1: ', (index-1));
     const wait = this.arrayResponses[index-1];
+    console.log('wait: ', wait);
     if( wait && wait.type === this.typeCommand.WAIT){
+      console.log('CANCELLO WAIT E MESSAGE');
       this.arrayResponses.splice(index-1, 2); 
     } else {
+      console.log('CANCELLO SOLO MESSAGE');
       this.arrayResponses.splice(index, 1); 
     }
-    // console.log('onDeleteActionReply', this.arrayResponses);
+    console.log('onDeleteActionReply', this.arrayResponses);
     this.onUpdateAndSaveAction();
   }
 
