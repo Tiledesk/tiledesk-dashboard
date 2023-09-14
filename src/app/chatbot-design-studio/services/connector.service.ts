@@ -239,6 +239,7 @@ export class ConnectorService {
   }
 
   deleteConnectorToList(connectorID){
+    console.log('[CONNECTOR-SERV] deleteConnectorToList::  connectorID ', connectorID)
     delete this.listOfConnectors[connectorID];
   }
 
