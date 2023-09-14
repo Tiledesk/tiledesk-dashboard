@@ -237,7 +237,7 @@ export class CdsCanvasComponent implements OnInit {
     document.addEventListener(
       "start-dragging", (e: CustomEvent) => {
         const el = e.detail.element;
-        console.log('[CDS-CANVAS] start-dragging ', el);
+        // console.log('[CDS-CANVAS] start-dragging ', el);
         this.removeConnectorDraftAndCloseFloatMenu();
         this.intentSelected = this.listOfIntents.find((intent) => intent.intent_id === el.id);
         el.style.zIndex = 2;
@@ -267,7 +267,7 @@ export class CdsCanvasComponent implements OnInit {
     document.addEventListener(
       "end-dragging", (e: CustomEvent) => {
         const el = e.detail.element;
-        console.log('[CDS-CANVAS] end-dragging ', el);
+        // console.log('[CDS-CANVAS] end-dragging ', el);
         el.style.zIndex = 1;
         this.intentService.patchAttributes(this.intentSelected.id, this.intentSelected.attributes);
       },
@@ -342,28 +342,6 @@ export class CdsCanvasComponent implements OnInit {
       },
       true
     );
-
-    /** LISTNER OF FLOAT MENU */
-    /** mouseup */
-    document.addEventListener('mouseup', function () {
-      console.log('[CDS-CANVAS] MOUSE UP CLOSE FLOAT MENU', that.hasClickedAddAction)
-      // @ Remove connectors of the float context menu
-      // if (!that.hasClickedAddAction) {
-      //   that.removeConnectorDraftAndCloseFloatMenu();
-      // }
-    });
-
-    /** LISTNER WHEN ARE CLICKED THE KEYBOARD KEYS Backspace, Escape or Canc
-     * actions context menu (static & float) 
-    */
-    document.addEventListener('keydown', function (event) {
-      console.log('[CDS-CANVAS] MOUSE KEYDOWN CLOSE FLOAT MENU hasClickedAddAction ', that.hasClickedAddAction)
-      if (event.key === 'Backspace' || event.key === 'Escape' || event.key === 'Canc' && !that.hasClickedAddAction) {
-        if (!that.hasClickedAddAction) {
-          that.removeConnectorDraftAndCloseFloatMenu();
-        }
-      }
-    });
   }
   // ---------------------------------------------------------
   // END listener di eventi Stage e Connectors
@@ -386,6 +364,34 @@ export class CdsCanvasComponent implements OnInit {
       // this.controllerService.closeButtonPanel();
       this.closeAllPanels();
     }
+  }
+
+  /** -------------------------------------------------------
+   * LISTNER WHEN ARE CLICKED THE KEYBOARD KEYS Backspace, Escape or Canc
+   * actions context menu (static & float) 
+   * -------------------------------------------------------
+  */
+  @HostListener('document:keydown', ['$event']) 
+  onKeydownHandler(event: KeyboardEvent) {
+    console.log('[CDS-CANVAS] MOUSE KEYDOWN CLOSE FLOAT MENU hasClickedAddAction ', this.hasClickedAddAction)
+    if (event.key === 'Backspace' || event.key === 'Escape' || event.key === 'Canc' && !this.hasClickedAddAction) {
+      if (!this.hasClickedAddAction) {
+        // case: FLOAT MENU
+        this.removeConnectorDraftAndCloseFloatMenu();
+      }else{
+        // case: STATIC MENU
+        this.IS_OPEN_ADD_ACTIONS_MENU = false;
+      } 
+    }
+  }
+
+  /** -------------------------------------------------------
+   * LISTNER OF FLOAT MENU 
+   * -------------------------------------------------------
+  */
+  @HostListener('document:mouseup', ['$event']) 
+  onMouseUpHandler(event: KeyboardEvent) {
+    console.log('[CDS-CANVAS] MOUSE UP CLOSE FLOAT MENU', this.hasClickedAddAction)
   }
 
 
