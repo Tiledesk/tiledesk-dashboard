@@ -399,7 +399,8 @@ export class IntentService {
           actionsIntent,
           webhookEnabledIntent
         ).subscribe((intent: Intent) => {
-          console.log('>>>>>>>> UPDATED ', intent.id);
+          console.log('[INTENT-SERVICE] UPDATED INTENT ID ', intent.id);
+          console.log('[INTENT-SERVICE] UPDATED INTENT ', intent);
           resolve(true);
         }, (error) => {
           console.error('ERROR: ', error);

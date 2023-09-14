@@ -80,6 +80,7 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
   newActionCreated: Action;
   dragDisabled: boolean = true;
   connectorIsOverAnIntent: boolean = false;
+  webHookTooltipText: string
 
   constructor(
     private logger: LoggerService,
@@ -166,7 +167,7 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
       this.isStart = true;
     }
 
-    this.addEventListener();
+    this.addEventListener();  
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -650,6 +651,29 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
   openTestSiteInPopupWindow() {
     this.intentService.setIntentSelected(this.intent);
     this.testItOut.emit(this.intent)
+  }
+
+  onMouseOverWebhookBtn(intent) {
+    console.log('[CDS-INTENT] onMouseOverWebhookBtn  intent ', intent)
+    if (intent.webhook_enabled === false) {
+      this.webHookTooltipText = "Enable webhook"
+    } else {
+      this.webHookTooltipText = "Disable webhook"
+    }
+  }
+
+  toggleIntentWebhook(intent) {
+    console.log('[CDS-INTENT] toggleIntentWebhook  intent ', intent)
+    console.log('[CDS-INTENT] toggleIntentWebhook  intent webhook_enabled ', intent.webhook_enabled)
+    if (intent.webhook_enabled === false) {
+      intent.webhook_enabled = true;
+      this.intentService.updateIntent(intent);
+      // this.webHookTooltipText = "Disable webhook"
+    } else {
+      intent.webhook_enabled = false;
+      this.intentService.updateIntent(intent);
+      // this.webHookTooltipText = "Enable webhook"
+    }
   }
 
 }
