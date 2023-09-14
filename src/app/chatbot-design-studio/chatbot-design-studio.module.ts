@@ -158,6 +158,9 @@ import { BaseConditionRowComponent } from './cds-dashboard/cds-canvas/actions/li
 import { VariableListComponent } from './cds-dashboard/cds-canvas/actions/list/cds-action-json-condition/variable-list/variable-list.component';
 import { BaseFilterComponent } from './cds-dashboard/cds-canvas/actions/list/cds-action-json-condition/base-filter/base-filter.component';
 
+//ACTION ASK-GPT: elements
+import { AddkbDialogComponent } from './cds-dashboard/cds-canvas/actions/list/cds-action-askgpt/addkb-dialog/addkb-dialog.component';
+
 //CDS- ACTIONS
 import { CdsActionDescriptionComponent } from './cds-dashboard/cds-canvas/actions/list/cds-action-description/cds-action-description.component';
 import { CdsActionIntentComponent } from './cds-dashboard/cds-canvas/actions/list/cds-action-intent/cds-action-intent.component';
@@ -180,6 +183,7 @@ import { CdsActionAskgptComponent } from './cds-dashboard/cds-canvas/actions/lis
 import { CdsActionWhatsappAttributeComponent } from './cds-dashboard/cds-canvas/actions/list/cds-action-whatsapp-attribute/cds-action-whatsapp-attribute.component';
 import { CdsWhatsappReceiverComponent } from './cds-dashboard/cds-canvas/actions/list/cds-action-whatsapp-static/whatsapp-receiver/whatsapp-receiver.component';
 import { CdsActionWhatsappStaticComponent } from './cds-dashboard/cds-canvas/actions/list/cds-action-whatsapp-static/cds-action-whatsapp-static.component';
+import { CdsActionGPTTaskComponent } from './cds-dashboard/cds-canvas/actions/list/cds-action-gpt-task/cds-action-gpt-task.component';
 
 //CDS PANELS
 import { CdsActionDetailPanelComponent } from './cds-dashboard/cds-canvas/cds-panel-action-detail/cds-panel-action-detail.component';
@@ -198,8 +202,6 @@ import { CdsActionControlsComponent } from './cds-dashboard/cds-canvas/actions/s
 import { CdsAddActionMenuComponent } from './cds-dashboard/cds-canvas/actions/shared/cds-add-action-menu/cds-add-action-menu.component';
 import { CdsQuestionComponent } from './cds-dashboard/cds-canvas/actions/list/question/question.component';
 import { CdsAnswerComponent } from './cds-dashboard/cds-canvas/actions/list/answer/answer.component';
-import { AddkbDialogComponent } from './cds-dashboard/cds-canvas/actions/list/cds-action-askgpt/addkb-dialog/addkb-dialog.component';
-
 
 @NgModule({
   declarations: [
@@ -282,6 +284,7 @@ import { AddkbDialogComponent } from './cds-dashboard/cds-canvas/actions/list/cd
         CdsActionWhatsappStaticComponent,
         CdsWhatsappReceiverComponent,
         CdsActionAskgptComponent,
+        CdsActionGPTTaskComponent,
         // action REPLY elements: start //
         CdsActionReplyToolsComponent,
         CdsActionReplyTextComponent,

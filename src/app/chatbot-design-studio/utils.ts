@@ -98,6 +98,7 @@ export enum TYPE_ACTION {
     WHATSAPP_ATTRIBUTE = 'whatsapp_attribute',
     WHATSAPP_SEGMENT = 'whatsapp_segment',
     ASKGPT = 'askgpt',
+    GPT_TASK = 'gpt_task',
     WAIT = 'wait',
     INTENT = 'intent',
     // CONDITION = 'condition',
@@ -125,8 +126,8 @@ export const ACTION_CATEGORY =[
     { type: getKeyByValue(TYPE_ACTION_CATEGORY.FLOW, TYPE_ACTION_CATEGORY), name: TYPE_ACTION_CATEGORY.FLOW, src: 'assets/cds/images/actions_category/flow.svg'},
     { type: getKeyByValue(TYPE_ACTION_CATEGORY.INTEGRATIONS, TYPE_ACTION_CATEGORY), name: TYPE_ACTION_CATEGORY.INTEGRATIONS, src: 'assets/cds/images/actions_category/integrations.svg'},
     { type: getKeyByValue(TYPE_ACTION_CATEGORY.SPECIAL, TYPE_ACTION_CATEGORY), name: TYPE_ACTION_CATEGORY.SPECIAL, src: 'assets/cds/images/actions_category/special.svg'},
+    // { type: getKeyByValue(TYPE_ACTION_CATEGORY.NEW, TYPE_ACTION_CATEGORY), name: TYPE_ACTION_CATEGORY.NEW, src: 'assets/cds/images/actions_category/new.svg'}
 ]
-// { type: getKeyByValue(TYPE_ACTION_CATEGORY.NEW, TYPE_ACTION_CATEGORY), name: TYPE_ACTION_CATEGORY.NEW, src: 'assets/cds/images/actions_category/new.svg'}
 
 export function getKeyByValue(value, keys) {
     const indexOfS = Object.values(keys).indexOf(value as unknown as any);
@@ -228,6 +229,7 @@ export const ELEMENTS_LIST = [
     { name: 'WhatsApp by Attribute', category: TYPE_ACTION_CATEGORY.INTEGRATIONS, type: TYPE_ACTION.WHATSAPP_ATTRIBUTE, src: "assets/cds/images/actions/whatsapp.svg", description: 'This action send an approved WhatsApp template' },
     // { name: 'WhatsApp by Segment', category: TYPE_ACTION_CATEGORY.INTEGRATIONS, type: TYPE_ACTION.WHATSAPP_SEGMENT, src: "assets/cds/images/actions/whatsapp.svg", description: 'This action send an approved WhatsApp template' },
     { name: 'Ask GPT', type: TYPE_ACTION.ASKGPT, category: TYPE_ACTION_CATEGORY.INTEGRATIONS, src: "assets/cds/images/actions/openai-icon.svg", description: 'This action forwards the question to ChatGPT' },
+    { name: 'GPT Task', type: TYPE_ACTION.GPT_TASK, category: TYPE_ACTION_CATEGORY.INTEGRATIONS, src: "assets/cds/images/actions/openai-icon.svg", description: 'This action forwards the question to ChatGPT' },
     { name: 'Hidden message', category: TYPE_ACTION_CATEGORY.SPECIAL, type: TYPE_ACTION.HIDE_MESSAGE, src: "assets/cds/images/actions/hidden_message.svg"},
     { name: 'Change dept', category: TYPE_ACTION_CATEGORY.SPECIAL, type: TYPE_ACTION.CHANGE_DEPARTMENT, src: "assets/cds/images/actions/change_department.svg"},
     { name: 'Set function', category: TYPE_ACTION_CATEGORY.NEW, type: TYPE_ACTION.ASSIGN_FUNCTION, src: "assets/cds/images/actions/assign_var.svg"},
@@ -256,6 +258,7 @@ export const ACTIONS_LIST= {
     WHATSAPP_ATTRIBUTE: { name: 'WhatsApp by Attribute', category: TYPE_ACTION_CATEGORY.INTEGRATIONS, type: TYPE_ACTION.WHATSAPP_ATTRIBUTE, src: "assets/cds/images/actions/whatsapp.svg", description: 'This action send an approved WhatsApp template' },
     // WHATSAPP_SEGMENT: { name: 'WhatsApp by Segment', category: TYPE_ACTION_CATEGORY.INTEGRATIONS, type: TYPE_ACTION.WHATSAPP_SEGMENT, src: "assets/cds/images/actions/whatsapp.svg", description: 'This action send an approved WhatsApp template' },
     ASKGPT: { name: 'Ask GPT', type: TYPE_ACTION.ASKGPT, category: TYPE_ACTION_CATEGORY.INTEGRATIONS, src: "assets/cds/images/actions/openai-icon.svg", description: 'This action forwards the question to ChatGPT' },
+    GPT_TASK: { name: 'GPT Task', type: TYPE_ACTION.GPT_TASK, category: TYPE_ACTION_CATEGORY.INTEGRATIONS, src: "assets/cds/images/actions/openai-icon.svg", description: 'This action forwards the question to ChatGPT' },
     HIDE_MESSAGE: { name: 'Hidden message', category: TYPE_ACTION_CATEGORY.SPECIAL, type: TYPE_ACTION.HIDE_MESSAGE, src: "assets/cds/images/actions/hidden_message.svg" },
     CHANGE_DEPARTMENT: { name: 'Change dept', category: TYPE_ACTION_CATEGORY.SPECIAL, type: TYPE_ACTION.CHANGE_DEPARTMENT, src: "assets/cds/images/actions/change_department.svg" },
     ASSIGN_FUNCTION: { name: 'Set function', category: TYPE_ACTION_CATEGORY.NEW, type: TYPE_ACTION.ASSIGN_FUNCTION, src: "assets/cds/images/actions/assign_var.svg" },

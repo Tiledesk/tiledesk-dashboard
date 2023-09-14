@@ -335,6 +335,20 @@ export class ActionAskGPT extends Action {
     }
 }
 
+export class ActionGPTTask extends Action {
+    question: string;
+    assignReplyTo: string;
+    assignSourceTo: string;
+    context: string;
+    max_tokens: number;
+    temperature: number;
+    model: string
+    constructor() {
+        super();
+        this._tdActionType = TYPE_ACTION.GPT_TASK
+    }
+}
+
 
 export class Message {
     text: string;
