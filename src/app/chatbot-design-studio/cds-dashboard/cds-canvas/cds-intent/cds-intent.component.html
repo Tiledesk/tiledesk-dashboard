@@ -46,7 +46,8 @@
         <cds-action-intent class="panel-response" 
             [isStart]="isStart" 
             [intentSelected]="intent"
-            [action]="listOfActions[0]">
+            [action]="listOfActions[0]"
+            (updateAndSaveAction)="onUpdateAndSaveAction($event)">
         </cds-action-intent>
     </div>
 
