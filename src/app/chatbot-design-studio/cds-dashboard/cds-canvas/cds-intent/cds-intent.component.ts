@@ -74,7 +74,6 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
   isStart = false;
   startAction: any;
   isDragging: boolean = false;
-  isLiveActive: boolean = false;
   actionDragPlaceholderWidth: number;
   hideActionDragPlaceholder: boolean;
   newActionCreated: Action;
@@ -87,6 +86,7 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
     private connectorService: ConnectorService,
     private stageService: StageService,
     private controllerService: ControllerService,
+    private elemenRef : ElementRef
   ) {
     this.initSubscriptions()
   }
@@ -141,17 +141,27 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
     subscribtion = this.subscriptions.find(item => item.key === subscribtionKey);
     if (!subscribtion) {
       subscribtion = this.intentService.liveActiveIntent.pipe(takeUntil(this.unsubscribe$)).subscribe(intent => {
-        this.isLiveActive = false
         if (intent && this.intent && intent.intent_id === this.intent.intent_id) {
           var stageElement = document.getElementById(intent.intent_id);
-          this.isLiveActive = true
           this.stageService.centerStageOnTopPosition(stageElement)
+          this.addCssClassAndRemoveAfterTime('live-active-intent', '#block-header-'+(intent.intent_id), 6)
         }
       });
       const subscribe = { key: subscribtionKey, value: subscribtion };
       this.subscriptions.push(subscribe);
     }
 
+  }
+
+
+  addCssClassAndRemoveAfterTime(className: string, componentID: string, delay: number){
+    let element = this.elemenRef.nativeElement.querySelector(componentID)
+    if(element){
+      element.classList.add(className)
+      setTimeout(()=> {
+        element.classList.remove(className)
+      }, delay*1000)
+    }
   }
 
   ngOnInit(): void {
