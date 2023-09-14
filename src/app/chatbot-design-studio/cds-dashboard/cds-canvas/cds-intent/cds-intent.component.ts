@@ -205,58 +205,41 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
   // ---------------------------------------------------------
   addEventListener() {
     let that = this;
-
     document.addEventListener(
       "connector-release-on-intent", (e: CustomEvent) => {
-        console.log('[CDS-INTENT] connector-release-on-intent e ', e)
-
-        console.log('[CDS-INTENT] Connector released on intent - id intent', e.detail.toId)
-        console.log('[CDS-INTENT] Connector released on intent -  this.intent.intent_id', this.intent.intent_id)
+        // console.log('[CDS-INTENT] connector-release-on-intent e ', e)
+        // console.log('[CDS-INTENT] Connector released on intent - id intent', e.detail.toId)
+        // console.log('[CDS-INTENT] Connector released on intent -  this.intent.intent_id', this.intent.intent_id)
         // movingBorder
         // flashBorder
         if (e.detail.toId === this.intent.intent_id) {
           const intentContentEl = <HTMLElement>document.querySelector(`#intent-content-${e.detail.toId}`);
           const blockHeaderEl = <HTMLElement>document.querySelector(`#block-header-${e.detail.toId}`);
-          console.log('[CDS-INTENT] Connector released on intent -  intentContentEl', intentContentEl)
-          console.log('[CDS-INTENT] Connector released on intent -  blockHeaderEl', blockHeaderEl)
+          // console.log('[CDS-INTENT] Connector released on intent -  intentContentEl', intentContentEl)
+          // console.log('[CDS-INTENT] Connector released on intent -  blockHeaderEl', blockHeaderEl)
           intentContentEl.classList.remove("outline-border")
           intentContentEl.classList.add("ripple-effect")
           // , "rippleEffect"
           setTimeout(() => {
             intentContentEl.classList.remove("ripple-effect")
           }, 2000);
-
         }
       },
       true
     );
 
-
     document.addEventListener(
       "connector-moved-over-intent", (e: CustomEvent) => {
-        console.log('[CDS-INTENT] Connector Moved over intent e ', e)
-
-        // console.log('[CDS-INTENT] Connector Moved over intent - e.detail.toId', e.detail.toId)
-        // console.log('[CDS-INTENT] Connector Moved over intent - this.intent ', this.intent)
-
+        // console.log('[CDS-INTENT] Connector Moved over intent e ', e)
         // movingBorder
         // flashBorder
         if (e.detail.toId === this.intent.intent_id) {
-          console.log('[CDS-INTENT] Connector Moved over intent here yes 1 ', this.intent.intent_id)
+          // console.log('[CDS-INTENT] Connector Moved over intent here yes 1 ', this.intent.intent_id)
           this.connectorIsOverAnIntent = true;
-          console.log('[CDS-INTENT] Connector Moved over intent connectorIsOverAnIntent ', this.connectorIsOverAnIntent)
+          // console.log('[CDS-INTENT] Connector Moved over intent connectorIsOverAnIntent ', this.connectorIsOverAnIntent)
           const intentContentEl = <HTMLElement>document.querySelector(`#intent-content-${e.detail.toId}`);
-          console.log('[CDS-INTENT] Connector Moved over intent -  intentContentEl', intentContentEl)
+          // console.log('[CDS-INTENT] Connector Moved over intent -  intentContentEl', intentContentEl)
           intentContentEl.classList.add("outline-border")
-          // const blockHeaderEl = <HTMLElement>document.querySelector(`#block-header-${e.detail.toId}`);
-          // console.log('[CDS-INTENT] Connector released on intent -  intentContentEl', intentContentEl)
-          // console.log('[CDS-INTENT] Connector released on intent -  blockHeaderEl', blockHeaderEl)
-          // blockHeaderEl.classList.add("flashBorderAndRipple")
-          // // , "rippleEffect"
-          // setTimeout(() => {
-          //   blockHeaderEl.classList.remove("flashBorderAndRipple")
-          // }, 2000);
-
         } else {
           console.log('[CDS-INTENT] Connector Moved over intent here yes 2 ')
         }
@@ -266,15 +249,15 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
 
     document.addEventListener(
       "connector-moved-out-of-intent", (e: CustomEvent) => {
-        console.log('[CDS-INTENT] Connector Moved out of intent e ', e)
+        // console.log('[CDS-INTENT] Connector Moved out of intent e ', e)
         if (e.detail.toId === this.intent.intent_id) {
-          console.log('[CDS-INTENT] Connector Moved out of intent e id ', e.detail.toId)
+          // console.log('[CDS-INTENT] Connector Moved out of intent e id ', e.detail.toId)
           const intentContentEl = <HTMLElement>document.querySelector(`#intent-content-${e.detail.toId}`);
-          console.log('[CDS-INTENT] Connector Moved over intent -  intentContentEl', intentContentEl)
+          // console.log('[CDS-INTENT] Connector Moved over intent -  intentContentEl', intentContentEl)
           intentContentEl.classList.remove("outline-border")
         }
         this.connectorIsOverAnIntent = false;
-        console.log('[CDS-INTENT] Connector Moved out of intent connectorIsOverAnIntent ', this.connectorIsOverAnIntent)
+        // console.log('[CDS-INTENT] Connector Moved out of intent connectorIsOverAnIntent ', this.connectorIsOverAnIntent)
       },
       true
     );

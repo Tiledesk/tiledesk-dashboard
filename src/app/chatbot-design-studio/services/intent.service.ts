@@ -388,6 +388,7 @@ export class IntentService {
       } else {
         this.idIntentUpdating = intent.intent_id;
       }
+      
       this.setTimeoutChangeEvent = setTimeout(() => {
         this.faqService.updateIntent(
           id,

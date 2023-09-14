@@ -13,8 +13,9 @@ import { FaqKbService } from 'app/services/faq-kb.service';
 import { DashboardService } from 'app/chatbot-design-studio/services/dashboard.service';
 
 import { Chatbot } from 'app/models/faq_kb-model';
-import { EXTERNAL_URL } from '../../utils';
+import { EXTERNAL_URL, TYPE_INTENT_NAME } from '../../utils';
 import { CdsPublishOnCommunityModalComponent } from '../utils/cds-publish-on-community-modal/cds-publish-on-community-modal.component';
+import { IntentService } from 'app/chatbot-design-studio/services/intent.service';
 
 const swal = require('sweetalert');
 
@@ -51,7 +52,6 @@ export class CdsHeaderComponent implements OnInit {
   TRY_ON_WA: boolean;
   displayModalAttacchBotToDept: string;
 
-
   constructor(
     private router: Router,
     private logger: LoggerService,
@@ -60,7 +60,8 @@ export class CdsHeaderComponent implements OnInit {
     public appConfigService: AppConfigService,
     private multichannelService: MultichannelService,
     private notify: NotifyService,
-    private dashboardService: DashboardService
+    private dashboardService: DashboardService,
+    private intentService: IntentService
   ) { }
 
   ngOnInit(): void {
@@ -230,6 +231,8 @@ export class CdsHeaderComponent implements OnInit {
     // const url = testItOutUrl + '?tiledesk_projectid=' + this.projectID + '&tiledesk_participants=bot_' + this.id_faq_kb + "&tiledesk_departmentID=" + this.defaultDepartmentId + '&td_draft=true'
     // let params = `toolbar=no,menubar=no,width=815,height=727,left=100,top=100`;
     // window.open(url, '_blank', params);
+    let intentStart = this.intentService.listOfIntents.find(obj => ( obj.intent_display_name.trim() === TYPE_INTENT_NAME.DISPLAY_NAME_START));
+    this.intentService.setIntentSelected(intentStart);
     this.onTestItOut.emit(true);
   }
 

@@ -57,8 +57,8 @@ export class CdsActionDetailPanelComponent implements OnInit, OnChanges {
       // this.elementSelected = JSON.parse(JSON.stringify(this.elementIntentSelected.element));
       // this.elementSelectedIndex = this.elementIntentSelected.index
       // this.elementSelectedMaxLength = [...Array(this.elementIntentSelected.maxLength).keys()]
-      // console.log('[PANEL-INTENT-DETAIL] (OnChanges) elementIntentSelectedType ', this.elementIntentSelectedType);
-      // console.log('[PANEL-INTENT-DETAIL] (OnChanges) elementSelected ', this.elementSelected);
+      console.log('[PANEL-INTENT-DETAIL] (OnChanges) elementIntentSelectedType ', this.elementIntentSelectedType);
+      console.log('[PANEL-INTENT-DETAIL] (OnChanges) elementSelected ', this.elementSelected);
       // console.log('[PANEL-INTENT-DETAIL] (OnChanges) intentSelected ', this.intentSelected);
     }catch(error){
       this.logger.log('[CDS-PANEL-INTENT-DETAIL] (ngOnChanges) ERROR', error);

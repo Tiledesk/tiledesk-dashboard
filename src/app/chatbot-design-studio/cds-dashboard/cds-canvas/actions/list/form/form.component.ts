@@ -74,9 +74,30 @@ export class CdsFormComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
-    console.log('intentForm::::: ', this.intentForm);
+    console.log('[FORM-COMP] ngOnInit::::: ', this.intentForm);
+  }
+
+  ngOnChanges() {
+    console.log('[FORM-COMP] (OnChanges) intentForm ', this.intentForm);
+    this.initialize();
+  }
+
+
+  private initialize(){
     this.logger.log('[FORM-COMP] (OnInit) intentSelected ', this.intentSelected)
     this.logger.log('[FORM-COMP] (OnInit) intentForm ', this.intentForm)
+    this.displayTilebotAddEditForm = true;
+    this.displayAddForm = false;
+    this.displayEditForm = false
+    this.displayBoxNewForm = false;
+    this.displaySettingForm = false;
+    this.displayNewFormButton = true;
+    this.displayCancelButton = false;
+    this.displaySettingsButton = false;
+    this.idForm = "id-form-000";
+    this.modelsOfForm = [];
+    this.cancelCommands = [];
+    
     let modelsFactory = new FormModelsFactory()
     this.modelsOfForm = modelsFactory.getModels();
     this.selectedForm = this.modelsOfForm[0];
@@ -98,7 +119,6 @@ export class CdsFormComponent implements OnInit, OnChanges {
       this.cancelCommands = this.intentForm.cancelCommands;
       this.cancelReply = this.intentForm.cancelReply;
       this.cancelCommandsString = this.cancelCommands.toString();
-
       this.logger.log('[FORM-COMP] (OnInit) intentFormSize ', this.intentFormSize)
       this.logger.log('[FORM-COMP] OnInit intentForm.fields ', this.fields)
       this.logger.log('[FORM-COMP] cancelCommands ', this.cancelCommands)
@@ -106,12 +126,6 @@ export class CdsFormComponent implements OnInit, OnChanges {
       this.logger.log('[FORM-COMP] cancelCommandsString ', this.cancelCommandsString)
     }
   }
-
-  ngOnChanges() {
-    this.logger.log('[FORM-COMP] (OnChanges) intentForm ', this.intentForm);
-    // this.logger.log('[FORM-COMP] (OnChanges) intentSelected ', this.intentSelected)
-  }
-
 
   scrollToTop(): void {
     setTimeout(() => {

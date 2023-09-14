@@ -157,9 +157,9 @@
     // margin: auto;
   }
 
-  .live-active-intent:hover {
-    animation: none;
-  }
+  // .live-active-intent:hover {
+  //   animation: none;
+  // }
 
 
   .cds-start {
@@ -1031,6 +1031,16 @@
 .action--text:hover {
   color: rgba($icon-color, 0.8);
 }
+
+cds-action-description.header-action ::ng-deep{
+  .action-title{
+    max-width: 100%
+  }
+}
+
+
+
+
 
 .source-item,
 .target-item {
