@@ -203,9 +203,10 @@ export class CdsDashboardComponent implements OnInit {
   /** SIDEBAR OUTPUT EVENTS */
   onClickItemList(event: string) {
     console.log('[CDS DSHBRD] active section-->', event);
-    // if(event === SIDEBAR_PAGES.INTENTS){
-    //   this.connectorService.initializeConnectors();
-    // }
+    if(event !== 'cds-sb-intents'){
+      // this.connectorService.initializeConnectors();
+      this.IS_OPEN_PANEL_WIDGET = false;
+    }
     this.activeSidebarSection = event;
   }
   /*****************************************************/ 

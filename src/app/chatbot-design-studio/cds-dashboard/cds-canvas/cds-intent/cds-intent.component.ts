@@ -637,7 +637,7 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   onMouseOverWebhookBtn(intent) {
-    console.log('[CDS-INTENT] onMouseOverWebhookBtn  intent ', intent)
+    // console.log('[CDS-INTENT] onMouseOverWebhookBtn  intent ', intent)
     if (intent.webhook_enabled === false) {
       this.webHookTooltipText = "Enable webhook"
     } else {
