@@ -165,21 +165,6 @@ export class CdsActionReplyComponent implements OnInit {
     } catch (error) {
       this.logger.log('drop ERROR', error);
     }
-    return
-    // try {
-    //   let from = event.previousIndex;
-    //   let to = event.currentIndex;
-
-    //   this.arrayResponses.splice(to, 0, this.arrayResponses.splice(from, 1)[0]); 
-    //   from = index;
-    //   to = from - 2;
-    //   this.arrayResponses.splice(to, 0, this.arrayResponses.splice(from, 1)[0]);
-    //   // console.log( 'onMoveUpResponse ---> ', this.arrayResponses);
-    //   this.connectorService.movedConnector(this.intentSelected.id);
-    //   this.onUpdateAndSaveAction();
-    // } catch (error) {
-    //   this.logger.log('onAddNewResponse ERROR', error);
-    // }
   }
 
 

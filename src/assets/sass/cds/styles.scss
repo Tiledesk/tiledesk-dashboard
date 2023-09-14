@@ -274,3 +274,13 @@ cds-connector.connector-false {
     top: calc(50% - 10px);
 }
 
+
+::ng-deep .cds-mat-tooltip {
+    background-color: #2d323e !important;
+    font-size: 12px !important;
+    border-radius: 6px !important;
+    font-family: "Poppins", "Roboto", "Arial", sans-serif !important;
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+  }
+

@@ -23,10 +23,12 @@
     content: "";
     transition: box-shadow 0.15s ease 0s;
   }
+
   &.outline-border {
     outline: 2px solid #6c6859;
     border-radius: 10px;
   }
+
   &.ripple-effect {
     animation-name: ripple_effect;
     animation-duration: 1s;
@@ -139,8 +141,9 @@
     box-shadow: 0 0 0 rgba(204, 169, 44, 0.4);
     animation: pulse 1s 2 forwards;
     // position: relative;
- }
- .live-active-intent::before {
+  }
+
+  .live-active-intent::before {
     // content: '';
     box-shadow: 0 0 0 rgba(204, 169, 44, 0.4);
     animation: pulse 1s 2 forwards;
@@ -218,29 +221,65 @@
 
 }
 
-/* Play Widget btn
+/* Intent header actions
 /* ***************************** */
-.test-intent-play-container {
+.intent-header-actions-container {
   position: absolute;
-  top: 1px;
-  // z-index: 10;
-  right: -30px;
-  // background: aquamarine;
+  top: 0px;
+  right: 0px;
   height: 45px;
   padding-left: 12px;
   opacity: 0;
-  transform: translate3d(-50px, 0, 0);
-  cursor: pointer;
+  transform: translate3d(0, 20px, 0);
   transition: 0.25s all ease-in-out;
 }
 
-.test-intent-play-container-on-start {
-  top: 10px;
+.panel-intent-content:hover .intent-header-actions-container-on-start {
+  top: -19px !important;
+  right: 12px !important;
 }
 
-.panel-intent-content:hover .test-intent-play-container {
+.panel-intent-content:hover .intent-header-actions-container {
+  top: -28px;
   opacity: 1;
   transform: translate3d(0, 0, 0);
+}
+
+.intent-header-actions-wpr {
+  background: #fff;
+  height: 25px;
+  border-radius: 14px;
+  box-shadow: #001b4714 0 3px 8px;
+  display: flex;
+  padding: 3px 0px;
+}
+
+.intent-header-action-btn {
+  cursor: pointer;
+  border-left: solid 1px $border-light;
+  padding: 0 8px;
+
+}
+
+.intent-header-action-btn:first-child {
+  border-left: unset;
+}
+
+
+.svg-icon--wh .wh-st0 {
+  fill: none;
+}
+
+.svg-icon--wh .wh-st1 {
+  fill: #6C6859;
+}
+
+.svg-icon--wh .wh-st2 {
+  fill: #C73A63;
+}
+
+.svg-icon--wh.webhook-disabled .wh-st2 {
+  fill: #6C6859;
 }
 
 
@@ -321,8 +360,6 @@
   opacity: 1;
 }
 
-
-
 .cds-action-active {
   // border: 3px solid #0f172a !important;
   outline: 2px solid rgba(236, 182, 6, .6901960784) !important;
@@ -332,9 +369,6 @@
 .cds-no-featured-action {
   background-color: $light-brown;
 }
-
-
-
 
 /* Btn add action
 /* --------------------------------- */
@@ -353,9 +387,6 @@
   opacity: 1;
 }
 
-
-
-
 .body-action {
   position: relative;
   display: flex;
@@ -366,14 +397,9 @@
   border-radius: 6px; // nk
 }
 
-
-
-
 // .cds-featured-action {
 //   background-color: #e3e1f1;
 // }
-
-
 
 .header-action {
   position: relative;
@@ -425,8 +451,6 @@
   user-select: none;
 }
 
-
-
 .alspn {
   display: flex;
   width: 100%;
@@ -462,11 +486,6 @@
   content: "";
   border-radius: 50%;
 }
-
-
-
-
-
 
 .eexGFU {
   width: 44px;
@@ -512,16 +531,6 @@
   content: "";
   border-radius: 50%;
 }
-
-
-
-
-
-
-
-
-
-
 
 .button-intent {
   display: block;
@@ -813,18 +822,6 @@
   }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
 .header__center {
   font-size: 2rem;
   display: grid;
@@ -865,8 +862,6 @@
   cursor: grab;
   // width: 36px;
 }
-
-
 
 // .action--handle > svg {
 //   position: absolute;
@@ -940,8 +935,6 @@
   opacity: 1;
 }
 
-
-
 // .cdk-drag-preview .delete-action {
 //   display: none;
 // }
@@ -971,10 +964,6 @@
   transform: rotate(-90deg);
   color: #d2e3fc;
 }
-
-
-
-
 
 .add--action-placeholder>.add-action-from-placeholder-btn-wpr {
   opacity: 0;
@@ -1061,13 +1050,6 @@ cds-action-description.header-action ::ng-deep{
   margin-bottom: 5px;
 }
 
-
-
-
-
-
-
-
 //** FLOATING MENU - start**//
 .cds-intent-options {
   display: flex;
@@ -1095,11 +1077,6 @@ cds-action-description.header-action ::ng-deep{
 }
 
 //** FLOATING MENU - end**//
-
-
-
-
-
 
 
 
@@ -1173,20 +1150,6 @@ cds-action-description.header-action ::ng-deep{
   height: 18px;
   color: currentcolor;
   background: transparent;
-}
-
-
-
-
-
-
-::ng-deep .custom-mat-tooltip {
-  background-color: #2d323e !important;
-  font-size: 12px !important;
-  border-radius: 2px !important;
-  font-family: "Poppins", "Roboto", "Arial", sans-serif !important;
-  padding-top: 8px !important;
-  padding-bottom: 8px !important;
 }
 
 .add--action-placeholder {

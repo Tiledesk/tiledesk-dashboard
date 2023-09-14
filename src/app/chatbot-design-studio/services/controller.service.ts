@@ -50,12 +50,18 @@ export class ControllerService {
     this.actionSource.next({type: null, element: null});
   }
 
-
-
   /** closeAddActionMenu */
   public closeAddActionMenu(){
     console.log('closeAddActionMenu:: ');
     this.addActionMenu.next();
+  }
+
+
+  public closeAllPanels(){
+    console.log('closeAllPanels:: ');
+    this.addActionMenu.next();
+    this.buttonSource.next();
+    this.actionSource.next({type: null, element: null});
   }
 
 }

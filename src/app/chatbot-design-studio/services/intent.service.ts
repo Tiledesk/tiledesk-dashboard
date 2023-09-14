@@ -26,6 +26,7 @@ import { FaqService } from 'app/services/faq.service';
 import { FaqKbService } from 'app/services/faq-kb.service';
 import { TYPE_INTENT_NAME, NEW_POSITION_ID, TYPE_ACTION, TYPE_COMMAND, removeNodesStartingWith } from 'app/chatbot-design-studio/utils';
 import { ConnectorService } from 'app/chatbot-design-studio/services/connector.service';
+import { ControllerService } from 'app/chatbot-design-studio/services/controller.service';
 
 
 /** CLASSE DI SERVICES PER TUTTE LE AZIONI RIFERITE AD OGNI SINGOLO INTENT **/
@@ -67,7 +68,8 @@ export class IntentService {
   constructor(
     private faqService: FaqService,
     private faqKbService: FaqKbService,
-    private connectorService: ConnectorService
+    private connectorService: ConnectorService,
+    private controllerService: ControllerService
   ) { }
 
 
@@ -400,7 +402,8 @@ export class IntentService {
           actionsIntent,
           webhookEnabledIntent
         ).subscribe((intent: Intent) => {
-          console.log('>>>>>>>> UPDATED ', intent.id);
+          console.log('[INTENT-SERVICE] UPDATED INTENT ID ', intent.id);
+          console.log('[INTENT-SERVICE] UPDATED INTENT ', intent);
           resolve(true);
         }, (error) => {
           console.error('ERROR: ', error);
@@ -628,6 +631,8 @@ export class IntentService {
       });
       this.behaviorIntent.next(intentToUpdate);
       this.connectorService.movedConnector(intentToUpdate.intent_id);
+      
+      this.controllerService.closeAllPanels();
       // this.connectorService.deleteConnectorsFromActionByActionId(this.actionSelectedID);
       setTimeout(async () => {
         const responseIntent = await this.updateIntent(intentToUpdate);
