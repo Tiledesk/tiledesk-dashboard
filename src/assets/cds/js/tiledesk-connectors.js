@@ -166,6 +166,7 @@ export class TiledeskConnectors {
     if (connectorElement) {
       connectorElement.remove();
       const connectorDeleted = this.connectors[connectorId];
+      console.log('*** connectorDeleted: ', connectorDeleted);
       delete this.connectors[connectorId];
       this.deleteConnectorInBlock(connectorId);
       if (connectorDeleted) {
