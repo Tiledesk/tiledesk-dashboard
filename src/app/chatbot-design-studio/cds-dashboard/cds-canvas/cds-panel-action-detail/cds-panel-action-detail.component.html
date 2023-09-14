@@ -137,6 +137,13 @@
                         (updateAndSaveAction)="onSaveIntent($event)">
                     </cds-action-web-request>
 
+                    <cds-action-web-request-v2 *ngSwitchCase="typeAction.WEB_REQUESTV2"
+                        class="panel-response"
+                        [action]="elementSelected"
+                        [previewMode]="false"
+                        (updateAndSaveAction)="onSaveIntent($event)">
+                    </cds-action-web-request-v2>
+
                     <cds-action-whatsapp-attribute *ngSwitchCase="typeAction.WHATSAPP_ATTRIBUTE"
                         class="panel-response"
                         [action]="elementSelected"
@@ -157,11 +164,18 @@
                         class="panel-response"
                         [intentSelected]="intentSelected"
                         [action]="elementSelected"
-                        [project_id]="project_id"
                         [previewMode]="false"
                         (onCreateUpdateConnector)="createOrUpdateConnector($event.fromId, $event.toId)"
                         (updateAndSaveAction)="onSaveIntent($event)">
                     </cds-action-askgpt>
+
+                    <cds-action-gpt-task *ngSwitchCase="typeAction.GPT_TASK"
+                        class="panel-response"
+                        [intentSelected]="intentSelected"
+                        [action]="elementSelected"
+                        [previewMode]="false"
+                        (updateAndSaveAction)="onSaveIntent($event)">
+                    </cds-action-gpt-task>
                     
                     <!-- <cds-action-assign-function *ngSwitchCase="typeAction.ASSIGN_FUNCTION"
                         [action]="elementSelected">

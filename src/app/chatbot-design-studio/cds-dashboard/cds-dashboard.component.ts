@@ -59,6 +59,7 @@ export class CdsDashboardComponent implements OnInit {
     console.log("•••• [CDS DSHBRD] ngOnInit ••••");
     this.auth.checkRoleForCurrentProject();
     this.executeAsyncFunctionsInSequence();
+    this.hideShowWidget('hide')
   }
 
   /**************** CUSTOM FUNCTIONS ****************/

@@ -1,5 +1,5 @@
 import { Component, EventEmitter, HostListener, Input, OnInit, Output, SimpleChanges } from '@angular/core';
-import { ActionAskGPT, Intent } from 'app/models/intent-model';
+import { ActionGPTTask, Intent } from 'app/models/intent-model';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { variableList } from 'app/chatbot-design-studio/utils';
 import { MatDialog } from '@angular/material/dialog';
@@ -9,27 +9,18 @@ import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
 
 
 @Component({
-  selector: 'cds-action-askgpt',
-  templateUrl: './cds-action-askgpt.component.html',
-  styleUrls: ['./cds-action-askgpt.component.scss']
+  selector: 'cds-action-gpt-task',
+  templateUrl: './cds-action-gpt-task.component.html',
+  styleUrls: ['./cds-action-gpt-task.component.scss']
 })
-export class CdsActionAskgptComponent implements OnInit {
+export class CdsActionGPTTaskComponent implements OnInit {
 
   @Input() intentSelected: Intent;
-  @Input() action: ActionAskGPT;
+  @Input() action: ActionGPTTask;
   @Input() previewMode: boolean = true;
   @Output() updateAndSaveAction = new EventEmitter;
-  @Output() onCreateUpdateConnector = new EventEmitter<{fromId: string, toId: string}>()
   
   listOfIntents: Array<{name: string, value: string, icon?:string}>;
-
-  // Connectors
-  idIntentSelected: string;
-  idConnectorTrue: string;
-  idConnectorFalse: string;
-  isConnectedTrue: boolean = false;
-  isConnectedFalse: boolean = false;
-  connector: any;
 
   kbs_list = [];
   kb_selected_id: string = null;
@@ -38,7 +29,6 @@ export class CdsActionAskgptComponent implements OnInit {
   indexing_hint: string = null;
 
   question: string = "";
-  kbid: string = "";
   // gptkey: string = "";
   buttonDisabled: boolean = false;
   buttonIcon: string = "add"
@@ -57,168 +47,117 @@ export class CdsActionAskgptComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.logger.debug("[ACTION-ASKGPT] action detail: ", this.action);
-    this.question = this.action.question;
-    this.kbid = this.action.kbid;
+    // this.logger.debug("[ACTION-ASKGPT] action detail: ", this.action);
+    // this.question = this.action.question;
+    // this.kbid = this.action.kbid;
 
-    this.intentService.isChangedConnector$.subscribe((connector: any) => {
-      this.logger.debug('[ACTION-ASKGPT] isChangedConnector -->', connector);
-      this.connector = connector;
-      this.updateConnector();
-    });
-
-    // this.getAllOpenaiKbs();
-    this.getKnowledgeBaseSettings();
-    this.initializeAttributes();
+    // // this.getAllOpenaiKbs();
+    // this.getKnowledgeBaseSettings();
+    // this.initializeAttributes();
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if(this.intentSelected){
-      this.initializeConnector();
-    }
   }
 
-  initializeConnector() {
-    this.idIntentSelected = this.intentSelected.intent_id;
-    this.idConnectorTrue = this.idIntentSelected+'/'+this.action._tdActionId + '/true';
-    this.idConnectorFalse = this.idIntentSelected+'/'+this.action._tdActionId + '/false';
-
-    this.listOfIntents = this.intentService.getListOfIntents()
-  }
-
-  private updateConnector(){
-    try {
-      const array = this.connector.fromId.split("/");
-      const idAction= array[1];
-      if(idAction === this.action._tdActionId){
-        if(this.connector.deleted){ //TODO: verificare quale dei due connettori è stato eliminato e impostare isConnected a false
-          // DELETE 
-          if(array[array.length -1] === 'true'){
-            this.action.trueIntent = null
-            this.isConnectedTrue = false
-          }        
-          if(array[array.length -1] === 'false'){
-            this.action.falseIntent = null
-            this.isConnectedFalse = false;
-          }
-        } else { //TODO: verificare quale dei due connettori è stato aggiunto (controllare il valore della action corrispondente al true/false intent)
-          // ADD / EDIT
-          this.logger.debug('[ACTION-ASKGPT] updateConnector', this.connector.toId, this.connector.fromId ,this.action, array[array.length-1]);
-          if(array[array.length -1] === 'true'){
-            this.action.trueIntent = '#'+this.connector.toId;
-            this.isConnectedTrue = true
-          }        
-          if(array[array.length -1] === 'false'){
-            this.action.falseIntent = '#'+this.connector.toId;
-            this.isConnectedFalse = true;
-          }
-        }
-
-        this.updateAndSaveAction.emit();
-      }
-    } catch (error) {
-      this.logger.error('[ACTION-ASKGPT] updateConnector error: ', error);
-    }
-  }
 
   getKnowledgeBaseSettings() {
-    this.kbService.getKbSettings().subscribe((kbSettings: any) => {
-      this.logger.debug("[ACTION-ASKGPT] get kbSettings: ", kbSettings);
-      this.kbs_list = kbSettings.kbs.map(t => {
-        t.icon = "language"
-        return t;
-      })
-      if (this.action.kbid) {
-        this.kb_selected_id = kbSettings.kbs.find(k => k.url === this.action.kbid)._id;
-        this.kb_selected_name = kbSettings.kbs.find(k => k.url === this.action.kbid).name;
-      }
-    }, (error) => {
-      this.logger.error("[ACTION-ASKGPT] ERROR get kbSettings: ", error);
-    }, () => {
-      this.logger.info("[ACTION-ASKGPT] get kbSettings *COMPLETE*");
-    })
+    // this.kbService.getKbSettings().subscribe((kbSettings: any) => {
+    //   this.logger.debug("[ACTION-ASKGPT] get kbSettings: ", kbSettings);
+    //   this.kbs_list = kbSettings.kbs.map(t => {
+    //     t.icon = "language"
+    //     return t;
+    //   })
+    //   if (this.action.kbid) {
+    //     this.kb_selected_id = kbSettings.kbs.find(k => k.url === this.action.kbid)._id;
+    //     this.kb_selected_name = kbSettings.kbs.find(k => k.url === this.action.kbid).name;
+    //   }
+    // }, (error) => {
+    //   this.logger.error("[ACTION-ASKGPT] ERROR get kbSettings: ", error);
+    // }, () => {
+    //   this.logger.info("[ACTION-ASKGPT] get kbSettings *COMPLETE*");
+    // })
   }
 
   private initializeAttributes() {
-    let new_attributes = [];
-    if (!variableList.userDefined.some(v => v.name === 'gpt_reply')) {
-      new_attributes.push({ name: "gpt_reply", value: "gpt_reply" });
-    }
-    if (!variableList.userDefined.some(v => v.name === 'gpt_source')) {
-      new_attributes.push({ name: "gpt_source", value: "gpt_source" });
-    }
-    variableList.userDefined = [ ...variableList.userDefined, ...new_attributes];
-    this.logger.debug("[ACTION ASKGPT] Initialized variableList.userDefined: ", variableList.userDefined);
+    // let new_attributes = [];
+    // if (!variableList.userDefined.some(v => v.name === 'gpt_reply')) {
+    //   new_attributes.push({ name: "gpt_reply", value: "gpt_reply" });
+    // }
+    // if (!variableList.userDefined.some(v => v.name === 'gpt_source')) {
+    //   new_attributes.push({ name: "gpt_source", value: "gpt_source" });
+    // }
+    // variableList.userDefined = [ ...variableList.userDefined, ...new_attributes];
+    // this.logger.debug("[ACTION ASKGPT] Initialized variableList.userDefined: ", variableList.userDefined);
   }
 
   changeTextarea($event: string, property: string) {
-    this.logger.log("[ACTION-ASKGPT] onEditableDivTextChange event", $event)
-    this.logger.log("[ACTION-ASKGPT] onEditableDivTextChange property", property)
-    this.action[property] = $event
-    this.updateAndSaveAction.emit();
+    // this.logger.log("[ACTION-ASKGPT] onEditableDivTextChange event", $event)
+    // this.logger.log("[ACTION-ASKGPT] onEditableDivTextChange property", property)
+    // this.action[property] = $event
+    // this.updateAndSaveAction.emit();
   }
 
   onSelectedAttribute(event, property) {
-    this.logger.log("[ACTION-ASKGPT] onEditableDivTextChange event", event)
-    this.logger.log("[ACTION-ASKGPT] onEditableDivTextChange property", property)
-    this.action[property] = event.value;
-    this.updateAndSaveAction.emit();
+    // this.logger.log("[ACTION-ASKGPT] onEditableDivTextChange event", event)
+    // this.logger.log("[ACTION-ASKGPT] onEditableDivTextChange property", property)
+    // this.action[property] = event.value;
+    // this.updateAndSaveAction.emit();
   }
 
   onChangeSelect(event) {
-    if (event.clickEvent === 'footer') {
-      // this.openAddKbDialog();  moved in knowledge base settings
-    } else {
-      this.action.kbid = event.url;
-      this.kb_selected_id = this.kbs_list.find(k => k.url === this.action.kbid)._id;
-      this.kb_selected_name = this.kbs_list.find(k => k.url === this.action.kbid).name;
-      //this.checkKbStatus(this.action.kbid);
-      console.log("[ACTION-ASKGPT] updated action", this.action, this.kb_selected_name);
-      this.updateAndSaveAction.emit();
-    }
+    // if (event.clickEvent === 'footer') {
+    //   // this.openAddKbDialog();  moved in knowledge base settings
+    // } else {
+    //   this.action.kbid = event.url;
+    //   this.kb_selected_id = this.kbs_list.find(k => k.url === this.action.kbid)._id;
+    //   this.kb_selected_name = this.kbs_list.find(k => k.url === this.action.kbid).name;
+    //   //this.checkKbStatus(this.action.kbid);
+    //   console.log("[ACTION-ASKGPT] updated action", this.action, this.kb_selected_name);
+    //   this.updateAndSaveAction.emit();
+    // }
   }
 
   onChangeBlockSelect(event:{name: string, value: string}, type: 'trueIntent' | 'falseIntent') {
-    if(event){
-      this.action[type]=event.value
-    }
+    // if(event){
+    //   this.action[type]=event.value
+    // }
 
-    switch(type){
-      case 'trueIntent':
-        this.onCreateUpdateConnector.emit({ fromId: this.idConnectorTrue, toId: this.action.trueIntent})
-        break;
-      case 'falseIntent':
-        this.onCreateUpdateConnector.emit({fromId: this.idConnectorFalse, toId: this.action.falseIntent})
-        break;
-    }
-    this.updateAndSaveAction.emit();
+    // switch(type){
+    //   case 'trueIntent':
+    //     this.onCreateUpdateConnector.emit({ fromId: this.idConnectorTrue, toId: this.action.trueIntent})
+    //     break;
+    //   case 'falseIntent':
+    //     this.onCreateUpdateConnector.emit({fromId: this.idConnectorFalse, toId: this.action.falseIntent})
+    //     break;
+    // }
+    // this.updateAndSaveAction.emit();
   }
   
   onChangeAttributes(attributes:any, type:'trueIntent' | 'falseIntent'){
-    console.log("type: ", type)
-    console.log("attributes: ", attributes)
-    if (type === 'trueIntent') {
-      this.action.trueIntentAttributes = attributes;
-    }
-    if (type === 'falseIntent') {
-      this.action.falseIntentAttributes = attributes;
-    }
-    console.log("action updated: ", this.action)
+    // console.log("type: ", type)
+    // console.log("attributes: ", attributes)
+    // if (type === 'trueIntent') {
+    //   this.action.trueIntentAttributes = attributes;
+    // }
+    // if (type === 'falseIntent') {
+    //   this.action.falseIntentAttributes = attributes;
+    // }
+    // console.log("action updated: ", this.action)
   }
 
 
-  getValue(key: string): string{
-    let value = ''
-    if(this.kbs_list && this.kbs_list.length > 0)
-      value = this.kbs_list.find(el => el.url === this.action.kbid)[key]
-    return value   
-  }
+  // getValue(key: string): string{
+  //   let value = ''
+  //   if(this.kbs_list && this.kbs_list.length > 0)
+  //     value = this.kbs_list.find(el => el.url === this.action.kbid)[key]
+  //   return value   
+  // }
 
   @HostListener('document:visibilitychange')
   visibilitychange() {
-    if (!document.hidden) {
-      this.getKnowledgeBaseSettings();
-    }
+    // if (!document.hidden) {
+    //   this.getKnowledgeBaseSettings();
+    // }
   }
 
 
