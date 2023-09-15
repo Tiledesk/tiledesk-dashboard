@@ -260,7 +260,22 @@ export class CdsCanvasComponent implements OnInit {
         const x = e.detail.x;
         const y = e.detail.y;
         this.connectorService.moved(el, x, y);
-        this.intentSelected['attributes']['position'] = {'x': el.offsetLeft, 'y': el.offsetTop};
+        // Verifica se intentSelected è definito e se attributes è definito
+        if (this.intentSelected && this.intentSelected.attributes) {
+          if (!this.intentSelected.attributes.position) {
+            this.intentSelected.attributes.position = {};
+          }
+          this.intentSelected.attributes.position = {'x': el.offsetLeft, 'y': el.offsetTop};
+        } else {
+          this.intentSelected = {
+            attributes: {
+              position: {
+                x: el.offsetLeft,
+                y: el.offsetTop
+              }
+            }
+          };
+        }
       },
       false
     );

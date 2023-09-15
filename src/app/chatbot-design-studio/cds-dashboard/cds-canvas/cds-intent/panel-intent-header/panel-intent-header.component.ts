@@ -1,8 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges, ViewChild, ElementRef } from '@angular/core';
 import { LoggerService } from 'app/services/logger/logger.service';
-
-
-import { Intent } from '../../../../../models/intent-model';
+import { Intent } from 'app/models/intent-model';
 import { IntentService } from 'app/chatbot-design-studio/services/intent.service';
 
 @Component({
@@ -13,19 +11,14 @@ import { IntentService } from 'app/chatbot-design-studio/services/intent.service
 export class PanelIntentHeaderComponent implements OnInit, OnChanges {
   @ViewChild('myInput', { static: true }) myInput!: ElementRef<HTMLInputElement>;
 
-
-  @Output() saveIntent = new EventEmitter();
-  // @Output() changeIntentName = new EventEmitter();
   @Input() intent: Intent;
-  @Input() showSpinner: boolean;
-  // @Input() listOfIntents: Intent[];
+  @Output() saveIntent = new EventEmitter();
 
   listOfIntents: Intent[];
   intentName: string;
   intentNameResult: boolean = true;
   intentNameAlreadyExist: boolean = false
   intentNameNotHasSpecialCharacters: boolean = true;
-
   id_faq_kb: string;
   isFocused: boolean = false;
 
@@ -35,76 +28,61 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
   ) { 
     this.intentService.getIntents().subscribe(intents => {
       if(intents){
-        this.listOfIntents = intents
+        this.listOfIntents = intents;
       }
     })
   }
 
   // SYSTEM FUNCTIONS //
   ngOnInit(): void {
-    this.showSpinner = false;
-    this.listOfIntents = this.intentService.listOfIntents 
     // console.log("[PANEL-INTENT-HEADER] intentSelected: ", this.intent)
-    try {
-      this.intentName = this.intent.intent_display_name;
-    } catch (error) {
-      this.logger.log('intent selected ', error);
-    }
+    this. initialize();
   }
 
   ngOnChanges() {
     // console.log("[PANEL-INTENT-HEADER] header OnChanges intentSelected: ", this.intent)
     // this.logger.log("[PANEL-INTENT-HEADER] header OnChanges intentSelected intent_display_name: ", this.intent.intent_display_name)
     // console.log("[PANEL-INTENT-HEADER] header OnChanges listOfIntents: ", this.listOfIntents)
-    
+  }
+
+  /******************* CUSTOM FUNCTIONS *******************/ 
+  /** initialize */
+  private initialize(){
+    this.listOfIntents = this.intentService.listOfIntents 
     const untitledIntents = this.listOfIntents.filter((el) => {
       return el.intent_display_name.indexOf('untitled_block') > -1;
     });
-
     this.logger.log("[PANEL-INTENT-HEADER] OnChanges untitledIntents: ", untitledIntents)
     if (this.intent.intent_display_name === undefined && untitledIntents.length === 0) {
       this.intent.intent_display_name = 'untitled_block_1';
       this.saveIntent.emit(this.intent);
-      // this.listOfIntents.push(this.intent) 
     } else if (this.intent.intent_display_name === undefined && untitledIntents.length > 0) {
-      let lastUntitledIntent = untitledIntents[untitledIntents.length - 1].intent_display_name
-      this.logger.log("[PANEL-INTENT-HEADER] OnChanges lastUntitledIntent: ", lastUntitledIntent)
-
-      const lastUntitledIntentSegment = lastUntitledIntent.split("_")
-      this.logger.log("[PANEL-INTENT-HEADER] OnChanges lastUntitledIntentSegment: ", lastUntitledIntentSegment)
-      const lastUntitledIntentNumb = +lastUntitledIntentSegment[2]
-      this.logger.log("[PANEL-INTENT-HEADER] OnChanges lastUntitledIntentNumb: ", lastUntitledIntentNumb)
-      const nextUntitledIntentNumb = lastUntitledIntentNumb + 1
-      this.logger.log("[PANEL-INTENT-HEADER] OnChanges nextUntitledIntentNumb: ", nextUntitledIntentNumb)
+      let lastUntitledIntent = untitledIntents[untitledIntents.length - 1].intent_display_name;
+      this.logger.log("[PANEL-INTENT-HEADER] OnChanges lastUntitledIntent: ", lastUntitledIntent);
+      const lastUntitledIntentSegment = lastUntitledIntent.split("_");
+      this.logger.log("[PANEL-INTENT-HEADER] OnChanges lastUntitledIntentSegment: ", lastUntitledIntentSegment);
+      const lastUntitledIntentNumb = +lastUntitledIntentSegment[2];
+      this.logger.log("[PANEL-INTENT-HEADER] OnChanges lastUntitledIntentNumb: ", lastUntitledIntentNumb);
+      const nextUntitledIntentNumb = lastUntitledIntentNumb + 1;
+      this.logger.log("[PANEL-INTENT-HEADER] OnChanges nextUntitledIntentNumb: ", nextUntitledIntentNumb);
       this.intent.intent_display_name = 'untitled_block_' + nextUntitledIntentNumb;
       this.saveIntent.emit(this.intent);
-      // this.listOfIntents.push(this.intent) 
     }
-
-
     this.intentName = this.intent.intent_display_name;
-    this.showSpinner = false;
     this.intentNameAlreadyExist = false;
     this.intentNameNotHasSpecialCharacters = true;
-
     if (this.intent && this.intent['faq_kb']) {
       this.id_faq_kb = this.intent['faq_kb'][0]._id;
     }
-    try {
-      this.intentName = this.intent.intent_display_name;
-    } catch (error) {
-      this.logger.log('[PANEL-INTENT-HEADER] intent selected ', error);
-    }
   }
 
-  /******************* CUSTOM FUNCTIONS *******************/ 
- 
   /** checkIntentNameMachRegex */
-  checkIntentNameMachRegex(intentname) {
+  private checkIntentNameMachRegex(intentname) {
     const regex = /^[ _0-9a-zA-Z]+$/
     return regex.test(intentname);
   }
 
+  /** checkIntentName */
   private checkIntentName(name: string) {
     this.intentNameAlreadyExist = false;
     if (name !== this.intent.intent_display_name) {
@@ -119,20 +97,20 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
     }
     return this.intentNameResult;
   }
-
+  /******************* END CUSTOM FUNCTIONS *******************/ 
 
 
   /******************* EVENT FUNCTIONS *******************/ 
   /** onMouseUpInput */
   onMouseUpInput(){
-    // this.logger.log("[PANEL-INTENT-HEADER] onMouseUpInput");
+    this.logger.log("[PANEL-INTENT-HEADER] onMouseUpInput");
     this.isFocused = true;
     this.myInput.nativeElement.focus();
   }
 
   /** onChangeIntentName */
   onChangeIntentName(name: string) {
-    // this.logger.log("[PANEL-INTENT-HEADER] onChangeIntentName");
+    this.logger.log("[PANEL-INTENT-HEADER] onChangeIntentName");
     this.checkIntentName(name);
     this.onSaveIntent();
   }
@@ -147,7 +125,7 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
 
   /** doubleClickFunction */
   doubleClickFunction(event){
-    // this.logger.log("[PANEL-INTENT-HEADER] doubleClickFunction");
+    this.logger.log("[PANEL-INTENT-HEADER] doubleClickFunction");
     this.myInput.nativeElement.select()
   }
 
@@ -180,7 +158,6 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
       this.intentService.selectIntent(this.intent);
       this.intent.intent_display_name = this.intentName.trim();
       this.intentService.changeIntentName(this.intent);
-      // this.saveIntent.emit(this.intent);
     }
   }
 

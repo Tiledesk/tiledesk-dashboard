@@ -67,7 +67,9 @@ export class CdsActionReplyImageComponent implements OnInit {
       this.connector = connector;
       this.updateConnector();
     });
-    this.patchButtons();
+    // this.patchButtons();
+    // this.buttons = this.response?.attributes?.attachment?.buttons;
+    this.buttons = this.intentService.patchButtons(this.buttons, this.idAction);
     this.idIntent = this.idAction.split('/')[0];
   }
 
@@ -83,24 +85,24 @@ export class CdsActionReplyImageComponent implements OnInit {
     }
   }
 
-  private patchButtons(){
-    console.log('patchButtons:: ', this.response);
-    let buttons = this.response?.attributes?.attachment?.buttons;
-    if(!buttons)return;
-    buttons.forEach(button => {
-      if(!button.uid || button.uid === undefined){
-        const idButton = generateShortUID();
-        const idActionConnector = this.idAction+'/'+idButton;
-        button.uid = idButton;
-        button.__idConnector = idActionConnector;
-        if(button.action && button.action !== ''){
-          button.__isConnected = true;
-        } else {
-          button.__isConnected = false;
-        }
-      }
-    }); 
-  }
+  // private patchButtons(){
+  //   console.log('patchButtons:: ', this.response);
+  //   let buttons = this.response?.attributes?.attachment?.buttons;
+  //   if(!buttons)return;
+  //   buttons.forEach(button => {
+  //     if(!button.__uid || button.__uid === undefined){
+  //       const idButton = generateShortUID();
+  //       const idActionConnector = this.idAction+'/'+idButton;
+  //       button.__uid = idButton;
+  //       button.__idConnector = idActionConnector;
+  //       if(button.action && button.action !== ''){
+  //         button.__isConnected = true;
+  //       } else {
+  //         button.__isConnected = false;
+  //       }
+  //     }
+  //   }); 
+  // }
 
 
   private updateConnector(){

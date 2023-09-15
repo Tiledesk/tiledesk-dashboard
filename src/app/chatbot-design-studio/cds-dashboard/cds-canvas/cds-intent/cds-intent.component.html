@@ -1,7 +1,7 @@
 <div class="panel-intent-content tds_draggable" [id]="'intent-content-'+ intent?.intent_id">
-    <!--  -->
 
-    <div class="intent-header-actions-container" *ngIf="listOfActions?.length > 0"
+    <div *ngIf="listOfActions?.length > 0"
+        class="intent-header-actions-container"
         [ngClass]="{'intent-header-actions-container-on-start': isStart}">
 
 
@@ -97,7 +97,6 @@
             class="pic-title-text tds_draggable" 
             [intent]="intent">
         </cds-panel-intent-header>
-
 
         <div *ngIf="!isStart" class="cds-intent-options">
             <div class="option" (click)="onSelectQuestion(HAS_SELECTED_TYPE.QUESTION)"
