@@ -87,7 +87,7 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
     private connectorService: ConnectorService,
     private stageService: StageService,
     private controllerService: ControllerService,
-    private elemenRef : ElementRef
+    private elemenRef: ElementRef
   ) {
     this.initSubscriptions()
   }
@@ -105,7 +105,7 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
         if (intent && this.intent && intent.intent_id === this.intent.intent_id) {
           console.log("[CDS-INTENT] sto modifico l'intent: ", this.intent, " con : ", intent);
           this.intent = intent;
-          
+
           if (intent['attributesChanged']) {
             console.log("[CDS-INTENT] ho solo cambiato la posizione sullo stage");
             delete intent['attributesChanged'];
@@ -145,7 +145,7 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
         if (intent && this.intent && intent.intent_id === this.intent.intent_id) {
           var stageElement = document.getElementById(intent.intent_id);
           this.stageService.centerStageOnTopPosition(stageElement)
-          this.addCssClassAndRemoveAfterTime('live-active-intent', '#block-header-'+(intent.intent_id), 6)
+          this.addCssClassAndRemoveAfterTime('live-active-intent', '#block-header-' + (intent.intent_id), 6)
         }
       });
       const subscribe = { key: subscribtionKey, value: subscribtion };
@@ -155,13 +155,13 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
   }
 
 
-  addCssClassAndRemoveAfterTime(className: string, componentID: string, delay: number){
+  addCssClassAndRemoveAfterTime(className: string, componentID: string, delay: number) {
     let element = this.elemenRef.nativeElement.querySelector(componentID)
-    if(element){
+    if (element) {
       element.classList.add(className)
-      setTimeout(()=> {
+      setTimeout(() => {
         element.classList.remove(className)
-      }, delay*1000)
+      }, delay * 1000)
     }
   }
 
@@ -177,7 +177,7 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
       this.isStart = true;
     }
 
-    this.addEventListener();  
+    this.addEventListener();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -647,11 +647,13 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   onMouseOverWebhookBtn(intent) {
-    // console.log('[CDS-INTENT] onMouseOverWebhookBtn  intent ', intent)
-    if (intent.webhook_enabled === false) {
-      this.webHookTooltipText = "Enable webhook"
-    } else {
-      this.webHookTooltipText = "Disable webhook"
+    console.log('[CDS-INTENT] onMouseOverWebhookBtn  intent ', intent)
+    if (intent) {
+      if (intent.webhook_enabled === false || !intent.webhook_enabled) {
+        this.webHookTooltipText = "Enable webhook"
+      } else if (intent.webhook_enabled === true) {
+        this.webHookTooltipText = "Disable webhook"
+      }
     }
   }
 

@@ -8,7 +8,7 @@
         <!-- ---------------------------------- -->
         <div class="intent-header-actions-wpr" >
             <div class="intent-header-action-btn svg-icon--wh" 
-                [ngClass]="{'webhook-disabled': intent.webhook_enabled === false }"
+                [ngClass]="{'webhook-enabled': intent.webhook_enabled === true }"
                 (mouseover)="onMouseOverWebhookBtn(intent)"
                 (click)="toggleIntentWebhook(intent)"
                 matTooltipClass="cds-mat-tooltip" 

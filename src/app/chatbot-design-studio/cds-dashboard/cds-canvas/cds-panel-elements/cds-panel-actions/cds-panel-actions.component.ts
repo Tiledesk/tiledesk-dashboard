@@ -149,7 +149,9 @@ export class CdsPanelActionsComponent implements OnInit {
           this.hideActionPlaceholderOfActionPanel.emit(true)
           console.log('[CDS-PANEL-ACTIONS] Hide action drag placeholder', hideActionDragPlaceholder);
           actionDragPlaceholder.style.opacity = '0';
-          addActionPlaceholderEl.style.opacity = '1';
+          if (addActionPlaceholderEl) {
+            addActionPlaceholderEl.style.opacity = '1';
+          }
         }
 
         //  console.log('height', entry.contentRect.height);
