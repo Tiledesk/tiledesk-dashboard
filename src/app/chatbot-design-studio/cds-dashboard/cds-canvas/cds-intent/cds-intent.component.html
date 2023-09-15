@@ -1,10 +1,10 @@
 <div class="panel-intent-content tds_draggable" [id]="'intent-content-'+ intent?.intent_id">
-    <!--  -->
 
-    <div class="intent-header-actions-container" *ngIf="listOfActions?.length > 0"
+    <div *ngIf="listOfActions?.length > 0"
+        class="intent-header-actions-container"
         [ngClass]="{'intent-header-actions-container-on-start': isStart}">
         <!-- ---------------------------------- -->
-        <!-- Enable / disable intent webhook  -->
+        <!-- Enable / disable intent webhook    -->
         <!-- ---------------------------------- -->
         <div class="intent-header-actions-wpr" >
             <div class="intent-header-action-btn svg-icon--wh" 
@@ -49,7 +49,6 @@
                 #tooltip="matTooltip"
                 matTooltipPosition='above' 
                 matTooltipHideDelay="100">
-             
                 <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
                     xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 24 24"
                     style="enable-background:new 0 0 24 24;" xml:space="preserve" height="18px" width="18px"
@@ -62,20 +61,17 @@
                     <path class="play-widget-st0" d="M0,0h24v24H0V0z" />
                     <path d="M4.5,2.5v19l15-9.5L4.5,2.5z" />
                 </svg>
-
-            
             </div>
         </div>
     </div>
 
     <div class="pic-header tds_draggable"  
         [id]="'block-header-'+ intent?.intent_id"
-        [ngClass]="{'cds-start': isStart, 
-                    'placeholder-block-header':listOfActions?.length === 0}">
+        [ngClass]="{'cds-start': isStart, 'placeholder-block-header':listOfActions?.length === 0}">
 
-        <cds-panel-intent-header class="pic-title-text tds_draggable" [intent]="intent">
+        <cds-panel-intent-header class="pic-title-text tds_draggable" 
+            [intent]="intent">
         </cds-panel-intent-header>
-
 
         <div *ngIf="!isStart" class="cds-intent-options">
             <div class="option" (click)="onSelectQuestion(HAS_SELECTED_TYPE.QUESTION)"

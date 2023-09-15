@@ -24,7 +24,7 @@ import {
   Command, Wait, Message, Expression, Attributes, Action, ActionAskGPT, ActionWhatsappAttribute, ActionWhatsappStatic, ActionWebRequestV2, ActionGPTTask } from 'app/models/intent-model';
 import { FaqService } from 'app/services/faq.service';
 import { FaqKbService } from 'app/services/faq-kb.service';
-import { TYPE_INTENT_NAME, NEW_POSITION_ID, TYPE_ACTION, TYPE_COMMAND, removeNodesStartingWith } from 'app/chatbot-design-studio/utils';
+import { TYPE_INTENT_NAME, NEW_POSITION_ID, TYPE_ACTION, TYPE_COMMAND, removeNodesStartingWith, generateShortUID} from 'app/chatbot-design-studio/utils';
 import { ConnectorService } from 'app/chatbot-design-studio/services/connector.service';
 import { ControllerService } from 'app/chatbot-design-studio/services/controller.service';
 
@@ -468,11 +468,8 @@ export class IntentService {
 
   /** update title of intent */
   public changeIntentName(intent){
-    this.behaviorIntent.next(intent);
+    this.behaviorIntents.next(this.listOfIntents);
     const response = this.updateIntent(intent);
-    if(response){
-      // console.log('update previous Intent: OK');
-    }
   }
 
   // moving new action in intent from panel elements
@@ -779,7 +776,23 @@ export class IntentService {
 
 
 
-
+  public  patchButtons(buttons, idAction){
+    console.log('patchButtons:: ', buttons);
+    buttons.forEach((button, index) => {
+      const checkUid = buttons.filter(btn => btn.uid === button.uid);
+      if (checkUid.length > 1 || !button.uid && button.uid == undefined) {
+        button.uid = generateShortUID(index);
+      } 
+      const idActionConnector = idAction+'/'+button.uid;
+      button.__idConnector = idActionConnector;
+      if(button.action && button.action !== ''){
+        button.__isConnected = true;
+      } else {
+        button.__isConnected = false;
+      }
+    }); 
+    return buttons;
+  }
   
 
   // OLD_patchAttributes(attributes: any) {
