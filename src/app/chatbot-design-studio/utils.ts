@@ -377,8 +377,9 @@ export function patchActionId(action) {
 
 
 export function generateShortUID(index?) {
-    const timestamp = Date.now().toString(36)+index; // Converti l'orario corrente in base 36
-    // const randomChars = Math.random().toString(36).substr(2, 5); // Genera una stringa casuale di 5 caratteri in base 36
+    let timestamp = uuidv4();
+    timestamp = timestamp.replace(/-/g, "");
+    // const timestamp = Date.now().toString(36)+index;
     return timestamp; // + randomChars;
 }
   
