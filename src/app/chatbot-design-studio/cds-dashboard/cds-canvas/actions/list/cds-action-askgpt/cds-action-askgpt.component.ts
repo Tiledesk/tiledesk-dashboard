@@ -141,11 +141,11 @@ export class CdsActionAskgptComponent implements OnInit {
 
   private initializeAttributes() {
     let new_attributes = [];
-    if (!variableList.userDefined.some(v => v.name === 'gpt_reply')) {
-      new_attributes.push({ name: "gpt_reply", value: "gpt_reply" });
+    if (!variableList.userDefined.some(v => v.name === 'kb_reply')) {
+      new_attributes.push({ name: "kb_reply", value: "kb_reply" });
     }
-    if (!variableList.userDefined.some(v => v.name === 'gpt_source')) {
-      new_attributes.push({ name: "gpt_source", value: "gpt_source" });
+    if (!variableList.userDefined.some(v => v.name === 'kb_source')) {
+      new_attributes.push({ name: "kb_source", value: "kb_source" });
     }
     variableList.userDefined = [ ...variableList.userDefined, ...new_attributes];
     this.logger.debug("[ACTION ASKGPT] Initialized variableList.userDefined: ", variableList.userDefined);

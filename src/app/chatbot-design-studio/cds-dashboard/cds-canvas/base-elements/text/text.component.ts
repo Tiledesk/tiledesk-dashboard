@@ -19,6 +19,7 @@ export class CDSTextComponent implements OnInit {
   @Input() customPrefix: boolean;
   @Input() disabled: boolean = false;
   @Input() autocompleteOptions: string[] = [];
+  @Input() inputType: string = "text";
   @Output() onChange = new EventEmitter<string>();
   
   filteredOptions: Observable<string[]>;

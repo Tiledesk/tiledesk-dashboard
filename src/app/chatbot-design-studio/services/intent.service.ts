@@ -723,11 +723,15 @@ export class IntentService {
     if(typeAction === TYPE_ACTION.ASKGPT){
       action = new ActionAskGPT();
       action.question = '{{last_user_text}}'
-      action.assignReplyTo = 'gpt_reply';
-      action.assignSourceTo = 'gpt_source';
+      action.assignReplyTo = 'kb_reply';
+      action.assignSourceTo = 'kb_source';
     }
     if(typeAction === TYPE_ACTION.GPT_TASK){
       action = new ActionGPTTask();
+      action.max_tokens = 128;
+      action.temperature = 0.7;
+      action.model = "gpt-3.5-turbo";
+      action.assignReplyTo = 'gpt_reply';
     }
     console.log('ho creato nuova action ', action);
     return action;

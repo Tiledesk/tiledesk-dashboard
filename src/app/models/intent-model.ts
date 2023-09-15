@@ -338,7 +338,6 @@ export class ActionAskGPT extends Action {
 export class ActionGPTTask extends Action {
     question: string;
     assignReplyTo: string;
-    assignSourceTo: string;
     context: string;
     max_tokens: number;
     temperature: number;
