@@ -475,7 +475,7 @@ export class TiledeskConnectors {
     if (el && el.classList && el.classList.contains(keyClass)) {
       return el;
     }
-    console.log('[TILEDESK-CONNECTORS] searchClassInParents ->', keyClass);
+    // console.log('[TILEDESK-CONNECTORS] searchClassInParents ->', keyClass);
     let parent = el.parentElement;
     while (parent !== null) {
       if (parent && parent.classList && parent.classList.contains(keyClass)) {
@@ -855,16 +855,16 @@ export class TiledeskConnectors {
 
 
   createConnectorFromId(fromId, toId) {
-    console.log("createConnectorFromId:", fromId, toId);
+    console.log("createConnectorFromId fromId - toId:", fromId, toId);
     const fromEle = document.getElementById(fromId);
     const toEle = document.getElementById(toId);
-    console.log("fromEle:", fromEle);
-    console.log("toEle:", toEle);
+    // console.log("fromEle:", fromEle);
+    // console.log("toEle:", toEle);
     if (toEle && fromEle) {
       const fromPoint = this.elementLogicCenter(fromEle);
       const toPoint = this.elementLogicTopLeft(toEle);
-      console.log("toPoint:", toPoint);
-      console.log("fromPoint:", fromPoint);
+      // console.log("toPoint:", toPoint);
+      // console.log("fromPoint:", fromPoint);
       this.createConnector(fromId, toId, fromPoint, toPoint);
       return true;
     }

@@ -293,7 +293,7 @@ export class ConnectorService {
 
   moved(element, x, y){
     this.tiledeskConnectors.moved(element, x, y);
-    console.log('[CONNECTOR-SERV] moved element ' ,element , ' x ' , x ,  'y ',  y )
+    // console.log('[CONNECTOR-SERV] moved element ' ,element , ' x ' , x ,  'y ',  y )
   }
 
 }
