@@ -284,3 +284,6 @@ cds-connector.connector-false {
     padding-bottom: 8px !important;
   }
 
+::ng-deep .mat-expansion-indicator::after {
+color: white;
+}

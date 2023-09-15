@@ -1,7 +1,7 @@
 @import "./src/assets/sass/cds/_variables.scss";
 
 .cds-action-content{
-    padding: 5px 10px;
+    padding: 16px;
 }
 
 .previewContent{
@@ -20,7 +20,6 @@
     }
 
     .icon-action img{
-        height: 16px;
         filter: brightness(0) saturate(100%) invert(42%) sepia(2%) saturate(2720%) hue-rotate(9deg) brightness(91%) contrast(81%);
     }
 
@@ -33,10 +32,17 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    filter: brightness(0) saturate(100%) invert(52%) sepia(7%) saturate(525%) hue-rotate(8deg) brightness(93%) contrast(90%);
     img {
-        height: 20px;
+        height: 16px;
     }
 }  
+
+// .icon-acion#gpt-icon {
+//     img {
+//         height:px;
+//     }
+// }
 
 
 .preview-divider {
@@ -67,11 +73,15 @@
     margin: 0;
     padding: 0;
     margin-bottom: 30px;
+    display: flex;
+    flex-direction: row;
 }
 
 .field-box {
     display: flex;
     flex-direction: column;
+    width: 100%;
+    margin-right: 10px;
     // width: 70%;
     // min-width: 90px;
     // gap: 10px;
@@ -504,4 +514,168 @@ div.value-wrp {
     font-size: 14px;
     font-weight: 600;
     color: white;
+}
+
+
+
+
+
+.custom-expansion-panel {
+    background-color: transparent;
+    box-shadow: none;
+    color: white;
+}
+
+///////////////////////////////////////
+///////////////////////////////////////
+
+
+
+// .mat-expansion-panel-header {
+//     padding: 0;
+
+//     &:hover {
+//         background-color: transparent;
+//     }
+// }
+
+// .mat-expansion-panel-header-title {
+//     color: white;
+// }
+
+// .mat-expansion-indicator::after {
+//     color: white !important;
+// }
+
+// .mat-expansion-panel-header-description, .mat-expansion-indicator:after {
+//     color: white;
+// }
+
+// ::ng-deep .mat-expansion-indicator, .mat-expansion-indicator:after {
+//     color: white;
+// }
+
+// .mat-expansion-panel-header.mat-expanded {
+//     height: 48px;
+// }
+
+// .disable_ripple:hover{
+//     background: transparent !important;
+// }
+
+// .mat-expansion-panel-body {
+//     padding: 0 !important;
+// }
+    
+
+
+
+.action-wait-content{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.action-wait-slider {
+    align-items: center;
+    background: #647283;
+    border-radius: 13px;
+    display: inline-flex;
+    position: relative;
+    height: 26px;
+    padding: 0 9px 0 3px;
+    width: 100%;
+    text-align: center;
+    transition: width 0.3s ease-in;
+    font-size: 14px;
+    margin-right: 10px;
+}
+
+.action-wait-slider > mat-slider {
+    width: 100%;
+    margin-left: 6px;
+}
+
+.action-wait-range {
+    color: #e8eaed;
+    font-size: 11px;
+    font-weight: 400;
+    padding-left: 6px;
+}
+
+.wait-action-title {
+    font-family: "Poppins","Roboto", "Arial", sans-serif;
+    color: #e8eaed;
+}
+
+
+.action-wait-slider ::ng-deep{
+    .mat-accent .mat-slider-track-fill {
+        background-color: $icon-color !important;
+    }
+    .mat-slider-thumb-label {
+        background-color: $icon-color !important;
+
+    }
+    .mat-slider-thumb {
+        background-color: $icon-color !important;
+    }
+}
+
+.slider-input ::ng-deep {
+    width: 60px;
+
+    input {
+        text-align: center;
+    }
+}
+
+mat-expansion-panel ::ng-deep {
+    background-color: transparent;
+    box-shadow: none;
+    color: white;
+
+    .mat-expansion-panel-header {
+        padding: 0;
+    
+        &:hover {
+            background-color: transparent;
+        }
+    }
+    
+    .mat-expansion-panel-header-title {
+        color: white;
+    }
+    
+    .mat-expansion-indicator::after {
+        color: white !important;
+    }
+    
+    .mat-expansion-panel-header-description, .mat-expansion-indicator:after {
+        color: white;
+    }
+    
+    ::ng-deep .mat-expansion-indicator, .mat-expansion-indicator:after {
+        color: white;
+    }
+    
+    .mat-expansion-panel-header.mat-expanded {
+        height: 48px;
+    }
+    
+    .disable_ripple:hover{
+        background: transparent !important;
+    }
+    
+    .mat-expansion-panel-body {
+        padding: 0 !important;
+    }    
+
+    .mat-expansion-panel-body {
+        padding: 0 !important;
+    }
+}
+
+.icon-action {
+
 }
