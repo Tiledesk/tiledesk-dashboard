@@ -49,7 +49,7 @@ export class VariableListComponent implements OnInit {
     if(this.variableListSystemDefined){
       this.filteredIntentVariableList = this.variableListSystemDefined
     }
-    //console.log('variable-list initialize:: ', variableList.userDefined);
+    //this.logger.log('variable-list initialize:: ', variableList.userDefined);
   }
 
   openDialog() {
@@ -59,7 +59,7 @@ export class VariableListComponent implements OnInit {
       data: {text: ''}
     });
     dialogRef.afterClosed().subscribe(result => {
-      // console.log(`Dialog result: ${result}`);
+      // this.logger.log(`Dialog result: ${result}`);
       if(result && result !== undefined && result !== false){
         let variable = {name: result, value: result};
         that.variableListUserDefined.push(variable);

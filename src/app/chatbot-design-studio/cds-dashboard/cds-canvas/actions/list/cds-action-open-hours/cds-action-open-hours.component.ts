@@ -39,7 +39,7 @@ export class CdsActionOpenHoursComponent implements OnInit {
 
   ngOnInit(): void {
     this.intentService.isChangedConnector$.subscribe((connector: any) => {
-      // console.log('CdsActionIntentComponent isChangedConnector-->', connector);
+      // this.logger.log('CdsActionIntentComponent isChangedConnector-->', connector);
       this.connector = connector;
       this.updateConnector();
     });
@@ -71,7 +71,7 @@ export class CdsActionOpenHoursComponent implements OnInit {
       if(idAction === this.action._tdActionId){
         if(this.connector.deleted){ //TODO: verificare quale dei due connettori è stato eliminato e impostare isConnected a false
           // DELETE 
-          // console.log(' deleteConnector :: ', this.connector.id);
+          // this.logger.log(' deleteConnector :: ', this.connector.id);
           // this.action.intentName = null;
           if(array[array.length -1] === 'true'){
             this.action.trueIntent = null
@@ -83,7 +83,7 @@ export class CdsActionOpenHoursComponent implements OnInit {
           }
         } else { //TODO: verificare quale dei due connettori è stato aggiunto (controllare il valore della action corrispondente al true/false intent)
           // ADD / EDIT
-          console.log(' updateConnector :: onlineagents', this.connector.toId, this.connector.fromId ,this.action, array[array.length-1]);
+          this.logger.log(' updateConnector :: onlineagents', this.connector.toId, this.connector.fromId ,this.action, array[array.length-1]);
           if(array[array.length -1] === 'true'){
             this.action.trueIntent = '#'+this.connector.toId;
             this.isConnectedTrue = true
@@ -97,7 +97,7 @@ export class CdsActionOpenHoursComponent implements OnInit {
         this.updateAndSaveAction.emit();
       }
     } catch (error) {
-      console.log('error: ', error);
+      this.logger.log('error: ', error);
     }
   }
 

@@ -53,7 +53,7 @@ export class CdsActionDescriptionComponent implements OnInit {
   // }
 
   onChangeText(text: string){
-    console.log('ActionDescriptionComponent onChangeText:: ', text);
+    this.logger.log('ActionDescriptionComponent onChangeText:: ', text);
     this.actionSelected._tdActionTitle = text;
   }
 

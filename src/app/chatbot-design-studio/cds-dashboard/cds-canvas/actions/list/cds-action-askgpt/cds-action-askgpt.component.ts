@@ -173,7 +173,7 @@ export class CdsActionAskgptComponent implements OnInit {
       this.kb_selected_id = this.kbs_list.find(k => k.url === this.action.kbid)._id;
       this.kb_selected_name = this.kbs_list.find(k => k.url === this.action.kbid).name;
       //this.checkKbStatus(this.action.kbid);
-      console.log("[ACTION-ASKGPT] updated action", this.action, this.kb_selected_name);
+      this.logger.log("[ACTION-ASKGPT] updated action", this.action, this.kb_selected_name);
       this.updateAndSaveAction.emit();
     }
   }
@@ -195,15 +195,15 @@ export class CdsActionAskgptComponent implements OnInit {
   }
   
   onChangeAttributes(attributes:any, type:'trueIntent' | 'falseIntent'){
-    console.log("type: ", type)
-    console.log("attributes: ", attributes)
+    this.logger.log("type: ", type)
+    this.logger.log("attributes: ", attributes)
     if (type === 'trueIntent') {
       this.action.trueIntentAttributes = attributes;
     }
     if (type === 'falseIntent') {
       this.action.falseIntentAttributes = attributes;
     }
-    console.log("action updated: ", this.action)
+    this.logger.log("action updated: ", this.action)
   }
 
 
@@ -293,7 +293,7 @@ export class CdsActionAskgptComponent implements OnInit {
   //   }
   //   this.openaikbService.deleteOpenaiKb(id).subscribe((deletedKb) => {
   //     this.logger.info("deletedKb response ", deletedKb);
-  //     console.log("deletedKb response ", deletedKb);
+  //     this.logger.log("deletedKb response ", deletedKb);
   //     this.getAllOpenaiKbs();
   //   }, (error) => {
   //     this.logger.error("[ACTION ASKGPT] ERROR delete kb: ", error);

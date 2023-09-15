@@ -21,7 +21,7 @@ export class CdsActionAssignFunctionComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // console.log('-------> action:: ', this.action);
+    // this.logger.log('-------> action:: ', this.action);
     this.initialize();
   }
 
@@ -35,13 +35,13 @@ export class CdsActionAssignFunctionComponent implements OnInit {
   }
 
   onSelectedFunction(event: any) {
-    // console.log("onSelectedFunction::: ", event);
+    // this.logger.log("onSelectedFunction::: ", event);
     this.action.functionName = event.value;
     this.updateAndSaveAction.emit()
   }
 
   onSelectedAttribute(event: any){
-    // console.log("onSelectedAttribute::: ", event);
+    // this.logger.log("onSelectedAttribute::: ", event);
     this.action.assignTo = event.name;
     this.updateAndSaveAction.emit()
   }

@@ -33,9 +33,9 @@ export class CdsActionIntentComponent implements OnInit {
 
 
   ngOnInit(): void {
-    console.log("[CDS-ACTION-INTENT] elementSelected: ", this.action, this.intentSelected)
+    this.logger.log("[CDS-ACTION-INTENT] elementSelected: ", this.action, this.intentSelected)
     this.intentService.isChangedConnector$.subscribe((connector: any) => {
-      console.log('[CDS-ACTION-INTENT] - subcribe to isChangedConnector$ >>', connector);
+      this.logger.log('[CDS-ACTION-INTENT] - subcribe to isChangedConnector$ >>', connector);
       this.connector = connector;
       this.updateConnector();
     });
@@ -51,39 +51,39 @@ export class CdsActionIntentComponent implements OnInit {
     this.idIntentSelected = this.intentSelected.intent_id;
     this.idConnector = this.idIntentSelected+'/'+this.action._tdActionId;
     this.intents = this.intentService.getListOfIntents();
-    console.log('[CDS-ACTION-INTENT] - initialize - idIntentSelected ', this.idIntentSelected);
-    console.log('[CDS-ACTION-INTENT] - initialize - idConnector ', this.idConnector);
-    console.log('[CDS-ACTION-INTENT] - initialize - intents ', this.intents);
+    this.logger.log('[CDS-ACTION-INTENT] - initialize - idIntentSelected ', this.idIntentSelected);
+    this.logger.log('[CDS-ACTION-INTENT] - initialize - idConnector ', this.idConnector);
+    this.logger.log('[CDS-ACTION-INTENT] - initialize - intents ', this.intents);
   }
 
   private updateConnector(){
-    console.log('[CDS-ACTION-INTENT] 1- updateConnector :: ');
+    this.logger.log('[CDS-ACTION-INTENT] 1- updateConnector :: ');
     try {
       const array = this.connector.fromId.split("/");
       const idAction= array[1];
-      console.log('[CDS-ACTION-INTENT] 2 - updateConnector :: ', idAction, this.action._tdActionId);
+      this.logger.log('[CDS-ACTION-INTENT] 2 - updateConnector :: ', idAction, this.action._tdActionId);
       if(idAction === this.action._tdActionId){
         if(this.connector.deleted){
           // DELETE 
-          console.log('[CDS-ACTION-INTENT] deleteConnector :: ', this.connector.id);
+          this.logger.log('[CDS-ACTION-INTENT] deleteConnector :: ', this.connector.id);
           this.action.intentName = null;
           this.isConnected = false;
         } else {
           // ADD / EDIT
-          console.log('[CDS-ACTION-INTENT] updateConnector :: ', this.connector.toId);
+          this.logger.log('[CDS-ACTION-INTENT] updateConnector :: ', this.connector.toId);
           this.action.intentName = "#"+this.connector.toId;
           this.isConnected = true;
         }
         this.updateAndSaveAction.emit();
       }
     } catch (error) {
-      console.log('error: ', error);
+      this.logger.log('error: ', error);
     }
   }
 
 
   onChangeSelect(event: {name: string, value: string}){
-    console.log('CDS-ACTION-INTENT onChangeSelect-->', event)
+    this.logger.log('CDS-ACTION-INTENT onChangeSelect-->', event)
     this.action.intentName = event.value
     if(!this.action._tdActionTitle){
       this.action._tdActionTitle = this.intents.find(intent => intent.value === event.value).name

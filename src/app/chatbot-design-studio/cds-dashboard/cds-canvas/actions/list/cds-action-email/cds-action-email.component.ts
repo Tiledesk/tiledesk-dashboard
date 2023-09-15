@@ -27,7 +27,7 @@ export class CdsActionEmailComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnInit(): void {
-    console.log("[ACTION-EMAIL] elementSelected: ", this.action)
+    this.logger.log("[ACTION-EMAIL] elementSelected: ", this.action)
   }
 
   ngOnChanges() {
@@ -37,8 +37,8 @@ export class CdsActionEmailComponent implements OnInit, OnChanges {
 
   onChangeTextarea($event: string, property: string) {
     if($event){
-      console.log("[CDS-ACTION-EMAIL] onEditableDivTextChange event", $event)
-      console.log("[CDS-ACTION-EMAIL] onEditableDivTextChange property", property)
+      this.logger.log("[CDS-ACTION-EMAIL] onEditableDivTextChange event", $event)
+      this.logger.log("[CDS-ACTION-EMAIL] onEditableDivTextChange property", property)
       this.action[property] = $event
       this.updateAndSaveAction.emit();
     }
@@ -64,7 +64,7 @@ export class CdsActionEmailComponent implements OnInit, OnChanges {
   }
 
   onToChange(event) {
-    console.log("[CDS-ACTION-EMAIL] onToChange event: ", event);
+    this.logger.log("[CDS-ACTION-EMAIL] onToChange event: ", event);
     this.action.to = event;
   }
 
@@ -73,7 +73,7 @@ export class CdsActionEmailComponent implements OnInit, OnChanges {
 
 
   // onOpenActionDetails() {
-  //   console.log( '[CDS-ACTION-EMAIL] onOpenActionDetails' )
+  //   this.logger.log( '[CDS-ACTION-EMAIL] onOpenActionDetails' )
   //   this.controllerService.openActionDetailPanel('email');
   // }
 

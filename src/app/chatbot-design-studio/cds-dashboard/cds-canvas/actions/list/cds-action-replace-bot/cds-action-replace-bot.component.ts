@@ -25,12 +25,12 @@ export class CdsActionReplaceBotComponent implements OnInit, OnChanges {
     ) { }
 
   ngOnInit(): void {
-    console.log("[ACTION REPLACE BOT] action (on-init): ", this.action)
+    this.logger.log("[ACTION REPLACE BOT] action (on-init): ", this.action)
     this.getAllBots();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log("[ACTION REPLACE BOT] action (on-changes): ", this.action)
+    this.logger.log("[ACTION REPLACE BOT] action (on-changes): ", this.action)
   }
 
   getAllBots() {
@@ -50,7 +50,7 @@ export class CdsActionReplaceBotComponent implements OnInit, OnChanges {
     //this.logger.log("[ACTION REPLACE BOT] onChangeActionButton event: ", event)
     this.action.botName = event.value;
     this.updateAndSaveAction.emit()
-    console.log("[ACTION REPLACE BOT] action edited: ", this.action)
+    this.logger.log("[ACTION REPLACE BOT] action edited: ", this.action)
   }
 
 }

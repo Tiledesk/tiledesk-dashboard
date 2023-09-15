@@ -56,7 +56,7 @@ export class CdsDashboardComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    console.log("•••• [CDS DSHBRD] ngOnInit ••••");
+    this.logger.log("•••• [CDS DSHBRD] ngOnInit ••••");
     this.auth.checkRoleForCurrentProject();
     this.executeAsyncFunctionsInSequence();
     this.hideShowWidget('hide')
@@ -70,22 +70,22 @@ export class CdsDashboardComponent implements OnInit {
    * possiamo visualizzare lo stage completo
    */
   async executeAsyncFunctionsInSequence() {
-    console.log('[CDS DSHBRD] executeAsyncFunctionsInSequence -------------> ');
+    this.logger.log('[CDS DSHBRD] executeAsyncFunctionsInSequence -------------> ');
     try {
       const getTranslations = await this.getTranslations();
-      console.log('[CDS DSHBRD] Risultato 1:', getTranslations);
+      this.logger.log('[CDS DSHBRD] Risultato 1:', getTranslations);
       const getUrlParams = await this.getUrlParams();
-      console.log('[CDS DSHBRD] Risultato 2:', getUrlParams);
+      this.logger.log('[CDS DSHBRD] Risultato 2:', getUrlParams);
       const getBotById = await this.dashboardService.getBotById();
-      console.log('[CDS DSHBRD] Risultato 3:', getBotById, this.selectedChatbot);
+      this.logger.log('[CDS DSHBRD] Risultato 3:', getBotById, this.selectedChatbot);
       const getCurrentProject = await this.dashboardService.getCurrentProject();
-      console.log('[CDS DSHBRD] Risultato 4:', getCurrentProject);
+      this.logger.log('[CDS DSHBRD] Risultato 4:', getCurrentProject);
       const getBrowserVersion = await this.dashboardService.getBrowserVersion();
-      console.log('[CDS DSHBRD] Risultato 5:', getBrowserVersion);
+      this.logger.log('[CDS DSHBRD] Risultato 5:', getBrowserVersion);
       const getDefaultDepartmentId = this.dashboardService.getDeptsByProjectId();
-      console.log('[CDS DSHBRD] Risultato 6:', getDefaultDepartmentId);
+      this.logger.log('[CDS DSHBRD] Risultato 6:', getDefaultDepartmentId);
       if (getTranslations && getUrlParams && getBotById && getCurrentProject && getBrowserVersion && getDefaultDepartmentId) {
-        console.log('[CDS DSHBRD] Ho finito di inizializzare la dashboard');
+        this.logger.log('[CDS DSHBRD] Ho finito di inizializzare la dashboard');
         this.project = this.dashboardService.project;
         this.selectedChatbot = this.dashboardService.selectedChatbot;
         this.initFinished = true;
@@ -161,7 +161,7 @@ export class CdsDashboardComponent implements OnInit {
 
   /** Go back to previous page */
   goBack() {
-    console.log('[CDS DSHBRD] goBack ');
+    this.logger.log('[CDS DSHBRD] goBack ');
     this.router.navigate(['project/' + this.project._id + '/bots/my-chatbots/all']);
     this.hideShowWidget('show');
   }
@@ -175,7 +175,7 @@ export class CdsDashboardComponent implements OnInit {
    * - button configuration panel  
   */
   onTestItOut(event: Intent | boolean) {
-    console.log('[CDS DSHBRD] onTestItOut intent ', event);
+    this.logger.log('[CDS DSHBRD] onTestItOut intent ', event);
     if(typeof event === "boolean"){
       this.IS_OPEN_PANEL_WIDGET = true;
     } else {
@@ -196,13 +196,13 @@ export class CdsDashboardComponent implements OnInit {
 
   /** onClosePanelWidget */
   onClosePanelWidget(){
-    console.log('[CDS DSHBRD] onClosePanelWidget');
+    this.logger.log('[CDS DSHBRD] onClosePanelWidget');
     this.IS_OPEN_PANEL_WIDGET = false;
   }
 
   /** SIDEBAR OUTPUT EVENTS */
   onClickItemList(event: string) {
-    console.log('[CDS DSHBRD] active section-->', event);
+    this.logger.log('[CDS DSHBRD] active section-->', event);
     if(event !== 'cds-sb-intents'){
       // this.connectorService.initializeConnectors();
       this.IS_OPEN_PANEL_WIDGET = false;

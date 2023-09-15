@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { LoggerService } from 'app/services/logger/logger.service';
 
 @Component({
   selector: 'cds-addkb-dialog',
@@ -13,18 +14,19 @@ export class AddkbDialogComponent implements OnInit {
   kbForm: FormGroup;
 
   constructor(
+    private logger: LoggerService,
     private formBuilder: FormBuilder,
     public dialogRef: MatDialogRef<AddkbDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
   ) { }
 
   ngOnInit(): void {
-    console.log("Add Knowledge base dialog - OPENED");
+    this.logger.log("Add Knowledge base dialog - OPENED");
     this.kbForm = this.createConditionGroup();
   }
 
   onChangeInput(event, target):void {
-    // console.log("----> event: ", event);
+    // this.logger.log("----> event: ", event);
 
     // if (target === 'url') {
     //   const regexPattern = '(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?';
@@ -50,12 +52,12 @@ export class AddkbDialogComponent implements OnInit {
   }
 
   onSubmitKb() {
-    console.log("onSubmitKb: ", this.kbForm)
+    this.logger.log("onSubmitKb: ", this.kbForm)
     if (this.kbForm.valid) {
-      console.log("abilita il bottone")
+      this.logger.log("abilita il bottone")
       this.disableSubmit = false;
     } else {
-      console.log("disabilita il bottone")
+      this.logger.log("disabilita il bottone")
       this.disableSubmit = true;
     }
   }
@@ -63,7 +65,7 @@ export class AddkbDialogComponent implements OnInit {
   onCloseDialog(): void {
     // ADD CONTROLS!!!!
     // NOT NECESSARY???
-    console.log("Add Knowledge base dialog - CLOSED");
+    this.logger.log("Add Knowledge base dialog - CLOSED");
     this.dialogRef.close();
   }
 

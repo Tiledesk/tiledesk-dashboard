@@ -35,7 +35,7 @@ export class CDSFilterComponent implements OnInit {
   }
 
   ngOnChanges(){
-    console.log('[BASE_FILTER] expression selected-->', this.expression)
+    this.logger.log('[BASE_FILTER] expression selected-->', this.expression)
   }
 
   onOpenConditionDetail(index: number){
@@ -49,7 +49,6 @@ export class CDSFilterComponent implements OnInit {
     }else if(last){
       this.expression.conditions.splice(index-1, 2)
     }
-    this.logger.log('expressionnn', this.expression)
   }
 
   onChangeOperator(event, index: number){
@@ -60,9 +59,7 @@ export class CDSFilterComponent implements OnInit {
 
   onDismiss(condition: Condition){
     if(condition){
-      this.logger.log('onDismiss popover condition', condition)
       this.logger.log('onDismiss popover condition', condition, this.selectedCondition, this.selectedIndex, this.expression)
-      console.log('onDismiss popover condition', condition)
       //if condition already exist --> do not push new condition
       //else push new operaor and condition  
       if(this.selectedCondition){

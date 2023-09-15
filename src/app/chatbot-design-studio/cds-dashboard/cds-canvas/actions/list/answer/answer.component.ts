@@ -19,7 +19,6 @@ export class CdsAnswerComponent implements OnInit {
   }
 
   onChangeText(_answer:string) { 
-    console.log('onChangeText:: _answer:: ', _answer);
     this.updateAnswerIntentSelected.emit(_answer);
   }
 

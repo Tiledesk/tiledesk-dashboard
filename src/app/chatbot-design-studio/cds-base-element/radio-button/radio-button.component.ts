@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { LoggerService } from 'app/services/logger/logger.service';
 
 @Component({
   selector: 'cds-radio-buttons',
@@ -13,15 +14,13 @@ export class CDSRadioButtonComponent implements OnInit {
   @Input() column: number = 1;
   @Output() changeButtonSelect = new EventEmitter<any>();
 
-  constructor() { }
+  constructor(private logger: LoggerService) { }
 
   ngOnInit(): void {
-
-    console.log('[RADIO-BUTTON] itemSelected', this.itemSelected)
+    this.logger.log('[RADIO-BUTTON] itemSelected', this.itemSelected)
   }
 
   onChangeButton(event){
-    console.log('changeeeeeeeee', event)
     this.changeButtonSelect.emit(event.value)
   }
 

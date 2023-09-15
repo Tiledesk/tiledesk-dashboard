@@ -28,12 +28,12 @@ export class CdsActionDeleteVariableComponent implements OnInit {
   }
 
   private initialize() {
-    // console.log('action: ', variableList.userDefined);
+    // this.logger.log('action: ', variableList.userDefined);
     this.variableListUserDefined = variableList.userDefined;
   }
 
   onChangeSelect(variableSelected: {name: string, value: string}){
-    // console.log('changeeeeee', variableSelected);
+    // this.logger.log('changeeeeee', variableSelected);
     this.action.variableName = variableSelected.name;
     this.updateAndSaveAction.emit()
   }
