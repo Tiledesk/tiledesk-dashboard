@@ -274,7 +274,7 @@ export class CdsActionReplyComponent implements OnInit {
 
   /** onCreateNewButton */
   onCreateNewButton(index){
-    console.log('onCreateNewButton: ', index);
+    console.log('[cds-action-reply] onCreateNewButton: ', index);
     try {
       if(!this.arrayResponses[index].message.attributes || !this.arrayResponses[index].message.attributes.attachment){
         this.arrayResponses[index].message.attributes = new MessageAttributes();
@@ -282,11 +282,10 @@ export class CdsActionReplyComponent implements OnInit {
     } catch (error) {
       console.log('error: ', error);
     }
-
     let buttonSelected = this.createNewButton();
     if(buttonSelected){
       this.arrayResponses[index].message.attributes.attachment.buttons.push(buttonSelected);
-      console.log('onCreateNewButton: ', this.arrayResponses);
+      console.log('[cds-action-reply] onCreateNewButton: ', this.action, this.arrayResponses);
       this.onUpdateAndSaveAction();
     }
   }
@@ -296,7 +295,6 @@ export class CdsActionReplyComponent implements OnInit {
     if(this.intentSelected.intent_id){
       this.idAction = this.intentSelected.intent_id+'/'+this.action._tdActionId;
       const idActionConnector = this.idAction+'/'+idButton;
-      console.log('createNewButton: ', this.intentSelected);
       let buttonSelected = new Button(
         idButton,
         idActionConnector,
@@ -309,22 +307,10 @@ export class CdsActionReplyComponent implements OnInit {
         '',
         true
       );
-
-      // let buttonSelected = {
-      //   'uid': idButton,
-      //   'idConnector': idActionConnector,
-      //   'isConnected': false,
-      //   'value': 'Button',
-      //   'type': TYPE_BUTTON.TEXT,
-      //   'target': TYPE_URL.BLANK,
-      //   'link': '',
-      //   'action': '',
-      //   'show_echo': true
-      // };
+      console.log('[cds-action-reply] createNewButton: ', buttonSelected);
       return buttonSelected;
     }
     return null;
-    
   }
 
   /** onDeleteButton */
@@ -343,9 +329,9 @@ export class CdsActionReplyComponent implements OnInit {
    * 2 - update intent
    * */
   public async onUpdateAndSaveAction() {
-    console.log('[CDS-INTENT] onUpdateAndSaveAction:::: ', this.intentSelected, this.intentSelected.actions);
+    console.log('[cds-action-reply] onUpdateAndSaveAction:::: ', this.intentSelected, this.action);
     this.connectorService.movedConnector(this.intentSelected.intent_id);
-    this.updateAndSaveAction.emit();
+    this.updateAndSaveAction.emit(this.action);
   }
 
   // on intent name //

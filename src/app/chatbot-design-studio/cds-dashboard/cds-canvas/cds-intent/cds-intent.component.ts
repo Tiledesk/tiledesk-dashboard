@@ -18,10 +18,13 @@ import {
   moveItemInArray,
   transferArrayItem
 } from '@angular/cdk/drag-drop';
-import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { StageService } from 'app/chatbot-design-studio/services/stage.service';
 import { ControllerService } from 'app/chatbot-design-studio/services/controller.service';
+
+import { replaceItemInArrayForKey } from 'app/chatbot-design-studio/utils';
+
+
 
 
 export enum HAS_SELECTED_TYPE {
@@ -611,6 +614,10 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
    * 2 - update intent
    * */
   public async onUpdateAndSaveAction(event) {
+    // se event non è nullo sostituisco in this.intent.actions la action con _tdActionId 
+    if(event && event._tdActionId){
+      replaceItemInArrayForKey('_tdActionId', this.intent.actions, event);
+    }
     console.log('[CDS-INTENT] onUpdateAndSaveAction:::: ', event, this.intent, this.intent.actions);
     const response = await this.intentService.updateIntent(this.intent);
     if (response) {

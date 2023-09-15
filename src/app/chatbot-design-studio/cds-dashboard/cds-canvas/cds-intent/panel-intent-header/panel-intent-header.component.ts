@@ -98,22 +98,32 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
     }
   }
 
-  // CUSTOM FUNCTIONS //
-  /** /^[ _0-9a-zA-Z]+$/ */
-  // private checkIntentName(): boolean {
-  //   if (!this.intentName || this.intentName.length === 0) {
-  //     return false;
-  //   } else {
-  //     return true;
-  //   }
-  // }
-
+  /******************* CUSTOM FUNCTIONS *******************/ 
+ 
+  /** checkIntentNameMachRegex */
   checkIntentNameMachRegex(intentname) {
     const regex = /^[ _0-9a-zA-Z]+$/
     return regex.test(intentname);
   }
 
-  // EVENT FUNCTIONS //
+  private checkIntentName(name: string) {
+    this.intentNameAlreadyExist = false;
+    if (name !== this.intent.intent_display_name) {
+      this.intentNameAlreadyExist = this.listOfIntents.some((el) => {
+        return el.intent_display_name === name;
+      });
+    }
+    this.intentNameNotHasSpecialCharacters = this.checkIntentNameMachRegex(name);
+    this.intentNameResult = true;
+    if (!this.intentName || this.intentName.trim().length === 0) {
+      this.intentNameResult = false;
+    }
+    return this.intentNameResult;
+  }
+
+
+
+  /******************* EVENT FUNCTIONS *******************/ 
   /** onMouseUpInput */
   onMouseUpInput(){
     // this.logger.log("[PANEL-INTENT-HEADER] onMouseUpInput");
@@ -147,20 +157,7 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
   //   this.isFocused = false;
   // }
 
-  private checkIntentName(name: string) {
-    this.intentNameAlreadyExist = false;
-    if (name !== this.intent.intent_display_name) {
-      this.intentNameAlreadyExist = this.listOfIntents.some((el) => {
-        return el.intent_display_name === name;
-      });
-    }
-    this.intentNameNotHasSpecialCharacters = this.checkIntentNameMachRegex(name);
-    this.intentNameResult = true;
-    if (!this.intentName || this.intentName.trim().length === 0) {
-      this.intentNameResult = false;
-    }
-    return this.intentNameResult;
-  }
+
 
   // /** BLUR EVENT*/
   // onBlurIntentName(event) {
@@ -188,11 +185,14 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
     }
   }
 
-  toggleIntentWebhook(event) {
-    this.logger.log('[PANEL-INTENT-HEADER] toggleWebhook ', event.checked);
-    this.intent.webhook_enabled = event.checked;
-    this.saveIntent.emit(this.intent);
-  }
+
+
+  
+  // toggleIntentWebhook(event) {
+  //   this.logger.log('[PANEL-INTENT-HEADER] toggleWebhook ', event.checked);
+  //   this.intent.webhook_enabled = event.checked;
+  //   this.saveIntent.emit(this.intent);
+  // }
   // getCurrentProject() {
   //   this.auth.project_bs.subscribe((project) => {
   //     this.project = project;
