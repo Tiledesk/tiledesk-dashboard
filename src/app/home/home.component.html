@@ -8,7 +8,7 @@
 <appdashboard-home-promo-banner *ngIf="isVisibleHomeBanner" (showPromoBanner)='showPromoBanner()'>
 </appdashboard-home-promo-banner>
 
-<appdashboard-home-promo-design-studio style="position: relative;" [user]="user"
+<appdashboard-home-promo-design-studio *ngIf="isVisibleHomeBanner" style="position: relative;" [user]="user"
   [ngStyle]="{'margin-top':isVisibleHomeBanner === true ? '0px' : '-5px' }">
 </appdashboard-home-promo-design-studio>
 

@@ -33,7 +33,7 @@ $background-color-active: $icon-color;
         display: flex;
         flex-direction: row;
         align-items: center;
-        justify-content: start;
+        justify-content: flex-start;
         margin-bottom: 10px;
         padding-left: 14px;
         gap: 11px;
@@ -160,11 +160,6 @@ $background-color-active: $icon-color;
     margin: 6px 0px 14px 0px;
 }
 
-
-
-
-
-
 .intent {
     display: flex;
     flex-direction: row;
@@ -174,7 +169,7 @@ $background-color-active: $icon-color;
     margin-bottom: 8px;
     cursor: pointer;
     transition: all 0.3s;
-    align-items: start;
+    align-items: flex-start;
     height: 20px;
     padding-left: 10px;
 

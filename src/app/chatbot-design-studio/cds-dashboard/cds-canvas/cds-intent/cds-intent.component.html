@@ -4,15 +4,12 @@
     <div class="intent-header-actions-container" *ngIf="listOfActions?.length > 0"
         [ngClass]="{'intent-header-actions-container-on-start': isStart}">
 
-
-
-
-
         <div class="intent-header-actions-wpr">
             <!-- ---------------------------------- -->
             <!-- Delete intent  -->
             <!-- ---------------------------------- -->
             <div class="intent-header-action-btn svg-icon--delete-intent" 
+                *ngIf="!isStart"
                 (click)="$event.stopPropagation();onDeleteIntent(intent)"
                 matTooltipClass="cds-mat-tooltip" 
                 matTooltip="Delete intent" 
