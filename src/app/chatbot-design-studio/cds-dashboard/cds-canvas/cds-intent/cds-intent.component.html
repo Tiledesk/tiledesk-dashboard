@@ -13,7 +13,7 @@
             <!-- Delete intent  -->
             <!-- ---------------------------------- -->
             <div class="intent-header-action-btn svg-icon--delete-intent" 
-            (click)="$event.stopPropagation();onDeleteIntent(intent)"
+                (click)="$event.stopPropagation();onDeleteIntent(intent)"
                 matTooltipClass="cds-mat-tooltip" 
                 matTooltip="Delete intent" 
                 #tooltip="matTooltip"
@@ -93,9 +93,10 @@
         [id]="'block-header-'+ intent?.intent_id" 
         [ngClass]="{'cds-start': isStart, 'placeholder-block-header':listOfActions?.length === 0}">
 
-        <appdashboard-panel-intent-header class="pic-title-text tds_draggable" 
-            [intentSelected]="intent">
-        </appdashboard-panel-intent-header>
+        <cds-panel-intent-header 
+            class="pic-title-text tds_draggable" 
+            [intent]="intent">
+        </cds-panel-intent-header>
 
 
         <div *ngIf="!isStart" class="cds-intent-options">
@@ -173,7 +174,8 @@
 
             <div class="action-drag-placeholder" *cdkDragPlaceholder></div>
 
-            <cds-action-description cdkDragHandle class="header-action" 
+            <cds-action-description cdkDragHandle 
+                class="header-action" 
                 [elementType]="action._tdActionType">
             </cds-action-description>
 
@@ -254,7 +256,7 @@
                     (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-json-condition>
 
-                <cds-action-replace-bot *ngSwitchCase="TYPE_ACTION.REPLACE_BOT"     
+                <cds-action-replace-bot *ngSwitchCase="TYPE_ACTION.REPLACE_BOT" 
                     class="panel-response"
                     [action]="action">
                 </cds-action-replace-bot>

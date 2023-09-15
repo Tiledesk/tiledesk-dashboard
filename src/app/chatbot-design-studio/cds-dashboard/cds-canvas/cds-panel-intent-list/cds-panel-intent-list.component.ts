@@ -56,7 +56,7 @@ export class CdsPanelIntentListComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    // console.log('[CdsPanelIntentListComponent] ngOnChanges::', this.listOfIntents);
+    //console.log('[CdsPanelIntentListComponent] ngOnChanges::', this.listOfIntents);
   }
 
   /** ngOnDestroy */

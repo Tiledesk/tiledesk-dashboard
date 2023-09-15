@@ -58,6 +58,8 @@ export class IntentService {
   setTimeoutChangeEvent: any;
   idIntentUpdating: string;
 
+  intentNameAlreadyExist: boolean;
+
 
   // newPosition: any = {'x':0, 'y':0};
   
@@ -91,12 +93,14 @@ export class IntentService {
         this.intentSelected = startIntent[0];
       }
     }
+    console.log('[INTENT SERVICE] ::: setDefaultIntentSelected ::: ', this.intentSelected);
     this.behaviorIntent.next(this.intentSelected);
     //this.liveActiveIntent.next(this.intentSelected);
   }
 
   public setIntentSelected(intent){
     this.intentSelected = intent;
+    console.log('[INTENT SERVICE] ::: setIntentSelected ::: ', this.intentSelected);
     this.behaviorIntent.next(this.intentSelected);
     //this.liveActiveIntent.next(this.selectedIntent);
   }
@@ -105,6 +109,30 @@ export class IntentService {
     let intent = this.listOfIntents.find((intent) => intent.intent_display_name === intentName);
     this.liveActiveIntent.next(intent)
   }
+
+
+  /** checkIntentNameMachRegex */
+  // checkIntentNameMachRegex(intentname) {
+  //   const regex = /^[ _0-9a-zA-Z]+$/
+  //   return regex.test(intentname);
+  // }
+
+  // private checkIntentName(name: string, ) {
+  //   this.intentNameAlreadyExist = false;
+  //   if (name !== this.intent.intent_display_name) {
+  //     this.intentNameAlreadyExist = this.listOfIntents.some((el) => {
+  //       return el.intent_display_name === name;
+  //     });
+  //   }
+
+  //   this.intentNameNotHasSpecialCharacters = this.checkIntentNameMachRegex(name);
+  //   this.intentNameResult = true;
+  //   if (!this.intentName || this.intentName.trim().length === 0) {
+  //     this.intentNameResult = false;
+  //   }
+  //   return this.intentNameResult;
+  // }
+  
 
   /** setDragAndListnerEvent */
   // public setListnerEvent(intent) {
@@ -402,7 +430,6 @@ export class IntentService {
           actionsIntent,
           webhookEnabledIntent
         ).subscribe((intent: Intent) => {
-          console.log('[INTENT-SERVICE] UPDATED INTENT ID ', intent.id);
           console.log('[INTENT-SERVICE] UPDATED INTENT ', intent);
           resolve(true);
         }, (error) => {
@@ -437,6 +464,15 @@ export class IntentService {
 
 
   // START ACTION FUNCTIONS //
+
+  /** update title of intent */
+  public changeIntentName(intent){
+    this.behaviorIntent.next(intent);
+    const response = this.updateIntent(intent);
+    if(response){
+      // console.log('update previous Intent: OK');
+    }
+  }
 
   // moving new action in intent from panel elements
   public moveNewActionIntoIntent(event, action, currentIntentId): any {
@@ -601,7 +637,8 @@ export class IntentService {
     this.actionSelectedID = null;
     this.intentSelected = this.listOfIntents.find(intent => intent.intent_id === intentID);
     console.log('[INTENT SERVICE] --> intentID', intentID)
-    console.log('[INTENT SERVICE] --> selectIntent', this.intentSelected)
+    console.log('[INTENT SERVICE] --> selectIntent', this.intentSelected);
+    console.log('[INTENT SERVICE] ::: setIntentSelected ::: ', this.intentSelected);
     if(!this.intentSelected)return;
     this.listActions = this.intentSelected.actions?this.intentSelected.actions:null;
     this.selectedAction = null;
