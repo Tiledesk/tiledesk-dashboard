@@ -711,6 +711,8 @@ export class IntentService {
     }
     if(typeAction === TYPE_ACTION.WEB_REQUESTV2){
       action = new ActionWebRequestV2();
+      action.assignStatusTo = 'status';
+      action.assignErrorTo = 'error';
     }
     if(typeAction === TYPE_ACTION.AGENT){
       action = new ActionAgent();

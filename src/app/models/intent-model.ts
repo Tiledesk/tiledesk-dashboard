@@ -175,18 +175,22 @@ export class ActionWebRequestV2 extends Action {
     method: string;
     url: string;
     headersString: any;
-    jsonBody: string;
-    assignTo: string;
+    body: string;
+    assignStatusTo: string;
+    assignErrorTo: string;
+    trueIntent: string;
+    falseIntent: string;
     assignments: {}
     constructor(){
         super();
         this.url = '';
-        this.headersString = {"Content-Type":"application/json", "Cache-Control":"no-cache", "User-Agent":"TiledeskBotRuntime", "Accept":"*/*"};
-        this.jsonBody = JSON.stringify({});
-        this.assignTo = '';
+        this.headersString = {"Content-Type":"*/*", "Cache-Control":"no-cache", "User-Agent":"TiledeskBotRuntime", "Accept":"*/*"};
+        this.body = null
+        this.assignStatusTo = '';
+        this.assignErrorTo = '';
         this.assignments = {};
         this.method = TYPE_METHOD_REQUEST.GET;
-        this._tdActionType = TYPE_ACTION.WEB_REQUEST;
+        this._tdActionType = TYPE_ACTION.WEB_REQUESTV2;
     }
 }
 

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { ActionWebRequest } from 'app/models/intent-model';
+import { ActionWebRequest, ActionWebRequestV2 } from 'app/models/intent-model';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { TYPE_METHOD_ATTRIBUTE, TYPE_METHOD_REQUEST, TEXT_CHARS_LIMIT } from 'app/chatbot-design-studio/utils';
 
@@ -10,7 +10,7 @@ import { TYPE_METHOD_ATTRIBUTE, TYPE_METHOD_REQUEST, TEXT_CHARS_LIMIT } from 'ap
 })
 export class CdsActionWebRequestV2Component implements OnInit {
 
-  @Input() action: ActionWebRequest;
+  @Input() action: ActionWebRequestV2;
   @Input() previewMode: boolean = true;
   @Output() updateAndSaveAction = new EventEmitter();
   
@@ -19,17 +19,20 @@ export class CdsActionWebRequestV2Component implements OnInit {
 
   limitCharsText = TEXT_CHARS_LIMIT;
   jsonHeader: any; 
-  jsonBody: string;
+  body: string = null
   jsonIsValid = true;
   errorMessage: string;
   methodSelectedHeader = true;
   methodSelectedBody = false;
   headerAttributes: any;
 
-  hasSelectedVariable: boolean = false;
+  // hasSelectedVariable: boolean = false;
   typeMethodAttribute = TYPE_METHOD_ATTRIBUTE;
   assignments: {} = {}
 
+  bodyOptions: Array<{label: string, value: string, disabled: boolean, checked: boolean}>= [ {label: 'none', value: 'none', disabled: false, checked: true}, {label: 'Json', value: 'json', disabled: false, checked: false}]
+  
+  
   constructor(
     private logger: LoggerService
   ) { }
@@ -43,9 +46,9 @@ export class CdsActionWebRequestV2Component implements OnInit {
     // on change
     this.initialize();
     console.log('CDS-ACTION-WEB-REQUEST ACTION' , this.action )
-    if (this.action && this.action.assignTo) {
-      this.hasSelectedVariable = true
-    }
+    // if (this.action && this.action.assignStatusTo) {
+    //   this.hasSelectedVariable = true
+    // }
   }
 
   
@@ -55,16 +58,16 @@ export class CdsActionWebRequestV2Component implements OnInit {
       return { label: key, value: key }
     })
     this.jsonHeader = this.action.headersString;
-    this.jsonIsValid = this.isValidJson(this.action.jsonBody);
+    this.jsonIsValid = this.isValidJson(this.action.body);
     if(this.jsonIsValid){
-      this.jsonBody = this.action.jsonBody;
-      this.jsonBody = this.formatJSON(this.jsonBody, "\t");
+      this.body = this.action.body;
+      this.body = this.formatJSON(this.body, "\t");
     }
     this.assignments = this.action.assignments
   }
 
   private setActionWebRequest(){
-    this.action.jsonBody = this.jsonBody;
+    this.action.body = this.body;
     this.updateAndSaveAction.emit()
   }
 
@@ -100,14 +103,26 @@ export class CdsActionWebRequestV2Component implements OnInit {
     this.updateAndSaveAction.emit()
   }
 
+
+  onChangeButtonSelect(event: {label: string, value: string, disabled: boolean}){
+    switch (event.value){
+      case 'none':
+        this.body = null
+        break;
+      case 'json':
+        this.body = JSON.stringify({})
+    }
+    console.log('onChangeButtonSelect-->', event, this.body)
+  }
+
   onChangeTextarea(e, type: 'url' | 'jsonBody'){
     this.logger.debug('onChangeTextarea:', e, type );
     switch(type){
       case 'jsonBody': {
-        this.jsonBody = e;
+        this.body = e;
         this.setActionWebRequest();
         setTimeout(() => {
-          this.jsonIsValid = this.isValidJson(this.jsonBody);
+          this.jsonIsValid = this.isValidJson(this.body);
           this.updateAndSaveAction.emit()
         }, 500);
         break;
@@ -129,13 +144,13 @@ export class CdsActionWebRequestV2Component implements OnInit {
       this.methodSelectedHeader = true;
       this.methodSelectedBody = false;
     }
-    this.jsonIsValid = this.isValidJson(this.jsonBody);
+    this.jsonIsValid = this.isValidJson(this.body);
     this.setActionWebRequest();
   }
 
   onJsonFormatter(){
       try {
-        this.jsonBody = this.formatJSON(this.jsonBody, "\t");
+        this.body = this.formatJSON(this.body, "\t");
       }
       catch (err) {
         this.logger.error('error:', err);
@@ -148,19 +163,6 @@ export class CdsActionWebRequestV2Component implements OnInit {
     this.updateAndSaveAction.emit()
     // this.jsonHeader = attributes;
   }
-
-  onClearSelectedAttribute(){
-    this.action.assignTo = '';
-    this.hasSelectedVariable = false;
-    this.updateAndSaveAction.emit()
-  }
-  
-  onSelectedAttribute(variableSelected: {name: string, value: string}, step: number){
-    this.hasSelectedVariable = true;
-    this.action.assignTo = variableSelected.value;
-    this.updateAndSaveAction.emit()
-  }
-
 
   onChangeAttributesResponse(attributes:{[key: string]: string }){
     this.action.assignments = attributes ;

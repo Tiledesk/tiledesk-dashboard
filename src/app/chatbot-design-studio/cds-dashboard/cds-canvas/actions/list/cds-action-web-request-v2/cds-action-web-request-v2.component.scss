@@ -19,9 +19,8 @@
 
 
 
-.cds-web-request-row {
+.cds-web-request-options {
     margin: 10px 0px;
-    padding: 0px 2px;
     display: flex;
     gap: 10px;
     position: relative;
@@ -40,20 +39,14 @@
         }
     }
 }
-.label-assign-to {
-    cursor: default;
+
+.cds-web-request-row{
     display: flex;
-    outline: none;
-    overflow: hidden;
-    position: relative;
-    width: 150px;
-    height: 36px;
-    border-radius: 4px 0 0 4px;
-    background: #f2f2f2;
-    font-weight: 700;
-    margin: 6px 0;
-    padding: 8px 0 0 10px;
+    flex-direction: column;
+    gap: 10px;
 }
+
+
 .input-group .input-group-addon {
     border: 0;
     background: transparent;
@@ -105,6 +98,7 @@
     cursor: pointer;
     box-sizing: border-box;
     outline: none;
+    margin: 0px 2px;
     padding: 0;
     span {
         align-items: center;
@@ -184,13 +178,6 @@
         margin: 10px 0px;
     } 
 }
-
-.cds-attributes {
-    display: block;
-    width: 100%;
-    // margin: 6px 15px;
-}
-
 
 
 

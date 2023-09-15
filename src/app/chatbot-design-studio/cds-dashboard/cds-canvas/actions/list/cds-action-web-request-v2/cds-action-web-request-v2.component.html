@@ -42,7 +42,7 @@
         </cds-textarea>
     </div>
 
-    <div class="cds-web-request-row">
+    <div class="cds-web-request-options">
         <div class="add-response" (click)="onChangeParamsButton()">
             <span [ngClass]="{'cds-action-active': methodSelectedHeader}">Header</span>
         </div>
@@ -53,49 +53,42 @@
             <button id="cds-community-btn" type="button" class="btn btn-primary pull-right cds-blue-button" (click)="onJsonFormatter()">format JSON </button>
         </div>
     </div>
-    
-    <div class="cds-web-request-row">
 
+    <div class="cds-web-request-row"  *ngIf="methodSelectedHeader">
         <cds-attributes
-            *ngIf="methodSelectedHeader"
             class="cds-attributes"
             [method]="typeMethodAttribute.INPUT"
             [attributes]="jsonHeader"
             (changeAttributes)="onChangeAttributes($event)">
         </cds-attributes>
+    </div>
+    
+    <div class="cds-web-request-row" *ngIf="methodSelectedBody">
 
-        <cds-textarea *ngIf="methodSelectedBody"
+        <cds-radio-buttons
+            [items]="bodyOptions"
+            [itemSelected]="bodyOptionSelected"
+            (changeButtonSelect)="onChangeButtonSelect($event)">
+        </cds-radio-buttons>
+
+        <cds-textarea 
             [ngClass]="{'jsonError': !jsonIsValid}"
             class = "text-editable-div"
-            [text]="jsonBody"
+            [text]="body"
             [textLimitBtn]="false"
             [emojiPikerBtn]="false"
             [setAttributeBtn]="true"
             [minRow]="5" [maxRow]="10"
             [readonly]="false"
-            (changeTextarea)="onChangeTextarea($event, 'jsonBody')">
+            (changeTextarea)="onChangeTextarea($event, 'body')">
         </cds-textarea>
-    </div>
-
-    <div *ngIf="methodSelectedBody"
-        class="cds-web-request-row-error center" 
-        [ngClass]="{'json-error-yes': !jsonIsValid}">
-       
-        <span>{{errorMessage}}</span>
-    </div>
 
 
-    <div class="text-editor-wrapper">
-        <div class="field-box">
-            <label class="title-label">Assign to:</label>
-            <cds-attributes
-                class="cds-attributes"
-                [attributes]="assignments"
-                [method]="typeMethodAttribute.TEXT"
-                [openBlock]="true"
-                (changeAttributes)="onChangeAttributesResponse($event)">
-            </cds-attributes>
+        <div class="cds-web-request-row-error center" 
+            [ngClass]="{'json-error-yes': !jsonIsValid}">
+            <span>{{errorMessage}}</span>
         </div>
+
     </div>
 
     
