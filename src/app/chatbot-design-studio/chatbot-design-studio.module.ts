@@ -116,6 +116,7 @@ import { DialogComponent } from './cds-base-element/dialog/dialog.component';
 // import { ActionAssignFunctionComponent } from './cds-dashboard/panel-intent-detail/actions/action-assign-function/action-assign-function.component';
 import { DialogYesNoComponent } from './cds-base-element/dialog-yes-no/dialog-yes-no.component';
 import { CDSFilterComponent } from './cds-base-element/filter/filter.component';
+import { CDSRadioButtonComponent } from './cds-base-element/radio-button/radio-button.component';
 import { CDSDetailBotDetailComponent } from './cds-chatbot-details/detail/detail.component';
 import { CDSDetailImportExportComponent } from './cds-chatbot-details/import-export/import-export.component';
 import { WsChatbotService } from 'app/services/websocket/ws-chatbot.service';
@@ -219,6 +220,7 @@ import { CdsAnswerComponent } from './cds-dashboard/cds-canvas/actions/list/answ
     DialogComponent,
     DialogYesNoComponent,
     CDSFilterComponent,
+    CDSRadioButtonComponent,
     SelectComponent,
     TextEditableDivComponent,
 
