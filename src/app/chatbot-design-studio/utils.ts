@@ -376,18 +376,16 @@ export function patchActionId(action) {
 }
 
 
-export function generateShortUID() {
-    const timestamp = Date.now().toString(36); // Converti l'orario corrente in base 36
+export function generateShortUID(index?) {
+    const timestamp = Date.now().toString(36)+index; // Converti l'orario corrente in base 36
     // const randomChars = Math.random().toString(36).substr(2, 5); // Genera una stringa casuale di 5 caratteri in base 36
     return timestamp; // + randomChars;
-  }
+}
   
-
 export function convertJsonToArray(jsonData:any){
     const arrayOfObjs = Object.entries(jsonData).map(([key, value]) => ({ 'name': key, 'value': value }))
     return arrayOfObjs;
 }
-
 
 export function checkIFElementExists(elementId:string){
     var element = document.getElementById(elementId);
@@ -396,7 +394,7 @@ export function checkIFElementExists(elementId:string){
     } else {
       return true;
     }
-  }
+}
 
 export function removeNodesStartingWith(obj, start) {
     for (const key in obj) {

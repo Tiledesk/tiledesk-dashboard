@@ -78,7 +78,9 @@ export class CdsActionReplyGalleryComponent implements OnInit {
       this.gallery.forEach((el, index)=> {
         this.activateEL[index]= {title: false, description: false};
         this.checkButtons(el, index);
-        this.patchButtons(el, index);
+        // this.patchButtons(el, index);
+        // this.buttons = this.response?.attributes?.attachment?.gallery[index].buttons;
+        this.buttons = this.intentService.patchButtons(this.buttons, this.idAction);
       })
     }
   }
@@ -95,24 +97,23 @@ export class CdsActionReplyGalleryComponent implements OnInit {
     }
   }
 
-  private patchButtons(element: GalleryElement, index: number){
-    console.log('patchButtons:: ', this.response);
-    let buttons = this.response?.attributes?.attachment?.gallery[index].buttons;
-    if(!buttons)return;
-    buttons.forEach(button => {
-      if(!button.uid || button.uid === undefined){
-        button.uid = generateShortUID();
-      }
-
-      const idActionConnector = this.idAction+'/'+button.uid;
-      button.__idConnector = idActionConnector;
-      if(button.action && button.action !== ''){
-        button.__isConnected = true;
-      } else {
-        button.__isConnected = false;
-      }
-    });
-  }
+  // private patchButtons(element: GalleryElement, index: number){
+  //   console.log('patchButtons:: ', this.response);
+  //   let buttons = this.response?.attributes?.attachment?.gallery[index].buttons;
+  //   if(!buttons)return;
+  //   buttons.forEach(button => {
+  //     if(!button.__uid || button.__uid === undefined){
+  //       button.__uid = generateShortUID();
+  //     }
+  //     const idActionConnector = this.idAction+'/'+button.__uid;
+  //     button.__idConnector = idActionConnector;
+  //     if(button.action && button.action !== ''){
+  //       button.__isConnected = true;
+  //     } else {
+  //       button.__isConnected = false;
+  //     }
+  //   });
+  // }
   
   private updateConnector(){
     try {
