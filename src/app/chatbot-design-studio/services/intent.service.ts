@@ -91,12 +91,14 @@ export class IntentService {
         this.intentSelected = startIntent[0];
       }
     }
+    console.log('[INTENT SERVICE] ::: setDefaultIntentSelected ::: ', this.intentSelected);
     this.behaviorIntent.next(this.intentSelected);
     //this.liveActiveIntent.next(this.intentSelected);
   }
 
   public setIntentSelected(intent){
     this.intentSelected = intent;
+    console.log('[INTENT SERVICE] ::: setIntentSelected ::: ', this.intentSelected);
     this.behaviorIntent.next(this.intentSelected);
     //this.liveActiveIntent.next(this.selectedIntent);
   }
@@ -438,6 +440,15 @@ export class IntentService {
 
   // START ACTION FUNCTIONS //
 
+  /** update title of intent */
+  public changeIntentName(intent){
+    this.behaviorIntent.next(intent);
+    const response = this.updateIntent(intent);
+    if(response){
+      // console.log('update previous Intent: OK');
+    }
+  }
+
   // moving new action in intent from panel elements
   public moveNewActionIntoIntent(event, action, currentIntentId): any {
     let newAction = this.createNewAction(action.value.type);
@@ -601,7 +612,8 @@ export class IntentService {
     this.actionSelectedID = null;
     this.intentSelected = this.listOfIntents.find(intent => intent.intent_id === intentID);
     console.log('[INTENT SERVICE] --> intentID', intentID)
-    console.log('[INTENT SERVICE] --> selectIntent', this.intentSelected)
+    console.log('[INTENT SERVICE] --> selectIntent', this.intentSelected);
+    console.log('[INTENT SERVICE] ::: setIntentSelected ::: ', this.intentSelected);
     if(!this.intentSelected)return;
     this.listActions = this.intentSelected.actions?this.intentSelected.actions:null;
     this.selectedAction = null;

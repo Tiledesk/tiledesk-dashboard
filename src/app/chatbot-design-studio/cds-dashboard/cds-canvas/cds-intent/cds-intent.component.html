@@ -72,8 +72,8 @@
                     'placeholder-block-header':listOfActions?.length === 0, 
                     'live-active-intent': isLiveActive}">
 
-        <appdashboard-panel-intent-header class="pic-title-text tds_draggable" [intentSelected]="intent">
-        </appdashboard-panel-intent-header>
+        <cds-panel-intent-header class="pic-title-text tds_draggable" [intent]="intent">
+        </cds-panel-intent-header>
 
 
         <div *ngIf="!isStart" class="cds-intent-options">
