@@ -21,15 +21,14 @@
             #myInput type="text" 
             class="input form-control tds_draggable"
             [(ngModel)]="intentName"
-            (mouseup)="onMouseUpInput()"
             [readonly]="intentName === 'start' || intentName === 'defaultFallback'"
+            [placeholder]="'EnterIntentName' | translate"
+            (mouseup)="onMouseUpInput()"
             (ngModelChange)="onChangeIntentName($event)" 
             (keydown.enter)="onEnterButtonPressed($event)"
-            (dblclick)="doubleClickFunction($event)"
-            [placeholder]="'EnterIntentName' | translate">
+            (dblclick)="doubleClickFunction($event)">
         <div *ngIf="intentNameAlreadyExist" class="error---msg"> The block name must be unique </div>
-        <div *ngIf="intentNameNotHasSpecialCharacters === false" class="error---msg"> The block name cannot contain
-            special characters </div>
+        <div *ngIf="intentNameNotHasSpecialCharacters === false" class="error---msg"> The block name cannot contain special characters </div>
 
     </div> 
 

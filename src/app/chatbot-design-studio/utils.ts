@@ -435,3 +435,14 @@ export function moveItemToPosition(array, DISPLAY_NAME, position) {
     array.splice(position, 0, itemToMove);
     return array;
 }
+
+export function replaceItemInArrayForKey(key, array, item) {
+    let keyValue = item[key];
+    for (let i = 0; i < array.length; i++) {
+        if (array[i][key] === keyValue) {
+          array[i] = item;
+          return;
+        }
+    }
+    return array;
+}

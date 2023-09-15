@@ -133,14 +133,14 @@ export class CdsPanelActionsComponent implements OnInit {
        entries.forEach(entry => {
         const actionDragPlaceholderWidth  = entry.contentRect.width
         console.log('[CDS-PANEL-ACTIONS] actionDragPlaceholderWidth width', actionDragPlaceholderWidth);
-        
         let hideActionDragPlaceholder = null;
-        
         if (actionDragPlaceholderWidth === 258) {
           hideActionDragPlaceholder = false;
           this.hideActionPlaceholderOfActionPanel.emit(false)
           console.log('[CDS-PANEL-ACTIONS] Hide action drag placeholder', hideActionDragPlaceholder);
-          actionDragPlaceholder.style.opacity = '1';
+          if (actionDragPlaceholder) {
+            actionDragPlaceholder.style.opacity = '1';
+          }
           if (addActionPlaceholderEl) {
             addActionPlaceholderEl.style.opacity = '0';
           }
@@ -148,12 +148,13 @@ export class CdsPanelActionsComponent implements OnInit {
           hideActionDragPlaceholder = true;
           this.hideActionPlaceholderOfActionPanel.emit(true)
           console.log('[CDS-PANEL-ACTIONS] Hide action drag placeholder', hideActionDragPlaceholder);
-          actionDragPlaceholder.style.opacity = '0';
+          if (actionDragPlaceholder) {
+            actionDragPlaceholder.style.opacity = '0';
+          }
           if (addActionPlaceholderEl) {
             addActionPlaceholderEl.style.opacity = '1';
           }
         }
-
         //  console.log('height', entry.contentRect.height);
        });
      });
