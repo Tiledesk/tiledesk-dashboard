@@ -9,7 +9,7 @@
             <!-- Delete intent  -->
             <!-- ---------------------------------- -->
             <div class="intent-header-action-btn svg-icon--delete-intent" 
-                *ngIf="!isStart"
+                *ngIf="!isInternalIntent"
                 (click)="$event.stopPropagation();onDeleteIntent(intent)"
                 matTooltipClass="cds-mat-tooltip" 
                 matTooltip="Delete intent" 

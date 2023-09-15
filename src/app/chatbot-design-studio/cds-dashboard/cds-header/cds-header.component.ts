@@ -45,7 +45,7 @@ export class CdsHeaderComponent implements OnInit {
 
 
   PRESENTS_MODAL_ATTACH_BOT_TO_DEPT: boolean = false;
-  isBetaUrl: boolean = true;
+  isBetaUrl: boolean = false;
   popup_visibility: string = 'none';
   public TESTSITE_BASE_URL: string;
   public_Key: string;
@@ -72,10 +72,10 @@ export class CdsHeaderComponent implements OnInit {
 
     this.getTestSiteUrl();
     this.getOSCODE();
-    // this.isBetaUrl = false;
-    // if(this.router.url.includes('beta')){
-    //   this.isBetaUrl = true;
-    // }
+    this.isBetaUrl = false;
+    if(this.router.url.includes('beta')){
+      this.isBetaUrl = true;
+    }
   }
 
   getOSCODE() {

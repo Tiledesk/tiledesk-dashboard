@@ -50,7 +50,7 @@ export class CdsPanelElementsComponent implements OnInit {
   onOpenMenu(e, type, category?: string) {
     this.onMouseOverActionMenuSx.emit(true)
     setTimeout(() => {
-      console.log('[CDS-PANEL-ELEMENTS] onOpenMenu: menu type ', type);
+      // console.log('[CDS-PANEL-ELEMENTS] onOpenMenu: menu type ', type);
       this.menuType = type;
       this.menuCategory = category;
       //this.menuTrigger.openMenu();
