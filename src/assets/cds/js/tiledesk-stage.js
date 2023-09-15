@@ -271,7 +271,7 @@ export class TiledeskStage {
             let newX = (originRec.width/2)-(x+w/2);
             // console.log('newX:', newX);
 
-            let newY = (20)-(y);
+            let newY = (50)-(y);
             // console.log('newX:', newY);
 
             let tcmd = `translate(${newX}px, ${newY}px)`;

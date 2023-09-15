@@ -68,9 +68,10 @@
         </div>
     </div>
 
-    <div class="pic-header tds_draggable" [id]="'block-header-'+ intent?.intent_id" [ngClass]="{'cds-start': isStart, 
-                    'placeholder-block-header':listOfActions?.length === 0, 
-                    'live-active-intent': isLiveActive}">
+    <div class="pic-header tds_draggable"  
+        [id]="'block-header-'+ intent?.intent_id"
+        [ngClass]="{'cds-start': isStart, 
+                    'placeholder-block-header':listOfActions?.length === 0}">
 
         <cds-panel-intent-header class="pic-title-text tds_draggable" [intent]="intent">
         </cds-panel-intent-header>
