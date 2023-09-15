@@ -1,9 +1,4 @@
-<div class="header-left" [class.is_opened]="IS_OPEN_SIDEBAR" (click)="goToBack()" style="cursor:pointer"
-matTooltip="Go back to dashboard" 
-matTooltipClass="custom-mat-tooltip"
-matTooltipHideDelay="100"
-matTooltipPosition='below'
-#tooltip="matTooltip" >
+<div class="header-left" [class.is_opened]="IS_OPEN_SIDEBAR">
     <img *ngIf="!IS_OPEN_SIDEBAR" src="assets/img/logos/tiledesk_logo_white_small.svg">
     <img *ngIf="IS_OPEN_SIDEBAR" src="assets/img/logos/tiledesk-logo_new_white.svg">
 </div>
@@ -18,6 +13,18 @@ matTooltipPosition='below'
         </span>
     </div> -->
     <!-- <i class="material-icons cds-btn-back" (click)="goBack()">keyboard_arrow_left</i> -->
+    <div class="header-go-back"  
+        (click)="goToBack()" 
+        style="cursor:pointer"
+        matTooltip="Go back to dashboard" 
+        matTooltipClass="custom-mat-tooltip"
+        matTooltipHideDelay="100"
+        matTooltipPosition='below'
+        #tooltip="matTooltip">
+        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#fff">
+            <path d="M0 0h24v24H0z" fill="none"/><path d="M11.67 3.87L9.9 2.1 0 12l9.9 9.9 1.77-1.77L3.54 12z"/>
+        </svg>
+    </div>
     <div class="header-title">{{ selectedChatbot?.name }}</div>
     <div class="right-opts">
         <div *ngIf="isBetaUrl">

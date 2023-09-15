@@ -51,6 +51,7 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
   @Output() actionDeleted = new EventEmitter();
   @Output() showPanelActions = new EventEmitter(); // nk
   @Output() testItOut = new EventEmitter<Intent>();
+  @Output() deleteIntent = new EventEmitter();
 
   @ViewChild('openActionMenuBtn', { static: false }) openActionMenuBtnRef: ElementRef;
 
@@ -677,5 +678,10 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
       // this.webHookTooltipText = "Enable webhook"
     }
   }
+
+  onDeleteIntent(intent: Intent) {
+    this.deleteIntent.emit(intent);
+  }
+
 
 }

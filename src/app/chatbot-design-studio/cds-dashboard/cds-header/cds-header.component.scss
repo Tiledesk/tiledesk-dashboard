@@ -43,6 +43,13 @@ $margin-top-card: 30px;
             }
         }
     }
+
+    .header-go-back {
+        cursor: pointer;
+        margin-left: 21px;
+        position: relative;
+        top: 4px;
+    }
     .toggle-setting-sidebar-icon-wpr {
         position: absolute;
         z-index: 1050;
@@ -76,6 +83,15 @@ $margin-top-card: 30px;
 
     .header-title {
         margin-left: 20px;
+        position: absolute;
+        left: 50%;
+        top: 0px;
+        max-width: 250px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        font-weight: 400;
+
     }
 
     .cds-test-it-out {
