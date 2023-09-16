@@ -91,7 +91,6 @@ $margin-top-card: 30px;
         white-space: nowrap;
         text-overflow: ellipsis;
         font-weight: 400;
-
     }
 
     .cds-test-it-out {
@@ -109,6 +108,13 @@ $margin-top-card: 30px;
       border: 1px solid red;
       cursor: auto;
     }
+}
+
+.go-back-to-my-chatbot-text {
+    font-size: 18px;
+    position: relative;
+    top: -6px;
+    color:#006cff
 }
 
 
