@@ -142,7 +142,12 @@ export class CdsCanvasComponent implements OnInit {
     this.subscriptionOpenButtonPanel = this.controllerService.isOpenButtonPanel$.subscribe((button: Button) => {
       this.buttonSelected = button;
       if (button) {
-        this.closeAllPanels();
+        // this.closeAllPanels(); // nk the action detail panel is not closed when the button detail panel is opened
+        this.IS_OPEN_PANEL_WIDGET = false;
+        this.closePanelWidget.next();
+        // this.IS_OPEN_PANEL_ACTION_DETAIL = false;
+        // this.IS_OPEN_PANEL_BUTTON_CONFIG = false;
+        // this.IS_OPEN_ADD_ACTIONS_MENU = true;
         this.removeConnectorDraftAndCloseFloatMenu();
         this.IS_OPEN_PANEL_BUTTON_CONFIG = true;
       } else {
@@ -154,7 +159,7 @@ export class CdsCanvasComponent implements OnInit {
     this.subscriptionOpenAddActionMenu = this.controllerService.isOpenAddActionMenu$.subscribe((menu: any) => {
       if (menu) {
         this.closeAllPanels();
-        this.IS_OPEN_ADD_ACTIONS_MENU = true;
+        
       } else {
         this.IS_OPEN_ADD_ACTIONS_MENU = false;
       }
