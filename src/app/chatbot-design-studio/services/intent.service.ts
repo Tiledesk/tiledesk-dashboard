@@ -27,6 +27,8 @@ import { FaqKbService } from 'app/services/faq-kb.service';
 import { TYPE_INTENT_NAME, NEW_POSITION_ID, TYPE_ACTION, TYPE_COMMAND, removeNodesStartingWith, generateShortUID} from 'app/chatbot-design-studio/utils';
 import { ConnectorService } from 'app/chatbot-design-studio/services/connector.service';
 import { ControllerService } from 'app/chatbot-design-studio/services/controller.service';
+import { StageService } from 'app/chatbot-design-studio/services/stage.service';
+
 
 
 /** CLASSE DI SERVICES PER TUTTE LE AZIONI RIFERITE AD OGNI SINGOLO INTENT **/
@@ -71,7 +73,8 @@ export class IntentService {
     private faqService: FaqService,
     private faqKbService: FaqKbService,
     private connectorService: ConnectorService,
-    private controllerService: ControllerService
+    private controllerService: ControllerService,
+    private stageService: StageService
   ) { }
 
 
@@ -98,12 +101,12 @@ export class IntentService {
     //this.liveActiveIntent.next(this.intentSelected);
   }
 
-  public setIntentSelected(intent){
-    this.intentSelected = intent;
-    console.log('[INTENT SERVICE] ::: setIntentSelected ::: ', this.intentSelected);
-    this.behaviorIntent.next(this.intentSelected);
-    //this.liveActiveIntent.next(this.selectedIntent);
-  }
+  // public setIntentSelected(intent){
+  //   this.intentSelected = intent;
+  //   console.log('[INTENT SERVICE] ::: setIntentSelected ::: ', this.intentSelected);
+  //   this.behaviorIntent.next(this.intentSelected);
+  //   //this.liveActiveIntent.next(this.selectedIntent);
+  // }
 
   public setLiveActiveIntent(intentName: string){
     let intent = this.listOfIntents.find((intent) => intent.intent_display_name === intentName);
@@ -399,7 +402,6 @@ export class IntentService {
     if(!timeout)timeout = 0;
     let intent = JSON.parse(JSON.stringify(originalIntent));
     intent = removeNodesStartingWith(intent, '__');
-
     return new Promise((resolve, reject) => {
       let id = intent.id;
       let attributes = intent.attributes?intent.attributes:{};
@@ -486,7 +488,6 @@ export class IntentService {
         // const fromEle = document.getElementById(currentIntent.intent_id);
         // this.connectorService.movedConnector(currentIntent.intent_id);
         console.log('update current Intent: OK');
-        
         //this.behaviorIntent.next(currentIntent);
       }
     }, 0);
@@ -506,45 +507,22 @@ export class IntentService {
     console.log('moveActionBetweenDifferentIntents: ', event, this.listOfIntents, currentIntentId, currentIntent, previousIntent);
     currentIntent.actions.splice(event.currentIndex, 0, action);
     previousIntent.actions.splice(event.previousIndex, 1);
-
-    this.behaviorIntent.next(currentIntent);
-    this.behaviorIntent.next(previousIntent);
     this.connectorService.movedConnector(currentIntent.intent_id);
     this.connectorService.movedConnector(previousIntent.intent_id);
     this.connectorService.deleteConnectorsFromActionByActionId(action._tdActionId);
-
-
-      const responseCurrentIntent = this.updateIntent(currentIntent);
-      if(responseCurrentIntent){
-        // this.connectorService.movedConnector(currentIntent.intent_id);
-        console.log('update current Intent: OK');
-        // this.behaviorIntent.next(currentIntent);
-      }
-
-      const responsePreviousIntent = this.updateIntent(previousIntent);
-      if(responsePreviousIntent){
-        console.log('update previous Intent: OK');
-      }
-
-
-
-      // if( previousIntent.actions.length>0){
-      //   const responsePreviousIntent = await this.updateIntent(previousIntent);
-      //   if(responsePreviousIntent){
-      //     // update the intent connectors
-      //     // this.connectorService.movedConnector(previousIntent.intent_id);
-      //     // console.log('update previous Intent: OK');
-      //     // this.behaviorIntent.next(previousIntent);
-      //   }
-      // } else {
-      //   const responsePreviousIntent = await this.deleteIntent(previousIntent.id);
-      //   if(responsePreviousIntent){
-      //     console.log('delete previous Intent: OK');
-      //     // this.refreshIntents();
-      //   }
-      // }
-      
+    const responseCurrentIntent = this.updateIntent(currentIntent);
+    if(responseCurrentIntent){
+      console.log('update current Intent: OK');
+    }
+    const responsePreviousIntent = this.updateIntent(previousIntent);
+    if(responsePreviousIntent){
+      console.log('update previous Intent: OK');
+    }  
+    // this.controllerService.closeAllPanels();
+    // this.behaviorIntent.next(currentIntent);
+    // this.behaviorIntent.next(previousIntent);
   }
+
 
   
   // on move action from intent to stage
@@ -618,28 +596,34 @@ export class IntentService {
     });
   }
 
+
+  /**  */
+  public selectIntent(intentID){
+    this.intentSelected = this.listOfIntents.find(intent => intent.intent_id === intentID);
+    // this.stageService.setDragElement(this.intentSelected.intent_id);
+    console.log('[INTENT SERVICE] --> selectIntent', intentID)
+  }
+
   /** selectAction */
   public selectAction(intentID, actionId){
     this.actionSelectedID = actionId;
-    // this.intentSelectedID = intentID;
-
-    this.intentSelected = this.listOfIntents.find(intent => intent.intent_id === intentID);
-
+    this.selectIntent(intentID);
+    // this.intentSelected = this.listOfIntents.find(intent => intent.intent_id === intentID);
     this.listActions = this.intentSelected.actions;
     this.selectedAction = this.listActions.find(action => action._tdActionId === actionId);
   }
 
-  public selectIntent(intentID){
-    // this.intentSelectedID = intentID;
+
+  public setIntentSelected(intentID){
+    this.selectIntent(intentID);
     this.actionSelectedID = null;
-    this.intentSelected = this.listOfIntents.find(intent => intent.intent_id === intentID);
-    console.log('[INTENT SERVICE] --> intentID', intentID)
-    console.log('[INTENT SERVICE] --> selectIntent', this.intentSelected);
-    console.log('[INTENT SERVICE] ::: setIntentSelected ::: ', this.intentSelected);
-    if(!this.intentSelected)return;
     this.listActions = this.intentSelected.actions?this.intentSelected.actions:null;
     this.selectedAction = null;
-    // this.behaviorIntent.next(this.selectedIntent)
+    console.log('[INTENT SERVICE] ::: setIntentSelected ::: ', this.intentSelected);
+    this.behaviorIntent.next(this.intentSelected);
+    // if(!this.intentSelected)return;
+    // chiudo tutti i pannelli
+    // this.controllerService.closeAllPanels();
   }
 
 
@@ -652,7 +636,7 @@ export class IntentService {
   /** deleteSelectedAction 
   */
   public deleteSelectedAction(){
-    console.log('deleteSelectedAction', this.intentSelected.intent_id, this.actionSelectedID);
+    console.log('[INTENT SERVICE] ::: deleteSelectedAction', this.intentSelected.intent_id, this.actionSelectedID);
     if(this.intentSelected.intent_id && this.actionSelectedID){
       this.connectorService.deleteConnectorsFromActionByActionId(this.actionSelectedID);
       let intentToUpdate = this.listOfIntents.find((intent) => intent.intent_id === this.intentSelected.intent_id);
@@ -665,19 +649,16 @@ export class IntentService {
       });
       this.behaviorIntent.next(intentToUpdate);
       this.connectorService.movedConnector(intentToUpdate.intent_id);
-      
       this.controllerService.closeAllPanels();
       // this.connectorService.deleteConnectorsFromActionByActionId(this.actionSelectedID);
-      setTimeout(async () => {
-        const responseIntent = await this.updateIntent(intentToUpdate);
-        if(responseIntent){
-          // this.connectorService.movedConnector(intentToUpdate.intent_id);
-          console.log('update Intent: OK');
-          // this.behaviorIntent.next(intentToUpdate);
-        }
-        this.unselectAction();
-        console.log('deleteSelectedAction', intentToUpdate);
-      }, 0);
+      const responseIntent = this.updateIntent(intentToUpdate);
+      if(responseIntent){
+        // this.connectorService.movedConnector(intentToUpdate.intent_id);
+        console.log('update Intent: OK');
+        // this.behaviorIntent.next(intentToUpdate);
+      }
+      this.unselectAction();
+      console.log('deleteSelectedAction', intentToUpdate);
     }
   } 
 
