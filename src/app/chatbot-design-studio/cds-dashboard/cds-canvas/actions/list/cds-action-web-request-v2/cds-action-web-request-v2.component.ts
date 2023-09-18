@@ -13,6 +13,17 @@ export class CdsActionWebRequestV2Component implements OnInit {
   @Input() action: ActionWebRequestV2;
   @Input() previewMode: boolean = true;
   @Output() updateAndSaveAction = new EventEmitter();
+  @Output() onCreateUpdateConnector = new EventEmitter<{fromId: string, toId: string}>()
+  
+  listOfIntents: Array<{name: string, value: string, icon?:string}>;
+
+  // Connectors
+  idIntentSelected: string;
+  idConnectorTrue: string;
+  idConnectorFalse: string;
+  isConnectedTrue: boolean = false;
+  isConnectedFalse: boolean = false;
+  connector: any;
   
   methods: Array<{label: string, value: string}>;
   pattern = "^[a-zA-Z_]*[a-zA-Z_]+[a-zA-Z0-9_]*$";
@@ -45,7 +56,7 @@ export class CdsActionWebRequestV2Component implements OnInit {
   ngOnChanges() {
     // on change
     this.initialize();
-    console.log('CDS-ACTION-WEB-REQUEST ACTION' , this.action )
+    console.log('[ACTION-WEB-REQUEST-v2] onChanges' , this.action )
     // if (this.action && this.action.assignStatusTo) {
     //   this.hasSelectedVariable = true
     // }
@@ -167,6 +178,29 @@ export class CdsActionWebRequestV2Component implements OnInit {
   onChangeAttributesResponse(attributes:{[key: string]: string }){
     this.action.assignments = attributes ;
     this.updateAndSaveAction.emit()
+  }
+
+  onSelectedAttribute(event, property) {
+    this.logger.log("[ACTION-WEB-REQUEST-v2] onEditableDivTextChange event", event)
+    this.logger.log("[ACTION-WEB-REQUEST-v2] onEditableDivTextChange property", property)
+    this.action[property] = event.value;
+    this.updateAndSaveAction.emit();
+  }
+
+  onChangeBlockSelect(event:{name: string, value: string}, type: 'trueIntent' | 'falseIntent') {
+    if(event){
+      this.action[type]=event.value
+    }
+
+    switch(type){
+      case 'trueIntent':
+        this.onCreateUpdateConnector.emit({ fromId: this.idConnectorTrue, toId: this.action.trueIntent})
+        break;
+      case 'falseIntent':
+        this.onCreateUpdateConnector.emit({fromId: this.idConnectorFalse, toId: this.action.falseIntent})
+        break;
+    }
+    this.updateAndSaveAction.emit();
   }
 
 }

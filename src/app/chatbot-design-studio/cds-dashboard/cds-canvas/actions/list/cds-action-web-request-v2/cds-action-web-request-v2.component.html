@@ -91,5 +91,46 @@
 
     </div>
 
+    <hr class="preview-divider">
+
+    <div class="text-editor-wrapper">
+        <div class="field-box">
+            <label class="title-label">Assign status</label>
+            <div class="value-wrp">
+                <cds-textarea id="assignTo" 
+                    [textLimitBtn]="false" 
+                    [emojiPikerBtn]="false" 
+                    [setAttributeBtn]="true"
+                    [minRow]="1" 
+                    [maxRow]="1" 
+                    [readonly]="true" 
+                    [text]="action.assignStatusTo"
+                    (selectedAttribute)="onSelectedAttribute($event, 'assignStatusTo')"
+                    (clearSelectedAttribute)="onSelectedAttribute($event, 'assignStatusTo')">
+                </cds-textarea>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-editor-wrapper">
+        <div class="field-box">
+            <label class="title-label">Assign error</label>
+            <div class="value-wrp">
+                <cds-textarea id="assignTo" 
+                    [textLimitBtn]="false"
+                    [emojiPikerBtn]="false" 
+                    [setAttributeBtn]="true"
+                    [minRow]="1" 
+                    [maxRow]="1" 
+                    [readonly]="true" 
+                    [text]="action.assignErrorTo"
+                    (selectedAttribute)="onSelectedAttribute($event, 'assignErrorTo')"
+                    (clearSelectedAttribute)="onSelectedAttribute($event, 'assignErrorTo')">
+                </cds-textarea>
+            </div>
+        </div>
+    </div>
+
+    <hr class="custom-divider">
     
 </div>
