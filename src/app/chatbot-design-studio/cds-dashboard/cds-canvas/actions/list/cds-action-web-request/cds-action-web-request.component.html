@@ -65,6 +65,7 @@
         </cds-attributes>
 
         <cds-textarea *ngIf="methodSelectedBody"
+            id="url"
             [ngClass]="{'jsonError': !jsonIsValid}"
             class = "text-editable-div"
             [text]="jsonBody"

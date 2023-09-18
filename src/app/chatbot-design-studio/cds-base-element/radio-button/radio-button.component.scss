@@ -1,8 +1,26 @@
+
+:host{
+    --selectedColor: #ecb606;
+}
+
 mat-radio-group ::ng-deep{
     display: flex;
     gap: 10px;
 
     label{
         margin: 0px;
+    }
+
+    .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle{
+        border-color: var(--selectedColor) 
+    }
+    
+    .mat-radio-button.mat-accent .mat-radio-inner-circle{
+        color: var(--selectedColor);
+        background-color: var(--selectedColor);
+    }
+    
+    .mat-radio-button.mat-accent .mat-radio-ripple .mat-ripple-element {
+        background-color: var(--selectedColor);
     }
 }

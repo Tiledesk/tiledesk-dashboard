@@ -158,30 +158,6 @@
     }
 }
 
-.text-editable-div {
-    width: 100%;
-    // border: 0px solid #000;
-    // margin: 10.5px;
-    // line-height: 25px;
-    // appearance: textfield;
-    // background: #fff;
-    // border-radius: 8px;
-    // width: calc(100% - 0px);
-    // white-space: pre;
-    // white-space: pre-wrap;
-    // white-space: break-spaces;
-    // display: inline-block;
-    // font-size: 14px;
-    // overflow: hidden auto;
-    // padding: 5px 10px;
-    // height: 200px;
-    &.jsonError {
-        border-radius: 8px;
-        padding: 2px 2px 0 0;
-        outline: rgb(209, 47, 25) solid 2px !important; //rgb(236, 6, 6) solid 2px !important;
-    }
-}
-
 .cds-web-request-row-error {
     display: flex;
     font-size: 0.8em;
@@ -247,11 +223,12 @@
 }
 
 cds-select#method ::ng-deep{
-    padding: 6px 0;
+    // padding: 6px 0;
     min-width:120px;
     .ng-select-container{
-        height: 32px;
+        height: 37px;
         border-radius: 8px 0px 0px 8px;
+        border: 1px solid rgb(118, 118, 118) !important;
     }
 }
 
@@ -268,7 +245,8 @@ cds-select#method ::ng-deep{
 
 cds-textarea#url ::ng-deep {
     display: flex;
-    padding: 6px 0px 0px 0;
+    width: 100%;
+    // padding: 6px 0px 0px 0;
     textarea {
         border: 1px solid rgb(118, 118, 118) !important;
         border-radius: 0px 8px 8px 0px;
@@ -277,6 +255,12 @@ cds-textarea#url ::ng-deep {
 
         height: 23px !important;
         min-height: 23px !important;
+    }
+}
+
+cds-textarea#body.jsonError ::ng-deep {
+    textarea {
+        border: 1px solid red !important;
     }
 }
 

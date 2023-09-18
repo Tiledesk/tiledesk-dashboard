@@ -69,7 +69,7 @@
 
     <div class="cds-web-request-options">
 
-        <mat-button-toggle-group [(ngModel)]="optionSelected">
+        <mat-button-toggle-group [(ngModel)]="optionSelected" (change)="onChangeOption($event)">
             <mat-button-toggle value="header">Header</mat-button-toggle>
             <mat-button-toggle value="body">Body</mat-button-toggle>
         </mat-button-toggle-group>
@@ -98,11 +98,11 @@
 
         <cds-radio-buttons
             [items]="bodyOptions"
-            [itemSelected]="bodyOptionSelected"
+            [color]="'#ecb606'"
             (changeButtonSelect)="onChangeButtonSelect($event)">
         </cds-radio-buttons>
 
-        <cds-textarea 
+        <cds-textarea id="body"
             [ngClass]="{'jsonError': !jsonIsValid}"
             class = "text-editable-div"
             [text]="body"
