@@ -115,16 +115,26 @@ export class CdsActionDetailPanelComponent implements OnInit, OnChanges {
   }
 
 
-  createOrUpdateConnector(idConnector: string, toIntentId: string){
+  onConnectorChange(type: 'create' | 'delete', idConnector: string, toIntentId: string){
+    console.log('createOrUpdateConnector-->', type, idConnector, toIntentId)
     const fromId = idConnector;
     let toId = '';
     const posId = toIntentId.indexOf("#");
     if (posId !== -1) {
       toId = toIntentId.slice(posId+1);
     }
-    console.log('createNewConnector: ', fromId);
-    this.connectorService.deleteConnectorWithIDStartingWith(fromId);
-    this.connectorService.createNewConnector(fromId, toId);
+
+    switch(type){
+      case 'create':
+        console.log('createNewConnector: ', fromId);
+        this.connectorService.deleteConnectorWithIDStartingWith(fromId);
+        this.connectorService.createNewConnector(fromId, toId);
+        break;
+      case 'delete':
+        this.connectorService.deleteConnectorWithIDStartingWith(fromId);
+        break;
+
+    }
   }
 
 }

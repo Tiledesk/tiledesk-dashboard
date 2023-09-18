@@ -34,8 +34,10 @@
                 [items]="intents"
                 [bindLabelSelect]="'name'"
                 [bindValueSelect]="'value'"
+                [clearable]="true" 
                 [itemSelected]="action?.intentName"
-                (onSelected)="onChangeSelect($event)">
+                (onSelected)="onChangeSelect($event)"
+                (onReset)="onResetSelect($event)">
             </cds-select>
             <!-- <cds-text id="text-condition" 
                 [control]="actionIntentFormGroup.controls['intentName']"
