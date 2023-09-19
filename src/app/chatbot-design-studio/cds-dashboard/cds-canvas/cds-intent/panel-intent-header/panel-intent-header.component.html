@@ -1,4 +1,4 @@
-<div class="header">
+<div class="header" (click)="onSelectIntent($event)">
     <div *ngIf="intentName === 'start'" class="intent-icon">
         <span class="material-icons rocket">rocket_launch</span>
     </div>
@@ -14,10 +14,11 @@
             [(ngModel)]="intentName"
             [readonly]="intentName === 'start' || intentName === 'defaultFallback'"
             [placeholder]="'EnterIntentName' | translate"
-            (mouseup)="onMouseUpInput()"
-            (ngModelChange)="onChangeIntentName($event)" 
+            (ngModelChange)="onChangeIntentName($event)"
+            (mouseup)="onMouseUpInput($event)" 
+            (dblclick)="doubleClickFunction($event)"
             (keydown.enter)="onEnterButtonPressed($event)"
-            (dblclick)="doubleClickFunction($event)">
+            >
         <div *ngIf="intentNameAlreadyExist" class="error---msg"> The block name must be unique </div>
         <div *ngIf="intentNameNotHasSpecialCharacters === false" class="error---msg"> The block name cannot contain special characters </div>
 

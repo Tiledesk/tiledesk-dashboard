@@ -469,8 +469,12 @@ export class IntentService {
 
   /** update title of intent */
   public changeIntentName(intent){
-    this.behaviorIntents.next(this.listOfIntents);
-    const response = this.updateIntent(intent);
+    setTimeout(async () => {
+      const response = await this.updateIntent(intent, 2000);
+      if(response){
+        this.behaviorIntents.next(this.listOfIntents);
+      }
+    }, 0);
   }
 
   // moving new action in intent from panel elements
@@ -597,23 +601,24 @@ export class IntentService {
   }
 
 
-  /**  */
+  /** selectIntent */
   public selectIntent(intentID){
     this.intentSelected = this.listOfIntents.find(intent => intent.intent_id === intentID);
-    // this.stageService.setDragElement(this.intentSelected.intent_id);
-    console.log('[INTENT SERVICE] --> selectIntent', intentID)
+    this.stageService.setDragElement(this.intentSelected.intent_id);
+    console.log('[INTENT SERVICE] --> selectIntent', this.intentSelected)
   }
 
   /** selectAction */
   public selectAction(intentID, actionId){
     this.actionSelectedID = actionId;
-    this.selectIntent(intentID);
-    // this.intentSelected = this.listOfIntents.find(intent => intent.intent_id === intentID);
+    this.intentSelected = this.listOfIntents.find(intent => intent.intent_id === intentID);
     this.listActions = this.intentSelected.actions;
     this.selectedAction = this.listActions.find(action => action._tdActionId === actionId);
+    console.log('[INTENT SERVICE] --> selectAction: ', intentID, actionId);
+    this.behaviorIntent.next(this.intentSelected);
   }
 
-
+  /** setIntentSelected */
   public setIntentSelected(intentID){
     this.selectIntent(intentID);
     this.actionSelectedID = null;
@@ -800,17 +805,17 @@ export class IntentService {
       console.log('[INTENT SERVICE] -> patchAttributes, ', intentID, attributes);
       this.faqService.patchAttributes(intentID, attributes).subscribe((data) => {
         if (data) {
-          this.listOfIntents = this.listOfIntents.map((obj) => (obj.id === intentID ? data : obj));
-          data['attributesChanged'] = true;
+          // this.listOfIntents = this.listOfIntents.map((obj) => (obj.id === intentID ? data : obj));
+          // data['attributesChanged'] = true;
           console.log('[INTENT SERVICE] patchAttributes OK: ', data);
-          this.behaviorIntent.next(data);
+          // this.behaviorIntent.next(data);
         }
       }, (error) => {
         console.log('error:   ', error);
       }, () => {
         console.log('complete');
       });
-    }, 1000);
+    }, 2000);
   }
 
 
