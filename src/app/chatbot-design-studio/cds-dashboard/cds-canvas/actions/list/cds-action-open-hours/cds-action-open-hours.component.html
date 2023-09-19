@@ -51,7 +51,8 @@
                     [itemSelected]="action?.trueIntent" 
                     [placeholder]="'Select a block'"
                     [clearable]="true" 
-                    (onSelected)="onChangeSelect($event, 'trueIntent')">
+                    (onSelected)="onChangeSelect($event, 'trueIntent')"
+                    (onReset)="onResetBlockSelect($event, 'trueIntent')">
                 </cds-select>
             </div>
             <!-- <cds-attributes 
@@ -76,7 +77,8 @@
                     [itemSelected]="action?.falseIntent" 
                     [placeholder]="'Select a block'"
                     [clearable]="true" 
-                    (onSelected)="onChangeSelect($event, 'falseIntent')">
+                    (onSelected)="onChangeSelect($event, 'falseIntent')"
+                    (onReset)="onResetBlockSelect($event, 'falseIntent')">
                 </cds-select>
             </div>
             <!-- <cds-attributes 

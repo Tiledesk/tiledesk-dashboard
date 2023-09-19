@@ -121,6 +121,7 @@
         margin: 0;
         flex-direction: column;
         flex-wrap: nowrap;
+        align-items: flex-end;
         .button-reply-add{
             color: $color-txt-2-hex;
             border-color: $color-txt-2-hex;

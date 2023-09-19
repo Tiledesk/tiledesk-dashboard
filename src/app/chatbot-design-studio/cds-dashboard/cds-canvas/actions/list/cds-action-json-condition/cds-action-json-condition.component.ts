@@ -21,7 +21,7 @@ export class CdsActionJsonConditionComponent implements OnInit {
   @Input() action: ActionJsonCondition;
   @Input() previewMode: boolean = true;
   @Output() updateAndSaveAction = new EventEmitter();
-  @Output() onCreateUpdateConnector = new EventEmitter<{fromId: string, toId: string}>()
+  @Output() onConnectorChange = new EventEmitter<{type: 'create' | 'delete',  fromId: string, toId: string}>()
   
   actionJsonConditionFormGroup: FormGroup
   trueIntentAttributes: string = "";
@@ -211,12 +211,25 @@ export class CdsActionJsonConditionComponent implements OnInit {
 
     switch(type){
       case 'trueIntent':
-        this.onCreateUpdateConnector.emit({ fromId: this.idConnectorTrue, toId: this.action.trueIntent})
+        this.onConnectorChange.emit({ type: 'create', fromId: this.idConnectorTrue, toId: this.action.trueIntent})
         break;
       case 'falseIntent':
-        this.onCreateUpdateConnector.emit({fromId: this.idConnectorFalse, toId: this.action.falseIntent})
+        this.onConnectorChange.emit({ type: 'create', fromId: this.idConnectorFalse, toId: this.action.falseIntent})
         break;
     }
+    this.updateAndSaveAction.emit();
+  }
+
+  onResetBlockSelect(event:{name: string, value: string}, type: 'trueIntent' | 'falseIntent') {
+    switch(type){
+      case 'trueIntent':
+        this.onConnectorChange.emit({ type: 'delete', fromId: this.idConnectorTrue, toId: this.action.trueIntent})
+        break;
+      case 'falseIntent':
+        this.onConnectorChange.emit({ type: 'delete', fromId: this.idConnectorFalse, toId: this.action.falseIntent})
+        break;
+    }
+    this.action[type]=null
     this.updateAndSaveAction.emit();
   }
 

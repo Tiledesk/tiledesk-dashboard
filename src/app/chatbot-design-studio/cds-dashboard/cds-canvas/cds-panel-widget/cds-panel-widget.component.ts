@@ -65,8 +65,8 @@ export class CdsPanelWidgetComponent implements OnInit {
 
   setIframeUrl(){
     this.TESTSITE_BASE_URL = this.appConfigService.getConfig().testsiteBaseUrl;
-    // const testItOutBaseUrl = this.TESTSITE_BASE_URL.substring(0, this.TESTSITE_BASE_URL.lastIndexOf('/')); 
-    const testItOutBaseUrl = "https://widget.tiledesk.com/v6/5.0.71/assets/twp"; // nk for test publication
+    const testItOutBaseUrl = this.TESTSITE_BASE_URL.substring(0, this.TESTSITE_BASE_URL.lastIndexOf('/')); 
+    // const testItOutBaseUrl = "https://widget.tiledesk.com/v6/5.0.71/assets/twp"; // nk for test publication
     const testItOutUrl = testItOutBaseUrl + '/chatbot-panel.html'
     // const testItOutUrl = 'http://localhost:4203/assets/twp'+ '/chatbot-panel.html'
     let url = testItOutUrl + '?tiledesk_projectid=' + this.projectID + 

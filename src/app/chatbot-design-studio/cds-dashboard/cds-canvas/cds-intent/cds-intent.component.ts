@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges, ViewChil
 import { Action, Form, Intent } from 'app/models/intent-model';
 import { Subject, Subscription } from 'rxjs';
 
-import { ACTIONS_LIST, TYPE_ACTION, TYPE_INTENT_NAME, patchActionId } from 'app/chatbot-design-studio/utils';
+import { ACTIONS_LIST, TYPE_ACTION, TYPE_INTENT_NAME, checkInternalIntent, patchActionId } from 'app/chatbot-design-studio/utils';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { IntentService } from 'app/chatbot-design-studio/services/intent.service';
 // import { ControllerService } from 'app/chatbot-design-studio/services/controller.service';
@@ -183,15 +183,11 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
       this.isStart = true;
      
     }
-    this.isInternalIntent = this.checkInternalIntent(this.intent)
+
+    this.isInternalIntent = checkInternalIntent(this.intent)
+
     this.addEventListener();
   }
-
- 
-  checkInternalIntent(intent: Intent): boolean{
-      return this.intent.intent_display_name === TYPE_INTENT_NAME.DISPLAY_NAME_START ||  this.intent.intent_display_name === TYPE_INTENT_NAME.DISPLAY_NAME_DEFAULT_FALLBACK ? true: false
-  }
-  
 
   ngOnChanges(changes: SimpleChanges): void {
     // Fixed bug where an empty intent's action placeholder remains visible if an action is dragged from the left action menu

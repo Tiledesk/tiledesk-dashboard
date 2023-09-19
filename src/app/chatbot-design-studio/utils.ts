@@ -223,7 +223,7 @@ export const ELEMENTS_LIST = [
     { name: 'Replace bot', category: TYPE_ACTION_CATEGORY.FLOW, type: TYPE_ACTION.REPLACE_BOT, src: "assets/cds/images/actions/replace_bot.svg", description: "Choose a chatbot to replace the current one in the conversation"},
     { name: 'Wait', category: TYPE_ACTION_CATEGORY.FLOW, type: TYPE_ACTION.WAIT, src:"assets/cds/images/actions/wait.svg", description: 'This action waits the specified amount of milliseconds before moving to the next one along the block actions-pipeline'},
     { name: 'Web Request', category: TYPE_ACTION_CATEGORY.INTEGRATIONS, type: TYPE_ACTION.WEB_REQUEST, src:"assets/cds/images/actions/web_request.svg", description: ''},
-    // { name: 'Web Request-v2', category: TYPE_ACTION_CATEGORY.INTEGRATIONS, type: TYPE_ACTION.WEB_REQUESTV2, src:"assets/cds/images/actions/web_request.svg", description: ''},
+    { name: 'Web Request-v2', category: TYPE_ACTION_CATEGORY.INTEGRATIONS, type: TYPE_ACTION.WEB_REQUESTV2, src:"assets/cds/images/actions/web_request.svg", description: ''},
     { name: 'Send email', category: TYPE_ACTION_CATEGORY.INTEGRATIONS, type: TYPE_ACTION.EMAIL, src:"assets/cds/images/actions/send_email.svg", description: 'This action send an email to the specified users group or email addresses.<br>You can use a comma sepatated addresses list.<br>i.e. “andrea@tiledesk.com, gab@tiledesk.com"<br>You can use the special tag “@everyone” to send an email to each of the Tiledesk’s project teamates.<br><br>You can also use the name of a single user group using the group name. i.e. “sales”'},
     { name: 'WhatsApp Static', category: TYPE_ACTION_CATEGORY.INTEGRATIONS, type: TYPE_ACTION.WHATSAPP_STATIC, src: "assets/cds/images/actions/whatsapp.svg", description: 'This action send an approved WhatsApp template' },
     { name: 'WhatsApp by Attribute', category: TYPE_ACTION_CATEGORY.INTEGRATIONS, type: TYPE_ACTION.WHATSAPP_ATTRIBUTE, src: "assets/cds/images/actions/whatsapp.svg", description: 'This action send an approved WhatsApp template' },
@@ -252,7 +252,7 @@ export const ACTIONS_LIST= {
     REPLACE_BOT: { name: 'Replace bot', category: TYPE_ACTION_CATEGORY.FLOW, type: TYPE_ACTION.REPLACE_BOT, src: "assets/cds/images/actions/replace_bot.svg", description: "Choose a chatbot to replace the current one in the conversation" },
     WAIT : { name: 'Wait', type: TYPE_ACTION.WAIT, src:"assets/cds/images/actions/wait.svg", description: 'This action waits the specified amount of milliseconds before moving to the next one along the block actions-pipeline'},
     WEB_REQUEST : { name: 'Web Request',category: TYPE_ACTION_CATEGORY.INTEGRATIONS, type: TYPE_ACTION.WEB_REQUEST, src:"assets/cds/images/actions/web_request.svg", description: ''},
-    // WEB_REQUESTV2 : { name: 'Web Request-v2',category: TYPE_ACTION_CATEGORY.INTEGRATIONS, type: TYPE_ACTION.WEB_REQUESTV2, src:"assets/cds/images/actions/web_request.svg", description: ''},
+    WEB_REQUESTV2 : { name: 'Web Request-v2',category: TYPE_ACTION_CATEGORY.INTEGRATIONS, type: TYPE_ACTION.WEB_REQUESTV2, src:"assets/cds/images/actions/web_request.svg", description: ''},
     EMAIL : { name: 'Send email', category: TYPE_ACTION_CATEGORY.INTEGRATIONS, type: TYPE_ACTION.EMAIL, src:"assets/cds/images/actions/send_email.svg", description: 'This action send an email to the specified users group or email addresses.<br>You can use a comma sepatated addresses list.<br>i.e. “andrea@tiledesk.com, gab@tiledesk.com"<br>You can use the special tag “@everyone” to send an email to each of the Tiledesk’s project teamates.<br><br>You can also use the name of a single user group using the group name. i.e. “sales”'},
     WHATSAPP_STATIC: { name: 'WhatsApp Static', category: TYPE_ACTION_CATEGORY.INTEGRATIONS, type: TYPE_ACTION.WHATSAPP_STATIC, src: "assets/cds/images/actions/whatsapp.svg", description: 'This action send an approved WhatsApp template' },
     WHATSAPP_ATTRIBUTE: { name: 'WhatsApp by Attribute', category: TYPE_ACTION_CATEGORY.INTEGRATIONS, type: TYPE_ACTION.WHATSAPP_ATTRIBUTE, src: "assets/cds/images/actions/whatsapp.svg", description: 'This action send an approved WhatsApp template' },
@@ -444,4 +444,8 @@ export function replaceItemInArrayForKey(key, array, item) {
         }
     }
     return array;
+}
+
+export function checkInternalIntent(intent: Intent): boolean{
+    return intent.intent_display_name === TYPE_INTENT_NAME.DISPLAY_NAME_START ||  intent.intent_display_name === TYPE_INTENT_NAME.DISPLAY_NAME_DEFAULT_FALLBACK ? true: false
 }

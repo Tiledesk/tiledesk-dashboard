@@ -29,6 +29,7 @@ export class SelectComponent implements OnInit {
   @Input() formGroup: FormGroup = new FormGroup({ select: new FormControl()});
   @Input() formControlName: string = 'select';
   @Output() onSelected = new EventEmitter();
+  @Output() onReset = new EventEmitter();
   @Output() onDeleted = new EventEmitter();
 
   valueFormGroup: FormGroup 
@@ -55,9 +56,9 @@ export class SelectComponent implements OnInit {
     this.onSelected.emit(event)
   }
 
-  onResetValue(){
+  onResetValue(event){
     this.itemSelected = null
-    this.onSelected.emit(null)
+    this.onReset.emit(null)
   }
 
   onOpen(){

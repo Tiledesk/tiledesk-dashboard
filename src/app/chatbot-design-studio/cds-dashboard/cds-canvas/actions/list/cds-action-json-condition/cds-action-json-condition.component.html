@@ -94,7 +94,8 @@
                         [itemSelected]="action?.trueIntent" 
                         [placeholder]="'Select a block'"
                         [clearable]="true" 
-                        (onSelected)="onChangeForm($event, 'trueIntent')">
+                        (onSelected)="onChangeForm($event, 'trueIntent')"
+                        (onReset)="onResetBlockSelect($event, 'trueIntent')">
                     </cds-select>
                 </div>
                 <!-- <cds-attributes
@@ -118,7 +119,8 @@
                         [itemSelected]="action?.falseIntent" 
                         [placeholder]="'Select a block'"
                         [clearable]="true" 
-                        (onSelected)="onChangeForm($event, 'falseIntent')">
+                        (onSelected)="onChangeForm($event, 'falseIntent')"
+                        (onReset)="onResetBlockSelect($event, 'falseIntent')">
                     </cds-select>
                 </div>
                 <!-- <cds-attributes

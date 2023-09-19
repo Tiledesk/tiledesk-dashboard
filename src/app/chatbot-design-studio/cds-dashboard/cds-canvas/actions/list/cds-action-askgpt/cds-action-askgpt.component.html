@@ -64,7 +64,7 @@
             [setAttributeBtn]="true" 
             [minRow]="2"
             [maxRow]="4" 
-            [text]="question" 
+            [text]="action?.question" 
             [placeholder]="'Question to submit'"
             (changeTextarea)="changeTextarea($event, 'question')">
         </cds-textarea>
@@ -144,7 +144,8 @@
                 [itemSelected]="action?.trueIntent" 
                 [placeholder]="'Select a block'"
                 [clearable]="true" 
-                (onSelected)="onChangeBlockSelect($event, 'trueIntent')">
+                (onSelected)="onChangeBlockSelect($event, 'trueIntent')"
+                (onReset)="onResetBlockSelect($event, 'trueIntent')">
             </cds-select>
         </div>
         <!-- <cds-attributes 
@@ -169,7 +170,8 @@
                 [itemSelected]="action?.falseIntent" 
                 [placeholder]="'Select a block'"
                 [clearable]="true" 
-                (onSelected)="onChangeBlockSelect($event, 'falseIntent')">
+                (onSelected)="onChangeBlockSelect($event, 'falseIntent')"
+                (onReset)="onResetBlockSelect($event, 'falseIntent')">
             </cds-select>
         </div>
         <!-- <cds-attributes 

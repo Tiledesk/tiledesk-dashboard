@@ -16,8 +16,8 @@ export class CdsActionIntentComponent implements OnInit {
   @Input() action: ActionIntentConnected;
   @Input() previewMode: boolean = true;
   @Output() updateAndSaveAction = new EventEmitter();
-  @Output() onCreateUpdateConnector = new EventEmitter<{fromId: string, toId: string}>()
-
+  @Output() onConnectorChange = new EventEmitter<{type: 'create' | 'delete',  fromId: string, toId: string}>()
+  
   intents: Array<{name: string, value: string, icon?:string}>
   idIntentSelected: string;
   idConnector: string;
@@ -88,7 +88,13 @@ export class CdsActionIntentComponent implements OnInit {
     if(!this.action._tdActionTitle){
       this.action._tdActionTitle = this.intents.find(intent => intent.value === event.value).name
     }
-    this.onCreateUpdateConnector.emit({fromId: this.idConnector, toId: this.action.intentName})
+    this.onConnectorChange.emit({ type: 'create', fromId: this.idConnector, toId: this.action.intentName})
+    this.updateAndSaveAction.emit();
+  }
+
+  onResetSelect(event:{name: string, value: string}) {
+    this.onConnectorChange.emit({ type: 'delete', fromId: this.idConnector, toId: this.action.intentName})
+    this.action.intentName=null
     this.updateAndSaveAction.emit();
   }
   

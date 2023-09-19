@@ -11,7 +11,7 @@
         [bindValue]="bindValueSelect"
         [(ngModel)] = "itemSelected"
         [placeholder]="placeholder"
-        (clear)="onResetValue()"
+        (clear)="onResetValue($event)"
         (open)="onOpen()"
         (close)="onClose()"
         (change) = "onChangeActionButton($event)">

@@ -19,7 +19,7 @@ export class CdsActionAskgptComponent implements OnInit {
   @Input() action: ActionAskGPT;
   @Input() previewMode: boolean = true;
   @Output() updateAndSaveAction = new EventEmitter;
-  @Output() onCreateUpdateConnector = new EventEmitter<{fromId: string, toId: string}>()
+  @Output() onConnectorChange = new EventEmitter<{type: 'create' | 'delete',  fromId: string, toId: string}>()
   
   listOfIntents: Array<{name: string, value: string, icon?:string}>;
 
@@ -37,8 +37,7 @@ export class CdsActionAskgptComponent implements OnInit {
   status_code: number;
   indexing_hint: string = null;
 
-  question: string = "";
-  kbid: string = "";
+
   // gptkey: string = "";
   buttonDisabled: boolean = false;
   buttonIcon: string = "add"
@@ -58,8 +57,6 @@ export class CdsActionAskgptComponent implements OnInit {
 
   ngOnInit(): void {
     this.logger.debug("[ACTION-ASKGPT] action detail: ", this.action);
-    this.question = this.action.question;
-    this.kbid = this.action.kbid;
 
     this.intentService.isChangedConnector$.subscribe((connector: any) => {
       this.logger.debug('[ACTION-ASKGPT] isChangedConnector -->', connector);
@@ -185,12 +182,25 @@ export class CdsActionAskgptComponent implements OnInit {
 
     switch(type){
       case 'trueIntent':
-        this.onCreateUpdateConnector.emit({ fromId: this.idConnectorTrue, toId: this.action.trueIntent})
+        this.onConnectorChange.emit({ type: 'create', fromId: this.idConnectorTrue, toId: this.action.trueIntent})
         break;
       case 'falseIntent':
-        this.onCreateUpdateConnector.emit({fromId: this.idConnectorFalse, toId: this.action.falseIntent})
+        this.onConnectorChange.emit({ type: 'create', fromId: this.idConnectorFalse, toId: this.action.falseIntent})
         break;
     }
+    this.updateAndSaveAction.emit();
+  }
+
+  onResetBlockSelect(event:{name: string, value: string}, type: 'trueIntent' | 'falseIntent') {
+    switch(type){
+      case 'trueIntent':
+        this.onConnectorChange.emit({ type: 'delete', fromId: this.idConnectorTrue, toId: this.action.trueIntent})
+        break;
+      case 'falseIntent':
+        this.onConnectorChange.emit({ type: 'delete', fromId: this.idConnectorFalse, toId: this.action.falseIntent})
+        break;
+    }
+    this.action[type]=null
     this.updateAndSaveAction.emit();
   }
   
