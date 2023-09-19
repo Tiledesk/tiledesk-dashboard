@@ -120,8 +120,14 @@ $margin-bottom: 15px;
     }
 }
 
+.cds-action-preview{
+    padding: 5px 0px;
+}
 
 .previewMode{
+    &.box-dw{
+        margin: 0px;
+    }
     #scrollMe{
         padding: 0;
         margin: 0; 
@@ -134,17 +140,22 @@ $margin-bottom: 15px;
         max-height: unset;
         overflow: unset;
     }
-    .draggable-box{
-        padding-top: $padding-base-preview;
-        padding-bottom: $padding-base-preview;
-        border-bottom: 3px solid #ebe2c6
-    }
+    // .draggable-box{
+    //     padding-top: $padding-base-preview;
+    //     padding-bottom: $padding-base-preview;
+    //     border-bottom: 3px solid #ebe2c6
+    // }
     .reply-info{
         max-width: calc(100% - 20px);
         margin: 5px auto;
         padding: 5px;
         font-size: .7em;
         line-height: 16px;
+    }
+
+    .preview-divider {
+        margin: 10px 0px;
+        border-top: 2px solid $light-brown;
     }
 }
 

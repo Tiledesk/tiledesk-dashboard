@@ -1,6 +1,8 @@
+@import "./src/assets/sass/cds/_variables.scss";
+
 
 :host{
-    --selectedColor: #ecb606;
+    --selectedColor: #{$icon-color};
 }
 
 mat-radio-group ::ng-deep{
