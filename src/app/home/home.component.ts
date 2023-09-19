@@ -133,8 +133,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   // resPromoBanner: any;
 
   // HOME REVOLUTION 
-  displayAnalyticsConvsGraph: boolean = true;
-  displayAnalyticsIndicators: boolean = true;
+  displayAnalyticsConvsGraph: boolean = false;
+  displayAnalyticsIndicators: boolean = false;
   displayConnectWhatsApp: boolean = true
   displayCreateChatbot: boolean = true
   displayInviteTeammate: boolean = true
