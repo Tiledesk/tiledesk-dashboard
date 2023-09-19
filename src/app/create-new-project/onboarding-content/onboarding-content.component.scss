@@ -8,14 +8,14 @@ $color-light-gray: #efefef;
 $color-middle-gray: #ccc;
 $color-gray: #333;
 $color-error: rgb(255, 95, 95);
-$color-error-shadow:rgba(255, 95, 95, 0.9);
+$color-error-shadow: rgba(255, 95, 95, 0.9);
 $color-text: #566787;
 $color-pro-plan: #3ea9f5;
 //---------------------//
 // STRUCTURE
 //---------------------//
 
-.step-header{
+.step-header {
     position: absolute;
     width: calc(100% - 360px);
     height: 70px;
@@ -34,7 +34,9 @@ $color-pro-plan: #3ea9f5;
         margin-top: 0px;
         margin-bottom: 0.5em;
     }
+
     display: none;
+
     &.active {
         min-height: calc(100vh - 150px);
         display: block;
@@ -59,35 +61,43 @@ $color-pro-plan: #3ea9f5;
     font-family: $mdb-font-family-poppins;
     background: white;
     width: 100%;
-    margin: 0px; 
+    margin: 0px;
     padding: 0px;
     display: flex;
+
     .logo {
-      position:absolute;
-      width: 150px;
-      top: 20px;
-      left: 20px;
-      z-index: 9999;
+        position: absolute;
+        width: 150px;
+        top: 20px;
+        left: 20px;
+        z-index: 9999;
     }
+
+    .logo.no-text {
+        width: 31px !important;
+    }
+
     .close-wizard-page {
-      text-align: left;
-      height: 66px;
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      margin-left: -100%;
-      color: $white;
-      z-index: 9999;
-      .close-btn {
-        font-size: 60px;
-        font-weight: 100;
+        text-align: left;
+        height: 66px;
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        margin-left: -100%;
         color: $white;
-        cursor: pointer;
-        opacity: 0.8;
-      }
-      .close-btn:hover {
-        opacity: 0.5;
-      }
+        z-index: 9999;
+
+        .close-btn {
+            font-size: 60px;
+            font-weight: 100;
+            color: $white;
+            cursor: pointer;
+            opacity: 0.8;
+        }
+
+        .close-btn:hover {
+            opacity: 0.5;
+        }
     }
 }
 
@@ -109,6 +119,7 @@ $color-pro-plan: #3ea9f5;
     // background: bisque;
 
 }
+
 .col-right {
     min-height: 100vh;
     height: auto;
@@ -118,9 +129,30 @@ $color-pro-plan: #3ea9f5;
     overflow: hidden;
     z-index: 10;
     background-color: #4caf50;
-}  
+}
 
+@media (max-width: 768px) {
 
+    .col-left {
+        width: 100%;
+    }
+
+    .col-right {
+        display: none;
+    }
+
+    .step-header {
+        width: 100%;
+    }
+
+    .type-step {
+        .title {
+            font-size: 28px;
+            line-height: 1.2em;
+        }
+    }
+
+}
 
 
 /** CSS STEPS **/
@@ -138,10 +170,12 @@ $color-pro-plan: #3ea9f5;
     -webkit-box-align: center;
     align-items: center;
     font-size: 18px;
-    font-family: "Poppins","Roboto", "Arial", sans-serif;
+    font-family: "Poppins", "Roboto", "Arial", sans-serif;
+
     .step-number {
         display: flex;
     }
+
     .number-label {
         line-height: 20px;
         display: flex;
@@ -150,11 +184,13 @@ $color-pro-plan: #3ea9f5;
         font-weight: bold;
         color: $color-text;
     }
+
     .number-list {
         height: 20px;
         overflow: hidden;
         margin-right: 4px;
         margin-left: 10px;
+
         ul {
             list-style: none;
             padding: 0px;
@@ -162,12 +198,15 @@ $color-pro-plan: #3ea9f5;
             transition: all 0.4s ease 0s;
         }
     }
+
     .number-of {
         margin-right: 10px;
     }
+
     .step-points {
         display: flex;
     }
+
     .point {
         display: flex;
         width: 8px;
@@ -175,7 +214,8 @@ $color-pro-plan: #3ea9f5;
         border-radius: 4px;
         margin-right: 4px;
         background-color: $color-light-gray;
-        &.active{
+
+        &.active {
             background-color: $color-pro-plan;
         }
     }
@@ -186,7 +226,8 @@ $color-pro-plan: #3ea9f5;
     // max-height: calc(100% - 60px);
     // min-height: calc(100% - 60px);
     opacity: 1;
-    &.hidden{
+
+    &.hidden {
         opacity: 0;
     }
 }
@@ -201,10 +242,12 @@ $color-pro-plan: #3ea9f5;
     padding: 0px;
     background-color: #fff;
 }
+
 .navigation-btn {
     display: flex;
     flex-direction: row;
 }
+
 .btn {
     font-size: 14px;
     padding: 18px 36px;
@@ -212,6 +255,7 @@ $color-pro-plan: #3ea9f5;
     max-width: 300px;
     margin: 10px 0;
 }
+
 .btn-back {
     display: inline-flex;
     align-items: center;
@@ -228,11 +272,13 @@ $color-pro-plan: #3ea9f5;
     background: $color-light-gray;
     margin: 10px 10px 10px 0;
     padding: 10px;
+
     svg {
         fill: $color-gray;
         width: 1em;
     }
-    &:disabled{
+
+    &:disabled {
         cursor: not-allowed;
         box-shadow: none;
         opacity: .65;
@@ -240,11 +286,11 @@ $color-pro-plan: #3ea9f5;
 }
 
 
-button.hidden{
+button.hidden {
     opacity: 0;
 }
 
-.bck-loader{
+.bck-loader {
     position: absolute;
     top: 0;
     bottom: 0;
@@ -260,20 +306,24 @@ button.hidden{
         overflow: hidden;
         z-index: 1;
         position: relative;
+
         &.active {
             opacity: 1;
             height: auto;
             overflow: visible;
             margin-left: 0;
         }
+
         &.active.fade-in-left-question:not(.shown) {
             -webkit-animation: fade-in-left 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) 0.2s both;
-                animation: fade-in-left 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) 0.2s both;
+            animation: fade-in-left 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) 0.2s both;
         }
+
         &.active.fade-in-right-question:not(.shown) {
             -webkit-animation: fade-in-right 0.6s cubic-bezier(0.390, 0.575, 0.565, 1.000) 0.2s both;
-                animation: fade-in-right 0.6s cubic-bezier(0.390, 0.575, 0.565, 1.000) 0.2s both;
+            animation: fade-in-right 0.6s cubic-bezier(0.390, 0.575, 0.565, 1.000) 0.2s both;
         }
+
         &.shown {
             opacity: 1;
             height: auto;
@@ -282,6 +332,7 @@ button.hidden{
         }
 
     }
+
     .question-type {
         display: block;
         margin-bottom: 24px;
@@ -292,12 +343,11 @@ button.hidden{
     // ANIMATIONS //
     .fade-in-right {
         -webkit-animation: fade-in-right 0.6s cubic-bezier(0.390, 0.575, 0.565, 1.000) 0.4s both;
-            animation: fade-in-right 0.6s cubic-bezier(0.390, 0.575, 0.565, 1.000) 0.4s both;
+        animation: fade-in-right 0.6s cubic-bezier(0.390, 0.575, 0.565, 1.000) 0.4s both;
     }
+
     .fade-in-left {
         -webkit-animation: fade-in-left 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) 0.2s both;
-            animation: fade-in-left 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) 0.2s both;
+        animation: fade-in-left 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) 0.2s both;
     }
 }
-
-    

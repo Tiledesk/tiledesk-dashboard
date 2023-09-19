@@ -140,6 +140,19 @@ $color-pro-plan: #3ea9f5;
     }
 }
 
+@media (max-width: 768px) { 
+    .cnp-widget-installation{ 
+        .title { 
+            font-size: 28px;
+            line-height: 1.2em;
+        }
+        .description { 
+            font-size: 18px;
+            line-height: 1.2em;
+        }
+    }
+}
+
 .small{
     display:none;
 }

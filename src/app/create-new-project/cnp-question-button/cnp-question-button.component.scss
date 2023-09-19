@@ -87,7 +87,6 @@ h4.title {
         }
     }
 
-
     section {
         position: absolute;
         left: 10px;
@@ -106,4 +105,20 @@ h4.title {
         line-height: 1.2em;
         font-weight: 400;
     }
+}
+
+@media (max-width: 468px) { 
+    .question-button { 
+        width: 132px;
+        height: 98px;
+    }
+    div.row.buttons > div > div > div > p {
+        font-size:12px;
+        padding-left: 5px;
+    }
+
+     div.row.buttons > div > div > div > h2 {
+        display: none;
+     }
+
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, isDevMode } from '@angular/core';
+import { Component, HostListener, OnInit, isDevMode } from '@angular/core';
 import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from "@angular/common/http";
@@ -41,6 +41,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
   DISPLAY_SPINNER = false;
 
   companyLogoBlack_Url: string;
+  companyLogoNoText_Url: string;
   temp_SelectedLangName: string;
   temp_SelectedLangCode: string;
   botid: string;
@@ -79,6 +80,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
   isFirstProject: boolean = false;
   selectedTranslationCode: string;
   selectedTranslationLabel: string;
+  displayLogoWithText: boolean = true;
 
   constructor(
     private auth: AuthService,
@@ -101,6 +103,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
     const brand = brandService.getBrand();
     this.logo_x_rocket = brand['wizard_create_project_page']['logo_x_rocket'];
     this.companyLogoBlack_Url = brand['company_logo_black__url'];
+    this.companyLogoNoText_Url = brand['company_logo_no_text__url'];
     this.botid = this.route.snapshot.params['botid'];
   }
 
@@ -120,6 +123,43 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
     this.getCurrentTranslation();
     // console.log('[WIZARD - CREATE-PRJCT] previousUrl ', this.previousUrl);
     this.initialize();
+    this.onInitWindowHeight();
+
+  }
+
+  onInitWindowHeight(): any {
+
+    console.log('[ONBOARDING-CONTEMT] ACTUAL WIDTH ', window.innerWidth);
+
+    if (window.innerWidth < 452) {
+      if (window && window['Tiledesk']) {
+        window['Tiledesk']('hide')
+      }
+    }
+    if (window.innerWidth < 371) { 
+        this.displayLogoWithText = false
+    } else {
+      this.displayLogoWithText = true
+    }
+
+
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    console.log('[ONBOARDING-CONTENT] NEW WIDTH ', window.innerWidth);
+    if (window.innerWidth < 452) {
+      if (window && window['Tiledesk']) {
+        window['Tiledesk']('hide')
+      }
+    }
+
+    if (window.innerWidth < 371) { 
+      this.displayLogoWithText = false
+  } else {
+    this.displayLogoWithText = true
+  }
+
   }
 
 
@@ -500,7 +540,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
           }
 
           let userFullname = ''
-          if (this.user.firstname && this.user.lastname)  {
+          if (this.user.firstname && this.user.lastname) {
             userFullname = this.user.firstname + ' ' + this.user.lastname
           } else if (this.user.firstname && !this.user.lastname) {
             userFullname = this.user.firstname
