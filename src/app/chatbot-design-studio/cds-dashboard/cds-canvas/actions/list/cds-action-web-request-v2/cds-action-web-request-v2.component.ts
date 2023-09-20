@@ -46,7 +46,6 @@ export class CdsActionWebRequestV2Component implements OnInit {
 
   bodyOptions: Array<{label: string, value: string, disabled: boolean, checked: boolean}>= [ {label: 'none', value: 'none', disabled: false, checked: true}, {label: 'Json', value: 'json', disabled: false, checked: false}]
   
-  
   constructor(
     private logger: LoggerService,
     private intentService: IntentService
@@ -137,6 +136,9 @@ export class CdsActionWebRequestV2Component implements OnInit {
 
   private initializeAttributes() {
     let new_attributes = [];
+    if (!variableList.userDefined.some(v => v.name === 'result')) {
+      new_attributes.push({ name: "result", value: "result" });
+    }
     if (!variableList.userDefined.some(v => v.name === 'status')) {
       new_attributes.push({ name: "status", value: "status" });
     }

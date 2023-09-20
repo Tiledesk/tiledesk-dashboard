@@ -134,17 +134,12 @@ div.value-wrp {
 
 }
 
-.set-attribute-value.empty {
-    color: #ff4000;
-    background: unset;
-}
-
 .set-attribute-operands-wpr {
     padding: 0px 3px;
 }
 
 .set-attribute-operands-wpr.empty {
-    color: #ff4000;
+    color: $empty-element-property;
     background: unset;
     font-size: 12px;
     font-weight: 400;

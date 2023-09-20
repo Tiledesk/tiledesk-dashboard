@@ -176,6 +176,7 @@ export class ActionWebRequestV2 extends Action {
     url: string;
     headersString: any;
     body: string;
+    assignResultTo: string;
     assignStatusTo: string;
     assignErrorTo: string;
     trueIntent: string;

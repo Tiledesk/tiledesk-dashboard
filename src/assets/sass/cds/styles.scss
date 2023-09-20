@@ -105,8 +105,10 @@ emoji-mart {
     text-overflow: ellipsis;
 }
 
-.action-row-right.empty {
-    color: #ff4000
+.action-row-right.empty,
+.set-attribute-value.empty {
+    background: none;
+    color: $empty-element-property;
 }
 
 .action-row .action-row-left svg {

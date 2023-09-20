@@ -13,8 +13,6 @@ export class CdsActionAssignVariableComponent implements OnInit, OnChanges {
     @Input() previewMode: boolean = true;
     @Output() updateAndSaveAction = new EventEmitter();
     
-    displaySetOperationPlaceholder:boolean = true
-
     listOfMathOperators: Array<{ name: string, value: string, src?: string }> = [];
     listOfFunctions: Array<{ name: string, value: string, src?: string }> = [];
 
@@ -31,7 +29,7 @@ export class CdsActionAssignVariableComponent implements OnInit, OnChanges {
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        this.logger.log('[CDS-ACTION-ASSIGN-VARIABLE] action ', this.action)
+        console.log('[CDS-ACTION-ASSIGN-VARIABLE] action ', this.action)
         const operands = this.action.operation.operands
         const operators = this.action.operation.operators
         this.logger.log('[CDS-ACTION-ASSIGN-VARIABLE] operands ', operands)

@@ -346,7 +346,10 @@ export class IntentService {
     const filteredArray = this.listOfIntents.filter((element) => element.intent_display_name.startsWith(this.preDisplayName));
     if(filteredArray.length>0){
       const lastElement = filteredArray.slice(-1)[0];
-      const intent_display_name = parseInt(lastElement.intent_display_name.substring(this.preDisplayName.length));
+      let intent_display_name = 0
+      if(lastElement.intent_display_name.substring(this.preDisplayName.length)){
+       intent_display_name = parseInt(lastElement.intent_display_name.substring(this.preDisplayName.length));
+      }
       return this.preDisplayName+(intent_display_name+1);
     } else {
       return this.preDisplayName+1;
@@ -694,6 +697,7 @@ export class IntentService {
     }
     if(typeAction === TYPE_ACTION.WEB_REQUESTV2){
       action = new ActionWebRequestV2();
+      action.assignResultTo= 'result'
       action.assignStatusTo = 'status';
       action.assignErrorTo = 'error';
     }
