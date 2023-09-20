@@ -69,6 +69,10 @@ export class IntentService {
   private changedConnector = new Subject<any>();
   public isChangedConnector$ = this.changedConnector.asObservable();
 
+
+
+  public arrayUNDO: Array<any> = [];
+
   constructor(
     private faqService: FaqService,
     private faqKbService: FaqKbService,
@@ -402,6 +406,7 @@ export class IntentService {
     if(!timeout)timeout = 0;
     let intent = JSON.parse(JSON.stringify(originalIntent));
     intent = removeNodesStartingWith(intent, '__');
+    // this.addUNDOtoList(originalIntent);
     return new Promise((resolve, reject) => {
       let id = intent.id;
       let attributes = intent.attributes?intent.attributes:{};
@@ -414,13 +419,11 @@ export class IntentService {
       }
       let actionsIntent = intent.actions?intent.actions:[];
       let webhookEnabledIntent = intent.webhook_enabled?intent.webhook_enabled:false;
-
       if(this.idIntentUpdating == intent.intent_id){
         clearTimeout(this.setTimeoutChangeEvent);
       } else {
         this.idIntentUpdating = intent.intent_id;
       }
-      
       this.setTimeoutChangeEvent = setTimeout(() => {
         this.faqService.updateIntent(
           id,
@@ -446,9 +449,12 @@ export class IntentService {
   }
 
   /** deleteIntent */
-  public async deleteIntent(intentId: string): Promise<boolean> { 
+  public async deleteIntent(intent: Intent): Promise<boolean> { 
+    //  let intentToUpdate = this.listOfIntents.find((intent) => intent.id === intent.id);
+    // this.addUNDOtoList(this.listOfIntents, 'DEL');
+    this.deleteIntentToListOfIntents(intent.intent_id);
     return new Promise((resolve, reject) => {
-      this.faqService.deleteFaq(intentId).subscribe((data) => {
+      this.faqService.deleteFaq(intent.id).subscribe((data) => {
         resolve(true);
       }, (error) => {
         console.error('ERROR: ', error);
@@ -767,7 +773,7 @@ export class IntentService {
 
 
 
-  public  patchButtons(buttons, idAction){
+  public patchButtons(buttons, idAction){
     console.log('patchButtons:: ', buttons);
     buttons.forEach((button, index) => {
       const checkUid = buttons.filter(btn => btn.uid === button.uid);
@@ -803,6 +809,8 @@ export class IntentService {
     clearTimeout(this.setTimeoutChangeEvent);
     this.setTimeoutChangeEvent = setTimeout(() => {
       console.log('[INTENT SERVICE] -> patchAttributes, ', intentID, attributes);
+      // let intentToUpdate = this.listOfIntents.find((intent) => intent.id === intentID);
+      // this.addUNDOtoList(this.listOfIntents, 'PUT');
       this.faqService.patchAttributes(intentID, attributes).subscribe((data) => {
         if (data) {
           // this.listOfIntents = this.listOfIntents.map((obj) => (obj.id === intentID ? data : obj));
@@ -818,5 +826,66 @@ export class IntentService {
     }, 2000);
   }
 
+
+
+  /************************************************/
+  /** addUNDO */
+  /************************************************/
+  public addUNDOtoList(intents){
+    // const copiaArray = JSON.parse(JSON.stringify(intents));
+    console.log('[INTENT SERVICE] -> addUNDO', intents);
+    this.arrayUNDO.push(intents);
+    // this.arrayUNDO = this.arrayUNDO.slice(10);
+  }
+
+
+  private confrontaOggettiPerID(obj1, obj2) {
+    return obj1.id === obj2.id;
+  }
+
+  // Verifica se gli oggetti con lo stesso ID sono uguali
+  
+
+
+  public restoreLastUNDO(){
+    console.log('[INTENT SERVICE] -> restoreLastUNDO',  this.arrayUNDO);
+    if(this.arrayUNDO && this.arrayUNDO.length>0){
+      const operation = this.arrayUNDO.pop();
+      // const sonoUguali = this.listOfIntents.every((oggetto1) =>
+      //   operation.some((oggetto2) => this.confrontaOggettiPerID(oggetto1, oggetto2))
+      // );
+      // console.log('[INTENT SERVICE] -> sonoUguali', sonoUguali)
+      this.listOfIntents = operation;
+      this.refreshIntents();
+      this.connectorService.createConnectors(this.listOfIntents);
+  
+      // this.listOfIntents.forEach(element => {
+      //   this.refreshIntent(element);
+      // });
+
+    }
+    
+
+    // console.log('[INTENT SERVICE] -> restoreLastUNDO operation',  operation);
+    // if(!operation)return;
+    // let listOperations = operation.operations;
+    // console.log('[INTENT SERVICE] -> restoreLastUNDO listOperations',  listOperations);
+    // listOperations.forEach(ope => {
+    //   this.listOfIntents = ope.item;
+    //   this.refreshIntents();
+    //   console.log('[INTENT SERVICE] -> restoreLastUNDO ope', ope);
+    //   // if(operation.type === 'DEL'){
+    //   //   this.listOfIntents.push(ope.item);
+    //   //   this.refreshIntents();
+    //   //   console.log('[INTENT SERVICE] -> PUSH', this.listOfIntents);
+    //   // }
+    //   // if(operation.type === 'PUT'){
+    //   //   this.listOfIntents = this.listOfIntents.filter((elem) => elem.intent_id !== ope.item.intent_id);
+    //   //   this.refreshIntents();
+    //   //   console.log('[INTENT SERVICE] -> DEL', this.listOfIntents);
+    //   // }
+    // });
+  }
+  /************************************************/
 
 }
