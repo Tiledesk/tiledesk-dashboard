@@ -2733,9 +2733,6 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.logger.log('[WS-REQUESTS-MSGS] - CREATE TAG - TAG-NAME: ', this.tag, ' TAG-COLOR: ', this.tag_selected_color)
     this.logger.log('[WS-REQUESTS-MSGS] - CREATE TAG - this.ngselect: ', this.ngselect)
     // this.ngselect.close()
-
-
-
     // if (this.tag_name && this.tag_name.length > 0) {
     // this.hasError = false;
 

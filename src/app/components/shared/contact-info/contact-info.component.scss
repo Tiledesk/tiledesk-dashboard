@@ -16,7 +16,7 @@ textarea[type="text"] {
 }
 
 .tab0-card1 {
-    min-height: 225px;
+    min-height: 283px;
 }
 
 .tab0-card1-ticket {
@@ -326,6 +326,19 @@ textarea[type="text"] {
         // left: -2px;
         top: 3px;
     }
+}
+
+.manage_tags-cnctc-info{
+    color: #03a5e8;
+    font-size: 12px;
+    font-weight: 400;
+    margin-top: 6px;
+    cursor: pointer;
+    margin-left: 9px;
+}
+
+.manage_tags-cnctc-info:hover {
+    text-decoration: underline;
 }
 
 // ---- Assigned tag without icon

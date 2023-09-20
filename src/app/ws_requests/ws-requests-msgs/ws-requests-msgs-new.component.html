@@ -2620,7 +2620,7 @@
                             (click)="smartAssignmentOn()">
                             {{'ConvertToOnline' | translate}}
                             <span matTooltipClass="custom-mat-tooltip"
-                              matTooltip="{{'SmartReassignmentForThisConversationWillBeEnabled' | translate}"
+                              matTooltip="{{'SmartReassignmentForThisConversationWillBeEnabled' | translate}}"
                               #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
                               <i class="material-icons"
                                 style=" font-size:16px; color:#7695a5;vertical-align: middle; cursor:pointer;position: relative;top: -2px;">
@@ -2684,11 +2684,23 @@
                       </div>
                       <div class="ng-select-tags-wpr" [ngStyle]="{'width':CHAT_PANEL_MODE === true ? 'auto' : 'auto' }">
 
-                        <ng-select style="margin-right: 13px;" class="ng-select-tags" id="select-tag" #ngSelect
-                          (change)="addTag()" [items]="tagsList" bindLabel="tag" bindValue="_id" [clearable]="false"
-                          [clearSearchOnAdd]="true" [hideSelected]="true" placeholder="{{ typeALabelAndPressEnter}}"
-                          [(ngModel)]="tag" addTagText="Create New" [addTag]="createNewTag"
-                          (keyup.enter)="ngSelect.close()" notFoundText="No tags found. Type to create a tag"
+                        <ng-select style="margin-right: 13px;" 
+                          class="ng-select-tags" 
+                          id="select-tag" 
+                          #ngSelect
+                          (change)="addTag()" 
+                          [items]="tagsList" 
+                          bindLabel="tag" 
+                          bindValue="_id" 
+                          [clearable]="false"
+                          [clearSearchOnAdd]="true" 
+                          [hideSelected]="true" 
+                          placeholder="{{ typeALabelAndPressEnter}}"
+                          [(ngModel)]="tag" 
+                          addTagText="Create New" 
+                          [addTag]="createNewTag"
+                          (keyup.enter)="ngSelect.close()" 
+                          notFoundText="No tags found. Type to create a tag"
                           [disabled]="DISABLE_ADD_NOTE_AND_TAGS === true">
 
                           <ng-template ng-label-tmp let-item="item">
