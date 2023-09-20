@@ -151,7 +151,7 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
         if (intent && this.intent && intent.intent_id === this.intent.intent_id) {
           var stageElement = document.getElementById(intent.intent_id);
           this.stageService.centerStageOnTopPosition(stageElement)
-          this.addCssClassAndRemoveAfterTime('live-active-intent', '#block-header-' + (intent.intent_id), 6)
+          this.addCssClassAndRemoveAfterTime('live-active-intent', '#intent-content-' + (intent.intent_id), 6)
         }
       });
       const subscribe = { key: subscribtionKey, value: subscribtion };
@@ -653,21 +653,25 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
     this.showPanelActions.emit(data);
   }
 
+  /** ******************************
+   * intent controls options: START
+   * ****************************** */
+  onOptionIntentControlClicked(event: 'webhook' | 'delete' | 'test'){
+    switch(event){
+      case 'webhook':
+        this.toggleIntentWebhook(this.intent);
+        break;
+      case 'delete':
+        this.onDeleteIntent(this.intent)
+        break;
+      case 'test':
+        this.openTestSiteInPopupWindow()
+    }
+  }
 
   openTestSiteInPopupWindow() {
     this.intentService.setIntentSelected(this.intent);
     this.testItOut.emit(this.intent)
-  }
-
-  onMouseOverWebhookBtn(intent) {
-    // console.log('[CDS-INTENT] onMouseOverWebhookBtn  intent ', intent)
-    if (intent) {
-      if (intent.webhook_enabled === false || !intent.webhook_enabled) {
-        this.webHookTooltipText = "Enable webhook"
-      } else if (intent.webhook_enabled === true) {
-        this.webHookTooltipText = "Disable webhook"
-      }
-    }
   }
 
   toggleIntentWebhook(intent) {
@@ -687,6 +691,9 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
   onDeleteIntent(intent: Intent) {
     this.deleteIntent.emit(intent);
   }
+  /** ******************************
+   * intent controls options: END 
+   * ****************************** */
 
 
 }
