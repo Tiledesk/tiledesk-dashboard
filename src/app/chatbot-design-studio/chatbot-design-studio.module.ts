@@ -73,7 +73,6 @@ import { CdsCanvasComponent } from './cds-dashboard/cds-canvas/cds-canvas.compon
 // import { ImageResponseComponent } from './cds-dashboard/panel-intent-detail/actions/action-reply/reply-types/image-response/image-response.component';
 // import { FrameResponseComponent } from './cds-dashboard/panel-intent-detail/actions/action-reply/reply-types/frame-response/frame-response.component';
 // import { ImageUploadComponent } from './cds-dashboard/panel-intent-detail/actions/action-reply/elements/image-upload/image-upload.component';
-import { PanelIntentHeaderComponent } from './cds-dashboard/cds-canvas/cds-intent/panel-intent-header/panel-intent-header.component';
 // import { ElementFromUrlComponent } from './cds-dashboard/panel-intent-detail/actions/action-reply/elements/element-from-url/element-from-url.component';
 // import { QuestionComponent } from './cds-dashboard/panel-intent-detail/question/question.component';
 // import { AnswerComponent } from './cds-dashboard/panel-intent-detail/answer/answer.component';
@@ -89,23 +88,13 @@ import { CDSElementFromUrlComponent } from './cds-dashboard/cds-canvas/base-elem
 
 
 
-//INTENT ACTIONS
-// import { ActionWaitComponent } from './cds-dashboard/panel-intent-detail/actions/action-wait/action-wait.component';
-// import { ActionEmailComponent } from './cds-dashboard/panel-intent-detail/actions/action-email/action-email.component';
-// import { ActionIntentComponent } from './cds-dashboard/panel-intent-detail/actions/action-intent/action-intent.component'
-// import { ActionDeleteVariableComponent } from './cds-dashboard/panel-intent-detail/actions/action-delete-variable/action-delete-variable.component';
-// import { ActionAssignVariableComponent } from './cds-dashboard/panel-intent-detail/actions/action-assign-variable/action-assign-variable.component';
-// import { ActionReplaceBotComponent } from './cds-dashboard/panel-intent-detail/actions/action-replace-bot/action-replace-bot.component';
-// import { ActionChangeDepartmentComponent } from './cds-dashboard/panel-intent-detail/actions/action-change-department/action-change-department.component';
-// import { ActionOnlineAgentsComponent } from './cds-dashboard/panel-intent-detail/actions/action-online-agents/action-online-agents.component';
-// import { ActionOpenHoursComponent } from './cds-dashboard/panel-intent-detail/actions/action-open-hours/action-open-hours.component';
-// import { ActionHideMessageComponent } from './cds-dashboard/panel-intent-detail/actions/action-hide-message/action-hide-message.component';
-// import { ActionDescriptionComponent } from './cds-dashboard/panel-intent-detail/actions/action-description/action-description.component';
-// import { ActionCloseComponent } from './cds-dashboard/panel-intent-detail/actions/action-close/action-close.component';
-// import { ActionAgentHandoffComponent } from './cds-dashboard/panel-intent-detail/actions/action-agent-handoff/action-agent-handoff.component';
-// import { ActionJsonConditionComponent } from './cds-dashboard/panel-intent-detail/actions/action-json-condition/action-json-condition.component';
+//INTENT
+import { CdsIntentComponent } from './cds-dashboard/cds-canvas/cds-intent/cds-intent.component';
+import { PanelIntentHeaderComponent } from './cds-dashboard/cds-canvas/cds-intent/panel-intent-header/panel-intent-header.component';
+import { PanelIntentControlsComponent } from './cds-dashboard/cds-canvas/cds-intent/panel-intent-controls/panel-intent-controls.component';
 
-// import { CdsFooterComponent } from './cds-dashboard/cds-footer/cds-footer.component';
+
+
 import { CdsPublishOnCommunityModalComponent } from './cds-dashboard/utils/cds-publish-on-community-modal/cds-publish-on-community-modal.component';
 import { SelectComponent } from './cds-base-element/select/select.component';
 // import { VariableListComponent } from './cds-dashboard/cds-canvas/panel-intent-detail/actions/action-json-condition/variable-list/variable-list.component';
@@ -133,7 +122,6 @@ import { ChangeBotLangModalComponent } from 'app/components/modals/change-bot-la
 
 import { CdsPopupComponent } from './cds-dashboard/utils/cds-popup/cds-popup.component';
 import { CdsModalActivateBotComponent } from './cds-dashboard/utils/cds-modal-activate-bot/cds-modal-activate-bot.component';
-import { CdsIntentComponent } from './cds-dashboard/cds-canvas/cds-intent/cds-intent.component';
 import { CdsPanelElementsComponent } from './cds-dashboard/cds-canvas/cds-panel-elements/cds-panel-elements.component';
 // import { CdsPanelDetailComponent } from './cds-dashboard/cds-panel-detail/cds-panel-detail.component';
 import { CdsPanelActionsComponent } from './cds-dashboard/cds-canvas/cds-panel-elements/cds-panel-actions/cds-panel-actions.component';
@@ -236,7 +224,8 @@ import { CdsAnswerComponent } from './cds-dashboard/cds-canvas/actions/list/answ
       //CDS INTENT
       CdsIntentComponent,
       PanelIntentHeaderComponent,
-
+      PanelIntentControlsComponent,
+      
       //CDS PANEL ELEMENTS
       CdsPanelElementsComponent,
       CdsPanelActionsComponent,

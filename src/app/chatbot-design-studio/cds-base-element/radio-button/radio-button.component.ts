@@ -23,7 +23,6 @@ export class CDSRadioButtonComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges){
-    console.log('changeeeeeeee', this.color, this.elementRef.nativeElement.querySelector('.content'))
     if(this.color) this.elementRef.nativeElement.querySelector('.content').style.setProperty('--selectedColor', this.color);
   }
 
