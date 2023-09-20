@@ -335,8 +335,17 @@ import { ActivateAppsumoProductComponent } from './create-project-wizard/activat
 import { ContactCustomPropertiesComponent } from './components/modals/contact-custom-properties/contact-custom-properties.component';
 import { ContactInfoComponent } from './components/shared/contact-info/contact-info.component';
 import { CreateProjectGsComponent } from './create-project-wizard/create-project-gs/create-project-gs.component';
-
-
+// new home comp
+import { HomeConvsGraphComponent } from './home-components/home-convs-graph/home-convs-graph.component';
+import { HomeWhatsappAccountComponent } from './home-components/home-whatsapp-account/home-whatsapp-account.component';
+import { HomeCreateChatbotComponent } from './home-components/home-create-chatbot/home-create-chatbot.component';
+import { HomeNewsFeedComponent } from './home-components/home-news-feed/home-news-feed.component';
+import { HomeAnalyticsIndicatorComponent } from './home-components/home-analytics-indicator/home-analytics-indicator.component';
+import { HomeWhatsappAccountWizardComponent } from './home-components/home-whatsapp-account-wizard/home-whatsapp-account-wizard.component';
+import { HomeWhatsappAccountWizardModalComponent } from './home-components/home-whatsapp-account-wizard/home-whatsapp-account-wizard-modal/home-whatsapp-account-wizard-modal.component';
+import { HomeCustomizeWidgetComponent } from './home-components/home-customize-widget/home-customize-widget.component';
+import { HomeCreateTeammateComponent } from './home-components/home-create-teammate/home-create-teammate.component';
+// ./new home comp
 
 
 import { OpenaikbsService } from './services/openaikbs.service';
@@ -597,7 +606,16 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     ContactCustomPropertiesComponent,
     ContactInfoComponent,
     CreateProjectGsComponent,
-    KnowledgeBasesComponent
+    KnowledgeBasesComponent,
+    HomeConvsGraphComponent,
+    HomeWhatsappAccountComponent,
+    HomeCreateChatbotComponent,
+    HomeNewsFeedComponent,
+    HomeAnalyticsIndicatorComponent,
+    HomeWhatsappAccountWizardComponent,
+    HomeWhatsappAccountWizardModalComponent,
+    HomeCustomizeWidgetComponent,
+    HomeCreateTeammateComponent
   ],
   imports: [
     TooltipModule.forRoot(CutomTooltipOptions as TooltipOptions),

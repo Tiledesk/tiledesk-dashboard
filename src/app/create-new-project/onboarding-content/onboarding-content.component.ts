@@ -621,12 +621,29 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
       segmentTrackAttr["botId"] = this.botId;
       // let segmentTrackAttr = this.segmentAttributes;
       this.segment(segmentPageName, segmentTrackName, segmentTrackAttr, this.segmentIdentifyAttributes);
+
+      console.log('[ONBOARDING-D]  segmentIdentifyAttributes ', this.segmentIdentifyAttributes)
+      this.saveUserPreferences(this.segmentIdentifyAttributes)
       // this.DISPLAY_SPINNER_SECTION = false;
       // this.DISPLAY_BOT = true;
       this.goToExitOnboarding();
     }
   }
   // -----------------  FUNCTION CALLBACK   ------------------------ //
+
+  // for new home
+  saveUserPreferences(segmentIdentifyAttributes) {
+    this.projectService.updateProjectWithUserPreferences(segmentIdentifyAttributes)
+      .subscribe((res: any) => {
+
+        this.logger.log('[ONBOARDING-D] - UPDATE PRJCT WITH USER PREFERENCES RES ', res);
+
+      }, error => {
+        this.logger.error('[ONBOARDING-D] - UPDATE PRJCT WITH USER PREFERENCES - ERROR ', error)
+      }, () => {
+        this.logger.log('[ONBOARDING-D] - UPDATE PRJCT WITH USER PREFERENCES * COMPLETE *')
+      });
+  }
 
   addWidgetDefaultLanguage() {
     this.browser_lang = this.translate.getBrowserLang();

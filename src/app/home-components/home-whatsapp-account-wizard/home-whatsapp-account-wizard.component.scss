@@ -1,0 +1,281 @@
+.home-block-wpr {
+    margin-top: 18px;
+    border-radius: 12px;
+    padding: 24px;
+    // box-shadow: 0 0 20px 4px rgb(154 161 177 / 15%), 0 4px 80px -8px rgb(36 40 47 / 25%),
+    //     0 4px 4px -2px rgb(91 94 105 / 15%);
+    box-shadow: 0 0 #0000, 0 0 #0000, 0 1px 3px #0000001a, 0 1px 2px -1px #0000001a;
+    margin-bottom: 18px;
+}
+._2vFcS {
+    margin: 20px 50px;
+    border-radius: 8px;
+}
+
+._2iqgV {
+    flex-direction: column;
+}
+
+._2qLvL {
+    display: flex;
+}
+
+.cKPgl {
+    padding: 8px;
+    background-color: rgba(255, 255, 255, 0.05);
+    gap: 8px;
+    position: relative;
+    border-radius: 4px;
+}
+
+._2N7fw {
+    align-items: center;
+    height: 90px;
+}
+
+._1fLoo {
+    flex: none;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background-color: #0c172d;
+    overflow: hidden;
+    margin-top: 6px;
+    position: absolute;
+    left: -40px;
+    top: -18px;
+}
+
+.wa-step-description {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;  
+    overflow: hidden;
+}
+
+.step-completed {
+    background-color: #25d366;
+}
+
+.KJpMb {
+    flex: auto;
+    padding: 6px 0;
+}
+
+._1aC9T {
+    align-items: center;
+}
+
+.o_7eO {
+    margin-left: auto;
+    transition: opacity 300ms ease-in-out;
+}
+
+._1FEtf {
+    display: block;
+    border: none;
+    outline: none;
+    padding: 0;
+    background-color: transparent;
+    text-align: left;
+}
+
+._2u1EA {
+    background-color: #208ef0;
+}
+
+// ._3pOpF {
+//     min-width: 36px;
+//     height: 36px;
+//     border-radius: 50%;
+//     // background-color: var(--cobaltSub);
+// }
+
+._1e3oJ {
+    justify-content: center;
+}
+
+._2tIkX {
+    justify-content: center;
+}
+
+._24ku1 {
+    width: 10px;
+    height: 10px;
+    transform: rotate(180deg);
+}
+
+.SHY5O {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+// ._3S-3- {
+//     width: 24px;
+//     height: 24px;
+// }
+
+._2_Qkq {
+    position: absolute;
+    right: -42px;
+    top: 50%;
+    z-index: 1;
+    transition: opacity 300ms ease-in-out;
+}
+
+._1FEtf[disabled] {
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+._3pOpF {
+    min-width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: #2196f3;
+}
+
+.connect-whatsapp-wizard-title {
+    font-size: 24px;
+    font-family: Poppins, Roboto, Arial, sans-serif;
+    color: #e0f0ff;
+    padding: 0px 1px;
+    -webkit-font-smoothing: antialiased;
+    -moz-font-smoothing: antialiased;
+    -o-font-smoothing: antialiased;
+    font-weight: 400;
+    height: 30px;
+}
+
+.activate-step-2 {
+    color: #e0f0ff !important;
+}
+.activate-step-3 {
+    color: #e0f0ff !important;
+}
+
+.stepper-line {
+    width: 1px;
+    height: 80px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, .4);
+    overflow: hidden;
+    margin-top: 6px;
+    position: absolute;
+    left: -29px;
+    top: 11px;
+}
+
+.wa-wizard-connect-support-icon {
+height: 40px;
+}
+
+.wa-wizard-connect-support-text {
+    font-size: 18px;
+    color: #2196f3;
+    cursor: pointer;
+    font-family: Poppins,Roboto,Arial,sans-serif;
+    font-weight: 400;
+
+}
+
+.wa-wizard-connect-support {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    height: 40px;
+    margin-top: 12px;
+}
+
+// --------------------------------------------------
+// ANIMATED ARROW https://codepen.io/cbrst/pen/ebxwLJ
+// --------------------------------------------------
+.arrow-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: center;
+    color: #0f62ff;
+    font-weight: 400;
+    margin-top: 6px;
+    cursor: pointer;
+  }
+  
+  .arrow-wrapper {
+    display: flex;
+    align-items: center;
+  }
+  
+  .arrow-container:hover .arrow-wrapper .arrow span {
+    $size: 9px;
+    width: $size * 1.414 !important;
+    right: calc($size / 1.414) * -1;
+  }
+  
+  #arrow_1 .arrow {
+    $size: 9px;
+    $width: 2px;
+  
+    cursor: pointer;
+    display: block;
+    width: calc($size / 1.414);
+    height: calc($size / 1.414) * 2;
+    position: relative;
+  
+    & span,
+    &:before,
+    &:after {
+      // background: #fff;
+      background: #0f62ff;
+      content: "";
+      display: block;
+      width: $size;
+      height: $width;
+      position: absolute;
+      top: calc(50% - (#{$width} / 2));
+    }
+  
+    &:before {
+      transform: rotate(-45deg);
+    }
+    &:after {
+      transform: rotate(45deg);
+    }
+  
+    & span {
+      width: 0;
+    }
+    &:hover span {
+      width: $size * 1.414;
+    }
+  
+    @each $direction in "left" "right" {
+      &.arrow--#{$direction} {
+        & span,
+        &:before,
+        &:after {
+          #{$direction}: 0;
+          transform-origin: #{$direction} 50%;
+        }
+  
+        &:before,
+        &:after {
+          transition: #{$direction} 0.3s 0.05s;
+        }
+  
+        & span {
+          transition: width 0.3s, #{$direction} 0.3s 0.05s;
+        }
+  
+        &:hover {
+          & span,
+          &:before,
+          &:after {
+            #{$direction}: calc($size / 1.414) * -1;
+          }
+        }
+      }
+    }
+  }

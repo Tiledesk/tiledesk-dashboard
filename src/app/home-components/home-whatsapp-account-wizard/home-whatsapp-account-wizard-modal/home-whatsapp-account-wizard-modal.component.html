@@ -1,0 +1,162 @@
+<ng-container [ngSwitch]="activeStep">
+    <ng-container *ngSwitchCase="'step1'" [ngTemplateOutlet]="step1"></ng-container>
+    <ng-container *ngSwitchCase="'step2'" [ngTemplateOutlet]="step2"></ng-container>
+    <ng-container *ngSwitchCase="'step3'" [ngTemplateOutlet]="step3"></ng-container>
+   <!--  <ng-container *ngSwitchCase="'cds-sb-fulfillment'" [ngTemplateOutlet]="fulfillment"></ng-container>
+    <ng-container *ngSwitchCase="'cds-sb-training'" [ngTemplateOutlet]="training"></ng-container>
+    <ng-container *ngSwitchCase="'cds-sb-rules'" [ngTemplateOutlet]="rules"></ng-container>
+    <ng-container *ngSwitchDefault [ngTemplateOutlet]="intents"></ng-container> -->
+</ng-container>
+
+
+<!-- --------------------------------------------------------- -->
+<!-- @ Step 1 -->
+<!-- --------------------------------------------------------- -->
+<ng-template #step1 [ngOutletContext]="context">
+    <mat-dialog-content class="mat-typography" style="min-height: 30px;">
+        <div class="wa-steps-modal">
+            <div class="wa-step-modal-header">
+                <h2 class="wa-step-modal-title">
+
+                    Connect your WhatsApp
+                </h2>
+            </div>
+            <div class="connect-wa-first-step-modal-content">
+                <div class="img-wpr">
+                    <img src="https://tiledesk.com/wp-content/uploads/2022/10/WhatsApp-to-your-communication-channels.png"
+                        alt="" style="height: 150px; width: auto; object-fit: cover;">
+                </div>
+                <div class="connect-wa-first-step-link-title">
+                    A guide on how to connect your WhatsApp Business number with Tiledesk
+                </div>
+
+                <div class="connect-wa-first-step-link">
+                    <div class="round--dot">
+                        <span class="material-icons">
+                            arrow_forward
+                        </span>
+                    </div>
+                    <div>
+                        <a href="https://gethelp.tiledesk.com/articles/connect-tiledesk-with-whatsapp-business/"
+                            target="_blank">Connect Tiledesk with WhatsApp Business</a>
+                    </div>
+                </div>
+
+                <div class="connect-wa-first-step-link-title">
+                    Not sure how to set up a business account? Take a look here
+                </div>
+
+                <div class="connect-wa-first-step-link">
+                    <div class="round--dot">
+                        <span class="material-icons">
+                            arrow_forward
+                        </span>
+                    </div>
+                    <div>
+                        <a href="https://gethelp.tiledesk.com/articles/configure-a-whatsapp-business-account/"
+                            target="_blank">Configure a WhatsApp Business account</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </mat-dialog-content>
+
+    <mat-dialog-actions align="center" class="contact-property-modal-action">
+        <button tabindex="-1" mat-button mat-dialog-close>
+            {{'Cancel' | translate}}
+        </button>
+        <button tabindex="-1" mat-button (click)="goToConnectWACard()">
+            {{'NextStep' | translate}}
+        </button>
+    </mat-dialog-actions>
+</ng-template>
+<!-- --------------------------------------------------------- -->
+<!-- @ Step 2 -->
+<!-- --------------------------------------------------------- -->
+<ng-template #step2 [ngOutletContext]="context">
+    <mat-dialog-content class="mat-typography" style="min-height: 30px;">
+        <div class="wa-steps-modal">
+            <div class="wa-step-modal-header">
+                <h2 class="wa-step-modal-title">
+                    Create a bot for WhatsApp
+                </h2>
+
+                <h3 class="wa-step-modal-title">
+                    After setting up your bot:
+                </h3>
+            </div>
+            <div class="wa-step-modal-content">
+                <div class="wa-step-modal-quick-tip-wpr" style="margin-bottom: 12px;">
+                    <div class="round--dot">
+                        <span class="material-icons">
+                            arrow_forward
+                        </span>
+                    </div>
+                    <div class="wa-step-modal-quick-tip">
+                        {{ 'WAWizardQuickTip1' | translate : t_params}}
+                    </div>
+                </div>
+                <div class="wa-step-modal-quick-tip-wpr">
+                    <div class="round--dot">
+                        <span class="material-icons">
+                            arrow_forward
+                        </span>
+                    </div>
+                    <div class="wa-step-modal-quick-tip">
+                        {{ 'WAWizardQuickTip2' | translate : t_params}}
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+
+    </mat-dialog-content>
+    <mat-dialog-actions align="center" class="contact-property-modal-action">
+        <button tabindex="-1" mat-button mat-dialog-close>
+            {{'Cancel' | translate}}
+        </button>
+        <button tabindex="-1" mat-button (click)="goToConnectCreateChatbot()">
+            {{'NextStep' | translate}}
+        </button>
+    </mat-dialog-actions>
+
+</ng-template>
+
+<!-- --------------------------------------------------------- -->
+<!-- @ Step 3 -->
+<!-- --------------------------------------------------------- -->
+<ng-template #step3 [ngOutletContext]="context">
+    <mat-dialog-content class="mat-typography" style="min-height: 30px;">
+        <div class="wa-steps-modal">
+            <div class="wa-step-modal-header">
+                <h2 class="wa-step-modal-title">
+                    Test your WhatsApp bot
+                </h2>
+
+                <h3 class="wa-step-modal-title">
+                    Enter your phone number and click the "Test it out" button.
+                </h3>
+            </div>
+            <div class="wa-step-modal-content">
+                <div class="wa-step-modal-enter-phone-number" style="margin-bottom: 12px;">
+                    <input [(ngModel)]="phoneNumber" (ngModelChange)="onChangePhoneNumber($event)" id="phone-number"
+                    class="form-control" style="max-width: 450px;">
+                </div>
+            </div>
+        </div>
+
+    </mat-dialog-content>
+    <mat-dialog-actions align="center" class="contact-property-modal-action">
+        <button tabindex="-1" mat-button mat-dialog-close>
+            {{'Cancel' | translate}}
+        </button>
+        <button tabindex="-1" mat-button (click)="testItOutWABot()">
+            <!-- {{'NextStep' | translate}} -->
+            Test it out
+        </button>
+    </mat-dialog-actions>
+
+</ng-template>

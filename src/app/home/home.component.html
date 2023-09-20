@@ -2,15 +2,390 @@
   Home
   <!-- <button (click)="sumuptest()" type="button">  test  </button> -->
 </p>
+<!-- -------------------------------------------------------------------------------- -->
+<!-- New home  -->
+<!-- -------------------------------------------------------------------------------- -->
+<div class="overlay" style="display: none;" [ngStyle]="{ 'height': elemHomeMainContentHeight }"></div>
+<div class="main-content home-main-content"
+  style="padding-top: 8px; padding-left: 0px ; padding-right: 0px;margin-top: 0px; background: rgb(241,245,249);">
+  <div class="container-fluid " style="max-width: 100%;padding-right: 0px; padding-left: 0px;   ">
+
+    <div class="home-project">
+
+      <div class="flex flex-col flex-auto min-w-0">
+        <div class="bg-card">
+          <div class="flex flex-col w-full max-w-screen-xl mx-auto padding-l-r">
+
+            <div class="flex flex-col sm-flex-row flex-auto sm-items-center min-w-0 my-8 sm:my-12">
+              <div class="flex flex-auto items-center min-w-0">
+                <!-- rounded-full -->
+                <div class="flex-0 w-16 h-16  overflow-hidden">
+                  <!-- <img src="assets/images/avatars/brian-hughes.jpg" class="w-full h-full object-cover"> -->
+                  <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 65.2 65.2"
+                    style="enable-background:new 0 0 65.2 65.2;" xml:space="preserve"  class="td--logo">
+                    <style type="text/css">
+                      .tl-st0 {
+                        fill: #F18876;
+                      }
+
+                      <!-- .tl-st1 {
+                        fill: #F7B6A7;
+                      } -->
+                    </style>
+                    <g>
+                      
+                      <path class="tl-st0" d="M54.9,29.8H35.6c-1.7,0-3-1.4-3-3V7.5c0-1.7-1.4-3-3-3H10.3c-1.7,0-3,1.4-3,3v22.3v22.3c0,1.7,1.4,3,3,3H9h3.5
+		c0.7,0,1.4,0.3,1.9,0.8l2.2,2.2l2.1,2.1c0.7,0.7,1.8,0.7,2.5,0l2.1-2.1l2.2-2.2c0.5-0.5,1.2-0.8,1.9-0.8h27.6c1.7,0,3-1.4,3-3V32.8
+    C58,31.2,56.6,29.8,54.9,29.8" />
+                  </g>
+                  <g class="running">
+                      <path [ngClass]="{
+                        'free-plan-badge': current_selected_prjct?.plan_badge_background_type === 'free_plan_badge', 
+                        'a-plan-badge':  current_selected_prjct?.plan_badge_background_type === 'a_plan_badge',
+                        'b-plan-badge': current_selected_prjct?.plan_badge_background_type === 'b_plan_badge', 
+                        'c-plan-badge': current_selected_prjct?.plan_badge_background_type === 'c_plan_badge',
+                        'unsupported-plan-badge': current_selected_prjct?.plan_badge_background_type === 'unsupported_plan_badge'
+                        }" d="M56.1,25.7H38.5c-1,0-1.8-0.8-1.8-1.8V6.3c0-1,0.8-1.8,1.8-1.8h17.6c1,0,1.8,0.8,1.8,1.8v17.6
+		C58,24.9,57.1,25.7,56.1,25.7" />
+                    </g>
+                  </svg>
+
+                 
+
+                </div>
+                <!-- style="flex-direction: row !important;" -->
+                <div class="flex flex-col min-w-0 ml-4">
+                  <!-- leading-7 -->
+                  <div class="text-2xl md-text-5xl font-w-400 tracking-tight  md-leading-snug truncate project---name">
+                    <span style="font-family: 'Poppins', Arial, sans-serif;"> {{ prjct_name }} </span>
+                    <span class="material-icons home-edit-project-name-icon" (click)="goToProjectSettingsGeneral()"
+                      matTooltipClass="custom-mat-tooltip" matTooltip="{{'EditProjectName' | translate }}"
+                      #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
+                      mode_edit
+                    </span>
+
+                    <!-- <span *ngIf="project_plan_badge" class="home-project-plan-badge" 
+                    [ngClass]="{
+                      'free-plan-badge': current_selected_prjct?.plan_badge_background_type === 'free_plan_badge', 
+                      'a-plan-badge':  current_selected_prjct?.plan_badge_background_type === 'a_plan_badge',
+                      'b-plan-badge': current_selected_prjct?.plan_badge_background_type === 'b_plan_badge', 
+                      'c-plan-badge': current_selected_prjct?.plan_badge_background_type === 'c_plan_badge',
+                      'unsupported-plan-badge': current_selected_prjct?.plan_badge_background_type === 'unsupported_plan_badge'
+                      }">
+                      {{ prjct_profile_name }}
+                    </span> -->
+
+                  </div>
+
+                   <div class="flex items-center">
+                    <div *ngIf="project_plan_badge" class="home-project-plan-badge" [ngClass]="{
+                      'free-plan-badge': current_selected_prjct?.plan_badge_background_type === 'free_plan_badge', 
+                      'a-plan-badge':  current_selected_prjct?.plan_badge_background_type === 'a_plan_badge',
+                      'b-plan-badge': current_selected_prjct?.plan_badge_background_type === 'b_plan_badge', 
+                      'c-plan-badge': current_selected_prjct?.plan_badge_background_type === 'c_plan_badge',
+                      'unsupported-plan-badge': current_selected_prjct?.plan_badge_background_type === 'unsupported_plan_badge'
+                      }">
+                      {{ prjct_profile_name }}
+                    </div>
+                  </div> 
+                </div>
+              </div>
+              <!-- ---------------------------------- -->
+              <!-- Left side mt-6 -------------------------------------------------------------------------------------------------------------->
+              <!-- ---------------------------------- -->
+              <div class="flex items-center  sm-mt-0 sm-ml-2 space-x-3">
+
+                <!-- ------------------------------------ -->
+                <!-- Operating Hours style="background-color: #f44336-->
+                <!-- ------------------------------------ -->
+                <ng-container *ngIf="isVisibleOPH && USER_ROLE !== 'agent'">
+                  <button mat-mini-fab aria-label="date_range icon"
+                    [ngClass]="{'oph-disabled': !OPERATING_HOURS_ACTIVE || DISPLAY_OPH_AS_DISABLED, 'oph-enabled': OPERATING_HOURS_ACTIVE && !DISPLAY_OPH_AS_DISABLED }"
+                    style="box-shadow: unset;margin-right: 16px;    position: relative;"
+                    [satPopoverAnchor]="editOperatingHours" (click)="editOperatingHours.toggle();"
+                    matTooltipClass="custom-mat-tooltip" matTooltip="{{'AdjustOperatingHours' | translate}}"
+                    #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
+                    <mat-icon style="color: #fff;position: relative;top: -2px;">date_range</mat-icon>
+                  </button>
+
+                  <sat-popover #editOperatingHours id="edit-operating-hours" horizontalAlign="center"
+                    verticalAlign="center" hasBackdrop (backdropClicked)="editOperatingHours.close()"
+                    panelClass="edit-operating-hours" interactiveClose="false">
+                    <div class="edit-operating-hours-content-wpr" style="padding-top: 8px;padding-bottom: 8px;">
+
+                      <div
+                        style="align-items: center;color: rgba(0,0,0,.55); display: flex;padding-left: 16px;padding-right: 16px;">
+
+                        <div class="opicon" style=" padding-right: 8px;">
+                          <button mat-mini-fab aria-label="Button with a date_range icon"
+                            [ngClass]="{'oph-disabled': !OPERATING_HOURS_ACTIVE || DISPLAY_OPH_AS_DISABLED, 'oph-enabled': OPERATING_HOURS_ACTIVE && !DISPLAY_OPH_AS_DISABLED }"
+                            style="box-sizing: unset; cursor: default ;" disabled>
+                            <mat-icon style="color: #fff;position: relative;top: -2px;">date_range</mat-icon>
+                          </button>
+                        </div>
+
+                        <div class="optext"
+                          style="overflow: hidden;padding-right: 12px;display: flex;flex-direction: column;align-items: center;justify-content: center;">
+
+                          <div style="color: rgba(0, 0, 0, 0.87);font-weight: 500;font-size: 14px;">
+                            {{'Hours' | translate}}
+                          </div>
+
+                          <div style="font-size: 12px;font-weight: 500;text-transform: uppercase;">
+                            <span *ngIf="!OPERATING_HOURS_ACTIVE || DISPLAY_OPH_AS_DISABLED">
+                              {{'Disabled' | translate}}
+                            </span>
+
+                            <span *ngIf="OPERATING_HOURS_ACTIVE && !DISPLAY_OPH_AS_DISABLED">
+                              {{'Enabled' | translate}}
+                            </span>
+                          </div>
+                        </div>
+                        <button tabindex="-1" mat-icon-button color="primary" aria-label="Button with a settings icon"
+                          (click)="goToOperatingHours()">
+                          <mat-icon>settings</mat-icon>
+                        </button>
+                      </div>
+                    </div>
+                  </sat-popover>
+                </ng-container>
+
+                <!-- ------------------------------------ -->
+                <!-- Settings  mat-primary ng-reflect-color="primary"  -->
+                <!-- ------------------------------------ -->
+                <button mat-flat-button="" [matMenuTriggerFor]="dashletMenu"
+                  class="mat-focus-indicato mat-flat-button mat-button-base"
+                  style="background-color: #2196f3; color: #fff;margin-right: 4px;">
+                  <span class="mat-button-wrapper">
+                    <mat-icon role="img" class="mat-icon notranslate icon-size-5 mat-icon-no-color" aria-hidden="true"
+                      ng-reflect-svg-icon="heroicons_solid:cog" data-mat-icon-type="svg" data-mat-icon-name="cog"
+                      data-mat-icon-namespace="heroicons_solid" style="margin-right: 8px;width: 20px! important;
+                      height: 20px !important;">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" fit=""
+                        height="20px" width="20px" preserveAspectRatio="xMidYMid meet" focusable="false"
+                        style="fill: #fff;position: relative; right: -2px;">
+                        <path fill-rule="evenodd"
+                          d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z"
+                          clip-rule="evenodd">
+                        </path>
+                      </svg>
+                    </mat-icon>
+                    <span class="ml-2 button-dashlet-settings" style="">
+                      {{'Settings' | translate}}
+                    </span>
+                  </span>
+                  <span matripple="" class="mat-ripple mat-button-ripple" ng-reflect-disabled="false"
+                    ng-reflect-centered="false" ng-reflect-trigger="[object HTMLButtonElement]">
+                  </span>
+                  <span class="mat-button-focus-overlay"> </span>
+                </button>
+
+                <mat-menu #dashletMenu="matMenu">
+                  <!-- *ngIf="displayAnalyticsConvsGraph" -->
+                  <button mat-menu-item (click)="$event.stopPropagation()">
+                    <mat-checkbox class="home-settings-checkbox" [checked]="displayAnalyticsConvsGraph"
+                      (change)="switchAnalyticsConvsGraph($event.checked)"></mat-checkbox>
+                    <span>Conversations chart</span>
+                  </button>
+                  <!-- *ngIf="displayAnalyticsIndicators" -->
+                  <button mat-menu-item (click)="$event.stopPropagation()">
+                    <mat-checkbox class="home-settings-checkbox" [checked]="displayAnalyticsIndicators"
+                      (change)="switchAnalyticsIndicators($event.checked)">
+                    </mat-checkbox>
+
+                    <span>Analitcs Overview</span>
+                  </button>
+
+                  <button mat-menu-item (click)="$event.stopPropagation()">
+                    <mat-checkbox class="home-settings-checkbox" [checked]="displayConnectWhatsApp"
+                      (change)="switchConnectWhatsApp($event.checked)"></mat-checkbox>
+
+                    <span>Connect WhatsApp </span>
+                  </button>
+                  <button mat-menu-item (click)="$event.stopPropagation()">
+                    <mat-checkbox class="home-settings-checkbox" [checked]="displayCreateChatbot"
+                      (change)="switchCreateChatbot($event.checked)"></mat-checkbox>
+                    <span>Create Chatbot</span>
+                  </button>
+                  <button mat-menu-item (click)="$event.stopPropagation()">
+                    <mat-checkbox class="home-settings-checkbox" [checked]="displayInviteTeammate"
+                      (change)="switchInviteTeammate($event.checked)"></mat-checkbox>
+                    <span>Invite teammate</span>
+                  </button>
+
+                  <button mat-menu-item (click)="$event.stopPropagation()">
+                    <mat-checkbox class="home-settings-checkbox" [checked]="displayCustomizeWidget"
+                      (change)="switchCustomizeWidget($event.checked)"></mat-checkbox>
+                    <span>Customize widget</span>
+                  </button>
+
+
+                  <button mat-menu-item (click)="$event.stopPropagation()">
+                    <mat-checkbox class="home-settings-checkbox" [checked]="displayNewsFeed"
+                      (change)="switchNewsFeed($event.checked)"></mat-checkbox>
+                    <!-- <mat-icon>notifications_off</mat-icon> -->
+                    <span>News Feed</span>
+                  </button>
+                </mat-menu>
+              </div>
+            </div>
+            <!-- -------------------------------------- -->
+            <!-- New Menu to change project  -->
+            <!-- -------------------------------------- -->
+            <div style="display: none !important; " aria-haspopup="true" matripple=""
+              class="change-project-menu-wpr mat-ripple mat-menu-trigger relative flex self-start pt-2 pb-1 pl-5 pr-4 cursor-pointer overflow-hidden rounded-t-xl border border-b-0 bg-default">
+              <div [matMenuTriggerFor]="projectsMenu" class="flex items-center"
+                style="align-items: center !important;display: flex !important;">
+                <div class="overflow-hidden" style="    overflow: hidden !important;">
+                  <div class="font-medium leading-6 truncate" style="    line-height: 1.5rem !important; font-weight: 500 !important;    overflow: hidden !important;
+                  text-overflow: ellipsis !important;
+                  white-space: nowrap !important;">{{ project.name }}</div>
+                </div>
+                <div class="flex items-center justify-center pl-2"
+                  style="    padding-left: 0.5rem !important; justify-content: center !important; align-items: center !important; display: flex !important">
+                  <mat-icon role="img" class="mat-icon notranslate icon-size-5 mat-icon-no-color" aria-hidden="true"
+                    ng-reflect-svg-icon="heroicons_solid:chevron-down" data-mat-icon-type="svg"
+                    data-mat-icon-name="chevron-down" data-mat-icon-namespace="heroicons_solid"><svg
+                      xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" fit="" height="100%"
+                      width="100%" preserveAspectRatio="xMidYMid meet" focusable="false">
+                      <path fill-rule="evenodd"
+                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                        clip-rule="evenodd"></path>
+                    </svg>
+                  </mat-icon>
+                </div>
+              </div>
+              <mat-menu #projectsMenu="matMenu" xPosition="after">
+                <button mat-menu-item (click)="goToProjects()">
+                  <mat-icon>view_list</mat-icon>
+                  <span>{{ 'NavBar.ViewAllProjects' | translate }}</span>
+                </button>
+                <button mat-menu-item (click)="goToCreateProject()">
+                  <mat-icon>add_circle_outline</mat-icon>
+                  <span>{{ 'AddProject' | translate }}</span>
+                </button>
+                <button mat-menu-item [matMenuTriggerFor]="recentProjects"> {{ 'RecentProjects' | translate }}</button>
+              </mat-menu>
+
+              <mat-menu #recentProjects="matMenu">
+                <button *ngFor="let prjct of projects?.slice() | slice:0:5; let i=index" mat-menu-item (click)="goToHome(
+                  prjct,
+                  prjct?.id_project?._id, prjct?.id_project?.name,
+                  prjct?.id_project?.profile?.name, 
+                  prjct?.id_project?.trialExpired, 
+                  prjct?.id_project?.trialDaysLeft, 
+                  prjct?.id_project?.activeOperatingHours)">
+                  {{ prjct?.id_project?.name }}
+                </button>
+              </mat-menu>
+              <mat-menu #otherProjects="matMenu" *ngIf="projects?.length > 5">
+                <button *ngFor="let prjct of projects?.slice() | slice:5:10; let i=index" mat-menu-item (click)="goToHome(
+                  prjct,
+                  prjct?.id_project?._id, prjct?.id_project?.name,
+                  prjct?.id_project?.profile?.name, 
+                  prjct?.id_project?.trialExpired, 
+                  prjct?.id_project?.trialDaysLeft, 
+                  prjct?.id_project?.activeOperatingHours)">
+                  {{ prjct?.id_project?.name }}
+                </button>
+              </mat-menu>
+
+            </div>
+          </div>
+        </div> <!-- ./ bg-card -->
+        <div class="home-blocks-wpr">
+          <div class="home--blocks" id="homeBlocks">
+
+            <appdashboard-home-whatsapp-account-wizard style="margin-bottom: 18px;" *ngIf="displayWhatsappAccountWizard"
+              
+              (goToConnectWA)="goToConnectWA()" 
+              (goToCreateChatbot)="goToCreateChatbot()"
+              (hasTestedBotOnWa)="hasTestedBotOnWa()" 
+              [whatsAppIsConnected]="whatsAppIsConnected"
+              [wadepartmentName]="wadepartmentName" 
+              [chatbotConnectedWithWA]='chatbotConnectedWithWA'
+              [waBotId]="waBotId" 
+              [use_case_for_child]="use_case_for_child"
+              [solution_channel_for_child]="solution_channel_for_child" 
+              [solution_for_child]="solution_for_child"
+              [testBotOnWA]="testBotOnWA" 
+              [botIdForTestWA]="botIdForTestWA"
+              (hasCreatedChatbot)="hasCreatedChatbot($event)">
+            </appdashboard-home-whatsapp-account-wizard>
+
+
+            <appdashboard-home-convs-graph *ngIf="displayAnalyticsConvsGraph"
+              [displayAnalyticsConvsGraph]="displayAnalyticsConvsGraph" 
+              [projectId]="projectId" 
+              [USER_ROLE]="USER_ROLE">
+            </appdashboard-home-convs-graph>
+
+
+            <appdashboard-home-analytics-indicator *ngIf="displayAnalyticsIndicators" 
+              [projectId]="projectId"
+              [USER_ROLE]="USER_ROLE">
+            </appdashboard-home-analytics-indicator>
+
+            <appdashboard-home-whatsapp-account *ngIf="displayConnectWhatsApp" style=" z-index: 11;"
+              #childWhatsappAccount 
+              (onClickOnUnistallApp)="onClickOnUnistallApp()"
+              (onClickOnGoToLearnMoreOrManageApp)="onClickOnGoToLearnMoreOrManageApp()"
+              (onClickOnDisplayWhatsAppWizard)="onClickOnDisplayWhatsAppWizard()"
+              [whatsAppIsInstalled]="whatsAppIsInstalled" 
+              [whatsAppIsConnected]="whatsAppIsConnected"
+              [solution_channel_for_child]="solution_channel_for_child" 
+              [solution_for_child]="solution_for_child"
+              [userHasClickedDisplayWAWizard]="userHasClickedDisplayWAWizard">
+            </appdashboard-home-whatsapp-account>
+
+            <appdashboard-home-create-chatbot #childCreateChatbot *ngIf="displayCreateChatbot"
+              [use_case_for_child]="use_case_for_child" 
+              [solution_channel_for_child]="solution_channel_for_child"
+              [waBotId]="waBotId" 
+              [wadepartmentName]="wadepartmentName"
+              [chatbotConnectedWithWA]="chatbotConnectedWithWA"
+              (botHookedToDefaultDept)="botHookedToDefaultDept($event)">
+            </appdashboard-home-create-chatbot>
+
+            <appdashboard-home-create-teammate *ngIf="displayInviteTeammate"></appdashboard-home-create-teammate>
+
+            <appdashboard-home-customize-widget *ngIf="displayCustomizeWidget"></appdashboard-home-customize-widget>
+
+
+          </div>
+        </div>
+        <div class="news-feed-wpr" style="    background-color: rgb(241,245,249);     padding-left: 30px;">
+          <appdashboard-home-news-feed *ngIf="displayNewsFeed"> </appdashboard-home-news-feed>
+        </div>
+      </div>
+
+
+
+
+    </div>
+  </div>
+</div>
+
+
+<!-- -------------------------------------------------------------------------------- -->
+<!-- ./New home  -->
+<!-- -------------------------------------------------------------------------------- -->
+
+
+
+
+
+
 <!-- -------------------------------- -->
 <!-- Promo Banner -->
 <!-- -------------------------------- -->
-<appdashboard-home-promo-banner *ngIf="isVisibleHomeBanner" (showPromoBanner)='showPromoBanner()'>
-</appdashboard-home-promo-banner>
+<!-- <appdashboard-home-promo-banner *ngIf="isVisibleHomeBanner" (showPromoBanner)='showPromoBanner()'>
+</appdashboard-home-promo-banner> -->
 
-<appdashboard-home-promo-design-studio *ngIf="isVisibleHomeBanner" style="position: relative;" [user]="user"
+<!-- <appdashboard-home-promo-design-studio style="position: relative; display: none;" [user]="user"
   [ngStyle]="{'margin-top':isVisibleHomeBanner === true ? '0px' : '-5px' }">
-</appdashboard-home-promo-design-studio>
+</appdashboard-home-promo-design-studio> -->
 
 <div class="main-content" style="padding-top: 8px;margin-top: 0px;">
   <!-- ----------------------------------------------------------- -->
@@ -39,17 +414,14 @@
         <h2 class="n-header-home-title">
           <span style="font-family: 'Poppins', Arial, sans-serif;"> {{ prjct_name }} </span>
           <span class="material-icons home-edit-project-name-icon" (click)="goToProjectSettingsGeneral()"
-          matTooltipClass="custom-mat-tooltip"
-          matTooltip="{{'EditProjectName' | translate }}" 
-          #tooltip="matTooltip" 
-          matTooltipPosition='below' 
-          matTooltipHideDelay="100">
+            matTooltipClass="custom-mat-tooltip" matTooltip="{{'EditProjectName' | translate }}" #tooltip="matTooltip"
+            matTooltipPosition='below' matTooltipHideDelay="100">
             mode_edit
           </span>
 
           <!-- // PLAN TYPE BADGE 
               <span class="project-plan" (click)="goToPayment()" -->
-          <span *ngIf="isVisible" style="font-family: roboto;">
+          <span *ngIf="isVisiblePay" style="font-family: roboto;">
             <span class="project-plan" (click)="goToPayment()"
               style="text-transform:capitalize; margin-left: 0px !important;top: -4px!important; box-shadow: 0 0 0 1px rgb(255 255 255 / 50%) inset">
               {{ prjct_profile_name }}
@@ -104,7 +476,6 @@
                       <!-- --------------------------------------------------- -->
                       <!-- USECASE uploadEngine Native -->
                       <!-- --------------------------------------------------- -->
-
                       <img *ngIf="projectUser?.hasImage && !UPLOAD_ENGINE_IS_FIREBASE"
                         src="{{baseUrl}}images?path=uploads%2Fusers%2F{{projectUser?.id_user?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                         alt="" onerror="this.src='assets/img/no_image_user.png'" style="width: 32px;height: 32px;">
@@ -135,7 +506,8 @@
               {{projectUsers?.length}}
 
               <span *ngIf="projectUsers?.length === 1"> {{'Teammate' | translate}} </span>
-              <span *ngIf="projectUsers?.length > 1 || projectUsers?.length === 0"> {{'Teammates' | translate}} </span>
+              <span *ngIf="projectUsers?.length > 1 || projectUsers?.length === 0"> {{'Teammates' | translate}}
+              </span>
               <span class="tool_tip" *ngIf="!DISPLAY_TEAMMATES">
                 <!-- (click)="toggleDisplayTeammates()" -->
                 <span class="material-icons add-operators-icons tool_tip">
@@ -336,9 +708,10 @@
             <span *ngIf="isVisibleOPH"
               style="padding-left: 4px;color: rgba(255,255,255,0.8);font-size: 13px;font-weight: 400;"
               (click)="goToOperatingHours()">
-              <span *ngIf="!OPERATING_HOURS_ACTIVE || DISPLAY_OPH_AS_DISABLED"> {{'OperatingHoursDisabled' | translate
-                }}</span>
-              <span *ngIf="OPERATING_HOURS_ACTIVE && !DISPLAY_OPH_AS_DISABLED"> {{'OperatingHoursEnabled' | translate}}
+              <span *ngIf="!OPERATING_HOURS_ACTIVE || DISPLAY_OPH_AS_DISABLED">
+                {{'OperatingHoursDisabled' | translate  }}</span>
+              <span *ngIf="OPERATING_HOURS_ACTIVE && !DISPLAY_OPH_AS_DISABLED">
+                {{'OperatingHoursEnabled' | translate}}
               </span>
               <span class="tool_tip">
                 <span *ngIf="USER_ROLE !== 'agent'" class="material-icons add-operators-icons tool_tip"
@@ -1563,28 +1936,28 @@
               <div id=slideset6>
                 <div class="slide">
                   <p class="meta">
-                    <strong>Conversations' TAGS</strong>
-                    <span>May 2023</span>
+                    <strong>Chatbots</strong>
+                    <span>February 2023</span>
                   </p>
                   <p>
-                   Tags help you categorize and organize all your customer communications
+                    Chatbot Design Studio: Chatbot builder community
                   </p>
                 </div>
                 <div class="slide">
                   <p class="meta">
-                    <strong>Contacts</strong>
-                    <span>May 2023</span>
+                    <strong>Chatbots</strong>
+                    <span>February 2023</span>
                   </p>
                   <p>
-                    Adds the ability to add custom properties to contacts
+                    Chatbot Design Studio: No-code chatbot builder
                 </div>
                 <div class="slide">
                   <p class="meta">
-                    <strong>Contacts</strong>
-                    <span>May 2023</span>
+                    <strong>Chatbots</strong>
+                    <span>February 2023</span>
                   </p>
                   <p>
-                    Adds the ability to tag a contact
+                    Chatbot Design Studio: Chatbot builder community
                   </p>
                 </div>
               </div>
@@ -1815,64 +2188,64 @@
 			</p>
 		</div>
 
-  </div>
-</div> -->
-  <!-- ./end new-bckgrnd -->
+  </div> -->
+</div>
+<!-- ./end new-bckgrnd -->
 
 
-  <!-- 
+<!-- 
       ////////////////////////////////////////////////////////
       /////////// BUTTON TO TEST USER ACTIVITY LOG ///////////
       ////////////////////////////////////////////////////////  -->
-  <!-- <div class="col-md-3">
+<!-- <div class="col-md-3">
         <button class="btn btn-primary" (click)="goToUserActivitiesLog()">
           Activities
         </button>
       </div> -->
 
-  <!-- 
+<!-- 
       ////////////////////////////////////////////////////////
       ///////////////// BUTTON TO TEST PRICING ///////////////
       ////////////////////////////////////////////////////////  -->
 
-  <!-- <div class="col-md-3">
+<!-- <div class="col-md-3">
         <button class="btn btn-primary" (click)="goToPricing()">
           Pricing
         </button>
       </div> -->
 
-  <!-- 
+<!-- 
       ////////////////////////////////////////////////////////
       ///////////////// BUTTON TO TEST Analytics Static Page ///////////////
       ////////////////////////////////////////////////////////  -->
-  <!-- <div class="col-md-3">
+<!-- <div class="col-md-3">
         <button class="btn btn-primary" (click)="goToAnalyticsStaticPage()">
             Analytics Static Page
         </button>
       </div> -->
 
-  <!-- 
+<!-- 
       ////////////////////////////////////////////////////////
       ///////////////// BUTTON TO TEST Activities Static Page ///////////////
       ////////////////////////////////////////////////////////  -->
-  <!-- <div class="col-md-3">
+<!-- <div class="col-md-3">
         <button class="btn btn-primary" (click)="goToActivitiesStaticPage()">
             Activities Static Page
         </button>
       </div> -->
 
-  <!-- 
+<!-- 
       ////////////////////////////////////////////////////////
       ///////////////// BUTTON TO TEST Hours Static Page ///////////////
       ////////////////////////////////////////////////////////  -->
-  <!-- <div class="col-md-3">
+<!-- <div class="col-md-3">
           <button class="btn btn-primary" (click)="goToHoursStaticPage()">
               Hours Static Page
           </button>
         </div> -->
 
-  <!-- </div> -->
+<!-- </div> -->
 
-  <!-- <div class="row">   </div>
+<!-- <div class="row">   </div>
 
     <div class="row">  </div> -->
