@@ -158,9 +158,9 @@ input:-webkit-autofill {
     display: none;
   }
 
-  .signup-subtitle {
-    display: none;
-  }
+  // .signup-subtitle {
+  //   display: none;
+  // }
 
   .signup-title > h2 {
     text-align: center !important;
@@ -441,7 +441,7 @@ input.secure {
   height: 20px;
 }
 
-.google-button {
+.su-google-button {
   // background-color: rgb(66, 133, 244);
   display: inline-flex;
   align-items: center;
@@ -458,16 +458,17 @@ input.secure {
   // box-shadow: none !important;
   background: #ffff !important;
   color: #4285f4 !important;
-  margin-bottom: 30px;
+  // margin-bottom: 30px;
+  margin-top: 30px;
   height: 56px;
 }
 
-.google-button:hover {
+.su-google-button:hover {
   border-color: #94c8ff !important;
   background-color: #f4f9ff !important;
   opacity: 1 !important;
 }
-.google-button:hover > div {
+.su-google-button:hover > div {
   border-color: #94c8ff !important;
   background-color: #f4f9ff !important;
   opacity: 1 !important;
