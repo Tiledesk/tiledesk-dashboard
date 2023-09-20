@@ -1,9 +1,5 @@
 @import "./src/assets/sass/cds/_variables.scss";
 
-.cds-action-content{
-  // position: relative;
-  padding: 5px 10px;
-}
 
 .previewContent{
   position: relative;
@@ -26,14 +22,6 @@
   }
 
 }
-
-.preview-divider {
-  margin: 5px 0px;
-  border-top: 2px solid $light-brown;
-}
-
-
-
 
 .content-action {
     margin-top: 10px;

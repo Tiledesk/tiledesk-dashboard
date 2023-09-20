@@ -82,8 +82,8 @@
 
         .response-wrp{
             border-radius: 8px;
-            background: #ffffff;
-            border: 1px solid #ffffff;
+            background: transparent; // #ffffff;
+            border: unset; //1px solid #ffffff;
             overflow-x: hidden;
             overflow-y: auto;
             color: #22272d;

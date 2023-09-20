@@ -218,18 +218,10 @@ li > a {
     background-color: $icon-color-background;
 }
 
-.section:active {
-    background-color: $icon-color;
-
-    .item-icon {
-        color: white;
-    }
-}
-
 .is_active {
-    background-color: $icon-color;
+    background-color: $icon-active-background;
 
     .item-icon {
-        color: white;
+        color: $icon-active-color;
     }
 }

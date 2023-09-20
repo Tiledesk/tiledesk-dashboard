@@ -94,8 +94,8 @@
 
         .response-wrp{
             border-radius: 8px;
-            background: #ffffff;
-            border: 1px solid #ffffff;
+            background: transparent; // #ffffff;
+            border: unset; //1px solid #ffffff;
             overflow-x: hidden;
             overflow-y: auto;
             color: #22272d;
@@ -125,7 +125,7 @@
         .button-reply-add{
             color: $color-txt-2-hex;
             border-color: $color-txt-2-hex;
-            margin-right: 10px;
+            // margin-right: 10px;
         }
     }
 
@@ -413,7 +413,7 @@
     min-width: 100px;
     text-align: center;
     width: fit-content;
-    margin-right: 10px;
+    // margin-right: 10px;
 }
 .button-controls {
     justify-content: space-between;

@@ -88,6 +88,9 @@ $label-height-base: 48px;
 
 $icon-color: #ecb606b0;
 $icon-color-background: #545454;
+$icon-active-color: white;
+$icon-active-background: rgb(58, 107, 147);
+
 $light-blue: #8ab4f8;
 $light-black: #202124;
 $blue-action-backgroud: #1e293b;
@@ -101,12 +104,15 @@ $success-connector: rgb(44, 191, 35);
 $failure-connector: rgb(191, 35, 35);
 
 $action-item-color: #d2e3fc;
-$action-item-background:rgba(66,85,117,1);
-$action-color-selected:rgba(179,141,38,1);
-/*$action-item-background:rgba(138,180,248,.24);*/
+$action-item-background:rgba(255,255,255, 0.7); //rgba(66,85,117,1);
+$action-no-featured-item-background:rgba(255,255,255, 1); //rgba(66,85,117,1);
+$action-color-selected:rgb(58, 107, 147); // rgba(179,141,38,1);
+$intent-preview-background: #d3e3ee; //rgb(235, 226, 198);
 
 
-$padding-base-preview: 5px;
+$padding-base-preview: 0 10px 10px;
+$base-element-gap: 5px;
+$border-radius-base-preview: 8px;
 
 /* CDS REFACTORING
 /* ******************************* */
@@ -130,6 +136,7 @@ $blu-01:#132144;
 $black-02: #222;
 $blu-02: #006cff;
 $azure-01:rgb(220, 233, 255);
-$accent-blue: #0f62ff; 
+$accent-blue: rgb(62, 169, 245);
+$base-blue: rgb(58, 107, 147);
 $red: #ff4000;
 $icon-bckgrnd-color: #e4e6eb;

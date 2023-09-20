@@ -80,7 +80,7 @@ emoji-mart {
 
 .cds-action-preview {
     /* padding: 3px 16px 16px; */
-    padding: 16px;
+    padding: 5px 10px;;
     margin: 0px;;
     position: relative;
 }
@@ -146,6 +146,18 @@ emoji-mart {
     font-weight: 400;
     white-space: nowrap;
 }
+/* Intent Controls
+/* ------------------------ */
+.panel-intent-content:hover cds-panel-intent-controls > .intent-header-actions-container-on-start {
+    top: -28px!important;
+    right: 12px !important;
+}
+.panel-intent-content:hover cds-panel-intent-controls > .intent-header-actions-container {
+    top: -28px;
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+}
+
 /* Action Controls
 /* ------------------------ */
 .body-action > cds-action-controls > .action-controls {
@@ -263,8 +275,14 @@ cds-connector.connector-false {
 
 cds-connector.connector {
     position: absolute;
+    right: -25px;
     top: calc(50% - 10px);
+}
+
+cds-connector.button-connector {
+    position: absolute;
     right: -15px;
+    top: calc(50% - 10px);
 }
 
 cds-connector.connector-true,
@@ -286,4 +304,10 @@ cds-connector.connector-false {
 
 ::ng-deep .mat-expansion-indicator::after {
 color: white;
+}
+
+
+.preview-divider {
+    margin: 5px 0px;
+    border-top: 2px solid rgba( $base-blue , 0.3);
 }

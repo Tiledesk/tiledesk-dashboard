@@ -43,7 +43,7 @@
 .previewMode{
     display: flex;
     flex-direction: column;
-    gap: $padding-base-preview;
+    gap: $base-element-gap;
 
     &.extensions-response{
         margin: 0;
@@ -53,7 +53,7 @@
     .galleryElement {
         margin: 0;
         // padding: 8px;
-        gap: $padding-base-preview;
+        gap: $base-element-gap;
         display: flex;
         flex-direction: column;
         // background-color: #ffffff80; // nk
@@ -149,7 +149,7 @@
         display: flex;
         margin: 0px; //15px 0 0;
         padding: 0px 0px 0px 0px;
-        gap: $padding-base-preview;
+        gap: $base-element-gap;
         width: 100%;
         font-size: 14px;
         // padding: 0 5px;
@@ -585,7 +585,7 @@ cds-image-upload ::ng-deep {
     min-width: 100px;
     text-align: center;
     width: fit-content;
-    margin-right: 10px;
+    // margin-right: 10px;
 }
 
 .button-controls {

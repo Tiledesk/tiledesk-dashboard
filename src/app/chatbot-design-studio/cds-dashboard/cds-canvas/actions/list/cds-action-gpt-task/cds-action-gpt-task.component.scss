@@ -1,9 +1,5 @@
 @import "./src/assets/sass/cds/_variables.scss";
 
-.cds-action-content{
-    padding: 16px;
-}
-
 .previewContent{
     position: relative;
     display: flex;
@@ -43,14 +39,6 @@
 //         height:px;
 //     }
 // }
-
-
-.preview-divider {
-    margin: 5px 0px;
-    border-top: 2px solid $light-brown;
-}
-
-
 .content {
     max-height: calc(100vh - 200px);
     padding: 20px 40px;

@@ -21,9 +21,7 @@ export class CdsActionEmailComponent implements OnInit, OnChanges {
 
 
   constructor(
-    private logger: LoggerService,
-    private eRef: ElementRef,
-    private controllerService: ControllerService
+    private logger: LoggerService
   ) { }
 
   ngOnInit(): void {

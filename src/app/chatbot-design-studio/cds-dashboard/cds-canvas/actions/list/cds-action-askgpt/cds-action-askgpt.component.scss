@@ -1,8 +1,6 @@
 @import "./src/assets/sass/cds/_variables.scss";
 
-.cds-action-content{
-    padding: 5px 10px;
-}
+
 
 .previewContent{
     position: relative;
@@ -37,13 +35,6 @@
         height: 20px;
     }
 }  
-
-
-.preview-divider {
-    margin: 5px 0px;
-    border-top: 2px solid $light-brown;
-}
-
 
 .content {
     max-height: calc(100vh - 200px);

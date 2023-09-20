@@ -5,8 +5,9 @@ $text-color: white;
 $background-color: transparent;
 $text-color-hover: $icon-color;
 $background-color-hover: $icon-color-background;
-$text-color-active: white;
-$background-color-active: $icon-color;
+$text-color-active: $icon-active-color;
+$background-color-active: $icon-active-background;
+$icon-color-active: $accent-blue;
 
 .content {
     width: 100%;
@@ -288,7 +289,7 @@ $background-color-active: $icon-color;
 
 .intent:active {
     background-color: $background-color-active;
-    border-right: solid 5px $background-color-hover;
+    border-right: solid 5px $icon-color-active;
     border-radius: 6px 10px 10px 6px;
 
     .intent-display-name {
@@ -298,17 +299,15 @@ $background-color-active: $icon-color;
         margin-bottom: 0px;
     }
 
-    .icon-list {
-        .icon {
-            // color: #333;
-            color: white;
-        }
+    .icon-container,
+    .icon-list .icon{
+        color: $icon-color-active !important;
     }
 }
 
 .active {
     background-color: $background-color-active !important;
-    border-right: solid 5px $background-color-hover;
+    border-right: solid 5px $icon-color-active;
     border-radius: 6px 10px 10px 6px;
 
     .intent-display-name {
@@ -318,12 +317,11 @@ $background-color-active: $icon-color;
         margin-bottom: 0px;
     }
 
-    .icon-list {
-        .icon {
-            // color: #333;
-            color: $background-color-hover !important;
-        }
+    .icon-container,
+    .icon-list .icon{
+        color: $icon-color-active !important;
     }
+
 }
 
 
