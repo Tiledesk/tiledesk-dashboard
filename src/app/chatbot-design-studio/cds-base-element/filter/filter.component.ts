@@ -17,7 +17,6 @@ export class CDSFilterComponent implements OnInit {
   @Input() booleanOperators: {}
   @Input() previewMode: boolean = true
   @Output() onChangeExpression = new EventEmitter<Expression>()
-  @Output() onDeleteGroup = new EventEmitter()
 
   selectedCondition: Condition;
   selectedIndex: number;
@@ -49,6 +48,7 @@ export class CDSFilterComponent implements OnInit {
     }else if(last){
       this.expression.conditions.splice(index-1, 2)
     }
+    this.onChangeExpression.emit(this.expression)
   }
 
   onChangeOperator(event, index: number){

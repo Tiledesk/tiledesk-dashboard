@@ -134,15 +134,20 @@ export class CdsActionReplyGalleryComponent implements OnInit {
             buttonChanged.__idConnector = this.connector.fromId;
             buttonChanged.action = '';
             buttonChanged.type = TYPE_BUTTON.TEXT;
+            this.changeActionReply.emit();
           } else {
             // ADD / EDIT
-            buttonChanged.__isConnected = true;
+            // buttonChanged.__isConnected = true;
             buttonChanged.__idConnector = this.connector.fromId;
             buttonChanged.action = buttonChanged.action? buttonChanged.action : '#' + this.connector.toId;
             buttonChanged.type = TYPE_BUTTON.ACTION;
             console.log('updateConnector :: ', el.buttons);
+            if(!buttonChanged.__isConnected){
+              buttonChanged.__isConnected = true;
+              this.changeActionReply.emit();
+            } 
           }
-          this.changeActionReply.emit();
+          // this.changeActionReply.emit();
         }
       });
     } catch (error) {

@@ -365,17 +365,6 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
-  /** updateIntent 
-   * service updateIntent is async
-   * !!! the response from the service is NOT handled!!!
-  */
-  // private async updateIntent() {
-  //   const response = await this.intentService.updateIntent(this.intent);
-  //   if (response) {
-  //     console.log('updateIntent: ', this.intent);
-  //   }
-  // }
-
   /*********************************************/
 
 
@@ -630,7 +619,9 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
       replaceItemInArrayForKey('_tdActionId', this.intent.actions, event);
     }
     console.log('[CDS-INTENT] onUpdateAndSaveAction:::: ', event, this.intent, this.intent.actions);
-    this.intentService.selectAction(this.intent.intent_id, event);
+    console.log('[CDS-INTENT] onUpdateAndSaveAction:::: intent::: ', this.intent);
+    // this.intentService.selectAction(this.intent.intent_id, event);
+
     const response = await this.intentService.updateIntent(this.intent);
     if (response) {
       console.log('updateIntent: ', this.intent);

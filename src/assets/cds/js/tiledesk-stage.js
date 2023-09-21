@@ -153,6 +153,7 @@ export class TiledeskStage {
     setDragElement(element) {
         let pos_mouse_x;
         let pos_mouse_y;
+        console.log('setDragElement::: ', element);
         element.onmousedown = (function(event) {
             this.isDraggingElement = true;
             console.log('dragMouseDown', event, this.classDraggable, element);

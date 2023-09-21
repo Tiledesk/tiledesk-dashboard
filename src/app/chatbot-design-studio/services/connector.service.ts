@@ -264,9 +264,14 @@ export class ConnectorService {
   }
  
 
+  // deleteINConnectorsOfBlock(intent_id){
+  //   this.tiledeskConnectors.deleteINConnectorsOfBlock(intent_id);
+  //   console.log('[CONNECTOR-SERV] deleteINConnectorsOfBlock intent_id ' ,intent_id);
+  // }
+
   deleteConnectorsOfBlock(intent_id){
     this.tiledeskConnectors.deleteConnectorsOfBlock(intent_id);
-    console.log('[CONNECTOR-SERV] deleteConnectorsOfBlock intent_id ' ,intent_id)
+    console.log('[CONNECTOR-SERV] deleteConnectorsOfBlock intent_id ' ,intent_id);
   }
 
   deleteConnectorFromAction(actionId, connId){
