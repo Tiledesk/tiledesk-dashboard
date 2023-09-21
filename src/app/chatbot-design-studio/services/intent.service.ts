@@ -376,11 +376,11 @@ export class IntentService {
   }
   
   /** save a New Intent, created on drag action on stage */
-  public async saveNewIntent(id_faq_kb, newIntent, oldId?): Promise<any> { 
+  public async saveNewIntent(id_faq_kb, newIntent, parentUD?): Promise<any> { 
     console.log('[INTENT SERVICE] -> saveNewIntent, ');
-    this.addUNDOtoList();
+    if(!parentUD)this.addUNDOtoList();
     return new Promise((resolve, reject) => {
-      console.log("[INTENT SERVICE]  salva ", oldId);
+      console.log("[INTENT SERVICE]  salva ");
       const that = this;
       this.faqService.addIntent(
         id_faq_kb,
@@ -411,7 +411,7 @@ export class IntentService {
 
 
   /** updateIntent */
-  public async updateIntent(originalIntent: Intent, timeout?: number): Promise<boolean> { 
+  public async updateIntent(originalIntent: Intent, timeout?: number, parentUD?:boolean): Promise<boolean> { 
     
     // mi assicuro chi l'intent che sto cercando di salvare esiste
     const esisteOggetto = this.listOfIntents.some((intent) => intent.intent_id === originalIntent.intent_id);
@@ -420,7 +420,8 @@ export class IntentService {
     let intent = JSON.parse(JSON.stringify(originalIntent));
     intent = removeNodesStartingWith(intent, '__');
     console.log('[INTENT SERVICE] -> updateIntent, ', originalIntent);
-    this.addUNDOtoList();
+  
+    // if(!parentUD)this.addUNDOtoList();
     return new Promise((resolve, reject) => {
       let id = intent.id;
       let attributes = intent.attributes?intent.attributes:{};
@@ -464,10 +465,10 @@ export class IntentService {
   }
 
   /** deleteIntent */
-  public async deleteIntent(intent: Intent): Promise<boolean> { 
+  public async deleteIntent(intent: Intent, parentUD?:boolean): Promise<boolean> { 
     this.deleteIntentToListOfIntents(intent.intent_id);
     console.log('[INTENT SERVICE] -> deleteIntent, ');
-    this.addUNDOtoList();
+    if(!parentUD)this.addUNDOtoList();
     return new Promise((resolve, reject) => {
       this.faqService.deleteFaq(intent.id).subscribe((data) => {
         this.prevListOfIntent = JSON.parse(JSON.stringify(this.listOfIntents));
@@ -865,19 +866,20 @@ export class IntentService {
       if (itemLive) {
         if(JSON.stringify(itemLive) !== JSON.stringify(itemUNDOREDO)){
           // update intent
-          console.log('[INTENT SERVICE] addUNDO -> UPDATE INTENT',  itemUNDOREDO);
+          console.log('[INTENT SERVICE] ->  UPDATE INTENT',  itemUNDOREDO);
           // this.connectorService.deleteConnectorsOfBlock(itemUNDOREDO.intent_id);
-          this.updateIntent(itemUNDOREDO);
+          this.updateIntent(itemUNDOREDO, 0, true);
         }
       } else {
         // insert new intent
         // caso in cui arrayUNDO contiene un item in più dell'array attualmente visualizzato
         // quindi bisogna creare un item
-        console.log('[INTENT SERVICE] addUNDO -> SALVO NEW INTENT',  itemUNDOREDO);
+        console.log('[INTENT SERVICE] -> SALVO NEW INTENT',  itemUNDOREDO);
         let id_faq_kb = this.dashboardService.id_faq_kb;
-        const oldId = itemUNDOREDO.id?itemUNDOREDO.id:null;
-        const newIntent = await this.saveNewIntent(id_faq_kb, itemUNDOREDO, oldId);
+        // const oldId = itemUNDOREDO.id?itemUNDOREDO.id:null;
+        const newIntent = await this.saveNewIntent(id_faq_kb, itemUNDOREDO, true);
         if (newIntent) {
+          this.connectorService.createConnectors(this.listOfIntents);
           //this.setDragAndListnerEventToElement(newIntent);
         }
       }
@@ -890,13 +892,14 @@ export class IntentService {
     const missingItemsInUNDOREDO = arrayLIVE.filter(
       (item) => !intentIdsArrayUNDOREDO.includes(item.intent_id)
     );
-    console.log('[INTENT SERVICE] addUNDO -> ELIMINO INTENT 1',  missingItemsInUNDOREDO);
+    console.log('[INTENT SERVICE] -> ELIMINO INTENT 1',  missingItemsInUNDOREDO);
     if(missingItemsInUNDOREDO && missingItemsInUNDOREDO.length>0){
       // caso in cui array attuale contiene un item in più dell'array UNDO REDO
       // quindi bisogna eliminare un item
       missingItemsInUNDOREDO.forEach(element => {
-        console.log('[INTENT SERVICE] addUNDO -> ELIMINO INTENT 2',  element);
-        this.deleteIntent(element);
+        console.log('[INTENT SERVICE] -> ELIMINO INTENT 2',  element);
+        this.deleteIntent(element, true);
+        this.connectorService.deleteConnectorsOfBlock(element.intent_id);
       });
     }
     // return true; // Tutti gli oggetti con lo stesso ID sono equivalenti
@@ -913,9 +916,10 @@ export class IntentService {
       this.confrontaArray(listOfIntentsLIVE, listOfIntentsUNDO);
       
       this.listOfIntents = listOfIntentsUNDO;
-      // this.connectorService.deleteAllConnectors();
-      this.connectorService.createConnectors(this.listOfIntents);
       this.refreshIntents();
+      // this.connectorService.deleteAllConnectors();
+      // this.connectorService.createConnectors(this.listOfIntents);
+      // this.refreshIntents();
     }
   }
 
@@ -928,9 +932,10 @@ export class IntentService {
       this.confrontaArray(listOfIntentsLIVE, listOfIntentsREDO);
       
       this.listOfIntents = listOfIntentsREDO;
-      // this.connectorService.deleteAllConnectors();
-      this.connectorService.createConnectors(this.listOfIntents);
       this.refreshIntents();
+      // this.connectorService.deleteAllConnectors();
+      // this.connectorService.createConnectors(this.listOfIntents);
+      
     }
   }
   /************************************************/
