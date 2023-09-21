@@ -24,7 +24,7 @@ import {
   Command, Wait, Message, Expression, Attributes, Action, ActionAskGPT, ActionWhatsappAttribute, ActionWhatsappStatic, ActionWebRequestV2, ActionGPTTask } from 'app/models/intent-model';
 import { FaqService } from 'app/services/faq.service';
 import { FaqKbService } from 'app/services/faq-kb.service';
-import { TYPE_INTENT_NAME, NEW_POSITION_ID, TYPE_ACTION, TYPE_COMMAND, removeNodesStartingWith, generateShortUID} from 'app/chatbot-design-studio/utils';
+import { TYPE_INTENT_NAME, NEW_POSITION_ID, TYPE_ACTION, TYPE_COMMAND, removeNodesStartingWith, generateShortUID, checkIFElementExists} from 'app/chatbot-design-studio/utils';
 import { ConnectorService } from 'app/chatbot-design-studio/services/connector.service';
 import { ControllerService } from 'app/chatbot-design-studio/services/controller.service';
 import { StageService } from 'app/chatbot-design-studio/services/stage.service';
@@ -277,7 +277,7 @@ export class IntentService {
 
   getIntentPosition(intentId: string){
     let pos = {'x':0, 'y':0};
-    let intent = this.listOfIntents.find((intent) => intent.id === intentId);
+    let intent = this.listOfIntents.find((intent) => intent.intent_id === intentId);
     // console.log('getIntentPosition intentId: ', intentId, intent);
     if(!intent || !intent.attributes || !intent.attributes.position)return pos;
     return intent.attributes.position;
@@ -300,7 +300,7 @@ export class IntentService {
   setIntentPosition(intentId:string, newPos: any){
     console.log('setIntentPosition:: ',intentId, newPos);
     // this.listOfIntents = this.behaviorIntents.getValue();
-    let intentToUpdate = this.listOfIntents.find((intent) => intent.id === intentId);
+    let intentToUpdate = this.listOfIntents.find((intent) => intent.intent_id === intentId);
     if(!intentToUpdate)return; 
     // if(!intentToUpdate.attributes){intentToUpdate.attributes = {};
     intentToUpdate['attributes']['position'] = {'x': newPos.x, 'y': newPos.y};
@@ -393,7 +393,7 @@ export class IntentService {
         newIntent.actions,
         newIntent.webhook_enabled
       ).subscribe((intent:any) => {
-        console.log("[INTENT SERVICE]  ho salvato in remoto l'intent ", intent.id);
+        console.log("[INTENT SERVICE]  ho salvato in remoto l'intent ", intent.intent_id);
         this.prevListOfIntent = JSON.parse(JSON.stringify(this.listOfIntents));
         resolve(intent);
       }, (error) => {
@@ -587,9 +587,9 @@ export class IntentService {
     // this.behaviorIntents.next(this.listOfIntents);
   }
 
-  replaceNewIntentToListOfIntents(intent){
+  replaceNewIntentToListOfIntents(intent, oldID){
     this.listOfIntents = this.listOfIntents.map((obj) => {
-      if (obj.id === NEW_POSITION_ID) {
+      if (obj.id === oldID) {
         return intent;
       }
       return obj;
@@ -627,9 +627,10 @@ export class IntentService {
 
   /** selectIntent */
   public selectIntent(intentID){
+    console.log('[INTENT SERVICE] --> selectIntent',  this.listOfIntents, intentID);
     this.intentSelected = this.listOfIntents.find(intent => intent.intent_id === intentID);
-    this.stageService.setDragElement(this.intentSelected.intent_id);
-    console.log('[INTENT SERVICE] --> selectIntent', this.intentSelected)
+    if(this.intentSelected)this.stageService.setDragElement(this.intentSelected.intent_id);
+   
   }
 
   /** selectAction */
@@ -828,7 +829,7 @@ export class IntentService {
     this.setTimeoutChangeEvent = setTimeout(() => {
       console.log('[INTENT SERVICE] -> patchAttributes, ', intentID, attributes);
       // let intentToUpdate = this.listOfIntents.find((intent) => intent.id === intentID);
-      this.addUNDOtoList();
+      // this.addUNDOtoList();
       this.faqService.patchAttributes(intentID, attributes).subscribe((data) => {
         this.prevListOfIntent = JSON.parse(JSON.stringify(this.listOfIntents));
         if (data) {
@@ -846,6 +847,25 @@ export class IntentService {
   }
 
 
+
+  /** setDragAndListnerEventToElement */
+  public setDragAndListnerEventToElement(intent) {
+    let intervalId = setInterval(async () => {
+      const result = checkIFElementExists(intent.intent_id);
+      if (result === true) {
+        console.log('[CDS CANVAS] Condition is true ', intent.intent_id);
+        this.stageService.setDragElement(intent.intent_id);
+        // this.intentService.setListnerEvent(intent);
+        clearInterval(intervalId);
+      }
+    }, 100); 
+    // Chiamiamo la funzione ogni 100 millisecondi (0.1 secondo)
+    // Termina l'intervallo dopo 2 secondi (2000 millisecondi)
+    setTimeout(() => {
+      console.log('Timeout: 2 secondo scaduto.');
+      clearInterval(intervalId);
+    }, 2000);
+  }
 
   /************************************************/
   /** UNDO / REDO */
@@ -879,8 +899,11 @@ export class IntentService {
         // const oldId = itemUNDOREDO.id?itemUNDOREDO.id:null;
         const newIntent = await this.saveNewIntent(id_faq_kb, itemUNDOREDO, true);
         if (newIntent) {
+          this.intentSelected.id = newIntent.id;
+          this.replaceNewIntentToListOfIntents(newIntent, itemUNDOREDO.id);
+          this.setDragAndListnerEventToElement(newIntent);
+
           this.connectorService.createConnectors(this.listOfIntents);
-          //this.setDragAndListnerEventToElement(newIntent);
         }
       }
     }

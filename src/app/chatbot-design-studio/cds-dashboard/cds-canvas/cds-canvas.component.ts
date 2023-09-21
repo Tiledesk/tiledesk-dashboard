@@ -467,28 +467,28 @@ export class CdsCanvasComponent implements OnInit {
   private setDragAndListnerEventToElements() {
     this.logger.log("[CDS CANVAS] AGGIORNO ELENCO LISTNER");
     this.listOfIntents.forEach(intent => {
-      this.setDragAndListnerEventToElement(intent);
+      this.intentService.setDragAndListnerEventToElement(intent);
     });
   }
 
   /** setDragAndListnerEventToElement */
-  private setDragAndListnerEventToElement(intent) {
-    let intervalId = setInterval(async () => {
-      const result = checkIFElementExists(intent.intent_id);
-      if (result === true) {
-        this.logger.log('[CDS CANVAS] Condition is true ', intent.intent_id);
-        this.stageService.setDragElement(intent.intent_id);
-        // this.intentService.setListnerEvent(intent);
-        clearInterval(intervalId);
-      }
-    }, 100); 
-    // Chiamiamo la funzione ogni 100 millisecondi (0.1 secondo)
-    // Termina l'intervallo dopo 2 secondi (2000 millisecondi)
-    setTimeout(() => {
-      this.logger.log('Timeout: 2 secondo scaduto.');
-      clearInterval(intervalId);
-    }, 2000);
-  }
+  // private setDragAndListnerEventToElement(intent) {
+  //   let intervalId = setInterval(async () => {
+  //     const result = checkIFElementExists(intent.intent_id);
+  //     if (result === true) {
+  //       this.logger.log('[CDS CANVAS] Condition is true ', intent.intent_id);
+  //       this.stageService.setDragElement(intent.intent_id);
+  //       // this.intentService.setListnerEvent(intent);
+  //       clearInterval(intervalId);
+  //     }
+  //   }, 100); 
+  //   // Chiamiamo la funzione ogni 100 millisecondi (0.1 secondo)
+  //   // Termina l'intervallo dopo 2 secondi (2000 millisecondi)
+  //   setTimeout(() => {
+  //     this.logger.log('Timeout: 2 secondo scaduto.');
+  //     clearInterval(intervalId);
+  //   }, 2000);
+  // }
   /** ************************* **/
   /** END DRAG DROP FUNCTIONS 
   /** ************************* **/
@@ -602,7 +602,7 @@ export class CdsCanvasComponent implements OnInit {
     this.intentSelected.id = NEW_POSITION_ID;
     this.intentService.addNewIntentToListOfIntents(this.intentSelected);
 
-    this.setDragAndListnerEventToElement(this.intentSelected);
+    this.intentService.setDragAndListnerEventToElement(this.intentSelected);
     this.intentService.setIntentSelected(this.intentSelected.intent_id);
     /** chiamata quando trascino un connettore sullo stage e creo un intent al volo  */
     const connectorDraft = this.connectorService.connectorDraft;
@@ -618,8 +618,8 @@ export class CdsCanvasComponent implements OnInit {
     if (newIntent) {
       this.intentSelected.id = newIntent.id;
       console.log('[CDS-CANVAS] Intent salvato correttamente: ', newIntent, this.listOfIntents);
-      this.intentService.replaceNewIntentToListOfIntents(newIntent);
-      this.setDragAndListnerEventToElement(newIntent);
+      this.intentService.replaceNewIntentToListOfIntents(newIntent, NEW_POSITION_ID);
+      this.intentService.setDragAndListnerEventToElement(newIntent);
       return newIntent;
     } else {
       return null;
