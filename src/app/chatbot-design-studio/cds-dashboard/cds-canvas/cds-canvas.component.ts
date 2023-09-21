@@ -60,6 +60,7 @@ export class CdsCanvasComponent implements OnInit {
   private subscriptionOpenButtonPanel: Subscription;
   IS_OPEN_PANEL_BUTTON_CONFIG: boolean = false;
   buttonSelected: any;
+  
 
   /** panel widget */
   IS_OPEN_PANEL_WIDGET: boolean = false;
@@ -164,6 +165,7 @@ export class CdsCanvasComponent implements OnInit {
         this.IS_OPEN_ADD_ACTIONS_MENU = false;
       }
     });
+
   }
 
   /** initialize */
@@ -366,6 +368,30 @@ export class CdsCanvasComponent implements OnInit {
       },
       true
     );
+    
+    
+    
+  
+    document.addEventListener(
+      "keydown", (e) => {
+        // Verifica se è stato premuto Ctrl (Windows) o Command (Mac) e Z contemporaneamente
+        console.log('[CDS-CANVAS]  subscriptionUNDO ', e);
+        if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'z') {
+          e.preventDefault(); 
+          // Evita il comportamento predefinito, ad esempio la navigazione indietro nella cronologia del browser
+          console.log("Hai premuto Ctrl+ALT+Z (o Command+Alt+Z)!");
+          this.intentService.restoreLastREDO();
+        } else if ((e.ctrlKey || e.metaKey) && e.key === "z") {
+          // Impedisci il comportamento predefinito (ad esempio, l'undo in un campo di testo)
+          e.preventDefault(); 
+          console.log("Hai premuto Ctrl+Z (o Command+Z)!");
+          this.intentService.restoreLastUNDO();
+        }
+      }, false
+    );
+
+    
+
   }
   // ---------------------------------------------------------
   // END listener di eventi Stage e Connectors
@@ -501,10 +527,18 @@ export class CdsCanvasComponent implements OnInit {
    * elimino intent da remoto
    */
   private async deleteIntent(intent) {
-    this.connectorService.deleteConnectorsOfBlock(intent.intent_id);
-    this.intentService.deleteIntentToListOfIntents(intent.intent_id);
-    this.intentSelected = null;
-    this.intentService.deleteIntent(intent.id);
+    console.log('[CDS-CANVAS]  deleteIntent',intent);
+    setTimeout(() => {
+      this.intentSelected = null;
+      this.intentService.deleteIntent(intent);
+      this.connectorService.deleteConnectorsOfBlock(intent.intent_id);
+      // console.log('[CDS-CANVAS]  copiaArray',copiaArray);
+    }, 0);
+    
+    
+    
+
+    // //this.intentService.deleteIntentToListOfIntents(intent.intent_id);
   }
 
 
@@ -567,6 +601,7 @@ export class CdsCanvasComponent implements OnInit {
     this.intentSelected = this.intentService.createNewIntent(this.id_faq_kb, action, pos);
     this.intentSelected.id = NEW_POSITION_ID;
     this.intentService.addNewIntentToListOfIntents(this.intentSelected);
+
     this.setDragAndListnerEventToElement(this.intentSelected);
     this.intentService.setIntentSelected(this.intentSelected.intent_id);
     /** chiamata quando trascino un connettore sullo stage e creo un intent al volo  */
@@ -578,11 +613,13 @@ export class CdsCanvasComponent implements OnInit {
       this.connectorService.createConnectorFromId(fromId, toId);
       this.removeConnectorDraftAndCloseFloatMenu();
     }
+
     const newIntent = await this.intentService.saveNewIntent(this.id_faq_kb, this.intentSelected);
     if (newIntent) {
       this.intentSelected.id = newIntent.id;
-      this.logger.log('[CDS-CANVAS] Intent salvato correttamente: ', newIntent, this.listOfIntents);
+      console.log('[CDS-CANVAS] Intent salvato correttamente: ', newIntent, this.listOfIntents);
       this.intentService.replaceNewIntentToListOfIntents(newIntent);
+      this.setDragAndListnerEventToElement(newIntent);
       return newIntent;
     } else {
       return null;
@@ -756,7 +793,7 @@ export class CdsCanvasComponent implements OnInit {
   onSaveButton(button: Button) {
     const arrayId = button.__idConnector.split("/");
     const idConnector = arrayId[0] ? arrayId[0] : null;
-    this.logger.log('onSaveButton: ', idConnector, this.listOfIntents);
+    console.log('onSaveButton: ', idConnector, this.listOfIntents);
     if (idConnector) {
       this.intentSelected = this.listOfIntents.find(obj => obj.intent_id === idConnector);
       this.updateIntent(2000);
@@ -770,7 +807,7 @@ export class CdsCanvasComponent implements OnInit {
   // --------------------------------------------------------- //
   /** onSavePanelIntentDetail */
   onSavePanelIntentDetail(intentSelected: any) {
-    this.logger.log('[CDS-CANVAS] onSavePanelIntentDetail intentSelected ', intentSelected)
+    console.log('[CDS-CANVAS] onSavePanelIntentDetail intentSelected ', intentSelected)
     if (intentSelected && intentSelected != null) {
       this.intentSelected = intentSelected;
       this.intentService.refreshIntent(this.intentSelected);

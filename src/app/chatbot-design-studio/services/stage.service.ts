@@ -48,7 +48,7 @@ export class StageService {
   setDragElement(elementId:string) {
     const element = document.getElementById(elementId);
     console.log("[STAGE SERVICE] imposto il drag sull'elemento ", elementId, element);
-    this.tiledeskStage.setDragElement(element);
+    if(element)this.tiledeskStage.setDragElement(element);
   }
   
 

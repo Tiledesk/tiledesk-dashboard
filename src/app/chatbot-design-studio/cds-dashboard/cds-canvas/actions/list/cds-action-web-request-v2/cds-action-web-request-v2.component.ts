@@ -90,7 +90,8 @@ export class CdsActionWebRequestV2Component implements OnInit {
       const array = this.connector.fromId.split("/");
       const idAction= array[1];
       if(idAction === this.action._tdActionId){
-        if(this.connector.deleted){ //TODO: verificare quale dei due connettori è stato eliminato e impostare isConnected a false
+        if(this.connector.deleted){ 
+          //TODO: verificare quale dei due connettori è stato eliminato e impostare isConnected a false
           // DELETE 
           if(array[array.length -1] === 'true'){
             this.action.trueIntent = null
@@ -100,20 +101,26 @@ export class CdsActionWebRequestV2Component implements OnInit {
             this.action.falseIntent = null
             this.isConnectedFalse = false;
           }
+          this.updateAndSaveAction.emit();
         } else { //TODO: verificare quale dei due connettori è stato aggiunto (controllare il valore della action corrispondente al true/false intent)
           // ADD / EDIT
           this.logger.debug('[ACTION-ASKGPT] updateConnector', this.connector.toId, this.connector.fromId ,this.action, array[array.length-1]);
           if(array[array.length -1] === 'true'){
-            this.action.trueIntent = '#'+this.connector.toId;
-            this.isConnectedTrue = true
+            this.isConnectedTrue = true;
+            if(this.action.trueIntent !== '#'+this.connector.toId){
+              this.action.trueIntent = '#'+this.connector.toId;
+              this.updateAndSaveAction.emit();
+            } 
           }        
           if(array[array.length -1] === 'false'){
-            this.action.falseIntent = '#'+this.connector.toId;
             this.isConnectedFalse = true;
+            if(this.action.falseIntent !== '#'+this.connector.toId){
+              this.action.falseIntent = '#'+this.connector.toId;
+              this.updateAndSaveAction.emit();
+            } 
           }
         }
 
-        this.updateAndSaveAction.emit();
       }
     } catch (error) {
       this.logger.error('[ACTION-ASKGPT] updateConnector error: ', error);
