@@ -372,7 +372,6 @@ export class TiledeskConnectors {
     const blockId = element.id;
     let block = this.blocks[blockId];
     if (!block) {
-      console.log("NO block:", this.blocks, element.id, element);
       return;
     }
     // console.log("block:---> ", block)

@@ -88,12 +88,15 @@ emoji-mart {
     display: flex;
     align-items: center;
     gap: 6px;
-    height: 21px;
     flex-direction: row;
 }
 
 .action-row-left {
     height: 20px;
+    width: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .action-row-right {
@@ -107,8 +110,10 @@ emoji-mart {
 
 .action-row-right.empty,
 .set-attribute-value.empty {
-    background: none;
-    color: $empty-element-property;
+    background: none !important;
+    color: $empty-element-property !important;
+    font-size: 12px !important;
+    padding: unset !important;
 }
 
 .action-row .action-row-left svg {
@@ -121,33 +126,7 @@ emoji-mart {
     color: $brown-85;
 }
 
-/* Action delay preview
-/* ------------------------ */
-.action-delay-preview {
-    align-items: center;
-    background: #647283;
-    border-radius: 13px;
-    display: inline-flex;
-    position: relative;
-    height: 26px;
-    padding: 0 9px 0 3px;
-    text-align: center;
-    transition: width 0.3s ease-in;
-    font-size: 14px;
-    top: 3px;
-}
-.action-delay-preview .delay--icon {
-    padding-right: 4px;
-    color: #ecb606b0;
-}
 
-.action-delay-preview .delay--time {
-    color: #d2d2d2;
-    cursor: pointer;
-    font-size: 11px;
-    font-weight: 400;
-    white-space: nowrap;
-}
 /* Intent Controls
 /* ------------------------ */
 .panel-intent-content:hover cds-panel-intent-controls > .intent-header-actions-container-on-start {
