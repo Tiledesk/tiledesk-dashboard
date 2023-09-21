@@ -4,6 +4,7 @@ import { IntentService } from 'app/chatbot-design-studio/services/intent.service
 import { TYPE_ACTION, TYPE_INTENT_ELEMENT } from 'app/chatbot-design-studio/utils';
 import { Action, Form, Intent } from 'app/models/intent-model';
 import { LoggerService } from 'app/services/logger/logger.service';
+import { DashboardService } from 'app/chatbot-design-studio/services/dashboard.service';
 
 @Component({
   selector: 'cds-panel-action-detail',
@@ -13,9 +14,9 @@ import { LoggerService } from 'app/services/logger/logger.service';
 export class CdsActionDetailPanelComponent implements OnInit, OnChanges {
   @Input() elementIntentSelected: any;
   @Input() showSpinner: boolean;
-  @Input() project_id: string;
   @Output() onUpdateIntent = new EventEmitter();
   
+  project_id: string;
   intentSelected: Intent;
 
   typeIntentElement = TYPE_INTENT_ELEMENT;
@@ -30,10 +31,12 @@ export class CdsActionDetailPanelComponent implements OnInit, OnChanges {
   constructor(
     private logger: LoggerService,
     private intentService: IntentService,
-    private connectorService: ConnectorService
+    private connectorService: ConnectorService,
+    private dashboardService: DashboardService
   ) { }
 
   ngOnInit(): void {
+    this.project_id = this.dashboardService.projectID;
   //  console.log('[PANEL-INTENT-DETAIL] (ngOnInit) @Input elementIntentSelected ', this.elementIntentSelected, this.intentSelected);
   //   try {
   //     this.elementSelected = JSON.parse(JSON.stringify(this.elementIntentSelected.element));

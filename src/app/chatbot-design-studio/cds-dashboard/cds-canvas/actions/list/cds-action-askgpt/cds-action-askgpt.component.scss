@@ -1,6 +1,14 @@
 @import "./src/assets/sass/cds/_variables.scss";
 
-
+.previewContent{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 5px;
+    padding: 3px 0px;
+}
 
 .cds-action-preview{
     .title-preview-label{
@@ -27,6 +35,13 @@
         height: 20px;
     }
 }  
+
+
+.preview-divider {
+    margin: 5px 0px;
+    border-top: 2px solid $light-brown;
+}
+
 
 .content {
     max-height: calc(100vh - 200px);
