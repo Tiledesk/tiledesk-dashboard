@@ -345,7 +345,8 @@ export class ActionGPTTask extends Action {
     context: string;
     max_tokens: number;
     temperature: number;
-    model: string
+    model: string;
+    preview?: Array<any>;
     constructor() {
         super();
         this._tdActionType = TYPE_ACTION.GPT_TASK

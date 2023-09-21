@@ -3,7 +3,7 @@ import { ActionAskGPT, Intent } from 'app/models/intent-model';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { variableList } from 'app/chatbot-design-studio/utils';
 import { MatDialog } from '@angular/material/dialog';
-import { OpenaikbsService } from 'app/services/openaikbs.service';
+import { OpenaiService } from 'app/services/openai.service';
 import { IntentService } from 'app/chatbot-design-studio/services/intent.service';
 import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
 
@@ -50,7 +50,7 @@ export class CdsActionAskgptComponent implements OnInit {
 
   constructor(
     private logger: LoggerService,
-    private openaikbService: OpenaikbsService,
+    // private openaikbService: OpenaiService,
     private kbService: KnowledgeBaseService,
     public dialog: MatDialog,
     private intentService: IntentService
