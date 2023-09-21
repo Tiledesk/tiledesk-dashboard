@@ -121,6 +121,11 @@ export enum TYPE_ACTION_CATEGORY {
     NEW = 'New'
 }
 
+export enum TYPE_EVENT_CATEGORY {
+    TRIGGER = 'trigger',
+    RULE = 'rule'
+}
+
 export const ACTION_CATEGORY =[
     { type: getKeyByValue(TYPE_ACTION_CATEGORY.MOST_USED, TYPE_ACTION_CATEGORY), name: TYPE_ACTION_CATEGORY.MOST_USED, src: 'assets/cds/images/actions_category/most_used.svg'},
     { type: getKeyByValue(TYPE_ACTION_CATEGORY.FLOW, TYPE_ACTION_CATEGORY), name: TYPE_ACTION_CATEGORY.FLOW, src: 'assets/cds/images/actions_category/flow.svg'},
@@ -264,6 +269,10 @@ export const ACTIONS_LIST= {
     // ASSIGN_FUNCTION: { name: 'Set function', category: TYPE_ACTION_CATEGORY.NEW, type: TYPE_ACTION.ASSIGN_FUNCTION, src: "assets/cds/images/actions/assign_var.svg" },
 }
 
+export const EVENTS_LIST = {
+    TRIGGER: { name: 'Trigger', category: TYPE_EVENT_CATEGORY.TRIGGER},
+    RULE: { name: 'Rule', category: TYPE_EVENT_CATEGORY.RULE},
+}
 
 export const OPERATORS_LIST: { [key: string]: { name: string, type: TYPE_OPERATOR, src?: string } } = {
     "equalAsNumbers": { name: "equal As Numbers", type: TYPE_OPERATOR.equalAsNumbers, src: "assets/cds/images/operators/equal.svg" },
