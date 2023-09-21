@@ -353,11 +353,10 @@ export class IntentService {
   /** generate display name of intent */
   public setDisplayName(){
     // let listOfIntents = this.behaviorIntents.getValue();
-    let displayNames = this.listOfIntents
-    .filter((element) => element.intent_display_name.startsWith(this.preDisplayName))
-    .map((element) => element.intent_display_name.replace(this.preDisplayName, ''));
+    let displayNames = this.listOfIntents.filter((element) => element.intent_display_name.startsWith(this.preDisplayName))
+                                          .map((element) => element.intent_display_name.replace(this.preDisplayName, ''));
     // displayNames = displayNames.slice().sort();
-    const numbers = displayNames.map((name) => parseInt(name, 10));
+    const numbers = displayNames.filter(el => el !== '').map((name) => parseInt(name, 10));
     numbers.sort((a, b) => a - b);
     const lastNumber = numbers[numbers.length - 1];
     if(numbers.length>0){
@@ -719,6 +718,7 @@ export class IntentService {
     }
     if(typeAction === TYPE_ACTION.WEB_REQUESTV2){
       action = new ActionWebRequestV2();
+      action.assignResultTo= 'result'
       action.assignStatusTo = 'status';
       action.assignErrorTo = 'error';
     }

@@ -1,10 +1,5 @@
 @import "./src/assets/sass/cds/_variables.scss";
 
-.cds-action-content{
-    // position: relative;
-    padding: 5px 10px;
-}
-
 .previewContent{
     position: relative;
     display: flex;
@@ -12,7 +7,7 @@
     align-items: center;
     justify-content: flex-end;
     gap: 5px;
-    padding: 3px 0px;
+    padding: 0px;
   
     .icon-action img{
         height: 16px;
@@ -26,12 +21,6 @@
     }
 
 }
-  
-.preview-divider {
-    margin: 5px 0px;
-    border-top: 2px solid $light-brown;
-}
-
 
 .content {
     //padding: 10px 30px;

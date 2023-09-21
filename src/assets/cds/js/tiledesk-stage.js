@@ -174,7 +174,6 @@ export class TiledeskStage {
 
             // console.log("pos_mouse_x:", pos_mouse_x, "pos_mouse_y:", pos_mouse_y);
             document.onmousemove = (function(event) {
-                console.log('elementDrag', element, this.scale);
                 event = event || window.event;
                 event.preventDefault();
                 const delta_x = event.clientX - pos_mouse_x;

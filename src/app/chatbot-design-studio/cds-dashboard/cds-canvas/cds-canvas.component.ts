@@ -189,7 +189,6 @@ export class CdsCanvasComponent implements OnInit {
     this.closePanelWidget.next();
   }
 
-
   /** getIntentPosition: call from html */
   getIntentPosition(intentId: string) {
     return this.intentService.getIntentPosition(intentId);
@@ -433,6 +432,11 @@ export class CdsCanvasComponent implements OnInit {
         this.IS_OPEN_ADD_ACTIONS_MENU = false;
       } 
     }
+  }
+
+
+  @HostListener('contextmenu', ['$event'])
+  onRightClick(event){
   }
 
   /** -------------------------------------------------------
@@ -679,7 +683,7 @@ export class CdsCanvasComponent implements OnInit {
     }
     swal({
       title: this.translate.instant('AreYouSure'),
-      text: "The intent " + intent.intent_display_name + " will be deleted",
+      text: "The block " + intent.intent_display_name + " will be deleted",
       icon: "warning",
       buttons: ["Cancel", "Delete"],
       dangerMode: true,

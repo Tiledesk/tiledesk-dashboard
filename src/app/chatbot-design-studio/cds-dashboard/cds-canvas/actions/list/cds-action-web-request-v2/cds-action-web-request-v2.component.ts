@@ -46,7 +46,6 @@ export class CdsActionWebRequestV2Component implements OnInit {
 
   bodyOptions: Array<{label: string, value: string, disabled: boolean, checked: boolean}>= [ {label: 'none', value: 'none', disabled: false, checked: true}, {label: 'Json', value: 'json', disabled: false, checked: false}]
   
-  
   constructor(
     private logger: LoggerService,
     private intentService: IntentService
@@ -144,6 +143,9 @@ export class CdsActionWebRequestV2Component implements OnInit {
 
   private initializeAttributes() {
     let new_attributes = [];
+    if (!variableList.userDefined.some(v => v.name === 'result')) {
+      new_attributes.push({ name: "result", value: "result" });
+    }
     if (!variableList.userDefined.some(v => v.name === 'status')) {
       new_attributes.push({ name: "status", value: "status" });
     }
@@ -153,12 +155,7 @@ export class CdsActionWebRequestV2Component implements OnInit {
     variableList.userDefined = [ ...variableList.userDefined, ...new_attributes];
     this.logger.debug("[ACTION ASKGPT] Initialized variableList.userDefined: ", variableList.userDefined);
   }
-  
 
-  private setActionWebRequest(){
-    this.action.body = this.body;
-    this.updateAndSaveAction.emit()
-  }
 
   private formatJSON(input, indent) {
     if (input.length == 0) {
@@ -192,7 +189,8 @@ export class CdsActionWebRequestV2Component implements OnInit {
     this.updateAndSaveAction.emit()
   }
 
-  onChangeButtonSelect(event: {label: string, value: string, disabled: boolean}){
+  onChangeButtonSelect(event: {label: string, value: string, disabled: boolean, checked: boolean}){
+    this.bodyOptions.forEach(el => { el.value ===event.value? el.checked= true: el.checked = false })
     switch (event.value){
       case 'none':
         this.body = null
@@ -203,12 +201,12 @@ export class CdsActionWebRequestV2Component implements OnInit {
     console.log('onChangeButtonSelect-->', event, this.body)
   }
 
-  onChangeTextarea(e, type: 'url' | 'jsonBody'){
-    this.logger.debug('onChangeTextarea:', e, type );
+  onChangeTextarea(e, type: 'url' | 'body'){
+   console.log('onChangeTextarea:', e, type );
     switch(type){
-      case 'jsonBody': {
+      case 'body': {
         this.body = e;
-        this.setActionWebRequest();
+        this.action.body = this.body;
         setTimeout(() => {
           this.jsonIsValid = this.isValidJson(this.body);
           this.updateAndSaveAction.emit()
@@ -223,17 +221,14 @@ export class CdsActionWebRequestV2Component implements OnInit {
 
   }
 
-  onChangeParamsButton(){
-    if(this.methodSelectedHeader){
-      this.methodSelectedHeader = false;
-      this.methodSelectedBody = true;
-      this.jsonHeader = this.action.headersString;
-    } else if(this.methodSelectedBody){
-      this.methodSelectedHeader = true;
-      this.methodSelectedBody = false;
+  onChangeOption(event: 'header'|'body'){
+    switch(event){
+      case 'header':
+        this.jsonHeader = this.action.headersString;
+        break;
+      case 'body':
+        break;
     }
-    this.jsonIsValid = this.isValidJson(this.body);
-    this.setActionWebRequest();
   }
 
   onChangeAttributes(attributes:any){

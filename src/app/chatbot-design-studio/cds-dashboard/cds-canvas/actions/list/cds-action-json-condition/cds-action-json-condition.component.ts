@@ -241,6 +241,7 @@ export class CdsActionJsonConditionComponent implements OnInit {
   }
 
   onChangeExpression(event){
+    console.log('eventtttttttt', event)
     this.updateAndSaveAction.emit();
   }
 

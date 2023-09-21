@@ -8,18 +8,12 @@
     align-items: flex-end;
     justify-content: flex-end;
     gap: 5px;
-    padding: 3px 0px;
+    padding: 0px;
     
     .title-label{
      color: #6c6859;
      font-size: 12px; 
     }
-}
-
-cds-connector.connector{
-  position: absolute;
-  right: -31px;
-  top: calc(50% - 10px);
 }
 
 // .action-connector {

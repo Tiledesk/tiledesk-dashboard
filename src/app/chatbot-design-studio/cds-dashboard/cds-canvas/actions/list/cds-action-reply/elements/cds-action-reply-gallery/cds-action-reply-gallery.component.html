@@ -172,8 +172,8 @@
 
 
 <ng-template #placeholder [ngOutletContext]="context">
-    <div class="gallery-preview-wrp " id="placeholder">
-        <div class="image">
+    <div class="gallery-preview-wrp" id="placeholder">
+        <div class="image no-image">
             <img src="assets/cds/images/icons/add_image.svg">
         </div>
         <div class="content">
@@ -217,11 +217,10 @@
                     </div>
                 </div>
         
-                <cds-connector
-                    class = "connector"
+                <cds-connector class="button-connector"
                     cdkDragDisabled
-                    [idConnector] = "button.__idConnector"
-                    [isConnected] = "button.__isConnected">
+                    [idConnector]="button.__idConnector"
+                    [isConnected]="button.__isConnected">
                 </cds-connector>
         
             </div>

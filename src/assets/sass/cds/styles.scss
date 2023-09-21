@@ -80,7 +80,7 @@ emoji-mart {
 
 .cds-action-preview {
     /* padding: 3px 16px 16px; */
-    padding: 16px;
+    padding: 5px 10px;;
     margin: 0px;;
     position: relative;
 }
@@ -88,12 +88,15 @@ emoji-mart {
     display: flex;
     align-items: center;
     gap: 6px;
-    height: 21px;
     flex-direction: row;
 }
 
 .action-row-left {
     height: 20px;
+    width: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .action-row-right {
@@ -105,8 +108,12 @@ emoji-mart {
     text-overflow: ellipsis;
 }
 
-.action-row-right.empty {
-    color: #ff4000
+.action-row-right.empty,
+.set-attribute-value.empty {
+    background: none !important;
+    color: $empty-element-property !important;
+    font-size: 12px !important;
+    padding: unset !important;
 }
 
 .action-row .action-row-left svg {
@@ -119,33 +126,19 @@ emoji-mart {
     color: $brown-85;
 }
 
-/* Action delay preview
+
+/* Intent Controls
 /* ------------------------ */
-.action-delay-preview {
-    align-items: center;
-    background: #647283;
-    border-radius: 13px;
-    display: inline-flex;
-    position: relative;
-    height: 26px;
-    padding: 0 9px 0 3px;
-    text-align: center;
-    transition: width 0.3s ease-in;
-    font-size: 14px;
-    top: 3px;
+.panel-intent-content:hover cds-panel-intent-controls > .intent-header-actions-container-on-start {
+    top: -28px!important;
+    right: 12px !important;
 }
-.action-delay-preview .delay--icon {
-    padding-right: 4px;
-    color: #ecb606b0;
+.panel-intent-content:hover cds-panel-intent-controls > .intent-header-actions-container {
+    top: -28px;
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
 }
 
-.action-delay-preview .delay--time {
-    color: #d2d2d2;
-    cursor: pointer;
-    font-size: 11px;
-    font-weight: 400;
-    white-space: nowrap;
-}
 /* Action Controls
 /* ------------------------ */
 .body-action > cds-action-controls > .action-controls {
@@ -263,8 +256,14 @@ cds-connector.connector-false {
 
 cds-connector.connector {
     position: absolute;
+    right: -25px;
     top: calc(50% - 10px);
+}
+
+cds-connector.button-connector {
+    position: absolute;
     right: -15px;
+    top: calc(50% - 10px);
 }
 
 cds-connector.connector-true,
@@ -286,4 +285,10 @@ cds-connector.connector-false {
 
 ::ng-deep .mat-expansion-indicator::after {
 color: white;
+}
+
+
+.preview-divider {
+    margin: 5px 0px;
+    border-top: 2px solid rgba( $base-blue , 0.3);
 }

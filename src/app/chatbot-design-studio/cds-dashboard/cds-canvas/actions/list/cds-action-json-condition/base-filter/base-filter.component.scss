@@ -1,5 +1,11 @@
 @import "./src/assets/sass/cds/_variables.scss";
 
+
+:host{
+    --content-background: rgb(66, 85, 117);
+    --icon-color: #{$icon-color};
+
+}
 .base-filter{
     &:hover{
         div.filter-remove{
@@ -9,7 +15,7 @@
     }
 }
 .content{
-    background: $action-item-background;
+    background: var(--content-background);
     // margin: 0 30px;
     padding: 20px;
     border-radius: 4px;
@@ -46,11 +52,11 @@
 
         span.material-icons{
             font-size: 20px;
-            color: $icon-color;
+            color:  var(--icon-color);
         }
 
         &:hover{
-            background-color: $icon-color;
+            background-color: var(--icon-color);
             span.material-icons{
                 color: white;
             }
@@ -167,10 +173,10 @@
         font-size: 12px;
         span.material-icons {
             font-size: 20px;
-            color: $icon-color;
+            color:  var(--icon-color);
         }
         &:hover {
-            background-color: $icon-color;
+            background-color:  var(--icon-color);
             span.material-icons{
                 color: white;
             }

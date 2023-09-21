@@ -85,10 +85,10 @@
         </div>
 
         <cds-connector *ngIf="previewMode"
-            class = "connector"
+            class="button-connector"
             cdkDragDisabled
-            [idConnector] = "button.__idConnector"
-            [isConnected] = "button.__isConnected">
+            [idConnector]="button.__idConnector"
+            [isConnected]="button.__isConnected">
         </cds-connector>
 
     </div>

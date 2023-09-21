@@ -1,19 +1,28 @@
 @import "./src/assets/sass/cds/_variables.scss";
 @import "./src/assets/sass/animations.scss";
 
+
+:host{
+  --action-background: #{$action-item-background};
+  --action-no-featured-backgroud: #{$action-no-featured-item-background};
+  --intent-background: #{$intent-preview-background};
+  --intent-header-background: transparent; //#{$deep-brown};
+  --base-border-radius-preview: #{$border-radius-base-preview};
+  --base-padding-preview: #{$padding-base-preview};
+  --action-selected-color: #{$accent-blue};
+}
+
+
 .panel-intent-content {
   transition: background-color 0.15s ease 0s;
   width: 264px;
   cursor: pointer;
-  /*    border-radius: 10px;
-    border: 2px solid rgb(255, 255, 255);
-    padding: 0 10px 10px 10px;
-    background-color: rgb(235, 226, 198); */
   position: relative;
   margin: 0px;
 
-  // position: absolute;
-  // transform: translateX(-50%);
+  background-color: var(--intent-background);
+  padding: var(--base-padding-preview);
+  border-radius: var(--base-border-radius-preview);
   &::before {
     display: block;
     border-radius: 10px;
@@ -36,6 +45,12 @@
     border-radius: 10px;
   }
 
+  &.isStart{
+    background-color: unset;
+    padding: 0;
+    border-radius: unset;
+  }
+
 
 
 
@@ -44,15 +59,14 @@
     justify-content: space-between;
     min-height: 30px;
     width: auto;
-    margin: 10px 0px;
+    margin: 0px; //10px 0px;
     overflow-x: hidden;
     position: relative;
     border-radius: 10px;
-    border: 2px solid rgb(255, 255, 255);
-    // box-shadow: inset 0 0 0 2px #fff;
+    // border: 2px solid rgb(255, 255, 255);
     padding: 0 10px 10px 10px;
     // background-color: rgb(235, 226, 198);
-    background-color: $deep-brown;
+    background-color: var(--intent-header-background);
   }
 
   // --------------------------------
@@ -123,9 +137,9 @@
   }
 
 
-  .placeholder-block-header {
-    border: 1px solid rgb(255, 255, 255);
-  }
+  // .placeholder-block-header {
+  //   border: 1px solid rgb(255, 255, 255);
+  // }
 
   // .live-active-intent {
   //   // border: 3px solid red;
@@ -186,7 +200,7 @@
     height: 43px;
     position: absolute;
     right: 20px;
-    top: 12px;
+    top: 13px;
 
     .title-label {
       display: none;
@@ -221,90 +235,8 @@
 
 }
 
-/* Intent header actions
-/* ***************************** */
-.intent-header-actions-container {
-  position: absolute;
-  top: 0px;
-  right: 0px;
-  height: 45px;
-  padding-left: 12px;
-  opacity: 0;
-  transform: translate3d(0, 20px, 0);
-  transition: 0.25s all ease-in-out;
-}
-
-.panel-intent-content:hover .intent-header-actions-container-on-start {
-  top: -19px !important;
-  right: 12px !important;
-}
-
-.panel-intent-content:hover .intent-header-actions-container {
-  top: -28px;
-  opacity: 1;
-  transform: translate3d(0, 0, 0);
-}
-
-.intent-header-actions-wpr {
-  background: #fff;
-  height: 25px;
-  border-radius: 14px;
-  box-shadow: #001b4714 0 3px 8px;
-  display: flex;
-  padding: 3px 0px;
-}
-
-.intent-header-action-btn {
-  cursor: pointer;
-  border-left: solid 1px $border-light;
-  padding: 0 8px;
-
-}
-
-.intent-header-action-btn:first-child {
-  border-left: unset;
-}
 
 
-// .svg-icon--wh .wh-st0 {
-//   fill: none;
-// }
-
-// .svg-icon--wh .wh-st1 {
-//   fill: #6C6859;
-// }
-
-// .svg-icon--wh .wh-st2 {
-//   fill: #6C6859;
-// }
-
-// .svg-icon--wh.webhook-enabled .wh-st1 {
-//   fill: #17B366;
-// }
-
-// .svg-icon--wh.webhook-enabled .wh-st2 {
-//   fill: #17B366;
-// }
-
-.svg-icon--wh.webhook-enabled  svg {
-  fill: #17B366;
-}
-
-.svg-icon--wh:hover  svg {
-  fill: #3ea9f5;
-}
-
-.svg-icon--delete-intent:hover svg{
-  fill: #3ea9f5!important; 
-}
-
-.svg-icon--play:hover svg{
-  fill: #3ea9f5 !important; 
-}
-
-// .svg-icon--wh.webhook-enabled .wh-st2 {
-//   fill: #C73A63;
-// }
 
 
 
@@ -329,14 +261,10 @@
   align-items: center;
   width: 100%;
   min-height: 30px;
-  /*   border-radius: 6px;
-  padding: 5px 0px;
-  background-color: #ffffff80;
-  box-shadow: #0000000f 0 0 0 1px; */
-  border-radius: 10px;
+  border-radius: var(--base-border-radius-preview);
   border: 2px solid rgb(255, 255, 255);
-  padding: 0 10px 10px 10px;
-  background-color: rgb(235, 226, 198);
+  // padding: 0 10px 10px 10px;
+  background-color: var(--action-background)
 }
 
 /* Drag placeholder 
@@ -387,12 +315,11 @@
 
 .cds-action-active {
   // border: 3px solid #0f172a !important;
-  outline: 2px solid rgba(236, 182, 6, .6901960784) !important;
-  border-radius: 8px;
+  outline: 2px solid var(--action-selected-color) !important;
 }
 
 .cds-no-featured-action {
-  background-color: $light-brown;
+  background-color: var(--action-no-featured-backgroud);
 }
 
 /* Btn add action
@@ -417,8 +344,8 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  background-color: #ffffff80; // nk
-  box-shadow: #0000000f 0 0 0 1px; // nk
+  // background-color: #ffffff80; // nk
+  // box-shadow: #0000000f 0 0 0 1px; // nk
   border-radius: 6px; // nk
 }
 
@@ -1063,6 +990,12 @@ cds-action-description.header-action ::ng-deep{
   }
 }
 
+cds-panel-intent-header.isStart ::ng-deep{
+  input {
+    color: white !important;
+  }
+}
+
 
 
 
@@ -1090,7 +1023,7 @@ cds-action-description.header-action ::ng-deep{
 
     &[active=true] {
       img {
-        filter: brightness(0) saturate(100%) invert(82%) sepia(26%) saturate(4056%) hue-rotate(360deg) brightness(95%) contrast(96%);
+        filter: brightness(0) saturate(100%) invert(68%) sepia(36%) saturate(6687%) hue-rotate(182deg) brightness(104%) contrast(92%);
       }
     }
   }

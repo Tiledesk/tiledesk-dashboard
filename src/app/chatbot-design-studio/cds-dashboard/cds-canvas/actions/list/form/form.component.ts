@@ -483,6 +483,7 @@ export class CdsFormComponent implements OnInit, OnChanges {
   /** START EVENTS */
   /** Events of FORM EDIT ADD */
   onChangedFormFields(event:any){
+    console.log('eventttttttt', event)
     try {
       const objIndex = this.fields.findIndex(obj => obj.name === event.name);
       if (objIndex === -1) {
@@ -496,6 +497,7 @@ export class CdsFormComponent implements OnInit, OnChanges {
       // this.intentSelected.form = this.intentForm;
       // this.updateIntentForm.emit(this.intentForm);
       this.logger.log('[FORM-COMP] saveAddEditForm intentForm ', this.intentForm);
+      this.jsonGenerator();
     } catch (error) {
       this.logger.log('[FORM-COMP] error ', error);
     }
