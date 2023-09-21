@@ -374,7 +374,7 @@ export class CdsActionReplyComponent implements OnInit {
 
   onOpenPanelActionDetail(event){
     console.log('onOpenPanelActionDetail :: ', this.action);
-    this.intentService.setIntentSelected(this.intentSelected);
+    this.intentService.setIntentSelected(this.intentSelected.intent_id);
     this.controllerService.openActionDetailPanel(TYPE_INTENT_ELEMENT.ACTION, this.action);
   }
 

@@ -38,8 +38,8 @@
         <cds-intent *ngFor="let intent of listOfIntents" 
             [id]="intent.intent_id"
             class="panel-intent tds_input_block tds_draggable" 
-            [style.top.px]="getIntentPosition(intent.id).y"
-            [style.left.px]="getIntentPosition(intent.id).x" 
+            [style.top.px]="getIntentPosition(intent.intent_id).y"
+            [style.left.px]="getIntentPosition(intent.intent_id).x" 
             [intent]="intent"
             [hideActionPlaceholderOfActionPanel]="hideActionPlaceholderOfActionPanel"
             (actionSelected)=onActionSelected($event) 
