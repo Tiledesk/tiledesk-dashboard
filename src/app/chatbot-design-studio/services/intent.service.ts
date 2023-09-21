@@ -420,7 +420,7 @@ export class IntentService {
     intent = removeNodesStartingWith(intent, '__');
     console.log('[INTENT SERVICE] -> updateIntent, ', originalIntent);
   
-    // if(!parentUD)this.addUNDOtoList();
+    if(!parentUD)this.addUNDOtoList();
     return new Promise((resolve, reject) => {
       let id = intent.id;
       let attributes = intent.attributes?intent.attributes:{};
@@ -829,7 +829,7 @@ export class IntentService {
     this.setTimeoutChangeEvent = setTimeout(() => {
       console.log('[INTENT SERVICE] -> patchAttributes, ', intentID, attributes);
       // let intentToUpdate = this.listOfIntents.find((intent) => intent.id === intentID);
-      // this.addUNDOtoList();
+      this.addUNDOtoList();
       this.faqService.patchAttributes(intentID, attributes).subscribe((data) => {
         this.prevListOfIntent = JSON.parse(JSON.stringify(this.listOfIntents));
         if (data) {
@@ -887,8 +887,12 @@ export class IntentService {
         if(JSON.stringify(itemLive) !== JSON.stringify(itemUNDOREDO)){
           // update intent
           console.log('[INTENT SERVICE] ->  UPDATE INTENT',  itemUNDOREDO);
-          // this.connectorService.deleteConnectorsOfBlock(itemUNDOREDO.intent_id);
-          this.updateIntent(itemUNDOREDO, 0, true);
+          
+          const resp = await this.updateIntent(itemUNDOREDO, 0, true);
+          if (resp) {
+            // updated
+            this.connectorService.createConnectors(this.listOfIntents);
+          }
         }
       } else {
         // insert new intent
@@ -902,7 +906,6 @@ export class IntentService {
           this.intentSelected.id = newIntent.id;
           this.replaceNewIntentToListOfIntents(newIntent, itemUNDOREDO.id);
           this.setDragAndListnerEventToElement(newIntent);
-
           this.connectorService.createConnectors(this.listOfIntents);
         }
       }

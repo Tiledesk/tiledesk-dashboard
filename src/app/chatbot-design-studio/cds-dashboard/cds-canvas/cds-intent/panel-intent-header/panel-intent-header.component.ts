@@ -130,7 +130,7 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
   /** doubleClickFunction */
   doubleClickFunction(event){
     this.logger.log("[PANEL-INTENT-HEADER] doubleClickFunction");
-    // this.myInput.nativeElement.select();
+    this.myInput.nativeElement.select();
     // this.intentService.selectIntent(this.intent);
   }
 
