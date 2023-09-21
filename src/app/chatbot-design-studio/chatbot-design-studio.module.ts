@@ -203,6 +203,7 @@ import { CdsActionControlsComponent } from './cds-dashboard/cds-canvas/actions/s
 import { CdsAddActionMenuComponent } from './cds-dashboard/cds-canvas/actions/shared/cds-add-action-menu/cds-add-action-menu.component';
 import { CdsQuestionComponent } from './cds-dashboard/cds-canvas/actions/list/question/question.component';
 import { CdsAnswerComponent } from './cds-dashboard/cds-canvas/actions/list/answer/answer.component';
+import { SharedModule } from 'app/shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -358,7 +359,7 @@ import { CdsAnswerComponent } from './cds-dashboard/cds-canvas/actions/list/answ
     MatIconModule,
     MatButtonToggleModule,
     RouterModule,
-    TranslateModule,
+    // TranslateModule,
     FormsModule,
     MatInputModule,
     MatExpansionModule,
@@ -368,6 +369,7 @@ import { CdsAnswerComponent } from './cds-dashboard/cds-canvas/actions/list/answ
     FormsModule,
     ReactiveFormsModule,
     SatPopoverModule,
+    SharedModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

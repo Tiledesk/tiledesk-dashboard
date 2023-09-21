@@ -339,7 +339,7 @@ import { CreateProjectGsComponent } from './create-project-wizard/create-project
 
 
 
-import { OpenaikbsService } from './services/openaikbs.service';
+import { OpenaiService } from './services/openai.service';
 import { KnowledgeBasesComponent } from './knowledge-bases/knowledge-bases.component';
 
 // NOTE: Eliminazione del local storage produce inconsistenza delle instances Firebase. Si salta il logout.
@@ -710,7 +710,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     FilterArrayPipe,
     MarkerService,
     // LoggerInstance,
-    OpenaikbsService,
+    OpenaiService,
     PopupService,
     NotificationService,
     { provide: LocationStrategy, useClass: HashLocationStrategy }

@@ -4,7 +4,7 @@ import { AuthService } from 'app/core/auth.service';
 import { KB, KbSettings } from 'app/models/kbsettings-model';
 import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
 import { LoggerService } from 'app/services/logger/logger.service';
-import { OpenaikbsService } from 'app/services/openaikbs.service';
+import { OpenaiService } from 'app/services/openai.service';
 
 @Component({
   selector: 'appdashboard-knowledge-bases',
@@ -55,7 +55,7 @@ export class KnowledgeBasesComponent implements OnInit {
     private auth: AuthService,
     private formBuilder: FormBuilder,
     private logger: LoggerService,
-    private openaikbService: OpenaikbsService,
+    private openaiService: OpenaiService,
     private kbService: KnowledgeBaseService
   ) { }
 
@@ -183,7 +183,7 @@ export class KnowledgeBasesComponent implements OnInit {
       full_url: kb.url,
       gptkey: kb.gptkey
     }
-    this.openaikbService.startScraping(data).subscribe((response) => {
+    this.openaiService.startScraping(data).subscribe((response) => {
       console.log("start scraping response: ", response);
     }, (error) => {
       console.error("error start scraping response: ", error);
@@ -223,7 +223,7 @@ export class KnowledgeBasesComponent implements OnInit {
       "full_url": kb.url
     }
     return new Promise((resolve, reject) => {
-      this.openaikbService.checkScrapingStatus(data).subscribe((response: any) => {
+      this.openaiService.checkScrapingStatus(data).subscribe((response: any) => {
         resolve(response.status_code);
       }, (error) => {
         this.logger.error(error);
@@ -242,7 +242,7 @@ export class KnowledgeBasesComponent implements OnInit {
     this.searching = true;
     this.show_answer = false;
 
-    this.openaikbService.askGpt(data).subscribe((response: any) => {
+    this.openaiService.askGpt(data).subscribe((response: any) => {
       if (response.success == false) {
         this.error_answer = true;
       } else {
@@ -266,14 +266,15 @@ export class KnowledgeBasesComponent implements OnInit {
   }
 
   showHideSecret(target) {
-    let el = <HTMLInputElement>document.getElementById(target);
-    if (el.type === "password") {
-      this.gptkeyVisible = true;
-      el.type = "text";
-    } else {
-      this.gptkeyVisible = false;
-      el.type = "password"
-    }
+    this.gptkeyVisible = !this.gptkeyVisible;
+    // let el = <HTMLInputElement>document.getElementById(target);
+    // if (el.type === "password") {
+    //   this.gptkeyVisible = true;
+    //   el.type = "text";
+    // } else {
+    //   this.gptkeyVisible = false;
+    //   el.type = "password"
+    // }
   }
 
   openAddKnowledgeBaseModal() {
