@@ -181,7 +181,7 @@ export class TiledeskConnectors {
   }
 
   onKeyPressDeleteConnector(event) {
-    console.log('1 onDeleteConnector:::: ', event, this.selectedConnector);
+    // console.log('1 onDeleteConnector:::: ', event, this.selectedConnector);
     if (event.key === 'Delete' || event.key === 'Backspace' && this.selectedConnector) {
       this.deleteConnector(this.selectedConnector.id);
     }

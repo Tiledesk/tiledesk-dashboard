@@ -386,7 +386,7 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
     console.log('[CDS-INTENT] onActionSelected index: ', index);
     console.log('[CDS-INTENT] onActionSelected idAction: ', idAction);
     this.elementTypeSelected = idAction;
-    this.intentService.setIntentSelected(this.intent);
+    // this.intentService.setIntentSelected(this.intent.intent_id);
     this.intentService.selectAction(this.intent.intent_id, idAction);
     this.actionSelected.emit({ action: action, index: index, maxLength: this.listOfActions.length });
   }
@@ -400,7 +400,7 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
   onSelectQuestion(elementSelected) {
     console.log('[CDS-INTENT] onSelectQuestion-->', elementSelected, this.intent.question)
     this.elementTypeSelected = elementSelected;
-    this.intentService.selectIntent(this.intent.intent_id)
+    this.intentService.setIntentSelected(this.intent.intent_id)
     // this.isIntentElementSelected = true;
     this.questionSelected.emit(this.intent.question);
   }
@@ -408,7 +408,7 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
   onSelectForm(elementSelected) {
     // this.isIntentElementSelected = true;
     this.elementTypeSelected = elementSelected;
-    this.intentService.selectIntent(this.intent.intent_id)
+    this.intentService.setIntentSelected(this.intent.intent_id)
     if (this.intent && !this.intent.form) {
       let newForm = new Form()
       this.intent.form = newForm;
@@ -585,8 +585,9 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
       // moving action in the same intent
       console.log("[CDS-INTENT] onDropAction sto spostando una action all'interno dello stesso intent: ", event);
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+      this.controllerService.closeAllPanels();
+      this.intentService.setIntentSelected(this.intent.intent_id);
       this.connectorService.movedConnector(this.intent.intent_id);
-      console.log("[CDS-INTENT] onDropAction aggiorno l'intent");
       const response = await this.intentService.updateIntent(this.intent);
       if (response) {
         // this.connectorService.movedConnector(this.intent.intent_id);
@@ -599,13 +600,17 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
             // moving action from another intent
             console.log("[CDS-INTENT] onDropAction sposto la action tra 2 intent differenti");
             this.intentService.moveActionBetweenDifferentIntents(event, action, this.intent.intent_id);
+            this.controllerService.closeAllPanels();
+            this.intentService.setIntentSelected(this.intent.intent_id);
           } else if (action.value && action.value.type) {
             // moving new action in intent from panel elements
             console.log("[CDS-INTENT] onDropAction aggiungo una nuova action all'intent da panel elements - action ", this.newActionCreated);
-            console.log("[CDS-INTENT] onDropAction aggiungo una nuova action all'intent da panel elements - currrent index ", event.currentIndex);
+            // console.log("[CDS-INTENT] onDropAction aggiungo una nuova action all'intent da panel elements - currrent index ", event.currentIndex);
             // console.log("[CDS-INTENT] onDropAction aggiungo una nuova action all'intent da panel elements - actionId ",  this.newActionCreated._tdActionId);
-            let newAction = this.intentService.moveNewActionIntoIntent(event, action, this.intent.intent_id);
-            this.onSelectAction(newAction, event.currentIndex, newAction._tdActionId)
+            this.intentService.moveNewActionIntoIntent(event, action, this.intent.intent_id);
+            this.controllerService.closeAllPanels();
+            this.intentService.setIntentSelected(this.intent.intent_id);
+            //this.onSelectAction(newAction, event.currentIndex, newAction._tdActionId)
           }
         }
       } catch (error) {
@@ -625,6 +630,7 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
       replaceItemInArrayForKey('_tdActionId', this.intent.actions, event);
     }
     console.log('[CDS-INTENT] onUpdateAndSaveAction:::: ', event, this.intent, this.intent.actions);
+    this.intentService.selectAction(this.intent.intent_id, event);
     const response = await this.intentService.updateIntent(this.intent);
     if (response) {
       console.log('updateIntent: ', this.intent);
@@ -650,12 +656,13 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
     console.log('[CDS-INTENT] openActionMenu > openActionMenuBtnRef ', openActionMenuElm)
     console.log('[CDS-INTENT] openActionMenu > buttonXposition ', buttonXposition)
     const data = { 'x': buttonXposition, 'y': buttonYposition, 'intent': intent, 'addAction': true };
+    this.intentService.setIntentSelected(this.intent.intent_id);
     this.showPanelActions.emit(data);
   }
 
 
   openTestSiteInPopupWindow() {
-    this.intentService.setIntentSelected(this.intent);
+    this.intentService.setIntentSelected(this.intent.intent_id);
     this.testItOut.emit(this.intent)
   }
 
@@ -673,6 +680,7 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
   toggleIntentWebhook(intent) {
     console.log('[CDS-INTENT] toggleIntentWebhook  intent ', intent)
     console.log('[CDS-INTENT] toggleIntentWebhook  intent webhook_enabled ', intent.webhook_enabled)
+    this.intentService.setIntentSelected(this.intent.intent_id);
     if (intent.webhook_enabled === false) {
       intent.webhook_enabled = true;
       this.intentService.updateIntent(intent);
@@ -685,6 +693,7 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   onDeleteIntent(intent: Intent) {
+    this.intentService.setIntentSelected(this.intent.intent_id);
     this.deleteIntent.emit(intent);
   }
 

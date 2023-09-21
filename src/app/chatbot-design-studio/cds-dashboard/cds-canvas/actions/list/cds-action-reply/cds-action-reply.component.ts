@@ -286,6 +286,8 @@ export class CdsActionReplyComponent implements OnInit {
     if(buttonSelected){
       this.arrayResponses[index].message.attributes.attachment.buttons.push(buttonSelected);
       console.log('[cds-action-reply] onCreateNewButton: ', this.action, this.arrayResponses);
+      // this.intentService.setIntentSelected(this.intentSelected.intent_id);
+      this.intentService.selectAction(this.intentSelected.intent_id, this.action._tdActionId);
       this.onUpdateAndSaveAction();
     }
   }
@@ -364,7 +366,9 @@ export class CdsActionReplyComponent implements OnInit {
   /** appdashboard-button-configuration-panel: onOpenButtonPanel */
   onOpenButtonPanel(buttonSelected) {
     console.log('onOpenButtonPanel 2 :: ', buttonSelected);
-    // this.response = event.refResponse;
+    // this.intentService.setIntentSelected(this.intentSelected.intent_id);
+    this.intentService.selectAction(this.intentSelected.intent_id, this.action._tdActionId);
+    this.controllerService.closeAllPanels();
     this.controllerService.openButtonPanel(buttonSelected);
   }
 

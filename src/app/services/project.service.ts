@@ -10,6 +10,7 @@ import { LoggerService } from '../services/logger/logger.service';
 export class ProjectService {
 
   SERVER_BASE_PATH: string;
+  WHATSAPP_API_URL: string;
   PROJECTS_URL: string;
   TOKEN: string;
   user: any;
@@ -46,6 +47,7 @@ export class ProjectService {
     this.logger.log('[PROJECT-SERV] - SERVER_BASE_PATH ', this.SERVER_BASE_PATH);
     this.PROJECTS_URL = this.SERVER_BASE_PATH + 'projects/';
     this.logger.log('[PROJECT-SERV] - PROJECTS URL ', this.PROJECTS_URL);
+    this.WHATSAPP_API_URL = this.appConfigService.getConfig().whatsappApiUrl;
   }
 
   countOfMyAvailability(numOfMyAvailability: number) {
@@ -752,6 +754,249 @@ export class ProjectService {
     })
     return promise;
   }
+
+  // -------------------------------------
+  // New home service
+  // -------------------------------------
+  updateProjectWithUserPreferences(segmentIdentifyAttributes) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    let url = this.SERVER_BASE_PATH + "projects/" + this.projectID + "/attributes"
+    console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH USER PREFERENCES - URL', url);
+    // var key = 'ccp_'+propertyName;
+    // const body = { [key]: propertyValue };
+    const body = { userPreferences: segmentIdentifyAttributes }
+    console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH USER PREFERENCES- BODY', body);
+    return this._httpclient
+      .patch(url, JSON.stringify(body), httpOptions)
+  }
+
+  checkWAConnection() {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    let url = this.WHATSAPP_API_URL + "/ext/" + this.projectID
+    console.log('[PROJECT-SERV] -  CHECK-WA-CONNECTION - URL', url);
+
+    return this._httpclient
+      .get(url, httpOptions)
+  }
+
+  updateProjectWithWAWizardSteps(wastep) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    let url = this.SERVER_BASE_PATH + "projects/" + this.projectID + "/attributes"
+    console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD STEPS - URL', url);
+    const body = { wastep: wastep }
+    console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD STEPS - BODY', body);
+    return this._httpclient
+      .patch(url, body, httpOptions)
+  }
+
+  updateProjectWithWAWizardStep1(step1) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    let url = this.SERVER_BASE_PATH + "projects/" + this.projectID + "/attributes"
+    console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD STEP 1 - URL', url);
+    const body = { wastep1: step1 }
+    console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD STEP 1 - BODY', body);
+    return this._httpclient
+      .patch(url, body, httpOptions)
+  }
+
+  updateProjectWithWAWizardStep2(step2) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    let url = this.SERVER_BASE_PATH + "projects/" + this.projectID + "/attributes"
+    console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD STEP 2 - URL', url);
+    const body = { wastep2: step2 }
+    console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD STEP 2 - BODY', body);
+    return this._httpclient
+      .patch(url, body, httpOptions)
+  }
+
+  updateProjectWithWAWizardStep3(step3) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    let url = this.SERVER_BASE_PATH + "projects/" + this.projectID + "/attributes"
+    console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD STEP 3 - URL', url);
+    const body = { wastep3: step3 }
+    console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD STEP 3 - BODY', body);
+    return this._httpclient
+      .patch(url, body, httpOptions)
+  }
+
+
+  updateProjectWithWAOneStepWizard(oneStepWizard) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    let url = this.SERVER_BASE_PATH + "projects/" + this.projectID + "/attributes"
+    console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD STEPS - URL', url);
+    const body = {oneStepWizard: oneStepWizard}
+    console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD STEPS - BODY', body);
+    return this._httpclient
+      .patch(url, body, httpOptions)
+  }
+
+  updateProjectWithWASettings(wasettings) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    let url = this.SERVER_BASE_PATH + "projects/" + this.projectID + "/attributes"
+    console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA SETTINGS - URL', url);
+    const body = { wasettings: wasettings }
+    console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA SETTINGS - BODY', body);
+    return this._httpclient
+      .patch(url, body, httpOptions)
+  }
+
+  updateProjectRemoveWASettings() {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    let url = this.SERVER_BASE_PATH + "projects/" + this.projectID + "/attributes"
+    console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD STEPS - URL', url);
+    const body = { wasettings: {} }
+    console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD STEPS - BODY', body);
+    return this._httpclient
+      .patch(url, body, httpOptions)
+  }
+
+
+  updateProjectWithWAWizardCompleted() {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    let url = this.SERVER_BASE_PATH + "projects/" + this.projectID + "/attributes"
+    console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD COMPLETED - URL', url);
+    const body = { wizardCompleted: true }
+    console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD COMPLETED - BODY', body);
+    return this._httpclient
+      .patch(url, body, httpOptions)
+  }
+
+
+  updateProjectUserHasRemovedWA(hasuninstalled) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    let url = this.SERVER_BASE_PATH + "projects/" + this.projectID + "/attributes"
+    console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH USER HAS UNISTALLED WA - URL', url);
+    const body = { userHasReMovedWA: hasuninstalled }
+    console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH USER HAS UNISTALLED WA - BODY', body);
+    return this._httpclient
+      .patch(url, JSON.stringify(body), httpOptions)
+  }
+
+
+  updateProjectWithDisplayWAWizard(displaywawizard) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    let url = this.SERVER_BASE_PATH + "projects/" + this.projectID + "/attributes"
+    console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH DISPLAY WA WIZARD - URL', url);
+    const body = { displayWAWizard: displaywawizard }
+    console.log('[PROJECT-SERV] - UPDATE PRJCT WITH DISPLAY WA WIZARD - BODY', body);
+    return this._httpclient
+      .patch(url, JSON.stringify(body), httpOptions)
+  }
+
+  updateDashletsPreferences(
+    displayAnalyticsConvsGraph: boolean,
+    displayAnalyticsIndicators: boolean,
+    displayConnectWhatsApp: boolean,
+    displayCreateChatbot: boolean,
+    displayInviteTeammate: boolean,
+    displayCustomizeWidget: boolean = true,
+    displayNewsFeed: boolean) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    let url = this.SERVER_BASE_PATH + "projects/" + this.projectID + "/attributes"
+    console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH DASHLET PREFERENCES - URL', url);
+    const body =
+    {
+      dashlets:
+      {
+        convsGraph: displayAnalyticsConvsGraph,
+        analyticsIndicators: displayAnalyticsIndicators,
+        connectWhatsApp: displayConnectWhatsApp,
+        createChatbot: displayCreateChatbot,
+        inviteTeammate: displayInviteTeammate,
+        customizeWidget: displayCustomizeWidget,
+        newsFeed: displayNewsFeed
+      }
+    }
+    // JSON.stringify()
+    console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH DASHLET PREFERENCES - BODY', body);
+    return this._httpclient
+      .patch(url, body, httpOptions)
+  }
+
+
+
+  // -------------------------------------
+  // ./ New home service
+  // -------------------------------------
+
 
   // -------------------------------------
   // UPDATE SUBSCRIPTION !! Used for test

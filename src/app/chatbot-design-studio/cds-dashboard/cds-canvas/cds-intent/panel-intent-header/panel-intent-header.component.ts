@@ -48,33 +48,19 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
   /******************* CUSTOM FUNCTIONS *******************/ 
   /** initialize */
   private initialize(){
-    this.listOfIntents = this.intentService.listOfIntents 
-    const untitledIntents = this.listOfIntents.filter((el) => {
-      return el.intent_display_name.indexOf('untitled_block') > -1;
-    });
-    this.logger.log("[PANEL-INTENT-HEADER] OnChanges untitledIntents: ", untitledIntents)
-    if (this.intent.intent_display_name === undefined && untitledIntents.length === 0) {
-      this.intent.intent_display_name = 'untitled_block_1';
-      this.saveIntent.emit(this.intent);
-    } else if (this.intent.intent_display_name === undefined && untitledIntents.length > 0) {
-      let lastUntitledIntent = untitledIntents[untitledIntents.length - 1].intent_display_name;
-      this.logger.log("[PANEL-INTENT-HEADER] OnChanges lastUntitledIntent: ", lastUntitledIntent);
-      const lastUntitledIntentSegment = lastUntitledIntent.split("_");
-      this.logger.log("[PANEL-INTENT-HEADER] OnChanges lastUntitledIntentSegment: ", lastUntitledIntentSegment);
-      const lastUntitledIntentNumb = +lastUntitledIntentSegment[2];
-      this.logger.log("[PANEL-INTENT-HEADER] OnChanges lastUntitledIntentNumb: ", lastUntitledIntentNumb);
-      const nextUntitledIntentNumb = lastUntitledIntentNumb + 1;
-      this.logger.log("[PANEL-INTENT-HEADER] OnChanges nextUntitledIntentNumb: ", nextUntitledIntentNumb);
-      this.intent.intent_display_name = 'untitled_block_' + nextUntitledIntentNumb;
-      this.saveIntent.emit(this.intent);
+    this.listOfIntents = this.intentService.listOfIntents;
+    if (this.intent.intent_display_name === undefined && this.intent.intent_display_name.trim().length === 0) {
+      this.intentService.setDisplayName();
+    } else {
+      this.intentName = this.intent.intent_display_name;
     }
-    this.intentName = this.intent.intent_display_name;
     this.intentNameAlreadyExist = false;
     this.intentNameNotHasSpecialCharacters = true;
-    if (this.intent && this.intent['faq_kb']) {
-      this.id_faq_kb = this.intent['faq_kb'][0]._id;
-    }
   }
+
+
+
+  // funzione
 
   /** checkIntentNameMachRegex */
   private checkIntentNameMachRegex(intentname) {
@@ -84,15 +70,22 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
 
   /** checkIntentName */
   private checkIntentName(name: string) {
+    this.intentNameResult = true;
     this.intentNameAlreadyExist = false;
-    if (name !== this.intent.intent_display_name) {
-      this.intentNameAlreadyExist = this.listOfIntents.some((el) => {
-        return el.intent_display_name === name;
-      });
+    if(!this.intentName || this.intentName.trim().length == 0) {
+      console.log("[PANEL-INTENT-HEADER] error 1");
+      this.intentNameResult = false;
+    }
+    for (let i = 0; i < this.listOfIntents.length; i++) {
+      if (this.listOfIntents[i].intent_display_name === name) {
+        this.intentNameAlreadyExist = true;
+        this.intentNameResult = false;
+        break; // Possiamo uscire dal ciclo una volta trovato l'oggetto cercato
+      }
     }
     this.intentNameNotHasSpecialCharacters = this.checkIntentNameMachRegex(name);
-    this.intentNameResult = true;
-    if (!this.intentName || this.intentName.trim().length === 0) {
+    if(!this.intentNameNotHasSpecialCharacters){
+      console.log("[PANEL-INTENT-HEADER] error 3");
       this.intentNameResult = false;
     }
     return this.intentNameResult;
@@ -101,40 +94,50 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
 
 
   /******************* EVENT FUNCTIONS *******************/ 
+
+  onSelectIntent(event){
+    console.log("[PANEL-INTENT-HEADER] onSelectIntent",event, this.intent);
+    // this.intentService.setIntentSelected(this.intent.intent_id);
+  }
+
   /** onMouseUpInput */
-  onMouseUpInput(){
+  onMouseUpInput(event){
     this.logger.log("[PANEL-INTENT-HEADER] onMouseUpInput");
     this.isFocused = true;
     this.myInput.nativeElement.focus();
   }
 
   /** onChangeIntentName */
-  onChangeIntentName(name: string) {
-    this.logger.log("[PANEL-INTENT-HEADER] onChangeIntentName");
-    this.checkIntentName(name);
-    this.onSaveIntent();
+  onChangeIntentName(event) {
+    console.log("[PANEL-INTENT-HEADER] onChangeIntentName",event, this.intent);
+    const result = this.checkIntentName(event);
+    if(result){
+      this.onSaveIntent();
+      this.intentService.setIntentSelected(this.intent.intent_id);
+    }
   }
 
   /** ENTER KEYBOARD EVENT*/
   onEnterButtonPressed(event) {
     console.log('[PANEL-INTENT-HEADER] onEnterButtonPressed Intent name: onEnterButtonPressed event', event)
-    // this.checkIntentName(this.intentName);
-    // this.onSaveIntent();
-    event.target.blur()
+    // // this.checkIntentName(this.intentName);
+    // // this.onSaveIntent();
+    // event.target.blur()
+    this.myInput.nativeElement.blur();
+    // this.intentService.selectIntent(this.intent);
   }
 
   /** doubleClickFunction */
   doubleClickFunction(event){
     this.logger.log("[PANEL-INTENT-HEADER] doubleClickFunction");
-    this.myInput.nativeElement.select()
+    // this.myInput.nativeElement.select();
+    // this.intentService.selectIntent(this.intent);
   }
 
   // onMouseBlur(){
   //   this.logger.log("[PANEL-INTENT-HEADER] onMouseBlur");
   //   this.isFocused = false;
   // }
-
-
 
   // /** BLUR EVENT*/
   // onBlurIntentName(event) {
@@ -147,75 +150,10 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
 
   /** */
   onSaveIntent() {
-    // console.log('[PANEL-INTENT-HEADER] this.intentName ', this.intentName)
-    // console.log('[PANEL-INTENT-HEADER] intentNameResult ', this.intentNameResult)
-    // console.log('[PANEL-INTENT-HEADER] intentNameAlreadyExist ', this.intentNameAlreadyExist)
-    // console.log('[PANEL-INTENT-HEADER] intentNameNotHasSpecialCharacters ', this.intentNameNotHasSpecialCharacters)
-    // // this.intentNameResult = this.checkIntentName();
-    // console.log("[PANEL-INTENT-HEADER] onSaveIntent");
-    if (this.intentNameResult && !this.intentNameAlreadyExist && this.intentNameNotHasSpecialCharacters === true) {
-      console.log("[PANEL-INTENT-HEADER] SALVO!!!");
-      this.intentService.selectIntent(this.intent);
-      this.intent.intent_display_name = this.intentName.trim();
-      this.intentService.changeIntentName(this.intent);
-    }
+    console.log("[PANEL-INTENT-HEADER] SALVO!!!");
+    // this.intentService.setIntentSelected(this.intent.intent_id);
+    this.intent.intent_display_name = this.intentName.trim();
+    this.intentService.changeIntentName(this.intent);
   }
-
-
-
-  
-  // toggleIntentWebhook(event) {
-  //   this.logger.log('[PANEL-INTENT-HEADER] toggleWebhook ', event.checked);
-  //   this.intent.webhook_enabled = event.checked;
-  //   this.saveIntent.emit(this.intent);
-  // }
-  // getCurrentProject() {
-  //   this.auth.project_bs.subscribe((project) => {
-  //     this.project = project;
-  //     this.logger.log('[PANEL-INTENT-HEADER] project from AUTH service subscription  ', this.project)
-  //   });
-  // }
-
-  // getDeptsByProjectId() {
-  //   this.departmentService.getDeptsByProjectId().subscribe((departments: any) => {
-  //     this.logger.log('[PANEL-INTENT-HEADER] - DEPT GET DEPTS ', departments);
-  //     this.logger.log('[PANEL-INTENT-HEADER] - DEPT BOT ID ', this.id_faq_kb);
-
-  //     if (departments) {
-  //       departments.forEach((dept: any) => {
-  //         // this.logger.log('[PANEL-INTENT-HEADER] - DEPT', dept);
-
-  //         if (dept.default === true) {
-  //           this.defaultDepartmentId = dept._id;
-  //           this.logger.log('[PANEL-INTENT-HEADER] - DEFAULT DEPT ID ', this.defaultDepartmentId);
-  //         }
-
-  //       })
-  //     }
-  //   }, error => {
-
-  //     this.logger.error('[PANEL-INTENT-HEADER] - DEPT - GET DEPTS  - ERROR', error);
-  //   }, () => {
-  //     this.logger.log('[PANEL-INTENT-HEADER] - DEPT - GET DEPTS - COMPLETE')
-
-  //   });
-  // }
-
-  // getTestSiteUrl() {
-  //   this.TESTSITE_BASE_URL = this.appConfigService.getConfig().testsiteBaseUrl;
-  //   this.logger.log('[PANEL-INTENT-HEADER] AppConfigService getAppConfig TESTSITE_BASE_URL', this.TESTSITE_BASE_URL);
-  // }
-
-  // openTestSiteInPopupWindow() {
-
-  //   const testItOutBaseUrl = this.TESTSITE_BASE_URL.substring(0, this.TESTSITE_BASE_URL.lastIndexOf('/'));
-  //   const testItOutUrl = testItOutBaseUrl + '/chatbot-panel.html'
-
-  //   const url = testItOutUrl + '?tiledesk_projectid=' + this.project._id + '&tiledesk_participants=bot_' + this.id_faq_kb + "&tiledesk_departmentID=" + this.defaultDepartmentId
-
-  //   let params = `toolbar=no,menubar=no,width=815,height=727,left=100,top=100`;
-  //   window.open(url, '_blank', params);
-  // }
-
 
 }
