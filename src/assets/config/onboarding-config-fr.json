@@ -1,7 +1,7 @@
 {
   "steps":[
     {
-      "title": "Dites-nous en plus avant de commencer, afin que nous puissions personnaliser votre expérience ${userFullname}",
+      "title": "Salut ${userFullname}, dites-nous en plus avant de commencer, afin que nous puissions personnaliser votre expérience",
       "buttons": {
         "back": "Retourner",
         "next": "Continuer"
@@ -23,6 +23,7 @@
             {"label": "Services juridiques", "value": "legal_services"},
             {"label": "Services financiers", "value": "financial_services"},
             {"label": "Commerce de détail et commerce électronique", "value": "retail_ecommerce"},
+            {"label": "Éducation", "value": "education"},
             {"label": "Autre", "value": "other"}
           ]
         },

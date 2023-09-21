@@ -1,7 +1,7 @@
 {
   "steps":[
     {
-      "title": "Dicci di più prima di iniziare, in modo da personalizzare la tua esperienza con noi, ${userFullname}",
+      "title": "Ciao ${userFullname}, dicci di più prima di iniziare, in modo da personalizzare la tua esperienza con noi",
       "buttons": {
         "back": "Indietro",
         "next": "Continua"
@@ -23,6 +23,7 @@
             {"label": "Servizi legali", "value": "legal_services"},
             {"label": "Servizi finanziari", "value": "financial_services"},
             {"label": "Vendita al dettaglio & E-commerce", "value": "retail_ecommerce"},
+            {"label": "Educazione", "value": "education"},
             {"label": "Altro", "value": "other"}
           ]
         },
