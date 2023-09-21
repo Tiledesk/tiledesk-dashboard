@@ -79,7 +79,6 @@ export class CdsActionAskgptComponent implements OnInit {
     this.idIntentSelected = this.intentSelected.intent_id;
     this.idConnectorTrue = this.idIntentSelected+'/'+this.action._tdActionId + '/true';
     this.idConnectorFalse = this.idIntentSelected+'/'+this.action._tdActionId + '/false';
-
     this.listOfIntents = this.intentService.getListOfIntents()
   }
 
@@ -98,20 +97,29 @@ export class CdsActionAskgptComponent implements OnInit {
             this.action.falseIntent = null
             this.isConnectedFalse = false;
           }
-        } else { //TODO: verificare quale dei due connettori è stato aggiunto (controllare il valore della action corrispondente al true/false intent)
+          this.updateAndSaveAction.emit();
+        } else { 
+          // TODO: verificare quale dei due connettori è stato aggiunto (controllare il valore della action corrispondente al true/false intent)
           // ADD / EDIT
           this.logger.debug('[ACTION-ASKGPT] updateConnector', this.connector.toId, this.connector.fromId ,this.action, array[array.length-1]);
           if(array[array.length -1] === 'true'){
-            this.action.trueIntent = '#'+this.connector.toId;
-            this.isConnectedTrue = true
+            // this.action.trueIntent = '#'+this.connector.toId;
+            this.isConnectedTrue = true;
+            if(this.action.trueIntent !== '#'+this.connector.toId){ 
+              this.action.trueIntent = '#'+this.connector.toId;
+              this.updateAndSaveAction.emit();
+            } 
           }        
           if(array[array.length -1] === 'false'){
-            this.action.falseIntent = '#'+this.connector.toId;
+            // this.action.falseIntent = '#'+this.connector.toId;
             this.isConnectedFalse = true;
+            if(this.action.falseIntent !== '#'+this.connector.toId){ 
+              this.action.falseIntent = '#'+this.connector.toId;
+              this.updateAndSaveAction.emit();
+            } 
           }
         }
-
-        this.updateAndSaveAction.emit();
+        // this.updateAndSaveAction.emit();
       }
     } catch (error) {
       this.logger.error('[ACTION-ASKGPT] updateConnector error: ', error);

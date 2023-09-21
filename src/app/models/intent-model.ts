@@ -1,5 +1,5 @@
 import { TYPE_COMMAND, TYPE_OPERATOR } from './../chatbot-design-studio/utils';
-import { TYPE_ACTION, TYPE_ATTACHMENT, TYPE_METHOD_REQUEST, TYPE_MATH_OPERATOR } from '../chatbot-design-studio/utils';
+import { TYPE_ACTION, TYPE_ATTACHMENT, TYPE_METHOD_REQUEST, TYPE_MATH_OPERATOR, generateShortUID } from '../chatbot-design-studio/utils';
 import { v4 as uuidv4 } from 'uuid';
 
 export class Intent {

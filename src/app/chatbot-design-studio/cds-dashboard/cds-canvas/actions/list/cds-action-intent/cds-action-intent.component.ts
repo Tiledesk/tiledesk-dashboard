@@ -68,13 +68,16 @@ export class CdsActionIntentComponent implements OnInit {
           this.logger.log('[CDS-ACTION-INTENT] deleteConnector :: ', this.connector.id);
           this.action.intentName = null;
           this.isConnected = false;
+          this.updateAndSaveAction.emit();
         } else {
           // ADD / EDIT
-          this.logger.log('[CDS-ACTION-INTENT] updateConnector :: ', this.connector.toId);
-          this.action.intentName = "#"+this.connector.toId;
+          console.log('[CDS-ACTION-INTENT] updateConnector :: ', this.connector.toId, this.action.intentName);
           this.isConnected = true;
+          if(this.action.intentName !== "#"+this.connector.toId){ 
+            this.action.intentName = "#"+this.connector.toId;
+            this.updateAndSaveAction.emit();
+          } 
         }
-        this.updateAndSaveAction.emit();
       }
     } catch (error) {
       this.logger.log('error: ', error);

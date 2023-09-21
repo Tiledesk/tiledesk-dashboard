@@ -81,20 +81,27 @@ export class CdsActionOnlineAgentsComponent implements OnInit {
             this.action.falseIntent = null
             this.isConnectedFalse = false;
           }
+          this.updateAndSaveAction.emit();
         } else { //TODO: verificare quale dei due connettori è stato aggiunto (controllare il valore della action corrispondente al true/false intent)
           // ADD / EDIT
           this.logger.log(' updateConnector :: onlineagents', this.connector.toId, this.connector.fromId ,this.action, array[array.length-1]);
           if(array[array.length -1] === 'true'){
-            this.action.trueIntent = '#'+this.connector.toId;
-            this.isConnectedTrue = true
-          }        
+            this.isConnectedTrue = true;
+            if(this.action.trueIntent !== '#'+this.connector.toId){
+              this.action.trueIntent = '#'+this.connector.toId;
+              this.updateAndSaveAction.emit();
+            } 
+          }    
+
           if(array[array.length -1] === 'false'){
-            this.action.falseIntent = '#'+this.connector.toId;
             this.isConnectedFalse = true;
+            if(this.action.falseIntent !== '#'+this.connector.toId){
+              this.action.falseIntent = '#'+this.connector.toId
+              this.updateAndSaveAction.emit();
+            } 
           }
         }
-
-        this.updateAndSaveAction.emit();
+        
       }
     } catch (error) {
       this.logger.log('error: ', error);
@@ -134,7 +141,6 @@ export class CdsActionOnlineAgentsComponent implements OnInit {
     if(event){
       this.action[type]=event.value
     }
-
     switch(type){
       case 'trueIntent':
         this.onConnectorChange.emit({ type: 'create', fromId: this.idConnectorTrue, toId: this.action.trueIntent})
