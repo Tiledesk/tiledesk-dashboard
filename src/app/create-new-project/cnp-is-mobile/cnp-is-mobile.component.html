@@ -1,0 +1,57 @@
+<div class="main-content" style="padding-top:0px; padding-left: 5px;padding-right: 5px; margin-top: 0px;">
+    <div class="container-fluid" style="padding-left: 5px;padding-right: 5px;">
+        <div class="logo-wpr">
+            <img [src]="companyLogoBlack_Url" class="cnp-logo" />
+        </div>
+        <div *ngIf="!loginLinkSent" class="content--wpr" style="display: flex;">
+            <div class="tac mb24">
+                Your phone's screen might be too small!
+            </div>
+            <div class="tac">
+                Don't worry, we can send you by email a link to log in on DESKTOP
+            </div>
+
+            <div class="email-me-login-link-wpr tac">
+                <button class="btn btn-tdblu send-login-link-btn" (click)="hasClickedSendEmail()">
+                    <span class="material-icons send-login-link-btn-icon">
+                        send
+                    </span>
+
+                    <span send-login-link-btn-text> Email me a login link </span>
+
+                </button>
+            </div>
+        </div>
+
+        <div *ngIf="loginLinkSent" class="content--wpr" style="display: flex;">
+            <div class="tac mb24">
+               <span *ngIf="!loginLinkResent">  Login link sent! </span>
+               <span *ngIf="loginLinkResent">  Login link resent! </span>
+            </div>
+
+            <div class="tac" *ngIf="!loginLinkResent">
+                You can retry in 60 seconds if you don't see the email
+            </div>
+
+            <div class="tac" *ngIf="loginLinkResent">
+                If you still don't see the email, please check your spam folder
+            </div>
+
+            <div class="resend-email-me-login-link-wpr tac">
+                <button class="btn btn-tdblu send-login-link-btn"
+                    (click)="hasClickedResendEmail()" 
+                    [disabled]="loginLinkResent" >
+                    <span send-login-link-btn-text> Resend login link </span>
+                </button>
+            </div>
+
+            <div class="spinner--container">
+                <div class="spinner">
+                    <div class="bounce1"></div>
+                    <div class="bounce2"></div>
+                    <div class="bounce3"></div>
+                  </div>
+            </div>
+        </div>
+    </div>
+</div>

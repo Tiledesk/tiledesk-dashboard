@@ -265,11 +265,12 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         takeUntil(this.unsubscribe$)
       )
       .subscribe((project) => {
-        console.log('[HOME] $UBSCIBE TO PUBLISHED PROJECT - RES  ', project)
+        console.log('[HOME] $UBSCIBE TO PUBLISHED PROJECT - RES  --> ', project)
 
         if (project) {
           this.project = project
           this.projectId = this.project._id
+          this.prjct_name = this.project.name
 
           const hasEmittedTrialEnded = localStorage.getItem('dshbrd----' + this.project._id)
           this.logger.log('[HOME] - getCurrentProjectAndInit  ', hasEmittedTrialEnded, '  for project id', this.project._id)

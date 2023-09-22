@@ -300,11 +300,11 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         // -----------------------------------------------------------------------------------------------------
         this.getCurrentUserAndConnectToWs();
 
-        // this.listenToSwPostMessage()
+        this.listenToSwPostMessage()
     }
 
     listenToSwPostMessage() {
-        this.logger.log('[CONVS-LIST-PAGE] listenToNotificationCLick - CALLED: ')
+       console.log('[CONVS-LIST-PAGE] listenToNotificationCLick - CALLED: ')
 
         if (navigator && navigator.serviceWorker) {
             const that = this
@@ -788,7 +788,9 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                     (this.route.indexOf('/unauthorized_access') !== -1) ||
                     (this.route.indexOf('/editfaq') !== -1) ||
                     (this.route.indexOf('/createfaq') !== -1) ||
-                    (this.route.indexOf('/cds') !== -1)
+                    (this.route.indexOf('/cds') !== -1) ||
+                    (this.route.indexOf('/desktop-access') !== -1)
+                  
 
                 ) {
 
@@ -912,7 +914,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                     (this.route.indexOf('/unauthorized_access') !== -1) ||
                     (this.route.indexOf('/editfaq') !== -1) ||
                     (this.route.indexOf('/createfaq') !== -1) ||
-                    (this.route.indexOf('/cds') !== -1)
+                    (this.route.indexOf('/cds') !== -1) ||
+                    (this.route.indexOf('/desktop-access') !== -1)
 
                 ) {
                     elemFooter.setAttribute('style', 'display:none;');

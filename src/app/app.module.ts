@@ -350,6 +350,7 @@ import { HomeCreateTeammateComponent } from './home-components/home-create-teamm
 
 import { OpenaikbsService } from './services/openaikbs.service';
 import { KnowledgeBasesComponent } from './knowledge-bases/knowledge-bases.component';
+import { CnpIsMobileComponent } from './create-new-project/cnp-is-mobile/cnp-is-mobile.component';
 
 // NOTE: Eliminazione del local storage produce inconsistenza delle instances Firebase. Si salta il logout.
 
@@ -615,7 +616,8 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     HomeWhatsappAccountWizardComponent,
     HomeWhatsappAccountWizardModalComponent,
     HomeCustomizeWidgetComponent,
-    HomeCreateTeammateComponent
+    HomeCreateTeammateComponent,
+    CnpIsMobileComponent
   ],
   imports: [
     TooltipModule.forRoot(CutomTooltipOptions as TooltipOptions),

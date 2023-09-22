@@ -31,6 +31,8 @@ export class AppStoreInstallComponent implements OnInit {
   isChromeVerGreaterThan100: boolean;
   reason: string;
   appurl: string;
+  calledBy: string;
+
   constructor(
     public route: ActivatedRoute,
     private sanitizer: DomSanitizer,
@@ -81,7 +83,10 @@ export class AppStoreInstallComponent implements OnInit {
     this.showSpinner = true;
     this.route.params.subscribe((params) => {
       this.projectId = params.projectid
-      //  console.log('[APP-STORE-INSTALL] - GET ROUTE PARAMS ', params);
+      // console.log('[APP-STORE-INSTALL] - GET ROUTE PARAMS ', params);
+      if (params.calledby && params.calledby === 'h') {
+        this.calledBy = 'home'
+      }
 
       this.appStoreService.getAppDetail(params.appid).subscribe((res) => {
         this.logger.log("[APP-STORE-INSTALL] - GET APP DETAIL RESULT: ", res);
@@ -233,9 +238,13 @@ export class AppStoreInstallComponent implements OnInit {
   }
 
   goBack() {
-    this.logger.log("[APP-STORE-INSTALL] - goBack to app store");
+    // console.log("[APP-STORE-INSTALL] - goBack to app store calledBy ", this.calledBy);
     // this.location.back();
-    this.router.navigate(['project/' + this.projectId + '/app-store/'])
+    if (this.calledBy === 'home') {
+      this.router.navigate(['project/' + this.projectId + '/home'])
+    } else {
+      this.router.navigate(['project/' + this.projectId + '/app-store'])
+    }
   }
 
 

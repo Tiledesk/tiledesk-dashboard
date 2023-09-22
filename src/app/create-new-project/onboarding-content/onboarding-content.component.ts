@@ -81,6 +81,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
   selectedTranslationCode: string;
   selectedTranslationLabel: string;
   displayLogoWithText: boolean = true;
+  isMobile: boolean = true;
 
   constructor(
     private auth: AuthService,
@@ -117,27 +118,27 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
     // if(this.previousUrl.endsWith('/signup')){
     //   this.isFirstProject = true;
     // }
-    // console.log('previousUrl2:: ', this.previousUrl, this.isSignupPrevPage);
+    // this.logger.log('previousUrl2:: ', this.previousUrl, this.isSignupPrevPage);
     //this.checkCurrentUrlAndHideCloseBtn();
     // 
     this.getCurrentTranslation();
-    // console.log('[WIZARD - CREATE-PRJCT] previousUrl ', this.previousUrl);
+    // this.logger.log('[WIZARD - CREATE-PRJCT] previousUrl ', this.previousUrl);
     this.initialize();
     this.onInitWindowHeight();
-
+    this.detectMobile();
   }
 
   onInitWindowHeight(): any {
 
-    console.log('[ONBOARDING-CONTEMT] ACTUAL WIDTH ', window.innerWidth);
+    this.logger.log('[ONBOARDING-CONTENT] ACTUAL WIDTH ', window.innerWidth);
 
     if (window.innerWidth < 452) {
       if (window && window['Tiledesk']) {
         window['Tiledesk']('hide')
       }
     }
-    if (window.innerWidth < 371) { 
-        this.displayLogoWithText = false
+    if (window.innerWidth < 371) {
+      this.displayLogoWithText = false
     } else {
       this.displayLogoWithText = true
     }
@@ -147,18 +148,18 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
-    console.log('[ONBOARDING-CONTENT] NEW WIDTH ', window.innerWidth);
+    this.logger.log('[ONBOARDING-CONTENT] NEW WIDTH ', window.innerWidth);
     if (window.innerWidth < 452) {
       if (window && window['Tiledesk']) {
         window['Tiledesk']('hide')
       }
     }
 
-    if (window.innerWidth < 371) { 
+    if (window.innerWidth < 371) {
       this.displayLogoWithText = false
-  } else {
-    this.displayLogoWithText = true
-  }
+    } else {
+      this.displayLogoWithText = true
+    }
 
   }
 
@@ -243,7 +244,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
       if (projects.length > 0) {
         this.isFirstProject = false; // to change in true for test without sign up
       }
-      // console.log('getProjects:: ', projects, this.isFirstProject);
+      // this.logger.log('getProjects:: ', projects, this.isFirstProject);
       this.getLoggedUser();
     });
 
@@ -255,7 +256,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
     //       this.projectName = project.name;
     //       this.isFirstProject = false;
     //     }
-    //     console.log('getCurrentProject:: ', project);
+    //     this.logger.log('getCurrentProject:: ', project);
     //     this.getLoggedUser();
     //   });
   }
@@ -265,18 +266,18 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
       if (user) {
         this.user = user;
         this.userFullname = user.displayName ? user.displayName : user.firstname;
-        // console.log('getLoggedUser:: ', user);
+        // this.logger.log('getLoggedUser:: ', user);
         // this.projectName = this.setProjectName();
-        // console.log('setProjectName:: ', this.projectName, this.isSignupPrevPage);
+        // this.logger.log('setProjectName:: ', this.projectName, this.isSignupPrevPage);
 
         if (this.isFirstProject) {
-          // console.log('[WIZARD - CREATE-PRJCT] project_name ', this.projectName);
+          // this.logger.log('[WIZARD - CREATE-PRJCT] project_name ', this.projectName);
           this.projectName = this.setProjectName();
           if (!this.projectName) {
             this.arrayOfSteps.push(TYPE_STEP.NAME_PROJECT);
           }
           this.setFirstStep();
-          // console.log('YES isFirstProject:: ', this.arrayOfSteps);
+          // this.logger.log('YES isFirstProject:: ', this.arrayOfSteps);
         } else {
           this.arrayOfSteps.push(TYPE_STEP.NAME_PROJECT);
           // this.arrayOfSteps.push(TYPE_STEP.WELCOME_MESSAGE);
@@ -289,14 +290,14 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
 
 
   private setFirstStep() {
-    // console.log('setFirstStep:: ');
+    // this.logger.log('setFirstStep:: ');
     // if(this.previousUrl.endsWith('/signup')){
     let lang = "en";
     if (this.translate.currentLang) {
       lang = this.translate.currentLang;
     }
     let onboardingConfig = 'assets/config/onboarding-config-' + lang + '.json';
-    // console.log('onboardingConfig:: ', onboardingConfig, lang);
+    // this.logger.log('onboardingConfig:: ', onboardingConfig, lang);
     this.checkFileExists(onboardingConfig).then(result => {
       if (result === false) {
         onboardingConfig = 'assets/config/onboarding-config.json';
@@ -313,7 +314,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
     //   lang = this.translate.currentLang;
     // }
     // let onboardingConfig = 'assets/config/onboarding-config-'+lang+'.json';
-    // console.log('loadJsonOnboardingConfig:: ',onboardingConfig);
+    // this.logger.log('loadJsonOnboardingConfig:: ',onboardingConfig);
     let jsonSteps: any;
     this.httpClient.get(onboardingConfig).subscribe(data => {
       let jsonString = JSON.stringify(data);
@@ -394,7 +395,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
 
   goToNextQuestion($event) {
     this.segmentIdentifyAttributes = $event;
-    // console.log('goToNextQuestion::: ', $event, this.segmentIdentifyAttributes)
+    // this.logger.log('goToNextQuestion::: ', $event, this.segmentIdentifyAttributes)
     this.checkQuestions();
   }
 
@@ -447,7 +448,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
     } catch (error) {
       this.logger.error('[WIZARD - error: ', error);
     }
-    // console.log('segmentAttributes:: ',this.segmentAttributes);
+    // this.logger.log('segmentAttributes:: ',this.segmentAttributes);
     this.goToNextStep();
   }
 
@@ -465,12 +466,23 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
     this.location.back();
   }
 
-  goToExitOnboarding() {
-    // if (this.isFirstProject) {
-    this.router.navigate(['project/' + this.newProject.id + '/home'])
-    // } else {
-    // this.location.back();
+
+  detectMobile() {
+    // const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    // if (isMobile) {
+    //   /* your code here */
     // }
+    this.isMobile = /Android|iPhone/i.test(window.navigator.userAgent);
+    this.logger.log('[ONBOARDING-CONTENT] - IS MOBILE ', this.isMobile);
+  }
+
+
+  goToExitOnboarding() {
+    if (this.isMobile === false) {
+      this.router.navigate(['project/' + this.newProject.id + '/home'])
+    } else {
+      this.router.navigate(['project/' + this.newProject.id + '/desktop-access'])
+    }
   }
 
 
@@ -483,7 +495,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
     this.DISPLAY_SPINNER_SECTION = true;
     this.DISPLAY_SPINNER = true;
     this.projectService.createProject(this.projectName, 'onboarding-content').subscribe((project) => {
-      // console.log('[ONBOARDING-D] POST DATA PROJECT RESPONSE ', project);
+      this.logger.log('[ONBOARDING-CONTENT] POST DATA PROJECT RESPONSE ', project);
       if (project) {
         this.newProject = project
         // WHEN THE USER SELECT A PROJECT ITS ID IS SEND IN THE PROJECT SERVICE THET PUBLISHES IT
@@ -498,7 +510,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
         }
         // SENT THE NEW PROJECT TO THE AUTH SERVICE THAT PUBLISH
         this.auth.projectSelected(newproject)
-        // console.log('[ONBOARDING-D] NEW CREATED PROJECT ', newproject)
+        // this.logger.log('[ONBOARDING-D] NEW CREATED PROJECT ', newproject)
         this.projectID = newproject._id
       }
       /* 
@@ -596,14 +608,14 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
    * */
   getProjectsAndSaveInStorage() {
     this.projectService.getProjects().subscribe((projects: any) => {
-      // console.log('[WIZARD - CREATE-PRJCT] !!! getProjectsAndSaveInStorage PROJECTS ', projects);
+      // this.logger.log('[WIZARD - CREATE-PRJCT] !!! getProjectsAndSaveInStorage PROJECTS ', projects);
       if (projects) {
         this.projects = projects;
         // SET THE IDs and the NAMES OF THE PROJECT IN THE LOCAL STORAGE.
         // WHEN IS REFRESHED A PAGE THE AUTSERVICE USE THE NAVIGATION PROJECT ID TO GET FROM STORAGE THE NAME OF THE PROJECT
         // AND THEN PUBLISH PROJECT ID AND PROJECT NAME
         this.projects.forEach(project => {
-          // console.log('[WIZARD - CREATE-PRJCT] !!! getProjectsAndSaveInStorage SET PROJECT IN STORAGE')
+          // this.logger.log('[WIZARD - CREATE-PRJCT] !!! getProjectsAndSaveInStorage SET PROJECT IN STORAGE')
           if (project.id_project) {
             const prjct: Project = {
               _id: project.id_project._id,
@@ -662,7 +674,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
       // let segmentTrackAttr = this.segmentAttributes;
       this.segment(segmentPageName, segmentTrackName, segmentTrackAttr, this.segmentIdentifyAttributes);
 
-      console.log('[ONBOARDING-D]  segmentIdentifyAttributes ', this.segmentIdentifyAttributes)
+      this.logger.log('[ONBOARDING-CONTENT]  segmentIdentifyAttributes ', this.segmentIdentifyAttributes)
       this.saveUserPreferences(this.segmentIdentifyAttributes)
       // this.DISPLAY_SPINNER_SECTION = false;
       // this.DISPLAY_BOT = true;
@@ -690,7 +702,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
 
     if (tranlatedLanguage.includes(this.browser_lang)) {
       const langName = this.getLanguageNameFromCode(this.browser_lang)
-      // console.log('[WIZARD - CREATE-PRJCT] - langName ', langName)
+      // this.logger.log('[WIZARD - CREATE-PRJCT] - langName ', langName)
 
       this.temp_SelectedLangName = langName;
       this.temp_SelectedLangCode = this.browser_lang
@@ -733,7 +745,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
 
 
   segment(pageName, trackName, trackAttr, segmentIdentifyAttributes) {
-    // console.log('segment::: ', segmentIdentifyAttributes);
+    // this.logger.log('segment::: ', segmentIdentifyAttributes);
 
     segmentIdentifyAttributes['name'] = this.user.firstname + ' ' + this.user.lastname;
     segmentIdentifyAttributes['email'] = this.user.email;
@@ -790,7 +802,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
         this.DISPLAY_SPINNER = false;
         this.CREATE_BOT_ERROR = true;
       }, () => {
-        // console.log('[BOT-CREATE] CREATE FAQKB - POST REQUEST * COMPLETE *');
+        // this.logger.log('[BOT-CREATE] CREATE FAQKB - POST REQUEST * COMPLETE *');
       });
   }
 
@@ -809,7 +821,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
       this.DISPLAY_SPINNER = false;
       this.CREATE_BOT_ERROR = true;
     }, () => {
-      // console.log('[BOT-CREATE --->  DEPTS RES - COMPLETE')
+      // this.logger.log('[BOT-CREATE --->  DEPTS RES - COMPLETE')
     });
   }
 
@@ -817,14 +829,14 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
   // ----------------- 3 : ASSIGN BOT TO THE DEFAULT DEPARTMENT  ------------------------ //
   hookBotToDept(departmentId) {
     this.departmentService.updateExistingDeptWithSelectedBot(departmentId, this.botId).subscribe((res) => {
-      // console.log('[TILEBOT] - UPDATE EXISTING DEPT WITH SELECED BOT - RES ', res);
+      // this.logger.log('[TILEBOT] - UPDATE EXISTING DEPT WITH SELECED BOT - RES ', res);
       this.callback('hookBotToDept', res);
     }, (error) => {
       this.logger.error('[TILEBOT] - UPDATE EXISTING DEPT WITH SELECED BOT - ERROR ', error);
       this.DISPLAY_SPINNER = false;
       this.CREATE_BOT_ERROR = true;
     }, () => {
-      // console.log('[TILEBOT] - UPDATE EXISTING DEPT WITH SELECED BOT * COMPLETE *');
+      // this.logger.log('[TILEBOT] - UPDATE EXISTING DEPT WITH SELECED BOT * COMPLETE *');
     });
   }
 
@@ -859,8 +871,8 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
     //this.logger.log('FORM DATA ', formData)
     this.faqService.uploadFaqCsv(formData)
       .subscribe(data => {
-        // console.log('uploadFaqCsv()::: ', data);
-        // console.log('[TILEBOT] UPLOAD CSV DATA ', data);
+        // this.logger.log('uploadFaqCsv()::: ', data);
+        // this.logger.log('[TILEBOT] UPLOAD CSV DATA ', data);
         if (data['success'] === true) {
           // this.callback('uploadFaqCsv');
           this.callback('uploadFaqFromCSV');
@@ -873,7 +885,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
         this.DISPLAY_SPINNER = false;
         this.CREATE_FAQ_ERROR = true;
       }, () => {
-        // console.log('[TILEBOT] UPLOAD CSV * COMPLETE *');
+        // this.logger.log('[TILEBOT] UPLOAD CSV * COMPLETE *');
         // setTimeout(() => {
         //   this.DISPLAY_SPINNER_SECTION = false;
         //   this.DISPLAY_SPINNER = false;

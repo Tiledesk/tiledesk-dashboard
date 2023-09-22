@@ -142,7 +142,7 @@ import { EmailTicketingStaticComponent } from './static-pages/email-ticketing-st
 import { ActivateAppsumoProductComponent } from './create-project-wizard/activate-appsumo-product/activate-appsumo-product.component';
 import { CreateProjectGsComponent } from './create-project-wizard/create-project-gs/create-project-gs.component';
 import { KnowledgeBasesComponent } from './knowledge-bases/knowledge-bases.component';
-
+import { CnpIsMobileComponent } from './create-new-project/cnp-is-mobile/cnp-is-mobile.component';
 
 
 const routes: Routes = [
@@ -190,12 +190,15 @@ const routes: Routes = [
 
   // USED AFTER THE SIGNUP
   { path: 'create-project', component: CreateProjectComponent, canActivate: [AuthGuard] }, // wizard 
+  
 
   // USED WHEN THE USER CLICK ON 'ADD NEW PROJECT' FROM THE NAVBAR
   //{ path: 'create-new-project', component: CreateProjectComponent, canActivate: [AuthGuard] }, // wizard 
   { path: 'create-new-project', component: OnboardingContentComponent, canActivate: [AuthGuard] }, // wizard 
 
+  
   { path: 'project/:projectid/onboarding-widget', component: OnboardingWidgetComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/desktop-access', component: CnpIsMobileComponent, canActivate: [AuthGuard] }, // wizard 
 
   { path: 'project/:projectid/configure-widget', component: ConfigureWidgetComponent, canActivate: [AuthGuard] }, // wizard step 2
   { path: 'project/:projectid/onboarding/:langcode/:langname', component: OnboardingComponent, canActivate: [AuthGuard] }, // wizard step 3
@@ -466,6 +469,7 @@ const routes: Routes = [
   { path: 'project/:projectid/app-store', component: AppStoreComponent, canActivate: [AuthGuard] },
   //{ path: 'project/:projectid/app-store-install/:url/:apptitle', component: AppStoreInstallComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/app-store-install/:appid/:reason', component: AppStoreInstallComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/app-store-install/:appid/:reason/:calledby', component: AppStoreInstallComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/app-create', component: AppCreateComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/app-edit/:appid', component: AppCreateComponent, canActivate: [AuthGuard] },
   // Webhook

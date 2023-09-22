@@ -2515,6 +2515,7 @@ img {
 
 .ml-4 {
   margin-left: 1rem !important;
+  margin-top: -7px;
 }
 
 @media (min-width: 960px) {
@@ -2626,32 +2627,36 @@ img {
 }
 
 .free-plan-badge {
-  // background-color: #faba3e;
-  background-color: #ff9f05;
+  // background-color: #ff9f05;
+  color: #ff9f05;
   fill: #ff9f05;
   transition: width 1s;
 }
 
 .a-plan-badge {
-  background-color: #19a95d;
+  // background-color: #19a95d;
+  color: #19a95d;
   fill:  #19a95d;
   transition: width 1s;
 }
 
 .b-plan-badge {
-  background-color: #00a1c2;
+  // background-color: #00a1c2;
+  color: #00a1c2;
   fill: #00a1c2;
   transition: width 1s;
 }
 
 .c-plan-badge {
-  background-color: #9966ff;
+  // background-color: #9966ff;
+  color: #9966ff;
   fill: #9966ff;
   transition: width 1s;
 }
 
 .unsupported-plan-badge {
-  background-color: #ed006b;
+  // background-color: #ed006b;
+  color: #ed006b;
   fill: #ed006b;
   transition: width 1s;
 }
@@ -2673,15 +2678,14 @@ img {
 
 .home-project-plan-badge {
   width: fit-content;
-  // border-radius: 4px;
-  // padding: 0px 5px;
-  color: #fff;
+  // color: #fff;
   text-transform: capitalize;
   font-size: 11px;
-  font-weight: 400;
+  font-weight: 500;
   font-family: "Poppins", "Roboto", "Arial", sans-serif;
-  border-radius: 999px;
-  padding: 2px 8px;
+  line-height: 1; // nk
+  // border-radius: 999px;
+  // padding: 2px 8px;
 }
 
 .oph-disabled {
