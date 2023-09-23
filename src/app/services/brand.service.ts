@@ -15,7 +15,7 @@ export class BrandService {
   // "brandSrc":"https://tiledeskbrand.nicolan74.repl.co/mybrand",
 
   public brand: any;
-
+  // "company_logo_black__url": "assets/img/logos/tiledesk_3.0_logo_black_v2_no_version.svg",
    _brand = {
     "metaTitle": "Tiledesk Support Dashboard",
     "favicon__url": "https://tiledesk.com/wp-content/uploads/2022/07/tiledesk_v13-300x300.png",
@@ -23,7 +23,7 @@ export class BrandService {
     "company_site_name": "tiledesk.com",
     "company_site_url": "https://www.tiledesk.com",
     "company_logo_white__url": "assets/img/logos/tiledesk-logo_white_orange.svg",
-    "company_logo_black__url": "assets/img/logos/tiledesk_3.0_logo_black_v2_no_version.svg",
+    "company_logo_black__url": "assets/img/logos/tiledesk_4.0_logo_black_text.svg",
     "company_logo_allwhite__url": "assets/img/logos/tiledesk_3.0_logo_all_white_v2_no_version.svg",
     "company_logo_no_text__url": "assets/img/logos/tiledesk-solo-logo.png",
     "privacy_policy_link_text": "Privacy Policy",

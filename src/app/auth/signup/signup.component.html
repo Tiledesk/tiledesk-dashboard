@@ -3,13 +3,12 @@
 
   <div class="container-fluid">
 
-    <!-- [ngStyle]="{'background-size': bckgndImageSize}" 
-    'brand-background-image': company_name === 'Tiledesk',
-        'no_brand-background-image': company_name !== 'Tiledesk' -->
-    <div class="split left" style="display: flex; justify-content: center; align-items: center;"
+    <!-- style="display: flex; justify-content: center; align-items: center;" -->
+    <div class="split left" 
       [ngClass]="{'hidden_left_panel' : hide_left_panel === true  }">
 
-      <div>
+      <!-- Circle bckgnd -->
+      <!-- <div>
         <svg viewBox="0 0 960 540" width="100%" height="100%" preserveAspectRatio="xMidYMax slice"
           xmlns="http://www.w3.org/2000/svg" class="absolute inset-0 pointer-events-none ng-tns-c137-1"
           style="inset: 0; position: absolute;">
@@ -19,7 +18,7 @@
             <circle r="234" cx="790" cy="491" class="ng-tns-c137-1"></circle>
           </g>
         </svg>
-      </div>
+      </div> -->
 
       <!--  --------------------------------------------------------------- -->
       <!--  Right panel -->
@@ -27,85 +26,112 @@
 
       <div class="centered-horizontally" style="margin:auto; margin-top: 60px;">
 
-        <div class="left-logo" style="text-align: center;text-align: center; z-index: 1050;  position: relative;">
-          <a [href]="company_site_url" target="_blank">
-            <!-- [src]="companyLogoAllWithe_Url" -->
-            <img src="assets/img/logos/tiledesk_planet.svg" class="img-fluid" style="width: 200px;" />
-          </a>
+        <div class="left-logo" style="z-index: 1050;  position: relative;" (click)="goToCompanySite()">
+        
+            <!-- <a [href]="company_site_url" target="_blank"> -->
+              <img [src]="companyLogoBlack_Url" class="img-fluid" style="max-width: 150px; height: auto; top: -50px;
+              left: 25px; position: absolute;" />
+              <!-- <img src="assets/img/logos/tiledesk_planet.svg" class="img-fluid" style="width: 200px;" /> -->
+            <!-- </a> -->
+
         </div>
 
         <div class="welcome-text">
           <!-- {{'WelcomeTo' | translate }} -->
 
-          <span> Welcome </span> <span style="display: block;"> to Tiledesk </span>
+          <!-- <span> Welcome </span> <span style="display: block;"> to Tiledesk </span> -->
+          <span> Shorten your lead conversion cycle with AI </span>
 
         </div>
 
         <div class="welcome-text-subtitle">
-          The community-led no-code platform for customer engagement.
-          <span style="display: block;"> Omni-channel live chat + AI-powered chatbots and conversational apps. </span>
-        </div>
-        <!-- ---------------------------------- -->
-        <!-- @ Social proof -->
-        <!-- ---------------------------------- -->
-
-        <div class="social-proof-container">
-          <div class="social-proof-wpr">
-            <!-- href="https://www.softwareadvice.com/crm/customer-service-comparison/#frontrunners%22%3E" -->
-            <div class="social-proof softwareadvice">
-              <a style="cursor: default;">
-                <img border="0"
-                  src="https://capterra.s3.amazonaws.com/assets/images/gdm-badges/SA-Badge-FrontRunners-2023-FullColor.png"
-                  style="width: 90px;" />
-              </a>
-            </div>
-            <!-- href="https://www.capterra.com/reviews/187541/Tiledesk?utm_source=vendor&utm_medium=badge&utm_campaign=capterra_reviews_badge%22%3E -->
-            <div class="social-proof capterra">
-              <a style="cursor: default;">
-                <img src="https://assets.capterra.com/badge/df9c5368d6b2558cc4a82e34a7ed1793.svg?v=2131354&p=187541"
-                  style="width: 140px;" />
-              </a>
-            </div>
-
-            <!-- href="https://www.getapp.com/customer-service-support-software/customer-service/category-leaders/%22%3E" -->
-            <div class="social-proof getapp">
-              <a style="cursor: default;">
-                <img border="0"
-                  src="https://capterra.s3.amazonaws.com/assets/images/gdm-badges/GA-Badge-CategoryLeaders-2023-FullColor-Positive.png"
-                  style="width: 105px" />
-              </a>
-            </div>
-
-            <div class="social-proof capterrabestvalue">
-              <!-- <a style="cursor: default;">
-                <img border="0"
-                  src="https://capterra.s3.amazonaws.com/assets/images/gdm-badges/GA-Badge-CategoryLeaders-2023-FullColor-Positive.png"
-                  style="width: 105px" />
-              </a> -->
-
-              <a href="https://www.capterra.com/p/187541/Tiledesk/"> 
-                <img border="0" src="https://capterra.s3.amazonaws.com/assets/images/gdm-badges/ca-value-2023.png" 
-                style="width: 99px"/>
-              </a>
-            </div>
-
+          <!-- The community-led no-code platform for customer engagement.
+          <span style="display: block;"> Omni-channel live chat + AI-powered chatbots and conversational apps. </span> -->
+          <div> 
+            <span class="material-icons" style="color: #f0806f;">
+            arrow_circle_right
+            </span>
           </div>
+          <div> Create your AI assistant with the <span style="color: #f0806f; font-weight: 500;">Visual Conversation Builder </span>  </div>
+     
         </div>
 
+        <div class="welcome-text-subtitle">
+          <!-- The community-led no-code platform for customer engagement.
+          <span style="display: block;"> Omni-channel live chat + AI-powered chatbots and conversational apps. </span> -->
+          <div> 
+            <span class="material-icons" style="color: #f0806f;">
+            arrow_circle_right
+            </span>
+          </div>
+          <div> 
+            <span style="color: #f0806f; font-weight: 500;">  Boost engagement by 4x </span> and be on all messaging channels
+          </div>
+     
+        </div>
 
-        <!-- <div style="width: 250px;
-        margin: auto;
-        text-align: center;">
-          <h2
-            style="font-size: 26px;font-family: 'Montserrat', sans-serif;color:#fff; text-align:left; line-height: 1.2em;">
-            {{ "AlreadyHaveAnAccount" | translate }}
-          </h2>
-          <button (click)="goToSigninPage()" type="submit" class="btn btn-white"
-            style="height: 56px;padding-left: 107px;padding-right: 107px;">
-            Login
-          </button>
-        </div> -->
-      </div>
+        <div class="welcome-text-subtitle">
+          <!-- The community-led no-code platform for customer engagement.
+          <span style="display: block;"> Omni-channel live chat + AI-powered chatbots and conversational apps. </span> -->
+          <div> 
+            <span class="material-icons" style="color: #f0806f;">
+            arrow_circle_right
+            </span>
+          </div>
+          <div> 
+            Turn leads into buying customers with <span style="color: #f0806f; font-weight: 500;">  WhatsApp automation </span>
+          </div> 
+     
+        </div>
+
+          <!-- ---------------------------------- -->
+          <!-- @ Social proof -->
+          <!-- ---------------------------------- -->
+          <div class="social-proof-container">
+            <div class="satisfied-customers-num">
+              Join 1,000+ Satisfied Customers
+            </div>
+            <div class="social-proof-wpr">
+              <!-- href="https://www.softwareadvice.com/crm/customer-service-comparison/#frontrunners%22%3E" -->
+              <div class="social-proof softwareadvice">
+                <a style="cursor: default;">
+                  <img border="0"
+                    src="https://capterra.s3.amazonaws.com/assets/images/gdm-badges/SA-Badge-FrontRunners-2023-FullColor.png"
+                    style="width: 80px;" />
+                </a>
+              </div>
+              <!-- href="https://www.capterra.com/reviews/187541/Tiledesk?utm_source=vendor&utm_medium=badge&utm_campaign=capterra_reviews_badge%22%3E -->
+              <div class="social-proof capterra">
+                <a style="cursor: default;">
+                  <img src="https://assets.capterra.com/badge/df9c5368d6b2558cc4a82e34a7ed1793.svg?v=2131354&p=187541"
+                    style="width: 130px;" />
+                </a>
+              </div>
+  
+              <!-- href="https://www.getapp.com/customer-service-support-software/customer-service/category-leaders/%22%3E" -->
+              <div class="social-proof getapp">
+                <a style="cursor: default;">
+                  <img border="0"
+                    src="https://capterra.s3.amazonaws.com/assets/images/gdm-badges/GA-Badge-CategoryLeaders-2023-FullColor-Positive.png"
+                    style="width: 95px" />
+                </a>
+              </div>
+  
+              <div class="social-proof capterrabestvalue">
+                <!-- <a style="cursor: default;">
+                  <img border="0"
+                    src="https://capterra.s3.amazonaws.com/assets/images/gdm-badges/GA-Badge-CategoryLeaders-2023-FullColor-Positive.png"
+                    style="width: 105px" />
+                </a> -->
+  
+                <a href="https://www.capterra.com/p/187541/Tiledesk/">
+                  <img border="0" src="https://capterra.s3.amazonaws.com/assets/images/gdm-badges/ca-value-2023.png"
+                    style="width: 89px" />
+                </a>
+              </div>
+  
+            </div>
+          </div>
     </div>
 
     <div class="split right">
@@ -148,7 +174,7 @@
             <span class="material-icons-outlined" style="font-size: 35px;
             color: rgb(143, 143,143);">
               add
-              </span>
+            </span>
           </div>
 
           <div class="logo-at-media-plus-992 appsumo-logo" *ngIf="appSumoActivationEmail">
@@ -180,7 +206,8 @@
 
         <div class="signup-title" style="text-align:center">
           <h2 *ngIf="!appSumoActivationEmail">
-            {{ 'CreateAFreeAccount' | translate}}
+            <!-- {{ 'CreateAFreeAccount' | translate}} -->
+            Sign up for free today
           </h2>
           <h2 *ngIf="appSumoActivationEmail">
             Welcome Sumo-ling!
@@ -188,44 +215,15 @@
         </div>
 
         <div *ngIf="!appSumoActivationEmail" class="no-card-required">
-          {{ "NoCreditCardRequired" | translate }}
+          <!-- {{ "NoCreditCardRequired" | translate }} -->
+          We recommend using your <span style="font-weight: 500;">work email </span>  - it keeps work and life separate
+
         </div>
         <div *ngIf="appSumoActivationEmail" class="no-card-required">
           Your account is almost ready
         </div>
 
         <div class="login-container">
-
-           <button *ngIf="!appSumoActivationEmail" type="button" class="google-button" (click)="signupWithGoogle()">
-            <div style="margin-right: 10px; background: rgb(255, 255, 255); padding: 10px; border-radius: 2px;">
-       
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 186.69 190.5"
-                xmlns:v="https://vecta.io/nano" style="position: relative;top: 2px;">
-                <g transform="translate(1184.583 765.171)">
-                  <path clip-path="none" mask="none"
-                    d="M-1089.333-687.239v36.888h51.262c-2.251 11.863-9.006 21.908-19.137 28.662l30.913 23.986c18.011-16.625 28.402-41.044 28.402-70.052 0-6.754-.606-13.249-1.732-19.483z"
-                    fill="#4285f4" />
-                  <path clip-path="none" mask="none"
-                    d="M-1142.714-651.791l-6.972 5.337-24.679 19.223h0c15.673 31.086 47.796 52.561 85.03 52.561 25.717 0 47.278-8.486 63.038-23.033l-30.913-23.986c-8.486 5.715-19.31 9.179-32.125 9.179-24.765 0-45.806-16.712-53.34-39.226z"
-                    fill="#34a853" />
-                  <path clip-path="none" mask="none"
-                    d="M-1174.365-712.61c-6.494 12.815-10.217 27.276-10.217 42.689s3.723 29.874 10.217 42.689c0 .086 31.693-24.592 31.693-24.592-1.905-5.715-3.031-11.776-3.031-18.098s1.126-12.383 3.031-18.098z"
-                    fill="#fbbc05" />
-                  <path
-                    d="M-1089.333-727.244c14.028 0 26.497 4.849 36.455 14.201l27.276-27.276c-16.539-15.413-38.013-24.852-63.731-24.852-37.234 0-69.359 21.388-85.032 52.561l31.692 24.592c7.533-22.514 28.575-39.226 53.34-39.226z"
-                    fill="#ea4335" clip-path="none" mask="none" />
-                </g>
-              </svg>
-            </div>
-            <div style="padding: 10px 10px 10px 0px; font-weight: 500; width: calc(100% - 91px);">Sign up with Google</div>
-          </button>
-  
-          <div class="auth---divider"><span>&nbsp;&nbsp;or&nbsp;&nbsp;</span></div>
-  
-          <div class="h-20"></div> 
-
-
-
 
           <form [formGroup]="userForm" (ngSubmit)="signup()" autocomplete="off">
 
@@ -246,17 +244,18 @@
               {{ formErrors.lastName }}
             </div> -->
 
-            <label for="email">Email <span style="color:#ff5252">*</span></label>
+            <label for="email">Work email <span style="color:#ff5252">*</span></label>
             <!-- id="email" -->
             <!-- [readonly]="SKIP_WIZARD"   [ngClass]="{'gray-bckgnd' : SKIP_WIZARD}" -->
             <input id="user-email" type="email" class="input" formControlName="email" required autocomplete="off"
-              autocorrect="off" autocapitalize="off" spellcheck="false" [ngClass]="{'disabled-email-input-appsumo-signup': appSumoActivationEmail}">
+              autocorrect="off" autocapitalize="off" spellcheck="false"
+              [ngClass]="{'disabled-email-input-appsumo-signup': appSumoActivationEmail}">
 
             <div *ngIf="formErrors.email" class="is-danger" translate>
               {{ formErrors.email }}
             </div>
             <div *ngIf="appSumoActivationEmail && !isValidAppSumoActivationEmail" class="is-danger" translate>
-                Email must be a valid email
+              Email must be a valid email
             </div>
 
             <label for="password">Password <span style="color:#ff5252">*</span></label>
@@ -338,15 +337,47 @@
               </span>
             </div>
 
-            <div class="left-panel-signin-link" style="margin-top:16px; text-align: center" *ngIf="appSumoActivationEmail">
+            <div class="left-panel-signin-link" style="margin-top:16px; text-align: center"
+              *ngIf="appSumoActivationEmail">
               <a routerLink="/login" style="color: #666666; font-size: 1.1em">
                 {{ "AlreadyHaveAnAccount" | translate }}
                 <span style="color: #03a5e8">Login</span>
               </a>
             </div>
 
+            <div class="auth---divider">
+              <span class="auth---divider-text">
+                &nbsp;&nbsp;You can also&nbsp;&nbsp;
+              </span>
+            </div>
 
+            <div class="h-20"></div>
           </form>
+
+          <button *ngIf="!appSumoActivationEmail" type="button" class="google-button" (click)="signupWithGoogle()">
+            <div style="margin-right: 10px; background: rgb(255, 255, 255); padding: 10px; border-radius: 2px;">
+
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 186.69 190.5"
+                xmlns:v="https://vecta.io/nano" style="position: relative;top: 2px;">
+                <g transform="translate(1184.583 765.171)">
+                  <path clip-path="none" mask="none"
+                    d="M-1089.333-687.239v36.888h51.262c-2.251 11.863-9.006 21.908-19.137 28.662l30.913 23.986c18.011-16.625 28.402-41.044 28.402-70.052 0-6.754-.606-13.249-1.732-19.483z"
+                    fill="#4285f4" />
+                  <path clip-path="none" mask="none"
+                    d="M-1142.714-651.791l-6.972 5.337-24.679 19.223h0c15.673 31.086 47.796 52.561 85.03 52.561 25.717 0 47.278-8.486 63.038-23.033l-30.913-23.986c-8.486 5.715-19.31 9.179-32.125 9.179-24.765 0-45.806-16.712-53.34-39.226z"
+                    fill="#34a853" />
+                  <path clip-path="none" mask="none"
+                    d="M-1174.365-712.61c-6.494 12.815-10.217 27.276-10.217 42.689s3.723 29.874 10.217 42.689c0 .086 31.693-24.592 31.693-24.592-1.905-5.715-3.031-11.776-3.031-18.098s1.126-12.383 3.031-18.098z"
+                    fill="#fbbc05" />
+                  <path
+                    d="M-1089.333-727.244c14.028 0 26.497 4.849 36.455 14.201l27.276-27.276c-16.539-15.413-38.013-24.852-63.731-24.852-37.234 0-69.359 21.388-85.032 52.561l31.692 24.592c7.533-22.514 28.575-39.226 53.34-39.226z"
+                    fill="#ea4335" clip-path="none" mask="none" />
+                </g>
+              </svg>
+            </div>
+            <div style="padding: 10px 10px 10px 0px; font-weight: 500; width: calc(100% - 91px);">Sign up with Google
+            </div>
+          </button>
 
         </div>
         <!-- ./login-container -->
