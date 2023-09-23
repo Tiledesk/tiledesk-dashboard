@@ -17,6 +17,7 @@ import { ConnectorService } from 'app/chatbot-design-studio/services/connector.s
 export class CdsActionReplyTextComponent implements OnInit {
   @ViewChild('autosize') autosize: CdkTextareaAutosize;
   
+  @Output() updateIntentFromConnectorModification = new EventEmitter();
   @Output() changeActionReply = new EventEmitter();
   @Output() deleteActionReply = new EventEmitter();
   @Output() moveUpResponse = new EventEmitter();
@@ -124,7 +125,8 @@ export class CdsActionReplyTextComponent implements OnInit {
           buttonChanged.__idConnector = this.connector.fromId;
           buttonChanged.action = '';
           buttonChanged.type = TYPE_BUTTON.TEXT;
-          this.changeActionReply.emit();
+          this.updateIntentFromConnectorModification.emit(this.connector.id);
+          // this.changeActionReply.emit();
         } else {
           // ADD / EDIT
           // buttonChanged.__isConnected = true;
@@ -134,7 +136,8 @@ export class CdsActionReplyTextComponent implements OnInit {
           console.log(' -> updateConnector :: ', this.buttons);
           if(!buttonChanged.__isConnected){
             buttonChanged.__isConnected = true;
-            this.changeActionReply.emit();
+            this.updateIntentFromConnectorModification.emit(this.connector.id);
+            // this.changeActionReply.emit();
           } 
         }
         // this.changeActionReply.emit();

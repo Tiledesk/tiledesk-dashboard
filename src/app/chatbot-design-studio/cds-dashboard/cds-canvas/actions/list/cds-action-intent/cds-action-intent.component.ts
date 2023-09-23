@@ -15,6 +15,8 @@ export class CdsActionIntentComponent implements OnInit {
   @Input() isStart: boolean;
   @Input() action: ActionIntentConnected;
   @Input() previewMode: boolean = true;
+  
+  @Output() updateIntentFromConnectorModification = new EventEmitter();
   @Output() updateAndSaveAction = new EventEmitter();
   @Output() onConnectorChange = new EventEmitter<{type: 'create' | 'delete',  fromId: string, toId: string}>()
   
@@ -68,14 +70,14 @@ export class CdsActionIntentComponent implements OnInit {
           this.logger.log('[CDS-ACTION-INTENT] deleteConnector :: ', this.connector.id);
           this.action.intentName = null;
           this.isConnected = false;
-          this.updateAndSaveAction.emit();
+          this.updateIntentFromConnectorModification.emit(this.connector.id);
         } else {
           // ADD / EDIT
           console.log('[CDS-ACTION-INTENT] updateConnector :: ', this.connector.toId, this.action.intentName);
           this.isConnected = true;
           if(this.action.intentName !== "#"+this.connector.toId){ 
             this.action.intentName = "#"+this.connector.toId;
-            this.updateAndSaveAction.emit();
+            this.updateIntentFromConnectorModification.emit(this.connector.id);
           } 
         }
       }

@@ -534,9 +534,9 @@ export class CdsCanvasComponent implements OnInit {
     console.log('[CDS-CANVAS]  deleteIntent',intent);
     setTimeout(() => {
       this.intentSelected = null;
+      this.intentService.deleteIntentToListOfIntents(intent.intent_id);
       this.intentService.deleteIntent(intent);
       this.connectorService.deleteConnectorsOfBlock(intent.intent_id);
-      // console.log('[CDS-CANVAS]  copiaArray',copiaArray);
     }, 0);
     
     
@@ -617,8 +617,7 @@ export class CdsCanvasComponent implements OnInit {
       this.connectorService.createConnectorFromId(fromId, toId);
       this.removeConnectorDraftAndCloseFloatMenu();
     }
-
-    const newIntent = await this.intentService.saveNewIntent(this.id_faq_kb, this.intentSelected);
+    const newIntent = await this.intentService.saveNewIntent(this.intentSelected);
     if (newIntent) {
       this.intentSelected.id = newIntent.id;
       console.log('[CDS-CANVAS] Intent salvato correttamente: ', newIntent, this.listOfIntents);

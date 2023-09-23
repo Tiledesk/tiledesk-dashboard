@@ -156,7 +156,19 @@ export class TiledeskConnectors {
     };
   }
 
+  deleteConnectorsOutOfBlock(blockId) {
+    console.log("[JS] deleteConnectorsOutOfBlock ----> ", blockId);
+    for (var connectorId in this.connectors) {
+      if (connectorId.startsWith(blockId)) {
+        this.deleteConnector(connectorId);
+      }
+    }
+    delete this.blocks[blockId];
+    console.log("[JS] blocks :---> ", this.blocks);
+    console.log("[JS] connectors :---> ", this.connectors);
+  }
 
+  
   deleteConnectorsOfBlock(blockId) {
     console.log("[JS] deleteConnectors ----> ", blockId);
     for (var connectorId in this.connectors) {

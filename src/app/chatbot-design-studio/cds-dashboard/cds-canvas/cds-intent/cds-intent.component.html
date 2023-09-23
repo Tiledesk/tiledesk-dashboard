@@ -109,7 +109,8 @@
                     class="panel-response" 
                     [intentSelected]="intent"
                     [connector]="connector" 
-                    [action]="action"   
+                    [action]="action"
+                    (updateIntentFromConnectorModification)="onUpdateIntentFromConnectorModification($event)"   
                     (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-reply>
 
@@ -118,13 +119,15 @@
                     [intentSelected]="intent" 
                     [connector]="connector" 
                     [action]="action"
+                    (updateIntentFromConnectorModification)="onUpdateIntentFromConnectorModification($event)"
                     (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-reply>
 
                 <cds-action-intent *ngSwitchCase="TYPE_ACTION.INTENT" 
                     class="panel-response" 
                     [intentSelected]="intent"
-                    [action]="action" 
+                    [action]="action"
+                    (updateIntentFromConnectorModification)="onUpdateIntentFromConnectorModification($event)" 
                     (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-intent>
 
@@ -138,6 +141,7 @@
                     [connectorChanged]="connectorChanged" 
                     [intentSelected]="intent" 
                     [action]="action"
+                    (updateIntentFromConnectorModification)="onUpdateIntentFromConnectorModification($event)"
                     (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-online-agents>
 
@@ -146,6 +150,7 @@
                     [connectorChanged]="connectorChanged" 
                     [intentSelected]="intent" 
                     [action]="action"
+                    (updateIntentFromConnectorModification)="onUpdateIntentFromConnectorModification($event)"
                     (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-open-hours>
 
@@ -172,6 +177,7 @@
                     class="panel-response"
                     [intentSelected]="intent" 
                     [action]="action" 
+                    (updateIntentFromConnectorModification)="onUpdateIntentFromConnectorModification($event)"
                     (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-json-condition>
 
@@ -193,6 +199,7 @@
                 <cds-action-hide-message *ngSwitchCase="TYPE_ACTION.HIDE_MESSAGE" 
                     class="panel-response"
                     [action]="action" 
+                    (updateIntentFromConnectorModification)="onUpdateIntentFromConnectorModification($event)"
                     (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-hide-message>
 
@@ -221,6 +228,7 @@
                     class="panel-response" 
                     [intentSelected]="intent" 
                     [action]="action"
+                    (updateIntentFromConnectorModification)="onUpdateIntentFromConnectorModification($event)"
                     (updateAndSaveAction)="onUpdateAndSaveAction($event)">
                 </cds-action-askgpt>
 
@@ -228,6 +236,7 @@
                     class="panel-response" 
                     [intentSelected]="intent"
                     [action]="action"
+                    (updateIntentFromConnectorModification)="onUpdateIntentFromConnectorModification($event)"
                     (updateAndSaveAction)="onSaveIntent($event)">
                 </cds-action-gpt-task>
 

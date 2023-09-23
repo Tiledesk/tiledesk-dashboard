@@ -608,6 +608,17 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
+
+  public async onUpdateIntentFromConnectorModification(connector){
+    console.log('[CDS-INTENT] onUpdateIntentFromConnectorModification:::: intent::: ', connector);
+    const response = await this.intentService.updateIntent(this.intent, 0, connector);
+    if (response) {
+      console.log('updateIntent: ', this.intent);
+    }
+  }
+
+
+
   /**  onUpdateAndSaveAction: 
    * function called by all actions in @output whenever they are modified!
    * 1 - update connectors
@@ -621,7 +632,6 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
     console.log('[CDS-INTENT] onUpdateAndSaveAction:::: ', event, this.intent, this.intent.actions);
     console.log('[CDS-INTENT] onUpdateAndSaveAction:::: intent::: ', this.intent);
     // this.intentService.selectAction(this.intent.intent_id, event);
-
     const response = await this.intentService.updateIntent(this.intent);
     if (response) {
       console.log('updateIntent: ', this.intent);

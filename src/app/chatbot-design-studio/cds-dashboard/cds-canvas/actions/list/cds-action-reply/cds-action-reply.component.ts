@@ -21,7 +21,8 @@ export class CdsActionReplyComponent implements OnInit {
 
   @Input() action: ActionReply;
   @Input() intentSelected: Intent;
-  @Input() previewMode: boolean = true
+  @Input() previewMode: boolean = true;
+  @Output() updateIntentFromConnectorModification = new EventEmitter();
   @Output() updateAndSaveAction = new EventEmitter();
   
 
@@ -245,7 +246,6 @@ export class CdsActionReplyComponent implements OnInit {
     } catch (error) {
       this.logger.log('onAddNewResponse ERROR', error);
     }
-
     // cancello l'elemento wait precedente 
     console.log('**** arrayResponses: ', this.arrayResponses, 'index-1: ', (index-1));
     const wait = this.arrayResponses[index-1];
@@ -261,6 +261,10 @@ export class CdsActionReplyComponent implements OnInit {
     this.onUpdateAndSaveAction();
   }
 
+
+  onUpdateIntentFromConnectorModification(connectorID){
+    this.updateIntentFromConnectorModification.emit(connectorID);
+  }
 
   /** onChangingReplyAction */
   onChangeActionReply(event) {

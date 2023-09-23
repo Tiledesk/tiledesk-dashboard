@@ -15,6 +15,7 @@ import { LoggerService } from 'app/services/chat21-core/providers/abstract/logge
 export class CdsActionReplyGalleryComponent implements OnInit {
   @ViewChild('scrollMe', { static: false }) scrollContainer: ElementRef;
   
+  @Output() updateIntentFromConnectorModification = new EventEmitter();
   @Output() changeActionReply = new EventEmitter();
   @Output() deleteActionReply = new EventEmitter();
   @Output() moveUpResponse = new EventEmitter();
@@ -134,7 +135,8 @@ export class CdsActionReplyGalleryComponent implements OnInit {
             buttonChanged.__idConnector = this.connector.fromId;
             buttonChanged.action = '';
             buttonChanged.type = TYPE_BUTTON.TEXT;
-            this.changeActionReply.emit();
+            this.updateIntentFromConnectorModification.emit(this.connector.id);
+            // this.changeActionReply.emit();
           } else {
             // ADD / EDIT
             // buttonChanged.__isConnected = true;
@@ -144,7 +146,8 @@ export class CdsActionReplyGalleryComponent implements OnInit {
             console.log('updateConnector :: ', el.buttons);
             if(!buttonChanged.__isConnected){
               buttonChanged.__isConnected = true;
-              this.changeActionReply.emit();
+              this.updateIntentFromConnectorModification.emit(this.connector.id);
+              // this.changeActionReply.emit();
             } 
           }
           // this.changeActionReply.emit();
