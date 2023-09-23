@@ -523,7 +523,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         this.wadepartmentid = this.current_selected_prjct.id_project.attributes.wasettings.department_id
         this.getDeptById(this.wadepartmentid)
       } else {
-        console.log('[HOME] - (onInit) - wasettings', this.current_selected_prjct.id_project.attributes.wasettings)
+        console.log('[HOME] - (onInit) - not exist wasettings', )
       }
 
 
@@ -567,7 +567,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
       // console.log('[HOME] - Find Current Project Among All - current_selected_prjct - prjct_name ', this.prjct_name);
-      // console.log('[HOME] - Find Current Project Among All - current_selected_prjct - prjct_profile_name ', this.prjct_profile_name);
+      console.log('[HOME] - Find Current Project Among All - current_selected_prjct - prjct_profile_name ', this.prjct_profile_name);
       // console.log('[HOME] - Find Current Project Among All - current_selected_prjct - profile_name ', this.profile_name);
       // console.log('[HOME] - Find Current Project Among All - current_selected_prjct - prjct_trial_expired ', this.prjct_trial_expired);
       // console.log('[HOME] - Find Current Project Among All - current_selected_prjct - prjct_profile_type ', this.prjct_profile_type);

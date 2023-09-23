@@ -79,7 +79,7 @@
                   </div>
 
                    <div class="flex items-center">
-                    <div *ngIf="project_plan_badge" class="home-project-plan-badge" [ngClass]="{
+                    <div  class="home-project-plan-badge" [ngClass]="{
                       'free-plan-badge': current_selected_prjct?.plan_badge_background_type === 'free_plan_badge', 
                       'a-plan-badge':  current_selected_prjct?.plan_badge_background_type === 'a_plan_badge',
                       'b-plan-badge': current_selected_prjct?.plan_badge_background_type === 'b_plan_badge', 
@@ -233,7 +233,7 @@
               </div>
             </div>
             <!-- -------------------------------------- -->
-            <!-- New Menu to change project  -->
+            <!-- New Menu to change project !! display none  -->
             <!-- -------------------------------------- -->
             <div style="display: none !important; " aria-haspopup="true" matripple=""
               class="change-project-menu-wpr mat-ripple mat-menu-trigger relative flex self-start pt-2 pb-1 pl-5 pr-4 cursor-pointer overflow-hidden rounded-t-xl border border-b-0 bg-default">
@@ -300,7 +300,6 @@
           <div class="home--blocks" id="homeBlocks">
 
             <appdashboard-home-whatsapp-account-wizard style="margin-bottom: 18px;" *ngIf="displayWhatsappAccountWizard"
-              
               (goToConnectWA)="goToConnectWA()" 
               (goToCreateChatbot)="goToCreateChatbot()"
               (hasTestedBotOnWa)="hasTestedBotOnWa()" 
@@ -351,6 +350,8 @@
             </appdashboard-home-create-chatbot>
 
             <appdashboard-home-create-teammate *ngIf="displayInviteTeammate"></appdashboard-home-create-teammate>
+
+            <appdashboard-home-kb> </appdashboard-home-kb>
 
             <appdashboard-home-customize-widget *ngIf="displayCustomizeWidget"></appdashboard-home-customize-widget>
 

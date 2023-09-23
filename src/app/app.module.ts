@@ -330,6 +330,7 @@ import { CnpQuestionSelectComponent } from './create-new-project/cnp-question-se
 import { CnpQuestionButtonComponent } from './create-new-project/cnp-question-button/cnp-question-button.component';
 import { CnpChatbotWelcomeMessageComponent } from './create-new-project/cnp-chatbot-welcome-message/cnp-chatbot-welcome-message.component';
 import { CnpWidgetInstallationComponent } from './create-new-project/cnp-widget-installation/cnp-widget-installation.component';
+import { CnpIsMobileComponent } from './create-new-project/cnp-is-mobile/cnp-is-mobile.component';
 import { LoadingSectionComponent } from './create-new-project/loading-section/loading-section.component';
 import { ActivateAppsumoProductComponent } from './create-project-wizard/activate-appsumo-product/activate-appsumo-product.component';
 import { ContactCustomPropertiesComponent } from './components/modals/contact-custom-properties/contact-custom-properties.component';
@@ -345,12 +346,14 @@ import { HomeWhatsappAccountWizardComponent } from './home-components/home-whats
 import { HomeWhatsappAccountWizardModalComponent } from './home-components/home-whatsapp-account-wizard/home-whatsapp-account-wizard-modal/home-whatsapp-account-wizard-modal.component';
 import { HomeCustomizeWidgetComponent } from './home-components/home-customize-widget/home-customize-widget.component';
 import { HomeCreateTeammateComponent } from './home-components/home-create-teammate/home-create-teammate.component';
+import { HomeKbComponent } from './home-components/home-kb/home-kb.component';
 // ./new home comp
 
 
 import { OpenaikbsService } from './services/openaikbs.service';
 import { KnowledgeBasesComponent } from './knowledge-bases/knowledge-bases.component';
-import { CnpIsMobileComponent } from './create-new-project/cnp-is-mobile/cnp-is-mobile.component';
+
+
 
 // NOTE: Eliminazione del local storage produce inconsistenza delle instances Firebase. Si salta il logout.
 
@@ -617,7 +620,8 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     HomeWhatsappAccountWizardModalComponent,
     HomeCustomizeWidgetComponent,
     HomeCreateTeammateComponent,
-    CnpIsMobileComponent
+    CnpIsMobileComponent,
+    HomeKbComponent
   ],
   imports: [
     TooltipModule.forRoot(CutomTooltipOptions as TooltipOptions),
