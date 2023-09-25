@@ -5662,6 +5662,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.tab3 = false;
     this.tab4 = false;
     this.logger.log('haSelectedTab1 ', this.tab1)
+    this.getTag();
     setTimeout(() => {
       this.getTagContainerElementHeight()
     }, 1000);
