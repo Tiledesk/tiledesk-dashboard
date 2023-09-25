@@ -4,6 +4,7 @@
 - Deploys in production
 - Makes the predefined tags available for the contacts
 - Add the ability to add predefined tags from the "Profile" tab
+- Refactor sign in and sign up pages
 
 ### 2.4.60
 - Deploys in production
