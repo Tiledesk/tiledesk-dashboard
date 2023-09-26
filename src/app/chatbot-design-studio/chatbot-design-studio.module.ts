@@ -192,6 +192,8 @@ import { CdsAddActionMenuComponent } from './cds-dashboard/cds-canvas/actions/sh
 import { CdsQuestionComponent } from './cds-dashboard/cds-canvas/actions/list/question/question.component';
 import { CdsAnswerComponent } from './cds-dashboard/cds-canvas/actions/list/answer/answer.component';
 import { SharedModule } from 'app/shared/shared.module';
+import { CdsEventComponent } from './cds-dashboard/cds-event/cds-event.component';
+import { CdsRuleComponent } from './cds-dashboard/cds-rule/cds-rule.component';
 
 @NgModule({
   declarations: [
@@ -324,6 +326,12 @@ import { SharedModule } from 'app/shared/shared.module';
     CdsModalActivateBotComponent,
     CdsPublishOnCommunityModalComponent,
     CdsSplashScreenComponent,
+
+
+
+    //EVENT BASE COMPONENT
+    CdsEventComponent,
+    CdsRuleComponent,
   ],
   imports: [
     A11yModule,

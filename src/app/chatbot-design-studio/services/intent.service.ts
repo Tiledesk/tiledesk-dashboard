@@ -853,7 +853,7 @@ export class IntentService {
     let intervalId = setInterval(async () => {
       const result = checkIFElementExists(intent.intent_id);
       if (result === true) {
-        console.log('[CDS CANVAS] Condition is true ', intent.intent_id);
+        console.log('[INTENT SERVICE] Condition is true ', intent.intent_id);
         this.stageService.setDragElement(intent.intent_id);
         // this.intentService.setListnerEvent(intent);
         clearInterval(intervalId);
