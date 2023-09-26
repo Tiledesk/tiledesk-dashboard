@@ -1,23 +1,5 @@
 @import "./src/assets/sass/cds/_variables.scss";
 
-
-.previewMode{
-    .filter-row{
-        grid-column-gap: 5px;
-        grid-row-gap: 0px;
-    }
-    .filter-condition{
-        font-size: 0.6em;
-        line-height: 12px;
-        padding: 8px 8px;
-    }
-    .filter-icon span {
-        font-size: 18px;
-    }
-
-    
-}
-
 .base-filter{
     &:hover{
         div.filter-remove{
@@ -35,7 +17,7 @@
 
 .filter-row{
     display: grid;
-    // grid-template-columns: minmax(0px, 1fr) 100px;
+    grid-template-columns: minmax(0px, 1fr) 100px;
     grid-column-gap: 10px;
     grid-row-gap: 10px;
 }
@@ -168,11 +150,6 @@
     margin: 10px auto;
 }
 
-.filter-operator-preview{
-    display: block;
-    text-align: center;
-}
-
 ::ng-deep .filter-operator {
     .select-bot-box {
         width: max-content;
@@ -255,10 +232,4 @@
     white-space: nowrap;
     transition: color 0.3s ease 0s;
     overflow: hidden !important;
-}
-
-cds-select::ng-deep{
-    .select-bot-box {
-        margin: 0px auto;
-    }
 }

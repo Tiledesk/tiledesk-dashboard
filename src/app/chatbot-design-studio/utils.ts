@@ -2,20 +2,6 @@ import { AbstractControl } from "@angular/forms";
 import { ActionAssignVariable, Intent } from "app/models/intent-model";
 import { v4 as uuidv4 } from 'uuid';
 
-
-export enum TYPE_INTENT_NAME {
-    TOPIC_INTERNAL = 'internal',
-    DISPLAY_NAME_START = "start",
-    DISPLAY_NAME_DEFAULT_FALLBACK = "defaultFallback",
-}
-
-export enum SIDEBAR_PAGES {
-    INTENTS = 'cds-sb-intents',
-    SETTINGS = 'cds-sb-settings',
-    FULFILLMENT = 'cds-sb-fulfillment',
-    RULES = 'cds-sb-rules'
-}
-
 export enum EXTERNAL_URL {
     getchatbotinfo = "https://tiledesk.com/community/getchatbotinfo/chatbotId/"
 }
@@ -90,15 +76,12 @@ export enum TYPE_ACTION {
     REPLY = 'reply',
     RANDOM_REPLY = 'randomreply',
     WEB_REQUEST = 'webrequest',
-    WEB_REQUESTV2 = 'webrequestv2',
     AGENT = 'agent',
     CLOSE = 'close',
     EMAIL = 'email',
     WHATSAPP_STATIC = 'whatsapp_static',
     WHATSAPP_ATTRIBUTE = 'whatsapp_attribute',
     WHATSAPP_SEGMENT = 'whatsapp_segment',
-    ASKGPT = 'askgpt',
-    GPT_TASK = 'gpt_task',
     WAIT = 'wait',
     INTENT = 'intent',
     // CONDITION = 'condition',
@@ -109,31 +92,13 @@ export enum TYPE_ACTION {
     CHANGE_DEPARTMENT = 'department',
     ONLINE_AGENTS = 'ifonlineagents',
     OPEN_HOURS = 'ifopenhours',
-    HIDE_MESSAGE = 'hmessage',
+    HIDE_MESSSAGE = 'hmessage',
     JSON_CONDITION = 'jsoncondition'
 }
 
-export enum TYPE_ACTION_CATEGORY {
-    MOST_USED = 'Most used',
-    FLOW = 'Flow',
-    INTEGRATIONS = 'Integrations',
-    SPECIAL = 'Special',
-    NEW = 'New'
-}
-
-export const ACTION_CATEGORY =[
-    { type: getKeyByValue(TYPE_ACTION_CATEGORY.MOST_USED, TYPE_ACTION_CATEGORY), name: TYPE_ACTION_CATEGORY.MOST_USED, src: 'assets/cds/images/actions_category/most_used.svg'},
-    { type: getKeyByValue(TYPE_ACTION_CATEGORY.FLOW, TYPE_ACTION_CATEGORY), name: TYPE_ACTION_CATEGORY.FLOW, src: 'assets/cds/images/actions_category/flow.svg'},
-    { type: getKeyByValue(TYPE_ACTION_CATEGORY.INTEGRATIONS, TYPE_ACTION_CATEGORY), name: TYPE_ACTION_CATEGORY.INTEGRATIONS, src: 'assets/cds/images/actions_category/integrations.svg'},
-    { type: getKeyByValue(TYPE_ACTION_CATEGORY.SPECIAL, TYPE_ACTION_CATEGORY), name: TYPE_ACTION_CATEGORY.SPECIAL, src: 'assets/cds/images/actions_category/special.svg'},
-    // { type: getKeyByValue(TYPE_ACTION_CATEGORY.NEW, TYPE_ACTION_CATEGORY), name: TYPE_ACTION_CATEGORY.NEW, src: 'assets/cds/images/actions_category/new.svg'}
-]
-
-export function getKeyByValue(value, keys) {
-    const indexOfS = Object.values(keys).indexOf(value as unknown as any);
-    const key = Object.keys(keys)[indexOfS];
-    return key;
-}
+// export enum TYPE_TD_ACTION_ID {
+//     UUIDV4 = uuidv4()
+// }
 
 export enum TYPE_OPERATOR {
     equalAsNumbers = "equalAsNumbers",
@@ -181,15 +146,6 @@ export enum TYPE_METHOD_ATTRIBUTE {
     INPUT = 'input'
 }
 
-export enum TYPE_OF_MENU {
-    EVENT = 'event',
-    BLOCK = 'block',
-    ACTION = 'action',
-    FORM = 'form',
-    QUESTION = 'question'
-}
-
-export const NEW_POSITION_ID = 'new';
 
 export const MESSAGE_METADTA_WIDTH = '100%';
 export const MESSAGE_METADTA_HEIGHT = 230;
@@ -210,58 +166,54 @@ export function calculatingRemainingCharacters(text: string, limit: number): num
 }
 
 export const ELEMENTS_LIST = [
-    { name: 'Reply', category: TYPE_ACTION_CATEGORY.MOST_USED, type: TYPE_ACTION.REPLY, src:"assets/cds/images/actions/reply.svg", description: '<b>Pro tip</b>: Turn this block into a programmed proactive message. <a href=https://www.youtube.com/embed/SgDGwvVoqWE target=_blank>Here is how!</a> '},
-    { name: 'Random Reply', category: TYPE_ACTION_CATEGORY.MOST_USED, type: TYPE_ACTION.RANDOM_REPLY, src:"assets/cds/images/actions/random_reply.svg", description: 'Create some replies that will be randomly selected'},
-    { name: 'Agent Handoff', category: TYPE_ACTION_CATEGORY.MOST_USED, type: TYPE_ACTION.AGENT, src:"assets/cds/images/actions/agent_handoff.svg", description: 'This action replaces the current chatbot with an agent.<br>The upcoming agent is assigned to the conversation following the department rules'},
-    { name: 'Close', category: TYPE_ACTION_CATEGORY.MOST_USED, type: TYPE_ACTION.CLOSE, src:"assets/cds/images/actions/close.svg", description: 'This action instantly closes the current conversation'},
-    { name: 'If Operating Hours', category: TYPE_ACTION_CATEGORY.MOST_USED, type: TYPE_ACTION.OPEN_HOURS, src: "assets/cds/images/actions/open_hours.svg", description: 'This action moves the flow to different blocks, based on the operating hours status.<br>During working hours the <b>TRUE block</b> will be triggered.<br>During offline hours the <b>FALSE block</b> will be triggered.<br>One of the two options can be unset. The flow will optionally stop only when a block-populated condition is met.<br>To optionally stop the flow set “Stop on met condition”. To always continue unset the same option.'},
-    { name: 'If Online Agent', category: TYPE_ACTION_CATEGORY.MOST_USED, type: TYPE_ACTION.ONLINE_AGENTS, src: "assets/cds/images/actions/online_agents.svg", description: 'This action moves the flow to different blocks, based on the agents’ availability.<br>If there are agents available the <b>TRUE block</b> will be triggered.<br>If there are no agents available the <b>FALSE block</b> will be triggered.<br>One of the two options can be unset. The flow will optionally stop only when a block-populated condition is met.<br>To optionally stop the flow set “Stop on met condition”. To always continue unset Stop on met condition.' },
-    { name: 'Condition', category: TYPE_ACTION_CATEGORY.FLOW, type: TYPE_ACTION.JSON_CONDITION, src: "assets/cds/images/actions/condition.svg"},
-    { name: 'Connect block', category: TYPE_ACTION_CATEGORY.FLOW, type: TYPE_ACTION.INTENT, src:"assets/cds/images/actions/connect_intent.svg", description: 'This action moves the flow to the specified block.<br> Keep in mind that if there are other actions in the current block actions-pipeline they will be executed too, generating a parallel-execution of all the branches affering to each block triggered through this Connect-block action.'},
-    { name: 'Set attribute', category: TYPE_ACTION_CATEGORY.FLOW, type: TYPE_ACTION.ASSIGN_VARIABLE, src: "assets/cds/images/actions/assign_var.svg"},
-    { name: 'Delete attribute', category: TYPE_ACTION_CATEGORY.FLOW, type: TYPE_ACTION.DELETE_VARIABLE, src: "assets/cds/images/actions/delete_var.svg"},
-    { name: 'Replace bot', category: TYPE_ACTION_CATEGORY.FLOW, type: TYPE_ACTION.REPLACE_BOT, src: "assets/cds/images/actions/replace_bot.svg", description: "Choose a chatbot to replace the current one in the conversation"},
-    { name: 'Wait', category: TYPE_ACTION_CATEGORY.FLOW, type: TYPE_ACTION.WAIT, src:"assets/cds/images/actions/wait.svg", description: 'This action waits the specified amount of milliseconds before moving to the next one along the block actions-pipeline'},
-    { name: 'Web Request', category: TYPE_ACTION_CATEGORY.INTEGRATIONS, type: TYPE_ACTION.WEB_REQUEST, src:"assets/cds/images/actions/web_request.svg", description: ''},
-    { name: 'Web Request-v2', category: TYPE_ACTION_CATEGORY.INTEGRATIONS, type: TYPE_ACTION.WEB_REQUESTV2, src:"assets/cds/images/actions/web_request.svg", description: ''},
-    { name: 'Send email', category: TYPE_ACTION_CATEGORY.INTEGRATIONS, type: TYPE_ACTION.EMAIL, src:"assets/cds/images/actions/send_email.svg", description: 'This action send an email to the specified users group or email addresses.<br>You can use a comma sepatated addresses list.<br>i.e. “andrea@tiledesk.com, gab@tiledesk.com"<br>You can use the special tag “@everyone” to send an email to each of the Tiledesk’s project teamates.<br><br>You can also use the name of a single user group using the group name. i.e. “sales”'},
-    { name: 'WhatsApp Static', category: TYPE_ACTION_CATEGORY.INTEGRATIONS, type: TYPE_ACTION.WHATSAPP_STATIC, src: "assets/cds/images/actions/whatsapp.svg", description: 'This action send an approved WhatsApp template' },
-    { name: 'WhatsApp by Attribute', category: TYPE_ACTION_CATEGORY.INTEGRATIONS, type: TYPE_ACTION.WHATSAPP_ATTRIBUTE, src: "assets/cds/images/actions/whatsapp.svg", description: 'This action send an approved WhatsApp template' },
-    // { name: 'WhatsApp by Segment', category: TYPE_ACTION_CATEGORY.INTEGRATIONS, type: TYPE_ACTION.WHATSAPP_SEGMENT, src: "assets/cds/images/actions/whatsapp.svg", description: 'This action send an approved WhatsApp template' },
-    { name: 'Ask GPT', type: TYPE_ACTION.ASKGPT, category: TYPE_ACTION_CATEGORY.INTEGRATIONS, src: "assets/cds/images/actions/openai-icon.svg", description: 'This action forwards the question to ChatGPT' },
-    { name: 'GPT Task', type: TYPE_ACTION.GPT_TASK, category: TYPE_ACTION_CATEGORY.INTEGRATIONS, src: "assets/cds/images/actions/openai-icon.svg", description: 'This action forwards the question to ChatGPT' },
-    { name: 'Hidden message', category: TYPE_ACTION_CATEGORY.SPECIAL, type: TYPE_ACTION.HIDE_MESSAGE, src: "assets/cds/images/actions/hidden_message.svg"},
-    { name: 'Change dept', category: TYPE_ACTION_CATEGORY.SPECIAL, type: TYPE_ACTION.CHANGE_DEPARTMENT, src: "assets/cds/images/actions/change_department.svg"},
-    // { name: 'Set function', category: TYPE_ACTION_CATEGORY.NEW, type: TYPE_ACTION.ASSIGN_FUNCTION, src: "assets/cds/images/actions/assign_var.svg"},
+    { name: 'Reply', type: TYPE_ACTION.REPLY, src:"assets/cds/images/actions/reply.svg", description: '<b>Pro tip</b>: Turn this block into a programmed proactive message. <a href=https://www.youtube.com/embed/SgDGwvVoqWE target=_blank>Here is how!</a> '},
+    { name: 'Random Reply', type: TYPE_ACTION.RANDOM_REPLY, src:"assets/cds/images/actions/random_reply.svg", description: 'Create some replies that will be randomly selected'},
+    { name: 'Web Request', type: TYPE_ACTION.WEB_REQUEST, src:"assets/cds/images/actions/web_request.svg", description: ''},
+    { name: 'Agent Handoff', type: TYPE_ACTION.AGENT, src:"assets/cds/images/actions/agent_handoff.svg", description: 'This action replaces the current chatbot with an agent.<br>The upcoming agent is assigned to the conversation following the department rules'},
+    { name: 'Close', type: TYPE_ACTION.CLOSE, src:"assets/cds/images/actions/close.svg", description: 'This action instantly closes the current conversation'},
+    { name: 'Send email', type: TYPE_ACTION.EMAIL, src:"assets/cds/images/actions/send_email.svg", description: 'This action send an email to the specified users group or email addresses.<br>You can use a comma sepatated addresses list.<br>i.e. “andrea@tiledesk.com, gab@tiledesk.com"<br>You can use the special tag “@everyone” to send an email to each of the Tiledesk’s project teamates.<br><br>You can also use the name of a single user group using the group name. i.e. “sales”'},
+    { name: 'WhatsApp Static', type: TYPE_ACTION.WHATSAPP_STATIC, src: "assets/cds/images/actions/whatsapp.svg", description: 'This action send an approved WhatsApp template' },
+    { name: 'WhatsApp by Attribute', type: TYPE_ACTION.WHATSAPP_ATTRIBUTE, src: "assets/cds/images/actions/whatsapp.svg", description: 'This action send an approved WhatsApp template' },
+    { name: 'WhatsApp by Segment', type: TYPE_ACTION.WHATSAPP_SEGMENT, src: "assets/cds/images/actions/whatsapp.svg", description: 'This action send an approved WhatsApp template' },
+    { name: 'Wait', type: TYPE_ACTION.WAIT, src:"assets/cds/images/actions/wait.svg", description: 'This action waits the specified amount of milliseconds before moving to the next one along the block actions-pipeline'},
+    { name: 'Connect block', type: TYPE_ACTION.INTENT, src:"assets/cds/images/actions/connect_intent.svg", description: 'This action moves the flow to the specified block.<br> Keep in mind that if there are other actions in the current block actions-pipeline they will be executed too, generating a parallel-execution of all the branches affering to each block triggered through this Connect-block action.'},
+    { name: 'Set attribute', type: TYPE_ACTION.ASSIGN_VARIABLE, src: "assets/cds/images/actions/assign_var.svg"},
+    { name: 'Set function', type: TYPE_ACTION.ASSIGN_FUNCTION, src: "assets/cds/images/actions/assign_var.svg"},
+    { name: 'Delete attribute', type: TYPE_ACTION.DELETE_VARIABLE, src: "assets/cds/images/actions/delete_var.svg"},
+    { name: 'Replace bot', type: TYPE_ACTION.REPLACE_BOT, src: "assets/cds/images/actions/replace_bot.svg", description: "Choose a chatbot to replace the current one in the conversation"},
+    { name: 'Change dept', type: TYPE_ACTION.CHANGE_DEPARTMENT, src: "assets/cds/images/actions/change_department.svg"},
+    { name: 'If Online Agent', type: TYPE_ACTION.ONLINE_AGENTS, src: "assets/cds/images/actions/online_agents.svg", description: 'This action moves the flow to different blocks, based on the agents’ availability.<br>If there are agents available the <b>TRUE block</b> will be triggered.<br>If there are no agents available the <b>FALSE block</b> will be triggered.<br>One of the two options can be unset. The flow will optionally stop only when a block-populated condition is met.<br>To optionally stop the flow set “Stop on met condition”. To always continue unset Stop on met condition.' },
+    { name: 'If Operating Hours', type: TYPE_ACTION.OPEN_HOURS, src: "assets/cds/images/actions/open_hours.svg", description: 'This action moves the flow to different blocks, based on the operating hours status.<br>During working hours the <b>TRUE block</b> will be triggered.<br>During offline hours the <b>FALSE block</b> will be triggered.<br>One of the two options can be unset. The flow will optionally stop only when a block-populated condition is met.<br>To optionally stop the flow set “Stop on met condition”. To always continue unset the same option.'},
+    { name: 'Hidden message', type: TYPE_ACTION.HIDE_MESSSAGE, src: "assets/cds/images/actions/hidden_message.svg"},
+    { name: 'Condition', type: TYPE_ACTION.JSON_CONDITION, src: "assets/cds/images/actions/condition.svg"},
     { name: 'Form', type: TYPE_INTENT_ELEMENT.FORM, src: "assets/cds/images/form.svg", description: "Add a Form to ask user data"},
     { name: 'Answer', type: TYPE_INTENT_ELEMENT.ANSWER, src: "assets/cds/images/form.svg", description: "Add an Answer"},
     { name: 'Question', type: TYPE_INTENT_ELEMENT.QUESTION, src: "assets/cds/images/form.svg", description: "Add a Question"},
 ]
 
+
 export const ACTIONS_LIST= {
-    REPLY : { name: 'Reply', category: TYPE_ACTION_CATEGORY.MOST_USED, type: TYPE_ACTION.REPLY, src:"assets/cds/images/actions/reply.svg", description: '<b>Pro tip</b>: Turn this block into a programmed proactive message. <a href=https://www.youtube.com/embed/SgDGwvVoqWE target=_blank>Here is how!</a> '},
-    RANDOM_REPLY : { name: 'Random Reply', category: TYPE_ACTION_CATEGORY.MOST_USED, type: TYPE_ACTION.RANDOM_REPLY, src:"assets/cds/images/actions/random_reply.svg", description: 'Create some replies that will be randomly selected'},
-    AGENT : { name: 'Agent Handoff', category: TYPE_ACTION_CATEGORY.MOST_USED, type: TYPE_ACTION.AGENT, src:"assets/cds/images/actions/agent_handoff.svg", description: 'This action replaces the current chatbot with an agent.<br>The upcoming agent is assigned to the conversation following the department rules'},
-    CLOSE : { name: 'Close', category: TYPE_ACTION_CATEGORY.MOST_USED, type: TYPE_ACTION.CLOSE, src:"assets/cds/images/actions/close.svg", description: 'This action instantly closes the current conversation'},
-    OPEN_HOURS: { name: 'If Operating Hours', category: TYPE_ACTION_CATEGORY.MOST_USED, type: TYPE_ACTION.OPEN_HOURS, src: "assets/cds/images/actions/open_hours.svg", description: 'This action moves the flow to different blocks, based on the operating hours status.<br>During working hours the <b>TRUE block</b> will be triggered.<br>During offline hours the <b>FALSE block</b> will be triggered.<br>One of the two options can be unset. The flow will optionally stop only when a block-populated condition is met.<br>To optionally stop the flow set “Stop on met condition”. To always continue unset the same option.' },
-    ONLINE_AGENTS: { name: 'If Online Agent', category: TYPE_ACTION_CATEGORY.MOST_USED, type: TYPE_ACTION.ONLINE_AGENTS, src: "assets/cds/images/actions/online_agents.svg", description: 'This action moves the flow to different blocks, based on the agents’ availability.<br>If there are agents available the <b>TRUE block</b> will be triggered.<br>If there are no agents available the <b>FALSE block</b> will be triggered.<br>One of the two options can be unset. The flow will optionally stop only when a block-populated condition is met.<br>To optionally stop the flow set “Stop on met condition”. To always continue unset Stop on met condition.' },
-    JSON_CONDITION: { name: 'Condition', category: TYPE_ACTION_CATEGORY.FLOW, type: TYPE_ACTION.JSON_CONDITION, src: "assets/cds/images/actions/condition.svg" },
-    INTENT : { name: 'Connect block', category: TYPE_ACTION_CATEGORY.FLOW, type: TYPE_ACTION.INTENT, src:"assets/cds/images/actions/connect_intent.svg", description: 'This action moves the flow to the specified block.<br> Keep in mind that if there are other actions in the current block actions-pipeline they will be executed too, generating a parallel-execution of all the branches affering to each block triggered through this Connect-block action.'},
-    ASSIGN_VARIABLE: { name: 'Set attribute', category: TYPE_ACTION_CATEGORY.FLOW, type: TYPE_ACTION.ASSIGN_VARIABLE, src: "assets/cds/images/actions/assign_var.svg" },
-    DELETE_VARIABLE: { name: 'Delete attribute', category: TYPE_ACTION_CATEGORY.FLOW, type: TYPE_ACTION.DELETE_VARIABLE, src: "assets/cds/images/actions/delete_var.svg" },
-    REPLACE_BOT: { name: 'Replace bot', category: TYPE_ACTION_CATEGORY.FLOW, type: TYPE_ACTION.REPLACE_BOT, src: "assets/cds/images/actions/replace_bot.svg", description: "Choose a chatbot to replace the current one in the conversation" },
+    REPLY : { name: 'Reply', type: TYPE_ACTION.REPLY, src:"assets/cds/images/actions/reply.svg", description: '<b>Pro tip</b>: Turn this block into a programmed proactive message. <a href=https://www.youtube.com/embed/SgDGwvVoqWE target=_blank>Here is how!</a> '},
+    RANDOM_REPLY : { name: 'Random Reply', type: TYPE_ACTION.RANDOM_REPLY, src:"assets/cds/images/actions/random_reply.svg", description: 'Create some replies that will be randomly selected'},
+    WEB_REQUEST : { name: 'Web Request', type: TYPE_ACTION.WEB_REQUEST, src:"assets/cds/images/actions/web_request.svg", description: ''},
+    AGENT : { name: 'Agent Handoff', type: TYPE_ACTION.AGENT, src:"assets/cds/images/actions/agent_handoff.svg", description: 'This action replaces the current chatbot with an agent.<br>The upcoming agent is assigned to the conversation following the department rules'},
+    CLOSE : { name: 'Close', type: TYPE_ACTION.CLOSE, src:"assets/cds/images/actions/close.svg", description: 'This action instantly closes the current conversation'},
+    EMAIL : { name: 'Send email', type: TYPE_ACTION.EMAIL, src:"assets/cds/images/actions/send_email.svg", description: 'This action send an email to the specified users group or email addresses.<br>You can use a comma sepatated addresses list.<br>i.e. “andrea@tiledesk.com, gab@tiledesk.com"<br>You can use the special tag “@everyone” to send an email to each of the Tiledesk’s project teamates.<br><br>You can also use the name of a single user group using the group name. i.e. “sales”'},
+    WHATSAPP_STATIC: { name: 'WhatsApp Static', type: TYPE_ACTION.WHATSAPP_STATIC, src: "assets/cds/images/actions/whatsapp.svg", description: 'This action send an approved WhatsApp template' },
+    WHATSAPP_ATTRIBUTE: { name: 'WhatsApp by Attribute', type: TYPE_ACTION.WHATSAPP_ATTRIBUTE, src: "assets/cds/images/actions/whatsapp.svg", description: 'This action send an approved WhatsApp template' },
+    WHATSAPP_SEGMENT: { name: 'WhatsApp by Segment', type: TYPE_ACTION.WHATSAPP_SEGMENT, src: "assets/cds/images/actions/whatsapp.svg", description: 'This action send an approved WhatsApp template' },
     WAIT : { name: 'Wait', type: TYPE_ACTION.WAIT, src:"assets/cds/images/actions/wait.svg", description: 'This action waits the specified amount of milliseconds before moving to the next one along the block actions-pipeline'},
-    WEB_REQUEST : { name: 'Web Request',category: TYPE_ACTION_CATEGORY.INTEGRATIONS, type: TYPE_ACTION.WEB_REQUEST, src:"assets/cds/images/actions/web_request.svg", description: ''},
-    WEB_REQUESTV2 : { name: 'Web Request-v2',category: TYPE_ACTION_CATEGORY.INTEGRATIONS, type: TYPE_ACTION.WEB_REQUESTV2, src:"assets/cds/images/actions/web_request.svg", description: ''},
-    EMAIL : { name: 'Send email', category: TYPE_ACTION_CATEGORY.INTEGRATIONS, type: TYPE_ACTION.EMAIL, src:"assets/cds/images/actions/send_email.svg", description: 'This action send an email to the specified users group or email addresses.<br>You can use a comma sepatated addresses list.<br>i.e. “andrea@tiledesk.com, gab@tiledesk.com"<br>You can use the special tag “@everyone” to send an email to each of the Tiledesk’s project teamates.<br><br>You can also use the name of a single user group using the group name. i.e. “sales”'},
-    WHATSAPP_STATIC: { name: 'WhatsApp Static', category: TYPE_ACTION_CATEGORY.INTEGRATIONS, type: TYPE_ACTION.WHATSAPP_STATIC, src: "assets/cds/images/actions/whatsapp.svg", description: 'This action send an approved WhatsApp template' },
-    WHATSAPP_ATTRIBUTE: { name: 'WhatsApp by Attribute', category: TYPE_ACTION_CATEGORY.INTEGRATIONS, type: TYPE_ACTION.WHATSAPP_ATTRIBUTE, src: "assets/cds/images/actions/whatsapp.svg", description: 'This action send an approved WhatsApp template' },
-    // WHATSAPP_SEGMENT: { name: 'WhatsApp by Segment', category: TYPE_ACTION_CATEGORY.INTEGRATIONS, type: TYPE_ACTION.WHATSAPP_SEGMENT, src: "assets/cds/images/actions/whatsapp.svg", description: 'This action send an approved WhatsApp template' },
-    ASKGPT: { name: 'Ask GPT', type: TYPE_ACTION.ASKGPT, category: TYPE_ACTION_CATEGORY.INTEGRATIONS, src: "assets/cds/images/actions/openai-icon.svg", description: 'This action forwards the question to ChatGPT' },
-    GPT_TASK: { name: 'GPT Task', type: TYPE_ACTION.GPT_TASK, category: TYPE_ACTION_CATEGORY.INTEGRATIONS, src: "assets/cds/images/actions/openai-icon.svg", description: 'This action forwards the question to ChatGPT' },
-    HIDE_MESSAGE: { name: 'Hidden message', category: TYPE_ACTION_CATEGORY.SPECIAL, type: TYPE_ACTION.HIDE_MESSAGE, src: "assets/cds/images/actions/hidden_message.svg" },
-    CHANGE_DEPARTMENT: { name: 'Change dept', category: TYPE_ACTION_CATEGORY.SPECIAL, type: TYPE_ACTION.CHANGE_DEPARTMENT, src: "assets/cds/images/actions/change_department.svg" },
-    // ASSIGN_FUNCTION: { name: 'Set function', category: TYPE_ACTION_CATEGORY.NEW, type: TYPE_ACTION.ASSIGN_FUNCTION, src: "assets/cds/images/actions/assign_var.svg" },
+    INTENT : { name: 'Connect block', type: TYPE_ACTION.INTENT, src:"assets/cds/images/actions/connect_intent.svg", description: 'This action moves the flow to the specified block.<br> Keep in mind that if there are other actions in the current block actions-pipeline they will be executed too, generating a parallel-execution of all the branches affering to each block triggered through this Connect-block action.'},
+    // CONDITION : { name: 'Condition', type: TYPE_ACTION.CONDITION, src:"assets/cds/images/actions/condition.svg"},
+    ASSIGN_VARIABLE: { name: 'Set attribute', type: TYPE_ACTION.ASSIGN_VARIABLE, src: "assets/cds/images/actions/assign_var.svg" },
+    ASSIGN_FUNCTION: { name: 'Set function', type: TYPE_ACTION.ASSIGN_FUNCTION, src: "assets/cds/images/actions/assign_var.svg" },
+    DELETE_VARIABLE: { name: 'Delete attribute', type: TYPE_ACTION.DELETE_VARIABLE, src: "assets/cds/images/actions/delete_var.svg" },
+    REPLACE_BOT: { name: 'Replace bot', type: TYPE_ACTION.REPLACE_BOT, src: "assets/cds/images/actions/replace_bot.svg", description: "Choose a chatbot to replace the current one in the conversation" },
+    CHANGE_DEPARTMENT: { name: 'Change dept', type: TYPE_ACTION.CHANGE_DEPARTMENT, src: "assets/cds/images/actions/change_department.svg" },
+    ONLINE_AGENTS: { name: 'If Online Agent', type: TYPE_ACTION.ONLINE_AGENTS, src: "assets/cds/images/actions/online_agents.svg", description: 'This action moves the flow to different blocks, based on the agents’ availability.<br>If there are agents available the <b>TRUE block</b> will be triggered.<br>If there are no agents available the <b>FALSE block</b> will be triggered.<br>One of the two options can be unset. The flow will optionally stop only when a block-populated condition is met.<br>To optionally stop the flow set “Stop on met condition”. To always continue unset Stop on met condition.' },
+    OPEN_HOURS: { name: 'If Operating Hours', type: TYPE_ACTION.OPEN_HOURS, src: "assets/cds/images/actions/open_hours.svg", description: 'This action moves the flow to different blocks, based on the operating hours status.<br>During working hours the <b>TRUE block</b> will be triggered.<br>During offline hours the <b>FALSE block</b> will be triggered.<br>One of the two options can be unset. The flow will optionally stop only when a block-populated condition is met.<br>To optionally stop the flow set “Stop on met condition”. To always continue unset the same option.' },
+    HIDE_MESSSAGE: { name: 'Hidden message', type: TYPE_ACTION.HIDE_MESSSAGE, src: "assets/cds/images/actions/hidden_message.svg" },
+    JSON_CONDITION: { name: 'Condition', type: TYPE_ACTION.JSON_CONDITION, src: "assets/cds/images/actions/condition.svg" }
 }
 
 
@@ -301,7 +253,6 @@ export const TYPE_FUNCTION_LIST_FOR_VARIABLES: { [key: string]: { name: string, 
     "floorAsNumbers": { name: "Floor", type: TYPE_FUNCTION_VAR.floorAsNumber, src: "assets/cds/images/operators/floor.svg" },
     "ceilAsNumbers": { name: "Ceil", type: TYPE_FUNCTION_VAR.ceilAsNumber, src: "assets/cds/images/operators/ceil.svg" },
 }
-
 export const TYPE_FUNCTION_LIST_FOR_FUNCTIONS: { [key: string]: { name: string, type: TYPE_FUNCTION_FUNC, src?: string } } = {
     "isOpenNowAsStrings": { name: "Is open now", type: TYPE_FUNCTION_FUNC.isOpenNowAsStrings, src: "" },
     "availableAgentAsStrings": { name: "Available agents?", type: TYPE_FUNCTION_FUNC.availableAgentsAsStrings, src: "" },
@@ -314,17 +265,6 @@ export const CERTIFIED_TAGS: Array<{color: string, name: string}> = [
     // { "color": "#0049bd", "name": "Self-serve" }, 
 ]
 
-export const BUTTON_TYPES: Array<{ label: string, value: TYPE_BUTTON }> = [
-    { label: "text", value: TYPE_BUTTON.TEXT },
-    { label: "url", value: TYPE_BUTTON.URL },
-    { label: "go to block", value: TYPE_BUTTON.ACTION }
-]
-
-export const URL_TYPES: Array<{ label: string, value: TYPE_URL }> = [
-    { label: "blank", value: TYPE_URL.BLANK },
-    { label: "parent", value: TYPE_URL.PARENT },
-    { label: "self", value: TYPE_URL.SELF },
-]
 
 export function OperatorValidator(control: AbstractControl): { [key: string]: boolean } | null {
     if (control.value in TYPE_OPERATOR) {
@@ -375,39 +315,6 @@ export function patchActionId(action) {
     return action;
 }
 
-
-export function generateShortUID(index?) {
-    let timestamp = uuidv4();
-    timestamp = timestamp.replace(/-/g, "");
-    // const timestamp = Date.now().toString(36)+index;
-    return timestamp; // + randomChars;
-}
-  
-export function convertJsonToArray(jsonData:any){
-    const arrayOfObjs = Object.entries(jsonData).map(([key, value]) => ({ 'name': key, 'value': value }))
-    return arrayOfObjs;
-}
-
-export function checkIFElementExists(elementId:string){
-    var element = document.getElementById(elementId);
-    if(!element){
-      return false;
-    } else {
-      return true;
-    }
-}
-
-export function removeNodesStartingWith(obj, start) {
-    for (const key in obj) {
-        if (key.startsWith(start)) {
-            delete obj[key];
-        } else if (typeof obj[key] === 'object') {
-            removeNodesStartingWith(obj[key], start);
-        }
-    }
-    return obj;
-}
-
 // export function retriveListOfVariables(intents: Array<Intent>) {
 //     variableList.userDefined = []
 //     intents.forEach(intent => {
@@ -420,32 +327,3 @@ export function removeNodesStartingWith(obj, start) {
 //         }))
 //     })
 // }
-
-export function moveItemToPosition(array, DISPLAY_NAME, position) {
-    if (position < 0 || position >= array.length) {
-        return array;
-    }
-    const startIndex = array.findIndex(item => item.intent_display_name.trim() === DISPLAY_NAME);
-    if (startIndex === -1 || startIndex === position) {
-        return array;
-    }
-    const itemToMove = array[startIndex];
-    array.splice(startIndex, 1);
-    array.splice(position, 0, itemToMove);
-    return array;
-}
-
-export function replaceItemInArrayForKey(key, array, item) {
-    let keyValue = item[key];
-    for (let i = 0; i < array.length; i++) {
-        if (array[i][key] === keyValue) {
-          array[i] = item;
-          return;
-        }
-    }
-    return array;
-}
-
-export function checkInternalIntent(intent: Intent): boolean{
-    return intent.intent_display_name === TYPE_INTENT_NAME.DISPLAY_NAME_START ||  intent.intent_display_name === TYPE_INTENT_NAME.DISPLAY_NAME_DEFAULT_FALLBACK ? true: false
-}

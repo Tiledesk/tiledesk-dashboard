@@ -1,0 +1,36 @@
+<div class="box-sx">
+    <div class="box-responses-type" 
+    cdkDropList
+    [cdkDropListData]="items"
+    cdkDropListSortingDisabled
+    (cdkDropListDropped)="drop($event)"
+    >
+        <!-- <p class="card-title">Type response</p> -->
+        <div data-adding-allowed="true" class="add-responses">
+
+            <div data-add-response-type="Type.TEXT" class="add-response" (click)="addElement(TypeMessage.TEXT)" ncdkDrag>
+                <i class="material-icons">text_fields</i><span>{{'Text' | translate}}</span>
+            </div>
+            <!-- <div data-add-response-type="Type.RANDOM_TEXT" class="add-response" cdkDrag>
+                <i class="material-icons">text_fields</i><span>Random text</span>
+            </div> -->
+            <div data-add-response-type="Type.IMAGE" class="add-response" (click)="addElement(TypeMessage.IMAGE)" cdkDrag>
+                <i class="material-icons">image</i><span>{{'Image' | translate}}</span>
+            </div>
+            <!-- <div data-add-response-type="Type.FORM" class="add-response" cdkDrag>
+                <i class="material-icons">view_module</i><span>Form</span>
+            </div> -->
+            <div data-add-response-type="Type.VIDEO" class="add-response" (click)="addElement(TypeMessage.FRAME)" cdkDrag>
+                <i class="material-icons">play_circle</i><span>{{'Video' | translate}}</span>
+            </div>
+
+            <!-- <div data-add-response-type="Type.GALLERY" class="add-response" (click)="addElement(TypeMessage.GALLERY)" cdkDrag>
+                <i class="material-icons">view_carousel</i><span>{{'Gallery' | translate}}</span>
+            </div> -->
+
+            <div data-add-response-type="Type.REDIRECT" class="add-response" (click)="addElement(TypeMessage.REDIRECT)" cdkDrag>
+                <i class="material-icons">launch</i><span>{{'Redirect' | translate}}</span>
+            </div>
+        </div>
+    </div>
+</div>

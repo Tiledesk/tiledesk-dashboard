@@ -1,0 +1,116 @@
+<!-- <cds-action-description 
+    [actionType]="'WEB_REQUEST'"
+    [actionSelected]="action">
+</cds-action-description> -->
+
+<div class="content" #scrollMe id="scrollMe" >
+
+    <div class="input-group cds-input-group">
+        <span class="input-group-addon">
+            <ng-select 
+                class = "form-control-select" 
+                [items] = "methods" 
+                bindLabel="label"
+                bindValue="value"
+                [searchable] = false
+                [clearable] = false
+                [(ngModel)] = "action.method"
+                (change) = "onChangeMethodButton($event)">
+            </ng-select>
+        </span>
+        <cds-textarea id="url"
+            class="text-editable-div"
+            [text]="action.url" 
+            [minRow]="1" [maxRow]="1"
+            popoverVerticalAlign="above"
+            [textLimitBtn]="false"
+            [emojiPikerBtn]="false"
+            [setAttributeBtn]="true"
+            [placeholder]="'Enter request URL'"
+            (changeTextarea)="onChangeTextarea($event, 'url')">
+        </cds-textarea>
+
+        <!-- <input [(ngModel)]="action.url" type="text" placeholder="Enter request URL" class="ng-untouched ng-pristine ng-valid">  -->
+    </div>
+
+    <div class="cds-web-request-row">
+        <div class="add-response" (click)="onChangeParamsButton()">
+            <span [ngClass]="{'cds-action-active': methodSelectedHeader}">Header</span>
+        </div>
+        <div class="add-response" (click)="onChangeParamsButton()">
+            <span [ngClass]="{'cds-action-active': methodSelectedBody}">Body</span>
+        </div>
+        <div  *ngIf="methodSelectedBody" class="cds-rigth">
+            <button id="cds-community-btn" type="button" class="btn btn-primary pull-right cds-blue-button" (click)="onJsonFormatter()">format JSON </button>
+        </div>
+    </div>
+    
+    <div class="cds-web-request-row">
+
+        <cds-attributes
+            *ngIf="methodSelectedHeader"
+            class="cds-attributes"
+            [method]="typeMethodAttribute.INPUT"
+            [attributes]="jsonHeader"
+            (changeAttributes)="onChangeAttributes($event)">
+        </cds-attributes>
+
+        <cds-textarea *ngIf="methodSelectedBody"
+            [ngClass]="{'jsonError': !jsonIsValid}"
+            class = "text-editable-div"
+            [text]="jsonBody"
+            [textLimitBtn]="false"
+            [emojiPikerBtn]="false"
+            [setAttributeBtn]="true"
+            [minRow]="5" [maxRow]="10"
+            [readonly]="false"
+            (changeTextarea)="onChangeTextarea($event, 'jsonBody')">
+        </cds-textarea>
+    </div>
+
+    <div *ngIf="methodSelectedBody"
+        class="cds-web-request-row-error center" 
+        [ngClass]="{'json-error-yes': !jsonIsValid}">
+        <!-- [ngStyle]="{'opacity':jsonIsValid ? '0' : '1' }" -->
+        <span>{{errorMessage}}</span>
+    </div>
+
+    <!-- <div class="cds-web-request-row input-group cds-input-group">
+        <div class="label-assign-to">Assign to</div>
+        <input [(ngModel)]="action.assignTo" type="text" placeholder="..." [formControl]="assignTo" [pattern]="pattern"> 
+    </div> -->
+
+    <div class="text-editor-wrapper">
+        <div class="field-box">
+            <label class="title-label">Assign to:</label>
+
+            <cds-attributes
+                class="cds-attributes"
+                [attributes]="assignments"
+                [method]="typeMethodAttribute.TEXT"
+                [openBlock]="true"
+                (changeAttributes)="onChangeAttributesResponse($event)">
+            </cds-attributes>
+
+            <!-- <div class="value-wrp">
+                <cds-textarea id="assignTo"
+                    [ngClass]="{'assigned' : action.assignTo}"
+                    [text]="action.assignTo"
+                    [textLimitBtn]="false"
+                    [emojiPikerBtn]="false"
+                    [setAttributeBtn]="hasSelectedVariable? false: true"
+                    [minRow]="1" [maxRow]="1"
+                    [readonly]="true"
+                    (clearSelectedAttribute)="onClearSelectedAttribute()"
+                    (selectedAttribute)="onSelectedAttribute($event,1)">
+                </cds-textarea>
+            </div> -->
+        </div>
+    </div>
+    <!-- <div 
+        [ngStyle]="{'opacity':assignTo.errors?.pattern ? '1' : '0' }"
+        class="cds-web-request-row-error center json-error-yes">
+        <span>The entered field is not in a valid format</span>
+    </div> -->
+    
+</div>

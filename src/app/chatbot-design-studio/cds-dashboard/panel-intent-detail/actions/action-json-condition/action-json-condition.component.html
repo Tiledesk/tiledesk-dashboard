@@ -1,0 +1,118 @@
+<div class="content" #scrollMe id="scrollMe" >
+
+    <form [formGroup]="actionJsonConditionFormGroup">
+        <!-- formArrayName="groups" -->
+        <div > 
+            <!-- [formGroupName]="i" -->
+            <div class="text-editor-wrapper" *ngFor="let group of action?.groups; let i = index; let last = last">
+                <!-- EXPRESSION [i]-->
+                <div *ngIf="i%2 === 0" class="base-filter">
+                    <div class="control-buttons" *ngIf="group?.conditions && group?.conditions.length > 0 || i!==0">
+                        <div class="filter-remove" (click)="onDeleteGroup(i, last)"><span class="material-icons">delete</span></div>
+                    </div>
+                    <base-filter *ngIf="i%2 === 0"
+                        [expression]="group"
+                        [booleanOperators]="booleanOperators">
+                    </base-filter>
+                </div>
+
+                <!-- OPERATOR [i]-->
+                <div *ngIf="i%2 === 1" class="group-operator-wrapper">
+                    <div class="filter-add-group">
+                        <cds-select style="min-width:70px;"
+                            [items]="booleanOperators"
+                            [bindLabelSelect]="'operator'"
+                            [bindValueSelect]="'operator'"
+                            [placeholder]="'Select a block'"
+                            [itemSelected]="group?.operator"
+                            (onSelected)="onChangeOperator($event, i)">
+                        </cds-select>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="filter-add-group-wrapper add-conditions-group">
+            <div class="filter-add-group" (click)="onClickAddGroup()">
+                <div class="filter-add-group-plus"><span class="material-icons">add</span></div>
+                <span class="text">Add conditions group</span>
+            </div> 
+        </div>
+
+
+        <div class="text-editor-wrapper">
+            <div class="field-box">
+                <label class="title-label">if <b style="color: green">TRUE</b> go to:</label>
+                <ul>
+                    <li style="background-color: green;"></li>
+                    <cds-select id="text-condition"
+                        [items]="listOfActions"
+                        [bindLabelSelect]="'name'"
+                        [bindValueSelect]="'value'"
+                        [itemSelected]="action?.trueIntent"
+                        [placeholder]="'Select a block'"
+                        [clearable]="true"
+                        (onSelected)="onChangeForm($event, 'trueIntent')">
+                    </cds-select>
+                </ul> 
+            </div>
+            <cds-attributes
+                class="cds-attributes"
+                [attributes]="trueIntentAttributes"
+                (changeAttributes)="onChangeAttributesTrue($event)"
+            ></cds-attributes>
+        </div>
+    
+        <div class="text-editor-wrapper">
+            <div class="field-box">
+                <label class="title-label">if <b style="color: red">FALSE</b> go to:</label>
+                <ul>
+                    <li style="background-color: red;"></li>
+                    <cds-select id="text-condition"
+                        [items]="listOfActions"
+                        [bindLabelSelect]="'name'"
+                        [bindValueSelect]="'value'"
+                        [itemSelected]="action?.falseIntent"
+                        [placeholder]="'Select a block'"
+                        [clearable]="true"
+                        (onSelected)="onChangeForm($event, 'falseIntent')">
+                    </cds-select>
+                </ul>
+            </div>
+            <cds-attributes
+                class="cds-attributes"
+                [attributes]="falseIntentAttributes"
+                (changeAttributes)="onChangeAttributesFalse($event)"
+            ></cds-attributes>
+        </div>
+    
+        
+
+    </form>
+
+    
+
+</div>
+
+<div class="footer-panel-intent-detail">
+    <!-- <div class="text-editor-wrapper checkbox-condition">
+        <div class="field-box">
+            <mat-checkbox 
+                [formControl]="actionJsonConditionFormGroup.controls['stopOnConditionMet']">
+                {{"Stop on condition met" | translate}}
+            </mat-checkbox>
+        </div>
+    </div> -->
+
+    <div class="disable-input-message">
+        <section class="disable-input-message-section">
+            <mat-checkbox 
+                [checked]="action.stopOnConditionMet"
+                (change)="onStopConditionMeet()">
+                {{"Stop on condition met" | translate}}
+            </mat-checkbox>
+        </section>
+    </div>
+</div>

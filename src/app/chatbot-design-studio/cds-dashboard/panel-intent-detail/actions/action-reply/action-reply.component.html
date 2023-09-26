@@ -1,0 +1,209 @@
+
+<div class="box-up">
+    <appdashboard-panel-reply-tools
+        class="panel-tools-response"
+        (addNewResponse) = onAddNewResponse($event)>
+    </appdashboard-panel-reply-tools>
+</div>
+
+<div class="box-dw">
+    <div class="reply-info" *ngIf="typeAction === typeActions.RANDOM_REPLY">{{actionList.RANDOM_REPLY.description}}</div>
+    <!-- [ngStyle]="{'transform': translateY}" -->
+    <div #scrollMe id="scrollMe" 
+        class="content draggable-list" 
+        cdkDropList 
+        (cdkDropListDropped)="drop($event)">
+        <!-- <div *ngFor="let response of arrayResponses; let i = index;" class="draggable-box" cdkDrag> -->
+        <div *ngFor="let message of arrayMessagesWithWait; let i = index;" 
+            class="draggable-box" 
+            [ngStyle]="{'margin-top':typeAction === typeActions.RANDOM_REPLY?'20px':'0px', 'margin-bottom':typeAction === typeActions.RANDOM_REPLY?'30px':'0px'}" 
+            cdkDrag>
+            <div *ngIf="message.type === typeMessage.TEXT">
+                <div class="custom-placeholder" *cdkDragPlaceholder>
+                    <appdashboard-text-response
+                        [index] = i
+                        [typeAction] = typeAction
+                        [response] = message>
+                    </appdashboard-text-response>
+                </div>
+                
+                <div class="response">
+                    <div *ngIf="typeAction === typeActions.REPLY"
+                        class="response-drop" 
+                        [ngClass]="{'grabbing':textGrabbing}"
+                        (mousedown)="mouseDown()" 
+                        (mouseup)="mouseUp()" 
+                        cdkDragHandle>
+                    </div> 
+                    <appdashboard-text-response
+                        [index] = i
+                        [typeAction] = typeAction
+                        [response] = message
+                        (moveUpResponse) = onMoveUpResponse($event)
+                        (moveDownResponse) = onMoveDownResponse($event)
+                        (deleteResponse) = onDeleteResponse($event)
+                        (openButtonPanel) = onOpenButtonPanel($event)
+                        (changeDelayTimeReplyElement) = onChangeDelayTimeReplyElement()
+                        (changeReplyElement) = onChangeReplyElement()>
+                    </appdashboard-text-response>
+                </div>
+            </div>
+            
+            <div *ngIf="message.type === typeMessage.IMAGE">
+                <div class="custom-placeholder" *cdkDragPlaceholder>
+                    <appdashboard-image-response
+                        [index] = i
+                        [typeAction] = typeAction
+                        [response] = message>
+                    </appdashboard-image-response>
+                </div>
+                
+                <div class="response">
+                    <div *ngIf="typeAction === typeActions.REPLY"
+                        class="response-drop" 
+                        [ngClass]="{'grabbing':textGrabbing}"
+                        (mousedown)="mouseDown()" 
+                        (mouseup)="mouseUp()" 
+                        cdkDragHandle>
+                    </div> 
+                    <appdashboard-image-response
+                        [index] = i
+                        [typeAction] = typeAction
+                        [response] = message
+                        (moveUpResponse) = onMoveUpResponse($event)
+                        (moveDownResponse) = onMoveDownResponse($event)
+                        (deleteResponse) = onDeleteResponse($event)
+                        (openButtonPanel) = onOpenButtonPanel($event)
+                        (changeDelayTimeReplyElement)=onChangeDelayTimeReplyElement()
+                        (changeReplyElement) = onChangeReplyElement()>
+                    </appdashboard-image-response>
+                </div>
+            </div>
+
+            <div *ngIf="message.type === typeMessage.FRAME">
+                <div class="custom-placeholder" *cdkDragPlaceholder>
+                    <appdashboard-frame-response
+                        [index] = i
+                        [typeAction] = typeAction
+                        [response] = message>
+                    </appdashboard-frame-response>
+                </div>
+                
+                <div class="response">
+                    <div *ngIf="typeAction === typeActions.REPLY" 
+                        class="response-drop" 
+                        [ngClass]="{'grabbing':textGrabbing}"
+                        (mousedown)="mouseDown()" 
+                        (mouseup)="mouseUp()" 
+                        cdkDragHandle>
+                    </div> 
+                    <appdashboard-frame-response
+                        [index] = i
+                        [typeAction] = typeAction
+                        [response] = message
+                        onChangeText
+                        (moveUpResponse) = onMoveUpResponse($event)
+                        (moveDownResponse) = onMoveDownResponse($event)
+                        (deleteResponse) = onDeleteResponse($event)
+                        (openButtonPanel) = onOpenButtonPanel($event)
+                        (changeDelayTimeReplyElement) = onChangeDelayTimeReplyElement()
+                        (changeReplyElement) = onChangeReplyElement()>
+                    </appdashboard-frame-response>
+                </div>
+            </div>
+
+
+            <div *ngIf="message.type === typeMessage.GALLERY">
+                <div class="custom-placeholder" *cdkDragPlaceholder>
+                    <appdashboard-gallery-response
+                        [index] = i
+                        [typeAction] = typeAction
+                        [response] = message>
+                    </appdashboard-gallery-response>
+                </div>
+                
+                <div class="response">
+                    <div *ngIf="typeAction === typeActions.REPLY" 
+                        class="response-drop" 
+                        [ngClass]="{'grabbing':textGrabbing}"
+                        (mousedown)="mouseDown()" 
+                        (mouseup)="mouseUp()" 
+                        cdkDragHandle>
+                    </div> 
+                    <appdashboard-gallery-response
+                        [index] = i
+                        [typeAction] = typeAction
+                        [response] = message
+                        onChangeText
+                        (moveUpResponse) = onMoveUpResponse($event)
+                        (moveDownResponse) = onMoveDownResponse($event)
+                        (deleteResponse) = onDeleteResponse($event)
+                        (openButtonPanel) = onOpenButtonPanel($event)
+                        (changeDelayTimeReplyElement) = onChangeDelayTimeReplyElement()
+                        (changeReplyElement) = onChangeReplyElement()>
+                    </appdashboard-gallery-response>
+                </div>
+            </div>
+
+
+            <div *ngIf="message.type === typeMessage.REDIRECT">
+                <div class="custom-placeholder" *cdkDragPlaceholder>
+                    <appdashboard-redirect-response
+                        [index] = i
+                        [typeAction] = typeAction
+                        [response] = message>
+                    </appdashboard-redirect-response>
+                </div>
+                
+                <div class="response">
+                    <div *ngIf="typeAction === typeActions.REPLY" 
+                        class="response-drop" 
+                        [ngClass]="{'grabbing':textGrabbing}"
+                        (mousedown)="mouseDown()" 
+                        (mouseup)="mouseUp()" 
+                        cdkDragHandle>
+                    </div> 
+                    <appdashboard-redirect-response
+                        [index] = i
+                        [typeAction] = typeAction
+                        [response] = message
+                        onChangeText
+                        (moveUpResponse) = onMoveUpResponse($event)
+                        (moveDownResponse) = onMoveDownResponse($event)
+                        (deleteResponse) = onDeleteResponse($event)
+                        (changeDelayTimeReplyElement) = onChangeDelayTimeReplyElement()
+                        (changeReplyElement) = onChangeReplyElement()>
+                    </appdashboard-redirect-response>
+                </div>
+            </div>
+    
+        </div>
+    </div>
+
+</div>
+
+
+<div class="footer-panel-intent-detail">
+    <div class="disable-input-message">
+        <section class="disable-input-message-section">
+            <mat-checkbox 
+                [checked]="reply.attributes.disableInputMessage"
+                (change)="onDisableInputMessage()">
+                {{"Disable input box" | translate}}
+            </mat-checkbox>
+        </section>
+    </div>
+</div>
+
+
+
+<div class="card-buttons" (focusout)="onFocusOutEvent($event)"
+    [ngClass]="{'active':openCardButton}">
+    <appdashboard-panel-button-configuration
+        *ngIf="openCardButton"
+        [button] = buttonSelected
+        [listOfActions] = listOfActions
+        (closeButtonPanel) = onCloseButtonPanel()
+        (saveButton) = onSaveButton($event)>
+    </appdashboard-panel-button-configuration>
+</div>

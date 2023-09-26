@@ -1,0 +1,93 @@
+<div *ngIf="typeAction === typeActions.REPLY" class="extensions-response">
+    <div class="delay-wrapper" [ngStyle]="{width: canShowFilter? 'auto': '100%'}">
+        <appdashboard-delay-slider
+            [delayTime]="delayTime"
+            (changeDelayTime)="onChangeDelayTime($event)"
+            (clickDelayTime)="onClickDelayTime($event)">
+        </appdashboard-delay-slider>
+    </div>
+    <div class="filter-wrapper" *ngIf="canShowFilter || response._tdJSONCondition?.conditions?.length > 0">
+        <appdashboard-filter
+            [expression]="response._tdJSONCondition"
+            [booleanOperators]="booleanOperators"
+            (onChangeExpression)="onChangeExpression($event)">
+        </appdashboard-filter>
+    </div>
+</div>
+
+
+<div class="frame-response">
+    
+    <div class="text-editor-wrapper">
+        <div class="text-editor">
+        
+            <div class="response-frame-wrapper"
+                [ngStyle]="{'width':framePath? 'auto' : '100%' }">
+                <div *ngIf="!framePath" class="response-frame-panel">              
+                    <div class="frame-panel">
+                        <appdashboard-element-from-url
+                            [metadata] = response.metadata
+                            (loadPathElement)="onLoadPathElement()"
+                        ></appdashboard-element-from-url>
+                    </div>
+                </div>
+
+                <div *ngIf="response.type === typeMessage.FRAME" class="content-frame">
+                    <iframe 
+                        *ngIf="framePath"
+                        id="contentFrame" 
+                        #iframe allowfullscreen
+                        style= "border:none;"
+                        [width]="frameWidth"
+                        [height]="frameHeight"
+                        [src]="framePath">
+                    </iframe>
+
+                    <div class="control-button delete" (click)="onDeletePathElement()">
+                        <em class="material-icons">clear</em>
+                    </div>
+                </div>
+
+                
+
+            </div>
+
+            <div class="response-controls">
+                 <div class="control-button delete" (click)="onDeleteResponse()">
+                    <em class="material-icons">delete</em>
+                </div>
+                <div *ngIf="typeAction === typeActions.REPLY" class="control-button" (click)="onMoveUpResponse()">
+                    <em class="material-icons">expand_less</em>
+                </div> 
+                <div *ngIf="typeAction === typeActions.REPLY" class="control-button" (click)="onMoveDownResponse()">
+                    <em class="material-icons">expand_more</em>
+                </div>
+            </div>
+            
+            <cds-textarea 
+                class="text-editable-div"
+                [text]="response.text" 
+                [minRow]="1"
+                popoverVerticalAlign="above"
+                [emojiPikerBtn]="true"
+                (changeTextarea)="onChangeTextarea($event)">
+            </cds-textarea>
+            
+            <div *ngIf="typeAction === typeActions.REPLY" class="text-editor-drop">
+                <em class="material-icons">drag_indicator</em>
+            </div> 
+        </div>
+        <!-- 
+        <div class="editor-utils">
+            <div class="num-chars" [ngClass]="{'error' : alertCharsText}">{{leftCharsText}}</div>
+            <!- <div class="text-editor-insert-attribute">
+                <em class="material-icons">code</em>
+            </div> 
+            <div class="emoji-picker">
+                <em class="material-icons">insert_emoticon</em>
+            </div>  ->
+        </div> -->
+
+    </div> 
+
+</div>

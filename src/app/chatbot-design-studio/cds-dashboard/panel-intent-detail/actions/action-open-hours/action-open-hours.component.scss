@@ -1,0 +1,87 @@
+@import "./src/assets/sass/cds/_variables.scss";
+
+.content-action {
+    margin-top: 10px;
+    height: 50px;
+    // float: left;
+    width: calc(100% - 250px);
+}
+.content {
+    //padding: 10px 30px;
+    padding: 20px 0px;
+    margin-left: 30px;
+    margin-right: 30px;
+}
+
+.text-editor-wrapper {
+    font-size: $font-size-base;
+    position: relative;
+    width: 100%;
+    height: auto;
+    margin: 0;
+    padding: 0;
+    margin-bottom: 30px;    
+}
+
+.field-box {
+    display: flex;
+    flex-direction: column;
+    // width: 70%;
+    min-width: 90px;
+}
+
+.title-label {
+    color: white;
+    font-size: 18px;
+    margin-bottom: 0px;
+    // margin-left: 30px;
+}
+
+
+ul {
+  text-align: justify;
+  position: relative;
+  overflow: hidden;
+  padding-top: 10px;
+  padding-inline-start: 0px;
+  height: 50px;
+}
+ul:before, .active:after {
+  content: '';
+  width: 70%;
+  border: 3px solid white;
+  position: absolute;
+  top: 22px;
+  z-index: 0;
+}
+.active:after {
+  border-color: lightblue;
+}
+ul:after {
+  content: "";
+  display: inline-block;
+  width: 100%;
+}
+li {
+  width: 2em;
+  height: 2em;
+  text-align: center;
+  line-height: 2em;
+  border-radius: 50%;
+  background: green;
+  margin: 0 0em;
+  display: inline-block;
+  color: white;
+  border: 2px white solid;
+  z-index: 0;
+  position: absolute;
+}
+
+
+#text-condition{
+    position: relative;
+    top: -4px;
+    right: -45px;
+    width: 88%;
+    display: block;
+}

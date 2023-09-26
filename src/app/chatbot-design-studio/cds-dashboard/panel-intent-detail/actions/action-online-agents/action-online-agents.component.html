@@ -1,0 +1,58 @@
+<div class="content-panel-intent-detail">
+
+    <div class="text-editor-wrapper">
+        <div class="field-box">
+            <label class="title-label">if <b style="color: green">TRUE</b> go to:</label>
+            <ul>
+                <li style="background-color: green;"></li>
+                <cds-select id="text-condition"
+                    [items]="listOfActions"
+                    [bindLabelSelect]="'name'"
+                    [bindValueSelect]="'value'"
+                    [itemSelected]="action?.trueIntent"
+                    (onSelected)="onChangeSelect($event, 'trueIntent')">
+                </cds-select>
+            </ul> 
+        </div>
+        <cds-attributes
+            class="cds-attributes"
+            [attributes]="trueIntentAttributes"
+            (changeAttributes)="onChangeAttributesTrue($event)"
+        ></cds-attributes>
+    </div>
+
+    <div class="text-editor-wrapper">
+        <div class="field-box">
+            <label class="title-label">if <b style="color: red">FALSE</b> go to:</label>
+            <ul>
+                <li style="background-color: red;"></li>
+                <cds-select id="text-condition"
+                    [items]="listOfActions"
+                    [bindLabelSelect]="'name'"
+                    [bindValueSelect]="'value'"
+                    [itemSelected]="action?.falseIntent"
+                    (onSelected)="onChangeSelect($event, 'falseIntent')">
+                </cds-select>
+            </ul>
+        </div>
+        <cds-attributes
+            class="cds-attributes"
+            [attributes]="falseIntentAttributes"
+            (changeAttributes)="onChangeAttributesFalse($event)"
+        ></cds-attributes>
+    </div>
+
+</div>
+
+
+<div class="footer-panel-intent-detail">
+    <div class="disable-input-message">
+        <section class="disable-input-message-section">
+            <mat-checkbox 
+                [checked]="action.stopOnConditionMet"
+                (change)="onStopConditionMeet()">
+                {{"Stop on condition met" | translate}}
+            </mat-checkbox>
+        </section>
+    </div>
+</div>

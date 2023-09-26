@@ -1,0 +1,20 @@
+<div class="content-panel-intent-detail">
+
+    <div class="text-editor-wrapper">
+        <div class="field-box">
+            <label class="title-label">Assign to:</label>
+            <div class="value-wrp">
+                <cds-textarea id="assignTo"
+                    [textLimitBtn]="false"
+                    [emojiPikerBtn]="false"
+                    [setAttributeBtn]="true"
+                    [minRow]="1" [maxRow]="1"
+                    [readonly]="true"
+                    [text]="action.attributeName"
+                    (selectedAttribute)="onSelectedAttribute($event)">
+                </cds-textarea>
+            </div>
+        </div>
+    </div>
+
+</div>

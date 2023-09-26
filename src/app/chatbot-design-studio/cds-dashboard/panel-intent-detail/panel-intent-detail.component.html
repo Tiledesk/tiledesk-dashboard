@@ -1,0 +1,199 @@
+<div class="panel-intent-detail" (click)="onClickInside()">
+    <div class="header-panel">
+        <cds-action-description 
+            *ngIf="elementIntentSelectedType === typeIntentElement.ACTION"
+            [actionSelected]="elementSelected"
+            [showTip]="true"
+            (closeIntent)="onCloseIntent()"
+            (saveIntent)="onSaveIntent()">
+        </cds-action-description>
+        <cds-action-description 
+            *ngIf="elementIntentSelectedType === typeIntentElement.FORM"
+            [elementType]="typeIntentElement.FORM"
+            [showTip]="false"
+            (closeIntent)="onCloseIntent()"
+            (saveIntent)="onSaveIntent()">
+        </cds-action-description>
+        <cds-action-description 
+            *ngIf="elementIntentSelectedType === typeIntentElement.ANSWER"
+            [elementType]="typeIntentElement.ANSWER"
+            [showTip]="false"
+            (closeIntent)="onCloseIntent()"
+            (saveIntent)="onSaveIntent()">
+        </cds-action-description>
+        <cds-action-description 
+            *ngIf="elementIntentSelectedType === typeIntentElement.QUESTION"
+            [elementType]="typeIntentElement.QUESTION"
+            [showTip]="false"
+            (closeIntent)="onCloseIntent()"
+            (saveIntent)="onSaveIntent()">
+        </cds-action-description>
+    </div>
+
+    <div class="content-panel">
+        <div *ngIf="elementIntentSelectedType === typeIntentElement.ACTION" >
+            <div *ngFor="let item of elementSelectedMaxLength, let i = index" >
+                <div *ngIf="i === elementSelectedIndex" [ngSwitch]="elementSelected._tdActionType">
+    
+                    <cds-action-reply *ngSwitchCase="typeAction.REPLY"
+                        class="panel-response"
+                        [typeAction]="typeAction.REPLY"
+                        [reply]="elementSelected"
+                        [intent_display_name]="elementIntentSelected.intent_display_name"
+                        [listOfActions]="listOfActions">
+                    </cds-action-reply>
+    
+                    <cds-action-reply *ngSwitchCase="typeAction.RANDOM_REPLY"
+                        class="panel-response"
+                        [typeAction]="typeAction.RANDOM_REPLY"
+                        [reply]="elementSelected"
+                        [intent_display_name]="elementIntentSelected.intent_display_name"
+                        [listOfActions]="listOfActions">
+                    </cds-action-reply>
+    
+                    <cds-action-web-request *ngSwitchCase="typeAction.WEB_REQUEST"
+                        [action]="elementSelected">
+                    </cds-action-web-request>
+            
+                    <cds-action-wait *ngSwitchCase="typeAction.WAIT"
+                        [action]="elementSelected">
+                    </cds-action-wait>
+            
+                    <cds-action-intent *ngSwitchCase="typeAction.INTENT"
+                        class="panel-response"
+                        [action]="elementSelected"
+                        [intents]="listOfActions">
+                    </cds-action-intent>
+            
+                    <cds-action-email *ngSwitchCase="typeAction.EMAIL"
+                        class="panel-response"
+                        [action]="elementSelected">
+                    </cds-action-email>
+
+                    <cds-action-whatsapp-static *ngSwitchCase="typeAction.WHATSAPP_STATIC"
+                        class="panel-response"
+                        [action]="elementSelected"
+                        [project_id]="project_id"
+                        [intentName]="intentSelected.intent_display_name">
+                    </cds-action-whatsapp-static>
+
+                    <cds-action-whatsapp-attribute *ngSwitchCase="typeAction.WHATSAPP_ATTRIBUTE"
+                        class="panel-response"
+                        [action]="elementSelected">
+                    </cds-action-whatsapp-attribute>
+                
+                    <cds-action-json-condition *ngSwitchCase="typeAction.JSON_CONDITION"
+                        [action]="elementSelected"
+                        [listOfActions]="listOfActions">
+                    </cds-action-json-condition>
+            
+                    <cds-action-assign-variable *ngSwitchCase="typeAction.ASSIGN_VARIABLE"
+                        [action]="elementSelected">
+                    </cds-action-assign-variable>
+    
+                    <cds-action-assign-function *ngSwitchCase="typeAction.ASSIGN_FUNCTION"
+                        [action]="elementSelected">
+                    </cds-action-assign-function>
+                
+                    <cds-action-delete-variable *ngSwitchCase="typeAction.DELETE_VARIABLE"
+                        [action]="elementSelected">
+                    </cds-action-delete-variable>
+                
+                    <cds-action-online-agents *ngSwitchCase="typeAction.ONLINE_AGENTS"
+                        [listOfActions] = "listOfActions"    
+                        [action]="elementSelected">
+                    </cds-action-online-agents>
+            
+                    <cds-action-open-hours *ngSwitchCase="typeAction.OPEN_HOURS"
+                        [listOfActions] = "listOfActions"
+                        [action]="elementSelected">
+                    </cds-action-open-hours>
+                
+                    <cds-action-hide-message *ngSwitchCase="typeAction.HIDE_MESSSAGE"
+                        [action]="elementSelected">
+                    </cds-action-hide-message>
+    
+                    <cds-action-replace-bot *ngSwitchCase="typeAction.REPLACE_BOT"
+                        [action]="elementSelected">
+                    </cds-action-replace-bot>
+    
+                    <cds-action-change-department *ngSwitchCase="typeAction.CHANGE_DEPARTMENT"
+                        [action]="elementSelected">
+                    </cds-action-change-department>
+    
+                    <cds-action-agent *ngSwitchCase="typeAction.AGENT"
+                        [action]="elementSelected">
+                    </cds-action-agent>
+    
+                    <cds-action-close *ngSwitchCase="typeAction.CLOSE"
+                        [action]="elementSelected">
+                    </cds-action-close>
+    
+                </div>
+            </div>
+        </div>
+
+
+
+        <div *ngIf="elementIntentSelectedType === typeIntentElement.QUESTION" class="panel-question">
+            <appdashboard-question 
+                [intentSelected]="intentSelected"
+                (updateIntentSelected)="onUpdateQuestionsIntentSelected($event)">
+            </appdashboard-question>
+        </div>
+    
+        <div *ngIf="elementIntentSelectedType === typeIntentElement.FORM" class="panel-form">
+            <appdashboard-form 
+                [intentForm]="elementSelected" 
+                [intentSelected]="intentSelected" 
+                (updateIntentForm)="onUpdateFormIntentSelected($event)">
+            </appdashboard-form>
+        </div>
+    
+        <div *ngIf="elementIntentSelectedType === typeIntentElement.ANSWER" class="panel-answer">
+            <appdashboard-answer
+                [intentSelected]="intentSelected"
+                (updateAnswerIntentSelected)="onUpdateAnswerIntentSelected($event)">
+            </appdashboard-answer>
+        </div>
+
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- <div class="card-buttons" 
+    *ngIf="openCardButton"
+    [ngClass]="{'active':openCardButton}"
+    cdkDragBoundary=".panel-response" cdkDrag>
+    <div class="card-buttons-handle" cdkDragHandle>
+        <svg id="card-buttons-no-close" width="24px" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z"></path>
+            <path d="M0 0h24v24H0z" fill="none"></path>
+        </svg>
+    </div>
+    <appdashboard-panel-button-configuration
+        [button] = buttonSelected
+        [listOfActions] = listOfActions
+        (closeButtonPanel) = onCloseButtonPanel()
+        (saveButton) = onSaveButton($event)
+    ></appdashboard-panel-button-configuration>
+</div> -->
+
+<!-- <div class="card-buttons" 
+    *ngIf="openCardButton"
+    [ngClass]="{'active':openCardButton}">
+    <appdashboard-panel-button-configuration
+        [button] = buttonSelected
+        [listOfActions] = listOfActions
+        (closeButtonPanel) = onCloseButtonPanel()
+        (saveButton) = onSaveButton($event)
+    ></appdashboard-panel-button-configuration>
+</div> -->

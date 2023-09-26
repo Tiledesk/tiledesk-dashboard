@@ -1,0 +1,29 @@
+<div 
+    cdkTrapFocus 
+    [cdkTrapFocusAutoCapture]="textMessage.length>0?false:true">
+    <mat-form-field 
+        class="box-textarea" 
+        appearance="fill">
+        <textarea
+            matInput
+            cdkFocusInitial
+            cdkTextareaAutosize
+            [(ngModel)]="textMessage"
+            #autosize="cdkTextareaAutosize"
+            [maxlength]="limitCharsText"
+            cdkAutosizeMinRows="1"
+            cdkAutosizeMaxRows="5"
+            (ngModelChange)="onChangeTextarea($event)">
+        </textarea>
+    </mat-form-field>
+</div>
+
+<div class="editor-utils">
+    <div class="num-chars" [ngClass]="{'error' : alertCharsText}">{{leftCharsText}}</div>
+    <!-- <div class="text-editor-insert-attribute">
+        <em class="material-icons">code</em>
+    </div> 
+    <div class="emoji-picker">
+        <em class="material-icons">insert_emoticon</em>
+    </div>  -->
+</div>

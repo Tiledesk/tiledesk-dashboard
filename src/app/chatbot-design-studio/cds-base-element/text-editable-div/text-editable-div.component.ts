@@ -87,7 +87,7 @@ export class TextEditableDivComponent implements OnInit, OnChanges {
 
   onVariableSelected(variable) {
     if (this.elTextarea) {
-      this.insertAtCursor(this.elTextarea, '{{' + variable.name + '}}')
+      this.insertAtCursor(this.elTextarea, '${' + variable.name + '}')
       this.setattributepopover.close()
     }
   }
@@ -208,7 +208,7 @@ export class TextEditableDivComponent implements OnInit, OnChanges {
     let fommattedActionSubject = ''
     splits.forEach(element => {
       if (element.type === 'tag') {
-        tagName = '{{' + element.name + '}}';
+        tagName = '${' + element.name + '}';
         tagNameAsTag = `<div tag="true" contenteditable="false"  style=" font-weight: 400;font-family: 'ROBOTO'; background: #ffdc66;cursor: pointer;-webkit-transition: all 0.3s;  transition: all 0.3s; border-radius: 10px;-webkit-box-decoration-break: clone; box-decoration-break: clone; display: inline; padding: 0 5px;">${tagName}</div>`
         newSplitsArray.push(tagNameAsTag)
       } else if (element.type === 'text') {
@@ -249,7 +249,7 @@ export class TextEditableDivComponent implements OnInit, OnChanges {
 
   _onVariableSelected(variable) {
     this.logger.log("[TEXT-EDITABLE-DIV] selectedAttibute attribute: ", variable);
-    let attribute = '{{' + variable.value + '}}'
+    let attribute = '${' + variable.value + '}'
 
     this.logger.log('[TEXT-EDITABLE-DIV] selectedAttibute attribute - attribute length : ', attribute.length)
     // const imputEle = document.querySelector('#email-subject') as HTMLElement

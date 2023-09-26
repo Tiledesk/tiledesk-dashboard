@@ -1,0 +1,118 @@
+<div *ngIf="typeAction === typeActions.REPLY" class="extensions-response">
+    <div class="delay-wrapper" [ngStyle]="{width: canShowFilter? 'auto': '100%'}">
+        <appdashboard-delay-slider
+            [delayTime]="delayTime"
+            (changeDelayTime)="onChangeDelayTime($event)"
+            (clickDelayTime)="onClickDelayTime($event)">
+        </appdashboard-delay-slider>
+    </div>
+    <div class="filter-wrapper" *ngIf="canShowFilter || response._tdJSONCondition?.conditions?.length > 0">
+        <appdashboard-filter
+            [expression]="response._tdJSONCondition"
+            [booleanOperators]="booleanOperators"
+            (onChangeExpression)="onChangeExpression($event)">
+        </appdashboard-filter>
+    </div>
+</div>
+
+
+    
+<div class="image-editor-wrapper">
+        
+        <div class="image-editor">
+        
+            <div class="response-controls">
+                <div class="control-button delete" (click)="onDeleteResponse()">
+                   <em class="material-icons">delete</em>
+               </div>
+               <div *ngIf="typeAction === typeActions.REPLY" class="control-button" (click)="onMoveUpResponse()">
+                   <em class="material-icons">expand_less</em>
+               </div> 
+               <div *ngIf="typeAction === typeActions.REPLY" class="control-button" (click)="onMoveDownResponse()">
+                   <em class="material-icons">expand_more</em>
+               </div>
+            </div>
+
+            <div class="response-image-uploader-wrapper">
+                <appdashboard-image-upload
+                    class="image-upload"
+                    [metadata] = response.metadata>
+                </appdashboard-image-upload>
+                <div *ngIf="response.metadata.src" class="control-button delete" (click)="onDeletePathElement()">
+                    <em class="material-icons">clear</em>
+                </div>
+            </div>
+
+            <div *ngIf="typeAction === typeActions.REPLY" class="text-editor-drop">
+                <em class="material-icons">drag_indicator</em>
+            </div> 
+
+            <!-- <appdashboard-element-textarea
+                [limitCharsText]="limitCharsText"
+                [textMessage]="response.text"
+                (changeTextarea)="onChangeTextarea($event)"
+            ></appdashboard-element-textarea> -->
+
+            <!-- <text-editable-div 
+                class = "text-editable-div"
+                [emojiPikerBtn]="true" 
+                [setAttributeBtn]="true" 
+                [textLimitBtn]="true" 
+                [textLimit]="limitCharsText" 
+                [text]="response.text" 
+                (textChanged)="onChangeTextarea($event)"> 
+            </text-editable-div> -->
+
+            <cds-textarea 
+                class="text-editable-div"
+                [text]="response.text" 
+                [minRow]="1"
+                popoverVerticalAlign="above"
+                [emojiPikerBtn]="true"
+                (changeTextarea)="onChangeTextarea($event)">
+            </cds-textarea>
+
+        </div> 
+
+</div>
+
+<div class="buttons-response button-replies" cdkDropListOrientation="horizontal" cdkDropList (cdkDropListDropped)="drop($event)" >
+    
+    <div *ngFor="let button of buttons; let i = index;" class="tpl-drop-down single-btn-reply" cdkDragBoundary=".button-replies" cdkDrag> 
+   
+        <div class="button-reply custom-placeholder" *cdkDragPlaceholder>
+            <div class="button-reply-text">
+                {{button.value}}
+            </div>
+        </div>
+
+        <div class="button-reply">
+            <div class="button-reply-text single-btn-reply"
+                (click)="onOpenButtonPanel(button)">
+                {{button.value}}
+            </div>
+            <div class="button-controls">
+                
+                <div class="buttonsToMove">
+                    <div class="control-button" (click)="onMoveLeftButton(i)">
+                        <em class="material-icons">chevron_left</em>
+                    </div> 
+                    <div class="control-button" (click)="onMoveRightButton(i)">
+                        <em class="material-icons">chevron_right</em>
+                    </div>
+                </div>
+
+                <div class="control-button delete" (click)="onDeleteButton(i)">
+                    <em class="material-icons">delete</em>
+                </div>
+
+           </div>
+        </div>
+        
+
+    </div>
+
+    <div class="button-reply-add single-btn-reply" (click)="onOpenButtonPanel()">
+    + Add button
+    </div>
+</div>

@@ -1,0 +1,439 @@
+<div class="actions-drawer" #panel_actions_div id="panel_actions_div" (focusout)="onFocusOut($event)">
+  <div class="actions-drawer-close-btn-wpr">
+    <button type="button" size="35" aria-label="Close" class="actions-drawer-close-btn" (click)="closeActionsDrawer()">
+      <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24"
+        style="min-width: 20px; min-height: 20px; fill:#9aa0a6">
+        <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z">
+        </path>
+        <path d="M0 0h24v24H0z" fill="none"></path>
+      </svg>
+    </button>
+  </div>
+  <div class="actions-drawer-header-wpr">
+    <div width="85.984375" offset="206.28125" class="actions-drawer-header">
+      <div class="actions-drawer-title-wpr">
+
+        <div data-name="actions" data-active="true" aria-label="actions" class="actions-drawer-title">Actions</div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="actions-drawer-content">
+
+
+    <section>
+      <div class="section-title">Most used</div>
+      <!-- ---------------------------------- -->
+      <!-- First row -->
+      <!-- ---------------------------------- -->
+      <div class="actions-btns-wpr">
+
+        <div class="action-box-wpr">
+          <div class="action-box">
+            <div class="action-btn-icon">
+              <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="onActionSelected(TYPE_ACTION.REPLY)">
+                <img [src]="ACTIONS_LIST['REPLY'].src" [title]="ACTIONS_LIST['REPLY'].name">
+              </button>
+            </div>
+            <div class="action-btn-text">{{ACTIONS_LIST['REPLY'].name}}</div>
+          </div>
+        </div>
+        <div class="action-box-wpr">
+          <div class="action-box">
+            <div class="action-btn-icon">
+              <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="onActionSelected(TYPE_ACTION.AGENT)">
+                <img [src]="ACTIONS_LIST['AGENT'].src" [title]="ACTIONS_LIST['AGENT'].name">
+              </button>
+            </div>
+            <div class="action-btn-text">{{ACTIONS_LIST['AGENT'].name}}</div>
+          </div>
+        </div>
+
+      </div>
+      <!-- ---------------------------------- -->
+      <!-- Second row -->
+      <!-- ---------------------------------- -->
+      <div class="actions-btns-wpr">
+      
+        <div class="action-box-wpr">
+          <div class="action-box">
+            <div class="action-btn-icon">
+              <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="onActionSelected(TYPE_ACTION.RANDOM_REPLY)">
+                <img [src]="ACTIONS_LIST['RANDOM_REPLY'].src" [title]="ACTIONS_LIST['RANDOM_REPLY'].name">
+              </button>
+            </div>
+            <div class="action-btn-text">{{ACTIONS_LIST['RANDOM_REPLY'].name}}</div>
+          </div>
+        </div>
+        <div class="action-box-wpr">
+          <div class="action-box">
+            <div class="action-btn-icon">
+              <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="onActionSelected(TYPE_ACTION.CLOSE)">
+                <img [src]="ACTIONS_LIST['CLOSE'].src" [title]="ACTIONS_LIST['CLOSE'].name">
+              </button>
+            </div>
+            <div class="action-btn-text">{{ACTIONS_LIST['CLOSE'].name}}</div>
+          </div>
+        </div>
+  
+      </div>
+      <!-- ---------------------------------- -->
+      <!-- Third row -->
+      <!-- ---------------------------------- -->
+      <div class="actions-btns-wpr">
+        <div class="action-box-wpr">
+          <div class="action-box">
+            <div class="action-btn-icon">
+              <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="onActionSelected(TYPE_ACTION.OPEN_HOURS)">
+                <img [src]="ACTIONS_LIST['OPEN_HOURS'].src" [title]="ACTIONS_LIST['OPEN_HOURS'].name">
+              </button>
+            </div>
+            <div class="action-btn-text">{{ACTIONS_LIST['OPEN_HOURS'].name}}</div>
+          </div>
+        </div>
+        <div class="action-box-wpr">
+          <div class="action-box">
+            <div class="action-btn-icon">
+              <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="onActionSelected(TYPE_ACTION.ONLINE_AGENTS)">
+                <img [src]="ACTIONS_LIST['ONLINE_AGENTS'].src" [title]="ACTIONS_LIST['ONLINE_AGENTS'].name">
+              </button>
+            </div>
+            <div class="action-btn-text">{{ACTIONS_LIST['ONLINE_AGENTS'].name}}</div>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <section>
+      <div class="section-title">Flow</div>
+      <!-- ---------------------------------- -->
+      <!-- First row -->
+      <!-- ---------------------------------- -->
+      <div class="actions-btns-wpr">
+      
+        <div class="action-box-wpr">
+          <div class="action-box">
+            <div class="action-btn-icon">
+              <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="onActionSelected(TYPE_ACTION.JSON_CONDITION)">
+                <img [src]="ACTIONS_LIST['JSON_CONDITION'].src" [title]="ACTIONS_LIST['JSON_CONDITION'].name">
+              </button>
+            </div>
+            <div class="action-btn-text">{{ACTIONS_LIST['JSON_CONDITION'].name}}</div>
+          </div>
+        </div>
+        <div class="action-box-wpr">
+          <div class="action-box">
+            <div class="action-btn-icon">
+              <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="onActionSelected(TYPE_ACTION.INTENT)">
+                <img [src]="ACTIONS_LIST['INTENT'].src" [title]="ACTIONS_LIST['INTENT'].name">
+              </button>
+            </div>
+            <div class="action-btn-text">{{ACTIONS_LIST['INTENT'].name}}</div>
+          </div>
+        </div>
+  
+      </div>
+      <!-- ---------------------------------- -->
+      <!-- Second row -->
+      <!-- ---------------------------------- -->
+      <div class="actions-btns-wpr">
+
+        <div class="action-box-wpr">
+          <div class="action-box">
+            <div class="action-btn-icon">
+              <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="onActionSelected(TYPE_ACTION.ASSIGN_VARIABLE)">
+                <img [src]="ACTIONS_LIST['ASSIGN_VARIABLE'].src" [title]="ACTIONS_LIST['ASSIGN_VARIABLE'].name">
+              </button>
+            </div>
+            <div class="action-btn-text">{{ACTIONS_LIST['ASSIGN_VARIABLE'].name}}</div>
+          </div>
+        </div>
+        <div class="action-box-wpr">
+          <div class="action-box">
+            <div class="action-btn-icon">
+              <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="onActionSelected(TYPE_ACTION.DELETE_VARIABLE)">
+                <img [src]="ACTIONS_LIST['DELETE_VARIABLE'].src" [title]="ACTIONS_LIST['DELETE_VARIABLE'].name">
+              </button>
+            </div>
+            <div class="action-btn-text">{{ACTIONS_LIST['DELETE_VARIABLE'].name}}</div>
+          </div>
+        </div>
+  
+      </div>
+      <!-- ---------------------------------- -->
+      <!-- Third row -->
+      <!-- ---------------------------------- -->
+      <div class="actions-btns-wpr">
+
+        <div class="action-box-wpr">
+          <div class="action-box">
+            <div class="action-btn-icon">
+              <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="onActionSelected(TYPE_ACTION.REPLACE_BOT)">
+                <img [src]="ACTIONS_LIST['REPLACE_BOT'].src" [title]="ACTIONS_LIST['REPLACE_BOT'].name">
+              </button>
+            </div>
+            <div class="action-btn-text">{{ACTIONS_LIST['REPLACE_BOT'].name}}</div>
+          </div>
+        </div>
+        <div class="action-box-wpr">
+          <div class="action-box">
+            <div class="action-btn-icon">
+              <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="onActionSelected(TYPE_ACTION.WAIT)">
+                <img [src]="ACTIONS_LIST['WAIT'].src" [title]="ACTIONS_LIST['WAIT'].name">
+              </button>
+            </div>
+            <div class="action-btn-text">{{ACTIONS_LIST['WAIT'].name}}</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+    <section>
+      <div class="section-title">Integrations</div>
+      <!-- ---------------------------------- -->
+      <!-- First row -->
+      <!-- ---------------------------------- -->
+      <div class="actions-btns-wpr">
+      
+        <div class="action-box-wpr">
+          <div class="action-box">
+            <div class="action-btn-icon">
+              <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="onActionSelected(TYPE_ACTION.WEB_REQUEST)">
+                <img [src]="ACTIONS_LIST['WEB_REQUEST'].src" [title]="ACTIONS_LIST['WEB_REQUEST'].name">
+              </button>
+            </div>
+            <div class="action-btn-text">{{ACTIONS_LIST['WEB_REQUEST'].name}}</div>
+          </div>
+        </div>
+        <div class="action-box-wpr">
+          <div class="action-box">
+            <div class="action-btn-icon">
+              <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="onActionSelected(TYPE_ACTION.EMAIL)">
+                <img [src]="ACTIONS_LIST['EMAIL'].src" [title]="ACTIONS_LIST['EMAIL'].name">
+              </button>
+            </div>
+            <div class="action-btn-text">{{ACTIONS_LIST['EMAIL'].name}}</div>
+          </div>
+        </div>
+  
+      </div>
+
+      <!-- ---------------------------------- -->
+      <!-- Second row -->
+      <!-- ---------------------------------- -->
+     <div  class="actions-btns-wpr">
+      
+        <div class="action-box-wpr">
+          <div class="action-box">
+            <div class="action-btn-icon">
+              <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="onActionSelected(TYPE_ACTION.WHATSAPP_STATIC)">
+                <img [src]="ACTIONS_LIST['WHATSAPP_STATIC'].src" [title]="ACTIONS_LIST['WHATSAPP_STATIC'].name">
+              </button>
+            </div>
+            <div class="action-btn-text">{{ACTIONS_LIST['WHATSAPP_STATIC'].name}}</div>
+          </div>
+        </div>
+        <div class="action-box-wpr">
+          <div class="action-box">
+            <div class="action-btn-icon">
+              <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="onActionSelected(TYPE_ACTION.WHATSAPP_ATTRIBUTE)">
+                <img [src]="ACTIONS_LIST['WHATSAPP_ATTRIBUTE'].src" [title]="ACTIONS_LIST['WHATSAPP_ATTRIBUTE'].name">
+              </button>
+            </div>
+            <div class="action-btn-text">{{ACTIONS_LIST['WHATSAPP_ATTRIBUTE'].name}}</div>
+          </div>
+        </div>
+  
+      </div> 
+
+    </section>
+
+    <section>
+      <div class="section-title">Special</div>
+      <!-- ---------------------------------- -->
+      <!-- First row -->
+      <!-- ---------------------------------- -->
+      <div class="actions-btns-wpr">
+      
+        <div class="action-box-wpr">
+          <div class="action-box">
+            <div class="action-btn-icon">
+              <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="onActionSelected(TYPE_ACTION.HIDE_MESSSAGE)">
+                <img [src]="ACTIONS_LIST['HIDE_MESSSAGE'].src" [title]="ACTIONS_LIST['HIDE_MESSSAGE'].name">
+              </button>
+            </div>
+            <div class="action-btn-text">{{ACTIONS_LIST['HIDE_MESSSAGE'].name}}</div>
+          </div>
+        </div>
+        <div class="action-box-wpr">
+          <div class="action-box">
+            <div class="action-btn-icon">
+              <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="onActionSelected(TYPE_ACTION.CHANGE_DEPARTMENT)">
+                <img [src]="ACTIONS_LIST['CHANGE_DEPARTMENT'].src" [title]="ACTIONS_LIST['CHANGE_DEPARTMENT'].name">
+              </button>
+            </div>
+            <div class="action-btn-text">{{ACTIONS_LIST['CHANGE_DEPARTMENT'].name}}</div>
+          </div>
+        </div>
+  
+      </div>
+    </section>
+
+
+    <section>
+      <div class="section-title">New</div>
+      <!-- ---------------------------------- -->
+      <!-- First row -->
+      <!-- ---------------------------------- -->
+      <div class="actions-btns-wpr">
+      
+        <div class="action-box-wpr">
+          <div class="action-box">
+            <div class="action-btn-icon">
+              <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="onActionSelected(TYPE_ACTION.ASSIGN_FUNCTION)">
+                <img [src]="ACTIONS_LIST['ASSIGN_FUNCTION'].src" [title]="ACTIONS_LIST['ASSIGN_FUNCTION'].name">
+              </button>
+            </div>
+            <div class="action-btn-text">{{ACTIONS_LIST['ASSIGN_FUNCTION'].name}}</div>
+          </div>
+        </div>
+  
+      </div>
+    </section>
+
+
+    <!-- ---------------------------------- -->
+    <!-- Not used -->
+    <!-- ---------------------------------- -->
+    <!-- <div style="display: none;" class="actions-btns-wpr">
+      <div class="action-box-wpr">
+        <div class="action-box">
+          <div class="action-btn-icon">
+            <button class="btn btn-tdblu-no-boxshadow action-btn" disabled>
+              <svg aria-label="DisableInput" width="24" height="24" viewBox="0 0 24 24" fill="#FFFFFF"
+                xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd"
+                  d="M6.58594 5H4C2.89543 5 2 5.89543 2 7V17C2 18.1046 2.89543 19 4 19H20C20.1792 19 20.3529 18.9764 20.5182 18.9322L18.5859 17H4V7L8.58594 7L6.58594 5ZM20 15.5856V7L11.4144 7L9.41436 5H20C21.1046 5 22 5.89543 22 7V17C22 17.1791 21.9765 17.3527 21.9323 17.5179L20 15.5856ZM10.5859 9H6V11H8V15H10V11H12V10.4141L10.5859 9Z" />
+                <rect x="2" y="3" width="2" height="26.2817" transform="rotate(-45 2 3)" />
+              </svg>
+            </button>
+          </div>
+          <div class="action-btn-text"> Disable input </div>
+        </div>
+      </div>
+
+
+      <div class="action-box-wpr">
+        <div class="action-box">
+          <div class="action-btn-icon">
+            <button class="btn btn-tdblu-no-boxshadow action-btn" disabled>
+              <svg aria-label="EnableInput" width="24" height="24" viewBox="0 0 24 24" fill="#FFFFFF"
+                xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd"
+                  d="M4 5C2.89543 5 2 5.89543 2 7V17C2 18.1046 2.89543 19 4 19H20C21.1046 19 22 18.1046 22 17V7C22 5.89543 21.1046 5 20 5H4ZM4 7L20 7V17H4V7ZM6 9H12V11H10V15H8V11H6V9Z" />
+              </svg>
+            </button>
+          </div>
+          <div class="action-btn-text"> Enable input </div>
+        </div>
+      </div>
+    </div> -->
+
+
+    <!-- <div style="display: none;" class="actions-btns-wpr">
+        <div style="display: none;" class="action-box-wpr">
+        <div class="action-box">
+          <div class="action-btn-icon">
+            <button class="btn btn-tdblu-no-boxshadow action-btn" disabled>
+              <svg aria-label="TiledeskAPI" xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24"
+                height="24px" viewBox="0 0 24 24" width="24px" fill="#FFFFFF">
+                <g>
+                  <rect fill="none" height="24" width="24" />
+                  <path
+                    d="M14,12l-2,2l-2-2l2-2L14,12z M12,6l2.12,2.12l2.5-2.5L12,1L7.38,5.62l2.5,2.5L12,6z M6,12l2.12-2.12l-2.5-2.5L1,12 l4.62,4.62l2.5-2.5L6,12z M18,12l-2.12,2.12l2.5,2.5L23,12l-4.62-4.62l-2.5,2.5L18,12z M12,18l-2.12-2.12l-2.5,2.5L12,23l4.62-4.62 l-2.5-2.5L12,18z" />
+                </g>
+              </svg>
+            </button>
+          </div>
+          <div class="action-btn-text"> Tiledesk API </div>
+        </div>
+      </div> 
+   
+      <div style="display: none;" class="action-box-wpr">
+        <div class="action-box">
+          <div class="action-btn-icon">
+            <button class="btn btn-tdblu-no-boxshadow action-btn" disabled>
+              <svg aria-label="AddTag" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px"
+                fill="#FFFFFF">
+                <path d="M0 0h24v24H0z" fill="none" />
+                <path
+                  d="M17.63 5.84C17.27 5.33 16.67 5 16 5L5 5.01C3.9 5.01 3 5.9 3 7v10c0 1.1.9 1.99 2 1.99L16 19c.67 0 1.27-.33 1.63-.84L22 12l-4.37-6.16z" />
+              </svg>
+            </button>
+          </div>
+          <div class="action-btn-text"> Add a tag </div>
+        </div>
+      </div>
+   </div> -->
+
+    <!-- <div class="actions-btns-wpr">
+    <div class="action-box-wpr">
+      <div class="action-box">
+        <div class="action-btn-icon">
+          <button class="btn btn-tdblu-no-boxshadow action-btn" (click)="onActionSelected('helpcenter')" disabled>
+            <svg aria-label="HelpCenter" xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24"
+              height="24px" viewBox="0 0 24 24" width="24px" fill="#fff">
+              <g>
+                <rect fill="none" height="24" width="24" />
+              </g>
+              <g>
+                <path
+                  d="M12,2C6.48,2,2,6.48,2,12c0,5.52,4.48,10,10,10s10-4.48,10-10C22,6.48,17.52,2,12,2z M19.46,9.12l-2.78,1.15 c-0.51-1.36-1.58-2.44-2.95-2.94l1.15-2.78C16.98,5.35,18.65,7.02,19.46,9.12z M12,15c-1.66,0-3-1.34-3-3s1.34-3,3-3s3,1.34,3,3 S13.66,15,12,15z M9.13,4.54l1.17,2.78c-1.38,0.5-2.47,1.59-2.98,2.97L4.54,9.13C5.35,7.02,7.02,5.35,9.13,4.54z M4.54,14.87 l2.78-1.15c0.51,1.38,1.59,2.46,2.97,2.96l-1.17,2.78C7.02,18.65,5.35,16.98,4.54,14.87z M14.88,19.46l-1.15-2.78 c1.37-0.51,2.45-1.59,2.95-2.97l2.78,1.17C18.65,16.98,16.98,18.65,14.88,19.46z" />
+              </g>
+            </svg>
+          </button>
+        </div>
+        <div class="action-btn-text"> Help center </div>
+      </div>
+    </div>
+    
+
+     <div class="action-box">
+          <div class="action-btn-icon">
+            <button class="btn btn-tdblu-no-boxshadow action-btn" disabled>
+              <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px"
+                viewBox="0 0 24 24" width="24px" fill="#fff">
+                <g>
+                  <rect fill="none" height="24" width="24" />
+                </g>
+                <g>
+                  <g>
+                    <path
+                      d="M21,12.22C21,6.73,16.74,3,12,3c-4.69,0-9,3.65-9,9.28C2.4,12.62,2,13.26,2,14v2c0,1.1,0.9,2,2,2h1v-6.1 c0-3.87,3.13-7,7-7s7,3.13,7,7V19h-8v2h8c1.1,0,2-0.9,2-2v-1.22c0.59-0.31,1-0.92,1-1.64v-2.3C22,13.14,21.59,12.53,21,12.22z" />
+                    <circle cx="9" cy="13" r="1" />
+                    <circle cx="15" cy="13" r="1" />
+                    <path
+                      d="M18,11.03C17.52,8.18,15.04,6,12.05,6c-3.03,0-6.29,2.51-6.03,6.45c2.47-1.01,4.33-3.21,4.86-5.89 C12.19,9.19,14.88,11,18,11.03z" />
+                  </g>
+                </g>
+              </svg>
+            </button>
+          </div>
+          <div class="action-btn-text"> Deflect to help center </div>
+        </div>
+
+
+  </div> -->
+
+
+
+
+  </div>
+
+</div>

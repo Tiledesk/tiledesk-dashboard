@@ -15,7 +15,6 @@ export class CDSFilterComponent implements OnInit {
 
   @Input() expression: Expression = new Expression();
   @Input() booleanOperators: {}
-  @Input() previewMode: boolean = true
   @Output() onChangeExpression = new EventEmitter<Expression>()
   @Output() onDeleteGroup = new EventEmitter()
 
@@ -49,6 +48,7 @@ export class CDSFilterComponent implements OnInit {
     }else if(last){
       this.expression.conditions.splice(index-1, 2)
     }
+    this.logger.log('expressionnn', this.expression)
   }
 
   onChangeOperator(event, index: number){
@@ -59,11 +59,13 @@ export class CDSFilterComponent implements OnInit {
 
   onDismiss(condition: Condition){
     if(condition){
+      this.logger.log('onDismiss popover condition', condition)
       this.logger.log('onDismiss popover condition', condition, this.selectedCondition, this.selectedIndex, this.expression)
       //if condition already exist --> do not push new condition
       //else push new operaor and condition  
       if(this.selectedCondition){
         this.expression.conditions[this.selectedIndex] = condition;
+        this.selectedCondition = null
       }else {
         if(this.expression.conditions.length === 0){
           this.expression.conditions.push(condition);

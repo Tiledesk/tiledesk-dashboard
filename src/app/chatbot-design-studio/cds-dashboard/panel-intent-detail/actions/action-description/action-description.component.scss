@@ -1,0 +1,172 @@
+@import "./src/assets/sass/cds/_variables.scss";
+
+.action_welcome {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 30px 20px 20px;
+    border-bottom: 2px solid $action-item-background;
+    .edit-mode-header-buttons {
+        float: right;
+        display: flex;
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        cursor: pointer;
+        z-index: 1;
+        .control-button {
+            align-items: center;
+            background: #dcdcdc;
+            border-radius: 4px;
+            color: #475e7a;
+            cursor: pointer;
+            display: flex;
+            flex-grow: 1;
+            flex-shrink: 0;
+            font-size: 13px;
+            height: 30px;
+            justify-content: center;
+            margin: 0 5px;
+            transition: all .3s;
+            width: 30px;
+        }
+    }
+
+    .section{
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+    }
+    .action-title {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 5px;
+        max-width: calc(100% - 70px);
+        .text-action {
+            color: #fff;
+            margin-bottom: 0px;
+        }
+        img {
+            width: 18px;
+            margin: auto 6px auto 4px;
+            height: auto;
+        }
+    }
+    .action-description{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+        font-size: 11px;
+        color: $action-item-color;
+        line-height: 1.5;
+        em {
+            display: flex;
+            margin-right: 10px;
+        }
+        &:hover{
+            cursor: pointer;
+        }
+    }
+
+    div.action-description::ng-deep a {
+        word-break: break-word;
+    }
+    
+    input.action-input {
+        width: 100%;
+        border-radius: 4px;
+        border: 0;
+        padding: 5px 10px;
+        color: #22272d;
+        font-size: 1.15em;
+        line-height: 16px;
+    }   
+}
+
+::ng-deep .cds-custom-tooltip {
+    background: #1e293b;
+    color: $color-light-gray-hex;
+    font-size: 12px;
+    border-radius: 2px;
+    font-family: 'Poppins';
+    padding-top: 8px;
+    padding-bottom: 8px;
+    margin: 4px 0 0 0!important;
+    border: 1px solid #3c485c;
+}
+
+
+::ng-deep .description-tooltip {
+    background-color: #fff;
+    color: #555555;
+    font-size: 12px;
+    border-radius: 2px;
+    font-family: 'Poppins';
+    padding-top:8px;
+    padding-bottom:8px;
+    border: 1px solid #e5effe;
+}
+
+.tooltip-wrp {
+    position: relative;
+    padding: 12px;
+    box-shadow: 0 2px 4px -1px #0003, 0 4px 5px #00000024, 0 1px 10px #0000001f;
+    background-color: #fff;
+    color: #555555; 
+    font-size: 10px;
+    text-align: justify;
+    border-radius: 4px;
+    font-family: 'Poppins';
+    border: 1px solid #e5effe;
+    width: auto;
+}
+
+.caret_tooltip {
+    height: 8px;
+    width: 8px;
+    position: absolute;
+    left: -4px;
+    top: 50%;
+    background: #fff;
+    transform: translateY(-50%) rotate(45deg);
+    background: #fff;
+}
+
+
+
+
+
+// .action-tip_wpr{
+//     display: flex;
+//     align-items: center;
+//     position: absolute;
+//     top: 10px;
+//     left: 0px;
+//     font-size: 10px;
+//     .material-icons{
+//         color: #fff;
+//         margin: 0px 5px;
+//         font-size: 18px;
+//     }
+// }
+
+// cds-text ::ng-deep {
+//     width: 100%;
+//     input {
+//         border: 1px solid #c6cdd4 !important;
+//         outline: none !important;
+//         transition: border .3s;
+//         border-radius: 3px;
+//         line-height: 20px !important;
+//         font-size: 1em !important;
+//         padding: 2px 5px !important;
+//         :hover{
+//             border: 1px solid $icon-color-background !important;
+//         }
+
+//     }
+// }

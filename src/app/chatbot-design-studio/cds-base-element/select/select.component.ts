@@ -16,21 +16,12 @@ export class SelectComponent implements OnInit {
   @Input() bindLabelSelect: string;
   @Input() optionalBindAdditionalText: string; 
   @Input() optionalBindDescription: string; 
-  @Input() bindValueSelect: string; 
-  @Input() footerButton: boolean = false;
-  @Input() footerButtonDisabled: boolean = false;
-  @Input() footerButtonIcon: string;
-  @Input() footerButtonText: string;
-
-  @Input() deleteButton: boolean = false;
+  @Input() bindValueSelect: string;
   @Input() clearable: boolean = false;
-  @Input() searchable: boolean = false;
   @Input() placeholder: string = 'Select an option'
   @Input() formGroup: FormGroup = new FormGroup({ select: new FormControl()});
   @Input() formControlName: string = 'select';
-  @Output() onSelected = new EventEmitter();
-  @Output() onReset = new EventEmitter();
-  @Output() onDeleted = new EventEmitter();
+  @Output() onSelected = new EventEmitter()
 
   valueFormGroup: FormGroup 
   
@@ -41,14 +32,14 @@ export class SelectComponent implements OnInit {
 
   ngOnChanges(){
     if(this.itemSelected && this.items){
-    //   this.logger.log('itemmmm selectedddd-->', this.itemSelected, this.items)
+    //   console.log('itemmmm selectedddd-->', this.itemSelected, this.items)
     //   this.itemSelected = this.items.find(el => el[this.bindValueSelect] === this.itemSelected)
       this.itemSelected = this.items.find(el => el[this.bindValueSelect] === this.itemSelected)[this.bindValueSelect]
     }
   }
 
   onChangeActionButton(event) {
-    // this.logger.log("[SELECT BASE ELEMENT] onChangeActionButton event: ", event, this.items)
+    // console.log("[SELECT BASE ELEMENT] onChangeActionButton event: ", event, this.items)
     // this.itemSelected = event;
     if(event){
       this.itemSelected = event[this.bindValueSelect];
@@ -56,20 +47,12 @@ export class SelectComponent implements OnInit {
     this.onSelected.emit(event)
   }
 
-  onResetValue(event){
+  onResetValue(){
     this.itemSelected = null
-    this.onReset.emit(null)
+    this.onSelected.emit(null)
   }
 
   onOpen(){
-  }
-
-  onFooterButtonClick(event) {
-    this.onSelected.emit({ clickEvent: 'footer'});
-  }
-
-  onDeleteButtonClick(event) {
-    this.onDeleted.emit(event);
   }
 
   onClose(){

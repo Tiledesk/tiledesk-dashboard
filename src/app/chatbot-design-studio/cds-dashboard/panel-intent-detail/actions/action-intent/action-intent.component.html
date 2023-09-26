@@ -1,0 +1,73 @@
+<div class="content-panel-intent-detail">
+
+    <div class="text-editor-wrapper">
+        <div class="field-box">
+            <label class="title-label">Go to block</label>
+            <cds-select id="text-condition"
+                [items]="intents"
+                [bindLabelSelect]="'name'"
+                [bindValueSelect]="'value'"
+                [itemSelected]="action?.intentName"
+                (onSelected)="onChangeSelect($event)">
+            </cds-select>
+            <!-- <cds-text id="text-condition" 
+                [control]="actionIntentFormGroup.controls['intentName']"
+                [autocompleteOptions]="intents">
+            </cds-text> -->
+        </div>
+    </div>
+
+        <!-- <div>
+            <label class="title-label">
+                Go to Intent
+            </label>
+            <cds-text [autocompleteOptions]="intents" [placeholder]="'Type to search an intent'" [text]="elementSelected.intentName" (change)="onTextChange($event)"></cds-text>
+        </div> -->
+
+
+        <!-- <label class="title-label">
+            Go to Intent
+        </label>
+
+        <div class="">
+            <ng-select 
+                class = "form-control-select" 
+                [items] = "intents" 
+                [searchable] = true
+                [editableSearchTerm]= true
+                [clearable] = false
+                [(ngModel)] = "buttonAction"
+                (change) = "onChangeActionButton($event)">
+            </ng-select>
+        </div> -->
+
+
+
+    <!-- <div class="form-group ng-select" style="width: 500px;">
+        <label class="control-label">
+            Go to Intent
+        </label>
+        <div class="selectFormModel">
+            <ng-select 
+                class = "form-control-select" 
+                [items] = "intents" 
+                [searchable] = true
+                [clearable] = false
+                [(ngModel)] = "buttonAction"
+                (change) = "onChangeActionButton($event)">
+            </ng-select>
+        </div>
+    </div> -->
+
+    <!-- <div class="form-group json-payload-textaread">
+        <label class="control-label">
+            JSON Payload
+        </label>
+        <mat-form-field class="box-textarea" appearance="fill">
+            <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1"
+                cdkAutosizeMaxRows="5">
+              </textarea>
+        </mat-form-field>
+    </div> -->
+
+</div>

@@ -30,8 +30,8 @@
     
     .auto-suggest-group {
         display: flex;
-        // max-width: 400px;
-        // width: 100%;
+        max-width: 400px;
+        width: 100%;
     }
     
 
@@ -112,31 +112,25 @@
         width: 50%;
     }
 
-    cds-textarea#value.value ::ng-deep{
+    ::ng-deep cds-textarea#assignTo,
+    ::ng-deep cds-textarea#value {
         display: flex;
-        width: calc(50% - 2px);
-        textarea {
-            padding: 0 0 0 10px !important;
-            border: 0!important;
-            outline: 0!important;
-            border-radius: 0 4px 4px 0;
+        &.assigned {
+            textarea {
+                background: transparent;
+                padding: 0!important;
+                border: 0!important;
+                outline: 0!important;
+            }
         }
-    }
-
-    cds-textarea#assignTo.assigned ::ng-deep {
-        display: flex;
-        textarea {
-            background: transparent;
-            padding: 0!important;
-            border: 0!important;
-            outline: 0!important;
+        &.value {
+            textarea {
+                padding: 0 0 0 10px !important;
+                border: 0!important;
+                outline: 0!important;
+                border-radius: 0 4px 4px 0;
+            }
         }
-    }
-
-
-    cds-textarea#assignTo ::ng-deep ,
-    cds-textarea#value ::ng-deep  {
-        display: flex;
         .editor-utils {
             display: flex;
             align-items: center;

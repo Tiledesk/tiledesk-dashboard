@@ -46,8 +46,6 @@ $color-txt-3-rgb: 204 204 204;
 $color-txt-4-rgb: 255 255 255;
 
 
-
-
 $color-bck-light-gray-hex: #e7f3ff;
 $color-bck-gray-hex: #647283;
 $color-text-box-hex: #566787;
@@ -62,13 +60,9 @@ $bg-color-dark-hex: #0F172A;
 $bg-color-bck-hex: #1E293B;
 $bg-color-card-hex: #293445;
 
-
-
 $bg-opacity-full: 1;
 $bg-opacity-halfway: 0.5;
 $bg-opacity-empty: 0.2;
-
-$brown-85: #6c6859d9;
 
 
 // Typography elements
@@ -76,11 +70,11 @@ $mdb-font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif !default;
 $mdb-font-family-poppins: "Poppins", "Roboto", Arial, sans-serif !default;
 $font-size-base: 14px;
 
-$height-header: 25px;
+$height-header: 50px;
 $padding-base: 15px !default;
 $margin-base: 15px !default;
 
-$button-height-base: 20px; //32px;
+$button-height-base: 32px;
 $button-max-width-base: 240px;
 $button-border-radius-base: 16px;
 
@@ -94,42 +88,8 @@ $blue-action-backgroud: #1e293b;
 $light-gray: #5f6368;
 $panel-border-radius: 16px;
 
-$deep-brown: #6c6859;
-$light-brown: #e8e6dd;
-
-$success-connector: rgb(44, 191, 35);
-$failure-connector: rgb(191, 35, 35);
 
 $action-item-color: #d2e3fc;
 $action-item-background:rgba(66,85,117,1);
 $action-color-selected:rgba(179,141,38,1);
 /*$action-item-background:rgba(138,180,248,.24);*/
-
-
-$padding-base-preview: 5px;
-
-/* CDS REFACTORING
-/* ******************************* */
-$deep-blu: #1e293b;
-$scrollbar-track-color: #1c2b45;
-// $scrollbar-track-light-color: rgba(231, 238, 239, 0.8);
-$scrollbar-track-white-color: rgb(255, 255, 255);
-$scrollbar-thumb-color:rgba(162, 176, 195, 1);
-$border-light: rgb(223,227,237);
-$background-extra-light-gray:rgb(238, 244, 246);
-$inactive-text-color:rgb(110, 132, 154);
-$gray-01: rgba(100, 116, 145, 0.08);
-$gray-02: #647491;
-$gray-03: rgb(100, 116, 145);
-$gray-04: rgb(142, 152, 168);
-$gray-05: #f5f5f5;
-$drop-zone-color-border: rgb(212, 217, 230);
-$drop-zone-background: rgb(142,152,168);
-$black-01:#080f1a;
-$blu-01:#132144;
-$black-02: #222;
-$blu-02: #006cff;
-$azure-01:rgb(220, 233, 255);
-$accent-blue: #0f62ff; 
-$red: #ff4000;
-$icon-bckgrnd-color: #e4e6eb;

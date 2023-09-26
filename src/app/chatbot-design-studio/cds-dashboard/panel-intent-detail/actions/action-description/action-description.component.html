@@ -1,0 +1,56 @@
+ <div class="action_welcome">
+   
+    <div class="edit-mode-header-buttons">
+        <div class="control-button" 
+            (click)="onCloseIntent()"
+            matTooltipClass="cds-custom-tooltip"
+            matTooltip="Close" 
+            matTooltipPosition='below'>
+            <em class="material-icons">close</em>
+        </div> 
+        <div class="control-button" 
+            (click)="onSaveIntent()"
+            matTooltipClass="cds-custom-tooltip"
+            matTooltip="Save & close" 
+            matTooltipPosition='below'>
+            <em class="material-icons">check</em>
+        </div> 
+    </div>
+
+    
+    <div class="section">
+        
+        <div class="action-title">
+            <img [src]="element?.src" [title]="element?.name">
+            <p class="text-action">{{element?.name}}</p>
+        </div>
+
+        <div *ngIf="showTip" class="action-description">
+            <div *ngIf="element?.description"
+                [satPopoverAnchor]="descriptionTooltip"
+                (click)="manageTooltip()">
+                <em class="material-icons">info</em>
+            </div>
+
+            <div [innerHtml]="tipText"></div>
+
+            <input class="action-input"
+                [ngModel]="dataInput"
+                [placeholder]="titlePlaceholder"
+                (input)="onChangeText($event.target.value)"/>
+        </div>
+    </div>
+</div>
+
+<sat-popover #descriptionTooltip id="descriptionTooltip" 
+    hasBackdrop 
+    verticalAlign="center" 
+    horizontalAlign="after" 
+    (backdropClicked)="descriptionTooltip.close()" 
+    panelClass="description-tooltip">
+    <div class="tooltip-wrp">
+        <div class="caret_tooltip"></div>
+        <span [innerHTML]="element?.description"></span>
+   </div>
+</sat-popover>
+

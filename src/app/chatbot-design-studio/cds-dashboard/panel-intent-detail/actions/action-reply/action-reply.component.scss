@@ -1,0 +1,236 @@
+@import "./src/assets/sass/cds/_variables.scss";
+
+$min-height-content: 376px;
+$margin-left: 10px;
+$padding: 10px; 
+$action-description-height: 100px;
+$margin-bottom: 15px;
+
+/* customize scrollbar */
+::-webkit-scrollbar {
+    width: 0px;
+}
+
+// .disable-input-message {
+//     position: absolute;
+//     bottom: 10px;
+//     left: 10px;
+//     color: white;
+// }
+
+::ng-deep .mat-checkbox.mat-accent .mat-checkbox-frame {
+    border-color: $icon-color!important;
+}
+
+// overwrite the checkbox background
+::ng-deep .mat-checkbox-checked .mat-checkbox-background, 
+.mat-checkbox-indeterminate .mat-checkbox-background {
+    background-color: $icon-color!important;
+    .mat-checkbox-checkmark {
+        background: $icon-color!important;;
+        .mat-checkbox-checkmark-path {
+          stroke: white;
+          stroke-width: 5px;
+        }
+      }
+
+}
+
+// // overwrite the ripple overlay on hover and click
+// ::ng-deep .mat-checkbox:not(.mat-checkbox-disabled) .mat-checkbox-ripple .mat-ripple-element {
+//   background-color: black !important;
+// }
+
+.box-up {
+    display: inline-block;
+    padding: 5px 20px;
+    background: #dcdcdc;
+    position: static;
+    width: 100%;
+}
+
+.box-dw {
+    .reply-info{
+        color: aliceblue;
+        padding: 10px;
+        font-size: 14px;
+        text-align: center;
+        border: 2px solid #0F172A;
+        border-radius: 10px;
+        margin: 10px;
+        background: #425575;
+    }
+}
+
+
+/*
+.box-sx {
+    position: relative;
+    display: inline-flex;
+    vertical-align: top;
+    flex-direction: column;
+    width: calc(100% - 100px);
+    max-height: 100%;
+    // height: calc(100vh - 145px);
+    max-height: calc(100% - 130px - $action-description-height - $margin-bottom);
+    overflow: hidden;
+    border-radius: 0.6em;
+    // background-color: rgb($bg-color-card-rgb);
+    margin-left: $margin-left;
+    font-family: 'Poppins','Roboto', 'Arial', sans-serif;
+    color: #394f5a; 
+    font-size: 1em;
+    padding: $padding;
+    .reply-info{
+        color: aliceblue;
+        padding: 10px;
+        font-size: 14px;
+        text-align: center;
+        border: 2px solid #0F172A;
+        border-radius: 10px;
+        margin: 0px 5px 0px;
+        background: #425575;
+    }
+}
+
+.box-dx {
+    display: inline-flex;
+    padding-top: $padding;
+    .panel-tools-response {
+        position: relative;
+        display: inline-flex;
+        vertical-align: top;
+        width: auto;
+        margin-left: 10px;
+        max-height: 100%;
+        height: fit-content;
+        overflow: hidden;
+        border-radius: 0.6em;
+        background-color: $color-withe-hex;
+        font-family: 'Poppins','Roboto', 'Arial', sans-serif;
+        color: $bg-color-dark-hex;
+        font-size: 1em;
+        padding: $padding;
+    }
+}
+
+*/
+
+#scrollMe {
+    scroll-behavior: smooth;
+    padding: 0;
+    margin: 0;
+    margin-bottom: 30px;
+    padding-bottom: 140px;
+}
+.content {
+    position: relative;
+    display: block;
+    height: auto;
+    width: 100%;
+    min-height: $min-height-content;
+    margin-top: 0px;
+    overflow: auto;
+    max-height: calc(100vh - 200px);
+    .response {
+        display: block;
+        position: relative;
+        height: auto;
+        width: 100%;
+        min-height: auto;
+        // margin: 2px;
+        .response-drop {
+            position: absolute;
+            display: flex;
+            align-content: space-around;
+            width: 24px;
+            height: 26px;
+            left: 0px;
+            top: 0px;
+            margin: 0;
+            color: $color-bck-gray-hex;
+            cursor: grab;
+            background-color: transparent;
+            z-index: 1; 
+        }
+        .response-drop:hover {
+            color: $color-withe-hex;
+            cursor: grab;  
+        }
+    }
+    
+
+
+    /** START DRAG AND DROP **/
+    .draggable-list {
+        width: 500px;
+        max-width: 100%;
+        border: solid 1px $color-txt-3-hex;
+        min-height: 60px;
+        display: block;
+        background: $color-withe-hex;
+        border-radius: 4px;
+        overflow: hidden;
+    }
+      
+    .cdk-drag-preview {
+        box-sizing: border-box;
+        border-radius: 4px;
+        box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+                    0 8px 10px 1px rgba(0, 0, 0, 0.14),
+                    0 3px 14px 2px rgba(0, 0, 0, 0.12);
+    }
+       
+    .draggable-box:last-child {
+        border: none;
+    }
+      
+    .draggable-list.cdk-drop-list-dragging .draggable-box:not(.cdk-drag-placeholder) {
+       transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+    }
+      
+    .custom-placeholder {
+        opacity: 0.4;
+        background: $color-txt-3-hex;
+        border: dotted 2px $color-txt-2-hex;
+        min-height: 60px;
+        transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+    }
+    /** END DRAG AND DROP **/
+}
+
+
+
+.card-buttons {
+    position: absolute;
+    display: none;
+    top: 0;
+    right: 0;
+    margin: 0;
+    outline: none;
+    width: 380px;
+    height: 100%;
+    color: #fff;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: transparent;
+    overflow: visible;
+    z-index: 14;
+    border-radius: 1em;
+    box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2),
+                0 2px 2px 0 rgba(0, 0, 0, 0.14),
+                0 1px 5px 0 rgba(0, 0, 0, 0.12);
+    &.active{
+        display: block;
+    }
+}
+
+// cds-action-description {
+//     padding: 10px 0;
+//     margin-left: 10px;
+//     // margin-right: 30px;
+//     & ::ng-deep .action_welcome{
+//         margin-bottom: 0px;
+//     }
+// }

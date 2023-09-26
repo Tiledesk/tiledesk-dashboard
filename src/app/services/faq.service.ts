@@ -391,7 +391,7 @@ public _getAllFaqByFaqKbId(id_faq_kb: string): Observable<Intent[]> {
    * @param webhook_enabled 
    * @returns 
    */
-   public addIntent(id_faq_kb: string, attributes: any, question: any, answer: string, intent_display_name: string, intent_id: string, intent_form: any, intent_actions: any, webhook_enabled: boolean) {
+   public addIntent(id_faq_kb: string, question: any, answer: string, intent_display_name: string, intent_form: any, intent_actions: any, webhook_enabled: boolean) {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -402,11 +402,9 @@ public _getAllFaqByFaqKbId(id_faq_kb: string): Observable<Intent[]> {
     this.logger.log('[FAQ-SERV] ADD FAQ -  PUT URL ', url);
     const body = { 
       'id_faq_kb': id_faq_kb, 
-      'attributes': attributes,
       'question': question, 
       'answer': answer, 
       'intent_display_name': intent_display_name, 
-      'intent_id': intent_id,
       'form': intent_form,
       'actions': intent_actions,
       'webhook_enabled': webhook_enabled 
@@ -426,7 +424,7 @@ public _getAllFaqByFaqKbId(id_faq_kb: string): Observable<Intent[]> {
    * @param webhook_enabled 
    * @returns 
    */
-   public updateIntent(id: string, attributes: any, question: any, answer: string, intent_display_name: string, intent_form: any, intent_actions: any, webhook_enabled: boolean) {
+   public updateIntent(id: string, question: any, answer: string, intent_display_name: string, intent_form: any, intent_actions: any, webhook_enabled: boolean) {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -437,7 +435,6 @@ public _getAllFaqByFaqKbId(id_faq_kb: string): Observable<Intent[]> {
     let url = this.FAQ_URL + id; 
     this.logger.log('[FAQ-SERV] UPDATE FAQ - PUT URL ', url);
     const body = { 
-      'attributes': attributes, 
       'question': question, 
       'answer': answer, 
       'intent_display_name': intent_display_name, 
@@ -576,22 +573,6 @@ public _getAllFaqByFaqKbId(id_faq_kb: string): Observable<Intent[]> {
       .post(url, JSON.stringify(body), httpOptions)
   }
 
-
-
-  public patchAttributes(id: string, attributes: any): Observable<Intent> {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Authorization': this.TOKEN
-      })
-    };
-    let url = this.SERVER_BASE_PATH + this.project._id + '/faq/' + id + '/attributes';
-    let body = JSON.stringify(attributes);
-    console.log('[FAQ.SERV] updateFaq - BODY ', url, body);
-    return this._httpClient
-    .patch<Intent>(url, body, httpOptions)
-    // return this._httpClient.patch(url, body, httpOptions)
-  }
 
 
 }

@@ -1,0 +1,109 @@
+<!-- <div style="padding: 20px 0 30px;"> -->
+<div class="container-wrap">
+
+    <div *ngIf="templates_list.length > 0 && !showLoader" id="select-template-box" class="select-template-box">
+
+        <!-- // Phone number id -->
+        <div class="phone-number-id-container">
+            <label class="title-label">Phone number id</label>
+            <input id="phone-number-id" type="text" placeholder="109***********67" value="{{phone_number_id}}"
+                (input)="onPhoneNumberIdChange($event)">
+        </div>
+
+        <!-- // Select template -->
+        <div class="select-template-container">
+            <label class="title-label" style="margin-top: 6px;">Choose a template</label>
+            <cds-select id="template-select" [items]="templates_list" [bindLabelSelect]="'name'"
+                [bindValueSelect]="'name'" [optionalBindAdditionalText]="'language'"
+                [optionalBindDescription]="'description'" [itemSelected]="action?.templateName"
+                (onSelected)="onChangeSelect($event)">
+            </cds-select>
+        </div>
+
+    </div>
+
+    <div *ngIf="showLoader" class="loader-container">
+        <div id="opt-train-wrp">
+            <label>Loading templates</label>
+            <div class="lds-spinner">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="templates_list.length == 0 && !showLoader" id="select-template-box" class="select-template-box">
+        <p>Oops, looks like there is no template. <a
+                href="https://www.facebook.com/business/help/2055875911147364?id=2129163877102343"
+                target="_blank">Create one now!</a></p>
+    </div>
+
+    <div *ngIf="selected_template" class="receiver-list">
+
+        <!-- <cds-whatsapp-receiver *ngIf="receiver_list.length == 0" [template]="selected_template"
+            [receiver]="receiver_list[0]" [index]=0 (receiverValue)="onReceiverEmitted($event, 0)"
+            (deleteReceiver)="onReceiverDeleteEmitted($event)">
+        </cds-whatsapp-receiver>
+        -->
+
+
+        <div *ngIf="action.payload.receiver_list.length > 0">
+            <div *ngFor="let rcv of action.payload.receiver_list; let id = index">
+                <cds-whatsapp-receiver [template]="selected_template" [receiver]="rcv" [index]=id
+                    (receiverValue)="onReceiverEmitted($event, id)"
+                    (deleteReceiver)="onReceiverDeleteEmitted($event, id)">
+                </cds-whatsapp-receiver>
+            </div>
+        </div>
+
+        <div class="add-block-btn-container">
+            <div>
+                <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 24 36.9"
+                    style="enable-background:new 0 0 24 36.9;width: 20px; height: auto;fill:#d2e3fc"
+                    xml:space="preserve">
+                    <g>
+                        <circle cx="12" cy="21.5" r="2" />
+                        <circle cx="12" cy="27.5" r="2" />
+                        <circle cx="12" cy="33.5" r="2" />
+                        <circle cx="12" cy="3.3" r="2" />
+                        <circle cx="12" cy="9.3" r="2" />
+                        <circle cx="12" cy="15.3" r="2" />
+                    </g>
+                </svg>
+            </div>
+            <div class="add-btn-container">
+                <button class="btn add-block-btn" (click)="addReceiver()">
+                    <span class="material-icons">
+                        add
+                    </span>
+                </button>
+                <div class="add-btn-text" (click)="addReceiver()"> Add receiver </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="json-preview-container" class="json-preview-container">
+        <div class="preview-header">
+            <span class="title">Payload</span>
+            <button class="icon-only">
+                <span class="material-icons" (click)="copyToClipboard()">
+                    content_copy
+                </span>
+            </button>
+        </div>    
+        <pre class="json" id="json"></pre>
+    </div>
+
+</div>

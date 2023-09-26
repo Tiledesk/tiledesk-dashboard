@@ -1,0 +1,26 @@
+<div class="content-panel-intent-detail">
+
+    <label class="title-label">Choose a bot</label>
+
+    <div class="select-bot-box">
+        <!-- <ng-select 
+            class = "form-control-select" 
+            appendTo="body"
+            [items] = "chatbots_name_list" 
+            [searchable] = true
+            [editableSearchTerm]= false
+            [clearable] = false
+            [(ngModel)] = "action.botName"
+            (change) = "onChangeActionButton($event)">
+        </ng-select> -->
+
+        <cds-select id="text-condition"
+            [items]="chatbots_name_list"
+            [bindLabelSelect]="'name'"
+            [bindValueSelect]="'value'"
+            [itemSelected]="action?.botName"
+            (onSelected)="onChangeSelect($event)">
+        </cds-select>
+    </div>
+
+</div>
