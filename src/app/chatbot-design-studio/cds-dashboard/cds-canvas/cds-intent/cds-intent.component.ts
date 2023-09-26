@@ -432,7 +432,6 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
    * Useful in case I move an action between different intents 
   * */
   onDragStarted(event, previousIntentId, index) {
-
     this.controllerService.closeActionDetailPanel();
     console.log('[CDS-INTENT] onDragStarted event ', event, 'previousIntentId ', previousIntentId);
     console.log('[CDS-INTENT] onDragStarted index ', index);
@@ -555,7 +554,13 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
   // }
 
 
-
+  /** Predicate function that only allows type='intent' to be dropped into a list. */
+  // canEnterDropList(action: any) {
+  //   return (item: CdkDrag<any>) => {
+  //     console.log('itemmmmmmmm', item.data, action)
+  //     return true
+  //   }
+  // }
 
 
 

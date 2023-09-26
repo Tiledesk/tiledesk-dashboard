@@ -1,6 +1,5 @@
-import { TYPE_ACTION_CATEGORY } from '../../../../utils';
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
-import { TYPE_ACTION, ACTIONS_LIST, TYPE_OF_MENU, ELEMENTS_LIST } from 'app/chatbot-design-studio/utils';
+import { TYPE_ACTION_CATEGORY, ACTIONS_LIST, TYPE_OF_MENU, TYPE_EVENT_CATEGORY, EVENTS_LIST } from 'app/chatbot-design-studio/utils';
 import { CdkDropList, CdkDragStart, CdkDragEnd, CdkDragMove } from '@angular/cdk/drag-drop';
 import { ControllerService } from 'app/chatbot-design-studio/services/controller.service';
 // import { DragDropService } from 'app/chatbot-design-studio/services/drag-drop.service';
@@ -44,7 +43,7 @@ export class CdsPanelActionsComponent implements OnInit {
     console.log('cds-panel-actions ngOnChanges:: ', this.pos, this.menuType, this.menuCategory);
     switch (this.menuType) {
       case TYPE_OF_MENU.ACTION:
-        this.menuItemsList = ELEMENTS_LIST.filter(el => el.category === TYPE_ACTION_CATEGORY[this.menuCategory]).map(element => {
+        this.menuItemsList = Object.values(ACTIONS_LIST).filter(el => el.category === TYPE_ACTION_CATEGORY[this.menuCategory]).map(element => {
           return {
             type: TYPE_OF_MENU.ACTION,
             value: element
@@ -52,9 +51,12 @@ export class CdsPanelActionsComponent implements OnInit {
         });
         break;
       case TYPE_OF_MENU.EVENT:
-        this.menuItemsList = [
-          { text: 'Coming Soon'}
-        ];
+        this.menuItemsList = Object.values(EVENTS_LIST).map(element => {
+          return {
+            type: TYPE_OF_MENU.EVENT,
+            value: element
+          };
+        });
         break;
       case TYPE_OF_MENU.BLOCK:
         this.menuItemsList = [{

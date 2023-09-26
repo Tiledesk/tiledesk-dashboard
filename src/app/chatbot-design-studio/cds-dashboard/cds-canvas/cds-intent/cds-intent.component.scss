@@ -16,7 +16,7 @@
 .panel-intent-content {
   transition: background-color 0.15s ease 0s;
   width: 264px;
-  cursor: pointer;
+  cursor: grab;
   position: relative;
   margin: 0px;
 
@@ -64,7 +64,7 @@
     position: relative;
     border-radius: 10px;
     // border: 2px solid rgb(255, 255, 255);
-    padding: 0 10px 10px 10px;
+    padding: 0 0px 10px 10px;
     // background-color: rgb(235, 226, 198);
     background-color: var(--intent-header-background);
   }
@@ -325,10 +325,10 @@
 /* Btn add action
 /* --------------------------------- */
 .csd-open-action-menu-btn-wpr {
-  height: 32px;
+  // height: 32px;
   text-align: center;
   position: absolute;
-  bottom: -45px;
+  bottom: -50px;
 }
 
 .cds-last-action>.csd-open-action-menu-btn-wpr {
@@ -957,7 +957,7 @@
 }
 
 .cds-add-action-btn>span {
-  font-size: 24px;
+  font-size: 20px;
   // color: $icon-color;
   color: #fff;
   position: relative;

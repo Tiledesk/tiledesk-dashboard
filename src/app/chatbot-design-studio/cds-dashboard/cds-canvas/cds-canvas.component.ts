@@ -37,6 +37,7 @@ export class CdsCanvasComponent implements OnInit {
 
   private subscriptionListOfIntents: Subscription;
   listOfIntents: Array<Intent> = [];
+  listOfEvents: Array<Intent> = []
   intentSelected: Intent;
   intent_id: string;
   hasClickedAddAction: boolean = false;

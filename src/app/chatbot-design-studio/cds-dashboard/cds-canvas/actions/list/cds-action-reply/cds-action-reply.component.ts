@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, ViewChild, ElementRef, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Wait, Button, Message, Command, ActionReply, MessageAttributes, Intent } from 'app/models/intent-model';
-import { TYPE_INTENT_ELEMENT, ELEMENTS_LIST, ACTIONS_LIST, TYPE_ACTION, TYPE_COMMAND, TYPE_RESPONSE, TYPE_BUTTON, TYPE_URL, TYPE_MESSAGE, generateShortUID } from 'app/chatbot-design-studio/utils';
+import { TYPE_INTENT_ELEMENT, ACTIONS_LIST, TYPE_ACTION, TYPE_COMMAND, TYPE_RESPONSE, TYPE_BUTTON, TYPE_URL, TYPE_MESSAGE, generateShortUID } from 'app/chatbot-design-studio/utils';
 import { LoggerService } from 'app/services/logger/logger.service';
 
 import { ControllerService } from 'app/chatbot-design-studio/services/controller.service';
@@ -69,7 +69,7 @@ export class CdsActionReplyComponent implements OnInit {
     // // console.log('ngOnInit panel-response::: ', this.typeAction);
     this.typeAction = (this.action._tdActionType === TYPE_ACTION.RANDOM_REPLY ? TYPE_ACTION.RANDOM_REPLY : TYPE_ACTION.REPLY);
     try {
-      this.element = ELEMENTS_LIST.find(item => item.type === this.action._tdActionType);
+      this.element = Object.values(ACTIONS_LIST).find(item => item.type === this.action._tdActionType);
       if(this.action._tdActionTitle && this.action._tdActionTitle != ""){
         this.dataInput = this.action._tdActionTitle;
       }
