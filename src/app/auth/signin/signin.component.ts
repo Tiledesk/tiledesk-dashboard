@@ -429,6 +429,15 @@ export class SigninComponent implements OnInit {
     this.router.navigate(['forgotpsw']);
   }
 
+  goToSignup() {
+    this.router.navigate(['signup']);
+  }
+
+  goToCompanySite() {
+    const url = this.company_site_url;
+    window.open(url, '_blank');
+  }
+
   // goToSignupPage() {
   //   this.router.navigate(['signup']);
   // }

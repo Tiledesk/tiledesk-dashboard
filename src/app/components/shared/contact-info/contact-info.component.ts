@@ -12,6 +12,8 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { browserRefresh } from 'app/app.component';
 import { LoggerService } from '../../../services/logger/logger.service';
+import { TagsService } from 'app/services/tags.service';
+import { UsersService } from 'app/services/users.service';
 @Component({
   selector: 'appdashboard-contact-info',
   templateUrl: './contact-info.component.html',
@@ -32,6 +34,7 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
 
   contactTags: Array<any>
   contactTempTags: Array<any> = []
+  tagsList: Array<any>;
 
   tag: any;
   tagContainerElementHeight: any;
@@ -62,6 +65,7 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
   public browserRefresh: boolean;
 
   public form: FormGroup;
+  CURRENT_USER_ROLE: string;
 
   constructor(
     public router: Router,
@@ -71,7 +75,9 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
     private appConfigService: AppConfigService,
     public dialog: MatDialog,
     private translate: TranslateService,
-    public logger: LoggerService
+    public logger: LoggerService,
+    private tagsService: TagsService,
+    public usersService: UsersService
   ) { }
 
 
@@ -85,7 +91,24 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
     this.getCurrentProject();
     this.getOSCODE();
     this.detectBrowserRefresh();
+    this.getTag();
+    this.getProjectUserRole();
     // this.getAllContactProperties()
+  }
+
+  // -------------------------------------------------------------
+  // @ Subscribe to project user role
+  // -------------------------------------------------------------
+  getProjectUserRole() {
+    this.usersService.project_user_role_bs
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((userRole) => {
+        this.logger.log('[WS-REQUESTS-MSGS] - GET CURRENT PTOJECT-USER ROLE - userRole ', userRole)
+        // used to display / hide 'WIDGET' and 'ANALITCS' in home.component.html
+        this.CURRENT_USER_ROLE = userRole;
+      })
   }
 
   detectBrowserRefresh() {
@@ -419,6 +442,53 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
   // -----------------------------------------------------
   // @ Lead Tags
   // -----------------------------------------------------
+  getTag() {
+    
+    this.tagsService.getTags().subscribe((tags: any) => {
+      if (tags) {
+        // contactTempTags are the available tags that the administrator has set on the tag management page
+       
+        this.contactTempTags = tags
+        this.contactTempTags =  this.contactTempTags.slice(0)
+        this.logger.log('[CONTACT-INFO] - GET TAGS - tag of contactTempTags  this.contactTempTags ', this.contactTempTags);
+        
+        this.logger.log('[CONTACT-INFO] - GET TAGS - contactTempTags length', this.contactTempTags.length);
+        this.logger.log('[CONTACTS-DTLS] - ADD TAG > contactTags: ', this.contactTags);
+
+        // -----------------------------------------------------------------------------------
+        // Splice tags from the contactTempTags the tags already present in the contactTags
+        // ------------------------------------------------------------------------------------
+        this.removeTagFromTaglistIfAlreadyAssigned(this.contactTempTags, this.contactTags);
+      }
+    }, (error) => {
+      this.logger.error('[CONTACT-INFO]  - GET TAGS - ERROR  ', error);
+    
+    }, () => {
+      this.logger.log('[CONTACT-INFO]  - GET TAGS * COMPLETE *');
+     
+    });
+  }
+
+  removeTagFromTaglistIfAlreadyAssigned(contactTempTags: any, contactTags: any) {
+    // remove from the contactTempTags (tags that the administrator has set on the tag management page and that are displayed in the combo box 'Add tag' of this template)
+    if (contactTempTags) {
+      for (var i = contactTempTags.length - 1; i >= 0; i--) {
+        for (var j = 0; j < contactTags.length; j++) {
+          if (contactTempTags[i] && (contactTempTags[i].tag === contactTags[j])) {
+            this.logger.log('[CONTACT-INFO] - REMOVE TAGS FROM TAG LIST WHEN IS SELECTED -  contactTempTags - contactTempTags[i] ', contactTempTags[i]);
+            contactTempTags.splice(i, 1);
+          }
+        }
+      }
+    } else {
+      this.logger.log('[CONTACT-INFO] - REMOVE TAGS FROM TAG LIST WHEN IS SELECTED -  tagsList undefined ', this.tagsList);
+    }
+    this.logger.log('[CONTACT-INFO] - GET TAGS -  tagsList - AFTER SPLICE ', this.contactTempTags);
+    this.contactTempTags = this.contactTempTags.slice(0);
+
+  }
+
+
   // When the user select a tag from the combo-box 
   addTag(tag) {
     this.logger.log('[CONTACT-INFO] - ADD TAG > tag: ', tag);
@@ -446,7 +516,36 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
     // self.this.logger.log("Create New TAG Clicked - leads tag: ", self.contactTags)
     this.logger.log("Create New TAG Clicked - leads tag: ", self.contactTags)
     self.updateContactTag(self.requester_id, self.contactTags)
+     const tag_selected_color = '#43B1F2'
+    self.addTagsToThePresetList(newTag, tag_selected_color)
   }
+
+  addTagsToThePresetList(newTag, tag_selected_color) {
+
+    this.tagsService.createTag(newTag, tag_selected_color)
+    .subscribe((tag: any) => {
+      this.logger.log('[WS-REQUESTS-MSGS] - CREATE TAG - RES ', tag);
+
+      // const tagObject = { tag: tag.tag, color: tag.color }
+      
+
+      
+
+    }, (error) => {
+      this.logger.error('[WS-REQUESTS-MSGS] - CREATE TAG - ERROR  ', error);
+      // this.notify.showWidgetStyleUpdateNotification(this.create_label_error, 4, 'report_problem');
+    }, () => {
+      this.logger.log('[WS-REQUESTS-MSGS] - CREATE TAG * COMPLETE *');
+      // this.notify.showWidgetStyleUpdateNotification(this.create_label_success, 2, 'done');
+
+      // this.tag_name = '';
+      // this.tag_selected_color = '#43B1F2';
+
+      this.getTag();
+    });
+
+  }
+ 
 
   removeTag(tag: string) {
     this.logger.log('[CONTACT-INFO] removeTag tag', tag)
@@ -488,13 +587,17 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
     const tagContainerElement = <HTMLElement>document.querySelector('.lead-tags--container');
     // this.logger.log('tagContainerElement ', tagContainerElement)
     if (tagContainerElement) {
-      this.tagContainerElementHeight = tagContainerElement.offsetHeight + 50 + 'px'
+      this.tagContainerElementHeight = tagContainerElement.offsetHeight + 60 + 'px'
       this.logger.log('[CONTACT-INFO] tagContainerElement.offsetHeight tagContainerElementHeight ', this.tagContainerElementHeight)
       this.logger.log('[CONTACT-INFO] tagContainerElement.clientHeight ', tagContainerElement.clientHeight)
 
       // this.tagContainerElementHeight = (this.requestInfoListElementHeight + tagContainerElement.offsetHeight) + 'px';
       // this.this.logger.log('this.tagContainerElementHeight ', this.tagContainerElementHeight)
     }
+  }
+
+  goToTags() {
+    this.router.navigate(['project/' + this.id_project + '/labels']);
   }
 
   // -----------------------------------------------------

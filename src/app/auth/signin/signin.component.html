@@ -3,10 +3,11 @@
   style="padding-top:0px;min-height: calc(100% - 0px); margin-top: 0px;padding-left: 0px;padding-right: 0px;padding-bottom: 0px;">
 
   <div class="container-fluid">
-    <div class="split left" style="display: flex; justify-content: center;
-    align-items: center;" [ngClass]="{'hidden_left_panel' : hide_left_panel === true}">
+    <!-- style="display: flex; justify-content: center;align-items: center;" -->
+    <div class="split left"  [ngClass]="{'hidden_left_panel' : hide_left_panel === true}">
 
-      <div>
+      <!-- Circle bckgnd -->
+      <!-- <div>
         <svg viewBox="0 0 960 540" width="100%" height="100%" preserveAspectRatio="xMidYMax slice"
           xmlns="http://www.w3.org/2000/svg" class="absolute inset-0 pointer-events-none ng-tns-c137-1"
           style="inset: 0; position: absolute;">
@@ -16,21 +17,21 @@
             <circle r="234" cx="790" cy="491" class="ng-tns-c137-1"></circle>
           </g>
         </svg>
-      </div>
+      </div> -->
 
       <!--  --------------------------------------------------------------- -->
       <!--  Right panel -->
       <!--  --------------------------------------------------------------- -->
       <div class="centered-horizontally" style="margin:auto; margin-top: 60px;">
 
-        <div class="left-logo" style="text-align: center;text-align: center;
-        z-index: 1050;
-        position: relative;">
-          <a [href]="company_site_url" target="_blank">
+        <div class="left-logo" style="z-index: 1050; position: relative;" (click)="goToCompanySite()">
+          <!-- <a [href]="company_site_url" target="_blank"> -->
 
             <!-- <img [src]="companyLogoAllWithe_Url" class="img-fluid" style="width: 180px;"/> -->
-            <img src="assets/img/logos/tiledesk_planet.svg" class="img-fluid" style="width: 200px;" />
-          </a>
+            <!-- <img src="assets/img/logos/tiledesk_planet.svg" class="img-fluid" style="width: 200px;" /> -->
+            <img [src]="companyLogoBlack_Url" class="img-fluid" style="max-width: 150px; height: auto; top: -50px;
+            left: 25px;position: absolute;" />
+          <!-- </a> -->
         </div>
 
         <!-- <div class="welcome-text">
@@ -42,7 +43,7 @@
           <span style="display: block;"> Omni-channel live chat + AI-powered chatbots and conversational apps. </span> 
         </div> -->
 
-        <div *ngIf="SUP === true" style="width: 260px; margin: auto; text-align: center;">
+        <div class="signin-no-account-wpr" *ngIf="SUP === true">
           <h2 class="signin-no-account">
             {{ "Dont" | translate }} <br>
             {{ "HaveAnAccountYet" | translate }}
@@ -168,16 +169,16 @@
             </button>
 
             <!-- <span *ngIf="userForm.valid" class="help is-success">Form Looks Valid</span> -->
-            <div class="left-panel-signup-link" style="margin-top:16px; text-align: center">
-              <a routerLink="/signup" style="color: #666666; font-size: 1.1em">
+            <div class="left-panel-signup-link" (click)="goToSignup()">
+              <!-- <a routerLink="/signup"> -->
                 {{ "DontHaveAnAccountYet" | translate }}
-                <span style="color: #03a5e8">
+                <span style="color: #03a5e8; cursor: pointer;">
                   {{ "SignUp" | translate }}
                 </span>
-              </a>
+              <!-- </a> -->
             </div>
-
-            <p style="color: #666666; font-size: 1.1em; text-align: center; margin-top: 16px;">
+            <!-- style="color: #666666; font-size: 1.1em; text-align: center; margin-top: 16px;" -->
+            <p class="signin-forgot-pswrd">
               {{ "ForgotYourPassword" | translate }}?
               <span style="color: #03a5e8; cursor:pointer" (click)="goToResetPsw()">
                 {{ "ClickHere" | translate }}

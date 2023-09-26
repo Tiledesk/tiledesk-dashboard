@@ -1,4 +1,5 @@
 @import "./src/assets/sass/md/_variables.scss";
+
 /****** LOGIN ******/
 .signup-button {
   width: 100%;
@@ -95,7 +96,8 @@ input:-webkit-autofill {
   left: 0;
   // background-color: #f0806f;
   // background-color: $brand-secodary;
-  background-color: rgb(15, 23, 42);
+  // background-color: rgb(15, 23, 42); // old
+  background-color: #d3e3ee; //new
   // background-image: url(https://tiledesk.com/wp-content/uploads/2023/01/background_chatboat_design.jpg?id=10568welcome-text);
 }
 
@@ -162,7 +164,7 @@ input:-webkit-autofill {
   //   display: none;
   // }
 
-  .signup-title > h2 {
+  .signup-title>h2 {
     text-align: center !important;
   }
 
@@ -178,6 +180,7 @@ input:-webkit-autofill {
   .right-logo {
     display: none;
   }
+
   .left-panel-signin-link {
     display: none;
   }
@@ -192,7 +195,7 @@ input:-webkit-autofill {
   font-family: "Poppins", "Roboto", "Arial", sans-serif;
 }
 
-.signup-title > h2 {
+.signup-title>h2 {
   font-size: 36px;
   // line-height: 55px;
   font-family: "Poppins", "Roboto", "Arial", sans-serif;
@@ -200,14 +203,27 @@ input:-webkit-autofill {
   text-align: left;
 }
 
-.signup-subtitle,
-.no-card-required {
-  font-size: 16px;
+.signup-subtitle {
+  font-size: 15px;
   font-weight: 400;
   margin-bottom: 15px;
   line-height: 21px;
   font-family: "Poppins", "Roboto", "Arial", sans-serif;
   text-align: left;
+  color: #222;
+}
+
+.no-card-required {
+  font-size: 14px;
+  /* font-weight: 400; */
+  margin-bottom: 15px;
+  line-height: 21px;
+  font-family: Poppins,Roboto,Arial,sans-serif;
+  /* text-align: left; */
+  color: rgb(100, 116, 145);
+  max-width: 400px;
+  padding: 0px 15px;
+
 }
 
 .auth-link-button-signup {
@@ -220,27 +236,39 @@ input:-webkit-autofill {
 }
 
 .welcome-text {
-  font-size: 40px;
-  font-family: "Poppins", "Roboto", "Arial", sans-serif;
+  // font-size: 40px;
+  // font-family: "Poppins", "Roboto", "Arial", sans-serif;
+  // font-weight: 600;
+  // line-height: 50px;
+  // padding: 20px;
+  // text-align: center;
+  // z-index: 1050;
+  // position: relative;
+  // color: #e8eaed;
+  font-size: 22px;
+  font-family: Poppins,Roboto,Arial,sans-serif;
   font-weight: 600;
-  line-height: 50px;
-  padding: 20px;
-  text-align: center;
+  line-height: 1.3;
+  padding: 98px 26px 12px 26px;
   z-index: 1050;
   position: relative;
-  color: #e8eaed;
+  color: #222;
 }
 
 .welcome-text-subtitle {
-  padding-left: 80px;
-  padding-right: 80px;
-  text-align: center;
-  color: #f0806f;
-  font-size: 18px;
+  // padding-left: 80px;
+  // padding-right: 80px;
+  padding: 30px 26px 0px 26px;
+  /* text-align: center; */
+  color: #222;
+  font-size: 16px;
   line-height: 25px;
-  font-weight: 500;
+  font-weight: 400;
   z-index: 1050;
   position: relative;
+  display: flex;
+  flex-direction: row;
+  gap: 6px;
 }
 
 label {
@@ -320,7 +348,7 @@ label {
 // }
 
 /* When the checkbox is checked, add a blue background */
-.container input:checked ~ .checkmark {
+.container input:checked~.checkmark {
   background-color: #2196f3;
 }
 
@@ -332,7 +360,7 @@ label {
 }
 
 /* Show the checkmark when checked */
-.container input:checked ~ .checkmark:after {
+.container input:checked~.checkmark:after {
   display: block;
 }
 
@@ -348,6 +376,7 @@ label {
   -ms-transform: rotate(45deg);
   transform: rotate(45deg);
 }
+
 // end CHECKBOX TERMS AND CONDITIONS
 
 input.secure {
@@ -374,6 +403,13 @@ input.secure {
 /* Social proof
 /* -------------------------------------------------------- */
 
+.satisfied-customers-num {
+  font-size: 18px;
+    font-weight: 500;
+    padding: 0 26px;
+    margin-bottom: 30px;
+}
+
 .social-proof-container {
   bottom: 20px;
   position: absolute;
@@ -388,8 +424,9 @@ input.secure {
   align-items: center;
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
-  justify-content: center;
+  gap: 5px;
+  justify-content: space-between;
+  padding: 0 26px;
 }
 
 .social-proof {
@@ -424,13 +461,15 @@ input.secure {
 /* ***************************** */
 
 .auth---divider {
-  font-size: 16px;
+  font-size: 14px;
   text-align: center;
   border-bottom: 1px solid #d9d9d9;
   line-height: 0em;
   display: block !important;
-  font-weight: 400;
+  // font-weight: 400;
   font-family: "Poppins", "Roboto", "Arial", sans-serif;
+  color: #647491;
+  padding-top: 18px !important;
 }
 
 .auth---divider span {
@@ -441,7 +480,7 @@ input.secure {
   height: 20px;
 }
 
-.su-google-button {
+.google-button {
   // background-color: rgb(66, 133, 244);
   display: inline-flex;
   align-items: center;
@@ -459,16 +498,16 @@ input.secure {
   background: #ffff !important;
   color: #4285f4 !important;
   margin-bottom: 30px;
-  margin-top: 30px;
   height: 56px;
 }
 
-.su-google-button:hover {
+.google-button:hover {
   border-color: #94c8ff !important;
   background-color: #f4f9ff !important;
   opacity: 1 !important;
 }
-.su-google-button:hover > div {
+
+.google-button:hover>div {
   border-color: #94c8ff !important;
   background-color: #f4f9ff !important;
   opacity: 1 !important;
@@ -632,5 +671,3 @@ input.secure {
 // .gray-bckgnd {
 //   background: #eeeeee !important;
 // }
-
-

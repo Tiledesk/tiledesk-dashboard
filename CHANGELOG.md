@@ -1,5 +1,11 @@
 # tiledesk-dashboard
 
+### 2.4.61
+- Deploys in production
+- Makes the predefined tags available for the contacts
+- Add the ability to add predefined tags from the "Profile" tab
+- Refactor sign in and sign up pages
+
 ### 2.4.60
 - Deploys in production
 - Adds the ability in the actions menu of the right side panel of the conversation details page to send the chat transcript via email

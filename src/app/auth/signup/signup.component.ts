@@ -852,6 +852,11 @@ export class SignupComponent implements OnInit, AfterViewInit {
     // , '_blank'
   }
 
+  goToCompanySite() {
+    const url = this.company_site_url;
+    window.open(url, '_blank');
+  }
+
 
 
   goToSigninPage() {
