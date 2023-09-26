@@ -1,3 +1,4 @@
+import { Chatbot } from 'app/models/faq_kb-model';
 import { TooltipOptions } from 'ng2-tooltip-directive';
 
 export const CutomTooltipOptions: TooltipOptions = {
@@ -318,23 +319,23 @@ export const featuresPlanA = [
     'Webhooks',
     'Email Support',
     'Team Inbox'
-  ]
-  export const highlightedFeaturesPlanA = [
+]
+export const highlightedFeaturesPlanA = [
     { 'color': '#a613ec', 'background': 'rgba(166,19,236,.2)', 'feature': '4 Seats' },
     { 'color': '#0d8cff', 'background': 'rgba(13,140,255,.2)', 'feature': '800 Chat/mo.' }
-  ]
+]
 
-  export const appSumoHighlightedFeaturesPlanATier1 = [
+export const appSumoHighlightedFeaturesPlanATier1 = [
     { 'color': '#a613ec', 'background': 'rgba(166,19,236,.2)', 'feature': '2 Seats' },
     { 'color': '#0d8cff', 'background': 'rgba(13,140,255,.2)', 'feature': '500 Chat/mo.' }
-  ]
+]
 
-  export const appSumoHighlightedFeaturesPlanATier2 = [
+export const appSumoHighlightedFeaturesPlanATier2 = [
     { 'color': '#a613ec', 'background': 'rgba(166,19,236,.2)', 'feature': '5 Seats' },
     { 'color': '#0d8cff', 'background': 'rgba(13,140,255,.2)', 'feature': '1.000 Chat/mo.' }
-  ]
-  
-  export const featuresPlanB = [
+]
+
+export const featuresPlanB = [
     'Widget Unbranding',
     'WhatsApp Business',
     'Facebook Messenger',
@@ -345,23 +346,23 @@ export const featuresPlanA = [
     'Livechat Support',
     'Knowledge Base',
     'Analytics'
-  ]
+]
   
-  export const highlightedFeaturesPlanB = [
+export const highlightedFeaturesPlanB = [
     { 'color': '#a613ec', 'background': 'rgba(166,19,236,.2)', 'feature': '15 Seats' },
     { 'color': '#0d8cff', 'background': 'rgba(13,140,255,.2)', 'feature': '3000 Chat/mo.' }
-  ]
-  export const appSumoHighlightedFeaturesPlanATier3 = [
+]
+export const appSumoHighlightedFeaturesPlanATier3 = [
     { 'color': '#a613ec', 'background': 'rgba(166,19,236,.2)', 'feature': '10 Seats' },
     { 'color': '#0d8cff', 'background': 'rgba(13,140,255,.2)', 'feature': '2.500 Chat/mo.' }
-  ]
+]
 
-  export const appSumoHighlightedFeaturesPlanATier4 = [
+export const appSumoHighlightedFeaturesPlanATier4 = [
     { 'color': '#a613ec', 'background': 'rgba(166,19,236,.2)', 'feature': '20 Seats' },
     { 'color': '#0d8cff', 'background': 'rgba(13,140,255,.2)', 'feature': '5.000 Chat/mo.' }
-  ]
+]
   
-  export const featuresPlanC = [
+export const featuresPlanC = [
     'Dedicated Customer Success Manager',
     'Chatbot Design Assistance',
     'Onboarding and Training',
@@ -375,12 +376,22 @@ export const featuresPlanA = [
     'SMTP Settings',
     'Support to host Tiledesk on your Infrastructure',
     'Premium Customer Support',
-  ]
+]
   
-  export const highlightedFeaturesPlanC = [
+export const highlightedFeaturesPlanC = [
     { 'color': '#a613ec', 'background': 'rgba(166,19,236,.2)', 'feature': 'Tailored solutions' }
-  
-  ]
+]
+
+export function goToCDSVersion(router: any, chatbot: Chatbot, project_id){
+    let chatBotDate = new Date(chatbot.createdAt)
+    let dateLimit = new Date('2023-09-26T00:00:00')
+    if(chatBotDate > dateLimit){
+        let urlCDS_v2 = `https://support-pre.tiledesk.com/new-cds/dashboard/#/project/${project_id}/cds/${chatbot._id}/intent/0`
+        window.open(urlCDS_v2, '_blank')
+    } else {
+        router.navigate(['project/' + project_id + '/cds/',chatbot._id, 'intent', '0']);
+    }
+}
 
 
 

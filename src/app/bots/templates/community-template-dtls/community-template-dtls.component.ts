@@ -7,6 +7,7 @@ import { LoggerService } from 'app/services/logger/logger.service';
 import { Location } from '@angular/common';
 import { DepartmentService } from 'app/services/department.service';
 import { Project } from 'app/models/project-model';
+import { goToCDSVersion } from 'app/utils/util';
 
 @Component({
   selector: 'appdashboard-community-template-dtls',
@@ -115,7 +116,12 @@ export class CommunityTemplateDtlsComponent implements OnInit {
 
 
   goToBotDetails() {
-    this.router.navigate(['project/' + this.projectId + '/cds/', this.botid, 'intent', '0'])
+    // this.router.navigate(['project/' + this.projectId + '/cds/', this.botid, 'intent', '0'])
+    let faqkb = {
+      createdAt: new Date(),
+      _id : this.botid
+    }
+    goToCDSVersion(this.router, faqkb, this.project._id)
   }
 
   getCurrentProject() {

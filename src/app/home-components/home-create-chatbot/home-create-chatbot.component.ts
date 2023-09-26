@@ -1,11 +1,13 @@
-import { Component, Input, OnChanges, OnInit, Output, SimpleChanges,EventEmitter } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, Output, SimpleChanges, EventEmitter, Type } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'app/core/auth.service';
+import { FaqKb } from 'app/models/faq_kb-model';
 import { AppConfigService } from 'app/services/app-config.service';
 import { DepartmentService } from 'app/services/department.service';
 import { FaqKbService } from 'app/services/faq-kb.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { UsersService } from 'app/services/users.service';
+import { goToCDSVersion } from 'app/utils/util';
 
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
@@ -240,24 +242,25 @@ export class HomeCreateChatbotComponent implements OnInit, OnChanges {
     imageData.src = imageUrl;
   }
 
-  goToBotProfile(bot_id, bot_type) {
+  goToBotProfile(bot: FaqKb) {
     let botType = ''
-    if (bot_type === 'internal') {
+    if (bot.type === 'internal') {
       botType = 'native'
       if (this.USER_ROLE !== 'agent') {
-        this.router.navigate(['project/' + this.projectId + '/bots/intents/', bot_id, botType]);
+        this.router.navigate(['project/' + this.projectId + '/bots/intents/', bot._id, botType]);
       }
-    } else if (bot_type === 'tilebot') {
+    } else if (bot.type === 'tilebot') {
       botType = 'tilebot'
       if (this.USER_ROLE !== 'agent') {
         // this.router.navigate(['project/' + this.project._id + '/tilebot/intents/', bot_id, botType]);
-        this.router.navigate(['project/' + this.projectId + '/cds/', bot_id, 'intent', '0', 'h']);
+        // this.router.navigate(['project/' + this.projectId + '/cds/', bot._id, 'intent', '0', 'h']);
+        goToCDSVersion(this.router, bot, this.projectId)
       }
     } else {
-      botType = bot_type
+      botType = bot.type
 
       if (this.USER_ROLE !== 'agent') {
-        this.router.navigate(['project/' + this.projectId + '/bots', bot_id, botType]);
+        this.router.navigate(['project/' + this.projectId + '/bots', bot._id, botType]);
       }
     }
   }
