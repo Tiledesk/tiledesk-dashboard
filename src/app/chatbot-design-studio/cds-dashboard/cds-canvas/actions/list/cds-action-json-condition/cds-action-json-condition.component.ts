@@ -41,7 +41,8 @@ export class CdsActionJsonConditionComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private logger: LoggerService,
-    private intentService: IntentService
+    private intentService: IntentService,
+    private connectorService: ConnectorService
     ) { }
 
   ngOnInit(): void {
@@ -241,7 +242,7 @@ export class CdsActionJsonConditionComponent implements OnInit {
   }
 
   onChangeExpression(event){
-    console.log('eventtttttttt', event)
+    this.connectorService.movedConnector(this.intentSelected.intent_id);
     this.updateAndSaveAction.emit();
   }
 
