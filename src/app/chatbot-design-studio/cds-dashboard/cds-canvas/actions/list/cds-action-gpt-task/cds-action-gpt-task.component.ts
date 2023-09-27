@@ -3,6 +3,8 @@ import { ActionGPTTask, Intent } from 'app/models/intent-model';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { variableList } from 'app/chatbot-design-studio/utils';
 import { OpenaiService } from 'app/services/openai.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AttributesDialogComponent } from './attributes-dialog/attributes-dialog.component';
 
 @Component({
   selector: 'cds-action-gpt-task',
@@ -32,6 +34,7 @@ export class CdsActionGPTTaskComponent implements OnInit {
 
   constructor(
     private logger: LoggerService,
+    private dialog: MatDialog,
     private openaiService: OpenaiService
   ) { }
 
@@ -57,7 +60,7 @@ export class CdsActionGPTTaskComponent implements OnInit {
     this.logger.debug("[ACTION GPT-TASK] changeTextarea event: ", $event);
     this.logger.debug("[ACTION GPT-TASK] changeTextarea propery: ", property);
     this.action[property] = $event;
-    this.checkVariables();
+    // this.checkVariables();
     this.updateAndSaveAction.emit();
   }
 
@@ -84,102 +87,19 @@ export class CdsActionGPTTaskComponent implements OnInit {
 
     this.action[target] = event;
 
-    // if (event.value) {
-    //   this.action[target] = Number(event.value);
-    // } else if (event) {
-    //   this.action[target] = Number(event);
-    // } else {
-    //   if (target === 'temperature') {
-    //     this.action[target] = 0.7
-    //   } else {
-    //     this.action[target] = 128
-    //   }
-    // }
-
-    // if (target === 'max_tokens') {
-    //   if (event) {
-    //     if (event < 1) {
-    //       this.action[target] = 1
-    //     } else if (event > 512) {
-    //       this.action[target] = 512
-    //     } else {
-    //       this.action[target] = Number(event);
-    //     }
-    //   } else {
-    //     this.action[target] = 128
-    //   }
-    // }
-
-    // if (target === 'temperature') {
-    //   if (event) {
-    //     if (event < 0) {
-    //       this.action[target] = 0
-    //     } else if (event > 1) {
-    //       this.action[target] = 1
-    //     } else {
-    //       this.action[target] = Number(event);
-    //     }
-    //   } else {
-    //     this.action[target] = 0.7
-    //   }
-    // }
-
     this.updateAndSaveAction.emit();
   }
 
-  getResponsePreview() {
-
-    this.showPreview = true;
-    this.showAiError = false;
-
+  execPreview() {
     this.checkVariables().then((resp) => {
 
-      if (resp === false) {
-        this.missingVariables = true;
+      if (resp === true) {
+        this.getResponse(this.action.question);
 
       } else {
-        let temp_question = this.action.question;
-        this.temp_variables.forEach((tv) => {
-          let old_value = "{{" + tv.name + "}}";
-          temp_question = temp_question.replace(old_value, tv.value);
-        })
-
-        this.searching = true;
-        this.missingVariables = false;
-        
-        setTimeout(() => {
-          let element = document.getElementById("preview-container");
-          element.classList.remove('preview-container-extended')
-        }, 200)
-
-        let data = {
-          question: temp_question,
-          context: this.action.context,
-          model: this.action.model,
-          max_tokens: this.action.max_tokens,
-          temperature: this.action.temperature
-        }
-
-        this.openaiService.previewPrompt(data).subscribe((ai_response: any) => {
-          this.searching = false;
-          setTimeout(() => {
-            let element = document.getElementById("preview-container");
-            element.classList.add('preview-container-extended')
-          }, 200)
-          this.ai_response = ai_response;
-        }, (error) => {
-          this.logger.error("[ACTION GPT-TASK] previewPrompt error: ", error);
-          setTimeout(() => {
-            let element = document.getElementById("preview-container");
-            element.classList.add('preview-container-extended')
-          }, 200)
-          this.showAiError = true;
-          this.searching = false;
-        }, () => {
-          this.logger.error("[ACTION GPT-TASK] preview prompt *COMPLETE*: ");
-          this.searching = false;
-        })
+        this.openAttributesDialog();
       }
+
     })
   }
 
@@ -191,58 +111,217 @@ export class CdsActionGPTTaskComponent implements OnInit {
       let response: boolean = true;
 
       if (!matches || matches.length == 0) {
-        this.showVariablesBtn = false;
-        resolve(response);
-      }
+        resolve(true);
 
-      if (matches.length > 0) {
-        if (!this.action.preview) {
-          this.action.preview = [];
-        }
-        this.showVariablesBtn = true;
+      } else {
+
         this.temp_variables = [];
-
         matches.forEach((m) => {
           let name = m.slice(2, m.length - 2);
           let attr = this.action.preview.find(v => v.name === name);
+
           if (attr && attr.value) {
             this.temp_variables.push({ name: name, value: attr.value });
+
           } else if (attr && !attr.value) {
-            response = false;
             this.temp_variables.push({ name: name, value: null });
+
           } else {
-            response = false;
             this.temp_variables.push({ name: name, value: null });
             this.action.preview.push({ name: name, value: null });
           }
         })
-        resolve(response);
+        resolve(false);
       }
-
     })
   }
 
-  showHideVariablesSection() {
-    this.showVariablesSection = !this.showVariablesSection;
-    if (this.showVariablesSection == false) {
-      this.getResponsePreview();
+  getResponse(question) {
+    console.log("getResponse called...")
+
+    let data = {
+      question: question,
+      context: this.action.context,
+      model: this.action.model,
+      max_tokens: this.action.max_tokens,
+      temperature: this.action.temperature
     }
+
+    this.showAiError = false;
+    this.searching = true;
+    this.showPreview = true;
+
+    setTimeout(() => {
+      let element = document.getElementById("preview-container");
+      element.classList.remove('preview-container-extended')
+    }, 200)
+
+    this.openaiService.previewPrompt(data).subscribe((ai_response: any) => {
+      this.searching = false;
+      setTimeout(() => {
+        let element = document.getElementById("preview-container");
+        element.classList.add('preview-container-extended')
+      }, 200)
+      this.ai_response = ai_response;
+    }, (error) => {
+      this.logger.error("[ACTION GPT-TASK] previewPrompt error: ", error);
+      setTimeout(() => {
+        let element = document.getElementById("preview-container");
+        element.classList.add('preview-container-extended')
+      }, 200)
+      this.showAiError = true;
+      this.searching = false;
+    }, () => {
+      this.logger.debug("[ACTION GPT-TASK] preview prompt *COMPLETE*: ");
+      this.searching = false;
+    })
+
   }
 
-  onChangeVar(event, name) {
-    let index = this.action.preview.findIndex(v => v.name === name);
-    if (index != -1) {
-      this.action.preview[index].value = event;
-    }
-    this.updateAndSaveAction.emit();
+
+  // getResponsePreview() {
+
+  //   this.showPreview = true;
+  //   this.showAiError = false;
+
+  //   this.checkVariables().then((resp) => {
+
+  //     if (resp === false) {
+  //       this.missingVariables = true;
+
+  //     } else {
+  //       let temp_question = this.action.question;
+  //       this.temp_variables.forEach((tv) => {
+  //         let old_value = "{{" + tv.name + "}}";
+  //         temp_question = temp_question.replace(old_value, tv.value);
+  //       })
+
+  //       this.searching = true;
+  //       this.missingVariables = false;
+
+  //       setTimeout(() => {
+  //         let element = document.getElementById("preview-container");
+  //         element.classList.remove('preview-container-extended')
+  //       }, 200)
+
+  //       let data = {
+  //         question: temp_question,
+  //         context: this.action.context,
+  //         model: this.action.model,
+  //         max_tokens: this.action.max_tokens,
+  //         temperature: this.action.temperature
+  //       }
+
+  //       this.openaiService.previewPrompt(data).subscribe((ai_response: any) => {
+  //         this.searching = false;
+  //         setTimeout(() => {
+  //           let element = document.getElementById("preview-container");
+  //           element.classList.add('preview-container-extended')
+  //         }, 200)
+  //         this.ai_response = ai_response;
+  //       }, (error) => {
+  //         this.logger.error("[ACTION GPT-TASK] previewPrompt error: ", error);
+  //         setTimeout(() => {
+  //           let element = document.getElementById("preview-container");
+  //           element.classList.add('preview-container-extended')
+  //         }, 200)
+  //         this.showAiError = true;
+  //         this.searching = false;
+  //       }, () => {
+  //         this.logger.error("[ACTION GPT-TASK] preview prompt *COMPLETE*: ");
+  //         this.searching = false;
+  //       })
+  //     }
+  //   })
+  // }
+
+  // _checkVariables() {
+  //   return new Promise((resolve, reject) => {
+  //     let regex: RegExp = /{{[^{}]*}}/g;
+  //     let string = this.action.question;
+  //     let matches = string.match(regex);
+  //     let response: boolean = true;
+
+  //     if (!matches || matches.length == 0) {
+  //       this.showVariablesBtn = false;
+  //       resolve(response);
+  //     }
+
+  //     if (matches.length > 0) {
+  //       if (!this.action.preview) {
+  //         this.action.preview = [];
+  //       }
+  //       this.showVariablesBtn = true;
+  //       this.temp_variables = [];
+
+  //       matches.forEach((m) => {
+  //         let name = m.slice(2, m.length - 2);
+  //         let attr = this.action.preview.find(v => v.name === name);
+  //         if (attr && attr.value) {
+  //           this.temp_variables.push({ name: name, value: attr.value });
+  //         } else if (attr && !attr.value) {
+  //           response = false;
+  //           this.temp_variables.push({ name: name, value: null });
+  //         } else {
+  //           response = false;
+  //           this.temp_variables.push({ name: name, value: null });
+  //           this.action.preview.push({ name: name, value: null });
+  //         }
+  //       })
+  //       console.log("temp_variables: ", this.temp_variables)
+  //       resolve(response);
+  //     }
+
+  //   })
+  // }
+
+  // showHideVariablesSection() {
+  //   this.showVariablesSection = !this.showVariablesSection;
+  //   if (this.showVariablesSection == false) {
+  //     this.getResponsePreview();
+  //   }
+  // }
+
+  // onChangeVar(event, name) {
+  //   let index = this.action.preview.findIndex(v => v.name === name);
+  //   if (index != -1) {
+  //     this.action.preview[index].value = event;
+  //   }
+  //   this.updateAndSaveAction.emit();
+  // }
+
+  // closePreview() {
+  //   let element = document.getElementById("preview-container");
+  //   element.classList.remove('preview-container-extended')
+
+  //   this.showPreview = false;
+  //   this.searching = false;
+  // }
+
+  openAttributesDialog() {
+    console.log("temp_variables: ", this.temp_variables);
+    const dialogRef = this.dialog.open(AttributesDialogComponent, {
+      panelClass: 'custom-dialog-container',
+      data: { attributes: this.temp_variables, question: this.action.question }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log("AttributesDialogComponent result: ", result);
+      this.getResponse(result.question);
+      this.saveAttributes(result.attributes);
+    });
   }
 
-  closePreview() {
-    let element = document.getElementById("preview-container");
-    element.classList.remove('preview-container-extended')
-
-    this.showPreview = false;
-    this.searching = false;
+  saveAttributes(attributes) {
+    console.log("attributes: ", attributes);
+    attributes.forEach(a => {
+      let index = this.action.preview.findIndex(v => v.name === a.name)
+      if (index != -1) {
+        this.action.preview[index].value = a.value;
+      } else {
+        this.action.preview.push({ name: a.name, value: a.value })
+      }
+      this.updateAndSaveAction.emit();
+    })
   }
 
 
