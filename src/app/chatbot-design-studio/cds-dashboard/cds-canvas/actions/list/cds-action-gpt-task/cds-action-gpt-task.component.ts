@@ -15,13 +15,19 @@ export class CdsActionGPTTaskComponent implements OnInit {
 
   @Input() intentSelected: Intent;
   @Input() action: ActionGPTTask;
+  @Input() project_id: string; 
   @Input() previewMode: boolean = true;
   @Output() updateAndSaveAction = new EventEmitter;
 
   panelOpenState = false;
-  models_list = [{ name: "GPT-3 (DaVinci)", value: "text-davinci-003" }, { name: "GPT-3.5 Turbo (ChatGPT)", value: "gpt-3.5-turbo" }, { name: "GPT-4 (ChatGPT)", value: "gpt-4" }];
+  models_list = [
+    { name: "GPT-3 (DaVinci)", value: "text-davinci-003" }, 
+    { name: "GPT-3.5 Turbo (ChatGPT)", value: "gpt-3.5-turbo" }, 
+    { name: "GPT-4 (ChatGPT)", value: "gpt-4" }
+  ];
   ai_response: string = "";
-  ai_error: string = "Oops! Something went wrong. Please wait some minutes and retry."
+  ai_error: string = "Oops! Something went wrong. Check your GPT Key or retry in a few moment."
+  // ai_error: string = "Oops! Something went wrong."
 
   showPreview: boolean = false;
   missingVariables: boolean = true;
@@ -41,6 +47,10 @@ export class CdsActionGPTTaskComponent implements OnInit {
   ngOnInit(): void {
     this.logger.debug("[ACTION GPT-TASK] ngOnInit action: ", this.action);
     this.initializeAttributes();
+
+    if (!this.action.preview) {
+      this.action.preview = []; // per retrocompatibilità
+    }
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -164,13 +174,13 @@ export class CdsActionGPTTaskComponent implements OnInit {
       }, 200)
       this.ai_response = ai_response;
     }, (error) => {
+      this.searching = false;
       this.logger.error("[ACTION GPT-TASK] previewPrompt error: ", error);
       setTimeout(() => {
         let element = document.getElementById("preview-container");
         element.classList.add('preview-container-extended')
       }, 200)
       this.showAiError = true;
-      this.searching = false;
     }, () => {
       this.logger.debug("[ACTION GPT-TASK] preview prompt *COMPLETE*: ");
       this.searching = false;
@@ -306,8 +316,10 @@ export class CdsActionGPTTaskComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       console.log("AttributesDialogComponent result: ", result);
-      this.getResponse(result.question);
-      this.saveAttributes(result.attributes);
+      if (result !== false) {
+        this.getResponse(result.question);
+        this.saveAttributes(result.attributes);
+      }
     });
   }
 

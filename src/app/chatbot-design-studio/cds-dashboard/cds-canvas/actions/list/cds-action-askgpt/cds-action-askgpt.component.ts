@@ -18,6 +18,7 @@ export class CdsActionAskgptComponent implements OnInit {
   @Input() intentSelected: Intent;
   @Input() action: ActionAskGPT;
   @Input() previewMode: boolean = true;
+  @Input() project_id: string;
   @Output() updateAndSaveAction = new EventEmitter;
   @Output() onConnectorChange = new EventEmitter<{type: 'create' | 'delete',  fromId: string, toId: string}>()
   
