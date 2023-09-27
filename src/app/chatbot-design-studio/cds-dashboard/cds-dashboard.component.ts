@@ -1,5 +1,6 @@
 
 import { Component, OnInit } from '@angular/core';
+import { Location } from '@angular/common'
 import { Router, ActivatedRoute } from '@angular/router';
 // import { TranslateService } from '@ngx-translate/core';
 
@@ -52,6 +53,7 @@ export class CdsDashboardComponent implements OnInit {
     private intentService: IntentService,
     private controllerService: ControllerService,
     private connectorService: ConnectorService,
+    private location: Location
     // private translate: TranslateService
   ) {}
 
@@ -162,7 +164,8 @@ export class CdsDashboardComponent implements OnInit {
   /** Go back to previous page */
   goBack() {
     this.logger.log('[CDS DSHBRD] goBack ');
-    this.router.navigate(['project/' + this.project._id + '/bots/my-chatbots/all']);
+    this.location.back()
+    // this.router.navigate(['project/' + this.project._id + '/bots/my-chatbots/all']);
     this.hideShowWidget('show');
   }
 
