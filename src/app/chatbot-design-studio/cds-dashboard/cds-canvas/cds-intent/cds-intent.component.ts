@@ -610,7 +610,7 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
 
 
   public async onUpdateIntentFromConnectorModification(connector){
-    console.log('[CDS-INTENT] onUpdateIntentFromConnectorModification:::: intent::: ', connector);
+    console.log('[CDS-INTENT] onUpdateIntentFromConnectorModification:::: intent::: ', connector, this.intent);
     const response = await this.intentService.updateIntent(this.intent, 0, connector);
     if (response) {
       console.log('updateIntent: ', this.intent);

@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { TiledeskConnectors } from 'app/../assets/cds/js/tiledesk-connectors.js';
 import { StageService } from 'app/chatbot-design-studio/services/stage.service';
+import { IntentService } from 'app/chatbot-design-studio/services/intent.service';
 import { TYPE_ACTION, TYPE_BUTTON } from 'app/chatbot-design-studio/utils';
 import { Intent } from 'app/models/intent-model';
+
 /** CLASSE DI SERVICES PER GESTIRE I CONNETTORI **/
 
 
@@ -16,7 +18,8 @@ export class ConnectorService {
   connectorDraft: any = {};
 
   constructor(
-    private stageService: StageService
+    private stageService: StageService,
+    private intentService: IntentService
   ) {}
 
   initializeConnectors(){
@@ -76,7 +79,7 @@ export class ConnectorService {
         if(action._tdActionType === TYPE_ACTION.REPLY || action._tdActionType === TYPE_ACTION.RANDOM_REPLY){
           
           var buttons = this.findButtons(action);
-          // console.log('buttons   ----- >', buttons);
+          console.log('buttons   ----- >', buttons);
           buttons.forEach(button => {
             console.log('[CONNECTOR-SERV] button   ----- > ', button, button.__idConnector);
             if(button.type === TYPE_BUTTON.ACTION && button.action){
@@ -183,7 +186,7 @@ export class ConnectorService {
   }
 
 
-  private findButtons(obj) {
+  public findButtons(obj) {
     var buttons = [];
     if(!obj) return buttons;
     // Verifica se l'oggetto corrente è un array

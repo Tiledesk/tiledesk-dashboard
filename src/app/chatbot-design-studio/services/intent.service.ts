@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { ComponentFactoryResolver, Injectable } from '@angular/core';
 import { Subject, BehaviorSubject } from 'rxjs';
 
 
@@ -75,6 +75,7 @@ export class IntentService {
 
   public arrayUNDO: Array<any> = [];
   public arrayREDO: Array<any> = [];
+  public lastActionSavedInUndoRedo: any;
 
   constructor(
     private faqService: FaqService,
@@ -376,7 +377,8 @@ export class IntentService {
   
   /** save a New Intent, created on drag action on stage */
   public async saveNewIntent(newIntent: Intent, fromCallerUndoRedo?:boolean): Promise<any> { 
-    if(!fromCallerUndoRedo)this.addUNDOactionToList(newIntent, 'PUSH');
+    // if(!fromCallerUndoRedo)
+    this.addUNDOactionToList(newIntent, 'PUSH');
     let id_faq_kb = this.dashboardService.id_faq_kb;
     console.log('[INTENT SERVICE] -> saveNewIntent, ');
     
@@ -409,14 +411,15 @@ export class IntentService {
 
 
   /** updateIntent */
-  public async updateIntent(originalIntent: Intent, timeout?: number, connector?: any, fromCallerUndoRedo?:boolean): Promise<boolean> { 
+  public async updateIntent(originalIntent: Intent, timeout?: number, connector?: any): Promise<boolean> { 
     const thereIsIntent = this.listOfIntents.some((intent) => intent.intent_id === originalIntent.intent_id);
     if(!thereIsIntent)return;
     if(!timeout)timeout = 0;
     let intent = JSON.parse(JSON.stringify(originalIntent));
     intent = removeNodesStartingWith(intent, '__');
     console.log('[INTENT SERVICE] -> updateIntent, ', originalIntent);
-    if(!fromCallerUndoRedo)this.addUNDOactionToList(originalIntent, 'PUT', connector);
+
+    this.addUNDOactionToList(originalIntent, 'PUT', connector);
 
     return new Promise((resolve, reject) => {
       let id = intent.id;
@@ -445,7 +448,8 @@ export class IntentService {
           displayNameIntent,
           formIntent,
           actionsIntent,
-          webhookEnabledIntent
+          webhookEnabledIntent,
+          intent.intent_id
         ).subscribe((intent: Intent) => {
           this.prevListOfIntent = JSON.parse(JSON.stringify(this.listOfIntents));
           resolve(true);
@@ -465,12 +469,13 @@ export class IntentService {
 
 
   /** deleteIntent */
-  public async deleteIntent(intent: Intent, fromCallerUndoRedo?:boolean): Promise<boolean> { 
-    if(!fromCallerUndoRedo)this.addUNDOactionToList(intent, 'DEL');
+  public async deleteIntent(intent: Intent): Promise<boolean> { 
+    // if(!fromCallerUndoRedo)
+    this.addUNDOactionToList(intent, 'DEL');
     // this.deleteIntentToListOfIntents(intent.intent_id);
     console.log('[INTENT SERVICE] -> deleteIntent, ');
     return new Promise((resolve, reject) => {
-      this.faqService.deleteFaq(intent.id).subscribe((data) => {
+      this.faqService.deleteFaq(intent.id, intent.intent_id).subscribe((data) => {
         this.prevListOfIntent = JSON.parse(JSON.stringify(this.listOfIntents));
         resolve(true);
       }, (error) => {
@@ -800,17 +805,23 @@ export class IntentService {
       if (checkUid.length > 1 || !button.uid && button.uid == undefined) {
         button.uid = generateShortUID(index);
       } 
-      const idActionConnector = idAction+'/'+button.uid;
-      button.__idConnector = idActionConnector;
-      if(button.action && button.action !== ''){
-        button.__isConnected = true;
-      } else {
-        button.__isConnected = false;
-      }
+      buttons[index] = this.patchButton(button, idAction);
     }); 
     return buttons;
   }
   
+
+  public patchButton(button, idAction){
+    console.log('patchButton:: ', button);
+    const idActionConnector = idAction+'/'+button.uid;
+    button.__idConnector = idActionConnector;
+    if(button.action && button.action !== ''){
+      button.__isConnected = true;
+    } else {
+      button.__isConnected = false;
+    }
+    return button;
+  }
 
   // OLD_patchAttributes(attributes: any) {
   //   console.log('-----------> patchAttributes, ', this.idBot);
@@ -873,80 +884,157 @@ export class IntentService {
    * 
    * 
   /************************************************/
-  public addUNDOactionToList(intent, type, connector?){
-     // se ho eliminato un intent e il connettore è contenuto nell'array dei connettori dell'intent NON devo aggiungere l'operazione
-     // se ho aggiunto un intent e il connettore è contenuto nell'array dei connettori dell'intent NON devo aggiungere l'operazione
-     console.log('[INTENT SERVICE] -> 0 addUNDOtoList', this.arrayUNDO, intent, type, connector);
 
-    /**
-     * memorizzo l'azione nell'array solo quando non viene da restore
-     */
-    let addToArray = true;
-    let connectors = [];
-    let pos = 0;
-    let typeUndo;
+  private setTypeOfOperation(connector, connectors){
+    let typeActionConnector = connectors.some((element) => {
+      return element.id === connector;
+    });
+    if(typeActionConnector){
+      // ho AGGIUNTO il connettore
+      // console.log('[INTENT SERVICE] -> ho AGGIUNTO il connettore');
+      return "CON-";
+    } else {
+      // ho ELIMINATO il connettore
+      // connectors è VUOTO
+      // console.log('[INTENT SERVICE] -> ho ELIMINATO il connettore');
+      return "CON+";
+    }
+  }
+
+  public addUNDOactionToList(intent, type, connector?){
     const lastUNDO = this.arrayUNDO[this.arrayUNDO.length - 1];
     const lastREDO = this.arrayREDO[this.arrayREDO.length - 1];
+    let connectors = [];
+    let pos = 0;
+    let typeAction = '';
+    let intentPrev = this.prevListOfIntent.find((obj) => obj.intent_id === intent.intent_id);
 
+    if(connector){
+      connectors = this.connectorService.searchConnectorsOfIntent(intent.intent_id);
+      typeAction = this.setTypeOfOperation(connector, connectors)
+    }
+
+    console.log('[INTENT SERVICE] START ----------------> addUNDOactionToList', intent, type, connector, connectors);
+    console.log('[INTENT SERVICE] -> addUNDOactionToList', this.arrayUNDO, this.arrayREDO);
+    pos =  this.prevListOfIntent.findIndex((element) => { return element.intent_id === intent.intent_id });
     if(type == 'PUSH'){
-      // const lastREDO = this.arrayREDO[this.arrayREDO.length - 1];
-      // se lastREDO ha lo stesso intent_id ed è un DEL NON lo aggiungo
-      // aspetta !!!
-      connectors = this.connectorService.searchConnectorsOfIntent(intent.intent_id);
-      pos = 4;
-      typeUndo = "DEL";
-    } else if(type == 'DEL'){
-      // const lastREDO = this.arrayREDO[this.arrayREDO.length - 1];
-      // se lastREDO ha lo stesso intent_id  ed è un PUSH NON lo aggiungo
-      connectors = this.connectorService.searchConnectorsOfIntent(intent.intent_id);
-      pos = 4;
-      typeUndo = "PUSH";
-    } else if(type == 'PUT'){
-      intent = this.prevListOfIntent.find((obj) => obj.intent_id === intent.intent_id);
-      typeUndo = "PUT";
-      if (lastUNDO && lastUNDO.isLast){
-        connectors = lastUNDO.connectors;
-        console.log('[INTENT SERVICE] -> connectors ', connector, connectors);
-        if(lastUNDO.typeUndo == 'DEL' || lastUNDO.typeUndo == 'PUSH') {
-          connectors.forEach(connect => {
-            if(connect.id == connector){
-              addToArray = false;
-              console.log('[INTENT SERVICE] -> trovato connect ', connect.id);
-              return;
-            }
-          });
+      if(this.lastActionSavedInUndoRedo && intent.intent_id == this.lastActionSavedInUndoRedo.intent.intent_id)return;
+      typeAction = "DEL";
+    }else if(type == 'DEL'){
+      if(this.lastActionSavedInUndoRedo && intent.intent_id == this.lastActionSavedInUndoRedo.intent.intent_id)return;
+      typeAction = "PUSH";
+    }else if(type == 'PUT'){
+      // intent = this.prevListOfIntent.find((obj) => obj.intent_id === intent.intent_id);
+      if(typeAction == 'CON+' || typeAction == 'CON-'){
+        // intent = this.prevListOfIntent.find((obj) => obj.intent_id === intent.intent_id);
+        // type = "CON";
+        console.log('[INTENT SERVICE] -> lastUNDO', lastUNDO, connector);
+        if(lastUNDO && lastUNDO.typeAction == typeAction && lastUNDO.connector == connector){
+          console.log('[INTENT SERVICE] -> vengo da un REDO di PUT');
+          return;
         }
-      } else if (lastREDO && lastREDO.isLast) {
-        connectors = lastREDO.connectors;
-        console.log('[INTENT SERVICE] -> connectors ', connector, connectors);
-        if(lastREDO.typeRedo == 'DEL' || lastREDO.typeRedo == 'PUSH') {
-          connectors.forEach(connect => {
-            if(connect.id == connector){
-              addToArray = false;
-              console.log('[INTENT SERVICE] -> trovato connect ', connect.id);
-              return;
-            }
-          });
+        console.log('[INTENT SERVICE] -> lastREDO', lastREDO, connector);
+        if(lastREDO && lastREDO.typeAction == typeAction && lastREDO.connector == connector){
+          console.log('[INTENT SERVICE] -> vengo da un UNDO di PUT');
+          return;
         }
-        // console.log('[INTENT SERVICE] -> addUNDOtoList PUT',lastAction);
-      }
-    }
+
+
+        // devo capire se il connettore aggiunto o eliminato viene da una push o una del
+        // se PUSH aggiungo il connettore 
+        // se DEL elimino connettore 
+        // se UPDATE (non può essere)
+        // se CON controllo se nella action precedente esisteva il connector se SI sto eliminando altrimenti se NO aggiungo connector
+
+      
     
-    if(addToArray){
-      const obj = {
-        isLast: true,
-        typeUndo: typeUndo,
-        typeRedo: '',
-        pos: pos,
-        intent: intent,
-        connectors: connectors
+        
+        
+        /** 
+         * se l'azione precedente è un CON (ho eliminato o aggiunto un connettore): 
+         *  - verifico se nell'UNDO REDO c'è un'azione identica
+         *    - se lo è NON SALVO
+         *    - altrimenti SALVO
+         * se l'azione precedente è un PUSH, DEL, PUT (ho aggiunto o eliminato o modificato un intent):
+         *  - verifico che il connettore che sto AGGIUNGNDO o ELIMINANDO sia figlio dell'azione precedente 
+         *    - se lo è NON SALVO
+         *    - altrimenti SALVO
+        */
+
+        // if(this.lastActionSavedInUndoRedo && (this.lastActionSavedInUndoRedo.type == 'CON+' || this.lastActionSavedInUndoRedo.type == 'CON-')){
+        //   // se l'azione è === all'ultima in REDO oppure UNDO significa che ho fatto Ctrl+Z oppure Ctrl+Shift+Z:  NON SALVO
+        //   console.log('[INTENT SERVICE] -> lastUNDO', lastUNDO, this.lastActionSavedInUndoRedo.type, connector);
+        //   if(lastUNDO && lastUNDO.type == this.lastActionSavedInUndoRedo.type && lastUNDO.connector == connector){
+        //     console.log('[INTENT SERVICE] -> vengo da un REDO di un connector');
+        //     return;
+        //   }
+        //   console.log('[INTENT SERVICE] -> lastREDO', lastREDO, this.lastActionSavedInUndoRedo.type, connector);
+        //   if(lastREDO && lastREDO.type == this.lastActionSavedInUndoRedo.type && lastREDO.connector == connector){
+        //     console.log('[INTENT SERVICE] -> vengo da un UNDO di un connector');
+        //     return;
+        //   }
+        // }
+
+        // else if(this.lastActionSavedInUndoRedo && this.lastActionSavedInUndoRedo.connectors && (this.lastActionSavedInUndoRedo.type === 'PUSH' || this.lastActionSavedInUndoRedo.type === 'DEL')){
+        //   const isConnectorInLastActionSavedInUndoRedo = this.lastActionSavedInUndoRedo.connectors.some((element) => {
+        //     return element.id === connector;
+        //   });
+        //   console.log('[INTENT SERVICE]', this.lastActionSavedInUndoRedo, connector, isConnectorInLastActionSavedInUndoRedo);
+        //   if (isConnectorInLastActionSavedInUndoRedo){
+        //     console.log('[INTENT SERVICE] il connettore modificato appartiene alla precedente azione ', this.lastActionSavedInUndoRedo.type);
+        //     // se il connettore modificato appartiene ai connettori dell'azione precedente (PUSH, DEL) NON salvare l'operazione in arrayUNDO
+        //     return;
+        //   } else {
+        //     // console.log('[INTENT SERVICE]',);
+        //     // altrimenti significa che è un'operazione non connessa a quella precedente quindi AGGIUNGI l'azione all'arrayUNDO
+        //   }
+        // }
+
+        // else if(this.lastActionSavedInUndoRedo && this.lastActionSavedInUndoRedo.type === 'PUT'){
+        //   // ok
+        //   typeAction = this.setTypeOfOperation(connector, connectors)
+        // }
+
+      } else {
+        typeAction = "PUT";
+        const intentPrevString = JSON.stringify(intentPrev);
+        console.log('[INTENT SERVICE] -> intent', intentPrev);
+        console.log('[INTENT SERVICE] -> typeAction', typeAction);
+        console.log('[INTENT SERVICE] -> lastUNDO', lastUNDO);
+        console.log('[INTENT SERVICE] -> lastREDO', lastREDO);
+        if(lastUNDO && lastUNDO.typeAction === typeAction){
+          const intentUNDOString = JSON.stringify(lastUNDO.intent);
+          // console.log('[INTENT SERVICE] -> intentUNDOString', intentUNDOString, intentPrevString);
+          if(intentUNDOString === intentPrevString) {
+            console.log('[INTENT SERVICE] -> vengo da un REDO di un connector');
+            return;
+          }
+        }
+        if(lastREDO && lastREDO.typeAction === typeAction){
+          const intentREDOString = JSON.stringify(lastREDO.intent);
+          // console.log('[INTENT SERVICE] -> intentREDOString', intentREDOString, intentPrevString);
+          if(intentREDOString === intentPrevString) {
+            console.log('[INTENT SERVICE] -> vengo da un UNDO di un connector');
+            return;
+          }
+        }
+        intent = intentPrev;
       }
-      if(lastUNDO)lastUNDO.isLast = false;
-      this.arrayUNDO.push(obj);
-      console.log('[INTENT SERVICE] -> AGGIUNGO ', obj, this.arrayUNDO, this.arrayREDO);
-      // this.arrayUNDO = this.arrayUNDO.slice(10);
-      this.arrayREDO = [];
     }
+
+    const obj = {
+      type: type,
+      typeAction: typeAction,
+      pos: pos,
+      intent: {...intent},
+      connector: connector,
+      connectors: connectors
+    }
+    this.arrayUNDO.push(obj);
+    console.log('[INTENT SERVICE] -> AGGIUNGO ', obj, this.arrayUNDO, this.arrayREDO);
+    // this.arrayUNDO = this.arrayUNDO.slice(10);
+    this.arrayREDO = [];
+    this.lastActionSavedInUndoRedo = obj;
   }
 
   private insertItemIntoPositionInTheArray(array, item, pos = array.length) {
@@ -976,40 +1064,56 @@ export class IntentService {
   }
 
   async restoreLastUNDO(){
+    console.log('[INTENT SERVICE] -> restoreLastUNDO', this.arrayUNDO);
     if(this.arrayUNDO && this.arrayUNDO.length>0){
       const objUNDO = this.arrayUNDO.pop();
-      console.log('[INTENT SERVICE] -> restoreLastUNDO', objUNDO);
-      if(objUNDO.typeUndo == 'PUSH') objUNDO.typeRedo = 'DEL';
-      else if(objUNDO.typeUndo == 'DEL') objUNDO.typeRedo = 'PUSH';
-      const lastREDO = this.arrayREDO[this.arrayREDO.length - 1];
-      if(lastREDO && lastREDO.isLast) lastREDO.isLast = false;
-      this.arrayREDO.push({ ...objUNDO });
-
-      console.log('[INTENT SERVICE] -> restoreLastUNDO', this.arrayUNDO, this.arrayREDO);
-      this.restoreAction(objUNDO, objUNDO.typeUndo);
+      const objREDO = {...objUNDO};
+      if(objUNDO.type == 'PUSH') objREDO.typeAction = 'DEL';
+      else if(objUNDO.type == 'DEL') objREDO.typeAction = 'PUSH';
+      else if(objUNDO.type == 'PUT') {
+        if(objUNDO.typeAction == 'CON+')objREDO.typeAction = 'CON-'
+        else if(objUNDO.typeAction == 'CON-')objREDO.typeAction = 'CON+';
+        else {
+          objREDO.typeAction = 'PUT';
+          let intent = this.listOfIntents.find((obj) => obj.intent_id === objUNDO.intent.intent_id);
+          objREDO.intent = intent;
+          console.log('[INTENT SERVICE] -> ho aggiunto REDO ', this.arrayREDO);
+        }
+      }
+      this.arrayREDO.push(objREDO);
+      this.restoreAction(objUNDO, objUNDO.typeAction);
+      console.log('[INTENT SERVICE] -> ho aggiornato gli array dopo UNDO ', this.arrayUNDO, this.arrayREDO);
     }
   }
-
 
   public restoreLastREDO(){
+    console.log('[INTENT SERVICE] -> restoreLastREDO', this.arrayREDO);
     if(this.arrayREDO && this.arrayREDO.length>0){
       const objREDO = this.arrayREDO.pop();
-      console.log('[INTENT SERVICE] -> restoreLastREDO', objREDO);
-      if(objREDO.typeRedo == 'PUSH')objREDO.typeUndo = 'DEL';
-      else if(objREDO.typeRedo == 'DEL')objREDO.typeUndo = 'PUSH';
-      const lastUNDO = this.arrayUNDO[this.arrayUNDO.length - 1];
-      if(lastUNDO && lastUNDO.isLast) lastUNDO.isLast = false;
-      this.arrayUNDO.push({ ...objREDO });
-      
-      console.log('[INTENT SERVICE] -> restoreLastREDO', this.arrayUNDO, this.arrayREDO);
-      this.restoreAction(objREDO, objREDO.typeRedo);
+      const objUNDO = {...objREDO};
+      if(objREDO.type == 'PUSH') objUNDO.typeAction = 'DEL';
+      else if(objREDO.type == 'DEL') objUNDO.typeAction = 'PUSH';
+      else if(objREDO.type == 'PUT') {
+        if(objREDO.typeAction == 'CON+')objUNDO.typeAction = 'CON-'
+        else if(objREDO.typeAction == 'CON-') objUNDO.typeAction = 'CON+';
+        else {
+          objUNDO.typeAction = 'PUT';
+          let intent = this.listOfIntents.find((obj) => obj.intent_id === objREDO.intent_id);
+          objUNDO.intent = intent;
+        } 
+      }
+      this.arrayUNDO.push(objUNDO);
+      this.restoreAction(objREDO, objREDO.typeAction);
+      console.log('[INTENT SERVICE] -> ho aggiornato gli array dopo REDO ', this.arrayUNDO, this.arrayREDO);
     }
   }
 
 
-  async restoreAction(action, type){
-    console.log('[INTENT SERVICE] -> restoreAction', action, type);
-    if(type == 'PUSH'){
+  async restoreAction(action, typeAction){
+    this.lastActionSavedInUndoRedo = action;
+    console.log('[INTENT SERVICE] -> restoreAction : typeAction:', typeAction, action);
+    
+    if(typeAction == 'PUSH'){
       this.listOfIntents = this.insertItemIntoPositionInTheArray(this.listOfIntents, action.intent, action.pos);
       let isOnTheStage = await this.isElementOnTheStage(action.intent.intent_id);
       console.log('[INTENT SERVICE] -> restoreAction', isOnTheStage, action.intent.intent_id);
@@ -1019,22 +1123,67 @@ export class IntentService {
           this.connectorService.createNewConnector(connector.fromId, connector.toId);
         });
       }
-      this.saveNewIntent(action.intent, true);
       this.refreshIntents();
-    } else if(type == 'DEL'){
+      this.connectorService.movedConnector(action.intent.intent_id);
+      this.saveNewIntent(action.intent, true);
+
+    } else if(typeAction == 'DEL'){
       this.deleteIntentToListOfIntents(action.intent.intent_id);
       this.refreshIntents();
       this.connectorService.deleteConnectorsOfBlock(action.intent.intent_id);
-      this.deleteIntent(action.intent, true);
-    } else if(type == 'PUT'){ 
+      this.connectorService.movedConnector(action.intent.intent_id);
+      this.deleteIntent(action.intent);
+    } else if(typeAction == 'PUT'){ 
       console.log('[INTENT SERVICE] -> PUT', action);
       this.replaceIntent(action.intent);
       this.refreshIntents();
-      this.refreshIntent(action.intent);
-      this.connectorService.deleteConnectorsOutOfBlock(action.intent.intent_id);
-      this.connectorService.createConnectorsOfIntent({...action.intent});
-      this.updateIntent(action.intent, 0, [], true);
+      // this.refreshIntent(action.intent);
+      // this.connectorService.deleteConnectorsOutOfBlock(action.intent.intent_id);
+      // this.connectorService.createConnectorsOfIntent({...action.intent});
+      this.connectorService.movedConnector(action.intent.intent_id);
+      this.updateIntent(action.intent, action.pos);
+    } else if(typeAction == 'CON+'){ 
+      console.log('[INTENT SERVICE] : AGGIUNGO CONNETTORE', action.connector);
+      // console.log('[INTENT SERVICE] -> CON', action);
+      let fromId = action.connector;
+      let toId = '';
+      const ultimoSlashIndex = action.connector.lastIndexOf('/');
+      if (ultimoSlashIndex !== -1) {
+        fromId = action.connector.substring(0, ultimoSlashIndex);
+        toId = action.connector.substring(ultimoSlashIndex + 1);
+        this.connectorService.createConnectorFromId(fromId, toId);
+      } else {
+        // console.log('[INTENT SERVICE] NON creo CONNETTORE');
+      }
+    } else if(typeAction == 'CON-'){ 
+      const actionId = action.connector.split('/');
+      console.log('[INTENT SERVICE] : ELIMINO CONNETTORE', actionId[0], action.connector);
+      this.connectorService.deleteConnectorFromAction(actionId[0], action.connector);
     }
+
+
+      // if(action.connectors){
+        // const isConnectorInLastActionSavedInUndoRedo = action.connectors.some((element) => {
+        //   return element.id === action.connector;
+        // });
+        // if (!isConnectorInLastActionSavedInUndoRedo){
+        //   console.log('[INTENT SERVICE] -> type: AGGIUNGO CONNETTORE', action.connector);
+        //   let fromId = action.connector;
+        //   let toId = '';
+        //   const ultimoSlashIndex = action.connector.lastIndexOf('/');
+        //   if (ultimoSlashIndex !== -1) {
+        //     fromId = action.connector.substring(0, ultimoSlashIndex);
+        //     toId = action.connector.substring(ultimoSlashIndex + 1);
+        //     this.connectorService.createConnectorFromId(fromId, toId);
+        //   } else {
+        //     console.log('NON creo CONNETTORE');
+        //   }
+        // } else {
+        //   const actionId = action.connector.split('/');
+        //   console.log('[INTENT SERVICE] -> type: ELIMINO CONNETTORE', actionId[0], action.connector);
+        //   this.connectorService.deleteConnectorFromAction(actionId[0], action.connector);
+        // }
+      // }
   }
 
   private replaceIntent(intent){
