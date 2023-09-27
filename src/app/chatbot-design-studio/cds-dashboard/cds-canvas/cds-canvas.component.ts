@@ -587,13 +587,17 @@ export class CdsCanvasComponent implements OnInit {
       // dragging a new action into the stage
       console.log('[CDS-CANVAS] ho draggato una action da panel element sullo stage');
       const newAction = this.intentService.createNewAction(action.value.type);
+      // createNewIntentFromPanelElement
       const newIntent = await this.createNewIntentWithAnAction(pos, newAction);
+      // this.intentService.addIntentToUndoRedo('PUSH', newIntent, []);
     } else if (action) {
       // dragging an action from another intent, into the stage
       console.log('[CDS-CANVAS] ho draggato una action da un intent sullo stage');
-      const resp = this.intentService.deleteActionFromPreviousIntentOnMovedAction(event, action);
-      if (resp) {
+      const intentToUpdate = this.intentService.deleteActionFromPreviousIntentOnMovedAction(action);
+      if (intentToUpdate) {
+         // createNewIntentDraggingActionFromAnotherIntent
         const newIntent = await this.createNewIntentWithAnAction(pos, action);
+        // this.intentService.addIntentToUndoRedo('PUSH', newIntent, [intentToUpdate]);
         if (newIntent) {
           this.logger.log('[CDS-CANVAS] cancello i connettori della action draggata');
           this.connectorService.deleteConnectorsFromActionByActionId(action._tdActionId);
@@ -604,6 +608,7 @@ export class CdsCanvasComponent implements OnInit {
       }
     }
   }
+  
 
   /** createNewIntentWithNewAction
   * chiamata quando trascino un connettore sullo stage e creo un intent al volo 
@@ -617,15 +622,15 @@ export class CdsCanvasComponent implements OnInit {
     this.intentSelected = this.intentService.createNewIntent(this.id_faq_kb, action, pos);
     this.intentSelected.id = NEW_POSITION_ID;
     this.intentService.addNewIntentToListOfIntents(this.intentSelected);
-
     this.intentService.setDragAndListnerEventToElement(this.intentSelected);
     this.intentService.setIntentSelected(this.intentSelected.intent_id);
+    
     /** chiamata quando trascino un connettore sullo stage e creo un intent al volo  */
     const connectorDraft = this.connectorService.connectorDraft;
     if(connectorDraft){
       const fromId = connectorDraft.fromId;
       const toId = this.intentSelected.intent_id;
-      this.logger.log('[CDS-CANVAS] sto per creare il connettore ', connectorDraft, fromId, toId);
+      console.log('[CDS-CANVAS] sto per creare il connettore ', connectorDraft, fromId, toId);
       this.connectorService.createConnectorFromId(fromId, toId);
       this.removeConnectorDraftAndCloseFloatMenu();
     }
@@ -640,6 +645,9 @@ export class CdsCanvasComponent implements OnInit {
       return null;
     }
   }
+
+
+
   // --------------------------------------------------------- //
  
 
@@ -851,7 +859,10 @@ export class CdsCanvasComponent implements OnInit {
       const toPoint = connectorDraft.toPoint;
       const fromId = connectorDraft.fromId;
       const newAction = this.intentService.createNewAction(event.type);
+
+      // createNewIntentFromConnectorDraft
       const newIntent = await this.createNewIntentWithAnAction(toPoint, newAction);
+      // this.intentService.addIntentToUndoRedo('PUSH', newIntent, []);
       if (newIntent) {
         console.log('[CDS-DSHBRD] ho creato un nuovo intent co la action trascinata');
       }
