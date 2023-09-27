@@ -10,6 +10,7 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { goToCDSVersion } from 'app/utils/util';
 import { FaqKb } from 'app/models/faq_kb-model';
+import { AppConfigService } from 'app/services/app-config.service';
 
 @Component({
   selector: 'appdashboard-ws-train-bot',
@@ -57,7 +58,8 @@ export class WsTrainBotComponent implements OnInit, OnChanges, OnDestroy {
     private notify: NotifyService,
     private router: Router,
     private auth: AuthService,
-    private logger: LoggerService
+    private logger: LoggerService,
+    private appConfigService: AppConfigService
   ) { }
 
   // -----------------------------------------------------------------------------------------------------
@@ -254,7 +256,7 @@ export class WsTrainBotComponent implements OnInit, OnChanges, OnDestroy {
   }
   goToCDS(faqkb: FaqKb) {
     // this.router.navigate(['project/' + this.project_id  + '/cds/', faqkb._id, 'intent', '0']);
-    goToCDSVersion(this.router, faqkb, this.project_id)
+    goToCDSVersion(this.router, faqkb, this.project_id, this.appConfigService.getConfig().cdsBaseUrl)
   }
 
 

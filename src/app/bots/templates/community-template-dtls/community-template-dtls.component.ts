@@ -121,7 +121,7 @@ export class CommunityTemplateDtlsComponent implements OnInit {
       createdAt: new Date(),
       _id : this.botid
     }
-    goToCDSVersion(this.router, faqkb, this.project._id)
+    goToCDSVersion(this.router, faqkb, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
   }
 
   getCurrentProject() {
@@ -155,7 +155,7 @@ export class CommunityTemplateDtlsComponent implements OnInit {
 
 
   getTestSiteUrl() {
-    this.TESTSITE_BASE_URL = this.appConfigService.getConfig().testsiteBaseUrl;
+    this.TESTSITE_BASE_URL = this.appConfigService.getConfig().widgetUrl + 'assets/twp/index.html';
     this.logger.log('[COMMUNITY-TEMPLATE-DTLS] AppConfigService getAppConfig TESTSITE_BASE_URL', this.TESTSITE_BASE_URL);
   }
 

@@ -254,7 +254,7 @@ export class HomeCreateChatbotComponent implements OnInit, OnChanges {
       if (this.USER_ROLE !== 'agent') {
         // this.router.navigate(['project/' + this.project._id + '/tilebot/intents/', bot_id, botType]);
         // this.router.navigate(['project/' + this.projectId + '/cds/', bot._id, 'intent', '0', 'h']);
-        goToCDSVersion(this.router, bot, this.projectId)
+        goToCDSVersion(this.router, bot, this.projectId, this.appConfigService.getConfig().cdsBaseUrl)
       }
     } else {
       botType = bot.type

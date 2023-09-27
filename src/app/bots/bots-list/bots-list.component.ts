@@ -895,7 +895,7 @@ export class BotListComponent implements OnInit {
 
   goToCDS(faqKb: FaqKb) {
     // this.router.navigate(['project/' + this.project._id + '/cds/', faqKb._id, 'intent', '0']);
-    goToCDSVersion(this.router, faqKb, this.project._id)
+    goToCDSVersion(this.router, faqKb, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
   }
 
 

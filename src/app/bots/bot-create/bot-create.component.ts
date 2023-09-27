@@ -25,6 +25,7 @@ import {
 } from '../../utils/util';
 import { FaqService } from 'app/services/faq.service';
 import { FaqKb } from 'app/models/faq_kb-model';
+import { AppConfigService } from 'app/services/app-config.service';
 
 @Component({
   selector: 'bot-create',
@@ -130,6 +131,7 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
     private departmentService: DepartmentService,
     private logger: LoggerService,
     private faqService: FaqService,
+    private appConfigService: AppConfigService
   ) {
     super();
 
@@ -195,7 +197,7 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
 
         // this.router.navigate(['project/' + this.project._id + '/tilebot/intents/', this.importedChatbotid, 'tilebot']);
         // this.router.navigate(['project/' + this.project._id + '/cds/', this.importedChatbotid, 'intent', '0']);
-        goToCDSVersion(this.router, faqkb,this.project._id)
+        goToCDSVersion(this.router, faqkb,this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
       }
 
     }, (error) => {
@@ -394,7 +396,7 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
         // this.translateparamBotName = { bot_name: this.newBot_name }
         // SAVE THE BOT IN LOCAL STORAGE
         this.botLocalDbService.saveBotsInStorage(this.newBot_Id, faqKb);
-        goToCDSVersion(this.router, faqKb, this.project._id)
+        goToCDSVersion(this.router, faqKb, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
       }
 
     }, (error) => {
@@ -570,7 +572,7 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
         bot_type = 'tilebot'
         // this.router.navigate(['project/' + this.project._id + '/tilebot/intents/' + this.newBot_Id + "/" + bot_type]);
         // this.router.navigate(['project/' + this.project._id + '/cds/', this.newBot_Id, 'intent', '0']);
-        goToCDSVersion(this.router, this.newBot, this.project._id)
+        goToCDSVersion(this.router, this.newBot, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
       } else {
         bot_type = this.botType;
         this.router.navigate(['project/' + this.project._id + '/bots/' + this.newBot_Id + "/" + bot_type]);

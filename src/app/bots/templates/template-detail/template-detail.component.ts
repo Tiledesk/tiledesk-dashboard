@@ -169,7 +169,7 @@ export class TemplateDetailComponent implements OnInit {
   }
 
   getTestSiteUrl() {
-    this.TESTSITE_BASE_URL = this.appConfigService.getConfig().testsiteBaseUrl;
+    this.TESTSITE_BASE_URL = this.appConfigService.getConfig().widgetUrl + 'assets/twp/index.html';
     this.logger.log('[TEMPLATE DETAIL] AppConfigService getAppConfig TESTSITE_BASE_URL', this.TESTSITE_BASE_URL);
   }
 
@@ -280,7 +280,7 @@ export class TemplateDetailComponent implements OnInit {
       createdAt: new Date(),
       _id : this.botid
     }
-    goToCDSVersion(this.router, faqkb, this.project._id)
+    goToCDSVersion(this.router, faqkb, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
 
     this.closeDialog();
     // this.closeCreateBotInfoModal();
