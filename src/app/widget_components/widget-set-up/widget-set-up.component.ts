@@ -908,7 +908,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   }
 
   getWidgetUrl() {
-    this.WIDGET_URL = this.appConfigService.getConfig().widgetUrl;
+    this.WIDGET_URL = this.appConfigService.getConfig().WIDGET_BASE_URL + 'launch.js';
     this.logger.log('[WIDGET-SET-UP] getAppConfig WIDGET_URL ', this.WIDGET_URL)
   }
 
@@ -1179,7 +1179,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
 
   getTestSiteUrl() {
-    this.TESTSITE_BASE_URL = this.appConfigService.getConfig().testsiteBaseUrl;
+    this.TESTSITE_BASE_URL = this.appConfigService.getConfig().WIDGET_BASE_URL + 'assets/twp/index.html';
     this.logger.log('[WIDGET-SET-UP] getAppConfig [WIDGET-SET-UP] TESTSITE_BASE_URL', this.TESTSITE_BASE_URL);
   }
 

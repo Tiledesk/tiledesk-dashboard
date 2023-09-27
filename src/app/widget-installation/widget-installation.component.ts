@@ -63,7 +63,7 @@ export class WidgetInstallationComponent implements OnInit {
   }
 
   getWidgetUrl() {
-    this.WIDGET_URL = this.appConfigService.getConfig().widgetUrl;
+    this.WIDGET_URL = this.appConfigService.getConfig().WIDGET_BASE_URL + 'launch.js';
   // console.log('[WIDGET-INSTALLATION] getAppConfig WIDGET_URL ', this.WIDGET_URL)
   }
 

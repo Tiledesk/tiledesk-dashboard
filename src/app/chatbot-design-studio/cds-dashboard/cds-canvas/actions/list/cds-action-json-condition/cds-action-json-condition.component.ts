@@ -91,7 +91,7 @@ export class CdsActionJsonConditionComponent implements OnInit {
             this.isConnectedFalse = false;
           }
           this.updateAndSaveAction.emit();
-        } else { //TODO: verificare quale dei due connettori è stato aggiunto (controllare il valore della action corrispondente al true/false intent)
+        } else {
           // ADD / EDIT
           this.logger.log(' updateConnector :: json-condition', this.connector.toId, this.connector.fromId ,this.action, array[array.length-1]);
           if(array[array.length -1] === 'true'){

@@ -69,7 +69,7 @@ export class CdsActionOnlineAgentsComponent implements OnInit {
       const array = this.connector.fromId.split("/");
       const idAction= array[1];
       if(idAction === this.action._tdActionId){
-        if(this.connector.deleted){ //TODO: verificare quale dei due connettori è stato eliminato e impostare isConnected a false
+        if(this.connector.deleted){
           // DELETE 
           // this.logger.log(' deleteConnector :: ', this.connector.id);
           // this.action.intentName = null;
@@ -82,7 +82,7 @@ export class CdsActionOnlineAgentsComponent implements OnInit {
             this.isConnectedFalse = false;
           }
           this.updateAndSaveAction.emit();
-        } else { //TODO: verificare quale dei due connettori è stato aggiunto (controllare il valore della action corrispondente al true/false intent)
+        } else {
           // ADD / EDIT
           this.logger.log(' updateConnector :: onlineagents', this.connector.toId, this.connector.fromId ,this.action, array[array.length-1]);
           if(array[array.length -1] === 'true'){

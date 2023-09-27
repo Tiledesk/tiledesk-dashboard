@@ -506,7 +506,7 @@ export class InstallTemplateComponent extends WidgetSetUpBaseComponent implement
   }
 
   getTestSiteUrl() {
-    this.TESTSITE_BASE_URL = this.appConfigService.getConfig().testsiteBaseUrl;
+    this.TESTSITE_BASE_URL = this.appConfigService.getConfig().WIDGET_BASE_URL + 'assets/twp/index.html';
     this.logger.log('[TEMPLATE DETAIL] AppConfigService getAppConfig TESTSITE_BASE_URL', this.TESTSITE_BASE_URL);
   }
 

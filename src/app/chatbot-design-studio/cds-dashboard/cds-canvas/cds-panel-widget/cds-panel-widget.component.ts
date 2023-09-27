@@ -33,7 +33,7 @@ export class CdsPanelWidgetComponent implements OnInit {
   public iframeVisibility: boolean = false
   public loading:boolean = true;
 
-  TESTSITE_BASE_URL: string = ''
+  WIDGET_BASE_URL: string = ''
   widgetTestSiteUrl: SafeResourceUrl = null
   constructor( 
     public appConfigService: AppConfigService,
@@ -71,10 +71,9 @@ export class CdsPanelWidgetComponent implements OnInit {
   }
 
   setIframeUrl(){
-    this.TESTSITE_BASE_URL = this.appConfigService.getConfig().testsiteBaseUrl;
+    this.WIDGET_BASE_URL = this.appConfigService.getConfig().WIDGET_BASE_URL;
     // const testItOutBaseUrl = this.TESTSITE_BASE_URL.substring(0, this.TESTSITE_BASE_URL.lastIndexOf('/')); 
-    const testItOutBaseUrl = "https://widget.tiledesk.com/v6/5.0.71/assets/twp"; // nk for test publication
-    const testItOutUrl = testItOutBaseUrl + '/chatbot-panel.html'
+    const testItOutUrl = this.WIDGET_BASE_URL + "assets/twp" + '/chatbot-panel.html'
     // const testItOutUrl = 'http://localhost:4203/assets/twp'+ '/chatbot-panel.html'
     let url = testItOutUrl + '?tiledesk_projectid=' + this.projectID + 
                               '&tiledesk_participants=bot_' + this.selectedChatbot._id + 
