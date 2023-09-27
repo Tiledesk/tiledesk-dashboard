@@ -194,6 +194,7 @@ import { CdsAnswerComponent } from './cds-dashboard/cds-canvas/actions/list/answ
 import { SharedModule } from 'app/shared/shared.module';
 import { CdsEventComponent } from './cds-dashboard/cds-event/cds-event.component';
 import { CdsRuleComponent } from './cds-dashboard/cds-rule/cds-rule.component';
+import { AttributesDialogComponent } from './cds-dashboard/cds-canvas/actions/list/cds-action-gpt-task/attributes-dialog/attributes-dialog.component';
 
 @NgModule({
   declarations: [
@@ -300,6 +301,9 @@ import { CdsRuleComponent } from './cds-dashboard/cds-rule/cds-rule.component';
         // action ASKGPT elements: start //
         AddkbDialogComponent,
         // action ASKGPT elements: end //
+        // action GptTask elements: start //
+        AttributesDialogComponent,
+        // action GptTask elements: end //
 
     // ******* CDS CANVAS:: end *******
 
