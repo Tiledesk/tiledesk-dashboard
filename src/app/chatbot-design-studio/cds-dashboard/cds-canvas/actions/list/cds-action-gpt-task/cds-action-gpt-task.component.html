@@ -93,6 +93,8 @@
         </div>
     </div>
 
+    <a routerLink="/project/{{ project_id }}/knowledge-bases" routerLinkActive="router-link-active" target="_blank">Manage GPT Key</a>
+
     <hr class="custom-divider">
 
     <mat-accordion>
@@ -219,7 +221,7 @@
                 <span style="margin-left: 8px;">Generating answer...</span>
             </div>
 
-            <div *ngIf="!searching && ai_response?.choices[0]?.message?.content">
+            <div *ngIf="!searching && !showAiError && ai_response?.choices[0]?.message?.content">
                 {{ ai_response.choices[0].message.content }}
             </div>
 
@@ -229,7 +231,7 @@
 
         </div>
 
-        <div class="usage-container" *ngIf="!searching && ai_response?.choices[0]?.message?.content">
+        <div class="usage-container" *ngIf="!searching && !showAiError && ai_response?.choices[0]?.message?.content">
             <span style="font-weight: 500;">Tokens usage</span>
             <span>Prompt: {{ ai_response.usage.prompt_tokens }}</span>
             <span>Answer: {{ ai_response.usage.completion_tokens }}</span>

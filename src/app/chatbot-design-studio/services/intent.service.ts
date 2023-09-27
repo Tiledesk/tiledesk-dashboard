@@ -783,6 +783,7 @@ export class IntentService {
       action.temperature = 0.7;
       action.model = "gpt-3.5-turbo";
       action.assignReplyTo = 'gpt_reply';
+      action.preview = [];
     }
     console.log('ho creato nuova action ', action);
     return action;
