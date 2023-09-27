@@ -124,18 +124,6 @@
         
     }
 
-    .button-reply{
-        min-width: 200px;
-        padding: 2px 10px;
-    }
-
-    .content-botton-reply {
-        position:relative;
-        height: 26px;
-    }
-
-
-
     /** BUTTONS **/
     .buttons-response {
         // display: block;
@@ -177,9 +165,18 @@
             margin: 10px 5px;
             background: #dfdfdf;
             border: dotted 0px #999;
-            height: $button-height-base;
+            // height: $button-height-base;
             transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
         }
+        min-width: 200px;
+        max-width: $button-max-width-base;
+        padding: 2px 10px;
+    }
+
+
+    .content-botton-reply {
+        position:relative;
+        // height: 26px;
     }
 
     .button-controls{
@@ -322,6 +319,7 @@
         transition: all .3s;
         width: 100%;
         position: relative;
+        text-wrap: wrap;
 
         line-height: $button-height-base;
         padding: 5px 10px;

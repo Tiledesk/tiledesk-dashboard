@@ -347,6 +347,7 @@
   // background-color: #ffffff80; // nk
   // box-shadow: #0000000f 0 0 0 1px; // nk
   border-radius: 6px; // nk
+  cursor: pointer;
 }
 
 // .cds-featured-action {
@@ -1015,6 +1016,7 @@ cds-panel-intent-header.isStart ::ng-deep{
   align-items: center;
   align-self: flex-end;
   gap: 5px;
+  cursor: pointer;
 
   .option {
     &:hover {
