@@ -95,6 +95,8 @@ export class ConnectorService {
               console.log('[CONNECTOR-SERV] -> idConnectorTo', idConnectorTo);
               if(idConnectorFrom && idConnectorTo){
                 this.tiledeskConnectors.createConnectorFromId(idConnectorFrom, idConnectorTo);
+              } else if(!button.__isConnected && button.__idConnector){
+                this.tiledeskConnectors.deleteConnector(button.__idConnector);
               }
             }
           });
@@ -108,6 +110,9 @@ export class ConnectorService {
             console.log('[CONNECTOR-SERV] - ONLINE_AGENTS ACTION -> idConnectorFrom', idConnectorFrom);
             console.log('[CONNECTOR-SERV] - ONLINE_AGENTS ACTION -> idConnectorTo', idConnectorTo);
             this.tiledeskConnectors.createConnectorFromId(idConnectorFrom, idConnectorTo);
+            // if(!action.__isConnected && action.__idConnector){
+            //   this.tiledeskConnectors.deleteConnector(action.__idConnector);
+            // }
           }
           if(action.falseIntent && action.falseIntent !== ''){
             const idConnectorFrom = intent.intent_id+'/'+action._tdActionId + '/false';
@@ -183,6 +188,11 @@ export class ConnectorService {
     intents.forEach(intent => {
       this.createConnectorsOfIntent(intent);
     });
+  }
+
+
+  updateConnectorsOutOfItent(intent){
+    this.tiledeskConnectors.updateConnectorsOutOfItent(intent);
   }
 
 
@@ -311,7 +321,7 @@ export class ConnectorService {
     console.log('[CONNECTOR-SERV] deleteConnectorsFromActionByActionId actionId ' ,actionId )
   }
 
-  movedConnector(elementID){
+  updateConnector(elementID){
     console.log('[CONNECTOR-SERV] movedConnector elementID ' ,elementID )
     const elem = document.getElementById(elementID);
     if(elem){

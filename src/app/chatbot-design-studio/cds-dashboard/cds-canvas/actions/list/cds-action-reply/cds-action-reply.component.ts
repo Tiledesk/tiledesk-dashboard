@@ -161,7 +161,7 @@ export class CdsActionReplyComponent implements OnInit {
       this.arrayResponses[event.previousIndex-1] = newPos0;
       this.arrayResponses[event.previousIndex] = newPos1;
       // console.log( 'DROP REPLY ---> ', this.arrayResponses);
-      this.connectorService.movedConnector(this.intentSelected.id);
+      this.connectorService.updateConnector(this.intentSelected.id);
       this.onUpdateAndSaveAction();
     } catch (error) {
       this.logger.log('drop ERROR', error);
@@ -180,7 +180,7 @@ export class CdsActionReplyComponent implements OnInit {
       to = from - 2;
       this.arrayResponses.splice(to, 0, this.arrayResponses.splice(from, 1)[0]);
       // console.log( 'onMoveUpResponse ---> ', this.arrayResponses);
-      this.connectorService.movedConnector(this.intentSelected.id);
+      this.connectorService.updateConnector(this.intentSelected.id);
       this.onUpdateAndSaveAction();
     } catch (error) {
       this.logger.log('onAddNewResponse ERROR', error);
@@ -197,7 +197,7 @@ export class CdsActionReplyComponent implements OnInit {
       to = from + 2;
       this.arrayResponses.splice(to, 0, this.arrayResponses.splice(from, 1)[0]);
       // console.log( 'onMoveUpResponse ---> ', this.arrayResponses);
-      this.connectorService.movedConnector(this.intentSelected.id);
+      this.connectorService.updateConnector(this.intentSelected.id);
       this.onUpdateAndSaveAction();
     } catch (error) {
       this.logger.log('onAddNewResponse ERROR', error);
@@ -336,7 +336,7 @@ export class CdsActionReplyComponent implements OnInit {
    * */
   public async onUpdateAndSaveAction() {
     console.log('[cds-action-reply] onUpdateAndSaveAction:::: ', this.intentSelected, this.action);
-    this.connectorService.movedConnector(this.intentSelected.intent_id);
+    this.connectorService.updateConnector(this.intentSelected.intent_id);
     this.updateAndSaveAction.emit(this.action);
   }
 

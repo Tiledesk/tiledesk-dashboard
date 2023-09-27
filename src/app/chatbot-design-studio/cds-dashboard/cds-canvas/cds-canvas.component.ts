@@ -356,6 +356,18 @@ export class CdsCanvasComponent implements OnInit {
       true
     );
 
+    /** connector-updated **
+     * scatta quando viene aggiornato un connettore:
+    */
+    document.addEventListener(
+      "connector-updated", (e: CustomEvent) => {
+        this.logger.log("[CDS-CANVAS] connector-updated:", e);
+        const connector = e.detail.connector;
+        this.intentService.onChangedConnector(connector);
+      },
+      true
+    );
+
     /** connector-selected **
      * scatta quando viene selezionato un connettore:
      * deseleziono action e intent (unselectAction)
@@ -587,7 +599,7 @@ export class CdsCanvasComponent implements OnInit {
           this.connectorService.deleteConnectorsFromActionByActionId(action._tdActionId);
           const elementID = this.intentService.previousIntentId;
           this.logger.log("[CDS-CANVAS] aggiorno i connettori dell'intent", elementID);
-          this.connectorService.movedConnector(elementID);
+          this.connectorService.updateConnector(elementID);
         }
       }
     }

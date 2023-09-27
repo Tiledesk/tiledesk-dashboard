@@ -108,11 +108,11 @@ export class CdsActionWebRequestV2Component implements OnInit {
           this.logger.debug('[ACTION-ASKGPT] updateConnector', this.connector.toId, this.connector.fromId ,this.action, array[array.length-1]);
           if(array[array.length -1] === 'true'){
             this.isConnectedTrue = true;
-            if(this.action.trueIntent !== '#'+this.connector.toId){
+            // if(this.action.trueIntent !== '#'+this.connector.toId){
               this.action.trueIntent = '#'+this.connector.toId;
               this.updateIntentFromConnectorModification.emit(this.connector.id);
               // this.updateAndSaveAction.emit();
-            } 
+            // } 
           }        
           if(array[array.length -1] === 'false'){
             this.isConnectedFalse = true;

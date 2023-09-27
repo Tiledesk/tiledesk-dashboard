@@ -527,7 +527,7 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
     // console.log('[CDS-INTENT] onDragEnded actionArrowElem', actionArrowElem)
 
     // const fromEle = document.getElementById(this.intent.intent_id);
-    // this.connectorService.movedConnector(fromEle);
+    // this.connectorService.updateConnector(fromEle);
   }
 
   // mouseOverAddActionPlaceholder(event) {
@@ -576,10 +576,10 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
       this.controllerService.closeAllPanels();
       this.intentService.setIntentSelected(this.intent.intent_id);
-      this.connectorService.movedConnector(this.intent.intent_id);
+      this.connectorService.updateConnector(this.intent.intent_id);
       const response = await this.intentService.updateIntent(this.intent);
       if (response) {
-        // this.connectorService.movedConnector(this.intent.intent_id);
+        // this.connectorService.updateConnector(this.intent.intent_id);
       }
     } else {
       try {
@@ -638,7 +638,7 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
     }
     // const fromEle = document.getElementById(this.intent.intent_id);
     // if(fromEle){
-    //   this.connectorService.movedConnector(fromEle);
+    //   this.connectorService.updateConnector(fromEle);
     //   this.updateIntent();
     // }
   }

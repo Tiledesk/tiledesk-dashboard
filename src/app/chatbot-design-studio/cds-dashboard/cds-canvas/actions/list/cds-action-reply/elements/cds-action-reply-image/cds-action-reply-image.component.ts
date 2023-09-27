@@ -216,7 +216,7 @@ export class CdsActionReplyImageComponent implements OnInit {
   /** dropButtons */
   dropButtons(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.buttons, event.previousIndex, event.currentIndex);
-    this.connectorService.movedConnector(this.idIntent);
+    this.connectorService.updateConnector(this.idIntent);
     this.changeActionReply.emit();
   }  
 

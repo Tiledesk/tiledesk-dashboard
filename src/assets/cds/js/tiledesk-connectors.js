@@ -168,7 +168,7 @@ export class TiledeskConnectors {
     console.log("[JS] connectors :---> ", this.connectors);
   }
 
-  
+
   deleteConnectorsOfBlock(blockId) {
     console.log("[JS] deleteConnectors ----> ", blockId);
     for (var connectorId in this.connectors) {
@@ -901,7 +901,7 @@ export class TiledeskConnectors {
 
 
   updateConnectorsOutOfItent(element) {
-    console.log("updateConnectorsOutOfItent ----> ", element.id);
+    console.log("updateConnectorsOutOfItent ----> ", this.blocks, element.id);
     const blockId = element.id;
     let block = this.blocks[blockId];
     if (!block) { return; }
@@ -914,6 +914,8 @@ export class TiledeskConnectors {
           conn.fromPoint = this.elementLogicCenter(el);
           console.log("conn.fromPoint :---> ", el, conn.fromId, conn.fromPoint);
           this.#drawConnector(conn.id, conn.fromPoint, conn.toPoint);
+          const event = new CustomEvent("connector-updated", { detail: { connector: conn } });
+          document.dispatchEvent(event);
         }
       }
     };
