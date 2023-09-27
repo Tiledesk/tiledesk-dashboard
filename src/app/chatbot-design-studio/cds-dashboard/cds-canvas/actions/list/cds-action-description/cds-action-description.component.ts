@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ACTIONS_LIST } from 'app/chatbot-design-studio/utils';
+import { ACTIONS_LIST, INTENT_ELEMENT } from 'app/chatbot-design-studio/utils';
 import { Action } from 'app/models/intent-model';
 import { LoggerService } from 'app/services/logger/logger.service';
 
@@ -29,13 +29,24 @@ export class CdsActionDescriptionComponent implements OnInit {
   }
 
   ngOnChanges(){
-    this.logger.log('ActionDescriptionComponent ngOnChanges:: ', this.actionSelected, this.elementType);
+    console.log('ActionDescriptionComponent ngOnChanges:: ', this.actionSelected, this.elementType);
     if(this.actionSelected){
       this.elementType = this.actionSelected._tdActionType;
     }
     try {
+
+      switch(this.elementType){
+        case 'form':
+        case 'question':
+        case 'answer':
+          this.element = Object.values(INTENT_ELEMENT).find(el => el.type === this.elementType)
+          break;
+        default:
+          this.element = Object.values(ACTIONS_LIST).find(el => el.type === this.elementType)
+          break;
+      }
       // this.element = ELEMENTS_LIST.find(item => item.type === this.elementType);
-      this.element = Object.values(ACTIONS_LIST).find(el => el.type === this.elementType)
+      
       if(this.actionSelected._tdActionTitle && this.actionSelected._tdActionTitle != ""){
         this.dataInput = this.actionSelected._tdActionTitle;
       }

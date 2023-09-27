@@ -22,10 +22,8 @@ export class CdsActionHideMessageComponent implements OnInit {
   }
 
   onChangeTextArea(text:string) {
-    setTimeout(() => {
       // this.logger.log('onChangeTextarea:: ', text);
       this.action.text = text;
       this.updateAndSaveAction.emit()
-    }, 500);
   }
 }
