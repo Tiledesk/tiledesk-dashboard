@@ -13,8 +13,12 @@
 
             <div class="email-me-login-link-wpr tac">
                 <button class="btn btn-tdblu send-login-link-btn" (click)="hasClickedSendEmail()">
-                    <span class="material-icons send-login-link-btn-icon">
+                    <!-- <span class="material-icons send-login-link-btn-icon">
                         send
+                    </span> -->
+
+                    <span class="material-icons send-login-link-btn-icon">
+                        email
                     </span>
 
                     <span send-login-link-btn-text> Email me a login link </span>
@@ -23,18 +27,15 @@
             </div>
         </div>
 
-        <div *ngIf="loginLinkSent" class="content--wpr" style="display: flex;">
-            <div class="tac mb24">
-               <span *ngIf="!loginLinkResent">  Login link sent! </span>
-               <span *ngIf="loginLinkResent">  Login link resent! </span>
+        <div *ngIf="loginLinkSent && !loginLinkResent"class="content--wpr" style="display: flex;">
+
+            <div class="tac mb24 bold" style="display: flex; flex-direction: column;">
+                <span>  Login link sent! </span>
+                <span style="font-weight: normal; font-size: 16px; margin-top: 12px;"> Check your mailbox and get ready for a Full Tiledesk experience! </span>
             </div>
 
-            <div class="tac" *ngIf="!loginLinkResent">
-                You can retry in 60 seconds if you don't see the email
-            </div>
-
-            <div class="tac" *ngIf="loginLinkResent">
-                If you still don't see the email, please check your spam folder
+            <div class="tac" style="font-size: 16px;">
+                You can try to send the email again in 60 seconds
             </div>
 
             <div class="resend-email-me-login-link-wpr tac">
@@ -53,5 +54,61 @@
                   </div>
             </div>
         </div>
+
+        <div *ngIf="loginLinkSent && loginLinkResent"class="content--wpr" style="display: flex;">
+
+            <div class="tac mb24 bold" style="display: flex; flex-direction: column;">
+                <span>  Login link resent! </span>
+                <span style="font-weight: normal; font-size: 16px; margin-top: 12px;"> Check your mailbox and get ready for a Full Tiledesk experience! </span>
+            </div>
+
+            <div class="tac" style="font-size: 16px;">
+                If you still don't see the email, please check your spam or log in the traditional way
+            </div>
+
+            <div class="tac" style="margin-top: 20px; font-weight: 600; font-size: 16px;">
+                See you on Tiledesk Desktop!
+            </div>
+
+            <div class="spinner--container">
+                <div class="spinner">
+                    <div class="bounce1"></div>
+                    <div class="bounce2"></div>
+                    <div class="bounce3"></div>
+                  </div>
+            </div>
+
+        </div>
+
+        <!-- <div *ngIf="loginLinkSent" class="content--wpr" style="display: flex;">
+            <div class="tac mb24 bold">
+               <span *ngIf="!loginLinkResent">  Login link sent! </span>
+               <span *ngIf="loginLinkResent">  Login link resent! </span>
+            </div>
+
+            <div class="tac" *ngIf="!loginLinkResent">
+                You can retry in 60 seconds if you don't see the email
+            </div>
+
+            <div class="tac small" *ngIf="loginLinkResent">
+                If you still don't see the email, please check your spam folder
+            </div>
+
+            <div class="resend-email-me-login-link-wpr tac">
+                <button class="btn btn-tdblu send-login-link-btn"
+                    (click)="hasClickedResendEmail()" 
+                    [disabled]="loginLinkResent" >
+                    <span send-login-link-btn-text> Resend login link </span>
+                </button>
+            </div>
+
+            <div class="spinner--container">
+                <div class="spinner">
+                    <div class="bounce1"></div>
+                    <div class="bounce2"></div>
+                    <div class="bounce3"></div>
+                  </div>
+            </div>
+        </div> -->
     </div>
 </div>
