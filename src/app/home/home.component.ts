@@ -317,7 +317,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.projectService.getProjectById(projectId).subscribe((project: any) => {
       console.log('[HOME] - GET PROJECT BY ID - PROJECT: ', project);
 
-      if (project && project.attributes) {
+      if (project && project.attributes && project.attributes.userPreferences) {
         this.PROJECT_ATTRIBUTES = project.attributes;
         this.getOnbordingPreferences(this.PROJECT_ATTRIBUTES)
         this.getDashlet(this.PROJECT_ATTRIBUTES)
