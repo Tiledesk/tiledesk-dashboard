@@ -92,6 +92,7 @@
         .button-reply-add{
             color: $color-txt-2-hex;
             border-color: $color-txt-2-hex;
+            margin-right: 5px;
         }
     }
 
@@ -101,7 +102,7 @@
     }
 
     .button-reply{
-        min-width: 200px;
+        min-width: $button-min-width-preview;
         max-width: $button-max-width-base;
         padding: 2px 10px;
         // max-width: calc(100% - 20px);
@@ -206,7 +207,7 @@
 
 .content-botton-reply {
     position:relative;
-    height: 26px;
+    // height: 26px;
 }
 
 
@@ -239,7 +240,7 @@
     // float: right;
     display: flex;
     position: relative;
-    min-width: 100px;
+    min-width: $button-min-width-base;
     text-align: center;
     // margin: 0px 5px 0px; //10px 5px 0;
     padding: 0px 10px;

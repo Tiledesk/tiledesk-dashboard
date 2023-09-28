@@ -435,6 +435,10 @@ export class CdsCanvasComponent implements OnInit {
     }
   }
 
+  @HostListener('wheel', ['$event'])
+  onMouseWheel(event: WheelEvent) {
+  }
+
 
   @HostListener('contextmenu', ['$event'])
   onRightClick(event){

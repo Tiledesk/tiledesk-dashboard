@@ -13,7 +13,7 @@
 
 
 # ng build  --prod --c=pre --base-href ./ commento questo dopo errore FATAL ERROR: Ineffective mark-compacts near heap limit Allocation failed - JavaScript heap out of memory
-node --max_old_space_size=8192 node_modules/@angular/cli/bin/ng build --configuration production --c=pre --output-path=dist --base-href ./
+node --max_old_space_size=8192 node_modules/@angular/cli/bin/ng build --configuration pre --output-path=dist --base-href ./
 cd dist
 
 ####### tiledesk
