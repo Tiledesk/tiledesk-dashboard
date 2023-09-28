@@ -2,7 +2,7 @@
     <div class="home-block-header-wpr">
         <div class="home-block-header">
             <div class="home-block-title">
-                Invite your teammates to join you in Tiledesk
+                Invite Teammates
             </div>
         </div>
     </div>
@@ -148,9 +148,6 @@
                             </div>
 
                         </div>
-
-
-
                     </div>
 
                 </sat-popover>
@@ -168,32 +165,39 @@
 
     </div>
 
-    <div class="home-block-description-and-menu-btn-wpr">
+    <div class="ct-home-block-description-and-menu-btn-wpr">
 
         <div class="home-block-description" style="padding-right: 55px;">
-            Brings the rest of your team to help you talking with customers
-
-            <!-- <span *ngIf="displayDefaultDescription === false"> {{'StartBySelecting' | translate : tparams }} </span>
-            <span *ngIf="displayDefaultDescription === true"> Create your chatbot from scratch with our brand new
-                no-code Chatbot Design Studio or start by selecting a
-                free ready-to-use template (pre-designed chatbot) that suits your needs</span> -->
+            Bring your team on board for collaborative automation and customer interactions
         </div>
 
-        <div class="action-btns-wpr">
-            <button mat-mini-fab aria-label="more_horiz icon" [matMenuTriggerFor]="menu"
-                style="box-shadow: unset; background-color: #2196f3">
+        <div class="ct-action-btns-wpr" *ngIf="USER_ROLE !== 'agent'">
+
+            <button id="home-material-btn" class="mat-focus-indicator mat-flat-button mat-button-base"
+            (click)="goToTeammates()">
+            <span class="mat-button-wrapper">
+
+                <span class="ml-2" style="font-size: 15px;">
+                    Invite teammates
+                </span>
+
+            </span>
+            <span matripple="" class="mat-ripple mat-button-ripple" ng-reflect-disabled="false"
+                ng-reflect-centered="false" ng-reflect-trigger="[object HTMLButtonElement]">
+            </span>
+            <span class="mat-button-focus-overlay"> </span>
+        </button>
+
+            <!-- <button mat-mini-fab aria-label="more_horiz icon" [matMenuTriggerFor]="menu"
+                style="box-shadow: unset; background-color: #2196f3; display: none;">
                 <mat-icon style="color: #fff;">more_horiz</mat-icon>
             </button>
-            <mat-menu #menu="matMenu" #aboveMenu="matMenu" yPosition="above">
+            <mat-menu style="display: none;" #menu="matMenu" #aboveMenu="matMenu" yPosition="above">
                 <button mat-menu-item (click)="goToTeammates()">
                     <mat-icon>group_add</mat-icon>
                     <span>Invite teammates</span>
                 </button>
-                <!-- <button mat-menu-item (click)="goToAddBotFromScratch()">
-                    <mat-icon>add_circle_outline</mat-icon>
-                    <span>Create from scratch</span>
-                </button> -->
-            </mat-menu>
+            </mat-menu> -->
         </div>
     </div>
 

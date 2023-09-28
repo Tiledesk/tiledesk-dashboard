@@ -1,0 +1,35 @@
+<h1 mat-dialog-title> {{ 'KbPage.AddKb' | translate }}</h1>
+<div mat-dialog-content>
+
+    <div class="info-container">
+        <i class="material-icons-outlined info-icon">help_outline</i>
+        <div class="info-text">
+            <p>{{ 'KbPage.AddKbInfoFirstText' | translate }}</p>
+            <p>{{ 'KbPage.AddKbInfoSecondText' | translate }}</p>
+        </div>
+    </div>
+    <!-- [ngClass]="{'invalid-url': !isValidURL}" -->
+    <form class="kb-url-form">
+        <mat-form-field appearance="fill" class="kb-mat-form-field">
+            <mat-label>URL</mat-label>
+            <input type="url" matInput [formControl]="URLFormControl" [(ngModel)]="newKb.url"
+                (ngModelChange)="onChangeURL($event)">
+            <mat-error *ngIf="URLFormControl.hasError('pattern') && !URLFormControl.hasError('required')">
+                Please enter a valid URL
+            </mat-error>
+            <mat-error *ngIf="URLFormControl.hasError('required')">
+                URL is <strong>required</strong>
+            </mat-error>
+        </mat-form-field>
+    </form>
+</div>
+<div mat-dialog-actions style="justify-content: center;">
+    <button class="mat-dialog-close-btn" mat-button (click)="onNoClick()">
+        {{ "Cancel" | translate }}
+    </button>
+    <!-- [mat-dialog-close]="newKb.url" -->
+    <button [disabled]="newKb.url.length === 0 || !isValidURL" class="mat-dialog-ok-btn" mat-button
+        (click)="onOkPresssed(newKb)" cdkFocusInitial>
+        {{ 'KbPage.Add' | translate }}
+    </button>
+</div>

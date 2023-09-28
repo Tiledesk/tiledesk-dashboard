@@ -3,10 +3,10 @@
     <div class="connect-whatsapp-wizard-title">
         Boost Customer Engagement with Whatsapp
     </div>
-    <!-- padding: 10px 50px;  (solution_for_child === 'want_to_talk_to_customers') && -->
-    <ng-container *ngIf="(solution_channel_for_child === 'whatsapp_fb_messenger' && solution_for_child === 'want_to_automate_conversations') || 
+    
+    <ng-container  *ngIf="(solution_channel_for_child === 'whatsapp_fb_messenger' && solution_for_child === 'want_to_automate_conversations') || 
         (solution_channel_for_child === 'web_mobile')">
-        <div class="connect-watsapp-wizard-wrp" style="display: flex; flex-direction: column;">
+        <div class="connect-watsapp-wizard-wrp" style="display: flex; flex-direction: column; display: none;">
             <div class="_2qLvL _2vFcS _2iqgV" style="gap: 4px;">
                 <!-- <span class="stepper-line"></span> -->
 
@@ -180,8 +180,8 @@
             </div>
         </div>
     </ng-container>
-
-    <ng-container *ngIf="solution_channel_for_child === 'whatsapp_fb_messenger' && solution_for_child === 'want_to_talk_to_customers'">
+    <!-- *ngIf="solution_channel_for_child === 'whatsapp_fb_messenger' && solution_for_child === 'want_to_talk_to_customers'" -->
+    <ng-container >
         <div class="connect-watsapp-wizard-wrp" style="display: flex; flex-direction: column;">
             <div class="_2qLvL _2vFcS _2iqgV" style="gap: 4px;">
                 <div style="z-index: 0;">

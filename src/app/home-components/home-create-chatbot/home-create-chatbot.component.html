@@ -1,9 +1,9 @@
 <div class="home-block-wpr">
     <div class="home-block-header-wpr">
         <div class="home-block-header">
-
-            <div *ngIf="chatbots && chatbots?.length === 0 " class="home-block-img-title-wpr">
-                <div class="home-block-img">
+            <!-- *ngIf="chatbots && chatbots?.length === 0" -->
+            <div class="home-block-img-title-wpr">
+                <div style="display: none;" class="home-block-img">
 
                     <svg width="42" height="42" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
                         xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 24 24"
@@ -85,16 +85,16 @@
                     </svg>
                 </div>
                 <div class="home-block-title">
-                    You don't have any chatbots yet!
+                    <!-- You don't have any chatbots yet! -->
+                    Get Started with Conversation Automation
                 </div>
             </div>
 
-            <div *ngIf="chatbots && chatbots?.length > 0 " class="home-block-img-title-wpr">
+            <!-- <div *ngIf="chatbots && chatbots?.length > 0 " class="home-block-img-title-wpr">
                 <div class="home-block-title">
                     Your chatbots
                 </div>
-
-            </div>
+            </div> -->
         </div>
     </div>
     <div style="height: 24px; width: 0px; flex: 0 0 auto;"></div>
@@ -319,28 +319,45 @@
 
     </div>
 
-
-
-    <div class="home-block-description-and-menu-btn-wpr">
-        <!-- *ngIf="chatbots && chatbots.length === 0" -->
-        <div class="home-block-description" style="padding-right: 55px;">
-            <!-- Create your chatbot from scratch with our brand new no-code Chatbot Design Studio or start by selecting a
-            free ready-to-use template (pre-designed chatbot) that suits your needs -->
+    <div *ngIf="chatbots && chatbots?.length === 0">
+        <div class="home-block-description" style="padding-bottom: 30px;">
             <span *ngIf="displayDefaultDescription === false"> {{'StartBySelecting' | translate : tparams }} </span>
             <span *ngIf="displayDefaultDescription === true"> Create your chatbot from scratch with our brand new
                 no-code Chatbot Design Studio or start by selecting a
                 free ready-to-use template (pre-designed chatbot) that suits your needs</span>
         </div>
+    </div>
 
 
 
+    <div class="cc-home-block-description-and-menu-btn-wpr">
         <!-- *ngIf="chatbots && chatbots.length === 0" -->
-        <div class="action-btns-wpr">
+        <!-- -->
+        <!-- *ngIf="chatbots && chatbots.length === 0" -->
+        <div class="action-btns-wpr" *ngIf="USER_ROLE !== 'agent'">
+            <!-- (click)="goToAddBotFromScratch()" -->
+            <button id="home-material-btn" class="mat-focus-indicator mat-flat-button mat-button-base"
+                (click)="presentModalAddBotFromScratch()">
+                <span class="mat-button-wrapper">
+
+                    <span class="ml-2" style="font-size: 15px;">
+                        Add from scratch
+                    </span>
+
+                </span>
+                <span matripple="" class="mat-ripple mat-button-ripple" ng-reflect-disabled="false"
+                    ng-reflect-centered="false" ng-reflect-trigger="[object HTMLButtonElement]">
+                </span>
+                <span class="mat-button-focus-overlay"> </span>
+            </button>
+
+
+            <!-- Display none -->
             <button mat-mini-fab aria-label="more_horiz icon" [matMenuTriggerFor]="menu"
-                style="box-shadow: unset; background-color: #2196f3">
+                style="display: none; box-shadow: unset; background-color: #2196f3">
                 <mat-icon style="color: #fff;">more_horiz</mat-icon>
             </button>
-            <mat-menu #menu="matMenu" #aboveMenu="matMenu" yPosition="above">
+            <mat-menu style="display: none;" #menu="matMenu" #aboveMenu="matMenu" yPosition="above">
                 <button mat-menu-item (click)="goToTemplates()">
                     <mat-icon>class</mat-icon>
                     <span>Tiledesk templates</span>
@@ -354,7 +371,165 @@
                     <span>Create from scratch</span>
                 </button>
             </mat-menu>
+            <!-- ./ Display none -->
         </div>
+    </div>
+
+    <div class="choose-template" *ngIf="USER_ROLE !== 'agent'">
+        or Choose a Template
+    </div>
+    <!-- this.use_case_for_child === 'increase_online_sales' -->
+    <!-- *ngIf="use_case_for_child === 'solve_customer_problems'"  -->
+    <div class="suggested-templates" *ngIf="USER_ROLE !== 'agent'">
+
+        <ng-container *ngFor="let template of templates | slice:0:2; let i=index ">
+            <div class="suggested-templates-card" (click)="openDialog(template)">
+                <div class="suggested-templates-card-image">
+                    <img _ngcontent-nei-c171="" style="width: auto; height: 40px;margin-top: 20px;" src="{{template.bigImage}}">
+                </div>
+                <div class="templates-card-title-and-description">
+                    <div class="suggested-templates-card-title">
+                        {{template.name}}
+                    </div>
+
+                    <div class="suggested-templates-card-description">
+                        {{template.description}}
+                    </div>
+
+                    <div class="suggested-templates-use-template">
+                        <span>Use template</span>
+                    </div>
+
+                </div>
+            </div>
+        </ng-container>
+
+        <!-- USECASE no user preferences -->
+        <div *ngIf="templates === undefined" class="suggested-templates-card" (click)="goToIncreaseSalesTemplates()">
+            <div class="suggested-templates-card-image">
+                <svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 0 24 24" width="40px" fill="#2196f3"
+                    style="margin-right: 8px; margin-top: 21px;">
+                    <path d="M0 0h24v24H0z" fill="none"></path>
+                    <path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"></path>
+                </svg>
+            </div>
+
+            <div class="templates-card-title-and-description">
+                <div class="suggested-templates-card-title">
+                    Increase sales
+                </div>
+
+                <div class="suggested-templates-card-description">
+                    Use chatbot templates to generate more sales in your business.
+                </div>
+
+                <div class="suggested-templates-use-template" style="padding-top: 3px;">
+                    <span style="font-size: 12px;padding-top: 6px; ">Explore templates</span>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="templates === undefined" class="suggested-templates-card" (click)="goToCustomerSatisfactionTemplates()">
+            <div class="suggested-templates-card-image">
+                <svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 0 24 24" width="40px" fill="#2196f3"
+                    style="margin-right: 8px; margin-top: 21px;">
+                    <path d="M0 0h24v24H0z" fill="none" />
+                    <path
+                        d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z" />
+                </svg>
+            </div>
+            <div class="templates-card-title-and-description">
+                <div class="suggested-templates-card-title">
+                    Customer Satisfaction
+                </div>
+
+                <div class="suggested-templates-card-description">
+                    Solve problems automatically with custom chatbot templates.
+                </div>
+
+                <div class="suggested-templates-use-template" style="padding-top: 3px;">
+                    <span style="font-size: 12px;padding-top: 6px; ">Explore templates</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Last button for no user preferences -->
+        <!-- find-all-template  -->
+        <div *ngIf="templates === undefined" class="suggested-templates-card" (click)="goToTemplates()">
+            <div class="suggested-templates-card-image">
+                <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="40px"
+                    viewBox="0 0 24 24" width="40px" fill="#2196f3" style="margin-right: 8px; margin-top: 21px;">
+                    <rect fill="none" height="24" width="24" />
+                    <path
+                        d="M9.68,13.69L12,11.93l2.31,1.76l-0.88-2.85L15.75,9h-2.84L12,6.19L11.09,9H8.25l2.31,1.84L9.68,13.69z M20,10 c0-4.42-3.58-8-8-8s-8,3.58-8,8c0,2.03,0.76,3.87,2,5.28V23l6-2l6,2v-7.72C19.24,13.87,20,12.03,20,10z M12,4c3.31,0,6,2.69,6,6 s-2.69,6-6,6s-6-2.69-6-6S8.69,4,12,4z" />
+                </svg>
+            </div>
+
+            <div class="templates-card-title-and-description">
+                <div class="suggested-templates-card-title">
+                    All templates
+                </div>
+
+                <div class="suggested-templates-card-description">
+                    Ready-to-use templates (pre-designed chatbot) to build chatbots in minutes
+                </div>
+
+                <div class="suggested-templates-use-template" style="padding-top: 3px;">
+                    <span style="font-size: 12px;padding-top: 6px; ">Explore all templates</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Last button for Customer Satisfaction Templates -->
+        <div *ngIf="use_case_for_child === 'solve_customer_problems'" class="suggested-templates-card"
+            (click)="goToCustomerSatisfactionTemplates()">
+            <div class="suggested-templates-card-image">
+                <svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 0 24 24" width="40px" fill="#2196f3"
+                    style="margin-right: 8px; margin-top: 21px;">
+                    <path d="M0 0h24v24H0z" fill="none" />
+                    <path
+                        d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z" />
+                </svg>
+            </div>
+            <div class="templates-card-title-and-description">
+                <div class="suggested-templates-card-title">
+                    Customer Satisfaction
+                </div>
+
+                <div class="suggested-templates-card-description">
+                    Solve problems automatically with custom chatbot templates.
+                </div>
+
+                <div class="suggested-templates-use-template" style="padding-top: 3px;">
+                    <span style="font-size: 12px;padding-top: 6px; ">Explore templates</span>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="use_case_for_child === 'increase_online_sales'" class="suggested-templates-card" (click)="goToIncreaseSalesTemplates()">
+            <div class="suggested-templates-card-image">
+                <svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 0 24 24" width="40px" fill="#2196f3"
+                    style="margin-right: 8px; margin-top: 21px;">
+                    <path d="M0 0h24v24H0z" fill="none"></path>
+                    <path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"></path>
+                </svg>
+            </div>
+
+            <div class="templates-card-title-and-description">
+                <div class="suggested-templates-card-title">
+                    Increase sales
+                </div>
+
+                <div class="suggested-templates-card-description">
+                    Use chatbot templates to generate more sales in your business.
+                </div>
+
+                <div class="suggested-templates-use-template" style="padding-top: 3px;">
+                    <span style="font-size: 12px;padding-top: 6px; ">Explore templates</span>
+                </div>
+            </div>
+        </div>
+
     </div>
 
 

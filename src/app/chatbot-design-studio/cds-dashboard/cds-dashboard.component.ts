@@ -91,6 +91,7 @@ export class CdsDashboardComponent implements OnInit {
   popup_visibility: string = 'none'
 
   isBetaUrl: boolean = false;
+  calledby: string;
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -217,6 +218,7 @@ export class CdsDashboardComponent implements OnInit {
   */
   private getUrlParams() {
     this.route.params.subscribe((params) => {
+      console.log('[CDS DSHBRD] getUrlParams  PARAMS', params);
       this.id_faq_kb = params.faqkbid;
       if (this.id_faq_kb) {
         this.getBotById(this.id_faq_kb)
@@ -224,7 +226,10 @@ export class CdsDashboardComponent implements OnInit {
       this.id_faq = params.faqid;
       this.botType = params.bottype
       this.intent_id = params.intent_id
-      this.logger.log('[CDS DSHBRD] getUrlParams  PARAMS', params);
+      if (params.calledby) {
+        this.calledby = 'home'
+      }
+      
       this.logger.log('[CDS DSHBRD] getUrlParams  BOT ID ', this.id_faq_kb);
       this.logger.log('[CDS DSHBRD] getUrlParams  FAQ ID ', this.id_faq);
       this.logger.log('[CDS DSHBRD] getUrlParams  FAQ ID ', this.intent_id);
@@ -576,7 +581,12 @@ export class CdsDashboardComponent implements OnInit {
 
   /** Go back to previous page */
   goBack() {
-    this.router.navigate(['project/' + this.project._id + '/bots/my-chatbots/all']);
+    // this.router.navigate(['project/' + this.project._id + '/bots/my-chatbots/all']);
+    if (this.calledby === "home") {
+      this.router.navigate(['project/' + this.project._id + '/home']);
+    } else {
+      this.router.navigate(['project/' + this.project._id + '/bots/my-chatbots/all']);
+    }
     this.hideShowWidget('show')
   }
 

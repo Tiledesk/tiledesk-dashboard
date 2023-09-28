@@ -181,7 +181,7 @@ export class KnowledgeBasesComponent implements OnInit {
   runIndexing(kb) {
     let data = {
       full_url: kb.url,
-      gptkey: kb.gptkey
+      gptkey: this.kbSettings.gptkey
     }
     this.openaikbService.startScraping(data).subscribe((response) => {
       console.log("start scraping response: ", response);

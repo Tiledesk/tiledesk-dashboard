@@ -1,0 +1,62 @@
+@import "./src/assets/sass/cds/_variables.scss";
+
+.kb-url-form {
+    min-width: 150px;
+    max-width: 500px;
+    width: 100%;
+  }
+
+  .kb-mat-form-field {
+    width: 100%;
+  }
+
+  .mat-dialog-close-btn {
+    background-color: #647491;
+    color: #fff;
+  }
+
+  .mat-dialog-ok-btn {
+    background-color: #2196f3;
+    color: #fff;
+
+  }
+
+
+
+.info-container {
+    display: flex;
+    flex-direction: row;
+    padding: 12px 15px;
+    border-radius: 4px;
+    color: #647491;
+
+    .info-icon {
+        margin-right: 8px;
+        font-size: 20px;
+    }
+
+    p {
+        margin-bottom: 0px;
+    }
+
+}
+
+//  ::ng-deep .mat-focused .mat-form-field-label {
+//     /*change color of label*/
+//     color: $color-blue-hex !important;
+// }
+
+// ::ng-deep.mat-form-field-underline {
+//     /*change color of underline*/
+//     background-color: $color-blue-hex !important;
+// }
+
+// ::ng-deep.mat-form-field-ripple {
+//     /*change color of underline when focused*/
+//     background-color: $color-blue-hex !important;
+// }
+
+// ::ng-deep .mat-focused.invalid-url .mat-form-field-label {
+//     /*change color of label*/
+//     color: red;
+// }

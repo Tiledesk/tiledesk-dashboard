@@ -12,16 +12,39 @@
         <div class="home-block-description" style="padding-right:55px">
             Upload URLs to streamline content creation and seamlessly integrate your knowledge base content for a Chat-GPT-like experience
         </div>
+
+        <div class="kb-counter">
+            {{ 'KbPage.KbCounterFooter' | translate: { counter: kbSettings?.kbs?.length } }}
+        </div>
        
-        <div class="actions-btn-wpr">
-            <button mat-flat-button=""
+        <div class="actions--btn-wpr">
+            <button id="home-material-btn"
                 class="mat-focus-indicator mat-flat-button mat-button-base"
-                style="background-color: #2196f3; color: #fff;margin-right: 4px;">
+               
+                (click)="goToKnowledgeBases()">
+                <span class="mat-button-wrapper">
+                
+                    <span class="ml-2"
+                        style="font-size: 15px;">
+                        Manage Knowledge Base
+                    </span>
+
+                </span>
+                <span matripple="" class="mat-ripple mat-button-ripple" ng-reflect-disabled="false"
+                    ng-reflect-centered="false" ng-reflect-trigger="[object HTMLButtonElement]">
+                </span>
+                <span class="mat-button-focus-overlay"> </span>
+            </button>
+
+            <button id="home-material-btn" [ngClass]="{'add-kb-disabled': kbSettings?.kbs?.length === 3}"
+                class="mat-focus-indicator mat-flat-button mat-button-base"
+                (click)="presentModalAddKb()"
+                [disabled]="addButtonDisabled">
                 <span class="mat-button-wrapper">
                  
                     <span class="ml-2"
                         style="font-size: 15px;">
-                        Customize
+                        {{'KbPage.AddKb' | translate}}
                     </span>
 
                 </span>

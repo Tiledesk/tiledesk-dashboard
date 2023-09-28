@@ -28,16 +28,42 @@
 
 .home-block-description-and-action-btn-wpr {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    // justify-content: space-between;
+    // align-items: center;
+    flex-direction: column;
+    gap: 8px;
 }
 
 .home-block-description {
-    color: #000000;
+    color: #222;
     font-size: 15px;
     font-weight: 400;
     line-height: 20px;
     margin: 0px;
+}
+
+.kb-counter {
+    display: flex;
+    justify-content: flex-start;
+    color: #647491;
+}
+
+.actions--btn-wpr {
+    display: flex;
+    justify-content: flex-end !important;
+}
+
+// #00000042
+
+#home-material-btn {
+    background-color: #2196f3;
+    color: #fff;
+    margin-right: 4px;
+}
+
+.add-kb-disabled {
+    color: #00000042 !important;
+    cursor: not-allowed;
 }
 
 .mat-flat-button {
@@ -55,9 +81,4 @@
 .mat-button .mat-button-wrapper>*,
 .mat-flat-button .mat-button-wrapper>* {
     vertical-align: middle;
-}
-
-.actions-btn-wpr {
-    display: flex;
-    align-self: center;
 }

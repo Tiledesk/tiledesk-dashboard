@@ -36,6 +36,7 @@ import {
 import { AnalyticsService } from 'app/analytics/analytics-service/analytics.service';
 import { AppStoreService } from 'app/services/app-store.service';
 import { DepartmentService } from 'app/services/department.service';
+import { Console } from 'console';
 
 
 const swal = require('sweetalert');
@@ -119,7 +120,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   learnMoreAboutDefaultRoles: string;
   DISPLAY_OPH_AS_DISABLED: boolean;
   UPLOAD_ENGINE_IS_FIREBASE: boolean;
-  current_selected_prjct: any;
+  current_prjct: any;
   popup_visibility: string = 'none';
   appSumoProfile: string;
   project_plan_badge: boolean;
@@ -135,10 +136,11 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   // HOME REVOLUTION 
   displayAnalyticsConvsGraph: boolean = false;
   displayAnalyticsIndicators: boolean = false;
-  displayConnectWhatsApp: boolean = true
-  displayCreateChatbot: boolean = true
-  displayInviteTeammate: boolean = true
-  displayCustomizeWidget: boolean = true
+  displayConnectWhatsApp: boolean;
+  displayKnowledgeBase: boolean;
+  displayCreateChatbot: boolean
+  displayInviteTeammate: boolean
+  displayCustomizeWidget: boolean
   displayNewsFeed: boolean = true
   displayWhatsappAccountWizard = false;
   whatsAppIsInstalled: boolean = null;
@@ -179,6 +181,27 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   userHasUnistalledWa: boolean = false
   chatbotCreated: boolean
   userHasClickedDisplayWAWizard: boolean = false
+  PROJECT_ATTRIBUTES: any
+  // list_case1 = [
+  //   { pos: 1, type: 'child1'},
+  //   { pos: 2, type: 'child2'},
+  //   { pos: 3, type: 'child3'},
+  //   { pos: 4, type: 'child4'},
+  //   { pos: 5, type: 'child5'},
+  //   { pos: 6, type: 'child6'}
+  // ]
+  child_list_order = [
+    { pos: 1, type: 'child1' },
+    { pos: 2, type: 'child2' },
+    { pos: 3, type: 'child3' },
+    { pos: 4, type: 'child4' },
+    { pos: 5, type: 'child5' },
+    { pos: 6, type: 'child6' },
+    { pos: 7, type: 'child7' },
+    { pos: 8, type: 'child8' }
+  ];
+
+
   constructor(
     public auth: AuthService,
     private route: ActivatedRoute,
@@ -217,7 +240,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.getLoggedUser()
     this.getCurrentProjectAndInit();
     // this.getStorageBucket(); // moved in getCurrentProject()
-    this.logger.log('[HOME] !!! Hello HomeComponent! ');
+    console.log('[HOME] !!! Hello HomeComponent! ');
 
     this.getBrowserLanguage();
     this.translateString();
@@ -279,6 +302,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           this.logger.log('[HOME] > OPERATING_HOURS_ACTIVE', this.OPERATING_HOURS_ACTIVE)
 
           this.findCurrentProjectAmongAll(this.projectId)
+          this.getProjectById(this.projectId)
           this.init()
         }
       }, (error) => {
@@ -287,6 +311,55 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       }, () => {
         this.logger.log('[HOME] $UBSCIBE TO PUBLISHED PROJECT * COMPLETE *');
       });
+  }
+
+  getProjectById(projectId) {
+    this.projectService.getProjectById(projectId).subscribe((project: any) => {
+      console.log('[HOME] - GET PROJECT BY ID - PROJECT: ', project);
+
+      if (project && project.attributes) {
+        this.PROJECT_ATTRIBUTES = project.attributes;
+        this.getOnbordingPreferences(this.PROJECT_ATTRIBUTES)
+        this.getDashlet(this.PROJECT_ATTRIBUTES)
+      } else {
+        console.log('[HOME] USECASE  PROJECT_ATTRIBUTES UNDEFINED', this.PROJECT_ATTRIBUTES)
+        this.setDefaultPreferences()
+      }
+
+
+    }, error => {
+      console.error('[HOME] - GET PROJECT BY ID - ERROR ', error);
+    }, () => {
+      console.log('[HOME] - GET PROJECT BY ID * COMPLETE * ');
+
+      // this.getApps();
+
+    });
+  }
+
+  getDashlet(project_attributes) {
+    if (project_attributes && project_attributes.dashlets) {
+      console.log('[HOME] - (onInit) - DASHLETS PREFERENCES ', project_attributes.dashlets);
+      const dashlets = project_attributes.dashlets;
+
+      this.displayAnalyticsConvsGraph = dashlets.convsGraph
+      this.displayAnalyticsIndicators = dashlets.analyticsIndicators
+      this.displayConnectWhatsApp = dashlets.connectWhatsApp
+      this.displayCreateChatbot = dashlets.createChatbot
+      this.displayKnowledgeBase = dashlets.knowledgeBase
+      this.displayInviteTeammate = dashlets.inviteTeammate
+      this.displayCustomizeWidget = dashlets.customizeWidget
+      this.displayNewsFeed = dashlets.newsFeed
+    }
+  }
+
+  setDefaultPreferences() {
+    this.displayCreateChatbot = true
+    this.switchCreateChatbot(this.displayCreateChatbot)
+    this.displayInviteTeammate = true
+    this.switchInviteTeammate(this.displayInviteTeammate)
+    this.displayKnowledgeBase = true
+    this.switchyKnowledgeBase(this.displayInviteTeammate)
   }
 
   findCurrentProjectAmongAll(projectId: string) {
@@ -306,252 +379,90 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         console.log('[HOME] getProjects this.projects ', this.projects);
       }
 
-      this.current_selected_prjct = projects.find(prj => prj.id_project.id === projectId);
-      console.log('[HOME] - CURRENT PROJECT - current_selected_prjct ', this.current_selected_prjct);
-      console.log('[HOME] - CURRENT PROJECT - current_selected_prjct  > attributes', this.current_selected_prjct.id_project.attributes);
-
-
-
-
-      if (this.current_selected_prjct &&
-        this.current_selected_prjct.id_project &&
-        this.current_selected_prjct.id_project.attributes &&
-        this.current_selected_prjct.id_project.attributes.userPreferences) {
-        this.solution_channel = this.current_selected_prjct.id_project.attributes.userPreferences.solution_channel
-        this.use_case = this.current_selected_prjct.id_project.attributes.userPreferences.use_case
-        this.solution = this.current_selected_prjct.id_project.attributes.userPreferences.solution
-
-        console.log('[HOME] - USER PREFERENCES  solution_channel', this.solution_channel);
-        console.log('[HOME] - USER PREFERENCES  use_case', this.use_case);
-        console.log('[HOME] - USER PREFERENCES  solution', this.solution);
-        this.use_case_for_child = this.use_case;
-        this.solution_channel_for_child = this.solution_channel
-        this.solution_for_child = this.solution
-        if (this.solution_channel_for_child === 'whatsapp_fb_messenger' || (this.solution_channel_for_child === 'web_mobile' && this.current_selected_prjct.id_project.attributes.displayWAWizard === true) ) {
-          // if (this.current_selected_prjct.id_project.attributes.userHasReMovedWA === true) {
-          this.displayWhatsappAccountWizard = true;
-          // }
-          this.displayCustomizeWidget = false;
-          // if (this.current_selected_prjct.id_project.attributes &&
-          //   this.current_selected_prjct.id_project.attributes.wizardCompleted &&
-          //   this.current_selected_prjct.id_project.attributes.wizardCompleted === true) {
-          //   this.displayWhatsappAccountWizard = false;
-          // }
-
-        }
-        // if (this.solution_channel_for_child === 'web_mobile' &&
-        //   this.current_selected_prjct &&
-        //   this.current_selected_prjct.id_project &&
-        //   this.current_selected_prjct.id_project.attributes && this.current_selected_prjct.id_project.attributes.displayWAWizard) {
-        //   if (this.current_selected_prjct.id_project.attributes.wizardCompleted !== true) {
-        //     if (this.current_selected_prjct.id_project.attributes && this.current_selected_prjct.id_project.attributes.displayWAWizard === true) {
-        //       this.displayWhatsappAccountWizard = true;
-        //       this.userHasClickedDisplayWAWizard = true;
-        //     }
-        //   }
-        // }
-        console.log('[HOME] - USE CASE solution_channel (0)', this.solution_channel_for_child, ' solution ', this.solution_for_child);
-        if ((this.solution_channel_for_child === 'whatsapp_fb_messenger' && this.solution_for_child === 'want_to_automate_conversations') 
-          || (this.solution_channel_for_child === 'web_mobile' && this.current_selected_prjct.id_project.attributes.displayWAWizard === true)){
-          if (this.current_selected_prjct &&
-            this.current_selected_prjct.id_project &&
-            this.current_selected_prjct.id_project.attributes) {
-            this.userHasClickedDisplayWAWizard = true;
-            const waWizardstep1 = this.current_selected_prjct.id_project.attributes.wastep1;
-            const waWizardstep2 = this.current_selected_prjct.id_project.attributes.wastep2;
-            const waWizardstep3 = this.current_selected_prjct.id_project.attributes.wastep3;
-
-            console.log('[HOME] - waWizardstep1 ', waWizardstep1);
-            console.log('[HOME] - waWizardstep2 ', waWizardstep2);
-            console.log('[HOME] - waWizardstep3 ', waWizardstep3);
-            console.log('[HOME] - userHasClickedDisplayWAWizard ', this.userHasClickedDisplayWAWizard);
-
-
-            if (waWizardstep1 === false || waWizardstep1 === undefined) {
-              this.chatbotCreated = false
-            } else if (waWizardstep1 === true) {
-              this.chatbotCreated = true
-            }
-
-            if (waWizardstep2 === false || waWizardstep2 === undefined) {
-              this.testBotOnWA = false
-
-            } else if (waWizardstep2 === true) {
-              this.testBotOnWA = true
-            }
-
-            if (waWizardstep3 === false || waWizardstep3 === undefined) {
-              this.whatsAppIsConnected = false
-            } else if (waWizardstep3 === true) {
-              this.whatsAppIsConnected = true
-            }
-            console.log('[HOME] - USE CASE 2 solution_channel ', this.solution_channel_for_child, ' solution ', this.solution_for_child);
-            console.log('[HOME] - USE CASE 2 chatbotCreated ', this.chatbotCreated);
-            console.log('[HOME] - USE CASE 2 testBotOnWA ', this.testBotOnWA);
-            console.log('[HOME] - USE CASE 2 whatsAppIsConnected ', this.whatsAppIsConnected);
-
-
-            if (waWizardstep1 === true && waWizardstep2 === true && waWizardstep3 === true) {
-              this.displayWhatsappAccountWizard = false;
-              this.whatsAppIsConnected = true;
-            } else if (waWizardstep1 === true && waWizardstep2 === true && waWizardstep3 === false) {
-              this.whatsAppIsConnected = false;
-              if (this.current_selected_prjct.id_project.attributes.wizardCompleted === true) {
-                this.displayWhatsappAccountWizard = false;
-              }
-            }
-
-          } else {
-            this.displayWhatsappAccountWizard = true;
-            // this.chatbotCreated = true;
-            this.testBotOnWA = false;
-            this.whatsAppIsConnected = false;
-          }
-        } else if (this.solution_channel_for_child === 'whatsapp_fb_messenger' && this.solution_for_child === 'want_to_talk_to_customers') {
-          console.log('[HOME] - USE CASE solution_channel (1)', this.solution_channel_for_child, ' solution ', this.solution_for_child);
-
-          if (this.current_selected_prjct &&
-            this.current_selected_prjct.id_project &&
-            this.current_selected_prjct.id_project.attributes &&
-            this.current_selected_prjct.id_project.attributes.oneStepWizard) {
-            console.log('[HOME] - HERE 3');
-            console.log('[HOME] - USE CASE step3 oneStepWizard watsAppConnected', this.current_selected_prjct.id_project.attributes.oneStepWizard.watsAppConnected);
-            if (this.current_selected_prjct.id_project.attributes.oneStepWizard.watsAppConnected === true) {
-              this.displayWhatsappAccountWizard = false;
-              this.whatsAppIsConnected = true
-              console.log('[HOME] - USE CASE solution_channel ', this.solution_channel_for_child, ' solution ', this.solution_for_child);
-              console.log('[HOME] - displayWhatsappAccountWizard ', this.displayWhatsappAccountWizard);
-            } else if (this.current_selected_prjct.id_project.attributes.oneStepWizard.watsAppConnected === false) {
-              this.whatsAppIsConnected = false
-              if (this.current_selected_prjct.id_project.attributes.wizardCompleted === true) {
-                this.displayWhatsappAccountWizard = false;
-              }
-
-            }
-
-          }
-        }
-
-      } else {
-        console.log('[HOME] - USER PREFERENCES  (NO ATTRIBUTES) solution_channel', this.solution_channel);
-        console.log('[HOME] - USER PREFERENCES  (NO ATTRIBUTES) use_case', this.use_case);
-        this.use_case_for_child = undefined;
-        this.solution_channel_for_child = undefined;
-        this.solution_for_child = undefined;
-        if (this.solution_channel_for_child === undefined) {
-          this.displayWhatsappAccountWizard = false;
-          console.log('[HOME] - USER PREFERENCES  (NO ATTRIBUTES) displayWhatsappAccountWizard', this.displayWhatsappAccountWizard);
-        }
-      }
-
-
-      if (this.current_selected_prjct &&
-        this.current_selected_prjct.id_project &&
-        this.current_selected_prjct.id_project.attributes &&
-        this.current_selected_prjct.id_project.attributes.userHasReMovedWA) {
-        if (this.current_selected_prjct.id_project.attributes.userHasReMovedWA === true) {
-          this.userHasUnistalledWa = true;
-          this.displayWhatsappAccountWizard = false;
-        }
-        else {
-          this.userHasUnistalledWa = false;
-          if (this.current_selected_prjct &&
-            this.current_selected_prjct.id_project &&
-            this.current_selected_prjct.id_project.attributes) {
-
-            const waWizardstep1 = this.current_selected_prjct.id_project.attributes.wastep1;
-            const waWizardstep2 = this.current_selected_prjct.id_project.attributes.wastep2;
-            const waWizardstep3 = this.current_selected_prjct.id_project.attributes.wastep3;
-            if ((this.solution_channel_for_child === 'whatsapp_fb_messenger') &&
-              (this.solution_for_child === 'want_to_talk_to_customers') ||
-              (this.solution_for_child === 'want_to_automate_conversations')) {
-              if (waWizardstep1 === undefined && waWizardstep2 === undefined && waWizardstep3 === undefined) {
-                this.displayWhatsappAccountWizard = true;
-              }
-            }
-          }
-        }
-      }
-
-
-
-      // if (this.current_selected_prjct &&
-      //   this.current_selected_prjct.id_project &&
-      //   this.current_selected_prjct.id_project.attributes) {
-
-      //   console.log('[HOME] - WA WIZARD (onInit) - wastep1  ',this.current_selected_prjct.id_project.attributes.wastep1);
-      //   console.log('[HOME] - WA WIZARD (onInit) - wastep2  ',this.current_selected_prjct.id_project.attributes.wastep2);
-      //   console.log('[HOME] - WA WIZARD (onInit) - wastep3  ',this.current_selected_prjct.id_project.attributes.wastep3);
-      //   if (this.current_selected_prjct.id_project.attributes.wastep1 === false) {
-      //     this.chatbotCreated = false
-      //   } else {
-      //     this.chatbotCreated = true
-      //   }
-
-      //   if (this.current_selected_prjct.id_project.attributes.wastep2 === false) {
-      //     this.testBotOnWA = false
-
-      //   } else {
-      //     this.testBotOnWA = true
-      //   }
-
-
-      //   if (this.current_selected_prjct.id_project.attributes.wastep3 === false) {
-      //     this.whatsAppIsConnected = false
-      //   } else {
-      //     this.whatsAppIsConnected = true
-      //   }
-
-
+      this.current_prjct = projects.find(prj => prj.id_project.id === projectId);
+      console.log('[HOME] - CURRENT PROJECT - current_prjct ', this.current_prjct);
+      console.log('[HOME] - CURRENT PROJECT - current_prjct  > attributes', this.current_prjct.id_project.attributes);
+      // ---------------------------------
+      // Get onboarding preferences 
+      // ---------------------------------
+      // if (this.current_prjct && this.current_prjct.id_project  && this.current_prjct.id_project.attributes ) {
+      //   this.PROJECT_ATTRIBUTES = this.current_prjct.id_project.attributes
+      //   this.getOnbordingPreferences(this.PROJECT_ATTRIBUTES)
       // } else {
-      //   this.whatsAppIsConnected = false
-      //   this.testBotOnWA = false
+      //   console.log('[HOME] USECASE  PROJECT_ATTRIBUTES UNDEFINED' , this.PROJECT_ATTRIBUTES) 
+
+      //   this.displayCreateChatbot = true
+      //   this.switchCreateChatbot(this.displayCreateChatbot)
+      //   this.displayInviteTeammate = true
+      //   this.switchInviteTeammate(this.displayInviteTeammate)
+      //   this.displayKnowledgeBase = true
+      //   this.switchyKnowledgeBase(this.displayInviteTeammate)
       // }
 
-      // console.log('[HOME] - WA WIZARD (onInit) - chatbotCreated ', this.chatbotCreated);
-      // console.log('[HOME] - WA WIZARD (onInit) - testBotOnWA ', this.testBotOnWA);
-      // console.log('[HOME] - WA WIZARD (onInit) - whatsAppIsConnected ', this.whatsAppIsConnected);
+
+      // if ( this.PROJECT_ATTRIBUTES && this.PROJECT_ATTRIBUTES.userHasReMovedWA) {
+      //   if (this.PROJECT_ATTRIBUTES.userHasReMovedWA === true) {
+      //     this.userHasUnistalledWa = true;
+      //     this.displayWhatsappAccountWizard = false;
+      //   }
+      //   else {
+      //     this.userHasUnistalledWa = false;
+      //     if (this.current_prjct &&
+      //       this.current_prjct.id_project &&
+      //       this.current_prjct.id_project.attributes) {
+
+      //       const waWizardstep1 = this.current_prjct.id_project.attributes.wastep1;
+      //       const waWizardstep2 = this.current_prjct.id_project.attributes.wastep2;
+      //       const waWizardstep3 = this.current_prjct.id_project.attributes.wastep3;
+      //       if ((this.solution_channel_for_child === 'whatsapp_fb_messenger') &&
+      //         (this.solution_for_child === 'want_to_talk_to_customers') ||
+      //         (this.solution_for_child === 'want_to_automate_conversations')) {
+      //         if (waWizardstep1 === undefined && waWizardstep2 === undefined && waWizardstep3 === undefined) {
+      //           this.displayWhatsappAccountWizard = true;
+      //         }
+      //       }
+      //     }
+      //   }
+      // }
 
 
-
-
-      if (this.current_selected_prjct &&
-        this.current_selected_prjct.id_project &&
-        this.current_selected_prjct.id_project.attributes &&
-        this.current_selected_prjct.id_project.attributes.wasettings) {
-        console.log('[HOME] - (onInit) - wasettings ', this.current_selected_prjct.id_project.attributes.wasettings);
-        this.wadepartmentid = this.current_selected_prjct.id_project.attributes.wasettings.department_id
+      if (this.current_prjct &&
+        this.current_prjct.id_project &&
+        this.current_prjct.id_project.attributes &&
+        this.current_prjct.id_project.attributes.wasettings) {
+        console.log('[HOME] - (onInit) - wasettings ', this.current_prjct.id_project.attributes.wasettings);
+        this.wadepartmentid = this.current_prjct.id_project.attributes.wasettings.department_id
         this.getDeptById(this.wadepartmentid)
       } else {
-        console.log('[HOME] - (onInit) - not exist wasettings', )
+        console.log('[HOME] - (onInit) - not exist wasettings',)
       }
 
 
-      if (this.current_selected_prjct &&
-        this.current_selected_prjct.id_project &&
-        this.current_selected_prjct.id_project.attributes &&
-        this.current_selected_prjct.id_project.attributes.dashlets) {
-        console.log('[HOME] - (onInit) - DASHLETS PREFERENCES ', this.current_selected_prjct.id_project.attributes.dashlets);
-        const dashlets = this.current_selected_prjct.id_project.attributes.dashlets;
+      // if (this.current_prjct &&
+      //   this.current_prjct.id_project &&
+      //   this.current_prjct.id_project.attributes &&
+      //   this.current_prjct.id_project.attributes.dashlets) {
+      //   console.log('[HOME] - (onInit) - DASHLETS PREFERENCES ', this.current_prjct.id_project.attributes.dashlets);
+      //   const dashlets = this.current_prjct.id_project.attributes.dashlets;
 
-        this.displayAnalyticsConvsGraph = dashlets.convsGraph
-        this.displayAnalyticsIndicators = dashlets.analyticsIndicators
-        this.displayConnectWhatsApp = dashlets.connectWhatsApp
-        this.displayCreateChatbot = dashlets.createChatbot
-        this.displayInviteTeammate = dashlets.inviteTeammate
-        this.displayCustomizeWidget = dashlets.customizeWidget
-        this.displayNewsFeed = dashlets.newsFeed
-      }
+      //   this.displayAnalyticsConvsGraph = dashlets.convsGraph
+      //   this.displayAnalyticsIndicators = dashlets.analyticsIndicators
+      //   this.displayConnectWhatsApp = dashlets.connectWhatsApp
+      //   this.displayCreateChatbot = dashlets.createChatbot
+      //   this.displayInviteTeammate = dashlets.inviteTeammate
+      //   this.displayCustomizeWidget = dashlets.customizeWidget
+      //   this.displayNewsFeed = dashlets.newsFeed
+      // }
 
 
-      const projectProfileData = this.current_selected_prjct.id_project.profile
+      const projectProfileData = this.current_prjct.id_project.profile
 
-      this.prjct_name = this.current_selected_prjct.id_project.name;
+      this.prjct_name = this.current_prjct.id_project.name;
       this.prjct_profile_name = projectProfileData.name;
       this.profile_name = projectProfileData.name;
-      this.prjct_trial_expired = this.current_selected_prjct.id_project.trialExpired;
+      this.prjct_trial_expired = this.current_prjct.id_project.trialExpired;
       this.prjct_profile_type = projectProfileData.type;
-      this.subscription_is_active = this.current_selected_prjct.id_project.isActiveSubscription;
+      this.subscription_is_active = this.current_prjct.id_project.isActiveSubscription;
       this.subscription_end_date = projectProfileData.subEnd;
       if (projectProfileData && projectProfileData.extra3) {
         console.log('[HOME] Find Current Project Among All extra3 ', projectProfileData.extra3)
@@ -566,13 +477,13 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
 
-      // console.log('[HOME] - Find Current Project Among All - current_selected_prjct - prjct_name ', this.prjct_name);
-      console.log('[HOME] - Find Current Project Among All - current_selected_prjct - prjct_profile_name ', this.prjct_profile_name);
-      // console.log('[HOME] - Find Current Project Among All - current_selected_prjct - profile_name ', this.profile_name);
-      // console.log('[HOME] - Find Current Project Among All - current_selected_prjct - prjct_trial_expired ', this.prjct_trial_expired);
-      // console.log('[HOME] - Find Current Project Among All - current_selected_prjct - prjct_profile_type ', this.prjct_profile_type);
-      // console.log('[HOME] - Find Current Project Among All - current_selected_prjct - subscription_is_active ', this.subscription_is_active);
-      // console.log('[HOME] - Find Current Project Among All - current_selected_prjct - subscription_end_date ', this.subscription_end_date);
+      // console.log('[HOME] - Find Current Project Among All - current_prjct - prjct_name ', this.prjct_name);
+      console.log('[HOME] - Find Current Project Among All - current_prjct - prjct_profile_name ', this.prjct_profile_name);
+      // console.log('[HOME] - Find Current Project Among All - current_prjct - profile_name ', this.profile_name);
+      // console.log('[HOME] - Find Current Project Among All - current_prjct - prjct_trial_expired ', this.prjct_trial_expired);
+      // console.log('[HOME] - Find Current Project Among All - current_prjct - prjct_profile_type ', this.prjct_profile_type);
+      // console.log('[HOME] - Find Current Project Among All - current_prjct - subscription_is_active ', this.subscription_is_active);
+      // console.log('[HOME] - Find Current Project Among All - current_prjct - subscription_end_date ', this.subscription_end_date);
 
       this.showSpinner = false;
 
@@ -591,7 +502,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           this.profile_name_for_segment = PLAN_NAME.B + " (trial)"
           this.prjct_profile_name = PLAN_NAME.B + " (trial)"
           this.auth.projectProfile(this.profile_name_for_segment)
-          this.current_selected_prjct['plan_badge_background_type'] = 'b_plan_badge'
+          this.current_prjct['plan_badge_background_type'] = 'b_plan_badge'
           // this.getProPlanTrialTranslation();
 
         } else {
@@ -600,7 +511,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           this.profile_name_for_segment = "Free"
           this.auth.projectProfile(this.profile_name_for_segment)
           this.prjct_profile_name = "Free plan";
-          this.current_selected_prjct['plan_badge_background_type'] = 'free_plan_badge'
+          this.current_prjct['plan_badge_background_type'] = 'free_plan_badge'
           // this.getPaidPlanTranslation(this.prjct_profile_name);
           this.logger.log('[HOME] Find Current Project Among All BRS-LANG 3 ', this.browserLang);
 
@@ -619,7 +530,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
             this.profile_name_for_segment = PLAN_NAME.A + '(' + this.appSumoProfile + ')'
             this.auth.projectProfile(this.profile_name_for_segment)
           }
-          this.current_selected_prjct['plan_badge_background_type'] = 'a_plan_badge'
+          this.current_prjct['plan_badge_background_type'] = 'a_plan_badge'
           // this.isVisibleANA = false;
 
 
@@ -633,13 +544,13 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
             this.profile_name_for_segment = PLAN_NAME.B + '(' + this.appSumoProfile + ')'
             this.auth.projectProfile(this.profile_name_for_segment)
           }
-          this.current_selected_prjct['plan_badge_background_type'] = 'b_plan_badge'
+          this.current_prjct['plan_badge_background_type'] = 'b_plan_badge'
 
         } else if (this.prjct_profile_name === PLAN_NAME.C) {
           this.prjct_profile_name = PLAN_NAME.C + ' plan'
           this.profile_name_for_segment = PLAN_NAME.C
           this.auth.projectProfile(this.profile_name_for_segment)
-          this.current_selected_prjct['plan_badge_background_type'] = 'c_plan_badge'
+          this.current_prjct['plan_badge_background_type'] = 'c_plan_badge'
           if (this.subscription_is_active) {
             // this.isVisibleANA = true;
           } else {
@@ -649,7 +560,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           this.prjct_profile_name = this.prjct_profile_name + ' plan (UNSUPPORTED)'
         }
       }
-      const projectCreatedAt = this.current_selected_prjct.id_project.createdAt
+      const projectCreatedAt = this.current_prjct.id_project.createdAt
       this.logger.log('[HOME] - Find Current Project Among All project CreatedAt', projectCreatedAt)
       const trialStarDate = moment(new Date(projectCreatedAt)).format("YYYY-MM-DD hh:mm:ss")
       this.logger.log('[HOME] - Find Current Project Among All project trialEndDate', trialStarDate)
@@ -662,9 +573,9 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       const daysDiffNowFromProjctCreated = currentTime.diff(projectCreatedAt, 'd');
       this.logger.log('[HOME] - Find Current Project Among All project daysDiffNowFromProjctCreated', daysDiffNowFromProjctCreated)
 
-      const hasEmittedTrialEnded = localStorage.getItem('dshbrd----' + this.current_selected_prjct.id_project._id)
-      this.logger.log('[HOME] - Find Current Project Among All hasEmittedTrialEnded  ', hasEmittedTrialEnded, '  for project id', this.current_selected_prjct.id_project._id)
-      this.logger.log('[HOME] - Find Current Project Among All - current_selected_prjct - prjct_profile_type 2', this.prjct_profile_type);
+      const hasEmittedTrialEnded = localStorage.getItem('dshbrd----' + this.current_prjct.id_project._id)
+      this.logger.log('[HOME] - Find Current Project Among All hasEmittedTrialEnded  ', hasEmittedTrialEnded, '  for project id', this.current_prjct.id_project._id)
+      this.logger.log('[HOME] - Find Current Project Among All - current_prjct - prjct_profile_type 2', this.prjct_profile_type);
       // if ((this.prjct_profile_type === 'free' && daysDiffNowFromProjctCreated >= 30) || (this.prjct_profile_type === 'payment' && daysDiffNowFromProjctCreated < 30)) {
       if ((this.prjct_trial_expired === true && hasEmittedTrialEnded === null) || (this.prjct_profile_type === 'payment' && hasEmittedTrialEnded === null)) {
         // console.log('[HOME] - Find Current Project Among All - BEFORE  Emitting TRIAL ENDED')
@@ -686,11 +597,11 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
                   "trial_plan_name": "Scale (trial) "
                 }, {
                   "context": {
-                    "groupId": this.current_selected_prjct.id_project._id
+                    "groupId": this.current_prjct.id_project._id
                   }
                 });
                 // this.updatedProjectTrialEndedEmitted(true)
-                localStorage.setItem('dshbrd----' + this.current_selected_prjct.id_project._id, 'hasEmittedTrialEnded')
+                localStorage.setItem('dshbrd----' + this.current_prjct.id_project._id, 'hasEmittedTrialEnded')
               } catch (err) {
                 this.logger.error('track Trial Started event error', err);
               }
@@ -729,6 +640,525 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
     });
   }
+
+  async getOnbordingPreferences(project_attributes) {
+    console.log('[HOME] - getOnbordingPreferences PREFERENCES  project_attributes', project_attributes);
+    // if (this.current_prjct &&
+    //   this.current_prjct.id_project &&
+    //   this.current_prjct.id_project.attributes &&
+    //   this.current_prjct.id_project.attributes.userPreferences) {
+
+    if (project_attributes && project_attributes.userHasReMovedWA) {
+      if (project_attributes.userHasReMovedWA === true) {
+        this.userHasUnistalledWa = true;
+        this.displayWhatsappAccountWizard = false;
+      }
+      else {
+        this.userHasUnistalledWa = false;
+        // if (project_attributes) {
+
+        //   const waWizardstep1 = project_attributes.wastep1;
+        //   const waWizardstep2 = project_attributes.wastep2;
+        //   const waWizardstep3 = project_attributes.wastep3;
+        //   if ((this.solution_channel_for_child === 'whatsapp_fb_messenger') &&
+        //     (this.solution_for_child === 'want_to_talk_to_customers') ||
+        //     (this.solution_for_child === 'want_to_automate_conversations')) {
+        //     if (waWizardstep1 === undefined && waWizardstep2 === undefined && waWizardstep3 === undefined) {
+        //       this.displayWhatsappAccountWizard = true;
+        //     }
+        //   }
+        // }
+      }
+    }
+
+    if (project_attributes && project_attributes.oneStepWizard && project_attributes.oneStepWizard.watsAppConnected) {
+      if (project_attributes.oneStepWizard.watsAppConnected === true) {
+        this.whatsAppIsConnected = true;
+        this.displayWhatsappAccountWizard = false;
+      }
+      else {
+        this.whatsAppIsConnected = false;
+      }
+    }
+
+
+
+    this.solution = project_attributes.userPreferences.solution
+    this.solution_channel = project_attributes.userPreferences.solution_channel
+    this.use_case = project_attributes.userPreferences.use_case
+
+    console.log('[HOME] - USER PREFERENCES getOnbordingPreferences solution_channel', this.solution_channel);
+    console.log('[HOME] - USER PREFERENCES getOnbordingPreferences use_case', this.use_case);
+    console.log('[HOME] - USER PREFERENCES getOnbordingPreferences solution', this.solution);
+
+    this.solution_for_child = this.solution;
+    this.solution_channel_for_child = this.solution_channel;
+    this.use_case_for_child = this.use_case;
+
+    if (this.solution === undefined && this.solution_channel === undefined && this.use_case === undefined) {
+
+      this.child_list_order = [
+        { pos: 1, type: 'child1' },
+        { pos: 2, type: 'child2' },
+        { pos: 3, type: 'child5' },
+        { pos: 4, type: 'child7' },
+        { pos: 5, type: 'child6' },
+        { pos: 6, type: 'child8' },
+        { pos: 7, type: 'child3' },
+        { pos: 8, type: 'child4' }
+      ]
+      
+      this.displayAnalyticsConvsGraph = false;
+      await this.switchAnalyticsConvsGraph(this.displayAnalyticsConvsGraph);
+
+      this.displayAnalyticsIndicators = false;
+      await this.switchAnalyticsIndicators(this.displayAnalyticsIndicators);
+
+      this.displayWhatsappAccountWizard = false;
+      this.displayConnectWhatsApp = false;
+      await this.switchConnectWhatsApp(this.displayConnectWhatsApp);
+
+      this.displayCreateChatbot = true;
+      await this.switchCreateChatbot(this.displayCreateChatbot)
+
+      this.displayInviteTeammate = true;
+      await this.switchInviteTeammate(this.displayInviteTeammate)
+
+      this.displayCustomizeWidget = false;
+      await this.switchCustomizeWidget( this.displayCustomizeWidget);
+
+      this.displayKnowledgeBase = true;
+      await this.switchyKnowledgeBase(this.displayKnowledgeBase);
+     
+     
+
+      console.log('[HOME] - YES ATTRIBUTES - NO USER PREFERENCES');
+    }
+
+
+    // ----------------------------------------------
+    // USECASE 1
+    // ----------------------------------------------
+    if (this.solution === 'want_to_automate_conversations' &&
+      this.solution_channel === 'web_mobile' &&
+      this.use_case === "solve_customer_problems") {
+
+      console.log('[HOME] USECASE 1')
+
+      this.child_list_order = [
+        { pos: 1, type: 'child1' },
+        { pos: 2, type: 'child2' },
+        { pos: 3, type: 'child5' },
+        { pos: 4, type: 'child7' },
+        { pos: 5, type: 'child6' },
+        { pos: 6, type: 'child8' },
+        { pos: 7, type: 'child3' },
+        { pos: 8, type: 'child4' }
+      ]
+
+      this.displayAnalyticsConvsGraph = false;
+      await this.switchAnalyticsConvsGraph(this.displayAnalyticsConvsGraph);
+
+      this.displayAnalyticsIndicators = false;
+      await this.switchAnalyticsIndicators(this.displayAnalyticsIndicators);
+
+      this.displayWhatsappAccountWizard = false;
+      this.displayConnectWhatsApp = false;
+      await this.switchConnectWhatsApp(this.displayConnectWhatsApp);
+
+      this.displayCreateChatbot = true;
+      await this.switchCreateChatbot(this.displayCreateChatbot)
+
+      this.displayInviteTeammate = true
+      await this.switchInviteTeammate(this.displayInviteTeammate)
+
+      this.displayKnowledgeBase = true;
+      await this.switchyKnowledgeBase(this.displayKnowledgeBase);
+
+      this.displayCustomizeWidget = true;
+      await this.switchCustomizeWidget(this.displayCustomizeWidget)
+
+
+    }
+
+    // ----------------------------------------------
+    // USECASE 2
+    // ----------------------------------------------
+    if (this.solution === 'want_to_automate_conversations' &&
+      this.solution_channel === 'web_mobile' &&
+      this.use_case === "increase_online_sales") {
+      console.log('[HOME] USECASE 2')
+
+      this.child_list_order = [
+        { pos: 1, type: 'child1' },
+        { pos: 2, type: 'child2' },
+        { pos: 3, type: 'child5' },
+        { pos: 4, type: 'child7' },
+        { pos: 5, type: 'child6' },
+        { pos: 6, type: 'child8' },
+        { pos: 7, type: 'child3' },
+        { pos: 8, type: 'child4' }
+      ]
+
+      this.displayAnalyticsConvsGraph = false;
+      await this.switchAnalyticsConvsGraph(this.displayAnalyticsConvsGraph);
+
+      this.displayAnalyticsIndicators = false;
+      await this.switchAnalyticsIndicators(this.displayAnalyticsIndicators);
+
+      this.displayWhatsappAccountWizard = false;
+      this.displayConnectWhatsApp = false;
+      await this.switchConnectWhatsApp(this.displayConnectWhatsApp);
+
+      this.displayCreateChatbot = true;
+      await this.switchCreateChatbot(this.displayCreateChatbot);
+
+      this.displayInviteTeammate = true
+      await this.switchInviteTeammate(this.displayInviteTeammate)
+
+      this.displayKnowledgeBase = false;
+      await this.switchyKnowledgeBase(this.displayKnowledgeBase);
+
+      this.displayCustomizeWidget = true;
+      await this.switchCustomizeWidget(this.displayCustomizeWidget)
+
+
+    }
+    // ----------------------------------------------
+    // USECASE 3
+    // ----------------------------------------------
+    if (this.solution === 'want_to_automate_conversations' &&
+      this.solution_channel === 'whatsapp_fb_messenger' &&
+      this.use_case === 'solve_customer_problems') {
+      console.log('[HOME] USECASE 3')
+
+      this.child_list_order = [
+        { pos: 1, type: 'child1' },
+        { pos: 2, type: 'child2' },
+        { pos: 3, type: 'child3' },
+        { pos: 4, type: 'child4' },
+        { pos: 5, type: 'child5' },
+        { pos: 6, type: 'child7' },
+        { pos: 7, type: 'child6' },
+        { pos: 8, type: 'child8' }
+      ]
+      console.log('[HOME] USECASE 3 userHasUnistalledWa', this.userHasUnistalledWa, 'whatsAppIsConnected', this.whatsAppIsConnected)
+
+      this.displayAnalyticsConvsGraph = false;
+      await this.switchAnalyticsConvsGraph(this.displayAnalyticsConvsGraph);
+
+      this.displayAnalyticsIndicators = false;
+      await this.switchAnalyticsIndicators(this.displayAnalyticsIndicators);
+
+      if (!this.userHasUnistalledWa && !this.whatsAppIsConnected) {
+        this.displayWhatsappAccountWizard = true;
+        console.log('[HOME] USECASE 3 displayWhatsappAccountWizard ', this.displayWhatsappAccountWizard)
+      }
+
+      this.displayConnectWhatsApp = true;
+      await this.switchConnectWhatsApp(this.displayConnectWhatsApp);
+
+      this.displayCreateChatbot = true;
+      await this.switchCreateChatbot(this.displayCreateChatbot);
+
+      this.displayInviteTeammate = true
+      await this.switchInviteTeammate(this.displayInviteTeammate)
+
+      this.displayKnowledgeBase = true;
+      await this.switchyKnowledgeBase(this.displayKnowledgeBase);
+
+      this.displayCustomizeWidget = false;
+      await this.switchCustomizeWidget(this.displayCustomizeWidget)
+
+      this.manageWAWizardSteps(project_attributes, 'USECASE 3')
+    }
+
+    // ----------------------------------------------
+    // USECASE 4
+    // ----------------------------------------------
+    if (this.solution === 'want_to_automate_conversations' &&
+      this.solution_channel === 'whatsapp_fb_messenger' &&
+      this.use_case === 'increase_online_sales') {
+      console.log('[HOME] USECASE 4')
+
+      this.child_list_order = [
+        { pos: 1, type: 'child1' },
+        { pos: 2, type: 'child2' },
+        { pos: 3, type: 'child3' },
+        { pos: 4, type: 'child4' },
+        { pos: 5, type: 'child5' },
+        { pos: 6, type: 'child6' },
+        { pos: 7, type: 'child7' },
+        { pos: 8, type: 'child8' }
+      ]
+
+      console.log('[HOME] USECASE 4 userHasUnistalledWa', this.userHasUnistalledWa, 'whatsAppIsConnected', this.whatsAppIsConnected)
+
+      this.displayAnalyticsConvsGraph = false;
+      await this.switchAnalyticsConvsGraph(this.displayAnalyticsConvsGraph);
+
+      this.displayAnalyticsIndicators = false;
+      await this.switchAnalyticsIndicators(this.displayAnalyticsIndicators);
+
+      if (!this.userHasUnistalledWa && !this.whatsAppIsConnected) {
+        this.displayWhatsappAccountWizard = true;
+        console.log('[HOME] USECASE 4 displayWhatsappAccountWizard ', this.displayWhatsappAccountWizard)
+      }
+      this.displayConnectWhatsApp = true;
+      await this.switchConnectWhatsApp(this.displayConnectWhatsApp);
+
+      this.displayCreateChatbot = true;
+      await this.switchCreateChatbot(this.displayCreateChatbot);
+
+      this.displayInviteTeammate = true;
+      await this.switchInviteTeammate(this.displayInviteTeammate);
+
+      this.displayKnowledgeBase = false;
+      await this.switchyKnowledgeBase(this.displayKnowledgeBase);
+
+      this.displayCustomizeWidget = false;
+      await this.switchCustomizeWidget(this.displayCustomizeWidget)
+
+
+      this.manageWAWizardSteps(project_attributes, 'USECASE 4')
+
+    }
+
+    // ----------------------------------------------
+    // USECASE 5
+    // ----------------------------------------------
+    if (this.solution === 'want_to_talk_to_customers' &&
+      this.solution_channel === 'web_mobile' &&
+      this.use_case === 'solve_customer_problems') {
+      console.log('[HOME] USECASE 5')
+
+      this.child_list_order = [
+        { pos: 1, type: 'child1' },
+        { pos: 2, type: 'child2' },
+        { pos: 3, type: 'child6' },
+        { pos: 4, type: 'child8' },
+        { pos: 5, type: 'child5' },
+        { pos: 6, type: 'child7' },
+        { pos: 7, type: 'child3' },
+        { pos: 8, type: 'child4' }
+      ]
+
+      this.displayAnalyticsConvsGraph = false;
+      await this.switchAnalyticsConvsGraph(this.displayAnalyticsConvsGraph);
+
+      this.displayAnalyticsIndicators = false;
+      await this.switchAnalyticsIndicators(this.displayAnalyticsIndicators);
+
+      this.displayWhatsappAccountWizard = false;
+      this.displayConnectWhatsApp = false;
+      await this.switchConnectWhatsApp(this.displayConnectWhatsApp);
+
+      this.displayCreateChatbot = true;
+      await this.switchCreateChatbot(this.displayCreateChatbot);
+
+      this.displayInviteTeammate = true;
+      await this.switchInviteTeammate(this.displayInviteTeammate);
+
+      this.displayKnowledgeBase = true;
+      await this.switchyKnowledgeBase(this.displayKnowledgeBase);
+
+      this.displayCustomizeWidget = true;
+      await this.switchCustomizeWidget(this.displayCustomizeWidget)
+
+    }
+
+    // ----------------------------------------------
+    // USECASE 6
+    // ----------------------------------------------
+    if (this.solution === 'want_to_talk_to_customers' &&
+      this.solution_channel === 'web_mobile' &&
+      this.use_case === 'increase_online_sales') {
+      console.log('[HOME] USECASE 6')
+
+      this.child_list_order = [
+        { pos: 1, type: 'child1' },
+        { pos: 2, type: 'child2' },
+        { pos: 3, type: 'child6' },
+        { pos: 4, type: 'child8' },
+        { pos: 5, type: 'child5' },
+        { pos: 6, type: 'child7' },
+        { pos: 7, type: 'child3' },
+        { pos: 8, type: 'child4' }
+      ]
+
+      this.displayAnalyticsConvsGraph = false;
+      this.switchAnalyticsConvsGraph(this.displayAnalyticsConvsGraph);
+
+      this.displayAnalyticsIndicators = false;
+      this.switchAnalyticsIndicators(this.displayAnalyticsIndicators);
+
+      this.displayWhatsappAccountWizard = false;
+      this.displayConnectWhatsApp = false;
+      await this.switchConnectWhatsApp(this.displayConnectWhatsApp);
+
+      this.displayCreateChatbot = true;
+      await this.switchCreateChatbot(this.displayCreateChatbot);
+
+      this.displayInviteTeammate = true;
+      await this.switchInviteTeammate(this.displayInviteTeammate)
+
+      this.displayKnowledgeBase = false;
+      await this.switchyKnowledgeBase(this.displayKnowledgeBase);
+
+      this.displayCustomizeWidget = true;
+      await this.switchCustomizeWidget(this.displayCustomizeWidget)
+
+    }
+
+    // ----------------------------------------------
+    // USECASE 7
+    // ----------------------------------------------
+    if (this.solution === 'want_to_talk_to_customers' &&
+      this.solution_channel === 'whatsapp_fb_messenger' &&
+      this.use_case === 'solve_customer_problems') {
+      console.log('[HOME] USECASE 7')
+
+      this.child_list_order = [
+        { pos: 1, type: 'child1' },
+        { pos: 2, type: 'child2' },
+        { pos: 3, type: 'child3' },
+        { pos: 4, type: 'child4' },
+        { pos: 5, type: 'child6' },
+        { pos: 6, type: 'child5' },
+        { pos: 7, type: 'child7' },
+        { pos: 8, type: 'child8' }
+      ]
+
+      this.displayAnalyticsConvsGraph = false;
+      this.switchAnalyticsConvsGraph(this.displayAnalyticsConvsGraph);
+
+      this.displayAnalyticsIndicators = false;
+      this.switchAnalyticsIndicators(this.displayAnalyticsIndicators);
+     
+      if (!this.userHasUnistalledWa && !this.whatsAppIsConnected) {
+        this.displayWhatsappAccountWizard = true;
+      }
+
+      this.displayConnectWhatsApp = true;
+      await this.switchConnectWhatsApp(this.displayConnectWhatsApp);
+
+      this.displayCreateChatbot = true
+      await this.switchCreateChatbot(this.displayCreateChatbot)
+
+      this.displayInviteTeammate = true
+      await this.switchInviteTeammate(this.displayInviteTeammate)
+
+      this.displayKnowledgeBase = true;
+      await this.switchyKnowledgeBase(this.displayKnowledgeBase);
+
+      this.displayCustomizeWidget = false;
+      await this.switchCustomizeWidget(this.displayCustomizeWidget)
+
+
+      this.manageWAWizardSteps(project_attributes, 'USECASE 7')
+    }
+
+
+    // ----------------------------------------------
+    // USECASE 8
+    // ----------------------------------------------
+    if (this.solution === 'want_to_talk_to_customers' &&
+      this.solution_channel === 'whatsapp_fb_messenger' &&
+      this.use_case === 'increase_online_sales') {
+      console.log('[HOME] USECASE 8')
+
+      this.child_list_order = [
+        { pos: 1, type: 'child1' },
+        { pos: 2, type: 'child2' },
+        { pos: 3, type: 'child3' },
+        { pos: 4, type: 'child4' },
+        { pos: 5, type: 'child6' },
+        { pos: 6, type: 'child5' },
+        { pos: 7, type: 'child7' },
+        { pos: 8, type: 'child8' }
+      ]
+
+      this.displayAnalyticsConvsGraph = false;
+      this.switchAnalyticsConvsGraph(this.displayAnalyticsConvsGraph);
+
+      this.displayAnalyticsIndicators = false;
+      this.switchAnalyticsIndicators(this.displayAnalyticsIndicators);
+
+      if (!this.userHasUnistalledWa && !this.whatsAppIsConnected) {
+        this.displayWhatsappAccountWizard = true;
+      }
+      this.displayConnectWhatsApp = true;
+      await this.switchConnectWhatsApp(true);
+
+      this.displayCreateChatbot = true
+      await this.switchCreateChatbot(this.displayCreateChatbot)
+
+      this.displayInviteTeammate = true
+      await this.switchInviteTeammate(this.displayInviteTeammate)
+
+      this.displayKnowledgeBase = false;
+      await this.switchyKnowledgeBase(false);
+
+      this.displayCustomizeWidget = false;
+      await this.switchCustomizeWidget(false)
+
+      this.manageWAWizardSteps(project_attributes, 'USECASE 8')
+
+
+
+    }
+  }
+
+  manageWAWizardSteps(project_attributes: any, calledby: string) {
+
+    const waWizardstep1 = project_attributes.wastep1;
+    const waWizardstep2 = project_attributes.wastep2;
+    const waWizardstep3 = project_attributes.wastep3;
+
+    console.log('[HOME] ', calledby, 'MANAGE WA WIZARD waWizardstep1', waWizardstep1)
+    console.log('[HOME] ', calledby, 'MANAGE WA WIZARD waWizardstep2', waWizardstep2)
+    console.log('[HOME] ', calledby, 'MANAGE WA WIZARD waWizardstep3', waWizardstep3)
+    if (waWizardstep1 === false || waWizardstep1 === undefined) {
+      this.chatbotCreated = false
+    } else if (waWizardstep1 === true) {
+      this.chatbotCreated = true
+    }
+
+    if (waWizardstep2 === false || waWizardstep2 === undefined) {
+      this.testBotOnWA = false
+
+    } else if (waWizardstep2 === true) {
+      this.testBotOnWA = true
+    }
+
+    if (waWizardstep3 === false || waWizardstep3 === undefined) {
+      this.whatsAppIsConnected = false
+    } else if (waWizardstep3 === true) {
+      this.whatsAppIsConnected = true
+    }
+    console.log('[HOME] ', calledby, 'MANAGE WA WIZARD solution_channel ', this.solution_channel_for_child, ' solution ', this.solution_for_child);
+    console.log('[HOME] ', calledby, 'MANAGE WA WIZARD chatbotCreated ', this.chatbotCreated);
+    console.log('[HOME] ', calledby, 'MANAGE WA WIZARD testBotOnWA ', this.testBotOnWA);
+    console.log('[HOME] ', calledby, 'MANAGE WA WIZARD whatsAppIsConnected ', this.whatsAppIsConnected);
+
+
+    if (waWizardstep1 === true && waWizardstep2 === true && waWizardstep3 === true) {
+      this.displayWhatsappAccountWizard = false;
+      this.whatsAppIsConnected = true;
+    } else if (waWizardstep1 === true && waWizardstep2 === true && waWizardstep3 === false) {
+      this.whatsAppIsConnected = false;
+      if (project_attributes.wizardCompleted === true) {
+        this.displayWhatsappAccountWizard = false;
+      }
+    }
+  }
+
+
+
+
+
+
+
 
   init() {
     // console.log("[HOME] > CALLING INIT")
@@ -2541,7 +2971,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     // window.open(url, '_blank');
 
     // --- new
-    localStorage.setItem('last_project', JSON.stringify(this.current_selected_prjct))
+    localStorage.setItem('last_project', JSON.stringify(this.current_prjct))
     let baseUrl = this.CHAT_BASE_URL + '#/conversation-detail/'
     let url = baseUrl
     const myWindow = window.open(url, '_self', 'Tiledesk - Open Source Live Chat');
@@ -3165,53 +3595,65 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   // new dashbord
-  switchAnalyticsConvsGraph(event) {
+  async switchAnalyticsConvsGraph(event) {
     console.log('[HOME] SWITCH ANALYTICS OVERVIEW event ', event)
     this.displayAnalyticsConvsGraph = event
-    this.updatesDashletsPreferences()
+    await this.updatesDashletsPreferences()
   }
 
-  switchAnalyticsIndicators(event) {
+  async switchAnalyticsIndicators(event) {
     console.log('[HOME] SWITCH ANALYTICS OVERVIEW event ', event)
     this.displayAnalyticsIndicators = event
-    this.updatesDashletsPreferences()
+    await this.updatesDashletsPreferences()
   }
 
-  switchConnectWhatsApp(event) {
+  async switchConnectWhatsApp(event) {
     console.log('[HOME] SWITCH CNNECT WA event ', event)
     this.displayConnectWhatsApp = event;
-    this.updatesDashletsPreferences()
+    await this.updatesDashletsPreferences()
   }
 
-  switchCreateChatbot(event) {
+  async switchCreateChatbot(event) {
     console.log('[HOME] SWITCH CREATE CHATBOT event ', event)
     this.displayCreateChatbot = event;
-    this.updatesDashletsPreferences()
+    await this.updatesDashletsPreferences()
   }
 
-  switchInviteTeammate(event) {
+  async switchInviteTeammate(event) {
     console.log('[HOME] SWITCH INVITE TEAMMATES event ', event)
     this.displayInviteTeammate = event;
-    this.updatesDashletsPreferences()
+    await this.updatesDashletsPreferences()
   }
-  switchCustomizeWidget(event) {
+
+  async switchyKnowledgeBase(event) {
+    console.log('[HOME] SWITCH KNOWLEDGE BASE event ', event)
+    this.displayKnowledgeBase = event;
+    await this.updatesDashletsPreferences()
+  }
+
+  async switchCustomizeWidget(event) {
     console.log('[HOME] SWITCH CUSTOMIZE WIDGET event ', event)
     this.displayCustomizeWidget = event;
-    this.updatesDashletsPreferences()
+    await this.updatesDashletsPreferences()
   }
 
-  switchNewsFeed(event) {
+  async switchNewsFeed(event) {
     console.log('[HOME] SWITCH NEWS FEED event ', event)
     this.displayNewsFeed = event;
-    this.updatesDashletsPreferences()
+    await this.updatesDashletsPreferences()
   }
 
-  updatesDashletsPreferences() {
+
+
+  async _updatesDashletsPreferences() {
+    // conast dashletArray =[ {'convsGraph': true, 'analyticsIndicators': true, 'connectWhatsApp': null, 'createChatbot': null, 'knowledgeBase': null, 'inviteTeammate': null,  'customizeWidget': null, 'newsFeed': true}]
+    console.log('[HOME] - updatesDashletsPreferences - displayCustomizeWidget: ', this.displayCustomizeWidget);
     this.projectService.updateDashletsPreferences(
       this.displayAnalyticsConvsGraph,
       this.displayAnalyticsIndicators,
       this.displayConnectWhatsApp,
       this.displayCreateChatbot,
+      this.displayKnowledgeBase,
       this.displayInviteTeammate,
       this.displayCustomizeWidget,
       this.displayNewsFeed)
@@ -3222,9 +3664,31 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         console.error('[HOME] - UPDATE PRJCT WITH DASHLET PREFERENCES - ERROR ', error)
       }, () => {
         console.log('[HOME] - UPDATE PRJCT WITH DASHLET PREFERENCES * COMPLETE *')
+        return
       });
+
+
   }
 
+  async updatesDashletsPreferences() {
+    // const dashletArray =[ {'convsGraph': true, 'analyticsIndicators': true, 'connectWhatsApp': null, 'createChatbot': null, 'knowledgeBase': null, 'inviteTeammate': null,  'customizeWidget': null, 'newsFeed': true}]
+    console.log('[HOME] - calling updatesDashletsPreferences - displayCustomizeWidget');
+    return await this.projectService.updateDashletsPreferences(
+      this.displayAnalyticsConvsGraph,
+      this.displayAnalyticsIndicators,
+      this.displayConnectWhatsApp,
+      this.displayCreateChatbot,
+      this.displayKnowledgeBase,
+      this.displayInviteTeammate,
+      this.displayCustomizeWidget,
+      this.displayNewsFeed)
+      .toPromise().then((res) => {
+        console.log('[HOME] - UPDATE PRJCT WITH DASHLET PREFERENCES - RES ', res);
+        return;
+      }).catch((err) => {
+        console.log('[HOME] - UPDATE PRJCT WITH DASHLET PREFERENCES - err ', err);
+      })
+  }
 
 
 

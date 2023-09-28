@@ -37,6 +37,19 @@ export class HomeCreateTeammateComponent implements OnInit {
     console.log('[HOME-CREATE-TEAMMATE] OnInit  ')
     this.getCurrentProjectAndPrjctTeammates();
     // this.getGroupsByProjectId();
+    this.getUserRole()
+  }
+
+  getUserRole() {
+    this.usersService.project_user_role_bs
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((userRole) => {
+
+        console.log('[HOME-CREATE-TEAMMATE] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
+        this.USER_ROLE = userRole;
+      })
   }
 
 

@@ -960,8 +960,9 @@ export class ProjectService {
     displayAnalyticsIndicators: boolean,
     displayConnectWhatsApp: boolean,
     displayCreateChatbot: boolean,
+    displayKnowledgeBase: boolean,
     displayInviteTeammate: boolean,
-    displayCustomizeWidget: boolean = true,
+    displayCustomizeWidget: boolean,
     displayNewsFeed: boolean) {
     const httpOptions = {
       headers: new HttpHeaders({
@@ -980,6 +981,7 @@ export class ProjectService {
         analyticsIndicators: displayAnalyticsIndicators,
         connectWhatsApp: displayConnectWhatsApp,
         createChatbot: displayCreateChatbot,
+        knowledgeBase: displayKnowledgeBase,
         inviteTeammate: displayInviteTeammate,
         customizeWidget: displayCustomizeWidget,
         newsFeed: displayNewsFeed

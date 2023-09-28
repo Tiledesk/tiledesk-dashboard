@@ -153,9 +153,9 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
   }
 
   toggleTabCreateImport(tabcreate ) {
-  //  console.log("[BOT-CREATE] toggleTabCreateImport tabcreate", tabcreate);
+  //  this.logger.log("[BOT-CREATE] toggleTabCreateImport tabcreate", tabcreate);
    this.HAS_SELECTED_CREATE_BOT = tabcreate
-  //  console.log("[BOT-CREATE] toggleTabCreateImport HAS_SELECTED_CREATE_BOT",  this.HAS_SELECTED_CREATE_BOT );
+  //  this.logger.log("[BOT-CREATE] toggleTabCreateImport HAS_SELECTED_CREATE_BOT",  this.HAS_SELECTED_CREATE_BOT );
   }
 
    // --------------------------------------------------------------------------
@@ -165,7 +165,7 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
 
     this.logger.log('[TILEBOT] - fileChangeUploadChatbotFromJSON $event ', event);
     // let fileJsonToUpload = ''
-    // // console.log('[TILEBOT] - fileChangeUploadChatbotFromJSON $event  target', event.target);
+    // this.logger.log('[TILEBOT] - fileChangeUploadChatbotFromJSON $event  target', event.target);
     // const selectedFile = event.target.files[0];
     // const fileReader = new FileReader();
     // fileReader.readAsText(selectedFile, "UTF-8");
@@ -207,7 +207,7 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
   getBrowserVersion() {
     this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
       this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
-      //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+      //  this.logger.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
     })
   }
 
@@ -238,7 +238,7 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
     this.route.params.subscribe((params) => {
       this.botType = params.type;
       this.logger.log('[BOT-CREATE] --->  PARAMS', params);
-      //  console.log('[BOT-CREATE] --->  PARAMS botType', this.botType);
+      //  this.logger.log('[BOT-CREATE] --->  PARAMS botType', this.botType);
 
       this.template = params.template;
       if (this.botType === 'native') {
@@ -442,7 +442,7 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
     // ------------------------------------------------------------------------------------------------------------------------------
     this.faqKbService.createFaqKb(this.faqKbName, this.faqKbUrl, _botType, this.bot_description, this.language, this.template)
       .subscribe((faqKb) => {
-        // console.log('[BOT-CREATE] CREATE FAQKB - RES ', faqKb);
+        // this.logger.log('[BOT-CREATE] CREATE FAQKB - RES ', faqKb);
 
         if (faqKb) {
           this.newBot_name = faqKb['name'];
@@ -554,7 +554,7 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
   }
 
   goTo_EditBot() {
-    // console.log('[BOT-CREATE] goTo_EditBot') 
+    this.logger.log('[BOT-CREATE] goTo_EditBot') 
     if (this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT === false) {
       let bot_type = ''
       if (this.botType === 'resolution') {
@@ -572,6 +572,7 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
       // this.router.navigate(['project/' + this.project._id + '/bots/' + this.newBot_Id + "/" + this.botType]);
 
     } else {
+      this.logger.log('[BOT-CREATE] goTo_EditBot PRESENTS_MODAL_ATTACH_BOT_TO_DEPT ', this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT) 
       this.present_modal_attacch_bot_to_dept()
     }
   }
@@ -583,7 +584,7 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
   }
 
   onCloseModalAttacchBotToDept() {
-    // console.log('[BOT-CREATE] onCloseModalAttacchBotToDept')
+    // this.logger.log('[BOT-CREATE] onCloseModalAttacchBotToDept')
     let bot_type = ''
     if (this.botType === 'resolution') {
       bot_type = 'native'
