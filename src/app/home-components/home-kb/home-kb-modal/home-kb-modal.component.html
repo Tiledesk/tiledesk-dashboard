@@ -1,11 +1,20 @@
-<h1 mat-dialog-title> {{ 'KbPage.AddKb' | translate }}</h1>
+<h1 mat-dialog-title> 
+    <!-- {{ 'KbPage.AddKb' | translate }} -->
+    Add Knowledge Base
+</h1>
 <div mat-dialog-content>
 
     <div class="info-container">
         <i class="material-icons-outlined info-icon">help_outline</i>
         <div class="info-text">
-            <p>{{ 'KbPage.AddKbInfoFirstText' | translate }}</p>
-            <p>{{ 'KbPage.AddKbInfoSecondText' | translate }}</p>
+            <p>
+                <!-- {{ 'KbPage.AddKbInfoFirstText' | translate }} -->
+                Set a valid URL for the Knowledge Base and your GPT key.
+            </p>
+            <p>
+                <!-- {{ 'KbPage.AddKbInfoSecondText' | translate }} -->
+                Note: you can add a maximum of 3 Knwoledge Bases.
+            </p>
         </div>
     </div>
     <!-- [ngClass]="{'invalid-url': !isValidURL}" -->
@@ -25,11 +34,13 @@
 </div>
 <div mat-dialog-actions style="justify-content: center;">
     <button class="mat-dialog-close-btn" mat-button (click)="onNoClick()">
-        {{ "Cancel" | translate }}
+        <!-- {{ "Cancel" | translate }} -->
+        Cancel
     </button>
     <!-- [mat-dialog-close]="newKb.url" -->
     <button [disabled]="newKb.url.length === 0 || !isValidURL" class="mat-dialog-ok-btn" mat-button
         (click)="onOkPresssed(newKb)" cdkFocusInitial>
-        {{ 'KbPage.Add' | translate }}
+        <!-- {{ 'KbPage.Add' | translate }} -->
+        Add Knowledge Base
     </button>
 </div>
