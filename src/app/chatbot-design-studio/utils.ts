@@ -435,3 +435,15 @@ export function replaceItemInArrayForKey(key, array, item) {
 export function checkInternalIntent(intent: Intent): boolean{
     return intent.intent_display_name === TYPE_INTENT_NAME.DISPLAY_NAME_START ||  intent.intent_display_name === TYPE_INTENT_NAME.DISPLAY_NAME_DEFAULT_FALLBACK ? true: false
 }
+
+
+export function centerStageOnCenterPosition(listOfIntents: Intent[]){
+    // let minX = listOfIntents.reduce((prev, curr)=> { return prev.attributes.position.x < curr.attributes.position.x ? prev : curr})
+    let minY = listOfIntents.reduce((prev, curr)=> { return prev.attributes.position.y < curr.attributes.position.y ? prev : curr})
+    // let maxX = listOfIntents.reduce((prev, curr)=> { return prev.attributes.position.x > curr.attributes.position.x ? prev : curr})
+    // let maxY = listOfIntents.reduce((prev, curr)=> { return prev.attributes.position.y > curr.attributes.position.y ? prev : curr})
+    // console.log('minnnnnnnn x', minX)
+    // console.log('maxxxxxxxx x', maxX)
+    console.log('minnnnnnnn y', minY)
+    // console.log('minnnnnnnn y', maxY)
+}
