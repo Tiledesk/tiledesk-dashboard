@@ -387,7 +387,7 @@ export function goToCDSVersion(router: any, chatbot: Chatbot, project_id, redire
     let dateLimit = new Date('2023-09-26T00:00:00')
     if(chatBotDate > dateLimit){
         let urlCDS_v2 = `${redirectBaseUrl}dashboard/#/project/${project_id}/cds/${chatbot._id}/intent/0`
-        window.open(urlCDS_v2, '_blank')
+        window.open(urlCDS_v2, '_self')
     } else {
         router.navigate(['project/' + project_id + '/cds/',chatbot._id, 'intent', '0']);
     }
