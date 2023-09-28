@@ -83,11 +83,13 @@ export class OpenaiService {
   askGpt(data) {
     const httpOptions = {
       headers: new HttpHeaders({
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN // remove it for pugliai endpoint
       })
     }
 
-    const url = this.GPT_API_URL + "/qa";
+    // const url = this.GPT_API_URL + "/qa";
+    const url = this.SERVER_BASE_PATH + this.project_id + "/kbsettings/qa";
     this.logger.debug('[OPENAI.SERVICE] - ask gpt URL: ', url);
 
     return this.httpClient.post(url, data, httpOptions);
@@ -96,11 +98,13 @@ export class OpenaiService {
   startScraping(data) {
     const httpOptions = {
       headers: new HttpHeaders({
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN // remove it for pugliai endpoint
       })
     }
 
-    const url = this.GPT_API_URL + "/scrape";
+    // const url = this.GPT_API_URL + "/scrape";
+    const url = this.SERVER_BASE_PATH + this.project_id + "/kbsettings/startscrape";
     this.logger.debug('[OPENAI.SERVICE] - scraping URL: ', url);
 
     return this.httpClient.post(url, data, httpOptions);
@@ -110,11 +114,13 @@ export class OpenaiService {
   checkScrapingStatus(data) {
     const httpOptions = {
       headers: new HttpHeaders({
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN // remove it for pugliai endpoint
       })
     }
 
-    const url = this.GPT_API_URL + "/scrape/status";
+    // const url = this.GPT_API_URL + "/scrape/status";
+    const url = this.SERVER_BASE_PATH + this.project_id + "/kbsettings/checkstatus";
     this.logger.debug('[OPENAI.SERVICE] - check scraping URL: ', url);
 
     return this.httpClient.post(url, data, httpOptions);
