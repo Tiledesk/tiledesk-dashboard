@@ -161,7 +161,7 @@
                     <tr *ngFor="let faqkb of faqkbList; let i = index">
                       <!--  style="width: 1%; white-space: nowrap;" -->
                       <td style="white-space: nowrap; width: 1%; cursor: pointer;">
-                        <span class="tool_tip" (click)='goToBotDtls(faqkb?._id, faqkb?.type,  faqkb?.name)'>
+                        <span class="tool_tip" (click)='goToBotDtls(faqkb)'>
                           <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE" class="bot--img"
                             src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{faqkb?._id}}%2Fphoto.jpg?alt=media"
                             onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
@@ -276,7 +276,7 @@
                       <!-- ----------------------------------------------------- -->
                       <!-- Bot name & truncated description -->
                       <!-- ----------------------------------------------------- -->
-                      <td (click)='goToBotDtls(faqkb?._id, faqkb?.type, faqkb?.name )' style="cursor: pointer;">
+                      <td (click)='goToBotDtls(faqkb)' style="cursor: pointer;">
                         <span style="font-weight:400; cursor: pointer;font-size:13px">
                           {{ faqkb?.name }}
                         </span>
@@ -312,7 +312,7 @@
                         <!-- rel="tooltip" title="{{ 'BotsPage.tooltipEditBot' | translate }}" -->
                         <button type="button" 
                           class="btn btn-primary btn-simple btn-xs"
-                          (click)='goToBotDtls(faqkb?._id, faqkb?.type,  faqkb?.name)'
+                          (click)='goToBotDtls(faqkb)'
                           matTooltipClass="custom-mat-tooltip"
                           matTooltip="{{ 'BotsPage.tooltipEditBot' | translate }}" 
                           #tooltip="matTooltip" 

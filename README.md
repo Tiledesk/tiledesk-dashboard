@@ -125,7 +125,7 @@ export  const environment = {
 #### dashboard-config.json
 ```typescript
 
-widgetUrl: "https://<YOUR_CHAT21_WEB_WIDGET_URL>:4200/launch.js",
+WIDGET_BASE_URL: "https://<YOUR_CHAT21_WEB_WIDGET_URL>:4200/launch.js",
 
 botcredendialsURL: "https://<YOUR_BOT_CREDENTIALS_URL>",
 
@@ -259,7 +259,7 @@ Edit the file brand.json in the folder `src/assets/brand/` or load an external j
 
 ```typescript
 
-widgetUrl: "https://<YOUR_CHAT21_WEB_WIDGET_URL>:4200/launch.js",
+WIDGET_BASE_URL: "https://<YOUR_CHAT21_WEB_WIDGET_URL>:4200/launch.js",
 
 botcredendialsURL: "https://<YOUR_BOT_CREDENTIALS_URL>",
 
@@ -309,7 +309,7 @@ Load external scripts by adding in environment.*.ts (if `remoteConfig` is set to
 
 ```typescript
 
-widgetUrl: "https://<YOUR_CHAT21_WEB_WIDGET_URL>:4200/launch.js",
+WIDGET_BASE_URL: "https://<YOUR_CHAT21_WEB_WIDGET_URL>:4200/launch.js",
 
 botcredendialsURL: "https://<YOUR_BOT_CREDENTIALS_URL>",
 

@@ -7,6 +7,7 @@ import { LoggerService } from 'app/services/logger/logger.service';
 import { Location } from '@angular/common';
 import { DepartmentService } from 'app/services/department.service';
 import { Project } from 'app/models/project-model';
+import { goToCDSVersion } from 'app/utils/util';
 
 @Component({
   selector: 'appdashboard-community-template-dtls',
@@ -115,7 +116,12 @@ export class CommunityTemplateDtlsComponent implements OnInit {
 
 
   goToBotDetails() {
-    this.router.navigate(['project/' + this.projectId + '/cds/', this.botid, 'intent', '0'])
+    // this.router.navigate(['project/' + this.projectId + '/cds/', this.botid, 'intent', '0'])
+    let faqkb = {
+      createdAt: new Date(),
+      _id : this.botid
+    }
+    goToCDSVersion(this.router, faqkb, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
   }
 
   getCurrentProject() {
@@ -149,7 +155,7 @@ export class CommunityTemplateDtlsComponent implements OnInit {
 
 
   getTestSiteUrl() {
-    this.TESTSITE_BASE_URL = this.appConfigService.getConfig().testsiteBaseUrl;
+    this.TESTSITE_BASE_URL = this.appConfigService.getConfig().WIDGET_BASE_URL + 'assets/twp/index.html';
     this.logger.log('[COMMUNITY-TEMPLATE-DTLS] AppConfigService getAppConfig TESTSITE_BASE_URL', this.TESTSITE_BASE_URL);
   }
 

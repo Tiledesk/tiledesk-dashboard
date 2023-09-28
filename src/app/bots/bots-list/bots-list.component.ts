@@ -18,6 +18,7 @@ import { ProjectService } from 'app/services/project.service';
 import { BotLocalDbService } from 'app/services/bot-local-db.service';
 import { MatDialog } from '@angular/material/dialog';
 import { CloneBotComponent } from './clone-bot/clone-bot.component';
+import { goToCDSVersion } from 'app/utils/util';
 
 const swal = require('sweetalert');
 @Component({
@@ -828,9 +829,8 @@ export class BotListComponent implements OnInit {
   // ---------------------------------------------------------------------------
   // Go to faq.component to: Add / Edit FAQ, Edit Bot name
   // ---------------------------------------------------------------------------
-  goToBotDtls(idFaqKb: string, botType: string, botname: string) {
-
-    this.goToCDS(idFaqKb)
+  goToBotDtls(faqkb: FaqKb) {
+    this.goToCDS(faqkb)
     // if (this.isPanelRoute === false) {
     //   this.goToOldBotDtls(idFaqKb, botType, botname)
     // } else {
@@ -838,7 +838,7 @@ export class BotListComponent implements OnInit {
     // }
 
     let _botType = ""
-    if (botType === 'internal') {
+    if (faqkb.type === 'internal') {
       _botType = 'native'
 
       // -------------------------------------------------------------------------------------------
@@ -847,21 +847,21 @@ export class BotListComponent implements OnInit {
       // -------------------------------------------------------------------------------------------
       // this.faqKbService.publishBotName(botname)
 
-      this.router.navigate(['project/' + this.project._id + '/bots/intents/', idFaqKb, _botType]);
+      this.router.navigate(['project/' + this.project._id + '/bots/intents/', faqkb._id, _botType]);
 
-    } else if (botType === 'tilebot') {
+    } else if (faqkb.type === 'tilebot') {
       _botType = 'tilebot'
       // this.router.navigate(['project/' + this.project._id + '/tilebot/intents/', idFaqKb, _botType]);
       // this.router.navigate(['project/' + this.project._id + '/createfaq', idFaqKb, _botType, 'en']);
-      this.goToCDS(idFaqKb)
+      this.goToCDS(faqkb)
 
 
     } else {
-      _botType = botType
-      this.router.navigate(['project/' + this.project._id + '/bots', idFaqKb, _botType]);
+      _botType = faqkb.type
+      this.router.navigate(['project/' + this.project._id + '/bots', faqkb._id, _botType]);
     }
 
-    this.logger.log('[BOTS-LIST] ID OF THE BOT (FAQKB) SELECTED ', idFaqKb, 'bot type ', botType);
+    this.logger.log('[BOTS-LIST] ID OF THE BOT (FAQKB) SELECTED ', faqkb._id, 'bot type ', faqkb.type);
   }
 
   goToOldBotDtls(idFaqKb: string, botType: string, botname: string) {
@@ -893,8 +893,9 @@ export class BotListComponent implements OnInit {
 
   }
 
-  goToCDS(idFaqKb: string) {
-    this.router.navigate(['project/' + this.project._id + '/cds/', idFaqKb, 'intent', '0']);
+  goToCDS(faqKb: FaqKb) {
+    // this.router.navigate(['project/' + this.project._id + '/cds/', faqKb._id, 'intent', '0']);
+    goToCDSVersion(this.router, faqKb, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
   }
 
 

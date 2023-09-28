@@ -98,7 +98,7 @@
         </div>
     </div>
     <div style="height: 24px; width: 0px; flex: 0 0 auto;"></div>
-    <!-- (click)="goToBotProfile(bot?._id, bot?.type)" (mouseenter)="chatbotDetails.open()"
+    <!-- (click)="goToBotProfile(bot)" (mouseenter)="chatbotDetails.open()"
                 (mouseleave)="chatbotDetails.close()" -->
     <div *ngIf="chatbots && chatbots?.length > 0" class="your-chatbots">
         <div class="served-by-desktop-b" *ngFor="let bot of chatbots | slice:0:10; let i=index; let first = first;">
@@ -290,7 +290,7 @@
 
 
                         <div class=" view-detail-btn" style="text-align: center;">
-                            <div class="arrow-container" (click)="goToBotProfile(bot?._id, bot?.type)">
+                            <div class="arrow-container" (click)="goToBotProfile(bot)">
                                 <div id="arrow_2" class="arrow-wrapper">
                                     <div class="text-block" style="margin-right: 16px; font-size: 13px;">
                                         {{ 'ViewDetails' | translate }}

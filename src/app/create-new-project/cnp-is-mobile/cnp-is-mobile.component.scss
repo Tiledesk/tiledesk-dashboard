@@ -8,12 +8,20 @@
     font-family: Poppins,Roboto,Arial,sans-serif;
     line-height: 1.3;
     font-size: 18px;
-    padding: 0 20px;
+    // padding: 0 20px;
     font-weight: 400;
 }
 
 .tac {
     text-align: center;
+}
+
+.bold {
+  font-weight: 600;
+}
+
+.small {
+  font-size: 14px;
 }
 
 .mb24 {
@@ -29,14 +37,15 @@
     font-size: 16px;
     margin-top: 32px;
     text-transform: none;
+    padding: 8px 18px
     // background: #f0806f;
 }
 
 .send-login-link-btn > .send-login-link-btn-icon {
     display: block;
-    margin-bottom: 12px;
+    margin-bottom: 6px;
     font-size: 28px;
-    transform: rotate(-45deg);
+    // transform: rotate(-45deg);
 }
 
 .resend-email-me-login-link-wpr {

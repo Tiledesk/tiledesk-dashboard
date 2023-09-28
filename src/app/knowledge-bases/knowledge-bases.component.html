@@ -21,7 +21,8 @@
 
           <div class="add-kb-div">
             <button class="btn btn-primary" (click)="openSecretsModal()">
-              {{ 'KbPage.Secrets' | translate }}
+              <!-- {{ 'KbPage.Secrets' | translate }} -->
+              GPT Key
             </button>
             <button class="btn btn-primary" (click)="openAddKnowledgeBaseModal()" [disabled]="addButtonDisabled">
               {{ 'KbPage.AddKb' | translate }}
@@ -51,7 +52,7 @@
 
                 <th>
                   <span class="column-th-span">
-                    {{ 'Date' | translate }}
+                    {{ 'KbPage.CreationDate' | translate }}
                   </span>
                 </th>
 
@@ -321,6 +322,7 @@
             <span *ngIf="error_answer">{{ 'KbPage.NoAnswerFound' | translate }}</span>
             <hr *ngIf="source_url">
             <span *ngIf="source_url">{{ 'KbPage.Source' | translate }}: {{ source_url }}</span>
+            <!-- <span *ngIf="source_url">{{ 'KbPage.Source' | translate }}: <a href="{{source_url}}" target="_blank">{{ source_url }}</a></span> -->
           </div>
 
         </div>
@@ -361,12 +363,12 @@
           <span class="input-label">GPT Key</span>
           <div class="fake-input">
             <div class="fake-input-inner">
-              <input id="gptkey-key" class="input-bold" type="text"
+              <input *ngIf="gptkeyVisible" id="gptkey-key" class="input-bold" type="text" autocomplete="off"
                 placeholder="{{ 'KbPage.TypeKbKeyPlaceholder' | translate }}" [(ngModel)]="kbSettings.gptkey">
+              <input *ngIf="!gptkeyVisible" value="••••••••••••••••••••••••••••" style="font-size: 30px;" disabled>
               <div class="show-hide-button" (click)="showHideSecret('gptkey-key')">
                 <span *ngIf="gptkeyVisible" class="material-icons-outlined">visibility_off</span>
                 <span *ngIf="!gptkeyVisible" class="material-icons-outlined">visibility</span>
-                <!-- <span *ngIf="!key_visible" class="material-icons-outlined">visibility</span> -->
               </div>
             </div>
           </div>

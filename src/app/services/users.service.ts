@@ -47,6 +47,7 @@ export class UsersService {
   RESEND_VERIFY_EMAIL: string;
   AVAILABLE_USERS_URL: any;
   USERS_ACTIVITIES_URL: any;
+  LOGIN_EMAIL_URL: any;
   PROJECT_USER_URL: any;
   INVITE_USER_URL: any;
   PENDING_INVITATION_URL: string;
@@ -95,12 +96,14 @@ export class UsersService {
     this.UPDATE_USER_URL = this.SERVER_BASE_PATH + 'users/';
     this.CHANGE_PSW_URL = this.SERVER_BASE_PATH + 'users/changepsw/';
     this.RESEND_VERIFY_EMAIL = this.SERVER_BASE_PATH + 'users/resendverifyemail/';
+    this.LOGIN_EMAIL_URL = this.SERVER_BASE_PATH + 'users/loginemail';
 
     this.logger.log('[USER-SERV] - SERVER_BASE_PATH ', this.SERVER_BASE_PATH);
     this.logger.log('[USER-SERV] - PROJECTS_URL  ', this.PROJECTS_URL);
     this.logger.log('[USER-SERV] - UPDATE_USER_URL ', this.UPDATE_USER_URL);
     this.logger.log('[USER-SERV] - CHANGE_PSW_URL ', this.CHANGE_PSW_URL);
     this.logger.log('[USER-SERV] - RESEND_VERIFY_EMAIL ', this.RESEND_VERIFY_EMAIL);
+    this.logger.log('[USER-SERV] - LOGIN_EMAIL_URL ', this.LOGIN_EMAIL_URL);
   }
 
   getCurrentProject() {
@@ -1156,6 +1159,26 @@ export class UsersService {
 
     return this._httpClient
       .get(url, httpOptions)
+
+  }
+
+  /**
+   * SEND LOGIN EMAIL
+   * @returns 
+   */
+  public sendLoginEmail(data) {
+    const url = this.LOGIN_EMAIL_URL;
+    this.logger.log('[USER-SERV] - RESEND VERIFY EMAIL URL ', url);
+    console.log('[USER-SERV] - RESEND VERIFY EMAIL URL ', url);
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    return this._httpClient.post(url, data, httpOptions);
 
   }
 

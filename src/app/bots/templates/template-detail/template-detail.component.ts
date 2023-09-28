@@ -2,6 +2,7 @@ import { Component, OnInit, Inject, isDevMode } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { AuthService } from 'app/core/auth.service';
+import { FaqKb } from 'app/models/faq_kb-model';
 import { AppConfigService } from 'app/services/app-config.service';
 import { BotLocalDbService } from 'app/services/bot-local-db.service';
 import { DepartmentService } from 'app/services/department.service';
@@ -9,6 +10,7 @@ import { FaqKbService } from 'app/services/faq-kb.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { LocalDbService } from 'app/services/users-local-db.service';
 import { UsersService } from 'app/services/users.service';
+import { goToCDSVersion } from 'app/utils/util';
 
 @Component({
   selector: 'appdashboard-template-detail',
@@ -28,6 +30,7 @@ export class TemplateDetailComponent implements OnInit {
   public projectId: string;
   public projectName: string;
   public USER_ROLE: string;
+  public bot: FaqKb
   public botid: string;
   public botname: string;
   public templateid: string;
@@ -72,7 +75,7 @@ export class TemplateDetailComponent implements OnInit {
     // console.log('[TEMPLATE DETAIL] template ', this.template)
     // this.logger.log('[TEMPLATE DETAIL] projectid ', this.projectid)
     if (this.template) {
-     
+      this.bot = this.template
       this.botname = this.template.name
       this.templateid = this.template._id
       this.templateProjectId = this.template.id_project
@@ -166,7 +169,7 @@ export class TemplateDetailComponent implements OnInit {
   }
 
   getTestSiteUrl() {
-    this.TESTSITE_BASE_URL = this.appConfigService.getConfig().testsiteBaseUrl;
+    this.TESTSITE_BASE_URL = this.appConfigService.getConfig().WIDGET_BASE_URL + 'assets/twp/index.html';
     this.logger.log('[TEMPLATE DETAIL] AppConfigService getAppConfig TESTSITE_BASE_URL', this.TESTSITE_BASE_URL);
   }
 
@@ -272,13 +275,12 @@ export class TemplateDetailComponent implements OnInit {
 
   goToBotDetails() {
     this.logger.log('[TEMPLATE DETAIL] GO TO  BOT DETAILS - isDevMode() ', isDevMode());
-    // if (isDevMode() === false) { 
-    //   this.router.navigate(['project/' + this.projectid + '/tilebot/intents/', this.botid, 'tilebot']);
-    // } else {
-    //   // this.router.navigate(['project/' + this.project._id + '/cds/', this.botid]);
-    //   this.router.navigate(['project/' + this.project._id + '/cds/', this.botid, 'intent', '0']);
-    // }
-    this.router.navigate(['project/' + this.project._id + '/cds/', this.botid, 'intent', '0']);
+    // this.router.navigate(['project/' + this.project._id + '/cds/', this.botid, 'intent', '0']);
+    let faqkb = {
+      createdAt: new Date(),
+      _id : this.botid
+    }
+    goToCDSVersion(this.router, faqkb, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
 
     this.closeDialog();
     // this.closeCreateBotInfoModal();

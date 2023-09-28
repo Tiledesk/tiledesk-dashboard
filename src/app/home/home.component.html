@@ -614,7 +614,7 @@
             <ng-container *ngIf="DISPLAY_CHATBOTS">
               <div class="served-by-desktop-b" *ngFor="let bot of chatbots; let first = first;">
                 <div [ngClass]="{ 'first-served-by': first, 'disable-link-if-is-agent': USER_ROLE === 'agent' }"
-                  class="served-by-desktop-c tool_tip" (click)="goToBotProfile(bot?._id, bot?.type)">
+                  class="served-by-desktop-c tool_tip" (click)="goToBotProfile(bot)">
 
 
                   <div class="served-by-desktop-d">

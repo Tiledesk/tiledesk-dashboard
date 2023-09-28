@@ -20,9 +20,12 @@ import {
   URL_styling_your_chatbot_replies,
   URL_response_bot_images_buttons_videos_and_more,
   URL_handoff_to_human_agents, URL_configure_your_first_chatbot,
-  URL_connect_your_dialogflow_agent
+  URL_connect_your_dialogflow_agent,
+  goToCDSVersion
 } from '../../utils/util';
 import { FaqService } from 'app/services/faq.service';
+import { FaqKb } from 'app/models/faq_kb-model';
+import { AppConfigService } from 'app/services/app-config.service';
 
 @Component({
   selector: 'bot-create',
@@ -50,6 +53,7 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
   SHOW_CIRCULAR_SPINNER = false;
   goToEditBot = true;
 
+  newBot: FaqKb
   newBot_name: string;
   newBot_Id: string;
   newBot_External: boolean;
@@ -127,6 +131,7 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
     private departmentService: DepartmentService,
     private logger: LoggerService,
     private faqService: FaqService,
+    private appConfigService: AppConfigService
   ) {
     super();
 
@@ -191,7 +196,8 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
         this.botLocalDbService.saveBotsInStorage(this.importedChatbotid, faqkb);
 
         // this.router.navigate(['project/' + this.project._id + '/tilebot/intents/', this.importedChatbotid, 'tilebot']);
-        this.router.navigate(['project/' + this.project._id + '/cds/', this.importedChatbotid, 'intent', '0']);
+        // this.router.navigate(['project/' + this.project._id + '/cds/', this.importedChatbotid, 'intent', '0']);
+        goToCDSVersion(this.router, faqkb,this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
       }
 
     }, (error) => {
@@ -380,16 +386,17 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
 
   createTilebotBotFromScratch() { 
     this.language = this.botDefaultSelectedLangCode;
-    this.faqKbService.createChatbotFromScratch(this.faqKbName,  'tilebot', this.language)
-    .subscribe((faqKb) => {
+    this.faqKbService.createChatbotFromScratch(this.faqKbName,  'tilebot', this.language).subscribe((faqKb) => {
       this.logger.log('[BOT-CREATE] createTilebotBotFromScratch - RES ', faqKb);
 
       if (faqKb) {
+        this.newBot = faqKb
         this.newBot_name = faqKb['name'];
         this.newBot_Id = faqKb['_id'];
         // this.translateparamBotName = { bot_name: this.newBot_name }
         // SAVE THE BOT IN LOCAL STORAGE
         this.botLocalDbService.saveBotsInStorage(this.newBot_Id, faqKb);
+        goToCDSVersion(this.router, faqKb, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
       }
 
     }, (error) => {
@@ -400,7 +407,7 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
     }, () => {
       this.logger.log('[BOT-CREATE] CREATE FAQKB - POST REQUEST * COMPLETE *');
 
-      this.router.navigate(['project/' + this.project._id + '/cds/', this.newBot_Id, 'intent', '0']);
+      // this.router.navigate(['project/' + this.project._id + '/cds/', this.newBot_Id, 'intent', '0']);
     })
   }
 
@@ -445,6 +452,7 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
         // this.logger.log('[BOT-CREATE] CREATE FAQKB - RES ', faqKb);
 
         if (faqKb) {
+          this.newBot = faqKb
           this.newBot_name = faqKb['name'];
           this.newBot_Id = faqKb['_id'];
 
@@ -563,8 +571,8 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
       } else if (this.botType === 'tilebot') {
         bot_type = 'tilebot'
         // this.router.navigate(['project/' + this.project._id + '/tilebot/intents/' + this.newBot_Id + "/" + bot_type]);
-        this.router.navigate(['project/' + this.project._id + '/cds/', this.newBot_Id, 'intent', '0']);
-      
+        // this.router.navigate(['project/' + this.project._id + '/cds/', this.newBot_Id, 'intent', '0']);
+        goToCDSVersion(this.router, this.newBot, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
       } else {
         bot_type = this.botType;
         this.router.navigate(['project/' + this.project._id + '/bots/' + this.newBot_Id + "/" + bot_type]);

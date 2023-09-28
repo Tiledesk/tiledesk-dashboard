@@ -4,7 +4,7 @@ import { HomeKbModalComponent } from './home-kb-modal/home-kb-modal.component';
 import { KB, KbSettings } from 'app/models/kbsettings-model';
 import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
 import { LoggerService } from 'app/services/logger/logger.service';
-import { OpenaikbsService } from 'app/services/openaikbs.service';
+import { OpenaiService } from 'app/services/openai.service';
 import { AuthService } from 'app/core/auth.service';
 import { Router } from '@angular/router';
 
@@ -34,7 +34,7 @@ export class HomeKbComponent implements OnInit {
     public dialog: MatDialog,
     private kbService: KnowledgeBaseService,
     private logger: LoggerService,
-    private openaikbService: OpenaikbsService,
+    private openaiService: OpenaiService,
     private auth: AuthService,
     public router: Router
   ) { }
@@ -132,7 +132,7 @@ export class HomeKbComponent implements OnInit {
       "full_url": kb.url
     }
     return new Promise((resolve, reject) => {
-      this.openaikbService.checkScrapingStatus(data).subscribe((response: any) => {
+      this.openaiService.checkScrapingStatus(data).subscribe((response: any) => {
         resolve(response.status_code);
       }, (error) => {
         this.logger.error(error);
@@ -146,7 +146,7 @@ export class HomeKbComponent implements OnInit {
       full_url: kb.url,
       gptkey: this.kbSettings.gptkey
     }
-    this.openaikbService.startScraping(data).subscribe((response) => {
+    this.openaiService.startScraping(data).subscribe((response) => {
       console.log("[HOME-KB] start scraping response: ", response);
     }, (error) => {
       console.error("[HOME-KB] error start scraping response: ", error);

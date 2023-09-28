@@ -34,7 +34,7 @@ export class InstallWidgetComponent extends WidgetSetUpBaseComponent implements 
   has_copied = false;
   continue_btn_disabled: boolean = true;
 
-  // WIDGET_URL = environment.widgetUrl; // now get from appconfig
+  // WIDGET_URL = environment.WIDGET_BASE_URL; // now get from appconfig
   WIDGET_URL: string;
   companyLogoBlack_Url: string;
   EXIST_STORED_ROUTE: boolean = false
@@ -112,7 +112,7 @@ export class InstallWidgetComponent extends WidgetSetUpBaseComponent implements 
   }
 
   getWidgetUrl() {
-    this.WIDGET_URL = this.appConfigService.getConfig().widgetUrl;
+    this.WIDGET_URL = this.appConfigService.getConfig().WIDGET_BASE_URL + 'launch.js';
     this.logger.log('[WIZARD - INSTALL-WIDGET] AppConfigService getAppConfig WIDGET_URL ', this.WIDGET_URL)
   }
 

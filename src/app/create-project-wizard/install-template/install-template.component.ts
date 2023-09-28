@@ -15,7 +15,8 @@ import { Location } from '@angular/common';
 import { BotLocalDbService } from 'app/services/bot-local-db.service';
 import { DepartmentService } from 'app/services/department.service';
 import { AppConfigService } from 'app/services/app-config.service';
-import { APP_SUMO_PLAN_NAME, PLAN_NAME } from 'app/utils/util';
+import { APP_SUMO_PLAN_NAME, goToCDSVersion, PLAN_NAME } from 'app/utils/util';
+import { FaqKb } from 'app/models/faq_kb-model';
 @Component({
   selector: 'appdashboard-install-template',
   templateUrl: './install-template.component.html',
@@ -404,7 +405,7 @@ export class InstallTemplateComponent extends WidgetSetUpBaseComponent implement
       }
 
       this.getFaqKbById(this.botid);
-      this.goToBotDetails()
+     
       if (!isDevMode()) {
         if (window['analytics']) {
 
@@ -491,7 +492,7 @@ export class InstallTemplateComponent extends WidgetSetUpBaseComponent implement
       this.logger.log('[INSTALL-TEMPLATE] GET FAQ-KB (DETAILS) BY ID  ', faqkb);
 
       this.botLocalDbService.saveBotsInStorage(botid, faqkb);
-
+      this.goToBotDetails(faqkb)
     }, (error) => {
       this.logger.error('[INSTALL-TEMPLATE] GET FAQ-KB BY ID  - ERROR ', error);
     }, () => {
@@ -500,13 +501,14 @@ export class InstallTemplateComponent extends WidgetSetUpBaseComponent implement
   }
 
 
-  goToBotDetails() {
+  goToBotDetails(faqkb: FaqKb) {
     this.logger.log('[TEMPLATE DETAIL] GO TO  BOT DETAILS - isDevMode() ', isDevMode());
-    this.router.navigate(['project/' + this.project._id + '/cds/', this.botid, 'intent', '0']);
+    // this.router.navigate(['project/' + this.project._id + '/cds/', this.botid, 'intent', '0']);
+    goToCDSVersion(this.router, faqkb, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
   }
 
   getTestSiteUrl() {
-    this.TESTSITE_BASE_URL = this.appConfigService.getConfig().testsiteBaseUrl;
+    this.TESTSITE_BASE_URL = this.appConfigService.getConfig().WIDGET_BASE_URL + 'assets/twp/index.html';
     this.logger.log('[TEMPLATE DETAIL] AppConfigService getAppConfig TESTSITE_BASE_URL', this.TESTSITE_BASE_URL);
   }
 

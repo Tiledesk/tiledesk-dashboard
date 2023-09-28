@@ -13,12 +13,13 @@ import { TranslateService } from '@ngx-translate/core';
 import { NotifyService } from '../core/notify.service';
 import { slideInOutAnimation } from '../_animations/index';
 import { UsersService } from '../services/users.service';
-import { avatarPlaceholder, getColorBck } from '../utils/util';
+import { avatarPlaceholder, getColorBck, goToCDSVersion } from '../utils/util';
 import { AppConfigService } from '../services/app-config.service';
 import { ComponentCanDeactivate } from '../core/pending-changes.guard';
 import { LoggerService } from '../services/logger/logger.service';
 import { Subject, Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
+import { FaqKb } from 'app/models/faq_kb-model';
 declare const $: any;
 const swal = require('sweetalert');
 
@@ -57,6 +58,7 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
 
   botId: string;
   selectedValue: string;
+  selectedBot: FaqKb
   selectedId: string;
   botIdEdit: string;
   dept_routing: string;
@@ -825,6 +827,7 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
       // this.selectedId = bot._id;
 
       if (faqkb) {
+        this.selectedBot = faqkb
         this.selectedId = faqkb._id;
         this.bot_type = faqkb.type;
         // USED ONLY FOR DEBUG
@@ -932,7 +935,8 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
       botType = 'tilebot'
       if (this.USER_ROLE !== 'agent') {
         // this.router.navigate(['project/' + this.project._id + '/tilebot/intents/', this.selectedId, botType]);
-        this.router.navigate(['project/' + this.project._id + '/cds/', this.selectedId, 'intent', '0']);
+        // this.router.navigate(['project/' + this.project._id + '/cds/', this.selectedId, 'intent', '0']);
+        goToCDSVersion(this.router, this.selectedBot, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
       }
     } else {
       botType = this.bot_type;

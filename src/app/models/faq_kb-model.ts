@@ -1,7 +1,7 @@
 export interface FaqKb {
     _id?: string;
-    updatedAt?: any;
-    createdAt?: any;
+    updatedAt?: Date;
+    createdAt?: Date;
     name?: string;
     url?: string;
     webhook_enabled?: boolean;

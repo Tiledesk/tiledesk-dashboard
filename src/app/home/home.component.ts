@@ -23,7 +23,7 @@ import { Chart } from 'chart.js'; /// VISITOR GRAPH FOR THE NEW NOME
 import moment from "moment";
 import { ContactsService } from '../services/contacts.service'; // USED FOR COUNT OF ACTIVE CONTACTS FOR THE NEW HOME
 import { FaqKbService } from '../services/faq-kb.service'; // USED FOR COUNT OF BOTS FOR THE NEW HOME
-import { APP_SUMO_PLAN_NAME, avatarPlaceholder, getColorBck, PLAN_NAME } from '../utils/util';
+import { APP_SUMO_PLAN_NAME, avatarPlaceholder, getColorBck, goToCDSVersion, PLAN_NAME } from '../utils/util';
 import { LoggerService } from '../services/logger/logger.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
@@ -36,7 +36,7 @@ import {
 import { AnalyticsService } from 'app/analytics/analytics-service/analytics.service';
 import { AppStoreService } from 'app/services/app-store.service';
 import { DepartmentService } from 'app/services/department.service';
-import { Console } from 'console';
+import { FaqKb } from 'app/models/faq_kb-model';
 
 
 const swal = require('sweetalert');
@@ -2942,24 +2942,25 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
 
-  goToBotProfile(bot_id, bot_type) {
+  goToBotProfile(bot: FaqKb) {
     let botType = ''
-    if (bot_type === 'internal') {
+    if (bot.type === 'internal') {
       botType = 'native'
       if (this.USER_ROLE !== 'agent') {
-        this.router.navigate(['project/' + this.project._id + '/bots/intents/', bot_id, botType]);
+        this.router.navigate(['project/' + this.project._id + '/bots/intents/', bot._id, botType]);
       }
-    } else if (bot_type === 'tilebot') {
+    } else if (bot.type === 'tilebot') {
       botType = 'tilebot'
       if (this.USER_ROLE !== 'agent') {
         // this.router.navigate(['project/' + this.project._id + '/tilebot/intents/', bot_id, botType]);
-        this.router.navigate(['project/' + this.project._id + '/cds/', bot_id, 'intent', '0']);
+        // this.router.navigate(['project/' + this.project._id + '/cds/', bot._id, 'intent', '0']);
+        goToCDSVersion(this.router, bot, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
       }
     } else {
-      botType = bot_type
+      botType = bot.type
 
       if (this.USER_ROLE !== 'agent') {
-        this.router.navigate(['project/' + this.projectId + '/bots', bot_id, botType]);
+        this.router.navigate(['project/' + this.projectId + '/bots', bot._id, botType]);
       }
     }
 
