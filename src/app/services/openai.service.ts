@@ -7,7 +7,7 @@ import { AuthService } from 'app/core/auth.service';
 @Injectable({
   providedIn: 'root'
 })
-export class OpenaikbsService {
+export class OpenaiService {
 
   SERVER_BASE_PATH: string;
   TOKEN: string;
@@ -37,7 +37,7 @@ export class OpenaikbsService {
     if (this.user) {
       this.TOKEN = this.user.token
     } else {
-      this.logger.log('[OPENAIKBS.SERVICE] - No user signed in');
+      this.logger.log('[OPENAI.SERVICE] - No user signed in');
     }
   }
 
@@ -46,19 +46,22 @@ export class OpenaikbsService {
   }
 
   getCurrentProject() {
-    console.log("get current project")
     this.auth.project_bs.subscribe((project) => {
       if (project) {
         this.project_id = project._id
       }
     }, (error) => {
-      console.log("get current project ERROR: ", error)
+      this.logger.error('[OPENAI.SERVICE] - get current project ERROR: ', error);
     }, () => {
-      console.log("*COMPLETE*")
+      this.logger.debug('[OPENAI.SERVICE] - get current project *COMPLETE*');
     });
   }
 
-  getAllOpenaikbs() {
+  ////////////////////////////////////////////////////////
+  //////////////////// OPENAI - START ////////////////////
+  ////////////////////////////////////////////////////////
+
+  previewPrompt(data) {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -66,45 +69,16 @@ export class OpenaikbsService {
       })
     }
 
-    const url = this.SERVER_BASE_PATH + this.project_id + "/openai_kbs";
-    console.log('[OPENAIKBS.SERVICE] getAllOpenaikbs - url ', url);
+    const url = this.SERVER_BASE_PATH + this.project_id + "/openai/";
+    this.logger.debug('[OPENAI.SERVICE] - preview prompt URL: ', url);
 
-    return this.httpClient.get(url, httpOptions);
+    return this.httpClient.post(url, data, httpOptions);
   }
 
-  addOpenaiKb(openaikb) {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Authorization': this.TOKEN
-      })
-    }
+  ////////////////////////////////////////////////////////
+  //////////////////// OPENAI - START ////////////////////
+  ////////////////////////////////////////////////////////
 
-    const url = this.SERVER_BASE_PATH + this.project_id + "/openai_kbs";
-    console.log('[OPENAIKBS.SERVICE] addOpenaiKb - url ', url);
-
-    return this.httpClient.post(url, openaikb, httpOptions);
-  } 
-
-  deleteOpenaiKb(kbid) {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Authorization': this.TOKEN
-      })
-    }
-
-    const url = this.SERVER_BASE_PATH + this.project_id + "/openai_kbs/" + kbid;
-    console.log('[OPENAIKBS.SERVICE] deleteOpenaiKb - url ', url);
-
-    return this.httpClient.delete(url, httpOptions);
-  }
-
-
-  ////////////////////////////////////////////////////////////////////////////////////////
-  ////////////////////////////////////////////////////////////////////////////////////////
-  ////////////////////////////////////////////////////////////////////////////////////////
-  ////////////////////////////////////////////////////////////////////////////////////////
 
   askGpt(data) {
     const httpOptions = {
@@ -113,9 +87,8 @@ export class OpenaikbsService {
       })
     }
 
-    const url = this.GPT_API_URL + "/qa"
-    console.log('[GPT.SERV] - GET *ALL* TEMPLATES - URL', url);
-    console.log("data: ", data);
+    const url = this.GPT_API_URL + "/qa";
+    this.logger.debug('[OPENAI.SERVICE] - ask gpt URL: ', url);
 
     return this.httpClient.post(url, data, httpOptions);
   }
@@ -128,8 +101,7 @@ export class OpenaikbsService {
     }
 
     const url = this.GPT_API_URL + "/scrape";
-    console.log('[GPT.SERV] - GET *ALL* TEMPLATES - URL', url);
-    console.log("data: ", data);
+    this.logger.debug('[OPENAI.SERVICE] - scraping URL: ', url);
 
     return this.httpClient.post(url, data, httpOptions);
 
@@ -143,8 +115,7 @@ export class OpenaikbsService {
     }
 
     const url = this.GPT_API_URL + "/scrape/status";
-    console.log('[GPT.SERV] - GET *ALL* TEMPLATES - URL', url);
-    console.log("data: ", data);
+    this.logger.debug('[OPENAI.SERVICE] - check scraping URL: ', url);
 
     return this.httpClient.post(url, data, httpOptions);
   }

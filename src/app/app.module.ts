@@ -350,7 +350,7 @@ import { HomeKbComponent } from './home-components/home-kb/home-kb.component';
 // ./new home comp
 
 
-import { OpenaikbsService } from './services/openaikbs.service';
+import { OpenaiService } from './services/openai.service';
 import { KnowledgeBasesComponent } from './knowledge-bases/knowledge-bases.component';
 
 
@@ -734,7 +734,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     FilterArrayPipe,
     MarkerService,
     // LoggerInstance,
-    OpenaikbsService,
+    OpenaiService,
     PopupService,
     NotificationService,
     { provide: LocationStrategy, useClass: HashLocationStrategy }
