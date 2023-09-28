@@ -396,7 +396,11 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
         // this.translateparamBotName = { bot_name: this.newBot_name }
         // SAVE THE BOT IN LOCAL STORAGE
         this.botLocalDbService.saveBotsInStorage(this.newBot_Id, faqKb);
-        goToCDSVersion(this.router, faqKb, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
+        let newfaqkb = {
+          createdAt: new Date(),
+          _id : this.newBot_Id
+        }
+        goToCDSVersion(this.router, newfaqkb, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
       }
 
     }, (error) => {

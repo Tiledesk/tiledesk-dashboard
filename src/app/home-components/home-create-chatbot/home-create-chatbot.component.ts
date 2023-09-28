@@ -416,6 +416,9 @@ export class HomeCreateChatbotComponent implements OnInit, OnChanges {
         // this.translateparamBotName = { bot_name: this.newBot_name }
         // SAVE THE BOT IN LOCAL STORAGE
         this.botLocalDbService.saveBotsInStorage( faqKb['_id'], faqKb);
+
+        // this.router.navigate(['project/' + this.projectId + '/cds/', this.newBot_Id, 'intent', '0', 'h']);
+        goToCDSVersion(this.router, faqKb, this.projectId, this.appConfigService.getConfig().cdsBaseUrl)
       }
 
     }, (error) => {
@@ -426,7 +429,7 @@ export class HomeCreateChatbotComponent implements OnInit, OnChanges {
     }, () => {
       this.logger.log('[HOME-CREATE-CHATBOT] CREATE FAQKB - POST REQUEST * COMPLETE *');
 
-      this.router.navigate(['project/' + this.projectId + '/cds/', this.newBot_Id, 'intent', '0', 'h']);
+      
     })
   }
 
