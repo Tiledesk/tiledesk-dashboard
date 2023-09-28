@@ -353,13 +353,39 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  setDefaultPreferences() {
-    this.displayCreateChatbot = true
-    this.switchCreateChatbot(this.displayCreateChatbot)
-    this.displayInviteTeammate = true
-    this.switchInviteTeammate(this.displayInviteTeammate)
-    this.displayKnowledgeBase = true
-    this.switchyKnowledgeBase(this.displayInviteTeammate)
+ async setDefaultPreferences() {
+    this.child_list_order = [
+      { pos: 1, type: 'child1' },
+      { pos: 2, type: 'child2' },
+      { pos: 3, type: 'child5' },
+      { pos: 4, type: 'child7' },
+      { pos: 5, type: 'child6' },
+      { pos: 6, type: 'child8' },
+      { pos: 7, type: 'child3' },
+      { pos: 8, type: 'child4' }
+    ]
+    
+    this.displayAnalyticsConvsGraph = false;
+    await this.switchAnalyticsConvsGraph(this.displayAnalyticsConvsGraph);
+
+    this.displayAnalyticsIndicators = false;
+    await this.switchAnalyticsIndicators(this.displayAnalyticsIndicators);
+
+    this.displayWhatsappAccountWizard = false;
+    this.displayConnectWhatsApp = false;
+    await this.switchConnectWhatsApp(this.displayConnectWhatsApp);
+
+    this.displayCreateChatbot = true;
+    await this.switchCreateChatbot(this.displayCreateChatbot)
+
+    this.displayInviteTeammate = true;
+    await this.switchInviteTeammate(this.displayInviteTeammate)
+
+    this.displayCustomizeWidget = false;
+    await this.switchCustomizeWidget( this.displayCustomizeWidget);
+
+    this.displayKnowledgeBase = true;
+    await this.switchyKnowledgeBase(this.displayKnowledgeBase);
   }
 
   findCurrentProjectAmongAll(projectId: string) {
