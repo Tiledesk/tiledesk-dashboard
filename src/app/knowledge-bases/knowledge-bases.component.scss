@@ -358,6 +358,7 @@ table {
 
 .animated-icon {
     animation: rotate 1.5s linear infinite;
+    animation-direction: reverse !important;
 }
 
 ::ng-deep .custom-mat-tooltip {
