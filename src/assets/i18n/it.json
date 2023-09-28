@@ -1571,7 +1571,7 @@
         "Enter": "Invia",
         "NoKbAdded": "Non hai ancora aggiunto nessuna Knowledge Base",
         "RunIndexing": "Indicizza",
-        "Date": "Data",
+        "CreationDate": "Data creazione",
         "KbCounterFooter": "{{ counter }} di 3 Knowledge Base aggiunte",
         "AddKbInfoFirstText": "Imposta un URL valido per la Knowledge Base e una GPT key.",
         "AddKbInfoSecondText": "Nota: puoi aggiungere massimo 3 Knwoledge Bases.",

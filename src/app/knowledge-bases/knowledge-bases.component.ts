@@ -185,6 +185,11 @@ export class KnowledgeBasesComponent implements OnInit {
     }
     this.openaiService.startScraping(data).subscribe((response) => {
       console.log("start scraping response: ", response);
+      setTimeout(() => {
+        this.checkStatus(kb).then((status_code: number) => {
+          kb.status = status_code;
+        })
+      }, 1000);
     }, (error) => {
       console.error("error start scraping response: ", error);
     }, () => {
@@ -241,6 +246,9 @@ export class KnowledgeBasesComponent implements OnInit {
 
     this.searching = true;
     this.show_answer = false;
+
+    this.answer = null;
+    this.source_url = null;
 
     this.openaiService.askGpt(data).subscribe((response: any) => {
       if (response.success == false) {
