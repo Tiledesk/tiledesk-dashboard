@@ -5,6 +5,7 @@ import { variableList } from 'app/chatbot-design-studio/utils';
 import { OpenaiService } from 'app/services/openai.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AttributesDialogComponent } from './attributes-dialog/attributes-dialog.component';
+import { AppConfigService } from 'app/services/app-config.service';
 
 @Component({
   selector: 'cds-action-gpt-task',
@@ -41,7 +42,8 @@ export class CdsActionGPTTaskComponent implements OnInit {
   constructor(
     private logger: LoggerService,
     private dialog: MatDialog,
-    private openaiService: OpenaiService
+    private openaiService: OpenaiService,
+    private appConfigService: AppConfigService,
   ) { }
 
   ngOnInit(): void {
@@ -334,6 +336,11 @@ export class CdsActionGPTTaskComponent implements OnInit {
       }
       this.updateAndSaveAction.emit();
     })
+  }
+
+  goToKNB(){
+    let url = this.appConfigService.getConfig().DASHBOARD_BASE_URL + 'dashboard/#/project/' + this.project_id +'/knowledge-bases'
+    window.open(url, '_blank')
   }
 
 

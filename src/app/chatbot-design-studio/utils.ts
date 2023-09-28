@@ -438,12 +438,22 @@ export function checkInternalIntent(intent: Intent): boolean{
 
 
 export function centerStageOnCenterPosition(listOfIntents: Intent[]){
-    // let minX = listOfIntents.reduce((prev, curr)=> { return prev.attributes.position.x < curr.attributes.position.x ? prev : curr})
-    let minY = listOfIntents.reduce((prev, curr)=> { return prev.attributes.position.y < curr.attributes.position.y ? prev : curr})
-    // let maxX = listOfIntents.reduce((prev, curr)=> { return prev.attributes.position.x > curr.attributes.position.x ? prev : curr})
-    // let maxY = listOfIntents.reduce((prev, curr)=> { return prev.attributes.position.y > curr.attributes.position.y ? prev : curr})
-    // console.log('minnnnnnnn x', minX)
-    // console.log('maxxxxxxxx x', maxX)
-    console.log('minnnnnnnn y', minY)
-    // console.log('minnnnnnnn y', maxY)
+    let arrayCoord = []
+    listOfIntents.forEach(el => arrayCoord.push(el.attributes.position))
+    let minX = listOfIntents.reduce((prev, curr)=> { return prev.attributes.position.x < curr.attributes.position.x ? prev : curr}).attributes.position.x
+    let minY = listOfIntents.reduce((prev, curr)=> { return prev.attributes.position.y < curr.attributes.position.y ? prev : curr}).attributes.position.y
+    let maxX = listOfIntents.reduce((prev, curr)=> { return prev.attributes.position.x > curr.attributes.position.x ? prev : curr}).attributes.position.x
+    let maxY = listOfIntents.reduce((prev, curr)=> { return prev.attributes.position.y > curr.attributes.position.y ? prev : curr}).attributes.position.y
+    
+    var width = Math.abs(minX) + Math.abs(maxX)
+    var height = Math.abs(minY) + Math.abs(maxY)
+    // let calcCenter = { x:  Math.round(((minX + maxWidth)/2)), y: Math.round(((minY + maxHeight)/2)) };
+    console.log('arrayyyyyyyy', arrayCoord)
+    // console.log('centerrrr', calcCenter)
+    console.log('width heightttt', width, height)
+
+    const stage = document.getElementById('tds_container').getBoundingClientRect()
+    var scale = Math.min(width / stage.width, height / stage.height);
+    console.log('scaleeeee', scale)
+    // return { width: srcWidth*ratio, height: srcHeight*ratio };
 }
