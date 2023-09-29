@@ -41,11 +41,11 @@ cd dist
 # echo available on https://panel.tiledesk.com/v3/dashboard/index.html
 
 # ####### tiledesk V3 MQTT-PANEL IN TEST FOLDER
-aws s3 sync --cache-control max-age=172800 . s3://panel.tiledesk.com/v3/as3/dashboard/
+aws s3 sync --cache-control max-age=172800 . s3://panel.tiledesk.com/v3/cds/dashboard/
 ## aws s3 sync ./index.html s3://tiledesk-console/v2/dashboard/ --exclude='*' --include='/index.html'
 ## aws s3 sync ./index.html s3://tiledesk-console/v2/dashboard/ --cache-control max-age=0
-echo new version deployed on s3://panel.tiledesk.com/v3/as3/dashboard/
-echo available on https://panel.tiledesk.com/v3/as3/dashboard/index.html
+echo new version deployed on s3://panel.tiledesk.com/v3/cds/dashboard/
+echo available on https://panel.tiledesk.com/v3/cds/dashboard/index.html
 
 ####### tiledesk V2 under latest
 # aws s3 sync . s3://tiledesk-console/v2/dashboard/A14
