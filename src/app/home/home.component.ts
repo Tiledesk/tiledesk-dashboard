@@ -365,11 +365,11 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       { pos: 8, type: 'child4' }
     ]
     
-    this.displayAnalyticsConvsGraph = false;
-    await this.switchAnalyticsConvsGraph(this.displayAnalyticsConvsGraph);
+    // this.displayAnalyticsConvsGraph = false;
+    // await this.switchAnalyticsConvsGraph(this.displayAnalyticsConvsGraph);
 
-    this.displayAnalyticsIndicators = false;
-    await this.switchAnalyticsIndicators(this.displayAnalyticsIndicators);
+    // this.displayAnalyticsIndicators = false;
+    // await this.switchAnalyticsIndicators(this.displayAnalyticsIndicators);
 
     this.displayWhatsappAccountWizard = false;
     this.displayConnectWhatsApp = false;
@@ -734,11 +734,11 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         { pos: 8, type: 'child4' }
       ]
       
-      this.displayAnalyticsConvsGraph = false;
-      await this.switchAnalyticsConvsGraph(this.displayAnalyticsConvsGraph);
+      // this.displayAnalyticsConvsGraph = false;
+      // await this.switchAnalyticsConvsGraph(this.displayAnalyticsConvsGraph);
 
-      this.displayAnalyticsIndicators = false;
-      await this.switchAnalyticsIndicators(this.displayAnalyticsIndicators);
+      // this.displayAnalyticsIndicators = false;
+      // await this.switchAnalyticsIndicators(this.displayAnalyticsIndicators);
 
       this.displayWhatsappAccountWizard = false;
       this.displayConnectWhatsApp = false;
@@ -770,23 +770,23 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.use_case === "solve_customer_problems") {
 
       console.log('[HOME] USECASE 1')
-
+      // , show: false
       this.child_list_order = [
-        { pos: 1, type: 'child1' },
-        { pos: 2, type: 'child2' },
-        { pos: 3, type: 'child5' },
-        { pos: 4, type: 'child7' },
-        { pos: 5, type: 'child6' },
-        { pos: 6, type: 'child8' },
-        { pos: 7, type: 'child3' },
-        { pos: 8, type: 'child4' }
+        { pos: 1, type: 'child1'},
+        { pos: 2, type: 'child2'},
+        { pos: 3, type: 'child5'},
+        { pos: 4, type: 'child7'},
+        { pos: 5, type: 'child6'},
+        { pos: 6, type: 'child8'},
+        { pos: 7, type: 'child3'},
+        { pos: 8, type: 'child4'}
       ]
 
-      this.displayAnalyticsConvsGraph = false;
-      await this.switchAnalyticsConvsGraph(this.displayAnalyticsConvsGraph);
+      // this.displayAnalyticsConvsGraph = false;
+      // await this.switchAnalyticsConvsGraph(this.displayAnalyticsConvsGraph);
 
-      this.displayAnalyticsIndicators = false;
-      await this.switchAnalyticsIndicators(this.displayAnalyticsIndicators);
+      // this.displayAnalyticsIndicators = false;
+      // await this.switchAnalyticsIndicators(this.displayAnalyticsIndicators);
 
       this.displayWhatsappAccountWizard = false;
       this.displayConnectWhatsApp = false;
@@ -826,11 +826,11 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         { pos: 8, type: 'child4' }
       ]
 
-      this.displayAnalyticsConvsGraph = false;
-      await this.switchAnalyticsConvsGraph(this.displayAnalyticsConvsGraph);
+      // this.displayAnalyticsConvsGraph = false;
+      // await this.switchAnalyticsConvsGraph(this.displayAnalyticsConvsGraph);
 
-      this.displayAnalyticsIndicators = false;
-      await this.switchAnalyticsIndicators(this.displayAnalyticsIndicators);
+      // this.displayAnalyticsIndicators = false;
+      // await this.switchAnalyticsIndicators(this.displayAnalyticsIndicators);
 
       this.displayWhatsappAccountWizard = false;
       this.displayConnectWhatsApp = false;
@@ -870,11 +870,11 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       ]
       console.log('[HOME] USECASE 3 userHasUnistalledWa', this.userHasUnistalledWa, 'whatsAppIsConnected', this.whatsAppIsConnected)
 
-      this.displayAnalyticsConvsGraph = false;
-      await this.switchAnalyticsConvsGraph(this.displayAnalyticsConvsGraph);
+      // this.displayAnalyticsConvsGraph = false;
+      // await this.switchAnalyticsConvsGraph(this.displayAnalyticsConvsGraph);
 
-      this.displayAnalyticsIndicators = false;
-      await this.switchAnalyticsIndicators(this.displayAnalyticsIndicators);
+      // this.displayAnalyticsIndicators = false;
+      // await this.switchAnalyticsIndicators(this.displayAnalyticsIndicators);
 
       if (!this.userHasUnistalledWa && !this.whatsAppIsConnected) {
         this.displayWhatsappAccountWizard = true;
@@ -920,11 +920,11 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
       console.log('[HOME] USECASE 4 userHasUnistalledWa', this.userHasUnistalledWa, 'whatsAppIsConnected', this.whatsAppIsConnected)
 
-      this.displayAnalyticsConvsGraph = false;
-      await this.switchAnalyticsConvsGraph(this.displayAnalyticsConvsGraph);
+      // this.displayAnalyticsConvsGraph = false;
+      // await this.switchAnalyticsConvsGraph(this.displayAnalyticsConvsGraph);
 
-      this.displayAnalyticsIndicators = false;
-      await this.switchAnalyticsIndicators(this.displayAnalyticsIndicators);
+      // this.displayAnalyticsIndicators = false;
+      // await this.switchAnalyticsIndicators(this.displayAnalyticsIndicators);
 
       if (!this.userHasUnistalledWa && !this.whatsAppIsConnected) {
         this.displayWhatsappAccountWizard = true;
@@ -969,11 +969,11 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         { pos: 8, type: 'child4' }
       ]
 
-      this.displayAnalyticsConvsGraph = false;
-      await this.switchAnalyticsConvsGraph(this.displayAnalyticsConvsGraph);
+      // this.displayAnalyticsConvsGraph = false;
+      // await this.switchAnalyticsConvsGraph(this.displayAnalyticsConvsGraph);
 
-      this.displayAnalyticsIndicators = false;
-      await this.switchAnalyticsIndicators(this.displayAnalyticsIndicators);
+      // this.displayAnalyticsIndicators = false;
+      // await this.switchAnalyticsIndicators(this.displayAnalyticsIndicators);
 
       this.displayWhatsappAccountWizard = false;
       this.displayConnectWhatsApp = false;
@@ -1012,11 +1012,11 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         { pos: 8, type: 'child4' }
       ]
 
-      this.displayAnalyticsConvsGraph = false;
-      this.switchAnalyticsConvsGraph(this.displayAnalyticsConvsGraph);
+      // this.displayAnalyticsConvsGraph = false;
+      // this.switchAnalyticsConvsGraph(this.displayAnalyticsConvsGraph);
 
-      this.displayAnalyticsIndicators = false;
-      this.switchAnalyticsIndicators(this.displayAnalyticsIndicators);
+      // this.displayAnalyticsIndicators = false;
+      // this.switchAnalyticsIndicators(this.displayAnalyticsIndicators);
 
       this.displayWhatsappAccountWizard = false;
       this.displayConnectWhatsApp = false;
@@ -1055,11 +1055,11 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         { pos: 8, type: 'child8' }
       ]
 
-      this.displayAnalyticsConvsGraph = false;
-      this.switchAnalyticsConvsGraph(this.displayAnalyticsConvsGraph);
+      // this.displayAnalyticsConvsGraph = false;
+      // this.switchAnalyticsConvsGraph(this.displayAnalyticsConvsGraph);
 
-      this.displayAnalyticsIndicators = false;
-      this.switchAnalyticsIndicators(this.displayAnalyticsIndicators);
+      // this.displayAnalyticsIndicators = false;
+      // this.switchAnalyticsIndicators(this.displayAnalyticsIndicators);
      
       if (!this.userHasUnistalledWa && !this.whatsAppIsConnected) {
         this.displayWhatsappAccountWizard = true;
@@ -1104,11 +1104,11 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         { pos: 8, type: 'child8' }
       ]
 
-      this.displayAnalyticsConvsGraph = false;
-      this.switchAnalyticsConvsGraph(this.displayAnalyticsConvsGraph);
+      // this.displayAnalyticsConvsGraph = false;
+      // this.switchAnalyticsConvsGraph(this.displayAnalyticsConvsGraph);
 
-      this.displayAnalyticsIndicators = false;
-      this.switchAnalyticsIndicators(this.displayAnalyticsIndicators);
+      // this.displayAnalyticsIndicators = false;
+      // this.switchAnalyticsIndicators(this.displayAnalyticsIndicators);
 
       if (!this.userHasUnistalledWa && !this.whatsAppIsConnected) {
         this.displayWhatsappAccountWizard = true;
