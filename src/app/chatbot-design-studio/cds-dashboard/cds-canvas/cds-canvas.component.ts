@@ -106,6 +106,11 @@ export class CdsCanvasComponent implements OnInit {
     this.stageService.setDrawer();
     this.connectorService.initializeConnectors();
     this.addEventListener();
+
+
+    setTimeout(()=> {
+      scaleAndcenterStageOnCenterPosition(this.listOfIntents)
+    }, 1000)
   }
 
 
@@ -178,7 +183,7 @@ export class CdsCanvasComponent implements OnInit {
     if (getAllIntents) {
       this.listOfIntents = this.intentService.listOfIntents;
       this.initListOfIntents();
-      scaleAndcenterStageOnCenterPosition(this.listOfIntents)
+      // scaleAndcenterStageOnCenterPosition(this.listOfIntents)
     }
   }
  
@@ -341,7 +346,7 @@ export class CdsCanvasComponent implements OnInit {
       },
       true
     );
-
+ 
     /** connector-deleted **
      * scatta quando viene eliminato un connettore:
      *  - elimino il connettore dalla lista dei connettori (deleteConnectorToList)

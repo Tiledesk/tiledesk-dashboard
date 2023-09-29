@@ -445,8 +445,12 @@ export function scaleAndcenterStageOnCenterPosition(listOfIntents: Intent[]){
     let maxX = listOfIntents.reduce((prev, curr)=> { return prev.attributes.position.x > curr.attributes.position.x ? prev : curr}).attributes.position.x
     let maxY = listOfIntents.reduce((prev, curr)=> { return prev.attributes.position.y > curr.attributes.position.y ? prev : curr}).attributes.position.y
     
-    var width = Math.abs(minX) + Math.abs(maxX)
-    var height = Math.abs(minY) + Math.abs(maxY)
+    let rightIntentWith = document.getElementById(listOfIntents.reduce((prev, curr)=> { return prev.attributes.position.x > curr.attributes.position.x ? prev : curr}).intent_id).getBoundingClientRect().width
+    let bottomIntentHeight = document.getElementById(listOfIntents.reduce((prev, curr)=> { return prev.attributes.position.y < curr.attributes.position.y ? prev : curr}).intent_id).getBoundingClientRect().height
+
+    var width = (maxX - minX) + rightIntentWith
+    var height = maxY - minY + bottomIntentHeight
+    
     // let calcCenter = { x:  Math.round(((minX + maxWidth)/2)), y: Math.round(((minY + maxHeight)/2)) };
     console.log('arrayyyyyyyy', arrayCoord)
     // console.log('centerrrr', calcCenter)
