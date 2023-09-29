@@ -5,6 +5,7 @@
 <!-- -------------------------------------------------------------------------------- -->
 <!-- New home  -->
 <!-- -------------------------------------------------------------------------------- -->
+
 <div class="overlay" style="display: none;" [ngStyle]="{ 'height': elemHomeMainContentHeight }"></div>
 <div class="main-content home-main-content"
   style="padding-top: 8px; padding-left: 0px ; padding-right: 0px;margin-top: 0px; background: rgb(241,245,249);">
@@ -278,6 +279,115 @@
         </div> <!-- ./ bg-card -->
         
         <div class="home-blocks-wpr">
+
+          
+          <!-- // Skeleton START -->
+          
+          <div> <!-- <div *ngIf="spinner-skeleton"> -->
+
+            <!-- // CARD 1 -->
+            <mat-card class="card mat-elevation-z3 is-loading">
+              <mat-card-content>
+                <div class="content">
+      
+                  <div style="margin-bottom: 16px;">
+                    <h2></h2>
+                    <div style="display: flex; flex-direction: row;">
+                      <div class="fake-circle"></div>
+                      <div class="fake-circle"></div>
+                      <div class="fake-circle"></div>
+                      <div class="fake-circle"></div>
+                      <div class="fake-circle"></div>
+                    </div>
+                  </div>
+
+                  <div style="display: flex; justify-content: center; margin-bottom: 16px;">
+                    <button style="width: 140px;"></button>
+                  </div>
+
+                  <h3 style="margin-bottom: 16px;"></h3>
+      
+                  <div style="width: 100%; display: flex; flex-direction: row; justify-content: flex-start;">
+                    <div class="fake-box"></div>
+                    <div class="fake-box"></div>
+                    <div class="fake-box"></div>
+                  </div>
+                </div>
+              </mat-card-content>
+            </mat-card>
+
+            <!-- // CARD 2 -->
+            <mat-card class="card mat-elevation-z3 is-loading">
+              <mat-card-content>
+                <div class="content">
+      
+                  <div>
+                    <h2></h2>
+                    <p></p>
+                    <p style="width: 560px;"></p>
+                  </div>
+                  
+                  <div class="fake-footer">
+                    <button style="width: 250px; margin-right: 10px;"></button>
+                    <button></button>
+                  </div>
+      
+                </div>
+              </mat-card-content>
+            </mat-card>
+
+            <!-- // CARD 3 -->
+            <mat-card class="card mat-elevation-z3 is-loading">
+              <mat-card-content>
+                <div class="content">
+      
+                  <div style="margin-bottom: 16px;">
+                    <h2 style="width: 180px;"></h2>
+                    <div style="display: flex; flex-direction: row;">
+                      <div class="fake-circle"></div>
+                      <div class="fake-circle"></div>
+                      <div class="fake-circle"></div>
+                    </div>
+                    
+                  </div>
+                  
+                  <p style="width: 560px;"></p>
+                  
+                  <div class="fake-footer">
+                    <button></button>
+                  </div>
+      
+                </div>
+              </mat-card-content>
+            </mat-card>
+
+            <!-- // CARD 4 -->
+            <mat-card class="card mat-elevation-z3 is-loading">
+              <mat-card-content>
+                <div class="content">
+      
+                  <div>
+                    <h2></h2>
+
+                    <div style="display: flex; flex-direction: row; justify-content: space-between;">
+                      <div>
+                        <p style="width: 620px;"></p>
+                        <p style="width: 460px;"></p>
+                        <p style="width: 540px;"></p>
+                      </div>
+                      <button style="width: 120px;"></button>
+                    </div>
+                  </div>
+                  
+      
+                </div>
+              </mat-card-content>
+            </mat-card>
+          </div>
+          <!-- // Skeleton END -->
+      
+          
+
           <div class="home--blocks" id="homeBlocks" *ngFor="let item of child_list_order">
 
            
