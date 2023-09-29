@@ -32,6 +32,7 @@ import { DashboardService } from 'app/chatbot-design-studio/services/dashboard.s
 
 
 
+
 /** CLASSE DI SERVICES PER TUTTE LE AZIONI RIFERITE AD OGNI SINGOLO INTENT **/
 
 @Injectable({
@@ -946,16 +947,21 @@ export class IntentService {
     const intentsToUpdate = object.intentsToUpdate;
     console.log('[INTENT SERVICE] -> restoreAction : typeAction:', object, object.intentsToUpdate);
     
+    
     if(restoreAction == 'DEL'){
       this.deleteIntentToListOfIntents(intent.intent_id);
+      this.connectorService.deleteConnectorByToId(intent.intent_id); // elimina i connettori e salva!
       intentsToUpdate.forEach(element => {
         console.log('[INTENT SERVICE] -> REPLACE ', element);
         this.listOfIntents = this.replaceIntent(element, this.listOfIntents);
-        this.connectorService.deleteConnectorByToId(intent.intent_id); // elimina i connettori e salva!
-        // this.updateIntent(element);
+        this.connectorService.deleteConnectorsOutOfBlock(element.intent_id);
+        this.updateIntent(element);
       });
       this.refreshIntents();
       this.deleteIntent(intent);
+      setTimeout(() => {
+        this.connectorService.createConnectors(this.listOfIntents);
+      }, 100);
       return;
     } 
     
@@ -964,8 +970,10 @@ export class IntentService {
       intentsToUpdate.forEach(element => {
         console.log('[INTENT SERVICE] -> REPLACE ', element);
         this.listOfIntents = this.replaceIntent(element, this.listOfIntents);
-        this.createConnectors(element); // crea i connettori e salva
+        this.connectorService.deleteConnectorsOutOfBlock(element.intent_id);
+        // this.createConnectors(element); // crea i connettori e salva
         this.updateIntent(element);
+        // this.connectorService.createConnectors(this.listOfIntents);
       });
       console.log('[INTENT SERVICE] -> UPDATED ', this.listOfIntents);
       let isOnTheStage = await this.isElementOnTheStage(intent.intent_id);
@@ -975,6 +983,10 @@ export class IntentService {
       }
       this.refreshIntents();
       this.saveNewIntent(intent);
+
+      setTimeout(() => {
+        this.connectorService.createConnectors(this.listOfIntents);
+      }, 1000);
       return;
     }
 
@@ -984,17 +996,49 @@ export class IntentService {
         // this.refreshIntents();
         // this.updateIntent(intent, 0, null, true);
     } 
+
+    
+   
   }
 
 
+  // finds all instances of the element in the object
+  
+  // private findsAllElementsInObject(obj, elements) {
+  //   for (const chiave in obj) {
+  //     console.log('[INTENT SERVICE] -> chiave', chiave);
+  //     if (typeof obj[chiave] === 'object') {
+  //       this.findsAllElementsInObject(obj[chiave], elements);
+  //     } else if (chiave === 'buttons') {
+  //       elements.push(obj[chiave]);
+  //     }
+  //   }
+  // }
+
+// Funzione per trovare tutti gli oggetti "buttons" in modo ricorsivo
+private findsAllElementsInObject(obj) {
+  let buttonsArray = [];
+  for (const key in obj) {
+    if (key === 'buttons') {
+      buttonsArray = buttonsArray.concat(obj[key]);
+    } else if (Array.isArray(obj[key])) {
+      obj[key].forEach((item) => {
+        buttonsArray = buttonsArray.concat(this.findsAllElementsInObject(item));
+      });
+    } else if (typeof obj[key] === 'object') {
+      buttonsArray = buttonsArray.concat(this.findsAllElementsInObject(obj[key]));
+    }
+  }
+  return buttonsArray;
+}
+
 
 private createConnectors(intent){
-  // console.log('[INTENT SERVICE] -> createConnectors', intent);
+  console.log('[INTENT SERVICE] -> createConnectors', intent);
+  
   intent.actions.forEach(element => {
-
     if(element._tdActionType == 'intent'){
       console.log('[INTENT SERVICE] -> createConnectors', element._tdActionType);
-      console.log("intentName:",  element.intentName);
       if(element.intentName){
         const toId = element.intentName.replace("#", "");
         const fromId = intent.intent_id+'/'+element._tdActionId;
@@ -1002,6 +1046,37 @@ private createConnectors(intent){
         this.connectorService.createConnectorFromId(fromId, toId);
       }
     }
+
+    if(element._tdActionType == 'reply'){
+      console.log('[INTENT SERVICE] -> createConnectors element:', element);
+      let buttons = this.findsAllElementsInObject(element);
+      console.log("creato connector: btn", buttons);
+      buttons.forEach(btn => {
+        // if (btn.type === TYPE_BUTTON.ACTION &&  btn.__isConnected === true && btn.__idConnector){
+        //   // this.changeActionReply.emit();
+        // } 
+
+
+        // const toId = element.intentName.replace("#", "");
+        // const fromId = intent.intent_id+'/'+element._tdActionId;
+        // console.log("creato connector:",  toId, fromId);
+        // this.connectorService.createConnectorFromId(fromId, toId);
+      });
+    }
+      // // ADD / EDIT
+      // // buttonChanged.__isConnected = true;
+      // buttonChanged.__idConnector = this.connector.fromId;
+      // buttonChanged.action = buttonChanged.action? buttonChanged.action : '#' + this.connector.toId;
+      // buttonChanged.type = TYPE_BUTTON.ACTION;
+      // console.log(' updateConnector :: ', this.buttons);
+      // if(!buttonChanged.__isConnected){
+      //   buttonChanged.__isConnected = true;
+      //   this.updateIntentFromConnectorModification.emit(this.connector.id);
+      //   // this.changeActionReply.emit();
+      // } 
+        
+        // this.changeActionReply.emit();
+    
   });
 
 

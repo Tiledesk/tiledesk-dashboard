@@ -546,11 +546,23 @@ export class CdsCanvasComponent implements OnInit {
     console.log('[CDS-CANVAS]  deleteIntent',intent);
     let intentsToUpdateUndo = [];
     let intentsToUpdateRedo = [];
-    
+    let intentToCancel =  JSON.parse(JSON.stringify(intent));
     const prevIntents = [ ...this.intentService.prevListOfIntent ];
-    const intentUpdateUndo = prevIntents.find((obj) => obj.intent_id == intent.intent_id);
-    if(intentUpdateUndo) intentsToUpdateUndo.push(intentUpdateUndo);
-    console.log('[CDS-CANVAS] intentsToUpdateUndo ', intentUpdateUndo);
+    // recupero tutti i connettori in ingresso di intent_id e creo un array di elementi da updare
+    const connectorsID = this.connectorService.searchConnectorsInOfIntent(intent.intent_id);
+    connectorsID.forEach(connector => {
+      let splitFromId = connector['id'].split('/');
+      let intent_id = splitFromId[0];
+      const idEsistente = intentsToUpdateUndo.some((obj) => obj.intent_id === intent_id);
+      if (!idEsistente) {
+        const intentUpdateUndo = prevIntents.find((obj) => obj.intent_id == intent_id);
+        intentsToUpdateUndo.push(intentUpdateUndo);
+      }
+    });
+    console.log('[CDS-CANVAS] connectorsID ', connectorsID);
+    // const intentUpdateUndo = prevIntents.filter((obj) => obj.intent_id == intent.intent_id);
+    // if(intentUpdateUndo) intentsToUpdateUndo.push(intentUpdateUndo);
+    // console.log('[CDS-CANVAS] intentsToUpdateUndo ', intentUpdateUndo);
 
     setTimeout(() => {
       this.intentSelected = null;
@@ -559,12 +571,19 @@ export class CdsCanvasComponent implements OnInit {
       this.intentService.deleteIntent(intent);
       this.connectorService.deleteConnectorsOfBlock(intent.intent_id);
     }, 0);
-    
-    const nowIntents = [ ...this.listOfIntents ];
-    const intentUpdateRedo = nowIntents.find((obj) => obj.intent_id == intent.intent_id);
-    if(intentUpdateRedo) intentsToUpdateRedo.push(intentUpdateRedo);
 
-    if(intentUpdateRedo && intentUpdateUndo)this.intentService.addIntentToUndoRedo('DEL', intent, intentsToUpdateUndo, intentsToUpdateRedo);
+    const nowIntents = [ ...this.listOfIntents ];
+    connectorsID.forEach(connector => {
+      let splitFromId = connector['id'].split('/');
+      let intent_id = splitFromId[0];
+      const idEsistente = intentsToUpdateRedo.some((obj) => obj.intent_id === intent_id);
+      if (!idEsistente) {
+        const intentUpdateRedo = nowIntents.find((obj) => obj.intent_id == intent_id);
+        intentsToUpdateRedo.push(intentUpdateRedo);
+      }
+    });
+
+    this.intentService.addIntentToUndoRedo('DEL', intentToCancel, intentsToUpdateUndo, intentsToUpdateRedo);
     // //this.intentService.deleteIntentToListOfIntents(intent.intent_id);
   }
 
@@ -668,14 +687,14 @@ export class CdsCanvasComponent implements OnInit {
     const intent_id = this.intentService.previousIntentId;
     const intentUpdateUndo = this.listOfIntents.find((obj) => obj.intent_id === intent_id);
     if(intentUpdateUndo)intentsToUpdateUndo.push(JSON.parse(JSON.stringify(intentUpdateUndo)));
-
+    
     const intentUpdateRedo = this.intentService.deleteActionFromPreviousIntentOnMovedAction(action);
+    if(intentUpdateRedo)intentsToUpdateRedo.push({ ...intentUpdateRedo });
 
     let intent = this.intentService.createNewIntent(this.id_faq_kb, action, pos);
-    if(intentUpdateRedo)intentsToUpdateRedo.push(JSON.parse(JSON.stringify(intentUpdateRedo)));
-
     this.intentService.addNewIntentToListOfIntents(intent);
-    // this.addIntentToUndoRedo('PUSH', intent, undoIntents, redoIntents);
+    if(intentUpdateRedo && intentUpdateUndo)this.intentService.addIntentToUndoRedo('PUSH', intent, intentsToUpdateUndo, intentsToUpdateRedo);
+
     const newIntent = await this.settingAndSaveNewIntent(pos, intent);
     if (newIntent) {
       this.logger.log('[CDS-CANVAS] cancello i connettori della action draggata');

@@ -44,6 +44,19 @@ export class ConnectorService {
     this.tiledeskConnectors.removeConnectorDraft();
   }
 
+searchConnectorsInOfIntent(intent_id){
+  console.log('[CONNECTOR-SERV] -----> searchConnectorsInOfIntent::: ', intent_id);
+  console.log('[CONNECTOR-SERV] -----> searchConnectorsInOfIntent::: ', this.tiledeskConnectors.connectors);
+  const INconnectors = Object.keys(this.tiledeskConnectors.connectors)
+  .filter(key => key.includes(intent_id) && !key.startsWith(intent_id) )
+  .reduce((filteredMap, key) => {
+    filteredMap[key] = this.tiledeskConnectors.connectors[key];
+    return filteredMap;
+  }, {});
+  const arrayConnectors = Object.values(INconnectors);
+  console.log('[CONNECTOR-SERV] -----> arrayConnectors::: ', arrayConnectors);
+  return arrayConnectors
+}
 
   searchConnectorsOfIntent(intent_id){
     console.log('[CONNECTOR-SERV] -----> searchConnectorsOfIntent::: ', intent_id);
