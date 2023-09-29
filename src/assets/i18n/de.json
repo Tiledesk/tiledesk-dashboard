@@ -24,6 +24,7 @@
 	"Request": "Anfrage",
 	"History": "Verlauf",
 	"Settings": "Einstellungen",
+	"ViewOption": "Optionen anzeigen",
 	"Notification": "Benachrichtigungen",
 	"Departments": "Abteilungen",
 	"Resources": "Ressourcen",
@@ -2255,8 +2256,8 @@
 	"AlternativeMethod": "Alternative methode",
 	"FromHere": "von hier",
 	"WidgetInstallations": {
-		"Title": "Show live chat to your visitors",
-        "Subtitle": "Allow your visitors to contact you via live chat, by adding our widget to your website.",
+		"Title": "Zeigen Sie Ihren Besuchern den Live-Chat",
+        "Subtitle": "Ermöglichen Sie Ihren Besuchern, Sie per Live-Chat zu kontaktieren, indem Sie unser Widget zu Ihrer Website hinzufügen.",
 		"GenericStep1": "Kopieren Sie den folgenden JavaScript-Code",
 		"WordpressStep1": "Melden Sie sich in der WordPress-Systemsteuerung an.",
 		"WordpressStep2": "Gehen Sie zu „Darstellung > Themen-Editor“.",

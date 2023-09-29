@@ -24,6 +24,7 @@
     "Request": "Беседа",
     "History": "История",
     "Settings": "Настройки",
+    "ViewOption": "Посмотреть варианты",
     "Notification": "Уведомления",
     "Departments": "Департаменты",
     "Resources": "Ресурсы",
@@ -2255,8 +2256,8 @@
     "AlternativeMethod": "альтернативный метод",
     "FromHere": "отсюда",
     "WidgetInstallations": {
-        "Title": "Show live chat to your visitors",
-        "Subtitle": "Allow your visitors to contact you via live chat, by adding our widget to your website.",
+        "Title": "Покажите живой чат своим посетителям",
+        "Subtitle": "Позвольте вашим посетителям связываться с вами через чат, добавив наш виджет на свой сайт.",
         "GenericStep1": "Скопируйте следующий код JavaScript",
         "WordpressStep1": "Войдите в панель управления Wordpress.",
         "WordpressStep2": "Перейдите в «Внешний вид > Редактор тем».",

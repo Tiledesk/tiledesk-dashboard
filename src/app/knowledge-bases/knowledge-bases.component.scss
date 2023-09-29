@@ -113,6 +113,9 @@
     }
 }
 
+.status-icon{
+    cursor: pointer;
+}
 .status-icon#done {
     margin-top: 5px;
     color: #18e32c;
@@ -361,16 +364,16 @@ table {
     animation-direction: reverse !important;
 }
 
-::ng-deep .custom-mat-tooltip {
-    background-color: #fff !important;
-    color: #555555 !important;
-    font-size: 12px !important;
-    border-radius: 2px !important;
-    font-family: "Poppins" !important;
-    padding-top: 8px !important;
-    padding-bottom: 8px !important;
-    border: 1px solid #e5effe !important;
-}
+// ::ng-deep .custom-mat-tooltip {
+//     background-color: #fff !important;
+//     color: #555555 !important;
+//     font-size: 12px !important;
+//     border-radius: 2px !important;
+//     font-family: "Poppins" !important;
+//     padding-top: 8px !important;
+//     padding-bottom: 8px !important;
+//     border: 1px solid #e5effe !important;
+// }
 
 .show-hide-button {
     cursor: pointer;

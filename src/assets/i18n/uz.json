@@ -24,6 +24,7 @@
     "Request": "Suhbat",
     "History": "Tarix",
     "Settings": "Sozlamalar",
+    "ViewOption": "Variantlarni ko‘rish",
     "Notification": "Bildirishnomalar",
     "Departments": "Bo'limlar",
     "Resources": "Resurslar",
@@ -2254,8 +2255,8 @@
     "AlternativeMethod": "muqobil usul",
     "FromHere": "bu yerdan",
     "WidgetInstallations": {
-        "Title": "Show live chat to your visitors",
-        "Subtitle": "Allow your visitors to contact you via live chat, by adding our widget to your website.",
+        "Title": "Mehmonlaringizga jonli suhbatni ko'rsating",
+        "Subtitle": "Vidjetimizni veb-saytingizga qo‘shish orqali tashrif buyuruvchilaringizga jonli chat orqali siz bilan bog‘lanishlariga ruxsat bering.",
         "GenericStep1": "Quyidagi JavaScript kodidan nusxa oling",
         "WordpressStep1": "Wordpress boshqaruv paneliga kiring.",
         "WordpressStep2": "“Tashqi ko'rinish> Mavzu muharriri“ ga o'ting.",
