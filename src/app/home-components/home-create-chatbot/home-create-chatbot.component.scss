@@ -505,19 +505,24 @@ body {
 
 .other-chatbots {
   height: 45px;
-  background: rgb(33, 150, 243);
+  // background: rgb(33, 150, 243);
+  background-color: #f4f5f7;
   width: 45px;
   font-size: 16px;
   text-align: center;
   line-height: 2.9;
   font-weight: 400;
-  color: #fff;
+  color: #7a869a;
   letter-spacing: -1px;
   position: relative;
   left: -5px;
   cursor: pointer;
   border-radius: 50%;
   border: 1px solid #eee;
+}
+
+.other-chatbots:hover { 
+  color: rgb(33, 150, 243);
 }
 
 // --------------------------------------------------
