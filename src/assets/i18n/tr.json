@@ -24,6 +24,7 @@
     "Request": "Konuşma",
     "History": "Tarih",
     "Settings": "Ayarlar",
+    "ViewOption": "Seçenekleri gör",
     "Notification": "Bildirimler",
     "Departments": "Bölümler",
     "Resources": "Kaynaklar",
@@ -2255,8 +2256,8 @@
     "AlternativeMethod": "alternatif yöntem",
     "FromHere": "buradan",
     "WidgetInstallations": {
-        "Title": "Show live chat to your visitors",
-        "Subtitle": "Allow your visitors to contact you via live chat, by adding our widget to your website.",
+        "Title": "Ziyaretçilerinize canlı sohbet gösterin",
+        "Subtitle": "Widget'ımızı web sitenize ekleyerek ziyaretçilerinizin sizinle canlı sohbet yoluyla iletişim kurmasına olanak tanıyın.",
         "GenericStep1": "Aşağıdaki JavaScript kodunu kopyalayın",
         "WordpressStep1": "Wordpress kontrol paneline giriş yapın.",
         "WordpressStep2": "“Görünüm > Tema Düzenleyici“ye gidin.",
