@@ -437,7 +437,7 @@ export function checkInternalIntent(intent: Intent): boolean{
 }
 
 
-export function centerStageOnCenterPosition(listOfIntents: Intent[]){
+export function scaleAndcenterStageOnCenterPosition(listOfIntents: Intent[]){
     let arrayCoord = []
     listOfIntents.forEach(el => arrayCoord.push(el.attributes.position))
     let minX = listOfIntents.reduce((prev, curr)=> { return prev.attributes.position.x < curr.attributes.position.x ? prev : curr}).attributes.position.x
@@ -453,7 +453,12 @@ export function centerStageOnCenterPosition(listOfIntents: Intent[]){
     console.log('width heightttt', width, height)
 
     const stage = document.getElementById('tds_container').getBoundingClientRect()
-    var scale = Math.min(width / stage.width, height / stage.height);
+    var scale = Math.min(stage.width / width, stage.height / height);
     console.log('scaleeeee', scale)
+
+    var translationX = Math.round((stage.width - (width * scale)) / 2);
+    var translationY = Math.round((stage.height - (height * scale)) / 2);
+    
+    console.log('translateeee x- y ', translationX, translationY)
     // return { width: srcWidth*ratio, height: srcHeight*ratio };
 }
