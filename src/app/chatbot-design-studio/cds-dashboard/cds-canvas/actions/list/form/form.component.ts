@@ -79,7 +79,8 @@ export class CdsFormComponent implements OnInit, OnChanges {
 
   ngOnChanges() {
     console.log('[FORM-COMP] (OnChanges) intentForm ', this.intentForm);
-    this.initialize();
+    if(this.intentForm)
+      this.initialize();
   }
 
 
