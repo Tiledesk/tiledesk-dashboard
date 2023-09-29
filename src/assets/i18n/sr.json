@@ -24,6 +24,7 @@
     "Request": "Разговор",
     "History": "Историја",
     "Settings": "Подешавања",
+    "ViewOption": "Прикажи опције",
     "Notification": "Обавештења",
     "Departments": "Одељења",
     "Resources": "Ресурси",
@@ -2255,8 +2256,8 @@
     "AlternativeMethod": "алтернативни метод",
     "FromHere": "одавде",
     "WidgetInstallations": {
-        "Title": "Show live chat to your visitors",
-        "Subtitle": "Allow your visitors to contact you via live chat, by adding our widget to your website.",
+        "Title": "Покажите својим посетиоцима ћаскање уживо",
+        "Subtitle": "Дозволите својим посетиоцима да вас контактирају путем ћаскања уживо, додавањем нашег виџета на вашу веб локацију.",
         "GenericStep1": "Копирајте следећи ЈаваСкрипт код",
         "WordpressStep1": "Пријавите се на Wordpress контролну таблу.",
         "WordpressStep2": "Идите на „Изглед> Уређивач теме“.",

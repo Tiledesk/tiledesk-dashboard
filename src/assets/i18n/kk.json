@@ -24,6 +24,7 @@
     "Request": "Әңгіме",
     "History": "Тарих",
     "Settings": "Параметрлер",
+    "ViewOption": "Опцияларды көру",
     "Notification": "Хабарландырулар",
     "Departments": "кафедралар",
     "Resources": "Ресурстар",
@@ -2255,8 +2256,8 @@
     "AlternativeMethod": "балама әдіс",
     "FromHere": "осы жерден",
     "WidgetInstallations": {
-        "Title": "Show live chat to your visitors",
-        "Subtitle": "Allow your visitors to contact you via live chat, by adding our widget to your website.",
+        "Title": "Келушілерге тікелей чатты көрсетіңіз",
+        "Subtitle": "Веб-сайтыңызға виджетті қосу арқылы келушілерге тікелей чат арқылы сізбен байланысуға мүмкіндік беріңіз.",
         "GenericStep1": "Келесі JavaScript кодын көшіріңіз",
         "WordpressStep1": "Wordpress басқару тақтасына кіріңіз.",
         "WordpressStep2": "«Көрініс > Тақырып редакторы» тармағына өтіңіз.",

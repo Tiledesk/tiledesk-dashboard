@@ -354,6 +354,8 @@ import { OpenaiService } from './services/openai.service';
 import { KnowledgeBasesComponent } from './knowledge-bases/knowledge-bases.component';
 import { HomeKbModalComponent } from './home-components/home-kb/home-kb-modal/home-kb-modal.component';
 import { HomeCreateChatbotModalComponent } from './home-components/home-create-chatbot/home-create-chatbot-modal/home-create-chatbot-modal.component';
+import { HomeInviteTeammateModalComponent } from './home-components/home-create-teammate/home-invite-teammate-modal/home-invite-teammate-modal.component';
+import { HomeInviteTeammateErrorModalComponent } from './home-components/home-create-teammate/home-invite-teammate-error-modal/home-invite-teammate-error-modal.component';
 
 
 
@@ -625,7 +627,9 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     CnpIsMobileComponent,
     HomeKbComponent,
     HomeKbModalComponent,
-    HomeCreateChatbotModalComponent
+    HomeCreateChatbotModalComponent,
+    HomeInviteTeammateModalComponent,
+    HomeInviteTeammateErrorModalComponent
   ],
   imports: [
     TooltipModule.forRoot(CutomTooltipOptions as TooltipOptions),
