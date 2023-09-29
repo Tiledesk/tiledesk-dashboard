@@ -1,0 +1,42 @@
+<h1 mat-dialog-title> 
+   Invite teammate
+</h1>
+<div mat-dialog-content>
+    <form class="invite-teammate-form">
+        <mat-form-field appearance="fill" class="mat--form-field">
+            <mat-label>Email</mat-label>
+            <input type="email" matInput [formControl]="emailFormControl" [(ngModel)]="teammateEmail">
+            <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
+                Please enter a valid email
+            </mat-error>
+            <mat-error *ngIf="emailFormControl.hasError('required')">
+                Email is <strong>required</strong>
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="mat--form-field">
+            <mat-label>Role</mat-label>
+            <select matNativeControl required #selectElem (change)="setSelected(selectElem.value)" [(ngModel)]="selectedRole" [formControl]="selectFormControl">
+                <option label="Select a role"></option>
+                <option value="admin">Administrator</option>
+                <option value="agent">Agent</option>
+              </select>
+              <mat-error *ngIf="selectFormControl.hasError('required')">
+                This field is required
+              </mat-error>
+          </mat-form-field>
+    </form>
+</div>
+<div mat-dialog-actions style="justify-content: center;">
+    <button class="mat-dialog-close-btn" mat-button (click)="onNoClick()">
+        <!-- {{ "Cancel" | translate }} -->
+        Cancel
+    </button>
+    <!-- [disabled]="newKb.url.length === 0 || !isValidURL" -->
+    <button [disabled]="emailFormControl.hasError('required') || emailFormControl.hasError('email') || selectFormControl.hasError('required')" 
+        class="mat-dialog-ok-btn" mat-button
+        (click)="onOkPresssed(teammateEmail)" cdkFocusInitial>
+       
+        Invite
+    </button>
+</div>
