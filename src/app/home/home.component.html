@@ -283,7 +283,7 @@
           
           <!-- // Skeleton START -->
           
-          <div> <!-- <div *ngIf="spinner-skeleton"> -->
+          <div *ngIf="showskeleton" class="skeleton"> <!-- <div *ngIf="spinner-skeleton"> -->
 
             <!-- // CARD 1 -->
             <mat-card class="card mat-elevation-z3 is-loading">
@@ -387,8 +387,8 @@
           <!-- // Skeleton END -->
       
           
-
-          <div class="home--blocks" id="homeBlocks" *ngFor="let item of child_list_order">
+          <ng-container *ngIf="!showskeleton">
+          <div  class="home--blocks" id="homeBlocks" *ngFor="let item of child_list_order">
 
            
 
@@ -488,8 +488,9 @@
             </ng-container>
 
           </div>
+        </ng-container>
         </div>
-        <div class="news-feed-wpr" style="    background-color: rgb(241,245,249);     padding-left: 30px;">
+        <div *ngIf="!showskeleton" class="news-feed-wpr" style="    background-color: rgb(241,245,249);     padding-left: 30px;">
           <appdashboard-home-news-feed *ngIf="displayNewsFeed"> </appdashboard-home-news-feed>
         </div>
       </div>

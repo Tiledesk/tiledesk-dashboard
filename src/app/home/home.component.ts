@@ -182,6 +182,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   chatbotCreated: boolean
   userHasClickedDisplayWAWizard: boolean = false
   PROJECT_ATTRIBUTES: any
+ showskeleton: boolean = true;
   // list_case1 = [
   //   { pos: 1, type: 'child1'},
   //   { pos: 2, type: 'child2'},
@@ -668,6 +669,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   async getOnbordingPreferences(project_attributes) {
+  this.showskeleton = false;
+
     console.log('[HOME] - getOnbordingPreferences PREFERENCES  project_attributes', project_attributes);
     // if (this.current_prjct &&
     //   this.current_prjct.id_project &&
