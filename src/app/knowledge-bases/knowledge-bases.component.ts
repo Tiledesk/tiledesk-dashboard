@@ -100,8 +100,8 @@ export class KnowledgeBasesComponent implements OnInit {
       } else {
         this.addButtonDisabled = true;
       }
+      this.checkAllStatuses();
       this.startPooling();
-      // this.checkAllStatuses();
     }, (error) => {
       this.logger.error("[KNOWLEDGE BASES COMP] ERROR get kbSettings: ", error);
     }, () => {
