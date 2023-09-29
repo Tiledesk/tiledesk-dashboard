@@ -317,7 +317,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   getProjectById(projectId) {
     this.projectService.getProjectById(projectId).subscribe((project: any) => {
       console.log('[HOME] - GET PROJECT BY ID - PROJECT: ', project);
-
+      
       if (project && project.attributes && project.attributes.userPreferences) {
         this.PROJECT_ATTRIBUTES = project.attributes;
         this.getOnbordingPreferences(this.PROJECT_ATTRIBUTES)
@@ -332,9 +332,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       console.error('[HOME] - GET PROJECT BY ID - ERROR ', error);
     }, () => {
       console.log('[HOME] - GET PROJECT BY ID * COMPLETE * ');
-
       // this.getApps();
-
+      setTimeout(() => {
+        this.showskeleton = false;
+      }, 1000);
     });
   }
 
@@ -669,7 +670,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   async getOnbordingPreferences(project_attributes) {
-  this.showskeleton = false;
 
     console.log('[HOME] - getOnbordingPreferences PREFERENCES  project_attributes', project_attributes);
     // if (this.current_prjct &&
