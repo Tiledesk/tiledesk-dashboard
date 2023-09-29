@@ -37,16 +37,18 @@ export class CdsActionIntentComponent implements OnInit {
   ngOnInit(): void {
     this.logger.log("[CDS-ACTION-INTENT] elementSelected: ", this.action, this.intentSelected)
     this.intentService.isChangedConnector$.subscribe((connector: any) => {
-      this.logger.log('[CDS-ACTION-INTENT] - subcribe to isChangedConnector$ >>', connector);
+      console.log('[CDS-ACTION-INTENT] - subcribe to isChangedConnector$ >>', connector);
       this.connector = connector;
       this.updateConnector();
     });
     this.initialize();
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    
-  }
+  // ngOnChanges(changes: SimpleChanges): void {
+  //   console.log('[CDS-ACTION-INTENT] >>', changes);
+  //   this.intentSelected = changes.intentSelected.currentValue;
+  //   this.onChangeConnector();
+  // }
 
   private initialize() {
     // this.isConnected = false;
@@ -86,6 +88,18 @@ export class CdsActionIntentComponent implements OnInit {
     }
   }
 
+
+  // onChangeConnector(){
+  //   if(this.action.intentName == null){
+  //     // DELETE 
+  //     this.logger.log('[CDS-ACTION-INTENT] deleteConnector :: ');
+  //     this.isConnected = false;
+  //   } else {
+  //     // ADD / EDIT
+  //     console.log('[CDS-ACTION-INTENT] updateConnector :: ');
+  //     this.isConnected = true;
+  //   }
+  // }
 
   onChangeSelect(event: {name: string, value: string}){
     this.logger.log('CDS-ACTION-INTENT onChangeSelect-->', event)

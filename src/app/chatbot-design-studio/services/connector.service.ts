@@ -279,19 +279,40 @@ export class ConnectorService {
   }
   
 
-
-  createConnectorFromId(fromId, toId){
-    console.log('[CONNECTOR-SERV] createConnectorFromId fromId ', fromId, ' toId ', toId)
-    let intervalId = setInterval(async () => {
-      const result = await this.tiledeskConnectors.createConnectorFromId(fromId, toId);
-      if (result === true) {
+  // funzione SINCRONA
+  async createConnectorFromId(fromId, toId) {
+    console.log('[CONNECTOR-SERV] createConnectorFromId fromId ', fromId, ' toId ', toId);
+    return new Promise(async (resolve) => {
+      let intervalId = setInterval(async () => {
+        const result = await this.tiledeskConnectors.createConnectorFromId(fromId, toId);
+        if (result === true) {
+          console.log('[CONNECTOR-SERV] sync 1 ');
+          clearInterval(intervalId);
+          resolve(true);
+        }
+      }, 100);
+      setTimeout(() => {
         clearInterval(intervalId);
-      }
-    }, 100);
-    setTimeout(() => {
-      clearInterval(intervalId);
-    }, 1000);
+        resolve(true);
+      }, 1000);
+    });
   }
+
+
+  // funzione ASINCRONA
+  // createConnectorFromId(fromId, toId){
+  //   console.log('[CONNECTOR-SERV] createConnectorFromId fromId ', fromId, ' toId ', toId)
+  //   let intervalId = setInterval(async () => {
+  //     const result = this.tiledeskConnectors.createConnectorFromId(fromId, toId);
+  //     if (result === true) {
+  //       console.log('[CONNECTOR-SERV] sync 1 ');
+  //       clearInterval(intervalId);
+  //     }
+  //   }, 100);
+  //   setTimeout(() => {
+  //     clearInterval(intervalId);
+  //   }, 1000);
+  // }
  
 
   // deleteINConnectorsOfBlock(intent_id){
@@ -320,6 +341,13 @@ export class ConnectorService {
     this.tiledeskConnectors.deleteConnectorsFromActionByActionId(actionId);
     console.log('[CONNECTOR-SERV] deleteConnectorsFromActionByActionId actionId ' ,actionId )
   }
+
+
+  deleteConnectorByToId(intentId){
+    this.tiledeskConnectors.deleteConnectorByToId(intentId);
+    console.log('[CONNECTOR-SERV] deleteConnectorByToId intentId ' ,intentId );
+  }
+
 
   updateConnector(elementID){
     console.log('[CONNECTOR-SERV] movedConnector elementID ' ,elementID )
