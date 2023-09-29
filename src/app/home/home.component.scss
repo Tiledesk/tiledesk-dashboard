@@ -2783,3 +2783,132 @@ img {
   padding-top: 8px !important;
   padding-bottom: 8px !important;
 }
+
+
+// FOR SKELETON
+.card {
+  margin-bottom: 25px;
+  padding: 24px;
+  width: 100%;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2),0px 5px 8px 0px rgba(0, 0, 0, 0.14),0px 1px 14px 0px rgba(0, 0, 0, 0.12);
+  -webkit-animation: fadein 0.5s; /* Safari, Chrome and Opera > 12.1 */
+     -moz-animation: fadein 0.5s; /* Firefox < 16 */
+      -ms-animation: fadein 0.5s; /* Internet Explorer */
+       -o-animation: fadein 0.5s; /* Opera < 12.1 */
+          animation: fadein 0.5s;
+
+  .content {
+      padding: 0px;
+  }
+}
+
+// loading
+@keyframes shine {
+  to {
+      background-position-x: -200%;
+  }
+}
+
+.card.is-loading {
+  .image,
+  h2, h3,
+  p, button {
+      background: #eee;
+      background: linear-gradient(110deg, #ececec 8%, #f5f5f5 18%, #ececec 33%);
+      border-radius: 5px;
+      background-size: 200% 100%;
+      animation: 1.5s shine linear infinite;
+  }
+
+  .image {
+      border: none;
+      border-radius: 30px;
+  }
+
+  h2 {
+      // width: 240px;
+      // height: 18px;
+      // margin: 0px;
+      width: 400px;
+      height: 22px;
+      margin: 0;
+      margin-bottom: 16px;
+  }
+
+  h3 {
+      width: 240px;
+      height: 16px;
+  }
+
+  p {
+      width: 700px;
+      height: 12px;
+      margin: 0px;
+      margin-bottom: 10px;
+  }
+
+  button {
+    width: 200px;
+    height: 40px;
+    border: none;
+    border-radius: 20px;
+  }
+
+  .fake-box {
+    background: #eee;
+    background: linear-gradient(110deg, #ececec 8%, #f5f5f5 18%, #ececec 33%);
+    border-radius: 5px;
+    background-size: 200% 100%;
+    animation: 1.5s shine linear infinite;
+    width: 235px;
+    height: 115px;
+    margin-right: 10px;
+  }
+
+  .fake-circle {
+    background: #eee;
+    background: linear-gradient(110deg, #ececec 8%, #f5f5f5 18%, #ececec 33%);
+    border-radius: 23px;
+    background-size: 200% 100%;
+    animation: 1.5s shine linear infinite;
+    width: 46px;
+    height: 46px;
+    border: solid 2px white;
+    margin-left: -6px;
+  }
+
+  .fake-footer {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+  }
+
+}
+
+// fade in card animation
+@keyframes fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Firefox < 16 */
+@-moz-keyframes fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Safari, Chrome and Opera > 12.1 */
+@-webkit-keyframes fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Internet Explorer */
+@-ms-keyframes fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+// END SKELETON STYLE
