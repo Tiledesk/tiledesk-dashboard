@@ -577,7 +577,7 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
       this.controllerService.closeAllPanels();
       this.intentService.setIntentSelected(this.intent.intent_id);
       this.connectorService.updateConnector(this.intent.intent_id);
-      const response = await this.intentService.updateIntent(this.intent);
+      const response = await this.intentService.onUpdateIntentWithTimeout(this.intent);
       if (response) {
         // this.connectorService.updateConnector(this.intent.intent_id);
       }
@@ -611,7 +611,7 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
 
   public async onUpdateIntentFromConnectorModification(connector){
     console.log('[CDS-INTENT] onUpdateIntentFromConnectorModification:::: intent::: ', connector, this.intent);
-    const response = await this.intentService.updateIntent(this.intent, 0);
+    const response = await this.intentService.onUpdateIntentWithTimeout(this.intent, 0);
     if (response) {
       console.log('updateIntent: ', this.intent);
     }
@@ -621,10 +621,15 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
 
   /**  onUpdateAndSaveAction: 
    * function called by all actions in @output whenever they are modified!
-   * 1 - update connectors
-   * 2 - update intent
    * */
   public async onUpdateAndSaveAction(event) {
+
+    // let intentsToUpdateUndo = [];
+    // let intentsToUpdateRedo = [];
+    // intentsToUpdateRedo = [ ...this.listOfIntents ];
+    // intentsToUpdateUndo = [ ...this.prevListOfIntent ];
+    // this.addIntentToUndoRedo('PUT', originalIntent, intentsToUpdateUndo, intentsToUpdateRedo);
+
     // se event non è nullo sostituisco in this.intent.actions la action con _tdActionId 
     if(event && event._tdActionId){
       replaceItemInArrayForKey('_tdActionId', this.intent.actions, event);
@@ -632,17 +637,17 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
     console.log('[CDS-INTENT] onUpdateAndSaveAction:::: ', event, this.intent, this.intent.actions);
     console.log('[CDS-INTENT] onUpdateAndSaveAction:::: intent::: ', this.intent);
     // this.intentService.selectAction(this.intent.intent_id, event);
-    const response = await this.intentService.updateIntent(this.intent);
+    const response = await this.intentService.onUpdateIntentWithTimeout(this.intent);
     if (response) {
       console.log('updateIntent: ', this.intent);
     }
+
     // const fromEle = document.getElementById(this.intent.intent_id);
     // if(fromEle){
     //   this.connectorService.updateConnector(fromEle);
     //   this.updateIntent();
     // }
   }
-
 
   openActionMenu(intent: any, calleBy: string) {
     console.log('[CDS-INTENT] openActionMenu > intent ', intent)
@@ -686,21 +691,17 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
     console.log('[CDS-INTENT] toggleIntentWebhook  intent ', intent)
     console.log('[CDS-INTENT] toggleIntentWebhook  intent webhook_enabled ', intent.webhook_enabled)
     this.intentService.setIntentSelected(this.intent.intent_id);
-    if (intent.webhook_enabled === false) {
-      intent.webhook_enabled = true;
-      this.intentService.updateIntent(intent);
-      // this.webHookTooltipText = "Disable webhook"
-    } else {
-      intent.webhook_enabled = false;
-      this.intentService.updateIntent(intent);
-      // this.webHookTooltipText = "Enable webhook"
-    }
+    intent.webhook_enabled = !intent.webhook_enabled;
+    // this.webHookTooltipText = "Disable webhook"
+    // this.webHookTooltipText = "Enable webhook"
+    this.intentService.onUpdateIntentWithTimeout(intent);
   }
 
   onDeleteIntent(intent: Intent) {
     this.intentService.setIntentSelected(this.intent.intent_id);
     this.deleteIntent.emit(intent);
   }
+
   /** ******************************
    * intent controls options: END 
    * ****************************** */

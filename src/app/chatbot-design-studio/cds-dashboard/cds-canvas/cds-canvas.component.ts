@@ -527,9 +527,9 @@ export class CdsCanvasComponent implements OnInit {
    * chiamata da cds-panel-action-detail
    * quando modifico un intent da pannello ex: cambio il testo, aggiungo un bottone ecc.
   */
-  private async updateIntent(time?) {
+  private async updateIntent(intent, time?) {
     if(!time)time = 0;
-    const response = await this.intentService.updateIntent(this.intentSelected, time);
+    const response = await this.intentService.onUpdateIntentWithTimeout(intent, time);
     if (response) {
       this.logger.log('[CDS-CANVAS] OK: intent aggiornato con successo sul server', this.intentSelected);
     } else {
@@ -904,7 +904,7 @@ export class CdsCanvasComponent implements OnInit {
     console.log('onSaveButton: ', idConnector, this.listOfIntents);
     if (idConnector) {
       this.intentSelected = this.listOfIntents.find(obj => obj.intent_id === idConnector);
-      this.updateIntent(2000);
+      this.updateIntent(this.intentSelected, 2000);
     }
   }
   // --------------------------------------------------------- //
@@ -919,7 +919,7 @@ export class CdsCanvasComponent implements OnInit {
     if (intentSelected && intentSelected != null) {
       this.intentSelected = intentSelected;
       this.intentService.refreshIntent(this.intentSelected);
-      this.updateIntent(2000);
+      this.updateIntent(intentSelected, 2000);
     } else {
       // this.onOpenDialog();
     }
@@ -935,21 +935,24 @@ export class CdsCanvasComponent implements OnInit {
   /** chiamata quando trascino un connettore sullo stage e creo un intent al volo */
   /** OPPURE */
   /** chiamata quando premo + sull'intent per aggiungere una nuova action */
-  async onAddingActionToStage(event) {
-    console.log('[CDS-CANVAS] onAddingActionToStage:: ', event);
+  
+  async onAddActionFromActionMenu(event) {
+    console.log('[CDS-CANVAS] onAddActionFromActionMenu:: ', event);
     this.IS_OPEN_ADD_ACTIONS_MENU = true;
     const connectorDraft = this.connectorService.connectorDraft;
+
     if (connectorDraft && connectorDraft.toPoint && !this.hasClickedAddAction) {
       console.log("[CDS-CANVAS] ho trascinato il connettore e sto per creare un intent", this.intentSelected);
       this.createNewIntentFromConnectorDraft(event.type, connectorDraft);
-    } else if (this.hasClickedAddAction) {
+      this.removeConnectorDraftAndCloseFloatMenu();
+    } 
+    else if (this.hasClickedAddAction) {
       console.log("[CDS-CANVAS] ho premuto + quindi creo una nuova action e la aggiungo all'intent", this.intentSelected);
       const newAction = this.intentService.createNewAction(event.type);
       this.intentSelected.actions.push(newAction);
-      this.updateIntent(0);
-      // this.intentService.refreshIntent(this.intentSelected);
+      this.updateIntent(this.intentSelected, 0);
     }
-    this.removeConnectorDraftAndCloseFloatMenu();
+    
   }
   // --------------------------------------------------------- //
 
