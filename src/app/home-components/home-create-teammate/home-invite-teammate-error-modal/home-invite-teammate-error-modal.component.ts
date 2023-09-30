@@ -7,12 +7,15 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
   styleUrls: ['./home-invite-teammate-error-modal.component.scss']
 })
 export class HomeInviteTeammateErrorModalComponent implements OnInit {
-
+ inviteTeammatesErrorMsg: string;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<HomeInviteTeammateErrorModalComponent>,
     public dialog: MatDialog,
-  ) { }
+  ) { 
+    console.log('[INVITE TEMMATE ERROR MODAL] data ', data)
+    this.inviteTeammatesErrorMsg = data.error
+  }
 
   ngOnInit(): void {
   }

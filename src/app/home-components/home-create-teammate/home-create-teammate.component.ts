@@ -44,6 +44,8 @@ export class HomeCreateTeammateComponent implements OnInit {
   project_name: string;
   id_project: string;
 
+  pendingInvitations: any;
+
   public projectUsers: any;
   projectUsersLength: any;
   public storageBucket: string;
@@ -74,6 +76,7 @@ export class HomeCreateTeammateComponent implements OnInit {
     this.getProjectPlan();
     this.getPendingInvitation()
     this.getCurrentProject()
+    this.getLoggedUser()
   }
 
   getCurrentProject() {
@@ -94,6 +97,7 @@ export class HomeCreateTeammateComponent implements OnInit {
         console.log('[HOME-CREATE-TEAMMATE] - GET PENDING INVITATION ', pendingInvitation);
 
         if (pendingInvitation) {
+          this.pendingInvitations = pendingInvitation
           this.countOfPendingInvites = pendingInvitation.length
           console.log('[HOME-CREATE-TEAMMATE] - # OF PENDING INVITATION ', this.countOfPendingInvites);
         }
@@ -145,8 +149,8 @@ export class HomeCreateTeammateComponent implements OnInit {
              
               this.logger.log('[HOME-CREATE-TEAMMATE] - GET PROJECT PLAN - PLAN_NAME ', 'FREE TRIAL', ' SEATS LIMIT: ', this.seatsLimit)
             } else {
-              this.prjct_profile_name = "Free";
-              this.profile_name_for_segment = "Free";
+              this.prjct_profile_name = "Free plan";
+              this.profile_name_for_segment = "Free plan";
               this.seatsLimit = PLAN_SEATS.free
               
               this.logger.log('[HOME-CREATE-TEAMMATE] - GET PROJECT PLAN - PLAN_NAME ', 'FREE TRIAL', ' SEATS LIMIT: ', this.seatsLimit)
@@ -495,7 +499,7 @@ export class HomeCreateTeammateComponent implements OnInit {
       // HANDLE THE ERROR "Pending Invitation already exist"
       if (project_user.success === false && project_user.msg === 'Pending Invitation already exist.') {
  
-        this.openDialogInviteTeammateError('Pending Invitation already exist.')
+        this.openDialogInviteTeammateError(email + ' has already been invited.')
 
         // this.PENDING_INVITATION_ALREADY_EXIST = true;
         console.error('[HOME-CREATE-TEAMMATE] - INVITE USER SUCCESS = FALSE ', project_user.msg, ' PENDING_INVITATION_ALREADY_EXIST');
@@ -519,7 +523,7 @@ export class HomeCreateTeammateComponent implements OnInit {
 
       } else if ((invite_error['success'] === false) && (invite_error['code'] === 4001)) {
         this.logger.error('[HOME-CREATE-TEAMMATE] !!! Forbidden, user is already a member')
-        this.openDialogInviteTeammateError(email + 'is already a member')
+        this.openDialogInviteTeammateError(email + ' is already a member')
         // this.INVITE_YOURSELF_ERROR = false;
         // this.INVITE_USER_ALREADY_MEMBER_ERROR = true;
         // this.INVITE_USER_NOT_FOUND = false;
@@ -550,14 +554,14 @@ export class HomeCreateTeammateComponent implements OnInit {
       // this.INVITE_USER_NOT_FOUND = false;
       // this.PENDING_INVITATION_ALREADY_EXIST = false;
 
-      // this.getAllUsersOfCurrentProject();
-      // this.getPendingInvitation();
+      this.getImageStorageThenProjectUsers();
+      this.getPendingInvitation();
       if (!isDevMode()) {
         if (window['analytics']) {
           let userFullname = ''
-          if (this.CURRENT_USER.firstname && this.CURRENT_USER.lastname)  {
+          if (this.CURRENT_USER && this.CURRENT_USER.firstname && this.CURRENT_USER.lastname)  {
             userFullname = this.CURRENT_USER.firstname + ' ' + this.CURRENT_USER.lastname
-          } else if (this.CURRENT_USER.firstname && !this.CURRENT_USER.lastname) {
+          } else if (this.CURRENT_USER && this.CURRENT_USER.firstname && !this.CURRENT_USER.lastname) {
             userFullname = this.CURRENT_USER.firstname
           }
 

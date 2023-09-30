@@ -170,11 +170,47 @@
         <div class="home-block-description" style="padding-right: 55px;">
             Bring your team on board for collaborative automation and customer interactions
         </div>
+        <div class="temmates-redeemed">
+            <span class="material-icons" *ngIf="(((prjct_profile_type === 'payment' && subscription_is_active === true) ||
+            (prjct_profile_type === 'free' && trial_expired === false) || 
+            (prjct_profile_type === 'free' && trial_expired === true))  &&
+            (projectUsersLength + countOfPendingInvites > seatsLimit))" style="color: #f44336; cursor: pointer;"
+            matTooltipClass="ct-custom-mat-tooltip-error" 
+            matTooltip="The number of teammates exceeds the number allowed for the {{ prjct_profile_name }}. Update the plan or manually remove excess teammates (the system will do it automatically in a month) "
+            #tooltip="matTooltip" 
+            matTooltipPosition='above' 
+            matTooltipHideDelay="100" >
+                error
+            </span>
+            <span class="redeemed-temmates-redeemed-num"  
+                matTooltipClass="ct-custom-mat-tooltip" 
+                matTooltip="View detail in Teammates & Groups"
+                #tooltip="matTooltip" 
+                matTooltipPosition='below' 
+                matTooltipHideDelay="100" 
+                (click)="goToTeammates()" [ngStyle]="{'color': countOfPendingInvites + projectUsersLength > seatsLimit ? '#f44336' : '#2196f3'}"> 
+                {{countOfPendingInvites + projectUsersLength}}  seats redeemed 
+                    <span class="pending--invitation" *ngIf="countOfPendingInvites > 0">
+                    ({{ countOfPendingInvites }} pending )
+                    </span>
+            </span>
+                of {{ seatsLimit }} available for the {{prjct_profile_name}}.
+            
+            <!-- <span class="pending--invitation" *ngIf="countOfPendingInvites > 0">
+                Pending Invitation: {{ countOfPendingInvites }}
+            </span> -->
+            <!-- <div *ngFor="let invitation of pendingInvitations">
+                {{invitation.email }} invited to become {{ invitation.role }}
+             </div> -->
+        </div>
+       
+
+      
 
         <div class="ct-action-btns-wpr" *ngIf="USER_ROLE !== 'agent'">
-
+                <!-- goToTeammates() -->
             <button id="home-material-btn" class="mat-focus-indicator mat-flat-button mat-button-base"
-            (click)="goToTeammates()">
+            (click)="presentModalInviteTeammate()">
             <span class="mat-button-wrapper">
 
                 <span class="ml-2" style="font-size: 15px;">
