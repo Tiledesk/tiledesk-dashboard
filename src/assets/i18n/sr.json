@@ -2364,6 +2364,7 @@
     "DownloadAsPDF":"Преузмите као ПДФ",
     "DownloadAsCSV": "Преузмите као ЦСВ",
     "StartBySelecting":"Започните тако што ћете изабрати бесплатан, спреман за употребу из {{template_category}} шаблона или креирајте свог цхат бота од нуле уз наш потпуно нови Цхатбот Десигн Студио без кода",
+    "StartBySelecting_en":"Get started by selecting a free ready-to-use from the {{template_category}} templates or create your chatbot from scratch with our brand new no-code Chatbot Design Studio",
     "NextStep":"Следећи корак",
     "WAWizardQuickTip1":"Када га објавите, повежите га на {{селецт_деп}}, односно на исто одељење које је изабрано приликом конфигурисања Тилдеск везе са ВхатсАпп Бусинесс-ом.",
     "WAWizardQuickTip2": "Уверите се да је креирани бот активиран у {{селецт_деп}}",

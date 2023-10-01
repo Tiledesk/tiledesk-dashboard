@@ -2364,6 +2364,7 @@
     "DownloadAsPDF":"PDF ретінде жүктеп алыңыз",
     "DownloadAsCSV": "CSV ретінде жүктеп алыңыз",
     "StartBySelecting":"{{template_category}} үлгілерінен пайдалануға дайын тегін таңдау арқылы бастаңыз немесе біздің жаңа кодсыз Chatbot Design Studio арқылы чатботыңызды нөлден жасаңыз.",
+    "StartBySelecting_en":"Get started by selecting a free ready-to-use from the {{template_category}} templates or create your chatbot from scratch with our brand new no-code Chatbot Design Studio",
     "NextStep":"Келесі қадам",
     "WAWizardQuickTip1":"Оны жариялаған кезде оны {{select_dep}}, яғни WhatsApp Business қызметімен Tildesk қосылымын теңшеу кезінде таңдалған бөлімге қосыңыз.",
     "WAWizardQuickTip2": "Жасалған бот {{select_dep}} ішінде белсендірілгеніне көз жеткізіңіз.",

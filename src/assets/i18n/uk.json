@@ -2364,6 +2364,7 @@
     "DownloadAsPDF":"Завантажити як PDF",
     "DownloadAsCSV": "Завантажити як CSV",
     "StartBySelecting":"Почніть, вибравши безкоштовний готовий до використання шаблон із {{template_category}}, або створіть свого чат-бота з нуля за допомогою нашої нової студії дизайну чат-ботів без коду.",
+    "StartBySelecting_en":"Get started by selecting a free ready-to-use from the {{template_category}} templates or create your chatbot from scratch with our brand new no-code Chatbot Design Studio",
     "NextStep":"Наступний крок",
     "WAWizardQuickTip1":"Коли ви публікуєте його, підключіть його до {{select_dep}}, тобто до того самого відділу, який було вибрано під час налаштування з’єднання Tildesk із WhatsApp Business.",
     "WAWizardQuickTip2": "Переконайтеся, що створений бот активовано в {{select_dep}}",

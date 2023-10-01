@@ -2364,6 +2364,7 @@
     "DownloadAsPDF":"PDF olarak indir",
     "DownloadAsCSV": "CSV olarak indir",
     "StartBySelecting":"{{template_category}} şablonlarından ücretsiz, kullanıma hazır bir şablon seçerek başlayın veya yepyeni kodsuz Chatbot Tasarım Stüdyomuzla sohbet robotunuzu sıfırdan oluşturun",
+    "StartBySelecting_en":"Get started by selecting a free ready-to-use from the {{template_category}} templates or create your chatbot from scratch with our brand new no-code Chatbot Design Studio",
     "NextStep":"Sonraki adım",
     "WAWizardQuickTip1":"Yayınladığınızda, {{select_dep}}'ye, yani WhatsApp Business ile Tildesk bağlantısını yapılandırırken seçilen aynı departmana bağlayın.",
     "WAWizardQuickTip2": "Oluşturulan botun {{select_dep}} içinde etkinleştirildiğinden emin olun",

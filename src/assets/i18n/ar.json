@@ -2364,6 +2364,7 @@
     "DownloadAsPDF":"تحميل بصيغة PDF",
     "DownloadAsCSV": "قم بالتنزيل كملف CSV",
     "StartBySelecting":"ابدأ باختيار برنامج مجاني جاهز للاستخدام من نماذج {{template_category}} أو أنشئ chatbot الخاص بك من البداية باستخدام Chatbot Design Studio الجديد الذي لا يحتوي على كود",
+    "StartBySelecting_en":"Get started by selecting a free ready-to-use from the {{template_category}} templates or create your chatbot from scratch with our brand new no-code Chatbot Design Studio",
     "NextStep":"الخطوة المقبلة",
     "WAWizardQuickTip1":"عند نشره ، اربطه بـ {{select_dep}} ، أي بالقسم نفسه المحدد عند تكوين اتصال Tildesk مع WhatsApp Business.",
     "WAWizardQuickTip2": "تأكد من تنشيط الروبوت الذي تم إنشاؤه في {{select_dep}}",

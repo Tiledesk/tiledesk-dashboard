@@ -25,15 +25,21 @@
             <button type="button" class=" btn btn-new btn-size-l btn--primary" (click)="forkTemplate()">
                 <!-- <span *ngIf="template?.certified === true" >Use template</span> -->
                 <!-- *ngIf="template?.certified === false" -->
-                <span>Import Chatbot</span>
+                <span>
+                    Import Template
+                </span>
             </button>
             <button type="button" class=" btn btn-new btn-size-l btn--default" (click)="openTestSiteInPopupWindow()">
-                <span>Test it out</span>
+                <span>
+                    Test it out
+                </span>
             </button>
         </div>
         <div class="template-detail-content">
             <div class="template-detail-tags-wpr">
-                <p weight="normal" class="template-detail-tags-section-name">Categories</p>
+                <p weight="normal" class="template-detail-tags-section-name">
+                    Categories
+                </p>
                 <div class="template-detail-tags" *ngIf="template.certifiedTags">
                     <span aria-label="tag" class="template-detail-tag-wpr"
                         [ngStyle]="{'color': tag.color, 'background-color':  tag.background}"
