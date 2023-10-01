@@ -86,7 +86,8 @@
                 </div>
                 <div class="home-block-title">
                     <!-- You don't have any chatbots yet! -->
-                    Get Started with Conversation Automation
+                  <span *ngIf="countOfChatbots === 0"> Get Started with Conversation Automation </span> 
+                  <span *ngIf="countOfChatbots > 0"> Your Chatbots and Conversational Apps </span> 
                 </div>
             </div>
 

@@ -48,6 +48,7 @@ export class HomeCreateTeammateComponent implements OnInit {
 
   public projectUsers: any;
   projectUsersLength: any;
+  countOfInvitedTeammates: any;
   public storageBucket: string;
   public baseUrl: string;
   private unsubscribe$: Subject<any> = new Subject<any>();
@@ -326,6 +327,8 @@ export class HomeCreateTeammateComponent implements OnInit {
         }
 
         this.projectUsersLength = projectUsers.length;
+        this.countOfInvitedTeammates = projectUsers.length - 1
+        console.log('[HOME-CREATE-TEAMMATE] - countOfInvitedTeammates ', this.countOfInvitedTeammates);
         const filteredProjectUser = projectUsers.filter((obj: any) => {
           return obj.id_user._id === this.CURRENT_USER_ID;
         });

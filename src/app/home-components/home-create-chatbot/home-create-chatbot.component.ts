@@ -216,9 +216,6 @@ export class HomeCreateChatbotComponent implements OnInit, OnChanges {
   getProjectBots(storage, uploadEngineIsFirebase) {
     this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
       console.log('[HOME-CREATE-CHATBOT] - GET FAQKB RES', faqKb);
-
-      
-      
         this.departmentService.getDeptsByProjectId().subscribe((depts: any) => { 
 
           console.log('[HOME-CREATE-CHATBOT] - GET DEPTS RES', depts);

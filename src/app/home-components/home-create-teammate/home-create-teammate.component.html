@@ -2,8 +2,14 @@
     <div class="home-block-header-wpr">
         <div class="home-block-header">
             <div class="home-block-title">
-               <span *ngIf="USER_ROLE !=='agent'">Invite Teammates </span> 
-               <span *ngIf="USER_ROLE ==='agent'">Teammates </span> 
+                <span *ngIf="USER_ROLE !=='agent' && countOfInvitedTeammates === 0">Invite Teammates </span>
+                <span *ngIf="USER_ROLE !=='agent' && countOfInvitedTeammates === 1">
+                    Kudos! You've invited {{countOfInvitedTeammates}} Teammate. Keep striving for greatness!
+                </span>
+                <span *ngIf="USER_ROLE !=='agent' && countOfInvitedTeammates > 1">
+                    Kudos! You've invited {{countOfInvitedTeammates}} Teammates. Keep striving for greatness!
+                </span>
+                <span *ngIf="USER_ROLE ==='agent'">Teammates </span>
             </div>
         </div>
     </div>
@@ -12,8 +18,7 @@
     <div *ngIf="projectUsers && projectUsers?.length > 0" class="project-teammates">
         <div class="served-by-desktop-b"
             *ngFor="let projectUser of projectUsers | slice:0:10; let i=index; let first = first;">
-            <div class="served-by-desktop-c"
-                [ngClass]="{ 'first-served-by': first}">
+            <div class="served-by-desktop-c" [ngClass]="{ 'first-served-by': first}">
                 <div class="served-by-desktop-d" [satPopoverAnchor]="t" (click)="t.toggle()">
                     <div size="45" class="served-by-desktop-e" style="width: 45px;">
 
@@ -122,7 +127,7 @@
                                         d="M224 256A128 128 0 1 1 224 0a128 128 0 1 1 0 256zM209.1 359.2l-18.6-31c-6.4-10.7 1.3-24.2 13.7-24.2H224h19.7c12.4 0 20.1 13.6 13.7 24.2l-18.6 31 33.4 123.9 36-146.9c2-8.1 9.8-13.4 17.9-11.3c70.1 17.6 121.9 81 121.9 156.4c0 17-13.8 30.7-30.7 30.7H285.5c-2.1 0-4-.4-5.8-1.1l.3 1.1H168l.3-1.1c-1.8 .7-3.8 1.1-5.8 1.1H30.7C13.8 512 0 498.2 0 481.3c0-75.5 51.9-138.9 121.9-156.4c8.1-2 15.9 3.3 17.9 11.3l36 146.9 33.4-123.9z" />
                                 </svg>
 
-                                <svg *ngIf="projectUser.role === 'agent'" xmlns="http://www.w3.org/2000/svg" 
+                                <svg *ngIf="projectUser.role === 'agent'" xmlns="http://www.w3.org/2000/svg"
                                     viewBox="0 0 512 512" height="14px" width="16px" fill="#7d8590"
                                     style="vertical-align: middle; position: relative; top: -2px;">
                                     <path
@@ -176,26 +181,21 @@
             (prjct_profile_type === 'free' && trial_expired === false) || 
             (prjct_profile_type === 'free' && trial_expired === true))  &&
             (projectUsersLength + countOfPendingInvites > seatsLimit))" style="color: #f44336; cursor: pointer;"
-            matTooltipClass="ct-custom-mat-tooltip-error" 
-            matTooltip="The number of teammates exceeds the number allowed for the {{ prjct_profile_name }}. Update the plan or manually remove excess teammates (the system will do it automatically in a month) "
-            #tooltip="matTooltip" 
-            matTooltipPosition='above' 
-            matTooltipHideDelay="100" >
+                matTooltipClass="ct-custom-mat-tooltip-error"
+                matTooltip="The number of teammates exceeds the number allowed for the {{ prjct_profile_name }}. Update the plan or manually remove excess teammates (the system will do it automatically in a month) "
+                #tooltip="matTooltip" matTooltipPosition='above' matTooltipHideDelay="100">
                 error
             </span>
-            <span class="redeemed-temmates-redeemed-num"  
-                matTooltipClass="ct-custom-mat-tooltip" 
-                matTooltip="View detail in Teammates & Groups"
-                #tooltip="matTooltip" 
-                matTooltipPosition='below' 
-                matTooltipHideDelay="100" 
-                (click)="goToTeammates()" [ngStyle]="{'color': countOfPendingInvites + projectUsersLength > seatsLimit ? '#f44336' : '#2196f3'}"> 
-                {{countOfPendingInvites + projectUsersLength}}  seats redeemed 
-                    <span class="pending--invitation" *ngIf="countOfPendingInvites > 0">
+            <span class="redeemed-temmates-redeemed-num" matTooltipClass="ct-custom-mat-tooltip"
+                matTooltip="View detail in Teammates & Groups" #tooltip="matTooltip" matTooltipPosition='below'
+                matTooltipHideDelay="100" (click)="goToTeammates()"
+                [ngStyle]="{'color': countOfPendingInvites + projectUsersLength > seatsLimit ? '#f44336' : '#2196f3'}">
+                {{countOfPendingInvites + projectUsersLength}} seats redeemed
+                <span class="pending--invitation" *ngIf="countOfPendingInvites > 0">
                     ({{ countOfPendingInvites }} pending )
-                    </span>
+                </span>
             </span>
-                of {{ seatsLimit }} available for the {{prjct_profile_name}}.
+            of {{ seatsLimit }} available for the {{prjct_profile_name}}.
         </div>
 
         <div *ngIf="USER_ROLE === 'agent'" class="temmates-redeemed">
@@ -203,41 +203,39 @@
             (prjct_profile_type === 'free' && trial_expired === false) || 
             (prjct_profile_type === 'free' && trial_expired === true))  &&
             (projectUsersLength + countOfPendingInvites > seatsLimit))" style="color: #f44336; cursor: pointer;"
-            matTooltipClass="ct-custom-mat-tooltip-error" 
-            matTooltip="The number of teammates exceeds the number allowed for the {{ prjct_profile_name }}. Update the plan or manually remove excess teammates (the system will do it automatically in a month) "
-            #tooltip="matTooltip" 
-            matTooltipPosition='above' 
-            matTooltipHideDelay="100" >
+                matTooltipClass="ct-custom-mat-tooltip-error"
+                matTooltip="The number of teammates exceeds the number allowed for the {{ prjct_profile_name }}. Update the plan or manually remove excess teammates (the system will do it automatically in a month) "
+                #tooltip="matTooltip" matTooltipPosition='above' matTooltipHideDelay="100">
                 error
             </span>
-            <span class="redeemed-temmates-redeemed-num"> 
-                {{countOfPendingInvites + projectUsersLength}}  seats redeemed 
-                    <span class="pending--invitation" *ngIf="countOfPendingInvites > 0">
+            <span class="redeemed-temmates-redeemed-num">
+                {{countOfPendingInvites + projectUsersLength}} seats redeemed
+                <span class="pending--invitation" *ngIf="countOfPendingInvites > 0">
                     ({{ countOfPendingInvites }} pending )
-                    </span>
+                </span>
             </span>
-                of {{ seatsLimit }} available for the {{prjct_profile_name}}.
+            of {{ seatsLimit }} available for the {{prjct_profile_name}}.
         </div>
-       
 
-      
+
+
 
         <div class="ct-action-btns-wpr" *ngIf="USER_ROLE !== 'agent'">
-                <!-- goToTeammates() -->
+            <!-- goToTeammates() -->
             <button id="home-material-btn" class="mat-focus-indicator mat-flat-button mat-button-base"
-            (click)="presentModalInviteTeammate()">
-            <span class="mat-button-wrapper">
+                (click)="presentModalInviteTeammate()">
+                <span class="mat-button-wrapper">
 
-                <span class="ml-2" style="font-size: 15px;">
-                    Invite teammate
+                    <span class="ml-2" style="font-size: 15px;">
+                        Invite teammate
+                    </span>
+
                 </span>
-
-            </span>
-            <span matripple="" class="mat-ripple mat-button-ripple" ng-reflect-disabled="false"
-                ng-reflect-centered="false" ng-reflect-trigger="[object HTMLButtonElement]">
-            </span>
-            <span class="mat-button-focus-overlay"> </span>
-        </button>
+                <span matripple="" class="mat-ripple mat-button-ripple" ng-reflect-disabled="false"
+                    ng-reflect-centered="false" ng-reflect-trigger="[object HTMLButtonElement]">
+                </span>
+                <span class="mat-button-focus-overlay"> </span>
+            </button>
 
             <!-- <button mat-mini-fab aria-label="more_horiz icon" [matMenuTriggerFor]="menu"
                 style="box-shadow: unset; background-color: #2196f3; display: none;">
