@@ -2,6 +2,7 @@ import { AbstractControl } from "@angular/forms";
 import { ActionAssignVariable, Intent } from "app/models/intent-model";
 import { v4 as uuidv4 } from 'uuid';
 
+export const preDisplayName:string  = 'untitled_block_';
 
 export enum TYPE_INTENT_NAME {
     TOPIC_INTERNAL = 'internal',

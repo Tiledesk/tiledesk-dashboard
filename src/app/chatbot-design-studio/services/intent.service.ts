@@ -24,7 +24,7 @@ import {
   Command, Wait, Message, Expression, Attributes, Action, ActionAskGPT, ActionWhatsappAttribute, ActionWhatsappStatic, ActionWebRequestV2, ActionGPTTask } from 'app/models/intent-model';
 import { FaqService } from 'app/services/faq.service';
 import { FaqKbService } from 'app/services/faq-kb.service';
-import { TYPE_INTENT_NAME, NEW_POSITION_ID, TYPE_ACTION, TYPE_COMMAND, removeNodesStartingWith, generateShortUID, checkIFElementExists} from 'app/chatbot-design-studio/utils';
+import { preDisplayName, TYPE_INTENT_NAME, NEW_POSITION_ID, TYPE_ACTION, TYPE_COMMAND, removeNodesStartingWith, generateShortUID, checkIFElementExists} from 'app/chatbot-design-studio/utils';
 import { ConnectorService } from 'app/chatbot-design-studio/services/connector.service';
 import { ControllerService } from 'app/chatbot-design-studio/services/controller.service';
 import { StageService } from 'app/chatbot-design-studio/services/stage.service';
@@ -55,7 +55,7 @@ export class IntentService {
   // intentSelectedID: string;
 
   previousIntentId: string = '';
-  preDisplayName: string = 'untitled_block_';
+  // preDisplayName: string = 'untitled_block_';
   
   botAttributes: any = {};
   listOfPositions: any = {};
@@ -306,7 +306,7 @@ export class IntentService {
     if(!intentToUpdate)return; 
     // if(!intentToUpdate.attributes){intentToUpdate.attributes = {};
     intentToUpdate['attributes']['position'] = {'x': newPos.x, 'y': newPos.y};
-    this.patchAttributes(intentId, intentToUpdate.attributes);
+    this.patchAttributes(intentToUpdate);
   }
   // END DASHBOARD FUNCTIONS //
 
@@ -356,16 +356,16 @@ export class IntentService {
   /** generate display name of intent */
   public setDisplayName(){
     // let listOfIntents = this.behaviorIntents.getValue();
-    let displayNames = this.listOfIntents.filter((element) => element.intent_display_name.startsWith(this.preDisplayName))
-                                          .map((element) => element.intent_display_name.replace(this.preDisplayName, ''));
+    let displayNames = this.listOfIntents.filter((element) => element.intent_display_name.startsWith(preDisplayName))
+                                          .map((element) => element.intent_display_name.replace(preDisplayName, ''));
     // displayNames = displayNames.slice().sort();
     const numbers = displayNames.filter(el => el !== '').map((name) => parseInt(name, 10));
     numbers.sort((a, b) => a - b);
     const lastNumber = numbers[numbers.length - 1];
     if(numbers.length>0){
-      return this.preDisplayName+(lastNumber+1);
+      return preDisplayName+(lastNumber+1);
     } else {
-      return this.preDisplayName+1;
+      return preDisplayName+1;
     }
     // const filteredArray = this.listOfIntents.filter((element) => element.intent_display_name.startsWith(this.preDisplayName));
     // if(filteredArray.length>0){
@@ -508,11 +508,16 @@ export class IntentService {
   /** update title of intent */
   public changeIntentName(intent){
     setTimeout(async () => {
-      const response = await this.onUpdateIntentWithTimeout(intent, 2000);
-      if(response){
-        this.behaviorIntents.next(this.listOfIntents);
+      let prevIntent = this.prevListOfIntent.find((obj) => obj.intent_id === intent.intent_id);
+      if(intent.intent_display_name !== prevIntent.intent_display_name){
+        const response = await this.onUpdateIntentWithTimeout(intent, 2000);
+        if(response){
+          // this.behaviorIntents.next(this.listOfIntents);
+          // this.refreshIntent(intent);
+          this.setDragAndListnerEventToElement(intent);
+        }
       }
-    }, 0);
+    }, 500);
   }
 
   // moving new action in intent from panel elements
@@ -843,7 +848,21 @@ export class IntentService {
   //     });
   // }
 
-  patchAttributes(intentID: string, attributes: any) {
+  patchAttributes( intent: Intent) {
+    const intentID = intent.id;
+    const attributes = intent.attributes;
+    let preAttributes = this.prevListOfIntent.find((obj) => obj.intent_id === intent.intent_id);
+    console.log('[INTENT SERVICE] -> patchAttributes, ', intentID, preAttributes, attributes);
+    if(JSON.stringify(attributes) === JSON.stringify(preAttributes.attributes))return;
+
+    let intentsToUpdateUndo = [];
+    let intentsToUpdateRedo = [];
+    // let intentToUpdateUndo = this.prevListOfIntent.find((intent) => intent.intent_id === originalIntent.intent_id);
+    // let intentToUpdateRedo = this.listOfIntents.find((intent) => intent.intent_id === originalIntent.intent_id);
+    intentsToUpdateRedo = [ ...this.listOfIntents ];
+    intentsToUpdateUndo = [ ...this.prevListOfIntent ];
+    this.addIntentToUndoRedo('PUT', intent, intentsToUpdateUndo, intentsToUpdateRedo);
+
     clearTimeout(this.setTimeoutChangeEvent);
     this.setTimeoutChangeEvent = setTimeout(() => {
       console.log('[INTENT SERVICE] -> patchAttributes, ', intentID, attributes);
@@ -862,7 +881,7 @@ export class IntentService {
       }, () => {
         console.log('complete');
       });
-    }, 2000);
+    }, 1000);
   }
 
 
@@ -1020,6 +1039,7 @@ export class IntentService {
             this.connectorService.createConnectors(this.listOfIntents);
           }, 100);
         }
+        this.setDragAndListnerEventToElement(obj);
       });
       this.refreshIntents();
     } 

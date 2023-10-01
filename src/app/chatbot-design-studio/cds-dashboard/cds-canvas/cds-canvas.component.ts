@@ -293,7 +293,7 @@ export class CdsCanvasComponent implements OnInit {
         this.logger.log('[CDS-CANVAS] end-dragging ', el);
         el.style.zIndex = 1;
         if(this.intentSelected){
-          this.intentService.patchAttributes(this.intentSelected.id, this.intentSelected.attributes);
+          this.intentService.patchAttributes(this.intentSelected);
         }
       },
       false
