@@ -536,7 +536,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         } else {
           // this.isVisibleANA = false;
 
-          this.profile_name_for_segment = "Free"
+          this.profile_name_for_segment = "Free plan"
           this.auth.projectProfile(this.profile_name_for_segment)
           this.prjct_profile_name = "Free plan";
           this.current_prjct['plan_badge_background_type'] = 'free_plan_badge'
@@ -586,6 +586,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           }
         } else if (this.prjct_profile_name !== PLAN_NAME.A && this.prjct_profile_name !== PLAN_NAME.B && this.prjct_profile_name !== PLAN_NAME.C) {
           this.prjct_profile_name = this.prjct_profile_name + ' plan (UNSUPPORTED)'
+          this.current_prjct['plan_badge_background_type'] = 'unsupported_plan_badge'
         }
       }
       const projectCreatedAt = this.current_prjct.id_project.createdAt

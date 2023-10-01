@@ -2,7 +2,8 @@
     <div class="home-block-header-wpr">
         <div class="home-block-header">
             <div class="home-block-title">
-                Invite Teammates
+               <span *ngIf="USER_ROLE !=='agent'">Invite Teammates </span> 
+               <span *ngIf="USER_ROLE ==='agent'">Teammates </span> 
             </div>
         </div>
     </div>
@@ -12,7 +13,7 @@
         <div class="served-by-desktop-b"
             *ngFor="let projectUser of projectUsers | slice:0:10; let i=index; let first = first;">
             <div class="served-by-desktop-c"
-                [ngClass]="{ 'first-served-by': first, 'disable-link-if-is-agent': USER_ROLE === 'agent' }">
+                [ngClass]="{ 'first-served-by': first}">
                 <div class="served-by-desktop-d" [satPopoverAnchor]="t" (click)="t.toggle()">
                     <div size="45" class="served-by-desktop-e" style="width: 45px;">
 
@@ -135,7 +136,7 @@
                             </div>
                         </div>
 
-                        <div class="view-detail-btn" style="text-align: center;">
+                        <div class="view-detail-btn" style="text-align: center;" *ngIf="USER_ROLE !== 'agent'">
                             <div class="arrow-container" (click)="goToAgentProfile(projectUser?.id_user?._id)">
                                 <div id="arrow_2" class="arrow-wrapper">
                                     <div class="text-block" style="margin-right: 16px; font-size: 13px;">
@@ -167,10 +168,10 @@
 
     <div class="ct-home-block-description-and-menu-btn-wpr">
 
-        <div class="home-block-description" style="padding-right: 55px;">
+        <div *ngIf="USER_ROLE !== 'agent'" class="home-block-description" style="padding-right: 55px;">
             Bring your team on board for collaborative automation and customer interactions
         </div>
-        <div class="temmates-redeemed">
+        <div *ngIf="USER_ROLE !== 'agent'" class="temmates-redeemed">
             <span class="material-icons" *ngIf="(((prjct_profile_type === 'payment' && subscription_is_active === true) ||
             (prjct_profile_type === 'free' && trial_expired === false) || 
             (prjct_profile_type === 'free' && trial_expired === true))  &&
@@ -195,13 +196,27 @@
                     </span>
             </span>
                 of {{ seatsLimit }} available for the {{prjct_profile_name}}.
-            
-            <!-- <span class="pending--invitation" *ngIf="countOfPendingInvites > 0">
-                Pending Invitation: {{ countOfPendingInvites }}
-            </span> -->
-            <!-- <div *ngFor="let invitation of pendingInvitations">
-                {{invitation.email }} invited to become {{ invitation.role }}
-             </div> -->
+        </div>
+
+        <div *ngIf="USER_ROLE === 'agent'" class="temmates-redeemed">
+            <span class="material-icons" *ngIf="(((prjct_profile_type === 'payment' && subscription_is_active === true) ||
+            (prjct_profile_type === 'free' && trial_expired === false) || 
+            (prjct_profile_type === 'free' && trial_expired === true))  &&
+            (projectUsersLength + countOfPendingInvites > seatsLimit))" style="color: #f44336; cursor: pointer;"
+            matTooltipClass="ct-custom-mat-tooltip-error" 
+            matTooltip="The number of teammates exceeds the number allowed for the {{ prjct_profile_name }}. Update the plan or manually remove excess teammates (the system will do it automatically in a month) "
+            #tooltip="matTooltip" 
+            matTooltipPosition='above' 
+            matTooltipHideDelay="100" >
+                error
+            </span>
+            <span class="redeemed-temmates-redeemed-num"> 
+                {{countOfPendingInvites + projectUsersLength}}  seats redeemed 
+                    <span class="pending--invitation" *ngIf="countOfPendingInvites > 0">
+                    ({{ countOfPendingInvites }} pending )
+                    </span>
+            </span>
+                of {{ seatsLimit }} available for the {{prjct_profile_name}}.
         </div>
        
 

@@ -69,7 +69,7 @@
 
                   </div>
 
-                  <div class="flex items-center">
+                  <div class="flex items-center" *ngIf="project_plan_badge">
                     <div class="home-project-plan-badge" [ngClass]="{
                       'free-plan-badge': current_prjct?.plan_badge_background_type === 'free_plan_badge', 
                       'a-plan-badge':  current_prjct?.plan_badge_background_type === 'a_plan_badge',
@@ -145,7 +145,7 @@
                 <!-- ------------------------------------ -->
                 <!-- Settings  mat-primary ng-reflect-color="primary"  -->
                 <!-- ------------------------------------ -->
-                <button mat-flat-button="" [matMenuTriggerFor]="dashletMenu"
+                <button *ngIf="USER_ROLE !== 'agent'" mat-flat-button="" [matMenuTriggerFor]="dashletMenu"
                   class="mat-focus-indicato mat-flat-button mat-button-base"
                   style="background-color: #2196f3; color: #fff;margin-right: 4px;">
                   <span class="mat-button-wrapper">
@@ -163,13 +163,13 @@
 
                 <mat-menu #dashletMenu="matMenu">
                   <!-- *ngIf="displayAnalyticsConvsGraph" -->
-                  <button mat-menu-item (click)="$event.stopPropagation()">
+                  <button *ngIf="isVisibleANA" mat-menu-item (click)="$event.stopPropagation()">
                     <mat-checkbox class="home-settings-checkbox" [checked]="displayAnalyticsConvsGraph"
                       (change)="switchAnalyticsConvsGraph($event.checked)"></mat-checkbox>
                     <span>Conversations chart</span>
                   </button>
                   <!-- *ngIf="displayAnalyticsIndicators" -->
-                  <button mat-menu-item (click)="$event.stopPropagation()">
+                  <button *ngIf="isVisibleANA"  mat-menu-item (click)="$event.stopPropagation()">
                     <mat-checkbox class="home-settings-checkbox" [checked]="displayAnalyticsIndicators"
                       (change)="switchAnalyticsIndicators($event.checked)">
                     </mat-checkbox>
@@ -386,107 +386,136 @@
           <!-- // Skeleton END -->
       
           
-          <ng-container *ngIf="!showskeleton">
-            <div class="home--blocks" id="homeBlocks" *ngFor="let item of child_list_order">
+          <ng-container *ngIf="!showskeleton ">
+            <span *ngIf="USER_ROLE !== 'agent'">
+              <div  class="home--blocks" id="homeBlocks" *ngFor="let item of child_list_order">
 
-            
+                <!-- ----------------------- -->
+                <!-- Child 1 Convs Graph -->
+                <!-- ----------------------- -->
+                <ng-container *ngIf="item.type === 'child1'">
+                  <appdashboard-home-convs-graph *ngIf="displayAnalyticsConvsGraph"
+                    [displayAnalyticsConvsGraph]="displayAnalyticsConvsGraph" [projectId]="projectId"
+                    [USER_ROLE]="USER_ROLE">
+                  </appdashboard-home-convs-graph>
+                </ng-container>
 
-              <!-- ----------------------- -->
-              <!-- Child 1 Convs Graph -->
-              <!-- ----------------------- -->
-              <ng-container *ngIf="item.type === 'child1'">
-                <appdashboard-home-convs-graph *ngIf="displayAnalyticsConvsGraph"
-                  [displayAnalyticsConvsGraph]="displayAnalyticsConvsGraph" [projectId]="projectId"
-                  [USER_ROLE]="USER_ROLE">
-                </appdashboard-home-convs-graph>
+                <!-- ----------------------- -->
+                <!-- Child 2 Analytics Indicator-->
+                <!-- ----------------------- -->
+                <ng-container *ngIf="item.type === 'child2'">
+                  <appdashboard-home-analytics-indicator *ngIf="displayAnalyticsIndicators" [projectId]="projectId"
+                    [USER_ROLE]="USER_ROLE">
+                  </appdashboard-home-analytics-indicator>
+                </ng-container>
+
+                <!-- ----------------------- -->
+                <!-- Child 3 Whatsapp Wizard -->
+                <!-- ----------------------- -->
+                <ng-container *ngIf="item.type === 'child3'">
+                  <appdashboard-home-whatsapp-account-wizard   *ngIf="displayWhatsappAccountWizard"
+                    style="margin-bottom: 18px;"
+                    (goToConnectWA)="goToConnectWA()" 
+                    (goToCreateChatbot)="goToCreateChatbot()"
+                    (hasTestedBotOnWa)="hasTestedBotOnWa()" 
+                    [whatsAppIsConnected]="whatsAppIsConnected"
+                    [wadepartmentName]="wadepartmentName" 
+                    [chatbotConnectedWithWA]='chatbotConnectedWithWA'
+                    [waBotId]="waBotId" 
+                    [use_case_for_child]="use_case_for_child"
+                    [solution_channel_for_child]="solution_channel_for_child" 
+                    [solution_for_child]="solution_for_child"
+                    [testBotOnWA]="testBotOnWA" 
+                    [botIdForTestWA]="botIdForTestWA"
+                    (hasCreatedChatbot)="hasCreatedChatbot($event)">
+                </appdashboard-home-whatsapp-account-wizard>
               </ng-container>
 
-              <!-- ----------------------- -->
-              <!-- Child 2 Analytics Indicator-->
-              <!-- ----------------------- -->
-              <ng-container *ngIf="item.type === 'child2'">
-                <appdashboard-home-analytics-indicator *ngIf="displayAnalyticsIndicators" [projectId]="projectId"
-                  [USER_ROLE]="USER_ROLE">
-                </appdashboard-home-analytics-indicator>
-              </ng-container>
+                <!-- ----------------------- -->
+                <!-- Child 4 Whatsapp Account-->
+                <!-- ----------------------- -->
+                <ng-container *ngIf="item.type === 'child4'">
+                  <appdashboard-home-whatsapp-account *ngIf="displayConnectWhatsApp" 
+                    style=" z-index: 11;"
+                    #childWhatsappAccount 
+                    (onClickOnUnistallApp)="onClickOnUnistallApp()"
+                    (onClickOnGoToLearnMoreOrManageApp)="onClickOnGoToLearnMoreOrManageApp()"
+                    (onClickOnDisplayWhatsAppWizard)="onClickOnDisplayWhatsAppWizard()"
+                    [whatsAppIsInstalled]="whatsAppIsInstalled" 
+                    [whatsAppIsConnected]="whatsAppIsConnected"
+                    [solution_channel_for_child]="solution_channel_for_child" 
+                    [solution_for_child]="solution_for_child"
+                    [userHasClickedDisplayWAWizard]="userHasClickedDisplayWAWizard">
+                  </appdashboard-home-whatsapp-account>
+                </ng-container>
 
-              <!-- ----------------------- -->
-              <!-- Child 3 Whatsapp Wizard -->
-              <!-- ----------------------- -->
-              <ng-container *ngIf="item.type === 'child3'">
-                <appdashboard-home-whatsapp-account-wizard   *ngIf="displayWhatsappAccountWizard"
-                  style="margin-bottom: 18px;"
-                  (goToConnectWA)="goToConnectWA()" 
-                  (goToCreateChatbot)="goToCreateChatbot()"
-                  (hasTestedBotOnWa)="hasTestedBotOnWa()" 
-                  [whatsAppIsConnected]="whatsAppIsConnected"
-                  [wadepartmentName]="wadepartmentName" 
-                  [chatbotConnectedWithWA]='chatbotConnectedWithWA'
-                  [waBotId]="waBotId" 
-                  [use_case_for_child]="use_case_for_child"
-                  [solution_channel_for_child]="solution_channel_for_child" 
-                  [solution_for_child]="solution_for_child"
-                  [testBotOnWA]="testBotOnWA" 
-                  [botIdForTestWA]="botIdForTestWA"
-                  (hasCreatedChatbot)="hasCreatedChatbot($event)">
-              </appdashboard-home-whatsapp-account-wizard>
-            </ng-container>
+                <!-- ----------------------- -->
+                <!-- Child 5 Create Chatbot -->
+                <!-- ----------------------- -->
+                <ng-container *ngIf="item.type === 'child5'">
+                  <appdashboard-home-create-chatbot #childCreateChatbot *ngIf="displayCreateChatbot"
+                    [use_case_for_child]="use_case_for_child" 
+                    [solution_channel_for_child]="solution_channel_for_child"
+                    [waBotId]="waBotId" 
+                    [wadepartmentName]="wadepartmentName"
+                    [chatbotConnectedWithWA]="chatbotConnectedWithWA"
+                    (botHookedToDefaultDept)="botHookedToDefaultDept($event)">
+                  </appdashboard-home-create-chatbot>
+                </ng-container>
 
-              <!-- ----------------------- -->
-              <!-- Child 4 Whatsapp Account-->
-              <!-- ----------------------- -->
-              <ng-container *ngIf="item.type === 'child4'">
-                <appdashboard-home-whatsapp-account *ngIf="displayConnectWhatsApp" 
-                  style=" z-index: 11;"
-                  #childWhatsappAccount 
-                  (onClickOnUnistallApp)="onClickOnUnistallApp()"
-                  (onClickOnGoToLearnMoreOrManageApp)="onClickOnGoToLearnMoreOrManageApp()"
-                  (onClickOnDisplayWhatsAppWizard)="onClickOnDisplayWhatsAppWizard()"
-                  [whatsAppIsInstalled]="whatsAppIsInstalled" 
-                  [whatsAppIsConnected]="whatsAppIsConnected"
-                  [solution_channel_for_child]="solution_channel_for_child" 
-                  [solution_for_child]="solution_for_child"
-                  [userHasClickedDisplayWAWizard]="userHasClickedDisplayWAWizard">
-                </appdashboard-home-whatsapp-account>
-              </ng-container>
+                <!-- ----------------------- -->
+                <!-- Child 6 Create Teammate -->
+                <!-- ----------------------- -->
+                <ng-container *ngIf="item.type === 'child6'" >
+                  <appdashboard-home-create-teammate 
+                    *ngIf="displayInviteTeammate">
+                  </appdashboard-home-create-teammate>
+                </ng-container>
 
-              <!-- ----------------------- -->
-              <!-- Child 5 Create Chatbot -->
-              <!-- ----------------------- -->
-              <ng-container *ngIf="item.type === 'child5'">
-                <appdashboard-home-create-chatbot #childCreateChatbot *ngIf="displayCreateChatbot"
-                  [use_case_for_child]="use_case_for_child" 
-                  [solution_channel_for_child]="solution_channel_for_child"
-                  [waBotId]="waBotId" 
-                  [wadepartmentName]="wadepartmentName"
-                  [chatbotConnectedWithWA]="chatbotConnectedWithWA"
-                  (botHookedToDefaultDept)="botHookedToDefaultDept($event)">
-                </appdashboard-home-create-chatbot>
-              </ng-container>
+                <!-- ----------------------- -->
+                <!-- Child 7 KB -->
+                <!-- ----------------------- -->
+                <ng-container *ngIf="item.type === 'child7'" >
+                  <appdashboard-home-kb *ngIf="displayKnowledgeBase"> </appdashboard-home-kb>
+                </ng-container>
 
-              <!-- ----------------------- -->
-              <!-- Child 6 Create Teammate -->
-              <!-- ----------------------- -->
-              <ng-container *ngIf="item.type === 'child6'" >
-                <appdashboard-home-create-teammate *ngIf="displayInviteTeammate"></appdashboard-home-create-teammate>
-              </ng-container>
+                <!-- ----------------------- -->
+                <!-- Child 8 Customize Widget -->
+                <!-- ----------------------- -->
+                <ng-container *ngIf="item.type === 'child8'" >
+                  <appdashboard-home-customize-widget *ngIf="displayCustomizeWidget">
+                  </appdashboard-home-customize-widget>
+                </ng-container>
 
-              <!-- ----------------------- -->
-              <!-- Child 7 KB -->
-              <!-- ----------------------- -->
-              <ng-container *ngIf="item.type === 'child7'" >
-                <appdashboard-home-kb *ngIf="displayKnowledgeBase"> </appdashboard-home-kb>
-              </ng-container>
+              </div>
+            </span>
+            <span *ngIf="USER_ROLE === 'agent'">
+              <div class="home--blocks">
+                
+                  <!-- *ngIf="displayAnalyticsConvsGraph" -->
+                  <!-- style="min-width: 834px; display: block;" -->
+                  <appdashboard-home-convs-graph *ngIf="isVisibleANA" 
+                  
+                    [displayAnalyticsConvsGraph]="displayAnalyticsConvsGraph" 
+                    [projectId]="projectId"
+                    [USER_ROLE]="USER_ROLE">
+                  </appdashboard-home-convs-graph>
 
-              <!-- ----------------------- -->
-              <!-- Child 8 Customize Widget -->
-              <!-- ----------------------- -->
-              <ng-container *ngIf="item.type === 'child8'" >
-                <appdashboard-home-customize-widget *ngIf="displayCustomizeWidget">
-                </appdashboard-home-customize-widget>
-              </ng-container>
+                  <!-- *ngIf="displayAnalyticsIndicators" -->
+                  <appdashboard-home-analytics-indicator *ngIf="isVisibleANA" 
+                    [projectId]="projectId"
+                    [USER_ROLE]="USER_ROLE">
+                  </appdashboard-home-analytics-indicator>
 
-            </div>
+                  <!-- *ngIf="displayInviteTeammate" -->
+                  <appdashboard-home-create-teammate> </appdashboard-home-create-teammate>
+
+                  <appdashboard-home-go-to-chat></appdashboard-home-go-to-chat>
+                
+
+              </div>
+
+            </span>
           </ng-container>
         </div>
         <div *ngIf="!showskeleton" class="news-feed-wpr" style="    background-color: rgb(241,245,249);     padding-left: 30px;">

@@ -1,4 +1,4 @@
-import { Component, OnInit, SimpleChanges, isDevMode } from '@angular/core';
+import { Component, Input, OnInit, SimpleChanges, isDevMode } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'app/core/auth.service';
 import { AppConfigService } from 'app/services/app-config.service';
