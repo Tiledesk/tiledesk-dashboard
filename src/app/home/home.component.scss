@@ -2753,12 +2753,18 @@ img {
   padding-top: 45px;
   padding-bottom: 18px;
   max-width: 994px;
-  // margin: auto;
+  // margin: 0px auto;
   display: flex;
   align-self: center;
- 
-  // margin-top: -1px;
 }
+
+@media (max-width: 868px) { 
+  .home-blocks-wpr { 
+    display: unset;
+    align-self: auto;
+  }
+}
+// 
 
 
 
