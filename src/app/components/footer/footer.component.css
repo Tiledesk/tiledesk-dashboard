@@ -1,0 +1,27 @@
+.x-twitter:hover > svg {
+   fill: #269ef4
+}
+
+.x-twitter > svg {
+    position: relative;
+    top: 2px;
+ }
+
+ .star-us-on-github-text {
+    cursor: pointer;
+ }
+
+ .star-us-on-github-text:hover > .github-icon > svg {
+    fill: #269ef4
+ }
+
+ .star-us-on-github-text:hover > .star-us-on-github-text {
+    color: #269ef4
+ }
+
+ 
+ .star-us-on-github-text {
+    font-size: 12px;
+    font-weight: 400;
+ }
+

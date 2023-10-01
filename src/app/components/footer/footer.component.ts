@@ -107,4 +107,9 @@ export class FooterComponent implements OnInit {
     this.logger.log('[FOOTER-COMP] BRAND_JSON - display_contact_us_email ', this.display_contact_us_email);
   }
 
+
+  goToTiledeskGithub() {
+    const url = 'https://github.com/Tiledesk';
+    window.open(url, '_blank');
+  }
 }
