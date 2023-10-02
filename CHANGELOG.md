@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.4.62
+- New Home page
+
 ### 2.4.61
 - Deploys in production
 - Makes the predefined tags available for the contacts
