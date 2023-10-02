@@ -92,12 +92,27 @@
         .button-reply-add{
             color: $color-txt-2-hex;
             border-color: $color-txt-2-hex;
+            margin-right: 5px;
         }
     }
 
+
+    .content-botton-reply {
+        height: unset;
+    }
+
     .button-reply{
-        min-width: 200px;
+        min-width: $button-min-width-preview;
+        max-width: $button-max-width-base;
         padding: 2px 10px;
+        // max-width: calc(100% - 20px);
+        // margin: auto;
+        // background: transparent;
+
+        // &.connected{
+        //     background: #ffff;
+        //     border-color: #ffff;
+        // }
     }
 }
 
@@ -192,7 +207,7 @@
 
 .content-botton-reply {
     position:relative;
-    height: 26px;
+    // height: 26px;
 }
 
 
@@ -225,7 +240,7 @@
     // float: right;
     display: flex;
     position: relative;
-    min-width: 100px;
+    min-width: $button-min-width-base;
     text-align: center;
     // margin: 0px 5px 0px; //10px 5px 0;
     padding: 0px 10px;
@@ -245,7 +260,7 @@
         margin: 10px 5px;
         background: #dfdfdf;
         border: dotted 0px #999;
-        height: $button-height-base;
+        // height: $button-height-base;
         transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 
     }
@@ -271,9 +286,6 @@
     margin: 0;
     padding: 0;
     outline: none;
-    overflow: hidden!important;
-    text-overflow: ellipsis;
-    white-space: nowrap;
 }
 
 .button-reply-add {

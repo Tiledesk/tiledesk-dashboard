@@ -57,15 +57,14 @@
 <div class="buttons-response button-replies" [class.previewMode]="previewMode" cdkDropListOrientation="vertical" cdkDropList (cdkDropListDropped)="dropButtons($event)" >
     
     <div *ngFor="let button of buttons; let i = index;" class="content-botton-reply" cdkDragBoundary=".button-replies" cdkDrag> 
-        <!-- tpl-drop-down2 single-btn-reply2 -->
         <div class="button-reply custom-placeholder" *cdkDragPlaceholder>
-            <div class="button-reply-text">
+            <div class="button-reply-text" [class.ellips]="!previewMode" >
                 {{button.value}}
             </div>
         </div>
 
-        <div class="button-reply" cdkDragHandle>
-            <div class="button-reply-text single-btn-reply"
+        <div class="button-reply" [class.connected]='button.__isConnected' cdkDragHandle>
+            <div class="button-reply-text" [class.ellips]="!previewMode" 
                 (click)="$event.stopPropagation(); onOpenButtonPanel(button)">
                 {{button.value}}
             </div>
@@ -93,7 +92,7 @@
 
     </div>
 
-    <div class="button-reply-add single-btn-reply" (click)="$event.stopPropagation();onCreateNewButton()">
+    <div class="button-reply-add" (click)="$event.stopPropagation();onCreateNewButton()">
     + Add button
     </div>
 </div>

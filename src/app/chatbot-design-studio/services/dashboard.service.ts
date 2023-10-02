@@ -83,14 +83,12 @@ export class DashboardService {
         this.logger.log('[CDS DSHBRD] getUrlParams  BOT ID ', this.id_faq_kb);
         this.logger.log('[CDS DSHBRD] getUrlParams  FAQ ID ', this.id_faq);
         this.logger.log('[CDS DSHBRD] getUrlParams  FAQ ID ', this.intent_id);
-        console.log('[CDS DSHBRD] getUrlParams', params);
         resolve(true);
       }, (error) => {
         this.logger.error('ERROR: ', error);
-        console.log('ERROR', error);
         reject(false);
       }, () => {
-        console.log('COMPLETE');
+        this.logger.log('COMPLETE');
       });
     });
   }
@@ -100,10 +98,10 @@ export class DashboardService {
   // Get bot by id
   // ----------------------------------------------------------
   async getBotById(): Promise<boolean> {
-    console.log('[CDS DSHBRD] - GET BOT BY ID RES - chatbot', this.id_faq_kb);
+    this.logger.log('[CDS DSHBRD] - GET BOT BY ID RES - chatbot', this.id_faq_kb);
     return new Promise((resolve, reject) => {
       this.faqKbService.getBotById(this.id_faq_kb).subscribe((chatbot: Chatbot) => {
-        console.log('[CDS DSHBRD] - GET BOT BY ID RES - chatbot', chatbot);
+        this.logger.log('[CDS DSHBRD] - GET BOT BY ID RES - chatbot', chatbot);
         if (chatbot) {
           this.selectedChatbot = chatbot;
           this.translateparamBotName = { bot_name: this.selectedChatbot.name }

@@ -14,7 +14,7 @@ import { DashboardService } from 'app/chatbot-design-studio/services/dashboard.s
 import { Intent, Button, Action, Form } from 'app/models/intent-model';
 
 // UTILS //
-import { checkIFElementExists, TYPE_INTENT_ELEMENT, TYPE_OF_MENU, NEW_POSITION_ID } from 'app/chatbot-design-studio/utils';
+import { checkIFElementExists, TYPE_INTENT_ELEMENT, TYPE_OF_MENU, NEW_POSITION_ID, TYPE_INTENT_NAME, scaleAndcenterStageOnCenterPosition } from 'app/chatbot-design-studio/utils';
 import { LoggerService } from 'app/services/logger/logger.service';
 
 const swal = require('sweetalert');
@@ -37,6 +37,7 @@ export class CdsCanvasComponent implements OnInit {
 
   private subscriptionListOfIntents: Subscription;
   listOfIntents: Array<Intent> = [];
+  listOfEvents: Array<Intent> = []
   intentSelected: Intent;
   intent_id: string;
   hasClickedAddAction: boolean = false;
@@ -105,6 +106,11 @@ export class CdsCanvasComponent implements OnInit {
     this.stageService.setDrawer();
     this.connectorService.initializeConnectors();
     this.addEventListener();
+
+
+    // setTimeout(()=> {
+    //   scaleAndcenterStageOnCenterPosition(this.listOfIntents)
+    // }, 1000)
   }
 
 
@@ -177,6 +183,7 @@ export class CdsCanvasComponent implements OnInit {
     if (getAllIntents) {
       this.listOfIntents = this.intentService.listOfIntents;
       this.initListOfIntents();
+      // scaleAndcenterStageOnCenterPosition(this.listOfIntents)
     }
   }
  
@@ -339,7 +346,7 @@ export class CdsCanvasComponent implements OnInit {
       },
       true
     );
-
+ 
     /** connector-deleted **
      * scatta quando viene eliminato un connettore:
      *  - elimino il connettore dalla lista dei connettori (deleteConnectorToList)
@@ -386,16 +393,16 @@ export class CdsCanvasComponent implements OnInit {
     document.addEventListener(
       "keydown", (e) => {
         // Verifica se è stato premuto Ctrl (Windows) o Command (Mac) e Z contemporaneamente
-        console.log('[CDS-CANVAS]  subscriptionUNDO ', e);
+        this.logger.log('[CDS-CANVAS]  subscriptionUNDO ', e);
         if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'z') {
           e.preventDefault(); 
           // Evita il comportamento predefinito, ad esempio la navigazione indietro nella cronologia del browser
-          console.log("Hai premuto Ctrl+ALT+Z (o Command+Alt+Z)!");
+          this.logger.log("Hai premuto Ctrl+ALT+Z (o Command+Alt+Z)!");
           this.intentService.restoreLastREDO();
         } else if ((e.ctrlKey || e.metaKey) && e.key === "z") {
           // Impedisci il comportamento predefinito (ad esempio, l'undo in un campo di testo)
           e.preventDefault(); 
-          console.log("Hai premuto Ctrl+Z (o Command+Z)!");
+          this.logger.log("Hai premuto Ctrl+Z (o Command+Z)!");
           this.intentService.restoreLastUNDO();
         }
       }, false
@@ -444,6 +451,10 @@ export class CdsCanvasComponent implements OnInit {
         this.IS_OPEN_ADD_ACTIONS_MENU = false;
       } 
     }
+  }
+
+  @HostListener('wheel', ['$event'])
+  onMouseWheel(event: WheelEvent) {
   }
 
 
@@ -901,7 +912,7 @@ export class CdsCanvasComponent implements OnInit {
   onSaveButton(button: Button) {
     const arrayId = button.__idConnector.split("/");
     const idConnector = arrayId[0] ? arrayId[0] : null;
-    console.log('onSaveButton: ', idConnector, this.listOfIntents);
+    this.logger.log('onSaveButton: ', idConnector, this.listOfIntents);
     if (idConnector) {
       this.intentSelected = this.listOfIntents.find(obj => obj.intent_id === idConnector);
       this.updateIntent(this.intentSelected, 2000);
@@ -915,7 +926,7 @@ export class CdsCanvasComponent implements OnInit {
   // --------------------------------------------------------- //
   /** onSavePanelIntentDetail */
   onSavePanelIntentDetail(intentSelected: any) {
-    console.log('[CDS-CANVAS] onSavePanelIntentDetail intentSelected ', intentSelected)
+    this.logger.log('[CDS-CANVAS] onSavePanelIntentDetail intentSelected ', intentSelected)
     if (intentSelected && intentSelected != null) {
       this.intentSelected = intentSelected;
       this.intentService.refreshIntent(this.intentSelected);

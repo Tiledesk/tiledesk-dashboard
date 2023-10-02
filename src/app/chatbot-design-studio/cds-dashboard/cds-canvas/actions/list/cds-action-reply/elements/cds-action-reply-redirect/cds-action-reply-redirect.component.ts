@@ -97,7 +97,6 @@ export class CdsActionReplyRedirectComponent implements OnInit {
 
   /** onButtonToogleChange */
   onButtonToogleChange(event){
-    console.log('onButtonToogleChange::: event', event)
     this.metadata.target = event.value;
     this.changeActionReply.emit();
   }

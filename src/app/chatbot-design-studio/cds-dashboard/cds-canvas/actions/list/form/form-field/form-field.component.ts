@@ -32,7 +32,7 @@ export class FormFieldComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    // console.log('[FORM-FIELD] fields ', this.fields)
+    // this.logger.log('[FORM-FIELD] fields ', this.fields)
   }
 
   drop(event: CdkDragDrop<string[]>) {
@@ -42,7 +42,7 @@ export class FormFieldComponent implements OnInit, OnChanges {
   }
 
   logValue() {
-    // console.log(this.fields);
+    // this.logger.log(this.fields);
   }
 
   // EVENTS //

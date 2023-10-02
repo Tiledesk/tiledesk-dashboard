@@ -4,6 +4,7 @@ import { Button, Expression, MessageAttributes, Message, Wait, Metadata } from '
 import { TYPE_ACTION, TEXT_CHARS_LIMIT, calculatingRemainingCharacters, TYPE_BUTTON, generateShortUID } from '../../../../../../../utils';
 import { ConnectorService } from 'app/chatbot-design-studio/services/connector.service';
 import { IntentService } from 'app/chatbot-design-studio/services/intent.service';
+import { LoggerService } from 'app/services/logger/logger.service';
 
 @Component({
   selector: 'cds-action-reply-image',
@@ -49,7 +50,8 @@ export class CdsActionReplyImageComponent implements OnInit {
 
   constructor( 
     private connectorService: ConnectorService,
-    private intentService: IntentService
+    private intentService: IntentService,
+    private logger: LoggerService
   ) { }
 
 
@@ -64,7 +66,7 @@ export class CdsActionReplyImageComponent implements OnInit {
     this.delayTime = (this.wait && this.wait.time)? (this.wait.time/1000) : 500;
     this.checkButtons();
     this.intentService.isChangedConnector$.subscribe((connector: any) => {
-      console.log('CdsActionReplyImageComponent isChangedConnector-->', connector);
+      this.logger.log('CdsActionReplyImageComponent isChangedConnector-->', connector);
       this.connector = connector;
       this.updateConnector();
     });
@@ -87,7 +89,7 @@ export class CdsActionReplyImageComponent implements OnInit {
   }
 
   // private patchButtons(){
-  //   console.log('patchButtons:: ', this.response);
+  //   this.logger.log('patchButtons:: ', this.response);
   //   let buttons = this.response?.attributes?.attachment?.buttons;
   //   if(!buttons)return;
   //   buttons.forEach(button => {
@@ -111,15 +113,11 @@ export class CdsActionReplyImageComponent implements OnInit {
       const array = this.connector.fromId.split("/");
       const idButton = array[array.length - 1];
       const idConnector = this.idAction+'/'+idButton;
-      console.log(' updateConnector :: connector.fromId: ', this.connector.fromId);
-      console.log(' updateConnector :: idConnector: ', idConnector);
-      console.log(' updateConnector :: idButton: ', idButton);
-      console.log(' updateConnector :: connector.id: ', this.connector.id);
+      this.logger.log(' updateConnector :: connector.fromId - idConnector: ', this.connector.fromId, idConnector);
       const buttonChanged = this.buttons.find(obj => obj.uid === idButton);
       if(idConnector === this.connector.fromId && buttonChanged){
         if(this.connector.deleted){
           // DELETE 
-          console.log(' deleteConnector :: ', this.connector.fromId);
           buttonChanged.__isConnected = false;
           buttonChanged.__idConnector = this.connector.fromId;
           buttonChanged.action = '';
@@ -132,7 +130,6 @@ export class CdsActionReplyImageComponent implements OnInit {
           buttonChanged.__idConnector = this.connector.fromId;
           buttonChanged.action = buttonChanged.action? buttonChanged.action : '#' + this.connector.toId;
           buttonChanged.type = TYPE_BUTTON.ACTION;
-          console.log(' updateConnector :: ', this.buttons);
           if(!buttonChanged.__isConnected){
             buttonChanged.__isConnected = true;
             this.updateIntentFromConnectorModification.emit(this.connector.id);
@@ -142,7 +139,7 @@ export class CdsActionReplyImageComponent implements OnInit {
         // this.changeActionReply.emit();
       }
     } catch (error) {
-      console.log('error: ', error);
+      this.logger.error('error: ', error);
     }
   }
   
@@ -247,7 +244,7 @@ export class CdsActionReplyImageComponent implements OnInit {
       //this.imageHeight = event.height;
       this.response.metadata.height = event.height;
     //}
-    // console.log('onCloseImagePanel:: ', event);
+    // this.logger.log('onCloseImagePanel:: ', event);
   }
 
   /** */

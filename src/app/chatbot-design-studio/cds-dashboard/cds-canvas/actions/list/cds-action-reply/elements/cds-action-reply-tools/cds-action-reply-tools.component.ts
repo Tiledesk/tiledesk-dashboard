@@ -21,7 +21,7 @@ export class CdsActionReplyToolsComponent implements OnInit {
 
 
   addElement(type: TYPE_MESSAGE){
-    // console.log('addElement---->', type);
+    // this.logger.log('addElement---->', type);
     var newElement:Command;
     switch (type) {
       case TYPE_MESSAGE.TEXT:

@@ -67,6 +67,12 @@ export class KnowledgeBasesComponent implements OnInit {
     this.kbForm = this.createConditionGroup();
   }
 
+  startPooling() {
+    let id = setInterval(() => {
+      this.checkAllStatuses();
+    }, 30000);
+  }
+
   // ----------------------
   // UTILS FUNCTION - Start
   getBrowserVersion() {
@@ -89,13 +95,13 @@ export class KnowledgeBasesComponent implements OnInit {
     this.kbService.getKbSettings().subscribe((kbSettings: KbSettings) => {
       this.logger.debug("[KNOWLEDGE BASES COMP] get kbSettings: ", kbSettings);
       this.kbSettings = kbSettings;
-      // this.kbsList = kbSettings.kbs;
       if (this.kbSettings.kbs.length < kbSettings.maxKbsNumber) {
         this.addButtonDisabled = false;
       } else {
         this.addButtonDisabled = true;
       }
       this.checkAllStatuses();
+      this.startPooling();
     }, (error) => {
       this.logger.error("[KNOWLEDGE BASES COMP] ERROR get kbSettings: ", error);
     }, () => {
@@ -181,10 +187,15 @@ export class KnowledgeBasesComponent implements OnInit {
   runIndexing(kb) {
     let data = {
       full_url: kb.url,
-      gptkey: kb.gptkey
+      gptkey: this.kbSettings.gptkey
     }
     this.openaiService.startScraping(data).subscribe((response) => {
       console.log("start scraping response: ", response);
+      setTimeout(() => {
+        this.checkStatus(kb).then((status_code: number) => {
+          kb.status = status_code;
+        })
+      }, 1000);
     }, (error) => {
       console.error("error start scraping response: ", error);
     }, () => {
@@ -193,7 +204,7 @@ export class KnowledgeBasesComponent implements OnInit {
   }
 
   checkAllStatuses() {
-
+    
     // SCANDALOSO - DA ELIMINARE IL PRIMA POSSIBILE
     // INDAGARE CON PUGLIA AI
     // Anche perchè ogni tanto risponde con tutti status 0 anche con 500ms di delay
@@ -241,6 +252,9 @@ export class KnowledgeBasesComponent implements OnInit {
 
     this.searching = true;
     this.show_answer = false;
+
+    this.answer = null;
+    this.source_url = null;
 
     this.openaiService.askGpt(data).subscribe((response: any) => {
       if (response.success == false) {

@@ -40,7 +40,7 @@ export class CdsActionOnlineAgentsComponent implements OnInit {
 
   ngOnInit(): void {
     this.intentService.isChangedConnector$.subscribe((connector: any) => {
-      // console.log('CdsActionIntentComponent isChangedConnector-->', connector);
+      // this.logger.log('CdsActionIntentComponent isChangedConnector-->', connector);
       this.connector = connector;
       this.updateConnector();
     });
@@ -70,7 +70,7 @@ export class CdsActionOnlineAgentsComponent implements OnInit {
       const array = this.connector.fromId.split("/");
       const idAction= array[1];
       if(idAction === this.action._tdActionId){
-        if(this.connector.deleted){ //TODO: verificare quale dei due connettori è stato eliminato e impostare isConnected a false
+        if(this.connector.deleted){
           // DELETE 
           // this.logger.log(' deleteConnector :: ', this.connector.id);
           // this.action.intentName = null;

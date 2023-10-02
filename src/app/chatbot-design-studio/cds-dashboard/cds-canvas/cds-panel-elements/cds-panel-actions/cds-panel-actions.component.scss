@@ -1,3 +1,5 @@
+@import "./src/assets/sass/cds/_variables.scss";
+
 #panel_actions_div{
     padding: 0px;
     box-shadow: #1321440a 0 12px 24px, #1321440a 0 8px 12px, #13214405 0 4px 4px, #13214403 0 2px 2px, #13214403 0 1px 1px, #11316008 0 0, #1131600f 0 0 0 1px;
@@ -5,6 +7,17 @@
     .coming-soon {
         overflow: hidden;
         padding: 6px;
+    }
+
+    .coming-soon{
+        .actions-btns-wpr{
+            cursor: default;
+            box-shadow: none;
+        }
+        .action-btn-icon,
+        .action-btn-text{
+            color: $icon-color
+        }
     }
     .section-title {
         padding-top: 3px;

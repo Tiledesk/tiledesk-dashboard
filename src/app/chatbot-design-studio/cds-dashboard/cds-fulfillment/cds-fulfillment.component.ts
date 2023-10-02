@@ -37,11 +37,11 @@ export class CdsFulfillmentComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // console.log("[CDS-FULFILLMENT] input chatbot: ", this.chatbot);
+    // this.logger.log("[CDS-FULFILLMENT] input chatbot: ", this.chatbot);
   }
 
   editBot() {
-    // console.log("edit bot clicked");
+    // this.logger.log("edit bot clicked");
 
     // RESOLVE THE BUG 'edit button remains focused after clicking'
     // ???

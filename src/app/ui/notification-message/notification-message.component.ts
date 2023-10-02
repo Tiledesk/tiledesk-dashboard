@@ -129,7 +129,7 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
   }
 
   getWidgetUrl() {
-    this.WIDGET_URL = this.appConfigService.getConfig().widgetUrl;
+    this.WIDGET_URL = this.appConfigService.getConfig().WIDGET_BASE_URL + 'launch.js';
   }
 
   getProjectPlan() {

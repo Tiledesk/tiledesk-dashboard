@@ -6,6 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { OpenaiService } from 'app/services/openai.service';
 import { IntentService } from 'app/chatbot-design-studio/services/intent.service';
 import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
+import { AppConfigService } from 'app/services/app-config.service';
 
 
 @Component({
@@ -20,6 +21,7 @@ export class CdsActionAskgptComponent implements OnInit {
   @Input() previewMode: boolean = true;
   
   @Output() updateIntentFromConnectorModification = new EventEmitter;
+  @Input() project_id: string;
   @Output() updateAndSaveAction = new EventEmitter;
   @Output() onConnectorChange = new EventEmitter<{type: 'create' | 'delete',  fromId: string, toId: string}>()
   
@@ -54,7 +56,8 @@ export class CdsActionAskgptComponent implements OnInit {
     // private openaikbService: OpenaiService,
     private kbService: KnowledgeBaseService,
     public dialog: MatDialog,
-    private intentService: IntentService
+    private intentService: IntentService,
+    private appConfigService: AppConfigService,
   ) { }
 
   ngOnInit(): void {
@@ -235,6 +238,11 @@ export class CdsActionAskgptComponent implements OnInit {
     if(this.kbs_list && this.kbs_list.length > 0)
       value = this.kbs_list.find(el => el.url === this.action.kbid)[key]
     return value   
+  }
+
+  goToKNB(){
+    let url = this.appConfigService.getConfig().DASHBOARD_BASE_URL + 'dashboard/#/project/' + this.project_id +'/knowledge-bases'
+    window.open(url, '_blank')
   }
 
   @HostListener('document:visibilitychange')

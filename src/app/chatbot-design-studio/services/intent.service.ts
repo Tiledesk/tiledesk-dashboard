@@ -94,7 +94,7 @@ export class IntentService {
    * per notificare alle actions che i connettori sono cambiati
    */
   public onChangedConnector(connector){
-    console.log('onChangedConnector:: ', connector);
+    // console.log('onChangedConnector:: ', connector);
     this.changedConnector.next(connector);
   }
 
@@ -106,7 +106,7 @@ export class IntentService {
         this.intentSelected = startIntent[0];
       }
     }
-    console.log('[INTENT SERVICE] ::: setDefaultIntentSelected ::: ', this.intentSelected);
+    // console.log('[INTENT SERVICE] ::: setDefaultIntentSelected ::: ', this.intentSelected);
     this.behaviorIntent.next(this.intentSelected);
     //this.liveActiveIntent.next(this.intentSelected);
   }
@@ -214,7 +214,7 @@ export class IntentService {
    * restituisce tutti gli intents
    */
   getIntents() {
-    console.log('getIntents: ',  this.behaviorIntents);
+    // console.log('getIntents: ',  this.behaviorIntents);
     return this.behaviorIntents.asObservable();
   }
 
@@ -241,12 +241,12 @@ export class IntentService {
 
 
   refreshIntents(){
-    console.log("aggiorno elenco intent: ", this.listOfIntents);
+    // console.log("aggiorno elenco intent: ", this.listOfIntents);
     this.behaviorIntents.next(this.listOfIntents);
   }
 
   refreshIntent(intentSelected){
-    console.log("aggiorno singolo intent")
+    // console.log("aggiorno singolo intent")
     this.behaviorIntent.next(intentSelected);
   }
   
@@ -260,7 +260,7 @@ export class IntentService {
   }
 
   getPreviousIntent(){
-    console.log("getPreviousIntent: ", this.listOfIntents, this.previousIntentId)
+    // console.log("getPreviousIntent: ", this.listOfIntents, this.previousIntentId)
     return this.listOfIntents.find((intent) => intent.intent_id === this.previousIntentId);
   }
 
@@ -300,7 +300,7 @@ export class IntentService {
   // }
 
   setIntentPosition(intentId:string, newPos: any){
-    console.log('setIntentPosition:: ',intentId, newPos);
+    // console.log('setIntentPosition:: ',intentId, newPos);
     // this.listOfIntents = this.behaviorIntents.getValue();
     let intentToUpdate = this.listOfIntents.find((intent) => intent.intent_id === intentId);
     if(!intentToUpdate)return; 
@@ -331,10 +331,10 @@ export class IntentService {
         this.refreshIntents();
         resolve(true);
       }, (error) => {
-        console.error('ERROR: ', error);
+        // console.error('ERROR: ', error);
         reject(false);
       }, () => {
-        console.log('COMPLETE ');
+        // console.log('COMPLETE ');
         resolve(true);
       });
     });
@@ -382,7 +382,7 @@ export class IntentService {
     let id_faq_kb = this.dashboardService.id_faq_kb;
     console.log('[INTENT SERVICE] -> saveNewIntent, ');
     return new Promise((resolve, reject) => {
-      console.log("[INTENT SERVICE]  salva ");
+      // console.log("[INTENT SERVICE]  salva ");
       const that = this;
       this.faqService.addIntent(
         id_faq_kb,
@@ -395,11 +395,11 @@ export class IntentService {
         newIntent.actions,
         newIntent.webhook_enabled
       ).subscribe((intent:any) => {
-        console.log("[INTENT SERVICE]  ho salvato in remoto l'intent ", intent.intent_id);
+        // console.log("[INTENT SERVICE]  ho salvato in remoto l'intent ", intent.intent_id);
         this.prevListOfIntent = JSON.parse(JSON.stringify(this.listOfIntents));
         resolve(intent);
       }, (error) => {
-        console.error('[INTENT SERVICE]  ERROR: ', error);
+        // console.error('[INTENT SERVICE]  ERROR: ', error);
         reject(false);
       }, () => {
         // console.log('COMPLETE ');
@@ -491,7 +491,7 @@ export class IntentService {
         this.prevListOfIntent = JSON.parse(JSON.stringify(this.listOfIntents));
         resolve(true);
       }, (error) => {
-        console.error('ERROR: ', error);
+        // console.error('ERROR: ', error);
         reject(false);
       }, () => {
         resolve(true);
@@ -523,7 +523,7 @@ export class IntentService {
 
   // moving new action in intent from panel elements
   public moveNewActionIntoIntent(event, action, currentIntentId): any {
-    console.log('[INTENT-SERVICE] moveNewActionIntoIntent');
+    // console.log('[INTENT-SERVICE] moveNewActionIntoIntent');
     let newAction = this.createNewAction(action.value.type);
     let currentIntent = this.listOfIntents.find(function(obj) {
       return obj.intent_id === currentIntentId;
@@ -545,16 +545,16 @@ export class IntentService {
 
   // on move action from different intents
   public moveActionBetweenDifferentIntents(event, action, currentIntentId){
-    console.log('[INTENT-SERVICE] moveActionBetweenDifferentIntents');
+    // console.log('[INTENT-SERVICE] moveActionBetweenDifferentIntents');
     const that = this;
-    console.log('moving action from another intent - action: ', currentIntentId);
+    // console.log('moving action from another intent - action: ', currentIntentId);
     let currentIntent = this.listOfIntents.find(function(obj) {
       return obj.intent_id === currentIntentId;
     });
     let previousIntent = this.listOfIntents.find(function(obj) {
       return obj.intent_id === that.previousIntentId;
     });
-    console.log('moveActionBetweenDifferentIntents: ', event, this.listOfIntents, currentIntentId, currentIntent, previousIntent);
+    // console.log('moveActionBetweenDifferentIntents: ', event, this.listOfIntents, currentIntentId, currentIntent, previousIntent);
     currentIntent.actions.splice(event.currentIndex, 0, action);
     previousIntent.actions.splice(event.previousIndex, 1);
     this.connectorService.updateConnector(currentIntent.intent_id);
@@ -562,11 +562,11 @@ export class IntentService {
     this.connectorService.deleteConnectorsFromActionByActionId(action._tdActionId);
     const responseCurrentIntent = this.onUpdateIntentWithTimeout(currentIntent);
     if(responseCurrentIntent){
-      console.log('update current Intent: OK');
+      // console.log('update current Intent: OK');
     }
     const responsePreviousIntent = this.onUpdateIntentWithTimeout(previousIntent);
     if(responsePreviousIntent){
-      console.log('update previous Intent: OK');
+      // console.log('update previous Intent: OK');
     }  
     // this.controllerService.closeAllPanels();
     // this.behaviorIntent.next(currentIntent);
@@ -584,12 +584,12 @@ export class IntentService {
     if(intentToUpdate){
       const actions = intentToUpdate.actions.filter((action: any) => action._tdActionId !== actionId);
       intentToUpdate.actions = actions;
-      console.log("[CDS-INTENT-SERVICES] ho eliminato la action dall'intent che la conteneva ",actionId, intentToUpdate);
+      // console.log("[CDS-INTENT-SERVICES] ho eliminato la action dall'intent che la conteneva ",actionId, intentToUpdate);
       this.connectorService.deleteConnectorsFromActionByActionId(actionId);
       console.log('[CDS-INTENT-SERVICES] aggiorno intent di partenza', intentToUpdate);
       const responseIntent = this.onUpdateIntentWithTimeout(intentToUpdate);
       if(responseIntent){
-        console.log('[CDS-INTENT-SERVICES] update Intent: OK');
+        // console.log('[CDS-INTENT-SERVICES] update Intent: OK');
         this.behaviorIntent.next(intentToUpdate);
       }
       return intentToUpdate;
@@ -600,7 +600,7 @@ export class IntentService {
 
 
   addNewIntentToListOfIntents(intent){
-    console.log("[CDS-INTENT-SERVICES] aggiungo l'intent alla lista di intent");
+    // console.log("[CDS-INTENT-SERVICES] aggiungo l'intent alla lista di intent");
     this.listOfIntents.push(intent);
     this.refreshIntents();
     // this.behaviorIntents.next(this.listOfIntents);
@@ -613,13 +613,13 @@ export class IntentService {
       }
       return obj;
     });
-    console.log("[CDS-INTENT-SERVICES] sostituisco l'intent con id NEW con l'intent salvato nella lista degli intent");
+    // console.log("[CDS-INTENT-SERVICES] sostituisco l'intent con id NEW con l'intent salvato nella lista degli intent");
     // this.behaviorIntents.next(this.listOfIntents);
     this.refreshIntents();
   }
 
   deleteIntentToListOfIntents(intentId){
-    console.log("[CDS-INTENT-SERVICES] elimino l'intent alla lista di intent", intentId);
+    // console.log("[CDS-INTENT-SERVICES] elimino l'intent alla lista di intent", intentId);
     this.listOfIntents = this.listOfIntents.filter((intent: any) => intent.intent_id !== intentId);
   }
 
@@ -645,7 +645,7 @@ export class IntentService {
 
   /** selectIntent */
   public selectIntent(intentID){
-    console.log('[INTENT SERVICE] --> selectIntent',  this.listOfIntents, intentID);
+    // console.log('[INTENT SERVICE] --> selectIntent',  this.listOfIntents, intentID);
     this.intentSelected = this.listOfIntents.find(intent => intent.intent_id === intentID);
     if(this.intentSelected)this.stageService.setDragElement(this.intentSelected.intent_id);
    
@@ -657,7 +657,7 @@ export class IntentService {
     this.intentSelected = this.listOfIntents.find(intent => intent.intent_id === intentID);
     this.listActions = this.intentSelected.actions;
     this.selectedAction = this.listActions.find(action => action._tdActionId === actionId);
-    console.log('[INTENT SERVICE] --> selectAction: ', intentID, actionId);
+    // console.log('[INTENT SERVICE] --> selectAction: ', intentID, actionId);
     this.behaviorIntent.next(this.intentSelected);
   }
 
@@ -667,7 +667,7 @@ export class IntentService {
     this.actionSelectedID = null;
     this.listActions = this.intentSelected.actions?this.intentSelected.actions:null;
     this.selectedAction = null;
-    console.log('[INTENT SERVICE] ::: setIntentSelected ::: ', this.intentSelected);
+    // console.log('[INTENT SERVICE] ::: setIntentSelected ::: ', this.intentSelected);
     this.behaviorIntent.next(this.intentSelected);
     // if(!this.intentSelected)return;
     // chiudo tutti i pannelli
@@ -684,7 +684,7 @@ export class IntentService {
   /** deleteSelectedAction 
   */
   public deleteSelectedAction(){
-    console.log('[INTENT SERVICE] ::: deleteSelectedAction', this.intentSelected.intent_id, this.actionSelectedID);
+    // console.log('[INTENT SERVICE] ::: deleteSelectedAction', this.intentSelected.intent_id, this.actionSelectedID);
     if(this.intentSelected.intent_id && this.actionSelectedID){
       this.connectorService.deleteConnectorsFromActionByActionId(this.actionSelectedID);
       let intentToUpdate = this.listOfIntents.find((intent) => intent.intent_id === this.intentSelected.intent_id);
@@ -706,7 +706,7 @@ export class IntentService {
         // this.behaviorIntent.next(intentToUpdate);
       }
       this.unselectAction();
-      console.log('deleteSelectedAction', intentToUpdate);
+      // console.log('deleteSelectedAction', intentToUpdate);
     }
   } 
 
@@ -802,8 +802,9 @@ export class IntentService {
       action.temperature = 0.7;
       action.model = "gpt-3.5-turbo";
       action.assignReplyTo = 'gpt_reply';
+      action.preview = [];
     }
-    console.log('ho creato nuova action ', action);
+    // console.log('ho creato nuova action ', action);
     return action;
   }
   // END ATTRIBUTE FUNCTIONS //
@@ -812,7 +813,7 @@ export class IntentService {
 
 
   public patchButtons(buttons, idAction){
-    console.log('patchButtons:: ', buttons);
+    // console.log('patchButtons:: ', buttons);
     buttons.forEach((button, index) => {
       const checkUid = buttons.filter(btn => btn.uid === button.uid);
       if (checkUid.length > 1 || !button.uid && button.uid == undefined) {
@@ -866,7 +867,7 @@ export class IntentService {
 
     clearTimeout(this.setTimeoutChangeEvent);
     this.setTimeoutChangeEvent = setTimeout(() => {
-      console.log('[INTENT SERVICE] -> patchAttributes, ', intentID, attributes);
+      // console.log('[INTENT SERVICE] -> patchAttributes, ', intentID, attributes);
       // let intentToUpdate = this.listOfIntents.find((intent) => intent.id === intentID);
       //if(!fromCallerUndoRedo)this.addUNDOtoList(intent, 'DEL');
       this.faqService.patchAttributes(intentID, attributes).subscribe((data) => {
@@ -874,13 +875,13 @@ export class IntentService {
         if (data) {
           // this.listOfIntents = this.listOfIntents.map((obj) => (obj.id === intentID ? data : obj));
           // data['attributesChanged'] = true;
-          console.log('[INTENT SERVICE] patchAttributes OK: ', data);
+          // console.log('[INTENT SERVICE] patchAttributes OK: ', data);
           // this.behaviorIntent.next(data);
         }
       }, (error) => {
-        console.log('error:   ', error);
+        // console.log('error:   ', error);
       }, () => {
-        console.log('complete');
+        // console.log('complete');
       });
     }, 1000);
   }
@@ -892,7 +893,7 @@ export class IntentService {
     let intervalId = setInterval(async () => {
       const result = checkIFElementExists(intent.intent_id);
       if (result === true) {
-        console.log('[CDS CANVAS] Condition is true ', intent.intent_id);
+        // console.log('[INTENT SERVICE] Condition is true ', intent.intent_id);
         this.stageService.setDragElement(intent.intent_id);
         // this.intentService.setListnerEvent(intent);
         clearInterval(intervalId);
@@ -901,7 +902,7 @@ export class IntentService {
     // Chiamiamo la funzione ogni 100 millisecondi (0.1 secondo)
     // Termina l'intervallo dopo 2 secondi (2000 millisecondi)
     setTimeout(() => {
-      console.log('Timeout: 2 secondo scaduto.');
+      // console.log('Timeout: 2 secondo scaduto.');
       clearInterval(intervalId);
     }, 2000);
   }

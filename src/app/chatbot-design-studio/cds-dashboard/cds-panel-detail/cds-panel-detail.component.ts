@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, HostListener, ElementRef, ViewChild } from '@angular/core';
 import { Intent } from '../../../models/intent-model';
 import { TYPE_INTENT_ELEMENT, TYPE_ACTION } from '../../utils';
+import { LoggerService } from 'app/services/logger/logger.service';
 
 
 @Component({
@@ -38,41 +39,41 @@ export class CdsPanelDetailComponent implements OnInit {
   // listOfActions: Array<{ name: string, value: string, icon?: string }>;;
 
 
-  constructor() { }
+  constructor(private logger: LoggerService) { }
 
   ngOnInit(): void {
     //this.isOpenPanelDetail = true;
   }
 
   ngOnChanges() {
-    // console.log('ngOnChanges:: ', this.elementSelected);
+    // this.logger.log('ngOnChanges:: ', this.elementSelected);
   }
 
   @HostListener('document:mousedown', ['$event'])
   onGlobalClick(event): void {
     if (!this.elementRef.nativeElement.contains(event.target)) {
       this.isOpenPanelDetail = false;
-      console.log("FUORI");
+      this.logger.log("FUORI");
     } else {
       this.isOpenPanelDetail = true;
-      console.log("DENTRO");
+      this.logger.log("DENTRO");
     }
   }
 
   // EVENT FUNCTIONS //
   onUpdateFormIntentSelected($event){
     this.elementSelected = $event;
-    // console.log("onUpdateFormIntentSelected:::: ", $event);
+    // this.logger.log("onUpdateFormIntentSelected:::: ", $event);
   }
 
   onUpdateAnswerIntentSelected($event){
     this.elementSelected = $event;
-    // console.log("updateAnswerIntentSelected:::: ", $event);
+    // this.logger.log("updateAnswerIntentSelected:::: ", $event);
   }
 
   onUpdateQuestionsIntentSelected($event){
     this.elementSelected = $event;
-    // console.log("onUpdateQuestionsIntentSelected:::: ", $event);
+    // this.logger.log("onUpdateQuestionsIntentSelected:::: ", $event);
   }
 
 
@@ -88,12 +89,12 @@ export class CdsPanelDetailComponent implements OnInit {
     // } else if(this.elementIntentSelectedType === this.typeIntentElement.FORM){
     //   this.intentSelected.form = this.elementSelected;
     // }
-    // console.log('----> onSaveIntent:: ', this.elementIntentSelectedType, this.intentSelected);
+    // this.logger.log('----> onSaveIntent:: ', this.elementIntentSelectedType, this.intentSelected);
     // this.closeAndSavePanelIntentDetail.emit(this.intentSelected);
   }
 
   onCloseIntent(){
-    // console.log('----> onCloseIntent:: ', this.elementIntentSelectedType, this.intentSelected);
+    // this.logger.log('----> onCloseIntent:: ', this.elementIntentSelectedType, this.intentSelected);
     // this.closeAndSavePanelIntentDetail.emit();
   }
 
