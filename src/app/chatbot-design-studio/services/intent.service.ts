@@ -417,8 +417,9 @@ export class IntentService {
     let intentsToUpdateRedo = [];
     // let intentToUpdateUndo = this.prevListOfIntent.find((intent) => intent.intent_id === originalIntent.intent_id);
     // let intentToUpdateRedo = this.listOfIntents.find((intent) => intent.intent_id === originalIntent.intent_id);
-    intentsToUpdateRedo = [ ...this.listOfIntents ];
-    intentsToUpdateUndo = [ ...this.prevListOfIntent ];
+    intentsToUpdateRedo = JSON.parse(JSON.stringify(this.listOfIntents));
+    intentsToUpdateUndo = JSON.parse(JSON.stringify(this.prevListOfIntent));
+    
 
     this.addIntentToUndoRedo('PUT', originalIntent, intentsToUpdateUndo, intentsToUpdateRedo);
 
@@ -859,8 +860,8 @@ export class IntentService {
     let intentsToUpdateRedo = [];
     // let intentToUpdateUndo = this.prevListOfIntent.find((intent) => intent.intent_id === originalIntent.intent_id);
     // let intentToUpdateRedo = this.listOfIntents.find((intent) => intent.intent_id === originalIntent.intent_id);
-    intentsToUpdateRedo = [ ...this.listOfIntents ];
-    intentsToUpdateUndo = [ ...this.prevListOfIntent ];
+    intentsToUpdateRedo = JSON.parse(JSON.stringify(this.listOfIntents));
+    intentsToUpdateUndo = JSON.parse(JSON.stringify(this.prevListOfIntent));
     this.addIntentToUndoRedo('PUT', intent, intentsToUpdateUndo, intentsToUpdateRedo);
 
     clearTimeout(this.setTimeoutChangeEvent);
@@ -938,12 +939,12 @@ export class IntentService {
       pos: pos,  
       undo:{
         type: typeUNDO,
-        intent: {...intent},
+        intent: JSON.parse(JSON.stringify(intent)),
         intentsToUpdate: intentsToUpdateUndo,
       },
       redo:{
         type: typeREDO,
-        intent: {...intent},
+        intent: JSON.parse(JSON.stringify(intent)),
         intentsToUpdate: intentsToUpdateRedo,
       }
     }
@@ -958,7 +959,7 @@ export class IntentService {
       this.arrayREDO.push(JSON.parse(JSON.stringify(objUNDO)));
       console.log('[INTENT SERVICE] -> RESTORE UNDO: ', objUNDO);
       this.restoreIntent(objUNDO.pos, objUNDO.undo);
-      // console.log('[INTENT SERVICE] -> ho aggiornato gli array dopo UNDO ', this.arrayUNDO, this.arrayREDO);
+      console.log('[INTENT SERVICE] -> ho aggiornato gli array dopo UNDO ', this.arrayUNDO, this.arrayREDO);
     }
   }
 
@@ -969,7 +970,7 @@ export class IntentService {
       this.arrayUNDO.push(JSON.parse(JSON.stringify(objREDO)));
       console.log('[INTENT SERVICE] -> RESTORE REDO: ', objREDO);
       this.restoreIntent(objREDO.pos, objREDO.redo);
-      // console.log('[INTENT SERVICE] -> ho aggiornato gli array dopo REDO ', this.arrayUNDO, this.arrayREDO);
+      console.log('[INTENT SERVICE] -> ho aggiornato gli array dopo REDO ', this.arrayUNDO, this.arrayREDO);
     }
   }
 
@@ -1041,6 +1042,8 @@ export class IntentService {
         }
         this.setDragAndListnerEventToElement(obj);
       });
+      // this.listOfIntents = this.replaceIntent(intent, this.listOfIntents);
+      // this.setDragAndListnerEventToElement(intent);
       this.refreshIntents();
     } 
 

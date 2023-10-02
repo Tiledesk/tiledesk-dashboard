@@ -547,7 +547,7 @@ export class CdsCanvasComponent implements OnInit {
     let intentsToUpdateUndo = [];
     let intentsToUpdateRedo = [];
     let intentToCancel =  JSON.parse(JSON.stringify(intent));
-    const prevIntents = [ ...this.intentService.prevListOfIntent ];
+    const prevIntents = JSON.parse(JSON.stringify(this.intentService.prevListOfIntent));
     // recupero tutti i connettori in ingresso di intent_id e creo un array di elementi da updare
     const connectorsID = this.connectorService.searchConnectorsInOfIntent(intent.intent_id);
     connectorsID.forEach(connector => {
@@ -572,7 +572,7 @@ export class CdsCanvasComponent implements OnInit {
       this.connectorService.deleteConnectorsOfBlock(intent.intent_id);
     }, 0);
 
-    const nowIntents = [ ...this.listOfIntents ];
+    const nowIntents = JSON.parse(JSON.stringify(this.listOfIntents));
     connectorsID.forEach(connector => {
       let splitFromId = connector['id'].split('/');
       let intent_id = splitFromId[0];
@@ -639,7 +639,7 @@ export class CdsCanvasComponent implements OnInit {
     
     let splitFromId = fromId.split('/');
     let intent_id = splitFromId[0];
-    const prevIntents = [ ...this.intentService.prevListOfIntent ];
+    const prevIntents = JSON.parse(JSON.stringify(this.intentService.prevListOfIntent));
     const intentUpdateUndo = prevIntents.find((obj) => obj.intent_id == intent_id);
     if(intentUpdateUndo) intentsToUpdateUndo.push(intentUpdateUndo);
     console.log('[CDS-CANVAS] intentsToUpdateUndo ', intentUpdateUndo);
@@ -650,7 +650,7 @@ export class CdsCanvasComponent implements OnInit {
     const resp = await this.connectorService.createConnectorFromId(fromId, toId);
     // console.log('[CDS-CANVAS] sync 2 ', resp);
    
-    const nowIntents = [ ...this.listOfIntents ];
+    const nowIntents = JSON.parse(JSON.stringify(this.listOfIntents));
     const intentUpdateRedo = nowIntents.find((obj) => obj.intent_id == intent_id);
     if(intentUpdateRedo) intentsToUpdateRedo.push(intentUpdateRedo);
     console.log('[CDS-CANVAS] intentUpdateRedo ', intentUpdateRedo);
