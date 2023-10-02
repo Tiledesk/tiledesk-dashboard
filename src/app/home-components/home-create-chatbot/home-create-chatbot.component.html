@@ -86,8 +86,8 @@
                 </div>
                 <div class="home-block-title">
                     <!-- You don't have any chatbots yet! -->
-                  <span *ngIf="countOfChatbots === 0"> Get Started with Conversation Automation </span> 
-                  <span *ngIf="countOfChatbots > 0"> Your Chatbots and Conversational Apps </span> 
+                    <span *ngIf="countOfChatbots === 0"> Get Started with Conversation Automation </span>
+                    <span *ngIf="countOfChatbots > 0"> Your Chatbots and Conversational Apps </span>
                 </div>
             </div>
 
@@ -187,7 +187,7 @@
                         <!-- ----------------------------------- -->
                         <!-- Bot Description -->
                         <!-- ----------------------------------- -->
-                        <div class="chatbot-popover-row flex-start">
+                        <!-- <div class="chatbot-popover-row flex-start">
                             <div class="left--col">
                                 <svg style="vertical-align: middle; position: relative; top: -1px;"
                                     xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="16px"
@@ -203,16 +203,16 @@
                                     </g>
                                 </svg>
                             </div>
-
+                          
                             <div class="right--col chatbot-description">
                                 <span *ngIf="bot.description"> {{bot.description}} </span>
                                 <span *ngIf="!bot.description"> No description provided</span>
                             </div>
-                        </div>
+                        </div> -->
                         <!-- ------------------------------------ -->
-                        <!-- @ Language  -->
+                        <!-- @ Bot Language  -->
                         <!-- ------------------------------------ -->
-                        <div style="margin-bottom: 3px;" class="chatbot-popover-row">
+                        <!-- <div style="margin-bottom: 3px;" class="chatbot-popover-row">
                             <div class="left--col">
                                 <span *ngIf="bot.language === 'da'">
                                     <img class="chatbot-language-flag" src="assets/img/language_flag/da.png">
@@ -264,15 +264,14 @@
                             <div class="right--col chatbot-language">
                                 {{bot.language}}
                             </div>
-                        </div>
+                        </div> -->
 
 
                         <!-- ----------------------------------- -->
                         <!-- Bot Department -->
                         <!-- ----------------------------------- -->
-                        <div class="chatbot-popover-row">
+                        <!-- <div class="chatbot-popover-row">
                             <div class="left--col">
-
                                 <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 0 24 24" width="16px"
                                     fill="#7d8590" style="position: relative;top: 2px;">
                                     <path d="M0 0h24v24H0V0z" fill="none" />
@@ -284,9 +283,8 @@
                             <div class="right--col chatbot-description">
                                 <span *ngIf="bot.deptName"> {{bot?.deptName}} </span>
                                 <span *ngIf="!bot.deptName"> Not hooked to a department</span>
-
                             </div>
-                        </div>
+                        </div> -->
 
 
 
@@ -294,7 +292,8 @@
                             <div class="arrow-container" (click)="goToBotProfile(bot)">
                                 <div id="arrow_2" class="arrow-wrapper">
                                     <div class="text-block" style="margin-right: 16px; font-size: 13px;">
-                                        {{ 'ViewDetails' | translate }}
+                                        <!-- {{ 'ViewDetails' | translate }} -->
+                                        Open in designer
                                     </div>
                                     <div class="arrow arrow--right">
                                         <span></span>
@@ -311,7 +310,7 @@
 
         <div *ngIf="chatbots?.length > 10" class="served-by-desktop-b" click="goToMyChatbots()">
             <div class="served-by-desktop-d">
-                <div  class="other-chatbots">
+                <div class="other-chatbots">
                     + {{numOfChabotNotDiplayed}}
                 </div>
             </div>
@@ -323,8 +322,9 @@
     <div *ngIf="chatbots && chatbots?.length === 0">
         <div class="home-block-description" style="padding-bottom: 30px;">
             <span *ngIf="displayDefaultDescription === false"> {{'StartBySelecting_en' | translate : tparams }} </span>
-            <span *ngIf="displayDefaultDescription === true"> Get started by selecting a free ready-to-use template 
-                from our library or create your chatbot and conversational app from scratch with our no-code Design Studios</span>
+            <span *ngIf="displayDefaultDescription === true"> Get started by selecting a free ready-to-use template
+                from our library or create your chatbot and conversational app from scratch with our no-code Design
+                Studio</span>
         </div>
     </div>
 
@@ -385,7 +385,17 @@
         <ng-container *ngFor="let template of templates | slice:0:2; let i=index ">
             <div class="suggested-templates-card" (click)="openDialog(template)">
                 <div class="suggested-templates-card-image">
-                    <img _ngcontent-nei-c171="" style="width: auto; height: 40px;margin-top: 20px;" src="{{template.bigImage}}">
+                    <span *ngIf="!template?.bigImage">
+                        <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE" style="width: 40px; height: 40px;"
+                            src="https://firebasestorage.googleapis.com/v0/b/tiledesk-prod-v2.appspot.com/o/profiles%2F{{template._id}}%2Fphoto.jpg?alt=media"
+                            onerror="this.src='assets/img/avatar_bot_tiledesk.svg'">
+                        <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" style="width: 40px; height: 40px;"
+                            src="{{baseUrl}}images?path=uploads%2Fusers%2F{{template?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                            onerror="this.src='assets/img/avatar_bot_tiledesk.svg'">
+                    </span>
+                    <span *ngIf="template?.bigImage">
+                        <img style="width: auto; height: 40px;margin-top: 20px;" src="{{template.bigImage}}">
+                    </span>
                 </div>
                 <div class="templates-card-title-and-description">
                     <div class="suggested-templates-card-title">
@@ -429,7 +439,8 @@
             </div>
         </div>
 
-        <div *ngIf="templates === undefined" class="suggested-templates-card" (click)="goToCustomerSatisfactionTemplates()">
+        <div *ngIf="templates === undefined" class="suggested-templates-card"
+            (click)="goToCustomerSatisfactionTemplates()">
             <div class="suggested-templates-card-image">
                 <svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 0 24 24" width="40px" fill="#2196f3"
                     style="margin-right: 8px; margin-top: 21px;">
@@ -475,7 +486,7 @@
                 </div>
 
                 <div class="suggested-templates-use-template" style="padding-top: 3px;">
-                    <span style="font-size: 12px;padding-top: 6px; ">Explore all templates</span>
+                    <span style="padding-top: 6px; ">Explore all templates</span>
                 </div>
             </div>
         </div>
@@ -506,7 +517,8 @@
             </div>
         </div>
 
-        <div *ngIf="use_case_for_child === 'increase_online_sales'" class="suggested-templates-card" (click)="goToIncreaseSalesTemplates()">
+        <div *ngIf="use_case_for_child === 'increase_online_sales'" class="suggested-templates-card"
+            (click)="goToIncreaseSalesTemplates()">
             <div class="suggested-templates-card-image">
                 <svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 0 24 24" width="40px" fill="#2196f3"
                     style="margin-right: 8px; margin-top: 21px;">

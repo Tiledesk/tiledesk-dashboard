@@ -12,7 +12,9 @@
         </i>
         <ul class="carousel">
             <!--  -->
-            <li class="news-card" [ngClass]="{'highlighted-card': news?.highlighted }" style="position: relative;"  *ngFor="let news of newsFeedList" (click)="openNewsLink(news?.learnmore)">
+            <li class="news-card" [ngClass]="{'highlighted-card': news?.highlighted }" 
+                style="position: relative;"  *ngFor="let news of newsFeedList" 
+                (click)="openNewsLink(news?.learnmore)">
                 
                 <!-- <div class="box"> -->
                     <!-- <div class="ribbon ribbon-top-right">
@@ -94,7 +96,7 @@
 
         </ul>
         <!-- <i class="fa-solid fa-angle-right"></i> -->
-        <i id="right" class="material-icons">
+        <i id="right" class="material-icons" style="opacity: 0;">
             keyboard_arrow_right
         </i>
     </div>

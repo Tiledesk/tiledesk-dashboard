@@ -1610,9 +1610,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
         if (res.success === true) {
           this.whatsAppIsConnected = true;
-          // this.waWizardSteps = [{ step1: true, step2: true, step3: true }]
-          // this.upadatedWatsAppWizard(this.waWizardSteps, 'checkWAConnection success')
-          this.presentModalWaSuccessfullyConnected()
+         
+          // this.presentModalWaSuccessfullyConnected()
 
           const calledBy = 'connected'
           this.updateProjectWithStep3AndWASettings(res.settings, true, calledBy)
