@@ -22,7 +22,9 @@ import { goToCDSVersion } from 'app/utils/util';
 export class TemplateDetailComponent implements OnInit {
   // public templateName: string;
   // public templateDescription: string;
-
+  UPLOAD_ENGINE_IS_FIREBASE: boolean;
+  storageBucket: string;
+  baseUrl: string;
   public template: any
 
   public TESTSITE_BASE_URL: string;
@@ -91,6 +93,25 @@ export class TemplateDetailComponent implements OnInit {
     this.getCurrentProjectAndThenGetDeptsByProjectId()
     this.getProjectUserRole()
     this.getLoggedUser();
+    this.getImageBaseUrl()
+  }
+
+  getImageBaseUrl() {
+    if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
+
+      this.UPLOAD_ENGINE_IS_FIREBASE = true;
+      const firebase_conf = this.appConfigService.getConfig().firebase;
+      this.storageBucket = firebase_conf['storageBucket'];
+      this.logger.log('[HOME-CREATE-CHATBOT] - IMAGE STORAGE ', this.storageBucket, 'usecase firebase')
+
+
+    } else {
+
+      this.UPLOAD_ENGINE_IS_FIREBASE = false;
+      this.baseUrl = this.appConfigService.getConfig().baseImageUrl;
+      this.logger.log('[HOME-CREATE-CHATBOT] - IMAGE STORAGE ', this.baseUrl, 'usecase native')
+    
+    }
   }
 
   getLoggedUser() {

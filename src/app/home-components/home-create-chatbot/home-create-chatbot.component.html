@@ -384,7 +384,7 @@
 
         <ng-container *ngFor="let template of templates | slice:0:2; let i=index ">
             <div class="suggested-templates-card" (click)="openDialog(template)">
-                <div class="suggested-templates-card-image">
+                <!-- <div class="suggested-templates-card-image">
                     <span *ngIf="!template?.bigImage">
                         <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE" style="width: 40px; height: 40px;"
                             src="https://firebasestorage.googleapis.com/v0/b/tiledesk-prod-v2.appspot.com/o/profiles%2F{{template._id}}%2Fphoto.jpg?alt=media"
@@ -396,7 +396,7 @@
                     <span *ngIf="template?.bigImage">
                         <img style="width: auto; height: 40px;margin-top: 20px;" src="{{template.bigImage}}">
                     </span>
-                </div>
+                </div> -->
                 <div class="templates-card-title-and-description">
                     <div class="suggested-templates-card-title">
                         {{template.name}}
