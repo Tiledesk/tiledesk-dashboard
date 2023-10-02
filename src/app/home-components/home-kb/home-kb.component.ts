@@ -54,9 +54,9 @@ export class HomeKbComponent implements OnInit {
 
 
   presentModalAddKb() {
-    console.log('[HOME-KB] - presentModalAddKb ');
+    this.logger.log('[HOME-KB] - presentModalAddKb ');
     const addKbBtnEl = <HTMLElement>document.querySelector('#home-material-btn'); 
-    console.log('[HOME-KB] - presentModalAddKb addKbBtnEl ', addKbBtnEl);
+    this.logger.log('[HOME-KB] - presentModalAddKb addKbBtnEl ', addKbBtnEl);
     addKbBtnEl.blur()
     const dialogRef = this.dialog.open(HomeKbModalComponent, {
       width: '600px',
@@ -66,13 +66,13 @@ export class HomeKbComponent implements OnInit {
     })
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(`[HOME-KB] Dialog result:`, result);
+      this.logger.log(`[HOME-KB] Dialog result:`, result);
 
       if (result) {
         this.newKb = result.newKb;
         this.kbSettings = result.kbSettings;
 
-        console.log(`[HOME-KB] Dialog this.newKb:`, this.newKb);
+        this.logger.log(`[HOME-KB] Dialog this.newKb:`, this.newKb);
 
         if (this.newKb) {
           this.saveKnowledgeBase()
@@ -111,7 +111,7 @@ export class HomeKbComponent implements OnInit {
 
   getKnowledgeBaseSettings() {
     this.kbService.getKbSettings().subscribe((kbSettings: KbSettings) => {
-      console.log("[HOME-KB] get kbSettings: ", kbSettings);
+      this.logger.log("[HOME-KB] get kbSettings: ", kbSettings);
       this.kbSettings = kbSettings;
     
       if (this.kbSettings.kbs.length < kbSettings.maxKbsNumber) {
@@ -147,16 +147,16 @@ export class HomeKbComponent implements OnInit {
       gptkey: this.kbSettings.gptkey
     }
     this.openaiService.startScraping(data).subscribe((response) => {
-      console.log("[HOME-KB] start scraping response: ", response);
+      this.logger.log("[HOME-KB] start scraping response: ", response);
     }, (error) => {
-      console.error("[HOME-KB] error start scraping response: ", error);
+      this.logger.error("[HOME-KB] error start scraping response: ", error);
     }, () => {
-      console.log("[HOME-KB] start scraping *COMPLETE*");
+      this.logger.log("[HOME-KB] start scraping *COMPLETE*");
     })
   }
 
   goToKnowledgeBases() {
-    console.log("goToKnowledgeBases -----> project._id: ", this.project._id);
+    this.logger.log("goToKnowledgeBases -----> project._id: ", this.project._id);
     this.router.navigate(['project/' + this.project._id + '/knowledge-bases'])
   }
 

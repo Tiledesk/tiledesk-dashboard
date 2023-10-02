@@ -93,7 +93,7 @@ export class CnpIsMobileComponent implements OnInit {
     let data = {
       id_project: this.id_project
     }
-    console.log("sendEmail data: ", data);
+    this.logger.log("sendEmail data: ", data);
 
     return new Promise((resolve, reject) => {
       this.usersService.sendLoginEmail(data).subscribe((response: any) => {

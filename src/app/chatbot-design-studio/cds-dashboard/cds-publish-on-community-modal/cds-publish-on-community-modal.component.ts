@@ -53,7 +53,7 @@ export class CdsPublishOnCommunityModalComponent implements OnInit {
     this.selectedChatbot = data.chatbot;
     this.projectId = data.projectId;
     this.hasPersonalCmntyInfo = data.personalCmntyInfo;
-   console.log('[PUBLISH-ON-COMMUNITY-MODAL-COMPONENT] hasPersonalCmntyInfo ', this.hasPersonalCmntyInfo)
+    this.logger.log('[PUBLISH-ON-COMMUNITY-MODAL-COMPONENT] hasPersonalCmntyInfo ', this.hasPersonalCmntyInfo)
     this.logger.log('[PUBLISH-ON-COMMUNITY-MODAL-COMPONENT] selectedChatbot ', this.selectedChatbot)
     this.logger.log('[PUBLISH-ON-COMMUNITY-MODAL-COMPONENT] projectId ', this.projectId)
     if (this.selectedChatbot) {

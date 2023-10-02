@@ -280,7 +280,7 @@ export class ProjectService {
 
     const url = this.SERVER_BASE_PATH + 'modules/payments/stripe/cancelsubscription';
     // const url = 'https://8ba8-79-8-190-172.eu.ngrok.io/modules/payments/stripe/cancelsubscription';
-    // console.log('[PROJECT-SERV] - CANCEL SUBSCRIPTION - PUT URL ', url);
+    // this.logger.log('[PROJECT-SERV] - CANCEL SUBSCRIPTION - PUT URL ', url);
 
     const body = { 'projectid': this.projectID, 'userid': this.user._id };
     this.logger.log('[PROJECT-SERV] - CANCEL SUBSCRIPTION - PUT REQUEST BODY ', body);
@@ -475,11 +475,11 @@ export class ProjectService {
     let url = this.PROJECTS_URL + this.projectID + '/'
     this.logger.log('[PROJECT-SERV] UPDATE EMAIL TEMPLATE - PUT URL ', url);
     this.logger.log('[PROJECT-SERV] UPDATE EMAIL TEMPLATE - temaplateName ', temaplateName);
-    // console.log('[PROJECT-SERV] UPDATE EMAIL TEMPLATE - template ', template);
+    // this.logger.log('[PROJECT-SERV] UPDATE EMAIL TEMPLATE - template ', template);
 
     // const body = { "settings.email.templates": template }
     // Object.keys(body).forEach(k => {
-    //   console.log('body key: ', k)
+    //   this.logger.log('body key: ', k)
     //   k + temaplateName
     // });
 
@@ -537,7 +537,7 @@ export class ProjectService {
     };
 
     let url = this.PROJECTS_URL + this.projectID + '/'
-    // console.log('[PROJECT-SERV] SAVE SMTP SETTINGS - PUT URL ', url);
+    // this.logger.log('[PROJECT-SERV] SAVE SMTP SETTINGS - PUT URL ', url);
 
     let body = {}
     body["settings.email.from"] = undefined;
@@ -673,7 +673,7 @@ export class ProjectService {
   // -----------------------------------------------------------------------------------------
   public unbanVisitor(contactid: string) {
     let url = this.PROJECTS_URL + this.projectID + '/ban/' + contactid;
-    // console.log('[PROJECT-SERV] - DELETE URL ', url);
+    // this.logger.log('[PROJECT-SERV] - DELETE URL ', url);
 
     const httpOptions = {
       headers: new HttpHeaders({
@@ -767,11 +767,11 @@ export class ProjectService {
     };
 
     let url = this.SERVER_BASE_PATH + "projects/" + this.projectID + "/attributes"
-    console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH USER PREFERENCES - URL', url);
+    this.logger.log('[PROJECT-SERV] -  UPDATE PRJCT WITH USER PREFERENCES - URL', url);
     // var key = 'ccp_'+propertyName;
     // const body = { [key]: propertyValue };
     const body = { userPreferences: segmentIdentifyAttributes }
-    console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH USER PREFERENCES- BODY', body);
+    this.logger.log('[PROJECT-SERV] -  UPDATE PRJCT WITH USER PREFERENCES- BODY', body);
     return this._httpclient
       .patch(url, JSON.stringify(body), httpOptions)
   }
@@ -785,7 +785,7 @@ export class ProjectService {
     };
 
     let url = this.WHATSAPP_API_URL + "/ext/" + this.projectID
-    console.log('[PROJECT-SERV] -  CHECK-WA-CONNECTION - URL', url);
+    this.logger.log('[PROJECT-SERV] -  CHECK-WA-CONNECTION - URL', url);
 
     return this._httpclient
       .get(url, httpOptions)
@@ -800,9 +800,9 @@ export class ProjectService {
     };
 
     let url = this.SERVER_BASE_PATH + "projects/" + this.projectID + "/attributes"
-    console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD STEPS - URL', url);
+    this.logger.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD STEPS - URL', url);
     const body = { wastep: wastep }
-    console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD STEPS - BODY', body);
+    this.logger.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD STEPS - BODY', body);
     return this._httpclient
       .patch(url, body, httpOptions)
   }
@@ -816,9 +816,9 @@ export class ProjectService {
     };
 
     let url = this.SERVER_BASE_PATH + "projects/" + this.projectID + "/attributes"
-    console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD STEP 1 - URL', url);
+    this.logger.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD STEP 1 - URL', url);
     const body = { wastep1: step1 }
-    console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD STEP 1 - BODY', body);
+    this.logger.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD STEP 1 - BODY', body);
     return this._httpclient
       .patch(url, body, httpOptions)
   }
@@ -832,9 +832,9 @@ export class ProjectService {
     };
 
     let url = this.SERVER_BASE_PATH + "projects/" + this.projectID + "/attributes"
-    console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD STEP 2 - URL', url);
+    this.logger.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD STEP 2 - URL', url);
     const body = { wastep2: step2 }
-    console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD STEP 2 - BODY', body);
+    this.logger.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD STEP 2 - BODY', body);
     return this._httpclient
       .patch(url, body, httpOptions)
   }
@@ -848,9 +848,9 @@ export class ProjectService {
     };
 
     let url = this.SERVER_BASE_PATH + "projects/" + this.projectID + "/attributes"
-    console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD STEP 3 - URL', url);
+    this.logger.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD STEP 3 - URL', url);
     const body = { wastep3: step3 }
-    console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD STEP 3 - BODY', body);
+    this.logger.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD STEP 3 - BODY', body);
     return this._httpclient
       .patch(url, body, httpOptions)
   }
@@ -865,9 +865,9 @@ export class ProjectService {
     };
 
     let url = this.SERVER_BASE_PATH + "projects/" + this.projectID + "/attributes"
-    console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD STEPS - URL', url);
+    this.logger.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD STEPS - URL', url);
     const body = {oneStepWizard: oneStepWizard}
-    console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD STEPS - BODY', body);
+    this.logger.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD STEPS - BODY', body);
     return this._httpclient
       .patch(url, body, httpOptions)
   }
@@ -881,9 +881,9 @@ export class ProjectService {
     };
 
     let url = this.SERVER_BASE_PATH + "projects/" + this.projectID + "/attributes"
-    console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA SETTINGS - URL', url);
+    this.logger.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA SETTINGS - URL', url);
     const body = { wasettings: wasettings }
-    console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA SETTINGS - BODY', body);
+    this.logger.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA SETTINGS - BODY', body);
     return this._httpclient
       .patch(url, body, httpOptions)
   }
@@ -897,9 +897,9 @@ export class ProjectService {
     };
 
     let url = this.SERVER_BASE_PATH + "projects/" + this.projectID + "/attributes"
-    console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD STEPS - URL', url);
+    this.logger.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD STEPS - URL', url);
     const body = { wasettings: {} }
-    console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD STEPS - BODY', body);
+    this.logger.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD STEPS - BODY', body);
     return this._httpclient
       .patch(url, body, httpOptions)
   }
@@ -914,9 +914,9 @@ export class ProjectService {
     };
 
     let url = this.SERVER_BASE_PATH + "projects/" + this.projectID + "/attributes"
-    console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD COMPLETED - URL', url);
+    this.logger.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD COMPLETED - URL', url);
     const body = { wizardCompleted: true }
-    console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD COMPLETED - BODY', body);
+    this.logger.log('[PROJECT-SERV] -  UPDATE PRJCT WITH WA WIZARD COMPLETED - BODY', body);
     return this._httpclient
       .patch(url, body, httpOptions)
   }
@@ -931,9 +931,9 @@ export class ProjectService {
     };
 
     let url = this.SERVER_BASE_PATH + "projects/" + this.projectID + "/attributes"
-    console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH USER HAS UNISTALLED WA - URL', url);
+    this.logger.log('[PROJECT-SERV] -  UPDATE PRJCT WITH USER HAS UNISTALLED WA - URL', url);
     const body = { userHasReMovedWA: hasuninstalled }
-    console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH USER HAS UNISTALLED WA - BODY', body);
+    this.logger.log('[PROJECT-SERV] -  UPDATE PRJCT WITH USER HAS UNISTALLED WA - BODY', body);
     return this._httpclient
       .patch(url, JSON.stringify(body), httpOptions)
   }
@@ -948,9 +948,9 @@ export class ProjectService {
     };
 
     let url = this.SERVER_BASE_PATH + "projects/" + this.projectID + "/attributes"
-    console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH DISPLAY WA WIZARD - URL', url);
+    this.logger.log('[PROJECT-SERV] -  UPDATE PRJCT WITH DISPLAY WA WIZARD - URL', url);
     const body = { displayWAWizard: displaywawizard }
-    console.log('[PROJECT-SERV] - UPDATE PRJCT WITH DISPLAY WA WIZARD - BODY', body);
+    this.logger.log('[PROJECT-SERV] - UPDATE PRJCT WITH DISPLAY WA WIZARD - BODY', body);
     return this._httpclient
       .patch(url, JSON.stringify(body), httpOptions)
   }
@@ -972,7 +972,7 @@ export class ProjectService {
     };
 
     let url = this.SERVER_BASE_PATH + "projects/" + this.projectID + "/attributes"
-    console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH DASHLET PREFERENCES - URL', url);
+    this.logger.log('[PROJECT-SERV] -  UPDATE PRJCT WITH DASHLET PREFERENCES - URL', url);
     const body =
     {
       dashlets:
@@ -988,7 +988,7 @@ export class ProjectService {
       }
     }
     // JSON.stringify()
-    console.log('[PROJECT-SERV] -  UPDATE PRJCT WITH DASHLET PREFERENCES - BODY', body);
+    this.logger.log('[PROJECT-SERV] -  UPDATE PRJCT WITH DASHLET PREFERENCES - BODY', body);
     return this._httpclient
       .patch(url, body, httpOptions)
   }
@@ -1062,8 +1062,8 @@ export class ProjectService {
 
     const url = this.SERVER_BASE_PATH + 'modules/payments/stripe/checkoutSession/' + sessionid;
     // const url = 'https://c1a0-79-8-190-172.eu.ngrok.io/modules/payments/stripe/checkoutSession/' + sessionid;
-    // console.log('[PROJECT-SERV] - GET STRIPE SESSION BY ID - ID', sessionid);
-    // console.log('[PROJECT-SERV] - GET STRIPE SESSION BY ID - URL', url);
+    // this.logger.log('[PROJECT-SERV] - GET STRIPE SESSION BY ID - ID', sessionid);
+    // this.logger.log('[PROJECT-SERV] - GET STRIPE SESSION BY ID - URL', url);
 
 
     return this._httpclient

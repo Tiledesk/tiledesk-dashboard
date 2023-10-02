@@ -190,16 +190,16 @@ export class KnowledgeBasesComponent implements OnInit {
       gptkey: this.kbSettings.gptkey
     }
     this.openaiService.startScraping(data).subscribe((response) => {
-      console.log("start scraping response: ", response);
+      this.logger.log("start scraping response: ", response);
       setTimeout(() => {
         this.checkStatus(kb).then((status_code: number) => {
           kb.status = status_code;
         })
       }, 1000);
     }, (error) => {
-      console.error("error start scraping response: ", error);
+      this.logger.error("error start scraping response: ", error);
     }, () => {
-      console.log("start scraping *COMPLETE*");
+      this.logger.log("start scraping *COMPLETE*");
     })
   }
 
@@ -224,7 +224,7 @@ export class KnowledgeBasesComponent implements OnInit {
     }
 
     Promise.all(promises).then((response) => {
-      console.log("Promise All *COMPLETED* ", response);
+      this.logger.log("Promise All *COMPLETED* ", response);
     })
   
   }

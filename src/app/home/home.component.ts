@@ -241,7 +241,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.getLoggedUser()
     this.getCurrentProjectAndInit();
     // this.getStorageBucket(); // moved in getCurrentProject()
-    console.log('[HOME] !!! Hello HomeComponent! ');
+    this.logger.log('[HOME] !!! Hello HomeComponent! ');
 
     this.getBrowserLanguage();
     this.translateString();
@@ -278,7 +278,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnDestroy() {
-    // console.log('HOME COMP - CALLING ON DESTROY')
+    // this.logger.log('HOME COMP - CALLING ON DESTROY')
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
@@ -289,7 +289,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         takeUntil(this.unsubscribe$)
       )
       .subscribe((project) => {
-        console.log('[HOME] $UBSCIBE TO PUBLISHED PROJECT - RES  --> ', project)
+        this.logger.log('[HOME] $UBSCIBE TO PUBLISHED PROJECT - RES  --> ', project)
 
         if (project) {
           this.project = project
@@ -316,22 +316,22 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   getProjectById(projectId) {
     this.projectService.getProjectById(projectId).subscribe((project: any) => {
-      console.log('[HOME] - GET PROJECT BY ID - PROJECT: ', project);
+      this.logger.log('[HOME] - GET PROJECT BY ID - PROJECT: ', project);
       
       if (project && project.attributes && project.attributes.userPreferences) {
         this.PROJECT_ATTRIBUTES = project.attributes;
         this.getOnbordingPreferences(this.PROJECT_ATTRIBUTES)
         this.getDashlet(this.PROJECT_ATTRIBUTES)
       } else {
-        console.log('[HOME] USECASE  PROJECT_ATTRIBUTES UNDEFINED', this.PROJECT_ATTRIBUTES)
+        this.logger.log('[HOME] USECASE  PROJECT_ATTRIBUTES UNDEFINED', this.PROJECT_ATTRIBUTES)
         this.setDefaultPreferences()
       }
 
 
     }, error => {
-      console.error('[HOME] - GET PROJECT BY ID - ERROR ', error);
+      this.logger.error('[HOME] - GET PROJECT BY ID - ERROR ', error);
     }, () => {
-      console.log('[HOME] - GET PROJECT BY ID * COMPLETE * ');
+      this.logger.log('[HOME] - GET PROJECT BY ID * COMPLETE * ');
       // this.getApps();
       setTimeout(() => {
         this.showskeleton = false;
@@ -341,7 +341,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   getDashlet(project_attributes) {
     if (project_attributes && project_attributes.dashlets) {
-      console.log('[HOME] - (onInit) - DASHLETS PREFERENCES ', project_attributes.dashlets);
+      this.logger.log('[HOME] - (onInit) - DASHLETS PREFERENCES ', project_attributes.dashlets);
       const dashlets = project_attributes.dashlets;
 
       this.displayAnalyticsConvsGraph = dashlets.convsGraph
@@ -395,7 +395,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.projectService.getProjects().subscribe((projects: any) => {
       // this.projectService.getProjectById(projectId).subscribe((project: any) => {
 
-      // console.log('[HOME] getProjects By id project', project);
+      // this.logger.log('[HOME] getProjects By id project', project);
       if (projects) {
         this.projects = projects;
 
@@ -404,12 +404,12 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           return project.id_project.status === 100;
 
         });
-        console.log('[HOME] getProjects this.projects ', this.projects);
+        this.logger.log('[HOME] getProjects this.projects ', this.projects);
       }
 
       this.current_prjct = projects.find(prj => prj.id_project.id === projectId);
-      console.log('[HOME] - CURRENT PROJECT - current_prjct ', this.current_prjct);
-      console.log('[HOME] - CURRENT PROJECT - current_prjct  > attributes', this.current_prjct.id_project.attributes);
+      this.logger.log('[HOME] - CURRENT PROJECT - current_prjct ', this.current_prjct);
+      this.logger.log('[HOME] - CURRENT PROJECT - current_prjct  > attributes', this.current_prjct.id_project.attributes);
       // ---------------------------------
       // Get onboarding preferences 
       // ---------------------------------
@@ -417,7 +417,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       //   this.PROJECT_ATTRIBUTES = this.current_prjct.id_project.attributes
       //   this.getOnbordingPreferences(this.PROJECT_ATTRIBUTES)
       // } else {
-      //   console.log('[HOME] USECASE  PROJECT_ATTRIBUTES UNDEFINED' , this.PROJECT_ATTRIBUTES) 
+      //   this.logger.log('[HOME] USECASE  PROJECT_ATTRIBUTES UNDEFINED' , this.PROJECT_ATTRIBUTES) 
 
       //   this.displayCreateChatbot = true
       //   this.switchCreateChatbot(this.displayCreateChatbot)
@@ -458,11 +458,11 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         this.current_prjct.id_project &&
         this.current_prjct.id_project.attributes &&
         this.current_prjct.id_project.attributes.wasettings) {
-        console.log('[HOME] - (onInit) - wasettings ', this.current_prjct.id_project.attributes.wasettings);
+        this.logger.log('[HOME] - (onInit) - wasettings ', this.current_prjct.id_project.attributes.wasettings);
         this.wadepartmentid = this.current_prjct.id_project.attributes.wasettings.department_id
         this.getDeptById(this.wadepartmentid)
       } else {
-        console.log('[HOME] - (onInit) - not exist wasettings',)
+        this.logger.log('[HOME] - (onInit) - not exist wasettings',)
       }
 
 
@@ -470,7 +470,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       //   this.current_prjct.id_project &&
       //   this.current_prjct.id_project.attributes &&
       //   this.current_prjct.id_project.attributes.dashlets) {
-      //   console.log('[HOME] - (onInit) - DASHLETS PREFERENCES ', this.current_prjct.id_project.attributes.dashlets);
+      //   this.logger.log('[HOME] - (onInit) - DASHLETS PREFERENCES ', this.current_prjct.id_project.attributes.dashlets);
       //   const dashlets = this.current_prjct.id_project.attributes.dashlets;
 
       //   this.displayAnalyticsConvsGraph = dashlets.convsGraph
@@ -493,11 +493,11 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.subscription_is_active = this.current_prjct.id_project.isActiveSubscription;
       this.subscription_end_date = projectProfileData.subEnd;
       if (projectProfileData && projectProfileData.extra3) {
-        console.log('[HOME] Find Current Project Among All extra3 ', projectProfileData.extra3)
+        this.logger.log('[HOME] Find Current Project Among All extra3 ', projectProfileData.extra3)
 
         this.appSumoProfile = APP_SUMO_PLAN_NAME[projectProfileData.extra3];
         this.appSumoProfilefeatureAvailableFromBPlan = APP_SUMO_PLAN_NAME['tiledesk_tier3']
-        console.log('[HOME] Find Current Project appSumoProfile ', this.appSumoProfile)
+        this.logger.log('[HOME] Find Current Project appSumoProfile ', this.appSumoProfile)
         this.tPlanParams = { 'plan_name': this.appSumoProfilefeatureAvailableFromBPlan }
       } else if (!projectProfileData.extra3) {
         this.tPlanParams = { 'plan_name': PLAN_NAME.B }
@@ -505,13 +505,13 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
 
-      // console.log('[HOME] - Find Current Project Among All - current_prjct - prjct_name ', this.prjct_name);
-      console.log('[HOME] - Find Current Project Among All - current_prjct - prjct_profile_name ', this.prjct_profile_name);
-      // console.log('[HOME] - Find Current Project Among All - current_prjct - profile_name ', this.profile_name);
-      // console.log('[HOME] - Find Current Project Among All - current_prjct - prjct_trial_expired ', this.prjct_trial_expired);
-      // console.log('[HOME] - Find Current Project Among All - current_prjct - prjct_profile_type ', this.prjct_profile_type);
-      // console.log('[HOME] - Find Current Project Among All - current_prjct - subscription_is_active ', this.subscription_is_active);
-      // console.log('[HOME] - Find Current Project Among All - current_prjct - subscription_end_date ', this.subscription_end_date);
+      // this.logger.log('[HOME] - Find Current Project Among All - current_prjct - prjct_name ', this.prjct_name);
+      this.logger.log('[HOME] - Find Current Project Among All - current_prjct - prjct_profile_name ', this.prjct_profile_name);
+      // this.logger.log('[HOME] - Find Current Project Among All - current_prjct - profile_name ', this.profile_name);
+      // this.logger.log('[HOME] - Find Current Project Among All - current_prjct - prjct_trial_expired ', this.prjct_trial_expired);
+      // this.logger.log('[HOME] - Find Current Project Among All - current_prjct - prjct_profile_type ', this.prjct_profile_type);
+      // this.logger.log('[HOME] - Find Current Project Among All - current_prjct - subscription_is_active ', this.subscription_is_active);
+      // this.logger.log('[HOME] - Find Current Project Among All - current_prjct - subscription_end_date ', this.subscription_end_date);
 
       this.showSpinner = false;
 
@@ -607,7 +607,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.logger.log('[HOME] - Find Current Project Among All - current_prjct - prjct_profile_type 2', this.prjct_profile_type);
       // if ((this.prjct_profile_type === 'free' && daysDiffNowFromProjctCreated >= 30) || (this.prjct_profile_type === 'payment' && daysDiffNowFromProjctCreated < 30)) {
       if ((this.prjct_trial_expired === true && hasEmittedTrialEnded === null) || (this.prjct_profile_type === 'payment' && hasEmittedTrialEnded === null)) {
-        // console.log('[HOME] - Find Current Project Among All - BEFORE  Emitting TRIAL ENDED')
+        // this.logger.log('[HOME] - Find Current Project Among All - BEFORE  Emitting TRIAL ENDED')
         // if (hasEmittedTrialEnded === null) {
 
 
@@ -659,11 +659,11 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       }
 
 
-      console.log('[HOME] - Find Current Project Among All - projects ', this.projects);
+      this.logger.log('[HOME] - Find Current Project Among All - projects ', this.projects);
     }, error => {
-      console.error('[HOME] - Find Current Project Among All: ', error);
+      this.logger.error('[HOME] - Find Current Project Among All: ', error);
     }, () => {
-      console.log('[HOME] - Find Current Project Among All * COMPLETE * ');
+      this.logger.log('[HOME] - Find Current Project Among All * COMPLETE * ');
 
       this.getApps();
 
@@ -672,7 +672,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   async getOnbordingPreferences(project_attributes) {
 
-    console.log('[HOME] - getOnbordingPreferences PREFERENCES  project_attributes', project_attributes);
+    this.logger.log('[HOME] - getOnbordingPreferences PREFERENCES  project_attributes', project_attributes);
     // if (this.current_prjct &&
     //   this.current_prjct.id_project &&
     //   this.current_prjct.id_project.attributes &&
@@ -717,9 +717,9 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.solution_channel = project_attributes.userPreferences.solution_channel
     this.use_case = project_attributes.userPreferences.use_case
 
-    console.log('[HOME] - USER PREFERENCES getOnbordingPreferences solution_channel', this.solution_channel);
-    console.log('[HOME] - USER PREFERENCES getOnbordingPreferences use_case', this.use_case);
-    console.log('[HOME] - USER PREFERENCES getOnbordingPreferences solution', this.solution);
+    this.logger.log('[HOME] - USER PREFERENCES getOnbordingPreferences solution_channel', this.solution_channel);
+    this.logger.log('[HOME] - USER PREFERENCES getOnbordingPreferences use_case', this.use_case);
+    this.logger.log('[HOME] - USER PREFERENCES getOnbordingPreferences solution', this.solution);
 
     this.solution_for_child = this.solution;
     this.solution_channel_for_child = this.solution_channel;
@@ -760,9 +760,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.displayKnowledgeBase = true;
       await this.switchyKnowledgeBase(this.displayKnowledgeBase);
      
-     
-
-      console.log('[HOME] - YES ATTRIBUTES - NO USER PREFERENCES');
+      this.logger.log('[HOME] - YES ATTRIBUTES - NO USER PREFERENCES');
     }
 
 
@@ -773,7 +771,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.solution_channel === 'web_mobile' &&
       this.use_case === "solve_customer_problems") {
 
-      console.log('[HOME] USECASE 1')
+        this.logger.log('[HOME] USECASE 1')
       // , show: false
       this.child_list_order = [
         { pos: 1, type: 'child1'},
@@ -817,7 +815,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.solution === 'want_to_automate_conversations' &&
       this.solution_channel === 'web_mobile' &&
       this.use_case === "increase_online_sales") {
-      console.log('[HOME] USECASE 2')
+        this.logger.log('[HOME] USECASE 2')
 
       this.child_list_order = [
         { pos: 1, type: 'child1' },
@@ -860,7 +858,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.solution === 'want_to_automate_conversations' &&
       this.solution_channel === 'whatsapp_fb_messenger' &&
       this.use_case === 'solve_customer_problems') {
-      console.log('[HOME] USECASE 3')
+        this.logger.log('[HOME] USECASE 3')
 
       this.child_list_order = [
         { pos: 1, type: 'child1' },
@@ -872,7 +870,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         { pos: 7, type: 'child6' },
         { pos: 8, type: 'child8' }
       ]
-      console.log('[HOME] USECASE 3 userHasUnistalledWa', this.userHasUnistalledWa, 'whatsAppIsConnected', this.whatsAppIsConnected)
+      this.logger.log('[HOME] USECASE 3 userHasUnistalledWa', this.userHasUnistalledWa, 'whatsAppIsConnected', this.whatsAppIsConnected)
 
       // this.displayAnalyticsConvsGraph = false;
       // await this.switchAnalyticsConvsGraph(this.displayAnalyticsConvsGraph);
@@ -882,7 +880,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
       if (!this.userHasUnistalledWa && !this.whatsAppIsConnected) {
         this.displayWhatsappAccountWizard = true;
-        console.log('[HOME] USECASE 3 displayWhatsappAccountWizard ', this.displayWhatsappAccountWizard)
+        this.logger.log('[HOME] USECASE 3 displayWhatsappAccountWizard ', this.displayWhatsappAccountWizard)
       }
 
       this.displayConnectWhatsApp = true;
@@ -909,7 +907,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.solution === 'want_to_automate_conversations' &&
       this.solution_channel === 'whatsapp_fb_messenger' &&
       this.use_case === 'increase_online_sales') {
-      console.log('[HOME] USECASE 4')
+        this.logger.log('[HOME] USECASE 4')
 
       this.child_list_order = [
         { pos: 1, type: 'child1' },
@@ -922,7 +920,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         { pos: 8, type: 'child8' }
       ]
 
-      console.log('[HOME] USECASE 4 userHasUnistalledWa', this.userHasUnistalledWa, 'whatsAppIsConnected', this.whatsAppIsConnected)
+      this.logger.log('[HOME] USECASE 4 userHasUnistalledWa', this.userHasUnistalledWa, 'whatsAppIsConnected', this.whatsAppIsConnected)
 
       // this.displayAnalyticsConvsGraph = false;
       // await this.switchAnalyticsConvsGraph(this.displayAnalyticsConvsGraph);
@@ -932,7 +930,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
       if (!this.userHasUnistalledWa && !this.whatsAppIsConnected) {
         this.displayWhatsappAccountWizard = true;
-        console.log('[HOME] USECASE 4 displayWhatsappAccountWizard ', this.displayWhatsappAccountWizard)
+        this.logger.log('[HOME] USECASE 4 displayWhatsappAccountWizard ', this.displayWhatsappAccountWizard)
       }
       this.displayConnectWhatsApp = true;
       await this.switchConnectWhatsApp(this.displayConnectWhatsApp);
@@ -960,7 +958,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.solution === 'want_to_talk_to_customers' &&
       this.solution_channel === 'web_mobile' &&
       this.use_case === 'solve_customer_problems') {
-      console.log('[HOME] USECASE 5')
+      this.logger.log('[HOME] USECASE 5')
 
       this.child_list_order = [
         { pos: 1, type: 'child1' },
@@ -1003,7 +1001,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.solution === 'want_to_talk_to_customers' &&
       this.solution_channel === 'web_mobile' &&
       this.use_case === 'increase_online_sales') {
-      console.log('[HOME] USECASE 6')
+      this.logger.log('[HOME] USECASE 6')
 
       this.child_list_order = [
         { pos: 1, type: 'child1' },
@@ -1046,7 +1044,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.solution === 'want_to_talk_to_customers' &&
       this.solution_channel === 'whatsapp_fb_messenger' &&
       this.use_case === 'solve_customer_problems') {
-      console.log('[HOME] USECASE 7')
+      this.logger.log('[HOME] USECASE 7')
 
       this.child_list_order = [
         { pos: 1, type: 'child1' },
@@ -1095,7 +1093,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.solution === 'want_to_talk_to_customers' &&
       this.solution_channel === 'whatsapp_fb_messenger' &&
       this.use_case === 'increase_online_sales') {
-      console.log('[HOME] USECASE 8')
+      this.logger.log('[HOME] USECASE 8')
 
       this.child_list_order = [
         { pos: 1, type: 'child1' },
@@ -1145,9 +1143,9 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     const waWizardstep2 = project_attributes.wastep2;
     const waWizardstep3 = project_attributes.wastep3;
 
-    console.log('[HOME] ', calledby, 'MANAGE WA WIZARD waWizardstep1', waWizardstep1)
-    console.log('[HOME] ', calledby, 'MANAGE WA WIZARD waWizardstep2', waWizardstep2)
-    console.log('[HOME] ', calledby, 'MANAGE WA WIZARD waWizardstep3', waWizardstep3)
+    this.logger.log('[HOME] ', calledby, 'MANAGE WA WIZARD waWizardstep1', waWizardstep1)
+    this.logger.log('[HOME] ', calledby, 'MANAGE WA WIZARD waWizardstep2', waWizardstep2)
+    this.logger.log('[HOME] ', calledby, 'MANAGE WA WIZARD waWizardstep3', waWizardstep3)
     if (waWizardstep1 === false || waWizardstep1 === undefined) {
       this.chatbotCreated = false
     } else if (waWizardstep1 === true) {
@@ -1166,10 +1164,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     } else if (waWizardstep3 === true) {
       this.whatsAppIsConnected = true
     }
-    console.log('[HOME] ', calledby, 'MANAGE WA WIZARD solution_channel ', this.solution_channel_for_child, ' solution ', this.solution_for_child);
-    console.log('[HOME] ', calledby, 'MANAGE WA WIZARD chatbotCreated ', this.chatbotCreated);
-    console.log('[HOME] ', calledby, 'MANAGE WA WIZARD testBotOnWA ', this.testBotOnWA);
-    console.log('[HOME] ', calledby, 'MANAGE WA WIZARD whatsAppIsConnected ', this.whatsAppIsConnected);
+    this.logger.log('[HOME] ', calledby, 'MANAGE WA WIZARD solution_channel ', this.solution_channel_for_child, ' solution ', this.solution_for_child);
+    this.logger.log('[HOME] ', calledby, 'MANAGE WA WIZARD chatbotCreated ', this.chatbotCreated);
+    this.logger.log('[HOME] ', calledby, 'MANAGE WA WIZARD testBotOnWA ', this.testBotOnWA);
+    this.logger.log('[HOME] ', calledby, 'MANAGE WA WIZARD whatsAppIsConnected ', this.whatsAppIsConnected);
 
 
     if (waWizardstep1 === true && waWizardstep2 === true && waWizardstep3 === true) {
@@ -1183,15 +1181,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-
-
-
-
-
-
-
   init() {
-    // console.log("[HOME] > CALLING INIT")
+    // this.logger.log("[HOME] > CALLING INIT")
     // this.getDeptsByProjectId(); // USED FOR COUNT OF DEPTS FOR THE NEW HOME
     this.getImageStorageThenUserAndBots(); // to comment -> moved in Home Create Chatbot
     // this.getLastMounthMessagesCount() // USED TO GET THE MESSAGES OF THE LAST 30 DAYS
@@ -1216,27 +1207,27 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   getApps() {
     this.appStoreService.getApps().subscribe((_apps: any) => {
       this.apps = _apps.apps;
-      console.log('[HOME] - getApps APPS ', this.apps);
+      this.logger.log('[HOME] - getApps APPS ', this.apps);
       this.apps.forEach(app => {
         if (app.title === "WhatsApp Business") {
 
           this.whatsAppAppId = app._id;
-          console.log('[HOME] - whatsAppAppId ', this.whatsAppAppId)
+          this.logger.log('[HOME] - whatsAppAppId ', this.whatsAppAppId)
           this.installActionType = app.installActionType
-          console.log('[HOME] - installActionType ', this.installActionType)
+          this.logger.log('[HOME] - installActionType ', this.installActionType)
 
           this.appTitle = app.title;
-          console.log('[HOME] - appTitle ', this.appTitle)
+          this.logger.log('[HOME] - appTitle ', this.appTitle)
           this.appVersion = app.version;
-          console.log('[HOME] - appVersion ', this.appVersion)
+          this.logger.log('[HOME] - appVersion ', this.appVersion)
 
 
         }
 
-        // console.log('[HOME] - getApps APPS app ', app)
+        // this.logger.log('[HOME] - getApps APPS app ', app)
         if (app && app.version === "v2") {
           if (app.installActionURL === "") {
-            // console.log('HOME - getApps APPS app installActionURL', app.installActionURL)
+            // this.logger.log('HOME - getApps APPS app installActionURL', app.installActionURL)
             delete app.installActionURL
           }
         }
@@ -1244,19 +1235,19 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
     }, (error) => {
-      console.error('[HOME] - getApps ERROR  ', error);
+      this.logger.error('[HOME] - getApps ERROR  ', error);
       // this.showSpinner = false;
     }, () => {
-      console.log('[HOME] getApps * COMPLETE *');
+      this.logger.log('[HOME] getApps * COMPLETE *');
       this.getInstallations().then((res: any) => {
-        console.log("[HOME] getInstallations res: ", res)
+        this.logger.log("[HOME] getInstallations res: ", res)
         if (res) {
-          console.log("[HOME] getInstallations whatsAppIsInstalled ", this.whatsAppIsInstalled, 'solution_channel ', this.solution_channel_for_child)
+          this.logger.log("[HOME] getInstallations whatsAppIsInstalled ", this.whatsAppIsInstalled, 'solution_channel ', this.solution_channel_for_child)
           if (res.length === 0) {
             if (this.solution_channel_for_child === 'whatsapp_fb_messenger') {
-              console.log("[HOME] GET APPS - BEFORE TO INSTALL WA solution_channel_for_child ", this.solution_channel_for_child)
-              console.log("[HOME] GET APPS - BEFORE TO INSTALL WA userHasUnistalledWa ", this.userHasUnistalledWa)
-              console.log("[HOME] GET APPS - BEFORE TO INSTALL WA whatsAppIsInstalled ", this.whatsAppIsInstalled)
+              this.logger.log("[HOME] GET APPS - BEFORE TO INSTALL WA solution_channel_for_child ", this.solution_channel_for_child)
+              this.logger.log("[HOME] GET APPS - BEFORE TO INSTALL WA userHasUnistalledWa ", this.userHasUnistalledWa)
+              this.logger.log("[HOME] GET APPS - BEFORE TO INSTALL WA whatsAppIsInstalled ", this.whatsAppIsInstalled)
               if (this.userHasUnistalledWa === false) {
                 if (this.whatsAppIsInstalled === false || this.whatsAppIsInstalled === null) {
                   this.installApp()
@@ -1266,7 +1257,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           }
           if (res.length > 0) {
             res.forEach(r => {
-              console.log("[HOME] getInstallations r: ", r)
+              this.logger.log("[HOME] getInstallations r: ", r)
               if (r.app_id === this.whatsAppAppId) {
                 this.whatsAppIsInstalled = true;
                 this.updatedProjectWithUserHasUnistalledWA(false)
@@ -1274,7 +1265,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
               } else {
                 this.whatsAppIsInstalled = false;
 
-                console.log("[HOME] getInstallations RUN INSTALL WA  whatsAppIsInstalled ", this.whatsAppIsInstalled, 'solution_channel ', this.solution_channel_for_child)
+                this.logger.log("[HOME] getInstallations RUN INSTALL WA  whatsAppIsInstalled ", this.whatsAppIsInstalled, 'solution_channel ', this.solution_channel_for_child)
 
                 if (this.solution_channel_for_child === 'whatsapp_fb_messenger') {
 
@@ -1291,7 +1282,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
         // this.showSpinner = false;
       }).catch((err) => {
-        console.error("[HOME] getInstallations ERROR: ", err)
+        this.logger.error("[HOME] getInstallations ERROR: ", err)
         // this.showSpinner = false;
       })
 
@@ -1302,10 +1293,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   getInstallations() {
     let promise = new Promise((resolve, reject) => {
       this.appStoreService.getInstallation(this.projectId).then((res) => {
-        //  console.log("[HOME] Get Installation Response: ", res);
+        //  this.logger.log("[HOME] Get Installation Response: ", res);
         resolve(res);
       }).catch((err) => {
-        // console.error("[HOME] Error getting installation: ", err);
+        // this.logger.error("[HOME] Error getting installation: ", err);
         reject(err);
       })
     })
@@ -1331,9 +1322,9 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     }
 
-    console.log('[HOME] appId ', this.whatsAppAppId)
-    console.log('[HOME] app app version', this.appVersion)
-    console.log('[HOME] installationType ', this.installActionType);
+    this.logger.log('[HOME] appId ', this.whatsAppAppId)
+    this.logger.log('[HOME] app app version', this.appVersion)
+    this.logger.log('[HOME] installationType ', this.installActionType);
 
     this.installV2App(this.projectId, this.whatsAppAppId)
 
@@ -1342,13 +1333,13 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   installV2App(projectId, appId) {
     this.appStoreService.installAppVersionTwo(projectId, appId).subscribe((res: any) => {
-      console.log('[HOME] INSTALL V2 APP ', projectId, appId)
+      this.logger.log('[HOME] INSTALL V2 APP ', projectId, appId)
 
     }, (error) => {
-      console.error('[HOME] INSTALL V2 APP - ERROR  ', error);
+      this.logger.error('[HOME] INSTALL V2 APP - ERROR  ', error);
       this.notify.showWidgetStyleUpdateNotification("An error occurred while creating the app", 4, 'report_problem');
     }, () => {
-      console.log('[HOME] INSTALL V2 APP - COMPLETE');
+      this.logger.log('[HOME] INSTALL V2 APP - COMPLETE');
       this.notify.showWidgetStyleUpdateNotification("App installed successfully", 2, 'done');
       // let index = this.apps.findIndex(x => x._id === appId);
       // // this.apps[index].installed = false;
@@ -1375,9 +1366,9 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     })
       .then((WillDelete) => {
         if (WillDelete) {
-          console.log('[HOME] UNINSTALL WA APP - app_id', this.whatsAppAppId);
+          this.logger.log('[HOME] UNINSTALL WA APP - app_id', this.whatsAppAppId);
           this.appStoreService.unistallNewApp(this.projectId, this.whatsAppAppId).subscribe((res: any) => {
-            console.log('[HOME] UNINSTALL WA APP - app_id - RES', res);
+            this.logger.log('[HOME] UNINSTALL WA APP - app_id - RES', res);
             if (res.success === true) {
               this.whatsAppIsInstalled = false
               this.displayWhatsappAccountWizard = false
@@ -1385,14 +1376,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
             }
 
           }, (error) => {
-            console.error('[HOME] UNINSTALL WA APP - ERROR  ', error);
+            this.logger.error('[HOME] UNINSTALL WA APP - ERROR  ', error);
             this.notify.showWidgetStyleUpdateNotification(this.errorWhileDeletingApp, 4, 'report_problem');
           }, () => {
             this.logger.log('[HOME] UNINSTALL WA APP * COMPLETE *');
-
-
-
-
             swal(this.done_msg + "!", this.appHasBeenDeletedMsg, {
               icon: "success",
             }).then((okpressed) => {
@@ -1417,7 +1404,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   // STEP 1
   // -------------------------------------------
   hasCreatedChatbot(event) {
-    console.log('[HOME] hasCreatedChatbot  ', event)
+    this.logger.log('[HOME] hasCreatedChatbot  ', event)
     if (event === true) {
       // if (this.chatbotCreated === false) {
       // this.waWizardSteps = [{ step1: true, step2: false, step3: false }]
@@ -1425,43 +1412,35 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.upadatedWatsAppWizardStep1(true, 'hasCreatedChatbot')
       // }
     }
-
   }
 
   upadatedWatsAppWizardStep1(step1, calledBy) {
-    console.log('upadatedWatsAppWizardStep1 step  1  ', step1)
-    console.log('upadatedWatsAppWizardStep1 calledBy', calledBy)
+    this.logger.log('upadatedWatsAppWizardStep1 step  1  ', step1)
+    this.logger.log('upadatedWatsAppWizardStep1 calledBy', calledBy)
     this.projectService.updateProjectWithWAWizardStep1(step1)
       .subscribe((res: any) => {
-        console.log('[HOME] - UPDATE PRJCT WITH WA WIZARD STEP 1 - RES ', res);
-
-
+        this.logger.log('[HOME] - UPDATE PRJCT WITH WA WIZARD STEP 1 - RES ', res);
       }, error => {
-        console.error('[HOME] - UPDATE PRJCT WITH WA WIZARD STEP 1 - ERROR ', error)
+        this.logger.error('[HOME] - UPDATE PRJCT WITH WA WIZARD STEP 1 - ERROR ', error)
       }, () => {
-        console.log('[HOME] - UPDATE PRJCT WITH WA WIZARD STEP 1 * COMPLETE *')
+        this.logger.log('[HOME] - UPDATE PRJCT WITH WA WIZARD STEP 1 * COMPLETE *')
       });
   }
 
 
-
   goToCreateChatbot() {
-    console.log('[HOME] GO TO CONNECT WA childCreateChatbot', this.childCreateChatbot);
+    this.logger.log('[HOME] GO TO CONNECT WA childCreateChatbot', this.childCreateChatbot);
     this.scrollToChild(this.childCreateChatbot)
   }
 
   botHookedToDefaultDept(event) {
-    console.log('[HOME] BOT ID HOOKED TO DEFAULT DEPT', event);
+    this.logger.log('[HOME] BOT ID HOOKED TO DEFAULT DEPT', event);
     this.botIdForTestWA = event;
   }
-
-
-
 
   // -------------------------------------------
   // STEP 2
   // -------------------------------------------
-
   hasTestedBotOnWa() {
     // this.waWizardSteps = [{ step1: true, step2: true, step3: false }]
     // this.upadatedWatsAppWizard(this.waWizardSteps, 'hasTestedBotOnWa')
@@ -1469,17 +1448,15 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   upadatedWatsAppWizardStep2(step2, calledBy) {
-    console.log('upadatedWatsAppWizardStep2 step  2  ', step2)
-    console.log('upadatedWatsApupadatedWatsAppWizardStep2 Wizard calledBy', calledBy)
+    this.logger.log('upadatedWatsAppWizardStep2 step  2  ', step2)
+    this.logger.log('upadatedWatsApupadatedWatsAppWizardStep2 Wizard calledBy', calledBy)
     this.projectService.updateProjectWithWAWizardStep2(step2)
       .subscribe((res: any) => {
-        console.log('[HOME] - UPDATE PRJCT WITH WA WIZARD STEP 2 - RES ', res);
-
-
+        this.logger.log('[HOME] - UPDATE PRJCT WITH WA WIZARD STEP 2 - RES ', res);
       }, error => {
-        console.error('[HOME] - UPDATE PRJCT WITH WA WIZARD STEP 2 - ERROR ', error)
+        this.logger.error('[HOME] - UPDATE PRJCT WITH WA WIZARD STEP 2 - ERROR ', error)
       }, () => {
-        console.log('[HOME] - UPDATE PRJCT WITH WA WIZARD STEPS 2 * COMPLETE *')
+        this.logger.log('[HOME] - UPDATE PRJCT WITH WA WIZARD STEPS 2 * COMPLETE *')
       });
   }
 
@@ -1487,21 +1464,21 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   // STEP 3
   // -------------------------------------------
   goToConnectWA() {
-    console.log('[HOME] GO TO CONNECT WA childWhatsappAccount', this.childWhatsappAccount);
+    this.logger.log('[HOME] GO TO CONNECT WA childWhatsappAccount', this.childWhatsappAccount);
     this.scrollToChild(this.childWhatsappAccount)
 
     // const elemOverlayDiv = <HTMLElement>document.querySelector('.overlay');
-    // console.log('[HOME] GO TO CONNECT WA elemOverlayDiv', elemOverlayDiv);
+    // this.logger.log('[HOME] GO TO CONNECT WA elemOverlayDiv', elemOverlayDiv);
 
     // const elemHomeMainContent = <HTMLElement>document.querySelector('.home-main-content');
-    // console.log('[HOME] elemHomeMainContent ', elemHomeMainContent)
+    // this.logger.log('[HOME] elemHomeMainContent ', elemHomeMainContent)
     // this.elemHomeMainContentHeight = elemHomeMainContent.offsetHeight + 'px';
-    // console.log('[HOME] elemHomeMainContent Height', this.elemHomeMainContentHeight)
+    // this.logger.log('[HOME] elemHomeMainContent Height', this.elemHomeMainContentHeight)
 
   }
 
   onClickOnGoToLearnMoreOrManageApp() {
-    console.log('HAS CLICKED GO TO LEARN MORE OR MANAGE APP whatsAppIsInstalled', this.whatsAppIsInstalled)
+    this.logger.log('HAS CLICKED GO TO LEARN MORE OR MANAGE APP whatsAppIsInstalled', this.whatsAppIsInstalled)
     if (this.whatsAppIsInstalled === false) {
       this.goToWhatsAppDetails()
     } else {
@@ -1510,7 +1487,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   goToWhatsAppDetails() {
-    console.log('goToWhatsAppDetails appTitle ', this.appTitle)
+    this.logger.log('goToWhatsAppDetails appTitle ', this.appTitle)
     if ((this.appTitle === "WhatsApp Business" || this.appTitle === "Facebook Messenger") &&
       ((this.profile_name === PLAN_NAME.A) ||
         (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
@@ -1571,10 +1548,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   openAppStoreInPopupWindow() {
     const whatsappUrl = this.appConfigService.getConfig().whatsappApiUrl;
 
-    console.log('[HOME] openAppStoreInPopupWindow whatsappUrl', whatsappUrl)
-    console.log('[HOME] openAppStoreInPopupWindow projectId', this.projectId)
-    console.log('[HOME] openAppStoreInPopupWindow user', this.user)
-    console.log('[HOME] openAppStoreInPopupWindow whatsAppAppId', this.whatsAppAppId)
+    this.logger.log('[HOME] openAppStoreInPopupWindow whatsappUrl', whatsappUrl)
+    this.logger.log('[HOME] openAppStoreInPopupWindow projectId', this.projectId)
+    this.logger.log('[HOME] openAppStoreInPopupWindow user', this.user)
+    this.logger.log('[HOME] openAppStoreInPopupWindow whatsAppAppId', this.whatsAppAppId)
 
     // + '&view=popup' // open connection window without link to documentation
     const url = whatsappUrl + '/configure?project_id=' + this.projectId + '&app_id=' + this.whatsAppAppId + '&token=' + this.user.token
@@ -1592,7 +1569,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     let popupTick = setInterval(() => {
       if (popup.closed) {
         clearInterval(popupTick);
-        console.log('window closed!');
+        this.logger.log('window closed!');
         this.getIfWathsAppIsConnectedAndUpdateProject()
       }
     }, 500);
@@ -1605,8 +1582,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.projectService.checkWAConnection()
       .subscribe((res: any) => {
 
-        console.log('[HOME] - CHECK-WA-CONNECTION - RES ', res);
-        console.log('[HOME] - CHECK-WA-CONNECTION - RES > success', res.success);
+        this.logger.log('[HOME] - CHECK-WA-CONNECTION - RES ', res);
+        this.logger.log('[HOME] - CHECK-WA-CONNECTION - RES > success', res.success);
 
         if (res.success === true) {
           this.whatsAppIsConnected = true;
@@ -1635,19 +1612,19 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         }
 
       }, error => {
-        console.error('[HOME] - CHECK-WA-CONNECTION - ERROR ', error)
+        this.logger.error('[HOME] - CHECK-WA-CONNECTION - ERROR ', error)
       }, () => {
-        console.log('[HOME] - CHECK-WA-CONNECTION * COMPLETE *')
+        this.logger.log('[HOME] - CHECK-WA-CONNECTION * COMPLETE *')
       });
   }
 
 
   updateProjectWithStep3AndWASettings(wasettings, isConnected, calledBy) {
-    console.log('[HOME] updateProjectWithWASettings', wasettings)
+    this.logger.log('[HOME] updateProjectWithWASettings', wasettings)
 
     this.projectService.updateProjectWithWASettings(wasettings)
       .subscribe((res: any) => {
-        console.log('[HOME] - UPDATE PRJCT WITH WA SETTINGS - RES ', res);
+        this.logger.log('[HOME] - UPDATE PRJCT WITH WA SETTINGS - RES ', res);
 
         if (res) {
           this.upadatedWatsAppWizardStep3(isConnected, calledBy)
@@ -1659,43 +1636,40 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         }
 
       }, error => {
-        console.error('[HOME] - UPDATE PRJCT WITH WA WSETTINGS  - ERROR ', error)
+        this.logger.error('[HOME] - UPDATE PRJCT WITH WA WSETTINGS  - ERROR ', error)
       }, () => {
-        console.log('[HOME] - UPDATE PRJCT WITH WA WSETTINGS * COMPLETE *')
-
-
+        this.logger.log('[HOME] - UPDATE PRJCT WITH WA WSETTINGS * COMPLETE *')
       });
   }
 
 
   updateProjectWithStep3AndRemoveWASettings(isConnected, calledBy) {
-    console.log('[HOME] - WA W updateProjectByDeletingWASettings');
+    this.logger.log('[HOME] - WA W updateProjectByDeletingWASettings');
     this.projectService.updateProjectRemoveWASettings()
       .subscribe((res: any) => {
-        console.log('[HOME] - WA W - UPDATE PRJCT WITH WA SETTINGS - RES ', res);
-
+        this.logger.log('[HOME] - WA W - UPDATE PRJCT WITH WA SETTINGS - RES ', res);
 
         this.wadepartmentid = undefined
         this.whatsAppIsConnected = false;
         this.waBotId = undefined
         // this.getDeptById(this.wadepartmentid)
-        // console.log('[HOME] - UPDATE PRJCT WITH WA WSETTINGS - whatsAppIsConnected ', this.whatsAppIsConnected);
+        // this.logger.log('[HOME] - UPDATE PRJCT WITH WA WSETTINGS - whatsAppIsConnected ', this.whatsAppIsConnected);
 
       }, error => {
-        console.error('[HOME] - WA W - UPDATE PRJCT WITH WA WSETTINGS  - ERROR ', error)
+        this.logger.error('[HOME] - WA W - UPDATE PRJCT WITH WA WSETTINGS  - ERROR ', error)
       }, () => {
-        console.log('[HOME] - WA W - UPDATE PRJCT WITH WA WSETTINGS * COMPLETE *')
+        this.logger.log('[HOME] - WA W - UPDATE PRJCT WITH WA WSETTINGS * COMPLETE *')
         this.upadatedWatsAppWizardStep3(isConnected, calledBy)
       });
   }
 
 
   upadatedWatsAppWizardStep3(step3, calledBy) {
-    console.log('upadatedWatsAppWizardStep3 step  3  ', step3)
-    console.log('upadatedWatsAppWizardStep3 calledBy', calledBy)
+    this.logger.log('upadatedWatsAppWizardStep3 step  3  ', step3)
+    this.logger.log('upadatedWatsAppWizardStep3 calledBy', calledBy)
     this.projectService.updateProjectWithWAWizardStep3(step3)
       .subscribe((res: any) => {
-        console.log('[HOME] - WA W - UPDATE PRJCT WITH WA WIZARD STEP 3 - RES ', res);
+        this.logger.log('[HOME] - WA W - UPDATE PRJCT WITH WA WIZARD STEP 3 - RES ', res);
         if (res && res.attributes && res.attributes) {
           if (res.attributes.wastep3 === false) {
             this.whatsAppIsConnected = false
@@ -1705,14 +1679,13 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
             //   this.displayWhatsappAccountWizard = true;
             // }
           }
-
         }
-        console.log('[HOME] - WA W - UPDATE PRJCT WITH WA WIZARD STEP 3 - whatsAppIsConnected ', this.whatsAppIsConnected);
+        this.logger.log('[HOME] - WA W - UPDATE PRJCT WITH WA WIZARD STEP 3 - whatsAppIsConnected ', this.whatsAppIsConnected);
 
       }, error => {
-        console.error('[HOME] - WA W - UPDATE PRJCT WITH WA WIZARD STEP 3 - ERROR ', error)
+        this.logger.error('[HOME] - WA W - UPDATE PRJCT WITH WA WIZARD STEP 3 - ERROR ', error)
       }, () => {
-        console.log('[HOME] - WA W - UPDATE PRJCT WITH WA WIZARD STEPS 3 * COMPLETE *')
+        this.logger.log('[HOME] - WA W - UPDATE PRJCT WITH WA WIZARD STEPS 3 * COMPLETE *')
 
         if (calledBy === 'connected') {
           this.oneStepWizard = { watsAppConnected: true }
@@ -1725,11 +1698,11 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   upadatedProjectWithWAWizardOnlyOneStep(oneStepWizard) {
-    console.log('[HOME] - WA W - upadatedProjectWithOneStepWizard', oneStepWizard)
+    this.logger.log('[HOME] - WA W - upadatedProjectWithOneStepWizard', oneStepWizard)
 
     this.projectService.updateProjectWithWAOneStepWizard(oneStepWizard)
       .subscribe((res: any) => {
-        console.log('[HOME] - WA W - UPDATE PRJCT WITH ONE STEP WIZARD - RES ', res);
+        this.logger.log('[HOME] - WA W - UPDATE PRJCT WITH ONE STEP WIZARD - RES ', res);
         if (res && res.attributes && res.attributes.oneStepWizard) {
           if (res.attributes.oneStepWizard.watsAppConnected === true) {
             this.displayWhatsappAccountWizard = false;
@@ -1745,9 +1718,9 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         }
 
       }, error => {
-        console.error('[HOME] - WA W - UPDATE PRJCT WITH ONE STEP WIZARD  - ERROR ', error)
+        this.logger.error('[HOME] - WA W - UPDATE PRJCT WITH ONE STEP WIZARD  - ERROR ', error)
       }, () => {
-        console.log('[HOME]  - WA W - UPDATE PRJCT WITH ONE STEP WIZARD * COMPLETE *')
+        this.logger.log('[HOME]  - WA W - UPDATE PRJCT WITH ONE STEP WIZARD * COMPLETE *')
       });
   }
   // /. --- step 3
@@ -1761,11 +1734,11 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   updateProjectWithHasCompletedWAWizard() {
     this.projectService.updateProjectWithWAWizardCompleted()
       .subscribe((res: any) => {
-        console.log('[HOME] - UPDATE PRJCT WITH WA WIZARD COMPLETED - RES ', res);
+        this.logger.log('[HOME] - UPDATE PRJCT WITH WA WIZARD COMPLETED - RES ', res);
       }, error => {
-        console.error('[HOME] - UPDATE PRJCT WITH WA WIZARD  - ERROR ', error)
+        this.logger.error('[HOME] - UPDATE PRJCT WITH WA WIZARD  - ERROR ', error)
       }, () => {
-        console.log('[HOME] - UPDATE PRJCT WITH WA WIZARD * COMPLETE *')
+        this.logger.log('[HOME] - UPDATE PRJCT WITH WA WIZARD * COMPLETE *')
       });
 
   }
@@ -1773,13 +1746,11 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   updatedProjectWithUserHasUnistalledWA(hasuninstalled) {
     this.projectService.updateProjectUserHasRemovedWA(hasuninstalled)
       .subscribe((res: any) => {
-        console.log('[HOME] - USER HAS UNISTALLED WA - RES ', res);
-
-
+        this.logger.log('[HOME] - USER HAS UNISTALLED WA - RES ', res);
       }, error => {
-        console.error('[HOME] - USER HAS UNISTALLED WA  - ERROR ', error)
+        this.logger.error('[HOME] - USER HAS UNISTALLED WA  - ERROR ', error)
       }, () => {
-        console.log('[HOME] - USER HAS UNISTALLED WA * COMPLETE *')
+        this.logger.log('[HOME] - USER HAS UNISTALLED WA * COMPLETE *')
       });
   }
 
@@ -1796,13 +1767,11 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     });
     this.projectService.updateProjectWithDisplayWAWizard(this.displayWhatsappAccountWizard)
       .subscribe((res: any) => {
-        console.log('[HOME] - USER HAS UNISTALLED WA - RES ', res);
-
-
+        this.logger.log('[HOME] - USER HAS UNISTALLED WA - RES ', res);
       }, error => {
-        console.error('[HOME] - USER HAS UNISTALLED WA  - ERROR ', error)
+        this.logger.error('[HOME] - USER HAS UNISTALLED WA  - ERROR ', error)
       }, () => {
-        console.log('[HOME] - USER HAS UNISTALLED WA * COMPLETE *')
+        this.logger.log('[HOME] - USER HAS UNISTALLED WA * COMPLETE *')
       });
   }
 
@@ -1811,11 +1780,11 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   // NO MORE USED
   // -------------------------------
   upadatedWatsAppWizard(wasteps, calledBy) {
-    console.log('upadatedWatsAppWizard calledBy ', calledBy)
-    console.log('upadatedWatsAppWizard calledBy', wasteps)
+    this.logger.log('upadatedWatsAppWizard calledBy ', calledBy)
+    this.logger.log('upadatedWatsAppWizard calledBy', wasteps)
     this.projectService.updateProjectWithWAWizardSteps(wasteps)
       .subscribe((res: any) => {
-        console.log('[HOME] - UPDATE PRJCT WITH WA WIZARD STEPS - RES ', res);
+        this.logger.log('[HOME] - UPDATE PRJCT WITH WA WIZARD STEPS - RES ', res);
         if (res && res.attributes && res.attributes.wastep) {
           if (res.attributes.wastep[0].step3 === false) {
             this.whatsAppIsConnected = false
@@ -1823,13 +1792,13 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
             this.whatsAppIsConnected = true
           }
         }
-        console.log('[HOME] - UPDATE PRJCT WITH WA WIZARD STEPS - whatsAppIsConnected ', this.whatsAppIsConnected);
+        this.logger.log('[HOME] - UPDATE PRJCT WITH WA WIZARD STEPS - whatsAppIsConnected ', this.whatsAppIsConnected);
 
 
       }, error => {
-        console.error('[HOME] - UPDATE PRJCT WITH WA WIZARD STEPS - ERROR ', error)
+        this.logger.error('[HOME] - UPDATE PRJCT WITH WA WIZARD STEPS - ERROR ', error)
       }, () => {
-        console.log('[HOME] - UPDATE PRJCT WITH WA WIZARD STEPS * COMPLETE *')
+        this.logger.log('[HOME] - UPDATE PRJCT WITH WA WIZARD STEPS * COMPLETE *')
       });
   }
 
@@ -1838,30 +1807,30 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   getDeptById(departmentid: string) {
 
     this.departmentService.getDeptById(departmentid).subscribe((dept: any) => {
-      console.log('[HOME]- GET WA DEPT BY ID - RES ', dept);
+      this.logger.log('[HOME]- GET WA DEPT BY ID - RES ', dept);
       this.wadepartmentName = dept.name;
       this.waBotId = dept.id_bot;
-      console.log('[HOME]- GET WA DEPT BY ID - RES > dept name ', this.wadepartmentName);
+      this.logger.log('[HOME]- GET WA DEPT BY ID - RES > dept name ', this.wadepartmentName);
     }, (error) => {
-      console.error('[HOME] - GET WA DEPT BY ID - ERROR ', error);
+      this.logger.error('[HOME] - GET WA DEPT BY ID - ERROR ', error);
 
     }, () => {
 
-      console.log('[HOME] - GET WA DEPT BY ID - COMPLETE ');
+      this.logger.log('[HOME] - GET WA DEPT BY ID - COMPLETE ');
       this.getBots()
     })
   }
 
   getBots() {
     this.faqKbService.getFaqKbByProjectId().subscribe((bots: any) => {
-      console.log('[USER-SERV] - GET BOT BY PROJECT ID AND SAVE IN STORAGE - bots ', bots);
+      this.logger.log('[USER-SERV] - GET BOT BY PROJECT ID AND SAVE IN STORAGE - bots ', bots);
       if (bots && bots !== null) {
 
         bots.forEach(bot => {
-          console.log('[HOME] - GET BOT BY PROJECT ID  - BOT', bot);
-          console.log('[HOME] - GET BOT BY PROJECT ID  - BOT-ID', bot._id);
+          this.logger.log('[HOME] - GET BOT BY PROJECT ID  - BOT', bot);
+          this.logger.log('[HOME] - GET BOT BY PROJECT ID  - BOT-ID', bot._id);
           if (bot._id === this.waBotId) {
-            console.log('[HOME] - BOT CONNECTED WITH WA  - BOT-ID', bot._id);
+            this.logger.log('[HOME] - BOT CONNECTED WITH WA  - BOT-ID', bot._id);
             this.chatbotConnectedWithWA = true
           }
 
@@ -1869,9 +1838,9 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
       }
     }, (error) => {
-      console.error('[HOME] - GET BOT BY PROJECT ID  - ERROR ', error);
+      this.logger.error('[HOME] - GET BOT BY PROJECT ID  - ERROR ', error);
     }, () => {
-      console.log('[HOME] - GET BOT BY PROJECT ID  * COMPLETE');
+      this.logger.log('[HOME] - GET BOT BY PROJECT ID  * COMPLETE');
 
     });
   }
@@ -1880,12 +1849,12 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   getDeptsByProjectId() {
     this.departmentService.getDeptsByProjectId().subscribe((departments: any) => {
 
-      console.log('[BOT-CREATE] ---> ALL DEPTS RES ', departments);
+      this.logger.log('[BOT-CREATE] ---> ALL DEPTS RES ', departments);
 
       if (departments) {
 
         departments.forEach(dept => {
-          console.log('[BOT-CREATE] ---> ALL DEPTS RES  > ', dept)
+          this.logger.log('[BOT-CREATE] ---> ALL DEPTS RES  > ', dept)
         });
 
       }
@@ -1918,31 +1887,31 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       dangerMode: false,
     }).then((value) => {
       if (value === 'catch') {
-        // console.log('featureAvailableFromPlanC value', value)
-        // console.log('[HOME] prjct_profile_type', this.prjct_profile_type)
-        // console.log('[HOME] subscription_is_active', this.subscription_is_active)
-        // console.log('[HOME] prjct_profile_type', this.prjct_profile_type)
-        // console.log('[HOME] trial_expired', this.trial_expired)
-        // console.log('[HOME] isVisiblePAY', this.isVisiblePAY)
+        // this.logger.log('featureAvailableFromPlanC value', value)
+        // this.logger.log('[HOME] prjct_profile_type', this.prjct_profile_type)
+        // this.logger.log('[HOME] subscription_is_active', this.subscription_is_active)
+        // this.logger.log('[HOME] prjct_profile_type', this.prjct_profile_type)
+        // this.logger.log('[HOME] trial_expired', this.trial_expired)
+        // this.logger.log('[HOME] isVisiblePAY', this.isVisiblePAY)
         if (this.isVisiblePay) {
-          // console.log('[HOME] HERE 1')
+          // this.logger.log('[HOME] HERE 1')
           if (this.USER_ROLE === 'owner') {
-            // console.log('[HOME] HERE 2')
+            // this.logger.log('[HOME] HERE 2')
             if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
-              // console.log('[HOME] HERE 3')
+              // this.logger.log('[HOME] HERE 3')
               this.notify._displayContactUsModal(true, 'upgrade_plan');
             } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true && this.profile_name === PLAN_NAME.A) {
               this.notify._displayContactUsModal(true, 'upgrade_plan');
             } else if (this.prjct_profile_type === 'free' && this.prjct_trial_expired === true) {
-              // console.log('[HOME] HERE 4')
+              // this.logger.log('[HOME] HERE 4')
               this.router.navigate(['project/' + this.projectId + '/pricing']);
             }
           } else {
-            // console.log('[HOME] HERE 5')
+            // this.logger.log('[HOME] HERE 5')
             this.presentModalAgentCannotManageAvancedSettings();
           }
         } else {
-          // console.log('[HOME] HERE 6')
+          // this.logger.log('[HOME] HERE 6')
           this.notify._displayContactUsModal(true, 'upgrade_plan');
         }
       }
@@ -1971,7 +1940,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         if (this.USER_ROLE === 'owner') {
           this.router.navigate(['project/' + this.projectId + '/project-settings/payments']);
         } else {
-          // console.log('[HOME-WA] HERE 5')
+          // this.logger.log('[HOME-WA] HERE 5')
           this.presentModalAgentCannotManageAvancedSettings();
         }
       }
@@ -2042,14 +2011,14 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         takeUntil(this.unsubscribe$)
       )
       .subscribe((convslast30: any) => {
-        console.log('[HOME] - GET LAST 30 DAYS CONVS ', convslast30);
+        this.logger.log('[HOME] - GET LAST 30 DAYS CONVS ', convslast30);
         let count = 0;
         convslast30.forEach(conv => {
-          console.log('[HOME] - GET LAST 30 DAYS CONV COUNT ', conv.count);
+          this.logger.log('[HOME] - GET LAST 30 DAYS CONV COUNT ', conv.count);
           count = count + conv.count
         });
 
-        console.log('[HOME] - GET LAST 30 DAYS CONV TOTAL ', count);
+        this.logger.log('[HOME] - GET LAST 30 DAYS CONV TOTAL ', count);
         if (count === 0) {
           // this.displayAnalyticsConvsGraph = false
         } else if (count > 0) {
@@ -2058,19 +2027,19 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
       }, (error) => {
-        console.error('[HOME] GET LAST 30 DAYS CONVS - ERROR ', error);
+        this.logger.error('[HOME] GET LAST 30 DAYS CONVS - ERROR ', error);
       }, () => {
-        console.log('[HOME] GET LAST 30 DAYS CONVS * COMPLETE *');
+        this.logger.log('[HOME] GET LAST 30 DAYS CONVS * COMPLETE *');
       });
   }
 
 
   diplayPopup() {
     const hasClosedPopup = localStorage.getItem('dshbrd----hasclosedpopup')
-    // console.log('[HOME] hasClosedPopup', hasClosedPopup)
+    // this.logger.log('[HOME] hasClosedPopup', hasClosedPopup)
     if (hasClosedPopup === null) {
       this.popup_visibility = 'block'
-      // console.log('[HOME] popup_visibility', this.popup_visibility)
+      // this.logger.log('[HOME] popup_visibility', this.popup_visibility)
     }
     if (hasClosedPopup === 'true') {
       this.popup_visibility = 'none'
@@ -2078,10 +2047,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   closeEverythingStartsHerePopup() {
-    // console.log('[HOME] closeEverythingStartsHerePopup')
+    // this.logger.log('[HOME] closeEverythingStartsHerePopup')
     localStorage.setItem('dshbrd----hasclosedpopup', 'true')
     this.popup_visibility = 'none'
-    // console.log('[HOME] closeEverythingStartsHerePopup popup_visibility ',  this.popup_visibility)
+    // this.logger.log('[HOME] closeEverythingStartsHerePopup popup_visibility ',  this.popup_visibility)
   }
 
   // pauseResumeLastUpdateSlider() {
@@ -2204,7 +2173,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   toggleDisplayTeammates() {
     this.DISPLAY_TEAMMATES = !this.DISPLAY_TEAMMATES;
-    // console.log('DISPLAY_TEAMMATES ',   this.DISPLAY_TEAMMATES)
+    // this.logger.log('DISPLAY_TEAMMATES ',   this.DISPLAY_TEAMMATES)
     // if (this.DISPLAY_TEAMMATES === false) {
     //   this.DISPLAY_TEAMMATES = true;
     //   this.logger.log('[HOME] > DISPLAY_TEAMMATES', this.DISPLAY_TEAMMATES)
@@ -2216,7 +2185,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   toggleDisplayChatbots(DISPLAY_CHATBOTS) {
     // this.DISPLAY_CHATBOTS = !this.DISPLAY_CHATBOTS
-    // console.log('DISPLAY_CHATBOTS ',   this.DISPLAY_CHATBOTS)
+    // this.logger.log('DISPLAY_CHATBOTS ',   this.DISPLAY_CHATBOTS)
     // if (this.DISPLAY_CHATBOTS === false) {
     //   this.DISPLAY_CHATBOTS = true;
     //   this.logger.log('[HOME] > DISPLAY_CHATBOTS', this.DISPLAY_CHATBOTS)
@@ -2438,7 +2407,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   // USED FOR COUNT OF BOTS FOR THE NEW HOME !!!
   getAllFaqKbByProjectId(storage, uploadEngineIsFirebase) {
     this.faqKbService.getAllBotByProjectId().subscribe((faqKb: any) => {
-      console.log('[HOME] - GET FAQKB RES', faqKb);
+      this.logger.log('[HOME] - GET FAQKB RES', faqKb);
       if (faqKb) {
 
         // -----------------------------------------------------------
@@ -2589,16 +2558,16 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       }
 
       if (key.includes("PPB")) {
-        // console.log('PUBLIC-KEY (PROJECTS-LIST) - key', key);
+        // this.logger.log('PUBLIC-KEY (PROJECTS-LIST) - key', key);
         let ppb = key.split(":");
-        // console.log('PUBLIC-KEY (PROJECTS-LIST) - ppb key&value', ppb);
+        // this.logger.log('PUBLIC-KEY (PROJECTS-LIST) - ppb key&value', ppb);
 
         if (ppb[1] === "F") {
           this.project_plan_badge = false;
-          // console.log('PUBLIC-KEY (PROJECTS-LIST) - project plan badge is', this.project_plan_badge);
+          // this.logger.log('PUBLIC-KEY (PROJECTS-LIST) - project plan badge is', this.project_plan_badge);
         } else {
           this.project_plan_badge = true;
-          // console.log('PUBLIC-KEY (PROJECTS-LIST) - project plan badge is', this.project_plan_badge);
+          // this.logger.log('PUBLIC-KEY (PROJECTS-LIST) - project plan badge is', this.project_plan_badge);
         }
       }
     });
@@ -2624,7 +2593,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     if (!this.public_Key.includes("PPB")) {
-      // console.log('PUBLIC-KEY (PROJECTS-LIST) - key.includes("PPB")', this.public_Key.includes("PPB"));
+      // this.logger.log('PUBLIC-KEY (PROJECTS-LIST) - key.includes("PPB")', this.public_Key.includes("PPB"));
       this.project_plan_badge = false;
     }
 
@@ -2645,7 +2614,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.logger.log('HOME CHECK PROMO URL promoUrl - env hasKeyPromoBannerUrl', hasKeyPromoBannerUrl)
     if (hasKeyPromoBannerUrl) {
       for (const [key, value] of Object.entries(this.appConfigService.getConfig())) {
-        // console.log(`${key}: ${value}`);
+        // this.logger.log(`${key}: ${value}`);
         if (key === 'promoBannerUrl' && value === '') {
           this.logger.log('HOME CHECK PROMO URL promoUrl - exist key but value is empty value', value)
           this.isVisibleHomeBanner = false;
@@ -3175,7 +3144,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         takeUntil(this.unsubscribe$)
       )
       .subscribe((requestsByDay: any) => {
-        console.log('[HOME] - REQUESTS BY DAY ', requestsByDay);
+        this.logger.log('[HOME] - REQUESTS BY DAY ', requestsByDay);
 
         // CREATES THE INITIAL ARRAY WITH THE LAST SEVEN DAYS (calculated with moment) AND REQUESTS COUNT = O
         const last7days_initarray = []
@@ -3626,49 +3595,49 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   // new dashbord
   async switchAnalyticsConvsGraph(event) {
-    console.log('[HOME] SWITCH ANALYTICS OVERVIEW event ', event)
+    this.logger.log('[HOME] SWITCH ANALYTICS OVERVIEW event ', event)
     this.displayAnalyticsConvsGraph = event
     await this.updatesDashletsPreferences()
   }
 
   async switchAnalyticsIndicators(event) {
-    console.log('[HOME] SWITCH ANALYTICS OVERVIEW event ', event)
+    this.logger.log('[HOME] SWITCH ANALYTICS OVERVIEW event ', event)
     this.displayAnalyticsIndicators = event
     await this.updatesDashletsPreferences()
   }
 
   async switchConnectWhatsApp(event) {
-    console.log('[HOME] SWITCH CNNECT WA event ', event)
+    this.logger.log('[HOME] SWITCH CNNECT WA event ', event)
     this.displayConnectWhatsApp = event;
     await this.updatesDashletsPreferences()
   }
 
   async switchCreateChatbot(event) {
-    console.log('[HOME] SWITCH CREATE CHATBOT event ', event)
+    this.logger.log('[HOME] SWITCH CREATE CHATBOT event ', event)
     this.displayCreateChatbot = event;
     await this.updatesDashletsPreferences()
   }
 
   async switchInviteTeammate(event) {
-    console.log('[HOME] SWITCH INVITE TEAMMATES event ', event)
+    this.logger.log('[HOME] SWITCH INVITE TEAMMATES event ', event)
     this.displayInviteTeammate = event;
     await this.updatesDashletsPreferences()
   }
 
   async switchyKnowledgeBase(event) {
-    console.log('[HOME] SWITCH KNOWLEDGE BASE event ', event)
+    this.logger.log('[HOME] SWITCH KNOWLEDGE BASE event ', event)
     this.displayKnowledgeBase = event;
     await this.updatesDashletsPreferences()
   }
 
   async switchCustomizeWidget(event) {
-    console.log('[HOME] SWITCH CUSTOMIZE WIDGET event ', event)
+    this.logger.log('[HOME] SWITCH CUSTOMIZE WIDGET event ', event)
     this.displayCustomizeWidget = event;
     await this.updatesDashletsPreferences()
   }
 
   async switchNewsFeed(event) {
-    console.log('[HOME] SWITCH NEWS FEED event ', event)
+    this.logger.log('[HOME] SWITCH NEWS FEED event ', event)
     this.displayNewsFeed = event;
     await this.updatesDashletsPreferences()
   }
@@ -3677,7 +3646,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   async _updatesDashletsPreferences() {
     // conast dashletArray =[ {'convsGraph': true, 'analyticsIndicators': true, 'connectWhatsApp': null, 'createChatbot': null, 'knowledgeBase': null, 'inviteTeammate': null,  'customizeWidget': null, 'newsFeed': true}]
-    console.log('[HOME] - updatesDashletsPreferences - displayCustomizeWidget: ', this.displayCustomizeWidget);
+    this.logger.log('[HOME] - updatesDashletsPreferences - displayCustomizeWidget: ', this.displayCustomizeWidget);
     this.projectService.updateDashletsPreferences(
       this.displayAnalyticsConvsGraph,
       this.displayAnalyticsIndicators,
@@ -3688,12 +3657,12 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.displayCustomizeWidget,
       this.displayNewsFeed)
       .subscribe((res: any) => {
-        console.log('[HOME] - UPDATE PRJCT WITH DASHLET PREFERENCES - RES ', res);
+        this.logger.log('[HOME] - UPDATE PRJCT WITH DASHLET PREFERENCES - RES ', res);
 
       }, error => {
-        console.error('[HOME] - UPDATE PRJCT WITH DASHLET PREFERENCES - ERROR ', error)
+        this.logger.error('[HOME] - UPDATE PRJCT WITH DASHLET PREFERENCES - ERROR ', error)
       }, () => {
-        console.log('[HOME] - UPDATE PRJCT WITH DASHLET PREFERENCES * COMPLETE *')
+        this.logger.log('[HOME] - UPDATE PRJCT WITH DASHLET PREFERENCES * COMPLETE *')
         return
       });
 
@@ -3702,7 +3671,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   async updatesDashletsPreferences() {
     // const dashletArray =[ {'convsGraph': true, 'analyticsIndicators': true, 'connectWhatsApp': null, 'createChatbot': null, 'knowledgeBase': null, 'inviteTeammate': null,  'customizeWidget': null, 'newsFeed': true}]
-    console.log('[HOME] - calling updatesDashletsPreferences - displayCustomizeWidget');
+    this.logger.log('[HOME] - calling updatesDashletsPreferences - displayCustomizeWidget');
     return await this.projectService.updateDashletsPreferences(
       this.displayAnalyticsConvsGraph,
       this.displayAnalyticsIndicators,
@@ -3713,10 +3682,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.displayCustomizeWidget,
       this.displayNewsFeed)
       .toPromise().then((res) => {
-        console.log('[HOME] - UPDATE PRJCT WITH DASHLET PREFERENCES - RES ', res);
+        this.logger.log('[HOME] - UPDATE PRJCT WITH DASHLET PREFERENCES - RES ', res);
         return;
       }).catch((err) => {
-        console.log('[HOME] - UPDATE PRJCT WITH DASHLET PREFERENCES - err ', err);
+        this.logger.log('[HOME] - UPDATE PRJCT WITH DASHLET PREFERENCES - err ', err);
       })
   }
 
@@ -3724,7 +3693,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   goToProjects() {
-    console.log('[HOME] HAS CLICCKED GO TO PROJECT ')
+    this.logger.log('[HOME] HAS CLICCKED GO TO PROJECT ')
     this.router.navigate(['/projects']);
     // (in AUTH SERVICE ) RESET PROJECT_BS AND REMOVE ITEM PROJECT FROM STORAGE WHEN THE USER GO TO PROJECTS PAGE
     this.auth.hasClickedGoToProjects();
@@ -3735,7 +3704,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     // this.unsubscribe$.next();
     // this.unsubscribe$.complete();
 
-    console.log('[HOME] project AFTER GOTO PROJECTS ', this.project)
+    this.logger.log('[HOME] project AFTER GOTO PROJECTS ', this.project)
   }
 
   goToCreateProject() {
@@ -3750,8 +3719,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     project_trial_expired: string,
     project_trial_days_left: number,
     activeOperatingHours: boolean) {
-    // console.log('!NAVBAR  goToHome prjct ', project)
-    console.log('[HOME] goToHome id_project ', id_project, 'project_name', project_name, 'project_trial_expired ', project_trial_expired, 'project_trial_days_left ', project_trial_days_left, ' activeOperatingHours ', activeOperatingHours)
+    // this.logger.log('!NAVBAR  goToHome prjct ', project)
+    this.logger.log('[HOME] goToHome id_project ', id_project, 'project_name', project_name, 'project_trial_expired ', project_trial_expired, 'project_trial_days_left ', project_trial_days_left, ' activeOperatingHours ', activeOperatingHours)
     localStorage.setItem('last_project', JSON.stringify(project))
     // RUNS ONLY IF THE THE USER CLICK OVER A PROJECT WITH THE ID DIFFERENT FROM THE CURRENT PROJECT ID
     if (id_project !== this.projectId) {
@@ -3771,7 +3740,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         operatingHours: activeOperatingHours
       }
       this.auth.projectSelected(project)
-      console.log('[HOME] !!! GO TO HOME - PROJECT ', project)
+      this.logger.log('[HOME] !!! GO TO HOME - PROJECT ', project)
     }
   }
 

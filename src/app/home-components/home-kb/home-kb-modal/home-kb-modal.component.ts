@@ -43,7 +43,7 @@ export class HomeKbModalComponent implements OnInit {
 
   getKnowledgeBaseSettings() {
     this.kbService.getKbSettings().subscribe((kbSettings: KbSettings) => {
-      console.log("[HOME-KB MODAL] get kbSettings: ", kbSettings);
+      this.logger.log("[HOME-KB MODAL] get kbSettings: ", kbSettings);
       this.kbSettings = kbSettings;
       // this.kbsList = kbSettings.kbs;
       if (this.kbSettings.kbs.length < kbSettings.maxKbsNumber) {
@@ -69,9 +69,9 @@ export class HomeKbModalComponent implements OnInit {
 
 
   onChangeURL(event) {
-    console.log("[HOME-KB MODAL] onChangeInput event", event);
+    this.logger.log("[HOME-KB MODAL] onChangeInput event", event);
    this.isValidURL = this.isValidUrl(event)
-    console.log("[HOME-KB MODAL] onChangeInput isValidURL", this.isValidURL);
+    this.logger.log("[HOME-KB MODAL] onChangeInput isValidURL", this.isValidURL);
   }
 
   isValidUrl = (urlString) => {

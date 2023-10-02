@@ -29,7 +29,7 @@ export class HomeGoToChatComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    // console.log('HOME COMP - CALLING ON DESTROY')
+    // this.logger.log('HOME COMP - CALLING ON DESTROY')
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
@@ -40,7 +40,7 @@ export class HomeGoToChatComponent implements OnInit {
         takeUntil(this.unsubscribe$)
       )
       .subscribe((project) => {
-        console.log('[HOME-GO-TO-CHAT] $UBSCIBE TO PUBLISHED PROJECT - RES  --> ', project)
+        this.logger.log('[HOME-GO-TO-CHAT] $UBSCIBE TO PUBLISHED PROJECT - RES  --> ', project)
 
         if (project) {
           this.findCurrentProjectAmongAll(project._id)
@@ -66,16 +66,16 @@ export class HomeGoToChatComponent implements OnInit {
           return project.id_project.status === 100;
 
         });
-        console.log('[HOME-GO-TO-CHAT] getProjects this.projects ', projects);
+        this.logger.log('[HOME-GO-TO-CHAT] getProjects this.projects ', projects);
       }
 
       this.current_prjct = projects.find(prj => prj.id_project.id === projectId);
 
       
     }, error => {
-      console.error('[HOME-GO-TO-CHAT] - Find Current Project Among All: ', error);
+      this.logger.error('[HOME-GO-TO-CHAT] - Find Current Project Among All: ', error);
     }, () => {
-      console.log('[HOME-GO-TO-CHAT] - Find Current Project Among All * COMPLETE * ');
+      this.logger.log('[HOME-GO-TO-CHAT] - Find Current Project Among All * COMPLETE * ');
 
     });
   }

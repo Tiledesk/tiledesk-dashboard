@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { LoggerService } from 'app/services/logger/logger.service';
 
 @Component({
   selector: 'appdashboard-home-news-feed',
@@ -10,7 +11,8 @@ export class HomeNewsFeedComponent implements OnInit, AfterViewInit {
   newsFeedList: any;
   displayScrollLeftBtn = false
   constructor(
-    private httpClient: HttpClient
+    private httpClient: HttpClient,
+    private logger: LoggerService,
   ) { }
 
   ngOnInit(): void {
@@ -26,12 +28,12 @@ export class HomeNewsFeedComponent implements OnInit, AfterViewInit {
     let url = 'assets/mock-data/newsFeed.json';
     this.httpClient.get(url).subscribe(news => {
 
-      console.log('[HOME-NEWS-FEED] - GET NEWS FEED ', news)
+      this.logger.log('[HOME-NEWS-FEED] - GET NEWS FEED ', news)
       this.newsFeedList = news;
     }, error => {
-      console.error('[HOME-NEWS-FEED] - GET NEWS FEED - ERROR: ', error);
+      this.logger.error('[HOME-NEWS-FEED] - GET NEWS FEED - ERROR: ', error);
     }, () => {
-      console.log('[HOME-NEWS-FEED] - GET NEWS FEED * COMPLETE *')
+      this.logger.log('[HOME-NEWS-FEED] - GET NEWS FEED * COMPLETE *')
       setTimeout(() => {
         this.initCarousel()
       }, 1500);
@@ -41,7 +43,7 @@ export class HomeNewsFeedComponent implements OnInit, AfterViewInit {
 
 
   openNewsLink(url: string) {
-    console.log('[HOME-NEWS-FEED] url ', url)
+    this.logger.log('[HOME-NEWS-FEED] url ', url)
     window.open(url, '_blank');
   }
 
@@ -64,20 +66,20 @@ export class HomeNewsFeedComponent implements OnInit, AfterViewInit {
 
       // Get the number of cards that can fit in the carousel at once
       let cardPerView = Math.round(carousel.offsetWidth / firstCardWidth);
-      console.log('cardPerView', cardPerView)
+      this.logger.log('cardPerView', cardPerView)
 
       // Insert copies of the last few cards to beginning of carousel for infinite scrolling
       // carouselChildrens.slice(-cardPerView).reverse().forEach((card: any) => {
-      //   console.log('afterbegin card', card )
+      //   this.logger.log('afterbegin card', card )
       //   carousel.insertAdjacentHTML("afterbegin", card.outerHTML);
-      //   console.log('afterbegin carousel', carousel )
+      //   this.logger.log('afterbegin carousel', carousel )
       // });
 
       // Insert copies of the first few cards to end of carousel for infinite scrolling
       // carouselChildrens.slice(0, cardPerView).forEach((card: any) => {
-      //   console.log('beforeend card', carousel )
+      //   this.logger.log('beforeend card', carousel )
       //   carousel.insertAdjacentHTML("beforeend", card.outerHTML);
-      //   console.log('beforeend carousel', carousel )
+      //   this.logger.log('beforeend carousel', carousel )
 
       // });
       // // Scroll the carousel at appropriate postition to hide first few duplicate cards on Firefox
@@ -90,7 +92,7 @@ export class HomeNewsFeedComponent implements OnInit, AfterViewInit {
       arrowBtns.forEach(btn => {
         btn.addEventListener("click", () => {
           carousel.scrollLeft += btn.id == "left" ? -firstCardWidth : firstCardWidth;
-          console.log('[HOME-NEWS-FEED] carousel.scrollLeft ', carousel.scrollLeft)
+          this.logger.log('[HOME-NEWS-FEED] carousel.scrollLeft ', carousel.scrollLeft)
 
 
 

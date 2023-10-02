@@ -45,15 +45,15 @@ export class KnowledgeBaseService {
   }
 
   getCurrentProject() {
-    console.log("get current project")
+    this.logger.log("get current project")
     this.auth.project_bs.subscribe((project) => {
       if (project) {
         this.project_id = project._id
       }
     }, (error) => {
-      console.log("get current project ERROR: ", error)
+      this.logger.log("get current project ERROR: ", error)
     }, () => {
-      console.log("*COMPLETE*")
+      this.logger.log("*COMPLETE*")
     });
   }
   // ******************************************

@@ -1,5 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { LoggerService } from 'app/services/logger/logger.service';
 
 @Component({
   selector: 'appdashboard-home-invite-teammate-error-modal',
@@ -12,8 +13,9 @@ export class HomeInviteTeammateErrorModalComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<HomeInviteTeammateErrorModalComponent>,
     public dialog: MatDialog,
+    private logger: LoggerService,
   ) { 
-    console.log('[INVITE TEMMATE ERROR MODAL] data ', data)
+    this.logger.log('[INVITE TEMMATE ERROR MODAL] data ', data)
     this.inviteTeammatesErrorMsg = data.error
   }
 

@@ -1169,7 +1169,6 @@ export class UsersService {
   public sendLoginEmail(data) {
     const url = this.LOGIN_EMAIL_URL;
     this.logger.log('[USER-SERV] - RESEND VERIFY EMAIL URL ', url);
-    console.log('[USER-SERV] - RESEND VERIFY EMAIL URL ', url);
 
     const httpOptions = {
       headers: new HttpHeaders({

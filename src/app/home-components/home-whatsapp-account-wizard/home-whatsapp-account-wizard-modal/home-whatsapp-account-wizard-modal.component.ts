@@ -24,7 +24,7 @@ export class HomeWhatsappAccountWizardModalComponent implements OnInit {
     private multichannelService: MultichannelService,
     private auth: AuthService,
   ) { 
-    console.log('[HOME-WHATSAPP-ACCOUNT-WIZARD-MODAL] data ', data)
+    this.logger.log('[HOME-WHATSAPP-ACCOUNT-WIZARD-MODAL] data ', data)
     if (data.calledBy === "step1") {
       this.activeStep = "step1"
      
@@ -66,16 +66,16 @@ export class HomeWhatsappAccountWizardModalComponent implements OnInit {
 
   // testItOutWABot() {
   //   this.dialogRef.close()
-  //   console.log('[HOME-WHATSAPP-ACCOUNT-WIZARD-MODAL] TEST IT OUT ' )
+  //   this.logger.log('[HOME-WHATSAPP-ACCOUNT-WIZARD-MODAL] TEST IT OUT ' )
   //   let info = {
   //     project_id: this.projectID,
   //     bot_id: this.waBotId
   //   }
 
-  //   console.log("[HOME-WHATSAPP-ACCOUNT-WIZARD-MODAL] TEST IT OUT WA BOT: ", info)
+  //   this.logger.log("[HOME-WHATSAPP-ACCOUNT-WIZARD-MODAL] TEST IT OUT WA BOT: ", info)
 
   //   this.multichannelService.getCodeForWhatsappTest(info).then((response: any) => {
-  //     console.log("[HOME-WHATSAPP-ACCOUNT-WIZARD-MODAL]  GET CODE FOR WA TEST : ", response);
+  //     this.logger.log("[HOME-WHATSAPP-ACCOUNT-WIZARD-MODAL]  GET CODE FOR WA TEST : ", response);
   //     // let code = "%23td" + response.short_uid;
   //     let text = "%23td" + response.short_uid + " Send me to start testing your bot";
   //     const testItOutOnWhatsappUrl = `https://api.whatsapp.com/send/?phone=${this.phoneNumber}&text=${text}&type=phone_number&app_absent=0`

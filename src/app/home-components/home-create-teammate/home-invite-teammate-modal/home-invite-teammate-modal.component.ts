@@ -23,7 +23,7 @@ export class HomeInviteTeammateModalComponent implements OnInit {
   }
 
   setSelected(value) {
-    console.log('setSelected value', value )
+    // this.logger.log('setSelected value', value )
     this.selectedRole = value
   }
 

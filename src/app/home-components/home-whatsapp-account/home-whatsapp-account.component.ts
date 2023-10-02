@@ -99,12 +99,12 @@ export class HomeWhatsappAccountComponent implements OnInit, OnChanges {
    */
 
    ngOnChanges(changes: SimpleChanges) {
-    console.log('[HOME-WA] ngOnChanges changes ', changes);
-    console.log('[HOME-WA] ngOnChanges whatsAppIsInstalled ', this.whatsAppIsInstalled);
-    console.log('[HOME-WA] ngOnChanges whatsAppIsConnected ', this.whatsAppIsConnected);
-    console.log('[HOME-WA] ngOnChanges solution_channel_for_child ', this.solution_channel_for_child);
-    console.log('[HOME-WA] ngOnChanges solution_for_child ', this.solution_for_child);
-    console.log('[HOME-WA] userHasClickedDisplayWAWizard ', this.userHasClickedDisplayWAWizard)
+    this.logger.log('[HOME-WA] ngOnChanges changes ', changes);
+    this.logger.log('[HOME-WA] ngOnChanges whatsAppIsInstalled ', this.whatsAppIsInstalled);
+    this.logger.log('[HOME-WA] ngOnChanges whatsAppIsConnected ', this.whatsAppIsConnected);
+    this.logger.log('[HOME-WA] ngOnChanges solution_channel_for_child ', this.solution_channel_for_child);
+    this.logger.log('[HOME-WA] ngOnChanges solution_for_child ', this.solution_for_child);
+    this.logger.log('[HOME-WA] userHasClickedDisplayWAWizard ', this.userHasClickedDisplayWAWizard)
     this.getApps();
    }
 
@@ -185,14 +185,14 @@ export class HomeWhatsappAccountComponent implements OnInit, OnChanges {
     this.subscription = this.auth.project_bs.subscribe((project) => {
       if (project) {
         this.projectId = project._id
-        console.log('[HOME-WA] - projectId ', this.projectId)
+        this.logger.log('[HOME-WA] - projectId ', this.projectId)
       }
     });
   }
 
   getProjectPlan() {
     this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-      // console.log('[PRICING - PAYMENT-LIST] getProjectPlan project Profile Data', projectProfileData)
+      // this.logger.log('[PRICING - PAYMENT-LIST] getProjectPlan project Profile Data', projectProfileData)
 
       if (projectProfileData) {
         this.profile_name = projectProfileData.profile_name
@@ -212,38 +212,38 @@ export class HomeWhatsappAccountComponent implements OnInit, OnChanges {
         }
       }
     }, error => {
-      console.error('[HOME-WA] - getProjectPlan - ERROR', error);
+      this.logger.error('[HOME-WA] - getProjectPlan - ERROR', error);
     }, () => {
-      console.log('[HOME-WA] - getProjectPlan * COMPLETE *')
+      this.logger.log('[HOME-WA] - getProjectPlan * COMPLETE *')
     });
   }
 
   getApps() {
     this.appStoreService.getApps().subscribe((_apps: any) => {
       this.apps = _apps.apps;
-      console.log('[HOME-WA] - getApps APPS ', this.apps);
+      this.logger.log('[HOME-WA] - getApps APPS ', this.apps);
       this.apps.forEach(app => {
         if (app.title === "WhatsApp Business") {
 
           this.whatsAppAppId = app._id;
-          console.log('[HOME-WA] - whatsAppAppId ', this.whatsAppAppId)
+          this.logger.log('[HOME-WA] - whatsAppAppId ', this.whatsAppAppId)
           this.installActionType = app.installActionType
-          console.log('[HOME-WA] - installActionType ', this.installActionType)
+          this.logger.log('[HOME-WA] - installActionType ', this.installActionType)
           this.runURL = app.runURL
-          console.log('[HOME-WA] - runURL ', this.runURL)
+          this.logger.log('[HOME-WA] - runURL ', this.runURL)
           this.appTitle = app.title;
-          console.log('[HOME-WA] - appTitle ', this.appTitle)
+          this.logger.log('[HOME-WA] - appTitle ', this.appTitle)
           this.appVersion = app.version;
-          console.log('[HOME-WA] - appVersion ', this.appVersion)
+          this.logger.log('[HOME-WA] - appVersion ', this.appVersion)
 
           this.whatsAppLearnMoreURL = app.learnMore;
-          console.log('[HOME-WA] - whatsAppLearnMoreURL ', this.whatsAppLearnMoreURL)
+          this.logger.log('[HOME-WA] - whatsAppLearnMoreURL ', this.whatsAppLearnMoreURL)
         }
 
-        // console.log('[HOME-WA] - getApps APPS app ', app)
+        // this.logger.log('[HOME-WA] - getApps APPS app ', app)
         if (app && app.version === "v2") {
           if (app.installActionURL === "") {
-            // console.log('HOME-WA - getApps APPS app installActionURL', app.installActionURL)
+            // this.logger.log('HOME-WA - getApps APPS app installActionURL', app.installActionURL)
             delete app.installActionURL
           }
         }
@@ -251,16 +251,16 @@ export class HomeWhatsappAccountComponent implements OnInit, OnChanges {
 
 
     }, (error) => {
-      console.error('[HOME-WA] - getApps ERROR  ', error);
+      this.logger.error('[HOME-WA] - getApps ERROR  ', error);
       // this.showSpinner = false;
     }, () => {
-      console.log('[HOME-WA] getApps * COMPLETE *');
+      this.logger.log('[HOME-WA] getApps * COMPLETE *');
       this.getInstallations().then((res: any) => {
-        console.log("[HOME-WA] getInstallations res: ", res)
+        this.logger.log("[HOME-WA] getInstallations res: ", res)
         if (res) {
           if (res.length > 0) {
             res.forEach(r => {
-              console.log("[HOME-WA] getInstallations r: ", r)
+              this.logger.log("[HOME-WA] getInstallations r: ", r)
               if (r.app_id === this.whatsAppAppId) {
                 this.whatsAppIsInstalled = true;
               } else {
@@ -276,7 +276,7 @@ export class HomeWhatsappAccountComponent implements OnInit, OnChanges {
 
         // this.showSpinner = false;
       }).catch((err) => {
-        console.error("[HOME-WA] getInstallations ERROR: ", err)
+        this.logger.error("[HOME-WA] getInstallations ERROR: ", err)
         // this.showSpinner = false;
       })
 
@@ -287,10 +287,10 @@ export class HomeWhatsappAccountComponent implements OnInit, OnChanges {
   getInstallations() {
     let promise = new Promise((resolve, reject) => {
       this.appStoreService.getInstallation(this.projectId).then((res) => {
-        //  console.log("[HOME-WA] Get Installation Response: ", res);
+        //  this.logger.log("[HOME-WA] Get Installation Response: ", res);
         resolve(res);
       }).catch((err) => {
-        // console.error("[HOME-WA] Error getting installation: ", err);
+        // this.logger.error("[HOME-WA] Error getting installation: ", err);
         reject(err);
       })
     })
@@ -299,7 +299,7 @@ export class HomeWhatsappAccountComponent implements OnInit, OnChanges {
 
   gotToLearMoreOrManageApp() {
     this.onClickOnGoToLearnMoreOrManageApp.emit()
-    // console.log('[HOME-WA] INSTALL OR OPEN APP ', this.whatsAppIsInstalled);
+    // this.logger.log('[HOME-WA] INSTALL OR OPEN APP ', this.whatsAppIsInstalled);
     // if (this.whatsAppIsInstalled === false) {
     //   this.goToWhatsAppDetails()
     // } else {
@@ -332,9 +332,9 @@ export class HomeWhatsappAccountComponent implements OnInit, OnChanges {
       }
     }
 
-    console.log('[HOME-WA] appId ', this.whatsAppAppId)
-    console.log('[HOME-WA] app app version', this.appVersion)
-    console.log('[HOME-WA] installationType ', this.installActionType);
+    this.logger.log('[HOME-WA] appId ', this.whatsAppAppId)
+    this.logger.log('[HOME-WA] app app version', this.appVersion)
+    this.logger.log('[HOME-WA] installationType ', this.installActionType);
 
     // this.installV2App(this.projectId, this.whatsAppAppId)
 
@@ -372,15 +372,15 @@ export class HomeWhatsappAccountComponent implements OnInit, OnChanges {
   unistallApp() {
 
     this.onClickOnUnistallApp.emit()
-  //   console.log('[HOME-WA] UNINSTALL V2 APP - app_id', this.whatsAppAppId);
+  //   this.logger.log('[HOME-WA] UNINSTALL V2 APP - app_id', this.whatsAppAppId);
     // this.appStoreService.unistallNewApp(this.projectId, this.whatsAppAppId).subscribe((res: any) => {
-    //   console.log('[HOME-WA] UNINSTALL V2 APP - app_id - RES', res);
+    //   this.logger.log('[HOME-WA] UNINSTALL V2 APP - app_id - RES', res);
 
     // }, (error) => {
-    //   console.error('[HOME-WA] UNINSTALL V2 APP - ERROR  ', error);
+    //   this.logger.error('[HOME-WA] UNINSTALL V2 APP - ERROR  ', error);
     //   this.notify.showWidgetStyleUpdateNotification("An error occurred while uninstalling the app", 4, 'report_problem');
     // }, () => {
-    //   console.log('[HOME-WA] UNINSTALL V2 APP - COMPLETE');
+    //   this.logger.log('[HOME-WA] UNINSTALL V2 APP - COMPLETE');
     //   this.notify.showWidgetStyleUpdateNotification("App uninstalled successfully", 2, 'done');
 
     //   this.whatsAppIsInstalled = false
@@ -413,31 +413,31 @@ export class HomeWhatsappAccountComponent implements OnInit, OnChanges {
       dangerMode: false,
     }).then((value) => {
       if (value === 'catch') {
-        // console.log('featureAvailableFromPlanC value', value)
-        // console.log('[HOME-WA] prjct_profile_type', this.prjct_profile_type)
-        // console.log('[HOME-WA] subscription_is_active', this.subscription_is_active)
-        // console.log('[HOME-WA] prjct_profile_type', this.prjct_profile_type)
-        // console.log('[HOME-WA] trial_expired', this.trial_expired)
-        // console.log('[HOME-WA] isVisiblePAY', this.isVisiblePAY)
+        // this.logger.log('featureAvailableFromPlanC value', value)
+        // this.logger.log('[HOME-WA] prjct_profile_type', this.prjct_profile_type)
+        // this.logger.log('[HOME-WA] subscription_is_active', this.subscription_is_active)
+        // this.logger.log('[HOME-WA] prjct_profile_type', this.prjct_profile_type)
+        // this.logger.log('[HOME-WA] trial_expired', this.trial_expired)
+        // this.logger.log('[HOME-WA] isVisiblePAY', this.isVisiblePAY)
         if (this.isVisiblePAY) {
-          // console.log('[HOME-WA] HERE 1')
+          // this.logger.log('[HOME-WA] HERE 1')
           if (this.USER_ROLE === 'owner') {
-            // console.log('[HOME-WA] HERE 2')
+            // this.logger.log('[HOME-WA] HERE 2')
             if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
-              // console.log('[HOME-WA] HERE 3')
+              // this.logger.log('[HOME-WA] HERE 3')
               this.notify._displayContactUsModal(true, 'upgrade_plan');
             } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true && this.profile_name === PLAN_NAME.A) {
               this.notify._displayContactUsModal(true, 'upgrade_plan');
             } else if (this.prjct_profile_type === 'free' && this.trial_expired === true) {
-              // console.log('[HOME-WA] HERE 4')
+              // this.logger.log('[HOME-WA] HERE 4')
               this.router.navigate(['project/' + this.projectId + '/pricing']);
             }
           } else {
-            // console.log('[HOME-WA] HERE 5')
+            // this.logger.log('[HOME-WA] HERE 5')
             this.presentModalAgentCannotManageAvancedSettings();
           }
         } else {
-          // console.log('[HOME-WA] HERE 6')
+          // this.logger.log('[HOME-WA] HERE 6')
           this.notify._displayContactUsModal(true, 'upgrade_plan');
         }
       }
@@ -471,7 +471,7 @@ export class HomeWhatsappAccountComponent implements OnInit, OnChanges {
         if (this.USER_ROLE === 'owner') {
           this.router.navigate(['project/' + this.projectId + '/project-settings/payments']);
         } else {
-          // console.log('[HOME-WA] HERE 5')
+          // this.logger.log('[HOME-WA] HERE 5')
           this.presentModalAgentCannotManageAvancedSettings();
         }
       }
@@ -483,13 +483,13 @@ export class HomeWhatsappAccountComponent implements OnInit, OnChanges {
   installV2App(projectId, appId) {
 
     this.appStoreService.installAppVersionTwo(projectId, appId).subscribe((res: any) => {
-      console.log('[HOME-WA] INSTALL V2 APP projectId ', projectId, 'appId ', appId)
+      this.logger.log('[HOME-WA] INSTALL V2 APP projectId ', projectId, 'appId ', appId)
 
     }, (error) => {
-      console.error('[HOME-WA] INSTALL V2 APP - ERROR  ', error);
+      this.logger.error('[HOME-WA] INSTALL V2 APP - ERROR  ', error);
       this.notify.showWidgetStyleUpdateNotification("An error occurred while creating the app", 4, 'report_problem');
     }, () => {
-      console.log('[HOME-WA] INSTALL V2 APP - COMPLETE');
+      this.logger.log('[HOME-WA] INSTALL V2 APP - COMPLETE');
       this.notify.showWidgetStyleUpdateNotification("App installed successfully", 2, 'done');
       // let index = this.apps.findIndex(x => x._id === appId);
       // // this.apps[index].installed = false;
