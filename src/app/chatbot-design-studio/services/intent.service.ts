@@ -913,12 +913,6 @@ export class IntentService {
   /************************************************/
 
   public addIntentToUndoRedo(type, intent, intentsToUpdateUndo, intentsToUpdateRedo){ // intent_id_chiamante
-    // se muovo tra intent differenti uso setPreviousIntentId
-    // se creo da floatmenu uso  ...
-    // altrimenti non uso nulla
-
-    // let intentsToUpdateUndo = [];
-    // let intentsToUpdateRedo = [];
     let typeUNDO = type;
     let typeREDO = type;
     if(type === 'PUSH'){typeUNDO = 'DEL';}
