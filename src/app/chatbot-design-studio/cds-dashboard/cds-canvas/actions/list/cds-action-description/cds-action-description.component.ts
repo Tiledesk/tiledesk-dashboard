@@ -29,7 +29,7 @@ export class CdsActionDescriptionComponent implements OnInit {
   }
 
   ngOnChanges(){
-    console.log('ActionDescriptionComponent ngOnChanges:: ', this.actionSelected, this.elementType);
+    this.logger.log('ActionDescriptionComponent ngOnChanges:: ', this.actionSelected, this.elementType);
     if(this.actionSelected){
       this.elementType = this.actionSelected._tdActionType;
     }

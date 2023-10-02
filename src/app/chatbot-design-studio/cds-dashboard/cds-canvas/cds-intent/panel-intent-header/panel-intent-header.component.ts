@@ -35,14 +35,14 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
 
   // SYSTEM FUNCTIONS //
   ngOnInit(): void {
-    // console.log("[PANEL-INTENT-HEADER] intentSelected: ", this.intent)
+    // this.logger.log("[PANEL-INTENT-HEADER] intentSelected: ", this.intent)
     this. initialize();
   }
 
   ngOnChanges() {
-    // console.log("[PANEL-INTENT-HEADER] header OnChanges intentSelected: ", this.intent)
+    // this.logger.log("[PANEL-INTENT-HEADER] header OnChanges intentSelected: ", this.intent)
     // this.logger.log("[PANEL-INTENT-HEADER] header OnChanges intentSelected intent_display_name: ", this.intent.intent_display_name)
-    // console.log("[PANEL-INTENT-HEADER] header OnChanges listOfIntents: ", this.listOfIntents)
+    // this.logger.log("[PANEL-INTENT-HEADER] header OnChanges listOfIntents: ", this.listOfIntents)
   }
 
   /******************* CUSTOM FUNCTIONS *******************/ 
@@ -73,7 +73,7 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
     this.intentNameResult = true;
     this.intentNameAlreadyExist = false;
     if(!this.intentName || this.intentName.trim().length == 0) {
-      console.log("[PANEL-INTENT-HEADER] error 1");
+      this.logger.log("[PANEL-INTENT-HEADER] error 1");
       this.intentNameResult = false;
     }
     for (let i = 0; i < this.listOfIntents.length; i++) {
@@ -85,7 +85,7 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
     }
     this.intentNameNotHasSpecialCharacters = this.checkIntentNameMachRegex(name);
     if(!this.intentNameNotHasSpecialCharacters){
-      console.log("[PANEL-INTENT-HEADER] error 3");
+      this.logger.log("[PANEL-INTENT-HEADER] error 3");
       this.intentNameResult = false;
     }
     return this.intentNameResult;
@@ -96,7 +96,7 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
   /******************* EVENT FUNCTIONS *******************/ 
 
   onSelectIntent(event){
-    console.log("[PANEL-INTENT-HEADER] onSelectIntent",event, this.intent);
+    this.logger.log("[PANEL-INTENT-HEADER] onSelectIntent",event, this.intent);
     // this.intentService.setIntentSelected(this.intent.intent_id);
   }
 
@@ -109,7 +109,7 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
 
   /** onChangeIntentName */
   onChangeIntentName(event) {
-    console.log("[PANEL-INTENT-HEADER] onChangeIntentName",event, this.intent);
+    this.logger.log("[PANEL-INTENT-HEADER] onChangeIntentName",event, this.intent);
     const result = this.checkIntentName(event);
     if(result){
       this.onSaveIntent();
@@ -119,7 +119,7 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
 
   /** ENTER KEYBOARD EVENT*/
   onEnterButtonPressed(event) {
-    console.log('[PANEL-INTENT-HEADER] onEnterButtonPressed Intent name: onEnterButtonPressed event', event)
+    this.logger.log('[PANEL-INTENT-HEADER] onEnterButtonPressed Intent name: onEnterButtonPressed event', event)
     // // this.checkIntentName(this.intentName);
     // // this.onSaveIntent();
     // event.target.blur()
@@ -141,7 +141,7 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
 
   // /** BLUR EVENT*/
   // onBlurIntentName(event) {
-  //   console.log('[PANEL-INTENT-HEADER] onBlurIntentName Intent name: onEnterButtonPressed event', event)
+  //   this.logger.log('[PANEL-INTENT-HEADER] onBlurIntentName Intent name: onEnterButtonPressed event', event)
   //   // this.checkIntentName(this.intentName);
   //   // this.onSaveIntent();
   // }
@@ -150,7 +150,7 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
 
   /** */
   onSaveIntent() {
-    console.log("[PANEL-INTENT-HEADER] SALVO!!!");
+    this.logger.log("[PANEL-INTENT-HEADER] SALVO!!!");
     // this.intentService.setIntentSelected(this.intent.intent_id);
     this.intent.intent_display_name = this.intentName.trim();
     this.intentService.changeIntentName(this.intent);

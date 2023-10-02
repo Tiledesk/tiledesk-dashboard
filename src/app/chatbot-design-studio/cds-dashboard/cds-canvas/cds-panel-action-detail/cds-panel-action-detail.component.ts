@@ -37,7 +37,7 @@ export class CdsActionDetailPanelComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.project_id = this.dashboardService.projectID;
-  //  console.log('[PANEL-INTENT-DETAIL] (ngOnInit) @Input elementIntentSelected ', this.elementIntentSelected, this.intentSelected);
+  //  this.logger.log('[PANEL-INTENT-DETAIL] (ngOnInit) @Input elementIntentSelected ', this.elementIntentSelected, this.intentSelected);
   //   try {
   //     this.elementSelected = JSON.parse(JSON.stringify(this.elementIntentSelected.element));
   //     this.elementIntentSelectedType = this.elementIntentSelected.type;
@@ -53,16 +53,16 @@ export class CdsActionDetailPanelComponent implements OnInit, OnChanges {
 
   initialize(){
     this.intentSelected = this.intentService.intentSelected;
-    console.log('[PANEL-INTENT-DETAIL] (OnChanges) @Input elementIntentSelected ', this.intentSelected, this.elementIntentSelected);
+    this.logger.log('[PANEL-INTENT-DETAIL] (OnChanges) @Input elementIntentSelected ', this.intentSelected, this.elementIntentSelected);
     try{
       this.elementIntentSelectedType = this.elementIntentSelected.type;
       this.elementSelected = this.elementIntentSelected.element;
       // this.elementSelected = JSON.parse(JSON.stringify(this.elementIntentSelected.element));
       // this.elementSelectedIndex = this.elementIntentSelected.index
       // this.elementSelectedMaxLength = [...Array(this.elementIntentSelected.maxLength).keys()]
-      console.log('[PANEL-INTENT-DETAIL] (OnChanges) elementIntentSelectedType ', this.elementIntentSelectedType);
-      console.log('[PANEL-INTENT-DETAIL] (OnChanges) elementSelected ', this.elementSelected);
-      // console.log('[PANEL-INTENT-DETAIL] (OnChanges) intentSelected ', this.intentSelected);
+      this.logger.log('[PANEL-INTENT-DETAIL] (OnChanges) elementIntentSelectedType ', this.elementIntentSelectedType);
+      this.logger.log('[PANEL-INTENT-DETAIL] (OnChanges) elementSelected ', this.elementSelected);
+      // this.logger.log('[PANEL-INTENT-DETAIL] (OnChanges) intentSelected ', this.intentSelected);
     }catch(error){
       this.logger.log('[CDS-PANEL-INTENT-DETAIL] (ngOnChanges) ERROR', error);
     }
@@ -71,9 +71,9 @@ export class CdsActionDetailPanelComponent implements OnInit, OnChanges {
   // private setDragConfig(){
   //   // drag study
   //   let el = document.getElementById("content-panel");
-  //   console.log('getElementById:: el', el);
+  //   this.logger.log('getElementById:: el', el);
   //   let drawer = document.getElementById("box-right");
-  //   console.log('getElementById:: drawer', drawer);
+  //   this.logger.log('getElementById:: drawer', drawer);
   //   setDrawer(el, drawer);
   // }
 
@@ -82,18 +82,18 @@ export class CdsActionDetailPanelComponent implements OnInit, OnChanges {
   onUpdateFormIntentSelected($event){
     this.elementSelected = $event;
     this.onSaveIntent()
-    // console.log("onUpdateFormIntentSelected:::: ", $event);
+    // this.logger.log("onUpdateFormIntentSelected:::: ", $event);
   }
 
   onUpdateAnswerIntentSelected($event){
     this.elementSelected = $event;
-    // console.log("updateAnswerIntentSelected:::: ", $event);
+    // this.logger.log("updateAnswerIntentSelected:::: ", $event);
   }
 
   onUpdateQuestionsIntentSelected($event){
     this.elementSelected = $event;
     this.onSaveIntent()
-    // console.log("onUpdateQuestionsIntentSelected:::: ", $event);
+    // this.logger.log("onUpdateQuestionsIntentSelected:::: ", $event);
   }
 
   onSaveIntent(){
@@ -108,18 +108,18 @@ export class CdsActionDetailPanelComponent implements OnInit, OnChanges {
     } else if(this.elementIntentSelectedType === this.typeIntentElement.FORM){
       this.intentSelected.form = this.elementSelected;
     }
-    console.log('----> onSaveIntent:: ', this.elementIntentSelectedType, this.intentSelected);
+    this.logger.log('----> onSaveIntent:: ', this.elementIntentSelectedType, this.intentSelected);
     this.onUpdateIntent.emit(this.intentSelected);
   }
 
   onCloseIntent(){
-    console.log('----> onCloseIntent:: ', this.elementIntentSelectedType, this.intentSelected);
+    this.logger.log('----> onCloseIntent:: ', this.elementIntentSelectedType, this.intentSelected);
     // this.closeAndSavePanelIntentDetail.emit();
   }
 
 
   onConnectorChange(type: 'create' | 'delete', idConnector: string, toIntentId: string){
-    console.log('createOrUpdateConnector-->', type, idConnector, toIntentId)
+    this.logger.log('createOrUpdateConnector-->', type, idConnector, toIntentId)
     const fromId = idConnector;
     let toId = '';
     const posId = toIntentId.indexOf("#");
@@ -129,7 +129,7 @@ export class CdsActionDetailPanelComponent implements OnInit, OnChanges {
 
     switch(type){
       case 'create':
-        console.log('createNewConnector: ', fromId);
+        this.logger.log('createNewConnector: ', fromId);
         this.connectorService.deleteConnectorWithIDStartingWith(fromId);
         this.connectorService.createNewConnector(fromId, toId);
         break;

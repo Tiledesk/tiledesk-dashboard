@@ -63,7 +63,7 @@ export class CdsActionReplyGalleryComponent implements OnInit {
       this.initElement();
       if(!this.previewMode) this.scrollToLeft();
       this.intentService.isChangedConnector$.subscribe((connector: any) => {
-        console.log('CdsActionReplyGalleryComponent isChangedConnector-->', connector);
+        this.logger.log('CdsActionReplyGalleryComponent isChangedConnector-->', connector);
         this.connector = connector;
         this.updateConnector();
       });
@@ -98,7 +98,7 @@ export class CdsActionReplyGalleryComponent implements OnInit {
   }
 
   // private patchButtons(element: GalleryElement, index: number){
-  //   console.log('patchButtons:: ', this.response);
+  //   this.logger.log('patchButtons:: ', this.response);
   //   let buttons = this.response?.attributes?.attachment?.gallery[index].buttons;
   //   if(!buttons)return;
   //   buttons.forEach(button => {
@@ -121,15 +121,11 @@ export class CdsActionReplyGalleryComponent implements OnInit {
         const array = this.connector.fromId.split("/");
         const idButton = array[array.length - 1];
         const idConnector = this.idAction+'/'+idButton;
-        console.log('[REPLY-GALLERY] updateConnector :: connector.fromId: ', this.connector.fromId);
-        console.log('[REPLY-GALLERY] updateConnector :: idConnector: ', idConnector);
-        console.log('[REPLY-GALLERY] updateConnector :: idButton: ', idButton);
-        console.log('[REPLY-GALLERY] updateConnector :: connector.id: ', this.connector.id);
+        this.logger.log('[REPLY-GALLERY] updateConnector :: connector.fromId - idConnector: ', this.connector.fromId, idConnector);
         const buttonChanged = el.buttons.find(obj => obj.uid === idButton);
         if(idConnector === this.connector.fromId && buttonChanged){
           if(this.connector.deleted){
             // DELETE 
-            console.log(' deleteConnector :: ', this.connector.fromId);
             buttonChanged.__isConnected = false;
             buttonChanged.__idConnector = this.connector.fromId;
             buttonChanged.action = '';
@@ -141,7 +137,6 @@ export class CdsActionReplyGalleryComponent implements OnInit {
             buttonChanged.__idConnector = this.connector.fromId;
             buttonChanged.action = buttonChanged.action? buttonChanged.action : '#' + this.connector.toId;
             buttonChanged.type = TYPE_BUTTON.ACTION;
-            console.log('updateConnector :: ', el.buttons);
             if(!buttonChanged.__isConnected){
               buttonChanged.__isConnected = true;
               this.changeActionReply.emit();
@@ -151,7 +146,7 @@ export class CdsActionReplyGalleryComponent implements OnInit {
         }
       });
     } catch (error) {
-      console.log('error: ', error);
+      this.logger.error('error: ', error);
     }
   }
 

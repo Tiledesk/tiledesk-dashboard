@@ -57,7 +57,7 @@ export class CdsActionReplyTextComponent implements OnInit {
   }
 
   // ngOnChanges(changes: SimpleChanges): void {
-  //   console.log('CdsActionReplyTextComponent ngOnChanges:: ', this.response);
+  //   this.logger.log('CdsActionReplyTextComponent ngOnChanges:: ', this.response);
   // }
 
   // PRIVATE FUNCTIONS //
@@ -88,7 +88,7 @@ export class CdsActionReplyTextComponent implements OnInit {
   }
 
   // private async patchButtons(){
-  //   console.log('patchButtons:: ', this.response);
+  //   this.logger.log('patchButtons:: ', this.response);
   //   let buttons = this.response?.attributes?.attachment?.buttons;
   //   if(!buttons)return;
   //   buttons.forEach(button => {
@@ -102,7 +102,7 @@ export class CdsActionReplyTextComponent implements OnInit {
   //     } else {
   //       button.__isConnected = false;
   //     }
-  //     console.log('[cds-action-reply-text ]:: button: ', button, button.__uid);
+  //     this.logger.log('[cds-action-reply-text ]:: button: ', button, button.__uid);
   //     // button.__isConnected = true;
       
   //   }); 
@@ -114,9 +114,6 @@ export class CdsActionReplyTextComponent implements OnInit {
       const idButton = array[array.length - 1];
       const idConnector = this.idAction+'/'+idButton;
       this.logger.log(' updateConnector [CdsActionReplyTextComponent]:: connector.fromId: ', this.connector.fromId);
-      // console.log(' updateConnector [CdsActionReplyTextComponent]:: idConnector: ', idConnector);
-      // console.log(' updateConnector [CdsActionReplyTextComponent]:: idButton: ', idButton);
-      // console.log(' updateConnector [CdsActionReplyTextComponent]:: connector.id: ', this.connector.id);
       const buttonChanged = this.buttons.find(obj => obj.uid === idButton);
       if(idConnector === this.connector.fromId && buttonChanged){
         if(this.connector.deleted){
@@ -193,8 +190,6 @@ export class CdsActionReplyTextComponent implements OnInit {
   }
 
   onSelectedAttribute(variableSelected: {name: string, value: string}){
-    // console.log('atttttttttt', variableSelected)
-    // console.log('textttttttt', this.checkForVariablesInsideText(this.response.text))
   }
 
   /** onOpenButtonPanel */

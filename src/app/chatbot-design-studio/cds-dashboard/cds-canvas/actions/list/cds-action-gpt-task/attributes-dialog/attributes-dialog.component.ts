@@ -68,7 +68,7 @@ export class AttributesDialogComponent implements OnInit {
   //     attributesControl.push(v)
   //     // this.varsForm.patchValue({ attributes: this.data.attributes });
   //   })
-  //   console.log("varsForm: ", this.varsForm);
+  //   this.logger.log("varsForm: ", this.varsForm);
   // }
 
 }

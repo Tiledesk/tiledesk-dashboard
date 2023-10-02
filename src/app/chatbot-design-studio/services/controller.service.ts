@@ -30,35 +30,35 @@ export class ControllerService {
 
   // Buttons s
   public openButtonPanel(button){
-    console.log('openButtonPanel:: ', button);
+    // console.log('openButtonPanel:: ', button);
     this.buttonSource.next(button);
   }
 
   public closeButtonPanel(){
-    console.log('closeButtonPanel:: ');
+    // console.log('closeButtonPanel:: ');
     this.buttonSource.next();
   }
 
   // action detail panel
   public openActionDetailPanel(type: TYPE_INTENT_ELEMENT, element: Action | string | Form){
-    console.log('openButtonPanel:: ', type, element);
+    // console.log('openButtonPanel:: ', type, element);
     this.actionSource.next({type, element});
   }
 
   public closeActionDetailPanel(){
-    console.log('closeActionDetailPanel:: ');
+    // console.log('closeActionDetailPanel:: ');
     this.actionSource.next({type: null, element: null});
   }
 
   /** closeAddActionMenu */
   public closeAddActionMenu(){
-    console.log('closeAddActionMenu:: ');
+    // console.log('closeAddActionMenu:: ');
     this.addActionMenu.next();
   }
 
 
   public closeAllPanels(){
-    console.log('closeAllPanels:: ');
+    // console.log('closeAllPanels:: ');
     this.addActionMenu.next();
     this.buttonSource.next();
     this.actionSource.next({type: null, element: null});

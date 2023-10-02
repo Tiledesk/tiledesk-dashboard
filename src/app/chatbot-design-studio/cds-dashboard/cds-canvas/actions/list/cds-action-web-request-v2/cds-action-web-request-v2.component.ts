@@ -70,7 +70,7 @@ export class CdsActionWebRequestV2Component implements OnInit {
     if(this.intentSelected){
       this.initializeConnector();
     }
-    console.log('[ACTION-WEB-REQUEST-v2] onChanges' , this.action, this.intentSelected )
+    this.logger.log('[ACTION-WEB-REQUEST-v2] onChanges' , this.action, this.intentSelected )
     // if (this.action && this.action.assignStatusTo) {
     //   this.hasSelectedVariable = true
     // }
@@ -198,11 +198,11 @@ export class CdsActionWebRequestV2Component implements OnInit {
       case 'json':
         this.body = JSON.stringify({})
     }
-    console.log('onChangeButtonSelect-->', event, this.body)
+    this.logger.log('onChangeButtonSelect-->', event, this.body)
   }
 
   onChangeTextarea(e, type: 'url' | 'body'){
-   console.log('onChangeTextarea:', e, type );
+    this.logger.log('onChangeTextarea:', e, type );
     switch(type){
       case 'body': {
         this.body = e;
@@ -232,7 +232,7 @@ export class CdsActionWebRequestV2Component implements OnInit {
   }
 
   onChangeAttributes(attributes:any){
-    // console.log('onChangeAttributes');
+    // this.logger.log('onChangeAttributes');
     this.action.headersString = attributes;
     this.updateAndSaveAction.emit()
     // this.jsonHeader = attributes;

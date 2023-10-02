@@ -42,7 +42,7 @@ export class CdsActionWebRequestComponent implements OnInit {
   ngOnChanges() {
     // on change
     this.initialize();
-    console.log('CDS-ACTION-WEB-REQUEST ACTION' , this.action )
+    this.logger.log('CDS-ACTION-WEB-REQUEST ACTION' , this.action )
     if (this.action && this.action.assignTo) {
       this.hasSelectedVariable = true
     }
@@ -143,7 +143,7 @@ export class CdsActionWebRequestComponent implements OnInit {
   }
 
   onChangeAttributes(attributes:any){
-    // console.log('onChangeAttributes');
+    // this.logger.log('onChangeAttributes');
     this.action.headersString = attributes;
     this.updateAndSaveAction.emit()
     // this.jsonHeader = attributes;

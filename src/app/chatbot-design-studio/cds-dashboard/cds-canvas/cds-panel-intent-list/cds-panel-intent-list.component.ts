@@ -51,12 +51,12 @@ export class CdsPanelIntentListComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
-    // console.log('ngOnInit:: ');
+    // this.logger.log('ngOnInit:: ');
     this.idSelectedIntent = null;
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    //console.log('[CdsPanelIntentListComponent] ngOnChanges::', this.listOfIntents);
+    //this.logger.log('[CdsPanelIntentListComponent] ngOnChanges::', this.listOfIntents);
   }
 
   /** ngOnDestroy */
@@ -78,7 +78,7 @@ export class CdsPanelIntentListComponent implements OnInit, OnChanges {
    */
   private setSubscriptions(){
     this.subscriptionListOfIntents = this.intentService.getIntents().subscribe(intents => {
-      console.log('[cds-panel-intent-list] --- AGGIORNATO ELENCO INTENTS ',intents);
+      this.logger.log('[cds-panel-intent-list] --- AGGIORNATO ELENCO INTENTS ',intents);
       if(intents && intents.length>0){
         this.initialize(intents);
       }
@@ -86,7 +86,7 @@ export class CdsPanelIntentListComponent implements OnInit, OnChanges {
 
     /** SUBSCRIBE TO THE INTENT SELECTED */
     this.subscriptionIntent = this.intentService.behaviorIntent.subscribe((intent: Intent) => {
-      console.log('[cds-panel-intent-list] --- AGGIORNATO INTENT ',intent);
+      this.logger.log('[cds-panel-intent-list] --- AGGIORNATO INTENT ',intent);
       if (intent) {
         if (!intent['attributesChanged']) {
           this.idSelectedIntent = intent.intent_id;

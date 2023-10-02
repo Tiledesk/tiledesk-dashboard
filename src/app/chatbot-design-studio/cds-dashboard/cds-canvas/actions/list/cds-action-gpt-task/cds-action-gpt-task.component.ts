@@ -93,10 +93,6 @@ export class CdsActionGPTTaskComponent implements OnInit {
   updateSliderValue(event, target) {
     this.logger.debug("[ACTION GPT-TASK] updateSliderValue event: ", event)
     this.logger.debug("[ACTION GPT-TASK] updateSliderValue target: ", target)
-
-    console.log("[ACTION GPT-TASK] updateSliderValue event: ", event)
-    console.log("[ACTION GPT-TASK] updateSliderValue target: ", target)
-
     this.action[target] = event;
 
     this.updateAndSaveAction.emit();
@@ -149,7 +145,7 @@ export class CdsActionGPTTaskComponent implements OnInit {
   }
 
   getResponse(question) {
-    console.log("getResponse called...")
+    this.logger.log("getResponse called...")
 
     let data = {
       question: question,
@@ -280,7 +276,7 @@ export class CdsActionGPTTaskComponent implements OnInit {
   //           this.action.preview.push({ name: name, value: null });
   //         }
   //       })
-  //       console.log("temp_variables: ", this.temp_variables)
+  //       this.logger.log("temp_variables: ", this.temp_variables)
   //       resolve(response);
   //     }
 
@@ -311,13 +307,13 @@ export class CdsActionGPTTaskComponent implements OnInit {
   // }
 
   openAttributesDialog() {
-    console.log("temp_variables: ", this.temp_variables);
+    this.logger.log("temp_variables: ", this.temp_variables);
     const dialogRef = this.dialog.open(AttributesDialogComponent, {
       panelClass: 'custom-dialog-container',
       data: { attributes: this.temp_variables, question: this.action.question }
     });
     dialogRef.afterClosed().subscribe(result => {
-      console.log("AttributesDialogComponent result: ", result);
+      this.logger.log("AttributesDialogComponent result: ", result);
       if (result !== false) {
         this.getResponse(result.question);
         this.saveAttributes(result.attributes);
@@ -326,7 +322,7 @@ export class CdsActionGPTTaskComponent implements OnInit {
   }
 
   saveAttributes(attributes) {
-    console.log("attributes: ", attributes);
+    this.logger.log("attributes: ", attributes);
     attributes.forEach(a => {
       let index = this.action.preview.findIndex(v => v.name === a.name)
       if (index != -1) {

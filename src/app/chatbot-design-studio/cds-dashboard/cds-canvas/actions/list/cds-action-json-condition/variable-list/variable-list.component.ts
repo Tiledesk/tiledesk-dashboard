@@ -80,7 +80,7 @@ export class VariableListComponent implements OnInit {
     variables.forEach(element => {
       jsonVar[element.name] = element.name;
     });
-    // console.log('jsonVar: ', jsonVar);
+    // this.logger.log('jsonVar: ', jsonVar);
     this.faqkbService.addNodeToChatbotAttributes(this.idBot, 'variables', jsonVar).subscribe((data)=> {
       if(data){
         //SUCCESS STATE

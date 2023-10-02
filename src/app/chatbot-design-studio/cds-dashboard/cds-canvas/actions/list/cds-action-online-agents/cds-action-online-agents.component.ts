@@ -39,7 +39,7 @@ export class CdsActionOnlineAgentsComponent implements OnInit {
 
   ngOnInit(): void {
     this.intentService.isChangedConnector$.subscribe((connector: any) => {
-      // console.log('CdsActionIntentComponent isChangedConnector-->', connector);
+      // this.logger.log('CdsActionIntentComponent isChangedConnector-->', connector);
       this.connector = connector;
       this.updateConnector();
     });

@@ -237,7 +237,6 @@ export class CdsActionAskgptComponent implements OnInit {
 
   goToKNB(){
     let url = this.appConfigService.getConfig().DASHBOARD_BASE_URL + 'dashboard/#/project/' + this.project_id +'/knowledge-bases'
-    console.log('urlllllll', url)
     window.open(url, '_blank')
   }
 

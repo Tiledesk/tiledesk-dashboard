@@ -65,13 +65,11 @@ export class CdsActionIntentComponent implements OnInit {
       if(idAction === this.action._tdActionId){
         if(this.connector.deleted){
           // DELETE 
-          this.logger.log('[CDS-ACTION-INTENT] deleteConnector :: ', this.connector.id);
           this.action.intentName = null;
           this.isConnected = false;
           this.updateAndSaveAction.emit();
         } else {
           // ADD / EDIT
-          console.log('[CDS-ACTION-INTENT] updateConnector :: ', this.connector.toId, this.action.intentName);
           this.isConnected = true;
           if(this.action.intentName !== "#"+this.connector.toId){ 
             this.action.intentName = "#"+this.connector.toId;

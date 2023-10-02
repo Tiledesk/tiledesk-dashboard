@@ -117,7 +117,7 @@ export class CdsActionReplyFrameComponent implements OnInit {
       this.frameHeight = event.height;
       this.response.metadata.height = event.height;
     //}
-    // console.log('onCloseframePanel:: ', event);
+    // this.logger.log('onCloseframePanel:: ', event);
   }
 
   /** */
@@ -131,7 +131,6 @@ export class CdsActionReplyFrameComponent implements OnInit {
   onLoadPathElement(){
     try {
       this.framePath = this.sanitizer.bypassSecurityTrustResourceUrl(this.response.metadata.src);
-      console.log('responseeeeeeeee', this.response, this.framePath)
       this.changeActionReply.emit();
     } catch (error) {
       this.logger.log('onAddNewResponse ERROR', error);

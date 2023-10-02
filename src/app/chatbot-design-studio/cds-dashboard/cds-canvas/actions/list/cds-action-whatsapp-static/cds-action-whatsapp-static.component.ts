@@ -33,7 +33,7 @@ export class CdsActionWhatsappStaticComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // console.log("[ACTION WHATSAPP STATIC] action: ", this.action);
+    // this.logger.log("[ACTION WHATSAPP STATIC] action: ", this.action);
     this.showLoader = true;
     this.getTemplates();
     //this.initialize();
@@ -83,7 +83,7 @@ export class CdsActionWhatsappStaticComponent implements OnInit {
       // if (this.action.payload.receiver_list) {
       //   this.receiver_list = this.action.payload.receiver_list;
       // }
-      // console.log("[ACTION WHATSAPP STATIC] payload: ", this.action.payload);
+      // this.logger.log("[ACTION WHATSAPP STATIC] payload: ", this.action.payload);
     } else {
       this.logger.debug("[ACTION WHATSAPP STATIC] Payload empty --> create payload")
       this.action.payload = {
@@ -128,11 +128,11 @@ export class CdsActionWhatsappStaticComponent implements OnInit {
     // } else {
 
     //   // this.message.receiver_list.push(event);
-    //   // console.log("payload.receiver_list (before) ", this.action.payload.receiver_list);
+    //   // this.logger.log("payload.receiver_list (before) ", this.action.payload.receiver_list);
     //   this.action.payload.receiver_list[index] = event;
     //   // this.action.payload = this.message;
     //   // this.logger.log("[ACTION WHATSAPP] Action updated ", this.action.payload);
-    //   console.log("[ACTION WHATSAPP] Action updated ", this.action.payload);
+    //   this.logger.log("[ACTION WHATSAPP] Action updated ", this.action.payload);
     // }
   }
 

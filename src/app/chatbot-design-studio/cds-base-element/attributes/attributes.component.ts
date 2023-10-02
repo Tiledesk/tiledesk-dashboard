@@ -37,12 +37,11 @@ export class AttributesComponent implements OnInit {
     this.newAttributes = [];
     try {
       Object.keys(this.attributes).forEach(key => {
-        // console.log(key, this.attributes[key]);
         const newAtt = {"key":key, "value": this.attributes[key]};
         this.newAttributes.push(newAtt);
       });
     } catch (error) {
-      // console.log("error: ", error);
+      // this.logger.error("error: ", error);
     }
     this.newAttributes.push({key:"", value:""});
     if(!this.method){
@@ -94,12 +93,10 @@ export class AttributesComponent implements OnInit {
         attributes[item.key] = item.value;
       }
     });
-    // console.log("------- >>>> ", this.attributes);
     this.changeAttributes.emit(attributes);
   }
 
   onClearSelectedAttribute(index){
-    // console.log('onClearInput:: ',this.newAttributes, index);
     if(!this.newAttributes[index].value){
       this.newAttributes.splice(index, 1);
     } else {
@@ -137,7 +134,6 @@ export class AttributesComponent implements OnInit {
 
     this.logger.log('[ATTRIBUTES] onSelectedAttribute: newAttributes', this.newAttributes)
     this.setChangedAttributes();
-    // console.log('[ATTRIBUTES] onSelectedAttribute: newAttributes', this.newAttributes)
   }
 
 }
