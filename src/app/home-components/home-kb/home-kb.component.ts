@@ -123,7 +123,7 @@ export class HomeKbComponent implements OnInit {
     }, (error) => {
       this.logger.error("[HOME-KB] ERROR get kbSettings: ", error);
     }, () => {
-      this.logger.info("[HOME-KB] get kbSettings *COMPLETE*");
+      this.logger.log("[HOME-KB] get kbSettings *COMPLETE*");
     })
   }
 

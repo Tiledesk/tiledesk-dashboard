@@ -679,7 +679,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
       this.saveUserPreferences(this.segmentIdentifyAttributes)
       // this.DISPLAY_SPINNER_SECTION = false;
       // this.DISPLAY_BOT = true;
-      this.goToExitOnboarding();
+      // this.goToExitOnboarding();
     }
   }
   // -----------------  FUNCTION CALLBACK   ------------------------ //
@@ -695,6 +695,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
         this.logger.error('[ONBOARDING-D] - UPDATE PRJCT WITH USER PREFERENCES - ERROR ', error)
       }, () => {
         this.logger.log('[ONBOARDING-D] - UPDATE PRJCT WITH USER PREFERENCES * COMPLETE *')
+        this.goToExitOnboarding();
       });
   }
 

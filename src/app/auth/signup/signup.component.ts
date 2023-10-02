@@ -233,7 +233,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
         var size = Object.keys(this.queryParams).length;
         // this.logger.log('queryParams size ', size)
         const storedRoute = this.localDbService.getFromStorage('wannago')
-        console.log('[SIGN-UP] storedRoute', storedRoute)
+        // console.log('[SIGN-UP] storedRoute', storedRoute)
         if (size > 0) {
 
           for (const [key, value] of Object.entries(this.queryParams)) {

@@ -90,13 +90,17 @@
                 <!-- ------------------------------------ -->
                 <!-- Operating Hours style="background-color: #f44336-->
                 <!-- ------------------------------------ -->
+                <!-- {{'AdjustOperatingHours' | translate}} -->
                 <ng-container *ngIf="isVisibleOPH && USER_ROLE !== 'agent'">
                   <button mat-mini-fab aria-label="date_range icon"
                     [ngClass]="{'oph-disabled': !OPERATING_HOURS_ACTIVE || DISPLAY_OPH_AS_DISABLED, 'oph-enabled': OPERATING_HOURS_ACTIVE && !DISPLAY_OPH_AS_DISABLED }"
                     style="box-shadow: unset;margin-right: 16px;    position: relative;"
                     [satPopoverAnchor]="editOperatingHours" (click)="editOperatingHours.toggle();"
-                    matTooltipClass="custom-mat-tooltip" matTooltip="{{'AdjustOperatingHours' | translate}}"
-                    #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
+                    matTooltipClass="custom-mat-tooltip" 
+                    matTooltip="Adjust operating hours"
+                    #tooltip="matTooltip" 
+                    matTooltipPosition='below' 
+                    matTooltipHideDelay="100">
                     <mat-icon style="color: #fff;position: relative;top: -2px;">date_range</mat-icon>
                   </button>
 
@@ -120,16 +124,19 @@
                           style="overflow: hidden;padding-right: 12px;display: flex;flex-direction: column;align-items: center;justify-content: center;">
 
                           <div style="color: rgba(0, 0, 0, 0.87);font-weight: 500;font-size: 14px;">
-                            {{'Hours' | translate}}
+                            <!-- {{'Hours' | translate}} -->
+                            Operating Hours
                           </div>
 
                           <div style="font-size: 12px;font-weight: 500;text-transform: uppercase;">
                             <span *ngIf="!OPERATING_HOURS_ACTIVE || DISPLAY_OPH_AS_DISABLED">
-                              {{'Disabled' | translate}}
+                              <!-- {{'Disabled' | translate}} -->
+                              Disabled
                             </span>
 
                             <span *ngIf="OPERATING_HOURS_ACTIVE && !DISPLAY_OPH_AS_DISABLED">
-                              {{'Enabled' | translate}}
+                              <!-- {{'Enabled' | translate}} -->
+                              Enabled
                             </span>
                           </div>
                         </div>
@@ -1866,7 +1873,10 @@
             <div class="col-xs-9">
 
               <h3 class="getting-started-card-title">{{ 'GettingStartedWith' | translate }} {{company_name}}</h3>
-              <p class="getting-started-card-subtitle">{{ 'HereIsAListOfPagesAndLinks' | translate}}</p>
+              <p class="getting-started-card-subtitle">
+                <!-- {{ 'HereIsAListOfPagesAndLinks' | translate}} -->
+                Here’s a list of pages we highly recommend going over before you start having conversations
+              </p>
 
               <ul style="list-style: none; padding-left:0px; line-height: 33px;">
 

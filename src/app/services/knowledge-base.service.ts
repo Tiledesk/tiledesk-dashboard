@@ -70,7 +70,7 @@ export class KnowledgeBaseService {
     }
 
     const url = this.SERVER_BASE_PATH + this.project_id + "/kbsettings";
-    this.logger.info("[KNOWLEDGE BASE SERVICE] - get settings URL ", url);
+    this.logger.log("[KNOWLEDGE BASE SERVICE] - get settings URL ", url);
 
     return this.httpClient.get(url, httpOptions);
   }
@@ -84,7 +84,7 @@ export class KnowledgeBaseService {
     }
 
     const url = this.SERVER_BASE_PATH + this.project_id + "/kbsettings/" + kb_settings._id;
-    this.logger.info("[KNOWLEDGE BASE SERVICE] - save settings URL ", url);
+    this.logger.log("[KNOWLEDGE BASE SERVICE] - save settings URL ", url);
 
     return this.httpClient.put(url, kb_settings, httpOptions);
   }
@@ -98,7 +98,7 @@ export class KnowledgeBaseService {
     }
 
     const url = this.SERVER_BASE_PATH + this.project_id + "/kbsettings/" + settings_id;
-    this.logger.info("[KNOWLEDGE BASE SERVICE] - add new kb URL ", url);
+    this.logger.log("[KNOWLEDGE BASE SERVICE] - add new kb URL ", url);
 
     return this.httpClient.post(url, kb, httpOptions);
   }
@@ -112,7 +112,7 @@ export class KnowledgeBaseService {
     }
 
     const url = this.SERVER_BASE_PATH + this.project_id + "/kbsettings/" + settings_id + "/" + kb_id;
-    this.logger.info("[KNOWLEDGE BASE SERVICE] - delete kb URL ", url);
+    this.logger.log("[KNOWLEDGE BASE SERVICE] - delete kb URL ", url);
 
     return this.httpClient.delete(url, httpOptions);
   }

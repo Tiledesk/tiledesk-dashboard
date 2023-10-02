@@ -408,7 +408,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       }
 
       this.current_prjct = projects.find(prj => prj.id_project.id === projectId);
-      this.logger.log('[HOME] - CURRENT PROJECT - current_prjct ', this.current_prjct);
+      this.logger.log('[HOME] - CURRENT PROJECT - current_prjct (findCurrentProjectAmongAll)', this.current_prjct);
       this.logger.log('[HOME] - CURRENT PROJECT - current_prjct  > attributes', this.current_prjct.id_project.attributes);
       // ---------------------------------
       // Get onboarding preferences 
@@ -726,7 +726,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.use_case_for_child = this.use_case;
 
     if (this.solution === undefined && this.solution_channel === undefined && this.use_case === undefined) {
-
+      this.logger.log('[HOME] - USECASE USER PREFERENCES getOnbordingPreferences solution', this.solution , 'solution_channel ', this.solution_channel , ' use_case ',this.use_case);
+      
       this.child_list_order = [
         { pos: 1, type: 'child1' },
         { pos: 2, type: 'child2' },
@@ -771,7 +772,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.solution_channel === 'web_mobile' &&
       this.use_case === "solve_customer_problems") {
 
-        this.logger.log('[HOME] USECASE 1')
+      this.logger.log('[HOME] USECASE 1')
       // , show: false
       this.child_list_order = [
         { pos: 1, type: 'child1'},
@@ -815,7 +816,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.solution === 'want_to_automate_conversations' &&
       this.solution_channel === 'web_mobile' &&
       this.use_case === "increase_online_sales") {
-        this.logger.log('[HOME] USECASE 2')
+      this.logger.log('[HOME] USECASE 2')
 
       this.child_list_order = [
         { pos: 1, type: 'child1' },
@@ -858,7 +859,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.solution === 'want_to_automate_conversations' &&
       this.solution_channel === 'whatsapp_fb_messenger' &&
       this.use_case === 'solve_customer_problems') {
-        this.logger.log('[HOME] USECASE 3')
+      this.logger.log('[HOME] USECASE 3')
 
       this.child_list_order = [
         { pos: 1, type: 'child1' },
@@ -907,7 +908,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.solution === 'want_to_automate_conversations' &&
       this.solution_channel === 'whatsapp_fb_messenger' &&
       this.use_case === 'increase_online_sales') {
-        this.logger.log('[HOME] USECASE 4')
+      this.logger.log('[HOME] USECASE 4')
 
       this.child_list_order = [
         { pos: 1, type: 'child1' },

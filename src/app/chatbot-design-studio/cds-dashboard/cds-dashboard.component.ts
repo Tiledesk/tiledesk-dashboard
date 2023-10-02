@@ -218,7 +218,7 @@ export class CdsDashboardComponent implements OnInit {
   */
   private getUrlParams() {
     this.route.params.subscribe((params) => {
-      console.log('[CDS DSHBRD] getUrlParams  PARAMS', params);
+      // console.log('[CDS DSHBRD] getUrlParams  PARAMS', params);
       this.id_faq_kb = params.faqkbid;
       if (this.id_faq_kb) {
         this.getBotById(this.id_faq_kb)
