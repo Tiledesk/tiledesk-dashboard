@@ -576,11 +576,11 @@ export class HomeCreateTeammateComponent implements OnInit {
 
             });
           } catch (err) {
-            this.logger.error('identify Invite Sent Profile error', err);
+            this.logger.error('Home identify Invite Sent Profile error', err);
           }
 
           try {
-            window['analytics'].track('Invite Sent', {
+            window['analytics'].track('Home invite Sent', {
               "invitee_email": email,
               "invitee_role": this.invitedProjectUser.role
             }, {
@@ -589,7 +589,7 @@ export class HomeCreateTeammateComponent implements OnInit {
               }
             });
           } catch (err) {
-            this.logger.error('track Invite Sent event error', err);
+            this.logger.error('track Home invite Sent event error', err);
           }
 
           try {
@@ -598,7 +598,7 @@ export class HomeCreateTeammateComponent implements OnInit {
               plan: this.profile_name_for_segment,
             });
           } catch (err) {
-            this.logger.error('group Invite Sent error', err);
+            this.logger.error('group Home invite Sent error', err);
           }
         }
       }

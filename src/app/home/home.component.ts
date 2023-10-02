@@ -182,7 +182,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   chatbotCreated: boolean
   userHasClickedDisplayWAWizard: boolean = false
   PROJECT_ATTRIBUTES: any
- showskeleton: boolean = true;
+  showskeleton: boolean = true;
   // list_case1 = [
   //   { pos: 1, type: 'child1'},
   //   { pos: 2, type: 'child2'},
@@ -317,7 +317,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   getProjectById(projectId) {
     this.projectService.getProjectById(projectId).subscribe((project: any) => {
       this.logger.log('[HOME] - GET PROJECT BY ID - PROJECT: ', project);
-      
+
       if (project && project.attributes && project.attributes.userPreferences) {
         this.PROJECT_ATTRIBUTES = project.attributes;
         this.getOnbordingPreferences(this.PROJECT_ATTRIBUTES)
@@ -355,7 +355,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
- async setDefaultPreferences() {
+  async setDefaultPreferences() {
     this.child_list_order = [
       { pos: 1, type: 'child1' },
       { pos: 2, type: 'child2' },
@@ -366,7 +366,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       { pos: 7, type: 'child3' },
       { pos: 8, type: 'child4' }
     ]
-    
+
     // this.displayAnalyticsConvsGraph = false;
     // await this.switchAnalyticsConvsGraph(this.displayAnalyticsConvsGraph);
 
@@ -384,7 +384,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     await this.switchInviteTeammate(this.displayInviteTeammate)
 
     this.displayCustomizeWidget = false;
-    await this.switchCustomizeWidget( this.displayCustomizeWidget);
+    await this.switchCustomizeWidget(this.displayCustomizeWidget);
 
     this.displayKnowledgeBase = true;
     await this.switchyKnowledgeBase(this.displayKnowledgeBase);
@@ -409,7 +409,9 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
       this.current_prjct = projects.find(prj => prj.id_project.id === projectId);
       this.logger.log('[HOME] - CURRENT PROJECT - current_prjct (findCurrentProjectAmongAll)', this.current_prjct);
-      this.logger.log('[HOME] - CURRENT PROJECT - current_prjct  > attributes', this.current_prjct.id_project.attributes);
+      if (this.current_prjct) {
+        this.logger.log('[HOME] - CURRENT PROJECT - current_prjct  > attributes', this.current_prjct.id_project.attributes);
+      }
       // ---------------------------------
       // Get onboarding preferences 
       // ---------------------------------
@@ -726,8 +728,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.use_case_for_child = this.use_case;
 
     if (this.solution === undefined && this.solution_channel === undefined && this.use_case === undefined) {
-      this.logger.log('[HOME] - USECASE USER PREFERENCES getOnbordingPreferences solution', this.solution , 'solution_channel ', this.solution_channel , ' use_case ',this.use_case);
-      
+      this.logger.log('[HOME] - USECASE USER PREFERENCES getOnbordingPreferences solution', this.solution, 'solution_channel ', this.solution_channel, ' use_case ', this.use_case);
+
       this.child_list_order = [
         { pos: 1, type: 'child1' },
         { pos: 2, type: 'child2' },
@@ -738,7 +740,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         { pos: 7, type: 'child3' },
         { pos: 8, type: 'child4' }
       ]
-      
+
       // this.displayAnalyticsConvsGraph = false;
       // await this.switchAnalyticsConvsGraph(this.displayAnalyticsConvsGraph);
 
@@ -756,11 +758,11 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       await this.switchInviteTeammate(this.displayInviteTeammate)
 
       this.displayCustomizeWidget = false;
-      await this.switchCustomizeWidget( this.displayCustomizeWidget);
+      await this.switchCustomizeWidget(this.displayCustomizeWidget);
 
       this.displayKnowledgeBase = true;
       await this.switchyKnowledgeBase(this.displayKnowledgeBase);
-     
+
       this.logger.log('[HOME] - YES ATTRIBUTES - NO USER PREFERENCES');
     }
 
@@ -775,14 +777,14 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.logger.log('[HOME] USECASE 1')
       // , show: false
       this.child_list_order = [
-        { pos: 1, type: 'child1'},
-        { pos: 2, type: 'child2'},
-        { pos: 3, type: 'child5'},
-        { pos: 4, type: 'child7'},
-        { pos: 5, type: 'child6'},
-        { pos: 6, type: 'child8'},
-        { pos: 7, type: 'child3'},
-        { pos: 8, type: 'child4'}
+        { pos: 1, type: 'child1' },
+        { pos: 2, type: 'child2' },
+        { pos: 3, type: 'child5' },
+        { pos: 4, type: 'child7' },
+        { pos: 5, type: 'child6' },
+        { pos: 6, type: 'child8' },
+        { pos: 7, type: 'child3' },
+        { pos: 8, type: 'child4' }
       ]
 
       // this.displayAnalyticsConvsGraph = false;
@@ -1063,7 +1065,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
       // this.displayAnalyticsIndicators = false;
       // this.switchAnalyticsIndicators(this.displayAnalyticsIndicators);
-     
+
       if (!this.userHasUnistalledWa && !this.whatsAppIsConnected) {
         this.displayWhatsappAccountWizard = true;
       }
@@ -1588,7 +1590,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
         if (res.success === true) {
           this.whatsAppIsConnected = true;
-         
+
           // this.presentModalWaSuccessfullyConnected()
 
           const calledBy = 'connected'
