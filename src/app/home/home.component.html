@@ -421,7 +421,8 @@
                 <!-- ----------------------- -->
                 <ng-container *ngIf="item.type === 'child2'">
                   <appdashboard-home-analytics-indicator *ngIf="displayAnalyticsIndicators" [projectId]="projectId"
-                    [USER_ROLE]="USER_ROLE">
+                    [USER_ROLE]="USER_ROLE"
+                    (trackUserAction)="trackUserAction($event)">
                   </appdashboard-home-analytics-indicator>
                 </ng-container>
 

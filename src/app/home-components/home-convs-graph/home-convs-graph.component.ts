@@ -18,7 +18,7 @@ import { LoggerService } from 'app/services/logger/logger.service';
 })
 
 export class HomeConvsGraphComponent implements OnInit, OnChanges {
-  @Output() trackUserAction = new EventEmitter()
+  @Output() trackUserAction = new EventEmitter();
   private unsubscribe$: Subject<any> = new Subject<any>();
   @Input() public projectId: string;
   @Input() public USER_ROLE: string;
@@ -521,7 +521,7 @@ export class HomeConvsGraphComponent implements OnInit, OnChanges {
   // -----------------------------------------------------------------------------------------------------
 
   goToRequestsAnalytics() {
-    this.trackUserAction.emit({action:'Home, Conversations graph: more filter in analytics clicked',actionRes: null })
+    this.trackUserAction.emit({action:'Home, Conversations graph: filter in analytics clicked',actionRes: null })
     // this.router.navigate(['project/' + this.projectId + '/conversation-analytics']);
     if (this.USER_ROLE !== 'agent') {
       this.router.navigate(['project/' + this.projectId + '/analytics/metrics']);
