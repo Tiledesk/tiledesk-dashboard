@@ -308,7 +308,7 @@
             </div>
         </div>
 
-        <div *ngIf="chatbots?.length > 10" class="served-by-desktop-b" click="goToMyChatbots()">
+        <div *ngIf="chatbots?.length > 10" class="served-by-desktop-b" (click)="goToMyChatbots()">
             <div class="served-by-desktop-d">
                 <div class="other-chatbots">
                     + {{numOfChabotNotDiplayed}}

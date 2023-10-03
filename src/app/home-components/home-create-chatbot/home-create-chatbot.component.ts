@@ -431,6 +431,7 @@ export class HomeCreateChatbotComponent implements OnInit, OnChanges {
   }
 
   goToMyChatbots() {
+    // console.log('goToMyChatbots')
     this.router.navigate(['project/' + this.projectId + '/bots/my-chatbots/all']);
   }
 
