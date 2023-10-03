@@ -137,8 +137,8 @@ export class TiledeskConnectors {
     }
     inblock.inConnectors[connector.id] = connector.id;
     //block.addConnector()
-    console.log("blocks:", this.blocks);
-    console.log("connectors:", this.connectors);
+    // console.log("blocks:", this.blocks);
+    // console.log("connectors:", this.connectors);
 
     this.#drawConnector(id, fromPoint, toPoint);
     this.removeConnectorDraft();

@@ -460,9 +460,10 @@ export function scaleAndcenterStageOnCenterPosition(listOfIntents: Intent[]){
     var scale = Math.min(stage.width / width, stage.height / height);
     console.log('scaleeeee', scale)
 
-    var translationX = Math.round((stage.width - (width * scale)) / 2);
-    var translationY = Math.round((stage.height - (height * scale)) / 2);
+    var translationX = Math.round((stage.width - (width * scale)) / 2) - rightIntentWith;
+    var translationY = Math.round((stage.height - (height * scale)) / 2) - bottomIntentHeight;
     
     console.log('translateeee x- y ', translationX, translationY)
+    return { scale: scale, translateX : translationX, translateY: translationY }
     // return { width: srcWidth*ratio, height: srcHeight*ratio };
 }
