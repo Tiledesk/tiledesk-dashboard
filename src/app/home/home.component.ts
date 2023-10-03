@@ -1490,6 +1490,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   goToWhatsAppDetails() {
+    this.trackUserAction({action:'Home, Open WhatsApp Details clicked',actionRes: null })
     this.logger.log('goToWhatsAppDetails appTitle ', this.appTitle)
     if ((this.appTitle === "WhatsApp Business" || this.appTitle === "Facebook Messenger") &&
       ((this.profile_name === PLAN_NAME.A) ||
@@ -1514,6 +1515,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   openInAppStoreInstall() {
+    this.trackUserAction({action:'Home, Connect WhatsApp clicked',actionRes: null })
     if ((this.appTitle === "WhatsApp Business" || this.appTitle === "Facebook Messenger") &&
       ((this.profile_name === PLAN_NAME.A) ||
         (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
