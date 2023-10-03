@@ -214,13 +214,13 @@ export class TemplateDetailComponent implements OnInit {
           }
 
           try {
-            window['analytics'].track('Use template', {
+            window['analytics'].track('Import template', {
               "username": userFullname,
               "userId": this.user._id,
-              "chatbotName": this.botname
+              "templateName": this.botname
             });
           } catch (err) {
-            this.logger.error('track signin event error', err);
+            this.logger.error('track Import template error', err);
           }
 
           try {
@@ -231,7 +231,7 @@ export class TemplateDetailComponent implements OnInit {
 
             });
           } catch (err) {
-            this.logger.error('Identify template details event error', err);
+            this.logger.error('Identify Import template error', err);
           }
 
           try {
@@ -240,7 +240,7 @@ export class TemplateDetailComponent implements OnInit {
 
             });
           } catch (err) {
-            this.logger.error('Group template details error', err);
+            this.logger.error('Group Import template error', err);
           }
 
         }

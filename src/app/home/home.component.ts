@@ -229,15 +229,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit() {
-    if (!isDevMode()) {
-      if (window['analytics']) {
-        try {
-          window['analytics'].page("Home Page, Home", {});
-        } catch (err) {
-          this.logger.error('page Home error', err);
-        }
-      }
-    }
+  
     this.getLoggedUser()
     this.getCurrentProjectAndInit();
     // this.getStorageBucket(); // moved in getCurrentProject()
@@ -274,7 +266,15 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit() {
-
+    if (!isDevMode()) {
+      if (window['analytics']) {
+        try {
+          window['analytics'].page("Home Page, Home", {});
+        } catch (err) {
+          this.logger.error('page Home error', err);
+        }
+      }
+    }
   }
 
   ngOnDestroy() {
@@ -412,48 +412,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       if (this.current_prjct) {
         this.logger.log('[HOME] - CURRENT PROJECT - current_prjct  > attributes', this.current_prjct.id_project.attributes);
       }
-      // ---------------------------------
-      // Get onboarding preferences 
-      // ---------------------------------
-      // if (this.current_prjct && this.current_prjct.id_project  && this.current_prjct.id_project.attributes ) {
-      //   this.PROJECT_ATTRIBUTES = this.current_prjct.id_project.attributes
-      //   this.getOnbordingPreferences(this.PROJECT_ATTRIBUTES)
-      // } else {
-      //   this.logger.log('[HOME] USECASE  PROJECT_ATTRIBUTES UNDEFINED' , this.PROJECT_ATTRIBUTES) 
 
-      //   this.displayCreateChatbot = true
-      //   this.switchCreateChatbot(this.displayCreateChatbot)
-      //   this.displayInviteTeammate = true
-      //   this.switchInviteTeammate(this.displayInviteTeammate)
-      //   this.displayKnowledgeBase = true
-      //   this.switchyKnowledgeBase(this.displayInviteTeammate)
-      // }
-
-
-      // if ( this.PROJECT_ATTRIBUTES && this.PROJECT_ATTRIBUTES.userHasReMovedWA) {
-      //   if (this.PROJECT_ATTRIBUTES.userHasReMovedWA === true) {
-      //     this.userHasUnistalledWa = true;
-      //     this.displayWhatsappAccountWizard = false;
-      //   }
-      //   else {
-      //     this.userHasUnistalledWa = false;
-      //     if (this.current_prjct &&
-      //       this.current_prjct.id_project &&
-      //       this.current_prjct.id_project.attributes) {
-
-      //       const waWizardstep1 = this.current_prjct.id_project.attributes.wastep1;
-      //       const waWizardstep2 = this.current_prjct.id_project.attributes.wastep2;
-      //       const waWizardstep3 = this.current_prjct.id_project.attributes.wastep3;
-      //       if ((this.solution_channel_for_child === 'whatsapp_fb_messenger') &&
-      //         (this.solution_for_child === 'want_to_talk_to_customers') ||
-      //         (this.solution_for_child === 'want_to_automate_conversations')) {
-      //         if (waWizardstep1 === undefined && waWizardstep2 === undefined && waWizardstep3 === undefined) {
-      //           this.displayWhatsappAccountWizard = true;
-      //         }
-      //       }
-      //     }
-      //   }
-      // }
 
 
       if (this.current_prjct &&
@@ -467,22 +426,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         this.logger.log('[HOME] - (onInit) - not exist wasettings',)
       }
 
-
-      // if (this.current_prjct &&
-      //   this.current_prjct.id_project &&
-      //   this.current_prjct.id_project.attributes &&
-      //   this.current_prjct.id_project.attributes.dashlets) {
-      //   this.logger.log('[HOME] - (onInit) - DASHLETS PREFERENCES ', this.current_prjct.id_project.attributes.dashlets);
-      //   const dashlets = this.current_prjct.id_project.attributes.dashlets;
-
-      //   this.displayAnalyticsConvsGraph = dashlets.convsGraph
-      //   this.displayAnalyticsIndicators = dashlets.analyticsIndicators
-      //   this.displayConnectWhatsApp = dashlets.connectWhatsApp
-      //   this.displayCreateChatbot = dashlets.createChatbot
-      //   this.displayInviteTeammate = dashlets.inviteTeammate
-      //   this.displayCustomizeWidget = dashlets.customizeWidget
-      //   this.displayNewsFeed = dashlets.newsFeed
-      // }
 
 
       const projectProfileData = this.current_prjct.id_project.profile
@@ -636,6 +579,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
               } catch (err) {
                 this.logger.error('track Trial Started event error', err);
               }
+
+
             } else {
               this.logger.log('track Trial Started window[analytics]', window['analytics']);
             }
@@ -645,16 +590,18 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
       if (!isDevMode()) {
         this.logger.log('here yes - group isDevMode', isDevMode())
-        if (window['analytics']) {
-          try {
-            window['analytics'].group(projectProfileData._id, {
-              name: projectProfileData.name,
-              plan: this.profile_name_for_segment,
-            });
-          } catch (err) {
-            this.logger.error('group Home error', err);
+        setTimeout(() => {
+          if (window['analytics']) {
+            try {
+              window['analytics'].group(projectProfileData._id, {
+                name: projectProfileData.name,
+                plan: this.profile_name_for_segment,
+              });
+            } catch (err) {
+              this.logger.error('group Home error', err);
+            }
           }
-        }
+        }, 100);
         // else {
         //   this.logger.error('group Home window[analytics]', window['analytics']);
         // }
@@ -671,6 +618,59 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
     });
   }
+
+
+  trackUserAction(event) {
+    let userFullname = ''
+    if (this.user.firstname && this.user.lastname)  {
+      userFullname = this.user.firstname + ' ' + this.user.lastname
+    } else if (this.user.firstname && !this.user.lastname) {
+      userFullname = this.user.firstname
+    }
+    console.log('[HOME] - trackUserAction ', event);
+    const userAction = event.action
+    const userActionRes = event.actionRes
+    console.log('[HOME] - trackUserAction userAction', userAction);
+    console.log('[HOME] - trackUserAction userActionRes', userActionRes);
+    const trackObjct = { "type": "organic", "username": userFullname,  "email": this.user.email, 'userId': this.user._id}
+    
+    // Created chatbot
+    if (userAction === 'Home, created chatbot from scratch' && userActionRes !== null) {
+      trackObjct['chatbotName'] = userActionRes.name
+      trackObjct['chatbotId'] = userActionRes._id
+    }
+    console.log('[HOME] - trackUserAction trackObjct', trackObjct);
+    if (!isDevMode()) {
+      try {
+        window['analytics'].track(userAction, trackObjct);
+      } catch (err) {
+        this.logger.error(`Track ${userAction} error`, err);
+      }
+
+      try {
+        window['analytics'].identify(this.user._id, {
+          username: userFullname,
+          email: this.user.email,
+          logins: 5,
+
+        });
+      } catch (err) {
+        this.logger.error(`Identify ${userAction} error`, err);
+      }
+
+      try {
+        window['analytics'].group(this.projectId, {
+          name: this.prjct_profile_name,
+
+        });
+      } catch (err) {
+        this.logger.error(`Group ${userAction} error`, err);
+      }
+
+
+    }
+  }
+
 
   async getOnbordingPreferences(project_attributes) {
 

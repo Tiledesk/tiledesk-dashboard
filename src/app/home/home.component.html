@@ -466,7 +466,8 @@
                     [waBotId]="waBotId" 
                     [wadepartmentName]="wadepartmentName"
                     [chatbotConnectedWithWA]="chatbotConnectedWithWA"
-                    (botHookedToDefaultDept)="botHookedToDefaultDept($event)">
+                    (botHookedToDefaultDept)="botHookedToDefaultDept($event)"
+                    (trackUserAction)="trackUserAction($event)">
                   </appdashboard-home-create-chatbot>
                 </ng-container>
 
