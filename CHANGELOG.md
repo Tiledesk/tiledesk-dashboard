@@ -1,5 +1,10 @@
 # tiledesk-dashboard
 
+### 2.4.64
+- Deploys in production
+- Changes the text of the note in the "Add Knowledge Base" dialog
+- Adds the "Beta" badge to the "Knowledge Base" menu item of the settings sidebar
+
 ### 2.4.63
 - Deploys in production
 - Improvements and bug fixing
