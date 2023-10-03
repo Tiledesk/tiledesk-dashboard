@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { HomeKbModalComponent } from './home-kb-modal/home-kb-modal.component';
 import { KB, KbSettings } from 'app/models/kbsettings-model';
@@ -14,6 +14,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./home-kb.component.scss']
 })
 export class HomeKbComponent implements OnInit {
+  @Output() trackUserAction = new EventEmitter()
   addButtonDisabled: boolean = false;
   project: any;
   kbSettings: KbSettings = {
@@ -156,6 +157,7 @@ export class HomeKbComponent implements OnInit {
   }
 
   goToKnowledgeBases() {
+    this.trackUserAction.emit({action:'Home, Add Knowledge Base button clicked',actionRes: null })
     this.logger.log("goToKnowledgeBases -----> project._id: ", this.project._id);
     this.router.navigate(['project/' + this.project._id + '/knowledge-bases'])
   }
