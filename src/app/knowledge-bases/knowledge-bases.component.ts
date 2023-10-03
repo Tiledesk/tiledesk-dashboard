@@ -252,7 +252,7 @@ export class KnowledgeBasesComponent implements OnInit {
 
     this.searching = true;
     this.show_answer = false;
-
+    this.error_answer = false;
     this.answer = null;
     this.source_url = null;
 

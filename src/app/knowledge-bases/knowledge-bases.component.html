@@ -194,8 +194,10 @@
               <span class="input-label">URL</span>
               <input type="url" name="url" class="custom-input" [(ngModel)]="newKb.url" formControlName="url"
                 placeholder="{{ 'KbPage.TypeKbUrlPlaceholder' | translate }}" (input)="onChangeInput($event)"
+                style="margin-bottom: 3px;" 
                 [class.invalid]="(kbForm.controls.url.errors?.pattern || kbForm.controls.url.errors?.required) && kbForm.controls.url.touched">
-            </div>
+                <span class="input--note">{{ 'KbPage.YouCanAddKBOfUpTo200Pages' | translate }}</span>
+              </div>
 
             <!-- <div class="input-container">
               <span class="input-label">GPT Key</span>
