@@ -491,7 +491,8 @@
                 <!-- Child 8 Customize Widget -->
                 <!-- ----------------------- -->
                 <ng-container *ngIf="item.type === 'child8'" >
-                  <appdashboard-home-customize-widget *ngIf="displayCustomizeWidget">
+                  <appdashboard-home-customize-widget *ngIf="displayCustomizeWidget"
+                  (trackUserAction)="trackUserAction($event)">
                   </appdashboard-home-customize-widget>
                 </ng-container>
 

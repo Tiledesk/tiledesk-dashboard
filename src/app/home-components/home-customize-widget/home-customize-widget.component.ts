@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'app/core/auth.service';
 import { LoggerService } from 'app/services/logger/logger.service';
@@ -9,6 +9,7 @@ import { LoggerService } from 'app/services/logger/logger.service';
   styleUrls: ['./home-customize-widget.component.scss']
 })
 export class HomeCustomizeWidgetComponent implements OnInit {
+@Output() trackUserAction = new EventEmitter()
  public project: any;
   constructor(
     private logger: LoggerService,
@@ -28,6 +29,7 @@ export class HomeCustomizeWidgetComponent implements OnInit {
   }
 
   goToWidgetSetUp() {
+    this.trackUserAction.emit({action:'Home, Customize widget',actionRes: null })
     this.router.navigate(['project/' + this.project._id + '/widget-set-up'])
   }
 
