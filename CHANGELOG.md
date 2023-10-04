@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.4.65
+- Deploys in production
+- Improvements and bug fixing
+
 ### 2.4.64
 - Deploys in production
 - Changes the text of the note in the "Add Knowledge Base" dialog
