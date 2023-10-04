@@ -207,7 +207,7 @@ export class TemplateDetailComponent implements OnInit {
       }
 
       this.getFaqKbById(this.botid);
-      // this.goToBotDetails()
+      this.goToBotDetails()
       if (!isDevMode()) {
         if (window['analytics']) {
 
@@ -246,6 +246,7 @@ export class TemplateDetailComponent implements OnInit {
           try {
             window['analytics'].group(this.projectId, {
               name: this.projectName,
+              plan: this.prjct_profile_name
 
             });
           } catch (err) {
