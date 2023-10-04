@@ -127,7 +127,8 @@ export class TemplatesComponent implements OnInit {
     const dialogRef = this.dialog.open(TemplateDetailComponent, {
       data: {
         template: template,
-        projectId: this.projectId
+        projectId: this.projectId,
+        callingPage: "Templates"
       },
     });
 

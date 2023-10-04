@@ -632,12 +632,19 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     const userActionRes = event.actionRes
     console.log('[HOME] - trackUserAction userAction', userAction);
     console.log('[HOME] - trackUserAction userActionRes', userActionRes);
-    const trackObjct = { "type": "organic", "username": userFullname,  "email": this.user.email, 'userId': this.user._id}
+    const trackObjct = { 
+      "type": "organic", 
+      "username": userFullname,  
+      "email": this.user.email, 
+      'userId': this.user._id
+    }
     
     // Created chatbot
-    if (userAction === 'Home, created chatbot from scratch' && userActionRes !== null) {
+    if (userAction === 'Create chatbot' && userActionRes !== null) {
       trackObjct['chatbotName'] = userActionRes.name
       trackObjct['chatbotId'] = userActionRes._id
+      trackObjct['page'] = "Home"
+      trackObjct['button'] = "Start from scratch"
     }
     console.log('[HOME] - trackUserAction trackObjct', trackObjct);
     if (!isDevMode()) {
@@ -660,14 +667,13 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
       try {
         window['analytics'].group(this.projectId, {
-          name: this.prjct_profile_name,
+          name: this.project.name,
+          plan: this.prjct_profile_name,
 
         });
       } catch (err) {
         this.logger.error(`Group ${userAction} error`, err);
       }
-
-
     }
   }
 

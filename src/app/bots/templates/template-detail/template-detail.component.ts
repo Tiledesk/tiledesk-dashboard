@@ -8,6 +8,7 @@ import { BotLocalDbService } from 'app/services/bot-local-db.service';
 import { DepartmentService } from 'app/services/department.service';
 import { FaqKbService } from 'app/services/faq-kb.service';
 import { LoggerService } from 'app/services/logger/logger.service';
+import { ProjectService } from 'app/services/project.service';
 import { LocalDbService } from 'app/services/users-local-db.service';
 import { UsersService } from 'app/services/users.service';
 import { goToCDSVersion } from 'app/utils/util';
@@ -38,7 +39,9 @@ export class TemplateDetailComponent implements OnInit {
   public templateProjectId: string;
   public _newlyCreatedProject: boolean;
   public defaultDeptID: string;
-  public user: any
+  public user: any;
+  public callingPage: string;
+  public prjct_profile_name: string;
   // public depts_length: number;
   // public DISPLAY_SELECT_DEPTS_WITHOUT_BOT: boolean;
   // public dept_id: string;
@@ -67,11 +70,13 @@ export class TemplateDetailComponent implements OnInit {
     public dialog: MatDialog,
     private departmentService: DepartmentService,
     private botLocalDbService: BotLocalDbService,
+    private projectService: ProjectService,
   ) {
-    this.logger.log('[TEMPLATE DETAIL] data ', data)
+    console.log('[TEMPLATE DETAIL] data ', data)
     this.projectid = data.projectId
     this.template = data.template;
     this._newlyCreatedProject = data.newlyCreatedProject
+    this.callingPage = data.callingPage
     // console.log('[TEMPLATE DETAIL] template ', this.template)
     // this.logger.log('[TEMPLATE DETAIL] projectid ', this.projectid)
     if (this.template) {
@@ -112,26 +117,26 @@ export class TemplateDetailComponent implements OnInit {
         this.projectId = project._id;
         this.projectName = project.name;
         this.getDeptsByProjectId()
+        this.getProjectById(this.project._id)
       }
     });
   }
 
-  // getDeptsByProjectId() {
-  //   this.departmentService.getDeptsByProjectId().subscribe((departments: any) => {
+  getProjectById(projectId) {
+    this.projectService.getProjectById(projectId).subscribe((project: any) => {
+      console.log('[BOT-CREATE] - GET PROJECT BY ID - PROJECT: ', project);
+      this.prjct_profile_name = project.profile.name
+      console.log('[BOT-CREATE] - GET PROJECT BY ID - PROJECT > prjct_profile_name: ', this.prjct_profile_name);
 
-  //     // this.logger.log('[TEMPLATE DETAIL] - DEPTS RES ', departments);
 
-  //     if (departments && departments.length === 1) {
-  //       this.defaultDeptID = departments[0]._id
-  //     }
-  //   }, error => {
+    }, error => {
+      this.logger.error('[BOT-CREATE] - GET PROJECT BY ID - ERROR ', error);
+    }, () => {
+      console.log('[BOT-CREATE] - GET PROJECT BY ID * COMPLETE * ');
 
-  //     this.logger.error('[TEMPLATE DETAIL] - DEPTS RES - ERROR', error);
-  //   }, () => {
-  //     this.logger.log('[TEMPLATE DETAIL] - DEPTS RES * COMPLETE *')
 
-  //   });
-  // }
+    });
+  }
 
   getDeptsByProjectId() {
     this.departmentService.getDeptsByProjectId().subscribe((departments: any) => {
@@ -189,7 +194,7 @@ export class TemplateDetailComponent implements OnInit {
 
   forkTemplate() {
     this.faqKbService.installTemplate(this.templateid, this.projectid, true, this.templateid).subscribe((res: any) => {
-      this.logger.log('[TEMPLATE DETAIL] - FORK TEMPLATE RES', res);
+      console.log('[TEMPLATE DETAIL] - FORK TEMPLATE RES', res);
       this.botid = res.bot_id
 
     }, (error) => {
@@ -202,7 +207,7 @@ export class TemplateDetailComponent implements OnInit {
       }
 
       this.getFaqKbById(this.botid);
-      this.goToBotDetails()
+      // this.goToBotDetails()
       if (!isDevMode()) {
         if (window['analytics']) {
 
@@ -214,10 +219,14 @@ export class TemplateDetailComponent implements OnInit {
           }
 
           try {
-            window['analytics'].track('Import template', {
+            window['analytics'].track('Create chatbot', {
               "username": userFullname,
+              "email": this.user.email,
               "userId": this.user._id,
-              "templateName": this.botname
+              "chatbotName": this.botname,
+              "chatbotId": this.botid,
+              'page': this.callingPage,
+              'button': 'Import Template'
             });
           } catch (err) {
             this.logger.error('track Import template error', err);

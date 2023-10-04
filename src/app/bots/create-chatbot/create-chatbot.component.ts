@@ -5,7 +5,7 @@ import { Project } from 'app/models/project-model';
 import { FaqKbService } from 'app/services/faq-kb.service';
 import { Location } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
-import { TemplateDetailComponent } from '../templates/template-detail/template-detail.component';
+// import { TemplateDetailComponent } from '../templates/template-detail/template-detail.component';
 import { FaqService } from 'app/services/faq.service';
 import { BotLocalDbService } from '../../services/bot-local-db.service';
 import { NotifyService } from '../../core/notify.service';
@@ -121,18 +121,18 @@ export class CreateChatbotComponent implements OnInit {
 
   }
 
-  openDialog(template) {
-    const dialogRef = this.dialog.open(TemplateDetailComponent, {
-      data: {
-        template: template,
-        projectId: this.project._id
-      },
-    });
+  // openDialog(template) {
+  //   const dialogRef = this.dialog.open(TemplateDetailComponent, {
+  //     data: {
+  //       template: template,
+  //       projectId: this.project._id
+  //     },
+  //   });
 
-    dialogRef.afterClosed().subscribe(result => {
-      // console.log(`Dialog result: ${result}`);
-    });
-  }
+  //   dialogRef.afterClosed().subscribe(result => {
+  //     // console.log(`Dialog result: ${result}`);
+  //   });
+  // }
 
   generateTagsBackground(templates) {
     templates.forEach(template => {

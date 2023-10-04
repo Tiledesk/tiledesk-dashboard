@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, isDevMode } from '@angular/core';
 import { FaqKbService } from '../../services/faq-kb.service';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
@@ -26,6 +26,9 @@ import {
 import { FaqService } from 'app/services/faq.service';
 import { FaqKb } from 'app/models/faq_kb-model';
 import { AppConfigService } from 'app/services/app-config.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators'
+import { ProjectService } from 'app/services/project.service';
 
 @Component({
   selector: 'bot-create',
@@ -34,6 +37,7 @@ import { AppConfigService } from 'app/services/app-config.service';
 })
 export class BotCreateComponent extends BotsBaseComponent implements OnInit {
   // tparams = brand;
+  private unsubscribe$: Subject<any> = new Subject<any>();
   tparams: any;
 
   faqKbName: string;
@@ -118,6 +122,8 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
   public create: boolean = true
   thereHasBeenAnErrorProcessing: string;
   importedChatbotid: string;
+  user: any;
+  prjct_profile_name: string;
   constructor(
     private faqKbService: FaqKbService,
     private router: Router,
@@ -131,7 +137,8 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
     private departmentService: DepartmentService,
     private logger: LoggerService,
     private faqService: FaqService,
-    private appConfigService: AppConfigService
+    private appConfigService: AppConfigService,
+    private projectService: ProjectService,
   ) {
     super();
 
@@ -148,22 +155,66 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
     this.getParamsBotTypeAndDepts();
     this.translateFileTypeNotSupported();
     this.getTranslations();
+    this.getLoggedUser();
+  }
+  getLoggedUser() {
+    this.auth.user_bs
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((user) => {
+        this.logger.log('[BOT-CREATE] - USER GET IN HOME ', user)
+
+        this.user = user;
+      })
+  }
+
+  ngAfterViewInit() {
+    console.log('[BOT-CREATE] HAS_SELECTED_CREATE_BOT ', this.HAS_SELECTED_CREATE_BOT)
+    if (this.HAS_SELECTED_CREATE_BOT === true) {
+      if (!isDevMode()) {
+        if (window['analytics']) {
+          try {
+            window['analytics'].page("Add bot, Create", {});
+          } catch (err) {
+            this.logger.error('page Add bot error', err);
+          }
+        }
+      }
+    }
+  }
+
+  ngOnDestroy() {
+    // this.logger.log('HOME COMP - CALLING ON DESTROY')
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   getTranslations() {
     this.translate.get('ThereHasBeenAnErrorProcessing')
-    .subscribe((translation: any) => {
-      this.thereHasBeenAnErrorProcessing = translation;
-    });
+      .subscribe((translation: any) => {
+        this.thereHasBeenAnErrorProcessing = translation;
+      });
   }
 
-  toggleTabCreateImport(tabcreate ) {
-  //  this.logger.log("[BOT-CREATE] toggleTabCreateImport tabcreate", tabcreate);
-   this.HAS_SELECTED_CREATE_BOT = tabcreate
-  //  this.logger.log("[BOT-CREATE] toggleTabCreateImport HAS_SELECTED_CREATE_BOT",  this.HAS_SELECTED_CREATE_BOT );
+  toggleTabCreateImport(tabcreate) {
+    //  this.logger.log("[BOT-CREATE] toggleTabCreateImport tabcreate", tabcreate);
+    this.HAS_SELECTED_CREATE_BOT = tabcreate
+    console.log("[BOT-CREATE] toggleTabCreateImport HAS_SELECTED_CREATE_BOT", this.HAS_SELECTED_CREATE_BOT);
+    if (this.HAS_SELECTED_CREATE_BOT === false) {
+      if (!isDevMode()) {
+        if (window['analytics']) {
+          try {
+            window['analytics'].page("Add bot, Import", {});
+          } catch (err) {
+            this.logger.error('page Add bot error', err);
+          }
+        }
+      }
+    }
   }
 
-   // --------------------------------------------------------------------------
+  // --------------------------------------------------------------------------
   // @ Import chatbot from json 
   // --------------------------------------------------------------------------
   fileChangeUploadChatbotFromJSON(event) {
@@ -190,14 +241,14 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
 
     this.faqService.importChatbotFromJSONFromScratch(formData).subscribe((faqkb: any) => {
       this.logger.log('[TILEBOT] - IMPORT CHATBOT FROM JSON - ', faqkb)
-      if (faqkb){
+      if (faqkb) {
         this.importedChatbotid = faqkb._id
         this.logger.log('[TILEBOT] - IMPORT CHATBOT FROM JSON - importedChatbotid ', this.importedChatbotid)
         this.botLocalDbService.saveBotsInStorage(this.importedChatbotid, faqkb);
-
+        this.trackChatbotImported(faqkb)
         // this.router.navigate(['project/' + this.project._id + '/tilebot/intents/', this.importedChatbotid, 'tilebot']);
         // this.router.navigate(['project/' + this.project._id + '/cds/', this.importedChatbotid, 'intent', '0']);
-        goToCDSVersion(this.router, faqkb,this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
+        goToCDSVersion(this.router, faqkb, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
       }
 
     }, (error) => {
@@ -209,6 +260,54 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
       this.notify.showWidgetStyleUpdateNotification("Chatbot was uploaded succesfully", 2, 'done')
     });
   }
+
+
+  trackChatbotImported(faqKb) {
+    let userFullname = ''
+    if (this.user.firstname && this.user.lastname) {
+      userFullname = this.user.firstname + ' ' + this.user.lastname
+    } else if (this.user.firstname && !this.user.lastname) {
+      userFullname = this.user.firstname
+    }
+    if (!isDevMode()) {
+      try {
+        window['analytics'].track('Create chatbot', {
+          "type": "organic",
+          "username": userFullname,
+          "email": this.user.email,
+          'userId': this.user._id,
+          'chatbotName': faqKb['name'],
+          'chatbotId': faqKb['_id'],
+          'page': 'Add bot, Import',
+          'button': 'Import Chatbot from JSON',
+        });
+      } catch (err) {
+        this.logger.error(`Track  Import Chatbot from JSON error`, err);
+      }
+
+      try {
+        window['analytics'].identify(this.user._id, {
+          username: userFullname,
+          email: this.user.email,
+          logins: 5,
+
+        });
+      } catch (err) {
+        this.logger.error(`Identify Create chatbot error`, err);
+      }
+
+      try {
+        window['analytics'].group(this.project._id, {
+          name: this.project.name,
+          plan: this.prjct_profile_name
+
+        });
+      } catch (err) {
+        this.logger.error(`Group Create chatbot error`, err);
+      }
+    }
+  }
+
 
   getBrowserVersion() {
     this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
@@ -345,18 +444,34 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
 
   detectBrowserLang() {
     this.browser_lang = this.translate.getBrowserLang();
-    this.logger.log('[BOT-CREATE - BROWSER LANGUAGE ', this.browser_lang);
+    this.logger.log('[BOT-CREATE] - BROWSER LANGUAGE ', this.browser_lang);
   }
 
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
       if (project) {
         this.project = project
+        this.getProjectById(this.project._id)
       }
-      // this.logger.log('[BOT-CREATE 00 -> FAQ-KB EDIT ADD COMP project ID from AUTH service subscription  ', this.project._id)
+      console.log('[BOT-CREATE] 00 -> FAQ-KB EDIT ADD COMP project ID from AUTH service subscription  ', this.project._id)
     });
   }
 
+  getProjectById(projectId) {
+    this.projectService.getProjectById(projectId).subscribe((project: any) => {
+      console.log('[BOT-CREATE] - GET PROJECT BY ID - PROJECT: ', project);
+      this.prjct_profile_name = project.profile.name
+      console.log('[BOT-CREATE] - GET PROJECT BY ID - PROJECT > prjct_profile_name: ', this.prjct_profile_name);
+
+
+    }, error => {
+      this.logger.error('[BOT-CREATE] - GET PROJECT BY ID - ERROR ', error);
+    }, () => {
+      console.log('[BOT-CREATE] - GET PROJECT BY ID * COMPLETE * ');
+
+
+    });
+  }
 
 
   /* !!NOT MORE USED - was used whith the 'bot external' checkbox - now the bot type is passwd from the component bot-type-select  */
@@ -384,9 +499,9 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
     }
   }
 
-  createTilebotBotFromScratch() { 
+  createTilebotBotFromScratch() {
     this.language = this.botDefaultSelectedLangCode;
-    this.faqKbService.createChatbotFromScratch(this.faqKbName,  'tilebot', this.language).subscribe((faqKb) => {
+    this.faqKbService.createChatbotFromScratch(this.faqKbName, 'tilebot', this.language).subscribe((faqKb) => {
       this.logger.log('[BOT-CREATE] createTilebotBotFromScratch - RES ', faqKb);
 
       if (faqKb) {
@@ -398,8 +513,9 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
         this.botLocalDbService.saveBotsInStorage(this.newBot_Id, faqKb);
         let newfaqkb = {
           createdAt: new Date(),
-          _id : this.newBot_Id
+          _id: this.newBot_Id
         }
+        this.trackChatbotCreated(faqKb)
         goToCDSVersion(this.router, newfaqkb, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
       }
 
@@ -407,12 +523,58 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
 
       this.logger.error('[BOT-CREATE] CREATE FAQKB - POST REQUEST ERROR ', error);
 
-    
+
     }, () => {
       this.logger.log('[BOT-CREATE] CREATE FAQKB - POST REQUEST * COMPLETE *');
 
       // this.router.navigate(['project/' + this.project._id + '/cds/', this.newBot_Id, 'intent', '0']);
     })
+  }
+
+  trackChatbotCreated(faqKb) {
+    let userFullname = ''
+    if (this.user.firstname && this.user.lastname) {
+      userFullname = this.user.firstname + ' ' + this.user.lastname
+    } else if (this.user.firstname && !this.user.lastname) {
+      userFullname = this.user.firstname
+    }
+    if (!isDevMode()) {
+      try {
+        window['analytics'].track('Create chatbot', {
+          "type": "organic",
+          "username": userFullname,
+          "email": this.user.email,
+          'userId': this.user._id,
+          'chatbotName': faqKb['name'],
+          'chatbotId': faqKb['_id'],
+          'page': 'Add bot, Create',
+          'button': 'Create chatbot',
+        });
+      } catch (err) {
+        this.logger.error(`Track Create chatbot error`, err);
+      }
+
+      try {
+        window['analytics'].identify(this.user._id, {
+          username: userFullname,
+          email: this.user.email,
+          logins: 5,
+
+        });
+      } catch (err) {
+        this.logger.error(`Identify Create chatbot error`, err);
+      }
+
+      try {
+        window['analytics'].group(this.project._id, {
+          name: this.project.name,
+          plan: this.prjct_profile_name
+
+        });
+      } catch (err) {
+        this.logger.error(`Group Create chatbot error`, err);
+      }
+    }
   }
 
   // CREATE 
@@ -566,7 +728,7 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
   }
 
   goTo_EditBot() {
-    this.logger.log('[BOT-CREATE] goTo_EditBot') 
+    this.logger.log('[BOT-CREATE] goTo_EditBot')
     if (this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT === false) {
       let bot_type = ''
       if (this.botType === 'resolution') {
@@ -584,7 +746,7 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
       // this.router.navigate(['project/' + this.project._id + '/bots/' + this.newBot_Id + "/" + this.botType]);
 
     } else {
-      this.logger.log('[BOT-CREATE] goTo_EditBot PRESENTS_MODAL_ATTACH_BOT_TO_DEPT ', this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT) 
+      this.logger.log('[BOT-CREATE] goTo_EditBot PRESENTS_MODAL_ATTACH_BOT_TO_DEPT ', this.PRESENTS_MODAL_ATTACH_BOT_TO_DEPT)
       this.present_modal_attacch_bot_to_dept()
     }
   }

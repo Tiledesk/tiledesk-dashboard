@@ -1,6 +1,5 @@
 import { Component, Input, OnInit, Output, EventEmitter, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { TemplateDetailComponent } from '../../../../../../bots/templates/template-detail/template-detail.component';
 import { DialogComponent } from 'app/chatbot-design-studio/cds-base-element/dialog/dialog.component';
 import { variableList } from 'app/chatbot-design-studio/utils';
 import { FaqKbService } from 'app/services/faq-kb.service';

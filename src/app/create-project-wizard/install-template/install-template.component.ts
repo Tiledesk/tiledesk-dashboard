@@ -4,7 +4,7 @@ import { BrandService } from 'app/services/brand.service';
 import { FaqKbService } from 'app/services/faq-kb.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { MatDialog } from '@angular/material/dialog';
-import { TemplateDetailComponent } from 'app/bots/templates/template-detail/template-detail.component';
+// import { TemplateDetailComponent } from 'app/bots/templates/template-detail/template-detail.component';
 import { ProjectService } from 'app/services/project.service';
 import { AuthService } from 'app/core/auth.service';
 import { Project } from 'app/models/project-model';
@@ -97,7 +97,7 @@ export class InstallTemplateComponent extends WidgetSetUpBaseComponent implement
   getParamsTemplatesAndProjects() {
     this.route.params.subscribe((params) => {
 
-      // console.log('[INSTALL-TEMPLATE] params ', params)
+      console.log('[INSTALL-TEMPLATE] params ', params)
       this.projectId = params.projectid;
       // this.logger.log('[INSTALL-TEMPLATE] projectId ', this.projectId)
       this.botId = params.botid;
@@ -222,7 +222,7 @@ export class InstallTemplateComponent extends WidgetSetUpBaseComponent implement
     // this.faqKbService.getTemplates().subscribe((res: any) => {
     this.faqKbService.getChatbotTemplateById(botid).subscribe((res: any) => {
       if (res) {
-        // console.log('[INSTALL-TEMPLATE] GET TEMPLATES - RES ', res)
+        console.log('[INSTALL-TEMPLATE] GET TEMPLATES - RES ', res)
 
         // const selectedTemplate = res.filter((obj) => {
         //   return obj._id === botid
@@ -419,8 +419,12 @@ export class InstallTemplateComponent extends WidgetSetUpBaseComponent implement
           try {
             window['analytics'].track('Use template', {
               "username": userFullname,
+              "email": this.user.email,
               "userId": this.user._id,
-              "chatbotName": this.botname
+              "chatbotName": this.botname,
+              'chatbotId':  this.botid,
+              'page': 'Onboarding, Install template',
+              'button': 'Import Template',
             });
           } catch (err) {
             this.logger.error('track Use template (install template) event error', err);
@@ -439,8 +443,8 @@ export class InstallTemplateComponent extends WidgetSetUpBaseComponent implement
 
           try {
             window['analytics'].group(this.projectId, {
-              name: this.prjct_profile_name,
-
+              name: this.projectName,
+              plan: this.prjct_profile_name,
             });
           } catch (err) {
             this.logger.error('Group tUse template (install template) error', err);

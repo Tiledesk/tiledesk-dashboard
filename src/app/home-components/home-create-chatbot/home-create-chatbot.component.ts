@@ -144,11 +144,12 @@ export class HomeCreateChatbotComponent implements OnInit, OnChanges {
 
   openDialog(template) {
    console.log('openDialog TemplateDetailComponent template ', template)
-   this.trackUserAction.emit({action:'Home, Use template ' + template.name ,actionRes: null })
+  //  this.trackUserAction.emit({action:'Home, Use template ' + template.name ,actionRes: null })
     const dialogRef = this.dialog.open(TemplateDetailComponent, {
       data: {
         template: template,
-        projectId: this.projectId
+        projectId: this.projectId,
+        callingPage: "Home"
       },
     });
 
@@ -379,7 +380,7 @@ export class HomeCreateChatbotComponent implements OnInit, OnChanges {
   }
 
   presentModalAddBotFromScratch() {
-    this.trackUserAction.emit({action:'Home, Start from scratch',actionRes: null })
+    // this.trackUserAction.emit({action:'Home, Start from scratch',actionRes: null })
     console.log('[HOME-CREATE-CHATBOT] - presentModalAddBotFromScratch ');
     const addKbBtnEl = <HTMLElement>document.querySelector('#home-material-btn');
     // this.logger.log('[HOME-CREATE-CHATBOT] - presentModalAddBotFromScratch addKbBtnEl ', addKbBtnEl);
@@ -418,7 +419,7 @@ export class HomeCreateChatbotComponent implements OnInit, OnChanges {
           // SAVE THE BOT IN LOCAL STORAGE
           this.botLocalDbService.saveBotsInStorage(faqKb['_id'], faqKb);
           
-          this.trackUserAction.emit({action:'Home, created chatbot from scratch',actionRes: faqKb })
+          this.trackUserAction.emit({action:'Create chatbot',actionRes: faqKb })
 
           // this.router.navigate(['project/' + this.projectId + '/cds/', this.newBot_Id, 'intent', '0', 'h']);
           goToCDSVersion(this.router, faqKb, this.projectId, this.appConfigService.getConfig().cdsBaseUrl)
