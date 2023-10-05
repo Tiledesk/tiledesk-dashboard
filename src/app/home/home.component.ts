@@ -289,7 +289,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         takeUntil(this.unsubscribe$)
       )
       .subscribe((project) => {
-        this.logger.log('[HOME] $UBSCIBE TO PUBLISHED PROJECT - RES  --> ', project)
+        console.log('[HOME] $UBSCIBE TO PUBLISHED PROJECT - RES  --> ', project)
 
         if (project) {
           this.project = project
@@ -316,7 +316,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   getProjectById(projectId) {
     this.projectService.getProjectById(projectId).subscribe((project: any) => {
-      this.logger.log('[HOME] - GET PROJECT BY ID - PROJECT: ', project);
+      console.log('[HOME] - GET PROJECT BY ID - PROJECT: ', project);
 
       if (project && project.attributes && project.attributes.userPreferences) {
         this.PROJECT_ATTRIBUTES = project.attributes;
@@ -594,7 +594,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           if (window['analytics']) {
             try {
               window['analytics'].group(projectProfileData._id, {
-                name: projectProfileData.name,
+                name: this.prjct_name,
                 plan: this.profile_name_for_segment,
               });
             } catch (err) {
@@ -650,7 +650,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     if (userAction === 'Install app') {
       trackObjct['appTitle'] = "WhatsApp Business"
       trackObjct['appID'] = this.whatsAppAppId
-      trackObjct['button'] = "Automatic installed"
+      trackObjct['button'] = "Automatic installation"
     }
     if (userAction === 'Uninstall app') {
       trackObjct['appTitle'] = "WhatsApp Business"
@@ -662,7 +662,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       trackObjct['appID'] = this.whatsAppAppId
       trackObjct['button'] = "Connect"
     }
-    
+
     this.logger.log('[HOME] - trackUserAction trackObjct', trackObjct);
     if (!isDevMode()) {
       try {
@@ -1233,7 +1233,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   getApps() {
     this.appStoreService.getApps().subscribe((_apps: any) => {
       this.apps = _apps.apps;
-      this.logger.log('[HOME] - getApps APPS ', this.apps);
+      console.log('[HOME] - getApps APPS ', this.apps);
       this.apps.forEach(app => {
         if (app.title === "WhatsApp Business") {
 
@@ -1266,49 +1266,87 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     }, () => {
       this.logger.log('[HOME] getApps * COMPLETE *');
       this.getInstallations().then((res: any) => {
-        
+
         if (res) {
-          this.logger.log("[HOME] getInstallations res: ", res)
-          this.logger.log("[HOME] getInstallations RES whatsAppIsInstalled ", this.whatsAppIsInstalled)
-          this.logger.log("[HOME] getInstallations RES solution_channel ", this.solution_channel_for_child)
-          if (res.length === 0) {
-            this.logger.log("[HOME] USE CASE RES 0 ")
-            if (this.solution_channel_for_child === 'whatsapp_fb_messenger') {
-              this.logger.log("[HOME] GET APPS - BEFORE TO INSTALL WA solution_channel_for_child ", this.solution_channel_for_child)
-              this.logger.log("[HOME] GET APPS - BEFORE TO INSTALL WA userHasUnistalledWa ", this.userHasUnistalledWa)
-              this.logger.log("[HOME] GET APPS - BEFORE TO INSTALL WA whatsAppIsInstalled ", this.whatsAppIsInstalled)
+          console.log("[HOME] getInstallations res: ", res)
+          console.log("[HOME] getInstallations - whatsAppIsInstalled ", this.whatsAppIsInstalled)
+          console.log("[HOME] getInstallations - solution_channel ", this.solution_channel_for_child)
+          console.log('[HOME] getInstallations - whatsAppAppId ', this.whatsAppAppId)
+          console.log("[HOME] getInstallations - userHasUnistalledWa ", this.userHasUnistalledWa)
+          console.log("[HOME] getInstallations - solution_channel_for_child ", this.solution_channel_for_child)
+          if (res.length > 0) {
+            console.log("[HOME] USE CASE RES > 0 ", this.solution_channel_for_child)
+            const WAInstallationIndex = res.findIndex((e) => e.app_id === this.whatsAppAppId);
+            console.log('[HOME] getInstallations WA app index', WAInstallationIndex)
+            if (WAInstallationIndex === -1) {
+              this.whatsAppIsInstalled = false;
+              console.log('HERE YES 1 whatsAppIsInstalled ', this.whatsAppIsInstalled)
               if (this.userHasUnistalledWa === false) {
-                if (this.whatsAppIsInstalled === false || this.whatsAppIsInstalled === null) {
-                  this.installApp()
+                console.log("[HOME] getInstallations - userHasUnistalledWa 2 ", this.userHasUnistalledWa)
+                if (this.solution_channel_for_child === 'whatsapp_fb_messenger') {
+                  this.installApp();
                 }
+              }
+            } else {
+              console.log('HERE YES 2 whatsAppIsInstalled ', this.whatsAppIsInstalled)
+              this.whatsAppIsInstalled = true
+            
+
+            }
+          } else if (res.length === 0) {
+            this.whatsAppIsInstalled = false;
+            if (this.userHasUnistalledWa === false) {
+              if (this.solution_channel_for_child === 'whatsapp_fb_messenger') {
+                this.installApp();
               }
             }
           }
-          if (res.length > 0) {
-            this.logger.log("[HOME] USE CASE RES > 0 ")
-            res.forEach(r => {
-              this.logger.log("[HOME] getInstallations r: ", r)
-              if (r.app_id === this.whatsAppAppId) {
-                this.logger.log('[HOME] here yes r.app_id ',r.app_id , 'whatsAppAppId ', this.whatsAppAppId)
-                this.whatsAppIsInstalled = true;
-                this.updatedProjectWithUserHasUnistalledWA(false)
 
-              } else {
-                this.whatsAppIsInstalled = false;
-                this.logger.log("[HOME] getInstallations RUN INSTALL WA  whatsAppIsInstalled (else)", this.whatsAppIsInstalled)
-                this.logger.log("[HOME] getInstallations RUN INSTALL WA solution_channel (else)", this.solution_channel_for_child)
-                this.logger.log("[HOME] getInstallations RUN INSTALL WA userHasUnistalledWa (else) ", this.userHasUnistalledWa)
-                if (this.userHasUnistalledWa === false) {
-                  if (this.solution_channel_for_child === 'whatsapp_fb_messenger') {
+          // if (res.length === 0) {
+          // console.log("[HOME] USE CASE RES 0 ")
+          // if (this.solution_channel_for_child === 'whatsapp_fb_messenger') {
+          //   this.logger.log("[HOME] GET APPS - BEFORE TO INSTALL WA solution_channel_for_child ", this.solution_channel_for_child)
+          //   this.logger.log("[HOME] GET APPS - BEFORE TO INSTALL WA userHasUnistalledWa ", this.userHasUnistalledWa)
+          //   this.logger.log("[HOME] GET APPS - BEFORE TO INSTALL WA whatsAppIsInstalled ", this.whatsAppIsInstalled)
+          //   if (this.userHasUnistalledWa === false) {
+          //     if (this.whatsAppIsInstalled === false || this.whatsAppIsInstalled === null) {
+          //       console.log("[HOME] getInstallations RUN INSTALL 1" )
+          //       this.installApp()
+          //     }
+          //   }
+          // }
+          // }
+          // if (res.length > 0) {
+          //   console.log("[HOME] USE CASE RES > 0 ")
+          //   res.forEach(r => {
+          //     this.logger.log("[HOME] getInstallations r: ", r)
+          //     if (r.app_id === this.whatsAppAppId) {
+          //       console.log('[HOME] here yes r.app_id ', r.app_id, 'whatsAppAppId ', this.whatsAppAppId)
+          //       this.whatsAppIsInstalled = true;
+          //       this.updatedProjectWithUserHasUnistalledWA(false)
 
-                    this.installApp()
-                  }
-                }
-              }
-            });
-          } else {
-            this.whatsAppIsInstalled = false;
-          }
+          //     } else {
+          //       console.log("[HOME] r.app_id", r.app_id )
+          //       this.whatsAppIsInstalled = false;
+          //       console.log("[HOME] getInstallations BEFORE TO INSTALL WA  whatsAppIsInstalled (else)", this.whatsAppIsInstalled)
+          //       console.log("[HOME] getInstallations BEFORE TO INSTALL WA solution_channel (else)", this.solution_channel_for_child)
+          //       console.log("[HOME] getInstallations BEFORE TO INSTALL WA userHasUnistalledWa (else) ", this.userHasUnistalledWa)
+          //       if (this.solution_channel_for_child === 'whatsapp_fb_messenger') {
+          //         if (this.userHasUnistalledWa === false) {
+
+          //           if (this.whatsAppIsInstalled === false || this.whatsAppIsInstalled === null) {
+          //             console.log("[HOME] getInstallations RUN INSTALL 2" )
+          //             this.installApp()
+          //           }
+          //         }
+          //       }
+          //     }
+          //   });
+          // } 
+
+          // else {
+          //   this.whatsAppIsInstalled = false;
+          // }
         } else {
           this.whatsAppIsInstalled = false;
         }
@@ -1355,9 +1393,9 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     }
 
-    this.logger.log('[HOME] appId ', this.whatsAppAppId)
-    this.logger.log('[HOME] app app version', this.appVersion)
-    this.logger.log('[HOME] installationType ', this.installActionType);
+    console.log('[HOME] appId installApp', this.whatsAppAppId)
+    console.log('[HOME] app app version installApp', this.appVersion)
+    console.log('[HOME] installationType installApp', this.installActionType);
 
     this.installV2App(this.projectId, this.whatsAppAppId)
 
@@ -1366,7 +1404,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   installV2App(projectId, appId) {
     this.appStoreService.installAppVersionTwo(projectId, appId).subscribe((res: any) => {
-      this.logger.log('[HOME] INSTALL V2 APP ', projectId, appId)
+      console.log('[HOME] INSTALL V2 APP ', projectId, appId)
 
     }, (error) => {
       this.logger.error('[HOME] INSTALL V2 APP - ERROR  ', error);
@@ -1523,7 +1561,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   goToWhatsAppDetails() {
-    
+
     this.logger.log('goToWhatsAppDetails appTitle ', this.appTitle)
     if ((this.appTitle === "WhatsApp Business" || this.appTitle === "Facebook Messenger") &&
       ((this.profile_name === PLAN_NAME.A) ||

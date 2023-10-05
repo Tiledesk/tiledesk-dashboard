@@ -97,14 +97,13 @@ export class HomeWhatsappAccountComponent implements OnInit, OnChanges {
   /**
    * On changes
    */
-
    ngOnChanges(changes: SimpleChanges) {
-    this.logger.log('[HOME-WA] ngOnChanges changes ', changes);
-    this.logger.log('[HOME-WA] ngOnChanges whatsAppIsInstalled ', this.whatsAppIsInstalled);
-    this.logger.log('[HOME-WA] ngOnChanges whatsAppIsConnected ', this.whatsAppIsConnected);
-    this.logger.log('[HOME-WA] ngOnChanges solution_channel_for_child ', this.solution_channel_for_child);
-    this.logger.log('[HOME-WA] ngOnChanges solution_for_child ', this.solution_for_child);
-    this.logger.log('[HOME-WA] userHasClickedDisplayWAWizard ', this.userHasClickedDisplayWAWizard)
+    console.log('[HOME-WA] ngOnChanges changes ', changes);
+    console.log('[HOME-WA] ngOnChanges whatsAppIsInstalled ', this.whatsAppIsInstalled);
+    console.log('[HOME-WA] ngOnChanges whatsAppIsConnected ', this.whatsAppIsConnected);
+    console.log('[HOME-WA] ngOnChanges solution_channel_for_child ', this.solution_channel_for_child);
+    console.log('[HOME-WA] ngOnChanges solution_for_child ', this.solution_for_child);
+    console.log('[HOME-WA] userHasClickedDisplayWAWizard ', this.userHasClickedDisplayWAWizard)
     // this.getApps();
    }
 
