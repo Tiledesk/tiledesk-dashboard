@@ -526,7 +526,7 @@ export class UsersService {
 
     const url = this.PROJECT_USER_URL + 'users/' + user_id;
     this.logger.log('[USER-SERV] - GET PROJECT-USER BY USER-ID - URL', url);
-
+    console.log('[USER-SERV] - GET PROJECT-USER BY USER-ID - URL', url);
     const httpOptions = {
       headers: new HttpHeaders({
         'Accept': 'application/json',
@@ -536,8 +536,7 @@ export class UsersService {
     };
   
 
-    return this._httpClient
-      .get<ProjectUser[]>(url, httpOptions)
+    return this._httpClient.get<ProjectUser[]>(url, httpOptions)
   }
 
 

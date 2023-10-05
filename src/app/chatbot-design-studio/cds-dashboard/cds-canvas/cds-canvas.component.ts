@@ -108,9 +108,10 @@ export class CdsCanvasComponent implements OnInit {
     this.addEventListener();
 
 
-    // setTimeout(()=> {
-    //   scaleAndcenterStageOnCenterPosition(this.listOfIntents)
-    // }, 1000)
+    setTimeout(()=> {
+      let newPos = scaleAndcenterStageOnCenterPosition(this.listOfIntents)
+      
+    }, 1000)
   }
 
 

@@ -44,7 +44,10 @@ export class CdsActionWebRequestV2Component implements OnInit {
   typeMethodAttribute = TYPE_METHOD_ATTRIBUTE;
   assignments: {} = {}
 
-  bodyOptions: Array<{label: string, value: string, disabled: boolean, checked: boolean}>= [ {label: 'none', value: 'none', disabled: false, checked: true}, {label: 'Json', value: 'json', disabled: false, checked: false}]
+  bodyOptions: Array<{label: string, value: string, disabled: boolean, checked: boolean}>= [ 
+      {label: 'none', value: 'none', disabled: false, checked: true}, 
+      {label: 'Json', value: 'json', disabled: false, checked: false}
+  ]
   
   constructor(
     private logger: LoggerService,
@@ -89,8 +92,7 @@ export class CdsActionWebRequestV2Component implements OnInit {
       const array = this.connector.fromId.split("/");
       const idAction= array[1];
       if(idAction === this.action._tdActionId){
-        if(this.connector.deleted){ 
-          //TODO: verificare quale dei due connettori è stato eliminato e impostare isConnected a false
+        if(this.connector.deleted){
           // DELETE 
           if(array[array.length -1] === 'true'){
             this.action.trueIntent = null
@@ -101,7 +103,7 @@ export class CdsActionWebRequestV2Component implements OnInit {
             this.isConnectedFalse = false;
           }
           this.updateAndSaveAction.emit();
-        } else { //TODO: verificare quale dei due connettori è stato aggiunto (controllare il valore della action corrispondente al true/false intent)
+        } else { 
           // ADD / EDIT
           this.logger.debug('[ACTION-ASKGPT] updateConnector', this.connector.toId, this.connector.fromId ,this.action, array[array.length-1]);
           if(array[array.length -1] === 'true'){
@@ -137,6 +139,8 @@ export class CdsActionWebRequestV2Component implements OnInit {
     if(this.jsonIsValid && this.action.body){
       this.body = this.action.body;
       this.body = this.formatJSON(this.body, "\t");
+      this.bodyOptions.forEach(el => { el.value ==='json'? el.checked= true: el.checked = false })
+    
     }
     this.assignments = this.action.assignments
   }
@@ -193,10 +197,10 @@ export class CdsActionWebRequestV2Component implements OnInit {
     this.bodyOptions.forEach(el => { el.value ===event.value? el.checked= true: el.checked = false })
     switch (event.value){
       case 'none':
-        this.body = null
+        this.body = JSON.stringify({})
         break;
       case 'json':
-        this.body = JSON.stringify({})
+        this.body = this.action.body
     }
     this.logger.log('onChangeButtonSelect-->', event, this.body)
   }
