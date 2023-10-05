@@ -830,7 +830,7 @@ export class BotListComponent implements OnInit {
   // Go to faq.component to: Add / Edit FAQ, Edit Bot name
   // ---------------------------------------------------------------------------
   goToBotDtls(faqkb: FaqKb) {
-    this.goToCDS(faqkb)
+    // this.goToCDS(faqkb)
     // if (this.isPanelRoute === false) {
     //   this.goToOldBotDtls(idFaqKb, botType, botname)
     // } else {

@@ -31,7 +31,7 @@
     padding: 12px 15px;
     border-radius: 4px;
     background-color: #d7ebfa6e;
-
+    font-weight: 400;
     .info-icon {
         margin-right: 8px;
         font-size: 20px;
@@ -394,4 +394,9 @@ table {
 
 .bold {
     font-weight: 500;
+}
+
+.input--note {
+    font-size: 12px;
+    font-weight: 400;
 }

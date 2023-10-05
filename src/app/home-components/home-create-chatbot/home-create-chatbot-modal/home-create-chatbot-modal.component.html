@@ -17,7 +17,8 @@
 
 <div mat-dialog-actions style="justify-content: center;">
     <button class="mat-dialog-close-btn" mat-button (click)="onNoClick()">
-        {{ "Cancel" | translate }}
+        <!-- {{ "Cancel" | translate }} -->
+        Cancel
     </button>
     <!-- [mat-dialog-close]="newKb.url" -->
     <button [disabled]="chatbotName?.length < 2" class="mat-dialog-ok-btn" mat-button (click)="onOkPresssed(chatbotName)"

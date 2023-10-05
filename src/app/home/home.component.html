@@ -218,12 +218,11 @@
                   <!-- --------------------- -->
 
 
-                  <button mat-menu-item (click)="$event.stopPropagation()">
+                  <!-- <button mat-menu-item (click)="$event.stopPropagation()">
                     <mat-checkbox class="home-settings-checkbox" [checked]="displayNewsFeed"
                       (change)="switchNewsFeed($event.checked)"></mat-checkbox>
-                    <!-- <mat-icon>notifications_off</mat-icon> -->
                     <span>News Feed</span>
-                  </button>
+                  </button> -->
                 </mat-menu>
               </div>
             </div>
@@ -539,9 +538,9 @@
             </span>
           </ng-container>
         </div>
-        <div *ngIf="!showskeleton" class="news-feed-wpr" style="    background-color: rgb(241,245,249);     padding-left: 30px;">
+        <!-- <div *ngIf="!showskeleton" class="news-feed-wpr" style="    background-color: rgb(241,245,249);     padding-left: 30px;">
           <appdashboard-home-news-feed *ngIf="displayNewsFeed"> </appdashboard-home-news-feed>
-        </div>
+        </div> -->
       </div>
 
 

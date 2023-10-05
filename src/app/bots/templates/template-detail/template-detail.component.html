@@ -13,8 +13,15 @@
         <div class="template-detail-header">
             <div class="template-detail-img-wpr">
 
-                <img *ngIf="!template?.bigImage" style="width: 40px; height: 40px;"
-                    src="https://firebasestorage.googleapis.com/v0/b/tiledesk-prod-v2.appspot.com/o/profiles%2F{{template._id}}%2Fphoto.jpg?alt=media"  onerror="this.src='assets/img/avatar_bot_tiledesk.svg'">
+                <span *ngIf="!template?.bigImage">
+                    <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE" style="width: 40px; height: 40px;"
+                        src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{template._id}}%2Fphoto.jpg?alt=media"
+                        onerror="this.src='assets/img/avatar_bot_tiledesk.svg'">
+                    <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" style="width: 40px; height: 40px;"
+                        src="{{baseUrl}}images?path=uploads%2Fusers%2F{{template?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                        onerror="this.src='assets/img/avatar_bot_tiledesk.svg'">
+                </span>
+
                 <img *ngIf="template?.bigImage" style="width: auto; height: 40px;" src="{{template.bigImage}}">
             </div>
             <div class="template-detail-name-wpr">
@@ -37,7 +44,8 @@
         </div>
         <div class="template-detail-content">
             <div class="template-detail-tags-wpr">
-                <p weight="normal" class="template-detail-tags-section-name">
+                <p weight="normal" class="template-detail-tags-section-name"
+                    *ngIf="template.certifiedTags && template.certifiedTags.length > 0">
                     Categories
                 </p>
                 <div class="template-detail-tags" *ngIf="template.certifiedTags">
@@ -177,7 +185,7 @@
                     <div class="template-detail-features-dot"></div>
                     <p weight="normal" class="template-detail-feature">{{feature}}</p>
                 </div>
-         
+
             </div>
         </div>
         <!-- <div class="css-1673xsz e1jquz1y1">

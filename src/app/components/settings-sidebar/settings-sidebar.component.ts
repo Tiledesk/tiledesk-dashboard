@@ -545,17 +545,21 @@ export class SettingsSidebarComponent implements OnInit {
 
     if (this.route.indexOf('/hours') !== -1) {
       this.OPERATING_HOURS_ROUTE_IS_ACTIVE = true
-      this.logger.log(
-        '[SETTING-SIDEBAR] - OPERATING_HOURS_ROUTE_IS_ACTIVE  ',
-        this.OPERATING_HOURS_ROUTE_IS_ACTIVE,
-      )
+      this.logger.log('[SETTING-SIDEBAR] - OPERATING_HOURS_ROUTE_IS_ACTIVE ',this.OPERATING_HOURS_ROUTE_IS_ACTIVE)
     } else {
       this.OPERATING_HOURS_ROUTE_IS_ACTIVE = false
-      this.logger.log(
-        '[SETTING-SIDEBAR] - OPERATING_HOURS_ROUTE_IS_ACTIVE  ',
-        this.OPERATING_HOURS_ROUTE_IS_ACTIVE,
-      )
+      this.logger.log('[SETTING-SIDEBAR] - OPERATING_HOURS_ROUTE_IS_ACTIVE ',this.OPERATING_HOURS_ROUTE_IS_ACTIVE)
     }
+
+    if (this.route.indexOf('/knowledge-bases') !== -1) {
+      this.KNOWLEDGE_BASES_ROUTE_IS_ACTIVE = true
+      this.logger.log('[SETTING-SIDEBAR] - KNOWLEDGE_BASES_ROUTE_IS_ACTIVE ',this.KNOWLEDGE_BASES_ROUTE_IS_ACTIVE)
+    } else {
+      this.KNOWLEDGE_BASES_ROUTE_IS_ACTIVE = false
+      this.logger.log('[SETTING-SIDEBAR] - KNOWLEDGE_BASES_ROUTE_IS_ACTIVE ',this.KNOWLEDGE_BASES_ROUTE_IS_ACTIVE)
+    }
+
+    
 
     if (this.route.indexOf('/project-settings/') !== -1) {
       this.PROJECT_SETTINGS_ROUTE_IS_ACTIVE = true

@@ -384,7 +384,7 @@ export const highlightedFeaturesPlanC = [
 
 export function goToCDSVersion(router: any, chatbot: Chatbot, project_id, redirectBaseUrl: string){
     let chatBotDate = new Date(chatbot.createdAt)
-    let dateLimit = new Date('2023-09-26T00:00:00')
+    let dateLimit = new Date('2023-10-02T00:00:00')
     if(chatBotDate > dateLimit){
         let urlCDS_v2 = `${redirectBaseUrl}dashboard/#/project/${project_id}/cds/${chatbot._id}/intent/0`
         window.open(urlCDS_v2, '_self')
