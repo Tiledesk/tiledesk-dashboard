@@ -105,7 +105,7 @@ export class HomeWhatsappAccountComponent implements OnInit, OnChanges {
     this.logger.log('[HOME-WA] ngOnChanges solution_channel_for_child ', this.solution_channel_for_child);
     this.logger.log('[HOME-WA] ngOnChanges solution_for_child ', this.solution_for_child);
     this.logger.log('[HOME-WA] userHasClickedDisplayWAWizard ', this.userHasClickedDisplayWAWizard)
-    this.getApps();
+    // this.getApps();
    }
 
 

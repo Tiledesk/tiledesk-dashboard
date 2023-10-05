@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, isDevMode } from '@angular/core';
 import { AppStoreService } from '../services/app-store.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../core/auth.service';
 import { Subscription } from 'rxjs'
 import { LoggerService } from '../services/logger/logger.service';
@@ -53,6 +53,9 @@ export class AppStoreComponent implements OnInit {
   appIsAvailable: boolean = true;
   appSumoProfile: string;
   appSumoProfilefeatureAvailableFromBPlan: string;
+  user: any;
+  project: any;
+  callingPage: string;
   constructor(
     public appStoreService: AppStoreService,
     private router: Router,
@@ -63,7 +66,8 @@ export class AppStoreComponent implements OnInit {
     public brandService: BrandService,
     private prjctPlanService: ProjectPlanService,
     public usersService: UsersService,
-    public appConfigService: AppConfigService
+    public appConfigService: AppConfigService,
+    public route: ActivatedRoute,
   ) {
     const brand = brandService.getBrand();
     this.tparams = brand;
@@ -74,13 +78,98 @@ export class AppStoreComponent implements OnInit {
     this.auth.checkRoleForCurrentProject();
     this.getApps();
     this.getCurrentProject();
-    this.getToken();
+    // this.getToken();
     this.getBrowserVersion();
     this.translateLabels();
     this.getProjectPlan();
     this.getOSCODE();
     this.getProjectUserRole();
+    this.getLoggedUser();
+    this.getRouteParams();
+    this.listenToParentPostMessage()
   }
+
+  getRouteParams() {
+    this.route.params.subscribe((params) => {
+      // this.projectId = params.projectid
+      this.logger.log('[APP-STORE] - GET ROUTE PARAMS ', params);
+      if (params.calledby && params.calledby === 'h') {
+        this.callingPage = 'home'
+      }
+    })
+  }
+
+  listenToParentPostMessage() {
+    const current_url = this.router.url
+    this.logger.log('[APP-STORE] - current_url ', current_url);
+
+    window.addEventListener("message", (event) => {
+      this.logger.log("[APP-STORE] message event ", event);
+
+      if (event && event.data && event.data.calledBy && event.data.calledBy === "whatsapp_proxy") {
+        if (event.data.action === 'installWhatsapp') {
+          this.logger.log("[APP-STORE] post message action ", event.data.action);
+
+        }
+
+        if (event.data.action === 'uninstallWhatsapp') {
+          this.logger.log("[APP-STORE] post message action ", event.data.action);
+
+        }
+
+        if (event.data.action === 'connectWhatsapp' && event.data.connected === false) {
+          this.logger.log("[APP-STORE] post message action ", event.data.action);
+          this.logger.log("[APP-STORE] post message WA connected ", event.data.action.connected);
+
+        }
+
+        if (event.data.action === 'connectWhatsapp' && event.data.connected === true) {
+          this.logger.log("[APP-STORE] post message action ", event.data.action);
+          this.logger.log("[APP-STORE] post message WA connected ", event.data.connected);
+
+        }
+      }
+    })
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
+  getBrowserVersion() {
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
+      this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+      //  this.logger.log("APP-STORE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    })
+  }
+
+  getLoggedUser() {
+    this.auth.user_bs
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((user) => {
+        this.logger.log('[BOT-CREATE] - USER GET IN HOME ', user)
+
+
+        if (user) {
+          this.user = user;
+          this.TOKEN = user.token
+          this.userId = user._id
+        }
+      })
+  }
+
+  // getToken() {
+  //   this.auth.user_bs.subscribe((user) => {
+  //     if (user) {
+  //       this.TOKEN = user.token
+  //       this.userId = user._id
+  //     }
+  //   });
+  // }
 
   getOSCODE() {
     this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
@@ -109,6 +198,21 @@ export class AppStoreComponent implements OnInit {
     }
   }
 
+  getCurrentProject() {
+    this.subscription = this.auth.project_bs
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((project) => {
+        if (project) {
+          this.project = project
+          this.projectId = project._id,
+
+            console.log('APP-STORE - projectId ', this.projectId)
+        }
+      });
+  }
+
   getProjectUserRole() {
     this.usersService.project_user_role_bs
       .pipe(
@@ -122,105 +226,6 @@ export class AppStoreComponent implements OnInit {
       });
   }
 
-
-
-  translateLabels() {
-    this.translateAreYouSure();
-    this.translateAppWillBeDeleted();
-    this.translateAppHasBeenDeleted();
-    this.translateAnErrorOccurreWhileDeletingTheApp();
-    this.translateDone();
-    this.translateCancel()
-
-    this.translate.get('AvailableFromThePlan', { plan_name: PLAN_NAME.B })
-      .subscribe((translation: any) => {
-        this.featureAvailableFromBPlan = translation;
-      });
-
-    this.translate.get('Pricing.UpgradePlan')
-      .subscribe((translation: any) => {
-        this.upgradePlan = translation;
-      });
-
-    this.translate.get('UsersWiththeAgentroleCannotManageTheAdvancedOptionsOfTheProject')
-      .subscribe((translation: any) => {
-        this.agentCannotManageAdvancedOptions = translation;
-      });
-
-    this.translate.get('LearnMoreAboutDefaultRoles')
-      .subscribe((translation: any) => {
-
-        this.learnMoreAboutDefaultRoles = translation;
-      });
-
-  }
-
-  translateCancel() {
-    this.translate.get('Cancel')
-      .subscribe((text: string) => {
-        this.cancel = text;
-      });
-  }
-
-  translateAreYouSure() {
-    this.translate.get('AreYouSure').subscribe((text: string) => {
-      this.areYouSureMsg = text;
-    });
-  }
-
-  translateAppWillBeDeleted() {
-    this.translate.get('TheAppWillBeDeleted').subscribe((text: string) => {
-      this.appWillBeDeletedMsg = text;
-    });
-  }
-
-
-  translateAppHasBeenDeleted() {
-    this.translate.get('TheAppHasBeenDeleted').subscribe((text: string) => {
-      this.appHasBeenDeletedMsg = text;
-    });
-  }
-  translateAnErrorOccurreWhileDeletingTheApp() {
-    this.translate.get('AnErrorOccurreWhileDeletingTheApp').subscribe((text: string) => {
-      this.errorWhileDeletingApp = text;
-    });
-  }
-
-  translateDone() {
-    this.translate.get('Done').subscribe((text: string) => {
-      this.done_msg = text;
-    });
-  }
-
-
-  getBrowserVersion() {
-    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
-      this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
-      //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
-    })
-  }
-
-  getToken() {
-    this.auth.user_bs.subscribe((user) => {
-      if (user) {
-        this.TOKEN = user.token
-        this.userId = user._id
-      }
-    });
-  }
-
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
-  }
-
-  getCurrentProject() {
-    this.subscription = this.auth.project_bs.subscribe((project) => {
-      if (project) {
-        this.projectId = project._id
-        this.logger.log('APP-STORE - projectId ', this.projectId)
-      }
-    });
-  }
 
   // ---------------------------
   // GET APPS
@@ -301,7 +306,7 @@ export class AppStoreComponent implements OnInit {
   //   }
   getProjectPlan() {
     this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-      // console.log('[PRICING - PAYMENT-LIST] getProjectPlan project Profile Data', projectProfileData)
+      this.logger.log('[APP-STORE] getProjectPlan project Profile Data', projectProfileData)
 
       if (projectProfileData) {
         this.profile_name = projectProfileData.profile_name
@@ -322,10 +327,10 @@ export class AppStoreComponent implements OnInit {
       }
     }, error => {
 
-      this.logger.error('[PRICING - PAYMENT-LIST] - getProjectPlan - ERROR', error);
+      this.logger.error('[APP-STORE] - getProjectPlan - ERROR', error);
     }, () => {
 
-      this.logger.log('[PRICING - PAYMENT-LIST] - getProjectPlan * COMPLETE *')
+      this.logger.log('[APP-STORE] - getProjectPlan * COMPLETE *')
 
     });
   }
@@ -374,7 +379,7 @@ export class AppStoreComponent implements OnInit {
         window.open(url, '_blank');
       }
     } else if (app && app.version === 'v2') {
-      this.installV2App(this.projectId, appId)
+      this.installV2App(this.projectId, appId, appTitle)
     }
 
   }
@@ -488,10 +493,10 @@ export class AppStoreComponent implements OnInit {
     this.router.navigate(['project/' + this.projectId + '/app-store-install/' + app._id + '/configure'])
   }
 
-  installV2App(projectId, appId) {
+  installV2App(projectId, appId, appTitle) {
 
     this.appStoreService.installAppVersionTwo(projectId, appId).subscribe((res: any) => {
-      this.logger.log('[APP-STORE] INSTALL V2 APP ', projectId, appId)
+      this.logger.log('[APP-STORE] INSTALL V2 APP projectId ', projectId, ' appId ', appId, ' appTitle ', appTitle)
 
     }, (error) => {
       this.logger.error('[APP-STORE] INSTALL V2 APP - ERROR  ', error);
@@ -500,6 +505,11 @@ export class AppStoreComponent implements OnInit {
       this.logger.log('[APP-STORE] INSTALL V2 APP - COMPLETE');
       this.notify.showWidgetStyleUpdateNotification("App installed successfully", 2, 'done');
       let index = this.apps.findIndex(x => x._id === appId);
+
+      // -----------------------------------
+      // @ Track event
+      // -----------------------------------
+      this.trackUserActionOnApp(appId, appTitle, 'Install app')
       // this.apps[index].installed = false;
       // this.apps[index].version = 'v2';
       setTimeout(() => {
@@ -509,8 +519,8 @@ export class AppStoreComponent implements OnInit {
     });
   }
 
-  unistallApp(appId) {
-    this.logger.log('[APP-STORE] UNINSTALL V2 APP - app_id', appId);
+  unistallApp(appId, appTitle) {
+    this.logger.log('[APP-STORE] UNINSTALL V2 APP - app_id', appId, ' appTitle ', appTitle);
 
     this.appStoreService.unistallNewApp(this.projectId, appId).subscribe((res: any) => {
       this.logger.log('[APP-STORE] UNINSTALL V2 APP - app_id - RES', res);
@@ -522,6 +532,11 @@ export class AppStoreComponent implements OnInit {
       this.logger.log('[APP-STORE] UNINSTALL V2 APP - COMPLETE');
       this.notify.showWidgetStyleUpdateNotification("App uninstalled successfully", 2, 'done');
       let index = this.apps.findIndex(x => x._id === appId);
+
+      // -----------------------------------
+      // @ Track event
+      // -----------------------------------
+      this.trackUserActionOnApp(appId, appTitle, 'Uninstall app')
       // this.apps[index].installed = false;
       // this.apps[index].version = 'v2';
       setTimeout(() => {
@@ -531,8 +546,58 @@ export class AppStoreComponent implements OnInit {
     });
   }
 
+  // -----------------------------------
+  // @ Track event
+  // -----------------------------------
+  trackUserActionOnApp(appId, appTitle, event) {
+    let userFullname = ''
+    if (this.user.firstname && this.user.lastname) {
+      userFullname = this.user.firstname + ' ' + this.user.lastname
+    } else if (this.user.firstname && !this.user.lastname) {
+      userFullname = this.user.firstname
+    }
+    if (!isDevMode()) {
+      try {
+        window['analytics'].track(event, {
+          "type": "organic",
+          "username": userFullname,
+          "email": this.user.email,
+          'userId': this.user._id,
+          'appTitle': appTitle,
+          'appID': appId,
+          'page': 'App store'
+        });
+      } catch (err) {
+        this.logger.error(`Track ${event} error`, err);
+      }
 
-  deleteNewApp(appId) {
+      try {
+        window['analytics'].identify(this.user._id, {
+          username: userFullname,
+          email: this.user.email,
+          logins: 5,
+
+        });
+      } catch (err) {
+        this.logger.error(`Identify ${event} error`, err);
+      }
+
+      try {
+        window['analytics'].group(this.projectId, {
+          name: this.project.name,
+          plan: this.profile_name
+
+        });
+      } catch (err) {
+        this.logger.error(`Group ${event} error`, err);
+      }
+    }
+
+  }
+
+
+  deleteNewApp(appId, appTitle) {
+    this.logger.log('[APP-STORE] - deleteNewApp appId ', appId, 'appTitle ', appTitle)
     swal({
       title: this.areYouSureMsg,
       text: this.appWillBeDeletedMsg,
@@ -543,7 +608,7 @@ export class AppStoreComponent implements OnInit {
       .then((WillDelete) => {
         if (WillDelete) {
           this.appStoreService.deleteNewApp(appId).subscribe((res: any) => {
-            //  console.log('[APP-STORE] DELETE V2 APP - app_id - RES', res);
+            this.logger.log('[APP-STORE] DELETE V2 APP - app_id - RES', res);
           }, (error) => {
             swal(this.errorWhileDeletingApp, {
               icon: "error",
@@ -551,6 +616,11 @@ export class AppStoreComponent implements OnInit {
             this.logger.error('[FAQ-EDIT-ADD] DELETE FAQ ERROR ', error);
           }, () => {
             this.logger.log('[FAQ-EDIT-ADD] DELETE FAQ * COMPLETE *');
+
+            // -----------------------------------
+            // @ Track event
+            // -----------------------------------
+            this.trackUserActionOnApp(appId, appTitle, 'Delete app')
 
             for (var i = 0; i < this.apps.length; i++) {
 
@@ -686,6 +756,74 @@ export class AppStoreComponent implements OnInit {
 
   goToCreateRasaBot() {
     this.router.navigate(['project/' + this.projectId + '/bot/rasa/create']);
+  }
+
+  translateLabels() {
+    this.translateAreYouSure();
+    this.translateAppWillBeDeleted();
+    this.translateAppHasBeenDeleted();
+    this.translateAnErrorOccurreWhileDeletingTheApp();
+    this.translateDone();
+    this.translateCancel()
+
+    this.translate.get('AvailableFromThePlan', { plan_name: PLAN_NAME.B })
+      .subscribe((translation: any) => {
+        this.featureAvailableFromBPlan = translation;
+      });
+
+    this.translate.get('Pricing.UpgradePlan')
+      .subscribe((translation: any) => {
+        this.upgradePlan = translation;
+      });
+
+    this.translate.get('UsersWiththeAgentroleCannotManageTheAdvancedOptionsOfTheProject')
+      .subscribe((translation: any) => {
+        this.agentCannotManageAdvancedOptions = translation;
+      });
+
+    this.translate.get('LearnMoreAboutDefaultRoles')
+      .subscribe((translation: any) => {
+
+        this.learnMoreAboutDefaultRoles = translation;
+      });
+
+  }
+
+  translateCancel() {
+    this.translate.get('Cancel')
+      .subscribe((text: string) => {
+        this.cancel = text;
+      });
+  }
+
+  translateAreYouSure() {
+    this.translate.get('AreYouSure').subscribe((text: string) => {
+      this.areYouSureMsg = text;
+    });
+  }
+
+  translateAppWillBeDeleted() {
+    this.translate.get('TheAppWillBeDeleted').subscribe((text: string) => {
+      this.appWillBeDeletedMsg = text;
+    });
+  }
+
+
+  translateAppHasBeenDeleted() {
+    this.translate.get('TheAppHasBeenDeleted').subscribe((text: string) => {
+      this.appHasBeenDeletedMsg = text;
+    });
+  }
+  translateAnErrorOccurreWhileDeletingTheApp() {
+    this.translate.get('AnErrorOccurreWhileDeletingTheApp').subscribe((text: string) => {
+      this.errorWhileDeletingApp = text;
+    });
+  }
+
+  translateDone() {
+    this.translate.get('Done').subscribe((text: string) => {
+      this.done_msg = text;
+    });
   }
 
 }

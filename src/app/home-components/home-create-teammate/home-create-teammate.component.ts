@@ -580,9 +580,10 @@ export class HomeCreateTeammateComponent implements OnInit {
           }
 
           try {
-            window['analytics'].track('Home invite Sent', {
+            window['analytics'].track('Invite Sent', {
               "invitee_email": email,
-              "invitee_role": this.invitedProjectUser.role
+              "invitee_role": this.invitedProjectUser.role,
+              "page":"Home"
             }, {
               "context": {
                 "groupId": this.invitedProjectUser.id_project

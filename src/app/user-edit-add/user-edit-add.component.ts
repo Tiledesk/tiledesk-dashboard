@@ -986,7 +986,8 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
           try {
             window['analytics'].track('Invite Sent', {
               "invitee_email": this.user_email,
-              "invitee_role": this.invitedProjectUser.role
+              "invitee_role": this.invitedProjectUser.role,
+              "page": "Invite Temmates Page"
             }, {
               "context": {
                 "groupId": this.invitedProjectUser.id_project

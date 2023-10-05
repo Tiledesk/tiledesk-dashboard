@@ -29,7 +29,7 @@ export class HomeCustomizeWidgetComponent implements OnInit {
   }
 
   goToWidgetSetUp() {
-    this.trackUserAction.emit({action:'Home, Customize widget button clicked',actionRes: null })
+    this.trackUserAction.emit({action:'Customize widget',actionRes: null })
     this.router.navigate(['project/' + this.project._id + '/widget-set-up'])
   }
 

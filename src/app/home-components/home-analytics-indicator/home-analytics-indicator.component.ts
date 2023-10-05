@@ -131,7 +131,7 @@ export class HomeAnalyticsIndicatorComponent implements OnInit {
 
 
   goToVisitorsAnalytics() {
-    this.trackUserAction.emit({action:'Home, Analytics indicator: filter Unique Visitors in analytics clicked',actionRes: null })
+    this.trackUserAction.emit({action:'Filter Unique Visitors in analytics',actionRes: null })
     if (this.USER_ROLE !== 'agent') {
       this.router.navigate(['project/' + this.projectId + '/analytics/metrics/visitors']);
     }
@@ -139,14 +139,14 @@ export class HomeAnalyticsIndicatorComponent implements OnInit {
 
   goToMessagesAnalytics() {
     // this.router.navigate(['project/' + this.projectId + '/messages-analytics']);
-    this.trackUserAction.emit({action:'Home, Analytics indicator: filter Messages in analytics clicked',actionRes: null })
+    this.trackUserAction.emit({action:'Filter Messages in analytics',actionRes: null })
     if (this.USER_ROLE !== 'agent') {
       this.router.navigate(['project/' + this.projectId + '/analytics/metrics/messages']);
     }
   }
 
   goToContacts() {
-    this.trackUserAction.emit({action:'Home, Analytics indicator: Go to contacts clicked',actionRes: null })
+    this.trackUserAction.emit({action:'Go to contacts',actionRes: null })
     this.router.navigate(['project/' + this.projectId + '/contacts']);
   }
 

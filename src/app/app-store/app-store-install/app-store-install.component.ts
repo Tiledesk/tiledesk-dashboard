@@ -83,7 +83,7 @@ export class AppStoreInstallComponent implements OnInit {
     this.showSpinner = true;
     this.route.params.subscribe((params) => {
       this.projectId = params.projectid
-      // console.log('[APP-STORE-INSTALL] - GET ROUTE PARAMS ', params);
+      this.logger.log('[APP-STORE-INSTALL] - GET ROUTE PARAMS ', params);
       if (params.calledby && params.calledby === 'h') {
         this.calledBy = 'home'
       }

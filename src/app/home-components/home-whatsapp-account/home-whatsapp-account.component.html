@@ -85,15 +85,15 @@
         </div>
  
 
-
+        whatsAppIsInstalled  > {{whatsAppIsInstalled }}
         <div class="actions-btn-wpr">
             <!-- whatsAppIsInstalled >   {{whatsAppIsInstalled }} -->
-            <!-- Uninstall -->
+            <!--  {{'Uninstall' | translate}}-->
             <button *ngIf="whatsAppIsInstalled" mat-mini-fab aria-label="more_horiz icon" (click)="unistallApp()"
                 [disabled]="!whatsAppIsInstalled"
                 style="box-shadow: unset;margin-right: 16px; background-color:#f44336; position: relative;"
                 [ngClass]="{'unistall-app-btn-disabled': !whatsAppIsInstalled}" matTooltipClass="custom-mat-tooltip"
-                matTooltip="{{'Uninstall' | translate}}" #tooltip="matTooltip" matTooltipPosition='below'
+                matTooltip="Uninstall" #tooltip="matTooltip" matTooltipPosition='below'
                 matTooltipHideDelay="100">
 
                 <mat-icon style="color: #fff;">

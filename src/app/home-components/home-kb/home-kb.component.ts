@@ -157,9 +157,9 @@ export class HomeKbComponent implements OnInit {
   }
 
   goToKnowledgeBases() {
-    this.trackUserAction.emit({action:'Home, Add Knowledge Base button clicked',actionRes: null })
+    // this.trackUserAction.emit({action:'Home, Add Knowledge Base button clicked',actionRes: null })
     this.logger.log("goToKnowledgeBases -----> project._id: ", this.project._id);
-    this.router.navigate(['project/' + this.project._id + '/knowledge-bases'])
+    this.router.navigate(['project/' + this.project._id + '/knowledge-bases/h'])
   }
 
 

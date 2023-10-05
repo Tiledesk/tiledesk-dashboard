@@ -72,7 +72,7 @@ export class TemplateDetailComponent implements OnInit {
     private botLocalDbService: BotLocalDbService,
     private projectService: ProjectService,
   ) {
-    console.log('[TEMPLATE DETAIL] data ', data)
+    this.logger.log('[TEMPLATE DETAIL] data ', data)
     this.projectid = data.projectId
     this.template = data.template;
     this._newlyCreatedProject = data.newlyCreatedProject
@@ -124,17 +124,13 @@ export class TemplateDetailComponent implements OnInit {
 
   getProjectById(projectId) {
     this.projectService.getProjectById(projectId).subscribe((project: any) => {
-      console.log('[BOT-CREATE] - GET PROJECT BY ID - PROJECT: ', project);
+      this.logger.log('[BOT-CREATE] - GET PROJECT BY ID - PROJECT: ', project);
       this.prjct_profile_name = project.profile.name
-      console.log('[BOT-CREATE] - GET PROJECT BY ID - PROJECT > prjct_profile_name: ', this.prjct_profile_name);
-
-
+      this.logger.log('[BOT-CREATE] - GET PROJECT BY ID - PROJECT > prjct_profile_name: ', this.prjct_profile_name);
     }, error => {
       this.logger.error('[BOT-CREATE] - GET PROJECT BY ID - ERROR ', error);
     }, () => {
-      console.log('[BOT-CREATE] - GET PROJECT BY ID * COMPLETE * ');
-
-
+      this.logger.log('[BOT-CREATE] - GET PROJECT BY ID * COMPLETE * ');
     });
   }
 
@@ -194,7 +190,7 @@ export class TemplateDetailComponent implements OnInit {
 
   forkTemplate() {
     this.faqKbService.installTemplate(this.templateid, this.projectid, true, this.templateid).subscribe((res: any) => {
-      console.log('[TEMPLATE DETAIL] - FORK TEMPLATE RES', res);
+      this.logger.log('[TEMPLATE DETAIL] - FORK TEMPLATE RES', res);
       this.botid = res.bot_id
 
     }, (error) => {

@@ -143,8 +143,8 @@ export class HomeCreateChatbotComponent implements OnInit, OnChanges {
 
 
   openDialog(template) {
-   console.log('openDialog TemplateDetailComponent template ', template)
-  //  this.trackUserAction.emit({action:'Home, Use template ' + template.name ,actionRes: null })
+    this.logger.log('openDialog TemplateDetailComponent template ', template)
+  
     const dialogRef = this.dialog.open(TemplateDetailComponent, {
       data: {
         template: template,
@@ -360,12 +360,12 @@ export class HomeCreateChatbotComponent implements OnInit, OnChanges {
   }
 
   goToIncreaseSalesTemplates() {
-    this.trackUserAction.emit({action:'Home, Explore Increase Sales Templates clicked',actionRes: null })
+    // this.trackUserAction.emit({action:'Home', actionRes: 'Explore Increase Sales Templates' })
     this.router.navigate(['project/' + this.projectId + '/bots/templates/increase-sales']);
   }
 
   goToCustomerSatisfactionTemplates() {
-    this.trackUserAction.emit({action:'Home, Explore Customer Satisfaction Templates clicked',actionRes: null })
+    // this.trackUserAction.emit({action:'Home',actionRes: 'Explore Customer Satisfaction Templates' })
     this.router.navigate(['project/' + this.projectId + '/bots/templates/customer-satisfaction']);
   }
 
@@ -380,8 +380,8 @@ export class HomeCreateChatbotComponent implements OnInit, OnChanges {
   }
 
   presentModalAddBotFromScratch() {
-    // this.trackUserAction.emit({action:'Home, Start from scratch',actionRes: null })
-    console.log('[HOME-CREATE-CHATBOT] - presentModalAddBotFromScratch ');
+ 
+    this.logger.log('[HOME-CREATE-CHATBOT] - presentModalAddBotFromScratch ');
     const addKbBtnEl = <HTMLElement>document.querySelector('#home-material-btn');
     // this.logger.log('[HOME-CREATE-CHATBOT] - presentModalAddBotFromScratch addKbBtnEl ', addKbBtnEl);
     addKbBtnEl.blur()

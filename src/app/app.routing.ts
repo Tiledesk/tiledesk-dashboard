@@ -43,7 +43,7 @@ import { TemplatesComponent } from './bots/templates/templates.component';
 
 import { ProjectEditAddComponent } from './project-edit-add/project-edit-add.component';
 // import { RequestsListHistoryComponent } from './requests-list-history/requests-list-history.component';
-import { HistoryAndNortConvsComponent } from './ws_requests//history-and-nort-convs/history-and-nort-convs.component';
+import { HistoryAndNortConvsComponent } from './ws_requests/history-and-nort-convs/history-and-nort-convs.component';
 
 // --------------------------------------------------------------------------------------------
 // AUTH PAGES
@@ -452,7 +452,7 @@ const routes: Routes = [
 
   // KNOWLEDGE BASES
   { path: 'project/:projectid/knowledge-bases', component: KnowledgeBasesComponent, canActivate: [AuthGuard]},
-
+  { path: 'project/:projectid/knowledge-bases/:calledby', component: KnowledgeBasesComponent, canActivate: [AuthGuard]}, // when called from home
   // RESET PASSORD (i.e. page forgot psw & reset psw )
   { path: 'forgotpsw', component: ResetPswComponent },
   { path: 'resetpassword/:resetpswrequestid', component: ResetPswComponent },

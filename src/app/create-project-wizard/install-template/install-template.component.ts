@@ -222,7 +222,7 @@ export class InstallTemplateComponent extends WidgetSetUpBaseComponent implement
     // this.faqKbService.getTemplates().subscribe((res: any) => {
     this.faqKbService.getChatbotTemplateById(botid).subscribe((res: any) => {
       if (res) {
-        console.log('[INSTALL-TEMPLATE] GET TEMPLATES - RES ', res)
+        this.logger.log('[INSTALL-TEMPLATE] GET TEMPLATES - RES ', res)
 
         // const selectedTemplate = res.filter((obj) => {
         //   return obj._id === botid

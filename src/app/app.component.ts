@@ -304,7 +304,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     listenToSwPostMessage() {
-       console.log('[CONVS-LIST-PAGE] listenToNotificationCLick - CALLED: ')
+        this.logger.log('[APP-COMPONENT] listenToNotificationCLick - CALLED: ')
 
         if (navigator && navigator.serviceWorker) {
             const that = this

@@ -143,7 +143,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   displayCustomizeWidget: boolean
   displayNewsFeed: boolean = true
   displayWhatsappAccountWizard = false;
-  whatsAppIsInstalled: boolean = null;
+  whatsAppIsInstalled: boolean = false;
   apps: any;
 
   whatsAppAppId: string;
@@ -229,7 +229,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit() {
-  
+
     this.getLoggedUser()
     this.getCurrentProjectAndInit();
     // this.getStorageBucket(); // moved in getCurrentProject()
@@ -622,31 +622,48 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   trackUserAction(event) {
     let userFullname = ''
-    if (this.user.firstname && this.user.lastname)  {
+    if (this.user.firstname && this.user.lastname) {
       userFullname = this.user.firstname + ' ' + this.user.lastname
     } else if (this.user.firstname && !this.user.lastname) {
       userFullname = this.user.firstname
     }
-    console.log('[HOME] - trackUserAction ', event);
+    this.logger.log('[HOME] - trackUserAction ', event);
     const userAction = event.action
     const userActionRes = event.actionRes
-    console.log('[HOME] - trackUserAction userAction', userAction);
-    console.log('[HOME] - trackUserAction userActionRes', userActionRes);
-    const trackObjct = { 
-      "type": "organic", 
-      "username": userFullname,  
-      "email": this.user.email, 
-      'userId': this.user._id
+    this.logger.log('[HOME] - trackUserAction userAction', userAction);
+    this.logger.log('[HOME] - trackUserAction userActionRes', userActionRes);
+    const trackObjct = {
+      "type": "organic",
+      "username": userFullname,
+      "email": this.user.email,
+      'userId': this.user._id,
+      'page': 'Home'
     }
-    
+
     // Created chatbot
     if (userAction === 'Create chatbot' && userActionRes !== null) {
       trackObjct['chatbotName'] = userActionRes.name
       trackObjct['chatbotId'] = userActionRes._id
-      trackObjct['page'] = "Home"
       trackObjct['button'] = "Start from scratch"
     }
-    console.log('[HOME] - trackUserAction trackObjct', trackObjct);
+    // Created chatbot
+    if (userAction === 'Install app') {
+      trackObjct['appTitle'] = "WhatsApp Business"
+      trackObjct['appID'] = this.whatsAppAppId
+      trackObjct['button'] = "Automatic installed"
+    }
+    if (userAction === 'Uninstall app') {
+      trackObjct['appTitle'] = "WhatsApp Business"
+      trackObjct['appID'] = this.whatsAppAppId
+      trackObjct['button'] = "Uninstall"
+    }
+    if (userAction === 'Connect app') {
+      trackObjct['appTitle'] = "WhatsApp Business"
+      trackObjct['appID'] = this.whatsAppAppId
+      trackObjct['button'] = "Connect"
+    }
+    
+    this.logger.log('[HOME] - trackUserAction trackObjct', trackObjct);
     if (!isDevMode()) {
       try {
         window['analytics'].track(userAction, trackObjct);
@@ -1249,10 +1266,13 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     }, () => {
       this.logger.log('[HOME] getApps * COMPLETE *');
       this.getInstallations().then((res: any) => {
-        this.logger.log("[HOME] getInstallations res: ", res)
+        
         if (res) {
-          this.logger.log("[HOME] getInstallations whatsAppIsInstalled ", this.whatsAppIsInstalled, 'solution_channel ', this.solution_channel_for_child)
+          this.logger.log("[HOME] getInstallations res: ", res)
+          this.logger.log("[HOME] getInstallations RES whatsAppIsInstalled ", this.whatsAppIsInstalled)
+          this.logger.log("[HOME] getInstallations RES solution_channel ", this.solution_channel_for_child)
           if (res.length === 0) {
+            this.logger.log("[HOME] USE CASE RES 0 ")
             if (this.solution_channel_for_child === 'whatsapp_fb_messenger') {
               this.logger.log("[HOME] GET APPS - BEFORE TO INSTALL WA solution_channel_for_child ", this.solution_channel_for_child)
               this.logger.log("[HOME] GET APPS - BEFORE TO INSTALL WA userHasUnistalledWa ", this.userHasUnistalledWa)
@@ -1265,20 +1285,24 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
             }
           }
           if (res.length > 0) {
+            this.logger.log("[HOME] USE CASE RES > 0 ")
             res.forEach(r => {
               this.logger.log("[HOME] getInstallations r: ", r)
               if (r.app_id === this.whatsAppAppId) {
+                this.logger.log('[HOME] here yes r.app_id ',r.app_id , 'whatsAppAppId ', this.whatsAppAppId)
                 this.whatsAppIsInstalled = true;
                 this.updatedProjectWithUserHasUnistalledWA(false)
 
               } else {
                 this.whatsAppIsInstalled = false;
+                this.logger.log("[HOME] getInstallations RUN INSTALL WA  whatsAppIsInstalled (else)", this.whatsAppIsInstalled)
+                this.logger.log("[HOME] getInstallations RUN INSTALL WA solution_channel (else)", this.solution_channel_for_child)
+                this.logger.log("[HOME] getInstallations RUN INSTALL WA userHasUnistalledWa (else) ", this.userHasUnistalledWa)
+                if (this.userHasUnistalledWa === false) {
+                  if (this.solution_channel_for_child === 'whatsapp_fb_messenger') {
 
-                this.logger.log("[HOME] getInstallations RUN INSTALL WA  whatsAppIsInstalled ", this.whatsAppIsInstalled, 'solution_channel ', this.solution_channel_for_child)
-
-                if (this.solution_channel_for_child === 'whatsapp_fb_messenger') {
-
-                  this.installApp()
+                    this.installApp()
+                  }
                 }
               }
             });
@@ -1349,14 +1373,16 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.notify.showWidgetStyleUpdateNotification("An error occurred while creating the app", 4, 'report_problem');
     }, () => {
       this.logger.log('[HOME] INSTALL V2 APP - COMPLETE');
-      this.notify.showWidgetStyleUpdateNotification("App installed successfully", 2, 'done');
+      // this.notify.showWidgetStyleUpdateNotification("App installed successfully", 2, 'done');
       // let index = this.apps.findIndex(x => x._id === appId);
       // // this.apps[index].installed = false;
       // // this.apps[index].version = 'v2';
       // setTimeout(() => {
       //   this.apps[index].installed = true;
       // }, 1000);
+      this.trackUserAction({ action: 'Install app', actionRes: null })
       this.whatsAppIsInstalled = true;
+      this.logger.log('[HOME] INSTALL V2 APP - COMPLETE > whatsAppIsInstalled ', this.whatsAppIsInstalled);
     });
   }
 
@@ -1364,11 +1390,11 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   onClickOnUnistallApp() {
     this.presentModalConfirmUnistallWatsApp()
   }
-
+  // this.areYouSureMsg
   presentModalConfirmUnistallWatsApp() {
     swal({
-      title: this.areYouSureMsg,
-      text: this.appWillBeDeletedMsg,
+      title: "Are you sure",
+      text: "The app will be deleted", // this.appWillBeDeletedMsg,
       icon: "warning",
       buttons: ["Cancel", "Delete"],
       dangerMode: true,
@@ -1388,12 +1414,13 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
             this.logger.error('[HOME] UNINSTALL WA APP - ERROR  ', error);
             this.notify.showWidgetStyleUpdateNotification(this.errorWhileDeletingApp, 4, 'report_problem');
           }, () => {
-            this.logger.log('[HOME] UNINSTALL WA APP * COMPLETE *');
-            swal(this.done_msg + "!", this.appHasBeenDeletedMsg, {
-              icon: "success",
-            }).then((okpressed) => {
+            this.trackUserAction({ action: 'Uninstall app', actionRes: null })
+            // this.logger.log('[HOME] UNINSTALL WA APP * COMPLETE *');
+            // swal(this.done_msg + "!", this.appHasBeenDeletedMsg, {
+            //   icon: "success",
+            // }).then((okpressed) => {
 
-            });
+            // });
           });
         } else {
           this.logger.log('[HOME] UNINSTALL WA APP swal WillDelete (else)')
@@ -1496,7 +1523,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   goToWhatsAppDetails() {
-    this.trackUserAction({action:'Home, Open WhatsApp Details clicked',actionRes: null })
+    
     this.logger.log('goToWhatsAppDetails appTitle ', this.appTitle)
     if ((this.appTitle === "WhatsApp Business" || this.appTitle === "Facebook Messenger") &&
       ((this.profile_name === PLAN_NAME.A) ||
@@ -1521,7 +1548,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   openInAppStoreInstall() {
-    this.trackUserAction({action:'Home, Connect WhatsApp clicked',actionRes: null })
+    // this.trackUserAction({ action: 'Home, Connect WhatsApp clicked', actionRes: null })
     if ((this.appTitle === "WhatsApp Business" || this.appTitle === "Facebook Messenger") &&
       ((this.profile_name === PLAN_NAME.A) ||
         (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
@@ -1598,7 +1625,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
         if (res.success === true) {
           this.whatsAppIsConnected = true;
-
+          this.trackUserAction({ action: 'Connect app', actionRes: null })
           // this.presentModalWaSuccessfullyConnected()
 
           const calledBy = 'connected'

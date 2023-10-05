@@ -521,7 +521,7 @@ export class HomeConvsGraphComponent implements OnInit, OnChanges {
   // -----------------------------------------------------------------------------------------------------
 
   goToRequestsAnalytics() {
-    this.trackUserAction.emit({action:'Home, Conversations graph: filter in analytics clicked',actionRes: null })
+    this.trackUserAction.emit({action:'Conversations graph, filter in analytics',actionRes: null })
     // this.router.navigate(['project/' + this.projectId + '/conversation-analytics']);
     if (this.USER_ROLE !== 'agent') {
       this.router.navigate(['project/' + this.projectId + '/analytics/metrics']);

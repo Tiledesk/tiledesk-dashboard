@@ -1,10 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, isDevMode } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'app/core/auth.service';
 import { KB, KbSettings } from 'app/models/kbsettings-model';
+import { Project } from 'app/models/project-model';
 import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { OpenaiService } from 'app/services/openai.service';
+import { ProjectService } from 'app/services/project.service';
 
 @Component({
   selector: 'appdashboard-knowledge-bases',
@@ -24,6 +27,12 @@ export class KnowledgeBasesComponent implements OnInit {
   buttonDisabled: boolean = true;
   addButtonDisabled: boolean = false;
   gptkeyVisible: boolean = false;
+  CURRENT_USER: any;
+  project: Project;
+  project_name: string;
+  id_project: string;
+  profile_name: string;
+  callingPage: string;
 
   kbForm: FormGroup;
   kbsList = [];
@@ -56,7 +65,9 @@ export class KnowledgeBasesComponent implements OnInit {
     private formBuilder: FormBuilder,
     private logger: LoggerService,
     private openaiService: OpenaiService,
-    private kbService: KnowledgeBaseService
+    private kbService: KnowledgeBaseService,
+    private projectService: ProjectService,
+    public route: ActivatedRoute,
   ) { }
 
   ngOnInit(): void {
@@ -65,6 +76,76 @@ export class KnowledgeBasesComponent implements OnInit {
     //this.getKnowledgeBases();
     this.getKnowledgeBaseSettings();
     this.kbForm = this.createConditionGroup();
+    this.trackPage();
+    this.getLoggedUser();
+    this.getCurrentProject()
+    this.getRouteParams()
+  }
+
+  getRouteParams() {
+    this.route.params.subscribe((params) => {
+      // this.projectId = params.projectid
+      this.logger.log('[KNOWLEDGE BASES COMP] - GET ROUTE PARAMS ', params);
+      if (params.calledby && params.calledby === 'h') {
+        this.callingPage = 'Home'
+        this.logger.log('[KNOWLEDGE BASES COMP] - GET ROUTE PARAMS callingPage ', this.callingPage);
+      } else if (!params.calledby) {
+        this.callingPage = 'Knowledge Bases'
+        this.logger.log('[KNOWLEDGE BASES COMP] - GET ROUTE PARAMS callingPage ', this.callingPage);
+      }
+    })
+  }
+
+  trackPage() {
+    if (!isDevMode()) {
+      if (window['analytics']) {
+        try {
+          window['analytics'].page("Knowledge Bases Page", {
+
+          });
+        } catch (err) {
+          this.logger.error('Signin page error', err);
+        }
+      }
+    }
+  }
+
+  getLoggedUser() {
+    this.auth.user_bs.subscribe((user) => {
+      this.logger.log('[KNOWLEDGE BASES COMP] - LOGGED USER ', user)
+      if (user) {
+        this.CURRENT_USER = user
+       
+      }
+    });
+  }
+
+  getCurrentProject() {
+    this.auth.project_bs.subscribe((project) => {
+      this.project = project
+      this.logger.log('[KNOWLEDGE BASES COMP] - GET CURRENT PROJECT ', this.project)
+      if (this.project) {
+        this.project_name = project.name;
+        this.id_project = project._id;
+        this.getProjectById(this.id_project)
+        this.logger.log('[KNOWLEDGE BASES COMP] - GET CURRENT PROJECT - PROJECT-NAME ', this.project_name, ' PROJECT-ID ', this.id_project)
+      }
+    });
+  }
+
+  getProjectById(projectId) {
+    this.projectService.getProjectById(projectId).subscribe((project: any) => {
+      this.logger.log('[KNOWLEDGE BASES COMP] - GET PROJECT BY ID - PROJECT: ', project);
+
+      this.profile_name = project.profile.name
+      this.logger.log('[KNOWLEDGE BASES COMP] - GET PROJECT BY ID - profile_name: ', this.profile_name);
+
+    }, error => {
+      this.logger.error('[KNOWLEDGE BASES COMP] - GET PROJECT BY ID - ERROR ', error);
+    }, () => {
+      this.logger.log('[KNOWLEDGE BASES COMP] - GET PROJECT BY ID * COMPLETE * ');
+    
+    });
   }
 
   startPooling() {
@@ -93,7 +174,7 @@ export class KnowledgeBasesComponent implements OnInit {
 
   getKnowledgeBaseSettings() {
     this.kbService.getKbSettings().subscribe((kbSettings: KbSettings) => {
-      this.logger.debug("[KNOWLEDGE BASES COMP] get kbSettings: ", kbSettings);
+      this.logger.log("[KNOWLEDGE BASES COMP] get kbSettings: ", kbSettings);
       this.kbSettings = kbSettings;
       if (this.kbSettings.kbs.length < kbSettings.maxKbsNumber) {
         this.addButtonDisabled = false;
@@ -105,8 +186,9 @@ export class KnowledgeBasesComponent implements OnInit {
     }, (error) => {
       this.logger.error("[KNOWLEDGE BASES COMP] ERROR get kbSettings: ", error);
     }, () => {
-      this.logger.info("[KNOWLEDGE BASES COMP] get kbSettings *COMPLETE*");
+      this.logger.log("[KNOWLEDGE BASES COMP] get kbSettings *COMPLETE*");
       this.showSpinner = false;
+
     })
   }
 
@@ -157,9 +239,64 @@ export class KnowledgeBasesComponent implements OnInit {
     }, (error) => {
       this.logger.error("[KNOWLEDGE BASES COMP] ERROR add new kb: ", error);
     }, () => {
-      this.logger.info("[KNOWLEDGE BASES COMP] add new kb *COMPLETED*");
+      this.logger.log("[KNOWLEDGE BASES COMP] add new kb *COMPLETED*");
+
+      this.trackUserActioOnKB('Added Knowledge Base')
     })
   }
+
+  trackUserActioOnKB(event) {
+    if (!isDevMode()) {
+      if (window['analytics']) {
+        let userFullname = ''
+        if (this.CURRENT_USER.firstname && this.CURRENT_USER.lastname) {
+          userFullname = this.CURRENT_USER.firstname + ' ' + this.CURRENT_USER.lastname
+        } else if (this.CURRENT_USER.firstname && !this.CURRENT_USER.lastname) {
+          userFullname = this.CURRENT_USER.firstname
+        }
+
+        try {
+          window['analytics'].identify(this.CURRENT_USER._id, {
+            name: userFullname,
+            email: this.CURRENT_USER.email,
+            plan: this.profile_name
+
+          });
+        } catch (err) {
+          this.logger.error('identify Invite Sent Profile error', err);
+        }
+
+        try {
+          window['analytics'].track(event, {
+            "type": "organic",
+            "username": userFullname,
+            "email": this.CURRENT_USER.email,
+            'userId': this.CURRENT_USER._id,
+            'page': this.callingPage
+         
+          }, {
+            "context": {
+              "groupId": this.id_project
+            }
+          });
+        } catch (err) {
+          this.logger.error('track Invite Sent event error', err);
+        }
+
+        try {
+          window['analytics'].group(this.id_project, {
+            name: this.project_name,
+            plan: this.profile_name + ' plan',
+          });
+        } catch (err) {
+          this.logger.error('group Invite Sent error', err);
+        }
+      }
+    }
+
+  }
+
+
 
   saveKnowledgeBaseSettings() {
     this.kbService.saveKbSettings(this.kbSettings).subscribe(((savedSettings) => {
@@ -180,7 +317,8 @@ export class KnowledgeBasesComponent implements OnInit {
     }, (error) => {
       this.logger.error("[KNOWLEDGE BASES COMP] ERROR delete kb: ", error);
     }, () => {
-      this.logger.info("[KNOWLEDGE BASES COMP] delete kb *COMPLETE*");
+      this.logger.log("[KNOWLEDGE BASES COMP] delete kb *COMPLETE*");
+      this.trackUserActioOnKB('Deleted Knowledge Base')
     })
   }
 
@@ -204,7 +342,7 @@ export class KnowledgeBasesComponent implements OnInit {
   }
 
   checkAllStatuses() {
-    
+
     // SCANDALOSO - DA ELIMINARE IL PRIMA POSSIBILE
     // INDAGARE CON PUGLIA AI
     // Anche perchè ogni tanto risponde con tutti status 0 anche con 500ms di delay
@@ -226,7 +364,7 @@ export class KnowledgeBasesComponent implements OnInit {
     Promise.all(promises).then((response) => {
       this.logger.log("Promise All *COMPLETED* ", response);
     })
-  
+
   }
 
   checkStatus(kb) {
@@ -319,7 +457,7 @@ export class KnowledgeBasesComponent implements OnInit {
 
   closeAddKnowledgeBaseModal() {
     this.addKnowledgeBaseModal = 'none';
-    this.newKb = { name: '', url: ''}
+    this.newKb = { name: '', url: '' }
   }
 
   closePreviewKnowledgeBaseModal() {
