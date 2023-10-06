@@ -565,12 +565,13 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     // createBotsAndUsersArray() {
     this.usersService.getProjectUsersByProjectId().subscribe((_projectUsers: any) => {
       // this.logger.log('% »»» WebSocketJs WF WS-RL - +++ GET PROJECT-USERS ', projectUsers);
-     console.log('[WS-REQUESTS-LIST]- GET PROJECT-USERS RES ', _projectUsers);
+    //  console.log('[WS-REQUESTS-LIST]- GET PROJECT-USERS RES ', _projectUsers);
       if (_projectUsers) {
         this.project_users = _projectUsers
         this.project_user_length = _projectUsers.length;
-        this.logger.log('[WS-REQUESTS-LIST] - GET PROJECT-USERS LENGTH ', this.project_user_length);
-        // this.projectUserArray = _projectUsers;
+        // console.log('[WS-REQUESTS-LIST] - GET PROJECT-USERS LENGTH ', this.project_user_length);
+        // console.log('[WS-REQUESTS-LIST] - GET PROJECT-USERS project_users ', this.project_users);
+        this.projectUserArray = _projectUsers;
 
         _projectUsers.forEach(projectuser => {
 
@@ -594,7 +595,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
           this.wsRequestsService.subscriptionToWsAllProjectUsersOfTheProject(projectuser.id_user._id);
 
           // Commented nk 
-          // this.listenToAllProjectUsersOfProject$(projectuser)
+          this.listenToAllProjectUsersOfProject$(projectuser)
 
           this.createAgentAvatarInitialsAnfBckgrnd(projectuser.id_user)
 
@@ -634,7 +635,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
         takeUntil(this.unsubscribe$)
       )
       .subscribe((projectUser_from_ws_subscription) => {
-         console.log('[WS-REQUESTS-LIST] $UBSC TO WS PROJECT-USERS (listenTo) projectUser_from_ws_subscription', projectUser_from_ws_subscription);
+        //  console.log('[WS-REQUESTS-LIST] $UBSC TO WS PROJECT-USERS (listenTo) projectUser_from_ws_subscription', projectUser_from_ws_subscription);
         // this.logger.log('WS-REQUESTS-LIST PROJECT-USERS ', projectuser);
 
         if (projectuser['_id'] === projectUser_from_ws_subscription['_id']) {
@@ -686,11 +687,11 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
           if (departmentsCount > 1) {
             // console.log('»»» »»» DEPTS PAGE - DEPT)', dept);
             if (dept && dept.default !== true) {
-              console.log('[DEPTS] - GET DEPTS -  DEPT NAME: ', dept.name, 'dept object', dept);
+              // console.log('[DEPTS] - GET DEPTS -  DEPT NAME: ', dept.name, 'dept object', dept);
 
               if (!dept.id_group || dept.id_group === undefined) {
                 count = count + 1;
-                console.log('[WS-REQUESTS-LIST] display all teammates')
+                // console.log('[WS-REQUESTS-LIST] display all teammates')
               }
             }
           } else if (departmentsCount === 1) {
@@ -698,12 +699,12 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
 
             if (!dept.id_group || dept.id_group === undefined) {
-              console.log('[WS-REQUESTS-LIST] (only default dept) ')
+              // console.log('[WS-REQUESTS-LIST] (only default dept) ')
               count = count + 1;
             }
           }
         });
-        console.log('[DEPTS] - COUNT OF DEPT WITHOUT GROUP', count);
+        // console.log('[DEPTS] - COUNT OF DEPT WITHOUT GROUP', count);
         if (count > 0) {
           // this.DISPLAY_ALL_TEAMMATES_TO_AGENT = true;
           this.filteredProjectUsersArray = projectUserArray
@@ -723,16 +724,16 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   }
 
   getGroupsByProjectId(projectUserArray) {
-    console.log('[WS-REQUESTS-LIST] - GROUPS - ALL PROJECT USERS ', projectUserArray)
+    // console.log('[WS-REQUESTS-LIST] - GROUPS - ALL PROJECT USERS ', projectUserArray)
     this.groupService.getGroupsByProjectId().subscribe((groups: any) => {
-      console.log('[WS-REQUESTS-LIST] - GROUPS GET BY PROJECT ID', groups);
+      // console.log('[WS-REQUESTS-LIST] - GROUPS GET BY PROJECT ID', groups);
       const memberOfAllGroups = []
       if (groups) {
         this.groupsList = groups;
 
         // this.logger.log('[DEPT-EDIT-ADD] - GROUP ID SELECTED', this.selectedGroupId);
         this.groupsList.forEach(group => {
-          console.log('[WS-REQUESTS-LIST] - GROUP ', group);
+          // console.log('[WS-REQUESTS-LIST] - GROUP ', group);
 
           if (group.members.includes(this.currentUserID)) {
             // console.log('[WS-REQUESTS-LIST] - GROUPS MEMBERS INCLUDES CURRENT USER');
@@ -740,18 +741,18 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
               memberOfAllGroups.indexOf(member) === -1 ? memberOfAllGroups.push(member) : this.logger.log("PUSH MEMBER ID IN memberOfAllGroups : This item already exists");
             });
 
-            console.log('[WS-REQUESTS-LIST] - ARRAY OF ALL MEMBERS OF GROUPS ', memberOfAllGroups);
+            // console.log('[WS-REQUESTS-LIST] - ARRAY OF ALL MEMBERS OF GROUPS ', memberOfAllGroups);
 
             this.filteredProjectUsersArray = projectUserArray.filter(projectUser => memberOfAllGroups.includes(projectUser.id_user._id))
-            console.log('[WS-REQUESTS-LIST] - PROJECT USER FILTERED FOR MEMBERS OF THE GROUPS IN WICH IS PRESENT THE CURRENT USER ', this.filteredProjectUsersArray);
+            // console.log('[WS-REQUESTS-LIST] - PROJECT USER FILTERED FOR MEMBERS OF THE GROUPS IN WICH IS PRESENT THE CURRENT USER ', this.filteredProjectUsersArray);
           } else {
-            console.log('[WS-REQUESTS-LIST] - GROUPS MEMBERS NOT INCLUDES CURRENT USER  - SHOW ALL TEAMMATES');
+            // console.log('[WS-REQUESTS-LIST] - GROUPS MEMBERS NOT INCLUDES CURRENT USER  - SHOW ALL TEAMMATES');
             this.filteredProjectUsersArray = projectUserArray
           }
         });
 
       } else {
-        console.log('[WS-REQUESTS-LIST] - THE PROJECT NOT HAS GROUPS - SHOW ALL TEAMMATES');
+        // console.log('[WS-REQUESTS-LIST] - THE PROJECT NOT HAS GROUPS - SHOW ALL TEAMMATES');
         this.filteredProjectUsersArray = projectUserArray
       }
     }, (error) => {
@@ -1104,7 +1105,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   // DEPTS_LAZY: add this 
   addDeptObject(wsrequests) {
     this.departmentService.getDeptsByProjectIdToPromise().then((_departments: any) => {
-     console.log('[WS-REQUESTS-LIST] - (DEPTS_LAZY) GET DEPTS BY PROJECT-ID toPromise', _departments);
+    //  console.log('[WS-REQUESTS-LIST] - (DEPTS_LAZY) GET DEPTS BY PROJECT-ID toPromise', _departments);
 
       wsrequests.forEach(request => {
         if (request.department) {

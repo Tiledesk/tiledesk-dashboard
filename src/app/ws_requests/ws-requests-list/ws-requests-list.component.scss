@@ -720,12 +720,12 @@ $f21blue: #039be5;
 .middle-nw {
   float: left;
   // width: 90%;
-  width: 89%;
+  width: 91%;
   // overflow: auto;
   overflow: hidden;
   /*will change this to hidden later to deny scolling to user*/
   white-space: nowrap;
-  height: 60px;
+  // height: 60px;
 }
 
 // .teammates-with-picture-assigned-requests-count {
@@ -816,7 +816,7 @@ $f21blue: #039be5;
   align-items: center;
   justify-content: center;
   display: flex;
-  margin-top: 4px;
+  margin-top: 9px;
   background: #e4e6eb;
   border-radius: 50%;
   padding: 2px;
