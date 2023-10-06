@@ -289,7 +289,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         takeUntil(this.unsubscribe$)
       )
       .subscribe((project) => {
-        console.log('[HOME] $UBSCIBE TO PUBLISHED PROJECT - RES  --> ', project)
+        this.logger.log('[HOME] $UBSCIBE TO PUBLISHED PROJECT - RES  --> ', project)
 
         if (project) {
           this.project = project
@@ -316,7 +316,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   getProjectById(projectId) {
     this.projectService.getProjectById(projectId).subscribe((project: any) => {
-      console.log('[HOME] - GET PROJECT BY ID - PROJECT: ', project);
+      this.logger.log('[HOME] - GET PROJECT BY ID - PROJECT: ', project);
 
       if (project && project.attributes && project.attributes.userPreferences) {
         this.PROJECT_ATTRIBUTES = project.attributes;
@@ -630,8 +630,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.logger.log('[HOME] - trackUserAction ', event);
     const userAction = event.action
     const userActionRes = event.actionRes
-    console.log('[HOME] - trackUserAction userAction', userAction);
-    console.log('[HOME] - trackUserAction userActionRes', userActionRes);
+    this.logger.log('[HOME] - trackUserAction userAction', userAction);
+    this.logger.log('[HOME] - trackUserAction userActionRes', userActionRes);
     const trackObjct = {
       "type": "organic",
       "username": userFullname,
@@ -667,7 +667,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       trackObjct['category'] = userActionRes
     }
 
-    console.log('[HOME] - trackUserAction trackObjct', trackObjct);
+    this.logger.log('[HOME] - trackUserAction trackObjct', trackObjct);
     if (!isDevMode()) {
       try {
         window['analytics'].track(userAction, trackObjct);
@@ -1237,7 +1237,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   getApps() {
     this.appStoreService.getApps().subscribe((_apps: any) => {
       this.apps = _apps.apps;
-      console.log('[HOME] - getApps APPS ', this.apps);
+      this.logger.log('[HOME] - getApps APPS ', this.apps);
       this.apps.forEach(app => {
         if (app.title === "WhatsApp Business") {
 
@@ -1272,27 +1272,27 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.getInstallations().then((res: any) => {
 
         if (res) {
-          console.log("[HOME] getInstallations res: ", res)
-          console.log("[HOME] getInstallations - whatsAppIsInstalled ", this.whatsAppIsInstalled)
-          console.log("[HOME] getInstallations - solution_channel ", this.solution_channel_for_child)
-          console.log('[HOME] getInstallations - whatsAppAppId ', this.whatsAppAppId)
-          console.log("[HOME] getInstallations - userHasUnistalledWa ", this.userHasUnistalledWa)
-          console.log("[HOME] getInstallations - solution_channel_for_child ", this.solution_channel_for_child)
+          this.logger.log("[HOME] getInstallations res: ", res)
+          this.logger.log("[HOME] getInstallations - whatsAppIsInstalled ", this.whatsAppIsInstalled)
+          this.logger.log("[HOME] getInstallations - solution_channel ", this.solution_channel_for_child)
+          this.logger.log('[HOME] getInstallations - whatsAppAppId ', this.whatsAppAppId)
+          this.logger.log("[HOME] getInstallations - userHasUnistalledWa ", this.userHasUnistalledWa)
+          this.logger.log("[HOME] getInstallations - solution_channel_for_child ", this.solution_channel_for_child)
           if (res.length > 0) {
-            console.log("[HOME] USE CASE RES > 0 ", this.solution_channel_for_child)
+            this.logger.log("[HOME] USE CASE RES > 0 ", this.solution_channel_for_child)
             const WAInstallationIndex = res.findIndex((e) => e.app_id === this.whatsAppAppId);
-            console.log('[HOME] getInstallations WA app index', WAInstallationIndex)
+            this.logger.log('[HOME] getInstallations WA app index', WAInstallationIndex)
             if (WAInstallationIndex === -1) {
               this.whatsAppIsInstalled = false;
-              console.log('HERE YES 1 whatsAppIsInstalled ', this.whatsAppIsInstalled)
+              this.logger.log('HERE YES 1 whatsAppIsInstalled ', this.whatsAppIsInstalled)
               if (this.userHasUnistalledWa === false) {
-                console.log("[HOME] getInstallations - userHasUnistalledWa 2 ", this.userHasUnistalledWa)
+                this.logger.log("[HOME] getInstallations - userHasUnistalledWa 2 ", this.userHasUnistalledWa)
                 if (this.solution_channel_for_child === 'whatsapp_fb_messenger') {
                   this.installApp();
                 }
               }
             } else {
-              console.log('HERE YES 2 whatsAppIsInstalled ', this.whatsAppIsInstalled)
+              this.logger.log('HERE YES 2 whatsAppIsInstalled ', this.whatsAppIsInstalled)
               this.whatsAppIsInstalled = true
             
 
@@ -1397,9 +1397,9 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     }
 
-    console.log('[HOME] appId installApp', this.whatsAppAppId)
-    console.log('[HOME] app app version installApp', this.appVersion)
-    console.log('[HOME] installationType installApp', this.installActionType);
+    this.logger.log('[HOME] appId installApp', this.whatsAppAppId)
+    this.logger.log('[HOME] app app version installApp', this.appVersion)
+    this.logger.log('[HOME] installationType installApp', this.installActionType);
 
     this.installV2App(this.projectId, this.whatsAppAppId)
 
@@ -1408,7 +1408,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   installV2App(projectId, appId) {
     this.appStoreService.installAppVersionTwo(projectId, appId).subscribe((res: any) => {
-      console.log('[HOME] INSTALL V2 APP ', projectId, appId)
+      this.logger.log('[HOME] INSTALL V2 APP ', projectId, appId)
 
     }, (error) => {
       this.logger.error('[HOME] INSTALL V2 APP - ERROR  ', error);

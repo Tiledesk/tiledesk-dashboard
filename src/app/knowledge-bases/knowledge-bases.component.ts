@@ -335,7 +335,7 @@ export class KnowledgeBasesComponent implements OnInit {
       gptkey: this.kbSettings.gptkey
     }
     this.openaiService.startScraping(data).subscribe((response: any) => {
-      console.log("start scraping response: ", response);
+      this.logger.log("start scraping response: ", response);
       if (response.message && response.message === "Invalid Openai API key") {
         this.notify.showWidgetStyleUpdateNotification("Invalid Openai API key", 4, 'report_problem');
       }

@@ -97,7 +97,7 @@ export class InstallTemplateComponent extends WidgetSetUpBaseComponent implement
   getParamsTemplatesAndProjects() {
     this.route.params.subscribe((params) => {
 
-      console.log('[INSTALL-TEMPLATE] params ', params)
+      // console.log('[INSTALL-TEMPLATE] params ', params)
       this.projectId = params.projectid;
       // this.logger.log('[INSTALL-TEMPLATE] projectId ', this.projectId)
       this.botId = params.botid;
