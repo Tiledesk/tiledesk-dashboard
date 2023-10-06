@@ -74,8 +74,11 @@
     (click)='goToNoRealtimeConversations()'>
     <a attr.aria-label="{{ 'GoToNotRealTimeRequests' | translate }}" href="javascript:;" role="button" class="tool_tip"
       style="cursor: pointer; display: unset;" [ngClass]="{ 'has-reached-100' : served_unserved_sum >= 100 }"
-      matTooltipClass="mat-white-tooltip" matTooltip="{{'ClickHereForMoreAdvancedSearches' | translate}}"
-      #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
+      matTooltipClass="mat-white-tooltip" 
+      matTooltip="{{'ClickHereForMoreAdvancedSearches' | translate}}"
+      #tooltip="matTooltip" 
+      matTooltipPosition='below'
+      matTooltipHideDelay="100">
       <span aria-hidden="true" class="material-icons" style="margin-top: 3px; color:#3ea9f5; font-size: 27px;
       position: relative;
       top: -3px;">
@@ -416,7 +419,12 @@
                     <ng-container class="all-teammates" >
                       <div class="served-by-conv-b" *ngFor="let agent of projectUserArray">
 
-                        <div class="served-by-conv-c tool_tip">
+                        <div class="served-by-conv-c"
+                          matTooltipClass="conv-custom-mat-tooltip" 
+                          matTooltip="{{ agent?.id_user?.firstname }}  {{ agent?.id_user?.lastname }}"
+                          #tooltip="matTooltip" 
+                          matTooltipPosition='above'
+                          matTooltipHideDelay="100">
                           <div class="served-by-conv-d">
 
                         
@@ -464,7 +472,7 @@
                             </div>
                           </div>
 
-                          <span style="min-width: fit-content;
+                          <!-- <span style="min-width: fit-content;
                           white-space: nowrap;
                           top: 34px;
                           padding: 1px 4px;
@@ -478,7 +486,7 @@
 
                             </span>
                            
-                          </span>
+                          </span> -->
 
                         </div>
                       </div>
