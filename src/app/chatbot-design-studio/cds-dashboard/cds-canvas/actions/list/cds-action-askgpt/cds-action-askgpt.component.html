@@ -20,7 +20,8 @@
             <span class="material-icons-outlined" style="color: #827e71; font-size: 20px;">school</span>
         </div>
         <div *ngIf="action?.kbid" class="action-row-right">
-            {{getValue('name')}}
+            <!-- {{getValue('name')}} -->
+            {{action?.kbName}}
         </div>
         <div *ngIf="!action?.kbid" class="action-row-right empty">
             Select Knowledge Base

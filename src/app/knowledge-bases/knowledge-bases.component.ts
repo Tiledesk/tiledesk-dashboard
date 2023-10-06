@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'app/core/auth.service';
+import { NotifyService } from 'app/core/notify.service';
 import { KB, KbSettings } from 'app/models/kbsettings-model';
 import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
 import { LoggerService } from 'app/services/logger/logger.service';
@@ -56,7 +57,8 @@ export class KnowledgeBasesComponent implements OnInit {
     private formBuilder: FormBuilder,
     private logger: LoggerService,
     private openaiService: OpenaiService,
-    private kbService: KnowledgeBaseService
+    private kbService: KnowledgeBaseService,
+    private notify: NotifyService
   ) { }
 
   ngOnInit(): void {
@@ -135,17 +137,23 @@ export class KnowledgeBasesComponent implements OnInit {
 
   saveKnowledgeBase() {
 
-    let first_index = this.newKb.url.indexOf('://') + 3;
-    let second_index = this.newKb.url.indexOf('www.') + 4;
+    let first_index = this.newKb.url.indexOf('://');
+    let second_index = this.newKb.url.indexOf('www.');
+
     let split_index;
-    if (second_index > first_index) {
-      split_index = second_index;
+    if (first_index !== -1 || first_index !== -1) {
+      if (second_index > first_index) {
+        split_index = second_index + 4;
+      } else {
+        split_index = first_index + 3;
+      }
+      this.newKb.name = this.newKb.url.substring(split_index);
     } else {
-      split_index = first_index;
+      this.newKb.name = this.newKb.url;
     }
-    this.newKb.name = this.newKb.url.substring(split_index);
 
     this.kbService.addNewKb(this.kbSettings._id, this.newKb).subscribe((savedSettings: KbSettings) => {
+      this.runIndexing(this.newKb);
       this.getKnowledgeBaseSettings();
       let kb = savedSettings.kbs.find(kb => kb.url === this.newKb.url);
       this.checkStatus(kb).then((status_code) => {
@@ -189,8 +197,11 @@ export class KnowledgeBasesComponent implements OnInit {
       full_url: kb.url,
       gptkey: this.kbSettings.gptkey
     }
-    this.openaiService.startScraping(data).subscribe((response) => {
+    this.openaiService.startScraping(data).subscribe((response: any) => {
       console.log("start scraping response: ", response);
+      if (response.message && response.message === "Invalid Openai API key") {
+        this.notify.showWidgetStyleUpdateNotification("Invalid Openai API key", 4, 'report_problem');
+      }
       setTimeout(() => {
         this.checkStatus(kb).then((status_code: number) => {
           kb.status = status_code;
