@@ -1369,9 +1369,10 @@ export class AuthService {
         }
         // Segments
         try {
-          window['analytics'].track('Signed In Sign in with Google', {
+          window['analytics'].track('Signed In', {
             "username": userFullname,
-            "userId": user._id
+            "userId": user._id,
+            'method': "Sign in with Google"
           });
         } catch (err) {
           this.logger.error('track Sign in with Google event error', err);

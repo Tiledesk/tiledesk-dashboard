@@ -630,8 +630,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.logger.log('[HOME] - trackUserAction ', event);
     const userAction = event.action
     const userActionRes = event.actionRes
-    this.logger.log('[HOME] - trackUserAction userAction', userAction);
-    this.logger.log('[HOME] - trackUserAction userActionRes', userActionRes);
+    console.log('[HOME] - trackUserAction userAction', userAction);
+    console.log('[HOME] - trackUserAction userActionRes', userActionRes);
     const trackObjct = {
       "type": "organic",
       "username": userFullname,
@@ -663,7 +663,11 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       trackObjct['button'] = "Connect"
     }
 
-    this.logger.log('[HOME] - trackUserAction trackObjct', trackObjct);
+    if (userAction === 'Explore Templates' &&  userActionRes !== null) {
+      trackObjct['category'] = userActionRes
+    }
+
+    console.log('[HOME] - trackUserAction trackObjct', trackObjct);
     if (!isDevMode()) {
       try {
         window['analytics'].track(userAction, trackObjct);

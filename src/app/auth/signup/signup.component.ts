@@ -504,6 +504,8 @@ export class SignupComponent implements OnInit, AfterViewInit {
         this.logger.log('[SIGN-UP] Lastname ', this.userForm.value['lastName']);
         this.logger.log('[SIGN-UP] POST DATA ', signupResponse);
         if (signupResponse['success'] === true) {
+
+          // this.localDbService.setInStorage('signedup', 'true')
           // this.router.navigate(['/welcome']);
           this.logger.log('[SIGN-UP] RES ', signupResponse);
           const userEmail = signupResponse.user.email

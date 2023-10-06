@@ -354,18 +354,19 @@ export class HomeCreateChatbotComponent implements OnInit, OnChanges {
     } else if (this.use_case_for_child === 'increase_online_sales') {
       this.router.navigate(['project/' + this.projectId + '/bots/templates/increase-sales']);
     } else if (this.use_case_for_child === undefined) {
+      this.trackUserAction.emit({action:'Explore Templates', actionRes: 'All' })
       this.router.navigate(['project/' + this.projectId + '/bots/templates/all']);
     }
     localStorage.setItem('wawizard', 'hookbot')
   }
 
   goToIncreaseSalesTemplates() {
-    // this.trackUserAction.emit({action:'Home', actionRes: 'Explore Increase Sales Templates' })
+    this.trackUserAction.emit({action:'Explore Templates', actionRes: 'Increase Sales' })
     this.router.navigate(['project/' + this.projectId + '/bots/templates/increase-sales']);
   }
 
   goToCustomerSatisfactionTemplates() {
-    // this.trackUserAction.emit({action:'Home',actionRes: 'Explore Customer Satisfaction Templates' })
+    this.trackUserAction.emit({action:'Explore Templates', actionRes: 'Customer Satisfaction' })
     this.router.navigate(['project/' + this.projectId + '/bots/templates/customer-satisfaction']);
   }
 

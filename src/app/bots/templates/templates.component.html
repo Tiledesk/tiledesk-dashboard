@@ -522,7 +522,7 @@
                                                                     <div class="css-1pwjctj cmnty-tmplt-content"
                                                                         *ngIf="template.tags">
                                                                         <div class="css-1limyoz cmnty-tmplt-tag-wpr"
-                                                                            *ngFor="let tag of template.tags">
+                                                                            *ngFor="let tag of template.tags | slice:0:3; let i=index">
                                                                             <div class="css-14z49fr cmnty-tmplt-tag">
                                                                                 <div
                                                                                     class="css-53dz3e cmnty-tmplt-tag-content-wpr">
@@ -539,6 +539,10 @@
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
+                                                                           
+                                                                        </div>
+                                                                        <div *ngIf="template?.tags?.length > 3">
+                                                                            + {{ template?.tags?.length - 3 }}
                                                                         </div>
 
 

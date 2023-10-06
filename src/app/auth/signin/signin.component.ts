@@ -275,6 +275,7 @@ export class SigninComponent implements OnInit {
     this.logger.log('[SIGN-IN] email ', this.userForm.value['email'])
     this.auth.signin(this.userForm.value['email'], this.userForm.value['password'], this.appConfigService.getConfig().SERVER_BASE_URL, (error, user) => {
       if (!error) {
+        // this.localDbService.removeFromStorage('signedup')
         // console.log('[SIGN-IN] SSO (Signin) - user', user);
         // this.localDbService.removeFromStorage('hpea');
         if (!isDevMode()) {
@@ -308,7 +309,8 @@ export class SigninComponent implements OnInit {
             try {
               window['analytics'].track('Signed In', {
                 "username": userFullname,
-                "userId": user._id
+                "userId": user._id,
+                'method': "Email and Password"
               });
             } catch (err) {
               this.logger.error('track signin event error', err);

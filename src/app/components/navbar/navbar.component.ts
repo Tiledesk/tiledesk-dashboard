@@ -570,7 +570,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     this.router.events
       .subscribe((event: NavigationEvent) => {
         if (event instanceof NavigationEnd) {
-          // console.log('[NAVBAR]  NavigationEnd ', event.url);
+          console.log('[NAVBAR]  NavigationEnd ', event.url);
 
           /** HIDE THE PLAN NAME IF THE ROUTE ACTIVE IS THE HOME */
           if (event.url.indexOf('/home') !== -1) {
@@ -616,6 +616,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
 
     this.router.events.subscribe((val) => {
+      
       if (this.location.path() !== '') {
         this.route = this.location.path();
         // this.logger.log('»> »> »> NAVBAR ROUTE DETECTED »> ', this.route)
@@ -648,6 +649,22 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
           // this.logger.log('»> »> »> NAVBAR ROUTE DETECTED  »> ', this.route, 'HIDE PENDING_EMAIL_NOTIFICATION ', this.HIDE_PENDING_EMAIL_NOTIFICATION)
         }
 
+        // const navigationEndVal = val instanceof NavigationEnd
+        // console.log('[NAVBAR] navigationEndVal ' ,navigationEndVal  )
+
+        // if (navigationEndVal) {
+        //   const hasSignedup = this.localDbService.getFromStorage('signedup')
+        //   console.log('[NAVBAR] hasSignedup ', hasSignedup) 
+        //   if (hasSignedup) {
+        //     this.HIDE_PENDING_EMAIL_NOTIFICATION = true;
+
+        //     console.log('[NAVBAR] HIDE_PENDING_EMAIL_NOTIFICATION ' ,this.HIDE_PENDING_EMAIL_NOTIFICATION  )
+        //   }
+        // }
+
+       
+
+
         // if (this.route === '/login') {
         //     this.logger.log('»> »> »> NAVBAR ROUTE DETECTED  »> ', this.route)
         //     // this.DETECTED_LOGIN_PAGE = true;
@@ -667,6 +684,8 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
         // }
       }
     });
+
+   
   }
 
   /**
