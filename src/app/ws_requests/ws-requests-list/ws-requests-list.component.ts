@@ -565,12 +565,13 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     // createBotsAndUsersArray() {
     this.usersService.getProjectUsersByProjectId().subscribe((_projectUsers: any) => {
       // this.logger.log('% »»» WebSocketJs WF WS-RL - +++ GET PROJECT-USERS ', projectUsers);
-      this.logger.log('[WS-REQUESTS-LIST]- GET PROJECT-USERS RES ', _projectUsers);
+    //  console.log('[WS-REQUESTS-LIST]- GET PROJECT-USERS RES ', _projectUsers);
       if (_projectUsers) {
         this.project_users = _projectUsers
         this.project_user_length = _projectUsers.length;
-        this.logger.log('[WS-REQUESTS-LIST] - GET PROJECT-USERS LENGTH ', this.project_user_length);
-        // this.projectUserArray = _projectUsers;
+        // console.log('[WS-REQUESTS-LIST] - GET PROJECT-USERS LENGTH ', this.project_user_length);
+        // console.log('[WS-REQUESTS-LIST] - GET PROJECT-USERS project_users ', this.project_users);
+        this.projectUserArray = _projectUsers;
 
         _projectUsers.forEach(projectuser => {
 
@@ -593,6 +594,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
           this.wsRequestsService.subscriptionToWsAllProjectUsersOfTheProject(projectuser.id_user._id);
 
+         
           this.listenToAllProjectUsersOfProject$(projectuser)
 
           this.createAgentAvatarInitialsAnfBckgrnd(projectuser.id_user)
@@ -633,7 +635,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
         takeUntil(this.unsubscribe$)
       )
       .subscribe((projectUser_from_ws_subscription) => {
-        // console.log('[WS-REQUESTS-LIST] $UBSC TO WS PROJECT-USERS (listenTo) projectUser_from_ws_subscription', projectUser_from_ws_subscription);
+        //  console.log('[WS-REQUESTS-LIST] $UBSC TO WS PROJECT-USERS (listenTo) projectUser_from_ws_subscription', projectUser_from_ws_subscription);
         // this.logger.log('WS-REQUESTS-LIST PROJECT-USERS ', projectuser);
 
         if (projectuser['_id'] === projectUser_from_ws_subscription['_id']) {
@@ -658,8 +660,8 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
         this.projectUserArray = this.tempProjectUserArray;
         // console.log('[WS-REQUESTS-LIST] this.projectUserArray ', this.projectUserArray)
 
-
-        this.getDeptsByProjectId(this.projectUserArray)
+        // COMMENTED NK
+        // this.getDeptsByProjectId(this.projectUserArray)
 
       }, (error) => {
         this.logger.error('[WS-REQUESTS-LIST] $UBSC TO WS PROJECT-USERS - ERROR ', error);
@@ -1103,7 +1105,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   // DEPTS_LAZY: add this 
   addDeptObject(wsrequests) {
     this.departmentService.getDeptsByProjectIdToPromise().then((_departments: any) => {
-      this.logger.log('[WS-REQUESTS-LIST] - (DEPTS_LAZY) GET DEPTS BY PROJECT-ID toPromise', _departments);
+    //  console.log('[WS-REQUESTS-LIST] - (DEPTS_LAZY) GET DEPTS BY PROJECT-ID toPromise', _departments);
 
       wsrequests.forEach(request => {
         if (request.department) {

@@ -264,8 +264,6 @@
     <!-- style="padding-left: 10px !important;" -->
     <div class="row">
       <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
-
-
         <!-- // --- Test - COUNT OF REQUESTS: ACTIVE, SERVED & UNSERVED as graph -->
         <!-- style="display: none;" -->
         <!-- ---------------------------------------------------------- -->
@@ -334,34 +332,6 @@
           </div> <!-- ./ col-xs-4 -->
 
           <div class="col-xs-7" style="margin-top: 8px;">
-            <!-- <div class="card" style="margin-top:0px"> -->
-            <!-- <div class="card-content"> -->
-            <!-- <div class="requests-chart-container" style="  width: 150px; height: 150px;float: left;"> -->
-            <!-- <canvas id="doughnutChart"></canvas> -->
-
-
-            <!-- // questo è buono -->
-            <!-- <div class="stackedbar-wpr" style="height:80px;">
-              <canvas id="stackedbarChart"></canvas>
-            </div> -->
-
-
-            <!-- <canvas id="MyChart" width="200" height="100"></canvas> -->
-
-            <!-- <div class="grid-container">
-                    <div class="requests-graph">
-                      <div class="graph-wrapper" style=" width:50%;
-                        display:block;
-                        overflow:hidden;
-                        /* margin:0 auto; */
-                        /* padding: 60px 50px; */
-                        max-height: 200px;
-                        background:#fff;
-                        border-radius:4px;">
-                        <canvas id="stacked"></canvas>
-                      </div>
-
-                  </div> -->
 
             <div class="row" style="margin-bottom: 16px;">
               <div class="col-sm-12 filter-convs-title-wpr">
@@ -431,24 +401,25 @@
           <!-- (ROLE_IS_AGENT === false) || (ROLE_IS_AGENT === true && DISPLAY_ALL_TEAMMATES_TO_AGENT) -->
           <!-- the last: ngIf="ROLE_IS_AGENT === false" -->
           <!--  -------------------------------------------------------------------------------------- -->
-          <div class="col-xs-12" style="padding-right: 5px;">
+           <div class="col-xs-12" style="padding-right: 5px;">
             <div class="card card--no-border" style="margin: 5px 0;margin-top: 8px;">
               <div class="card-content"
                 style="padding-top: 0px;padding-left: 0px;padding-right: 0px;padding-bottom: 0px;">
                 <div style="float: left" class="scroll-div-side-btn">
-                  <!-- <button (click)="scrollLeftTeammates()">left</button> -->
+                 
                   <i class="material-icons" (click)="scrollLeftTeammates()">keyboard_arrow_left</i>
                 </div>
 
                 <div #widgetsContent class="middle-nw">
                   <div class="served-by-conv-a" *ngIf="showRealTeammates === true">
-                    <ng-container class="all-teammates" *ngIf="ONLY_MY_REQUESTS === false">
+                    <!-- *ngIf="ONLY_MY_REQUESTS === false" -->
+                    <ng-container class="all-teammates" >
                       <div class="served-by-conv-b" *ngFor="let agent of projectUserArray">
 
                         <div class="served-by-conv-c tool_tip">
                           <div class="served-by-conv-d">
 
-                            <!-- {{ agent?.id_user?.firstname }} hasImage {{agent.hasImage }} -->
+                        
                             <div *ngIf="agent?.hasImage" size="42" class="served-by-conv-e">
 
                               <!-- ---------------------------------------- -->
@@ -476,7 +447,6 @@
                             <!-- ---------------------------------------- -->
                             <!-- Usecase No profile image -->
                             <!-- ---------------------------------------- -->
-                            <!-- [ngStyle]="{'background-color': agent?.id_user?.fillColour }"  -->
                             <div *ngIf="!agent?.hasImage" size="42" class="served-by-conv-e">
                               <div class="altenative-conv-avatar-wrap" style="width: 43px; height: 43px; top: -1px;"
                                 [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + agent?.id_user?.fillColour + ')'}">
@@ -485,9 +455,7 @@
                                   {{ agent?.id_user?.fullname_initial }}
                                 </span>
 
-                                <!-- <div class="teammates-no-picture-assigned_requests_count">
-                                {{agent?.number_assigned_requests_rt}}
-                              </div> -->
+                          
                                 <div class="teammates-no-picture-status-icon"
                                   [ngClass]="{'is-user-online': agent?.user_available_rt === true, 'is-user-offline':agent?.user_available_rt === false   }">
                                 </div>
@@ -509,7 +477,7 @@
                               </span>
 
                             </span>
-                            <!-- <i></i> -->
+                           
                           </span>
 
                         </div>
@@ -518,25 +486,25 @@
                     <!-- ------------------------------------------------------------------ -->
                     <!-- teammates of the groups to which the current user belongs -->
                     <!-- ------------------------------------------------------------------ -->
-                    <ng-container class="curren-user-teammates" *ngIf="ONLY_MY_REQUESTS === true">
+                    <!-- <ng-container class="curren-user-teammates" *ngIf="ONLY_MY_REQUESTS === true">
                       <div class="served-by-conv-b" *ngFor="let agent of filteredProjectUsersArray">
 
                         <div class="served-by-conv-c tool_tip">
                           <div class="served-by-conv-d">
 
-                            <!-- {{ agent?.id_user?.firstname }} hasImage {{agent.hasImage }} -->
+                           
                             <div *ngIf="agent?.hasImage" size="42" class="served-by-conv-e">
 
-                              <!-- ---------------------------------------- -->
-                              <!-- Usecase Firebase -->
-                              <!-- ---------------------------------------- -->
+                              <!- - ---------------------------------------- - ->
+                              <!- - Usecase Firebase - ->
+                              <!- - ---------------------------------------- - ->
                               <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE"
                                 src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?.id_user._id}}%2Fphoto.jpg?alt=media"
                                 alt="" onerror="this.src='assets/img/no_image_user.png'">
 
-                              <!-- ---------------------------------------- -->
-                              <!-- Usecase Native -->
-                              <!-- ---------------------------------------- -->
+                              <!- - ---------------------------------------- - ->
+                              <!- - Usecase Native - ->
+                              <!- - ---------------------------------------- - ->
                               <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE"
                                 src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?.id_user._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                                 alt="" onerror="this.src='assets/img/no_image_user.png'">
@@ -546,10 +514,9 @@
                               </div>
                             </div>
 
-                            <!-- ---------------------------------------- -->
-                            <!-- Usecase No profile image -->
-                            <!-- ---------------------------------------- -->
-                            <!-- [ngStyle]="{'background-color': agent?.id_user?.fillColour }"  -->
+                            <!- - ---------------------------------------- - ->
+                            <!- - Usecase No profile image - ->
+                            <!- - ---------------------------------------- - ->
                             <div *ngIf="!agent?.hasImage" size="42" class="served-by-conv-e">
                               <div class="altenative-conv-avatar-wrap" style="width: 43px; height: 43px; top: -1px;"
                                 [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + agent?.id_user?.fillColour + ')'}">
@@ -557,10 +524,6 @@
                                 <span class="altenative-conv-avatar" style="line-height: 40px;">
                                   {{ agent?.id_user?.fullname_initial }}
                                 </span>
-
-                                <!-- <div class="teammates-no-picture-assigned_requests_count">
-                                {{agent?.number_assigned_requests_rt}}
-                              </div> -->
                                 <div class="teammates-no-picture-status-icon"
                                   [ngClass]="{'is-user-online': agent?.user_available_rt === true, 'is-user-offline':agent?.user_available_rt === false   }">
                                 </div>
@@ -580,15 +543,11 @@
                               <span *ngIf="agent?.id_user?.lastname">
                                 {{ agent?.id_user?.lastname | slice:0:1 }}.
                               </span>
-
                             </span>
-                            <!-- <i></i> -->
                           </span>
-
                         </div>
                       </div>
-                    </ng-container>
-
+                    </ng-container> -->
                   </div>
 
                   <!-- ---------------------------------------------- -->
@@ -599,10 +558,7 @@
 
                       <div class="served-by-conv-c tool_tip">
                         <div class="served-by-conv-d">
-
-                          <!-- {{ agent?.id_user?.firstname }} hasImage {{agent.hasImage }} -->
                           <div size="42" class="served-by-conv-e">
-                            <!-- {{  agent.hasImage }} -->
                             <div class="skeleton-img"> </div>
 
                           </div>
@@ -611,18 +567,15 @@
                     </div>
                   </div>
                 </div>
-
-
-
                 <div style="float: right" class="scroll-div-side-btn">
-                  <!-- <button (click)="scrollRightTeammates()">right</button> -->
                   <i class="material-icons" (click)="scrollRightTeammates()">keyboard_arrow_right</i>
                 </div>
 
               </div>
             </div>
-          </div>
-          <!-- /.new ********* -->
+          </div>  
+          <!-- .END HERE -->
+         
         </div>
       </div>
 
