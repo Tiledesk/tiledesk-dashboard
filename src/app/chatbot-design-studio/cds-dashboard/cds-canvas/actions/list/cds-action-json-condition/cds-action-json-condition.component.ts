@@ -7,6 +7,7 @@ import { SatPopover } from '@ncstate/sat-popover';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { IntentService } from 'app/chatbot-design-studio/services/intent.service';
 import { ConnectorService } from 'app/chatbot-design-studio/services/connector.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'cds-action-json-condition',
@@ -38,6 +39,7 @@ export class CdsActionJsonConditionComponent implements OnInit {
   connector: any;
   
   listOfIntents: Array<{name: string, value: string, icon?:string}>;
+  private subscriptionChangedConnector: Subscription;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -47,11 +49,18 @@ export class CdsActionJsonConditionComponent implements OnInit {
     ) { }
 
   ngOnInit(): void {
-    this.intentService.isChangedConnector$.subscribe((connector: any) => {
+    this.subscriptionChangedConnector = this.intentService.isChangedConnector$.subscribe((connector: any) => {
       this.logger.log('CdsActionJsonConditionComponent isChangedConnector-->', connector);
       this.connector = connector;
       this.updateConnector();
     });
+  }
+
+  /** */
+  ngOnDestroy() {
+    if (this.subscriptionChangedConnector) {
+      this.subscriptionChangedConnector.unsubscribe();
+    }
   }
 
   ngOnChanges() {

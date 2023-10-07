@@ -7,7 +7,7 @@ import { OpenaiService } from 'app/services/openai.service';
 import { IntentService } from 'app/chatbot-design-studio/services/intent.service';
 import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
 import { AppConfigService } from 'app/services/app-config.service';
-
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'cds-action-askgpt',
@@ -50,6 +50,7 @@ export class CdsActionAskgptComponent implements OnInit {
   idBot: string;
   variableListUserDefined: Array<{ name: string, value: string }> // = variableList.userDefined 
   spinner: boolean = false;
+  private subscriptionChangedConnector: Subscription;
 
   constructor(
     private logger: LoggerService,
@@ -63,7 +64,7 @@ export class CdsActionAskgptComponent implements OnInit {
   ngOnInit(): void {
     this.logger.debug("[ACTION-ASKGPT] action detail: ", this.action);
 
-    this.intentService.isChangedConnector$.subscribe((connector: any) => {
+    this.subscriptionChangedConnector = this.intentService.isChangedConnector$.subscribe((connector: any) => {
       this.logger.debug('[ACTION-ASKGPT] isChangedConnector -->', connector);
       this.connector = connector;
       this.updateConnector();
@@ -77,6 +78,13 @@ export class CdsActionAskgptComponent implements OnInit {
   ngOnChanges(changes: SimpleChanges) {
     if(this.intentSelected){
       this.initializeConnector();
+    }
+  }
+
+  /** */
+  ngOnDestroy() {
+    if (this.subscriptionChangedConnector) {
+      this.subscriptionChangedConnector.unsubscribe();
     }
   }
 

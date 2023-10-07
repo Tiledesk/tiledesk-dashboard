@@ -8,6 +8,7 @@ import { TYPE_BUTTON, generateShortUID } from 'app/chatbot-design-studio/utils';
 import { IntentService } from 'app/chatbot-design-studio/services/intent.service';
 import { ConnectorService } from 'app/chatbot-design-studio/services/connector.service';
 import { LoggerService } from 'app/services/logger/logger.service';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -44,6 +45,7 @@ export class CdsActionReplyTextComponent implements OnInit {
   booleanOperators = [ { type: 'AND', operator: 'AND'},{ type: 'OR', operator: 'OR'},];
   // Buttons //
   buttons: Array<Button>;
+  private subscriptionChangedConnector: Subscription;
 
 
   constructor(
@@ -57,6 +59,12 @@ export class CdsActionReplyTextComponent implements OnInit {
     this.initialize();
   }
 
+  /** */
+  ngOnDestroy() {
+    if (this.subscriptionChangedConnector) {
+      this.subscriptionChangedConnector.unsubscribe();
+    }
+  }
   // ngOnChanges(changes: SimpleChanges): void {
   //   this.logger.log('CdsActionReplyTextComponent ngOnChanges:: ', this.response);
   // }
@@ -66,7 +74,7 @@ export class CdsActionReplyTextComponent implements OnInit {
   private initialize(){
     this.delayTime = (this.wait && this.wait.time)? (this.wait.time/1000) : 500;
     this.checkButtons();
-    this.intentService.isChangedConnector$.subscribe((connector: any) => {
+    this.subscriptionChangedConnector = this.intentService.isChangedConnector$.subscribe((connector: any) => {
       this.logger.log('[CdsActionReplyTextComponent] isChangedConnector-->', connector);
       this.connector = connector;
       this.updateConnector();
@@ -124,7 +132,7 @@ export class CdsActionReplyTextComponent implements OnInit {
           buttonChanged.__idConnector = this.connector.fromId;
           buttonChanged.action = '';
           buttonChanged.type = TYPE_BUTTON.TEXT;
-          this.updateIntentFromConnectorModification.emit(this.connector.id);
+          if(this.connector.notify)this.updateIntentFromConnectorModification.emit(this.connector.id);
           // this.changeActionReply.emit();
         } else {
           // ADD / EDIT
@@ -135,7 +143,7 @@ export class CdsActionReplyTextComponent implements OnInit {
           this.logger.log(' -> updateConnector :: ', this.buttons);
           if(!buttonChanged.__isConnected){
             buttonChanged.__isConnected = true;
-            this.updateIntentFromConnectorModification.emit(this.connector.id);
+            if(this.connector.notify)this.updateIntentFromConnectorModification.emit(this.connector.id);
             // this.changeActionReply.emit();
           } 
         }

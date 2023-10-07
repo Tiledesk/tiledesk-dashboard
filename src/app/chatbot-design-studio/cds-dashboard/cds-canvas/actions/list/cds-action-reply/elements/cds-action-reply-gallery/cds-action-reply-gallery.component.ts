@@ -6,6 +6,7 @@ import { IntentService } from 'app/chatbot-design-studio/services/intent.service
 import { TYPE_ACTION, TYPE_BUTTON, TYPE_URL, generateShortUID } from 'app/chatbot-design-studio/utils';
 import { Button, Expression, GalleryElement, Message, Wait, Metadata, MessageAttributes } from 'app/models/intent-model';
 import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'cds-action-reply-gallery',
@@ -42,6 +43,7 @@ export class CdsActionReplyGalleryComponent implements OnInit {
   activateEL: { [key: number]: {title: boolean, description: boolean} } = {};
   // Buttons //
   buttons: Array<Button>;
+  private subscriptionChangedConnector: Subscription;
 
   constructor(
     private logger: LoggerService,
@@ -56,6 +58,13 @@ export class CdsActionReplyGalleryComponent implements OnInit {
     this.initialize();
   }
 
+  /** */
+  ngOnDestroy() {
+    if (this.subscriptionChangedConnector) {
+      this.subscriptionChangedConnector.unsubscribe();
+    }
+  }
+
   private initialize(){
     this.delayTime = (this.wait && this.wait.time)? (this.wait.time/1000) : 500;
     this.gallery = [];
@@ -63,7 +72,7 @@ export class CdsActionReplyGalleryComponent implements OnInit {
       this.gallery = this.response.attributes.attachment.gallery;
       this.initElement();
       if(!this.previewMode) this.scrollToLeft();
-      this.intentService.isChangedConnector$.subscribe((connector: any) => {
+      this.subscriptionChangedConnector = this.intentService.isChangedConnector$.subscribe((connector: any) => {
         this.logger.log('CdsActionReplyGalleryComponent isChangedConnector-->', connector);
         this.connector = connector;
         this.updateConnector();

@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { IntentService } from 'app/chatbot-design-studio/services/intent.service';
 import { ActionOnlineAgent, Intent } from 'app/models/intent-model';
 import { LoggerService } from 'app/services/logger/logger.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'cds-action-online-agents',
@@ -31,6 +32,7 @@ export class CdsActionOnlineAgentsComponent implements OnInit {
   connector: any;
   
   listOfIntents: Array<{name: string, value: string, icon?:string}>;
+  private subscriptionChangedConnector: Subscription;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -39,11 +41,18 @@ export class CdsActionOnlineAgentsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.intentService.isChangedConnector$.subscribe((connector: any) => {
+    this.subscriptionChangedConnector = this.intentService.isChangedConnector$.subscribe((connector: any) => {
       // this.logger.log('CdsActionIntentComponent isChangedConnector-->', connector);
       this.connector = connector;
       this.updateConnector();
     });
+  }
+
+  /** */
+  ngOnDestroy() {
+    if (this.subscriptionChangedConnector) {
+      this.subscriptionChangedConnector.unsubscribe();
+    }
   }
 
   ngOnChanges() {

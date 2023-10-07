@@ -3,6 +3,7 @@ import { ActionIntentConnected, Intent } from 'app/models/intent-model';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { IntentService } from 'app/chatbot-design-studio/services/intent.service';
 import { ConnectorService } from 'app/chatbot-design-studio/services/connector.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'cds-action-intent',
@@ -25,6 +26,7 @@ export class CdsActionIntentComponent implements OnInit {
   idConnector: string;
   isConnected: boolean = false;
   connector: any;
+  private subscriptionChangedConnector: Subscription;
 
   constructor(
     private logger: LoggerService,
@@ -35,8 +37,8 @@ export class CdsActionIntentComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.logger.log("[CDS-ACTION-INTENT] elementSelected: ", this.action, this.intentSelected)
-    this.intentService.isChangedConnector$.subscribe((connector: any) => {
+    // console.log("[CDS-ACTION-INTENT] elementSelected: ", this.action, this.intentSelected)
+    this.subscriptionChangedConnector = this.intentService.isChangedConnector$.subscribe((connector: any) => {
       console.log('[CDS-ACTION-INTENT] - subcribe to isChangedConnector$ >>', connector);
       this.connector = connector;
       this.updateConnector();
@@ -44,40 +46,51 @@ export class CdsActionIntentComponent implements OnInit {
     this.initialize();
   }
 
-  // ngOnChanges(changes: SimpleChanges): void {
-  //   console.log('[CDS-ACTION-INTENT] >>', changes);
-  //   this.intentSelected = changes.intentSelected.currentValue;
-  //   this.onChangeConnector();
-  // }
+
+  /** */
+  ngOnDestroy() {
+    if (this.subscriptionChangedConnector) {
+      this.subscriptionChangedConnector.unsubscribe();
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log('[CDS-ACTION-INTENT] >>', changes);
+    this.intentSelected = changes.intentSelected.currentValue;
+    this.isConnected = true;
+    // this.onChangeConnector();
+  }
 
   private initialize() {
-    // this.isConnected = false;
+    this.isConnected = false;
     this.idIntentSelected = this.intentSelected.intent_id;
     this.idConnector = this.idIntentSelected+'/'+this.action._tdActionId;
     this.intents = this.intentService.getListOfIntents();
     this.logger.log('[CDS-ACTION-INTENT] - initialize - idIntentSelected ', this.idIntentSelected);
     this.logger.log('[CDS-ACTION-INTENT] - initialize - idConnector ', this.idConnector);
-    this.logger.log('[CDS-ACTION-INTENT] - initialize - intents ', this.intents);
+    // console.log('[CDS-ACTION-INTENT] - initialize - intents ', this.intents);
   }
 
   private updateConnector(){
-    this.logger.log('[CDS-ACTION-INTENT] 1- updateConnector :: ');
+    this.logger.log('[CDS-ACTION-INTENT] 1- updateConnector :: ',this.action.intentName);
+    this.isConnected = this.action.intentName?true:false;
     try {
       const array = this.connector.fromId.split("/");
       const idAction= array[1];
-      this.logger.log('[CDS-ACTION-INTENT] 2 - updateConnector :: ', idAction, this.action._tdActionId);
+      console.log('[CDS-ACTION-INTENT] 2 - updateConnector :: ', idAction, this.action._tdActionId);
       if(idAction === this.action._tdActionId){
+        console.log('[CDS-ACTION-INTENT] 3 - updateConnector :: ', this.connector);
         if(this.connector.deleted){
           // DELETE 
           this.action.intentName = null;
           this.isConnected = false;
-          this.updateIntentFromConnectorModification.emit(this.connector.id);
+          if(this.connector.notify)this.updateIntentFromConnectorModification.emit(this.connector.id);
         } else {
           // ADD / EDIT
           this.isConnected = true;
           if(this.action.intentName !== "#"+this.connector.toId){ 
             this.action.intentName = "#"+this.connector.toId;
-            this.updateIntentFromConnectorModification.emit(this.connector.id);
+            if(this.connector.notify)this.updateIntentFromConnectorModification.emit(this.connector.id);
           } 
         }
       }

@@ -5,6 +5,7 @@ import { TYPE_ACTION, TEXT_CHARS_LIMIT, calculatingRemainingCharacters, TYPE_BUT
 import { ConnectorService } from 'app/chatbot-design-studio/services/connector.service';
 import { IntentService } from 'app/chatbot-design-studio/services/intent.service';
 import { LoggerService } from 'app/services/logger/logger.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'cds-action-reply-image',
@@ -47,6 +48,7 @@ export class CdsActionReplyImageComponent implements OnInit {
   
   // Buttons //
   buttons: Array<Button>;
+  private subscriptionChangedConnector: Subscription;
 
   constructor( 
     private connectorService: ConnectorService,
@@ -60,12 +62,19 @@ export class CdsActionReplyImageComponent implements OnInit {
   }
 
 
+  /** */
+  ngOnDestroy() {
+    if (this.subscriptionChangedConnector) {
+      this.subscriptionChangedConnector.unsubscribe();
+    }
+  }
+
   // PRIVATE FUNCTIONS //
 
   private initialize(){
     this.delayTime = (this.wait && this.wait.time)? (this.wait.time/1000) : 500;
     this.checkButtons();
-    this.intentService.isChangedConnector$.subscribe((connector: any) => {
+    this.subscriptionChangedConnector = this.intentService.isChangedConnector$.subscribe((connector: any) => {
       this.logger.log('CdsActionReplyImageComponent isChangedConnector-->', connector);
       this.connector = connector;
       this.updateConnector();

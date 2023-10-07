@@ -3,6 +3,7 @@ import { ActionOpenHours, Intent } from '../../../../../../models/intent-model';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { IntentService } from 'app/chatbot-design-studio/services/intent.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'cds-action-open-hours',
@@ -31,6 +32,7 @@ export class CdsActionOpenHoursComponent implements OnInit {
   connector: any;
 
   listOfIntents: Array<{name: string, value: string, icon?:string}>;
+  private subscriptionChangedConnector: Subscription;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -39,11 +41,18 @@ export class CdsActionOpenHoursComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.intentService.isChangedConnector$.subscribe((connector: any) => {
+    this.subscriptionChangedConnector = this.intentService.isChangedConnector$.subscribe((connector: any) => {
       // this.logger.log('CdsActionIntentComponent isChangedConnector-->', connector);
       this.connector = connector;
       this.updateConnector();
     });
+  }
+
+  /** */
+  ngOnDestroy() {
+    if (this.subscriptionChangedConnector) {
+      this.subscriptionChangedConnector.unsubscribe();
+    }
   }
 
   ngOnChanges() {

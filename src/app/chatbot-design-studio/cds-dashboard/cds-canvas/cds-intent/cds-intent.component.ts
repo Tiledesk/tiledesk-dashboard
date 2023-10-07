@@ -579,7 +579,7 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
    * 3 - moving new action in intent from panel elements
    */
   async onDropAction(event: CdkDragDrop<string[]>) {
-    this.logger.log('[CDS-INTENT] onDropAction: ', event);
+   console.log('[CDS-INTENT] onDropAction: ', event);
     // this.logger.log('event:', event, 'previousContainer:', event.previousContainer, 'event.container:', event.container);
     if (event.previousContainer === event.container) {
       // moving action in the same intent
@@ -622,7 +622,7 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
 
   public async onUpdateIntentFromConnectorModification(connector){
     console.log('[CDS-INTENT] onUpdateIntentFromConnectorModification:::: intent::: ', connector, this.intent);
-    const response = await this.intentService.onUpdateIntentWithTimeout(this.intent, 0);
+    const response = await this.intentService.onUpdateIntentWithTimeout(this.intent, 0, connector);
     if (response) {
       console.log('updateIntent: ', this.intent);
     }
@@ -646,7 +646,7 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
       replaceItemInArrayForKey('_tdActionId', this.intent.actions, event);
     }
     this.logger.log('[CDS-INTENT] onUpdateAndSaveAction:::: ', event, this.intent, this.intent.actions);
-    this.logger.log('[CDS-INTENT] onUpdateAndSaveAction:::: intent::: ', this.intent);
+    console.log('[CDS-INTENT] onUpdateAndSaveAction:::: intent::: ', this.intent);
     // this.intentService.selectAction(this.intent.intent_id, event);
     const response = await this.intentService.onUpdateIntentWithTimeout(this.intent);
     if (response) {

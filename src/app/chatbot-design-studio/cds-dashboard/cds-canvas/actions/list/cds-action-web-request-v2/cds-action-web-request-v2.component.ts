@@ -3,6 +3,7 @@ import { ActionWebRequest, ActionWebRequestV2, Intent } from 'app/models/intent-
 import { LoggerService } from 'app/services/logger/logger.service';
 import { TYPE_METHOD_ATTRIBUTE, TYPE_METHOD_REQUEST, TEXT_CHARS_LIMIT, variableList } from 'app/chatbot-design-studio/utils';
 import { IntentService } from 'app/chatbot-design-studio/services/intent.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'cds-action-web-request-v2',
@@ -46,7 +47,8 @@ export class CdsActionWebRequestV2Component implements OnInit {
   assignments: {} = {}
 
   bodyOptions: Array<{label: string, value: string, disabled: boolean, checked: boolean}>= [ {label: 'none', value: 'none', disabled: false, checked: true}, {label: 'Json', value: 'json', disabled: false, checked: false}]
-  
+  private subscriptionChangedConnector: Subscription;
+
   constructor(
     private logger: LoggerService,
     private intentService: IntentService
@@ -55,14 +57,20 @@ export class CdsActionWebRequestV2Component implements OnInit {
   // SYSTEM FUNCTIONS //
   ngOnInit(): void {
     this.logger.debug("[ACTION-ASKGPT] action detail: ", this.action);
-
-    this.intentService.isChangedConnector$.subscribe((connector: any) => {
+    this.subscriptionChangedConnector = this.intentService.isChangedConnector$.subscribe((connector: any) => {
       this.logger.debug('[ACTION-ASKGPT] isChangedConnector -->', connector);
       this.connector = connector;
       this.updateConnector();
     });
-
     this.initializeAttributes();
+  }
+
+
+  /** */
+  ngOnDestroy() {
+    if (this.subscriptionChangedConnector) {
+      this.subscriptionChangedConnector.unsubscribe();
+    }
   }
 
   ngOnChanges(changes: SimpleChanges) {
