@@ -161,7 +161,7 @@ export class PricingComponent implements OnInit, OnDestroy {
 
   TILEDESK_V2 = true;
 
-  public TEST_PAYMENT_LINKS = false;
+  public TEST_PAYMENT_LINKS = true;
 
   DISPLAY_BTN_PLAN_LIVE_20_CENTSXUNIT_PROD: boolean = false;
   DISPLAY_BTN_PLAN_TEST_3_EURXUNIT_PRE: boolean = false;
@@ -342,9 +342,10 @@ export class PricingComponent implements OnInit, OnDestroy {
   // -------------------------------
   openPaymentLinkMontlyPlanA() {
     if (this.USER_ROLE === 'owner') {
-      // console.log('[PRICING] PLAN A Montly')
+      console.log('[PRICING] PLAN A Montly')
       // const url = `https://buy.stripe.com/test_3cseVQ6TIadkd8Y4gg?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanA}&locale=${this.browser_lang}`
       const url = `${this.PAYMENT_LINK_MONTLY_PLAN_A}?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanA}&locale=${this.browser_lang}"`
+      console.log('[PRICING] PLAN A Montly url ', url)
       window.open(url, '_self');
 
       if (!isDevMode()) {
