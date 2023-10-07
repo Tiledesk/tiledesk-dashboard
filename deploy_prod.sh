@@ -44,6 +44,7 @@ cd dist
 aws s3 sync --cache-control max-age=172800 . s3://panel.tiledesk.com/v3/cds/dashboard/
 ## aws s3 sync ./index.html s3://tiledesk-console/v2/dashboard/ --exclude='*' --include='/index.html'
 ## aws s3 sync ./index.html s3://tiledesk-console/v2/dashboard/ --cache-control max-age=0
+aws cloudfront create-invalidation --distribution-id E2D4FS8NGUODM4 --paths "/*"
 echo new version deployed on s3://panel.tiledesk.com/v3/cds/dashboard/
 echo available on https://panel.tiledesk.com/v3/cds/dashboard/index.html
 
