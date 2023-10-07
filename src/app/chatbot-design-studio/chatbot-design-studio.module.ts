@@ -195,6 +195,7 @@ import { SharedModule } from 'app/shared/shared.module';
 import { CdsEventComponent } from './cds-dashboard/cds-event/cds-event.component';
 import { CdsRuleComponent } from './cds-dashboard/cds-rule/cds-rule.component';
 import { AttributesDialogComponent } from './cds-dashboard/cds-canvas/actions/list/cds-action-gpt-task/attributes-dialog/attributes-dialog.component';
+import { CdsActionCaptureUserReplyComponent } from './cds-dashboard/cds-canvas/actions/list/cds-action-capture-user-reply/cds-action-capture-user-reply.component';
 
 @NgModule({
   declarations: [
@@ -280,6 +281,7 @@ import { AttributesDialogComponent } from './cds-dashboard/cds-canvas/actions/li
         CdsWhatsappReceiverComponent,
         CdsActionAskgptComponent,
         CdsActionGPTTaskComponent,
+        CdsActionCaptureUserReplyComponent,
         // action REPLY elements: start //
         CdsActionReplyToolsComponent,
         CdsActionReplyTextComponent,

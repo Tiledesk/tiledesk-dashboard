@@ -357,6 +357,15 @@ export class ActionGPTTask extends Action {
     }
 }
 
+export class ActionCaptureUserReply extends Action {
+    assignResultTo: string;
+    goToIntent: string;
+    constructor() {
+        super();
+        this._tdActionType = TYPE_ACTION.CAPTURE_USER_REPLY
+    }   
+}
+
 
 export class Message {
     text: string;

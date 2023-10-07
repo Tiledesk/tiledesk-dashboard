@@ -180,6 +180,18 @@ export class ConnectorService {
             }
           }
 
+          /**  CAPTURE USER_REPLY */
+          if(action._tdActionType === TYPE_ACTION.CAPTURE_USER_REPLY){
+            this.logger.log('[CONNECTOR-SERV] intent_display_name', intent.intent_display_name);
+            if(action.goToIntent && action.goToIntent !== ''){
+              const idConnectorFrom = intent.intent_id+'/'+action._tdActionId;
+              const idConnectorTo = action.goToIntent.replace("#", ""); ;
+              this.logger.log('[CONNECTOR-SERV] -> idConnectorFrom', idConnectorFrom);
+              this.logger.log('[CONNECTOR-SERV] -> idConnectorTo', idConnectorTo);
+              this.tiledeskConnectors.createConnectorFromId(idConnectorFrom, idConnectorTo);
+            }
+          }
+
         });
       }
     });

@@ -21,7 +21,7 @@ import {
   ActionReplaceBot,
   ActionWait,
   ActionWebRequest,
-  Command, Wait, Message, Expression, Attributes, Action, ActionAskGPT, ActionWhatsappAttribute, ActionWhatsappStatic, ActionWebRequestV2, ActionGPTTask } from 'app/models/intent-model';
+  Command, Wait, Message, Expression, Attributes, Action, ActionAskGPT, ActionWhatsappAttribute, ActionWhatsappStatic, ActionWebRequestV2, ActionGPTTask, ActionCaptureUserReply } from 'app/models/intent-model';
 import { FaqService } from 'app/services/faq.service';
 import { FaqKbService } from 'app/services/faq-kb.service';
 import { TYPE_INTENT_NAME, NEW_POSITION_ID, TYPE_ACTION, TYPE_COMMAND, removeNodesStartingWith, generateShortUID, checkIFElementExists} from 'app/chatbot-design-studio/utils';
@@ -785,7 +785,9 @@ export class IntentService {
       action.assignReplyTo = 'gpt_reply';
       action.preview = [];
     }
-    // console.log('ho creato nuova action ', action);
+    if(typeAction === TYPE_ACTION.CAPTURE_USER_REPLY) {
+      action = new ActionCaptureUserReply();
+    }
     return action;
   }
   // END ATTRIBUTE FUNCTIONS //
