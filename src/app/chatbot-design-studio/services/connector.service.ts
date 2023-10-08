@@ -128,7 +128,7 @@ export class ConnectorService {
               console.log('[CONNECTOR-SERV] -> idConnectorFrom', idConnectorFrom);
               console.log('[CONNECTOR-SERV] -> idConnectorTo', idConnectorTo);
               if(idConnectorFrom && idConnectorTo){
-                this.tiledeskConnectors.createConnectorFromId(idConnectorFrom, idConnectorTo, notify);
+                this.createConnectorFromId(idConnectorFrom, idConnectorTo, notify);
               } 
               // else if(!button.__isConnected && button.__idConnector){
               //   this.tiledeskConnectors.deleteConnector(button.__idConnector);
@@ -144,7 +144,7 @@ export class ConnectorService {
             const idConnectorTo = action.trueIntent.replace("#", "");
             console.log('[CONNECTOR-SERV] - ONLINE_AGENTS ACTION -> idConnectorFrom', idConnectorFrom);
             console.log('[CONNECTOR-SERV] - ONLINE_AGENTS ACTION -> idConnectorTo', idConnectorTo);
-            this.tiledeskConnectors.createConnectorFromId(idConnectorFrom, idConnectorTo, notify);
+            this.createConnectorFromId(idConnectorFrom, idConnectorTo, notify);
             // if(!action.__isConnected && action.__idConnector){
             //   this.tiledeskConnectors.deleteConnector(action.__idConnector);
             // }
@@ -154,7 +154,7 @@ export class ConnectorService {
             const idConnectorTo = action.falseIntent.replace("#", "");
             console.log('[CONNECTOR-SERV] - ONLINE_AGENTS ACTION -> idConnectorFrom', idConnectorFrom);
             console.log('[CONNECTOR-SERV] - ONLINE_AGENTS ACTION -> idConnectorTo', idConnectorTo);
-            this.tiledeskConnectors.createConnectorFromId(idConnectorFrom, idConnectorTo, notify);
+            this.createConnectorFromId(idConnectorFrom, idConnectorTo, notify);
           }
         }
 
@@ -165,14 +165,14 @@ export class ConnectorService {
             const idConnectorTo = action.trueIntent.replace("#", "");
             console.log('[CONNECTOR-SERV] - OPEN_HOURS ACTION -> idConnectorFrom', idConnectorFrom);
             console.log('[CONNECTOR-SERV] - OPEN_HOURS ACTION -> idConnectorTo', idConnectorTo);
-            this.tiledeskConnectors.createConnectorFromId(idConnectorFrom, idConnectorTo, notify);
+            this.createConnectorFromId(idConnectorFrom, idConnectorTo, notify);
           }
           if(action.falseIntent && action.falseIntent !== ''){
             const idConnectorFrom = intent.intent_id+'/'+action._tdActionId + '/false';
             const idConnectorTo = action.falseIntent.replace("#", "");
             console.log('[CONNECTOR-SERV] - OPEN_HOURS ACTION -> idConnectorFrom', idConnectorFrom);
             console.log('[CONNECTOR-SERV] - OPEN_HOURS ACTION -> idConnectorTo', idConnectorTo);
-            this.tiledeskConnectors.createConnectorFromId(idConnectorFrom, idConnectorTo, notify);
+            this.createConnectorFromId(idConnectorFrom, idConnectorTo, notify);
           }
         }
 
@@ -183,14 +183,14 @@ export class ConnectorService {
             const idConnectorTo =  action.trueIntent.replace("#", "");
             console.log('[CONNECTOR-SERV] - JSON_CONDITION ACTION -> idConnectorFrom', idConnectorFrom);
             console.log('[CONNECTOR-SERV] - JSON_CONDITION ACTION -> idConnectorTo', idConnectorTo);
-            this.tiledeskConnectors.createConnectorFromId(idConnectorFrom, idConnectorTo, notify);
+            this.createConnectorFromId(idConnectorFrom, idConnectorTo, notify);
           }
           if(action.falseIntent && action.falseIntent !== ''){
             const idConnectorFrom = intent.intent_id+'/'+action._tdActionId + '/false';
             const idConnectorTo = action.falseIntent.replace("#", "");
             console.log('[CONNECTOR-SERV] - JSON_CONDITION ACTION -> idConnectorFrom', idConnectorFrom);
             console.log('[CONNECTOR-SERV] - JSON_CONDITION ACTION -> idConnectorTo', idConnectorTo);
-            this.tiledeskConnectors.createConnectorFromId(idConnectorFrom, idConnectorTo, notify);
+            this.createConnectorFromId(idConnectorFrom, idConnectorTo, notify);
           }
         }
 
@@ -201,14 +201,14 @@ export class ConnectorService {
             const idConnectorTo =  action.trueIntent.replace("#", "");
             console.log('[CONNECTOR-SERV] - ASKGPT ACTION -> idConnectorFrom', idConnectorFrom);
             console.log('[CONNECTOR-SERV] - ASKGPT ACTION -> idConnectorTo', idConnectorTo);
-            this.tiledeskConnectors.createConnectorFromId(idConnectorFrom, idConnectorTo, notify);
+            this.createConnectorFromId(idConnectorFrom, idConnectorTo, notify);
           }
           if(action.falseIntent && action.falseIntent !== ''){
             const idConnectorFrom = intent.intent_id+'/'+action._tdActionId + '/false';
             const idConnectorTo = action.falseIntent.replace("#", "");
             console.log('[CONNECTOR-SERV] - ASKGPT ACTION -> idConnectorFrom', idConnectorFrom);
             console.log('[CONNECTOR-SERV] - ASKGPT ACTION -> idConnectorTo', idConnectorTo);
-            this.tiledeskConnectors.createConnectorFromId(idConnectorFrom, idConnectorTo, notify);
+            this.createConnectorFromId(idConnectorFrom, idConnectorTo, notify);
           }
         }
 
@@ -318,7 +318,7 @@ export class ConnectorService {
   
 
   async createConnectorFromId(fromId, toId, notify=true) {
-    console.log('[CONNECTOR-SERV] createConnectorFromId2 fromId ', fromId, ' toId ', toId);
+    console.log('[CONNECTOR-SERV] createConnectorFromId fromId ', fromId, ' toId ', toId);
     const connectorID = fromId+'/'+toId;
     const isConnector = document.getElementById(connectorID);
     if (isConnector) {

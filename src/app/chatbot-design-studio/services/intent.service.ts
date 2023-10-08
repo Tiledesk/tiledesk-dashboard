@@ -1052,6 +1052,9 @@ export class IntentService {
     
     if(restoreAction == 'DEL'){
       this.deleteIntentToListOfIntents(intent.intent_id);
+      setTimeout(()=> {
+        this.connectorService.deleteConnectorsOfBlock(intent.intent_id, false); // cancello tutti i connettori IN e OUT
+      }, 0);
       intentsToUpdate.forEach(element => {
         console.log('[INTENT SERVICE] -> REPLACE ', element);
         this.listOfIntents = this.replaceIntent(element, this.listOfIntents);
@@ -1064,7 +1067,6 @@ export class IntentService {
       });
       this.deleteIntent(intent, false); // async
       this.refreshIntents();
-      this.connectorService.deleteConnectorsOfBlock(intent.intent_id, false); // cancello tutti i connettori IN e OUT
       // console.log('[INTENT SERVICE] -> FINE: ');
       return;
     } 
@@ -1074,6 +1076,7 @@ export class IntentService {
       this.listOfIntents = this.insertItemIntoPositionInTheArray(this.listOfIntents, intent, pos);
       this.refreshIntent(intent);
       setTimeout(()=> {
+        this.connectorService.refreshConnectorsOfIntent(intent, false);
         this.connectorService.updateConnector(intent.intent_id, false);
       }, 0);
       let isOnTheStage = await this.isElementOnTheStage(intent.intent_id); // sync

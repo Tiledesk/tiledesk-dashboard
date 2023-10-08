@@ -59,6 +59,10 @@ export class CdsActionReplyTextComponent implements OnInit {
     this.initialize();
   }
 
+  // ngOnChanges(changes: SimpleChanges): void {
+  //   console.log('[CDS-ACTION-INTENT] >>', changes);
+  // }
+
   /** */
   ngOnDestroy() {
     if (this.subscriptionChangedConnector) {
@@ -127,7 +131,7 @@ export class CdsActionReplyTextComponent implements OnInit {
       if(idConnector === this.connector.fromId && buttonChanged){
         if(this.connector.deleted){
           // DELETE 
-          this.logger.log(' deleteConnector :: ', this.connector.fromId);
+          console.log('[CdsActionReplyTextComponent] deleteConnector :: ', this.connector.fromId);
           buttonChanged.__isConnected = false;
           buttonChanged.__idConnector = this.connector.fromId;
           buttonChanged.action = '';
@@ -140,7 +144,7 @@ export class CdsActionReplyTextComponent implements OnInit {
           buttonChanged.__idConnector = this.connector.fromId;
           buttonChanged.action = buttonChanged.action? buttonChanged.action : '#' + this.connector.toId;
           buttonChanged.type = TYPE_BUTTON.ACTION;
-          this.logger.log(' -> updateConnector :: ', this.buttons);
+          console.log('[CdsActionReplyTextComponent] updateConnector :: ', this.buttons);
           if(!buttonChanged.__isConnected){
             buttonChanged.__isConnected = true;
             if(this.connector.notify)this.updateIntentFromConnectorModification.emit(this.connector.id);
