@@ -339,14 +339,14 @@ export class ConnectorService {
   }
 
 
-  private async isElementOnTheStage(id: string): Promise<boolean>{
+  private async isElementOnTheStage(id: string): Promise<any>{
     return new Promise((resolve) => {
       let intervalId = setInterval(async () => {
         const result = document.getElementById(id);
         console.log('[CONNECTOR-SERV]  result:: ', result);
         if (result) {
           clearInterval(intervalId);
-          resolve(true);
+          resolve(result);
         }
       }, 0);
       setTimeout(() => {
@@ -444,14 +444,27 @@ export class ConnectorService {
 
   updateConnector(elementID, notify=true){
     console.log('[CONNECTOR-SERV] movedConnector elementID ' ,elementID )
+    // const elem = this.isElementOnTheStage(elementID)
     const elem = document.getElementById(elementID);
     if(elem){
-      this.logger.log('aggiorno i connettori: ', elem);
+      console.log('aggiorno i connettori: ', elem);
       setTimeout(() => {
         this.tiledeskConnectors.updateConnectorsOutOfItent(elem, notify);
       }, 0);
     }
   }
+
+  // updateConnectorNEW (elementID, notify=true){
+  //   console.log('[CONNECTOR-SERV] movedConnector elementID ' ,elementID )
+  //   const elem = document.getElementById(elementID);
+  //   if(elem){
+  //     this.logger.log('aggiorno i connettori: ', elem);
+  //     setTimeout(() => {
+  //       this.tiledeskConnectors.updateConnectorsOfItent(elem, notify);
+  //     }, 0);
+  //   }
+  // }
+
 
 
   moved(element, x, y){

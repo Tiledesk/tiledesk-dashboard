@@ -885,17 +885,37 @@ export class IntentService {
   //     });
   // }
 
-  patchAttributes( intent: Intent) {
+  patchAttributes( intent: Intent, UndoRedo:boolean = true) {
     const intentID = intent.id;
     const attributes = intent.attributes;
-    let preAttributes = this.prevListOfIntent.find((obj) => obj.intent_id === intent.intent_id);
-    console.log('[INTENT SERVICE] -> patchAttributes, ', intentID, preAttributes, attributes);
-    if(JSON.stringify(attributes) === JSON.stringify(preAttributes.attributes))return;
+    // let preAttributes = this.prevListOfIntent.find((obj) => obj.intent_id === intent.intent_id);
+    // console.log('[INTENT SERVICE] -> patchAttributes, ', intentID, preAttributes, attributes);
+    // if(JSON.stringify(attributes) === JSON.stringify(preAttributes.attributes))return;
+
+    const prevIntents = JSON.parse(JSON.stringify(this.prevListOfIntent));
+    const nowIntents = JSON.parse(JSON.stringify(this.listOfIntents));
+    console.log('[INTENT SERVICE] -> deleteIntent, ',prevIntents, nowIntents);
+    let intentsToUpdateUndo = this.setListOfintentsToUpdate(intent, prevIntents);
+    let intentsToUpdateRedo = this.setListOfintentsToUpdate(intent, nowIntents);
+    if(UndoRedo){
+      let intentPrev = prevIntents.find((item) => item.intent_id === intent.intent_id)?prevIntents.find((item) => item.intent_id === intent.intent_id):intent;
+      let intentNow = nowIntents.find((item) => item.intent_id === intent.intent_id)?nowIntents.find((item) => item.intent_id === intent.intent_id):intent;
+      this.addIntentToUndoRedo('PUT', intentPrev, intentNow, intentsToUpdateUndo, intentsToUpdateRedo);
+    }
+
+    // if(UndoRedo){
+    //   let preIntent = this.prevListOfIntent.find((obj) => obj.intent_id === intent.intent_id);
+    //   let nowIntent = this.listOfIntents.find((obj) => obj.intent_id === intent.intent_id);
+    //   preIntent = JSON.parse(JSON.stringify(preIntent));
+    //   nowIntent = JSON.parse(JSON.stringify(nowIntent));
+    //   console.log('[INTENT SERVICE] -> patchAttributes, ',preIntent, nowIntent);
+    //   this.addIntentToUndoRedo('PUT', preIntent, nowIntent, [], []);
+    // }
 
 
-    let intentUNDO = this.prevListOfIntent.find((item) => item.intent_id === intent.intent_id);
-    let intentREDO = this.listOfIntents.find((item) => item.intent_id === intent.intent_id);
-    // this.addIntentToUndoRedo('PUT', intent, [JSON.parse(JSON.stringify(intentUNDO))], [JSON.parse(JSON.stringify(intentREDO))]);
+    // let intentUNDO = this.prevListOfIntent.find((item) => item.intent_id === intent.intent_id);
+    // let intentREDO = this.listOfIntents.find((item) => item.intent_id === intent.intent_id);
+    // this.addIntentToUndoRedo('PUT', intent, intent, [JSON.parse(JSON.stringify(intentUNDO))], [JSON.parse(JSON.stringify(intentREDO))]);
 
     clearTimeout(this.setTimeoutChangeEvent);
     this.setTimeoutChangeEvent = setTimeout(() => {
@@ -1110,9 +1130,26 @@ export class IntentService {
     if(restoreAction == 'PUT'){ 
       console.log('[INTENT SERVICE] -> PUT intentsToUpdate: ', intent);
       this.listOfIntents = this.replaceIntent(intent, this.listOfIntents);
-      this.refreshIntents();
-      this.connectorService.refreshConnectorsOfIntent(intent, false); 
+      // this.refreshIntent(intent);
       this.updateIntent(intent);
+      // this.refreshIntents();
+      // setTimeout(()=> {
+      //   // this.connectorService.refreshConnectorsOfIntent(intent, false); 
+      //   this.connectorService.updateConnector(intent.intent_id, false);
+      // }, 0);
+
+      intentsToUpdate.forEach(element => {
+        console.log('[INTENT SERVICE] -> REPLACE ', element);
+        // this.listOfIntents = this.replaceIntent(element, this.listOfIntents);
+        // this.refreshIntent(element);
+        // this.updateIntent(element); // async
+        setTimeout(()=> {
+          // this.connectorService.refreshConnectorsOfIntent(element, false); 
+          this.connectorService.updateConnector(element.intent_id, false);
+        }, 0);
+      });
+
+      
       // this.connectorService.updateConnector(intent.intent_id);
       console.log('[INTENT SERVICE] -> FINE: ');
       return;

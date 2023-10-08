@@ -960,18 +960,56 @@ export class TiledeskConnectors {
       let conn = this.connectors[conn_id];
       if (conn) {
         console.log("OUT :---> ", conn, conn.fromPoint);
-        const el = document.getElementById(conn.fromId);
-        if (el) {
-          conn.fromPoint = this.elementLogicCenter(el);
-          console.log("conn.fromPoint :---> ", el, conn.fromId, conn.fromPoint);
-          this.#drawConnector(conn.id, conn.fromPoint, conn.toPoint);
-          conn['notify']=notify;
-          const event = new CustomEvent("connector-updated", { detail: { connector: conn } });
-          document.dispatchEvent(event);
+        const elFrom = document.getElementById(conn.fromId);
+        if (elFrom) {
+          conn.fromPoint = this.elementLogicCenter(elFrom);
+          console.log("conn.fromPoint :---> ", elFrom, conn.fromId, conn.fromPoint);
         }
+        const elToId = document.getElementById(conn.toId);
+        if (elToId) {
+          conn.toPoint = this.elementLogicTopLeft(elToId);
+          console.log("conn.toPoint :---> ", elToId, conn.toId, conn.toPoint);
+        }
+        this.#drawConnector(conn.id, conn.fromPoint, conn.toPoint);
+        conn['notify']=notify;
+        const event = new CustomEvent("connector-updated", { detail: { connector: conn } });
+        document.dispatchEvent(event);
       }
     };
   }
+
+
+
+
+  // updateConnectorsInOfItent(element, notify) {
+  //   console.log("updateConnectorsInOfItent ----> ", this.blocks, element.id);
+  //   const blockId = element.id;
+  //   let block = this.blocks[blockId];
+  //   if (!block) { return; }
+  //   for (const [key, conn_id] of Object.entries(block.inConnectors)) {
+  //     let conn = this.connectors[conn_id];
+  //     if (conn) {
+  //       console.log("OUT :---> ", conn, conn.toPoint);
+  //       const el = document.getElementById(conn.toId);
+  //       if (el) {
+  //         conn.toPoint = this.elementLogicCenter(el);
+  //         console.log("conn.toPoint :---> ", el, conn.toId, conn.toPoint);
+  //         this.#drawConnector(conn.id, conn.fromPoint, conn.toPoint);
+  //         conn['notify']=notify;
+  //         const event = new CustomEvent("connector-updated", { detail: { connector: conn } });
+  //         document.dispatchEvent(event);
+  //       }
+  //     }
+  //   };
+  // }
+
+
+  updateConnectorsOfItent(element, notify) {
+    console.log("updateConnectorsOfItent ----> ", this.blocks, element.id);
+    // this.updateConnectorsInOfItent(element, notify);
+    this.updateConnectorsOutOfItent(element, notify);
+  }
+
 
 
 
