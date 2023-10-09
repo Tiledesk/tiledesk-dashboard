@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'app/core/auth.service';
 import { KB, KbSettings } from 'app/models/kbsettings-model';
@@ -11,7 +11,7 @@ import { OpenaiService } from 'app/services/openai.service';
   templateUrl: './knowledge-bases.component.html',
   styleUrls: ['./knowledge-bases.component.scss']
 })
-export class KnowledgeBasesComponent implements OnInit {
+export class KnowledgeBasesComponent implements OnInit, OnDestroy {
 
   public IS_OPEN_SETTINGS_SIDEBAR: boolean;
   public isChromeVerGreaterThan100: boolean;
@@ -51,6 +51,8 @@ export class KnowledgeBasesComponent implements OnInit {
   show_answer: boolean = false;
   kbid_selected: any;
 
+  interval_id;
+
   constructor(
     private auth: AuthService,
     private formBuilder: FormBuilder,
@@ -68,7 +70,7 @@ export class KnowledgeBasesComponent implements OnInit {
   }
 
   startPooling() {
-    let id = setInterval(() => {
+    this.interval_id = setInterval(() => {
       this.checkAllStatuses();
     }, 30000);
   }
@@ -340,6 +342,10 @@ export class KnowledgeBasesComponent implements OnInit {
 
   closeSecretsModal() {
     this.secretsModal = 'none';
+  }
+
+  ngOnDestroy(): void {
+    clearInterval(this.interval_id);
   }
 
 }
