@@ -11,12 +11,14 @@ import { PaymentsListComponent } from './payments-list/payments-list.component';
 // import { LoadingSpinnerComponent } from '../ui/loading-spinner/loading-spinner.component';
 import { SharedModule } from '../shared/shared.module';
 import { PricingBaseComponent } from './pricing-base/pricing-base.component';
+import { NgSelectModule } from '@ng-select/ng-select';
 @NgModule({
   imports: [
     CommonModule,
     RouterModule,
     TranslateModule,
-    SharedModule
+    SharedModule,
+    NgSelectModule
   ],
   declarations: [
     PaymentSuccessPageComponent,

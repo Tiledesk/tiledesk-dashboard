@@ -281,11 +281,7 @@ export const emailDomainWhiteList = [
     'bigpond.net.au'
 ]
 
-export enum PLAN_NAME {
-    A = 'Growth',
-    B = 'Scale',
-    C = 'Plus',
-}
+
 
 export enum APP_SUMO_PLAN_NAME {
     tiledesk_tier1 = 'AppSumo License Tier 1',
@@ -294,12 +290,6 @@ export enum APP_SUMO_PLAN_NAME {
     tiledesk_tier4 = 'AppSumo License Tier 4',
 }
 
-export enum PLAN_SEATS {
-    free = 2, 
-    Growth = 4, 
-    Scale = 15,
-};
-
 export enum APPSUMO_PLAN_SEATS {
     tiledesk_tier1 = 2, 
     tiledesk_tier2 = 5, 
@@ -307,6 +297,28 @@ export enum APPSUMO_PLAN_SEATS {
     tiledesk_tier4 = 20,
 };
 
+// export enum PLAN_SEATS {
+//     free = 2, 
+//     Growth = 4, 
+//     Scale = 15,
+// };
+export enum PLAN_NAME {
+    A = 'Growth',
+    B = 'Scale',
+    C = 'Plus',
+    D = 'Basic',
+    E = 'Premium',
+    F = 'Custom'
+}
+
+export enum PLAN_SEATS {
+    free = 1, 
+    Growth = 4, 
+    Scale = 15,
+    Basic = 1,
+    Premium = 2,
+    Custom = 'Custom'
+};
 
 export const featuresPlanA = [
     'CRM',
@@ -324,6 +336,70 @@ export const highlightedFeaturesPlanA = [
     { 'color': '#a613ec', 'background': 'rgba(166,19,236,.2)', 'feature': '4 Seats' },
     { 'color': '#0d8cff', 'background': 'rgba(13,140,255,.2)', 'feature': '800 Chat/mo.' }
 ]
+
+// Premium plan
+export const featuresPlanD = [
+    'CRM',
+    'Private Notes',
+    'Unlimited Conversations History',
+    'Working Hours',
+    'User Ratings',
+    'Canned Responses',
+    'Webhooks',
+    'Email Support',
+    'Team Inbox',
+    '2 Knowledge Bases',
+    '250 Pages for Knowledge Base'
+]
+// Premium plan
+export const highlightedFeaturesPlanD = [
+    { 'color': '#a613ec', 'background': 'rgba(166,19,236,.2)', 'feature': '1 Seats ' },
+    { 'color': '#0d8cff', 'background': 'rgba(13,140,255,.2)', 'feature': '800 Chat/mo.' },
+    { 'color': '#19a95d', 'background': 'rgba(28,191,105,.2)', 'feature': '5 Chatbot' }
+]
+
+// Custom plan 
+export const featuresPlanE = [
+    'Widget Unbranding',
+    'WhatsApp Business',
+    'Facebook Messenger',
+    'Unlimited Departments',
+    'Unlimited Groups',
+    'Zapier connector',
+    'Data export',
+    'Livechat Support',
+    'Knowledge Base',
+    'Analytics',
+    'Email Ticketing',
+]
+  
+export const highlightedFeaturesPlanE = [
+    { 'color': '#a613ec', 'background': 'rgba(166,19,236,.2)', 'feature': '2 Seats' },
+    { 'color': '#0d8cff', 'background': 'rgba(13,140,255,.2)', 'feature': '3000 Chat/mo.' },
+    { 'color': '#19a95d', 'background': 'rgba(28,191,105,.2)', 'feature': '20 Chatbot' }
+]
+
+export const featuresPlanF = [
+    'Dedicated Customer Success Manager',
+    'Chatbot Design Assistance',
+    'Onboarding and Training',
+    'Smart Assignment',
+    'IP Filtering',
+    'Email Templates Customisation',
+    'Activities Log',
+    'Ban Visitors',
+    'Dialogflow connector',
+    'Rasa connector',
+    'SMTP Settings',
+    'Support to host Tiledesk on your Infrastructure',
+    'Premium Customer Support',
+]
+  
+export const highlightedFeaturesPlanF = [
+    { 'color': '#a613ec', 'background': 'rgba(166,19,236,.2)', 'feature': 'Tailored solutions' }
+]
+
+
 
 export const appSumoHighlightedFeaturesPlanATier1 = [
     { 'color': '#a613ec', 'background': 'rgba(166,19,236,.2)', 'feature': '2 Seats' },
