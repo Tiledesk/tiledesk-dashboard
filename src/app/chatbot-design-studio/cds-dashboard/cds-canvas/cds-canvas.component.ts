@@ -341,7 +341,7 @@ export class CdsCanvasComponent implements OnInit {
       "connector-created", (e: CustomEvent) => {
         console.log("[CDS-CANVAS] connector-created:", e);
         const connector = e.detail.connector;
-        connector.notify = true;
+        // connector.notify =  connector.notify?connector.notify:true;
         this.connectorService.addConnectorToList(connector);
         this.intentService.onChangedConnector(connector);
       },
@@ -552,20 +552,25 @@ export class CdsCanvasComponent implements OnInit {
   }
 
   /** Delete Intent **
-   * cancello tutti i connettori dell'intent
-   * rimuovo l'intent dallo stage
-   * elimino intent da remoto
+   * deleteIntentToListOfIntents: per cancellare l'intent dalla lista degli intents (listOfIntents), quindi in automatico per rimuovere l'intent dallo stage
+   * refreshIntents: fa scattare l'evento e aggiorna l'elenco degli intents (listOfIntents) in tutti i componenti sottoscritti, come cds-panel-intent-list 
+   * deleteIntent: chiamo il servizio per eliminare l'intent da remoto (il servizio è asincrono e non restituisce nulla, quindi ingnoro l'esito)
+   * in deleteIntent: aggiungo l'azione ad UNDO/REDO
+   * deleteConnectorsOfBlock: elimino i connettori in Ingresso verso intent eliminato e in Uscita dallo stesso, e salvo in automatico gli intent modificati (quelli ai quali ho eliminato il connettore in uscita)
+   * 
+   * ATTENZIONE: è necessario mantenere l'ordine per permettere ad UNDO/REDO di salvare in maniera corretta
+   * 
    */
   private async deleteIntent(intent) {
-    console.log('[CDS-CANVAS]  deleteIntent',intent);
-    let intent_id = intent.intent_id;
-    // console.log('[CDS-CANVAS] connectorsID ', connectorsID);
+    console.log('[CDS-CANVAS]  deleteIntent', intent);
     this.intentSelected = null;
-    this.intentService.deleteIntentToListOfIntents(intent_id);
+    this.intentService.deleteIntentToListOfIntents(intent.intent_id);
     this.intentService.refreshIntents();
     this.intentService.deleteIntent(intent);
-    // IMPORTANTE!!! DA AGGIUNGERE DOME ULTIMA AZIONE!!!
-    this.connectorService.deleteConnectorsOfBlock(intent_id, false); // cancello tutti i connettori IN e OUT
+    // this.intentService.updateIntents(this.listOfIntents, intent);
+    // IMPORTANTE!!! DA AGGIUNGERE COME ULTIMA AZIONE!!!
+    // cancello tutti i connettori IN e OUT dell'intent eliminato
+    this.connectorService.deleteConnectorsOfBlock(intent.intent_id, false); 
   }
 
 

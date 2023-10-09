@@ -84,14 +84,16 @@ export class CdsActionIntentComponent implements OnInit {
           // DELETE 
           this.action.intentName = null;
           this.isConnected = false;
-          if(this.connector.notify)this.updateIntentFromConnectorModification.emit(this.connector.id);
+          // if(this.connector.notify)
+          this.updateIntentFromConnectorModification.emit(this.connector);
         } else {
           // ADD / EDIT
           console.log('[CDS-ACTION-INTENT] 4 - PALLINO PIENO :: ');
           this.isConnected = true;
           if(this.action.intentName !== "#"+this.connector.toId){ 
             this.action.intentName = "#"+this.connector.toId;
-            if(this.connector.notify)this.updateIntentFromConnectorModification.emit(this.connector.id);
+            // if(this.connector.notify)
+            this.updateIntentFromConnectorModification.emit(this.connector);
           } 
         }
       }

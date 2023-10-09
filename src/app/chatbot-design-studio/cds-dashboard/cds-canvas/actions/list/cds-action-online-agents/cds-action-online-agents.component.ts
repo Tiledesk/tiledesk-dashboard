@@ -91,7 +91,8 @@ export class CdsActionOnlineAgentsComponent implements OnInit {
             this.action.falseIntent = null
             this.isConnectedFalse = false;
           }
-          this.updateIntentFromConnectorModification.emit(this.connector.id);
+          // if(this.connector.notify)
+          this.updateIntentFromConnectorModification.emit(this.connector);
           // this.updateAndSaveAction.emit();
         } else { //TODO: verificare quale dei due connettori è stato aggiunto (controllare il valore della action corrispondente al true/false intent)
           // ADD / EDIT
@@ -100,7 +101,8 @@ export class CdsActionOnlineAgentsComponent implements OnInit {
             this.isConnectedTrue = true;
             if(this.action.trueIntent !== '#'+this.connector.toId){
               this.action.trueIntent = '#'+this.connector.toId;
-              this.updateIntentFromConnectorModification.emit(this.connector.id);
+              // if(this.connector.notify)
+              this.updateIntentFromConnectorModification.emit(this.connector);
               // this.updateAndSaveAction.emit();
             } 
           }    
@@ -109,7 +111,8 @@ export class CdsActionOnlineAgentsComponent implements OnInit {
             this.isConnectedFalse = true;
             if(this.action.falseIntent !== '#'+this.connector.toId){
               this.action.falseIntent = '#'+this.connector.toId;
-              this.updateIntentFromConnectorModification.emit(this.connector.id);
+              // if(this.connector.notify)
+              this.updateIntentFromConnectorModification.emit(this.connector);
               // this.updateAndSaveAction.emit();
             } 
           }

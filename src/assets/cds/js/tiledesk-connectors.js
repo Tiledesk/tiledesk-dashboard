@@ -131,7 +131,7 @@ export class TiledeskConnectors {
    
     this.#drawConnector(id, fromPoint, toPoint);
     this.removeConnectorDraft();
-    console.log("connector CREATED:", id);
+    console.log("connector CREATED:", id, notify);
     connector['notify']=notify;
     const event = new CustomEvent("connector-created", { detail: { connector: connector } });
     document.dispatchEvent(event);
@@ -152,7 +152,6 @@ export class TiledeskConnectors {
         this.deleteConnector(connectorId, notify);
       }
     }
-    // delete this.blocks[blockId];
     console.log("[JS] blocks :---> ", this.blocks);
     console.log("[JS] connectors :---> ", this.connectors);
   }
@@ -192,20 +191,26 @@ export class TiledeskConnectors {
     console.log("[JS] connectors :---> ", this.connectors);
   }
 
+
+  /**  */
   deleteConnectorsOfBlock(blockId, notify=true) {
-    console.log("[JS] deleteConnectors ----> ", blockId, notify);
+    console.log("[JS] deleteConnectorsOfBlock ----> ", blockId, notify);
+    let arrayOfDeletedConnectors = [];
     for (var connectorId in this.connectors) {
       if (connectorId.startsWith(blockId)) {
-        // connettore in uscita, non notificare la cancellazione
+        // connettore in uscita
         this.deleteConnector(connectorId, notify);
       } else if (connectorId.includes(blockId)) {
-        // connettore in entrata, non notificare la cancellazione
+        // connettore in entrata
+        arrayOfDeletedConnectors.push(connectorId);
         this.deleteConnector(connectorId, notify);
       }
     }
     delete this.blocks[blockId];
     console.log("[JS] blocks :---> ", this.blocks);
     console.log("[JS] connectors :---> ", this.connectors);
+    console.log("[JS] arrayOfDeletedConnectors :---> ", arrayOfDeletedConnectors);
+    return arrayOfDeletedConnectors; 
   }
 
 

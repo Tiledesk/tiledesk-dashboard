@@ -20,7 +20,7 @@ export class CdsActionAskgptComponent implements OnInit {
   @Input() action: ActionAskGPT;
   @Input() previewMode: boolean = true;
   
-  @Output() updateIntentFromConnectorModification = new EventEmitter;
+  @Output() updateIntentFromConnectorModification = new EventEmitter();
   @Input() project_id: string;
   @Output() updateAndSaveAction = new EventEmitter;
   @Output() onConnectorChange = new EventEmitter<{type: 'create' | 'delete',  fromId: string, toId: string}>()
@@ -110,7 +110,8 @@ export class CdsActionAskgptComponent implements OnInit {
             this.action.falseIntent = null
             this.isConnectedFalse = false;
           }
-          this.updateIntentFromConnectorModification.emit(this.connector.id);
+          // if(this.connector.notify)
+          this.updateIntentFromConnectorModification.emit(this.connector);
           // this.updateAndSaveAction.emit();
         } else { 
           // TODO: verificare quale dei due connettori è stato aggiunto (controllare il valore della action corrispondente al true/false intent)
@@ -121,7 +122,8 @@ export class CdsActionAskgptComponent implements OnInit {
             this.isConnectedTrue = true;
             if(this.action.trueIntent !== '#'+this.connector.toId){ 
               this.action.trueIntent = '#'+this.connector.toId;
-              this.updateIntentFromConnectorModification.emit(this.connector.id);
+              // if(this.connector.notify)
+              this.updateIntentFromConnectorModification.emit(this.connector);
               // this.updateAndSaveAction.emit();
             } 
           }        
@@ -130,7 +132,8 @@ export class CdsActionAskgptComponent implements OnInit {
             this.isConnectedFalse = true;
             if(this.action.falseIntent !== '#'+this.connector.toId){ 
               this.action.falseIntent = '#'+this.connector.toId;
-              this.updateIntentFromConnectorModification.emit(this.connector.id);
+              // if(this.connector.notify)
+              this.updateIntentFromConnectorModification.emit(this.connector);
               // this.updateAndSaveAction.emit();
             } 
           }

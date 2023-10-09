@@ -140,7 +140,8 @@ export class CdsActionReplyGalleryComponent implements OnInit {
             buttonChanged.__idConnector = this.connector.fromId;
             buttonChanged.action = '';
             buttonChanged.type = TYPE_BUTTON.TEXT;
-            this.updateIntentFromConnectorModification.emit(this.connector.id);
+            // if(this.connector.notify)
+            this.updateIntentFromConnectorModification.emit(this.connector);
             // this.changeActionReply.emit();
           } else {
             // ADD / EDIT
@@ -150,7 +151,8 @@ export class CdsActionReplyGalleryComponent implements OnInit {
             buttonChanged.type = TYPE_BUTTON.ACTION;
             if(!buttonChanged.__isConnected){
               buttonChanged.__isConnected = true;
-              this.updateIntentFromConnectorModification.emit(this.connector.id);
+              // if(this.connector.notify)
+              this.updateIntentFromConnectorModification.emit(this.connector);
               // this.changeActionReply.emit();
             } 
           }

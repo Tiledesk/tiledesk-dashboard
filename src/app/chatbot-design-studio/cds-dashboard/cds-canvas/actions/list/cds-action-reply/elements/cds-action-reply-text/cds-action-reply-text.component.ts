@@ -136,7 +136,8 @@ export class CdsActionReplyTextComponent implements OnInit {
           buttonChanged.__idConnector = this.connector.fromId;
           buttonChanged.action = '';
           buttonChanged.type = TYPE_BUTTON.TEXT;
-          if(this.connector.notify)this.updateIntentFromConnectorModification.emit(this.connector.id);
+          // if(this.connector.notify)
+          this.updateIntentFromConnectorModification.emit(this.connector);
           // this.changeActionReply.emit();
         } else {
           // ADD / EDIT
@@ -147,7 +148,8 @@ export class CdsActionReplyTextComponent implements OnInit {
           console.log('[CdsActionReplyTextComponent] updateConnector :: ', this.buttons);
           if(!buttonChanged.__isConnected){
             buttonChanged.__isConnected = true;
-            if(this.connector.notify)this.updateIntentFromConnectorModification.emit(this.connector.id);
+            // if(this.connector.notify)
+            this.updateIntentFromConnectorModification.emit(this.connector);
             // this.changeActionReply.emit();
           } 
         }
