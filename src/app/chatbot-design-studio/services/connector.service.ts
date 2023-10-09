@@ -441,16 +441,15 @@ export class ConnectorService {
   }
   
 
-
-  updateConnector(elementID, notify=true){
+  async updateConnector(elementID, notify=true){
     console.log('[CONNECTOR-SERV] movedConnector elementID ' ,elementID )
-    // const elem = this.isElementOnTheStage(elementID)
-    const elem = document.getElementById(elementID);
+    const elem = await this.isElementOnTheStage(elementID); // chiamata sincrona
+    // const elem = document.getElementById(elementID);
     if(elem){
       console.log('aggiorno i connettori: ', elem);
-      setTimeout(() => {
+      //setTimeout(() => {
         this.tiledeskConnectors.updateConnectorsOutOfItent(elem, notify);
-      }, 0);
+      //}, 0);
     }
   }
 

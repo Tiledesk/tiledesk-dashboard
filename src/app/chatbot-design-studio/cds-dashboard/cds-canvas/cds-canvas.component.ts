@@ -371,7 +371,8 @@ export class CdsCanvasComponent implements OnInit {
       "connector-updated", (e: CustomEvent) => {
         console.log("[CDS-CANVAS] connector-updated:", e);
         const connector = e.detail.connector;
-        if(connector.notify)this.intentService.onChangedConnector(connector);
+        // if(connector.notify)
+        this.intentService.onChangedConnector(connector);
       },
       true
     );

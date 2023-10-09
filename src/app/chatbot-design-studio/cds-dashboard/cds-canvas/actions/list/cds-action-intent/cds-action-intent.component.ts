@@ -87,6 +87,7 @@ export class CdsActionIntentComponent implements OnInit {
           if(this.connector.notify)this.updateIntentFromConnectorModification.emit(this.connector.id);
         } else {
           // ADD / EDIT
+          console.log('[CDS-ACTION-INTENT] 4 - PALLINO PIENO :: ');
           this.isConnected = true;
           if(this.action.intentName !== "#"+this.connector.toId){ 
             this.action.intentName = "#"+this.connector.toId;
