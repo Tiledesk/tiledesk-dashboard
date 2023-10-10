@@ -59,10 +59,7 @@ export class CdsActionAskgptComponent implements OnInit {
 
   ngOnInit(): void {
     this.logger.debug("[ACTION-ASKGPT] action detail: ", this.action);
-    console.log("[ACTION-ASKGPT] action detail: ", this.action);
-    console.log("[ACTION-ASKGPT] action kbid: ", this.action.kbid);
-    console.log("[ACTION-ASKGPT] action kbname: ", this.action.kbName);
-
+    
     this.intentService.isChangedConnector$.subscribe((connector: any) => {
       this.logger.debug('[ACTION-ASKGPT] isChangedConnector -->', connector);
       this.connector = connector;
