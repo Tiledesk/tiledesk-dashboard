@@ -1,4 +1,4 @@
-import { Component, OnInit, isDevMode } from '@angular/core';
+import { Component, OnDestroy, OnInit, isDevMode } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'app/core/auth.service';
@@ -9,17 +9,17 @@ import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { OpenaiService } from 'app/services/openai.service';
 import { ProjectService } from 'app/services/project.service';
- 
+
 @Component({
   selector: 'appdashboard-knowledge-bases',
   templateUrl: './knowledge-bases.component.html',
   styleUrls: ['./knowledge-bases.component.scss']
 })
-export class KnowledgeBasesComponent implements OnInit {
- 
+export class KnowledgeBasesComponent implements OnInit, OnDestroy {
+
   public IS_OPEN_SETTINGS_SIDEBAR: boolean;
   public isChromeVerGreaterThan100: boolean;
- 
+
   addKnowledgeBaseModal = 'none';
   previewKnowledgeBaseModal = 'none';
   deleteKnowledgeBaseModal = 'none';
@@ -28,6 +28,8 @@ export class KnowledgeBasesComponent implements OnInit {
   buttonDisabled: boolean = true;
   addButtonDisabled: boolean = false;
   gptkeyVisible: boolean = false;
+
+  //analytics
   CURRENT_USER: any;
   project: Project;
   project_name: string;
@@ -60,7 +62,9 @@ export class KnowledgeBasesComponent implements OnInit {
   error_answer: boolean = false;
   show_answer: boolean = false;
   kbid_selected: any;
- 
+
+  interval_id;
+
   constructor(
     private auth: AuthService,
     private formBuilder: FormBuilder,
@@ -70,7 +74,8 @@ export class KnowledgeBasesComponent implements OnInit {
     private projectService: ProjectService,
     public route: ActivatedRoute,
     private notify: NotifyService
- ) { }
+  ) { }
+
   ngOnInit(): void {
     this.getBrowserVersion();
     this.listenSidebarIsOpened();
@@ -82,7 +87,7 @@ export class KnowledgeBasesComponent implements OnInit {
     this.getCurrentProject()
     this.getRouteParams()
   }
- 
+
   getRouteParams() {
     this.route.params.subscribe((params) => {
       // this.projectId = params.projectid
@@ -110,7 +115,7 @@ export class KnowledgeBasesComponent implements OnInit {
       }
     }
   }
- 
+
   getLoggedUser() {
     this.auth.user_bs.subscribe((user) => {
       this.logger.log('[KNOWLEDGE BASES COMP] - LOGGED USER ', user)
@@ -148,13 +153,13 @@ export class KnowledgeBasesComponent implements OnInit {
  
     });
   }
- 
+  
   startPooling() {
-    let id = setInterval(() => {
+    this.interval_id = setInterval(() => {
       this.checkAllStatuses();
     }, 30000);
   }
- 
+
   // ----------------------
   // UTILS FUNCTION - Start
   getBrowserVersion() {
@@ -162,7 +167,7 @@ export class KnowledgeBasesComponent implements OnInit {
       this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
     })
   }
- 
+
   listenSidebarIsOpened() {
     this.auth.settingSidebarIsOpned.subscribe((isopened) => {
       this.logger.log('[KNOWLEDGE BASES COMP] SETTINGS-SIDEBAR isopened (FROM SUBSCRIPTION) ', isopened)
@@ -171,11 +176,11 @@ export class KnowledgeBasesComponent implements OnInit {
   }
   // UTILS FUNCTION - End
   // --------------------
- 
- 
+
+
   getKnowledgeBaseSettings() {
     this.kbService.getKbSettings().subscribe((kbSettings: KbSettings) => {
-      this.logger.log("[KNOWLEDGE BASES COMP] get kbSettings: ", kbSettings);
+      this.logger.debug("[KNOWLEDGE BASES COMP] get kbSettings: ", kbSettings);
       this.kbSettings = kbSettings;
       if (this.kbSettings.kbs.length < kbSettings.maxKbsNumber) {
         this.addButtonDisabled = false;
@@ -187,18 +192,17 @@ export class KnowledgeBasesComponent implements OnInit {
     }, (error) => {
       this.logger.error("[KNOWLEDGE BASES COMP] ERROR get kbSettings: ", error);
     }, () => {
-      this.logger.log("[KNOWLEDGE BASES COMP] get kbSettings *COMPLETE*");
+      this.logger.info("[KNOWLEDGE BASES COMP] get kbSettings *COMPLETE*");
       this.showSpinner = false;
- 
     })
   }
- 
+
   createConditionGroup(): FormGroup {
     return this.formBuilder.group({
       url: ['', [Validators.required, Validators.pattern('(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?')]]
     })
   }
- 
+
   onChangeInput(event): void {
     if (this.kbForm.valid) {
       this.buttonDisabled = false;
@@ -206,7 +210,7 @@ export class KnowledgeBasesComponent implements OnInit {
       this.buttonDisabled = true;
     }
   }
- 
+
   onInputPreviewChange() {
     let element = document.getElementById('enter-button')
     if (this.question !== "") {
@@ -215,7 +219,7 @@ export class KnowledgeBasesComponent implements OnInit {
       element.style.display = 'none';
     }
   }
- 
+
   saveKnowledgeBase() {
  
     let first_index = this.newKb.url.indexOf('://');
@@ -251,7 +255,7 @@ export class KnowledgeBasesComponent implements OnInit {
       this.trackUserActioOnKB('Added Knowledge Base')
     })
   }
- 
+
   trackUserActioOnKB(event) {
     if (!isDevMode()) {
       if (window['analytics']) {
@@ -302,9 +306,7 @@ export class KnowledgeBasesComponent implements OnInit {
     }
  
   }
- 
- 
- 
+
   saveKnowledgeBaseSettings() {
     this.kbService.saveKbSettings(this.kbSettings).subscribe(((savedSettings) => {
       this.getKnowledgeBaseSettings();
@@ -315,7 +317,7 @@ export class KnowledgeBasesComponent implements OnInit {
       this.logger.info("[KNOWLEDGE BASES COMP] save kb settings *COMPLETE*");
     })
   }
- 
+
   deleteKnowledgeBase(id) {
     this.logger.debug("[KNOWLEDGE BASES COMP] kb to delete id: ", id);
     this.kbService.deleteKb(this.kbSettings._id, id).subscribe((response) => {
@@ -324,11 +326,11 @@ export class KnowledgeBasesComponent implements OnInit {
     }, (error) => {
       this.logger.error("[KNOWLEDGE BASES COMP] ERROR delete kb: ", error);
     }, () => {
-      this.logger.log("[KNOWLEDGE BASES COMP] delete kb *COMPLETE*");
+      this.logger.info("[KNOWLEDGE BASES COMP] delete kb *COMPLETE*");
       this.trackUserActioOnKB('Deleted Knowledge Base')
     })
   }
- 
+
   runIndexing(kb) {
     let data = {
       full_url: kb.url,
@@ -351,7 +353,7 @@ export class KnowledgeBasesComponent implements OnInit {
       this.logger.log("start scraping *COMPLETE*");
     })
   }
- 
+
   checkAllStatuses() {
  
     // SCANDALOSO - DA ELIMINARE IL PRIMA POSSIBILE
@@ -361,7 +363,7 @@ export class KnowledgeBasesComponent implements OnInit {
     for (let i = 0; i < this.kbSettings.kbs.length; i++) {
       const delay = 500 * i;
       let kb = this.kbSettings.kbs[i];
- 
+
       setTimeout(() => {
         promises.push(this.checkStatus(kb).then((status_code: number) => {
           kb.status = status_code;
@@ -371,13 +373,13 @@ export class KnowledgeBasesComponent implements OnInit {
         }))
       }, delay);
     }
- 
+
     Promise.all(promises).then((response) => {
       this.logger.log("Promise All *COMPLETED* ", response);
     })
- 
+  
   }
- 
+
   checkStatus(kb) {
     let data = {
       "full_url": kb.url
@@ -391,20 +393,20 @@ export class KnowledgeBasesComponent implements OnInit {
       })
     })
   }
- 
+
   submitQuestion() {
     let data = {
       question: this.question,
       kbid: this.kbid_selected.url,
       gptkey: this.kbSettings.gptkey
     }
- 
+
     this.searching = true;
     this.show_answer = false;
     this.error_answer = false;
     this.answer = null;
     this.source_url = null;
- 
+
     this.openaiService.askGpt(data).subscribe((response: any) => {
       if (response.success == false) {
         this.error_answer = true;
@@ -412,7 +414,7 @@ export class KnowledgeBasesComponent implements OnInit {
         this.answer = response.answer;
         this.source_url = response.source_url;
       }
- 
+
       this.show_answer = true;
       this.searching = false;
       setTimeout(() => {
@@ -427,7 +429,7 @@ export class KnowledgeBasesComponent implements OnInit {
       this.searching = false;
     })
   }
- 
+
   showHideSecret(target) {
     this.gptkeyVisible = !this.gptkeyVisible;
     // let el = <HTMLInputElement>document.getElementById(target);
@@ -439,22 +441,22 @@ export class KnowledgeBasesComponent implements OnInit {
     //   el.type = "password"
     // }
   }
- 
+
   openAddKnowledgeBaseModal() {
     this.addKnowledgeBaseModal = 'block';
   }
- 
+
   openPreviewKnowledgeBaseModal(kb) {
     this.kbid_selected = kb;
     this.previewKnowledgeBaseModal = 'block';
- 
+
   }
- 
+
   openDeleteKnowledgeBaseModal(kb) {
     this.kbid_selected = kb;
     this.deleteKnowledgeBaseModal = 'block';
   }
- 
+
   openSecretsModal() {
     this.secretsModal = 'block';
     if (this.kbSettings.gptkey) {
@@ -465,12 +467,12 @@ export class KnowledgeBasesComponent implements OnInit {
       this.gptkeyVisible = true;
     }
   }
- 
+
   closeAddKnowledgeBaseModal() {
     this.addKnowledgeBaseModal = 'none';
     this.newKb = { name: '', url: ''}
   }
- 
+
   closePreviewKnowledgeBaseModal() {
     this.previewKnowledgeBaseModal = 'none';
     this.question = "";
@@ -482,13 +484,17 @@ export class KnowledgeBasesComponent implements OnInit {
     let element = document.getElementById('enter-button')
     element.style.display = 'none';
   }
- 
+
   closeDeleteKnowledgeBaseModal() {
     this.deleteKnowledgeBaseModal = 'none';
   }
- 
+
   closeSecretsModal() {
     this.secretsModal = 'none';
   }
- 
+
+  ngOnDestroy(): void {
+    clearInterval(this.interval_id);
+  }
+
 }
