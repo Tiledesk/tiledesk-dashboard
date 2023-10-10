@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { TiledeskConnectors } from 'app/../assets/cds/js/tiledesk-connectors.js';
 import { StageService } from 'app/chatbot-design-studio/services/stage.service';
 import { IntentService } from 'app/chatbot-design-studio/services/intent.service';
-import { TYPE_ACTION, TYPE_BUTTON } from 'app/chatbot-design-studio/utils';
+import { TYPE_ACTION, TYPE_BUTTON, isElementOnTheStage } from 'app/chatbot-design-studio/utils';
 import { Intent } from 'app/models/intent-model';
 import { LoggerService } from 'app/services/logger/logger.service';
 /** CLASSE DI SERVICES PER GESTIRE I CONNETTORI **/
@@ -274,10 +274,12 @@ export class ConnectorService {
   // }
 
   /** */
-  createNewConnector(fromId:string, toId:string, notify=true){
+  async createNewConnector(fromId:string, toId:string, notify=true){
     console.log('[CONNECTOR-SERV] createNewConnector:: fromId:', fromId, 'toId:', toId, notify);
-    const elFrom = document.getElementById(fromId);
-    const elTo = document.getElementById(toId);
+    let elFrom = await isElementOnTheStage(fromId); // sync
+    let elTo = await isElementOnTheStage(toId); // sync
+    // const elFrom = document.getElementById(fromId);
+    // const elTo = document.getElementById(toId);
     this.logger.log('[CONNECTOR-SERV] createNewConnector:: ', elFrom, elTo);
     if (elFrom && elTo) { 
       const fromPoint = this.tiledeskConnectors.elementLogicCenter(elFrom);
@@ -335,15 +337,16 @@ export class ConnectorService {
   async createConnectorFromId(fromId, toId, notify=true) {
     console.log('[CONNECTOR-SERV] createConnectorFromId fromId ', fromId, ' toId ', toId);
     const connectorID = fromId+'/'+toId;
+    // let connector = await isElementOnTheStage(connectorID); // sync
     const isConnector = document.getElementById(connectorID);
     if (isConnector) {
       console.log('[CONNECTOR-SERV] il connettore esiste già', connectorID);
       // this.deleteConnector(connectorID);
-      return true;
+      // return true;
     }
-    let isOnTheStageFrom = await this.isElementOnTheStage(fromId); // sync
+    let isOnTheStageFrom = await isElementOnTheStage(fromId); // sync
     console.log('[CONNECTOR-SERV] isOnTheStageFrom', isOnTheStageFrom);
-    let isOnTheStageTo = await this.isElementOnTheStage(toId); // sync
+    let isOnTheStageTo = await isElementOnTheStage(toId); // sync
     console.log('[CONNECTOR-SERV] isOnTheStageFrom', isOnTheStageFrom);
     if(isOnTheStageFrom && isOnTheStageTo){
       const result = await this.tiledeskConnectors.createConnectorFromId(fromId, toId, notify);
@@ -354,22 +357,22 @@ export class ConnectorService {
   }
 
 
-  async isElementOnTheStage(id: string): Promise<any>{
-    return new Promise((resolve) => {
-      let intervalId = setInterval(async () => {
-        const result = document.getElementById(id);
-        console.log('[CONNECTOR-SERV]  result:: ', result);
-        if (result) {
-          clearInterval(intervalId);
-          resolve(result);
-        }
-      }, 0);
-      setTimeout(() => {
-        clearInterval(intervalId);
-        resolve(false);
-      }, 1000);
-    });
-  }
+  // async isElementOnTheStage(id: string): Promise<any>{
+  //   return new Promise((resolve) => {
+  //     let intervalId = setInterval(async () => {
+  //       const result = document.getElementById(id);
+  //       console.log('[CONNECTOR-SERV]  result:: ', result);
+  //       if (result) {
+  //         clearInterval(intervalId);
+  //         resolve(result);
+  //       }
+  //     }, 0);
+  //     setTimeout(() => {
+  //       clearInterval(intervalId);
+  //       resolve(false);
+  //     }, 1000);
+  //   });
+  // }
 
 
   // funzione SINCRONA
@@ -458,10 +461,10 @@ export class ConnectorService {
 
   async updateConnector(elementID, notify=true){
     console.log('[CONNECTOR-SERV] movedConnector elementID ' ,elementID )
-    const elem = await this.isElementOnTheStage(elementID); // chiamata sincrona
+    const elem = await isElementOnTheStage(elementID); // chiamata sincrona
     // const elem = document.getElementById(elementID);
     if(elem){
-      console.log('aggiorno i connettori: ', elem);
+      console.log('[CONNECTOR-SERV] aggiorno i connettori: ', elem);
       //setTimeout(() => {
         this.tiledeskConnectors.updateConnectorsOutOfItent(elem, notify);
       //}, 0);

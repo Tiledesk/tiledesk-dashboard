@@ -219,8 +219,6 @@ export class TiledeskConnectors {
     console.log('[JS] connectorId: ', connectorId);
     console.log('[JS] this.blocks: ', this.blocks);
     console.log('[JS] this.connectors: ', this.connectors);
-    // const isElementOnTheStage = isElementOnTheStage(connectorId);
-    // if(!isElementOnTheStage) return;
     let connectorElement = document.getElementById(connectorId);
     console.log('[JS] this.connectorElement: ', connectorElement);
     if (connectorElement) {
@@ -233,27 +231,6 @@ export class TiledeskConnectors {
       }
     }
   }
-
-
-  isElementOnTheStage(id) {
-    return new Promise((resolve) => {
-      let intervalId = setInterval(async () => {
-        const result = document.getElementById(id);
-        if (result) {
-          clearInterval(intervalId);
-          console.log('[JS] isElementOnTheStage:: ', id);
-          resolve(true);
-        }
-      }, 0);
-      setTimeout(() => {
-        clearInterval(intervalId);
-        resolve(false);
-      }, 1000);
-    });
-  }
-
-
-
 
 
   deleteConnectorInBlock(connectorId) {
