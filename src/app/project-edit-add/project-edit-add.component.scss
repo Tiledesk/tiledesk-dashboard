@@ -904,7 +904,15 @@ $f21blue: #039be5;
 }
 
 
-.from-a-plan-badge{
+.upgrade-for-webhook {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  height: 41px;
+  margin-left: 15px;
+}
+
+.from--a-plan-badge{
   background: #19a95d;
   font-size: 9px;
   color: #fff;
@@ -912,10 +920,12 @@ $f21blue: #039be5;
   padding: 3px 6px;
   text-transform: uppercase;
   font-weight: 400;
-  position: relative;
-  top: -8px;
-  left: -140px;
+  // position: relative;
+  // top: -8px;
+  // left: -140px;
 }
+
+
 
 ::ng-deep .custom-mat-tooltip-in-widget-setup {
   background-color: #555555 !important;
