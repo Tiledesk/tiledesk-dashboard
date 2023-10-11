@@ -560,6 +560,7 @@
         "Your": "Sizin",
         "30DaysFreeTrialOfTiledeskProPlan": "{{ company_name }} Pro planının 14 günlük ücretsiz deneme sürümü",
         "30DaysFreeTrial": "{{ plan_name }} planının 14 günlük ücretsiz denemesi",
+        "ChatbotLimitReached":"{{plan_name}} için chatbot sınırına ulaşıldı",
         "WillExpireIn": "süresi dolacak",
         "Days": "günler",
         "Tomorrow": "yarın",

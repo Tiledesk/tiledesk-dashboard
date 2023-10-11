@@ -560,6 +560,7 @@
         "Your": "Твоје",
         "30DaysFreeTrialOfTiledeskProPlan": "14-дневна бесплатна проба Про плана {{ company_name }}",
         "30DaysFreeTrial": "14-дневна бесплатна пробна верзија {{ план_наме }} плана",
+        "ChatbotLimitReached":"Достигнуто је ограничење за цхат бот за {{план_наме}}",
         "WillExpireIn": "ће истећи у",
         "Days": "дана",
         "Tomorrow": "сутра",

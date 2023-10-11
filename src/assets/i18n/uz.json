@@ -560,6 +560,7 @@
         "Your": "Sizning",
         "30DaysFreeTrialOfTiledeskProPlan": "{{ company_name }} Pro rejasining 14 kunlik bepul sinov muddati",
         "30DaysFreeTrial": "{{ plan_name }} tarif rejasining 14 kunlik bepul sinov muddati",
+        "ChatbotLimitReached":"{{plan_name}} uchun chatbot chegarasiga yetdi",
         "WillExpireIn": "yilda muddati tugaydi",
         "Days": "kunlar",
         "Tomorrow": "ertaga",

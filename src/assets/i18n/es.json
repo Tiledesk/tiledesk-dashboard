@@ -560,6 +560,7 @@
         "Your": "Tu",
         "30DaysFreeTrialOfTiledeskProPlan": "14 días de prueba gratuita del plan Pro {{ company_name }}",
         "30DaysFreeTrial": "prueba gratuita de 14 días del plan {{ plan_name }}",
+        "ChatbotLimitReached":"Se alcanzó el límite de chatbot para {{plan_name}}",
         "WillExpireIn": "caducará en",
         "Days": "días",
         "Tomorrow": "mañana",

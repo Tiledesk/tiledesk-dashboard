@@ -560,6 +560,7 @@
         "Your": "Din",
         "30DaysFreeTrialOfTiledeskProPlan": "14 dagars gratis provperiod på {{ company_name }} Pro-planen",
         "30DaysFreeTrial": "14 dagars gratis provperiod på {{ plan_name }}-planen",
+        "ChatbotLimitReached":"Chatbotgräns nådd för {{plan_name}}",
         "WillExpireIn": "kommer att löpa ut om",
         "Days": "dagar",
         "Tomorrow": "i morgon",

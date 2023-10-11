@@ -561,6 +561,7 @@
         "30DaysFreeTrialOfTiledeskProPlan": "{{ company_name }} Pro planının 14 günlük pulsuz sınaq müddəti",
         "30DaysFreeTrial": "{{ plan_name }} planının 14 günlük pulsuz sınaq müddəti",
         "WillExpireIn": "ildə başa çatacaq",
+        "ChatbotLimitReached":"{{plan_name}} üçün çatbot limitinə çatdı",
         "Days": "günlər",
         "Tomorrow": "sabah",
         "HasExpired": "Vaxtı Keçmiş",

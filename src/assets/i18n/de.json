@@ -560,6 +560,7 @@
 		"Your": "Ihre",
 		"30DaysFreeTrialOfTiledeskProPlan": "14-Tage kostensole Test Version {{ company_name }} Pro Version",
 		"30DaysFreeTrial": "14-tägige kostenlose Testversion des Plans {{ plan_name }}",
+		"ChatbotLimitReached":"Chatbot-Limit für {{plan_name}} erreicht",
 		"WillExpireIn": "wird ablaufen in",
 		"Days": "Tagen",
 		"Tomorrow": "Morgen",
