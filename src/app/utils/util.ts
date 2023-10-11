@@ -320,6 +320,13 @@ export enum PLAN_SEATS {
     Custom = 'Custom'
 };
 
+export enum CHATBOT_MAX_NUM {
+    free = 2, 
+    Basic = 5,
+    Premium = 20,
+    Custom = 'Custom'
+};
+
 export const featuresPlanA = [
     'CRM',
     'Private Notes',
