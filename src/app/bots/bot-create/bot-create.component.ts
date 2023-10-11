@@ -502,6 +502,7 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
   createTilebotBotFromScratch() {
     this.language = this.botDefaultSelectedLangCode;
     this.faqKbService.createChatbotFromScratch(this.faqKbName, 'tilebot', this.language).subscribe((faqKb) => {
+    // this.faqKbService.createChatbotFromScratch(this.faqKbName, 'internal', this.language).subscribe((faqKb) => {
       this.logger.log('[BOT-CREATE] createTilebotBotFromScratch - RES ', faqKb);
 
       if (faqKb) {

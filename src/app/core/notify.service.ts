@@ -105,7 +105,7 @@ export class NotifyService {
   displayEnterprisePlanHasExpiredModal(subHasExpired: boolean, prjctPlanName: string, prjctPlanSubsEndDate: Date) {
     if (subHasExpired === true) {
       this.displayModalEnterpiseSubsExpired = 'block';
-      this.prjct_profile_name = prjctPlanName + ' plan'
+      this.prjct_profile_name = prjctPlanName 
     }
     this.logger.log('[NOTIFY-SERVICE] - HasExpiredEnterpriseModal prjctPlanName ', prjctPlanName);
   }

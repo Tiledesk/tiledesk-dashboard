@@ -88,7 +88,7 @@
                   {{ "YouCurrentlyAreUsing" | translate }} {{ this.projectUsersLength + this.countOfPendingInvites }}
                   {{ "Of" | translate }} {{ seatsLimit }} {{ "ActiveOperatorSeatsInThe" | translate }}
                   <span style="text-transform: capitalize">
-                    {{ prjct_profile_name }}</span> - <span style="color: #039be5; cursor:pointer"
+                    {{ prjct_profile_name }}</span> - <span *ngIf="isVisiblePay" style="color: #039be5; cursor:pointer"
                     (click)="getMoreOperatorsSeats()">{{ "GetMore" | translate }} </span>
                 </span>
 

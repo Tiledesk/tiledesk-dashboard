@@ -272,10 +272,10 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     if (brand) {
       this.contactUsEmail = brand['contact_us_email'];
     }
-    this.translationParams = { plan_name: PLAN_NAME.B }
+    this.translationParams = { plan_name: PLAN_NAME.E }
     this.tParamsFreePlanSeatsNum = { free_plan_allowed_seats_num: PLAN_SEATS.free }
-    this.tParamsFeatureAvailableWith = { plan_name: PLAN_NAME.C }
-    this.t_params = { 'plan_name': PLAN_NAME.A }
+    this.tParamsFeatureAvailableWith = { plan_name: PLAN_NAME.F }
+    this.t_params = { 'plan_name': PLAN_NAME.D }
   }
 
   ngOnInit() {
@@ -451,8 +451,9 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         this.onlyUserWithOwnerRoleCanManageAdvancedProjectSettings = translation;
       });
 
-
   }
+
+
 
   translateThereHasBeenAnErrorProcessing() {
     this.translate.get('ThereHasBeenAnErrorProcessing')
@@ -512,10 +513,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         // this.logger.log('[PRJCT-EDIT-ADD] onlyOwnerCanManageTheAccountPlanMsg text', translation)
         this.learnMoreAboutDefaultRoles = translation;
       });
-    this.translate.get('AvailableWithThePlan', { plan_name: PLAN_NAME.C })
-      .subscribe((translation: any) => {
-        this.cPlanOnly = translation;
-      });
+
   }
 
 
@@ -890,8 +888,11 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   }
   presentModalFeautureAvailableOnlyWithPlanC() {
     // console.log('here presentModalFeautureAvailableOnlyWithPlanC')
+
     const el = document.createElement('div')
+
     el.innerHTML = this.cPlanOnly
+
     swal({
       // title: this.onlyOwnerCanManageTheAccountPlanMsg,
       content: el,
@@ -911,13 +912,13 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         if (this.isVisiblePaymentTab) {
           if (this.USER_ROLE === 'owner') {
             if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true) {
-              if (this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.B) {
+              if (this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.B || this.profile_name === PLAN_NAME.D || this.profile_name === PLAN_NAME.E) {
                 // console.log('HERE Y')
                 this.notify._displayContactUsModal(true, 'upgrade_plan');
               }
             } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
 
-              if (this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.B) {
+              if (this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.B || this.profile_name === PLAN_NAME.D || this.profile_name === PLAN_NAME.E) {
                 // console.log('HERE Y')
                 this.notify.displaySubscripionHasExpiredModal(true, this.profile_name, this.subscription_end_date)
               }
@@ -983,17 +984,28 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     // console.log('goToProjectSettings_Security subscription_is_active ', this.subscription_is_active)
     // console.log('goToProjectSettings_Security USER_ROLE ', this.USER_ROLE)
     if (this.USER_ROLE === 'owner') {
-      if (this.profile_name === PLAN_NAME.C) {
-        // console.log('goToProjectSettings_Security HERE 1 ')
+      if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
+        console.log('goToProjectSettings_Security HERE 1 ')
         if (this.subscription_is_active === true) {
-          // console.log('goToProjectSettings_Security HERE 2 ')
+          console.log('goToProjectSettings_Security HERE 2 ')
           this.router.navigate(['project/' + this.id_project + '/project-settings/security'])
         } else if (this.subscription_is_active === false) {
-          // console.log('goToProjectSettings_Security HERE 3 ')
-          this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.C, this.subscription_end_date);
+
+          console.log('goToProjectSettings_Security HERE 3 ')
+          if (this.profile_name === PLAN_NAME.C) {
+            this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.C + ' plan', this.subscription_end_date);
+          } else if (this.profile_name === PLAN_NAME.F) {
+            this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.F + ' plan', this.subscription_end_date);
+          }
         }
-      } else if (this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.B || this.prjct_profile_type === 'free') {
-        // console.log('goToProjectSettings_Security HERE 4 ')
+      } else if (
+        this.profile_name === PLAN_NAME.A ||
+        this.profile_name === PLAN_NAME.B ||
+        this.profile_name === PLAN_NAME.D ||
+        this.profile_name === PLAN_NAME.E ||
+        this.prjct_profile_type === 'free'
+      ) {
+        console.log('goToProjectSettings_Security HERE 4 ')
         this.presentModalFeautureAvailableOnlyWithPlanC()
       }
     } else {
@@ -1009,33 +1021,30 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   }
 
   goToProjectSettings_BannedVisitors() {
-    // console.log('[PRJCT-EDIT-ADD] displayModalBanVisitor profile_name: ', this.profile_name)
-    // console.log('[PRJCT-EDIT-ADD] displayModalBanVisitor PLAN_NAME.C: ', PLAN_NAME.C)
-    // console.log('[PRJCT-EDIT-ADD] displayModalBanVisitor subscription_is_active: ', this.subscription_is_active)
-    // console.log('[PRJCT-EDIT-ADD] displayModalBanVisitor USER_ROLE: ', this.USER_ROLE)
-    // if (this.profile_name === PLAN_NAME.C && this.subscription_is_active === true) {
-    //   if (this.USER_ROLE === 'owner') {
-    //     this.router.navigate(['project/' + this.id_project + '/project-settings/banned'])
-    //   } else {
-    //     this.presentModalAgentCannotManageAvancedSettings()
-    //   }
-    // } else if (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) {
-    //   this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.C, this.subscription_end_date);
-    // } else if (this.profile_name !== PLAN_NAME.C) {
-    //   this.presentModalFeautureAvailableOnlyWithPlanC()
-    // }
+
     if (this.USER_ROLE === 'owner') {
-      if (this.profile_name === PLAN_NAME.C) {
-        // console.log('displayModalBanVisitor HERE 1 ')
+      if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
+        console.log('displayModalBanVisitor HERE 1 ')
         if (this.subscription_is_active === true) {
-          // console.log('displayModalBanVisitor HERE 2 ')
+          console.log('displayModalBanVisitor HERE 2 ')
           this.router.navigate(['project/' + this.id_project + '/project-settings/banned'])
         } else if (this.subscription_is_active === false) {
-          // console.log('displayModalBanVisitor HERE 3 ')
-          this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.C, this.subscription_end_date);
+          console.log('displayModalBanVisitor HERE 3 ')
+          if (this.profile_name === PLAN_NAME.C) {
+          this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.C + ' plan', this.subscription_end_date);
+        } else if (this.profile_name === PLAN_NAME.F) {
+          this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.F + ' plan', this.subscription_end_date);
         }
-      } else if (this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.B || this.prjct_profile_type === 'free') {
-        // console.log('displayModalBanVisitor HERE 4 ')
+        }
+      } else if (
+        this.profile_name === PLAN_NAME.A ||
+        this.profile_name === PLAN_NAME.B ||
+        this.profile_name === PLAN_NAME.D ||
+        this.profile_name === PLAN_NAME.E ||
+        this.prjct_profile_type === 'free'
+
+      ) {
+        console.log('displayModalBanVisitor HERE 4 ')
         this.presentModalFeautureAvailableOnlyWithPlanC()
       }
     } else {
@@ -1046,76 +1055,68 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
   goToCustomizeNotificationEmailPage() {
     // this.router.navigate(['project/' + this.id_project + '/notification-email'])
-    this.logger.log('goToCustomizeNotificationEmailPage profile_name ', this.profile_name)
-
-
-    // if (this.profile_name === PLAN_NAME.C && this.subscription_is_active === true) {
-    //   if (this.USER_ROLE === 'owner') {
-    //     this.logger.log('[PRJCT-EDIT-ADD] - HAS CLICKED goToCustomizeNotificationEmailPage');
-    //     this.router.navigate(['project/' + this.id_project + '/notification-email'])
-    //   } else {
-    //     this.presentModalOnlyOwnerCanManageEmailTempalte()
-    //   }
-    // } else if (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) {
-    //   this.notify.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
-    // } else if (this.profile_name !== PLAN_NAME.C) {
-    //   this.presentModalFeautureAvailableOnlyWithPlanC()
-    // }
+    console.log('goToCustomizeNotificationEmailPage profile_name ', this.profile_name)
     if (this.USER_ROLE === 'owner') {
-      if (this.profile_name === PLAN_NAME.C) {
-        // console.log('goToCustomizeNotificationEmailPage HERE 1 ')
+      if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
+        console.log('goToCustomizeNotificationEmailPage HERE 1 ')
         if (this.subscription_is_active === true) {
-          // console.log('goToCustomizeNotificationEmailPage HERE 2 ')
+          console.log('goToCustomizeNotificationEmailPage HERE 2 ')
           this.router.navigate(['project/' + this.id_project + '/notification-email'])
         } else if (this.subscription_is_active === false) {
-          // console.log('goToCustomizeNotificationEmailPage HERE 3 ')
-          this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.C, this.subscription_end_date);
+          console.log('goToCustomizeNotificationEmailPage HERE 3 ')
+          if (this.profile_name === PLAN_NAME.C) {
+            this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.C + ' plan', this.subscription_end_date);
+          } else if (this.profile_name === PLAN_NAME.F) {
+            this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.F + ' plan', this.subscription_end_date);
+          }
         }
-      } else if (this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.B || this.prjct_profile_type === 'free') {
-        // console.log('goToCustomizeNotificationEmailPage HERE 4 ')
+      } else if (
+        this.profile_name === PLAN_NAME.A ||
+        this.profile_name === PLAN_NAME.B ||
+        this.profile_name === PLAN_NAME.D ||
+        this.profile_name === PLAN_NAME.E ||
+        this.prjct_profile_type === 'free'
+      ) {
+        console.log('goToCustomizeNotificationEmailPage HERE 4 ')
 
         this.presentModalFeautureAvailableOnlyWithPlanC()
       }
     } else {
-      // console.log('goToCustomizeNotificationEmailPage HERE 5 ')
+      console.log('goToCustomizeNotificationEmailPage HERE 5 ')
       this.presentModalOnlyOwnerCanManageAdvancedProjectSettings()
     }
   }
 
   goToManageEmailSettings() {
-    //  console.log('goToManageEmailSettings profile_name ', this.profile_name)
-    //  console.log('goToManageEmailSettings subscription_is_active ', this.subscription_is_active)
-    //  console.log('goToManageEmailSettings USER_ROLE ', this.USER_ROLE)
-    // if (this.profile_name === PLAN_NAME.C && this.subscription_is_active === true) {
-
-    //   if (this.USER_ROLE === 'owner') {
-    //     this.logger.log('[PRJCT-EDIT-ADD] - HAS CLICKED goToManageEmailSettings');
-    //     this.router.navigate(['project/' + this.id_project + '/smtp-settings'])
-    //   } else {
-    //     this.presentModalOnlyOwnerCanManageEmailTempalte()
-    //   }
-    // } else if (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) {
-    //   this.notify.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
-    // } else if (this.profile_name !== PLAN_NAME.C) {
-    //   this.presentModalFeautureAvailableOnlyWithPlanC()
-    // }
+    console.log('goToManageEmailSettings profile_name ', this.profile_name)
 
     if (this.USER_ROLE === 'owner') {
-      if (this.profile_name === PLAN_NAME.C) {
-        // console.log('goToManageEmailSettings HERE 1 ')
+      if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
+        console.log('goToManageEmailSettings HERE 1 ')
         if (this.subscription_is_active === true) {
-          // console.log('goToManageEmailSettings HERE 2 ')
+          console.log('goToManageEmailSettings HERE 2 ')
           this.router.navigate(['project/' + this.id_project + '/smtp-settings'])
         } else if (this.subscription_is_active === false) {
-          // console.log('goToManageEmailSettings HERE 3 ')
-          this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.C, this.subscription_end_date);
+          console.log('goToManageEmailSettings HERE 3 ')
+          if (this.profile_name === PLAN_NAME.C) {
+            this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.C + ' plan', this.subscription_end_date);
+          } else if (this.profile_name === PLAN_NAME.F) {
+            this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.F + ' plan', this.subscription_end_date);
+          }
         }
-      } else if (this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.B || this.prjct_profile_type === 'free') {
-        // console.log('goToManageEmailSettings HERE 4 ')
+      } else if (
+        this.profile_name === PLAN_NAME.A ||
+        this.profile_name === PLAN_NAME.B ||
+        this.profile_name === PLAN_NAME.D ||
+        this.profile_name === PLAN_NAME.E ||
+        this.prjct_profile_type === 'free'
+
+      ) {
+        console.log('goToManageEmailSettings HERE 4 ')
         this.presentModalFeautureAvailableOnlyWithPlanC()
       }
     } else {
-      // console.log('goToManageEmailSettings HERE 5 ')
+      console.log('goToManageEmailSettings HERE 5 ')
       this.presentModalOnlyOwnerCanManageTSMTPsettings()
     }
   }
@@ -1141,21 +1142,66 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       });
   }
 
+  translateAvailableWithPlusOrCuromPlan() {
+    // let planName = ""
+    //   if (this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.B || this.profile_name === 'free') {
+    //     planName = PLAN_NAME.C
+    //     console.log('[PRJCT-EDIT-ADD] AvailableWithThePlan here 1 planName ', planName) 
+    //   } else if (this.profile_name === PLAN_NAME.D || this.profile_name === PLAN_NAME.E || this.profile_name === 'Sandbox') {
+    //     planName = PLAN_NAME.F
+    //     console.log('[PRJCT-EDIT-ADD] AvailableWithThePlan here 2 planName ', planName) 
+    //   }
+    this.translate.get('AvailableWithThePlan', { plan_name: PLAN_NAME.F })
+      .subscribe((translation: any) => {
+        console.log('[PRJCT-EDIT-ADD] AvailableWithThePlan translation ', translation)
+        this.cPlanOnly = translation;
+      });
+  }
+
   getProjectPlan() {
     this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-      this.logger.log('[PRJCT-EDIT-ADD] - getProjectPlan project Profile Data', projectProfileData)
+      console.log('[PRJCT-EDIT-ADD] - getProjectPlan project Profile Data', projectProfileData)
       if (projectProfileData) {
-        this.prjct_name = projectProfileData.name;
-        // this.prjct_profile_name = projectProfileData.profile_name;
-        this.profile_name = projectProfileData.profile_name
-        this.prjct_trial_expired = projectProfileData.trial_expired;
-        this.prjc_trial_days_left = projectProfileData.trial_days_left;
 
-        // this.numberOf_agents_seats = projectProfileData.profile_agents
+        this.prjct_name = projectProfileData.name;
+        console.log('[PRJCT-EDIT-ADD] - prjct_name', this.prjct_name)
+
+        this.profile_name = projectProfileData.profile_name
+        console.log('[PRJCT-EDIT-ADD] - profile_name', this.profile_name)
+
+        this.prjct_trial_expired = projectProfileData.trial_expired;
+        console.log('[PRJCT-EDIT-ADD] - prjct_trial_expired', this.prjct_trial_expired)
+
+        this.prjc_trial_days_left = projectProfileData.trial_days_left;
+        console.log('[PRJCT-EDIT-ADD] - prjc_trial_days_left', this.prjc_trial_days_left)
 
         this.subscription_is_active = projectProfileData.subscription_is_active;
+        console.log('[PRJCT-EDIT-ADD] - subscription_is_active', this.subscription_is_active)
+
         this.subscription_end_date = projectProfileData.subscription_end_date;
+        console.log('[PRJCT-EDIT-ADD] - subscription_end_date', this.subscription_end_date)
+
         this.subscription_start_date = projectProfileData.subscription_start_date;
+        console.log('[PRJCT-EDIT-ADD] - subscription_start_date', this.subscription_start_date)
+
+        this.prjct_profile_type = projectProfileData.profile_type;
+        console.log('[PRJCT-EDIT-ADD] - prjct_profile_type', this.prjct_profile_type)
+
+        this.translateAvailableWithPlusOrCuromPlan()
+
+        // if (this.profile_name === 'free') {
+        //   this.translationParams = { plan_name: PLAN_NAME.B }
+        // } else if (this.profile_name === 'Sandbox') {
+        //   this.translationParams = { plan_name: PLAN_NAME.E }
+        // }
+
+        // if (this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.B || this.profile_name === 'free') {
+        //   console.log('[PRJCT-EDIT-ADD] here yes tParamsFeatureAvailableWith')
+        //   this.tParamsFeatureAvailableWith = { plan_name: PLAN_NAME.C }
+        // } else if (this.profile_name === PLAN_NAME.D || this.profile_name === PLAN_NAME.E || this.profile_name === 'Sandbox') {
+        //   console.log('[PRJCT-EDIT-ADD] here yes 2 tParamsFeatureAvailableWith ')
+        //   this.tParamsFeatureAvailableWith = { plan_name: PLAN_NAME.F }
+        // }
 
         if (projectProfileData.extra3) {
           this.appSumoProfile = APP_SUMO_PLAN_NAME[projectProfileData.extra3]
@@ -1192,28 +1238,40 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
           this.subscription_creation_date = projectProfileData.subscription_start_date;
         }
         this.logger.log('[PRJCT-EDIT-ADD] - getProjectPlan project Profile Data > subscription_creation_date', this.subscription_creation_date)
-        this.prjct_profile_type = projectProfileData.profile_type;
+
         this.logger.log('[PRJCT-EDIT-ADD] - getProjectPlan project Profile Data > prjct_profile_type', this.prjct_profile_type)
 
-        if (this.profile_name === PLAN_NAME.C && this.subscription_is_active === true) {
+        if (this.profile_name === PLAN_NAME.C && this.subscription_is_active === true || this.profile_name === PLAN_NAME.F && this.subscription_is_active === true) {
           this.advancedSettingBtnDisabled = false
-        } else if (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) {
+        } else if (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false || this.profile_name === PLAN_NAME.F && this.subscription_is_active === false) {
           this.advancedSettingBtnDisabled = true
 
-        } else if (this.profile_name !== PLAN_NAME.C) {
+        } else if (this.profile_name !== PLAN_NAME.C && this.profile_name !== PLAN_NAME.F) {
           this.advancedSettingBtnDisabled = true
         }
         if (projectProfileData.profile_type === 'free') {
           if (projectProfileData.trial_expired === false) {
-            this.prjct_profile_name = PLAN_NAME.B + " (trial)"
-            this.seatsLimit = PLAN_SEATS[PLAN_NAME.B]
-            this.tParamsPlanAndSeats = { plan_name: this.prjct_profile_name, allowed_seats_num: this.seatsLimit }
-            // console.log('[PRJCT-EDIT-ADD] - GET PROJECT PLAN - PLAN_NAME ', 'FREE TRIAL', ' SEATS LIMIT: ', this.seatsLimit)
+            if (this.profile_name === 'free') {
+              this.prjct_profile_name = PLAN_NAME.B + " (trial)"
+              this.seatsLimit = PLAN_SEATS[PLAN_NAME.B]
+              this.tParamsPlanAndSeats = { plan_name: this.prjct_profile_name, allowed_seats_num: this.seatsLimit }
+              // console.log('[PRJCT-EDIT-ADD] - GET PROJECT PLAN - PLAN_NAME ', 'FREE TRIAL', ' SEATS LIMIT: ', this.seatsLimit)
+            } else if (this.profile_name === 'Sandbox') {
+              this.prjct_profile_name = PLAN_NAME.E + " (trial)"
+              this.seatsLimit = PLAN_SEATS[PLAN_NAME.E]
+              this.tParamsPlanAndSeats = { plan_name: this.prjct_profile_name, allowed_seats_num: this.seatsLimit }
+            }
           } else {
-            this.prjct_profile_name = "Free plan";
-            this.seatsLimit = PLAN_SEATS.free
-            this.tParamsPlanAndSeats = { plan_name: 'Free', allowed_seats_num: this.seatsLimit }
-            // console.log('[PRJCT-EDIT-ADD] - GET PROJECT PLAN - PLAN_NAME ', 'FREE TRIAL', ' SEATS LIMIT: ', this.seatsLimit)
+            if (this.profile_name === 'free') {
+              this.prjct_profile_name = "Free plan";
+              this.seatsLimit = PLAN_SEATS.free
+              this.tParamsPlanAndSeats = { plan_name: 'Free', allowed_seats_num: this.seatsLimit }
+              // console.log('[PRJCT-EDIT-ADD] - GET PROJECT PLAN - PLAN_NAME ', 'FREE TRIAL', ' SEATS LIMIT: ', this.seatsLimit)
+            } else if (this.profile_name === 'Sandbox') {
+              this.prjct_profile_name = "Sandbox";
+              this.seatsLimit = PLAN_SEATS.free
+              this.tParamsPlanAndSeats = { plan_name: 'Sandbox', allowed_seats_num: this.seatsLimit }
+            }
           }
         } else if (projectProfileData.profile_type === 'payment') {
           if (this.subscription_is_active === true) {
@@ -1244,6 +1302,21 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
               this.seatsLimit = projectProfileData.profile_agents
               this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.C, allowed_seats_num: this.seatsLimit }
               // console.log('[PRJCT-EDIT-ADD] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.C, ' SEATS LIMIT: ', this.seatsLimit)
+            } else if (projectProfileData.profile_name === PLAN_NAME.D) {
+              this.prjct_profile_name = PLAN_NAME.D + " plan";
+              this.seatsLimit = projectProfileData.profile_agents
+              this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.D, allowed_seats_num: this.seatsLimit }
+              // console.log('[PRJCT-EDIT-ADD] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.C, ' SEATS LIMIT: ', this.seatsLimit)
+            } else if (projectProfileData.profile_name === PLAN_NAME.E) {
+              this.prjct_profile_name = PLAN_NAME.E + " plan";
+              this.seatsLimit = projectProfileData.profile_agents
+              this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.E, allowed_seats_num: this.seatsLimit }
+              // console.log('[PRJCT-EDIT-ADD] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.C, ' SEATS LIMIT: ', this.seatsLimit)
+            } else if (projectProfileData.profile_name === PLAN_NAME.F) {
+              this.prjct_profile_name = PLAN_NAME.F + " plan";
+              this.seatsLimit = projectProfileData.profile_agents
+              this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.F, allowed_seats_num: this.seatsLimit }
+              // console.log('[PRJCT-EDIT-ADD] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.C, ' SEATS LIMIT: ', this.seatsLimit)
             }
 
           } else if (this.subscription_is_active === false) {
@@ -1265,7 +1338,23 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
               this.seatsLimit = projectProfileData.profile_agents
               this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.C, allowed_seats_num: this.seatsLimit }
               // console.log('[PRJCT-EDIT-ADD] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.C, ' SEATS LIMIT: ', this.seatsLimit)
+            } else if (projectProfileData.profile_name === PLAN_NAME.D) {
+              this.prjct_profile_name = PLAN_NAME.D + " plan";
+              this.seatsLimit = projectProfileData.profile_agents
+              this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.D, allowed_seats_num: this.seatsLimit }
+              // console.log('[PRJCT-EDIT-ADD] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.C, ' SEATS LIMIT: ', this.seatsLimit)
+            } else if (projectProfileData.profile_name === PLAN_NAME.E) {
+              this.prjct_profile_name = PLAN_NAME.E + " plan";
+              this.seatsLimit = projectProfileData.profile_agents
+              this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.E, allowed_seats_num: this.seatsLimit }
+              // console.log('[PRJCT-EDIT-ADD] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.C, ' SEATS LIMIT: ', this.seatsLimit)
+            } else if (projectProfileData.profile_name === PLAN_NAME.F) {
+              this.prjct_profile_name = PLAN_NAME.F + " plan";
+              this.seatsLimit = projectProfileData.profile_agents
+              this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.F, allowed_seats_num: this.seatsLimit }
+              // console.log('[PRJCT-EDIT-ADD] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.C, ' SEATS LIMIT: ', this.seatsLimit)
             }
+
           }
         }
 
@@ -1278,14 +1367,14 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         // }
         // RETURN THE CURRENT DAY AT THE TIME 00:00:00
 
-        if (this.profile_name === PLAN_NAME.C && this.subscription_is_active === true) {
-          this.advancedSettingBtnDisabled = false
-        } else if (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) {
-          this.advancedSettingBtnDisabled = true
+        // if (this.profile_name === PLAN_NAME.C && this.subscription_is_active === true) {
+        //   this.advancedSettingBtnDisabled = false
+        // } else if (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) {
+        //   this.advancedSettingBtnDisabled = true
 
-        } else if (this.profile_name !== PLAN_NAME.C) {
-          this.advancedSettingBtnDisabled = true
-        }
+        // } else if (this.profile_name !== PLAN_NAME.C) {
+        //   this.advancedSettingBtnDisabled = true
+        // }
 
         const today = moment().startOf('day')
 
@@ -1436,10 +1525,10 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   openModalSubsExpired() {
     if (this.isVisiblePaymentTab) {
       if (this.USER_ROLE === 'owner') {
-        if (this.profile_name !== PLAN_NAME.C) {
+        if (this.profile_name !== PLAN_NAME.C && this.profile_name !== PLAN_NAME.F) {
           this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
         } else {
-          if (this.profile_name === PLAN_NAME.C) {
+          if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
 
             this.notify.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
           }
@@ -1858,6 +1947,8 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
           if (this.profile_name === PLAN_NAME.C) {
             this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.C, this.subscription_end_date);
+          } else if (this.profile_name === PLAN_NAME.F) {
+            this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.F, this.subscription_end_date);
           } else if (this.profile_name !== PLAN_NAME.C) {
             // this.notify._displayContactUsModal(true, 'upgrade_plan');
             this.notify.displaySubscripionHasExpiredModal(true, this.profile_name, this.subscription_end_date);

@@ -196,9 +196,9 @@
                             <img class="bot-type-logo" src="assets/img/tilebot_logo_small.png" />
                           </span>
 
-                          <!-- <span class="tooltiptext">
-                        {{ 'BotsPage.BotId' | translate }}: <br> {{ faqkb?._id  }}
-                      </span> -->
+                              <!-- <span class="tooltiptext">
+                            {{ 'BotsPage.BotId' | translate }}: <br> {{ faqkb?._id  }}
+                          </span> -->
 
                           <div class="right" style="padding: 2px 9px;min-width: fit-content;">
                             <h4>{{ 'BotsPage.BotId' | translate }}</h4>
@@ -210,66 +210,66 @@
                         </span>
 
 
-                        <!-- <span *ngIf="!faqkb?.external"
-                      style="font-weight:400; font-size:12px; display:block; color:#7695a5; margin-top: 4px;">
-                      # FAQs:
-                      <span *ngIf="!faqkb?.has_faq">
-                        0
-                        <span style="position: relative; top: -2px;" class="tooltipx">
-                          <i class="material-icons"
-                            style="vertical-align: middle; color:#ec971f; font-size: 12px; padding-left: 8px">
-                            report_problem
-                          </i>
-                          <span class="tooltiptext">
-                     
-                            <span style="vertical-align: middle;font-size: 12px;">
-                              {{ 'BotsPage.PendingAddFaqs' | translate }}
+                              <!-- <span *ngIf="!faqkb?.external"
+                            style="font-weight:400; font-size:12px; display:block; color:#7695a5; margin-top: 4px;">
+                            # FAQs:
+                            <span *ngIf="!faqkb?.has_faq">
+                              0
+                              <span style="position: relative; top: -2px;" class="tooltipx">
+                                <i class="material-icons"
+                                  style="vertical-align: middle; color:#ec971f; font-size: 12px; padding-left: 8px">
+                                  report_problem
+                                </i>
+                                <span class="tooltiptext">
+                          
+                                  <span style="vertical-align: middle;font-size: 12px;">
+                                    {{ 'BotsPage.PendingAddFaqs' | translate }}
+                                  </span>
+                                </span>
+                              </span>
                             </span>
-                          </span>
-                        </span>
-                      </span>
-                      <span *ngIf="faqkb?.has_faq">
-                        {{ faqkb?.faqs_number }}
-                      </span>
-                    </span> -->
-
-                        <!-- <span *ngIf="faqkb?.external"
-                      style="font-weight:400; font-size:12px; display:block; color:#7695a5; margin-top: 4px;">
-
-                      <span [ngClass]="{'url-top-position' : faqkb?.url }"> Url: </span>
-                      <span *ngIf="faqkb?.url" [ngClass]="{'truncate' : i !== rowIndexSelected }"
-                        style="max-width: 250px;color: #03a5e8; cursor:pointer; display:inline-block; word-break: break-all;"
-                        (click)="$event.stopPropagation(); goToBotExternalUrl(faqkb?.url)">
-                        {{ faqkb?.url}}
-                      </span>
-                      <span *ngIf="faqkb?.url?.length > 43">
-                        <i *ngIf="i !== rowIndexSelected" class="material-icons"
-                          style="cursor: pointer; color: #039be5; font-size:18px;"
-                          (click)="$event.stopPropagation(); disableTruncateText(i)">
-                          keyboard_arrow_down
-                        </i>
-                        <i *ngIf="i === rowIndexSelected" class="material-icons"
-                          style="cursor: pointer; color: #039be5; font-size:18px;"
-                          (click)="$event.stopPropagation(); enableTruncateText()">
-                          keyboard_arrow_up
-                        </i>
-                      </span>
-
-                      <span *ngIf="!faqkb?.url">
-                        n.d.
-                        <span style="position: relative; top: -2px;" class="tooltipx">
-                          <i class="material-icons"
-                            style="vertical-align: middle; color:#ec971f; font-size: 12px; padding-left: 8px">
-                            report_problem
-                          </i>
-                          <span class="tooltiptext">
-                            <span style="vertical-align: middle;font-size: 12px;">
-                              {{ "BotsPage.NoUrlProvided" | translate }}
+                            <span *ngIf="faqkb?.has_faq">
+                              {{ faqkb?.faqs_number }}
                             </span>
-                          </span>
-                        </span>
-                      </span>
-                    </span> -->
+                          </span> -->
+
+                              <!-- <span *ngIf="faqkb?.external"
+                            style="font-weight:400; font-size:12px; display:block; color:#7695a5; margin-top: 4px;">
+
+                            <span [ngClass]="{'url-top-position' : faqkb?.url }"> Url: </span>
+                            <span *ngIf="faqkb?.url" [ngClass]="{'truncate' : i !== rowIndexSelected }"
+                              style="max-width: 250px;color: #03a5e8; cursor:pointer; display:inline-block; word-break: break-all;"
+                              (click)="$event.stopPropagation(); goToBotExternalUrl(faqkb?.url)">
+                              {{ faqkb?.url}}
+                            </span>
+                            <span *ngIf="faqkb?.url?.length > 43">
+                              <i *ngIf="i !== rowIndexSelected" class="material-icons"
+                                style="cursor: pointer; color: #039be5; font-size:18px;"
+                                (click)="$event.stopPropagation(); disableTruncateText(i)">
+                                keyboard_arrow_down
+                              </i>
+                              <i *ngIf="i === rowIndexSelected" class="material-icons"
+                                style="cursor: pointer; color: #039be5; font-size:18px;"
+                                (click)="$event.stopPropagation(); enableTruncateText()">
+                                keyboard_arrow_up
+                              </i>
+                            </span>
+
+                            <span *ngIf="!faqkb?.url">
+                              n.d.
+                              <span style="position: relative; top: -2px;" class="tooltipx">
+                                <i class="material-icons"
+                                  style="vertical-align: middle; color:#ec971f; font-size: 12px; padding-left: 8px">
+                                  report_problem
+                                </i>
+                                <span class="tooltiptext">
+                                  <span style="vertical-align: middle;font-size: 12px;">
+                                    {{ "BotsPage.NoUrlProvided" | translate }}
+                                  </span>
+                                </span>
+                              </span>
+                            </span>
+                          </span> -->
                       </td>
 
 

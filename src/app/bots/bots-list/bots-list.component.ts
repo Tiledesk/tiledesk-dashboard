@@ -1,4 +1,4 @@
-import { Component, isDevMode, OnInit } from '@angular/core';
+import { Component, isDevMode, OnDestroy, OnInit } from '@angular/core';
 import { FaqKbService } from '../../services/faq-kb.service';
 import { FaqKb } from '../../models/faq_kb-model';
 import { Router, RoutesRecognized } from '@angular/router';
@@ -18,7 +18,12 @@ import { ProjectService } from 'app/services/project.service';
 import { BotLocalDbService } from 'app/services/bot-local-db.service';
 import { MatDialog } from '@angular/material/dialog';
 import { CloneBotComponent } from './clone-bot/clone-bot.component';
-import { goToCDSVersion } from 'app/utils/util';
+import { CHATBOT_MAX_NUM, goToCDSVersion, PLAN_NAME } from 'app/utils/util';
+import { ProjectPlanService } from 'app/services/project-plan.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators'
+import { UsersService } from 'app/services/users.service';
+import { ChatbotModalComponent } from './chatbot-modal/chatbot-modal.component';
 
 const swal = require('sweetalert');
 @Component({
@@ -27,8 +32,11 @@ const swal = require('sweetalert');
   styleUrls: ['./bots-list.component.scss'],
 })
 
-export class BotListComponent implements OnInit {
+export class BotListComponent implements OnInit, OnDestroy {
   // tparams = brand;
+  PLAN_NAME = PLAN_NAME;
+  CHATBOT_MAX_NUM = CHATBOT_MAX_NUM;
+  private unsubscribe$: Subject<any> = new Subject<any>();
   tparams: any;
 
   faqkbList: FaqKb[];
@@ -98,6 +106,18 @@ export class BotListComponent implements OnInit {
   public currentProjectId: string;
   public botProfileImageExist: boolean;
   public botProfileImageurl: string;
+  public projectPlanAgentsNo: any;
+  public prjct_profile_type: any;
+  public subscription_is_active: any;
+  public subscription_end_date: any;
+  public profile_name: any;
+  public trial_expired: any;
+  public prjct_profile_name: string;
+  public chatBotLimit: any;
+  public chatBotCount: any;
+  public USER_ROLE: string;
+  public contactUs: string;
+ 
   constructor(
     private faqKbService: FaqKbService,
     private router: Router,
@@ -112,7 +132,9 @@ export class BotListComponent implements OnInit {
     private logger: LoggerService,
     private projectService: ProjectService,
     private botLocalDbService: BotLocalDbService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private prjctPlanService: ProjectPlanService,
+    private usersService: UsersService,
   ) {
 
     const brand = brandService.getBrand();
@@ -126,17 +148,126 @@ export class BotListComponent implements OnInit {
     this.getBrowserVersion();
     this.auth.checkRoleForCurrentProject();
     this.getProfileImageStorage();
-    this.translateTrashBotSuccessMsg();
-    this.translateTrashBotErrorMsg();
+
+
     this.getCurrentProject();
     this.getOSCODE();
     // this.getFaqKb();
     this.getFaqKbByProjectId();
     this.getTranslations();
-    this.getTemplates()
-    this.getCommunityTemplates()
-    this.getNavigationBaseUrl()
+    this.getTemplates();
+    this.getCommunityTemplates();
+    this.getNavigationBaseUrl();
+    this.getProjectPlan()
+    this.getUserRole()
   }
+
+  getUserRole() {
+    this.usersService.project_user_role_bs
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((userRole) => {
+
+        this.logger.log('[BOTS-LIST] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
+        this.USER_ROLE = userRole;
+      })
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
+  getProjectPlan() {
+    this.prjctPlanService.projectPlan$
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((projectProfileData: any) => {
+        this.logger.log('[BOTS-LIST] - GET PROJECT PROFILE - RES', projectProfileData)
+        if (projectProfileData) {
+
+
+          this.projectPlanAgentsNo = projectProfileData.profile_agents;
+          // this.logger.log('[BOTS-LIST]  - GET PROJECT PROFILE - projectPlanAgentsNo ', this.projectPlanAgentsNo);
+
+          this.prjct_profile_type = projectProfileData.profile_type;
+          // this.logger.log('[HOME-CREATE-TEAMMATE]  - GET PROJECT PROFILE - prjct_profile_type ', this.prjct_profile_type);
+
+          this.subscription_is_active = projectProfileData.subscription_is_active;
+          // this.logger.log('[HOME-CREATE-TEAMMATE]  - GET PROJECT PROFILE - subscription_is_active ', this.projectPlanAgentsNo);
+          this.subscription_end_date = projectProfileData.subscription_end_date
+          // this.logger.log('[HOME-CREATE-TEAMMATE]  - GET PROJECT PROFILE - subscription_end_date ', this.subscription_end_date);
+          this.profile_name = projectProfileData.profile_name
+          // this.logger.log('[HOME-CREATE-TEAMMATE]  - GET PROJECT PROFILE - profile_name ', this.profile_name);
+          this.trial_expired = projectProfileData.trial_expired
+          // this.logger.log('[HOME-CREATE-TEAMMATE]  - GET PROJECT PROFILE - trial_expired ', this.trial_expired);
+
+          if (projectProfileData.profile_type === 'free') {
+
+            if (projectProfileData.trial_expired === false) {
+
+              if (this.profile_name === 'Sandbox') {
+                this.prjct_profile_name = PLAN_NAME.E + " plan (trial)"
+                this.chatBotLimit = CHATBOT_MAX_NUM[PLAN_NAME.E]
+                console.log('[BOTS-LIST] - GET PROJECT PLAN - PLAN_NAME ', this.prjct_profile_name, ' CB LIMIT: ', this.chatBotLimit)
+              }
+
+            } else {
+              if (this.profile_name === 'Sandbox') {
+                this.prjct_profile_name = "Sandbox plan";
+                this.chatBotLimit = CHATBOT_MAX_NUM.free;
+                console.log('[BOTS-LIST] - GET PROJECT PLAN - PLAN_NAME ', this.prjct_profile_name, ' TRIAL EXPIRED CB LIMIT: ', this.chatBotLimit)
+              }
+            }
+          } else if (projectProfileData.profile_type === 'payment') {
+
+            if (this.subscription_is_active === true) {
+
+              if (projectProfileData.profile_name === PLAN_NAME.D) {
+                this.prjct_profile_name = PLAN_NAME.D + " plan";
+                this.chatBotLimit = CHATBOT_MAX_NUM[PLAN_NAME.D]
+                console.log('[BOTS-LIST] - GET PROJECT PLAN - PLAN_NAME ', this.prjct_profile_name, ' SUB ACTIVE CB LIMIT: ', this.chatBotLimit)
+
+              } else if (projectProfileData.profile_name === PLAN_NAME.E) {
+                this.prjct_profile_name = PLAN_NAME.E + " plan";
+                this.chatBotLimit = CHATBOT_MAX_NUM[PLAN_NAME.E]
+                console.log('[BOTS-LIST] - GET PROJECT PLAN - PLAN_NAME ', this.prjct_profile_name, ' SUB ACTIVE CB LIMIT: ', this.chatBotLimit)
+              }
+
+            } else if (this.subscription_is_active === false) {
+
+              if (projectProfileData.profile_name === PLAN_NAME.D) {
+                this.prjct_profile_name = PLAN_NAME.D + " plan";
+                this.chatBotLimit = CHATBOT_MAX_NUM.free;
+                console.log('[BOTS-LIST] - GET PROJECT PLAN - PLAN_NAME ', this.prjct_profile_name, ' SUB EXIP CB LIMIT: ', this.chatBotLimit)
+
+              } else if (projectProfileData.profile_name === PLAN_NAME.E) {
+                this.prjct_profile_name = PLAN_NAME.E + " plan";
+                this.chatBotLimit = CHATBOT_MAX_NUM.free;
+                console.log('[BOTS-LIST] - GET PROJECT PLAN - PLAN_NAME ', this.prjct_profile_name, ' SUB EXIP CB LIMIT: ', this.chatBotLimit)
+
+              } else if (projectProfileData.profile_name === PLAN_NAME.F) {
+                this.prjct_profile_name = PLAN_NAME.F + " plan";
+                this.chatBotLimit = CHATBOT_MAX_NUM.free;
+                console.log('[BOTS-LIST] - GET PROJECT PLAN - PLAN_NAME ', this.prjct_profile_name, ' SUB EXIP CB LIMIT: ', this.chatBotLimit)
+
+              }
+
+            }
+          }
+          
+        }
+      }, err => {
+        this.logger.error('[BOTS-LIST] GET PROJECT PLAN - ERROR', err);
+      }, () => {
+        console.log('[BOTS-LIST] GET PROJECT PLAN * COMPLETE *');
+        
+      });
+  }
+
+ 
 
   getNavigationBaseUrl() {
     const href = window.location.href;
@@ -163,7 +294,7 @@ export class BotListComponent implements OnInit {
         const communityTemplates = res
         this.logger.log('[BOTS-LIST] - GET COMMUNITY TEMPLATES', communityTemplates);
         this.allCommunityTemplatesCount = communityTemplates.length;
-        this.logger.log('[[BOTS-LIST] - GET COMMUNITY TEMPLATES COUNT', this.allCommunityTemplatesCount);
+        this.logger.log('[BOTS-LIST] - GET COMMUNITY TEMPLATES COUNT', this.allCommunityTemplatesCount);
       }
     }, (error) => {
       this.logger.error('[BOTS-LIST]  GET COMMUNITY TEMPLATES ERROR ', error);
@@ -313,25 +444,19 @@ export class BotListComponent implements OnInit {
         this.warning = text;
       });
 
+
+    this.translate.get('ContactUs')
+      .subscribe((text: string) => {
+
+        this.contactUs = text;
+        // this.logger.log('+ + + TrashBotErrorNoticationMsg', text)
+      });
+
+    this.translateTrashBotSuccessMsg();
+    this.translateTrashBotErrorMsg();
   }
 
-  getProfileImageStorage() {
-    if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
-      this.UPLOAD_ENGINE_IS_FIREBASE = true;
-      const firebase_conf = this.appConfigService.getConfig().firebase;
-      this.storageBucket = firebase_conf['storageBucket'];
-      this.logger.log('[BOTS-LIST] IMAGE STORAGE ', this.storageBucket, 'usecase Firebase')
-    } else {
-      this.UPLOAD_ENGINE_IS_FIREBASE = false;
-      // this.baseUrl = this.appConfigService.getConfig().SERVER_BASE_URL;
-      this.baseUrl = this.appConfigService.getConfig().baseImageUrl;
 
-
-      this.logger.log('[BOTS-LIST] IMAGE STORAGE ', this.baseUrl, 'usecase native')
-    }
-  }
-
-  
 
   translateTrashBotSuccessMsg() {
     this.translate.get('TrashBotSuccessNoticationMsg')
@@ -350,6 +475,24 @@ export class BotListComponent implements OnInit {
       });
   }
 
+  getProfileImageStorage() {
+    if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
+      this.UPLOAD_ENGINE_IS_FIREBASE = true;
+      const firebase_conf = this.appConfigService.getConfig().firebase;
+      this.storageBucket = firebase_conf['storageBucket'];
+      this.logger.log('[BOTS-LIST] IMAGE STORAGE ', this.storageBucket, 'usecase Firebase')
+    } else {
+      this.UPLOAD_ENGINE_IS_FIREBASE = false;
+      // this.baseUrl = this.appConfigService.getConfig().SERVER_BASE_URL;
+      this.baseUrl = this.appConfigService.getConfig().baseImageUrl;
+
+
+      this.logger.log('[BOTS-LIST] IMAGE STORAGE ', this.baseUrl, 'usecase native')
+    }
+  }
+
+
+
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
       this.project = project
@@ -367,15 +510,17 @@ export class BotListComponent implements OnInit {
   getFaqKbByProjectId() {
     // this.faqKbService.getAllBotByProjectId().subscribe((faqKb: any) => {
     this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
-      this.logger.log('[BOTS-LIST] - GET BOTS BY PROJECT ID', faqKb);
+      console.log('[BOTS-LIST] - GET BOTS BY PROJECT ID > RES', faqKb);
       if (faqKb) {
 
         this.faqkbList = faqKb;
+        this.chatBotCount = this.faqkbList.length;
+        console.log('[BOTS-LIST] - GET BOTS BY PROJECT ID > chatBotCount', this.chatBotCount);
 
         this.faqkbList.forEach(bot => {
           this.logger.log('[BOTS-LIST] getFaqKbByProjectId bot ', bot)
-          this.getBotProfileImage(bot) 
-          
+          this.getBotProfileImage(bot)
+
         });
 
         this.myChatbotOtherCount = faqKb.length
@@ -483,7 +628,7 @@ export class BotListComponent implements OnInit {
     const self = this;
     this.logger.log('[BOTS-LIST] HERE YES 1')
     this.verifyImageURL(imageUrl, function (imageExists) {
- 
+
       if (imageExists === true) {
         self.botProfileImageExist = imageExists
         self.logger.log('[BOTS-LIST] BOT PROFILE IMAGE (FAQ-COMP) - BOT PROFILE IMAGE EXIST ? ', imageExists, 'usecase native')
@@ -495,7 +640,7 @@ export class BotListComponent implements OnInit {
         self.botProfileImageExist = imageExists
 
         self.logger.log('[CDS-CHATBOT-DTLS] BOT PROFILE IMAGE (FAQ-COMP) - BOT PROFILE IMAGE EXIST ? ', imageExists, 'usecase native')
-        
+
       }
     })
   }
@@ -816,9 +961,44 @@ export class BotListComponent implements OnInit {
   }
 
   createBlankTilebot() {
-    this.router.navigate(['project/' + this.project._id + '/bots/create/tilebot/blank']);
-    // this.router.navigate(['project/' + this.project._id + '/chatbot/create']);
+    if (this.chatBotCount < this.chatBotLimit) {
+      this.router.navigate(['project/' + this.project._id + '/bots/create/tilebot/blank']);
+      // this.router.navigate(['project/' + this.project._id + '/chatbot/create']);
+    } else if (this.chatBotCount >= this.chatBotLimit) {
 
+      if (this.USER_ROLE === 'owner') {
+        this.presentDialogReachedChatbotLimit()
+      } else {
+        this.presentModalOnlyOwnerCanManageTheAccountPlan()
+      }
+    }
+  }
+
+  presentDialogReachedChatbotLimit() {
+
+    
+      console.log('openDialog presentDialogReachedChatbotLimit')
+      const dialogRef = this.dialog.open(ChatbotModalComponent, {
+        backdropClass: 'cdk-overlay-transparent-backdrop',
+        hasBackdrop: true,
+        data: {
+          projectProfile: this.prjct_profile_name,
+        },
+      });
+  
+      dialogRef.afterClosed().subscribe(result => {
+       console.log(`Dialog result: ${result}`);
+      });
+    
+ 
+  }
+  contacUsViaEmail() {
+    window.open('mailto:sales@tiledesk.com?subject=Upgrade Tiledesk plan');
+  }
+
+
+  presentModalOnlyOwnerCanManageTheAccountPlan() {
+    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan('Agents can\'t manage chatbots', 'Learn more about default roles')
   }
 
 
