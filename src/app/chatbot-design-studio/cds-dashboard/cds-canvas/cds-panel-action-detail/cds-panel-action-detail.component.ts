@@ -96,7 +96,7 @@ export class CdsActionDetailPanelComponent implements OnInit, OnChanges {
     // this.logger.log("onUpdateQuestionsIntentSelected:::: ", $event);
   }
 
-  onSaveIntent(){
+  onSaveIntent(event?){
     if(this.elementIntentSelectedType === this.typeIntentElement.ACTION){
       // this.intentSelected.actions[this.elementSelectedIndex] = this.elementSelected;
       const index = this.intentSelected.actions.findIndex(el => el._tdActionId === this.elementSelected._tdActionId);
@@ -108,7 +108,7 @@ export class CdsActionDetailPanelComponent implements OnInit, OnChanges {
     } else if(this.elementIntentSelectedType === this.typeIntentElement.FORM){
       this.intentSelected.form = this.elementSelected;
     }
-    this.logger.log('----> onSaveIntent:: ', this.elementIntentSelectedType, this.intentSelected);
+    console.log('----> onSaveIntent:: ', event, this.elementIntentSelectedType, this.intentSelected);
     this.onUpdateIntent.emit(this.intentSelected);
   }
 
@@ -126,17 +126,15 @@ export class CdsActionDetailPanelComponent implements OnInit, OnChanges {
     if (posId !== -1) {
       toId = toIntentId.slice(posId+1);
     }
-
     switch(type){
       case 'create':
-        this.logger.log('createNewConnector: ', fromId);
-        this.connectorService.deleteConnectorWithIDStartingWith(fromId);
-        this.connectorService.createNewConnector(fromId, toId);
+        // this.logger.log('createNewConnector: ', fromId);
+        this.connectorService.deleteConnectorWithIDStartingWith(fromId, false);
+        this.connectorService.createNewConnector(fromId, toId, false);
         break;
       case 'delete':
-        this.connectorService.deleteConnectorWithIDStartingWith(fromId);
+        this.connectorService.deleteConnectorWithIDStartingWith(fromId, false);
         break;
-
     }
   }
 

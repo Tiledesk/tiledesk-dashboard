@@ -540,9 +540,9 @@ export class CdsCanvasComponent implements OnInit {
    * chiamata da cds-panel-action-detail
    * quando modifico un intent da pannello ex: cambio il testo, aggiungo un bottone ecc.
   */
-  private async updateIntent(intent, time=0, UndoRedo=true) {
+  private async updateIntent(intent, time=0, UndoRedo=true, connector?) {
     console.log('[CDS-CANVAS] updateIntent: ');
-    const response = await this.intentService.onUpdateIntentWithTimeout(intent, time, UndoRedo);
+    const response = await this.intentService.onUpdateIntentWithTimeout(intent, time, UndoRedo, connector);
     if (response) {
       this.logger.log('[CDS-CANVAS] OK: intent aggiornato con successo sul server', this.intentSelected);
     } else {
@@ -899,11 +899,11 @@ export class CdsCanvasComponent implements OnInit {
   // --------------------------------------------------------- //
   /** onSavePanelIntentDetail */
   onSavePanelIntentDetail(intentSelected: any) {
-    this.logger.log('[CDS-CANVAS] onSavePanelIntentDetail intentSelected ', intentSelected)
+    console.log('[CDS-CANVAS] onSavePanelIntentDetail intentSelected ', intentSelected)
     if (intentSelected && intentSelected != null) {
       this.intentSelected = intentSelected;
       this.intentService.refreshIntent(this.intentSelected);
-      this.updateIntent(intentSelected, 2000);
+      this.updateIntent(intentSelected, 1000);
     } else {
       // this.onOpenDialog();
     }

@@ -169,9 +169,6 @@ export class TiledeskConnectors {
   }
 
 
-
-
-
   deleteConnectorsOfBlockThatDontExist(blockId, notify=true) {
     console.log("[JS] deleteConnectorsOfBlockThatDontExist ----> ", blockId, notify);
     for (var connectorId in this.connectors) {
@@ -327,6 +324,25 @@ export class TiledeskConnectors {
   }
 
 
+  deleteConnectorsBrokenOutOfBlock(blockId, notify=true) {
+    // console.log("[JS] deleteConnectorsBrokenOutOfBlock ----> ", this.connectors);
+    for (var connectorId in this.connectors) {
+      if (connectorId.startsWith(blockId)) {
+        // console.log("[JS] deleteConnectorsBrokenOutOfBlock ----> ", connectorId, blockId);
+        let connector = this.connectors[connectorId];
+        // console.log("[JS] deleteConnectorsBrokenOutOfBlock ----> ", connector);
+        const fromEle = document.getElementById(connector['fromId']);
+        const toEle = document.getElementById(connector['toId']);
+        if(!fromEle || !toEle){
+          this.deleteConnector(connectorId, notify);
+        }
+      }
+    }
+    console.log("[JS] blocks :---> ", this.blocks);
+    console.log("[JS] connectors :---> ", this.connectors);
+  }
+
+
   // deleteINConnectorsOfBlock(blockId) {
   //   console.log("[JS] delete IN Connectors ----> ", blockId);
   //   // cerca tutti quelli che finiscono con blockId
@@ -346,27 +362,6 @@ export class TiledeskConnectors {
 
  
 
-
-  // deleteConnector(event) {
-
-  //     let connector = document.getElementById(this.selectedConnector.id);
-  //     if (connector) {
-  //       connector.remove();
-  //       const connectorDeleted = this.connectors[this.selectedConnector.id];
-  //       delete this.connectors[this.selectedConnector.id];
-
-  //       // const parentBlockId = connectorDeleted.fromId.split("/")[0];
-  //       // const destBlockId = connectorDeleted.toId.split("/")[0];
-  //       // delete this.connectors[this.selectedConnector.id];
-  //       // delete this.blocks[parentBlockId];
-  //       // delete this.blocks[destBlockId];
-
-  //       console.log('this.connectors: ', this.connectors, connectorDeleted);
-  //       const customEvent = new CustomEvent("connector-deleted", { detail: {connector: connectorDeleted} });
-  //       document.dispatchEvent(customEvent);
-  //     }
-  //   }
-  // }
 
 
   /** */

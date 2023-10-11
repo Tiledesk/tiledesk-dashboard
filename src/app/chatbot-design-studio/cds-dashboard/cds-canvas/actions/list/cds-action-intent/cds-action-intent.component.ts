@@ -19,7 +19,7 @@ export class CdsActionIntentComponent implements OnInit {
   
   @Output() updateIntentFromConnectorModification = new EventEmitter();
   @Output() updateAndSaveAction = new EventEmitter();
-  @Output() onConnectorChange = new EventEmitter<{type: 'create' | 'delete',  fromId: string, toId: string}>()
+  @Output() onConnectorChange = new EventEmitter<any>(); //{type: 'create' | 'delete',  fromId: string, toId: string}
   
   intents: Array<{name: string, value: string, icon?:string}>
   idIntentSelected: string;
@@ -117,17 +117,19 @@ export class CdsActionIntentComponent implements OnInit {
 
   onChangeSelect(event: {name: string, value: string}){
     this.logger.log('CDS-ACTION-INTENT onChangeSelect-->', event)
-    this.action.intentName = event.value
+    this.action.intentName = event.value;
     if(!this.action._tdActionTitle){
-      this.action._tdActionTitle = this.intents.find(intent => intent.value === event.value).name
+      this.action._tdActionTitle = this.intents.find(intent => intent.value === event.value).name;
     }
-    this.onConnectorChange.emit({ type: 'create', fromId: this.idConnector, toId: this.action.intentName})
+    let connector = { type: 'create', fromId: this.idConnector, toId: this.action.intentName };
+    this.onConnectorChange.emit(connector);
     this.updateAndSaveAction.emit();
   }
 
   onResetSelect(event:{name: string, value: string}) {
-    this.onConnectorChange.emit({ type: 'delete', fromId: this.idConnector, toId: this.action.intentName})
-    this.action.intentName=null
+    let connector = { type: 'delete', fromId: this.idConnector, toId: this.action.intentName };
+    this.onConnectorChange.emit(connector)
+    this.action.intentName = null
     this.updateAndSaveAction.emit();
   }
   

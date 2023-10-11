@@ -691,20 +691,13 @@ export class IntentService {
     // console.log('moveActionBetweenDifferentIntents: ', event, this.listOfIntents, currentIntentId, currentIntent, previousIntent);
     currentIntent.actions.splice(event.currentIndex, 0, action);
     previousIntent.actions.splice(event.previousIndex, 1);
-    this.connectorService.updateConnector(currentIntent.intent_id);
-    this.connectorService.updateConnector(previousIntent.intent_id);
+    this.connectorService.updateConnector(currentIntent.intent_id, false);
+    this.connectorService.updateConnector(previousIntent.intent_id, false);
     this.connectorService.deleteConnectorsFromActionByActionId(action._tdActionId, false);
+    const responsePreviousIntent = this.onUpdateIntentWithTimeout(previousIntent, 0, false);
+
+    // devo fare una funzione che passa anche lo stato di intent prev onUpdateIntentWithTimeout NON va bene!!!
     const responseCurrentIntent = this.onUpdateIntentWithTimeout(currentIntent);
-    if(responseCurrentIntent){
-      // console.log('update current Intent: OK');
-    }
-    const responsePreviousIntent = this.onUpdateIntentWithTimeout(previousIntent);
-    if(responsePreviousIntent){
-      // console.log('update previous Intent: OK');
-    }  
-    // this.controllerService.closeAllPanels();
-    // this.behaviorIntent.next(currentIntent);
-    // this.behaviorIntent.next(previousIntent);
   }
 
 
@@ -795,11 +788,18 @@ export class IntentService {
   }
 
   /** deleteSelectedAction 
+   * deleteConnectorsFromActionByActionId: elimino i connettori in uscita della action
+   * aggiorno l'intent con la nuova action 
+   * aggiorno la lista degli intents
+   * refreshIntent: aggiorno gli attributi della action (pallini)
+   * updateConnector: aggiorno i connettori
+   * closeAllPanels: chiudo i pannelli
+   * onUpdateIntentWithTimeout: salvo l'intent
   */
   public deleteSelectedAction(){
     // console.log('[INTENT SERVICE] ::: deleteSelectedAction', this.intentSelected.intent_id, this.actionSelectedID);
     if(this.intentSelected.intent_id && this.actionSelectedID){
-      this.connectorService.deleteConnectorsFromActionByActionId(this.actionSelectedID);
+      this.connectorService.deleteConnectorsFromActionByActionId(this.actionSelectedID, false);
       let intentToUpdate = this.listOfIntents.find((intent) => intent.intent_id === this.intentSelected.intent_id);
       intentToUpdate.actions = intentToUpdate.actions.filter((action: any) => action._tdActionId !== this.actionSelectedID);
       this.listOfIntents = this.listOfIntents.map((intent) => {
@@ -808,15 +808,14 @@ export class IntentService {
         }
         return intent;
       });
-      this.behaviorIntent.next(intentToUpdate);
-      this.connectorService.updateConnector(intentToUpdate.intent_id);
+      this.refreshIntent(intentToUpdate);
+      this.connectorService.updateConnector(intentToUpdate.intent_id, false);
       this.controllerService.closeAllPanels();
       // this.connectorService.deleteConnectorsFromActionByActionId(this.actionSelectedID);
       const responseIntent = this.onUpdateIntentWithTimeout(intentToUpdate);
       if(responseIntent){
         // this.connectorService.movedConnector(intentToUpdate.intent_id);
         console.log('update Intent: OK');
-        // this.behaviorIntent.next(intentToUpdate);
       }
       this.unselectAction();
       // console.log('deleteSelectedAction', intentToUpdate);
@@ -1216,16 +1215,22 @@ export class IntentService {
    * @returns 
    * 
    * replaceIntent: per ogni intent collegato (tramite connettore) all'intent eliminato, sostituisco la vecchia versione nell'elenco degli intent
+   * refreshIntent: faccio scattare l'evento per comunicare a tutti i componenti sottoscritti che l'intent è stato modificato 
+   *  * (fa scattare updateConnector in tutte le azioni coinvolte e aggiorna i pallini dei connettori cioè tutti gli attributi custom __) !!! DA ELIMINARE !!!
    * updateConnector: aggiorno i connettori dell'elemento modificato perchè può cambiare la posizione delle actions
-   * // refreshIntent: faccio scattare l'evento per comunicare a tutti i componenti sottoscritti che l'intent è stato modificato (fa scattare updateConnector in tutte le azioni coinvolte e aggiorna i pallini dei connettori)
    * updateConnector: aggiorno i connettori di tutti gli intent collegati all'intent modificato
    * updateIntent: salva l'intent modificato in remoto
    * refreshIntents: fa scattare l'evento e aggiorna l'elenco degli intents (listOfIntents) in tutti i componenti sottoscritti, come cds-panel-intent-list 
    */
   private async restorePut(intent, intentsToUpdate){
     this.listOfIntents = this.replaceIntent(intent, this.listOfIntents);
-    this.connectorService.updateConnector(intent.intent_id, false);
-    // this.refreshIntent(intent);
+    this.refreshIntent(intent); // aggiorno gli attributi custom ex: __isConnected !!! DA RIFATTORIZZARE !!!
+    setTimeout(()=> {
+      // this.connectorService.deleteConnectorsOutOfBlock(intent.intent_id, false);
+      this.connectorService.deleteConnectorsBrokenOutOfBlock(intent.intent_id, false);
+      this.connectorService.createConnectorsOfIntent(intent, false);
+      this.connectorService.updateConnector(intent.intent_id, false);
+    }, 100);
     intentsToUpdate.forEach(element => {
       console.log('[INTENT SERVICE] -> REPLACE ', element);
       setTimeout(()=> {

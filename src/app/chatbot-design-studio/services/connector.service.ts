@@ -100,7 +100,7 @@ export class ConnectorService {
   createConnectorsOfIntent(intent, notify=true){
     if(intent.actions){
       intent.actions.forEach(action => {
-        console.log('[CONNECTOR-SERV] createConnectors:: ACTION ', action);
+        console.log('[CONNECTOR-SERV] createConnectors:: ACTION ', action._tdActionId);
         
         /**  INTENT */
         if(action._tdActionType === TYPE_ACTION.INTENT){
@@ -437,6 +437,11 @@ export class ConnectorService {
     this.logger.log('[CONNECTOR-SERV] deleteConnectorsOfBlock intent_id ' ,intent_id, notify);
     this.tiledeskConnectors.deleteConnectorsOfBlock(intent_id, notify);
   }
+  
+  deleteConnectorsBrokenOutOfBlock(intent_id, notify=true){
+    this.tiledeskConnectors.deleteConnectorsBrokenOutOfBlock(intent_id, notify);
+    this.logger.log('[CONNECTOR-SERV] deleteConnectorsBrokenOutOfBlock intent_id ' ,intent_id )
+  }
 
   deleteConnectorFromAction(actionId, connId, notify=true){
     this.tiledeskConnectors.deleteConnectorFromAction(actionId, connId, notify);
@@ -447,6 +452,8 @@ export class ConnectorService {
     this.tiledeskConnectors.deleteConnectorsFromActionByActionId(actionId, notify);
     this.logger.log('[CONNECTOR-SERV] deleteConnectorsFromActionByActionId actionId ' ,actionId )
   }
+  
+
 
   deleteConnectorByToId(intentId){
     this.tiledeskConnectors.deleteConnectorByToId(intentId);
