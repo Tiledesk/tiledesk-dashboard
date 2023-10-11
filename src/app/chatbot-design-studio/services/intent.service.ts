@@ -524,7 +524,6 @@ export class IntentService {
       else if(connector.notify) this.addIntentToUndoRedo('CONN', intentPrev, intentNow, intentsToUpdateUndo, intentsToUpdateRedo, connector);
     }
     if(!timeout)timeout = 0;
-    intent = removeNodesStartingWith(intent, '__');
     return new Promise((resolve, reject) => {
       if(this.idIntentUpdating == intent.intent_id){
         clearTimeout(this.setTimeoutChangeEvent);
@@ -541,6 +540,29 @@ export class IntentService {
       }, timeout);
     });
   }
+
+
+  private updateIntentInMoveActionBetweenDifferentIntents(action, currentIntent, UndoRedo:boolean = true){
+    const thereIsIntent = this.listOfIntents.some((intent) => intent.intent_id === currentIntent.intent_id);
+    console.log('[INTENT SERVICE] -> updateIntentInMoveActionBetweenDifferentIntents, ', thereIsIntent, currentIntent);
+    if(!thereIsIntent)return;
+    let intent = JSON.parse(JSON.stringify(currentIntent));
+    const prevIntents = JSON.parse(JSON.stringify(this.prevListOfIntent));
+    const nowIntents = JSON.parse(JSON.stringify(this.listOfIntents));
+    console.log('[INTENT SERVICE] -> updateIntentInMoveActionBetweenDifferentIntents, ',prevIntents, nowIntents);
+    if(UndoRedo){
+      const tdAction = action._tdActionId;
+      let intentOriginActionPrev = prevIntents.find((obj) => obj.actions.some((action) => action._tdActionId === tdAction));
+      let intentOriginActionNow = nowIntents.find((obj) => obj.intent_id === intentOriginActionPrev.intent_id);
+
+      let intentPrev = prevIntents.find((item) => item.intent_id === intent.intent_id)?prevIntents.find((item) => item.intent_id === intent.intent_id):intent;
+      let intentNow = nowIntents.find((item) => item.intent_id === intent.intent_id)?nowIntents.find((item) => item.intent_id === intent.intent_id):intent;
+      this.addIntentToUndoRedo('PUT', intentPrev, intentNow, [intentOriginActionPrev], [intentOriginActionNow]);
+    }
+    const response = this.updateIntent(intent);
+  }
+
+  
 
   /**
    * deleteActionFromPreviousIntentOnMovedAction
@@ -575,6 +597,7 @@ export class IntentService {
   /** updateIntent */
   private async updateIntent(intent: Intent): Promise<boolean> { 
     console.log('[INTENT SERVICE] -> updateIntent, ', intent);
+    intent = removeNodesStartingWith(intent, '__');
     return new Promise((resolve, reject) => {
       let id = intent.id;
       let attributes = intent.attributes?intent.attributes:{};
@@ -696,8 +719,9 @@ export class IntentService {
     this.connectorService.deleteConnectorsFromActionByActionId(action._tdActionId, false);
     const responsePreviousIntent = this.onUpdateIntentWithTimeout(previousIntent, 0, false);
 
-    // devo fare una funzione che passa anche lo stato di intent prev onUpdateIntentWithTimeout NON va bene!!!
-    const responseCurrentIntent = this.onUpdateIntentWithTimeout(currentIntent);
+    const responseCurrentIntent = this.updateIntentInMoveActionBetweenDifferentIntents(action,currentIntent);
+    // devo fare una funzione che passa anche lo stato di intent prev onUpdateIntentWithTimeout NON va bene
+    // const responseCurrentIntent = this.onUpdateIntentWithTimeout(currentIntent);
   }
 
 
@@ -1233,7 +1257,9 @@ export class IntentService {
     }, 100);
     intentsToUpdate.forEach(element => {
       console.log('[INTENT SERVICE] -> REPLACE ', element);
+      this.listOfIntents = this.replaceIntent(element, this.listOfIntents);
       setTimeout(()=> {
+        this.connectorService.createConnectorsOfIntent(element, false);
         this.connectorService.updateConnector(element.intent_id, false);
       }, 100);
     });
