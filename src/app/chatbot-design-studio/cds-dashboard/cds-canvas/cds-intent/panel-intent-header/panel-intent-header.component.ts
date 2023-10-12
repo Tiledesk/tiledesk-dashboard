@@ -114,8 +114,19 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
     this.logger.log("[PANEL-INTENT-HEADER] onChangeIntentName",event, this.intent);
     const result = this.checkIntentName(event);
     if(result){
+      this.intentName = event;
+      // this.onSaveIntent();
+      // this.intentService.setIntentSelected(this.intent.intent_id);
+    }
+  }
+
+
+  onBlur(event){
+    console.log('[PANEL-INTENT-HEADER] onBlur', event, this.intentName)
+    this.myInput.nativeElement.blur();
+    const result = this.checkIntentName(this.intentName);
+    if(result){
       this.onSaveIntent();
-      this.intentService.setIntentSelected(this.intent.intent_id);
     }
   }
 

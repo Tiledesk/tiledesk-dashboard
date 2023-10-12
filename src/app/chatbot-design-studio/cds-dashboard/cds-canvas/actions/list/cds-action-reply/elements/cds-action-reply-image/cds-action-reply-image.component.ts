@@ -202,7 +202,7 @@ export class CdsActionReplyImageComponent implements OnInit {
   onChangeTextarea(text:string) {
     if(!this.previewMode){
       this.response.text = text;
-      this.changeActionReply.emit();
+      // this.changeActionReply.emit();
     }
   }
 
@@ -227,6 +227,12 @@ export class CdsActionReplyImageComponent implements OnInit {
     this.connectorService.updateConnector(this.idIntent);
     this.changeActionReply.emit();
   }  
+
+  /** onBlur */
+  onBlur(event){
+    console.log('[ACTION REPLY IMAGE] onBlur', event);
+    this.changeActionReply.emit();
+  }
 
   // EVENT FUNCTIONS //
   /** */

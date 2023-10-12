@@ -11,6 +11,7 @@
                     [minRow]="1" [maxRow]="1"
                     [readonly]="true"
                     [text]="action.assignTo"
+                    (blur)="onBlur($event)"
                     (selectedAttribute)="onSelectedAttribute($event)">
                 </cds-textarea>
             </div>

@@ -55,14 +55,21 @@ export class CdsActionIntentComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log('[CDS-ACTION-INTENT] >>', changes);
-    this.intentSelected = changes.intentSelected.currentValue;
-    this.isConnected = true;
-    // this.onChangeConnector();
+    console.log('[CDS-ACTION-INTENT] >> ngOnChanges', changes);
+    // this.intentSelected = changes.intentSelected.currentValue;
+    this.checkConnectionStatus();
   }
 
+  private checkConnectionStatus(){
+    if(this.action.intentName){
+     this.isConnected = true;
+    } else {
+     this.isConnected = false;
+    }
+   }
+
   private initialize() {
-    this.isConnected = false;
+    this.checkConnectionStatus();
     this.idIntentSelected = this.intentSelected.intent_id;
     this.idConnector = this.idIntentSelected+'/'+this.action._tdActionId;
     this.intents = this.intentService.getListOfIntents();
@@ -70,6 +77,8 @@ export class CdsActionIntentComponent implements OnInit {
     this.logger.log('[CDS-ACTION-INTENT] - initialize - idConnector ', this.idConnector);
     // console.log('[CDS-ACTION-INTENT] - initialize - intents ', this.intents);
   }
+
+ 
 
   private updateConnector(){
     this.logger.log('[CDS-ACTION-INTENT] 1- updateConnector :: ',this.action.intentName);
@@ -123,14 +132,14 @@ export class CdsActionIntentComponent implements OnInit {
     }
     let connector = { type: 'create', fromId: this.idConnector, toId: this.action.intentName };
     this.onConnectorChange.emit(connector);
-    this.updateAndSaveAction.emit();
+    this.updateAndSaveAction.emit(this.intentSelected);
   }
 
   onResetSelect(event:{name: string, value: string}) {
     let connector = { type: 'delete', fromId: this.idConnector, toId: this.action.intentName };
     this.onConnectorChange.emit(connector)
     this.action.intentName = null
-    this.updateAndSaveAction.emit();
+    this.updateAndSaveAction.emit(this.intentSelected);
   }
   
 }

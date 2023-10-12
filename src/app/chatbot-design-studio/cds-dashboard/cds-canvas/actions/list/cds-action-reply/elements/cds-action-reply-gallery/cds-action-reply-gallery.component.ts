@@ -5,7 +5,8 @@ import { ConnectorService } from 'app/chatbot-design-studio/services/connector.s
 import { IntentService } from 'app/chatbot-design-studio/services/intent.service';
 import { TYPE_ACTION, TYPE_BUTTON, TYPE_URL, generateShortUID } from 'app/chatbot-design-studio/utils';
 import { Button, Expression, GalleryElement, Message, Wait, Metadata, MessageAttributes } from 'app/models/intent-model';
-import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+// import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerService } from 'app/services/logger/logger.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -73,7 +74,7 @@ export class CdsActionReplyGalleryComponent implements OnInit {
       this.initElement();
       if(!this.previewMode) this.scrollToLeft();
       this.subscriptionChangedConnector = this.intentService.isChangedConnector$.subscribe((connector: any) => {
-        this.logger.log('CdsActionReplyGalleryComponent isChangedConnector-->', connector);
+        // this.logger.log('CdsActionReplyGalleryComponent isChangedConnector-->', connector);
         this.connector = connector;
         this.updateConnector();
       });
@@ -283,7 +284,7 @@ export class CdsActionReplyGalleryComponent implements OnInit {
   onChangeText(text: string, element: 'title' | 'description', index: number) {
     this.gallery[index][element] = text;
     this.response.attributes.attachment.gallery = this.gallery;
-    this.changeActionReply.emit();
+    // this.changeActionReply.emit();
   }
 
 
@@ -313,6 +314,12 @@ export class CdsActionReplyGalleryComponent implements OnInit {
   onChangeMetadata(metadata: Metadata, index: number){
     this.gallery[index].preview = metadata;
     this.response.attributes.attachment.gallery = this.gallery
+    this.changeActionReply.emit();
+  }
+
+  /** onBlur */
+  onBlur(event){
+    console.log('[ACTION REPLY GALLERY] onBlur', event);
     this.changeActionReply.emit();
   }
   // EVENT FUNCTIONS //

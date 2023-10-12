@@ -91,13 +91,19 @@ export class CdsActionReplyRedirectComponent implements OnInit {
   onChangeTextarea(text:string) {
     if(!this.previewMode){
       this.metadata.src = text;
-      this.changeActionReply.emit();
+      // this.changeActionReply.emit();
     }
   }
 
   /** onButtonToogleChange */
   onButtonToogleChange(event){
     this.metadata.target = event.value;
+    this.changeActionReply.emit();
+  }
+
+  /** onBlur */
+  onBlur(event){
+    console.log('[ACTION REPLY REDIRECT] onBlur', event);
     this.changeActionReply.emit();
   }
 
