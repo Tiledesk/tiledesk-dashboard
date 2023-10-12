@@ -173,6 +173,7 @@ export class CdsActionReplyComponent implements OnInit {
   // on action //
   /** */
   onMoveUpResponse(index: number) {
+    if(index<2)return;
     try {
       let from = index - 1;
       let to = from - 2;
@@ -190,6 +191,7 @@ export class CdsActionReplyComponent implements OnInit {
 
   /** */
   onMoveDownResponse(index: number) {
+    if(index === this.arrayResponses.length-1)return;
     try {
       let from = index;
       let to = from + 2;
@@ -362,6 +364,7 @@ export class CdsActionReplyComponent implements OnInit {
   onDisableInputMessage() {
     try {
       this.action.attributes.disableInputMessage = !this.action.attributes.disableInputMessage;
+      this.updateAndSaveAction.emit(this.action);
     } catch (error) {
       this.logger.log("Error: ", error);
     }

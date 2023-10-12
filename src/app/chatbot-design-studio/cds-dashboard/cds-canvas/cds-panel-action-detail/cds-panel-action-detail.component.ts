@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges, ChangeDetectorRef, TemplateRef, ViewContainerRef, HostListener } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, ChangeDetectorRef, TemplateRef, ViewContainerRef, HostListener, SimpleChanges } from '@angular/core';
 import { ConnectorService } from 'app/chatbot-design-studio/services/connector.service';
 import { IntentService } from 'app/chatbot-design-studio/services/intent.service';
 import { TYPE_ACTION, TYPE_INTENT_ELEMENT } from 'app/chatbot-design-studio/utils';
@@ -47,7 +47,8 @@ export class CdsActionDetailPanelComponent implements OnInit, OnChanges {
   //   }
   }
 
-  ngOnChanges() {
+  ngOnChanges(changes: SimpleChanges): void {
+    this.logger.log('[PANEL-INTENT-DETAIL] (OnChanges)', changes, this.elementIntentSelected);
     this.initialize();
   }
 

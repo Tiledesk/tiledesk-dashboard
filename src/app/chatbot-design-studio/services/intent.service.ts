@@ -1280,7 +1280,7 @@ export class IntentService {
     intentsToUpdate.forEach(element => {
       this.listOfIntents = this.replaceIntent(element, this.listOfIntents);
       console.log('[INTENT SERVICE] -> REPLACE ELEMENT: ', element);
-      // this.refreshIntent(intent);
+      // this.refreshIntent(element);
       setTimeout(()=> {
         this.connectorService.deleteConnectorsOutOfBlock(intent.intent_id, false, false);
         this.connectorService.deleteConnectorsBrokenOutOfBlock(element.intent_id, false);
