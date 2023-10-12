@@ -207,6 +207,7 @@ export class ActionReplaceBot extends Action {
 
 export class ActionChangeDepartment extends Action {
     depName: string;
+    triggerBot: boolean;
     constructor(){
         super();
         this._tdActionType = TYPE_ACTION.CHANGE_DEPARTMENT;

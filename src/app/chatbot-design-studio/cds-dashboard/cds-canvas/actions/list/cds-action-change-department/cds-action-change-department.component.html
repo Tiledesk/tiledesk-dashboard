@@ -40,4 +40,15 @@
         </div>
     </div>
 
+    <div class="trigger-bot-section-container">
+        <section class="trigger-bot-section">
+            <mat-checkbox 
+                [checked]="action.triggerBot"
+                (change)="onCheckboxChange($event)">
+                Trigger Bot
+            </mat-checkbox>
+        </section>
+        <p class="trigger-bot-description">Automatically triggers the selected department bound chatbot</p>
+    </div>
+
 </div>

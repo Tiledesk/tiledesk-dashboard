@@ -754,6 +754,7 @@ export class IntentService {
     }
     if(typeAction === TYPE_ACTION.CHANGE_DEPARTMENT) {
       action = new  ActionChangeDepartment();
+      action.triggerBot = true;
     }
     if(typeAction === TYPE_ACTION.HIDE_MESSAGE){
       action = new ActionHideMessage();
