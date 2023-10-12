@@ -43,14 +43,7 @@ export class CdsActionChangeDepartmentComponent implements OnInit {
     //this.logger.log("[ACTION REPLACE BOT] onChangeActionButton event: ", event)
     this.action.depName = event.value;
     this.updateAndSaveAction.emit()
-    this.logger.log("[ACTION CHANGE DEPARTMENT] action edited: ", this.action)
-  }
-
-  onCheckboxChange(event) {
-    this.logger.log("[ACTION CHANGE DEPARTMENT] checkbox event: ", event.checked);
-    this.action.triggerBot = event.checked;
-    this.updateAndSaveAction.emit()
-
+    this.logger.log("[ACTION REPLACE BOT] action edited: ", this.action)
   }
 
 
