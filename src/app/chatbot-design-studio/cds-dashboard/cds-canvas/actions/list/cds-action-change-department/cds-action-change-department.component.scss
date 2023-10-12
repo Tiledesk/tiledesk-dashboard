@@ -31,6 +31,34 @@
     
 }
 
+.trigger-bot-section-container {
+    margin-top: 16px;
+}
+
+.trigger-bot-description {
+    color: #d9d9d9;
+    font-size: 14px;
+}
+
+::ng-deep .mat-checkbox.mat-accent .mat-checkbox-frame {
+    // border-color: $icon-color!important;
+    border-color: red;
+}
+
+// overwrite the checkbox background
+::ng-deep .mat-checkbox-checked .mat-checkbox-background, 
+.mat-checkbox-indeterminate .mat-checkbox-background {
+    background-color: red;
+    .mat-checkbox-checkmark {
+        background: red;
+        .mat-checkbox-checkmark-path {
+          stroke: white;
+          stroke-width: 5px;
+        }
+      }
+
+}
+
 // .select-bot-box {
 //     width: 100%;
 // }
