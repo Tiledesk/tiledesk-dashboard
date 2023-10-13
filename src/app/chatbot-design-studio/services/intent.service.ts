@@ -109,104 +109,10 @@ export class IntentService {
     //this.liveActiveIntent.next(this.intentSelected);
   }
 
-  // public setIntentSelected(intent){
-  //   this.intentSelected = intent;
-  //   console.log('[INTENT SERVICE] ::: setIntentSelected ::: ', this.intentSelected);
-  //   this.behaviorIntent.next(this.intentSelected);
-  //   //this.liveActiveIntent.next(this.selectedIntent);
-  // }
-
   public setLiveActiveIntent(intentName: string){
     let intent = this.listOfIntents.find((intent) => intent.intent_display_name === intentName);
     this.liveActiveIntent.next(intent)
   }
-
-
-  /** checkIntentNameMachRegex */
-  // checkIntentNameMachRegex(intentname) {
-  //   const regex = /^[ _0-9a-zA-Z]+$/
-  //   return regex.test(intentname);
-  // }
-
-  // private checkIntentName(name: string, ) {
-  //   this.intentNameAlreadyExist = false;
-  //   if (name !== this.intent.intent_display_name) {
-  //     this.intentNameAlreadyExist = this.listOfIntents.some((el) => {
-  //       return el.intent_display_name === name;
-  //     });
-  //   }
-
-  //   this.intentNameNotHasSpecialCharacters = this.checkIntentNameMachRegex(name);
-  //   this.intentNameResult = true;
-  //   if (!this.intentName || this.intentName.trim().length === 0) {
-  //     this.intentNameResult = false;
-  //   }
-  //   return this.intentNameResult;
-  // }
-  
-
-  /** setDragAndListnerEvent */
-  // public setListnerEvent(intent) {
-  //   let that = this;
-  //   let elem = document.getElementById(intent.intent_id);
-  //   if(elem){
-  //     const panelIntentContent = elem.getElementsByClassName('panel-intent-content')[0];
-  //     const picHeader = panelIntentContent.getElementsByClassName('pic-header')[0];
-  //     if(picHeader){
-  //       console.log("imposto il listner per la selezione/deselezione dell'elemento ");
-  //       // **************** !!!!!!!! aggiungo listner !!!!!!! *******************//
-  //       // Aggiungi l'event listener con i parametri
-  //       // console.log("2.1 --- hasListenerMouseup -> ", elem.dataset.hasListenerMouseup ,intent.intent_id);
-  //       if (elem.dataset.hasListenerMouseup !== 'true') {
-  //         picHeader.addEventListener('mouseup', function () {
-  //           elem.dataset.hasListenerMouseup = 'true';
-  //           that.onMouseUpIntent(intent, elem);
-  //         });
-  //       }
-  //       // Aggiungi l'event listener con i parametri
-  //       // console.log("2.2 --- hasListenerMousedown -> ",elem.dataset.hasListenerMousedown, intent.intent_id);
-  //       if (elem.dataset.hasListenerMousedown !== 'true') {
-  //         picHeader.addEventListener('mousedown', function () {
-  //           elem.dataset.hasListenerMousedown = 'true';
-  //           that.onMouseDownIntent(elem);
-  //         });
-  //       }
-  //       // Aggiungi l'event listener con i parametri
-  //       // console.log("2.3 --- hasListenerMousemove -> ",elem.dataset.hasListenerMousemove, intent.intent_id);
-  //       if (elem.dataset.hasListenerMousemove !== 'true') {
-  //         picHeader.addEventListener('mousemove', function () {
-  //           elem.dataset.hasListenerMousemove = 'true';
-  //           that.onMouseMoveIntent(elem);
-  //         });
-  //       }
-  //     }
-  //   }
-  // }
-
-  // /** */
-  // onMouseDownIntent(element): void {
-  //   // console.log("onMouseDownIntent:  element: ",element);
-  //   const x = element.offsetLeft;
-  //   const y = element.offsetTop;
-  //   element.style.zIndex = 2;
-  // }
-
-  // /** */
-  // onMouseUpIntent(intent: any, element: any) {
-  //   console.log("onMouseUpIntent: ", intent, " element: ", element);
-  //   let newPos = { 'x': element.offsetLeft, 'y': element.offsetTop };
-  //   let pos = intent.attributes.position; // this.intentService.getIntentPosition(intent.id);
-  //   if (newPos.x != pos.x || newPos.y != pos.y) {
-  //     element.style.zIndex = '1';
-  //     // console.log("setIntentPosition x:", newPos.x, " y: ",newPos.y);
-  //     this.setIntentPosition(intent.id, newPos);
-  //   }
-  // }
-
-  // /** */
-  // onMouseMoveIntent(element: any) {
-  // }
-
 
   /** 
    * restituisce tutti gli intents
@@ -219,16 +125,6 @@ export class IntentService {
 
 
   // START DASHBOARD FUNCTIONS //
-
-  // //** recupero le posizioni degli intent sullo stage */
-  // setDashboardAttributes(idBot, attributes){
-  //   this.botAttributes = attributes;
-  //   this.idBot = idBot;
-  //   if(attributes && attributes['positions']){
-  //     this.listOfPositions = attributes['positions'];
-  //   }
-  // }
-
 
   refreshIntents(){
     // console.log("aggiorno elenco intent: ", this.listOfIntents);
@@ -254,19 +150,6 @@ export class IntentService {
     return this.listOfIntents.find((intent) => intent.intent_id === this.previousIntentId);
   }
 
-
-
-  // /** Get Intent position */    
-  // OLD_getIntentPosition(id: string){
-  //   let pos = {'x':0, 'y':0};
-  //   const positions = this.listOfPositions;
-  //   if(!positions)return pos;
-  //   if(positions && positions[id]){
-  //     return positions[id];
-  //   }
-  //   return pos;
-  // }
-
   getIntentPosition(intentId: string){
     let pos = {'x':0, 'y':0};
     let intent = this.listOfIntents.find((intent) => intent.intent_id === intentId);
@@ -275,33 +158,6 @@ export class IntentService {
     return intent.attributes.position;
     
   }
-
-  // /** Set intent position */
-  // OLD_setIntentPosition(id:string, newPos: any){
-  //   const positions = this.listOfPositions;
-  //   if(positions){
-  //     if(!newPos && positions[id]){
-  //       delete positions[id];
-  //     } else {
-  //       positions[id] =  {'x': newPos.x, 'y': newPos.y};
-  //     }
-  //     this.setPositionsInDashboardAttributes(positions);
-  //   }
-  // }
-
-  // setIntentPosition(intentId:string, newPos: any){
-  //   // console.log('setIntentPosition:: ',intentId, newPos);
-  //   // this.listOfIntents = this.behaviorIntents.getValue();
-  //   let intentToUpdate = this.listOfIntents.find((intent) => intent.intent_id === intentId);
-  //   if(!intentToUpdate)return; 
-  //   // if(!intentToUpdate.attributes){intentToUpdate.attributes = {};
-  //   intentToUpdate['attributes']['position'] = {'x': newPos.x, 'y': newPos.y};
-  //   this.patchAttributes(intentToUpdate);
-  // }
-  // END DASHBOARD FUNCTIONS //
-
-  
-
 
   // START INTENT FUNCTIONS //
 
@@ -671,9 +527,6 @@ export class IntentService {
     });
   }
 
-
-
-  
   // END INTENT FUNCTIONS //
 
 
@@ -744,41 +597,35 @@ export class IntentService {
   }
 
 
-  
-  
-
-
-  addNewIntentToListOfIntents(intent){
+  /**
+   * addNewIntentToListOfIntents
+   * @param intent 
+   */
+  public addNewIntentToListOfIntents(intent){
     // console.log("[CDS-INTENT-SERVICES] aggiungo l'intent alla lista di intent");
     this.listOfIntents.push(intent);
     this.refreshIntents();
     // this.behaviorIntents.next(this.listOfIntents);
   }
 
-  replaceNewIntentToListOfIntents(intent){
-    this.listOfIntents = this.listOfIntents.map((obj) => {
-      if (obj.intent_id === intent.intent_id) {
-        return intent;
-      }
-      return obj;
-    });
-    // console.log("[CDS-INTENT-SERVICES] sostituisco l'intent con id NEW con l'intent salvato nella lista degli intent");
-    // this.behaviorIntents.next(this.listOfIntents);
-    this.refreshIntents();
-  }
-
-  deleteIntentToListOfIntents(intentId){
+  /**
+   * 
+   * @param intentId 
+   */
+  public deleteIntentToListOfIntents(intentId){
     // console.log("[CDS-INTENT-SERVICES] elimino l'intent alla lista di intent", intentId);
     this.listOfIntents = this.listOfIntents.filter((intent: any) => intent.intent_id !== intentId);
   }
-
 
   /** getListOfActions */
   public getListOfActions(){
     return this.listActions;
   }
 
-
+  /**
+   * getListOfIntents
+   * @returns 
+   */
   public getListOfIntents(): Array<{name: string, value: string, icon?:string}>{
     return this.listOfIntents.map(a => {
       if (a.intent_display_name.trim() === 'start') {
@@ -866,7 +713,11 @@ export class IntentService {
   } 
 
 
-  /** createNewAction */
+  /**
+   * createNewAction
+   * @param typeAction 
+   * @returns 
+   */
   public createNewAction(typeAction: TYPE_ACTION) {
     // console.log('[INTENT-SERV] createNewAction typeAction ', typeAction)
     let action: any;

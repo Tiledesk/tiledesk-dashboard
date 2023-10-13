@@ -78,7 +78,6 @@ export class CdsActionIntentComponent implements OnInit {
     // console.log('[CDS-ACTION-INTENT] - initialize - intents ', this.intents);
   }
 
- 
 
   private updateConnector(){
     this.logger.log('[CDS-ACTION-INTENT] 1- updateConnector :: ',this.action.intentName);
@@ -88,23 +87,20 @@ export class CdsActionIntentComponent implements OnInit {
       const idAction= array[1];
       console.log('[CDS-ACTION-INTENT] 2 - updateConnector :: ', idAction, this.action._tdActionId);
       if(idAction === this.action._tdActionId){
-        console.log('[CDS-ACTION-INTENT] 3 - updateConnector :: ', this.connector);
         if(this.connector.deleted){
           // DELETE 
           this.action.intentName = null;
           this.isConnected = false;
-          // if(this.connector.notify)
-          this.updateIntentFromConnectorModification.emit(this.connector);
         } else {
           // ADD / EDIT
           console.log('[CDS-ACTION-INTENT] 4 - PALLINO PIENO :: ');
           this.isConnected = true;
           if(this.action.intentName !== "#"+this.connector.toId){ 
             this.action.intentName = "#"+this.connector.toId;
-            // if(this.connector.notify)
-            this.updateIntentFromConnectorModification.emit(this.connector);
           } 
         }
+        // if(this.connector.dispatch) il dispatch blocca il flusso derettamente in connectors.js
+        this.updateIntentFromConnectorModification.emit(this.connector);
       }
     } catch (error) {
       this.logger.log('error: ', error);
