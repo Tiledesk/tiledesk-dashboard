@@ -643,11 +643,11 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
     console.log('[CDS-INTENT] onUpdateAndSaveAction:::: intent::: ', this.intent);
     // this.intentService.selectAction(this.intent.intent_id, event);
     this.connectorService.updateConnector(this.intent.intent_id, false);
-    const response = await this.intentService.onUpdateIntentWithTimeout(this.intent);
-    this.connectorService.updateConnector(this.intent.intent_id, false);
-    if (response) {
-      this.logger.log('updateIntent: ', this.intent);
-    }
+    // const response = await 
+    this.intentService.onUpdateIntentWithTimeout(this.intent, 0);
+    // if (response) {
+    //   this.logger.log('updateIntent: ', this.intent);
+    // }
   }
 
   openActionMenu(intent: any, calleBy: string) {
