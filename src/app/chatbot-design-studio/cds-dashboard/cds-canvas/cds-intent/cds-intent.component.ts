@@ -635,12 +635,6 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
    * */
   public async onUpdateAndSaveAction(event) {
 
-    // let intentsToUpdateUndo = [];
-    // let intentsToUpdateRedo = [];
-    // intentsToUpdateRedo = [ ...this.listOfIntents ];
-    // intentsToUpdateUndo = [ ...this.prevListOfIntent ];
-    // this.addIntentToUndoRedo('PUT', originalIntent, intentsToUpdateUndo, intentsToUpdateRedo);
-
     // se event non è nullo sostituisco in this.intent.actions la action con _tdActionId 
     if(event && event._tdActionId){
       replaceItemInArrayForKey('_tdActionId', this.intent.actions, event);
@@ -649,15 +643,10 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
     console.log('[CDS-INTENT] onUpdateAndSaveAction:::: intent::: ', this.intent);
     // this.intentService.selectAction(this.intent.intent_id, event);
     const response = await this.intentService.onUpdateIntentWithTimeout(this.intent);
+    this.connectorService.updateConnector(this.intent.intent_id, false);
     if (response) {
       this.logger.log('updateIntent: ', this.intent);
     }
-
-    // const fromEle = document.getElementById(this.intent.intent_id);
-    // if(fromEle){
-    //   this.connectorService.updateConnector(fromEle);
-    //   this.updateIntent();
-    // }
   }
 
   openActionMenu(intent: any, calleBy: string) {

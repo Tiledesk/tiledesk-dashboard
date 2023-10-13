@@ -378,13 +378,13 @@ export function convertJsonToArray(jsonData:any){
 }
 
 export async function isElementOnTheStage(elementId:string): Promise<any>{
-    // if(document.getElementById(elementId)) return document.getElementById(elementId);
+    // if(document.getElementById(elementId)) return true;
     return new Promise((resolve) => {
         let intervalId = setInterval(async () => {
             const result = document.getElementById(elementId);
             if (result) {
-            clearInterval(intervalId);
-            resolve(result);
+                clearInterval(intervalId);
+                resolve(result);
             }
         }, 0);
         setTimeout(() => {

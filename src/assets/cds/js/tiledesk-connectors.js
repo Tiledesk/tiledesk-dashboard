@@ -226,7 +226,9 @@ export class TiledeskConnectors {
       delete this.connectors[connectorId];
       connectorDeleted['notify']=notify;
       if (connectorDeleted && dispatch) {
-        this.#removeConnector(connectorDeleted, );
+        // this.#removeConnector(connectorDeleted, );
+        const customEvent = new CustomEvent("connector-deleted", { detail: { connector: connectorDeleted } });
+        document.dispatchEvent(customEvent);
       }
     }
   }
@@ -253,10 +255,10 @@ export class TiledeskConnectors {
     }
   }
 
-  #removeConnector(connectorDeleted) {
-    const customEvent = new CustomEvent("connector-deleted", { detail: { connector: connectorDeleted } });
-    document.dispatchEvent(customEvent);
-  }
+  // #removeConnector(connectorDeleted) {
+  //   const customEvent = new CustomEvent("connector-deleted", { detail: { connector: connectorDeleted } });
+  //   document.dispatchEvent(customEvent);
+  // }
 
   onKeyPressDeleteConnector(event) {
     // console.log('1 onDeleteConnector:::: ', event, this.selectedConnector);
@@ -930,7 +932,7 @@ export class TiledeskConnectors {
 
 
 
-  updateConnectorsOutOfItent(element, notify) {
+  updateConnectorsOutOfItent(element, notify=true, dispatch=true) {
     console.log("updateConnectorsOutOfItent ----> ", this.blocks, element.id);
     const blockId = element.id;
     let block = this.blocks[blockId];
@@ -951,8 +953,10 @@ export class TiledeskConnectors {
         }
         this.#drawConnector(conn.id, conn.fromPoint, conn.toPoint);
         conn['notify']=notify;
-        const event = new CustomEvent("connector-updated", { detail: { connector: conn } });
-        document.dispatchEvent(event);
+        if(dispatch){
+          const event = new CustomEvent("connector-updated", { detail: { connector: conn } });
+          document.dispatchEvent(event);
+        }
         
       }
     };

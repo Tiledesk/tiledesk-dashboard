@@ -20,11 +20,6 @@
                <label class="control-label ">
                     {{ 'Button title' | translate }}
                 </label>
-                <!-- <cds-text id="input_title" 
-                    #input_title
-                    [text]="buttonLabel"
-                    (onChange)="onChangeTitle($event)">
-                </cds-text> -->
 
                 <cds-textarea 
                     class="text-editable-div"
@@ -32,6 +27,7 @@
                     [minRow]="1"
                     popoverVerticalAlign="above"
                     [emojiPikerBtn]="true"
+                    (blur)="onBlur($event)"
                     (changeTextarea)="onChangeTitle($event)">
                 </cds-textarea>
 
@@ -94,10 +90,24 @@
                 <label class="control-label">
                     {{ 'Url' | translate }}
                 </label>
-                <cds-text
+                <!-- <cds-text
                     [text]="buttonUrl"
+                    (blur)="onBlur($event)"
                     (onChange)="onChangeUrl($event)">
-                </cds-text>
+                </cds-text> -->
+
+                <cds-textarea 
+                    class="text-editable-div"
+                    [text]="buttonUrl" 
+                    [minRow]="1"
+                    [showUtils]="false"
+                    [emojiPikerBtn]="false"
+                    [setAttributeBtn]="false"
+                    [textLimitBtn]="false"
+                    popoverVerticalAlign="above"
+                    (blur)="onBlur($event)"
+                    (changeTextarea)="onChangeUrl($event)">
+                </cds-textarea>
             </div> 
 
         </div>

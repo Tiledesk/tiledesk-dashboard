@@ -226,7 +226,6 @@ export class CdsActionAskgptComponent implements OnInit {
     if(event){
       this.action[type]=event.value
     }
-
     switch(type){
       case 'trueIntent':
         this.onConnectorChange.emit({ type: 'create', fromId: this.idConnectorTrue, toId: this.action.trueIntent})
