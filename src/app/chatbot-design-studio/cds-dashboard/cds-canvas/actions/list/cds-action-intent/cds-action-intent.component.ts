@@ -85,9 +85,10 @@ export class CdsActionIntentComponent implements OnInit {
     try {
       const array = this.connector.fromId.split("/");
       const idAction= array[1];
-      console.log('[CDS-ACTION-INTENT] 2 - updateConnector :: ', idAction, this.action._tdActionId);
+      console.log('[CDS-ACTION-INTENT] 2 - updateConnector :: ', idAction, this.action._tdActionId, this.connector);
       if(idAction === this.action._tdActionId){
         if(this.connector.deleted){
+          console.log('[CDS-ACTION-INTENT] 3 - PALLINO VUOTO :: ');
           // DELETE 
           this.action.intentName = null;
           this.isConnected = false;
@@ -100,7 +101,7 @@ export class CdsActionIntentComponent implements OnInit {
           } 
         }
         // if(this.connector.dispatch) il dispatch blocca il flusso derettamente in connectors.js
-        this.updateIntentFromConnectorModification.emit(this.connector);
+        this.updateAndSaveAction.emit(this.connector);
       }
     } catch (error) {
       this.logger.log('error: ', error);

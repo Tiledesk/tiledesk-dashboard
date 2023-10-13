@@ -169,8 +169,10 @@ export class CdsPanelButtonConfigurationComponent implements OnInit {
 
   private checkTypeButton() {
     if (this.button.type === this.typeOfButton.TEXT) {
+      this.deleteConnector();
       return true;
     } else if (this.button.type === this.typeOfButton.URL) {
+      this.deleteConnector();
       return this.checkUrl(this.buttonUrl);
     } else if (this.button.type === this.typeOfButton.ACTION) {
       return this.checkAction(this.buttonAction);
@@ -179,6 +181,7 @@ export class CdsPanelButtonConfigurationComponent implements OnInit {
   }
 
   private checkUrl(url: string): boolean {
+    console.log('checkUrl:: ', url);
     this.errorUrl = true;
     if (url && url.length > 1) {
       this.errorUrl = false;
@@ -201,9 +204,9 @@ export class CdsPanelButtonConfigurationComponent implements OnInit {
   }
 
   private checkAndSaveButton(){
-    // this.logger.log('checkAndSaveButton: ');
     let checkLabel = this.checkButtonLabel();
     let checkType = this.checkTypeButton();
+    console.log('checkAndSaveButton: ', checkLabel, checkType);
     if (checkLabel && checkType) {
       this.saveButton.emit(this.button);
     }
@@ -221,17 +224,17 @@ export class CdsPanelButtonConfigurationComponent implements OnInit {
   /** */
   onChangeTitle(text: string) {
     this.buttonLabel = text;
-    this.checkAndSaveButton();
+    // this.checkAndSaveButton();
   }
 
   /** */
   onChangeTypeButton(typeOfButton: { label: string, value: TYPE_BUTTON }) {
     this.buttonType = this.button.type = typeOfButton.value;
-    this.buttonAction = null
-    this.logger.log('onChangeTypeButton-->', typeOfButton, this.button)
+    this.buttonAction = null;
+    console.log('onChangeTypeButton-->', typeOfButton, this.button)
     if(this.button.__idConnector){
       const fromId = this.button.__idConnector;
-      this.connectorService.deleteConnectorWithIDStartingWith(fromId);
+      // this.connectorService.deleteConnectorWithIDStartingWith(fromId);
       // let parts = this.button.idConnector.split('/');
       // if(parts && parts.length>1){
       //   let actionId = parts[1];
@@ -239,35 +242,52 @@ export class CdsPanelButtonConfigurationComponent implements OnInit {
       //   this.connectorService.deleteConnectorsFromActionByActionId(actionId);
       // }
     }
+    this.checkAndSaveButton();
+  }
+
+
+  /**
+   * onBlur
+   * @param event 
+   */
+  public onBlur(event){
+    this.checkAndSaveButton();
   }
 
   /** */
   onChangeUrl(text: string) {
     // this.logger.log('onChangeUrl: ');
     this.buttonUrl = text;
-    this.checkAndSaveButton();
+    // this.checkAndSaveButton();
   }
 
   /** */
   onChangeGoToBlock(event: {name: string, value: string}){
-    this.logger.log('onChangeGoToBlock: ', event);
+    console.log('onChangeGoToBlock: ', event);
     this.buttonAction = event.value;
     if(this.buttonAttributes && this.buttonAttributes !== '{}'){
       this.button.action = this.buttonAction + JSON.stringify(this.buttonAttributes);
     } else {
       this.button.action = this.buttonAction;
     }
-    // this.openBlockAttributes = true;
+    this.button.__isConnected = true;
     const fromId = this.button.__idConnector;
     let toId = '';
     const posId = this.button.action.indexOf("#");
     if (posId !== -1) {
       toId = this.button.action.slice(posId+1);
     }
-    this.logger.log('createNewConnector: ', fromId);
-    this.connectorService.deleteConnectorWithIDStartingWith(fromId);
-    this.connectorService.createNewConnector(fromId, toId);
+    console.log('onChangeGoToBlock: ', this.button);
+    this.connectorService.deleteConnectorWithIDStartingWith(fromId, false, false);
+    this.connectorService.createNewConnector(fromId, toId, false, false);
     this.checkAndSaveButton();
+  }
+
+  private deleteConnector(){
+    const fromId = this.button.__idConnector;
+    this.connectorService.deleteConnectorWithIDStartingWith(fromId, false, false);
+    this.button.__isConnected = false;
+    this.button.action = '';
   }
 
   onChangeOpenIn(event: {name: string, value: string}){

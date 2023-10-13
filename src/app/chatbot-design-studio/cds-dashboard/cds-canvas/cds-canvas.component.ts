@@ -886,12 +886,13 @@ export class CdsCanvasComponent implements OnInit {
   // --------------------------------------------------------- //
   /** onSaveButton */
   onSaveButton(button: Button) {
+    
     const arrayId = button.__idConnector.split("/");
     const idConnector = arrayId[0] ? arrayId[0] : null;
     this.logger.log('onSaveButton: ', idConnector, this.listOfIntents);
     if (idConnector) {
       this.intentSelected = this.listOfIntents.find(obj => obj.intent_id === idConnector);
-      this.updateIntent(this.intentSelected, 1000);
+      this.updateIntent(this.intentSelected, 0);
     }
   }
   // --------------------------------------------------------- //
