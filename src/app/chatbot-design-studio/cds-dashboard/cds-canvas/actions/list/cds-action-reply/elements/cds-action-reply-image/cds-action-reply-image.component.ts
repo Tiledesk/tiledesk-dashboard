@@ -5,6 +5,7 @@ import { TYPE_ACTION, TEXT_CHARS_LIMIT, calculatingRemainingCharacters, TYPE_BUT
 import { ConnectorService } from 'app/chatbot-design-studio/services/connector.service';
 import { IntentService } from 'app/chatbot-design-studio/services/intent.service';
 import { LoggerService } from 'app/services/logger/logger.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'cds-action-reply-image',
@@ -13,6 +14,7 @@ import { LoggerService } from 'app/services/logger/logger.service';
 })
 export class CdsActionReplyImageComponent implements OnInit {
   
+  @Output() updateIntentFromConnectorModification = new EventEmitter();
   @Output() changeActionReply = new EventEmitter();
   @Output() deleteActionReply = new EventEmitter();
   @Output() moveUpResponse = new EventEmitter();
@@ -46,6 +48,7 @@ export class CdsActionReplyImageComponent implements OnInit {
   
   // Buttons //
   buttons: Array<Button>;
+  private subscriptionChangedConnector: Subscription;
 
   constructor( 
     private connectorService: ConnectorService,
@@ -59,12 +62,19 @@ export class CdsActionReplyImageComponent implements OnInit {
   }
 
 
+  /** */
+  ngOnDestroy() {
+    if (this.subscriptionChangedConnector) {
+      this.subscriptionChangedConnector.unsubscribe();
+    }
+  }
+
   // PRIVATE FUNCTIONS //
 
   private initialize(){
     this.delayTime = (this.wait && this.wait.time)? (this.wait.time/1000) : 500;
     this.checkButtons();
-    this.intentService.isChangedConnector$.subscribe((connector: any) => {
+    this.subscriptionChangedConnector = this.intentService.isChangedConnector$.subscribe((connector: any) => {
       this.logger.log('CdsActionReplyImageComponent isChangedConnector-->', connector);
       this.connector = connector;
       this.updateConnector();
@@ -121,7 +131,9 @@ export class CdsActionReplyImageComponent implements OnInit {
           buttonChanged.__idConnector = this.connector.fromId;
           buttonChanged.action = '';
           buttonChanged.type = TYPE_BUTTON.TEXT;
-          this.changeActionReply.emit();
+          // if(this.connector.notify)
+          this.updateIntentFromConnectorModification.emit(this.connector);
+          // this.changeActionReply.emit();
         } else {
           // ADD / EDIT
           // buttonChanged.__isConnected = true;
@@ -130,7 +142,9 @@ export class CdsActionReplyImageComponent implements OnInit {
           buttonChanged.type = TYPE_BUTTON.ACTION;
           if(!buttonChanged.__isConnected){
             buttonChanged.__isConnected = true;
-            this.changeActionReply.emit();
+            // if(this.connector.notify)
+            this.updateIntentFromConnectorModification.emit(this.connector);
+            // this.changeActionReply.emit();
           } 
         }
         // this.changeActionReply.emit();
@@ -188,7 +202,7 @@ export class CdsActionReplyImageComponent implements OnInit {
   onChangeTextarea(text:string) {
     if(!this.previewMode){
       this.response.text = text;
-      this.changeActionReply.emit();
+      // this.changeActionReply.emit();
     }
   }
 
@@ -210,9 +224,15 @@ export class CdsActionReplyImageComponent implements OnInit {
   /** dropButtons */
   dropButtons(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.buttons, event.previousIndex, event.currentIndex);
-    this.connectorService.movedConnector(this.idIntent);
+    this.connectorService.updateConnector(this.idIntent);
     this.changeActionReply.emit();
   }  
+
+  /** onBlur */
+  onBlur(event){
+    console.log('[ACTION REPLY IMAGE] onBlur', event);
+    this.changeActionReply.emit();
+  }
 
   // EVENT FUNCTIONS //
   /** */

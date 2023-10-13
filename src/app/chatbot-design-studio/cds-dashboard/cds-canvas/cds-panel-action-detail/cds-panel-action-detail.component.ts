@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges, ChangeDetectorRef, TemplateRef, ViewContainerRef, HostListener } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, ChangeDetectorRef, TemplateRef, ViewContainerRef, HostListener, SimpleChanges } from '@angular/core';
 import { ConnectorService } from 'app/chatbot-design-studio/services/connector.service';
 import { IntentService } from 'app/chatbot-design-studio/services/intent.service';
 import { TYPE_ACTION, TYPE_INTENT_ELEMENT } from 'app/chatbot-design-studio/utils';
@@ -14,7 +14,7 @@ import { DashboardService } from 'app/chatbot-design-studio/services/dashboard.s
 export class CdsActionDetailPanelComponent implements OnInit, OnChanges {
   @Input() elementIntentSelected: any;
   @Input() showSpinner: boolean;
-  @Output() onUpdateIntent = new EventEmitter();
+  @Output() savePanelIntentDetail = new EventEmitter();
   
   project_id: string;
   intentSelected: Intent;
@@ -47,7 +47,8 @@ export class CdsActionDetailPanelComponent implements OnInit, OnChanges {
   //   }
   }
 
-  ngOnChanges() {
+  ngOnChanges(changes: SimpleChanges): void {
+    this.logger.log('[PANEL-INTENT-DETAIL] (OnChanges)', changes, this.elementIntentSelected);
     this.initialize();
   }
 
@@ -96,7 +97,7 @@ export class CdsActionDetailPanelComponent implements OnInit, OnChanges {
     // this.logger.log("onUpdateQuestionsIntentSelected:::: ", $event);
   }
 
-  onSaveIntent(){
+  onSaveIntent(event?){
     if(this.elementIntentSelectedType === this.typeIntentElement.ACTION){
       // this.intentSelected.actions[this.elementSelectedIndex] = this.elementSelected;
       const index = this.intentSelected.actions.findIndex(el => el._tdActionId === this.elementSelected._tdActionId);
@@ -108,8 +109,8 @@ export class CdsActionDetailPanelComponent implements OnInit, OnChanges {
     } else if(this.elementIntentSelectedType === this.typeIntentElement.FORM){
       this.intentSelected.form = this.elementSelected;
     }
-    this.logger.log('----> onSaveIntent:: ', this.elementIntentSelectedType, this.intentSelected);
-    this.onUpdateIntent.emit(this.intentSelected);
+    console.log('----> onSaveIntent:: ', event, this.elementIntentSelectedType, this.intentSelected);
+    this.savePanelIntentDetail.emit(this.intentSelected);
   }
 
   onCloseIntent(){
@@ -118,25 +119,30 @@ export class CdsActionDetailPanelComponent implements OnInit, OnChanges {
   }
 
 
+  /**
+   * onConnectorChange
+   * @param type 
+   * @param idConnector 
+   * @param toIntentId 
+   * 
+   * IMPORTANTE: questa funzione deve SOLO aggiornare i connettori e NON deve salvare.
+   */
   onConnectorChange(type: 'create' | 'delete', idConnector: string, toIntentId: string){
-    this.logger.log('createOrUpdateConnector-->', type, idConnector, toIntentId)
+    console.log('createOrUpdateConnector-->', type, idConnector, toIntentId)
     const fromId = idConnector;
     let toId = '';
     const posId = toIntentId.indexOf("#");
     if (posId !== -1) {
       toId = toIntentId.slice(posId+1);
     }
-
     switch(type){
       case 'create':
-        this.logger.log('createNewConnector: ', fromId);
-        this.connectorService.deleteConnectorWithIDStartingWith(fromId);
-        this.connectorService.createNewConnector(fromId, toId);
+        this.connectorService.deleteConnectorWithIDStartingWith(fromId, false, false);
+        this.connectorService.createNewConnector(fromId, toId, true, false);
         break;
       case 'delete':
-        this.connectorService.deleteConnectorWithIDStartingWith(fromId);
+        this.connectorService.deleteConnectorWithIDStartingWith(fromId, true, false);
         break;
-
     }
   }
 

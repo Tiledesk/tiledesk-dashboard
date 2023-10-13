@@ -1,5 +1,5 @@
 
-import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 
@@ -8,6 +8,7 @@ import { TYPE_BUTTON, generateShortUID } from 'app/chatbot-design-studio/utils';
 import { IntentService } from 'app/chatbot-design-studio/services/intent.service';
 import { ConnectorService } from 'app/chatbot-design-studio/services/connector.service';
 import { LoggerService } from 'app/services/logger/logger.service';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -18,6 +19,7 @@ import { LoggerService } from 'app/services/logger/logger.service';
 export class CdsActionReplyTextComponent implements OnInit {
   @ViewChild('autosize') autosize: CdkTextareaAutosize;
   
+  @Output() updateIntentFromConnectorModification = new EventEmitter();
   @Output() changeActionReply = new EventEmitter();
   @Output() deleteActionReply = new EventEmitter();
   @Output() moveUpResponse = new EventEmitter();
@@ -43,6 +45,7 @@ export class CdsActionReplyTextComponent implements OnInit {
   booleanOperators = [ { type: 'AND', operator: 'AND'},{ type: 'OR', operator: 'OR'},];
   // Buttons //
   buttons: Array<Button>;
+  private subscriptionChangedConnector: Subscription;
 
 
   constructor(
@@ -57,6 +60,16 @@ export class CdsActionReplyTextComponent implements OnInit {
   }
 
   // ngOnChanges(changes: SimpleChanges): void {
+  //   console.log('[CDS-ACTION-INTENT] >>', changes);
+  // }
+
+  /** */
+  ngOnDestroy() {
+    if (this.subscriptionChangedConnector) {
+      this.subscriptionChangedConnector.unsubscribe();
+    }
+  }
+  // ngOnChanges(changes: SimpleChanges): void {
   //   this.logger.log('CdsActionReplyTextComponent ngOnChanges:: ', this.response);
   // }
 
@@ -65,7 +78,7 @@ export class CdsActionReplyTextComponent implements OnInit {
   private initialize(){
     this.delayTime = (this.wait && this.wait.time)? (this.wait.time/1000) : 500;
     this.checkButtons();
-    this.intentService.isChangedConnector$.subscribe((connector: any) => {
+    this.subscriptionChangedConnector = this.intentService.isChangedConnector$.subscribe((connector: any) => {
       this.logger.log('[CdsActionReplyTextComponent] isChangedConnector-->', connector);
       this.connector = connector;
       this.updateConnector();
@@ -118,22 +131,26 @@ export class CdsActionReplyTextComponent implements OnInit {
       if(idConnector === this.connector.fromId && buttonChanged){
         if(this.connector.deleted){
           // DELETE 
-          this.logger.log(' deleteConnector :: ', this.connector.fromId);
+          console.log('[CdsActionReplyTextComponent] deleteConnector :: ', this.connector.fromId);
           buttonChanged.__isConnected = false;
           buttonChanged.__idConnector = this.connector.fromId;
           buttonChanged.action = '';
           buttonChanged.type = TYPE_BUTTON.TEXT;
-          this.changeActionReply.emit();
+          // if(this.connector.notify)
+          this.updateIntentFromConnectorModification.emit(this.connector);
+          // this.changeActionReply.emit();
         } else {
           // ADD / EDIT
           // buttonChanged.__isConnected = true;
           buttonChanged.__idConnector = this.connector.fromId;
           buttonChanged.action = buttonChanged.action? buttonChanged.action : '#' + this.connector.toId;
           buttonChanged.type = TYPE_BUTTON.ACTION;
-          this.logger.log(' -> updateConnector :: ', this.buttons);
+          console.log('[CdsActionReplyTextComponent] updateConnector :: ', this.buttons);
           if(!buttonChanged.__isConnected){
             buttonChanged.__isConnected = true;
-            this.changeActionReply.emit();
+            // if(this.connector.notify)
+            this.updateIntentFromConnectorModification.emit(this.connector);
+            // this.changeActionReply.emit();
           } 
         }
         // this.changeActionReply.emit();
@@ -185,8 +202,13 @@ export class CdsActionReplyTextComponent implements OnInit {
   onChangeTextarea(text:string) {
     if(!this.previewMode){
       this.response.text = text;
-      this.changeActionReply.emit();
+      // this.changeActionReply.emit();
     }
+  }
+
+  onBlur(event){
+    // console.log('[ACTION REPLY TEXT] onBlur', event);
+    this.changeActionReply.emit();
   }
 
   onSelectedAttribute(variableSelected: {name: string, value: string}){
@@ -210,7 +232,7 @@ export class CdsActionReplyTextComponent implements OnInit {
   /** dropButtons */
   dropButtons(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.buttons, event.previousIndex, event.currentIndex);
-    this.connectorService.movedConnector(this.idIntent);
+    this.connectorService.updateConnector(this.idIntent);
     this.changeActionReply.emit();
   }  
 

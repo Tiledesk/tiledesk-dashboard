@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { IntentService } from 'app/chatbot-design-studio/services/intent.service';
 import { ActionOnlineAgent, Intent } from 'app/models/intent-model';
 import { LoggerService } from 'app/services/logger/logger.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'cds-action-online-agents',
@@ -15,6 +16,7 @@ export class CdsActionOnlineAgentsComponent implements OnInit {
   @Input() intentSelected: Intent;
   @Input() action: ActionOnlineAgent;
   @Input() previewMode: boolean = true;
+  @Output() updateIntentFromConnectorModification = new EventEmitter();
   @Output() updateAndSaveAction = new EventEmitter();
   @Output() onConnectorChange = new EventEmitter<{type: 'create' | 'delete',  fromId: string, toId: string}>()
   
@@ -30,6 +32,7 @@ export class CdsActionOnlineAgentsComponent implements OnInit {
   connector: any;
   
   listOfIntents: Array<{name: string, value: string, icon?:string}>;
+  private subscriptionChangedConnector: Subscription;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -38,11 +41,18 @@ export class CdsActionOnlineAgentsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.intentService.isChangedConnector$.subscribe((connector: any) => {
+    this.subscriptionChangedConnector = this.intentService.isChangedConnector$.subscribe((connector: any) => {
       // this.logger.log('CdsActionIntentComponent isChangedConnector-->', connector);
       this.connector = connector;
       this.updateConnector();
     });
+  }
+
+  /** */
+  ngOnDestroy() {
+    if (this.subscriptionChangedConnector) {
+      this.subscriptionChangedConnector.unsubscribe();
+    }
   }
 
   ngOnChanges() {
@@ -81,23 +91,29 @@ export class CdsActionOnlineAgentsComponent implements OnInit {
             this.action.falseIntent = null
             this.isConnectedFalse = false;
           }
-          this.updateAndSaveAction.emit();
-        } else {
+          // if(this.connector.notify)
+          this.updateIntentFromConnectorModification.emit(this.connector);
+          // this.updateAndSaveAction.emit();
+        } else { //TODO: verificare quale dei due connettori è stato aggiunto (controllare il valore della action corrispondente al true/false intent)
           // ADD / EDIT
           this.logger.log(' updateConnector :: onlineagents', this.connector.toId, this.connector.fromId ,this.action, array[array.length-1]);
           if(array[array.length -1] === 'true'){
             this.isConnectedTrue = true;
             if(this.action.trueIntent !== '#'+this.connector.toId){
               this.action.trueIntent = '#'+this.connector.toId;
-              this.updateAndSaveAction.emit();
+              // if(this.connector.notify)
+              this.updateIntentFromConnectorModification.emit(this.connector);
+              // this.updateAndSaveAction.emit();
             } 
           }    
 
           if(array[array.length -1] === 'false'){
             this.isConnectedFalse = true;
             if(this.action.falseIntent !== '#'+this.connector.toId){
-              this.action.falseIntent = '#'+this.connector.toId
-              this.updateAndSaveAction.emit();
+              this.action.falseIntent = '#'+this.connector.toId;
+              // if(this.connector.notify)
+              this.updateIntentFromConnectorModification.emit(this.connector);
+              // this.updateAndSaveAction.emit();
             } 
           }
         }

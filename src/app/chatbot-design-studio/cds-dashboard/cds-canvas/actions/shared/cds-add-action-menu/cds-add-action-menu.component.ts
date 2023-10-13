@@ -12,7 +12,7 @@ export class CdsAddActionMenuComponent implements OnInit, OnChanges {
 
   @Input() menuType: string;
   // @Input() tdsContainerEleHeight: any;
-  @Output() addingActionToStage = new EventEmitter();
+  @Output() addActionFromActionMenu = new EventEmitter();
   // ACTIONS_LIST = ACTIONS_LIST
   menuItemsList: any;
   filterMenuItemsList: any;
@@ -132,16 +132,16 @@ export class CdsAddActionMenuComponent implements OnInit, OnChanges {
 
   // return it.toLocaleLowerCase().includes(searchText);
 
-  onAddingActionToStage(item){
-    this.logger.log('[CDS-ADD-ACTION-MENU] ON ADDING ACTION - TO STAGE - item: ', item);
-    // this.logger.log('[CDS-ADD-ACTION-MENU] ON ADDING ACTION - TO STAGE - actionToSearch 1: ',this.actionToSearch);
+  onAddActionFromActionMenu(item){
+    console.log('[CDS-ADD-ACTION-MENU] ON ADDING ACTION - TO STAGE - item: ', item);
+    // console.log('[CDS-ADD-ACTION-MENU] ON ADDING ACTION - TO STAGE - actionToSearch 1: ',this.actionToSearch);
     let event = { 
       'type': item.value.type
     }
     this.actionToSearch = undefined;
     this.filterMenuItemsList = this.menuItemsList;
-    this.addingActionToStage.emit(event);
-    //this.logger.log('[CDS-ADD-ACTION-MENU] ON ADDING ACTION - TO STAGE - actionToSearch 2: ',this.actionToSearch);
+    this.addActionFromActionMenu.emit(event);
+    //console.log('[CDS-ADD-ACTION-MENU] ON ADDING ACTION - TO STAGE - actionToSearch 2: ',this.actionToSearch);
   }
 
 }

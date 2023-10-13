@@ -7,7 +7,7 @@ import { OpenaiService } from 'app/services/openai.service';
 import { IntentService } from 'app/chatbot-design-studio/services/intent.service';
 import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
 import { AppConfigService } from 'app/services/app-config.service';
-
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'cds-action-askgpt',
@@ -19,6 +19,8 @@ export class CdsActionAskgptComponent implements OnInit {
   @Input() intentSelected: Intent;
   @Input() action: ActionAskGPT;
   @Input() previewMode: boolean = true;
+  
+  @Output() updateIntentFromConnectorModification = new EventEmitter();
   @Input() project_id: string;
   @Output() updateAndSaveAction = new EventEmitter;
   @Output() onConnectorChange = new EventEmitter<{type: 'create' | 'delete',  fromId: string, toId: string}>()
@@ -47,6 +49,7 @@ export class CdsActionAskgptComponent implements OnInit {
   idBot: string;
   variableListUserDefined: Array<{ name: string, value: string }> // = variableList.userDefined 
   spinner: boolean = false;
+  private subscriptionChangedConnector: Subscription;
 
   constructor(
     private logger: LoggerService,
@@ -59,8 +62,8 @@ export class CdsActionAskgptComponent implements OnInit {
 
   ngOnInit(): void {
     this.logger.debug("[ACTION-ASKGPT] action detail: ", this.action);
-    
-    this.intentService.isChangedConnector$.subscribe((connector: any) => {
+
+    this.subscriptionChangedConnector = this.intentService.isChangedConnector$.subscribe((connector: any) => {
       this.logger.debug('[ACTION-ASKGPT] isChangedConnector -->', connector);
       this.connector = connector;
       this.updateConnector();
@@ -88,6 +91,13 @@ export class CdsActionAskgptComponent implements OnInit {
   }
 
 
+  /** */
+  ngOnDestroy() {
+    if (this.subscriptionChangedConnector) {
+      this.subscriptionChangedConnector.unsubscribe();
+    }
+  }
+
   initializeConnector() {
     this.idIntentSelected = this.intentSelected.intent_id;
     this.idConnectorTrue = this.idIntentSelected+'/'+this.action._tdActionId + '/true';
@@ -110,7 +120,9 @@ export class CdsActionAskgptComponent implements OnInit {
             this.action.falseIntent = null
             this.isConnectedFalse = false;
           }
-          this.updateAndSaveAction.emit();
+          // if(this.connector.notify)
+          this.updateIntentFromConnectorModification.emit(this.connector);
+          // this.updateAndSaveAction.emit();
         } else { 
           // TODO: verificare quale dei due connettori è stato aggiunto (controllare il valore della action corrispondente al true/false intent)
           // ADD / EDIT
@@ -120,7 +132,9 @@ export class CdsActionAskgptComponent implements OnInit {
             this.isConnectedTrue = true;
             if(this.action.trueIntent !== '#'+this.connector.toId){ 
               this.action.trueIntent = '#'+this.connector.toId;
-              this.updateAndSaveAction.emit();
+              // if(this.connector.notify)
+              this.updateIntentFromConnectorModification.emit(this.connector);
+              // this.updateAndSaveAction.emit();
             } 
           }        
           if(array[array.length -1] === 'false'){
@@ -128,7 +142,9 @@ export class CdsActionAskgptComponent implements OnInit {
             this.isConnectedFalse = true;
             if(this.action.falseIntent !== '#'+this.connector.toId){ 
               this.action.falseIntent = '#'+this.connector.toId;
-              this.updateAndSaveAction.emit();
+              // if(this.connector.notify)
+              this.updateIntentFromConnectorModification.emit(this.connector);
+              // this.updateAndSaveAction.emit();
             } 
           }
         }

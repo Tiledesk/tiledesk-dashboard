@@ -3,6 +3,7 @@ import { ActionWebRequest, ActionWebRequestV2, Intent } from 'app/models/intent-
 import { LoggerService } from 'app/services/logger/logger.service';
 import { TYPE_METHOD_ATTRIBUTE, TYPE_METHOD_REQUEST, TEXT_CHARS_LIMIT, variableList } from 'app/chatbot-design-studio/utils';
 import { IntentService } from 'app/chatbot-design-studio/services/intent.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'cds-action-web-request-v2',
@@ -14,6 +15,7 @@ export class CdsActionWebRequestV2Component implements OnInit {
   @Input() intentSelected: Intent;
   @Input() action: ActionWebRequestV2;
   @Input() previewMode: boolean = true;
+  @Output() updateIntentFromConnectorModification = new EventEmitter();
   @Output() updateAndSaveAction = new EventEmitter();
   @Output() onConnectorChange = new EventEmitter<{type: 'create' | 'delete',  fromId: string, toId: string}>()
   
@@ -48,6 +50,7 @@ export class CdsActionWebRequestV2Component implements OnInit {
       {label: 'none', value: 'none', disabled: false, checked: true}, 
       {label: 'Json', value: 'json', disabled: false, checked: false}
   ]
+  private subscriptionChangedConnector: Subscription;
   
   constructor(
     private logger: LoggerService,
@@ -57,14 +60,20 @@ export class CdsActionWebRequestV2Component implements OnInit {
   // SYSTEM FUNCTIONS //
   ngOnInit(): void {
     this.logger.debug("[ACTION-ASKGPT] action detail: ", this.action);
-
-    this.intentService.isChangedConnector$.subscribe((connector: any) => {
+    this.subscriptionChangedConnector = this.intentService.isChangedConnector$.subscribe((connector: any) => {
       this.logger.debug('[ACTION-ASKGPT] isChangedConnector -->', connector);
       this.connector = connector;
       this.updateConnector();
     });
-
     this.initializeAttributes();
+  }
+
+
+  /** */
+  ngOnDestroy() {
+    if (this.subscriptionChangedConnector) {
+      this.subscriptionChangedConnector.unsubscribe();
+    }
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -102,22 +111,28 @@ export class CdsActionWebRequestV2Component implements OnInit {
             this.action.falseIntent = null
             this.isConnectedFalse = false;
           }
-          this.updateAndSaveAction.emit();
+          // if(this.connector.notify)
+          this.updateIntentFromConnectorModification.emit(this.connector);
+          // this.updateAndSaveAction.emit();
         } else { 
           // ADD / EDIT
           this.logger.debug('[ACTION-ASKGPT] updateConnector', this.connector.toId, this.connector.fromId ,this.action, array[array.length-1]);
           if(array[array.length -1] === 'true'){
             this.isConnectedTrue = true;
-            if(this.action.trueIntent !== '#'+this.connector.toId){
+            // if(this.action.trueIntent !== '#'+this.connector.toId){
               this.action.trueIntent = '#'+this.connector.toId;
-              this.updateAndSaveAction.emit();
-            } 
+              // if(this.connector.notify)
+              this.updateIntentFromConnectorModification.emit(this.connector);
+              // this.updateAndSaveAction.emit();
+            // } 
           }        
           if(array[array.length -1] === 'false'){
             this.isConnectedFalse = true;
             if(this.action.falseIntent !== '#'+this.connector.toId){
               this.action.falseIntent = '#'+this.connector.toId;
-              this.updateAndSaveAction.emit();
+              // if(this.connector.notify)
+              this.updateIntentFromConnectorModification.emit(this.connector);
+              // this.updateAndSaveAction.emit();
             } 
           }
         }

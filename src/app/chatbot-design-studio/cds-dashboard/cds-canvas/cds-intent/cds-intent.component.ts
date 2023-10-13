@@ -418,7 +418,7 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
     } else if (event === 'delete') {
       this.intentService.selectAction(this.intent.intent_id, action._tdActionId)
       this.intentService.deleteSelectedAction();
-      this.actionDeleted.emit(true)
+      // this.actionDeleted.emit(true)
     }
   }
 
@@ -532,7 +532,7 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
     // this.logger.log('[CDS-INTENT] onDragEnded actionArrowElem', actionArrowElem)
 
     // const fromEle = document.getElementById(this.intent.intent_id);
-    // this.connectorService.movedConnector(fromEle);
+    // this.connectorService.updateConnector(fromEle);
   }
 
   // mouseOverAddActionPlaceholder(event) {
@@ -579,7 +579,7 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
    * 3 - moving new action in intent from panel elements
    */
   async onDropAction(event: CdkDragDrop<string[]>) {
-    this.logger.log('[CDS-INTENT] onDropAction: ', event);
+   console.log('[CDS-INTENT] onDropAction: ', event);
     // this.logger.log('event:', event, 'previousContainer:', event.previousContainer, 'event.container:', event.container);
     if (event.previousContainer === event.container) {
       // moving action in the same intent
@@ -587,10 +587,10 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
       this.controllerService.closeAllPanels();
       this.intentService.setIntentSelected(this.intent.intent_id);
-      this.connectorService.movedConnector(this.intent.intent_id);
-      const response = await this.intentService.updateIntent(this.intent);
+      this.connectorService.updateConnector(this.intent.intent_id);
+      const response = await this.intentService.onUpdateIntentWithTimeout(this.intent);
       if (response) {
-        // this.connectorService.movedConnector(this.intent.intent_id);
+        // this.connectorService.updateConnector(this.intent.intent_id);
       }
     } else {
       try {
@@ -619,31 +619,46 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
+  /**
+   * onUpdateIntentFromConnectorModification
+   * @param connector 
+   */
+  public async onUpdateIntentFromConnectorModification(connector){
+    console.log('[CDS-INTENT] onUpdateIntentFromConnectorModification:::: intent::: ', connector, this.intent);
+    this.intentService.onUpdateIntentWithTimeout(this.intent, 0, true, connector);
+  }
+
+
+
   /**  onUpdateAndSaveAction: 
    * function called by all actions in @output whenever they are modified!
-   * 1 - update connectors
-   * 2 - update intent
    * */
   public async onUpdateAndSaveAction(event) {
+
+    // let intentsToUpdateUndo = [];
+    // let intentsToUpdateRedo = [];
+    // intentsToUpdateRedo = [ ...this.listOfIntents ];
+    // intentsToUpdateUndo = [ ...this.prevListOfIntent ];
+    // this.addIntentToUndoRedo('PUT', originalIntent, intentsToUpdateUndo, intentsToUpdateRedo);
+
     // se event non è nullo sostituisco in this.intent.actions la action con _tdActionId 
     if(event && event._tdActionId){
       replaceItemInArrayForKey('_tdActionId', this.intent.actions, event);
     }
     this.logger.log('[CDS-INTENT] onUpdateAndSaveAction:::: ', event, this.intent, this.intent.actions);
-    this.logger.log('[CDS-INTENT] onUpdateAndSaveAction:::: intent::: ', this.intent);
+    console.log('[CDS-INTENT] onUpdateAndSaveAction:::: intent::: ', this.intent);
     // this.intentService.selectAction(this.intent.intent_id, event);
-
-    const response = await this.intentService.updateIntent(this.intent);
+    const response = await this.intentService.onUpdateIntentWithTimeout(this.intent);
     if (response) {
       this.logger.log('updateIntent: ', this.intent);
     }
+
     // const fromEle = document.getElementById(this.intent.intent_id);
     // if(fromEle){
-    //   this.connectorService.movedConnector(fromEle);
+    //   this.connectorService.updateConnector(fromEle);
     //   this.updateIntent();
     // }
   }
-
 
   openActionMenu(intent: any, calleBy: string) {
     this.logger.log('[CDS-INTENT] openActionMenu > intent ', intent)
@@ -687,21 +702,17 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
     this.logger.log('[CDS-INTENT] toggleIntentWebhook  intent ', intent)
     this.logger.log('[CDS-INTENT] toggleIntentWebhook  intent webhook_enabled ', intent.webhook_enabled)
     this.intentService.setIntentSelected(this.intent.intent_id);
-    if (intent.webhook_enabled === false) {
-      intent.webhook_enabled = true;
-      this.intentService.updateIntent(intent);
-      // this.webHookTooltipText = "Disable webhook"
-    } else {
-      intent.webhook_enabled = false;
-      this.intentService.updateIntent(intent);
-      // this.webHookTooltipText = "Enable webhook"
-    }
+    intent.webhook_enabled = !intent.webhook_enabled;
+    // this.webHookTooltipText = "Disable webhook"
+    // this.webHookTooltipText = "Enable webhook"
+    this.intentService.onUpdateIntentWithTimeout(intent);
   }
 
   onDeleteIntent(intent: Intent) {
     this.intentService.setIntentSelected(this.intent.intent_id);
     this.deleteIntent.emit(intent);
   }
+
   /** ******************************
    * intent controls options: END 
    * ****************************** */

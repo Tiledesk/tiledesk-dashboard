@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter, OnChanges, ViewChild, E
 import { LoggerService } from 'app/services/logger/logger.service';
 import { Intent } from 'app/models/intent-model';
 import { IntentService } from 'app/chatbot-design-studio/services/intent.service';
+import { preDisplayName } from 'app/chatbot-design-studio/utils';
 
 @Component({
   selector: 'cds-panel-intent-header',
@@ -72,15 +73,16 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
   private checkIntentName(name: string) {
     this.intentNameResult = true;
     this.intentNameAlreadyExist = false;
-    if(!this.intentName || this.intentName.trim().length == 0) {
-      this.logger.log("[PANEL-INTENT-HEADER] error 1");
+    if(!this.intentName || this.intentName.trim().length == 0 || this.intentName === preDisplayName) {
+      console.log("[PANEL-INTENT-HEADER] error 1");
       this.intentNameResult = false;
     }
     for (let i = 0; i < this.listOfIntents.length; i++) {
-      if (this.listOfIntents[i].intent_display_name === name) {
+      // console.log("[PANEL-INTENT-HEADER] checkIntentName::: ", this.listOfIntents[i], name, this.intent);
+      if (this.listOfIntents[i].intent_display_name === name && this.listOfIntents[i].intent_id !== this.intent.intent_id) { 
         this.intentNameAlreadyExist = true;
         this.intentNameResult = false;
-        break; // Possiamo uscire dal ciclo una volta trovato l'oggetto cercato
+        break;
       }
     }
     this.intentNameNotHasSpecialCharacters = this.checkIntentNameMachRegex(name);
@@ -112,8 +114,19 @@ export class PanelIntentHeaderComponent implements OnInit, OnChanges {
     this.logger.log("[PANEL-INTENT-HEADER] onChangeIntentName",event, this.intent);
     const result = this.checkIntentName(event);
     if(result){
+      this.intentName = event;
+      // this.onSaveIntent();
+      // this.intentService.setIntentSelected(this.intent.intent_id);
+    }
+  }
+
+
+  onBlur(event){
+    console.log('[PANEL-INTENT-HEADER] onBlur', event, this.intentName)
+    this.myInput.nativeElement.blur();
+    const result = this.checkIntentName(this.intentName);
+    if(result){
       this.onSaveIntent();
-      this.intentService.setIntentSelected(this.intent.intent_id);
     }
   }
 

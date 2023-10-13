@@ -2,6 +2,7 @@ import { AbstractControl } from "@angular/forms";
 import { ActionAssignVariable, Intent } from "app/models/intent-model";
 import { v4 as uuidv4 } from 'uuid';
 
+export const preDisplayName:string  = 'untitled_block_';
 
 export enum TYPE_INTENT_NAME {
     TOPIC_INTERNAL = 'internal',
@@ -195,7 +196,7 @@ export enum TYPE_OF_MENU {
     QUESTION = 'question'
 }
 
-export const NEW_POSITION_ID = 'new';
+export const INTENT_TEMP_ID = 'new';
 
 export const MESSAGE_METADTA_WIDTH = '100%';
 export const MESSAGE_METADTA_HEIGHT = 230;
@@ -376,14 +377,23 @@ export function convertJsonToArray(jsonData:any){
     return arrayOfObjs;
 }
 
-export function checkIFElementExists(elementId:string){
-    var element = document.getElementById(elementId);
-    if(!element){
-      return false;
-    } else {
-      return true;
-    }
+export async function isElementOnTheStage(elementId:string): Promise<any>{
+    // if(document.getElementById(elementId)) return document.getElementById(elementId);
+    return new Promise((resolve) => {
+        let intervalId = setInterval(async () => {
+            const result = document.getElementById(elementId);
+            if (result) {
+            clearInterval(intervalId);
+            resolve(result);
+            }
+        }, 0);
+        setTimeout(() => {
+            clearInterval(intervalId);
+            resolve(false);
+        }, 1000);
+    });
 }
+
 
 export function removeNodesStartingWith(obj, start) {
     for (const key in obj) {
@@ -394,6 +404,14 @@ export function removeNodesStartingWith(obj, start) {
         }
     }
     return obj;
+}
+
+export function insertItemIntoPositionInTheArray(array, item, pos = array.length) {
+    if (pos < 0 || pos > array.length) {
+      pos = array.length;
+    }
+    array.splice(pos, 0, item);
+    return array;
 }
 
 // export function retriveListOfVariables(intents: Array<Intent>) {

@@ -5,7 +5,9 @@ import { ConnectorService } from 'app/chatbot-design-studio/services/connector.s
 import { IntentService } from 'app/chatbot-design-studio/services/intent.service';
 import { TYPE_ACTION, TYPE_BUTTON, TYPE_URL, generateShortUID } from 'app/chatbot-design-studio/utils';
 import { Button, Expression, GalleryElement, Message, Wait, Metadata, MessageAttributes } from 'app/models/intent-model';
-import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+// import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
+import { LoggerService } from 'app/services/logger/logger.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'cds-action-reply-gallery',
@@ -15,6 +17,7 @@ import { LoggerService } from 'app/services/chat21-core/providers/abstract/logge
 export class CdsActionReplyGalleryComponent implements OnInit {
   @ViewChild('scrollMe', { static: false }) scrollContainer: ElementRef;
   
+  @Output() updateIntentFromConnectorModification = new EventEmitter();
   @Output() changeActionReply = new EventEmitter();
   @Output() deleteActionReply = new EventEmitter();
   @Output() moveUpResponse = new EventEmitter();
@@ -41,6 +44,7 @@ export class CdsActionReplyGalleryComponent implements OnInit {
   activateEL: { [key: number]: {title: boolean, description: boolean} } = {};
   // Buttons //
   buttons: Array<Button>;
+  private subscriptionChangedConnector: Subscription;
 
   constructor(
     private logger: LoggerService,
@@ -55,6 +59,13 @@ export class CdsActionReplyGalleryComponent implements OnInit {
     this.initialize();
   }
 
+  /** */
+  ngOnDestroy() {
+    if (this.subscriptionChangedConnector) {
+      this.subscriptionChangedConnector.unsubscribe();
+    }
+  }
+
   private initialize(){
     this.delayTime = (this.wait && this.wait.time)? (this.wait.time/1000) : 500;
     this.gallery = [];
@@ -62,8 +73,8 @@ export class CdsActionReplyGalleryComponent implements OnInit {
       this.gallery = this.response.attributes.attachment.gallery;
       this.initElement();
       if(!this.previewMode) this.scrollToLeft();
-      this.intentService.isChangedConnector$.subscribe((connector: any) => {
-        this.logger.log('CdsActionReplyGalleryComponent isChangedConnector-->', connector);
+      this.subscriptionChangedConnector = this.intentService.isChangedConnector$.subscribe((connector: any) => {
+        // this.logger.log('CdsActionReplyGalleryComponent isChangedConnector-->', connector);
         this.connector = connector;
         this.updateConnector();
       });
@@ -130,7 +141,9 @@ export class CdsActionReplyGalleryComponent implements OnInit {
             buttonChanged.__idConnector = this.connector.fromId;
             buttonChanged.action = '';
             buttonChanged.type = TYPE_BUTTON.TEXT;
-            this.changeActionReply.emit();
+            // if(this.connector.notify)
+            this.updateIntentFromConnectorModification.emit(this.connector);
+            // this.changeActionReply.emit();
           } else {
             // ADD / EDIT
             // buttonChanged.__isConnected = true;
@@ -139,7 +152,9 @@ export class CdsActionReplyGalleryComponent implements OnInit {
             buttonChanged.type = TYPE_BUTTON.ACTION;
             if(!buttonChanged.__isConnected){
               buttonChanged.__isConnected = true;
-              this.changeActionReply.emit();
+              // if(this.connector.notify)
+              this.updateIntentFromConnectorModification.emit(this.connector);
+              // this.changeActionReply.emit();
             } 
           }
           // this.changeActionReply.emit();
@@ -269,7 +284,7 @@ export class CdsActionReplyGalleryComponent implements OnInit {
   onChangeText(text: string, element: 'title' | 'description', index: number) {
     this.gallery[index][element] = text;
     this.response.attributes.attachment.gallery = this.gallery;
-    this.changeActionReply.emit();
+    // this.changeActionReply.emit();
   }
 
 
@@ -291,7 +306,7 @@ export class CdsActionReplyGalleryComponent implements OnInit {
   /** dropButtons */
   dropButtons(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.buttons, event.previousIndex, event.currentIndex);
-    this.connectorService.movedConnector(this.idIntent);
+    this.connectorService.updateConnector(this.idIntent);
     this.changeActionReply.emit();
   }  
 
@@ -299,6 +314,12 @@ export class CdsActionReplyGalleryComponent implements OnInit {
   onChangeMetadata(metadata: Metadata, index: number){
     this.gallery[index].preview = metadata;
     this.response.attributes.attachment.gallery = this.gallery
+    this.changeActionReply.emit();
+  }
+
+  /** onBlur */
+  onBlur(event){
+    console.log('[ACTION REPLY GALLERY] onBlur', event);
     this.changeActionReply.emit();
   }
   // EVENT FUNCTIONS //

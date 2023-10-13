@@ -21,7 +21,8 @@ export class CdsActionReplyComponent implements OnInit {
 
   @Input() action: ActionReply;
   @Input() intentSelected: Intent;
-  @Input() previewMode: boolean = true
+  @Input() previewMode: boolean = true;
+  @Output() updateIntentFromConnectorModification = new EventEmitter();
   @Output() updateAndSaveAction = new EventEmitter();
   
 
@@ -160,7 +161,7 @@ export class CdsActionReplyComponent implements OnInit {
       this.arrayResponses[previousPos-1] = waitCur;
       this.arrayResponses[previousPos] = msgCur;
       // console.log( 'DROP REPLY ---> ', this.arrayResponses);
-      this.connectorService.movedConnector(this.intentSelected.id);
+      this.connectorService.updateConnector(this.intentSelected.id);
       this.onUpdateAndSaveAction();
     } catch (error) {
       this.logger.log('drop ERROR', error);
@@ -171,6 +172,7 @@ export class CdsActionReplyComponent implements OnInit {
   // on action //
   /** */
   onMoveUpResponse(index: number) {
+    if(index<2)return;
     try {
       let from = index - 1;
       let to = from - 2;
@@ -178,8 +180,8 @@ export class CdsActionReplyComponent implements OnInit {
       from = index;
       to = from - 2;
       this.arrayResponses.splice(to, 0, this.arrayResponses.splice(from, 1)[0]);
-      // this.logger.log( 'onMoveUpResponse ---> ', this.arrayResponses);
-      this.connectorService.movedConnector(this.intentSelected.id);
+      // console.log( 'onMoveUpResponse ---> ', this.arrayResponses);
+      this.connectorService.updateConnector(this.intentSelected.id);
       this.onUpdateAndSaveAction();
     } catch (error) {
       this.logger.log('onAddNewResponse ERROR', error);
@@ -188,6 +190,7 @@ export class CdsActionReplyComponent implements OnInit {
 
   /** */
   onMoveDownResponse(index: number) {
+    if(index === this.arrayResponses.length-1)return;
     try {
       let from = index;
       let to = from + 2;
@@ -195,8 +198,8 @@ export class CdsActionReplyComponent implements OnInit {
       from = index - 1;
       to = from + 2;
       this.arrayResponses.splice(to, 0, this.arrayResponses.splice(from, 1)[0]);
-      // this.logger.log( 'onMoveUpResponse ---> ', this.arrayResponses);
-      this.connectorService.movedConnector(this.intentSelected.id);
+      // console.log( 'onMoveUpResponse ---> ', this.arrayResponses);
+      this.connectorService.updateConnector(this.intentSelected.id);
       this.onUpdateAndSaveAction();
     } catch (error) {
       this.logger.log('onAddNewResponse ERROR', error);
@@ -245,7 +248,6 @@ export class CdsActionReplyComponent implements OnInit {
     } catch (error) {
       this.logger.log('onAddNewResponse ERROR', error);
     }
-
     // cancello l'elemento wait precedente 
     this.logger.log('**** arrayResponses: ', this.arrayResponses, 'index-1: ', (index-1));
     const wait = this.arrayResponses[index-1];
@@ -261,6 +263,10 @@ export class CdsActionReplyComponent implements OnInit {
     this.onUpdateAndSaveAction();
   }
 
+
+  onUpdateIntentFromConnectorModification(connectorID){
+    this.updateIntentFromConnectorModification.emit(connectorID);
+  }
 
   /** onChangingReplyAction */
   onChangeActionReply(event) {
@@ -331,8 +337,8 @@ export class CdsActionReplyComponent implements OnInit {
    * 2 - update intent
    * */
   public async onUpdateAndSaveAction() {
-    this.logger.log('[cds-action-reply] onUpdateAndSaveAction:::: ', this.intentSelected, this.action);
-    this.connectorService.movedConnector(this.intentSelected.intent_id);
+    console.log('[cds-action-reply] onUpdateAndSaveAction:::: ', this.intentSelected, this.action);
+    this.connectorService.updateConnector(this.intentSelected.intent_id);
     this.updateAndSaveAction.emit(this.action);
   }
 
@@ -357,6 +363,7 @@ export class CdsActionReplyComponent implements OnInit {
   onDisableInputMessage() {
     try {
       this.action.attributes.disableInputMessage = !this.action.attributes.disableInputMessage;
+      this.updateAndSaveAction.emit(this.action);
     } catch (error) {
       this.logger.log("Error: ", error);
     }

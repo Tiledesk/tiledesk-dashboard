@@ -33,6 +33,7 @@ export class CDSTextareaComponent implements OnInit {
 
   @Output() changeTextarea = new EventEmitter();
   @Output() selectedAttribute = new EventEmitter();
+  @Output() blur = new EventEmitter();
   @Output() selectedEmoji = new EventEmitter();
   @Output() clearSelectedAttribute = new EventEmitter();
 
@@ -114,6 +115,10 @@ export class CDSTextareaComponent implements OnInit {
     if(!this.isSelected || !this.readonly){
       this.changeTextarea.emit(event);
     }
+  }
+
+  onBlur(event){
+    this.blur.emit(event);
   }
 
   onVariableSelected(variableSelected: { name: string, value: string }) {
