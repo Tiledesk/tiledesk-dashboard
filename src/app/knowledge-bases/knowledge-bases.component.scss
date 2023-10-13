@@ -31,7 +31,7 @@
     padding: 12px 15px;
     border-radius: 4px;
     background-color: #d7ebfa6e;
-    font-weight: 400;
+
     .info-icon {
         margin-right: 8px;
         font-size: 20px;
@@ -59,7 +59,7 @@
         margin-bottom: 0px;
         color: rgb(98, 119, 140);
     }
-    
+
     .material-icons-round {
         font-size: 20px;
         margin-right: 8px;
@@ -113,17 +113,17 @@
     }
 }
 
-.status-icon{
-    cursor: pointer;
-}
 .status-icon#done {
     margin-top: 5px;
     color: #18e32c;
 }
+
 .status-icon#cached {
     margin-top: 5px;
-    color: #62778c;;
+    color: #62778c;
+    ;
 }
+
 .status-icon#close {
     margin-top: 5px;
     color: #f44336;
@@ -294,6 +294,7 @@ td {
         0% {
             opacity: 0;
         }
+
         100% {
             opacity: 1;
         }
@@ -303,6 +304,7 @@ td {
         0% {
             transform: translate(16px);
         }
+
         100% {
             transform: translate(0px);
         }
@@ -364,16 +366,16 @@ table {
     animation-direction: reverse !important;
 }
 
-// ::ng-deep .custom-mat-tooltip {
-//     background-color: #fff !important;
-//     color: #555555 !important;
-//     font-size: 12px !important;
-//     border-radius: 2px !important;
-//     font-family: "Poppins" !important;
-//     padding-top: 8px !important;
-//     padding-bottom: 8px !important;
-//     border: 1px solid #e5effe !important;
-// }
+::ng-deep .custom-mat-tooltip {
+    background-color: #fff !important;
+    color: #555555 !important;
+    font-size: 12px !important;
+    border-radius: 2px !important;
+    font-family: "Poppins" !important;
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+    border: 1px solid #e5effe !important;
+}
 
 .show-hide-button {
     cursor: pointer;
@@ -396,7 +398,26 @@ table {
     font-weight: 500;
 }
 
-.input--note {
-    font-size: 12px;
+.contat-us-no-chat-gpt {
+    display: flex;
+    align-items: center;
     font-weight: 400;
+    gap: 6px;
+}
+
+.contact-us-via-email {
+    color: #2196f3;
+    cursor: pointer;
+}
+
+.contact-us-via-email:hover {
+    text-decoration: underline;
+}
+
+.kb-question-text {
+    margin-top: 18px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 400;
+    margin-bottom: 18px;
 }
