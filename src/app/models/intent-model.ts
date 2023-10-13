@@ -177,7 +177,8 @@ export class ActionWebRequestV2 extends Action {
     method: string;
     url: string;
     headersString: any;
-    body: string;
+    jsonBody: string;
+    bodyType: string;
     assignResultTo: string;
     assignStatusTo: string;
     assignErrorTo: string;
@@ -188,7 +189,8 @@ export class ActionWebRequestV2 extends Action {
         super();
         this.url = '';
         this.headersString = {"Content-Type":"*/*", "Cache-Control":"no-cache", "User-Agent":"TiledeskBotRuntime", "Accept":"*/*"};
-        this.body = null
+        this.jsonBody = null
+        this.bodyType = 'none'
         this.assignStatusTo = '';
         this.assignErrorTo = '';
         this.assignments = {};
