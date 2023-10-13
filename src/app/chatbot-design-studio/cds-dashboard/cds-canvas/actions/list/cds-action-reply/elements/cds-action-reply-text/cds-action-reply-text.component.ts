@@ -45,6 +45,7 @@ export class CdsActionReplyTextComponent implements OnInit {
   booleanOperators = [ { type: 'AND', operator: 'AND'},{ type: 'OR', operator: 'OR'},];
   // Buttons //
   buttons: Array<Button>;
+  TYPE_BUTTON = TYPE_BUTTON;
   private subscriptionChangedConnector: Subscription;
 
 
@@ -219,14 +220,27 @@ export class CdsActionReplyTextComponent implements OnInit {
     this.openButtonPanel.emit(button);
   }
 
-  /** onCreateNewButton */
-  onCreateNewButton(){
-    this.createNewButton.emit(this.index);
-  }
+  // /** onCreateNewButton */
+  // onCreateNewButton(){
+  //   this.createNewButton.emit(this.index);
+  // }
 
-  /** onDeleteButton */
-  onDeleteButton(index: number){
-    this.deleteButton.emit({index: index, buttons: this.buttons});
+  /** onButtonControl */
+  onButtonControl(action: string, index: number ){
+    console.log('eventtttttt', action, index)
+    switch(action){
+      case 'delete': /** onDeleteButton */
+        this.deleteButton.emit({index: index, buttons: this.buttons});
+        break;
+      case 'moveLeft':
+        break;
+      case 'moveRight':
+        break;
+      case 'new': /** onCreateNewButton */
+        console.log('eventtttttt newwwwwww' , action, index)
+        this.createNewButton.emit(this.index);
+        break;
+    }
   }
 
   /** dropButtons */

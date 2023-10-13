@@ -198,35 +198,31 @@
             </div>
        </div>
         <div class="buttons-response button-replies">
-            <div *ngFor="let button of galleryEl.buttons; let j= index;" class="content-botton-reply"> 
-                <div class="button-reply">
-                    <div class="button-reply-text single-btn-reply"
-                        (click)="$event.stopPropagation(); onOpenButtonPanel(i, j, button)">
-                        {{button.value}}
-                    </div>
-                    <div class="button-controls">
-                        <!-- <div class="buttonsToMove">
-                            <div class="control-button" (click)="onMoveLeftButton(i)">
-                                <em class="material-icons">chevron_left</em>
-                            </div> 
-                            <div class="control-button" (click)="onMoveRightButton(i)">
-                                <em class="material-icons">chevron_right</em>
-                            </div>
-                        </div> -->
-                        <div class="control-button delete" (click)="$event.stopPropagation(); onDeleteButton(i)">
-                            <em class="material-icons">delete</em>
-                        </div>
-                    </div>
-                </div>
+            <div *ngFor="let button of galleryEl.buttons; let j= index;" class="content-botton-reply" cdkDragBoundary=".button-replies" cdkDrag> 
+
+                <!-- DRAG PLACEHOLDER -->
+                <cds-action-reply-button class="custom-placeholder" *cdkDragPlaceholder
+                    (click)="$event.stopPropagation(); onOpenButtonPanel(button)"
+                    [button]="button"
+                    [previewMode]="previewMode">
+                </cds-action-reply-button>
+
+                <cds-action-reply-button [class.connected]='button.__isConnected' cdkDragHandle
+                    (click)="$event.stopPropagation(); onOpenButtonPanel(button)"
+                    [button]="button"
+                    [previewMode]="previewMode"
+                    (onButtonControl)="onButtonControl($event, i, j)">
+                </cds-action-reply-button>
         
-                <cds-connector class="button-connector"
+                <cds-connector *ngIf="button.type !== TYPE_BUTTON.URL"
+                    class="button-connector"
                     cdkDragDisabled
                     [idConnector]="button.__idConnector"
                     [isConnected]="button.__isConnected">
                 </cds-connector>
         
             </div>
-            <div *ngIf="galleryEl.buttons.length < 3" class="button-reply-add" (click)="$event.stopPropagation();onAddButton(i)">
+            <div *ngIf="galleryEl.buttons.length < 3" class="button-reply-add" (click)="$event.stopPropagation();onButtonControl('new', i, j)">
                 + Add button
             </div>
         </div> 

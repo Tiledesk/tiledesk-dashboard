@@ -44,6 +44,7 @@ export class CdsActionReplyGalleryComponent implements OnInit {
   activateEL: { [key: number]: {title: boolean, description: boolean} } = {};
   // Buttons //
   buttons: Array<Button>;
+  TYPE_BUTTON = TYPE_BUTTON;
   private subscriptionChangedConnector: Subscription;
 
   constructor(
@@ -301,6 +302,23 @@ export class CdsActionReplyGalleryComponent implements OnInit {
   onDeleteButton(indexGallery: number, index){
     this.gallery[indexGallery].buttons.splice(index, 1);
     this.changeActionReply.emit();
+  }
+
+  /** onButtonControl */
+  onButtonControl(action: string, indexGallery: number, index){
+    switch(action){
+
+      case 'delete': /** onDeleteButton */
+        this.onDeleteButton(indexGallery, index)
+        break;
+      case 'moveLeft':
+        break;
+      case 'moveRight':
+        break;
+      case 'new': /** onCreateNewButton */
+        this.onAddButton(indexGallery);
+        break;
+    }
   }
 
   /** dropButtons */

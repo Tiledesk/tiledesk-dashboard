@@ -305,17 +305,18 @@ export class IntentService {
     return new Promise((resolve, reject) => {
       // console.log("[INTENT SERVICE]  salva ");
       const that = this;
-      this.faqService.addIntent(
-        id_faq_kb,
-        newIntent.attributes,
-        newIntent.question,
-        newIntent.answer,
-        newIntent.intent_display_name,
-        newIntent.intent_id,
-        newIntent.form,
-        newIntent.actions,
-        newIntent.webhook_enabled
-      ).subscribe((intent:any) => {
+      const intentToAdd = { 
+        'id_faq_kb': id_faq_kb, 
+        'attributes': newIntent.attributes,
+        'question': newIntent.question, 
+        'answer': newIntent.answer, 
+        'intent_display_name': newIntent.intent_display_name,
+        'intent_id': newIntent.intent_id,
+        'form': newIntent.form,
+        'actions': newIntent.actions,
+        'webhook_enabled': newIntent.webhook_enabled
+      };
+      this.faqService.addIntent(intentToAdd).subscribe((intent:any) => {
         // console.log("[INTENT SERVICE]  ho salvato in remoto l'intent ", intent.intent_id);
         this.prevListOfIntent = JSON.parse(JSON.stringify(this.listOfIntents));
         this.setDragAndListnerEventToElement(intent);
@@ -482,17 +483,21 @@ export class IntentService {
       let formIntent = intent.form?intent.form:{};
       let actionsIntent = intent.actions?intent.actions:[];
       let webhookEnabledIntent = intent.webhook_enabled?intent.webhook_enabled:false;
-      this.faqService.updateIntent(
-        id,
-        attributes,
-        questionIntent,
-        answerIntent,
-        displayNameIntent,
-        formIntent,
-        actionsIntent,
-        webhookEnabledIntent,
-        intent.intent_id
-      ).subscribe((intent: Intent) => {
+
+      let intentToUpdate = {
+        '_id': intent.id,
+        'attributes': attributes, 
+        'question': questionIntent, 
+        'answer': answerIntent, 
+        'intent_display_name': displayNameIntent, 
+        'form': formIntent,
+        'actions': actionsIntent,
+        'webhook_enabled': webhookEnabledIntent,
+        "id_faq_kb": intent.id_faq_kb,
+        "intent_id":intent.intent_id
+      };
+
+      this.faqService.updateIntent(intentToUpdate).subscribe((intent: Intent) => {
         this.prevListOfIntent = JSON.parse(JSON.stringify(this.listOfIntents));
         this.setDragAndListnerEventToElement(intent);
         resolve(true);

@@ -157,6 +157,7 @@ export class CdsActionWebRequestV2Component implements OnInit {
       this.body = this.formatJSON(this.body, "\t");
     }
     this.assignments = this.action.assignments
+    console.log('actionnnnnnnn', this.action)
   }
 
   private initializeAttributes() {
@@ -217,13 +218,13 @@ export class CdsActionWebRequestV2Component implements OnInit {
       case 'json':
         this.body = this.action.jsonBody
     }
-    this.logger.log('onChangeButtonSelect-->', event, this.body)
+    console.log('onChangeButtonSelect-->', event, this.body, this.action)
   }
 
-  onChangeTextarea(e, type: 'url' | 'jsonBody'){
-    this.logger.log('onChangeTextarea:', e, type );
+  onChangeTextarea(e, type: 'url' | 'body'){
+    console.log('onChangeTextarea:', e, type );
     switch(type){
-      case 'jsonBody': {
+      case 'body': {
         this.body = e;
         this.action.jsonBody = this.body;
         setTimeout(() => {
