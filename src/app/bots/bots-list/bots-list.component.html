@@ -3,16 +3,7 @@
   [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }">
   Chatbots
 </p>
-<!-- <span class="navbar-brand navbar-brand-sidebar-settings"
-  [ngClass]="{'is_opened':IS_OPEN_SETTINGS_SIDEBAR, 'is_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
- 
-  <i class="material-icons">settings</i>
 
-  <span *ngIf="IS_OPEN_SETTINGS_SIDEBAR">{{ 'Settings' | translate }} </span>
-</span>
-<span class="navbar-brand navbar-brand-title">
-  {{ "Bot" | translate }}
-</span> -->
 
 
 
@@ -30,6 +21,8 @@
         [increaseSalesBotsCount]="increaseSalesBotsCount" style="border-right:1px solid #e5effe !important;">
       </appdashboard-bots-sidebar>
       <div class="teplate-content" style="flex: 1 1 auto; margin-left: 20px;">
+
+        <appdashboard-chatbot-alert *ngIf="chatBotCount >= chatBotLimit" ></appdashboard-chatbot-alert>
 
         <div class="row">
           <div class="col-xs-12">
@@ -323,8 +316,8 @@
 
                         <!-- rel="tooltip" title="{{ 'Duplicate' | translate }}" -->
                       <button type="button" 
-                        class="btn btn-primary btn-simple btn-xs"
-                        (click)='duplicateChatbot(faqkb?._id,  faqkb?.name)'
+                          class="btn btn-primary btn-simple btn-xs"
+                          (click)='duplicateChatbot(faqkb?._id,  faqkb?.name)'
                           matTooltipClass="custom-mat-tooltip"
                           matTooltip="{{ 'Duplicate' | translate }}" 
                           #tooltip="matTooltip" 

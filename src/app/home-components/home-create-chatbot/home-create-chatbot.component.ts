@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, Output, SimpleChanges, EventEmitter, Type } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, Output, SimpleChanges, EventEmitter, Type, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'app/core/auth.service';
 import { FaqKb } from 'app/models/faq_kb-model';
@@ -15,13 +15,17 @@ import { MatDialog } from '@angular/material/dialog';
 import { TemplateDetailComponent } from 'app/bots/templates/template-detail/template-detail.component';
 import { HomeCreateChatbotModalComponent } from './home-create-chatbot-modal/home-create-chatbot-modal.component';
 import { BotLocalDbService } from 'app/services/bot-local-db.service';
+import { BotsBaseComponent } from 'app/bots/bots-base/bots-base.component';
+import { ProjectPlanService } from 'app/services/project-plan.service';
+import { ChatbotModalComponent } from 'app/bots/bots-list/chatbot-modal/chatbot-modal.component';
+import { NotifyService } from 'app/core/notify.service';
 
 @Component({
   selector: 'appdashboard-home-create-chatbot',
   templateUrl: './home-create-chatbot.component.html',
   styleUrls: ['./home-create-chatbot.component.scss']
 })
-export class HomeCreateChatbotComponent implements OnInit, OnChanges {
+export class HomeCreateChatbotComponent extends BotsBaseComponent implements OnInit, OnChanges, OnDestroy {
   @Input() use_case_for_child: string;
   @Input() solution_channel_for_child: string;
   @Input() waBotId: string;
@@ -35,7 +39,7 @@ export class HomeCreateChatbotComponent implements OnInit, OnChanges {
   storageBucket: string;
   baseUrl: string;
   chatbots: any;
-  countOfChatbots: number;
+  chatBotCount: number;
   numOfChabotNotDiplayed: number;
   USER_ROLE: string;
   tparams: any;
@@ -59,13 +63,24 @@ export class HomeCreateChatbotComponent implements OnInit, OnChanges {
     private departmentService: DepartmentService,
     public dialog: MatDialog,
     private botLocalDbService: BotLocalDbService,
-  ) { }
+    public prjctPlanService: ProjectPlanService,
+    private notify: NotifyService,
+  ) { 
+    super(prjctPlanService);
+  }
 
   ngOnInit(): void {
     // this.getCurrentProjectAndPrjctBots();
     this.getUserRole()
+    this.getProjectPlan();
+    this.getUserRole();
   }
 
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
 
 
   ngOnChanges(changes: SimpleChanges) {
@@ -143,13 +158,14 @@ export class HomeCreateChatbotComponent implements OnInit, OnChanges {
 
 
   openDialog(template) {
-    this.logger.log('openDialog TemplateDetailComponent template ', template)
+    this.logger.log('[HOME-CREATE-CHATBOT] openDialog TemplateDetailComponent template ', template)
   
     const dialogRef = this.dialog.open(TemplateDetailComponent, {
       data: {
         template: template,
         projectId: this.projectId,
-        callingPage: "Home"
+        callingPage: "Home",
+        projectProfile: this.prjct_profile_name
       },
     });
 
@@ -219,6 +235,7 @@ export class HomeCreateChatbotComponent implements OnInit, OnChanges {
   getProjectBots(storage, uploadEngineIsFirebase) {
     this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
       this.logger.log('[HOME-CREATE-CHATBOT] - GET FAQKB RES', faqKb);
+
       this.departmentService.getDeptsByProjectId().subscribe((depts: any) => {
 
         this.logger.log('[HOME-CREATE-CHATBOT] - GET DEPTS RES', depts);
@@ -298,10 +315,10 @@ export class HomeCreateChatbotComponent implements OnInit, OnChanges {
         this.chatbots = faqKb;
         this.logger.log('[HOME-CREATE-CHATBOT] - GET FAQKB RES this.chatbots', this.chatbots);
 
-        this.countOfChatbots = faqKb.length;
-        this.logger.log('[HOME-CREATE-CHATBOT] - COUNT OF CHATBOTS', this.countOfChatbots);
-        if (this.countOfChatbots > 10) {
-          this.numOfChabotNotDiplayed = this.countOfChatbots - 10;
+        this.chatBotCount = faqKb.length;
+        this.logger.log('[HOME-CREATE-CHATBOT] - COUNT OF CHATBOTS', this.chatBotCount);
+        if (this.chatBotCount > 10) {
+          this.numOfChabotNotDiplayed = this.chatBotCount - 10;
           this.logger.log('[HOME-CREATE-CHATBOT] - NUM OF CHATBOTS NOT DISLAYED', this.numOfChabotNotDiplayed);
         }
 
@@ -380,8 +397,24 @@ export class HomeCreateChatbotComponent implements OnInit, OnChanges {
     localStorage.setItem('wawizard', 'hookbot')
   }
 
+  createBlankTilebot() {
+    console.log('[BOTS-LIST] createBlankTilebot chatBotCount ', this.chatBotCount, ' chatBotLimit ',this.chatBotLimit ) 
+    if (this.chatBotCount < this.chatBotLimit) {
+     
+      this.presentModalAddBotFromScratch()
+
+    } else if (this.chatBotCount >= this.chatBotLimit) {
+
+      if (this.USER_ROLE !== 'agent') {
+        this.presentDialogReachedChatbotLimit()
+      } else if (this.USER_ROLE === 'agent') {
+        this.presentModalOnlyOwnerCanManageTheAccountPlan()
+      }
+    }
+  }
+
+
   presentModalAddBotFromScratch() {
- 
     this.logger.log('[HOME-CREATE-CHATBOT] - presentModalAddBotFromScratch ');
     const addKbBtnEl = <HTMLElement>document.querySelector('#home-material-btn');
     // this.logger.log('[HOME-CREATE-CHATBOT] - presentModalAddBotFromScratch addKbBtnEl ', addKbBtnEl);
@@ -405,6 +438,8 @@ export class HomeCreateChatbotComponent implements OnInit, OnChanges {
     });
   }
 
+ 
+
   createTilebotBotFromScratch(chatbotName) {
     this.language = this.botDefaultSelectedLangCode;
 
@@ -427,15 +462,29 @@ export class HomeCreateChatbotComponent implements OnInit, OnChanges {
         }
 
       }, (error) => {
-
         this.logger.error('[HOME-CREATE-CHATBOT] CREATE FAQKB - POST REQUEST ERROR ', error);
-
-
       }, () => {
         this.logger.log('[HOME-CREATE-CHATBOT] CREATE FAQKB - POST REQUEST * COMPLETE *');
-        
-
       })
+  }
+
+  presentDialogReachedChatbotLimit() {
+    console.log('[HOME-CREATE-CHATBOT] openDialog presentDialogReachedChatbotLimit prjct_profile_name ', this.prjct_profile_name)
+    const dialogRef = this.dialog.open(ChatbotModalComponent, {
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+      hasBackdrop: true,
+      data: {
+        projectProfile: this.prjct_profile_name,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`[HOME-CREATE-CHATBOT] Dialog result: ${result}`);
+    });
+  }
+
+  presentModalOnlyOwnerCanManageTheAccountPlan() {
+    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan('Agents can\'t manage chatbots', 'Learn more about default roles')
   }
 
   goToMyChatbots() {

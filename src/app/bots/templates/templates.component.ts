@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from 'app/core/auth.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { FaqKbService } from '../../services/faq-kb.service';
@@ -6,19 +6,23 @@ import { MatDialog } from '@angular/material/dialog';
 import { TemplateDetailComponent } from './template-detail/template-detail.component';
 import { Router } from '@angular/router';
 import { AppConfigService } from 'app/services/app-config.service';
+import { BotsBaseComponent } from '../bots-base/bots-base.component';
+import { ProjectPlanService } from 'app/services/project-plan.service';
+import { UsersService } from 'app/services/users.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators'
+import { ChatbotModalComponent } from '../bots-list/chatbot-modal/chatbot-modal.component';
+import { NotifyService } from 'app/core/notify.service';
+
 @Component({
   selector: 'appdashboard-templates',
   templateUrl: './templates.component.html',
   styleUrls: ['./templates.component.scss']
 })
 
-// interface certifiedTags {
-//   name: string;
-//   [others: string]: any;
-// }
 
-export class TemplatesComponent implements OnInit {
-  isChromeVerGreaterThan100: boolean;
+export class TemplatesComponent extends BotsBaseComponent implements OnInit, OnDestroy {
+  private unsubscribe$: Subject<any> = new Subject<any>();
   templates: Array<any>
   communityTemplates: Array<any>;
   certfifiedTemplates: Array<any>;
@@ -40,12 +44,15 @@ export class TemplatesComponent implements OnInit {
   increaseSalesBotsCount: number;
   COMMUNITY_TEMPLATE: boolean = false;
   CERTIFIED_TEMPLATE: boolean = false;
-
+  isChromeVerGreaterThan100: boolean;
   storageBucket: string;
   baseUrl: string;
   UPLOAD_ENGINE_IS_FIREBASE: boolean;
   valueToSearch: string;
+  chatBotCount: any;
+  public USER_ROLE: string;
   public THERE_ARE_RESULTS: boolean = true;
+
   constructor(
     private auth: AuthService,
     private faqKbService: FaqKbService,
@@ -53,9 +60,10 @@ export class TemplatesComponent implements OnInit {
     public dialog: MatDialog,
     private router: Router,
     public appConfigService: AppConfigService,
-  ) { }
-
-
+    public prjctPlanService: ProjectPlanService,
+    private usersService: UsersService,
+    private notify: NotifyService
+  ) { super(prjctPlanService); }
 
   ngOnInit(): void {
     this.getBrowserVersion();
@@ -66,6 +74,25 @@ export class TemplatesComponent implements OnInit {
     this.getFaqKbByProjectId()
     this.getRoutes();
     this.getProfileImageStorage();
+    this.getProjectPlan();
+    this.getUserRole()
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
+  getUserRole() {
+    this.usersService.project_user_role_bs
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((userRole) => {
+
+        this.logger.log('[BOTS-LIST] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
+        this.USER_ROLE = userRole;
+      })
   }
   getProfileImageStorage() {
     if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
@@ -88,7 +115,7 @@ export class TemplatesComponent implements OnInit {
       this.CERTIFIED_TEMPLATE = false
       this.logger.log('[BOTS-TEMPLATES] COMMUNITY TEMPLATES ', this.COMMUNITY_TEMPLATE)
       this.logger.log('[BOTS-TEMPLATES] CERTIFIED TEMPLATES ', this.CERTIFIED_TEMPLATE)
-    } else if ((this.route.indexOf('bots/templates/all') !== -1 ) || (this.route.indexOf('bots/templates/customer-satisfaction') !== -1 ) || (this.route.indexOf('bots/templates/increase-sales') !== -1 )) {
+    } else if ((this.route.indexOf('bots/templates/all') !== -1) || (this.route.indexOf('bots/templates/customer-satisfaction') !== -1) || (this.route.indexOf('bots/templates/increase-sales') !== -1)) {
       this.CERTIFIED_TEMPLATE = true
       this.COMMUNITY_TEMPLATE = false
       this.logger.log('[BOTS-TEMPLATES] CERTIFIED TEMPLATES ', this.CERTIFIED_TEMPLATE)
@@ -123,12 +150,13 @@ export class TemplatesComponent implements OnInit {
   }
 
   openDialog(template) {
-    this.logger.log('openDialog')
+    console.log('[BOTS-TEMPLATES] openDialog TemplateDetailComponent prjct_profile_name ', this.prjct_profile_name)
     const dialogRef = this.dialog.open(TemplateDetailComponent, {
       data: {
         template: template,
         projectId: this.projectId,
-        callingPage: "Templates"
+        callingPage: "Templates",
+        projectProfile: this.prjct_profile_name
       },
     });
 
@@ -140,9 +168,10 @@ export class TemplatesComponent implements OnInit {
   getFaqKbByProjectId() {
     this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
       if (faqKb) {
+        this.chatBotCount = faqKb.length
         this.myChatbotOtherCount = faqKb.length
-        this.logger.log('[BOTS-TEMPLATES] - GET BOTS BY PROJECT ID - myChatbotOtherCount',  this.myChatbotOtherCount);
-        this.logger.log('[BOTS-TEMPLATES] - GET BOTS BY PROJECT ID - faqKb',  faqKb);
+        this.logger.log('[BOTS-TEMPLATES] - GET BOTS BY PROJECT ID - myChatbotOtherCount', this.myChatbotOtherCount);
+        this.logger.log('[BOTS-TEMPLATES] - GET BOTS BY PROJECT ID - faqKb', faqKb);
       }
 
       const customerSatisfactionBots = faqKb.filter((obj) => {
@@ -366,9 +395,37 @@ export class TemplatesComponent implements OnInit {
 
 
   createBlankTilebot() {
-    this.router.navigate(['project/' + this.project._id + '/bots/create/tilebot/blank']);
-    // this.router.navigate(['project/' + this.project._id + '/chatbot/create']);
+    console.log('[BOTS-TEMPLATES] createBlankTilebot chatBotCount ', this.chatBotCount, ' chatBotLimit ', this.chatBotLimit, ' USER_ROLE ', this.USER_ROLE)
+    if (this.chatBotCount < this.chatBotLimit) {
+      this.router.navigate(['project/' + this.project._id + '/bots/create/tilebot/blank']);
+      // this.router.navigate(['project/' + this.project._id + '/chatbot/create']);
 
+    } else if (this.chatBotCount >= this.chatBotLimit) {
+      if (this.USER_ROLE !== 'agent') {
+        this.presentDialogReachedChatbotLimit()
+      } else if (this.USER_ROLE === 'agent') {
+        this.presentModalOnlyOwnerCanManageTheAccountPlan()
+      }
+    }
+  }
+
+  presentModalOnlyOwnerCanManageTheAccountPlan() {
+    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan('Agents can\'t manage chatbots', 'Learn more about default roles')
+  }
+
+  presentDialogReachedChatbotLimit() {
+    console.log('[BOTS-TEMPLATES] openDialog presentDialogReachedChatbotLimit prjct_profile_name ', this.prjct_profile_name)
+    const dialogRef = this.dialog.open(ChatbotModalComponent, {
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+      hasBackdrop: true,
+      data: {
+        projectProfile: this.prjct_profile_name,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
   }
 
   goToCommunityTemplateDetail(templateid) {
@@ -382,16 +439,16 @@ export class TemplatesComponent implements OnInit {
     this.logger.log('[BOTS-TEMPLATES]  SEARCH IN COMMUNITY TEMPLATE - value to search ', this.valueToSearch);
     this.faqKbService.searchInCommunityTemplates(this.valueToSearch).subscribe((searchedtemplates: any) => {
       if (searchedtemplates) {
-       this.templates = searchedtemplates
-       
-       if (searchedtemplates.length === 0) {
-         this.THERE_ARE_RESULTS = false;
+        this.templates = searchedtemplates
 
-       } else {
-        this.THERE_ARE_RESULTS = true;
-       }
+        if (searchedtemplates.length === 0) {
+          this.THERE_ARE_RESULTS = false;
+
+        } else {
+          this.THERE_ARE_RESULTS = true;
+        }
       }
-      
+
       this.logger.log('[BOTS-TEMPLATES]  SEARCH IN COMMUNITY TEMPLATE - RES  ', searchedtemplates);
     }, (error) => {
       this.logger.error('[BOTS-TEMPLATES] SEARCH IN COMMUNITY TEMPLATE - ERROR ', error);
@@ -406,9 +463,9 @@ export class TemplatesComponent implements OnInit {
     this.logger.log('[BOTS-TEMPLATES] onChangeValueToSearch  valueToSearch ', valueToSearch);
     if (valueToSearch === '') {
       // this.getCommunityTemplates()
-     this.templates = this.communityTemplates
+      this.templates = this.communityTemplates
     }
-   
+
   }
 
   clearSearchInCommunityTemplates() {

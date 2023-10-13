@@ -86,8 +86,8 @@
                 </div>
                 <div class="home-block-title">
                     <!-- You don't have any chatbots yet! -->
-                    <span *ngIf="countOfChatbots === 0"> Get Started with Conversation Automation </span>
-                    <span *ngIf="countOfChatbots > 0"> Your Chatbots and Conversational Apps </span>
+                    <span *ngIf="chatBotCount === 0"> Get Started with Conversation Automation </span>
+                    <span *ngIf="chatBotCount > 0"> Your Chatbots and Conversational Apps </span>
                 </div>
             </div>
 
@@ -337,7 +337,7 @@
         <div class="action-btns-wpr" *ngIf="USER_ROLE !== 'agent'">
             <!-- (click)="goToAddBotFromScratch()" -->
             <button id="home-material-btn" class="mat-focus-indicator mat-flat-button mat-button-base"
-                (click)="presentModalAddBotFromScratch()">
+                (click)="createBlankTilebot()">
                 <span class="mat-button-wrapper">
 
                     <span class="ml-2" style="font-size: 15px;">

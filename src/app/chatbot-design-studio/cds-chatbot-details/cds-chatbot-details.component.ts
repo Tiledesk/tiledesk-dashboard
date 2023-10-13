@@ -15,6 +15,8 @@ import { Project } from 'app/models/project-model';
 import { FaqService } from 'app/services/faq.service';
 import { BotsBaseComponent } from 'app/bots/bots-base/bots-base.component';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { ProjectPlanService } from 'app/services/project-plan.service';
+
 const swal = require('sweetalert');
 
 @Component({
@@ -26,40 +28,23 @@ export class CdsChatbotDetailsComponent extends BotsBaseComponent implements OnI
   @Input() selectedChatbot: Chatbot;
 
   activeSection: 'bot_detail' | 'import_export' | 'community' | 'developer' = 'bot_detail'
-
-
   isVisibleDEP: boolean;
   public_Key: string;
-
-
   depts_length: number;
-
-
-
   done_msg: string;
-
   showSpinner = true;
   showSpinnerInUpdateBotCard = true;
- 
   updateBotError: string;
   uploadedFile: any;
-
   updateBotSuccess: string;
   notValidJson: string;
   errorDeletingAnswerMsg: string;
   answerSuccessfullyDeleted: string;
   thereHasBeenAnErrorProcessing: string;
   project: Project;
-
-
-
   botDefaultSelectedLangCode: string
-
-
   faq_kb_remoteKey: string;
-
-  details: any
-
+  details: any;
   translationsMap: Map<string, string> = new Map();
 
   constructor(
@@ -67,7 +52,8 @@ export class CdsChatbotDetailsComponent extends BotsBaseComponent implements OnI
     public appConfigService: AppConfigService,
     private auth: AuthService,
     private translate: TranslateService,
-  ) { super(); }
+    public prjctPlanService: ProjectPlanService,
+  ) { super(prjctPlanService); }
 
   ngOnInit(): void {
     this.auth.checkRoleForCurrentProject();

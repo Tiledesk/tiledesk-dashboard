@@ -190,7 +190,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
     private faqKbService: FaqKbService,
     public location: Location,
     private notify: NotifyService,
-    private prjctPlanService: ProjectPlanService,
+    public prjctPlanService: ProjectPlanService,
     private translate: TranslateService,
     private uploadImageService: UploadImageService,
     private uploadImageNativeService: UploadImageNativeService,
@@ -199,9 +199,10 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
     public brandService: BrandService,
     private departmentService: DepartmentService,
     private logger: LoggerService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+   
   ) {
-    super();
+    super(prjctPlanService);
 
     const brand = brandService.getBrand();
     this.tparams = brand;

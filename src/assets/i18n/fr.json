@@ -2341,6 +2341,7 @@
     "HavingCannedResponsesCanPutYouGreatAdvantage":"L'efficacité est primordiale lorsqu'il s'agit de la satisfaction du client. Avoir une collection de “réponses prédéfinies“ facilement disponibles peut vous donner un grand avantage lorsque vous répondez à une demande d'un client lors d'une session de chat en direct ou que vous répondez simplement aux questions fréquemment posées.",
     "NumberOfTeammatesExceedsThePlan": "Le nombre de coéquipiers autorisés est de {{free_plan_allowed_seats_num}}. Mettez à jour le plan ou supprimez manuellement les coéquipiers qui dépassent la limite (le système le fera automatiquement dans un mois)",
     "NumberOfTeammatesExceedsThePlan_2":"Le nombre de coéquipiers autorisés pour le forfait {{plan_name}} est de {{allowed_seats_num}}. Mettez à jour le plan ou supprimez manuellement les coéquipiers en excès (le système le fera automatiquement dans un mois)",
+    "NumberOfChatbotExceedsThePlan": "Le nombre de chatbots autorisés pour le plan {{plan_name}} est de {{allowed_cb_num}}. Plan de mise à niveau ou suppression manuelle du chatbot en excès (le système le fera automatiquement dans un délai d'un mois)",
     "OnlyWithPlan": "Forfait {{plan_name}} uniquement",
     "CreateNewContactProperty":"Créer une nouvelle propriété de contact",
     "PropertyLabel":"Étiquette de propriété",

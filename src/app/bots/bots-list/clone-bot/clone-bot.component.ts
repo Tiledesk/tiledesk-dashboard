@@ -34,11 +34,12 @@ export class CloneBotComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log('[CLONE-BOT] - ON SELECTED PROJECT - (on-init) selectedprojectid ', this.selectedProjectId)
   }
 
 
   onSelectProject(selectedprojectid) {
-    this.logger.log('[CLONE-BOT] - ON SELECTED PROJECT - selectedprojectid ', selectedprojectid)
+    console.log('[CLONE-BOT] - ON SELECTED PROJECT - selectedprojectid ', this.selectedProjectId)
     this.selectedProjectId = selectedprojectid
   }
 
@@ -72,6 +73,10 @@ export class CloneBotComponent implements OnInit {
 
   closeDialog() {
     this.dialogRef.close(this.selectedProjectId)
+  }
+
+  onNoClick(): void {
+    this.dialogRef.close();
   }
 
 

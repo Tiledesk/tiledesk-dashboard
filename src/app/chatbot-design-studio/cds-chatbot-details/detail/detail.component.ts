@@ -13,6 +13,7 @@ import { AppConfigService } from 'app/services/app-config.service';
 import { DepartmentService } from 'app/services/department.service';
 import { FaqKbService } from 'app/services/faq-kb.service';
 import { LoggerService } from 'app/services/logger/logger.service';
+import { ProjectPlanService } from 'app/services/project-plan.service';
 import { UploadImageNativeService } from 'app/services/upload-image-native.service';
 import { UploadImageService } from 'app/services/upload-image.service';
 import { avatarPlaceholder, getColorBck } from 'app/utils/util';
@@ -82,7 +83,8 @@ export class CDSDetailBotDetailComponent extends BotsBaseComponent implements On
     private sanitizer: DomSanitizer,
     private translate: TranslateService,
     public dialog: MatDialog,
-  ) {  super(); }
+    public prjctPlanService: ProjectPlanService,
+  ) {  super(prjctPlanService); }
 
   ngOnInit(): void {
     this.getDeptsByProjectId();

@@ -29,6 +29,10 @@ import { AppConfigService } from 'app/services/app-config.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
 import { ProjectService } from 'app/services/project.service';
+import { ProjectPlanService } from 'app/services/project-plan.service';
+import { UsersService } from 'app/services/users.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ChatbotModalComponent } from '../bots-list/chatbot-modal/chatbot-modal.component';
 
 @Component({
   selector: 'bot-create',
@@ -124,6 +128,9 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
   importedChatbotid: string;
   user: any;
   prjct_profile_name: string;
+  chatBotCount: number;
+  USER_ROLE : string;
+
   constructor(
     private faqKbService: FaqKbService,
     private router: Router,
@@ -139,9 +146,11 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
     private faqService: FaqService,
     private appConfigService: AppConfigService,
     private projectService: ProjectService,
+    public prjctPlanService: ProjectPlanService,
+    private usersService: UsersService,
+    public dialog: MatDialog,
   ) {
-    super();
-
+    super(prjctPlanService);
     const brand = brandService.getBrand();
     this.tparams = brand;
   }
@@ -156,7 +165,45 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
     this.translateFileTypeNotSupported();
     this.getTranslations();
     this.getLoggedUser();
+    this.getFaqKbByProjectId();
+    this.getProjectPlan();
+    this.getUserRole();
   }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
+  getUserRole() {
+    this.usersService.project_user_role_bs
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((userRole) => {
+
+        this.logger.log('[BOT-CREATE] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
+        this.USER_ROLE = userRole;
+      })
+  }
+
+
+  getFaqKbByProjectId() {
+    this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
+      console.log('[BOT-CREATE] - GET BOTS BY PROJECT ID > RES', faqKb);
+      if (faqKb) {
+        this.chatBotCount = faqKb.length;
+        console.log('[BOT-CREATE] - GET BOTS BY PROJECT ID > chatBotCount', this.chatBotCount);
+      }
+    }, (error) => {
+      this.logger.error('[BOT-CREATE] GET BOTS ERROR ', error);
+    }, () => {
+      this.logger.log('[BOT-CREATE] GET BOTS * COMPLETE *');
+
+    });
+  }
+
+
   getLoggedUser() {
     this.auth.user_bs
       .pipe(
@@ -184,11 +231,7 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
     }
   }
 
-  ngOnDestroy() {
-    // this.logger.log('HOME COMP - CALLING ON DESTROY')
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
-  }
+ 
 
   getTranslations() {
     this.translate.get('ThereHasBeenAnErrorProcessing')
@@ -218,49 +261,65 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
   // @ Import chatbot from json 
   // --------------------------------------------------------------------------
   fileChangeUploadChatbotFromJSON(event) {
+    console.log('[BOT-CREATE] fileChangeUploadChatbotFromJSON chatBotCount ', this.chatBotCount, ' chatBotLimit ', this.chatBotLimit)
+    console.log('[BOT-CREATE] - fileChangeUploadChatbotFromJSON $event ', event);
 
-    this.logger.log('[TILEBOT] - fileChangeUploadChatbotFromJSON $event ', event);
-    // let fileJsonToUpload = ''
-    // this.logger.log('[TILEBOT] - fileChangeUploadChatbotFromJSON $event  target', event.target);
-    // const selectedFile = event.target.files[0];
-    // const fileReader = new FileReader();
-    // fileReader.readAsText(selectedFile, "UTF-8");
-    // fileReader.onload = () => {
-    //   fileJsonToUpload = JSON.parse(fileReader.result as string)
-    //   this.logger.log('fileJsonToUpload CHATBOT', fileJsonToUpload);
-    // }
-    // fileReader.onerror = (error) => {
-    //   this.logger.log(error);
-    // }
-    const fileList: FileList = event.target.files;
-    const file: File = fileList[0];
-    const formData: FormData = new FormData();
-    formData.set('id_faq_kb', this.id_faq_kb);
-    formData.append('uploadFile', file, file.name);
-    this.logger.log('FORM DATA ', formData)
+    if (this.chatBotCount < this.chatBotLimit) {
 
-    this.faqService.importChatbotFromJSONFromScratch(formData).subscribe((faqkb: any) => {
-      this.logger.log('[TILEBOT] - IMPORT CHATBOT FROM JSON - ', faqkb)
-      if (faqkb) {
-        this.importedChatbotid = faqkb._id
-        this.logger.log('[TILEBOT] - IMPORT CHATBOT FROM JSON - importedChatbotid ', this.importedChatbotid)
-        this.botLocalDbService.saveBotsInStorage(this.importedChatbotid, faqkb);
-        this.trackChatbotImported(faqkb)
-        // this.router.navigate(['project/' + this.project._id + '/tilebot/intents/', this.importedChatbotid, 'tilebot']);
-        // this.router.navigate(['project/' + this.project._id + '/cds/', this.importedChatbotid, 'intent', '0']);
-        goToCDSVersion(this.router, faqkb, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
+      const fileList: FileList = event.target.files;
+      const file: File = fileList[0];
+      const formData: FormData = new FormData();
+      formData.set('id_faq_kb', this.id_faq_kb);
+      formData.append('uploadFile', file, file.name);
+      console.log('[BOT-CREATE] FORM DATA ', formData)
+
+      this.faqService.importChatbotFromJSONFromScratch(formData).subscribe((faqkb: any) => {
+        this.logger.log('[BOT-CREATE] - IMPORT CHATBOT FROM JSON - ', faqkb)
+        if (faqkb) {
+          this.importedChatbotid = faqkb._id
+          this.logger.log('[BOT-CREATE] - IMPORT CHATBOT FROM JSON - importedChatbotid ', this.importedChatbotid)
+          this.botLocalDbService.saveBotsInStorage(this.importedChatbotid, faqkb);
+          this.trackChatbotImported(faqkb)
+          // this.router.navigate(['project/' + this.project._id + '/tilebot/intents/', this.importedChatbotid, 'tilebot']);
+          // this.router.navigate(['project/' + this.project._id + '/cds/', this.importedChatbotid, 'intent', '0']);
+          goToCDSVersion(this.router, faqkb, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
+        }
+
+      }, (error) => {
+        this.logger.error('[BOT-CREATE] -  IMPORT CHATBOT FROM JSON- ERROR', error);
+
+        this.notify.showWidgetStyleUpdateNotification(this.thereHasBeenAnErrorProcessing, 4, 'report_problem');
+      }, () => {
+        this.logger.log('[BOT-CREATE] - IMPORT CHATBOT FROM JSON - COMPLETE');
+        this.notify.showWidgetStyleUpdateNotification("Chatbot was uploaded succesfully", 2, 'done')
+      });
+    } else if (this.chatBotCount >= this.chatBotLimit) {
+      if (this.USER_ROLE !== 'agent') {
+        this.presentDialogReachedChatbotLimit()
+      } else if (this.USER_ROLE === 'agent') {
+        this.presentModalOnlyOwnerCanManageTheAccountPlan()
       }
+    }
+  }
 
-    }, (error) => {
-      this.logger.error('[TILEBOT] -  IMPORT CHATBOT FROM JSON- ERROR', error);
+  presentDialogReachedChatbotLimit() {
+    console.log('[BOT-CREATE] openDialog presentDialogReachedChatbotLimit prjct_profile_name ', this.prjct_profile_name)
+    const dialogRef = this.dialog.open(ChatbotModalComponent, {
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+      hasBackdrop: true,
+      data: {
+        projectProfile: this.prjct_profile_name,
+      },
+    });
 
-      this.notify.showWidgetStyleUpdateNotification(this.thereHasBeenAnErrorProcessing, 4, 'report_problem');
-    }, () => {
-      this.logger.log('[TILEBOT] - IMPORT CHATBOT FROM JSON - COMPLETE');
-      this.notify.showWidgetStyleUpdateNotification("Chatbot was uploaded succesfully", 2, 'done')
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`[BOT-CREATE] Dialog result: ${result}`);
     });
   }
 
+  presentModalOnlyOwnerCanManageTheAccountPlan() {
+    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan('Agents can\'t manage chatbots', 'Learn more about default roles')
+  }
 
   trackChatbotImported(faqKb) {
     let userFullname = ''
@@ -499,10 +558,27 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
     }
   }
 
+  createBlankTilebot() {
+    console.log('[BOTS-CREATE] createBlankTilebot chatBotCount ', this.chatBotCount, ' chatBotLimit ', this.chatBotLimit)
+    if (this.chatBotCount < this.chatBotLimit) {
+     
+      this.createTilebotBotFromScratch() 
+
+    } else if (this.chatBotCount >= this.chatBotLimit) {
+
+      if (this.USER_ROLE !== 'agent') {
+        this.presentDialogReachedChatbotLimit()
+      } else if (this.USER_ROLE === 'agent') {
+        this.presentModalOnlyOwnerCanManageTheAccountPlan()
+      }
+    }
+  }
+
   createTilebotBotFromScratch() {
+    
     this.language = this.botDefaultSelectedLangCode;
     this.faqKbService.createChatbotFromScratch(this.faqKbName, 'tilebot', this.language).subscribe((faqKb) => {
-    // this.faqKbService.createChatbotFromScratch(this.faqKbName, 'internal', this.language).subscribe((faqKb) => {
+      // this.faqKbService.createChatbotFromScratch(this.faqKbName, 'internal', this.language).subscribe((faqKb) => {
       this.logger.log('[BOT-CREATE] createTilebotBotFromScratch - RES ', faqKb);
 
       if (faqKb) {
@@ -527,7 +603,7 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
 
     }, () => {
       this.logger.log('[BOT-CREATE] CREATE FAQKB - POST REQUEST * COMPLETE *');
-
+      this.faqKbName = null;
       // this.router.navigate(['project/' + this.project._id + '/cds/', this.newBot_Id, 'intent', '0']);
     })
   }

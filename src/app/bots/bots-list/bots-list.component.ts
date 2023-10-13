@@ -24,6 +24,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
 import { UsersService } from 'app/services/users.service';
 import { ChatbotModalComponent } from './chatbot-modal/chatbot-modal.component';
+import { BotsBaseComponent } from '../bots-base/bots-base.component';
 
 const swal = require('sweetalert');
 @Component({
@@ -32,7 +33,7 @@ const swal = require('sweetalert');
   styleUrls: ['./bots-list.component.scss'],
 })
 
-export class BotListComponent implements OnInit, OnDestroy {
+export class BotListComponent extends BotsBaseComponent implements OnInit, OnDestroy {
   // tparams = brand;
   PLAN_NAME = PLAN_NAME;
   CHATBOT_MAX_NUM = CHATBOT_MAX_NUM;
@@ -106,6 +107,7 @@ export class BotListComponent implements OnInit, OnDestroy {
   public currentProjectId: string;
   public botProfileImageExist: boolean;
   public botProfileImageurl: string;
+
   public projectPlanAgentsNo: any;
   public prjct_profile_type: any;
   public subscription_is_active: any;
@@ -113,11 +115,12 @@ export class BotListComponent implements OnInit, OnDestroy {
   public profile_name: any;
   public trial_expired: any;
   public prjct_profile_name: string;
-  public chatBotLimit: any;
+  // public chatBotLimit: any;
+
   public chatBotCount: any;
   public USER_ROLE: string;
   public contactUs: string;
- 
+
   constructor(
     private faqKbService: FaqKbService,
     private router: Router,
@@ -133,10 +136,10 @@ export class BotListComponent implements OnInit, OnDestroy {
     private projectService: ProjectService,
     private botLocalDbService: BotLocalDbService,
     public dialog: MatDialog,
-    private prjctPlanService: ProjectPlanService,
-    private usersService: UsersService,
+    public prjctPlanService: ProjectPlanService,
+    private usersService: UsersService
   ) {
-
+    super(prjctPlanService);
     const brand = brandService.getBrand();
     this.tparams = brand;
     this.dev_mode = isDevMode()
@@ -148,8 +151,6 @@ export class BotListComponent implements OnInit, OnDestroy {
     this.getBrowserVersion();
     this.auth.checkRoleForCurrentProject();
     this.getProfileImageStorage();
-
-
     this.getCurrentProject();
     this.getOSCODE();
     // this.getFaqKb();
@@ -158,8 +159,13 @@ export class BotListComponent implements OnInit, OnDestroy {
     this.getTemplates();
     this.getCommunityTemplates();
     this.getNavigationBaseUrl();
-    this.getProjectPlan()
-    this.getUserRole()
+    this.getProjectPlan();
+    this.getUserRole();
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   getUserRole() {
@@ -174,100 +180,6 @@ export class BotListComponent implements OnInit, OnDestroy {
       })
   }
 
-  ngOnDestroy() {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
-  }
-
-  getProjectPlan() {
-    this.prjctPlanService.projectPlan$
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((projectProfileData: any) => {
-        this.logger.log('[BOTS-LIST] - GET PROJECT PROFILE - RES', projectProfileData)
-        if (projectProfileData) {
-
-
-          this.projectPlanAgentsNo = projectProfileData.profile_agents;
-          // this.logger.log('[BOTS-LIST]  - GET PROJECT PROFILE - projectPlanAgentsNo ', this.projectPlanAgentsNo);
-
-          this.prjct_profile_type = projectProfileData.profile_type;
-          // this.logger.log('[HOME-CREATE-TEAMMATE]  - GET PROJECT PROFILE - prjct_profile_type ', this.prjct_profile_type);
-
-          this.subscription_is_active = projectProfileData.subscription_is_active;
-          // this.logger.log('[HOME-CREATE-TEAMMATE]  - GET PROJECT PROFILE - subscription_is_active ', this.projectPlanAgentsNo);
-          this.subscription_end_date = projectProfileData.subscription_end_date
-          // this.logger.log('[HOME-CREATE-TEAMMATE]  - GET PROJECT PROFILE - subscription_end_date ', this.subscription_end_date);
-          this.profile_name = projectProfileData.profile_name
-          // this.logger.log('[HOME-CREATE-TEAMMATE]  - GET PROJECT PROFILE - profile_name ', this.profile_name);
-          this.trial_expired = projectProfileData.trial_expired
-          // this.logger.log('[HOME-CREATE-TEAMMATE]  - GET PROJECT PROFILE - trial_expired ', this.trial_expired);
-
-          if (projectProfileData.profile_type === 'free') {
-
-            if (projectProfileData.trial_expired === false) {
-
-              if (this.profile_name === 'Sandbox') {
-                this.prjct_profile_name = PLAN_NAME.E + " plan (trial)"
-                this.chatBotLimit = CHATBOT_MAX_NUM[PLAN_NAME.E]
-                console.log('[BOTS-LIST] - GET PROJECT PLAN - PLAN_NAME ', this.prjct_profile_name, ' CB LIMIT: ', this.chatBotLimit)
-              }
-
-            } else {
-              if (this.profile_name === 'Sandbox') {
-                this.prjct_profile_name = "Sandbox plan";
-                this.chatBotLimit = CHATBOT_MAX_NUM.free;
-                console.log('[BOTS-LIST] - GET PROJECT PLAN - PLAN_NAME ', this.prjct_profile_name, ' TRIAL EXPIRED CB LIMIT: ', this.chatBotLimit)
-              }
-            }
-          } else if (projectProfileData.profile_type === 'payment') {
-
-            if (this.subscription_is_active === true) {
-
-              if (projectProfileData.profile_name === PLAN_NAME.D) {
-                this.prjct_profile_name = PLAN_NAME.D + " plan";
-                this.chatBotLimit = CHATBOT_MAX_NUM[PLAN_NAME.D]
-                console.log('[BOTS-LIST] - GET PROJECT PLAN - PLAN_NAME ', this.prjct_profile_name, ' SUB ACTIVE CB LIMIT: ', this.chatBotLimit)
-
-              } else if (projectProfileData.profile_name === PLAN_NAME.E) {
-                this.prjct_profile_name = PLAN_NAME.E + " plan";
-                this.chatBotLimit = CHATBOT_MAX_NUM[PLAN_NAME.E]
-                console.log('[BOTS-LIST] - GET PROJECT PLAN - PLAN_NAME ', this.prjct_profile_name, ' SUB ACTIVE CB LIMIT: ', this.chatBotLimit)
-              }
-
-            } else if (this.subscription_is_active === false) {
-
-              if (projectProfileData.profile_name === PLAN_NAME.D) {
-                this.prjct_profile_name = PLAN_NAME.D + " plan";
-                this.chatBotLimit = CHATBOT_MAX_NUM.free;
-                console.log('[BOTS-LIST] - GET PROJECT PLAN - PLAN_NAME ', this.prjct_profile_name, ' SUB EXIP CB LIMIT: ', this.chatBotLimit)
-
-              } else if (projectProfileData.profile_name === PLAN_NAME.E) {
-                this.prjct_profile_name = PLAN_NAME.E + " plan";
-                this.chatBotLimit = CHATBOT_MAX_NUM.free;
-                console.log('[BOTS-LIST] - GET PROJECT PLAN - PLAN_NAME ', this.prjct_profile_name, ' SUB EXIP CB LIMIT: ', this.chatBotLimit)
-
-              } else if (projectProfileData.profile_name === PLAN_NAME.F) {
-                this.prjct_profile_name = PLAN_NAME.F + " plan";
-                this.chatBotLimit = CHATBOT_MAX_NUM.free;
-                console.log('[BOTS-LIST] - GET PROJECT PLAN - PLAN_NAME ', this.prjct_profile_name, ' SUB EXIP CB LIMIT: ', this.chatBotLimit)
-
-              }
-
-            }
-          }
-          
-        }
-      }, err => {
-        this.logger.error('[BOTS-LIST] GET PROJECT PLAN - ERROR', err);
-      }, () => {
-        console.log('[BOTS-LIST] GET PROJECT PLAN * COMPLETE *');
-        
-      });
-  }
-
- 
 
   getNavigationBaseUrl() {
     const href = window.location.href;
@@ -350,7 +262,16 @@ export class BotListComponent implements OnInit, OnDestroy {
   }
 
   duplicateChatbot(bot_id, bot_name) {
-    this.getProjects(bot_id, bot_name)
+    console.log('[BOTS-LIST] duplicateChatbot chatBotCount ', this.chatBotCount, ' chatBotLimit ', this.chatBotLimit, ' USER_ROLE ', this.USER_ROLE)
+    if (this.chatBotCount < this.chatBotLimit) {
+      this.getProjects(bot_id, bot_name)
+    } else if (this.chatBotCount >= this.chatBotLimit) {
+      if (this.USER_ROLE !== 'agent') {
+        this.presentDialogReachedChatbotLimit()
+      } else if (this.USER_ROLE === 'agent') {
+        this.presentModalOnlyOwnerCanManageTheAccountPlan()
+      }
+    }
   }
 
   getProjects(bot_id, bot_name) {
@@ -508,7 +429,6 @@ export class BotListComponent implements OnInit, OnDestroy {
    * NOTE: THE CURRENT PROJECT-ID IS OBTAINED IN THE FAQ-KB SERVICE
    */
   getFaqKbByProjectId() {
-    // this.faqKbService.getAllBotByProjectId().subscribe((faqKb: any) => {
     this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
       console.log('[BOTS-LIST] - GET BOTS BY PROJECT ID > RES', faqKb);
       if (faqKb) {
@@ -615,7 +535,6 @@ export class BotListComponent implements OnInit, OnDestroy {
       this.showSpinner = false;
       // this.getAllFaqByFaqKbId();
     });
-
   }
 
   getBotProfileImage(bot) {
@@ -961,37 +880,36 @@ export class BotListComponent implements OnInit, OnDestroy {
   }
 
   createBlankTilebot() {
+    console.log('[BOTS-LIST] createBlankTilebot chatBotCount ', this.chatBotCount, ' chatBotLimit ', this.chatBotLimit)
     if (this.chatBotCount < this.chatBotLimit) {
       this.router.navigate(['project/' + this.project._id + '/bots/create/tilebot/blank']);
       // this.router.navigate(['project/' + this.project._id + '/chatbot/create']);
     } else if (this.chatBotCount >= this.chatBotLimit) {
 
-      if (this.USER_ROLE === 'owner') {
+      if (this.USER_ROLE !== 'agent') {
         this.presentDialogReachedChatbotLimit()
-      } else {
+      } else if (this.USER_ROLE === 'agent') {
         this.presentModalOnlyOwnerCanManageTheAccountPlan()
       }
     }
   }
 
   presentDialogReachedChatbotLimit() {
+    console.log('[BOTS-LIST] openDialog presentDialogReachedChatbotLimit prjct_profile_name ', this.prjct_profile_name)
+    const dialogRef = this.dialog.open(ChatbotModalComponent, {
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+      hasBackdrop: true,
+      data: {
+        projectProfile: this.prjct_profile_name,
+      },
+    });
 
-    
-      console.log('openDialog presentDialogReachedChatbotLimit')
-      const dialogRef = this.dialog.open(ChatbotModalComponent, {
-        backdropClass: 'cdk-overlay-transparent-backdrop',
-        hasBackdrop: true,
-        data: {
-          projectProfile: this.prjct_profile_name,
-        },
-      });
-  
-      dialogRef.afterClosed().subscribe(result => {
-       console.log(`Dialog result: ${result}`);
-      });
-    
- 
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`[BOTS-LIST] Dialog result: ${result}`);
+    });
   }
+
+
   contacUsViaEmail() {
     window.open('mailto:sales@tiledesk.com?subject=Upgrade Tiledesk plan');
   }

@@ -1,6 +1,7 @@
-<!-- <h2 mat-dialog-title>Install Angular</h2> -->
+
 <mat-dialog-actions align="end" style="min-height: 13px;">
-    <button mat-button mat-dialog-close
+    <!-- mat-dialog-close  -->
+    <button mat-button (click)="closeDialog()"
         style="position: relative;top: -16px; min-width: 36px; padding: 0px;border-radius: 50%;">
         <span class="material-icons">
             close
@@ -29,7 +30,7 @@
             </div>
         </div>
         <div class="template-detail-btns-wpr">
-            <button type="button" class=" btn btn-new btn-size-l btn--primary" (click)="forkTemplate()">
+            <button type="button" class=" btn btn-new btn-size-l btn--primary" (click)="importTempalte()">
                 <!-- <span *ngIf="template?.certified === true" >Use template</span> -->
                 <!-- *ngIf="template?.certified === false" -->
                 <span>

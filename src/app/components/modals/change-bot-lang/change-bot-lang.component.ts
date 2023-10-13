@@ -1,6 +1,7 @@
 import { Component, Inject, OnChanges, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { BotsBaseComponent } from 'app/bots/bots-base/bots-base.component';
+import { ProjectPlanService } from 'app/services/project-plan.service';
 @Component({
   selector: 'appdashboard-change-bot-lang',
   templateUrl: './change-bot-lang.component.html',
@@ -13,8 +14,10 @@ export class ChangeBotLangModalComponent extends BotsBaseComponent implements On
   intentsEngine: string
   constructor(
     public dialogRef: MatDialogRef<ChangeBotLangModalComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any) {
-    super();
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public prjctPlanService: ProjectPlanService,
+    ) {
+    super(prjctPlanService);
     // console.log('[CHANGE-BOT-LANG] DATA ', data)
     this.botDefaultSelectedLangCode = data.chatbot.language;
     this.selectedDefaultBotLang = this.botDefaultLanguages[this.getIndexOfbotDefaultLanguages(data.chatbot.language)].name;
