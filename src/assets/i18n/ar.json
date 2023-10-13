@@ -1586,7 +1586,14 @@
         "DeleteKb": "حذف قاعدة المعرفة",
         "DeleteKbInfoFirstText": "لن تتمكن بعد الآن من استخدام الذكاء الاصطناعي في قاعدة المعرفة هذه",
         "SureToDelete": "هل أنت متأكد أنك تريد حذف قاعدة المعرفة <b>{{ name }}</b>؟",
-        "GptKeyInfo": "أدخل مفتاح GPT الخاص بك لاستخدام قواعد المعرفة الخاصة بك"
+        "GptKeyInfo": "أدخل مفتاح GPT الخاص بك لاستخدام قواعد المعرفة الخاصة بك",
+        "YouHaveNotIncludedYourGPTKeyYet":"يبدو أنك لم تقم بتضمين مفتاح GPT الخاص بك بعد.",
+        "AGPTKeyIsNecessary":"يعد مفتاح GPT ضروريًا لتوصيل قاعدة المعرفة الخاصة بك بنجاح.",
+        "DoYouWantToAddAGPTKey":"هل تريد إضافة مفتاح GPT؟",
+        "NotNow":"ليس الآن",
+        "EnterGPTKey":"أدخل مفتاح GPT",
+        "DonNotHaveGPTKey":"ليس لديك مفتاح GPT؟",
+        "ContactUsAndWeWillBeGladToHelpYou":"اتصل بنا وسنكون سعداء بمساعدتك"
     },
     "Sunday": "الأحد",
     "Monday": "الاثنين",

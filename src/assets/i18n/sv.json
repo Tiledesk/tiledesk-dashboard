@@ -1586,7 +1586,14 @@
         "DeleteKb": "Ta bort kunskapsbas",
         "DeleteKbInfoFirstText": "Du kommer inte längre att kunna använda AI på denna kunskapsbas",
         "SureToDelete": "Är du säker på att du vill ta bort kunskapsbasen <b>{{ name }}</b>?",
-        "GptKeyInfo": "Ange din GPT-nyckel för att använda dina kunskapsbaser"
+        "GptKeyInfo": "Ange din GPT-nyckel för att använda dina kunskapsbaser",
+        "YouHaveNotIncludedYourGPTKeyYet":"Det verkar som att du inte har inkluderat din GPT-nyckel än.",
+        "AGPTKeyIsNecessary":"En GPT-nyckel är nödvändig för att framgångsrikt ansluta din kunskapsbas.",
+        "DoYouWantToAddAGPTKey":"Vill du lägga till en GPT-nyckel?",
+        "NotNow":"Inte nu",
+        "EnterGPTKey":"Ange GPT-nyckel",
+        "DonNotHaveGPTKey":"Har du ingen GPT-nyckel?",
+        "ContactUsAndWeWillBeGladToHelpYou":"Kontakta oss så hjälper vi dig gärna"
     },
     "Sunday": "söndag",
     "Monday": "måndag",

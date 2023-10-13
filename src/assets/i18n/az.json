@@ -1586,7 +1586,14 @@
         "DeleteKb": "Bilik bazasını silin",
         "DeleteKbInfoFirstText": "Artıq bu bilik bazasında süni intellektdən istifadə edə bilməyəcəksiniz",
         "SureToDelete": "Bilik Bazasını silmək istədiyinizə əminsiniz <b>{{ name }}</b>?",
-        "GptKeyInfo": "Bilik Bazalarınızdan istifadə etmək üçün GPT Açarınızı daxil edin"
+        "GptKeyInfo": "Bilik Bazalarınızdan istifadə etmək üçün GPT Açarınızı daxil edin",
+        "YouHaveNotIncludedYourGPTKeyYet":"Deyəsən, GPT-Açarınızı hələ daxil etməmisiniz.",
+        "AGPTKeyIsNecessary":"Bilik Bazanızı uğurla birləşdirmək üçün GPT-Açarı lazımdır.",
+        "DoYouWantToAddAGPTKey":"GPT açarı əlavə etmək istəyirsiniz?",
+        "NotNow":"İndi yox",
+        "EnterGPTKey":"GPT-Açarını daxil edin",
+        "DonNotHaveGPTKey":"GPT açarınız yoxdur?",
+        "ContactUsAndWeWillBeGladToHelpYou": "Bizimlə əlaqə saxlayın və sizə kömək etməkdən şad olarıq"
     },
     "Sunday": "bazar günü",
     "Monday": "bazar ertəsi",

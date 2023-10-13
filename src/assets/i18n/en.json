@@ -1586,7 +1586,14 @@
         "DeleteKb": "Delete Knowledge Base",
         "DeleteKbInfoFirstText": "You will no longer be able to use AI on this knowledge base",
         "SureToDelete": "Are you sure you want to delete the Knowledge Base <b>{{ name }}</b>?",
-        "GptKeyInfo": "Enter your GPT Key to use your Knowledge Bases"
+        "GptKeyInfo": "Enter your GPT Key to use your Knowledge Bases",
+        "YouHaveNotIncludedYourGPTKeyYet":"It seems like you haven't included your GPT-Key yet.",
+        "AGPTKeyIsNecessary": "A GPT-Key is necessary to successfully connect your Knowledge Base.",
+        "DoYouWantToAddAGPTKey": "Do you want to add a GPT key?",
+        "NotNow":"Not now",
+        "EnterGPTKey":"Enter GPT-Key",
+        "DonNotHaveGPTKey": "¿No tienes una clave GPT?",
+        "ContactUsAndWeWillBeGladToHelpYou":"Contact us and we will be glad to help you."
     },
     "Sunday": "Sunday",
     "Monday": "Monday",

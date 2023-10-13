@@ -1586,7 +1586,14 @@
         "DeleteKb": "Удалить базу знаний",
         "DeleteKbInfoFirstText": "Вы больше не сможете использовать ИИ в этой базе знаний.",
         "SureToDelete": "Вы уверены, что хотите удалить Базу знаний <b>{{ name }}</b>?",
-        "GptKeyInfo": "Введите свой ключ GPT, чтобы использовать свои базы знаний."
+        "GptKeyInfo": "Введите свой ключ GPT, чтобы использовать свои базы знаний.",
+        "YouHaveNotIncludedYourGPTKeyYet":"Кажется, вы еще не добавили свой GPT-ключ.",
+        "AGPTKeyIsNecessary": "Для успешного подключения вашей базы знаний необходим GPT-ключ.",
+        "DoYouWantToAddAGPTKey":"Хотите добавить GPT-ключ?",
+        "NotNow":"Не сейчас",
+        "EnterGPTKey":"Введите GPT-ключ",
+        "DonNotHaveGPTKey":"У вас нет GPT-ключа?",
+        "ContactUsAndWeWillBeGladToHelpYou":"Свяжитесь с нами и мы будем рады Вам помочь"
     },
     "Sunday": "Воскресенье",
     "Monday": "Понедельник",

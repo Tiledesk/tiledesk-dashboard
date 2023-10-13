@@ -1585,7 +1585,14 @@
         "DeleteKb": "Ma'lumot bazasini o'chirish",
         "DeleteKbInfoFirstText": "Siz endi bu bilimlar bazasida AIdan foydalana olmaysiz",
         "SureToDelete": "Haqiqatan ham Maʼlumot bazasini oʻchirib tashlamoqchimisiz <b>{{ name }}</b>?",
-        "GptKeyInfo": "Ma'lumotlar bazasidan foydalanish uchun GPT kalitingizni kiriting"
+        "GptKeyInfo": "Ma'lumotlar bazasidan foydalanish uchun GPT kalitingizni kiriting",
+        "YouHaveNotIncludedYourGPTKeyYet":"Siz hali GPT kalitini kiritmaganga o'xshaysiz.",
+        "AGPTKeyIsNecessary": "Bilimlar bazasini muvaffaqiyatli ulash uchun GPT-kalit zarur.",
+        "DoYouWantToAddAGPTKey":"GPT kalitini qo'shmoqchimisiz?",
+        "NotNow":"Hozir emas",
+        "EnterGPTKey":"GPT kalitini kiriting",
+        "DonNotHaveGPTKey":"GPT-kalitingiz yoʻqmi?",
+        "ContactUsAndWeWillBeGladToHelpYou":"Biz bilan bog'laning va biz sizga yordam berishdan xursand bo'lamiz"
     },
     "Sunday": "yakshanba",
     "Monday": "dushanba",

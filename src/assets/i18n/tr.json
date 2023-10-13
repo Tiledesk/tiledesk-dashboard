@@ -1586,7 +1586,14 @@
         "DeleteKb": "Bilgi Bankasını Sil",
         "DeleteKbInfoFirstText": "Artık bu bilgi tabanında yapay zekayı kullanamayacaksınız",
         "SureToDelete": "Bilgi Bankasını silmek istediğinizden emin misiniz <b>{{ name }}</b>?",
-        "GptKeyInfo": "Bilgi Tabanlarınızı kullanmak için GPT Anahtarınızı girin"
+        "GptKeyInfo": "Bilgi Tabanlarınızı kullanmak için GPT Anahtarınızı girin",
+        "YouHaveNotIncludedYourGPTKeyYet":"Henüz GPT Anahtarınızı eklememişsiniz gibi görünüyor.",
+        "AGPTKeyIsNecessary":"Bilgi Tabanınıza başarıyla bağlanmak için bir GPT Anahtarı gereklidir.",
+        "DoYouWantToAddAGPTKey":"GPT anahtarı eklemek istiyor musunuz?",
+        "NotNow":"Şimdi değil",
+        "EnterGPTKey":"GPT Anahtarını Girin",
+        "DonNotHaveGPTKey":"GPT anahtarınız yok mu?",
+        "ContactUsAndWeWillBeGladToHelpYou":"Bizimle iletişime geçin, size yardımcı olmaktan memnuniyet duyarız"
     },
     "Sunday": "Pazar",
     "Monday": "Pazartesi",

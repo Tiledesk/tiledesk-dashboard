@@ -1586,7 +1586,14 @@
         "DeleteKb": "Supprimer la base de connaissances",
         "DeleteKbInfoFirstText": "Vous ne pourrez plus utiliser l'IA sur cette base de connaissances",
         "SureToDelete": "Êtes-vous sûr de vouloir supprimer la base de connaissances <b>{{ name }}</b>?",
-        "GptKeyInfo": "Entrez votre clé GPT pour utiliser vos bases de connaissances"
+        "GptKeyInfo": "Entrez votre clé GPT pour utiliser vos bases de connaissances",
+        "YouHaveNotIncludedYourGPTKeyYet":"Il semble que vous n'ayez pas encore inclus votre clé GPT.",
+        "AGPTKeyIsNecessary":"Une clé GPT est nécessaire pour connecter avec succès votre base de connaissances.",
+        "DoYouWantToAddAGPTKey":"Voulez-vous ajouter une clé GPT?",
+        "NotNow":"Pas maintenant",
+        "EnterGPTKey":"Entrez la clé GPT",
+        "DonNotHaveGPTKey":"Vous n'avez pas de clé GPT?",
+        "ContactUsAndWeWillBeGladToHelpYou":"Contactez-nous et nous serons heureux de vous aider"
     },
     "Sunday": "Dimanche",
     "Monday": "Lundi",

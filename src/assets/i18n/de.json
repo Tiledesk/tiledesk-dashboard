@@ -1587,7 +1587,13 @@
 		"DeleteKb": "Wissensdatenbank löschen",
 		"DeleteKbInfoFirstText": "Sie können KI auf dieser Wissensdatenbank nicht mehr verwenden",
 		"SureToDelete": "Sind Sie sicher, dass Sie die Wissensdatenbank löschen möchten? <b>{{ name }}</b>?",
-		"GptKeyInfo": "Geben Sie Ihren GPT-Schlüssel ein, um Ihre Wissensdatenbanken zu nutzen"
+		"GptKeyInfo": "Geben Sie Ihren GPT-Schlüssel ein, um Ihre Wissensdatenbanken zu nutzen",
+		"YouHaveNotIncludedYourGPTKeyYet":"Es scheint, als hätten Sie Ihren GPT-Schlüssel noch nicht eingegeben.",
+		"DoYouWantToAddAGPTKey":"Möchten Sie einen GPT-Schlüssel hinzufügen?",
+		"NotNow":"Nicht jetzt",
+		"EnterGPTKey":"GPT-Schlüssel eingeben",
+		"DonNotHaveGPTKey": "Sie haben keinen GPT-Schlüssel?",
+		"ContactUsAndWeWillBeGladToHelpYou":"Kontaktieren Sie uns, wir helfen Ihnen gerne weiter"
 	},
 	"Sunday": "Sonntag",
 	"Monday": "Montag",

@@ -1586,7 +1586,14 @@
         "DeleteKb": "Білім қорын жою",
         "DeleteKbInfoFirstText": "Сіз бұдан былай бұл білім базасында AI пайдалана алмайсыз",
         "SureToDelete": "Білім қорын жойғыңыз келетініне сенімдісіз бе <b>{{ name }}</b>?",
-        "GptKeyInfo": "Білім қорын пайдалану үшін GPT кілтін енгізіңіз"
+        "GptKeyInfo": "Білім қорын пайдалану үшін GPT кілтін енгізіңіз",
+        "YouHaveNotIncludedYourGPTKeyYet":"GPT кілтін әлі қоспаған сияқтысыз.",
+        "AGPTKeyIsNecessary":"GPT кілті білім қорын сәтті қосу үшін қажет.",
+        "DoYouWantToAddAGPTKey":"GPT кілтін қосқыңыз келе ме?",
+        "NotNow":"Қазір емес",
+        "EnterGPTKey":"GPT кілтін енгізіңіз",
+        "DonNotHaveGPTKey":"GPT кілті жоқ па?",
+        "ContactUsAndWeWillBeGladToHelpYou":"Бізбен байланысыңыз, біз сізге көмектесуге қуаныштымыз"
     },
     "Sunday": "Жексенбі",
     "Monday": "дүйсенбі",
