@@ -32,6 +32,7 @@ cds-rules,
 cds-chatbot-details,
 cds-fulfillment {
     width: 100%;
+    overflow-y: scroll;
 }
 
 .is_opened_sidebar {
@@ -46,6 +47,7 @@ cds-fulfillment {
   transition: 0.3s;
   display: flex;
   min-width: 60px;
+  overflow: hidden;
 }
 
 .cds-content {
