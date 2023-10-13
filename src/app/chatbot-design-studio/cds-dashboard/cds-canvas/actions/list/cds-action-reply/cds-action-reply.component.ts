@@ -281,6 +281,7 @@ export class CdsActionReplyComponent implements OnInit {
   /** onCreateNewButton */
   onCreateNewButton(index){
     this.logger.log('[cds-action-reply] onCreateNewButton: ', index);
+    console.log("onCreateNewButton --->", index, this.arrayResponses[index])
     try {
       if(!this.arrayResponses[index].message.attributes || !this.arrayResponses[index].message.attributes.attachment){
         this.arrayResponses[index].message.attributes = new MessageAttributes();

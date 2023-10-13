@@ -48,6 +48,7 @@ export class CdsActionReplyImageComponent implements OnInit {
   
   // Buttons //
   buttons: Array<Button>;
+  TYPE_BUTTON = TYPE_BUTTON;
   private subscriptionChangedConnector: Subscription;
 
   constructor( 
@@ -217,8 +218,20 @@ export class CdsActionReplyImageComponent implements OnInit {
   }
 
   /** onDeleteButton */
-  onDeleteButton(index: number){
-    this.deleteButton.emit({index: index, buttons: this.buttons});
+  onButtonControl(action: string, index: number ){
+    switch(action){
+
+      case 'delete': /** onDeleteButton */
+        this.deleteButton.emit({index: index, buttons: this.buttons});
+        break;
+      case 'moveLeft':
+        break;
+      case 'moveRight':
+        break;
+      case 'new': /** onCreateNewButton */
+        this.createNewButton.emit(this.index);
+        break;
+    }
   }
 
   /** dropButtons */

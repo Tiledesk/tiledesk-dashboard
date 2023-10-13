@@ -391,7 +391,7 @@ public _getAllFaqByFaqKbId(id_faq_kb: string): Observable<Intent[]> {
    * @param webhook_enabled 
    * @returns 
    */
-   public addIntent(id_faq_kb: string, attributes: any, question: any, answer: string, intent_display_name: string, intent_id: string, intent_form: any, intent_actions: any, webhook_enabled: boolean) {
+   public addIntent(intent: any) {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -400,19 +400,8 @@ public _getAllFaqByFaqKbId(id_faq_kb: string): Observable<Intent[]> {
     };
     const url = this.FAQ_URL;
     this.logger.log('[FAQ-SERV] ADD FAQ -  PUT URL ', url);
-    const body = { 
-      'id_faq_kb': id_faq_kb, 
-      'attributes': attributes,
-      'question': question, 
-      'answer': answer, 
-      'intent_display_name': intent_display_name, 
-      'intent_id': intent_id,
-      'form': intent_form,
-      'actions': intent_actions,
-      'webhook_enabled': webhook_enabled 
-    };
-    this.logger.log('[FAQ-SERV] ADD FAQ - POST BODY ', body);
-    return this._httpClient.post(url, JSON.stringify(body), httpOptions)
+    this.logger.log('[FAQ-SERV] ADD FAQ - POST BODY ', intent);
+    return this._httpClient.post(url, JSON.stringify(intent), httpOptions)
   }
 
   /**
@@ -426,30 +415,22 @@ public _getAllFaqByFaqKbId(id_faq_kb: string): Observable<Intent[]> {
    * @param webhook_enabled 
    * @returns 
    */
-   public updateIntent(id: string, attributes: any, question: any, answer: string, intent_display_name: string, intent_form: any, intent_actions: any, webhook_enabled: boolean, intent_id?: string) {
+   public updateIntent(intent: any) {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         'Authorization': this.TOKEN
       })
     };
-    this.logger.log('[FAQ-SERV] UPDATE FAQ - ID ', id);
-    let url = this.FAQ_URL + id; 
-    if(intent_id) url = this.FAQ_URL + 'intentId' + intent_id; 
+    this.logger.log('[FAQ-SERV] UPDATE FAQ - ID ', intent._id);
+    let url = this.FAQ_URL + intent._id; 
+    if(intent.intent_id) url = this.FAQ_URL + 'intentId' + intent.intent_id; 
     
     this.logger.log('[FAQ-SERV] UPDATE FAQ - PUT URL ', url);
-    const body = { 
-      'attributes': attributes, 
-      'question': question, 
-      'answer': answer, 
-      'intent_display_name': intent_display_name, 
-      'form': intent_form,
-      'actions': intent_actions,
-      'webhook_enabled': webhook_enabled
-    };
-    this.logger.log('----------->>>', intent_actions, body);
-    this.logger.log('[FAQ-SERV] UPDATE FAQ - PUT REQUEST BODY ', body);
-    return this._httpClient.put(url, JSON.stringify(body), httpOptions);
+
+    this.logger.log('----------->>>', intent);
+    this.logger.log('[FAQ-SERV] UPDATE FAQ - PUT REQUEST BODY ', intent);
+    return this._httpClient.put(url, JSON.stringify(intent), httpOptions);
   }
 
 
@@ -474,8 +455,7 @@ public _getAllFaqByFaqKbId(id_faq_kb: string): Observable<Intent[]> {
     const body = { 'question': question, 'answer': answer, 'id_faq_kb': id_faq_kb };
     this.logger.log('[FAQ-SERV] CREATE TRAIN BOT FAQ - BODY ', body);
 
-    return this._httpClient
-      .post(url, JSON.stringify(body), httpOptions)
+    return this._httpClient.post(url, JSON.stringify(body), httpOptions)
   }
 
   /**
@@ -520,11 +500,10 @@ public _getAllFaqByFaqKbId(id_faq_kb: string): Observable<Intent[]> {
     };
 
     let url = this.FAQ_URL + id;
-    if(intent_id) url = this.FAQ_URL + 'intentId' + intent_id; 
+    // if(intent_id) url = this.FAQ_URL + 'intentId' + intent_id; 
     this.logger.log('[FAQ-SERV] DELETE FAQ URL ', url);
 
-    return this._httpClient
-      .delete(url, httpOptions)
+    return this._httpClient.delete(url, httpOptions)
   }
 
   /**
@@ -551,8 +530,7 @@ public _getAllFaqByFaqKbId(id_faq_kb: string): Observable<Intent[]> {
     const body = { 'question': question, 'answer': answer };
     this.logger.log('[FAQ-SERV] - UPDATE TRAIN BOT FAQ - BODY ', body);
 
-    return this._httpClient
-      .put(url, JSON.stringify(body), httpOptions)
+    return this._httpClient.put(url, JSON.stringify(body), httpOptions)
   }
 
 
@@ -575,8 +553,7 @@ public _getAllFaqByFaqKbId(id_faq_kb: string): Observable<Intent[]> {
     const url = this.SERVER_BASE_PATH + this.project._id + '/faq_kb/' + 'askbot';
     const body = { 'id_faq_kb': botId, 'question': question };
 
-    return this._httpClient
-      .post(url, JSON.stringify(body), httpOptions)
+    return this._httpClient.post(url, JSON.stringify(body), httpOptions)
   }
 
 
@@ -591,8 +568,7 @@ public _getAllFaqByFaqKbId(id_faq_kb: string): Observable<Intent[]> {
     let url = this.SERVER_BASE_PATH + this.project._id + '/faq/' + id + '/attributes';
     let body = JSON.stringify(attributes);
     console.log('[FAQ.SERV] updateFaq - BODY ', url, body);
-    return this._httpClient
-    .patch<Intent>(url, body, httpOptions)
+    return this._httpClient.patch<Intent>(url, body, httpOptions)
     // return this._httpClient.patch(url, body, httpOptions)
   }
 
