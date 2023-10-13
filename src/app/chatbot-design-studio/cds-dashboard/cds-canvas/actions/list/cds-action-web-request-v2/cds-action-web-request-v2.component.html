@@ -101,7 +101,7 @@
             (changeButtonSelect)="onChangeButtonSelect($event)">
         </cds-radio-buttons>
 
-        <cds-textarea id="body"
+        <cds-textarea id="body" *ngIf="action?.bodyType !== 'none'"
             [ngClass]="{'jsonError': !jsonIsValid}"
             class = "text-editable-div"
             [text]="body"
@@ -110,7 +110,7 @@
             [setAttributeBtn]="true"
             [minRow]="5" [maxRow]="10"
             [readonly]="false"
-            (changeTextarea)="onChangeTextarea($event, 'jsonBody')">
+            (changeTextarea)="onChangeTextarea($event, 'body')">
         </cds-textarea>
 
 
