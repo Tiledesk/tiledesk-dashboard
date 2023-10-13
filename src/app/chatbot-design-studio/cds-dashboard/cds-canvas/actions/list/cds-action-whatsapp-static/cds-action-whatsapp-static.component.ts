@@ -37,7 +37,7 @@ export class CdsActionWhatsappStaticComponent implements OnInit {
     // this.getTemplates();
     //this.initialize();
     if (this.previewMode == false) {
-      console.log("Whatsapp static project_id: ", this.project_id);
+      this.logger.log("Whatsapp static project_id: ", this.project_id);
       this.showLoader = true;
       this.getTemplates();
     }
@@ -73,13 +73,11 @@ export class CdsActionWhatsappStaticComponent implements OnInit {
       if(preview){
         preview.style.display = 'block';
       }
-      console.log("initializeeee")
       this.initialize();
     })
   }
 
   initialize() {
-    console.log("initializeeee 2: ", this.action.payload)
     if (this.action.payload) {
       this.logger.debug("[ACTION WHATSAPP STATIC] initialize with payload: ", this.action.payload);
       if (this.action.payload.phone_number_id) {
@@ -91,7 +89,7 @@ export class CdsActionWhatsappStaticComponent implements OnInit {
       // }
       // this.logger.log("[ACTION WHATSAPP STATIC] payload: ", this.action.payload);
     } else {
-      console.log("action payload non esiste: ", this.action.payload);
+      this.logger.log("action payload non esiste: ", this.action.payload);
       this.logger.debug("[ACTION WHATSAPP STATIC] Payload empty --> create payload")
       this.action.payload = {
         id_project: this.project_id,
@@ -103,7 +101,7 @@ export class CdsActionWhatsappStaticComponent implements OnInit {
         receiver_list: []
       }
       this.updateJsonPreview();
-      console.log("[ACTION WHATSAPP STATIC] payload: ", this.action.payload)
+      this.logger.log("[ACTION WHATSAPP STATIC] payload: ", this.action.payload)
     }
   }
 
