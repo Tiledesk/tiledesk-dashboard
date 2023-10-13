@@ -220,14 +220,8 @@ export class CdsActionReplyTextComponent implements OnInit {
     this.openButtonPanel.emit(button);
   }
 
-  // /** onCreateNewButton */
-  // onCreateNewButton(){
-  //   this.createNewButton.emit(this.index);
-  // }
-
   /** onButtonControl */
   onButtonControl(action: string, index: number ){
-    console.log('eventtttttt', action, index)
     switch(action){
       case 'delete': /** onDeleteButton */
         this.deleteButton.emit({index: index, buttons: this.buttons});
@@ -237,7 +231,6 @@ export class CdsActionReplyTextComponent implements OnInit {
       case 'moveRight':
         break;
       case 'new': /** onCreateNewButton */
-        console.log('eventtttttt newwwwwww' , action, index)
         this.createNewButton.emit(this.index);
         break;
     }

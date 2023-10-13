@@ -3,10 +3,10 @@ import { TYPE_BUTTON } from 'app/chatbot-design-studio/utils';
 
 @Component({
   selector: 'cds-action-reply-button',
-  templateUrl: './button.component.html',
-  styleUrls: ['./button.component.scss']
+  templateUrl: './cds-action-reply-button.component.html',
+  styleUrls: ['./cds-action-reply-button.component.scss']
 })
-export class ButtonComponent implements OnInit {
+export class CdsActionReplyButtonComponent implements OnInit {
 
   @Input() button: any
   @Input() previewMode: boolean = true;
@@ -17,7 +17,6 @@ export class ButtonComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    console.log('buttonnnnnn', this.button)
   }
 
   onDeleteButton(){

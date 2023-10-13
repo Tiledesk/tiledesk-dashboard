@@ -307,7 +307,6 @@ export class CdsActionReplyGalleryComponent implements OnInit {
   /** onButtonControl */
   onButtonControl(action: string, indexGallery: number, index){
     switch(action){
-
       case 'delete': /** onDeleteButton */
         this.onDeleteButton(indexGallery, index)
         break;

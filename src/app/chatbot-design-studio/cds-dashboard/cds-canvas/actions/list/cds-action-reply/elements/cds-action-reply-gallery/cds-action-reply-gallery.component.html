@@ -198,14 +198,14 @@
             </div>
        </div>
         <div class="buttons-response button-replies">
-            <div *ngFor="let button of galleryEl.buttons; let j= index;" class="content-botton-reply" cdkDragBoundary=".button-replies" cdkDrag> 
+            <div *ngFor="let button of galleryEl.buttons; let j= index;" class="content-botton-reply"> 
 
                 <!-- DRAG PLACEHOLDER -->
-                <cds-action-reply-button class="custom-placeholder" *cdkDragPlaceholder
+                <!-- <cds-action-reply-button class="custom-placeholder" *cdkDragPlaceholder
                     (click)="$event.stopPropagation(); onOpenButtonPanel(button)"
                     [button]="button"
                     [previewMode]="previewMode">
-                </cds-action-reply-button>
+                </cds-action-reply-button> -->
 
                 <cds-action-reply-button [class.connected]='button.__isConnected' cdkDragHandle
                     (click)="$event.stopPropagation(); onOpenButtonPanel(button)"
@@ -222,7 +222,7 @@
                 </cds-connector>
         
             </div>
-            <div *ngIf="galleryEl.buttons.length < 3" class="button-reply-add" (click)="$event.stopPropagation();onButtonControl('new', i, j)">
+            <div *ngIf="galleryEl.buttons.length < 3" class="button-reply-add" (click)="$event.stopPropagation();onButtonControl('new', i, null)">
                 + Add button
             </div>
         </div> 
