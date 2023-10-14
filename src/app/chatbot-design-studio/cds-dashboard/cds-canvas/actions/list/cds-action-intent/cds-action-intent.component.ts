@@ -102,6 +102,7 @@ export class CdsActionIntentComponent implements OnInit {
         }
         // if(this.connector.dispatch) il dispatch blocca il flusso derettamente in connectors.js
         this.updateAndSaveAction.emit(this.connector);
+        
       }
     } catch (error) {
       this.logger.log('error: ', error);

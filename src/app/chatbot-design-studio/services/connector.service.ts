@@ -424,7 +424,7 @@ export class ConnectorService {
    * @param elementID 
    * @param notify 
    */
-  public async updateConnector(elementID, notify=true){
+  public async updateConnector(elementID, notify=true ){
     console.log('[CONNECTOR-SERV] movedConnector elementID ' ,elementID )
     const elem = await isElementOnTheStage(elementID); // chiamata sincrona
     // const elem = document.getElementById(elementID);
