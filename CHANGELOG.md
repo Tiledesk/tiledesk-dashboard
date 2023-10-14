@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.4.71
+- Deploys in production
+- Improves user experience when creating knowledge bases
+
 ### 2.4.70
 - Deploys in production
 - Improvements and bug fixing
