@@ -22,7 +22,7 @@
           <div class="add-kb-div">
             <button class="btn btn-primary" (click)="openSecretsModal()">
               <!-- {{ 'KbPage.Secrets' | translate }} -->
-              GPT Key
+              GPT-Key
             </button>
             <button class="btn btn-primary" (click)="openAddKnowledgeBaseModal()" [disabled]="addButtonDisabled">
               {{ 'KbPage.AddKb' | translate }}
@@ -368,7 +368,7 @@
         </div>
 
         <div class="form-container">
-          <span class="input-label">GPT Key</span>
+          <span class="input-label">GPT-Key</span>
           <div class="fake-input">
             <div class="fake-input-inner">
               <input *ngIf="gptkeyVisible" id="gptkey-key" class="input-bold" type="text" autocomplete="off"
