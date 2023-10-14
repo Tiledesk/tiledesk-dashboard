@@ -222,7 +222,7 @@ export class CdsCanvasComponent implements OnInit {
   private refreshIntents() {
     setTimeout(() => {
       this.setDragAndListnerEventToElements();
-      this.connectorService.createConnectors(this.listOfIntents);
+      this.connectorService.createConnectors(this.listOfIntents, false);
     }, 0);
   }
 
