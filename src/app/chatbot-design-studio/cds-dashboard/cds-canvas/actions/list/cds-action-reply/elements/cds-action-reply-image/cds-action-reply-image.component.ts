@@ -212,12 +212,7 @@ export class CdsActionReplyImageComponent implements OnInit {
     this.openButtonPanel.emit(button);
   }
 
-  /** onCreateNewButton */
-  onCreateNewButton(){
-    this.createNewButton.emit(this.index);
-  }
-
-  /** onDeleteButton */
+  /** onButtonControl */
   onButtonControl(action: string, index: number ){
     switch(action){
 
