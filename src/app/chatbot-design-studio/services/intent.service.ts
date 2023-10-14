@@ -291,7 +291,10 @@ export class IntentService {
     if (savedIntent) {
       console.log('[CDS-CANVAS] Intent salvato correttamente: ', savedIntent, this.listOfIntents);
       // this.replaceNewIntentToListOfIntents(savedIntent);
-      this.setDragAndListnerEventToElement(savedIntent);
+      this.listOfIntents = this.replaceIntent(intent, this.listOfIntents);
+      this.refreshIntents();
+      this.prevListOfIntent = JSON.parse(JSON.stringify(this.listOfIntents));
+      this.setDragAndListnerEventToElement(savedIntent.intent_id);
       return savedIntent;
     } else {
       return false;
@@ -317,9 +320,7 @@ export class IntentService {
         'webhook_enabled': newIntent.webhook_enabled
       };
       this.faqService.addIntent(intentToAdd).subscribe((intent:any) => {
-        // console.log("[INTENT SERVICE]  ho salvato in remoto l'intent ", intent.intent_id);
-        this.prevListOfIntent = JSON.parse(JSON.stringify(this.listOfIntents));
-        this.setDragAndListnerEventToElement(intent);
+        // console.log("[INTENT SERVICE]  ho salvato in remoto l'intent ", intent, newIntent, this.listOfIntents);
         resolve(intent);
       }, (error) => {
         console.error('[INTENT SERVICE]  ERROR: ', error);
@@ -499,7 +500,7 @@ export class IntentService {
 
       this.faqService.updateIntent(intentToUpdate).subscribe((intent: Intent) => {
         this.prevListOfIntent = JSON.parse(JSON.stringify(this.listOfIntents));
-        this.setDragAndListnerEventToElement(intent);
+        this.setDragAndListnerEventToElement(intent.intent_id);
         resolve(true);
       }, (error) => {
         console.error('ERROR: ', error);
@@ -549,7 +550,7 @@ export class IntentService {
         if(response){
           // this.behaviorIntents.next(this.listOfIntents);
           // this.refreshIntent(intent);
-          this.setDragAndListnerEventToElement(intent);
+          this.setDragAndListnerEventToElement(intent.intent_id);
         }
       }
     }, 500);
@@ -859,10 +860,10 @@ export class IntentService {
    * @param intent 
    * after the element is on the stage, set the drag on the element
    */
-  public async setDragAndListnerEventToElement(intent) {
-    let isOnTheStage = await isElementOnTheStage(intent.intent_id); // sync
+  public async setDragAndListnerEventToElement(intent_id) {
+    let isOnTheStage = await isElementOnTheStage(intent_id); // sync
     if(isOnTheStage){
-      this.stageService.setDragElement(intent.intent_id);
+      this.stageService.setDragElement(intent_id);
     }
   }
 

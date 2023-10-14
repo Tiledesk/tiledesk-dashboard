@@ -499,12 +499,12 @@ export class CdsCanvasComponent implements OnInit {
   private setDragAndListnerEventToElements() {
     this.logger.log("[CDS CANVAS] AGGIORNO ELENCO LISTNER");
     this.listOfIntents.forEach(intent => {
-      this.intentService.setDragAndListnerEventToElement(intent);
+      this.intentService.setDragAndListnerEventToElement(intent.intent_id);
     });
   }
 
   /** setDragAndListnerEventToElement */
-  // private setDragAndListnerEventToElement(intent) {
+  // private setDragAndListnerEventToElement(intent.intent_id) {
   //   let intervalId = setInterval(async () => {
   //     const result = checkIFElementExists(intent.intent_id);
   //     if (result === true) {
@@ -712,7 +712,7 @@ export class CdsCanvasComponent implements OnInit {
   private async settingAndSaveNewIntent(pos, intent, nowIntent, prevIntent) {
     this.logger.log('[CDS-CANVAS] sto per configurare il nuovo intent creato con pos e action ::: ', pos, intent, nowIntent, prevIntent);
     intent.id = INTENT_TEMP_ID;
-    this.intentService.setDragAndListnerEventToElement(intent);
+    this.intentService.setDragAndListnerEventToElement(intent.intent_id);
     this.intentService.setIntentSelected(intent.intent_id);
     this.intentSelected = intent;
     const savedIntent = await this.intentService.saveNewIntent(intent, nowIntent, prevIntent);
