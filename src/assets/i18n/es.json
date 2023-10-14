@@ -1592,7 +1592,7 @@
         "DoYouWantToAddAGPTKey":"¿Quieres agregar una clave GPT?",
         "NotNow":"Ahora no",
         "EnterGPTKey":"Ingrese la clave GPT",
-        "DonNotHaveGPTKey": "Don't have a GPT-key?",
+        "DonNotHaveGPTKey": "¿No tienes una clave GPT?",
         "ContactUsAndWeWillBeGladToHelpYou":"Contáctanos y estaremos encantados de ayudarte"
     },
     "Sunday": "Domingo",
