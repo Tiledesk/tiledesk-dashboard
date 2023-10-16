@@ -105,7 +105,7 @@ export class CdsActionJsonConditionComponent implements OnInit {
           // this.updateAndSaveAction.emit();
         } else { //TODO: verificare quale dei due connettori è stato aggiunto (controllare il valore della action corrispondente al true/false intent)
           // ADD / EDIT
-          this.logger.log(' updateConnector :: json-condition', this.connector.toId, this.connector.fromId ,this.action, array[array.length-1]);
+          console.log(' updateConnector :: json-condition', this.connector, this.connector.toId, this.connector.fromId ,this.action, array[array.length-1]);
           if(array[array.length -1] === 'true'){
             // this.action.trueIntent = '#'+this.connector.toId;
             this.isConnectedTrue = true
@@ -231,20 +231,21 @@ export class CdsActionJsonConditionComponent implements OnInit {
   onChangeForm(event:{name: string, value: string}, type : 'trueIntent' | 'falseIntent'){
     if(event){
       this.action[type]=event.value
-    }
 
-    switch(type){
-      case 'trueIntent':
-        this.onConnectorChange.emit({ type: 'create', fromId: this.idConnectorTrue, toId: this.action.trueIntent})
-        break;
-      case 'falseIntent':
-        this.onConnectorChange.emit({ type: 'create', fromId: this.idConnectorFalse, toId: this.action.falseIntent})
-        break;
+      switch(type){
+        case 'trueIntent':
+          this.onConnectorChange.emit({ type: 'create', fromId: this.idConnectorTrue, toId: this.action.trueIntent})
+          break;
+        case 'falseIntent':
+          this.onConnectorChange.emit({ type: 'create', fromId: this.idConnectorFalse, toId: this.action.falseIntent})
+          break;
+      }
+      this.updateAndSaveAction.emit();
     }
-    this.updateAndSaveAction.emit();
   }
 
   onResetBlockSelect(event:{name: string, value: string}, type: 'trueIntent' | 'falseIntent') {
+    console.log('onResetBlockSelect', event )
     switch(type){
       case 'trueIntent':
         this.onConnectorChange.emit({ type: 'delete', fromId: this.idConnectorTrue, toId: this.action.trueIntent})

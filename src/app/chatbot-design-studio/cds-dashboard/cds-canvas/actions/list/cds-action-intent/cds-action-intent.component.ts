@@ -39,7 +39,7 @@ export class CdsActionIntentComponent implements OnInit {
   ngOnInit(): void {
     // console.log("[CDS-ACTION-INTENT] elementSelected: ", this.action, this.intentSelected)
     this.subscriptionChangedConnector = this.intentService.isChangedConnector$.subscribe((connector: any) => {
-      console.log('[CDS-ACTION-INTENT] - subcribe to isChangedConnector$ >>', connector);
+      // console.log('[CDS-ACTION-INTENT] - subcribe to isChangedConnector$ >>', connector);
       this.connector = connector;
       this.updateConnector();
     });
@@ -85,16 +85,16 @@ export class CdsActionIntentComponent implements OnInit {
     try {
       const array = this.connector.fromId.split("/");
       const idAction= array[1];
-      console.log('[CDS-ACTION-INTENT] 2 - updateConnector :: ', idAction, this.action._tdActionId, this.connector);
+      this.logger.log('[CDS-ACTION-INTENT] 2 - updateConnector :: ', idAction, this.action._tdActionId, this.connector);
       if(idAction === this.action._tdActionId){
         if(this.connector.deleted){
-          console.log('[CDS-ACTION-INTENT] 3 - PALLINO VUOTO :: ');
+          this.logger.log('[CDS-ACTION-INTENT] 3 - PALLINO VUOTO :: ');
           // DELETE 
           this.action.intentName = null;
           this.isConnected = false;
         } else {
           // ADD / EDIT
-          console.log('[CDS-ACTION-INTENT] 4 - PALLINO PIENO :: ');
+          this.logger.log('[CDS-ACTION-INTENT] 4 - PALLINO PIENO :: ');
           this.isConnected = true;
           if(this.action.intentName !== "#"+this.connector.toId){ 
             this.action.intentName = "#"+this.connector.toId;

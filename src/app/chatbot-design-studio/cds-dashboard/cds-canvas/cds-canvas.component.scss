@@ -29,7 +29,15 @@ $box-left-width-closed: 0px;
     z-index: 11
   }
   &#widget-preview{
-    z-index: 12
+    z-index: 12;
+
+    &.isVisible{
+      width: 0;
+      visibility: visible;
+    }
+    &.isHidden{
+      visibility: hidden;
+    }
   }
 }
 

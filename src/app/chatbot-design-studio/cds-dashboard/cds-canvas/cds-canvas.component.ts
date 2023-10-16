@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild, ElementRef, HostListener, Output, EventEmitter } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component, OnInit, ViewChild, ElementRef, HostListener, Output, EventEmitter, Input } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -30,7 +30,9 @@ export class CdsCanvasComponent implements OnInit {
   @ViewChild('drawer_of_items_to_zoom_and_drag', { static: false }) drawerOfItemsToZoomAndDrag: ElementRef;
 
   @Output() testItOut = new EventEmitter();
-  @Output() closePanelWidget = new EventEmitter();
+  // @Output() closePanelWidget = new EventEmitter();
+
+  @Input() onHeaderTestItOut: Observable<Intent | boolean>
 
   id_faq_kb: string;
   TYPE_OF_MENU = TYPE_OF_MENU;
@@ -64,6 +66,8 @@ export class CdsCanvasComponent implements OnInit {
   
 
   /** panel widget */
+  private subscriptionOpenWidgetPanel: Subscription;
+  testitOutFirstClick: boolean = false;
   IS_OPEN_PANEL_WIDGET: boolean = false;
   
   constructor(
@@ -72,7 +76,7 @@ export class CdsCanvasComponent implements OnInit {
     private connectorService: ConnectorService,
     private controllerService: ControllerService,
     private translate: TranslateService,
-    private dashboardService: DashboardService,
+    public dashboardService: DashboardService,
     private logger: LoggerService
   ) {
     this.setSubscriptions();
@@ -97,6 +101,9 @@ export class CdsCanvasComponent implements OnInit {
     if (this.subscriptionOpenButtonPanel) {
       this.subscriptionOpenButtonPanel.unsubscribe();
     }
+    if (this.subscriptionOpenWidgetPanel) {
+      this.subscriptionOpenWidgetPanel.unsubscribe();
+    }
   }
 
   /** */
@@ -108,10 +115,9 @@ export class CdsCanvasComponent implements OnInit {
     this.addEventListener();
 
 
-    setTimeout(()=> {
-      let newPos = scaleAndcenterStageOnCenterPosition(this.listOfIntents)
-      
-    }, 1000)
+    // setTimeout(()=> {
+    //   let newPos = scaleAndcenterStageOnCenterPosition(this.listOfIntents) 
+    // }, 1000)
   }
 
 
@@ -152,7 +158,7 @@ export class CdsCanvasComponent implements OnInit {
       if (button) {
         // this.closeAllPanels(); // nk the action detail panel is not closed when the button detail panel is opened
         this.IS_OPEN_PANEL_WIDGET = false;
-        this.closePanelWidget.next();
+        // this.closePanelWidget.next();
         // this.IS_OPEN_PANEL_ACTION_DETAIL = false;
         // this.IS_OPEN_PANEL_BUTTON_CONFIG = false;
         // this.IS_OPEN_ADD_ACTIONS_MENU = true;
@@ -171,7 +177,7 @@ export class CdsCanvasComponent implements OnInit {
       } else {
         this.IS_OPEN_ADD_ACTIONS_MENU = false;
       }
-    });
+    });    
 
   }
 
@@ -186,6 +192,7 @@ export class CdsCanvasComponent implements OnInit {
       this.initListOfIntents();
       // scaleAndcenterStageOnCenterPosition(this.listOfIntents)
     }
+    this.subscriptionOpenWidgetPanel = this.onHeaderTestItOut.subscribe((event) => this.onTestItOut(event));
   }
  
 
@@ -194,7 +201,7 @@ export class CdsCanvasComponent implements OnInit {
     this.IS_OPEN_PANEL_WIDGET = false;
     this.IS_OPEN_PANEL_ACTION_DETAIL = false;
     this.IS_OPEN_PANEL_BUTTON_CONFIG = false;
-    this.closePanelWidget.next();
+    // this.closePanelWidget.next();
   }
 
   /** getIntentPosition: call from html */
@@ -869,9 +876,25 @@ export class CdsCanvasComponent implements OnInit {
   // - actions context menu' (static & float),
   // - button configuration panel  
   // -------------------------------------------------------
-  onTestItOut(status) {
-    this.logger.log('[CDS-CANVAS] onTestItOut  status ', status);
-    this.testItOut.emit(true);
+  onTestItOut(event: Intent | boolean) {
+    // this.testItOut.emit(true);
+    this.testitOutFirstClick = true;
+    console.log('[CDS DSHBRD] onTestItOut intent ', event);
+    this.IS_OPEN_PANEL_WIDGET = true
+    // if(typeof event === "boolean"){
+    //   this.IS_OPEN_PANEL_WIDGET = true;
+    // } else {
+    //   this.IS_OPEN_PANEL_WIDGET = !this.IS_OPEN_PANEL_WIDGET;
+    // }
+
+    if(this.IS_OPEN_PANEL_WIDGET){
+      this.controllerService.closeActionDetailPanel();
+      this.controllerService.closeButtonPanel();
+      // this.intentService.setLiveActiveIntent(null);
+      this.controllerService.closeAddActionMenu();
+      this.connectorService.removeConnectorDraft();
+    }
+
   }
 
   /** onActionDeleted */

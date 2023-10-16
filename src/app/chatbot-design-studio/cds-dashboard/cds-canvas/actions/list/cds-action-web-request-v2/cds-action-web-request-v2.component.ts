@@ -273,17 +273,17 @@ export class CdsActionWebRequestV2Component implements OnInit {
   onChangeBlockSelect(event:{name: string, value: string}, type: 'trueIntent' | 'falseIntent') {
     if(event){
       this.action[type]=event.value
-    }
 
-    switch(type){
-      case 'trueIntent':
-        this.onConnectorChange.emit({ type: 'create', fromId: this.idConnectorTrue, toId: this.action.trueIntent})
-        break;
-      case 'falseIntent':
-        this.onConnectorChange.emit({ type: 'create', fromId: this.idConnectorFalse, toId: this.action.falseIntent})
-        break;
+      switch(type){
+        case 'trueIntent':
+          this.onConnectorChange.emit({ type: 'create', fromId: this.idConnectorTrue, toId: this.action.trueIntent})
+          break;
+        case 'falseIntent':
+          this.onConnectorChange.emit({ type: 'create', fromId: this.idConnectorFalse, toId: this.action.falseIntent})
+          break;
+      }
+      this.updateAndSaveAction.emit();
     }
-    this.updateAndSaveAction.emit();
   }
 
   onResetBlockSelect(event:{name: string, value: string}, type: 'trueIntent' | 'falseIntent') {

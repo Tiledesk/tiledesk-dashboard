@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { IntentService } from 'app/chatbot-design-studio/services/intent.service';
 import { AppConfigService } from 'app/services/app-config.service';
@@ -16,7 +16,7 @@ import { Chatbot } from 'app/models/faq_kb-model';
   templateUrl: './cds-panel-widget.component.html',
   styleUrls: ['./cds-panel-widget.component.scss']
 })
-export class CdsPanelWidgetComponent implements OnInit {
+export class CdsPanelWidgetComponent implements OnInit, OnDestroy {
 
   @ViewChild('widgetIframe', {static:true}) widgetIframe:ElementRef;
 
@@ -72,6 +72,7 @@ export class CdsPanelWidgetComponent implements OnInit {
   }
 
   setIframeUrl(){
+    console.log('[CDS-PANEL-WIDGET] setIframeUrl parameters ---> ', this.projectID, this.selectedChatbot, this.defaultDepartmentId)
     this.WIDGET_BASE_URL = this.appConfigService.getConfig().WIDGET_BASE_URL;
     // const testItOutBaseUrl = this.TESTSITE_BASE_URL.substring(0, this.TESTSITE_BASE_URL.lastIndexOf('/')); 
     const testItOutUrl = this.WIDGET_BASE_URL + "assets/twp" + '/chatbot-panel.html'
@@ -113,5 +114,10 @@ export class CdsPanelWidgetComponent implements OnInit {
 
   startTest(){
     this.iframeVisibility = !this.iframeVisibility
+  }
+
+
+  ngOnDestroy(): void {
+    console.log('[CDS-PANEL-WIDGET] destroyyyyyyyy')
   }
 }
