@@ -2341,7 +2341,7 @@
     "HavingCannedResponsesCanPutYouGreatAdvantage":"Müşteri memnuniyeti söz konusu olduğunda verimlilik her şeydir. Hazır yanıtlardan oluşan bir koleksiyona sahip olmak, canlı bir sohbet oturumunda bir müşteri sorgusuna katılırken veya yalnızca sık sorulan soruları yanıtlarken size büyük avantaj sağlayabilir.",
     "NumberOfTeammatesExceedsThePlan":"İzin verilen takım arkadaşı sayısı {{free_plan_allowed_seats_num}}. Planı güncelleyin veya sınırı aşan ekip arkadaşlarını manuel olarak kaldırın (sistem bunu bir ay içinde otomatik olarak yapacaktır)",
     "NumberOfTeammatesExceedsThePlan_2":"{{plan_name}} planı için izin verilen takım arkadaşı sayısı: {{allowed_seats_num}}. Planı güncelleyin veya fazla takım arkadaşlarını manuel olarak kaldırın (sistem bunu bir ay içinde otomatik olarak yapacaktır)",
-    "NumberOfChatbotExceedsThePlan":"{{plan_name}} planı için izin verilen chatbot sayısı {{allowed_cb_num}}. Planı yükseltin veya fazla chatbot'u manuel olarak kaldırın (sistem bunu bir ay içinde otomatik olarak yapacaktır)",
+    "NumberOfChatbotExceedsThePlan":"{{plan_name}} için izin verilen sohbet robotlarının sayısı: {{allowed_cb_num}}. Planı yükseltin veya fazla chatbot'u manuel olarak kaldırın (sistem bunu bir ay içinde otomatik olarak yapacaktır)",
     "OnlyWithPlan": "Yalnızca {{plan_name}} planı",
     "CreateNewContactProperty":"Yeni Bir Kişi Özelliği Oluşturun",
     "PropertyLabel":"Özellik Etiketi",
