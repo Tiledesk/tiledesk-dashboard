@@ -569,10 +569,8 @@ export class CdsCanvasComponent implements OnInit {
     this.intentService.deleteIntentToListOfIntents(intent.intent_id);
     this.intentService.refreshIntents();
     this.intentService.deleteIntent(intent);
-    // this.intentService.updateIntents(this.listOfIntents, intent);
-    // IMPORTANTE!!! DA AGGIUNGERE COME ULTIMA AZIONE!!!
-    // cancello tutti i connettori IN e OUT dell'intent eliminato
-    this.connectorService.deleteConnectorsOfBlock(intent.intent_id); 
+    // IMPORTANTE operazione SUCCESSIVA! al delete cancello tutti i connettori IN e OUT dell'intent eliminato e salvo la modifica
+    this.connectorService.deleteConnectorsOfBlock(intent.intent_id, true, false); 
   }
 
 

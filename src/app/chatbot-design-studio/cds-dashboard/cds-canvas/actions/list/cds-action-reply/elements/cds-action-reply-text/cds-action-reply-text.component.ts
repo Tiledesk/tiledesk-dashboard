@@ -19,7 +19,7 @@ import { Subscription } from 'rxjs';
 export class CdsActionReplyTextComponent implements OnInit {
   @ViewChild('autosize') autosize: CdkTextareaAutosize;
   
-  @Output() updateIntentFromConnectorModification = new EventEmitter();
+  // @Output() updateIntentFromConnectorModification = new EventEmitter();
   @Output() updateAndSaveAction = new EventEmitter();
   @Output() changeActionReply = new EventEmitter();
   @Output() deleteActionReply = new EventEmitter();

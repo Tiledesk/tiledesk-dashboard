@@ -307,9 +307,9 @@ export class ConnectorService {
    * deleteConnectorsOfBlock
    * @param intent_id 
    */
-  public deleteConnectorsOfBlock(intent_id){
-    this.logger.log('[CONNECTOR-SERV] deleteConnectorsOfBlock intent_id ' ,intent_id);
-    this.tiledeskConnectors.deleteConnectorsOfBlock(intent_id);
+  public deleteConnectorsOfBlock(intent_id, save=false, undo=false){
+    console.log('[CONNECTOR-SERV] deleteConnectorsOfBlock intent_id ' ,intent_id);
+    this.tiledeskConnectors.deleteConnectorsOfBlock(intent_id, save, undo);
   }
 
   /**

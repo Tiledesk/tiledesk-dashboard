@@ -925,18 +925,18 @@ export class IntentService {
    * @param intentsToUpdateRedo 
    */
   public addIntentToUndoRedo(type: string, intentPre: Intent, intentNow: Intent, intentsToUpdateUndo: Array<Intent>, intentsToUpdateRedo: Array<Intent>, connector?: string){
-    let typeUNDO = type;
-    let typeREDO = type;
-    if(type === 'PUSH'){typeUNDO = 'DEL';}
-    if(type === 'DEL'){typeUNDO = 'PUSH';}
-    let pos =  this.listOfIntents.findIndex((element) => { return element.intent_id === intentPre.intent_id });
-    if(!pos || pos<0)pos = this.listOfIntents.length;
-    let UNDO = this.setUndoRedoObject(type, typeUNDO, typeREDO, pos, intentPre, intentNow, intentsToUpdateUndo, intentsToUpdateRedo, connector);
-    this.arrayUNDO.push(UNDO);
-    console.log('[INTENT SERVICE] -> AGGIUNGO ', UNDO, this.arrayUNDO );
-    // this.arrayUNDO = this.arrayUNDO.slice(10);
-    this.lastActionUndoRedo = false;
-    this.arrayREDO = [];
+    // let typeUNDO = type;
+    // let typeREDO = type;
+    // if(type === 'PUSH'){typeUNDO = 'DEL';}
+    // if(type === 'DEL'){typeUNDO = 'PUSH';}
+    // let pos =  this.listOfIntents.findIndex((element) => { return element.intent_id === intentPre.intent_id });
+    // if(!pos || pos<0)pos = this.listOfIntents.length;
+    // let UNDO = this.setUndoRedoObject(type, typeUNDO, typeREDO, pos, intentPre, intentNow, intentsToUpdateUndo, intentsToUpdateRedo, connector);
+    // this.arrayUNDO.push(UNDO);
+    // console.log('[INTENT SERVICE] -> AGGIUNGO ', UNDO, this.arrayUNDO );
+    // // this.arrayUNDO = this.arrayUNDO.slice(10);
+    // this.lastActionUndoRedo = false;
+    // this.arrayREDO = [];
   }
 
 
