@@ -327,7 +327,7 @@ export class CdsActionReplyComponent implements OnInit {
     let button = event.buttons[event.index];
     event.buttons.splice(event.index, 1);
     var intentId = this.idAction.substring(0, this.idAction.indexOf('/'));
-    this.connectorService.deleteConnectorFromAction(intentId, button.__idConnector, false);
+    this.connectorService.deleteConnectorFromAction(intentId, button.__idConnector);
     this.updateAndSaveAction.emit();
   }
 

@@ -100,9 +100,7 @@ export class CdsActionIntentComponent implements OnInit {
             this.action.intentName = "#"+this.connector.toId;
           } 
         }
-        // if(this.connector.dispatch) il dispatch blocca il flusso derettamente in connectors.js
-        this.updateAndSaveAction.emit(this.connector);
-        
+        if(this.connector.save)this.updateAndSaveAction.emit(this.connector);
       }
     } catch (error) {
       this.logger.log('error: ', error);
@@ -135,8 +133,8 @@ export class CdsActionIntentComponent implements OnInit {
 
   onResetSelect(event:{name: string, value: string}) {
     let connector = { type: 'delete', fromId: this.idConnector, toId: this.action.intentName };
-    this.onConnectorChange.emit(connector)
-    this.action.intentName = null
+    this.action.intentName = null;
+    this.onConnectorChange.emit(connector);
     this.updateAndSaveAction.emit(this.intentSelected);
   }
   

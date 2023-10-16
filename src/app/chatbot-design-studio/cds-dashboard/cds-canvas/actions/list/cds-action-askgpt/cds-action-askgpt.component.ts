@@ -121,7 +121,7 @@ export class CdsActionAskgptComponent implements OnInit {
             this.isConnectedFalse = false;
           }
           // if(this.connector.notify)
-          this.updateIntentFromConnectorModification.emit(this.connector);
+          if(this.connector.save)this.updateAndSaveAction.emit(this.connector);
           // this.updateAndSaveAction.emit();
         } else { 
           // TODO: verificare quale dei due connettori è stato aggiunto (controllare il valore della action corrispondente al true/false intent)
@@ -133,7 +133,7 @@ export class CdsActionAskgptComponent implements OnInit {
             if(this.action.trueIntent !== '#'+this.connector.toId){ 
               this.action.trueIntent = '#'+this.connector.toId;
               // if(this.connector.notify)
-              this.updateIntentFromConnectorModification.emit(this.connector);
+              if(this.connector.save)this.updateAndSaveAction.emit(this.connector);
               // this.updateAndSaveAction.emit();
             } 
           }        
@@ -143,7 +143,7 @@ export class CdsActionAskgptComponent implements OnInit {
             if(this.action.falseIntent !== '#'+this.connector.toId){ 
               this.action.falseIntent = '#'+this.connector.toId;
               // if(this.connector.notify)
-              this.updateIntentFromConnectorModification.emit(this.connector);
+              if(this.connector.save)this.updateAndSaveAction.emit(this.connector);
               // this.updateAndSaveAction.emit();
             } 
           }

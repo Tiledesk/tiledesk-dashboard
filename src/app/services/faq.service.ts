@@ -498,11 +498,9 @@ public _getAllFaqByFaqKbId(id_faq_kb: string): Observable<Intent[]> {
         'Authorization': this.TOKEN
       })
     };
-
     let url = this.FAQ_URL + id;
-    // if(intent_id) url = this.FAQ_URL + 'intentId' + intent_id; 
+    if(intent_id) url = this.FAQ_URL + 'intentId' + intent_id; 
     this.logger.log('[FAQ-SERV] DELETE FAQ URL ', url);
-
     return this._httpClient.delete(url, httpOptions)
   }
 

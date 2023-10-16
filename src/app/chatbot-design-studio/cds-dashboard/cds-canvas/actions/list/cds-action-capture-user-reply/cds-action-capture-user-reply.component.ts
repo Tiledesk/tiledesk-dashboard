@@ -57,15 +57,14 @@ export class CdsActionCaptureUserReplyComponent implements OnInit {
           // DELETE 
           this.action.goToIntent = null
           this.isConnected = false
-          this.updateAndSaveAction.emit();
         } else { 
           // ADD / EDIT
           this.isConnected = true;
           if(this.action.goToIntent !== "#"+this.connector.toId){ 
             this.action.goToIntent = "#"+this.connector.toId;
-            this.updateAndSaveAction.emit();
           } 
         };
+        if(this.connector.save)this.updateAndSaveAction.emit(this.connector);
       }
     } catch (error) {
       this.logger.error('[ACTION-CAPTURE-USER-REPLY] updateConnector error: ', error);

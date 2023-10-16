@@ -196,7 +196,7 @@ export enum TYPE_OF_MENU {
     QUESTION = 'question'
 }
 
-export const INTENT_TEMP_ID = 'new';
+export const INTENT_TEMP_ID = '';
 
 export const MESSAGE_METADTA_WIDTH = '100%';
 export const MESSAGE_METADTA_HEIGHT = 230;

@@ -18,6 +18,7 @@ export class CdsActionReplyGalleryComponent implements OnInit {
   @ViewChild('scrollMe', { static: false }) scrollContainer: ElementRef;
   
   @Output() updateIntentFromConnectorModification = new EventEmitter();
+  @Output() updateAndSaveAction = new EventEmitter();
   @Output() changeActionReply = new EventEmitter();
   @Output() deleteActionReply = new EventEmitter();
   @Output() moveUpResponse = new EventEmitter();
@@ -143,7 +144,7 @@ export class CdsActionReplyGalleryComponent implements OnInit {
             buttonChanged.action = '';
             buttonChanged.type = TYPE_BUTTON.TEXT;
             // if(this.connector.notify)
-            this.updateIntentFromConnectorModification.emit(this.connector);
+            if(this.connector.save)this.updateAndSaveAction.emit(this.connector);
             // this.changeActionReply.emit();
           } else {
             // ADD / EDIT
@@ -154,7 +155,7 @@ export class CdsActionReplyGalleryComponent implements OnInit {
             if(!buttonChanged.__isConnected){
               buttonChanged.__isConnected = true;
               // if(this.connector.notify)
-              this.updateIntentFromConnectorModification.emit(this.connector);
+              if(this.connector.save)this.updateAndSaveAction.emit(this.connector);
               // this.changeActionReply.emit();
             } 
           }
