@@ -1,3 +1,4 @@
+import { AppConfigService } from './../../services/app-config.service';
 
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common'
@@ -52,10 +53,7 @@ export class CdsDashboardComponent implements OnInit {
     private auth: AuthService,
     private logger: LoggerService,
     private dashboardService: DashboardService,
-    private intentService: IntentService,
-    private controllerService: ControllerService,
-    private connectorService: ConnectorService,
-    private location: Location
+    private appConfigService: AppConfigService
     // private translate: TranslateService
   ) {}
 
@@ -165,8 +163,10 @@ export class CdsDashboardComponent implements OnInit {
 
   /** Go back to previous page */
   goBack() {
-    this.logger.log('[CDS DSHBRD] goBack ');
-    this.location.back()
+    let dashbordBaseUrl = this.appConfigService.getConfig().DASHBOARD_BASE_URL + 'dashboard/#/project/'+ this.dashboardService.projectID + '/home'
+    console.log('[CDS DSHBRD] goBack ', dashbordBaseUrl, this.appConfigService.getConfig().DASHBOARD_BASE_URL);
+    window.open(dashbordBaseUrl, '_self')
+    // this.location.back()
     // this.router.navigate(['project/' + this.project._id + '/bots/my-chatbots/all']);
     this.hideShowWidget('show');
   }
