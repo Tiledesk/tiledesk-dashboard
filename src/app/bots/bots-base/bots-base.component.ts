@@ -130,13 +130,13 @@ export class BotsBaseComponent implements OnInit {
 
             if (this.subscription_is_active === true) {
 
-              if (projectProfileData.profile_name === PLAN_NAME.D) {
+              if (this.profile_name === PLAN_NAME.D) {
                 this.prjct_profile_name = PLAN_NAME.D + " plan";
                 this.chatBotLimit = CHATBOT_MAX_NUM[PLAN_NAME.D]
                 this.tParamsPlanAndChatBot = { plan_name: this.prjct_profile_name, allowed_cb_num: this.chatBotLimit }
                 console.log('[BOTS-BASE] - GET PROJECT PLAN - PLAN_NAME ', this.prjct_profile_name, ' SUB ACTIVE CB LIMIT: ', this.chatBotLimit)
 
-              } else if (projectProfileData.profile_name === PLAN_NAME.E) {
+              } else if (this.profile_name === PLAN_NAME.E) {
                 this.prjct_profile_name = PLAN_NAME.E + " plan";
                 this.chatBotLimit = CHATBOT_MAX_NUM[PLAN_NAME.E]
                 this.tParamsPlanAndChatBot = { plan_name: this.prjct_profile_name, allowed_cb_num: this.chatBotLimit }
@@ -145,19 +145,19 @@ export class BotsBaseComponent implements OnInit {
 
             } else if (this.subscription_is_active === false) {
 
-              if (projectProfileData.profile_name === PLAN_NAME.D) {
+              if (this.profile_name === PLAN_NAME.D) {
                 this.prjct_profile_name = PLAN_NAME.D + " plan";
                 this.chatBotLimit = CHATBOT_MAX_NUM.free;
                 this.tParamsPlanAndChatBot = { plan_name: this.prjct_profile_name, allowed_cb_num: this.chatBotLimit }
                 console.log('[BOTS-BASE] - GET PROJECT PLAN - PLAN_NAME ', this.prjct_profile_name, ' SUB EXIP CB LIMIT: ', this.chatBotLimit)
 
-              } else if (projectProfileData.profile_name === PLAN_NAME.E) {
+              } else if (this.profile_name === PLAN_NAME.E) {
                 this.prjct_profile_name = PLAN_NAME.E + " plan";
                 this.chatBotLimit = CHATBOT_MAX_NUM.free;
                 this.tParamsPlanAndChatBot = { plan_name: this.prjct_profile_name, allowed_cb_num: this.chatBotLimit }
                 console.log('[BOTS-BASE] - GET PROJECT PLAN - PLAN_NAME ', this.prjct_profile_name, ' SUB EXIP CB LIMIT: ', this.chatBotLimit)
 
-              } else if (projectProfileData.profile_name === PLAN_NAME.F) {
+              } else if (this.profile_name === PLAN_NAME.F) {
                 this.prjct_profile_name = PLAN_NAME.F + " plan";
                 this.chatBotLimit = CHATBOT_MAX_NUM.free;
                 this.tParamsPlanAndChatBot = { plan_name: this.prjct_profile_name, allowed_cb_num: this.chatBotLimit }

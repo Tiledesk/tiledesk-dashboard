@@ -1,13 +1,18 @@
-<div class="chatbot-alert-content"> 
-<div  *ngIf="((
-(prjct_profile_type === 'payment' && subscription_is_active === true) ||
-(prjct_profile_type === 'free' && trial_expired === false) || 
-(prjct_profile_type === 'free' && trial_expired === true))  &&
+<div class="chatbot-alert-content">
+  <div class="sub-active-cb-num-greater-than-the-allowed" *ngIf="((
+((profile_name === PLAN_NAME.D || profile_name === PLAN_NAME.E) && subscription_is_active === true) ||
+(profile_name === 'Sandbox' && trial_expired === false) || 
+(profile_name === 'Sandbox' && trial_expired === true))  &&
 (chatBotCount > chatBotLimit))">
-<span class="msg-alert">
-    {{ 'NumberOfTeammatesExceedsThePlan_2' | translate: tParamsPlanAndChatBot }} 
-  </span>
+    <span class="msg-alert">
+      {{ 'NumberOfChatbotExceedsThePlan' | translate: tParamsPlanAndChatBot }}
+    </span>
+    <div class="upgrade--plan-btn-wpr" style="text-align: center;">
+      <button class="upgrade--plan-btn" (click)="presentContactUsModal()">
+        {{ "Pricing.UpgradePlan" | translate }}
+      </button>
+    </div>
 
-</div>
+  </div>
 
 </div>
