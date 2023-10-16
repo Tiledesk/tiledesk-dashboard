@@ -291,7 +291,7 @@ export class IntentService {
     if (savedIntent) {
       console.log('[CDS-CANVAS] Intent salvato correttamente: ', savedIntent, this.listOfIntents);
       // this.replaceNewIntentToListOfIntents(savedIntent);
-      this.listOfIntents = this.replaceIntent(intent, this.listOfIntents);
+      this.listOfIntents = this.replaceIntent(savedIntent, this.listOfIntents);
       this.refreshIntents();
       this.prevListOfIntent = JSON.parse(JSON.stringify(this.listOfIntents));
       this.setDragAndListnerEventToElement(savedIntent.intent_id);
@@ -524,7 +524,7 @@ export class IntentService {
   
 
 
-  updateIntents(listOfIntents, intent){
+  public updateIntents(listOfIntents, intent){
     const intents = JSON.parse(JSON.stringify(listOfIntents));
     let intentsToUpdate = this.setListOfintentsToUpdate(intent, intents);
     // aggiorna gli intent connessi all'intent eliminato
@@ -532,7 +532,6 @@ export class IntentService {
       this.updateIntent(element);
     });
   }
-
   // END INTENT FUNCTIONS //
 
 
