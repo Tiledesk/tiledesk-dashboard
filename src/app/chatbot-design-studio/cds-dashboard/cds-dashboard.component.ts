@@ -19,6 +19,7 @@ import { Intent } from 'app/models/intent-model';
 
 // UTILS //
 import { SIDEBAR_PAGES } from 'app/chatbot-design-studio/utils';
+import { Subject } from 'rxjs/internal/Subject';
 
 @Component({
   selector: 'appdashboard-cds-dashboard',
@@ -30,8 +31,9 @@ export class CdsDashboardComponent implements OnInit {
   SIDEBAR_PAGES = SIDEBAR_PAGES;
   initFinished:boolean = false;
   IS_OPEN_SIDEBAR: boolean = false;
-  IS_OPEN_INTENTS_LIST: boolean = true;
   IS_OPEN_PANEL_WIDGET: boolean = false;
+
+  eventTestItOutHeader: Subject<Intent | boolean> = new Subject<Intent | boolean>();
 
   id_faq_kb: string;
   id_faq: string;
@@ -179,29 +181,31 @@ export class CdsDashboardComponent implements OnInit {
   */
   onTestItOut(event: Intent | boolean) {
     this.logger.log('[CDS DSHBRD] onTestItOut intent ', event);
-    if(typeof event === "boolean"){
-      this.IS_OPEN_PANEL_WIDGET = true;
-    } else {
-      this.IS_OPEN_PANEL_WIDGET = !this.IS_OPEN_PANEL_WIDGET;
-    }
-    if(this.IS_OPEN_PANEL_WIDGET){
-      this.controllerService.closeActionDetailPanel();
-      this.controllerService.closeButtonPanel();
-      // this.intentService.setLiveActiveIntent(null);
-      this.controllerService.closeAddActionMenu();
-      this.connectorService.removeConnectorDraft();
-    }
+    // if(typeof event === "boolean"){
+    //   this.IS_OPEN_PANEL_WIDGET = true;
+    // } else {
+    //   this.IS_OPEN_PANEL_WIDGET = !this.IS_OPEN_PANEL_WIDGET;
+    // }
+    // if(this.IS_OPEN_PANEL_WIDGET){
+    //   this.controllerService.closeActionDetailPanel();
+    //   this.controllerService.closeButtonPanel();
+    //   // this.intentService.setLiveActiveIntent(null);
+    //   this.controllerService.closeAddActionMenu();
+    //   this.connectorService.removeConnectorDraft();
+    // }
+
+    this.eventTestItOutHeader.next(event);
   }
   /*****************************************************/
 
 
   /**************** START EVENTS PANEL INTENT ****************/
 
-  /** onClosePanelWidget */
-  onClosePanelWidget(){
-    this.logger.log('[CDS DSHBRD] onClosePanelWidget');
-    this.IS_OPEN_PANEL_WIDGET = false;
-  }
+  // /** onClosePanelWidget */
+  // onClosePanelWidget(){
+  //   this.logger.log('[CDS DSHBRD] onClosePanelWidget');
+  //   this.IS_OPEN_PANEL_WIDGET = false;
+  // }
 
   /** SIDEBAR OUTPUT EVENTS */
   onClickItemList(event: string) {
