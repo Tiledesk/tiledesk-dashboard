@@ -427,7 +427,7 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
    * delete selected action by keydown backspace
    * */
   onKeydown(event) {
-    this.logger.log('[CDS-INTENT] onKeydown: ', event);
+    // console.log('[CDS-INTENT] onKeydown: ', event);
     if (event.key === 'Backspace' || event.key === 'Escape' || event.key === 'Canc') {
       this.intentService.deleteSelectedAction();
     }

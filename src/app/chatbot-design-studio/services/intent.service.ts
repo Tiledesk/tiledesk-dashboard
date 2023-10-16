@@ -370,7 +370,7 @@ export class IntentService {
    * @param connector 
    * @returns 
    */
-  public async onUpdateIntentWithTimeout(originalIntent: Intent, timeout: number=0, UndoRedo:boolean = true, connector?: any): Promise<boolean> { 
+  public async onUpdateIntentWithTimeout(originalIntent: Intent, timeout: number=0, undo:boolean = false, connector?: any): Promise<boolean> { 
     const thereIsIntent = this.listOfIntents.some((intent) => intent.intent_id === originalIntent.intent_id);
     console.log('[INTENT SERVICE] -> onUpdateIntentWithTimeout, ', originalIntent, connector);
     if(!thereIsIntent)return;
@@ -378,7 +378,7 @@ export class IntentService {
     const prevIntents = JSON.parse(JSON.stringify(this.prevListOfIntent));
     const nowIntents = JSON.parse(JSON.stringify(this.listOfIntents));
     // console.log('[INTENT SERVICE] -> onUpdateIntentWithTimeout2, ',prevIntents, nowIntents);
-    if(UndoRedo){
+    if(undo){
       let intentPrev = prevIntents.find((item) => item.intent_id === intent.intent_id)?prevIntents.find((item) => item.intent_id === intent.intent_id):intent;
       let intentNow = nowIntents.find((item) => item.intent_id === intent.intent_id)?nowIntents.find((item) => item.intent_id === intent.intent_id):intent;
       let intentsToUpdateUndo = [intentPrev];
@@ -592,9 +592,9 @@ export class IntentService {
     // console.log('moveActionBetweenDifferentIntents: ', event, this.listOfIntents, currentIntentId, currentIntent, previousIntent);
     currentIntent.actions.splice(event.currentIndex, 0, action);
     previousIntent.actions.splice(event.previousIndex, 1);
-    this.connectorService.updateConnector(currentIntent.intent_id, false);
-    this.connectorService.updateConnector(previousIntent.intent_id, false);
-    this.connectorService.deleteConnectorsFromActionByActionId(action._tdActionId, false);
+    this.connectorService.updateConnector(currentIntent.intent_id);
+    this.connectorService.updateConnector(previousIntent.intent_id);
+    this.connectorService.deleteConnectorsFromActionByActionId(action._tdActionId);
 
     const responsePreviousIntent = this.onUpdateIntentWithTimeout(previousIntent, 0, false);
     const responseCurrentIntent = this.updateIntentInMoveActionBetweenDifferentIntents(action,currentIntent);
@@ -695,7 +695,7 @@ export class IntentService {
   public deleteSelectedAction(){
     // console.log('[INTENT SERVICE] ::: deleteSelectedAction', this.intentSelected.intent_id, this.actionSelectedID);
     if(this.intentSelected.intent_id && this.actionSelectedID){
-      this.connectorService.deleteConnectorsFromActionByActionId(this.actionSelectedID, false);
+      this.connectorService.deleteConnectorsFromActionByActionId(this.actionSelectedID);
       let intentToUpdate = this.listOfIntents.find((intent) => intent.intent_id === this.intentSelected.intent_id);
       intentToUpdate.actions = intentToUpdate.actions.filter((action: any) => action._tdActionId !== this.actionSelectedID);
       this.listOfIntents = this.listOfIntents.map((intent) => {
@@ -705,7 +705,7 @@ export class IntentService {
         return intent;
       });
       this.refreshIntent(intentToUpdate);
-      this.connectorService.updateConnector(intentToUpdate.intent_id, false);
+      this.connectorService.updateConnector(intentToUpdate.intent_id);
       this.controllerService.closeAllPanels();
       // this.connectorService.deleteConnectorsFromActionByActionId(this.actionSelectedID);
       const responseIntent = this.onUpdateIntentWithTimeout(intentToUpdate);
@@ -1057,15 +1057,15 @@ export class IntentService {
     this.refreshIntent(intent);
     let isOnTheStage = await isElementOnTheStage(intent.intent_id); // sync
     if(isOnTheStage){
-      this.connectorService.createConnectorsOfIntent(intent, false);
+      this.connectorService.createConnectorsOfIntent(intent);
       intentsToUpdate.forEach(element => {
         console.log('[INTENT SERVICE] -> REPLACE ', element);
         this.listOfIntents = this.replaceIntent(element, this.listOfIntents);
         // this.refreshIntent(element); 
         setTimeout(()=> {
           // ATTENZIONE!!! le seguenti azioni devono essere svolte solo dopo che l'elemento è stato aggiornato (gli attributi __ dovrebbero essere generati quando carichiamo i dati dal server!!!)
-          this.connectorService.deleteConnectorsOfBlockThatDontExist(element.intent_id, false);
-          this.connectorService.createConnectorsOfIntent(element, false);
+          this.connectorService.deleteConnectorsOfBlockThatDontExist(element.intent_id);
+          this.connectorService.createConnectorsOfIntent(element);
           // this.connectorService.updateConnector(element.intent_id, false);
         }, 100);
         this.updateIntent(element); // async
@@ -1095,13 +1095,13 @@ export class IntentService {
    */
   private async restoreDel(intent, intentsToUpdate){
     this.deleteIntentToListOfIntents(intent.intent_id);
-    this.connectorService.deleteConnectorsOfBlock(intent.intent_id, false); // cancello tutti i connettori IN e OUT
+    this.connectorService.deleteConnectorsOfBlock(intent.intent_id); // cancello tutti i connettori IN e OUT
     intentsToUpdate.forEach(element => {
       console.log('[INTENT SERVICE] -> REPLACE ', element);
       this.listOfIntents = this.replaceIntent(element, this.listOfIntents);
       setTimeout(()=> {
         // ATTENZIONE!!! le seguenti azioni devono essere svolte solo dopo che l'elemento è stato aggiornato (gli attributi __ dovrebbero essere generati quando carichiamo i dati dal server!!!)
-        this.connectorService.createConnectorsOfIntent(element, false);
+        this.connectorService.createConnectorsOfIntent(element);
         // this.connectorService.deleteConnectorsOfBlockThatDontExist(element.intent_id, false);
         // this.connectorService.updateConnector(element.intent_id, false);
       }, 100);
@@ -1131,10 +1131,10 @@ export class IntentService {
     console.log('[INTENT SERVICE] -> REPLACE INTENT: ', intent);
     // this.refreshIntent(intent); // aggiorno gli attributi custom ex: __isConnected !!! DA RIFATTORIZZARE !!!
     setTimeout(()=> {
-      this.connectorService.deleteConnectorsOutOfBlock(intent.intent_id, false, false);
-      this.connectorService.deleteConnectorsBrokenOutOfBlock(intent.intent_id, false);
-      this.connectorService.createConnectorsOfIntent(intent, false);
-      this.connectorService.updateConnector(intent.intent_id, false);
+      this.connectorService.deleteConnectorsOutOfBlock(intent.intent_id);
+      this.connectorService.deleteConnectorsBrokenOutOfBlock(intent.intent_id);
+      this.connectorService.createConnectorsOfIntent(intent);
+      this.connectorService.updateConnector(intent.intent_id);
     }, 100);
   
     intentsToUpdate.forEach(element => {
@@ -1142,10 +1142,10 @@ export class IntentService {
       console.log('[INTENT SERVICE] -> REPLACE ELEMENT: ', element);
       // this.refreshIntent(element);
       setTimeout(()=> {
-        this.connectorService.deleteConnectorsOutOfBlock(intent.intent_id, false, false);
-        this.connectorService.deleteConnectorsBrokenOutOfBlock(element.intent_id, false);
-        this.connectorService.createConnectorsOfIntent(element, false);
-        this.connectorService.updateConnector(element.intent_id, false);
+        this.connectorService.deleteConnectorsOutOfBlock(intent.intent_id);
+        this.connectorService.deleteConnectorsBrokenOutOfBlock(element.intent_id);
+        this.connectorService.createConnectorsOfIntent(element);
+        this.connectorService.updateConnector(element.intent_id);
       }, 100);
       this.updateIntent(element); // async
     });
@@ -1172,8 +1172,8 @@ export class IntentService {
     // setTimeout(()=> {
         const arrow = document.getElementById(connector.id);
         console.log('[INTENT SERVICE] -> arrow: ', arrow, connector);
-        if(arrow)this.connectorService.deleteConnector(connector.id, false);
-        else this.connectorService.createNewConnector(connector.fromId, connector.toId, false);
+        if(arrow)this.connectorService.deleteConnector(connector.id);
+        else this.connectorService.createNewConnector(connector.fromId, connector.toId);
       // this.connectorService.updateConnector(intent.intent_id, false);
     // }, 100);
     this.updateIntent(intent); // async
