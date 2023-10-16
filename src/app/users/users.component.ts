@@ -583,6 +583,15 @@ export class UsersComponent implements OnInit, OnDestroy {
     }
   }
 
+  presentContactUsModal() {
+    if (this.USER_ROLE === 'owner') {
+      this.notify._displayContactUsModal(true, 'upgrade_plan')
+    } else {
+      this.presentModalOnlyOwnerCanManageTheAccountPlan()
+    }
+
+  }
+
   getMoreOperatorsSeats() {
     if (this.USER_ROLE === 'owner') {
       if (!this.appSumoProfile) {
