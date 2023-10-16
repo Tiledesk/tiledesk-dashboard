@@ -126,7 +126,7 @@ export class ConnectorService {
   public createConnectorsOfIntent(intent:any){
     if(intent.actions){
       intent.actions.forEach(action => {
-        console.log('[CONNECTOR-SERV] createConnectors:: ACTION ', action._tdActionId);
+        // console.log('[CONNECTOR-SERV] createConnectors:: ACTION ', action._tdActionId);
         
         /**  INTENT */
         if(action._tdActionType === TYPE_ACTION.INTENT){
