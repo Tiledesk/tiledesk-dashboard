@@ -81,9 +81,9 @@ export class CdsActionCaptureUserReplyComponent implements OnInit {
   onChangeBlockSelect(event:{name: string, value: string}, type: string) {
     if(event){
       this.action[type] = event.value;
+      this.onConnectorChange.emit({ type: 'create', fromId: this.idConnector, toId: this.action.goToIntent });
+      this.updateAndSaveAction.emit();
     }
-    this.onConnectorChange.emit({ type: 'create', fromId: this.idConnector, toId: this.action.goToIntent });
-    this.updateAndSaveAction.emit();
   }
 
   onResetBlockSelect(event:{name: string, value: string}, type: string) {

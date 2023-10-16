@@ -156,16 +156,17 @@ export class CdsActionOnlineAgentsComponent implements OnInit {
   onChangeSelect(event:{name: string, value: string}, type: 'trueIntent' | 'falseIntent'){
     if(event){
       this.action[type]=event.value
+
+      switch(type){
+        case 'trueIntent':
+          this.onConnectorChange.emit({ type: 'create', fromId: this.idConnectorTrue, toId: this.action.trueIntent})
+          break;
+        case 'falseIntent':
+          this.onConnectorChange.emit({ type: 'create', fromId: this.idConnectorFalse, toId: this.action.falseIntent})
+          break;
+      }
+      this.updateAndSaveAction.emit();
     }
-    switch(type){
-      case 'trueIntent':
-        this.onConnectorChange.emit({ type: 'create', fromId: this.idConnectorTrue, toId: this.action.trueIntent})
-        break;
-      case 'falseIntent':
-        this.onConnectorChange.emit({ type: 'create', fromId: this.idConnectorFalse, toId: this.action.falseIntent})
-        break;
-    }
-    this.updateAndSaveAction.emit();
   }
 
   onResetBlockSelect(event:{name: string, value: string}, type: 'trueIntent' | 'falseIntent') {
