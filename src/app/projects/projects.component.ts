@@ -138,8 +138,10 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   }
 
   getLoggedUserAndCheckProfilePhoto() {
+    // console.log('window.opener.location ', window.opener.location )
+   
     this.auth.user_bs.subscribe((user) => {
-      this.logger.log('[PROJECTS] - USER  ', user)
+      // console.log('[PROJECTS] - USER  ', user)
       this.user = user;
 
       if (user) {

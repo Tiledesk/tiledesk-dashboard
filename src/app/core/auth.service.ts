@@ -64,6 +64,7 @@ export class AuthService {
   public tilebotSidebarIsOpened: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null)
   public botsSidebarIsOpened: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null)
   public isChromeVerGreaterThan100: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null)
+  
   show_ExpiredSessionPopup: boolean
 
   _user_role: string
@@ -254,6 +255,7 @@ export class AuthService {
   // --------------------------------------------------------------------------------------
   publishSSOloggedUser() {
     const storedUser = localStorage.getItem('user')
+    console.log('[AUTH-SERV] publishSSOloggedUser storedUser ', storedUser)
     if (storedUser !== null) {
       this.user_bs.next(JSON.parse(storedUser))
 
@@ -1332,54 +1334,13 @@ export class AuthService {
   
 
   public siginWithGoogle() {
-
+    console.log('[AUTH-SERV] siginWithGoogle HERE YES!!!')
     // const url = this.SERVER_BASE_PATH + "auth/google"
     const url = "https://eu.rtmv3.tiledesk.com/api/auth/google"
     window.open(url, '_self');
 
-    let storedUser = localStorage.getItem('user')
-    let user = JSON.parse(storedUser);
-
-    if (!isDevMode()) {
-      if (window['analytics']) {
-        try {
-          window['analytics'].page("Auth Page, Sign in with Google", {
-
-          });
-        } catch (err) {
-          this.logger.error('Sign in with Google page error', err);
-        }
-
-        let userFullname = ''
-        if (user.firstname && user.lastname)  {
-          userFullname = user.firstname + ' ' + user.lastname
-        } else if (user.firstname && !user.lastname) {
-          userFullname = user.firstname
-        }
-
-        try {
-          window['analytics'].identify(user._id, {
-            name: userFullname,
-            email: user.email,
-            logins: 5,
-
-          });
-        } catch (err) {
-          this.logger.error('identify Sign in with Google event error', err);
-        }
-        // Segments
-        try {
-          window['analytics'].track('Signed In', {
-            "username": userFullname,
-            "userId": user._id,
-            'method': "Sign in with Google"
-          });
-        } catch (err) {
-          this.logger.error('track Sign in with Google event error', err);
-        }
-      }
-    }
-
+    this.localDbService.setInStorage('swg', 'true')
+  
   }
 
   public siginUpWithGoogle() {

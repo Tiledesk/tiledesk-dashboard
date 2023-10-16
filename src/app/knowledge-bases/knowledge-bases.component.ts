@@ -1,10 +1,14 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, isDevMode } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'app/core/auth.service';
+import { NotifyService } from 'app/core/notify.service';
 import { KB, KbSettings } from 'app/models/kbsettings-model';
+import { Project } from 'app/models/project-model';
 import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { OpenaiService } from 'app/services/openai.service';
+import { ProjectService } from 'app/services/project.service';
 
 @Component({
   selector: 'appdashboard-knowledge-bases',
@@ -25,6 +29,14 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
   buttonDisabled: boolean = true;
   addButtonDisabled: boolean = false;
   gptkeyVisible: boolean = false;
+
+  //analytics
+  CURRENT_USER: any;
+  project: Project;
+  project_name: string;
+  id_project: string;
+  profile_name: string;
+  callingPage: string;
 
   kbForm: FormGroup;
   kbsList = [];
@@ -59,7 +71,10 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private logger: LoggerService,
     private openaiService: OpenaiService,
-    private kbService: KnowledgeBaseService
+    private kbService: KnowledgeBaseService,
+    private projectService: ProjectService,
+    public route: ActivatedRoute,
+    private notify: NotifyService
   ) { }
 
   ngOnInit(): void {
@@ -68,6 +83,75 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
     //this.getKnowledgeBases();
     this.getKnowledgeBaseSettings();
     this.kbForm = this.createConditionGroup();
+    this.trackPage();
+    this.getLoggedUser();
+    this.getCurrentProject()
+    this.getRouteParams()
+    this.getRouteParams()
+  }
+
+  getRouteParams() {
+    this.route.params.subscribe((params) => {
+      // this.projectId = params.projectid
+      this.logger.log('[KNOWLEDGE BASES COMP] - GET ROUTE PARAMS ', params);
+      if (params.calledby && params.calledby === 'h') {
+        this.callingPage = 'Home'
+        this.logger.log('[KNOWLEDGE BASES COMP] - GET ROUTE PARAMS callingPage ', this.callingPage);
+      } else if (!params.calledby) {
+        this.callingPage = 'Knowledge Bases'
+        this.logger.log('[KNOWLEDGE BASES COMP] - GET ROUTE PARAMS callingPage ', this.callingPage);
+      }
+    })
+  }
+
+  trackPage() {
+    if (!isDevMode()) {
+      if (window['analytics']) {
+        try {
+          window['analytics'].page("Knowledge Bases Page", {
+
+          });
+        } catch (err) {
+          this.logger.error('Signin page error', err);
+        }
+      }
+    }
+  }
+
+  getLoggedUser() {
+    this.auth.user_bs.subscribe((user) => {
+      this.logger.log('[KNOWLEDGE BASES COMP] - LOGGED USER ', user)
+      if (user) {
+        this.CURRENT_USER = user
+
+      }
+    });
+  }
+  getCurrentProject() {
+    this.auth.project_bs.subscribe((project) => {
+      this.project = project
+      this.logger.log('[KNOWLEDGE BASES COMP] - GET CURRENT PROJECT ', this.project)
+      if (this.project) {
+        this.project_name = project.name;
+        this.id_project = project._id;
+        this.getProjectById(this.id_project)
+        this.logger.log('[KNOWLEDGE BASES COMP] - GET CURRENT PROJECT - PROJECT-NAME ', this.project_name, ' PROJECT-ID ', this.id_project)
+      }
+    });
+  }
+  getProjectById(projectId) {
+    this.projectService.getProjectById(projectId).subscribe((project: any) => {
+      this.logger.log('[KNOWLEDGE BASES COMP] - GET PROJECT BY ID - PROJECT: ', project);
+
+      this.profile_name = project.profile.name
+      this.logger.log('[KNOWLEDGE BASES COMP] - GET PROJECT BY ID - profile_name: ', this.profile_name);
+
+    }, error => {
+      this.logger.error('[KNOWLEDGE BASES COMP] - GET PROJECT BY ID - ERROR ', error);
+    }, () => {
+      this.logger.log('[KNOWLEDGE BASES COMP] - GET PROJECT BY ID * COMPLETE * ');
+
+    });
   }
 
   startPooling() {
@@ -149,6 +233,7 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
     this.newKb.name = this.newKb.url.substring(split_index);
 
     this.kbService.addNewKb(this.kbSettings._id, this.newKb).subscribe((savedSettings: KbSettings) => {
+      // console.log('[KNOWLEDGE BASES COMP] this.kbSettings addNewKb ', this.kbSettings)
       this.getKnowledgeBaseSettings();
       let kb = savedSettings.kbs.find(kb => kb.url === this.newKb.url);
 
@@ -158,7 +243,7 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
         setTimeout(() => {
           this.openMissingGptkeyModal();
         }, 600)
-        
+
       } else {
         this.closeAddKnowledgeBaseModal();
         this.checkStatus(kb).then((status_code) => {
@@ -171,29 +256,104 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
       this.logger.error("[KNOWLEDGE BASES COMP] ERROR add new kb: ", error);
     }, () => {
       this.logger.log("[KNOWLEDGE BASES COMP] add new kb *COMPLETED*");
+      let gptkey = "empty"
+      if (this.kbSettings.gptkey !== "") {
+        gptkey = 'filled'
+      }
+      // console.log("[KNOWLEDGE BASES COMP] gptkey ", gptkey)
+      this.trackUserActioOnKB('Added Knowledge Base', gptkey)
     })
+  }
+
+  trackUserActioOnKB(event: any, gptkey: string) {
+    if (!isDevMode()) {
+      if (window['analytics']) {
+        let userFullname = ''
+        if (this.CURRENT_USER.firstname && this.CURRENT_USER.lastname) {
+          userFullname = this.CURRENT_USER.firstname + ' ' + this.CURRENT_USER.lastname
+        } else if (this.CURRENT_USER.firstname && !this.CURRENT_USER.lastname) {
+          userFullname = this.CURRENT_USER.firstname
+        }
+
+        try {
+          window['analytics'].identify(this.CURRENT_USER._id, {
+            name: userFullname,
+            email: this.CURRENT_USER.email,
+            plan: this.profile_name
+
+          });
+        } catch (err) {
+          this.logger.error('identify Invite Sent Profile error', err);
+        }
+
+        try {
+          window['analytics'].track(event, {
+            "type": "organic",
+            "username": userFullname,
+            "email": this.CURRENT_USER.email,
+            'userId': this.CURRENT_USER._id,
+            'page': this.callingPage,
+            'gptkey': gptkey
+
+          }, {
+            "context": {
+              "groupId": this.id_project
+            }
+          });
+        } catch (err) {
+          this.logger.error('track Invite Sent event error', err);
+        }
+
+        try {
+          window['analytics'].group(this.id_project, {
+            name: this.project_name,
+            plan: this.profile_name + ' plan',
+          });
+        } catch (err) {
+          this.logger.error('group Invite Sent error', err);
+        }
+      }
+    }
   }
 
   saveKnowledgeBaseSettings() {
     this.kbService.saveKbSettings(this.kbSettings).subscribe(((savedSettings) => {
+
+      // console.log('[KNOWLEDGE BASES COMP] save kb this.kbSettings > gptkey: ', this.kbSettings.gptkey)
+      // console.log('[KNOWLEDGE BASES COMP] save kb savedSettings: ', savedSettings)
       this.getKnowledgeBaseSettings();
       this.closeSecretsModal();
     }), (error) => {
       this.logger.error("[KNOWLEDGE BASES COMP] ERROR save kb settings: ", error);
     }, () => {
       this.logger.log("[KNOWLEDGE BASES COMP] save kb settings *COMPLETE*");
+      let gptkey = "empty"
+      if (this.kbSettings.gptkey !== "") {
+        gptkey = 'filled'
+      }
+      // console.log("[KNOWLEDGE BASES COMP] gptkey ", gptkey)
+      this.trackUserActioOnKB('Save Knowledge Base GPT-Key', gptkey)
     })
   }
 
   deleteKnowledgeBase(id) {
     this.logger.log("[KNOWLEDGE BASES COMP] kb to delete id: ", id);
     this.kbService.deleteKb(this.kbSettings._id, id).subscribe((response) => {
+
+      // console.log('[KNOWLEDGE BASES COMP] this.kbSettings delete > ', this.kbSettings.gptkey)
+
       this.getKnowledgeBaseSettings();
       this.closeDeleteKnowledgeBaseModal();
     }, (error) => {
       this.logger.error("[KNOWLEDGE BASES COMP] ERROR delete kb: ", error);
     }, () => {
       this.logger.log("[KNOWLEDGE BASES COMP] delete kb *COMPLETE*");
+      let gptkey = "empty"
+      if (this.kbSettings.gptkey !== "") {
+        gptkey = 'filled'
+      }
+      // console.log("[KNOWLEDGE BASES COMP] gptkey ", gptkey)
+      this.trackUserActioOnKB('Deleted Knowledge Base', gptkey)
     })
   }
 
@@ -202,8 +362,11 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
       full_url: kb.url,
       gptkey: this.kbSettings.gptkey
     }
-    this.openaiService.startScraping(data).subscribe((response) => {
+    this.openaiService.startScraping(data).subscribe((response: any) => {
       this.logger.log("start scraping response: ", response);
+      if (response.message && response.message === "Invalid Openai API key") {
+        this.notify.showWidgetStyleUpdateNotification("Invalid Openai API key", 4, 'report_problem');
+      }
       setTimeout(() => {
         this.checkStatus(kb).then((status_code: number) => {
           kb.status = status_code;

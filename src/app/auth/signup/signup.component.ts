@@ -147,8 +147,13 @@ export class SignupComponent implements OnInit, AfterViewInit {
     this.buildForm();
     this.getBrowserLang();
     this.getOSCODE();
-    this.getQueryParamsAndSegmentRecordPageAndIdentify()
-    // 
+    this.getQueryParamsAndSegmentRecordPageAndIdentify();
+    
+    const hasSigninWithGoogle = this.localDbService.getFromStorage('swg')
+    if (hasSigninWithGoogle) {
+      this.localDbService.removeFromStorage('swg')
+      console.log('[SIGN-UP] removeFromStorage swg')
+    }
 
   }
 
@@ -569,7 +574,8 @@ export class SignupComponent implements OnInit, AfterViewInit {
                   "last_name": signupResponse.user.lastname,
                   "email": signupResponse.user.email,
                   "username": userFullname,
-                  'userId': signupResponse.user._id
+                  'userId': signupResponse.user._id,
+                  'method': "Email and Password"
                 });
               } catch (err) {
                 this.logger.error('track signup event error', err);

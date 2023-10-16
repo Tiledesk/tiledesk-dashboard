@@ -77,13 +77,14 @@ export class CreateProjectGsComponent implements OnInit {
             }
 
             try {
-              window['analytics'].track("Signed Up with Google ", {
+              window['analytics'].track("Signed Up", {
                 "type": "organic",
                 "first_name": user.firstname,
                 "last_name": user.lastname,
                 "email": user.email,
                 "username": userFullname,
-                'userId': user._id
+                'userId': user._id,
+                'method': "Signup up with Google"
               });
             } catch (err) {
               this.logger.error('track signup event error', err);

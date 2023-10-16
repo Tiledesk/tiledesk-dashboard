@@ -220,7 +220,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     private logger: LoggerService,
     private projectService: ProjectService,
     public appStoreService: AppStoreService,
-    private departmentService: DepartmentService
+    private departmentService: DepartmentService,
+    public localDbService: LocalDbService
   ) {
     const brand = brandService.getBrand();
     this.company_name = brand['company_name'];
@@ -262,6 +263,13 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     // this.getPromoBanner()
     this.waWizardSteps = [{ step1: false, step2: false, step3: false }]
     this.oneStepWizard = { watsAppConnected: false }
+
+    // get if user has used Signin with Google
+    const hasSigninWithGoogle = this.localDbService.getFromStorage('swg')
+    if (hasSigninWithGoogle) {
+      this.localDbService.removeFromStorage('swg')
+      // console.log('[SIGN-UP] removeFromStorage swg')
+    }
 
   }
 
@@ -2039,7 +2047,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         takeUntil(this.unsubscribe$)
       )
       .subscribe((user) => {
-        this.logger.log('[HOME] - USER GET IN HOME ', user)
+        // console.log('[HOME] - USER GET IN HOME ', user)
         // tslint:disable-next-line:no-debugger
         // debugger
         this.user = user;
