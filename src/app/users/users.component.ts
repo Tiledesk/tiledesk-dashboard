@@ -131,6 +131,11 @@ export class UsersComponent implements OnInit, OnDestroy {
   }
 
 
+  ngOnDestroy() {
+    this.subscription.unsubscribe()
+  }
+
+
 
   getBrowserVersion() {
     this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
@@ -484,8 +489,15 @@ export class UsersComponent implements OnInit, OnDestroy {
   //     })
   // }
 
-  ngOnDestroy() {
-    this.subscription.unsubscribe()
+
+
+  presentContactUsModal() {
+    if (this.USER_ROLE === 'owner') {
+      this.notify._displayContactUsModal(true, 'upgrade_plan')
+    } else {
+      this.presentModalOnlyOwnerCanManageTheAccountPlan()
+    }
+
   }
 
   openModalSubsExpired() {

@@ -87,7 +87,6 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
     this.getLoggedUser();
     this.getCurrentProject()
     this.getRouteParams()
-    this.getRouteParams()
   }
 
   getRouteParams() {
