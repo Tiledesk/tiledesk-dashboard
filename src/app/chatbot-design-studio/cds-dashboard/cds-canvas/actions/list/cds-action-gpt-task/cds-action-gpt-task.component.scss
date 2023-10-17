@@ -624,6 +624,16 @@ div.value-wrp {
     }
 }
 
+.gpt-setting-input {
+    color: black;
+    text-align: center;
+    width: 45px;
+    border: none;
+    height: 26px;
+    border-radius: 12px;
+    background-color: aliceblue;
+}
+
 mat-expansion-panel ::ng-deep {
     background-color: transparent;
     box-shadow: none;

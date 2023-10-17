@@ -147,7 +147,7 @@ export class CdsActionReplyComponent implements OnInit {
   }
 
   drop(event: CdkDragDrop<string[]>) {
-    // console.log( 'DROP REPLY ---> ',event, this.arrayResponses);
+    // this.logger.log( 'DROP REPLY ---> ',event, this.arrayResponses);
     this.textGrabbing = false;
     try {
       let currentPos = event.currentIndex*2+1;
@@ -160,7 +160,7 @@ export class CdsActionReplyComponent implements OnInit {
       this.arrayResponses[currentPos] = msgPre;
       this.arrayResponses[previousPos-1] = waitCur;
       this.arrayResponses[previousPos] = msgCur;
-      // console.log( 'DROP REPLY ---> ', this.arrayResponses);
+      // this.logger.log( 'DROP REPLY ---> ', this.arrayResponses);
       this.connectorService.updateConnector(this.intentSelected.id);
       this.onUpdateAndSaveAction();
     } catch (error) {
@@ -180,7 +180,7 @@ export class CdsActionReplyComponent implements OnInit {
       from = index;
       to = from - 2;
       this.arrayResponses.splice(to, 0, this.arrayResponses.splice(from, 1)[0]);
-      // console.log( 'onMoveUpResponse ---> ', this.arrayResponses);
+      // this.logger.log( 'onMoveUpResponse ---> ', this.arrayResponses);
       this.connectorService.updateConnector(this.intentSelected.id);
       this.onUpdateAndSaveAction();
     } catch (error) {
@@ -198,7 +198,7 @@ export class CdsActionReplyComponent implements OnInit {
       from = index - 1;
       to = from + 2;
       this.arrayResponses.splice(to, 0, this.arrayResponses.splice(from, 1)[0]);
-      // console.log( 'onMoveUpResponse ---> ', this.arrayResponses);
+      // this.logger.log( 'onMoveUpResponse ---> ', this.arrayResponses);
       this.connectorService.updateConnector(this.intentSelected.id);
       this.onUpdateAndSaveAction();
     } catch (error) {
@@ -281,7 +281,6 @@ export class CdsActionReplyComponent implements OnInit {
   /** onCreateNewButton */
   onCreateNewButton(index){
     this.logger.log('[cds-action-reply] onCreateNewButton: ', index);
-    console.log("onCreateNewButton --->", index, this.arrayResponses[index])
     try {
       if(!this.arrayResponses[index].message.attributes || !this.arrayResponses[index].message.attributes.attachment){
         this.arrayResponses[index].message.attributes = new MessageAttributes();

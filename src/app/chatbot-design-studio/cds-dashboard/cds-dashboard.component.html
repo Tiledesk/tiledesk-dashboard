@@ -21,8 +21,7 @@
         
         <cds-canvas *ngIf="activeSidebarSection == SIDEBAR_PAGES.INTENTS && initFinished" 
             class="cds-content"
-            (closePanelWidget)="onClosePanelWidget()"
-            (testItOut)="onTestItOut($event)">
+            [onHeaderTestItOut]="eventTestItOutHeader.asObservable()">
         </cds-canvas>
 
         <cds-chatbot-details *ngIf="activeSidebarSection == SIDEBAR_PAGES.SETTINGS && initFinished" 
@@ -37,10 +36,7 @@
             [selectedChatbot]="selectedChatbot">
         </cds-rules>
 
-        <cds-panel-widget *ngIf="IS_OPEN_PANEL_WIDGET" 
-            id="widget-preview" 
-            class="cds-generic-panel">
-        </cds-panel-widget>
+        
         
     </div>
 

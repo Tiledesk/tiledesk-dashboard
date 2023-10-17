@@ -263,6 +263,7 @@ export class ActionIntentConnected extends Action {
 export class ActionEmail extends Action {
     to: string;
     subject: string;
+    replyto: string;
     text: string;
     constructor() {
         super();
