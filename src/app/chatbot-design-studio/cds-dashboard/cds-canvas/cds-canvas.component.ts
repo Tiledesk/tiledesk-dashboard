@@ -963,6 +963,7 @@ export class CdsCanvasComponent implements OnInit {
       const newAction = this.intentService.createNewAction(event.type);
       this.intentSelected.actions.push(newAction);
       this.updateIntent(this.intentSelected, 0);
+      this.controllerService.closeAddActionMenu();
     }
     
   }
