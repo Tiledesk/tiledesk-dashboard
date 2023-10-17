@@ -328,7 +328,8 @@ export class CdsActionReplyComponent implements OnInit {
     event.buttons.splice(event.index, 1);
     var intentId = this.idAction.substring(0, this.idAction.indexOf('/'));
     this.connectorService.deleteConnectorFromAction(intentId, button.__idConnector);
-    this.updateAndSaveAction.emit();
+    // this.updateAndSaveAction.emit();
+    this.onUpdateAndSaveAction();
   }
 
 
@@ -337,10 +338,10 @@ export class CdsActionReplyComponent implements OnInit {
    * 1 - update connectors
    * 2 - update intent
    * */
-  public async onUpdateAndSaveAction() {
+  public async onUpdateAndSaveAction(connector?) {
     console.log('[cds-action-reply] onUpdateAndSaveAction:::: ', this.intentSelected, this.action);
     this.connectorService.updateConnector(this.intentSelected.intent_id);
-    this.updateAndSaveAction.emit(this.action);
+    this.updateAndSaveAction.emit(connector);
   }
 
   // on intent name //

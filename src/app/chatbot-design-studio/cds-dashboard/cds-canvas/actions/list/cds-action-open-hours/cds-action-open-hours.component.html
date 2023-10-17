@@ -10,6 +10,7 @@
             <b>OPEN</b>
         </label>
         <cds-connector class="connector-true"
+            [class]="idConnectorTrue"
             [idConnector] = "idConnectorTrue"
             [isConnected] = "isConnectedTrue">
         </cds-connector>
@@ -21,6 +22,7 @@
     <div class="previewContent">
         <label class="title-preview-label">else</label>
         <cds-connector class="connector-false"
+            [class]="idConnectorFalse"
             [idConnector] = "idConnectorFalse"
             [isConnected] = "isConnectedFalse">
         </cds-connector>

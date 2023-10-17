@@ -343,7 +343,7 @@ export class CdsCanvasComponent implements OnInit {
         console.log("[CDS-CANVAS] connector-created:", e);
         const connector = e.detail.connector;
         connector['created'] = true;
-        // connector.notify =  connector.notify?connector.notify:true;
+        delete connector['deleted'];
         this.connectorService.addConnectorToList(connector);
         this.intentService.onChangedConnector(connector);
       },
@@ -360,6 +360,7 @@ export class CdsCanvasComponent implements OnInit {
         console.log("[CDS-CANVAS] connector-deleted:", e);
         const connector = e.detail.connector;
         connector['deleted'] = true;
+        delete connector['created'];
         this.connectorService.deleteConnectorToList(connector.id);
         this.intentService.onChangedConnector(connector);
       },

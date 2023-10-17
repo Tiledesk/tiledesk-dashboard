@@ -58,6 +58,11 @@ export class CdsActionReplyTextComponent implements OnInit {
 
   // SYSTEM FUNCTIONS //
   ngOnInit(): void {
+    this.subscriptionChangedConnector = this.intentService.isChangedConnector$.subscribe((connector: any) => {
+      console.log('[CDS-ACTION-REPLY] - subcribe to isChangedConnector$ >>', connector);
+      this.connector = connector;
+      this.updateConnector();
+    });
     this.initialize();
   }
 
@@ -71,6 +76,7 @@ export class CdsActionReplyTextComponent implements OnInit {
       this.subscriptionChangedConnector.unsubscribe();
     }
   }
+  
   // ngOnChanges(changes: SimpleChanges): void {
   //   this.logger.log('CdsActionReplyTextComponent ngOnChanges:: ', this.response);
   // }
@@ -80,13 +86,7 @@ export class CdsActionReplyTextComponent implements OnInit {
   private initialize(){
     this.delayTime = (this.wait && this.wait.time)? (this.wait.time/1000) : 500;
     this.checkButtons();
-    this.subscriptionChangedConnector = this.intentService.isChangedConnector$.subscribe((connector: any) => {
-      this.logger.log('[CdsActionReplyTextComponent] isChangedConnector-->', connector);
-      this.connector = connector;
-      this.updateConnector();
-    });
-    // this.patchButtons();
-    // this.buttons = this.response?.attributes?.attachment?.buttons;
+    // console.log('[CDS-ACTION-REPLY] - buttons >>', this.response, this.buttons);
     this.buttons = this.intentService.patchButtons(this.buttons, this.idAction);
     this.idIntent = this.idAction.split('/')[0];
   }
@@ -128,8 +128,9 @@ export class CdsActionReplyTextComponent implements OnInit {
       const array = this.connector.fromId.split("/");
       const idButton = array[array.length - 1];
       const idConnector = this.idAction+'/'+idButton;
-      this.logger.log(' updateConnector [CdsActionReplyTextComponent]:: connector.fromId: ', this.connector.fromId);
       const buttonChanged = this.buttons.find(obj => obj.uid === idButton);
+      // console.log('updateConnector [CdsActionReplyTextComponent]:: buttonChanged: ', this.connector, buttonChanged, this.buttons, idButton);
+      // console.log('updateConnector [CdsActionReplyTextComponent]:: connector.fromId: ', idConnector, idButton, this.connector.fromId);
       if(idConnector === this.connector.fromId && buttonChanged){
         if(this.connector.deleted){
           // DELETE 
@@ -147,7 +148,7 @@ export class CdsActionReplyTextComponent implements OnInit {
           buttonChanged.__idConnector = this.connector.fromId;
           buttonChanged.action = buttonChanged.action? buttonChanged.action : '#' + this.connector.toId;
           buttonChanged.type = TYPE_BUTTON.ACTION;
-          console.log('[CdsActionReplyTextComponent] updateConnector :: ', this.buttons);
+          console.log('[CdsActionReplyTextComponent] updateConnector :: ', buttonChanged);
           if(!buttonChanged.__isConnected){
             buttonChanged.__isConnected = true;
             // if(this.connector.notify)

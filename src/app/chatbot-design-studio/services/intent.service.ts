@@ -384,7 +384,7 @@ export class IntentService {
       let intentsToUpdateUndo = [intentPrev];
       let intentsToUpdateRedo = [intentNow];
       if(!connector)this.addIntentToUndoRedo('PUT', intentPrev, intentNow, intentsToUpdateUndo, intentsToUpdateRedo);
-      else if(connector.notify) this.addIntentToUndoRedo('CONN', intentPrev, intentNow, intentsToUpdateUndo, intentsToUpdateRedo, connector);
+      else if(connector) this.addIntentToUndoRedo('CONN', intentPrev, intentNow, intentsToUpdateUndo, intentsToUpdateRedo, connector);
     }
     if(!timeout)timeout = 0;
     return new Promise((resolve, reject) => {
@@ -925,18 +925,18 @@ export class IntentService {
    * @param intentsToUpdateRedo 
    */
   public addIntentToUndoRedo(type: string, intentPre: Intent, intentNow: Intent, intentsToUpdateUndo: Array<Intent>, intentsToUpdateRedo: Array<Intent>, connector?: string){
-    // let typeUNDO = type;
-    // let typeREDO = type;
-    // if(type === 'PUSH'){typeUNDO = 'DEL';}
-    // if(type === 'DEL'){typeUNDO = 'PUSH';}
-    // let pos =  this.listOfIntents.findIndex((element) => { return element.intent_id === intentPre.intent_id });
-    // if(!pos || pos<0)pos = this.listOfIntents.length;
-    // let UNDO = this.setUndoRedoObject(type, typeUNDO, typeREDO, pos, intentPre, intentNow, intentsToUpdateUndo, intentsToUpdateRedo, connector);
-    // this.arrayUNDO.push(UNDO);
-    // console.log('[INTENT SERVICE] -> AGGIUNGO ', UNDO, this.arrayUNDO );
-    // // this.arrayUNDO = this.arrayUNDO.slice(10);
-    // this.lastActionUndoRedo = false;
-    // this.arrayREDO = [];
+    let typeUNDO = type;
+    let typeREDO = type;
+    if(type === 'PUSH'){typeUNDO = 'DEL';}
+    if(type === 'DEL'){typeUNDO = 'PUSH';}
+    let pos =  this.listOfIntents.findIndex((element) => { return element.intent_id === intentPre.intent_id });
+    if(!pos || pos<0)pos = this.listOfIntents.length;
+    let UNDO = this.setUndoRedoObject(type, typeUNDO, typeREDO, pos, intentPre, intentNow, intentsToUpdateUndo, intentsToUpdateRedo, connector);
+    this.arrayUNDO.push(UNDO);
+    console.log('[INTENT SERVICE] ***** AGGIUNGO ', UNDO, this.arrayUNDO );
+    // this.arrayUNDO = this.arrayUNDO.slice(10);
+    this.lastActionUndoRedo = false;
+    this.arrayREDO = [];
   }
 
 
@@ -1130,9 +1130,9 @@ export class IntentService {
     console.log('[INTENT SERVICE] -> REPLACE INTENT: ', intent);
     // this.refreshIntent(intent); // aggiorno gli attributi custom ex: __isConnected !!! DA RIFATTORIZZARE !!!
     setTimeout(()=> {
-      this.connectorService.deleteConnectorsOutOfBlock(intent.intent_id);
-      this.connectorService.deleteConnectorsBrokenOutOfBlock(intent.intent_id);
-      this.connectorService.createConnectorsOfIntent(intent);
+      this.connectorService.deleteConnectorsOutOfBlock(intent.intent_id); // false, false
+      this.connectorService.deleteConnectorsBrokenOutOfBlock(intent.intent_id); // false, false
+      this.connectorService.createConnectorsOfIntent(intent); // false, false
       this.connectorService.updateConnector(intent.intent_id);
     }, 100);
   
@@ -1141,9 +1141,9 @@ export class IntentService {
       console.log('[INTENT SERVICE] -> REPLACE ELEMENT: ', element);
       // this.refreshIntent(element);
       setTimeout(()=> {
-        this.connectorService.deleteConnectorsOutOfBlock(intent.intent_id);
-        this.connectorService.deleteConnectorsBrokenOutOfBlock(element.intent_id);
-        this.connectorService.createConnectorsOfIntent(element);
+        this.connectorService.deleteConnectorsOutOfBlock(intent.intent_id); // false, false
+        this.connectorService.deleteConnectorsBrokenOutOfBlock(element.intent_id); // false, false
+        this.connectorService.createConnectorsOfIntent(element); // false, false
         this.connectorService.updateConnector(element.intent_id);
       }, 100);
       this.updateIntent(element); // async
@@ -1167,7 +1167,7 @@ export class IntentService {
    * refreshIntents: fa scattare l'evento e aggiorna l'elenco degli intents (listOfIntents) in tutti i componenti sottoscritti, come cds-panel-intent-list 
    */
   private async restoreConnector(intent, connector){
-    this.listOfIntents = this.replaceIntent(intent, this.listOfIntents);
+    
     // setTimeout(()=> {
         const arrow = document.getElementById(connector.id);
         console.log('[INTENT SERVICE] -> arrow: ', arrow, connector);
@@ -1175,6 +1175,8 @@ export class IntentService {
         else this.connectorService.createNewConnector(connector.fromId, connector.toId);
       // this.connectorService.updateConnector(intent.intent_id, false);
     // }, 100);
+
+    // this.listOfIntents = this.replaceIntent(intent, this.listOfIntents); /// Arggggg!! questa mmerda ricarica tutte le action e mi svuota tutti i connettori true false
     this.updateIntent(intent); // async
     // this.refreshIntent(intent);
     return;

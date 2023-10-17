@@ -60,6 +60,11 @@ export class CdsActionReplyImageComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.subscriptionChangedConnector = this.intentService.isChangedConnector$.subscribe((connector: any) => {
+      this.logger.log('CdsActionReplyImageComponent isChangedConnector-->', connector);
+      this.connector = connector;
+      this.updateConnector();
+    });
     this.initialize();
   }
 
@@ -76,11 +81,6 @@ export class CdsActionReplyImageComponent implements OnInit {
   private initialize(){
     this.delayTime = (this.wait && this.wait.time)? (this.wait.time/1000) : 500;
     this.checkButtons();
-    this.subscriptionChangedConnector = this.intentService.isChangedConnector$.subscribe((connector: any) => {
-      this.logger.log('CdsActionReplyImageComponent isChangedConnector-->', connector);
-      this.connector = connector;
-      this.updateConnector();
-    });
     // this.patchButtons();
     // this.buttons = this.response?.attributes?.attachment?.buttons;
     this.buttons = this.intentService.patchButtons(this.buttons, this.idAction);

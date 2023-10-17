@@ -56,8 +56,7 @@ export class CdsActionIntentComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges): void {
     console.log('[CDS-ACTION-INTENT] >> ngOnChanges', changes);
-    // this.intentSelected = changes.intentSelected.currentValue;
-    this.checkConnectionStatus();
+    // this.checkConnectionStatus();
   }
 
   private checkConnectionStatus(){
@@ -96,9 +95,9 @@ export class CdsActionIntentComponent implements OnInit {
           // ADD / EDIT
           console.log('[CDS-ACTION-INTENT] 4 - PALLINO PIENO :: ');
           this.isConnected = true;
-          if(this.action.intentName !== "#"+this.connector.toId){ 
-            this.action.intentName = "#"+this.connector.toId;
-          } 
+          //if(this.action.intentName !== "#"+this.connector.toId){ 
+          this.action.intentName = "#"+this.connector.toId;
+          //} 
         }
         if(this.connector.save)this.updateAndSaveAction.emit(this.connector);
       }
