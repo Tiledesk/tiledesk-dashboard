@@ -7,6 +7,8 @@ import { ProjectPlanService } from 'app/services/project-plan.service';
 import { PLAN_NAME } from 'app/utils/util';
 import { TranslateService } from '@ngx-translate/core'
 import { UsersService } from 'app/services/users.service';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'appdashboard-chatbot-alert',
@@ -21,6 +23,8 @@ export class ChatbotAlertComponent extends BotsBaseComponent implements OnInit {
   public USER_ROLE: string;
   onlyOwnerCanManageTheAccountPlanMsg: string;
   learnMoreAboutDefaultRoles: string;
+  route: string;
+  IS_TEMPLATE_ROUTE: boolean
 
   constructor(
     public prjctPlanService: ProjectPlanService,
@@ -29,16 +33,30 @@ export class ChatbotAlertComponent extends BotsBaseComponent implements OnInit {
     private translate: TranslateService,
     private notify: NotifyService,
     private usersService: UsersService,
+    private router: Router
   ) {
     super(prjctPlanService);
     this.getProjectPlan();
-
   }
 
   ngOnInit(): void {
     this.getFaqKbByProjectId();
     this.translateModalOnlyOwnerCanManageProjectAccount();
     this.getProjectUserRole()
+    this.getActiveRoute()
+  }
+
+  getActiveRoute() {
+    const currentUrl = this.router.url;
+    console.log('[CHATBOT-ALERT] currentUrl route' ,currentUrl)
+    if (currentUrl.indexOf('/templates/') !== -1) {
+      console.log('[CHATBOT-ALERT] template route')
+      this.IS_TEMPLATE_ROUTE = true
+    } else if (currentUrl.indexOf('/my-chatbots/') !== -1) {
+      console.log('[CHATBOT-ALERT] chatbots route')
+      this.IS_TEMPLATE_ROUTE = false
+    }
+   
   }
 
   getProjectUserRole() {
@@ -70,8 +88,8 @@ export class ChatbotAlertComponent extends BotsBaseComponent implements OnInit {
     } else {
       this.presentModalOnlyOwnerCanManageTheAccountPlan()
     }
-
   }
+
 
 
   openModalSubsExpired() {

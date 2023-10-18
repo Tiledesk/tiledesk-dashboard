@@ -7,7 +7,7 @@ import { DepartmentService } from 'app/services/department.service';
 import { FaqKbService } from 'app/services/faq-kb.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { UsersService } from 'app/services/users.service';
-import { goToCDSVersion } from 'app/utils/util';
+import { PLAN_NAME, goToCDSVersion } from 'app/utils/util';
 
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
@@ -26,6 +26,7 @@ import { NotifyService } from 'app/core/notify.service';
   styleUrls: ['./home-create-chatbot.component.scss']
 })
 export class HomeCreateChatbotComponent extends BotsBaseComponent implements OnInit, OnChanges, OnDestroy {
+  PLAN_NAME = PLAN_NAME
   @Input() use_case_for_child: string;
   @Input() solution_channel_for_child: string;
   @Input() waBotId: string;
@@ -65,7 +66,7 @@ export class HomeCreateChatbotComponent extends BotsBaseComponent implements OnI
     private botLocalDbService: BotLocalDbService,
     public prjctPlanService: ProjectPlanService,
     private notify: NotifyService,
-  ) { 
+  ) {
     super(prjctPlanService);
   }
 
@@ -159,7 +160,7 @@ export class HomeCreateChatbotComponent extends BotsBaseComponent implements OnI
 
   openDialog(template) {
     this.logger.log('[HOME-CREATE-CHATBOT] openDialog TemplateDetailComponent template ', template)
-  
+
     const dialogRef = this.dialog.open(TemplateDetailComponent, {
       data: {
         template: template,
@@ -236,32 +237,32 @@ export class HomeCreateChatbotComponent extends BotsBaseComponent implements OnI
     this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
       this.logger.log('[HOME-CREATE-CHATBOT] - GET FAQKB RES', faqKb);
 
-      this.departmentService.getDeptsByProjectId().subscribe((depts: any) => {
+      // this.departmentService.getDeptsByProjectId().subscribe((depts: any) => {
 
-        this.logger.log('[HOME-CREATE-CHATBOT] - GET DEPTS RES', depts);
-        if (depts) {
-          for (let i = 0; i < depts.length; i++) {
-            this.logger.log('[HOME-CREATE-CHATBOT] - GET DEPTS RES depts[i]', depts[i]);
-            if (faqKb) {
-              for (let j = 0; j < faqKb.length; j++) {
-                this.logger.log('[HOME-CREATE-CHATBOT] - GET DEPTS RES faqKb[j]', faqKb[j]);
+      //   this.logger.log('[HOME-CREATE-CHATBOT] - GET DEPTS RES', depts);
+      //   if (depts) {
+      //     for (let i = 0; i < depts.length; i++) {
+      //       this.logger.log('[HOME-CREATE-CHATBOT] - GET DEPTS RES depts[i]', depts[i]);
+      //       if (faqKb) {
+      //         for (let j = 0; j < faqKb.length; j++) {
+      //           this.logger.log('[HOME-CREATE-CHATBOT] - GET DEPTS RES faqKb[j]', faqKb[j]);
 
-                if (depts[i].hasBot === true) {
-                  this.logger.log('[HOME-CREATE-CHATBOT] - HERE YES (depts[i].hasBot)');
-                  if (depts[i].id_bot === faqKb[j]._id) {
-                    this.logger.log('[HOME-CREATE-CHATBOT] - Dept', depts[i].name, ' has bot with id ', faqKb[j]._id);
-                    faqKb[j]['deptName'] = depts[i].name
-                    if (depts[i].default === true) {
-                      this.logger.log('[HOME-CREATE-CHATBOT] - Dept', depts[i].name, 'is default', depts[i].default, 'has bot with id ', faqKb[j]._id);
-                      this.botHookedToDefaultDept.emit(faqKb[j]._id)
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      })
+      //           if (depts[i].hasBot === true) {
+      //             this.logger.log('[HOME-CREATE-CHATBOT] - HERE YES (depts[i].hasBot)');
+      //             if (depts[i].id_bot === faqKb[j]._id) {
+      //               this.logger.log('[HOME-CREATE-CHATBOT] - Dept', depts[i].name, ' has bot with id ', faqKb[j]._id);
+      //               faqKb[j]['deptName'] = depts[i].name
+      //               if (depts[i].default === true) {
+      //                 this.logger.log('[HOME-CREATE-CHATBOT] - Dept', depts[i].name, 'is default', depts[i].default, 'has bot with id ', faqKb[j]._id);
+      //                 this.botHookedToDefaultDept.emit(faqKb[j]._id)
+      //               }
+      //             }
+      //           }
+      //         }
+      //       }
+      //     }
+      //   }
+      // })
 
 
       if (faqKb) {
@@ -371,19 +372,19 @@ export class HomeCreateChatbotComponent extends BotsBaseComponent implements OnI
     } else if (this.use_case_for_child === 'increase_online_sales') {
       this.router.navigate(['project/' + this.projectId + '/bots/templates/increase-sales']);
     } else if (this.use_case_for_child === undefined) {
-      this.trackUserAction.emit({action:'Explore Templates', actionRes: 'All' })
+      this.trackUserAction.emit({ action: 'Explore Templates', actionRes: 'All' })
       this.router.navigate(['project/' + this.projectId + '/bots/templates/all']);
     }
     localStorage.setItem('wawizard', 'hookbot')
   }
 
   goToIncreaseSalesTemplates() {
-    this.trackUserAction.emit({action:'Explore Templates', actionRes: 'Increase Sales' })
+    this.trackUserAction.emit({ action: 'Explore Templates', actionRes: 'Increase Sales' })
     this.router.navigate(['project/' + this.projectId + '/bots/templates/increase-sales']);
   }
 
   goToCustomerSatisfactionTemplates() {
-    this.trackUserAction.emit({action:'Explore Templates', actionRes: 'Customer Satisfaction' })
+    this.trackUserAction.emit({ action: 'Explore Templates', actionRes: 'Customer Satisfaction' })
     this.router.navigate(['project/' + this.projectId + '/bots/templates/customer-satisfaction']);
   }
 
@@ -398,18 +399,23 @@ export class HomeCreateChatbotComponent extends BotsBaseComponent implements OnI
   }
 
   createBlankTilebot() {
-    console.log('[BOTS-LIST] createBlankTilebot chatBotCount ', this.chatBotCount, ' chatBotLimit ',this.chatBotLimit ) 
-    if (this.chatBotCount < this.chatBotLimit) {
-     
-      this.presentModalAddBotFromScratch()
+    console.log('[BOTS-LIST] createBlankTilebot chatBotCount ', this.chatBotCount, ' chatBotLimit ', this.chatBotLimit , ' PROJECT PLAN ' , this.profile_name)
+    if (this.profile_name === 'Sandbox' || this.profile_name === PLAN_NAME.D || this.profile_name === PLAN_NAME.E || this.profile_name === PLAN_NAME.F) {
+      if (this.chatBotCount < this.chatBotLimit) {
 
-    } else if (this.chatBotCount >= this.chatBotLimit) {
+        this.presentModalAddBotFromScratch()
 
-      if (this.USER_ROLE !== 'agent') {
-        this.presentDialogReachedChatbotLimit()
-      } else if (this.USER_ROLE === 'agent') {
-        this.presentModalOnlyOwnerCanManageTheAccountPlan()
+      } else if (this.chatBotCount >= this.chatBotLimit) {
+
+        if (this.USER_ROLE !== 'agent') {
+          this.presentDialogReachedChatbotLimit()
+        } else if (this.USER_ROLE === 'agent') {
+          this.presentModalOnlyOwnerCanManageTheAccountPlan()
+        }
       }
+    } else if (this.profile_name === 'free' || this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.B || this.profile_name === PLAN_NAME.C) {
+
+      this.presentModalAddBotFromScratch()
     }
   }
 
@@ -438,7 +444,7 @@ export class HomeCreateChatbotComponent extends BotsBaseComponent implements OnI
     });
   }
 
- 
+
 
   createTilebotBotFromScratch(chatbotName) {
     this.language = this.botDefaultSelectedLangCode;
@@ -454,8 +460,8 @@ export class HomeCreateChatbotComponent extends BotsBaseComponent implements OnI
           // this.translateparamBotName = { bot_name: this.newBot_name }
           // SAVE THE BOT IN LOCAL STORAGE
           this.botLocalDbService.saveBotsInStorage(faqKb['_id'], faqKb);
-          
-          this.trackUserAction.emit({action:'Create chatbot',actionRes: faqKb })
+
+          this.trackUserAction.emit({ action: 'Create chatbot', actionRes: faqKb })
 
           // this.router.navigate(['project/' + this.projectId + '/cds/', this.newBot_Id, 'intent', '0', 'h']);
           goToCDSVersion(this.router, faqKb, this.projectId, this.appConfigService.getConfig().cdsBaseUrl)

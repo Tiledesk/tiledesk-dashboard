@@ -327,14 +327,27 @@
                 Studio</span>
         </div>
     </div>
-
+    chatBotLimit  > {{ chatBotLimit}}
+    <div class="chatbots-created" *ngIf="(chatBotLimit && profile_name !== PLAN_NAME.F && subscription_is_active) || (chatBotLimit && profile_name === PLAN_NAME.F && !subscription_is_active) ">
+        <span class="chatbots-created-num" 
+            matTooltipClass="h-custom-mat-tooltip"
+            matTooltip="View detail in Chatbots list" 
+            #tooltip="matTooltip" 
+            matTooltipPosition='below'
+            matTooltipHideDelay="100" 
+            (click)="goToMyChatbots()"
+            [ngStyle]="{'color': chatBotCount > chatBotLimit ? '#f44336' : '#2196f3'}">
+            {{ chatBotCount }} chatbots
+        </span> 
+        <span> 
+        {{ 'NumberOfChatbotCreated' | translate: tParamsPlanAndChatBot }}
+        </span>
+    </div>
 
 
     <div class="cc-home-block-description-and-menu-btn-wpr">
-        <!-- *ngIf="chatbots && chatbots.length === 0" -->
-        <!-- -->
-        <!-- *ngIf="chatbots && chatbots.length === 0" -->
         <div class="action-btns-wpr" *ngIf="USER_ROLE !== 'agent'">
+            
             <!-- (click)="goToAddBotFromScratch()" -->
             <button id="home-material-btn" class="mat-focus-indicator mat-flat-button mat-button-base"
                 (click)="createBlankTilebot()">
@@ -343,14 +356,12 @@
                     <span class="ml-2" style="font-size: 15px;">
                         Start from scratch
                     </span>
-
                 </span>
                 <span matripple="" class="mat-ripple mat-button-ripple" ng-reflect-disabled="false"
                     ng-reflect-centered="false" ng-reflect-trigger="[object HTMLButtonElement]">
                 </span>
                 <span class="mat-button-focus-overlay"> </span>
             </button>
-
 
             <!-- Display none -->
             <button mat-mini-fab aria-label="more_horiz icon" [matMenuTriggerFor]="menu"

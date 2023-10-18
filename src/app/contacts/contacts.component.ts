@@ -21,6 +21,7 @@ const swal = require('sweetalert');
   templateUrl: './contacts.component.html',
   styleUrls: ['./contacts.component.scss'],
 })
+
 export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
 
   PLAN_NAME = PLAN_NAME;
@@ -674,7 +675,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.showSpinner = true;
     this.contactsService.getLeadsActiveOrTrashed(this.queryString, this.pageNo, this.hasClickedTrashed).subscribe((leads_object: any) => {
-      this.logger.log('[CONTACTS-COMP] - GET LEADS RESPONSE ', leads_object);
+      console.log('[CONTACTS-COMP] - GET LEADS RESPONSE ', leads_object);
 
       this.contacts = leads_object['leads'];
       this.logger.log('[CONTACTS-COMP] - CONTACTS LIST ', this.contacts);
@@ -834,7 +835,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
 
   getTrashedContactsCount() {
     this.contactsService.getLeadsTrashed().subscribe((trashedleads: any) => {
-      this.logger.log('[CONTACTS-COMP] - GET TRASHED LEADS RESPONSE ', trashedleads)
+      console.log('[CONTACTS-COMP] - GET TRASHED LEADS RESPONSE ', trashedleads)
       if (trashedleads) {
         this.trashedContanctCount = trashedleads.count
       }
@@ -847,7 +848,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
 
   getActiveContactsCount() {
     this.contactsService.getLeadsActive().subscribe((activeleads: any) => {
-      this.logger.log('[CONTACTS-COMP] - GET ACTIVE LEADS RESPONSE ', activeleads)
+      console.log('[CONTACTS-COMP] - GET ACTIVE LEADS RESPONSE ', activeleads)
       if (activeleads) {
         this.countOfActiveContacts = activeleads['count'];
       }

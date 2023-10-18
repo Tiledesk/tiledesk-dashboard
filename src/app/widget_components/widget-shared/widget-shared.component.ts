@@ -1,11 +1,14 @@
 import { Component, OnInit } from '@angular/core';
+import { BotsBaseComponent } from 'app/bots/bots-base/bots-base.component';
+import { ProjectPlanService } from 'app/services/project-plan.service';
 
 @Component({
   selector: 'appdashboard-widget-shared',
   templateUrl: './widget-shared.component.html',
   styleUrls: ['./widget-shared.component.scss']
 })
-export class WidgetSharedComponent implements OnInit {
+// extends BotsBaseComponent
+export class WidgetSharedComponent  implements OnInit {
 
   availableTranslations: Array<any> = []
 
@@ -198,7 +201,11 @@ export class WidgetSharedComponent implements OnInit {
 
 
 
-  constructor() { }
+  constructor(
+    // public prjctPlanService: ProjectPlanService,
+  ) {
+    // super(prjctPlanService);
+   }
 
   ngOnInit() {
   }

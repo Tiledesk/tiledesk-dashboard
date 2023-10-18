@@ -396,17 +396,39 @@ export class TemplatesComponent extends BotsBaseComponent implements OnInit, OnD
 
   createBlankTilebot() {
     console.log('[BOTS-TEMPLATES] createBlankTilebot chatBotCount ', this.chatBotCount, ' chatBotLimit ', this.chatBotLimit, ' USER_ROLE ', this.USER_ROLE)
-    if (this.chatBotCount < this.chatBotLimit) {
-      this.router.navigate(['project/' + this.project._id + '/bots/create/tilebot/blank']);
-      // this.router.navigate(['project/' + this.project._id + '/chatbot/create']);
 
-    } else if (this.chatBotCount >= this.chatBotLimit) {
-      if (this.USER_ROLE !== 'agent') {
-        this.presentDialogReachedChatbotLimit()
-      } else if (this.USER_ROLE === 'agent') {
-        this.presentModalOnlyOwnerCanManageTheAccountPlan()
+    // if (this.chatBotCount < this.chatBotLimit) {
+    //   this.router.navigate(['project/' + this.project._id + '/bots/create/tilebot/blank']);
+    //   // this.router.navigate(['project/' + this.project._id + '/chatbot/create']);
+
+    // } else if (this.chatBotCount >= this.chatBotLimit) {
+    //   if (this.USER_ROLE !== 'agent') {
+    //     this.presentDialogReachedChatbotLimit()
+    //   } else if (this.USER_ROLE === 'agent') {
+    //     this.presentModalOnlyOwnerCanManageTheAccountPlan()
+    //   }
+    // }
+
+    if (this.USER_ROLE !== 'agent') {
+      if (this.chatBotLimit) {
+        if (this.chatBotCount < this.chatBotLimit) {
+          console.log('[INSTALL-TEMPLATE] USECASE  chatBotCount < chatBotLimit: RUN NAVIGATE')
+          this.router.navigate(['project/' + this.project._id + '/bots/create/tilebot/blank']);
+
+        } else if (this.chatBotCount >= this.chatBotLimit) {
+          console.log('[INSTALL-TEMPLATE] USECASE  chatBotCount >= chatBotLimit DISPLAY MODAL')
+          this.presentDialogReachedChatbotLimit()
+        }
+      } else if (!this.chatBotLimit) {
+        console.log('[INSTALL-TEMPLATE] USECASE  NO chatBotLimit: RUN NAVIGATE')
+        this.router.navigate(['project/' + this.project._id + '/bots/create/tilebot/blank']);
       }
+    } if (this.USER_ROLE === 'agent') {
+      this.presentModalOnlyOwnerCanManageTheAccountPlan()
     }
+
+
+
   }
 
   presentModalOnlyOwnerCanManageTheAccountPlan() {

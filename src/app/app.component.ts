@@ -376,8 +376,6 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.count = foregroundNoticationCount;
                     // console.log('[APP-COMPONENT] - stored FOREGROUND NOTIFICATION COUNT ', this.count)
                 }
-
-
             })
     }
 

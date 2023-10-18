@@ -112,7 +112,7 @@ export class ContactsService {
     };
 
     const url = this.SERVER_BASE_PATH + this.projectId + '/leads?page=0&status=1000';
-    this.logger.log('[CONTACTS-SERV] - GET TRASHED CONTACTS URL', url);
+    console.log('[CONTACTS-SERV] - GET TRASHED CONTACTS URL', url);
 
     return this.httpClient
       .get<Contact[]>(url, httpOptions)
@@ -130,7 +130,7 @@ export class ContactsService {
     };
 
     const url = this.SERVER_BASE_PATH + this.projectId + '/leads';
-    this.logger.log('[CONTACTS-SERV] - GET ACIVE CONTACTS URL', url);
+   console.log('[CONTACTS-SERV] - GET ACIVE CONTACTS URL', url);
 
     return this.httpClient
       .get<Contact[]>(url, httpOptions)

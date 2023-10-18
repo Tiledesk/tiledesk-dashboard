@@ -262,15 +262,32 @@ export class BotListComponent extends BotsBaseComponent implements OnInit, OnDes
   }
 
   duplicateChatbot(bot_id, bot_name) {
-    console.log('[BOTS-LIST] duplicateChatbot chatBotCount ', this.chatBotCount, ' chatBotLimit ', this.chatBotLimit, ' USER_ROLE ', this.USER_ROLE)
-    if (this.chatBotCount < this.chatBotLimit) {
-      this.getProjects(bot_id, bot_name)
-    } else if (this.chatBotCount >= this.chatBotLimit) {
-      if (this.USER_ROLE !== 'agent') {
-        this.presentDialogReachedChatbotLimit()
-      } else if (this.USER_ROLE === 'agent') {
-        this.presentModalOnlyOwnerCanManageTheAccountPlan()
+    console.log('[BOTS-LIST] duplicateChatbot chatBotCount ', this.chatBotCount, ' chatBotLimit ', this.chatBotLimit, ' USER_ROLE ', this.USER_ROLE, ' profile_name ' , this.profile_name)
+    // if (this.chatBotCount < this.chatBotLimit) {
+    //   this.getProjects(bot_id, bot_name)
+    // } else if (this.chatBotCount >= this.chatBotLimit) {
+    //   if (this.USER_ROLE !== 'agent') {
+    //     this.presentDialogReachedChatbotLimit()
+    //   } else if (this.USER_ROLE === 'agent') {
+    //     this.presentModalOnlyOwnerCanManageTheAccountPlan()
+    //   }
+    // }
+
+    if (this.USER_ROLE !== 'agent') {
+      if (this.chatBotLimit) {
+        if (this.chatBotCount < this.chatBotLimit) {
+          console.log('[BOTS-LIST] USECASE  chatBotCount < chatBotLimit: RUN GET PRJCTS')
+          this.getProjects(bot_id, bot_name)
+        } else if (this.chatBotCount >= this.chatBotLimit) {
+          console.log('[BOTS-LIST] USECASE  chatBotCount >= chatBotLimit DISPLAY MODAL')
+          this.presentDialogReachedChatbotLimit()
+        }
+      } else if (!this.chatBotLimit) {
+        console.log('[BOTS-LIST] USECASE  NO chatBotLimit: RUN PRJCTS')
+        this.getProjects(bot_id, bot_name)
       }
+    } if (this.USER_ROLE === 'agent') {
+      this.presentModalOnlyOwnerCanManageTheAccountPlan()
     }
   }
 
@@ -290,7 +307,6 @@ export class BotListComponent extends BotsBaseComponent implements OnInit, OnDes
 
       }
     }, error => {
-
       this.logger.error('[BOTS-LIST] - duplicateChatbot - GET PROJECTS - ERROR ', error)
     }, () => {
       this.logger.log('[BOTS-LIST] - duplicateChatbot - GET PROJECTS * COMPLETE *')
@@ -881,16 +897,33 @@ export class BotListComponent extends BotsBaseComponent implements OnInit, OnDes
 
   createBlankTilebot() {
     console.log('[BOTS-LIST] createBlankTilebot chatBotCount ', this.chatBotCount, ' chatBotLimit ', this.chatBotLimit)
-    if (this.chatBotCount < this.chatBotLimit) {
-      this.router.navigate(['project/' + this.project._id + '/bots/create/tilebot/blank']);
-      // this.router.navigate(['project/' + this.project._id + '/chatbot/create']);
-    } else if (this.chatBotCount >= this.chatBotLimit) {
+    // if (this.chatBotCount < this.chatBotLimit) {
+    //   this.router.navigate(['project/' + this.project._id + '/bots/create/tilebot/blank']);
+    //   // this.router.navigate(['project/' + this.project._id + '/chatbot/create']);
+    // } else if (this.chatBotCount >= this.chatBotLimit) {
 
-      if (this.USER_ROLE !== 'agent') {
-        this.presentDialogReachedChatbotLimit()
-      } else if (this.USER_ROLE === 'agent') {
-        this.presentModalOnlyOwnerCanManageTheAccountPlan()
+    //   if (this.USER_ROLE !== 'agent') {
+    //     this.presentDialogReachedChatbotLimit()
+    //   } else if (this.USER_ROLE === 'agent') {
+    //     this.presentModalOnlyOwnerCanManageTheAccountPlan()
+    //   }
+    // }
+
+    if (this.USER_ROLE !== 'agent') {
+      if (this.chatBotLimit) {
+        if (this.chatBotCount < this.chatBotLimit) {
+          console.log('[BOTS-LIST] USECASE  chatBotCount < chatBotLimit: RUN NAVIGATE')
+          this.router.navigate(['project/' + this.project._id + '/bots/create/tilebot/blank']);
+        } else if (this.chatBotCount >= this.chatBotLimit) {
+          console.log('[BOTS-LIST] USECASE  chatBotCount >= chatBotLimit DISPLAY MODAL')
+          this.presentDialogReachedChatbotLimit()
+        }
+      } else if (!this.chatBotLimit) {
+        console.log('[BOTS-LIST] USECASE  NO chatBotLimit: RUN NAVIGATE')
+        this.router.navigate(['project/' + this.project._id + '/bots/create/tilebot/blank'])
       }
+    } if (this.USER_ROLE === 'agent') {
+      this.presentModalOnlyOwnerCanManageTheAccountPlan()
     }
   }
 

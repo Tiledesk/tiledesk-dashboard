@@ -1,6 +1,5 @@
 .chatbot-alert-content {
     background: red;
-    background: red;
     margin-left: -20px;
     margin-right: -20px;
     margin-top: -9px;
@@ -8,6 +7,11 @@
     color: #fff;
     font-weight: 400;
     text-align: center;
+    min-height: 72px;
+}
+
+.chatbot-alert-content-no-lm {
+  margin-left: 0px;
 }
 
 

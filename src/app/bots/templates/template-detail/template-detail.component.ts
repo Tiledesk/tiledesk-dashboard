@@ -258,15 +258,32 @@ export class TemplateDetailComponent extends BotsBaseComponent implements OnInit
 
   importTempalte() {
     console.log('[TEMPLATE DETAIL] importTempalte chatBotCount ',this.chatBotCount ,' chatBotLimit ', this.chatBotLimit, ' USER_ROLE ', this.USER_ROLE) 
-    if (this.chatBotCount < this.chatBotLimit) {
-      this.forkTemplate()
-    } else if (this.chatBotCount >= this.chatBotLimit) {
+    // if (this.chatBotCount < this.chatBotLimit) {
+    //   this.forkTemplate()
+    // } else if (this.chatBotCount >= this.chatBotLimit) {
 
-      if (this.USER_ROLE !== 'agent') {
-        this.presentDialogReachedChatbotLimit()
-      } else if (this.USER_ROLE === 'agent')  {
-        this.presentModalOnlyOwnerCanManageTheAccountPlan()
+    //   if (this.USER_ROLE !== 'agent') {
+    //     this.presentDialogReachedChatbotLimit()
+    //   } else if (this.USER_ROLE === 'agent')  {
+    //     this.presentModalOnlyOwnerCanManageTheAccountPlan()
+    //   }
+    // }
+
+    if (this.USER_ROLE !== 'agent') {
+      if (this.chatBotLimit) {
+        if (this.chatBotCount < this.chatBotLimit) {
+          console.log('[INSTALL-TEMPLATE] USECASE  chatBotCount < chatBotLimit: RUN FORK')
+          this.forkTemplate()
+        } else if (this.chatBotCount >= this.chatBotLimit) {
+          console.log('[INSTALL-TEMPLATE] USECASE  chatBotCount >= chatBotLimit DISPLAY MODAL')
+          this.presentDialogReachedChatbotLimit()
+        }
+      } else if (!this.chatBotLimit) {
+        console.log('[INSTALL-TEMPLATE] USECASE  NO chatBotLimit: RUN FORK')
+        this.forkTemplate()
       }
+    } if (this.USER_ROLE === 'agent') {
+      this.presentModalOnlyOwnerCanManageTheAccountPlan()
     }
   }
 

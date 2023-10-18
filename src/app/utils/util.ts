@@ -324,7 +324,7 @@ export enum CHATBOT_MAX_NUM {
     free = 2, 
     Basic = 5,
     Premium = 20,
-    Custom = 'Custom'
+    Custom = 500
 };
 
 export const featuresPlanA = [

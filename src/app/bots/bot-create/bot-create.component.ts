@@ -264,7 +264,7 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
     console.log('[BOT-CREATE] fileChangeUploadChatbotFromJSON chatBotCount ', this.chatBotCount, ' chatBotLimit ', this.chatBotLimit)
     console.log('[BOT-CREATE] - fileChangeUploadChatbotFromJSON $event ', event);
 
-    if (this.chatBotCount < this.chatBotLimit) {
+    // if (this.chatBotCount < this.chatBotLimit) {
 
       const fileList: FileList = event.target.files;
       const file: File = fileList[0];
@@ -272,34 +272,57 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
       formData.set('id_faq_kb', this.id_faq_kb);
       formData.append('uploadFile', file, file.name);
       console.log('[BOT-CREATE] FORM DATA ', formData)
+      
+      // this.importChatbotFromJSON(formData)
+   
+    // } else if (this.chatBotCount >= this.chatBotLimit) {
+    //   if (this.USER_ROLE !== 'agent') {
+    //     this.presentDialogReachedChatbotLimit()
+    //   } else if (this.USER_ROLE === 'agent') {
+    //     this.presentModalOnlyOwnerCanManageTheAccountPlan()
+    //   }
+    // }
 
-      this.faqService.importChatbotFromJSONFromScratch(formData).subscribe((faqkb: any) => {
-        this.logger.log('[BOT-CREATE] - IMPORT CHATBOT FROM JSON - ', faqkb)
-        if (faqkb) {
-          this.importedChatbotid = faqkb._id
-          this.logger.log('[BOT-CREATE] - IMPORT CHATBOT FROM JSON - importedChatbotid ', this.importedChatbotid)
-          this.botLocalDbService.saveBotsInStorage(this.importedChatbotid, faqkb);
-          this.trackChatbotImported(faqkb)
-          // this.router.navigate(['project/' + this.project._id + '/tilebot/intents/', this.importedChatbotid, 'tilebot']);
-          // this.router.navigate(['project/' + this.project._id + '/cds/', this.importedChatbotid, 'intent', '0']);
-          goToCDSVersion(this.router, faqkb, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
+    if (this.USER_ROLE !== 'agent') {
+      if (this.chatBotLimit) {
+        if (this.chatBotCount < this.chatBotLimit) {
+          console.log('[BOT-CREATE] USECASE  chatBotCount < chatBotLimit: RUN IMPORT CHATBOT FROM JSON')
+          this.importChatbotFromJSON(formData)
+        } else if (this.chatBotCount >= this.chatBotLimit) {
+          console.log('[BOT-CREATE] USECASE  chatBotCount >= chatBotLimit DISPLAY MODAL')
+          this.presentDialogReachedChatbotLimit()
         }
-
-      }, (error) => {
-        this.logger.error('[BOT-CREATE] -  IMPORT CHATBOT FROM JSON- ERROR', error);
-
-        this.notify.showWidgetStyleUpdateNotification(this.thereHasBeenAnErrorProcessing, 4, 'report_problem');
-      }, () => {
-        this.logger.log('[BOT-CREATE] - IMPORT CHATBOT FROM JSON - COMPLETE');
-        this.notify.showWidgetStyleUpdateNotification("Chatbot was uploaded succesfully", 2, 'done')
-      });
-    } else if (this.chatBotCount >= this.chatBotLimit) {
-      if (this.USER_ROLE !== 'agent') {
-        this.presentDialogReachedChatbotLimit()
-      } else if (this.USER_ROLE === 'agent') {
-        this.presentModalOnlyOwnerCanManageTheAccountPlan()
+      } else if (!this.chatBotLimit) {
+        console.log('[BOT-CREATE] USECASE  NO chatBotLimit: RUN IMPORT CHATBOT FROM JSON')
+        this.importChatbotFromJSON(formData)
       }
+    } if (this.USER_ROLE === 'agent') {
+      this.presentModalOnlyOwnerCanManageTheAccountPlan()
     }
+  }
+
+  importChatbotFromJSON(formData) {
+    this.faqService.importChatbotFromJSONFromScratch(formData).subscribe((faqkb: any) => {
+      this.logger.log('[BOT-CREATE] - IMPORT CHATBOT FROM JSON - ', faqkb)
+      if (faqkb) {
+        this.importedChatbotid = faqkb._id
+        this.logger.log('[BOT-CREATE] - IMPORT CHATBOT FROM JSON - importedChatbotid ', this.importedChatbotid)
+        this.botLocalDbService.saveBotsInStorage(this.importedChatbotid, faqkb);
+        this.trackChatbotImported(faqkb)
+        // this.router.navigate(['project/' + this.project._id + '/tilebot/intents/', this.importedChatbotid, 'tilebot']);
+        // this.router.navigate(['project/' + this.project._id + '/cds/', this.importedChatbotid, 'intent', '0']);
+        goToCDSVersion(this.router, faqkb, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
+      }
+
+    }, (error) => {
+      this.logger.error('[BOT-CREATE] -  IMPORT CHATBOT FROM JSON- ERROR', error);
+
+      this.notify.showWidgetStyleUpdateNotification(this.thereHasBeenAnErrorProcessing, 4, 'report_problem');
+    }, () => {
+      this.logger.log('[BOT-CREATE] - IMPORT CHATBOT FROM JSON - COMPLETE');
+      this.notify.showWidgetStyleUpdateNotification("Chatbot was uploaded succesfully", 2, 'done')
+    });
+
   }
 
   presentDialogReachedChatbotLimit() {
@@ -560,18 +583,38 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
 
   createBlankTilebot() {
     console.log('[BOTS-CREATE] createBlankTilebot chatBotCount ', this.chatBotCount, ' chatBotLimit ', this.chatBotLimit)
-    if (this.chatBotCount < this.chatBotLimit) {
+    // if (this.chatBotCount < this.chatBotLimit) {
      
-      this.createTilebotBotFromScratch() 
+    //   this.createTilebotBotFromScratch() 
 
-    } else if (this.chatBotCount >= this.chatBotLimit) {
+    // } else if (this.chatBotCount >= this.chatBotLimit) {
 
-      if (this.USER_ROLE !== 'agent') {
-        this.presentDialogReachedChatbotLimit()
-      } else if (this.USER_ROLE === 'agent') {
-        this.presentModalOnlyOwnerCanManageTheAccountPlan()
-      }
+    //   if (this.USER_ROLE !== 'agent') {
+    //     this.presentDialogReachedChatbotLimit()
+    //   } else if (this.USER_ROLE === 'agent') {
+    //     this.presentModalOnlyOwnerCanManageTheAccountPlan()
+    //   }
+    // }
+
+    if (this.USER_ROLE !== 'agent') {
+      if (this.chatBotLimit) {
+        if (this.chatBotCount < this.chatBotLimit) {
+          console.log('[BOTS-CREATE] USECASE  chatBotCount < chatBotLimit: RUN CREATE FROM SCRATCH')
+          this.createTilebotBotFromScratch()
+        } else if (this.chatBotCount >= this.chatBotLimit) {
+          console.log('[BOTS-CREATE] USECASE  chatBotCount >= chatBotLimit DISPLAY MODAL')
+          this.presentDialogReachedChatbotLimit()
+        }
+      } else if (!this.chatBotLimit) {
+        console.log('[BOTS-CREATE] USECASE  NO chatBotLimit: RUN CREATE FROM SCRATCH')
+        this.createTilebotBotFromScratch()
+      } 
+    } if (this.USER_ROLE === 'agent') {
+      this.presentModalOnlyOwnerCanManageTheAccountPlan()
     }
+
+
+
   }
 
   createTilebotBotFromScratch() {

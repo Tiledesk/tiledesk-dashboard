@@ -87,7 +87,7 @@ export class BotsBaseComponent implements OnInit {
   // )
   getProjectPlan() {
     this.prjctPlanService.projectPlan$
-     
+
       .subscribe((projectProfileData: any) => {
         console.log('[BOTS-BASE] - GET PROJECT PROFILE - RES', projectProfileData)
         if (projectProfileData) {
@@ -99,11 +99,14 @@ export class BotsBaseComponent implements OnInit {
           console.log('[BOTS-BASE]  - GET PROJECT PROFILE - prjct_profile_type ', this.prjct_profile_type);
 
           this.subscription_is_active = projectProfileData.subscription_is_active;
-          console.log('[BOTS-BASE]  - GET PROJECT PROFILE - subscription_is_active ', this.projectPlanAgentsNo);
+          console.log('[BOTS-BASE]  - GET PROJECT PROFILE - subscription_is_active ', this.subscription_is_active);
+
           this.subscription_end_date = projectProfileData.subscription_end_date
           console.log('[BOTS-BASE]  - GET PROJECT PROFILE - subscription_end_date ', this.subscription_end_date);
+
           this.profile_name = projectProfileData.profile_name
           console.log('[BOTS-BASE]  - GET PROJECT PROFILE - profile_name ', this.profile_name);
+
           this.trial_expired = projectProfileData.trial_expired
           console.log('[BOTS-BASE]  - GET PROJECT PROFILE - trial_expired ', this.trial_expired);
 
@@ -118,6 +121,13 @@ export class BotsBaseComponent implements OnInit {
                 console.log('[BOTS-BASE] - GET PROJECT PLAN - PLAN_NAME ', this.prjct_profile_name, ' CB LIMIT: ', this.chatBotLimit)
               }
 
+              if (this.profile_name === 'free') {
+                this.prjct_profile_name = PLAN_NAME.B + " plan (trial)"
+                this.chatBotLimit = null
+                // this.tParamsPlanAndChatBot = { plan_name: this.prjct_profile_name, allowed_cb_num: this.chatBotLimit }
+                console.log('[BOTS-BASE] - GET PROJECT PLAN - PLAN_NAME ', this.prjct_profile_name, ' CB LIMIT: ', this.chatBotLimit)
+              }
+
             } else {
               if (this.profile_name === 'Sandbox') {
                 this.prjct_profile_name = "Sandbox plan";
@@ -125,12 +135,37 @@ export class BotsBaseComponent implements OnInit {
                 this.tParamsPlanAndChatBot = { plan_name: this.prjct_profile_name, allowed_cb_num: this.chatBotLimit }
                 console.log('[BOTS-BASE] - GET PROJECT PLAN - PLAN_NAME ', this.prjct_profile_name, ' TRIAL EXPIRED CB LIMIT: ', this.chatBotLimit)
               }
+
+              if (this.profile_name === 'free') {
+                this.prjct_profile_name = "Free plan";
+                this.chatBotLimit = null;
+                // this.tParamsPlanAndChatBot = { plan_name: this.prjct_profile_name, allowed_cb_num: this.chatBotLimit }
+                console.log('[BOTS-BASE] - GET PROJECT PLAN - PLAN_NAME ', this.prjct_profile_name, ' TRIAL EXPIRED CB LIMIT: ', this.chatBotLimit)
+              }
             }
           } else if (projectProfileData.profile_type === 'payment') {
 
             if (this.subscription_is_active === true) {
 
-              if (this.profile_name === PLAN_NAME.D) {
+              if (this.profile_name === PLAN_NAME.A) {
+                this.prjct_profile_name = PLAN_NAME.A + " plan";
+                this.chatBotLimit = null
+                // this.tParamsPlanAndChatBot = { plan_name: this.prjct_profile_name, allowed_cb_num: this.chatBotLimit }
+                console.log('[BOTS-BASE] - GET PROJECT PLAN - PLAN_NAME ', this.prjct_profile_name, ' SUB ACTIVE CB LIMIT: ', this.chatBotLimit)
+
+              } else if (this.profile_name === PLAN_NAME.B) {
+                this.prjct_profile_name = PLAN_NAME.B + " plan";
+                this.chatBotLimit = null
+                // this.tParamsPlanAndChatBot = { plan_name: this.prjct_profile_name, allowed_cb_num: this.chatBotLimit }
+                console.log('[BOTS-BASE] - GET PROJECT PLAN - PLAN_NAME ', this.prjct_profile_name, ' SUB ACTIVE CB LIMIT: ', this.chatBotLimit)
+
+              } else if (this.profile_name === PLAN_NAME.C) {
+                this.prjct_profile_name = PLAN_NAME.C + " plan";
+                this.chatBotLimit = null
+                // this.tParamsPlanAndChatBot = { plan_name: this.prjct_profile_name, allowed_cb_num: this.chatBotLimit }
+                console.log('[BOTS-BASE] - GET PROJECT PLAN - PLAN_NAME ', this.prjct_profile_name, ' SUB ACTIVE CB LIMIT: ', this.chatBotLimit)
+
+              } else if (this.profile_name === PLAN_NAME.D) {
                 this.prjct_profile_name = PLAN_NAME.D + " plan";
                 this.chatBotLimit = CHATBOT_MAX_NUM[PLAN_NAME.D]
                 this.tParamsPlanAndChatBot = { plan_name: this.prjct_profile_name, allowed_cb_num: this.chatBotLimit }
@@ -141,11 +176,34 @@ export class BotsBaseComponent implements OnInit {
                 this.chatBotLimit = CHATBOT_MAX_NUM[PLAN_NAME.E]
                 this.tParamsPlanAndChatBot = { plan_name: this.prjct_profile_name, allowed_cb_num: this.chatBotLimit }
                 console.log('[BOTS-BASE] - GET PROJECT PLAN - PLAN_NAME ', this.prjct_profile_name, ' SUB ACTIVE CB LIMIT: ', this.chatBotLimit)
+
+              } else if (this.profile_name === PLAN_NAME.F) {
+                this.prjct_profile_name = PLAN_NAME.F + " plan";
+                this.chatBotLimit = CHATBOT_MAX_NUM[PLAN_NAME.F]
+                this.tParamsPlanAndChatBot = { plan_name: this.prjct_profile_name, allowed_cb_num: this.chatBotLimit }
+                console.log('[BOTS-BASE] - GET PROJECT PLAN - PLAN_NAME ', this.prjct_profile_name, ' SUB ACTIVE CB LIMIT: ', this.chatBotLimit)
               }
 
             } else if (this.subscription_is_active === false) {
+              if (this.profile_name === PLAN_NAME.A) {
+                this.prjct_profile_name = PLAN_NAME.A + " plan";
+                this.chatBotLimit = null;
+                // this.tParamsPlanAndChatBot = { plan_name: this.prjct_profile_name, allowed_cb_num: this.chatBotLimit }
+                console.log('[BOTS-BASE] - GET PROJECT PLAN - PLAN_NAME ', this.prjct_profile_name, ' SUB EXIP CB LIMIT: ', this.chatBotLimit)
 
-              if (this.profile_name === PLAN_NAME.D) {
+              } else if (this.profile_name === PLAN_NAME.B) {
+                this.prjct_profile_name = PLAN_NAME.B + " plan";
+                this.chatBotLimit = null;
+                // this.tParamsPlanAndChatBot = { plan_name: this.prjct_profile_name, allowed_cb_num: this.chatBotLimit }
+                console.log('[BOTS-BASE] - GET PROJECT PLAN - PLAN_NAME ', this.prjct_profile_name, ' SUB EXIP CB LIMIT: ', this.chatBotLimit)
+
+              } else if (this.profile_name === PLAN_NAME.C) {
+                this.prjct_profile_name = PLAN_NAME.C + " plan";
+                this.chatBotLimit = null;
+                // this.tParamsPlanAndChatBot = { plan_name: this.prjct_profile_name, allowed_cb_num: this.chatBotLimit }
+                console.log('[BOTS-BASE] - GET PROJECT PLAN - PLAN_NAME ', this.prjct_profile_name, ' SUB EXIP CB LIMIT: ', this.chatBotLimit)
+
+              } else if (this.profile_name === PLAN_NAME.D) {
                 this.prjct_profile_name = PLAN_NAME.D + " plan";
                 this.chatBotLimit = CHATBOT_MAX_NUM.free;
                 this.tParamsPlanAndChatBot = { plan_name: this.prjct_profile_name, allowed_cb_num: this.chatBotLimit }
