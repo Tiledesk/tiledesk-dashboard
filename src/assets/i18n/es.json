@@ -2342,6 +2342,7 @@
     "NumberOfTeammatesExceedsThePlan": "El número de compañeros de equipo permitido es {{free_plan_allowed_seats_num}}. Actualice el plan o elimine manualmente a los compañeros que excedan el límite (el sistema lo hará automáticamente en un mes)",
     "NumberOfTeammatesExceedsThePlan_2":"El número de compañeros de equipo permitidos para el plan {{plan_name}} es {{allowed_seats_num}}. Actualice el plan o elimine manualmente el exceso de compañeros de equipo (el sistema lo hará automáticamente en un mes)",
     "NumberOfChatbotExceedsThePlan":"La cantidad de chatbots permitidos para {{plan_name}} es {{allowed_cb_num}}. Actualice el plan o elimine manualmente el exceso de chatbot (el sistema lo hará automáticamente dentro de un mes)",
+    "NumberOfChatbotCreated": "created of {{allowed_cb_num}} available for {{plan_name}}",
     "OnlyWithPlan": "Solo {{plan_name}} plan",
     "CreateNewContactProperty":"Crear una nueva propiedad de contacto",
     "PropertyLabel":"Etiqueta de la propiedad",

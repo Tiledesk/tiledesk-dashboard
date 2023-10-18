@@ -2342,6 +2342,7 @@
     "NumberOfTeammatesExceedsThePlan":"Дозволена кількість товаришів по команді становить {{free_plan_allowed_seats_num}}. Оновіть план або вручну видаліть товаришів по команді, які перевищують ліміт (система зробить це автоматично через місяць)",
     "NumberOfTeammatesExceedsThePlan_2":"Кількість членів команди, дозволена для плану {{plan_name}}, становить {{allowed_seats_num}}. Оновіть план або вручну видаліть зайвих товаришів (система зробить це автоматично через місяць)",
     "NumberOfChatbotExceedsThePlan":"Кількість дозволених чат-ботів для {{plan_name}} становить {{allowed_cb_num}}. Оновіть план або вручну видаліть зайвий чат-бот (система зробить це автоматично протягом місяця)",
+    "NumberOfChatbotCreated": "created of {{allowed_cb_num}} available for {{plan_name}}",
     "OnlyWithPlan": "Лише план {{plan_name}}",
     "CreateNewContactProperty":"Створіть властивість нового контакту",
     "PropertyLabel":"Етикетка властивості",

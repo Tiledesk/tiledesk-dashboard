@@ -2342,6 +2342,7 @@
     "NumberOfTeammatesExceedsThePlan":"Допустимое количество товарищей по команде: {{free_plan_allowed_seats_num}}. Обновите план или вручную удалите тиммейтов, которые превышают лимит (система сделает это автоматически через месяц)",
     "NumberOfTeammatesExceedsThePlan_2":"Количество товарищей по команде, разрешенное для плана {{plan_name}}: {{allowed_seats_num}}. Обновите план или вручную удалите лишних тиммейтов (система сделает это автоматически через месяц)",
     "NumberOfChatbotExceedsThePlan": "Количество чат-ботов, разрешенных для {{plan_name}}, равно {{allowed_cb_num}}. Обновите план или вручную удалите лишнего чат-бота (система сделает это автоматически в течение месяца)",
+    "NumberOfChatbotCreated": "created of {{allowed_cb_num}} available for {{plan_name}}",
     "OnlyWithPlan": "Только план {{plan_name}}",
     "CreateNewContactProperty":"Создать новое свойство контакта",
     "PropertyLabel":"Ярлык свойства",
