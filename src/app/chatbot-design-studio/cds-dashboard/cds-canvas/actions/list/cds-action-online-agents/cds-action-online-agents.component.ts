@@ -112,7 +112,7 @@ export class CdsActionOnlineAgentsComponent implements OnInit {
             if(this.action.falseIntent !== '#'+this.connector.toId){
               this.action.falseIntent = '#'+this.connector.toId;
               // if(this.connector.notify)
-              if(this.connector.save)this.updateIntentFromConnectorModification.emit(this.connector);
+              if(this.connector.save)this.updateAndSaveAction.emit(this.connector);
               // this.updateAndSaveAction.emit();
             } 
           }

@@ -338,7 +338,7 @@ export class CdsActionReplyComponent implements OnInit {
    * 2 - update intent
    * */
   public async onUpdateAndSaveAction(connector?) {
-    console.log('[cds-action-reply] onUpdateAndSaveAction:::: ', this.intentSelected, this.action);
+    this.logger.log('[cds-action-reply] onUpdateAndSaveAction:::: ', this.intentSelected, this.action);
     this.connectorService.updateConnector(this.intentSelected.intent_id);
     this.updateAndSaveAction.emit(connector);
   }

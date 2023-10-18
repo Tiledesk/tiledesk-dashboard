@@ -394,7 +394,6 @@ export async function isElementOnTheStage(elementId:string): Promise<any>{
     });
 }
 
-
 export function removeNodesStartingWith(obj, start) {
     for (const key in obj) {
         if (key.startsWith(start)) {

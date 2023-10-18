@@ -20,6 +20,7 @@ export class CdsPanelWidgetComponent implements OnInit, OnDestroy {
 
   @ViewChild('widgetIframe', {static:true}) widgetIframe:ElementRef;
 
+  @Input() isPanelVisible: boolean = false
   // @Input() projectID: string;
   // @Input() id_faq_kb: string;
   // @Input() defaultDepartmentId: string;
@@ -57,8 +58,8 @@ export class CdsPanelWidgetComponent implements OnInit, OnDestroy {
      *  - notify iframe with a postMessage about the changes
      */
     this.intentService.behaviorIntent.pipe(skip(1)).subscribe((intent: Intent)=> {
-      
-      if(intent && intent.intent_display_name !== this.intentName){
+      console.log('[CDS-PANEL-WIDGET] behaviorIntent-->', intent, this.intentName)
+      if(intent && intent.intent_display_name !== this.intentName && this.isPanelVisible){
         this.intentName = intent.intent_display_name
         this.widgetIframe.nativeElement.contentWindow.postMessage(
             {action: 'restart', intentName: this.intentName}, "*");
@@ -72,7 +73,7 @@ export class CdsPanelWidgetComponent implements OnInit, OnDestroy {
   }
 
   setIframeUrl(){
-    console.log('[CDS-PANEL-WIDGET] setIframeUrl parameters ---> ', this.projectID, this.selectedChatbot, this.defaultDepartmentId)
+    console.log('[CDS-PANEL-WIDGET] setIframeUrl parameters ---> ', this.projectID, this.selectedChatbot, this.defaultDepartmentId, this.intentName)
     this.WIDGET_BASE_URL = this.appConfigService.getConfig().WIDGET_BASE_URL;
     // const testItOutBaseUrl = this.TESTSITE_BASE_URL.substring(0, this.TESTSITE_BASE_URL.lastIndexOf('/')); 
     const testItOutUrl = this.WIDGET_BASE_URL + "assets/twp" + '/chatbot-panel.html'

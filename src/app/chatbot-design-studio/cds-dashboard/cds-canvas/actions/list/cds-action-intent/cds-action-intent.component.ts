@@ -65,7 +65,7 @@ export class CdsActionIntentComponent implements OnInit {
     } else {
      this.isConnected = false;
     }
-   }
+  }
 
   private initialize() {
     this.checkConnectionStatus();
