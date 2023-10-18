@@ -65,7 +65,7 @@ export class CdsActionWebRequestV2Component implements OnInit {
       this.connector = connector;
       this.updateConnector();
     });
-    this.initializeAttributes();
+    this.initialize();
   }
 
 
@@ -76,24 +76,37 @@ export class CdsActionWebRequestV2Component implements OnInit {
     }
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    // on change
-    this.initialize();
-    if(this.intentSelected){
-      this.initializeConnector();
+  // ngOnChanges(changes: SimpleChanges) {
+  //   // on change
+  //   this.initialize();
+  //   if(this.intentSelected){
+  //     this.initializeConnector();
+  //   }
+  //   this.logger.log('[ACTION-WEB-REQUEST-v2] onChanges' , this.action, this.intentSelected )
+  //   // if (this.action && this.action.assignStatusTo) {
+  //   //   this.hasSelectedVariable = true
+  //   // }
+  // }
+
+  private checkConnectionStatus(){
+    if(this.action.trueIntent){
+     this.isConnectedTrue = true;
+    } else {
+     this.isConnectedTrue = false;
     }
-    this.logger.log('[ACTION-WEB-REQUEST-v2] onChanges' , this.action, this.intentSelected )
-    // if (this.action && this.action.assignStatusTo) {
-    //   this.hasSelectedVariable = true
-    // }
+    if(this.action.falseIntent){
+      this.isConnectedFalse = true;
+     } else {
+      this.isConnectedFalse = false;
+     }
   }
 
   initializeConnector() {
     this.idIntentSelected = this.intentSelected.intent_id;
     this.idConnectorTrue = this.idIntentSelected+'/'+this.action._tdActionId + '/true';
     this.idConnectorFalse = this.idIntentSelected+'/'+this.action._tdActionId + '/false';
-
-    this.listOfIntents = this.intentService.getListOfIntents()
+    this.listOfIntents = this.intentService.getListOfIntents();
+    this.checkConnectionStatus();
   }
 
   private updateConnector(){
@@ -143,9 +156,11 @@ export class CdsActionWebRequestV2Component implements OnInit {
     }
   }
 
-  
+
+
   // CUSTOM FUNCTIONS //
   private initialize(){
+    this.initializeAttributes();
     this.methods = Object.keys(TYPE_METHOD_REQUEST).map((key, index) => {
       return { label: key, value: key }
     })
@@ -157,7 +172,10 @@ export class CdsActionWebRequestV2Component implements OnInit {
       this.body = this.formatJSON(this.body, "\t");
     }
     this.assignments = this.action.assignments
-    console.log('actionnnnnnnn', this.action)
+    console.log('actionnnnnnnn', this.action);
+    if(this.intentSelected){
+      this.initializeConnector();
+    }
   }
 
   private initializeAttributes() {

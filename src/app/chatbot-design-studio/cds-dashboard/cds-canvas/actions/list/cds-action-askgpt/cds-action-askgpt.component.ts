@@ -62,33 +62,30 @@ export class CdsActionAskgptComponent implements OnInit {
 
   ngOnInit(): void {
     this.logger.debug("[ACTION-ASKGPT] action detail: ", this.action);
-
     this.subscriptionChangedConnector = this.intentService.isChangedConnector$.subscribe((connector: any) => {
       this.logger.debug('[ACTION-ASKGPT] isChangedConnector -->', connector);
       this.connector = connector;
       this.updateConnector();
     });
-
-    if (this.previewMode == false) {
-      this.onDetailModeLoad();
-    }
-
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
     if(this.intentSelected){
       this.initializeConnector();
     }
+    if (this.previewMode == false) {
+      this.onDetailModeLoad();
+    }
+  }
 
+
+  // ngOnChanges(changes: SimpleChanges) {
+    // if(this.intentSelected){
+    //   this.initializeConnector();
+    // }
     // if (this.previewMode == false) {
     //   this.onDetailModeLoad();
     // }
-  }
+  // }
 
-  onDetailModeLoad() {
-    this.getKnowledgeBaseSettings();
-    this.initializeAttributes();
-  }
+
 
 
   /** */
@@ -98,11 +95,30 @@ export class CdsActionAskgptComponent implements OnInit {
     }
   }
 
+  onDetailModeLoad() {
+    this.getKnowledgeBaseSettings();
+    this.initializeAttributes();
+  }
+  
   initializeConnector() {
     this.idIntentSelected = this.intentSelected.intent_id;
     this.idConnectorTrue = this.idIntentSelected+'/'+this.action._tdActionId + '/true';
     this.idConnectorFalse = this.idIntentSelected+'/'+this.action._tdActionId + '/false';
-    this.listOfIntents = this.intentService.getListOfIntents()
+    this.listOfIntents = this.intentService.getListOfIntents();
+    this.checkConnectionStatus();
+  }
+
+  private checkConnectionStatus(){
+    if(this.action.trueIntent){
+     this.isConnectedTrue = true;
+    } else {
+     this.isConnectedTrue = false;
+    }
+    if(this.action.falseIntent){
+      this.isConnectedFalse = true;
+     } else {
+      this.isConnectedFalse = false;
+     }
   }
 
   private updateConnector(){
@@ -130,22 +146,22 @@ export class CdsActionAskgptComponent implements OnInit {
           if(array[array.length -1] === 'true'){
             // this.action.trueIntent = '#'+this.connector.toId;
             this.isConnectedTrue = true;
-            if(this.action.trueIntent !== '#'+this.connector.toId){ 
+            // if(this.action.trueIntent !== '#'+this.connector.toId){ 
               this.action.trueIntent = '#'+this.connector.toId;
               // if(this.connector.notify)
               if(this.connector.save)this.updateAndSaveAction.emit(this.connector);
               // this.updateAndSaveAction.emit();
-            } 
+            // } 
           }        
           if(array[array.length -1] === 'false'){
             // this.action.falseIntent = '#'+this.connector.toId;
             this.isConnectedFalse = true;
-            if(this.action.falseIntent !== '#'+this.connector.toId){ 
+            // if(this.action.falseIntent !== '#'+this.connector.toId){ 
               this.action.falseIntent = '#'+this.connector.toId;
               // if(this.connector.notify)
               if(this.connector.save)this.updateAndSaveAction.emit(this.connector);
               // this.updateAndSaveAction.emit();
-            } 
+            // } 
           }
         }
         // this.updateAndSaveAction.emit();

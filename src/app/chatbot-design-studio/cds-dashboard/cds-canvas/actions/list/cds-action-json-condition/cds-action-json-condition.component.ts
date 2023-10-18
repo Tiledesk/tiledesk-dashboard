@@ -54,6 +54,7 @@ export class CdsActionJsonConditionComponent implements OnInit {
       this.connector = connector;
       this.updateConnector();
     });
+    this.initialize();
   }
 
   /** */
@@ -63,24 +64,37 @@ export class CdsActionJsonConditionComponent implements OnInit {
     }
   }
 
-  ngOnChanges() {
-    this.initialize();
-    if(this.intentSelected){
-      this.initializeConnector();
-    }
-    this.logger.log('[ACTION-JSON-CONDITION] actionnn-->', this.action)
-    if (this.action) {
-      this.setFormValue()
-    }
-  }
+  // ngOnChanges() {
+  //   this.initialize();
+  //   if(this.intentSelected){
+  //     this.initializeConnector();
+  //   }
+  //   this.logger.log('[ACTION-JSON-CONDITION] actionnn-->', this.action)
+  //   if (this.action) {
+  //     this.setFormValue()
+  //   }
+  // }
 
+  
   private initializeConnector() {
-    // this.isConnected = false;
     this.idIntentSelected = this.intentSelected.intent_id;
     this.idConnectorTrue = this.idIntentSelected+'/'+this.action._tdActionId + '/true';
     this.idConnectorFalse = this.idIntentSelected+'/'+this.action._tdActionId + '/false';
+    this.listOfIntents = this.intentService.getListOfIntents();
+    this.checkConnectionStatus();
+  }
 
-    this.listOfIntents = this.intentService.getListOfIntents()
+  private checkConnectionStatus(){
+    if(this.action.trueIntent){
+     this.isConnectedTrue = true;
+    } else {
+     this.isConnectedTrue = false;
+    }
+    if(this.action.falseIntent){
+      this.isConnectedFalse = true;
+     } else {
+      this.isConnectedFalse = false;
+     }
   }
 
   private updateConnector(){
@@ -109,22 +123,22 @@ export class CdsActionJsonConditionComponent implements OnInit {
           if(array[array.length -1] === 'true'){
             // this.action.trueIntent = '#'+this.connector.toId;
             this.isConnectedTrue = true
-            if(this.action.trueIntent !== '#'+this.connector.toId){ 
+            // if(this.action.trueIntent !== '#'+this.connector.toId){ 
               this.action.trueIntent = '#'+this.connector.toId;
               // if(this.connector.notify)
               if(this.connector.save)this.updateAndSaveAction.emit(this.connector);
               // this.updateAndSaveAction.emit();
-            } 
+            // } 
           }        
           if(array[array.length -1] === 'false'){
             // this.action.falseIntent = '#'+this.connector.toId;
             this.isConnectedFalse = true;
-            if(this.action.falseIntent !== '#'+this.connector.toId){ 
+            // if(this.action.falseIntent !== '#'+this.connector.toId){ 
               this.action.falseIntent = '#'+this.connector.toId;
               // if(this.connector.notify)
               if(this.connector.save)this.updateAndSaveAction.emit(this.connector);
               // this.updateAndSaveAction.emit();
-            } 
+            // } 
           }
         }
       }
@@ -146,6 +160,13 @@ export class CdsActionJsonConditionComponent implements OnInit {
     })
     this.trueIntentAttributes = this.action.trueIntentAttributes;
     this.falseIntentAttributes = this.action.falseIntentAttributes;
+    if(this.intentSelected){
+      this.initializeConnector();
+    }
+    this.logger.log('[ACTION-JSON-CONDITION] actionnn-->', this.action)
+    if (this.action) {
+      this.setFormValue()
+    }
   }
 
   private setFormValue(){

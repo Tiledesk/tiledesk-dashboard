@@ -563,10 +563,11 @@ export class CdsCanvasComponent implements OnInit {
 
   /** Delete Intent **
    * deleteIntentToListOfIntents: per cancellare l'intent dalla lista degli intents (listOfIntents), quindi in automatico per rimuovere l'intent dallo stage
+   * updateAndSaveAllIntentsConnectedToDeletedIntent: modifico (aggiorno la action svuotando il pallino) e salvo tutti gli intents che hanno un connettore in uscita verso l'intent da eliminare
    * refreshIntents: fa scattare l'evento e aggiorna l'elenco degli intents (listOfIntents) in tutti i componenti sottoscritti, come cds-panel-intent-list 
    * deleteIntent: chiamo il servizio per eliminare l'intent da remoto (il servizio è asincrono e non restituisce nulla, quindi ingnoro l'esito)
    * in deleteIntent: aggiungo l'azione ad UNDO/REDO
-   * deleteConnectorsOfBlock: elimino i connettori in Ingresso verso intent eliminato e in Uscita dallo stesso, e salvo in automatico gli intent modificati (quelli ai quali ho eliminato il connettore in uscita)
+   * deleteConnectorsOfBlock: elimino i connettori in Ingresso verso intent eliminato e in Uscita dallo stesso
    * 
    * ATTENZIONE: è necessario mantenere l'ordine per permettere ad UNDO/REDO di salvare in maniera corretta
    * 
@@ -575,10 +576,11 @@ export class CdsCanvasComponent implements OnInit {
     console.log('[CDS-CANVAS]  deleteIntent', intent);
     this.intentSelected = null;
     this.intentService.deleteIntentToListOfIntents(intent.intent_id);
+    this.intentService.updateAndSaveAllIntentsConnectedToDeletedIntent(intent.intent_id);
     this.intentService.refreshIntents();
     this.intentService.deleteIntent(intent);
-    // IMPORTANTE operazione SUCCESSIVA! al delete cancello tutti i connettori IN e OUT dell'intent eliminato e salvo la modifica
-    this.connectorService.deleteConnectorsOfBlock(intent.intent_id, true, false); 
+    // IMPORTANTE operazione SUCCESSIVA! al delete cancello tutti i connettori IN e OUT dell'intent eliminato
+    this.connectorService.deleteConnectorsOfBlock(intent.intent_id, false, false); 
   }
 
 
@@ -953,7 +955,6 @@ export class CdsCanvasComponent implements OnInit {
     console.log('[CDS-CANVAS] onAddActionFromActionMenu:: ', event);
     this.IS_OPEN_ADD_ACTIONS_MENU = true;
     const connectorDraft = this.connectorService.connectorDraft;
-
     if (connectorDraft && connectorDraft.toPoint && !this.hasClickedAddAction) {
       console.log("[CDS-CANVAS] ho trascinato il connettore e sto per creare un intent", this.intentSelected);
       this.createNewIntentFromConnectorDraft(event.type, connectorDraft);
@@ -963,7 +964,7 @@ export class CdsCanvasComponent implements OnInit {
       console.log("[CDS-CANVAS] ho premuto + quindi creo una nuova action e la aggiungo all'intent", this.intentSelected);
       const newAction = this.intentService.createNewAction(event.type);
       this.intentSelected.actions.push(newAction);
-      this.updateIntent(this.intentSelected, 0);
+      this.updateIntent(this.intentSelected, 0, true);
       this.controllerService.closeAddActionMenu();
     }
     

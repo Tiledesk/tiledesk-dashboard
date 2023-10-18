@@ -491,7 +491,7 @@ public _getAllFaqByFaqKbId(id_faq_kb: string): Observable<Intent[]> {
    * @param id 
    * @returns 
    */
-  public deleteFaq(id: string, intent_id?: string) {
+  public deleteFaq(id: string, intent_id?: string, id_faq_kb?: string) {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -499,9 +499,9 @@ public _getAllFaqByFaqKbId(id_faq_kb: string): Observable<Intent[]> {
       })
     };
     let url = this.FAQ_URL + id;
-    // if(intent_id) url = this.FAQ_URL + 'intentId' + intent_id; 
+    if(intent_id) url = this.FAQ_URL + 'intentId' + intent_id + '?id_faq_kb=' + id_faq_kb; 
     this.logger.log('[FAQ-SERV] DELETE FAQ URL ', url);
-    return this._httpClient.delete(url, httpOptions)
+    return this._httpClient.delete(url, httpOptions);
   }
 
   /**

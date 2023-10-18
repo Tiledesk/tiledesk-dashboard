@@ -89,6 +89,7 @@ export class CdsActionReplyTextComponent implements OnInit {
     // console.log('[CDS-ACTION-REPLY] - buttons >>', this.response, this.buttons);
     this.buttons = this.intentService.patchButtons(this.buttons, this.idAction);
     this.idIntent = this.idAction.split('/')[0];
+    this.checkConnectionStatus();
   }
 
   private checkButtons(){
@@ -100,6 +101,19 @@ export class CdsActionReplyTextComponent implements OnInit {
     } else {
       this.buttons = [];
     }
+  }
+
+
+  private checkConnectionStatus(){
+    this.buttons.forEach(button => {
+      if(button.type == TYPE_BUTTON.ACTION){
+        if(button.action){
+          button.__isConnected = true;
+        } else {
+          button.__isConnected = false;
+        }
+      } 
+    });
   }
 
   // private async patchButtons(){
@@ -149,12 +163,12 @@ export class CdsActionReplyTextComponent implements OnInit {
           buttonChanged.action = buttonChanged.action? buttonChanged.action : '#' + this.connector.toId;
           buttonChanged.type = TYPE_BUTTON.ACTION;
           console.log('[CdsActionReplyTextComponent] updateConnector :: ', buttonChanged);
-          if(!buttonChanged.__isConnected){
+          // if(!buttonChanged.__isConnected){
             buttonChanged.__isConnected = true;
             // if(this.connector.notify)
             if(this.connector.save)this.updateAndSaveAction.emit(this.connector);
             // this.changeActionReply.emit();
-          } 
+          // } 
         }
         // this.changeActionReply.emit();
       }

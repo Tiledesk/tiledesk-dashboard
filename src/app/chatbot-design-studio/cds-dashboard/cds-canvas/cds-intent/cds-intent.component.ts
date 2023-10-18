@@ -588,7 +588,7 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
       this.controllerService.closeAllPanels();
       this.intentService.setIntentSelected(this.intent.intent_id);
       this.connectorService.updateConnector(this.intent.intent_id);
-      const response = await this.intentService.onUpdateIntentWithTimeout(this.intent);
+      const response = await this.intentService.onUpdateIntentWithTimeout(this.intent, 0, true);
       if (response) {
         // this.connectorService.updateConnector(this.intent.intent_id);
       }
@@ -634,6 +634,9 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
    * function called by all actions in @output whenever they are modified!
    * */
   public async onUpdateAndSaveAction(connector) {
+    // !!! URGENTE !!! add type and obj. type: connector| intent
+
+
     // se event non è nullo sostituisco in this.intent.actions la action con _tdActionId 
     if(connector && connector._tdActionId){
       replaceItemInArrayForKey('_tdActionId', this.intent.actions, connector);
@@ -687,7 +690,7 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
     intent.webhook_enabled = !intent.webhook_enabled;
     // this.webHookTooltipText = "Disable webhook"
     // this.webHookTooltipText = "Enable webhook"
-    this.intentService.onUpdateIntentWithTimeout(intent);
+    this.intentService.onUpdateIntentWithTimeout(intent,0,true);
   }
 
   onDeleteIntent(intent: Intent) {

@@ -653,7 +653,6 @@ export class TiledeskConnectors {
         });
       document.dispatchEvent(connectorReleaseOnIntent);
       console.log("connector-release-on-intent fired!");
-
     }
     else if (this.drawingBack && this.toPoint) {
       // quando rilascio il connector sullo stage e apro il float menu

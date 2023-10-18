@@ -54,10 +54,10 @@ export class CdsActionIntentComponent implements OnInit {
     }
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log('[CDS-ACTION-INTENT] >> ngOnChanges', changes);
-    // this.checkConnectionStatus();
-  }
+  // ngOnChanges(changes: SimpleChanges): void {
+  //   console.log('[CDS-ACTION-INTENT] >> ngOnChanges', changes);
+  //   // this.checkConnectionStatus();
+  // }
 
   private checkConnectionStatus(){
     if(this.action.intentName){
@@ -65,7 +65,7 @@ export class CdsActionIntentComponent implements OnInit {
     } else {
      this.isConnected = false;
     }
-   }
+  }
 
   private initialize() {
     this.checkConnectionStatus();

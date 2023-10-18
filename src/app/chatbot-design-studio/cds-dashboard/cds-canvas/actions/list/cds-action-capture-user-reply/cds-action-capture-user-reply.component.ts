@@ -45,7 +45,16 @@ export class CdsActionCaptureUserReplyComponent implements OnInit {
     this.logger.debug("Intent Selected: ", this.intentSelected);
     this.idIntentSelected = this.intentSelected.intent_id;
     this.idConnector = this.idIntentSelected+'/'+this.action._tdActionId;
-    this.listOfIntents = this.intentService.getListOfIntents()
+    this.listOfIntents = this.intentService.getListOfIntents();
+    this.checkConnectionStatus();
+  }
+
+  private checkConnectionStatus(){
+    if(this.action.goToIntent){
+     this.isConnected = true;
+    } else {
+     this.isConnected = false;
+    }
   }
 
   private updateConnector(){
@@ -60,9 +69,9 @@ export class CdsActionCaptureUserReplyComponent implements OnInit {
         } else { 
           // ADD / EDIT
           this.isConnected = true;
-          if(this.action.goToIntent !== "#"+this.connector.toId){ 
+          // if(this.action.goToIntent !== "#"+this.connector.toId){ 
             this.action.goToIntent = "#"+this.connector.toId;
-          } 
+          // } 
         };
         if(this.connector.save)this.updateAndSaveAction.emit(this.connector);
       }

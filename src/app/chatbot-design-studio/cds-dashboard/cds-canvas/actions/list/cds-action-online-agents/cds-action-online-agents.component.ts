@@ -46,6 +46,7 @@ export class CdsActionOnlineAgentsComponent implements OnInit {
       this.connector = connector;
       this.updateConnector();
     });
+    this.initialize();
   }
 
   /** */
@@ -55,8 +56,25 @@ export class CdsActionOnlineAgentsComponent implements OnInit {
     }
   }
 
-  ngOnChanges() {
-    this.initialize();
+  // ngOnChanges() {
+  //   this.initialize();
+  //   if(this.intentSelected){
+  //     this.initializeConnector();
+  //   }
+  //   if (this.action && this.action.trueIntent) {
+  //     this.setFormValue();
+  //   }
+  // }
+
+  private initialize() {
+    this.actionOnlineAgentsFormGroup = this.buildForm();
+    this.actionOnlineAgentsFormGroup.valueChanges.subscribe(form => {
+      this.logger.log('[ACTION-ONLINE-AGENT] form valueChanges-->', form)
+      if (form && (form.trueIntent !== ''))
+        this.action = Object.assign(this.action, this.actionOnlineAgentsFormGroup.value);
+    })
+    this.trueIntentAttributes = this.action.trueIntentAttributes;
+    this.falseIntentAttributes = this.action.falseIntentAttributes;
     if(this.intentSelected){
       this.initializeConnector();
     }
@@ -70,9 +88,24 @@ export class CdsActionOnlineAgentsComponent implements OnInit {
     this.idIntentSelected = this.intentSelected.intent_id;
     this.idConnectorTrue = this.idIntentSelected+'/'+this.action._tdActionId + '/true';
     this.idConnectorFalse = this.idIntentSelected+'/'+this.action._tdActionId + '/false';
-
-    this.listOfIntents = this.intentService.getListOfIntents()
+    this.listOfIntents = this.intentService.getListOfIntents();
+    this.checkConnectionStatus();
   }
+
+
+  private checkConnectionStatus(){
+    if(this.action.trueIntent){
+     this.isConnectedTrue = true;
+    } else {
+     this.isConnectedTrue = false;
+    }
+    if(this.action.falseIntent){
+      this.isConnectedFalse = true;
+     } else {
+      this.isConnectedFalse = false;
+     }
+  }
+
 
   private updateConnector(){
     try {
@@ -127,16 +160,7 @@ export class CdsActionOnlineAgentsComponent implements OnInit {
 
   
 
-  private initialize() {
-    this.actionOnlineAgentsFormGroup = this.buildForm();
-    this.actionOnlineAgentsFormGroup.valueChanges.subscribe(form => {
-      this.logger.log('[ACTION-ONLINE-AGENT] form valueChanges-->', form)
-      if (form && (form.trueIntent !== ''))
-        this.action = Object.assign(this.action, this.actionOnlineAgentsFormGroup.value);
-    })
-    this.trueIntentAttributes = this.action.trueIntentAttributes;
-    this.falseIntentAttributes = this.action.falseIntentAttributes;
-  }
+
 
 
   buildForm(): FormGroup {
