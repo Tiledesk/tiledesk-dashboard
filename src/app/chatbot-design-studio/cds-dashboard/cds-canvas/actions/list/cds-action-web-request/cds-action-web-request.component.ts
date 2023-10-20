@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ActionWebRequest } from 'app/models/intent-model';
 import { LoggerService } from 'app/services/logger/logger.service';
-import { TYPE_METHOD_ATTRIBUTE, TYPE_METHOD_REQUEST, TEXT_CHARS_LIMIT } from '../../../../../utils';
+import { TYPE_UPDATE_ACTION, TYPE_METHOD_ATTRIBUTE, TYPE_METHOD_REQUEST, TEXT_CHARS_LIMIT } from 'app/chatbot-design-studio/utils';
 
 @Component({
   selector: 'cds-action-web-request',
@@ -65,7 +65,7 @@ export class CdsActionWebRequestComponent implements OnInit {
 
   private setActionWebRequest(){
     this.action.jsonBody = this.jsonBody;
-    this.updateAndSaveAction.emit()
+    this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.ACTION, element: this.action});
   }
 
   private formatJSON(input, indent) {
@@ -97,7 +97,7 @@ export class CdsActionWebRequestComponent implements OnInit {
   // EVENT FUNCTIONS //
   onChangeMethodButton(e: {label: string, value: string}){
     this.action.method = e.value;
-    this.updateAndSaveAction.emit()
+    this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.ACTION, element: this.action});
   }
 
   onChangeTextarea(e, type: 'url' | 'jsonBody'){
@@ -108,13 +108,13 @@ export class CdsActionWebRequestComponent implements OnInit {
         this.setActionWebRequest();
         setTimeout(() => {
           this.jsonIsValid = this.isValidJson(this.jsonBody);
-          this.updateAndSaveAction.emit()
+          this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.ACTION, element: this.action});
         }, 500);
         break;
       }
       case 'url' : {
         this.action.url = e
-        this.updateAndSaveAction.emit()
+        this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.ACTION, element: this.action});
       }
     }
 
@@ -143,28 +143,25 @@ export class CdsActionWebRequestComponent implements OnInit {
   }
 
   onChangeAttributes(attributes:any){
-    // this.logger.log('onChangeAttributes');
     this.action.headersString = attributes;
-    this.updateAndSaveAction.emit()
-    // this.jsonHeader = attributes;
+    this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.ACTION, element: this.action});
   }
 
   onClearSelectedAttribute(){
     this.action.assignTo = '';
     this.hasSelectedVariable = false;
-    this.updateAndSaveAction.emit()
+    this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.ACTION, element: this.action});
   }
   
   onSelectedAttribute(variableSelected: {name: string, value: string}, step: number){
     this.hasSelectedVariable = true;
     this.action.assignTo = variableSelected.value;
-    this.updateAndSaveAction.emit()
+    this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.ACTION, element: this.action});
   }
 
-
   onChangeAttributesResponse(attributes:{[key: string]: string }){
-    this.action.assignments = attributes ;
-    this.updateAndSaveAction.emit()
+    this.action.assignments = attributes;
+    this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.ACTION, element: this.action});
   }
 
 }

@@ -3,6 +3,7 @@ import { ActionChangeDepartment } from 'app/models/intent-model';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Department } from 'app/models/department-model';
 import { LoggerService } from 'app/services/logger/logger.service';
+import { TYPE_UPDATE_ACTION } from 'app/chatbot-design-studio/utils';
 
 @Component({
   selector: 'cds-action-change-department',
@@ -42,15 +43,13 @@ export class CdsActionChangeDepartmentComponent implements OnInit {
   onChangeSelect(event: {name: string, value: string}) {
     //this.logger.log("[ACTION REPLACE BOT] onChangeActionButton event: ", event)
     this.action.depName = event.value;
-    this.updateAndSaveAction.emit()
-    this.logger.log("[ACTION CHANGE DEPARTMENT] action edited: ", this.action)
+    this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.ACTION, element: this.action});
   }
 
   onCheckboxChange(event) {
     this.logger.log("[ACTION CHANGE DEPARTMENT] checkbox event: ", event.checked);
     this.action.triggerBot = event.checked;
-    this.updateAndSaveAction.emit()
-
+    this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.ACTION, element: this.action});
   }
 
 

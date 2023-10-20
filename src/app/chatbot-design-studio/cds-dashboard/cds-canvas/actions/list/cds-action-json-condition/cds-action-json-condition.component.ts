@@ -8,6 +8,7 @@ import { LoggerService } from 'app/services/logger/logger.service';
 import { IntentService } from 'app/chatbot-design-studio/services/intent.service';
 import { ConnectorService } from 'app/chatbot-design-studio/services/connector.service';
 import { Subscription } from 'rxjs';
+import { TYPE_UPDATE_ACTION } from 'app/chatbot-design-studio/utils';
 
 @Component({
   selector: 'cds-action-json-condition',
@@ -102,9 +103,7 @@ export class CdsActionJsonConditionComponent implements OnInit {
       const array = this.connector.fromId.split("/");
       const idAction= array[1];
       if(idAction === this.action._tdActionId){
-        if(this.connector.deleted){ //TODO: verificare quale dei due connettori è stato eliminato e impostare isConnected a false
-          // DELETE 
-          // this.logger.log(' deleteConnector :: ', this.connector.id);
+        if(this.connector.deleted){
           // this.action.intentName = null;
           if(array[array.length -1] === 'true'){
             this.action.trueIntent = null
@@ -114,31 +113,18 @@ export class CdsActionJsonConditionComponent implements OnInit {
             this.action.falseIntent = null
             this.isConnectedFalse = false;
           }
-          // if(this.connector.notify)
-          if(this.connector.save)this.updateAndSaveAction.emit(this.connector);
-          // this.updateAndSaveAction.emit();
-        } else { //TODO: verificare quale dei due connettori è stato aggiunto (controllare il valore della action corrispondente al true/false intent)
-          // ADD / EDIT
-          console.log(' updateConnector :: json-condition', this.connector, this.connector.toId, this.connector.fromId ,this.action, array[array.length-1]);
+          if(this.connector.save)this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.CONNECTOR, element: this.connector});
+        } else {
+          // console.log(' updateConnector :: json-condition', this.connector, this.connector.toId, this.connector.fromId ,this.action, array[array.length-1]);
           if(array[array.length -1] === 'true'){
-            // this.action.trueIntent = '#'+this.connector.toId;
             this.isConnectedTrue = true
-            // if(this.action.trueIntent !== '#'+this.connector.toId){ 
-              this.action.trueIntent = '#'+this.connector.toId;
-              // if(this.connector.notify)
-              if(this.connector.save)this.updateAndSaveAction.emit(this.connector);
-              // this.updateAndSaveAction.emit();
-            // } 
+            this.action.trueIntent = '#'+this.connector.toId;
+            if(this.connector.save)this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.CONNECTOR, element: this.connector});
           }        
           if(array[array.length -1] === 'false'){
-            // this.action.falseIntent = '#'+this.connector.toId;
             this.isConnectedFalse = true;
-            // if(this.action.falseIntent !== '#'+this.connector.toId){ 
-              this.action.falseIntent = '#'+this.connector.toId;
-              // if(this.connector.notify)
-              if(this.connector.save)this.updateAndSaveAction.emit(this.connector);
-              // this.updateAndSaveAction.emit();
-            // } 
+            this.action.falseIntent = '#'+this.connector.toId;
+            if(this.connector.save)this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.CONNECTOR, element: this.connector});
           }
         }
       }
@@ -223,7 +209,7 @@ export class CdsActionJsonConditionComponent implements OnInit {
     // let groups = this.actionJsonConditionFormGroup.get('groups') as FormArray
     // groups.push(this.createOperatorGroup(), {emitEvent: false})
     // groups.push(this.createExpressionGroup(), {emitEvent: false})
-    this.updateAndSaveAction.emit();
+    this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.ACTION, element: this.action});
   }
 
   onDeleteGroup(index: number, last: boolean){
@@ -233,20 +219,18 @@ export class CdsActionJsonConditionComponent implements OnInit {
     }else if(last){
       this.action.groups.splice(index-1, 2)
     }
-    
-
     if(this.action.groups.length === 0){
       this.action.groups.push(new Expression())
       // let groups = this.actionJsonConditionFormGroup.get('groups') as FormArray
       // groups.push(this.createExpressionGroup(), {emitEvent: false})
     }
-    this.updateAndSaveAction.emit();
+    this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.ACTION, element: this.action});
   }
 
   onChangeOperator(event, index: number){
     (this.action.groups[index] as Operator).operator= event['type']
     this.logger.log('onChangeOperator actionsss', this.action, this.actionJsonConditionFormGroup)
-    this.updateAndSaveAction.emit();
+    this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.ACTION, element: this.action});
   }
 
   onChangeForm(event:{name: string, value: string}, type : 'trueIntent' | 'falseIntent'){
@@ -261,7 +245,7 @@ export class CdsActionJsonConditionComponent implements OnInit {
           this.onConnectorChange.emit({ type: 'create', fromId: this.idConnectorFalse, toId: this.action.falseIntent})
           break;
       }
-      this.updateAndSaveAction.emit();
+      this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.ACTION, element: this.action});
     }
   }
 
@@ -276,12 +260,12 @@ export class CdsActionJsonConditionComponent implements OnInit {
         break;
     }
     this.action[type]=null
-    this.updateAndSaveAction.emit();
+    this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.ACTION, element: this.action});
   }
 
   onChangeExpression(event){
     this.connectorService.updateConnector(this.intentSelected.intent_id);
-    this.updateAndSaveAction.emit();
+    this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.ACTION, element: this.action});
   }
 
   onChangeAttributes(attributes:any, type: 'trueIntent' | 'falseIntent'){
@@ -291,13 +275,13 @@ export class CdsActionJsonConditionComponent implements OnInit {
     if(type === 'falseIntent'){
       this.action.falseIntentAttributes = attributes;
     }
-    this.updateAndSaveAction.emit();
+    this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.ACTION, element: this.action});
   }
 
   onStopConditionMeet() {
     try {
       this.action.stopOnConditionMet = !this.action.stopOnConditionMet;
-      this.updateAndSaveAction.emit();
+      this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.ACTION, element: this.action});
     } catch (error) {
       this.logger.log("Error: ", error);
     }

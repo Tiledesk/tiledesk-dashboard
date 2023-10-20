@@ -1,7 +1,7 @@
 import { ActionAssignVariable, Operand } from '../../../../../../models/intent-model';
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { LoggerService } from 'app/services/logger/logger.service';
-import { TYPE_MATH_OPERATOR, TYPE_FUNCTION_LIST_FOR_VARIABLES, TYPE_MATH_OPERATOR_LIST } from 'app/chatbot-design-studio/utils';
+import { TYPE_UPDATE_ACTION, TYPE_FUNCTION_LIST_FOR_VARIABLES, TYPE_MATH_OPERATOR_LIST } from 'app/chatbot-design-studio/utils';
 
 @Component({
     selector: 'cds-action-assign-variable',
@@ -91,7 +91,7 @@ export class CdsActionAssignVariableComponent implements OnInit, OnChanges {
 
     onSelectedAttribute(variableSelected: { name: string, value: string }) {
         this.action.destination = variableSelected.value;
-        this.updateAndSaveAction.emit()
+        this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.ACTION, element: this.action});
     }
 
     onChangeOperation(event) {
@@ -99,6 +99,6 @@ export class CdsActionAssignVariableComponent implements OnInit, OnChanges {
         // this.action.operation.operators.push(TYPE_MATH_OPERATOR['addAsNumber']);
         // this.action.operation.operands.push(new Operand());
         // this.action.operation = Object.assign({}, temp);
-        this.updateAndSaveAction.emit()
+        this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.ACTION, element: this.action});
     }
 }

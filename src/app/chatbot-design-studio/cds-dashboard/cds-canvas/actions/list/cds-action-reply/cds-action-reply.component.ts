@@ -1,13 +1,12 @@
 import { Component, OnInit, Input, ViewChild, ElementRef, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Wait, Button, Message, Command, ActionReply, MessageAttributes, Intent } from 'app/models/intent-model';
-import { TYPE_INTENT_ELEMENT, ACTIONS_LIST, TYPE_ACTION, TYPE_COMMAND, TYPE_RESPONSE, TYPE_BUTTON, TYPE_URL, TYPE_MESSAGE, generateShortUID } from 'app/chatbot-design-studio/utils';
+import { TYPE_UPDATE_ACTION, TYPE_INTENT_ELEMENT, ACTIONS_LIST, TYPE_ACTION, TYPE_COMMAND, TYPE_RESPONSE, TYPE_BUTTON, TYPE_URL, TYPE_MESSAGE, generateShortUID } from 'app/chatbot-design-studio/utils';
 import { LoggerService } from 'app/services/logger/logger.service';
 
 import { ControllerService } from 'app/chatbot-design-studio/services/controller.service';
 import { IntentService } from 'app/chatbot-design-studio/services/intent.service';
 import { ConnectorService } from 'app/chatbot-design-studio/services/connector.service';
-
 
 @Component({
   selector: 'cds-action-reply',
@@ -327,7 +326,7 @@ export class CdsActionReplyComponent implements OnInit {
     event.buttons.splice(event.index, 1);
     var intentId = this.idAction.substring(0, this.idAction.indexOf('/'));
     this.connectorService.deleteConnectorFromAction(intentId, button.__idConnector);
-    this.updateAndSaveAction.emit();
+    this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.ACTION, element: this.action});
   }
 
 
@@ -339,7 +338,7 @@ export class CdsActionReplyComponent implements OnInit {
   public async onUpdateAndSaveAction() {
     this.logger.log('[cds-action-reply] onUpdateAndSaveAction:::: ', this.intentSelected, this.action);
     // this.connectorService.updateConnector(this.intentSelected.intent_id);
-    this.updateAndSaveAction.emit(this.action);
+    this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.ACTION, element: this.action});
   }
 
   // on intent name //
@@ -363,7 +362,7 @@ export class CdsActionReplyComponent implements OnInit {
   onDisableInputMessage() {
     try {
       this.action.attributes.disableInputMessage = !this.action.attributes.disableInputMessage;
-      this.updateAndSaveAction.emit(this.action);
+      this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.ACTION, element: this.action});
     } catch (error) {
       this.logger.log("Error: ", error);
     }

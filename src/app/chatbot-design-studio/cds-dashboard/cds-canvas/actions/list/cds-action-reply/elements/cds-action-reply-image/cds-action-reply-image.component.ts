@@ -1,11 +1,11 @@
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Button, Expression, MessageAttributes, Message, Wait, Metadata } from '../../../../../../../../models/intent-model';
-import { TYPE_ACTION, TEXT_CHARS_LIMIT, calculatingRemainingCharacters, TYPE_BUTTON, generateShortUID } from '../../../../../../../utils';
 import { ConnectorService } from 'app/chatbot-design-studio/services/connector.service';
 import { IntentService } from 'app/chatbot-design-studio/services/intent.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { Subscription } from 'rxjs';
+import { TYPE_UPDATE_ACTION, TYPE_BUTTON} from 'app/chatbot-design-studio/utils';
 
 @Component({
   selector: 'cds-action-reply-image',
@@ -128,28 +128,20 @@ export class CdsActionReplyImageComponent implements OnInit {
       const buttonChanged = this.buttons.find(obj => obj.uid === idButton);
       if(idConnector === this.connector.fromId && buttonChanged){
         if(this.connector.deleted){
-          // DELETE 
           buttonChanged.__isConnected = false;
           buttonChanged.__idConnector = this.connector.fromId;
           buttonChanged.action = '';
           buttonChanged.type = TYPE_BUTTON.TEXT;
-          // if(this.connector.notify)
-          if(this.connector.save)this.updateAndSaveAction.emit(this.connector);
-          // this.changeActionReply.emit();
+          if(this.connector.save)this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.CONNECTOR, element: this.connector});
         } else {
-          // ADD / EDIT
-          // buttonChanged.__isConnected = true;
           buttonChanged.__idConnector = this.connector.fromId;
           buttonChanged.action = buttonChanged.action? buttonChanged.action : '#' + this.connector.toId;
           buttonChanged.type = TYPE_BUTTON.ACTION;
           if(!buttonChanged.__isConnected){
             buttonChanged.__isConnected = true;
-            // if(this.connector.notify)
-            if(this.connector.save)this.updateAndSaveAction.emit(this.connector);
-            // this.changeActionReply.emit();
+            if(this.connector.save)this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.CONNECTOR, element: this.connector});
           } 
         }
-        // this.changeActionReply.emit();
       }
     } catch (error) {
       this.logger.error('error: ', error);

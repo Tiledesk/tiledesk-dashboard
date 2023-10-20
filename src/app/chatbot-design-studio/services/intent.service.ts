@@ -253,8 +253,8 @@ export class IntentService {
       let intentNow = nowIntents.find((item) => item.intent_id === intent.intent_id)?nowIntents.find((item) => item.intent_id === intent.intent_id):intent;
       this.addIntentToUndoRedo('PUT', intentPrev, intentNow, intentsToUpdateUndo, intentsToUpdateRedo);
     }
-    clearTimeout(this.setTimeoutChangeEvent);
-    this.setTimeoutChangeEvent = setTimeout(() => {
+    // clearTimeout(this.setTimeoutChangeEvent);
+    // this.setTimeoutChangeEvent = setTimeout(() => {
       this.faqService.patchAttributes(intentID, attributes).subscribe((data) => {
         if (data) {
           this.prevListOfIntent = JSON.parse(JSON.stringify(this.listOfIntents));
@@ -267,7 +267,7 @@ export class IntentService {
       }, () => {
         console.log('complete');
       });
-    }, 500);
+    // }, 500);
   }
 
   /**

@@ -2,7 +2,7 @@ import { ActionEmail } from 'app/models/intent-model';
 import { Component, OnInit, Input, ElementRef, OnChanges, Output, EventEmitter } from '@angular/core';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { ControllerService } from 'app/chatbot-design-studio/services/controller.service';
-
+import { TYPE_UPDATE_ACTION } from 'app/chatbot-design-studio/utils';
 
 @Component({
   selector: 'cds-action-email',
@@ -37,8 +37,8 @@ export class CdsActionEmailComponent implements OnInit, OnChanges {
     if($event){
       this.logger.log("[CDS-ACTION-EMAIL] onEditableDivTextChange event", $event)
       this.logger.log("[CDS-ACTION-EMAIL] onEditableDivTextChange property", property)
-      this.action[property] = $event
-      this.updateAndSaveAction.emit();
+      this.action[property] = $event;
+      this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.ACTION, element: this.action});
     }
   }
 

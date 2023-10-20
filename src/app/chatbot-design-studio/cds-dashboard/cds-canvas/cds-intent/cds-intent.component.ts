@@ -633,17 +633,22 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
   /**  onUpdateAndSaveAction: 
    * function called by all actions in @output whenever they are modified!
    * */
-  public async onUpdateAndSaveAction(connector) {
-    // !!! URGENTE !!! add type and obj. type: connector| intent
-
-
-    // se event non è nullo sostituisco in this.intent.actions la action con _tdActionId 
-    if(connector && connector._tdActionId){
-      replaceItemInArrayForKey('_tdActionId', this.intent.actions, connector);
+  public async onUpdateAndSaveAction(object) {
+    let connector = null;
+    if(object && object.type && object.type === 'connector'){
+      connector = object.element;
+    } else if(object && object.type && object.type === 'action'){
+      const action  = object.element;
+      // se event non è nullo sostituisco in this.intent.actions la action con _tdActionId 
+      if(action && action._tdActionId){
+        replaceItemInArrayForKey('_tdActionId', this.intent.actions, action);
+      }
     }
-    console.log('[CDS-INTENT] onUpdateAndSaveAction:::: ', connector, this.intent, this.intent.actions);
+    console.log('[CDS-INTENT] onUpdateAndSaveAction:::: ', object, this.intent, this.intent.actions);
     this.intentService.onUpdateIntentWithTimeout(this.intent, 0, true, connector);
   }
+
+
 
   openActionMenu(intent: any, calleBy: string) {
     this.logger.log('[CDS-INTENT] openActionMenu > intent ', intent)

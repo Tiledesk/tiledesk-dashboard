@@ -2,7 +2,8 @@ import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges } from '@
 import { ActionIntentConnected, Intent } from 'app/models/intent-model';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { IntentService } from 'app/chatbot-design-studio/services/intent.service';
-import { ConnectorService } from 'app/chatbot-design-studio/services/connector.service';
+// import { ConnectorService } from 'app/chatbot-design-studio/services/connector.service';
+import { TYPE_UPDATE_ACTION } from 'app/chatbot-design-studio/utils';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -88,18 +89,14 @@ export class CdsActionIntentComponent implements OnInit {
       if(idAction === this.action._tdActionId){
         if(this.connector.deleted){
           this.logger.log('[CDS-ACTION-INTENT] 3 - PALLINO VUOTO :: ');
-          // DELETE 
           this.action.intentName = null;
           this.isConnected = false;
         } else {
-          // ADD / EDIT
           this.logger.log('[CDS-ACTION-INTENT] 4 - PALLINO PIENO :: ');
           this.isConnected = true;
-          //if(this.action.intentName !== "#"+this.connector.toId){ 
           this.action.intentName = "#"+this.connector.toId;
-          //} 
         }
-        if(this.connector.save)this.updateAndSaveAction.emit(this.connector);
+        if(this.connector.save)this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.CONNECTOR, element: this.connector});
       }
     } catch (error) {
       this.logger.log('error: ', error);
@@ -127,14 +124,14 @@ export class CdsActionIntentComponent implements OnInit {
     }
     let connector = { type: 'create', fromId: this.idConnector, toId: this.action.intentName };
     this.onConnectorChange.emit(connector);
-    this.updateAndSaveAction.emit(this.intentSelected);
+    this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.ACTION, element: this.action});
   }
 
   onResetSelect(event:{name: string, value: string}) {
     let connector = { type: 'delete', fromId: this.idConnector, toId: this.action.intentName };
     this.action.intentName = null;
     this.onConnectorChange.emit(connector);
-    this.updateAndSaveAction.emit(this.intentSelected);
+    this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.ACTION, element: this.action});
   }
   
 }

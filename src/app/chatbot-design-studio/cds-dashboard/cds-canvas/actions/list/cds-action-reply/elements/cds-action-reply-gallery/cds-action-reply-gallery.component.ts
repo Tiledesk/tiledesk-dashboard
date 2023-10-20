@@ -3,7 +3,7 @@ import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild }
 import { DomSanitizer } from '@angular/platform-browser';
 import { ConnectorService } from 'app/chatbot-design-studio/services/connector.service';
 import { IntentService } from 'app/chatbot-design-studio/services/intent.service';
-import { TYPE_ACTION, TYPE_BUTTON, TYPE_URL, generateShortUID } from 'app/chatbot-design-studio/utils';
+import { TYPE_UPDATE_ACTION, TYPE_ACTION, TYPE_BUTTON, TYPE_URL, generateShortUID } from 'app/chatbot-design-studio/utils';
 import { Button, Expression, GalleryElement, Message, Wait, Metadata, MessageAttributes } from 'app/models/intent-model';
 // import { LoggerService } from 'app/services/chat21-core/providers/abstract/logger.service';
 import { LoggerService } from 'app/services/logger/logger.service';
@@ -138,28 +138,20 @@ export class CdsActionReplyGalleryComponent implements OnInit {
         const buttonChanged = el.buttons.find(obj => obj.uid === idButton);
         if(idConnector === this.connector.fromId && buttonChanged){
           if(this.connector.deleted){
-            // DELETE 
             buttonChanged.__isConnected = false;
             buttonChanged.__idConnector = this.connector.fromId;
             buttonChanged.action = '';
             buttonChanged.type = TYPE_BUTTON.TEXT;
-            // if(this.connector.notify)
-            if(this.connector.save)this.updateAndSaveAction.emit(this.connector);
-            // this.changeActionReply.emit();
+            if(this.connector.save)this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.CONNECTOR, element: this.connector});
           } else {
-            // ADD / EDIT
-            // buttonChanged.__isConnected = true;
             buttonChanged.__idConnector = this.connector.fromId;
             buttonChanged.action = buttonChanged.action? buttonChanged.action : '#' + this.connector.toId;
             buttonChanged.type = TYPE_BUTTON.ACTION;
             if(!buttonChanged.__isConnected){
               buttonChanged.__isConnected = true;
-              // if(this.connector.notify)
-              if(this.connector.save)this.updateAndSaveAction.emit(this.connector);
-              // this.changeActionReply.emit();
+              if(this.connector.save)this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.CONNECTOR, element: this.connector});
             } 
           }
-          // this.changeActionReply.emit();
         }
       });
     } catch (error) {

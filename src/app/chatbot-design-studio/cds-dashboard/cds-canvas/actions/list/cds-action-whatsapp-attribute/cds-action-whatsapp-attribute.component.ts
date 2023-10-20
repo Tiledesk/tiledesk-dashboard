@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ActionWhatsappAttribute } from 'app/models/intent-model';
 import { LoggerService } from 'app/services/logger/logger.service';
+import { TYPE_UPDATE_ACTION } from 'app/chatbot-design-studio/utils';
 
 @Component({
   selector: 'cds-action-whatsapp-attribute',
@@ -25,7 +26,7 @@ export class CdsActionWhatsappAttributeComponent implements OnInit {
   onSelectedAttribute(event) {
     this.action.attributeName = event.value;
     this.logger.debug("onSelectedAttribute event: ", this.action);
-    this.updateAndSaveAction.emit()
+    this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.ACTION, element: this.action});
   }
 
 }

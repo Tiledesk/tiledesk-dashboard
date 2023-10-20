@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { variableList } from 'app/chatbot-design-studio/utils';
 import { ActionDeleteVariable } from 'app/models/intent-model';
 import { LoggerService } from 'app/services/logger/logger.service';
+import { TYPE_UPDATE_ACTION } from 'app/chatbot-design-studio/utils';
 
 @Component({
   selector: 'cds-action-delete-variable',
@@ -33,9 +34,8 @@ export class CdsActionDeleteVariableComponent implements OnInit {
   }
 
   onChangeSelect(variableSelected: {name: string, value: string}){
-    // this.logger.log('changeeeeee', variableSelected);
     this.action.variableName = variableSelected.name;
-    this.updateAndSaveAction.emit()
+    this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.ACTION, element: this.action});
   }
 
 }

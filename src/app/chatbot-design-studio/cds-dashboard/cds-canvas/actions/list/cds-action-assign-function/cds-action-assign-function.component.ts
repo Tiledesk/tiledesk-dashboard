@@ -1,7 +1,7 @@
 import { ActionAssignFunction } from '../../../../../../models/intent-model';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { LoggerService } from 'app/services/logger/logger.service';
-import { TYPE_FUNCTION_LIST_FOR_FUNCTIONS } from 'app/chatbot-design-studio/utils';
+import { TYPE_FUNCTION_LIST_FOR_FUNCTIONS, TYPE_UPDATE_ACTION } from 'app/chatbot-design-studio/utils';
 
 @Component({
   selector: 'cds-action-assign-function',
@@ -37,13 +37,13 @@ export class CdsActionAssignFunctionComponent implements OnInit {
   onSelectedFunction(event: any) {
     // this.logger.log("onSelectedFunction::: ", event);
     this.action.functionName = event.value;
-    this.updateAndSaveAction.emit()
+    this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.ACTION, element: this.action});
   }
 
   onSelectedAttribute(event: any){
     // this.logger.log("onSelectedAttribute::: ", event);
     this.action.assignTo = event.name;
-    this.updateAndSaveAction.emit()
+    this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.ACTION, element: this.action});
   }
   
 }

@@ -8,6 +8,7 @@ import { IntentService } from 'app/chatbot-design-studio/services/intent.service
 import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
 import { AppConfigService } from 'app/services/app-config.service';
 import { Subscription } from 'rxjs';
+import { TYPE_UPDATE_ACTION } from 'app/chatbot-design-studio/utils';
 
 @Component({
   selector: 'cds-action-askgpt',
@@ -126,45 +127,32 @@ export class CdsActionAskgptComponent implements OnInit {
       const array = this.connector.fromId.split("/");
       const idAction= array[1];
       if(idAction === this.action._tdActionId){
-        if(this.connector.deleted){ //TODO: verificare quale dei due connettori è stato eliminato e impostare isConnected a false
-          // DELETE 
+        if(this.connector.deleted){
           if(array[array.length -1] === 'true'){
-            this.action.trueIntent = null
-            this.isConnectedTrue = false
+            this.action.trueIntent = null;
+            this.isConnectedTrue = false;
           }        
           if(array[array.length -1] === 'false'){
-            this.action.falseIntent = null
+            this.action.falseIntent = null;
             this.isConnectedFalse = false;
           }
-          // if(this.connector.notify)
-          if(this.connector.save)this.updateAndSaveAction.emit(this.connector);
-          // this.updateAndSaveAction.emit();
+          if(this.connector.save)this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.CONNECTOR, element: this.connector});
         } else { 
           // TODO: verificare quale dei due connettori è stato aggiunto (controllare il valore della action corrispondente al true/false intent)
-          // ADD / EDIT
           this.logger.debug('[ACTION-ASKGPT] updateConnector', this.connector.toId, this.connector.fromId ,this.action, array[array.length-1]);
           if(array[array.length -1] === 'true'){
             // this.action.trueIntent = '#'+this.connector.toId;
             this.isConnectedTrue = true;
-            // if(this.action.trueIntent !== '#'+this.connector.toId){ 
-              this.action.trueIntent = '#'+this.connector.toId;
-              // if(this.connector.notify)
-              if(this.connector.save)this.updateAndSaveAction.emit(this.connector);
-              // this.updateAndSaveAction.emit();
-            // } 
+            this.action.trueIntent = '#'+this.connector.toId;
+            if(this.connector.save)this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.CONNECTOR, element: this.connector});
           }        
           if(array[array.length -1] === 'false'){
             // this.action.falseIntent = '#'+this.connector.toId;
             this.isConnectedFalse = true;
-            // if(this.action.falseIntent !== '#'+this.connector.toId){ 
-              this.action.falseIntent = '#'+this.connector.toId;
-              // if(this.connector.notify)
-              if(this.connector.save)this.updateAndSaveAction.emit(this.connector);
-              // this.updateAndSaveAction.emit();
-            // } 
+            this.action.falseIntent = '#'+this.connector.toId;
+            if(this.connector.save)this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.CONNECTOR, element: this.connector});
           }
         }
-        // this.updateAndSaveAction.emit();
       }
     } catch (error) {
       this.logger.error('[ACTION-ASKGPT] updateConnector error: ', error);
@@ -211,14 +199,14 @@ export class CdsActionAskgptComponent implements OnInit {
     this.logger.log("[ACTION-ASKGPT] onEditableDivTextChange event", $event)
     this.logger.log("[ACTION-ASKGPT] onEditableDivTextChange property", property)
     this.action[property] = $event
-    this.updateAndSaveAction.emit();
+    this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.ACTION, element: this.action});
   }
 
   onSelectedAttribute(event, property) {
     this.logger.log("[ACTION-ASKGPT] onEditableDivTextChange event", event)
     this.logger.log("[ACTION-ASKGPT] onEditableDivTextChange property", property)
     this.action[property] = event.value;
-    this.updateAndSaveAction.emit();
+    this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.ACTION, element: this.action});
   }
 
   onChangeSelect(event) {
@@ -234,37 +222,36 @@ export class CdsActionAskgptComponent implements OnInit {
       }
       //this.checkKbStatus(this.action.kbid);
       this.logger.log("[ACTION-ASKGPT] updated action", this.action);
-      this.updateAndSaveAction.emit();
+      this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.ACTION, element: this.action});
     }
   }
 
   onChangeBlockSelect(event:{name: string, value: string}, type: 'trueIntent' | 'falseIntent') {
     if(event){
       this.action[type]=event.value
-
       switch(type){
         case 'trueIntent':
-          this.onConnectorChange.emit({ type: 'create', fromId: this.idConnectorTrue, toId: this.action.trueIntent})
+          this.onConnectorChange.emit({ type: 'create', fromId: this.idConnectorTrue, toId: this.action.trueIntent});
           break;
         case 'falseIntent':
-          this.onConnectorChange.emit({ type: 'create', fromId: this.idConnectorFalse, toId: this.action.falseIntent})
+          this.onConnectorChange.emit({ type: 'create', fromId: this.idConnectorFalse, toId: this.action.falseIntent});
           break;
       }
-      this.updateAndSaveAction.emit();
+      this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.ACTION, element: this.action});
     }
   }
 
   onResetBlockSelect(event:{name: string, value: string}, type: 'trueIntent' | 'falseIntent') {
     switch(type){
       case 'trueIntent':
-        this.onConnectorChange.emit({ type: 'delete', fromId: this.idConnectorTrue, toId: this.action.trueIntent})
+        this.onConnectorChange.emit({ type: 'delete', fromId: this.idConnectorTrue, toId: this.action.trueIntent});
         break;
       case 'falseIntent':
-        this.onConnectorChange.emit({ type: 'delete', fromId: this.idConnectorFalse, toId: this.action.falseIntent})
+        this.onConnectorChange.emit({ type: 'delete', fromId: this.idConnectorFalse, toId: this.action.falseIntent});
         break;
     }
     this.action[type]=null
-    this.updateAndSaveAction.emit();
+    this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.ACTION, element: this.action});
   }
   
   onChangeAttributes(attributes:any, type:'trueIntent' | 'falseIntent'){

@@ -3,6 +3,7 @@ import { ActionReplaceBot } from 'app/models/intent-model';
 import { FaqKbService } from 'app/services/faq-kb.service';
 import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { LoggerService } from 'app/services/logger/logger.service';
+import { TYPE_UPDATE_ACTION } from 'app/chatbot-design-studio/utils';
 
 @Component({
   selector: 'cds-action-replace-bot',
@@ -49,7 +50,7 @@ export class CdsActionReplaceBotComponent implements OnInit, OnChanges {
   onChangeSelect(event: {name: string, value: string}) {
     //this.logger.log("[ACTION REPLACE BOT] onChangeActionButton event: ", event)
     this.action.botName = event.value;
-    this.updateAndSaveAction.emit()
+    this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.ACTION, element: this.action});
     this.logger.log("[ACTION REPLACE BOT] action edited: ", this.action)
   }
 

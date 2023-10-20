@@ -6,6 +6,7 @@ import { OpenaiService } from 'app/services/openai.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AttributesDialogComponent } from './attributes-dialog/attributes-dialog.component';
 import { AppConfigService } from 'app/services/app-config.service';
+import { TYPE_UPDATE_ACTION } from 'app/chatbot-design-studio/utils';
 
 @Component({
   selector: 'cds-action-gpt-task',
@@ -72,42 +73,37 @@ export class CdsActionGPTTaskComponent implements OnInit {
     this.logger.debug("[ACTION GPT-TASK] changeTextarea event: ", $event);
     this.logger.debug("[ACTION GPT-TASK] changeTextarea propery: ", property);
     this.action[property] = $event;
-    // this.checkVariables();
-    this.updateAndSaveAction.emit();
+    this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.ACTION, element: this.action});
   }
 
   onSelectedAttribute(event, property) {
     this.logger.log("[ACTION GPT-TASK] onEditableDivTextChange event", event)
     this.logger.log("[ACTION GPT-TASK] onEditableDivTextChange property", property)
     this.action[property] = event.value;
-    this.updateAndSaveAction.emit();
+    this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.ACTION, element: this.action});
   }
 
   onChangeSelect(event, target) {
     this.logger.debug("[ACTION GPT-TASK] onChangeSelect event: ", event.value)
     this.logger.debug("[ACTION GPT-TASK] onChangeSelect target: ", target)
     this.action[target] = event.value;
-    this.updateAndSaveAction.emit();
+    this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.ACTION, element: this.action});
   }
 
   updateSliderValue(event, target) {
     this.logger.debug("[ACTION GPT-TASK] updateSliderValue event: ", event)
     this.logger.debug("[ACTION GPT-TASK] updateSliderValue target: ", target)
     this.action[target] = event;
-
-    this.updateAndSaveAction.emit();
+    this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.ACTION, element: this.action});
   }
 
   execPreview() {
     this.checkVariables().then((resp) => {
-
       if (resp === true) {
         this.getResponse(this.action.question);
-
       } else {
         this.openAttributesDialog();
       }
-
     })
   }
 
@@ -117,23 +113,17 @@ export class CdsActionGPTTaskComponent implements OnInit {
       let string = this.action.question;
       let matches = string.match(regex);
       let response: boolean = true;
-
       if (!matches || matches.length == 0) {
         resolve(true);
-
       } else {
-
         this.temp_variables = [];
         matches.forEach((m) => {
           let name = m.slice(2, m.length - 2);
           let attr = this.action.preview.find(v => v.name === name);
-
           if (attr && attr.value) {
             this.temp_variables.push({ name: name, value: attr.value });
-
           } else if (attr && !attr.value) {
             this.temp_variables.push({ name: name, value: null });
-
           } else {
             this.temp_variables.push({ name: name, value: null });
             this.action.preview.push({ name: name, value: null });
@@ -146,7 +136,6 @@ export class CdsActionGPTTaskComponent implements OnInit {
 
   getResponse(question) {
     this.logger.log("getResponse called...")
-
     let data = {
       question: question,
       context: this.action.context,
@@ -154,16 +143,13 @@ export class CdsActionGPTTaskComponent implements OnInit {
       max_tokens: this.action.max_tokens,
       temperature: this.action.temperature
     }
-
     this.showAiError = false;
     this.searching = true;
     this.showPreview = true;
-
     setTimeout(() => {
       let element = document.getElementById("preview-container");
       element.classList.remove('preview-container-extended')
     }, 200)
-
     this.openaiService.previewPrompt(data).subscribe((ai_response: any) => {
       this.searching = false;
       setTimeout(() => {
@@ -330,7 +316,7 @@ export class CdsActionGPTTaskComponent implements OnInit {
       } else {
         this.action.preview.push({ name: a.name, value: a.value })
       }
-      this.updateAndSaveAction.emit();
+      this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.ACTION, element: this.action});
     })
   }
 

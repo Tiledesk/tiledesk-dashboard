@@ -4,7 +4,7 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 
 import { Message, Wait, Button, MessageAttributes, Expression } from 'app/models/intent-model';
-import { TYPE_BUTTON, generateShortUID } from 'app/chatbot-design-studio/utils';
+import { TYPE_BUTTON, TYPE_UPDATE_ACTION } from 'app/chatbot-design-studio/utils';
 import { IntentService } from 'app/chatbot-design-studio/services/intent.service';
 import { ConnectorService } from 'app/chatbot-design-studio/services/connector.service';
 import { LoggerService } from 'app/services/logger/logger.service';
@@ -147,30 +147,20 @@ export class CdsActionReplyTextComponent implements OnInit {
       // console.log('updateConnector [CdsActionReplyTextComponent]:: connector.fromId: ', idConnector, idButton, this.connector.fromId);
       if(idConnector === this.connector.fromId && buttonChanged){
         if(this.connector.deleted){
-          // DELETE 
           console.log('[CdsActionReplyTextComponent] deleteConnector :: ', this.connector.fromId);
           buttonChanged.__isConnected = false;
           buttonChanged.__idConnector = this.connector.fromId;
           buttonChanged.action = '';
           buttonChanged.type = TYPE_BUTTON.TEXT;
-          // if(this.connector.notify)
-          if(this.connector.save)this.updateAndSaveAction.emit(this.connector);
-          // this.changeActionReply.emit();
+          if(this.connector.save)this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.CONNECTOR, element: this.connector});
         } else {
-          // ADD / EDIT
-          // buttonChanged.__isConnected = true;
           buttonChanged.__idConnector = this.connector.fromId;
           buttonChanged.action = buttonChanged.action? buttonChanged.action : '#' + this.connector.toId;
           buttonChanged.type = TYPE_BUTTON.ACTION;
           console.log('[CdsActionReplyTextComponent] updateConnector :: ', buttonChanged);
-          // if(!buttonChanged.__isConnected){
-            buttonChanged.__isConnected = true;
-            // if(this.connector.notify)
-            if(this.connector.save)this.updateAndSaveAction.emit(this.connector);
-            // this.changeActionReply.emit();
-          // } 
+          buttonChanged.__isConnected = true;
+          if(this.connector.save)this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.CONNECTOR, element: this.connector});
         }
-        // this.changeActionReply.emit();
       }
     } catch (error) {
       this.logger.error('error: ', error);
@@ -219,7 +209,6 @@ export class CdsActionReplyTextComponent implements OnInit {
   onChangeTextarea(text:string) {
     if(!this.previewMode){
       this.response.text = text;
-      // this.changeActionReply.emit();
     }
   }
 

@@ -4,6 +4,7 @@ import { IntentService } from 'app/chatbot-design-studio/services/intent.service
 import { ActionOnlineAgent, Intent } from 'app/models/intent-model';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { Subscription } from 'rxjs';
+import { TYPE_UPDATE_ACTION } from 'app/chatbot-design-studio/utils';
 
 @Component({
   selector: 'cds-action-online-agents',
@@ -113,9 +114,6 @@ export class CdsActionOnlineAgentsComponent implements OnInit {
       const idAction= array[1];
       if(idAction === this.action._tdActionId){
         if(this.connector.deleted){
-          // DELETE 
-          // this.logger.log(' deleteConnector :: ', this.connector.id);
-          // this.action.intentName = null;
           if(array[array.length -1] === 'true'){
             this.action.trueIntent = null
             this.isConnectedTrue = false
@@ -124,33 +122,24 @@ export class CdsActionOnlineAgentsComponent implements OnInit {
             this.action.falseIntent = null
             this.isConnectedFalse = false;
           }
-          // if(this.connector.notify)
-          if(this.connector.save)this.updateAndSaveAction.emit(this.connector);
-          // this.updateAndSaveAction.emit();
-        } else { //TODO: verificare quale dei due connettori è stato aggiunto (controllare il valore della action corrispondente al true/false intent)
-          // ADD / EDIT
+          if(this.connector.save)this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.CONNECTOR, element: this.connector});
+        } else {
           this.logger.log(' updateConnector :: onlineagents', this.connector.toId, this.connector.fromId ,this.action, array[array.length-1]);
           if(array[array.length -1] === 'true'){
             this.isConnectedTrue = true;
             if(this.action.trueIntent !== '#'+this.connector.toId){
               this.action.trueIntent = '#'+this.connector.toId;
-              // if(this.connector.notify)
-              if(this.connector.save)this.updateAndSaveAction.emit(this.connector);
-              // this.updateAndSaveAction.emit();
+              if(this.connector.save)this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.CONNECTOR, element: this.connector});
             } 
           }    
-
           if(array[array.length -1] === 'false'){
             this.isConnectedFalse = true;
             if(this.action.falseIntent !== '#'+this.connector.toId){
               this.action.falseIntent = '#'+this.connector.toId;
-              // if(this.connector.notify)
-              if(this.connector.save)this.updateIntentFromConnectorModification.emit(this.connector);
-              // this.updateAndSaveAction.emit();
+              if(this.connector.save)this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.CONNECTOR, element: this.connector});
             } 
           }
         }
-        
       }
     } catch (error) {
       this.logger.log('error: ', error);
@@ -180,7 +169,6 @@ export class CdsActionOnlineAgentsComponent implements OnInit {
   onChangeSelect(event:{name: string, value: string}, type: 'trueIntent' | 'falseIntent'){
     if(event){
       this.action[type]=event.value
-
       switch(type){
         case 'trueIntent':
           this.onConnectorChange.emit({ type: 'create', fromId: this.idConnectorTrue, toId: this.action.trueIntent})
@@ -189,7 +177,7 @@ export class CdsActionOnlineAgentsComponent implements OnInit {
           this.onConnectorChange.emit({ type: 'create', fromId: this.idConnectorFalse, toId: this.action.falseIntent})
           break;
       }
-      this.updateAndSaveAction.emit();
+      this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.ACTION, element: this.action});
     }
   }
 
@@ -203,7 +191,7 @@ export class CdsActionOnlineAgentsComponent implements OnInit {
         break;
     }
     this.action[type]=null
-    this.updateAndSaveAction.emit();
+    this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.ACTION, element: this.action});
   }
 
 
@@ -214,7 +202,7 @@ export class CdsActionOnlineAgentsComponent implements OnInit {
     if(type === 'falseIntent'){
       this.action.falseIntentAttributes = attributes;
     }
-    this.updateAndSaveAction.emit();
+    this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.ACTION, element: this.action});
   }
   
 

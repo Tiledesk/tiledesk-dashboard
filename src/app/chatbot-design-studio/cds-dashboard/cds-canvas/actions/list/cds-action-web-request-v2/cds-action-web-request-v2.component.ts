@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { ActionWebRequest, ActionWebRequestV2, Intent } from 'app/models/intent-model';
 import { LoggerService } from 'app/services/logger/logger.service';
-import { TYPE_METHOD_ATTRIBUTE, TYPE_METHOD_REQUEST, TEXT_CHARS_LIMIT, variableList } from 'app/chatbot-design-studio/utils';
+import { TYPE_UPDATE_ACTION, TYPE_METHOD_ATTRIBUTE, TYPE_METHOD_REQUEST, TEXT_CHARS_LIMIT, variableList } from 'app/chatbot-design-studio/utils';
 import { IntentService } from 'app/chatbot-design-studio/services/intent.service';
 import { Subscription } from 'rxjs';
 
@@ -115,7 +115,6 @@ export class CdsActionWebRequestV2Component implements OnInit {
       const idAction= array[1];
       if(idAction === this.action._tdActionId){
         if(this.connector.deleted){
-          // DELETE 
           if(array[array.length -1] === 'true'){
             this.action.trueIntent = null
             this.isConnectedTrue = false
@@ -124,28 +123,19 @@ export class CdsActionWebRequestV2Component implements OnInit {
             this.action.falseIntent = null
             this.isConnectedFalse = false;
           }
-          // if(this.connector.notify)
-          if(this.connector.save)this.updateAndSaveAction.emit(this.connector);
-          // this.updateAndSaveAction.emit();
+          if(this.connector.save)this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.CONNECTOR, element: this.connector});
         } else { 
-          // ADD / EDIT
           this.logger.debug('[ACTION-ASKGPT] updateConnector', this.connector.toId, this.connector.fromId ,this.action, array[array.length-1]);
           if(array[array.length -1] === 'true'){
             this.isConnectedTrue = true;
-            // if(this.action.trueIntent !== '#'+this.connector.toId){
-              this.action.trueIntent = '#'+this.connector.toId;
-              // if(this.connector.notify)
-              if(this.connector.save)this.updateAndSaveAction.emit(this.connector);
-              // this.updateAndSaveAction.emit();
-            // } 
+            this.action.trueIntent = '#'+this.connector.toId;
+            if(this.connector.save)this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.CONNECTOR, element: this.connector});
           }        
           if(array[array.length -1] === 'false'){
             this.isConnectedFalse = true;
             if(this.action.falseIntent !== '#'+this.connector.toId){
               this.action.falseIntent = '#'+this.connector.toId;
-              // if(this.connector.notify)
-              if(this.connector.save)this.updateAndSaveAction.emit(this.connector);
-              // this.updateAndSaveAction.emit();
+              if(this.connector.save)this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.CONNECTOR, element: this.connector});
             } 
           }
         }
@@ -223,7 +213,7 @@ export class CdsActionWebRequestV2Component implements OnInit {
   // EVENT FUNCTIONS //
   onChangeMethodButton(e: {label: string, value: string}){
     this.action.method = e.value;
-    this.updateAndSaveAction.emit()
+    this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.ACTION, element: this.action});
   }
 
   onChangeButtonSelect(event: {label: string, value: string, disabled: boolean, checked: boolean}){
@@ -247,13 +237,13 @@ export class CdsActionWebRequestV2Component implements OnInit {
         this.action.jsonBody = this.body;
         setTimeout(() => {
           this.jsonIsValid = this.isValidJson(this.body);
-          this.updateAndSaveAction.emit()
+          this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.ACTION, element: this.action});
         }, 500);
         break;
       }
       case 'url' : {
-        this.action.url = e
-        this.updateAndSaveAction.emit()
+        this.action.url = e;
+        this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.ACTION, element: this.action});
       }
     }
 
@@ -272,20 +262,19 @@ export class CdsActionWebRequestV2Component implements OnInit {
   onChangeAttributes(attributes:any){
     // this.logger.log('onChangeAttributes');
     this.action.headersString = attributes;
-    this.updateAndSaveAction.emit()
-    // this.jsonHeader = attributes;
+    this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.ACTION, element: this.action});
   }
 
   onChangeAttributesResponse(attributes:{[key: string]: string }){
     this.action.assignments = attributes ;
-    this.updateAndSaveAction.emit()
+    this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.ACTION, element: this.action});
   }
 
   onSelectedAttribute(event, property) {
     this.logger.log("[ACTION-WEB-REQUEST-v2] onEditableDivTextChange event", event)
     this.logger.log("[ACTION-WEB-REQUEST-v2] onEditableDivTextChange property", property)
     this.action[property] = event.value;
-    this.updateAndSaveAction.emit();
+    this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.ACTION, element: this.action});
   }
 
   onChangeBlockSelect(event:{name: string, value: string}, type: 'trueIntent' | 'falseIntent') {
@@ -300,7 +289,7 @@ export class CdsActionWebRequestV2Component implements OnInit {
           this.onConnectorChange.emit({ type: 'create', fromId: this.idConnectorFalse, toId: this.action.falseIntent})
           break;
       }
-      this.updateAndSaveAction.emit();
+      this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.ACTION, element: this.action});
     }
   }
 
@@ -313,8 +302,8 @@ export class CdsActionWebRequestV2Component implements OnInit {
         this.onConnectorChange.emit({ type: 'delete', fromId: this.idConnectorFalse, toId: this.action.falseIntent})
         break;
     }
-    this.action[type]=null
-    this.updateAndSaveAction.emit();
+    this.action[type] = null;
+    this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.ACTION, element: this.action});
   }
 
 }

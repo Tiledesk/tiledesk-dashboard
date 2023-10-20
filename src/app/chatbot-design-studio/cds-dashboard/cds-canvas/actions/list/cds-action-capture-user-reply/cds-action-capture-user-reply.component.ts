@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { IntentService } from 'app/chatbot-design-studio/services/intent.service';
 import { ActionCaptureUserReply, Intent } from 'app/models/intent-model';
 import { LoggerService } from 'app/services/logger/logger.service';
+import { TYPE_UPDATE_ACTION } from 'app/chatbot-design-studio/utils';
 
 @Component({
   selector: 'cds-action-capture-user-reply',
@@ -73,7 +74,7 @@ export class CdsActionCaptureUserReplyComponent implements OnInit {
             this.action.goToIntent = "#"+this.connector.toId;
           // } 
         };
-        if(this.connector.save)this.updateAndSaveAction.emit(this.connector);
+        if(this.connector.save)this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.CONNECTOR, element: this.connector});
       }
     } catch (error) {
       this.logger.error('[ACTION-CAPTURE-USER-REPLY] updateConnector error: ', error);
@@ -84,21 +85,21 @@ export class CdsActionCaptureUserReplyComponent implements OnInit {
     this.logger.log("[ACTION-CAPTURE-USER-REPLY] onEditableDivTextChange event", event)
     this.logger.log("[ACTION-CAPTURE-USER-REPLY] onEditableDivTextChange property", property)
     this.action[property] = event.value;
-    this.updateAndSaveAction.emit();
+    this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.ACTION, element: this.action});
   }
 
   onChangeBlockSelect(event:{name: string, value: string}, type: string) {
     if(event){
       this.action[type] = event.value;
       this.onConnectorChange.emit({ type: 'create', fromId: this.idConnector, toId: this.action.goToIntent });
-      this.updateAndSaveAction.emit();
+      this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.ACTION, element: this.action});
     }
   }
 
   onResetBlockSelect(event:{name: string, value: string}, type: string) {
     this.onConnectorChange.emit({ type: 'delete', fromId: this.idConnector, toId: this.action.goToIntent });
     this.action[type] = null;
-    this.updateAndSaveAction.emit();
+    this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.ACTION, element: this.action});
   }
 
 

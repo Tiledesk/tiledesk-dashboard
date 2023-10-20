@@ -3,6 +3,7 @@ import { Component, ElementRef, EventEmitter, Input, OnInit, Output } from '@ang
 import { ActionWhatsappStatic } from 'app/models/intent-model';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { WhatsappService } from 'app/services/whatsapp.service';
+import { TYPE_UPDATE_ACTION } from 'app/chatbot-design-studio/utils';
 
 @Component({
   selector: 'cds-action-whatsapp-static',
@@ -114,7 +115,7 @@ export class CdsActionWhatsappStaticComponent implements OnInit {
     this.action.payload.receiver_list = [];
     this.updateJsonPreview();
     this.addReceiver();
-    this.updateAndSaveAction.emit()
+    this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.ACTION, element: this.action});
   }
 
   addReceiver() {
@@ -125,26 +126,14 @@ export class CdsActionWhatsappStaticComponent implements OnInit {
     // update receiver
     this.action.payload.receiver_list[index] = event;
     this.logger.log("[ACTION WHATSAPP] Action updated ", this.action.payload);
-    this.updateAndSaveAction.emit()
+    this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.ACTION, element: this.action});
     this.updateJsonPreview();
-
-    // if (this.action.payload.receiver_list.find(r => r.phone_number === event.phone_number)) {
-    //   this.logger.log("[ACTION WHATSAPP STATIC] Receiver already exists with number: onReceiverEmitted event: ", event.phone_number);
-    // } else {
-
-    //   // this.message.receiver_list.push(event);
-    //   // this.logger.log("payload.receiver_list (before) ", this.action.payload.receiver_list);
-    //   this.action.payload.receiver_list[index] = event;
-    //   // this.action.payload = this.message;
-    //   // this.logger.log("[ACTION WHATSAPP] Action updated ", this.action.payload);
-    //   this.logger.log("[ACTION WHATSAPP] Action updated ", this.action.payload);
-    // }
   }
 
   onReceiverDeleteEmitted(event, index) {
     this.logger.debug("delete event: ", event);
     this.action.payload.receiver_list.splice(index, 1);
-    this.updateAndSaveAction.emit()
+    this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.ACTION, element: this.action});
     this.updateJsonPreview();
   }
 
@@ -157,9 +146,8 @@ export class CdsActionWhatsappStaticComponent implements OnInit {
       element.classList.add('highlighted');
     } else {
       this.action.payload.phone_number_id = this.phone_number_id;
-      this.updateAndSaveAction.emit();
+      this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.ACTION, element: this.action});
     }
-
     this.logger.debug("[ACTION WHATSAPP] Action updated ", this.action.payload);
     this.updateJsonPreview();
   }

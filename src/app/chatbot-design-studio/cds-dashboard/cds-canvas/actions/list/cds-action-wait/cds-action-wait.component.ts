@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { ActionWait } from 'app/models/intent-model';
+import { TYPE_UPDATE_ACTION } from 'app/chatbot-design-studio/utils';
 
 @Component({
   selector: 'cds-action-wait',
@@ -28,10 +29,8 @@ export class CdsActionWaitComponent implements OnInit, OnChanges {
   }
 
   updateWaitValue(event) {
-    const msvalue = event.value * 1000
-
+    const msvalue = event.value * 1000;
     this.action.millis = msvalue
-    this.updateAndSaveAction.emit()
-    // this.delayTime  = msvalue
+    this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.ACTION, element: this.action});
   }
 }
