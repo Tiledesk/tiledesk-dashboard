@@ -374,8 +374,7 @@ public _getAllFaqByFaqKbId(id_faq_kb: string): Observable<Intent[]> {
 
     const body = { 'question': question, 'answer': answer, 'intent_display_name': intentname, 'form': intentform, 'webhook_enabled': faqwebhookenabled };
     this.logger.log('[FAQ-SERV] UPDATE FAQ - PUT REQUEST BODY ', body);
-    return this._httpClient
-      .put(url, JSON.stringify(body), httpOptions)
+    return this._httpClient.put(url, JSON.stringify(body), httpOptions)
   }
 
 
