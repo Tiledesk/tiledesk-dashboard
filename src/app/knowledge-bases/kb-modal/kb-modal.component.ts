@@ -1,14 +1,15 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
+import { ChatbotModalComponent } from 'app/bots/bots-list/chatbot-modal/chatbot-modal.component';
 
 @Component({
-  selector: 'appdashboard-chatbot-modal',
-  templateUrl: './chatbot-modal.component.html',
-  styleUrls: ['./chatbot-modal.component.scss']
+  selector: 'appdashboard-kb-modal',
+  templateUrl: './kb-modal.component.html',
+  styleUrls: ['./kb-modal.component.scss']
 })
-export class ChatbotModalComponent implements OnInit {
-  public chatbotLimitReached: string;
+export class KbModalComponent implements OnInit {
+  public KBLimitReached: string;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<ChatbotModalComponent>,
@@ -16,19 +17,19 @@ export class ChatbotModalComponent implements OnInit {
   ) {
     console.log('[CHATBOT-MODAL] data ', data)
     if (data && data.projectProfile) {
-      this.getTranslatedStringChatbotLimitReached(data.projectProfile)
+      this.getTranslatedStringKBLimitReached(data.projectProfile)
     }
-  }
+   }
 
   ngOnInit(): void {
   }
 
-  getTranslatedStringChatbotLimitReached(projectProfile) {
-    this.translate.get('Pricing.ChatbotLimitReached', { plan_name: projectProfile })
+  getTranslatedStringKBLimitReached(projectProfile) {
+    this.translate.get('KbPage.KBLimitReached', { plan_name: projectProfile })
       .subscribe((text: string) => {
 
-        this.chatbotLimitReached = text;
-        console.log('+ + + ChatbotLimitReached', text)
+        this.KBLimitReached = text;
+        console.log('+ + + KBLimitReached', text)
       });
   }
 

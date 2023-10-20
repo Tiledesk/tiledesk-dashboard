@@ -286,7 +286,7 @@ export class BotListComponent extends BotsBaseComponent implements OnInit, OnDes
         console.log('[BOTS-LIST] USECASE  NO chatBotLimit: RUN PRJCTS')
         this.getProjects(bot_id, bot_name)
       }
-    } if (this.USER_ROLE === 'agent') {
+    } else if (this.USER_ROLE === 'agent') {
       this.presentModalOnlyOwnerCanManageTheAccountPlan()
     }
   }

@@ -1566,6 +1566,7 @@
         "UpgradeYourAccountToSetTeamOfficeHours": "Komandanın iş saatlarını təyin etmək və agentlərinizin nə vaxt işlədiyini ziyarətçilərə bildirmək üçün hesabınızı təkmilləşdirin!"
     },
     "KbPage": {
+        "KBLimitReached":"{{plan_name}} üçün Bilik Bazaları limitinə çatdı",
         "AddKb": "Bilik bazası əlavə edin",
         "Secrets": "Sirlər",
         "Add": "Əlavə et",

@@ -1565,6 +1565,7 @@
         "UpgradeYourAccountToSetTeamOfficeHours": "Jamoaning ish vaqtini belgilash va tashrif buyuruvchilarga agentlaringiz qachon ishlayotgani haqida xabar berish uchun hisobingizni yangilang!"
     },
     "KbPage": {
+        "KBLimitReached":"{{plan_name}} uchun maʼlumotlar bazasi chegarasiga yetdi",
         "AddKb": "Bilimlar bazasini qo'shish",
         "Secrets": "Sirlar",
         "Add": "Qo'shish",

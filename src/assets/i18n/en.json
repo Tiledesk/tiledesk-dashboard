@@ -1566,6 +1566,7 @@
         "UpgradeYourAccountToSetTeamOfficeHours": "Upgrade your account to set team office hours and let visitors know when your agents are working!"
     },
     "KbPage": {
+        "KBLimitReached":"Knowledge Bases limit reached for {{plan_name}}",
         "AddKb": "Add Knowledge Base",
         "Secrets": "Secrets",
         "Add": "Add Knowledge Base",

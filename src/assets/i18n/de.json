@@ -1567,6 +1567,7 @@
 		"UpgradeYourAccountToSetTeamOfficeHours": "Aktualisieren Sie Ihr Konto, um Teambürozeiten festzulegen und Besuchern mitzuteilen, wann Ihre Agenten arbeiten!"
 	},
 	"KbPage": {
+		"KBLimitReached":"Das Wissensdatenbanklimit für {{plan_name}} wurde erreicht.",
 		"AddKb": "Wissensdatenbank hinzufügen",
 		"Secrets": "Geheimnisse",
 		"Add": "Hinzufügen",

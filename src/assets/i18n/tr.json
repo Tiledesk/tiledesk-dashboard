@@ -1566,6 +1566,7 @@
         "UpgradeYourAccountToSetTeamOfficeHours": "Ekip çalışma saatlerini ayarlamak ve ziyaretçilerinizin temsilcilerinizin ne zaman çalıştığını bilmesini sağlamak için hesabınızı yükseltin!"
     },
     "KbPage": {
+        "KBLimitReached":"{{plan_name}} için Bilgi Tabanı sınırına ulaşıldı",
         "AddKb": "Bilgi Bankası Ekle",
         "Secrets": "Sırlar",
         "Add": "Eklemek",

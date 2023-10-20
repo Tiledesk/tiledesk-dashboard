@@ -1566,6 +1566,7 @@
         "UpgradeYourAccountToSetTeamOfficeHours": "Uppgradera ditt konto för att ställa in teamets kontorstid och låt besökarna veta när dina agenter arbetar!"
     },
     "KbPage": {
+        "KBLimitReached":"Kunskapsbasens gräns nådd för {{plan_name}}",
         "AddKb": "Lägg till kunskapsbas",
         "Secrets": "Hemligheter",
         "Add": "Lägg till",

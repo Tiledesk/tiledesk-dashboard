@@ -359,6 +359,8 @@ import { HomeInviteTeammateErrorModalComponent } from './home-components/home-cr
 import { HomeGoToChatComponent } from './home-components/home-go-to-chat/home-go-to-chat.component';
 import { ChatbotModalComponent } from './bots/bots-list/chatbot-modal/chatbot-modal.component';
 import { ChatbotAlertComponent } from './bots/bots-list/chatbot-alert/chatbot-alert.component';
+import { KbBaseComponent } from './knowledge-bases/kb-base/kb-base.component';
+import { KbModalComponent } from './knowledge-bases/kb-modal/kb-modal.component';
 
 
 
@@ -635,7 +637,9 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     HomeInviteTeammateErrorModalComponent,
     HomeGoToChatComponent,
     ChatbotModalComponent,
-    ChatbotAlertComponent
+    ChatbotAlertComponent,
+    KbBaseComponent,
+    KbModalComponent
   ],
   imports: [
     TooltipModule.forRoot(CutomTooltipOptions as TooltipOptions),

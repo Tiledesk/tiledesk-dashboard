@@ -1566,6 +1566,7 @@
         "UpgradeYourAccountToSetTeamOfficeHours": "قم بترقية حسابك لتعيين ساعات عمل الفريق وإعلام الزائرين عندما يعمل وكلاؤك!"
     },
     "KbPage": {
+        "KBLimitReached":"تم الوصول إلى الحد الأقصى لقواعد المعرفة لـ {{plan_name}}",
         "AddKb": "إضافة قاعدة المعرفة",
         "Secrets": "أسرار",
         "Add": "يضيف",

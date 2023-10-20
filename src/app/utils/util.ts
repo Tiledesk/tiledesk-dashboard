@@ -327,6 +327,13 @@ export enum CHATBOT_MAX_NUM {
     Custom = 500
 };
 
+export enum KB_MAX_NUM {
+    free = 1, 
+    Basic = 2,
+    Premium = 3,
+    Custom = 3
+};
+
 export const featuresPlanA = [
     'CRM',
     'Private Notes',
