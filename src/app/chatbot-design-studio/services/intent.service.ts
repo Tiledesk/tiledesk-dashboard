@@ -291,7 +291,7 @@ export class IntentService {
     if (savedIntent) {
       console.log('[CDS-CANVAS] Intent salvato correttamente: ', savedIntent, this.listOfIntents);
       // this.replaceNewIntentToListOfIntents(savedIntent);
-      this.listOfIntents = this.replaceIntent(savedIntent, this.listOfIntents);
+      this.listOfIntents = this.replaceIntent(savedIntent);
       this.refreshIntents();
       this.prevListOfIntent = JSON.parse(JSON.stringify(this.listOfIntents));
       this.setDragAndListnerEventToElement(savedIntent.intent_id);
@@ -436,7 +436,7 @@ export class IntentService {
     if(UndoRedo){
       let intentPrev = prevIntents.find((item) => item.intent_id === intent.intent_id)?prevIntents.find((item) => item.intent_id === intent.intent_id):intent;
       let intentNow = nowIntents.find((item) => item.intent_id === intent.intent_id)?nowIntents.find((item) => item.intent_id === intent.intent_id):intent;
-      this.addIntentToUndoRedo('PUT', intentPrev, intentNow, [], []);
+      this.addIntentToUndoRedo('PUT', intentPrev, intentNow, [intentPrev], [intentNow]);
     }
     const response = this.updateIntent(intent);
   }
@@ -905,16 +905,16 @@ export class IntentService {
    * @param listOfIntents 
    * @returns 
    */
-  private replaceIntent(intent, listOfIntents){
-    for (let i = 0; i < listOfIntents.length; i++) {
+  public replaceIntent(intent){
+    for (let i = 0; i < this.listOfIntents.length; i++) {
       // console.log('[INTENT SERVICE] -> replaceIntent:', intent.intent_id, listOfIntents[i].intent_id);
-      if (listOfIntents[i].intent_id === intent.intent_id) {
-        listOfIntents[i] = intent;
+      if (this.listOfIntents[i].intent_id === intent.intent_id) {
+        this.listOfIntents[i] = intent;
         // console.log('[INTENT SERVICE] -> SOSTITUISCO:', intent);
         break;
       }
     }
-    return listOfIntents;
+    return this.listOfIntents;
   }
 
   /**
@@ -1091,7 +1091,7 @@ export class IntentService {
       this.connectorService.createConnectorsOfIntent(intent);
       intentsToUpdate.forEach(element => {
         console.log('[INTENT UNDO] -> REPLACE ', element);
-        this.listOfIntents = this.replaceIntent(element, this.listOfIntents);
+        this.listOfIntents = this.replaceIntent(element);
         // this.refreshIntent(element); 
         setTimeout(()=> {
           // ATTENZIONE!!! le seguenti azioni devono essere svolte solo dopo che l'elemento è stato aggiornato (gli attributi __ dovrebbero essere generati quando carichiamo i dati dal server!!!)
@@ -1129,7 +1129,7 @@ export class IntentService {
     this.connectorService.deleteConnectorsOfBlock(intent.intent_id); // cancello tutti i connettori IN e OUT
     intentsToUpdate.forEach(element => {
       console.log('[INTENT UNDO] -> REPLACE ', element);
-      this.listOfIntents = this.replaceIntent(element, this.listOfIntents);
+      this.listOfIntents = this.replaceIntent(element);
       setTimeout(()=> {
         // ATTENZIONE!!! le seguenti azioni devono essere svolte solo dopo che l'elemento è stato aggiornato (gli attributi __ dovrebbero essere generati quando carichiamo i dati dal server!!!)
         this.connectorService.createConnectorsOfIntent(element);
@@ -1158,7 +1158,7 @@ export class IntentService {
    * refreshIntents: fa scattare l'evento e aggiorna l'elenco degli intents (listOfIntents) in tutti i componenti sottoscritti, come cds-panel-intent-list 
    */
   private async restorePut(intent, intentsToUpdate){
-    this.listOfIntents = this.replaceIntent(intent, this.listOfIntents);
+    this.listOfIntents = this.replaceIntent(intent);
     console.log('[INTENT UNDO] -> REPLACE INTENT: ', intent);
     // this.refreshIntent(intent); // aggiorno gli attributi custom ex: __isConnected !!! DA RIFATTORIZZARE !!!
     setTimeout(()=> {
@@ -1169,7 +1169,7 @@ export class IntentService {
     }, 100);
   
     intentsToUpdate.forEach(element => {
-      this.listOfIntents = this.replaceIntent(element, this.listOfIntents);
+      this.listOfIntents = this.replaceIntent(element);
       console.log('[INTENT UNDO] -> REPLACE ELEMENT: ', element);
       // this.refreshIntent(element);
       if( element.intent_id !== intent.intent_id){
@@ -1202,7 +1202,7 @@ export class IntentService {
    */
   private async restoreConnector(intent, connector){
     this.updateIntent(intent); // async
-    this.listOfIntents = this.replaceIntent(intent, this.listOfIntents); /// Arggggg!! questa mmerda ricarica tutte le action e mi svuota tutti i connettori true false
+    this.listOfIntents = this.replaceIntent(intent); /// Arggggg!! questa mmerda ricarica tutte le action e mi svuota tutti i connettori true false
  
     setTimeout(()=> {
         const arrow = document.getElementById(connector.id);

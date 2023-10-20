@@ -929,11 +929,11 @@ export class CdsCanvasComponent implements OnInit {
   // --------------------------------------------------------- //
   /** onSavePanelIntentDetail */
   onSavePanelIntentDetail(intentSelected: any) {
-    this.logger.log('[CDS-CANVAS] onSavePanelIntentDetail intentSelected ', intentSelected)
+    console.log('[CDS-CANVAS] onSavePanelIntentDetail intentSelected ', intentSelected)
     if (intentSelected && intentSelected != null) {
       this.intentSelected = intentSelected;
-      this.intentService.refreshIntent(this.intentSelected);
-      // this.updateIntent(intentSelected, 1000);
+      this.intentService.replaceIntent(this.intentSelected);
+      // this.intentService.refreshIntent(this.intentSelected);
       this.intentService.onUpdateIntentFromActionPanel(intentSelected);
     } else {
       // this.onOpenDialog();

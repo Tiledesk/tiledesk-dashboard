@@ -99,7 +99,7 @@ export class CdsActionDetailPanelComponent implements OnInit, OnChanges {
 
   onSaveIntent(event?){
     if(this.elementIntentSelectedType === this.typeIntentElement.ACTION){
-      // this.intentSelected.actions[this.elementSelectedIndex] = this.elementSelected;
+      //this.intentSelected.actions[this.elementSelectedIndex] = this.elementSelected;
       const index = this.intentSelected.actions.findIndex(el => el._tdActionId === this.elementSelected._tdActionId);
       this.intentSelected.actions[index] = this.elementSelected;
     } else if(this.elementIntentSelectedType === this.typeIntentElement.ANSWER){
@@ -131,7 +131,6 @@ export class CdsActionDetailPanelComponent implements OnInit, OnChanges {
     console.log('createOrUpdateConnector-->', type, idConnector, toIntentId)
     const fromId = idConnector;
     let toId = '';
-    
     switch(type){
       case 'create':
         const posId = toIntentId.indexOf("#");
@@ -139,7 +138,7 @@ export class CdsActionDetailPanelComponent implements OnInit, OnChanges {
           toId = toIntentId.slice(posId+1);
         }
         this.connectorService.deleteConnectorWithIDStartingWith(fromId, false, false);
-        this.connectorService.createNewConnector(fromId, toId, true, false);
+        this.connectorService.createNewConnector(fromId, toId, false, false);
         break;
       case 'delete':
         this.connectorService.deleteConnectorWithIDStartingWith(fromId, false, false);

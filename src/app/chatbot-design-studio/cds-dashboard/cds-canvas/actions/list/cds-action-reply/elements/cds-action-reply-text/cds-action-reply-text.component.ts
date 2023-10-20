@@ -68,6 +68,10 @@ export class CdsActionReplyTextComponent implements OnInit {
 
   // ngOnChanges(changes: SimpleChanges): void {
   //   console.log('[CDS-ACTION-INTENT] >>', changes);
+  //   // if(this.action && this.intentSelected)this.initialize();
+  //   if(changes.idAction.currentValue === this.idAction){
+  //     // this.updateConnector();
+  //   }
   // }
 
   /** */

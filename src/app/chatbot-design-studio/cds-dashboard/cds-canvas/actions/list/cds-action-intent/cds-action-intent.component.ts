@@ -117,17 +117,20 @@ export class CdsActionIntentComponent implements OnInit {
   // }
 
   onChangeSelect(event: {name: string, value: string}){
-    this.logger.log('CDS-ACTION-INTENT onChangeSelect-->', event)
-    this.action.intentName = event.value;
-    if(!this.action._tdActionTitle){
-      this.action._tdActionTitle = this.intents.find(intent => intent.value === event.value).name;
+    if(event){
+      console.log('CDS-ACTION-INTENT onChangeSelect-->', event);
+      this.action.intentName = event.value;
+      if(!this.action._tdActionTitle){
+        this.action._tdActionTitle = this.intents.find(intent => intent.value === event.value).name;
+      }
+      let connector = { type: 'create', fromId: this.idConnector, toId: this.action.intentName };
+      this.onConnectorChange.emit(connector);
+      this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.ACTION, element: this.action});
     }
-    let connector = { type: 'create', fromId: this.idConnector, toId: this.action.intentName };
-    this.onConnectorChange.emit(connector);
-    this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.ACTION, element: this.action});
   }
 
   onResetSelect(event:{name: string, value: string}) {
+    console.log('CDS-ACTION-INTENT onResetSelect-->', event);
     let connector = { type: 'delete', fromId: this.idConnector, toId: this.action.intentName };
     this.action.intentName = null;
     this.onConnectorChange.emit(connector);

@@ -142,12 +142,13 @@ export class ConnectorService {
         /**  REPLY  RANDOM_REPLY */
         if(action._tdActionType === TYPE_ACTION.REPLY || action._tdActionType === TYPE_ACTION.RANDOM_REPLY){
           var buttons = this.findButtons(action);
-          console.log('buttons   ----- >', buttons);
+          console.log('buttons   ----- >', buttons, action);
           buttons.forEach(button => {
-            console.log('[CONNECTOR-SERV] button   ----- > ', button, button.__idConnector);
+            // console.log('[CONNECTOR-SERV] button   ----- > ', button, button.__idConnector);
             if(button.type === TYPE_BUTTON.ACTION && button.action){
-              const idConnectorFrom = button.__idConnector;
-              console.log('[CONNECTOR-SERV] -> idConnectorFrom', button.__idConnector);
+              // const idConnectorFrom = button.__idConnector;
+              const idConnectorFrom = intent.intent_id+"/"+action._tdActionId+"/"+button.uid;
+              console.log('[CONNECTOR-SERV] -> idConnectorFrom', idConnectorFrom);
               var startIndex = button.action.indexOf('#') + 1;
               var endIndex = button.action.indexOf('{');
               let idConnectorTo = button.action.substring(startIndex);

@@ -83,8 +83,11 @@ export class CdsActionReplyComponent implements OnInit {
 
 
   // ngOnChanges(changes: SimpleChanges): void {
-  //   this.logger.log('ActionReplyComponent ngOnChanges:: ', this.action);
-  //   if(this.action && this.intentSelected)this.initialize();
+  //   console.log('ActionReplyComponent ngOnChanges:: ', changes);
+  //   // if(this.action && this.intentSelected)this.initialize();
+  //   if(changes.action.currentValue._tdActionId === this.action._tdActionId){
+  //     this.idAction = this.intentSelected.intent_id+'/'+this.action._tdActionId;
+  //   }
   // }
 
 
