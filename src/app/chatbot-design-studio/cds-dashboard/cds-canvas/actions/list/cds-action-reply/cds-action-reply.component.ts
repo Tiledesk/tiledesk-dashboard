@@ -77,9 +77,7 @@ export class CdsActionReplyComponent implements OnInit {
     } catch (error) {
       this.logger.log("error ", error);
     }
-
     this.initialize();
-
   }
 
 
@@ -161,7 +159,8 @@ export class CdsActionReplyComponent implements OnInit {
       this.arrayResponses[previousPos] = msgCur;
       // this.logger.log( 'DROP REPLY ---> ', this.arrayResponses);
       this.connectorService.updateConnector(this.intentSelected.id);
-      this.onUpdateAndSaveAction();
+      const element = {type: TYPE_UPDATE_ACTION.ACTION, element: this.intentSelected};
+      this.onUpdateAndSaveAction(element);
     } catch (error) {
       this.logger.log('drop ERROR', error);
     }
@@ -181,7 +180,8 @@ export class CdsActionReplyComponent implements OnInit {
       this.arrayResponses.splice(to, 0, this.arrayResponses.splice(from, 1)[0]);
       // this.logger.log( 'onMoveUpResponse ---> ', this.arrayResponses);
       this.connectorService.updateConnector(this.intentSelected.id);
-      this.onUpdateAndSaveAction();
+      const element = {type: TYPE_UPDATE_ACTION.ACTION, element: this.action};
+      this.onUpdateAndSaveAction(element);
     } catch (error) {
       this.logger.log('onAddNewResponse ERROR', error);
     }
@@ -199,7 +199,8 @@ export class CdsActionReplyComponent implements OnInit {
       this.arrayResponses.splice(to, 0, this.arrayResponses.splice(from, 1)[0]);
       // this.logger.log( 'onMoveUpResponse ---> ', this.arrayResponses);
       this.connectorService.updateConnector(this.intentSelected.id);
-      this.onUpdateAndSaveAction();
+      const element = {type: TYPE_UPDATE_ACTION.ACTION, element: this.action};
+      this.onUpdateAndSaveAction(element);
     } catch (error) {
       this.logger.log('onAddNewResponse ERROR', error);
     }
@@ -207,23 +208,24 @@ export class CdsActionReplyComponent implements OnInit {
 
 
   /** onAddNewActionReply */
-  onAddNewActionReply(element) {
-    this.logger.log('onAddNewActionReply: ', element);
+  onAddNewActionReply(ele) {
+    this.logger.log('onAddNewActionReply: ', ele);
     try {
-      let message = new Message(element.message.type, element.message.text);
-      if (element.message.attributes) {
-        message.attributes = element.message.attributes;
+      let message = new Message(ele.message.type, ele.message.text);
+      if (ele.message.attributes) {
+        message.attributes = ele.message.attributes;
       }
-      if (element.message.metadata) {
-        message.metadata = element.message.metadata;
+      if (ele.message.metadata) {
+        message.metadata = ele.message.metadata;
       }
       const wait = new Wait();
-      let command = new Command(element.type);
+      let command = new Command(ele.type);
       command.message = message;
       this.arrayResponses.push(wait);
       this.arrayResponses.push(command);
       this.scrollToBottom();
-      this.onUpdateAndSaveAction();
+      const element = {type: TYPE_UPDATE_ACTION.ACTION, element: this.action};
+      this.onUpdateAndSaveAction(element);
     } catch (error) {
       this.logger.log('onAddNewResponse ERROR', error);
     }
@@ -259,7 +261,8 @@ export class CdsActionReplyComponent implements OnInit {
       this.arrayResponses.splice(index, 1); 
     }
     this.logger.log('onDeleteActionReply', this.arrayResponses);
-    this.onUpdateAndSaveAction();
+    const element = {type: TYPE_UPDATE_ACTION.ACTION, element: this.action};
+    this.onUpdateAndSaveAction(element);
   }
 
 
@@ -270,7 +273,8 @@ export class CdsActionReplyComponent implements OnInit {
   /** onChangingReplyAction */
   onChangeActionReply(event) {
     // this.logger.log('onChangeActionReply ************', event);
-    this.onUpdateAndSaveAction();
+    const element = {type: TYPE_UPDATE_ACTION.ACTION, element: this.action};
+    this.onUpdateAndSaveAction(element);
   }
   
 
@@ -293,7 +297,8 @@ export class CdsActionReplyComponent implements OnInit {
       this.logger.log('[cds-action-reply] onCreateNewButton: ', this.action, this.arrayResponses);
       // this.intentService.setIntentSelected(this.intentSelected.intent_id);
       this.intentService.selectAction(this.intentSelected.intent_id, this.action._tdActionId);
-      this.onUpdateAndSaveAction();
+      const element = {type: TYPE_UPDATE_ACTION.ACTION, element: this.action};
+      this.onUpdateAndSaveAction(element);
     }
   }
 
@@ -335,10 +340,10 @@ export class CdsActionReplyComponent implements OnInit {
    * 1 - update connectors
    * 2 - update intent
    * */
-  public async onUpdateAndSaveAction() {
-    this.logger.log('[cds-action-reply] onUpdateAndSaveAction:::: ', this.intentSelected, this.action);
+  public async onUpdateAndSaveAction(element) {
+    this.logger.log('[cds-action-reply] onUpdateAndSaveAction:::: ', element);
     // this.connectorService.updateConnector(this.intentSelected.intent_id);
-    this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.ACTION, element: this.action});
+    this.updateAndSaveAction.emit(element);
   }
 
   // on intent name //
