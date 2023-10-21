@@ -1176,10 +1176,11 @@ export class IntentService {
     console.log('[INTENT UNDO] -> REPLACE INTENT: ', intent);
     // this.refreshIntent(intent); // aggiorno gli attributi custom ex: __isConnected !!! DA RIFATTORIZZARE !!!
     setTimeout(()=> {
-      this.connectorService.deleteConnectorsOutOfBlock(intent.intent_id); // false, false
-      this.connectorService.deleteConnectorsBrokenOutOfBlock(intent.intent_id); // false, false
+      this.connectorService.deleteConnectorsOutOfBlock(intent.intent_id, false, false, false); // false, false
+      // this.connectorService.deleteConnectorsBrokenOutOfBlock(intent.intent_id); // false, false
       this.connectorService.createConnectorsOfIntent(intent); // false, false
       this.connectorService.updateConnector(intent.intent_id);
+      // cancello tutti i connettori in uscita e li ricreo
     }, 100);
     this.intentSelected = intent;
     intentsToUpdate.forEach(element => {
@@ -1188,8 +1189,8 @@ export class IntentService {
       // this.refreshIntent(element);
       if( element.intent_id !== intent.intent_id){
         setTimeout(()=> {
-          this.connectorService.deleteConnectorsOutOfBlock(intent.intent_id); // false, false
-          this.connectorService.deleteConnectorsBrokenOutOfBlock(element.intent_id); // false, false
+          this.connectorService.deleteConnectorsOutOfBlock(intent.intent_id, false, false, false); // false, false
+          // this.connectorService.deleteConnectorsBrokenOutOfBlock(element.intent_id); // false, false
           this.connectorService.createConnectorsOfIntent(element); // false, false
           this.connectorService.updateConnector(element.intent_id);
         }, 100);

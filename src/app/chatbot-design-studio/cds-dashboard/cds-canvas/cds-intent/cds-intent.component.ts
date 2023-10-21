@@ -184,9 +184,9 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
 
       //** set 'start' intent as default selected one */
       this.intentService.setDefaultIntentSelected()
-      //** center stage on 'start' intent */
-      let startElement = document.getElementById(this.intent.intent_id)
-      this.stageService.centerStageOnHorizontalPosition(startElement)
+      // //** center stage on 'start' intent */
+      // let startElement = document.getElementById(this.intent.intent_id)
+      // this.stageService.centerStageOnHorizontalPosition(startElement)
      
     }
 

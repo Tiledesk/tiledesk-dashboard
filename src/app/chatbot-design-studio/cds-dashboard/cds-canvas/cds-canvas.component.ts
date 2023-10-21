@@ -113,13 +113,29 @@ export class CdsCanvasComponent implements OnInit {
     this.stageService.setDrawer();
     this.connectorService.initializeConnectors();
     this.addEventListener();
-
-
+    // this.setStartIntent();
     // setTimeout(()=> {
     //   let newPos = scaleAndcenterStageOnCenterPosition(this.listOfIntents) 
     // }, 1000)
   }
-
+  
+  private async setStartIntent(){
+    let intentSelected = this.listOfIntents.find((intent) => intent.intent_display_name === 'start');
+    console.log('setStartIntent:: ', intentSelected);
+    if(intentSelected){
+      // this.setIntentSelected();
+      // if (this.intent.actions && this.intent.actions.length === 1 && this.intent.actions[0]._tdActionType === TYPE_ACTION.INTENT && this.intent.intent_display_name === 'start') {
+      //** set 'start' intent as default selected one */
+      this.intentService.setDefaultIntentSelected();
+      //** center stage on 'start' intent */
+      let startElement = await isElementOnTheStage(intentSelected.intent_id); // sync
+      if(startElement){
+        this.stageService.centerStageOnHorizontalPosition(startElement);
+      }
+      // let startElement = document.getElementById(intentSelected.intent_id);
+      // }
+    }
+  }
 
   /** ************************* **/
   /** START CUSTOM FUNCTIONS 
@@ -192,6 +208,7 @@ export class CdsCanvasComponent implements OnInit {
     if (getAllIntents) {
       this.listOfIntents = this.intentService.listOfIntents;
       this.initListOfIntents();
+      this.setStartIntent();
       // scaleAndcenterStageOnCenterPosition(this.listOfIntents)
     }
     this.subscriptionOpenWidgetPanel = this.onHeaderTestItOut.subscribe((event) => this.onTestItOut(event));
@@ -545,6 +562,7 @@ export class CdsCanvasComponent implements OnInit {
 
   /** posCenterIntentSelected */
   private posCenterIntentSelected(intent) {
+    console.log('[CDS-CANVAS] posCenterIntentSelected: ', intent);
     var stageElement = document.getElementById(intent.intent_id);
     this.stageService.centerStageOnPosition(stageElement);
   }

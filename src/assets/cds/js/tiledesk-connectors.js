@@ -159,11 +159,11 @@ export class TiledeskConnectors {
     console.log("[JS] connectors :---> ", this.connectors);
   }
 
-  deleteConnectorsOutOfBlock(blockId) {
+  deleteConnectorsOutOfBlock(blockId, save=false, undo=false, notify=true) {
     console.log("[JS] deleteConnectorsOutOfBlock ----> ", blockId);
     for (var connectorId in this.connectors) {
       if (connectorId.startsWith(blockId)) {
-        this.deleteConnector(connectorId);
+        this.deleteConnector(connectorId, save, undo, notify);
       }
     }
     // delete this.blocks[blockId];
@@ -341,7 +341,7 @@ export class TiledeskConnectors {
         const fromEle = document.getElementById(connector['fromId']);
         const toEle = document.getElementById(connector['toId']);
         if(!fromEle || !toEle){
-          this.deleteConnector(connectorId);
+          this.deleteConnector(connectorId, false, false, false);
         }
       }
     }
