@@ -45,10 +45,11 @@ export class CdsActionDetailPanelComponent implements OnInit, OnChanges {
   //   } catch (error) {
   //     this.logger.log('[PANEL-INTENT-DETAIL] (OnInit) ERROR', error);
   //   }
+  // this.initialize();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.logger.log('[PANEL-INTENT-DETAIL] (OnChanges)', changes, this.elementIntentSelected);
+    console.log('[PANEL-INTENT-DETAIL] (OnChanges)', changes, this.elementIntentSelected);
     this.initialize();
   }
 
@@ -110,6 +111,7 @@ export class CdsActionDetailPanelComponent implements OnInit, OnChanges {
       this.intentSelected.form = this.elementSelected;
     }
     console.log('----> onSaveIntent:: ', event, this.elementIntentSelectedType, this.intentSelected);
+    // elimino connettori della action e poi li ricreo
     this.savePanelIntentDetail.emit(this.intentSelected);
   }
 
@@ -128,8 +130,9 @@ export class CdsActionDetailPanelComponent implements OnInit, OnChanges {
    * IMPORTANTE: questa funzione deve SOLO aggiornare i connettori e NON deve salvare e NON deve aggiungere UNDO.
    */
   onConnectorChange(type: 'create' | 'delete', idConnector: string, toIntentId: string){
-    console.log('createOrUpdateConnector-->', type, idConnector, toIntentId)
+    console.log('createOrUpdateConnector-->', type, idConnector, toIntentId);
     const fromId = idConnector;
+    
     let toId = '';
     switch(type){
       case 'create':
@@ -137,11 +140,11 @@ export class CdsActionDetailPanelComponent implements OnInit, OnChanges {
         if (posId !== -1) {
           toId = toIntentId.slice(posId+1);
         }
-        this.connectorService.deleteConnectorWithIDStartingWith(fromId, false, false);
+        this.connectorService.deleteConnectorWithIDStartingWith(fromId, false, false, false);
         this.connectorService.createNewConnector(fromId, toId, false, false);
         break;
       case 'delete':
-        this.connectorService.deleteConnectorWithIDStartingWith(fromId, false, false);
+        this.connectorService.deleteConnectorWithIDStartingWith(fromId, false, false, true);
         break;
     }
   }

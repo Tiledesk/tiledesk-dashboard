@@ -377,7 +377,7 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
   /** EVENTS  */
 
   onSelectAction(action, index: number, idAction) {
-    this.logger.log('[CDS-INTENT] onActionSelected action: ', action);
+    console.log('[CDS-INTENT] onActionSelected action: ', action);
     this.logger.log('[CDS-INTENT] onActionSelected index: ', index);
     this.logger.log('[CDS-INTENT] onActionSelected idAction: ', idAction);
     this.elementTypeSelected = idAction;

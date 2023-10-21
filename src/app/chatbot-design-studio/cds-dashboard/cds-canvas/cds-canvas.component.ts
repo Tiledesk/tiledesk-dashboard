@@ -145,8 +145,10 @@ export class CdsCanvasComponent implements OnInit {
       this.logger.log('[CDS-CANVAS]  isOpenActionDetailPanel ', element);
       if (element.type) {
         this.closeAllPanels();
-        this.removeConnectorDraftAndCloseFloatMenu();
-        this.IS_OPEN_PANEL_ACTION_DETAIL = true;
+        // setTimeout(() => {
+          this.removeConnectorDraftAndCloseFloatMenu();
+          this.IS_OPEN_PANEL_ACTION_DETAIL = true;
+        // }, 200);
       } else {
         this.IS_OPEN_PANEL_ACTION_DETAIL = false;
       }
@@ -932,8 +934,6 @@ export class CdsCanvasComponent implements OnInit {
     console.log('[CDS-CANVAS] onSavePanelIntentDetail intentSelected ', intentSelected)
     if (intentSelected && intentSelected != null) {
       this.intentSelected = intentSelected;
-      this.intentService.replaceIntent(this.intentSelected);
-      // this.intentService.refreshIntent(this.intentSelected);
       this.intentService.onUpdateIntentFromActionPanel(intentSelected);
     } else {
       // this.onOpenDialog();

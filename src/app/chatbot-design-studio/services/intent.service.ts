@@ -293,7 +293,6 @@ export class IntentService {
       // this.replaceNewIntentToListOfIntents(savedIntent);
       this.listOfIntents = this.replaceIntent(savedIntent);
       this.refreshIntents();
-      this.prevListOfIntent = JSON.parse(JSON.stringify(this.listOfIntents));
       this.setDragAndListnerEventToElement(savedIntent.intent_id);
       return savedIntent;
     } else {
@@ -321,6 +320,7 @@ export class IntentService {
       };
       this.faqService.addIntent(intentToAdd).subscribe((intent:any) => {
         // console.log("[INTENT SERVICE]  ho salvato in remoto l'intent ", intent, newIntent, this.listOfIntents);
+        this.prevListOfIntent = JSON.parse(JSON.stringify(this.listOfIntents));
         resolve(intent);
       }, (error) => {
         console.error('[INTENT SERVICE]  ERROR: ', error);
@@ -425,18 +425,28 @@ export class IntentService {
   }
 
   
+  /**
+   * onUpdateIntentFromActionPanel
+   * @param currentIntent 
+   * @param UndoRedo 
+   * @returns 
+   * 
+   * 
+   */
   public onUpdateIntentFromActionPanel(currentIntent, UndoRedo:boolean = true){
     const thereIsIntent = this.listOfIntents.some((intent) => intent.intent_id === currentIntent.intent_id);
-    console.log('[INTENT SERVICE] -> onUpdateIntentFromActionPanel, ', thereIsIntent, currentIntent);
     if(!thereIsIntent)return;
+    this.listOfIntents = this.replaceIntent(currentIntent);
+    console.log('[INTENT SERVICE] -> onUpdateIntentFromActionPanel ', this.listOfIntents, currentIntent);
     let intent = JSON.parse(JSON.stringify(currentIntent));
     const prevIntents = JSON.parse(JSON.stringify(this.prevListOfIntent));
     const nowIntents = JSON.parse(JSON.stringify(this.listOfIntents));
-    console.log('[INTENT SERVICE] -> onUpdateIntentFromActionPanel, ',prevIntents, nowIntents);
+    // console.log('[INTENT SERVICE] -> onUpdateIntentFromActionPanel ',prevIntents, nowIntents);
     if(UndoRedo){
       let intentPrev = prevIntents.find((item) => item.intent_id === intent.intent_id)?prevIntents.find((item) => item.intent_id === intent.intent_id):intent;
       let intentNow = nowIntents.find((item) => item.intent_id === intent.intent_id)?nowIntents.find((item) => item.intent_id === intent.intent_id):intent;
-      this.addIntentToUndoRedo('PUT', intentPrev, intentNow, [intentPrev], [intentNow]);
+      // console.log('[INTENT SERVICE] -> PUT ', intentPrev, intent);
+      this.addIntentToUndoRedo('PUT', intentPrev, intent, [intentPrev], [intentNow]);
     }
     const response = this.updateIntent(intent);
   }
@@ -910,10 +920,10 @@ export class IntentService {
       // console.log('[INTENT SERVICE] -> replaceIntent:', intent.intent_id, listOfIntents[i].intent_id);
       if (this.listOfIntents[i].intent_id === intent.intent_id) {
         this.listOfIntents[i] = intent;
-        // console.log('[INTENT SERVICE] -> SOSTITUISCO:', intent);
         break;
       }
     }
+    console.log('[INTENT SERVICE] -> SOSTITUISCO:', intent, this.listOfIntents);
     return this.listOfIntents;
   }
 
@@ -957,6 +967,7 @@ export class IntentService {
    * @param intentsToUpdateRedo 
    */
   public addIntentToUndoRedo(type: string, intentPre: Intent, intentNow: Intent, intentsToUpdateUndo: Array<Intent>, intentsToUpdateRedo: Array<Intent>, connector?: string){
+    console.log('[INTENT UNDO] *****  addIntentToUndoRedo', intentNow );
     let typeUNDO = type;
     let typeREDO = type;
     if(type === 'PUSH'){typeUNDO = 'DEL';}
@@ -1040,6 +1051,7 @@ export class IntentService {
    * @returns 
    */
   async restoreIntent(pos, obj){
+    this.controllerService.closeAllPanels();
     const object = JSON.parse(JSON.stringify(obj));
     const restoreAction = object.type;
     const intent = object.intent;
@@ -1087,6 +1099,7 @@ export class IntentService {
     this.listOfIntents = insertItemIntoPositionInTheArray(this.listOfIntents, intent, pos);
     this.refreshIntent(intent);
     let isOnTheStage = await isElementOnTheStage(intent.intent_id); // sync
+    this.intentSelected = intent;
     if(isOnTheStage){
       this.connectorService.createConnectorsOfIntent(intent);
       intentsToUpdate.forEach(element => {
@@ -1127,6 +1140,7 @@ export class IntentService {
   private async restoreDel(intent, intentsToUpdate){
     this.deleteIntentToListOfIntents(intent.intent_id);
     this.connectorService.deleteConnectorsOfBlock(intent.intent_id); // cancello tutti i connettori IN e OUT
+    this.intentSelected = null;
     intentsToUpdate.forEach(element => {
       console.log('[INTENT UNDO] -> REPLACE ', element);
       this.listOfIntents = this.replaceIntent(element);
@@ -1167,7 +1181,7 @@ export class IntentService {
       this.connectorService.createConnectorsOfIntent(intent); // false, false
       this.connectorService.updateConnector(intent.intent_id);
     }, 100);
-  
+    this.intentSelected = intent;
     intentsToUpdate.forEach(element => {
       this.listOfIntents = this.replaceIntent(element);
       console.log('[INTENT UNDO] -> REPLACE ELEMENT: ', element);

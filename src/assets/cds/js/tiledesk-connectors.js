@@ -216,7 +216,7 @@ export class TiledeskConnectors {
 
 
 
-  deleteConnector(connectorId, save=false, undo=false) {
+  deleteConnector(connectorId, save=false, undo=false, notify=true) {
     console.log('[JS] connectorId: ', connectorId);
     console.log('[JS] this.blocks: ', this.blocks);
     console.log('[JS] this.connectors: ', this.connectors);
@@ -228,7 +228,7 @@ export class TiledeskConnectors {
       delete this.connectors[connectorId];
       connectorDeleted['save']=save;
       connectorDeleted['undo']=undo;
-      if (connectorDeleted) {
+      if (connectorDeleted && notify) {
         // this.#removeConnector(connectorDeleted, );
         const customEvent = new CustomEvent("connector-deleted", { detail: { connector: connectorDeleted } });
         document.dispatchEvent(customEvent);

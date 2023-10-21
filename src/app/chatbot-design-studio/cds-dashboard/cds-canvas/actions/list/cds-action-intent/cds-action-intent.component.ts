@@ -85,10 +85,10 @@ export class CdsActionIntentComponent implements OnInit {
     try {
       const array = this.connector.fromId.split("/");
       const idAction= array[1];
-      this.logger.log('[CDS-ACTION-INTENT] 2 - updateConnector :: ', idAction, this.action._tdActionId, this.connector);
+      console.log('[CDS-ACTION-INTENT] 2 - updateConnector :: ', idAction, this.action._tdActionId, this.connector);
       if(idAction === this.action._tdActionId){
         if(this.connector.deleted){
-          this.logger.log('[CDS-ACTION-INTENT] 3 - PALLINO VUOTO :: ');
+          console.log('[CDS-ACTION-INTENT] 3 - PALLINO VUOTO :: ', this.connector);
           this.action.intentName = null;
           this.isConnected = false;
         } else {
@@ -125,7 +125,7 @@ export class CdsActionIntentComponent implements OnInit {
       }
       let connector = { type: 'create', fromId: this.idConnector, toId: this.action.intentName };
       this.onConnectorChange.emit(connector);
-      this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.ACTION, element: this.action});
+      this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.ACTION, element: JSON.parse(JSON.stringify(this.action))});
     }
   }
 
@@ -134,7 +134,7 @@ export class CdsActionIntentComponent implements OnInit {
     let connector = { type: 'delete', fromId: this.idConnector, toId: this.action.intentName };
     this.action.intentName = null;
     this.onConnectorChange.emit(connector);
-    this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.ACTION, element: this.action});
+    this.updateAndSaveAction.emit({type: TYPE_UPDATE_ACTION.ACTION, element: JSON.parse(JSON.stringify(this.action))});
   }
   
 }

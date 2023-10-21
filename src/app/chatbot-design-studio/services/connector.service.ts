@@ -352,9 +352,9 @@ export class ConnectorService {
    * @param connectorID 
    * 
    */
-  public deleteConnector(connectorID){
+  public deleteConnector(connectorID, save=false, undo=false) {
     console.log('[CONNECTOR-SERV] deleteConnector::  connectorID ', connectorID)
-    this.tiledeskConnectors.deleteConnector(connectorID);
+    this.tiledeskConnectors.deleteConnector(connectorID, save, undo);
   }
 
   /**
@@ -379,8 +379,8 @@ export class ConnectorService {
    * 
    * elimino il connettore creato in precedenza allo stesso punto e lo sostituisco con il nuovo
    */
-  public deleteConnectorWithIDStartingWith(connectorID, save=false, undo=false){
-    this.logger.log('[CONNECTOR-SERV] deleteConnectorWithIDStartingWith:: ', this.tiledeskConnectors.connectors);
+  public deleteConnectorWithIDStartingWith(connectorID, save=false, undo=false, notify=true){
+    console.log('[CONNECTOR-SERV] deleteConnectorWithIDStartingWith:: ', connectorID, this.tiledeskConnectors.connectors);
     const isConnector = document.getElementById(connectorID);
     if (isConnector){
       const listOfConnectors = Object.keys(this.tiledeskConnectors.connectors)
@@ -390,8 +390,8 @@ export class ConnectorService {
         return filteredMap;
       }, {});
       for (const [key, connector] of Object.entries(listOfConnectors)) {
-        // this.logger.log('delete connector :: ', key );
-        this.tiledeskConnectors.deleteConnector(key, save, undo);
+        console.log('delete connector :: ', key );
+        this.tiledeskConnectors.deleteConnector(key, save, undo, notify);
       };
     }
   }
