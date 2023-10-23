@@ -10,8 +10,9 @@ import { PricingComponent } from './pricing.component';
 import { PaymentsListComponent } from './payments-list/payments-list.component';
 // import { LoadingSpinnerComponent } from '../ui/loading-spinner/loading-spinner.component';
 import { SharedModule } from '../shared/shared.module';
-import { PricingBaseComponent } from './pricing-base/pricing-base.component';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { PricingBaseComponent } from './pricing-base/pricing-base.component';
+
 @NgModule({
   imports: [
     CommonModule,

@@ -361,6 +361,8 @@ import { ChatbotModalComponent } from './bots/bots-list/chatbot-modal/chatbot-mo
 import { ChatbotAlertComponent } from './bots/bots-list/chatbot-alert/chatbot-alert.component';
 import { KbBaseComponent } from './knowledge-bases/kb-base/kb-base.component';
 import { KbModalComponent } from './knowledge-bases/kb-modal/kb-modal.component';
+import { KbAlertComponent } from './knowledge-bases/kb-alert/kb-alert.component';
+
 
 
 
@@ -639,7 +641,8 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     ChatbotModalComponent,
     ChatbotAlertComponent,
     KbBaseComponent,
-    KbModalComponent
+    KbModalComponent,
+    KbAlertComponent
   ],
   imports: [
     TooltipModule.forRoot(CutomTooltipOptions as TooltipOptions),
