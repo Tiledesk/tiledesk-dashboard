@@ -560,10 +560,11 @@ export class TiledeskConnectors {
 
   /** removeSelection */
   #removeSelection(target) {
-    console.log("resetting connector selection?", this.selectedConnector, target)
+    // console.log("---> resetting connector selection?", this.selectedConnector, target)
     if (this.selectedConnector) {
       if (!target.id || (this.selectedConnector.id !== target.id)) {
-        this.selectedConnector.setAttributeNS(null, "class", "connector");
+        this.selectedConnector.setAttributeNS(null, "class", this.classes["connector"]);
+        this.selectedConnector.setAttributeNS(null, "marker-start", "url(#" + this.ids['arrow'] + ")");
         this.selectedConnector = null;
       }
     }
@@ -629,7 +630,7 @@ export class TiledeskConnectors {
     console.log("mouse up event...", event);
     this.target.removeEventListener("mousemove", this.ref_handleMouseMove, false);
     this.target.removeEventListener("mouseup", this.ref_handleMouseUp, false);
-    console.log('handleMouseUp ------> ', event.target, event.srcElement);
+    // console.log('handleMouseUp ------> ', event.target, event.srcElement);
     let elConnectable = this.#searchClassInParents(event.target, this.classes["input_block"]);
     if (elConnectable && elConnectable.id && this.fromId) {
       console.log("2 connectable? ", this.fromId, elConnectable.id);
@@ -758,14 +759,14 @@ export class TiledeskConnectors {
         }
       });
       connector.addEventListener('mouseleave', (e) => {
-        //console.log("mouseleave e", e.currentTarget);
+        console.log("---> mouseleave e", e.currentTarget);
         if (!e.currentTarget.classList.contains(this.classes["connector_selected"])) {
           e.currentTarget.setAttributeNS(null, "class", this.classes["connector"]);
           connector.setAttributeNS(null, "marker-start", "url(#" + this.ids['arrow'] + ")");
         }
       });
       connector.addEventListener('click', (e) => {
-        // console.log("clicked e", e.currentTarget);
+        // console.log("---> clicked e", e.currentTarget);
         if (this.selectedConnector) {
           this.selectedConnector.setAttributeNS(null, "class", this.classes["connector"]);
           this.selectedConnector.setAttributeNS(null, "marker-start", "url(#" + this.ids['arrow'] + ")");
@@ -773,7 +774,6 @@ export class TiledeskConnectors {
         this.selectedConnector = e.currentTarget;
         this.selectedConnector.setAttributeNS(null, "class", this.classes["connector_selected"]);
         this.selectedConnector.setAttributeNS(null, "marker-start", "url(#" + this.ids['arrow_selected'] + ")");
-
         const event = new CustomEvent("connector-selected", { detail: { connector: connector } });
         document.dispatchEvent(event);
       });
