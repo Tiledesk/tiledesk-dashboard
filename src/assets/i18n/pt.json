@@ -1566,6 +1566,7 @@
         "UpgradeYourAccountToSetTeamOfficeHours": "Atualize sua conta para definir o horário de expediente da equipe e informar aos visitantes quando seus agentes estão trabalhando!"
     },
     "KbPage": {
+        "NumberOfKbExceedsThePlan":"O número de bases de conhecimento permitidas para {{plan_name}} é {{allowed_kb_num}}. Atualizar o plano ou remover bases de conhecimento que excedam o número permitido (o sistema fará isso automaticamente dentro de um mês)",
         "KBLimitReached":"Limite da Base de Conhecimento atingido para {{plan_name}}",
         "AddKb": "Adicionar base de conhecimento",
         "Secrets": "Segredos",
