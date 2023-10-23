@@ -660,9 +660,9 @@ export class AuthService {
 
         // SET USER IN LOCAL STORAGE
         localStorage.setItem('user', JSON.stringify(user))
-        const chatPrefix = this.appConfigService.getConfig().chatStoragePrefix;
-        localStorage.setItem(chatPrefix + '__tiledeskToken', user.token) // x autologin of Chat ionic
-        // localStorage.setItem('chat_sv5__tiledeskToken', user.token) // x autologin of Chat ionic
+        // const chatPrefix = this.appConfigService.getConfig().chatStoragePrefix;
+        // localStorage.setItem(chatPrefix + '__tiledeskToken', user.token) // x autologin of Chat ionic
+        localStorage.setItem('tiledesk_token', user.token) // x autologin of Chat ionic
         this.logger.log('[AUTH-SERV] > USER ', user)
 
         ///////////////////
@@ -1139,21 +1139,22 @@ export class AuthService {
     // if (calledby !== 'autologin') {
     this.logger.log('[AUTH-SERV] Signout this.router.url +++++ ', this.router.url)
     const current_url = this.router.url
-    const chatPrefix = this.appConfigService.getConfig().chatStoragePrefix;
+    // const chatPrefix = this.appConfigService.getConfig().chatStoragePrefix;
 
     if (current_url.indexOf('request-for-panel') === -1) {
       this.logger.log('[AUTH-SERV] Signout current url  NOT contains request-for-panel ')
 
-      const chat_stored__currentUser = localStorage.getItem(chatPrefix + '__currentUser')
-      this.logger.log('[AUTH-SERV] SIGNOUT - STORED chat_stored__currentUser : ', chat_stored__currentUser)
-      if (chat_stored__currentUser) {
-        localStorage.removeItem(chatPrefix + '__currentUser')
-      }
+      // const chat_stored__currentUser = localStorage.getItem(chatPrefix + '__currentUser')
+      // this.logger.log('[AUTH-SERV] SIGNOUT - STORED chat_stored__currentUser : ', chat_stored__currentUser)
+      // if (chat_stored__currentUser) {
+      //   localStorage.removeItem(chatPrefix + '__currentUser')
+      // }
 
-      const chat_stored__tiledeskToken = localStorage.getItem(chatPrefix + '__tiledeskToken')
-      if (chat_stored__tiledeskToken) {
-        localStorage.removeItem(chatPrefix + '__tiledeskToken')
-        this.logger.log('[AUTH-SERV] SIGNOUT - STORED chat_stored__tiledeskToken : ', chat_stored__currentUser)
+      // const chat_stored__tiledeskToken = localStorage.getItem(chatPrefix + '__tiledeskToken')
+      const stored__tiledeskToken = localStorage.getItem('tiledesk_token')
+      if (stored__tiledeskToken) {
+        localStorage.removeItem('tiledesk_token')
+        this.logger.log('[AUTH-SERV] SIGNOUT - STORED stored__tiledeskToken : ', stored__tiledeskToken)
       }
 
       this.webSocketClose()

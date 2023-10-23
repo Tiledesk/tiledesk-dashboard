@@ -1,5 +1,10 @@
 # tiledesk-dashboard
 
+chatPrefix
+### 2.4.73-rc1
+- Deploys in production
+- Removes chatPrefix
+
 ### 2.4.72
 - Deploys in production
 - Improvements and bug fixing
