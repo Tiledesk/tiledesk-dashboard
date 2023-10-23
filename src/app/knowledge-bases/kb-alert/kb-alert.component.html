@@ -1,0 +1,32 @@
+<div class="chatbot-alert-content">
+    <div class="sub-active-cb-num-greater-than-the-allowed" *ngIf="((
+  ((profile_name === PLAN_NAME.D || profile_name === PLAN_NAME.E) && subscription_is_active === true) ||
+  (profile_name === 'Sandbox' && trial_expired === false) || 
+  (profile_name === 'Sandbox' && trial_expired === true))  &&
+  (kbCount > kbLimit))">
+      <span class="msg-alert">
+        {{ 'KbPage.NumberOfKbExceedsThePlan' | translate: tParamsPlanAndKb }}
+      </span>
+      <div class="upgrade--plan-btn-wpr" style="text-align: center;">
+        <button class="upgrade--plan-btn" (click)="presentContactUsModal()">
+          {{ "Pricing.UpgradePlan" | translate }}
+        </button>
+      </div>
+  
+    </div>
+  
+    <div class="sub-expired-cb-num-greater-than-the-allowed" *ngIf="(
+      (profile_name === PLAN_NAME.D || profile_name === PLAN_NAME.E || profile_name === PLAN_NAME.F) && subscription_is_active === false  &&
+      (kbCount > kbLimit))">
+          <span class="msg-alert">
+            {{ 'KbPage.NumberOfKbExceedsThePlan' | translate: tParamsPlanAndKb }}
+          </span>
+          <div class="upgrade--plan-btn-wpr" style="text-align: center;">
+            <button class="upgrade--plan-btn" (click)="openModalSubsExpired()">
+              {{ "Pricing.UpgradePlan" | translate }}
+            </button>
+          </div>
+      
+        </div>
+  
+  </div>
