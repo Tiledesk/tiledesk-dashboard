@@ -1,4 +1,4 @@
-import { Component, OnInit, isDevMode } from '@angular/core';
+import { Component, OnDestroy, OnInit, isDevMode } from '@angular/core';
 import { AppStoreService } from '../services/app-store.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../core/auth.service';
@@ -19,7 +19,7 @@ const swal = require('sweetalert');
   templateUrl: './app-store.component.html',
   styleUrls: ['./app-store.component.scss']
 })
-export class AppStoreComponent implements OnInit {
+export class AppStoreComponent implements OnInit, OnDestroy {
   PLAN_NAME = PLAN_NAME;
   APP_SUMO_PLAN_NAME = APP_SUMO_PLAN_NAME;
   private unsubscribe$: Subject<any> = new Subject<any>();
@@ -89,6 +89,12 @@ export class AppStoreComponent implements OnInit {
     this.listenToParentPostMessage()
   }
 
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
   getRouteParams() {
     this.route.params.subscribe((params) => {
       // this.projectId = params.projectid
@@ -132,11 +138,7 @@ export class AppStoreComponent implements OnInit {
     })
   }
 
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
-  }
+ 
 
   getBrowserVersion() {
     this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
