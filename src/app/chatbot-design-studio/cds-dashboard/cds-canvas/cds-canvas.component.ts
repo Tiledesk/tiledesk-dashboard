@@ -568,12 +568,12 @@ export class CdsCanvasComponent implements OnInit {
   }
 
   /**  updateIntent 
-   * chiamata da cds-panel-action-detail
+   * chiamata da cds-panel-action-detail e da cds-panel-button-configuration
    * quando modifico un intent da pannello ex: cambio il testo, aggiungo un bottone ecc.
   */
-  private async updateIntent(intent, time=0, save=false, undo=false) {
+  private async updateIntent(intent, time=0, undo=false) {
     console.log('[CDS-CANVAS] updateIntent: ');
-    const response = await this.intentService.onUpdateIntentWithTimeout(intent, time, save, undo);
+    const response = await this.intentService.onUpdateIntentWithTimeout(intent, time, undo);
     if (response) {
       this.logger.log('[CDS-CANVAS] OK: intent aggiornato con successo sul server', this.intentSelected);
     } else {
@@ -932,13 +932,14 @@ export class CdsCanvasComponent implements OnInit {
   // --------------------------------------------------------- //
   /** onSaveButton */
   onSaveButton(button: Button) {
-    
     const arrayId = button.__idConnector.split("/");
-    const idConnector = arrayId[0] ? arrayId[0] : null;
-    this.logger.log('onSaveButton: ', idConnector, this.listOfIntents);
-    if (idConnector) {
-      this.intentSelected = this.listOfIntents.find(obj => obj.intent_id === idConnector);
-      this.updateIntent(this.intentSelected, 0);
+    const intentIdIntentToUpdate = arrayId[0] ? arrayId[0] : null;
+    console.log('onSaveButton: ', button, intentIdIntentToUpdate, this.listOfIntents);
+    if (intentIdIntentToUpdate) {
+      this.intentSelected = this.listOfIntents.find(obj => obj.intent_id === intentIdIntentToUpdate);
+      // forse conviene fare come in onSavePanelIntentDetail passando intent aggiornato (con action corretta)!!!!
+      // this.intentService.onUpdateIntentWithTimeout(this.intentSelected, 0, true);
+      this.intentService.onUpdateIntentFromActionPanel(this.intentSelected);
     }
   }
   // --------------------------------------------------------- //

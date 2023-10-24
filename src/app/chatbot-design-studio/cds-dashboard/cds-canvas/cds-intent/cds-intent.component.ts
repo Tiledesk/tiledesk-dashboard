@@ -632,6 +632,9 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
 
   /**  onUpdateAndSaveAction: 
    * function called by all actions in @output whenever they are modified!
+   * called when the connector is created or deleted
+   * OR 
+   * called when the action is modified
    * */
   public async onUpdateAndSaveAction(object) {
     let connector = null;
@@ -639,7 +642,6 @@ export class CdsIntentComponent implements OnInit, OnDestroy, OnChanges {
       connector = object.element;
     } else if(object && object.type && object.type === 'action'){
       const action  = object.element;
-      // se event non è nullo sostituisco in this.intent.actions la action con _tdActionId 
       if(action && action._tdActionId){
         replaceItemInArrayForKey('_tdActionId', this.intent.actions, action);
       }

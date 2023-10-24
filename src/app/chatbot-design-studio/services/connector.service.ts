@@ -63,11 +63,9 @@ export class ConnectorService {
    * 
    */
   async createNewConnector(fromId:string, toId:string, save=false, undo=false){
-    console.log('[CONNECTOR-SERV] createNewConnector:: fromId:', fromId, 'toId:', toId);
+    this.logger.log('[CONNECTOR-SERV] createNewConnector:: fromId:', fromId, 'toId:', toId);
     let elFrom = await isElementOnTheStage(fromId); // sync
     let elTo = await isElementOnTheStage(toId); // sync
-    // const elFrom = document.getElementById(fromId);
-    // const elTo = document.getElementById(toId);
     this.logger.log('[CONNECTOR-SERV] createNewConnector:: ', elFrom, elTo);
     if (elFrom && elTo) { 
       const fromPoint = this.tiledeskConnectors.elementLogicCenter(elFrom);
@@ -94,7 +92,7 @@ export class ConnectorService {
    * @param toId 
    * @returns 
    */
-  public async createConnectorFromId(fromId, toId, save=false, undo=false) {
+  public async createConnectorFromId_old(fromId, toId, save=false, undo=false) {
     console.log('[CONNECTOR-SERV] createConnectorFromId fromId ', fromId, ' toId ', toId);
     const connectorID = fromId+'/'+toId;
     // let connector = await isElementOnTheStage(connectorID); // sync
@@ -115,6 +113,32 @@ export class ConnectorService {
       return false;
     }
   }
+
+
+  public async createConnectorFromId(fromId, toId, save=false, undo=false) {
+    const connectorID = fromId+'/'+toId;
+    const isConnector = document.getElementById(connectorID);
+    if (isConnector) {
+      console.log('[CONNECTOR-SERV] il connettore esiste già', connectorID);
+      this.tiledeskConnectors.updateConnectorsOutOfItent(connectorID);
+      return true;
+    } 
+    let isOnTheStageFrom = await isElementOnTheStage(fromId); // sync
+    console.log('[CONNECTOR-SERV] isOnTheStageFrom', isOnTheStageFrom);
+    let isOnTheStageTo = await isElementOnTheStage(toId); // sync
+    console.log('[CONNECTOR-SERV] isOnTheStageFrom', isOnTheStageFrom);
+    if(isOnTheStageFrom && isOnTheStageTo){
+      const fromEle = document.getElementById(fromId);
+      const toEle = document.getElementById(toId);
+      const fromPoint = this.tiledeskConnectors.elementLogicCenter(fromEle);
+      const toPoint = this.tiledeskConnectors.elementLogicTopLeft(toEle);
+      this.tiledeskConnectors.createConnector(fromId, toId, fromPoint, toPoint, save, undo);
+      return true;
+    } else {
+      return false;
+    }
+  }
+
 
 
   /**

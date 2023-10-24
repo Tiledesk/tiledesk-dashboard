@@ -378,13 +378,14 @@ export class IntentService {
     const prevIntents = JSON.parse(JSON.stringify(this.prevListOfIntent));
     const nowIntents = JSON.parse(JSON.stringify(this.listOfIntents));
     // console.log('[INTENT SERVICE] -> onUpdateIntentWithTimeout2, ',prevIntents, nowIntents);
-    if(undo){
+    
+    if(undo || connector){
       let intentPrev = prevIntents.find((item) => item.intent_id === intent.intent_id)?prevIntents.find((item) => item.intent_id === intent.intent_id):intent;
       let intentNow = nowIntents.find((item) => item.intent_id === intent.intent_id)?nowIntents.find((item) => item.intent_id === intent.intent_id):intent;
       let intentsToUpdateUndo = [intentPrev];
       let intentsToUpdateRedo = [intentNow];
-      if(!connector)this.addIntentToUndoRedo('PUT', intentPrev, intentNow, intentsToUpdateUndo, intentsToUpdateRedo);
-      else if(connector && connector.undo) this.addIntentToUndoRedo('CONN', intentPrev, intentNow, intentsToUpdateUndo, intentsToUpdateRedo, connector);
+      if(connector && connector.undo) this.addIntentToUndoRedo('CONN', intentPrev, intentNow, intentsToUpdateUndo, intentsToUpdateRedo, connector);
+      else if(!connector && undo)this.addIntentToUndoRedo('PUT', intentPrev, intentNow, intentsToUpdateUndo, intentsToUpdateRedo);
     }
     if(!timeout)timeout = 0;
     return new Promise((resolve, reject) => {
@@ -1218,7 +1219,6 @@ export class IntentService {
   private async restoreConnector(intent, connector){
     this.updateIntent(intent); // async
     this.listOfIntents = this.replaceIntent(intent); /// Arggggg!! questa mmerda ricarica tutte le action e mi svuota tutti i connettori true false
- 
     setTimeout(()=> {
         const arrow = document.getElementById(connector.id);
         console.log('[INTENT UNDO] -> arrow: ', arrow, connector);

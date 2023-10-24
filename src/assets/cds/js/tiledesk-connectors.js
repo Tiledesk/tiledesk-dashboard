@@ -349,28 +349,6 @@ export class TiledeskConnectors {
     console.log("[JS] connectors :---> ", this.connectors);
   }
 
-
-  // deleteINConnectorsOfBlock(blockId) {
-  //   console.log("[JS] delete IN Connectors ----> ", blockId);
-  //   // cerca tutti quelli che finiscono con blockId
-  //   for (var connectorId in this.connectors) {
-  //     if (connectorId.endsWith(blockId)) {
-  //       this.deleteConnector(connectorId);
-  //     }
-  //   }
-  //   delete this.blocks[blockId];
-  //   console.log("[JS] blocks :---> ", this.blocks);
-  //   console.log("[JS] connectors :---> ", this.connectors);
-  // }
-
-
-
-
-
- 
-
-
-
   /** */
   createBlock(blockId) {
     let block = {
@@ -639,7 +617,6 @@ export class TiledeskConnectors {
       }
     }
     if (elConnectable) {
-      //if (event.target.classList.contains(this.classes["input_block"])) {
       this.createConnector(this.fromId, elConnectable.id, this.drawingBack, this.toPoint, true, true);
       const connectorReleaseOnIntent = new CustomEvent("connector-release-on-intent",
         {
@@ -653,7 +630,6 @@ export class TiledeskConnectors {
           }
         });
       document.dispatchEvent(connectorReleaseOnIntent);
-      console.log("connector-release-on-intent fired!");
     }
     else if (this.drawingBack && this.toPoint) {
       // quando rilascio il connector sullo stage e apro il float menu
@@ -718,22 +694,6 @@ export class TiledeskConnectors {
     connector.setAttributeNS(null, "class", this.classes["path"]);
   }
 
-  /** drawConnectorDraft */
-  // #drawConnectorDraft_OLD() {
-  //   let connector = document.getElementById("connectorDraft");
-  //   if (!connector) {
-  //     connector = document.createElementNS("http://www.w3.org/2000/svg", "path");
-  //     connector.setAttributeNS(null, "fill", "transparent");
-  //     connector.setAttributeNS(null, "id", "connectorDraft");
-  //     this.svgContainer.appendChild(connector);
-  //   }
-  //   let d = "M" + this.drawingFront.x + " " + this.drawingFront.y + " " + "C " + this.controlFront.x + " " + this.controlFront.y + " " + this.controlBack.x + " " + this.controlBack.y + " " + this.drawingBack.x + " " + this.drawingBack.y;
-  //   connector.setAttributeNS(null, "d", d);
-  //   connector.setAttributeNS(null, "class", this.classes["path"]);
-  // }
-
-
-
   /** 
    * Creates or modify a connector in HTML
    */
@@ -790,77 +750,6 @@ export class TiledeskConnectors {
     connector.setAttributeNS(null, "d", d);
     connector.setAttributeNS(null, "marker-start", "url(#" + this.ids['arrow'] + ")");
   }
-
-  /** Creates or modify a connector in HTML */
-  // #drawConnector_OLD(id, backPoint, frontPoint) {
-  //   // console.log(id, backPoint, frontPoint);
-  //   const that = this;
-  //   let connector = document.getElementById(id);
-  //   if (!connector) {
-  //     connector = document.createElementNS("http://www.w3.org/2000/svg", "path");
-  //     connector.setAttributeNS(null, "fill", "transparent");
-  //     connector.setAttributeNS(null, "id", id);
-  //     connector.setAttributeNS(null, "class", this.classes["connector"]);
-  //     connector.setAttributeNS(null, "pointer-events", "stroke");
-  //     connector.addEventListener('mouseover', (e) => {
-  //       // console.log("mouseover e", e.currentTarget);
-  //       if (that.selectedConnector !== null) { // jump highlighting current selection
-  //         if (that.selectedConnector.id !== e.currentTarget.id) {
-  //           e.currentTarget.setAttributeNS(null, "class", that.classes["connector_over"]);
-  //         }
-  //       }
-  //       else {
-  //         e.currentTarget.setAttributeNS(null, "class", that.classes["connector_over"]);
-  //       }
-  //     });
-  //     connector.addEventListener('mouseleave', (e) => {
-  //       // console.log("mouseleave e", e);
-  //       if (!e.currentTarget.classList.contains(that.classes["connector_selected"])) {
-  //         e.currentTarget.setAttributeNS(null, "class", that.classes["connector"]);
-  //       }
-  //     });
-  //     connector.addEventListener('click', (e) => {
-  //       // console.log("clicked -> ", e, that);
-  //       if (that.selectedConnector) {
-  //         that.selectedConnector.setAttributeNS(null, "class", that.classes["connector"]);
-  //         console.log("ripristino  class connector -> ", that.selectedConnector);
-  //       }
-  //       that.selectedConnector = e.currentTarget;
-  //       console.log("new selectedConnector -> ", that.selectedConnector.id);
-  //       that.selectedConnector.setAttributeNS(null, "class", that.classes["connector_selected"]);
-  //       console.log("connector_selected class ", that.selectedConnector);
-
-  //       const event = new CustomEvent("connector-selected", { detail: {connector: connector} });
-  //       document.dispatchEvent(event);
-  //     });
-  //     this.svgContainer.appendChild(connector);
-  //   }
-
-  //   // control points
-  //   let controlFront = { x: 0, y: 0 };
-  //   let controlBack = { x: 0, y: 0 };
-  //   if (frontPoint.x < backPoint.x) {
-  //     const front_back_dist_x = backPoint.x - frontPoint.x;
-  //     controlFront.x = frontPoint.x - (front_back_dist_x);
-  //     controlBack.x = backPoint.x + (front_back_dist_x);
-  //   }
-  //   else {
-  //     const front_back_half_dist = Math.round((frontPoint.x - backPoint.x) / 2);
-  //     controlFront.x = backPoint.x + front_back_half_dist;
-  //     controlBack.x = backPoint.x + front_back_half_dist;
-  //   }
-  //   controlFront.y = frontPoint.y;
-  //   controlBack.y = backPoint.y;
-  //   let d = "M" + frontPoint.x + " " + frontPoint.y + " " + "C " + controlFront.x + " " + controlFront.y + " " + controlBack.x + " " + controlBack.y + " " + backPoint.x + " " + backPoint.y;
-  //   connector.setAttributeNS(null, "d", d);
-
-  //   // connector.setAttributeNS(null, "tabindex", "0");
-  //   // connector.setAttributeNS(null, "keydown", "deleteConnector(event)");
-  //   //connector.setAttributeNS(null, "stroke", "#FF0000");
-  //   //connector.setAttributeNS(null, "stroke-width", "1px");
-  // }
-
-
   /** Measure from phisical to logical */
 
 
@@ -913,10 +802,6 @@ export class TiledeskConnectors {
     }
   }
 
-
-
-
-
   createConnectorFromId(fromId, toId, save=false, undo=false) {
     console.log("createConnectorFromId fromId - toId:", fromId, toId);
     const fromEle = document.getElementById(fromId);
@@ -953,49 +838,15 @@ export class TiledeskConnectors {
         }
         this.#drawConnector(conn.id, conn.fromPoint, conn.toPoint);
         conn['notify']='';
-
         const event = new CustomEvent("connector-updated", { detail: { connector: conn } });
         document.dispatchEvent(event);
-        
-        
       }
     };
   }
-
-
-
-
-  // updateConnectorsInOfItent(element, notify) {
-  //   console.log("updateConnectorsInOfItent ----> ", this.blocks, element.id);
-  //   const blockId = element.id;
-  //   let block = this.blocks[blockId];
-  //   if (!block) { return; }
-  //   for (const [key, conn_id] of Object.entries(block.inConnectors)) {
-  //     let conn = this.connectors[conn_id];
-  //     if (conn) {
-  //       console.log("OUT :---> ", conn, conn.toPoint);
-  //       const el = document.getElementById(conn.toId);
-  //       if (el) {
-  //         conn.toPoint = this.elementLogicCenter(el);
-  //         console.log("conn.toPoint :---> ", el, conn.toId, conn.toPoint);
-  //         this.#drawConnector(conn.id, conn.fromPoint, conn.toPoint);
-  //         conn['notify']=notify;
-  //         const event = new CustomEvent("connector-updated", { detail: { connector: conn } });
-  //         document.dispatchEvent(event);
-  //       }
-  //     }
-  //   };
-  // }
-
 
   updateConnectorsOfItent(element) {
     console.log("updateConnectorsOfItent ----> ", this.blocks, element.id);
     this.updateConnectorsOutOfItent(element);
   }
-
-
-
-
-
 
 }

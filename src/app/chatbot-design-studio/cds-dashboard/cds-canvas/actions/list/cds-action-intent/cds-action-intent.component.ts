@@ -75,7 +75,7 @@ export class CdsActionIntentComponent implements OnInit {
     this.intents = this.intentService.getListOfIntents();
     this.logger.log('[CDS-ACTION-INTENT] - initialize - idIntentSelected ', this.idIntentSelected);
     this.logger.log('[CDS-ACTION-INTENT] - initialize - idConnector ', this.idConnector);
-    // console.log('[CDS-ACTION-INTENT] - initialize - intents ', this.intents);
+    this.logger.log('[CDS-ACTION-INTENT] - initialize - intents ', this.intents);
   }
 
 
@@ -85,14 +85,14 @@ export class CdsActionIntentComponent implements OnInit {
     try {
       const array = this.connector.fromId.split("/");
       const idAction= array[1];
-      console.log('[CDS-ACTION-INTENT] 2 - updateConnector :: ', idAction, this.action._tdActionId, this.connector);
+      // console.log('[CDS-ACTION-INTENT] 2 - updateConnector :: ', idAction, this.action._tdActionId, this.connector);
       if(idAction === this.action._tdActionId){
         if(this.connector.deleted){
-          console.log('[CDS-ACTION-INTENT] 3 - PALLINO VUOTO :: ', this.connector);
+          this.logger.log('[CDS-ACTION-INTENT] connettore eliminato - PALLINO VUOTO :: ', this.connector);
           this.action.intentName = null;
           this.isConnected = false;
         } else {
-          this.logger.log('[CDS-ACTION-INTENT] 4 - PALLINO PIENO :: ');
+          this.logger.log('[CDS-ACTION-INTENT] connettore creato - PALLINO PIENO :: ', this.connector);
           this.isConnected = true;
           this.action.intentName = "#"+this.connector.toId;
         }
