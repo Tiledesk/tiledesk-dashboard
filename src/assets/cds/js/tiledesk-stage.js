@@ -85,12 +85,12 @@ export class TiledeskStage {
         this.getPositionNow();
 
         if (event.ctrlKey === false) {
-            // console.log("pan");
-            let direction = -1;
-            this.tx += event.deltaX * direction;
-            this.ty += event.deltaY * direction;
-            // console.log('mousemove ctrlKey: ', event, this.tx);
-            this.transform();
+          if (event.shiftKey) {
+            this.tx += event.deltaY;
+          } else {
+            this.ty += event.deltaY * -1;
+          }
+          this.transform();
         } else {
             var originRec = this.container.getBoundingClientRect();            
             // zoom
