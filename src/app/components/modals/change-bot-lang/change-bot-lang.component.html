@@ -10,8 +10,12 @@
     </div>
 
 
-    <ng-select appendTo="body" id="bot_default_language" [clearable]="true" [(ngModel)]="selectedDefaultBotLang"
-        [items]="botDefaultLanguages" bindLabel="name" placeholder="{{ 'ChooseALanguage' | translate }}"
+    <ng-select appendTo="body" id="bot_default_language" 
+        [clearable]="true" 
+        [(ngModel)]="selectedDefaultBotLang"
+        [items]="chatbotLanguages" 
+        bindLabel="name" 
+        placeholder="{{ 'ChooseALanguage' | translate }}"
         (change)="onSelectBotDefaultlang(selectedDefaultBotLang)">
     </ng-select>
 

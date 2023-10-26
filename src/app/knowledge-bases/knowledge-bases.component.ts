@@ -16,13 +16,15 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
 import { MatDialog } from '@angular/material/dialog';
 import { KbModalComponent } from './kb-modal/kb-modal.component';
+import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 
 @Component({
   selector: 'appdashboard-knowledge-bases',
   templateUrl: './knowledge-bases.component.html',
   styleUrls: ['./knowledge-bases.component.scss']
 })
-export class KnowledgeBasesComponent extends KbBaseComponent implements OnInit, OnDestroy {
+// extends KbBaseComponent
+export class KnowledgeBasesComponent extends PricingBaseComponent implements OnInit, OnDestroy {
 
   public IS_OPEN_SETTINGS_SIDEBAR: boolean;
   public isChromeVerGreaterThan100: boolean;
@@ -43,6 +45,7 @@ export class KnowledgeBasesComponent extends KbBaseComponent implements OnInit, 
   profile_name: string;
   callingPage: string;
   USER_ROLE: string;
+  kbCount: number;
 
   kbForm: FormGroup;
   kbsList = [];
@@ -69,6 +72,7 @@ export class KnowledgeBasesComponent extends KbBaseComponent implements OnInit, 
   error_answer: boolean = false;
   show_answer: boolean = false;
   kbid_selected: any;
+
 
   constructor(
     private auth: AuthService,
@@ -143,7 +147,6 @@ export class KnowledgeBasesComponent extends KbBaseComponent implements OnInit, 
         this.logger.log('[KNOWLEDGE-BASES-COMP] - LOGGED USER ', user)
         if (user) {
           this.CURRENT_USER = user
-
         }
       });
   }
@@ -220,6 +223,11 @@ export class KnowledgeBasesComponent extends KbBaseComponent implements OnInit, 
     this.kbService.getKbSettings().subscribe((kbSettings: KbSettings) => {
       this.logger.log("[KNOWLEDGE-BASES-COMP] get kbSettings: ", kbSettings);
       this.kbSettings = kbSettings;
+      if (this.kbSettings) {
+        this.kbCount = this.kbSettings.kbs.length
+        console.log("[KNOWLEDGE-BASES-COMP] KbCount: ", this.kbCount);
+      }
+
       // if (this.kbSettings.kbs.length < kbSettings.maxKbsNumber) {
 
       // if (this.kbSettings.kbs.length < this.kbLimit) {
@@ -267,9 +275,10 @@ export class KnowledgeBasesComponent extends KbBaseComponent implements OnInit, 
     console.log('[KNOWLEDGE-BASES-COMP] KB Limit ', this.kbLimit)
     if (this.USER_ROLE !== 'agent') {
       if (this.kbLimit) {
-        if (this.kbSettings.kbs.length < this.kbLimit) {
+        if (this.kbCount < this.kbLimit) {
           this.addKnowledgeBaseModal = 'block';
         } else if (this.kbSettings.kbs.length >= this.kbLimit) {
+          
           this.presentDialogReachedKbLimit()
         }
       } else if (!this.kbLimit) {

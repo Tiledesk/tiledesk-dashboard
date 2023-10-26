@@ -13,6 +13,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
 import { ChatbotModalComponent } from '../bots-list/chatbot-modal/chatbot-modal.component';
 import { NotifyService } from 'app/core/notify.service';
+import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 
 @Component({
   selector: 'appdashboard-templates',
@@ -21,7 +22,7 @@ import { NotifyService } from 'app/core/notify.service';
 })
 
 
-export class TemplatesComponent extends BotsBaseComponent implements OnInit, OnDestroy {
+export class TemplatesComponent extends PricingBaseComponent implements OnInit, OnDestroy {
   private unsubscribe$: Subject<any> = new Subject<any>();
   templates: Array<any>
   communityTemplates: Array<any>;
@@ -218,9 +219,12 @@ export class TemplatesComponent extends BotsBaseComponent implements OnInit, OnD
 
       if (res) {
         this.communityTemplates = res
-        this.logger.log('[BOTS-TEMPLATES] - GET COMMUNITY TEMPLATES', this.communityTemplates);
+        // console.log('[BOTS-TEMPLATES] - GET COMMUNITY TEMPLATES', this.communityTemplates);
         this.allCommunityTemplatesCount = this.communityTemplates.length;
         this.logger.log('[BOTS-TEMPLATES] - GET COMMUNITY TEMPLATES COUNT', this.allCommunityTemplatesCount);
+
+        // Get publisher profile
+        // this.getUserCommunityProfile(this.communityTemplates)
 
         // let stripHere = 115;
         // this.communityTemplates.forEach(communityTemplate => {
@@ -248,6 +252,28 @@ export class TemplatesComponent extends BotsBaseComponent implements OnInit, OnD
       // this.generateTagsBackground(this.templates)
     });
 
+  }
+
+  getUserCommunityProfile(communityTemplates) {
+    console.log('[BOTS-TEMPLATES] USER CMNTY PROFILE ',communityTemplates);
+    communityTemplates.forEach(tmplt => {
+      console.log('BOTS-TEMPLATES] created by  ', tmplt.createdBy)
+
+      this.usersService.getCurrentUserCommunityProfile(tmplt.createdBy)
+        .subscribe((userCmntyProfile: any) => {
+          let createdByFullName = ""
+          if (userCmntyProfile.firstname && userCmntyProfile.lastname) {
+            createdByFullName = userCmntyProfile.firstname + ' ' + userCmntyProfile.lastname
+            this.communityTemplates['createdByFullName'] = createdByFullName
+          } else if (userCmntyProfile.firstname && !userCmntyProfile.lastname) {
+            createdByFullName = userCmntyProfile.firstname
+            this.communityTemplates['createdByFullName'] = createdByFullName
+          }
+
+          console.log('[BOTS-TEMPLATES] USER CMNTY PROFILE >  createdBy', createdByFullName);
+          // console.log('[BOTS-TEMPLATES] USER CMNTY PROFILE >  communityTemplates', this.communityTemplates);
+        })
+    });
   }
 
   getTemplates() {

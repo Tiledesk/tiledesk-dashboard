@@ -24,7 +24,9 @@ const swal = require('sweetalert');
   templateUrl: './cds-chatbot-details.component.html',
   styleUrls: ['./cds-chatbot-details.component.scss']
 })
-export class CdsChatbotDetailsComponent extends BotsBaseComponent implements OnInit {
+
+// extends BotsBaseComponent
+export class CdsChatbotDetailsComponent  implements OnInit {
   @Input() selectedChatbot: Chatbot;
 
   activeSection: 'bot_detail' | 'import_export' | 'community' | 'developer' = 'bot_detail'
@@ -53,7 +55,9 @@ export class CdsChatbotDetailsComponent extends BotsBaseComponent implements OnI
     private auth: AuthService,
     private translate: TranslateService,
     public prjctPlanService: ProjectPlanService,
-  ) { super(prjctPlanService); }
+  ) { 
+    // super(prjctPlanService); 
+  }
 
   ngOnInit(): void {
     this.auth.checkRoleForCurrentProject();

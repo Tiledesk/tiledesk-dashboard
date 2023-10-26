@@ -4,10 +4,10 @@
             <div class="home-block-title">
                 <span *ngIf="USER_ROLE !=='agent' && countOfInvitedTeammates === 0">Invite Teammates </span>
                 <span *ngIf="USER_ROLE !=='agent' && countOfInvitedTeammates === 1">
-                    Kudos! You've invited {{countOfInvitedTeammates}} Teammate. Keep striving for greatness!
+                    Kudos! You've invited {{countOfInvitedTeammates}} teammate. Keep striving for greatness!
                 </span>
                 <span *ngIf="USER_ROLE !=='agent' && countOfInvitedTeammates > 1">
-                    Kudos! You've invited {{countOfInvitedTeammates}} Teammates. Keep striving for greatness!
+                    Kudos! You've invited {{countOfInvitedTeammates}} teammates. Keep striving for greatness!
                 </span>
                 <span *ngIf="USER_ROLE ==='agent'">Teammates </span>
             </div>
@@ -200,6 +200,19 @@
                 </span>
             </span>
             of {{ seatsLimit }} available for the {{prjct_profile_name}}.
+
+            <span *ngIf="!subscription_is_active && prjct_profile_type === 'payment'">
+                <i class="material-icons" 
+                matTooltipClass="h-custom-mat-tooltip"
+                matTooltip="Subscription payment problem" 
+                #tooltip="matTooltip" 
+                matTooltipPosition='below'
+                matTooltipHideDelay="100" 
+                (click)="openModalSubsExpired()"
+                style="vertical-align: middle; color: #f44336; cursor: pointer; font-size: 20px;"> 
+                    error_outline 
+                </i>
+            </span>
         </div>
 
         <div *ngIf="USER_ROLE === 'agent'" class="temmates-redeemed">
@@ -227,7 +240,7 @@
         <div class="ct-action-btns-wpr" *ngIf="USER_ROLE !== 'agent'">
             <!-- goToTeammates() -->
             <button id="home-material-btn" class="mat-focus-indicator mat-flat-button mat-button-base"
-                (click)="inviteTeammate()">
+                (click)="inviteTeammate()" [disabled]="!subscription_is_active">
                 <span class="mat-button-wrapper">
 
                     <span class="ml-2" style="font-size: 15px;">

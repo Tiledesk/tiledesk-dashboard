@@ -28,7 +28,9 @@ import {
   URL_configure_your_first_chatbot,
   URL_dialogflow_connector,
   avatarPlaceholder,
-  getColorBck
+  getColorBck,
+  botDefaultLanguages,
+  getIndexOfbotDefaultLanguages
 } from '../../utils/util';
 import { DomSanitizer } from '@angular/platform-browser';
 const swal = require('sweetalert');
@@ -37,7 +39,9 @@ const swal = require('sweetalert');
   templateUrl: './tilebot.component.html',
   styleUrls: ['./tilebot.component.scss']
 })
-export class TilebotComponent extends BotsBaseComponent implements OnInit {
+
+// extends BotsBaseComponent
+export class TilebotComponent  implements OnInit {
   @ViewChild('editbotbtn', { static: false }) private elementRef: ElementRef;
   @ViewChild('filechangeuploadCSV', { static: false }) private filechangeuploadCSV: ElementRef;
   faq: Faq[];
@@ -202,7 +206,7 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
     private logger: LoggerService,
     private sanitizer: DomSanitizer,
   ) {
-    super(prjctPlanService);
+    // super(prjctPlanService);
     const brand = brandService.getBrand();
     this.tparams = brand;
   }
@@ -1080,7 +1084,7 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
       // this.logger.log('[TILEBOT] GET FAQ-KB (DETAILS) BY ID  (ONLY FOR NATIVE BOT i.e. Resolution) LANGUAGE ', this.botDefaultSelectedLang);
       if (faqkb && faqkb.language) {
         this.faqkb_language = faqkb.language;
-        this.botDefaultSelectedLang = this.botDefaultLanguages[this.getIndexOfbotDefaultLanguages(faqkb.language)].name
+        this.botDefaultSelectedLang = botDefaultLanguages[getIndexOfbotDefaultLanguages(faqkb.language)].name
         this.logger.log('[TILEBOT] GET FAQ-KB (DETAILS) BY ID  (ONLY FOR NATIVE BOT i.e. Resolution) LANGUAGE ', this.botDefaultSelectedLang);
       }
 

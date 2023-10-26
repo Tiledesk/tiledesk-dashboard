@@ -16,7 +16,7 @@ import { LoggerService } from 'app/services/logger/logger.service';
 import { ProjectPlanService } from 'app/services/project-plan.service';
 import { UploadImageNativeService } from 'app/services/upload-image-native.service';
 import { UploadImageService } from 'app/services/upload-image.service';
-import { avatarPlaceholder, getColorBck } from 'app/utils/util';
+import { avatarPlaceholder, botDefaultLanguages, getColorBck, getIndexOfbotDefaultLanguages } from 'app/utils/util';
 const swal = require('sweetalert');
 
 @Component({
@@ -24,7 +24,8 @@ const swal = require('sweetalert');
   templateUrl: './detail.component.html',
   styleUrls: ['./detail.component.scss']
 })
-export class CDSDetailBotDetailComponent extends BotsBaseComponent implements OnInit {
+// extends BotsBaseComponent
+export class CDSDetailBotDetailComponent  implements OnInit {
 
   @ViewChild('fileInputBotProfileImage', { static: false }) fileInputBotProfileImage: any;
   @ViewChild('editbotbtn', { static: false }) private elementRef: ElementRef;
@@ -69,7 +70,7 @@ export class CDSDetailBotDetailComponent extends BotsBaseComponent implements On
   selected_dept_name: string;
   botHasBeenAssociatedWithDept: string;
 
-
+  chatbotLanguages: any;
 
   constructor(
     private logger: LoggerService,
@@ -84,7 +85,9 @@ export class CDSDetailBotDetailComponent extends BotsBaseComponent implements On
     private translate: TranslateService,
     public dialog: MatDialog,
     public prjctPlanService: ProjectPlanService,
-  ) {  super(prjctPlanService); }
+  ) {  
+    // super(prjctPlanService); 
+  }
 
   ngOnInit(): void {
     this.getDeptsByProjectId();
@@ -261,7 +264,9 @@ export class CDSDetailBotDetailComponent extends BotsBaseComponent implements On
   destructureSelectedChatbot(selectedChatbot: Chatbot) {
     this.faqKb_id = selectedChatbot._id;
     this.logger.log('[CDS-CHATBOT-DTLS] - BOT ID', this.faqKb_id)
-    this.logger.log('[CDS-CHATBOT-DTLS] - BOT ID', this.faqKb_id)
+    console.log('[CDS-CHATBOT-DTLS] - botDefaultLanguages ', botDefaultLanguages)
+    this.chatbotLanguages = botDefaultLanguages
+    console.log('[CDS-CHATBOT-DTLS] - chatbotLanguages ', this.chatbotLanguages)
     this.id_faq_kb = selectedChatbot._id;
     if (this.faqKb_id) {
       this.checkBotImageExist()
@@ -289,8 +294,8 @@ export class CDSDetailBotDetailComponent extends BotsBaseComponent implements On
 
     if (selectedChatbot && selectedChatbot.language) {
       this.faqkb_language = selectedChatbot.language;
-      this.botDefaultSelectedLang = this.botDefaultLanguages[this.getIndexOfbotDefaultLanguages(selectedChatbot.language)].name
-      this.logger.log('[CDS-CHATBOT-DTLS] BOT DEAFAULT SELECTED LANGUAGE ', this.botDefaultSelectedLang);
+      this.botDefaultSelectedLang = this.chatbotLanguages[getIndexOfbotDefaultLanguages(selectedChatbot.language)].name
+      console.log('[CDS-CHATBOT-DTLS] BOT DEAFAULT SELECTED LANGUAGE ', this.botDefaultSelectedLang);
     }
   }
 
@@ -515,13 +520,14 @@ export class CDSDetailBotDetailComponent extends BotsBaseComponent implements On
       width: '600px',
       data: {
         chatbot: this.selectedChatbot,
-        projectId: this.project._id
+        projectId: this.project._id,
+        chatbotLanguages: this.chatbotLanguages
       },
     });
     dialogRef.afterClosed().subscribe(langCode => {
       this.logger.log(`Dialog result: ${langCode}`);
       if (langCode !== 'close') {
-        this.botDefaultSelectedLang = this.botDefaultLanguages[this.getIndexOfbotDefaultLanguages(langCode)].name
+        this.botDefaultSelectedLang = botDefaultLanguages[getIndexOfbotDefaultLanguages(langCode)].name
       }
       this.updateChatbotLanguage(langCode)
     })

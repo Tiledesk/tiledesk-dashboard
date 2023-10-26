@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { ProjectPlanService } from 'app/services/project-plan.service';
-import { APPSUMO_PLAN_SEATS, APP_SUMO_PLAN_NAME, PLAN_NAME, PLAN_SEATS } from 'app/utils/util';
+import { APPSUMO_PLAN_SEATS, APP_SUMO_PLAN_NAME, CHATBOT_MAX_NUM, KB_MAX_NUM, PLAN_NAME, PLAN_SEATS } from 'app/utils/util';
 
 @Component({
   selector: 'appdashboard-pricing-base',
@@ -18,6 +18,8 @@ export class PricingBaseComponent implements OnInit {
   PLAN_SEATS = PLAN_SEATS;
   APP_SUMO_PLAN_NAME = APP_SUMO_PLAN_NAME;
   APPSUMO_PLAN_SEATS = APPSUMO_PLAN_SEATS;
+  CHATBOT_MAX_NUM = CHATBOT_MAX_NUM;
+  KB_MAX_NUM = KB_MAX_NUM
 
   prjct_id: string;
   prjct_name: string;
@@ -30,12 +32,18 @@ export class PricingBaseComponent implements OnInit {
   trial_expired: any;
   prjct_profile_name: string
 
+
   // Plan limit
-  seatsLimit: any;
+  public seatsLimit: any;
+  public chatBotLimit: any;
+  public kbLimit: any;
 
   // Translations params
-  tParamsFreePlanSeatsNum: any;
-  tParamsPlanAndSeats: any;
+  public tParamsFreePlanSeatsNum: any;
+  public tParamsPlanAndSeats: any;
+  public tParamsPlanAndChatBot: any;
+  public tParamsPlanAndKb: any;
+  public tParamsPlanNameTrialExpired: any;
 
   constructor(
     public prjctPlanService: ProjectPlanService,
@@ -52,16 +60,31 @@ export class PricingBaseComponent implements OnInit {
         console.log('[P-BASE] - GET PROJECT PLAN - RES ', projectProfileData)
         if (projectProfileData) {
           this.prjct_id = projectProfileData._id
+          console.log('[P-BASE] - GET PROJECT PROFILE - prjct_id ', this.prjct_id);
+
           this.prjct_name = projectProfileData.name
+          console.log('[P-BASE] - GET PROJECT PROFILE - prjct_name ', this.prjct_name);
+
           this.projectPlanAgentsNo = projectProfileData.profile_agents;
+          console.log('[P-BASE] - GET PROJECT PROFILE - projectPlanAgentsNo ', this.projectPlanAgentsNo);
+
           this.subscription_is_active = projectProfileData.subscription_is_active;
+          console.log('[P-BASE] - GET PROJECT PROFILE - subscription_is_active ', this.subscription_is_active);
+
           this.subscription_end_date = projectProfileData.subscription_end_date;
+          console.log('[P-BASE] - GET PROJECT PROFILE - subscription_end_date ', this.subscription_end_date);
+
           this.prjct_profile_type = projectProfileData.profile_type;
+          console.log('[P-BASE] - GET PROJECT PROFILE - prjct_profile_type ', this.prjct_profile_type);
+
           this.profile_name = projectProfileData.profile_name;
+          console.log('[P-BASE] - GET PROJECT PROFILE - profile_name ', this.profile_name);
+
           this.trial_expired = projectProfileData.trial_expired;
+          console.log('[P-BASE]  - GET PROJECT PROFILE - trial_expired ', this.trial_expired);
 
           if (projectProfileData && projectProfileData.extra3) {
-            console.log('[HOME] Find Current Project Among All extra3 ', projectProfileData.extra3)
+            console.log('[P-BASE] Find Current Project Among All extra3 ', projectProfileData.extra3)
             this.appSumoProfile = APP_SUMO_PLAN_NAME[projectProfileData.extra3]
             console.log('[P-BASE] Find Current Project appSumoProfile ', this.appSumoProfile)
           }
@@ -69,128 +92,407 @@ export class PricingBaseComponent implements OnInit {
           if (projectProfileData.profile_type === 'free') {
             if (projectProfileData.trial_expired === false) {
 
+              // ------------------------------------------------------------------------ 
+              // USECASE: Free Plan (TRIAL ACTIVE i.e. Scale trial)
+              // ------------------------------------------------------------------------
               if (this.profile_name === 'free') {
-                this.prjct_profile_name = PLAN_NAME.B + " plan (trial)"
-                this.seatsLimit = PLAN_SEATS[PLAN_NAME.B]
-                // this.seatsLimit = PLAN_SEATS.free
-                this.tParamsPlanAndSeats = { plan_name: this.prjct_profile_name, allowed_seats_num: this.seatsLimit }
-                console.log('[P-BASE] - GET PROJECT PLAN - PLAN_NAME ', 'FREE TRIAL', ' SEATS LIMIT: ', this.seatsLimit)
-              } else if (this.profile_name === 'Sandbox') {
 
-                this.prjct_profile_name = PLAN_NAME.E + " plan (trial)"
-                this.seatsLimit = PLAN_SEATS[PLAN_NAME.E]
-                // this.seatsLimit = PLAN_SEATS.free
+                this.prjct_profile_name = PLAN_NAME.B + " plan (trial)"
+                console.log('[P-BASE] - GET PROJECT PLAN - NAME ', this.prjct_profile_name, ' TYPE: ', projectProfileData.profile_type, ' SUB EXIPED: ', projectProfileData.trial_expired)
+
+                // Seats limit
+                this.seatsLimit = PLAN_SEATS[PLAN_NAME.B]
                 this.tParamsPlanAndSeats = { plan_name: this.prjct_profile_name, allowed_seats_num: this.seatsLimit }
-                console.log('[P-BASE] - GET PROJECT PLAN - PLAN_NAME ', 'FREE TRIAL', ' SEATS LIMIT: ', this.seatsLimit)
+                console.log('[P-BASE] - GET PROJECT PLAN - SEATS LIMIT ', this.seatsLimit)
+
+                // Chatbot limit
+                this.chatBotLimit = null
+                console.log('[P-BASE] - GET PROJECT PLAN - CB LIMIT ', this.chatBotLimit)
+
+                this.kbLimit = 3
+                console.log('[P-BASE] - GET PROJECT PLAN - KB LIMIT ', this.kbLimit)
+
+                // ------------------------------------------------------------------------
+                // USECASE: Sandbox Plan (new FREE PLAN - TRIAL ACTIVE i.e. Premium trial)
+                // ------------------------------------------------------------------------
+              } else if (this.profile_name === 'Sandbox') {
+                this.prjct_profile_name = PLAN_NAME.E + " plan (trial)"
+                console.log('[P-BASE] - GET PROJECT PLAN - NAME ', this.prjct_profile_name, ' TYPE: ', projectProfileData.profile_type, ' SUB EXIPED: ', projectProfileData.trial_expired)
+
+                // Seats limit
+                this.seatsLimit = PLAN_SEATS[PLAN_NAME.E]
+                this.tParamsPlanAndSeats = { plan_name: this.prjct_profile_name, allowed_seats_num: this.seatsLimit }
+                console.log('[P-BASE] - GET PROJECT PLAN - SEATS LIMIT ', this.seatsLimit)
+
+                // Chatbot limit
+                this.chatBotLimit = CHATBOT_MAX_NUM[PLAN_NAME.E]
+                this.tParamsPlanAndChatBot = { plan_name: this.prjct_profile_name, allowed_cb_num: this.chatBotLimit }
+                console.log('[P-BASE] - GET PROJECT PLAN - CB LIMIT ', this.chatBotLimit)
+
+                // Kb Limit
+                this.kbLimit = KB_MAX_NUM[PLAN_NAME.E]
+                this.tParamsPlanAndKb = { plan_name: this.prjct_profile_name, allowed_kb_num: this.kbLimit }
+                console.log('[P-BASE] - GET PROJECT PLAN - KB LIMIT ', this.kbLimit)
+
+               
               }
             } else {
+
+              // ------------------------------------------------------------------------
+              // USECASE: Free Plan (TRIAL EXPIRED)
+              // ------------------------------------------------------------------------
               if (this.profile_name === 'free') {
                 this.prjct_profile_name = "Free plan";
+                console.log('[P-BASE] - GET PROJECT PLAN - NAME ', this.prjct_profile_name, ' TYPE: ', projectProfileData.profile_type, ' SUB EXIPED: ', projectProfileData.trial_expired)
+
+                // Seats limit
                 this.seatsLimit = PLAN_SEATS.free
                 this.tParamsPlanAndSeats = { plan_name: 'Free', allowed_seats_num: this.seatsLimit }
-                // console.log('[P-BASE] - GET PROJECT PLAN - PLAN_NAME ', 'FREE TRIAL', ' SEATS LIMIT: ', this.seatsLimit)
+                console.log('[P-BASE] - GET PROJECT PLAN - SEATS LIMIT ', this.seatsLimit)
+
+                // Chatbot limit
+                this.chatBotLimit = null;
+                console.log('[P-BASE] - GET PROJECT PLAN - CB LIMIT ', this.chatBotLimit)
+
+                // KB limit
+                this.kbLimit = 3;
+                this.tParamsPlanAndKb = { plan_name: this.prjct_profile_name, allowed_kb_num: this.kbLimit }
+                console.log('[P-BASE] - GET PROJECT PLAN - KB LIMIT ', this.kbLimit)
+
+                this.tParamsPlanNameTrialExpired = {plan_name: PLAN_NAME.B }
+
+                // ------------------------------------------------------------------------
+                // USECASE: Sandbox Plan (TRIAL EXPIRED)
+                // ------------------------------------------------------------------------
               } else if (this.profile_name === 'Sandbox') {
                 this.prjct_profile_name = "Sandbox plan";
+                console.log('[P-BASE] - GET PROJECT PLAN - NAME ', this.prjct_profile_name, ' TYPE: ', projectProfileData.profile_type, ' SUB EXIPED: ', projectProfileData.trial_expired)
+
+                // Seats limit
                 this.seatsLimit = PLAN_SEATS.free
                 this.tParamsPlanAndSeats = { plan_name: 'Sandbox', allowed_seats_num: this.seatsLimit }
+                console.log('[P-BASE] - GET PROJECT PLAN - SEATS LIMIT ', this.seatsLimit)
+
+                // Chatbot limit
+                this.chatBotLimit = CHATBOT_MAX_NUM.free;
+                this.tParamsPlanAndChatBot = { plan_name: this.prjct_profile_name, allowed_cb_num: this.chatBotLimit }
+                console.log('[P-BASE] - GET PROJECT PLAN - CB LIMIT ', this.chatBotLimit)
+
+                // KB limit
+                this.kbLimit = KB_MAX_NUM.free;
+                this.tParamsPlanAndKb = { plan_name: this.prjct_profile_name, allowed_kb_num: this.kbLimit }
+                console.log('[P-BASE] - GET PROJECT PLAN - KB LIMIT ', this.kbLimit)
+
+                this.tParamsPlanNameTrialExpired = {plan_name: PLAN_NAME.E}
               }
             }
           } else if (projectProfileData.profile_type === 'payment') {
+
             if (this.subscription_is_active === true) {
-              if (projectProfileData.profile_name === PLAN_NAME.A) {
+
+              if (this.profile_name === PLAN_NAME.A) {
+                // ------------------------------------------------------------------------
+                // USECASE: Growth Plan (SUB ACTIVE)
+                // ------------------------------------------------------------------------
                 if (!this.appSumoProfile) {
                   this.prjct_profile_name = PLAN_NAME.A + " plan";
+                  console.log('[P-BASE] - GET PROJECT PLAN - NAME ', this.prjct_profile_name, ' TYPE: ', projectProfileData.profile_type, ' SUB EXIPED: ', projectProfileData.trial_expired)
+
+                  // Seats limit
                   this.seatsLimit = PLAN_SEATS[PLAN_NAME.A]
                   this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.A, allowed_seats_num: this.seatsLimit }
-                  console.log('[P-BASE] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.A, ' SEATS LIMIT: ', this.seatsLimit)
+                  console.log('[P-BASE] - GET PROJECT PLAN - SEATS LIMIT ', this.seatsLimit)
+
+                  // Chatbot limit
+                  this.chatBotLimit = null;
+                  console.log('[P-BASE] - GET PROJECT PLAN - CB LIMIT ', this.chatBotLimit);
+
+                  // KB limit
+                  this.kbLimit = 3;
+                  this.tParamsPlanAndKb = { plan_name: this.prjct_profile_name, allowed_kb_num: this.kbLimit };
+                  console.log('[P-BASE] - GET PROJECT PLAN - KB LIMIT ', this.kbLimit);
+
                 } else {
+                  // ------------------------------------------------------------------------
+                  // USECASE: Growth Plan AppSumo (SUB ACTIVE)
+                  // ------------------------------------------------------------------------
                   this.prjct_profile_name = PLAN_NAME.A + " plan " + '(' + this.appSumoProfile + ')';
+                  console.log('[P-BASE] - GET PROJECT PLAN - NAME ', this.prjct_profile_name, ' TYPE: ', projectProfileData.profile_type, ' SUB EXIPED: ', projectProfileData.trial_expired)
+
+                  // Seats limit
                   this.seatsLimit = APPSUMO_PLAN_SEATS[projectProfileData.extra3];
                   this.tParamsPlanAndSeats = { plan_name: 'AppSumo ' + this.appSumoProfile, allowed_seats_num: this.seatsLimit }
-                  console.log('[P-BASE] - GET PROJECT PLAN - prjct_profile_name ', this.prjct_profile_name, ' SEATS LIMIT: ', this.seatsLimit)
+                  console.log('[P-BASE] - GET PROJECT PLAN - SEATS LIMIT ', this.seatsLimit);
+
+                  // Chatbot limit
+                  this.chatBotLimit = null;
+                  console.log('[P-BASE] - GET PROJECT PLAN - CB LIMIT ', this.chatBotLimit);
+
+                  // KB limit
+                  this.kbLimit = 3;
+                  this.tParamsPlanAndKb = { plan_name: this.prjct_profile_name, allowed_kb_num: this.kbLimit };
+                  console.log('[P-BASE] - GET PROJECT PLAN - KB LIMIT ', this.kbLimit);
                 }
-              } else if (projectProfileData.profile_name === PLAN_NAME.B) {
+              } else if (this.profile_name === PLAN_NAME.B) {
+                // ------------------------------------------------------------------------
+                // USECASE: Scale Plan (SUB ACTIVE)
+                // ------------------------------------------------------------------------
                 if (!this.appSumoProfile) {
                   this.prjct_profile_name = PLAN_NAME.B + " plan";
+                  console.log('[P-BASE] - GET PROJECT PLAN - NAME ', this.prjct_profile_name, ' TYPE: ', projectProfileData.profile_type, ' SUB EXIPED: ', projectProfileData.trial_expired)
+
+                  // Seats limit
                   this.seatsLimit = PLAN_SEATS[PLAN_NAME.B]
-                  this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.B, allowed_seats_num: this.seatsLimit }
-                  console.log('[P-BASE] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.B, ' SEATS LIMIT: ', this.seatsLimit)
+                  this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.B, allowed_seats_num: this.seatsLimit };
+                  console.log('[P-BASE] - GET PROJECT PLAN - SEATS LIMIT ', this.seatsLimit);
+
+                  // Chatbot limit
+                  this.chatBotLimit = null;
+                  console.log('[P-BASE] - GET PROJECT PLAN - CB LIMIT ', this.chatBotLimit);
+
+                  // KB limit
+                  this.kbLimit = 3;
+                  this.tParamsPlanAndKb = { plan_name: this.prjct_profile_name, allowed_kb_num: this.kbLimit };
+                  console.log('[P-BASE] - GET PROJECT PLAN - KB LIMIT ', this.kbLimit);
                 } else {
-                  this.prjct_profile_name = PLAN_NAME.B + " plan " + '(' + this.appSumoProfile + ')';;
+                  // ------------------------------------------------------------------------
+                  // USECASE: Scale Plan AppSumo (SUB ACTIVE)
+                  // ------------------------------------------------------------------------
+                  this.prjct_profile_name = PLAN_NAME.B + " plan " + '(' + this.appSumoProfile + ')';
+                  console.log('[P-BASE] - GET PROJECT PLAN - NAME ', this.prjct_profile_name, ' TYPE: ', projectProfileData.profile_type, ' SUB EXIPED: ', projectProfileData.trial_expired)
+
+                  // Seats limit
                   this.seatsLimit = APPSUMO_PLAN_SEATS[projectProfileData.extra3];
                   this.tParamsPlanAndSeats = { plan_name: 'AppSumo ' + this.appSumoProfile, allowed_seats_num: this.seatsLimit }
-                  console.log('[P-BASE] - GET PROJECT PLAN - prjct_profile_name ', this.prjct_profile_name, ' SEATS LIMIT: ', this.seatsLimit)
+                  console.log('[P-BASE] - GET PROJECT PLAN - SEATS LIMIT ', this.seatsLimit)
+
+                  // Chatbot limit
+                  this.chatBotLimit = null;
+                  console.log('[P-BASE] - GET PROJECT PLAN - CB LIMIT ', this.chatBotLimit);
+
+                  // KB limit
+                  this.kbLimit = 3;
+                  this.tParamsPlanAndKb = { plan_name: this.prjct_profile_name, allowed_kb_num: this.kbLimit };
+                  console.log('[P-BASE] - GET PROJECT PLAN - KB LIMIT ', this.kbLimit);
                 }
-              } else if (projectProfileData.profile_name === PLAN_NAME.C) {
+                // ------------------------------------------------------------------------
+                // USECASE: Plus Plan (SUB ACTIVE)
+                // ------------------------------------------------------------------------
+              } else if (this.profile_name === PLAN_NAME.C) {
                 this.prjct_profile_name = PLAN_NAME.C + " plan";
+                console.log('[P-BASE] - GET PROJECT PLAN - NAME ', this.prjct_profile_name, ' TYPE: ', projectProfileData.profile_type, ' SUB EXIPED: ', projectProfileData.trial_expired)
+
+                // Seats limit
                 this.seatsLimit = projectProfileData.profile_agents
                 this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.C, allowed_seats_num: this.seatsLimit }
-                console.log('[P-BASE] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.C, ' SEATS LIMIT: ', this.seatsLimit)
+                console.log('[P-BASE] - GET PROJECT PLAN - SEATS LIMIT ', this.seatsLimit)
 
-              } else if (projectProfileData.profile_name === PLAN_NAME.D) {
+                // Chatbot limit
+                this.chatBotLimit = null;
+                console.log('[P-BASE] - GET PROJECT PLAN - CB LIMIT ', this.chatBotLimit);
+
+                // KB limit
+                this.kbLimit = 3;
+                this.tParamsPlanAndKb = { plan_name: this.prjct_profile_name, allowed_kb_num: this.kbLimit };
+                console.log('[P-BASE] - GET PROJECT PLAN - KB LIMIT ', this.kbLimit);
+
+                // ------------------------------------------------------------------------
+                // USECASE: Basic Plan (SUB ACTIVE) new for Growth Plan
+                // ------------------------------------------------------------------------
+              } else if (this.profile_name === PLAN_NAME.D) {
                 this.prjct_profile_name = PLAN_NAME.D + " plan";
+                console.log('[P-BASE] - GET PROJECT PLAN - NAME ', this.prjct_profile_name, ' TYPE: ', projectProfileData.profile_type, ' SUB EXIPED: ', projectProfileData.trial_expired)
+
+                // Seats limit
                 this.seatsLimit = projectProfileData.profile_agents
                 this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.D, allowed_seats_num: this.seatsLimit }
-                console.log('[P-BASE] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.D, ' SEATS LIMIT: ', this.seatsLimit)
-              } else if (projectProfileData.profile_name === PLAN_NAME.E) {
+                console.log('[P-BASE] - GET PROJECT PLAN - SEATS LIMIT ', this.seatsLimit)
+
+                // Chatbot limit
+                this.chatBotLimit = CHATBOT_MAX_NUM[PLAN_NAME.D]
+                this.tParamsPlanAndChatBot = { plan_name: this.prjct_profile_name, allowed_cb_num: this.chatBotLimit }
+                console.log('[P-BASE] - GET PROJECT PLAN - CB LIMIT ', this.chatBotLimit);
+
+                // KB limit
+                this.kbLimit = KB_MAX_NUM[PLAN_NAME.D]
+                this.tParamsPlanAndKb = { plan_name: this.prjct_profile_name, allowed_kb_num: this.kbLimit }
+                console.log('[P-BASE] - GET PROJECT PLAN - KB LIMIT ', this.kbLimit);
+
+                // ------------------------------------------------------------------------
+                // USECASE: Premium Plan (SUB ACTIVE) new for Scale Plan
+                // ------------------------------------------------------------------------
+              } else if (this.profile_name === PLAN_NAME.E) {
                 this.prjct_profile_name = PLAN_NAME.E + " plan";
-                this.seatsLimit = projectProfileData.profile_agents
-                this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.E, allowed_seats_num: this.seatsLimit }
-                console.log('[P-BASE] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.D, ' SEATS LIMIT: ', this.seatsLimit)
-              } else if (projectProfileData.profile_name === PLAN_NAME.F) {
+                console.log('[P-BASE] - GET PROJECT PLAN - NAME ', this.prjct_profile_name, ' TYPE: ', projectProfileData.profile_type, ' SUB EXIPED: ', projectProfileData.trial_expired)
+
+                // Seats limit
+                this.seatsLimit = projectProfileData.profile_agents;
+                this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.E, allowed_seats_num: this.seatsLimit };
+                console.log('[P-BASE] - GET PROJECT PLAN - SEATS LIMIT ', this.seatsLimit);
+
+                // Chatbot limit
+                this.chatBotLimit = CHATBOT_MAX_NUM[PLAN_NAME.E]
+                this.tParamsPlanAndChatBot = { plan_name: this.prjct_profile_name, allowed_cb_num: this.chatBotLimit };
+                console.log('[P-BASE] - GET PROJECT PLAN - CB LIMIT ', this.chatBotLimit);
+
+                // KB limit
+                this.kbLimit = KB_MAX_NUM[PLAN_NAME.E]
+                this.tParamsPlanAndKb = { plan_name: this.prjct_profile_name, allowed_kb_num: this.kbLimit }
+                console.log('[P-BASE] - GET PROJECT PLAN - KB LIMIT ', this.kbLimit);
+
+                // ------------------------------------------------------------------------
+                // USECASE: Custom Plan (SUB ACTIVE) new for Plus Plan
+                // ------------------------------------------------------------------------
+              } else if (this.profile_name === PLAN_NAME.F) {
                 this.prjct_profile_name = PLAN_NAME.F + " plan";
-                this.seatsLimit = projectProfileData.profile_agents
-                this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.F, allowed_seats_num: this.seatsLimit }
-                console.log('[P-BASE] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.F, ' SEATS LIMIT: ', this.seatsLimit)
+                console.log('[P-BASE] - GET PROJECT PLAN - NAME ', this.prjct_profile_name, ' TYPE: ', projectProfileData.profile_type, ' SUB EXIPED: ', projectProfileData.trial_expired)
+
+                // Seats limit
+                this.seatsLimit = projectProfileData.profile_agents;
+                this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.F, allowed_seats_num: this.seatsLimit };
+                console.log('[P-BASE] - GET PROJECT PLAN - SEATS LIMIT ', this.seatsLimit);
+
+                // Chatbot limit CHATBOT_MAX_NUM[PLAN_NAME.F]
+                this.chatBotLimit = null
+                this.tParamsPlanAndChatBot = { plan_name: this.prjct_profile_name, allowed_cb_num: this.chatBotLimit }
+                console.log('[P-BASE] - GET PROJECT PLAN - CB LIMIT ', this.chatBotLimit);
+
+                // KB limit
+                this.kbLimit = KB_MAX_NUM[PLAN_NAME.F]
+                this.tParamsPlanAndKb = { plan_name: this.prjct_profile_name, allowed_kb_num: this.kbLimit }
+                console.log('[P-BASE] - GET PROJECT PLAN - KB LIMIT ', this.kbLimit);
               }
 
             } else if (this.subscription_is_active === false) {
-              
-
-              if (projectProfileData.profile_name === PLAN_NAME.A) {
+              // ------------------------------------------------------------------------
+              // USECASE: Growth Plan (SUB EXPIRED)
+              // ------------------------------------------------------------------------
+              if (this.profile_name === PLAN_NAME.A) {
                 this.prjct_profile_name = PLAN_NAME.A + " plan";
+                console.log('[P-BASE] - GET PROJECT PLAN - NAME ', this.prjct_profile_name, ' TYPE: ', projectProfileData.profile_type, ' SUB EXIPED: ', projectProfileData.trial_expired)
+
+                // Seats limit
                 this.seatsLimit = PLAN_SEATS.free
                 this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.A, allowed_seats_num: this.seatsLimit }
-                console.log('[P-BASE] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.A, ' SEATS LIMIT: ', this.seatsLimit)
+                console.log('[P-BASE] - GET PROJECT PLAN - SEATS LIMIT ', this.seatsLimit)
 
-              } else if (projectProfileData.profile_name === PLAN_NAME.B) {
+                // Chatbot limit
+                this.chatBotLimit = null;
+                console.log('[P-BASE] - GET PROJECT PLAN - CB LIMIT ', this.chatBotLimit);
+
+                // KB limit
+                this.kbLimit = 3;
+                this.tParamsPlanAndKb = { plan_name: this.prjct_profile_name, allowed_kb_num: this.kbLimit }
+                console.log('[P-BASE] - GET PROJECT PLAN - KB LIMIT ', this.kbLimit);
+
+                // ------------------------------------------------------------------------
+                // USECASE: Scale Plan (SUB EXPIRED)
+                // ------------------------------------------------------------------------
+              } else if (this.profile_name === PLAN_NAME.B) {
                 this.prjct_profile_name = PLAN_NAME.B + " plan";
+                console.log('[P-BASE] - GET PROJECT PLAN - NAME ', this.prjct_profile_name, ' TYPE: ', projectProfileData.profile_type, ' SUB EXIPED: ', projectProfileData.trial_expired)
+
+                // Seats limit
                 this.seatsLimit = PLAN_SEATS.free
                 this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.B, allowed_seats_num: this.seatsLimit }
-                console.log('[P-BASE] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.B, ' SEATS LIMIT: ', this.seatsLimit)
+                console.log('[P-BASE] - GET PROJECT PLAN - SEATS LIMIT ', this.seatsLimit)
 
-              } else if (projectProfileData.profile_name === PLAN_NAME.C) {
+                // Chatbot limit
+                this.chatBotLimit = null;
+                console.log('[P-BASE] - GET PROJECT PLAN - CB LIMIT ', this.chatBotLimit);
+
+                // KB limit
+                this.kbLimit = 3;
+                this.tParamsPlanAndKb = { plan_name: this.prjct_profile_name, allowed_kb_num: this.kbLimit }
+                console.log('[P-BASE] - GET PROJECT PLAN - KB LIMIT ', this.kbLimit);
+                // ------------------------------------------------------------------------
+                // USECASE: Plus Plan (SUB EXPIRED)
+                // ------------------------------------------------------------------------
+              } else if (this.profile_name === PLAN_NAME.C) {
                 this.prjct_profile_name = PLAN_NAME.C + " plan";
+                console.log('[P-BASE] - GET PROJECT PLAN - NAME ', this.prjct_profile_name, ' TYPE: ', projectProfileData.profile_type, ' SUB EXIPED: ', projectProfileData.trial_expired);
+
+                // Seats limit
                 this.seatsLimit = PLAN_SEATS.free
                 this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.C, allowed_seats_num: this.seatsLimit }
-                console.log('[P-BASE] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.C, ' SEATS LIMIT: ', this.seatsLimit)
+                console.log('[P-BASE] - GET PROJECT PLAN - SEATS LIMIT ', this.seatsLimit)
 
-              } else if (projectProfileData.profile_name === PLAN_NAME.D) {
+                // Chatbot limit
+                this.chatBotLimit = null;
+                console.log('[P-BASE] - GET PROJECT PLAN - CB LIMIT ', this.chatBotLimit);
+
+                // KB limit
+                this.kbLimit = 3;
+                this.tParamsPlanAndKb = { plan_name: this.prjct_profile_name, allowed_kb_num: this.kbLimit }
+                console.log('[P-BASE] - GET PROJECT PLAN - KB LIMIT ', this.kbLimit);
+
+                // ------------------------------------------------------------------------
+                // USECASE: Basic Plan (SUB EXPIRED) new for Growth
+                // ------------------------------------------------------------------------
+              } else if (this.profile_name === PLAN_NAME.D) {
                 this.prjct_profile_name = PLAN_NAME.D + " plan";
+                console.log('[P-BASE] - GET PROJECT PLAN - NAME ', this.prjct_profile_name, ' TYPE: ', projectProfileData.profile_type, ' SUB EXIPED: ', projectProfileData.trial_expired)
+
+                // Seats limit
                 this.seatsLimit = PLAN_SEATS.free
                 this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.D, allowed_seats_num: this.seatsLimit }
-                console.log('[P-BASE] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.C, ' SEATS LIMIT: ', this.seatsLimit)
+                console.log('[P-BASE] - GET PROJECT PLAN - SEATS LIMIT ', this.seatsLimit)
 
-              } else if (projectProfileData.profile_name === PLAN_NAME.E) {
+                // Chatbot limit
+                this.chatBotLimit = CHATBOT_MAX_NUM.free;
+                this.tParamsPlanAndChatBot = { plan_name: this.prjct_profile_name, allowed_cb_num: this.chatBotLimit }
+                console.log('[P-BASE] - GET PROJECT PLAN - CB LIMIT ', this.chatBotLimit);
+
+                // KB limit
+                this.kbLimit = KB_MAX_NUM.free;
+                this.tParamsPlanAndKb = { plan_name: this.prjct_profile_name, allowed_kb_num: this.kbLimit }
+                console.log('[P-BASE] - GET PROJECT PLAN - KB LIMIT ', this.kbLimit);
+
+                // ------------------------------------------------------------------------
+                // USECASE: Premium Plan (SUB EXPIRED) new for Scale
+                // ------------------------------------------------------------------------
+              } else if (this.profile_name === PLAN_NAME.E) {
                 this.prjct_profile_name = PLAN_NAME.E + " plan";
+                console.log('[P-BASE] - GET PROJECT PLAN - NAME ', this.prjct_profile_name, ' TYPE: ', projectProfileData.profile_type, ' SUB EXIPED: ', projectProfileData.trial_expired)
+
+                // Seats limit
                 this.seatsLimit = PLAN_SEATS.free
                 this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.E, allowed_seats_num: this.seatsLimit }
-                console.log('[P-BASE] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.E, ' SEATS LIMIT: ', this.seatsLimit)
+                console.log('[P-BASE] - GET PROJECT PLAN - SEATS LIMIT ', this.seatsLimit)
 
-              } else if (projectProfileData.profile_name === PLAN_NAME.F) {
+                // Chatbot limit
+                this.chatBotLimit = CHATBOT_MAX_NUM.free;
+                this.tParamsPlanAndChatBot = { plan_name: this.prjct_profile_name, allowed_cb_num: this.chatBotLimit }
+                console.log('[P-BASE] - GET PROJECT PLAN - CB LIMIT ', this.chatBotLimit);
+
+                // KB limit
+                this.kbLimit = KB_MAX_NUM.free;
+                this.tParamsPlanAndKb = { plan_name: this.prjct_profile_name, allowed_kb_num: this.kbLimit }
+                console.log('[P-BASE] - GET PROJECT PLAN - KB LIMIT ', this.kbLimit);
+
+                // ------------------------------------------------------------------------
+                // USECASE: Custom Plan (SUB EXPIRED) new for Plus
+                // ------------------------------------------------------------------------
+              } else if (this.profile_name === PLAN_NAME.F) {
                 this.prjct_profile_name = PLAN_NAME.F + " plan";
+                console.log('[P-BASE] - GET PROJECT PLAN - NAME ', this.prjct_profile_name, ' TYPE: ', projectProfileData.profile_type, ' SUB EXIPED: ', projectProfileData.trial_expired)
+
+                // Seats limit
                 this.seatsLimit = PLAN_SEATS.free
                 this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.F, allowed_seats_num: this.seatsLimit }
-                console.log('[P-BASE] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.F, ' SEATS LIMIT: ', this.seatsLimit)
+                console.log('[P-BASE] - GET PROJECT PLAN - SEATS LIMIT ', this.seatsLimit)
+
+                // Chatbot limit
+                this.chatBotLimit = CHATBOT_MAX_NUM.free;
+                this.tParamsPlanAndChatBot = { plan_name: this.prjct_profile_name, allowed_cb_num: this.chatBotLimit }
+                console.log('[P-BASE] - GET PROJECT PLAN - CB LIMIT ', this.chatBotLimit);
+
+                // KB limit
+                this.kbLimit = KB_MAX_NUM.free;
+                this.tParamsPlanAndKb = { plan_name: this.prjct_profile_name, allowed_kb_num: this.kbLimit }
+                console.log('[P-BASE] - GET PROJECT PLAN - KB LIMIT ', this.kbLimit);
               }
             }
-          }
-
-
-          // ADDS 'Plan' to the project plan's name
-          // NOTE: IF THE PLAN IS OF FREE TYPE IN THE USER INTERFACE THE MESSAGE 'You currently have ...' IS NOT DISPLAYED
-          if (this.prjct_profile_type === 'payment') {
-            // this.getPaidPlanTranslation(this.profile_name)
           }
         }
       },

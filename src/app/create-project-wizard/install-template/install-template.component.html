@@ -2,7 +2,7 @@
     <img [src]="companyLogoBlack_Url" class="logo" />
 
     <div class="close-wizard-page">
-        <i class="material-icons close-btn" (click)="goToGetStartChatbot()">arrow_back</i>
+        <i class="material-icons close-btn" (click)="goBack()">arrow_back</i>
     </div>
 
 
@@ -74,8 +74,8 @@
                                     <span>Use template</span>
                                 </button>
                             </div> -->
-                            <p weight="normal" *ngIf="templatesCertifiedTags" class="install-template-tags-section-name">Categories</p>
-                            <p weight="normal" *ngIf="templateTags" class="install-template-tags-section-name">Tags</p>
+                            <p weight="normal" *ngIf="templatesCertifiedTags && templatesCertifiedTags.length > 0" class="install-template-tags-section-name">Categories</p>
+                            <p weight="normal" *ngIf="templateTags && templateTags.length > 0" class="install-template-tags-section-name">Tags</p>
                             <div class="template-card-footer template-footer">
                                 <div class="template-tags-wpr">
 

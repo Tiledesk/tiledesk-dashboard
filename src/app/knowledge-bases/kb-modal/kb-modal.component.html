@@ -7,7 +7,12 @@
         <div class="dialog--content-first-row">
             {{KBLimitReached}}
         </div>
-        <div class="dialog--content-second-row">
+        <div *ngIf="profile_name !== 'free' && 
+                    profile_name !== PLAN_NAME.A && 
+                    profile_name !== PLAN_NAME.B && 
+                    profile_name !== PLAN_NAME.C &&
+                    profile_name !== PLAN_NAME.F"    
+            class="dialog--content-second-row">
             {{ "Pricing.ContactUsViaEmailToUpgradeYourPricingPlan" | translate }}.
         </div>
     </div>
@@ -19,7 +24,12 @@
 
     </button>
     <!-- cdkFocusInitial -->
-    <button class="mat-dialog-ok-btn" mat-button (click)="onOkPresssed()">
+    <button  *ngIf="profile_name !== 'free' && 
+                profile_name !== PLAN_NAME.A && 
+                profile_name !== PLAN_NAME.B && 
+                profile_name !== PLAN_NAME.C &&
+                profile_name !== PLAN_NAME.F"
+    class="mat-dialog-ok-btn" mat-button (click)="onOkPresssed()">
         {{'ContactUs' | translate}}
     </button>
 </div>

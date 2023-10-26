@@ -328,7 +328,8 @@
         </div>
     </div>
     <!-- chatBotLimit  > {{ chatBotLimit}} -->
-    <div class="chatbots-created" *ngIf="(chatBotLimit && profile_name !== PLAN_NAME.F && subscription_is_active) || (chatBotLimit && profile_name === PLAN_NAME.F && !subscription_is_active) ">
+    <!-- *ngIf="(chatBotLimit && profile_name !== PLAN_NAME.F && subscription_is_active) || (chatBotLimit && profile_name === PLAN_NAME.F && !subscription_is_active) " -->
+    <div class="chatbots-created" *ngIf="chatBotLimit">
         <span class="chatbots-created-num" 
             matTooltipClass="h-custom-mat-tooltip"
             matTooltip="View detail in Chatbots list" 
@@ -341,6 +342,31 @@
         </span> 
         <span> 
         {{ 'NumberOfChatbotCreated' | translate: tParamsPlanAndChatBot }}
+        </span>
+
+        <span *ngIf="(!subscription_is_active && prjct_profile_type === 'payment') && (chatBotCount > chatBotLimit)">
+            <i class="material-icons" 
+            matTooltipClass="h-custom-mat-tooltip"
+            matTooltip="Subscription payment problem" 
+            #tooltip="matTooltip" 
+            matTooltipPosition='below'
+            matTooltipHideDelay="100" 
+            (click)="openModalSubsExpired()"
+            style="vertical-align: middle; color: #f44336; cursor: pointer; font-size: 20px;"> 
+                error_outline 
+            </i>
+        </span>
+        <span *ngIf="(trial_expired && prjct_profile_type === 'free') && (chatBotCount > chatBotLimit)">
+            <i class="material-icons" 
+            matTooltipClass="h-custom-mat-tooltip"
+            matTooltip="Your 14-day free trial has expired" 
+            #tooltip="matTooltip" 
+            matTooltipPosition='below'
+            matTooltipHideDelay="100" 
+            (click)="openModalTrialExpired()"
+            style="vertical-align: middle; color: #f44336; cursor: pointer; font-size: 20px;"> 
+                error_outline 
+            </i>
         </span>
     </div>
 

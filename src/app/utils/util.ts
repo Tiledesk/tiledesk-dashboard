@@ -312,7 +312,7 @@ export enum PLAN_NAME {
 }
 
 export enum PLAN_SEATS {
-    free = 1, 
+    free = 1, // Sandbox
     Growth = 4, 
     Scale = 15,
     Basic = 1,
@@ -324,7 +324,7 @@ export enum CHATBOT_MAX_NUM {
     free = 2, 
     Basic = 5,
     Premium = 20,
-    Custom = 500
+    Custom = 'Custom'
 };
 
 export enum KB_MAX_NUM {
@@ -334,6 +334,7 @@ export enum KB_MAX_NUM {
     Custom = 3
 };
 
+// Growth
 export const featuresPlanA = [
     'CRM',
     'Private Notes',
@@ -351,7 +352,7 @@ export const highlightedFeaturesPlanA = [
     { 'color': '#0d8cff', 'background': 'rgba(13,140,255,.2)', 'feature': '800 Chat/mo.' }
 ]
 
-// Premium plan
+// Basic plan
 export const featuresPlanD = [
     'CRM',
     'Private Notes',
@@ -365,14 +366,33 @@ export const featuresPlanD = [
     '2 Knowledge Bases',
     '250 Pages for Knowledge Base'
 ]
-// Premium plan
+// Basic plan
 export const highlightedFeaturesPlanD = [
     { 'color': '#a613ec', 'background': 'rgba(166,19,236,.2)', 'feature': '1 Seats ' },
     { 'color': '#0d8cff', 'background': 'rgba(13,140,255,.2)', 'feature': '800 Chat/mo.' },
     { 'color': '#19a95d', 'background': 'rgba(28,191,105,.2)', 'feature': '5 Chatbot' }
 ]
 
-// Custom plan 
+// Scale Plan
+export const featuresPlanB = [
+    'Widget Unbranding',
+    'WhatsApp Business',
+    'Facebook Messenger',
+    'Unlimited Departments',
+    'Unlimited Groups',
+    'Zapier connector',
+    'Data export',
+    'Livechat Support',
+    'Knowledge Base',
+    'Analytics'
+]
+
+export const highlightedFeaturesPlanB = [
+    { 'color': '#a613ec', 'background': 'rgba(166,19,236,.2)', 'feature': '15 Seats' },
+    { 'color': '#0d8cff', 'background': 'rgba(13,140,255,.2)', 'feature': '3000 Chat/mo.' }
+]
+
+// Premium plan 
 export const featuresPlanE = [
     'Widget Unbranding',
     'WhatsApp Business',
@@ -386,13 +406,37 @@ export const featuresPlanE = [
     'Analytics',
     'Email Ticketing',
 ]
-  
+
+// Premium plan 
 export const highlightedFeaturesPlanE = [
     { 'color': '#a613ec', 'background': 'rgba(166,19,236,.2)', 'feature': '2 Seats' },
     { 'color': '#0d8cff', 'background': 'rgba(13,140,255,.2)', 'feature': '3000 Chat/mo.' },
     { 'color': '#19a95d', 'background': 'rgba(28,191,105,.2)', 'feature': '20 Chatbot' }
 ]
 
+// Plus plan
+export const featuresPlanC = [
+    'Dedicated Customer Success Manager',
+    'Chatbot Design Assistance',
+    'Onboarding and Training',
+    'Smart Assignment',
+    'IP Filtering',
+    'Email Templates Customisation',
+    'Activities Log',
+    'Ban Visitors',
+    'Dialogflow connector',
+    'Rasa connector',
+    'SMTP Settings',
+    'Support to host Tiledesk on your Infrastructure',
+    'Premium Customer Support',
+]
+
+// Plus plan
+export const highlightedFeaturesPlanC = [
+    { 'color': '#a613ec', 'background': 'rgba(166,19,236,.2)', 'feature': 'Tailored solutions' }
+]
+
+// Custom Plan
 export const featuresPlanF = [
     'Dedicated Customer Success Manager',
     'Chatbot Design Assistance',
@@ -409,6 +453,7 @@ export const featuresPlanF = [
     'Premium Customer Support',
 ]
   
+// Custom Plan
 export const highlightedFeaturesPlanF = [
     { 'color': '#a613ec', 'background': 'rgba(166,19,236,.2)', 'feature': 'Tailored solutions' }
 ]
@@ -425,23 +470,6 @@ export const appSumoHighlightedFeaturesPlanATier2 = [
     { 'color': '#0d8cff', 'background': 'rgba(13,140,255,.2)', 'feature': '1.000 Chat/mo.' }
 ]
 
-export const featuresPlanB = [
-    'Widget Unbranding',
-    'WhatsApp Business',
-    'Facebook Messenger',
-    'Unlimited Departments',
-    'Unlimited Groups',
-    'Zapier connector',
-    'Data export',
-    'Livechat Support',
-    'Knowledge Base',
-    'Analytics'
-]
-  
-export const highlightedFeaturesPlanB = [
-    { 'color': '#a613ec', 'background': 'rgba(166,19,236,.2)', 'feature': '15 Seats' },
-    { 'color': '#0d8cff', 'background': 'rgba(13,140,255,.2)', 'feature': '3000 Chat/mo.' }
-]
 export const appSumoHighlightedFeaturesPlanATier3 = [
     { 'color': '#a613ec', 'background': 'rgba(166,19,236,.2)', 'feature': '10 Seats' },
     { 'color': '#0d8cff', 'background': 'rgba(13,140,255,.2)', 'feature': '2.500 Chat/mo.' }
@@ -452,27 +480,11 @@ export const appSumoHighlightedFeaturesPlanATier4 = [
     { 'color': '#0d8cff', 'background': 'rgba(13,140,255,.2)', 'feature': '5.000 Chat/mo.' }
 ]
   
-export const featuresPlanC = [
-    'Dedicated Customer Success Manager',
-    'Chatbot Design Assistance',
-    'Onboarding and Training',
-    'Smart Assignment',
-    'IP Filtering',
-    'Email Templates Customisation',
-    'Activities Log',
-    'Ban Visitors',
-    'Dialogflow connector',
-    'Rasa connector',
-    'SMTP Settings',
-    'Support to host Tiledesk on your Infrastructure',
-    'Premium Customer Support',
-]
-  
-export const highlightedFeaturesPlanC = [
-    { 'color': '#a613ec', 'background': 'rgba(166,19,236,.2)', 'feature': 'Tailored solutions' }
-]
+
 
 export function goToCDSVersion(router: any, chatbot: Chatbot, project_id, redirectBaseUrl: string){
+    // router.navigate(['project/' + project_id + '/cds/',chatbot._id, 'intent', '0']);
+
     let chatBotDate = new Date(chatbot.createdAt)
     let dateLimit = new Date('2023-10-02T00:00:00')
     if(chatBotDate > dateLimit){
@@ -482,6 +494,66 @@ export function goToCDSVersion(router: any, chatbot: Chatbot, project_id, redire
         router.navigate(['project/' + project_id + '/cds/',chatbot._id, 'intent', '0']);
     }
 }
+
+
+export const botDefaultLanguages = [
+    { code: 'da', name: 'Danish - da' },
+    { code: 'nl', name: 'Dutch - nl' },
+    { code: 'en', name: 'English - en' },
+    { code: 'fi', name: 'Finnish - fi' },
+    { code: 'fr', name: 'French - fr' },
+    { code: 'de', name: 'German - de' },
+    { code: 'hu', name: 'Hungarian - hu' },
+    { code: 'it', name: 'Italian - it' },
+    { code: 'nb', name: 'Norwegian - nb' },
+    { code: 'pt', name: 'Portuguese - pt' },
+    { code: 'ro', name: 'Romanian - ro' },
+    { code: 'ru', name: 'Russian - ru' },
+    { code: 'es', name: 'Spanish - es' },
+    { code: 'sv', name: 'Swedish - sv' },
+    { code: 'tr', name: 'Turkish - tr' }
+  ];
+
+  export function getIndexOfbotDefaultLanguages(langcode: string): number {
+    console.log('getIndexOfbotDefaultLanguages langcode ' , langcode) 
+    console.log('getIndexOfbotDefaultLanguages index' , langcode) 
+    const index = botDefaultLanguages.findIndex(x => x.code === langcode);
+    return index
+  }
+
+  export const dialogflowLanguage = [
+    { code: 'zh-cn', name: 'Chinese (Simplified) — zh-cn' },
+    { code: 'zh-hk', name: 'Chinese (Hong Kong) — zh-hk' },
+    { code: 'zh-tw', name: 'Chinese (Traditional) — zh-tw' },
+    { code: 'da', name: 'Danish — da' },
+    { code: 'nl', name: 'Dutch — nl' },
+    { code: 'en', name: 'English — en' },
+    { code: 'fr', name: 'French — fr' },
+    { code: 'de', name: 'German — de' },
+    { code: 'hi', name: 'Hindi — hi' },
+    { code: 'id', name: 'Indonesian — id' },
+    { code: 'it', name: 'Italian — it' },
+    { code: 'ja', name: 'Japanese — ja' },
+    { code: 'ko', name: 'Korean (South Korea) — ko' },
+    { code: 'no', name: 'Norwegian — no' },
+    { code: 'pl', name: 'Polish — pl' },
+    { code: 'pt-br', name: 'Portuguese (Brazilian) — pt-br' },
+    { code: 'pt', name: 'Portuguese (European) — pt' },
+    { code: 'ru', name: 'Russian — ru' },
+    { code: 'es', name: 'Spanish — es' },
+    { code: 'sv', name: 'Swedish — sv' },
+    { code: 'th', name: 'Thai — th' },
+    { code: 'tr', name: 'Turkish — tr' },
+    { code: 'uk', name: 'Ukrainian — uk' },
+  ];
+
+
+  export function getIndexOfdialogflowLanguage(langcode: string): number {
+    const index = this.dialogflowLanguage.findIndex(x => x.code === langcode);
+    return index
+  }
+
+
 
 
 

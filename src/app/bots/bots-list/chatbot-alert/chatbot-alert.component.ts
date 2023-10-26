@@ -8,6 +8,7 @@ import { PLAN_NAME } from 'app/utils/util';
 import { TranslateService } from '@ngx-translate/core'
 import { UsersService } from 'app/services/users.service';
 import { Router } from '@angular/router';
+import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 
 
 @Component({
@@ -16,7 +17,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./chatbot-alert.component.scss']
 })
 
-export class ChatbotAlertComponent extends BotsBaseComponent implements OnInit {
+export class ChatbotAlertComponent extends PricingBaseComponent implements OnInit {
 
   public chatBotCount: number;
   PLAN_NAME = PLAN_NAME;

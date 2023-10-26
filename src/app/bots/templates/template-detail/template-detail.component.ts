@@ -6,6 +6,7 @@ import { ChatbotModalComponent } from 'app/bots/bots-list/chatbot-modal/chatbot-
 import { AuthService } from 'app/core/auth.service';
 import { NotifyService } from 'app/core/notify.service';
 import { FaqKb } from 'app/models/faq_kb-model';
+import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { AppConfigService } from 'app/services/app-config.service';
 import { BotLocalDbService } from 'app/services/bot-local-db.service';
 import { DepartmentService } from 'app/services/department.service';
@@ -26,8 +27,8 @@ import { takeUntil } from 'rxjs/operators'
   styleUrls: ['./template-detail.component.scss']
 })
 
-
-export class TemplateDetailComponent extends BotsBaseComponent implements OnInit {
+// extends BotsBaseComponent
+export class TemplateDetailComponent extends PricingBaseComponent implements OnInit {
   // public templateName: string;
   // public templateDescription: string;
   private unsubscribe$: Subject<any> = new Subject<any>();

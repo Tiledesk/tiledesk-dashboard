@@ -19,13 +19,14 @@ import { BotsBaseComponent } from 'app/bots/bots-base/bots-base.component';
 import { ProjectPlanService } from 'app/services/project-plan.service';
 import { ChatbotModalComponent } from 'app/bots/bots-list/chatbot-modal/chatbot-modal.component';
 import { NotifyService } from 'app/core/notify.service';
+import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 
 @Component({
   selector: 'appdashboard-home-create-chatbot',
   templateUrl: './home-create-chatbot.component.html',
   styleUrls: ['./home-create-chatbot.component.scss']
 })
-export class HomeCreateChatbotComponent extends BotsBaseComponent implements OnInit, OnChanges, OnDestroy {
+export class HomeCreateChatbotComponent extends PricingBaseComponent implements OnInit, OnChanges, OnDestroy {
   PLAN_NAME = PLAN_NAME
   @Input() use_case_for_child: string;
   @Input() solution_channel_for_child: string;
@@ -400,22 +401,39 @@ export class HomeCreateChatbotComponent extends BotsBaseComponent implements OnI
 
   createBlankTilebot() {
     console.log('[BOTS-LIST] createBlankTilebot chatBotCount ', this.chatBotCount, ' chatBotLimit ', this.chatBotLimit , ' PROJECT PLAN ' , this.profile_name)
-    if (this.profile_name === 'Sandbox' || this.profile_name === PLAN_NAME.D || this.profile_name === PLAN_NAME.E || this.profile_name === PLAN_NAME.F) {
-      if (this.chatBotCount < this.chatBotLimit) {
+    // if (this.profile_name === 'Sandbox' || this.profile_name === PLAN_NAME.D || this.profile_name === PLAN_NAME.E || this.profile_name === PLAN_NAME.F) {
+    //   if (this.chatBotCount < this.chatBotLimit) {
 
-        this.presentModalAddBotFromScratch()
+    //     this.presentModalAddBotFromScratch()
 
-      } else if (this.chatBotCount >= this.chatBotLimit) {
+    //   } else if (this.chatBotCount >= this.chatBotLimit) {
 
-        if (this.USER_ROLE !== 'agent') {
+    //     if (this.USER_ROLE !== 'agent') {
+    //       this.presentDialogReachedChatbotLimit()
+    //     } else if (this.USER_ROLE === 'agent') {
+    //       this.presentModalOnlyOwnerCanManageTheAccountPlan()
+    //     }
+    //   }
+    // } else if (this.profile_name === 'free' || this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.B || this.profile_name === PLAN_NAME.C) {
+
+    //   this.presentModalAddBotFromScratch()
+    // }
+
+    if (this.USER_ROLE !== 'agent') {
+      if (this.chatBotLimit) {
+        if (this.chatBotCount < this.chatBotLimit) {
+          console.log('[HOME-CREATE-CHATBOT] USECASE  chatBotCount < chatBotLimit: RUN IMPORT CHATBOT FROM JSON')
+          this.presentModalAddBotFromScratch()
+        } else if (this.chatBotCount >= this.chatBotLimit) {
+          console.log('[HOME-CREATE-CHATBOT] USECASE  chatBotCount >= chatBotLimit DISPLAY MODAL')
           this.presentDialogReachedChatbotLimit()
-        } else if (this.USER_ROLE === 'agent') {
-          this.presentModalOnlyOwnerCanManageTheAccountPlan()
         }
+      } else if (!this.chatBotLimit) {
+        console.log('[HOME-CREATE-CHATBOT] USECASE  NO chatBotLimit: RUN IMPORT CHATBOT FROM JSON')
+        this.presentModalAddBotFromScratch()
       }
-    } else if (this.profile_name === 'free' || this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.B || this.profile_name === PLAN_NAME.C) {
-
-      this.presentModalAddBotFromScratch()
+    } if (this.USER_ROLE === 'agent') {
+      this.presentModalOnlyOwnerCanManageTheAccountPlan()
     }
   }
 
@@ -498,5 +516,27 @@ export class HomeCreateChatbotComponent extends BotsBaseComponent implements OnI
     this.router.navigate(['project/' + this.projectId + '/bots/my-chatbots/all']);
   }
 
+
+  openModalSubsExpired() {
+    if (this.USER_ROLE === 'owner') {
+      if (this.profile_name !== PLAN_NAME.C && this.profile_name !== PLAN_NAME.F ) {
+        this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
+      } else if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
+        this.notify.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
+      }
+    } else {
+      this.presentModalOnlyOwnerCanManageTheAccountPlan();
+    }
+  }
+
+  openModalTrialExpired() {
+    if (this.USER_ROLE === 'owner') {
+      
+        this.notify.displayTrialHasExpiredModal();
+     
+    } else {
+      this.presentModalOnlyOwnerCanManageTheAccountPlan();
+    }
+  }
 
 }

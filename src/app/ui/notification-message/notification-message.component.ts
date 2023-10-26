@@ -238,6 +238,12 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
     }
   }
 
+  go_ToPricing() {
+    this.router.navigate(['project/' + this.projectId + '/pricing']);
+
+    this.notify.closeModalTrialExpired()
+    }
+
   onLogoutModalHandled() {
     this.notify.closeLogoutModal()
     this.auth.signOut('userdetailsidebar');

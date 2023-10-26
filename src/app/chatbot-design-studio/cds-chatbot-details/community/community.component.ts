@@ -90,7 +90,7 @@ export class CDSDetailCommunityComponent implements OnInit {
   getUserCommunityProfile(user_id: string) {
     this.usersService.getCurrentUserCommunityProfile(user_id)
       .subscribe((userCmntyProfile) => {
-        this.logger.log('[CDS-DETAIL-COMMUNITY] GET CURRENT  USER CMNTY PROFILE RES ', userCmntyProfile)
+        console.log('[CDS-DETAIL-COMMUNITY] GET CURRENT  USER CMNTY PROFILE RES ', userCmntyProfile)
         if (userCmntyProfile) {
           if (userCmntyProfile['description']) {
             this.userDescription = userCmntyProfile['description'];

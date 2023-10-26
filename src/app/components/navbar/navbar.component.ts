@@ -37,6 +37,7 @@ import { BrandService } from './../../services/brand.service';
 import { LocalDbService } from '../../services/users-local-db.service';
 import { LoggerService } from '../../services/logger/logger.service';
 import { APP_SUMO_PLAN_NAME, PLAN_NAME, URL_understanding_default_roles } from '../../utils/util';
+import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 
 const swal = require('sweetalert');
 
@@ -46,10 +47,10 @@ const swal = require('sweetalert');
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss']
 })
-export class NavbarComponent implements OnInit, AfterViewInit, AfterContentChecked, OnDestroy, AfterViewChecked {
+export class NavbarComponent extends PricingBaseComponent implements OnInit, AfterViewInit, AfterContentChecked, OnDestroy, AfterViewChecked {
 
   PLAN_NAME = PLAN_NAME;
-  APP_SUMO_PLAN_NAME: APP_SUMO_PLAN_NAME;
+  APP_SUMO_PLAN_NAME = APP_SUMO_PLAN_NAME;
   appSumoProfile: string;
   prjct_profile_name_for_segment: string;
   URL_UNDERSTANDING_DEFAULT_ROLES = URL_understanding_default_roles
@@ -167,7 +168,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     private uploadImageService: UploadImageService,
     private uploadImageNativeService: UploadImageNativeService,
     private notifyService: NotifyService,
-    private prjctPlanService: ProjectPlanService,
+    public prjctPlanService: ProjectPlanService,
     private projectService: ProjectService,
     public wsRequestsService: WsRequestsService,
     public appConfigService: AppConfigService,
@@ -176,11 +177,11 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     private logger: LoggerService,
 
   ) {
-
+    super(prjctPlanService);
 
     const brand = brandService.getBrand();
     this.tparams = brand;
-    this.translationParams = { plan_name: PLAN_NAME.B }
+    // this.translationParams = { plan_name: PLAN_NAME.B }
 
 
     this.location = location;
@@ -236,6 +237,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     // this.subscribeToLogoutPressedinSidebarNavMobile();
 
     this.getProjectPlan();
+    this.getTrialLeft()
     this.getBrowserLanguage();
     this.listenCancelSubscription();
     this.getIfIsCreatedNewProject();
@@ -766,56 +768,48 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
   }
 
 
-  getProjectPlan() {
+  getTrialLeft() {
     this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
       // console.log('[NAVBAR] - getProjectPlan project Profile Data', projectProfileData)
       if (projectProfileData) {
-        this.prjct_profile_name = projectProfileData.profile_name;
-        this.profile_name = projectProfileData.profile_name;
+        // this.prjct_profile_name = projectProfileData.profile_name;
+        // this.profile_name = projectProfileData.profile_name;
         this.prjct_trial_expired = projectProfileData.trial_expired;
         this.prjc_trial_days_left = projectProfileData.trial_days_left;
-        this.prjct_profile_type = projectProfileData.profile_type;
-        this.subscription_end_date = projectProfileData.subscription_end_date;
-        this.subscription_is_active = projectProfileData.subscription_is_active;
+        // this.prjct_profile_type = projectProfileData.profile_type;
+        // this.subscription_end_date = projectProfileData.subscription_end_date;
+        // this.subscription_is_active = projectProfileData.subscription_is_active;
 
-        if (projectProfileData && projectProfileData.extra3) {
-          this.logger.log('[NAVBAR] projectProfileData extra3', projectProfileData.extra3)
-          this.appSumoProfile = APP_SUMO_PLAN_NAME[projectProfileData.extra3]
-          this.logger.log('[NAVBAR] projectProfileData appSumoProfile ', this.appSumoProfile)
-        }
+        // if (projectProfileData && projectProfileData.extra3) {
+        //   this.logger.log('[NAVBAR] projectProfileData extra3', projectProfileData.extra3)
+        //   this.appSumoProfile = APP_SUMO_PLAN_NAME[projectProfileData.extra3]
+        //   this.logger.log('[NAVBAR] projectProfileData appSumoProfile ', this.appSumoProfile)
+        // }
 
-        if (projectProfileData.profile_type === 'free') {
-          if (projectProfileData.trial_expired === false) {
-            this.prjct_profile_name_for_segment = PLAN_NAME.B + " plan (trial)"
-
-          } else {
-            this.prjct_profile_name_for_segment = "Free plan";
-          }
-        } else if (projectProfileData.profile_type === 'payment') {
-
-          if (projectProfileData.profile_name === PLAN_NAME.A) {
-            if (!this.appSumoProfile) {
-              this.prjct_profile_name_for_segment = PLAN_NAME.A + " plan";
-
-            } else {
-              this.prjct_profile_name_for_segment = PLAN_NAME.A + " plan " + '(' + this.appSumoProfile + ')';
-
-            }
-          } else if (projectProfileData.profile_name === PLAN_NAME.B) {
-            if (!this.appSumoProfile) {
-              this.prjct_profile_name_for_segment = PLAN_NAME.B + " plan";
-
-            } else {
-              this.prjct_profile_name_for_segment = PLAN_NAME.B + " plan " + '(' + this.appSumoProfile + ')';
-            }
-          } else if (projectProfileData.profile_name === PLAN_NAME.C) {
-            this.prjct_profile_name_for_segment = PLAN_NAME.C + " plan";
-          }
-
-
-        }
-        // this.prjc_trial_days_left_percentage = ((this.prjc_trial_days_left *= -1) * 100) / 30
-        // console.log('[NAVBAR]  prjc_trial_days_left ', this.prjc_trial_days_left)
+        // if (projectProfileData.profile_type === 'free') {
+        //   if (projectProfileData.trial_expired === false) {
+        //     this.prjct_profile_name_for_segment = PLAN_NAME.B + " plan (trial)"
+        //   } else {
+        //     this.prjct_profile_name_for_segment = "Free plan";
+        //   }
+        // } else if (projectProfileData.profile_type === 'payment') {
+        //   if (projectProfileData.profile_name === PLAN_NAME.A) {
+        //     if (!this.appSumoProfile) {
+        //       this.prjct_profile_name_for_segment = PLAN_NAME.A + " plan";
+        //     } else {
+        //       this.prjct_profile_name_for_segment = PLAN_NAME.A + " plan " + '(' + this.appSumoProfile + ')';
+        //     }
+        //   } else if (projectProfileData.profile_name === PLAN_NAME.B) {
+        //     if (!this.appSumoProfile) {
+        //       this.prjct_profile_name_for_segment = PLAN_NAME.B + " plan";
+        //     } else {
+        //       this.prjct_profile_name_for_segment = PLAN_NAME.B + " plan " + '(' + this.appSumoProfile + ')';
+        //     }
+        //   } else if (projectProfileData.profile_name === PLAN_NAME.C) {
+        //     this.prjct_profile_name_for_segment = PLAN_NAME.C + " plan";
+        //   }
+        // }
+      
 
         if (this.prjct_trial_expired === false) {
           this.prjc_trial_days_left_percentage = (this.prjc_trial_days_left * 100) / 14;
@@ -841,6 +835,13 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     }, () => {
       this.logger.log('[NAVBAR] - getProjectPlan - COMPLETE')
     });
+  }
+
+  round5(x) {
+    // const percentageRounded = Math.ceil(x / 5) * 5;
+    // this.logger.log('[NAVBAR] project trial days left % rounded', percentageRounded);
+    // return Math.ceil(x / 5) * 5;
+    return x % 5 < 3 ? (x % 5 === 0 ? x : Math.floor(x / 5) * 5) : Math.ceil(x / 5) * 5
   }
 
   // getPaidPlanTranslation(project_profile_name) {
@@ -879,23 +880,17 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
   openModalSubsExpired() {
     if (this.USER_ROLE === 'owner') {
-      if (this.profile_name !== PLAN_NAME.C) {
+      if (this.profile_name !== PLAN_NAME.C && this.profile_name !== PLAN_NAME.F ) {
         this.notifyService.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
-      } else if (this.profile_name === PLAN_NAME.C) {
+      } else if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
         this.notifyService.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
       }
     } else {
       this.presentModalOnlyOwnerCanManageTheAccountPlan();
     }
-
   }
 
-  round5(x) {
-    // const percentageRounded = Math.ceil(x / 5) * 5;
-    // this.logger.log('[NAVBAR] project trial days left % rounded', percentageRounded);
-    // return Math.ceil(x / 5) * 5;
-    return x % 5 < 3 ? (x % 5 === 0 ? x : Math.floor(x / 5) * 5) : Math.ceil(x / 5) * 5
-  }
+ 
 
   goToPricing() {
     // if (this.ROLE_IS_AGENT === false) {

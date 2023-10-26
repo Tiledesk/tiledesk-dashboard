@@ -1,4 +1,5 @@
 <div class="chatbot-alert-content">
+  profile_name >  {{profile_name }} trial_expired > {{ trial_expired }} kbCount {{kbCount }} kbLimit {{kbLimit}}
     <div class="sub-active-cb-num-greater-than-the-allowed" *ngIf="((
   ((profile_name === PLAN_NAME.D || profile_name === PLAN_NAME.E) && subscription_is_active === true) ||
   (profile_name === 'Sandbox' && trial_expired === false) || 

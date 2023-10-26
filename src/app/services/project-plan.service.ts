@@ -58,21 +58,23 @@ export class ProjectPlanService {
 
 
   getProjectIdFroUrlAndIfExistGetProjectByIdAndPublish(calledBy) {
-    this.logger.log('[PROJECT-PLAN-SERV] - getProjectIdFroUrlAndIfExistGetProjectByIdAndPublish (called', calledBy);
+    console.log('[PROJECT-PLAN-SERV] - getProjectIdFroUrlAndIfExistGetProjectByIdAndPublish (called', calledBy);
     this.router.events.subscribe((ev) => {
       if (ev instanceof NavigationEnd) {
 
         const current_url = ev.url
         // console.log('[PROJECT-PLAN-SERV] - NavigationEnd current_url', current_url);
         const url_segments = current_url.split('/');
-        this.logger.log('[PROJECT-PLAN-SERV] - CURRENT URL SEGMENTS ', url_segments);
+        console.log('[PROJECT-PLAN-SERV] - CURRENT URL SEGMENTS ', url_segments);
         const nav_project_id = url_segments[2];
-        // console.log('[PROJECT-PLAN-SERV] - nav_project_id ', nav_project_id);
+        console.log('[PROJECT-PLAN-SERV] - nav_project_id ', nav_project_id);
 
         this.progetIdGetFromParams = nav_project_id
         // -----------------------------------------------------------------
         // this check is in auth.guard - auth.service - project-plan.service
         // -----------------------------------------------------------------
+        // url_segments[1] !== 'install-template' &&
+        // url_segments[1] !== 'install-template-np' &&
         if (
           nav_project_id &&
           nav_project_id !== 'email' &&
@@ -83,13 +85,12 @@ export class ProjectPlanService {
           url_segments[1] !== 'autologin' &&
           url_segments[1] !== 'get-chatbot' &&
           url_segments[1] !== 'activate-product' &&
-          url_segments[1] !== 'install-template' &&
           url_segments[1] !== 'create-project-itw' &&
-          url_segments[1] !== 'install-template-np' &&
           url_segments[1] !== 'success' &&
           current_url !== '/projects'
         ) {
           // this.getProjectByIdAndPublish(nav_project_id, calledBy)
+          console.log('[PROJECT-PLAN-SERV] url_segments ',url_segments[1] ) 
           this.findCurrentProjectAmongAll(nav_project_id)
         }
 
@@ -104,11 +105,12 @@ export class ProjectPlanService {
 
 
   findCurrentProjectAmongAll(projectId: string) {
+    console.log('[PROJECT-PLAN-SERV] - GET PROJECTS - projectId ', projectId)
     this.projectService.getProjects().subscribe((projects: any) => {
-      this.logger.log('[PROJECT-PLAN-SERV] - GET PROJECTS - projects ', projects)
+      console.log('[PROJECT-PLAN-SERV] - GET PROJECTS - projects ', projects)
 
       const current_prjct = projects.find(prj => prj.id_project.id === projectId);
-      this.logger.log('[PROJECT-PLAN-SERV] - FIND CURRENT PROJECT AMONG ALL - current_prjct ', current_prjct);
+      console.log('[PROJECT-PLAN-SERV] - FIND CURRENT PROJECT AMONG ALL - current_prjct ', current_prjct);
      
       if (current_prjct) {
         const projectPlanData: Project = {
@@ -132,7 +134,7 @@ export class ProjectPlanService {
         }
 
 
-        this.logger.log('[PROJECT-PLAN-SERV] - FIND CURRENT PROJECT AMONG ALL - projectPlanData ', projectPlanData) 
+        console.log('[PROJECT-PLAN-SERV] - FIND CURRENT PROJECT AMONG ALL - projectPlanData ', projectPlanData) 
 
         this.projectPlan$.next(projectPlanData);
       } else {

@@ -251,7 +251,7 @@ export class GetStartChatbotForkComponent implements OnInit {
 
   goToInstallTemplate() {
     this.logger.log('[GET START CHATBOT FORK] goToInstallTemplate botid', this.botid, ' - selectedProjectId ', this.selectedProjectId)
-    this.router.navigate([`install-template/${this.botid}/${this.selectedProjectId}`]);
+    this.router.navigate([`install-template/${this.selectedProjectId}/${this.botid}`]);
   }
 
   goToYourProject() {

@@ -290,7 +290,7 @@ export class CreateProjectComponent extends WidgetSetUpBaseComponent implements 
   }
 
   goToInstallTemplate() {
-    this.router.navigate([`install-template-np/${this.botid}/${this.id_project}` + '/' + this.temp_SelectedLangCode + '/' + this.temp_SelectedLangName]);
+    this.router.navigate([`install-template-np/${this.id_project}/${this.botid}` + '/' + this.temp_SelectedLangCode + '/' + this.temp_SelectedLangName]);
   }
 
 }

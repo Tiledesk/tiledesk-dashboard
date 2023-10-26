@@ -15,7 +15,8 @@
 
         <div class="kb-counter">
             <!-- {{ 'KbPage.KbCounterFooter' | translate: { counter: kbSettings?.kbs?.length } }} -->
-           {{kbSettings?.kbs?.length }} of 3 Knowledge Bases added
+           <!-- {{kbSettings?.kbs?.length }} of 3 Knowledge Bases added -->
+           {{ 'KbPage.KbCounterFooter_es' | translate: { counter: kbCount, allowed_kb_num: kbLimit, plan_name: prjct_profile_name } }}
         </div>
        
         <div class="actions--btn-wpr">

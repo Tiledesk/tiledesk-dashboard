@@ -7,16 +7,19 @@ import { LoggerService } from 'app/services/logger/logger.service';
 import { OpenaiService } from 'app/services/openai.service';
 import { AuthService } from 'app/core/auth.service';
 import { Router } from '@angular/router';
+import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
+import { ProjectPlanService } from 'app/services/project-plan.service';
 
 @Component({
   selector: 'appdashboard-home-kb',
   templateUrl: './home-kb.component.html',
   styleUrls: ['./home-kb.component.scss']
 })
-export class HomeKbComponent implements OnInit {
+export class HomeKbComponent extends PricingBaseComponent implements OnInit {
   @Output() trackUserAction = new EventEmitter()
   addButtonDisabled: boolean = false;
   project: any;
+  kbCount: number;
   kbSettings: KbSettings = {
     _id: null,
     id_project: null,
@@ -37,12 +40,16 @@ export class HomeKbComponent implements OnInit {
     private logger: LoggerService,
     private openaiService: OpenaiService,
     private auth: AuthService,
-    public router: Router
-  ) { }
+    public router: Router,
+    public prjctPlanService: ProjectPlanService,
+  ) {
+    super(prjctPlanService);
+   }
 
   ngOnInit(): void {
     this.getKnowledgeBaseSettings();
     this.getCurrentProject();
+    this.getProjectPlan();
   }
 
   getCurrentProject() {
@@ -114,13 +121,17 @@ export class HomeKbComponent implements OnInit {
     this.kbService.getKbSettings().subscribe((kbSettings: KbSettings) => {
       this.logger.log("[HOME-KB] get kbSettings: ", kbSettings);
       this.kbSettings = kbSettings;
-    
-      if (this.kbSettings.kbs.length < kbSettings.maxKbsNumber) {
-        this.addButtonDisabled = false;
-      } else {
-        this.addButtonDisabled = true;
+      if (this.kbSettings) {
+        this.kbCount = this.kbSettings.kbs.length
+        console.log("[HOME-KB] KbCount: ", this.kbCount);
       }
-      // this.checkAllStatuses();
+    
+      // if (this.kbSettings.kbs.length < kbSettings.maxKbsNumber) {
+      //   this.addButtonDisabled = false;
+      // } else {
+      //   this.addButtonDisabled = true;
+      // }
+     
     }, (error) => {
       this.logger.error("[HOME-KB] ERROR get kbSettings: ", error);
     }, () => {

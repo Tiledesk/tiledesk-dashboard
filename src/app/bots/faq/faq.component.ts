@@ -20,7 +20,7 @@ import { BotsBaseComponent } from '../bots-base/bots-base.component';
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from '../../services/brand.service';
 import { DepartmentService } from '../../services/department.service';
-import { avatarPlaceholder, getColorBck } from '../../utils/util';
+import { avatarPlaceholder, botDefaultLanguages, dialogflowLanguage, getColorBck, getIndexOfbotDefaultLanguages, getIndexOfdialogflowLanguage } from '../../utils/util';
 import { LoggerService } from '../../services/logger/logger.service';
 import {
   URL_microlanguage_for_dialogflow_images_videos,
@@ -32,6 +32,7 @@ import {
   URL_dialogflow_connector
 } from '../../utils/util';
 import { DomSanitizer } from '@angular/platform-browser';
+import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 
 
 const swal = require('sweetalert');
@@ -42,7 +43,8 @@ const swal = require('sweetalert');
   templateUrl: './faq.component.html',
   styleUrls: ['./faq.component.scss'],
 })
-export class FaqComponent extends BotsBaseComponent implements OnInit {
+// extends BotsBaseComponent
+export class FaqComponent extends PricingBaseComponent implements OnInit {
   @ViewChild('editbotbtn', { static: false }) elementRef: ElementRef;
 
   faq: Faq[];
@@ -417,7 +419,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
       this.dlgflwSelectedLangCode = res['language'];
       this.logger.log('[FAQ-COMP] getDialogFlowBotData (FaqComponent) - RES > dlgflwSelectedLangCode ', this.dlgflwSelectedLangCode);
 
-      this.dlgflwSelectedLang = this.dialogflowLanguage[this.getIndexOfdialogflowLanguage(res['language'])]
+      this.dlgflwSelectedLang = dialogflowLanguage[getIndexOfdialogflowLanguage(res['language'])]
       this.logger.log('getDialogFlowBotData (FaqComponent) - RES > dlgflwSelectedLang ', this.dlgflwSelectedLang);
 
       if (res['kbs'] && res['kbs'] !== 'undefined' && res['kbs'] !== 'null' && res['kbs'] !== null) {
@@ -1014,7 +1016,7 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
       // this.logger.log('[FAQ-COMP] GET FAQ-KB (DETAILS) BY ID  (ONLY FOR NATIVE BOT i.e. Resolution) LANGUAGE ', this.botDefaultSelectedLang);
       if (faqkb && faqkb.language) {
         this.faqkb_language = faqkb.language;
-        this.botDefaultSelectedLang = this.botDefaultLanguages[this.getIndexOfbotDefaultLanguages(faqkb.language)].name
+        this.botDefaultSelectedLang = botDefaultLanguages[getIndexOfbotDefaultLanguages(faqkb.language)].name
         this.logger.log('[FAQ-COMP] GET FAQ-KB (DETAILS) BY ID  (ONLY FOR NATIVE BOT i.e. Resolution) LANGUAGE ', this.botDefaultSelectedLang);
       }
 

@@ -177,8 +177,8 @@ const routes: Routes = [
   { path: 'projects-for-panel', component: ProjectsForPanelComponent, canActivate: [AuthGuard] },
   { path: 'get-chatbot/:botid', component: GetStartChatbotForkComponent, canActivate: [AuthGuard] },
   { path: 'activate-product/:activation_email/:licenseproductkeyuuid/:plan_id/:invoice_item_uuid', component: ActivateAppsumoProductComponent, canActivate: [AuthGuard] },
-  { path: 'install-template/:botid/:projectid', component: InstallTemplateComponent, canActivate: [AuthGuard] },
-  { path: 'install-template-np/:botid/:projectid/:langcode/:langname', component: InstallTemplateComponent, canActivate: [AuthGuard] },
+  { path: 'install-template/:projectid/:botid', component: InstallTemplateComponent, canActivate: [AuthGuard] },
+  { path: 'install-template-np/:projectid/:botid/:langcode/:langname', component: InstallTemplateComponent, canActivate: [AuthGuard] },
   { path: 'create-project-itw/:botid', component: CreateProjectComponent, canActivate: [AuthGuard] }, // wizard 
   { path: 'create-project-gs', component: CreateProjectGsComponent, canActivate: [AuthGuard] }, 
 

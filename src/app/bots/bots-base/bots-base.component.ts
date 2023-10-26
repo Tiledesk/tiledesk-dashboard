@@ -78,6 +78,7 @@ export class BotsBaseComponent implements OnInit {
   }
 
   getIndexOfbotDefaultLanguages(langcode: string): number {
+    console.log('getIndexOfbotDefaultLanguages' , langcode) 
     const index = this.botDefaultLanguages.findIndex(x => x.code === langcode);
     return index
   }

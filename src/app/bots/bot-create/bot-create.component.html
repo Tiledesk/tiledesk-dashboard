@@ -215,9 +215,8 @@
             <!-- ------------------------------------------------------ -->
             <!-- Resolution bot (i.e. native bot) - language -->
             <!-- ------------------------------------------------------ -->
-            <section *ngIf="botType === 'resolution' && HAS_SELECTED_CREATE_BOT === true">
+            <!-- <section *ngIf="botType === 'resolution' && HAS_SELECTED_CREATE_BOT === true">
               <div class="row" style="margin-bottom: 8px;">
-                <!-- style="padding-top: 0px; line-height: 1.2;" -->
                 <label class="col-sm-2 custom-label">
                   {{ "ResolutionBotLanguage" | translate }}
                 </label>
@@ -228,7 +227,7 @@
                   </ng-select>
                 </div>
               </div>
-            </section>
+            </section> -->
 
             <!-- ------------------------------------------------------ -->
             <!-- External bot - external bot url -->
@@ -357,7 +356,7 @@
                 <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
                   <!--  (clear)="onClearSelectedLanguage()" -->
                   <ng-select id="dlgflw_language_option" [clearable]="false" [(ngModel)]="dlgflwSelectedLang"
-                    [items]="dialogflowLanguage" bindLabel="name" placeholder="{{ 'ChooseALanguage' | translate }}"
+                    [items]="dialogflowLang" bindLabel="name" placeholder="{{ 'ChooseALanguage' | translate }}"
                     (change)="onSelectDialogFlowBotLang(dlgflwSelectedLang.code)">
                   </ng-select>
                 </div>

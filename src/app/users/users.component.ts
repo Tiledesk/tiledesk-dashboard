@@ -12,7 +12,8 @@ import { avatarPlaceholder, getColorBck, PLAN_SEATS, PLAN_NAME, APP_SUMO_PLAN_NA
 import { URL_understanding_default_roles } from '../utils/util'
 import { LoggerService } from '../services/logger/logger.service'
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component'
-
+import { takeUntil } from 'rxjs/operators'
+import { Subject } from 'rxjs';
 const swal = require('sweetalert')
 
 @Component({
@@ -20,7 +21,9 @@ const swal = require('sweetalert')
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.scss'],
 })
-export class UsersComponent extends  PricingBaseComponent implements OnInit, OnDestroy {
+
+export class UsersComponent extends PricingBaseComponent implements OnInit, OnDestroy {
+  private unsubscribe$: Subject<any> = new Subject<any>();
   PLAN_NAME = PLAN_NAME;
   PLAN_SEATS = PLAN_SEATS;
   APP_SUMO_PLAN_NAME = APP_SUMO_PLAN_NAME;
@@ -136,8 +139,68 @@ export class UsersComponent extends  PricingBaseComponent implements OnInit, OnD
     this.getBrowserVersion()
   }
 
+  ngOnDestroy() {
+    // this.subscription.unsubscribe()
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
+  getCurrentProject() {
+    this.auth.project_bs
+    .pipe(
+      takeUntil(this.unsubscribe$)
+    )
+    .subscribe((project) => {
+
+      // this.logger.log('[USERS] - GET CURRENT PROJECT -> project', this.project)
+      if (project) {
+        this.project = project;
+        this.id_project = project._id;
+        this.logger.log(
+          '[USERS] - GET CURRENT PROJECT -> project ID',
+          this.id_project,
+        )
+      }
+    })
+  }
+
+  getProjectUserRole() {
+    this.usersService.project_user_role_bs
+    .pipe(
+      takeUntil(this.unsubscribe$)
+    ).subscribe((user_role) => {
+      this.USER_ROLE = user_role
+      this.logger.log(
+        '[USERS] - GET PROJECT USER ROLE - USER_ROLE : ',
+        this.USER_ROLE,
+      )
+    })
+  }
+
+  getLoggedUser() {
+    this.auth.user_bs
+    .pipe(
+      takeUntil(this.unsubscribe$)
+    )
+    .subscribe((user) => {
+      this.logger.log('[USERS] LOGGED USER GET IN USERS-COMP - USER', user)
+      if (user) {
+        this.CURRENT_USER = user;
+        this.CURRENT_USER_ID = user._id;
+        this.logger.log(
+          '[USERS] LOGGED USER GET IN USERS-COMP - Current USER ID ',
+          this.CURRENT_USER_ID,
+        )
+      }
+    })
+  }
+
   getBrowserVersion() {
-    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
+    this.auth.isChromeVerGreaterThan100
+    .pipe(
+      takeUntil(this.unsubscribe$)
+    )
+    .subscribe((isChromeVerGreaterThan100: boolean) => {
       this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
       //  console.log("[WS-REQUESTS-LIST] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
     })
@@ -150,33 +213,6 @@ export class UsersComponent extends  PricingBaseComponent implements OnInit, OnD
     })
   }
 
-  translateStrings() {
-    this.translateChangeAvailabilitySuccessMsg()
-    this.translateChangeAvailabilityErrorMsg()
-    this.translateRemoveProjectUserSuccessMsg()
-    this.translateRemoveProjectUserErrorMsg()
-    this.translateResendInviteSuccessMsg()
-    this.translateResendInviteErrorMsg()
-    this.translateCanceledInviteSuccessMsg()
-    this.translateCanceledInviteErrorMsg()
-    this.translateModalOnlyOwnerCanManageProjectAccount()
-  }
-
-  translateModalOnlyOwnerCanManageProjectAccount() {
-    this.translate
-      .get('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan')
-      .subscribe((translation: any) => {
-        // this.logger.log('PROJECT-EDIT-ADD  onlyOwnerCanManageTheAccountPlanMsg text', translation)
-        this.onlyOwnerCanManageTheAccountPlanMsg = translation
-      })
-
-    this.translate
-      .get('LearnMoreAboutDefaultRoles')
-      .subscribe((translation: any) => {
-        // this.logger.log('PROJECT-EDIT-ADD  onlyOwnerCanManageTheAccountPlanMsg text', translation)
-        this.learnMoreAboutDefaultRoles = translation
-      })
-  }
 
   getChatUrl() {
     this.CHAT_BASE_URL = this.appConfigService.getConfig().CHAT_BASE_URL
@@ -245,125 +281,13 @@ export class UsersComponent extends  PricingBaseComponent implements OnInit, OnD
     }
   }
 
-  translateCanceledInviteSuccessMsg() {
-    this.translate
-      .get('UsersPage.CanceledInviteSuccessMsg')
-      .subscribe((text: string) => {
-        this.canceledInviteSuccessMsg = text
-        // this.logger.log('[USERS] + + + canceledInviteSuccessMsg Invite Success Notication Msg', text)
-      })
-  }
-
-  translateCanceledInviteErrorMsg() {
-    this.translate
-      .get('UsersPage.CanceledInviteErrorMsg')
-      .subscribe((text: string) => {
-        this.canceledInviteErrorMsg = text
-        // this.logger.log('[USERS] + + + canceledInviteErrorMsg Invite Success Notication Msg', text)
-      })
-  }
-
-  translateResendInviteSuccessMsg() {
-    this.translate
-      .get('UsersPage.ResendInviteSuccessNoticationMsg')
-      .subscribe((text: string) => {
-        this.resendInviteSuccessNoticationMsg = text
-        // this.logger.log('[USERS] + + + resend Invite Success Notication Msg', text)
-      })
-  }
-
-  translateResendInviteErrorMsg() {
-    this.translate
-      .get('UsersPage.ResendInviteErrorNoticationMsg')
-      .subscribe((text: string) => {
-        this.resendInviteErrorNoticationMsg = text
-        // this.logger.log('[USERS] + + + resend Invite Error Notication Msg', text)
-      })
-  }
-
   getBrowserLanguage() {
     this.browserLang = this.translate.getBrowserLang()
     this.logger.log('[USERS] - BRS LANG ', this.browserLang)
   }
 
-  // TRANSLATION
-  translateChangeAvailabilitySuccessMsg() {
-    this.translate
-      .get('ChangeAvailabilitySuccessNoticationMsg')
-      .subscribe((text: string) => {
-        this.changeAvailabilitySuccessNoticationMsg = text
-        // this.logger.log('[USERS] + + + change Availability Success Notication Msg', text)
-      })
-  }
 
-  // TRANSLATION
-  translateChangeAvailabilityErrorMsg() {
-    this.translate
-      .get('ChangeAvailabilityErrorNoticationMsg')
-      .subscribe((text: string) => {
-        this.changeAvailabilityErrorNoticationMsg = text
-        // this.logger.log('[USERS] + + + change Availability Error Notication Msg', text)
-      })
-  }
 
-  // TRANSLATION
-  translateRemoveProjectUserSuccessMsg() {
-    this.translate
-      .get('RemoveProjectUserSuccessNoticationMsg')
-      .subscribe((text: string) => {
-        this.deleteProjectUserSuccessNoticationMsg = text
-        // this.logger.log('[USERS] + + + RemoveProjectUserSuccessNoticationMsg ', text)
-      })
-  }
-
-  // TRANSLATION
-  translateRemoveProjectUserErrorMsg() {
-    this.translate
-      .get('RemoveProjectUserErrorNoticationMsg')
-      .subscribe((text: string) => {
-        this.deleteProjectUserErrorNoticationMsg = text
-        // this.logger.log('[USERS] + + + RemoveProjectUserErrorNoticationMsg ', text)
-      })
-  }
-
-  getLoggedUser() {
-    this.auth.user_bs.subscribe((user) => {
-      this.logger.log('[USERS] LOGGED USER GET IN USERS-COMP - USER', user)
-      if (user) {
-        this.CURRENT_USER = user;
-        this.CURRENT_USER_ID = user._id;
-        this.logger.log(
-          '[USERS] LOGGED USER GET IN USERS-COMP - Current USER ID ',
-          this.CURRENT_USER_ID,
-        )
-      }
-    })
-  }
-
-  getProjectUserRole() {
-    this.usersService.project_user_role_bs.subscribe((user_role) => {
-      this.USER_ROLE = user_role
-      this.logger.log(
-        '[USERS] - GET PROJECT USER ROLE - USER_ROLE : ',
-        this.USER_ROLE,
-      )
-    })
-  }
-
-  getCurrentProject() {
-    this.auth.project_bs.subscribe((project) => {
-
-      // this.logger.log('[USERS] - GET CURRENT PROJECT -> project', this.project)
-      if (project) {
-        this.project = project;
-        this.id_project = project._id;
-        this.logger.log(
-          '[USERS] - GET CURRENT PROJECT -> project ID',
-          this.id_project,
-        )
-      }
-    })
-  }
 
   // !! No more used - replaced by goToEditUser
   // goToMemberProfile(member_id: string) {
@@ -561,9 +485,7 @@ export class UsersComponent extends  PricingBaseComponent implements OnInit, OnD
   //     })
   // }
 
-  ngOnDestroy() {
-    this.subscription.unsubscribe()
-  }
+
 
   openModalSubsExpired() {
     if (this.USER_ROLE === 'owner') {
@@ -1007,6 +929,111 @@ export class UsersComponent extends  PricingBaseComponent implements OnInit, OnD
     )
   }
 
+  translateStrings() {
+    this.translateChangeAvailabilitySuccessMsg()
+    this.translateChangeAvailabilityErrorMsg()
+    this.translateRemoveProjectUserSuccessMsg()
+    this.translateRemoveProjectUserErrorMsg()
+    this.translateResendInviteSuccessMsg()
+    this.translateResendInviteErrorMsg()
+    this.translateCanceledInviteSuccessMsg()
+    this.translateCanceledInviteErrorMsg()
+    this.translateModalOnlyOwnerCanManageProjectAccount()
+  }
+
+  // TRANSLATION
+  translateChangeAvailabilitySuccessMsg() {
+    this.translate
+      .get('ChangeAvailabilitySuccessNoticationMsg')
+      .subscribe((text: string) => {
+        this.changeAvailabilitySuccessNoticationMsg = text
+        // this.logger.log('[USERS] + + + change Availability Success Notication Msg', text)
+      })
+  }
+
+  // TRANSLATION
+  translateChangeAvailabilityErrorMsg() {
+    this.translate
+      .get('ChangeAvailabilityErrorNoticationMsg')
+      .subscribe((text: string) => {
+        this.changeAvailabilityErrorNoticationMsg = text
+        // this.logger.log('[USERS] + + + change Availability Error Notication Msg', text)
+      })
+  }
+
+  // TRANSLATION
+  translateRemoveProjectUserSuccessMsg() {
+    this.translate
+      .get('RemoveProjectUserSuccessNoticationMsg')
+      .subscribe((text: string) => {
+        this.deleteProjectUserSuccessNoticationMsg = text
+        // this.logger.log('[USERS] + + + RemoveProjectUserSuccessNoticationMsg ', text)
+      })
+  }
+
+  // TRANSLATION
+  translateRemoveProjectUserErrorMsg() {
+    this.translate
+      .get('RemoveProjectUserErrorNoticationMsg')
+      .subscribe((text: string) => {
+        this.deleteProjectUserErrorNoticationMsg = text
+        // this.logger.log('[USERS] + + + RemoveProjectUserErrorNoticationMsg ', text)
+      })
+  }
+
+  translateResendInviteSuccessMsg() {
+    this.translate
+      .get('UsersPage.ResendInviteSuccessNoticationMsg')
+      .subscribe((text: string) => {
+        this.resendInviteSuccessNoticationMsg = text
+        // this.logger.log('[USERS] + + + resend Invite Success Notication Msg', text)
+      })
+  }
+
+  translateResendInviteErrorMsg() {
+    this.translate
+      .get('UsersPage.ResendInviteErrorNoticationMsg')
+      .subscribe((text: string) => {
+        this.resendInviteErrorNoticationMsg = text
+        // this.logger.log('[USERS] + + + resend Invite Error Notication Msg', text)
+      })
+  }
+
+  translateCanceledInviteSuccessMsg() {
+    this.translate
+      .get('UsersPage.CanceledInviteSuccessMsg')
+      .subscribe((text: string) => {
+        this.canceledInviteSuccessMsg = text
+        // this.logger.log('[USERS] + + + canceledInviteSuccessMsg Invite Success Notication Msg', text)
+      })
+  }
+
+  translateCanceledInviteErrorMsg() {
+    this.translate
+      .get('UsersPage.CanceledInviteErrorMsg')
+      .subscribe((text: string) => {
+        this.canceledInviteErrorMsg = text
+        // this.logger.log('[USERS] + + + canceledInviteErrorMsg Invite Success Notication Msg', text)
+      })
+  }
+
+
+  translateModalOnlyOwnerCanManageProjectAccount() {
+    this.translate
+      .get('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan')
+      .subscribe((translation: any) => {
+        // this.logger.log('PROJECT-EDIT-ADD  onlyOwnerCanManageTheAccountPlanMsg text', translation)
+        this.onlyOwnerCanManageTheAccountPlanMsg = translation
+      })
+
+    this.translate
+      .get('LearnMoreAboutDefaultRoles')
+      .subscribe((translation: any) => {
+        // this.logger.log('PROJECT-EDIT-ADD  onlyOwnerCanManageTheAccountPlanMsg text', translation)
+        this.learnMoreAboutDefaultRoles = translation
+      })
+  }
+
   // trackByFn(index, item) {
   //   this.logger.log('USER COMP ***** trackByFn ***** ', index)
   //   return index; // or
@@ -1022,5 +1049,8 @@ export class UsersComponent extends  PricingBaseComponent implements OnInit, OnD
   //   this.logger.log('trackByIds', item)
   //   return this.useTrackById ? item.id : item;
   // }
+
+
+
 
 }

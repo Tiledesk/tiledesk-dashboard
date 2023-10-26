@@ -19,7 +19,7 @@ import { UsersService } from '../../services/users.service';
 import { BotsBaseComponent } from '../bots-base/bots-base.component';
 import { BrandService } from '../../services/brand.service';
 import { DepartmentService } from '../../services/department.service';
-import { avatarPlaceholder, getColorBck } from '../../utils/util';
+import { avatarPlaceholder, botDefaultLanguages, getColorBck, getIndexOfbotDefaultLanguages } from '../../utils/util';
 import { LoggerService } from '../../services/logger/logger.service';
 import {
   URL_microlanguage_for_dialogflow_images_videos,
@@ -40,7 +40,9 @@ const swal = require('sweetalert');
   templateUrl: './native-bot.component.html',
   styleUrls: ['./native-bot.component.scss']
 })
-export class NativeBotComponent extends BotsBaseComponent implements OnInit {
+
+// extends BotsBaseComponent
+export class NativeBotComponent  implements OnInit {
   @ViewChild('editbotbtn', { static: false }) elementRef: ElementRef;
 
   faq: Faq[];
@@ -200,7 +202,7 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
     private logger: LoggerService,
   
   ) {
-    super(prjctPlanService);
+    // super(prjctPlanService);
 
     const brand = brandService.getBrand();
     this.tparams = brand;
@@ -970,7 +972,7 @@ export class NativeBotComponent extends BotsBaseComponent implements OnInit {
       // this.logger.log('[FAQ-COMP] GET FAQ-KB (DETAILS) BY ID  (ONLY FOR NATIVE BOT i.e. Resolution) LANGUAGE ', this.botDefaultSelectedLang);
       if (faqkb && faqkb.language) {
         this.faqkb_language = faqkb.language;
-        this.botDefaultSelectedLang = this.botDefaultLanguages[this.getIndexOfbotDefaultLanguages(faqkb.language)].name
+        this.botDefaultSelectedLang = botDefaultLanguages[getIndexOfbotDefaultLanguages(faqkb.language)].name
         this.logger.log('[NATIVE-BOT] GET FAQ-KB (DETAILS) BY ID  (ONLY FOR NATIVE BOT i.e. Resolution) LANGUAGE ', this.botDefaultSelectedLang);
       }
 

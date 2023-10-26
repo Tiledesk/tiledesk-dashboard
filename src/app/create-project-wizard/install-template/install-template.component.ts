@@ -22,6 +22,7 @@ import { ProjectPlanService } from 'app/services/project-plan.service';
 import { UsersService } from 'app/services/users.service';
 import { ChatbotModalComponent } from 'app/bots/bots-list/chatbot-modal/chatbot-modal.component';
 import { NotifyService } from 'app/core/notify.service';
+import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 
 @Component({
   selector: 'appdashboard-install-template',
@@ -30,7 +31,7 @@ import { NotifyService } from 'app/core/notify.service';
 })
 
 // extends  WidgetSetUpBaseComponent // extends BotsBaseComponent
-export class InstallTemplateComponent implements OnInit {
+export class InstallTemplateComponent extends PricingBaseComponent implements OnInit {
   PLAN_NAME = PLAN_NAME;
   APP_SUMO_PLAN_NAME = APP_SUMO_PLAN_NAME;
   CHATBOT_MAX_NUM = CHATBOT_MAX_NUM
@@ -71,7 +72,7 @@ export class InstallTemplateComponent implements OnInit {
   public trial_expired: boolean;
   public chatBotLimit: any;
   public tParamsPlanAndChatBot: any;
-
+  availableTranslations: Array<any> = []
 
   constructor(
     private route: ActivatedRoute,
@@ -93,7 +94,7 @@ export class InstallTemplateComponent implements OnInit {
     private notify: NotifyService,
   ) {
     // super(translate);
-    // super(prjctPlanService);
+    super(prjctPlanService);
     const brand = brandService.getBrand();
     this.companyLogoBlack_Url = brand['company_logo_black__url'];
     this.tparams = brand;
@@ -153,49 +154,48 @@ export class InstallTemplateComponent implements OnInit {
 
       console.log('[INSTALL-TEMPLATE] projectId ', this.projectId)
       this.botId = params.botid;
+
       this.langCode = params.langcode;
       this.langName = params.langname;
+
       console.log('[INSTALL-TEMPLATE] params langCode: ', this.langCode, ' - langName: ', this.langName)
-      if (this.langCode && this.langName) {
-        // this.addNewLanguage(this.langCode, this.langName)
-        this.newlyCreatedProject = true
-      }
+      // if (this.langCode && this.langName) {
+      //   this.addNewLanguage(this.langCode, this.langName)
+      //   this.newlyCreatedProject = true
+      // }
 
       this.getTemplates(params['botid'])
-
       this.getProjects(this.projectId)
-
-
     })
   }
 
-  // addNewLanguage(langCode: string, langName: string) {
+  addNewLanguage(langCode: string, langName: string) {
 
-  //   this.logger.log('[INSTALL-TEMPLATE] - ADD-NEW-LANG selectedTranslationCode', langCode);
-  //   this.logger.log('[INSTALL-TEMPLATE] - ADD-NEW-LANG selectedTranslationLabel', langName);
+    console.log('[INSTALL-TEMPLATE] - ADD-NEW-LANG selectedTranslationCode', langCode);
+    console.log('[INSTALL-TEMPLATE] - ADD-NEW-LANG selectedTranslationLabel', langName);
 
-  //   // cloneLabel CHE RITORNERA IN RESPONSE LA NUOVA LINGUA (l'inglese nel caso non sia una delle nostre lingue pretradotte)
-  //   this.widgetService.cloneLabel(langCode.toUpperCase())
-  //     .subscribe((res: any) => {
+    // cloneLabel CHE RITORNERA IN RESPONSE LA NUOVA LINGUA (l'inglese nel caso non sia una delle nostre lingue pretradotte)
+    this.widgetService.cloneLabel(langCode.toUpperCase())
+      .subscribe((res: any) => {
 
-  //       this.logger.log('[INSTALL-TEMPLATE] - ADD-NEW-LANG (clone-label) RES ', res.data);
+        console.log('[INSTALL-TEMPLATE] - ADD-NEW-LANG (clone-label) RES ', res.data);
 
 
 
-  //     }, error => {
-  //       this.logger.error('[INSTALL-TEMPLATE] ADD-NEW-LANG (clone-label) - ERROR ', error)
-  //     }, () => {
-  //       this.logger.log('[INSTALL-TEMPLATE] ADD-NEW-LANG (clone-label) * COMPLETE *')
+      }, error => {
+        this.logger.error('[INSTALL-TEMPLATE] ADD-NEW-LANG (clone-label) - ERROR ', error)
+      }, () => {
+        this.logger.log('[INSTALL-TEMPLATE] ADD-NEW-LANG (clone-label) * COMPLETE *')
 
-  //     });
+      });
 
-  //   // // ADD THE NEW LANGUAGE TO BOTTOM NAV
-  //   const newLang = { code: langCode, name: langName };
-  //   this.logger.log('[INSTALL-TEMPLATE] Multilanguage saveNewLanguage newLang objct ', newLang);
+    // // ADD THE NEW LANGUAGE TO BOTTOM NAV
+    const newLang = { code: langCode, name: langName };
+    this.logger.log('[INSTALL-TEMPLATE] Multilanguage saveNewLanguage newLang objct ', newLang);
 
-  //   this.availableTranslations.push(newLang)
-  //   this.logger.log('[INSTALL-TEMPLATE] Multilanguage saveNewLanguage availableTranslations ', this.availableTranslations)
-  // }
+    this.availableTranslations.push(newLang)
+    this.logger.log('[INSTALL-TEMPLATE] Multilanguage saveNewLanguage availableTranslations ', this.availableTranslations)
+  }
 
   getProjects(projectid) {
     this.projectService.getProjects().subscribe((projects: any) => {
@@ -219,133 +219,133 @@ export class InstallTemplateComponent implements OnInit {
             console.log('[INSTALL-TEMPLATE] trial_expired ', this.trial_expired)
             console.log('[INSTALL-TEMPLATE] subscription_is_active ', this.subscription_is_active)
 
-            if (project.id_project.profile.extra3) {
-              this.appSumoProfile = APP_SUMO_PLAN_NAME[project.id_project.profile.extra3]
-              this.logger.log('[INSTALL-TEMPLATE] Find Current Project appSumoProfile ', this.appSumoProfile)
-            }
+            // if (project.id_project.profile.extra3) {
+            //   this.appSumoProfile = APP_SUMO_PLAN_NAME[project.id_project.profile.extra3]
+            //   this.logger.log('[INSTALL-TEMPLATE] Find Current Project appSumoProfile ', this.appSumoProfile)
+            // }
 
 
-            if (project.id_project.profile.type === 'free') {
-              if (project.id_project.trial_expired === false) {
+            // if (project.id_project.profile.type === 'free') {
+            //   if (project.id_project.trial_expired === false) {
 
-                if (this.profile_name === 'Sandbox') {
-                  this.prjct_profile_name = PLAN_NAME.E + " plan (trial)"
-                  this.chatBotLimit = CHATBOT_MAX_NUM[PLAN_NAME.E]
-                  this.tParamsPlanAndChatBot = { plan_name: this.prjct_profile_name, allowed_cb_num: this.chatBotLimit }
-                  console.log('[BOTS-BASE] - GET PROJECT PLAN - PLAN_NAME ', this.prjct_profile_name, ' CB LIMIT: ', this.chatBotLimit)
-                }
+            //     if (this.profile_name === 'Sandbox') {
+            //       this.prjct_profile_name = PLAN_NAME.E + " plan (trial)"
+            //       this.chatBotLimit = CHATBOT_MAX_NUM[PLAN_NAME.E]
+            //       this.tParamsPlanAndChatBot = { plan_name: this.prjct_profile_name, allowed_cb_num: this.chatBotLimit }
+            //       console.log('[BOTS-BASE] - GET PROJECT PLAN - PLAN_NAME ', this.prjct_profile_name, ' CB LIMIT: ', this.chatBotLimit)
+            //     }
 
-                if (this.profile_name === 'free') {
-                  this.prjct_profile_name = PLAN_NAME.B + " plan (trial)"
-                  this.chatBotLimit = null
-                  console.log('[BOTS-BASE] - GET PROJECT PLAN - PLAN_NAME ', this.prjct_profile_name, ' CB LIMIT: ', this.chatBotLimit)
-                }
-
-
-              } else {
-                if (this.profile_name === 'Sandbox') {
-                  this.prjct_profile_name = "Sandbox plan";
-                  this.chatBotLimit = CHATBOT_MAX_NUM.free;
-                  this.tParamsPlanAndChatBot = { plan_name: this.prjct_profile_name, allowed_cb_num: this.chatBotLimit }
-                  console.log('[BOTS-BASE] - GET PROJECT PLAN - PLAN_NAME ', this.prjct_profile_name, ' TRIAL EXPIRED CB LIMIT: ', this.chatBotLimit)
-                }
-
-                if (this.profile_name === 'free') {
-                  this.prjct_profile_name = "Free plan";
-                  this.chatBotLimit = null;
-                  // this.tParamsPlanAndChatBot = { plan_name: this.prjct_profile_name, allowed_cb_num: this.chatBotLimit }
-                  console.log('[BOTS-BASE] - GET PROJECT PLAN - PLAN_NAME ', this.prjct_profile_name, ' TRIAL EXPIRED CB LIMIT: ', this.chatBotLimit)
-                }
-              }
-
-            } else if (project.id_project.profile.type === 'payment') {
-              if (this.subscription_is_active === true) {
-                if (project.id_project.profile.name === PLAN_NAME.A) {
-                  if (!this.appSumoProfile) {
-                    this.prjct_profile_name = PLAN_NAME.A + " plan";
-                    this.chatBotLimit = null
-                  } else {
-                    this.prjct_profile_name = PLAN_NAME.A + " plan " + '(' + this.appSumoProfile + ')';
-                    this.chatBotLimit = null
-                  }
-                } else if (project.id_project.profile.name === PLAN_NAME.B) {
-                  if (!this.appSumoProfile) {
-                    this.prjct_profile_name = PLAN_NAME.B + " plan";
-                    this.chatBotLimit = null;
-                    console.log('[INSTALL-TEMPLATE] - GET PROJECT PLAN - PLAN_NAME ', this.prjct_profile_name, ' SUB ACTIVE CB LIMIT: ', this.chatBotLimit)
-
-                  } else {
-                    this.prjct_profile_name = PLAN_NAME.B + " plan " + '(' + this.appSumoProfile + ')';
-                    this.chatBotLimit = null
-                  }
-                } else if (project.id_project.profile.name === PLAN_NAME.C) {
-                  this.prjct_profile_name = PLAN_NAME.C + " plan";
-                  this.chatBotLimit = null
-                  console.log('[INSTALL-TEMPLATE] - GET PROJECT PLAN - PLAN_NAME ', this.prjct_profile_name, ' SUB ACTIVE CB LIMIT: ', this.chatBotLimit)
-
-                } else if (this.profile_name === PLAN_NAME.D) {
-                  this.prjct_profile_name = PLAN_NAME.D + " plan";
-                  this.chatBotLimit = CHATBOT_MAX_NUM[PLAN_NAME.D]
-                  this.tParamsPlanAndChatBot = { plan_name: this.prjct_profile_name, allowed_cb_num: this.chatBotLimit }
-                  console.log('[INSTALL-TEMPLATE] - GET PROJECT PLAN - PLAN_NAME ', this.prjct_profile_name, ' SUB ACTIVE CB LIMIT: ', this.chatBotLimit)
-
-                } else if (this.profile_name === PLAN_NAME.E) {
-                  this.prjct_profile_name = PLAN_NAME.E + " plan";
-                  this.chatBotLimit = CHATBOT_MAX_NUM[PLAN_NAME.E]
-                  this.tParamsPlanAndChatBot = { plan_name: this.prjct_profile_name, allowed_cb_num: this.chatBotLimit }
-                  console.log('[INSTALL-TEMPLATE] - GET PROJECT PLAN - PLAN_NAME ', this.prjct_profile_name, ' SUB ACTIVE CB LIMIT: ', this.chatBotLimit)
-
-                } else if (this.profile_name === PLAN_NAME.F) {
-                  this.prjct_profile_name = PLAN_NAME.F + " plan";
-                  this.chatBotLimit = CHATBOT_MAX_NUM[PLAN_NAME.F]
-                  this.tParamsPlanAndChatBot = { plan_name: this.prjct_profile_name, allowed_cb_num: this.chatBotLimit }
-                  console.log('[INSTALL-TEMPLATE] - GET PROJECT PLAN - PLAN_NAME ', this.prjct_profile_name, ' SUB ACTIVE CB LIMIT: ', this.chatBotLimit)
-                }
-
-              } else if (this.subscription_is_active === false) {
-
-                if (this.profile_name === PLAN_NAME.A) {
-                  this.prjct_profile_name = PLAN_NAME.A + " plan";
-                  this.chatBotLimit = null;
-                  // this.tParamsPlanAndChatBot = { plan_name: this.prjct_profile_name, allowed_cb_num: this.chatBotLimit }
-                  console.log('[INSTALL-TEMPLATE] - GET PROJECT PLAN - PLAN_NAME ', this.prjct_profile_name, ' SUB EXIP CB LIMIT: ', this.chatBotLimit)
-
-                } else if (this.profile_name === PLAN_NAME.B) {
-                  this.prjct_profile_name = PLAN_NAME.B + " plan";
-                  this.chatBotLimit = null;
-                  // this.tParamsPlanAndChatBot = { plan_name: this.prjct_profile_name, allowed_cb_num: this.chatBotLimit }
-                  console.log('[INSTALL-TEMPLATE] - GET PROJECT PLAN - PLAN_NAME ', this.prjct_profile_name, ' SUB EXIP CB LIMIT: ', this.chatBotLimit)
-
-                } else if (this.profile_name === PLAN_NAME.C) {
-                  this.prjct_profile_name = PLAN_NAME.C + " plan";
-                  this.chatBotLimit = null;
-                  // this.tParamsPlanAndChatBot = { plan_name: this.prjct_profile_name, allowed_cb_num: this.chatBotLimit }
-                  console.log('[INSTALL-TEMPLATE] - GET PROJECT PLAN - PLAN_NAME ', this.prjct_profile_name, ' SUB EXIP CB LIMIT: ', this.chatBotLimit)
-
-                } else if (this.profile_name === PLAN_NAME.D) {
-                  this.prjct_profile_name = PLAN_NAME.D + " plan";
-                  this.chatBotLimit = CHATBOT_MAX_NUM.free;
-                  this.tParamsPlanAndChatBot = { plan_name: this.prjct_profile_name, allowed_cb_num: this.chatBotLimit }
-                  console.log('[INSTALL-TEMPLATE] - GET PROJECT PLAN - PLAN_NAME ', this.prjct_profile_name, ' SUB EXIP CB LIMIT: ', this.chatBotLimit)
-
-                } else if (this.profile_name === PLAN_NAME.E) {
-                  this.prjct_profile_name = PLAN_NAME.E + " plan";
-                  this.chatBotLimit = CHATBOT_MAX_NUM.free;
-                  this.tParamsPlanAndChatBot = { plan_name: this.prjct_profile_name, allowed_cb_num: this.chatBotLimit }
-                  console.log('[INSTALL-TEMPLATE] - GET PROJECT PLAN - PLAN_NAME ', this.prjct_profile_name, ' SUB EXIP CB LIMIT: ', this.chatBotLimit)
-
-                } else if (this.profile_name === PLAN_NAME.F) {
-                  this.prjct_profile_name = PLAN_NAME.F + " plan";
-                  this.chatBotLimit = CHATBOT_MAX_NUM.free;
-                  this.tParamsPlanAndChatBot = { plan_name: this.prjct_profile_name, allowed_cb_num: this.chatBotLimit }
-                  console.log('[INSTALL-TEMPLATE] - GET PROJECT PLAN - PLAN_NAME ', this.prjct_profile_name, ' SUB EXIP CB LIMIT: ', this.chatBotLimit)
-
-                }
-              }
+            //     if (this.profile_name === 'free') {
+            //       this.prjct_profile_name = PLAN_NAME.B + " plan (trial)"
+            //       this.chatBotLimit = null
+            //       console.log('[BOTS-BASE] - GET PROJECT PLAN - PLAN_NAME ', this.prjct_profile_name, ' CB LIMIT: ', this.chatBotLimit)
+            //     }
 
 
+            //   } else {
+            //     if (this.profile_name === 'Sandbox') {
+            //       this.prjct_profile_name = "Sandbox plan";
+            //       this.chatBotLimit = CHATBOT_MAX_NUM.free;
+            //       this.tParamsPlanAndChatBot = { plan_name: this.prjct_profile_name, allowed_cb_num: this.chatBotLimit }
+            //       console.log('[BOTS-BASE] - GET PROJECT PLAN - PLAN_NAME ', this.prjct_profile_name, ' TRIAL EXPIRED CB LIMIT: ', this.chatBotLimit)
+            //     }
 
-            }
+            //     if (this.profile_name === 'free') {
+            //       this.prjct_profile_name = "Free plan";
+            //       this.chatBotLimit = null;
+            //       // this.tParamsPlanAndChatBot = { plan_name: this.prjct_profile_name, allowed_cb_num: this.chatBotLimit }
+            //       console.log('[BOTS-BASE] - GET PROJECT PLAN - PLAN_NAME ', this.prjct_profile_name, ' TRIAL EXPIRED CB LIMIT: ', this.chatBotLimit)
+            //     }
+            //   }
+
+            // } else if (project.id_project.profile.type === 'payment') {
+            //   if (this.subscription_is_active === true) {
+            //     if (project.id_project.profile.name === PLAN_NAME.A) {
+            //       if (!this.appSumoProfile) {
+            //         this.prjct_profile_name = PLAN_NAME.A + " plan";
+            //         this.chatBotLimit = null
+            //       } else {
+            //         this.prjct_profile_name = PLAN_NAME.A + " plan " + '(' + this.appSumoProfile + ')';
+            //         this.chatBotLimit = null
+            //       }
+            //     } else if (project.id_project.profile.name === PLAN_NAME.B) {
+            //       if (!this.appSumoProfile) {
+            //         this.prjct_profile_name = PLAN_NAME.B + " plan";
+            //         this.chatBotLimit = null;
+            //         console.log('[INSTALL-TEMPLATE] - GET PROJECT PLAN - PLAN_NAME ', this.prjct_profile_name, ' SUB ACTIVE CB LIMIT: ', this.chatBotLimit)
+
+            //       } else {
+            //         this.prjct_profile_name = PLAN_NAME.B + " plan " + '(' + this.appSumoProfile + ')';
+            //         this.chatBotLimit = null
+            //       }
+            //     } else if (project.id_project.profile.name === PLAN_NAME.C) {
+            //       this.prjct_profile_name = PLAN_NAME.C + " plan";
+            //       this.chatBotLimit = null
+            //       console.log('[INSTALL-TEMPLATE] - GET PROJECT PLAN - PLAN_NAME ', this.prjct_profile_name, ' SUB ACTIVE CB LIMIT: ', this.chatBotLimit)
+
+            //     } else if (this.profile_name === PLAN_NAME.D) {
+            //       this.prjct_profile_name = PLAN_NAME.D + " plan";
+            //       this.chatBotLimit = CHATBOT_MAX_NUM[PLAN_NAME.D]
+            //       this.tParamsPlanAndChatBot = { plan_name: this.prjct_profile_name, allowed_cb_num: this.chatBotLimit }
+            //       console.log('[INSTALL-TEMPLATE] - GET PROJECT PLAN - PLAN_NAME ', this.prjct_profile_name, ' SUB ACTIVE CB LIMIT: ', this.chatBotLimit)
+
+            //     } else if (this.profile_name === PLAN_NAME.E) {
+            //       this.prjct_profile_name = PLAN_NAME.E + " plan";
+            //       this.chatBotLimit = CHATBOT_MAX_NUM[PLAN_NAME.E]
+            //       this.tParamsPlanAndChatBot = { plan_name: this.prjct_profile_name, allowed_cb_num: this.chatBotLimit }
+            //       console.log('[INSTALL-TEMPLATE] - GET PROJECT PLAN - PLAN_NAME ', this.prjct_profile_name, ' SUB ACTIVE CB LIMIT: ', this.chatBotLimit)
+
+            //     } else if (this.profile_name === PLAN_NAME.F) {
+            //       this.prjct_profile_name = PLAN_NAME.F + " plan";
+            //       this.chatBotLimit = CHATBOT_MAX_NUM[PLAN_NAME.F]
+            //       this.tParamsPlanAndChatBot = { plan_name: this.prjct_profile_name, allowed_cb_num: this.chatBotLimit }
+            //       console.log('[INSTALL-TEMPLATE] - GET PROJECT PLAN - PLAN_NAME ', this.prjct_profile_name, ' SUB ACTIVE CB LIMIT: ', this.chatBotLimit)
+            //     }
+
+            //   } else if (this.subscription_is_active === false) {
+
+            //     if (this.profile_name === PLAN_NAME.A) {
+            //       this.prjct_profile_name = PLAN_NAME.A + " plan";
+            //       this.chatBotLimit = null;
+            //       // this.tParamsPlanAndChatBot = { plan_name: this.prjct_profile_name, allowed_cb_num: this.chatBotLimit }
+            //       console.log('[INSTALL-TEMPLATE] - GET PROJECT PLAN - PLAN_NAME ', this.prjct_profile_name, ' SUB EXIP CB LIMIT: ', this.chatBotLimit)
+
+            //     } else if (this.profile_name === PLAN_NAME.B) {
+            //       this.prjct_profile_name = PLAN_NAME.B + " plan";
+            //       this.chatBotLimit = null;
+            //       // this.tParamsPlanAndChatBot = { plan_name: this.prjct_profile_name, allowed_cb_num: this.chatBotLimit }
+            //       console.log('[INSTALL-TEMPLATE] - GET PROJECT PLAN - PLAN_NAME ', this.prjct_profile_name, ' SUB EXIP CB LIMIT: ', this.chatBotLimit)
+
+            //     } else if (this.profile_name === PLAN_NAME.C) {
+            //       this.prjct_profile_name = PLAN_NAME.C + " plan";
+            //       this.chatBotLimit = null;
+            //       // this.tParamsPlanAndChatBot = { plan_name: this.prjct_profile_name, allowed_cb_num: this.chatBotLimit }
+            //       console.log('[INSTALL-TEMPLATE] - GET PROJECT PLAN - PLAN_NAME ', this.prjct_profile_name, ' SUB EXIP CB LIMIT: ', this.chatBotLimit)
+
+            //     } else if (this.profile_name === PLAN_NAME.D) {
+            //       this.prjct_profile_name = PLAN_NAME.D + " plan";
+            //       this.chatBotLimit = CHATBOT_MAX_NUM.free;
+            //       this.tParamsPlanAndChatBot = { plan_name: this.prjct_profile_name, allowed_cb_num: this.chatBotLimit }
+            //       console.log('[INSTALL-TEMPLATE] - GET PROJECT PLAN - PLAN_NAME ', this.prjct_profile_name, ' SUB EXIP CB LIMIT: ', this.chatBotLimit)
+
+            //     } else if (this.profile_name === PLAN_NAME.E) {
+            //       this.prjct_profile_name = PLAN_NAME.E + " plan";
+            //       this.chatBotLimit = CHATBOT_MAX_NUM.free;
+            //       this.tParamsPlanAndChatBot = { plan_name: this.prjct_profile_name, allowed_cb_num: this.chatBotLimit }
+            //       console.log('[INSTALL-TEMPLATE] - GET PROJECT PLAN - PLAN_NAME ', this.prjct_profile_name, ' SUB EXIP CB LIMIT: ', this.chatBotLimit)
+
+            //     } else if (this.profile_name === PLAN_NAME.F) {
+            //       this.prjct_profile_name = PLAN_NAME.F + " plan";
+            //       this.chatBotLimit = CHATBOT_MAX_NUM.free;
+            //       this.tParamsPlanAndChatBot = { plan_name: this.prjct_profile_name, allowed_cb_num: this.chatBotLimit }
+            //       console.log('[INSTALL-TEMPLATE] - GET PROJECT PLAN - PLAN_NAME ', this.prjct_profile_name, ' SUB EXIP CB LIMIT: ', this.chatBotLimit)
+
+            //     }
+            //   }
+
+
+
+            // }
 
             const selectedProject: Project = {
               _id: project['id_project']['_id'],
@@ -361,6 +361,14 @@ export class InstallTemplateComponent implements OnInit {
             this.getProjectBots();
             // this.getProjectPlan();
             this.getUserRole();
+            this.getProjectPlan()
+
+            if (this.langCode && this.langName) {
+              this.addNewLanguage(this.langCode, this.langName)
+              this.newlyCreatedProject = true
+            }
+
+
           }
         });
       }
@@ -540,9 +548,18 @@ export class InstallTemplateComponent implements OnInit {
   //   });
   // }
 
-  goToGetStartChatbot() {
+  goBack() {
     // this.router.navigate([`/get-chatbot/${this.botId}`]);
-    this.location.back();
+    if (!this.chatBotLimit) {
+      this.location.back();
+    } else if (this.chatBotLimit) {
+      if (this.chatBotCount < this.chatBotLimit) {
+        this.location.back();
+      } else if (this.chatBotCount >= this.chatBotLimit) {
+        this.router.navigate([`/project/${this.projectId}/home`]);
+      }
+
+    }
   }
 
   importTemplate() {
@@ -583,12 +600,8 @@ export class InstallTemplateComponent implements OnInit {
       if (this.newlyCreatedProject) {
         this.hookBotToDept()
       }
-
       this.getFaqKbById(this.botid);
-
       this.trackImportTemplate()
-
-
 
     });
   }
@@ -613,24 +626,17 @@ export class InstallTemplateComponent implements OnInit {
 
   getDeptsByProjectId() {
     this.departmentService.getDeptsByProjectId().subscribe((departments: any) => {
-
       if (departments) {
         departments.forEach((dept: any) => {
-
-
           if (dept.default === true) {
             this.defaultDeptID = dept._id;
-
           }
         });
       }
-
     }, error => {
-
       this.logger.error('[INSTALL-TEMPLATE] - DEPT - GET DEPTS  - ERROR', error);
     }, () => {
       this.logger.log('[INSTALL-TEMPLATE] - DEPT - GET DEPTS - COMPLETE')
-
     });
   }
 

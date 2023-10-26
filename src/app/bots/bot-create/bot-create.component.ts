@@ -21,7 +21,8 @@ import {
   URL_response_bot_images_buttons_videos_and_more,
   URL_handoff_to_human_agents, URL_configure_your_first_chatbot,
   URL_connect_your_dialogflow_agent,
-  goToCDSVersion
+  goToCDSVersion,
+  dialogflowLanguage
 } from '../../utils/util';
 import { FaqService } from 'app/services/faq.service';
 import { FaqKb } from 'app/models/faq_kb-model';
@@ -33,13 +34,15 @@ import { ProjectPlanService } from 'app/services/project-plan.service';
 import { UsersService } from 'app/services/users.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ChatbotModalComponent } from '../bots-list/chatbot-modal/chatbot-modal.component';
+import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 
 @Component({
   selector: 'bot-create',
   templateUrl: './bot-create.component.html',
   styleUrls: ['./bot-create.component.scss']
 })
-export class BotCreateComponent extends BotsBaseComponent implements OnInit {
+// extends BotsBaseComponent
+export class BotCreateComponent extends PricingBaseComponent implements OnInit {
   // tparams = brand;
   private unsubscribe$: Subject<any> = new Subject<any>();
   tparams: any;
@@ -95,7 +98,9 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
 
   hasAlreadyUploadAfile = false
 
-  dlgflwSelectedLang = this.dialogflowLanguage[5];
+  dlgflwSelectedLang = dialogflowLanguage[5];
+  dialogflowLang: any
+
   dlgflwSelectedLangCode = 'en';
   dlgflwKnowledgeBaseID: string;
   filetypeNotSupported: string;
@@ -153,6 +158,7 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
     super(prjctPlanService);
     const brand = brandService.getBrand();
     this.tparams = brand;
+    this.dialogflowLang = dialogflowLanguage
   }
 
   ngOnInit() {
@@ -168,6 +174,7 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
     this.getFaqKbByProjectId();
     this.getProjectPlan();
     this.getUserRole();
+    console.log('[BOT-CREATE] dlgflwSelectedLang ', this.dlgflwSelectedLang)
   }
 
   ngOnDestroy() {

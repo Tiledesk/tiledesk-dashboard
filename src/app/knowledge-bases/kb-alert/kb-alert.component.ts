@@ -7,13 +7,16 @@ import { UsersService } from 'app/services/users.service';
 import { NotifyService } from 'app/core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
 import { PLAN_NAME } from 'app/utils/util';
+import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 
 @Component({
   selector: 'appdashboard-kb-alert',
   templateUrl: './kb-alert.component.html',
   styleUrls: ['./kb-alert.component.scss']
 })
-export class KbAlertComponent extends KbBaseComponent implements OnInit {
+
+// extends KbBaseComponent
+export class KbAlertComponent extends PricingBaseComponent implements OnInit {
  
   kbCount: number;
   public USER_ROLE: string;
@@ -36,6 +39,7 @@ export class KbAlertComponent extends KbBaseComponent implements OnInit {
     this.getKB();
     this.getProjectUserRole();
     this.translateModalOnlyOwnerCanManageProjectAccount();
+    this.getProjectPlan();
   }
 
 

@@ -25,6 +25,7 @@ import { takeUntil } from 'rxjs/operators'
 import { UsersService } from 'app/services/users.service';
 import { ChatbotModalComponent } from './chatbot-modal/chatbot-modal.component';
 import { BotsBaseComponent } from '../bots-base/bots-base.component';
+import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 
 const swal = require('sweetalert');
 @Component({
@@ -33,7 +34,7 @@ const swal = require('sweetalert');
   styleUrls: ['./bots-list.component.scss'],
 })
 
-export class BotListComponent extends BotsBaseComponent implements OnInit, OnDestroy {
+export class BotListComponent extends PricingBaseComponent implements OnInit, OnDestroy {
   // tparams = brand;
   PLAN_NAME = PLAN_NAME;
   CHATBOT_MAX_NUM = CHATBOT_MAX_NUM;

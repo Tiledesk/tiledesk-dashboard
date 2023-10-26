@@ -15,7 +15,7 @@
       <appdashboard-settings-sidebar style="border-right:1px solid #e5effe !important"> </appdashboard-settings-sidebar>
       <div class="teplate-content" style="flex: 1 1 auto; margin: 0 20px;">
 
-        <appdashboard-kb-alert *ngIf="kbLimit && kbSettings.kbs.length >= kbLimit"> </appdashboard-kb-alert>
+        <appdashboard-kb-alert *ngIf="kbLimit && kbSettings.kbs.length > kbLimit"> </appdashboard-kb-alert>
 
         <loading-spinner *ngIf="showSpinner"></loading-spinner>
 
@@ -151,7 +151,8 @@
 
           <div class="counter-box">
             <p>
-              {{ 'KbPage.KbCounterFooter' | translate: { counter: kbSettings?.kbs?.length } }}
+              <!-- {{ 'KbPage.KbCounterFooter' | translate: { counter: kbSettings?.kbs?.length } }} -->
+              {{ 'KbPage.KbCounterFooter_2' | translate: { counter: kbCount, allowed_kb_num: kbLimit, plan_name: prjct_profile_name } }}
             </p>
           </div>
 
