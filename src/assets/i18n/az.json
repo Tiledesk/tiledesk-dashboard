@@ -1577,6 +1577,7 @@
         "CreationDate": "Yaradılma tarixi",
         "KbCounterFooter": "{{ counter }} 3 Bilik bazası əlavə edildi",
         "KbCounterFooter_2":"{{plan_name }} ilə əlçatan olan  {{ allowed_kb_num }} bilik bazasından {{counter}}-si əlavə edildi",
+        "KbCounterFooter_es": "Added {{counter}} knowledge bases of {{ allowed_kb_num }} available with {{ plan_name }}",
         "AddKbInfoFirstText": "Bilik Bazası və GPT açarınız üçün etibarlı URL təyin edin.",
         "AddKbInfoSecondText": "Qeyd: Siz hər biri 200-ə qədər səhifədən ibarət maksimum 3 Bilik bazası əlavə edə bilərsiniz. Daha böyük bilik bazaları üçün performans təmin edilmir",
         "YouCanAddKBOfUpTo200Pages": "Siz 200-ə qədər səhifədən ibarət Bilik Bazalarını əlavə edə bilərsiniz",

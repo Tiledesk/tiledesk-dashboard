@@ -1577,6 +1577,7 @@
         "CreationDate": "Жасалу күні",
         "KbCounterFooter": "{{ counter }} 3 білім қоры қосылды",
         "KbCounterFooter_2":"{{ plan_name }} қол жетімді {{ allowed_kb_num }} білім базасының {{ counter }}-і қосылды.",
+        "KbCounterFooter_es": "Added {{counter}} knowledge bases of {{ allowed_kb_num }} available with {{ plan_name }}",
         "AddKbInfoFirstText": "Білім қоры және GPT кілті үшін жарамды URL мекенжайын орнатыңыз.",
         "AddKbInfoSecondText": "Ескертпе: Әрқайсысы 200 беттен тұратын ең көбі 3 білім қорын қосуға болады. Үлкенірек білім базалары үшін өнімділікке кепілдік берілмейді",
         "YouCanAddKBOfUpTo200Pages":"200 бетке дейін білім қорын қосуға болады",

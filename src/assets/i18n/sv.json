@@ -1577,6 +1577,7 @@
         "CreationDate": "Skapelsedagen",
         "KbCounterFooter": "{{ counter }} av 3 kunskapsbaser tillagda",
         "KbCounterFooter_2": "Lade till {{ counter }} av {{ allowed_kb_num }} kunskapsbaser tillgängliga med {{ plan_name }}",
+        "KbCounterFooter_es": "Added {{counter}} knowledge bases of {{ allowed_kb_num }} available with {{ plan_name }}",
         "AddKbInfoFirstText": "Ange en giltig URL för kunskapsbasen och din GPT-nyckel.",
         "AddKbInfoSecondText": "Obs! Du kan lägga till maximalt 3 kunskapsbaser, var och en bestående av upp till 200 sidor. För större kunskapsbaser garanteras inte prestanda",
         "YouCanAddKBOfUpTo200Pages":"Du kan lägga till kunskapsbaser på upp till 200 sidor",

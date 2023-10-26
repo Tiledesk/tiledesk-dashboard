@@ -1578,6 +1578,7 @@
         "CreationDate": "Data creazione",
         "KbCounterFooter": "{{ counter }} di 3 Knowledge Base aggiunte",
         "KbCounterFooter_2": "Aggiunte {{counter}} basi di conoscenza di {{ allowed_kb_num }} disponibili con il {{ plan_name }}",
+        "KbCounterFooter_es": "Added {{counter}} knowledge bases of {{ allowed_kb_num }} available with {{ plan_name }}",
         "AddKbInfoFirstText": "Imposta un URL valido per la Knowledge Base e una GPT key.",
         "AddKbInfoSecondText": "Nota: puoi aggiungere un massimo di 3 Knowledge Base, ciascuna composta da un massimo di 200 pagine. Per Knowledge Base più grandi le performance non sono garantite",
         "YouCanAddKBOfUpTo200Pages":"Puoi aggiungere Knowledge Base fino a 200 pagine",

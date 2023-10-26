@@ -1576,6 +1576,7 @@
         "CreationDate": "Yaratilgan sana",
         "KbCounterFooter": "{{ counter }} 3 ta bilim bazasi qo'shildi",
         "KbCounterFooter_2": "{{ plan_name }} bilan mavjud {{ allowed_kb_num }} ta bilim bazasidan {{ counter }} tasi qoʻshildi",
+        "KbCounterFooter_es": "Added {{counter}} knowledge bases of {{ allowed_kb_num }} available with {{ plan_name }}",
         "AddKbInfoFirstText": "Ma'lumotlar bazasi va GPT kalitingiz uchun to'g'ri URL manzilini o'rnating.",
         "AddKbInfoSecondText": "Eslatma: Har biri 200 tagacha sahifadan iborat boʻlgan maksimal 3 ta bilim bazasini qoʻshishingiz mumkin. Kattaroq bilim bazalari uchun ishlash kafolatlanmaydi",
         "YouCanAddKBOfUpTo200Pages":"Siz 200 sahifagacha boʻlgan bilim bazalarini qoʻshishingiz mumkin",

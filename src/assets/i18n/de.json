@@ -1578,6 +1578,7 @@
 		"CreationDate": "Erstellungsdatum",
 		"KbCounterFooter": "{{ counter }} von 3 Wissensdatenbanken hinzugefügt",
 		"KbCounterFooter_2": "{{ counter }} von {{ allowed_kb_num }} verfügbaren Wissensdatenbanken mit {{ plan_name }} hinzugefügt",
+		"KbCounterFooter_es": "Added {{counter}} knowledge bases of {{ allowed_kb_num }} available with {{ plan_name }}",
 		"AddKbInfoFirstText": "Legen Sie eine gültige URL für die Wissensdatenbank und Ihren GPT-Schlüssel fest.",
 		"AddKbInfoSecondText": "Hinweis: Sie können maximal 3 Wissensdatenbanken mit jeweils bis zu 200 Seiten hinzufügen. Für größere Wissensdatenbanken kann die Leistung nicht garantiert werden",
 		"YouCanAddKBOfUpTo200Pages": "Sie können Wissensdatenbanken mit bis zu 200 Seiten hinzufügen",
