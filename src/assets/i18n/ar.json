@@ -1576,6 +1576,7 @@
         "RunIndexing": "تشغيل الفهرسة",
         "CreationDate": "تاريخ الإنشاء",
         "KbCounterFooter": "{{ counter }} تمت إضافة 3 قواعد معرفية",
+        "KbCounterFooter_2": "تمت إضافة {{counter}} من {{ allowed_kb_num }} قواعد معرفية متاحة مع {{plan_name }}",
         "AddKbInfoFirstText": "قم بتعيين عنوان URL صالح لقاعدة المعرفة ومفتاح GPT الخاص بك.",
         "AddKbInfoSecondText": "ملاحظة: يمكنك إضافة 3 قواعد معرفية كحد أقصى، تتكون كل قاعدة من 200 صفحة كحد أقصى. بالنسبة لقواعد المعرفة الأكبر، لا يتم ضمان الأداء",
         "YouCanAddKBOfUpTo200Pages": "يمكنك إضافة قواعد معارف تصل إلى 200 صفحة",

@@ -1576,6 +1576,7 @@
         "RunIndexing": "Dizin Oluşturmayı Çalıştır",
         "CreationDate": "Oluşturulma tarihi",
         "KbCounterFooter": "{{ counter }} / 3 Bilgi Tabanı eklendi",
+        "KbCounterFooter_2": "{{ plan_name }} ile kullanılabilen {{ allowed_kb_num }} bilgi tabanından {{ counter }}'si eklendi",
         "AddKbInfoFirstText": "Bilgi Bankası ve GPT anahtarınız için geçerli bir URL ayarlayın.",
         "AddKbInfoSecondText": "Not: Her biri en fazla 200 sayfadan oluşan maksimum 3 Bilgi Bankası ekleyebilirsiniz. Daha büyük bilgi tabanları için performans garanti edilmez",
         "YouCanAddKBOfUpTo200Pages":"200 sayfaya kadar Bilgi Tabanları ekleyebilirsiniz",

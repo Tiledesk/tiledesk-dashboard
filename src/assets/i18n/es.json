@@ -1576,6 +1576,7 @@
         "RunIndexing": "Ejecutar indexación",
         "CreationDate": "Fecha de creación",
         "KbCounterFooter": "{{ counter }} de 3 Bases de Conocimiento añadidas",
+        "KbCounterFooter_2": "Se agregaron {{ counter }} de {{ allowed_kb_num }} bases de conocimientos disponibles con {{ plan_name }}",
         "AddKbInfoFirstText": "Establezca una URL válida para la base de conocimientos y su clave GPT.",
         "AddKbInfoSecondText": "Nota: Puede agregar un máximo de 3 bases de conocimientos, cada una de las cuales consta de hasta 200 páginas. Para bases de conocimiento más grandes, el rendimiento no está garantizado",
         "YouCanAddKBOfUpTo200Pages": "Puedes agregar Bases de Conocimiento de hasta 200 páginas",

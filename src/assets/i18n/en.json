@@ -1576,6 +1576,7 @@
         "RunIndexing": "Run Indexing",
         "CreationDate": "Creation date",
         "KbCounterFooter": "{{counter}} of 3 Knowledge Bases added",
+        "KbCounterFooter_2": "Added {{counter}} knowledge bases of {{ allowed_kb_num }} available with {{ plan_name }}",
         "AddKbInfoFirstText": "Set a valid URL for the Knowledge Base and your GPT key.",
         "AddKbInfoSecondText": "Note: You can add a maximum of 3 Knowledge Bases, each consisting of up to 200 pages. For larger Knowledge bases performance is not guaranteed.",
         "YouCanAddKBOfUpTo200Pages":"You can add Knowledge Bases of up to 200 pages",
