@@ -9,6 +9,8 @@ import { AuthService } from 'app/core/auth.service';
 import { Router } from '@angular/router';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { ProjectPlanService } from 'app/services/project-plan.service';
+import { NotifyService } from 'app/core/notify.service';
+import { UsersService } from 'app/services/users.service';
 
 @Component({
   selector: 'appdashboard-home-kb',
@@ -42,8 +44,10 @@ export class HomeKbComponent extends PricingBaseComponent implements OnInit {
     private auth: AuthService,
     public router: Router,
     public prjctPlanService: ProjectPlanService,
+    public notify: NotifyService,
+    public usersService: UsersService,
   ) {
-    super(prjctPlanService);
+    super(prjctPlanService, notify);
    }
 
   ngOnInit(): void {
@@ -111,9 +115,9 @@ export class HomeKbComponent extends PricingBaseComponent implements OnInit {
         }
       })
     }, (error) => {
-      this.logger.error("[HOME-KB]] ERROR add new kb: ", error);
+      this.logger.error("[HOME-KB] ERROR add new kb: ", error);
     }, () => {
-      this.logger.info("[HOME-KB]] add new kb *COMPLETED*");
+      this.logger.info("[HOME-KB] add new kb *COMPLETED*");
     })
   }
 

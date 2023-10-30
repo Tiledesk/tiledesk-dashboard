@@ -275,7 +275,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     this.translationParams = { plan_name: PLAN_NAME.E }
     this.tParamsFreePlanSeatsNum = { free_plan_allowed_seats_num: PLAN_SEATS.free }
     this.tParamsFeatureAvailableWith = { plan_name: PLAN_NAME.F }
-    this.t_params = { 'plan_name': PLAN_NAME.D }
+    
   }
 
   ngOnInit() {
@@ -1031,10 +1031,10 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         } else if (this.subscription_is_active === false) {
           console.log('displayModalBanVisitor HERE 3 ')
           if (this.profile_name === PLAN_NAME.C) {
-          this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.C + ' plan', this.subscription_end_date);
-        } else if (this.profile_name === PLAN_NAME.F) {
-          this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.F + ' plan', this.subscription_end_date);
-        }
+            this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.C + ' plan', this.subscription_end_date);
+          } else if (this.profile_name === PLAN_NAME.F) {
+            this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.F + ' plan', this.subscription_end_date);
+          }
         }
       } else if (
         this.profile_name === PLAN_NAME.A ||
@@ -1358,23 +1358,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
           }
         }
 
-        /**
-         * *** GET THE subscription_creation_date FROM THE PTOJECT PROFILE ***
-         */
-        // if (projectProfileData.subscription_creation_date) {
-        //   this.subscription_creation_date = projectProfileData.subscription_creation_date;
-        //   this.logger.log('ProjectPlanService (ProjectEditAddComponent) subscription_creation_date', this.subscription_creation_date)
-        // }
-        // RETURN THE CURRENT DAY AT THE TIME 00:00:00
-
-        // if (this.profile_name === PLAN_NAME.C && this.subscription_is_active === true) {
-        //   this.advancedSettingBtnDisabled = false
-        // } else if (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) {
-        //   this.advancedSettingBtnDisabled = true
-
-        // } else if (this.profile_name !== PLAN_NAME.C) {
-        //   this.advancedSettingBtnDisabled = true
-        // }
+     
 
         const today = moment().startOf('day')
 
@@ -1435,6 +1419,11 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
             // console.log('[WS-REQUESTS-MSGS] displayChatRatings', this.DISPLAY_ADVANCED_TAB)
           } else {
             this.DISPLAY_ADVANCED_TAB = false;
+            if (this.profile_name === 'Sandbox') {
+              this.t_params = { 'plan_name': PLAN_NAME.D }
+            } else if (this.profile_name === 'free') {
+              this.t_params = { 'plan_name': PLAN_NAME.A }
+            }
             // console.log('[WS-REQUESTS-MSGS] profile_type', projectProfileData.profile_type)
             // console.log('[WS-REQUESTS-MSGS] displayChatRatings', this.DISPLAY_ADVANCED_TAB)
           }
@@ -2719,7 +2708,18 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     if (this.profile_name == PLAN_NAME.C && this.subscription_is_active === true) {
       // console.log('PRJCT-EDIT-ADD] GO TO WEBHOOK PAGE HERE USECASE PLAN C ACTIVE ')
       this.router.navigate(['project/' + this.id_project + '/webhook']);
-
+    }
+    if (this.profile_name == PLAN_NAME.D && this.subscription_is_active === true) {
+      // console.log('PRJCT-EDIT-ADD] GO TO WEBHOOK PAGE HERE USECASE PLAN C ACTIVE ')
+      this.router.navigate(['project/' + this.id_project + '/webhook']);
+    }
+    if (this.profile_name == PLAN_NAME.E && this.subscription_is_active === true) {
+      // console.log('PRJCT-EDIT-ADD] GO TO WEBHOOK PAGE HERE USECASE PLAN C ACTIVE ')
+      this.router.navigate(['project/' + this.id_project + '/webhook']);
+    }
+    if (this.profile_name == PLAN_NAME.F && this.subscription_is_active === true) {
+      // console.log('PRJCT-EDIT-ADD] GO TO WEBHOOK PAGE HERE USECASE PLAN f ACTIVE ')
+      this.router.navigate(['project/' + this.id_project + '/webhook']);
 
     } else if (this.prjct_profile_type === 'free' && this.prjct_trial_expired === true) {
       // console.log('PRJCT-EDIT-ADD] GO TO WEBHOOK PAGE HERE USECASE PLAN FREE FOREVER - PRESENT MODAL ')
@@ -2731,6 +2731,15 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       // console.log('PRJCT-EDIT-ADD] GO TO WEBHOOK PAGE HERE USECASE PLAN B EXPIRED - PRESENT MODAL ')
       this.presentModalFeautureAvailableOnlyWithPaidPlans()
     } else if (this.profile_name == PLAN_NAME.C && this.subscription_is_active === false) {
+      // console.log('PRJCT-EDIT-ADD] GO TO WEBHOOK PAGE HERE USECASE PLAN C EXPIRED - PRESENT MODAL ')
+      this.presentModalFeautureAvailableOnlyWithPaidPlans()
+    } else if (this.profile_name == PLAN_NAME.D && this.subscription_is_active === false) {
+      // console.log('PRJCT-EDIT-ADD] GO TO WEBHOOK PAGE HERE USECASE PLAN C EXPIRED - PRESENT MODAL ')
+      this.presentModalFeautureAvailableOnlyWithPaidPlans()
+    } else if (this.profile_name == PLAN_NAME.E && this.subscription_is_active === false) {
+      // console.log('PRJCT-EDIT-ADD] GO TO WEBHOOK PAGE HERE USECASE PLAN C EXPIRED - PRESENT MODAL ')
+      this.presentModalFeautureAvailableOnlyWithPaidPlans()
+    } else if (this.profile_name == PLAN_NAME.F && this.subscription_is_active === false) {
       // console.log('PRJCT-EDIT-ADD] GO TO WEBHOOK PAGE HERE USECASE PLAN C EXPIRED - PRESENT MODAL ')
       this.presentModalFeautureAvailableOnlyWithPaidPlans()
     }

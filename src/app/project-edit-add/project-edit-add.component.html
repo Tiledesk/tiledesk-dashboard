@@ -901,7 +901,7 @@
 
                     <div class="row">
                       <div class="col-xs-12">
-                        <button (click)="goToWebhookPage()" class="btn btn-primary"
+                        <button  class="btn btn-primary" (click)="goToWebhookPage()"
                           style="margin-top:5px; padding:6px 15px ">
                           {{ "ProjectEditPage.ManageWebhook" | translate }}
                         </button>
@@ -914,9 +914,11 @@
                         <div class="upgrade-btn-wpr">
                           <button class="btn btn-get-feature-no-boxshadow pull-left"
                             style="margin-bottom: 0px;margin-top: 0px!important; margin-left: 15px;"
-                            (click)="goToPricing()" matTooltipClass="custom-mat-tooltip-in-widget-setup"
+                            (click)="goToPricing()" 
+                            matTooltipClass="custom-mat-tooltip-in-widget-setup"
                             matTooltip=" {{'UpgradePlanToGetTheFeature' | translate}}" #tooltip="matTooltip"
-                            matTooltipPosition='below' matTooltipHideDelay="100">
+                            matTooltipPosition='below'
+                             matTooltipHideDelay="100">
                             <span class="material-icons-outlined get-feature-upgrade-plan-icon">
                               upgrade
                             </span>

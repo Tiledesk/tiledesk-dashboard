@@ -28,11 +28,11 @@ export class KbAlertComponent extends PricingBaseComponent implements OnInit {
     public prjctPlanService: ProjectPlanService,
     private kbService: KnowledgeBaseService,
     private logger: LoggerService,
-    private usersService: UsersService,
-    private notify: NotifyService,
+    public usersService: UsersService,
+    public notify: NotifyService,
     private translate: TranslateService,
   ) { 
-    super(prjctPlanService);
+    super(prjctPlanService, notify);
   }
 
   ngOnInit(): void {

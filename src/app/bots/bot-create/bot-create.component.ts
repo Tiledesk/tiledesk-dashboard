@@ -144,7 +144,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
     private translate: TranslateService,
     public location: Location,
     private botLocalDbService: BotLocalDbService,
-    private notify: NotifyService,
+    public notify: NotifyService,
     public brandService: BrandService,
     private departmentService: DepartmentService,
     private logger: LoggerService,
@@ -152,10 +152,10 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
     private appConfigService: AppConfigService,
     private projectService: ProjectService,
     public prjctPlanService: ProjectPlanService,
-    private usersService: UsersService,
+    public usersService: UsersService,
     public dialog: MatDialog,
   ) {
-    super(prjctPlanService);
+    super(prjctPlanService, notify);
     const brand = brandService.getBrand();
     this.tparams = brand;
     this.dialogflowLang = dialogflowLanguage

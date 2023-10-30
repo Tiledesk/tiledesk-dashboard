@@ -608,14 +608,14 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         // this.logger.log('[HOME] - Find Current Project Among All - BEFORE  Emitting TRIAL ENDED')
         // if (hasEmittedTrialEnded === null) {
 
-        console.log('[HOME] - Find Current Project Among All - Emitting TRIAL ENDED profile_name_for_segment',  this.profile_name_for_segment)
+        console.log('[HOME] - Find Current Project Among All - Emitting TRIAL ENDED profile_name_for_segment', this.profile_name_for_segment)
         // ------------------------------------
         // @ Segment: emit Trial Ended
         // ------------------------------------
         if (!isDevMode()) {
           setTimeout(() => {
             if (window['analytics']) {
-              console.log('[HOME] - Find Current Project Among All - Emitting TRIAL ENDED profile_name_for_segment',  this.profile_name_for_segment)
+              console.log('[HOME] - Find Current Project Among All - Emitting TRIAL ENDED profile_name_for_segment', this.profile_name_for_segment)
               try {
                 window['analytics'].track('Trial Ended', {
                   "userId": this.user._id,
@@ -2922,7 +2922,20 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   goToProjectSettingsGeneral() {
-    this.router.navigate(['project/' + this.projectId + '/project-settings/general']);
+    if (this.USER_ROLE === 'owner') {
+      this.router.navigate(['project/' + this.projectId + '/project-settings/general']);
+    } else {
+      this.presentModalOnlyOwnerCanManageTheAccountPlan()
+    }
+  }
+
+
+  goToPricing() {
+    if (this.USER_ROLE === 'owner') {
+      this.router.navigate(['project/' + this.projectId + '/pricing']);
+    } else {
+      this.presentModalOnlyOwnerCanManageTheAccountPlan()
+    }
   }
 
 
@@ -2987,10 +3000,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.router.navigate(['project/' + this.projectId + '/hours-demo']);
   }
 
-  // test link
-  goToPricing() {
-    this.router.navigate(['project/' + this.projectId + '/pricing']);
-  }
+
 
 
   goToOperatingHours() {

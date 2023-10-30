@@ -238,11 +238,11 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
     }
   }
 
-  go_ToPricing() {
+  goTo_Pricing() {
     this.router.navigate(['project/' + this.projectId + '/pricing']);
 
     this.notify.closeModalTrialExpired()
-    }
+  }
 
   onLogoutModalHandled() {
     this.notify.closeLogoutModal()
@@ -310,7 +310,7 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
             if (window['analytics']) {
 
               let userFullname = ''
-              if (this.currentUser.firstname && this.currentUser.lastname)  {
+              if (this.currentUser.firstname && this.currentUser.lastname) {
                 userFullname = this.currentUser.firstname + ' ' + this.currentUser.lastname
               } else if (this.currentUser.firstname && !this.currentUser.lastname) {
                 userFullname = this.currentUser.firstname

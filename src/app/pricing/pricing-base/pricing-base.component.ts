@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { NotifyService } from 'app/core/notify.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { ProjectPlanService } from 'app/services/project-plan.service';
+import { UsersService } from 'app/services/users.service';
 import { APPSUMO_PLAN_SEATS, APP_SUMO_PLAN_NAME, CHATBOT_MAX_NUM, KB_MAX_NUM, PLAN_NAME, PLAN_SEATS } from 'app/utils/util';
 
 @Component({
@@ -21,6 +23,9 @@ export class PricingBaseComponent implements OnInit {
   CHATBOT_MAX_NUM = CHATBOT_MAX_NUM;
   KB_MAX_NUM = KB_MAX_NUM
 
+
+  USER_ROLE: string;
+
   prjct_id: string;
   prjct_name: string;
   appSumoProfile: string;
@@ -31,7 +36,7 @@ export class PricingBaseComponent implements OnInit {
   profile_name: string
   trial_expired: any;
   prjct_profile_name: string
-
+  appSumoProfilefeatureAvailableFromBPlan: string;
 
   // Plan limit
   public seatsLimit: any;
@@ -44,9 +49,15 @@ export class PricingBaseComponent implements OnInit {
   public tParamsPlanAndChatBot: any;
   public tParamsPlanAndKb: any;
   public tParamsPlanNameTrialExpired: any;
-
+  public tParamsHoursAvailableFromPlan: any;
+  public tParamsActivitiesFromPlan: any;
+  public tParamsCRMAvailableFromPlan: any;
+  public tParamsCannedAvailableFromPlan: any;
+  public tParamsAvailableFromTier2: any; // Scale or Premium
+  public tParamsAvailableFromAppSumoTier2: any; 
   constructor(
     public prjctPlanService: ProjectPlanService,
+    public notify: NotifyService,
   ) {
 
   }
@@ -80,13 +91,18 @@ export class PricingBaseComponent implements OnInit {
           this.profile_name = projectProfileData.profile_name;
           console.log('[P-BASE] - GET PROJECT PROFILE - profile_name ', this.profile_name);
 
+          this.USER_ROLE = projectProfileData.user_role
+          console.log('[P-BASE] - GET PROJECT PROFILE - USER_ROLE ', this.USER_ROLE);
+
           this.trial_expired = projectProfileData.trial_expired;
           console.log('[P-BASE]  - GET PROJECT PROFILE - trial_expired ', this.trial_expired);
 
           if (projectProfileData && projectProfileData.extra3) {
             console.log('[P-BASE] Find Current Project Among All extra3 ', projectProfileData.extra3)
-            this.appSumoProfile = APP_SUMO_PLAN_NAME[projectProfileData.extra3]
+            this.appSumoProfile = APP_SUMO_PLAN_NAME[projectProfileData.extra3],
+            this.appSumoProfilefeatureAvailableFromBPlan = APP_SUMO_PLAN_NAME['tiledesk_tier3']
             console.log('[P-BASE] Find Current Project appSumoProfile ', this.appSumoProfile)
+            this.tParamsAvailableFromAppSumoTier2 = this.appSumoProfilefeatureAvailableFromBPlan
           }
 
           if (projectProfileData.profile_type === 'free') {
@@ -109,8 +125,12 @@ export class PricingBaseComponent implements OnInit {
                 this.chatBotLimit = null
                 console.log('[P-BASE] - GET PROJECT PLAN - CB LIMIT ', this.chatBotLimit)
 
+                // KB limit
                 this.kbLimit = 3
                 console.log('[P-BASE] - GET PROJECT PLAN - KB LIMIT ', this.kbLimit)
+
+                // Translate params for static page
+                this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.C }
 
                 // ------------------------------------------------------------------------
                 // USECASE: Sandbox Plan (new FREE PLAN - TRIAL ACTIVE i.e. Premium trial)
@@ -134,9 +154,11 @@ export class PricingBaseComponent implements OnInit {
                 this.tParamsPlanAndKb = { plan_name: this.prjct_profile_name, allowed_kb_num: this.kbLimit }
                 console.log('[P-BASE] - GET PROJECT PLAN - KB LIMIT ', this.kbLimit)
 
-               
+                // Translate params for static page
+                this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.F }
               }
             } else {
+
 
               // ------------------------------------------------------------------------
               // USECASE: Free Plan (TRIAL EXPIRED)
@@ -159,7 +181,14 @@ export class PricingBaseComponent implements OnInit {
                 this.tParamsPlanAndKb = { plan_name: this.prjct_profile_name, allowed_kb_num: this.kbLimit }
                 console.log('[P-BASE] - GET PROJECT PLAN - KB LIMIT ', this.kbLimit)
 
-                this.tParamsPlanNameTrialExpired = {plan_name: PLAN_NAME.B }
+                // Translate params for static page
+                this.tParamsHoursAvailableFromPlan = { plan_name: PLAN_NAME.A }
+                this.tParamsCRMAvailableFromPlan = { plan_name: PLAN_NAME.A }
+                this.tParamsCannedAvailableFromPlan = { plan_name: PLAN_NAME.A }
+                this.tParamsAvailableFromTier2 = { plan_name: PLAN_NAME.B }
+                this.tParamsPlanNameTrialExpired = { plan_name: PLAN_NAME.B }
+                this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.C }
+
 
                 // ------------------------------------------------------------------------
                 // USECASE: Sandbox Plan (TRIAL EXPIRED)
@@ -183,7 +212,15 @@ export class PricingBaseComponent implements OnInit {
                 this.tParamsPlanAndKb = { plan_name: this.prjct_profile_name, allowed_kb_num: this.kbLimit }
                 console.log('[P-BASE] - GET PROJECT PLAN - KB LIMIT ', this.kbLimit)
 
-                this.tParamsPlanNameTrialExpired = {plan_name: PLAN_NAME.E}
+                // Translate params for static page
+
+                this.tParamsHoursAvailableFromPlan = { plan_name: PLAN_NAME.D }
+                this.tParamsCRMAvailableFromPlan = { plan_name: PLAN_NAME.D }
+                this.tParamsCannedAvailableFromPlan = { plan_name: PLAN_NAME.D }
+                this.tParamsAvailableFromTier2 = { plan_name: PLAN_NAME.E }
+                this.tParamsPlanNameTrialExpired = { plan_name: PLAN_NAME.E }
+                this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.F }
+
               }
             }
           } else if (projectProfileData.profile_type === 'payment') {
@@ -212,6 +249,10 @@ export class PricingBaseComponent implements OnInit {
                   this.tParamsPlanAndKb = { plan_name: this.prjct_profile_name, allowed_kb_num: this.kbLimit };
                   console.log('[P-BASE] - GET PROJECT PLAN - KB LIMIT ', this.kbLimit);
 
+                  // Translate params for static page
+                  this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.C }
+                  this.tParamsAvailableFromTier2 = { plan_name: PLAN_NAME.B }
+
                 } else {
                   // ------------------------------------------------------------------------
                   // USECASE: Growth Plan AppSumo (SUB ACTIVE)
@@ -232,6 +273,9 @@ export class PricingBaseComponent implements OnInit {
                   this.kbLimit = 3;
                   this.tParamsPlanAndKb = { plan_name: this.prjct_profile_name, allowed_kb_num: this.kbLimit };
                   console.log('[P-BASE] - GET PROJECT PLAN - KB LIMIT ', this.kbLimit);
+
+                  // Translate params for static page
+                  this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.C }
                 }
               } else if (this.profile_name === PLAN_NAME.B) {
                 // ------------------------------------------------------------------------
@@ -254,6 +298,9 @@ export class PricingBaseComponent implements OnInit {
                   this.kbLimit = 3;
                   this.tParamsPlanAndKb = { plan_name: this.prjct_profile_name, allowed_kb_num: this.kbLimit };
                   console.log('[P-BASE] - GET PROJECT PLAN - KB LIMIT ', this.kbLimit);
+
+                  // Translate params for static page
+                  this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.C }
                 } else {
                   // ------------------------------------------------------------------------
                   // USECASE: Scale Plan AppSumo (SUB ACTIVE)
@@ -274,6 +321,9 @@ export class PricingBaseComponent implements OnInit {
                   this.kbLimit = 3;
                   this.tParamsPlanAndKb = { plan_name: this.prjct_profile_name, allowed_kb_num: this.kbLimit };
                   console.log('[P-BASE] - GET PROJECT PLAN - KB LIMIT ', this.kbLimit);
+
+                  // Translate params for static page
+                  this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.C }
                 }
                 // ------------------------------------------------------------------------
                 // USECASE: Plus Plan (SUB ACTIVE)
@@ -318,6 +368,10 @@ export class PricingBaseComponent implements OnInit {
                 this.tParamsPlanAndKb = { plan_name: this.prjct_profile_name, allowed_kb_num: this.kbLimit }
                 console.log('[P-BASE] - GET PROJECT PLAN - KB LIMIT ', this.kbLimit);
 
+                // Translate params for static page
+                this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.F }
+                this.tParamsAvailableFromTier2 = { plan_name: PLAN_NAME.E }
+
                 // ------------------------------------------------------------------------
                 // USECASE: Premium Plan (SUB ACTIVE) new for Scale Plan
                 // ------------------------------------------------------------------------
@@ -339,6 +393,9 @@ export class PricingBaseComponent implements OnInit {
                 this.kbLimit = KB_MAX_NUM[PLAN_NAME.E]
                 this.tParamsPlanAndKb = { plan_name: this.prjct_profile_name, allowed_kb_num: this.kbLimit }
                 console.log('[P-BASE] - GET PROJECT PLAN - KB LIMIT ', this.kbLimit);
+
+                // Translate params for static page
+                this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.F }
 
                 // ------------------------------------------------------------------------
                 // USECASE: Custom Plan (SUB ACTIVE) new for Plus Plan
@@ -364,6 +421,8 @@ export class PricingBaseComponent implements OnInit {
               }
 
             } else if (this.subscription_is_active === false) {
+
+
               // ------------------------------------------------------------------------
               // USECASE: Growth Plan (SUB EXPIRED)
               // ------------------------------------------------------------------------
@@ -385,6 +444,9 @@ export class PricingBaseComponent implements OnInit {
                 this.tParamsPlanAndKb = { plan_name: this.prjct_profile_name, allowed_kb_num: this.kbLimit }
                 console.log('[P-BASE] - GET PROJECT PLAN - KB LIMIT ', this.kbLimit);
 
+
+                // Translate params for static page
+                this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.C }
                 // ------------------------------------------------------------------------
                 // USECASE: Scale Plan (SUB EXPIRED)
                 // ------------------------------------------------------------------------
@@ -405,6 +467,10 @@ export class PricingBaseComponent implements OnInit {
                 this.kbLimit = 3;
                 this.tParamsPlanAndKb = { plan_name: this.prjct_profile_name, allowed_kb_num: this.kbLimit }
                 console.log('[P-BASE] - GET PROJECT PLAN - KB LIMIT ', this.kbLimit);
+
+                // Translate params for static page
+                this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.C }
+                this.tParamsAvailableFromTier2 = {plan_name: PLAN_NAME.B}
                 // ------------------------------------------------------------------------
                 // USECASE: Plus Plan (SUB EXPIRED)
                 // ------------------------------------------------------------------------
@@ -425,6 +491,10 @@ export class PricingBaseComponent implements OnInit {
                 this.kbLimit = 3;
                 this.tParamsPlanAndKb = { plan_name: this.prjct_profile_name, allowed_kb_num: this.kbLimit }
                 console.log('[P-BASE] - GET PROJECT PLAN - KB LIMIT ', this.kbLimit);
+
+                // Translate params for static page
+                this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.C }
+                this.tParamsAvailableFromTier2 = {plan_name: PLAN_NAME.B}
 
                 // ------------------------------------------------------------------------
                 // USECASE: Basic Plan (SUB EXPIRED) new for Growth
@@ -448,6 +518,10 @@ export class PricingBaseComponent implements OnInit {
                 this.tParamsPlanAndKb = { plan_name: this.prjct_profile_name, allowed_kb_num: this.kbLimit }
                 console.log('[P-BASE] - GET PROJECT PLAN - KB LIMIT ', this.kbLimit);
 
+
+                // Translate params for static page
+                this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.F }
+
                 // ------------------------------------------------------------------------
                 // USECASE: Premium Plan (SUB EXPIRED) new for Scale
                 // ------------------------------------------------------------------------
@@ -470,6 +544,10 @@ export class PricingBaseComponent implements OnInit {
                 this.tParamsPlanAndKb = { plan_name: this.prjct_profile_name, allowed_kb_num: this.kbLimit }
                 console.log('[P-BASE] - GET PROJECT PLAN - KB LIMIT ', this.kbLimit);
 
+                // Translate params for static page
+                this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.F }
+                this.tParamsAvailableFromTier2 = {plan_name: PLAN_NAME.E }
+
                 // ------------------------------------------------------------------------
                 // USECASE: Custom Plan (SUB EXPIRED) new for Plus
                 // ------------------------------------------------------------------------
@@ -491,6 +569,10 @@ export class PricingBaseComponent implements OnInit {
                 this.kbLimit = KB_MAX_NUM.free;
                 this.tParamsPlanAndKb = { plan_name: this.prjct_profile_name, allowed_kb_num: this.kbLimit }
                 console.log('[P-BASE] - GET PROJECT PLAN - KB LIMIT ', this.kbLimit);
+
+                // Translate params for static page
+                this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.F }
+                this.tParamsAvailableFromTier2 = {plan_name: PLAN_NAME.E }
               }
             }
           }
@@ -503,6 +585,21 @@ export class PricingBaseComponent implements OnInit {
         console.log('[P-BASE] GET PROJECT PROFILE * COMPLETE *')
       },
     )
+  }
+
+
+
+  // Dialogs
+  openModalTrialExpired() {
+    if (this.USER_ROLE === 'owner') {
+      this.notify.displayTrialHasExpiredModal();
+    } else {
+      this.presentModalOnlyOwnerCanManageTheAccountPlan();
+    }
+  }
+
+  presentModalOnlyOwnerCanManageTheAccountPlan() {
+    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan('Agents can\'t manage chatbots', 'Learn more about default roles')
   }
 
 }

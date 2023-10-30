@@ -62,9 +62,12 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit, 
     private router: Router,
     public appConfigService: AppConfigService,
     public prjctPlanService: ProjectPlanService,
-    private usersService: UsersService,
-    private notify: NotifyService
-  ) { super(prjctPlanService); }
+    public usersService: UsersService,
+    public notify: NotifyService
+  ) { 
+    super(prjctPlanService, notify);
+  
+  }
 
   ngOnInit(): void {
     this.getBrowserVersion();

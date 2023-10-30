@@ -62,14 +62,14 @@ export class HomeCreateTeammateComponent extends PricingBaseComponent implements
     public auth: AuthService,
     private logger: LoggerService,
     public appConfigService: AppConfigService,
-    private usersService: UsersService,
+    public usersService: UsersService,
     private groupsService: GroupService,
     public router: Router,
     public dialog: MatDialog,
     public prjctPlanService: ProjectPlanService,
-    private notify: NotifyService,
+    public notify: NotifyService,
   ) {
-    super(prjctPlanService);
+    super(prjctPlanService, notify);
    }
 
   ngOnInit(): void {

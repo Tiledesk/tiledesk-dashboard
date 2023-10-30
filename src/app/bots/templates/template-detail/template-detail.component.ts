@@ -85,7 +85,7 @@ export class TemplateDetailComponent extends PricingBaseComponent implements OnI
     public appConfigService: AppConfigService,
     private logger: LoggerService,
     public auth: AuthService,
-    private usersService: UsersService,
+    public usersService: UsersService,
     private faqKbService: FaqKbService,
     private router: Router,
     public dialog: MatDialog,
@@ -93,9 +93,9 @@ export class TemplateDetailComponent extends PricingBaseComponent implements OnI
     private botLocalDbService: BotLocalDbService,
     private projectService: ProjectService,
     public prjctPlanService: ProjectPlanService,
-    private notify: NotifyService
+    public notify: NotifyService
   ) {
-    super(prjctPlanService);
+    super(prjctPlanService, notify);
     console.log('[TEMPLATE DETAIL] data ', data)
     this.projectid = data.projectId
     this.template = data.template;

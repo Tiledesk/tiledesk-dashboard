@@ -235,7 +235,7 @@
         <h2 class="modal-title"
           style="color: #262f3c; text-align: center; font-family: 'Poppins','Roboto', 'Arial', sans-serif; margin-top: 20px; font-size:28px">
           <span style="vertical-align: middle;">
-            Your 14-day free trial has expired
+            Your trial has ended
           </span>
         </h2>
 
@@ -248,7 +248,8 @@
           <div class="col-sm-12">
             <h3 style="text-align: center;  color: #8894ab; font-size: 22px; margin-bottom: 20px;">
               
-              Upgrade your plan
+              You have been reverted to our free plan and the paid features have been paused.
+              To keep using our paid features, upgrade to one of our paid plans
             </h3>
           </div>
         </div>
@@ -258,10 +259,10 @@
         style="margin-top: 0px; background-color: #fff; border-top:none; border-bottom-left-radius:6px; border-bottom-right-radius:6px">
         <div style="text-align: center; margin-bottom: 15px;">
         
-          <button *ngIf="USER_ROLE === 'owner'" type="button" class="btn btn-primary" (click)="goToPricing()" >
+          <button *ngIf="USER_ROLE === 'owner'" type="button" class="btn btn-primary" (click)="goTo_Pricing()" >
 
             <!-- {{ 'Pricing.UpgradePlan' | translate }} -->
-            Upgrade Plan
+            Upgrade you plan
           </button>
         </div>
       </div>

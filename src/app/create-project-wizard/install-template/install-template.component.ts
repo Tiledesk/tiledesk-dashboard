@@ -90,11 +90,11 @@ export class InstallTemplateComponent extends PricingBaseComponent implements On
     private departmentService: DepartmentService,
     public appConfigService: AppConfigService,
     public prjctPlanService: ProjectPlanService,
-    private usersService: UsersService,
-    private notify: NotifyService,
+    public usersService: UsersService,
+    public notify: NotifyService,
   ) {
     // super(translate);
-    super(prjctPlanService);
+    super(prjctPlanService, notify);
     const brand = brandService.getBrand();
     this.companyLogoBlack_Url = brand['company_logo_black__url'];
     this.tparams = brand;

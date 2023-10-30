@@ -177,7 +177,7 @@
             Bring your team on board for collaborative automation and customer interactions
         </div>
         <div *ngIf="USER_ROLE !== 'agent'" class="temmates-redeemed">
-            <span class="material-icons" *ngIf="(((prjct_profile_type === 'payment' && subscription_is_active === true) ||
+            <!-- <span class="material-icons" *ngIf="(((prjct_profile_type === 'payment' && subscription_is_active === true) ||
             (prjct_profile_type === 'free' && trial_expired === false) || 
             (prjct_profile_type === 'free' && trial_expired === true))  &&
             (projectUsersLength + countOfPendingInvites > seatsLimit))" style="color: #f44336; cursor: pointer;"
@@ -185,7 +185,10 @@
                 matTooltip="The number of teammates exceeds the number allowed for the {{ prjct_profile_name }}. Update the plan or manually remove excess teammates (the system will do it automatically in a month) "
                 #tooltip="matTooltip" matTooltipPosition='above' matTooltipHideDelay="100">
                 error
-            </span>
+            </span> -->
+
+
+
             <span class="redeemed-temmates-redeemed-num" 
                 matTooltipClass="h-custom-mat-tooltip"
                 matTooltip="View detail in Teammates & Groups" 
@@ -201,18 +204,33 @@
             </span>
             of {{ seatsLimit }} available for the {{prjct_profile_name}}.
 
-            <span *ngIf="!subscription_is_active && prjct_profile_type === 'payment'">
+            <span *ngIf="(!subscription_is_active && prjct_profile_type === 'payment') && (countOfPendingInvites + projectUsersLength > seatsLimit)">
                 <i class="material-icons" 
-                matTooltipClass="h-custom-mat-tooltip"
-                matTooltip="Subscription payment problem" 
-                #tooltip="matTooltip" 
-                matTooltipPosition='below'
-                matTooltipHideDelay="100" 
-                (click)="openModalSubsExpired()"
-                style="vertical-align: middle; color: #f44336; cursor: pointer; font-size: 20px;"> 
-                    error_outline 
+                    matTooltipClass="h-custom-mat-tooltip"
+                    matTooltip="Subscription payment problem" 
+                    #tooltip="matTooltip" 
+                    matTooltipPosition='below'
+                    matTooltipHideDelay="100" 
+                    (click)="openModalSubsExpired()"
+                    style="vertical-align: middle; color: #f44336; cursor: pointer; font-size: 20px;"> 
+                    error 
                 </i>
             </span>
+
+            <span *ngIf="(trial_expired && prjct_profile_type === 'free') && (countOfPendingInvites + projectUsersLength > seatsLimit)">
+                <i class="material-icons" 
+                    matTooltipClass="h-custom-mat-tooltip"
+                    matTooltip="Your 14-day free trial has expired" 
+                    #tooltip="matTooltip" 
+                    matTooltipPosition='below'
+                    matTooltipHideDelay="100" 
+                    (click)="openModalTrialExpired()"
+                    style="vertical-align: middle; color: #f44336; cursor: pointer; font-size: 20px;"> 
+                    error 
+                </i>
+            </span>
+
+        
         </div>
 
         <div *ngIf="USER_ROLE === 'agent'" class="temmates-redeemed">
@@ -238,9 +256,10 @@
 
 
         <div class="ct-action-btns-wpr" *ngIf="USER_ROLE !== 'agent'">
-            <!-- goToTeammates() -->
+            <!-- goToTeammates() --> 
+            <!-- [disabled]="!subscription_is_active && " -->
             <button id="home-material-btn" class="mat-focus-indicator mat-flat-button mat-button-base"
-                (click)="inviteTeammate()" [disabled]="!subscription_is_active">
+                (click)="inviteTeammate()" >
                 <span class="mat-button-wrapper">
 
                     <span class="ml-2" style="font-size: 15px;">

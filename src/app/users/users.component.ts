@@ -108,16 +108,16 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, OnDe
   isChromeVerGreaterThan100: boolean
  
   constructor(
-    private usersService: UsersService,
+    public usersService: UsersService,
     private router: Router,
     private auth: AuthService,
-    private notify: NotifyService,
+    public notify: NotifyService,
     private translate: TranslateService,
     public prjctPlanService: ProjectPlanService,
     public appConfigService: AppConfigService,
     private logger: LoggerService,
   ) {
-    super(prjctPlanService);
+    super(prjctPlanService, notify);
     this.tParamsFreePlanSeatsNum = { free_plan_allowed_seats_num: PLAN_SEATS.free }
 
   }

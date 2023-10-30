@@ -128,7 +128,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     private faqService: FaqService,
     private auth: AuthService,
     private _location: Location,
-    private notify: NotifyService,
+    public notify: NotifyService,
     public appConfigService: AppConfigService,
     private translate: TranslateService,
     public brandService: BrandService,
@@ -138,9 +138,9 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     private botLocalDbService: BotLocalDbService,
     public dialog: MatDialog,
     public prjctPlanService: ProjectPlanService,
-    private usersService: UsersService
+    public usersService: UsersService
   ) {
-    super(prjctPlanService);
+    super(prjctPlanService, notify);
     const brand = brandService.getBrand();
     this.tparams = brand;
     this.dev_mode = isDevMode()

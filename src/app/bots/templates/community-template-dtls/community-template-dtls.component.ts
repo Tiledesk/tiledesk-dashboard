@@ -52,11 +52,11 @@ export class CommunityTemplateDtlsComponent extends PricingBaseComponent impleme
     private router: Router,
     private departmentService: DepartmentService,
     public prjctPlanService: ProjectPlanService,
-    private usersService: UsersService,
+    public usersService: UsersService,
     public dialog: MatDialog,
-    private notify: NotifyService
+    public notify: NotifyService
   ) {
-    super(prjctPlanService);
+    super(prjctPlanService, notify);
   }
 
   ngOnInit(): void {

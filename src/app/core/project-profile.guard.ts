@@ -65,7 +65,7 @@ export class ProjectProfileGuard implements CanActivate {
         //   this.userIsAuthorized = false;
         // }
 
-        if ((planName !== PLAN_NAME.C && url.indexOf('/activities') !== -1)) {
+        if ((planName !== PLAN_NAME.C && planName !== PLAN_NAME.F && url.indexOf('/activities') !== -1)) {
           this.userIsAuthorized = false;
           // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> Plan type', type, 'Plan name: ', planName, ' - userIsAuthorized: ', this.userIsAuthorized);
           // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> PAGE IS ACTIVITIES', url.indexOf('/activities') !== -1);
@@ -102,7 +102,7 @@ export class ProjectProfileGuard implements CanActivate {
           // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> PAGE IS ', url.indexOf('/analytics') !== -1);
         }
         
-        // PLAN A and PLAN C AUTHORIZED TO MONITOR
+        // PLAN A and PLAN B and PLAN C AUTHORIZED TO MONITOR
         if ((planName === PLAN_NAME.A && url.indexOf('/wsrequests') !== -1) || (planName === PLAN_NAME.B && url.indexOf('/wsrequests') !== -1) || (planName === PLAN_NAME.C && url.indexOf('/wsrequests') !== -1)) {
           this.userIsAuthorized = true;
           // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> Plan type', type, 'Plan name: ', planName, ' - userIsAuthorized: ', this.userIsAuthorized);
@@ -202,7 +202,7 @@ export class ProjectProfileGuard implements CanActivate {
         // }
 
 
-        if ((planName !== PLAN_NAME.C && url.indexOf('/activities') !== -1)) {
+        if ((planName !== PLAN_NAME.C && planName !== PLAN_NAME.F && url.indexOf('/activities') !== -1)) {
           this.userIsAuthorized = false;
           // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> Plan type', type, 'Plan name: ', planName, ' - userIsAuthorized: ', this.userIsAuthorized);
           // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> PAGE IS ACTIVITIES', url.indexOf('/activities') !== -1);

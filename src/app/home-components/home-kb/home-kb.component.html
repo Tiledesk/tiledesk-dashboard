@@ -17,6 +17,33 @@
             <!-- {{ 'KbPage.KbCounterFooter' | translate: { counter: kbSettings?.kbs?.length } }} -->
            <!-- {{kbSettings?.kbs?.length }} of 3 Knowledge Bases added -->
            {{ 'KbPage.KbCounterFooter_es' | translate: { counter: kbCount, allowed_kb_num: kbLimit, plan_name: prjct_profile_name } }}
+        
+           <span *ngIf="(!subscription_is_active && prjct_profile_type === 'payment') && (kbCount > kbLimit)">
+            <i class="material-icons" 
+                matTooltipClass="h-custom-mat-tooltip"
+                matTooltip="Subscription payment problem" 
+                #tooltip="matTooltip" 
+                matTooltipPosition='below'
+                matTooltipHideDelay="100" 
+                (click)="openModalSubsExpired()"
+                style="vertical-align: middle; color: #f44336; cursor: pointer; font-size: 20px;"> 
+                error 
+            </i>
+        </span>
+
+        <span *ngIf="(trial_expired && prjct_profile_type === 'free') && (kbCount > kbLimit)">
+            <i class="material-icons" 
+                matTooltipClass="h-custom-mat-tooltip"
+                matTooltip="Your 14-day free trial has expired" 
+                #tooltip="matTooltip" 
+                matTooltipPosition='below'
+                matTooltipHideDelay="100" 
+                (click)="openModalTrialExpired()"
+                style="vertical-align: middle; color: #f44336; cursor: pointer; font-size: 20px;"> 
+                error 
+            </i>
+        </span>
+        
         </div>
        
         <div class="actions--btn-wpr">

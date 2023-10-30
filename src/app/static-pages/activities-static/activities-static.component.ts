@@ -11,6 +11,10 @@ import { UsersService } from '../../services/users.service';
 import { LoggerService } from '../../services/logger/logger.service';
 import { AppConfigService } from 'app/services/app-config.service';
 import { PLAN_NAME } from 'app/utils/util';
+import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators'
+
 const swal = require('sweetalert');
 
 @Component({
@@ -18,9 +22,11 @@ const swal = require('sweetalert');
   templateUrl: './activities-static.component.html',
   styleUrls: ['./activities-static.component.scss']
 })
-export class ActivitiesStaticComponent extends StaticPageBaseComponent implements OnInit, OnDestroy {
+
+export class ActivitiesStaticComponent extends PricingBaseComponent implements OnInit, OnDestroy {
   PLAN_NAME = PLAN_NAME
-  tparams: any;
+  private unsubscribe$: Subject<any> = new Subject<any>();
+  // tparams: any;
   activities: any;
   agentAvailabilityOrRoleChange: string;
   agentDeletion: string;
@@ -39,22 +45,25 @@ export class ActivitiesStaticComponent extends StaticPageBaseComponent implement
   onlyOwnerCanManageTheAccountPlanMsg: string;
   learnMoreAboutDefaultRoles: string;
 
+  public_Key: any
+  payIsVisible: boolean;
+
   // public myDatePickerOptions: IMyDpOptions = {
   //   dateFormat: 'dd/mm/yyyy',
   // };
   profile_name: string;
-  isChromeVerGreaterThan100:boolean;
+  isChromeVerGreaterThan100: boolean;
   constructor(
     public translate: TranslateService,
     public auth: AuthService,
     private router: Router,
-    private prjctPlanService: ProjectPlanService,
-    private notify: NotifyService,
+    public prjctPlanService: ProjectPlanService,
+    public notify: NotifyService,
     private usersService: UsersService,
     public logger: LoggerService,
     public appConfigService: AppConfigService
   ) {
-    super(translate,);
+    super(prjctPlanService, notify);
   }
 
   ngOnInit() {
@@ -67,15 +76,26 @@ export class ActivitiesStaticComponent extends StaticPageBaseComponent implement
     this.getTranslationStrings();
     this.getOSCODE();
     this.getBrowserVersion();
-    this.tparams = {'plan_name': PLAN_NAME.C}
+    this.presentModalsOnInit()
+    // this.tparams = { 'plan_name': PLAN_NAME.C }
+  }
+
+  ngOnDestroy() {
+    // this.subscription.unsubscribe();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   getBrowserVersion() {
-    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => { 
-     this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
-    //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
-    })
-   }
+    this.auth.isChromeVerGreaterThan100
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((isChromeVerGreaterThan100: boolean) => {
+        this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+        //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+      })
+  }
 
   getOSCODE() {
     this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
@@ -110,75 +130,92 @@ export class ActivitiesStaticComponent extends StaticPageBaseComponent implement
   }
 
   getProjectUserRole() {
-    this.usersService.project_user_role_bs.subscribe((user_role) => {
-      this.USER_ROLE = user_role;
-      this.logger.log('[ACTIVITIES-STATIC] - PROJECT USER ROLE: ', this.USER_ROLE);
-    });
-  }
-
-  getTranslationStrings() {
-    this.translateModalOnlyOwnerCanManageProjectAccount()
-  }
-
-  translateModalOnlyOwnerCanManageProjectAccount() {
-    this.translate.get('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan')
-      .subscribe((translation: any) => {
-        // this.logger.log('PROJECT-EDIT-ADD  onlyOwnerCanManageTheAccountPlanMsg text', translation)
-        this.onlyOwnerCanManageTheAccountPlanMsg = translation;
-      });
-
-
-    this.translate.get('LearnMoreAboutDefaultRoles')
-      .subscribe((translation: any) => {
-        // this.logger.log('PROJECT-EDIT-ADD  onlyOwnerCanManageTheAccountPlanMsg text', translation)
-        this.learnMoreAboutDefaultRoles = translation;
+    this.usersService.project_user_role_bs
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((user_role) => {
+        this.USER_ROLE = user_role;
+        this.logger.log('[ACTIVITIES-STATIC] - PROJECT USER ROLE: ', this.USER_ROLE);
       });
   }
+  getCurrentProject() {
+    this.auth.project_bs
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((project) => {
+        this.logger.log('[ACTIVITIES-STATIC] - project ', project)
+
+        if (project) {
+          this.projectId = project._id
+          this.logger.log('[ACTIVITIES-STATIC] - project id ', this.projectId)
+        }
+      });
+  }
+
+ 
 
   getBrowserLang() {
     this.browserLang = this.translate.getBrowserLang();
   }
 
-  getProjectPlan() {
-    this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-      this.logger.log('[ACTIVITIES-STATIC] - GET PROJECT PROFILE', projectProfileData)
-      if (projectProfileData) {
+  // getProjectPlan() {
+  //   this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
+  //     this.logger.log('[ACTIVITIES-STATIC] - GET PROJECT PROFILE', projectProfileData)
+  //     if (projectProfileData) {
 
-        this.prjct_profile_type = projectProfileData.profile_type;
-        this.subscription_is_active = projectProfileData.subscription_is_active;
+  //       this.prjct_profile_type = projectProfileData.profile_type;
+  //       this.subscription_is_active = projectProfileData.subscription_is_active;
 
-        this.subscription_end_date = projectProfileData.subscription_end_date
-        this.profile_name = projectProfileData.profile_name;
-        this.buildPlanName(projectProfileData.profile_name, this.browserLang, this.prjct_profile_type);
+  //       this.subscription_end_date = projectProfileData.subscription_end_date
+  //       this.profile_name = projectProfileData.profile_name;
+  //       this.buildPlanName(projectProfileData.profile_name, this.browserLang, this.prjct_profile_type);
 
-        
 
-        if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
-          // if (this.USER_ROLE === 'owner') {
-          //   if (this.profile_name === PLAN_NAME.C) {
-          //       // this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date)
-          //       this.notify.displayEnterprisePlanHasExpiredModal(true, this.profile_name, this.subscription_end_date);
 
-          //   }
-          // }
-          if (this.USER_ROLE === 'owner') {
+  //       if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
+  //         // if (this.USER_ROLE === 'owner') {
+  //         //   if (this.profile_name === PLAN_NAME.C) {
+  //         //       // this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date)
+  //         //       this.notify.displayEnterprisePlanHasExpiredModal(true, this.profile_name, this.subscription_end_date);
 
-            if (this.profile_name !== PLAN_NAME.C) {
+  //         //   }
+  //         // }
+  //         if (this.USER_ROLE === 'owner') {
 
-              this.notify.displaySubscripionHasExpiredModal(true, this.profile_name, this.subscription_end_date)
+  //           if (this.profile_name !== PLAN_NAME.C) {
 
-            } else if (this.profile_name === PLAN_NAME.C) {
+  //             this.notify.displaySubscripionHasExpiredModal(true, this.profile_name, this.subscription_end_date)
 
-              this.notify.displayEnterprisePlanHasExpiredModal(true, this.profile_name, this.subscription_end_date);
-            }
-          }
+  //           } else if (this.profile_name === PLAN_NAME.C) {
+
+  //             this.notify.displayEnterprisePlanHasExpiredModal(true, this.profile_name, this.subscription_end_date);
+  //           }
+  //         }
+  //       }
+  //     }
+  //   }, err => {
+  //     this.logger.error('[ACTIVITIES-STATIC] GET PROJECT PROFILE - ERROR', err);
+  //   }, () => {
+  //     this.logger.log('[ACTIVITIES-STATIC] GET PROJECT PROFILE * COMPLETE *');
+  //   });
+  // }
+
+  presentModalsOnInit() {
+
+    if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
+      if (this.USER_ROLE === 'owner') {
+        if (this.profile_name !== PLAN_NAME.C) {
+
+          this.notify.displaySubscripionHasExpiredModal(true, this.profile_name, this.subscription_end_date)
+
+        } else if (this.profile_name === PLAN_NAME.C) {
+
+          this.notify.displayEnterprisePlanHasExpiredModal(true, this.profile_name, this.subscription_end_date);
         }
       }
-    }, err => {
-      this.logger.error('[ACTIVITIES-STATIC] GET PROJECT PROFILE - ERROR', err);
-    }, () => {
-      this.logger.log('[ACTIVITIES-STATIC] GET PROJECT PROFILE * COMPLETE *');
-    });
+    }
   }
 
 
@@ -205,23 +242,6 @@ export class ActivitiesStaticComponent extends StaticPageBaseComponent implement
     this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles)
   }
 
-
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
-  }
-
-  getCurrentProject() {
-    this.auth.project_bs.subscribe((project) => {
-      this.logger.log('[ACTIVITIES-STATIC] - project ', project)
-
-      if (project) {
-        this.projectId = project._id
-        this.logger.log('[ACTIVITIES-STATIC] - project id ', this.projectId)
-      }
-    });
-  }
-
-
   buildActivitiesOptions() {
     this.translate.get('ActivitiesOptions')
       .subscribe((text: any) => {
@@ -246,6 +266,26 @@ export class ActivitiesStaticComponent extends StaticPageBaseComponent implement
           { id: 'PROJECT_USER_INVITE', name: this.agentInvitation },
           { id: 'REQUEST_CREATE', name: this.newRequest },
         ];
+      });
+  }
+
+
+  getTranslationStrings() {
+    this.translateModalOnlyOwnerCanManageProjectAccount()
+  }
+
+  translateModalOnlyOwnerCanManageProjectAccount() {
+    this.translate.get('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan')
+      .subscribe((translation: any) => {
+        // this.logger.log('PROJECT-EDIT-ADD  onlyOwnerCanManageTheAccountPlanMsg text', translation)
+        this.onlyOwnerCanManageTheAccountPlanMsg = translation;
+      });
+
+
+    this.translate.get('LearnMoreAboutDefaultRoles')
+      .subscribe((translation: any) => {
+        // this.logger.log('PROJECT-EDIT-ADD  onlyOwnerCanManageTheAccountPlanMsg text', translation)
+        this.learnMoreAboutDefaultRoles = translation;
       });
   }
 

@@ -164,10 +164,10 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     public authguard: AuthGuard,
     private translate: TranslateService,
     private router: Router,
-    private usersService: UsersService,
+    public usersService: UsersService,
     private uploadImageService: UploadImageService,
     private uploadImageNativeService: UploadImageNativeService,
-    private notifyService: NotifyService,
+    public notifyService: NotifyService,
     public prjctPlanService: ProjectPlanService,
     private projectService: ProjectService,
     public wsRequestsService: WsRequestsService,
@@ -177,7 +177,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     private logger: LoggerService,
 
   ) {
-    super(prjctPlanService);
+    super(prjctPlanService, notifyService);
 
     const brand = brandService.getBrand();
     this.tparams = brand;

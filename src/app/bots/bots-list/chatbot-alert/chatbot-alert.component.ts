@@ -32,11 +32,11 @@ export class ChatbotAlertComponent extends PricingBaseComponent implements OnIni
     private logger: LoggerService,
     private faqKbService: FaqKbService,
     private translate: TranslateService,
-    private notify: NotifyService,
-    private usersService: UsersService,
+    public notify: NotifyService,
+    public usersService: UsersService,
     private router: Router
   ) {
-    super(prjctPlanService);
+    super(prjctPlanService, notify);
     this.getProjectPlan();
   }
 

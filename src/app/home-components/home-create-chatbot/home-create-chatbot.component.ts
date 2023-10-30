@@ -61,14 +61,14 @@ export class HomeCreateChatbotComponent extends PricingBaseComponent implements 
     private logger: LoggerService,
     private router: Router,
     private faqKbService: FaqKbService,
-    private usersService: UsersService,
+    public usersService: UsersService,
     private departmentService: DepartmentService,
     public dialog: MatDialog,
     private botLocalDbService: BotLocalDbService,
     public prjctPlanService: ProjectPlanService,
-    private notify: NotifyService,
+    public notify: NotifyService,
   ) {
-    super(prjctPlanService);
+    super(prjctPlanService, notify);
   }
 
   ngOnInit(): void {
@@ -529,14 +529,12 @@ export class HomeCreateChatbotComponent extends PricingBaseComponent implements 
     }
   }
 
-  openModalTrialExpired() {
-    if (this.USER_ROLE === 'owner') {
-      
-        this.notify.displayTrialHasExpiredModal();
-     
-    } else {
-      this.presentModalOnlyOwnerCanManageTheAccountPlan();
-    }
-  }
+  // openModalTrialExpired() {
+  //   if (this.USER_ROLE === 'owner') {  
+  //       this.notify.displayTrialHasExpiredModal();
+  //   } else {
+  //     this.presentModalOnlyOwnerCanManageTheAccountPlan();
+  //   }
+  // }
 
 }

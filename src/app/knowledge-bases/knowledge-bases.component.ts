@@ -82,12 +82,12 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     private kbService: KnowledgeBaseService,
     private projectService: ProjectService,
     public route: ActivatedRoute,
-    private notify: NotifyService,
+    public notify: NotifyService,
     public prjctPlanService: ProjectPlanService,
-    private usersService: UsersService,
+    public usersService: UsersService,
     public dialog: MatDialog,
   ) {
-    super(prjctPlanService);
+    super(prjctPlanService, notify);
   }
 
   ngOnInit(): void {
@@ -278,7 +278,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         if (this.kbCount < this.kbLimit) {
           this.addKnowledgeBaseModal = 'block';
         } else if (this.kbSettings.kbs.length >= this.kbLimit) {
-          
+
           this.presentDialogReachedKbLimit()
         }
       } else if (!this.kbLimit) {
@@ -325,6 +325,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     }
 
     this.kbService.addNewKb(this.kbSettings._id, this.newKb).subscribe((savedSettings: KbSettings) => {
+      console.log('[KNOWLEDGE-BASESCOMP] savedSettings' , savedSettings) 
       this.runIndexing(this.newKb);
       this.getKnowledgeBaseSettings();
       let kb = savedSettings.kbs.find(kb => kb.url === this.newKb.url);
@@ -475,6 +476,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     }
     return new Promise((resolve, reject) => {
       this.openaiService.checkScrapingStatus(data).subscribe((response: any) => {
+        console.log()
         resolve(response.status_code);
       }, (error) => {
         this.logger.error(error);

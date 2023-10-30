@@ -191,20 +191,20 @@ export class FaqComponent extends PricingBaseComponent implements OnInit {
     private auth: AuthService,
     private faqKbService: FaqKbService,
     public location: Location,
-    private notify: NotifyService,
+    public notify: NotifyService,
     public prjctPlanService: ProjectPlanService,
     private translate: TranslateService,
     private uploadImageService: UploadImageService,
     private uploadImageNativeService: UploadImageNativeService,
     public appConfigService: AppConfigService,
-    private usersService: UsersService,
+    public usersService: UsersService,
     public brandService: BrandService,
     private departmentService: DepartmentService,
     private logger: LoggerService,
     private sanitizer: DomSanitizer,
    
   ) {
-    super(prjctPlanService);
+    super(prjctPlanService, notify);
 
     const brand = brandService.getBrand();
     this.tparams = brand;

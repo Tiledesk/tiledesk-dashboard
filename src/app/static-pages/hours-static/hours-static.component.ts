@@ -10,6 +10,7 @@ import { UsersService } from '../../services/users.service';
 import { LoggerService } from '../../services/logger/logger.service';
 import { AppConfigService } from 'app/services/app-config.service';
 import { PLAN_NAME } from 'app/utils/util';
+import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 const swal = require('sweetalert');
 
 @Component({
@@ -17,7 +18,8 @@ const swal = require('sweetalert');
   templateUrl: './hours-static.component.html',
   styleUrls: ['./hours-static.component.scss']
 })
-export class HoursStaticComponent extends StaticPageBaseComponent implements OnInit, OnDestroy {
+
+export class HoursStaticComponent extends PricingBaseComponent implements OnInit, OnDestroy {
   PLAN_NAME = PLAN_NAME;
   projectId: string;
   subscription: Subscription;
@@ -32,19 +34,21 @@ export class HoursStaticComponent extends StaticPageBaseComponent implements OnI
   learnMoreAboutDefaultRoles: string;
   profile_name: string;
   isChromeVerGreaterThan100: boolean;
-  tparams: any;
+  // tparams: any;
+  public_Key:any
+  payIsVisible: boolean;
   constructor(
     private router: Router,
     public auth: AuthService,
     public translate: TranslateService,
-    private prjctPlanService: ProjectPlanService,
-    private notify: NotifyService,
+    public prjctPlanService: ProjectPlanService,
+    public notify: NotifyService,
     private usersService: UsersService,
     private logger: LoggerService,
     public appConfigService: AppConfigService
   ) { 
-    super(translate); 
-    this.tparams = {plan_name: PLAN_NAME.A}
+    super(prjctPlanService, notify);
+    // this.tparams = {plan_name: PLAN_NAME.A}
   
   }
 
@@ -53,10 +57,14 @@ export class HoursStaticComponent extends StaticPageBaseComponent implements OnI
     this.getCurrentProject();
     this.getBrowserLang();
     this.getProjectPlan();
-
     this.getProjectUserRole();
     this.getTranslationStrings();
     this.getBrowserVersion();
+    this.presentModalsOnInit()
+  }
+
+  ngOnDestroy() {
+    // this.subscription.unsubscribe();
   }
 
   getBrowserVersion() {
@@ -127,39 +135,55 @@ export class HoursStaticComponent extends StaticPageBaseComponent implements OnI
     this.browserLang = this.translate.getBrowserLang();
   }
 
+  presentModalsOnInit() {
 
-  getProjectPlan() {
-    this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-      this.logger.log('[HOURS-STATIC] GET PROJECT PROFILE', projectProfileData)
-      if (projectProfileData) {
+    if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
+      if (this.USER_ROLE === 'owner') {
+        if (this.profile_name !== PLAN_NAME.C && this.profile_name !== PLAN_NAME.F) {
 
-        this.prjct_profile_type = projectProfileData.profile_type;
-        this.subscription_is_active = projectProfileData.subscription_is_active;
+          this.notify.displaySubscripionHasExpiredModal(true, this.profile_name, this.subscription_end_date)
 
-        this.subscription_end_date = projectProfileData.subscription_end_date
-        this.profile_name = projectProfileData.profile_name
+        } else if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
 
-        this.buildPlanName(projectProfileData.profile_name, this.browserLang, this.prjct_profile_type);
-
-        if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
-          if (this.USER_ROLE === 'owner') {
-            if (this.profile_name !== PLAN_NAME.C) {
-
-              this.notify.displaySubscripionHasExpiredModal(true, this.profile_name, this.subscription_end_date)
-
-            } else if (this.profile_name === PLAN_NAME.C) {
-
-              this.notify.displayEnterprisePlanHasExpiredModal(true, this.profile_name, this.subscription_end_date);
-            }
-          }
+          this.notify.displayEnterprisePlanHasExpiredModal(true, this.profile_name, this.subscription_end_date);
         }
       }
-    }, err => {
-      this.logger.error('[HOURS-STATIC] GET PROJECT PROFILE - ERROR ', err);
-    }, () => {
-      this.logger.log('[HOURS-STATIC] GET PROJECT PROFILE * COMPLETE *');
-    });
+    }
+
   }
+
+  // getProjectPlan() {
+  //   this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
+  //     this.logger.log('[HOURS-STATIC] GET PROJECT PROFILE', projectProfileData)
+  //     if (projectProfileData) {
+
+  //       this.prjct_profile_type = projectProfileData.profile_type;
+  //       this.subscription_is_active = projectProfileData.subscription_is_active;
+
+  //       this.subscription_end_date = projectProfileData.subscription_end_date
+  //       this.profile_name = projectProfileData.profile_name
+
+  //       this.buildPlanName(projectProfileData.profile_name, this.browserLang, this.prjct_profile_type);
+
+  //       if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
+  //         if (this.USER_ROLE === 'owner') {
+  //           if (this.profile_name !== PLAN_NAME.C) {
+
+  //             this.notify.displaySubscripionHasExpiredModal(true, this.profile_name, this.subscription_end_date)
+
+  //           } else if (this.profile_name === PLAN_NAME.C) {
+
+  //             this.notify.displayEnterprisePlanHasExpiredModal(true, this.profile_name, this.subscription_end_date);
+  //           }
+  //         }
+  //       }
+  //     }
+  //   }, err => {
+  //     this.logger.error('[HOURS-STATIC] GET PROJECT PROFILE - ERROR ', err);
+  //   }, () => {
+  //     this.logger.log('[HOURS-STATIC] GET PROJECT PROFILE * COMPLETE *');
+  //   });
+  // }
 
 
   goToPricing() {
@@ -197,9 +221,7 @@ export class HoursStaticComponent extends StaticPageBaseComponent implements OnI
 
 
 
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
-  }
+
 
 
 }

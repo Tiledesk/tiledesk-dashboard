@@ -2,8 +2,10 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { ChatbotModalComponent } from 'app/bots/bots-list/chatbot-modal/chatbot-modal.component';
+import { NotifyService } from 'app/core/notify.service';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { ProjectPlanService } from 'app/services/project-plan.service';
+import { UsersService } from 'app/services/users.service';
 import { PLAN_NAME } from 'app/utils/util';
 
 @Component({
@@ -19,8 +21,10 @@ export class KbModalComponent extends PricingBaseComponent implements OnInit {
     public dialogRef: MatDialogRef<ChatbotModalComponent>,
     private translate: TranslateService,
     public prjctPlanService: ProjectPlanService,
+    public notify: NotifyService,
+    public usersService: UsersService,
   ) {
-    super(prjctPlanService);
+    super(prjctPlanService, notify);
     console.log('[CHATBOT-MODAL] data ', data)
     if (data && data.projectProfile) {
       this.getTranslatedStringKBLimitReached(data.projectProfile)
