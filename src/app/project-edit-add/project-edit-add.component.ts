@@ -274,7 +274,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     }
     this.translationParams = { plan_name: PLAN_NAME.E }
     this.tParamsFreePlanSeatsNum = { free_plan_allowed_seats_num: PLAN_SEATS.free }
-    this.tParamsFeatureAvailableWith = { plan_name: PLAN_NAME.F }
+   
     
   }
 
@@ -1142,7 +1142,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       });
   }
 
-  translateAvailableWithPlusOrCuromPlan() {
+  translateAvailableWithPlusOrCustomPlan(planName) {
     // let planName = ""
     //   if (this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.B || this.profile_name === 'free') {
     //     planName = PLAN_NAME.C
@@ -1151,7 +1151,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     //     planName = PLAN_NAME.F
     //     console.log('[PRJCT-EDIT-ADD] AvailableWithThePlan here 2 planName ', planName) 
     //   }
-    this.translate.get('AvailableWithThePlan', { plan_name: PLAN_NAME.F })
+    this.translate.get('AvailableWithThePlan', { plan_name: planName })
       .subscribe((translation: any) => {
         console.log('[PRJCT-EDIT-ADD] AvailableWithThePlan translation ', translation)
         this.cPlanOnly = translation;
@@ -1187,7 +1187,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         this.prjct_profile_type = projectProfileData.profile_type;
         console.log('[PRJCT-EDIT-ADD] - prjct_profile_type', this.prjct_profile_type)
 
-        this.translateAvailableWithPlusOrCuromPlan()
+      
 
         // if (this.profile_name === 'free') {
         //   this.translationParams = { plan_name: PLAN_NAME.B }
@@ -1214,7 +1214,8 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         }
 
         if (projectProfileData.extra3 === 'tiledesk_tier1' || projectProfileData.extra3 === 'tiledesk_tier2') {
-
+          this.tParamsFeatureAvailableWith = { plan_name: PLAN_NAME.C }
+          this.translateAvailableWithPlusOrCustomPlan(PLAN_NAME.C)
           this.planFeatures = featuresPlanA;
           if (projectProfileData.extra3 === 'tiledesk_tier1') {
             this.highlightedFeatures = appSumoHighlightedFeaturesPlanATier1;
@@ -1223,7 +1224,8 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
           }
         }
         else if (projectProfileData.extra3 === 'tiledesk_tier3' || projectProfileData.extra3 === 'tiledesk_tier4') {
-
+          this.tParamsFeatureAvailableWith = { plan_name: PLAN_NAME.C }
+          this.translateAvailableWithPlusOrCustomPlan(PLAN_NAME.C)
           this.planFeatures = featuresPlanA;
           if (projectProfileData.extra3 === 'tiledesk_tier3') {
             this.highlightedFeatures = appSumoHighlightedFeaturesPlanATier3;
@@ -1250,27 +1252,36 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
           this.advancedSettingBtnDisabled = true
         }
         if (projectProfileData.profile_type === 'free') {
+
           if (projectProfileData.trial_expired === false) {
             if (this.profile_name === 'free') {
               this.prjct_profile_name = PLAN_NAME.B + " (trial)"
               this.seatsLimit = PLAN_SEATS[PLAN_NAME.B]
               this.tParamsPlanAndSeats = { plan_name: this.prjct_profile_name, allowed_seats_num: this.seatsLimit }
               // console.log('[PRJCT-EDIT-ADD] - GET PROJECT PLAN - PLAN_NAME ', 'FREE TRIAL', ' SEATS LIMIT: ', this.seatsLimit)
+              this.tParamsFeatureAvailableWith = { plan_name: PLAN_NAME.C }
+              this.translateAvailableWithPlusOrCustomPlan(PLAN_NAME.C)
             } else if (this.profile_name === 'Sandbox') {
               this.prjct_profile_name = PLAN_NAME.E + " (trial)"
               this.seatsLimit = PLAN_SEATS[PLAN_NAME.E]
               this.tParamsPlanAndSeats = { plan_name: this.prjct_profile_name, allowed_seats_num: this.seatsLimit }
+              this.tParamsFeatureAvailableWith = { plan_name: PLAN_NAME.F }
+              this.translateAvailableWithPlusOrCustomPlan(PLAN_NAME.F)
             }
           } else {
             if (this.profile_name === 'free') {
               this.prjct_profile_name = "Free plan";
               this.seatsLimit = PLAN_SEATS.free
               this.tParamsPlanAndSeats = { plan_name: 'Free', allowed_seats_num: this.seatsLimit }
+              this.tParamsFeatureAvailableWith = { plan_name: PLAN_NAME.C }
+              this.translateAvailableWithPlusOrCustomPlan(PLAN_NAME.C)
               // console.log('[PRJCT-EDIT-ADD] - GET PROJECT PLAN - PLAN_NAME ', 'FREE TRIAL', ' SEATS LIMIT: ', this.seatsLimit)
             } else if (this.profile_name === 'Sandbox') {
               this.prjct_profile_name = "Sandbox";
               this.seatsLimit = PLAN_SEATS.free
               this.tParamsPlanAndSeats = { plan_name: 'Sandbox', allowed_seats_num: this.seatsLimit }
+              this.tParamsFeatureAvailableWith = { plan_name: PLAN_NAME.F}
+              this.translateAvailableWithPlusOrCustomPlan(PLAN_NAME.F)
             }
           }
         } else if (projectProfileData.profile_type === 'payment') {
@@ -1281,6 +1292,8 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
                 this.seatsLimit = PLAN_SEATS[PLAN_NAME.A]
                 this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.A, allowed_seats_num: this.seatsLimit }
                 this.logger.log('[PRJCT-EDIT-ADD] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.A, ' SEATS LIMIT: ', this.seatsLimit)
+                this.tParamsFeatureAvailableWith = { plan_name: PLAN_NAME.C }
+                this.translateAvailableWithPlusOrCustomPlan(PLAN_NAME.C)
               } else {
                 this.prjct_profile_name = PLAN_NAME.A + ' plan ' + '(' + this.appSumoProfile + ')'
                 this.seatsLimit = APPSUMO_PLAN_SEATS[projectProfileData.extra3];
@@ -1291,6 +1304,8 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
                 this.prjct_profile_name = PLAN_NAME.B + " plan";
                 this.seatsLimit = PLAN_SEATS[PLAN_NAME.B]
                 this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.B, allowed_seats_num: this.seatsLimit }
+                this.tParamsFeatureAvailableWith = { plan_name: PLAN_NAME.C }
+                this.translateAvailableWithPlusOrCustomPlan(PLAN_NAME.C)
                 // console.log('[PRJCT-EDIT-ADD] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.B, ' SEATS LIMIT: ', this.seatsLimit)
               } else {
                 this.prjct_profile_name = PLAN_NAME.B + ' plan ' + '(' + this.appSumoProfile + ')'
@@ -1306,11 +1321,15 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
               this.prjct_profile_name = PLAN_NAME.D + " plan";
               this.seatsLimit = projectProfileData.profile_agents
               this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.D, allowed_seats_num: this.seatsLimit }
+              this.tParamsFeatureAvailableWith = { plan_name: PLAN_NAME.F }
+              this.translateAvailableWithPlusOrCustomPlan(PLAN_NAME.F)
               // console.log('[PRJCT-EDIT-ADD] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.C, ' SEATS LIMIT: ', this.seatsLimit)
             } else if (projectProfileData.profile_name === PLAN_NAME.E) {
               this.prjct_profile_name = PLAN_NAME.E + " plan";
               this.seatsLimit = projectProfileData.profile_agents
               this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.E, allowed_seats_num: this.seatsLimit }
+              this.tParamsFeatureAvailableWith = { plan_name: PLAN_NAME.F }
+              this.translateAvailableWithPlusOrCustomPlan(PLAN_NAME.F)
               // console.log('[PRJCT-EDIT-ADD] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.C, ' SEATS LIMIT: ', this.seatsLimit)
             } else if (projectProfileData.profile_name === PLAN_NAME.F) {
               this.prjct_profile_name = PLAN_NAME.F + " plan";
@@ -1325,33 +1344,45 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
               this.prjct_profile_name = PLAN_NAME.A + " plan";
               this.seatsLimit = PLAN_SEATS[PLAN_NAME.A]
               this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.A, allowed_seats_num: this.seatsLimit }
+              this.tParamsFeatureAvailableWith = { plan_name: PLAN_NAME.C }
+              this.translateAvailableWithPlusOrCustomPlan(PLAN_NAME.C)
               // console.log('[PRJCT-EDIT-ADD] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.A, ' SEATS LIMIT: ', this.seatsLimit)
 
             } else if (projectProfileData.profile_name === PLAN_NAME.B) {
               this.prjct_profile_name = PLAN_NAME.B + " plan";
               this.seatsLimit = PLAN_SEATS[PLAN_NAME.B]
               this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.B, allowed_seats_num: this.seatsLimit }
+              this.tParamsFeatureAvailableWith = { plan_name: PLAN_NAME.C }
+              this.translateAvailableWithPlusOrCustomPlan(PLAN_NAME.C)
               // console.log('[PRJCT-EDIT-ADD] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.B, ' SEATS LIMIT: ', this.seatsLimit)
 
             } else if (projectProfileData.profile_name === PLAN_NAME.C) {
               this.prjct_profile_name = PLAN_NAME.C + " plan";
               this.seatsLimit = projectProfileData.profile_agents
               this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.C, allowed_seats_num: this.seatsLimit }
+              this.tParamsFeatureAvailableWith = { plan_name: PLAN_NAME.C }
+              this.translateAvailableWithPlusOrCustomPlan(PLAN_NAME.C)
               // console.log('[PRJCT-EDIT-ADD] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.C, ' SEATS LIMIT: ', this.seatsLimit)
             } else if (projectProfileData.profile_name === PLAN_NAME.D) {
               this.prjct_profile_name = PLAN_NAME.D + " plan";
               this.seatsLimit = projectProfileData.profile_agents
               this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.D, allowed_seats_num: this.seatsLimit }
               // console.log('[PRJCT-EDIT-ADD] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.C, ' SEATS LIMIT: ', this.seatsLimit)
+              this.tParamsFeatureAvailableWith = { plan_name: PLAN_NAME.F }
+              this.translateAvailableWithPlusOrCustomPlan(PLAN_NAME.F)
             } else if (projectProfileData.profile_name === PLAN_NAME.E) {
               this.prjct_profile_name = PLAN_NAME.E + " plan";
               this.seatsLimit = projectProfileData.profile_agents
               this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.E, allowed_seats_num: this.seatsLimit }
+              this.tParamsFeatureAvailableWith = { plan_name: PLAN_NAME.F }
+              this.translateAvailableWithPlusOrCustomPlan(PLAN_NAME.F)
               // console.log('[PRJCT-EDIT-ADD] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.C, ' SEATS LIMIT: ', this.seatsLimit)
             } else if (projectProfileData.profile_name === PLAN_NAME.F) {
               this.prjct_profile_name = PLAN_NAME.F + " plan";
               this.seatsLimit = projectProfileData.profile_agents
               this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.F, allowed_seats_num: this.seatsLimit }
+              this.tParamsFeatureAvailableWith = { plan_name: PLAN_NAME.F }
+              this.translateAvailableWithPlusOrCustomPlan(PLAN_NAME.F)
               // console.log('[PRJCT-EDIT-ADD] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.C, ' SEATS LIMIT: ', this.seatsLimit)
             }
 

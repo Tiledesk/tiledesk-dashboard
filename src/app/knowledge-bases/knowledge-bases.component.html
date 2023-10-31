@@ -218,7 +218,7 @@
         <button class="btn btn-white" style="padding:12px 16px;" (click)="closeAddKnowledgeBaseModal()">
           {{ "Cancel" | translate }}
         </button>
-        <button id="addkb-btn" class="btn btn-primary" [disabled]="buttonDisabled" (click)="saveKnowledgeBase()">
+        <button id="addkb-btn" class="btn btn-primary" [disabled]="buttonDisabled || newKb?.url?.length === 0" (click)="saveKnowledgeBase()">
           {{ 'KbPage.Add' | translate }}
         </button>
       </div>
