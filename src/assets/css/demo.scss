@@ -1704,9 +1704,10 @@ appdashboard-app-store > div > div > div > div > div > div.card-content > div.av
   font-weight: 400;
   width: fit-content;
   padding: 0 4px;
-  line-height: 20px;
+  // line-height: 20px;
   border-radius: 3px;
   margin-bottom: 3px;
+  margin-top: -25px;
 }
 
 appdashboard-app-store > div > div > div > div > div > div.card-content > .app-store-card-no-badge {

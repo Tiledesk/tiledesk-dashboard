@@ -318,7 +318,7 @@
               </div>
             </div>
             <!-- padding: 0px 20px; min-height: 52px; -->
-            <h5 class="card-title" style="margin-bottom: 5px;"
+            <h5 class="card-title" style="margin-bottom: 28px;"
               [ngClass]="{'app-store-card-no-badge': (app?.title !== 'Zapier') && (app?.title !== 'WhatsApp Business') && (app?.title !== 'Facebook Messenger') && (app?.title !== 'Help Center') && (app?.title !== 'Send transcript by email')}">
               {{ app.title}}
             </h5>
@@ -326,10 +326,10 @@
             <ng-container *ngIf="projectProfileData?.extra3">
               <div class="available-from-b-plan-badge b-plan-badge-color"
                 *ngIf="(app?.title === 'Zapier') || (app?.title === 'WhatsApp Business') || (app?.title === 'Facebook Messenger') || (app?.title === 'Help Center')">
-                {{ 'AvailableFromThePlan' | translate: tParamsAvailableFromAppSumoTier2 }}
+                {{ 'AvailableFromThePlan' | translate: tParamsAvailableFromAppSumoTier3 }}
               </div>
             </ng-container>
-            <ng-container *ngIf="!projectProfileData?.extra3 && profile_name !== PLAN_NAME.B && profile_name !== PLAN_NAME.E">
+            <ng-container *ngIf="!projectProfileData?.extra3 && (profile_name === PLAN_NAME.B && !subscription_is_active) && (profile_name === PLAN_NAME.E && !subscription_is_active) && (profile_name === 'Sandbox' && trial_expired) && (profile_name === 'free' && trial_expired)">
               <div class="available-from-b-plan-badge b-plan-badge-color"
                 *ngIf="((app?.title === 'Zapier') || (app?.title === 'WhatsApp Business') || (app?.title === 'Facebook Messenger') || (app?.title === 'Help Center') || (app?.title === 'Send transcript by email'))">
                 {{ 'AvailableFromThePlan' | translate: tParamsAvailableFromTier2 }}

@@ -274,8 +274,8 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     }
     this.translationParams = { plan_name: PLAN_NAME.E }
     this.tParamsFreePlanSeatsNum = { free_plan_allowed_seats_num: PLAN_SEATS.free }
-   
-    
+
+
   }
 
   ngOnInit() {
@@ -1187,7 +1187,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         this.prjct_profile_type = projectProfileData.profile_type;
         console.log('[PRJCT-EDIT-ADD] - prjct_profile_type', this.prjct_profile_type)
 
-      
+
 
         // if (this.profile_name === 'free') {
         //   this.translationParams = { plan_name: PLAN_NAME.B }
@@ -1280,7 +1280,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
               this.prjct_profile_name = "Sandbox";
               this.seatsLimit = PLAN_SEATS.free
               this.tParamsPlanAndSeats = { plan_name: 'Sandbox', allowed_seats_num: this.seatsLimit }
-              this.tParamsFeatureAvailableWith = { plan_name: PLAN_NAME.F}
+              this.tParamsFeatureAvailableWith = { plan_name: PLAN_NAME.F }
               this.translateAvailableWithPlusOrCustomPlan(PLAN_NAME.F)
             }
           }
@@ -1389,7 +1389,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
           }
         }
 
-     
+
 
         const today = moment().startOf('day')
 
@@ -1467,6 +1467,13 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
             // console.log('[WS-REQUESTS-MSGS] profile_type', projectProfileData.profile_type)
             this.DISPLAY_ADVANCED_TAB = false;
             // console.log('[WS-REQUESTS-MSGS] DISPLAY_ADVANCED_TAB', this.DISPLAY_ADVANCED_TAB)
+
+            if (this.profile_name === PLAN_NAME.A) {
+              this.t_params = { 'plan_name': PLAN_NAME.A }
+            } else if (this.profile_name === PLAN_NAME.D) {
+              this.t_params = { 'plan_name': PLAN_NAME.D }
+            }
+
           }
         }
 

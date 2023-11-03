@@ -152,7 +152,7 @@ export class WsSharedComponent implements OnInit {
       if (member_id && member_id !== 'system') {
 
         this.cleaned_members_array.push(member_id);
-        this.logger.log('%%% WsRequestsMsgsComponent - CLEANED MEMBERS ARRAY ', this.cleaned_members_array);
+        console.log('%%% WsRequestsMsgsComponent - CLEANED MEMBERS ARRAY ', this.cleaned_members_array);
         this.logger.log('%%% WsRequestsMsgsComponent - CLEANED MEMBERS isFirebaseUploadEngine ', isFirebaseUploadEngine);
         const memberIsBot = member_id.includes('bot_');
 
@@ -200,69 +200,77 @@ export class WsSharedComponent implements OnInit {
               this.checkImageExists(imgUrl, (existsImage) => {
                 if (existsImage == true) {
                   storeduser['hasImage'] = true
-                  // console.log('HERE Y1 USER ', storeduser)
+                  console.log('HERE Y2 USER storeduser  hasImage', storeduser, 'this.agents_array ', this.agents_array)
                   this.createAgentAvatar(storeduser)
-                  this.agents_array.push({ '_id': storeduser['_id'], 'firstname': storeduser['firstname'], 'lastname': storeduser['lastname'], 'isBot': false, 'hasImage': storeduser['hasImage'], 'userfillColour': storeduser['fillColour'], 'userFullname': storeduser['fullname_initial'] })
-
+                  const index = this.agents_array.findIndex(object => object.id === storeduser['_id']);
+                  console.log('HERE Y2 USER index (1)', index)
+                  if (index === -1) {
+                    this.agents_array.push({ '_id': storeduser['_id'], 'firstname': storeduser['firstname'], 'lastname': storeduser['lastname'], 'isBot': false, 'hasImage': storeduser['hasImage'], 'userfillColour': storeduser['fillColour'], 'userFullname': storeduser['fullname_initial'] })
+                  }
                 }
                 else {
                   storeduser['hasImage'] = false
-                  // console.log('HERE Y2 USER ', storeduser)
+                  console.log('HERE Y2 USER storeduser  !hasImage', storeduser, 'this.agents_array ', this.agents_array)
                   this.createAgentAvatar(storeduser)
-                  this.agents_array.push({ '_id': storeduser['_id'], 'firstname': storeduser['firstname'], 'lastname': storeduser['lastname'], 'isBot': false, 'hasImage': storeduser['hasImage'], 'userfillColour': storeduser['fillColour'], 'userFullname': storeduser['fullname_initial'] })
-
+                  const index = this.agents_array.findIndex(object => object.id === storeduser['_id']);
+                  console.log('HERE Y2 USER index (2)', index)
+                  if (index === -1) {
+                    this.agents_array.push({ '_id': storeduser['_id'], 'firstname': storeduser['firstname'], 'lastname': storeduser['lastname'], 'isBot': false, 'hasImage': storeduser['hasImage'], 'userfillColour': storeduser['fillColour'], 'userFullname': storeduser['fullname_initial'] })
+                  }
                 }
               });
 
 
             } else {
-            //  console.log('[WS-SHARED][WS-REQUESTS-MSGS] - member_id =! from ', storeduser['_id'])
+              //  console.log('[WS-SHARED][WS-REQUESTS-MSGS] - member_id =! from ', storeduser['_id'])
             }
           } else {
             this.logger.log('[WS-SHARED][WS-REQUESTS-MSGS] - there is not stored user with id ', member_id)
-           
+
             this.usersService.getProjectUserById(member_id)
-            .subscribe((projectuser) => {
-             
-              // console.log('[WS-SHARED][WS-REQUESTS-MSGS] - USER IS NOT IN STORAGE GET PROJECT-USER BY ID - RES', projectuser);
-              const user: any = projectuser[0].id_user;
-           
+              .subscribe((projectuser) => {
 
-              let imgUrl = ''
-              if (isFirebaseUploadEngine === true) {
-                // ------------------------------------------------------------------------------
-                // Usecase uploadEngine Firebase 
-                // ------------------------------------------------------------------------------
-                imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + imageStorage + "/o/profiles%2F" + member_id + "%2Fphoto.jpg?alt=media"
+                // console.log('[WS-SHARED][WS-REQUESTS-MSGS] - USER IS NOT IN STORAGE GET PROJECT-USER BY ID - RES', projectuser);
+                const user: any = projectuser[0].id_user;
 
-              } else {
-                // ------------------------------------------------------------------------------
-                // Usecase uploadEngine Native 
-                // ------------------------------------------------------------------------------
-                imgUrl = imageStorage + "images?path=uploads%2Fusers%2F" + member_id + "%2Fimages%2Fthumbnails_200_200-photo.jpg"
-              }
 
-              this.checkImageExists(imgUrl, (existsImage) => {
-                if (existsImage == true) {
-                  user.hasImage = true
+                let imgUrl = ''
+                if (isFirebaseUploadEngine === true) {
+                  // ------------------------------------------------------------------------------
+                  // Usecase uploadEngine Firebase 
+                  // ------------------------------------------------------------------------------
+                  imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + imageStorage + "/o/profiles%2F" + member_id + "%2Fphoto.jpg?alt=media"
+
+                } else {
+                  // ------------------------------------------------------------------------------
+                  // Usecase uploadEngine Native 
+                  // ------------------------------------------------------------------------------
+                  imgUrl = imageStorage + "images?path=uploads%2Fusers%2F" + member_id + "%2Fimages%2Fthumbnails_200_200-photo.jpg"
                 }
-                else {
-                  user.hasImage = false
-                }
+
+                this.checkImageExists(imgUrl, (existsImage) => {
+                  if (existsImage == true) {
+                    user.hasImage = true
+                  }
+                  else {
+                    user.hasImage = false
+                  }
+                });
+
+                user['is_bot'] = false
+                // console.log('WS-SHARED][WS-REQUESTS-MSGS]',  user)
+
+                // this.agents_array.push({ '_id': member_id, 'firstname': member_id, 'isBot': false })
+                this.agents_array.push({ '_id': user['_id'], 'firstname': user['firstname'], 'lastname': user['lastname'], 'isBot': false, 'hasImage': user['hasImage'], 'userfillColour': user['fillColour'], 'userFullname': user['fullname_initial'] })
+                this.usersLocalDbService.saveMembersInStorage(user['_id'], user, 'ws-shared (createAgentsArrayFromParticipantsId)');
+                console.log('HERE Y3 USER projectuser ', projectuser, 'this.agents_array ', this.agents_array)
+
+              }, (error) => {
+                this.logger.error('[WS-SHARED][WS-REQUESTS-MSGS] - USER IS NOT IN STORAGE - GET PROJECT-USER BY ID - ERROR ', error);
+              }, () => {
+                this.logger.log('[WS-SHARED][WS-REQUESTS-MSGS] - USER IS NOT IN STORAGE - GET PROJECT-USER BY ID * COMPLETE *');
+                console.log('[WS-SHARED][WS-REQUESTS-MSGS] this.agents_array ', this.agents_array)
               });
-
-              user['is_bot'] = false
-              // console.log('WS-SHARED][WS-REQUESTS-MSGS]',  user)
-
-              // this.agents_array.push({ '_id': member_id, 'firstname': member_id, 'isBot': false })
-              this.agents_array.push({ '_id': user['_id'], 'firstname': user['firstname'], 'lastname': user['lastname'], 'isBot': false, 'hasImage': user['hasImage'], 'userfillColour': user['fillColour'], 'userFullname': user['fullname_initial'] })
-              this.usersLocalDbService.saveMembersInStorage(user['_id'], user, 'ws-shared (createAgentsArrayFromParticipantsId)');
-
-            }, (error) => {
-              this.logger.error('[WS-SHARED][WS-REQUESTS-MSGS] - USER IS NOT IN STORAGE - GET PROJECT-USER BY ID - ERROR ', error);
-            }, () => {
-              this.logger.log('[WS-SHARED][WS-REQUESTS-MSGS] - USER IS NOT IN STORAGE - GET PROJECT-USER BY ID * COMPLETE *');
-            });
           }
         }
       }
@@ -460,44 +468,44 @@ export class WsSharedComponent implements OnInit {
   getConversationTypeInRequests(ws_requests) {
     this.conversationTypeInRequests = [];
     ws_requests.forEach(request => {
-    // console.log('[WS-SHARED] getConversationTypeInRequests request ', request)
+      // console.log('[WS-SHARED] getConversationTypeInRequests request ', request)
       let channelObjct = {}
       // (request.channel.name !== '' || request.channel.name !== '' || request.channel.name === 'telegram' || request.channel.name === 'whatsapp' || request.channel.name === 'messenger' || request.channel.name === 'chat21')
-    
-  
+
+
       if (request.channel.name === 'chat21') {
-        channelObjct['id'] =  "chat21";
-        channelObjct['name'] =  "Chat";
+        channelObjct['id'] = "chat21";
+        channelObjct['name'] = "Chat";
       }
       if (request.channel.name === 'whatsapp') {
-        channelObjct['id'] =  "whatsapp";
-        channelObjct['name'] =  "WhatsApp";
+        channelObjct['id'] = "whatsapp";
+        channelObjct['name'] = "WhatsApp";
       }
       if (request.channel.name === 'messenger') {
-        channelObjct['id'] =  "messenger";
-        channelObjct['name'] =  "Messenger";
+        channelObjct['id'] = "messenger";
+        channelObjct['name'] = "Messenger";
       }
       if (request.channel.name === 'telegram') {
-        channelObjct['id'] =  "telegram";
-        channelObjct['name'] =  "Telegram";
+        channelObjct['id'] = "telegram";
+        channelObjct['name'] = "Telegram";
       }
 
       if (request.channel.name === 'email') {
-        channelObjct['id'] =  "email";
-        channelObjct['name'] =  "Email";
+        channelObjct['id'] = "email";
+        channelObjct['name'] = "Email";
       }
 
       if (request.channel.name === 'form') {
-        channelObjct['id'] =  "form";
-        channelObjct['name'] =  "Ticket";
+        channelObjct['id'] = "form";
+        channelObjct['name'] = "Ticket";
       }
 
       const index = this.conversationTypeInRequests.findIndex((e) => e.id === request.channel.name);
       // if (this.conversationTypeInRequests.indexOf(request.channel.name) === -1) {
-        if (index === -1) {
+      if (index === -1) {
         this.conversationTypeInRequests.push(channelObjct)
       } else {
-      //  console.log('[WS-SHARED] the element already exist')
+        //  console.log('[WS-SHARED] the element already exist')
       }
     })
     // console.log('[WS-SHARED] getConversationTypeInRequests array ', this.conversationTypeInRequests)
@@ -735,7 +743,7 @@ export class WsSharedComponent implements OnInit {
     } else {
 
       const user = this.usersLocalDbService.getMemberFromStorage(member_id);
-      this.logger.log('[WS-SHARED] members_replace user ', user)  
+      this.logger.log('[WS-SHARED] members_replace user ', user)
       if (user) {
         // this.logger.log('user ', user)
         if (user['lastname']) {
@@ -782,13 +790,13 @@ export class WsSharedComponent implements OnInit {
   // JOIN TO CHAT GROUP
   onJoinHandled(id_request: string, currentUserID: string, postmessage?: string) {
     // this.getFirebaseToken(() => {
-   
+
     this.logger.log('[WS-SHARED][REQUEST-DTLS-X-PANEL][WS-REQUESTS-UNSERVED-X-PANEL][WS-REQUESTS-LIST][SERVED][UNSERVED] - JOIN PRESSED');
     this.logger.log('[WS-SHARED][REQUEST-DTLS-X-PANEL][WS-REQUESTS-UNSERVED-X-PANEL][WS-REQUESTS-LIST][SERVED][UNSERVED] - JOIN PRESSED postmessage', postmessage);
 
     this.wsRequestsService.addParticipant(id_request, currentUserID)
       .subscribe((data: any) => {
-      
+
         this.logger.log('[WS-SHARED][REQUEST-DTLS-X-PANEL][WS-REQUESTS-UNSERVED-X-PANEL][WS-REQUESTS-LIST][SERVED][UNSERVED] - addParticipant TO CHAT GROUP ', data);
       }, (err) => {
         this.logger.error('[WS-SHARED][REQUEST-DTLS-X-PANEL][WS-REQUESTS-UNSERVED-X-PANEL][WS-REQUESTS-LIST][SERVED][UNSERVED] - addParticipant TO CHAT GROUP - ERROR ', err);

@@ -45,7 +45,7 @@ export class ActivitiesStaticComponent extends PricingBaseComponent implements O
   onlyOwnerCanManageTheAccountPlanMsg: string;
   learnMoreAboutDefaultRoles: string;
 
-  public_Key: any
+  public_Key: any;
   payIsVisible: boolean;
 
   // public myDatePickerOptions: IMyDpOptions = {

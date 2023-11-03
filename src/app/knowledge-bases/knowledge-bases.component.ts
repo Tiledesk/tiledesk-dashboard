@@ -310,7 +310,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   }
 
   saveKnowledgeBase() {
-    // this.closeAddKnowledgeBaseModal();
+    this.closeAddKnowledgeBaseModal();
     let first_index = this.newKb.url.indexOf('://');
     let second_index = this.newKb.url.indexOf('www.');
 
@@ -335,7 +335,8 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         if (status_code === 0) {
           this.runIndexing(kb);
         }
-        this.closeAddKnowledgeBaseModal();
+        // this.closeAddKnowledgeBaseModal();
+        this.reset()
       })
     }, (error) => {
       this.logger.error("[KNOWLEDGE-BASESCOMP] ERROR add new kb: ", error);
@@ -441,9 +442,9 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       }, 1000);
     }, (error) => {
       this.logger.error("error start scraping response: ", error);
-      if (error && error[1].error) {
-        console.log('error[1].error statusText ', error[1].error.statusText)
-      }
+      // if (error && error[1].error) {
+      //   console.log('error[1].error statusText ', error[1].error.statusText)
+      // }
       // this.notify.showWidgetStyleUpdateNotification("Invalid Openai API key", 4, 'report_problem');
     }, () => {
       this.logger.log("start scraping *COMPLETE*");
@@ -565,6 +566,9 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
   closeAddKnowledgeBaseModal() {
     this.addKnowledgeBaseModal = 'none';
+    // this.newKb = { name: '', url: '' }
+  }
+  reset() {
     this.newKb = { name: '', url: '' }
   }
 

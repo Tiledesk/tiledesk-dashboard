@@ -18,15 +18,16 @@
   <div class="sub-expired-cb-num-greater-than-the-allowed" *ngIf="(
     (profile_name === PLAN_NAME.D || profile_name === PLAN_NAME.E || profile_name === PLAN_NAME.F) && subscription_is_active === false  &&
     (chatBotCount > chatBotLimit))">
-        <span class="msg-alert">
-          {{ 'NumberOfChatbotExceedsThePlan' | translate: tParamsPlanAndChatBot }}
-        </span>
-        <div class="upgrade--plan-btn-wpr" style="text-align: center;">
-          <button class="upgrade--plan-btn" (click)="openModalSubsExpired()">
-            {{ "Pricing.UpgradePlan" | translate }}
-          </button>
-        </div>
-    
-      </div>
+    <span class="msg-alert" style="display: block;">{{ "Pricing.SubscriptionPaymentProblem" | translate}} </span>
+    <span class="msg-alert">
+      {{ 'NumberOfChatbotExceedsThePlan' | translate: tParamsPlanAndChatBot }}
+    </span>
+    <div class="upgrade--plan-btn-wpr" style="text-align: center;">
+      <button class="upgrade--plan-btn" (click)="openModalSubsExpired()">
+        {{ "Pricing.UpgradePlan" | translate }}
+      </button>
+    </div>
+
+  </div>
 
 </div>

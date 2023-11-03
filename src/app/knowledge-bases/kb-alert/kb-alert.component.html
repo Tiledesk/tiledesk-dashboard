@@ -1,33 +1,35 @@
 <div class="chatbot-alert-content">
   <!-- profile_name >  {{profile_name }} trial_expired > {{ trial_expired }} kbCount {{kbCount }} kbLimit {{kbLimit}} -->
-    <div class="sub-active-cb-num-greater-than-the-allowed" *ngIf="((
+  <div class="sub-active-cb-num-greater-than-the-allowed" *ngIf="((
   ((profile_name === PLAN_NAME.A || profile_name === PLAN_NAME.B || profile_name === PLAN_NAME.C || profile_name === PLAN_NAME.D || profile_name === PLAN_NAME.E || profile_name === PLAN_NAME.C) && subscription_is_active === true) ||
   (profile_name === 'Sandbox' && trial_expired === false) || 
   (profile_name === 'Sandbox' && trial_expired === true))  &&
   (kbCount > kbLimit))">
-      <span class="msg-alert">
-        {{ 'KbPage.NumberOfKbExceedsThePlan' | translate: tParamsPlanAndKb }}
-      </span>
-      <div class="upgrade--plan-btn-wpr" style="text-align: center;">
-        <button class="upgrade--plan-btn" (click)="presentContactUsModal()">
-          {{ "Pricing.UpgradePlan" | translate }}
-        </button>
-      </div>
-  
+    <span class="msg-alert">
+      {{ 'KbPage.NumberOfKbExceedsThePlan' | translate: tParamsPlanAndKb }}
+    </span>
+    <div class="upgrade--plan-btn-wpr" style="text-align: center;">
+      <button class="upgrade--plan-btn" (click)="presentContactUsModal()">
+        {{ "Pricing.UpgradePlan" | translate }}
+      </button>
     </div>
-  
-    <div class="sub-expired-cb-num-greater-than-the-allowed" *ngIf="(
+
+  </div>
+
+  <div class="sub-expired-cb-num-greater-than-the-allowed" *ngIf="(
       (profile_name === PLAN_NAME.D || profile_name === PLAN_NAME.E || profile_name === PLAN_NAME.F) && subscription_is_active === false  &&
       (kbCount > kbLimit))">
-          <span class="msg-alert">
-            {{ 'KbPage.NumberOfKbExceedsThePlan' | translate: tParamsPlanAndKb }}
-          </span>
-          <div class="upgrade--plan-btn-wpr" style="text-align: center;">
-            <button class="upgrade--plan-btn" (click)="openModalSubsExpired()">
-              {{ "Pricing.UpgradePlan" | translate }}
-            </button>
-          </div>
-      
-        </div>
-  
+    <span class="msg-alert" style="display: block;">{{ "Pricing.SubscriptionPaymentProblem" | translate}} </span>
+
+    <span class="msg-alert">
+      {{ 'KbPage.NumberOfKbExceedsThePlan' | translate: tParamsPlanAndKb }}
+    </span>
+    <div class="upgrade--plan-btn-wpr" style="text-align: center;">
+      <button class="upgrade--plan-btn" (click)="openModalSubsExpired()">
+        {{ "Pricing.UpgradePlan" | translate }}
+      </button>
+    </div>
+
   </div>
+
+</div>

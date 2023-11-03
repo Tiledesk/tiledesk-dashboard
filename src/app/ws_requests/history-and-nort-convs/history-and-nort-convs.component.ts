@@ -2319,7 +2319,11 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
         (this.profile_name === PLAN_NAME.A) ||
         (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
         (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
-        (this.prjct_profile_type === 'free' && this.trial_expired === true)
+        (this.profile_name === PLAN_NAME.D) ||
+        (this.profile_name === PLAN_NAME.E && this.subscription_is_active === false) ||
+        (this.profile_name === PLAN_NAME.F && this.subscription_is_active === false) ||
+        (this.profile_name === 'free' && this.trial_expired === true) ||
+        (this.profile_name === 'Sandbox' && this.trial_expired === true)
 
       ) {
 
@@ -2333,7 +2337,10 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       } else if (
         (this.profile_name === PLAN_NAME.B && this.subscription_is_active === true) ||
         (this.profile_name === PLAN_NAME.C && this.subscription_is_active === true) ||
-        (this.prjct_profile_type === 'free' && this.trial_expired === false)
+        (this.profile_name === PLAN_NAME.E && this.subscription_is_active === true) ||
+        (this.profile_name === PLAN_NAME.F && this.subscription_is_active === true) ||
+        (this.profile_name === 'free' && this.trial_expired === false) ||
+        (this.profile_name === 'Sandbox' && this.trial_expired === false)
 
       ) {
         this.wsRequestsService.downloadHistoryRequestsAsCsv(this.queryString, 0).subscribe((requests: any) => {

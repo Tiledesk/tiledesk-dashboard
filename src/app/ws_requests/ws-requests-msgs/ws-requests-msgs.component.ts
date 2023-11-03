@@ -1597,7 +1597,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       )
       .subscribe((wsrequest) => {
 
-        this.logger.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** ', wsrequest)
+       console.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** ', wsrequest)
         this.request = wsrequest;
 
         if (this.request) {
@@ -2237,7 +2237,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           }
 
 
-
+          
           this.createAgentsArrayFromParticipantsId(this.members_array, this.requester_id, this.UPLOAD_ENGINE_IS_FIREBASE, this.imageStorage)
           this.createRequesterAvatar(this.request.lead);
           this.IS_CURRENT_USER_JOINED = this.currentUserIdIsInParticipants(this.request.participants, this.currentUserID, this.request.request_id);
@@ -4047,7 +4047,11 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         (this.profile_name === PLAN_NAME.A) ||
         (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
         (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
-        (this.prjct_profile_type === 'free' && this.trial_expired === true)
+        (this.profile_name === PLAN_NAME.D) ||
+        (this.profile_name === PLAN_NAME.E && this.subscription_is_active === false) ||
+        (this.profile_name === PLAN_NAME.F && this.subscription_is_active === false) ||
+        (this.profile_name === 'free' && this.trial_expired === true) ||
+        (this.profile_name === 'Sandbox' && this.trial_expired === true)
 
       ) {
         if (!this.appSumoProfile) {
@@ -4059,7 +4063,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       } else if (
         (this.profile_name === PLAN_NAME.B && this.subscription_is_active === true) ||
         (this.profile_name === PLAN_NAME.C && this.subscription_is_active === true) ||
-        (this.prjct_profile_type === 'free' && this.trial_expired === false)
+        (this.profile_name === PLAN_NAME.E && this.subscription_is_active === true) ||
+        (this.profile_name === PLAN_NAME.F && this.subscription_is_active === true) ||
+        (this.profile_name === 'free' && this.trial_expired === false) ||
+        (this.profile_name === 'Sandbox' && this.trial_expired === false)
 
       ) {
         this.displayModalTranscript = 'block'

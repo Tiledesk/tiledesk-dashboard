@@ -37,6 +37,7 @@ export class PricingBaseComponent implements OnInit {
   trial_expired: any;
   prjct_profile_name: string
   appSumoProfilefeatureAvailableFromBPlan: string;
+  projectProfileData: any;
 
   // Plan limit
   public seatsLimit: any;
@@ -52,9 +53,10 @@ export class PricingBaseComponent implements OnInit {
   public tParamsHoursAvailableFromPlan: any;
   public tParamsActivitiesFromPlan: any;
   public tParamsCRMAvailableFromPlan: any;
+  public tParamsEmailTicketingFromPlan: any;
   public tParamsCannedAvailableFromPlan: any;
-  public tParamsAvailableFromTier2: any; // Scale or Premium
-  public tParamsAvailableFromAppSumoTier2: any; 
+  public tParamsAvailableFromTier2: any; // i.e. Scale or Premium
+  public tParamsAvailableFromAppSumoTier3: any;
   constructor(
     public prjctPlanService: ProjectPlanService,
     public notify: NotifyService,
@@ -70,6 +72,7 @@ export class PricingBaseComponent implements OnInit {
       (projectProfileData: any) => {
         console.log('[P-BASE] - GET PROJECT PLAN - RES ', projectProfileData)
         if (projectProfileData) {
+          this.projectProfileData = projectProfileData
           this.prjct_id = projectProfileData._id
           console.log('[P-BASE] - GET PROJECT PROFILE - prjct_id ', this.prjct_id);
 
@@ -100,9 +103,10 @@ export class PricingBaseComponent implements OnInit {
           if (projectProfileData && projectProfileData.extra3) {
             console.log('[P-BASE] Find Current Project Among All extra3 ', projectProfileData.extra3)
             this.appSumoProfile = APP_SUMO_PLAN_NAME[projectProfileData.extra3],
-            this.appSumoProfilefeatureAvailableFromBPlan = APP_SUMO_PLAN_NAME['tiledesk_tier3']
+              this.appSumoProfilefeatureAvailableFromBPlan = APP_SUMO_PLAN_NAME['tiledesk_tier3']
             console.log('[P-BASE] Find Current Project appSumoProfile ', this.appSumoProfile)
-            this.tParamsAvailableFromAppSumoTier2 = this.appSumoProfilefeatureAvailableFromBPlan
+            this.tParamsAvailableFromAppSumoTier3 = { plan_name: this.appSumoProfilefeatureAvailableFromBPlan }
+             
           }
 
           if (projectProfileData.profile_type === 'free') {
@@ -140,7 +144,8 @@ export class PricingBaseComponent implements OnInit {
                 console.log('[P-BASE] - GET PROJECT PLAN - NAME ', this.prjct_profile_name, ' TYPE: ', projectProfileData.profile_type, ' SUB EXIPED: ', projectProfileData.trial_expired)
 
                 // Seats limit
-                this.seatsLimit = PLAN_SEATS[PLAN_NAME.E]
+                // this.seatsLimit = PLAN_SEATS[PLAN_NAME.E]
+                this.seatsLimit = projectProfileData.profile_agents
                 this.tParamsPlanAndSeats = { plan_name: this.prjct_profile_name, allowed_seats_num: this.seatsLimit }
                 console.log('[P-BASE] - GET PROJECT PLAN - SEATS LIMIT ', this.seatsLimit)
 
@@ -156,6 +161,7 @@ export class PricingBaseComponent implements OnInit {
 
                 // Translate params for static page
                 this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.F }
+               
               }
             } else {
 
@@ -188,6 +194,7 @@ export class PricingBaseComponent implements OnInit {
                 this.tParamsAvailableFromTier2 = { plan_name: PLAN_NAME.B }
                 this.tParamsPlanNameTrialExpired = { plan_name: PLAN_NAME.B }
                 this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.C }
+                this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.A }
 
 
                 // ------------------------------------------------------------------------
@@ -220,6 +227,7 @@ export class PricingBaseComponent implements OnInit {
                 this.tParamsAvailableFromTier2 = { plan_name: PLAN_NAME.E }
                 this.tParamsPlanNameTrialExpired = { plan_name: PLAN_NAME.E }
                 this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.F }
+                this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.E }
 
               }
             }
@@ -447,6 +455,11 @@ export class PricingBaseComponent implements OnInit {
 
                 // Translate params for static page
                 this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.C }
+                this.tParamsCRMAvailableFromPlan = { plan_name: PLAN_NAME.A }
+                this.tParamsHoursAvailableFromPlan = { plan_name: PLAN_NAME.A }
+                this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.A }
+                this.tParamsCannedAvailableFromPlan = { plan_name: PLAN_NAME.A }
+                this.tParamsAvailableFromTier2 = { plan_name: PLAN_NAME.B }
                 // ------------------------------------------------------------------------
                 // USECASE: Scale Plan (SUB EXPIRED)
                 // ------------------------------------------------------------------------
@@ -470,7 +483,8 @@ export class PricingBaseComponent implements OnInit {
 
                 // Translate params for static page
                 this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.C }
-                this.tParamsAvailableFromTier2 = {plan_name: PLAN_NAME.B}
+                this.tParamsAvailableFromTier2 = { plan_name: PLAN_NAME.B }
+               
                 // ------------------------------------------------------------------------
                 // USECASE: Plus Plan (SUB EXPIRED)
                 // ------------------------------------------------------------------------
@@ -494,7 +508,7 @@ export class PricingBaseComponent implements OnInit {
 
                 // Translate params for static page
                 this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.C }
-                this.tParamsAvailableFromTier2 = {plan_name: PLAN_NAME.B}
+                this.tParamsAvailableFromTier2 = { plan_name: PLAN_NAME.B }
 
                 // ------------------------------------------------------------------------
                 // USECASE: Basic Plan (SUB EXPIRED) new for Growth
@@ -521,7 +535,11 @@ export class PricingBaseComponent implements OnInit {
 
                 // Translate params for static page
                 this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.F }
-
+                this.tParamsCRMAvailableFromPlan = { plan_name: PLAN_NAME.D }
+                this.tParamsHoursAvailableFromPlan = { plan_name: PLAN_NAME.D }
+                this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.E }
+                this.tParamsCannedAvailableFromPlan = { plan_name: PLAN_NAME.D }
+                this.tParamsAvailableFromTier2 = { plan_name: PLAN_NAME.E }
                 // ------------------------------------------------------------------------
                 // USECASE: Premium Plan (SUB EXPIRED) new for Scale
                 // ------------------------------------------------------------------------
@@ -546,7 +564,8 @@ export class PricingBaseComponent implements OnInit {
 
                 // Translate params for static page
                 this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.F }
-                this.tParamsAvailableFromTier2 = {plan_name: PLAN_NAME.E }
+                this.tParamsAvailableFromTier2 = { plan_name: PLAN_NAME.E }
+                this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.E }
 
                 // ------------------------------------------------------------------------
                 // USECASE: Custom Plan (SUB EXPIRED) new for Plus
@@ -572,7 +591,7 @@ export class PricingBaseComponent implements OnInit {
 
                 // Translate params for static page
                 this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.F }
-                this.tParamsAvailableFromTier2 = {plan_name: PLAN_NAME.E }
+                this.tParamsAvailableFromTier2 = { plan_name: PLAN_NAME.E }
               }
             }
           }
