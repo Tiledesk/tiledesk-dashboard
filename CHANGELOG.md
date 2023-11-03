@@ -1,8 +1,9 @@
 # tiledesk-dashboard
 
-chatPrefix
+### 2.4.73-rc2
+- Standalone design studio connected
+
 ### 2.4.73-rc1
-- Deploys in production
 - Removes chatPrefix
 
 ### 2.4.72
