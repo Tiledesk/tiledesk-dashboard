@@ -238,7 +238,8 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
   // ---------------------------
   getApps() {
     this.appStoreService.getApps().subscribe((_apps: any) => {
-      this.apps = _apps.apps;
+     
+      this.apps = _apps.apps.filter( el => el._id !== '64259aaf035da07321451424' );
       console.log('APP-STORE - getApps APPS ', this.apps);
       this.apps.forEach(app => {
         if (app.description.length > 118) {
@@ -414,6 +415,28 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
       this.installV2App(this.projectId, appId, appTitle)
     }
 
+  }
+
+
+  learnmore(learnmoreUrl: string, app_id) {
+    // console.log('[APP-STORE] learnmoreUrl ', learnmoreUrl);
+    if (learnmoreUrl.startsWith('{')) {
+      // console.log('[APP-STORE] installationUrl start with curly bracket ');
+      const learnmoreUrlString = learnmoreUrl.replace(/&quot;/ig, '"');
+      const learnMoreObjct = JSON.parse(learnmoreUrlString)
+      // console.log('[APP-STORE] learnmoreUrl start with curly bracket - learnMoreObjct, ', learnMoreObjct);
+      // URL = learnMoreObjct.url
+      const target = learnMoreObjct.target;
+
+      if (target === '_self') {
+        this.openAppDetails(URL, app_id)
+      }
+    } else if (learnmoreUrl.startsWith('http')) {
+      // console.log('[APP-STORE] learnmoreUrl NOT start with curly bracket ');
+      const URL = learnmoreUrl
+      window.open(URL, '_blank')
+    }
+    
   }
 
   presentModalFeautureAvailableFromTier2Plan(planName) {
@@ -704,26 +727,8 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
     });
   }
 
-  learnmore(learnmoreUrl: string, app_id) {
-    // console.log('[APP-STORE] learnmoreUrl ', learnmoreUrl);
-    if (learnmoreUrl.startsWith('{')) {
-      // console.log('[APP-STORE] installationUrl start with curly bracket ');
-      const learnmoreUrlString = learnmoreUrl.replace(/&quot;/ig, '"');
-      const learnMoreObjct = JSON.parse(learnmoreUrlString)
-      // console.log('[APP-STORE] learnmoreUrl start with curly bracket - learnMoreObjct, ', learnMoreObjct);
-      // URL = learnMoreObjct.url
-      const target = learnMoreObjct.target;
 
-      if (target === '_self') {
-        this.openAppDetails(URL, app_id)
-      }
-    } else if (learnmoreUrl.startsWith('http')) {
-      // console.log('[APP-STORE] learnmoreUrl NOT start with curly bracket ');
-      const URL = learnmoreUrl
-      window.open(URL, '_blank')
-    }
-    //   // const url = learnmoreUrl;
-  }
+
   openAppDetails(URL, app_id) {
     // console.log('HERE Y')
     this.router.navigate(['project/' + this.projectId + '/app-store-install/' + app_id + '/detail'])

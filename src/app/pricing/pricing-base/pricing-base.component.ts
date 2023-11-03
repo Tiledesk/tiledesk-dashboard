@@ -38,6 +38,7 @@ export class PricingBaseComponent implements OnInit {
   prjct_profile_name: string
   appSumoProfilefeatureAvailableFromBPlan: string;
   projectProfileData: any;
+  dispayBadgeAvaibleFromInAppStore: boolean;
 
   // Plan limit
   public seatsLimit: any;
@@ -135,6 +136,8 @@ export class PricingBaseComponent implements OnInit {
 
                 // Translate params for static page
                 this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.C }
+               
+                this.dispayBadgeAvaibleFromInAppStore = false;
 
                 // ------------------------------------------------------------------------
                 // USECASE: Sandbox Plan (new FREE PLAN - TRIAL ACTIVE i.e. Premium trial)
@@ -161,7 +164,7 @@ export class PricingBaseComponent implements OnInit {
 
                 // Translate params for static page
                 this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.F }
-               
+                this.dispayBadgeAvaibleFromInAppStore = false;
               }
             } else {
 
@@ -196,7 +199,7 @@ export class PricingBaseComponent implements OnInit {
                 this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.C }
                 this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.A }
 
-
+                this.dispayBadgeAvaibleFromInAppStore = true;
                 // ------------------------------------------------------------------------
                 // USECASE: Sandbox Plan (TRIAL EXPIRED)
                 // ------------------------------------------------------------------------
@@ -229,6 +232,7 @@ export class PricingBaseComponent implements OnInit {
                 this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.F }
                 this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.E }
 
+                this.dispayBadgeAvaibleFromInAppStore = true;
               }
             }
           } else if (projectProfileData.profile_type === 'payment') {
@@ -261,6 +265,7 @@ export class PricingBaseComponent implements OnInit {
                   this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.C }
                   this.tParamsAvailableFromTier2 = { plan_name: PLAN_NAME.B }
 
+                  this.dispayBadgeAvaibleFromInAppStore = true;
                 } else {
                   // ------------------------------------------------------------------------
                   // USECASE: Growth Plan AppSumo (SUB ACTIVE)
@@ -309,6 +314,8 @@ export class PricingBaseComponent implements OnInit {
 
                   // Translate params for static page
                   this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.C }
+
+                  this.dispayBadgeAvaibleFromInAppStore = false;
                 } else {
                   // ------------------------------------------------------------------------
                   // USECASE: Scale Plan AppSumo (SUB ACTIVE)
@@ -353,7 +360,8 @@ export class PricingBaseComponent implements OnInit {
                 this.kbLimit = 3;
                 this.tParamsPlanAndKb = { plan_name: this.prjct_profile_name, allowed_kb_num: this.kbLimit };
                 console.log('[P-BASE] - GET PROJECT PLAN - KB LIMIT ', this.kbLimit);
-
+                
+                this.dispayBadgeAvaibleFromInAppStore = false;
                 // ------------------------------------------------------------------------
                 // USECASE: Basic Plan (SUB ACTIVE) new for Growth Plan
                 // ------------------------------------------------------------------------
@@ -379,7 +387,7 @@ export class PricingBaseComponent implements OnInit {
                 // Translate params for static page
                 this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.F }
                 this.tParamsAvailableFromTier2 = { plan_name: PLAN_NAME.E }
-
+                this.dispayBadgeAvaibleFromInAppStore = true;
                 // ------------------------------------------------------------------------
                 // USECASE: Premium Plan (SUB ACTIVE) new for Scale Plan
                 // ------------------------------------------------------------------------
@@ -404,7 +412,7 @@ export class PricingBaseComponent implements OnInit {
 
                 // Translate params for static page
                 this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.F }
-
+                this.dispayBadgeAvaibleFromInAppStore = false;
                 // ------------------------------------------------------------------------
                 // USECASE: Custom Plan (SUB ACTIVE) new for Plus Plan
                 // ------------------------------------------------------------------------
@@ -426,6 +434,7 @@ export class PricingBaseComponent implements OnInit {
                 this.kbLimit = KB_MAX_NUM[PLAN_NAME.F]
                 this.tParamsPlanAndKb = { plan_name: this.prjct_profile_name, allowed_kb_num: this.kbLimit }
                 console.log('[P-BASE] - GET PROJECT PLAN - KB LIMIT ', this.kbLimit);
+                this.dispayBadgeAvaibleFromInAppStore = false;
               }
 
             } else if (this.subscription_is_active === false) {
@@ -460,6 +469,7 @@ export class PricingBaseComponent implements OnInit {
                 this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.A }
                 this.tParamsCannedAvailableFromPlan = { plan_name: PLAN_NAME.A }
                 this.tParamsAvailableFromTier2 = { plan_name: PLAN_NAME.B }
+                this.dispayBadgeAvaibleFromInAppStore = true;
                 // ------------------------------------------------------------------------
                 // USECASE: Scale Plan (SUB EXPIRED)
                 // ------------------------------------------------------------------------
@@ -484,7 +494,7 @@ export class PricingBaseComponent implements OnInit {
                 // Translate params for static page
                 this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.C }
                 this.tParamsAvailableFromTier2 = { plan_name: PLAN_NAME.B }
-               
+                this.dispayBadgeAvaibleFromInAppStore = true;
                 // ------------------------------------------------------------------------
                 // USECASE: Plus Plan (SUB EXPIRED)
                 // ------------------------------------------------------------------------
@@ -509,7 +519,7 @@ export class PricingBaseComponent implements OnInit {
                 // Translate params for static page
                 this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.C }
                 this.tParamsAvailableFromTier2 = { plan_name: PLAN_NAME.B }
-
+                this.dispayBadgeAvaibleFromInAppStore = true;
                 // ------------------------------------------------------------------------
                 // USECASE: Basic Plan (SUB EXPIRED) new for Growth
                 // ------------------------------------------------------------------------
@@ -540,6 +550,8 @@ export class PricingBaseComponent implements OnInit {
                 this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.E }
                 this.tParamsCannedAvailableFromPlan = { plan_name: PLAN_NAME.D }
                 this.tParamsAvailableFromTier2 = { plan_name: PLAN_NAME.E }
+                this.dispayBadgeAvaibleFromInAppStore = true;
+
                 // ------------------------------------------------------------------------
                 // USECASE: Premium Plan (SUB EXPIRED) new for Scale
                 // ------------------------------------------------------------------------
@@ -566,6 +578,7 @@ export class PricingBaseComponent implements OnInit {
                 this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.F }
                 this.tParamsAvailableFromTier2 = { plan_name: PLAN_NAME.E }
                 this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.E }
+                this.dispayBadgeAvaibleFromInAppStore = true;
 
                 // ------------------------------------------------------------------------
                 // USECASE: Custom Plan (SUB EXPIRED) new for Plus
@@ -592,6 +605,7 @@ export class PricingBaseComponent implements OnInit {
                 // Translate params for static page
                 this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.F }
                 this.tParamsAvailableFromTier2 = { plan_name: PLAN_NAME.E }
+                this.dispayBadgeAvaibleFromInAppStore = true;
               }
             }
           }

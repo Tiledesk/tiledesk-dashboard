@@ -275,7 +275,7 @@
       <!-- @ App cards -->
       <!-- -------------------------------------------------------------------- -->
       <div *ngFor="let app of apps" class="col-lg-4 col-md-4 col-sm-6" style="cursor:pointer">
-        <div class="card card-app-store" *ngIf="app?._id !== '64259aaf035da07321451424'">
+        <div class="card card-app-store" >
 
           <div class="card-content">
             <div class="row app-card-header">
@@ -329,7 +329,8 @@
                 {{ 'AvailableFromThePlan' | translate: tParamsAvailableFromAppSumoTier3 }}
               </div>
             </ng-container>
-            <ng-container *ngIf="!projectProfileData?.extra3 && (profile_name === PLAN_NAME.B && !subscription_is_active) && (profile_name === PLAN_NAME.E && !subscription_is_active) && (profile_name === 'Sandbox' && trial_expired) && (profile_name === 'free' && trial_expired)">
+            <!-- !projectProfileData?.extra3 || (profile_name === PLAN_NAME.A) || (profile_name === PLAN_NAME.D) || (profile_name === PLAN_NAME.B && !subscription_is_active) ||  (profile_name === PLAN_NAME.E && !subscription_is_active) || (profile_name === 'Sandbox' && trial_expired) || (profile_name === 'free' && trial_expired) -->
+            <ng-container *ngIf="dispayBadgeAvaibleFromInAppStore ">
               <div class="available-from-b-plan-badge b-plan-badge-color"
                 *ngIf="((app?.title === 'Zapier') || (app?.title === 'WhatsApp Business') || (app?.title === 'Facebook Messenger') || (app?.title === 'Help Center') || (app?.title === 'Send transcript by email'))">
                 {{ 'AvailableFromThePlan' | translate: tParamsAvailableFromTier2 }}
@@ -376,7 +377,7 @@
               <ng-container *ngIf="app.version === 'v2'">
                 <div *ngIf="app.installActionURL === undefined"
                   [ngClass]="{'col-xs-4': app.where.appsstore === true && app.installed, 'col-xs-6': (app.where.appsstore === false || !app.where.appsstore) || !app.installed}"
-                  class="app-store-left-col-btn" (click)="learnmore(app.learnMore, app._id)">
+                  class="app-store-left-col-btn" (click)="learnmore(app.learnMore, app._id, app.title)">
                   <a>
                     {{'LearnMore' | translate}}
                   </a>
@@ -385,7 +386,7 @@
 
                 <div *ngIf="app.installActionURL !== undefined"
                   [ngClass]="{'col-xs-3': app.where.appsstore === true && app.installed, 'col-xs-4': ((app.where.appsstore === false || !app.where.appsstore) && app.installed), 'col-xs-6': ((app.where.appsstore === false || !app.where.appsstore) && !app.installed) ||  (app.where.appsstore === true && !app.installed)}"
-                  class="app-store-left-col-btn" (click)="learnmore(app.learnMore, app._id)">
+                  class="app-store-left-col-btn" (click)="learnmore(app.learnMore, app._id, app.title)">
                   <a>
                     {{'LearnMore' | translate}}
                   </a>
