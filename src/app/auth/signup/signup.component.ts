@@ -152,7 +152,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
     const hasSigninWithGoogle = this.localDbService.getFromStorage('swg')
     if (hasSigninWithGoogle) {
       this.localDbService.removeFromStorage('swg')
-      console.log('[SIGN-UP] removeFromStorage swg')
+      // console.log('[SIGN-UP] removeFromStorage swg')
     }
 
   }
