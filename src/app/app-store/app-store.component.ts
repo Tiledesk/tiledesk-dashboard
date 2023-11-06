@@ -238,8 +238,8 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
   // ---------------------------
   getApps() {
     this.appStoreService.getApps().subscribe((_apps: any) => {
-     
-      this.apps = _apps.apps.filter( el => el._id !== '64259aaf035da07321451424' );
+
+      this.apps = _apps.apps.filter(el => el._id !== '64259aaf035da07321451424');
       console.log('APP-STORE - getApps APPS ', this.apps);
       this.apps.forEach(app => {
         if (app.description.length > 118) {
@@ -312,7 +312,7 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
   //     console.log('[WIDGET-SET-UP] - featureIsAvailable IS AVAIBLE' )
   //   }
 
-  
+
   // getProjectPlan() {
   //   this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
   //     this.logger.log('[APP-STORE] getProjectPlan project Profile Data', projectProfileData)
@@ -347,8 +347,7 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
   //   });
   // }
 
-  installApp(app, installationType: string, installationUrl: string, appTitle: string, appId: string) {
-    console.log('[APP-STORE] appId ', appId, 'appTitle ', appTitle)
+  checkPlanAndPresentModal(appTitle) {
     if (
       (appTitle === "WhatsApp Business" ||
         appTitle === "Facebook Messenger" ||
@@ -363,10 +362,10 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
       if (!this.appSumoProfile) {
         // this.presentModalFeautureAvailableFromBPlan()
         this.presentModalFeautureAvailableFromTier2Plan(this.featureAvailableFromBPlan)
-        return
+        return false
       } else {
         this.presentModalAppSumoFeautureAvailableFromBPlan()
-        return
+        return false
       }
     } else if (
       (appTitle === "WhatsApp Business" ||
@@ -380,10 +379,59 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
         (this.profile_name === 'Sandbox' && this.trial_expired === true))) {
       if (!this.appSumoProfile) {
         this.presentModalFeautureAvailableFromTier2Plan(this.featureAvailableFromEPlan)
-        return
+        return false
       }
 
     }
+  }
+
+
+  installApp(app, installationType: string, installationUrl: string, appTitle: string, appId: string) {
+    console.log('[APP-STORE] appId ', appId, 'appTitle ', appTitle)
+    const isAvailable = this.checkPlanAndPresentModal(appTitle)
+    console.log('[APP-STORE] isAvaibleFromPlan ', isAvailable)
+    if (isAvailable === false) {
+      return
+    }
+    // if (
+    //   (appTitle === "WhatsApp Business" ||
+    //     appTitle === "Facebook Messenger" ||
+    //     appTitle === "Zapier" ||
+    //     appTitle === 'Help Center' ||
+    //     appTitle === 'Send transcript by email') &&
+    //   ((this.profile_name === PLAN_NAME.A) ||
+    //     (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
+    //     (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
+    //     (this.profile_name === 'free' && this.trial_expired === true))) {
+
+    //   if (!this.appSumoProfile) {
+    //     // this.presentModalFeautureAvailableFromBPlan()
+    //     this.presentModalFeautureAvailableFromTier2Plan(this.featureAvailableFromBPlan)
+    //     return
+    //   } else {
+    //     this.presentModalAppSumoFeautureAvailableFromBPlan()
+    //     return
+    //   }
+    // } else if (
+    //   (appTitle === "WhatsApp Business" ||
+    //     appTitle === "Facebook Messenger" ||
+    //     appTitle === "Zapier" ||
+    //     appTitle === 'Help Center' ||
+    //     appTitle === 'Send transcript by email') &&
+    //   ((this.profile_name === PLAN_NAME.D) ||
+    //     (this.profile_name === PLAN_NAME.E && this.subscription_is_active === false) ||
+    //     (this.profile_name === PLAN_NAME.F && this.subscription_is_active === false) ||
+    //     (this.profile_name === 'Sandbox' && this.trial_expired === true))) {
+    //   if (!this.appSumoProfile) {
+    //     this.presentModalFeautureAvailableFromTier2Plan(this.featureAvailableFromEPlan)
+    //     return
+    //   }
+
+    // }
+
+
+
+
 
     // console.log('[APP-STORE] app ', app)
     this.logger.log('[APP-STORE] app app version', app.version)
@@ -418,8 +466,17 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
   }
 
 
-  learnmore(learnmoreUrl: string, app_id) {
-    // console.log('[APP-STORE] learnmoreUrl ', learnmoreUrl);
+  learnmore(learnmoreUrl: string, app_id: string, appTitle: string) {
+    console.log('[APP-STORE] learnmoreUrl ', learnmoreUrl);
+    console.log('[APP-STORE] app_id ', app_id);
+    console.log('[APP-STORE] appTitle ', appTitle);
+
+    const isAvailable = this.checkPlanAndPresentModal(appTitle)
+    console.log('[APP-STORE] isAvaibleFromPlan ', isAvailable)
+    if (isAvailable === false) {
+      return
+    }
+
     if (learnmoreUrl.startsWith('{')) {
       // console.log('[APP-STORE] installationUrl start with curly bracket ');
       const learnmoreUrlString = learnmoreUrl.replace(/&quot;/ig, '"');
@@ -436,7 +493,48 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
       const URL = learnmoreUrl
       window.open(URL, '_blank')
     }
-    
+
+  }
+
+
+  openInAppStoreInstall(app, appTitle) {
+    const isAvailable = this.checkPlanAndPresentModal(appTitle)
+    console.log('[APP-STORE] isAvaibleFromPlan ', isAvailable)
+    if (isAvailable === false) {
+      return
+    }
+    // if ((app.title === "WhatsApp Business" || app.title === "Facebook Messenger") &&
+    //   ((this.profile_name === PLAN_NAME.A) ||
+    //     (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
+    //     (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
+    //     (this.profile_name === 'free' && this.trial_expired === true))) {
+
+
+    //   if (!this.appSumoProfile) {
+    //     this.presentModalFeautureAvailableFromTier2Plan(this.featureAvailableFromBPlan)
+    //     return
+    //   } else {
+    //     this.presentModalAppSumoFeautureAvailableFromBPlan()
+    //     return
+    //   }
+    // } else if ((app.title === "WhatsApp Business" || app.title === "Facebook Messenger") &&
+    //   ((this.profile_name === PLAN_NAME.D) ||
+    //     (this.profile_name === PLAN_NAME.E && this.subscription_is_active === false) ||
+    //     (this.profile_name === PLAN_NAME.F && this.subscription_is_active === false) ||
+    //     (this.profile_name === 'Sandbox' && this.trial_expired === true))) {
+
+    // }
+    this.logger.log('openInAppStoreInstall app ', app)
+    this.router.navigate(['project/' + this.projectId + '/app-store-install/' + app._id + '/run'])
+  }
+
+  openConfigureUrlInAppStoreInstall(app, appTitle, appId) {
+    const isAvailable = this.checkPlanAndPresentModal(appTitle)
+    console.log('[APP-STORE] isAvaibleFromPlan ', isAvailable)
+    if (isAvailable === false) {
+      return
+    }
+    this.router.navigate(['project/' + this.projectId + '/app-store-install/' + app._id + '/configure'])
   }
 
   presentModalFeautureAvailableFromTier2Plan(planName) {
@@ -489,7 +587,7 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
   }
 
 
-  
+
 
   presentModalAppSumoFeautureAvailableFromBPlan() {
     const el = document.createElement('div')
@@ -524,35 +622,6 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
     this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.agentCannotManageAdvancedOptions, this.learnMoreAboutDefaultRoles)
   }
 
-  openInAppStoreInstall(app) {
-    if ((app.title === "WhatsApp Business" || app.title === "Facebook Messenger") &&
-      ((this.profile_name === PLAN_NAME.A) ||
-        (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
-        (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
-        (this.profile_name === 'free' && this.trial_expired === true))) {
-
-
-      if (!this.appSumoProfile) {
-        this.presentModalFeautureAvailableFromTier2Plan(this.featureAvailableFromBPlan)
-        return
-      } else {
-        this.presentModalAppSumoFeautureAvailableFromBPlan()
-        return
-      }
-    } else if ((app.title === "WhatsApp Business" || app.title === "Facebook Messenger") &&
-    ((this.profile_name === PLAN_NAME.D) ||
-      (this.profile_name === PLAN_NAME.E && this.subscription_is_active === false) ||
-      (this.profile_name === PLAN_NAME.F && this.subscription_is_active === false) ||
-      (this.profile_name === 'Sandbox' && this.trial_expired === true))) {
-
-    }
-    this.logger.log('openInAppStoreInstall app ', app)
-    this.router.navigate(['project/' + this.projectId + '/app-store-install/' + app._id + '/run'])
-  }
-
-  openConfigureUrlInAppStoreInstall(app) {
-    this.router.navigate(['project/' + this.projectId + '/app-store-install/' + app._id + '/configure'])
-  }
 
   installV2App(projectId, appId, appTitle) {
 
@@ -814,12 +883,12 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
         this.featureAvailableFromBPlan = translation;
       });
 
-      this.translate.get('AvailableFromThePlan', { plan_name: PLAN_NAME.E })
+    this.translate.get('AvailableFromThePlan', { plan_name: PLAN_NAME.E })
       .subscribe((translation: any) => {
         this.featureAvailableFromEPlan = translation;
       });
 
-      
+
 
     this.translate.get('Pricing.UpgradePlan')
       .subscribe((translation: any) => {

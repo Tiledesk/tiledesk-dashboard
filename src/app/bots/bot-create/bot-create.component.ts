@@ -590,6 +590,9 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
 
   createBlankTilebot() {
     console.log('[BOTS-CREATE] createBlankTilebot chatBotCount ', this.chatBotCount, ' chatBotLimit ', this.chatBotLimit)
+   
+   
+   
     // if (this.chatBotCount < this.chatBotLimit) {
      
     //   this.createTilebotBotFromScratch() 
@@ -635,6 +638,9 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
         this.newBot = faqKb
         this.newBot_name = faqKb['name'];
         this.newBot_Id = faqKb['_id'];
+
+        // this.displayModalAttacchBotToDept= 'block'
+
         // this.translateparamBotName = { bot_name: this.newBot_name }
         // SAVE THE BOT IN LOCAL STORAGE
         this.botLocalDbService.saveBotsInStorage(this.newBot_Id, faqKb);
@@ -643,7 +649,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
           _id: this.newBot_Id
         }
         this.trackChatbotCreated(faqKb)
-        goToCDSVersion(this.router, newfaqkb, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
+        // goToCDSVersion(this.router, newfaqkb, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
       }
 
     }, (error) => {
@@ -654,6 +660,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
     }, () => {
       this.logger.log('[BOT-CREATE] CREATE FAQKB - POST REQUEST * COMPLETE *');
       this.faqKbName = null;
+      
       // this.router.navigate(['project/' + this.project._id + '/cds/', this.newBot_Id, 'intent', '0']);
     })
   }

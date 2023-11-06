@@ -10,6 +10,9 @@ import { UsersService } from '../../services/users.service';
 import { LoggerService } from '../../services/logger/logger.service';
 import { AppConfigService } from 'app/services/app-config.service';
 import { APP_SUMO_PLAN_NAME, PLAN_NAME } from 'app/utils/util';
+import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators'
 
 const swal = require('sweetalert');
 
@@ -19,7 +22,10 @@ const swal = require('sweetalert');
   styleUrls: ['./analytics-static.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class AnalyticsStaticComponent extends StaticPageBaseComponent implements OnInit, OnDestroy {
+
+// extends StaticPageBaseComponent
+export class AnalyticsStaticComponent extends PricingBaseComponent implements OnInit, OnDestroy {
+  private unsubscribe$: Subject<any> = new Subject<any>();
   PLAN_NAME = PLAN_NAME;
   APP_SUMO_PLAN_NAME = APP_SUMO_PLAN_NAME;
   subscription: Subscription;
@@ -61,19 +67,24 @@ export class AnalyticsStaticComponent extends StaticPageBaseComponent implements
   onlyOwnerCanManageTheAccountPlanMsg: string;
   learnMoreAboutDefaultRoles: string;
   isChromeVerGreaterThan100: boolean;
-  tparams: any;
+  // tparams: any;
+
+  public_Key: any;
+  payIsVisible: boolean;
+
   constructor(
     private router: Router,
     public auth: AuthService,
     public translate: TranslateService,
-    private prjctPlanService: ProjectPlanService,
-    private notify: NotifyService,
+    public prjctPlanService: ProjectPlanService,
+    public notify: NotifyService,
     private usersService: UsersService,
     private logger: LoggerService,
     public appConfigService: AppConfigService
   ) {
-    super(translate);
-    this.tparams = { 'plan_name': PLAN_NAME.B }
+    // super(translate);
+    super(prjctPlanService, notify);
+    // this.tparams = { 'plan_name': PLAN_NAME.B }
   }
 
   ngOnInit() {
@@ -84,10 +95,21 @@ export class AnalyticsStaticComponent extends StaticPageBaseComponent implements
     this.getProjectUserRole();
     this.getTranslationStrings();
     this.getBrowserVersion();
+    this.presentModalsOnInit()
+  }
+
+  ngOnDestroy() {
+    // this.subscription.unsubscribe();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   getBrowserVersion() {
-    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
+    this.auth.isChromeVerGreaterThan100
+    .pipe(
+      takeUntil(this.unsubscribe$)
+    )
+    .subscribe((isChromeVerGreaterThan100: boolean) => {
       this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
       //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
     })
@@ -130,7 +152,11 @@ export class AnalyticsStaticComponent extends StaticPageBaseComponent implements
   }
 
   getProjectUserRole() {
-    this.usersService.project_user_role_bs.subscribe((user_role) => {
+    this.usersService.project_user_role_bs
+    .pipe(
+      takeUntil(this.unsubscribe$)
+    )
+    .subscribe((user_role) => {
       this.USER_ROLE = user_role;
       this.logger.log('[ANALYTICS-STATIC] - PROJECT USER ROLE: ', this.USER_ROLE);
     });
@@ -155,8 +181,11 @@ export class AnalyticsStaticComponent extends StaticPageBaseComponent implements
   }
 
   getCurrentProject() {
-    this.auth.project_bs.subscribe((project) => {
-
+    this.auth.project_bs
+    .pipe(
+      takeUntil(this.unsubscribe$)
+    )
+    .subscribe((project) => {
       if (project) {
         this.projectId = project._id
         this.logger.log('[ANALYTICS-STATIC] - project id', this.projectId)
@@ -164,53 +193,74 @@ export class AnalyticsStaticComponent extends StaticPageBaseComponent implements
     });
   }
 
-  getProjectPlan() {
-    this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-      this.logger.log('[ANALYTICS-STATIC] GET PROJECT PROFILE', projectProfileData)
-      if (projectProfileData) {
+  presentModalsOnInit() {
+    if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
+      if (this.USER_ROLE === 'owner') {
+        if (this.profile_name !== PLAN_NAME.A && this.profile_name !== PLAN_NAME.D) {
 
-        this.prjct_profile_type = projectProfileData.profile_type;
-        this.subscription_is_active = projectProfileData.subscription_is_active;
+          if (this.profile_name === PLAN_NAME.B || this.profile_name === PLAN_NAME.E) {
 
-        this.subscription_end_date = projectProfileData.subscription_end_date
-        this.profile_name = projectProfileData.profile_name
+            this.notify.displaySubscripionHasExpiredModal(true, this.profile_name, this.subscription_end_date)
 
-        this.buildPlanName(projectProfileData.profile_name, this.browserLang, this.prjct_profile_type);
+          } else if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
 
-        if (projectProfileData.extra3) {
-          this.appSumoProfile = APP_SUMO_PLAN_NAME[projectProfileData.extra3]
-          this.appSumoProfilefeatureAvailableFromBPlan = APP_SUMO_PLAN_NAME['tiledesk_tier3']
-
-          this.tparams = { 'plan_name': this.appSumoProfilefeatureAvailableFromBPlan }
-        } else if (!projectProfileData.extra3) {
-          this.tparams = { 'plan_name': PLAN_NAME.B }
-        }
-
-        if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
-          if (this.USER_ROLE === 'owner') {
-            if (this.profile_name !== PLAN_NAME.A) {
-
-              if (this.profile_name === PLAN_NAME.B) {
-
-                this.notify.displaySubscripionHasExpiredModal(true, this.profile_name, this.subscription_end_date)
-
-              } else if (this.profile_name === PLAN_NAME.C) {
-
-                this.notify.displayEnterprisePlanHasExpiredModal(true, this.profile_name, this.subscription_end_date);
-              }
-            } else if (this.profile_name === PLAN_NAME.A) {
-
-              this.notify.displaySubscripionHasExpiredModal(true, this.profile_name, this.subscription_end_date)
-            }
+            this.notify.displayEnterprisePlanHasExpiredModal(true, this.profile_name, this.subscription_end_date);
           }
+        } else if (this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.D) {
+
+          this.notify.displaySubscripionHasExpiredModal(true, this.profile_name, this.subscription_end_date)
         }
       }
-    }, err => {
-      this.logger.error('[ANALYTICS-STATIC] GET PROJECT PROFILE - ERROR', err);
-    }, () => {
-      this.logger.log('[ANALYTICS-STATIC] GET PROJECT PROFILE * COMPLETE *');
-    });
+    }
   }
+
+  // getProjectPlan() {
+  //   this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
+  //     this.logger.log('[ANALYTICS-STATIC] GET PROJECT PROFILE', projectProfileData)
+  //     if (projectProfileData) {
+
+  //       this.prjct_profile_type = projectProfileData.profile_type;
+  //       this.subscription_is_active = projectProfileData.subscription_is_active;
+
+  //       this.subscription_end_date = projectProfileData.subscription_end_date
+  //       this.profile_name = projectProfileData.profile_name
+
+  //       this.buildPlanName(projectProfileData.profile_name, this.browserLang, this.prjct_profile_type);
+
+  //       if (projectProfileData.extra3) {
+  //         this.appSumoProfile = APP_SUMO_PLAN_NAME[projectProfileData.extra3]
+  //         this.appSumoProfilefeatureAvailableFromBPlan = APP_SUMO_PLAN_NAME['tiledesk_tier3']
+
+  //         this.tparams = { 'plan_name': this.appSumoProfilefeatureAvailableFromBPlan }
+  //       } else if (!projectProfileData.extra3) {
+  //         this.tparams = { 'plan_name': PLAN_NAME.B }
+  //       }
+
+  //       if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
+  //         if (this.USER_ROLE === 'owner') {
+  //           if (this.profile_name !== PLAN_NAME.A) {
+
+  //             if (this.profile_name === PLAN_NAME.B) {
+
+  //               this.notify.displaySubscripionHasExpiredModal(true, this.profile_name, this.subscription_end_date)
+
+  //             } else if (this.profile_name === PLAN_NAME.C) {
+
+  //               this.notify.displayEnterprisePlanHasExpiredModal(true, this.profile_name, this.subscription_end_date);
+  //             }
+  //           } else if (this.profile_name === PLAN_NAME.A) {
+
+  //             this.notify.displaySubscripionHasExpiredModal(true, this.profile_name, this.subscription_end_date)
+  //           }
+  //         }
+  //       }
+  //     }
+  //   }, err => {
+  //     this.logger.error('[ANALYTICS-STATIC] GET PROJECT PROFILE - ERROR', err);
+  //   }, () => {
+  //     this.logger.log('[ANALYTICS-STATIC] GET PROJECT PROFILE * COMPLETE *');
+  //   });
+  // }
 
 
   goToPricing() {
@@ -243,9 +293,7 @@ export class AnalyticsStaticComponent extends StaticPageBaseComponent implements
   }
 
 
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
-  }
+
 
 
 }

@@ -349,10 +349,10 @@
                         </option>
                       </select>
 
-                      <!-- 
-                    // -------------------------------------------------------------------
-                    // Create a new group link
-                    // ------------------------------------------------------------------- -->
+                       
+                    <!-- ------------------------------------------------------------------- -->
+                    <!-- Create a new group link -->
+                    <!-- ------------------------------------------------------------------- -->
                       <span
                         style="display: block;font-size: 12px;font-weight: 400; color: #7695a5; line-height: 1.2em; padding-top: 3px;">
                         {{ "DeptsAddEditPage.SelectAnExistingOne" | translate }}
@@ -375,10 +375,10 @@
             </div>
 
 
-            <!-- 
-            // -------------------------------------------------------------------
-            // Create btns
-            // ------------------------------------------------------------------- -->
+             
+            <!-- ------------------------------------------------------------------- -->
+            <!-- Create btns -->
+            <!-- ------------------------------------------------------------------- -->
             <div class="row" *ngIf="CREATE_VIEW">
               <div class="col-sm-12">
                 <span *ngIf="has_selected_bot === true">
@@ -399,10 +399,10 @@
               </div>
             </div>
 
-            <!-- 
-            // -------------------------------------------------------------------
-            // Edit btns (if ROUTING_PAGE_MODE === true is changed the label)
-            // ------------------------------------------------------------------- -->
+             
+            <!-- ------------------------------------------------------------------- -->
+            <!-- Edit btns (if ROUTING_PAGE_MODE === true is changed the label) -->
+            <!-- ------------------------------------------------------------------- -->
             <div class="row" *ngIf="EDIT_VIEW">
               <div class="col-sm-12">
 
@@ -710,10 +710,10 @@
             </div>
 
 
-            <!--
-            // ---------------------------------------------------------------------
-            // Agent
-            // --------------------------------------------------------------------- -->
+            
+            <!-- --------------------------------------------------------------------- -->
+            <!-- Agent -->
+            <!-- --------------------------------------------------------------------- -->
             <div class="row" style="margin-top:0px">
               <!-- border-top: 1px solid #dadde1; -->
               <div class="col-sm-12">
@@ -851,8 +851,12 @@
 
 
 <div *ngIf="OPEN_CREATE_GROUP_RIGHT_SIDEBAR === true" class="view-side">
-  <appdashboard-create-group [ngStyle]="{'height':train_bot_sidebar_height }" [newInnerWidth]="newInnerWidth"
-    [deptName_toUpdate]="deptName_toUpdate" (valueChange)='handleCloseCreateGroupSidebar($event)'
+  <appdashboard-create-group 
+    style="z-index: 2;"
+    [ngStyle]="{'height':train_bot_sidebar_height }" 
+    [newInnerWidth]="newInnerWidth"
+    [deptName_toUpdate]="deptName_toUpdate" 
+    (valueChange)='handleCloseCreateGroupSidebar($event)'
     (groupcreated)='handleNewGroupCreatedFromSidebar($event)'></appdashboard-create-group>
 </div>
 

@@ -11,6 +11,8 @@ import { LoggerService } from '../../services/logger/logger.service';
 import { AppConfigService } from 'app/services/app-config.service';
 import { PLAN_NAME } from 'app/utils/util';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators'
 
 @Component({
   selector: 'appdashboard-contacts-static',
@@ -19,6 +21,9 @@ import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.comp
 })
 // extends StaticPageBaseComponent 
 export class ContactsStaticComponent extends  PricingBaseComponent implements OnInit, OnDestroy {
+
+  private unsubscribe$: Subject<any> = new Subject<any>();
+
   tparams: any;
   imageObject = [
     {
@@ -75,8 +80,18 @@ export class ContactsStaticComponent extends  PricingBaseComponent implements On
     // this.tparams = {'plan_name': PLAN_NAME.A}
   }
 
+  ngOnDestroy() {
+    // this.subscription.unsubscribe();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
   getBrowserVersion() {
-    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
+    this.auth.isChromeVerGreaterThan100
+    .pipe(
+      takeUntil(this.unsubscribe$)
+    )
+    .subscribe((isChromeVerGreaterThan100: boolean) => {
       this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
       //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
     })
@@ -113,7 +128,11 @@ export class ContactsStaticComponent extends  PricingBaseComponent implements On
   }
 
   getProjectUserRole() {
-    this.usersService.project_user_role_bs.subscribe((user_role) => {
+    this.usersService.project_user_role_bs
+    .pipe(
+      takeUntil(this.unsubscribe$)
+    )
+    .subscribe((user_role) => {
       this.USER_ROLE = user_role;
       this.logger.log('[CNTCTS-STATIC] - PROJECT USER ROLE: ', this.USER_ROLE);
     });
@@ -145,7 +164,11 @@ export class ContactsStaticComponent extends  PricingBaseComponent implements On
   }
 
   getCurrentProject() {
-    this.auth.project_bs.subscribe((project) => {
+    this.auth.project_bs
+    .pipe(
+      takeUntil(this.unsubscribe$)
+    )
+    .subscribe((project) => {
       // this.logger.log('[DEPTS-STATIC] - project ', project)
 
       if (project) {
@@ -226,11 +249,6 @@ export class ContactsStaticComponent extends  PricingBaseComponent implements On
   presentModalOnlyOwnerCanManageTheAccountPlan() {
     // https://github.com/t4t5/sweetalert/issues/845
     this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles)
-  }
-
-
-  ngOnDestroy() {
-    // this.subscription.unsubscribe();
   }
 
 

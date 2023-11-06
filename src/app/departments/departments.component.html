@@ -163,8 +163,8 @@
                                     unpublished
                                   </span>
                                   <span class="right" style="white-space: normal;padding: 5px;font-weight: 200;">
-                                    <h4 style="font-weight:400"> {{'DefaultDepartment' | translate}} {{ 'Disabled' |
-                                      translate }}</h4>
+                                    <h4 style="font-weight:400">
+                                       {{'DefaultDepartment' | translate}} {{ 'Disabled' | translate }}</h4>
                                     <!-- {{'TheDefaulDeptIsDisabledBecause' | translate}} -->
                                     {{'TheDefaulDeptIsDisabledBecause_2' | translate}}
                                     <i></i>
@@ -180,8 +180,8 @@
                                     check_circle
                                   </span>
                                   <span class="right" style="white-space: normal;padding: 5px;font-weight: 200;">
-                                    <h4 style="font-weight:400"> {{'DefaultDepartment' | translate}} {{ 'Enabled' |
-                                      translate }}</h4>
+                                    <h4 style="font-weight:400">
+                                       {{'DefaultDepartment' | translate}} {{ 'Enabled' | translate }}</h4>
                                     <!-- {{'TheDefaulDeptIsEnabledBecause' | translate}} -->
                                     {{'TheDefaulDeptIsEnabledBecause_2' | translate}}
                                     <i></i>
@@ -281,21 +281,21 @@
                             <span *ngIf="dept?.hasGroupName && !dept?.groupHasBeenTrashed">
                               <span style="color: #7695a5; font-size: 12px; font-weight:400">
                                 {{ 'DepartmentsPage.Group' | translate }}
-                              </span> <span style="font-weight:400;font-size:13px"> {{ dept?.hasGroupName }} </span>
+                              </span> 
+                              <span style="font-weight:400;font-size:13px"> {{ dept?.hasGroupName }} </span>
                             </span>
 
                             <!-- USE CASE 2: ROUTING ASSIGNED or POOLED + THE DEPT HAS A GROUP ID NOT NULL AND NOT UNDEFINED + THE GROUP HAS TRASHED VALUE = TRUE -->
                             <!-- dept?.routing !== 'fixed' &&  -->
                             <span *ngIf="dept?.hasGroupName && dept?.groupHasBeenTrashed === true">
-                              <span style="color: #aaaaaa; vertical-align: middle; "> {{ 'DepartmentsPage.Group' |
-                                translate
-                                }}
+                              <span style="color: #aaaaaa; vertical-align: middle; ">
+                                 {{ 'DepartmentsPage.Group' |  translate }}
                               </span>
                               <span style="vertical-align: middle;font-size:13px"> {{ dept?.hasGroupName }} </span>
                               <i class="material-icons"
                                 style="vertical-align: middle; font-size:12px; color: #ff5252; padding-left: 8px">report_problem</i>
-                              <span style="color: #ff5252; vertical-align: middle; font-size:12px;">{{
-                                'DepartmentsPage.TheGroupHasBeenTrashed' | translate }}
+                              <span style="color: #ff5252; vertical-align: middle; font-size:12px;">
+                                {{ 'DepartmentsPage.TheGroupHasBeenTrashed' | translate }}
                               </span>
                             </span>
 
@@ -336,8 +336,10 @@
                         <span class="card_title__underline">
                           {{ "Departments" | translate }}
                           <span
-                            *ngIf="profile_name === PLAN_NAME.A || prjct_profile_type === 'free' && trialExpired === true"
-                            class="from-b-plan-badge"> {{'AvailableFromThePlan' | translate: t_params }} </span>
+                            *ngIf="profile_name === PLAN_NAME.A || profile_name === PLAN_NAME.D || profile_name === 'free' && trial_expired === true || profile_name === 'Sandbox' && trial_expired === true"
+                            class="from-b-plan-badge"> 
+                            {{'AvailableFromThePlan' | translate: tParamsAvailableFromTier2 }}
+                           </span>
                         </span>
                       </h3>
                     </div>

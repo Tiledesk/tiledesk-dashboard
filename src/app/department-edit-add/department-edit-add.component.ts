@@ -13,13 +13,15 @@ import { TranslateService } from '@ngx-translate/core';
 import { NotifyService } from '../core/notify.service';
 import { slideInOutAnimation } from '../_animations/index';
 import { UsersService } from '../services/users.service';
-import { avatarPlaceholder, getColorBck, goToCDSVersion } from '../utils/util';
+import { APP_SUMO_PLAN_NAME, PLAN_NAME, avatarPlaceholder, getColorBck, goToCDSVersion } from '../utils/util';
 import { AppConfigService } from '../services/app-config.service';
 import { ComponentCanDeactivate } from '../core/pending-changes.guard';
 import { LoggerService } from '../services/logger/logger.service';
 import { Subject, Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
 import { FaqKb } from 'app/models/faq_kb-model';
+import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
+import { ProjectPlanService } from 'app/services/project-plan.service';
 declare const $: any;
 const swal = require('sweetalert');
 
@@ -32,9 +34,10 @@ const swal = require('sweetalert');
   // host: { '[@slideInOutAnimation]': '' }
 })
 // , ComponentCanDeactivate
-export class DepartmentEditAddComponent implements OnInit, AfterViewInit, ComponentCanDeactivate {
+export class DepartmentEditAddComponent extends PricingBaseComponent implements OnInit, AfterViewInit, ComponentCanDeactivate {
   private unsubscribe$: Subject<any> = new Subject<any>();
-
+  PLAN_NAME = PLAN_NAME;
+  APP_SUMO_PLAN_NAME = APP_SUMO_PLAN_NAME;
   @Input() ws_requestslist_deptIdSelected: string;
   @Input() display_dept_sidebar: boolean;
 
@@ -114,7 +117,18 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
   cancelMsg: string;
   areTouSureYouWantToNavigateAwayFromThisPageWithoutSaving: string
   isChromeVerGreaterThan100: boolean;
-  USER_ROLE: string
+  USER_ROLE: string;
+  featureAvailableFromBPlan: string;
+  featureAvailableFromEPlan: string;
+  cancel: string;
+  upgradePlan: string;
+  isVisiblePAY: boolean;
+  public_Key: string;
+  projectId: string;
+
+  agentCannotManageAdvancedOptions: string;
+  learnMoreAboutDefaultRoles: string;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -124,11 +138,14 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
     private groupService: GroupService,
     public location: Location,
     public translate: TranslateService,
-    private notify: NotifyService,
+    public notify: NotifyService,
     private usersService: UsersService,
     public appConfigService: AppConfigService,
-    private logger: LoggerService
-  ) { }
+    private logger: LoggerService,
+    public prjctPlanService: ProjectPlanService,
+  ) {
+    super(prjctPlanService, notify);
+  }
 
 
   // ------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -144,6 +161,7 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
       event.returnValue = false;
     }
   }
+
   canDeactivate(): Observable<boolean> | boolean {
     // insert logic to check if there are pending changes here;
     // returning true will navigate without confirmation
@@ -279,13 +297,41 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
      * THE FAQ-KB LIST COME BACK FROM THE CALLBACK
      * IS USED TO POPULATE THE DROP-DOWN LIST 'SELECT A BOT' OF CREATE VIEW AND OF IN THE EDIT VIEW)
      */
-    this.getFaqKbByProjecId()
+    this.getFaqKbByProjecId();
 
-    this.getUsersAndGroup()
+    this.getUsersAndGroup();
     // this.getProjectUsers();
 
-    this.translateLabels()
-    this.getBrowserVersion()
+    this.translateLabels();
+    this.getBrowserVersion();
+    this.getProjectPlan();
+    this.getOSCODE();
+  }
+
+  getOSCODE() {
+    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
+    this.logger.log('[DEPT-EDIT-ADD] AppConfigService getAppConfig public_Key', this.public_Key);
+
+    let keys = this.public_Key.split("-");
+    this.logger.log('[DEPT-EDIT-ADD] PUBLIC-KEY - public_Key keys', keys)
+
+    keys.forEach(key => {
+
+      if (key.includes("PAY")) {
+
+        let pay = key.split(":");
+
+        if (pay[1] === "F") {
+          this.isVisiblePAY = false;
+        } else {
+          this.isVisiblePAY = true;
+        }
+      }
+    });
+
+    if (!this.public_Key.includes("PAY")) {
+      this.isVisiblePAY = false;
+    }
   }
 
   getUserRole() {
@@ -326,9 +372,117 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
   // -----------------------------------------------------------------------------
   // @ CREATE GROUP RIGHT SIDEBAR
   // -----------------------------------------------------------------------------
+  checkPlanAndPresentModal() {
+
+    if ((this.profile_name === PLAN_NAME.A) ||
+      (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
+      (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
+      (this.profile_name === 'free' && this.trial_expired === true)) {
+      if (!this.appSumoProfile) {
+        // this.presentModalFeautureAvailableFromBPlan()
+        this.presentModalFeautureAvailableFromTier2Plan(this.featureAvailableFromBPlan)
+        return false
+      } else {
+        this.presentModalAppSumoFeautureAvailableFromBPlan()
+        return false
+      }
+    } else if ((this.profile_name === PLAN_NAME.D) ||
+      (this.profile_name === PLAN_NAME.E && this.subscription_is_active === false) ||
+      (this.profile_name === PLAN_NAME.F && this.subscription_is_active === false) ||
+      (this.profile_name === 'Sandbox' && this.trial_expired === true)) {
+
+      if (!this.appSumoProfile) {
+        this.presentModalFeautureAvailableFromTier2Plan(this.featureAvailableFromEPlan)
+        return false
+      }
+    }
+  }
+
+  presentModalFeautureAvailableFromTier2Plan(planName) {
+    const el = document.createElement('div')
+    el.innerHTML = planName //this.featureAvailableFromBPlan
+    swal({
+      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
+      content: el,
+      icon: "info",
+      // buttons: true,
+      buttons: {
+        cancel: this.cancel,
+        catch: {
+          text: this.upgradePlan,
+          value: "catch",
+        },
+      },
+      dangerMode: false,
+    }).then((value) => {
+      if (value === 'catch') {
+        if (this.isVisiblePAY) {
+          console.log('[DEPT-EDIT-ADD] HERE 1')
+          if (this.USER_ROLE === 'owner') {
+            console.log('[DEPT-EDIT-ADD] HERE 2')
+            if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
+              console.log('[DEPT-EDIT-ADD] HERE 3')
+              this.notify._displayContactUsModal(true, 'upgrade_plan');
+            } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true && this.profile_name === PLAN_NAME.A) {
+              this.notify._displayContactUsModal(true, 'upgrade_plan');
+            } else if (this.prjct_profile_type === 'free' && this.trial_expired === true) {
+              console.log('[DEPT-EDIT-ADD] HERE 4')
+              this.router.navigate(['project/' + this.projectId + '/pricing']);
+            }
+          } else {
+            console.log('[DEPT-EDIT-ADD] HERE 5')
+            this.presentModalAgentCannotManageAvancedSettings();
+          }
+        } else {
+          console.log('[DEPT-EDIT-ADD] HERE 6')
+          this.notify._displayContactUsModal(true, 'upgrade_plan');
+        }
+      }
+    });
+  }
+
+  presentModalAppSumoFeautureAvailableFromBPlan() {
+    const el = document.createElement('div')
+    el.innerHTML = 'Available from ' + this.appSumoProfilefeatureAvailableFromBPlan
+    swal({
+      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
+      content: el,
+      icon: "info",
+      // buttons: true,
+      buttons: {
+        cancel: this.cancel,
+        catch: {
+          text: this.upgradePlan,
+          value: "catch",
+        },
+      },
+      dangerMode: false,
+    }).then((value) => {
+      if (value === 'catch') {
+        if (this.USER_ROLE === 'owner') {
+          this.router.navigate(['project/' + this.projectId + '/project-settings/payments']);
+        } else {
+          // console.log('[APP-STORE] HERE 5')
+          this.presentModalAgentCannotManageAvancedSettings();
+        }
+      }
+    });
+
+  }
+
+  presentModalAgentCannotManageAvancedSettings() {
+    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.agentCannotManageAdvancedOptions, this.learnMoreAboutDefaultRoles)
+  }
+
 
   // OPEN * CREATE GROUP RIGHT SIDEBAR *
   openCreateGroupRightSideBar() {
+
+    const isAvailable = this.checkPlanAndPresentModal()
+    console.log('[DEPT-EDIT-ADD] isAvaibleFromPlan ', isAvailable)
+    if (isAvailable === false) {
+      return
+    }
 
     // SCOLL TO TOP WHEN THE USER CLICK 'CREATE A NEW GROUP'
     this.navbarbrandRef.nativeElement.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -464,6 +618,39 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
         this.areTouSureYouWantToNavigateAwayFromThisPageWithoutSaving = translation.AreTouSureYouWantToNavigateAwayFromThisPageWithoutSaving;
 
       });
+
+    this.translate.get('AvailableFromThePlan', { plan_name: PLAN_NAME.B })
+      .subscribe((translation: any) => {
+        this.featureAvailableFromBPlan = translation;
+      });
+
+    this.translate.get('AvailableFromThePlan', { plan_name: PLAN_NAME.E })
+      .subscribe((translation: any) => {
+        this.featureAvailableFromEPlan = translation;
+      });
+
+
+    this.translate.get('Cancel')
+      .subscribe((text: string) => {
+        this.cancel = text;
+      });
+
+    this.translate.get('Pricing.UpgradePlan')
+      .subscribe((translation: any) => {
+        this.upgradePlan = translation;
+      });
+
+      this.translate.get('UsersWiththeAgentroleCannotManageTheAdvancedOptionsOfTheProject')
+      .subscribe((translation: any) => {
+        this.agentCannotManageAdvancedOptions = translation;
+      });
+
+    this.translate.get('LearnMoreAboutDefaultRoles')
+      .subscribe((translation: any) => {
+
+        this.learnMoreAboutDefaultRoles = translation;
+      });
+
   }
 
   // ============ NEW - SUBSTITUTES has_clicked_fixed ============
@@ -642,8 +829,15 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
   }
 
   getCurrentProject() {
-    this.auth.project_bs.subscribe((project) => {
+    this.auth.project_bs
+    .pipe(
+      takeUntil(this.unsubscribe$)
+    )
+    .subscribe((project) => {
       this.project = project
+      if (project) { 
+        this.projectId = project._id
+      }
       // this.logger.log('[DEPT-EDIT-ADD] project ID from AUTH service subscription  ', this.project._id)
     });
   }
@@ -1016,7 +1210,7 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
     this.logger.log('[DEPT-EDIT-ADD] - EDIT - BOT ID WHEN EDIT IS PRESSED IF USER ! DOES NOT SELECT A ANOTHER BOT', this.botId);
     this.logger.log('[DEPT-EDIT-ADD] - EDIT - DEPT_ROUTING WHEN EDIT IS PRESSED ', this.dept_routing);
     this.logger.log('[DEPT-EDIT-ADD] - EDIT - ROUTING_SELECTED WHEN EDIT IS PRESSED ', this.ROUTING_SELECTED);
-    
+
     if (this.selectedBotId === undefined) {
       this.botIdEdit = this.botId
     } else {
@@ -1045,8 +1239,8 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
 
   goTo_BotEditAddPage_CREATE() {
     // this.router.navigate(['project/' + this.project._id + '/bots/bot-select-type']);
-     this.router.navigate(['project/' + this.project._id + '/bots/my-chatbots/all']);
-   
+    this.router.navigate(['project/' + this.project._id + '/bots/my-chatbots/all']);
+
   }
 
   // TEST CHAT21-API-NODEJS router.get('/:departmentid/operators'
