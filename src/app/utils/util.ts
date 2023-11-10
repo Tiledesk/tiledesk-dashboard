@@ -420,17 +420,28 @@ export const highlightedFeaturesPlanC = [
     { 'color': '#a613ec', 'background': 'rgba(166,19,236,.2)', 'feature': 'Tailored solutions' }
 ]
 
+// export function goToCDSVersion(router: any, chatbot: Chatbot, project_id, redirectBaseUrl: string){
+//     let chatBotDate = new Date(chatbot.createdAt)
+//     let dateLimit = new Date('2023-10-02T00:00:00')
+//     if(chatBotDate > dateLimit){
+//         let urlCDS_v2 = `${redirectBaseUrl}dashboard/#/project/${project_id}/cds/${chatbot._id}/intent/0`
+//         window.open(urlCDS_v2, '_self')
+//     } else {
+//         router.navigate(['project/' + project_id + '/cds/',chatbot._id, 'intent', '0']);
+//     }
+// }
+
+
 export function goToCDSVersion(router: any, chatbot: Chatbot, project_id, redirectBaseUrl: string){
     let chatBotDate = new Date(chatbot.createdAt)
     let dateLimit = new Date('2023-10-02T00:00:00')
     if(chatBotDate > dateLimit){
-        let urlCDS_v2 = `${redirectBaseUrl}dashboard/#/project/${project_id}/cds/${chatbot._id}/intent/0`
+        let urlCDS_v2 = `${redirectBaseUrl}#/project/${project_id}/cds/${chatbot._id}/intent/0`
         window.open(urlCDS_v2, '_self')
     } else {
         router.navigate(['project/' + project_id + '/cds/',chatbot._id, 'intent', '0']);
     }
 }
-
 
 
 // Links to documentation
