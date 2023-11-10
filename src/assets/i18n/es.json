@@ -2229,6 +2229,7 @@
     "YouCannotAddAgents": "Lo sentimos, pero no es posible agregar agentes al chat. Solo puede haber un agente para un chat tipo ticket",
     "YouCannotJoinChat": "Disculpa, las conversaciones de tipo de ticker solo pueden ser atendidas por un agente",
     "VisitorAlreadyBanned": "Visitante ya prohibido",
+    "developer": "Desarrolladores",
     "OnboardPage": {
         "ChatbotTitle": "Crea un chatbot para tu sitio web y/o apps de mensajería favoridas (WhatsApp, Messenger, etc.)",
         "DoYouWantChatbot": "¿Quieres un chatbot que te ayude a conocer mejor a tus clientes y/o automatizar las respuestas a sus consultas más repetitivas?",

@@ -11,6 +11,7 @@ import { ProjectService } from 'app/services/project.service';
 import { goToCDSVersion } from 'app/utils/util';
 import { MatDialog } from '@angular/material/dialog';
 import { DomSanitizer } from '@angular/platform-browser';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'cnp-templates',
@@ -70,7 +71,8 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
     public appConfigService: AppConfigService,
     private router: Router,
     public dialog: MatDialog,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private translate: TranslateService,
   ) {
 
     const brand = brandService.getBrand();
@@ -99,7 +101,12 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
       const userPreferences = this.updatedProject.attributes.userPreferences
       this.projectid = this.updatedProject._id
       console.log('[CNP-TEMPLATES] - updatedProject > projectid', this.projectid)
-      this.t_paramsUserRole = { user_role: userPreferences.user_role }
+      
+      const userRole = this.translate.instant(userPreferences.user_role)
+      
+      console.log('[CNP-TEMPLATES] - userRole', userRole)
+
+      this.t_paramsUserRole = { selected_role: userPreferences.user_role }
 
       if (userPreferences && userPreferences.use_case && userPreferences.use_case === "solve_customer_problems") {
         this.DISPLAY_INCREASE_TMPLT = false
@@ -374,7 +381,7 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
       createdAt: new Date(),
       _id: this.botid
     }
-    // goToCDSVersion(this.router, faqkb, this.projectid, this.appConfigService.getConfig().cdsBaseUrl)
+    goToCDSVersion(this.router, faqkb, this.projectid, this.appConfigService.getConfig().cdsBaseUrl)
 
   }
 

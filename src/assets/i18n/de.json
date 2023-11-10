@@ -2228,6 +2228,7 @@
 	"YouCannotAddAgents": "Entschuldigung, aber es ist nicht möglich Agenten zum Chat hinzuzufügen. Für einen Ticket-Chat kann es nur einen Agenten geben",
 	"YouCannotJoinChat": "Entschuldigung, Chats vom Typ Ticket können nur von einem Agenten bedient werden",
 	"VisitorAlreadyBanned": "Besucher bereits gesperrt",
+	"developer": "Developers",
 	"OnboardPage": {
 		"ChatbotTitle": "Richten Sie einen Chatbot für Ihre Website oder Ihren Kanal ein (WhatsApp, Facebook usw.) -",
 		"DoYouWantChatbot": "Möchten Sie, dass ein Chatbot Ihnen hilft, Ihre Kunden besser kennenzulernen und/oder Ihre sich wiederholendsten Fragen zu automatisieren?",

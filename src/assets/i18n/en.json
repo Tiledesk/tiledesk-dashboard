@@ -2229,6 +2229,7 @@
     "YouCannotAddAgents": "Sorry, but it is not possible to add agents to the chat. There can only be one agent for a ticket-type chat",
     "YouCannotJoinChat": "Sorry, ticket type chats can only be served by an agent",
     "VisitorAlreadyBanned": "Visitor already banned",
+    "developer": "Developers",
     "OnboardPage": {
         "ChatbotTitle": "Set up a chatbot for your website - or your channel (Whatsapp, Facebook etc.)",
         "DoYouWantChatbot": "Do you want a chatbot to help you to get to know your customers better and/or to automate your most repetitive queries?",

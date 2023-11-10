@@ -2228,6 +2228,7 @@
     "YouCannotAddAgents": "Kechirasiz, lekin chatga jamoadoshlarni qo'shish mumkin emas. Chipta turidagi suhbat uchun faqat bitta jamoadosh bo'lishi mumkin",
     "YouCannotJoinChat": "Kechirasiz, chipta turidagi chatlar faqat agent tomonidan xizmat qilishi mumkin",
     "VisitorAlreadyBanned": "Tashrifchi allaqachon taqiqlangan",
+    "developer": "Dasturchilar",
     "OnboardPage": {
         "ChatbotTitle": "Veb-saytingiz uchun ChatBot-ni - yoki kanalingiz (WhatsApp, Facebook va boshqalar)",
         "DoYouWantChatbot": "Sizga ba'zi tez-tez savollarga biron bir xayoliy avtomatlashtirish yoki javob berishni istaysizmi?",

@@ -2229,6 +2229,7 @@
     "YouCannotAddAgents": "Tyvärr, men det är inte möjligt att lägga till agenter i chatten. Det kan bara finnas en agent för en chatt av biljetttyp",
     "YouCannotJoinChat": "Tyvärr, chattar av biljetttyp kan endast betjänas av en agent",
     "VisitorAlreadyBanned": "Besökare redan förbjuden",
+    "developer": "Utvecklarna",
     "OnboardPage": {
         "ChatbotTitle": "Ställ in en chatbot för din webbplats - eller din kanal (WhatsApp, Facebook etc.)",
         "DoYouWantChatbot": "Vill du ha en chatbot för att hjälpa dina användare med lite snygg automatisering eller svara på några frekventa frågor?",

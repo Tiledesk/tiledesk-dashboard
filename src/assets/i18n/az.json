@@ -2229,6 +2229,7 @@
     "YouCannotAddAgents": "Üzr istəyirik, lakin söhbətə agentlər əlavə etmək mümkün deyil. Bilet tipli söhbət üçün yalnız bir agent ola bilər",
     "YouCannotJoinChat": "Bağışlayın, bilet tipli söhbətlərə yalnız agent xidmət göstərə bilər",
     "VisitorAlreadyBanned": "Ziyarətçi artıq qadağandır",
+    "developer": "Tərtibatçılar",
     "OnboardPage": {
         "ChatbotTitle": "Veb saytınız üçün bir ChatBot qurun - və ya kanalınız (WhatsApp, Facebook və s.)",
         "DoYouWantChatbot": "Bəzi xülya avtomatlaşdırılması və ya bəzi tez-tez suallara cavab vermək üçün istifadəçilərinizə kömək etmək üçün bir söhbət etmək istəyirsiniz?",
