@@ -22,17 +22,23 @@ export class CnpQuestionButtonComponent implements OnInit {
   initialize(){
     if(this.question.answer){
       this.selectedOption = this.question.answer;
+      console.log('CNP-QUESTION-BTN selectedOption', this.selectedOption)
     }
   }
 
   goToSelectedButton($event){
+    console.log('CNP-QUESTION-BTN goToSelectedButton event', $event)
     this.selectedOption = $event.value;
     this.question.answer = $event.value;
+    console.log('CNP-QUESTION-BTN goToSelectedButton selectedOption', this.selectedOption)
+    console.log('CNP-QUESTION-BTN goToSelectedButton this.question.answer', this.question.answer)
     try {
       this.segmentAttributes[this.question.attribute_name] = $event.value;
     } catch (error) {
       // error; 
     }
+    console.log('CNP-QUESTION-BTN segmentAttributes', this.segmentAttributes)
+    this.segmentAttributes['solution'] = "want_to_automate_conversations"
     this.goToNext.emit(this.segmentAttributes);
   }
 }

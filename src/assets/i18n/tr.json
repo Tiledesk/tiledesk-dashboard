@@ -2258,7 +2258,9 @@
         "Pass": "Adım",
         "ContactAnOperator": "Kullanıcılarınızın gerektiğinde bir insan ajanı ile iletişime geçmesine izin verecek bir düğme ister misiniz?",
         "NoDontWantAnAgent": "Hayır, teşekkürler. Benim için tüm işi yapmasını tercih ediyorum",
-        "YesAddButtonAgent": "Evet, bir ajanla iletişime geçmek için bir düğme istiyorum"
+        "YesAddButtonAgent": "Evet, bir ajanla iletişime geçmek için bir düğme istiyorum",
+        "WhereWouldYouLikeToStart": "Var vill du börja?",
+        "ChooseATemplateFor":"{{selected_role}} için bir şablon seçin. Daha sonra Topluluğumuzdaki tüm şablonları bulun."
     },
     "AreYouHavingProblems": "Sorun mu yaşıyorsunuz?",
     "IntegrationOnMorePlatforms": "Tiledesk birçok platforma entegre edilebilir, daha fazlasını öğrenin.",

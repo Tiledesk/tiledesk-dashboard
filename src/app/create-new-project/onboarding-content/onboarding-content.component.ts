@@ -25,7 +25,9 @@ export enum TYPE_STEP {
   NAME_PROJECT = "nameProject",
   CUSTOM_STEP = "customStep",
   WELCOME_MESSAGE = "welcomeMessage",
-  WIDGET_INSTALLATION = "widgetInstallation"
+  WIDGET_INSTALLATION = "widgetInstallation",
+  TEMPLATES_INSTALLATION = "templateInstallation"
+
 }
 
 @Component({
@@ -82,6 +84,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
   selectedTranslationLabel: string;
   displayLogoWithText: boolean = true;
   isMobile: boolean = true;
+  updatedProject: any;
 
   constructor(
     private auth: AuthService,
@@ -142,8 +145,6 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
     } else {
       this.displayLogoWithText = true
     }
-
-
   }
 
   @HostListener('window:resize', ['$event'])
@@ -242,8 +243,8 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
         this.projects = projects;
       }
       if (projects.length > 0) {
-        this.isFirstProject = false; // the good one
-        // this.isFirstProject = true; // for test without sign up
+        // this.isFirstProject = false; // the good one
+        this.isFirstProject = true; // for test without sign up
       }
       // this.logger.log('getProjects:: ', projects, this.isFirstProject);
       this.getLoggedUser();
@@ -272,17 +273,20 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
         // this.logger.log('setProjectName:: ', this.projectName, this.isSignupPrevPage);
 
         if (this.isFirstProject) {
-          // this.logger.log('[WIZARD - CREATE-PRJCT] project_name ', this.projectName);
+          
           this.projectName = this.setProjectName();
           if (!this.projectName) {
+            console.log('[ONBOARDING-CONTENT] - CREATE-PRJCT] here yes ', this.projectName);
             this.arrayOfSteps.push(TYPE_STEP.NAME_PROJECT);
           }
           this.setFirstStep();
+
           // this.logger.log('YES isFirstProject:: ', this.arrayOfSteps);
         } else {
           this.arrayOfSteps.push(TYPE_STEP.NAME_PROJECT);
           // this.arrayOfSteps.push(TYPE_STEP.WELCOME_MESSAGE);
-          this.arrayOfSteps.push(TYPE_STEP.WIDGET_INSTALLATION);
+
+          // this.arrayOfSteps.push(TYPE_STEP.WIDGET_INSTALLATION);
         }
 
       }
@@ -335,7 +339,12 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
         this.activeQuestion = this.customSteps[0].questions[0];
       }
       // this.arrayOfSteps.push(TYPE_STEP.WELCOME_MESSAGE);
-      this.arrayOfSteps.push(TYPE_STEP.WIDGET_INSTALLATION);
+
+
+      // this.arrayOfSteps.push(TYPE_STEP.WIDGET_INSTALLATION);
+      this.arrayOfSteps.push(TYPE_STEP.TEMPLATES_INSTALLATION);
+      console.log('[ONBOARDING-CONTENT] arrayOfSteps ', this.arrayOfSteps)
+
     });
   }
 
@@ -396,7 +405,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
 
   goToNextQuestion($event) {
     this.segmentIdentifyAttributes = $event;
-    // this.logger.log('goToNextQuestion::: ', $event, this.segmentIdentifyAttributes)
+    console.log('[ONBOARDING-CONTENT] goToNextQuestion::: ', $event, this.segmentIdentifyAttributes)
     this.checkQuestions();
   }
 
@@ -407,8 +416,10 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
       this.checkQuestions();
       this.activeQuestionNumber = 0;
       this.activeQuestion = this.activeStep.questions[0];
+      console.log('[ONBOARDING-CONTENT]  goToNextCustomStep activeTypeStepNumber: ', this.activeTypeStepNumber)
       this.goToNextStep();
     } else {
+      console.log('[ONBOARDING-CONTENT]  goToNextCustomStep activeTypeStepNumber: ', this.activeTypeStepNumber)
       this.goToNextStep();
     }
   }
@@ -433,13 +444,32 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
 
   goToNextStep() {
     // this.DISPLAY_SPINNER_SECTION = false;  
+    console.log('[ONBOARDING-CONTENT] activeTypeStepNumber: ', this.activeTypeStepNumber)
+
     if (this.segmentIdentifyAttributes && this.segmentIdentifyAttributes["solution_channel"] === "whatsapp_fb_messenger") {
-      this.arrayOfSteps.splice(this.arrayOfSteps.length - 2);
-      this.createNewProject();
-    } else {
-      this.nextNumberStep();
-      this.checkPrevButton();
+      console.log('[ONBOARDING-CONTENT] this.arrayOfSteps[this.activeTypeStepNumber] ', this.arrayOfSteps[this.activeTypeStepNumber])
+      // if(this.arrayOfSteps[this.activeTypeStepNumber] === TYPE_STEP.WIDGET_INSTALLATION) {
+
+      console.log('[ONBOARDING-CONTENT] goToNextStep (1): ', this.arrayOfSteps)
+
+      this.arrayOfSteps = this.arrayOfSteps.filter(item => item !== TYPE_STEP.WIDGET_INSTALLATION);
+      console.log('[ONBOARDING-CONTENT] goToNextStep (2): ', this.arrayOfSteps)
+
+      // this.arrayOfSteps.splice((this.arrayOfSteps.length - 2), 1);
+      // } 
+      // if(this.arrayOfSteps[this.activeTypeStepNumber] === TYPE_STEP.TEMPLATES_INSTALLATION) {
     }
+    // if (this.arrayOfSteps[this.activeTypeStepNumber] === TYPE_STEP.TEMPLATES_INSTALLATION) {
+    //   this.createNewProject();
+    //   return
+
+    // }
+    this.nextNumberStep();
+    this.checkPrevButton();
+    // else {
+    //   this.nextNumberStep();
+    //   this.checkPrevButton();
+    // }
   }
 
 
@@ -453,9 +483,18 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
     this.goToNextStep();
   }
 
-  goToSaveProjectAndCreateBot($event) {
-    this.createNewProject();
+  createProjectFromTemplates() {
+    this.createNewProject()
+  }
 
+  goToTemplatesInstallation($event) {
+    this.goToNextStep();
+  }
+
+  goToSaveProjectAndCreateBot($event) {
+    this.goToNextStep()
+
+    // this.createNewProject();
     // if(this.arrayOfSteps[0] === TYPE_STEP.NAME_PROJECT){
     //   this.createNewProject();
     // } else {
@@ -468,26 +507,6 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
   }
 
 
-  detectMobile() {
-    // const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-    // if (isMobile) {
-    //   /* your code here */
-    // }
-    this.isMobile = /Android|iPhone/i.test(window.navigator.userAgent);
-    this.logger.log('[ONBOARDING-CONTENT] - IS MOBILE ', this.isMobile);
-  }
-
-
-  goToExitOnboarding() {
-    if (this.isMobile === false) {
-      this.router.navigate(['project/' + this.newProject.id + '/home'])
-    } else {
-      this.router.navigate(['project/' + this.newProject.id + '/desktop-access'])
-    }
-  }
-
-
-
   /** 
    * SERVICES  
    * create project and bot 
@@ -496,8 +515,9 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
     this.DISPLAY_SPINNER_SECTION = true;
     this.DISPLAY_SPINNER = true;
     this.projectService.createProject(this.projectName, 'onboarding-content').subscribe((project) => {
-      this.logger.log('[ONBOARDING-CONTENT] POST DATA PROJECT RESPONSE ', project);
+      console.log('[ONBOARDING-CONTENT] POST DATA PROJECT RESPONSE ', project);
       if (project) {
+        
         this.newProject = project
         // WHEN THE USER SELECT A PROJECT ITS ID IS SEND IN THE PROJECT SERVICE THET PUBLISHES IT
         // THE SIDEBAR SIGNS UP FOR ITS PUBLICATION
@@ -521,9 +541,9 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
       */
     }, (error) => {
       this.DISPLAY_SPINNER = false;
-      this.logger.error('[ONBOARDING-D] CREATE NEW PROJECT - POST REQUEST - ERROR ', error);
+      this.logger.error('[ONBOARDING-CONTENT] CREATE NEW PROJECT - POST REQUEST - ERROR ', error);
     }, () => {
-      this.logger.log('[ONBOARDING-D] CREATE NEW PROJECT - POST REQUEST * COMPLETE *');
+      this.logger.log('[ONBOARDING-CONTENT] CREATE NEW PROJECT - POST REQUEST * COMPLETE *');
       this.projectService.newProjectCreated(true);
       const trialStarDate = moment(new Date(this.newProject.createdAt)).format("YYYY-MM-DD hh:mm:ss")
       const trialEndDate = moment(new Date(this.newProject.createdAt)).add(14, 'days').format("YYYY-MM-DD hh:mm:ss")
@@ -640,7 +660,9 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
 
   // -----------------  FUNCTION CALLBACK   ------------------------ //
   callback(step: string, variable?: any) {
+    console.log('HRE YESSSSS step ',step )
     if (step === 'createNewProject') {
+     
       //   this.createBot();
       // }
       // else if(step === 'createBot'){
@@ -651,7 +673,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
       // }
       // else if(step === 'uploadFaqFromCSV'){
       //this.goToNextStep();
-      this.DISPLAY_SPINNER_SECTION = true;
+      this.DISPLAY_SPINNER_SECTION = false;
       this.DISPLAY_SPINNER = false;
 
       this.addWidgetDefaultLanguage()
@@ -675,11 +697,11 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
       // let segmentTrackAttr = this.segmentAttributes;
       this.segment(segmentPageName, segmentTrackName, segmentTrackAttr, this.segmentIdentifyAttributes);
 
-      this.logger.log('[ONBOARDING-CONTENT]  segmentIdentifyAttributes ', this.segmentIdentifyAttributes)
+     console.log('[ONBOARDING-CONTENT]  segmentIdentifyAttributes ', this.segmentIdentifyAttributes)
       this.saveUserPreferences(this.segmentIdentifyAttributes)
       // this.DISPLAY_SPINNER_SECTION = false;
       // this.DISPLAY_BOT = true;
-      // this.goToExitOnboarding();
+    
     }
   }
   // -----------------  FUNCTION CALLBACK   ------------------------ //
@@ -689,14 +711,39 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
     this.projectService.updateProjectWithUserPreferences(segmentIdentifyAttributes)
       .subscribe((res: any) => {
 
-        this.logger.log('[ONBOARDING-D] - UPDATE PRJCT WITH USER PREFERENCES RES ', res);
+        console.log('[ONBOARDING-D] - UPDATE PRJCT WITH USER PREFERENCES RES ', res);
+        this.updatedProject = res
 
       }, error => {
         this.logger.error('[ONBOARDING-D] - UPDATE PRJCT WITH USER PREFERENCES - ERROR ', error)
       }, () => {
-        this.logger.log('[ONBOARDING-D] - UPDATE PRJCT WITH USER PREFERENCES * COMPLETE *')
-        this.goToExitOnboarding();
+        console.log('[ONBOARDING-D] - UPDATE PRJCT WITH USER PREFERENCES * COMPLETE *')
+        // this.goToExitOnboarding();
+        // this.goToOnbordingTemplates()
       });
+  }
+
+  goToOnbordingTemplates() {
+    this.router.navigate(['project/' + this.newProject.id + '/onboarding-templates'])
+
+  }
+
+  detectMobile() {
+    // const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    // if (isMobile) {
+    //   /* your code here */
+    // }
+    this.isMobile = /Android|iPhone/i.test(window.navigator.userAgent);
+    this.logger.log('[ONBOARDING-CONTENT] - IS MOBILE ', this.isMobile);
+  }
+
+
+  goToExitOnboarding() {
+    if (this.isMobile === false) {
+      this.router.navigate(['project/' + this.newProject.id + '/home'])
+    } else {
+      this.router.navigate(['project/' + this.newProject.id + '/desktop-access'])
+    }
   }
 
   addWidgetDefaultLanguage() {

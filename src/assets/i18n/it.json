@@ -2258,7 +2258,9 @@
         "Pass": "Step",
         "ContactAnOperator": "Vuoi un pulsante che permetta ai tuoi clienti di parlare con una persona del tuo team quando necessario?",
         "NoDontWantAnAgent": "No, grazie continuo senza operatori umani",
-        "YesAddButtonAgent": "Si, voglio aggiungere un pulsante per contattare un membro del team"
+        "YesAddButtonAgent": "Si, voglio aggiungere un pulsante per contattare un membro del team",
+        "WhereWouldYouLikeToStart": "Da dove vorresti iniziare?",
+        "ChooseATemplateFor":"Scegli un modello per {{selected_role}}. Trova tutti i modelli nella nostra community più tardi."
     },
     "AreYouHavingProblems": "Stai riscontrando dei problemi?",
     "IntegrationOnMorePlatforms": "Tiledesk può essere integrato su moltissime piattaforme, scopri di più.",

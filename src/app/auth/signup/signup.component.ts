@@ -667,7 +667,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
             self.router.navigate(['/projects']);
           }
         } else {
-          // self.localDbService.removeFromStorage('wannago')
+          self.localDbService.removeFromStorage('wannago')
           self.router.navigate([self.storedRoute]);
         }
 

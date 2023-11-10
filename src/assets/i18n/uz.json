@@ -2257,7 +2257,9 @@
         "Pass": "Qadam",
         "ContactAnOperator": "Agar kerak bo'lsa, foydalanuvchilarga insoniy vositasi bilan aloqada bo'lishga imkon berishni xohlaysizmi?",
         "NoDontWantAnAgent": "Yo'q, rahmat. Men uchun barcha ishlarni bajarish uchun ChatBotni afzal ko'raman",
-        "YesAddButtonAgent": "Ha, men agent bilan bog'lanish uchun tugmachani xohlayman"
+        "YesAddButtonAgent": "Ha, men agent bilan bog'lanish uchun tugmachani xohlayman",
+        "WhereWouldYouLikeToStart": "Qayerdan boshlamoqchisiz?",
+        "ChooseATemplateFor":"{{selected_role}} uchun shablonni tanlang. Hamjamiyatimizdagi barcha shablonlarni keyinroq toping.."
     },
     "AreYouHavingProblems": "Muammolarga duch kelyapsizmi?",
     "IntegrationOnMorePlatforms": "Tiledesk ko'plab platformalarda birlashtirilishi mumkin, ko'proq bilib oling.",

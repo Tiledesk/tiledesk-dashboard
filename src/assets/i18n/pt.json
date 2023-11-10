@@ -2258,7 +2258,9 @@
         "Pass": "Etapa",
         "ContactAnOperator": "Deseja um botão para permitir que seus usuários entrem em contato com um agente humano quando necessário?",
         "NoDontWantAnAgent": "Não, obrigado. Eu prefiro o chatbot para fazer todo o trabalho para mim",
-        "YesAddButtonAgent": "Sim, eu quero um botão para entrar em contato com um agente"
+        "YesAddButtonAgent": "Sim, eu quero um botão para entrar em contato com um agente",
+        "WhereWouldYouLikeToStart": "Onde você gostaria de começar?",
+        "ChooseATemplateFor":"Escolha um modelo para {{selected_role}}. Encontre todos os modelos em nossa comunidade mais tarde."
     },
     "AreYouHavingProblems": "Você está tendo problemas?",
     "IntegrationOnMorePlatforms": "O Tiledesk pode ser integrado em várias plataformas, saiba mais.",

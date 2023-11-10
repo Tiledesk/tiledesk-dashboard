@@ -66,7 +66,7 @@ export class InstallWidgetComponent extends WidgetSetUpBaseComponent implements 
 
   getStoredRoute() {
     this.storedRoute = this.localDbService.getFromStorage('wannago')
-    this.logger.log('[WIZARD - INSTALL-WIDGET] storedRoute ', this.storedRoute)
+    // console.log('[WIZARD - INSTALL-WIDGET] storedRoute ', this.storedRoute)
     if (this.storedRoute) {
 
       this.storedRoute.split('/')

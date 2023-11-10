@@ -2258,7 +2258,9 @@
         "Pass": "خطوة",
         "ContactAnOperator": "هل تريد زرًا للسماح للمستخدمين بالاتصال بعامل بشري عند الحاجة؟",
         "NoDontWantAnAgent": "لا شكرا. أنا أفضل chatbot للقيام بكل العمل من أجلي",
-        "YesAddButtonAgent": "نعم ، أريد زرًا للاتصال بعامل"
+        "YesAddButtonAgent": "نعم ، أريد زرًا للاتصال بعامل",
+        "WhereWouldYouLikeToStart": "أين تريد أن تبدأ؟",
+        "ChooseATemplateFor":"اختر نموذجًا لـ {{selected_role}}. ابحث عن جميع القوالب في مجتمعنا لاحقًا."
     },
     "AreYouHavingProblems": "هل لديك مشاكل؟",
     "IntegrationOnMorePlatforms": "يمكن دمج Tiledesk في العديد من الأنظمة الأساسية ، اكتشف المزيد.",

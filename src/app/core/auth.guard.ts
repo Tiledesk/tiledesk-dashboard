@@ -339,6 +339,8 @@ export class AuthGuard implements CanActivate {
 
     // console.log('[AUTH-GUARD] SSO - CAN ACTIVATE next ', next);
     // console.log('[AUTH-GUARD] SSO - CAN ACTIVATE state ', state);
+    // console.log('[AUTH-GUARD] SSO - CAN ACTIVATE state _root queryParams', state['_root']['value'].queryParams )
+    // if () 
     const url = state.url;
     const _url = next['_routerState'].url
     // console.log('[AUTH-GUARD] SSO - CAN ACTIVATE state url  ', url);

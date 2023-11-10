@@ -26,6 +26,12 @@ $color-pro-plan: #3ea9f5;
     z-index: 31;
 }
 
+.step-header-full-width {
+    width:100%
+}
+
+
+
 .type-step {
     .title {
         font-size: 36px;
@@ -112,12 +118,14 @@ $color-pro-plan: #3ea9f5;
     float: left;
     padding: 100px 40px 40px;
     z-index: 20;
-
     // width: 100%;
     // max-height: calc(100vh - 1px);
     // overflow: initial;
     // background: bisque;
+}
 
+.col-left-full-width {
+    width: 100%
 }
 
 .col-right {
@@ -234,7 +242,9 @@ $color-pro-plan: #3ea9f5;
 
 /** NAVIGATION **/
 .row-navigation {
-    position: relative;
+    // position: relative;
+    position: absolute;
+    bottom: 0;
     left: 0;
     width: 100%;
     z-index: 0;
@@ -246,6 +256,7 @@ $color-pro-plan: #3ea9f5;
 .navigation-btn {
     display: flex;
     flex-direction: row;
+    justify-content:center;
 }
 
 .btn {
@@ -284,6 +295,11 @@ $color-pro-plan: #3ea9f5;
         opacity: .65;
     }
 }
+
+.hide-prev-btn {
+    display: none;
+}
+
 
 
 button.hidden {

@@ -143,6 +143,8 @@ import { ActivateAppsumoProductComponent } from './create-project-wizard/activat
 import { CreateProjectGsComponent } from './create-project-wizard/create-project-gs/create-project-gs.component';
 import { KnowledgeBasesComponent } from './knowledge-bases/knowledge-bases.component';
 import { CnpIsMobileComponent } from './create-new-project/cnp-is-mobile/cnp-is-mobile.component';
+import { CnpTemplatesComponent } from './create-new-project/cnp-templates/cnp-templates.component';
+
 
 
 const routes: Routes = [
@@ -198,7 +200,9 @@ const routes: Routes = [
 
   
   { path: 'project/:projectid/onboarding-widget', component: OnboardingWidgetComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/desktop-access', component: CnpIsMobileComponent, canActivate: [AuthGuard] }, // wizard 
+  { path: 'project/:projectid/desktop-access/:botid', component: CnpIsMobileComponent, canActivate: [AuthGuard] }, // wizard 
+  { path: 'project/:projectid/onboarding-templates', component: CnpTemplatesComponent, canActivate: [AuthGuard] }, // wizard 
+  
 
   { path: 'project/:projectid/configure-widget', component: ConfigureWidgetComponent, canActivate: [AuthGuard] }, // wizard step 2
   { path: 'project/:projectid/onboarding/:langcode/:langname', component: OnboardingComponent, canActivate: [AuthGuard] }, // wizard step 3

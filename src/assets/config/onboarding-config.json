@@ -1,7 +1,44 @@
 {
   "steps":[
     {
-      "title": "Hi ${userFullname}! Tell us more before starting, so we can personalise your experience",
+      "title": "About you",
+      "buttons": {
+        "next": "Continue"
+      },
+      "questions": [
+        {
+          "title": "Your Role",
+          "attribute_name": "user_role",
+          "type": "select",
+          "labels": {
+            "placeholder":"Select your main role"
+          },
+          "options": [
+            {"label": "Developer", "value": "developer"},
+            {"label": "Conversation Designer", "value": "conversation_designer"},
+            {"label": "No-Code Builder", "value": "no_code_builder"},
+            {"label": "Business Stakeholder", "value": "business_stakeholder"},
+            {"label": "Other", "value": "other"}
+          ]
+        },
+        {
+          "title": "Team Size",
+          "type": "select",
+          "attribute_name": "company_size",
+          "labels": {
+            "placeholder":"How many collaborators will you have?"
+          },
+          "options": [
+            {"label": "Just me", "value": "1"},
+            {"label": "Small team (2-5)", "value": "2-5"},
+            {"label": "Large team (5+)", "value": "5+"}
+          ]
+        }
+      ]
+    }, 
+
+    {
+      "title": "${userFullname} thank you 🙏 Last questions before starting...",
       "buttons": {
         "back": "Go back",
         "next": "Continue"
@@ -16,15 +53,7 @@
             {"icon": "💰", "label": "Increase online sales", "value": "increase_online_sales"}
           ]
         },
-        {
-          "title": "How do you want to reach your goal?",
-          "type": "button",
-          "attribute_name": "solution",
-          "buttons": [
-            {"icon":"💬", "label": "I want to talk to customers", "value": "want_to_talk_to_customers"},
-            {"icon":"🤖", "label": "I want to automate conversations", "value": "want_to_automate_conversations"}
-          ]
-        },
+       
         {
           "title": "Which channel most interests you?",
           "type": "button",

@@ -2258,7 +2258,9 @@
         "Pass": "Addım atmaq",
         "ContactAnOperator": "İstifadəçilərinizin lazım olduqda bir insan agenti ilə əlaqə qurmasına icazə vermək üçün bir düymə istəyirsiniz?",
         "NoDontWantAnAgent": "Xeyr, təşəkkürlər. Mənim üçün bütün işləri görmək üçün Chatbot-a üstünlük verirəm",
-        "YesAddButtonAgent": "Bəli, bir agentlə əlaqə qurmaq üçün bir düymə istəyirəm"
+        "YesAddButtonAgent": "Bəli, bir agentlə əlaqə qurmaq üçün bir düymə istəyirəm",
+        "WhereWouldYouLikeToStart": "Hardan başlamaq istərdiniz?",
+        "ChooseATemplateFor":"{{selected_role}} üçün şablon seçin. İcmamızda bütün şablonları daha sonra tapın."
     },
     "AreYouHavingProblems": "Problemləriniz var?",
     "IntegrationOnMorePlatforms": "Tiledesk bir çox platformaya inteqrasiya oluna bilər, daha çox məlumat əldə edin.",

@@ -2257,7 +2257,9 @@
 		"Pass": "Schritt",
 		"ContactAnOperator": "Möchten Sie eine Schaltfläche, mit der Ihre Benutzer bei Bedarf mit einem menschlichen Agenten in Kontakt treten können?",
 		"NoDontWantAnAgent": "Nein Danke. Ich bevorzuge den Chatbot, die ganze Arbeit für mich zu erledigen",
-		"YesAddButtonAgent": "Ja, ich möchte, dass ein Knopf mit einem Agenten in Kontakt tritt"
+		"YesAddButtonAgent": "Ja, ich möchte, dass ein Knopf mit einem Agenten in Kontakt tritt",
+		"WhereWouldYouLikeToStart": "Wo möchten Sie beginnen?",
+		"ChooseATemplateFor":"Wählen Sie eine Vorlage für {{selected_role}}. Alle Vorlagen finden Sie später in unserer Community."
 	},
 	"AreYouHavingProblems": "Haben Sie Probleme?",
 	"IntegrationOnMorePlatforms": "Tiledesk kann auf vielen Plattformen integriert werden, erfahren Sie mehr.",

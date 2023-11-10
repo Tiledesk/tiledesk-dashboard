@@ -2258,7 +2258,9 @@
         "Pass": "Step",
         "ContactAnOperator": "Would you like to include a button that allows your users to get in touch with a human agent upon request?",
         "NoDontWantAnAgent": "No, thanks. I prefer only having the chatbot to do all the work for me",
-        "YesAddButtonAgent": "Yes, I'd like a button that can connect customers to an agent"
+        "YesAddButtonAgent": "Yes, I'd like a button that can connect customers to an agent",
+        "WhereWouldYouLikeToStart": "Where would you like to start?",
+        "ChooseATemplateFor":"Choose a template for {{selected_role}}. Find all templates in our Community later."
     },
     "AreYouHavingProblems": "Are you having problems?",
     "IntegrationOnMorePlatforms": "Tiledesk integrates with many platforms, learn more.",

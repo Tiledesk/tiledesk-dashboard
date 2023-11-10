@@ -2258,7 +2258,9 @@
         "Pass": "Paso",
         "ContactAnOperator": "¿Quieres un botón para permitir que tus clientes se pongan en contacto con un miembro de tu equipo cuando sea necesario?",
         "NoDontWantAnAgent": "No, gracias. Prefiero que el chatbot haga todo el trabajo por mí",
-        "YesAddButtonAgent": "Sí, quiero un botón para incluir mi equipo en las conversaciones"
+        "YesAddButtonAgent": "Sí, quiero un botón para incluir mi equipo en las conversaciones",
+        "WhereWouldYouLikeToStart": "¿Por dónde te gustaría empezar?",
+        "ChooseATemplateFor":"Elija una plantilla para {{selected_role}}. Encuentre todas las plantillas en nuestra Comunidad más tarde."
     },
     "AreYouHavingProblems": "¿Tienes problemas?",
     "IntegrationOnMorePlatforms": "Tiledesk se puede integrar en muchas plataformas, obtenga más información.",

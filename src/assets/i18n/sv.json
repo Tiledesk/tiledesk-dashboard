@@ -2258,7 +2258,9 @@
         "Pass": "Steg",
         "ContactAnOperator": "Vill du ha en knapp för att låta dina användare komma i kontakt med en mänsklig agent när det behövs?",
         "NoDontWantAnAgent": "Nej tack. Jag föredrar att chatboten gör allt arbete för mig",
-        "YesAddButtonAgent": "Ja, jag vill att en knapp ska komma i kontakt med en agent"
+        "YesAddButtonAgent": "Ja, jag vill att en knapp ska komma i kontakt med en agent",
+        "WhereWouldYouLikeToStart": "Var vill du börja?",
+        "ChooseATemplateFor":"Изаберите шаблон за {{selected_role}}. Пронађи све шаблоне у нашој заједници касније."
     },
     "AreYouHavingProblems": "Har du problem?",
     "IntegrationOnMorePlatforms": "Visa alla plattformar.",
