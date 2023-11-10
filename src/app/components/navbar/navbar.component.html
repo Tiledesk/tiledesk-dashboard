@@ -50,8 +50,142 @@
         </li> -->
 
 
+        <ng-container>
+          <li>
+            <button [matMenuTriggerFor]="menu" class="quote-modal-btn">
+              <span class="material-icons-round" style="font-size: 16px;">
+                storage
+                </span>
+            </button>
+            <mat-menu #menu="matMenu" xPosition="before" style="margin-top: 6px !important; width: 220px !important;">
+
+              <div class="menu-container">
+                <p class="menu-title">Usage</p>
+
+                <!-- // Alternative: follow the example on https://codepen.io/nikitahl/pen/ZEjRBEE -->
+
+                <div class="quotes-container">
+
+                  <div class="quote-container">
+                    <p class="quote-title">Convesations</p>
+                    <div class="quote">
+                      <mat-progress-spinner
+                        class="example-margin"
+                        [strokeWidth]="8"
+                        [diameter]="80"
+                        [color]="'primary'"
+                        [mode]="'determinate'"
+                        [value]="requests_perc">
+                      </mat-progress-spinner>
+                    
+                      <div class="percentage">{{ requests_perc }}<span style="font-size: 10px; margin-top: 2px; margin-left: 1px"> %</span></div>
+                    </div>
+                    <div class="quote-count">{{requests_count}} / {{requests_limit}}</div>
+                  </div>
+
+                  <div class="quote-container">
+                    <p class="quote-title">Messages</p>
+                    <div class="quote">
+                      <mat-progress-spinner
+                        class="example-margin"
+                        [strokeWidth]="8"
+                        [diameter]="80"
+                        [color]="'primary'"
+                        [mode]="'determinate'"
+                        [value]="messages_perc">
+                      </mat-progress-spinner>
+                    
+                      <div class="percentage">{{ messages_perc }}<span style="font-size: 10px; margin-top: 2px; margin-left: 1px"> %</span></div>
+                    </div>
+                    <div class="quote-count">{{ messages_count }} / {{messages_limit}}</div>
+                  </div>
+
+                  <div class="quote-container">
+                    <p class="quote-title">Tokens</p>
+                    <div class="quote">
+                      <mat-progress-spinner
+                        class="example-margin"
+                        [strokeWidth]="8"
+                        [diameter]="80"
+                        [color]="'primary'"
+                        [mode]="'determinate'"
+                        [value]="tokens_perc">
+                      </mat-progress-spinner>
+                    
+                      <div class="percentage">{{ tokens_perc }}<span style="font-size: 10px; margin-top: 2px; margin-left: 1px"> %</span></div>
+                    </div>
+                    <div class="quote-count">{{ tokens_count }} / {{tokens_limit}}</div>
+                  </div>
+
+                  <div class="quote-container">
+                    <p class="quote-title">Email</p>
+                    <div class="quote">
+                      <mat-progress-spinner
+                        class="example-margin"
+                        [strokeWidth]="8"
+                        [diameter]="80"
+                        [color]="'primary'"
+                        [mode]="'determinate'"
+                        [value]="email_perc">
+                      </mat-progress-spinner>
+                    
+                      <div class="percentage">{{ email_perc }}<span style="font-size: 10px; margin-top: 2px; margin-left: 1px"> %</span></div>
+                    </div>
+                    <div class="quote-count">{{ email_count }} / {{email_limit}}</div>
+                  </div>
+
+                </div>
 
 
+                <button mat-flat-button class="upgrade-btn" (click)="goToPricing()">
+                  <span class="material-icons-outlined">bolt</span>
+                  {{ "Pricing.UpgradePlan" | translate }}
+                </button>
+
+              </div>
+
+            </mat-menu>
+          </li>
+
+        </ng-container>
+
+        <!-- <ng-container>
+          <li>
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                <div id="quotes" class="quotes">
+                  <img src="../../../assets/img/trend-icon.png" alt="Usage" width="30px" height="30px">
+                </div>
+              </a>
+
+            <ul class="dropdown-menu" style="margin-top: 11px; padding-left:20px;padding-right:20px;width: 200px;">
+              <p *ngIf="prjct_trial_expired === false" style="margin-bottom:0px">
+                {{ "Pricing.Your" | translate }}
+
+                <span style="font-weight:600">
+                  {{ "Pricing.30DaysFreeTrial" | translate: translationParams }}
+                </span>
+
+                {{ "Pricing.WillExpireIn" | translate }}
+
+                <span *ngIf="prjc_trial_days_left < -1">
+                  {{ - prjc_trial_days_left }} {{ "Pricing.Days" | translate }}
+                </span>
+
+                <span *ngIf="prjc_trial_days_left === -1">
+                  {{ "Pricing.Tomorrow" | translate }}
+                </span>
+              </p>
+
+              <p *ngIf="prjct_trial_expired === true" style="margin-bottom:0px">
+                {{ "Pricing.Your" | translate }}
+                <span style="font-weight:600">
+                  {{ "Pricing.30DaysFreeTrial" | translate: translationParams }}
+                </span>
+                {{ "Pricing.HasExpired" | translate }}
+              </p>
+            </ul>
+          </li>
+        </ng-container> -->
 
         <!-- ------------------------------------------------  -->
         <!--  UPGRADE (PROFILE TYPE = FREE) -->
@@ -60,7 +194,7 @@
           <li *ngIf="project && prjct_profile_type === 'free'">
 
             <a href="#" class="dropdown-toggle" data-toggle="dropdown"
-              style="padding-top:0px; padding-bottom:0px; padding-right: 0px;">
+              style="padding-top:0px; padding-bottom:0px; padding-right: 0px; padding-left: 0px;">
               <div id="progress" class="progress" [attr.data-percentage]="prjc_trial_days_left_percentage">
                 <span class="progress-left">
                   <span class="progress-bar"
