@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'app/core/auth.service';
 import { BrandService } from 'app/services/brand.service';
 import { LoggerService } from 'app/services/logger/logger.service';
@@ -15,25 +16,40 @@ export class CnpIsMobileComponent implements OnInit {
   loginLinkSent: boolean = false;
   loginLinkResent: boolean = false;
   id_project: string;
+  botId: string;
 
   constructor(
     public brandService: BrandService,
     private logger: LoggerService,
     private usersService: UsersService,
-    private auth: AuthService
+    private auth: AuthService,
+    private route: ActivatedRoute,
   ) {
     const brand = brandService.getBrand();
     this.companyLogoBlack_Url = brand['company_logo_black__url'];
   }
 
   ngOnInit(): void {
+    this.getCurrentProject();
+    this.getParamsBotTypeAndDepts()
+  }
+
+  getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
       this.id_project = project._id;
     });
   }
 
+  getParamsBotTypeAndDepts() {
+    this.route.params.subscribe((params) => {
+      // console.log('[CNP-IS-MOB] --->  PARAMS', params);
+      if(params && params.botid)  {
+        this.botId = params.botid
+      }
+    });
+  }
+
   hasClickedSendEmail() {
-    
     this.sendEmail().then((response) => {
       if (response == true) {
         this.loginLinkSent = true;
@@ -91,7 +107,8 @@ export class CnpIsMobileComponent implements OnInit {
   sendEmail() {
 
     let data = {
-      id_project: this.id_project
+      id_project: this.id_project,
+      bot_id: this.botId
     }
     this.logger.log("sendEmail data: ", data);
 

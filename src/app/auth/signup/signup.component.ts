@@ -152,7 +152,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
     const hasSigninWithGoogle = this.localDbService.getFromStorage('swg')
     if (hasSigninWithGoogle) {
       this.localDbService.removeFromStorage('swg')
-      console.log('[SIGN-UP] removeFromStorage swg')
+      // console.log('[SIGN-UP] removeFromStorage swg')
     }
 
   }
@@ -662,12 +662,15 @@ export class SignupComponent implements OnInit, AfterViewInit {
           if (self.SKIP_WIZARD === false) {
             // self.router.navigate(['/create-project']);
             // self.createNewProject(signupResponse)
-            self.router.navigate(['/create-new-project']);
+
+            // self.router.navigate(['/create-new-project']);
+            self.router.navigate(['/onboarding']);
+            
           } else {
             self.router.navigate(['/projects']);
           }
         } else {
-          // self.localDbService.removeFromStorage('wannago')
+          self.localDbService.removeFromStorage('wannago')
           self.router.navigate([self.storedRoute]);
         }
 

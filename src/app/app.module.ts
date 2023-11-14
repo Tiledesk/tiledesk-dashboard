@@ -358,6 +358,8 @@ import { HomeInviteTeammateModalComponent } from './home-components/home-create-
 import { HomeInviteTeammateErrorModalComponent } from './home-components/home-create-teammate/home-invite-teammate-error-modal/home-invite-teammate-error-modal.component';
 import { HomeGoToChatComponent } from './home-components/home-go-to-chat/home-go-to-chat.component';
 import { KnowledgeBasesComponent } from './knowledge-bases/knowledge-bases.component';
+import { CnpTemplatesComponent } from './create-new-project/cnp-templates/cnp-templates.component';
+import { OnboardingWelcomeComponent } from './create-new-project/onboarding-welcome/onboarding-welcome.component';
 
 
 
@@ -632,7 +634,9 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     HomeCreateChatbotModalComponent,
     HomeInviteTeammateModalComponent,
     HomeInviteTeammateErrorModalComponent,
-    HomeGoToChatComponent
+    HomeGoToChatComponent,
+    CnpTemplatesComponent,
+    OnboardingWelcomeComponent
   ],
   imports: [
     TooltipModule.forRoot(CutomTooltipOptions as TooltipOptions),

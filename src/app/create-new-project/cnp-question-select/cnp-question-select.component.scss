@@ -1,14 +1,35 @@
+.row-wpr {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 h4.title {
     color: #566787;
     position: relative;
     line-height: normal;
     margin-bottom: 0.5em;
-    font-size: 24px;
-    font-weight: 300;
+    // font-size: 24px;
+    font-size: 16px;
+    // font-weight: 300;
+    font-weight: 400;
     font-style: normal;
+    width: 355px;
 }
 
 .select-option {
     margin-top: 0px; 
     max-width: 500px;
+    width: 355px;
+}
+
+
+@media (max-width: 668px){
+    h4.title { 
+        width: 250px;
+        font-size: 14px;
+    }
+    .select-option  {
+        width: 250px;
+    }
 }

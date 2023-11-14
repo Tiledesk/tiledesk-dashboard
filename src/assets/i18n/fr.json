@@ -204,7 +204,7 @@
     "SignInToTiledesk": "Connectez-vous à {{company_name}}",
     "SignInTo": "Connectez-vous à",
     "SignIn": "S'identifier",
-    "WelcomeTo": "Bienvenue à",
+    "WelcomeTo": "Bienvenue chez {{company_name}}",
     "IfYouWantToLoginToTheOldVersion": "Si vous souhaitez vous connecter à l'ancienne version",
     "LetSetUpYourTiledeskChat": "Configurons votre chat {{company_name}}",
     "LetSetUpYourChat": "Configurons votre",
@@ -2229,7 +2229,17 @@
     "YouCannotAddAgents": "Désolé, mais il n'est pas possible d'ajouter des agents au chat. Il ne peut y avoir qu'un seul agent pour un chat de type ticket",
     "YouCannotJoinChat": "Désolé, les chats de type ticket ne peuvent être servis que par un agent",
     "VisitorAlreadyBanned": "Visiteur déjà banni",
+    "developer": "Développeurs",
+    "conversation_designer":"Concepteurs de conversations", 
+    "no_code_builder": "Constructeurs sans code",
+    "business_stakeholder": "Parties prenantes du monde des affaires",
+    "ImportTemplate":"Modèle d'importation",
+    "ImportChatbot":"Importer le chatbot",
+    "StartFromScratch":"Commencer à partir de zéro",
+    "WhereWouldYouLikeToStart":"Par où aimeriez-vous commencer?",
+    "AutomateConversationsFromPrototyping":"Automatisez les conversations depuis le prototypage vers tous vos canaux en quelques minutes",
     "OnboardPage": {
+        "ChooseYourChatbotFromOurTemplates":"Choisissez votre chatbot parmi nos modèles, prêt à être déployé sur vos canaux",
         "ChatbotTitle": "Configurez un chatbot pour votre site Web - ou votre chaîne (WhatsApp, Facebook etc.)",
         "DoYouWantChatbot": "Voulez-vous qu'un chatbot aide vos utilisateurs à une automatisation fantaisie ou à répondre à des questions fréquentes?",
         "YesChatboat": "Oui, permettez-moi de configurer mon premier chatbot!",
@@ -2258,7 +2268,10 @@
         "Pass": "Marcher",
         "ContactAnOperator": "Voulez-vous un bouton pour permettre à vos utilisateurs de contacter un agent humain en cas de besoin?",
         "NoDontWantAnAgent": "Non merci. Je préfère que le chatbot fasse tout le travail pour moi",
-        "YesAddButtonAgent": "Oui, je veux un bouton pour entrer en contact avec un agent"
+        "YesAddButtonAgent": "Oui, je veux un bouton pour entrer en contact avec un agent",
+        "WhereWouldYouLikeToStart": "Par où aimeriez-vous commencer?",
+        "ChooseATemplateFor":"Choisissez un modèle pour {{selected_role}}. Retrouvez tous les modèles dans notre Communauté plus tard."
+
     },
     "AreYouHavingProblems": "Avez-vous des problèmes?",
     "IntegrationOnMorePlatforms": "Tiledesk peut être intégré sur de nombreuses plateformes, en savoir plus.",

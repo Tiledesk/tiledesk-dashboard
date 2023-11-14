@@ -1,0 +1,195 @@
+<div class="main-content onboarding-templt-page">
+
+    <img *ngIf="displayLogoWithText" [src]="companyLogoBlack_Url" class="logo" />
+    <img *ngIf="!displayLogoWithText" [src]="companyLogoNoText_Url" class="logo no-text" />
+
+    <div class="scrollable-list">
+        <div class="scrollable-list-content-container">
+
+            <div class="scrollable-list-wpr" no-prevent-default="true">
+                <h2 class="onboarding-templt-page-title" [ngClass]="{'onboarding-templt-page-title-mobile': isMobile}">
+                    {{'OnboardPage.WhereWouldYouLikeToStart' | translate}}
+                </h2>
+                <h4 class="onboarding-templt-page-description" [ngClass]="{'onboarding-templt-page-description-mobile': isMobile}">
+                    <span *ngIf="DIPLAY_CUSTOM_SUBTITLE === false">   
+                        {{'OnboardPage.ChooseATemplateFor' | translate: t_paramsUserRole }}
+                    </span> 
+                    <span *ngIf="DIPLAY_CUSTOM_SUBTITLE === true">  
+                        {{'OnboardPage.ChooseYourChatbotFromOurTemplates' | translate }}
+                    </span>
+                </h4>
+                <div class="tmplt-btns-container">
+                    <div class="tmplt-list-wpr" [ngClass]="{'tmplt-list-wpr-mobile': isMobile}">
+                        <ul role="tablist" class="tmplt-list">
+                            <li *ngFor="let template of templates; let i = index" role="presentation">
+                                <button (click)="selectedTemplate(i, template._id)" id="tmplt_{{template._id}}"
+                                    role="tab" type="button" aria-selected="true" class="tmplt-btn  tmplt-btn-isActive"
+                                    [ngClass]="{'tmplt-btn-isActive': selectedIndex === i}">
+                                    <div class="tmplt-name">{{template?.name}}</div>
+                                    <div class="tmplt-desc"
+                                        [ngClass]="{'tmplt-desc-is-visible': selectedIndex === i  }">
+                                        <span *ngIf="template?.title">
+                                            {{template?.title}}
+                                        </span>
+                                        <!-- <span *ngIf="!template?.short_description"> {{template?.description}} </span> -->
+                                    </div>
+                                </button>
+                            </li>
+
+                        </ul>
+                        <!-- <h4 class="start-from-scratch-link">I want to
+                            <span class="start--from--scratch" >
+                                start from scratch
+                            </span>
+                        </h4> -->
+                    </div>
+
+                    <!-- ------------------------------------------- -->
+                    <!-- New preview card -->
+                    <!-- ------------------------------------------- -->
+                    <div *ngIf="!isMobile" class="template-preview-card">
+                        <div class="template-preview-card-content">
+                           
+                            <!-- <img  *ngIf="templateid === '651a87648cb2c70013d80d8b'" src="https://tiledesk.com/wp-content/uploads/2023/11/Demo-booking-bot.png"> -->
+                           
+                            <!-- <img  *ngIf="templateid === '651e66be6717f500135f41b9'" src="https://tiledesk.com/wp-content/uploads/2023/11/Product-Cards.png"> -->
+                            
+                            <!-- <img  *ngIf="templateid === '6529582c23034f0013ee1af6'" src="https://tiledesk.com/wp-content/uploads/2023/11/Lead-gen-bot.png"> -->
+
+                            <!-- <img  *ngIf="templateid === '651ecc5749598e0013305876'" src="https://tiledesk.com/wp-content/uploads/2023/11/Manage-Support-Requests.png"> -->
+                            
+                            <!-- <img  *ngIf="templateid === '651fc9ef8c10e70013b6e240'" src="https://tiledesk.com/wp-content/uploads/2023/11/GPT-Powered-KB.png"> -->
+
+                            <!-- <img  *ngIf="templateid === '651ad6c1bfdf310013ca90d7'" src="https://tiledesk.com/wp-content/uploads/2023/11/customer-service.png"> -->
+                           
+                            <div  *ngIf="templateid === '651a87648cb2c70013d80d8b'"  
+                                style="background-image: url(https://tiledesk.com/wp-content/uploads/2023/11/Demo-booking-bot.png); background-repeat: no-repeat;
+                                width: 100%;
+                                height: 100%;
+                                background-size: cover;
+                                background-position: 0px -86px;"></div>
+
+                            <div  *ngIf="templateid === '651e66be6717f500135f41b9'"  
+                                style="background-image: url(https://tiledesk.com/wp-content/uploads/2023/11/Product-Cards.png); background-repeat: no-repeat;
+                                width: 100%;
+                                height: 100%;
+                                background-size: cover;
+                                background-position: 0px -86px;"></div>
+
+                            <div  *ngIf="templateid === '6529582c23034f0013ee1af6'"  
+                                style="background-image: url(https://tiledesk.com/wp-content/uploads/2023/11/Lead-gen-bot.png); background-repeat: no-repeat;
+                                width: 100%;
+                                height: 100%;
+                                background-size: cover;
+                                background-position: 0px -86px;"></div>
+
+                            <div  *ngIf="templateid === '651ecc5749598e0013305876'"  
+                                style="background-image: url(https://tiledesk.com/wp-content/uploads/2023/11/Manage-Support-Requests.png); background-repeat: no-repeat;
+                                width: 100%;
+                                height: 100%;
+                                background-size: cover;
+                                background-position: 0px -86px;"></div>
+
+                            <div  *ngIf="templateid === '651fc9ef8c10e70013b6e240'"  
+                                style="background-image: url(https://tiledesk.com/wp-content/uploads/2023/11/GPT-Powered-KB.png); background-repeat: no-repeat;
+                                width: 100%;
+                                height: 100%;
+                                background-size: cover;
+                                background-position: 0px -86px;"></div>
+
+                            <div  *ngIf="templateid === '651ad6c1bfdf310013ca90d7'"  
+                                style="background-image: url(https://tiledesk.com/wp-content/uploads/2023/11/customer-service.png); background-repeat: no-repeat;
+                                width: 100%;
+                                height: 100%;
+                                background-size: cover;
+                                background-position: 0px -86px;"></div>
+                            
+                        </div>
+                        <div class="template-preview-card-footer">
+                            <div class="_left_hwxid_93" style="flex-grow: 1;">
+
+
+                                <div class="template-preview-card-import-and-start-from-scratch">
+                                    <div style="color: #3ea9f5;" (class)="template-preview--link"
+                                        (click)="forkTemplate()"> 
+                                        <!-- Import template -->
+                                        {{ 'ImportChatbot' | translate}}
+                                    </div>
+                                    <div style="color: #3c4858;"> or </div>
+                                    <div style="color: #3ea9f5;" (class)="template-preview--link"
+                                        (click)="presentModalAddBotFromScratch()">
+                                        <!-- Start from scratch -->
+                                        {{ 'StartFromScratch' | translate}}
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- ------------------------------------------- -->
+                    <!-- Old preview card -->
+                    <!-- ------------------------------------------- -->
+                    <div style="display: none;" class="tmplt-card-wpr">
+                        <div id="109c8544-130c-4516-8b26-4c58b77701e5-tabpanel" class="tmplt-card">
+                           
+                            <img  *ngIf="templateid === '651a87648cb2c70013d80d8b'" src="https://tiledesk.com/wp-content/uploads/2023/11/Demo-booking-bot.png">
+
+                            <img  *ngIf="templateid === '651e66be6717f500135f41b9'" src="https://tiledesk.com/wp-content/uploads/2023/11/Product-Cards.png">
+                            
+                            <img  *ngIf="templateid === '6529582c23034f0013ee1af6'" src="https://tiledesk.com/wp-content/uploads/2023/11/Lead-gen-bot.png">
+                           
+                            <img  *ngIf="templateid === '651ecc5749598e0013305876'" src="https://tiledesk.com/wp-content/uploads/2023/11/Manage-Support-Requests.png">
+                           
+                            <img  *ngIf="templateid === '651fc9ef8c10e70013b6e240'" src="https://tiledesk.com/wp-content/uploads/2023/11/GPT-Powered-KB.png">
+
+                            <img  *ngIf="templateid === '651ad6c1bfdf310013ca90d7'" src="https://tiledesk.com/wp-content/uploads/2023/11/customer-service.png">
+
+                            <!-- <video *ngIf="templateid === '651a87648cb2c70013d80d8b'" width="682" height="454" controls>
+                                <source src="https://videos.files.wordpress.com/TOZV61Dq/demo-booking-bot.mp4"
+                                    type="video/mp4">
+                            </video>
+                            <video *ngIf="templateid === '651e66be6717f500135f41b9'" width="682" height="454" controls>
+                                <source src="https://videos.files.wordpress.com/pujds7Bw/product-cards.mp4"
+                                    type="video/mp4">
+                            </video>
+                            <video *ngIf="templateid === '6529582c23034f0013ee1af6'" width="682" height="454" controls>
+                                <source src="https://videos.files.wordpress.com/miWQ0mBX/lead-gen.mp4" type="video/mp4">
+                            </video>
+
+                            <video *ngIf="templateid === '651ecc5749598e0013305876'" width="682" height="454" controls>
+                                <source src="https://videos.files.wordpress.com/VJfeGCBw/priority-gpt-bot.mp4"
+                                    type="video/mp4">
+                            </video>
+
+                            <video *ngIf="templateid === '651fc9ef8c10e70013b6e240'" width="682" height="454" controls>
+                                <source src="https://videos.files.wordpress.com/f1mIA27P/gpt-powered-kb.mp4"
+                                    type="video/mp4">
+                            </video>
+
+                            <video *ngIf="templateid === '651ad6c1bfdf310013ca90d7'" width="682" height="454" controls>
+                                <source src="https://videos.files.wordpress.com/o3etQXZJ/customer-service.mp4"
+                                    type="video/mp4">
+                            </video> -->
+                        </div>
+                    </div>
+                </div>
+
+
+                <div *ngIf="isMobile" class="row--navigation">
+                    <div class="navigation--btn">
+                         <button class="btn btn-lg btn-primary btn-let-start" (click)="forkTemplate()">
+                           Import template
+                        </button> 
+                        <button class="btn btn-lg btn-primary btn-let-start" (click)="presentModalAddBotFromScratch()">
+                            Start from scratch
+                         </button> 
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
