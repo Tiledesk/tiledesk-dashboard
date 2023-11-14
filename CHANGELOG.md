@@ -1,8 +1,14 @@
 # tiledesk-dashboard
 
-### 2.4.73-rc3
+### 2.4.73-rc5
 - Production test
 - New onboarding
+
+### 2.4.73-rc4
+- Improvements and bug fixing
+
+### 2.4.73-rc3
+- Adds analytics quote
 
 ### 2.4.73-rc2
 - Standalone design studio connected
