@@ -5,7 +5,7 @@ $color-light-gray: #efefef;
 $color-middle-gray: #ccc;
 $color-gray: #333;
 $color-error: rgb(255, 95, 95);
-$color-error-shadow:rgba(255, 95, 95, 0.9);
+$color-error-shadow: rgba(255, 95, 95, 0.9);
 $color-text: #566787;
 $color-pro-plan: #3ea9f5;
 
@@ -60,11 +60,12 @@ $color-pro-plan: #3ea9f5;
     text-align: center;
     font-weight: 500;
     font-family: $mdb-font-family-poppins;
+    font-size: 32px;
 }
 
 .onboarding-templt-page-description {
     text-align: center;
-    margin-bottom: 32px !important;
+    margin-bottom: 32px;
     font-weight: 400;
     font-family: $mdb-font-family-poppins;
 }
@@ -107,7 +108,7 @@ $color-pro-plan: #3ea9f5;
     margin-right: 24px;
 }
 
-.tmplt-list{
+.tmplt-list {
     padding: 0px;
     margin: 0px;
     list-style: none;
@@ -127,7 +128,7 @@ $color-pro-plan: #3ea9f5;
     width: 274px;
     padding: 12px 16px;
     background-color: #fff;
-    max-height : 68px;
+    max-height: 68px;
     // height: 68px;
     transition: max-height 0.15s ease-out;
 }
@@ -140,7 +141,7 @@ $color-pro-plan: #3ea9f5;
     transition: max-height 0.3s ease-in 0s;
     border-color: #3ea9f5;
     background-color: #f1f3fd;
-    max-height : 100px;
+    max-height: 100px;
     transition: max-height 0.25s ease-in;
     // height: 100px;
 }
@@ -148,7 +149,7 @@ $color-pro-plan: #3ea9f5;
 
 
 
-.start-from-scratch-link{
+.start-from-scratch-link {
     font-size: 19px;
     height: 24px;
     width: 274px;
@@ -178,17 +179,14 @@ $color-pro-plan: #3ea9f5;
     display: none;
 }
 
-.tmplt-desc-is-visible{
+.tmplt-desc-is-visible {
     // opacity: 1;
     display: block;
 }
 
-a {
-    color: #4262ff;
-    text-decoration: none;
-}
 
-.tmplt-card-wpr{
+
+.tmplt-card-wpr {
     position: relative;
     overflow: hidden;
     background-color: #f2f2f2;
@@ -232,21 +230,23 @@ a {
     padding: 0;
     background-color: #fff;
 }
+
 .navigation--btn {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
-    // margin-bottom: 18px;
-    // margin-top: 18px;
+    align-items: center;
 
 }
+
 .btn-let-start {
     font-size: 14px;
-    padding: 18px 36px;
+    padding: 12px 36px;
     width: 100%;
     margin: 10px 0;
     max-width: 300px;
 }
+
 .btn-back {
     display: inline-flex;
     align-items: center;
@@ -263,6 +263,7 @@ a {
     background: $color-light-gray;
     margin: 10px 10px 10px 0;
     padding: 10px;
+
     svg {
         fill: $color-gray;
         width: 1em;
@@ -275,10 +276,103 @@ a {
 }
 
 .start--from--scratch:hover {
-   text-decoration: underline;
+    text-decoration: underline;
 }
 
-// .c-fQCIOf-gHOYCp-size-medium {
-//     width: 682px;
-//     height: 454px;
+
+
+
+/* New card template preview
+/* ************************* */
+
+.template-preview-card {
+    border: 1px solid #e7e7e7;
+    display: flex;
+    flex-direction: column;
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all ease .1s;
+    width: 682px;
+    height: 454px;
+}
+
+.template-preview-card-content {
+    height: 380px;
+    width: 100%;
+}
+
+.template-preview-card-footer {
+    background-color: #fff;
+    border-top: 1px solid #e7e7e7;
+    padding: 12px 16px;
+    display: flex;
+    gap: 12px;
+    flex-grow: 1;
+}
+
+
+.template-preview-card-import-and-start-from-scratch {
+    height: 100%;
+    // background: antiquewhite;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: 500;
+    // 
+    gap: 6px
+}
+
+.template-preview--link {
+    cursor: pointer;
+}
+
+.template-preview--link:hover {
+    text-decoration: underline;
+}
+
+// .template-preview-card-import:hover {
+//     text-decoration: underline;
+// }
+.onboarding-templt-page-title-mobile {
+    font-size: 20px;
+    max-width: 270px;
+    margin: auto;
+}
+
+.onboarding-templt-page-description-mobile {
+    font-size: 14px;
+    max-width: 270px;
+    margin: auto;
+    margin-bottom: 12px;
+    margin-top: 12px;
+}
+
+.tmplt-list-wpr-mobile {
+    margin-right: 0px;
+}
+
+
+
+// @media (max-width: 668px) {
+
+//     .tmplt-list-wpr {
+//         margin-right: 0px;
+//     }
+
+//     .onboarding-templt-page-title {
+//         font-size: 20px;
+//         max-width: 250px;
+//         margin: auto;
+//     }
+
+//     .onboarding-templt-page-description {
+//         font-size: 14px;
+//         max-width: 250px;
+//         margin: auto;
+//         margin-bottom: 22px;
+//         margin-top: 12px;
+//     }
+
 // }

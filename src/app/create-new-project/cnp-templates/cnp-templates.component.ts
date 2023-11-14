@@ -50,6 +50,7 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
   increaseSalesTemplates: Array<any>
   DISPLAY_INCREASE_TMPLT: boolean
   videoURL: any;
+  DIPLAY_CUSTOM_SUBTITLE: boolean;
 
   templtId = ['651a87648cb2c70013d80d8b', '651e66be6717f500135f41b9', '6529582c23034f0013ee1af6', '651ecc5749598e0013305876', '651fc9ef8c10e70013b6e240', '651ad6c1bfdf310013ca90d7']
   videoSource = [
@@ -86,28 +87,35 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
     // this.getTemplates();
     this.selectedIndex = 0;
     // this.getCurrentProject()
+    this.detectMobile()
   }
 
   ngAfterViewInit(): void {
-    console.log('[CNP-TEMPLATES] HELLO !!! ');
+    // console.log('[CNP-TEMPLATES] HELLO !!! ');
     this.createProjectFromTemplates.emit()
   }
 
   ngOnChanges(changes: SimpleChanges): void {
 
-    console.log('[CNP-TEMPLATES] - updatedProject ', this.updatedProject)
+    // console.log('[CNP-TEMPLATES] - updatedProject ', this.updatedProject)
     if (this.updatedProject && this.updatedProject.attributes && this.updatedProject.attributes.userPreferences) {
-      console.log('[CNP-TEMPLATES] - updatedProject > attributes > userPreferences', this.updatedProject.attributes.userPreferences)
+      // console.log('[CNP-TEMPLATES] - updatedProject > attributes > userPreferences', this.updatedProject.attributes.userPreferences)
       const userPreferences = this.updatedProject.attributes.userPreferences
       this.projectid = this.updatedProject._id
-      console.log('[CNP-TEMPLATES] - updatedProject > projectid', this.projectid)
-      
-      const userRole = this.translate.instant(userPreferences.user_role)
-      
-      console.log('[CNP-TEMPLATES] - userRole', userRole)
+      // console.log('[CNP-TEMPLATES] - updatedProject > projectid', this.projectid)
 
-      this.t_paramsUserRole = { selected_role: userPreferences.user_role }
+      if (userPreferences.user_role === 'developer' || userPreferences.user_role === 'conversation_designer' || userPreferences.user_role === 'no_code_builder' || userPreferences.user_role === 'business_stakeholder') {
+        this.DIPLAY_CUSTOM_SUBTITLE = false;
+        const userRole = this.translate.instant(userPreferences.user_role)
 
+        // console.log('[CNP-TEMPLATES] - userRole', userRole)
+        // console.log('[CNP-TEMPLATES] - DIPLAY_CUSTOM_SUBTITLE ', this.DIPLAY_CUSTOM_SUBTITLE)
+
+        this.t_paramsUserRole = { selected_role: userRole }
+      } else if (userPreferences.user_role === 'other') {
+        this.DIPLAY_CUSTOM_SUBTITLE = true;
+        // console.log('[CNP-TEMPLATES] - DIPLAY_CUSTOM_SUBTITLE ', this.DIPLAY_CUSTOM_SUBTITLE)
+      }
       if (userPreferences && userPreferences.use_case && userPreferences.use_case === "solve_customer_problems") {
         this.DISPLAY_INCREASE_TMPLT = false
         this.getTemplates('Customer Satisfaction');
@@ -182,7 +190,7 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
 
       if (res) {
         // this.certfifiedTemplates = res
-        console.log('[CNP-TEMPLATES] - GET ALL TEMPLATES RES', res);
+        // console.log('[CNP-TEMPLATES] - GET ALL TEMPLATES RES', res);
         if (res) {
           // this.templates = res.slice(0, 5);
 
@@ -199,13 +207,13 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
             return this.templtId.includes(item._id)
           });
 
-          console.log('[CNP-TEMPLATES] - filterdres ', filterdres);
+          // console.log('[CNP-TEMPLATES] - filterdres ', filterdres);
 
           this.templates = filterdres.filter((obj) => {
             return obj.mainCategory === selectedUseCase
           });
 
-          console.log('[CNP-TEMPLATES] - FILTERED TEMPLATES CATEGORY: ', selectedUseCase, 'TEMPLATES:  ', this.templates);
+          // console.log('[CNP-TEMPLATES] - FILTERED TEMPLATES CATEGORY: ', selectedUseCase, 'TEMPLATES:  ', this.templates);
 
           // for (let i = 0; i < this.templates.length; i++) {
           //   for (let j = 0; j < this.videoSource.length; j++) { 
@@ -229,13 +237,13 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
           this.templatename = this.template.name
           this.templateid = this.template._id
           // this.videoURL = this.sanitizer.bypassSecurityTrustResourceUrl(this.template.videoSource)
-        
+
           // console.log('[CNP-TEMPLATES] first tempaltes videoURL ', this.videoURL)
-          console.log('[CNP-TEMPLATES] first tempaltes selected ', this.template)
-          console.log('[CNP-TEMPLATES] first tempaltes selected templateid', this.template._id)
+          // console.log('[CNP-TEMPLATES] first tempaltes selected ', this.template)
+          // console.log('[CNP-TEMPLATES] first tempaltes selected templateid', this.template._id)
         }
-        console.log('[CNP-TEMPLATES] - GET ALL TEMPLATES templates', this.templates);
-        
+        // console.log('[CNP-TEMPLATES] - GET ALL TEMPLATES templates', this.templates);
+
       }
 
     }, (error) => {
@@ -250,10 +258,10 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
 
   selectedTemplate(i, templateid) {
     this.selectedIndex = i;
-    console.log('[CNP-TEMPLATES] selectedTemplate selectedIndex ', this.selectedIndex);
+    // console.log('[CNP-TEMPLATES] selectedTemplate selectedIndex ', this.selectedIndex);
 
     this.templateid = templateid
-    console.log('[CNP-TEMPLATES] selectedTemplate templateid ', this.templateid);
+    // console.log('[CNP-TEMPLATES] selectedTemplate templateid ', this.templateid);
 
     const template = this.templates.filter((el: any) => {
       return el._id === templateid
@@ -261,7 +269,7 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
     this.template = template[0]
     this.templatename = this.template.name
     // this.videoURL = this.sanitizer.bypassSecurityTrustResourceUrl(this.template.videoSource)
-    console.log('[CNP-TEMPLATES] selectedTemplate template ', this.template);
+    // console.log('[CNP-TEMPLATES] selectedTemplate template ', this.template);
     // console.log('[CNP-TEMPLATES] selectedTemplate videoURL ', this.videoURL);
   }
 
@@ -304,7 +312,7 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
 
 
   presentModalAddBotFromScratch() {
-    console.log('[TEMPLATE DETAIL] - presentModalAddBotFromScratch ');
+    // console.log('[TEMPLATE DETAIL] - presentModalAddBotFromScratch ');
     const dialogRef = this.dialog.open(HomeCreateChatbotModalComponent, {
       width: '600px',
       // data: {
@@ -334,8 +342,8 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
 
           this.botid = faqKb['_id'];
           this.botName = faqKb['name'];
-          console.log('[TEMPLATE DETAIL] createTilebotBotFromScratch - botid ', this.botid);
-          console.log('[TEMPLATE DETAIL] createTilebotBotFromScratch - botName ', this.botName);
+          // console.log('[TEMPLATE DETAIL] createTilebotBotFromScratch - botid ', this.botid);
+          // console.log('[TEMPLATE DETAIL] createTilebotBotFromScratch - botName ', this.botName);
           // this.translateparamBotName = { bot_name: this.newBot_name }
           // SAVE THE BOT IN LOCAL STORAGE
           this.botLocalDbService.saveBotsInStorage(faqKb['_id'], faqKb);
@@ -356,7 +364,7 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
         this.segmentAttributes['chatbotName'] = this.botName
         this.segmentAttributes['chatbotId'] = this.botid;
         this.segmentAttributes['method'] = "from scratch";
-        console.log('[TEMPLATE DETAIL] segmentAttributes', this.segmentAttributes)
+        // console.log('[TEMPLATE DETAIL] segmentAttributes', this.segmentAttributes)
         this.goToExitOnboarding()
       })
   }

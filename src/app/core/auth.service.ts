@@ -255,7 +255,7 @@ export class AuthService {
   // --------------------------------------------------------------------------------------
   publishSSOloggedUser() {
     const storedUser = localStorage.getItem('user')
-    console.log('[AUTH-SERV] publishSSOloggedUser storedUser ', storedUser)
+    // console.log('[AUTH-SERV] publishSSOloggedUser storedUser ', storedUser)
     if (storedUser !== null) {
       this.user_bs.next(JSON.parse(storedUser))
 
@@ -1335,7 +1335,7 @@ export class AuthService {
   
 
   public siginWithGoogle() {
-    console.log('[AUTH-SERV] siginWithGoogle HERE YES!!!')
+    // console.log('[AUTH-SERV] siginWithGoogle HERE YES!!!')
     // const url = this.SERVER_BASE_PATH + "auth/google"
     const url = "https://eu.rtmv3.tiledesk.com/api/auth/google"
     window.open(url, '_self');

@@ -35,7 +35,7 @@ export class CnpQuestionSelectComponent implements OnInit {
     } catch (error) {
       // error;
     }
-    console.log('CNP-QUESTION-SELECT goToNext segmentAttributes ', this.segmentAttributes) 
+    // console.log('CNP-QUESTION-SELECT goToNext segmentAttributes ', this.segmentAttributes) 
     this.goToNext.emit(this.segmentAttributes);
   }
 

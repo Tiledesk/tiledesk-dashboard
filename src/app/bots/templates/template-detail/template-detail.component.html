@@ -165,12 +165,13 @@
             </div>
         </div>
         <div>
-            <p weight="normal" class="template-detail-description">
-                {{template.description}}
+            <p weight="normal" class="template-detail-description" [innerHTML]="template?.description | marked ">
+                <!-- {{template.description}} -->
             </p>
             <span size="24" class="blank-span-h24 " *ngIf="template.templateFeatures"></span>
-            <p weight="medium" class="template-detail-section-features-name" *ngIf="template.templateFeatures">Template
-                features:</p>
+            <p weight="medium" class="template-detail-section-features-name" *ngIf="template.templateFeatures">
+                Template features:
+            </p>
             <span size="16" class="blank-span-h16 "></span>
             <!-- <div class="template-detail-feature-wpr" *ngIf="template.templateFeatures" >
                 <div class="template-detail-features" *ngFor="let feature of template.templateFeatures">

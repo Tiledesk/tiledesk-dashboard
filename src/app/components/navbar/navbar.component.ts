@@ -640,7 +640,8 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
           (this.route.indexOf('/projects-for-panel') !== -1) ||
           (this.route.indexOf('/unserved-request-for-panel') !== -1) ||
           (this.route.indexOf('/desktop-access') !== -1) ||
-          (this.route.indexOf('/onboarding-templates') !== -1)
+          (this.route.indexOf('/onboarding-templates') !== -1) ||
+          (this.route.indexOf('/onboarding') !== -1)
           
         ) {
           // this.logger.log('»> »> »> NAVBAR ROUTE DETECTED  »> ', this.route)

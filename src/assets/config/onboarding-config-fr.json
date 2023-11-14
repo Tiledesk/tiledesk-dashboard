@@ -1,7 +1,7 @@
 {
   "steps":[
     {
-      "title": "Au propos de vous",
+      "title": "Créer un profil",
       "buttons": {
         "next": "Continuer"
       },
@@ -32,6 +32,21 @@
             {"label": "Juste moi", "value": "1"},
             {"label": "Petite équipe (2-5)", "value": "2-5"},
             {"label": "Grande équipe (5+)", "value": "5+"}
+          ]
+        },
+        {
+          "title": "Comment avez-vous découvert Tiledesk ?",
+          "type": "select",
+          "attribute_name": "acquisition_source",
+          "labels": {
+            "placeholder":"LinkedIn, Amis, Blogs "
+          },
+          "options": [
+            {"label": "Moteurs de recherche", "value": "search_engines"},
+            {"label": "Social Media (LinkedIn, Facebook, Instagram, etc.)", "value": "social_media"},
+            {"label": "Amis ou collègues", "value": "friends_colleagues"},
+            {"label": "Sites Web tiers / blogs / vidéos", "value": "third_party_websites_blogs_videos"},
+            {"label": "Autre", "value": "other"}
           ]
         }
       ]

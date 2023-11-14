@@ -19,12 +19,15 @@
 
             <div class="teplate-content" style="flex: 1 1 auto;">
 
-                <div class="button-row">
-                    <div></div>
-
-                    <button type="button" class="btn btn-new btn-size-m btn--primary" (click)="createBlankTilebot()">
-                        <span>Add from scratch</span>
-                    </button>
+                <div class="row button-row">
+                    <div class="col-sm-12">
+                        <div class="t--btn-wpr">
+                            <button type="button" class="btn btn-new btn-size-m btn--primary"
+                                (click)="createBlankTilebot()">
+                                <span>Add from scratch</span>
+                            </button>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- <div class="css-121pzjd eooq4xa4">
@@ -89,6 +92,12 @@
                         <span *ngIf="COMMUNITY_TEMPLATE">
                             Community
                         </span>
+                        <!-- <div class="t--btn-wpr" *ngIf="!COMMUNITY_TEMPLATE">
+                            <button type="button" class="btn btn-new btn-size-m btn--primary"
+                                (click)="createBlankTilebot()">
+                                <span>Add from scratch</span>
+                            </button>
+                        </div> -->
                     </div>
                     <loading-spinner *ngIf="showSpinner"></loading-spinner>
                     <div *ngIf="!showSpinner" class="page-content">
@@ -195,7 +204,7 @@
                                                     [ngStyle]="{'color': tag.color, 'background-color':  tag.background}"
                                                     *ngFor="let tag of template.certifiedTags">
                                                     <p weight="normal" class="template-tag-name">
-                                                        {{tag.name  }} </p>
+                                                        {{tag.name }} </p>
 
                                                 </span>
 
@@ -539,7 +548,7 @@
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
-                                                                           
+
                                                                         </div>
                                                                         <div *ngIf="template?.tags?.length > 3">
                                                                             + {{ template?.tags?.length - 3 }}

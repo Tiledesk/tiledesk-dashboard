@@ -27,18 +27,20 @@ $color-pro-plan: #3ea9f5;
 }
 
 .step-header-full-width {
-    width:100%
+    width: 100%
 }
 
 
 
 .type-step {
     .title {
-        font-size: 36px;
+        // font-size: 36px;
+        font-size: 32px;
         font-weight: 500;
         line-height: 1.3em;
         margin-top: 0px;
-        margin-bottom: 0.5em;
+        margin-bottom: 32px;
+        text-align: center;
     }
 
     display: none;
@@ -139,6 +141,14 @@ $color-pro-plan: #3ea9f5;
     background-color: #4caf50;
 }
 
+@media (max-width: 668px) {
+    .col-left-full-width {
+        padding: 100px 25px 40px 40px;
+    }
+}
+
+
+
 @media (max-width: 768px) {
 
     .col-left {
@@ -155,7 +165,7 @@ $color-pro-plan: #3ea9f5;
 
     .type-step {
         .title {
-            font-size: 28px;
+            font-size: 20px;
             line-height: 1.2em;
         }
     }
@@ -256,7 +266,7 @@ $color-pro-plan: #3ea9f5;
 .navigation-btn {
     display: flex;
     flex-direction: row;
-    justify-content:center;
+    justify-content: center;
 }
 
 .btn {

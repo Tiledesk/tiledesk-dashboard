@@ -102,6 +102,7 @@ import { PaymentCanceledPageComponent } from './pricing/payment-canceled-page/pa
 import { PaymentsListComponent } from './pricing/payments-list/payments-list.component';
 import { CreateProjectComponent } from './create-project-wizard/create-project/create-project.component';
 import { OnboardingContentComponent } from './create-new-project/onboarding-content/onboarding-content.component';
+
 import { InstallWidgetComponent } from './create-project-wizard/install-widget/install-widget.component';
 import { ConfigureWidgetComponent } from './create-project-wizard/configure-widget/configure-widget.component';
 import { LoadingPageComponent } from './loading-page/loading-page.component';
@@ -144,6 +145,7 @@ import { CreateProjectGsComponent } from './create-project-wizard/create-project
 import { KnowledgeBasesComponent } from './knowledge-bases/knowledge-bases.component';
 import { CnpIsMobileComponent } from './create-new-project/cnp-is-mobile/cnp-is-mobile.component';
 import { CnpTemplatesComponent } from './create-new-project/cnp-templates/cnp-templates.component';
+import { OnboardingWelcomeComponent } from './create-new-project/onboarding-welcome/onboarding-welcome.component';
 
 
 
@@ -196,9 +198,9 @@ const routes: Routes = [
 
   // USED WHEN THE USER CLICK ON 'ADD NEW PROJECT' FROM THE NAVBAR
   //{ path: 'create-new-project', component: CreateProjectComponent, canActivate: [AuthGuard] }, // wizard 
-  { path: 'create-new-project', component: OnboardingContentComponent, canActivate: [AuthGuard] }, // wizard 
-
   
+  { path: 'onboarding', component: OnboardingWelcomeComponent, canActivate: [AuthGuard] }, // wizard
+  { path: 'create-new-project', component: OnboardingContentComponent, canActivate: [AuthGuard] }, // wizard 
   { path: 'project/:projectid/onboarding-widget', component: OnboardingWidgetComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/desktop-access/:botid', component: CnpIsMobileComponent, canActivate: [AuthGuard] }, // wizard 
   { path: 'project/:projectid/onboarding-templates', component: CnpTemplatesComponent, canActivate: [AuthGuard] }, // wizard 

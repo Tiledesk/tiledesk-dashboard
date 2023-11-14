@@ -17,7 +17,7 @@ export class BrandService {
   public brand: any;
   // "company_logo_black__url": "assets/img/logos/tiledesk_3.0_logo_black_v2_no_version.svg",
    _brand = {
-    "metaTitle": "Tiledesk Support Dashboard",
+    "metaTitle": "Tiledesk Design Studio",
     "favicon__url": "https://tiledesk.com/wp-content/uploads/2022/07/tiledesk_v13-300x300.png",
     "company_name": "Tiledesk",
     "company_site_name": "tiledesk.com",
