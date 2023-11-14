@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.4.73-rc3
+- Production test
+- New onboarding
+
 ### 2.4.73-rc2
 - Standalone design studio connected
 
