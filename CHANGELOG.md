@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.4.74
+- Deploys in production
+- Fixes translations
+
 ### 2.4.73
 - Deploys in production
 - New onboarding
