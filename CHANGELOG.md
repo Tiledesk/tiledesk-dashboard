@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.4.73
+- Deploys in production
+- New onboarding
+
 ### 2.4.73-rc5
 - Production test
 - New onboarding
