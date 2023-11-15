@@ -12,6 +12,9 @@ import { AppConfigService } from 'app/services/app-config.service';
 import { PLAN_NAME } from 'app/utils/util';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators'
+
 @Component({
   selector: 'appdashboard-email-ticketing-static',
   templateUrl: './email-ticketing-static.component.html',
@@ -19,6 +22,8 @@ import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.comp
 })
 // extends StaticPageBaseComponent
 export class EmailTicketingStaticComponent extends PricingBaseComponent implements OnInit, OnDestroy {
+
+  private unsubscribe$: Subject<any> = new Subject<any>();
 
   PLAN_NAME = PLAN_NAME
   subscription: Subscription;
@@ -61,8 +66,17 @@ export class EmailTicketingStaticComponent extends PricingBaseComponent implemen
     this.presentModalsOnInit()
   }
 
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
   getBrowserVersion() {
-    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
+    this.auth.isChromeVerGreaterThan100
+    .pipe(
+      takeUntil(this.unsubscribe$)
+    )
+    .subscribe((isChromeVerGreaterThan100: boolean) => {
       this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
       //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
     })
@@ -103,7 +117,11 @@ export class EmailTicketingStaticComponent extends PricingBaseComponent implemen
   }
 
   getProjectUserRole() {
-    this.usersService.project_user_role_bs.subscribe((user_role) => {
+    this.usersService.project_user_role_bs
+    .pipe(
+      takeUntil(this.unsubscribe$)
+    )
+    .subscribe((user_role) => {
       this.USER_ROLE = user_role;
       this.logger.log('[WSREQUEST-STATIC] - PROJECT USER ROLE: ', this.USER_ROLE);
     });
@@ -128,7 +146,11 @@ export class EmailTicketingStaticComponent extends PricingBaseComponent implemen
   }
 
   getCurrentProject() {
-    this.auth.project_bs.subscribe((project) => {
+    this.auth.project_bs
+    .pipe(
+      takeUntil(this.unsubscribe$)
+    )
+    .subscribe((project) => {
 
       if (project) {
         this.projectId = project._id
@@ -213,8 +235,6 @@ export class EmailTicketingStaticComponent extends PricingBaseComponent implemen
     this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles)
   }
 
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
-  }
+
 
 }
