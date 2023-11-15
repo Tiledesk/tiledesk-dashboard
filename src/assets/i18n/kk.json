@@ -2238,6 +2238,7 @@
     "StartFromScratch":"Нөлден бастаңыз",
     "WhereWouldYouLikeToStart":"Сіз неден бастағыңыз келеді?",
     "AutomateConversationsFromPrototyping":"Прототиптеуден бастап барлық арналарыңызға бірнеше минут ішінде сөйлесулерді автоматтандырыңыз",
+    "Or":"немесе",
     "OnboardPage": {
         "ChooseYourChatbotFromOurTemplates":"Арналарыңызда орналастыруға дайын чатботты үлгілерімізден таңдаңыз",
         "ChatbotTitle": "Веб-сайтыңызға арналған чатбелтті орнатыңыз - немесе сіздің арнаңыз (Whatsapp, Facebook және т.б.)",

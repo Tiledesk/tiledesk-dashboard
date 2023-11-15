@@ -2237,6 +2237,7 @@
     "StartFromScratch":"Noldan boshlang",
     "WhereWouldYouLikeToStart":"Qayerdan boshlashni hohlar edingiz?",
     "AutomateConversationsFromPrototyping":"Suhbatlarni prototiplashdan tortib, barcha kanallaringizga bir necha daqiqada avtomatlashtiring",
+    "Or":"yoki",
     "OnboardPage": {
         "ChooseYourChatbotFromOurTemplates": "Kanallaringizga o‘rnatishga tayyor bo‘lgan andozalarimizdan chatbotingizni tanlang",
         "ChatbotTitle": "Veb-saytingiz uchun ChatBot-ni - yoki kanalingiz (WhatsApp, Facebook va boshqalar)",

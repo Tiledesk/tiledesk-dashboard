@@ -2238,6 +2238,7 @@
     "StartFromScratch":"ابدأ من الصفر",
     "WhereWouldYouLikeToStart":"أين تريد أن تبدأ؟",
     "AutomateConversationsFromPrototyping": "قم بأتمتة المحادثات بدءًا من النماذج الأولية وحتى جميع قنواتك في دقائق",
+    "Or":"أو",
     "OnboardPage": {
         "ChooseYourChatbotFromOurTemplates":"اختر برنامج الدردشة الآلي الخاص بك من قوالبنا، الجاهزة للنشر على قنواتك",
         "ChatbotTitle": "قم بإعداد chatbot لموقع الويب الخاص بك - أو قناتك (WhatsApp ، Facebook وما إلى ذلك)",

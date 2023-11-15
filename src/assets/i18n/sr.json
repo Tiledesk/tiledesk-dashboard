@@ -2238,6 +2238,7 @@
     "StartFromScratch":"Почети од нуле",
     "WhereWouldYouLikeToStart":"Где бисте желели да почнете?",
     "AutomateConversationsFromPrototyping":"Аутоматизујте разговоре од израде прототипа до свих ваших канала за неколико минута",
+    "Or":"или",
     "OnboardPage": {
         "ChooseYourChatbotFromOurTemplates":"Изаберите свог цхат бота из наших шаблона, спреман за примену на вашим каналима",
         "ChatbotTitle": "Подесите Цхатбот за вашу веб страницу - или ваш канал (ВхатсАпп, Фацебоок итд.)",

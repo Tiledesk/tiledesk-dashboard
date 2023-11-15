@@ -2238,6 +2238,7 @@
     "StartFromScratch":"Inizia da zero",
     "WhereWouldYouLikeToStart":"Da dove vorresti iniziare?",
     "AutomateConversationsFromPrototyping":"Automatizza le conversazioni dalla prototipazione a tutti i tuoi canali in pochi minuti",
+    "Or":"o",
     "OnboardPage": {
         "ChooseYourChatbotFromOurTemplates":"Scegli il tuo chatbot tra i nostri template, pronti per essere implementati sui tuoi canali",
         "ChatbotTitle": "Crea un chatbot per il tuo sito Web e/o app di messagistica preferita canale (WhatsApp, Messenger, ecc.)",

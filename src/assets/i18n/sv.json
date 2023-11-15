@@ -2238,6 +2238,7 @@
     "StartFromScratch":"Börja från början",
     "WhereWouldYouLikeToStart":"Var skulle du vilja börj?",
     "AutomateConversationsFromPrototyping":"Automatisera konversationer från prototyper till alla dina kanaler på några minuter",
+    "Or":"eller",
     "OnboardPage": {
         "ChooseYourChatbotFromOurTemplates":"Välj din chatbot från våra mallar, redo att distribueras på dina kanaler",
         "ChatbotTitle": "Ställ in en chatbot för din webbplats - eller din kanal (WhatsApp, Facebook etc.)",

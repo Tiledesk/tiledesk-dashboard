@@ -2238,6 +2238,7 @@
     "StartFromScratch":"Sıfırdan başlamak",
     "WhereWouldYouLikeToStart":"Nereden başlamak istersiniz?",
     "AutomateConversationsFromPrototyping":"Prototip oluşturma aşamasından tüm kanallarınıza kadar olan görüşmeleri dakikalar içinde otomatikleştirin",
+    "Or":"veya",
     "OnboardPage": {
         "ChooseYourChatbotFromOurTemplates": "Kanallarınıza dağıtılmaya hazır şablonlarımızdan chatbot'unuzu seçin", 
         "ChatbotTitle": "Web siteniz veya kanalınız için bir sohbet botu ayarlayın (WhatsApp, Facebook vb.)",
