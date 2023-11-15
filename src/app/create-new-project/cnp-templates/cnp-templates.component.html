@@ -10,16 +10,34 @@
                 <h2 class="onboarding-templt-page-title" [ngClass]="{'onboarding-templt-page-title-mobile': isMobile}">
                     {{'OnboardPage.WhereWouldYouLikeToStart' | translate}}
                 </h2>
-                <h4 class="onboarding-templt-page-description" [ngClass]="{'onboarding-templt-page-description-mobile': isMobile}">
-                    <span *ngIf="DIPLAY_CUSTOM_SUBTITLE === false">   
+                <h4 class="onboarding-templt-page-description"
+                    [ngClass]="{'onboarding-templt-page-description-mobile': isMobile}">
+                    <span *ngIf="DIPLAY_CUSTOM_SUBTITLE === false">
                         {{'OnboardPage.ChooseATemplateFor' | translate: t_paramsUserRole }}
-                    </span> 
-                    <span *ngIf="DIPLAY_CUSTOM_SUBTITLE === true">  
+                    </span>
+                    <span *ngIf="DIPLAY_CUSTOM_SUBTITLE === true">
                         {{'OnboardPage.ChooseYourChatbotFromOurTemplates' | translate }}
                     </span>
                 </h4>
                 <div class="tmplt-btns-container">
-                    <div class="tmplt-list-wpr" [ngClass]="{'tmplt-list-wpr-mobile': isMobile}">
+                    <div *ngIf="isLoading" class="tmplt-list-wpr" [ngClass]="{'tmplt-list-wpr-mobile': isMobile}">
+
+                        <ul class="tmplt-list">
+                            <li>
+                                <button class="tmplt-btn tmplt-btn-isActive" style="width:274px ; height: 100px ;">
+                                </button>
+                            </li>
+                            <li>
+                                <button class="tmplt-btn" style="width:274px ; height: 47 ;">
+                                </button>
+                            </li>
+                            <li>
+                                <button class="tmplt-btn" style="height: 274px; height: 47 ;">
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                    <div *ngIf="!isLoading" class="tmplt-list-wpr" [ngClass]="{'tmplt-list-wpr-mobile': isMobile}">
                         <ul role="tablist" class="tmplt-list">
                             <li *ngFor="let template of templates; let i = index" role="presentation">
                                 <button (click)="selectedTemplate(i, template._id)" id="tmplt_{{template._id}}"
@@ -49,61 +67,55 @@
                     <!-- ------------------------------------------- -->
                     <div *ngIf="!isMobile" class="template-preview-card">
                         <div class="template-preview-card-content">
-                           
+
                             <!-- <img  *ngIf="templateid === '651a87648cb2c70013d80d8b'" src="https://tiledesk.com/wp-content/uploads/2023/11/Demo-booking-bot.png"> -->
-                           
+
                             <!-- <img  *ngIf="templateid === '651e66be6717f500135f41b9'" src="https://tiledesk.com/wp-content/uploads/2023/11/Product-Cards.png"> -->
-                            
+
                             <!-- <img  *ngIf="templateid === '6529582c23034f0013ee1af6'" src="https://tiledesk.com/wp-content/uploads/2023/11/Lead-gen-bot.png"> -->
 
                             <!-- <img  *ngIf="templateid === '651ecc5749598e0013305876'" src="https://tiledesk.com/wp-content/uploads/2023/11/Manage-Support-Requests.png"> -->
-                            
+
                             <!-- <img  *ngIf="templateid === '651fc9ef8c10e70013b6e240'" src="https://tiledesk.com/wp-content/uploads/2023/11/GPT-Powered-KB.png"> -->
 
                             <!-- <img  *ngIf="templateid === '651ad6c1bfdf310013ca90d7'" src="https://tiledesk.com/wp-content/uploads/2023/11/customer-service.png"> -->
-                           
-                            <div  *ngIf="templateid === '651a87648cb2c70013d80d8b'"  
-                                style="background-image: url(https://tiledesk.com/wp-content/uploads/2023/11/Demo-booking-bot.png); background-repeat: no-repeat;
+
+                            <div *ngIf="templateid === '651a87648cb2c70013d80d8b'" style="background-image: url(https://tiledesk.com/wp-content/uploads/2023/11/Demo-booking-bot.png); background-repeat: no-repeat;
                                 width: 100%;
                                 height: 100%;
                                 background-size: cover;
                                 background-position: 0px -86px;"></div>
 
-                            <div  *ngIf="templateid === '651e66be6717f500135f41b9'"  
-                                style="background-image: url(https://tiledesk.com/wp-content/uploads/2023/11/Product-Cards.png); background-repeat: no-repeat;
+                            <div *ngIf="templateid === '651e66be6717f500135f41b9'" style="background-image: url(https://tiledesk.com/wp-content/uploads/2023/11/Product-Cards.png); background-repeat: no-repeat;
                                 width: 100%;
                                 height: 100%;
                                 background-size: cover;
                                 background-position: 0px -86px;"></div>
 
-                            <div  *ngIf="templateid === '6529582c23034f0013ee1af6'"  
-                                style="background-image: url(https://tiledesk.com/wp-content/uploads/2023/11/Lead-gen-bot.png); background-repeat: no-repeat;
+                            <div *ngIf="templateid === '6529582c23034f0013ee1af6'" style="background-image: url(https://tiledesk.com/wp-content/uploads/2023/11/Lead-gen-bot.png); background-repeat: no-repeat;
                                 width: 100%;
                                 height: 100%;
                                 background-size: cover;
                                 background-position: 0px -86px;"></div>
 
-                            <div  *ngIf="templateid === '651ecc5749598e0013305876'"  
-                                style="background-image: url(https://tiledesk.com/wp-content/uploads/2023/11/Manage-Support-Requests.png); background-repeat: no-repeat;
+                            <div *ngIf="templateid === '651ecc5749598e0013305876'" style="background-image: url(https://tiledesk.com/wp-content/uploads/2023/11/Manage-Support-Requests.png); background-repeat: no-repeat;
                                 width: 100%;
                                 height: 100%;
                                 background-size: cover;
                                 background-position: 0px -86px;"></div>
 
-                            <div  *ngIf="templateid === '651fc9ef8c10e70013b6e240'"  
-                                style="background-image: url(https://tiledesk.com/wp-content/uploads/2023/11/GPT-Powered-KB.png); background-repeat: no-repeat;
+                            <div *ngIf="templateid === '651fc9ef8c10e70013b6e240'" style="background-image: url(https://tiledesk.com/wp-content/uploads/2023/11/GPT-Powered-KB.png); background-repeat: no-repeat;
                                 width: 100%;
                                 height: 100%;
                                 background-size: cover;
                                 background-position: 0px -86px;"></div>
 
-                            <div  *ngIf="templateid === '651ad6c1bfdf310013ca90d7'"  
-                                style="background-image: url(https://tiledesk.com/wp-content/uploads/2023/11/customer-service.png); background-repeat: no-repeat;
+                            <div *ngIf="templateid === '651ad6c1bfdf310013ca90d7'" style="background-image: url(https://tiledesk.com/wp-content/uploads/2023/11/customer-service.png); background-repeat: no-repeat;
                                 width: 100%;
                                 height: 100%;
                                 background-size: cover;
                                 background-position: 0px -86px;"></div>
-                            
+
                         </div>
                         <div class="template-preview-card-footer">
                             <div class="_left_hwxid_93" style="flex-grow: 1;">
@@ -111,7 +123,7 @@
 
                                 <div class="template-preview-card-import-and-start-from-scratch">
                                     <div style="color: #3ea9f5;" (class)="template-preview--link"
-                                        (click)="forkTemplate()"> 
+                                        (click)="forkTemplate()">
                                         <!-- Import template -->
                                         {{ 'ImportChatbot' | translate}}
                                     </div>
@@ -134,18 +146,24 @@
                     <!-- ------------------------------------------- -->
                     <div style="display: none;" class="tmplt-card-wpr">
                         <div id="109c8544-130c-4516-8b26-4c58b77701e5-tabpanel" class="tmplt-card">
-                           
-                            <img  *ngIf="templateid === '651a87648cb2c70013d80d8b'" src="https://tiledesk.com/wp-content/uploads/2023/11/Demo-booking-bot.png">
 
-                            <img  *ngIf="templateid === '651e66be6717f500135f41b9'" src="https://tiledesk.com/wp-content/uploads/2023/11/Product-Cards.png">
-                            
-                            <img  *ngIf="templateid === '6529582c23034f0013ee1af6'" src="https://tiledesk.com/wp-content/uploads/2023/11/Lead-gen-bot.png">
-                           
-                            <img  *ngIf="templateid === '651ecc5749598e0013305876'" src="https://tiledesk.com/wp-content/uploads/2023/11/Manage-Support-Requests.png">
-                           
-                            <img  *ngIf="templateid === '651fc9ef8c10e70013b6e240'" src="https://tiledesk.com/wp-content/uploads/2023/11/GPT-Powered-KB.png">
+                            <img *ngIf="templateid === '651a87648cb2c70013d80d8b'"
+                                src="https://tiledesk.com/wp-content/uploads/2023/11/Demo-booking-bot.png">
 
-                            <img  *ngIf="templateid === '651ad6c1bfdf310013ca90d7'" src="https://tiledesk.com/wp-content/uploads/2023/11/customer-service.png">
+                            <img *ngIf="templateid === '651e66be6717f500135f41b9'"
+                                src="https://tiledesk.com/wp-content/uploads/2023/11/Product-Cards.png">
+
+                            <img *ngIf="templateid === '6529582c23034f0013ee1af6'"
+                                src="https://tiledesk.com/wp-content/uploads/2023/11/Lead-gen-bot.png">
+
+                            <img *ngIf="templateid === '651ecc5749598e0013305876'"
+                                src="https://tiledesk.com/wp-content/uploads/2023/11/Manage-Support-Requests.png">
+
+                            <img *ngIf="templateid === '651fc9ef8c10e70013b6e240'"
+                                src="https://tiledesk.com/wp-content/uploads/2023/11/GPT-Powered-KB.png">
+
+                            <img *ngIf="templateid === '651ad6c1bfdf310013ca90d7'"
+                                src="https://tiledesk.com/wp-content/uploads/2023/11/customer-service.png">
 
                             <!-- <video *ngIf="templateid === '651a87648cb2c70013d80d8b'" width="682" height="454" controls>
                                 <source src="https://videos.files.wordpress.com/TOZV61Dq/demo-booking-bot.mp4"
@@ -180,12 +198,12 @@
 
                 <div *ngIf="isMobile" class="row--navigation">
                     <div class="navigation--btn">
-                         <button class="btn btn-lg btn-primary btn-let-start" (click)="forkTemplate()">
-                           Import template
-                        </button> 
+                        <button class="btn btn-lg btn-primary btn-let-start" (click)="forkTemplate()">
+                            Import template
+                        </button>
                         <button class="btn btn-lg btn-primary btn-let-start" (click)="presentModalAddBotFromScratch()">
                             Start from scratch
-                         </button> 
+                        </button>
                     </div>
                 </div>
 
