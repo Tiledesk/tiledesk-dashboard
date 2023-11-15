@@ -2238,6 +2238,7 @@
     "StartFromScratch": "Start from scratch",
     "WhereWouldYouLikeToStart": "Where would you like to start?",
     "AutomateConversationsFromPrototyping": "Automate conversations from prototyping to all your channels in minutes",
+    "Or": "or",
     "OnboardPage": {
         "ChooseYourChatbotFromOurTemplates": "Choose your chatbot from our templates, ready to be deployed on your channels",
         "ChatbotTitle": "قم بإعداد chatbot لموقعك على الويب - أو قناتك (Whatsapp و Facebook وما إلى ذلك)",
