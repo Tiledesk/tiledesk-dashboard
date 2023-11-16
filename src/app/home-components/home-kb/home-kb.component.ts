@@ -11,6 +11,7 @@ import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.comp
 import { ProjectPlanService } from 'app/services/project-plan.service';
 import { NotifyService } from 'app/core/notify.service';
 import { UsersService } from 'app/services/users.service';
+import { PLAN_NAME } from 'app/utils/util';
 
 @Component({
   selector: 'appdashboard-home-kb',
@@ -18,6 +19,7 @@ import { UsersService } from 'app/services/users.service';
   styleUrls: ['./home-kb.component.scss']
 })
 export class HomeKbComponent extends PricingBaseComponent implements OnInit {
+  PLAN_NAME = PLAN_NAME
   @Output() trackUserAction = new EventEmitter()
   addButtonDisabled: boolean = false;
   project: any;
@@ -177,5 +179,17 @@ export class HomeKbComponent extends PricingBaseComponent implements OnInit {
     this.router.navigate(['project/' + this.project._id + '/knowledge-bases/h'])
   }
 
+
+  openModalSubsExpired() {
+    if (this.USER_ROLE === 'owner') {
+      if (this.profile_name !== PLAN_NAME.C && this.profile_name !== PLAN_NAME.F ) {
+        this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
+      } else if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
+        this.notify.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
+      }
+    } else {
+      this.presentModalOnlyOwnerCanManageTheAccountPlan();
+    }
+  }
 
 }

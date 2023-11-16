@@ -494,6 +494,10 @@ export class PricingBaseComponent implements OnInit {
                 // Translate params for static page
                 this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.C }
                 this.tParamsAvailableFromTier2 = { plan_name: PLAN_NAME.B }
+                this.tParamsCRMAvailableFromPlan = { plan_name: PLAN_NAME.A }
+                this.tParamsHoursAvailableFromPlan = { plan_name: PLAN_NAME.A }
+                this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.A }
+                this.tParamsCannedAvailableFromPlan = { plan_name: PLAN_NAME.A }
                 this.dispayBadgeAvaibleFromInAppStore = true;
                 // ------------------------------------------------------------------------
                 // USECASE: Plus Plan (SUB EXPIRED)
@@ -519,6 +523,10 @@ export class PricingBaseComponent implements OnInit {
                 // Translate params for static page
                 this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.C }
                 this.tParamsAvailableFromTier2 = { plan_name: PLAN_NAME.B }
+                this.tParamsCRMAvailableFromPlan = { plan_name: PLAN_NAME.A }
+                this.tParamsHoursAvailableFromPlan = { plan_name: PLAN_NAME.A }
+                this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.A }
+                this.tParamsCannedAvailableFromPlan = { plan_name: PLAN_NAME.A }
                 this.dispayBadgeAvaibleFromInAppStore = true;
                 // ------------------------------------------------------------------------
                 // USECASE: Basic Plan (SUB EXPIRED) new for Growth
@@ -578,6 +586,9 @@ export class PricingBaseComponent implements OnInit {
                 this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.F }
                 this.tParamsAvailableFromTier2 = { plan_name: PLAN_NAME.E }
                 this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.E }
+                this.tParamsCRMAvailableFromPlan = { plan_name: PLAN_NAME.D }
+                this.tParamsHoursAvailableFromPlan = { plan_name: PLAN_NAME.D }
+                this.tParamsCannedAvailableFromPlan = { plan_name: PLAN_NAME.D }
                 this.dispayBadgeAvaibleFromInAppStore = true;
 
                 // ------------------------------------------------------------------------
@@ -605,6 +616,10 @@ export class PricingBaseComponent implements OnInit {
                 // Translate params for static page
                 this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.F }
                 this.tParamsAvailableFromTier2 = { plan_name: PLAN_NAME.E }
+                this.tParamsCRMAvailableFromPlan = { plan_name: PLAN_NAME.D }
+                this.tParamsHoursAvailableFromPlan = { plan_name: PLAN_NAME.D }
+                this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.E }
+                this.tParamsCannedAvailableFromPlan = { plan_name: PLAN_NAME.D }
                 this.dispayBadgeAvaibleFromInAppStore = true;
               }
             }

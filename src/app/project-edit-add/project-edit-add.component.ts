@@ -1470,10 +1470,28 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
             if (this.profile_name === PLAN_NAME.A) {
               this.t_params = { 'plan_name': PLAN_NAME.A }
-            } else if (this.profile_name === PLAN_NAME.D) {
-              this.t_params = { 'plan_name': PLAN_NAME.D }
-            }
 
+            } else if (this.profile_name === PLAN_NAME.B) {
+
+              this.t_params = { 'plan_name': PLAN_NAME.A }
+
+            } else if (this.profile_name === PLAN_NAME.C) {
+
+              this.t_params = { 'plan_name': PLAN_NAME.A }
+
+            } else if (this.profile_name === PLAN_NAME.D) {
+
+              this.t_params = { 'plan_name': PLAN_NAME.D }
+
+            } else if (this.profile_name === PLAN_NAME.E) {
+
+              this.t_params = { 'plan_name': PLAN_NAME.D }
+
+            } else if (this.profile_name === PLAN_NAME.F) {
+
+              this.t_params = { 'plan_name': PLAN_NAME.D }
+
+            }
           }
         }
 
@@ -1973,12 +1991,12 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       if (this.USER_ROLE === 'owner') {
         if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
           if (this.profile_name === PLAN_NAME.C) {
-            this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.C, this.subscription_end_date);
+            this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.C + ' plan', this.subscription_end_date);
           } else if (this.profile_name === PLAN_NAME.F) {
-            this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.F, this.subscription_end_date);
-          } else if (this.profile_name !== PLAN_NAME.C) {
+            this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.F  + ' plan', this.subscription_end_date);
+          } else if (this.profile_name !== PLAN_NAME.C && this.profile_name !== PLAN_NAME.F) {
             // this.notify._displayContactUsModal(true, 'upgrade_plan');
-            this.notify.displaySubscripionHasExpiredModal(true, this.profile_name, this.subscription_end_date);
+            this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
           }
         } else if (this.prjct_profile_type === 'free') {
           this.router.navigate(['project/' + this.id_project + '/pricing']);

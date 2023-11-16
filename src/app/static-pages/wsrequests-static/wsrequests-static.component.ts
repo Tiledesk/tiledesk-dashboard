@@ -10,14 +10,19 @@ import { UsersService } from '../../services/users.service';
 import { LoggerService } from '../../services/logger/logger.service';
 import { AppConfigService } from 'app/services/app-config.service';
 import { PLAN_NAME } from 'app/utils/util';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators'
+import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 
 @Component({
   selector: 'appdashboard-wsrequests-static',
   templateUrl: './wsrequests-static.component.html',
   styleUrls: ['./wsrequests-static.component.scss']
 })
-export class WsrequestsStaticComponent extends StaticPageBaseComponent implements OnInit, OnDestroy {
 
+// extends StaticPageBaseComponent
+export class WsrequestsStaticComponent extends  PricingBaseComponent implements OnInit, OnDestroy {
+  private unsubscribe$: Subject<any> = new Subject<any>();
   PLAN_NAME = PLAN_NAME
   subscription: Subscription;
   projectId: string;
@@ -27,6 +32,9 @@ export class WsrequestsStaticComponent extends StaticPageBaseComponent implement
   prjct_profile_name: string;
   subscription_end_date: Date;
   profile_name: string;
+
+  public_Key:any
+  payIsVisible: boolean;
 
   imageObject = [
     {
@@ -56,13 +64,13 @@ export class WsrequestsStaticComponent extends StaticPageBaseComponent implement
     private router: Router,
     public auth: AuthService,
     public translate: TranslateService,
-    private prjctPlanService: ProjectPlanService,
-    private notify: NotifyService,
+    public prjctPlanService: ProjectPlanService,
+    public notify: NotifyService,
     private usersService: UsersService,
     private logger: LoggerService,
     public appConfigService: AppConfigService
   ) { 
-    super(translate); 
+    super(prjctPlanService, notify);
   }
 
   ngOnInit(): void {
@@ -73,6 +81,7 @@ export class WsrequestsStaticComponent extends StaticPageBaseComponent implement
     this.getProjectUserRole();
     this.getTranslationStrings();
     this.getBrowserVersion();
+    this.presentModalsOnInit()
   }
 
   getBrowserVersion() {
@@ -151,39 +160,53 @@ export class WsrequestsStaticComponent extends StaticPageBaseComponent implement
     });
   }
 
-  getProjectPlan() {
-    this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-      this.logger.log('[WSREQUEST-STATIC] GET PROJECT PROFILE', projectProfileData)
-      if (projectProfileData) {
 
-        this.prjct_profile_type = projectProfileData.profile_type;
-        this.subscription_is_active = projectProfileData.subscription_is_active;
+  presentModalsOnInit() { 
+    if (this.USER_ROLE === 'owner') {
 
-        this.subscription_end_date = projectProfileData.subscription_end_date
-        this.profile_name = projectProfileData.profile_name
+      if (this.profile_name !== PLAN_NAME.C && this.profile_name !== PLAN_NAME.F) {
 
-        this.buildPlanName(projectProfileData.profile_name, this.browserLang, this.prjct_profile_type);
+        this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date)
 
-        if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
-          if (this.USER_ROLE === 'owner') {
+      } else if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
 
-            if (this.profile_name !== PLAN_NAME.C) {
-
-              this.notify.displaySubscripionHasExpiredModal(true, this.profile_name, this.subscription_end_date)
-
-            } else if (this.profile_name === PLAN_NAME.C) {
-
-              this.notify.displayEnterprisePlanHasExpiredModal(true, this.profile_name, this.subscription_end_date);
-            }
-          }
-        }
+        this.notify.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
       }
-    }, err => {
-      this.logger.error('[WSREQUEST-STATIC] GET PROJECT PROFILE - ERROR', err);
-    }, () => {
-      this.logger.log('[WSREQUEST-STATIC] GET PROJECT PROFILE * COMPLETE *');
-    });
+    }
   }
+  // getProjectPlan() {
+  //   this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
+  //     this.logger.log('[WSREQUEST-STATIC] GET PROJECT PROFILE', projectProfileData)
+  //     if (projectProfileData) {
+
+  //       this.prjct_profile_type = projectProfileData.profile_type;
+  //       this.subscription_is_active = projectProfileData.subscription_is_active;
+
+  //       this.subscription_end_date = projectProfileData.subscription_end_date
+  //       this.profile_name = projectProfileData.profile_name
+
+  //       this.buildPlanName(projectProfileData.profile_name, this.browserLang, this.prjct_profile_type);
+
+  //       if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
+  //         if (this.USER_ROLE === 'owner') {
+
+  //           if (this.profile_name !== PLAN_NAME.C && this.profile_name !== PLAN_NAME.F) {
+
+  //             this.notify.displaySubscripionHasExpiredModal(true, this.profile_name, this.subscription_end_date)
+
+  //           } else if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
+
+  //             this.notify.displayEnterprisePlanHasExpiredModal(true, this.profile_name, this.subscription_end_date);
+  //           }
+  //         }
+  //       }
+  //     }
+  //   }, err => {
+  //     this.logger.error('[WSREQUEST-STATIC] GET PROJECT PROFILE - ERROR', err);
+  //   }, () => {
+  //     this.logger.log('[WSREQUEST-STATIC] GET PROJECT PROFILE * COMPLETE *');
+  //   });
+  // }
 
 
   goToPricing() {
