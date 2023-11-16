@@ -84,8 +84,18 @@ export class WsrequestsStaticComponent extends  PricingBaseComponent implements 
     this.presentModalsOnInit()
   }
 
+  ngOnDestroy() {
+    // this.subscription.unsubscribe();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
   getBrowserVersion() {
-    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
+    this.auth.isChromeVerGreaterThan100
+    .pipe(
+      takeUntil(this.unsubscribe$)
+    )
+    .subscribe((isChromeVerGreaterThan100: boolean) => {
       this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
       //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
     })
@@ -126,7 +136,11 @@ export class WsrequestsStaticComponent extends  PricingBaseComponent implements 
   }
 
   getProjectUserRole() {
-    this.usersService.project_user_role_bs.subscribe((user_role) => {
+    this.usersService.project_user_role_bs
+    .pipe(
+      takeUntil(this.unsubscribe$)
+    )
+    .subscribe((user_role) => {
       this.USER_ROLE = user_role;
       this.logger.log('[WSREQUEST-STATIC] - PROJECT USER ROLE: ', this.USER_ROLE);
     });
@@ -151,7 +165,11 @@ export class WsrequestsStaticComponent extends  PricingBaseComponent implements 
   }
 
   getCurrentProject() {
-    this.auth.project_bs.subscribe((project) => {
+    this.auth.project_bs
+    .pipe(
+      takeUntil(this.unsubscribe$)
+    )
+    .subscribe((project) => {
 
       if (project) {
         this.projectId = project._id
@@ -232,8 +250,6 @@ export class WsrequestsStaticComponent extends  PricingBaseComponent implements 
     this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles)
   }
 
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
-  }
+ 
 
 }

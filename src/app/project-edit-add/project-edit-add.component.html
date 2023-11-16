@@ -124,7 +124,7 @@
               <span class="project-edit-add-link-to-doc" (click)="goToKBDocsSettingUpAutomaticAssignment()">
                 {{'SettingUpAutomaticAssignment' | translate}}
               </span>
-              <span *ngIf="profile_name !== PLAN_NAME?.C && profile_name !== PLAN_NAME?.F " class="c-plan--only--badge">
+              <span *ngIf="!isTier3Plans" class="c-plan--only--badge">
                 {{'OnlyWithPlan'| translate: tParamsFeatureAvailableWith}}
               </span>
             </div>
@@ -913,12 +913,13 @@
                         </div>
                         <div class="upgrade-btn-wpr">
                           <button class="btn btn-get-feature-no-boxshadow pull-left"
-                            style="margin-bottom: 0px;margin-top: 0px!important; margin-left: 15px;"
-                            (click)="goToPricing()" 
-                            matTooltipClass="custom-mat-tooltip-in-widget-setup"
-                            matTooltip=" {{'UpgradePlanToGetTheFeature' | translate}}" #tooltip="matTooltip"
-                            matTooltipPosition='below'
-                             matTooltipHideDelay="100">
+                              style="margin-bottom: 0px;margin-top: 0px!important; margin-left: 15px;"
+                              (click)="goToPricing()" 
+                              matTooltipClass="custom-mat-tooltip-in-widget-setup"
+                              matTooltip=" {{'UpgradePlanToGetTheFeature' | translate}}" 
+                              #tooltip="matTooltip"
+                              matTooltipPosition='below'
+                              matTooltipHideDelay="100">
                             <span class="material-icons-outlined get-feature-upgrade-plan-icon">
                               upgrade
                             </span>
@@ -1396,7 +1397,8 @@
                             style="margin-bottom: 0px;margin-top: 0px!important; margin-left: 15px;" (click)="goToPricing()"
                             matTooltipClass="custom-mat-tooltip-in-widget-setup"
                             matTooltip=" {{'UpgradePlanToGetTheFeature' | translate}}" #tooltip="matTooltip"
-                            matTooltipPosition='below' matTooltipHideDelay="100">
+                            matTooltipPosition='below' 
+                            matTooltipHideDelay="100">
                             <span class="material-icons-outlined get-feature-upgrade-plan-icon">
                               upgrade
                             </span>
@@ -1422,11 +1424,10 @@
                       <h3 class="card_title__underlined">
                         <span class="card_title__underline">
                           {{ "ProjectEditPage.CustomizeEmailTemplate" | translate }}
-                          <span *ngIf="profile_name !== PLAN_NAME?.C && profile_name !== PLAN_NAME?.F"
+                          <!-- <span *ngIf="!isTier3Plans"
                             class="c-plan-only-badge">
                             {{'OnlyWithPlan' | translate : tParamsFeatureAvailableWith}}
-                            <!-- {{'EnterpriseOnly' | translate }}  -->
-                          </span>
+                          </span> -->
                         </span>
                       </h3>
                     </div>
@@ -1444,6 +1445,31 @@
                         {{ "ProjectEditPage.CustomizeEmailTemplateBtn" | translate }}
                       </button>
                     </div>
+                    <div class="col-xs-12">
+                      <div class="upgrade-for-webhook" style="margin-left: 0px;" *ngIf="!isTier3Plans">
+                        <div class="c-plan-only-badge">
+                          {{'OnlyWithPlan' | translate : tParamsFeatureAvailableWith}}
+                        </div>
+                        <div class="upgrade-btn-wpr">
+                          <button class="btn btn-get-feature-no-boxshadow pull-left"
+                              style="margin-bottom: 0px;margin-top: 0px!important; margin-left: 15px;"
+                              (click)="goToPricing()" 
+                              matTooltipClass="custom-mat-tooltip-in-widget-setup"
+                              matTooltip=" {{'UpgradePlanToGetTheFeature' | translate}}" 
+                              #tooltip="matTooltip"
+                              matTooltipPosition='below'
+                              matTooltipHideDelay="100">
+                            <span class="material-icons-outlined get-feature-upgrade-plan-icon">
+                              upgrade
+                            </span>
+                            <span>
+                              {{ 'Pricing.UpgradePlan' | translate }}
+                            </span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
                   </div>
                   <!-- END CUSTOMIZE EMAILS SENT TO AGENTS -->
 
@@ -1453,11 +1479,10 @@
                       <h3 class="card_title__underlined">
                         <span class="card_title__underline">
                           {{ "ProjectEditPage.SMTPSettings" | translate }}
-                          <span *ngIf="profile_name !== PLAN_NAME?.C && profile_name !== PLAN_NAME?.F"
+                          <!-- <span *ngIf="!isTier3Plans"
                             class="c-plan-only-badge">
-                            <!-- {{'EnterpriseOnly' | translate }}  -->
                             {{'OnlyWithPlan' | translate : tParamsFeatureAvailableWith}}
-                          </span>
+                          </span> -->
                         </span>
                       </h3>
                     </div>
@@ -1475,6 +1500,34 @@
                         {{ "ProjectEditPage.ManageSMTPSettings" | translate }}
                       </button>
                     </div>
+
+                    <div class="col-xs-12">
+                      <div class="upgrade-for-webhook" style="margin-left: 0px;" *ngIf="!isTier3Plans">
+                        <div class="c-plan-only-badge">
+                          {{'OnlyWithPlan' | translate : tParamsFeatureAvailableWith}}
+                        </div>
+                        <div class="upgrade-btn-wpr">
+                          <button class="btn btn-get-feature-no-boxshadow pull-left"
+                              style="margin-bottom: 0px;margin-top: 0px!important; margin-left: 15px;"
+                              (click)="goToPricing()" 
+                              matTooltipClass="custom-mat-tooltip-in-widget-setup"
+                              matTooltip=" {{'UpgradePlanToGetTheFeature' | translate}}" 
+                              #tooltip="matTooltip"
+                              matTooltipPosition='below'
+                              matTooltipHideDelay="100">
+                            <span class="material-icons-outlined get-feature-upgrade-plan-icon">
+                              upgrade
+                            </span>
+                            <span>
+                              {{ 'Pricing.UpgradePlan' | translate }}
+                            </span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+
+
                   </div>
                   <!-- END CONFIGURE EMAIL SMTP -->
 

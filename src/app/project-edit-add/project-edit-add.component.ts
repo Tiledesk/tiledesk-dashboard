@@ -213,6 +213,8 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   t_params: any;
   planFeatures: any;
   highlightedFeatures: any;
+  isTier3Plans: boolean // Plus or Custom
+
   formErrors: FormErrors = {
     'creditCard': '',
     'expirationDate': '',
@@ -1446,14 +1448,17 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         if (projectProfileData.profile_type === 'free') {
           if (projectProfileData.trial_expired === false) {
             this.DISPLAY_ADVANCED_TAB = true;
+            this.isTier3Plans = false
             // console.log('[WS-REQUESTS-MSGS] profile_type', projectProfileData.profile_type)
             // console.log('[WS-REQUESTS-MSGS] displayChatRatings', this.DISPLAY_ADVANCED_TAB)
           } else {
             this.DISPLAY_ADVANCED_TAB = false;
             if (this.profile_name === 'Sandbox') {
               this.t_params = { 'plan_name': PLAN_NAME.D }
+              this.isTier3Plans = false
             } else if (this.profile_name === 'free') {
               this.t_params = { 'plan_name': PLAN_NAME.A }
+              this.isTier3Plans = false
             }
             // console.log('[WS-REQUESTS-MSGS] profile_type', projectProfileData.profile_type)
             // console.log('[WS-REQUESTS-MSGS] displayChatRatings', this.DISPLAY_ADVANCED_TAB)
@@ -1461,6 +1466,34 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         } else if (projectProfileData.profile_type === 'payment') {
           if (projectProfileData.subscription_is_active === true) {
             this.DISPLAY_ADVANCED_TAB = true;
+
+            if (this.profile_name === PLAN_NAME.A) {
+
+              this.isTier3Plans = false
+              
+            } else if (this.profile_name === PLAN_NAME.B) {
+
+              this.isTier3Plans = false
+
+            } else if (this.profile_name === PLAN_NAME.C) {
+
+              this.isTier3Plans = true
+
+            } else if (this.profile_name === PLAN_NAME.D) {
+
+              this.isTier3Plans = false
+
+            } else if (this.profile_name === PLAN_NAME.E) {
+
+              this.isTier3Plans = false
+
+            } else if (this.profile_name === PLAN_NAME.F) {
+
+              this.isTier3Plans = true
+
+            }
+
+
             // console.log('[WS-REQUESTS-MSGS] profile_type', projectProfileData.profile_type)
             // console.log('[WS-REQUESTS-MSGS] displayChatRatings', this.DISPLAY_ADVANCED_TAB)
           } else if (projectProfileData.subscription_is_active === false) {
@@ -1469,27 +1502,34 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
             // console.log('[WS-REQUESTS-MSGS] DISPLAY_ADVANCED_TAB', this.DISPLAY_ADVANCED_TAB)
 
             if (this.profile_name === PLAN_NAME.A) {
+
               this.t_params = { 'plan_name': PLAN_NAME.A }
+              this.isTier3Plans = false
 
             } else if (this.profile_name === PLAN_NAME.B) {
 
               this.t_params = { 'plan_name': PLAN_NAME.A }
+              this.isTier3Plans = false
 
             } else if (this.profile_name === PLAN_NAME.C) {
 
               this.t_params = { 'plan_name': PLAN_NAME.A }
+              this.isTier3Plans = false
 
             } else if (this.profile_name === PLAN_NAME.D) {
 
               this.t_params = { 'plan_name': PLAN_NAME.D }
+              this.isTier3Plans = false
 
             } else if (this.profile_name === PLAN_NAME.E) {
 
               this.t_params = { 'plan_name': PLAN_NAME.D }
+              this.isTier3Plans = false
 
             } else if (this.profile_name === PLAN_NAME.F) {
 
               this.t_params = { 'plan_name': PLAN_NAME.D }
+              this.isTier3Plans = false
 
             }
           }
@@ -2000,6 +2040,16 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
           }
         } else if (this.prjct_profile_type === 'free') {
           this.router.navigate(['project/' + this.id_project + '/pricing']);
+        } else if (
+          this.profile_name === PLAN_NAME.A ||
+          this.profile_name === PLAN_NAME.B ||
+          this.profile_name === PLAN_NAME.D ||
+          this.profile_name === PLAN_NAME.E ||
+          this.prjct_profile_type === 'free'
+  
+        ) {
+          console.log('goToManageEmailSettings HERE 4 ')
+          this.presentModalFeautureAvailableOnlyWithPlanC()
         }
       } else {
         this.presentModalOnlyOwnerCanManageTheAccountPlan();

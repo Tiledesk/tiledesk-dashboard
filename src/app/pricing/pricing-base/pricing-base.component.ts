@@ -621,6 +621,7 @@ export class PricingBaseComponent implements OnInit {
                 this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.E }
                 this.tParamsCannedAvailableFromPlan = { plan_name: PLAN_NAME.D }
                 this.dispayBadgeAvaibleFromInAppStore = true;
+                
               }
             }
           }
