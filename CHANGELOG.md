@@ -2,7 +2,7 @@
 
 ### 2.4.75
 - Deploys in production
-- Disable the sign up button during the registration process
+- Disables the sign up button during the registration process
 - Hides the widget during onboarding steps
 
 ### 2.4.74
