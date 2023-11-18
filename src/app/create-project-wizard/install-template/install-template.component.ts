@@ -702,7 +702,7 @@ export class InstallTemplateComponent extends PricingBaseComponent implements On
         }
 
         try {
-          window['analytics'].track('Import template', {
+          window['analytics'].track('Create chatbot', {
             "username": userFullname,
             "email": this.user.email,
             "userId": this.user._id,
