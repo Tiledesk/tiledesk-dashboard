@@ -578,13 +578,13 @@ export class InstallTemplateComponent extends PricingBaseComponent implements On
         this.forkTemplate()
       }
     } if (this.USER_ROLE === 'agent') {
-      this.presentModalOnlyOwnerCanManageTheAccountPlan()
+      this.presentModalAgentCannotManageChatbot()
     }
   }
 
 
-  presentModalOnlyOwnerCanManageTheAccountPlan() {
-    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan('Agents can\'t manage chatbots', 'Learn more about default roles')
+  presentModalAgentCannotManageChatbot() {
+    this.notify.presentModalAgentCannotManageChatbot('Agents can\'t manage chatbots', 'Learn more about default roles')
   }
 
   forkTemplate() {

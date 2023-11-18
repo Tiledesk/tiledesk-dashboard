@@ -426,17 +426,6 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit, 
   createBlankTilebot() {
     console.log('[BOTS-TEMPLATES] createBlankTilebot chatBotCount ', this.chatBotCount, ' chatBotLimit ', this.chatBotLimit, ' USER_ROLE ', this.USER_ROLE)
 
-    // if (this.chatBotCount < this.chatBotLimit) {
-    //   this.router.navigate(['project/' + this.project._id + '/bots/create/tilebot/blank']);
-    //   // this.router.navigate(['project/' + this.project._id + '/chatbot/create']);
-
-    // } else if (this.chatBotCount >= this.chatBotLimit) {
-    //   if (this.USER_ROLE !== 'agent') {
-    //     this.presentDialogReachedChatbotLimit()
-    //   } else if (this.USER_ROLE === 'agent') {
-    //     this.presentModalOnlyOwnerCanManageTheAccountPlan()
-    //   }
-    // }
 
     if (this.USER_ROLE !== 'agent') {
       if (this.chatBotLimit) {
@@ -453,15 +442,15 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit, 
         this.router.navigate(['project/' + this.project._id + '/bots/create/tilebot/blank']);
       }
     } if (this.USER_ROLE === 'agent') {
-      this.presentModalOnlyOwnerCanManageTheAccountPlan()
+      this.presentModalAgentCannotManageChatbot()
     }
 
 
 
   }
 
-  presentModalOnlyOwnerCanManageTheAccountPlan() {
-    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan('Agents can\'t manage chatbots', 'Learn more about default roles')
+  presentModalAgentCannotManageChatbot() {
+    this.notify.presentModalAgentCannotManageChatbot('Agents can\'t manage chatbots', 'Learn more about default roles')
   }
 
   presentDialogReachedChatbotLimit() {

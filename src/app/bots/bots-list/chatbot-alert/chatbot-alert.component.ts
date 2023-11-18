@@ -114,10 +114,7 @@ export class ChatbotAlertComponent extends PricingBaseComponent implements OnIni
   }
 
   presentModalOnlyOwnerCanManageTheAccountPlan() {
-    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(
-      this.onlyOwnerCanManageTheAccountPlanMsg,
-      this.learnMoreAboutDefaultRoles,
-    )
+    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles)
   }
 
   translateModalOnlyOwnerCanManageProjectAccount() {

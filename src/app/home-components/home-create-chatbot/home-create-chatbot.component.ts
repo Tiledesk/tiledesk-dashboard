@@ -20,6 +20,7 @@ import { ProjectPlanService } from 'app/services/project-plan.service';
 import { ChatbotModalComponent } from 'app/bots/bots-list/chatbot-modal/chatbot-modal.component';
 import { NotifyService } from 'app/core/notify.service';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'appdashboard-home-create-chatbot',
@@ -55,6 +56,10 @@ export class HomeCreateChatbotComponent extends PricingBaseComponent implements 
   language: string;
   chatbotName: string
   newBot_Id: string
+
+  onlyOwnerCanManageTheAccountPlanMsg: string;
+  learnMoreAboutDefaultRoles: string;
+
   constructor(
     public appConfigService: AppConfigService,
     public auth: AuthService,
@@ -67,6 +72,7 @@ export class HomeCreateChatbotComponent extends PricingBaseComponent implements 
     private botLocalDbService: BotLocalDbService,
     public prjctPlanService: ProjectPlanService,
     public notify: NotifyService,
+    private translate: TranslateService
   ) {
     super(prjctPlanService, notify);
   }
@@ -76,6 +82,7 @@ export class HomeCreateChatbotComponent extends PricingBaseComponent implements 
     this.getUserRole()
     this.getProjectPlan();
     this.getUserRole();
+    this.translateString()
   }
 
 
@@ -109,6 +116,21 @@ export class HomeCreateChatbotComponent extends PricingBaseComponent implements 
     this.getCurrentProjectAndPrjctBots();
     this.getTemplates(this.use_case_for_child)
 
+  }
+
+  translateString() {
+    this.translateModalOnlyOwnerCanManageProjectAccount()
+  }
+  translateModalOnlyOwnerCanManageProjectAccount() {
+    this.translate.get('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan')
+      .subscribe((translation: any) => {
+        this.onlyOwnerCanManageTheAccountPlanMsg = translation;
+      });
+
+    this.translate.get('LearnMoreAboutDefaultRoles')
+      .subscribe((translation: any) => {
+        this.learnMoreAboutDefaultRoles = translation;
+      });
   }
 
   getTemplates(use_case) {
@@ -433,7 +455,7 @@ export class HomeCreateChatbotComponent extends PricingBaseComponent implements 
         this.presentModalAddBotFromScratch()
       }
     } if (this.USER_ROLE === 'agent') {
-      this.presentModalOnlyOwnerCanManageTheAccountPlan()
+      this.presentModalAgentCannotManageChatbot()
     }
   }
 
@@ -507,8 +529,8 @@ export class HomeCreateChatbotComponent extends PricingBaseComponent implements 
     });
   }
 
-  presentModalOnlyOwnerCanManageTheAccountPlan() {
-    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan('Agents can\'t manage chatbots', 'Learn more about default roles')
+  presentModalAgentCannotManageChatbot() {
+    this.notify.presentModalAgentCannotManageChatbot('Agents can\'t manage chatbots', 'Learn more about default roles')
   }
 
   goToMyChatbots() {
@@ -525,16 +547,20 @@ export class HomeCreateChatbotComponent extends PricingBaseComponent implements 
         this.notify.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
       }
     } else {
+      this.presentModalAgentCannotManageChatbot();
+    }
+  }
+
+  openModalTrialExpired() {
+    if (this.USER_ROLE === 'owner') {  
+        this.notify.displayTrialHasExpiredModal();
+    } else {
       this.presentModalOnlyOwnerCanManageTheAccountPlan();
     }
   }
 
-  // openModalTrialExpired() {
-  //   if (this.USER_ROLE === 'owner') {  
-  //       this.notify.displayTrialHasExpiredModal();
-  //   } else {
-  //     this.presentModalOnlyOwnerCanManageTheAccountPlan();
-  //   }
-  // }
+  presentModalOnlyOwnerCanManageTheAccountPlan() {
+    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles)
+  }
 
 }

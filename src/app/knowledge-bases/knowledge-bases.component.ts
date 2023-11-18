@@ -365,7 +365,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
           });
         } catch (err) {
-          this.logger.error('identify Invite Sent Profile error', err);
+          this.logger.error('[KNOWLEDGE-BASES-COMP] identify Invite Sent Profile error', err);
         }
 
         try {
@@ -382,7 +382,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
             }
           });
         } catch (err) {
-          this.logger.error('track Invite Sent event error', err);
+          this.logger.error('[KNOWLEDGE-BASES-COMP] track Invite Sent event error', err);
         }
 
         try {
@@ -391,7 +391,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
             plan: this.profile_name + ' plan',
           });
         } catch (err) {
-          this.logger.error('group Invite Sent error', err);
+          this.logger.error('[KNOWLEDGE-BASES-COMP] group Invite Sent error', err);
         }
       }
     }
@@ -407,7 +407,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     }), (error) => {
       this.logger.error("[KNOWLEDGE-BASESCOMP] ERROR save kb settings: ", error);
     }, () => {
-      this.logger.info("[KNOWLEDGE-BASES-COMP] save kb settings *COMPLETE*");
+      this.logger.log("[KNOWLEDGE-BASES-COMP] save kb settings *COMPLETE*");
     })
   }
 
@@ -430,7 +430,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       gptkey: this.kbSettings.gptkey
     }
     this.openaiService.startScraping(data).subscribe((response: any) => {
-      this.logger.log("start scraping response: ", response);
+      this.logger.log("[KNOWLEDGE-BASES-COMP] start scraping response: ", response);
 
       if (response.message && response.message === "Invalid Openai API key") {
         this.notify.showWidgetStyleUpdateNotification("Invalid Openai API key", 4, 'report_problem');
@@ -441,13 +441,13 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         })
       }, 1000);
     }, (error) => {
-      this.logger.error("error start scraping response: ", error);
+      this.logger.error("[KNOWLEDGE-BASES-COMP] error start scraping response: ", error);
       // if (error && error[1].error) {
       //   console.log('error[1].error statusText ', error[1].error.statusText)
       // }
       // this.notify.showWidgetStyleUpdateNotification("Invalid Openai API key", 4, 'report_problem');
     }, () => {
-      this.logger.log("start scraping *COMPLETE*");
+      this.logger.log("[KNOWLEDGE-BASES-COMP] start scraping *COMPLETE*");
     })
   }
 
@@ -472,7 +472,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     }
 
     Promise.all(promises).then((response) => {
-      this.logger.log("Promise All *COMPLETED* ", response);
+      this.logger.log("[KNOWLEDGE-BASES-COMP] Promise All *COMPLETED* ", response);
     })
 
   }
@@ -520,10 +520,10 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         element.classList.add('answer-active');
       }, (200));
     }, (error) => {
-      this.logger.error("ERROR ask gpt: ", error);
+      this.logger.error("[KNOWLEDGE-BASES-COMP] ERROR ask gpt: ", error);
       this.searching = false;
     }, () => {
-      this.logger.info("ask gpt *COMPLETE*")
+      this.logger.log("[KNOWLEDGE-BASES-COMP] ask gpt *COMPLETE*")
       this.searching = false;
     })
   }
@@ -557,6 +557,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     this.secretsModal = 'block';
     if (this.kbSettings.gptkey) {
       let el = <HTMLInputElement>document.getElementById('gptkey-key');
+      console.log('[KNOWLEDGE-BASES-COMP] openSecretsModal el', el)
       el.type = "password"
       this.gptkeyVisible = false;
     } else {

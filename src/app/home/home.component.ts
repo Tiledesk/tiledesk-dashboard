@@ -2082,7 +2082,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   presentModalAgentCannotManageAvancedSettings() {
-    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.agentCannotManageAdvancedOptions, this.learnMoreAboutDefaultRoles)
+    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles)
   }
 
 

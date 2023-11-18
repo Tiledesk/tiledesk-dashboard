@@ -12,6 +12,7 @@ import { ProjectPlanService } from 'app/services/project-plan.service';
 import { NotifyService } from 'app/core/notify.service';
 import { UsersService } from 'app/services/users.service';
 import { PLAN_NAME } from 'app/utils/util';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'appdashboard-home-kb',
@@ -38,6 +39,10 @@ export class HomeKbComponent extends PricingBaseComponent implements OnInit {
     name: '',
     url: ''
   }
+
+  onlyOwnerCanManageTheAccountPlanMsg: string;
+  learnMoreAboutDefaultRoles: string;
+
   constructor(
     public dialog: MatDialog,
     private kbService: KnowledgeBaseService,
@@ -48,6 +53,7 @@ export class HomeKbComponent extends PricingBaseComponent implements OnInit {
     public prjctPlanService: ProjectPlanService,
     public notify: NotifyService,
     public usersService: UsersService,
+    private translate: TranslateService
   ) {
     super(prjctPlanService, notify);
    }
@@ -56,6 +62,22 @@ export class HomeKbComponent extends PricingBaseComponent implements OnInit {
     this.getKnowledgeBaseSettings();
     this.getCurrentProject();
     this.getProjectPlan();
+    this.translateString()
+  }
+
+  translateString() {
+    this.translateModalOnlyOwnerCanManageProjectAccount()
+  }
+  translateModalOnlyOwnerCanManageProjectAccount() {
+    this.translate.get('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan')
+      .subscribe((translation: any) => {
+        this.onlyOwnerCanManageTheAccountPlanMsg = translation;
+      });
+
+    this.translate.get('LearnMoreAboutDefaultRoles')
+      .subscribe((translation: any) => {
+        this.learnMoreAboutDefaultRoles = translation;
+      });
   }
 
   getCurrentProject() {
@@ -190,6 +212,18 @@ export class HomeKbComponent extends PricingBaseComponent implements OnInit {
     } else {
       this.presentModalOnlyOwnerCanManageTheAccountPlan();
     }
+  }
+
+  openModalTrialExpired() {
+    if (this.USER_ROLE === 'owner') {  
+        this.notify.displayTrialHasExpiredModal();
+    } else {
+      this.presentModalOnlyOwnerCanManageTheAccountPlan();
+    }
+  }
+
+  presentModalOnlyOwnerCanManageTheAccountPlan() {
+    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles)
   }
 
 }

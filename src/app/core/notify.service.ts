@@ -137,7 +137,7 @@ export class NotifyService {
 
   // "CONTACT US - LET'S CHAT" MODAL
   _displayContactUsModal(displayModal: boolean, areAvailableOperatorsSeats: string) {
-    this.logger.log('[NOTIFY-SERVICE] - _displayContactUsModal areAvailableOperatorsSeats ', areAvailableOperatorsSeats);
+   console.log('[NOTIFY-SERVICE] - _displayContactUsModal areAvailableOperatorsSeats ', areAvailableOperatorsSeats);
     if (areAvailableOperatorsSeats === 'operators_seats_unavailable') {
       this.showSubtitleAllOperatorsSeatsUsed = true;
     } else {
@@ -603,6 +603,25 @@ export class NotifyService {
 
 
   presentModalOnlyOwnerCanManageTheAccountPlan(onlyOwnerCanManageTheAccountPlanMsg: string, learnMoreAboutDefaultRoles: string) {
+
+    const el = document.createElement('div')
+    // el.innerHTML = onlyOwnerCanManageTheAccountPlanMsg + '. ' + "<a href='https://docs.tiledesk.com/knowledge-base/understanding-default-roles/' target='_blank'>" + learnMoreAboutDefaultRoles + "</a>"
+    el.innerHTML = onlyOwnerCanManageTheAccountPlanMsg + '. ' + `<a href=${this.URL_UNDERSTANDING_DEFAULT_ROLES} target='_blank'>` + learnMoreAboutDefaultRoles + "</a>"
+    swal({
+      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
+      content: el,
+      icon: "info",
+      // buttons: true,
+      button: {
+        text: "OK",
+      },
+      dangerMode: false,
+    })
+
+  }
+
+
+  presentModalAgentCannotManageChatbot(onlyOwnerCanManageTheAccountPlanMsg: string, learnMoreAboutDefaultRoles: string) {
 
     const el = document.createElement('div')
     // el.innerHTML = onlyOwnerCanManageTheAccountPlanMsg + '. ' + "<a href='https://docs.tiledesk.com/knowledge-base/understanding-default-roles/' target='_blank'>" + learnMoreAboutDefaultRoles + "</a>"

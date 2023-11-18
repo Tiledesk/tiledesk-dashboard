@@ -58,6 +58,8 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
   user: any;
   project: any;
   callingPage: string;
+  onlyOwnerCanManageTheAccountPlanMsg: string;
+
   constructor(
     public appStoreService: AppStoreService,
     private router: Router,
@@ -576,7 +578,8 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
             }
           } else {
             // console.log('[APP-STORE] HERE 5')
-            this.presentModalAgentCannotManageAvancedSettings();
+            // this.presentModalAgentCannotManageAvancedSettings();
+            this.presentModalOnlyOwnerCanManageTheAccountPlan();
           }
         } else {
           // console.log('[APP-STORE] HERE 6')
@@ -611,16 +614,20 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
           this.router.navigate(['project/' + this.projectId + '/project-settings/payments']);
         } else {
           // console.log('[APP-STORE] HERE 5')
-          this.presentModalAgentCannotManageAvancedSettings();
+          // this.presentModalAgentCannotManageAvancedSettings();
+          this.presentModalOnlyOwnerCanManageTheAccountPlan();
         }
       }
     });
-
   }
 
-  presentModalAgentCannotManageAvancedSettings() {
-    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.agentCannotManageAdvancedOptions, this.learnMoreAboutDefaultRoles)
+  presentModalOnlyOwnerCanManageTheAccountPlan() {
+    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles)
   }
+
+  // presentModalAgentCannotManageAvancedSettings() {
+  //   this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.agentCannotManageAdvancedOptions, this.learnMoreAboutDefaultRoles)
+  // }
 
 
   installV2App(projectId, appId, appTitle) {
@@ -904,6 +911,11 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
       .subscribe((translation: any) => {
 
         this.learnMoreAboutDefaultRoles = translation;
+      });
+
+    this.translate.get('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan')
+      .subscribe((translation: any) => {
+        this.onlyOwnerCanManageTheAccountPlanMsg = translation;
       });
 
   }

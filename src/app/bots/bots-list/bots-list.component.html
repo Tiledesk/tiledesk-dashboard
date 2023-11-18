@@ -166,9 +166,8 @@
                             src="{{baseUrl}}images?path=uploads%2Fusers%2F{{faqkb?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                             onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" /> -->
                             
-                            <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" class="bot--img"
-                            [src]="faqkb.botImage"
-                            onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
+                          <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" class="bot--img"
+                             [src]="faqkb.botImage" onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
 
                             
 

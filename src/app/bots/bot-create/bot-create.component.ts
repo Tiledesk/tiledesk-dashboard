@@ -280,15 +280,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
       formData.append('uploadFile', file, file.name);
       console.log('[BOT-CREATE] FORM DATA ', formData)
       
-      // this.importChatbotFromJSON(formData)
-   
-    // } else if (this.chatBotCount >= this.chatBotLimit) {
-    //   if (this.USER_ROLE !== 'agent') {
-    //     this.presentDialogReachedChatbotLimit()
-    //   } else if (this.USER_ROLE === 'agent') {
-    //     this.presentModalOnlyOwnerCanManageTheAccountPlan()
-    //   }
-    // }
+  
 
     if (this.USER_ROLE !== 'agent') {
       if (this.chatBotLimit) {
@@ -304,7 +296,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
         this.importChatbotFromJSON(formData)
       }
     } if (this.USER_ROLE === 'agent') {
-      this.presentModalOnlyOwnerCanManageTheAccountPlan()
+      this.presentModalAgentCannotManageChatbot()
     }
   }
 
@@ -347,8 +339,8 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
     });
   }
 
-  presentModalOnlyOwnerCanManageTheAccountPlan() {
-    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan('Agents can\'t manage chatbots', 'Learn more about default roles')
+  presentModalAgentCannotManageChatbot() {
+    this.notify.presentModalAgentCannotManageChatbot('Agents can\'t manage chatbots', 'Learn more about default roles')
   }
 
   trackChatbotImported(faqKb) {
@@ -591,20 +583,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
   createBlankTilebot() {
     console.log('[BOTS-CREATE] createBlankTilebot chatBotCount ', this.chatBotCount, ' chatBotLimit ', this.chatBotLimit)
    
-   
-   
-    // if (this.chatBotCount < this.chatBotLimit) {
-     
-    //   this.createTilebotBotFromScratch() 
-
-    // } else if (this.chatBotCount >= this.chatBotLimit) {
-
-    //   if (this.USER_ROLE !== 'agent') {
-    //     this.presentDialogReachedChatbotLimit()
-    //   } else if (this.USER_ROLE === 'agent') {
-    //     this.presentModalOnlyOwnerCanManageTheAccountPlan()
-    //   }
-    // }
+  
 
     if (this.USER_ROLE !== 'agent') {
       if (this.chatBotLimit) {
@@ -620,7 +599,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
         this.createTilebotBotFromScratch()
       } 
     } if (this.USER_ROLE === 'agent') {
-      this.presentModalOnlyOwnerCanManageTheAccountPlan()
+      this.presentModalAgentCannotManageChatbot()
     }
 
 

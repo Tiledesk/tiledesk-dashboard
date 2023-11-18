@@ -14,6 +14,7 @@ import { ProjectPlanService } from 'app/services/project-plan.service';
 import { NotifyService } from 'app/core/notify.service';
 import { HomeInviteTeammateErrorModalComponent } from './home-invite-teammate-error-modal/home-invite-teammate-error-modal.component';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'appdashboard-home-create-teammate',
@@ -58,6 +59,9 @@ export class HomeCreateTeammateComponent extends PricingBaseComponent implements
   USER_ROLE: string;
   numOfTeammatesNotDiplayed: number;
   countOfTeammates: number;
+  onlyOwnerCanManageTheAccountPlanMsg: string;
+  learnMoreAboutDefaultRoles: string;
+
   constructor(
     public auth: AuthService,
     private logger: LoggerService,
@@ -68,6 +72,7 @@ export class HomeCreateTeammateComponent extends PricingBaseComponent implements
     public dialog: MatDialog,
     public prjctPlanService: ProjectPlanService,
     public notify: NotifyService,
+    private translate: TranslateService
   ) {
     super(prjctPlanService, notify);
    }
@@ -81,6 +86,7 @@ export class HomeCreateTeammateComponent extends PricingBaseComponent implements
     this.getPendingInvitation()
     this.getCurrentProject()
     this.getLoggedUser()
+    this.translateString()
   }
 
   ngOnDestroy() {
@@ -91,6 +97,22 @@ export class HomeCreateTeammateComponent extends PricingBaseComponent implements
   ngOnChanges(changes: SimpleChanges) {
     this.logger.log('[HOME-CREATE-TEAMMATE] changes  ', changes)
     // this.getCurrentProjectAndPrjctTeammates();
+  }
+
+
+  translateString() {
+    this.translateModalOnlyOwnerCanManageProjectAccount()
+  }
+  translateModalOnlyOwnerCanManageProjectAccount() {
+    this.translate.get('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan')
+      .subscribe((translation: any) => {
+        this.onlyOwnerCanManageTheAccountPlanMsg = translation;
+      });
+
+    this.translate.get('LearnMoreAboutDefaultRoles')
+      .subscribe((translation: any) => {
+        this.learnMoreAboutDefaultRoles = translation;
+      });
   }
 
   getCurrentProject() {
@@ -544,9 +566,7 @@ export class HomeCreateTeammateComponent extends PricingBaseComponent implements
     });
   }
 
-  presentModalOnlyOwnerCanManageTheAccountPlan() {
-    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan('Only teammates with the owner role can manage the account’s plan', 'Learn more about default roles')
-  }
+ 
 
   doInviteUser(email, role) {
 
@@ -701,6 +721,7 @@ export class HomeCreateTeammateComponent extends PricingBaseComponent implements
 
 
   openModalSubsExpired() {
+    console.log('[HOME-CREATE-TEAMMATE] openModalSubsExpired ')
     if (this.USER_ROLE === 'owner') {
       if (this.profile_name !== PLAN_NAME.C && this.profile_name !== PLAN_NAME.F ) {
         this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
@@ -710,6 +731,18 @@ export class HomeCreateTeammateComponent extends PricingBaseComponent implements
     } else {
       this.presentModalOnlyOwnerCanManageTheAccountPlan();
     }
+  }
+
+  openModalTrialExpired() {
+    if (this.USER_ROLE === 'owner') {  
+        this.notify.displayTrialHasExpiredModal();
+    } else {
+      this.presentModalOnlyOwnerCanManageTheAccountPlan();
+    }
+  }
+
+  presentModalOnlyOwnerCanManageTheAccountPlan() {
+    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles)
   }
 
 }

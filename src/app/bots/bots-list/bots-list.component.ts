@@ -264,15 +264,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
 
   duplicateChatbot(bot_id, bot_name) {
     console.log('[BOTS-LIST] duplicateChatbot chatBotCount ', this.chatBotCount, ' chatBotLimit ', this.chatBotLimit, ' USER_ROLE ', this.USER_ROLE, ' profile_name ' , this.profile_name)
-    // if (this.chatBotCount < this.chatBotLimit) {
-    //   this.getProjects(bot_id, bot_name)
-    // } else if (this.chatBotCount >= this.chatBotLimit) {
-    //   if (this.USER_ROLE !== 'agent') {
-    //     this.presentDialogReachedChatbotLimit()
-    //   } else if (this.USER_ROLE === 'agent') {
-    //     this.presentModalOnlyOwnerCanManageTheAccountPlan()
-    //   }
-    // }
+  
 
     if (this.USER_ROLE !== 'agent') {
       if (this.chatBotLimit) {
@@ -288,7 +280,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
         this.getProjects(bot_id, bot_name)
       }
     } else if (this.USER_ROLE === 'agent') {
-      this.presentModalOnlyOwnerCanManageTheAccountPlan()
+      this.presentModalAgentCannotManageChatbot()
     }
   }
 
@@ -898,17 +890,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
 
   createBlankTilebot() {
     console.log('[BOTS-LIST] createBlankTilebot chatBotCount ', this.chatBotCount, ' chatBotLimit ', this.chatBotLimit)
-    // if (this.chatBotCount < this.chatBotLimit) {
-    //   this.router.navigate(['project/' + this.project._id + '/bots/create/tilebot/blank']);
-    //   // this.router.navigate(['project/' + this.project._id + '/chatbot/create']);
-    // } else if (this.chatBotCount >= this.chatBotLimit) {
-
-    //   if (this.USER_ROLE !== 'agent') {
-    //     this.presentDialogReachedChatbotLimit()
-    //   } else if (this.USER_ROLE === 'agent') {
-    //     this.presentModalOnlyOwnerCanManageTheAccountPlan()
-    //   }
-    // }
+  
 
     if (this.USER_ROLE !== 'agent') {
       if (this.chatBotLimit) {
@@ -924,7 +906,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
         this.router.navigate(['project/' + this.project._id + '/bots/create/tilebot/blank'])
       }
     } if (this.USER_ROLE === 'agent') {
-      this.presentModalOnlyOwnerCanManageTheAccountPlan()
+      this.presentModalAgentCannotManageChatbot()
     }
   }
 
@@ -949,8 +931,8 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
   }
 
 
-  presentModalOnlyOwnerCanManageTheAccountPlan() {
-    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan('Agents can\'t manage chatbots', 'Learn more about default roles')
+  presentModalAgentCannotManageChatbot() {
+    this.notify.presentModalAgentCannotManageChatbot('Agents can\'t manage chatbots', 'Learn more about default roles')
   }
 
 

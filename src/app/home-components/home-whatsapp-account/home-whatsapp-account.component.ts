@@ -62,6 +62,8 @@ export class HomeWhatsappAccountComponent implements OnInit, OnChanges {
   appVersion: string;
   whatsAppLearnMoreURL: string;
 
+  onlyOwnerCanManageTheAccountPlanMsg: string;
+
   constructor(
     public appStoreService: AppStoreService,
     private router: Router,
@@ -89,8 +91,15 @@ export class HomeWhatsappAccountComponent implements OnInit, OnChanges {
     // this.translateLabels();
     this.getProjectUserRole();
     this.getOSCODE();
-   
+    this.translateString()
   }
+
+  translateString(){ 
+    this.translate.get('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan')
+      .subscribe((translation: any) => {
+        this.onlyOwnerCanManageTheAccountPlanMsg = translation;
+      });
+    }
 
 
   
@@ -398,7 +407,6 @@ export class HomeWhatsappAccountComponent implements OnInit, OnChanges {
     const el = document.createElement('div')
     el.innerHTML = this.featureAvailableFromBPlan
     swal({
-      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
       content: el,
       icon: "info",
       // buttons: true,
@@ -433,7 +441,8 @@ export class HomeWhatsappAccountComponent implements OnInit, OnChanges {
             }
           } else {
             // this.logger.log('[HOME-WA] HERE 5')
-            this.presentModalAgentCannotManageAvancedSettings();
+            // this.presentModalAgentCannotManageAvancedSettings();
+            this.presentModalOnlyOwnerCanManageTheAccountPlan();
           }
         } else {
           // this.logger.log('[HOME-WA] HERE 6')
@@ -442,11 +451,13 @@ export class HomeWhatsappAccountComponent implements OnInit, OnChanges {
       }
     });
   }
-
-
-  presentModalAgentCannotManageAvancedSettings() {
-    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.agentCannotManageAdvancedOptions, this.learnMoreAboutDefaultRoles)
+  presentModalOnlyOwnerCanManageTheAccountPlan() {
+    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles)
   }
+
+  // presentModalAgentCannotManageAvancedSettings() {
+  //   this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.agentCannotManageAdvancedOptions, this.learnMoreAboutDefaultRoles)
+  // }
 
 
   presentModalAppSumoFeautureAvailableFromBPlan() {
@@ -471,7 +482,8 @@ export class HomeWhatsappAccountComponent implements OnInit, OnChanges {
           this.router.navigate(['project/' + this.projectId + '/project-settings/payments']);
         } else {
           // this.logger.log('[HOME-WA] HERE 5')
-          this.presentModalAgentCannotManageAvancedSettings();
+          // this.presentModalAgentCannotManageAvancedSettings();
+          this.presentModalOnlyOwnerCanManageTheAccountPlan()
         }
       }
     });

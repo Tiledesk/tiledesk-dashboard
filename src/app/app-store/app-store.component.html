@@ -323,7 +323,7 @@
               {{ app.title}}
             </h5>
 
-            <ng-container *ngIf="projectProfileData?.extra3">
+            <ng-container *ngIf="projectProfileData?.extra3 && projectProfileData?.extra3 !== 'tiledesk_tier3' && projectProfileData?.extra3 !== 'tiledesk_tier4'">
               <div class="available-from-b-plan-badge b-plan-badge-color"
                 *ngIf="(app?.title === 'Zapier') || (app?.title === 'WhatsApp Business') || (app?.title === 'Facebook Messenger') || (app?.title === 'Help Center')">
                 {{ 'AvailableFromThePlan' | translate: tParamsAvailableFromAppSumoTier3 }}

@@ -128,7 +128,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
 
   agentCannotManageAdvancedOptions: string;
   learnMoreAboutDefaultRoles: string;
-
+  onlyOwnerCanManageTheAccountPlanMsg: string;
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -402,7 +402,6 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
     const el = document.createElement('div')
     el.innerHTML = planName //this.featureAvailableFromBPlan
     swal({
-      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
       content: el,
       icon: "info",
       // buttons: true,
@@ -445,7 +444,6 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
     const el = document.createElement('div')
     el.innerHTML = 'Available from ' + this.appSumoProfilefeatureAvailableFromBPlan
     swal({
-      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
       content: el,
       icon: "info",
       // buttons: true,
@@ -463,11 +461,16 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
           this.router.navigate(['project/' + this.projectId + '/project-settings/payments']);
         } else {
           // console.log('[APP-STORE] HERE 5')
-          this.presentModalAgentCannotManageAvancedSettings();
+          // this.presentModalAgentCannotManageAvancedSettings();
+          this.presentModalOnlyOwnerCanManageTheAccountPlan();
         }
       }
     });
 
+  }
+
+  presentModalOnlyOwnerCanManageTheAccountPlan() {
+    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles)
   }
 
   presentModalAgentCannotManageAvancedSettings() {
@@ -640,9 +643,14 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
         this.upgradePlan = translation;
       });
 
-      this.translate.get('UsersWiththeAgentroleCannotManageTheAdvancedOptionsOfTheProject')
+    this.translate.get('UsersWiththeAgentroleCannotManageTheAdvancedOptionsOfTheProject')
       .subscribe((translation: any) => {
         this.agentCannotManageAdvancedOptions = translation;
+      });
+
+    this.translate.get('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan')
+      .subscribe((translation: any) => {
+        this.onlyOwnerCanManageTheAccountPlanMsg = translation;
       });
 
     this.translate.get('LearnMoreAboutDefaultRoles')

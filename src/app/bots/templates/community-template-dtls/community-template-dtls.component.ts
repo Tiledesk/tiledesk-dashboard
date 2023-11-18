@@ -179,7 +179,7 @@ export class CommunityTemplateDtlsComponent extends PricingBaseComponent impleme
         this.forkTemplate()
       }
     } if (this.USER_ROLE === 'agent') {
-      this.presentModalOnlyOwnerCanManageTheAccountPlan()
+      this.presentModalOnlyOwnerCanManageChatbot()
     }
   }
 
@@ -214,8 +214,8 @@ export class CommunityTemplateDtlsComponent extends PricingBaseComponent impleme
     });
   }
 
-  presentModalOnlyOwnerCanManageTheAccountPlan() {
-    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan('Agents can\'t manage chatbots', 'Learn more about default roles')
+  presentModalOnlyOwnerCanManageChatbot() {
+    this.notify.presentModalAgentCannotManageChatbot('Agents can\'t manage chatbots', 'Learn more about default roles')
   }
 
 

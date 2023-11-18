@@ -785,21 +785,6 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   goToPricing() {
     this.logger.log('[WIDGET-SET-UP] - goToPricing projectId ', this.id_project);
 
-    // if (this.payIsVisible) {
-    //   if (this.USER_ROLE === 'owner') {
-    //     if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
-    //       this.notify._displayContactUsModal(true, 'upgrade_plan');
-    //     } else {
-    //       this.router.navigate(['project/' + this.id_project + '/pricing']);
-    //       // this.presentModalContactUsToUpgradePlan()
-
-    //     }
-    //   } else {
-    //     this.presentModalOnlyOwnerCanManageTheAccountPlan();
-    //   }
-    // } else {
-    //   this.notify._displayContactUsModal(true, 'upgrade_plan');
-    // }
     if (this.payIsVisible) {
 
       if (!this.appSumoProfile) {
@@ -808,19 +793,16 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
             // Trial expired
             if (this.profile_name === 'free') {
               if (this.USER_ROLE === 'owner') {
-                if (this.USER_ROLE === 'owner') {
-                  this.router.navigate(['project/' + this.id_project + '/project-settings/payments']);
-                } else {
-                  this.presentModalOnlyOwnerCanManageTheAccountPlan();
-                }
+                // this.router.navigate(['project/' + this.id_project + '/project-settings/payments']);
+                this.router.navigate(['project/' + this.id_project + '/pricing'])
               } else {
                 this.presentModalOnlyOwnerCanManageTheAccountPlan();
               }
-              // this.presentModalFeautureAvailableFromTier2(this.featureAvailableFromBPlan)
 
             } else if (this.profile_name === 'Sandbox') {
               if (this.USER_ROLE === 'owner') {
-                this.router.navigate(['project/' + this.id_project + '/project-settings/payments']);
+                // this.router.navigate(['project/' + this.id_project + '/project-settings/payments']);
+                this.router.navigate(['project/' + this.id_project + '/pricing'])
               } else {
                 this.presentModalOnlyOwnerCanManageTheAccountPlan();
               }
