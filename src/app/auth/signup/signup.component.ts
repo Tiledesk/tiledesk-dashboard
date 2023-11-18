@@ -569,7 +569,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
                 window['analytics'].track("Signed Up", {
                   "type": "organic",
                   "utm_source": utm_source_value,
-                  "signupButton": su,
+                  "button": su,
                   "first_name": signupResponse.user.firstname,
                   "last_name": signupResponse.user.lastname,
                   "email": signupResponse.user.email,

@@ -316,6 +316,7 @@ export class SigninComponent implements OnInit {
               window['analytics'].track('Signed In', {
                 "username": userFullname,
                 "userId": user._id,
+                'button': 'Login',
                 'method': "Email and Password"
               });
             } catch (err) {

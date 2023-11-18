@@ -417,7 +417,7 @@ export class InstallTemplateComponent extends WidgetSetUpBaseComponent implement
           }
 
           try {
-            window['analytics'].track('Use template', {
+            window['analytics'].track('Create chatbot', {
               "username": userFullname,
               "email": this.user.email,
               "userId": this.user._id,

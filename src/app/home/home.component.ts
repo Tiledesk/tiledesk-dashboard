@@ -654,7 +654,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       trackObjct['chatbotId'] = userActionRes._id
       trackObjct['button'] = "Start from scratch"
     }
-    // Created chatbot
+    // Install App 
     if (userAction === 'Install app') {
       trackObjct['appTitle'] = "WhatsApp Business"
       trackObjct['appID'] = this.whatsAppAppId
@@ -674,6 +674,12 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     if (userAction === 'Explore Templates' &&  userActionRes !== null) {
       trackObjct['category'] = userActionRes
     }
+
+    if (userAction === 'Customize widget' &&  userActionRes === null) {
+      trackObjct['button'] = 'Customize'
+    }
+
+    
 
     this.logger.log('[HOME] - trackUserAction trackObjct', trackObjct);
     if (!isDevMode()) {
