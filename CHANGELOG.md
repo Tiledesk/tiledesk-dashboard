@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.4.76
+- Deploys in production
+- Improvements and bug fixing
+
 ### 2.4.75
 - Deploys in production
 - Disables the sign up button during the registration process
