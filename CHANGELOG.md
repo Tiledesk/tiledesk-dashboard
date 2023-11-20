@@ -2,7 +2,7 @@
 
 ### 2.4.77
 - Deploys in production
-- Fixes the bug: unable to update intent due to missing id_faq_kb parameter in PUT API call
+- Fixes the bug: unable to update intent due to missing "id_faq_kb" parameter in PUT API call
 
 ### 2.4.76
 - Deploys in production
