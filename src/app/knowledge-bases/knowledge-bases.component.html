@@ -25,7 +25,8 @@
               GPT-Key
             </button>
             <button class="btn btn-primary" (click)="openAddKnowledgeBaseModal()" [disabled]="addButtonDisabled">
-              {{ 'KbPage.AddKb' | translate }}
+              <!-- {{ 'KbPage.AddKb' | translate }} -->
+              Add your Website
             </button>
           </div>
 
@@ -184,8 +185,11 @@
         <div class="info-container">
           <i class="material-icons-outlined info-icon">help_outline</i>
           <div class="info-text">
-            <p>{{ 'KbPage.AddKbInfoFirstText' | translate }}</p>
-            <p>{{ 'KbPage.AddKbInfoSecondText' | translate }}</p>
+            <!-- <p>{{ 'KbPage.AddKbInfoFirstText' | translate }}</p> -->
+            Set a valid URL for your Website. Tiledesk will search your website URL for relevant answers. ChatGPT will then be trained to reply in a human-like way.
+            Note: You can add a maximum of 3 URLs, each consisting of up to 200 pages. For larger Websites please contact us (sales@tiledesk.com).
+
+            <!-- <p>{{ 'KbPage.AddKbInfoSecondText' | translate }}</p> -->
           </div>
         </div>
 
