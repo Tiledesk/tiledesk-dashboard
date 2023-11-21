@@ -14,9 +14,10 @@
             "placeholder":"Seleziona il tuo ruolo principale"
           },
           "options": [
+            {"label": "Titolare attività", "value": "business_owner"},
             {"label": "Sviluppatore", "value": "developer"},
-            {"label": "Progettista di conversazioni", "value": "conversation_designer"},
-            {"label": "Costruttore senza codice", "value": "no_code_builder"},
+            {"label": "Conversation Designer", "value": "conversation_designer"},
+            {"label": "No-Code Builder", "value": "no_code_builder"},
             {"label": "Business Stakeholder", "value": "business_stakeholder"},
             {"label": "Altro", "value": "other"}
           ]

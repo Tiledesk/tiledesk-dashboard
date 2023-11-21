@@ -14,6 +14,7 @@
             "placeholder":"Select your main role"
           },
           "options": [
+            {"label": "Business owner", "value": "business_owner"},
             {"label": "Developer", "value": "developer"},
             {"label": "Conversation Designer", "value": "conversation_designer"},
             {"label": "No-Code Builder", "value": "no_code_builder"},

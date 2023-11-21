@@ -2229,6 +2229,7 @@
     "YouCannotAddAgents": "Désolé, mais il n'est pas possible d'ajouter des agents au chat. Il ne peut y avoir qu'un seul agent pour un chat de type ticket",
     "YouCannotJoinChat": "Désolé, les chats de type ticket ne peuvent être servis que par un agent",
     "VisitorAlreadyBanned": "Visiteur déjà banni",
+    "business_owner":"Propriétaires d'entreprise",
     "developer": "Développeurs",
     "conversation_designer":"Concepteurs de conversations", 
     "no_code_builder": "Constructeurs sans code",

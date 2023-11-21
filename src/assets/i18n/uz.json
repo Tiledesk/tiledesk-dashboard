@@ -2228,6 +2228,7 @@
     "YouCannotAddAgents": "Kechirasiz, lekin chatga jamoadoshlarni qo'shish mumkin emas. Chipta turidagi suhbat uchun faqat bitta jamoadosh bo'lishi mumkin",
     "YouCannotJoinChat": "Kechirasiz, chipta turidagi chatlar faqat agent tomonidan xizmat qilishi mumkin",
     "VisitorAlreadyBanned": "Tashrifchi allaqachon taqiqlangan",
+    "business_owner":"Biznes egalari",
     "developer": "Dasturchilar",
     "conversation_designer":"Suhbat dizaynerlari", 
     "no_code_builder": "Kodsiz quruvchilar",

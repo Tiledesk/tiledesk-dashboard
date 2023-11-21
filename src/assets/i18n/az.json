@@ -2229,6 +2229,7 @@
     "YouCannotAddAgents": "Üzr istəyirik, lakin söhbətə agentlər əlavə etmək mümkün deyil. Bilet tipli söhbət üçün yalnız bir agent ola bilər",
     "YouCannotJoinChat": "Bağışlayın, bilet tipli söhbətlərə yalnız agent xidmət göstərə bilər",
     "VisitorAlreadyBanned": "Ziyarətçi artıq qadağandır",
+    "business_owner":"Biznes sahibləri",
     "developer": "Tərtibatçılar",
     "conversation_designer":"Söhbət Dizaynerləri", 
     "no_code_builder": "Kodsuz İnşaatçılar",

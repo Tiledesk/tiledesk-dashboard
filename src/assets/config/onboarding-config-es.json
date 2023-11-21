@@ -14,9 +14,10 @@
             "placeholder":"Selecciona tu rol principal"
           },
           "options": [
+            {"label": "Dueño de negocio", "value": "business_owner"},
             {"label": "Desarrollador", "value": "developer"},
-            {"label": "Diseñador de conversaciones", "value": "conversation_designer"},
-            {"label": "Constructor sin código", "value": "no_code_builder"},
+            {"label": "Conversation Designer", "value": "conversation_designer"},
+            {"label": "No-Code Builder", "value": "no_code_builder"},
             {"label": "Parte interesada empresarial", "value": "business_stakeholder"},
             {"label": "Otro", "value": "other"}
           ]

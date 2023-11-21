@@ -2229,6 +2229,7 @@
     "YouCannotAddAgents": "Lo sentimos, pero no es posible agregar agentes al chat. Solo puede haber un agente para un chat tipo ticket",
     "YouCannotJoinChat": "Disculpa, las conversaciones de tipo de ticker solo pueden ser atendidas por un agente",
     "VisitorAlreadyBanned": "Visitante ya prohibido",
+    "business_owner":"Propietarios de negocios",
     "developer": "Desarrolladores",
     "conversation_designer":"Diseñadores de conversaciones", 
     "no_code_builder": "Constructores sin códigor",
