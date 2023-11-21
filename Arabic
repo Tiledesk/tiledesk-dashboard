@@ -2229,6 +2229,7 @@
     "YouCannotAddAgents": "عذرا ، ولكن لا يمكن إضافة وكلاء إلى الدردشة. يمكن أن يكون هناك وكيل واحد فقط لمحادثة من نوع التذكرة",
     "YouCannotJoinChat": "عذرًا ، لا يمكن تقديم محادثات نوع التذكرة إلا بواسطة وكيل",
     "VisitorAlreadyBanned": "الزائر محظور بالفعل",
+    "business_owner": "Business owners",
     "developer": "Developers",
     "conversation_designer": "Conversation Designers",
     "no_code_builder": "No-Code Builders",
