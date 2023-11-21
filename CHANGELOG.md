@@ -3,6 +3,7 @@
 ### 2.4.78
 - Deploys in production
 - Adds the ability to select the "Business Owner" role in the first step of onboarding
+- Bug fixes in Knowledge Base
 
 ### 2.4.77
 - Deploys in production
