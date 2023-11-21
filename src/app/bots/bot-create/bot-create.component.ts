@@ -628,7 +628,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
           _id: this.newBot_Id
         }
         this.trackChatbotCreated(faqKb)
-        // goToCDSVersion(this.router, newfaqkb, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
+        goToCDSVersion(this.router, newfaqkb, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
       }
 
     }, (error) => {

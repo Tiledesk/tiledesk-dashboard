@@ -273,6 +273,7 @@ export class NotificationMessageComponent extends PricingBaseComponent implement
         this._cancelSubscription()
       } else if (this.subscription_id.startsWith("XX")) {
         window.open(`mailto:sales@tiledesk.com?subject=Cancel subscription for project with id  ${this.projectId}`);
+        this.notify.cancelSubscriptionCompleted(true);
       }
     } else {
       this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles);
