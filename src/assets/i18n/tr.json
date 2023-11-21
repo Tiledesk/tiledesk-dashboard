@@ -1565,7 +1565,6 @@
         "UpgradeYourAccountToSetTeamOfficeHours": "Ekip çalışma saatlerini ayarlamak ve ziyaretçilerinizin temsilcilerinizin ne zaman çalıştığını bilmesini sağlamak için hesabınızı yükseltin!"
     },
     "KbPage": {
-        "AddKb": "Bilgi Bankası Ekle",
         "Secrets": "Sırlar",
         "Add": "Eklemek",
         "Enter": "Girmek",
@@ -1573,8 +1572,10 @@
         "RunIndexing": "Dizin Oluşturmayı Çalıştır",
         "CreationDate": "Oluşturulma tarihi",
         "KbCounterFooter": "{{ counter }} / 3 Bilgi Tabanı eklendi",
-        "AddKbInfoFirstText": "Bilgi Bankası ve GPT anahtarınız için geçerli bir URL ayarlayın.",
-        "AddKbInfoSecondText": "Not: Her biri en fazla 200 sayfadan oluşan maksimum 3 Bilgi Bankası ekleyebilirsiniz. Daha büyük bilgi tabanları için performans garanti edilmez",
+        "AddKb": "Web sitenizi ekleyin",
+        "AddKbInfoFirstText": "Web siteniz için geçerli bir URL ayarlayın.",
+        "AddKbInfoSecondText": "Tiledesk, ilgili yanıtlar için web sitenizin URL'sini arayacaktır. ChatGPT daha sonra insan benzeri bir şekilde yanıt vermek üzere eğitilecektir.",
+        "AddKbInfoThirdText": "Not: Her biri en fazla 200 sayfadan oluşan en fazla 3 URL ekleyebilirsiniz. Daha büyük Web Siteleri için lütfen <a href='mailto:sales@tiledesk.com' target='_blank'>bize Ulaşın</a>",
         "YouCanAddKBOfUpTo200Pages":"200 sayfaya kadar Bilgi Tabanları ekleyebilirsiniz",
         "SearchingAnswer": "Uygun bir cevap aranıyor...",
         "Answer": "Cevap",

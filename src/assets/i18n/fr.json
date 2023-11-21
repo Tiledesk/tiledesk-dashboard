@@ -1565,7 +1565,6 @@
         "UpgradeYourAccountToSetTeamOfficeHours": "Mettez à niveau votre compte pour définir les heures de bureau de l'équipe et informer les visiteurs lorsque vos agents travaillent !"
     },
     "KbPage": {
-        "AddKb": "Ajouter une base de connaissances",
         "Secrets": "Secrets",
         "Add": "Ajouter",
         "Enter": "Entrer",
@@ -1573,8 +1572,10 @@
         "RunIndexing": "Exécuter l'indexation",
         "CreationDate": "Date de création",
         "KbCounterFooter": "{{ counter }} sur 3 bases de connaissances ajoutées",
-        "AddKbInfoFirstText": "Définissez une URL valide pour la base de connaissances et votre clé GPT.",
-        "AddKbInfoSecondText": "Remarque : Vous pouvez ajouter un maximum de 3 bases de connaissances, chacune comprenant jusqu'à 200 pages. Pour les bases de connaissances plus volumineuses, les performances ne sont pas garanties",
+        "AddKb": "Ajoutez votre site Web",
+        "AddKbInfoFirstText": "Définissez une URL valide pour votre site Web.",
+        "AddKbInfoSecondText": "Tiledesk recherchera l'URL de votre site Web pour trouver des réponses pertinentes. ChatGPT sera ensuite formé pour répondre de manière humaine.",
+        "AddKbInfoThirdText": "Remarque: Vous pouvez ajouter un maximum de 3 URL, chacune comprenant jusqu'à 200 pages. Pour les sites Web plus grands, veuillez <a href='mailto:sales@tiledesk.com' target='_blank'>contactez-nous</a>",
         "YouCanAddKBOfUpTo200Pages":"Vous pouvez ajouter des bases de connaissances jusqu'à 200 pages",
         "SearchingAnswer": "Recherche d'une réponse appropriée...",
         "Answer": "Répondre",
