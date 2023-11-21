@@ -105,7 +105,7 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
       this.projectid = this.updatedProject._id
       // console.log('[CNP-TEMPLATES] - updatedProject > projectid', this.projectid)
 
-      if (userPreferences.user_role === 'developer' || userPreferences.user_role === 'conversation_designer' || userPreferences.user_role === 'no_code_builder' || userPreferences.user_role === 'business_stakeholder') {
+      if (userPreferences.user_role === 'business_owner'|| userPreferences.user_role === 'developer' || userPreferences.user_role === 'conversation_designer' || userPreferences.user_role === 'no_code_builder' || userPreferences.user_role === 'business_stakeholder') {
         this.DIPLAY_CUSTOM_SUBTITLE = false;
         const userRole = this.translate.instant(userPreferences.user_role)
 

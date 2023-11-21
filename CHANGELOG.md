@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.4.78
+- Deploys in production
+- Adds the ability to select the "Business Owner" role in the first step of onboarding
+
 ### 2.4.77
 - Deploys in production
 - Fixes the bug: unable to update intent due to missing "id_faq_kb" parameter in PUT API call
