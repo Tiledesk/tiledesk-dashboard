@@ -1565,7 +1565,6 @@
         "UpgradeYourAccountToSetTeamOfficeHours": "Atualize sua conta para definir o horário de expediente da equipe e informar aos visitantes quando seus agentes estão trabalhando!"
     },
     "KbPage": {
-        "AddKb": "Add Knowledge Base",
         "Secrets": "Secrets",
         "Add": "Add Knowledge Base",
         "Enter": "Enter",
@@ -1573,8 +1572,10 @@
         "RunIndexing": "Run Indexing",
         "CreationDate": "Creation date",
         "KbCounterFooter": "{{counter}} of 3 Knowledge Bases added",
-        "AddKbInfoFirstText": "Set a valid URL for the Knowledge Base and your GPT-Key.",
-        "AddKbInfoSecondText": "Note: You can add a maximum of 3 Knowledge Bases, each consisting of up to 200 pages. For larger Knowledge bases performance is not guaranteed.",
+        "AddKb": "Add your Website",
+        "AddKbInfoFirstText": "Set a valid URL for your Website.",
+        "AddKbInfoSecondText": "Tiledesk will search your website URL for relevant answers. ChatGPT will then be trained to reply in a human-like way.",
+        "AddKbInfoThirdText": "Note: You can add a maximum of 3 URLs, each consisting of up to 200 pages. For larger Websites please <a href='mailto:sales@tiledesk.com' target='_blank'>contact us</a>",
         "YouCanAddKBOfUpTo200Pages": "You can add Knowledge Bases of up to 200 pages",
         "SearchingAnswer": "Searching a suitable answer...",
         "Answer": "Answer",
