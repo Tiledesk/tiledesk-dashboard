@@ -23,9 +23,9 @@
             {{ "Pricing.WeWereUnableToAutomaticallyRenewYourSubscription" | translate }}.
             {{ "Pricing.PleaseContactUs" | translate }}
             {{ "Pricing.ToUpdateYourPaymentInformation" | translate }}.
-            <span style="display: block;" *ngIf="projectUsersLength + countOfPendingInvites > PLAN_SEATS.free">
+            <!-- <span style="display: block;" *ngIf="projectUsersLength + countOfPendingInvites > PLAN_SEATS.free">
               {{'NumberOfTeammatesExceedsThePlan' | translate: tParamsFreePlanSeatsNum}}
-            </span>
+            </span> -->
             <div class="contact--us-btn-wpr" style="text-align: center;">
               <button class="contact--us-btn" (click)="contactUs()">
                 {{'ContactUs' | translate}}

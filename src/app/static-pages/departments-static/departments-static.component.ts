@@ -247,11 +247,12 @@ export class DepartmentsStaticComponent extends PricingBaseComponent implements 
   // }
 
   goToPricing() {
-    this.logger.log('[DEPTS-STATIC] - goToPricing projectId ', this.projectId);
+    console.log('[DEPTS-STATIC] - goToPricing projectId ', this.projectId);
     if (!this.appSumoProfile) {
       if (this.payIsVisible) {
         if (this.USER_ROLE === 'owner') {
-          if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
+          // && this.subscription_is_active === false
+          if (this.prjct_profile_type === 'payment') {
             this.notify._displayContactUsModal(true, 'upgrade_plan');
           } else  if (this.prjct_profile_type === 'free') {
             this.router.navigate(['project/' + this.projectId + '/pricing']);

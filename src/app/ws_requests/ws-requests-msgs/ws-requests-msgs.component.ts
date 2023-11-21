@@ -389,7 +389,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   agentCannotManageAdvancedOptions: string;
   subscription_end_date: any;
   onlyAvailableWithEnterprisePlan: string;
-  cPlanOnly: string
+  cPlanOnly: string;
+  fPlanOnly:  string;
   learnMoreAboutDefaultRoles: string;
   onlyUserWithOwnerRoleCanManageAdvancedProjectSettings: string;
   displayChatRatings: boolean = true;
@@ -4249,30 +4250,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     // if ((this.profile_name === PLAN_NAME.B && this.subscription_is_active === true) || (this.prjct_profile_type === 'free' && this.trial_expired === false)) {
     this.logger.log('displayModalBanVisitor leadid ', leadid)
     this.logger.log('displayModalBanVisitor bannedVisitorsArray ', this.bannedVisitorsArray)
-    // if (this.CURRENT_USER_ROLE === 'owner') {
 
-    //   if (
-    //     (this.profile_name === PLAN_NAME.A) ||
-    //     (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
-    //     (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
-    //     (this.prjct_profile_type === 'free' && this.trial_expired === true)
-
-    //   ) {
-    //     this.presentModalFeautureAvailableOnlyWithPlanC();
-    //     this.logger.log('[WIDGET-SET-UP] - featureIsAvailable IS NOT AVAILABLE')
-    //   } else if (
-
-    //     (this.profile_name === PLAN_NAME.C && this.subscription_is_active === true)
-
-
-    //   ) {
-    //     this.banVisitors(leadid, ipaddress)
-    //     this.logger.log('[WS-REQUESTS-MSGS] - featureIsAvailable IS AVAILABLE')
-    //   }
-
-    // } else {
-    //   this.presentModalAgentCannotManageAvancedSettings()
-    // }
 
     if (this.CURRENT_USER_ROLE === 'owner') {
       if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
@@ -4287,9 +4265,11 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
             this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.F, this.subscription_end_date);
           } 
         }
-      } else if (this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.B || this.profile_name === PLAN_NAME.D || this.profile_name === PLAN_NAME.E || this.prjct_profile_type === 'free') {
+      } else if (this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.B || this.profile_name === 'free') {
         // this.logger.log('displayModalBanVisitor HERE 4 ')
-        this.presentModalFeautureAvailableOnlyWithPlanC()
+        this.presentModalFeautureAvailableOnlyWithTier3Plans(this.cPlanOnly)
+      } else if (this.profile_name === PLAN_NAME.D || this.profile_name === PLAN_NAME.E || this.profile_name === 'Sandbox') {
+        this.presentModalFeautureAvailableOnlyWithTier3Plans(this.fPlanOnly)
       }
     } else {
       // this.logger.log('displayModalBanVisitor HERE 5 ')
@@ -4428,9 +4408,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
 
   // Banned visitors tab
-  presentModalFeautureAvailableOnlyWithPlanC() {
+  presentModalFeautureAvailableOnlyWithTier3Plans(planName) {
     const el = document.createElement('div')
-    el.innerHTML = this.cPlanOnly
+    el.innerHTML = planName // this.cPlanOnly
     swal({
       content: el,
       icon: "info",
@@ -4448,7 +4428,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         // this.logger.log('featureAvailableFromPlanC value', value)
         if (this.isVisiblePaymentTab) {
           if (this.CURRENT_USER_ROLE === 'owner') {
-            if (this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.B) {
+            if (this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.B || this.profile_name === PLAN_NAME.D || this.profile_name === PLAN_NAME.E) {
               // if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
               this.notify._displayContactUsModal(true, 'upgrade_plan');
             } else if (this.prjct_profile_type === 'free') {
@@ -4928,6 +4908,11 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.translate.get('AvailableWithThePlan', { plan_name: PLAN_NAME.C })
       .subscribe((translation: any) => {
         this.cPlanOnly = translation;
+      });
+
+    this.translate.get('AvailableWithThePlan', { plan_name: PLAN_NAME.F })
+      .subscribe((translation: any) => {
+        this.fPlanOnly = translation;
       });
 
     this.translate.get('LearnMoreAboutDefaultRoles')

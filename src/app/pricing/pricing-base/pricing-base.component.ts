@@ -32,13 +32,15 @@ export class PricingBaseComponent implements OnInit {
   projectPlanAgentsNo: number;
   prjct_profile_type: string;
   subscription_is_active: boolean;
-  subscription_end_date: any
-  profile_name: string
+  subscription_end_date: any;
+  subscription_id: string;
+  profile_name: string;
   trial_expired: any;
-  prjct_profile_name: string
+  prjct_profile_name: string;
   appSumoProfilefeatureAvailableFromBPlan: string;
   projectProfileData: any;
   dispayBadgeAvaibleFromInAppStore: boolean;
+  profile_name_for_segment: string;
 
   // Plan limit
   public seatsLimit: any;
@@ -58,6 +60,9 @@ export class PricingBaseComponent implements OnInit {
   public tParamsCannedAvailableFromPlan: any;
   public tParamsAvailableFromTier2: any; // i.e. Scale or Premium
   public tParamsAvailableFromAppSumoTier3: any;
+  public tprojectprofilemane : any;
+
+
   constructor(
     public prjctPlanService: ProjectPlanService,
     public notify: NotifyService,
@@ -94,6 +99,9 @@ export class PricingBaseComponent implements OnInit {
 
           this.profile_name = projectProfileData.profile_name;
           console.log('[P-BASE] - GET PROJECT PROFILE - profile_name ', this.profile_name);
+          
+          this.subscription_id = projectProfileData.subscription_id;
+          console.log('[P-BASE] - GET PROJECT PROFILE - subscription_id ', this.profile_name);
 
           this.USER_ROLE = projectProfileData.user_role
           console.log('[P-BASE] - GET PROJECT PROFILE - USER_ROLE ', this.USER_ROLE);
@@ -120,7 +128,8 @@ export class PricingBaseComponent implements OnInit {
 
                 this.prjct_profile_name = PLAN_NAME.B + " plan (trial)"
                 console.log('[P-BASE] - GET PROJECT PLAN - NAME ', this.prjct_profile_name, ' TYPE: ', projectProfileData.profile_type, ' TRIAL IS EXPIRED: ', projectProfileData.trial_expired)
-
+                this.profile_name_for_segment  = this.prjct_profile_name 
+                
                 // Seats limit
                 this.seatsLimit = PLAN_SEATS[PLAN_NAME.B]
                 this.tParamsPlanAndSeats = { plan_name: this.prjct_profile_name, allowed_seats_num: this.seatsLimit }
@@ -145,6 +154,7 @@ export class PricingBaseComponent implements OnInit {
               } else if (this.profile_name === 'Sandbox') {
                 this.prjct_profile_name = PLAN_NAME.E + " plan (trial)"
                 console.log('[P-BASE] - GET PROJECT PLAN - NAME ', this.prjct_profile_name, ' TYPE: ', projectProfileData.profile_type, ' TRIAL IS EXPIRED: ', projectProfileData.trial_expired)
+                this.profile_name_for_segment  = this.prjct_profile_name 
 
                 // Seats limit
                 // this.seatsLimit = PLAN_SEATS[PLAN_NAME.E]
@@ -167,14 +177,13 @@ export class PricingBaseComponent implements OnInit {
                 this.dispayBadgeAvaibleFromInAppStore = false;
               }
             } else {
-
-
               // ------------------------------------------------------------------------
               // USECASE: Free Plan (TRIAL EXPIRED)
               // ------------------------------------------------------------------------
               if (this.profile_name === 'free') {
                 this.prjct_profile_name = "Free plan";
                 console.log('[P-BASE] - GET PROJECT PLAN - NAME ', this.prjct_profile_name, ' TYPE: ', projectProfileData.profile_type, ' TRIAL IS EXPIRED: ', projectProfileData.trial_expired)
+                this.profile_name_for_segment  = this.prjct_profile_name 
 
                 // Seats limit
                 this.seatsLimit = PLAN_SEATS.free
@@ -206,7 +215,8 @@ export class PricingBaseComponent implements OnInit {
               } else if (this.profile_name === 'Sandbox') {
                 this.prjct_profile_name = "Sandbox plan";
                 console.log('[P-BASE] - GET PROJECT PLAN - NAME ', this.prjct_profile_name, ' TYPE: ', projectProfileData.profile_type, ' TRIAL IS EXPIRED: ', projectProfileData.trial_expired)
-
+                this.profile_name_for_segment  = this.prjct_profile_name;
+                
                 // Seats limit
                 this.seatsLimit = PLAN_SEATS.free
                 this.tParamsPlanAndSeats = { plan_name: 'Sandbox', allowed_seats_num: this.seatsLimit }
@@ -246,7 +256,9 @@ export class PricingBaseComponent implements OnInit {
                 if (!this.appSumoProfile) {
                   this.prjct_profile_name = PLAN_NAME.A + " plan";
                   console.log('[P-BASE] - GET PROJECT PLAN - NAME ', this.prjct_profile_name, ' TYPE: ', projectProfileData.profile_type, ' SUB IS ACTIVE: ', this.subscription_is_active)
-
+                  this.profile_name_for_segment  = this.prjct_profile_name;
+                  this.tprojectprofilemane = { projectprofile:  this.prjct_profile_name }
+                 
                   // Seats limit
                   this.seatsLimit = PLAN_SEATS[PLAN_NAME.A]
                   this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.A, allowed_seats_num: this.seatsLimit }
@@ -272,7 +284,9 @@ export class PricingBaseComponent implements OnInit {
                   // ------------------------------------------------------------------------
                   this.prjct_profile_name = PLAN_NAME.A + " plan " + '(' + this.appSumoProfile + ')';
                   console.log('[P-BASE] - GET PROJECT PLAN - NAME ', this.prjct_profile_name, ' TYPE: ', projectProfileData.profile_type, ' SUB IS ACTIVE: ',this.subscription_is_active)
-
+                  this.profile_name_for_segment  = this.prjct_profile_name;
+                  this.tprojectprofilemane = { projectprofile:  this.prjct_profile_name }
+                  
                   // Seats limit
                   this.seatsLimit = APPSUMO_PLAN_SEATS[projectProfileData.extra3];
                   this.tParamsPlanAndSeats = { plan_name: 'AppSumo ' + this.appSumoProfile, allowed_seats_num: this.seatsLimit }
@@ -297,6 +311,8 @@ export class PricingBaseComponent implements OnInit {
                 if (!this.appSumoProfile) {
                   this.prjct_profile_name = PLAN_NAME.B + " plan";
                   console.log('[P-BASE] - GET PROJECT PLAN - NAME ', this.prjct_profile_name, ' TYPE: ', projectProfileData.profile_type, ' SUB IS ACTIVE: ', this.subscription_is_active)
+                  this.profile_name_for_segment  = this.prjct_profile_name;
+                  this.tprojectprofilemane = { projectprofile:  this.prjct_profile_name }
 
                   // Seats limit
                   this.seatsLimit = PLAN_SEATS[PLAN_NAME.B]
@@ -322,6 +338,8 @@ export class PricingBaseComponent implements OnInit {
                   // ------------------------------------------------------------------------
                   this.prjct_profile_name = PLAN_NAME.B + " plan " + '(' + this.appSumoProfile + ')';
                   console.log('[P-BASE] - GET PROJECT PLAN - NAME ', this.prjct_profile_name, ' TYPE: ', projectProfileData.profile_type, ' SUB IS ACTIVE: ', this.subscription_is_active)
+                  this.profile_name_for_segment  = this.prjct_profile_name;
+                  this.tprojectprofilemane = { projectprofile:  this.prjct_profile_name }
 
                   // Seats limit
                   this.seatsLimit = APPSUMO_PLAN_SEATS[projectProfileData.extra3];
@@ -346,6 +364,8 @@ export class PricingBaseComponent implements OnInit {
               } else if (this.profile_name === PLAN_NAME.C) {
                 this.prjct_profile_name = PLAN_NAME.C + " plan";
                 console.log('[P-BASE] - GET PROJECT PLAN - NAME ', this.prjct_profile_name, ' TYPE: ', projectProfileData.profile_type, ' SUB IS ACTIVE: ', this.subscription_is_active)
+                this.profile_name_for_segment  = this.prjct_profile_name;
+                this.tprojectprofilemane = { projectprofile:  this.prjct_profile_name }
 
                 // Seats limit
                 this.seatsLimit = projectProfileData.profile_agents
@@ -368,6 +388,8 @@ export class PricingBaseComponent implements OnInit {
               } else if (this.profile_name === PLAN_NAME.D) {
                 this.prjct_profile_name = PLAN_NAME.D + " plan";
                 console.log('[P-BASE] - GET PROJECT PLAN - NAME ', this.prjct_profile_name, ' TYPE: ', projectProfileData.profile_type, ' SUB IS ACTIVE: ', this.subscription_is_active)
+                this.profile_name_for_segment  = this.prjct_profile_name;
+                this.tprojectprofilemane = { projectprofile:  this.prjct_profile_name }
 
                 // Seats limit
                 this.seatsLimit = projectProfileData.profile_agents
@@ -394,6 +416,8 @@ export class PricingBaseComponent implements OnInit {
               } else if (this.profile_name === PLAN_NAME.E) {
                 this.prjct_profile_name = PLAN_NAME.E + " plan";
                 console.log('[P-BASE] - GET PROJECT PLAN - NAME ', this.prjct_profile_name, ' TYPE: ', projectProfileData.profile_type, ' SUB IS ACTIVE: ', this.subscription_is_active)
+                this.profile_name_for_segment  = this.prjct_profile_name;
+                this.tprojectprofilemane = { projectprofile:  this.prjct_profile_name }
 
                 // Seats limit
                 this.seatsLimit = projectProfileData.profile_agents;
@@ -419,6 +443,8 @@ export class PricingBaseComponent implements OnInit {
               } else if (this.profile_name === PLAN_NAME.F) {
                 this.prjct_profile_name = PLAN_NAME.F + " plan";
                 console.log('[P-BASE] - GET PROJECT PLAN - NAME ', this.prjct_profile_name, ' TYPE: ', projectProfileData.profile_type, ' SUB IS ACTIVE: ', this.subscription_is_active)
+                this.profile_name_for_segment  = this.prjct_profile_name;
+                this.tprojectprofilemane = { projectprofile:  this.prjct_profile_name }
 
                 // Seats limit
                 this.seatsLimit = projectProfileData.profile_agents;
@@ -446,6 +472,8 @@ export class PricingBaseComponent implements OnInit {
               if (this.profile_name === PLAN_NAME.A) {
                 this.prjct_profile_name = PLAN_NAME.A + " plan";
                 console.log('[P-BASE] - GET PROJECT PLAN - NAME ', this.prjct_profile_name, ' TYPE: ', projectProfileData.profile_type, ' SUB IS ACTIVE: ', this.subscription_is_active)
+                this.profile_name_for_segment  = this.prjct_profile_name;
+                this.tprojectprofilemane = { projectprofile:  this.prjct_profile_name }
 
                 // Seats limit
                 this.seatsLimit = PLAN_SEATS.free
@@ -476,6 +504,8 @@ export class PricingBaseComponent implements OnInit {
               } else if (this.profile_name === PLAN_NAME.B) {
                 this.prjct_profile_name = PLAN_NAME.B + " plan";
                 console.log('[P-BASE] - GET PROJECT PLAN - NAME ', this.prjct_profile_name, ' TYPE: ', projectProfileData.profile_type, ' SUB IS ACTIVE: ', this.subscription_is_active)
+                this.profile_name_for_segment  = this.prjct_profile_name;
+                this.tprojectprofilemane = { projectprofile:  this.prjct_profile_name }
 
                 // Seats limit
                 this.seatsLimit = PLAN_SEATS.free
@@ -505,6 +535,8 @@ export class PricingBaseComponent implements OnInit {
               } else if (this.profile_name === PLAN_NAME.C) {
                 this.prjct_profile_name = PLAN_NAME.C + " plan";
                 console.log('[P-BASE] - GET PROJECT PLAN - NAME ', this.prjct_profile_name, ' TYPE: ', projectProfileData.profile_type, ' SUB IS ACTIVE: ', this.subscription_is_active);
+                this.profile_name_for_segment  = this.prjct_profile_name;
+                this.tprojectprofilemane = { projectprofile:  this.prjct_profile_name }
 
                 // Seats limit
                 this.seatsLimit = PLAN_SEATS.free
@@ -534,6 +566,8 @@ export class PricingBaseComponent implements OnInit {
               } else if (this.profile_name === PLAN_NAME.D) {
                 this.prjct_profile_name = PLAN_NAME.D + " plan";
                 console.log('[P-BASE] - GET PROJECT PLAN - NAME ', this.prjct_profile_name, ' TYPE: ', projectProfileData.profile_type, ' SUB IS ACTIVE: ', this.subscription_is_active)
+                this.profile_name_for_segment  = this.prjct_profile_name;
+                this.tprojectprofilemane = { projectprofile:  this.prjct_profile_name }
 
                 // Seats limit
                 this.seatsLimit = PLAN_SEATS.free
@@ -566,6 +600,8 @@ export class PricingBaseComponent implements OnInit {
               } else if (this.profile_name === PLAN_NAME.E) {
                 this.prjct_profile_name = PLAN_NAME.E + " plan";
                 console.log('[P-BASE] - GET PROJECT PLAN - NAME ', this.prjct_profile_name, ' TYPE: ', projectProfileData.profile_type, ' SUB IS ACTIVE: ', this.subscription_is_active)
+                this.profile_name_for_segment  = this.prjct_profile_name;
+                this.tprojectprofilemane = { projectprofile:  this.prjct_profile_name }
 
                 // Seats limit
                 this.seatsLimit = PLAN_SEATS.free
@@ -597,6 +633,8 @@ export class PricingBaseComponent implements OnInit {
               } else if (this.profile_name === PLAN_NAME.F) {
                 this.prjct_profile_name = PLAN_NAME.F + " plan";
                 console.log('[P-BASE] - GET PROJECT PLAN - NAME ', this.prjct_profile_name, ' TYPE: ', projectProfileData.profile_type, ' SUB IS ACTIVE: ', this.subscription_is_active)
+                this.profile_name_for_segment  = this.prjct_profile_name;
+                this.tprojectprofilemane = { projectprofile:  this.prjct_profile_name }
 
                 // Seats limit
                 this.seatsLimit = PLAN_SEATS.free

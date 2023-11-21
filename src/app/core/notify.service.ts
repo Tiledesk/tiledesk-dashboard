@@ -86,7 +86,9 @@ export class NotifyService {
   }
 
   closeContactUsModalToUpgradePlan() {
+    console.log('closeContactUsModalToUpgradePlan')
     this.displayContactUsModalToUpgradePlan = 'none'
+    this.displayContactUsModal = 'none'
   }
 
 

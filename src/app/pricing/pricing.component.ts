@@ -33,7 +33,7 @@ enum MONTHLY_PRICE {
   Scale = "89",
   Plus = 'Custom',
   Basic = "15",
-  Premium = "50",
+  Premium = "100",
   Custom = 'Starting at 300€'
 }
 
