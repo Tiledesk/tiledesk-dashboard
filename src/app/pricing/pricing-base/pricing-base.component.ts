@@ -191,11 +191,14 @@ export class PricingBaseComponent implements OnInit {
                 console.log('[P-BASE] - GET PROJECT PLAN - SEATS LIMIT ', this.seatsLimit)
 
                 // Chatbot limit
-                this.chatBotLimit = null;
+                // this.chatBotLimit = null;
+                this.chatBotLimit = CHATBOT_MAX_NUM.free;
+                this.tParamsPlanAndChatBot = { plan_name: this.prjct_profile_name, allowed_cb_num: this.chatBotLimit }
                 console.log('[P-BASE] - GET PROJECT PLAN - CB LIMIT ', this.chatBotLimit)
 
                 // KB limit
-                this.kbLimit = 3;
+                // this.kbLimit = 3;
+                this.kbLimit = KB_MAX_NUM.free;
                 this.tParamsPlanAndKb = { plan_name: this.prjct_profile_name, allowed_kb_num: this.kbLimit }
                 console.log('[P-BASE] - GET PROJECT PLAN - KB LIMIT ', this.kbLimit)
 
@@ -481,11 +484,14 @@ export class PricingBaseComponent implements OnInit {
                 console.log('[P-BASE] - GET PROJECT PLAN - SEATS LIMIT ', this.seatsLimit)
 
                 // Chatbot limit
-                this.chatBotLimit = null;
+                // this.chatBotLimit = null;
+                this.chatBotLimit = CHATBOT_MAX_NUM.free
+                this.tParamsPlanAndChatBot = { plan_name: this.prjct_profile_name, allowed_cb_num: this.chatBotLimit }
                 console.log('[P-BASE] - GET PROJECT PLAN - CB LIMIT ', this.chatBotLimit);
 
                 // KB limit
-                this.kbLimit = 3;
+                // this.kbLimit = 3;
+                this.kbLimit = KB_MAX_NUM.free
                 this.tParamsPlanAndKb = { plan_name: this.prjct_profile_name, allowed_kb_num: this.kbLimit }
                 console.log('[P-BASE] - GET PROJECT PLAN - KB LIMIT ', this.kbLimit);
 
@@ -513,11 +519,14 @@ export class PricingBaseComponent implements OnInit {
                 console.log('[P-BASE] - GET PROJECT PLAN - SEATS LIMIT ', this.seatsLimit)
 
                 // Chatbot limit
-                this.chatBotLimit = null;
+                // this.chatBotLimit = null;
+                this.chatBotLimit = CHATBOT_MAX_NUM.free
+                this.tParamsPlanAndChatBot = { plan_name: this.prjct_profile_name, allowed_cb_num: this.chatBotLimit }
                 console.log('[P-BASE] - GET PROJECT PLAN - CB LIMIT ', this.chatBotLimit);
 
                 // KB limit
-                this.kbLimit = 3;
+                // this.kbLimit = 3;
+                this.kbLimit = KB_MAX_NUM.free
                 this.tParamsPlanAndKb = { plan_name: this.prjct_profile_name, allowed_kb_num: this.kbLimit }
                 console.log('[P-BASE] - GET PROJECT PLAN - KB LIMIT ', this.kbLimit);
 
@@ -544,11 +553,14 @@ export class PricingBaseComponent implements OnInit {
                 console.log('[P-BASE] - GET PROJECT PLAN - SEATS LIMIT ', this.seatsLimit)
 
                 // Chatbot limit
-                this.chatBotLimit = null;
+                // this.chatBotLimit = null;
+                this.chatBotLimit = CHATBOT_MAX_NUM.free;
+                this.tParamsPlanAndChatBot = { plan_name: this.prjct_profile_name, allowed_cb_num: this.chatBotLimit }
                 console.log('[P-BASE] - GET PROJECT PLAN - CB LIMIT ', this.chatBotLimit);
 
                 // KB limit
-                this.kbLimit = 3;
+                // this.kbLimit = 3;
+                this.kbLimit = KB_MAX_NUM.free
                 this.tParamsPlanAndKb = { plan_name: this.prjct_profile_name, allowed_kb_num: this.kbLimit }
                 console.log('[P-BASE] - GET PROJECT PLAN - KB LIMIT ', this.kbLimit);
 
