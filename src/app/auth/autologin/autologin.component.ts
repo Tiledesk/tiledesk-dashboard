@@ -228,7 +228,8 @@ export class AutologinComponent implements OnInit {
           window['analytics'].track('Signed In', {
             "username": userFullname,
             "userId": user._id,
-            'method': "Sign in with Google"
+            'button': 'Sign in with Google',
+            'method': "Google Auth"
           });
         } catch (err) {
           this.logger.error('track Sign in with Google event error', err);

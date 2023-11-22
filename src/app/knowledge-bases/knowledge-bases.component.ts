@@ -221,15 +221,29 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
 
   saveKnowledgeBase() {
 
-    let first_index = this.newKb.url.indexOf('://') + 3;
-    let second_index = this.newKb.url.indexOf('www.') + 4;
+    // let first_index = this.newKb.url.indexOf('://') + 3;
+    // let second_index = this.newKb.url.indexOf('www.') + 4;
+    // let split_index;
+    // if (second_index > first_index) {
+    //   split_index = second_index;
+    // } else {
+    //   split_index = first_index;
+    // }
+    // this.newKb.name = this.newKb.url.substring(split_index);
+    let first_index = this.newKb.url.indexOf('://');
+    let second_index = this.newKb.url.indexOf('www.');
+
     let split_index;
-    if (second_index > first_index) {
-      split_index = second_index;
+    if (first_index !== -1 || second_index !== -1) {
+      if (second_index > first_index) {
+        split_index = second_index + 4;
+      } else {
+        split_index = first_index + 3;
+      }
+      this.newKb.name = this.newKb.url.substring(split_index);
     } else {
-      split_index = first_index;
+      this.newKb.name = this.newKb.url;
     }
-    this.newKb.name = this.newKb.url.substring(split_index);
 
     this.kbService.addNewKb(this.kbSettings._id, this.newKb).subscribe((savedSettings: KbSettings) => {
       // console.log('[KNOWLEDGE BASES COMP] this.kbSettings addNewKb ', this.kbSettings)
@@ -432,6 +446,7 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
     this.source_url = null;
 
     this.openaiService.askGpt(data).subscribe((response: any) => {
+      console.log("ask gpt preview response: ", response);
       if (response.success == false) {
         this.error_answer = true;
       } else {
@@ -447,6 +462,8 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
       }, (200));
     }, (error) => {
       this.logger.error("ERROR ask gpt: ", error);
+      this.error_answer = true;
+      this.show_answer = true;
       this.searching = false;
     }, () => {
       this.logger.log("ask gpt *COMPLETE*")

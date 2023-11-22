@@ -84,7 +84,8 @@ export class CreateProjectGsComponent implements OnInit {
                 "email": user.email,
                 "username": userFullname,
                 'userId': user._id,
-                'method': "Signup up with Google"
+                'button': "Signup up with Google",
+                'method': "Google Auth"
               });
             } catch (err) {
               this.logger.error('track signup event error', err);

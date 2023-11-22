@@ -499,6 +499,7 @@ export class CdsDashboardComponent implements OnInit {
     this.logger.log('[CDS DSHBRD] editIntent formIntentSelected', formIntentSelected)
     let actionsIntentSelected = this.intentSelected.actions;
     let webhookEnabledIntentSelected = this.intentSelected.webhook_enabled;
+    let id_faq_kb = this.intentSelected.id_faq_kb
 
     // const pendingClassName = 'loading-btn--pending';
     // const successClassName = 'loading-btn--success';
@@ -518,7 +519,8 @@ export class CdsDashboardComponent implements OnInit {
       displayNameIntentSelected,
       formIntentSelected,
       actionsIntentSelected,
-      webhookEnabledIntentSelected
+      webhookEnabledIntentSelected,
+      id_faq_kb
     ).subscribe((upadatedIntent) => {
       this.showSpinner = false;
       this.logger.log('[CDS DSHBRD] editIntent - RES upadatedIntent', upadatedIntent);

@@ -1566,7 +1566,6 @@
 		"UpgradeYourAccountToSetTeamOfficeHours": "Aktualisieren Sie Ihr Konto, um Teambürozeiten festzulegen und Besuchern mitzuteilen, wann Ihre Agenten arbeiten!"
 	},
 	"KbPage": {
-		"AddKb": "Wissensdatenbank hinzufügen",
 		"Secrets": "Geheimnisse",
 		"Add": "Hinzufügen",
 		"Enter": "Eingeben",
@@ -1574,8 +1573,10 @@
 		"RunIndexing": "Führen Sie die Indizierung aus",
 		"CreationDate": "Erstellungsdatum",
 		"KbCounterFooter": "{{ counter }} von 3 Wissensdatenbanken hinzugefügt",
-		"AddKbInfoFirstText": "Legen Sie eine gültige URL für die Wissensdatenbank und Ihren GPT-Schlüssel fest.",
-		"AddKbInfoSecondText": "Hinweis: Sie können maximal 3 Wissensdatenbanken mit jeweils bis zu 200 Seiten hinzufügen. Für größere Wissensdatenbanken kann die Leistung nicht garantiert werden",
+		"AddKb": "Füge deine Website hinzu",
+  		"AddKbInfoFirstText": "Legen Sie eine gültige URL für Ihre Website fest.",
+		"AddKbInfoSecondText": "Tiledesk durchsucht die URL Ihrer Website nach relevanten Antworten. ChatGPT wird dann darauf trainiert, auf menschenähnliche Weise zu antworten.",
+		"AddKbInfoThirdText": "Hinweis: Sie können maximal 3 URLs hinzufügen, die jeweils aus bis zu 200 Seiten bestehen. Für größere Websites bitte <a href='mailto:sales@tiledesk.com' target='_blank'>kontaktiere uns</a>",
 		"YouCanAddKBOfUpTo200Pages": "Sie können Wissensdatenbanken mit bis zu 200 Seiten hinzufügen",
 		"SearchingAnswer": "Suche nach einer passenden Antwort...",
 		"Answer": "Antwort",
@@ -2228,7 +2229,8 @@
 	"YouCannotAddAgents": "Entschuldigung, aber es ist nicht möglich Agenten zum Chat hinzuzufügen. Für einen Ticket-Chat kann es nur einen Agenten geben",
 	"YouCannotJoinChat": "Entschuldigung, Chats vom Typ Ticket können nur von einem Agenten bedient werden",
 	"VisitorAlreadyBanned": "Besucher bereits gesperrt",
-	"developer": "Developers",
+	"business_owner":"Unternehmer",
+	"developer": "Geschäftsinhaber",
 	"conversation_designer":"Gesprächsdesigner", 
 	"no_code_builder": "No-Code-Builder",
 	"business_stakeholder": "Geschäftsinteressenten",
@@ -2237,6 +2239,7 @@
 	"StartFromScratch":"Fangen Sie bei Null an",
 	"WhereWouldYouLikeToStart":"Wo möchten Sie beginnen?",
 	"AutomateConversationsFromPrototyping": "Automatisieren Sie Gespräche vom Prototyping bis hin zu allen Ihren Kanälen in wenigen Minuten",
+	"Or":"oder",
 	"OnboardPage": {
 		"ChooseYourChatbotFromOurTemplates":"Wählen Sie aus unseren Vorlagen Ihren Chatbot aus, der sofort auf Ihren Kanälen eingesetzt werden kann",
 		"ChatbotTitle": "Richten Sie einen Chatbot für Ihre Website oder Ihren Kanal ein (WhatsApp, Facebook usw.) -",

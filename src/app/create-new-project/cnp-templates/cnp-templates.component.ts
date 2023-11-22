@@ -51,6 +51,7 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
   DISPLAY_INCREASE_TMPLT: boolean
   videoURL: any;
   DIPLAY_CUSTOM_SUBTITLE: boolean;
+  isLoading= true;
 
   templtId = ['651a87648cb2c70013d80d8b', '651e66be6717f500135f41b9', '6529582c23034f0013ee1af6', '651ecc5749598e0013305876', '651fc9ef8c10e70013b6e240', '651ad6c1bfdf310013ca90d7']
   videoSource = [
@@ -104,7 +105,7 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
       this.projectid = this.updatedProject._id
       // console.log('[CNP-TEMPLATES] - updatedProject > projectid', this.projectid)
 
-      if (userPreferences.user_role === 'developer' || userPreferences.user_role === 'conversation_designer' || userPreferences.user_role === 'no_code_builder' || userPreferences.user_role === 'business_stakeholder') {
+      if (userPreferences.user_role === 'business_owner'|| userPreferences.user_role === 'developer' || userPreferences.user_role === 'conversation_designer' || userPreferences.user_role === 'no_code_builder' || userPreferences.user_role === 'business_stakeholder') {
         this.DIPLAY_CUSTOM_SUBTITLE = false;
         const userRole = this.translate.instant(userPreferences.user_role)
 
@@ -248,10 +249,12 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
 
     }, (error) => {
       this.logger.error('[CNP-TEMPLATES] GET TEMPLATES ERROR ', error);
-      // this.showSpinner = false;
+    
+      this.isLoading = false
     }, () => {
       this.logger.log('[CNP-TEMPLATES] GET TEMPLATES COMPLETE');
-      // this.showSpinner = false;
+      this.isLoading = false
+   
       // this.generateTagsBackground(this.templates)
     });
   }

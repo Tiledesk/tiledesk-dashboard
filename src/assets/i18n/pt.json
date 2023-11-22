@@ -1565,7 +1565,6 @@
         "UpgradeYourAccountToSetTeamOfficeHours": "Atualize sua conta para definir o horário de expediente da equipe e informar aos visitantes quando seus agentes estão trabalhando!"
     },
     "KbPage": {
-        "AddKb": "Adicionar base de conhecimento",
         "Secrets": "Segredos",
         "Add": "Adicionar",
         "Enter": "Digitar",
@@ -1573,8 +1572,10 @@
         "RunIndexing": "Executar indexação",
         "CreationDate": "Data de criação",
         "KbCounterFooter": "{{ counter }} de 3 bases de conhecimento adicionadas",
-        "AddKbInfoFirstText": "Defina um URL válido para a Base de Conhecimento e sua chave GPT.",
-        "AddKbInfoSecondText": "Observação: você pode adicionar no máximo 3 bases de conhecimento, cada uma com até 200 páginas. Para bases de conhecimento maiores, o desempenho não é garantido",
+        "AddKb": "Adicione seu site",
+        "AddKbInfoFirstText": "Defina um URL válido para o seu site.",
+        "AddKbInfoSecondText": "O Tiledesk pesquisará o URL do seu site em busca de respostas relevantes. O ChatGPT será então treinado para responder de maneira humana.",
+        "AddKbInfoThirdText": "Nota: Você pode adicionar no máximo 3 URLs, cada uma contendo até 200 páginas. Para sites maiores, por favor <a href='mailto:sales@tiledesk.com' target='_blank'>contate-nos</a>",
         "YouCanAddKBOfUpTo200Pages":"Você pode adicionar bases de conhecimento de até 200 páginas",
         "SearchingAnswer": "Procurando uma resposta adequada...",
         "Answer": "Responder",
@@ -2229,6 +2230,7 @@
     "YouCannotAddAgents": "Desculpe, mas não é possível adicionar agentes ao chat. Só pode haver um agente para um chat do tipo ticket",
     "YouCannotJoinChat": "Desculpe, chats do tipo ticket só podem ser atendidos por um agente",
     "VisitorAlreadyBanned": "Visitante já banido",
+    "business_owner":"Proprietários de empresas",
     "developer": "Desenvolvedores",
     "conversation_designer":"Designers de conversação", 
     "no_code_builder": "Construtores sem código",
@@ -2238,6 +2240,7 @@
     "StartFromScratch":"Começar do zero",
     "WhereWouldYouLikeToStart":"Onde você gostaria de começar?",
     "AutomateConversationsFromPrototyping":"Automatize conversas desde a prototipagem até todos os seus canais em minutos",
+    "Or":"ou",
     "OnboardPage": {
         "ChooseYourChatbotFromOurTemplates":"Escolha seu chatbot em nossos modelos, pronto para ser implantado em seus canais",
         "ChatbotTitle": "Configure um chatbot para o seu site - ou seu canal (Whatsapp, Facebook etc.)",

@@ -1564,7 +1564,6 @@
         "UpgradeYourAccountToSetTeamOfficeHours": "Jamoaning ish vaqtini belgilash va tashrif buyuruvchilarga agentlaringiz qachon ishlayotgani haqida xabar berish uchun hisobingizni yangilang!"
     },
     "KbPage": {
-        "AddKb": "Bilimlar bazasini qo'shish",
         "Secrets": "Sirlar",
         "Add": "Qo'shish",
         "Enter": "Kirish",
@@ -1572,8 +1571,10 @@
         "RunIndexing": "Indekslashni ishga tushiring",
         "CreationDate": "Yaratilgan sana",
         "KbCounterFooter": "{{ counter }} 3 ta bilim bazasi qo'shildi",
-        "AddKbInfoFirstText": "Ma'lumotlar bazasi va GPT kalitingiz uchun to'g'ri URL manzilini o'rnating.",
-        "AddKbInfoSecondText": "Eslatma: Har biri 200 tagacha sahifadan iborat boʻlgan maksimal 3 ta bilim bazasini qoʻshishingiz mumkin. Kattaroq bilim bazalari uchun ishlash kafolatlanmaydi",
+        "AddKb": "Veb-saytingizni qo'shing",
+        "AddKbInfoFirstText": "Veb-saytingiz uchun haqiqiy URL manzilini o'rnating.",
+        "AddKbInfoSecondText": "Tiledesk tegishli javoblar uchun veb-saytingizning URL manzilini qidiradi. ChatGPT so‘ngra odamga o‘xshash tarzda javob berishga o‘rgatiladi.",
+        "AddKbInfoThirdText": "Eslatma: Siz har biri 200 tagacha sahifadan iborat boʻlgan maksimal 3 ta URL qoʻshishingiz mumkin Kattaroq veb-saytlar uchun iltimos <a href='mailto:sales@tiledesk.com' target='_blank'>Biz bilan bog'lanish</a>",
         "YouCanAddKBOfUpTo200Pages":"Siz 200 sahifagacha boʻlgan bilim bazalarini qoʻshishingiz mumkin",
         "SearchingAnswer": "Tegishli javob qidirilmoqda...",
         "Answer": "Javob",
@@ -2228,6 +2229,7 @@
     "YouCannotAddAgents": "Kechirasiz, lekin chatga jamoadoshlarni qo'shish mumkin emas. Chipta turidagi suhbat uchun faqat bitta jamoadosh bo'lishi mumkin",
     "YouCannotJoinChat": "Kechirasiz, chipta turidagi chatlar faqat agent tomonidan xizmat qilishi mumkin",
     "VisitorAlreadyBanned": "Tashrifchi allaqachon taqiqlangan",
+    "business_owner":"Biznes egalari",
     "developer": "Dasturchilar",
     "conversation_designer":"Suhbat dizaynerlari", 
     "no_code_builder": "Kodsiz quruvchilar",
@@ -2237,6 +2239,7 @@
     "StartFromScratch":"Noldan boshlang",
     "WhereWouldYouLikeToStart":"Qayerdan boshlashni hohlar edingiz?",
     "AutomateConversationsFromPrototyping":"Suhbatlarni prototiplashdan tortib, barcha kanallaringizga bir necha daqiqada avtomatlashtiring",
+    "Or":"yoki",
     "OnboardPage": {
         "ChooseYourChatbotFromOurTemplates": "Kanallaringizga o‘rnatishga tayyor bo‘lgan andozalarimizdan chatbotingizni tanlang",
         "ChatbotTitle": "Veb-saytingiz uchun ChatBot-ni - yoki kanalingiz (WhatsApp, Facebook va boshqalar)",

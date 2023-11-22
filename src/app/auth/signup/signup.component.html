@@ -324,14 +324,16 @@
 
             <!-- <div *ngIf="userForm.valid" class="notification is-success">Form is valid</div> -->
             <!-- SUBMIT -->
-            <button type="submit" class="btn signup-button" [disabled]="!userForm.valid">
+            <button type="submit" class="btn signup-button" [disabled]="!userForm.valid || showSpinnerInLoginBtn">
               <span *ngIf="!showSpinnerInLoginBtn">
 
                 <!-- {{ "SignUp" | translate }} -->
                 <!-- {{ 'CreateAFreeAccount' | translate}} -->
                 {{ "GetStarted" | translate}}
               </span>
-              <span *ngIf="showSpinnerInLoginBtn"> <i class="fa fa-spinner fa-spin"></i></span>
+              <span *ngIf="showSpinnerInLoginBtn"> 
+                <i class="fa fa-spinner fa-spin"></i>
+              </span>
             </button>
 
             <div class="signup-subtitle" *ngIf="!appSumoActivationEmail">

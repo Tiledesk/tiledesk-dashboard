@@ -20,7 +20,7 @@
   "appsUrl":  "${APPS_URL}",
   "cdsBaseUrl": "${CDS_BASE_URL}",
   "promoBannerUrl": "${PROMO_BANNER_URL}",
-  "chatStoragePrefix": "${CHAT_STORAGE_PREFIX}",
+  "whatsappApiUrl": "${WHATSAPP_API_URL}",
   "tiledeskPhoneNumber": "${TILEDESK_PHONE_NUMBER}",
   "ticketingEmail": "${TICKETING_EMAIL}", 
   "firebase": {

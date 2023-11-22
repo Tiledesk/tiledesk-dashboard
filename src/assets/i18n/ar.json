@@ -1565,7 +1565,6 @@
         "UpgradeYourAccountToSetTeamOfficeHours": "قم بترقية حسابك لتعيين ساعات عمل الفريق وإعلام الزائرين عندما يعمل وكلاؤك!"
     },
     "KbPage": {
-        "AddKb": "إضافة قاعدة المعرفة",
         "Secrets": "أسرار",
         "Add": "يضيف",
         "Enter": "يدخل",
@@ -1573,8 +1572,10 @@
         "RunIndexing": "تشغيل الفهرسة",
         "CreationDate": "تاريخ الإنشاء",
         "KbCounterFooter": "{{ counter }} تمت إضافة 3 قواعد معرفية",
-        "AddKbInfoFirstText": "قم بتعيين عنوان URL صالح لقاعدة المعرفة ومفتاح GPT الخاص بك.",
-        "AddKbInfoSecondText": "ملاحظة: يمكنك إضافة 3 قواعد معرفية كحد أقصى، تتكون كل قاعدة من 200 صفحة كحد أقصى. بالنسبة لقواعد المعرفة الأكبر، لا يتم ضمان الأداء",
+        "AddKb": "إضافة موقع الويب الخاص بك",
+        "AddKbInfoFirstText": "قم بتعيين عنوان URL صالح لموقعك على الويب.",
+        "AddKbInfoSecondText": "سيبحث Tiledesk في عنوان URL لموقع الويب الخاص بك عن الإجابات ذات الصلة، وسيتم بعد ذلك تدريب ChatGPT للرد بطريقة تشبه طريقة الإنسان.",
+        "AddKbInfoThirdText": "ملحوظة: يمكنك إضافة 3 عناوين URL كحد أقصى، يتكون كل منها من 200 صفحة كحد أقصى. بالنسبة للمواقع الأكبر حجمًا، يرجى <a href='mailto:sales@tiledesk.com' target='_blank'>اتصل بنا</a>",
         "YouCanAddKBOfUpTo200Pages": "يمكنك إضافة قواعد معارف تصل إلى 200 صفحة",
         "SearchingAnswer": "جاري البحث عن إجابة مناسبة...",
         "Answer": "إجابة",
@@ -2229,6 +2230,7 @@
     "YouCannotAddAgents": "عذرا ، ولكن لا يمكن إضافة وكلاء إلى الدردشة. يمكن أن يكون هناك وكيل واحد فقط لمحادثة من نوع التذكرة",
     "YouCannotJoinChat": "عذرًا ، لا يمكن تقديم محادثات نوع التذكرة إلا بواسطة وكيل",
     "VisitorAlreadyBanned": "الزائر ممنوع بالفعل",
+    "business_owner":"أصحاب الأعمال",
     "developer": "المطورين",
     "conversation_designer":"مصممي المحادثة",
     "no_code_builder": "بناة بلا كود",
@@ -2238,6 +2240,7 @@
     "StartFromScratch":"ابدأ من الصفر",
     "WhereWouldYouLikeToStart":"أين تريد أن تبدأ؟",
     "AutomateConversationsFromPrototyping": "قم بأتمتة المحادثات بدءًا من النماذج الأولية وحتى جميع قنواتك في دقائق",
+    "Or":"أو",
     "OnboardPage": {
         "ChooseYourChatbotFromOurTemplates":"اختر برنامج الدردشة الآلي الخاص بك من قوالبنا، الجاهزة للنشر على قنواتك",
         "ChatbotTitle": "قم بإعداد chatbot لموقع الويب الخاص بك - أو قناتك (WhatsApp ، Facebook وما إلى ذلك)",

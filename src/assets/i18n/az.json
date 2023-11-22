@@ -1565,7 +1565,6 @@
         "UpgradeYourAccountToSetTeamOfficeHours": "Komandanın iş saatlarını təyin etmək və agentlərinizin nə vaxt işlədiyini ziyarətçilərə bildirmək üçün hesabınızı təkmilləşdirin!"
     },
     "KbPage": {
-        "AddKb": "Bilik bazası əlavə edin",
         "Secrets": "Sirlər",
         "Add": "Əlavə et",
         "Enter": "Daxil edin",
@@ -1573,8 +1572,10 @@
         "RunIndexing": "İndeksləşdirməni işə salın",
         "CreationDate": "Yaradılma tarixi",
         "KbCounterFooter": "{{ counter }} 3 Bilik bazası əlavə edildi",
-        "AddKbInfoFirstText": "Bilik Bazası və GPT açarınız üçün etibarlı URL təyin edin.",
-        "AddKbInfoSecondText": "Qeyd: Siz hər biri 200-ə qədər səhifədən ibarət maksimum 3 Bilik bazası əlavə edə bilərsiniz. Daha böyük bilik bazaları üçün performans təmin edilmir",
+        "AddKb": "Veb saytınızı əlavə edin",
+        "AddKbInfoFirstText": "Veb saytınız üçün etibarlı URL təyin edin.",
+        "AddKbInfoSecondText": "Tiledesk müvafiq cavablar üçün vebsayt URL-nizi axtaracaq ChatGPT daha sonra insana bənzər şəkildə cavab vermək üçün təlim keçəcək.",
+        "AddKbInfoThirdText": "Qeyd: Siz hər biri 200 səhifədən ibarət maksimum 3 URL əlavə edə bilərsiniz. Böyük vebsaytlar üçün zəhmət olmasa <a href='mailto:sales@tiledesk.com' target='_blank'>bizimlə əlaqə saxlayın</a>",
         "YouCanAddKBOfUpTo200Pages": "Siz 200-ə qədər səhifədən ibarət Bilik Bazalarını əlavə edə bilərsiniz",
         "SearchingAnswer": "Uyğun cavab axtarılır...",
         "Answer": "Cavab verin",
@@ -2229,6 +2230,7 @@
     "YouCannotAddAgents": "Üzr istəyirik, lakin söhbətə agentlər əlavə etmək mümkün deyil. Bilet tipli söhbət üçün yalnız bir agent ola bilər",
     "YouCannotJoinChat": "Bağışlayın, bilet tipli söhbətlərə yalnız agent xidmət göstərə bilər",
     "VisitorAlreadyBanned": "Ziyarətçi artıq qadağandır",
+    "business_owner":"Biznes sahibləri",
     "developer": "Tərtibatçılar",
     "conversation_designer":"Söhbət Dizaynerləri", 
     "no_code_builder": "Kodsuz İnşaatçılar",
@@ -2238,6 +2240,7 @@
     "StartFromScratch":"Sıfırdan başlamaq",
     "WhereWouldYouLikeToStart":"Hardan başlamaq istərdiniz?",
     "AutomateConversationsFromPrototyping": "Söhbətləri bir neçə dəqiqə ərzində prototipdən bütün kanallarınıza qədər avtomatlaşdırın",
+    "Or":"və ya",
     "OnboardPage": {
         "ChooseYourChatbotFromOurTemplates":"Kanallarınızda yerləşdirilməyə hazır olan chatbotunuzu şablonlarımızdan seçin",
         "ChatbotTitle": "Veb saytınız üçün bir ChatBot qurun - və ya kanalınız (WhatsApp, Facebook və s.)",

@@ -1565,7 +1565,6 @@
         "UpgradeYourAccountToSetTeamOfficeHours": "Uppgradera ditt konto för att ställa in teamets kontorstid och låt besökarna veta när dina agenter arbetar!"
     },
     "KbPage": {
-        "AddKb": "Lägg till kunskapsbas",
         "Secrets": "Hemligheter",
         "Add": "Lägg till",
         "Enter": "Stiga på",
@@ -1573,8 +1572,10 @@
         "RunIndexing": "Kör indexering",
         "CreationDate": "Skapelsedagen",
         "KbCounterFooter": "{{ counter }} av 3 kunskapsbaser tillagda",
-        "AddKbInfoFirstText": "Ange en giltig URL för kunskapsbasen och din GPT-nyckel.",
-        "AddKbInfoSecondText": "Obs! Du kan lägga till maximalt 3 kunskapsbaser, var och en bestående av upp till 200 sidor. För större kunskapsbaser garanteras inte prestanda",
+        "AddKb": "Lägg till din webbplats",
+        "AddKbInfoFirstText": "Ange en giltig URL för din webbplats.",
+        "AddKbInfoSecondText": "Tiledesk kommer att söka efter relevanta svar på din webbadress. ChatGPT kommer sedan att tränas i att svara på ett mänskligt sätt.",
+        "AddKbInfoThirdText": "Obs: Du kan lägga till maximalt 3 webbadresser, var och en bestående av upp till 200 sidor. För större webbplatser vänligen <a href='mailto:sales@tiledesk.com' target='_blank'>kontakta oss</a>",
         "YouCanAddKBOfUpTo200Pages":"Du kan lägga till kunskapsbaser på upp till 200 sidor",
         "SearchingAnswer": "Söker efter ett passande svar...",
         "Answer": "Svar",
@@ -2229,6 +2230,7 @@
     "YouCannotAddAgents": "Tyvärr, men det är inte möjligt att lägga till agenter i chatten. Det kan bara finnas en agent för en chatt av biljetttyp",
     "YouCannotJoinChat": "Tyvärr, chattar av biljetttyp kan endast betjänas av en agent",
     "VisitorAlreadyBanned": "Besökare redan förbjuden",
+    "business_owner":"Företagsägare",
     "developer": "Utvecklarna",
     "conversation_designer":"Konversationsdesigners", 
     "no_code_builder": "No-Code Builders",
@@ -2238,6 +2240,7 @@
     "StartFromScratch":"Börja från början",
     "WhereWouldYouLikeToStart":"Var skulle du vilja börj?",
     "AutomateConversationsFromPrototyping":"Automatisera konversationer från prototyper till alla dina kanaler på några minuter",
+    "Or":"eller",
     "OnboardPage": {
         "ChooseYourChatbotFromOurTemplates":"Välj din chatbot från våra mallar, redo att distribueras på dina kanaler",
         "ChatbotTitle": "Ställ in en chatbot för din webbplats - eller din kanal (WhatsApp, Facebook etc.)",

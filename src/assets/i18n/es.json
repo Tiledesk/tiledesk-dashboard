@@ -1565,7 +1565,6 @@
         "UpgradeYourAccountToSetTeamOfficeHours": "¡Actualice su cuenta para establecer las horas de oficina del equipo e informe a los visitantes cuando sus agentes están trabajando!"
     },
     "KbPage": {
-        "AddKb": "Agregar base de conocimientos",
         "Secrets": "Misterios",
         "Add": "Agregar",
         "Enter": "Ingresar",
@@ -1573,8 +1572,10 @@
         "RunIndexing": "Ejecutar indexación",
         "CreationDate": "Fecha de creación",
         "KbCounterFooter": "{{ counter }} de 3 Bases de Conocimiento añadidas",
-        "AddKbInfoFirstText": "Establezca una URL válida para la base de conocimientos y su clave GPT.",
-        "AddKbInfoSecondText": "Nota: Puede agregar un máximo de 3 bases de conocimientos, cada una de las cuales consta de hasta 200 páginas. Para bases de conocimiento más grandes, el rendimiento no está garantizado",
+        "AddKb": "Añade tu página web",
+        "AddKbInfoFirstText": "Establezca una URL válida para su sitio web.",
+        "AddKbInfoSecondText": "Tiledesk buscará en la URL de su sitio web respuestas relevantes. Luego, ChatGPT estará capacitado para responder de forma humana.",
+        "AddKbInfoThirdText": "Nota: Puede agregar un máximo de 3 URL, cada una de las cuales consta de hasta 200 páginas. Para sitios web más grandes, por favor <a href='mailto:sales@tiledesk.com' target='_blank'>contáctenos</a>",
         "YouCanAddKBOfUpTo200Pages": "Puedes agregar Bases de Conocimiento de hasta 200 páginas",
         "SearchingAnswer": "Buscando una respuesta adecuada...",
         "Answer": "Respuesta",
@@ -2229,6 +2230,7 @@
     "YouCannotAddAgents": "Lo sentimos, pero no es posible agregar agentes al chat. Solo puede haber un agente para un chat tipo ticket",
     "YouCannotJoinChat": "Disculpa, las conversaciones de tipo de ticker solo pueden ser atendidas por un agente",
     "VisitorAlreadyBanned": "Visitante ya prohibido",
+    "business_owner":"Propietarios de negocios",
     "developer": "Desarrolladores",
     "conversation_designer":"Diseñadores de conversaciones", 
     "no_code_builder": "Constructores sin códigor",
@@ -2238,6 +2240,7 @@
     "StartFromScratch":"Empezar de cero",
     "WhereWouldYouLikeToStart":"¿Por dónde te gustaría empezar?",
     "AutomateConversationsFromPrototyping":"Automatiza conversaciones desde la creación de prototipos hasta todos tus canales en minutos",
+    "Or":"o",
     "OnboardPage": {
         "ChooseYourChatbotFromOurTemplates":"Elige tu chatbot entre nuestras plantillas, listo para ser implementado en tus canales",
         "ChatbotTitle": "Crea un chatbot para tu sitio web y/o apps de mensajería favoridas (WhatsApp, Messenger, etc.)",
