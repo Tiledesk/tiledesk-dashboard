@@ -15,7 +15,7 @@ import { ProjectPlanService } from '../services/project-plan.service';
 import { LoggerService } from '../services/logger/logger.service';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 @Component({
-  selector: 'mongodb-departments',
+  selector: 'departments',
   templateUrl: './departments.component.html',
   styleUrls: ['./departments.component.scss'],
 })

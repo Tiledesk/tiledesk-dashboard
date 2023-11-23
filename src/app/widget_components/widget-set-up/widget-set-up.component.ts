@@ -591,7 +591,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
 
           this.prjct_name = projectProfileData.name;
-          this.prjct_profile_name = projectProfileData.profile_name;
+          // this.prjct_profile_name = projectProfileData.profile_name;
           this.profile_name = projectProfileData.profile_name;
           this.prjct_trial_expired = projectProfileData.trial_expired;
           this.prjct_profile_type = projectProfileData.profile_type;
@@ -617,18 +617,21 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
               // Trial active
               if (this.profile_name === 'free') {
                 this.prjct_profile_name_for_segment = PLAN_NAME.B + " plan (trial)"
+                this.prjct_profile_name  = PLAN_NAME.B + " plan (trial)"
                 console.log('[WIDGET-SET-UP] n0 ')
                 this.featureIsAvailable = true;
               } else if (this.profile_name === 'Sandbox') {
                 console.log('[WIDGET-SET-UP] n1 ')
                 this.featureIsAvailable = true;
                 this.prjct_profile_name_for_segment = PLAN_NAME.E + " plan (trial)"
+                this.prjct_profile_name = PLAN_NAME.E + " plan (trial)"
               }
 
             } else {
               // Trial expired
               if (this.profile_name === 'free') {
                 this.prjct_profile_name_for_segment = "Free plan";
+                this.prjct_profile_name = "Free plan";
                 console.log('[WIDGET-SET-UP] n2 ')
                 this.t_params = { 'plan_name': PLAN_NAME.B }
                 this.featureIsAvailable = false;
@@ -639,7 +642,8 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
                 this.t_params = { 'plan_name': PLAN_NAME.E }
                 this.featureIsAvailable = false;
 
-                this.prjct_profile_name_for_segment = "Sandbox";
+                this.prjct_profile_name_for_segment = "Sandbox plan";
+                this.prjct_profile_name = "Sandbox plan";
               }
 
             }
@@ -652,12 +656,14 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
                 // Growth sub active
                 if (!this.appSumoProfile) {
                   this.prjct_profile_name_for_segment = PLAN_NAME.A + " plan";
+                  this.prjct_profile_name = PLAN_NAME.A + " plan";
                   this.featureIsAvailable = false;
                   this.t_params = { 'plan_name': PLAN_NAME.B }
 
                   // Growth AppSumo sub active
                 } else {
                   this.prjct_profile_name_for_segment = PLAN_NAME.A + " plan " + '(' + this.appSumoProfile + ')';
+                  this.prjct_profile_name = PLAN_NAME.A + " plan " + '(' + this.appSumoProfile + ')';
                   this.featureIsAvailable = false;
                   this.t_params = { 'plan_name': this.appSumoProfilefeatureAvailableFromBPlan }
                 }
@@ -665,114 +671,82 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
                 // Scale sub active
                 if (!this.appSumoProfile) {
                   this.prjct_profile_name_for_segment = PLAN_NAME.B + " plan";
+                  this.prjct_profile_name = PLAN_NAME.B + " plan";
                   this.featureIsAvailable = true;
                   // Scale AppSumo sub active
                 } else {
-                  this.prjct_profile_name_for_segment = PLAN_NAME.B + " plan " + '(' + this.appSumoProfile + ')';;
+                  this.prjct_profile_name_for_segment = PLAN_NAME.B + " plan " + '(' + this.appSumoProfile + ')';
+                  this.prjct_profile_name = PLAN_NAME.B + " plan " + '(' + this.appSumoProfile + ')';
                   this.featureIsAvailable = true;
                 }
                 // Plus sub active
               } else if (projectProfileData.profile_name === PLAN_NAME.C) {
 
                 this.prjct_profile_name_for_segment = PLAN_NAME.C + " plan";
+                this.prjct_profile_name = PLAN_NAME.C + " plan";
                 this.featureIsAvailable = true;
 
                 // Basic sub active
               } else if (projectProfileData.profile_name === PLAN_NAME.D) {
                 this.prjct_profile_name_for_segment = PLAN_NAME.D + " plan";
+                this.prjct_profile_name = PLAN_NAME.D + " plan";
                 this.t_params = { 'plan_name': PLAN_NAME.E }
                 this.featureIsAvailable = false;
 
                 // Premium sub active
               } else if (projectProfileData.profile_name === PLAN_NAME.E) {
                 this.prjct_profile_name_for_segment = PLAN_NAME.E + " plan";
+                this.prjct_profile_name = PLAN_NAME.E + " plan";
                 this.featureIsAvailable = true;
 
                 // Custom sub active
               } else if (projectProfileData.profile_name === PLAN_NAME.F) {
                 this.prjct_profile_name_for_segment = PLAN_NAME.F + " plan";
+                this.prjct_profile_name = PLAN_NAME.F + " plan";
                 this.featureIsAvailable = true;
               }
 
             } else if (this.subscription_is_active === false) {
               // Growth sub expired
               if (projectProfileData.profile_name === PLAN_NAME.A) {
-
+                this.prjct_profile_name = PLAN_NAME.A + " plan"
                 this.t_params = { 'plan_name': PLAN_NAME.B }
                 this.featureIsAvailable = false;
 
                 // Scale sub expired
               } else if (projectProfileData.profile_name === PLAN_NAME.B) {
+                this.prjct_profile_name = PLAN_NAME.B + " plan"
                 this.t_params = { 'plan_name': PLAN_NAME.B }
                 this.featureIsAvailable = false;
 
                 // Plus sub expired
               } else if (projectProfileData.profile_name === PLAN_NAME.C) {
+                this.prjct_profile_name = PLAN_NAME.C + " plan"
                 this.t_params = { 'plan_name': PLAN_NAME.B }
                 this.featureIsAvailable = false;
 
                 // Basic sub expired
               } else if (projectProfileData.profile_name === PLAN_NAME.D) {
+                this.prjct_profile_name = PLAN_NAME.D + " plan"
                 this.t_params = { 'plan_name': PLAN_NAME.E }
                 this.featureIsAvailable = false;
 
                 // Premium sub expired
               } else if (projectProfileData.profile_name === PLAN_NAME.E) {
+                this.prjct_profile_name = PLAN_NAME.E + " plan"
                 this.t_params = { 'plan_name': PLAN_NAME.E }
                 this.featureIsAvailable = false;
 
                 // Custom sub expired
               } else if (projectProfileData.profile_name === PLAN_NAME.F) {
+                this.prjct_profile_name = PLAN_NAME.F + " plan"
                 this.t_params = { 'plan_name': PLAN_NAME.E }
                 this.featureIsAvailable = false;
 
               }
 
             }
-
-
           }
-
-          // if (
-          //   (this.profile_name === PLAN_NAME.A) ||
-          //   (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
-          //   (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
-          //   (this.profile_name === 'free' && this.prjct_trial_expired === true)
-          // ) {
-          //   this.featureIsAvailable = false;
-          //   this.t_params = { 'plan_name': PLAN_NAME.B }
-          //   console.log('[WIDGET-SET-UP] H1 ')
-
-          // } else if ((this.profile_name === PLAN_NAME.D) ||
-          //   (this.profile_name === PLAN_NAME.E && this.subscription_is_active === false) ||
-          //   (this.profile_name === PLAN_NAME.F && this.subscription_is_active === false) ||
-          //   (this.profile_name === 'Sanbox' && this.prjct_trial_expired === true)
-          // ) {
-          //   console.log('[WIDGET-SET-UP] H2 ')
-          //   this.featureIsAvailable = false;
-          //   this.t_params = { 'plan_name': PLAN_NAME.E }
-
-          // } else if (
-          //   (this.profile_name === PLAN_NAME.B && this.subscription_is_active === true) ||
-          //   (this.profile_name === PLAN_NAME.C && this.subscription_is_active === true) ||
-          //   (this.profile_name === 'free' && this.prjct_trial_expired === false)
-
-          // ) {
-          //   console.log('[WIDGET-SET-UP] H3 ')
-          //   this.featureIsAvailable = true;
-          //   this.t_params = { 'plan_name': PLAN_NAME.B }
-          //   // console.log('[WIDGET-SET-UP] - featureIsAvailable ' , this.featureIsAvailable)
-          // } else if (
-          //   (this.profile_name === PLAN_NAME.D && this.subscription_is_active === true) ||
-          //   (this.profile_name === PLAN_NAME.F && this.subscription_is_active === true) ||
-          //   (this.profile_name === 'Sandbox' && this.prjct_trial_expired === false)
-
-          // ) {
-          //   console.log('[WIDGET-SET-UP] H4 ')
-          //   this.featureIsAvailable = true;
-          //   this.t_params = { 'plan_name': PLAN_NAME.F }
-          //   // console.log('[WIDGET-SET-UP] - featureIsAvailable ' , this.featureIsAvailable)
-          // }
         }
       }, error => {
 
@@ -873,12 +847,12 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           if (this.USER_ROLE === 'owner') {
             // console.log('[APP-STORE] HERE 2')
             if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
-              if (this.profile_name !== PLAN_NAME.C) {
-                this.notify.displaySubscripionHasExpiredModal(true, this.profile_name, this.subscription_end_date);
-              } else if (this.profile_name === PLAN_NAME.C) {
-                this.notify.displayEnterprisePlanHasExpiredModal(true, this.profile_name, this.subscription_end_date);
+              if (this.profile_name !== PLAN_NAME.C && this.profile_name !== PLAN_NAME.F) {
+                this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
+              } else if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
+                this.notify.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
               }
-            } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true && this.profile_name === PLAN_NAME.A) {
+            } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true && (this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.D)) {
               this.notify._displayContactUsModal(true, 'upgrade_plan');
             } else if (this.prjct_profile_type === 'free') {
               // console.log('[APP-STORE] HERE 4')

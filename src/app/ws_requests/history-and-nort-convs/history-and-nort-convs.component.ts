@@ -1379,37 +1379,11 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
           this.appSumoProfile = APP_SUMO_PLAN_NAME[projectProfileData.extra3]
           this.appSumoProfilefeatureAvailableFromBPlan = APP_SUMO_PLAN_NAME['tiledesk_tier3']
         }
-
-        
-
-
-
-        // this.buildPlanName(projectProfileData.profile_name, this.browserLang, this.prjct_profile_type);
-
-        // tslint:disable-next-line:max-line-length
-        // if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false || this.prjct_profile_type === 'free' && this.trial_expired === true) {
-        //   this.date_picker_is_disabled = true;
-        //   // this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date)
-        // } else {
-        //   this.date_picker_is_disabled = false;
-        // }
       }
     })
   }
 
-  buildPlanName(planName: string, browserLang: string, planType: string) {
-    if (planType === 'payment') {
-
-      this.getPaidPlanTranslation(planName)
-      // if (browserLang === 'it') {
-      //   this.prjct_profile_name = 'Piano ' + planName;
-      //   return this.prjct_profile_name
-      // } else if (browserLang !== 'it') {
-      //   this.prjct_profile_name = planName + ' Plan';
-      //   return this.prjct_profile_name
-      // }
-    }
-  }
+ 
 
   getPaidPlanTranslation(project_profile_name) {
     this.translate.get('PaydPlanName', { projectprofile: project_profile_name })
@@ -1447,18 +1421,18 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   }
 
   openModalSubsExpiredOrGoToPricing() {
-     
+
     if (this.payIsVisible) {
 
       if (this.USER_ROLE === 'owner') {
         if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
           if (this.profile_name !== PLAN_NAME.C && this.profile_name !== PLAN_NAME.F) {
-            this.notify.displaySubscripionHasExpiredModal(true, this.profile_name, this.subscription_end_date);
+            this.notify.displaySubscripionHasExpiredModal(true, this.profile_name + ' plan', this.subscription_end_date);
           } else if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
-            this.notify.displayEnterprisePlanHasExpiredModal(true, this.profile_name, this.subscription_end_date);
+            this.notify.displayEnterprisePlanHasExpiredModal(true, this.profile_name + ' plan', this.subscription_end_date);
           }
 
-        } else if ((this.profile_name === 'free' || this.profile_name === 'Sandbox') && this.trial_expired === true) {  // 
+        } else if ((this.profile_name === 'free' || this.profile_name === 'Sandbox')) {  //  && this.trial_expired === true
           this.router.navigate(['project/' + this.projectId + '/pricing']);
           // this.notify.presentContactUsModalToUpgradePlan(true);
         }
@@ -2328,61 +2302,33 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
 
   exportRequestsToCSV() {
+    if (this.payIsVisible) {
 
-    const isAvailable = this.checkPlanAndPresentModal()
-    console.log('[HISTORY & NORT-CONVS] isAvaibleFromPlan ', isAvailable)
-    if (isAvailable === false) {
-      return
-    }
+      const isAvailable = this.checkPlanAndPresentModal()
+      console.log('[HISTORY & NORT-CONVS] isAvaibleFromPlan ', isAvailable)
+      if (isAvailable === false) {
+        return
+      }
 
-    // if (this.payIsVisible) {
-    //   if (
-    //     (this.profile_name === PLAN_NAME.A) ||
-    //     (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
-    //     (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
-    //     (this.profile_name === PLAN_NAME.D) ||
-    //     (this.profile_name === PLAN_NAME.E && this.subscription_is_active === false) ||
-    //     (this.profile_name === PLAN_NAME.F && this.subscription_is_active === false) ||
-    //     (this.profile_name === 'free' && this.trial_expired === true) ||
-    //     (this.profile_name === 'Sandbox' && this.trial_expired === true)
+      this.wsRequestsService.downloadHistoryRequestsAsCsv(this.queryString, 0).subscribe((requests: any) => {
+        if (requests) {
+          this.logger.log('[HISTORY & NORT-CONVS] - DOWNLOAD REQUESTS AS CSV - RES ', requests);
 
-    //   ) {
-
-
-    //     if (!this.appSumoProfile) {
-    //       this.presentModalFeautureAvailableFromBPlan()
-    //     } else if (this.appSumoProfile) {
-    //       this.presentModalAppSumoFeautureAvailableFromBPlan()
-    //     }
-    //     // console.log('[HISTORY & NORT-CONVS] -  EXPORT DATA IS NOT AVAILABLE ')
-    //   } else if (
-    //     (this.profile_name === PLAN_NAME.B && this.subscription_is_active === true) ||
-    //     (this.profile_name === PLAN_NAME.C && this.subscription_is_active === true) ||
-    //     (this.profile_name === PLAN_NAME.E && this.subscription_is_active === true) ||
-    //     (this.profile_name === PLAN_NAME.F && this.subscription_is_active === true) ||
-    //     (this.profile_name === 'free' && this.trial_expired === false) ||
-    //     (this.profile_name === 'Sandbox' && this.trial_expired === false)
-
-    //   ) {
-        this.wsRequestsService.downloadHistoryRequestsAsCsv(this.queryString, 0).subscribe((requests: any) => {
-          if (requests) {
-            this.logger.log('[HISTORY & NORT-CONVS] - DOWNLOAD REQUESTS AS CSV - RES ', requests);
-
-            // const reqNoLineBreaks = requests.replace(/(\r\n\t|\n|\r\t)/gm, ' ');
-            // this.logger.log('!!! DOWNLOAD REQUESTS AS CSV - REQUESTS NO NEW LINE ', reqNoLineBreaks);
-            this.downloadFile(requests)
-          }
-        }, error => {
-          this.logger.error('[HISTORY & NORT-CONVS] - DOWNLOAD REQUESTS AS CSV - ERROR: ', error);
-        }, () => {
-          this.logger.log('[HISTORY & NORT-CONVS] - DOWNLOAD REQUESTS AS CSV * COMPLETE *')
-        });
-        // console.log('[HISTORY & NORT-CONVS] - EXPORT DATA IS AVAILABLE ')
+          // const reqNoLineBreaks = requests.replace(/(\r\n\t|\n|\r\t)/gm, ' ');
+          // this.logger.log('!!! DOWNLOAD REQUESTS AS CSV - REQUESTS NO NEW LINE ', reqNoLineBreaks);
+          this.downloadFile(requests)
+        }
+      }, error => {
+        this.logger.error('[HISTORY & NORT-CONVS] - DOWNLOAD REQUESTS AS CSV - ERROR: ', error);
+      }, () => {
+        this.logger.log('[HISTORY & NORT-CONVS] - DOWNLOAD REQUESTS AS CSV * COMPLETE *')
+      });
+      // console.log('[HISTORY & NORT-CONVS] - EXPORT DATA IS AVAILABLE ')
       // }
 
-    // } else {
-    //   this.notify._displayContactUsModal(true, 'upgrade_plan');
-    // }
+    } else {
+      this.notify._displayContactUsModal(true, 'upgrade_plan');
+    }
   }
 
   presentModalFeautureAvailableFromTier2Plan(planName) {
@@ -2410,9 +2356,9 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
             if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
               console.log('[HISTORY & NORT-CONVS] HERE 3')
               this.notify._displayContactUsModal(true, 'upgrade_plan');
-            } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true && this.profile_name === PLAN_NAME.A) {
+            } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true && (this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.D)) {
               this.notify._displayContactUsModal(true, 'upgrade_plan');
-            } else if (this.prjct_profile_type === 'free' && this.trial_expired === true) {
+            } else if (this.prjct_profile_type === 'free') { // && this.trial_expired === true
               console.log('[HISTORY & NORT-CONVS] HERE 4')
               this.router.navigate(['project/' + this.projectId + '/pricing']);
             }

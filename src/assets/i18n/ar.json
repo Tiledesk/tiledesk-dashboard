@@ -462,7 +462,7 @@
     "OurNativeEasyAndPowerfulNLPChatbot": "روبوت الدردشة الأصلي السهل والقوي الخاص بمعالجة اللغة الطبيعية (NLP)",
     "ResolutionBotDescription": "أتمتة إجابات أسئلتك الشائعة للحصول على حلول فورية وعملاء أكثر سعادة",
     "UseDialogflowToTrainYourBot...": "استخدم Dialogflow لتدريب الروبوت الخاص بك من خلال تكامل Dialogflow الأصلي والمبتكر",
-    "UseYourFavouriteTechnology...": "استخدم التكنولوجيا المفضلة لديك لتضمين روبوت المحادثة الخاص بك مع {{ company_name }}. الق نظرة على موقعنا",
+    "UseYourFavouriteTechnology...": "استخدم التكنولوجيا المفضلة لديك لتضمين برنامج الدردشة الآلي الخاص بك مع {{ company_name }}",
     "GetStartedTutorial": "برنامج تعليمي للبدء",
     "AnIdentityBotRepresents": "يمثل روبوت الهوية ملف تعريف افتراضي يستخدم للرسائل التلقائية التي يرسلها النظام (مثل إرسال الرسائل في المشغلات)",
     "DialogflowKnowledgeBaseID": "معرف قاعدة معارف Dialogflow",

@@ -1,10 +1,10 @@
 <div class="chatbot-alert-content" [ngClass]="{'chatbot-alert-content-no-lm': IS_TEMPLATE_ROUTE}">
   <div class="sub-active-cb-num-greater-than-the-allowed" *ngIf="((
-((profile_name === PLAN_NAME.A || profile_name === PLAN_NAME.B || profile_name === PLAN_NAME.D || profile_name === PLAN_NAME.E) && subscription_is_active === true) ||
+((profile_name === PLAN_NAME.A || profile_name === PLAN_NAME.B || profile_name === PLAN_NAME.C || profile_name === PLAN_NAME.D || profile_name === PLAN_NAME.E || profile_name === PLAN_NAME.F) && subscription_is_active === true) ||
 (profile_name === 'Sandbox' && trial_expired === false) || 
+(profile_name === 'Sandbox' && trial_expired === true) || 
 (profile_name === 'free' && trial_expired === false) || 
-(profile_name === 'free' && trial_expired === true) || 
-(profile_name === 'Sandbox' && trial_expired === true))  &&
+(profile_name === 'free' && trial_expired === true))  &&
 (chatBotCount > chatBotLimit))">
     <span class="msg-alert">
       {{ 'NumberOfChatbotExceedsThePlan' | translate: tParamsPlanAndChatBot }}

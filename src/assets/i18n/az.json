@@ -462,7 +462,7 @@
     "OurNativeEasyAndPowerfulNLPChatbot": "Doğma, asan və güclü NLP (Natural Language Processing) chatbotumuz",
     "ResolutionBotDescription": "Ani həllər və daha xoşbəxt müştərilər üçün ümumi suallarınıza cavabları avtomatlaşdırın",
     "UseDialogflowToTrainYourBot...": "Botunuzu yerli və innovativ Dialogflow inteqrasiyamızla öyrətmək üçün Dialogflow-dan istifadə edin",
-    "UseYourFavouriteTechnology...": "Chatbotunuzu {{ company_name }}ilə yerləşdirmək üçün sevimli texnologiyanızdan istifadə edin. Bizimkilərə nəzər salın",
+    "UseYourFavouriteTechnology...": "{{ company_name }} ilə chatbotunuzu yerləşdirmək üçün sevimli texnologiyanızdan istifadə edin",
     "GetStartedTutorial": "Başlanğıc Təlimatı",
     "AnIdentityBotRepresents": "Kimlik botu sistem tərəfindən göndərilən avtomatik mesajlar üçün istifadə olunan virtual profili təmsil edir (məsələn, tetikleyicilərdə mesaj göndərmək)",
     "DialogflowKnowledgeBaseID": "Dialoq axını məlumat bazası ID",

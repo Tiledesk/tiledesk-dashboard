@@ -155,7 +155,7 @@ export class ActivitiesStaticComponent extends PricingBaseComponent implements O
       });
   }
 
- 
+
 
   getBrowserLang() {
     this.browserLang = this.translate.getBrowserLang();
@@ -221,21 +221,35 @@ export class ActivitiesStaticComponent extends PricingBaseComponent implements O
 
 
   goToPricing() {
-    if (this.payIsVisible) {
-      if (this.USER_ROLE === 'owner') {
+    if (!this.appSumoProfile) {
+      if (this.payIsVisible) {
+        if (this.USER_ROLE === 'owner') {
 
-        if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
-          this.notify._displayContactUsModal(true, 'upgrade_plan');
+          if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
+            this.notify._displayContactUsModal(true, 'upgrade_plan');
+          } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true) {
+            // this.router.navigate(['project/' + this.projectId + '/pricing']);
+            this.notify.presentContactUsModalToUpgradePlan(true);
+          } else if (this.prjct_profile_type === 'free') {
+            this.router.navigate(['project/' + this.projectId + '/pricing']);
+          }
         } else {
-          this.router.navigate(['project/' + this.projectId + '/pricing']);
-          // this.notify.presentContactUsModalToUpgradePlan(true);
+          this.presentModalOnlyOwnerCanManageTheAccountPlan();
         }
       } else {
-        this.presentModalOnlyOwnerCanManageTheAccountPlan();
+        this.notify._displayContactUsModal(true, 'upgrade_plan');
       }
     } else {
-      this.notify._displayContactUsModal(true, 'upgrade_plan');
+      this.notify.presentContactUsModalToUpgradePlan(true);
     }
+    
+    // else if (this.projectProfileData && this.projectProfileData.extra3) {
+    //   if (this.projectProfileData.extra3 === 'tiledesk_tier1' || this.projectProfileData.extra3 === 'tiledesk_tier2') {
+    //     this.router.navigate(['project/' + this.projectId + '/project-settings/payments']);
+    //   } else if (this.projectProfileData.extra3 === 'tiledesk_tier3' || this.projectProfileData.extra3 === 'tiledesk_tier4') {
+        
+    //   }
+    // }
   }
 
   presentModalOnlyOwnerCanManageTheAccountPlan() {

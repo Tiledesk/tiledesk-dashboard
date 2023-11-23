@@ -422,7 +422,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
             if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
               console.log('[DEPT-EDIT-ADD] HERE 3')
               this.notify._displayContactUsModal(true, 'upgrade_plan');
-            } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true && this.profile_name === PLAN_NAME.A) {
+            } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true && (this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.D)) {
               this.notify._displayContactUsModal(true, 'upgrade_plan');
             } else if (this.prjct_profile_type === 'free' && this.trial_expired === true) {
               console.log('[DEPT-EDIT-ADD] HERE 4')

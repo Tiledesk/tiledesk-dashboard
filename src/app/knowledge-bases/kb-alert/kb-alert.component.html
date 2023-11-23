@@ -1,9 +1,12 @@
 <div class="chatbot-alert-content">
   <!-- profile_name >  {{profile_name }} trial_expired > {{ trial_expired }} kbCount {{kbCount }} kbLimit {{kbLimit}} -->
   <div class="sub-active-cb-num-greater-than-the-allowed" *ngIf="((
-  ((profile_name === PLAN_NAME.A || profile_name === PLAN_NAME.B || profile_name === PLAN_NAME.C || profile_name === PLAN_NAME.D || profile_name === PLAN_NAME.E || profile_name === PLAN_NAME.C) && subscription_is_active === true) ||
+  ((profile_name === PLAN_NAME.A || profile_name === PLAN_NAME.B || profile_name === PLAN_NAME.C || profile_name === PLAN_NAME.D || profile_name === PLAN_NAME.E || profile_name === PLAN_NAME.F) && subscription_is_active === true) ||
   (profile_name === 'Sandbox' && trial_expired === false) || 
-  (profile_name === 'Sandbox' && trial_expired === true))  &&
+  (profile_name === 'Sandbox' && trial_expired === true) || 
+  (profile_name === 'free' && trial_expired === true) ||
+  (profile_name === 'free' && trial_expired === false) 
+  )  &&
   (kbCount > kbLimit))">
     <span class="msg-alert">
       {{ 'KbPage.NumberOfKbExceedsThePlan' | translate: tParamsPlanAndKb }}
@@ -17,7 +20,7 @@
   </div>
 
   <div class="sub-expired-cb-num-greater-than-the-allowed" *ngIf="(
-      (profile_name === PLAN_NAME.D || profile_name === PLAN_NAME.E || profile_name === PLAN_NAME.F) && subscription_is_active === false  &&
+      (profile_name === PLAN_NAME.A || profile_name === PLAN_NAME.B || profile_name === PLAN_NAME.C || profile_name === PLAN_NAME.D || profile_name === PLAN_NAME.E || profile_name === PLAN_NAME.F) && subscription_is_active === false  &&
       (kbCount > kbLimit))">
     <span class="msg-alert" style="display: block;">{{ "Pricing.SubscriptionPaymentProblem" | translate}} </span>
 

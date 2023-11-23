@@ -473,11 +473,11 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
     console.log('[APP-STORE] app_id ', app_id);
     console.log('[APP-STORE] appTitle ', appTitle);
 
-    const isAvailable = this.checkPlanAndPresentModal(appTitle)
-    console.log('[APP-STORE] isAvaibleFromPlan ', isAvailable)
-    if (isAvailable === false) {
-      return
-    }
+    // const isAvailable = this.checkPlanAndPresentModal(appTitle)
+    // console.log('[APP-STORE] isAvaibleFromPlan ', isAvailable)
+    // if (isAvailable === false) {
+    //   return
+    // }
 
     if (learnmoreUrl.startsWith('{')) {
       // console.log('[APP-STORE] installationUrl start with curly bracket ');
@@ -505,27 +505,7 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
     if (isAvailable === false) {
       return
     }
-    // if ((app.title === "WhatsApp Business" || app.title === "Facebook Messenger") &&
-    //   ((this.profile_name === PLAN_NAME.A) ||
-    //     (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
-    //     (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
-    //     (this.profile_name === 'free' && this.trial_expired === true))) {
-
-
-    //   if (!this.appSumoProfile) {
-    //     this.presentModalFeautureAvailableFromTier2Plan(this.featureAvailableFromBPlan)
-    //     return
-    //   } else {
-    //     this.presentModalAppSumoFeautureAvailableFromBPlan()
-    //     return
-    //   }
-    // } else if ((app.title === "WhatsApp Business" || app.title === "Facebook Messenger") &&
-    //   ((this.profile_name === PLAN_NAME.D) ||
-    //     (this.profile_name === PLAN_NAME.E && this.subscription_is_active === false) ||
-    //     (this.profile_name === PLAN_NAME.F && this.subscription_is_active === false) ||
-    //     (this.profile_name === 'Sandbox' && this.trial_expired === true))) {
-
-    // }
+   
     this.logger.log('openInAppStoreInstall app ', app)
     this.router.navigate(['project/' + this.projectId + '/app-store-install/' + app._id + '/run'])
   }
@@ -570,7 +550,7 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
             if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
               // console.log('[APP-STORE] HERE 3')
               this.notify._displayContactUsModal(true, 'upgrade_plan');
-            } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true && this.profile_name === PLAN_NAME.A) {
+            } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true && (this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.D)) {
               this.notify._displayContactUsModal(true, 'upgrade_plan');
             } else if (this.prjct_profile_type === 'free' && this.trial_expired === true) {
               // console.log('[APP-STORE] HERE 4')

@@ -83,7 +83,10 @@ export class ProjectProfileGuard implements CanActivate {
         if (
           (planName === PLAN_NAME.A && url.indexOf('/analytics') !== -1) ||
           (planName === PLAN_NAME.A && url.indexOf('/departments') !== -1) ||
-          (planName === PLAN_NAME.A && url.indexOf('/groups') !== -1)
+          (planName === PLAN_NAME.A && url.indexOf('/groups') !== -1) ||
+          (planName === PLAN_NAME.D && url.indexOf('/analytics') !== -1) ||
+          (planName === PLAN_NAME.D && url.indexOf('/departments') !== -1) ||
+          (planName === PLAN_NAME.D && url.indexOf('/groups') !== -1)
 
         ) {
           this.userIsAuthorized = false;
