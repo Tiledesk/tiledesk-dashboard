@@ -1060,8 +1060,8 @@ export class ProjectService {
       // responseType: 'text' as 'json'
     };
 
-    // const url = this.SERVER_BASE_PATH + 'modules/payments/stripe/checkoutSession/' + sessionid;
-    const url = 'https://9ce8-5-90-223-136.ngrok-free.app/modules/payments/stripe/checkoutSession/' + sessionid;
+    const url = this.SERVER_BASE_PATH + 'modules/payments/stripe/checkoutSession/' + sessionid;
+    // const url = 'https://9ce8-5-90-223-136.ngrok-free.app/modules/payments/stripe/checkoutSession/' + sessionid;
     // this.logger.log('[PROJECT-SERV] - GET STRIPE SESSION BY ID - ID', sessionid);
     // this.logger.log('[PROJECT-SERV] - GET STRIPE SESSION BY ID - URL', url);
 

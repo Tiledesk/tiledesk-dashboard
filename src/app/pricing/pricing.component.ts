@@ -360,9 +360,9 @@ export class PricingComponent implements OnInit, OnDestroy {
       // -------------------------------------------------------------------------------------------
       // New pricing
       // -------------------------------------------------------------------------------------------
-      this.clientReferenceIdForPlanD = this.currentUserID + '_' + this.projectId + '_' + PLAN_NAME.D
+      this.clientReferenceIdForPlanD = this.currentUserID + '_' + this.projectId + '_' + PLAN_NAME.D + '_' + 1
       console.log('[PRICING] clientReferenceIdForPlanD ', this.clientReferenceIdForPlanD)
-      this.clientReferenceIdForPlanE = this.currentUserID + '_' + this.projectId + '_' + PLAN_NAME.E
+      this.clientReferenceIdForPlanE = this.currentUserID + '_' + this.projectId + '_' + PLAN_NAME.E + '_' + 2
       console.log('[PRICING] clientReferenceIdForPlanE ', this.clientReferenceIdForPlanB)
       this.clientReferenceIdForPlanC = this.currentUserID + '_' + this.projectId + '_' + PLAN_NAME.C
       // console.log('[PRICING] clientReferenceIdForPlanB ', this.clientReferenceIdForPlanC)
