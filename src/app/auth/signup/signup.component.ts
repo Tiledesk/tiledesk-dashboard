@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, isDevMode } from '@angular/core';
+import { Component, OnInit, AfterViewInit, isDevMode, ViewChild, ElementRef } from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../../core/auth.service';
 import { Router } from '@angular/router';
@@ -16,6 +16,7 @@ import { ProjectService } from 'app/services/project.service';
 import { Project } from 'app/models/project-model';
 import { emailDomainWhiteList } from 'app/utils/util';
 import { TitleCasePipe } from '@angular/common';
+declare const grecaptcha: any;
 
 type UserFields = 'email' | 'password' | 'firstName' | 'lastName' | 'terms';
 type FormErrors = { [u in UserFields]: string };
@@ -27,7 +28,7 @@ type FormErrors = { [u in UserFields]: string };
   providers: [TitleCasePipe]
 })
 export class SignupComponent implements OnInit, AfterViewInit {
-
+  @ViewChild('recaptcha', { static: false }) el: ElementRef;
 
   // tparams = brand;
   // companyLogoBlack_Url = brand.company_logo_black__url;
@@ -65,6 +66,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
   storedRoute: string;
 
   public_Key: string;
+  reCaptchaSiteKey: string;
   MT: boolean;
   templateName: string;
   strongPassword = false;
@@ -148,14 +150,42 @@ export class SignupComponent implements OnInit, AfterViewInit {
     this.getBrowserLang();
     this.getOSCODE();
     this.getQueryParamsAndSegmentRecordPageAndIdentify();
-    
+    this.getReCaptchaSiteKey()
+
     const hasSigninWithGoogle = this.localDbService.getFromStorage('swg')
     if (hasSigninWithGoogle) {
       this.localDbService.removeFromStorage('swg')
       // console.log('[SIGN-UP] removeFromStorage swg')
     }
-
   }
+  getReCaptchaSiteKey() {
+    this.reCaptchaSiteKey = this.appConfigService.getConfig().reCaptchaSiteKey;
+    // console.log('[SIGN-UP] reCaptchaSiteKey ',  this.reCaptchaSiteKey)
+  }
+  
+
+  ngAfterViewInit() {
+    const elemPswInput = <HTMLInputElement>document.getElementById('signup-password');
+    // this.logger.log('ELEMENT INPUT PSW ', elemPswInput)
+    const style = window.getComputedStyle(elemPswInput);
+    // this.logger.log('ELEMENT INPUT PSW STYLE', style)
+
+    /**
+     * THE HTML ELEMENT FOR INSERTING THE PASSWORD IS OF TEXT TYPE (instead of PASSWORD TYPE) TO AVOID THE CHROME SELF-COMPLETION
+     * (e.g., "USE PASSWORD FOR"").
+     * TO AVOID THAT THE TEXT INSERTED IN THE PASSWORD FIELD IS DISPLAYED AT ELEMEMT HAS BEEN SETTED THE STYLE
+     * 'webkitTextSecurity' THAT HIDES THE USER INPUT.
+     * HOWEVER THE STYLE 'webkitTextSecurity' IS NOT COMPATIPLE ON ALL THE BROWSER,
+     * FOR WHETHER IF THE webkitTextSecurity STYLE THERE IS NOT, IS ADDED THE ATTRIBUTE PASSWORD TO THE FIELD
+     */
+    if (style['-webkitTextSecurity']) {
+      this.logger.log('[SIGN-UP] ngAfterViewInit ELEMENT INPUT PSW HAS STYLE webkitTextSecurity: YES')
+    } else {
+      this.logger.log('[SIGN-UP] ngAfterViewInit ELEMENT INPUT PSW HAS STYLE webkitTextSecurity: FALSE')
+      elemPswInput.setAttribute('type', 'password');
+    }
+  }
+
 
   // 
   // 'email': [{ value: '', disabled: true }, [
@@ -391,7 +421,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
         this.appSumoActivationEmail = storedRouteSegment[2]
         // console.log('[SIGN-UP] this.appSumoActivationEmail ', this.appSumoActivationEmail)
         this.userForm.patchValue({ 'email': this.appSumoActivationEmail })
-        this.isValidAppSumoActivationEmail= this.validateEmail(this.appSumoActivationEmail)
+        this.isValidAppSumoActivationEmail = this.validateEmail(this.appSumoActivationEmail)
         // console.log('[SIGN-UP] this.isValidAppSumoActivationEmail ', this.isValidAppSumoActivationEmail)
         const emailInputElm = document.getElementById("user-email") as HTMLInputElement;
         // console.log('[SIGN-UP] emailInputElm ', emailInputElm)
@@ -402,7 +432,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
 
     // console.log('[SIGN-UP] checkCurrentUrlAndSkipWizard router.url  ', this.router.url)
 
-    
+
     if (this.router.url.indexOf('/signup-on-invitation') !== -1) {
       this.SKIP_WIZARD = true;
       this.logger.log('[SIGN-UP] checkCurrentUrlAndSkipWizard SKIP_WIZARD ', this.SKIP_WIZARD)
@@ -447,29 +477,19 @@ export class SignupComponent implements OnInit, AfterViewInit {
     }
   }
 
-  ngAfterViewInit() {
-    const elemPswInput = <HTMLInputElement>document.getElementById('signup-password');
-    // this.logger.log('ELEMENT INPUT PSW ', elemPswInput)
-    const style = window.getComputedStyle(elemPswInput);
-    // this.logger.log('ELEMENT INPUT PSW STYLE', style)
 
-    /**
-     * THE HTML ELEMENT FOR INSERTING THE PASSWORD IS OF TEXT TYPE (instead of PASSWORD TYPE) TO AVOID THE CHROME SELF-COMPLETION
-     * (e.g., "USE PASSWORD FOR"").
-     * TO AVOID THAT THE TEXT INSERTED IN THE PASSWORD FIELD IS DISPLAYED AT ELEMEMT HAS BEEN SETTED THE STYLE
-     * 'webkitTextSecurity' THAT HIDES THE USER INPUT.
-     * HOWEVER THE STYLE 'webkitTextSecurity' IS NOT COMPATIPLE ON ALL THE BROWSER,
-     * FOR WHETHER IF THE webkitTextSecurity STYLE THERE IS NOT, IS ADDED THE ATTRIBUTE PASSWORD TO THE FIELD
-     */
-    if (style['-webkitTextSecurity']) {
-      this.logger.log('[SIGN-UP] ngAfterViewInit ELEMENT INPUT PSW HAS STYLE webkitTextSecurity: YES')
-    } else {
-      this.logger.log('[SIGN-UP] ngAfterViewInit ELEMENT INPUT PSW HAS STYLE webkitTextSecurity: FALSE')
-      elemPswInput.setAttribute('type', 'password');
-    }
+  signUp() { 
+    grecaptcha.ready(() => {
+      grecaptcha.execute(this.reCaptchaSiteKey, {action: 'submit'}).then((token) => {
+          // Add your logic to submit to your backend server here.
+          console.log('[SIGN-UP] grecaptcha ', token) 
+          if (token) {
+            this.signup()
+          }
+      });
+    });
   }
 
- 
   signup() {
     this.showSpinnerInLoginBtn = true;
     const email = this.userForm.value['email']
@@ -522,12 +542,12 @@ export class SignupComponent implements OnInit, AfterViewInit {
           if (!isDevMode()) {
             if (window['analytics']) {
               let userFullname = ''
-              if (signupResponse.user.firstname && signupResponse.user.lastname)  {
+              if (signupResponse.user.firstname && signupResponse.user.lastname) {
                 userFullname = signupResponse.user.firstname + ' ' + signupResponse.user.lastname
               } else if (signupResponse.user.firstname && !signupResponse.user.lastname) {
                 userFullname = signupResponse.user.firstname
               }
-  
+
               try {
                 window['analytics'].identify(signupResponse.user._id, {
                   name: userFullname,
@@ -562,8 +582,8 @@ export class SignupComponent implements OnInit, AfterViewInit {
               // }
               // this.logger.log('[SIGN-UP] Signed Up button clicked event ', event)
 
-           
-  
+
+
 
               try {
                 window['analytics'].track("Signed Up", {
@@ -657,7 +677,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
 
         // console.log('self.EXIST_STORED_ROUTE: ', self.EXIST_STORED_ROUTE, self.storedRoute);
         // console.log('self.SKIP_WIZARD: ', self.SKIP_WIZARD);
-        
+
         if (!self.EXIST_STORED_ROUTE) {
           if (self.SKIP_WIZARD === false) {
             // self.router.navigate(['/create-project']);
@@ -665,7 +685,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
 
             // self.router.navigate(['/create-new-project']);
             self.router.navigate(['/onboarding']);
-            
+
           } else {
             self.router.navigate(['/projects']);
           }
@@ -756,7 +776,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
             }
 
             let userFullname = ''
-            if (signupResponse.user.firstname && signupResponse.user.lastname)  {
+            if (signupResponse.user.firstname && signupResponse.user.lastname) {
               userFullname = signupResponse.user.firstname + ' ' + signupResponse.user.lastname
             } else if (signupResponse.user.firstname && !signupResponse.user.lastname) {
               userFullname = signupResponse.user.firstname
