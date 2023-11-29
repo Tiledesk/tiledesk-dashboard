@@ -1726,3 +1726,14 @@ appdashboard-app-store > div > div > div > div > .card-app-store {
   color: $plan-c-color;
   background: $plan-c-background;
 }
+
+
+// /* hide recaptcha badge*/
+.grecaptcha-badge {
+  visibility: hidden;
+}
+
+// /* only show recaptcha badge on needed pages */
+// .recaptcha .grecaptcha-badge {
+//   visibility: visible;
+// }
