@@ -105,7 +105,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
                 const grecaptchaBadgeEl = <HTMLElement>document.querySelector('.grecaptcha-badge');
                 if (event.url !== '/signup') {
-                    // console.log('[APP-COMPONENT] grecaptchaBadgeEl ', grecaptchaBadgeEl)
+                    console.log('[APP-COMPONENT] grecaptchaBadgeEl ', grecaptchaBadgeEl)
                     if (grecaptchaBadgeEl) {
                         grecaptchaBadgeEl.style.visibility = 'hidden'
                     }

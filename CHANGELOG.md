@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.4.79-rc2
+- Implements google reCAPTCHA on the sign up page 
+
 ### 2.4.79-rc1
 - Adds the ability to select the "Business Owner" role in the first step of onboarding
 - Bug fixes in Knowledge Base
