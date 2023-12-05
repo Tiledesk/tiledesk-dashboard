@@ -352,26 +352,7 @@ export const highlightedFeaturesPlanA = [
     { 'color': '#0d8cff', 'background': 'rgba(13,140,255,.2)', 'feature': '800 Chat/mo.' }
 ]
 
-// Basic plan
-export const featuresPlanD = [
-    'CRM',
-    'Private Notes',
-    'Unlimited Conversations History',
-    'Working Hours',
-    'User Ratings',
-    'Canned Responses',
-    'Webhooks',
-    'Email Support',
-    'Team Inbox',
-    '2 Knowledge Bases',
-    '250 Pages for Knowledge Base'
-]
-// Basic plan
-export const highlightedFeaturesPlanD = [
-    { 'color': '#a613ec', 'background': 'rgba(166,19,236,.2)', 'feature': '1 Seats ' },
-    { 'color': '#0d8cff', 'background': 'rgba(13,140,255,.2)', 'feature': '800 Chat/mo.' },
-    { 'color': '#19a95d', 'background': 'rgba(28,191,105,.2)', 'feature': '5 Chatbot' }
-]
+
 
 // Scale Plan
 export const featuresPlanB = [
@@ -392,27 +373,6 @@ export const highlightedFeaturesPlanB = [
     { 'color': '#0d8cff', 'background': 'rgba(13,140,255,.2)', 'feature': '3000 Chat/mo.' }
 ]
 
-// Premium plan 
-export const featuresPlanE = [
-    'Widget Unbranding',
-    'WhatsApp Business',
-    'Facebook Messenger',
-    'Unlimited Departments',
-    'Unlimited Groups',
-    'Zapier connector',
-    'Data export',
-    'Livechat Support',
-    'Knowledge Base',
-    'Analytics',
-    'Email Ticketing',
-]
-
-// Premium plan 
-export const highlightedFeaturesPlanE = [
-    { 'color': '#a613ec', 'background': 'rgba(166,19,236,.2)', 'feature': '2 Seats' },
-    { 'color': '#0d8cff', 'background': 'rgba(13,140,255,.2)', 'feature': '3000 Chat/mo.' },
-    { 'color': '#19a95d', 'background': 'rgba(28,191,105,.2)', 'feature': '20 Chatbot' }
-]
 
 // Plus plan
 export const featuresPlanC = [
@@ -435,6 +395,69 @@ export const featuresPlanC = [
 export const highlightedFeaturesPlanC = [
     { 'color': '#a613ec', 'background': 'rgba(166,19,236,.2)', 'feature': 'Tailored solutions' }
 ]
+
+// ------------------------
+// New Pricing
+// ------------------------
+
+// Basic plan
+export const featuresPlanD = [
+    'CRM',
+    'Private Notes',
+    'Unlimited Conversations History',
+    'Working Hours',
+    'User Ratings',
+    'Canned Responses',
+    'Webhooks',
+    'Email Support',
+    'Team Inbox',
+    '2 Knowledge Bases',
+    '250 Pages for Knowledge Base', 
+    '50,000 AI Tokens'
+]
+// Basic plan
+export const highlightedFeaturesPlanD = [
+    { 'color': '#a613ec', 'background': 'rgba(166,19,236,.2)', 'feature': '1 User ' },
+    { 'color': '#0d8cff', 'background': 'rgba(13,140,255,.2)', 'feature': '800 Chat/mo.' },
+    { 'color': '#19a95d', 'background': 'rgba(28,191,105,.2)', 'feature': '5 Chatbot' }
+]
+
+export const additionalFeaturesPlanD = [
+    'Addional users at 8€/User',
+   'Addional Chat/mo at 10€/500 Conversations'
+]
+
+
+// Premium plan 
+export const featuresPlanE = [
+    'Widget Unbranding',
+    'WhatsApp Business',
+    'Facebook Messenger',
+    'Unlimited Departments',
+    'Unlimited Groups',
+    'Zapier connector',
+    'Data export',
+    'Livechat Support',
+    'Knowledge Base',
+    'Analytics',
+    'Email Ticketing',
+    '3 Knowledge Bases',
+    '500 Pages for Knowledge Base', 
+    '250,000 AI Tokens'
+]
+
+// Premium plan 
+export const highlightedFeaturesPlanE = [
+    { 'color': '#a613ec', 'background': 'rgba(166,19,236,.2)', 'feature': '2 User' },
+    { 'color': '#0d8cff', 'background': 'rgba(13,140,255,.2)', 'feature': '3000 Chat/mo.' },
+    { 'color': '#19a95d', 'background': 'rgba(28,191,105,.2)', 'feature': '20 Chatbot' }
+]
+
+export const additionalFeaturesPlanE = [
+    'Addional users at 16€/User',
+    'Addional Chat/mo at 10€/500 Conversations'
+]
+
 
 // Custom Plan
 export const featuresPlanF = [

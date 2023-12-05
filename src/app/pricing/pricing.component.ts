@@ -12,7 +12,7 @@ import { BrandService } from '../services/brand.service';
 import { LoggerService } from '../services/logger/logger.service';
 import { AppConfigService } from '../services/app-config.service';
 import { TranslateService } from '@ngx-translate/core';
-import { featuresPlanA, featuresPlanB, featuresPlanC, featuresPlanD, featuresPlanE, featuresPlanF, highlightedFeaturesPlanA, highlightedFeaturesPlanB, highlightedFeaturesPlanC, highlightedFeaturesPlanD, highlightedFeaturesPlanE, highlightedFeaturesPlanF, PLAN_NAME } from 'app/utils/util';
+import {  additionalFeaturesPlanD, additionalFeaturesPlanE, featuresPlanA, featuresPlanB, featuresPlanC, featuresPlanD, featuresPlanE, featuresPlanF, highlightedFeaturesPlanA, highlightedFeaturesPlanB, highlightedFeaturesPlanC, highlightedFeaturesPlanD, highlightedFeaturesPlanE, highlightedFeaturesPlanF, PLAN_NAME } from 'app/utils/util';
 import { NotifyService } from 'app/core/notify.service';
 
 declare var Stripe: any;
@@ -26,6 +26,9 @@ enum PLAN_DESC {
   Growth = 'Improve customer experience and qualify leads better with premium features',
   Scale = 'Go omni-channel & find your customers where they already are: WhatsApp, Facebook, etc.',
   Plus = 'Exploit all the premium features and receive support to design chatbots tailor-made',
+  Basic = 'Improve customer experience and qualify leads better with premium features',
+  Premium =  'Go omni-channel & find your customers where they already are: WhatsApp, Facebook, etc.',
+  Custom  = 'Exploit all the premium features and receive support to design chatbots tailor-made'
 }
 
 enum MONTHLY_PRICE {
@@ -41,8 +44,8 @@ enum ANNUAL_PRICE {
   Growth = "225",
   Scale = "790",
   Plus = 'Custom',
-  Basic = "135",
-  Premium = "375",
+  Basic = "150",
+  Premium = "1,000",
   Custom = 'Starting at 300€'
 }
 
@@ -117,6 +120,7 @@ export class PricingComponent implements OnInit, OnDestroy {
   planDecription: string;
   profileType: string;
   planFeatures: Array<string>;
+  additionalFeatures: Array<any>;
   annualPrice: string;
   monthlyPrice: string;
   annualPeriod: boolean;
@@ -268,6 +272,8 @@ export class PricingComponent implements OnInit, OnDestroy {
     this.planDecription = PLAN_DESC[PLAN_NAME.D]
     this.planFeatures = featuresPlanD //  featuresPlanA;
     this.highlightedFeatures = highlightedFeaturesPlanD
+    this.additionalFeatures = additionalFeaturesPlanD
+    console.log('[PRICING] additioalFeatures D PLAN ', this.additionalFeatures)
     this.monthlyPeriod = true;
     this.annualPeriod = false;
     this.monthlyPrice = MONTHLY_PRICE[PLAN_NAME.D]
@@ -350,10 +356,10 @@ export class PricingComponent implements OnInit, OnDestroy {
       this.logger.log('[PRICING] USER UID ', this.currentUserID);
       this.logger.log('[PRICING] USER email ', this.currentUserEmail);
 
-      // this.clientReferenceIdForPlanA = this.currentUserID + '_' + this.projectId + '_' + PLAN_NAME.A
-      // // console.log('[PRICING] clientReferenceIdForPlanA ', this.clientReferenceIdForPlanA)
-      // this.clientReferenceIdForPlanB = this.currentUserID + '_' + this.projectId + '_' + PLAN_NAME.B
-      // // console.log('[PRICING] clientReferenceIdForPlanB ', this.clientReferenceIdForPlanB)
+      this.clientReferenceIdForPlanA = this.currentUserID + '_' + this.projectId + '_' + PLAN_NAME.A
+      // console.log('[PRICING] clientReferenceIdForPlanA ', this.clientReferenceIdForPlanA)
+      this.clientReferenceIdForPlanB = this.currentUserID + '_' + this.projectId + '_' + PLAN_NAME.B
+      // console.log('[PRICING] clientReferenceIdForPlanB ', this.clientReferenceIdForPlanB)
       // this.clientReferenceIdForPlanC = this.currentUserID + '_' + this.projectId + '_' + PLAN_NAME.C
       // // console.log('[PRICING] clientReferenceIdForPlanB ', this.clientReferenceIdForPlanC)
       
@@ -378,10 +384,11 @@ export class PricingComponent implements OnInit, OnDestroy {
       this.PAYMENT_LINK_ANNUALLY_PLAN_B = "https://buy.stripe.com/test_fZeeVQ6TI85cglabIK";
       this.PAYMENT_LINK_PLAN_C = "https://buy.stripe.com/test_4gw1502Ds5X4ed26ot";
 
-      this.PAYMENT_LINK_MONTLY_PLAN_D = "https://buy.stripe.com/test_3cs8xs0vk99g4Cs006"
-      this.PAYMENT_LINK_ANNUALLY_PLAN_D = "https://buy.stripe.com/test_28o9Bwema99g4CsbIP";
-      this.PAYMENT_LINK_MONTLY_PLAN_E = "https://buy.stripe.com/test_28o5lg0vk5X49WMbIQ";
-      this.PAYMENT_LINK_ANNUALLY_PLAN_E = "https://buy.stripe.com/test_7sI294di61GO6KAaEN";
+      this.PAYMENT_LINK_MONTLY_PLAN_D = "https://buy.stripe.com/test_4gw294di6clsed200i", // "https://buy.stripe.com/test_3cs8xs0vk99g4Cs006"
+      this.PAYMENT_LINK_ANNUALLY_PLAN_D = "https://buy.stripe.com/test_6oE8xsfqe3OW7OE28r", //"https://buy.stripe.com/test_28o9Bwema99g4CsbIP";
+      this.PAYMENT_LINK_MONTLY_PLAN_E = "https://buy.stripe.com/test_3cscNIdi62KS3yocN2", // "https://buy.stripe.com/test_28o5lg0vk5X49WMbIQ";
+      this.PAYMENT_LINK_ANNUALLY_PLAN_E = "https://buy.stripe.com/test_9AQbJE2Ds7184Cs14l" //"https://buy.stripe.com/test_7sI294di61GO6KAaEN";
+    
     } else if (this.TEST_PAYMENT_LINKS === false) {
       this.PAYMENT_LINK_MONTLY_PLAN_A = "https://buy.stripe.com/5kA3ck5K604y9qg3ck"; // "https://buy.stripe.com/aEU3ckc8ug3wdGwdQS";
       this.PAYMENT_LINK_ANNUALLY_PLAN_A = "https://buy.stripe.com/fZefZ6egCeZsgSI14d",// "https://buy.stripe.com/28oaEM1tQeZs6e4fYZ";
@@ -390,10 +397,14 @@ export class PricingComponent implements OnInit, OnDestroy {
 
     }
   }
- // -------------------------------
+
+
+
+
+
+  // -------------------------------
   // PLAN D 
   // -------------------------------
-
   openPaymentLinkMontlyPlanD() {
     if (this.USER_ROLE === 'owner') {
       console.log('[PRICING] PLAN A Montly')
@@ -743,6 +754,7 @@ export class PricingComponent implements OnInit, OnDestroy {
    
     this.planFeatures = [];
     this.highlightedFeatures = [];
+    this.additionalFeatures = [];
     this.planName = planname;
 
 
@@ -754,11 +766,13 @@ export class PricingComponent implements OnInit, OnDestroy {
       console.log(' PLAN D Features')
       this.planFeatures = featuresPlanD;
       this.highlightedFeatures = highlightedFeaturesPlanD;
+      this.additionalFeatures = additionalFeaturesPlanD
     }
     if (planname === PLAN_NAME.E) {
       // console.log(' PLAN E Features')
       this.planFeatures = featuresPlanE;
       this.highlightedFeatures = highlightedFeaturesPlanE;
+      this.additionalFeatures = additionalFeaturesPlanE
     }
 
     if (planname === PLAN_NAME.F) {
