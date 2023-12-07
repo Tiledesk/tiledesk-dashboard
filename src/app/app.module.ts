@@ -360,6 +360,7 @@ import { HomeGoToChatComponent } from './home-components/home-go-to-chat/home-go
 import { KnowledgeBasesComponent } from './knowledge-bases/knowledge-bases.component';
 import { CnpTemplatesComponent } from './create-new-project/cnp-templates/cnp-templates.component';
 import { OnboardingWelcomeComponent } from './create-new-project/onboarding-welcome/onboarding-welcome.component';
+import { HomeNewsFeedModalComponent } from './home-components/home-news-feed/home-news-feed-modal/home-news-feed-modal.component';
 
 
 
@@ -636,7 +637,8 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     HomeInviteTeammateErrorModalComponent,
     HomeGoToChatComponent,
     CnpTemplatesComponent,
-    OnboardingWelcomeComponent
+    OnboardingWelcomeComponent,
+    HomeNewsFeedModalComponent
   ],
   imports: [
     TooltipModule.forRoot(CutomTooltipOptions as TooltipOptions),
