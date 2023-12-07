@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.4.79
+- Adds the "News and documentation" section to the home page
+
 ### 2.4.78
 - Deploys in production
 - Adds the ability to select the "Business Owner" role in the first step of onboarding
