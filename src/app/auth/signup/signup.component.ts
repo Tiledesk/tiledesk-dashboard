@@ -147,8 +147,13 @@ export class SignupComponent implements OnInit, AfterViewInit {
     this.buildForm();
     this.getBrowserLang();
     this.getOSCODE();
-    this.getQueryParamsAndSegmentRecordPageAndIdentify()
-    // 
+    this.getQueryParamsAndSegmentRecordPageAndIdentify();
+    
+    const hasSigninWithGoogle = this.localDbService.getFromStorage('swg')
+    if (hasSigninWithGoogle) {
+      this.localDbService.removeFromStorage('swg')
+      // console.log('[SIGN-UP] removeFromStorage swg')
+    }
 
   }
 
@@ -564,12 +569,13 @@ export class SignupComponent implements OnInit, AfterViewInit {
                 window['analytics'].track("Signed Up", {
                   "type": "organic",
                   "utm_source": utm_source_value,
-                  "signupButton": su,
+                  "button": su,
                   "first_name": signupResponse.user.firstname,
                   "last_name": signupResponse.user.lastname,
                   "email": signupResponse.user.email,
                   "username": userFullname,
-                  'userId': signupResponse.user._id
+                  'userId': signupResponse.user._id,
+                  'method': "Email and Password"
                 });
               } catch (err) {
                 this.logger.error('track signup event error', err);
@@ -656,12 +662,15 @@ export class SignupComponent implements OnInit, AfterViewInit {
           if (self.SKIP_WIZARD === false) {
             // self.router.navigate(['/create-project']);
             // self.createNewProject(signupResponse)
-            self.router.navigate(['/create-new-project']);
+
+            // self.router.navigate(['/create-new-project']);
+            self.router.navigate(['/onboarding']);
+            
           } else {
             self.router.navigate(['/projects']);
           }
         } else {
-          // self.localDbService.removeFromStorage('wannago')
+          self.localDbService.removeFromStorage('wannago')
           self.router.navigate([self.storedRoute]);
         }
 

@@ -24,20 +24,23 @@ import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.comp
   styleUrls: ['./knowledge-bases.component.scss']
 })
 // extends KbBaseComponent
-export class KnowledgeBasesComponent extends PricingBaseComponent implements OnInit, OnDestroy {
 
+export class KnowledgeBasesComponent extends PricingBaseComponent implements OnInit, OnDestroy {
+  private unsubscribe$: Subject<any> = new Subject<any>();
   public IS_OPEN_SETTINGS_SIDEBAR: boolean;
   public isChromeVerGreaterThan100: boolean;
-  private unsubscribe$: Subject<any> = new Subject<any>();
 
   addKnowledgeBaseModal = 'none';
   previewKnowledgeBaseModal = 'none';
   deleteKnowledgeBaseModal = 'none';
   secretsModal = 'none';
+  missingGptkeyModal = 'none';
   showSpinner: boolean = true;
   buttonDisabled: boolean = true;
   addButtonDisabled: boolean = false;
   gptkeyVisible: boolean = false;
+
+  //analytics
   CURRENT_USER: any;
   project: Project;
   project_name: string;
@@ -73,6 +76,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   show_answer: boolean = false;
   kbid_selected: any;
 
+  interval_id;
 
   constructor(
     private auth: AuthService,
@@ -108,6 +112,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+    clearInterval(this.interval_id);
   }
 
   getRouteParams() {
@@ -182,21 +187,23 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
   getProjectById(projectId) {
     this.projectService.getProjectById(projectId).subscribe((project: any) => {
-      this.logger.log('[KNOWLEDGE-BASES-COMP] - GET PROJECT BY ID - PROJECT: ', project);
+      this.logger.log('[KNOWLEDGE BASES COMP] - GET PROJECT BY ID - PROJECT: ', project);
 
       this.profile_name = project.profile.name
-      this.logger.log('[KNOWLEDGE-BASES-COMP] - GET PROJECT BY ID - profile_name: ', this.profile_name);
+    
+      this.logger.log('[KNOWLEDGE BASES COMP] - GET PROJECT BY ID - profile_name: ', this.profile_name);
 
     }, error => {
       this.logger.error('[KNOWLEDGE-BASES-COMP] - GET PROJECT BY ID - ERROR ', error);
     }, () => {
       this.logger.log('[KNOWLEDGE-BASES-COMP] - GET PROJECT BY ID * COMPLETE * ');
+      this.logger.log('[KNOWLEDGE BASES COMP] - GET PROJECT BY ID * COMPLETE * ');
 
     });
   }
 
   startPooling() {
-    let id = setInterval(() => {
+    this.interval_id = setInterval(() => {
       this.checkAllStatuses();
     }, 30000);
   }
@@ -221,29 +228,20 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
   getKnowledgeBaseSettings() {
     this.kbService.getKbSettings().subscribe((kbSettings: KbSettings) => {
-      this.logger.log("[KNOWLEDGE-BASES-COMP] get kbSettings: ", kbSettings);
+      this.logger.log("[KNOWLEDGE BASES COMP] get kbSettings: ", kbSettings);
       this.kbSettings = kbSettings;
-      if (this.kbSettings) {
-        this.kbCount = this.kbSettings.kbs.length
-        console.log("[KNOWLEDGE-BASES-COMP] KbCount: ", this.kbCount);
+      if (this.kbSettings.kbs.length < kbSettings.maxKbsNumber) {
+        this.addButtonDisabled = false;
+      } else {
+        this.addButtonDisabled = true;
       }
-
-      // if (this.kbSettings.kbs.length < kbSettings.maxKbsNumber) {
-
-      // if (this.kbSettings.kbs.length < this.kbLimit) {
-
-      //   this.addButtonDisabled = false;
-      // } else {
-      //   this.addButtonDisabled = true;
-      // }
       this.checkAllStatuses();
       this.startPooling();
     }, (error) => {
-      this.logger.error("[KNOWLEDGE-BASES-COMP] ERROR get kbSettings: ", error);
+      this.logger.error("[KNOWLEDGE BASES COMP] ERROR get kbSettings: ", error);
     }, () => {
-      this.logger.log("[KNOWLEDGE-BASES-COMP] get kbSettings *COMPLETE*");
+      this.logger.log("[KNOWLEDGE BASES COMP] get kbSettings *COMPLETE*");
       this.showSpinner = false;
-
     })
   }
 
@@ -309,13 +307,23 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     this.notify.presentModalOnlyOwnerCanManageTheAccountPlan('Agents can\'t manage chatbots', 'Learn more about default roles')
   }
 
+  
   saveKnowledgeBase() {
-    this.closeAddKnowledgeBaseModal();
+
+    // let first_index = this.newKb.url.indexOf('://') + 3;
+    // let second_index = this.newKb.url.indexOf('www.') + 4;
+    // let split_index;
+    // if (second_index > first_index) {
+    //   split_index = second_index;
+    // } else {
+    //   split_index = first_index;
+    // }
+    // this.newKb.name = this.newKb.url.substring(split_index);
     let first_index = this.newKb.url.indexOf('://');
     let second_index = this.newKb.url.indexOf('www.');
 
     let split_index;
-    if (first_index !== -1 || first_index !== -1) {
+    if (first_index !== -1 || second_index !== -1) {
       if (second_index > first_index) {
         split_index = second_index + 4;
       } else {
@@ -327,27 +335,39 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     }
 
     this.kbService.addNewKb(this.kbSettings._id, this.newKb).subscribe((savedSettings: KbSettings) => {
-      console.log('[KNOWLEDGE-BASESCOMP] savedSettings' , savedSettings) 
-      this.runIndexing(this.newKb);
+      // console.log('[KNOWLEDGE BASES COMP] this.kbSettings addNewKb ', this.kbSettings)
       this.getKnowledgeBaseSettings();
       let kb = savedSettings.kbs.find(kb => kb.url === this.newKb.url);
-      this.checkStatus(kb).then((status_code) => {
-        if (status_code === 0) {
-          this.runIndexing(kb);
-        }
-        // this.closeAddKnowledgeBaseModal();
-        this.reset()
-      })
+
+      if (!this.kbSettings.gptkey) {
+        this.closeAddKnowledgeBaseModal();
+        this.checkStatus(kb);
+        setTimeout(() => {
+          this.openMissingGptkeyModal();
+        }, 600)
+
+      } else {
+        this.closeAddKnowledgeBaseModal();
+        this.checkStatus(kb).then((status_code) => {
+          if (status_code === 0) {
+            this.runIndexing(kb);
+          }
+        })
+      }
     }, (error) => {
       this.logger.error("[KNOWLEDGE-BASESCOMP] ERROR add new kb: ", error);
     }, () => {
-      this.logger.log("[KNOWLEDGE-BASESCOMP] add new kb *COMPLETED*");
-
-      this.trackUserActioOnKB('Added Knowledge Base')
+      this.logger.log("[KNOWLEDGE BASES COMP] add new kb *COMPLETED*");
+      let gptkey = "empty"
+      if (this.kbSettings.gptkey !== "") {
+        gptkey = 'filled'
+      }
+      // console.log("[KNOWLEDGE BASES COMP] gptkey ", gptkey)
+      this.trackUserActioOnKB('Added Knowledge Base', gptkey)
     })
   }
 
-  trackUserActioOnKB(event) {
+  trackUserActioOnKB(event: any, gptkey: string) {
     if (!isDevMode()) {
       if (window['analytics']) {
         let userFullname = ''
@@ -374,7 +394,8 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
             "username": userFullname,
             "email": this.CURRENT_USER.email,
             'userId': this.CURRENT_USER._id,
-            'page': this.callingPage
+            'page': this.callingPage,
+            'gptkey': gptkey
 
           }, {
             "context": {
@@ -400,27 +421,46 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
 
 
+  
+
   saveKnowledgeBaseSettings() {
     this.kbService.saveKbSettings(this.kbSettings).subscribe(((savedSettings) => {
+
+      // console.log('[KNOWLEDGE BASES COMP] save kb this.kbSettings > gptkey: ', this.kbSettings.gptkey)
+      // console.log('[KNOWLEDGE BASES COMP] save kb savedSettings: ', savedSettings)
       this.getKnowledgeBaseSettings();
       this.closeSecretsModal();
     }), (error) => {
       this.logger.error("[KNOWLEDGE-BASESCOMP] ERROR save kb settings: ", error);
     }, () => {
-      this.logger.log("[KNOWLEDGE-BASES-COMP] save kb settings *COMPLETE*");
+      this.logger.log("[KNOWLEDGE BASES COMP] save kb settings *COMPLETE*");
+      let gptkey = "empty"
+      if (this.kbSettings.gptkey !== "") {
+        gptkey = 'filled'
+      }
+      // console.log("[KNOWLEDGE BASES COMP] gptkey ", gptkey)
+      this.trackUserActioOnKB('Save Knowledge Base GPT-Key', gptkey)
     })
   }
 
   deleteKnowledgeBase(id) {
-    this.logger.debug("[KNOWLEDGE-BASES-COMP] kb to delete id: ", id);
+    this.logger.log("[KNOWLEDGE BASES COMP] kb to delete id: ", id);
     this.kbService.deleteKb(this.kbSettings._id, id).subscribe((response) => {
+
+      // console.log('[KNOWLEDGE BASES COMP] this.kbSettings delete > ', this.kbSettings.gptkey)
+
       this.getKnowledgeBaseSettings();
       this.closeDeleteKnowledgeBaseModal();
     }, (error) => {
-      this.logger.error("[KNOWLEDGE-BASES-COMP] ERROR delete kb: ", error);
+      this.logger.error("[KNOWLEDGE BASES COMP] ERROR delete kb: ", error);
     }, () => {
-      this.logger.log("[KNOWLEDGE-BASES-COMP] delete kb *COMPLETE*");
-      this.trackUserActioOnKB('Deleted Knowledge Base')
+      this.logger.log("[KNOWLEDGE BASES COMP] delete kb *COMPLETE*");
+      let gptkey = "empty"
+      if (this.kbSettings.gptkey !== "") {
+        gptkey = 'filled'
+      }
+      // console.log("[KNOWLEDGE BASES COMP] gptkey ", gptkey)
+      this.trackUserActioOnKB('Deleted Knowledge Base', gptkey)
     })
   }
 
@@ -430,8 +470,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       gptkey: this.kbSettings.gptkey
     }
     this.openaiService.startScraping(data).subscribe((response: any) => {
-      this.logger.log("[KNOWLEDGE-BASES-COMP] start scraping response: ", response);
-
+      this.logger.log("start scraping response: ", response);
       if (response.message && response.message === "Invalid Openai API key") {
         this.notify.showWidgetStyleUpdateNotification("Invalid Openai API key", 4, 'report_problem');
       }
@@ -501,11 +540,12 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
     this.searching = true;
     this.show_answer = false;
-    this.error_answer = false;
+
     this.answer = null;
     this.source_url = null;
 
     this.openaiService.askGpt(data).subscribe((response: any) => {
+      console.log("ask gpt preview response: ", response);
       if (response.success == false) {
         this.error_answer = true;
       } else {
@@ -520,10 +560,12 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         element.classList.add('answer-active');
       }, (200));
     }, (error) => {
-      this.logger.error("[KNOWLEDGE-BASES-COMP] ERROR ask gpt: ", error);
+      this.logger.error("ERROR ask gpt: ", error);
+      this.error_answer = true;
+      this.show_answer = true;
       this.searching = false;
     }, () => {
-      this.logger.log("[KNOWLEDGE-BASES-COMP] ask gpt *COMPLETE*")
+      this.logger.log("ask gpt *COMPLETE*")
       this.searching = false;
     })
   }
@@ -540,7 +582,9 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     // }
   }
 
-
+  // openAddKnowledgeBaseModal() {
+  //   this.addKnowledgeBaseModal = 'block';
+  // }
 
   openPreviewKnowledgeBaseModal(kb) {
     this.kbid_selected = kb;
@@ -554,22 +598,25 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   }
 
   openSecretsModal() {
-    this.secretsModal = 'block';
-    if (this.kbSettings.gptkey) {
-      let el = <HTMLInputElement>document.getElementById('gptkey-key');
-      console.log('[KNOWLEDGE-BASES-COMP] openSecretsModal el', el)
-      el.type = "password"
-      this.gptkeyVisible = false;
-    } else {
-      this.gptkeyVisible = true;
-    }
+    this.missingGptkeyModal = 'none';
+    setTimeout(() => {
+      this.secretsModal = 'block';
+      if (this.kbSettings.gptkey) {
+        let el = <HTMLInputElement>document.getElementById('gptkey-key');
+        el.type = "password"
+        this.gptkeyVisible = false;
+      } else {
+        this.gptkeyVisible = true;
+      }
+    }, 600);
+  }
+
+  openMissingGptkeyModal() {
+    this.missingGptkeyModal = 'block';
   }
 
   closeAddKnowledgeBaseModal() {
     this.addKnowledgeBaseModal = 'none';
-    // this.newKb = { name: '', url: '' }
-  }
-  reset() {
     this.newKb = { name: '', url: '' }
   }
 
@@ -592,5 +639,17 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   closeSecretsModal() {
     this.secretsModal = 'none';
   }
+
+
+  closeMissingGptkeyModal() {
+    this.missingGptkeyModal = 'none';
+  }
+
+
+  contactSalesForChatGptKey() {
+    this.closeSecretsModal()
+    window.open(`mailto:support@tiledesk.com?subject=I don't have a GPT-Key`);
+  }
+
 
 }

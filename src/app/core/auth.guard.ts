@@ -339,6 +339,8 @@ export class AuthGuard implements CanActivate {
 
     // console.log('[AUTH-GUARD] SSO - CAN ACTIVATE next ', next);
     // console.log('[AUTH-GUARD] SSO - CAN ACTIVATE state ', state);
+    // console.log('[AUTH-GUARD] SSO - CAN ACTIVATE state _root queryParams', state['_root']['value'].queryParams )
+    // if () 
     const url = state.url;
     const _url = next['_routerState'].url
     // console.log('[AUTH-GUARD] SSO - CAN ACTIVATE state url  ', url);
@@ -349,6 +351,16 @@ export class AuthGuard implements CanActivate {
     // ----------------------------------------
     const decodeCurrentUrl = decodeURIComponent(url)
     // console.log('[AUTH-GUARD] _decodeCurrentUrl ', decodeCurrentUrl)
+
+    if (decodeCurrentUrl === '/projects') {
+      // get if user has used Signin with Google
+      const hasSigninWithGoogle = this.localDbService.getFromStorage('swg')
+      if (hasSigninWithGoogle) {
+        this.localDbService.removeFromStorage('swg')
+        // console.log('[AUTH-GUARD] removeFromStorage swg')
+      }
+    }
+
 
     const storedRoute = this.localDbService.getFromStorage('wannago')
     // console.log('[AUTH-GUARD] storedRoute getFromStorage ', storedRoute)

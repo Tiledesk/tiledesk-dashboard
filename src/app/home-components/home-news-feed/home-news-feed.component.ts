@@ -1,6 +1,9 @@
 import { HttpClient } from '@angular/common/http';
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { LoggerService } from 'app/services/logger/logger.service';
+import { HomeNewsFeedModalComponent } from './home-news-feed-modal/home-news-feed-modal.component';
+
 
 @Component({
   selector: 'appdashboard-home-news-feed',
@@ -8,16 +11,31 @@ import { LoggerService } from 'app/services/logger/logger.service';
   styleUrls: ['./home-news-feed.component.scss']
 })
 export class HomeNewsFeedComponent implements OnInit, AfterViewInit {
+  @ViewChild('scrollableElement') scrollableElement: ElementRef;
+
+  @Input() showskeleton: any;
   newsFeedList: any;
-  displayScrollLeftBtn = false
+  displayScrollLeftBtn = false;
+  displayScrollRightBtn = true;
   constructor(
     private httpClient: HttpClient,
     private logger: LoggerService,
+    public dialog: MatDialog,
+
   ) { }
 
   ngOnInit(): void {
     this.getNewsFeed()
+
+    // Add event listener to the scrollable element
+
   }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    this.logger.log('[HOME-NEWS-FEED] showskeleton', this.showskeleton)
+  }
+
+
 
   ngAfterViewInit() {
 
@@ -41,22 +59,58 @@ export class HomeNewsFeedComponent implements OnInit, AfterViewInit {
     });
   }
 
+  openNews(url: string, type: string) {
+    this.logger.log('[HOME-NEWS-FEED] openNews url ', url, ' type ', type)
+    if (type === 'video') {
+      this.openVideoInModal(url)
+    } else {
+      this.openNewsLink(url)
+    }
+  }
 
   openNewsLink(url: string) {
     this.logger.log('[HOME-NEWS-FEED] url ', url)
     window.open(url, '_blank');
   }
 
+  openVideoInModal(url: string) {
+    const dialogRef = this.dialog.open(HomeNewsFeedModalComponent, {
+      data: {
+        videoURL: url + '&rel=0&controls=1&showinfo=0',
+
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.logger.log(`Dialog result: ${result}`);
+    });
+  }
+
+  // @HostListener('window:scroll', ['$event'])
+  // onScroll(event) {
+  //   // Get the horizontal scroll position of the element
+  //   setTimeout(() => {
+  //     const scrollLeft = this.scrollableElement.nativeElement.scrollLeft;
+  //     console.log('[HOME-NEWS-FEED] Horizontal scroll position: ', scrollLeft);
+  //   }, 2500);
+  
+  // }
+
   // https://www.codingnepalweb.com/draggable-card-slider-html-css-javascript/
   initCarousel() {
     const wrapper = <HTMLElement>document.querySelector(".news-wrapper");
     const carousel = <HTMLElement>document.querySelector(".carousel");
+    this.logger.log('[HOME-NEWS-FEED] carousel.offsetWidth ', carousel.offsetWidth)
+  
+   
     if (carousel) {
       const _firstCardWidth = <HTMLElement>carousel.querySelector(".news-card");
       const firstCardWidth = _firstCardWidth.offsetWidth;
+      this.logger.log('[HOME-NEWS-FEED] firstCardWidth',  firstCardWidth )
       const arrowBtns = document.querySelectorAll(".wrapper i");
       const carouselChildrens = [...[carousel.children]];
-
+      // console.log('[HOME-NEWS-FEED] carouselChildrens ', carouselChildrens)
+      // console.log('[HOME-NEWS-FEED] arrowBtns ', arrowBtns)
 
       let isDragging = false;
       let isAutoPlay = false;
@@ -66,7 +120,48 @@ export class HomeNewsFeedComponent implements OnInit, AfterViewInit {
 
       // Get the number of cards that can fit in the carousel at once
       let cardPerView = Math.round(carousel.offsetWidth / firstCardWidth);
-      this.logger.log('cardPerView', cardPerView)
+      this.logger.log('[HOME-NEWS-FEED]  cardPerView', cardPerView)
+
+
+      // this.scrollableElement.nativeElement.addEventListener('scroll', this.onScroll);
+      // console.log('[HOME-NEWS-FEED]  scrollableElement', this.scrollableElement)
+      const feedCarouselEl = document.getElementById('feed-carousel');
+      // console.log('[HOME-NEWS-FEED]  feedCarouselEl', feedCarouselEl)
+      // // console.log('[HOME-NEWS-FEED]  feedCarouselEl Width', feedCarouselEl.clientWidth)
+      // console.log('[HOME-NEWS-FEED]  feedCarouselEl scrollWidth', feedCarouselEl.scrollWidth)
+
+    
+      // const feedCarouselWprEl = document.getElementById('feed-carousel-wpr');
+      // console.log('[HOME-NEWS-FEED]  feedCarouselWprEl', feedCarouselWprEl)
+      // console.log('[HOME-NEWS-FEED]  feedCarouselWprEl Width', feedCarouselWprEl.clientWidth)
+
+      feedCarouselEl.addEventListener('scroll', (event) => {
+        this.logger.log('scroll event ', event);
+        const scrollPosition = feedCarouselEl.scrollLeft;
+        const scrollScrollWidth = feedCarouselEl.scrollWidth
+        this.logger.log('scrollPosition ', scrollPosition);
+        this.logger.log('scrollScrollWidth ', scrollScrollWidth);
+        if(scrollPosition !== 40) {
+          this.displayScrollLeftBtn = true
+        } else if (scrollPosition === 40) {
+          this.displayScrollLeftBtn = false
+          this.displayScrollRightBtn = true
+        }
+        // if (scrollPosition !== 582) {
+        //   this.displayScrollRightBtn = true
+        // } else if (scrollPosition === 582) {
+        //   this.displayScrollRightBtn = false
+        // }
+
+      });
+
+
+        // if (carousel.scrollLeft < 40) {
+          //   this.displayScrollLeftBtn = false
+          // } else if (carousel.scrollLeft >= 40) {
+          //   this.displayScrollLeftBtn = true
+          // }
+
 
       // Insert copies of the last few cards to beginning of carousel for infinite scrolling
       // carouselChildrens.slice(-cardPerView).reverse().forEach((card: any) => {
@@ -91,30 +186,33 @@ export class HomeNewsFeedComponent implements OnInit, AfterViewInit {
       // Add event listeners for the arrow buttons to scroll the carousel left and right
       arrowBtns.forEach(btn => {
         btn.addEventListener("click", () => {
-          carousel.scrollLeft += btn.id == "left" ? -firstCardWidth : firstCardWidth;
+          carousel.scrollLeft += btn.id == "left" ? -firstCardWidth : firstCardWidth + 55;
           this.logger.log('[HOME-NEWS-FEED] carousel.scrollLeft ', carousel.scrollLeft)
+         
 
 
-
-          if (carousel.scrollLeft < 40) {
-            this.displayScrollLeftBtn = false
-          } else if (carousel.scrollLeft >= 40) {
-            this.displayScrollLeftBtn = true
-          }
+          // if (carousel.scrollLeft < 40) {
+          //   this.displayScrollLeftBtn = false
+          // } else if (carousel.scrollLeft >= 40) {
+          //   this.displayScrollLeftBtn = true
+          // }
         });
       });
 
       const dragStart = (e) => {
         isDragging = true;
+
         carousel.classList.add("dragging");
         // Records the initial cursor and scroll position of the carousel
         startX = e.pageX;
+        this.logger.log('[HOME-NEWS-FEED] isDragging startX', startX)
         startScrollLeft = carousel.scrollLeft;
       }
       const dragging = (e) => {
         if (!isDragging) return; // if isDragging is false return from here
         // Updates the scroll position of the carousel based on the cursor movement
         carousel.scrollLeft = startScrollLeft - (e.pageX - startX);
+        this.logger.log('[HOME-NEWS-FEED] isDragging startX', startX)
       }
       const dragStop = () => {
         isDragging = false;

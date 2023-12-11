@@ -4,7 +4,7 @@
         "title": "Getting started for admin",
         "image": "https://tiledesk.com/wp-content/uploads/2023/06/Getting-started-for-admin_v2.png",
         "description": "",
-        "learnmore": "https://gethelp.tiledesk.com/categories/getting-started-for-admins/",
+        "learnmore": "https://docs.tiledesk.com/knowledge-base-category/getting-started-for-admins/",
         "type": "article",
         "highlighted": false
     
@@ -14,7 +14,7 @@
         "title": "Getting started for agents",
         "image": "https://tiledesk.com/wp-content/uploads/2023/06/Getting-started-for-agent.png",
         "description": "",
-        "learnmore": "https://gethelp.tiledesk.com/categories/getting-started-for-agents/",
+        "learnmore": "https://docs.tiledesk.com/knowledge-base-category/getting-started-for-agents/",
         "type": "article",
         "highlighted": false
        
@@ -27,6 +27,44 @@
         "learnmore": "https://developer.tiledesk.com/",
         "type": "article",
         "highlighted": false
+    },
+    {
+        "tag": "Academy",
+        "title": "How to create a bot with a chain of blocks",
+        "description": "Learn how to add blocks for a complete and coherent conversation",
+        "background": "linear-gradient(135deg, rgb(206, 159, 252) 0%, rgb(115, 103, 240) 100%)",
+        "learnmore": "https://www.youtube.com/embed/xh_sidKrcxQ?si=ZHEjk-WHLuE8Fy2V",
+        "type": "video",
+        "highlighted": false
+    },
+    {
+        "tag": "Academy",
+        "title": "Add a deals carousel to your conversation flow",
+        "description": "Showcase Your Best Deals with a Carousel",
+        "background": "linear-gradient(135deg, rgb(240, 47, 194) 0%, rgb(96, 148, 234) 100%)",
+        "learnmore": "https://www.youtube.com/embed/nYffHW1wKWk?si=oaDIP02xp1BP4EDh",
+        "type": "video",
+        "highlighted": false
+    },
+    {
+        "tag": "Academy",
+        "title": "ChatGPT from Knowledge Base",
+        "description": "Automate your Knowledge Base using ChatGPT",
+        "background": "linear-gradient(135deg, rgb(113, 23, 234) 0%, rgb(234, 96, 96) 100%)",
+        "learnmore": "https://www.youtube.com/embed/it9I7bDWsTQ?si=MIoifdsr5QYQ3x_q",
+        "type": "video",
+        "highlighted": false
+    },
+    {
+        "tag": "Academy",
+        "title": "How can your bot hand over to a human",
+        "description": "What if you want a chatbot-human handoff?",
+        "background": "linear-gradient(135deg, rgb(197, 108, 214) 0%, rgb(52, 37, 175) 100%)",
+        "learnmore": "https://www.youtube.com/embed/hwMZ993sFCI?si=7MSmkVpX1VOeraF9",
+        "type": "video",
+        "highlighted": false
     }
 
 ]
+
+

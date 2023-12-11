@@ -1,0 +1,108 @@
+.onboarding-welcome-container {
+    padding: 16px;
+    height: 100vh;
+    width: 100vw;
+}
+
+
+.onboarding-welcome-main {
+    height: 100%;
+    width: 100%;
+    padding-bottom: 30px;
+    overflow-y: auto;
+}
+
+.onboarding-welcome-spacing {
+    flex: 3 1 0%;
+    text-align: center;
+    min-height: 45px;
+}
+
+.onboarding-welcome-content-wpr {
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+}
+
+
+.onboarding-welcome-content {
+    padding-top: 25vh;
+}
+
+.onboarding-welcome-inner-content {
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    flex-direction: column;
+    -webkit-box-pack: center;
+    justify-content: center;
+}
+
+.onboarding-welcome-logo-container {
+    border-radius: 50%;
+    min-height: 82px;
+    min-width: 82px;
+    box-shadow: rgba(17, 49, 96, 0.16) 0px 8px 16px 0px, rgba(17, 49, 96, 0.06) 0px 0px 0px 1px;
+    /* background-image: linear-gradient(rgba(19, 33, 68, 0.85), rgb(19, 33, 68)); */
+    margin-bottom: 21px;
+}
+
+.onboarding-welcome-logo-svg-wpr {
+    transition: opacity 0.15s ease 0s, background 0.15s ease 0s, color 0.15s ease 0s, transform 0.15s ease 0s;
+    box-sizing: content-box;
+    width: 82px;
+    height: 82px;
+    color: rgb(255, 255, 255);
+    background: transparent;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-wrap: wrap;
+}
+
+
+.onboarding-welcome-title-wpr {
+    color: rgb(19, 33, 68);
+    font-weight: 600;
+    font-size: 28px;
+    text-align: center;
+    margin-bottom: 16px;
+    font-family: Poppins, Roboto, Arial, sans-serif;
+}
+
+.onboarding-welcome-title {
+    color: rgb(19, 33, 68);
+    font-weight: 600;
+    font-size: 28px;
+    text-align: center;
+    margin-bottom: 16px;
+    font-family: Poppins, Roboto, Arial, sans-serif;
+}
+
+.onboarding-welcome-subtitle {
+    width: 370px;
+    margin-bottom: 40px;
+    color: rgb(98, 119, 140);
+    line-height: 1.47;
+    text-align: center;
+    font-weight: 400;
+    font-size: 16px;
+}
+
+.onboarding-welcome-btn-wpr {
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+}
+
+
+@media (max-width: 668px){
+    .onboarding-welcome-subtitle { 
+        width: 340px;
+        font-size: 14px;
+    }
+}

@@ -30,7 +30,18 @@
                     <button type="button" class="btn btn-new btn-size-m btn--primary" (click)="createBlankTilebot()">
                         <span>Add from scratch</span>
                     </button>
-                </div>
+                </div> 
+                <!-- from Master (commented) -->
+                <!-- <div class="row button-row">
+                    <div class="col-sm-12">
+                        <div class="t--btn-wpr">
+                            <button type="button" class="btn btn-new btn-size-m btn--primary"
+                                (click)="createBlankTilebot()">
+                                <span>Add from scratch</span>
+                            </button>
+                        </div>
+                    </div>
+                </div> -->
 
                 <!-- <div class="css-121pzjd eooq4xa4">
                     <h2 weight="500" class="css-180zyx9 eimqq0f0">Browse templates</h2>
@@ -94,6 +105,12 @@
                         <span *ngIf="COMMUNITY_TEMPLATE">
                             Community
                         </span>
+                        <!-- <div class="t--btn-wpr" *ngIf="!COMMUNITY_TEMPLATE">
+                            <button type="button" class="btn btn-new btn-size-m btn--primary"
+                                (click)="createBlankTilebot()">
+                                <span>Add from scratch</span>
+                            </button>
+                        </div> -->
                     </div>
                     <loading-spinner *ngIf="showSpinner"></loading-spinner>
                     <div *ngIf="!showSpinner" class="page-content">
@@ -200,7 +217,7 @@
                                                     [ngStyle]="{'color': tag.color, 'background-color':  tag.background}"
                                                     *ngFor="let tag of template.certifiedTags">
                                                     <p weight="normal" class="template-tag-name">
-                                                        {{tag.name  }} </p>
+                                                        {{tag.name }} </p>
 
                                                 </span>
 
@@ -513,14 +530,6 @@
                                                         <div class="css-1fubhz3 cmnty-tmplt-card-footer">
                                                             <div class="css-pqgycx cmnty-tmplt-card-footer-left">
 
-
-
-                                                                <!-- <button type="button"
-                                                                    class="btn btn-new btn-size-m btn--primary btn-block"
-                                                                    (click)="openDialog(template)">
-                                                    
-                                                                    <span>Use template </span>
-                                                                </button> -->
                                                             </div>
                                                             <div class="css-sa2iis cmnty-tmplt-card-footer-right-wpr">
                                                                 <div class="css-1p5njkb cmnty-tmplt-card-footer-right">
@@ -544,7 +553,7 @@
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
-                                                                           
+
                                                                         </div>
                                                                         <div *ngIf="template?.tags?.length > 3">
                                                                             + {{ template?.tags?.length - 3 }}

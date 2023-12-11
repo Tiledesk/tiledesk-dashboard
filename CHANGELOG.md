@@ -1,5 +1,58 @@
 # tiledesk-dashboard
 
+### 2.4.79
+- Adds the "News and documentation" section to the home page
+
+### 2.4.78
+- Deploys in production
+- Adds the ability to select the "Business Owner" role in the first step of onboarding
+- Bug fixes in Knowledge Base
+
+### 2.4.77
+- Deploys in production
+- Fixes the bug: unable to update intent due to missing "id_faq_kb" parameter in PUT API call
+
+### 2.4.76
+- Deploys in production
+- Improvements and bug fixing
+
+### 2.4.75
+- Deploys in production
+- Disables the sign up button during the registration process
+- Hides the widget during onboarding steps
+
+### 2.4.74
+- Deploys in production
+- Fixes translations
+
+### 2.4.73
+- Deploys in production
+- New onboarding
+
+### 2.4.73-rc5
+- Production test
+- New onboarding
+
+### 2.4.73-rc4
+- Improvements and bug fixing
+
+### 2.4.73-rc3
+- Adds analytics quote
+
+### 2.4.73-rc2
+- Standalone design studio connected
+
+### 2.4.73-rc1
+- Removes chatPrefix
+
+### 2.4.72
+- Deploys in production
+- Improvements and bug fixing
+
+### 2.4.71
+- Deploys in production
+- Improves user experience when creating knowledge bases
+
 ### 2.4.70
 - Deploys in production
 - Improvements and bug fixing

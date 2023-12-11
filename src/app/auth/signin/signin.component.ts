@@ -91,6 +91,12 @@ export class SigninComponent implements OnInit {
     this.buildForm();
     this.getWindowWidthAndHeight();
     this.getStoredRoute()
+    // get if user has used Signin with Google
+    const hasSigninWithGoogle = this.localDbService.getFromStorage('swg')
+    if (hasSigninWithGoogle) {
+      this.localDbService.removeFromStorage('swg')
+      // console.log('[SIGN-IN] removeFromStorage swg')
+    }
   }
 
   getStoredRoute() {
@@ -289,7 +295,7 @@ export class SigninComponent implements OnInit {
             }
 
             let userFullname = ''
-            if (user.firstname && user.lastname)  {
+            if (user.firstname && user.lastname) {
               userFullname = user.firstname + ' ' + user.lastname
             } else if (user.firstname && !user.lastname) {
               userFullname = user.firstname
@@ -310,6 +316,7 @@ export class SigninComponent implements OnInit {
               window['analytics'].track('Signed In', {
                 "username": userFullname,
                 "userId": user._id,
+                'button': 'Login',
                 'method': "Email and Password"
               });
             } catch (err) {
@@ -445,8 +452,8 @@ export class SigninComponent implements OnInit {
   // }
   goToSignupPage() {
     const storedUser = localStorage.getItem('user');
-    this.logger.log('[SIGN-IN] GO TO SIGNUP PAGE STORED USER ',storedUser) 
-    if(storedUser) {
+    this.logger.log('[SIGN-IN] GO TO SIGNUP PAGE STORED USER ', storedUser)
+    if (storedUser) {
       // localStorage.removeItem('user')
       this.auth.signOut('signin');
     }

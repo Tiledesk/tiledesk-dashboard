@@ -351,7 +351,7 @@ import { HomeKbComponent } from './home-components/home-kb/home-kb.component';
 
 
 import { OpenaiService } from './services/openai.service';
-import { KnowledgeBasesComponent } from './knowledge-bases/knowledge-bases.component';
+// import { KnowledgeBasesComponent } from './knowledge-bases/knowledge-bases.component';
 import { HomeKbModalComponent } from './home-components/home-kb/home-kb-modal/home-kb-modal.component';
 import { HomeCreateChatbotModalComponent } from './home-components/home-create-chatbot/home-create-chatbot-modal/home-create-chatbot-modal.component';
 import { HomeInviteTeammateModalComponent } from './home-components/home-create-teammate/home-invite-teammate-modal/home-invite-teammate-modal.component';
@@ -363,6 +363,10 @@ import { KbBaseComponent } from './knowledge-bases/kb-base/kb-base.component';
 import { KbModalComponent } from './knowledge-bases/kb-modal/kb-modal.component';
 import { KbAlertComponent } from './knowledge-bases/kb-alert/kb-alert.component';
 
+import { KnowledgeBasesComponent } from './knowledge-bases/knowledge-bases.component';
+import { CnpTemplatesComponent } from './create-new-project/cnp-templates/cnp-templates.component';
+import { OnboardingWelcomeComponent } from './create-new-project/onboarding-welcome/onboarding-welcome.component';
+import { HomeNewsFeedModalComponent } from './home-components/home-news-feed/home-news-feed-modal/home-news-feed-modal.component';
 
 
 
@@ -642,7 +646,10 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     ChatbotAlertComponent,
     KbBaseComponent,
     KbModalComponent,
-    KbAlertComponent
+    KbAlertComponent,
+    CnpTemplatesComponent,
+    OnboardingWelcomeComponent,
+    HomeNewsFeedModalComponent
   ],
   imports: [
     TooltipModule.forRoot(CutomTooltipOptions as TooltipOptions),

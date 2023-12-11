@@ -11,6 +11,7 @@ import { AppConfigService } from '../../services/app-config.service';
 import { environment } from '../../../environments/environment';
 import { ProjectService } from '../../services/project.service';
 import { LoggerService } from '../../services/logger/logger.service';
+import { LocalDbService } from 'app/services/users-local-db.service';
 
 @Component({
   selector: 'appdashboard-autologin',
@@ -26,8 +27,7 @@ export class AutologinComponent implements OnInit {
   FCMcurrentToken: string;
   user: any;
   public version: string = environment.VERSION;
-
-
+  public hasSignedInWithGoogle: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -36,7 +36,8 @@ export class AutologinComponent implements OnInit {
     public sso: SsoService,
     public appConfigService: AppConfigService,
     private projectService: ProjectService,
-    private logger: LoggerService
+    private logger: LoggerService,
+    private localDbService: LocalDbService
   ) {
 
     this.user = auth.user_bs.value;
@@ -59,6 +60,15 @@ export class AutologinComponent implements OnInit {
 
   }
 
+    
+  ngOnInit() {
+    this.logger.log('[AUTOLOGIN] SSO - autologin page');
+    this.detectMobile();
+   
+  }
+
+ 
+
   getJWTAndRouteParamsAndLogin() {
     this.route.params.subscribe((params) => {
       this.logger.log('[AUTOLOGIN] SSO - autologin page params ', params)
@@ -78,8 +88,10 @@ export class AutologinComponent implements OnInit {
         storedJWT = storedUserParsed.token;
         this.logger.log('[AUTOLOGIN] SSO - autologin page stored TOKEN ', storedJWT);
       } else {
-        const chatPrefix = this.appConfigService.getConfig().chatStoragePrefix
-        storedJWT = localStorage.getItem(chatPrefix + '__tiledeskToken')
+        // const chatPrefix = this.appConfigService.getConfig().chatStoragePrefix
+        // storedJWT = localStorage.getItem(chatPrefix + '__tiledeskToken')
+
+        storedJWT = localStorage.getItem('tiledesk_token')
       }
 
       this.logger.log('[AUTOLOGIN] SSO - autologin getConfig firebaseAuth', this.appConfigService.getConfig().firebaseAuth)
@@ -96,11 +108,7 @@ export class AutologinComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
 
-    this.logger.log('[AUTOLOGIN] SSO - autologin page');
-    this.detectMobile();
-  }
 
 
   detectMobile() {
@@ -126,26 +134,34 @@ export class AutologinComponent implements OnInit {
     this.logger.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser route ', route);
     this.logger.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser JWT ', JWT);
     this.logger.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser storedJWT ', storedJWT);
-    const chatPrefix = this.appConfigService.getConfig().chatStoragePrefix;
+    // const chatPrefix = this.appConfigService.getConfig().chatStoragePrefix;
     if (JWT !== storedJWT) {
-      this.logger.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser stored', chatPrefix, '__tiledeskToken is equal to params JWT ');
+      this.logger.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser stored tiledesk_token is equal to params JWT ');
       this.logout();
     } else {
-      this.logger.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser stored ', chatPrefix, 'tiledeskToken is NOT equal to params JWT ');
+      this.logger.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser stored tiledesk_token is NOT equal to params JWT ');
     }
 
     this.sso.getCurrentAuthenticatedUser(JWT).subscribe(auth_user => {
-      this.logger.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser RES ', auth_user);
+      // console.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser RES ', auth_user);
 
       const user = { firstname: auth_user['firstname'], lastname: auth_user['lastname'], _id: auth_user['_id'], email: auth_user['email'], emailverified: auth_user['emailverified'], token: JWT }
-      this.logger.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser user ', user);
+      // console.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser user ', user);
 
       localStorage.setItem('user', JSON.stringify(user));
-      localStorage.setItem(chatPrefix + '__tiledeskToken', JWT);
-
+      // localStorage.setItem(chatPrefix + '__tiledeskToken', JWT);
+      localStorage.setItem('tiledesk_token', JWT);
       this.auth.publishSSOloggedUser();
 
       this.router.navigate([route]);
+
+      // get if user has used Signin with Google
+      const hasSigninWithGoogle = this.localDbService.getFromStorage('swg')
+      if ( hasSigninWithGoogle ) {
+        this.localDbService.removeFromStorage('swg')
+        // console.log('[AUTOLOGIN] SSO removeFromStorage swg') 
+        this.trackUserHasSignedInWithGoogle(user)
+      }
 
       this.logger.log('[AUTOLOGIN] SSO - ssoLogin JWT before to get permsission ', JWT)
       this.logger.log('[AUTOLOGIN] SSO - ssoLogin storedJWT before to get permsission ', storedJWT)
@@ -177,6 +193,49 @@ export class AutologinComponent implements OnInit {
         this.getProjectFromRemotePublishAndSaveInStorage(project_id);
       }
     });
+  }
+
+  trackUserHasSignedInWithGoogle(user) {
+    if (!isDevMode()) {
+      if (window['analytics']) {
+        // try {
+        //   window['analytics'].page("Auth Page, Sign in with Google", {
+
+        //   });
+        // } catch (err) {
+        //   this.logger.error('Sign in with Google page error', err);
+        // }
+
+        let userFullname = ''
+        if (user.firstname && user.lastname)  {
+          userFullname = user.firstname + ' ' + user.lastname
+        } else if (user.firstname && !user.lastname) {
+          userFullname = user.firstname
+        }
+
+        try {
+          window['analytics'].identify(user._id, {
+            name: userFullname,
+            email: user.email,
+            logins: 5,
+
+          });
+        } catch (err) {
+          this.logger.error('identify Sign in with Google event error', err);
+        }
+        // Segments
+        try {
+          window['analytics'].track('Signed In', {
+            "username": userFullname,
+            "userId": user._id,
+            'button': 'Sign in with Google',
+            'method': "Google Auth"
+          });
+        } catch (err) {
+          this.logger.error('track Sign in with Google event error', err);
+        }
+      }
+     }
   }
 
   getProjectFromRemotePublishAndSaveInStorage(project_id) {
@@ -242,12 +301,12 @@ export class AutologinComponent implements OnInit {
     // -------------
     // @ Logout
     // -------------
-    const chatPrefix = this.appConfigService.getConfig().chatStoragePrefix;
+    // const chatPrefix = this.appConfigService.getConfig().chatStoragePrefix;
     if (JWT !== storedJWT) {
-      this.logger.log('[AUTOLOGIN] SSO - ssoLoginWithCustomToken getCurrentAuthenticatedUser stored', chatPrefix, '__tiledeskToken is equal to params JWT ');
+      this.logger.log('[AUTOLOGIN] SSO - ssoLoginWithCustomToken getCurrentAuthenticatedUser stored tiledesk_token is equal to params JWT ');
       this.logout();
     } else {
-      this.logger.log('[AUTOLOGIN] SSO - ssoLoginWithCustomToken getCurrentAuthenticatedUser stored ', chatPrefix, '__tiledeskToken is NOT equal to params JWT ');
+      this.logger.log('[AUTOLOGIN] SSO - ssoLoginWithCustomToken getCurrentAuthenticatedUser stored tiledesk_token is NOT equal to params JWT ');
     }
 
     this.sso.chat21CreateFirebaseCustomToken(JWT).subscribe((fbtoken: string) => {
@@ -267,8 +326,8 @@ export class AutologinComponent implements OnInit {
                 // const user = { firstname: auth_user.firstname, lastname: auth_user.lastname, _id: auth_user._id, token: JWT }
                 const user = { firstname: auth_user['firstname'], lastname: auth_user['lastname'], _id: auth_user['_id'], email: auth_user['email'], emailverified: auth_user['emailverified'], token: JWT }
                 localStorage.setItem('user', JSON.stringify(user));
-                // localStorage.setItem('chat_sv5__tiledeskToken', JWT);
-                localStorage.setItem(chatPrefix+'__tiledeskToken', JWT);
+                // localStorage.setItem(chatPrefix+'__tiledeskToken', JWT);
+                localStorage.setItem('tiledesk_token', JWT);
                 this.auth.publishSSOloggedUser();
 
                 this.router.navigate([route]);

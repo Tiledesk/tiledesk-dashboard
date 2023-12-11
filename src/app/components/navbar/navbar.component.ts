@@ -524,6 +524,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
       }
     });
   }
+
   checkUserImageUploadIsComplete() {
     if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
       this.uploadImageService.userImageWasUploaded.subscribe((image_exist) => {
@@ -640,7 +641,10 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
           (this.route.indexOf('/request-for-panel') !== -1) ||
           (this.route.indexOf('/projects-for-panel') !== -1) ||
           (this.route.indexOf('/unserved-request-for-panel') !== -1) ||
-          (this.route.indexOf('/desktop-access') !== -1)
+          (this.route.indexOf('/desktop-access') !== -1) ||
+          (this.route.indexOf('/onboarding-templates') !== -1) ||
+          (this.route.indexOf('/onboarding') !== -1)
+          
         ) {
           // this.logger.log('»> »> »> NAVBAR ROUTE DETECTED  »> ', this.route)
           // this.DETECTED_PROJECT_PAGE = true;

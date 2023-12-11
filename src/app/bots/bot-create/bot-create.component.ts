@@ -224,7 +224,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    console.log('[BOT-CREATE] HAS_SELECTED_CREATE_BOT ', this.HAS_SELECTED_CREATE_BOT)
+    // console.log('[BOT-CREATE] HAS_SELECTED_CREATE_BOT ', this.HAS_SELECTED_CREATE_BOT)
     if (this.HAS_SELECTED_CREATE_BOT === true) {
       if (!isDevMode()) {
         if (window['analytics']) {
@@ -250,7 +250,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
   toggleTabCreateImport(tabcreate) {
     //  this.logger.log("[BOT-CREATE] toggleTabCreateImport tabcreate", tabcreate);
     this.HAS_SELECTED_CREATE_BOT = tabcreate
-    console.log("[BOT-CREATE] toggleTabCreateImport HAS_SELECTED_CREATE_BOT", this.HAS_SELECTED_CREATE_BOT);
+    // console.log("[BOT-CREATE] toggleTabCreateImport HAS_SELECTED_CREATE_BOT", this.HAS_SELECTED_CREATE_BOT);
     if (this.HAS_SELECTED_CREATE_BOT === false) {
       if (!isDevMode()) {
         if (window['analytics']) {
@@ -534,21 +534,21 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
         this.project = project
         this.getProjectById(this.project._id)
       }
-      console.log('[BOT-CREATE] 00 -> FAQ-KB EDIT ADD COMP project ID from AUTH service subscription  ', this.project._id)
+      // console.log('[BOT-CREATE] 00 -> FAQ-KB EDIT ADD COMP project ID from AUTH service subscription  ', this.project._id)
     });
   }
 
   getProjectById(projectId) {
     this.projectService.getProjectById(projectId).subscribe((project: any) => {
-      console.log('[BOT-CREATE] - GET PROJECT BY ID - PROJECT: ', project);
+      // console.log('[BOT-CREATE] - GET PROJECT BY ID - PROJECT: ', project);
       this.prjct_profile_name = project.profile.name
-      console.log('[BOT-CREATE] - GET PROJECT BY ID - PROJECT > prjct_profile_name: ', this.prjct_profile_name);
+      // console.log('[BOT-CREATE] - GET PROJECT BY ID - PROJECT > prjct_profile_name: ', this.prjct_profile_name);
 
 
     }, error => {
       this.logger.error('[BOT-CREATE] - GET PROJECT BY ID - ERROR ', error);
     }, () => {
-      console.log('[BOT-CREATE] - GET PROJECT BY ID * COMPLETE * ');
+      this.logger.log('[BOT-CREATE] - GET PROJECT BY ID * COMPLETE * ');
 
 
     });
