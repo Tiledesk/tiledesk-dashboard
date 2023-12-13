@@ -1,8 +1,11 @@
+@import "./src/variables.scss";
+
 textarea[type="text"] {
     font-size: 14px;
     width: 100%;
     margin-bottom: 10px;
     -webkit-appearance: none;
+    appearance: none;
     background: #fff;
     border: 1px solid #d9d9d9 !important;
     padding-right: 8px;
@@ -78,8 +81,9 @@ textarea[type="text"] {
 }
 
 .ul-wpr li .tag--row .tag--icon {
-    fill: rgb(135, 150, 175);
-    margin-right: 12px;
+    // fill: rgb(135, 150, 175);
+    fill: var(--icon-color);
+    margin-right: var(--tag-icon-margin-right);
     transition: fill 0.2s ease-in-out 0s;
 }
 
@@ -162,7 +166,7 @@ textarea[type="text"] {
 }
 
 .ul-wpr li .action-btns-arrow button:hover svg {
-    fill: rgb(5, 102, 255);
+    fill: var(--icon-hover-color);
 }
 
 .ul-wpr li:hover .input-row {
@@ -174,23 +178,23 @@ textarea[type="text"] {
 }
 
 .ul-wpr li .action-btns button:hover svg {
-    fill: rgb(5, 102, 255);
+    fill: var(--icon-hover-color);
 }
 
 .ul-wpr li .contact-row:hover span svg {
-    fill: rgb(5, 102, 255);
+    fill: var(--icon-hover-color);
 }
 
 .ul-wpr li .contact-row:hover div svg {
-    fill: rgb(5, 102, 255);
+    fill: var(--icon-hover-color);
 }
 // ----
 .ul-wpr li .tag--row:hover span .tag--icon {
-    fill: rgb(5, 102, 255);
+    fill: var(--icon-hover-color);
 }
 
 .ul-wpr li .tag--row:hover div .tag--icon {
-    fill: rgb(5, 102, 255);
+    fill: var(--icon-hover-color);
 }
 
 .ul-wpr li #contact-row-source-page:hover div input {
@@ -356,13 +360,13 @@ textarea[type="text"] {
     width: calc(100% - 20px);
 }
 .no-contact-tags {
-    margin-top: 0;
+    margin-top: 2px;
     margin-bottom: 0;
     font-weight: 400;
     font-size: 14px;
     line-height: 18px;
     letter-spacing: -0.01em;
-    padding: 3px 20px 4px 3px;
+    // padding: 3px 20px 4px 3px;
     overflow: hidden;
     text-overflow: ellipsis;
     -webkit-line-clamp: 1;

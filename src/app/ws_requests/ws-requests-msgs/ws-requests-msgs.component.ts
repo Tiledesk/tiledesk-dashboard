@@ -218,7 +218,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   subscription: Subscription;
   CURRENT_USER_ROLE: string;
 
-  CHAT_PANEL_MODE: boolean;
+  CHAT_PANEL_MODE: boolean = true;
   dshbrdBaseUrl: string;
   project_name: string;
 
@@ -1221,7 +1221,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       _elemMainPanel.classList.add("main-panel-chat-panel-mode");
 
     } else {
-      this.CHAT_PANEL_MODE = false;
+      this.CHAT_PANEL_MODE = true;
       // thia.logger.log('[WS-REQUESTS-MSGS] - CHAT_PANEL_MODE »»» ', this.CHAT_PANEL_MODE);
       const _elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
       // thia.logger.log('[WS-REQUESTS-MSGS] - CHAT_PANEL_MODE »»» _elemMainPanel', _elemMainPanel);

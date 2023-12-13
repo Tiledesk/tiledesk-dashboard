@@ -55,6 +55,7 @@
               "src/assets/sass/material-dashboard.scss",
               "src/assets/css/demo.scss",
               "src/assets/sass/cds/styles.scss",
+              "src/variables.scss",
               "node_modules/@ng-select/ng-select/themes/default.theme.css",
               "node_modules/leaflet/dist/leaflet.css",
               "node_modules/material-icons/iconfont/material-icons.css",
