@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, isDevMode } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Route, Router } from '@angular/router';
 import { AuthService } from 'app/core/auth.service';
 import { NotifyService } from 'app/core/notify.service';
 import { KB, KbSettings } from 'app/models/kbsettings-model';
@@ -74,7 +74,8 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
     private kbService: KnowledgeBaseService,
     private projectService: ProjectService,
     public route: ActivatedRoute,
-    private notify: NotifyService
+    private notify: NotifyService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -548,9 +549,14 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     clearInterval(this.interval_id);
   }
+  
   contactSalesForChatGptKey() {
     this.closeSecretsModal()
     window.open(`mailto:support@tiledesk.com?subject=I don't have a GPT-Key`);
+  }
+
+  goToIntegrations() {
+    this.router.navigate(['project/' + this.project._id + '/integrations/'], { queryParams: { name: 'openai' }} )
   }
 
 

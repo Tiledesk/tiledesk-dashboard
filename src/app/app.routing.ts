@@ -146,6 +146,7 @@ import { KnowledgeBasesComponent } from './knowledge-bases/knowledge-bases.compo
 import { CnpIsMobileComponent } from './create-new-project/cnp-is-mobile/cnp-is-mobile.component';
 import { CnpTemplatesComponent } from './create-new-project/cnp-templates/cnp-templates.component';
 import { OnboardingWelcomeComponent } from './create-new-project/onboarding-welcome/onboarding-welcome.component';
+import { IntegrationsComponent } from './integrations/integrations.component';
 
 
 
@@ -484,6 +485,7 @@ const routes: Routes = [
   { path: 'project/:projectid/map-request', component: MapRequestComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/email', component: EmailTicketingComponent, canActivate: [AuthGuard, ProjectProfileGuard] },
   { path: 'project/:projectid/email-demo', component: EmailTicketingStaticComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/integrations', component: IntegrationsComponent, canActivate: [AuthGuard] },
 
 
 ];

@@ -185,6 +185,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     CONV_DETAIL_ROUTE_IS_ACTIVE: boolean;
     CONTACT_EDIT_ROUTE_IS_ACTIVE: boolean;
     CONTACT_CONVS_ROUTE_IS_ACTIVE: boolean;
+    INTEGRATIONS_ROUTE_IS_ACTIVE: boolean = true;
 
     IS_REQUEST_FOR_PANEL_ROUTE: boolean;
     IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE: boolean;

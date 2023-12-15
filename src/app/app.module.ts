@@ -360,6 +360,14 @@ import { HomeGoToChatComponent } from './home-components/home-go-to-chat/home-go
 import { KnowledgeBasesComponent } from './knowledge-bases/knowledge-bases.component';
 import { CnpTemplatesComponent } from './create-new-project/cnp-templates/cnp-templates.component';
 import { OnboardingWelcomeComponent } from './create-new-project/onboarding-welcome/onboarding-welcome.component';
+import { IntegrationsComponent } from './integrations/integrations.component';
+import { OpenaiIntegrationComponent } from './integrations/list/openai-integration/openai-integration.component';
+import { QaplaIntegrationComponent } from './integrations/list/qapla-integration/qapla-integration.component';
+import { CustomerioIntegrationComponent } from './integrations/list/customerio-integration/customerio-integration.component';
+import { HubspotIntegrationComponent } from './integrations/list/hubspot-integration/hubspot-integration.component';
+import { BrevoIntegrationComponent } from './integrations/list/brevo-integration/brevo-integration.component';
+import { GsheetsIntegrationComponent } from './integrations/list/gsheets-integration/gsheets-integration.component';
+import { IntegrationHeaderComponent } from './integrations/base-components/integration-header/integration-header.component';
 
 
 
@@ -636,7 +644,15 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     HomeInviteTeammateErrorModalComponent,
     HomeGoToChatComponent,
     CnpTemplatesComponent,
-    OnboardingWelcomeComponent
+    OnboardingWelcomeComponent,
+    IntegrationsComponent,
+    OpenaiIntegrationComponent,
+    QaplaIntegrationComponent,
+    CustomerioIntegrationComponent,
+    HubspotIntegrationComponent,
+    BrevoIntegrationComponent,
+    GsheetsIntegrationComponent,
+    IntegrationHeaderComponent
   ],
   imports: [
     TooltipModule.forRoot(CutomTooltipOptions as TooltipOptions),

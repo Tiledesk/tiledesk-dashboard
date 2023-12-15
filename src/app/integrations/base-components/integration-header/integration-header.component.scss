@@ -1,0 +1,20 @@
+
+.header-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 10px 0px;
+}
+
+img {
+    // width: 30px;
+    // height: auto;
+    width: auto;
+    height: 40px;
+    margin-right: 6px;
+}
+
+.title {
+    font-size: 26px;
+    font-weight: 600;
+}
