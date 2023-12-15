@@ -9,20 +9,8 @@
 
   <span *ngIf="IS_OPEN_SETTINGS_SIDEBAR">{{ 'Settings' | translate }} </span>
 </span>
-<!-- <span class="navbar-brand navbar-brand-title" style="text-transform: capitalize;">
-  {{ 'Teammates' | translate }}
-</span> -->
 
 
-
-<!-- <ul class="bottom-nav">
-  <li class="btn-with-border-effect li-active">
-    <a style="text-transform: capitalize;"> {{ "Teammates" | translate }} </a>
-  </li>
-  <li *ngIf="isVisible" class="btn-with-border-effect border-from-center" (click)="goToGroups()">
-    <a>{{ "Groups" | translate }} </a>
-  </li>
-</ul> -->
 
 <div class="main-content" style="padding-top:0px; padding-left: 5px;padding-right: 5px;">
   <div class="container-fluid" style="padding-left: 5px;padding-right: 5px;">
@@ -39,7 +27,7 @@
           <li class="btn-with-border-effect li-active">
             <a style="text-transform: capitalize;"> {{ "Teammates" | translate }} </a>
           </li>
-          <li *ngIf="isVisible" class="btn-with-border-effect border-from-center" (click)="goToGroups()">
+          <li *ngIf="isVisibleGroups" class="btn-with-border-effect border-from-center" (click)="goToGroups()">
             <a>{{ "Groups" | translate }} </a>
           </li>
         </ul>
@@ -75,7 +63,7 @@
         <!-- -------------------------------------------------- -->
         <!--  PROJECT PROFILE INFO  -->
         <!-- -------------------------------------------------- -->
-        <div class="row">
+        <div class="row" *ngIf="areActivePay">
           <div class="col-md-12">
             <div class="card card card--no-border" style="margin-top: 0px; margin-bottom: 0px;">
               <div class="card-content" *ngIf="(((prjct_profile_type === 'payment' && subscription_is_active === true) ||

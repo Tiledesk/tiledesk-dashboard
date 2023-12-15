@@ -24,10 +24,7 @@ export class UsersComponent implements OnInit, OnDestroy {
   PLAN_SEATS = PLAN_SEATS;
   APP_SUMO_PLAN_NAME = APP_SUMO_PLAN_NAME;
   APPSUMO_PLAN_SEATS = APPSUMO_PLAN_SEATS;
-  seatsLimit: any;
-  trial_expired: any;
-  tParamsFreePlanSeatsNum: any;
-  tParamsPlanAndSeats: any;
+ 
 
   public_Key: string
   showSpinner = true
@@ -43,7 +40,7 @@ export class UsersComponent implements OnInit, OnDestroy {
   display = 'none'
   displayCancelInvitationModal = 'none'
   project: Project
-  id_project: string
+  
   USER_ROLE: string
   CURRENT_USER_ID: string
   CURRENT_USER: any
@@ -55,13 +52,20 @@ export class UsersComponent implements OnInit, OnDestroy {
 
   deleteProjectUserSuccessNoticationMsg: string
   deleteProjectUserErrorNoticationMsg: string
+
+  id_project: string
   projectPlanAgentsNo: number
   prjct_profile_name: string
   browserLang: string
   prjct_profile_type: any;
   subscription_is_active: any
   subscription_end_date: any
+  seatsLimit: any;
+  trial_expired: any;
+  tParamsFreePlanSeatsNum: any;
+  tParamsPlanAndSeats: any;
   projectUsersLength: number
+
 
   HAS_FINISHED_GET_PROJECT_USERS = false
   HAS_FINISHED_GET_PENDING_USERS = false
@@ -76,7 +80,8 @@ export class UsersComponent implements OnInit, OnDestroy {
   canceledInviteSuccessMsg: string
   canceledInviteErrorMsg: string
   subscription: Subscription
-  isVisible: boolean
+  isVisibleGroups: boolean;
+  areActivePay: boolean;
   storageBucket: string
 
   baseUrl: string
@@ -122,7 +127,7 @@ export class UsersComponent implements OnInit, OnDestroy {
     this.getLoggedUser()
     this.hasChangedAvailabilityStatusInSidebar()
     this.getPendingInvitation()
-    this.getProjectPlan()
+
     this.getOSCODE()
     this.getChatUrl()
     this.listenSidebarIsOpened();
@@ -214,14 +219,38 @@ export class UsersComponent implements OnInit, OnDestroy {
         // this.logger.log('[USERS] - PUBLIC-KEY (Users) - gro key&value', gro);
 
         if (gro[1] === 'F') {
-          this.isVisible = false
-          // this.logger.log('[USERS] - PUBLIC-KEY (Users) - gro isVisible', this.isVisible);
+          this.isVisibleGroups = false
+          // this.logger.log('[USERS] - PUBLIC-KEY (Users) - gro isVisibleGroups', this.isVisibleGroups);
         } else {
-          this.isVisible = true
-          // this.logger.log('[USERS] - PUBLIC-KEY (Users) - gro isVisible', this.isVisible);
+          this.isVisibleGroups = true
+          // this.logger.log('[USERS] - PUBLIC-KEY (Users) - gro isVisibleGroups', this.isVisibleGroups);
+        }
+      }
+
+      if (key.includes('PAY')) {
+        // this.logger.log('[USERS] - PUBLIC-KEY (Users) - key', key);
+        let gro = key.split(':')
+        // this.logger.log('[USERS] - PUBLIC-KEY (Users) - gro key&value', gro);
+
+        if (gro[1] === 'F') {
+          this.areActivePay = false
+          // this.logger.log('[USERS] - PUBLIC-KEY (Users) - areActivePay', this.areActivePay);
+        } else {
+          this.areActivePay = true
+          // this.logger.log('[USERS] - PUBLIC-KEY (Users) - areActivePay', this.areActivePay);
         }
       }
     })
+
+    if (!this.public_Key.includes("GRO")) {
+      this.isVisibleGroups = false;
+    }
+
+    if (!this.public_Key.includes("PAY")) {
+      this.areActivePay = false;
+    }
+
+    this.getProjectPlan()
   }
 
   translateCanceledInviteSuccessMsg() {
@@ -397,15 +426,27 @@ export class UsersComponent implements OnInit, OnDestroy {
           if (projectProfileData.profile_type === 'free') {
             if (projectProfileData.trial_expired === false) {
               this.prjct_profile_name = PLAN_NAME.B + " plan (trial)"
-              this.seatsLimit = PLAN_SEATS[PLAN_NAME.B]
-              // this.seatsLimit = PLAN_SEATS.free
-              this.tParamsPlanAndSeats = { plan_name: this.prjct_profile_name, allowed_seats_num: this.seatsLimit }
-              this.logger.log('[USERS] - GET PROJECT PLAN - PLAN_NAME ', 'FREE TRIAL', ' SEATS LIMIT: ', this.seatsLimit)
+              if (this.areActivePay) {
+                this.seatsLimit = PLAN_SEATS[PLAN_NAME.B]
+                // this.seatsLimit = PLAN_SEATS.free
+                this.tParamsPlanAndSeats = { plan_name: this.prjct_profile_name, allowed_seats_num: this.seatsLimit }
+                this.logger.log('[USERS] - GET PROJECT PLAN - PLAN_NAME ', this.prjct_profile_name, 'areActivePay', this.areActivePay, ' SEATS LIMIT: ', this.seatsLimit)
+              } else {
+                this.seatsLimit = 1000;
+                this.tParamsPlanAndSeats = { plan_name: 'Free', allowed_seats_num: this.seatsLimit }
+                this.logger.log('[USERS] - GET PROJECT PLAN - PLAN_NAME ', this.prjct_profile_name, 'areActivePay', this.areActivePay, ' SEATS LIMIT: ', this.seatsLimit)
+              }
             } else {
               this.prjct_profile_name = "Free plan";
-              this.seatsLimit = PLAN_SEATS.free
-              this.tParamsPlanAndSeats = { plan_name: 'Free', allowed_seats_num: this.seatsLimit }
-              // console.log('[USERS] - GET PROJECT PLAN - PLAN_NAME ', 'FREE TRIAL', ' SEATS LIMIT: ', this.seatsLimit)
+              if (this.areActivePay) {
+                this.seatsLimit = PLAN_SEATS.free
+                this.tParamsPlanAndSeats = { plan_name: 'Free', allowed_seats_num: this.seatsLimit }
+                this.logger.log('[USERS] - GET PROJECT PLAN - PLAN_NAME ', this.prjct_profile_name, 'areActivePay', this.areActivePay, ' SEATS LIMIT: ', this.seatsLimit)
+              } else {
+                this.seatsLimit = 1000
+                this.tParamsPlanAndSeats = { plan_name: 'Free', allowed_seats_num: this.seatsLimit }
+                this.logger.log('[USERS] - GET PROJECT PLAN - PLAN_NAME ', this.prjct_profile_name, 'areActivePay', this.areActivePay, ' SEATS LIMIT: ', this.seatsLimit)
+              }
             }
           } else if (projectProfileData.profile_type === 'payment') {
             if (this.subscription_is_active === true) {
@@ -522,10 +563,10 @@ export class UsersComponent implements OnInit, OnDestroy {
 
   getMoreOperatorsSeats() {
     if (this.USER_ROLE === 'owner') {
-      if (!this.appSumoProfile){
+      if (!this.appSumoProfile) {
         this.notify._displayContactUsModal(true, 'upgrade_plan')
       } else {
-        this.router.navigate(['project/' + this.prjct_id  + '/project-settings/payments']);
+        this.router.navigate(['project/' + this.prjct_id + '/project-settings/payments']);
       }
     } else {
       this.presentModalOnlyOwnerCanManageTheAccountPlan()
@@ -807,9 +848,9 @@ export class UsersComponent implements OnInit, OnDestroy {
             } catch (err) {
               this.logger.error('Account Deleted page error', err);
             }
-           
+
             let userFullname = ''
-            if (this.CURRENT_USER.firstname && this.CURRENT_USER.lastname)  {
+            if (this.CURRENT_USER.firstname && this.CURRENT_USER.lastname) {
               userFullname = this.CURRENT_USER.firstname + ' ' + this.CURRENT_USER.lastname
             } else if (this.CURRENT_USER.firstname && !this.CURRENT_USER.lastname) {
               userFullname = this.CURRENT_USER.firstname
@@ -876,8 +917,6 @@ export class UsersComponent implements OnInit, OnDestroy {
   }
 
 
-
-
   // New changeAvailabilityStatus(selecedstatusID: number, projectUser_id: string, ngselectid: number, $event: any) {
   changeAvailabilityStatus(selectedStatusValue: any, projectUser_id: string) {
 
@@ -927,8 +966,7 @@ export class UsersComponent implements OnInit, OnDestroy {
 
 
         this.getUploadEgine()
-      },
-      )
+      },)
   }
 
   // IF THE AVAILABILITY STATUS IS CHANGED BY THE SIDEBAR AVAILABILITY / UNAVAILABILITY BUTTON

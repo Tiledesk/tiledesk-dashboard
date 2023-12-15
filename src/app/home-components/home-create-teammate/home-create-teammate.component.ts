@@ -57,6 +57,9 @@ export class HomeCreateTeammateComponent implements OnInit {
   USER_ROLE: string;
   numOfTeammatesNotDiplayed: number;
   countOfTeammates: number;
+  public_Key: string;
+  areActivePay: boolean;
+
   constructor(
     public auth: AuthService,
     private logger: LoggerService,
@@ -74,10 +77,38 @@ export class HomeCreateTeammateComponent implements OnInit {
     this.getCurrentProjectAndPrjctTeammates();
     // this.getGroupsByProjectId();
     this.getUserRole()
-    this.getProjectPlan();
     this.getPendingInvitation()
     this.getCurrentProject()
     this.getLoggedUser()
+    this.getOSCODE()
+  }
+
+  getOSCODE() {
+    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
+    // this.logger.log('[HOME-CREATE-TEAMMATE] AppConfigService getAppConfig public_Key', this.public_Key);
+    let keys = this.public_Key.split("-");
+    // this.logger.log('[HOME-CREATE-TEAMMATE] PUBLIC-KEY keys', keys)
+    keys.forEach(key => {
+      // this.logger.log('[HOME-CREATE-TEAMMATE] public_Key key', key)
+      if (key.includes("PAY")) {
+        // this.logger.log('[HOME-CREATE-TEAMMATE] PUBLIC-KEY - key', key);
+        let psa = key.split(":");
+        // this.logger.log('[HOME-CREATE-TEAMMATE] PUBLIC-KEY - pay key&value', psa);
+        if (psa[1] === "F") {
+          this.areActivePay = false;
+        } else {
+          this.areActivePay = true;
+        }
+      }
+    });
+
+    if (!this.public_Key.includes("PAY")) {
+      // this.logger.log('[HOME-CREATE-TEAMMATE] PUBLIC-KEY  - key.includes("PAY")', this.public_Key.includes("PAY"));
+      this.areActivePay = false;
+    }
+
+    this.getProjectPlan();
+
   }
 
   getCurrentProject() {
@@ -144,16 +175,21 @@ export class HomeCreateTeammateComponent implements OnInit {
 
             if (projectProfileData.trial_expired === false) {
               this.prjct_profile_name = PLAN_NAME.B + " (trial)"
-              this.profile_name_for_segment =  PLAN_NAME.B + " (trial)"
-              this.seatsLimit = PLAN_SEATS[PLAN_NAME.B]
-              // this.seatsLimit = PLAN_SEATS.free
-             
+              this.profile_name_for_segment = PLAN_NAME.B + " (trial)"
+              if (this.areActivePay) {
+                this.seatsLimit = PLAN_SEATS[PLAN_NAME.B]
+              } else {
+                this.seatsLimit = 1000;
+              }
               this.logger.log('[HOME-CREATE-TEAMMATE] - GET PROJECT PLAN - PLAN_NAME ', 'FREE TRIAL', ' SEATS LIMIT: ', this.seatsLimit)
             } else {
               this.prjct_profile_name = "Free plan";
               this.profile_name_for_segment = "Free plan";
-              this.seatsLimit = PLAN_SEATS.free
-              
+              if (this.areActivePay) {
+                this.seatsLimit = PLAN_SEATS.free
+              } else {
+                this.seatsLimit = 1000;
+              }
               this.logger.log('[HOME-CREATE-TEAMMATE] - GET PROJECT PLAN - PLAN_NAME ', 'FREE TRIAL', ' SEATS LIMIT: ', this.seatsLimit)
             }
           } else if (projectProfileData.profile_type === 'payment') {
@@ -162,13 +198,13 @@ export class HomeCreateTeammateComponent implements OnInit {
                 if (!this.appSumoProfile) {
                   this.prjct_profile_name = PLAN_NAME.A + " plan";
                   this.seatsLimit = PLAN_SEATS[PLAN_NAME.A]
-                  this.profile_name_for_segment =  PLAN_NAME.A + " plan";
-                  
+                  this.profile_name_for_segment = PLAN_NAME.A + " plan";
+
                   this.logger.log('[HOME-CREATE-TEAMMATE] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.A, ' SEATS LIMIT: ', this.seatsLimit)
                   this.logger.log('[HOME-CREATE-TEAMMATE] - GET PROJECT PLAN - prjct_profile_name: ', this.prjct_profile_name)
                 } else {
                   this.prjct_profile_name = PLAN_NAME.A + " plan " + '(' + this.appSumoProfile + ')';
-                  this.profile_name_for_segment =  PLAN_NAME.A + " plan " + '(' + this.appSumoProfile + ')';;
+                  this.profile_name_for_segment = PLAN_NAME.A + " plan " + '(' + this.appSumoProfile + ')';;
                   this.seatsLimit = APPSUMO_PLAN_SEATS[projectProfileData.extra3];
                   this.logger.log('[HOME-CREATE-TEAMMATE] - GET PROJECT PLAN - prjct_profile_name ', this.prjct_profile_name, ' SEATS LIMIT: ', this.seatsLimit)
                 }
@@ -182,7 +218,7 @@ export class HomeCreateTeammateComponent implements OnInit {
                   this.logger.log('[HOME-CREATE-TEAMMATE] - GET PROJECT PLAN - prjct_profile_name: ', this.prjct_profile_name)
                 } else {
                   this.prjct_profile_name = PLAN_NAME.B + " plan " + '(' + this.appSumoProfile + ')';
-                  this.profile_name_for_segment =  this.prjct_profile_name
+                  this.profile_name_for_segment = this.prjct_profile_name
                   this.seatsLimit = APPSUMO_PLAN_SEATS[projectProfileData.extra3];
                   this.logger.log('[HOME-CREATE-TEAMMATE] - GET PROJECT PLAN - prjct_profile_name ', this.prjct_profile_name, ' SEATS LIMIT: ', this.seatsLimit)
                 }
@@ -202,21 +238,21 @@ export class HomeCreateTeammateComponent implements OnInit {
                 this.prjct_profile_name = PLAN_NAME.A + " plan";
                 this.profile_name_for_segment = PLAN_NAME.A + " plan";
                 this.seatsLimit = PLAN_SEATS.free
-               
+
                 this.logger.log('[HOME-CREATE-TEAMMATE] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.A, ' SEATS LIMIT: ', this.seatsLimit)
 
               } else if (projectProfileData.profile_name === PLAN_NAME.B) {
                 this.prjct_profile_name = PLAN_NAME.B + " plan";
                 this.profile_name_for_segment = PLAN_NAME.B + " plan";
                 this.seatsLimit = PLAN_SEATS.free
-               
+
                 this.logger.log('[HOME-CREATE-TEAMMATE] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.B, ' SEATS LIMIT: ', this.seatsLimit)
 
               } else if (projectProfileData.profile_name === PLAN_NAME.C) {
                 this.prjct_profile_name = PLAN_NAME.C + " plan";
                 this.profile_name_for_segment = PLAN_NAME.C + " plan";
                 this.seatsLimit = PLAN_SEATS.free
-                
+
                 this.logger.log('[HOME-CREATE-TEAMMATE] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.C, ' SEATS LIMIT: ', this.seatsLimit)
               }
             }
@@ -344,8 +380,8 @@ export class HomeCreateTeammateComponent implements OnInit {
               groupArray.push({ groupName: groups[i].name, groupMembers: groups[i].members })
               this.logger.log('[HOME-CREATE-TEAMMATE] - GET GROUPS BY PROJECT ID > GROUP ARRAY ', groupArray)
 
-             
-        
+
+
               //   if (groups[i].members && groups[i].members.length > 0) {
               //     for (let j = 0; j < groups[i].members.length; j++) {
               //       this.logger.log('[HOME-CREATE-TEAMMATE] - GET GROUPS BY PROJECT ID > GROUP MEMBERS > MEMBER', groups[i].members[j])
@@ -371,7 +407,7 @@ export class HomeCreateTeammateComponent implements OnInit {
             //   this.logger.log('[HOME-CREATE-TEAMMATE] - GET GROUPS BY PROJECT ID > groupArrayGrouped ', groupArrayGrouped)
             // }
 
-          
+
           }
         })
 
@@ -451,7 +487,7 @@ export class HomeCreateTeammateComponent implements OnInit {
 
   presentModalInviteTeammate() {
     this.logger.log('[HOME-CREATE-TEAMMATE] - presentModalAddKb ');
-    const addKbBtnEl = <HTMLElement>document.querySelector('#home-material-btn'); 
+    const addKbBtnEl = <HTMLElement>document.querySelector('#home-material-btn');
     this.logger.log('[HOME-CREATE-TEAMMATE] - presentModalAddKb addKbBtnEl ', addKbBtnEl);
     addKbBtnEl.blur()
     const dialogRef = this.dialog.open(HomeInviteTeammateModalComponent, {
@@ -465,7 +501,7 @@ export class HomeCreateTeammateComponent implements OnInit {
       this.logger.log(`[HOME-CREATE-TEAMMATE] Dialog result:`, result);
 
       if (result) {
-        if (result.email && result.role)  {
+        if (result.email && result.role) {
           this.logger.log(`[HOME-CREATE-TEAMMATE] email:`, result.email, ' role ', result.role);
 
           if (this.projectUsersLength + this.countOfPendingInvites < this.seatsLimit) {
@@ -484,11 +520,11 @@ export class HomeCreateTeammateComponent implements OnInit {
 
   presentModalOnlyOwnerCanManageTheAccountPlan() {
     this.notify.presentModalOnlyOwnerCanManageTheAccountPlan('Only teammates with the owner role can manage the account’s plan', 'Learn more about default roles')
-    
+
   }
 
-  doInviteUser(email, role){
-    
+  doInviteUser(email, role) {
+
     this.usersService.inviteUser(email, role).subscribe((project_user: any) => {
       this.logger.log('[HOME-CREATE-TEAMMATE] - INVITE USER - POST SUBSCRIPTION PROJECT-USER - RES project_user)', project_user);
       this.logger.log('[HOME-CREATE-TEAMMATE] - INVITE USER - POST SUBSCRIPTION PROJECT-USER - RES project_user.id_project', project_user.id_project);
@@ -501,7 +537,7 @@ export class HomeCreateTeammateComponent implements OnInit {
 
       // HANDLE THE ERROR "Pending Invitation already exist"
       if (project_user.success === false && project_user.msg === 'Pending Invitation already exist.') {
- 
+
         this.openDialogInviteTeammateError(email + ' has already been invited.')
 
         // this.PENDING_INVITATION_ALREADY_EXIST = true;
@@ -550,7 +586,7 @@ export class HomeCreateTeammateComponent implements OnInit {
 
       }
     }, () => {
-     this.logger.log('[HOME-CREATE-TEAMMATE] - INVITE USER  * COMPLETE *');
+      this.logger.log('[HOME-CREATE-TEAMMATE] - INVITE USER  * COMPLETE *');
       // this.INVITE_YOURSELF_ERROR = false;
       // this.INVITE_OTHER_ERROR = false;
       // this.INVITE_USER_ALREADY_MEMBER_ERROR = false;
@@ -562,7 +598,7 @@ export class HomeCreateTeammateComponent implements OnInit {
       if (!isDevMode()) {
         if (window['analytics']) {
           let userFullname = ''
-          if (this.CURRENT_USER && this.CURRENT_USER.firstname && this.CURRENT_USER.lastname)  {
+          if (this.CURRENT_USER && this.CURRENT_USER.firstname && this.CURRENT_USER.lastname) {
             userFullname = this.CURRENT_USER.firstname + ' ' + this.CURRENT_USER.lastname
           } else if (this.CURRENT_USER && this.CURRENT_USER.firstname && !this.CURRENT_USER.lastname) {
             userFullname = this.CURRENT_USER.firstname
@@ -583,7 +619,7 @@ export class HomeCreateTeammateComponent implements OnInit {
             window['analytics'].track('Invite Sent', {
               "invitee_email": email,
               "invitee_role": this.invitedProjectUser.role,
-              "page":"Home"
+              "page": "Home"
             }, {
               "context": {
                 "groupId": this.invitedProjectUser.id_project

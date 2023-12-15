@@ -130,7 +130,9 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   isVisibleNotificationTab: boolean;
   isVisibleSecurityTab: boolean;
   isVisibleCustomizeEmailTemplate: boolean
-  isVisibleSMTPsettings: boolean
+  isVisibleSMTPsettings: boolean;
+  isVisibleBannedVisitor: boolean
+  isVisibleAutoSendTranscript: boolean
   max_agent_assigned_chat: number
   reassignment_delay: number
   automatic_idle_chats: number
@@ -622,7 +624,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
           // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - isVisibleSecurityTab', this.isVisibleSecurityTab);
         }
       }
-
+      // Customize the notification email template
       if (key.includes("PET")) {
         // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
         let pet = key.split(":");
@@ -635,7 +637,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
           // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - isVisibleCustomizeEmailTemplate', this.isVisibleCustomizeEmailTemplate);
         }
       }
-
+      // SMTP settings
       if (key.includes("MTS")) {
         // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
         let mts = key.split(":");
@@ -649,6 +651,32 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         }
       }
 
+      if (key.includes("BAN")) {
+        // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
+        let mts = key.split(":");
+        //  console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - ips key&value', ips);
+        if (mts[1] === "F") {
+          this.isVisibleBannedVisitor = false;
+          // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - isVisibleBannedVisitor', this.isVisibleBannedVisitor);
+        } else {
+          this.isVisibleBannedVisitor = true;
+          // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - isVisibleBannedVisitor', this.isVisibleBannedVisitor);
+        }
+      }
+
+      // Auto sendd transcript by email 
+      if (key.includes("AST")) {
+        // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
+        let mts = key.split(":");
+        //  console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - ips key&value', ips);
+        if (mts[1] === "F") {
+          this.isVisibleAutoSendTranscript = false;
+          // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - isVisibleAutoSendTranscript', this.isVisibleAutoSendTranscript);
+        } else {
+          this.isVisibleAutoSendTranscript = true;
+          // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - isVisibleAutoSendTranscript', this.isVisibleAutoSendTranscript);
+        }
+      }
     });
 
     if (!this.public_Key.includes("PAY")) {
@@ -684,6 +712,16 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     if (!this.public_Key.includes("MTS")) {
       // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("MTS")', this.public_Key.includes("MTS"));
       this.isVisibleSMTPsettings = false;
+    }
+
+    if (!this.public_Key.includes("BAN")) {
+      // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("BAN")', this.public_Key.includes("BAN"));
+      this.isVisibleBannedVisitor = false;
+    }
+
+    if (!this.public_Key.includes("AST")) {
+      // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("AST")', this.public_Key.includes("AST"));
+      this.isVisibleAutoSendTranscript = false;
     }
 
   }

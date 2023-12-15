@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.4.80
+- Improvements and bug fixing
+
 ### 2.4.79
 - Adds the "News and documentation" section to the home page
 

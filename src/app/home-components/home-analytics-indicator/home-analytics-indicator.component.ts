@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { UsersService } from 'app/services/users.service';
 import { ContactsService } from 'app/services/contacts.service';
 import { LoggerService } from 'app/services/logger/logger.service';
+import { AppConfigService } from 'app/services/app-config.service';
 @Component({
   selector: 'appdashboard-home-analytics-indicator',
   templateUrl: './home-analytics-indicator.component.html',
@@ -20,6 +21,9 @@ export class HomeAnalyticsIndicatorComponent implements OnInit {
   countOfActiveContacts: number;
   countOfVisitors: number;
   countOfLastMonthMsgs: number;
+  public_Key: string;
+  isVisibleANA: boolean;
+
   constructor(
     private analyticsService: AnalyticsService,
     public translate: TranslateService,
@@ -27,21 +31,18 @@ export class HomeAnalyticsIndicatorComponent implements OnInit {
     private router: Router,
     private contactsService: ContactsService,
     private logger: LoggerService,
+    public appConfigService: AppConfigService
   ) { }
 
    // -----------------------------------------------------------------------------------------------------
   // @ Lifecycle hooks
   // -----------------------------------------------------------------------------------------------------
   ngOnInit(): void {
-    this.getUserRole() 
-    this.inizializeHomeStatic()
+    this.getUserRole();
+    this.inizializeHomeStatic();
+    this.getOSCODE();
   }
 
-  inizializeHomeStatic() {
-    this.getActiveContactsCount();
-    this.getVisitorsCount();
-    this.getLastMounthMessagesCount();
-  }
 
   ngOnChanges(changes: SimpleChanges) {
     this.logger.log('[HOME-ANALITICS] ngOnChanges changes ', changes)
@@ -55,6 +56,42 @@ export class HomeAnalyticsIndicatorComponent implements OnInit {
         this.inizializeHomeStatic()
       }
     }
+  }
+
+  inizializeHomeStatic() {
+    this.getActiveContactsCount();
+    this.getVisitorsCount();
+    this.getLastMounthMessagesCount();
+  }
+
+  getOSCODE() {
+    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
+    // this.logger.log('[HOME-ANALITICS] AppConfigService getAppConfig public_Key', this.public_Key);
+    let keys = this.public_Key.split("-");
+    // this.logger.log('[HOME-ANALITICS] PUBLIC-KEY keys', keys)
+    keys.forEach(key => {
+      // this.logger.log('[HOME-ANALITICS] public_Key key', key)
+      
+      if (key.includes("ANA")) {
+        // this.logger.log('[HOME-ANALITICS] PUBLIC-KEY - key', key);
+        let ana = key.split(":");
+        // this.logger.log('[HOME-ANALITICS] PUBLIC-KEY - ana key&value', ana);
+
+        if (ana[1] === "F") {
+          this.isVisibleANA = false;
+          // this.logger.log('[HOME-ANALITICS] PUBLIC-KEY - ana isVisible', this.isVisibleANA);
+        } else {
+          this.isVisibleANA = true;
+          // this.logger.log('[HOME-ANALITICS] PUBLIC-KEY - ana isVisible', this.isVisibleANA);
+        }
+      }     
+    });
+
+    if (!this.public_Key.includes("ANA")) {
+      // this.logger.log('[HOME-ANALITICS] PUBLIC-KEY - key.includes("V1L")', this.public_Key.includes("ANA"));
+      this.isVisibleANA = false;
+    }
+
   }
 
 

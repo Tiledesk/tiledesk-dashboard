@@ -14,8 +14,10 @@ import moment from 'moment';
 import { LocalDbService } from 'app/services/users-local-db.service';
 import { ProjectService } from 'app/services/project.service';
 import { Project } from 'app/models/project-model';
-import { emailDomainWhiteList } from 'app/utils/util';
+import { emailDomainWhiteList, tranlatedLanguage } from 'app/utils/util';
 import { TitleCasePipe } from '@angular/common';
+import { WidgetSetUpBaseComponent } from 'app/widget_components/widget-set-up/widget-set-up-base/widget-set-up-base.component';
+import { WidgetService } from 'app/services/widget.service';
 
 type UserFields = 'email' | 'password' | 'firstName' | 'lastName' | 'terms';
 type FormErrors = { [u in UserFields]: string };
@@ -26,7 +28,7 @@ type FormErrors = { [u in UserFields]: string };
   styleUrls: ['./signup.component.scss'],
   providers: [TitleCasePipe]
 })
-export class SignupComponent implements OnInit, AfterViewInit {
+export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit, AfterViewInit {
 
 
   // tparams = brand;
@@ -65,7 +67,9 @@ export class SignupComponent implements OnInit, AfterViewInit {
   storedRoute: string;
 
   public_Key: string;
+  areActivePay: boolean;
   MT: boolean;
+ 
   templateName: string;
   strongPassword = false;
   userForm: FormGroup;
@@ -78,6 +82,13 @@ export class SignupComponent implements OnInit, AfterViewInit {
   id_project: string;
   appSumoActivationEmail: string;
   isValidAppSumoActivationEmail: boolean;
+
+  browser_lang: string;
+  temp_SelectedLangName: string;
+  temp_SelectedLangCode: string;
+  selectedTranslationLabel: string;
+  selectedTranslationCode: string;
+
   // newUser = false; // to toggle login or signup form
   // passReset = false; // set to true when password reset is triggered
   // 'maxlength': 'Password cannot be more than 25 characters long.',
@@ -115,7 +126,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
     private fb: FormBuilder,
     private auth: AuthService,
     private router: Router,
-    private translate: TranslateService,
+    public translate: TranslateService,
     private route: ActivatedRoute,
     private notify: NotifyService,
     public appConfigService: AppConfigService,
@@ -123,9 +134,10 @@ export class SignupComponent implements OnInit, AfterViewInit {
     private logger: LoggerService,
     private localDbService: LocalDbService,
     private projectService: ProjectService,
-    public titleCasePipe: TitleCasePipe
+    public titleCasePipe: TitleCasePipe,
+    private widgetService: WidgetService
   ) {
-
+    super(translate);
     const brand = brandService.getBrand();
     // this.logger.log('>>> BRAND ' , brand) 
 
@@ -148,11 +160,11 @@ export class SignupComponent implements OnInit, AfterViewInit {
     this.getBrowserLang();
     this.getOSCODE();
     this.getQueryParamsAndSegmentRecordPageAndIdentify();
-    
+
     const hasSigninWithGoogle = this.localDbService.getFromStorage('swg')
     if (hasSigninWithGoogle) {
       this.localDbService.removeFromStorage('swg')
-      // console.log('[SIGN-UP] removeFromStorage swg')
+      // this.logger.log('[SIGN-UP] removeFromStorage swg')
     }
 
   }
@@ -238,7 +250,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
         var size = Object.keys(this.queryParams).length;
         // this.logger.log('queryParams size ', size)
         const storedRoute = this.localDbService.getFromStorage('wannago')
-        // console.log('[SIGN-UP] storedRoute', storedRoute)
+        // this.logger.log('[SIGN-UP] storedRoute', storedRoute)
         if (size > 0) {
 
           for (const [key, value] of Object.entries(this.queryParams)) {
@@ -334,6 +346,29 @@ export class SignupComponent implements OnInit, AfterViewInit {
       // this.logger.log('PUBLIC-KEY (SIGNUP) - mt is', this.MT);
     }
 
+    if (this.public_Key.includes("PAY") === true) {
+
+      keys.forEach(key => {
+        // this.logger.log('NavbarComponent public_Key key', key)
+        if (key.includes("PAY")) {
+          // this.logger.log('PUBLIC-KEY (SIGNUP) - key', key);
+          let pay = key.split(":");
+          // this.logger.log('PUBLIC-KEY (SIGNUP) - areActivePay key&value', pay);
+          if (pay[1] === "F") {
+            this.areActivePay = false;
+            // this.logger.log('PUBLIC-KEY (SIGNUP) - areActivePay is', this.areActivePay);
+          } else {
+            this.areActivePay = true;
+            // this.logger.log('PUBLIC-KEY (SIGNUP) - areActivePay is', this.areActivePay);
+          }
+        }
+      });
+
+    } else {
+      this.areActivePay = false;
+      // this.logger.log('PUBLIC-KEY (SIGNUP) - areActivePay is', this.areActivePay);
+    }
+
     this.checkCurrentUrlAndSkipWizard();
   }
 
@@ -377,7 +412,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
   checkCurrentUrlAndSkipWizard() {
 
     this.storedRoute = this.localDbService.getFromStorage('wannago')
-    // console.log('[SIGN-UP] storedRoute ', this.storedRoute)
+    // this.logger.log('[SIGN-UP] storedRoute ', this.storedRoute)
     if (this.storedRoute) {
       this.EXIST_STORED_ROUTE = true
     } else {
@@ -387,22 +422,22 @@ export class SignupComponent implements OnInit, AfterViewInit {
     if (this.storedRoute) {
       if (this.storedRoute.indexOf('/activate-product') !== -1) {
         const storedRouteSegment = this.storedRoute.split('/')
-        // console.log('[SIGN-UP] storedRouteSegment', storedRouteSegment)
+        // this.logger.log('[SIGN-UP] storedRouteSegment', storedRouteSegment)
         this.appSumoActivationEmail = storedRouteSegment[2]
-        // console.log('[SIGN-UP] this.appSumoActivationEmail ', this.appSumoActivationEmail)
+        // this.logger.log('[SIGN-UP] this.appSumoActivationEmail ', this.appSumoActivationEmail)
         this.userForm.patchValue({ 'email': this.appSumoActivationEmail })
-        this.isValidAppSumoActivationEmail= this.validateEmail(this.appSumoActivationEmail)
-        // console.log('[SIGN-UP] this.isValidAppSumoActivationEmail ', this.isValidAppSumoActivationEmail)
+        this.isValidAppSumoActivationEmail = this.validateEmail(this.appSumoActivationEmail)
+        // this.logger.log('[SIGN-UP] this.isValidAppSumoActivationEmail ', this.isValidAppSumoActivationEmail)
         const emailInputElm = document.getElementById("user-email") as HTMLInputElement;
-        // console.log('[SIGN-UP] emailInputElm ', emailInputElm)
+        // this.logger.log('[SIGN-UP] emailInputElm ', emailInputElm)
         emailInputElm.disabled = true;
       }
     }
 
 
-    // console.log('[SIGN-UP] checkCurrentUrlAndSkipWizard router.url  ', this.router.url)
-
     
+
+
     if (this.router.url.indexOf('/signup-on-invitation') !== -1) {
       this.SKIP_WIZARD = true;
       this.logger.log('[SIGN-UP] checkCurrentUrlAndSkipWizard SKIP_WIZARD ', this.SKIP_WIZARD)
@@ -420,10 +455,10 @@ export class SignupComponent implements OnInit, AfterViewInit {
   validateEmail(appSumoActivationEmail) {
     var validateEmailRegex = /^(?=.{1,254}$)(?=.{1,64}@)[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+(\.[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+)*@[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?(\.[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?)+$/
     if (appSumoActivationEmail.match(validateEmailRegex)) {
-      // console.log('Valid email address!')
+      // this.logger.log('Valid email address!')
       return true;
     } else {
-      // console.log('Invalid email address!')
+      // this.logger.log('Invalid email address!')
       return false;
     }
   }
@@ -432,7 +467,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
     this.pendingInvitationEmail = this.route.snapshot.params['pendinginvitationemail'];
 
     this.userForm.patchValue({ 'email': this.pendingInvitationEmail })
-    // console.log('[SIGN-UP] Pending Invitation Email (get From URL)  ', this.pendingInvitationEmail)
+    // this.logger.log('[SIGN-UP] Pending Invitation Email (get From URL)  ', this.pendingInvitationEmail)
   }
 
 
@@ -469,7 +504,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
     }
   }
 
- 
+
   signup() {
     this.showSpinnerInLoginBtn = true;
     const email = this.userForm.value['email']
@@ -522,12 +557,12 @@ export class SignupComponent implements OnInit, AfterViewInit {
           if (!isDevMode()) {
             if (window['analytics']) {
               let userFullname = ''
-              if (signupResponse.user.firstname && signupResponse.user.lastname)  {
+              if (signupResponse.user.firstname && signupResponse.user.lastname) {
                 userFullname = signupResponse.user.firstname + ' ' + signupResponse.user.lastname
               } else if (signupResponse.user.firstname && !signupResponse.user.lastname) {
                 userFullname = signupResponse.user.firstname
               }
-  
+
               try {
                 window['analytics'].identify(signupResponse.user._id, {
                   name: userFullname,
@@ -562,8 +597,8 @@ export class SignupComponent implements OnInit, AfterViewInit {
               // }
               // this.logger.log('[SIGN-UP] Signed Up button clicked event ', event)
 
-           
-  
+
+
 
               try {
                 window['analytics'].track("Signed Up", {
@@ -636,7 +671,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
 
     this.auth.signin(userEmail, this.userForm.value['password'], this.appConfigService.getConfig().SERVER_BASE_URL, function (error) {
       self.logger.log('[SIGN-UP] autoSignin 1. POST DATA ', error);
-      // console.log('autoSignin: ', error);
+      // this.logger.log('autoSignin: ', error);
       if (!error) {
         // --------------------------------------------
         // Run widget login
@@ -652,20 +687,31 @@ export class SignupComponent implements OnInit, AfterViewInit {
           window['tiledesk_widget_login']();
         }
 
-        // console.log('[SIGN-UP] autoSignin storedRoute ', self.storedRoute)
-        // console.log('[SIGN-UP] autoSignin EXIST_STORED_ROUTE ', self.EXIST_STORED_ROUTE)
+        // this.logger.log('[SIGN-UP] autoSignin storedRoute ', self.storedRoute)
+        // this.logger.log('[SIGN-UP] autoSignin EXIST_STORED_ROUTE ', self.EXIST_STORED_ROUTE)
 
-        // console.log('self.EXIST_STORED_ROUTE: ', self.EXIST_STORED_ROUTE, self.storedRoute);
-        // console.log('self.SKIP_WIZARD: ', self.SKIP_WIZARD);
-        
+        // this.logger.log('self.EXIST_STORED_ROUTE: ', self.EXIST_STORED_ROUTE, self.storedRoute);
+        // this.logger.log('self.SKIP_WIZARD: ', self.SKIP_WIZARD);
+
         if (!self.EXIST_STORED_ROUTE) {
           if (self.SKIP_WIZARD === false) {
+
+            self.logger.log('self.areActivePay: ', self.areActivePay);
             // self.router.navigate(['/create-project']);
+            
             // self.createNewProject(signupResponse)
 
             // self.router.navigate(['/create-new-project']);
-            self.router.navigate(['/onboarding']);
-            
+            // self.router.navigate(['/onboarding']);
+
+            if (self.areActivePay) {
+              self.router.navigate(['/onboarding']);
+            } else if (!self.areActivePay) {
+              // self.router.navigate(['/create-new-project']);
+              self.createNewProject(signupResponse)
+              
+            }
+
           } else {
             self.router.navigate(['/projects']);
           }
@@ -728,7 +774,8 @@ export class SignupComponent implements OnInit, AfterViewInit {
 
           this.id_project = newproject._id
           // this.router.navigate([`/project/${this.id_project}/configure-widget`]);
-          this.router.navigate(['/create-new-project']);
+          // this.router.navigate(['/create-new-project']);
+          this.router.navigate(['/projects']);
         }
 
 
@@ -740,73 +787,69 @@ export class SignupComponent implements OnInit, AfterViewInit {
         this.logger.log('[SIGN-UP] CREATE NEW PROJECT - POST REQUEST * COMPLETE *');
         this.projectService.newProjectCreated(true);
 
+        
+
         const trialStarDate = moment(new Date(this.new_project.createdAt)).format("YYYY-MM-DD hh:mm:ss")
         // this.logger.log('[WIZARD - CREATE-PRJCT] POST DATA PROJECT trialStarDate ', trialStarDate);
         const trialEndDate = moment(new Date(this.new_project.createdAt)).add(14, 'days').format("YYYY-MM-DD hh:mm:ss")
         // this.logger.log('[WIZARD - CREATE-PRJCT] POST DATA PROJECT trialEndDate', trialEndDate)
 
-        if (!isDevMode()) {
-          if (window['analytics']) {
-            try {
-              window['analytics'].page("Signup, Create project", {
+        this.trackCreateProject(signupResponse, trialStarDate,  trialEndDate)
+        
 
-              });
-            } catch (err) {
-              this.logger.error('Signup Create project page error', err);
-            }
-
-            let userFullname = ''
-            if (signupResponse.user.firstname && signupResponse.user.lastname)  {
-              userFullname = signupResponse.user.firstname + ' ' + signupResponse.user.lastname
-            } else if (signupResponse.user.firstname && !signupResponse.user.lastname) {
-              userFullname = signupResponse.user.firstname
-            }
-
-            try {
-              window['analytics'].identify(signupResponse.user._id, {
-                name: userFullname,
-                email: signupResponse.user.email,
-                logins: 5,
-                plan: "Scale (trial)"
-              });
-            } catch (err) {
-              this.logger.error('Signup Create project identify error', err);
-            }
-
-            try {
-              window['analytics'].track('Trial Started', {
-                "userId": signupResponse.user._id,
-                "trial_start_date": trialStarDate,
-                "trial_end_date": trialEndDate,
-                "trial_plan_name": "Scale (trial)",
-                "context": {
-                  "groupId": this.new_project._id
-                }
-              });
-            } catch (err) {
-              this.logger.error('Signup Create track Trial Started event error', err);
-            }
-
-            try {
-              window['analytics'].group(this.new_project._id, {
-                name: this.new_project.name,
-                plan: "Scale (trial)",
-              });
-            } catch (err) {
-              this.logger.error('Signup Create project group error', err);
-            }
-          }
-        }
-
-        setTimeout(() => {
-          // this.DISPLAY_SPINNER = false;
-        }, 2000);
+        // setTimeout(() => {
+        //   this.DISPLAY_SPINNER = false;
+        // }, 2000);
 
         // 'getProjectsAndSaveInStorage()' was called only on the onInit lifehook, now recalling also after the creation 
         // of the new project resolve the bug  'the auth service not find the project in the storage'
         this.getProjectsAndSaveInStorage();
-
+        this.addWidgetDefaultLanguage()
       });
+  }
+
+  addWidgetDefaultLanguage() {
+    this.browser_lang = this.translate.getBrowserLang();
+
+    if (tranlatedLanguage.includes(this.browser_lang)) {
+      const langName = this.getLanguageNameFromCode(this.browser_lang)
+      // this.logger.log('[WIZARD - CREATE-PRJCT] - langName ', langName)
+
+      this.temp_SelectedLangName = langName;
+      this.temp_SelectedLangCode = this.browser_lang
+    } else {
+
+      this.temp_SelectedLangName = 'English';
+      this.temp_SelectedLangCode = 'en'
+    }
+
+    this.addNewLanguage(this.temp_SelectedLangCode, this.temp_SelectedLangName)
+
+  }
+
+  addNewLanguage(langCode, langName) {
+    this.selectedTranslationCode = langCode;
+    this.selectedTranslationLabel = langName;
+    this.logger.log('[SIGN-UP] ADD-NEW-LANG selectedTranslationCode', this.selectedTranslationCode);
+    this.logger.log('[SIGN-UP] ADD-NEW-LANG selectedTranslationLabel', this.selectedTranslationLabel);
+
+    this.widgetService.cloneLabel(this.temp_SelectedLangCode.toUpperCase())
+      .subscribe((res: any) => {
+        // this.logger.log('Multilanguage - addNewLanguage - CLONE LABEL RES ', res);
+        this.logger.log('[SIGN-UP] - ADD-NEW-LANG (clone-label) RES ', res.data);
+
+      }, error => {
+        this.logger.error('[SIGN-UP] ADD-NEW-LANG (clone-label) - ERROR ', error)
+      }, () => {
+        this.logger.log('[SIGN-UP] ADD-NEW-LANG (clone-label) * COMPLETE *')
+      });
+
+    // // ADD THE NEW LANGUAGE TO BOTTOM NAV
+    const newLang = { code: this.temp_SelectedLangCode, name: this.temp_SelectedLangName };
+    this.logger.log('[SIGN-UP] Multilanguage saveNewLanguage newLang objct ', newLang);
+
+    this.availableTranslations.push(newLang)
+    this.logger.log('[SIGN-UP] Multilanguage saveNewLanguage availableTranslations ', this.availableTranslations)
   }
 
   getProjectsAndSaveInStorage() {
@@ -838,7 +881,60 @@ export class SignupComponent implements OnInit, AfterViewInit {
     });
   }
 
+  trackCreateProject(signupResponse, trialStarDate,  trialEndDate) {
+    if (!isDevMode()) {
+      if (window['analytics']) {
+        try {
+          window['analytics'].page("Signup, Create project", {
 
+          });
+        } catch (err) {
+          this.logger.error('Signup Create project page error', err);
+        }
+
+        let userFullname = ''
+        if (signupResponse.user.firstname && signupResponse.user.lastname) {
+          userFullname = signupResponse.user.firstname + ' ' + signupResponse.user.lastname
+        } else if (signupResponse.user.firstname && !signupResponse.user.lastname) {
+          userFullname = signupResponse.user.firstname
+        }
+
+        try {
+          window['analytics'].identify(signupResponse.user._id, {
+            name: userFullname,
+            email: signupResponse.user.email,
+            logins: 5,
+            plan: "Scale (trial)"
+          });
+        } catch (err) {
+          this.logger.error('Signup Create project identify error', err);
+        }
+
+        try {
+          window['analytics'].track('Trial Started', {
+            "userId": signupResponse.user._id,
+            "trial_start_date": trialStarDate,
+            "trial_end_date": trialEndDate,
+            "trial_plan_name": "Scale (trial)",
+            "context": {
+              "groupId": this.new_project._id
+            }
+          });
+        } catch (err) {
+          this.logger.error('Signup Create track Trial Started event error', err);
+        }
+
+        try {
+          window['analytics'].group(this.new_project._id, {
+            name: this.new_project.name,
+            plan: "Scale (trial)",
+          });
+        } catch (err) {
+          this.logger.error('Signup Create project group error', err);
+        }
+      }
+    }
+  }
 
   widgetReInit() {
     if (window && window['tiledesk']) {

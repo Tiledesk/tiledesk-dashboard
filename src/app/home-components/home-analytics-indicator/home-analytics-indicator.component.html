@@ -23,7 +23,7 @@
         </div>
         <div class="flex items-baseline justify-center w-full mt-5 text-secondary">
           <!-- truncate -->
-          <div *ngIf="USER_ROLE !== 'agent'" class="text-accent-link-on-white text-md font-medium ">
+          <div *ngIf="USER_ROLE !== 'agent' && isVisibleANA" class="text-accent-link-on-white text-md font-medium ">
             <div class="arrow-container" (click)="goToContacts()">
               <div id="arrow_1" class="arrow-wrapper">
                 <div class="text-block" style="margin-right: 16px;">
@@ -65,7 +65,7 @@
         </div> -->
         <div class="flex items-baseline justify-center w-full mt-5 text-secondary">
           <!-- truncate -->
-          <div *ngIf="USER_ROLE !== 'agent'" class="text-accent-link-on-white text-md font-medium ">
+          <div *ngIf="USER_ROLE !== 'agent' && isVisibleANA" class="text-accent-link-on-white text-md font-medium ">
             <div class="arrow-container" (click)="goToVisitorsAnalytics()">
               <div id="arrow_1" class="arrow-wrapper">
                 <div class="text-block" style="margin-right: 16px;">
@@ -107,7 +107,7 @@
         <!-- <div class="other-analytics-text truncate">
           {{'Last30DaysMessages' | translate}}
         </div> -->
-        <div *ngIf="USER_ROLE !== 'agent'" class="flex items-baseline justify-center w-full mt-5 text-secondary">
+        <div *ngIf="USER_ROLE !== 'agent' && isVisibleANA" class="flex items-baseline justify-center w-full mt-5 text-secondary">
           <!-- truncate -->
           <div class="text-accent-link-on-white text-md font-medium ">
             <div class="arrow-container" (click)="goToMessagesAnalytics()">

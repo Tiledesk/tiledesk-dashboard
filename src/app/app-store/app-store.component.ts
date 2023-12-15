@@ -162,14 +162,7 @@ export class AppStoreComponent implements OnInit {
       })
   }
 
-  // getToken() {
-  //   this.auth.user_bs.subscribe((user) => {
-  //     if (user) {
-  //       this.TOKEN = user.token
-  //       this.userId = user._id
-  //     }
-  //   });
-  // }
+
 
   getOSCODE() {
     this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
@@ -205,10 +198,9 @@ export class AppStoreComponent implements OnInit {
       )
       .subscribe((project) => {
         if (project) {
-          this.project = project
-          this.projectId = project._id,
-
-            console.log('APP-STORE - projectId ', this.projectId)
+          this.project = project;
+          this.projectId = project._id;
+          this.logger.log('APP-STORE - projectId ', this.projectId)
         }
       });
   }
@@ -233,8 +225,37 @@ export class AppStoreComponent implements OnInit {
   getApps() {
     this.appStoreService.getApps().subscribe((_apps: any) => {
       this.apps = _apps.apps;
-      // console.log('APP-STORE - getApps APPS ', this.apps);
+      this.logger.log('APP-STORE - getApps APPS ', this.apps);
+
+
+      const paidApps = [
+        {
+          title: "WhatsApp Business", _id: "638a2564ccd1d40013e52125"
+        },
+        {
+          title: "Facebook Messenger", _id: "6421f8093e8de70013f78a5d"
+        },
+        {
+          title: "Help Center", _id: "643820f0edf2f350eeb2d835"
+        }
+      ]
+
+      if (!this.isVisiblePAY) {
+        this.apps = _apps.apps.filter(a => !paidApps.some(p => p._id == a._id));
+
+        this.logger.log('APP-STORE - Here yes')
+        this.logger.log('APP-STORE - getApps APPS after filter', this.apps)
+      }
+
+      const sendTranscriptAppIndex = this.apps.findIndex(object => {
+        return object._id === "64259aaf035da07321451424";
+      });
+
+      this.logger.log('sendTranscriptAppIndex ', sendTranscriptAppIndex);
+      this.apps.splice(sendTranscriptAppIndex, 1);
+
       this.apps.forEach(app => {
+      
         if (app.description.length > 118) {
           app.description = app.description.slice(0, 118) + '...'
         }
