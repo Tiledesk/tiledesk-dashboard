@@ -331,8 +331,9 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
     if (!this.public_Key.includes("GRO")) {
       this.isVisibleGroups = false;
     }
-
-    this.getProjectPlan()
+    if (this.isVisibleGroups === true) {
+      this.getProjectPlan()
+    }
   }
 
   getProjectPlan() {
@@ -358,11 +359,11 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
           if (projectProfileData.profile_type === 'free') {
             if (projectProfileData.trial_expired === false) {
               this.prjct_profile_name = PLAN_NAME.B + " plan (trial)"
-              this.isVisibleGroups = false
+              this.isVisibleGroups = true
             } else {
               this.prjct_profile_name = "Free plan";
               this.isVisibleGroups = false
-             
+
             }
           } else if (projectProfileData.profile_type === 'payment') {
             if (this.subscription_is_active === true) {
@@ -385,11 +386,11 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
               } else if (projectProfileData.profile_name === PLAN_NAME.C) {
                 this.prjct_profile_name = PLAN_NAME.C + " plan";
                 this.isVisibleGroups = true
-                
+
               }
 
             } else if (this.subscription_is_active === false) {
-             
+
               if (projectProfileData.profile_name === PLAN_NAME.A) {
                 this.prjct_profile_name = PLAN_NAME.A + " plan";
                 this.isVisibleGroups = false
@@ -1143,7 +1144,7 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
     this.logger.log('[DEPT-EDIT-ADD] - EDIT - BOT ID WHEN EDIT IS PRESSED IF USER ! DOES NOT SELECT A ANOTHER BOT', this.botId);
     this.logger.log('[DEPT-EDIT-ADD] - EDIT - DEPT_ROUTING WHEN EDIT IS PRESSED ', this.dept_routing);
     this.logger.log('[DEPT-EDIT-ADD] - EDIT - ROUTING_SELECTED WHEN EDIT IS PRESSED ', this.ROUTING_SELECTED);
-    
+
     if (this.selectedBotId === undefined) {
       this.botIdEdit = this.botId
     } else {
@@ -1172,8 +1173,8 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
 
   goTo_BotEditAddPage_CREATE() {
     // this.router.navigate(['project/' + this.project._id + '/bots/bot-select-type']);
-     this.router.navigate(['project/' + this.project._id + '/bots/my-chatbots/all']);
-   
+    this.router.navigate(['project/' + this.project._id + '/bots/my-chatbots/all']);
+
   }
 
   // TEST CHAT21-API-NODEJS router.get('/:departmentid/operators'
