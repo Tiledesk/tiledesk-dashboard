@@ -358,7 +358,7 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
           if (projectProfileData.profile_type === 'free') {
             if (projectProfileData.trial_expired === false) {
               this.prjct_profile_name = PLAN_NAME.B + " plan (trial)"
-              this.isVisibleGroups = true
+              this.isVisibleGroups = false
             } else {
               this.prjct_profile_name = "Free plan";
               this.isVisibleGroups = false

@@ -225,7 +225,7 @@ export class AppStoreComponent implements OnInit {
   getApps() {
     this.appStoreService.getApps().subscribe((_apps: any) => {
       this.apps = _apps.apps;
-      this.logger.log('APP-STORE - getApps APPS ', this.apps);
+      console.log('APP-STORE - getApps APPS ', this.apps);
 
 
       const paidApps = [
@@ -244,7 +244,7 @@ export class AppStoreComponent implements OnInit {
         this.apps = _apps.apps.filter(a => !paidApps.some(p => p.title == a.title));
 
         this.logger.log('APP-STORE - Here yes')
-        this.logger.log('APP-STORE - getApps APPS after filter', this.apps)
+        console.log('APP-STORE - getApps APPS after filter', this.apps)
       }
 
       const sendTranscriptAppIndex = this.apps.findIndex(object => {

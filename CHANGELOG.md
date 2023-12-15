@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.4.82
+- Improvements and bug fixing
+
 ### 2.4.81
 - Improvements and bug fixing
 
