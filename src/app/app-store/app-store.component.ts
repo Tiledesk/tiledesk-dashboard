@@ -230,25 +230,25 @@ export class AppStoreComponent implements OnInit {
 
       const paidApps = [
         {
-          title: "WhatsApp Business", _id: "638a2564ccd1d40013e52125"
+          title: "WhatsApp Business"
         },
         {
-          title: "Facebook Messenger", _id: "6421f8093e8de70013f78a5d"
+          title: "Facebook Messenger"
         },
         {
-          title: "Help Center", _id: "643820f0edf2f350eeb2d835"
+          title: "Help Center"
         }
       ]
 
       if (!this.isVisiblePAY) {
-        this.apps = _apps.apps.filter(a => !paidApps.some(p => p._id == a._id));
+        this.apps = _apps.apps.filter(a => !paidApps.some(p => p.title == a.title));
 
         this.logger.log('APP-STORE - Here yes')
         this.logger.log('APP-STORE - getApps APPS after filter', this.apps)
       }
 
       const sendTranscriptAppIndex = this.apps.findIndex(object => {
-        return object._id === "64259aaf035da07321451424";
+        return object.title === "Send transcript by email";
       });
 
       this.logger.log('sendTranscriptAppIndex ', sendTranscriptAppIndex);
