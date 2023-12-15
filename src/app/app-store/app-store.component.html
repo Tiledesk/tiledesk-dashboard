@@ -274,7 +274,8 @@
       <!-- -------------------------------------------------------------------- -->
       <!-- @ App cards -->
       <!-- -------------------------------------------------------------------- -->
-      <div *ngFor="let app of apps" class="col-lg-4 col-md-4 col-sm-6" style="cursor:pointer">
+      <div *ngFor="let app of apps" class="col-lg-4 col-md-4 col-sm-6" style="cursor:pointer"
+        [ngClass]="{'hide-paid-app': !this.isVisiblePAY && (app.title === 'WhatsApp Business' || app.title === 'Facebook Messenger' || app.title === 'Help Center') }">
         <div class="card card-app-store">
 
           <div class="card-content">
@@ -318,7 +319,11 @@
               </div>
             </div>
             <!-- padding: 0px 20px; min-height: 52px; -->
-            <h5 class="card-title" style="margin-bottom: 5px;" [ngClass]="{'app-store-card-no-badge': (app?.title !== 'Zapier') && (app?.title !== 'WhatsApp Business') && (app?.title !== 'Facebook Messenger') && (app?.title !== 'Help Center')}">
+            <h5 class="card-title" style="margin-bottom: 5px;" [ngClass]="{
+              'app-store-card-no-badge': (app?.title !== 'Zapier') && 
+                                          (app?.title !== 'WhatsApp Business') && 
+                                          (app?.title !== 'Facebook Messenger') && 
+                                          (app?.title !== 'Help Center')}">
               {{ app.title}}
             </h5>
     

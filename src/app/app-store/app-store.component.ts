@@ -240,31 +240,31 @@ export class AppStoreComponent implements OnInit {
         }
       ]
 
-      if (!this.isVisiblePAY) {
-        // this.apps =  _apps.apps.filter(a => !paidApps.some(p => p.title == a.title));
+      // if (!this.isVisiblePAY) {
+      //   // this.apps =  _apps.apps.filter(a => !paidApps.some(p => p.title == a.title));
 
-        this.logger.log('APP-STORE - Here yes')
-        // console.log('APP-STORE - getApps APPS after filter', this.apps)
+      //   this.logger.log('APP-STORE - Here yes')
+      //   // console.log('APP-STORE - getApps APPS after filter', this.apps)
 
-        const sendWAAppIndex = this.apps.findIndex(object => {
-          return object.title === "WhatsApp Business";
-        });
+      //   const sendWAAppIndex = this.apps.findIndex(object => {
+      //     return object.title === "WhatsApp Business";
+      //   });
 
-        this.apps.splice(sendWAAppIndex, 1);
+      //   this.apps.splice(sendWAAppIndex, 1);
 
-        const sendFMAppIndex = this.apps.findIndex(object => {
-          return object.title === "Facebook Messenger";
-        });
+      //   const sendFMAppIndex = this.apps.findIndex(object => {
+      //     return object.title === "Facebook Messenger";
+      //   });
         
-        this.apps.splice(sendFMAppIndex, 1);
+      //   this.apps.splice(sendFMAppIndex, 1);
 
-        const sendHCAppIndex = this.apps.findIndex(object => {
-          return object.title === "Help Center";
-        });
+      //   const sendHCAppIndex = this.apps.findIndex(object => {
+      //     return object.title === "Help Center";
+      //   });
         
-        this.apps.splice(sendHCAppIndex, 1);
+      //   this.apps.splice(sendHCAppIndex, 1);
 
-      }
+      // }
 
       const sendTranscriptAppIndex = this.apps.findIndex(object => {
         return object.title === "Send transcript by email";
