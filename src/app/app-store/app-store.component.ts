@@ -241,10 +241,29 @@ export class AppStoreComponent implements OnInit {
       ]
 
       if (!this.isVisiblePAY) {
-        this.apps = _apps.apps.filter(a => !paidApps.some(p => p.title == a.title));
+        // this.apps =  _apps.apps.filter(a => !paidApps.some(p => p.title == a.title));
 
         this.logger.log('APP-STORE - Here yes')
-        console.log('APP-STORE - getApps APPS after filter', this.apps)
+        // console.log('APP-STORE - getApps APPS after filter', this.apps)
+
+        const sendWAAppIndex = this.apps.findIndex(object => {
+          return object.title === "WhatsApp Business";
+        });
+
+        this.apps.splice(sendWAAppIndex, 1);
+
+        const sendFMAppIndex = this.apps.findIndex(object => {
+          return object.title === "Facebook Messenger";
+        });
+        
+        this.apps.splice(sendFMAppIndex, 1);
+
+        const sendHCAppIndex = this.apps.findIndex(object => {
+          return object.title === "Help Center";
+        });
+        
+        this.apps.splice(sendHCAppIndex, 1);
+
       }
 
       const sendTranscriptAppIndex = this.apps.findIndex(object => {
@@ -255,6 +274,8 @@ export class AppStoreComponent implements OnInit {
       this.apps.splice(sendTranscriptAppIndex, 1);
 
       this.apps.forEach(app => {
+
+
       
         if (app.description.length > 118) {
           app.description = app.description.slice(0, 118) + '...'
