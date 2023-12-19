@@ -34,6 +34,7 @@ export class SettingsSidebarComponent implements OnInit {
   isVisibleAPP: boolean;
   isVisibleETK: boolean;
   isVisibleKNB: boolean;
+  isVisibleAUT: boolean;
   TAG_ROUTE_IS_ACTIVE: boolean;
   EMAIL_TICKETING_ROUTE_IS_ACTIVE: boolean;
   CANNED_RESPONSES_ROUTE_IS_ACTIVE: boolean;
@@ -47,6 +48,7 @@ export class SettingsSidebarComponent implements OnInit {
   PROJECT_SETTINGS_ROUTE_IS_ACTIVE: boolean;
   OPERATING_HOURS_ROUTE_IS_ACTIVE: boolean;
   KNOWLEDGE_BASES_ROUTE_IS_ACTIVE: boolean;
+  AUTOMATIONS_ROUTE_IS_ACTIVE: boolean;
   public_Key: string;
   USER_ROLE: any;
   CHAT_BASE_URL: string;
@@ -281,6 +283,15 @@ export class SettingsSidebarComponent implements OnInit {
           this.isVisibleKNB = true;
         }
       }
+
+      if (key.includes('AUT')) {
+        let aut = key.split(':')
+        if (aut[1] === 'F') {
+          this.isVisibleAUT = false;
+        } else {
+          this.isVisibleAUT = true;
+        }
+      }
     })
 
     if (!this.public_Key.includes('CAR')) {
@@ -300,6 +311,9 @@ export class SettingsSidebarComponent implements OnInit {
     
     if (!this.public_Key.includes('KNB')) {
       this.isVisibleKNB = false
+    }
+    if (!this.public_Key.includes('AUT')) {
+      this.isVisibleAUT = false
     }
   }
 
@@ -393,6 +407,10 @@ export class SettingsSidebarComponent implements OnInit {
   goToOperatingHours() {
     // routerLink="project/{{ project._id }}/hours"
     this.router.navigate(['project/' + this.project._id + '/hours'])
+  }
+
+  goToAutomations() {
+    this.router.navigate(['project/' + this.project._id + '/automations'])
   }
 
   goToKnowledgeBases() {
@@ -562,7 +580,13 @@ export class SettingsSidebarComponent implements OnInit {
       this.logger.log('[SETTING-SIDEBAR] - KNOWLEDGE_BASES_ROUTE_IS_ACTIVE ',this.KNOWLEDGE_BASES_ROUTE_IS_ACTIVE)
     }
 
-    
+    if (this.route.indexOf('/automations') !== -1) {
+      this.AUTOMATIONS_ROUTE_IS_ACTIVE = true
+      this.logger.log('[SETTING-SIDEBAR] - AUTOMATIONS_ROUTE_IS_ACTIVE ',this.AUTOMATIONS_ROUTE_IS_ACTIVE)
+    } else {
+      this.AUTOMATIONS_ROUTE_IS_ACTIVE = false
+      this.logger.log('[SETTING-SIDEBAR] - AUTOMATIONS_ROUTE_IS_ACTIVE ',this.AUTOMATIONS_ROUTE_IS_ACTIVE)
+    }
 
     if (this.route.indexOf('/project-settings/') !== -1) {
       this.PROJECT_SETTINGS_ROUTE_IS_ACTIVE = true
