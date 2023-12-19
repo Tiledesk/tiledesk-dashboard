@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.4.87
+- Adds Automations Logs page
+
 ### 2.4.86
 - Improvements and bug fixing
 
