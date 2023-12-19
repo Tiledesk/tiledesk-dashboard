@@ -32,7 +32,7 @@
                 </li>
 
                 <li *ngIf="display_contact_us_email">
-                    <span *ngIf="displayContactUs" style="font-size: 12px;">
+                    <span *ngIf="displayContactUs && areActivePay" style="font-size: 12px;">
                         <!-- <a target="_blank" href="mailto:{{contactUsEmail}}" style="text-transform: none">  -->
                         {{ 'NeedHelpWriteTo' | translate }}
                         <span style="font-weight:500">

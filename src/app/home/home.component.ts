@@ -59,7 +59,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   // tparams = brand;
   company_name: string;
   tparams: any;
-  public_Key: string;
+
   firebaseProjectId: any;
   LOCAL_STORAGE_CURRENT_USER: any;
 
@@ -88,7 +88,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   showSpinner = true;
 
   subscription: Subscription;
-  isVisiblePay: boolean;
+  
   installWidgetText: string;
 
   //** FOR THE NEW DASHBOARD **//
@@ -110,11 +110,14 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   chatbots: any // TO DISPLAY THE CHATBOT IN THE NEW HOME HEADER
   DISPLAY_TEAMMATES: boolean = false;
   DISPLAY_CHATBOTS: boolean = false;
-
+  
+  public_Key: string;
   isVisibleANA: boolean;
   isVisibleAPP: boolean;
   isVisibleOPH: boolean;
   isVisibleHomeBanner: boolean;
+  isVisiblePay: boolean;
+
   hidechangelogrocket: boolean;
   onlyOwnerCanManageTheAccountPlanMsg: string;
   learnMoreAboutDefaultRoles: string;
@@ -325,11 +328,15 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   getProjectById(projectId) {
     this.projectService.getProjectById(projectId).subscribe((project: any) => {
       this.logger.log('[HOME] - GET PROJECT BY ID - PROJECT: ', project);
+      if (project && project.attributes && project.attributes.dashlets) {
+        this.PROJECT_ATTRIBUTES = project.attributes;
+        this.getDashlet(this.PROJECT_ATTRIBUTES)
+      }
 
       if (project && project.attributes && project.attributes.userPreferences) {
         this.PROJECT_ATTRIBUTES = project.attributes;
         this.getOnbordingPreferences(this.PROJECT_ATTRIBUTES)
-        this.getDashlet(this.PROJECT_ATTRIBUTES)
+        
       } else {
         this.logger.log('[HOME] USECASE  PROJECT_ATTRIBUTES UNDEFINED', this.PROJECT_ATTRIBUTES)
         this.setDefaultPreferences()
@@ -343,11 +350,12 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       // this.getApps();
       setTimeout(() => {
         this.showskeleton = false;
-      }, 1000);
+      }, 1200);
     });
   }
 
   getDashlet(project_attributes) {
+    this.logger.log('[HOME] - (onInit) - DASHLETS PREFERENCES project_attributes ', project_attributes);
     if (project_attributes && project_attributes.dashlets) {
       this.logger.log('[HOME] - (onInit) - DASHLETS PREFERENCES ', project_attributes.dashlets);
       const dashlets = project_attributes.dashlets;
@@ -2576,8 +2584,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.logger.log('[HOME] AppConfigService getAppConfig CHAT_BASE_URL', this.CHAT_BASE_URL);
   }
 
-
-
   getOSCODE() {
     this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
     // this.logger.log('[HOME] AppConfigService getAppConfig public_Key', this.public_Key);
@@ -2652,18 +2658,20 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       }
 
       if (key.includes("PPB")) {
-        // this.logger.log('PUBLIC-KEY (PROJECTS-LIST) - key', key);
+        // this.logger.log('PUBLIC-KEY (HOME) - key', key);
         let ppb = key.split(":");
-        // this.logger.log('PUBLIC-KEY (PROJECTS-LIST) - ppb key&value', ppb);
+        // this.logger.log('PUBLIC-KEY (HOME) - ppb key&value', ppb);
 
         if (ppb[1] === "F") {
           this.project_plan_badge = false;
-          // this.logger.log('PUBLIC-KEY (PROJECTS-LIST) - project plan badge is', this.project_plan_badge);
+          // this.logger.log('PUBLIC-KEY (HOME) - project plan badge is', this.project_plan_badge);
         } else {
           this.project_plan_badge = true;
-          // this.logger.log('PUBLIC-KEY (PROJECTS-LIST) - project plan badge is', this.project_plan_badge);
+          // this.logger.log('PUBLIC-KEY (HOME) - project plan badge is', this.project_plan_badge);
         }
       }
+
+     
     });
 
     if (!this.public_Key.includes("ANA")) {
@@ -2687,20 +2695,14 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     if (!this.public_Key.includes("PPB")) {
-      // this.logger.log('PUBLIC-KEY (PROJECTS-LIST) - key.includes("PPB")', this.public_Key.includes("PPB"));
+      // this.logger.log('PUBLIC-KEY (HOME) - key.includes("PPB")', this.public_Key.includes("PPB"));
       this.project_plan_badge = false;
     }
 
-    // this.logger.log('eoscode', this.eos)
-    // if (this.eos && this.eos === publicKey) {
-
-    //   this.isVisible = true;
-    //   this.logger.log('eoscode isVisible ', this.isVisible);
-    // } else {
-
-    //   this.isVisible = false;
-    //   this.logger.log('eoscode isVisible ', this.isVisible);
-    // }
+    if (!this.public_Key.includes("PAY")) {
+      // this.logger.log('PUBLIC-KEY (HOME) - key.includes("PPB")', this.public_Key.includes("PPB"));
+      this.isVisiblePay = false;
+    }
   }
 
   checkPromoURL() {
@@ -3691,81 +3693,79 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   async switchAnalyticsConvsGraph(event) {
     this.logger.log('[HOME] SWITCH ANALYTICS OVERVIEW event ', event)
     this.displayAnalyticsConvsGraph = event
-    await this.updatesDashletsPreferences()
+    await this.updatesDashletsPreferences('switchAnalyticsConvsGraph')
   }
 
   async switchAnalyticsIndicators(event) {
     this.logger.log('[HOME] SWITCH ANALYTICS OVERVIEW event ', event)
     this.displayAnalyticsIndicators = event
-    await this.updatesDashletsPreferences()
+    await this.updatesDashletsPreferences('switchAnalyticsIndicators')
   }
 
   async switchConnectWhatsApp(event) {
     this.logger.log('[HOME] SWITCH CNNECT WA event ', event)
     this.displayConnectWhatsApp = event;
-    await this.updatesDashletsPreferences()
+    await this.updatesDashletsPreferences('switchConnectWhatsApp')
   }
 
   async switchCreateChatbot(event) {
     this.logger.log('[HOME] SWITCH CREATE CHATBOT event ', event)
     this.displayCreateChatbot = event;
-    await this.updatesDashletsPreferences()
+    await this.updatesDashletsPreferences('switchCreateChatbot')
   }
 
   async switchInviteTeammate(event) {
     this.logger.log('[HOME] SWITCH INVITE TEAMMATES event ', event)
     this.displayInviteTeammate = event;
-    await this.updatesDashletsPreferences()
+    await this.updatesDashletsPreferences('switchInviteTeammate')
   }
 
   async switchyKnowledgeBase(event) {
     this.logger.log('[HOME] SWITCH KNOWLEDGE BASE event ', event)
     this.displayKnowledgeBase = event;
-    await this.updatesDashletsPreferences()
+    await this.updatesDashletsPreferences('switchyKnowledgeBase')
   }
 
   async switchCustomizeWidget(event) {
     this.logger.log('[HOME] SWITCH CUSTOMIZE WIDGET event ', event)
     this.displayCustomizeWidget = event;
-    await this.updatesDashletsPreferences()
+    await this.updatesDashletsPreferences('switchCustomizeWidget')
   }
 
   async switchNewsFeed(event) {
     this.logger.log('[HOME] SWITCH NEWS FEED event ', event)
     this.displayNewsFeed = event;
-    await this.updatesDashletsPreferences()
+    await this.updatesDashletsPreferences('switchNewsFeed')
   }
 
 
 
-  async _updatesDashletsPreferences() {
-    // conast dashletArray =[ {'convsGraph': true, 'analyticsIndicators': true, 'connectWhatsApp': null, 'createChatbot': null, 'knowledgeBase': null, 'inviteTeammate': null,  'customizeWidget': null, 'newsFeed': true}]
-    this.logger.log('[HOME] - updatesDashletsPreferences - displayCustomizeWidget: ', this.displayCustomizeWidget);
-    this.projectService.updateDashletsPreferences(
-      this.displayAnalyticsConvsGraph,
-      this.displayAnalyticsIndicators,
-      this.displayConnectWhatsApp,
-      this.displayCreateChatbot,
-      this.displayKnowledgeBase,
-      this.displayInviteTeammate,
-      this.displayCustomizeWidget,
-      this.displayNewsFeed)
-      .subscribe((res: any) => {
-        this.logger.log('[HOME] - UPDATE PRJCT WITH DASHLET PREFERENCES - RES ', res);
+  // async _updatesDashletsPreferences() {
+  //   // conast dashletArray =[ {'convsGraph': true, 'analyticsIndicators': true, 'connectWhatsApp': null, 'createChatbot': null, 'knowledgeBase': null, 'inviteTeammate': null,  'customizeWidget': null, 'newsFeed': true}]
+  //   this.logger.log('[HOME] - updatesDashletsPreferences - displayCustomizeWidget: ', this.displayCustomizeWidget);
+  //   this.projectService.updateDashletsPreferences(
+  //     this.displayAnalyticsConvsGraph,
+  //     this.displayAnalyticsIndicators,
+  //     this.displayConnectWhatsApp,
+  //     this.displayCreateChatbot,
+  //     this.displayKnowledgeBase,
+  //     this.displayInviteTeammate,
+  //     this.displayCustomizeWidget,
+  //     this.displayNewsFeed)
+  //     .subscribe((res: any) => {
+  //       this.logger.log('[HOME] - UPDATE PRJCT WITH DASHLET PREFERENCES - RES ', res);
 
-      }, error => {
-        this.logger.error('[HOME] - UPDATE PRJCT WITH DASHLET PREFERENCES - ERROR ', error)
-      }, () => {
-        this.logger.log('[HOME] - UPDATE PRJCT WITH DASHLET PREFERENCES * COMPLETE *')
-        return
-      });
+  //     }, error => {
+  //       this.logger.error('[HOME] - UPDATE PRJCT WITH DASHLET PREFERENCES - ERROR ', error)
+  //     }, () => {
+  //       this.logger.log('[HOME] - UPDATE PRJCT WITH DASHLET PREFERENCES * COMPLETE *')
+  //       return
+  //     });
+  // }
 
-
-  }
-
-  async updatesDashletsPreferences() {
+  async updatesDashletsPreferences(calledBy) {
     // const dashletArray =[ {'convsGraph': true, 'analyticsIndicators': true, 'connectWhatsApp': null, 'createChatbot': null, 'knowledgeBase': null, 'inviteTeammate': null,  'customizeWidget': null, 'newsFeed': true}]
-    this.logger.log('[HOME] - calling updatesDashletsPreferences - displayCustomizeWidget');
+    this.logger.log('[HOME] - calling updatesDashletsPreferences by ', calledBy);
     return await this.projectService.updateDashletsPreferences(
       this.displayAnalyticsConvsGraph,
       this.displayAnalyticsIndicators,
@@ -3782,9 +3782,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         this.logger.log('[HOME] - UPDATE PRJCT WITH DASHLET PREFERENCES - err ', err);
       })
   }
-
-
-
 
   goToProjects() {
     this.logger.log('[HOME] HAS CLICCKED GO TO PROJECT ')

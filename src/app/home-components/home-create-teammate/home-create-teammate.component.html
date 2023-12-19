@@ -186,7 +186,7 @@
                 #tooltip="matTooltip" matTooltipPosition='above' matTooltipHideDelay="100">
                 error
             </span>
-            <span class="redeemed-temmates-redeemed-num" matTooltipClass="ct-custom-mat-tooltip"
+            <span *ngIf="areActivePay" class="redeemed-temmates-redeemed-num" matTooltipClass="ct-custom-mat-tooltip"
                 matTooltip="View detail in Teammates & Groups" #tooltip="matTooltip" matTooltipPosition='below'
                 matTooltipHideDelay="100" (click)="goToTeammates()"
                 [ngStyle]="{'color': countOfPendingInvites + projectUsersLength > seatsLimit ? '#f44336' : '#2196f3'}">
@@ -195,7 +195,7 @@
                     ({{ countOfPendingInvites }} pending )
                 </span>
             </span>
-            of {{ seatsLimit }} available for the {{prjct_profile_name}}.
+           <span *ngIf="areActivePay"> of {{ seatsLimit }} available for the {{prjct_profile_name}}. </span> 
         </div>
 
         <div *ngIf="USER_ROLE === 'agent'" class="temmates-redeemed">

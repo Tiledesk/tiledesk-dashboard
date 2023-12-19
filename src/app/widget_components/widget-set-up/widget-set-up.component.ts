@@ -1130,6 +1130,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     var acc = document.getElementsByClassName("widget-section-accordion");
     // this.logger.log('[WIDGET-SET-UP] ACCORDION', acc);
     var i: number;
+    // #widget-all-settings-form > button:nth-child(7)
     for (i = 0; i < acc.length; i++) {
       this.logger.log('[WIDGET-SET-UP] ACCORDION i', i, 'acc[i]', acc[i]);
       // Open the first accordion https://codepen.io/fpavision/details/xxxONGv
@@ -1147,6 +1148,8 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
 
       var arrow_icon_div = firstAccordion.children[1];
+
+      
       // this.logger.log('[WIDGET-SET-UP] ACCORDION ARROW ICON WRAP DIV', arrow_icon_div);
 
       var arrow_icon = arrow_icon_div.children[0]

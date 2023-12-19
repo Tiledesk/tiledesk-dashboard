@@ -6,16 +6,16 @@
         <!-- {{'HereIsAListOfPagesAndLinks' | translate}} -->
         Here’s a list of pages we highly recommend going over before you start having conversations
     </div>
-    <div class="news-wrapper">
+    <div id="feed-carousel-wpr" class="news-wrapper">
         <!-- *ngIf="displayScrollLeftBtn"   [ngStyle]="{'opacity':displayScrollLeftBtn === false ? '0' : '1' }" -->
         <i id="left" class="material-icons" [ngStyle]="{'opacity':displayScrollLeftBtn === false ? '0' : '1' }">
             navigate_before
         </i>
-        <ul class="carousel">
-            <!--  -->
+        <ul id="feed-carousel" class="carousel" #scrollableElement>
+            <!--   -->
             <li class="news-card" [ngClass]="{'highlighted-card': news?.highlighted }" 
                 style="position: relative;"  *ngFor="let news of newsFeedList" 
-                (click)="openNewsLink(news?.learnmore)">
+                (click)="openNews(news?.learnmore, news?.type)">
                 
                 <!-- <div class="box"> -->
                     <!-- <div class="ribbon ribbon-top-right">
@@ -23,7 +23,7 @@
                     </div> -->
                 <!-- </div> -->
 
-                <div class="img" style="position: relative;">
+                <div class="card-image" *ngIf="news?.image" class="img" style="position: relative;">
                     <img [src]="news?.image" alt="img" draggable="false">
 
                     <!-- YouTube button  -->
@@ -35,6 +35,17 @@
                             <path d="M 45,24 27,14 27,34" fill="#fff"></path>
                         </svg>
                     </div>
+                </div>
+                <div  *ngIf="!news?.image" class="img card-noimage" style="position: relative;" [ngStyle]="{ 'background': news?.background }">
+                    <!-- <img src="https://tiledesk.com/wp-content/uploads/2022/08/tiledesk_v13.png" alt="img" draggable="false">   -->
+                   
+                    <!-- [ngStyle]="{ 'background': linear-gradient(135deg, rgb(206, 159, 252) 0%, rgb(115, 103, 240) 100%) }" -->
+                    <!-- <div class="news-description-wpr"> -->
+                        <div class="news-description">
+                           {{ news?.description }} 
+                        </div>
+                    <!-- </div> -->
+                    
                 </div>
                 <div class="news-tag">
                     <span *ngIf="news?.tag === 'Academy'" class="news-tag-icon">
@@ -77,19 +88,23 @@
 
                 <h2>{{news?.title}}</h2>
 
-                <div class="news-link-wpr" (click)="openNewsLink(news?.learnmore)">
+                <div class="news-link-wpr" >
 
-                    <div class="news-link" *ngIf="news?.tag === 'Feature' && news?.type === 'article'"  >
+                    <div class="news-link" *ngIf="news?.tag === 'Feature' && news?.type === 'article'"  
+                    (click)="openNewsLink(news?.learnmore)">
                         Read more
                     </div>
-                    <div class="news-link" *ngIf="news?.tag === 'Academy' && news?.type === 'article'"  >
+                    <div class="news-link" *ngIf="news?.tag === 'Academy' && news?.type === 'article'"  
+                    (click)="openNewsLink(news?.learnmore)">
                         Learn more
                     </div>
-                    <div class="news-link" *ngIf="news?.tag === 'Academy' && news?.type === 'video'"  >
-                        View video
+                    <div class="news-link" *ngIf="news?.tag === 'Academy' && news?.type === 'video'"  
+                        (click)="openVideoInModal(news?.learnmore)">
+                        Play video
                     </div>
-                    <div class="news-link" *ngIf="news?.tag === 'Feature' && news?.type === 'video'"  >
-                        View video
+                    <div class="news-link" *ngIf="news?.tag === 'Feature' && news?.type === 'video'"  
+                     (click)="openVideoInModal(news?.learnmore)">
+                        Play video
                     </div>
                    
                 </div>
@@ -97,7 +112,9 @@
 
         </ul>
         <!-- <i class="fa-solid fa-angle-right"></i> -->
-        <i id="right" class="material-icons" style="opacity: 0;">
+        <!-- [ngStyle]="{'opacity':displayScrollLeftBtn === false ? '0' : '1' }" -->
+        <!-- style="opacity: 0;" -->
+        <i id="right" class="material-icons" [ngStyle]="{'opacity':displayScrollRightBtn === false ? '0' : '1' }">
             keyboard_arrow_right
         </i>
     </div>

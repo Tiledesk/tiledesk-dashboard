@@ -4,6 +4,7 @@ import { environment } from '../../../environments/environment';
 // import brand from 'assets/brand/brand.json';
 import { BrandService } from './../../services/brand.service';
 import { LoggerService } from './../../services/logger/logger.service';
+import { AppConfigService } from 'app/services/app-config.service';
 // declare var require: any;
 @Component({
   selector: 'app-footer',
@@ -36,10 +37,14 @@ export class FooterComponent implements OnInit {
   contactUsEmail: string;
   displayContactUs: boolean;
 
+  public_Key: string;
+  areActivePay: boolean;
+
   constructor(
     public brandService: BrandService,
     private logger: LoggerService,
     private prjctPlanService: ProjectPlanService,
+    public appConfigService: AppConfigService
   ) {
     const brand = brandService.getBrand();
     this.company_name = brand['company_name'];
@@ -57,7 +62,34 @@ export class FooterComponent implements OnInit {
   ngOnInit() {
     this.logger.log('[FOOTER-COMP] version ', this.version);
     // this.brandLog()
-    this.getProjectPlan()
+    this.getOSCODE()
+  }
+
+  getOSCODE() {
+
+    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
+    this.logger.log('[FOOTER-COMP] getAppConfig - public_Key', this.public_Key);
+    let keys = this.public_Key.split("-");
+    this.logger.log('[FOOTER-COMP] - keys', keys)
+    keys.forEach(key => {
+
+      if (key.includes("PAY")) {
+        // this.logger.log('[FOOTER-COMP] PUBLIC-KEY - key', key);
+        let psa = key.split(":");
+        // this.logger.log('[FOOTER-COMP] PUBLIC-KEY - pay key&value', psa);
+        if (psa[1] === "F") {
+          this.areActivePay = false;
+        } else {
+          this.areActivePay = true;
+        }
+      }
+    });
+
+    if (!this.public_Key.includes("PAY")) {
+      this.areActivePay = false;
+    }
+
+    this.getProjectPlan();
   }
   getProjectPlan() {
     this.prjctPlanService.projectPlan$.subscribe(

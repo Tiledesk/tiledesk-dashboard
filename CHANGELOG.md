@@ -1,5 +1,20 @@
 # tiledesk-dashboard
 
+### 2.4.84
+- Improvements and bug fixing
+
+### 2.4.83
+- Improvements and bug fixing
+
+### 2.4.82
+- Improvements and bug fixing
+
+### 2.4.81
+- Improvements and bug fixing
+
+### 2.4.80
+- Improvements and bug fixing
+
 ### 2.4.79-rc2
 - Implements google reCAPTCHA on the sign up page 
 - Removes the last "Get Template" onboarding step
@@ -7,6 +22,9 @@
 ### 2.4.79-rc1
 - Adds the ability to select the "Business Owner" role in the first step of onboarding
 - Bug fixes in Knowledge Base
+
+### 2.4.79
+- Adds the "News and documentation" section to the home page
 
 ### 2.4.78
 - Deploys in production

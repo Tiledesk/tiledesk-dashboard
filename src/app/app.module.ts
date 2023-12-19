@@ -360,6 +360,9 @@ import { HomeGoToChatComponent } from './home-components/home-go-to-chat/home-go
 import { KnowledgeBasesComponent } from './knowledge-bases/knowledge-bases.component';
 import { CnpTemplatesComponent } from './create-new-project/cnp-templates/cnp-templates.component';
 import { OnboardingWelcomeComponent } from './create-new-project/onboarding-welcome/onboarding-welcome.component';
+import { HomeNewsFeedModalComponent } from './home-components/home-news-feed/home-news-feed-modal/home-news-feed-modal.component';
+import { AutomationsComponent } from './automations/automations.component';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 
 
@@ -636,7 +639,9 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     HomeInviteTeammateErrorModalComponent,
     HomeGoToChatComponent,
     CnpTemplatesComponent,
-    OnboardingWelcomeComponent
+    OnboardingWelcomeComponent,
+    HomeNewsFeedModalComponent,
+    AutomationsComponent
   ],
   imports: [
     TooltipModule.forRoot(CutomTooltipOptions as TooltipOptions),
@@ -662,6 +667,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     MatExpansionModule,
     MatDialogModule,
     MatCheckboxModule,
+    MatAutocompleteModule,
     /* PRIVATE */
     PricingModule,
     ChatbotDesignStudioModule,

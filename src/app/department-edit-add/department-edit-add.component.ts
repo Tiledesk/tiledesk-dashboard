@@ -13,13 +13,14 @@ import { TranslateService } from '@ngx-translate/core';
 import { NotifyService } from '../core/notify.service';
 import { slideInOutAnimation } from '../_animations/index';
 import { UsersService } from '../services/users.service';
-import { avatarPlaceholder, getColorBck, goToCDSVersion } from '../utils/util';
+import { APP_SUMO_PLAN_NAME, PLAN_NAME, avatarPlaceholder, getColorBck, goToCDSVersion } from '../utils/util';
 import { AppConfigService } from '../services/app-config.service';
 import { ComponentCanDeactivate } from '../core/pending-changes.guard';
 import { LoggerService } from '../services/logger/logger.service';
 import { Subject, Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
 import { FaqKb } from 'app/models/faq_kb-model';
+import { ProjectPlanService } from 'app/services/project-plan.service';
 declare const $: any;
 const swal = require('sweetalert');
 
@@ -114,7 +115,23 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
   cancelMsg: string;
   areTouSureYouWantToNavigateAwayFromThisPageWithoutSaving: string
   isChromeVerGreaterThan100: boolean;
-  USER_ROLE: string
+  USER_ROLE: string;
+  public_Key: string;
+  isVisibleGroups: boolean;
+
+  prjct_id: string
+  prjct_name: string
+  profile_name: string
+  projectPlanAgentsNo: number
+  prjct_profile_name: string
+  browserLang: string
+  prjct_profile_type: any;
+  subscription_is_active: any
+  subscription_end_date: any
+  seatsLimit: any;
+  trial_expired: any;
+  appSumoProfile: string
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -127,7 +144,8 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
     private notify: NotifyService,
     private usersService: UsersService,
     public appConfigService: AppConfigService,
-    private logger: LoggerService
+    private logger: LoggerService,
+    private prjctPlanService: ProjectPlanService
   ) { }
 
 
@@ -212,6 +230,7 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
   ngOnInit() {
     this.auth.checkRoleForCurrentProject();
     this.getProfileImageStorage();
+    this.getOSCODE()
 
     this.logger.log('[DEPT-EDIT-ADD] selectedDeptId FROM @INPUT: ', this.ws_requestslist_deptIdSelected)
     this.logger.log('[DEPT-EDIT-ADD] display_dept_sidebar FROM @INPUT: ', this.display_dept_sidebar)
@@ -288,6 +307,115 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
     this.getBrowserVersion()
   }
 
+  getOSCODE() {
+    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK
+    this.logger.log('[USERS] getAppConfig - public_Key', this.public_Key)
+
+    let keys = this.public_Key.split('-')
+    keys.forEach((key) => {
+      if (key.includes('GRO')) {
+        // this.logger.log('[DEPT-EDIT-ADD] - PUBLIC-KEY (Users) - key', key);
+        let gro = key.split(':')
+        // this.logger.log('[DEPT-EDIT-ADD] - PUBLIC-KEY (Users) - gro key&value', gro);
+
+        if (gro[1] === 'F') {
+          this.isVisibleGroups = false
+          // this.logger.log('[DEPT-EDIT-ADD] - PUBLIC-KEY (Users) - gro isVisibleGroups', this.isVisibleGroups);
+        } else {
+          this.isVisibleGroups = true
+          // this.logger.log('[DEPT-EDIT-ADD] - PUBLIC-KEY (Users) - gro isVisibleGroups', this.isVisibleGroups);
+        }
+      }
+    })
+
+    if (!this.public_Key.includes("GRO")) {
+      this.isVisibleGroups = false;
+    }
+    if (this.isVisibleGroups === true) {
+      this.getProjectPlan()
+    }
+  }
+
+  getProjectPlan() {
+    this.prjctPlanService.projectPlan$.subscribe(
+      (projectProfileData: any) => {
+        this.logger.log('[USERS] - GET PROJECT PLAN - RES ', projectProfileData)
+        if (projectProfileData) {
+          this.prjct_id = projectProfileData._id
+          this.prjct_name = projectProfileData.name
+          this.projectPlanAgentsNo = projectProfileData.profile_agents;
+          this.subscription_is_active = projectProfileData.subscription_is_active;
+          this.subscription_end_date = projectProfileData.subscription_end_date;
+          this.prjct_profile_type = projectProfileData.profile_type;
+          this.profile_name = projectProfileData.profile_name;
+          this.trial_expired = projectProfileData.trial_expired;
+
+          if (projectProfileData && projectProfileData.extra3) {
+            this.logger.log('[HOME] Find Current Project Among All extra3 ', projectProfileData.extra3)
+            this.appSumoProfile = APP_SUMO_PLAN_NAME[projectProfileData.extra3]
+            this.logger.log('[USERS] Find Current Project appSumoProfile ', this.appSumoProfile)
+          }
+
+          if (projectProfileData.profile_type === 'free') {
+            if (projectProfileData.trial_expired === false) {
+              this.prjct_profile_name = PLAN_NAME.B + " plan (trial)"
+              this.isVisibleGroups = true
+            } else {
+              this.prjct_profile_name = "Free plan";
+              this.isVisibleGroups = false
+
+            }
+          } else if (projectProfileData.profile_type === 'payment') {
+            if (this.subscription_is_active === true) {
+              if (projectProfileData.profile_name === PLAN_NAME.A) {
+                if (!this.appSumoProfile) {
+                  this.prjct_profile_name = PLAN_NAME.A + " plan";
+                  this.isVisibleGroups = false
+                } else {
+                  this.prjct_profile_name = PLAN_NAME.A + " plan " + '(' + this.appSumoProfile + ')';
+                  this.isVisibleGroups = false
+                }
+              } else if (projectProfileData.profile_name === PLAN_NAME.B) {
+                if (!this.appSumoProfile) {
+                  this.prjct_profile_name = PLAN_NAME.B + " plan";
+                  this.isVisibleGroups = true
+                } else {
+                  this.prjct_profile_name = PLAN_NAME.B + " plan " + '(' + this.appSumoProfile + ')';;
+                  this.isVisibleGroups = true
+                }
+              } else if (projectProfileData.profile_name === PLAN_NAME.C) {
+                this.prjct_profile_name = PLAN_NAME.C + " plan";
+                this.isVisibleGroups = true
+
+              }
+
+            } else if (this.subscription_is_active === false) {
+
+              if (projectProfileData.profile_name === PLAN_NAME.A) {
+                this.prjct_profile_name = PLAN_NAME.A + " plan";
+                this.isVisibleGroups = false
+
+              } else if (projectProfileData.profile_name === PLAN_NAME.B) {
+                this.prjct_profile_name = PLAN_NAME.B + " plan";
+                this.isVisibleGroups = false
+
+              } else if (projectProfileData.profile_name === PLAN_NAME.C) {
+                this.prjct_profile_name = PLAN_NAME.C + " plan";
+                this.isVisibleGroups = false
+              }
+            }
+          }
+        }
+      },
+      (err) => {
+        this.logger.error('[USERS] GET PROJECT PROFILE - ERROR', err)
+      },
+      () => {
+        this.logger.log('[USERS] GET PROJECT PROFILE * COMPLETE *')
+      },
+    )
+  }
+
   getUserRole() {
     this.usersService.project_user_role_bs
       .pipe(
@@ -295,7 +423,7 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
       )
       .subscribe((userRole) => {
 
-        this.logger.log('[HOME] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
+        this.logger.log('[DEPT-EDIT-ADD] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
         // used to display / hide 'WIDGET' and 'ANALITCS' in home.component.html
         this.USER_ROLE = userRole;
       })
@@ -1016,7 +1144,7 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
     this.logger.log('[DEPT-EDIT-ADD] - EDIT - BOT ID WHEN EDIT IS PRESSED IF USER ! DOES NOT SELECT A ANOTHER BOT', this.botId);
     this.logger.log('[DEPT-EDIT-ADD] - EDIT - DEPT_ROUTING WHEN EDIT IS PRESSED ', this.dept_routing);
     this.logger.log('[DEPT-EDIT-ADD] - EDIT - ROUTING_SELECTED WHEN EDIT IS PRESSED ', this.ROUTING_SELECTED);
-    
+
     if (this.selectedBotId === undefined) {
       this.botIdEdit = this.botId
     } else {
@@ -1045,8 +1173,8 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
 
   goTo_BotEditAddPage_CREATE() {
     // this.router.navigate(['project/' + this.project._id + '/bots/bot-select-type']);
-     this.router.navigate(['project/' + this.project._id + '/bots/my-chatbots/all']);
-   
+    this.router.navigate(['project/' + this.project._id + '/bots/my-chatbots/all']);
+
   }
 
   // TEST CHAT21-API-NODEJS router.get('/:departmentid/operators'

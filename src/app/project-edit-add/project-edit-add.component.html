@@ -98,7 +98,7 @@
 
               </li>
 
-              <li (click)="goToProjectSettings_BannedVisitors()" class="btn-with-border-effect"
+              <li *ngIf="isVisibleBannedVisitor" (click)="goToProjectSettings_BannedVisitors()" class="btn-with-border-effect"
                 [ngClass]="{'li-active': PROJECT_SETTINGS_BANNED_VISITORS_ROUTE, 'border-from-center': PROJECT_SETTINGS_BANNED_VISITORS_ROUTE === false }">
                 <a> {{'BannedVisitors' | translate }} </a>
               </li>
@@ -1359,7 +1359,7 @@
                   <!-- END UNASSIGNED CONVERSATION -->
 
                   <!-- TRANSCRIPT BY EMAIL -->
-                  <div class="row" style="margin-top: 40px;">
+                  <div  *ngIf="isVisibleAutoSendTranscript" class="row" style="margin-top: 40px;">
                     <div class="col-md-6">
                       <h3 class="card_title__underlined">
                         <span class="card_title__underline">
@@ -1394,7 +1394,7 @@
                   </div>
 
                   <!-- AUTO SEND TRANSCRIPT BY EMAIL BODY -->
-                  <div class="input-wrapper" style="max-width: 992px;">
+                  <div *ngIf="isVisibleAutoSendTranscript" class="input-wrapper" style="max-width: 992px;">
 
                     <div class="row">
                       <div class="col-xs-12 col-sm-10" style="margin-bottom: 12px;">
@@ -1428,8 +1428,8 @@
                   </div>
                   <!-- TRANSCRIPT BY EMAIL ./END -->
 
-                  <!-- CUSTOMIZE EMAILS SENT TO AGENTS *ngIf="isVisibleCustomizeEmailTemplate" -->
-                  <div class="row customize-email-template" style="margin-top: 40px;">
+                  <!-- CUSTOMIZE EMAILS SENT TO AGENTS  -->
+                  <div *ngIf="isVisibleCustomizeEmailTemplate" class="row customize-email-template" style="margin-top: 40px;">
                     <div class="col-md-6">
                       <h3 class="card_title__underlined">
                         <span class="card_title__underline">

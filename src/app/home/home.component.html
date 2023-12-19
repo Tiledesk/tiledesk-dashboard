@@ -22,13 +22,13 @@
                 <!-- rounded-full -->
                 <div class="flex-0 w-16 h-16  overflow-hidden">
                   <!-- <img src="assets/images/avatars/brian-hughes.jpg" class="w-full h-full object-cover"> -->
-                  <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+                  <svg *ngIf="isVisiblePay" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
                     xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 65.2 65.2"
                     style="enable-background:new 0 0 65.2 65.2;" xml:space="preserve" class="td--logo">
                     <g>
                       <path fill="#F18876" d="M54.9,29.8H35.6c-1.7,0-3-1.4-3-3V7.5c0-1.7-1.4-3-3-3H10.3c-1.7,0-3,1.4-3,3v22.3v22.3c0,1.7,1.4,3,3,3H9h3.5
-		c0.7,0,1.4,0.3,1.9,0.8l2.2,2.2l2.1,2.1c0.7,0.7,1.8,0.7,2.5,0l2.1-2.1l2.2-2.2c0.5-0.5,1.2-0.8,1.9-0.8h27.6c1.7,0,3-1.4,3-3V32.8
-    C58,31.2,56.6,29.8,54.9,29.8" />
+		                    c0.7,0,1.4,0.3,1.9,0.8l2.2,2.2l2.1,2.1c0.7,0.7,1.8,0.7,2.5,0l2.1-2.1l2.2-2.2c0.5-0.5,1.2-0.8,1.9-0.8h27.6c1.7,0,3-1.4,3-3V32.8
+                        C58,31.2,56.6,29.8,54.9,29.8" />
                     </g>
                     <g class="running">
                       <path [ngClass]="{
@@ -38,11 +38,25 @@
                         'c-plan-badge': current_prjct?.plan_badge_background_type === 'c_plan_badge',
                         'unsupported-plan-badge': current_prjct?.plan_badge_background_type === 'unsupported_plan_badge'
                         }" d="M56.1,25.7H38.5c-1,0-1.8-0.8-1.8-1.8V6.3c0-1,0.8-1.8,1.8-1.8h17.6c1,0,1.8,0.8,1.8,1.8v17.6
-		C58,24.9,57.1,25.7,56.1,25.7" />
+		                    C58,24.9,57.1,25.7,56.1,25.7" />
                     </g>
                   </svg>
 
-
+                  <svg *ngIf="!isVisiblePay" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 65.2 65.2"
+                    style="enable-background:new 0 0 65.2 65.2;" xml:space="preserve" class="td--logo">
+                    <g>
+                      <path fill="#F18876" d="M54.9,29.8H35.6c-1.7,0-3-1.4-3-3V7.5c0-1.7-1.4-3-3-3H10.3c-1.7,0-3,1.4-3,3v22.3v22.3c0,1.7,1.4,3,3,3H9h3.5
+                      c0.7,0,1.4,0.3,1.9,0.8l2.2,2.2l2.1,2.1c0.7,0.7,1.8,0.7,2.5,0l2.1-2.1l2.2-2.2c0.5-0.5,1.2-0.8,1.9-0.8h27.6c1.7,0,3-1.4,3-3V32.8
+                      C58,31.2,56.6,29.8,54.9,29.8" />
+                    </g>
+                    <g class="running">
+                      <path 
+                       d="M56.1,25.7H38.5c-1,0-1.8-0.8-1.8-1.8V6.3c0-1,0.8-1.8,1.8-1.8h17.6c1,0,1.8,0.8,1.8,1.8v17.6
+                      C58,24.9,57.1,25.7,56.1,25.7" 
+                      fill="#E5BBAD"/>
+                    </g>
+                  </svg>
 
                 </div>
                 <!-- style="flex-direction: row !important;" -->
@@ -96,11 +110,8 @@
                     [ngClass]="{'oph-disabled': !OPERATING_HOURS_ACTIVE || DISPLAY_OPH_AS_DISABLED, 'oph-enabled': OPERATING_HOURS_ACTIVE && !DISPLAY_OPH_AS_DISABLED }"
                     style="box-shadow: unset;margin-right: 16px;    position: relative;"
                     [satPopoverAnchor]="editOperatingHours" (click)="editOperatingHours.toggle();"
-                    matTooltipClass="custom-mat-tooltip" 
-                    matTooltip="Adjust operating hours"
-                    #tooltip="matTooltip" 
-                    matTooltipPosition='below' 
-                    matTooltipHideDelay="100">
+                    matTooltipClass="custom-mat-tooltip" matTooltip="Adjust operating hours" #tooltip="matTooltip"
+                    matTooltipPosition='below' matTooltipHideDelay="100">
                     <mat-icon style="color: #fff;position: relative;top: -2px;">date_range</mat-icon>
                   </button>
 
@@ -170,13 +181,15 @@
 
                 <mat-menu #dashletMenu="matMenu">
                   <!-- *ngIf="displayAnalyticsConvsGraph" -->
-                  <button *ngIf="isVisibleANA" mat-menu-item (click)="$event.stopPropagation()">
+                  <!-- *ngIf="isVisibleANA" -->
+                  <button mat-menu-item (click)="$event.stopPropagation()">
                     <mat-checkbox class="home-settings-checkbox" [checked]="displayAnalyticsConvsGraph"
                       (change)="switchAnalyticsConvsGraph($event.checked)"></mat-checkbox>
                     <span>Conversations chart</span>
                   </button>
                   <!-- *ngIf="displayAnalyticsIndicators" -->
-                  <button *ngIf="isVisibleANA"  mat-menu-item (click)="$event.stopPropagation()">
+                  <!-- *ngIf="isVisibleANA" -->
+                  <button mat-menu-item (click)="$event.stopPropagation()">
                     <mat-checkbox class="home-settings-checkbox" [checked]="displayAnalyticsIndicators"
                       (change)="switchAnalyticsIndicators($event.checked)">
                     </mat-checkbox>
@@ -218,11 +231,11 @@
                   <!-- --------------------- -->
 
 
-                  <!-- <button mat-menu-item (click)="$event.stopPropagation()">
+                  <button mat-menu-item (click)="$event.stopPropagation()">
                     <mat-checkbox class="home-settings-checkbox" [checked]="displayNewsFeed"
                       (change)="switchNewsFeed($event.checked)"></mat-checkbox>
                     <span>News Feed</span>
-                  </button> -->
+                  </button>
                 </mat-menu>
               </div>
             </div>
@@ -290,10 +303,10 @@
             </div>
           </div>
         </div> <!-- ./ bg-card -->
-        
+
         <div class="home-blocks-wpr">
 
-          
+
           <!-- // Skeleton START -->
           <div *ngIf="showskeleton" class="skeleton">
 
@@ -301,7 +314,7 @@
             <mat-card class="card mat-elevation-z3 is-loading">
               <mat-card-content>
                 <div class="content">
-      
+
                   <div style="margin-bottom: 16px;">
                     <h2></h2>
                     <div style="display: flex; flex-direction: row;">
@@ -318,7 +331,7 @@
                   </div>
 
                   <h3 style="margin-bottom: 16px;"></h3>
-      
+
                   <div style="width: 100%; display: flex; flex-direction: row; justify-content: flex-start;">
                     <div class="fake-box"></div>
                     <div class="fake-box"></div>
@@ -332,18 +345,18 @@
             <mat-card class="card mat-elevation-z3 is-loading">
               <mat-card-content>
                 <div class="content">
-      
+
                   <div>
                     <h2></h2>
                     <p></p>
                     <p style="width: 560px;"></p>
                   </div>
-                  
+
                   <div class="fake-footer">
                     <button style="width: 250px; margin-right: 10px;"></button>
                     <button></button>
                   </div>
-      
+
                 </div>
               </mat-card-content>
             </mat-card>
@@ -352,7 +365,7 @@
             <mat-card class="card mat-elevation-z3 is-loading">
               <mat-card-content>
                 <div class="content">
-      
+
                   <div style="margin-bottom: 16px;">
                     <h2 style="width: 180px;"></h2>
                     <div style="display: flex; flex-direction: row;">
@@ -360,15 +373,15 @@
                       <div class="fake-circle"></div>
                       <div class="fake-circle"></div>
                     </div>
-                    
+
                   </div>
-                  
+
                   <p style="width: 560px;"></p>
-                  
+
                   <div class="fake-footer">
                     <button></button>
                   </div>
-      
+
                 </div>
               </mat-card-content>
             </mat-card>
@@ -377,7 +390,7 @@
             <mat-card class="card mat-elevation-z3 is-loading">
               <mat-card-content>
                 <div class="content">
-      
+
                   <div>
                     <h2></h2>
 
@@ -390,28 +403,26 @@
                       <button style="width: 120px;"></button>
                     </div>
                   </div>
-                  
-      
+
+
                 </div>
               </mat-card-content>
             </mat-card>
           </div>
           <!-- // Skeleton END -->
-      
-          
+
+
           <ng-container *ngIf="!showskeleton ">
             <span *ngIf="USER_ROLE !== 'agent'">
-              <div  class="home--blocks" id="homeBlocks" *ngFor="let item of child_list_order">
+              <div class="home--blocks" id="homeBlocks" *ngFor="let item of child_list_order">
 
                 <!-- ----------------------- -->
                 <!-- Child 1 Convs Graph -->
                 <!-- ----------------------- -->
                 <ng-container *ngIf="item.type === 'child1'">
                   <appdashboard-home-convs-graph *ngIf="displayAnalyticsConvsGraph"
-                    [displayAnalyticsConvsGraph]="displayAnalyticsConvsGraph" 
-                    [projectId]="projectId"
-                    [USER_ROLE]="USER_ROLE"
-                    (trackUserAction)="trackUserAction($event)">
+                    [displayAnalyticsConvsGraph]="displayAnalyticsConvsGraph" [projectId]="projectId"
+                    [USER_ROLE]="USER_ROLE" (trackUserAction)="trackUserAction($event)">
                   </appdashboard-home-convs-graph>
                 </ng-container>
 
@@ -420,8 +431,7 @@
                 <!-- ----------------------- -->
                 <ng-container *ngIf="item.type === 'child2'">
                   <appdashboard-home-analytics-indicator *ngIf="displayAnalyticsIndicators" [projectId]="projectId"
-                    [USER_ROLE]="USER_ROLE"
-                    (trackUserAction)="trackUserAction($event)">
+                    [USER_ROLE]="USER_ROLE" (trackUserAction)="trackUserAction($event)">
                   </appdashboard-home-analytics-indicator>
                 </ng-container>
 
@@ -429,38 +439,27 @@
                 <!-- Child 3 Whatsapp Wizard -->
                 <!-- ----------------------- -->
                 <ng-container *ngIf="item.type === 'child3'">
-                  <appdashboard-home-whatsapp-account-wizard   *ngIf="displayWhatsappAccountWizard"
-                    style="margin-bottom: 18px;"
-                    (goToConnectWA)="goToConnectWA()" 
-                    (goToCreateChatbot)="goToCreateChatbot()"
-                    (hasTestedBotOnWa)="hasTestedBotOnWa()" 
-                    [whatsAppIsConnected]="whatsAppIsConnected"
-                    [wadepartmentName]="wadepartmentName" 
-                    [chatbotConnectedWithWA]='chatbotConnectedWithWA'
-                    [waBotId]="waBotId" 
-                    [use_case_for_child]="use_case_for_child"
-                    [solution_channel_for_child]="solution_channel_for_child" 
-                    [solution_for_child]="solution_for_child"
-                    [testBotOnWA]="testBotOnWA" 
-                    [botIdForTestWA]="botIdForTestWA"
-                    (hasCreatedChatbot)="hasCreatedChatbot($event)">
-                </appdashboard-home-whatsapp-account-wizard>
-              </ng-container>
+                  <appdashboard-home-whatsapp-account-wizard *ngIf="displayWhatsappAccountWizard"
+                    style="margin-bottom: 18px;" (goToConnectWA)="goToConnectWA()"
+                    (goToCreateChatbot)="goToCreateChatbot()" (hasTestedBotOnWa)="hasTestedBotOnWa()"
+                    [whatsAppIsConnected]="whatsAppIsConnected" [wadepartmentName]="wadepartmentName"
+                    [chatbotConnectedWithWA]='chatbotConnectedWithWA' [waBotId]="waBotId"
+                    [use_case_for_child]="use_case_for_child" [solution_channel_for_child]="solution_channel_for_child"
+                    [solution_for_child]="solution_for_child" [testBotOnWA]="testBotOnWA"
+                    [botIdForTestWA]="botIdForTestWA" (hasCreatedChatbot)="hasCreatedChatbot($event)">
+                  </appdashboard-home-whatsapp-account-wizard>
+                </ng-container>
 
                 <!-- ----------------------- -->
                 <!-- Child 4 Whatsapp Account-->
                 <!-- ----------------------- -->
                 <ng-container *ngIf="item.type === 'child4'">
-                  <appdashboard-home-whatsapp-account *ngIf="displayConnectWhatsApp" 
-                    style=" z-index: 11;"
-                    #childWhatsappAccount 
-                    (onClickOnUnistallApp)="onClickOnUnistallApp()"
+                  <appdashboard-home-whatsapp-account *ngIf="displayConnectWhatsApp" style=" z-index: 11;"
+                    #childWhatsappAccount (onClickOnUnistallApp)="onClickOnUnistallApp()"
                     (onClickOnGoToLearnMoreOrManageApp)="onClickOnGoToLearnMoreOrManageApp()"
                     (onClickOnDisplayWhatsAppWizard)="onClickOnDisplayWhatsAppWizard()"
-                    [whatsAppIsInstalled]="whatsAppIsInstalled" 
-                    [whatsAppIsConnected]="whatsAppIsConnected"
-                    [solution_channel_for_child]="solution_channel_for_child" 
-                    [solution_for_child]="solution_for_child"
+                    [whatsAppIsInstalled]="whatsAppIsInstalled" [whatsAppIsConnected]="whatsAppIsConnected"
+                    [solution_channel_for_child]="solution_channel_for_child" [solution_for_child]="solution_for_child"
                     [userHasClickedDisplayWAWizard]="userHasClickedDisplayWAWizard">
                   </appdashboard-home-whatsapp-account>
                 </ng-container>
@@ -470,10 +469,8 @@
                 <!-- ----------------------- -->
                 <ng-container *ngIf="item.type === 'child5'">
                   <appdashboard-home-create-chatbot #childCreateChatbot *ngIf="displayCreateChatbot"
-                    [use_case_for_child]="use_case_for_child" 
-                    [solution_channel_for_child]="solution_channel_for_child"
-                    [waBotId]="waBotId" 
-                    [wadepartmentName]="wadepartmentName"
+                    [use_case_for_child]="use_case_for_child" [solution_channel_for_child]="solution_channel_for_child"
+                    [waBotId]="waBotId" [wadepartmentName]="wadepartmentName"
                     [chatbotConnectedWithWA]="chatbotConnectedWithWA"
                     (botHookedToDefaultDept)="botHookedToDefaultDept($event)"
                     (trackUserAction)="trackUserAction($event)">
@@ -483,25 +480,23 @@
                 <!-- ----------------------- -->
                 <!-- Child 6 Create Teammate -->
                 <!-- ----------------------- -->
-                <ng-container *ngIf="item.type === 'child6'" >
-                  <appdashboard-home-create-teammate 
-                    *ngIf="displayInviteTeammate">
+                <ng-container *ngIf="item.type === 'child6'">
+                  <appdashboard-home-create-teammate *ngIf="displayInviteTeammate">
                   </appdashboard-home-create-teammate>
                 </ng-container>
 
                 <!-- ----------------------- -->
                 <!-- Child 7 KB -->
                 <!-- ----------------------- -->
-                <ng-container *ngIf="item.type === 'child7'" >
-                  <appdashboard-home-kb *ngIf="displayKnowledgeBase" 
-                    (trackUserAction)="trackUserAction($event)">
+                <ng-container *ngIf="item.type === 'child7'">
+                  <appdashboard-home-kb *ngIf="displayKnowledgeBase" (trackUserAction)="trackUserAction($event)">
                   </appdashboard-home-kb>
                 </ng-container>
 
                 <!-- ----------------------- -->
                 <!-- Child 8 Customize Widget -->
                 <!-- ----------------------- -->
-                <ng-container *ngIf="item.type === 'child8'" >
+                <ng-container *ngIf="item.type === 'child8'">
                   <appdashboard-home-customize-widget *ngIf="displayCustomizeWidget"
                     (trackUserAction)="trackUserAction($event)">
                   </appdashboard-home-customize-widget>
@@ -511,36 +506,35 @@
             </span>
             <span *ngIf="USER_ROLE === 'agent'">
               <div class="home--blocks">
-                
-                  <!-- *ngIf="displayAnalyticsConvsGraph" -->
-                  <!-- style="min-width: 834px; display: block;" -->
-                  <appdashboard-home-convs-graph *ngIf="isVisibleANA" 
-                  
-                    [displayAnalyticsConvsGraph]="displayAnalyticsConvsGraph" 
-                    [projectId]="projectId"
-                    [USER_ROLE]="USER_ROLE">
-                  </appdashboard-home-convs-graph>
 
-                  <!-- *ngIf="displayAnalyticsIndicators" -->
-                  <appdashboard-home-analytics-indicator *ngIf="isVisibleANA" 
-                    [projectId]="projectId"
-                    [USER_ROLE]="USER_ROLE">
-                  </appdashboard-home-analytics-indicator>
+                <!-- *ngIf="displayAnalyticsConvsGraph" -->
+                <!-- style="min-width: 834px; display: block;" -->
+                <appdashboard-home-convs-graph *ngIf="isVisibleANA"
+                  [displayAnalyticsConvsGraph]="displayAnalyticsConvsGraph" [projectId]="projectId"
+                  [USER_ROLE]="USER_ROLE">
+                </appdashboard-home-convs-graph>
 
-                  <!-- *ngIf="displayInviteTeammate" -->
-                  <appdashboard-home-create-teammate> </appdashboard-home-create-teammate>
+                <!-- *ngIf="displayAnalyticsIndicators" -->
+                <appdashboard-home-analytics-indicator *ngIf="isVisibleANA" [projectId]="projectId"
+                  [USER_ROLE]="USER_ROLE">
+                </appdashboard-home-analytics-indicator>
 
-                  <appdashboard-home-go-to-chat></appdashboard-home-go-to-chat>
-                
+                <!-- *ngIf="displayInviteTeammate" -->
+                <appdashboard-home-create-teammate> </appdashboard-home-create-teammate>
+
+                <appdashboard-home-go-to-chat></appdashboard-home-go-to-chat>
+
 
               </div>
 
             </span>
           </ng-container>
         </div>
-        <!-- <div *ngIf="!showskeleton" class="news-feed-wpr" style="    background-color: rgb(241,245,249);     padding-left: 30px;">
-          <appdashboard-home-news-feed *ngIf="displayNewsFeed"> </appdashboard-home-news-feed>
-        </div> -->
+        <div *ngIf="!showskeleton" class="news-feed-wpr"
+          style="background-color: rgb(241,245,249);  padding-left: 15px;padding-right: 15px;">
+          <appdashboard-home-news-feed *ngIf="displayNewsFeed" [showskeleton]="showskeleton">
+          </appdashboard-home-news-feed>
+        </div>
       </div>
 
 

@@ -19,9 +19,6 @@
   <div class="container-fluid">
 
     <div class="row">
-
-
-
       <div class="col-xs-12" class="alert-exceed-numb-of-seats-allowed"
         *ngIf="prjct_profile_type === 'payment' && subscription_is_active === false">
         <i class="material-icons" style="vertical-align: middle; color: #f44336;">error_outline</i>
@@ -46,7 +43,7 @@
       <!-- -------------------------------------------------- -->
       <!--  PROJECT PROFILE INFO  -->
       <!-- -------------------------------------------------- -->
-      <div class="row">
+      <div class="row" *ngIf="areActivePay">
         <div class="col-md-12">
           <div class="card card card--no-border" style="margin-top: 0px; margin-bottom: 0px;">
             <div class="card-content" *ngIf="(((prjct_profile_type === 'payment' && subscription_is_active === true) || 

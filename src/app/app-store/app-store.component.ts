@@ -162,14 +162,7 @@ export class AppStoreComponent implements OnInit {
       })
   }
 
-  // getToken() {
-  //   this.auth.user_bs.subscribe((user) => {
-  //     if (user) {
-  //       this.TOKEN = user.token
-  //       this.userId = user._id
-  //     }
-  //   });
-  // }
+
 
   getOSCODE() {
     this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
@@ -205,10 +198,9 @@ export class AppStoreComponent implements OnInit {
       )
       .subscribe((project) => {
         if (project) {
-          this.project = project
-          this.projectId = project._id,
-
-            console.log('APP-STORE - projectId ', this.projectId)
+          this.project = project;
+          this.projectId = project._id;
+          this.logger.log('APP-STORE - projectId ', this.projectId)
         }
       });
   }
@@ -233,8 +225,58 @@ export class AppStoreComponent implements OnInit {
   getApps() {
     this.appStoreService.getApps().subscribe((_apps: any) => {
       this.apps = _apps.apps;
-      // console.log('APP-STORE - getApps APPS ', this.apps);
+      console.log('APP-STORE - getApps APPS ', this.apps);
+
+
+      const paidApps = [
+        {
+          title: "WhatsApp Business"
+        },
+        {
+          title: "Facebook Messenger"
+        },
+        {
+          title: "Help Center"
+        }
+      ]
+
+      if (!this.isVisiblePAY) {
+        // this.apps =  _apps.apps.filter(a => !paidApps.some(p => p.title == a.title));
+
+        this.logger.log('APP-STORE - Here yes')
+        // console.log('APP-STORE - getApps APPS after filter', this.apps)
+
+        const sendWAAppIndex = this.apps.findIndex(object => {
+          return object.title === "WhatsApp Business";
+        });
+
+        this.apps.splice(sendWAAppIndex, 1);
+
+        const sendFMAppIndex = this.apps.findIndex(object => {
+          return object.title === "Facebook Messenger";
+        });
+        
+        this.apps.splice(sendFMAppIndex, 1);
+
+        const sendHCAppIndex = this.apps.findIndex(object => {
+          return object.title === "Help Center";
+        });
+        
+        this.apps.splice(sendHCAppIndex, 1);
+
+      }
+
+      const sendTranscriptAppIndex = this.apps.findIndex(object => {
+        return object.title === "Send transcript by email";
+      });
+
+      this.logger.log('sendTranscriptAppIndex ', sendTranscriptAppIndex);
+      this.apps.splice(sendTranscriptAppIndex, 1);
+
       this.apps.forEach(app => {
+
+
+      
         if (app.description.length > 118) {
           app.description = app.description.slice(0, 118) + '...'
         }

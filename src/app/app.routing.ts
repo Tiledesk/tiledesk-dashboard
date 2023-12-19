@@ -146,6 +146,7 @@ import { KnowledgeBasesComponent } from './knowledge-bases/knowledge-bases.compo
 import { CnpIsMobileComponent } from './create-new-project/cnp-is-mobile/cnp-is-mobile.component';
 import { CnpTemplatesComponent } from './create-new-project/cnp-templates/cnp-templates.component';
 import { OnboardingWelcomeComponent } from './create-new-project/onboarding-welcome/onboarding-welcome.component';
+import { AutomationsComponent } from './automations/automations.component';
 
 
 
@@ -455,6 +456,9 @@ const routes: Routes = [
   // HOURS
   { path: 'project/:projectid/hours', component: HoursComponent, canActivate: [AuthGuard, ProjectProfileGuard] },
   { path: 'project/:projectid/hours-demo', component: HoursStaticComponent, canActivate: [AuthGuard] },
+
+  // AUTOMATIONS
+  { path: 'project/:projectid/automations', component: AutomationsComponent, canActivate: [AuthGuard]},
 
   // KNOWLEDGE BASES
   { path: 'project/:projectid/knowledge-bases', component: KnowledgeBasesComponent, canActivate: [AuthGuard]},
