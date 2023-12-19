@@ -274,10 +274,9 @@ export class SettingsSidebarComponent implements OnInit {
       }
 
       if (key.includes('KNB')) {
-        let etk = key.split(':')
-        if (etk[1] === 'F') {
-          //this.isVisibleKNB = false;  // <---- CHANGE CHANGE CHANGE CHANGE
-          this.isVisibleKNB = true;     // <---- CHANGE CHANGE CHANGE CHANGE
+        let knb = key.split(':')
+        if (knb[1] === 'F') {
+          this.isVisibleKNB = false;
         } else {
           this.isVisibleKNB = true;
         }
@@ -297,6 +296,10 @@ export class SettingsSidebarComponent implements OnInit {
     }
     if (!this.public_Key.includes('ETK')) {
       this.isVisibleETK = false
+    }
+    
+    if (!this.public_Key.includes('KNB')) {
+      this.isVisibleKNB = false
     }
   }
 

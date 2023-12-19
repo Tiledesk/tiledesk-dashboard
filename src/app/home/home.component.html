@@ -488,7 +488,7 @@
                 <!-- ----------------------- -->
                 <!-- Child 7 KB -->
                 <!-- ----------------------- -->
-                <ng-container *ngIf="item.type === 'child7'">
+                <ng-container *ngIf="item.type === 'child7' && isVisibleKNB">
                   <appdashboard-home-kb *ngIf="displayKnowledgeBase" (trackUserAction)="trackUserAction($event)">
                   </appdashboard-home-kb>
                 </ng-container>

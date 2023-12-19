@@ -117,6 +117,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   isVisibleOPH: boolean;
   isVisibleHomeBanner: boolean;
   isVisiblePay: boolean;
+  isVisibleKNB: boolean;
 
   hidechangelogrocket: boolean;
   onlyOwnerCanManageTheAccountPlanMsg: string;
@@ -2671,6 +2672,15 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         }
       }
 
+      if (key.includes('KNB')) {
+        let knb = key.split(':')
+        if (knb[1] === 'F') {
+          this.isVisibleKNB = false;
+        } else {
+          this.isVisibleKNB = true;
+        }
+      }
+
      
     });
 
@@ -2702,6 +2712,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     if (!this.public_Key.includes("PAY")) {
       // this.logger.log('PUBLIC-KEY (HOME) - key.includes("PPB")', this.public_Key.includes("PPB"));
       this.isVisiblePay = false;
+    }
+
+    if (!this.public_Key.includes('KNB')) {
+      this.isVisibleKNB = false
     }
   }
 
