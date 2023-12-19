@@ -308,6 +308,9 @@ export class SettingsSidebarComponent implements OnInit {
     if (!this.public_Key.includes('ETK')) {
       this.isVisibleETK = false
     }
+    if (!this.public_Key.includes('AUT')) {
+      this.isVisibleAUT = false
+    }
   }
 
   getRoutingTranslation() {
