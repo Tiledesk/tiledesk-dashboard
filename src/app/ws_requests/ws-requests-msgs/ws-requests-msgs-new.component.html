@@ -2395,7 +2395,7 @@
 
                   <div class="col-sm-12" style="margin-bottom: 8px;">
 
-                    <ng-select class="conv-details" [items]="priority"
+                    <ng-select class="ticket-priority" [items]="priority"
                       bindLabel="name" bindValue="name" 
                       [clearable]="false"
                       [hideSelected]="true" 
@@ -2453,7 +2453,7 @@
 
                       <div class="followers">
                         <!-- (change)="getValues($event)" -->
-                        <ng-select class="conv-details"
+                        <ng-select class="ticket-followers"
                           [items]="projectTeammates" bindLabel="label" 
                           [multiple]="true"
                           placeholder="Search teammate" 
@@ -2547,7 +2547,7 @@
                       <div class="ng-select-tags-wpr" [ngStyle]="{'width':CHAT_PANEL_MODE === true ? 'auto' : 'auto' }">
 
                         <ng-select style="margin-right: 13px;" 
-                          class="ng-select-tags" 
+                          class="convs-tags" 
                           id="select-tag" 
                           #ngSelect
                           (change)="addTag()" 

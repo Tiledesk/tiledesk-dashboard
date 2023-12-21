@@ -3853,6 +3853,7 @@ span .conv-svg-icon {
   background-color: var(--conv-details-edit-contact-fullname-form-background-color);
   border-radius: var(--conv-details-edit-contact-fullname-form-border-radius);
   box-shadow: var(--conv-details-edit-contact-fullname-form-elevation);
+  border: var(--conv-details-edit-contact-fullname-border);
   margin-bottom: 10px;
   padding: 8px;
 }
@@ -3938,11 +3939,12 @@ label {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
-  font-size: 14px;
+  font-size: 12px;
   line-height: 18px;
   letter-spacing: -0.01em;
   width: 204px;
   font-family: var(--header-font-family);
+  font-weight: 400;
 }
 
 .contact-location-chat-one-agent {
@@ -4908,6 +4910,7 @@ label {
 
 .tag-content-wpr-chat {
   padding: 6px 12px 6px 12px !important;
+  margin-bottom: 19px;
 }
 
 
@@ -5011,7 +5014,7 @@ label {
 .tag:hover {
   .tag_icon_in_ws_msgs {
     // fill: rgba(233, 235, 238, 0.3) !important;
-    fill: var(--conv-tag-background-color) !important;
+    fill: var(--conv-tag-hover-icon-color) !important;
   }
 
   .tag-delete {
@@ -5053,12 +5056,13 @@ label {
 
 .ws_msgs_note__textarea>textarea {
   display: block;
-  border: var(--texarea-select-border);
+  border: var(--texarea-border);
   padding: 12px;
   border-radius: 3px;
   resize: none;
   margin-bottom: 8px;
-  background: var(--texarea-select-background);
+  background: var(--texarea-background);
+  color: var(--text-color);
 }
 
 
@@ -5085,6 +5089,7 @@ label {
   transition: all 0.3s ease 0s;
   padding-left: 5px;
   padding-right: 5px;
+  background: transparent !important;
 }
 
 .contact--conversations {
@@ -5414,6 +5419,22 @@ label {
   margin-top: 5px;
 }
 
+
+.dropdown-menu-working-status {
+  background-color: var(--conversation-detail-background) !important;
+}
+
+.dropdown-menu-working-status>li>a{ 
+  color: var(--text-color) !important;
+}
+
+.dropdown-menu-chat {
+  background-color: var(--conversation-detail-background) !important;
+}
+
+.dropdown-menu-chat>li>a{ 
+  color: var(--text-color) !important;
+}
 
 /*
 /* Are used ?

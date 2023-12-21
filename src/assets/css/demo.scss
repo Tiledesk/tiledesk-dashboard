@@ -1733,12 +1733,139 @@ appdashboard-app-store > div > div > div > div > .card-app-store {
   background: $plan-c-background;
 }
 
-// conv details select
-.ng-select.conv-details .ng-select-container { 
-  background-color: var(--texarea-select-background);
+// ticket-priority select
+.ng-select.ticket-priority .ng-select-container { 
+  background-color: var(--select-background);
   color: var(--text-color);
-  border: var(--texarea-select-border);
+  // border: var(--select-border);
 }
+.ng-select.ticket-priority.ng-select-opened > .ng-select-container {
+  background-color: var(--select-background) !important;
+  // border: var(--select-opened-border);
+}
+
+.ticket-priority .ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
+  background-color: var(--select-background) !important;
+  color: var(--text-color)
+}
+
+.ticket-priority .ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
+  background-color: var(--select-background)!important;
+  color: var(--text-color);
+}
+
+.ticket-priority .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked {
+  background-color: var(--select-background-marked) !important;
+  color: var(--text-color) !important;
+}
+
+// ticket-followers select
+.ng-select.ticket-followers .ng-select-container { 
+  background-color: var(--select-background);
+  color: var(--text-color);
+  // border: var(--select-border);
+}
+.ng-select.ticket-followers.ng-select-opened > .ng-select-container {
+  background-color: var(--select-background) !important;
+  // border: var(--select-opened-border);
+}
+
+.ticket-followers .ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
+  background-color: var(--select-background) !important;
+  color: var(--text-color)
+}
+
+.ticket-followers .ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
+  background-color: var(--select-background)!important;
+  color: var(--text-color);
+}
+
+.ticket-followers .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked {
+  background-color: var(--select-background-marked) !important;
+  color: var(--text-color) !important;
+}
+
+// convs-tags select
+.ng-select.convs-tags .ng-select-container { 
+  background-color: var(--select-background);
+  color: var(--text-color);
+  // border: var(--select-border);
+}
+.ng-select.convs-tags.ng-select-opened > .ng-select-container {
+  background-color: var(--select-background) !important;
+  // border: var(--select-opened-border);
+}
+
+.convs-tags .ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
+  background-color: var(--select-background) !important;
+  color: var(--text-color)
+}
+
+.convs-tags .ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
+  background-color: var(--select-background)!important;
+  color: var(--text-color);
+}
+
+.convs-tags .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked {
+  background-color: var(--select-background-marked) !important;
+  color: var(--text-color) !important;
+}
+
+// add-contact-t select
+.ng-select.add-contact-tag .ng-select-container { 
+  background-color: var(--select-background) !important;
+  color: var(--text-color);
+  border: var(--select-border);
+}
+
+.ng-select.add-contact-tag.ng-select-opened > .ng-select-container {
+  background-color: var(--select-background) !important;
+  // border: var(--select-opened-border);
+}
+
+.add-contact-tag .ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
+  background-color: var(--select-background) !important;
+  color: var(--text-color)
+}
+
+
+.add-contact-tag .ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
+  background-color: var(--select-background)!important;
+  color: var(--text-color);
+}
+
+.add-contact-tag .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked {
+  background-color: var(--select-background-marked) !important;
+  color: var(--text-color) !important;
+}
+
+// select add contact property
+.ng-select.contact-property .ng-select-container { 
+  background-color: var(--select-background) !important;;
+  color: var(--text-color);
+  border: var(--select-border);
+}
+
+.ng-select.contact-property.ng-select-opened > .ng-select-container {
+  background-color: var(--select-background) !important;
+  // border: var(--select-opened-border);
+}
+
+.contact-property .ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
+  background-color: var(--select-background) !important;
+  color: var(--text-color)
+}
+
+.contact-property .ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
+  background-color: var(--select-background)!important;
+  color: var(--text-color);
+}
+
+.contact-property .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked {
+  background-color: var(--select-background-marked) !important;
+  color: var(--text-color) !important;
+}
+
 
 // Shared close button
 .close--round-btn {
@@ -1773,5 +1900,4 @@ appdashboard-app-store > div > div > div > div > .card-app-store {
   text-align: center !important;
   line-height: 17px !important;
 }
-
 

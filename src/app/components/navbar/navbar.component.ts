@@ -1,7 +1,7 @@
 // tslint:disable:max-line-length
-import { Component, OnInit, ElementRef, AfterContentChecked, AfterViewInit, AfterViewChecked, OnDestroy } from '@angular/core';
+import { Component, OnInit, ElementRef, AfterContentChecked, AfterViewInit, AfterViewChecked, OnDestroy, Inject } from '@angular/core';
 // import { ROUTES } from '../sidebar/sidebar.component';
-import { Location, LocationStrategy, PathLocationStrategy } from '@angular/common';
+import { DOCUMENT, Location, LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { AuthService } from '../../core/auth.service';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthGuard } from '../../core/auth.guard';
@@ -157,6 +157,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
   tlangparams: any;
 
   constructor(
+    @Inject(DOCUMENT) private document: Document,
     location: Location,
     private element: ElementRef,
     public auth: AuthService,
@@ -1662,4 +1663,8 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
       this.logger.log('[NAVBAR] + + + HAS OPENED THE CHAT ', this.HAS_OPENED_THE_CHAT);
     }
   }
+
+  // changeThemeColor() {
+  //   this.document.body.classList.add('dark');
+  // }
 }

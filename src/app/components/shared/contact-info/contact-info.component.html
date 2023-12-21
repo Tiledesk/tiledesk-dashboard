@@ -463,9 +463,10 @@
         <div class="ng-select-lead-properties-wpr" style="width: 100%;">
 
           <!-- contactsCustomProperties -->
-          <ng-select [items]="contactPropertiesToSelect" 
+          <ng-select class="contact-property" 
+            id="add-contatct-custom-property"
+            [items]="contactPropertiesToSelect" 
             style="top: 0px;padding-right: 2px;" 
-            class="ng-select-tags"
             bindLabel="label" 
             bindValue="label" 
             placeholder="{{'AddContactProperty'| translate}}"
@@ -534,7 +535,9 @@
             </div>
 
             <div class="ng-select-tags-wpr">
-              <ng-select class="ng-select-tags" id="select-tag" style="padding-right: 13px;"
+              <ng-select class="add-contact-tag" 
+                style="padding-right: 13px;"
+                id="select-tag" 
                 [ngStyle]="{'top':contactTags?.length === 0 ? '-10px' : '-6px' }" 
                 #ngSelect 
                 (change)="addTag(tag)"
