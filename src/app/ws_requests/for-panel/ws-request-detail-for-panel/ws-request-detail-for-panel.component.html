@@ -1,278 +1,231 @@
-<div class="right-side-bar" style="    
-position: absolute;
-z-index: 100;
-top: 0;
-/* top: -10; */
-right: 0;
-/* width: 90%; */
-width: 100%;
-/* height: 100%; */
-height: 100vh;
-overflow-y: auto;
-overflow-x: hidden;
-background: #fff;
-padding-top:10px;
-padding-left: 15px;
-/* padding-right: 15px; */
-padding-right: 0px;
-/* padding-bottom: 15px; */
-">
+<div class="right-side-bar request-detail-for-panel-main-content">
+  <div class="request-detail-for-panel-container">
 
+    <div class="row request-detail-for-panel-header">
+      <div class="col-xs-8 request-detail-for-panel-title-wpr">
+        <h4 class="request-detail-for-panel-title">
+          {{'RequestMsgsPage.Details' | translate}}
+        </h4>
+      </div>
 
-    <!-- background-color: #3c4252!important;color: #fff!important; margin-left:-20px; margin-right:-20px; margin-top:-15px" -->
-    <div style="border-bottom: 1px solid #eeeeee;height: 50px;">
-
-        <div class="row">
-            <div class="col-xs-8">
-                <h4>{{'RequestMsgsPage.Details' | translate}}</h4>
-            </div>
-            <!-- <div class="col-xs-2" style="text-align: right;">
-
-                <i class="material-icons join-sidebar-btn"
-                    (click)="closeRightSideBar()">
-                    close
-                </i>
-            </div> -->
-            <!-- <div class="col-xs-2" style="text-align: right;">
-
-                <i class="material-icons archive-sidebar-btn"
-                    (click)="closeRightSideBar()">
-                    close
-                </i>
-            </div> -->
-            <div class="col-xs-4" style="text-align: right;">
-
-                <i class="material-icons close-sidebar-btn" (click)="closeRightSideBar()">
-                    close
-                </i>
-            </div>
-        </div>
+      <div class="col-xs-4" style="text-align: right;">
+        <button type="button" class="close--round-btn" aria-label="Close" style="margin-right: 18px;margin-top: 2px;"
+          (click)="closeRightSideBar()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
     </div>
+  </div>
 
+
+  <div class="row" style="margin-top:5px">
+    <div class="col-sm-12">
+      
+      <p style="margin-bottom: 0px;" 
+        matTooltipClass="conv-dtls-custom-mat-tooltip"
+        matTooltip="{{ 'ContactEmail' | translate }}" 
+        #tooltip="matTooltip" 
+        matTooltipPosition='right'
+        matTooltipHideDelay="100">
+        <i class="material-icons request-detail-for-panel-m-i">email</i>
+        
+        <span style="position: relative;top: 1px;">
+          <a class="avaible-email" target="_blank" *ngIf="request?.lead?.email"
+            href="mailto:{{request?.lead?.email}}">
+            {{request?.lead?.email}}
+          </a>
+          <a class="unavaible-property" *ngIf="!request?.lead?.email">
+            {{'Unavailable' | translate}}
+          </a>
+        </span>
+
+      </p>
+    </div>
+  </div>
+
+
+  <div class="row" style="margin-top:5px">
+    <div class="col-sm-12">
+      <p style="margin-bottom: 0px;"
+        matTooltipClass="conv-dtls-custom-mat-tooltip"
+        matTooltip="{{ 'Created' | translate }}" 
+        #tooltip="matTooltip" 
+        matTooltipPosition='right'
+        matTooltipHideDelay="100">
+
+          <i class="material-icons request-detail-for-panel-m-i">
+            watch_later
+          </i>
+
+        <span style="position: relative;top: 1px;">
+          <span class="request-created-at">
+            {{ request?.createdAt | amTimeAgo }}
+            <span>
+              ({{ request?.createdAt | date: 'd/M/y HH:mm' }})
+            </span>
+          </span>
+        </span>
+      </p>
+    </div>
+  </div>
+
+  <div class="row" style="margin-top:5px">
+    <div class="col-sm-12">
+      <p style="margin-bottom: 0px;"
+        matTooltipClass="conv-dtls-custom-mat-tooltip"
+        matTooltip="{{ 'Department' | translate }}" 
+        #tooltip="matTooltip" 
+        matTooltipPosition='right'
+        matTooltipHideDelay="100">
+        <!-- <span class="tool_tip"> -->
+          <i class="material-icons request-detail-for-panel-m-i">account_balance</i>
+
+          <!-- <span class="top"
+            style="min-width: fit-content; text-align: center ; top:-8px; border-radius: 3px; padding: 3px 10px; font-size: 10px; line-height: 12px;"> -->
+            <!-- {{ "Department" | translate }} -->
+            <!-- <i></i> -->
+          <!-- </span> -->
+        <!-- </span> -->
+
+        <span style="position: relative;top: 1px;">
+
+          <!-- <span *ngIf="request?.dept" class="dept-avatar-detail-for-panel"
+            [ngStyle]="{'background-color': request?.dept?.dept_name_fillcolour }">
+            {{ request?.dept?.dept_name_initial }}
+          </span> -->
+
+          <span class="avaible-dept">
+            <span *ngIf="request?.dept">
+              {{request?.dept?.name }}
+            </span>
+            <span class="unavaible-property" *ngIf="!request?.dept" style="text-transform: lowercase;padding-left: 0px;margin-left: 0px;">
+              {{'DepartmentsPage.NoDept' | translate}}
+            </span>
+          </span>
+        </span>
+      </p>
+    </div>
+  </div>
+
+  <button class="accordion more-info-accordion" (click)="openMoreInfoAccordion()"> 
+    {{'MoreInfo' | translate}}
+  </button>
+  <div class="more-info-panel">
+    <div class="row" style="margin-top:5px">
+      <div class="col-sm-12">
+        <p style="margin-bottom: 0px;"
+          matTooltipClass="conv-dtls-custom-mat-tooltip"
+          matTooltip="{{ 'Language' | translate }}" 
+          #tooltip="matTooltip" 
+          matTooltipPosition='right'
+          matTooltipHideDelay="100">
+
+          <!-- <span class="tool_tip"> -->
+            <i class="material-icons request-detail-for-panel-m-i">flag</i>
+            <!-- <span class="top"
+              style="min-width: fit-content; text-align: center ; top:-8px; border-radius: 3px; padding: 3px 10px; font-size: 10px; line-height: 12px;"> -->
+              <!-- {{ "Language" | translate }} -->
+              <!-- <i></i>
+            </span> -->
+          <!-- </span> -->
+
+          <span style="position: relative;top: 1px;">
+            <span  class="avaible-language"
+              *ngIf="request?.language">
+              {{ request?.language }}
+            </span>
+            <span  class="unavailable-language" style=""
+              *ngIf="!request?.language">
+              {{'Unavailable' | translate}}
+            </span>
+          </span>
+        </p>
+      </div>
+    </div>
 
     <div class="row" style="margin-top:5px">
-        <div class="col-sm-12">
-            <!-- margin-top: 6px; -->
-            <p style="margin-bottom: 0px;">
-
-                <span class="tool_tip">
-                    <i class="material-icons"
-                        style="vertical-align: middle; color: #394f5a;font-size:14px; padding: 6px; background: #e4e6eb; border-radius: 50%;">email</i>
-
-                    <span class="top"
-                        style="min-width: fit-content; text-align: center ; top:-8px; border-radius: 3px; padding: 3px 10px; font-size: 10px; line-height: 12px;">
-                        {{ "ContactEmail" | translate }}
-
-                        <i></i>
-                    </span>
-                </span>
-
-                <span style="position: relative;top: 1px;">
-
-                    <a style="font-size: 12px;font-weight: 400;" target="_blank" *ngIf="request?.lead?.email"
-                        href="mailto:{{request?.lead?.email}}">
-                        {{request?.lead?.email}}
-                    </a>
-                    <a *ngIf="!request?.lead?.email" style="color: #7695a5; font-weight: 400; font-size: 12px;">n.a.</a>
-                </span>
-
-            </p>
-        </div>
-    </div>
-
-
-    <div class="row" style="margin-top:5px">
-        <div class="col-sm-12">
-            <p style="margin-bottom: 0px;">
-
-                <span class="tool_tip">
-                    <i class="material-icons"
-                        style="vertical-align: middle; color: #394f5a;font-size:14px; padding: 6px; background: #e4e6eb; border-radius: 50%;">watch_later
-                    </i>
-                    <span class="top"
-                        style="min-width: fit-content; text-align: center ; top:-8px; border-radius: 3px; padding: 3px 10px; font-size: 10px; line-height: 12px;">
-                        <!-- {{ "RequestMsgsPage.Created" | translate }} -->
-                        {{ "Created" | translate }}
-                        <i></i>
-                    </span>
-                </span>
-
-
-                <span style="position: relative;top: 1px;">
-                    <span style="color: #7695a5; font-weight: 400; font-size: 12px;">
-                        {{ request?.createdAt | amTimeAgo }}
-                        <span>
-                            ({{ request?.createdAt | date: 'd/M/y HH:mm' }})
-                        </span>
-                    </span>
-                </span>
-            </p>
-        </div>
-    </div>
-
-    <!-- <div class="row" style="margin-top:5px" *ngIf="request?.language">
-        <div class="col-sm-12">
-            <p style="margin-bottom: 0px;">
-
-                <span class="tool_tip">
-                    <i class="material-icons"
-                        style="vertical-align: middle; color: #394f5a;font-size:14px; padding: 6px; background: #e4e6eb; border-radius: 50%;">flag</i>
-                    <span class="top"
-                        style="min-width: fit-content; text-align: center ; top:-8px; border-radius: 3px; padding: 3px 10px; font-size: 10px; line-height: 12px;">
-                        {{ "Language" | translate }}
-                        <i></i>
-                    </span>
-                </span>
-
-                <span style="position: relative;top: 1px;">
-                    <span style="color: #7695a5; font-weight: 400; font-size: 12px; text-transform: uppercase;">
-                        {{ request?.language }}
-                    </span>
-                </span>
-            </p>
-        </div>
-    </div> -->
-
-
-    <div class="row" style="margin-top:5px">
-        <div class="col-sm-12">
-            <p style="margin-bottom: 0px;">
-                <span class="tool_tip">
-                    <i class="material-icons"
-                        style="vertical-align: middle; color: #394f5a;font-size:14px; padding: 6px; background: #e4e6eb; border-radius: 50%;">account_balance</i>
-
-                    <span class="top"
-                        style="min-width: fit-content; text-align: center ; top:-8px; border-radius: 3px; padding: 3px 10px; font-size: 10px; line-height: 12px;">
-                        {{ "Department" | translate }}
-                        <i></i>
-                    </span>
-                </span>
-
-                <span style="position: relative;top: 1px;">
-
-                    <span *ngIf="request?.dept" class="dept-avatar-detail-for-panel"
-                        [ngStyle]="{'background-color': request?.dept?.dept_name_fillcolour }">
-                        {{ request?.dept?.dept_name_initial }}
-                    </span>
-
-                    <span style="color: #7695a5; font-weight: 400; font-size: 12px;">
-                        <span *ngIf="request?.dept">
-                            {{request?.dept?.name }}
-                        </span>
-                        <span *ngIf="!request?.dept"
-                            style="text-transform: lowercase;padding-left: 0px;margin-left: 0px;">
-                            {{'DepartmentsPage.NoDept' | translate}}
-                        </span>
-                    </span>
-                </span>
-            </p>
-        </div>
-    </div>
-    <button class="accordion" (click)="openMoreInfoAccordion()"> {{'MoreInfo' | translate}}</button>
-    <div class="more-info-panel">
-        <div class="row" style="margin-top:5px">
-            <div class="col-sm-12">
-                <p style="margin-bottom: 0px;">
-
-                    <span class="tool_tip">
-                        <i class="material-icons"
-                            style="vertical-align: middle; color: #394f5a;font-size:14px; padding: 6px; background: #e4e6eb; border-radius: 50%;">flag</i>
-                        <span class="top"
-                            style="min-width: fit-content; text-align: center ; top:-8px; border-radius: 3px; padding: 3px 10px; font-size: 10px; line-height: 12px;">
-                            {{ "Language" | translate }}
-                            <i></i>
-                        </span>
-                    </span>
-
-                    <span style="position: relative;top: 1px;">
-                        <span style="color: #7695a5; font-weight: 400; font-size: 12px; text-transform: uppercase;"
-                            *ngIf="request?.language">
-                            {{ request?.language }}
-                        </span>
-                        <span style="color: #7695a5; font-weight: 400; font-size: 12px; text-transform: lowercase;"
-                            *ngIf="!request?.language">
-                            {{'Unavailable' | translate}}
-                        </span>
-                    </span>
-                </p>
-            </div>
-        </div>
-
-        <div class="row" style="margin-top:5px">
-            <div class="col-sm-12">
-                <!-- *ngIf="request?.userAgent" -->
-                <p style="margin-bottom: 0px;">
-                    <span class="tool_tip">
-                        <!-- ---------------------------------------------------------------- -->
-                        <!-- @ OS - if not is -->
-                        <!-- ---------------------------------------------------------------- -->
-                        <span *ngIf="(request?.ua_os?.indexOf('Android') === -1) && 
+      <div class="col-sm-12">
+        <!-- *ngIf="request?.userAgent" -->
+        <p style="margin-bottom: 0px;"
+          matTooltipClass="conv-dtls-custom-mat-tooltip"
+          matTooltip="{{ 'OperatingSystem' | translate }}" 
+          #tooltip="matTooltip" 
+          matTooltipPosition='right'
+          matTooltipHideDelay="100">
+          <!-- <span class="tool_tip"> -->
+            <!-- ---------------------------------------------------------------- -->
+            <!-- @ OS - if not is -->
+            <!-- ---------------------------------------------------------------- -->
+            <span *ngIf="(request?.ua_os?.indexOf('Android') === -1) && 
                                 (request?.ua_os?.indexOf('Mac OS') === -1) && 
                                 (request?.ua_os?.indexOf('iOS') === -1) &&
                                 (request?.ua_os?.indexOf('Windows') === -1) &&
                                 (request?.ua_os?.indexOf('Ubuntu') === -1)">
 
-                            <img class="ua-os-icon--right-sidebar" style="margin-top: 2px;"
-                                src="assets/img/user_agent/laptop.svg" />
-                        </span>
+              <img class="ua-os-icon--right-sidebar" style="margin-top: 2px;" src="assets/img/user_agent/laptop.svg" />
+            </span>
 
-                        <!-- ---------------------------------------------------------------- -->
-                        <!-- if is Android -->
-                        <!-- ---------------------------------------------------------------- -->
-                        <span *ngIf="request?.ua_os?.indexOf('Android') !== -1">
-                            <img class="ua-os-icon--right-sidebar" src="assets/img/user_agent/android.svg" />
-                        </span>
+            <!-- ---------------------------------------------------------------- -->
+            <!-- if is Android -->
+            <!-- ---------------------------------------------------------------- -->
+            <span *ngIf="request?.ua_os?.indexOf('Android') !== -1">
+              <img class="ua-os-icon--right-sidebar" src="assets/img/user_agent/android.svg" />
+            </span>
 
-                        <!-- ---------------------------------------------------------------- -->
-                        <!-- if is Mac OS or iOS -->
-                        <!-- ---------------------------------------------------------------- -->
-                        <span *ngIf="request?.ua_os?.indexOf('Mac OS') !== -1 || request?.ua_os.indexOf('iOS') !== -1">
-                            <img class="ua-os-icon--right-sidebar" style="margin-bottom: 2px;"
-                                src="assets/img/user_agent/apple.svg" />
-                        </span>
+            <!-- ---------------------------------------------------------------- -->
+            <!-- if is Mac OS or iOS -->
+            <!-- ---------------------------------------------------------------- -->
+            <span *ngIf="request?.ua_os?.indexOf('Mac OS') !== -1 || request?.ua_os.indexOf('iOS') !== -1">
+              <img class="ua-os-icon--right-sidebar" style="margin-bottom: 2px;"
+                src="assets/img/user_agent/apple.svg" />
+            </span>
 
 
-                        <!-- ---------------------------------------------------------------- -->
-                        <!-- if is Windows -->
-                        <!-- ---------------------------------------------------------------- -->
-                        <span *ngIf="request?.ua_os?.indexOf('Windows') !== -1">
-                            <img class="ua-os-icon--right-sidebar" style="margin-top: 2px;"
-                                src="assets/img/user_agent/windows.svg" />
-                        </span>
+            <!-- ---------------------------------------------------------------- -->
+            <!-- if is Windows -->
+            <!-- ---------------------------------------------------------------- -->
+            <span *ngIf="request?.ua_os?.indexOf('Windows') !== -1">
+              <img class="ua-os-icon--right-sidebar" style="margin-top: 2px;" src="assets/img/user_agent/windows.svg" />
+            </span>
 
-                        <!-- ---------------------------------------------------------------- -->
-                        <!-- if is Ubuntu -->
-                        <!-- ---------------------------------------------------------------- -->
-                        <span *ngIf="request?.ua_os?.indexOf('Ubuntu') !== -1">
-                            <img class="ua-os-icon--right-sidebar" src="assets/img/user_agent/ubuntu.svg" />
-                        </span>
+            <!-- ---------------------------------------------------------------- -->
+            <!-- if is Ubuntu -->
+            <!-- ---------------------------------------------------------------- -->
+            <span *ngIf="request?.ua_os?.indexOf('Ubuntu') !== -1">
+              <img class="ua-os-icon--right-sidebar" src="assets/img/user_agent/ubuntu.svg" />
+            </span>
 
-                        <span class="top"
-                            style="min-width: fit-content; text-align: center ; top:-8px; border-radius: 3px; padding: 3px 10px; font-size: 10px; line-height: 12px;">
-                            {{ 'OperatingSystem' | translate }}
-                            <i></i>
-                        </span>
+            <!-- <span class="top"
+              style="min-width: fit-content; text-align: center ; top:-8px; border-radius: 3px; padding: 3px 10px; font-size: 10px; line-height: 12px;">
+              {{ 'OperatingSystem' | translate }}
+              <i></i>
+            </span> -->
 
-                    </span>
-                    <span style="color: #7695a5; font-weight: 400; font-size: 12px;">
-                        <span *ngIf="request?.ua_os !== 'undefined undefined'"> {{ request?.ua_os }} </span>
-                        <span *ngIf="request?.ua_os === 'undefined undefined'"> {{'Unavailable' | translate}} </span>
-                    </span>
-                </p>
-            </div>
-        </div>
+          <!-- </span> -->
+          <span  class="request--operating-system">
+            <span *ngIf="request?.ua_os !== 'undefined undefined'"> {{ request?.ua_os }} </span>
+            <span *ngIf="request?.ua_os === 'undefined undefined'"> {{'Unavailable' | translate}} </span>
+          </span>
+        </p>
+      </div>
+    </div>
 
-        <div class="row" style="margin-top:5px">
-            <div class="col-sm-12">
-                <!-- *ngIf="request?.userAgent" -->
-                <p style="margin-bottom: 0px;">
+    <div class="row" style="margin-top:5px">
+      <div class="col-sm-12">
+        <!-- *ngIf="request?.userAgent" -->
+        <p style="margin-bottom: 0px;"
+          matTooltipClass="conv-dtls-custom-mat-tooltip"
+          matTooltip="Browser" 
+          #tooltip="matTooltip" 
+          matTooltipPosition='right'
+          matTooltipHideDelay="100">
 
-                    <span class="tool_tip">
+          <!-- <span class="tool_tip"> -->
 
-                        <!-- ---------------------------------------------------------------- -->
-                        <!-- @ Browser - if not is -->
-                        <!-- ---------------------------------------------------------------- -->
-                        <span *ngIf="(request?.ua_browser?.indexOf('Chrome') === -1) && 
+            <!-- ---------------------------------------------------------------- -->
+            <!-- @ Browser - if not is -->
+            <!-- ---------------------------------------------------------------- -->
+            <span *ngIf="(request?.ua_browser?.indexOf('Chrome') === -1) && 
                                 (request?.ua_browser?.indexOf('Chromium') === -1) &&
                                 (request?.ua_browser?.indexOf('Firefox') === -1) &&
                                 (request?.ua_browser?.indexOf('Edge') === -1) &&
@@ -280,196 +233,159 @@ padding-right: 0px;
                                 (request?.ua_browser?.indexOf('Safari') === -1) &&
                                 (request?.ua_browser?.indexOf('IE') === -1)">
 
-                            <img class="ua_browser_icon--right-sidebar" src="assets/img/user_agent/globe.svg" />
-
-                        </span>
-
-
-                        <!-- ---------------------------------------------------------------- -->
-                        <!-- Chrome or Chromium -->
-                        <!-- ---------------------------------------------------------------- -->
-                        <span
-                            *ngIf="request?.ua_browser?.indexOf('Chrome') !== -1 || request?.ua_browser.indexOf('Chromium') !== -1">
-                            <img class="ua_browser_icon--right-sidebar" src="assets/img/user_agent/chrome.svg" />
-                        </span>
+              <img class="ua_browser_icon--right-sidebar" src="assets/img/user_agent/globe.svg" />
+            </span>
+            <!-- ---------------------------------------------------------------- -->
+            <!-- Chrome or Chromium -->
+            <!-- ---------------------------------------------------------------- -->
+            <span
+              *ngIf="request?.ua_browser?.indexOf('Chrome') !== -1 || request?.ua_browser.indexOf('Chromium') !== -1">
+              <img class="ua_browser_icon--right-sidebar" src="assets/img/user_agent/chrome.svg" />
+            </span>
 
 
-                        <!-- ---------------------------------------------------------------- -->
-                        <!-- Firefox -->
-                        <!-- ---------------------------------------------------------------- -->
-                        <span *ngIf="request?.ua_browser?.indexOf('Firefox') !== -1">
-                            <img class="ua_browser_icon--right-sidebar" src="assets/img/user_agent/firefox.svg" />
-                        </span>
+            <!-- ---------------------------------------------------------------- -->
+            <!-- Firefox -->
+            <!-- ---------------------------------------------------------------- -->
+            <span *ngIf="request?.ua_browser?.indexOf('Firefox') !== -1">
+              <img class="ua_browser_icon--right-sidebar" src="assets/img/user_agent/firefox.svg" />
+            </span>
 
 
-                        <!-- ---------------------------------------------------------------- -->
-                        <!-- Edge -->
-                        <!-- ---------------------------------------------------------------- -->
-                        <span *ngIf="request?.ua_browser?.indexOf('Edge') !== -1">
-                            <img class="ua_browser_icon--right-sidebar" src="assets/img/user_agent/edge.svg" />
-                        </span>
+            <!-- ---------------------------------------------------------------- -->
+            <!-- Edge -->
+            <!-- ---------------------------------------------------------------- -->
+            <span *ngIf="request?.ua_browser?.indexOf('Edge') !== -1">
+              <img class="ua_browser_icon--right-sidebar" src="assets/img/user_agent/edge.svg" />
+            </span>
 
 
-                        <!-- ---------------------------------------------------------------- -->
-                        <!-- Opera -->
-                        <!-- ---------------------------------------------------------------- -->
-                        <span *ngIf="request?.ua_browser?.indexOf('Opera') !== -1">
-                            <img class="ua_browser_icon--right-sidebar" src="assets/img/user_agent/opera.svg" />
-                        </span>
+            <!-- ---------------------------------------------------------------- -->
+            <!-- Opera -->
+            <!-- ---------------------------------------------------------------- -->
+            <span *ngIf="request?.ua_browser?.indexOf('Opera') !== -1">
+              <img class="ua_browser_icon--right-sidebar" src="assets/img/user_agent/opera.svg" />
+            </span>
 
 
-                        <!-- ---------------------------------------------------------------- -->
-                        <!-- Safari -->
-                        <!-- ---------------------------------------------------------------- -->
-                        <span *ngIf="request?.ua_browser?.indexOf('Safari') !== -1">
-                            <img class="ua_browser_icon--right-sidebar" src="assets/img/user_agent/safari.svg" />
-                        </span>
+            <!-- ---------------------------------------------------------------- -->
+            <!-- Safari -->
+            <!-- ---------------------------------------------------------------- -->
+            <span *ngIf="request?.ua_browser?.indexOf('Safari') !== -1">
+              <img class="ua_browser_icon--right-sidebar" src="assets/img/user_agent/safari.svg" />
+            </span>
 
 
-                        <!-- ---------------------------------------------------------------- -->
-                        <!-- Explorer -->
-                        <!-- ---------------------------------------------------------------- -->
-                        <span *ngIf="request?.ua_browser?.indexOf('IE') !== -1">
-                            <img class="ua_browser_icon--right-sidebar" src="assets/img/user_agent/explorer.svg" />
-                        </span>
+            <!-- ---------------------------------------------------------------- -->
+            <!-- Explorer -->
+            <!-- ---------------------------------------------------------------- -->
+            <span *ngIf="request?.ua_browser?.indexOf('IE') !== -1">
+              <img class="ua_browser_icon--right-sidebar" src="assets/img/user_agent/explorer.svg" />
+            </span>
 
 
-                        <span class="top"
-                            style="min-width: fit-content; text-align: center ; top:-8px; border-radius: 3px; padding: 3px 10px; font-size: 10px; line-height: 12px;">
-                            Browser
-                            <i></i>
-                        </span>
-                    </span>
+            <!-- <span class="top"
+              style="min-width: fit-content; text-align: center ; top:-8px; border-radius: 3px; padding: 3px 10px; font-size: 10px; line-height: 12px;">
+              Browser
+              <i></i>
+            </span> -->
+          <!-- </span> -->
 
-                    <span style="color: #7695a5; font-weight: 400; font-size: 12px;">
-                        <span *ngIf="request?.ua_browser !== 'undefined undefined'"> {{ request?.ua_browser }} </span>
-                        <span *ngIf="request?.ua_browser === 'undefined undefined'"> {{'Unavailable' | translate}}
-                        </span>
-                    </span>
+          <span class="request--browser" style="">
+            <span *ngIf="request?.ua_browser !== 'undefined undefined'"> {{ request?.ua_browser }} </span>
+            <span *ngIf="request?.ua_browser === 'undefined undefined'"> {{'Unavailable' | translate}}
+            </span>
+          </span>
 
-                </p>
-            </div>
-        </div>
+        </p>
+      </div>
+    </div>
 
-        <div class="row" style="margin-top:5px">
-            <div class="col-sm-12">
-                <p style="margin-bottom:0px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 95%;"
-                    class="tool_tip">
-                    <span>
-                        <img style="width: 26px;
+    <div class="row" style="margin-top:5px">
+      <div class="col-sm-12">
+        <p style="margin-bottom:0px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 95%;"
+          class="tool_tip">
+          <span>
+            <img style="width: 26px;
                     padding: 6px;
                     background: #e4e6eb;
                     border-radius: 50%;
                     height: 26px;" class="request_details___ua_browser_icon"
-                            src="assets/img/user_agent/source_page.svg" />
-                    </span>
+              src="assets/img/user_agent/source_page.svg" />
+          </span>
 
-                    <span style="position: relative;top: 1px;">
-                        <span style=" font-weight: 400; font-size: 12px;">
-                            <!-- word-wrap: break-word; -->
-                            <span *ngIf="request?.sourcePage">
-                                <a href="{{request?.sourcePage}}" target="_blank">{{request?.sourcePage}}</a>
-                            </span>
-                            <span *ngIf="!request?.sourcePage"
-                                style="color: #7695a5; font-weight: 400; font-size: 12px;">
-                                {{'Unavailable' | translate}}
-                            </span>
-                        </span>
-                    </span>
-                    <!-- <span class="top"
+          <span style="position: relative;top: 1px;">
+            <span style=" font-weight: 400; font-size: 12px;">
+              <!-- word-wrap: break-word; -->
+              <span class="avalable-source-page" *ngIf="request?.sourcePage">
+                <a href="{{request?.sourcePage}}" target="_blank">{{request?.sourcePage}}</a>
+              </span>
+              <span class="unavalable-source-page" *ngIf="!request?.sourcePage">
+                {{'Unavailable' | translate}}
+              </span>
+            </span>
+          </span>
+          <!-- <span class="top"
                     style="min-width: fit-content; text-align: center ; top:-8px; border-radius: 3px; padding: 3px 10px; font-size: 10px; line-height: 12px;">
                     {{ "RequestMsgsPage.SourcePage" | translate }}
                     <i></i>
                 </span> -->
-                </p>
-            </div>
-        </div>
-
+        </p>
+      </div>
     </div>
+  </div>
 
+  <!-- https://stackoverflow.com/questions/42256877/how-to-create-chat-bubbles-like-facebook-messenger -->
 
-    <!-- <div id="chat-content">
-
-        <!- - CHAT MESSAGES - ->
-        <div class="chat-messages">
-
-            <!- - MESSAGE - ->
-            <div *ngFor="let message of messagesList; let i = index" class="message-row"
-                 [ngClass]="{
-                            'me': requester_id === message.sender,
-                            'contact': requester_id !== message.sender,
-                            'first-of-group': isFirstMessageOfGroup(message, i),
-                            'last-of-group': isLastMessageOfGroup(message, i)
-                            }">
-
-
-                <div class="bubble">
-                    <div class="message">{{ message?.text}}</div>
-                    <div class="time secondary-text">{{message.createdAt | date:'short'}}</div>
-                </div>
-
-            </div>
-            <!- - / MESSAGE - ->
-
+  <div class="chat-messages-header">
+    <div class="contact-avatar---chat0-wrapper" style="position: relative;">
+      <div class="contact-avatar---chat1">
+        <div class="contact-avatar---chat2">
+          <div [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + request?.requester_fullname_fillColour + ')'}"
+            class="contact-avatar---chat3">
+            <span class="contact-avatar---chat4">
+              {{ request?.requester_fullname_initial }}
+            </span>
+          </div>
         </div>
-        <!- - CHAT MESSAGES - ->
+      </div>
+      <div class="contact-name">
+        <span class="requester-name--for-panel">
+          {{ request?.lead?.fullname }}
+        </span>
 
-    </div> -->
+        <span *ngIf="!request?.lead?.fullname"
+          [ngClass]="{'requester_fullname_initial-undefined-in-ws-request-dtl-for-panel' : !request?.lead?.fullname}">
+          N/A
+        </span>
+      </div>
+      <div class="request-dtls---requester-status-icon"
+        [ngClass]="{'requester_is_online' : REQUESTER_IS_ONLINE, 'requester_is_offline' : !REQUESTER_IS_ONLINE}">
+      </div>
+    </div>
+    <!-- ----------------------------------------------------- -->
+    <!-- Action buttons: archive - join - open chat -->
+    <!-- ----------------------------------------------------- -->
 
-    <!-- https://stackoverflow.com/questions/42256877/how-to-create-chat-bubbles-like-facebook-messenger -->
+    <div class="action-btns--wpr">
 
-    <div class="chat-messages-header">
-        <div class="contact-avatar---chat0-wrapper" style="position: relative;">
-            <div class="contact-avatar---chat1">
-                <div class="contact-avatar---chat2">
-                    <!-- [ngStyle]="{'background-color': request?.requester_fullname_fillColour }"  -->
-                    <div [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + request?.requester_fullname_fillColour + ')'}"
-                        class="contact-avatar---chat3">
-                        <span class="contact-avatar---chat4">
-                            {{ request?.requester_fullname_initial }}
-                        </span>
-                    </div>
-
-                </div>
-            </div>
-            <div class="contact-name">
-                <span class="requester-name--for-panel">
-                    {{ request?.lead?.fullname }}
-                </span>
-
-                <span *ngIf="!request?.lead?.fullname"
-                    [ngClass]="{'requester_fullname_initial-undefined-in-ws-request-dtl-for-panel' : !request?.lead?.fullname}">
-                    N/A
-                </span>
-            </div>
-            <div class="request-dtls---requester-status-icon"
-                [ngClass]="{'requester_is_online' : REQUESTER_IS_ONLINE, 'requester_is_offline' : !REQUESTER_IS_ONLINE}">
-            </div>
-        </div>
-        <!-- ----------------------------------------------------- -->
-        <!-- Action buttons: archive - join - open chat -->
-        <!-- ----------------------------------------------------- -->
-
-        <div class="action-btns--wpr">
-
-            <!-- ----------------------- -->
-            <!-- Join btn  -->
-            <!-- ----------------------- -->
-            <!-- request?.currentUserIsJoined, request?.participanting_Agents, *ngIf="request?.currentUserIsJoined === false" -->
-            <button type="button" rel="tooltip" title="{{ 'RequestMsgsPage.Enter' | translate }}"
-                class="btn btn-tdblu btn-simple btn-xs tool_tip join-btn" (click)='joinRequest(request?.request_id)'
-                [disabled]="request?.currentUserIsJoined === true || REQUEST_STATUS === 1000">
-                <!-- ------------------------------------------------------------------------------------------------------ -->
-                <!-- SVG font-awesome link icon -->
-                <!-- ------------------------------------------------------------------------------------------------------ -->
-                <svg style="height: 15px; width:auto;" aria-hidden="true" focusable="false" data-prefix="fas"
-                    data-icon="link" class="svg-inline--fa fa-link fa-w-16" role="img"
-                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                    <path fill="currentColor"
-                        d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z">
-                    </path>
-                </svg>
-                <span [ngStyle]="{'left':browserLang === 'it' ? '-29px' : '-16px' }" style="
+      <!-- ----------------------- -->
+      <!-- Join btn  -->
+      <!-- ----------------------- -->
+      <!-- request?.currentUserIsJoined, request?.participanting_Agents, *ngIf="request?.currentUserIsJoined === false" -->
+      <button type="button" rel="tooltip" title="{{ 'RequestMsgsPage.Enter' | translate }}"
+        class="btn btn-tdblu btn-simple btn-xs tool_tip join-btn" (click)='joinRequest(request?.request_id)'
+        [disabled]="request?.currentUserIsJoined === true || REQUEST_STATUS === 1000">
+        <!-- ------------------------------------------------------------------------------------------------------ -->
+        <!-- SVG font-awesome link icon -->
+        <!-- ------------------------------------------------------------------------------------------------------ -->
+        <svg style="height: 15px; width:auto;" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="link"
+          class="svg-inline--fa fa-link fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+          <path fill="currentColor"
+            d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z">
+          </path>
+        </svg>
+        <span [ngStyle]="{'left':browserLang === 'it' ? '-29px' : '-16px' }" style="
                     min-width: fit-content;
                     text-align: center;
                     top: -8px;
@@ -477,46 +393,44 @@ padding-right: 0px;
                     padding: 3px 10px;
                     font-size: 10px;
                     line-height: 12px;" class="top">
-                    <span style="text-transform: capitalize;"> {{ 'RequestMsgsPage.Enter' | translate }} </span>
-                    <i style="left: 70%;"></i>
-                </span>
+          <span style="text-transform: capitalize;"> {{ 'RequestMsgsPage.Enter' | translate }} </span>
+          <i style="left: 70%;"></i>
+        </span>
 
-            </button>
+      </button>
 
-            <!-- ----------------------- -->
-            <!-- Archive btn -->
-            <!-- ----------------------- -->
-            <button type="button" rel="tooltip" title="{{ 'VisitorsPage.tootipArchiveRequest' | translate }}"
-                class="btn btn-tdblu btn-simple btn-xs tool_tip archive-btn"
-                (click)='archiveRequest(request?.request_id)'
-                [disabled]="(request?.currentUserIsJoined === false && ROLE_IS_AGENT === true) || REQUEST_STATUS === 1000">
+      <!-- ----------------------- -->
+      <!-- Archive btn -->
+      <!-- ----------------------- -->
+      <button type="button" rel="tooltip" title="{{ 'VisitorsPage.tootipArchiveRequest' | translate }}"
+        class="btn btn-tdblu btn-simple btn-xs tool_tip archive-btn" (click)='archiveRequest(request?.request_id)'
+        [disabled]="(request?.currentUserIsJoined === false && ROLE_IS_AGENT === true) || REQUEST_STATUS === 1000">
 
-                <i class="material-icons">archive</i>
-                <span
-                    style="min-width: fit-content; text-align: center; top: -8px; border-radius: 3px; padding: 3px 10px; font-size: 10px; line-height: 12px;"
-                    class="top">
-                    <span *ngIf="ROLE_IS_AGENT !== true" style="text-transform: capitalize;"> {{ 'VisitorsPage.Resolve'
-                        | translate }} </span>
-                    <span *ngIf="ROLE_IS_AGENT === true" style="text-transform: capitalize;"> {{ 'ActionNotAllowed' |
-                        translate }} </span>
-                    <i></i>
-                </span>
-            </button>
-        </div>
+        <i class="material-icons">archive</i>
+        <span
+          style="min-width: fit-content; text-align: center; top: -8px; border-radius: 3px; padding: 3px 10px; font-size: 10px; line-height: 12px;"
+          class="top">
+          <span *ngIf="ROLE_IS_AGENT !== true" style="text-transform: capitalize;"> {{ 'VisitorsPage.Resolve'
+            | translate }} </span>
+          <span *ngIf="ROLE_IS_AGENT === true" style="text-transform: capitalize;"> {{ 'ActionNotAllowed' |
+            translate }} </span>
+          <i></i>
+        </span>
+      </button>
     </div>
+  </div>
 
-    <!-- SEE HERE  -->
-    <div #scrollMe class="chat-messages-container" [ngStyle]="{ 'height': chat_content_height }">
-        <!-- CHAT CONTENT -->
-        <div id="chat-content" fxFlex="1 1 auto" fusePerfectScrollbar>
+  <!-- SEE HERE  -->
+  <div #scrollMe class="chat-messages-container" [ngStyle]="{ 'height': chat_content_height }">
+    <!-- CHAT CONTENT -->
+    <div id="chat-content" fxFlex="1 1 auto" fusePerfectScrollbar>
 
-            <!-- CHAT MESSAGES -->
-            <div class="chat-messages">
+      <!-- CHAT MESSAGES -->
+      <div class="chat-messages">
 
-                <!-- MESSAGE -->
-                <!-- && message?.attributes?.subtype !== 'info' -->
-                <div *ngFor="let message of messagesList; let i = index; let first = first" class="message-row"
-                    [ngClass]="{
+        <!-- MESSAGE -->
+        <!-- && message?.attributes?.subtype !== 'info' -->
+        <div *ngFor="let message of messagesList; let i = index; let first = first" class="message-row" [ngClass]="{
                             'me': requester_id !== message.sender && message?.attributes?.subtype !== 'info' && message?.attributes?.subtype !== 'info/support',
                             'contact': requester_id === message.sender && message?.attributes?.subtype !== 'info' && message?.attributes?.subtype !== 'info/support',
                             'first-of-group': isFirstMessageOfGroup(message, i),
@@ -525,56 +439,56 @@ padding-right: 0px;
                             'info-first': isFirstInfoMessage(message, i)
                             }">
 
-                    <!-- <img *ngIf="shouldShowContactAvatar(message, i)" src="{{message.avatar_url}}"
+          <!-- <img *ngIf="shouldShowContactAvatar(message, i)" src="{{message.avatar_url}}"
                         (error)="onImageError(message, i)" class="avatar"> -->
 
 
-                    <div class="bubble" [ngClass]="{ 'first' : first }">
-                        <!-- <div class="message">{{message?.text}}</div> -->
-                        <div class="message" [innerHTML]="message?.text | htmlEntitiesEncode  | marked"></div>
+          <div class="bubble" [ngClass]="{ 'first' : first }">
+            <!-- <div class="message">{{message?.text}}</div> -->
+            <div class="message" [innerHTML]="message?.text | htmlEntitiesEncode  | marked"></div>
 
-                        <div *ngIf="!shouldShowContactAvatar(message, i)" class="time secondary-text">
-                            <!-- {{message.createdAt | date: 'd/M/y HH:mm'}} -->
+            <div *ngIf="!shouldShowContactAvatar(message, i)" class="time secondary-text">
+              <!-- {{message.createdAt | date: 'd/M/y HH:mm'}} -->
 
-                            <span *ngIf="(message.createdAt | amDateFormat:'YYYY') === currentYear">
-                                {{browserLang === 'en' ? (message.createdAt | amDateFormat:'MMM DD HH:mm') :
-                                (message.createdAt | amDateFormat:'DD MMM HH:mm')}}
-                            </span>
-                            <span *ngIf="(message.createdAt  | amDateFormat:'YYYY') !== currentYear">
-                                {{browserLang === 'en' ? (message.createdAt | amDateFormat:'MMM DD YYYY HH:mm') :
-                                (message.createdAt | amDateFormat:'DD MMM YYYY HH:mm') }}
-                            </span>
-
-                        </div>
-                        <div *ngIf="shouldShowContactAvatar(message, i)" class="time secondary-text">
-                            <!-- {{message.createdAt  | date: 'd/M/y HH:mm'}} -->
-
-                            <span *ngIf="(message.createdAt | amDateFormat:'YYYY') === currentYear">
-                                {{browserLang === 'en' ? (message.createdAt | amDateFormat:'MMM DD HH:mm') :
-                                (message.createdAt | amDateFormat:'DD MMM HH:mm')}}
-                            </span>
-                            <span *ngIf="(message.createdAt  | amDateFormat:'YYYY') !== currentYear">
-                                {{browserLang === 'en' ? (message.createdAt | amDateFormat:'MMM DD YYYY HH:mm') :
-                                (message.createdAt | amDateFormat:'DD MMM YYYY HH:mm') }}
-                            </span>
-                            <span style="margin-left: 3px;">
-                                {{'SentBy' | translate}} {{ message.senderFullname}}
-                            </span>
-                        </div>
-                        <!-- <div class="time secondary-text"></div> -->
-                    </div>
-
-                </div>
-                <!-- / MESSAGE -->
+              <span *ngIf="(message.createdAt | amDateFormat:'YYYY') === currentYear">
+                {{browserLang === 'en' ? (message.createdAt | amDateFormat:'MMM DD HH:mm') :
+                (message.createdAt | amDateFormat:'DD MMM HH:mm')}}
+              </span>
+              <span *ngIf="(message.createdAt  | amDateFormat:'YYYY') !== currentYear">
+                {{browserLang === 'en' ? (message.createdAt | amDateFormat:'MMM DD YYYY HH:mm') :
+                (message.createdAt | amDateFormat:'DD MMM YYYY HH:mm') }}
+              </span>
 
             </div>
-            <!-- CHAT MESSAGES -->
+            <div *ngIf="shouldShowContactAvatar(message, i)" class="time secondary-text">
+              <!-- {{message.createdAt  | date: 'd/M/y HH:mm'}} -->
+
+              <span *ngIf="(message.createdAt | amDateFormat:'YYYY') === currentYear">
+                {{browserLang === 'en' ? (message.createdAt | amDateFormat:'MMM DD HH:mm') :
+                (message.createdAt | amDateFormat:'DD MMM HH:mm')}}
+              </span>
+              <span *ngIf="(message.createdAt  | amDateFormat:'YYYY') !== currentYear">
+                {{browserLang === 'en' ? (message.createdAt | amDateFormat:'MMM DD YYYY HH:mm') :
+                (message.createdAt | amDateFormat:'DD MMM YYYY HH:mm') }}
+              </span>
+              <span style="margin-left: 3px;">
+                {{'SentBy' | translate}} {{ message.senderFullname}}
+              </span>
+            </div>
+            <!-- <div class="time secondary-text"></div> -->
+          </div>
 
         </div>
-        <!-- / CHAT CONTENT -->
+        <!-- / MESSAGE -->
+
+      </div>
+      <!-- CHAT MESSAGES -->
+
+    </div>
+    <!-- / CHAT CONTENT -->
 
 
-        <!-- <ul>
+    <!-- <ul>
             <li *ngFor="let message of messagesList; let i = index; let first = first ;let last = last;"
                 [ngClass]="{
             'him' : requester_id === message.sender && messagesList[i-1]?.sender !== requester_id && messagesList[i+1]?.sender !== requester_id, 
@@ -588,75 +502,73 @@ padding-right: 0px;
                 {{ message?.text }}
             </li>
         </ul> -->
-    </div>
+  </div>
 
 
 
 
 
 
-    <!-- --------------------------------------------------------------- -->
-    <!-- Note - the following is set to DISPLAY NONE -->
-    <!-- ---------------------------------------------------------------- -->
-    <div #scrollMe class="card-content"
-        style="height: 500px; overflow-y: auto; padding: 0px; padding-left:25px; padding-right:25px; display: none;"
-        (scroll)="onScroll($event)">
+  <!-- --------------------------------------------------------------- -->
+  <!-- Note - the following is set to DISPLAY NONE -->
+  <!-- ---------------------------------------------------------------- -->
+  <div #scrollMe class="card-content"
+    style="height: 500px; overflow-y: auto; padding: 0px; padding-left:25px; padding-right:25px; display: none;"
+    (scroll)="onScroll($event)">
 
-        <div *ngIf="!showSpinner" class="chat-body" style="vertical-align:baseline;">
-            <div *ngFor="let message of messagesList">
-                <div class="parent">
-                    <div [ngClass]="{'child' : requester_id !== message.sender}">
+    <div *ngIf="!showSpinner" class="chat-body" style="vertical-align:baseline;">
+      <div *ngFor="let message of messagesList">
+        <div class="parent">
+          <div [ngClass]="{'child' : requester_id !== message.sender}">
 
-                        <div class="speech-wrapper">
-
-
-                            <div *ngIf="requester_id === message.sender" class="bubble">
+            <div class="speech-wrapper">
 
 
-                                <div class="txt">
-                                    <p class="name" [ngStyle]="{'color': fillColour }">{{ message.senderFullname }}
-
-                                        <span
-                                            style="float:right; cursor:pointer; color: #00bcf8; text-decoration: underline;"
-                                            (click)="openRightSideBar(message?.text)">
-
-                                            {{ 'Train' | translate }}
-
-                                        </span>
-                                    </p>
-                                    <p class="message ow">
-                                        {{ message?.text }}
-                                    </p>
-                                    <span class="timestamp"> {{ message?.createdAt | date: 'd/M/y HH:mm:ss'}} </span>
-                                </div>
-                                <div class="bubble-arrow"></div>
-                            </div>
-
-                            <div *ngIf="requester_id !== message.sender" class="bubble alt">
+              <div *ngIf="requester_id === message.sender" class="bubble">
 
 
-                                <div class="txt">
-                                    <p class="name alt">
-                                        {{ message.senderFullname }}
+                <div class="txt">
+                  <p class="name" [ngStyle]="{'color': fillColour }">{{ message.senderFullname }}
 
-                                    </p>
-                                    <p class="message ow">{{ message.text }}</p>
-                                    <span class="timestamp"> {{ message.createdAt | date: 'd/M/y HH:mm:ss'}}</span>
-                                </div>
-                                <div class="bubble-arrow alt"></div>
-                            </div>
-                        </div>
-                    </div>
+                    <span style="float:right; cursor:pointer; color: #00bcf8; text-decoration: underline;"
+                      (click)="openRightSideBar(message?.text)">
 
+                      {{ 'Train' | translate }}
+
+                    </span>
+                  </p>
+                  <p class="message ow">
+                    {{ message?.text }}
+                  </p>
+                  <span class="timestamp"> {{ message?.createdAt | date: 'd/M/y HH:mm:ss'}} </span>
                 </div>
-            </div>
-        </div>
+                <div class="bubble-arrow"></div>
+              </div>
 
-        <a id="fixed-button" class="button" [ngStyle]="{'display':displayBtnScrollToBottom }"
-            (click)="scrollToBottom()">
-            <span class="icon is-small">
-                <i class="fa fa-chevron-down"></i>
-            </span>
-        </a>
+              <div *ngIf="requester_id !== message.sender" class="bubble alt">
+
+
+                <div class="txt">
+                  <p class="name alt">
+                    {{ message.senderFullname }}
+
+                  </p>
+                  <p class="message ow">{{ message.text }}</p>
+                  <span class="timestamp"> {{ message.createdAt | date: 'd/M/y HH:mm:ss'}}</span>
+                </div>
+                <div class="bubble-arrow alt"></div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
     </div>
+
+    <a id="fixed-button" class="button" [ngStyle]="{'display':displayBtnScrollToBottom }" (click)="scrollToBottom()">
+      <span class="icon is-small">
+        <i class="fa fa-chevron-down"></i>
+      </span>
+    </a>
+  </div>
 </div>

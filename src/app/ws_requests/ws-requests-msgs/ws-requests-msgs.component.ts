@@ -218,7 +218,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   subscription: Subscription;
   CURRENT_USER_ROLE: string;
 
-  CHAT_PANEL_MODE: boolean = true; // nk for test change color
+  CHAT_PANEL_MODE: boolean  = true; // nk for test change color
   dshbrdBaseUrl: string;
   project_name: string;
 
@@ -1367,8 +1367,11 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   // ----------------------------------------------------------------------------
   getParamRequestId() {
     this.route.params.subscribe((params) => {
-      // this.logger.log('[WS-REQUESTS-MSGS] - getParamRequestId  ', params);
-      this.getBotConversationAttribute(params.requestid)
+     // ------------------------------------------------------
+     // Request for the Chatbot attributes accordion  NO MORE USED
+     // ------------------------------------------------------
+     // this.getBotConversationAttribute(params.requestid);
+
       if (this.id_request) {
         // this.logger.log('[WS-REQUESTS-MSGS] - UNSUB-REQUEST-BY-ID - id_request ', this.id_request);
 

@@ -31,9 +31,11 @@
                       <!-- -----new REQUESTER -->
                       <!-- [ngStyle]="{'background-color': fillColour }" -->
                       <span style="cursor: pointer;" (click)='goToContactDetails()' class="requester-avatar-wrapper"
-                        matTooltipClass="custom-mat-tooltip"
-                        matTooltip="{{ 'ClickToViewTheDetailsOfTheContact' | translate }}" #tooltip="matTooltip"
-                        matTooltipPosition='right' matTooltipHideDelay="100">
+                        matTooltipClass="conv-dtls-custom-mat-tooltip"
+                        matTooltip="{{ 'ClickToViewTheDetailsOfTheContact' | translate }}" 
+                        #tooltip="matTooltip"
+                        matTooltipPosition='right' 
+                        matTooltipHideDelay="100">
                         <span class="_requester-avatar_as_title"
                           [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + fillColour + ')'}"
                           [ngClass]="{'requester_fullname-undefined' : !request?.lead?.fullname}">
@@ -100,9 +102,11 @@
                       <div class="col-xs-12 chat-header-wpr-btn">
                         <button #openChatBtn (click)="openChatAtSelectedConversation()"
                           class="btn btn-primary chat-header-btn plr-8 ptb-8 pull-right" role="button"
-                          matTooltipClass="custom-mat-tooltip"
-                          matTooltip="{{ 'ThisConversationIsAssignedToYou' | translate }}" #tooltip="matTooltip"
-                          matTooltipPosition='below' matTooltipHideDelay="100">
+                          matTooltipClass="conv-dtls-custom-mat-tooltip"
+                          matTooltip="{{ 'ThisConversationIsAssignedToYou' | translate }}" 
+                          #tooltip="matTooltip"
+                          matTooltipPosition='below' 
+                          matTooltipHideDelay="100">
                           <i class="material-icons"
                             style="vertical-align: middle; top:0px !important; padding-bottom: 2px;">open_in_new</i>
                           <span style="vertical-align: middle"> {{ 'OpenChat' | translate }}</span>
@@ -118,7 +122,8 @@
                       *ngIf="JOIN_TO_GROUP_HAS_ERROR === false && IS_CURRENT_USER_JOINED === false  && SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING === false && HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST === false">
                       <div class="col-xs-12">
                         <button class="btn btn-primary chat-header-btn plr-8 ptb-8 pull-right" (click)="onJoinHandled()"
-                          [disabled]="request?.status == 1000" role="button" matTooltipClass="custom-mat-tooltip"
+                          [disabled]="request?.status == 1000" role="button" 
+                          matTooltipClass="conv-dtls-custom-mat-tooltip"
                           matTooltip="{{ 'ThisConversationIsNotAssignedToYou' | translate }}" #tooltip="matTooltip"
                           matTooltipPosition='below' matTooltipHideDelay="100">
                           <i class="material-icons"
@@ -940,7 +945,8 @@
                       s-4,8.7-8.9,8.7c-2.5,0-4.7-1-6.3-2.6L22.3,33c2.1,2,4.9,3.3,8.1,3.3c6.3,0,11.4-5,11.4-11.2S36.7,13.8,30.4,13.8z M29.1,20v6.2
                       l5.4,3.2l0.9-1.5L31,25.3V20H29.1z" />
                           </svg>
-                          <span class="request-category" style="color: #999999" matTooltipClass="custom-mat-tooltip"
+                          <span class="request-category" style="color: #999999" 
+                            matTooltipClass="conv-dtls-custom-mat-tooltip"
                             matTooltip="{{ 'RequestMsgsPage.RequestResolved' | translate }}" #tooltip="matTooltip"
                             matTooltipPosition='below' matTooltipHideDelay="100">
                             {{ "RequestMsgsPage.Resolved_F" | translate }}
@@ -976,11 +982,12 @@
                           C39.3,24.7,38.5,25.7,38.5,27z M36.6,22c0-0.6-0.4-1.1-0.9-1.1H22.5c-0.5,0-0.9,0.5-0.9,1.1v9.8c0,0.6,0.4,1.1,0.9,1.1h13.2
                           c0.5,0,0.9-0.5,0.9-1.1V22z" />
                           </svg>
-                          <span class="request-category" style="color: #999999" matTooltipClass="custom-mat-tooltip"
+                          <span class="request-category" style="color: #999999" 
+                            matTooltipClass="conv-dtls-custom-mat-tooltip"
                             matTooltip="{{ 'RequestMsgsPage.InternalRequestResolved' | translate }}"
-                            #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
-                            <!-- {{ "RequestMsgsPage.InternalRequestClosed" | translate }} -->
-
+                            #tooltip="matTooltip" 
+                            matTooltipPosition='below' 
+                            matTooltipHideDelay="100">
                             {{ "RequestMsgsPage.Resolved_M" | translate }}
                             <span *ngIf="request?.closed_by"
                               style="font-size: 12px; font-weight: 400;">({{request?.closed_by_label}})</span>
@@ -1014,7 +1021,8 @@
                           c2.4-0.4,4.6,1.2,5,3.5C34.9,17.1,34.9,17.6,34.8,18z" />
                             </g>
                           </svg>
-                          <span class="request-category" style="color: #f44336" matTooltipClass="custom-mat-tooltip"
+                          <span class="request-category" style="color: #f44336" 
+                            matTooltipClass="conv-dtls-custom-mat-tooltip"
                             matTooltip="{{ 'RequestMsgsPage.RequestUnserved' | translate }}" #tooltip="matTooltip"
                             matTooltipPosition='below' matTooltipHideDelay="100">
                             {{ "NotAssigned_F" | translate }}
@@ -1049,7 +1057,8 @@
                           c0.5,0,0.9-0.5,0.9-1.1V22z" />
                           </svg>
 
-                          <span class="request-category" style="color: #999999" matTooltipClass="custom-mat-tooltip"
+                          <span class="request-category" style="color: #999999" 
+                            matTooltipClass="conv-dtls-custom-mat-tooltip"
                             matTooltip="{{ 'RequestMsgsPage.InternalRequestUnserved' | translate }}"
                             #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
                             <!-- {{ "RequestMsgsPage.InternalRequestUnserved" | translate }} -->
@@ -1081,10 +1090,11 @@
                             </g>
                           </svg>
 
-                          <span class="request-category" style="color: #4CAF50" matTooltipClass="custom-mat-tooltip"
+                          <span class="request-category" style="color: #4CAF50" 
+                            matTooltipClass="conv-dtls-custom-mat-tooltip"
                             matTooltip="{{ 'RequestMsgsPage.ConversationAssignedToYou' | translate }}"
                             #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
-                            <!-- {{ "RequestMsgsPage.RequestServedBy" | translate }} -->
+                            
                             {{ "Assigned_F" | translate }}
 
                           </span>
@@ -1115,10 +1125,12 @@
                           c0.5,0,0.9-0.5,0.9-1.1V22z" />
                           </svg>
 
-                          <span class="request-category" style="color: #4CAF50" matTooltipClass="custom-mat-tooltip"
-                            matTooltip="{{ 'RequestMsgsPage.TicketAssignedToYou' | translate }}" #tooltip="matTooltip"
-                            matTooltipPosition='below' matTooltipHideDelay="100">
-                            <!-- {{ "RequestMsgsPage.InternalRequestServedBy" | translate }} -->
+                          <span class="request-category" style="color: #4CAF50" 
+                            matTooltipClass="conv-dtls-custom-mat-tooltip"
+                            matTooltip="{{ 'RequestMsgsPage.TicketAssignedToYou' | translate }}" 
+                            #tooltip="matTooltip"
+                            matTooltipPosition='below' 
+                            matTooltipHideDelay="100">
                             {{ "Assigned_M" | translate }}
                           </span>
                         </span>
@@ -1151,13 +1163,13 @@
                             </g>
                           </svg>
 
-                          <span class="request-category" style="color: #00bcd4;" matTooltipClass="custom-mat-tooltip"
-                            matTooltip="{{ 'RequestMsgsPage.RequestServedBy' | translate }}" #tooltip="matTooltip"
-                            matTooltipPosition='below' matTooltipHideDelay="100">
-
-                            <!-- {{ "RequestMsgsPage.RequestServedBy" | translate }} -->
+                          <span class="request-category" style="color: #00bcd4;" 
+                            matTooltipClass="conv-dtls-custom-mat-tooltip"
+                            matTooltip="{{ 'RequestMsgsPage.RequestServedBy' | translate }}" 
+                            #tooltip="matTooltip"
+                            matTooltipPosition='below' 
+                            matTooltipHideDelay="100">
                             {{ "Served" | translate }}
-
                           </span>
                         </span>
 
@@ -1188,9 +1200,12 @@
                           c0.5,0,0.9-0.5,0.9-1.1V22z" />
                           </svg>
 
-                          <span class="request-category" style="color: #00bcd4;" matTooltipClass="custom-mat-tooltip"
+                          <span class="request-category" style="color: #00bcd4;" 
+                            matTooltipClass="conv-dtls-custom-mat-tooltip"
                             matTooltip="{{ 'RequestMsgsPage.InternalRequestServedBy' | translate }}"
-                            #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
+                            #tooltip="matTooltip" 
+                            matTooltipPosition='below' 
+                            matTooltipHideDelay="100">
                             {{ "Served" | translate }}
                           </span>
                         </span>
@@ -1403,21 +1418,15 @@
                   <!-- Project name -->
                   <!-- --------------------------------------------------------------------- -->
                   <div *ngIf="CHAT_PANEL_MODE === true" class="row" style="margin-top:8px">
-                    <!-- border-top: 1px solid #e1eef4;" -->
+                   
                     <div class="col-sm-12">
-                      <!-- <span style="position: relative;top: 1px;"> -->
-                      <!-- <div class="row"> -->
-                      <!-- (click)="goToProjectHomeInNewTab()" -->
-                      <!-- <div class="col-xs-12" style="padding-right:10px"> -->
+                      
                       <p class="chat-panel-mode-project-name" style="margin-top: 0px;">
-                        <!-- <i class="material-icons conv-details-sidebar-icon" matTooltipClass="custom-mat-tooltip"
-                          matTooltip="{{ 'Project' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
-                          matTooltipHideDelay="100">
-                          apps
-                        </i> -->
-
-                        <span class="project-icon-wpr" style="vertical-align: middle; position: relative; top: 3px;" matTooltipClass="custom-mat-tooltip"
-                        matTooltip="{{ 'Project' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
+                        <span class="project-icon-wpr" style="vertical-align: middle; position: relative; top: 3px;" 
+                        matTooltipClass="conv-dtls-custom-mat-tooltip"
+                        matTooltip="{{ 'Project' | translate }}"
+                        #tooltip="matTooltip" 
+                        matTooltipPosition='right'
                         matTooltipHideDelay="100">
                           <svg class="project-icon" fill="none" height="22"
                             viewBox="0 0 24 24" width="22" xmlns="http://www.w3.org/2000/svg">
@@ -1452,8 +1461,11 @@
                   <div class="row" *ngIf="request?.ticket_id" style="margin-top:5px">
                     <div class="col-sm-12">
                       <p class="" style="margin-bottom: 0px">
-                        <i class="material-icons conv-details-sidebar-icon" matTooltipClass="custom-mat-tooltip"
-                          matTooltip="{{ 'TicketId' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
+                        <i class="material-icons conv-details-sidebar-icon" 
+                          matTooltipClass="conv-dtls-custom-mat-tooltip"
+                          matTooltip="{{ 'TicketId' | translate }}" 
+                          #tooltip="matTooltip" 
+                          matTooltipPosition='right'
                           matTooltipHideDelay="100">
                           info
                         </i>
@@ -1472,9 +1484,13 @@
                   <div *ngIf="request?.subject" class="row" style="margin-top:5px">
                     <div class="col-sm-12">
                       <p class="" style="margin-bottom: 0px">
-                        <i class="material-icons conv-details-sidebar-icon" matTooltipClass="custom-mat-tooltip"
-                          matTooltip="{{ 'RequestMsgsPage.Subject' | translate }}" #tooltip="matTooltip"
-                          matTooltipPosition='right' matTooltipHideDelay="100" style="margin-bottom: 0px;">
+                        <i class="material-icons conv-details-sidebar-icon" 
+                          matTooltipClass="conv-dtls-custom-mat-tooltip"
+                          matTooltip="{{ 'RequestMsgsPage.Subject' | translate }}" 
+                          #tooltip="matTooltip"
+                          matTooltipPosition='right' 
+                          matTooltipHideDelay="100" 
+                          style="margin-bottom: 0px;">
                           subject
                         </i>
                         <span style="position: relative;top: -1px;">
@@ -1482,7 +1498,8 @@
                             {{ticketSubject}}
                           </span>
                           <span *ngIf='!ticketSubjectEditMode' class="material-icons edit-in-place"
-                            (click)='ticketSubjectEditMode=true' matTooltipClass="custom-mat-tooltip"
+                            (click)='ticketSubjectEditMode=true' 
+                            matTooltipClass="conv-dtls-custom-mat-tooltip"
                             matTooltip="{{ 'ClickToEdit' | translate }}" #tooltip="matTooltip"
                             matTooltipPosition='right' matTooltipHideDelay="100">
                             mode_edit
@@ -1501,8 +1518,11 @@
                   <div class="row" style="margin-top:5px" *ngIf="CHAT_PANEL_MODE === false">
                     <div class="col-xs-10">
                       <p [ngClass]="{'no-top-margin' : request?.subject}" style="margin-bottom: 0px;">
-                        <i class="material-icons conv-details-sidebar-icon" matTooltipClass="custom-mat-tooltip"
-                          matTooltip="{{ 'ContactEmail' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
+                        <i class="material-icons conv-details-sidebar-icon" 
+                          matTooltipClass="conv-dtls-custom-mat-tooltip"
+                          matTooltip="{{ 'ContactEmail' | translate }}" 
+                          #tooltip="matTooltip" 
+                          matTooltipPosition='right'
                           matTooltipHideDelay="100">
                           email
                         </i>
@@ -1534,8 +1554,11 @@
                   <div class="row" style="margin-top:5px">
                     <div class="col-sm-12">
                       <p [ngClass]="{'no-top-margin' : request?.subject}" style="margin-bottom: 0px;">
-                        <i class="material-icons conv-details-sidebar-icon" matTooltipClass="custom-mat-tooltip"
-                          matTooltip="{{ 'Created' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
+                        <i class="material-icons conv-details-sidebar-icon" 
+                          matTooltipClass="conv-dtls-custom-mat-tooltip"
+                          matTooltip="{{ 'Created' | translate }}" 
+                          #tooltip="matTooltip" 
+                          matTooltipPosition='right'
                           matTooltipHideDelay="100">
                           calendar_today
                         </i>
@@ -1558,8 +1581,11 @@
                   <div class="row" style="margin-top:5px">
                     <div class="col-sm-12">
                       <p class="" style="margin-bottom: 0px;">
-                        <i class="material-icons conv-details-sidebar-icon" matTooltipClass="custom-mat-tooltip"
-                          matTooltip="{{ 'Language' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
+                        <i class="material-icons conv-details-sidebar-icon" 
+                          matTooltipClass="conv-dtls-custom-mat-tooltip"
+                          matTooltip="{{ 'Language' | translate }}" 
+                          #tooltip="matTooltip" 
+                          matTooltipPosition='right'
                           matTooltipHideDelay="100">
                           language
                         </i>
@@ -1584,8 +1610,11 @@
                     <div class="col-sm-12">
                       <p class="" style="margin-bottom: 0px; cursor: pointer;">
                         <i class="material-icons conv-details-sidebar-icon location-icon"
-                          matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'Location' | translate }}"
-                          #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100"
+                          matTooltipClass="conv-dtls-custom-mat-tooltip" 
+                          matTooltip="{{ 'Location' | translate }}"
+                          #tooltip="matTooltip" 
+                          matTooltipPosition='right' 
+                          matTooltipHideDelay="100"
                           style="margin-right: 3px;">
                           location_on
                         </i>
@@ -1610,8 +1639,10 @@
                         <div class="row">
                           <div class="col-xs-10" style="padding-right:10px">
                             <div [ngClass]="{'id_request-wrap': !showAllIdRequest}">
-                              <i class="material-icons conv-details-sidebar-icon" matTooltipClass="custom-mat-tooltip"
-                                matTooltip="{{ 'RequestMsgsPage.RequestId' | translate }}" #tooltip="matTooltip"
+                              <i class="material-icons conv-details-sidebar-icon" 
+                                matTooltipClass="conv-dtls-custom-mat-tooltip"
+                                matTooltip="{{ 'RequestMsgsPage.RequestId' | translate }}" 
+                                #tooltip="matTooltip"
                                 matTooltipPosition='right' matTooltipHideDelay="100">
                                 info
                               </i>
@@ -1646,8 +1677,11 @@
                     <div class="col-sm-12">
                       <p [ngClass]="{'yes-margin' : !request?.sourcePage && CHAT_PANEL_MODE === false, 'no-margin': request?.channel?.name !== 'chat21'}"
                         style="margin-bottom: 0px;">
-                        <i class="material-icons conv-details-sidebar-icon" matTooltipClass="custom-mat-tooltip"
-                          matTooltip="{{ 'Department' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
+                        <i class="material-icons conv-details-sidebar-icon" 
+                          matTooltipClass="conv-dtls-custom-mat-tooltip"
+                          matTooltip="{{ 'Department' | translate }}" 
+                          #tooltip="matTooltip" 
+                          matTooltipPosition='right'
                           matTooltipHideDelay="100">
                           account_balance
                         </i>
@@ -1678,9 +1712,12 @@
 
                               <div [ngClass]="{'source-page-wrap': !showAllSourcePageString}">
                                 <img class="request_details___ua_browser_icon"
-                                  src="assets/img/user_agent/source_page.svg" matTooltipClass="custom-mat-tooltip"
-                                  matTooltip="{{ 'RequestMsgsPage.SourcePage' | translate }}" #tooltip="matTooltip"
-                                  matTooltipPosition='right' matTooltipHideDelay="100" />
+                                  src="assets/img/user_agent/source_page.svg" 
+                                  matTooltipClass="conv-dtls-custom-mat-tooltip"
+                                  matTooltip="{{ 'RequestMsgsPage.SourcePage' | translate }}" 
+                                  #tooltip="matTooltip"
+                                  matTooltipPosition='right' 
+                                  matTooltipHideDelay="100" />
                       
                                 <span style="font-weight: 400; font-size: 13px;">
                                   <span *ngIf="showAllSourcePageString" style="word-wrap: break-word;">
@@ -1720,16 +1757,19 @@
                       <p style="margin-bottom: 0px;">
 
                         <span *ngIf="(request?.ua_browser.indexOf('Chrome') === -1) && 
-                      (request?.ua_browser.indexOf('Chromium') === -1) &&
-                      (request?.ua_browser.indexOf('Firefox') === -1) &&
-                      (request?.ua_browser.indexOf('Edge') === -1) &&
-                      (request?.ua_browser.indexOf('Opera') === -1) &&
-                      (request?.ua_browser.indexOf('Safari') === -1) &&
-                      (request?.ua_browser.indexOf('IE') === -1)">
+                          (request?.ua_browser.indexOf('Chromium') === -1) &&
+                          (request?.ua_browser.indexOf('Firefox') === -1) &&
+                          (request?.ua_browser.indexOf('Edge') === -1) &&
+                          (request?.ua_browser.indexOf('Opera') === -1) &&
+                          (request?.ua_browser.indexOf('Safari') === -1) &&
+                          (request?.ua_browser.indexOf('IE') === -1)">
 
                           <img class="request_details___ua_browser_icon" src="assets/img/user_agent/globe.svg"
-                            matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'Browser' | translate }}"
-                            #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100" />
+                            matTooltipClass="conv-dtls-custom-mat-tooltip" 
+                            matTooltip="{{ 'Browser' | translate }}"
+                            #tooltip="matTooltip" 
+                            matTooltipPosition='right' 
+                            matTooltipHideDelay="100" />
 
                         </span>
 
@@ -1739,8 +1779,11 @@
                         <!--  ---------------------------------------------------------------- -->
                         <span *ngIf="request?.ua_browser.indexOf('Chrome') !== -1 || request?.ua_browser.indexOf('Chromium') !== -1">
                           <img class="request_details___ua_browser_icon" src="assets/img/user_agent/chrome.svg"
-                            matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'Browser' | translate }}"
-                            #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100" />
+                            matTooltipClass="conv-dtls-custom-mat-tooltip" 
+                            matTooltip="{{ 'Browser' | translate }}"
+                            #tooltip="matTooltip" 
+                            matTooltipPosition='right' 
+                            matTooltipHideDelay="100" />
                         </span>
 
 
@@ -1749,8 +1792,11 @@
                         <!--  ---------------------------------------------------------------- -->
                         <span *ngIf="request?.ua_browser.indexOf('Firefox') !== -1">
                           <img class="request_details___ua_browser_icon" src="assets/img/user_agent/firefox.svg"
-                            matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'Browser' | translate }}"
-                            #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100" />
+                            matTooltipClass="conv-dtls-custom-mat-tooltip" 
+                            matTooltip="{{ 'Browser' | translate }}"
+                            #tooltip="matTooltip" 
+                            matTooltipPosition='right' 
+                            matTooltipHideDelay="100" />
                         </span>
 
 
@@ -1758,9 +1804,13 @@
                         <!-- Edge  -->
                         <!-- ---------------------------------------------------------------- -->
                         <span *ngIf="request?.ua_browser.indexOf('Edge') !== -1">
-                          <img class="request_details___ua_browser_icon" src="assets/img/user_agent/edge.svg"
-                            matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'Browser' | translate }}"
-                            #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100" />
+                          <img class="request_details___ua_browser_icon" 
+                            src="assets/img/user_agent/edge.svg"
+                            matTooltipClass="conv-dtls-custom-mat-tooltip" 
+                            matTooltip="{{ 'Browser' | translate }}"
+                            #tooltip="matTooltip" 
+                            matTooltipPosition='right' 
+                            matTooltipHideDelay="100" />
                         </span>
 
 
@@ -1768,9 +1818,13 @@
                         <!-- Opera  -->
                         <!-- ---------------------------------------------------------------- -->
                         <span *ngIf="request?.ua_browser.indexOf('Opera') !== -1">
-                          <img class="request_details___ua_browser_icon" src="assets/img/user_agent/opera.svg"
-                            matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'Browser' | translate }}"
-                            #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100" />
+                          <img class="request_details___ua_browser_icon" 
+                            src="assets/img/user_agent/opera.svg"
+                            matTooltipClass="conv-dtls-custom-mat-tooltip" 
+                            matTooltip="{{ 'Browser' | translate }}"
+                            #tooltip="matTooltip" 
+                            matTooltipPosition='right' 
+                            matTooltipHideDelay="100" />
                         </span>
 
 
@@ -1778,9 +1832,13 @@
                         <!--  Safari  -->
                         <!--  ---------------------------------------------------------------- -->
                         <span *ngIf="request?.ua_browser.indexOf('Safari') !== -1">
-                          <img class="request_details___ua_browser_icon" src="assets/img/user_agent/safari.svg"
-                            matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'Browser' | translate }}"
-                            #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100" />
+                          <img class="request_details___ua_browser_icon" 
+                            src="assets/img/user_agent/safari.svg"
+                            matTooltipClass="conv-dtls-custom-mat-tooltip" 
+                            matTooltip="{{ 'Browser' | translate }}"
+                            #tooltip="matTooltip" 
+                            matTooltipPosition='right' 
+                            matTooltipHideDelay="100" />
                         </span>
 
 
@@ -1788,17 +1846,19 @@
                         <!--  Explorer  -->
                         <!--  ---------------------------------------------------------------- -->
                         <span *ngIf="request?.ua_browser.indexOf('IE') !== -1">
-                          <img class="request_details___ua_browser_icon" src="assets/img/user_agent/explorer.svg"
-                            matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'Browser' | translate }}"
-                            #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100" />
+                          <img class="request_details___ua_browser_icon" 
+                            src="assets/img/user_agent/explorer.svg"
+                            matTooltipClass="conv-dtls-custom-mat-tooltip" 
+                            matTooltip="{{ 'Browser' | translate }}"
+                            #tooltip="matTooltip" 
+                            matTooltipPosition='right' 
+                            matTooltipHideDelay="100" />
                         </span>
 
 
                         <!-- ------------------------------------------------------ -->
 
                         <span style="position: relative;top: -1px;">
-
-
                           <span class="conv-details-sidebar-text">
                             <!-- <span *ngIf="request?.ua_browser !== 'undefined undefined'"> {{ request?.ua_browser }} </span> -->
                             <!-- <span *ngIf="request?.ua_browser === 'undefined undefined'"> N/A </span> -->
@@ -1827,9 +1887,13 @@
                                    (request?.ua_os?.indexOf('Windows') === -1) &&
                                    (request?.ua_os?.indexOf('Ubuntu') === -1)">
 
-                          <img class="request_details___os_icon" src="assets/img/user_agent/laptop.svg"
-                            matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'OperatingSystem' | translate }}"
-                            #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100" />
+                          <img class="request_details___os_icon" 
+                            src="assets/img/user_agent/laptop.svg"
+                            matTooltipClass="conv-dtls-custom-mat-tooltip" 
+                            matTooltip="{{ 'OperatingSystem' | translate }}"
+                            #tooltip="matTooltip" 
+                            matTooltipPosition='right' 
+                            matTooltipHideDelay="100" />
                         </span>
 
 
@@ -1838,8 +1902,11 @@
                         <!-- ---------------------------------------------------------------- -->
                         <span *ngIf="request?.ua_os.indexOf('Android') !== -1" class="os-wpr">
                           <img class="request_details___os_icon" src="assets/img/user_agent/android.svg"
-                            matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'OperatingSystem' | translate }}"
-                            #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100" />
+                            matTooltipClass="conv-dtls-custom-mat-tooltip" 
+                            matTooltip="{{ 'OperatingSystem' | translate }}"
+                            #tooltip="matTooltip" 
+                            matTooltipPosition='right' 
+                            matTooltipHideDelay="100" />
                         </span>
 
 
@@ -1848,8 +1915,11 @@
                         <!-- ---------------------------------------------------------------- -->
                         <span *ngIf="request?.ua_os.indexOf('Mac OS') !== -1 || request?.ua_os.indexOf('iOS') !== -1" class="os-wpr">
                           <img class="request_details___os_icon" src="assets/img/user_agent/apple.svg"
-                            matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'OperatingSystem' | translate }}"
-                            #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100" />
+                            matTooltipClass="conv-dtls-custom-mat-tooltip" 
+                            matTooltip="{{ 'OperatingSystem' | translate }}"
+                            #tooltip="matTooltip" 
+                            matTooltipPosition='right' 
+                            matTooltipHideDelay="100" />
                         </span>
 
 
@@ -1858,8 +1928,11 @@
                         <!--  ---------------------------------------------------------------- -->
                         <span *ngIf="request?.ua_os.indexOf('Windows') !== -1" class="os-wpr">
                           <img class="request_details___os_icon" src="assets/img/user_agent/windows.svg"
-                            matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'OperatingSystem' | translate }}"
-                            #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100" />
+                            matTooltipClass="conv-dtls-custom-mat-tooltip" 
+                            matTooltip="{{ 'OperatingSystem' | translate }}"
+                            #tooltip="matTooltip" 
+                            matTooltipPosition='right' 
+                            matTooltipHideDelay="100" />
                         </span>
 
 
@@ -1868,16 +1941,15 @@
                         <!--  ---------------------------------------------------------------- -->
                         <span *ngIf="request?.ua_os.indexOf('Ubuntu') !== -1" class="os-wpr">
                           <img class="request_details___os_icon" src="assets/img/user_agent/ubuntu.svg"
-                            matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'OperatingSystem' | translate }}"
-                            #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100" />
+                            matTooltipClass="conv-dtls-custom-mat-tooltip" 
+                            matTooltip="{{ 'OperatingSystem' | translate }}"
+                            #tooltip="matTooltip" 
+                            matTooltipPosition='right' 
+                            matTooltipHideDelay="100" />
                         </span>
 
-
                         <span style="position: relative;top: 1px;">
-
                           <span class="conv-details-sidebar-text">
-                            <!-- <span *ngIf="request?.ua_os !== 'undefined undefined'"> {{ request?.ua_os }} </span> -->
-                            <!-- <span *ngIf="request?.ua_os === 'undefined undefined'"> N/A </span> -->
                             <span>{{ request?.ua_os }}</span>
                           </span>
                         </span>
@@ -1899,8 +1971,11 @@
                         <span *ngIf="request?.channel?.name === 'telegram'" class="channel-wpr">
                           <span>
                             <img class="channel-icon" src="assets/img/channel_icons/telegram-logo.svg"
-                              matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'MessageChannel' | translate }}"
-                              #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100" />
+                              matTooltipClass="conv-dtls-custom-mat-tooltip" 
+                              matTooltip="{{ 'MessageChannel' | translate }}"
+                              #tooltip="matTooltip" 
+                              matTooltipPosition='right' 
+                              matTooltipHideDelay="100" />
                           </span>
 
                           <span style="position: relative;top: 0px;">
@@ -1917,8 +1992,11 @@
                         <span  *ngIf="request?.channel?.name === 'whatsapp'" class="channel-wpr">
                           <span>
                             <img class="channel-icon" src="assets/img/channel_icons/whatsapp-logo.svg"
-                              matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'MessageChannel' | translate }}"
-                              #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100" />
+                              matTooltipClass="conv-dtls-custom-mat-tooltip" 
+                              matTooltip="{{ 'MessageChannel' | translate }}"
+                              #tooltip="matTooltip" 
+                              matTooltipPosition='right' 
+                              matTooltipHideDelay="100" />
                           </span>
 
                           <span style="position: relative;top: 0px;">
@@ -1934,8 +2012,11 @@
                         <span *ngIf="request?.channel?.name === 'messenger'" class="channel-wpr">
                           <span>
                             <img class="channel-icon" src="assets/img/channel_icons/messenger-logo.svg"
-                              matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'MessageChannel' | translate }}"
-                              #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100" />
+                              matTooltipClass="conv-dtls-custom-mat-tooltip" 
+                              matTooltip="{{ 'MessageChannel' | translate }}"
+                              #tooltip="matTooltip" 
+                              matTooltipPosition='right' 
+                              matTooltipHideDelay="100" />
                           </span>
 
                           <span style="position: relative;top: 0px;">
@@ -1951,13 +2032,15 @@
                         <span *ngIf="request?.channel?.name === 'email'" class="channel-wpr">
                           <span>
                             <img class="channel-icon" src="assets/img/channel_icons/email-logo.svg"
-                              style="width: 17px; margin-left: 2px;" matTooltipClass="custom-mat-tooltip"
-                              matTooltip="{{ 'MessageChannel' | translate }}" #tooltip="matTooltip"
-                              matTooltipPosition='right' matTooltipHideDelay="100" />
+                              style="width: 17px; margin-left: 2px;" 
+                              matTooltipClass="conv-dtls-custom-mat-tooltip"
+                              matTooltip="{{ 'MessageChannel' | translate }}" 
+                              #tooltip="matTooltip"
+                              matTooltipPosition='right' 
+                              matTooltipHideDelay="100" />
                           </span>
 
                           <span style="position: relative;top: 0px;">
-
                             <span class="conv-details-sidebar-text">
                               <span>Email</span>
                             </span>
@@ -1970,13 +2053,15 @@
                         <span *ngIf="request?.channel?.name === 'form'" class="channel-wpr">
                           <span style="margin-left: 1px;">
                             <img class="channel-icon" src="assets/img/channel_icons/form-logo_v2.svg"
-                              matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'MessageChannel' | translate }}"
-                              #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100"
+                              matTooltipClass="conv-dtls-custom-mat-tooltip" 
+                              matTooltip="{{ 'MessageChannel' | translate }}"
+                              #tooltip="matTooltip" 
+                              matTooltipPosition='right' 
+                              matTooltipHideDelay="100"
                               style="width: 17px; margin-left:1px;" />
                           </span>
 
                           <span style="position: relative;top: 0px;">
-
                             <span class="conv-details-sidebar-text">
                               <span>Form</span>
                             </span>
@@ -2006,10 +2091,6 @@
                     </p>
                   </div>
                 </div> -->
-
-
-           
-  
 
                 <!--  ---------------------------------------------------------------- -->
                 <!--  @ Apps row -->
@@ -2141,7 +2222,7 @@
                                   <!-- IF IS A CLOSED REQUEST -->
                                   <!-- ------------------------------------- -->
                                   <span *ngIf="request?.status === 1000 && !request?.subject"
-                                    matTooltipClass="custom-mat-tooltip"
+                                    matTooltipClass="conv-dtls-custom-mat-tooltip"
                                     matTooltip="{{ 'RequestMsgsPage.RequestResolved' | translate }}"
                                     #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100"
                                     [matTooltipDisabled]="CHAT_PANEL_MODE">
@@ -2171,7 +2252,7 @@
                                   <!-- IF IS AN INTERNAL CLOSED REQUEST -->
                                   <!-- ------------------------------------- -->
                                   <span *ngIf="request?.status === 1000 && request?.subject"
-                                    matTooltipClass="custom-mat-tooltip"
+                                    matTooltipClass="conv-dtls-custom-mat-tooltip"
                                     matTooltip="{{ 'RequestMsgsPage.InternalRequestResolved' | translate }}"
                                     #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100"
                                     [matTooltipDisabled]="CHAT_PANEL_MODE">
@@ -2202,7 +2283,7 @@
                                   <!-- IF IS AN UNSERVED REQUEST -->
                                   <!-- ------------------------------------- -->
                                   <span *ngIf="request?.status === 100 && !request?.subject"
-                                    matTooltipClass="custom-mat-tooltip"
+                                    matTooltipClass="conv-dtls-custom-mat-tooltip"
                                     matTooltip="{{ 'RequestMsgsPage.RequestUnserved' | translate }}"
                                     #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100"
                                     [matTooltipDisabled]="CHAT_PANEL_MODE">
@@ -2235,9 +2316,11 @@
                                   <!-- IF IS AN INTERNAL UNSERVED REQUEST  -->
                                   <!-- ------------------------------------- -->
                                   <span *ngIf="request?.status === 100 && request?.subject"
-                                    matTooltipClass="custom-mat-tooltip"
+                                    matTooltipClass="conv-dtls-custom-mat-tooltip"
                                     matTooltip="{{ 'RequestMsgsPage.InternalRequestUnserved' | translate }}"
-                                    #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100"
+                                    #tooltip="matTooltip" 
+                                    matTooltipPosition='below' 
+                                    matTooltipHideDelay="100"
                                     [matTooltipDisabled]="CHAT_PANEL_MODE">
 
                                     <svg viewBox="0 0 58.1 53.9" style="width: 32px" xml:space="preserve">
@@ -2265,9 +2348,11 @@
                                   <!-- // SERVED REQUESTS AND CURRENT USER IS A PARTICIPANT -->
                                   <span
                                     *ngIf="request?.status === 200 && request?.currentUserIsJoined  && !request?.subject"
-                                    matTooltipClass="custom-mat-tooltip"
+                                    matTooltipClass="conv-dtls-custom-mat-tooltip"
                                     matTooltip="{{ 'RequestMsgsPage.ConversationAssignedToYou' | translate }}"
-                                    #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100"
+                                    #tooltip="matTooltip" 
+                                    matTooltipPosition='below' 
+                                    matTooltipHideDelay="100"
                                     [matTooltipDisabled]="CHAT_PANEL_MODE">
 
                                     <svg viewBox="0 0 58.1 53.9" style="width: 32px" xml:space="preserve">
@@ -2295,9 +2380,11 @@
                                   <!-- IF IS A INTERNAL SERVED REQUEST AND BETWEEN THE MEMBERS THERE IS THE CURRENT USER -->
                                   <span
                                     *ngIf="request?.status === 200 && request?.currentUserIsJoined  && request?.subject"
-                                    matTooltipClass="custom-mat-tooltip"
+                                    matTooltipClass="conv-dtls-custom-mat-tooltip"
                                     matTooltip="{{ 'RequestMsgsPage.TicketAssignedToYou' | translate }}"
-                                    #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100"
+                                    #tooltip="matTooltip" 
+                                    matTooltipPosition='below' 
+                                    matTooltipHideDelay="100"
                                     [matTooltipDisabled]="CHAT_PANEL_MODE">
 
                                     <svg viewBox="0 0 58.1 53.9" style="width: 32px" xml:space="preserve">
@@ -2325,7 +2412,7 @@
                                   <!-- // SERVED REQUESTS AND BETWEEN THE MEMBERS THERE ISN'T THE CURRENT USER-->
                                   <span
                                     *ngIf="request?.status === 200 && !request?.currentUserIsJoined && !request?.subject"
-                                    matTooltipClass="custom-mat-tooltip"
+                                    matTooltipClass="conv-dtls-custom-mat-tooltip"
                                     matTooltip="{{ 'RequestMsgsPage.RequestServedBy' | translate }}"
                                     #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100"
                                     [matTooltipDisabled]="CHAT_PANEL_MODE">
@@ -2358,7 +2445,7 @@
                                   <!-- IF IS AN INTERNAL SERVED REQUEST AND BETWEEN THE MEMBERS THERE ISN'T THE CURRENT USER -->
                                   <span
                                     *ngIf="request?.status === 200 && !request?.currentUserIsJoined && request?.subject"
-                                    matTooltipClass="custom-mat-tooltip"
+                                    matTooltipClass="conv-dtls-custom-mat-tooltip"
                                     matTooltip="{{ 'RequestMsgsPage.InternalRequestServedBy' | translate }}"
                                     #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100"
                                     [matTooltipDisabled]="CHAT_PANEL_MODE">
@@ -2511,9 +2598,11 @@
                                 <!-- <i class="material-icons" style="vertical-align: middle"> group  </i>  -->
                                 <span style="vertical-align: middle">
                                   <span class="followers-label"> Followers </span>
-                                  <span matTooltipClass="custom-mat-tooltip"
-                                    matTooltip="{{ 'AddTeammatesAsFollowers' | translate }}" #tooltip="matTooltip"
-                                    matTooltipPosition='right' matTooltipHideDelay="100">
+                                  <span matTooltipClass="conv-dtls-custom-mat-tooltip"
+                                    matTooltip="{{ 'AddTeammatesAsFollowers' | translate }}" 
+                                    #tooltip="matTooltip"
+                                    matTooltipPosition='right' 
+                                    matTooltipHideDelay="100">
                                     <i class="material-icons"
                                       style="position: relative;top: 6px; font-size:16px; color:#7695a5;vertical-align: middle; cursor:pointer">
                                       help_outline
@@ -2546,9 +2635,11 @@
                                     <span *ngIf="request?.smartAssignment === true" class="convert-to-offline-btn"
                                       (click)="smartAssignmentOff()">
                                       Convert to offline
-                                      <span matTooltipClass="custom-mat-tooltip"
+                                      <span matTooltipClass="conv-dtls-custom-mat-tooltip"
                                         matTooltip="Select this option to disable automatic reassignment for this conversation. It will be treated like a ticket that will allow you to take his time to reply"
-                                        #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
+                                        #tooltip="matTooltip" 
+                                        matTooltipPosition='right' 
+                                        matTooltipHideDelay="100">
                                         <i class="material-icons"
                                           style=" font-size:16px; color:#7695a5;vertical-align: middle; cursor:pointer;position: relative;top: -2px;">
                                           help_outline
@@ -2559,9 +2650,11 @@
                                     <span *ngIf="request?.smartAssignment === false" class="convert-to-offline-btn"
                                       (click)="smartAssignmentOn()">
                                       Convert to online
-                                      <span matTooltipClass="custom-mat-tooltip"
+                                      <span matTooltipClass="conv-dtls-custom-mat-tooltip"
                                         matTooltip="Select this option to enable automatic reassignment for this conversation"
-                                        #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
+                                        #tooltip="matTooltip" 
+                                        matTooltipPosition='right' 
+                                        matTooltipHideDelay="100">
                                         <i class="material-icons"
                                           style=" font-size:16px; color:#7695a5;vertical-align: middle; cursor:pointer;position: relative;top: -2px;">
                                           help_outline
@@ -2574,17 +2667,12 @@
                               </div>
                             </div>
                           </div>
-
-
-
                         </div>
                       </div>
                     </div>
                   </div>
                 </div> <!-- ./ Ticket accordion -->
-
-
-
+                
 
                 <!-- ----------------------------------------------------------------------------- -->
                 <!-- Agents -->
@@ -2635,7 +2723,7 @@
                             class="teammate-img-conv-detail"
                             src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?._id}}%2Fthumb_photo.jpg?alt=media"
                             onerror="this.src='assets/img/no_image_user.png'"
-                            matTooltipClass="custom-mat-tooltip-in-conv-detail-sidebar"
+                            matTooltipClass="conv-dtls-custom-mat-tooltip"
                             matTooltip="{{'ViewProfile' | translate }}" #tooltip="matTooltip" matTooltipPosition='above'
                             matTooltipHideDelay="100" (click)="goToMemberProfile( agent?._id )" />
 
@@ -2646,9 +2734,12 @@
                             class="teammate-img-conv-detail"
                             src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                             onerror="this.src='assets/img/no_image_user.png'"
-                            matTooltipClass="custom-mat-tooltip-in-conv-detail-sidebar"
-                            matTooltip="{{'ViewProfile' | translate }}" #tooltip="matTooltip" matTooltipPosition='above'
-                            matTooltipHideDelay="100" (click)="goToMemberProfile( agent?._id )" />
+                            matTooltipClass="conv-dtls-custom-mat-tooltip"
+                            matTooltip="{{'ViewProfile' | translate }}" 
+                            #tooltip="matTooltip" 
+                            matTooltipPosition='above'
+                            matTooltipHideDelay="100" 
+                            (click)="goToMemberProfile( agent?._id )" />
 
 
 
@@ -2667,9 +2758,12 @@
                             class="teammate-img-conv-detail"
                             src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?._id | slice:4}}%2Fthumb_photo.jpg?alt=media"
                             onerror="this.src='assets/img/avatar_bot_tiledesk.svg'"
-                            matTooltipClass="custom-mat-tooltip-in-conv-detail-sidebar"
-                            matTooltip="{{'ViewProfile' | translate }}" #tooltip="matTooltip" matTooltipPosition='above'
-                            matTooltipHideDelay="100" (click)="goToMemberProfile( agent?._id )" />
+                            matTooltipClass="conv-dtls-custom-mat-tooltip"
+                            matTooltip="{{'ViewProfile' | translate }}" 
+                            #tooltip="matTooltip" 
+                            matTooltipPosition='above'
+                            matTooltipHideDelay="100" 
+                            (click)="goToMemberProfile( agent?._id )" />
 
                           <!-- --------------------------------------- -->
                           <!-- Usecase  Native (bot) -->
@@ -2678,16 +2772,19 @@
                             class="teammate-img-conv-detail"
                             src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?._id | slice:4}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                             onerror="this.src='assets/img/avatar_bot_tiledesk.svg'"
-                            matTooltipClass="custom-mat-tooltip-in-conv-detail-sidebar"
-                            matTooltip="{{'ViewProfile' | translate }}" #tooltip="matTooltip" matTooltipPosition='above'
-                            matTooltipHideDelay="100" (click)="goToMemberProfile( agent?._id )" />
+                            matTooltipClass="conv-dtls-custom-mat-tooltip"
+                            matTooltip="{{'ViewProfile' | translate }}" 
+                            #tooltip="matTooltip" 
+                            matTooltipPosition='above'
+                            matTooltipHideDelay="100" 
+                            (click)="goToMemberProfile( agent?._id )" />
 
                           <!-- --------------------------------------- -->
                           <!-- Name of the bot -->
                           <!-- --------------------------------------- -->
                           <span *ngIf="agent.isBot === true" class="agent-fullname-has-image-and-chat-with"
                             style="font-size:12px; font-weight: 400"
-                            matTooltipClass="custom-mat-tooltip-in-conv-detail-sidebar"
+                            matTooltipClass="conv-dtls-custom-mat-tooltip"
                             matTooltip="{{'ViewProfile' | translate }}" #tooltip="matTooltip" matTooltipPosition='above'
                             matTooltipHideDelay="100" (click)="goToMemberProfile( agent?._id )">
                             {{agent?.firstname}} {{agent?.lastname}} (bot)
@@ -2700,7 +2797,7 @@
                           <span *ngIf="agent.hasImage" class="agent-fullname-has-image-and-chat-with"
                             [ngClass]="{'current_user_is_agent' : agent?._id === currentUserID}"
                             style="font-size:12px; font-weight: 400">
-                            <span matTooltipClass="custom-mat-tooltip-in-conv-detail-sidebar"
+                            <span matTooltipClass="conv-dtls-custom-mat-tooltip"
                               matTooltip="{{'ViewProfile' | translate }}" #tooltip="matTooltip"
                               matTooltipPosition='above' matTooltipHideDelay="100"
                               (click)="goToMemberProfile( agent?._id )">
@@ -2710,7 +2807,7 @@
                             <i class="material-icons chat-with-agent-ws-request-detail"
                               *ngIf="agent.isBot === false && CHAT_PANEL_MODE === false"
                               (click)="chatWithAgent( agent?._id, agent?.firstname, agent?.lastname)"
-                              matTooltipClass="custom-mat-tooltip-in-conv-detail-sidebar"
+                              matTooltipClass="conv-dtls-custom-mat-tooltip"
                               matTooltip="{{'ChatWith' | translate }}  {{agent?.firstname}} {{agent?.lastname}}"
                               #tooltip="matTooltip" matTooltipPosition='above' matTooltipHideDelay="100">
                               chat
@@ -2725,27 +2822,34 @@
                         <!-- --------------------------------------- -->
                         <div *ngIf="agent.isBot === false && !agent.hasImage" class="altenative-avatar-conv-detail-wpr"
                           [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + agent?.userfillColour + ')'}">
-                          <div matTooltipClass="custom-mat-tooltip-in-conv-detail-sidebar"
-                            matTooltip="{{'ViewProfile' | translate }}" #tooltip="matTooltip" matTooltipPosition='above'
-                            matTooltipHideDelay="100" class="altenative-avatar-conv-detail"
+                          <div matTooltipClass="conv-dtls-custom-mat-tooltipr"
+                            matTooltip="{{'ViewProfile' | translate }}" 
+                            #tooltip="matTooltip" 
+                            matTooltipPosition='above'
+                            matTooltipHideDelay="100" 
+                            class="altenative-avatar-conv-detail"
                             (click)="goToMemberProfile( agent?._id )" style="cursor:pointer">
                             {{ agent?.userFullname }}
                           </div>
                           <span class="agent-fullname-not-has-image-and-chat-with"
                             [ngClass]="{'current_user_is_agent' : agent?._id === currentUserID}"
                             style="font-size:12px; font-weight: 400">
-                            <span matTooltipClass="custom-mat-tooltip-in-conv-detail-sidebar"
-                              matTooltip="{{'ViewProfile' | translate }}" #tooltip="matTooltip"
-                              matTooltipPosition='above' matTooltipHideDelay="100" style="cursor:pointer"
+                            <span matTooltipClass="conv-dtls-custom-mat-tooltip"
+                              matTooltip="{{'ViewProfile' | translate }}" 
+                              #tooltip="matTooltip"
+                              matTooltipPosition='above'
+                              matTooltipHideDelay="100" style="cursor:pointer"
                               (click)="goToMemberProfile( agent?._id )">
                               {{agent?.firstname}} {{agent?.lastname}}
                             </span>
                             <i class="material-icons chat-with-agent-ws-request-detail"
                               *ngIf="agent.isBot === false && CHAT_PANEL_MODE === false && !agent.hasImage"
                               (click)="chatWithAgent( agent?._id, agent?.firstname, agent?.lastname)"
-                              matTooltipClass="custom-mat-tooltip-in-conv-detail-sidebar"
+                              matTooltipClass="conv-dtls-custom-mat-tooltip"
                               matTooltip="{{'ChatWith' | translate }}  {{agent?.firstname}} {{agent?.lastname}}"
-                              #tooltip="matTooltip" matTooltipPosition='above' matTooltipHideDelay="100">
+                              #tooltip="matTooltip" 
+                              matTooltipPosition='above'
+                              matTooltipHideDelay="100">
                               chat
                             </i>
                           </span>
@@ -4025,7 +4129,7 @@
             </div> -->
           </div>
 
-          <div class="modal-footer custom__modal__footer">
+          <div class="modal-footer transcript__modal__footer">
             <div style="text-align: center; margin-bottom: 15px;">
 
               <button style="padding-left: 24px; padding-right: 24px;" type="button" class="btn btn-white"

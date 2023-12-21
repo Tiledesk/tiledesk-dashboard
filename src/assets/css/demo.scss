@@ -958,6 +958,7 @@ my-app .main-panel .main-content .card {
 
 .swal-size-sm {
   width: 260px !important;
+  background-color: var(--card-background-color);
 
   /* // .swal-icon {
   //   width: 60px !important;
@@ -972,12 +973,17 @@ my-app .main-panel .main-content .card {
 .swal-size-sm > .swal-title {
   font-size: 18px !important;
   padding-top: 0px !important;
+  color: var(--text-color);
 }
 
 .swal-size-sm > .swal-text {
   font-size: 14px;
   text-align: center;
+  color: var(--secondary-text-color);
 }
+
+
+
 
 /*  used for the message of type info in the chat section of the conversation detail page */
 .type-info-msg-text > p {
@@ -1726,3 +1732,46 @@ appdashboard-app-store > div > div > div > div > .card-app-store {
   color: $plan-c-color;
   background: $plan-c-background;
 }
+
+// conv details select
+.ng-select.conv-details .ng-select-container { 
+  background-color: var(--texarea-select-background);
+  color: var(--text-color);
+  border: var(--texarea-select-border);
+}
+
+// Shared close button
+.close--round-btn {
+  border: none !important;
+  float: right !important;
+  border-radius: 50%;
+  // color: rgb(235, 234, 235);
+  height: 36px;
+  width: 36px;
+  background-color: var(--btn-background-color)
+}
+
+.close--round-btn:hover>span {
+  // color: rgba(60, 72, 88, .6) !important;
+  opacity: .6;
+}
+
+.close--round-btn>span {
+  font-size: 31px;
+  color: var(--btn-color) !important;
+}
+
+::ng-deep .conv-dtls-custom-mat-tooltip {
+  background-color: var(--dark-background);
+  color: var(--text-color-on-dark);
+  font-size: 12px !important;
+  border-radius: 2px !important;
+  font-family: var(--header-font-family);
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+  white-space: pre-line !important;
+  text-align: center !important;
+  line-height: 17px !important;
+}
+
+

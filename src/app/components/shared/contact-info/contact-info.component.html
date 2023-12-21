@@ -12,7 +12,7 @@
           <svg xmlns="http://www.w3.org/2000/svg" height="22px" viewBox="0 0 24 24"
             style="min-width: 22px; min-height: 22px;" 
             fill="none" 
-            matTooltipClass="custom-mat-tooltip"
+            matTooltipClass="conv-dtls-custom-mat-tooltip"
             matTooltip="{{ 'ContactEmail' | translate }}" 
             #tooltip="matTooltip" 
             matTooltipPosition='right'
@@ -73,7 +73,7 @@
       <div class="contact-row input-row">
         <span>
           <!-- <svg xmlns="http://www.w3.org/2000/svg" height="22px" viewBox="0 0 24 24"
-            style="min-width: 22px; min-height: 22px;" fill="none" matTooltipClass="custom-mat-tooltip"
+            style="min-width: 22px; min-height: 22px;" fill="none" matTooltipClass="conv-dtls-custom-mat-tooltip"
             matTooltip="{{ 'PhoneNumber' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
             matTooltipHideDelay="100">
             <path d="M0 0h24v24H0V0z" fill="none" />
@@ -81,8 +81,11 @@
               d="M6.54 5c.06.89.21 1.76.45 2.59l-1.2 1.2c-.41-1.2-.67-2.47-.76-3.79h1.51m9.86 12.02c.85.24 1.72.39 2.6.45v1.49c-1.32-.09-2.59-.35-3.8-.75l1.2-1.19M7.5 3H4c-.55 0-1 .45-1 1 0 9.39 7.61 17 17 17 .55 0 1-.45 1-1v-3.49c0-.55-.45-1-1-1-1.24 0-2.45-.2-3.57-.57-.1-.04-.21-.05-.31-.05-.26 0-.51.1-.71.29l-2.2 2.2c-2.83-1.45-5.15-3.76-6.59-6.59l2.2-2.2c.28-.28.36-.67.25-1.02C8.7 6.45 8.5 5.25 8.5 4c0-.55-.45-1-1-1z" />
           </svg> -->
           <svg xmlns="http://www.w3.org/2000/svg" height="22px" viewBox="0 0 24 24"
-            style="min-width: 22px; min-height: 22px;" fill="none" matTooltipClass="custom-mat-tooltip"
-            matTooltip="{{ 'PhoneNumber' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
+            style="min-width: 22px; min-height: 22px;" fill="none" 
+            matTooltipClass="conv-dtls-custom-mat-tooltip"
+            matTooltip="{{ 'PhoneNumber' | translate }}" 
+            #tooltip="matTooltip" 
+            matTooltipPosition='right'
             matTooltipHideDelay="100">
             <path d="M0 0h24v24H0V0z" fill="none" />
             <path
@@ -130,8 +133,10 @@
       <div class="contact-row input-row">
         <span>
           <svg xmlns="http://www.w3.org/2000/svg" height="22px" viewBox="0 0 24 24"
-            style="min-width: 22px; min-height: 22px;" fill="none" matTooltipClass="custom-mat-tooltip"
-            matTooltip="{{ 'Company' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
+            style="min-width: 22px; min-height: 22px;" fill="none" 
+            matTooltipClass="conv-dtls-custom-mat-tooltip"
+            matTooltip="{{ 'Company' | translate }}" #tooltip="matTooltip" 
+            matTooltipPosition='right'
             matTooltipHideDelay="100">
             <path d="M0 0h24v24H0V0z" fill="none" />
             <path
@@ -178,8 +183,11 @@
         <span>
 
           <svg xmlns="http://www.w3.org/2000/svg" height="22px" viewBox="0 0 24 24" fill="none"
-            style="min-width: 22px; min-height: 22px;" matTooltipClass="custom-mat-tooltip"
-            matTooltip="{{'Address' | translate}}" #tooltip="matTooltip" matTooltipPosition='right'
+            style="min-width: 22px; min-height: 22px;" 
+            matTooltipClass="conv-dtls-custom-mat-tooltip"
+            matTooltip="{{'Address' | translate}}" 
+            #tooltip="matTooltip" 
+            matTooltipPosition='right'
             matTooltipHideDelay="100">
             <path d="M0 0h24v24H0V0z" fill="none" />
             <path
@@ -381,8 +389,11 @@
           <!-- ----------------------------------------------------- -->
           <div class="label-and-input-wpr">
             <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="22px" viewBox="0 0 24 24"
-              style="min-width: 22px; min-height: 22px;" matTooltipClass="custom-mat-tooltip"
-              matTooltip="{{property.label}}" #tooltip="matTooltip" matTooltipPosition='right'
+              style="min-width: 22px; min-height: 22px;" 
+              matTooltipClass="conv-dtls-custom-mat-tooltip"
+              matTooltip="{{property.label}}" 
+              #tooltip="matTooltip" 
+              matTooltipPosition='right'
               matTooltipHideDelay="100">
               <g>
                 <rect fill="none" height="24" width="24" />
@@ -427,7 +438,13 @@
         <span style="width: 22px;height: 22px;">
 
           <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="22px" viewBox="0 0 24 24"
-            style="min-width: 22px; min-height: 22px;">
+            style="min-width: 22px; min-height: 22px;"
+            style="min-width: 22px; min-height: 22px;" 
+            matTooltipClass="conv-dtls-custom-mat-tooltip"
+            matTooltip="{{'AddContactProperty'| translate}}" 
+            #tooltip="matTooltip" 
+            matTooltipPosition='right'
+            matTooltipHideDelay="100">
             <g>
               <rect fill="none" height="24" width="24" />
             </g>
@@ -446,16 +463,19 @@
         <div class="ng-select-lead-properties-wpr" style="width: 100%;">
 
           <!-- contactsCustomProperties -->
-          <ng-select [items]="contactPropertiesToSelect" style="top: 0px;padding-right: 2px;" class="ng-select-tags"
-            bindLabel="label" bindValue="label" placeholder="{{'AddContactProperty'| translate}}"
-            [(ngModel)]="contactProperty" (change)="onSelectCustomProperty($event)">
+          <ng-select [items]="contactPropertiesToSelect" 
+            style="top: 0px;padding-right: 2px;" 
+            class="ng-select-tags"
+            bindLabel="label" 
+            bindValue="label" 
+            placeholder="{{'AddContactProperty'| translate}}"
+            [(ngModel)]="contactProperty" 
+            (change)="onSelectCustomProperty($event)">
 
             <ng-template ng-label-tmp let-item="item">
-              <!-- <img height="15" width="15" [src]="item.avatar" /> -->
               {{item.label}}
             </ng-template>
             <ng-template ng-option-tmp let-item="item" let-index="index">
-              <!-- <img height="15" width="15" [src]="item.avatar" /> -->
               {{item.label}}
             </ng-template>
             <ng-template ng-footer-tmp>
@@ -479,8 +499,11 @@
       <div class="tag--row  lead-tag-content-wpr">
         <span>
           <svg class="tag--icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" height="22px"
-            style="min-width: 22px; min-height: 22px;" matTooltipClass="custom-mat-tooltip"
-            matTooltip="{{ 'Tags.LeadTags' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
+            style="min-width: 22px; min-height: 22px;" 
+            matTooltipClass="conv-dtls-custom-mat-tooltip"
+            matTooltip="{{ 'Tags.LeadTags' | translate }}" 
+            #tooltip="matTooltip" 
+            matTooltipPosition='right'
             matTooltipHideDelay="100">
             <path
               d="M0 80V229.5c0 17 6.7 33.3 18.7 45.3l176 176c25 25 65.5 25 90.5 0L418.7 317.3c25-25 25-65.5 0-90.5l-176-176c-12-12-28.3-18.7-45.3-18.7H48C21.5 32 0 53.5 0 80zm112 32a32 32 0 1 1 0 64 32 32 0 1 1 0-64z" />
