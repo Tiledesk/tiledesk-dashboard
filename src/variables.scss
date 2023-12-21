@@ -160,6 +160,8 @@
      --btn-background-color: #e4e6eb;
      --btn-color: rgb(60, 72, 88);
      --btn-hover-background-color: #cfd2d7;
+     --tooltip-bckground: #2d323e;
+     --tooltip-color: white;
 
  }
 
@@ -326,5 +328,7 @@
      --btn-background-color: #e4e6eb;
      --btn-color: rgb(60, 72, 88);
      --btn-hover-background-color: #cfd2d7;
+     --tooltip-bckground: rgb(151, 163, 182);
+     --tooltip-color: var(--basic-blue-03);
 
  }
