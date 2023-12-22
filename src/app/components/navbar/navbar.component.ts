@@ -1664,7 +1664,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     }
   }
 
-  changeThemeColor() {
-    this.document.body.classList.add('dark');
-  }
+  // changeThemeColor() {
+  //   this.document.body.classList.add('dark');
+  // }
 }
