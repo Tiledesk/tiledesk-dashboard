@@ -1,7 +1,7 @@
 @import "../../assets/sass/md/_variables.scss";
 
 .card-content {
-    font-family:'Poppins','Roboto', 'Arial', sans-serif !important;
+    font-family: 'Poppins', 'Roboto', 'Arial', sans-serif !important;
 }
 
 label {
@@ -22,8 +22,8 @@ p {
 }
 
 .header {
-    display: flex; 
-    justify-content: space-between; 
+    display: flex;
+    justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
     align-items: flex-end;
@@ -32,6 +32,24 @@ p {
         font-weight: 500;
         font-size: 22px;
     }
+}
+
+.no-automations {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 80px;
+
+    .material-icons-outlined {
+        font-size: 60px;
+        color: #3c48588c;
+        margin-bottom: 20px;
+    }
+
+    p {
+        font-size: 18px;
+    }
+
 }
 
 .automation-option {
@@ -206,7 +224,7 @@ p {
 // }
 
 // .reload-button {
-    
+
 //     margin-left: 12px;
 //     font-size: 12px;
 //     background-color: transparent;
@@ -264,22 +282,22 @@ p {
     .complete {
         color: #70bbe7;
         background-color: white;
-    border-radius: 12px;
-    padding: 4px;
+        border-radius: 12px;
+        padding: 4px;
     }
 
     .pending {
         color: #cbcbcb;
         background-color: white;
-    border-radius: 12px;
-    padding: 4px;
+        border-radius: 12px;
+        padding: 4px;
     }
 
     .error {
         color: #bd1515;
         background-color: white;
-    border-radius: 12px;
-    padding: 4px;
+        border-radius: 12px;
+        padding: 4px;
     }
 }
 
