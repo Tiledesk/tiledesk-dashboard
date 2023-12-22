@@ -92,7 +92,7 @@ export class CreateProjectComponent extends WidgetSetUpBaseComponent implements 
     if (this.router.url.startsWith('/create-project-itw/')) {
       
       this.CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION = true
-      console.log('[WIZARD - CREATE-PRJCT] CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION ', this.CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION)
+      // console.log('[WIZARD - CREATE-PRJCT] CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION ', this.CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION)
       this.browser_lang = this.translate.getBrowserLang();
       
       if (tranlatedLanguage.includes(this.browser_lang)) {
@@ -141,7 +141,7 @@ export class CreateProjectComponent extends WidgetSetUpBaseComponent implements 
 
     this.projectService.createProject(this.project_name, 'create-project')
       .subscribe((project) => {
-        console.log('[WIZARD - CREATE-PRJCT] POST DATA PROJECT RESPONSE ', project);
+        // console.log('[WIZARD - CREATE-PRJCT] POST DATA PROJECT RESPONSE ', project);
         if (project) {
           this.new_project = project
           // WHEN THE USER SELECT A PROJECT ITS ID IS SEND IN THE PROJECT SERVICE THET PUBLISHES IT
@@ -340,7 +340,7 @@ export class CreateProjectComponent extends WidgetSetUpBaseComponent implements 
     // this.faqKbService.getTemplates().subscribe((res: any) => {
     this.faqKbService.getChatbotTemplateById(botid).subscribe((res: any) => {
       if (res) {
-        console.log('[WIZARD - CREATE-PRJCT] GET TEMPLATES - RES ', res)
+        // console.log('[WIZARD - CREATE-PRJCT] GET TEMPLATES - RES ', res)
        
         this.template = res;
         this.botname = res['name']
@@ -350,7 +350,7 @@ export class CreateProjectComponent extends WidgetSetUpBaseComponent implements 
         // }
         // if (  this.templates && this.templates['name']) {
         // this.botname = this.templates['name']
-        // // console.log('[INSTALL-TEMPLATE] GET TEMPLATES - SELECTED TEMPALTES >  botname', this.botname)
+        // console.log('[INSTALL-TEMPLATE] GET TEMPLATES - SELECTED TEMPALTES >  botname', this.botname)
         // }
 
         if (!isDevMode()) {
@@ -406,7 +406,7 @@ export class CreateProjectComponent extends WidgetSetUpBaseComponent implements 
 
   forkTemplate() {
     this.faqKbService.installTemplate(this.template._id, this.id_project, true, this.template._id).subscribe((res: any) => {
-      console.log('[INSTALL-TEMPLATE] - FORK TEMPLATE RES', res);
+      // console.log('[INSTALL-TEMPLATE] - FORK TEMPLATE RES', res);
       this.botid = res.bot_id
 
     }, (error) => {
@@ -470,7 +470,7 @@ export class CreateProjectComponent extends WidgetSetUpBaseComponent implements 
 
   getFaqKbById(botid) {
     this.faqKbService.getFaqKbById(botid).subscribe((faqkb: any) => {
-      console.log('[INSTALL-TEMPLATE] GET FAQ-KB (DETAILS) BY ID  ', faqkb);
+      // console.log('[INSTALL-TEMPLATE] GET FAQ-KB (DETAILS) BY ID  ', faqkb);
 
       this.botLocalDbService.saveBotsInStorage(botid, faqkb);
       this.goToBotDetails(faqkb)

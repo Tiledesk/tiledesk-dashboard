@@ -176,7 +176,7 @@ export class FaqKbService {
     // / (dovrebbe funzionare anche con POST ../PROJECT_ID/bots/fork/ID_FAQ_FB/)
     // const url = this.SERVER_BASE_PATH + "635b97cc7d7275001a2ab3e0/bots/fork/" + botid;
     const url = this.SERVER_BASE_PATH + projectid + "/faq_kb/fork/" + botid + "?public=" + ispublic + "&projectid=" + projectid;
-    console.log('[BOT-CREATE][FAQ-KB.SERV] - FORK - URL ', url);
+    // console.log('[BOT-CREATE][FAQ-KB.SERV] - FORK - URL ', url);
 
     return this._httpClient
       .post(url, null, httpOptions)
@@ -272,7 +272,7 @@ export class FaqKbService {
     };
 
     let url = this.FAQKB_URL + id;
-    console.log('[FAQ-KB.SERV] - GET FAQ-KB BY ID - URL', url);
+    // console.log('[FAQ-KB.SERV] - GET FAQ-KB BY ID - URL', url);
     return this._httpClient
       .get<FaqKb[]>(url, httpOptions)
   }
@@ -286,10 +286,10 @@ export class FaqKbService {
       })
     };
 
-    console.log('[FAQ-KB.SERV] - GET FAQ-KB BY ID -  this.SERVER_BASE_PATH',  this.SERVER_BASE_PATH);
+    // console.log('[FAQ-KB.SERV] - GET FAQ-KB BY ID -  this.SERVER_BASE_PATH',  this.SERVER_BASE_PATH);
     let url = this.SERVER_BASE_PATH + projectid + '/faq_kb/' + botid
     // let url = this.FAQKB_URL + botid;
-    console.log('[FAQ-KB.SERV] - GET FAQ-KB BY ID - URL', url);
+    // console.log('[FAQ-KB.SERV] - GET FAQ-KB BY ID - URL', url);
     return this._httpClient
       .get<FaqKb[]>(url, httpOptions)
   }

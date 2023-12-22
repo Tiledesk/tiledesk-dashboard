@@ -71,12 +71,12 @@ export class GetStartChatbotForkComponent implements OnInit {
   }
 
   getLoggedUser() {
-    console.log('[GET START CHATBOT FORK] getLoggedUser called') 
+    // console.log('[GET START CHATBOT FORK] getLoggedUser called') 
     this.auth.user_bs
       .subscribe((user) => {
         if (user) {
           this.user = user;
-          console.log('[GET START CHATBOT FORK]  - user ', this.user)
+          // console.log('[GET START CHATBOT FORK]  - user ', this.user)
         }
       });
   }
@@ -104,12 +104,12 @@ export class GetStartChatbotForkComponent implements OnInit {
     // console.log('[GET START CHATBOT FORK] storedRoute ', storedRoute)
 
     const storedRoute = decodeURIComponent(this.router.url);
-    console.log('[GET START CHATBOT FORK] _storedRoute ', storedRoute)
+    // console.log('[GET START CHATBOT FORK] _storedRoute ', storedRoute)
     if (storedRoute) {
       // storedRoute.split('/')
       let storedRouteSegments = storedRoute.split('/')
 
-      console.log('[GET START CHATBOT FORK] storedRouteSegment ', storedRouteSegments)
+      // console.log('[GET START CHATBOT FORK] storedRouteSegment ', storedRouteSegments)
       let secondStoredRouteSegment = storedRouteSegments[2]
 
       // this.logger.log('[GET START CHATBOT FORK] secondStoredRouteSegment ', secondStoredRouteSegment)
@@ -120,7 +120,7 @@ export class GetStartChatbotForkComponent implements OnInit {
 
         // console.log('[GET START CHATBOT FORK] secondStoredRouteSegments ', secondStoredRouteSegments)
         this.botid = secondStoredRouteSegments[0]
-        console.log('[GET START CHATBOT FORK] botid ', this.botid)
+        // console.log('[GET START CHATBOT FORK] botid ', this.botid)
         const _templateNameOnSite = secondStoredRouteSegments[1];
         try {
           this.templateNameOnSite = decodeURI(_templateNameOnSite)
@@ -135,7 +135,7 @@ export class GetStartChatbotForkComponent implements OnInit {
       // console.log('[GET START CHATBOT FORK] GET-CHATBOT-TEMPLATE-BY-ID - RES ', res)
       if (res) {
         this.selectedTemplate = res
-        console.log('[GET START CHATBOT FORK] GET-CHATBOT-TEMPLATE-BY-ID - selectedTemplate ', this.selectedTemplate)
+        // console.log('[GET START CHATBOT FORK] GET-CHATBOT-TEMPLATE-BY-ID - selectedTemplate ', this.selectedTemplate)
         this.botname = res['name']
 
         if (this.selectedTemplate && this.selectedTemplate['bigImage']) {
@@ -157,27 +157,27 @@ export class GetStartChatbotForkComponent implements OnInit {
 
   getProjects(projectid?: string) {
     this.projectService.getProjects().subscribe((projects: any) => {
-      console.log('[GET START CHATBOT FORK] - GET PROJECTS ', projects);
+      // console.log('[GET START CHATBOT FORK] - GET PROJECTS ', projects);
       if (projects) {
         this.projects = projects;
         if (this.projects && this.projects.length === 1) {
-          console.log('[GET START CHATBOT FORK] USE-CASE PROJECTS NO = 1')
+          // console.log('[GET START CHATBOT FORK] USE-CASE PROJECTS NO = 1')
           this.projectName = this.projects[0].id_project.name
           this.selectedProjectId = this.projects[0].id_project._id
-          console.log('[GET START CHATBOT FORK] this.project ', this.selectedProjectId)
+          // console.log('[GET START CHATBOT FORK] this.project ', this.selectedProjectId)
           this.project = this.projects[0].id_project;
-          console.log('[GET START CHATBOT FORK] this.project ', this.project)
+          // console.log('[GET START CHATBOT FORK] this.project ', this.project)
           this.buildPlanName(this.project)
           this.trackGroup(this.selectedProjectId)
         }
         if (projectid) {
-          console.log('[GET START CHATBOT FORK] USE-CASE PROJECTS NO > 1' , projectid)
+          // console.log('[GET START CHATBOT FORK] USE-CASE PROJECTS NO > 1' , projectid)
           if (this.projects && this.projects.length > 1) {
-            console.log('[GET START CHATBOT FORK] USE-CASE PROJECTS NO > 1')
+            // console.log('[GET START CHATBOT FORK] USE-CASE PROJECTS NO > 1')
             projects.forEach(project => {
               if (project.id_project.id === projectid) {
                 this.project = project.id_project
-                console.log('[GET START CHATBOT FORK] this.project ', this.project)
+                // console.log('[GET START CHATBOT FORK] this.project ', this.project)
                 this.projectPlan = project.id_project.profile.name
                 this.projectName = project.id_project.name;
                 this.selectedProjectId = projectid
@@ -239,10 +239,10 @@ export class GetStartChatbotForkComponent implements OnInit {
 
 
   forkTemplate() {
-    console.log('[GET START CHATBOT FORK] selectedTemplate ',this.selectedTemplate._id)
-    console.log('[GET START CHATBOT FORK] selectedProjectId ',this.selectedProjectId)
+    // console.log('[GET START CHATBOT FORK] selectedTemplate ',this.selectedTemplate._id)
+    // console.log('[GET START CHATBOT FORK] selectedProjectId ',this.selectedProjectId)
     this.faqKbService.installTemplate(this.selectedTemplate._id, this.selectedProjectId, true, this.selectedTemplate._id).subscribe((res: any) => {
-      console.log('[GET START CHATBOT FORK] - FORK TEMPLATE RES', res);
+      // console.log('[GET START CHATBOT FORK] - FORK TEMPLATE RES', res);
       this.botid = res.bot_id
 
     }, (error) => {
@@ -262,7 +262,7 @@ export class GetStartChatbotForkComponent implements OnInit {
 
   getFaqKbById(botid) {
     this.faqKbService.getFaqKbByIdAndProjectId(this.selectedProjectId , botid).subscribe((faqkb: any) => {
-      console.log('[GET START CHATBOT FORK] GET FAQ-KB (DETAILS) BY ID  ', faqkb);
+      // console.log('[GET START CHATBOT FORK] GET FAQ-KB (DETAILS) BY ID  ', faqkb);
 
       this.botLocalDbService.saveBotsInStorage(botid, faqkb);
       this.goToBotDetails(faqkb)
@@ -292,9 +292,9 @@ export class GetStartChatbotForkComponent implements OnInit {
           this.logger.error('Wizard Get start chatbot fork page error', err);
         }
         if (!this.user) {
-            console.log('[GET START CHATBOT FORK] this.user',  this.user)
+            // console.log('[GET START CHATBOT FORK] this.user',  this.user)
             this.user = localStorage.getItem('user');
-            console.log('[GET START CHATBOT FORK] stored user',  this.user)
+            // console.log('[GET START CHATBOT FORK] stored user',  this.user)
         }
 
         let userFullname = ''
@@ -394,7 +394,7 @@ export class GetStartChatbotForkComponent implements OnInit {
   buildPlanName(project) {
     if (project.profile.extra3) {
       this.appSumoProfile = APP_SUMO_PLAN_NAME[project.profile.extra3]
-      console.log('[GET START CHATBOT FORK] Find Current Project appSumoProfile ', this.appSumoProfile)
+      // console.log('[GET START CHATBOT FORK] Find Current Project appSumoProfile ', this.appSumoProfile)
     }
 
     if (project.profile.type === 'free') {
