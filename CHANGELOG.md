@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.4.88-rc1
+- Displays "No Automation" message when there are no logs
+- Improves the "Get template" onboarding
+
 ### 2.4.87
 - Adds Automations Logs page
 
