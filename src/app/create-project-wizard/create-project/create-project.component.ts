@@ -9,9 +9,14 @@ import { Location } from '@angular/common';
 import { BrandService } from '../../services/brand.service';
 import { LoggerService } from '../../services/logger/logger.service';
 import moment from 'moment';
-import { tranlatedLanguage } from 'app/utils/util';
+import { goToCDSVersion, tranlatedLanguage } from 'app/utils/util';
 import { TranslateService } from '@ngx-translate/core';
 import { WidgetSetUpBaseComponent } from 'app/widget_components/widget-set-up/widget-set-up-base/widget-set-up-base.component';
+import { WidgetService } from 'app/services/widget.service';
+import { FaqKbService } from 'app/services/faq-kb.service';
+import { BotLocalDbService } from 'app/services/bot-local-db.service';
+import { FaqKb } from 'app/models/faq_kb-model';
+import { AppConfigService } from 'app/services/app-config.service';
 
 @Component({
   selector: 'appdashboard-create-project',
@@ -42,6 +47,8 @@ export class CreateProjectComponent extends WidgetSetUpBaseComponent implements 
   temp_SelectedLangCode: string;
   botid: string;
   browser_lang: string;
+  template: any;
+  botname: string;
 
   constructor(
     private projectService: ProjectService,
@@ -52,6 +59,10 @@ export class CreateProjectComponent extends WidgetSetUpBaseComponent implements 
     private logger: LoggerService,
     private route: ActivatedRoute,
     public translate: TranslateService,
+    private widgetService: WidgetService,
+    private faqKbService: FaqKbService,
+    private botLocalDbService: BotLocalDbService,
+    public appConfigService: AppConfigService,
   ) {
     super(translate);
     const brand = brandService.getBrand();
@@ -81,7 +92,7 @@ export class CreateProjectComponent extends WidgetSetUpBaseComponent implements 
     if (this.router.url.startsWith('/create-project-itw/')) {
       
       this.CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION = true
-      // console.log('[WIZARD - CREATE-PRJCT] CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION ', this.CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION)
+      console.log('[WIZARD - CREATE-PRJCT] CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION ', this.CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION)
       this.browser_lang = this.translate.getBrowserLang();
       
       if (tranlatedLanguage.includes(this.browser_lang)) {
@@ -130,7 +141,7 @@ export class CreateProjectComponent extends WidgetSetUpBaseComponent implements 
 
     this.projectService.createProject(this.project_name, 'create-project')
       .subscribe((project) => {
-        this.logger.log('[WIZARD - CREATE-PRJCT] POST DATA PROJECT RESPONSE ', project);
+        console.log('[WIZARD - CREATE-PRJCT] POST DATA PROJECT RESPONSE ', project);
         if (project) {
           this.new_project = project
           // WHEN THE USER SELECT A PROJECT ITS ID IS SEND IN THE PROJECT SERVICE THET PUBLISHES IT
@@ -148,7 +159,8 @@ export class CreateProjectComponent extends WidgetSetUpBaseComponent implements 
           this.auth.projectSelected(newproject)
           this.logger.log('[WIZARD - CREATE-PRJCT] CREATED PROJECT ', newproject)
 
-          this.id_project = newproject._id
+          this.id_project = this.new_project._id
+          this.logger.log('[WIZARD - CREATE-PRJCT] CREATED PROJECT id', this.id_project)
 
         }
 
@@ -290,7 +302,189 @@ export class CreateProjectComponent extends WidgetSetUpBaseComponent implements 
   }
 
   goToInstallTemplate() {
-    this.router.navigate([`install-template-np/${this.botid}/${this.id_project}` + '/' + this.temp_SelectedLangCode + '/' + this.temp_SelectedLangName]);
+    // this.router.navigate([`install-template-np/${this.botid}/${this.id_project}` + '/' + this.temp_SelectedLangCode + '/' + this.temp_SelectedLangName]);
+    this.addNewLanguage(this.temp_SelectedLangCode, this.temp_SelectedLangName)
+    this.getTemplate(this.botid)
+  }
+
+  addNewLanguage(langCode: string, langName: string) {
+
+    this.logger.log('[WIZARD - CREATE-PRJCT] - ADD-NEW-LANG selectedTranslationCode', langCode);
+    this.logger.log('[WIZARD - CREATE-PRJCT] - ADD-NEW-LANG selectedTranslationLabel', langName);
+
+    // cloneLabel CHE RITORNERA IN RESPONSE LA NUOVA LINGUA (l'inglese nel caso non sia una delle nostre lingue pretradotte)
+    this.widgetService.cloneLabel(langCode.toUpperCase())
+      .subscribe((res: any) => {
+
+        this.logger.log('[WIZARD - CREATE-PRJCT] - ADD-NEW-LANG (clone-label) RES ', res.data);
+
+
+
+      }, error => {
+        this.logger.error('[WIZARD - CREATE-PRJCT] ADD-NEW-LANG (clone-label) - ERROR ', error)
+      }, () => {
+        this.logger.log('[WIZARD - CREATE-PRJCT] ADD-NEW-LANG (clone-label) * COMPLETE *')
+
+      });
+
+    // // ADD THE NEW LANGUAGE TO BOTTOM NAV
+    const newLang = { code: langCode, name: langName };
+    this.logger.log('[WIZARD - CREATE-PRJCT] Multilanguage saveNewLanguage newLang objct ', newLang);
+
+    this.availableTranslations.push(newLang)
+    this.logger.log('[WIZARD - CREATE-PRJCT] Multilanguage saveNewLanguage availableTranslations ', this.availableTranslations)
+  }
+
+
+  getTemplate(botid) {
+    // this.faqKbService.getTemplates().subscribe((res: any) => {
+    this.faqKbService.getChatbotTemplateById(botid).subscribe((res: any) => {
+      if (res) {
+        console.log('[WIZARD - CREATE-PRJCT] GET TEMPLATES - RES ', res)
+       
+        this.template = res;
+        this.botname = res['name']
+
+        // if (this.templates && this.templates['bigImage']) {
+        //   this.templateImg = this.templates['bigImage'];
+        // }
+        // if (  this.templates && this.templates['name']) {
+        // this.botname = this.templates['name']
+        // // console.log('[INSTALL-TEMPLATE] GET TEMPLATES - SELECTED TEMPALTES >  botname', this.botname)
+        // }
+
+        if (!isDevMode()) {
+          if (window['analytics']) {
+            try {
+              window['analytics'].page("Wizard, Install chatbot", {
+                "chatbotName": this.botname
+              });
+            } catch (err) {
+              this.logger.error('Wizard Install template page error', err);
+            }
+
+            let userFullname = ''
+            if (this.user.firstname && this.user.lastname)  {
+              userFullname = this.user.firstname + ' ' + this.user.lastname
+            } else if (this.user.firstname && !this.user.lastname) {
+              userFullname = this.user.firstname
+            }
+
+
+            try {
+              window['analytics'].identify(this.user._id, {
+                name: userFullname,
+                email: this.user.email,
+                logins: 5,
+
+              });
+            } catch (err) {
+              this.logger.error('Identify Install template event error', err);
+            }
+
+            // try {
+            //   window['analytics'].group(this.projectId, {
+            //     name: this.projectName,
+            //     plan: this.prjct_profile_name,
+            //   });
+            // } catch (err) {
+            //   this.logger.error('Group Install template group error', err);
+            // }
+          }
+        }
+      }
+
+    }, (error) => {
+      this.logger.error('[INSTALL-TEMPLATE] GET TEMPLATE BY ID - ERROR ', error);
+
+    }, () => {
+      this.logger.log('[INSTALL-TEMPLATE] GET TEMPLATE BY ID * COMPLETE *');
+      this.forkTemplate()
+    });
+  }
+
+
+  forkTemplate() {
+    this.faqKbService.installTemplate(this.template._id, this.id_project, true, this.template._id).subscribe((res: any) => {
+      console.log('[INSTALL-TEMPLATE] - FORK TEMPLATE RES', res);
+      this.botid = res.bot_id
+
+    }, (error) => {
+      this.logger.error('[INSTALL-TEMPLATE]] FORK TEMPLATE - ERROR ', error);
+
+    }, () => {
+      this.logger.log('[INSTALL-TEMPLATE] FORK TEMPLATE COMPLETE');
+     
+
+      this.getFaqKbById(this.botid);
+     
+      if (!isDevMode()) {
+        if (window['analytics']) {
+
+          let userFullname = ''
+          if (this.user.firstname && this.user.lastname)  {
+            userFullname = this.user.firstname + ' ' + this.user.lastname
+          } else if (this.user.firstname && !this.user.lastname) {
+            userFullname = this.user.firstname
+          }
+
+          try {
+            window['analytics'].track('Create chatbot', {
+              "username": userFullname,
+              "email": this.user.email,
+              "userId": this.user._id,
+              "chatbotName": this.botname,
+              'chatbotId':  this.botid,
+              'page': 'Onboarding, Install template',
+              'button': 'Import Template',
+            });
+          } catch (err) {
+            this.logger.error('track Use template (install template) event error', err);
+          }
+
+          try {
+            window['analytics'].identify(this.user._id, {
+              name: userFullname,
+              email: this.user.email,
+              logins: 5,
+
+            });
+          } catch (err) {
+            this.logger.error('Identify Use template (install template) event error', err);
+          }
+
+          try {
+            window['analytics'].group(this.id_project, {
+              name: this.new_project.name,
+              plan: this.new_project.profile_name,
+            });
+          } catch (err) {
+            this.logger.error('Group tUse template (install template) error', err);
+          }
+
+        }
+      }
+
+    });
+  }
+
+  getFaqKbById(botid) {
+    this.faqKbService.getFaqKbById(botid).subscribe((faqkb: any) => {
+      console.log('[INSTALL-TEMPLATE] GET FAQ-KB (DETAILS) BY ID  ', faqkb);
+
+      this.botLocalDbService.saveBotsInStorage(botid, faqkb);
+      this.goToBotDetails(faqkb)
+    }, (error) => {
+      this.logger.error('[INSTALL-TEMPLATE] GET FAQ-KB BY ID  - ERROR ', error);
+    }, () => {
+      this.logger.log('[INSTALL-TEMPLATE] GET FAQ-KB ID  - COMPLETE ');
+    });
+  }
+
+  goToBotDetails(faqkb: FaqKb) {
+    this.logger.log('[TEMPLATE DETAIL] GO TO  BOT DETAILS - isDevMode() ', isDevMode());
+    // this.router.navigate(['project/' + this.project._id + '/cds/', this.botid, 'intent', '0']);
+    goToCDSVersion(this.router, faqkb, this.id_project, this.appConfigService.getConfig().cdsBaseUrl)
   }
 
 }

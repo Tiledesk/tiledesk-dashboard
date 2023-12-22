@@ -403,7 +403,7 @@ export class AuthGuard implements CanActivate {
         // console.log('[AUTH-GUARD] SSO - CAN ACTIVATE queryParams HAS_JWT: NOT HAS - navigate to login ');
         // console.log('[AUTH-GUARD] - CAN ACTIVATE queryParams HAS_JWT: NOT HAS - wanna go url ', url);
         const storedRoute = this.localDbService.getFromStorage('wannago')
-        // console.log('[AUTH-GUARD] - CAN ACTIVATE queryParams HAS_JWT: NOT HAS - wanna go url storedRoute', storedRoute);
+        console.log('[AUTH-GUARD] - CAN ACTIVATE queryParams HAS_JWT: NOT HAS - wanna go url storedRoute', storedRoute);
 
         if (!storedRoute) {
           const URLtoStore = url;

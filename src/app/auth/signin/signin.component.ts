@@ -84,6 +84,7 @@ export class SigninComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log('[SIGN-IN] ON INIT !!!! ')
     this.getOSCODE();
     // this.redirectIfLogged();
     // this.widgetReInit()
@@ -101,7 +102,7 @@ export class SigninComponent implements OnInit {
 
   getStoredRoute() {
     this.storedRoute = this.localDbService.getFromStorage('wannago')
-    // console.log('[SIGN-IN] storedRoute ', this.storedRoute)
+    console.log('[SIGN-IN] storedRoute ', this.storedRoute)
     if (this.storedRoute) {
       this.EXIST_STORED_ROUTE = true
     } else {
