@@ -21,6 +21,7 @@
      --select-border: unset !important;
      --select-opened-border: unset !important;
      --texarea-border: 1px solid #ccc;
+     --table-tr-hover: #f5f5f5;
      --contact-tag-background: rgba(100, 116, 145, 0.08);
      --contact-tag-color: rgb(100, 116, 145);
      --conv-details-contact-fullname-color: #080f1a;
@@ -88,7 +89,7 @@
      --no-tags-margin-top: 0px;
      --no-tags-margin-bottom: 0px;
      --no-tags-font-size: 14px;
-     --no-tags-font-weight: 400;
+     --no-tags-font-weight: 300;
      --no-tags-line-height: 18px;
      --no-tags-letter-spacing: -0.01em;
      --no-tags-line-clamp: 1;
@@ -178,6 +179,7 @@
      --list-item-input-row-hover-background: rgb(30, 41, 59);
      --texarea-background: rgb(30, 41, 59);
      --texarea-border: 1px solid #ccc;
+     --table-tr-hover: #1e293b;;
      --select-background: #101725;
      --select-background-marked: rgba(30, 33, 41, 0.8);
      --select-border: unset !important;
@@ -254,7 +256,7 @@
      --no-tags-margin-top: 0px;
      --no-tags-margin-bottom: 0px;
      --no-tags-font-size: 14px;
-     --no-tags-font-weight: 400;
+     --no-tags-font-weight: 300;
      --no-tags-line-height: 18px;
      --no-tags-letter-spacing: -0.01em;
      --no-tags-line-clamp: 1;

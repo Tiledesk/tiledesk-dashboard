@@ -5436,6 +5436,10 @@ label {
   color: var(--text-color) !important;
 }
 
+.table-hover>tbody>tr:hover {
+  background-color: var(--table-tr-hover) !important;
+}
+
 /*
 /* Are used ?
 /* ----------------------------------------------------------------------- */

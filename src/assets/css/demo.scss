@@ -1733,12 +1733,48 @@ appdashboard-app-store > div > div > div > div > .card-app-store {
   background: $plan-c-background;
 }
 
+// https://github.com/ng-select/ng-select/issues/608
+// .ng-select.custom {
+//   .ng-select-container {
+//     height: 42px;
+//     background-color: $nav-active-gray;
+//     border: 1px solid $form-input-border;
+//     .ng-value-container {
+//       color: $select-font-color;
+
+//       .ng-placeholder {
+//         color: $select-font-color;
+//       }
+//     }
+//   }
+// }
+
+/*
+/* CUSTOMIZED NG-SELECT
+/* -------------------------------------------------- */
+
+// ------------------------------
 // ticket-priority select
+// ------------------------------
 .ng-select.ticket-priority .ng-select-container { 
   background-color: var(--select-background);
   color: var(--text-color);
   // border: var(--select-border);
 }
+
+.ng-select.ticket-priority .ng-select-container  .ng-value-container .ng-placeholder {
+  color: var(--secondary-text-color);
+}
+
+.ng-dropdown-panel.ticket-priority {
+  background-color: var(--select-background);
+  border: 1px solid var(--select-background);
+}
+
+.ticket-priority .ng-dropdown-panel {
+  background-color: var(--select-background);
+}
+
 .ng-select.ticket-priority.ng-select-opened > .ng-select-container {
   background-color: var(--select-background) !important;
   // border: var(--select-opened-border);
@@ -1759,12 +1795,28 @@ appdashboard-app-store > div > div > div > div > .card-app-store {
   color: var(--text-color) !important;
 }
 
+// ------------------------------
 // ticket-followers select
+// ------------------------------
 .ng-select.ticket-followers .ng-select-container { 
   background-color: var(--select-background);
   color: var(--text-color);
   // border: var(--select-border);
 }
+
+.ng-select.ticket-followers .ng-select-container  .ng-value-container .ng-placeholder {
+  color: var(--secondary-text-color);
+}
+
+.ng-dropdown-panel.ticket-followers{
+  background-color: var(--select-background);
+  border: 1px solid var(--select-background);
+}
+
+.ticket-followers .ng-dropdown-panel {
+  background-color: var(--select-background);
+}
+
 .ng-select.ticket-followers.ng-select-opened > .ng-select-container {
   background-color: var(--select-background) !important;
   // border: var(--select-opened-border);
@@ -1785,12 +1837,29 @@ appdashboard-app-store > div > div > div > div > .card-app-store {
   color: var(--text-color) !important;
 }
 
+
+// ----------------------------
 // convs-tags select
+// ----------------------------
 .ng-select.convs-tags .ng-select-container { 
   background-color: var(--select-background);
   color: var(--text-color);
   // border: var(--select-border);
 }
+
+.ng-select.convs-tags .ng-select-container  .ng-value-container .ng-placeholder {
+  color: var(--secondary-text-color)
+}
+
+.ng-dropdown-panel.convs-tags {
+  background-color: var(--select-background);
+  border: 1px solid var(--select-background);
+}
+
+.convs-tags .ng-dropdown-panel {
+  background-color: var(--select-background);
+}
+
 .ng-select.convs-tags.ng-select-opened > .ng-select-container {
   background-color: var(--select-background) !important;
   // border: var(--select-opened-border);
@@ -1811,11 +1880,26 @@ appdashboard-app-store > div > div > div > div > .card-app-store {
   color: var(--text-color) !important;
 }
 
+// -------------------------
 // add-contact-t select
+// -------------------------
 .ng-select.add-contact-tag .ng-select-container { 
   background-color: var(--select-background) !important;
   color: var(--text-color);
   border: var(--select-border);
+}
+
+.ng-select.add-contact-tag .ng-select-container  .ng-value-container .ng-placeholder {
+  color: var(--secondary-text-color);
+}
+
+.ng-dropdown-panel.add-contact-tag {
+  background-color: var(--select-background);
+  border: 1px solid var(--select-background);
+}
+
+.add-contact-tag .ng-dropdown-panel {
+  background-color: var(--select-background);
 }
 
 .ng-select.add-contact-tag.ng-select-opened > .ng-select-container {
@@ -1828,7 +1912,6 @@ appdashboard-app-store > div > div > div > div > .card-app-store {
   color: var(--text-color)
 }
 
-
 .add-contact-tag .ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
   background-color: var(--select-background)!important;
   color: var(--text-color);
@@ -1839,17 +1922,33 @@ appdashboard-app-store > div > div > div > div > .card-app-store {
   color: var(--text-color) !important;
 }
 
-// select add contact property
+// ----------------------------------
+// add contact property select 
+// ----------------------------------
 .ng-select.contact-property .ng-select-container { 
   background-color: var(--select-background) !important;;
   color: var(--text-color);
   border: var(--select-border);
 }
 
+.ng-select.contact-property .ng-select-container  .ng-value-container .ng-placeholder {
+  color: var(--secondary-text-color)
+}
+
+.ng-dropdown-panel.contact-property {
+  background-color: var(--select-background);
+  border: 1px solid var(--select-background);
+}
+
+.add-contact-tag .contact-property  {
+  background-color: var(--select-background);
+}
+
 .ng-select.contact-property.ng-select-opened > .ng-select-container {
   background-color: var(--select-background) !important;
   // border: var(--select-opened-border);
 }
+
 
 .contact-property .ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
   background-color: var(--select-background) !important;
@@ -1866,8 +1965,9 @@ appdashboard-app-store > div > div > div > div > .card-app-store {
   color: var(--text-color) !important;
 }
 
-
+// ----------------------
 // Shared close button
+// ----------------------
 .close--round-btn {
   border: none !important;
   float: right !important;

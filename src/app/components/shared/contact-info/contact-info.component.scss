@@ -43,7 +43,7 @@ textarea[type="text"] {
 .ul-wpr li {
     margin-bottom: var(--list-item-margin-bottom);
     transition: all 0.3s ease 0s;
-    padding: var(--list-item-padding);   
+    padding: var(--list-item-padding);
 }
 
 .ul-wpr li .contact-row {
@@ -53,7 +53,7 @@ textarea[type="text"] {
     height: var(--list-item-row-height);
 }
 
-.ul-wpr li .contact-row > span {
+.ul-wpr li .contact-row>span {
     display: var(--list-item-row-display);
     -webkit-box-align: var(--list-item-row-alignment);
     align-items: var(--list-item-row-alignment);
@@ -69,13 +69,12 @@ textarea[type="text"] {
 // ---
 .ul-wpr li .tag--row {
     display: var(--tag-row-display);
-    -webkit-box-align:  var(--tag-row-alignment);
+    -webkit-box-align: var(--tag-row-alignment);
     align-items: var(--tag-row-alignment);
-    margin-top: var(--tag-row-margin-top)
-    // height: var(--tag-row-height);
+    margin-top: var(--tag-row-margin-top) // height: var(--tag-row-height);
 }
 
-.ul-wpr li .tag--row > span {
+.ul-wpr li .tag--row>span {
     display: flex;
     -webkit-box-align: center;
     align-items: center;
@@ -115,7 +114,7 @@ textarea[type="text"] {
     width: var(--list-item-input-width);
     background-image: var(--list-item-input-background-image);
     cursor: pointer;
-    font-family: var(--content-font-family); 
+    font-family: var(--content-font-family);
     color: var(--text-color)
 }
 
@@ -130,7 +129,7 @@ textarea[type="text"] {
 
 .ul-wpr li .action-btns {
     opacity: 0;
-    height:var(--list-item-action-btns-height);
+    height: var(--list-item-action-btns-height);
     width: var(--list-item-action-btns-width);
     margin-left: auto;
     transition: opacity 0.2s ease-in-out 0s;
@@ -149,7 +148,7 @@ textarea[type="text"] {
 
 .ul-wpr li .action-btns-arrow {
     opacity: 1;
-    height:var(--list-item-action-btns-height);
+    height: var(--list-item-action-btns-height);
     width: var(--list-item-action-btns-width);
     margin-left: auto;
     transition: opacity 0.2s ease-in-out 0s;
@@ -176,6 +175,7 @@ textarea[type="text"] {
     border-radius: var(--list-item-input-row-hover-border-radius);
     background-color: var(--list-item-input-row-hover-background);
 }
+
 .ul-wpr li:hover .action-btns {
     opacity: 1;
 }
@@ -191,6 +191,7 @@ textarea[type="text"] {
 .ul-wpr li .contact-row:hover div svg {
     fill: var(--icon-hover-color);
 }
+
 // ----
 .ul-wpr li .tag--row:hover span .tag--icon {
     fill: var(--icon-hover-color);
@@ -209,6 +210,7 @@ textarea[type="text"] {
     margin-right: 8px !important;
     margin-left: 8px !important;
 }
+
 .ul-wpr-chat li {
     padding-left: 12px !important;
     padding-right: 12px !important;
@@ -219,7 +221,7 @@ textarea[type="text"] {
     fill: var(--icon-color)
 }
 
-.contact-row:hover > span > .project-name-icon {
+.contact-row:hover>span>.project-name-icon {
     // fill: #0566ff;
     fill: var(--icon-hover-color)
 }
@@ -248,7 +250,7 @@ textarea[type="text"] {
     align-items: center;
 }
 
-.lead-tag-content-wpr > svg {
+.lead-tag-content-wpr>svg {
     // fill: #8796af;
     fill: var(--icon-color);
     margin-right: 12px;
@@ -306,6 +308,7 @@ textarea[type="text"] {
 .ng-select-tags-wpr {
     height: 30px;
 }
+
 // .lead-tag {
 //     display: inline-block;
 // }
@@ -337,7 +340,7 @@ textarea[type="text"] {
 //     }
 // }
 
-.manage_tags-cnctc-info{
+.manage_tags-cnctc-info {
     color: var(--manage-tag-font-color);
     font-size: var(--manage-tag-font-size);
     font-weight: var(--manage-tag-font-weight);
@@ -356,6 +359,10 @@ textarea[type="text"] {
 
 .no-contact-tags-wpr {
     display: flex;
+}
+
+.no-contact-tags-wpr-on-chat {
+    width: 196px;
 }
 
 .no-contact-tags {
@@ -405,7 +412,7 @@ textarea[type="text"] {
 .tags-btn-wpr {
     display: flex;
     border-radius: 4px;
-    background-color: var(--contact-tag-background) ;
+    background-color: var(--contact-tag-background);
     color: var(--contact-tag-color);
 }
 
@@ -526,6 +533,7 @@ textarea[type="text"] {
 .extra-small-btn {
     box-shadow: unset !important;
 }
+
 // .btn-cancel-lead-note {
 //     color: #555;
 //     background-color: #efefef;
@@ -547,7 +555,103 @@ textarea[type="text"] {
     white-space: pre-line !important;
     text-align: center !important;
     line-height: 17px !important;
-  }
+}
+
+
+#lead-address::placeholder {
+    color: #8796af;
+    opacity: 1;  /* Firefox */
+    font-weight: 300;
+}
+
+#lead-address::-ms-input-placeholder {
+    color: #8796af; /* Edge 12 -18 */
+    font-weight: 300;
+}
+
+#lead-company::placeholder {
+    color: #8796af;
+    opacity: 1; /* Firefox */
+    font-weight: 300;
+}
+
+#lead-company::-ms-input-placeholder {
+    color: #8796af; /* Edge 12 -18 */
+    font-weight: 300;
+}
+
+#lead-street::placeholder {
+    color: #8796af;
+    opacity: 1; /* Firefox */
+    font-weight: 300;
+}
+
+#lead-street::-ms-input-placeholder {
+    color: #8796af; /* Edge 12 -18 */
+    font-weight: 300;
+}
+
+
+#lead-province::placeholder {
+    color: #8796af;
+    opacity: 1; /* Firefox */
+    font-weight: 300;
+}
+
+#lead-province::-ms-input-placeholder {
+    color: #8796af; /* Edge 12 -18 */
+    font-weight: 300;
+}
+
+
+#lead-postalzip::placeholder {
+    color: #8796af;
+    opacity: 1; /* Firefox */
+    font-weight: 300;
+}
+
+
+#lead-postalzip::-ms-input-placeholder {
+    color: #8796af; /* Edge 12 -18 */
+    font-weight: 300;
+}
+
+
+#lead-country::placeholder {
+    color: #8796af;
+    opacity: 1; /* Firefox */
+    font-weight: 300;
+}
+
+#lead-country::-ms-input-placeholder {
+    color: #8796af; /* Edge 12 -18 */
+}
+
+
+#lead-city::placeholder {
+    color: #8796af;
+    opacity: 1; /* Firefox */
+    font-weight: 300;
+}
+
+#lead-city::-ms-input-placeholder {
+    color: #8796af; /* Edge 12 -18 */
+    font-weight: 300;
+}
+
+.custom-property::placeholder {
+    color: #8796af;
+    opacity: 1; /* Firefox */
+    font-weight: 300;
+}
+
+
+.custom-property::-ms-input-placeholder {
+    color: #8796af; /* Edge 12 -18 */
+    font-weight: 300;
+}
+
+
 
 // --------------------------------------------------
 // ANIMATED ARROW https://codepen.io/cbrst/pen/ebxwLJ
@@ -589,7 +693,7 @@ textarea[type="text"] {
 //     & span,
 //     &:before,
 //     &:after {
-       
+
 //         // background: #8796af;
 //         background: var(--arrow-background);
 //         content: "";
@@ -612,7 +716,7 @@ textarea[type="text"] {
 //     }
 //     &:hover span {
 //         width: $size * 1.414;
-       
+
 //     }
 
 //     @each $direction in "left" "right" {

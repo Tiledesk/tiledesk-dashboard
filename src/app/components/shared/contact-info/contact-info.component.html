@@ -146,10 +146,16 @@
         <!-- (keydown.enter)='editContactCompany()'  -->
         <div class="form-group" style="margin-top: 2px;"
           [ngStyle]="{'width':CHAT_PANEL_MODE === true ? 'unset' : '100%' }">
-          <input #inputcompany type="text" name="company" data-id="company" class="form-control input-md"
-            [(ngModel)]="contactCompany" placeholder="{{ 'Company' | translate }}..." maxlength="255"
-            (keydown.enter)='inputcompany.blur()' (blur)="editContactCompany()" autocomplete="off"
-            style="padding-bottom: 2px;" [ngStyle]="{'width':CHAT_PANEL_MODE === true ? '200px' : '100%' }">
+          <input #inputcompany type="text" id="lead-company" name="company" data-id="company" 
+            class="form-control input-md"
+            [(ngModel)]="contactCompany" 
+            placeholder="{{ 'Company' | translate }}..." 
+            maxlength="255"
+            (keydown.enter)='inputcompany.blur()' 
+            (blur)="editContactCompany()" 
+            autocomplete="off"
+            style="padding-bottom: 2px;" 
+            [ngStyle]="{'width':CHAT_PANEL_MODE === true ? '200px' : '100%' }">
         </div>
         <div class="action-btns">
           <button *ngIf="contactCompany?.length > 0" type="button" data-id="delete-company-btn"
@@ -229,9 +235,16 @@
           <div class="label-and-input-wpr">
             <div class="propertyLabel">{{'Street' | translate}}: </div>
       
-            <input #inputleadstreet type="text" name="contactstreet" data-id="contactstreet"
-              class="form-control input-md" [(ngModel)]="contactStreet" placeholder="{{'StreetAddress' | translate}}..."
-              maxlength="255" (keydown.enter)='inputleadstreet.blur()' (blur)="editContactAddress()" autocomplete="off"
+            <input #inputleadstreet type="text" id="lead-street" 
+              name="contactstreet" 
+              data-id="contactstreet"
+              class="form-control input-md" 
+              [(ngModel)]="contactStreet" 
+              placeholder="{{'StreetAddress' | translate}}..."
+              maxlength="255" 
+              (keydown.enter)='inputleadstreet.blur()' 
+              (blur)="editContactAddress()" 
+              autocomplete="off"
               style="width: 100%;flex: 1 0 0px">
           </div>
         </div>
@@ -261,9 +274,16 @@
           <div class="label-and-input-wpr">
             <div class="propertyLabel">{{'City' | translate}}: </div>
             <!-- [ngStyle]="{'width':CHAT_PANEL_MODE === true ? '200px' : '100%' }" -->
-            <input #inputleadcity type="text" name="city" data-id="city" class="form-control input-md"
-              [(ngModel)]="contactCity" placeholder="{{'City' | translate}}..." maxlength="255"
-              (keydown.enter)='inputleadcity.blur()' (blur)="editContactAddress()" autocomplete="off"
+            <input #inputleadcity type="text" 
+              id="lead-city"
+              name="city" 
+              data-id="city" 
+              class="form-control input-md"
+              [(ngModel)]="contactCity" 
+              placeholder="{{'City' | translate}}..." 
+              maxlength="255"
+              (keydown.enter)='inputleadcity.blur()' 
+              (blur)="editContactAddress()" autocomplete="off"
               style="width: 100%;flex: 1 0 0px">
           </div>
         </div>
@@ -292,9 +312,17 @@
           <div class="label-and-input-wpr">
             <div class="propertyLabel">{{'State' | translate}}: </div>
           
-            <input #inputleadstate type="text" name="province" data-id="province" class="form-control input-md"
-              [(ngModel)]="contactProvince" placeholder="{{'State' | translate}}..." maxlength="255"
-              (keydown.enter)='inputleadstate.blur()' (blur)="editContactAddress()" autocomplete="off"
+            <input #inputleadstate type="text" 
+              id="lead-province"
+              name="province" 
+              data-id="province" 
+              class="form-control input-md"
+              [(ngModel)]="contactProvince" 
+              placeholder="{{'State' | translate}}..." 
+              maxlength="255"
+              (keydown.enter)='inputleadstate.blur()' 
+              (blur)="editContactAddress()" 
+              autocomplete="off"
               style="width: 100%;flex: 1 0 0px">
           </div>
         </div>
@@ -324,9 +352,16 @@
           <div class="label-and-input-wpr">
             <div class="propertyLabel">{{'PostalCode' | translate}}: </div>
           
-            <input #inputpostalzip type="text" name="postalzip" data-id="postalzip" class="form-control input-md"
-              [(ngModel)]="contactZipCode" placeholder="{{'PostalCode' | translate}}..." maxlength="255"
-              (keydown.enter)='inputpostalzip.blur()' (blur)="editContactAddress()" autocomplete="off"
+            <input #inputpostalzip id="lead-postalzip" 
+              type="text"
+              name="postalzip" 
+              data-id="postalzip" class="form-control input-md"
+              [(ngModel)]="contactZipCode" 
+              placeholder="{{'PostalCode' | translate}}..." 
+              maxlength="255"
+              (keydown.enter)='inputpostalzip.blur()' 
+              (blur)="editContactAddress()" 
+              autocomplete="off"
               style="width:100%;flex: 1 0 0px">
           </div>
         </div>
@@ -355,9 +390,17 @@
           <div class="label-and-input-wpr">
             <div class="propertyLabel">{{'Country' | translate}}: </div>
            
-            <input #inputleadcountry type="text" name="country" data-id="country" class="form-control input-md"
-              [(ngModel)]="contactCountry" placeholder="{{'Country' | translate}}..." maxlength="255"
-              (keydown.enter)='inputleadcountry.blur()' (blur)="editContactAddress()" autocomplete="off"
+            <input #inputleadcountry id="lead-country" 
+              type="text" 
+              name="country" 
+              data-id="country" 
+              class="form-control input-md"
+              [(ngModel)]="contactCountry" 
+              placeholder="{{'Country' | translate}}..." 
+              maxlength="255"
+              (keydown.enter)='inputleadcountry.blur()' 
+              (blur)="editContactAddress()" 
+              autocomplete="off"
               style="width: 100%;flex: 1 0 0px">
           </div>
         </div>
@@ -412,10 +455,16 @@
             <div [ngClass]="{'propertyLabelChat': CHAT_PANEL_MODE === true}" class="propertyLabel">{{property.label}}:
             </div>
            
-            <input #inputcustomproperties id="{{property.name}}" type="text" name="{{property.name}}"
-              data-id="{{property.name}}" class="form-control input-md" placeholder="{{property.label}}..."
-              maxlength="255" (keydown.enter)='inputcustomproperties.blur()'
-              (blur)="onKey(property.name, property.label ,$event)" autocomplete="off" style="padding-bottom: 5px;"
+            <input #inputcustomproperties  id="{{property.name}}" type="text" 
+              name="{{property.name}}"
+              data-id="{{property.name}}" 
+              class="form-control input-md custom-property" 
+              placeholder="{{property.label}}..."
+              maxlength="255" 
+              (keydown.enter)='inputcustomproperties.blur()'
+              (blur)="onKey(property.name, property.label ,$event)"
+              autocomplete="off" 
+              style="padding-bottom: 5px;"
               style="width: 100%;flex: 1 0 0px">
           </div>
         </div>
@@ -464,9 +513,10 @@
 
           <!-- contactsCustomProperties -->
           <ng-select class="contact-property" 
+            [ngStyle]="{ 'width': CHAT_PANEL_MODE === true ? '244px' : '100%' }"
             id="add-contatct-custom-property"
             [items]="contactPropertiesToSelect" 
-            style="top: 0px;padding-right: 2px;" 
+            style="top: 0px;padding-right: 2px; margin-left: 2px;" 
             bindLabel="label" 
             bindValue="label" 
             placeholder="{{'AddContactProperty'| translate}}"
@@ -513,8 +563,8 @@
         <form>
           <div class="lead-tags--container-wpr">
             <div class="lead-tags--container">
- 
-              <span *ngIf="contactTags?.length === 0" aria-label="tag" class="no-contact-tags-wpr">
+             
+              <span *ngIf="contactTags?.length === 0" aria-label="tag" class="no-contact-tags-wpr" [ngClass]="{'no-contact-tags-wpr-on-chat': CHAT_PANEL_MODE === true}" >
                 <p weight="400" class="no-contact-tags"> {{'NoTAGAssignedToThisContactYet' | translate}}</p>
               </span>
 
@@ -536,8 +586,8 @@
 
             <div class="ng-select-tags-wpr">
               <ng-select class="add-contact-tag" 
-                style="padding-right: 13px;"
-                id="select-tag" 
+                style="padding-right: 13px;margin-left: -1px "
+                id="select-lead-tag" 
                 [ngStyle]="{'top':contactTags?.length === 0 ? '-10px' : '-6px' }" 
                 #ngSelect 
                 (change)="addTag(tag)"
