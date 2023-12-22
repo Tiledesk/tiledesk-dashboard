@@ -573,7 +573,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
                 this.logger.error('identify signup event error', err);
               }
               let utm_source_value = undefined;
-              let su = undefined;
+              let su: any = 'Signed up';
               var size = Object.keys(this.queryParams).length;
               // this.logger.log('queryParams size ', size)
               // let event = ''
