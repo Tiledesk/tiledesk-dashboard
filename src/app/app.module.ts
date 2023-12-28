@@ -363,6 +363,7 @@ import { OnboardingWelcomeComponent } from './create-new-project/onboarding-welc
 import { HomeNewsFeedModalComponent } from './home-components/home-news-feed/home-news-feed-modal/home-news-feed-modal.component';
 import { AutomationsComponent } from './automations/automations.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { HomeCdsComponent } from './home-components/home-cds/home-cds.component';
 
 
 
@@ -641,7 +642,8 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     CnpTemplatesComponent,
     OnboardingWelcomeComponent,
     HomeNewsFeedModalComponent,
-    AutomationsComponent
+    AutomationsComponent,
+    HomeCdsComponent
   ],
   imports: [
     TooltipModule.forRoot(CutomTooltipOptions as TooltipOptions),
