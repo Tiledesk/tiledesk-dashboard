@@ -2695,11 +2695,20 @@ img {
 }
 
 .oph-disabled {
-  background-color: #f44336 !important;
+
+  color: #f44336 !important;
 }
 
 .oph-enabled {
+  color: #4caf50 !important;
+}
+
+.oph-btn-enabled {
   background-color: #4caf50 !important;
+}
+
+.oph-btn-disabled {
+  background-color: #f44336 !important;
 }
 
 .project---name {

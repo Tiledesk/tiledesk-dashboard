@@ -71,6 +71,7 @@
 
 button.close {
   -webkit-appearance: none;
+  appearance: none;
   padding: 0;
   cursor: pointer;
   background: 0 0;
@@ -408,9 +409,9 @@ button.close.custom-hover:hover {
   height: 100%;
   font-weight: 300;
 }
-.progress .progress-value div {
-  /* margin-top: 10px; */
-}
+// .progress .progress-value div {
+//   /* margin-top: 10px; */
+// }
 .progress .progress-value span {
   font-size: 12px;
   text-transform: uppercase;
@@ -674,9 +675,9 @@ button.close.custom-hover:hover {
   }
 }
 
-.progress {
-  /* margin-bottom: 1em; */
-}
+// .progress {
+//   /* margin-bottom: 1em; */
+// }
 
 .progress {
   position: relative;

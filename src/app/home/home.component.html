@@ -64,9 +64,12 @@
                   <!-- leading-7 -->
                   <div class="text-2xl md-text-5xl font-w-400 tracking-tight  md-leading-snug truncate project---name">
                     <span style="font-family: 'Poppins', Arial, sans-serif;"> {{ prjct_name }} </span>
-                    <span class="material-icons home-edit-project-name-icon" (click)="goToProjectSettingsGeneral()"
-                      matTooltipClass="custom-mat-tooltip" matTooltip="{{'EditProjectName' | translate }}"
-                      #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
+                    <span class="material-icons home-edit-project-name-icon" 
+                      (click)="goToProjectSettingsGeneral()"
+                      matTooltipClass="custom-mat-tooltip" 
+                      matTooltip="{{'EditProjectName' | translate }}"
+                      #tooltip="matTooltip" 
+                      matTooltipPosition='below' matTooltipHideDelay="100">
                       mode_edit
                     </span>
 
@@ -107,12 +110,18 @@
                 <!-- {{'AdjustOperatingHours' | translate}} -->
                 <ng-container *ngIf="isVisibleOPH && USER_ROLE !== 'agent'">
                   <button mat-mini-fab aria-label="date_range icon"
-                    [ngClass]="{'oph-disabled': !OPERATING_HOURS_ACTIVE || DISPLAY_OPH_AS_DISABLED, 'oph-enabled': OPERATING_HOURS_ACTIVE && !DISPLAY_OPH_AS_DISABLED }"
-                    style="box-shadow: unset;margin-right: 16px;    position: relative;"
-                    [satPopoverAnchor]="editOperatingHours" (click)="editOperatingHours.toggle();"
-                    matTooltipClass="custom-mat-tooltip" matTooltip="Adjust operating hours" #tooltip="matTooltip"
-                    matTooltipPosition='below' matTooltipHideDelay="100">
-                    <mat-icon style="color: #fff;position: relative;top: -2px;">date_range</mat-icon>
+                    style="box-shadow: unset;margin-right: 16px; position: relative; background-color: #fff;"
+                    [satPopoverAnchor]="editOperatingHours" 
+                    (click)="editOperatingHours.toggle();"
+                    matTooltipClass="custom-mat-tooltip" 
+                    matTooltip="Adjust operating hours" 
+                    #tooltip="matTooltip"
+                    matTooltipPosition='below'
+                    matTooltipHideDelay="100">
+                    <mat-icon style="position: relative;top: -2px;"
+                      [ngClass]="{'oph-disabled': !OPERATING_HOURS_ACTIVE || DISPLAY_OPH_AS_DISABLED, 'oph-enabled': OPERATING_HOURS_ACTIVE && !DISPLAY_OPH_AS_DISABLED }">
+                      date_range
+                    </mat-icon>
                   </button>
 
                   <sat-popover #editOperatingHours id="edit-operating-hours" horizontalAlign="center"
@@ -125,7 +134,7 @@
 
                         <div class="opicon" style=" padding-right: 8px;">
                           <button mat-mini-fab aria-label="Button with a date_range icon"
-                            [ngClass]="{'oph-disabled': !OPERATING_HOURS_ACTIVE || DISPLAY_OPH_AS_DISABLED, 'oph-enabled': OPERATING_HOURS_ACTIVE && !DISPLAY_OPH_AS_DISABLED }"
+                            [ngClass]="{'oph-btn-disabled': !OPERATING_HOURS_ACTIVE || DISPLAY_OPH_AS_DISABLED, 'oph-btn-enabled': OPERATING_HOURS_ACTIVE && !DISPLAY_OPH_AS_DISABLED }"
                             style="box-sizing: unset; cursor: default ;" disabled>
                             <mat-icon style="color: #fff;position: relative;top: -2px;">date_range</mat-icon>
                           </button>
@@ -165,13 +174,15 @@
                 <!-- ------------------------------------ -->
                 <button *ngIf="USER_ROLE !== 'agent'" mat-flat-button="" [matMenuTriggerFor]="dashletMenu"
                   class="mat-focus-indicato mat-flat-button mat-button-base"
-                  style="background-color: #2196f3; color: #fff;margin-right: 4px;">
+                  style="background-color: #fff ; color: #fff;margin-right: 4px;">
                   <span class="mat-button-wrapper">
-                    <mat-icon style="margin-right: 8px; color: #fff">filter_alt</mat-icon>
-                    <span class="ml-2 button-dashlet-settings">
-                      <!-- {{'ViewOption' | translate}} -->
+                    <mat-icon style="margin-right: 8px; color: #2196f3">
+                      tune
+                    </mat-icon>
+                    <!-- <span class="ml-2 button-dashlet-settings">
+                      <!- - {{'ViewOption' | translate}} - ->
                       View Options
-                    </span>
+                    </span> -->
                   </span>
                   <span matripple="" class="mat-ripple mat-button-ripple" ng-reflect-disabled="false"
                     ng-reflect-centered="false" ng-reflect-trigger="[object HTMLButtonElement]">
@@ -414,15 +425,21 @@
 
           <ng-container *ngIf="!showskeleton ">
             <span *ngIf="USER_ROLE !== 'agent'">
+
+              <home-cds> </home-cds>
+
               <div class="home--blocks" id="homeBlocks" *ngFor="let item of child_list_order">
 
                 <!-- ----------------------- -->
                 <!-- Child 1 Convs Graph -->
                 <!-- ----------------------- -->
                 <ng-container *ngIf="item.type === 'child1'">
-                  <appdashboard-home-convs-graph *ngIf="displayAnalyticsConvsGraph"
-                    [displayAnalyticsConvsGraph]="displayAnalyticsConvsGraph" [projectId]="projectId"
-                    [USER_ROLE]="USER_ROLE" (trackUserAction)="trackUserAction($event)">
+                  <appdashboard-home-convs-graph 
+                    *ngIf="displayAnalyticsConvsGraph"
+                    [displayAnalyticsConvsGraph]="displayAnalyticsConvsGraph" 
+                    [projectId]="projectId"
+                    [USER_ROLE]="USER_ROLE" 
+                    (trackUserAction)="trackUserAction($event)">
                   </appdashboard-home-convs-graph>
                 </ng-container>
 
@@ -430,8 +447,10 @@
                 <!-- Child 2 Analytics Indicator-->
                 <!-- ----------------------- -->
                 <ng-container *ngIf="item.type === 'child2'">
-                  <appdashboard-home-analytics-indicator *ngIf="displayAnalyticsIndicators" [projectId]="projectId"
-                    [USER_ROLE]="USER_ROLE" (trackUserAction)="trackUserAction($event)">
+                  <appdashboard-home-analytics-indicator 
+                    *ngIf="displayAnalyticsIndicators" [projectId]="projectId"
+                    [USER_ROLE]="USER_ROLE" 
+                    (trackUserAction)="trackUserAction($event)">
                   </appdashboard-home-analytics-indicator>
                 </ng-container>
 
@@ -440,13 +459,20 @@
                 <!-- ----------------------- -->
                 <ng-container *ngIf="item.type === 'child3'">
                   <appdashboard-home-whatsapp-account-wizard *ngIf="displayWhatsappAccountWizard"
-                    style="margin-bottom: 18px;" (goToConnectWA)="goToConnectWA()"
-                    (goToCreateChatbot)="goToCreateChatbot()" (hasTestedBotOnWa)="hasTestedBotOnWa()"
-                    [whatsAppIsConnected]="whatsAppIsConnected" [wadepartmentName]="wadepartmentName"
-                    [chatbotConnectedWithWA]='chatbotConnectedWithWA' [waBotId]="waBotId"
-                    [use_case_for_child]="use_case_for_child" [solution_channel_for_child]="solution_channel_for_child"
-                    [solution_for_child]="solution_for_child" [testBotOnWA]="testBotOnWA"
-                    [botIdForTestWA]="botIdForTestWA" (hasCreatedChatbot)="hasCreatedChatbot($event)">
+                    style="margin-bottom: 18px;" 
+                    (goToConnectWA)="goToConnectWA()"
+                    (goToCreateChatbot)="goToCreateChatbot()"
+                    (hasTestedBotOnWa)="hasTestedBotOnWa()"
+                    [whatsAppIsConnected]="whatsAppIsConnected" 
+                    [wadepartmentName]="wadepartmentName"
+                    [chatbotConnectedWithWA]='chatbotConnectedWithWA' 
+                    [waBotId]="waBotId"
+                    [use_case_for_child]="use_case_for_child" 
+                    [solution_channel_for_child]="solution_channel_for_child"
+                    [solution_for_child]="solution_for_child" 
+                    [testBotOnWA]="testBotOnWA"
+                    [botIdForTestWA]="botIdForTestWA" 
+                    (hasCreatedChatbot)="hasCreatedChatbot($event)">
                   </appdashboard-home-whatsapp-account-wizard>
                 </ng-container>
 
@@ -454,12 +480,16 @@
                 <!-- Child 4 Whatsapp Account-->
                 <!-- ----------------------- -->
                 <ng-container *ngIf="item.type === 'child4'">
-                  <appdashboard-home-whatsapp-account *ngIf="displayConnectWhatsApp" style=" z-index: 11;"
-                    #childWhatsappAccount (onClickOnUnistallApp)="onClickOnUnistallApp()"
+                  <appdashboard-home-whatsapp-account 
+                    *ngIf="displayConnectWhatsApp" style=" z-index: 11;"
+                    #childWhatsappAccount 
+                    (onClickOnUnistallApp)="onClickOnUnistallApp()"
                     (onClickOnGoToLearnMoreOrManageApp)="onClickOnGoToLearnMoreOrManageApp()"
                     (onClickOnDisplayWhatsAppWizard)="onClickOnDisplayWhatsAppWizard()"
-                    [whatsAppIsInstalled]="whatsAppIsInstalled" [whatsAppIsConnected]="whatsAppIsConnected"
-                    [solution_channel_for_child]="solution_channel_for_child" [solution_for_child]="solution_for_child"
+                    [whatsAppIsInstalled]="whatsAppIsInstalled" 
+                    [whatsAppIsConnected]="whatsAppIsConnected"
+                    [solution_channel_for_child]="solution_channel_for_child" 
+                    [solution_for_child]="solution_for_child"
                     [userHasClickedDisplayWAWizard]="userHasClickedDisplayWAWizard">
                   </appdashboard-home-whatsapp-account>
                 </ng-container>
