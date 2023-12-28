@@ -1,5 +1,11 @@
 # tiledesk-dashboard
 
+### 2.4.89
+- Deploys in production
+- Adds a button on the Home page that opens the latest updated chatbot in the design studio
+- Improves the "Get template" onboarding
+- Displays "No Automation" message when there are no logs
+
 ### 2.4.88-rc1
 - Displays "No Automation" message when there are no logs
 - Improves the "Get template" onboarding
