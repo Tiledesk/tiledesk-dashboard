@@ -1,6 +1,6 @@
 # tiledesk-dashboard
 
-### 2.4.89
+### 2.4.88
 - Deploys in production
 - Adds a button on the Home page that opens the latest updated chatbot in the design studio
 - Improves the "Get template" onboarding
