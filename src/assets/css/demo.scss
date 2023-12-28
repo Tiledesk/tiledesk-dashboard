@@ -1726,3 +1726,622 @@ appdashboard-app-store > div > div > div > div > .card-app-store {
   color: $plan-c-color;
   background: $plan-c-background;
 }
+
+
+/* -----------------------------------------
+/* New buttons > Btn Primary
+/* ----------------------------------------- */
+.btn--primary {
+  background-color: #0566ff;
+  border-color: #0566ff;
+  color: #fff;
+  text-transform: none;
+  border-radius: 999px;
+  box-shadow: unset;
+  font-family: "Poppins","Roboto", "Arial", sans-serif;
+}
+
+.btn--primary:hover {
+  background-color: #0049bd;
+  border-color: #0049bd;
+  color: #fff;
+  box-shadow: unset;
+}
+
+.btn--primary:focus {
+  background-color: #0049bd;
+  border-color: #0049bd;
+  color: #fff;
+  box-shadow: unset;
+}
+
+.btn--primary:active {
+  background-color: #0049bd;
+  border-color: #0049bd;
+}
+
+.btn--ripple-primary {
+  background-position: center;
+  transition: background 0.3s;
+}
+.btn--ripple-primary:hover {
+  background: #0049bd radial-gradient(circle, transparent 1%, #0566ff 1%) center/15000%;
+}
+.btn--ripple-primary:active {
+  background-color: #0049bd;
+  background-size: 100%;
+  transition: background 0s;
+}
+
+/* -----------------------------------------
+/* New buttons > Btn Primary no background
+/* ---------------------------------------- */
+.btn.btn--primary-no-bkgnd {
+  border:1px solid #0566ff;
+  color: #0566ff;
+  background-color: #fff;
+  border-radius: 999px;
+  box-shadow: unset;
+  font-family: "Poppins","Roboto", "Arial", sans-serif;
+  text-transform: unset;
+}
+
+.btn.btn--primary-no-bkgnd:hover {
+  background-color: rgba(5, 102, 255, .2);
+  border: 1px solid #0049bd;
+  color: #0566ff;
+  box-shadow: unset;
+}
+
+.btn.btn--primary-no-bkgnd:focus {
+  background-color: rgba(5, 102, 255, .2);
+  border: 1px solid #0049bd;
+  color: #0566ff;
+  box-shadow: unset;
+}
+
+.btn.btn--primary-no-bkgnd:active {
+  background-color: rgba(5, 102, 255, .2);
+  border: 1px solid #0049bd;
+  color: #0566ff;
+  box-shadow: unset;
+}
+
+.btn.btn--ripple-primary-no-bkgnd {
+  background-position: center;
+  transition: background 0.3s;
+}
+.btn.btn.btn--ripple-primary-no-bkgnd:hover {
+  background: rgba(5, 102, 255, 1) radial-gradient(circle, transparent 1%, rgba(5, 102, 255, .2) 1%) center/15000%;
+}
+
+.btn.btn--ripple-primary-no-bkgnd:active {
+  background-color: #0049bd;
+  background-size: 100%;
+  transition: background 0s;
+}
+
+/* -----------------------------------------
+/* New buttons > Btn blu
+/* ----------------------------------------- */
+// rgb(91, 114, 167) = 5b72a7 (--light-periwinkle)
+// 7c8eb9  (--opal-violet;)
+.btn.btn--blu {
+  background-color: rgb(91, 114, 167);
+  border-color: rgb(91, 114, 167);
+  color: #fff;
+  text-transform: none;
+  border-radius: 999px;
+  box-shadow: unset;
+  font-family: "Poppins","Roboto", "Arial", sans-serif;
+}
+
+.btn.btn--blu:hover {
+  background-color: #7c8eb9;
+  border-color: #7c8eb9;
+  color: #fff;
+  box-shadow: unset;
+}
+
+.btn.btn--blu:focus {
+  background-color: #7c8eb9;
+  border-color: #7c8eb9;
+  color: #fff;
+  box-shadow: unset;
+}
+
+.btn.btn--blu:active {
+  background-color: #7c8eb9;
+  border-color: #7c8eb9;
+}
+
+.btn.btn--ripple-blu {
+  background-position: center;
+  transition: background 0.3s;
+}
+.btn.btn--ripple-blu:hover {
+  background: #7c8eb9  radial-gradient(circle, transparent 1%, #5B72A7 1%) center/15000%;
+}
+.btn.btn--ripple-blu:active {
+  background-color: #7c8eb9;
+  background-size: 100%;
+  transition: background 0s;
+}
+
+/* -----------------------------------------
+/* New buttons > Btn blu no background
+/* ---------------------------------------- */
+// rgb(91, 114, 167) = 5b72a7 (--light-periwinkle)
+// 7c8eb9  (--opal-violet;)
+.btn.btn--blu-outline {
+  border:1px solid rgb(91, 114, 167) !important;
+  color: rgb(91, 114, 167);
+  background-color: #fff;
+  border-radius: 999px !important;
+  box-shadow: unset;
+  font-family: "Poppins","Roboto", "Arial", sans-serif;
+  text-transform: unset;
+}
+
+.btn.btn--blu-outline:hover {
+  background-color: rgba(91, 114, 167, .2);
+  border: 1px solid #7c8eb9;
+  color: rgb(91, 114, 167);
+  box-shadow: unset;
+}
+
+.btn.btn--blu-outline:focus {
+  background-color: rgba(91, 114, 167, .2);
+  border: 1px solid #7c8eb9;
+  color: rgb(91, 114, 167);
+  box-shadow: unset;
+}
+
+.btn.btn--blu-outline:active {
+  background-color: rgba(91, 114, 167, .2);
+  border: 1px solid rgba(91, 114, 167, .2);
+  color: rgb(91, 114, 167);
+  box-shadow: unset;
+}
+
+.btn.btn--ripple-blu-outline {
+  background-position: center;
+  transition: background 0.3s;
+}
+.btn.btn.btn--ripple-blu-outline:hover {
+  background: rgba(91, 114, 167, .1) radial-gradient(circle, transparent 1%, rgba(91, 114, 167, .3) 1%) center/15000%;
+}
+
+.btn.btn--ripple-blu-outline:active {
+  background-color: #7c8eb9;
+  background-size: 100%;
+  transition: background 0s;
+}
+
+
+/* -----------------------------------------
+/* New buttons > new primary button 
+/* ----------------------------------------- */
+// rgb(91, 114, 167) = 5b72a7 (--light-periwinkle)
+// 7c8eb9  (--opal-violet;)
+// --indigo -> #6883d0
+//--indigo-deep -> #5b5dbc
+
+.btn.btn-p {
+  background-color: var(--indigo);
+  border-color: var(--indigo);
+  color: #fff;
+  text-transform: none;
+  border-radius: 999px;
+  box-shadow: unset;
+  font-family: "Poppins","Roboto", "Arial", sans-serif;
+}
+
+.btn.btn-p:hover {
+  background-color: var(--indigo-deep);
+  border-color: var(--indigo-deep);
+  color: #fff;
+  box-shadow: unset;
+}
+
+.btn.btn-p:focus {
+  background-color: var(--indigo-deep);
+  border-color: var(--indigo-deep);
+  color: #fff;
+  box-shadow: unset;
+}
+
+.btn.btn-p:active {
+  background-color: var(--indigo-deep);
+  border-color: var(--indigo-deep);
+}
+
+.btn.btn-p-ripple {
+  background-position: center;
+  transition: background 0.3s;
+}
+.btn.btn-p-ripple:hover {
+  background: var(--indigo-deep)  radial-gradient(circle, transparent 1%, var(--indigo) 1%) center/15000%;
+}
+.btn.btn-p-ripple:active {
+  background-color: #7c8eb9;
+  background-size: 100%;
+  transition: background 0s;
+}
+
+
+/* -----------------------------------------
+/* New buttons > new primary btn
+/* ---------------------------------------- */
+// rgb(91, 114, 167) = 5b72a7 (--light-periwinkle)
+// 7c8eb9  (--opal-violet;)
+.btn.btn-p-outline {
+  border:1px solid var(--indigo) !important;
+  color: var(--indigo);
+  background-color: #fff;
+  border-radius: 999px !important;
+  box-shadow: unset;
+  font-family: "Poppins","Roboto", "Arial", sans-serif;
+  text-transform: unset;
+}
+
+.btn.btn-p-outline:hover {
+  background-color: rgba(104, 131, 208, .2);
+  border: 1px solid var(--indigo-deep);
+  color: var(--indigo-deep);
+  box-shadow: unset;
+}
+
+.btn.btn-p-outline:focus {
+  background-color: rgba(104, 131, 208, .2);
+  border: var(--indigo-deep);
+  color: var(--indigo-deep);
+  box-shadow: unset;
+}
+
+.btn.btn-p-outline:active {
+  background-color: rgba(104, 131, 208, .2);
+  border: 1px solid var(--indigo-deep);
+  color: var(--indigo-deep);
+  box-shadow: unset;
+}
+
+.btn.btn-p-outline-ripple {
+  background-position: center;
+  transition: background 0.3s;
+}
+// .btn.btn.btn-p-outline-ripple:hover {
+//   background: var(--indigo-deep) radial-gradient(circle, transparent 1%, var(--indigo) 1%) center/15000%;
+// }
+
+.btn.btn-p-outline-ripple:active {
+  background-color: rgba(104, 131, 208, .2);
+  background-size: 100%;
+  transition: background 0s;
+}
+
+
+/* -----------------------------------------
+/* New buttons > Btn default
+/* ----------------------------------------- */
+
+.btn--default {
+  background-color: transparent;
+  border: 1px solid #d1d9e0;
+  color: #333;
+  box-shadow: none;
+  text-transform: none;
+  min-width: 160px;
+}
+
+.btn--default:hover {
+  background-color: #eff2f6;
+  border: 1px solid #acb8cb;
+  color: #333;
+}
+
+/* -----------------------------------------
+/* New buttons > Common class
+/* ----------------------------------------- */
+
+
+.btn-block {
+  display: block;
+  max-width: 100%;
+  min-width: auto;
+  width: 100%;
+}
+
+.btn-size-m {
+  font-size: 14px !important;
+  height: 34px;
+  line-height: 18px;
+  min-width: 64px;
+  padding: 0 14px;
+}
+
+.btn-size-l {
+  font-size: 16px;
+  height: 38px;
+  line-height: 20px;
+  min-width: 80px;
+  padding: 0 16px;
+}
+
+.btn-size-xl {
+  font-size: 18px;
+  height: 48px;
+  line-height: 20px;
+  min-width: 80px;
+  padding: 0 24px;
+}
+
+
+
+// https://github.com/ng-select/ng-select/issues/608
+// .ng-select.custom {
+//   .ng-select-container {
+//     height: 42px;
+//     background-color: $nav-active-gray;
+//     border: 1px solid $form-input-border;
+//     .ng-value-container {
+//       color: $select-font-color;
+
+//       .ng-placeholder {
+//         color: $select-font-color;
+//       }
+//     }
+//   }
+// }
+
+/*
+/* CUSTOMIZED NG-SELECT
+/* -------------------------------------------------- */
+
+// ------------------------------
+// ticket-priority select
+// ------------------------------
+.ng-select.ticket-priority .ng-select-container { 
+  background-color: var(--select-background);
+  color: var(--text-color);
+  // border: var(--select-border);
+}
+
+.ng-select.ticket-priority .ng-select-container  .ng-value-container .ng-placeholder {
+  color: var(--secondary-text-color);
+}
+
+.ng-dropdown-panel.ticket-priority {
+  background-color: var(--select-background);
+  border: 1px solid var(--select-background);
+}
+
+.ticket-priority .ng-dropdown-panel {
+  background-color: var(--select-background);
+}
+
+.ng-select.ticket-priority.ng-select-opened > .ng-select-container {
+  background-color: var(--select-background) !important;
+  // border: var(--select-opened-border);
+}
+
+.ticket-priority .ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
+  background-color: var(--select-background) !important;
+  color: var(--text-color)
+}
+
+.ticket-priority .ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
+  background-color: var(--select-background)!important;
+  color: var(--text-color);
+}
+
+.ticket-priority .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked {
+  background-color: var(--select-background-marked) !important;
+  color: var(--text-color) !important;
+}
+
+// ------------------------------
+// ticket-followers select
+// ------------------------------
+.ng-select.ticket-followers .ng-select-container { 
+  background-color: var(--select-background);
+  color: var(--text-color);
+  // border: var(--select-border);
+}
+
+.ng-select.ticket-followers .ng-select-container  .ng-value-container .ng-placeholder {
+  color: var(--secondary-text-color);
+}
+
+.ng-dropdown-panel.ticket-followers{
+  background-color: var(--select-background);
+  border: 1px solid var(--select-background);
+}
+
+.ticket-followers .ng-dropdown-panel {
+  background-color: var(--select-background);
+}
+
+.ng-select.ticket-followers.ng-select-opened > .ng-select-container {
+  background-color: var(--select-background) !important;
+  // border: var(--select-opened-border);
+}
+
+.ticket-followers .ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
+  background-color: var(--select-background) !important;
+  color: var(--text-color)
+}
+
+.ticket-followers .ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
+  background-color: var(--select-background)!important;
+  color: var(--text-color);
+}
+
+.ticket-followers .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked {
+  background-color: var(--select-background-marked) !important;
+  color: var(--text-color) !important;
+}
+
+
+// ----------------------------
+// convs-tags select
+// ----------------------------
+.ng-select.convs-tags .ng-select-container { 
+  background-color: var(--select-background);
+  color: var(--text-color);
+  // border: var(--select-border);
+}
+
+.ng-select.convs-tags .ng-select-container  .ng-value-container .ng-placeholder {
+  color: var(--secondary-text-color)
+}
+
+.ng-dropdown-panel.convs-tags {
+  background-color: var(--select-background);
+  border: 1px solid var(--select-background);
+}
+
+.convs-tags .ng-dropdown-panel {
+  background-color: var(--select-background);
+}
+
+.ng-select.convs-tags.ng-select-opened > .ng-select-container {
+  background-color: var(--select-background) !important;
+  // border: var(--select-opened-border);
+}
+
+.convs-tags .ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
+  background-color: var(--select-background) !important;
+  color: var(--text-color)
+}
+
+.convs-tags .ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
+  background-color: var(--select-background)!important;
+  color: var(--text-color);
+}
+
+.convs-tags .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked {
+  background-color: var(--select-background-marked) !important;
+  color: var(--text-color) !important;
+}
+
+// -------------------------
+// add-contact-t select
+// -------------------------
+.ng-select.add-contact-tag .ng-select-container { 
+  background-color: var(--select-background) !important;
+  color: var(--text-color);
+  border: var(--select-border);
+}
+
+.ng-select.add-contact-tag .ng-select-container  .ng-value-container .ng-placeholder {
+  color: var(--secondary-text-color);
+}
+
+.ng-dropdown-panel.add-contact-tag {
+  background-color: var(--select-background);
+  border: 1px solid var(--select-background);
+}
+
+.add-contact-tag .ng-dropdown-panel {
+  background-color: var(--select-background);
+}
+
+.ng-select.add-contact-tag.ng-select-opened > .ng-select-container {
+  background-color: var(--select-background) !important;
+  // border: var(--select-opened-border);
+}
+
+.add-contact-tag .ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
+  background-color: var(--select-background) !important;
+  color: var(--text-color)
+}
+
+.add-contact-tag .ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
+  background-color: var(--select-background)!important;
+  color: var(--text-color);
+}
+
+.add-contact-tag .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked {
+  background-color: var(--select-background-marked) !important;
+  color: var(--text-color) !important;
+}
+
+// ----------------------------------
+// add contact property select 
+// ----------------------------------
+.ng-select.contact-property .ng-select-container { 
+  background-color: var(--select-background) !important;;
+  color: var(--text-color);
+  border: var(--select-border);
+}
+
+.ng-select.contact-property .ng-select-container  .ng-value-container .ng-placeholder {
+  color: var(--secondary-text-color)
+}
+
+.ng-dropdown-panel.contact-property {
+  background-color: var(--select-background);
+  border: 1px solid var(--select-background);
+}
+
+.add-contact-tag .contact-property  {
+  background-color: var(--select-background);
+}
+
+.ng-select.contact-property.ng-select-opened > .ng-select-container {
+  background-color: var(--select-background) !important;
+  // border: var(--select-opened-border);
+}
+
+
+.contact-property .ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
+  background-color: var(--select-background) !important;
+  color: var(--text-color)
+}
+
+.contact-property .ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
+  background-color: var(--select-background)!important;
+  color: var(--text-color);
+}
+
+.contact-property .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked {
+  background-color: var(--select-background-marked) !important;
+  color: var(--text-color) !important;
+}
+
+// ----------------------
+// Shared close button
+// ----------------------
+.close--round-btn {
+  border: none !important;
+  float: right !important;
+  border-radius: 50%;
+  // color: rgb(235, 234, 235);
+  height: 36px;
+  width: 36px;
+  background-color: var(--btn-background-color)
+}
+
+.close--round-btn:hover>span {
+  // color: rgba(60, 72, 88, .6) !important;
+  opacity: .6;
+}
+
+.close--round-btn>span {
+  font-size: 31px;
+  color: var(--btn-color) !important;
+}
+
+::ng-deep .conv-dtls-custom-mat-tooltip {
+  background-color: var(--dark-background);
+  color: var(--text-color-on-dark);
+  font-size: 12px !important;
+  border-radius: 2px !important;
+  font-family: var(--header-font-family);
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+  white-space: pre-line !important;
+  text-align: center !important;
+  line-height: 17px !important;
+}
