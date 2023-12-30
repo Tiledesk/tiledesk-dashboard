@@ -52,7 +52,7 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
   videoURL: any;
   DIPLAY_CUSTOM_SUBTITLE: boolean;
   isLoading= true;
-
+  
   templtId = ['651a87648cb2c70013d80d8b', '651e66be6717f500135f41b9', '6529582c23034f0013ee1af6', '651ecc5749598e0013305876', '651fc9ef8c10e70013b6e240', '651ad6c1bfdf310013ca90d7']
   videoSource = [
     { _id: '651a87648cb2c70013d80d8b', source: 'https://videos.files.wordpress.com/TOZV61Dq/demo-booking-bot.mp4' },
@@ -189,7 +189,7 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
     // this.logger.log('[BOTS-TEMPLATES] - GET ALL TEMPLATES route', this.route);
     this.faqKbService.getTemplates().subscribe((res: any) => {
 
-      if (res) {
+      
         // this.certfifiedTemplates = res
         // console.log('[CNP-TEMPLATES] - GET ALL TEMPLATES RES', res);
         if (res) {
@@ -245,7 +245,7 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
         }
         // console.log('[CNP-TEMPLATES] - GET ALL TEMPLATES templates', this.templates);
 
-      }
+     
 
     }, (error) => {
       this.logger.error('[CNP-TEMPLATES] GET TEMPLATES ERROR ', error);

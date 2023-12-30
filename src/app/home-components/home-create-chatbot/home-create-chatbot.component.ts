@@ -48,7 +48,8 @@ export class HomeCreateChatbotComponent implements OnInit, OnChanges {
   botDefaultSelectedLangCode: string = 'en'
   language: string;
   chatbotName: string
-  newBot_Id: string
+  newBot_Id: string;
+  templtId = ['651a87648cb2c70013d80d8b', '6529582c23034f0013ee1af6', '651ecc5749598e0013305876', '651ad6c1bfdf310013ca90d7']
   constructor(
     public appConfigService: AppConfigService,
     public auth: AuthService,
@@ -101,28 +102,30 @@ export class HomeCreateChatbotComponent implements OnInit, OnChanges {
     this.faqKbService.getTemplates().subscribe((res: any) => {
 
       if (res) {
-
-
+        console.log('[HOME-CREATE-CHATBOT] res before filter' ,res)
+        const filterdres = res.filter((item) => {
+          return this.templtId.includes(item._id)
+        });
         // ---------------------------------------------------------------------
-        // Customer Satisfaction templates
+        // Customer Satisfaction templates "24/7 Customer Service" -> "651ad6c1bfdf310013ca90d7" "Customer Satisfaction" -> "651ecc5749598e0013305876"
         // ---------------------------------------------------------------------
-        this.customerSatisfactionTemplates = res.filter((obj) => {
+        this.customerSatisfactionTemplates = filterdres.filter((obj) => {
           return obj.mainCategory === "Customer Satisfaction"
         });
         if (use_case === 'solve_customer_problems') {
           this.templates = this.customerSatisfactionTemplates
-          this.logger.log('[HOME-CREATE-CHATBOT] - TEMPLATES (solve_customer_problems)', this.templates)
+          console.log('[HOME-CREATE-CHATBOT] - TEMPLATES (Customer Satisfaction)', this.templates)
         }
         this.logger.log('[HOME-CREATE-CHATBOT] - TEMPLATES Customer Satisfaction TEMPLATES', this.customerSatisfactionTemplates);
         // ---------------------------------------------------------------------
         // Customer Increase Sales
         // ---------------------------------------------------------------------
-        this.increaseSalesTemplates = res.filter((obj) => {
+        this.increaseSalesTemplates = filterdres.filter((obj) => {
           return obj.mainCategory === "Increase Sales"
         });
         if (use_case === 'increase_online_sales') {
           this.templates = this.increaseSalesTemplates
-          this.logger.log('[HOME-CREATE-CHATBOT] - TEMPLATES (solve_customer_problems)', this.templates)
+          console.log('[HOME-CREATE-CHATBOT] - TEMPLATES (Increase Sales)', this.templates)
         }
         this.logger.log('[HOME-CREATE-CHATBOT] - TEMPLATES Increase Sales TEMPLATES', this.increaseSalesTemplates);
 
@@ -383,9 +386,9 @@ export class HomeCreateChatbotComponent implements OnInit, OnChanges {
   presentModalAddBotFromScratch() {
  
     this.logger.log('[HOME-CREATE-CHATBOT] - presentModalAddBotFromScratch ');
-    const addKbBtnEl = <HTMLElement>document.querySelector('#home-material-btn');
+    const createBotFromScratchBtnEl = <HTMLElement>document.querySelector('#home-material-btn');
     // this.logger.log('[HOME-CREATE-CHATBOT] - presentModalAddBotFromScratch addKbBtnEl ', addKbBtnEl);
-    addKbBtnEl.blur()
+    createBotFromScratchBtnEl.blur()
     const dialogRef = this.dialog.open(HomeCreateChatbotModalComponent, {
       width: '600px',
       // data: {

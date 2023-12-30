@@ -7,8 +7,7 @@
 <!-- -------------------------------------------------------------------------------- -->
 
 <div class="overlay" style="display: none;" [ngStyle]="{ 'height': elemHomeMainContentHeight }"></div>
-<div class="main-content home-main-content"
-  style="padding-top: 8px; padding-left: 0px ; padding-right: 0px;margin-top: 0px; background: rgb(241,245,249);">
+<div class="main-content home-main-content">
   <div class="container-fluid " style="max-width: 100%;padding-right: 0px; padding-left: 0px;">
 
     <div class="home-project">
@@ -109,8 +108,9 @@
                 <!-- ------------------------------------ -->
                 <!-- {{'AdjustOperatingHours' | translate}} -->
                 <ng-container *ngIf="isVisibleOPH && USER_ROLE !== 'agent'">
-                  <button mat-mini-fab aria-label="date_range icon"
-                    style="box-shadow: unset;margin-right: 16px; position: relative; background-color: #fff;"
+                  <button id="adjust-operating-hours-btn" 
+                    #editOperatingHoursBtn
+                    mat-mini-fab aria-label="date_range icon"
                     [satPopoverAnchor]="editOperatingHours" 
                     (click)="editOperatingHours.toggle();"
                     matTooltipClass="custom-mat-tooltip" 
@@ -124,10 +124,15 @@
                     </mat-icon>
                   </button>
 
-                  <sat-popover #editOperatingHours id="edit-operating-hours" horizontalAlign="center"
-                    verticalAlign="center" hasBackdrop (backdropClicked)="editOperatingHours.close()"
-                    panelClass="edit-operating-hours" interactiveClose="false">
-                    <div class="edit-operating-hours-content-wpr" style="padding-top: 8px;padding-bottom: 8px;">
+                  <sat-popover #editOperatingHours id="edit-operating-hours"
+                    horizontalAlign="center"
+                    verticalAlign="center" 
+                    hasBackdrop 
+                    (backdropClicked)="editOperatingHours.close(); operatingHoursPopoverClosed()"
+                    panelClass="edit-operating-hours" 
+                    interactiveClose="false">
+                    <div class="edit-operating-hours-content-wpr" 
+                    style="padding-top: 8px;padding-bottom: 8px;">
 
                       <div
                         style="align-items: center;color: rgba(0,0,0,.55); display: flex;padding-left: 16px;padding-right: 16px;">
@@ -172,22 +177,25 @@
                 <!-- ------------------------------------ -->
                 <!-- Settings  mat-primary ng-reflect-color="primary"  -->
                 <!-- ------------------------------------ -->
-                <button *ngIf="USER_ROLE !== 'agent'" mat-flat-button="" [matMenuTriggerFor]="dashletMenu"
-                  class="mat-focus-indicato mat-flat-button mat-button-base"
-                  style="background-color: #fff ; color: #fff;margin-right: 4px;">
-                  <span class="mat-button-wrapper">
-                    <mat-icon style="margin-right: 8px; color: #2196f3">
+                <button id="dashlet-filter-btn" *ngIf="USER_ROLE !== 'agent'" 
+                  mat-mini-fab aria-label="filter icon"
+                  [matMenuTriggerFor]="dashletMenu"
+                  matTooltipClass="custom-mat-tooltip" 
+                  matTooltip="Dashlets filter" 
+                  #tooltip="matTooltip"
+                  matTooltipPosition='below'
+                  matTooltipHideDelay="100">
+                  <!-- <span class="mat-button-wrapper"> -->
+                    <mat-icon style="color: #2196f3;position: relative; top: -1px;">
                       tune
                     </mat-icon>
                     <!-- <span class="ml-2 button-dashlet-settings">
                       <!- - {{'ViewOption' | translate}} - ->
                       View Options
                     </span> -->
-                  </span>
-                  <span matripple="" class="mat-ripple mat-button-ripple" ng-reflect-disabled="false"
-                    ng-reflect-centered="false" ng-reflect-trigger="[object HTMLButtonElement]">
-                  </span>
-                  <span class="mat-button-focus-overlay"> </span>
+                  <!-- </span> -->
+                
+  
                 </button>
 
                 <mat-menu #dashletMenu="matMenu">

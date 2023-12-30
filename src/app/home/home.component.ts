@@ -53,7 +53,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @ViewChild('childWhatsappAccount', { static: false, read: ElementRef }) public childWhatsappAccount;
   @ViewChild('childCreateChatbot', { static: false, read: ElementRef }) public childCreateChatbot;
-
+  @ViewChild('editOperatingHoursBtn', { static: false, read: ElementRef }) public editOperatingHoursBtn;
+  
 
   // company_name = brand.company_name;
   // tparams = brand;
@@ -353,6 +354,13 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         this.showskeleton = false;
       }, 1200);
     });
+  }
+
+  operatingHoursPopoverClosed() {
+    this.logger.log('[HOME] - operatingHoursPopoverClosed');
+    // const editOperatingHoursBtnEl = <HTMLElement>document.querySelector('#adjust-operating-hours-btn');
+    this.logger.log('[HOME] - operatingHoursPopoverClosed editOperatingHoursBtn', this.editOperatingHoursBtn);
+    this.editOperatingHoursBtn.nativeElement.blur();
   }
 
   getDashlet(project_attributes) {
@@ -2933,6 +2941,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.logger.log('[HOME]  »»»»»»» AVAILABLE PROJECT USERS ', available_project)
     })
   }
+
+ 
 
 
 

@@ -94,20 +94,21 @@
   justify-content: flex-start;
   -webkit-box-align: center;
   align-items: center;
-  gap: 6px;
+  // gap: 6px;
+  gap: 12px;
 }
 
 .suggested-templates-card {
   display: flex;
-  // width: 215px;
-  width: 235px;
   border-radius: 6px;
   cursor: pointer;
   background: #f5f7f9;
   padding: 8px;
   flex-direction: row;
-  // height: 90px;
-  height: 115px;
+  // width: 235px;
+  // height: 115px;
+  width: 145px;
+  height: 179px;
   transition: all 0.25s cubic-bezier(0.25, 1, 0.5, 1) 0s;
   position: relative;
 }
@@ -118,6 +119,20 @@
   box-shadow: rgba(0, 27, 71, 0.12) 0px 12px 32px;
 }
 
+
+.templates-card-title-and-description {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  background: rgba(0, 0, 0, .6);
+  height: 85px;
+  margin-top: 85px;
+  margin-left: -7px;
+  margin-right: -7px;
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+}
+
 .suggested-templates-use-template>span {
   cursor: pointer;
   color: #2196f3;
@@ -125,7 +140,7 @@
 }
 
 .suggested-templates-use-template:hover>span {
- text-decoration: underline;
+  text-decoration: underline;
 }
 
 // .suggested-templates-card {
@@ -143,6 +158,20 @@
   display: -webkit-box;
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
+}
+
+.suggested-templates-card-title-nw {
+  display: flex;
+  align-items: center;
+  height: 90px;
+  justify-content: center;
+  color: #fff;
+  text-align: center;
+  font-size: 14px;
+  padding: 8px;
+  width: 145px;
+  font-weight: 400;
+  line-height: 1.2em;
 }
 
 .suggested-templates-card-description {
@@ -521,7 +550,7 @@ body {
   border: 1px solid #eee;
 }
 
-.other-chatbots:hover { 
+.other-chatbots:hover {
   color: rgb(33, 150, 243);
 }
 
@@ -701,4 +730,30 @@ body {
   background: #fff;
   top: 28px !important;
   left: 32px !important;
+}
+
+
+#container {
+  display: flex;
+  flex-direction: row;
+  margin-top: -25px;
+}
+
+#left {
+  width: 320px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  // border-left: 1px solid black;
+}
+
+#right {
+  height: 100%;
+  // display: flex;
+}
+
+#right-container {
+  flex-grow: 1;
+  // border: 20px solid black;
+  // margin: 50px;
 }
