@@ -1,5 +1,11 @@
 # tiledesk-dashboard
 
+### 2.4.89
+- Deploys in production
+- Fixes the link available in the footer "Leave us feedback"
+- Changes "Getting started for admin" documentation link
+- Replaces "Getting Started with Agents" in the News Feed carousel with "Getting Started with AI Automation and Chatbots"
+
 ### 2.4.88
 - Deploys in production
 - Adds a button on the Home page that opens the latest updated chatbot in the design studio
