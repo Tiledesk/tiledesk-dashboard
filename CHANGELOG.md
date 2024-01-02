@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.4.90
+- Deploys in production
+- Manages the home section "YOUR CURRENT CHATBOT DESIGN" when no chatbot has been created yet
+
 ### 2.4.89
 - Deploys in production
 - Fixes the link available in the footer "Leave us feedback"
