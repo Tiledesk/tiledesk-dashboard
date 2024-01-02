@@ -751,20 +751,8 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
           this.logger.log('[NAVBAR] -> OPERATING_HOURS_ACTIVE ', this.OPERATING_HOURS_ACTIVE);
         }
-        // this.prjct_profile_name = this.project.profile_name;
-        // this.prjct_trial_expired = this.project.trial_expired;
-        // this.prjc_trial_days_left = this.project.trial_days_left;
-        // // this.prjc_trial_days_left_percentage = ((this.prjc_trial_days_left *= -1) * 100) / 30
-        // this.prjc_trial_days_left_percentage = (this.prjc_trial_days_left * 100) / 30;
-
-        // // this.prjc_trial_days_left_percentage IT IS 
-        // // A NEGATIVE NUMBER AND SO TO DETERMINE THE PERCENT IS MADE AN ADDITION
-        // const perc = 100 + this.prjc_trial_days_left_percentage
-        // this.logger.log('SIDEBAR project perc ', perc)
-
-
-        // this.prjc_trial_days_left_percentage = this.round5(perc)
-        // this.logger.log('SIDEBAR project trial days left % rounded', this.prjc_trial_days_left_percentage);
+    
+        this.getProjects()
       }
     });
   }

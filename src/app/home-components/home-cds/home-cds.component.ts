@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'app/core/auth.service';
 import { Chatbot } from 'app/models/faq_kb-model';
@@ -16,7 +16,7 @@ import { takeUntil } from 'rxjs/operators'
   styleUrls: ['./home-cds.component.scss']
 })
 export class HomeCdsComponent implements OnInit {
-
+  @Output() goToCreateChatbot = new EventEmitter();
   private unsubscribe$: Subject<any> = new Subject<any>();
   USER_ROLE: string;
   projectId: string;
@@ -26,6 +26,7 @@ export class HomeCdsComponent implements OnInit {
   chatbots:  Array<Chatbot> = [];
   chatbotName: string;
   lastUpdatedChatbot: Chatbot;
+  
 
   constructor(
     public appConfigService: AppConfigService,
@@ -106,23 +107,26 @@ export class HomeCdsComponent implements OnInit {
 
   getProjectBots(storage, uploadEngineIsFirebase) {
     this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
-     
-      faqKb.sort(function compare(a: Chatbot, b: Chatbot) {
-        if (a['updatedAt'] > b['updatedAt']) {
-          return -1;
-        }
-        if (a['updatedAt'] < b['updatedAt']) {
-          return 1;
-        }
-        return 0;
-      });
+      this.chatbots = faqKb
+      if (this.chatbots &&  this.chatbots.length > 0) {
+        
+        this.chatbots.sort(function compare(a: Chatbot, b: Chatbot) {
+          if (a['updatedAt'] > b['updatedAt']) {
+            return -1;
+          }
+          if (a['updatedAt'] < b['updatedAt']) {
+            return 1;
+          }
+          return 0;
+        });
 
-      this.logger.log('[HOME-CDS] - GET FAQKB RES (sorted)', faqKb);
- 
-      this.chatbotName = faqKb[0].name
-      this.lastUpdatedChatbot = faqKb[0]
-      this.logger.log('[HOME-CDS] - GET FAQKB lastUpdatedChatbot', this.lastUpdatedChatbot);
-
+        this.logger.log('[HOME-CDS] - GET FAQKB RES (sorted)', this.chatbots);
+  
+        this.chatbotName = this.chatbots[0].name;
+        this.lastUpdatedChatbot = this.chatbots[0];
+        this.logger.log('[HOME-CDS] - lastUpdatedChatbot ', this.lastUpdatedChatbot);
+        this.logger.log('[HOME-CDS] - GET FAQKB lastUpdatedChatbot', this.lastUpdatedChatbot);
+      } 
   
     }, (error) => {
       this.logger.error('[HOME-CDS] - GET FAQKB - ERROR ', error);
@@ -134,9 +138,13 @@ export class HomeCdsComponent implements OnInit {
 
   goToBotProfile() {
     if (this.USER_ROLE !== 'agent') {
-      // this.router.navigate(['project/' + this.project._id + '/tilebot/intents/', bot_id, botType]);
-      // this.router.navigate(['project/' + this.projectId + '/cds/', bot._id, 'intent', '0', 'h']);
-      goToCDSVersion(this.router, this.lastUpdatedChatbot, this.projectId, this.appConfigService.getConfig().cdsBaseUrl)
+      if (this.chatbots?.length > 0) {
+          // this.router.navigate(['project/' + this.project._id + '/tilebot/intents/', bot_id, botType]);
+          // this.router.navigate(['project/' + this.projectId + '/cds/', bot._id, 'intent', '0', 'h']);
+          goToCDSVersion(this.router, this.lastUpdatedChatbot, this.projectId, this.appConfigService.getConfig().cdsBaseUrl)
+        } else if (this.chatbots?.length === 0) {
+          this.goToCreateChatbot.emit()
+        }
     }
   }
 

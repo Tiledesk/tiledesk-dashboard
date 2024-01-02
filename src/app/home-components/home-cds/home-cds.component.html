@@ -29,19 +29,25 @@
             </div>
         </div>
 
-        <div class="title-container">
+        <div  class="title-container">
             <div class="home-cds-section-title">
                 YOUR CURRENT CHATBOT DESIGN
             </div>
-            <div class="home-cds-section-subtitle">
+            <div *ngIf="chatbots?.length > 0" class="home-cds-section-subtitle">
                 Open the Studio to start editing <b> {{ chatbotName }} </b> chatbot
+            </div>
+            <div *ngIf="chatbots?.length === 0" class="home-cds-section-subtitle">
+                You don't have any chatbot yet
             </div>
         </div>
 
         <div class="button-container">
             <button class="btn btn-size-xl btn-p  btn-p-ripple" style="background: #2196f3;" (click)="goToBotProfile()">
-                <span>
+                <span *ngIf="chatbots?.length > 0">
                     Edit chatbot
+                </span>
+                <span *ngIf="chatbots?.length === 0">
+                    Create your first chatbot
                 </span>
             </button>
         </div>

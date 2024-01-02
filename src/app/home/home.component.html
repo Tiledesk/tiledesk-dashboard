@@ -426,7 +426,7 @@
           <ng-container *ngIf="!showskeleton ">
             <span *ngIf="USER_ROLE !== 'agent'">
 
-              <home-cds> </home-cds>
+              <home-cds (goToCreateChatbot)="goToCreateChatbot()"> </home-cds>
 
               <div class="home--blocks" id="homeBlocks" *ngFor="let item of child_list_order">
 
@@ -499,8 +499,10 @@
                 <!-- ----------------------- -->
                 <ng-container *ngIf="item.type === 'child5'">
                   <appdashboard-home-create-chatbot #childCreateChatbot *ngIf="displayCreateChatbot"
-                    [use_case_for_child]="use_case_for_child" [solution_channel_for_child]="solution_channel_for_child"
-                    [waBotId]="waBotId" [wadepartmentName]="wadepartmentName"
+                    [use_case_for_child]="use_case_for_child" 
+                    [solution_channel_for_child]="solution_channel_for_child"
+                    [waBotId]="waBotId" 
+                    [wadepartmentName]="wadepartmentName"
                     [chatbotConnectedWithWA]="chatbotConnectedWithWA"
                     (botHookedToDefaultDept)="botHookedToDefaultDept($event)"
                     (trackUserAction)="trackUserAction($event)">
