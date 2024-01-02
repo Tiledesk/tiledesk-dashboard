@@ -30,15 +30,16 @@
         </div>
 
         <div  class="title-container">
-            <div class="home-cds-section-title">
+            <div *ngIf="chatbots?.length > 0" class="home-cds-section-title">
                 YOUR CURRENT CHATBOT DESIGN
+            </div>
+            <div *ngIf="chatbots?.length === 0" class="home-cds-section-title">
+                You don't have any chatbot yet
             </div>
             <div *ngIf="chatbots?.length > 0" class="home-cds-section-subtitle">
                 Open the Studio to start editing <b> {{ chatbotName }} </b> chatbot
             </div>
-            <div *ngIf="chatbots?.length === 0" class="home-cds-section-subtitle">
-                You don't have any chatbot yet
-            </div>
+           
         </div>
 
         <div class="button-container">
