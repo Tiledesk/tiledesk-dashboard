@@ -1976,8 +1976,10 @@ appdashboard-app-store > div > div > div > div > .card-app-store {
 // rgb(91, 114, 167) = 5b72a7 (--light-periwinkle)
 // 7c8eb9  (--opal-violet;)
 .btn.btn-p-outline {
-  border:1px solid var(--indigo) !important;
-  color: var(--indigo);
+  // border:1px solid var(--indigo) !important;
+  // color: var(--indigo);
+  border:1px solid var(--blue-turquoise) !important;
+  color: var(--blue-turquoise);
   background-color: #fff;
   border-radius: 999px !important;
   box-shadow: unset;
@@ -1987,8 +1989,10 @@ appdashboard-app-store > div > div > div > div > .card-app-store {
 
 .btn.btn-p-outline:hover {
   background-color: rgba(104, 131, 208, .2);
-  border: 1px solid var(--indigo-deep);
-  color: var(--indigo-deep);
+  // border: 1px solid var(--indigo-deep);
+  // color: var(--indigo-deep);
+  border: 1px solid var(--vivid-blue);
+  color: var(--vivid-blue);
   box-shadow: unset;
 }
 

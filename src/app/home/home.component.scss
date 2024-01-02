@@ -2879,7 +2879,7 @@ img {
 .home-blocks-wpr {
   // border-top: 1px solid rgb(226, 232, 240);
   margin-top: -1px;
-  background-color: rgb(241, 245, 249);
+  // background-color: rgb(241, 245, 249);
   padding: 45px 80px 18px;
   max-width: 994px;
   // margin: 0px auto;
@@ -3085,3 +3085,11 @@ img {
 }
 
 // END SKELETON STYLE
+
+
+.news-feed-wpr {
+  // background-color: rgb(241, 245, 249);
+  background-color: #fcfcfc;
+  padding-left: 15px;
+  padding-right: 15px;
+}
