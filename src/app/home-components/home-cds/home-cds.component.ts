@@ -106,23 +106,23 @@ export class HomeCdsComponent implements OnInit {
 
   getProjectBots(storage, uploadEngineIsFirebase) {
     this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
-     
-      faqKb.sort(function compare(a: Chatbot, b: Chatbot) {
-        if (a['updatedAt'] > b['updatedAt']) {
-          return -1;
-        }
-        if (a['updatedAt'] < b['updatedAt']) {
-          return 1;
-        }
-        return 0;
-      });
+      if (faqKb) {
+        faqKb.sort(function compare(a: Chatbot, b: Chatbot) {
+          if (a['updatedAt'] > b['updatedAt']) {
+            return -1;
+          }
+          if (a['updatedAt'] < b['updatedAt']) {
+            return 1;
+          }
+          return 0;
+        });
 
-      this.logger.log('[HOME-CDS] - GET FAQKB RES (sorted)', faqKb);
+        this.logger.log('[HOME-CDS] - GET FAQKB RES (sorted)', faqKb);
  
-      this.chatbotName = faqKb[0].name
-      this.lastUpdatedChatbot = faqKb[0]
-      this.logger.log('[HOME-CDS] - GET FAQKB lastUpdatedChatbot', this.lastUpdatedChatbot);
-
+        this.chatbotName = faqKb[0].name
+        this.lastUpdatedChatbot = faqKb[0]
+        this.logger.log('[HOME-CDS] - GET FAQKB lastUpdatedChatbot', this.lastUpdatedChatbot);
+      }
   
     }, (error) => {
       this.logger.error('[HOME-CDS] - GET FAQKB - ERROR ', error);
