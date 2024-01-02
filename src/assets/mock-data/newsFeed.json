@@ -2,19 +2,19 @@
     {
         "tag": "Academy",
         "title": "Getting started for admin",
-        "image": "https://tiledesk.com/wp-content/uploads/2023/06/Getting-started-for-admin_v2.png",
+        "image": "https://tiledesk.com/wp-content/uploads/2023/12/getting-started-for-admin_v2.png",
         "description": "",
-        "learnmore": "https://docs.tiledesk.com/knowledge-base-category/getting-started-for-admins/",
+        "learnmore": "https://gethelp.tiledesk.com/categories/manage-your-workspace/",
         "type": "article",
         "highlighted": false
     
     },
     {
         "tag": "Academy",
-        "title": "Getting started for agents",
-        "image": "https://tiledesk.com/wp-content/uploads/2023/06/Getting-started-for-agent.png",
+        "title": "Getting started with AI chatbots and automation",
+        "image": "https://tiledesk.com/wp-content/uploads/2023/12/getting-started-with_chatbot.png",
         "description": "",
-        "learnmore": "https://docs.tiledesk.com/knowledge-base-category/getting-started-for-agents/",
+        "learnmore": "https://gethelp.tiledesk.com/categories/ai-chatbots-and-automation/",
         "type": "article",
         "highlighted": false
        
