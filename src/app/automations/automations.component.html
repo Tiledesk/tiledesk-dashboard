@@ -31,6 +31,12 @@
               Reload</button>
           </div>
 
+          <div *ngIf="transactions.length === 0" class="no-automations">
+            <span class="material-icons-outlined automation-icon">hdr_auto</span>
+            <p>You haven't created any automation yet.</p>
+            <!-- <a>Create one now</a> -->
+          </div>
+
           <div class="automation-list">
 
             <div class="automation" *ngFor="let transaction of transactions"
@@ -55,7 +61,7 @@
               </div>
 
               <div *ngIf="transaction.channel === 'whatsapp'" class="channel-chip">
-                <img src="../../assets/img/whatsapp-small.png" width="22" height="auto">
+                <img src="assets/img/whatsapp-small.png" width="22" height="auto">
                 WhatsApp
               </div>
 
@@ -86,31 +92,31 @@
             <p class="subtitle">Automation Stats</p>
 
             <div class="stats">
-              <span class="stat"> 
-                <span class="material-icons-round counter-icon complete">done_all</span> 
-                <label>Read:</label> <span>{{ read_count }}</span> 
+              <span class="stat">
+                <span class="material-icons-round counter-icon complete">done_all</span>
+                <label>Read:</label> <span>{{ read_count }}</span>
               </span>
               <span class="stat">
-                <span class="material-icons-round counter-icon pending">done_all</span> 
+                <span class="material-icons-round counter-icon pending">done_all</span>
                 <label>Delivered:</label> {{ delivered_count }}
               </span>
               <span class="stat">
-                <span class="material-icons-round counter-icon pending">done</span> 
+                <span class="material-icons-round counter-icon pending">done</span>
                 <label>Sent:</label> {{ sent_count }}
               </span>
               <span class="stat">
-                <span class="material-icons-round counter-icon pending">schedule</span> 
+                <span class="material-icons-round counter-icon pending">schedule</span>
                 <label>Accepted:</label> {{ accepted_count }}
               </span>
               <span class="stat">
-                <span class="material-icons-round counter-icon error">error_outline</span> 
+                <span class="material-icons-round counter-icon error">error_outline</span>
                 <label>Rejected:</label> {{ failed_count }}
               </span>
               <span class="stat">
-                <span class="material-icons-round counter-icon error">error_outline</span> 
+                <span class="material-icons-round counter-icon error">error_outline</span>
                 <label>Failed:</label> {{ rejected_count }}
               </span>
-            </div>            
+            </div>
 
           </div>
 
@@ -122,7 +128,7 @@
           </div>
 
           <div class="logs-list">
-         
+
             <mat-expansion-panel *ngFor="let log of logs" style="border-radius: 0px;">
               <mat-expansion-panel-header>
                 <mat-panel-title>
