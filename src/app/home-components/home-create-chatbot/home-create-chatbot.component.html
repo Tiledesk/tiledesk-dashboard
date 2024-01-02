@@ -142,7 +142,7 @@
                     <ng-container *ngFor="let template of templates | slice:0:2; let i=index ">
                         <div class="suggested-templates-card" (click)="openDialog(template)" 
                         [ngClass]="{'customer-satifaction-manage-support-requests': template._id === '651ecc5749598e0013305876',
-                                    'customer-satifaction-24/7-customer-service': template._id === '651ad6c1bfdf310013ca90d7'}">
+                                    'customer-satifaction-all-the-time-customer-service': template._id === '651ad6c1bfdf310013ca90d7'}">
                             <!-- <div class="suggested-templates-card-image">
                             <span *ngIf="!template?.bigImage">
                                 <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE" style="width: 40px; height: 40px;"
