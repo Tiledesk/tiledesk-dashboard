@@ -101,17 +101,13 @@
         Your chatbots
       </div>
       <div class="hc-chatbot-count-btn-wpr">
-        <button class="btn btn-size-xl btn-p-outline btn-p-ripple" style="margin-top: 0px; max-height: 45px;
-                min-width: 270px; font-size: 16px" (click)="goToMyChatbots()">
-          <div class="btn-content" style="display: flex;
-                flex-direction: row;
-                justify-content: space-between;
-                align-items: center;">
+        <button id="hc-chatbot-count-btn" class="btn btn-size-xl btn-p-outline btn-p-ripple" style=""
+          (click)="goToMyChatbots()">
+          <div class="btn-content" style="">
             <div class="btn--text">
               Your chatbots
             </div>
-            <div class="btn--bot-count" style="    min-width: 18px;
-            text-align: center;">
+            <div class="btn--bot-count" style="">
               {{countOfChatbots}}
             </div>
           </div>
@@ -120,24 +116,19 @@
 
       <div class="start-from-scratch-btn-wpr">
         <!-- border-radius: 4px!important; -->
-        <button id="home-material-btn" class="btn btn-size-xl btn-p btn-p-ripple"
-          style="min-width: 270px; max-height: 45px; font-size: 16px" (click)="presentModalAddBotFromScratch()">
-          <div class="btn-content" style="display: flex;
-          flex-direction: row;
-          justify-content: space-between;
-          align-items: center;">
+        <button id="start-from-scratch-btn" class="btn btn-size-xl btn-p btn-p-ripple"
+          (click)="presentModalAddBotFromScratch()">
+          <div class="btn-content">
             <div class="btn--text">
               Start from scratch
             </div>
             <div class="btn--icon">
-              <span class="material-icons-outlined" style="font-size: 18px; vertical-align: middle;">
-                add_circle
+              <span class="material-icons-outlined">
+                add_circle_outline
               </span>
             </div>
           </div>
-
         </button>
-
       </div>
 
     </div>
@@ -145,8 +136,7 @@
     <div id="right">
       <div class="right-title">
         <div class="right-title-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24"  viewBox="0 0 24 24"
-             fill="none">
+          <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" viewBox="0 0 24 24" fill="none">
             <g>
               <rect fill="none" height="24" width="24" y="0" />
             </g>
@@ -161,10 +151,10 @@
         </div>
         <div class="right-title-text">
           New chatbot idea?
-
         </div>
       </div>
-      <div id="right-container">
+      <div id="right-container-sk" *ngIf="showSpinner" style="height: 179px"></div>
+      <div id="right-container" *ngIf="!showSpinner">
         <div class="suggested-templates" *ngIf="USER_ROLE !== 'agent'">
 
           <ng-container *ngFor="let template of templates | slice:0:2; let i=index ">
@@ -271,15 +261,13 @@
               <div class="svg-icon">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
                   <path d="M0 0h24v24H0V0z" fill="none" />
-                  <circle cx="15.5" cy="9.5" r="1.5" />
-                  <circle cx="8.5" cy="9.5" r="1.5" />
-                  <path
-                    d="M12 16c-1.48 0-2.75-.81-3.45-2H6.88c.8 2.05 2.79 3.5 5.12 3.5s4.32-1.45 5.12-3.5h-1.67c-.69 1.19-1.97 2-3.45 2zm-.01-14C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z" />
+                  <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
                 </svg>
               </div>
 
               <div class="explore-templates">
-                Customer Satisfaction templates
+                <!-- Customer Satisfaction templates -->
+                More templates
               </div>
             </div>
             <!-- <div class="templates-card-title-and-description">
@@ -299,12 +287,13 @@
               <div class="svg-icon">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
                   <path d="M0 0h24v24H0V0z" fill="none" />
-                  <path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6h-6z" />
+                  <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
                 </svg>
               </div>
 
               <div class="explore-templates">
-                Increase sales templates
+                More templates
+                <!-- Increase sales templates -->
               </div>
             </div>
 

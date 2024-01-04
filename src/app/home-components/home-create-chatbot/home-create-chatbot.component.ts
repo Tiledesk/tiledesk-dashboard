@@ -50,6 +50,8 @@ export class HomeCreateChatbotComponent implements OnInit, OnChanges {
   chatbotName: string
   newBot_Id: string;
   templtId = ['651a87648cb2c70013d80d8b', '6529582c23034f0013ee1af6', '651ecc5749598e0013305876', '651ad6c1bfdf310013ca90d7']
+  showSpinner: boolean
+  
   constructor(
     public appConfigService: AppConfigService,
     public auth: AuthService,
@@ -96,7 +98,7 @@ export class HomeCreateChatbotComponent implements OnInit, OnChanges {
   }
 
   getTemplates(use_case) {
-    // this.showSpinner = true;
+    this.showSpinner = true;
     // this.route = this.router.url
     // this.logger.log('[BOTS-TEMPLATES] - GET ALL TEMPLATES route', this.route);
     this.faqKbService.getTemplates().subscribe((res: any) => {
@@ -138,9 +140,11 @@ export class HomeCreateChatbotComponent implements OnInit, OnChanges {
 
     }, (error) => {
       this.logger.error('[HOME-CREATE-CHATBOT] GET TEMPLATES ERROR ', error);
-
+      this.showSpinner = false;
     }, () => {
       this.logger.log('[HOME-CREATE-CHATBOT] GET TEMPLATES COMPLETE');
+      this.showSpinner = false;
+      ;
     });
   }
 
