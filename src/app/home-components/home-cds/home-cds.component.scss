@@ -62,3 +62,21 @@
     margin-top: 16px;
     margin-bottom: 54px;
 }
+
+#home-cds-btn {
+    background: var(--blue-turquoise);
+    min-width: 380px;
+    min-height: 65px;
+    font-size: 21px;
+}
+
+.home-cds-btn-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.home-cds-btn-icon {
+    width: 24px;
+    height: 24px;
+}

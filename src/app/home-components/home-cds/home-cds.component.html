@@ -29,7 +29,7 @@
             </div>
         </div>
 
-        <div  class="title-container">
+        <div class="title-container">
             <div *ngIf="chatbots?.length > 0" class="home-cds-section-title">
                 YOUR CURRENT CHATBOT DESIGN
             </div>
@@ -39,17 +39,28 @@
             <div *ngIf="chatbots?.length > 0" class="home-cds-section-subtitle">
                 Open the Studio to start editing <b> {{ chatbotName }} </b> chatbot
             </div>
-           
+
         </div>
 
         <div class="button-container">
-            <button class="btn btn-size-xl btn-p  btn-p-ripple" style="background: #2196f3;" (click)="goToBotProfile()">
-                <span *ngIf="chatbots?.length > 0">
-                    Edit chatbot
-                </span>
-                <span *ngIf="chatbots?.length === 0">
-                    Create your first chatbot
-                </span>
+            <button id="home-cds-btn" class="btn btn-size-xl btn-p  btn-p-ripple" (click)="goToBotProfile()">
+                <div class="home-cds-btn-content">
+                    <div class="home-cds-btn-text" *ngIf="chatbots?.length > 0">
+                        Edit chatbot
+                    </div>
+                    <div class="home-cds-btn-text" *ngIf="chatbots?.length === 0">
+                        Create your first chatbot
+                    </div>
+                    <div class="home-cds-btn-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px"
+                            fill="#ffffff">
+                            <path d="M0 0h24v24H0V0z" fill="none" />
+                            <path
+                                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z" />
+                            <circle cx="12" cy="12" r="5" />
+                        </svg>
+                    </div>
+                </div>
             </button>
         </div>
 

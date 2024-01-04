@@ -356,7 +356,7 @@ export class HomeCreateChatbotComponent implements OnInit, OnChanges {
       this.router.navigate(['project/' + this.projectId + '/bots/templates/customer-satisfaction']);
     } else if (this.use_case_for_child === 'increase_online_sales') {
       this.router.navigate(['project/' + this.projectId + '/bots/templates/increase-sales']);
-    } else if (this.use_case_for_child === undefined) {
+    } else if (this.use_case_for_child === undefined || !this.use_case_for_child) {
       this.trackUserAction.emit({action:'Explore Templates', actionRes: 'All' })
       this.router.navigate(['project/' + this.projectId + '/bots/templates/all']);
     }

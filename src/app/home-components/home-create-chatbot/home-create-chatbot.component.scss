@@ -797,7 +797,7 @@ body {
   margin-top: 16px;
 }
 
-.svg-icon > svg {
+.svg-icon>svg {
   width: 50px;
   height: auto;
   fill: #2196f3;
@@ -808,7 +808,7 @@ body {
   font-weight: 400;
   line-height: 1.3em;
   color: #2196f3;
-  margin-top:12px;
+  margin-top: 12px;
   display: flex;
   align-items: center;
   flex: 1 auto;
@@ -817,11 +817,33 @@ body {
 .left-title {
   font-size: 26px;
   font-weight: 500;
-  margin-bottom: 27px;
+  margin-bottom: 40px;
   font-family: 'Poppins', 'Roboto', 'Arial', sans-serif;
   text-transform: uppercase;
-  margin-top: -36px;
+  margin-top: -40px;
   color: var(--blue-turquoise);
+}
+
+.right-title {
+  display: flex;
+  flex-direction: row;
+  height: 28px;
+  margin-bottom: 24px;
+  gap: 6px;
+}
+
+.right-title>.right-title-icon svg{
+  width: auto;
+  height: 28px;
+  fill: var(--blue-turquoise);
+}
+
+.right-title>.right-title-text {
+  font-size: 18px;
+  font-weight: 500;
+  font-family: 'Poppins', 'Roboto', 'Arial', sans-serif;
+  display: flex;
+  align-items: center;
 }
 
 
@@ -848,12 +870,12 @@ body {
   background-image: url(https://tiledesk.com/wp-content/uploads/2024/01/generate_leads.png);
   background-repeat: no-repeat;
   background-size: cover;
-  background-position: -16px -0px; 
+  background-position: -16px -0px;
 }
 
 .increase-sales-boost-engagement {
   background-image: url(https://tiledesk.com/wp-content/uploads/2024/01/boost_engagement.png);
   background-repeat: no-repeat;
   background-size: cover;
-  background-position: -16px -0px; 
+  background-position: -16px -0px;
 }
