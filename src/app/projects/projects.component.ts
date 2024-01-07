@@ -131,6 +131,9 @@ export class ProjectsComponent implements OnInit, OnDestroy {
           this.usersService.unsubsToWS_CurrentUser_allProject(project.id_project._id, project._id)
         }
       });
+
+      this.unsubscribe$.next();
+      this.unsubscribe$.complete();
     }
 
     this.unsubscribe$.next();
@@ -495,54 +498,85 @@ export class ProjectsComponent implements OnInit, OnDestroy {
 
 
         this.projects.forEach(project => {
-          this.logger.log('[PROJECTS] - SET PROJECT IN STORAGE > project ', project)
+          // console.log('[PROJECTS] - SET PROJECT IN STORAGE > project ', project)
           project['is_selected'] = false
 
           if (project.id_project && project.id_project.profile.type === 'free') {
             if (project.id_project && project.id_project.trialExpired === false) {
               // this.getProPlanTrialTranslation(project);
-              this.prjct_profile_name = PLAN_NAME.B + " plan (trial)";
-              project['prjct_profile_name'] = this.prjct_profile_name;
-              project['plan_badge_background_type'] = 'b_plan_badge';
+              if (project.id_project.profile.name === 'free') {
+                this.prjct_profile_name = PLAN_NAME.B + " plan (trial)";
+                project['prjct_profile_name'] = this.prjct_profile_name;
+                project['plan_badge_background_type'] = 'b_plan_badge';
+              } else if (project.id_project.profile.name === 'Sandbox') {
+                this.prjct_profile_name = PLAN_NAME.E + " plan (trial)";
+                project['prjct_profile_name'] = this.prjct_profile_name;
+                project['plan_badge_background_type'] = 'b_plan_badge';
+              }
             } else {
               // this.getPaidPlanTranslation(project, project.id_project.profile.name)
-              this.prjct_profile_name = "Free plan";
-              project['prjct_profile_name'] = this.prjct_profile_name;
-              project['plan_badge_background_type'] = 'free_plan_badge'
+              if (project.id_project.profile.name === 'free') {
+                this.prjct_profile_name = "Free plan";
+                project['prjct_profile_name'] = this.prjct_profile_name;
+                project['plan_badge_background_type'] = 'free_plan_badge'
+              } else if (project.id_project.profile.name === 'Sandbox') {
+                this.prjct_profile_name = "Sandbox plan";
+                project['prjct_profile_name'] = this.prjct_profile_name;
+                project['plan_badge_background_type'] = 'free_plan_badge'
+              }
             }
 
           } else if (project.id_project && project.id_project.profile.type === 'payment') {
             // this.getPaidPlanTranslation(project, project.id_project.profile.name);
             // if ( project.id_project.isActiveSubscription === true) {
-              if (project.id_project.profile.name  === PLAN_NAME.A ) {
-                if(!project.id_project.profile.extra3 ) {
+            if (project.id_project.profile.name === PLAN_NAME.A) {
+              if (!project.id_project.profile.extra3) {
                 this.prjct_profile_name = PLAN_NAME.A + " plan";
                 project['prjct_profile_name'] = this.prjct_profile_name;
-                } else {
-                  this.prjct_profile_name = PLAN_NAME.A + ' plan ' + '(' + APP_SUMO_PLAN_NAME[project.id_project.profile.extra3] + ')'
-                  project['prjct_profile_name'] = this.prjct_profile_name;
-                }
-                project['plan_badge_background_type'] = 'a_plan_badge'
-              } else if (project.id_project.profile.name === PLAN_NAME.B) { 
-                if(!project.id_project.profile.extra3 ) {
+              } else {
+                this.prjct_profile_name = PLAN_NAME.A + ' plan ' + '(' + APP_SUMO_PLAN_NAME[project.id_project.profile.extra3] + ')'
+                project['prjct_profile_name'] = this.prjct_profile_name;
+              }
+              project['plan_badge_background_type'] = 'a_plan_badge'
+            } else if (project.id_project.profile.name === PLAN_NAME.B) {
+              if (!project.id_project.profile.extra3) {
                 project['prjct_profile_name'] = this.prjct_profile_name;
                 this.prjct_profile_name = PLAN_NAME.B + " plan";
-                } else {
-                  this.prjct_profile_name = PLAN_NAME.B + ' plan ' + '(' + APP_SUMO_PLAN_NAME[project.id_project.profile.extra3] + ')'
-                }
-                project['prjct_profile_name'] = this.prjct_profile_name;
-                project['plan_badge_background_type'] = 'b_plan_badge'
-              }  else if (project.id_project.profile.name === PLAN_NAME.C) { 
-                this.prjct_profile_name = PLAN_NAME.C + " plan";
-                project['prjct_profile_name'] = this.prjct_profile_name;
-                project['plan_badge_background_type'] = 'c_plan_badge'
-              } else if (project.id_project.profile.name  !== PLAN_NAME.A && project.id_project.profile.name  !== PLAN_NAME.B && project.id_project.profile.name  !== PLAN_NAME.C) {
-                this.prjct_profile_name = project.id_project.profile.name + ' plan (UNSUPPORTED)'
-                // console.log('project.id_project.profile.name' ,project.id_project.profile.name)
-                project['prjct_profile_name'] = this.prjct_profile_name ;
-                project['plan_badge_background_type'] = 'unsupported_plan_badge'
+              } else {
+                this.prjct_profile_name = PLAN_NAME.B + ' plan ' + '(' + APP_SUMO_PLAN_NAME[project.id_project.profile.extra3] + ')'
               }
-              
+              project['prjct_profile_name'] = this.prjct_profile_name;
+              project['plan_badge_background_type'] = 'b_plan_badge'
+            } else if (project.id_project.profile.name === PLAN_NAME.C) {
+              this.prjct_profile_name = PLAN_NAME.C + " plan";
+              project['prjct_profile_name'] = this.prjct_profile_name;
+              project['plan_badge_background_type'] = 'c_plan_badge'
+            } else if (project.id_project.profile.name === PLAN_NAME.D) {
+              this.prjct_profile_name = PLAN_NAME.D + " plan";
+              project['prjct_profile_name'] = this.prjct_profile_name;
+              project['plan_badge_background_type'] = 'a_plan_badge'
+            } else if (project.id_project.profile.name === PLAN_NAME.E) {
+              this.prjct_profile_name = PLAN_NAME.E + " plan";
+              project['prjct_profile_name'] = this.prjct_profile_name;
+              project['plan_badge_background_type'] = 'b_plan_badge'
+            } else if (project.id_project.profile.name === PLAN_NAME.F) {
+              this.prjct_profile_name = PLAN_NAME.F + " plan";
+              project['prjct_profile_name'] = this.prjct_profile_name;
+              project['plan_badge_background_type'] = 'c_plan_badge'
+            } else if (
+              project.id_project.profile.name !== PLAN_NAME.A && 
+              project.id_project.profile.name !== PLAN_NAME.B && 
+              project.id_project.profile.name !== PLAN_NAME.C &&
+              project.id_project.profile.name !== PLAN_NAME.D &&
+              project.id_project.profile.name !== PLAN_NAME.E &&
+              project.id_project.profile.name !== PLAN_NAME.F
+              ) {
+              this.prjct_profile_name = project.id_project.profile.name + ' plan (UNSUPPORTED)'
+              // console.log('project.id_project.profile.name' ,project.id_project.profile.name)
+              project['prjct_profile_name'] = this.prjct_profile_name;
+              project['plan_badge_background_type'] = 'unsupported_plan_badge'
+            }
+
             // } 
             // else if ( project.id_project.isActiveSubscription === false) {}
 
@@ -572,7 +606,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
             }
             this.listenTocurrentUserWSAvailabilityAndBusyStatusForProject$()
 
-          
+
             /***  ADDED TO KNOW IF THE CURRENT USER IS AVAILABLE IN SOME PROJECT
              *    ID USED TO DISPLAY OR NOT THE MSG 'Attention, if you don't want to receive requests...' IN THE LOGOUT MODAL  ***/
             if (project.user_available === true) {

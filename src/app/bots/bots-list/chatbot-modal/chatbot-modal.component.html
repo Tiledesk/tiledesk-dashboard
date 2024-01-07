@@ -1,0 +1,26 @@
+<h1 mat-dialog-title style="text-align: center;">
+    {{ "Pricing.PlanChange" | translate }}
+</h1>
+<div mat-dialog-content>
+
+    <div class="dialog--content">
+        <div class="dialog--content-first-row">
+            {{chatbotLimitReached}}
+        </div>
+        <div class="dialog--content-second-row">
+            {{ "Pricing.ContactUsViaEmailToUpgradeYourPricingPlan" | translate }}.
+        </div>
+    </div>
+
+
+</div>
+<div mat-dialog-actions style="justify-content: center;">
+    <button class="mat-dialog-close-btn" mat-button (click)="onNoClick()">
+        {{ "Cancel" | translate }}
+
+    </button>
+    <!-- cdkFocusInitial -->
+    <button class="mat-dialog-ok-btn" mat-button (click)="onOkPresssed()">
+        {{'ContactUs' | translate}}
+    </button>
+</div>

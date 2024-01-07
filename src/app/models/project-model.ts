@@ -19,6 +19,7 @@ export interface Project {
     profile_type?: string;
     subscription_is_active?: any;
     profile?: any;
+    user_role?:string;
     subscription_end_date?: any;
     subscription_id?: any;
     subscription_creation_date?: any;

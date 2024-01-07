@@ -33,7 +33,8 @@ export class NotifyService {
 
   displayModalSubsExpired: string;
   displayModalEnterpiseSubsExpired: string;
-
+  displayModalTrialExpired= 'none';
+  
   displayContactUsModal = 'none';
   
   viewCancelSubscriptionModal = 'none';
@@ -101,6 +102,13 @@ export class NotifyService {
     this._prjctPlanName = prjctPlanName;
   }
 
+  displayTrialHasExpiredModal() {
+    this.displayModalTrialExpired = 'block';
+  }
+
+  closeModalTrialExpired() {
+    this.displayModalTrialExpired = 'none';
+  }
 
   displayEnterprisePlanHasExpiredModal(subHasExpired: boolean, prjctPlanName: string, prjctPlanSubsEndDate: Date) {
     if (subHasExpired === true) {
@@ -593,6 +601,24 @@ export class NotifyService {
 
 
   presentModalOnlyOwnerCanManageTheAccountPlan(onlyOwnerCanManageTheAccountPlanMsg: string, learnMoreAboutDefaultRoles: string) {
+
+    const el = document.createElement('div')
+    // el.innerHTML = onlyOwnerCanManageTheAccountPlanMsg + '. ' + "<a href='https://docs.tiledesk.com/knowledge-base/understanding-default-roles/' target='_blank'>" + learnMoreAboutDefaultRoles + "</a>"
+    el.innerHTML = onlyOwnerCanManageTheAccountPlanMsg + '. ' + `<a href=${this.URL_UNDERSTANDING_DEFAULT_ROLES} target='_blank'>` + learnMoreAboutDefaultRoles + "</a>"
+    swal({
+      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
+      content: el,
+      icon: "info",
+      // buttons: true,
+      button: {
+        text: "OK",
+      },
+      dangerMode: false,
+    })
+
+  }
+
+  presentModalAgentCannotManageChatbot(onlyOwnerCanManageTheAccountPlanMsg: string, learnMoreAboutDefaultRoles: string) {
 
     const el = document.createElement('div')
     // el.innerHTML = onlyOwnerCanManageTheAccountPlanMsg + '. ' + "<a href='https://docs.tiledesk.com/knowledge-base/understanding-default-roles/' target='_blank'>" + learnMoreAboutDefaultRoles + "</a>"

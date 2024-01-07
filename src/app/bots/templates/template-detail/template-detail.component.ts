@@ -78,7 +78,8 @@ export class TemplateDetailComponent implements OnInit {
     this.projectid = data.projectId
     this.template = data.template;
     this._newlyCreatedProject = data.newlyCreatedProject
-    this.callingPage = data.callingPage
+    this.callingPage = data.callingPage;
+    this.prjct_profile_name = data.projectProfile
     // console.log('[TEMPLATE DETAIL] template ', this.template)
     // this.logger.log('[TEMPLATE DETAIL] projectid ', this.projectid)
     if (this.template) {

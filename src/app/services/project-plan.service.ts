@@ -17,7 +17,8 @@ export class ProjectPlanService {
   projectID: string;
   TOKEN: string
   project_deleted_notification: string
-  progetIdGetFromParams: string
+  progetIdGetFromParams: string;
+  string;
   constructor(
     private router: Router,
     private auth: AuthService,
@@ -128,7 +129,8 @@ export class ProjectPlanService {
           subscription_id: current_prjct.id_project.profile['subscriptionId'],
           subscription_creation_date: current_prjct.id_project.profile['subscription_creation_date'],
           extra3: current_prjct.id_project.profile['extra3'],
-          extra4: current_prjct.id_project.profile['extra4']
+          extra4: current_prjct.id_project.profile['extra4'],
+          user_role: current_prjct.role
         }
 
 
@@ -166,7 +168,8 @@ export class ProjectPlanService {
   }
 
   getProjectByIdAndPublish(project_id: string, calledBy: string) {
-    // console.log('[PROJECT-PLAN-SERV] - getProjectByIdAndPublish (called', calledBy );
+     console.log('[PROJECT-PLAN-SERV] - getProjectByIdAndPublish (called', calledBy );
+    
     this.projectService.getProjectById(project_id).subscribe((project: any) => {
       this.logger.log('[PROJECT-PLAN-SERV] - GET PROJECT BY ID - project ', project, '(called', calledBy, ')');
 

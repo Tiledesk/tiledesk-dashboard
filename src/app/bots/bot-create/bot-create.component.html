@@ -182,14 +182,14 @@
             </div>
 
             <!-- ------------------------------------------------------------------- -->
-            <!-- @ Button create bot (dialogflow - external)  -->
+            <!-- @ Button create BLANK TILEBOT  -->
             <!-- ------------------------------------------------------------------- -->
             <div class="row" *ngIf="botType === 'tilebot' && HAS_SELECTED_CREATE_BOT === true">
 
 
               <div class="col-sm-12">
                 <button [disabled]="faqKbName?.length < 2" class="btn btn-lg btn-primary"
-                  (click)="createTilebotBotFromScratch()">
+                  (click)="createBlankTilebot()">
                   Create chatbot
                 </button>
               </div>
