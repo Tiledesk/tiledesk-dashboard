@@ -81,6 +81,7 @@ import { ActivitiesStaticComponent } from './static-pages/activities-static/acti
 import { HoursStaticComponent } from './static-pages/hours-static/hours-static.component';
 import { DepartmentsStaticComponent } from './static-pages/departments-static/departments-static.component';
 import { ContactsStaticComponent } from './static-pages/contacts-static/contacts-static.component';
+import { AutomationStaticComponent } from './static-pages/automation-static/automation-static.component';
 
 import { AnalyticsComponent } from './analytics/analytics.component';
 import { PanoramicaComponent } from './analytics/panoramica/panoramica.component';
@@ -147,6 +148,7 @@ import { CnpIsMobileComponent } from './create-new-project/cnp-is-mobile/cnp-is-
 import { CnpTemplatesComponent } from './create-new-project/cnp-templates/cnp-templates.component';
 import { OnboardingWelcomeComponent } from './create-new-project/onboarding-welcome/onboarding-welcome.component';
 import { AutomationsComponent } from './automations/automations.component';
+
 
 
 
@@ -458,7 +460,9 @@ const routes: Routes = [
   { path: 'project/:projectid/hours-demo', component: HoursStaticComponent, canActivate: [AuthGuard] },
 
   // AUTOMATIONS
-  { path: 'project/:projectid/automations', component: AutomationsComponent, canActivate: [AuthGuard]},
+  { path: 'project/:projectid/automations', component: AutomationsComponent, canActivate: [AuthGuard, ProjectProfileGuard]},
+  { path: 'project/:projectid/automations-demo', component: AutomationStaticComponent, canActivate: [AuthGuard]},
+ 
 
   // KNOWLEDGE BASES
   { path: 'project/:projectid/knowledge-bases', component: KnowledgeBasesComponent, canActivate: [AuthGuard]},
