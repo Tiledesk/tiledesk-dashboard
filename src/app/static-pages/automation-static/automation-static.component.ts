@@ -65,7 +65,7 @@ export class AutomationStaticComponent extends StaticPageBaseComponent implement
     this.getProjectUserRole();
     this.getTranslationStrings();
     this.getBrowserVersion();
-    this.tparams = {'plan_name': PLAN_NAME.C}
+    this.tparams = {'plan_name': PLAN_NAME.F}
   }
 
   getBrowserVersion() {

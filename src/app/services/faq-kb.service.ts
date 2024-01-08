@@ -40,9 +40,7 @@ export class FaqKbService {
       this.user = user;
       this.checkIfExistUserAndGetToken()
     });
-
     this.getCurrentProject();
-
     this.getAppConfig();
   }
 
@@ -66,7 +64,7 @@ export class FaqKbService {
       // debugger
 
       if (this.project) {
-        //  console.log('00 -> FAQKB SERVICE project ID from AUTH service subscription  ', this.project._id)
+        console.log('00 -> FAQKB SERVICE project ID from AUTH service subscription  ', this.project._id)
         this.FAQKB_URL = this.SERVER_BASE_PATH + this.project._id + '/faq_kb/'
 
 
