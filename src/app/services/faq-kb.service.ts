@@ -49,8 +49,12 @@ export class FaqKbService {
   getAppConfig() {
     // this.DLGFLW_BOT_CREDENTIAL_BASE_URL = this.appConfigService.getConfig().botcredendialsURL;
     this.SERVER_BASE_PATH = this.appConfigService.getConfig().SERVER_BASE_URL;
-    this.TEMPLATES_URL = this.appConfigService.getConfig().templatesUrl
-    this.COMMUNITY_TEMPLATES_URL = this.appConfigService.getConfig().communityTemplatesUrl
+    // this.TEMPLATES_URL = this.appConfigService.getConfig().templatesUrl
+    // this.COMMUNITY_TEMPLATES_URL = this.appConfigService.getConfig().communityTemplatesUrl
+  
+    this.TEMPLATES_URL = this.appConfigService.getConfig().SERVER_BASE_URL + "modules/templates/public/templates"
+    this.COMMUNITY_TEMPLATES_URL = this.appConfigService.getConfig().SERVER_BASE_URL + "modules/templates/public/community"
+
     this.logger.log('AppConfigService getAppConfig (FAQ-KB SERV.) DLGFLW_BOT_CREDENTIAL_BASE_URL ', this.DLGFLW_BOT_CREDENTIAL_BASE_URL);
     this.logger.log('AppConfigService getAppConfig (FAQ-KB SERV.) SERVER_BASE_PATH ', this.SERVER_BASE_PATH);
     // console.log('AppConfigService getAppConfig (FAQ-KB SERV.) COMMUNITY_TEMPLATES_URL ', this.COMMUNITY_TEMPLATES_URL);
