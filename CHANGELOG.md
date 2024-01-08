@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.4.92
+- Deploys in production
+- Improvements and bug fixing
+
 ### 2.4.91
 - Deploys in production
 - Improves the "Your Chatbots" home section
