@@ -197,7 +197,8 @@ export class GetStartChatbotForkComponent implements OnInit {
           // console.log('[GET START CHATBOT FORK] this.project ', this.selectedProjectId)
           this.project = this.projects[0].id_project;
           // console.log('[GET START CHATBOT FORK] this.project ', this.project)
-          this.buildPlanName(this.project)
+          this.getProjectBotsByPassingProjectId(this.selectedProjectId);
+          this.getProjectPlan(this.project)
           this.trackGroup(this.selectedProjectId)
         }
         if (projectid) {
@@ -227,7 +228,7 @@ export class GetStartChatbotForkComponent implements OnInit {
 
                 this.getProjectBots();
 
-                this.buildPlanName(this.project)
+                this.getProjectPlan(this.project)
                 this.trackGroup(this.selectedProjectId)
               }
             })
@@ -266,6 +267,25 @@ export class GetStartChatbotForkComponent implements OnInit {
       this.getChatBotCompleted = true
     });
   }
+
+  getProjectBotsByPassingProjectId(idProject: string) {
+    console.log('[GET START CHATBOT FORK] -  CALLING GET CHATBOTS BY PASS PRJCT ID');
+    this.faqKbService.getFaqKbByPassingProjectId(idProject).subscribe((faqKb: any) => {
+      console.log('[GET START CHATBOT FORK] - GET CHATBOTS BY PASS PRJCT ID', faqKb);
+
+      if (faqKb) {
+        this.chatBotCount = faqKb.length;
+        console.log('[GET START CHATBOT FORK] - COUNT OF CHATBOTS', this.chatBotCount);
+      }
+    }, (error) => {
+      console.error('[GET START CHATBOT FORK] - GET CHATBOTS - ERROR ', error);
+
+    }, () => {
+      console.log('[GET START CHATBOT FORK] - GET CHATBOTS * COMPLETE *');
+      this.getChatBotCompleted = true
+    });
+  }
+
 
 
 
@@ -507,7 +527,7 @@ export class GetStartChatbotForkComponent implements OnInit {
     }
   }
 
-  buildPlanName(project) {
+  getProjectPlan(project) {
     console.log('[GET START CHATBOT FORK] - GET PROJECT PLAN - project ', project)
     if (project.profile.extra3) {
       this.appSumoProfile = APP_SUMO_PLAN_NAME[project.profile.extra3]
