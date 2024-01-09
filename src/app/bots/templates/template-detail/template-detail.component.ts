@@ -19,6 +19,7 @@ import { ChatbotModalComponent } from 'app/bots/bots-list/chatbot-modal/chatbot-
 import { ProjectPlanService } from 'app/services/project-plan.service';
 import { NotifyService } from 'app/core/notify.service';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
+import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'appdashboard-template-detail',
   templateUrl: './template-detail.component.html',
@@ -59,6 +60,8 @@ export class TemplateDetailComponent extends PricingBaseComponent implements OnI
   public trial_expired: any;
   public chatBotLimit: any;
   public chatBotCount: any;
+  learnMoreAboutDefaultRoles: string;
+  agentsCannotManageChatbots: string;
   // public depts_length: number;
   // public DISPLAY_SELECT_DEPTS_WITHOUT_BOT: boolean;
   // public dept_id: string;
@@ -89,7 +92,8 @@ export class TemplateDetailComponent extends PricingBaseComponent implements OnI
     private botLocalDbService: BotLocalDbService,
     private projectService: ProjectService,
     public prjctPlanService: ProjectPlanService,
-    public notify: NotifyService
+    public notify: NotifyService,
+    private translate: TranslateService,
   ) {
     super(prjctPlanService, notify);
     this.logger.log('[TEMPLATE DETAIL] data ', data)
@@ -119,7 +123,8 @@ export class TemplateDetailComponent extends PricingBaseComponent implements OnI
     this.getLoggedUser();
     this.getImageBaseUrl()
     this.getProjectPlan()
-    this.getFaqKbByProjectId()
+    this.getFaqKbByProjectId();
+    this.traslateString()
   }
 
   ngOnDestroy() {
@@ -284,7 +289,7 @@ export class TemplateDetailComponent extends PricingBaseComponent implements OnI
   }
 
   presentModalAgentCannotManageChatbot() {
-    this.notify.presentModalAgentCannotManageChatbot('Agents can\'t manage chatbots', 'Learn more about default roles')
+    this.notify.presentModalAgentCannotManageChatbot(this.agentsCannotManageChatbots, this.learnMoreAboutDefaultRoles)
   }
 
   presentDialogReachedChatbotLimit() {
@@ -455,7 +460,19 @@ export class TemplateDetailComponent extends PricingBaseComponent implements OnI
   //   this.displayModalAttacchBotToDept = 'none'
   // }
 
+  traslateString() {
+    this.translate
+      .get('LearnMoreAboutDefaultRoles')
+      .subscribe((translation: any) => {
+        this.learnMoreAboutDefaultRoles = translation
+      })
 
+    this.translate
+      .get('AgentsCannotManageChatbots')
+      .subscribe((translation: any) => {
+        this.agentsCannotManageChatbots = translation
+      })
+  }
 
 
 }

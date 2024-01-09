@@ -132,7 +132,8 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
   prjct_profile_name: string;
   chatBotCount: number;
   USER_ROLE : string;
-
+  learnMoreAboutDefaultRoles : string;
+  agentsCannotManageChatbots: string;
   constructor(
     private faqKbService: FaqKbService,
     private router: Router,
@@ -242,6 +243,19 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
       .subscribe((translation: any) => {
         this.thereHasBeenAnErrorProcessing = translation;
       });
+     
+
+      this.translate
+      .get('LearnMoreAboutDefaultRoles')
+      .subscribe((translation: any) => {
+        this.learnMoreAboutDefaultRoles = translation
+      })
+
+    this.translate
+      .get('AgentsCannotManageChatbots')
+      .subscribe((translation: any) => {
+        this.agentsCannotManageChatbots = translation
+      })
   }
 
   toggleTabCreateImport(tabcreate) {
@@ -344,7 +358,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
   }
 
   presentModalAgentCannotManageChatbot() {
-    this.notify.presentModalAgentCannotManageChatbot('Agents can\'t manage chatbots', 'Learn more about default roles')
+    this.notify.presentModalAgentCannotManageChatbot(this.agentsCannotManageChatbots, this.learnMoreAboutDefaultRoles)
   }
 
 

@@ -1932,6 +1932,7 @@
     "OnlyUsersWithTheOwnerRoleCanManageSMTPsettings": "Yalnızca Sahip rolüne sahip bir takım arkadaşı SMTP ayarlarını yönetebilir",
     "OnlyUserWithOwnerRoleCanManageAdvancedProjectSettings":"Gelişmiş proje ayarlarını yalnızca Sahip rolüne sahip ekip arkadaşları yönetebilir",
     "LearnMoreAboutDefaultRoles": "Varsayılan roller hakkında daha fazla bilgi edinin",
+    "AgentsCannotManageChatbots":"Temsilci rolüne sahip ekip arkadaşları sohbet robotlarını yönetemez",
     "LearnHowCreateAGroup": "Nasıl grup oluşturacağınızı öğrenin",
     "HookTheBot": "Bu botu etkinleştir",
     "ActivateBotsForNewConversations": "Yeni konuşmalar için botları etkinleştirin",

@@ -1932,6 +1932,7 @@
     "OnlyUsersWithTheOwnerRoleCanManageSMTPsettings": "Только товарищ по команде с ролью владельца может управлять настройками SMTP",
     "OnlyUserWithOwnerRoleCanManageAdvancedProjectSettings": "Только товарищи по команде с ролью владельца могут управлять расширенными настройками проекта",
     "LearnMoreAboutDefaultRoles": "Узнайте больше о ролях по умолчанию",
+    "AgentsCannotManageChatbots":"Члены команды с ролью агента не могут управлять чат-ботами", 
     "LearnHowCreateAGroup": "Узнайте, как создать группу",
     "HookTheBot": "Активировать этого бота",
     "ActivateBotsForNewConversations": "Активируйте ботов для новых разговоров",

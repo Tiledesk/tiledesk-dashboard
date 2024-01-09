@@ -13,6 +13,7 @@ import { takeUntil } from 'rxjs/operators'
 import { ChatbotModalComponent } from '../bots-list/chatbot-modal/chatbot-modal.component';
 import { NotifyService } from 'app/core/notify.service';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
+import { TranslateService } from '@ngx-translate/core';
 
 
 
@@ -59,7 +60,8 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
   public THERE_ARE_RESULTS: boolean = true;
   chatBotCount: any;
   public USER_ROLE: string;
-  
+  learnMoreAboutDefaultRoles: string;
+  agentsCannotManageChatbots: string;
  
   constructor(
     private auth: AuthService,
@@ -71,6 +73,7 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
     public prjctPlanService: ProjectPlanService,
     public notify: NotifyService,
     public usersService: UsersService,
+    private translate: TranslateService,
   ) { 
     super(prjctPlanService, notify);
   }
@@ -459,7 +462,7 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
   }
 
   presentModalAgentCannotManageChatbot() {
-    this.notify.presentModalAgentCannotManageChatbot('Agents can\'t manage chatbots', 'Learn more about default roles')
+    this.notify.presentModalAgentCannotManageChatbot(this.agentsCannotManageChatbots, this.learnMoreAboutDefaultRoles)
   }
 
   presentDialogReachedChatbotLimit() {
@@ -520,6 +523,21 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
   clearSearchInCommunityTemplates() {
     this.valueToSearch = ''
     this.templates = this.communityTemplates
+  }
+
+
+  traslateString() {
+    this.translate
+      .get('LearnMoreAboutDefaultRoles')
+      .subscribe((translation: any) => {
+        this.learnMoreAboutDefaultRoles = translation
+      })
+
+    this.translate
+      .get('AgentsCannotManageChatbots')
+      .subscribe((translation: any) => {
+        this.agentsCannotManageChatbots = translation
+      })
   }
 
 

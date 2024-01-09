@@ -1932,6 +1932,7 @@
     "OnlyUsersWithTheOwnerRoleCanManageSMTPsettings": "Only a teammate with the Owner role can manage SMTP settings",
     "OnlyUserWithOwnerRoleCanManageAdvancedProjectSettings":"Only teammates with the Owner role can manage advanced project settings",
     "LearnMoreAboutDefaultRoles": "Learn more about default roles",
+    "AgentsCannotManageChatbots":"Teammates with an agent role cannot manage chatbots",
     "LearnHowCreateAGroup": "Learn how create a group",
     "HookTheBot": "Activate this bot",
     "ActivateBotsForNewConversations": "Activate bots for new conversations",

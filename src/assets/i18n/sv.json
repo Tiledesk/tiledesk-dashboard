@@ -1932,6 +1932,7 @@
     "OnlyUsersWithTheOwnerRoleCanManageSMTPsettings": "Endast en lagkamrat med rollen Ägare kan hantera SMTP-inställningar",
     "OnlyUserWithOwnerRoleCanManageAdvancedProjectSettings":"Endast lagkamrater med rollen Ägare kan hantera avancerade projektinställningar",
     "LearnMoreAboutDefaultRoles": "Läs mer om standardroller",
+    "AgentsCannotManageChatbots":"Lagkamrater med en agentroll kan inte hantera chatbots",
     "LearnHowCreateAGroup": "Lär dig hur du skapar en grupp",
     "HookTheBot": "Aktivera denna bot",
     "ActivateBotsForNewConversations": "Aktivera bots för nya konversationer",

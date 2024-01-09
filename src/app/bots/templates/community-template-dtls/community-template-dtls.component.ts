@@ -15,6 +15,7 @@ import { User } from 'app/models/user-model';
 import { ChatbotModalComponent } from 'app/bots/bots-list/chatbot-modal/chatbot-modal.component';
 import { MatDialog } from '@angular/material/dialog';
 import { NotifyService } from 'app/core/notify.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'appdashboard-community-template-dtls',
@@ -41,6 +42,8 @@ export class CommunityTemplateDtlsComponent extends PricingBaseComponent impleme
   user: User;
   public botname: string;
   projectName: string;
+  learnMoreAboutDefaultRoles: string;
+  agentsCannotManageChatbots: string;
 
   constructor(
     private route: ActivatedRoute,
@@ -54,7 +57,8 @@ export class CommunityTemplateDtlsComponent extends PricingBaseComponent impleme
     public prjctPlanService: ProjectPlanService,
     public usersService: UsersService,
     public dialog: MatDialog,
-    public notify: NotifyService
+    public notify: NotifyService,
+    private translate: TranslateService,
   ) {    
      super(prjctPlanService, notify);
   }
@@ -70,6 +74,7 @@ export class CommunityTemplateDtlsComponent extends PricingBaseComponent impleme
     this.getLoggedUser();
     this.getProjectBots();
     this.getProjectPlan();
+    this.traslateString();
   }
 
 
@@ -217,7 +222,7 @@ export class CommunityTemplateDtlsComponent extends PricingBaseComponent impleme
   }
 
   presentModalOnlyOwnerCanManageChatbot() {
-    this.notify.presentModalAgentCannotManageChatbot('Agents can\'t manage chatbots', 'Learn more about default roles')
+    this.notify.presentModalAgentCannotManageChatbot(this.agentsCannotManageChatbots, this.learnMoreAboutDefaultRoles)
   }
 
 
@@ -323,6 +328,20 @@ export class CommunityTemplateDtlsComponent extends PricingBaseComponent impleme
 
       }
     }
+  }
+
+  traslateString() {
+    this.translate
+      .get('LearnMoreAboutDefaultRoles')
+      .subscribe((translation: any) => {
+        this.learnMoreAboutDefaultRoles = translation
+      })
+
+    this.translate
+      .get('AgentsCannotManageChatbots')
+      .subscribe((translation: any) => {
+        this.agentsCannotManageChatbots = translation
+      })
   }
 
 

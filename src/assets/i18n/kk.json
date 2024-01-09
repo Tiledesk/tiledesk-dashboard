@@ -1932,6 +1932,7 @@
     "OnlyUsersWithTheOwnerRoleCanManageSMTPsettings": "SMTP параметрлерін тек Ие рөлі бар командалас басқара алады",
     "OnlyUserWithOwnerRoleCanManageAdvancedProjectSettings":"Тек Ие рөлі бар командаластар жобаның кеңейтілген параметрлерін басқара алады",
     "LearnMoreAboutDefaultRoles": "Әдепкі рөлдер туралы көбірек біліңіз",
+    "AgentsCannotManageChatbots":"Агент рөлі бар командаластар чат-боттарды басқара алмайды",
     "LearnHowCreateAGroup": "Топты құру жолын біліңіз",
     "HookTheBot": "Бұл ботты іске қосыңыз",
     "ActivateBotsForNewConversations": "Жаңа сөйлесулер үшін боттарды іске қосыңыз",

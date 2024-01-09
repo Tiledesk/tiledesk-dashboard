@@ -1932,6 +1932,7 @@
     "OnlyUsersWithTheOwnerRoleCanManageSMTPsettings": "يمكن فقط لزميل في الفريق مع دور المالك إدارة إعدادات SMTP",
     "OnlyUserWithOwnerRoleCanManageAdvancedProjectSettings":"يمكن لأعضاء الفريق الذين لديهم دور المالك فقط إدارة إعدادات المشروع المتقدمة",
     "LearnMoreAboutDefaultRoles": "تعرف على المزيد حول الأدوار الافتراضية",
+    "AgentsCannotManageChatbots":"لا يمكن لأعضاء الفريق الذين لديهم دور وكيل إدارة برامج الدردشة الآلية",
     "LearnHowCreateAGroup": "تعرف على كيفية إنشاء مجموعة",
     "HookTheBot": "قم بتنشيط هذا الروبوت",
     "ActivateBotsForNewConversations": "تنشيط الروبوتات للمحادثات الجديدة",
