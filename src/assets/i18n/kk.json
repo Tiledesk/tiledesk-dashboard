@@ -1573,6 +1573,8 @@
         "RunIndexing": "Индекстеуді іске қосыңыз",
         "CreationDate": "Жасалу күні",
         "KbCounterFooter": "{{ counter }} 3 білім қоры қосылды",
+        "KbCounterFooter1": "Added {{counter}} Knowledge Bases",
+        "KbCounterFooter2": "of {{allowed_kb_num}} available for {{plan_name}}",
         "AddKb": "Веб-сайтыңызды қосыңыз",
         "AddKbInfoFirstText": "Веб-сайтыңыз үшін жарамды URL мекенжайын орнатыңыз.",
         "AddKbInfoSecondText": "Tiledesk сәйкес жауаптар үшін веб-сайтыңыздың URL мекенжайын іздейді ChatGPT содан кейін адамға ұқсас жауап беруге үйретіледі.",

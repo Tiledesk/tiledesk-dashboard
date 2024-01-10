@@ -1572,6 +1572,8 @@
         "RunIndexing": "Indekslashni ishga tushiring",
         "CreationDate": "Yaratilgan sana",
         "KbCounterFooter": "{{ counter }} 3 ta bilim bazasi qo'shildi",
+        "KbCounterFooter1": "Added {{counter}} Knowledge Bases",
+        "KbCounterFooter2": "of {{allowed_kb_num}} available for {{plan_name}}",
         "AddKb": "Veb-saytingizni qo'shing",
         "AddKbInfoFirstText": "Veb-saytingiz uchun haqiqiy URL manzilini o'rnating.",
         "AddKbInfoSecondText": "Tiledesk tegishli javoblar uchun veb-saytingizning URL manzilini qidiradi. ChatGPT so‘ngra odamga o‘xshash tarzda javob berishga o‘rgatiladi.",

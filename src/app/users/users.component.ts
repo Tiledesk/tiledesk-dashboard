@@ -11,6 +11,9 @@ import { AppConfigService } from '../services/app-config.service'
 import { avatarPlaceholder, getColorBck, PLAN_SEATS, PLAN_NAME, APP_SUMO_PLAN_NAME, APPSUMO_PLAN_SEATS } from '../utils/util'
 import { URL_understanding_default_roles } from '../utils/util'
 import { LoggerService } from '../services/logger/logger.service'
+import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component'
+import { takeUntil } from 'rxjs/operators'
+import { Subject } from 'rxjs';
 
 const swal = require('sweetalert')
 
@@ -19,7 +22,8 @@ const swal = require('sweetalert')
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.scss'],
 })
-export class UsersComponent implements OnInit, OnDestroy {
+export class UsersComponent extends PricingBaseComponent implements OnInit, OnDestroy {
+  private unsubscribe$: Subject<any> = new Subject<any>();
   PLAN_NAME = PLAN_NAME;
   PLAN_SEATS = PLAN_SEATS;
   APP_SUMO_PLAN_NAME = APP_SUMO_PLAN_NAME;
@@ -107,12 +111,13 @@ export class UsersComponent implements OnInit, OnDestroy {
     private usersService: UsersService,
     private router: Router,
     private auth: AuthService,
-    private notify: NotifyService,
+    public notify: NotifyService,
     private translate: TranslateService,
-    private prjctPlanService: ProjectPlanService,
+    public prjctPlanService: ProjectPlanService,
     public appConfigService: AppConfigService,
     private logger: LoggerService,
   ) {
+    super(prjctPlanService, notify);
     this.tParamsFreePlanSeatsNum = { free_plan_allowed_seats_num: PLAN_SEATS.free }
 
   }
@@ -127,7 +132,7 @@ export class UsersComponent implements OnInit, OnDestroy {
     this.getLoggedUser()
     this.hasChangedAvailabilityStatusInSidebar()
     this.getPendingInvitation()
-
+    this.getProjectPlan()
     this.getOSCODE()
     this.getChatUrl()
     this.listenSidebarIsOpened();
@@ -135,76 +140,10 @@ export class UsersComponent implements OnInit, OnDestroy {
 
   }
 
-
   ngOnDestroy() {
-    this.subscription.unsubscribe()
-  }
-
-
-
-  getBrowserVersion() {
-    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
-      this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
-      //  console.log("[WS-REQUESTS-LIST] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
-    })
-  }
-
-  listenSidebarIsOpened() {
-    this.auth.settingSidebarIsOpned.subscribe((isopened) => {
-      this.logger.log('[USERS] SETTINGS-SIDEBAR isopened (FROM SUBSCRIPTION) ', isopened)
-      this.IS_OPEN_SETTINGS_SIDEBAR = isopened
-    })
-  }
-
-  translateStrings() {
-    this.translateChangeAvailabilitySuccessMsg()
-    this.translateChangeAvailabilityErrorMsg()
-    this.translateRemoveProjectUserSuccessMsg()
-    this.translateRemoveProjectUserErrorMsg()
-    this.translateResendInviteSuccessMsg()
-    this.translateResendInviteErrorMsg()
-    this.translateCanceledInviteSuccessMsg()
-    this.translateCanceledInviteErrorMsg()
-
-    this.translateModalOnlyOwnerCanManageProjectAccount()
-  }
-
-  translateModalOnlyOwnerCanManageProjectAccount() {
-    this.translate
-      .get('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan')
-      .subscribe((translation: any) => {
-        // this.logger.log('PROJECT-EDIT-ADD  onlyOwnerCanManageTheAccountPlanMsg text', translation)
-        this.onlyOwnerCanManageTheAccountPlanMsg = translation
-      })
-
-    this.translate
-      .get('LearnMoreAboutDefaultRoles')
-      .subscribe((translation: any) => {
-        // this.logger.log('PROJECT-EDIT-ADD  onlyOwnerCanManageTheAccountPlanMsg text', translation)
-        this.learnMoreAboutDefaultRoles = translation
-      })
-  }
-
-  getChatUrl() {
-    this.CHAT_BASE_URL = this.appConfigService.getConfig().CHAT_BASE_URL
-    this.logger.log('[USERS] getAppConfig CHAT_BASE_URL', this.CHAT_BASE_URL)
-  }
-
-  chatWithAgent(agentId, agentFirstname, agentLastname) {
-    this.logger.log('[USERS] - CHAT WITH AGENT - agentId: ', agentId, ' - agentFirstname: ', agentFirstname, ' - agentLastname: ', agentLastname)
-
-    // https://support-pre.tiledesk.com/chat/index.html?recipient=5de9200d6722370017731969&recipientFullname=Nuovopre%20Pre
-    // https://support-pre.tiledesk.com/chat/index.html?recipient=5dd278b8989ecd00174f9d6b&recipientFullname=Gian Burrasca
-    // const url = this.CHAT_BASE_URL + '?' + 'recipient=' + agentId + '&recipientFullname=' + agentFirstname + ' ' + agentLastname;
-    let agentFullname = ''
-    if (agentLastname) {
-      agentFullname = agentFirstname + ' ' + agentLastname
-    } else {
-      agentFullname = agentFirstname
-    }
-    const url = this.CHAT_BASE_URL + '#/conversation-detail/' + agentId + '/' + agentFullname + '/new'
-    this.logger.log('[USERS] - CHAT WITH AGENT - CHAT URL ', url)
-    window.open(url, '_blank')
+    // this.subscription.unsubscribe()
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   getOSCODE() {
@@ -250,92 +189,33 @@ export class UsersComponent implements OnInit, OnDestroy {
       this.areActivePay = false;
     }
 
-    this.getProjectPlan()
+    
   }
 
-  translateCanceledInviteSuccessMsg() {
-    this.translate
-      .get('UsersPage.CanceledInviteSuccessMsg')
-      .subscribe((text: string) => {
-        this.canceledInviteSuccessMsg = text
-        // this.logger.log('[USERS] + + + canceledInviteSuccessMsg Invite Success Notication Msg', text)
-      })
+  getCurrentProject() {
+    this.auth.project_bs
+    .pipe(
+      takeUntil(this.unsubscribe$)
+    )
+    .subscribe((project) => {
+      if (project) {
+        this.project = project;
+        this.id_project = project._id;
+        this.logger.log(
+          '[USERS] - GET CURRENT PROJECT -> project ID',
+          this.id_project,
+        )
+      }
+    })
   }
 
-  translateCanceledInviteErrorMsg() {
-    this.translate
-      .get('UsersPage.CanceledInviteErrorMsg')
-      .subscribe((text: string) => {
-        this.canceledInviteErrorMsg = text
-        // this.logger.log('[USERS] + + + canceledInviteErrorMsg Invite Success Notication Msg', text)
-      })
-  }
-
-  translateResendInviteSuccessMsg() {
-    this.translate
-      .get('UsersPage.ResendInviteSuccessNoticationMsg')
-      .subscribe((text: string) => {
-        this.resendInviteSuccessNoticationMsg = text
-        // this.logger.log('[USERS] + + + resend Invite Success Notication Msg', text)
-      })
-  }
-
-  translateResendInviteErrorMsg() {
-    this.translate
-      .get('UsersPage.ResendInviteErrorNoticationMsg')
-      .subscribe((text: string) => {
-        this.resendInviteErrorNoticationMsg = text
-        // this.logger.log('[USERS] + + + resend Invite Error Notication Msg', text)
-      })
-  }
-
-  getBrowserLanguage() {
-    this.browserLang = this.translate.getBrowserLang()
-    this.logger.log('[USERS] - BRS LANG ', this.browserLang)
-  }
-
-  // TRANSLATION
-  translateChangeAvailabilitySuccessMsg() {
-    this.translate
-      .get('ChangeAvailabilitySuccessNoticationMsg')
-      .subscribe((text: string) => {
-        this.changeAvailabilitySuccessNoticationMsg = text
-        // this.logger.log('[USERS] + + + change Availability Success Notication Msg', text)
-      })
-  }
-
-  // TRANSLATION
-  translateChangeAvailabilityErrorMsg() {
-    this.translate
-      .get('ChangeAvailabilityErrorNoticationMsg')
-      .subscribe((text: string) => {
-        this.changeAvailabilityErrorNoticationMsg = text
-        // this.logger.log('[USERS] + + + change Availability Error Notication Msg', text)
-      })
-  }
-
-  // TRANSLATION
-  translateRemoveProjectUserSuccessMsg() {
-    this.translate
-      .get('RemoveProjectUserSuccessNoticationMsg')
-      .subscribe((text: string) => {
-        this.deleteProjectUserSuccessNoticationMsg = text
-        // this.logger.log('[USERS] + + + RemoveProjectUserSuccessNoticationMsg ', text)
-      })
-  }
-
-  // TRANSLATION
-  translateRemoveProjectUserErrorMsg() {
-    this.translate
-      .get('RemoveProjectUserErrorNoticationMsg')
-      .subscribe((text: string) => {
-        this.deleteProjectUserErrorNoticationMsg = text
-        // this.logger.log('[USERS] + + + RemoveProjectUserErrorNoticationMsg ', text)
-      })
-  }
 
   getLoggedUser() {
-    this.auth.user_bs.subscribe((user) => {
+    this.auth.user_bs
+    .pipe(
+      takeUntil(this.unsubscribe$)
+    )
+    .subscribe((user) => {
       this.logger.log('[USERS] LOGGED USER GET IN USERS-COMP - USER', user)
       if (user) {
         this.CURRENT_USER = user;
@@ -349,29 +229,60 @@ export class UsersComponent implements OnInit, OnDestroy {
   }
 
   getProjectUserRole() {
-    this.usersService.project_user_role_bs.subscribe((user_role) => {
-      this.USER_ROLE = user_role
-      this.logger.log(
-        '[USERS] - GET PROJECT USER ROLE - USER_ROLE : ',
-        this.USER_ROLE,
+    this.usersService.project_user_role_bs
+      .pipe(
+        takeUntil(this.unsubscribe$)
       )
-    })
-  }
-
-  getCurrentProject() {
-    this.auth.project_bs.subscribe((project) => {
-
-      // this.logger.log('[USERS] - GET CURRENT PROJECT -> project', this.project)
-      if (project) {
-        this.project = project;
-        this.id_project = project._id;
+      .subscribe((user_role) => {
+        this.USER_ROLE = user_role
         this.logger.log(
-          '[USERS] - GET CURRENT PROJECT -> project ID',
-          this.id_project,
+          '[USERS] - GET PROJECT USER ROLE - USER_ROLE : ',
+          this.USER_ROLE,
         )
-      }
     })
   }
+
+  getBrowserVersion() {
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
+      this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+      //  console.log("[WS-REQUESTS-LIST] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    })
+  }
+
+  listenSidebarIsOpened() {
+    this.auth.settingSidebarIsOpned.subscribe((isopened) => {
+      this.logger.log('[USERS] SETTINGS-SIDEBAR isopened (FROM SUBSCRIPTION) ', isopened)
+      this.IS_OPEN_SETTINGS_SIDEBAR = isopened
+    })
+  }
+
+  getChatUrl() {
+    this.CHAT_BASE_URL = this.appConfigService.getConfig().CHAT_BASE_URL
+    this.logger.log('[USERS] getAppConfig CHAT_BASE_URL', this.CHAT_BASE_URL)
+  }
+
+  chatWithAgent(agentId, agentFirstname, agentLastname) {
+    this.logger.log('[USERS] - CHAT WITH AGENT - agentId: ', agentId, ' - agentFirstname: ', agentFirstname, ' - agentLastname: ', agentLastname)
+
+    // https://support-pre.tiledesk.com/chat/index.html?recipient=5de9200d6722370017731969&recipientFullname=Nuovopre%20Pre
+    // https://support-pre.tiledesk.com/chat/index.html?recipient=5dd278b8989ecd00174f9d6b&recipientFullname=Gian Burrasca
+    // const url = this.CHAT_BASE_URL + '?' + 'recipient=' + agentId + '&recipientFullname=' + agentFirstname + ' ' + agentLastname;
+    let agentFullname = ''
+    if (agentLastname) {
+      agentFullname = agentFirstname + ' ' + agentLastname
+    } else {
+      agentFullname = agentFirstname
+    }
+    const url = this.CHAT_BASE_URL + '#/conversation-detail/' + agentId + '/' + agentFullname + '/new'
+    this.logger.log('[USERS] - CHAT WITH AGENT - CHAT URL ', url)
+    window.open(url, '_blank')
+  }
+
+  getBrowserLanguage() {
+    this.browserLang = this.translate.getBrowserLang()
+    this.logger.log('[USERS] - BRS LANG ', this.browserLang)
+  }
+
 
   // !! No more used - replaced by goToEditUser
   // goToMemberProfile(member_id: string) {
@@ -379,9 +290,7 @@ export class UsersComponent implements OnInit, OnDestroy {
   // }
 
   goToEditUser(projectUser_id) {
-    this.router.navigate([
-      'project/' + this.id_project + '/user/edit/' + projectUser_id,
-    ])
+    this.router.navigate([ 'project/' + this.id_project + '/user/edit/' + projectUser_id ])
   }
 
   goToGroups() {
@@ -402,135 +311,6 @@ export class UsersComponent implements OnInit, OnDestroy {
   goToPricing() {
     this.router.navigate(['project/' + this.id_project + '/pricing']);
   }
-
-  getProjectPlan() {
-    this.subscription = this.prjctPlanService.projectPlan$.subscribe(
-      (projectProfileData: any) => {
-        this.logger.log('[USERS] - GET PROJECT PLAN - RES ', projectProfileData)
-        if (projectProfileData) {
-          this.prjct_id = projectProfileData._id
-          this.prjct_name = projectProfileData.name
-          this.projectPlanAgentsNo = projectProfileData.profile_agents;
-          this.subscription_is_active = projectProfileData.subscription_is_active;
-          this.subscription_end_date = projectProfileData.subscription_end_date;
-          this.prjct_profile_type = projectProfileData.profile_type;
-          this.profile_name = projectProfileData.profile_name;
-          this.trial_expired = projectProfileData.trial_expired;
-
-          if (projectProfileData && projectProfileData.extra3) {
-            this.logger.log('[HOME] Find Current Project Among All extra3 ', projectProfileData.extra3)
-            this.appSumoProfile = APP_SUMO_PLAN_NAME[projectProfileData.extra3]
-            this.logger.log('[USERS] Find Current Project appSumoProfile ', this.appSumoProfile)
-          }
-
-          if (projectProfileData.profile_type === 'free') {
-            if (projectProfileData.trial_expired === false) {
-              this.prjct_profile_name = PLAN_NAME.B + " plan (trial)"
-              if (this.areActivePay) {
-                this.seatsLimit = PLAN_SEATS[PLAN_NAME.B]
-                // this.seatsLimit = PLAN_SEATS.free
-                this.tParamsPlanAndSeats = { plan_name: this.prjct_profile_name, allowed_seats_num: this.seatsLimit }
-                this.logger.log('[USERS] - GET PROJECT PLAN - PLAN_NAME ', this.prjct_profile_name, 'areActivePay', this.areActivePay, ' SEATS LIMIT: ', this.seatsLimit)
-              } else {
-                this.seatsLimit = 1000;
-                this.tParamsPlanAndSeats = { plan_name: 'Free', allowed_seats_num: this.seatsLimit }
-                this.logger.log('[USERS] - GET PROJECT PLAN - PLAN_NAME ', this.prjct_profile_name, 'areActivePay', this.areActivePay, ' SEATS LIMIT: ', this.seatsLimit)
-              }
-            } else {
-              this.prjct_profile_name = "Free plan";
-              if (this.areActivePay) {
-                this.seatsLimit = PLAN_SEATS.free
-                this.tParamsPlanAndSeats = { plan_name: 'Free', allowed_seats_num: this.seatsLimit }
-                this.logger.log('[USERS] - GET PROJECT PLAN - PLAN_NAME ', this.prjct_profile_name, 'areActivePay', this.areActivePay, ' SEATS LIMIT: ', this.seatsLimit)
-              } else {
-                this.seatsLimit = 1000
-                this.tParamsPlanAndSeats = { plan_name: 'Free', allowed_seats_num: this.seatsLimit }
-                this.logger.log('[USERS] - GET PROJECT PLAN - PLAN_NAME ', this.prjct_profile_name, 'areActivePay', this.areActivePay, ' SEATS LIMIT: ', this.seatsLimit)
-              }
-            }
-          } else if (projectProfileData.profile_type === 'payment') {
-            if (this.subscription_is_active === true) {
-              if (projectProfileData.profile_name === PLAN_NAME.A) {
-                if (!this.appSumoProfile) {
-                  this.prjct_profile_name = PLAN_NAME.A + " plan";
-                  this.seatsLimit = PLAN_SEATS[PLAN_NAME.A]
-                  this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.A, allowed_seats_num: this.seatsLimit }
-                  this.logger.log('[USERS] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.A, ' SEATS LIMIT: ', this.seatsLimit)
-                } else {
-                  this.prjct_profile_name = PLAN_NAME.A + " plan " + '(' + this.appSumoProfile + ')';
-                  this.seatsLimit = APPSUMO_PLAN_SEATS[projectProfileData.extra3];
-                  this.tParamsPlanAndSeats = { plan_name: 'AppSumo ' + this.appSumoProfile, allowed_seats_num: this.seatsLimit }
-                  this.logger.log('[USERS] - GET PROJECT PLAN - prjct_profile_name ', this.prjct_profile_name, ' SEATS LIMIT: ', this.seatsLimit)
-                }
-              } else if (projectProfileData.profile_name === PLAN_NAME.B) {
-                if (!this.appSumoProfile) {
-                  this.prjct_profile_name = PLAN_NAME.B + " plan";
-                  this.seatsLimit = PLAN_SEATS[PLAN_NAME.B]
-                  this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.B, allowed_seats_num: this.seatsLimit }
-                  this.logger.log('[USERS] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.B, ' SEATS LIMIT: ', this.seatsLimit)
-                } else {
-                  this.prjct_profile_name = PLAN_NAME.B + " plan " + '(' + this.appSumoProfile + ')';;
-                  this.seatsLimit = APPSUMO_PLAN_SEATS[projectProfileData.extra3];
-                  this.tParamsPlanAndSeats = { plan_name: 'AppSumo ' + this.appSumoProfile, allowed_seats_num: this.seatsLimit }
-                  this.logger.log('[USERS] - GET PROJECT PLAN - prjct_profile_name ', this.prjct_profile_name, ' SEATS LIMIT: ', this.seatsLimit)
-                }
-              } else if (projectProfileData.profile_name === PLAN_NAME.C) {
-                this.prjct_profile_name = PLAN_NAME.C + " plan";
-                this.seatsLimit = projectProfileData.profile_agents
-                this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.C, allowed_seats_num: this.seatsLimit }
-                this.logger.log('[USERS] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.C, ' SEATS LIMIT: ', this.seatsLimit)
-              }
-
-            } else if (this.subscription_is_active === false) {
-              this.seatsLimit = PLAN_SEATS.free
-              if (projectProfileData.profile_name === PLAN_NAME.A) {
-                this.prjct_profile_name = PLAN_NAME.A + " plan";
-                this.seatsLimit = PLAN_SEATS.free
-                this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.A, allowed_seats_num: this.seatsLimit }
-                this.logger.log('[USERS] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.A, ' SEATS LIMIT: ', this.seatsLimit)
-
-              } else if (projectProfileData.profile_name === PLAN_NAME.B) {
-                this.prjct_profile_name = PLAN_NAME.B + " plan";
-                this.seatsLimit = PLAN_SEATS.free
-                this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.B, allowed_seats_num: this.seatsLimit }
-                this.logger.log('[USERS] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.B, ' SEATS LIMIT: ', this.seatsLimit)
-
-              } else if (projectProfileData.profile_name === PLAN_NAME.C) {
-                this.prjct_profile_name = PLAN_NAME.C + " plan";
-                this.seatsLimit = PLAN_SEATS.free
-                this.tParamsPlanAndSeats = { plan_name: PLAN_NAME.C, allowed_seats_num: this.seatsLimit }
-                this.logger.log('[USERS] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.C, ' SEATS LIMIT: ', this.seatsLimit)
-              }
-            }
-          }
-
-
-          // ADDS 'Plan' to the project plan's name
-          // NOTE: IF THE PLAN IS OF FREE TYPE IN THE USER INTERFACE THE MESSAGE 'You currently have ...' IS NOT DISPLAYED
-          if (this.prjct_profile_type === 'payment') {
-            // this.getPaidPlanTranslation(this.profile_name)
-          }
-        }
-      },
-      (err) => {
-        this.logger.error('[USERS] GET PROJECT PROFILE - ERROR', err)
-      },
-      () => {
-        this.logger.log('[USERS] GET PROJECT PROFILE * COMPLETE *')
-      },
-    )
-  }
-
-  // getPaidPlanTranslation(project_profile_name) {
-  //   this.translate
-  //     .get('PaydPlanName', { projectprofile: project_profile_name })
-  //     .subscribe((text: string) => {
-  //       this.prjct_profile_name = text
-  //       // this.logger.log('+ + + PaydPlanName ', text)
-  //     })
-  // }
-
-
 
   presentContactUsModal() {
     if (this.USER_ROLE === 'owner') {
@@ -981,6 +761,113 @@ export class UsersComponent implements OnInit, OnDestroy {
       },
     )
   }
+
+  translateStrings() {
+    this.translateChangeAvailabilitySuccessMsg()
+    this.translateChangeAvailabilityErrorMsg()
+    this.translateRemoveProjectUserSuccessMsg()
+    this.translateRemoveProjectUserErrorMsg()
+    this.translateResendInviteSuccessMsg()
+    this.translateResendInviteErrorMsg()
+    this.translateCanceledInviteSuccessMsg()
+    this.translateCanceledInviteErrorMsg()
+
+    this.translateModalOnlyOwnerCanManageProjectAccount()
+  }
+
+  translateModalOnlyOwnerCanManageProjectAccount() {
+    this.translate
+      .get('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan')
+      .subscribe((translation: any) => {
+        // this.logger.log('PROJECT-EDIT-ADD  onlyOwnerCanManageTheAccountPlanMsg text', translation)
+        this.onlyOwnerCanManageTheAccountPlanMsg = translation
+      })
+
+    this.translate
+      .get('LearnMoreAboutDefaultRoles')
+      .subscribe((translation: any) => {
+        // this.logger.log('PROJECT-EDIT-ADD  onlyOwnerCanManageTheAccountPlanMsg text', translation)
+        this.learnMoreAboutDefaultRoles = translation
+      })
+  }
+
+
+    // TRANSLATION
+    translateChangeAvailabilitySuccessMsg() {
+      this.translate
+        .get('ChangeAvailabilitySuccessNoticationMsg')
+        .subscribe((text: string) => {
+          this.changeAvailabilitySuccessNoticationMsg = text
+          // this.logger.log('[USERS] + + + change Availability Success Notication Msg', text)
+        })
+    }
+  
+    // TRANSLATION
+    translateChangeAvailabilityErrorMsg() {
+      this.translate
+        .get('ChangeAvailabilityErrorNoticationMsg')
+        .subscribe((text: string) => {
+          this.changeAvailabilityErrorNoticationMsg = text
+          // this.logger.log('[USERS] + + + change Availability Error Notication Msg', text)
+        })
+    }
+  
+    // TRANSLATION
+    translateRemoveProjectUserSuccessMsg() {
+      this.translate
+        .get('RemoveProjectUserSuccessNoticationMsg')
+        .subscribe((text: string) => {
+          this.deleteProjectUserSuccessNoticationMsg = text
+          // this.logger.log('[USERS] + + + RemoveProjectUserSuccessNoticationMsg ', text)
+        })
+    }
+  
+    // TRANSLATION
+    translateRemoveProjectUserErrorMsg() {
+      this.translate
+        .get('RemoveProjectUserErrorNoticationMsg')
+        .subscribe((text: string) => {
+          this.deleteProjectUserErrorNoticationMsg = text
+          // this.logger.log('[USERS] + + + RemoveProjectUserErrorNoticationMsg ', text)
+        })
+    }
+
+
+    translateCanceledInviteSuccessMsg() {
+      this.translate
+        .get('UsersPage.CanceledInviteSuccessMsg')
+        .subscribe((text: string) => {
+          this.canceledInviteSuccessMsg = text
+          // this.logger.log('[USERS] + + + canceledInviteSuccessMsg Invite Success Notication Msg', text)
+        })
+    }
+  
+    translateCanceledInviteErrorMsg() {
+      this.translate
+        .get('UsersPage.CanceledInviteErrorMsg')
+        .subscribe((text: string) => {
+          this.canceledInviteErrorMsg = text
+          // this.logger.log('[USERS] + + + canceledInviteErrorMsg Invite Success Notication Msg', text)
+        })
+    }
+  
+    translateResendInviteSuccessMsg() {
+      this.translate
+        .get('UsersPage.ResendInviteSuccessNoticationMsg')
+        .subscribe((text: string) => {
+          this.resendInviteSuccessNoticationMsg = text
+          // this.logger.log('[USERS] + + + resend Invite Success Notication Msg', text)
+        })
+    }
+  
+    translateResendInviteErrorMsg() {
+      this.translate
+        .get('UsersPage.ResendInviteErrorNoticationMsg')
+        .subscribe((text: string) => {
+          this.resendInviteErrorNoticationMsg = text
+          // this.logger.log('[USERS] + + + resend Invite Error Notication Msg', text)
+        })
+    }
 
   // trackByFn(index, item) {
   //   this.logger.log('USER COMP ***** trackByFn ***** ', index)

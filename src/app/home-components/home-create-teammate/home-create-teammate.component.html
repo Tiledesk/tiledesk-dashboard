@@ -4,10 +4,10 @@
             <div class="home-block-title">
                 <span *ngIf="USER_ROLE !=='agent' && countOfInvitedTeammates === 0">Invite Teammates </span>
                 <span *ngIf="USER_ROLE !=='agent' && countOfInvitedTeammates === 1">
-                    Kudos! You've invited {{countOfInvitedTeammates}} Teammate. Keep striving for greatness!
+                    Kudos! You've invited {{countOfInvitedTeammates}} teammate. Keep striving for greatness!
                 </span>
                 <span *ngIf="USER_ROLE !=='agent' && countOfInvitedTeammates > 1">
-                    Kudos! You've invited {{countOfInvitedTeammates}} Teammates. Keep striving for greatness!
+                    Kudos! You've invited {{countOfInvitedTeammates}} teammates. Keep striving for greatness!
                 </span>
                 <span *ngIf="USER_ROLE ==='agent'">Teammates </span>
             </div>
@@ -176,40 +176,67 @@
         <div *ngIf="USER_ROLE !== 'agent'" class="home-block-description" style="padding-right: 55px;">
             Bring your team on board for collaborative automation and customer interactions
         </div>
-        <div *ngIf="USER_ROLE !== 'agent'" class="temmates-redeemed">
-            <span class="material-icons" *ngIf="(((prjct_profile_type === 'payment' && subscription_is_active === true) ||
-            (prjct_profile_type === 'free' && trial_expired === false) || 
-            (prjct_profile_type === 'free' && trial_expired === true))  &&
-            (projectUsersLength + countOfPendingInvites > seatsLimit))" style="color: #f44336; cursor: pointer;"
-                matTooltipClass="ct-custom-mat-tooltip-error"
-                matTooltip="The number of teammates exceeds the number allowed for the {{ prjct_profile_name }}. Update the plan or manually remove excess teammates (the system will do it automatically in a month) "
-                #tooltip="matTooltip" matTooltipPosition='above' matTooltipHideDelay="100">
-                error
-            </span>
-            <span *ngIf="areActivePay" class="redeemed-temmates-redeemed-num" matTooltipClass="ct-custom-mat-tooltip"
-                matTooltip="View detail in Teammates & Groups" #tooltip="matTooltip" matTooltipPosition='below'
-                matTooltipHideDelay="100" (click)="goToTeammates()"
+        <div *ngIf="USER_ROLE !== 'agent' && areActivePay" class="temmates-redeemed">
+         
+            
+            <span *ngIf="areActivePay" class="redeemed-temmates-redeemed-num" 
+                matTooltipClass="h-custom-mat-tooltip"
+                matTooltip="View detail in Teammates & Groups" 
+                #tooltip="matTooltip" 
+                matTooltipPosition='below'
+                matTooltipHideDelay="100" 
+                (click)="goToTeammates()"
                 [ngStyle]="{'color': countOfPendingInvites + projectUsersLength > seatsLimit ? '#f44336' : '#2196f3'}">
-                {{countOfPendingInvites + projectUsersLength}} seats redeemed
+                    {{countOfPendingInvites + projectUsersLength}} seats redeemed
                 <span class="pending--invitation" *ngIf="countOfPendingInvites > 0">
                     ({{ countOfPendingInvites }} pending )
                 </span>
             </span>
            <span *ngIf="areActivePay"> of {{ seatsLimit }} available for the {{prjct_profile_name}}. </span> 
+          
+           <span *ngIf="(!subscription_is_active && prjct_profile_type === 'payment') && (countOfPendingInvites + projectUsersLength > seatsLimit)">
+                <i class="material-icons" 
+                    matTooltipClass="h-custom-mat-tooltip"
+                    matTooltip="Subscription payment problem" 
+                    #tooltip="matTooltip" 
+                    matTooltipPosition='below'
+                    matTooltipHideDelay="100" 
+                    (click)="openModalSubsExpired()"
+                    style="vertical-align: middle; color: #f44336; cursor: pointer; font-size: 20px;"> 
+                    error 
+                </i>
+            </span>
+
+            <span *ngIf="(trial_expired && prjct_profile_type === 'free') && (countOfPendingInvites + projectUsersLength > seatsLimit)">
+                <i class="material-icons" 
+                    matTooltipClass="h-custom-mat-tooltip"
+                    matTooltip="Your 14-day free trial has expired" 
+                    #tooltip="matTooltip" 
+                    matTooltipPosition='below'
+                    matTooltipHideDelay="100" 
+                    (click)="openModalTrialExpired()"
+                    style="vertical-align: middle; color: #f44336; cursor: pointer; font-size: 20px;"> 
+                    error 
+                </i>
+            </span>
         </div>
 
-        <div *ngIf="USER_ROLE === 'agent'" class="temmates-redeemed">
+        <div *ngIf="USER_ROLE === 'agent' && areActivePay" class="temmates-redeemed">
             <span class="material-icons" *ngIf="(((prjct_profile_type === 'payment' && subscription_is_active === true) ||
             (prjct_profile_type === 'free' && trial_expired === false) || 
             (prjct_profile_type === 'free' && trial_expired === true))  &&
-            (projectUsersLength + countOfPendingInvites > seatsLimit))" style="color: #f44336; cursor: pointer;"
-                matTooltipClass="ct-custom-mat-tooltip-error"
+            (projectUsersLength + countOfPendingInvites > seatsLimit))" style="color: #f44336;"
+                matTooltipClass="h-custom-mat-tooltip-error"
                 matTooltip="The number of teammates exceeds the number allowed for the {{ prjct_profile_name }}. Update the plan or manually remove excess teammates (the system will do it automatically in a month) "
-                #tooltip="matTooltip" matTooltipPosition='above' matTooltipHideDelay="100">
+                #tooltip="matTooltip" 
+                matTooltipPosition='above' 
+                matTooltipHideDelay="100">
                 error
             </span>
             <span class="redeemed-temmates-redeemed-num">
-                {{countOfPendingInvites + projectUsersLength}} seats redeemed
+                <span [ngStyle]="{'color': countOfPendingInvites + projectUsersLength > seatsLimit ? '#f44336' : '#2196f3'}">
+                    {{countOfPendingInvites + projectUsersLength}} seats redeemed
+                </span>
                 <span class="pending--invitation" *ngIf="countOfPendingInvites > 0">
                     ({{ countOfPendingInvites }} pending )
                 </span>
@@ -217,13 +244,10 @@
             of {{ seatsLimit }} available for the {{prjct_profile_name}}.
         </div>
 
-
-
-
         <div class="ct-action-btns-wpr" *ngIf="USER_ROLE !== 'agent'">
-            <!-- goToTeammates() -->
+            <!-- goToTeammates() presentModalInviteTeammate()  -->
             <button id="home-material-btn" class="mat-focus-indicator mat-flat-button mat-button-base"
-                (click)="presentModalInviteTeammate()">
+                (click)="inviteTeammate()">
                 <span class="mat-button-wrapper">
 
                     <span class="ml-2" style="font-size: 15px;">

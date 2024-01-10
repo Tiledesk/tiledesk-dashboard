@@ -1573,6 +1573,8 @@
         "RunIndexing": "Kör indexering",
         "CreationDate": "Skapelsedagen",
         "KbCounterFooter": "{{ counter }} av 3 kunskapsbaser tillagda",
+        "KbCounterFooter1": "Added {{counter}} Knowledge Bases",
+        "KbCounterFooter2": "of {{allowed_kb_num}} available for {{plan_name}}",
         "AddKb": "Lägg till din webbplats",
         "AddKbInfoFirstText": "Ange en giltig URL för din webbplats.",
         "AddKbInfoSecondText": "Tiledesk kommer att söka efter relevanta svar på din webbadress. ChatGPT kommer sedan att tränas i att svara på ett mänskligt sätt.",

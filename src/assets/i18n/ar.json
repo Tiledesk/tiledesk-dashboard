@@ -1573,6 +1573,8 @@
         "RunIndexing": "تشغيل الفهرسة",
         "CreationDate": "تاريخ الإنشاء",
         "KbCounterFooter": "{{ counter }} تمت إضافة 3 قواعد معرفية",
+        "KbCounterFooter1": "Added {{counter}} Knowledge Bases",
+        "KbCounterFooter2": "of {{allowed_kb_num}} available for {{plan_name}}",
         "AddKb": "إضافة موقع الويب الخاص بك",
         "AddKbInfoFirstText": "قم بتعيين عنوان URL صالح لموقعك على الويب.",
         "AddKbInfoSecondText": "سيبحث Tiledesk في عنوان URL لموقع الويب الخاص بك عن الإجابات ذات الصلة، وسيتم بعد ذلك تدريب ChatGPT للرد بطريقة تشبه طريقة الإنسان.",

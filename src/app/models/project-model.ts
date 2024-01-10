@@ -24,6 +24,7 @@ export interface Project {
     subscription_id?: any;
     subscription_creation_date?: any;
     subscription_start_date?: any;
+    payActive?: boolean;
     extra1?: string;
     extra2?: string;
     extra3?: string;

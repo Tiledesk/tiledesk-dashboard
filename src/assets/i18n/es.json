@@ -1573,6 +1573,8 @@
         "RunIndexing": "Ejecutar indexación",
         "CreationDate": "Fecha de creación",
         "KbCounterFooter": "{{ counter }} de 3 Bases de Conocimiento añadidas",
+        "KbCounterFooter1": "Added {{counter}} Knowledge Bases",
+        "KbCounterFooter2": "of {{allowed_kb_num}} available for {{plan_name}}",
         "AddKb": "Añade tu página web",
         "AddKbInfoFirstText": "Establezca una URL válida para su sitio web.",
         "AddKbInfoSecondText": "Tiledesk buscará en la URL de su sitio web respuestas relevantes. Luego, ChatGPT estará capacitado para responder de forma humana.",

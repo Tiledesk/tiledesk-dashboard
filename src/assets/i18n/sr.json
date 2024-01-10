@@ -1573,6 +1573,8 @@
         "RunIndexing": "Покрени индексирање",
         "CreationDate": "Датум израде",
         "KbCounterFooter": "{{ counter }} од 3 додане базе знања",
+        "KbCounterFooter1": "Added {{counter}} Knowledge Bases",
+        "KbCounterFooter2": "of {{allowed_kb_num}} available for {{plan_name}}",
         "AddKb": "Додајте своју веб локацију",
         "AddKbInfoFirstText": "Поставите важећи УРЛ за своју веб локацију.",
         "AddKbInfoSecondText": "Тиледеск ће претражити УРЛ вашег веб сајта за релевантне одговоре. ЦхатГПТ ће затим бити обучен да одговара на људски начин.",

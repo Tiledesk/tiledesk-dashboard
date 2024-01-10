@@ -1573,6 +1573,8 @@
         "RunIndexing": "Dizin Oluşturmayı Çalıştır",
         "CreationDate": "Oluşturulma tarihi",
         "KbCounterFooter": "{{ counter }} / 3 Bilgi Tabanı eklendi",
+        "KbCounterFooter1": "Added {{counter}} Knowledge Bases",
+        "KbCounterFooter2": "of {{allowed_kb_num}} available for {{plan_name}}",
         "AddKb": "Web sitenizi ekleyin",
         "AddKbInfoFirstText": "Web siteniz için geçerli bir URL ayarlayın.",
         "AddKbInfoSecondText": "Tiledesk, ilgili yanıtlar için web sitenizin URL'sini arayacaktır. ChatGPT daha sonra insan benzeri bir şekilde yanıt vermek üzere eğitilecektir.",

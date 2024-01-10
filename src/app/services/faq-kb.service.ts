@@ -218,6 +218,40 @@ export class FaqKbService {
       );
   }
 
+  public getFaqKbByPassingProjectId(projectid): Observable<FaqKb[]> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    const url = this.SERVER_BASE_PATH + projectid + '/faq_kb/'
+    this.logger.log('[FAQ-KB.SERV] - GET FAQ-KB BY PROJECT ID - URL', url);
+
+    return this._httpClient
+      .get<FaqKb[]>(url, httpOptions)
+      .pipe(
+        map(
+          (response) => {
+            const data = response;
+            // Does something on data.data
+            this.logger.log('[FAQ-KB.SERV] GET FAQ-KB BY PROJECT ID - data', data);
+
+            data.forEach(d => {
+              this.logger.log('[FAQ-KB.SERV] - GET FAQ-KB BY PROJECT ID URL data d', d);
+              if (d.description) {
+                let stripHere = 20;
+                d['truncated_desc'] = d.description.substring(0, stripHere) + '...';
+              }
+            });
+            // return the modified data:
+            return data;
+          })
+      );
+  }
+
+
   // ------------------------------------------------------------
   // with all=true the response return also the identity bot 
   // ------------------------------------------------------------

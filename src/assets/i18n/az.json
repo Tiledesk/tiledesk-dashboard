@@ -1573,6 +1573,8 @@
         "RunIndexing": "İndeksləşdirməni işə salın",
         "CreationDate": "Yaradılma tarixi",
         "KbCounterFooter": "{{ counter }} 3 Bilik bazası əlavə edildi",
+        "KbCounterFooter1": "Added {{counter}} Knowledge Bases",
+        "KbCounterFooter2": "of {{allowed_kb_num}} available for {{plan_name}}",
         "AddKb": "Veb saytınızı əlavə edin",
         "AddKbInfoFirstText": "Veb saytınız üçün etibarlı URL təyin edin.",
         "AddKbInfoSecondText": "Tiledesk müvafiq cavablar üçün vebsayt URL-nizi axtaracaq ChatGPT daha sonra insana bənzər şəkildə cavab vermək üçün təlim keçəcək.",

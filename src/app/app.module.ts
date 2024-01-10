@@ -367,6 +367,9 @@ import { AutomationsComponent } from './automations/automations.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { HomeCdsComponent } from './home-components/home-cds/home-cds.component';
 import { AutomationStaticComponent } from './static-pages/automation-static/automation-static.component';
+import { KbModalComponent } from './knowledge-bases/kb-modal/kb-modal.component';
+import { KbAlertComponent } from './knowledge-bases/kb-alert/kb-alert.component';
+
 
 
 
@@ -650,7 +653,9 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     HomeNewsFeedModalComponent,
     AutomationsComponent,
     HomeCdsComponent,
-    AutomationStaticComponent
+    AutomationStaticComponent,
+    KbModalComponent,
+    KbAlertComponent
   ],
   imports: [
     TooltipModule.forRoot(CutomTooltipOptions as TooltipOptions),

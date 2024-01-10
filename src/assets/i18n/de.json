@@ -1574,6 +1574,8 @@
 		"RunIndexing": "Führen Sie die Indizierung aus",
 		"CreationDate": "Erstellungsdatum",
 		"KbCounterFooter": "{{ counter }} von 3 Wissensdatenbanken hinzugefügt",
+		"KbCounterFooter1": "Added {{counter}} Knowledge Bases",
+        "KbCounterFooter2": "of {{allowed_kb_num}} available for {{plan_name}}",
 		"AddKb": "Füge deine Website hinzu",
   		"AddKbInfoFirstText": "Legen Sie eine gültige URL für Ihre Website fest.",
 		"AddKbInfoSecondText": "Tiledesk durchsucht die URL Ihrer Website nach relevanten Antworten. ChatGPT wird dann darauf trainiert, auf menschenähnliche Weise zu antworten.",

@@ -8,28 +8,61 @@ import { Project } from '../models/project-model';
 import { NotifyService } from '../core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
 import { LoggerService } from '../services/logger/logger.service';
+import { AppConfigService } from './app-config.service';
 @Injectable()
 
 export class ProjectPlanService {
 
   public projectPlan$: BehaviorSubject<Project> = new BehaviorSubject<Project>(null);
-
+  areActivePay: boolean;
+  public_Key: string;
   projectID: string;
   TOKEN: string
   project_deleted_notification: string
   progetIdGetFromParams: string;
-  string;
   constructor(
     private router: Router,
     private auth: AuthService,
     private projectService: ProjectService,
     private notify: NotifyService,
     private translate: TranslateService,
-    private logger: LoggerService
+    private logger: LoggerService,
+    public appConfigService: AppConfigService,
   ) {
-    this.getProjectIdFroUrlAndIfExistGetProjectByIdAndPublish('costructor');
+    this.getOSCODE()
     this.getUserToken();
     this.translateNotificationMsgs();
+  }
+
+  getOSCODE() {
+    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK
+    this.logger.log('[USERS] getAppConfig - public_Key', this.public_Key)
+
+    let keys = this.public_Key.split('-')
+    keys.forEach((key) => {
+    
+
+      if (key.includes('PAY')) {
+        // this.logger.log('[USERS] - PUBLIC-KEY (Users) - key', key);
+        let gro = key.split(':')
+        // this.logger.log('[USERS] - PUBLIC-KEY (Users) - gro key&value', gro);
+
+        if (gro[1] === 'F') {
+          this.areActivePay = false
+          // this.logger.log('[USERS] - PUBLIC-KEY (Users) - areActivePay', this.areActivePay);
+        } else {
+          this.areActivePay = true
+          // this.logger.log('[USERS] - PUBLIC-KEY (Users) - areActivePay', this.areActivePay);
+        }
+      }
+    })
+
+
+    if (!this.public_Key.includes("PAY")) {
+      this.areActivePay = false;
+    }
+
+    this.getProjectIdFroUrlAndIfExistGetProjectByIdAndPublish('costructor');
   }
 
   translateNotificationMsgs() {
@@ -130,7 +163,8 @@ export class ProjectPlanService {
           subscription_creation_date: current_prjct.id_project.profile['subscription_creation_date'],
           extra3: current_prjct.id_project.profile['extra3'],
           extra4: current_prjct.id_project.profile['extra4'],
-          user_role: current_prjct.role
+          user_role: current_prjct.role,
+          payActive: this.areActivePay
         }
 
 
