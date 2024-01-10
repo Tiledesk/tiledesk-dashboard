@@ -85,6 +85,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
   displayLogoWithText: boolean = true;
   isMobile: boolean = true;
   updatedProject: any;
+  showSpinner: boolean = false;
 
   constructor(
     private auth: AuthService,
@@ -237,7 +238,9 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
 
 
   private getProjects() {
+    this.showSpinner = true;
     this.projectService.getProjects().subscribe((projects: any) => {
+      // console.log('[ONBOARDING-CONTENT] projects ', projects) 
       this.isFirstProject = true;
       if (projects) {
         this.projects = projects;
@@ -248,6 +251,12 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
       }
       // console.log('[ONBOARDING-CONTENT] getProjects  projects:   ', projects, ' isFirstProject ', this.isFirstProject);
       this.getLoggedUser();
+    }, (error) => {
+      this.logger.error('[ONBOARDING-CONTENT] - GET PROJECTS ', error);
+      this.showSpinner = false;
+    }, () => {
+      this.logger.log('[AONBOARDING-CONTENT] - GET PROJECTS * COMPLETE *');
+      this.showSpinner = false;
     });
 
     // this.auth.project_bs

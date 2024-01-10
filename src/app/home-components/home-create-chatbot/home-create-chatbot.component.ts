@@ -127,7 +127,7 @@ export class HomeCreateChatbotComponent implements OnInit, OnChanges {
         });
         if (use_case === 'increase_online_sales') {
           this.templates = this.increaseSalesTemplates
-          console.log('[HOME-CREATE-CHATBOT] - TEMPLATES (Increase Sales)', this.templates)
+          this.logger.log('[HOME-CREATE-CHATBOT] - TEMPLATES (Increase Sales)', this.templates)
         }
         this.logger.log('[HOME-CREATE-CHATBOT] - TEMPLATES Increase Sales TEMPLATES', this.increaseSalesTemplates);
 

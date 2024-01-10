@@ -50,7 +50,7 @@ export class BotListComponent implements OnInit {
   HAS_FAQ_RELATED = false;
 
   project: Project;
-  showSpinner = true;
+  showSpinner: boolean = false;
 
   NUMBER_OF_CICLE: number;
 
@@ -210,10 +210,10 @@ export class BotListComponent implements OnInit {
 
     }, (error) => {
       this.logger.error('[BOTS-LIST] GET TEMPLATES ERROR ', error);
-      this.showSpinner = false;
+      // this.showSpinner = false;
     }, () => {
       this.logger.log('[BOTS-LIST] GET TEMPLATES COMPLETE');
-      this.showSpinner = false;
+      // this.showSpinner = false;
       // this.generateTagsBackground(this.templates)
     });
   }
@@ -365,6 +365,7 @@ export class BotListComponent implements OnInit {
    * NOTE: THE CURRENT PROJECT-ID IS OBTAINED IN THE FAQ-KB SERVICE
    */
   getFaqKbByProjectId() {
+    this.showSpinner = true
     // this.faqKbService.getAllBotByProjectId().subscribe((faqKb: any) => {
     this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
       this.logger.log('[BOTS-LIST] - GET BOTS BY PROJECT ID', faqKb);
@@ -584,12 +585,12 @@ export class BotListComponent implements OnInit {
         }
       }, (error) => {
         this.logger.error('[BOTS-LIST] GET BOT FAQs - ERROR ', error)
-        this.showSpinner = false;
+        // this.showSpinner = false;
       }, () => {
         this.logger.log('[BOTS-LIST] GET BOT FAQs - COMPLETE ');
-        setTimeout(() => {
-          this.showSpinner = false;
-        }, 100);
+        // setTimeout(() => {
+        //   this.showSpinner = false;
+        // }, 100);
       });
     }
   }
