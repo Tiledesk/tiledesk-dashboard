@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.4.93
+- Deploys in production
+- Change the request endpoint to retrieve chatbot templates
+
 ### 2.4.92
 - Deploys in production
 - Improvements and bug fixing
