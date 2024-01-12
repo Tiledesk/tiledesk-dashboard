@@ -1575,6 +1575,8 @@
         "KbCounterFooter": "{{ counter }} од 3 додане базе знања",
         "KbCounterFooter1": "Added {{counter}} Knowledge Bases",
         "KbCounterFooter2": "of {{allowed_kb_num}} available for {{plan_name}}",
+        "KBLimitReached": "Достигнуто је ограничење базе знања за {{plan_name}}",
+        "NumberOfKbExceedsThePlan":"Број база знања дозвољен за план {{plan_name}} је {{allowed_kb_num}}. Надоградите свој план или ручно уклоните вишак база знања (систем ће то урадити аутоматски у року од месец дана)",
         "AddKb": "Додајте своју веб локацију",
         "AddKbInfoFirstText": "Поставите важећи УРЛ за своју веб локацију.",
         "AddKbInfoSecondText": "Тиледеск ће претражити УРЛ вашег веб сајта за релевантне одговоре. ЦхатГПТ ће затим бити обучен да одговара на људски начин.",

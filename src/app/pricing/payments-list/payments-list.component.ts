@@ -15,6 +15,7 @@ export class PaymentsListComponent implements OnInit, OnDestroy {
   subscription_payments: any;
   showSpinner = true;
   subscription: Subscription;
+  isChromeVerGreaterThan100: boolean
   constructor(
     private auth: AuthService,
     private prjctPlanService: ProjectPlanService,
@@ -26,6 +27,14 @@ export class PaymentsListComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.auth.checkRoleForCurrentProject();
     this.getProjectPlan();
+    this.getBrowserVersion();
+  }
+
+  getBrowserVersion() {
+    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
+      this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+      //  console.log("[WS-REQUESTS-LIST] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+    })
   }
 
 

@@ -101,7 +101,7 @@ export class PricingBaseComponent implements OnInit {
           console.log('[P-BASE] - GET PROJECT PROFILE - profile_name ', this.profile_name);
 
           this.subscription_id = projectProfileData.subscription_id;
-          console.log('[P-BASE] - GET PROJECT PROFILE - subscription_id ', this.profile_name);
+          console.log('[P-BASE] - GET PROJECT PROFILE - subscription_id ', this.subscription_id);
 
           this.USER_ROLE = projectProfileData.user_role
           console.log('[P-BASE] - GET PROJECT PROFILE - USER_ROLE ', this.USER_ROLE);

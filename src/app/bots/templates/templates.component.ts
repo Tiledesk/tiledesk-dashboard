@@ -166,7 +166,7 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
   }
 
   openDialog(template) {
-    this.logger.log('openDialog')
+   console.log('openDialog TemplateDetailComponent')
     const dialogRef = this.dialog.open(TemplateDetailComponent, {
       data: {
         template: template,
@@ -439,20 +439,18 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
     // this.router.navigate(['project/' + this.project._id + '/bots/create/tilebot/blank']);
     // this.router.navigate(['project/' + this.project._id + '/chatbot/create']);
     console.log('[BOTS-TEMPLATES] createBlankTilebot chatBotCount ', this.chatBotCount, ' chatBotLimit ', this.chatBotLimit, ' USER_ROLE ', this.USER_ROLE)
-
-
     if (this.USER_ROLE !== 'agent') {
       if (this.chatBotLimit) {
         if (this.chatBotCount < this.chatBotLimit) {
-          console.log('[INSTALL-TEMPLATE] USECASE  chatBotCount < chatBotLimit: RUN NAVIGATE')
+          console.log('[BOTS-TEMPLATES] USECASE  chatBotCount < chatBotLimit: RUN NAVIGATE')
           this.router.navigate(['project/' + this.project._id + '/bots/create/tilebot/blank']);
 
         } else if (this.chatBotCount >= this.chatBotLimit) {
-          console.log('[INSTALL-TEMPLATE] USECASE  chatBotCount >= chatBotLimit DISPLAY MODAL')
+          console.log('[BOTS-TEMPLATES] USECASE  chatBotCount >= chatBotLimit DISPLAY MODAL')
           this.presentDialogReachedChatbotLimit()
         }
       } else if (!this.chatBotLimit) {
-        console.log('[INSTALL-TEMPLATE] USECASE  NO chatBotLimit: RUN NAVIGATE')
+        console.log('[BOTS-TEMPLATES] USECASE  NO chatBotLimit: RUN NAVIGATE')
         this.router.navigate(['project/' + this.project._id + '/bots/create/tilebot/blank']);
       }
     } if (this.USER_ROLE === 'agent') {

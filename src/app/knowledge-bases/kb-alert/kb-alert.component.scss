@@ -1,0 +1,30 @@
+.chatbot-alert-content {
+    background: red;
+    margin-left: -20px;
+    margin-right: -20px;
+    margin-top: -9px;
+    padding: 10px;
+    color: #fff;
+    font-weight: 400;
+    text-align: center;
+    min-height: 72px;
+}
+
+.chatbot-alert-content-no-lm {
+  margin-left: 0px;
+}
+
+
+.upgrade--plan-btn {
+    color: #039be5;
+    cursor: pointer;
+    background: #fff;
+    padding: 2px 8px;
+    border-radius: 4px;
+    border: #fff;
+    margin-top: 6px;
+  }
+  
+  .upgrade--plan-btn:hover {
+    background: #e8eaed;
+  }

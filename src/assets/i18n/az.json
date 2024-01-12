@@ -1575,6 +1575,8 @@
         "KbCounterFooter": "{{ counter }} 3 Bilik bazası əlavə edildi",
         "KbCounterFooter1": "Added {{counter}} Knowledge Bases",
         "KbCounterFooter2": "of {{allowed_kb_num}} available for {{plan_name}}",
+        "KBLimitReached": "{{plan_name}} üçün Bilik Bazaları limitinə çatdı",
+        "NumberOfKbExceedsThePlan":"{{plan_name}} planı üçün icazə verilən Bilik Bazalarının sayı {{allowed_kb_num}} təşkil edir. Planınızı təkmilləşdirin və ya artıq Bilik Bazalarını əl ilə silin (sistem bunu bir ay ərzində avtomatik edəcək)",
         "AddKb": "Veb saytınızı əlavə edin",
         "AddKbInfoFirstText": "Veb saytınız üçün etibarlı URL təyin edin.",
         "AddKbInfoSecondText": "Tiledesk müvafiq cavablar üçün vebsayt URL-nizi axtaracaq ChatGPT daha sonra insana bənzər şəkildə cavab vermək üçün təlim keçəcək.",

@@ -1574,6 +1574,8 @@
         "KbCounterFooter": "{{ counter }} 3 ta bilim bazasi qo'shildi",
         "KbCounterFooter1": "Added {{counter}} Knowledge Bases",
         "KbCounterFooter2": "of {{allowed_kb_num}} available for {{plan_name}}",
+        "KBLimitReached": "{{plan_name}} uchun maʼlumotlar bazasi chegarasiga yetdi",
+        "NumberOfKbExceedsThePlan":"{{plan_name}} rejasi uchun ruxsat etilgan bilim bazalari soni: {{allowed_kb_num}}. Rejangizni yangilang yoki ortiqcha bilim bazalarini qo'lda olib tashlang (tizim buni bir oy ichida avtomatik ravishda amalga oshiradi)",
         "AddKb": "Veb-saytingizni qo'shing",
         "AddKbInfoFirstText": "Veb-saytingiz uchun haqiqiy URL manzilini o'rnating.",
         "AddKbInfoSecondText": "Tiledesk tegishli javoblar uchun veb-saytingizning URL manzilini qidiradi. ChatGPT so‘ngra odamga o‘xshash tarzda javob berishga o‘rgatiladi.",

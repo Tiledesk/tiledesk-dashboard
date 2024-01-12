@@ -1575,6 +1575,8 @@
         "KbCounterFooter": "{{counter}} of 3 Knowledge Bases added",
         "KbCounterFooter1": "Added {{counter}} Knowledge Bases",
         "KbCounterFooter2": "of {{allowed_kb_num}} available for {{plan_name}}",
+        "KBLimitReached": "Knowledge Bases limit reached for {{plan_name}}",
+        "NumberOfKbExceedsThePlan": "The number of Knowledge Bases allowed for the {{plan_name}} plan is {{allowed_kb_num}}. Upgrade your plan or manually remove excess Knowledge Bases (the system will do this automatically within a month)",
         "AddKb": "Add your Website",
         "AddKbInfoFirstText": "Set a valid URL for your Website.",
         "AddKbInfoSecondText": "Tiledesk will search your website URL for relevant answers. ChatGPT will then be trained to reply in a human-like way.",

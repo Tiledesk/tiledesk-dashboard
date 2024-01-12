@@ -1575,6 +1575,8 @@
         "KbCounterFooter": "{{ counter }} تمت إضافة 3 قواعد معرفية",
         "KbCounterFooter1": "Added {{counter}} Knowledge Bases",
         "KbCounterFooter2": "of {{allowed_kb_num}} available for {{plan_name}}",
+        "KBLimitReached": "Knowledge Base limit reached for {{plan_name}}",
+        "NumberOfKbExceedsThePlan":"عدد قواعد المعرفة المسموح بها لخطة {{plan_name}} هو {{allowed_kb_num}}. قم بترقية خطتك أو قم بإزالة قواعد المعرفة الزائدة يدويًا (سيقوم النظام بذلك تلقائيًا خلال شهر واحد)",
         "AddKb": "إضافة موقع الويب الخاص بك",
         "AddKbInfoFirstText": "قم بتعيين عنوان URL صالح لموقعك على الويب.",
         "AddKbInfoSecondText": "سيبحث Tiledesk في عنوان URL لموقع الويب الخاص بك عن الإجابات ذات الصلة، وسيتم بعد ذلك تدريب ChatGPT للرد بطريقة تشبه طريقة الإنسان.",

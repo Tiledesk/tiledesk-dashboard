@@ -102,6 +102,7 @@ export class TemplateDetailComponent extends PricingBaseComponent implements OnI
     this._newlyCreatedProject = data.newlyCreatedProject
     this.callingPage = data.callingPage;
     this.prjct_profile_name = data.projectProfile
+    console.log('[TEMPLATE DETAIL] prjct_profile_name ', this.prjct_profile_name)
     // console.log('[TEMPLATE DETAIL] template ', this.template)
     // this.logger.log('[TEMPLATE DETAIL] projectid ', this.projectid)
     if (this.template) {
@@ -194,8 +195,8 @@ export class TemplateDetailComponent extends PricingBaseComponent implements OnI
   getProjectById(projectId) {
     this.projectService.getProjectById(projectId).subscribe((project: any) => {
       this.logger.log('[TEMPLATE DETAIL] - GET PROJECT BY ID - PROJECT: ', project);
-      this.prjct_profile_name = project.profile.name
-      this.logger.log('[TEMPLATE DETAIL] - GET PROJECT BY ID - PROJECT > prjct_profile_name: ', this.prjct_profile_name);
+      // this.prjct_profile_name = project.profile.name
+      // this.logger.log('[TEMPLATE DETAIL] - GET PROJECT BY ID - PROJECT > prjct_profile_name: ', this.prjct_profile_name);
     }, error => {
       this.logger.error('[TEMPLATE DETAIL] - GET PROJECT BY ID - ERROR ', error);
     }, () => {
