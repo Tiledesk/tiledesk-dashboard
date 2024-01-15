@@ -10,14 +10,19 @@ import { UsersService } from '../../services/users.service';
 import { LoggerService } from '../../services/logger/logger.service';
 import { AppConfigService } from 'app/services/app-config.service';
 import { PLAN_NAME } from 'app/utils/util';
+import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators'
 
 @Component({
   selector: 'appdashboard-email-ticketing-static',
   templateUrl: './email-ticketing-static.component.html',
   styleUrls: ['./email-ticketing-static.component.scss']
 })
-export class EmailTicketingStaticComponent extends StaticPageBaseComponent implements OnInit, OnDestroy {
 
+// extends StaticPageBaseComponent
+export class EmailTicketingStaticComponent extends PricingBaseComponent implements OnInit, OnDestroy {
+  private unsubscribe$: Subject<any> = new Subject<any>();
   PLAN_NAME = PLAN_NAME
   subscription: Subscription;
   projectId: string;
@@ -31,18 +36,21 @@ export class EmailTicketingStaticComponent extends StaticPageBaseComponent imple
   onlyOwnerCanManageTheAccountPlanMsg: string;
   learnMoreAboutDefaultRoles: string;
   isChromeVerGreaterThan100: boolean;
+  public_Key: any;
+  payIsVisible: boolean;
 
   constructor(
     private router: Router,
     public auth: AuthService,
     public translate: TranslateService,
-    private prjctPlanService: ProjectPlanService,
-    private notify: NotifyService,
+    public prjctPlanService: ProjectPlanService,
+    public notify: NotifyService,
     private usersService: UsersService,
     private logger: LoggerService,
     public appConfigService: AppConfigService
   ) {
-    super(translate); 
+    // super(translate); 
+    super(prjctPlanService, notify);
    }
 
   ngOnInit(): void {
@@ -53,10 +61,20 @@ export class EmailTicketingStaticComponent extends StaticPageBaseComponent imple
     this.getProjectUserRole();
     this.getTranslationStrings();
     this.getBrowserVersion();
+    this.presentModalsOnInit()
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   getBrowserVersion() {
-    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
+    this.auth.isChromeVerGreaterThan100
+    .pipe(
+      takeUntil(this.unsubscribe$)
+    )
+    .subscribe((isChromeVerGreaterThan100: boolean) => {
       this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
       //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
     })
@@ -64,8 +82,8 @@ export class EmailTicketingStaticComponent extends StaticPageBaseComponent imple
 
   getOSCODE() {
     this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
-    this.logger.log('[WSREQUEST-STATIC] AppConfigService getAppConfig public_Key', this.public_Key)
-    this.logger.log('[WSREQUEST-STATIC] public_Key', this.public_Key)
+    this.logger.log('[EMAIL-TKTNG-STATIC] AppConfigService getAppConfig public_Key', this.public_Key)
+    this.logger.log('[EMAIL-TKTNG-STATIC] public_Key', this.public_Key)
 
     let keys = this.public_Key.split("-");
     // this.logger.log('PUBLIC-KEY (Navbar) - public_Key keys', keys)
@@ -73,22 +91,22 @@ export class EmailTicketingStaticComponent extends StaticPageBaseComponent imple
     keys.forEach(key => {
       // this.logger.log('NavbarComponent public_Key key', key)
       if (key.includes("PAY")) {
-        this.logger.log('[WSREQUEST-STATIC] PUBLIC-KEY - key', key);
+        this.logger.log('[EMAIL-TKTNG-STATIC] PUBLIC-KEY - key', key);
         let pay = key.split(":");
         // this.logger.log('PUBLIC-KEY (Navbar) - pay key&value', pay);
         if (pay[1] === "F") {
           this.payIsVisible = false;
-          this.logger.log('[WSREQUEST-STATIC] - pay isVisible', this.payIsVisible);
+          this.logger.log('[EMAIL-TKTNG-STATIC] - pay isVisible', this.payIsVisible);
         } else {
           this.payIsVisible = true;
-          this.logger.log('[WSREQUEST-STATIC] - pay isVisible', this.payIsVisible);
+          this.logger.log('[EMAIL-TKTNG-STATIC] - pay isVisible', this.payIsVisible);
         }
       }
     });
 
     if (!this.public_Key.includes("PAY")) {
       this.payIsVisible = false;
-      this.logger.log('[WSREQUEST-STATIC] - pay isVisible', this.payIsVisible);
+      this.logger.log('[EMAIL-TKTNG-STATIC] - pay isVisible', this.payIsVisible);
     }
   }
 
@@ -97,76 +115,50 @@ export class EmailTicketingStaticComponent extends StaticPageBaseComponent imple
   }
 
   getProjectUserRole() {
-    this.usersService.project_user_role_bs.subscribe((user_role) => {
+    this.usersService.project_user_role_bs
+    .pipe(
+      takeUntil(this.unsubscribe$)
+    )
+    .subscribe((user_role) => {
       this.USER_ROLE = user_role;
-      this.logger.log('[WSREQUEST-STATIC] - PROJECT USER ROLE: ', this.USER_ROLE);
+      this.logger.log('[EMAIL-TKTNG-STATIC] - PROJECT USER ROLE: ', this.USER_ROLE);
     });
   }
 
-  getTranslationStrings() {
-    this.translateModalOnlyOwnerCanManageProjectAccount()
-  }
-
-  translateModalOnlyOwnerCanManageProjectAccount() {
-    this.translate.get('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan')
-      .subscribe((translation: any) => {
-        // this.logger.log('PROJECT-EDIT-ADD  onlyOwnerCanManageTheAccountPlanMsg text', translation)
-        this.onlyOwnerCanManageTheAccountPlanMsg = translation;
-      });
-
-    this.translate.get('LearnMoreAboutDefaultRoles')
-      .subscribe((translation: any) => {
-        // this.logger.log('PROJECT-EDIT-ADD  onlyOwnerCanManageTheAccountPlanMsg text', translation)
-        this.learnMoreAboutDefaultRoles = translation;
-      });
-  }
 
   getCurrentProject() {
-    this.auth.project_bs.subscribe((project) => {
+    this.auth.project_bs
+    .pipe(
+      takeUntil(this.unsubscribe$)
+    )
+    .subscribe((project) => {
 
       if (project) {
         this.projectId = project._id
-        this.logger.log('[WSREQUEST-STATIC] - project id', this.projectId)
+        this.logger.log('[EMAIL-TKTNG-STATIC] - project id', this.projectId)
       }
     });
   }
 
-  getProjectPlan() {
-    this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-      this.logger.log('[WSREQUEST-STATIC] GET PROJECT PROFILE', projectProfileData)
-      if (projectProfileData) {
+  presentModalsOnInit() {
+    if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
+      if (this.USER_ROLE === 'owner') {
 
-        this.prjct_profile_type = projectProfileData.profile_type;
-        this.subscription_is_active = projectProfileData.subscription_is_active;
+        if (this.profile_name !== PLAN_NAME.C && this.profile_name !== PLAN_NAME.F) {
 
-        this.subscription_end_date = projectProfileData.subscription_end_date
-        this.profile_name = projectProfileData.profile_name
+          this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date)
 
-        this.buildPlanName(projectProfileData.profile_name, this.browserLang, this.prjct_profile_type);
+        } else if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
 
-        if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
-          if (this.USER_ROLE === 'owner') {
-
-            if (this.profile_name !== PLAN_NAME.C) {
-
-              this.notify.displaySubscripionHasExpiredModal(true, this.profile_name, this.subscription_end_date)
-
-            } else if (this.profile_name === PLAN_NAME.C) {
-
-              this.notify.displayEnterprisePlanHasExpiredModal(true, this.profile_name, this.subscription_end_date);
-            }
-          }
+          this.notify.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
         }
       }
-    }, err => {
-      this.logger.error('[WSREQUEST-STATIC] GET PROJECT PROFILE - ERROR', err);
-    }, () => {
-      this.logger.log('[WSREQUEST-STATIC] GET PROJECT PROFILE * COMPLETE *');
-    });
+    }
   }
 
+
   goToPricing() {
-    this.logger.log('[WSREQUEST-STATIC] - goToPricing projectId ', this.projectId);
+    this.logger.log('[EMAIL-TKTNG-STATIC] - goToPricing projectId ', this.projectId);
     if (this.payIsVisible) {
       if (this.USER_ROLE === 'owner') {
         if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
@@ -189,8 +181,22 @@ export class EmailTicketingStaticComponent extends StaticPageBaseComponent imple
     this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles)
   }
 
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
+  getTranslationStrings() {
+    this.translateModalOnlyOwnerCanManageProjectAccount()
+  }
+
+  translateModalOnlyOwnerCanManageProjectAccount() {
+    this.translate.get('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan')
+      .subscribe((translation: any) => {
+        // this.logger.log('PROJECT-EDIT-ADD  onlyOwnerCanManageTheAccountPlanMsg text', translation)
+        this.onlyOwnerCanManageTheAccountPlanMsg = translation;
+      });
+
+    this.translate.get('LearnMoreAboutDefaultRoles')
+      .subscribe((translation: any) => {
+        // this.logger.log('PROJECT-EDIT-ADD  onlyOwnerCanManageTheAccountPlanMsg text', translation)
+        this.learnMoreAboutDefaultRoles = translation;
+      });
   }
 
 }

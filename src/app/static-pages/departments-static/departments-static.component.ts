@@ -10,6 +10,10 @@ import { UsersService } from '../../services/users.service';
 import { LoggerService } from '../../services/logger/logger.service';
 import { AppConfigService } from 'app/services/app-config.service';
 import { APP_SUMO_PLAN_NAME, PLAN_NAME } from 'app/utils/util';
+import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators'
+
 const swal = require('sweetalert');
 // node_modules/ng-simple-slideshow/src/app/modules/slideshow/IImage.d.ts
 // src/app/static-pages/departments-static/departments-static.component.ts
@@ -18,7 +22,9 @@ const swal = require('sweetalert');
   templateUrl: './departments-static.component.html',
   styleUrls: ['./departments-static.component.scss']
 })
-export class DepartmentsStaticComponent extends StaticPageBaseComponent implements OnInit, OnDestroy {
+// extends StaticPageBaseComponent
+export class DepartmentsStaticComponent  extends PricingBaseComponent implements OnInit, OnDestroy {
+  private unsubscribe$: Subject<any> = new Subject<any>();
   PLAN_NAME = PLAN_NAME
   APP_SUMO_PLAN_NAME = APP_SUMO_PLAN_NAME;
   imageObject = [
@@ -51,17 +57,22 @@ export class DepartmentsStaticComponent extends StaticPageBaseComponent implemen
   tparams: any;
   appSumoProfile: string;
   appSumoProfilefeatureAvailableFromBPlan: string;
+
+  public_Key: any;
+  payIsVisible: boolean;
+
   constructor(
     private router: Router,
     public auth: AuthService,
-    private prjctPlanService: ProjectPlanService,
-    private notify: NotifyService,
+    public prjctPlanService: ProjectPlanService,
+    public notify: NotifyService,
     public translate: TranslateService,
     private usersService: UsersService,
     private logger: LoggerService,
     public appConfigService: AppConfigService
   ) {
-    super(translate);
+    // super(translate);
+    super(prjctPlanService, notify);
   }
 
   ngOnInit() {
@@ -71,11 +82,21 @@ export class DepartmentsStaticComponent extends StaticPageBaseComponent implemen
     this.getProjectUserRole();
     this.getTranslationStrings();
     this.getBrowserVersion();
+    this.presentModalsOnInit()
+  }
 
+  ngOnDestroy() {
+    // this.subscription.unsubscribe();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   getBrowserVersion() {
-    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
+    this.auth.isChromeVerGreaterThan100
+    .pipe(
+      takeUntil(this.unsubscribe$)
+    )
+    .subscribe((isChromeVerGreaterThan100: boolean) => {
       this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
       //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
     })
@@ -114,10 +135,80 @@ export class DepartmentsStaticComponent extends StaticPageBaseComponent implemen
 
 
   getProjectUserRole() {
-    this.usersService.project_user_role_bs.subscribe((user_role) => {
+    this.usersService.project_user_role_bs
+    .pipe(
+      takeUntil(this.unsubscribe$)
+    )
+    .subscribe((user_role) => {
       this.USER_ROLE = user_role;
       this.logger.log('[DEPTS-STATIC] - PROJECT USER ROLE: ', this.USER_ROLE);
     });
+  }
+
+  getBrowserLang() {
+    this.browserLang = this.translate.getBrowserLang();
+  }
+
+  getCurrentProject() {
+    this.auth.project_bs
+    .pipe(
+      takeUntil(this.unsubscribe$)
+    )
+    .subscribe((project) => {
+      // this.logger.log('[DEPTS-STATIC] - project ', project)
+
+      if (project) {
+        this.projectId = project._id
+        this.logger.log('[DEPTS-STATIC] - project Id ', this.projectId)
+      }
+    });
+  }
+
+  presentModalsOnInit() {
+
+    if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
+
+      if (this.USER_ROLE === 'owner') {
+        if (this.profile_name !== PLAN_NAME.C && this.profile_name !== PLAN_NAME.F) {
+
+          this.notify.displaySubscripionHasExpiredModal(true, this.profile_name, this.subscription_end_date)
+
+        } else if (this.profile_name === PLAN_NAME.C && this.profile_name === PLAN_NAME.C) {
+
+          this.notify.displayEnterprisePlanHasExpiredModal(true, this.profile_name, this.subscription_end_date);
+        }
+      }
+    }
+  }
+
+
+  goToPricing() {
+    console.log('[DEPTS-STATIC] - goToPricing projectId ', this.projectId);
+    if (!this.appSumoProfile) {
+      if (this.payIsVisible) {
+        if (this.USER_ROLE === 'owner') {
+          // && this.subscription_is_active === false
+          if (this.prjct_profile_type === 'payment') {
+            this.notify._displayContactUsModal(true, 'upgrade_plan');
+          } else  if (this.prjct_profile_type === 'free') {
+            this.router.navigate(['project/' + this.projectId + '/pricing']);
+            // this.notify.presentContactUsModalToUpgradePlan(true);
+          }
+        } else {
+          this.presentModalOnlyOwnerCanManageTheAccountPlan();
+        }
+      } else {
+        this.notify._displayContactUsModal(true, 'upgrade_plan');
+      }
+    } else if (this.appSumoProfile) {
+      this.router.navigate(['project/' + this.projectId + '/project-settings/payments']);
+    }
+  }
+
+
+  presentModalOnlyOwnerCanManageTheAccountPlan() {
+    // https://github.com/t4t5/sweetalert/issues/845
+    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles)
   }
 
   getTranslationStrings() {
@@ -138,96 +229,6 @@ export class DepartmentsStaticComponent extends StaticPageBaseComponent implemen
         this.learnMoreAboutDefaultRoles = translation;
       });
   }
-
-
-  getBrowserLang() {
-    this.browserLang = this.translate.getBrowserLang();
-  }
-
-  getCurrentProject() {
-    this.auth.project_bs.subscribe((project) => {
-      // this.logger.log('[DEPTS-STATIC] - project ', project)
-
-      if (project) {
-        this.projectId = project._id
-        this.logger.log('[DEPTS-STATIC] - project Id ', this.projectId)
-      }
-    });
-  }
-
-  getProjectPlan() {
-    this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-      this.logger.log('[DEPTS-STATIC] GET PROJECT PROFILE', projectProfileData)
-      if (projectProfileData) {
-        this.prjct_profile_type = projectProfileData.profile_type;
-        this.subscription_is_active = projectProfileData.subscription_is_active;
-        this.subscription_end_date = projectProfileData.subscription_end_date
-        this.profile_name = projectProfileData.profile_name
-        this.buildPlanName(projectProfileData.profile_name, this.browserLang, this.prjct_profile_type);
-
-        if (projectProfileData.extra3) {
-          this.appSumoProfile = APP_SUMO_PLAN_NAME[projectProfileData.extra3]
-          this.appSumoProfilefeatureAvailableFromBPlan = APP_SUMO_PLAN_NAME['tiledesk_tier3']
-
-          this.tparams = { 'plan_name': this.appSumoProfilefeatureAvailableFromBPlan }
-        } else if (!projectProfileData.extra3) {
-          this.tparams = { 'plan_name': PLAN_NAME.B }
-        }
-
-        if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
-
-          if (this.USER_ROLE === 'owner') {
-
-            if (this.profile_name !== PLAN_NAME.C) {
-
-              this.notify.displaySubscripionHasExpiredModal(true, this.profile_name, this.subscription_end_date)
-
-            } else if (this.profile_name === PLAN_NAME.C) {
-
-              this.notify.displayEnterprisePlanHasExpiredModal(true, this.profile_name, this.subscription_end_date);
-            }
-          }
-
-        }
-      }
-    }, err => {
-      this.logger.error('[DEPTS-STATIC] GET PROJECT PROFILE - ERROR', err);
-    }, () => {
-      this.logger.log('[DEPTS-STATIC] GET PROJECT PROFILE * COMPLETE *');
-    });
-  }
-
-  goToPricing() {
-    this.logger.log('[DEPTS-STATIC] - goToPricing projectId ', this.projectId);
-    if (!this.appSumoProfile) {
-      if (this.payIsVisible) {
-        if (this.USER_ROLE === 'owner') {
-          if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
-            this.notify._displayContactUsModal(true, 'upgrade_plan');
-          } else {
-            // this.router.navigate(['project/' + this.projectId + '/pricing']);
-            this.notify.presentContactUsModalToUpgradePlan(true);
-          }
-        } else {
-          this.presentModalOnlyOwnerCanManageTheAccountPlan();
-        }
-      } else {
-        this.notify._displayContactUsModal(true, 'upgrade_plan');
-      }
-    } else if (this.appSumoProfile) {
-      this.router.navigate(['project/' + this.projectId + '/project-settings/payments']);
-    }
-  }
-
-
-  presentModalOnlyOwnerCanManageTheAccountPlan() {
-    // https://github.com/t4t5/sweetalert/issues/845
-    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles)
-  }
-
-
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
-  }
+ 
 
 }

@@ -10,14 +10,18 @@ import { UsersService } from '../../services/users.service';
 import { LoggerService } from '../../services/logger/logger.service';
 import { AppConfigService } from 'app/services/app-config.service';
 import { PLAN_NAME } from 'app/utils/util';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators'
+import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 
 @Component({
   selector: 'appdashboard-wsrequests-static',
   templateUrl: './wsrequests-static.component.html',
   styleUrls: ['./wsrequests-static.component.scss']
 })
-export class WsrequestsStaticComponent extends StaticPageBaseComponent implements OnInit, OnDestroy {
-
+// extends StaticPageBaseComponent
+export class WsrequestsStaticComponent extends PricingBaseComponent implements OnInit, OnDestroy {
+  private unsubscribe$: Subject<any> = new Subject<any>();
   PLAN_NAME = PLAN_NAME
   subscription: Subscription;
   projectId: string;
@@ -27,7 +31,8 @@ export class WsrequestsStaticComponent extends StaticPageBaseComponent implement
   prjct_profile_name: string;
   subscription_end_date: Date;
   profile_name: string;
-
+  public_Key: any
+  payIsVisible: boolean;
   imageObject = [
     {
       image: 'assets/img/new_analitycs_1_v6.png',
@@ -56,13 +61,13 @@ export class WsrequestsStaticComponent extends StaticPageBaseComponent implement
     private router: Router,
     public auth: AuthService,
     public translate: TranslateService,
-    private prjctPlanService: ProjectPlanService,
-    private notify: NotifyService,
+    public prjctPlanService: ProjectPlanService,
+    public notify: NotifyService,
     private usersService: UsersService,
     private logger: LoggerService,
     public appConfigService: AppConfigService
   ) { 
-    super(translate); 
+    super(prjctPlanService, notify);
   }
 
   ngOnInit(): void {
@@ -73,10 +78,22 @@ export class WsrequestsStaticComponent extends StaticPageBaseComponent implement
     this.getProjectUserRole();
     this.getTranslationStrings();
     this.getBrowserVersion();
+    this.presentModalsOnInit()
   }
 
+  ngOnDestroy() {
+    // this.subscription.unsubscribe();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
+
   getBrowserVersion() {
-    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
+    this.auth.isChromeVerGreaterThan100
+    .pipe(
+      takeUntil(this.unsubscribe$)
+    )
+    .subscribe((isChromeVerGreaterThan100: boolean) => {
       this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
       //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
     })
@@ -117,32 +134,23 @@ export class WsrequestsStaticComponent extends StaticPageBaseComponent implement
   }
 
   getProjectUserRole() {
-    this.usersService.project_user_role_bs.subscribe((user_role) => {
+    this.usersService.project_user_role_bs
+    .pipe(
+      takeUntil(this.unsubscribe$)
+    )
+    .subscribe((user_role) => {
       this.USER_ROLE = user_role;
       this.logger.log('[WSREQUEST-STATIC] - PROJECT USER ROLE: ', this.USER_ROLE);
     });
   }
 
-  getTranslationStrings() {
-    this.translateModalOnlyOwnerCanManageProjectAccount()
-  }
-
-  translateModalOnlyOwnerCanManageProjectAccount() {
-    this.translate.get('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan')
-      .subscribe((translation: any) => {
-        // this.logger.log('PROJECT-EDIT-ADD  onlyOwnerCanManageTheAccountPlanMsg text', translation)
-        this.onlyOwnerCanManageTheAccountPlanMsg = translation;
-      });
-
-    this.translate.get('LearnMoreAboutDefaultRoles')
-      .subscribe((translation: any) => {
-        // this.logger.log('PROJECT-EDIT-ADD  onlyOwnerCanManageTheAccountPlanMsg text', translation)
-        this.learnMoreAboutDefaultRoles = translation;
-      });
-  }
 
   getCurrentProject() {
-    this.auth.project_bs.subscribe((project) => {
+    this.auth.project_bs
+    .pipe(
+      takeUntil(this.unsubscribe$)
+    )
+    .subscribe((project) => {
 
       if (project) {
         this.projectId = project._id
@@ -151,38 +159,20 @@ export class WsrequestsStaticComponent extends StaticPageBaseComponent implement
     });
   }
 
-  getProjectPlan() {
-    this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-      this.logger.log('[WSREQUEST-STATIC] GET PROJECT PROFILE', projectProfileData)
-      if (projectProfileData) {
+  presentModalsOnInit() {
+    if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
+      if (this.USER_ROLE === 'owner') {
 
-        this.prjct_profile_type = projectProfileData.profile_type;
-        this.subscription_is_active = projectProfileData.subscription_is_active;
+        if (this.profile_name !== PLAN_NAME.C && this.profile_name !== PLAN_NAME.F) {
 
-        this.subscription_end_date = projectProfileData.subscription_end_date
-        this.profile_name = projectProfileData.profile_name
+          this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date)
 
-        this.buildPlanName(projectProfileData.profile_name, this.browserLang, this.prjct_profile_type);
+        } else if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
 
-        if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
-          if (this.USER_ROLE === 'owner') {
-
-            if (this.profile_name !== PLAN_NAME.C) {
-
-              this.notify.displaySubscripionHasExpiredModal(true, this.profile_name, this.subscription_end_date)
-
-            } else if (this.profile_name === PLAN_NAME.C) {
-
-              this.notify.displayEnterprisePlanHasExpiredModal(true, this.profile_name, this.subscription_end_date);
-            }
-          }
+          this.notify.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
         }
       }
-    }, err => {
-      this.logger.error('[WSREQUEST-STATIC] GET PROJECT PROFILE - ERROR', err);
-    }, () => {
-      this.logger.log('[WSREQUEST-STATIC] GET PROJECT PROFILE * COMPLETE *');
-    });
+    }
   }
 
 
@@ -209,8 +199,23 @@ export class WsrequestsStaticComponent extends StaticPageBaseComponent implement
     this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles)
   }
 
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
+  getTranslationStrings() {
+    this.translateModalOnlyOwnerCanManageProjectAccount()
   }
+
+  translateModalOnlyOwnerCanManageProjectAccount() {
+    this.translate.get('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan')
+      .subscribe((translation: any) => {
+        // this.logger.log('PROJECT-EDIT-ADD  onlyOwnerCanManageTheAccountPlanMsg text', translation)
+        this.onlyOwnerCanManageTheAccountPlanMsg = translation;
+      });
+
+    this.translate.get('LearnMoreAboutDefaultRoles')
+      .subscribe((translation: any) => {
+        // this.logger.log('PROJECT-EDIT-ADD  onlyOwnerCanManageTheAccountPlanMsg text', translation)
+        this.learnMoreAboutDefaultRoles = translation;
+      });
+  }
+
 
 }
