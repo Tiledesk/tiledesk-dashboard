@@ -336,8 +336,10 @@
                         <span class="card_title__underline">
                           {{ "Departments" | translate }}
                           <span
-                            *ngIf="profile_name === PLAN_NAME.A || prjct_profile_type === 'free' && trialExpired === true"
-                            class="from-b-plan-badge"> {{'AvailableFromThePlan' | translate: t_params }} </span>
+                            *ngIf="profile_name === PLAN_NAME.A || profile_name === PLAN_NAME.D || profile_name === 'free' && trial_expired === true || profile_name === 'Sandbox' && trial_expired === true"
+                            class="from-b-plan-badge"> 
+                            {{'AvailableFromThePlan' | translate: tParamsAvailableFromTier2 }}
+                           </span>
                         </span>
                       </h3>
                     </div>

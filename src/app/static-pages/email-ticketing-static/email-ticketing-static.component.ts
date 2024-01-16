@@ -12,7 +12,8 @@ import { AppConfigService } from 'app/services/app-config.service';
 import { PLAN_NAME } from 'app/utils/util';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators'
+import { takeUntil } from 'rxjs/operators';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'appdashboard-email-ticketing-static',
@@ -47,7 +48,8 @@ export class EmailTicketingStaticComponent extends PricingBaseComponent implemen
     public notify: NotifyService,
     private usersService: UsersService,
     private logger: LoggerService,
-    public appConfigService: AppConfigService
+    public appConfigService: AppConfigService,
+    public location: Location
   ) {
     // super(translate); 
     super(prjctPlanService, notify);
@@ -179,6 +181,10 @@ export class EmailTicketingStaticComponent extends PricingBaseComponent implemen
   presentModalOnlyOwnerCanManageTheAccountPlan() {
     // https://github.com/t4t5/sweetalert/issues/845
     this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles)
+  }
+
+  goBack() {
+    this.location.back();
   }
 
   getTranslationStrings() {

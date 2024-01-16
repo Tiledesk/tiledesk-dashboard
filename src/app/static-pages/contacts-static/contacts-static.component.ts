@@ -13,6 +13,7 @@ import { PLAN_NAME } from 'app/utils/util';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'appdashboard-contacts-static',
@@ -61,7 +62,8 @@ export class ContactsStaticComponent extends  PricingBaseComponent implements On
     public translate: TranslateService,
     private usersService: UsersService,
     private logger: LoggerService,
-    public appConfigService: AppConfigService
+    public appConfigService: AppConfigService,
+    public location: Location
   ) { 
     super(prjctPlanService, notify);
   }
@@ -196,7 +198,9 @@ export class ContactsStaticComponent extends  PricingBaseComponent implements On
     this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles)
   }
 
-
+  goBack() {
+    this.location.back();
+  }
 
   getTranslationStrings() {
     this.translateModalOnlyOwnerCanManageProjectAccount()

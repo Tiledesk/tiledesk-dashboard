@@ -77,7 +77,8 @@ export class NotifyService {
 
   contacUsViaEmail() {
     window.open('mailto:sales@tiledesk.com?subject=Upgrade Tiledesk plan');
-    this.closeContactUsModalToUpgradePlan()
+    this.closeContactUsModalToUpgradePlan();
+    this.closeModalSubsExpired()
   }
   
   contacUsViaEmailPlanC() {

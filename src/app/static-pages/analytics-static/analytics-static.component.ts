@@ -13,6 +13,7 @@ import { APP_SUMO_PLAN_NAME, PLAN_NAME } from 'app/utils/util';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
+import { Location } from '@angular/common';
 
 const swal = require('sweetalert');
 
@@ -79,7 +80,8 @@ export class AnalyticsStaticComponent extends PricingBaseComponent implements On
     public notify: NotifyService,
     private usersService: UsersService,
     private logger: LoggerService,
-    public appConfigService: AppConfigService
+    public appConfigService: AppConfigService,
+    public location: Location,
   ) {
     super(prjctPlanService, notify);
     // super(translate);
@@ -233,6 +235,9 @@ export class AnalyticsStaticComponent extends PricingBaseComponent implements On
     this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles)
   }
 
+  goBack() {
+    this.location.back();
+  }
 
   getTranslationStrings() {
     this.translateModalOnlyOwnerCanManageProjectAccount()

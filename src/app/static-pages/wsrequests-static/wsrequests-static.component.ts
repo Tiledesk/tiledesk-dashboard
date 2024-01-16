@@ -13,7 +13,7 @@ import { PLAN_NAME } from 'app/utils/util';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
-
+import { Location } from '@angular/common';
 @Component({
   selector: 'appdashboard-wsrequests-static',
   templateUrl: './wsrequests-static.component.html',
@@ -65,7 +65,8 @@ export class WsrequestsStaticComponent extends PricingBaseComponent implements O
     public notify: NotifyService,
     private usersService: UsersService,
     private logger: LoggerService,
-    public appConfigService: AppConfigService
+    public appConfigService: AppConfigService,
+    public location: Location
   ) { 
     super(prjctPlanService, notify);
   }
@@ -197,6 +198,10 @@ export class WsrequestsStaticComponent extends PricingBaseComponent implements O
   presentModalOnlyOwnerCanManageTheAccountPlan() {
     // https://github.com/t4t5/sweetalert/issues/845
     this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles)
+  }
+
+  goBack() {
+    this.location.back();
   }
 
   getTranslationStrings() {

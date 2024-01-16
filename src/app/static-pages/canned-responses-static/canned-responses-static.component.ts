@@ -13,6 +13,7 @@ import { PLAN_NAME } from 'app/utils/util';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'appdashboard-canned-responses-static',
@@ -60,7 +61,8 @@ export class CannedResponsesStaticComponent extends PricingBaseComponent impleme
     public translate: TranslateService,
     private usersService: UsersService,
     private logger: LoggerService,
-    public appConfigService: AppConfigService
+    public appConfigService: AppConfigService,
+    public location: Location
   ) { 
     super(prjctPlanService, notify);
   }
@@ -190,6 +192,9 @@ export class CannedResponsesStaticComponent extends PricingBaseComponent impleme
     this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles)
   }
 
+  goBack() {
+    this.location.back();
+  }
 
   getTranslationStrings() {
     this.translateModalOnlyOwnerCanManageProjectAccount()

@@ -152,7 +152,7 @@ export class WsSharedComponent implements OnInit {
       if (member_id && member_id !== 'system') {
 
         this.cleaned_members_array.push(member_id);
-        this.logger.log('%%% WsRequestsMsgsComponent - CLEANED MEMBERS ARRAY ', this.cleaned_members_array);
+        console.log('%%% WsRequestsMsgsComponent - CLEANED MEMBERS ARRAY ', this.cleaned_members_array);
         this.logger.log('%%% WsRequestsMsgsComponent - CLEANED MEMBERS isFirebaseUploadEngine ', isFirebaseUploadEngine);
         const memberIsBot = member_id.includes('bot_');
 
@@ -200,69 +200,77 @@ export class WsSharedComponent implements OnInit {
               this.checkImageExists(imgUrl, (existsImage) => {
                 if (existsImage == true) {
                   storeduser['hasImage'] = true
-                  // console.log('HERE Y1 USER ', storeduser)
+                  console.log('HERE Y2 USER storeduser  hasImage', storeduser, 'this.agents_array ', this.agents_array)
                   this.createAgentAvatar(storeduser)
-                  this.agents_array.push({ '_id': storeduser['_id'], 'firstname': storeduser['firstname'], 'lastname': storeduser['lastname'], 'isBot': false, 'hasImage': storeduser['hasImage'], 'userfillColour': storeduser['fillColour'], 'userFullname': storeduser['fullname_initial'] })
-
+                  const index = this.agents_array.findIndex(object => object.id === storeduser['_id']);
+                  console.log('HERE Y2 USER index (1)', index)
+                  if (index === -1) {
+                    this.agents_array.push({ '_id': storeduser['_id'], 'firstname': storeduser['firstname'], 'lastname': storeduser['lastname'], 'isBot': false, 'hasImage': storeduser['hasImage'], 'userfillColour': storeduser['fillColour'], 'userFullname': storeduser['fullname_initial'] })
+                  }
                 }
                 else {
                   storeduser['hasImage'] = false
-                  // console.log('HERE Y2 USER ', storeduser)
+                  console.log('HERE Y2 USER storeduser  !hasImage', storeduser, 'this.agents_array ', this.agents_array)
                   this.createAgentAvatar(storeduser)
-                  this.agents_array.push({ '_id': storeduser['_id'], 'firstname': storeduser['firstname'], 'lastname': storeduser['lastname'], 'isBot': false, 'hasImage': storeduser['hasImage'], 'userfillColour': storeduser['fillColour'], 'userFullname': storeduser['fullname_initial'] })
-
+                  const index = this.agents_array.findIndex(object => object.id === storeduser['_id']);
+                  console.log('HERE Y2 USER index (2)', index)
+                  if (index === -1) {
+                    this.agents_array.push({ '_id': storeduser['_id'], 'firstname': storeduser['firstname'], 'lastname': storeduser['lastname'], 'isBot': false, 'hasImage': storeduser['hasImage'], 'userfillColour': storeduser['fillColour'], 'userFullname': storeduser['fullname_initial'] })
+                  }
                 }
               });
 
 
             } else {
-            //  console.log('[WS-SHARED][WS-REQUESTS-MSGS] - member_id =! from ', storeduser['_id'])
+              //  console.log('[WS-SHARED][WS-REQUESTS-MSGS] - member_id =! from ', storeduser['_id'])
             }
           } else {
             this.logger.log('[WS-SHARED][WS-REQUESTS-MSGS] - there is not stored user with id ', member_id)
-           
+
             this.usersService.getProjectUserById(member_id)
-            .subscribe((projectuser) => {
-             
-              // console.log('[WS-SHARED][WS-REQUESTS-MSGS] - USER IS NOT IN STORAGE GET PROJECT-USER BY ID - RES', projectuser);
-              const user: any = projectuser[0].id_user;
-           
+              .subscribe((projectuser) => {
 
-              let imgUrl = ''
-              if (isFirebaseUploadEngine === true) {
-                // ------------------------------------------------------------------------------
-                // Usecase uploadEngine Firebase 
-                // ------------------------------------------------------------------------------
-                imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + imageStorage + "/o/profiles%2F" + member_id + "%2Fphoto.jpg?alt=media"
+                // console.log('[WS-SHARED][WS-REQUESTS-MSGS] - USER IS NOT IN STORAGE GET PROJECT-USER BY ID - RES', projectuser);
+                const user: any = projectuser[0].id_user;
 
-              } else {
-                // ------------------------------------------------------------------------------
-                // Usecase uploadEngine Native 
-                // ------------------------------------------------------------------------------
-                imgUrl = imageStorage + "images?path=uploads%2Fusers%2F" + member_id + "%2Fimages%2Fthumbnails_200_200-photo.jpg"
-              }
 
-              this.checkImageExists(imgUrl, (existsImage) => {
-                if (existsImage == true) {
-                  user.hasImage = true
+                let imgUrl = ''
+                if (isFirebaseUploadEngine === true) {
+                  // ------------------------------------------------------------------------------
+                  // Usecase uploadEngine Firebase 
+                  // ------------------------------------------------------------------------------
+                  imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + imageStorage + "/o/profiles%2F" + member_id + "%2Fphoto.jpg?alt=media"
+
+                } else {
+                  // ------------------------------------------------------------------------------
+                  // Usecase uploadEngine Native 
+                  // ------------------------------------------------------------------------------
+                  imgUrl = imageStorage + "images?path=uploads%2Fusers%2F" + member_id + "%2Fimages%2Fthumbnails_200_200-photo.jpg"
                 }
-                else {
-                  user.hasImage = false
-                }
+
+                this.checkImageExists(imgUrl, (existsImage) => {
+                  if (existsImage == true) {
+                    user.hasImage = true
+                  }
+                  else {
+                    user.hasImage = false
+                  }
+                });
+
+                user['is_bot'] = false
+                // console.log('WS-SHARED][WS-REQUESTS-MSGS]',  user)
+
+                // this.agents_array.push({ '_id': member_id, 'firstname': member_id, 'isBot': false })
+                this.agents_array.push({ '_id': user['_id'], 'firstname': user['firstname'], 'lastname': user['lastname'], 'isBot': false, 'hasImage': user['hasImage'], 'userfillColour': user['fillColour'], 'userFullname': user['fullname_initial'] })
+                this.usersLocalDbService.saveMembersInStorage(user['_id'], user, 'ws-shared (createAgentsArrayFromParticipantsId)');
+                console.log('HERE Y3 USER projectuser ', projectuser, 'this.agents_array ', this.agents_array)
+
+              }, (error) => {
+                this.logger.error('[WS-SHARED][WS-REQUESTS-MSGS] - USER IS NOT IN STORAGE - GET PROJECT-USER BY ID - ERROR ', error);
+              }, () => {
+                this.logger.log('[WS-SHARED][WS-REQUESTS-MSGS] - USER IS NOT IN STORAGE - GET PROJECT-USER BY ID * COMPLETE *');
+                console.log('[WS-SHARED][WS-REQUESTS-MSGS] this.agents_array ', this.agents_array)
               });
-
-              user['is_bot'] = false
-              // console.log('WS-SHARED][WS-REQUESTS-MSGS]',  user)
-
-              // this.agents_array.push({ '_id': member_id, 'firstname': member_id, 'isBot': false })
-              this.agents_array.push({ '_id': user['_id'], 'firstname': user['firstname'], 'lastname': user['lastname'], 'isBot': false, 'hasImage': user['hasImage'], 'userfillColour': user['fillColour'], 'userFullname': user['fullname_initial'] })
-              this.usersLocalDbService.saveMembersInStorage(user['_id'], user, 'ws-shared (createAgentsArrayFromParticipantsId)');
-
-            }, (error) => {
-              this.logger.error('[WS-SHARED][WS-REQUESTS-MSGS] - USER IS NOT IN STORAGE - GET PROJECT-USER BY ID - ERROR ', error);
-            }, () => {
-              this.logger.log('[WS-SHARED][WS-REQUESTS-MSGS] - USER IS NOT IN STORAGE - GET PROJECT-USER BY ID * COMPLETE *');
-            });
           }
         }
       }

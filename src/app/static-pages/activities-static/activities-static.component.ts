@@ -14,6 +14,7 @@ import { PLAN_NAME } from 'app/utils/util';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
+import { Location } from '@angular/common';
 const swal = require('sweetalert');
 
 @Component({
@@ -59,7 +60,8 @@ export class ActivitiesStaticComponent extends PricingBaseComponent implements O
     public notify: NotifyService,
     private usersService: UsersService,
     public logger: LoggerService,
-    public appConfigService: AppConfigService
+    public appConfigService: AppConfigService,
+    public location: Location
   ) {
     // super(translate,);
     super(prjctPlanService, notify);
@@ -239,6 +241,10 @@ export class ActivitiesStaticComponent extends PricingBaseComponent implements O
           { id: 'REQUEST_CREATE', name: this.newRequest },
         ];
       });
+  }
+
+  goBack() {
+    this.location.back();
   }
 
 

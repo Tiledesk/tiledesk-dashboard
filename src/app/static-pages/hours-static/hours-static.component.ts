@@ -12,7 +12,8 @@ import { AppConfigService } from 'app/services/app-config.service';
 import { PLAN_NAME } from 'app/utils/util';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators'
+import { takeUntil } from 'rxjs/operators';
+import { Location } from '@angular/common';
 const swal = require('sweetalert');
 
 @Component({
@@ -48,7 +49,8 @@ export class HoursStaticComponent extends PricingBaseComponent implements OnInit
     public notify: NotifyService,
     private usersService: UsersService,
     private logger: LoggerService,
-    public appConfigService: AppConfigService
+    public appConfigService: AppConfigService,
+    public location: Location
   ) { 
     // super(translate); 
     // this.tparams = {plan_name: PLAN_NAME.A}
@@ -65,6 +67,13 @@ export class HoursStaticComponent extends PricingBaseComponent implements OnInit
     this.getTranslationStrings();
     this.getBrowserVersion();
     this.presentModalsOnInit()
+  }
+
+
+  ngOnDestroy() {
+    // this.subscription.unsubscribe();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   getBrowserVersion() {
@@ -118,6 +127,10 @@ export class HoursStaticComponent extends PricingBaseComponent implements OnInit
       this.USER_ROLE = user_role;
       this.logger.log('[HOURS-STATIC] - PROJECT USER ROLE: ', this.USER_ROLE);
     });
+  }
+
+  goBack() {
+    this.location.back();
   }
 
   getTranslationStrings() {
@@ -195,11 +208,6 @@ export class HoursStaticComponent extends PricingBaseComponent implements OnInit
     });
   }
 
-
-
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
-  }
 
 
 }

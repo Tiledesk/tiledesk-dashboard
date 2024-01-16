@@ -13,6 +13,7 @@ import { APP_SUMO_PLAN_NAME, PLAN_NAME } from 'app/utils/util';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
+import { Location } from '@angular/common';
 
 const swal = require('sweetalert');
 // node_modules/ng-simple-slideshow/src/app/modules/slideshow/IImage.d.ts
@@ -69,7 +70,8 @@ export class DepartmentsStaticComponent  extends PricingBaseComponent implements
     public translate: TranslateService,
     private usersService: UsersService,
     private logger: LoggerService,
-    public appConfigService: AppConfigService
+    public appConfigService: AppConfigService,
+    public location: Location
   ) {
     // super(translate);
     super(prjctPlanService, notify);
@@ -209,6 +211,10 @@ export class DepartmentsStaticComponent  extends PricingBaseComponent implements
   presentModalOnlyOwnerCanManageTheAccountPlan() {
     // https://github.com/t4t5/sweetalert/issues/845
     this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles)
+  }
+
+  goBack() {
+    this.location.back();
   }
 
   getTranslationStrings() {

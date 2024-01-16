@@ -13,6 +13,7 @@ import { APP_SUMO_PLAN_NAME, PLAN_NAME } from 'app/utils/util';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
+import { Location } from '@angular/common';
 const swal = require('sweetalert');
 
 @Component({
@@ -63,7 +64,9 @@ export class GroupsStaticComponent extends PricingBaseComponent implements OnIni
     public notify: NotifyService,
     private usersService: UsersService,
     private logger: LoggerService,
-    public appConfigService: AppConfigService
+    public appConfigService: AppConfigService,
+    public location: Location
+
   ) {
     // super(translate);
     super(prjctPlanService, notify);
@@ -77,7 +80,7 @@ export class GroupsStaticComponent extends PricingBaseComponent implements OnIni
     this.getProjectUserRole();
     this.getTranslationStrings();
     this.getBrowserVersion();
-    this.presentModalsOnInit()
+    this.presentModalsOnInit();
   }
 
   ngOnDestroy() {
@@ -195,6 +198,10 @@ export class GroupsStaticComponent extends PricingBaseComponent implements OnIni
   presentModalOnlyOwnerCanManageTheAccountPlan() {
     // https://github.com/t4t5/sweetalert/issues/845
     this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles)
+  }
+
+  goBack() {
+    this.location.back();
   }
 
   getTranslationStrings() {
