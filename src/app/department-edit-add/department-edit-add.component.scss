@@ -6,6 +6,7 @@ input[type="text"] {
   width: 100%;
   margin-bottom: 10px;
   -webkit-appearance: none;
+  appearance: none;
   background: #fff;
   border: 1px solid #d9d9d9 !important;
   border-top: 1px solid #c0c0c0;
@@ -24,6 +25,7 @@ input[type="text"] {
   width: 100%;
   margin-bottom: 10px;
   -webkit-appearance: none;
+  appearance: none;
   padding: 0 8px;
   box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -43,6 +45,7 @@ textarea[type="text"] {
   width: 100%;
   margin-bottom: 10px;
   -webkit-appearance: none;
+  appearance: none;
   background: #fff;
   border: 1px solid #d9d9d9 !important;
   // border-top: 1px solid #c0c0c0;
@@ -66,9 +69,9 @@ select {
   width: 100%;
   // max-width: 253px;
 }
-.card form [class*="col-"] {
-  // padding: 0px;
-}
+// .card form [class*="col-"] {
+//   // padding: 0px;
+// }
 
 // RADIO BTNS
 // .form-check-label {
@@ -254,12 +257,12 @@ input[type="radio"] {
   padding-right: 0px !important;
 }
 
-@media (min-width: 992px) {
-  .no_padding_at_minwidth_992 {
-    // padding-left: 1px !important;
-    // padding-right: 1px !important;
-  }
-}
+// @media (min-width: 992px) {
+//   .no_padding_at_minwidth_992 {
+//     // padding-left: 1px !important;
+//     // padding-right: 1px !important;
+//   }
+// }
 
 .custom-label {
   color: #7695a5;
@@ -513,6 +516,7 @@ select[disabled] {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
+  user-select: none;
 }
 .onoffswitch-checkbox {
   display: none;
