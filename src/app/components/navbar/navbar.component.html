@@ -49,7 +49,6 @@
           </a>
         </li> -->
 
-
         <ng-container>
           <li>
             <button [matMenuTriggerFor]="menu" class="quote-modal-btn">
@@ -63,6 +62,197 @@
                 <p class="menu-title">Usage</p>
 
                 <!-- // Alternative: follow the example on https://codepen.io/nikitahl/pen/ZEjRBEE -->
+
+                <div class="quotes-container">
+
+                  <div class="quote-container">
+
+                    <div>
+                      <p class="quote-title">Convesations</p>
+                      <div class="quote-count">{{requests_count}} / {{requests_limit}}</div>
+                    </div>
+
+                    <div class="quote">
+                      <mat-progress-spinner
+                        class="example-margin"
+                        [strokeWidth]="5"
+                        [diameter]="50"
+                        [color]="'primary'"
+                        [mode]="'determinate'"
+                        [value]="requests_perc">
+                      </mat-progress-spinner>
+                    
+                      <div class="percentage">{{ requests_perc }}<span style="font-size: 10px; margin-top: 2px; margin-left: 1px"> %</span></div>
+                    </div>
+
+                  </div>
+
+                  <div class="quote-container">
+
+                    <div>
+                      <p class="quote-title">AI Tokens</p>
+                      <div class="quote-count">{{tokens_count}} / {{tokens_limit}}</div>
+                    </div>
+
+                    <div class="quote">
+                      <mat-progress-spinner
+                        class="example-margin"
+                        [strokeWidth]="5"
+                        [diameter]="50"
+                        [color]="'primary'"
+                        [mode]="'determinate'"
+                        [value]="tokens_perc">
+                      </mat-progress-spinner>
+                    
+                      <div class="percentage">{{ tokens_perc }}<span style="font-size: 10px; margin-top: 2px; margin-left: 1px"> %</span></div>
+                    </div>
+
+                  </div>
+
+                  <div class="quote-container">
+
+                    <div>
+                      <p class="quote-title">Email</p>
+                      <div class="quote-count">{{email_count}} / {{email_limit}}</div>
+                    </div>
+
+                    <div class="quote">
+                      <mat-progress-spinner
+                        class="example-margin"
+                        [strokeWidth]="5"
+                        [diameter]="50"
+                        [color]="'primary'"
+                        [mode]="'determinate'"
+                        [value]="email_perc">
+                      </mat-progress-spinner>
+                    
+                      <div class="percentage">{{ email_perc }}<span style="font-size: 10px; margin-top: 2px; margin-left: 1px"> %</span></div>
+                    </div>
+
+                  </div>
+
+                  <!-- <div class="quote-container">
+                    <p class="quote-title">Convesations</p>
+                    <div style="display: flex; align-items: center; width: 100%; justify-content: flex-start;">
+                      <div class="quote">
+                        <mat-progress-spinner
+                          class="example-margin"
+                          [strokeWidth]="8"
+                          [diameter]="80"
+                          [color]="'primary'"
+                          [mode]="'determinate'"
+                          [value]="requests_perc">
+                        </mat-progress-spinner>
+                      
+                        <div class="percentage">{{ requests_perc }}<span style="font-size: 10px; margin-top: 2px; margin-left: 1px"> %</span></div>
+                      </div>
+                      <div class="quote-count">{{requests_count}} / {{requests_limit}}</div>
+                    </div>
+                  </div>
+
+                  <div class="quote-container">
+                    <p class="quote-title">Convesations</p>
+                    <div style="display: flex; align-items: center; width: 100%; justify-content: flex-start;">
+                      <div class="quote">
+                        <mat-progress-spinner
+                          class="example-margin"
+                          [strokeWidth]="8"
+                          [diameter]="80"
+                          [color]="'primary'"
+                          [mode]="'determinate'"
+                          [value]="requests_perc">
+                        </mat-progress-spinner>
+                      
+                        <div class="percentage">{{ requests_perc }}<span style="font-size: 10px; margin-top: 2px; margin-left: 1px"> %</span></div>
+                      </div>
+                      <div class="quote-count">{{requests_count}} / {{requests_limit}}</div>
+                    </div>
+                  </div> -->
+
+                  <!-- <div class="quote-container">
+                    <p class="quote-title">Messages</p>
+                    <div class="quote">
+                      <mat-progress-spinner
+                        class="example-margin"
+                        [strokeWidth]="8"
+                        [diameter]="80"
+                        [color]="'primary'"
+                        [mode]="'determinate'"
+                        [value]="messages_perc">
+                      </mat-progress-spinner>
+                    
+                      <div class="percentage">{{ messages_perc }}<span style="font-size: 10px; margin-top: 2px; margin-left: 1px"> %</span></div>
+                    </div>
+                    <div class="quote-count">{{ messages_count }} / {{messages_limit}}</div>
+                  </div> -->
+
+                  <!-- <div class="quote-container">
+                    <p class="quote-title">AI Tokens</p>
+                    <div style="display: flex; align-items: center; width: 100%; justify-content: flex-start;">
+                      <div class="quote">
+                        <mat-progress-spinner
+                          class="example-margin"
+                          [strokeWidth]="6"
+                          [diameter]="60"
+                          [color]="'primary'"
+                          [mode]="'determinate'"
+                          [value]="tokens_perc">
+                        </mat-progress-spinner>
+                      
+                        <div class="percentage">{{ tokens_perc }}<span style="font-size: 10px; margin-top: 2px; margin-left: 1px"> %</span></div>
+                      </div>
+                      <div class="quote-count">{{ tokens_count }} / {{tokens_limit}}</div>
+                    </div>
+                  </div>
+
+                  <div class="quote-container">
+                    <p class="quote-title">Email</p>
+                    <div style="display: flex; align-items: center; width: 100%; justify-content: flex-start;">
+                      <div class="quote">
+                        <mat-progress-spinner
+                          class="example-margin"
+                          [strokeWidth]="8"
+                          [diameter]="80"
+                          [color]="'primary'"
+                          [mode]="'determinate'"
+                          [value]="email_perc">
+                        </mat-progress-spinner>
+                      
+                        <div class="percentage">{{ email_perc }}<span style="font-size: 10px; margin-top: 2px; margin-left: 1px"> %</span></div>
+                      </div>
+                      <div class="quote-count">{{ email_count }} / {{email_limit}}</div>
+                    </div>
+                  </div> -->
+
+                </div>
+
+
+                <button mat-flat-button class="upgrade-btn" (click)="goToPricing()">
+                  <span class="material-icons-outlined">bolt</span>
+                  {{ "Pricing.UpgradePlan" | translate }}
+                </button>
+
+              </div>
+
+            </mat-menu>
+          </li>
+
+        </ng-container>
+
+
+        <!-- <ng-container>
+          <li>
+            <button [matMenuTriggerFor]="menu" class="quote-modal-btn">
+              <span class="material-icons-round" style="font-size: 16px;">
+                storage
+                </span>
+            </button>
+            <mat-menu #menu="matMenu" xPosition="before" style="margin-top: 6px !important; width: 220px !important;">
+
+              <div class="menu-container">
+                <p class="menu-title">Usage</p>
+
+                // Alternative: follow the example on https://codepen.io/nikitahl/pen/ZEjRBEE
 
                 <div class="quotes-container">
 
@@ -147,7 +337,7 @@
             </mat-menu>
           </li>
 
-        </ng-container>
+        </ng-container> -->
 
         <!-- <ng-container>
           <li>

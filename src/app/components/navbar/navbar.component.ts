@@ -287,22 +287,27 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
   getQuotes() {
 
-    console.log(">>>>> this project: ", this.projectId);
     this.quotesService.getAllQuotes(this.projectId).subscribe((resp: any) => {
       console.log("quotes retrieved: ", resp)
 
-      // get profile limit!!!!!
-      //example SANDBOX: { users: 1, requests: 200, messages: 2000, chatbots: 2, kbs: 1, kb_pages: 50, ai_tokens: 10000, email: 2000 },
+      let profile_name = this.project.profile_name;
 
-      console.log("Project: ", this.project);
-      console.log("profile name: ", this.project.profile_name);
+      switch(profile_name) {
+        case PLAN_NAME.A:
+          profile_name = PLAN_NAME.D;
+          break;
+        case PLAN_NAME.B:
+          profile_name = PLAN_NAME.E
+          break;
+        case PLAN_NAME.C:
+          profile_name = PLAN_NAME.F
+          break;
+      }
 
-      console.log("PLAN LIST: ", PLANS_LIST.Plus);
-
-      this.requests_limit = PLANS_LIST[this.project.profile_name].requests;
-      this.messages_limit = PLANS_LIST[this.project.profile_name].messages;
-      this.email_limit = PLANS_LIST[this.project.profile_name].email;
-      this.tokens_limit = PLANS_LIST[this.project.profile_name].ai_tokens;
+      this.requests_limit = PLANS_LIST[profile_name].requests;
+      this.messages_limit = PLANS_LIST[profile_name].messages;
+      this.email_limit = PLANS_LIST[profile_name].email;
+      this.tokens_limit = PLANS_LIST[profile_name].tokens;
 
       if (resp.quotes.requests.quote === null) {
         resp.quotes.requests.quote = 0;
@@ -322,15 +327,20 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
       this.email_perc = Math.floor((resp.quotes.email.quote / this.email_limit) * 100);
       this.tokens_perc = Math.floor((resp.quotes.tokens.quote / this.tokens_limit) * 100);
 
-      this.requests_count = this.getformat(resp.quotes.requests.quote, null);
-      this.messages_count = this.getformat(resp.quotes.messages.quote, null);
-      this.email_count = this.getformat(resp.quotes.email.quote, null);
-      this.tokens_count = this.getformat(resp.quotes.tokens.quote, null)
+      // this.requests_count = this.getformat(resp.quotes.requests.quote, null);
+      // this.messages_count = this.getformat(resp.quotes.messages.quote, null);
+      // this.email_count = this.getformat(resp.quotes.email.quote, null);
+      // this.tokens_count = this.getformat(resp.quotes.tokens.quote, null)
 
-      this.requests_limit = this.getformat(this.requests_limit, true);
-      this.messages_limit = this.getformat(this.messages_limit, true);
-      this.tokens_limit = this.getformat(this.tokens_limit, true);
-      this.email_limit = this.getformat(this.email_limit, true);
+      this.requests_count = resp.quotes.requests.quote;
+      this.messages_count = resp.quotes.messages.quote;
+      this.email_count = resp.quotes.email.quote;
+      this.tokens_count = resp.quotes.tokens.quote;
+
+      // this.requests_limit = this.getformat(this.requests_limit, true);
+      // this.messages_limit = this.getformat(this.messages_limit, true);
+      // this.tokens_limit = this.getformat(this.tokens_limit, true);
+      // this.email_limit = this.getformat(this.email_limit, true);
 
     }, (error) => {
       console.error("get all quotes error: ", error)

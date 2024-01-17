@@ -863,25 +863,29 @@ button.close.custom-hover:hover {
   border-radius: 8px !important;
 }
 .menu-container {
-  padding: 0 8px;x
+  padding: 0 8px;
 
   .menu-title {
     font-size: 14px;
     font-weight: 600;
     margin-bottom: 0px;
+    color: #647491;
   }
 }
 
 .quotes-container {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  // flex-direction: row;
   justify-content: space-between;
-  flex-wrap: wrap;
+  // flex-wrap: wrap;
   width: 240px;
 }
 
 .quote-title {
   font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 2px;
 }
 
 .quote-modal-btn {
@@ -913,18 +917,37 @@ button.close.custom-hover:hover {
   stroke: #2196F2 !important;
 }
 
+// .quote-container {
+//   padding: 4px;
+//   margin-bottom: 20px;
+//   //width: 100px;
+//   display: flex;
+//   flex-direction: column;
+//   // align-items: center;
+//   align-items: flex-start;
+// }
+
 .quote-container {
   padding: 4px;
-  margin-bottom: 20px;
-  width: 100px;
-  display: flex;
-  flex-direction: column;
+  margin: 6px 0;
+  border-radius: 6px;
+  display: flex; 
+  flex-direction: row; 
+  width: 100%; 
+  justify-content: space-between; 
   align-items: center;
+
+  &:hover {
+    background-color: #2896f217;
+  }
 }
 
+
 .quote {
-  width: 80px;
-  height: 80px;
+  // width: 80px;
+  // height: 80px;
+  width: 50px;
+  height: 50px;
 }
 
 .percentage {
@@ -936,14 +959,30 @@ button.close.custom-hover:hover {
   font-weight: 600;
   color: #2196f2;
 }
+
+// .quote-count {
+//   background-color: #2196f2;
+//   border-radius: 8px;
+//   padding: 0 16px;
+//   // margin-top: 6px;
+//   color: white;
+//   font-weight: 400;
+//   font-size: 11px;
+//   width: 120px;
+//   text-align: center;
+// }
+
 .quote-count {
-  background-color: #2196f2;
+  background-color: #f5f7f9;
   border-radius: 8px;
   padding: 0 16px;
-  margin-top: 6px;
-  color: white;
+  color: #2896f2;
   font-weight: 400;
   font-size: 11px;
+  width: 120px;
+  text-align: center;
+  font-weight: 500;
+  box-shadow: 0 0 2px #2896f2;
 }
 
 #home-material-btn {

@@ -333,17 +333,11 @@ export enum KB_MAX_NUM {
 };
 
 export const PLANS_LIST = {
-    // OLD PLANS
-    free: { users: 1, requests: 200, messages: 2000, chatbots: 2, kbs: 1, kb_pages: 50, ai_tokens: 10000, email: 1000 },
-    Growth: { users: 1, requests: 800, messages: 10000, chatbots: 5, kbs: 2, kb_pages: 250, ai_tokens: 50000, email: 1000 },
-    Scale: { users: 2, requests: 3000, messages: 50000, chatbots: 20, kbs: 3, kb_pages: 500, ai_tokens: 250000, email: 1000 },
-    Plus: { users: 2, requests: 3000, messages: 50000, chatbots: 20, kbs: 3, kb_pages: 500, ai_tokens: 250000, email: 1000 },
-
-    // NEW PLANS
-    Sanbox: { users: 1, requests: 200, messages: 2000, chatbots: 2, kbs: 1, kb_pages: 50, ai_tokens: 10000, email: 1000 },
-    Basic: { users: 1, requests: 800, messages: 10000, chatbots: 5, kbs: 2, kb_pages: 250, ai_tokens: 50000, email: 1000 },
-    Premium: { users: 2, requests: 3000, messages: 50000, chatbots: 20, kbs: 3, kb_pages: 500, ai_tokens: 250000, email: 1000 },
-    Custom: { users: 100, requests: 10000, messages: 100000, chatbots: 100, kbs: 100, kb_pages: 1000, ai_tokens: 100000, email: 1000 } // manage it --> get limit directly from project info
+    FREE_TRIAL: { requests: 3000,   messages: 0,    tokens: 250000,     email: 200 }, // same as PREMIUM
+    Sandbox:    { requests: 200,    messages: 0,    tokens: 10000,      email: 200 },
+    Basic:      { requests: 800,    messages: 0,    tokens: 50000,      email: 200 },
+    Premium:    { requests: 3000,   messages: 0,    tokens: 250000,     email: 200 },
+    Custom:     { requests: 3000,   messages: 0,    tokens: 250000,     email: 200 }
 }
 
 export const featuresPlanA = [
