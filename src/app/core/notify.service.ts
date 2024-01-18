@@ -76,9 +76,10 @@ export class NotifyService {
   }
 
   contacUsViaEmail() {
-    window.open('mailto:sales@tiledesk.com?subject=Upgrade Tiledesk plan');
     this.closeContactUsModalToUpgradePlan();
     this.closeModalSubsExpired()
+    this.closeContactUsModal();
+    window.open('mailto:sales@tiledesk.com?subject=Upgrade Tiledesk plan');
   }
   
   contacUsViaEmailPlanC() {
@@ -114,7 +115,7 @@ export class NotifyService {
   displayEnterprisePlanHasExpiredModal(subHasExpired: boolean, prjctPlanName: string, prjctPlanSubsEndDate: Date) {
     if (subHasExpired === true) {
       this.displayModalEnterpiseSubsExpired = 'block';
-      this.prjct_profile_name = prjctPlanName + ' plan'
+      this.prjct_profile_name = prjctPlanName // + ' plan'
     }
     this.logger.log('[NOTIFY-SERVICE] - HasExpiredEnterpriseModal prjctPlanName ', prjctPlanName);
   }

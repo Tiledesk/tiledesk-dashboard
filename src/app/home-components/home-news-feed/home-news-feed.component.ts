@@ -99,7 +99,7 @@ export class HomeNewsFeedComponent implements OnInit, AfterViewInit {
   // https://www.codingnepalweb.com/draggable-card-slider-html-css-javascript/
   initCarousel() {
     const wrapper = <HTMLElement>document.querySelector(".news-wrapper");
-    const carousel = <HTMLElement>document.querySelector(".carousel");
+    const carousel = <HTMLElement>document.querySelector(".news-feed-carousel");
     this.logger.log('[HOME-NEWS-FEED] carousel.offsetWidth ', carousel.offsetWidth)
   
    

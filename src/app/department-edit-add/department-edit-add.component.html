@@ -854,7 +854,7 @@
 <div *ngIf="OPEN_CREATE_GROUP_RIGHT_SIDEBAR === true" class="view-side">
   <appdashboard-create-group [ngStyle]="{'height':train_bot_sidebar_height }" [newInnerWidth]="newInnerWidth"
     [deptName_toUpdate]="deptName_toUpdate" (valueChange)='handleCloseCreateGroupSidebar($event)'
-    (groupcreated)='handleNewGroupCreatedFromSidebar($event)'></appdashboard-create-group>
+    (groupcreated)='handleNewGroupCreatedFromSidebar($event)' style="z-index: 2;"></appdashboard-create-group>
 </div>
 
 <div *ngIf="OPEN_CREATE_BOT_RIGHT_SIDEBAR === true" class="view-side">

@@ -304,8 +304,11 @@
                       </div>
                     </div>
                     <div class="col-xs-4" style="padding-left: 2px;" (click)="deleteNewApp(app._id, app?.title)">
-                      <div class="delete-app-btn" role="button" matTooltipClass="custom-mat-tooltip"
-                        matTooltip="Delete App" #tooltip="matTooltip" matTooltipPosition='below'
+                      <div class="delete-app-btn" role="button" 
+                        matTooltipClass="custom-mat-tooltip"
+                        matTooltip="Delete App"
+                        #tooltip="matTooltip" 
+                        matTooltipPosition='below'
                         matTooltipHideDelay="100">
                         <span class="material-icons app-card-icon">
                           delete_forever

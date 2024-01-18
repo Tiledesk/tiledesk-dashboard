@@ -57,6 +57,7 @@ export class PricingBaseComponent implements OnInit {
   public tParamsHoursAvailableFromPlan: any;
   public tParamsActivitiesFromPlan: any;
   public tParamsCRMAvailableFromPlan: any;
+  public tParamsMonitorAvailableFromPlan: any;
   public tParamsEmailTicketingFromPlan: any;
   public tParamsCannedAvailableFromPlan: any;
   public tParamsAvailableFromTier2: any; // i.e. Scale or Premium
@@ -168,8 +169,8 @@ export class PricingBaseComponent implements OnInit {
                 this.profile_name_for_segment = this.prjct_profile_name
                 if (this.areActivePay === true) {
                   // Seats limit
-                  // this.seatsLimit = PLAN_SEATS[PLAN_NAME.E]
-                  this.seatsLimit = projectProfileData.profile_agents
+                  this.seatsLimit = PLAN_SEATS[PLAN_NAME.E]
+                  // this.seatsLimit = projectProfileData.profile_agents
                   this.tParamsPlanAndSeats = { plan_name: this.prjct_profile_name, allowed_seats_num: this.seatsLimit }
                   console.log('[P-BASE] - GET PROJECT PLAN - SEATS LIMIT ', this.seatsLimit)
 
@@ -219,15 +220,29 @@ export class PricingBaseComponent implements OnInit {
                   this.kbLimit = KB_MAX_NUM.free;
                   this.tParamsPlanAndKb = { plan_name: this.prjct_profile_name, allowed_kb_num: this.kbLimit }
                   console.log('[P-BASE] - GET PROJECT PLAN - KB LIMIT ', this.kbLimit)
-
-                  // Translate params for static page
+                  
+                  // --------------------------------------------------------------------------------
+                  // @ Translate params for static page (Upgrade plan names reference old plan names)
+                  // --------------------------------------------------------------------------------
                   this.tParamsHoursAvailableFromPlan = { plan_name: PLAN_NAME.A }
                   this.tParamsCRMAvailableFromPlan = { plan_name: PLAN_NAME.A }
+                  this.tParamsMonitorAvailableFromPlan = { plan_name: PLAN_NAME.A }
                   this.tParamsCannedAvailableFromPlan = { plan_name: PLAN_NAME.A }
+                  this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.A }
+
+                  // --------------------------------------------------------------------------------
+                  // @ Translate params for static page (Upgrade plan names reference new plan names)
+                  // --------------------------------------------------------------------------------
+                  // this.tParamsHoursAvailableFromPlan = { plan_name: PLAN_NAME.D }
+                  // this.tParamsCRMAvailableFromPlan = { plan_name: PLAN_NAME.D }
+                  // this.tParamsMonitorAvailableFromPlan = { plan_name: PLAN_NAME.D}
+                  // this.tParamsCannedAvailableFromPlan = { plan_name: PLAN_NAME.D }
+                  // this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.D }
+
                   this.tParamsAvailableFromTier2 = { plan_name: PLAN_NAME.B }
                   this.tParamsPlanNameTrialExpired = { plan_name: PLAN_NAME.B }
                   this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.F }
-                  this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.A }
+                  
 
                   this.dispayBadgeAvaibleFromInAppStore = true;
                 } else if (this.areActivePay === false) {
@@ -256,17 +271,17 @@ export class PricingBaseComponent implements OnInit {
                   this.kbLimit = KB_MAX_NUM.free;
                   this.tParamsPlanAndKb = { plan_name: this.prjct_profile_name, allowed_kb_num: this.kbLimit }
                   console.log('[P-BASE] - GET PROJECT PLAN - KB LIMIT ', this.kbLimit)
-
-                  // Translate params for static page
-
+                  // --------------------------------------------------------------------------------
+                  // @ Translate params for static page
+                  // --------------------------------------------------------------------------------
                   this.tParamsHoursAvailableFromPlan = { plan_name: PLAN_NAME.D }
                   this.tParamsCRMAvailableFromPlan = { plan_name: PLAN_NAME.D }
+                  this.tParamsMonitorAvailableFromPlan = { plan_name: PLAN_NAME.D }
                   this.tParamsCannedAvailableFromPlan = { plan_name: PLAN_NAME.D }
                   this.tParamsAvailableFromTier2 = { plan_name: PLAN_NAME.E }
                   this.tParamsPlanNameTrialExpired = { plan_name: PLAN_NAME.E }
-                  this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.F }
                   this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.E }
-
+                  this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.F }
                   this.dispayBadgeAvaibleFromInAppStore = true;
                 } else if (this.areActivePay === false) {
 
@@ -386,6 +401,7 @@ export class PricingBaseComponent implements OnInit {
                   console.log('[P-BASE] - GET PROJECT PLAN - KB LIMIT ', this.kbLimit);
 
                   // Translate params for static page
+                  
                   this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.F }
                 }
                 // ------------------------------------------------------------------------
@@ -435,11 +451,15 @@ export class PricingBaseComponent implements OnInit {
                 this.kbLimit = KB_MAX_NUM[PLAN_NAME.D]
                 this.tParamsPlanAndKb = { plan_name: this.prjct_profile_name, allowed_kb_num: this.kbLimit }
                 console.log('[P-BASE] - GET PROJECT PLAN - KB LIMIT ', this.kbLimit);
-
-                // Translate params for static page
-                this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.F }
+                
+                // --------------------------------------------------------------------------------
+                // @ Translate params for static page
+                // --------------------------------------------------------------------------------
+                this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.E }
                 this.tParamsAvailableFromTier2 = { plan_name: PLAN_NAME.E }
+                this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.F }
                 this.dispayBadgeAvaibleFromInAppStore = true;
+
                 // ------------------------------------------------------------------------
                 // USECASE: Premium Plan (SUB ACTIVE) new for Scale Plan
                 // ------------------------------------------------------------------------
@@ -523,13 +543,26 @@ export class PricingBaseComponent implements OnInit {
                 console.log('[P-BASE] - GET PROJECT PLAN - KB LIMIT ', this.kbLimit);
 
 
-                // Translate params for static page
-                this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.F }
+                // --------------------------------------------------------------------------------
+                // @ Translate params for static page (Upgrade plan names reference old plan names)
+                // --------------------------------------------------------------------------------
                 this.tParamsCRMAvailableFromPlan = { plan_name: PLAN_NAME.A }
+                this.tParamsMonitorAvailableFromPlan = { plan_name: PLAN_NAME.A }
                 this.tParamsHoursAvailableFromPlan = { plan_name: PLAN_NAME.A }
                 this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.A }
                 this.tParamsCannedAvailableFromPlan = { plan_name: PLAN_NAME.A }
+
+                // --------------------------------------------------------------------------------
+                // @ Translate params for static page (Upgrade plan names reference new plan names)
+                // --------------------------------------------------------------------------------
+                // this.tParamsCRMAvailableFromPlan = { plan_name: PLAN_NAME.D }
+                // this.tParamsMonitorAvailableFromPlan = { plan_name: PLAN_NAME.D }
+                // this.tParamsHoursAvailableFromPlan = { plan_name: PLAN_NAME.D }
+                // this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.D }
+                // this.tParamsCannedAvailableFromPlan = { plan_name: PLAN_NAME.D }
+
                 this.tParamsAvailableFromTier2 = { plan_name: PLAN_NAME.B }
+                this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.F }
                 this.dispayBadgeAvaibleFromInAppStore = true;
                 // ------------------------------------------------------------------------
                 // USECASE: Scale Plan (SUB EXPIRED)
@@ -557,13 +590,26 @@ export class PricingBaseComponent implements OnInit {
                 this.tParamsPlanAndKb = { plan_name: this.prjct_profile_name, allowed_kb_num: this.kbLimit }
                 console.log('[P-BASE] - GET PROJECT PLAN - KB LIMIT ', this.kbLimit);
 
-                // Translate params for static page
-                this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.F }
-                this.tParamsAvailableFromTier2 = { plan_name: PLAN_NAME.B }
+                // --------------------------------------------------------------------------------
+                // @ Translate params for static page (Upgrade plan names reference old plan names)
+                // --------------------------------------------------------------------------------
                 this.tParamsCRMAvailableFromPlan = { plan_name: PLAN_NAME.A }
+                this.tParamsMonitorAvailableFromPlan = { plan_name: PLAN_NAME.A }
                 this.tParamsHoursAvailableFromPlan = { plan_name: PLAN_NAME.A }
                 this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.A }
                 this.tParamsCannedAvailableFromPlan = { plan_name: PLAN_NAME.A }
+
+                // --------------------------------------------------------------------------------
+                // @ Translate params for static page (Upgrade plan names reference new plan names)
+                // --------------------------------------------------------------------------------
+                // this.tParamsCRMAvailableFromPlan = { plan_name: PLAN_NAME.D }
+                // this.tParamsMonitorAvailableFromPlan = { plan_name: PLAN_NAME.D }
+                // this.tParamsHoursAvailableFromPlan = { plan_name: PLAN_NAME.D }
+                // this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.D }
+                // this.tParamsCannedAvailableFromPlan = { plan_name: PLAN_NAME.D }
+
+                this.tParamsAvailableFromTier2 = { plan_name: PLAN_NAME.B }
+                this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.F }
                 this.dispayBadgeAvaibleFromInAppStore = true;
                 // ------------------------------------------------------------------------
                 // USECASE: Plus Plan (SUB EXPIRED)
@@ -591,13 +637,27 @@ export class PricingBaseComponent implements OnInit {
                 this.tParamsPlanAndKb = { plan_name: this.prjct_profile_name, allowed_kb_num: this.kbLimit }
                 console.log('[P-BASE] - GET PROJECT PLAN - KB LIMIT ', this.kbLimit);
 
-                // Translate params for static page
-                this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.F }
-                this.tParamsAvailableFromTier2 = { plan_name: PLAN_NAME.B }
+                // --------------------------------------------------------------------------------
+                // @ Translate params for static page (Upgrade plan names reference old plan names)
+                // --------------------------------------------------------------------------------
                 this.tParamsCRMAvailableFromPlan = { plan_name: PLAN_NAME.A }
+                this.tParamsMonitorAvailableFromPlan = { plan_name: PLAN_NAME.A }
                 this.tParamsHoursAvailableFromPlan = { plan_name: PLAN_NAME.A }
                 this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.A }
                 this.tParamsCannedAvailableFromPlan = { plan_name: PLAN_NAME.A }
+
+
+                // --------------------------------------------------------------------------------
+                // @ Translate params for static page (Upgrade plan names reference new plan names)
+                // --------------------------------------------------------------------------------
+                // this.tParamsCRMAvailableFromPlan = { plan_name: PLAN_NAME.D }
+                // this.tParamsMonitorAvailableFromPlan = { plan_name: PLAN_NAME.D }
+                // this.tParamsHoursAvailableFromPlan = { plan_name: PLAN_NAME.D }
+                // this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.D }
+                // this.tParamsCannedAvailableFromPlan = { plan_name: PLAN_NAME.D }
+
+                this.tParamsAvailableFromTier2 = { plan_name: PLAN_NAME.B }
+                this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.F }
                 this.dispayBadgeAvaibleFromInAppStore = true;
                 // ------------------------------------------------------------------------
                 // USECASE: Basic Plan (SUB EXPIRED) new for Growth
@@ -625,12 +685,13 @@ export class PricingBaseComponent implements OnInit {
 
 
                 // Translate params for static page
-                this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.F }
                 this.tParamsCRMAvailableFromPlan = { plan_name: PLAN_NAME.D }
+                this.tParamsMonitorAvailableFromPlan = { plan_name: PLAN_NAME.D }
                 this.tParamsHoursAvailableFromPlan = { plan_name: PLAN_NAME.D }
-                this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.E }
                 this.tParamsCannedAvailableFromPlan = { plan_name: PLAN_NAME.D }
+                this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.E }
                 this.tParamsAvailableFromTier2 = { plan_name: PLAN_NAME.E }
+                this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.F }
                 this.dispayBadgeAvaibleFromInAppStore = true;
 
                 // ------------------------------------------------------------------------
@@ -658,12 +719,13 @@ export class PricingBaseComponent implements OnInit {
                 console.log('[P-BASE] - GET PROJECT PLAN - KB LIMIT ', this.kbLimit);
 
                 // Translate params for static page
-                this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.F }
-                this.tParamsAvailableFromTier2 = { plan_name: PLAN_NAME.E }
-                this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.E }
                 this.tParamsCRMAvailableFromPlan = { plan_name: PLAN_NAME.D }
+                this.tParamsMonitorAvailableFromPlan = { plan_name: PLAN_NAME.D }
                 this.tParamsHoursAvailableFromPlan = { plan_name: PLAN_NAME.D }
                 this.tParamsCannedAvailableFromPlan = { plan_name: PLAN_NAME.D }
+                this.tParamsAvailableFromTier2 = { plan_name: PLAN_NAME.E }
+                this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.E }
+                this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.F }
                 this.dispayBadgeAvaibleFromInAppStore = true;
 
                 // ------------------------------------------------------------------------
@@ -691,12 +753,13 @@ export class PricingBaseComponent implements OnInit {
                 console.log('[P-BASE] - GET PROJECT PLAN - KB LIMIT ', this.kbLimit);
 
                 // Translate params for static page
-                this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.F }
-                this.tParamsAvailableFromTier2 = { plan_name: PLAN_NAME.E }
                 this.tParamsCRMAvailableFromPlan = { plan_name: PLAN_NAME.D }
+                this.tParamsMonitorAvailableFromPlan = { plan_name: PLAN_NAME.D }
                 this.tParamsHoursAvailableFromPlan = { plan_name: PLAN_NAME.D }
-                this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.E }
                 this.tParamsCannedAvailableFromPlan = { plan_name: PLAN_NAME.D }
+                this.tParamsAvailableFromTier2 = { plan_name: PLAN_NAME.E }
+                this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.E }
+                this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.F }
                 this.dispayBadgeAvaibleFromInAppStore = true;
 
               }

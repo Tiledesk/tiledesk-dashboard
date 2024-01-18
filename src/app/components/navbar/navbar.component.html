@@ -433,7 +433,12 @@
 <span *ngIf="HIDE_PENDING_EMAIL_NOTIFICATION === false">
   <div (click)="goToUserProfile()" *ngIf="user?.emailverified == false" data-notify="container" style="z-index: 1055;"
     class="alert alert-danger animated fadeInDown alert-pending-email-verification" role="alert"
-    data-notify-position="top-center" [ngClass]="{'is-user-profile-page' : DETECTED_USER_PROFILE_PAGE === true }">
+    data-notify-position="top-center" [ngClass]="{'is-user-profile-page' : DETECTED_USER_PROFILE_PAGE === true }"
+    matTooltipClass="custom-mat-tooltip"
+    matTooltip="{{ 'NavBar.WhenPendingEmailVerification' | translate}}"
+    #tooltip="matTooltip" 
+    matTooltipPosition='below'
+    matTooltipHideDelay="100">
     <!-- <button type="button" aria-hidden="true" class="close" data-notify="dismiss" style="position: absolute; right: 10px; top: 5px; z-index: 1033;">×</button> -->
     <span data-notify="icon" class="notifications">
       <i class="fa fa-exclamation-circle" style="font-size: 13px; position: relative;top: -1px;"></i>
@@ -441,7 +446,7 @@
         style="font-family: 'Poppins', sans-serif;font-weight: 400; display: inline; position: relative;top: -2px; font-size: 11px; padding-left: 5px;">
         {{"NavBar.PendingVerification" | translate }}
 
-        <span class="tooltipx" style="float: right;">
+        <!-- <span class="tooltipx" style="float: right;">
           <span>
             <i class="material-icons" style="position: relative;top: 4px; font-size:14px; color:#ffffff">
               help_outline
@@ -451,7 +456,7 @@
             style="min-width: 231px;line-height: 1.1;min-height: 34px; top: -5px; right: 105%; ">
             {{ "NavBar.WhenPendingEmailVerification" | translate}}
           </span>
-        </span>
+        </span> -->
       </span>
     </span>
     <!-- <span data-notify="title" style="max-width: 100%;">
