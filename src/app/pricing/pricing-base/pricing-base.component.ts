@@ -155,9 +155,11 @@ export class PricingBaseComponent implements OnInit {
                   this.dispayBadgeAvaibleFromInAppStore = false;
 
                 } else if (this.areActivePay === false) {
-
+                  console.log('[P-BASE] HERE YES plan areActivePay ' , this.areActivePay, ' prjct_profile_name ',  this.prjct_profile_name, ' TRIAL IS EXPIRED: ', this.trial_expired)
                   this.chatBotLimit = 1000
                   this.seatsLimit = 1000;
+                  console.log('[P-BASE] - GET PROJECT PLAN - CB LIMIT ', this.chatBotLimit)
+                  console.log('[P-BASE] - GET PROJECT PLAN - SEATS LIMIT ', this.seatsLimit)
                 }
 
                 // ------------------------------------------------------------------------
@@ -165,7 +167,7 @@ export class PricingBaseComponent implements OnInit {
                 // ------------------------------------------------------------------------
               } else if (this.profile_name === 'Sandbox') {
                 this.prjct_profile_name = PLAN_NAME.E + " plan (trial)"
-                console.log('[P-BASE] - GET PROJECT PLAN - NAME ', this.prjct_profile_name, ' TYPE: ', projectProfileData.profile_type, ' TRIAL IS EXPIRED: ', projectProfileData.trial_expired)
+                console.log('[P-BASE] - GET PROJECT PLAN - NAME ', this.prjct_profile_name, ' TYPE: ', projectProfileData.profile_type, ' TRIAL IS EXPIRED: ', this.trial_expired)
                 this.profile_name_for_segment = this.prjct_profile_name
                 if (this.areActivePay === true) {
                   // Seats limit
@@ -188,9 +190,11 @@ export class PricingBaseComponent implements OnInit {
                   this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.F }
                   this.dispayBadgeAvaibleFromInAppStore = false;
                 } else if (this.areActivePay === false) {
-
+                  console.log('[P-BASE] HERE YES plan areActivePay ' , this.areActivePay, ' prjct_profile_name ',  this.prjct_profile_name, ' TRIAL IS EXPIRED: ', this.trial_expired)
                   this.chatBotLimit = 1000
                   this.seatsLimit = 1000;
+                  console.log('[P-BASE] - GET PROJECT PLAN - CB LIMIT ', this.chatBotLimit)
+                  console.log('[P-BASE] - GET PROJECT PLAN - SEATS LIMIT ', this.seatsLimit)
                 }
               }
             } else {
@@ -201,7 +205,7 @@ export class PricingBaseComponent implements OnInit {
                 this.prjct_profile_name = "Free plan";
 
                 if (this.areActivePay === true) {
-                  console.log('[P-BASE] - GET PROJECT PLAN - NAME ', this.prjct_profile_name, ' TYPE: ', projectProfileData.profile_type, ' TRIAL IS EXPIRED: ', projectProfileData.trial_expired)
+                  console.log('[P-BASE] - GET PROJECT PLAN - NAME ', this.prjct_profile_name, ' TYPE: ', projectProfileData.profile_type, ' TRIAL IS EXPIRED: ', this.trial_expired)
                   this.profile_name_for_segment = this.prjct_profile_name
 
                   // Seats limit
@@ -246,15 +250,18 @@ export class PricingBaseComponent implements OnInit {
 
                   this.dispayBadgeAvaibleFromInAppStore = true;
                 } else if (this.areActivePay === false) {
+                  console.log('[P-BASE] HERE YES plan areActivePay ' , this.areActivePay, ' prjct_profile_name ',  this.prjct_profile_name, ' TRIAL IS EXPIRED: ', this.trial_expired)
                   this.chatBotLimit = 1000
                   this.seatsLimit = 1000;
+                  console.log('[P-BASE] - GET PROJECT PLAN - CB LIMIT ', this.chatBotLimit)
+                  console.log('[P-BASE] - GET PROJECT PLAN - SEATS LIMIT ', this.seatsLimit)
                 }
                 // ------------------------------------------------------------------------
                 // USECASE: Sandbox Plan (TRIAL EXPIRED)
                 // ------------------------------------------------------------------------
               } else if (this.profile_name === 'Sandbox') {
                 this.prjct_profile_name = "Sandbox plan";
-                console.log('[P-BASE] - GET PROJECT PLAN - NAME ', this.prjct_profile_name, ' TYPE: ', projectProfileData.profile_type, ' TRIAL IS EXPIRED: ', projectProfileData.trial_expired)
+                console.log('[P-BASE] - GET PROJECT PLAN - NAME ', this.prjct_profile_name, ' TYPE: ', projectProfileData.profile_type, ' TRIAL IS EXPIRED: ', this.trial_expired)
                 this.profile_name_for_segment = this.prjct_profile_name;
                 if (this.areActivePay === true) {
                   // Seats limit
@@ -284,9 +291,11 @@ export class PricingBaseComponent implements OnInit {
                   this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.F }
                   this.dispayBadgeAvaibleFromInAppStore = true;
                 } else if (this.areActivePay === false) {
-
+                  console.log('[P-BASE] HERE YES plan areActivePay ' , this.areActivePay, ' prjct_profile_name ',  this.prjct_profile_name, ' TRIAL IS EXPIRED: ', this.trial_expired)
                   this.chatBotLimit = 1000
                   this.seatsLimit = 1000;
+                  console.log('[P-BASE] - GET PROJECT PLAN - CB LIMIT ', this.chatBotLimit)
+                  console.log('[P-BASE] - GET PROJECT PLAN - SEATS LIMIT ', this.seatsLimit)
                 }
               }
             }

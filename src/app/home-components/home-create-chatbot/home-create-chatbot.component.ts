@@ -61,7 +61,8 @@ export class HomeCreateChatbotComponent extends PricingBaseComponent implements 
 
   onlyOwnerCanManageTheAccountPlanMsg: string;
   learnMoreAboutDefaultRoles: string;
-
+  public_Key: string;
+  areActivePay: boolean;
   
   constructor(
     public appConfigService: AppConfigService,
@@ -83,8 +84,36 @@ export class HomeCreateChatbotComponent extends PricingBaseComponent implements 
   ngOnInit(): void {
     // this.getCurrentProjectAndPrjctBots();
     this.getUserRole();
+    // this.getProjectPlan();
+    this.translateString();
+    this.getOSCODE()
+  }
+  getOSCODE() {
+    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
+    // this.logger.log('[HOME-CREATE-CHATBOT] AppConfigService getAppConfig public_Key', this.public_Key);
+    let keys = this.public_Key.split("-");
+    // this.logger.log('[HOME-CREATE-CHATBOT] PUBLIC-KEY keys', keys)
+    keys.forEach(key => {
+      // this.logger.log('[HOME-CREATE-CHATBOT] public_Key key', key)
+      if (key.includes("PAY")) {
+        // this.logger.log('[HOME-CREATE-CHATBOT] PUBLIC-KEY - key', key);
+        let psa = key.split(":");
+        // this.logger.log('[HOME-CREATE-CHATBOT] PUBLIC-KEY - pay key&value', psa);
+        if (psa[1] === "F") {
+          this.areActivePay = false;
+        } else {
+          this.areActivePay = true;
+        }
+      }
+    });
+
+    if (!this.public_Key.includes("PAY")) {
+      // this.logger.log('[HOME-CREATE-CHATBOT] PUBLIC-KEY  - key.includes("PAY")', this.public_Key.includes("PAY"));
+      this.areActivePay = false;
+    }
+
     this.getProjectPlan();
-    this.translateString()
+
   }
 
   ngOnDestroy() {

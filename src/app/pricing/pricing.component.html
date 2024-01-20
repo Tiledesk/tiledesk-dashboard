@@ -335,7 +335,8 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
                   </div>
                   <span class="css-ji9n63 ev1261q0 two-months-free-text-container">
                     <span size="4" class="css-1mug68f e1soz8mc0"></span>
-                    25% OFF
+                    <!-- 25% OFF -->
+                    2 months for free
                     <span size="4" class="css-1mug68f e1soz8mc0 span-4"></span>
                     <svg width="23" height="26" viewBox="0 0 23 26" fill="#647491" xmlns="http://www.w3.org/2000/svg"
                       class="absolute left-full ml-2.5" style="transform: translate(68px, -30px);">
@@ -415,7 +416,7 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
             </div>
 
             <!-- ----------------------------------------------- -->
-            <!-- Plan C  openPaymentLinkPlanC() -->
+            <!-- Plan C -->
             <!-- ----------------------------------------------- -->
             <div class="checkout-btn-wpr" *ngIf="planName === PLAN_NAME.C" (click)="contactUs(planName)">
               <button id="plan-c" type="button" class=" btn btn-new btn-size-xl-round btn--primary css-km1x31 epaijzs0">
@@ -428,6 +429,82 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
                 <span> Go to checkout </span>
               </button>
             </div> -->
+
+            <!-- --------------------- -->
+            <!-- Plan D Montly -->
+            <!-- --------------------- -->
+            <!-- && planName === PLAN_NAME.D -->
+            <div class="checkout-btn-wpr" *ngIf="monthlyPeriod  && profileType === 'free'"
+              (click)="openPaymentLinkMontlyPlanD()">
+              <button id="monthly-plan-a" type="button"
+                class=" btn btn-new btn-size-xl-round btn--primary css-km1x31 epaijzs0">
+                <span> Go to checkout (Basic M) </span>
+              </button>
+            </div>
+            <!-- --------------------- -->
+            <!-- Plan D Annually -->
+            <!-- --------------------- -->
+            <div class="checkout-btn-wpr" *ngIf="annualPeriod && planName === PLAN_NAME.D && profileType === 'free'"
+              (click)="openPaymentLinkAnnuallyPlanD()">
+              <button id="annually-plan-a" type="button"
+                class=" btn btn-new btn-size-xl-round btn--primary css-km1x31 epaijzs0">
+                <span> Go to checkout (Basic A) </span>
+              </button>
+            </div>
+
+            <!-- --------------------------------- -->
+            <!-- Plan D when already exist a Plan  -->
+            <!-- --------------------------------- -->
+            <div class="checkout-btn-wpr" *ngIf="planName === PLAN_NAME.D && profileType !== 'free'"
+              (click)="contactUs(planName)">
+              <button id="plan-a-contact-us" type="button"
+                class=" btn btn-new btn-size-xl-round btn--primary css-km1x31 epaijzs0">
+                <span> Contact Sales (Basic) </span>
+              </button>
+            </div>
+
+            <!-- --------------------- -->
+            <!-- Plan E Montly -->
+            <!-- --------------------- -->
+            <!-- && planName === PLAN_NAME.E -->
+            <div class="checkout-btn-wpr" *ngIf="monthlyPeriod  && profileType === 'free'"
+              (click)="openPaymentLinkMontlyPlanE()">
+              <button id="monthly-plan-b" type="button"
+                class=" btn btn-new btn-size-xl-round btn--primary css-km1x31 epaijzs0">
+                <span> Go to checkout (Premium M) </span>
+              </button>
+            </div>
+
+            <!-- --------------------- -->
+            <!-- Plan E Annually -->
+            <!-- --------------------- -->
+            <div class="checkout-btn-wpr" *ngIf="annualPeriod && planName === PLAN_NAME.E && profileType === 'free'"
+              (click)="openPaymentLinkAnnuallyPlanE()">
+              <button id="annually-plan-b" type="button"
+                class=" btn btn-new btn-size-xl-round btn--primary css-km1x31 epaijzs0">
+                <span> Go to checkout (Premium A) </span>
+              </button>
+            </div>
+
+            <!-- ----------------------------------------------- -->
+            <!-- Plan E when already exist a  payment type Plan -->
+            <!-- ----------------------------------------------- -->
+            <div class="checkout-btn-wpr" *ngIf="planName === PLAN_NAME.E && profileType !== 'free'"
+              (click)="contactUs(planName)">
+              <button id="plan-b-contact-us" type="button"
+                class=" btn btn-new btn-size-xl-round btn--primary css-km1x31 epaijzs0">
+                <span> Contact Sales  (Premium M) </span>
+              </button>
+            </div>
+
+            <!-- ----------------------------------------------- -->
+            <!-- Plan F -->
+            <!-- ----------------------------------------------- -->
+            <div class="checkout-btn-wpr" *ngIf="planName === PLAN_NAME.F" (click)="contactUs(planName)">
+              <button id="plan-c" type="button" class=" btn btn-new btn-size-xl-round btn--primary css-km1x31 epaijzs0">
+                <span> Contact Sales (Custom) </span>
+              </button>
+            </div>
 
 
             <!-- ----------------------------------------------- -->
