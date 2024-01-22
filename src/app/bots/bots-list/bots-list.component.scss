@@ -69,6 +69,7 @@ input[type="text"] {
 .modal {
   top: 0;
 }
+
 .modal-content {
   position: relative;
   background-color: #fff;
@@ -101,6 +102,7 @@ button.close {
   background: 0 0;
   border: 0;
 }
+
 .close {
   float: right;
   font-size: 21px;
@@ -171,7 +173,8 @@ button.close {
   /* Position the tooltip text - TOP */
   bottom: 100%;
   left: 50%;
-  margin-left: -60px; /* Use half of the width (120/2 = 60), to center the tooltip */
+  margin-left: -60px;
+  /* Use half of the width (120/2 = 60), to center the tooltip */
 
   // NEW
   box-shadow: 0 1em 2em -0.5em rgba(0, 0, 0, 0.35);
@@ -182,6 +185,7 @@ button.close {
 .tooltipx:hover .tooltiptext {
   visibility: visible;
 }
+
 // end TOOLTIP
 
 .card-header-custom-bkgrnd {
@@ -234,10 +238,29 @@ input[type="checkbox"]:disabled {
   background: #fff;
 }
 
+.bot-type-logo-wpr {
+  background: #ffff;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  position: absolute;
+  top: 0;
+  left: -4px;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #eee;
+  border-radius: 9999px;
+}
+
+.bot-type-logo-wpr > img {
+  padding: 1px;
+}
+
 @media (min-width: 768px) {
   .bot--full--desc {
     display: block;
   }
+
   .bot--truncated--desc {
     display: none;
   }
@@ -247,6 +270,7 @@ input[type="checkbox"]:disabled {
   .bot--truncated--desc {
     display: block;
   }
+
   .bot--full--desc {
     display: none;
   }
@@ -310,6 +334,7 @@ input[type="checkbox"]:disabled {
 .no-bot-tr-msg-wpr:hover {
   background-color: #fff !important;
 }
+
 .no-bot-msg {
   font-size: 18px;
   margin-bottom: 0px;
@@ -325,6 +350,5 @@ input[type="checkbox"]:disabled {
 }
 
 .btn---link:hover {
- text-decoration: underline;
+  text-decoration: underline;
 }
-

@@ -191,9 +191,9 @@ export class WsTrainBotComponent implements OnInit, OnChanges, OnDestroy {
         this.logger.error('[WS-TRAIN-BOT] - searchFaq - FAQS GOT BY TEXT - ERROR', error);
         this.showSpinner = false;
       }, () => {
-          this.logger.log('[WS-TRAIN-BOT] - searchFaq - FAQS GOT BY TEXT * COMPLETE *');
-          this.showSpinner = false;
-        });
+        this.logger.log('[WS-TRAIN-BOT] - searchFaq - FAQS GOT BY TEXT * COMPLETE *');
+        this.showSpinner = false;
+      });
     // this.logger.log('[WS-TRAIN-BOT] - searchFaq - faqToSearch ', this.faqToSearch);
 
   }
@@ -247,10 +247,12 @@ export class WsTrainBotComponent implements OnInit, OnChanges, OnDestroy {
     // this.router.navigate(['project/' + this.project_id + '/bots', idFaqKb, 'native']);
     if (faqkb.type === 'internal') {
       // this.router.navigate(['project/' + this.project_id + '/bots/intents/' + idFaqKb+ "/" + "tilebot"]);
-      this.router.navigate(['project/' + this.project_id + '/bots/intents/' + faqkb._id+ "/" + "internal"]);
-    } else if (faqkb.type === 'tilebot')  {
+      this.router.navigate(['project/' + this.project_id + '/bots/intents/' + faqkb._id + "/" + "internal"]);
+    } else if (faqkb.type === 'tilebot') {
       this.goToCDS(faqkb)
-    } else if (faqkb.type !== 'tilebot' && faqkb.type !== 'internal'){
+    } else if (faqkb.type === 'tiledesk-ai') {
+      this.goToCDS(faqkb)
+    } else if (faqkb.type !== 'tilebot' && faqkb.type !== 'internal') {
       this.router.navigate(['project/' + this.project_id + '/bots', faqkb._id, faqkb.type]);
     }
   }

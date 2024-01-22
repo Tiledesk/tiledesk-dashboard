@@ -1066,6 +1066,13 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
         // this.router.navigate(['project/' + this.project._id + '/cds/', this.selectedId, 'intent', '0']);
         goToCDSVersion(this.router, this.selectedBot, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
       }
+    } else if (this.bot_type === 'tiledesk-ai') {
+      botType = 'tiledesk-ai'
+      if (this.USER_ROLE !== 'agent') {
+        // this.router.navigate(['project/' + this.project._id + '/tilebot/intents/', this.selectedId, botType]);
+        // this.router.navigate(['project/' + this.project._id + '/cds/', this.selectedId, 'intent', '0']);
+        goToCDSVersion(this.router, this.selectedBot, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
+      }
     } else {
       botType = this.bot_type;
       if (this.USER_ROLE !== 'agent') {
