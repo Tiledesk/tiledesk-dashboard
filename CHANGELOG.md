@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.4.94
+- Deploys in production
+- Adds the ability to access the design studio for the "tiledesk-ai" chatbot type
+
 ### 2.4.93
 - Deploys in production
 - Change the request endpoint to retrieve chatbot templates
