@@ -855,6 +855,12 @@ export class BotListComponent implements OnInit {
       // this.router.navigate(['project/' + this.project._id + '/createfaq', idFaqKb, _botType, 'en']);
       this.goToCDS(faqkb)
 
+    } else if (faqkb.type === 'tiledesk-ai') {
+      _botType = 'tiledesk-ai'
+      // this.router.navigate(['project/' + this.project._id + '/tilebot/intents/', idFaqKb, _botType]);
+      // this.router.navigate(['project/' + this.project._id + '/createfaq', idFaqKb, _botType, 'en']);
+      this.goToCDS(faqkb)
+
 
     } else {
       _botType = faqkb.type
