@@ -5,10 +5,13 @@
 <head>
 
   <script src="https://js.stripe.com/v3" defer></script>
-<!-- Rewardful -->
-<script>(function (w, r) { w._rwq = r; w[r] = w[r] || function () { (w[r].q = w[r].q || []).push(arguments) } })(window, 		'rewardful');</script>
-<script async src='https://r.wdfl.co/rw.js' data-rewardful='351f89'></script>
-<!-- ./ Rewardful -->
+  <!-- Rewardful -->
+  <script>(function (w, r) { w._rwq = r; w[r] = w[r] || function () { (w[r].q = w[r].q || []).push(arguments) } })(window, 'rewardful');</script>
+  <script async src='https://r.wdfl.co/rw.js' data-rewardful='351f89'></script>
+  <!-- ./ Rewardful -->
+
+
+  <!-- <script src="https://www.google.com/recaptcha/api.js"></script> -->
 
   <base href='/'>
   <meta charset="UTF-8">
@@ -41,8 +44,93 @@
   <!-- --------------------------------------------------- -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600&display=swap"
-    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600&display=swap" rel="stylesheet">
+
+  <!-- ------------------------------- -->
+  <!-- reCAPTCHA -->
+  <!-- ------------------------------- -->
+  <!-- <script type="application/javascript">
+    var href = document.location.href;
+   
+    window.onload = function () {
+      hideRecaptchaBadge()
+      if (href.indexOf('signup') > -1) {
+        console.log('recaptchaBadge href contains signup', href)
+        displayRecaptchaBadge()
+      } else {
+        var oldHref = document.location.href;
+        console.log('recaptchaBadge oldHref ', oldHref)
+        var bodyList = document.querySelector("body")
+    
+        hideRecaptchaBadge()
+
+        var observer = new MutationObserver(function (mutations) {
+          mutations.forEach(function (mutation) {
+
+            if (oldHref != document.location.href) {
+              oldHref = document.location.href;
+              console.log('recaptchaBadge Changed oldHref ', oldHref)
+              if (oldHref.indexOf('signup') > -1) {
+                displayRecaptchaBadge()
+              } else {
+                hideRecaptchaBadge()
+              }
+            }
+          });
+        });
+
+        var config = {
+          childList: true,
+          subtree: true
+        };
+
+        observer.observe(bodyList, config);
+      };
+
+      if (window.performance) {
+        console.log("recaptchaBadge  window.performance fine on this browser");
+      }
+
+      if (performance.navigation.type == performance.navigation.TYPE_RELOAD) {
+        hideRecaptchaBadge()
+        console.log("This page is reloaded");
+        if (href.indexOf('signup') > -1) { 
+          displayRecaptchaBadge()
+        } else {
+          hideRecaptchaBadge()
+        }
+
+      } else {
+        console.info("This page is not reloaded");
+      }
+
+      function hideRecaptchaBadge() {
+        console.log('Called hideRecaptchaBadge')
+        let grecaptchaBadgeCollection = document.getElementsByClassName("grecaptcha-badge");
+        // console.log('INDEX hideRecaptchaBadge grecaptchaBadgeCollection ', grecaptchaBadgeCollection)
+        let grecaptchaBadgeElem = grecaptchaBadgeCollection[0]
+        // console.log('INDEX hideRecaptchaBadge grecaptchaBadgeElem ', grecaptchaBadgeElem)
+        if (grecaptchaBadgeElem) {
+          grecaptchaBadgeElem.style.display = "none"
+          
+        }
+      }
+
+      function displayRecaptchaBadge() {
+        console.log('Called displayRecaptchaBadge')
+        let grecaptchaBadgeCollection = document.getElementsByClassName("grecaptcha-badge");
+        // console.log('INDEX  displayRecaptchaBadge grecaptchaBadgeCollection ', grecaptchaBadgeCollection)
+        let grecaptchaBadgeElem = grecaptchaBadgeCollection[0]
+        // console.log('INDEX  displayRecaptchaBadge grecaptchaBadgeElem ', grecaptchaBadgeElem)
+        if (grecaptchaBadgeElem) {
+          grecaptchaBadgeElem.style.display = "block"
+          grecaptchaBadgeElem.style.visibility = "visible"
+        }
+      }
+
+    }
+  </script> -->
+
 
   <!-- the new one start -------- -->
   <!-- <script type="application/javascript">

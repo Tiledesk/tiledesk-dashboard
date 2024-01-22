@@ -36,7 +36,11 @@ import { Subscription } from 'rxjs'
 import { BrandService } from './../../services/brand.service';
 import { LocalDbService } from '../../services/users-local-db.service';
 import { LoggerService } from '../../services/logger/logger.service';
-import { APP_SUMO_PLAN_NAME, PLAN_NAME, URL_understanding_default_roles } from '../../utils/util';
+import { APP_SUMO_PLAN_NAME, PLANS_LIST, PLAN_NAME, URL_understanding_default_roles } from '../../utils/util';
+
+import { ThemePalette} from '@angular/material/core';
+import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
+import { QuotesService } from 'app/services/quotes.service';
 
 const swal = require('sweetalert');
 
@@ -156,6 +160,25 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
   dsbrd_lang: string;
   tlangparams: any;
 
+  // QUOTES
+  color: ThemePalette = 'primary';
+  mode: ProgressSpinnerMode = 'determinate';
+  requests_count = 0;
+  requests_perc = 0;
+  requests_limit = 0;
+  
+  messages_count = 0;
+  messages_perc = 0;
+  messages_limit = 0;
+  
+  email_count = 0;
+  email_perc = 0;
+  email_limit = 0;
+
+  tokens_count = 0;
+  tokens_perc = 0;
+  tokens_limit = 0;
+
   constructor(
     location: Location,
     private element: ElementRef,
@@ -174,7 +197,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     public brandService: BrandService,
     public localDbService: LocalDbService,
     private logger: LoggerService,
-
+    private quotesService: QuotesService
   ) {
 
 
@@ -250,6 +273,8 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     this.translateStrings();
     this.listenHasDeleteUserProfileImage();
 
+    // this.getQuotes();
+
   } // OnInit
 
 
@@ -260,6 +285,98 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     this.unsubscribe$.complete();
   }
 
+  getQuotes() {
+
+    this.quotesService.getAllQuotes(this.projectId).subscribe((resp: any) => {
+      console.log("quotes retrieved: ", resp)
+
+      let profile_name = this.project.profile_name;
+
+      switch(profile_name) {
+        case PLAN_NAME.A:
+          profile_name = PLAN_NAME.D;
+          break;
+        case PLAN_NAME.B:
+          profile_name = PLAN_NAME.E
+          break;
+        case PLAN_NAME.C:
+          profile_name = PLAN_NAME.F
+          break;
+      }
+
+      this.requests_limit = PLANS_LIST[profile_name].requests;
+      this.messages_limit = PLANS_LIST[profile_name].messages;
+      this.email_limit = PLANS_LIST[profile_name].email;
+      this.tokens_limit = PLANS_LIST[profile_name].tokens;
+
+      if (resp.quotes.requests.quote === null) {
+        resp.quotes.requests.quote = 0;
+      }
+      if (resp.quotes.messages.quote === null) {
+        resp.quotes.messages.quote = 0;
+      }
+      if (resp.quotes.email.quote === null) {
+        resp.quotes.email.quote = 0;
+      }
+      if (resp.quotes.tokens.quote === null) {
+        resp.quotes.tokens.quote = 0;
+      }
+      
+      this.requests_perc = Math.floor((resp.quotes.requests.quote / this.requests_limit) * 100);
+      this.messages_perc = Math.floor((resp.quotes.messages.quote / this.messages_limit) * 100);
+      this.email_perc = Math.floor((resp.quotes.email.quote / this.email_limit) * 100);
+      this.tokens_perc = Math.floor((resp.quotes.tokens.quote / this.tokens_limit) * 100);
+
+      // this.requests_count = this.getformat(resp.quotes.requests.quote, null);
+      // this.messages_count = this.getformat(resp.quotes.messages.quote, null);
+      // this.email_count = this.getformat(resp.quotes.email.quote, null);
+      // this.tokens_count = this.getformat(resp.quotes.tokens.quote, null)
+
+      this.requests_count = resp.quotes.requests.quote;
+      this.messages_count = resp.quotes.messages.quote;
+      this.email_count = resp.quotes.email.quote;
+      this.tokens_count = resp.quotes.tokens.quote;
+
+      // this.requests_limit = this.getformat(this.requests_limit, true);
+      // this.messages_limit = this.getformat(this.messages_limit, true);
+      // this.tokens_limit = this.getformat(this.tokens_limit, true);
+      // this.email_limit = this.getformat(this.email_limit, true);
+
+    }, (error) => {
+      console.error("get all quotes error: ", error)
+    }, () => {
+      console.log("get all quotes *COMPLETE*");
+    })
+  }
+
+  getformat(number, intg: Boolean | null){
+    if(number == 0) {
+      return 0;
+    }
+    else
+    {        
+      // hundreds
+      if(number <= 999){
+        return number ;
+      }
+      // thousands
+      else if(number >= 1000 && number <= 999999){
+        if (intg) {
+          return (number / 1000).toFixed(0) + 'K';  
+        }
+        return (number / 1000).toFixed(1) + 'K';
+      }
+      // millions
+      else if(number >= 1000000 && number <= 999999999){
+        if (intg) {
+          return (number / 1000000).toFixed(0) + 'M';
+        }
+        return (number / 1000000).toFixed(1) + 'M';
+      }
+      else
+        return number ;
+      }
+    }
 
   getLoggedUser() {
     this.auth.user_bs.subscribe((user) => {
@@ -748,7 +865,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
           this.projectId = project._id;
           this.projectName = project.name;
           this.OPERATING_HOURS_ACTIVE = this.project.operatingHours
-
+          this.getQuotes();
           this.logger.log('[NAVBAR] -> OPERATING_HOURS_ACTIVE ', this.OPERATING_HOURS_ACTIVE);
         }
     

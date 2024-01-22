@@ -399,6 +399,13 @@ export const highlightedFeaturesPlanC = [
 // ------------------------
 // New Pricing
 // ------------------------
+export const PLANS_LIST = {
+    FREE_TRIAL: { requests: 3000,   messages: 0,    tokens: 250000,     email: 200 }, // same as PREMIUM
+    Sandbox:    { requests: 200,    messages: 0,    tokens: 10000,      email: 200 },
+    Basic:      { requests: 800,    messages: 0,    tokens: 50000,      email: 200 },
+    Premium:    { requests: 3000,   messages: 0,    tokens: 250000,     email: 200 },
+    Custom:     { requests: 3000,   messages: 0,    tokens: 250000,     email: 200 }
+}
 
 // Basic plan
 export const featuresPlanD = [

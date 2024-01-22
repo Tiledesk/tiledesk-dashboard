@@ -2388,3 +2388,12 @@ appdashboard-app-store > div > div > div > div > .card-app-store {
   font-size: 21px;
   font-weight: 400;
 }
+// /* hide recaptcha badge*/
+.grecaptcha-badge {
+  visibility: hidden;
+}
+
+// /* only show recaptcha badge on needed pages */
+// .recaptcha .grecaptcha-badge {
+//   visibility: visible;
+// }
