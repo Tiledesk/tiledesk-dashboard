@@ -15,11 +15,14 @@ export const environment = {
   baseImageUrl: 'CHANGEIT',
   pushEngine: 'none',
   logLevel: 'Info',
+  communityTemplatesUrl: 'CHANGEIT',
   templatesUrl: 'CHANGEIT',
   appsUrl: 'CHANGEIT',
   cdsBaseUrl: 'CHANGEIT',
   promoBannerUrl: 'CHANGEIT',
-  chatStoragePrefix: "CHANGEIT",
+  whatsappApiUrl: "CHANGEIT",
+  ticketingEmail: "CHANGEIT",
+  tiledeskPhoneNumber: "CHANGEIT",
   firebase: {
       apiKey: 'CHANGEIT',
       authDomain: 'CHANGEIT',
@@ -31,4 +34,3 @@ export const environment = {
       vapidKey: 'CHANGEIT'
   }
 };
-

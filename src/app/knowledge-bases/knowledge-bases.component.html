@@ -22,10 +22,9 @@
         <div class="card-content" *ngIf="!showSpinner" style="padding-top: 10px;">
 
           <div class="add-kb-div">
-            <button class="btn btn-primary" (click)="openSecretsModal()">
-              <!-- {{ 'KbPage.Secrets' | translate }} -->
+            <!-- <button class="btn btn-primary" (click)="openSecretsModal()">
               GPT-Key
-            </button>
+            </button> -->
             <button class="btn btn-primary" (click)="openAddKnowledgeBaseModal()" [disabled]="addButtonDisabled">
               {{ 'KbPage.AddKb' | translate }}
             </button>
@@ -153,6 +152,11 @@
             <p>
               {{ 'KbPage.KbCounterFooter' | translate: { counter: kbSettings?.kbs?.length } }}
             </p>
+          </div>
+
+          <div class="key-reminder-box">
+            <b>Note</b>
+            <p>In order to use your Knowledge Bases you need a <b>GPT Api Key</b>. <a (click)="goToIntegrations()">Enter a key now!</a></p>
           </div>
 
         </div>
@@ -343,7 +347,7 @@
 </div>
 <!-- PREVIEW KNOWLEDGE BASE MODAL - END -->
 
-<!-- SECRETS / GPTKEY MODAL - START -->
+<!-- SECRETS / GPTKEY MODAL - START // TO DELETE -->
 <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{display: secretsModal}"
   style="background-color: rgba(90,90,90,0.5);">
   <div class="modal-dialog" role="document">

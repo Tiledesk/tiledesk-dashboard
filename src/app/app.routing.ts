@@ -149,6 +149,7 @@ import { CnpTemplatesComponent } from './create-new-project/cnp-templates/cnp-te
 import { OnboardingWelcomeComponent } from './create-new-project/onboarding-welcome/onboarding-welcome.component';
 import { AutomationsComponent } from './automations/automations.component';
 
+import { IntegrationsComponent } from './integrations/integrations.component';
 
 
 
@@ -492,6 +493,7 @@ const routes: Routes = [
   { path: 'project/:projectid/map-request', component: MapRequestComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/email', component: EmailTicketingComponent, canActivate: [AuthGuard, ProjectProfileGuard] },
   { path: 'project/:projectid/email-demo', component: EmailTicketingStaticComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/integrations', component: IntegrationsComponent, canActivate: [AuthGuard] },
 
 
 ];

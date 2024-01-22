@@ -105,6 +105,27 @@
           matTooltip="Monitor" #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100"
           [ngClass]="{'menu_item_active': CONV_DETAIL_ROUTE_IS_ACTIVE }"
           style="text-align: center; height: 50px !important;">
+      </ng-container>
+      <ng-container *ngIf="USER_ROLE !== 'agent'">
+        <li id="bot-anchor-wpr" *ngIf="project" routerLinkActive="active" matTooltipClass="custom-mat-tooltip"
+          matTooltip="Integrations" #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100" style="height: 50px !important;"
+          [ngClass]="{'menu_item_active': INTEGRATIONS_ROUTE_IS_ACTIVE}">
+          <a id="bot-anchor" #botbtn class="customAncor" routerLink="project/{{ project._id }}/integrations"   
+            style="height: 40px;">
+            <span class="bot-icon-wpr">
+              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" class="chat-bot-icon-st0">
+                <path d="M0 0h24v24H0V0z" fill="none"/>
+                <path d="M4 8h4V4H4v4zm6 12h4v-4h-4v4zm-6 0h4v-4H4v4zm0-6h4v-4H4v4zm6 0h4v-4h-4v4zm6-10v4h4V4h-4zm-6 4h4V4h-4v4zm6 6h4v-4h-4v4zm0 6h4v-4h-4v4z"/>
+              </svg>
+            </span>
+          </a>
+        </li>
+      </ng-container>
+
+      <ng-container>
+        <li id="monitor" *ngIf="project" routerLinkActive="active" matTooltipClass="custom-mat-tooltip" matTooltip="Monitor"
+          #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100"
+          [ngClass]="{'menu_item_active': CONV_DETAIL_ROUTE_IS_ACTIVE }" style="text-align: center; height: 50px !important;">
           <a class="customAncor" routerLink="project/{{ project._id }}/wsrequests" style="height: 40px;">
 
             <!-- <a class="customAncor" routerLink="project/{{ project._id }}/all-conversations" style="height: 40px;"> -->
