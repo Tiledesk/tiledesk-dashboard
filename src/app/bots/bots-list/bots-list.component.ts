@@ -226,19 +226,15 @@ export class BotListComponent implements OnInit {
     this.projectService.getProjects().subscribe((projects: any) => {
       this.logger.log('[BOTS-LIST] - duplicateChatbot - GET PROJECTS ', projects);
       if (projects) {
-
         if (projects && projects.length === 1) {
           this.projectname = projects[0].id_project.name
           this.selectedProjectId = projects[0].id_project._id
           this.forkTemplate(bot_id, this.selectedProjectId)
         } else if (projects && projects.length > 1) {
-
           this.openDialogCloneBot(projects, bot_id, bot_name)
         }
-
       }
     }, error => {
-
       this.logger.error('[BOTS-LIST] - duplicateChatbot - GET PROJECTS - ERROR ', error)
     }, () => {
       this.logger.log('[BOTS-LIST] - duplicateChatbot - GET PROJECTS * COMPLETE *')
@@ -251,7 +247,6 @@ export class BotListComponent implements OnInit {
         botName: bot_name,
         projects: projects,
         currentProjectId: this.currentProjectId,
-
       },
     });
 

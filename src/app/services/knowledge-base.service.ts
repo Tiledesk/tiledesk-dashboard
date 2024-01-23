@@ -60,6 +60,18 @@ export class KnowledgeBaseService {
   // ********** INITIALIZING SERVICE **********
   // ***************** END ********************
 
+  getKbSettings2(body: any) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    }
+    const url = 'https://tiledesk-dev.blackwave-d2bf4ee1.westus2.azurecontainerapps.io/api/list/namespace';
+    // const url = this.SERVER_BASE_PATH + this.project_id + "/kbsettings";
+    this.logger.log("[KNOWLEDGE BASE SERVICE] - get settings URL ", url, body);
+    return this.httpClient.post(url, JSON.stringify(body), httpOptions);
+  }
 
   getKbSettings() {
     const httpOptions = {
@@ -68,10 +80,8 @@ export class KnowledgeBaseService {
         'Authorization': this.TOKEN
       })
     }
-
     const url = this.SERVER_BASE_PATH + this.project_id + "/kbsettings";
     this.logger.log("[KNOWLEDGE BASE SERVICE] - get settings URL ", url);
-
     return this.httpClient.get(url, httpOptions);
   }
 
@@ -89,7 +99,8 @@ export class KnowledgeBaseService {
     return this.httpClient.put(url, kb_settings, httpOptions);
   }
 
-  addNewKb(settings_id: string, kb: KB) {
+
+  addNewKb(settings_id: string, body: any) {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -97,11 +108,29 @@ export class KnowledgeBaseService {
       })
     }
 
-    const url = this.SERVER_BASE_PATH + this.project_id + "/kbsettings/" + settings_id;
-    this.logger.log("[KNOWLEDGE BASE SERVICE] - add new kb URL ", url);
 
-    return this.httpClient.post(url, kb, httpOptions);
+    this.logger.log('[KNOWLEDGE BASE SERVICE] - SIGNIN POST REQUEST BODY ', body);
+    //const url = this.SERVER_BASE_PATH2 + "/scrape/single/";
+    const url = this.SERVER_BASE_PATH + this.project_id + "/kbsettings/" + settings_id;
+    //const url = 'https://tiledesk-dev.blackwave-d2bf4ee1.westus2.azurecontainerapps.io/api/scrape/single';
+    this.logger.log("[KNOWLEDGE BASE SERVICE] - add new kb URL ", url);
+    return this.httpClient.post(url, JSON.stringify(body), httpOptions);
   }
+
+
+  // addNewKb(settings_id: string, kb: KB) {
+  //   const httpOptions = {
+  //     headers: new HttpHeaders({
+  //       'Content-Type': 'application/json',
+  //       'Authorization': this.TOKEN
+  //     })
+  //   }
+
+  //   const url = this.SERVER_BASE_PATH + this.project_id + "/kbsettings/" + settings_id;
+  //   this.logger.log("[KNOWLEDGE BASE SERVICE] - add new kb URL ", url);
+
+  //   return this.httpClient.post(url, kb, httpOptions);
+  // }
 
   deleteKb(settings_id: string, kb_id: string){
     const httpOptions = {

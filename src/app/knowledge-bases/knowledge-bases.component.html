@@ -20,13 +20,19 @@
         <div class="card-content" *ngIf="!showSpinner" style="padding-top: 10px;">
 
           <div class="add-kb-div">
-            <button class="btn btn-primary" (click)="openSecretsModal()">
-              <!-- {{ 'KbPage.Secrets' | translate }} -->
+            <!-- <button class="btn btn-primary" (click)="openSecretsModal()">
               GPT-Key
-            </button>
-            <button class="btn btn-primary" (click)="openAddKnowledgeBaseModal()" [disabled]="addButtonDisabled">
+            </button> -->
+            <!-- <button class="btn btn-primary" (click)="openAddKnowledgeBaseModal()" [disabled]="addButtonDisabled">
               {{ 'KbPage.AddKb' | translate }}
+            </button> -->
+            <button class="btn btn-primary" (click)="openAddKnowledgeBaseModal()">
+              {{ 'Add content' | translate }}
             </button>
+            <button mat-button (click)="openDialog()">Launch dialog</button>
+            <!-- <button class="btn btn-primary" (click)="openAddKnowledgeBaseModal('text-file')">
+              {{ 'Add text file' | translate }}
+            </button> -->
           </div>
 
           <table class="table table-hover">
@@ -162,24 +168,93 @@
 </div>
 
 
-<!-- ADD KNOWLEDGE BASE MODAL - START -->
-<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{display: addKnowledgeBaseModal}"
+<!-- ADD KNOWLEDGE BASE MODAL - ADD URL PAGE -->
+<!-- <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{display: modalAddContent}"
   style="background-color: rgba(90,90,90,0.5);">
   <div class="modal-dialog" role="document">
+    
+
     <div class="modal-content">
 
       <div class="modal-header">
         <button type="button" class="close" aria-label="Close" (click)="closeAddKnowledgeBaseModal()">
           <span aria-hidden="true">&times;</span>
         </button>
+        <h4 class="modal-title">
+          <span style="vertical-align: middle;">
+            {{ 'Add page url' | translate }}
+          </span>
+        </h4>
+        
+      </div>
+      
+      <div class="modal-body">
+        <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
+          <mat-tab label="First">Content 1</mat-tab>
+          <mat-tab label="Second">Content 2</mat-tab>
+          <mat-tab label="Third">Content 3</mat-tab>
+        </mat-tab-group> -->
+        <!--
+        <div class="info-container">
+          <i class="material-icons-outlined info-icon">help_outline</i>
+          <div class="info-text">
+            <p>{{ 'KbPage.AddKbInfoFirstText' | translate }}</p>
+            <p>{{ 'KbPage.AddKbInfoSecondText' | translate }}</p>
+            <p [innerHTML]="'KbPage.AddKbInfoThirdText' | translate" style="margin-top: 8px;"></p>
+          </div>
+        </div>
+        
+        <div class="form-container">
+          <form [formGroup]="kbForm">
+            <div class="input-container">
+              <span class="input-label">Resource name:</span>
+              <input type="text" name="title" class="custom-input" [(ngModel)]="newKb.title" formControlName="title"
+                placeholder="{{ 'KbPage.TypeKbUrlPlaceholder' | translate }}" (input)="onChangeInput($event)"
+                [class.invalid]="(kbForm.controls.title.errors?.pattern || kbForm.controls.title.errors?.required) && kbForm.controls.title.touched">
+            </div>
+            <div class="input-container">
+              <span class="input-label">URL:</span>
+              <input type="url" name="url" class="custom-input" [(ngModel)]="newKb.url" formControlName="url"
+                placeholder="{{ 'KbPage.TypeKbUrlPlaceholder' | translate }}" (input)="onChangeInput($event)"
+                [class.invalid]="(kbForm.controls.url.errors?.pattern || kbForm.controls.url.errors?.required) && kbForm.controls.url.touched">
+            </div>
+          </form>
+        </div>
+      </div> -->
 
+      <!-- <div class="modal-footer">
+        <button class="btn btn-white" style="padding:12px 16px;" (click)="closeAddKnowledgeBaseModal()">
+          {{ "Cancel" | translate }}
+        </button>
+        <button id="addkb-btn" class="btn btn-primary" [disabled]="buttonDisabledPageUrl" (click)="saveKnowledgeBase()">
+          {{ 'KbPage.Add' | translate }}
+        </button>
+
+        
+      </div>
+
+    </div>
+  </div>
+</div> -->
+<!-- ADD KNOWLEDGE BASE MODAL - END ADD URL PAGE-->
+
+
+
+<!-- ADD KNOWLEDGE BASE MODAL - START ADD TEXT FILE -->
+<!-- <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{display: modalAddContent}"
+  style="background-color: rgba(90,90,90,0.5);">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="closeAddKnowledgeBaseModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
         <h4 class="modal-title">
           <span style="vertical-align: middle;">
             {{ 'KbPage.AddKb' | translate }}
           </span>
         </h4>
       </div>
-
       <div class="modal-body">
         <div class="info-container">
           <i class="material-icons-outlined info-icon">help_outline</i>
@@ -189,42 +264,57 @@
             <p [innerHTML]="'KbPage.AddKbInfoThirdText' | translate" style="margin-top: 8px;"></p>
           </div>
         </div>
-
+      
         <div class="form-container">
           <form [formGroup]="kbForm">
-
             <div class="input-container">
-              <span class="input-label">URL</span>
-              <input type="url" name="url" class="custom-input" [(ngModel)]="newKb.url" formControlName="url"
+              <span class="input-label">Resource name:</span>
+              <input type="text" name="title" class="custom-input" [(ngModel)]="newKb.title" formControlName="title"
                 placeholder="{{ 'KbPage.TypeKbUrlPlaceholder' | translate }}" (input)="onChangeInput($event)"
-                [class.invalid]="(kbForm.controls.url.errors?.pattern || kbForm.controls.url.errors?.required) && kbForm.controls.url.touched">
+                [class.invalid]="(kbForm.controls.title.errors?.pattern || kbForm.controls.title.errors?.required) && kbForm.controls.title.touched">
             </div>
+            <div class="input-container">
+              <span class="input-label">Text:</span>
+              <textarea type="text" name="textFile" class="custom-input textarea" [(ngModel)]="newKb.textFile" formControlName="textFile" rows="4"
+                placeholder="{{ 'KbPage.TypeKbUrlPlaceholder' | translate }}" (input)="onChangeInput($event)"
+                [class.invalid]="(kbForm.controls.textFile.errors?.pattern || kbForm.controls.textFile.errors?.required) && kbForm.controls.textFile.touched">
+              </textarea>
 
-            <!-- <div class="input-container">
-              <span class="input-label">GPT Key</span>
-              <input type="text" name="gptkey" class="custom-input" [(ngModel)]="newKb.gptkey" formControlName="gptkey"
-                placeholder="{{ 'KbPage.TypeKbKeyPlaceholder' | translate }}" (input)="onChangeInput($event)"
-                [class.invalid]="kbForm.controls.gptkey.errors?.required && kbForm.controls.gptkey.touched">
-            </div> -->
-
+            </div>
           </form>
         </div>
 
       </div>
-
       <div class="modal-footer">
         <button class="btn btn-white" style="padding:12px 16px;" (click)="closeAddKnowledgeBaseModal()">
           {{ "Cancel" | translate }}
         </button>
-        <button id="addkb-btn" class="btn btn-primary" [disabled]="buttonDisabled" (click)="saveKnowledgeBase()">
+        <button id="addkb-btn" class="btn btn-primary" [disabled]="buttonDisabledPageUrl" (click)="saveKnowledgeBase()">
           {{ 'KbPage.Add' | translate }}
         </button>
       </div>
 
     </div>
   </div>
-</div>
-<!-- ADD KNOWLEDGE BASE MODAL - END -->
+</div> -->
+<!-- ADD KNOWLEDGE BASE MODAL - END TEXT FILE -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <!-- DELETE KNOWLEDGE BASE MODAL - START -->
 <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{display: deleteKnowledgeBaseModal}"

@@ -1,0 +1,38 @@
+
+
+.modal-title {
+    font-weight: 500;
+}
+
+.modal-content {
+    border: none;
+}
+
+.info-container {
+    display: flex;
+    flex-direction: row;
+    padding: 12px 15px;
+    border-radius: 4px;
+    background-color: #d7ebfa6e;
+    .info-icon {
+        margin-right: 8px;
+        font-size: 20px;
+    }
+    p {
+        margin-bottom: 0px;
+    }
+}
+
+.modal-footer {
+    padding: 18px;
+    button {
+        border-radius: 6px;
+    }
+    button#addkb-btn {
+        margin-left: 10px;
+    }
+}
+
+.mat-tab-header {
+    border-bottom: 0px solid rgba(0,0,0,.12); 
+}
