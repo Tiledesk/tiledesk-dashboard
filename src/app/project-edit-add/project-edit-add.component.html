@@ -366,7 +366,7 @@
 
                             <ng-container *ngIf="!appSumoProfile">
                               <span *ngIf="!SUBSCRIPTION_BUFFER_DAYS">
-                                <span *ngIf="profile_name !== PLAN_NAME?.C !== PLAN_NAME?.F">
+                                <span *ngIf="profile_name !== PLAN_NAME?.C && profile_name !== PLAN_NAME?.F">
                                   {{ "Pricing.YourSubscriptionIsActive" | translate }}.
                                 </span>
                                 <span *ngIf="profile_name === PLAN_NAME?.C || profile_name === PLAN_NAME?.F">

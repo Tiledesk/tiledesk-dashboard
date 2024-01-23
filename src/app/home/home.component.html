@@ -138,7 +138,8 @@
                         style="align-items: center;color: rgba(0,0,0,.55); display: flex;padding-left: 16px;padding-right: 16px;">
 
                         <div class="opicon" style=" padding-right: 8px;">
-                          <button mat-mini-fab aria-label="Button with a date_range icon"
+                          <button mat-mini-fab 
+                              aria-label="Button with a date_range icon"
                             [ngClass]="{'oph-btn-disabled': !OPERATING_HOURS_ACTIVE || DISPLAY_OPH_AS_DISABLED, 'oph-btn-enabled': OPERATING_HOURS_ACTIVE && !DISPLAY_OPH_AS_DISABLED }"
                             style="box-sizing: unset; cursor: default ;" disabled>
                             <mat-icon style="color: #fff;position: relative;top: -2px;">date_range</mat-icon>

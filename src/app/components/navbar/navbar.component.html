@@ -50,11 +50,16 @@
         </li> -->
 
         <ng-container>
-          <li>
-            <button [matMenuTriggerFor]="menu" class="quote-modal-btn">
-              <span class="material-icons-round" style="font-size: 16px;">
+          <li id="usage-stats">
+            
+            <button mat-mini-fab aria-label="trend icon" [matMenuTriggerFor]="menu" class="quote-modal-btn">
+              <!-- <span class="material-icons-round" style="font-size: 16px;">
                 storage
-                </span>
+                </span> -->
+
+              <mat-icon style="color: #555555">
+                trending_up
+              </mat-icon>
             </button>
             <mat-menu #menu="matMenu" xPosition="before" style="margin-top: 6px !important; width: 220px !important;">
 
@@ -73,16 +78,12 @@
                     </div>
 
                     <div class="quote">
-                      <mat-progress-spinner
-                        class="example-margin"
-                        [strokeWidth]="5"
-                        [diameter]="50"
-                        [color]="'primary'"
-                        [mode]="'determinate'"
-                        [value]="requests_perc">
+                      <mat-progress-spinner class="example-margin" [strokeWidth]="5" [diameter]="50" [color]="'primary'"
+                        [mode]="'determinate'" [value]="requests_perc">
                       </mat-progress-spinner>
-                    
-                      <div class="percentage">{{ requests_perc }}<span style="font-size: 10px; margin-top: 2px; margin-left: 1px"> %</span></div>
+
+                      <div class="percentage">{{ requests_perc }}<span
+                          style="font-size: 10px; margin-top: 2px; margin-left: 1px"> %</span></div>
                     </div>
 
                   </div>
@@ -95,16 +96,12 @@
                     </div>
 
                     <div class="quote">
-                      <mat-progress-spinner
-                        class="example-margin"
-                        [strokeWidth]="5"
-                        [diameter]="50"
-                        [color]="'primary'"
-                        [mode]="'determinate'"
-                        [value]="tokens_perc">
+                      <mat-progress-spinner class="example-margin" [strokeWidth]="5" [diameter]="50" [color]="'primary'"
+                        [mode]="'determinate'" [value]="tokens_perc">
                       </mat-progress-spinner>
-                    
-                      <div class="percentage">{{ tokens_perc }}<span style="font-size: 10px; margin-top: 2px; margin-left: 1px"> %</span></div>
+
+                      <div class="percentage">{{ tokens_perc }}<span
+                          style="font-size: 10px; margin-top: 2px; margin-left: 1px"> %</span></div>
                     </div>
 
                   </div>
@@ -117,113 +114,14 @@
                     </div>
 
                     <div class="quote">
-                      <mat-progress-spinner
-                        class="example-margin"
-                        [strokeWidth]="5"
-                        [diameter]="50"
-                        [color]="'primary'"
-                        [mode]="'determinate'"
-                        [value]="email_perc">
+                      <mat-progress-spinner class="example-margin" [strokeWidth]="5" [diameter]="50" [color]="'primary'"
+                        [mode]="'determinate'" [value]="email_perc">
                       </mat-progress-spinner>
-                    
-                      <div class="percentage">{{ email_perc }}<span style="font-size: 10px; margin-top: 2px; margin-left: 1px"> %</span></div>
-                    </div>
 
-                  </div>
-
-                  <!-- <div class="quote-container">
-                    <p class="quote-title">Convesations</p>
-                    <div style="display: flex; align-items: center; width: 100%; justify-content: flex-start;">
-                      <div class="quote">
-                        <mat-progress-spinner
-                          class="example-margin"
-                          [strokeWidth]="8"
-                          [diameter]="80"
-                          [color]="'primary'"
-                          [mode]="'determinate'"
-                          [value]="requests_perc">
-                        </mat-progress-spinner>
-                      
-                        <div class="percentage">{{ requests_perc }}<span style="font-size: 10px; margin-top: 2px; margin-left: 1px"> %</span></div>
-                      </div>
-                      <div class="quote-count">{{requests_count}} / {{requests_limit}}</div>
+                      <div class="percentage">{{ email_perc }}<span
+                          style="font-size: 10px; margin-top: 2px; margin-left: 1px"> %</span></div>
                     </div>
                   </div>
-
-                  <div class="quote-container">
-                    <p class="quote-title">Convesations</p>
-                    <div style="display: flex; align-items: center; width: 100%; justify-content: flex-start;">
-                      <div class="quote">
-                        <mat-progress-spinner
-                          class="example-margin"
-                          [strokeWidth]="8"
-                          [diameter]="80"
-                          [color]="'primary'"
-                          [mode]="'determinate'"
-                          [value]="requests_perc">
-                        </mat-progress-spinner>
-                      
-                        <div class="percentage">{{ requests_perc }}<span style="font-size: 10px; margin-top: 2px; margin-left: 1px"> %</span></div>
-                      </div>
-                      <div class="quote-count">{{requests_count}} / {{requests_limit}}</div>
-                    </div>
-                  </div> -->
-
-                  <!-- <div class="quote-container">
-                    <p class="quote-title">Messages</p>
-                    <div class="quote">
-                      <mat-progress-spinner
-                        class="example-margin"
-                        [strokeWidth]="8"
-                        [diameter]="80"
-                        [color]="'primary'"
-                        [mode]="'determinate'"
-                        [value]="messages_perc">
-                      </mat-progress-spinner>
-                    
-                      <div class="percentage">{{ messages_perc }}<span style="font-size: 10px; margin-top: 2px; margin-left: 1px"> %</span></div>
-                    </div>
-                    <div class="quote-count">{{ messages_count }} / {{messages_limit}}</div>
-                  </div> -->
-
-                  <!-- <div class="quote-container">
-                    <p class="quote-title">AI Tokens</p>
-                    <div style="display: flex; align-items: center; width: 100%; justify-content: flex-start;">
-                      <div class="quote">
-                        <mat-progress-spinner
-                          class="example-margin"
-                          [strokeWidth]="6"
-                          [diameter]="60"
-                          [color]="'primary'"
-                          [mode]="'determinate'"
-                          [value]="tokens_perc">
-                        </mat-progress-spinner>
-                      
-                        <div class="percentage">{{ tokens_perc }}<span style="font-size: 10px; margin-top: 2px; margin-left: 1px"> %</span></div>
-                      </div>
-                      <div class="quote-count">{{ tokens_count }} / {{tokens_limit}}</div>
-                    </div>
-                  </div>
-
-                  <div class="quote-container">
-                    <p class="quote-title">Email</p>
-                    <div style="display: flex; align-items: center; width: 100%; justify-content: flex-start;">
-                      <div class="quote">
-                        <mat-progress-spinner
-                          class="example-margin"
-                          [strokeWidth]="8"
-                          [diameter]="80"
-                          [color]="'primary'"
-                          [mode]="'determinate'"
-                          [value]="email_perc">
-                        </mat-progress-spinner>
-                      
-                        <div class="percentage">{{ email_perc }}<span style="font-size: 10px; margin-top: 2px; margin-left: 1px"> %</span></div>
-                      </div>
-                      <div class="quote-count">{{ email_count }} / {{email_limit}}</div>
-                    </div>
-                  </div> -->
-
                 </div>
 
 
@@ -236,178 +134,37 @@
 
             </mat-menu>
           </li>
-
         </ng-container>
-
-
-        <!-- <ng-container>
-          <li>
-            <button [matMenuTriggerFor]="menu" class="quote-modal-btn">
-              <span class="material-icons-round" style="font-size: 16px;">
-                storage
-                </span>
-            </button>
-            <mat-menu #menu="matMenu" xPosition="before" style="margin-top: 6px !important; width: 220px !important;">
-
-              <div class="menu-container">
-                <p class="menu-title">Usage</p>
-
-                // Alternative: follow the example on https://codepen.io/nikitahl/pen/ZEjRBEE
-
-                <div class="quotes-container">
-
-                  <div class="quote-container">
-                    <p class="quote-title">Convesations</p>
-                    <div class="quote">
-                      <mat-progress-spinner
-                        class="example-margin"
-                        [strokeWidth]="8"
-                        [diameter]="80"
-                        [color]="'primary'"
-                        [mode]="'determinate'"
-                        [value]="requests_perc">
-                      </mat-progress-spinner>
-                    
-                      <div class="percentage">{{ requests_perc }}<span style="font-size: 10px; margin-top: 2px; margin-left: 1px"> %</span></div>
-                    </div>
-                    <div class="quote-count">{{requests_count}} / {{requests_limit}}</div>
-                  </div>
-
-                  <div class="quote-container">
-                    <p class="quote-title">Messages</p>
-                    <div class="quote">
-                      <mat-progress-spinner
-                        class="example-margin"
-                        [strokeWidth]="8"
-                        [diameter]="80"
-                        [color]="'primary'"
-                        [mode]="'determinate'"
-                        [value]="messages_perc">
-                      </mat-progress-spinner>
-                    
-                      <div class="percentage">{{ messages_perc }}<span style="font-size: 10px; margin-top: 2px; margin-left: 1px"> %</span></div>
-                    </div>
-                    <div class="quote-count">{{ messages_count }} / {{messages_limit}}</div>
-                  </div>
-
-                  <div class="quote-container">
-                    <p class="quote-title">AI Tokens</p>
-                    <div class="quote">
-                      <mat-progress-spinner
-                        class="example-margin"
-                        [strokeWidth]="8"
-                        [diameter]="80"
-                        [color]="'primary'"
-                        [mode]="'determinate'"
-                        [value]="tokens_perc">
-                      </mat-progress-spinner>
-                    
-                      <div class="percentage">{{ tokens_perc }}<span style="font-size: 10px; margin-top: 2px; margin-left: 1px"> %</span></div>
-                    </div>
-                    <div class="quote-count">{{ tokens_count }} / {{tokens_limit}}</div>
-                  </div>
-
-                  <div class="quote-container">
-                    <p class="quote-title">Email</p>
-                    <div class="quote">
-                      <mat-progress-spinner
-                        class="example-margin"
-                        [strokeWidth]="8"
-                        [diameter]="80"
-                        [color]="'primary'"
-                        [mode]="'determinate'"
-                        [value]="email_perc">
-                      </mat-progress-spinner>
-                    
-                      <div class="percentage">{{ email_perc }}<span style="font-size: 10px; margin-top: 2px; margin-left: 1px"> %</span></div>
-                    </div>
-                    <div class="quote-count">{{ email_count }} / {{email_limit}}</div>
-                  </div>
-
-                </div>
-
-
-                <button mat-flat-button class="upgrade-btn" (click)="goToPricing()">
-                  <span class="material-icons-outlined">bolt</span>
-                  {{ "Pricing.UpgradePlan" | translate }}
-                </button>
-
-              </div>
-
-            </mat-menu>
-          </li>
-
-        </ng-container> -->
-
-        <!-- <ng-container>
-          <li>
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                <div id="quotes" class="quotes">
-                  <img src="../../../assets/img/trend-icon.png" alt="Usage" width="30px" height="30px">
-                </div>
-              </a>
-
-            <ul class="dropdown-menu" style="margin-top: 11px; padding-left:20px;padding-right:20px;width: 200px;">
-              <p *ngIf="prjct_trial_expired === false" style="margin-bottom:0px">
-                {{ "Pricing.Your" | translate }}
-
-                <span style="font-weight:600">
-                  {{ "Pricing.30DaysFreeTrial" | translate: translationParams }}
-                </span>
-
-                {{ "Pricing.WillExpireIn" | translate }}
-
-                <span *ngIf="prjc_trial_days_left < -1">
-                  {{ - prjc_trial_days_left }} {{ "Pricing.Days" | translate }}
-                </span>
-
-                <span *ngIf="prjc_trial_days_left === -1">
-                  {{ "Pricing.Tomorrow" | translate }}
-                </span>
-              </p>
-
-              <p *ngIf="prjct_trial_expired === true" style="margin-bottom:0px">
-                {{ "Pricing.Your" | translate }}
-                <span style="font-weight:600">
-                  {{ "Pricing.30DaysFreeTrial" | translate: translationParams }}
-                </span>
-                {{ "Pricing.HasExpired" | translate }}
-              </p>
-            </ul>
-          </li>
-        </ng-container> -->
 
         <!-- ------------------------------------------------  -->
         <!--  UPGRADE (PROFILE TYPE = FREE) -->
         <!-- ------------------------------------------------  -->
         <ng-container *ngIf="isVisible">
-          <li *ngIf="project && prjct_profile_type === 'free'">
+          <li id="trial-days-indicator" *ngIf="project && prjct_profile_type === 'free'">
 
             <!-- <a href="#" class="dropdown-toggle" data-toggle="dropdown"
               style="padding-top:0px; padding-bottom:0px; padding-right: 0px;"> -->
-              <div id="progress" class="progress" [attr.data-percentage]="prjc_trial_days_left_percentage">
-                <span class="progress-left">
-                  <span class="progress-bar"
-                    [ngClass]="{' progress-bar-expired' : prjct_trial_expired === true}"></span>
-                </span>
-                <span class="progress-right">
-                  <span class="progress-bar"
-                    [ngClass]="{' progress-bar-expired' : prjct_trial_expired === true}"></span>
-                </span>
-                <div class="progress-value">
-                  <div style="font-size: 14px;font-weight: 400;">
-                    <span *ngIf="prjct_trial_expired === false">
-                      {{ prjc_trial_days_left }}
-                    </span>
-                    <span *ngIf="prjct_trial_expired === true">
-                      0
-                    </span>
-                  </div>
+            <div id="progress" class="progress" [attr.data-percentage]="prjc_trial_days_left_percentage">
+              <span class="progress-left">
+                <span class="progress-bar" [ngClass]="{' progress-bar-expired' : prjct_trial_expired === true}"></span>
+              </span>
+              <span class="progress-right">
+                <span class="progress-bar" [ngClass]="{' progress-bar-expired' : prjct_trial_expired === true}"></span>
+              </span>
+              <div class="progress-value">
+                <div style="font-size: 14px;font-weight: 400;">
+                  <span *ngIf="prjct_trial_expired === false">
+                    {{ prjc_trial_days_left }}
+                  </span>
+                  <span *ngIf="prjct_trial_expired === true">
+                    0
+                  </span>
                 </div>
               </div>
+            </div>
             <!-- </a> -->
 
-            <ul  class="dropdown-menu" style="margin-top: 11px; padding-left:20px;padding-right:20px;width: 200px;">
+            <ul class="dropdown-menu" style="margin-top: 11px; padding-left:20px;padding-right:20px;width: 200px;">
               <p *ngIf="prjct_trial_expired === false" style="margin-bottom:0px">
                 {{ "Pricing.Your" | translate }}
 
@@ -442,7 +199,7 @@
         <!--    UPGRADE BTN (PROFILE TYPE = FREE)  -->
         <!--  ------------------------------------------------ -->
         <ng-container *ngIf="isVisible">
-          <li *ngIf="project && prjct_profile_type === 'free'">
+          <li id="upgrade-plan-link" *ngIf="project && prjct_profile_type === 'free'">
             <a class="upgrade-btn-trial-expired" (click)="goToPricing()"> {{ "Pricing.UpgradePlan" | translate }} </a>
           </li>
         </ng-container>
@@ -451,12 +208,10 @@
         <!--  ------------------------------------------------ -->
         <!--   PLAN NAME (PROFILE TYPE = PAYMENTS)  && HOME_ROUTE_IS_ACTIVE === false-->
         <!--  ------------------------------------------------ -->
+       
         <ng-container *ngIf="isVisible">
-          <li *ngIf="project && prjct_profile_type === 'payment'">
+          <li  [ngClass]="{'hide-expired-subscription-indicator': prjct_profile_type === 'payment' && subscription_is_active === true}" id="expired-subscription-indicator" *ngIf="project && prjct_profile_type === 'payment'">
             <a>
-          
-
-
               <!--  ------------------------------------------------ -->
               <!--  TOOLTIP SUB EXPIRED (PROFILE TYPE = PAYMENTS) -->
               <!--  ------------------------------------------------ -->
@@ -469,10 +224,10 @@
                 <span class="expired__Tooltiptext"
                   style="font-size:12px; top: 27px;text-transform:none; cursor: pointer; height: fit-content;vertical-align: middle;">
 
-                  <span *ngIf="profile_name !== PLAN_NAME?.C">
+                  <span *ngIf="profile_name !== PLAN_NAME?.C && profile_name !== PLAN_NAME?.F">
                     {{ 'Pricing.SubscriptionPaymentProblem' | translate }}
                   </span>
-                  <span *ngIf="profile_name === PLAN_NAME?.C">
+                  <span *ngIf="profile_name === PLAN_NAME?.C || profile_name === PLAN_NAME?.F">
                     {{ 'Pricing.ThePlanHasExpired' | translate }}
                   </span>
                 </span>
@@ -480,30 +235,6 @@
             </a>
           </li>
         </ng-container>
-
-        <!-- <ng-container class="operating-hours">
-          <li *ngIf="project">
-            <a class="tool_tip" style="cursor: pointer;" *ngIf="!OPERATING_HOURS_ACTIVE" (click)="goToOperatingHours()">
-              <i class="material-icons" style="color:#AAA">access_time</i>
-          
-              <p class="hidden-lg hidden-md">operatinghoursoff</p>
-              <div class="bottom" style="text-align: center; padding: 4px; border-radius: 3px; text-transform: none; min-width: fit-content; white-space: nowrap;">
-                {{ 'OperatingHoursAreDisabled' | translate }}
-                <i></i>
-              </div>
-            </a>
-            <a class="tool_tip" style="cursor: pointer;" *ngIf="OPERATING_HOURS_ACTIVE" (click)="goToOperatingHours()">
-              <i class="material-icons" style="color:#3ea9f5">access_time</i>
-              <p class="hidden-lg hidden-md">operatinghourson</p>
-              <div class="bottom" style="text-align: center; padding: 4px; border-radius: 3px;">
-                {{ 'OperatingHoursAreEnabled' | translate }}
-
-                <i></i>
-              </div>
-            </a>
-          </li>
-        </ng-container> -->
-
 
         <!-- ------------------------------------------------------ -->
         <!-- test site btn -->
@@ -758,11 +489,8 @@
   <div (click)="goToUserProfile()" *ngIf="user?.emailverified == false" data-notify="container" style="z-index: 1055;"
     class="alert alert-danger animated fadeInDown alert-pending-email-verification" role="alert"
     data-notify-position="top-center" [ngClass]="{'is-user-profile-page' : DETECTED_USER_PROFILE_PAGE === true }"
-    matTooltipClass="custom-mat-tooltip"
-    matTooltip="{{ 'NavBar.WhenPendingEmailVerification' | translate}}"
-    #tooltip="matTooltip" 
-    matTooltipPosition='below'
-    matTooltipHideDelay="100">
+    matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'NavBar.WhenPendingEmailVerification' | translate}}"
+    #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
     <!-- <button type="button" aria-hidden="true" class="close" data-notify="dismiss" style="position: absolute; right: 10px; top: 5px; z-index: 1033;">×</button> -->
     <span data-notify="icon" class="notifications">
       <i class="fa fa-exclamation-circle" style="font-size: 13px; position: relative;top: -1px;"></i>
@@ -835,5 +563,3 @@
   </div>
   <!-- /.modal-dialog -->
 </div>
-
-

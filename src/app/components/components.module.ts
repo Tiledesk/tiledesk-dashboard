@@ -18,6 +18,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatIconModule } from '@angular/material/icon';
 
 
 @NgModule({
@@ -30,6 +31,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatSnackBarModule,
     MatMenuModule,
     MatButtonModule,
+    MatIconModule,
     MatProgressSpinnerModule,
     FormsModule,
     NgSelectModule

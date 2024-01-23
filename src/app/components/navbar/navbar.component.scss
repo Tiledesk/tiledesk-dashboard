@@ -1,4 +1,3 @@
-
 @import "./src/assets/sass/md/_variables.scss";
 
 .btn {
@@ -46,6 +45,7 @@
 .modal {
   top: 0;
 }
+
 .modal-content {
   position: relative;
   background-color: #fff;
@@ -77,6 +77,7 @@ button.close {
   background: 0 0;
   border: 0;
 }
+
 .close {
   float: right;
   font-size: 21px;
@@ -104,6 +105,7 @@ button.close {
   background-color: #eeeeee;
   padding-top: 10px !important;
 }
+
 /* MODAL END */
 
 /* // start TOOLTIP */
@@ -111,7 +113,8 @@ button.close {
 .tooltipx {
   position: relative;
   display: inline-block;
-  /* // border-bottom: 1px dotted black;  */ /* If you want dots under the hoverable text */
+  /* // border-bottom: 1px dotted black;  */
+  /* If you want dots under the hoverable text */
 }
 
 /* Tooltip text */
@@ -147,6 +150,7 @@ button.close {
 .tooltipx:hover .tooltiptext {
   visibility: visible;
 }
+
 /* // end TOOLTIP */
 
 /*  ============= PENDING EMAIL VERIFICATION MSG ============= */
@@ -281,7 +285,7 @@ button.close.custom-hover:hover {
   margin-bottom: 0px;
   font-size: 16px;
   color: #3c4858;
-  font-family:'Poppins','Roboto', 'Arial', sans-serif;
+  font-family: 'Poppins', 'Roboto', 'Arial', sans-serif;
   font-weight: 600;
 }
 
@@ -340,6 +344,7 @@ button.close.custom-hover:hover {
   left: 7px;
   top: 9px;
 }
+
 .progress:after {
   content: "";
   width: 100%;
@@ -351,7 +356,8 @@ button.close.custom-hover:hover {
   top: 0;
   left: 0;
 }
-.progress > span {
+
+.progress>span {
   width: 50%;
   height: 100%;
   overflow: hidden;
@@ -359,9 +365,11 @@ button.close.custom-hover:hover {
   top: 0;
   z-index: 1;
 }
+
 .progress .progress-left {
   left: 0;
 }
+
 .progress .progress-bar {
   width: 100%;
   height: 100%;
@@ -386,9 +394,11 @@ button.close.custom-hover:hover {
   -webkit-transform-origin: center left;
   transform-origin: center left;
 }
+
 .progress .progress-right {
   right: 0;
 }
+
 .progress .progress-right .progress-bar {
   left: -100%;
   border-top-left-radius: 75px;
@@ -397,6 +407,7 @@ button.close.custom-hover:hover {
   -webkit-transform-origin: center right;
   transform-origin: center right;
 }
+
 .progress .progress-value {
   display: flex;
   border-radius: 50%;
@@ -409,6 +420,7 @@ button.close.custom-hover:hover {
   height: 100%;
   font-weight: 300;
 }
+
 // .progress .progress-value div {
 //   /* margin-top: 10px; */
 // }
@@ -416,12 +428,14 @@ button.close.custom-hover:hover {
   font-size: 12px;
   text-transform: uppercase;
 }
+
 /* This for loop creates the 	necessary css animation names 
    Due to the split circle of progress-left and progress right, we must use the animations on each side. 
    */
 .progress[data-percentage="5"] .progress-right .progress-bar {
   animation: loading-1-minus-half 1.5s linear forwards;
 }
+
 .progress[data-percentage="5"] .progress-left .progress-bar {
   animation: 0;
 }
@@ -429,6 +443,7 @@ button.close.custom-hover:hover {
 .progress[data-percentage="10"] .progress-right .progress-bar {
   animation: loading-1 1.5s linear forwards;
 }
+
 .progress[data-percentage="10"] .progress-left .progress-bar {
   animation: 0;
 }
@@ -436,6 +451,7 @@ button.close.custom-hover:hover {
 .progress[data-percentage="15"] .progress-right .progress-bar {
   animation: loading-1-add-half 1.5s linear forwards;
 }
+
 .progress[data-percentage="15"] .progress-left .progress-bar {
   animation: 0;
 }
@@ -443,6 +459,7 @@ button.close.custom-hover:hover {
 .progress[data-percentage="20"] .progress-right .progress-bar {
   animation: loading-2 1.5s linear forwards;
 }
+
 .progress[data-percentage="20"] .progress-left .progress-bar {
   animation: 0;
 }
@@ -450,6 +467,7 @@ button.close.custom-hover:hover {
 .progress[data-percentage="25"] .progress-right .progress-bar {
   animation: loading-2-add-half 1.5s linear forwards;
 }
+
 .progress[data-percentage="25"] .progress-left .progress-bar {
   animation: 0;
 }
@@ -457,6 +475,7 @@ button.close.custom-hover:hover {
 .progress[data-percentage="30"] .progress-right .progress-bar {
   animation: loading-3 1.5s linear forwards;
 }
+
 .progress[data-percentage="30"] .progress-left .progress-bar {
   animation: 0;
 }
@@ -464,6 +483,7 @@ button.close.custom-hover:hover {
 .progress[data-percentage="35"] .progress-right .progress-bar {
   animation: loading-3-add-half 1.5s linear forwards;
 }
+
 .progress[data-percentage="35"] .progress-left .progress-bar {
   animation: 0;
 }
@@ -471,6 +491,7 @@ button.close.custom-hover:hover {
 .progress[data-percentage="40"] .progress-right .progress-bar {
   animation: loading-4 1.5s linear forwards;
 }
+
 .progress[data-percentage="40"] .progress-left .progress-bar {
   animation: 0;
 }
@@ -478,6 +499,7 @@ button.close.custom-hover:hover {
 .progress[data-percentage="45"] .progress-right .progress-bar {
   animation: loading-4-add-half 1.5s linear forwards;
 }
+
 .progress[data-percentage="45"] .progress-left .progress-bar {
   animation: 0;
 }
@@ -485,6 +507,7 @@ button.close.custom-hover:hover {
 .progress[data-percentage="50"] .progress-right .progress-bar {
   animation: loading-5 1.5s linear forwards;
 }
+
 .progress[data-percentage="50"] .progress-left .progress-bar {
   animation: 0;
 }
@@ -492,6 +515,7 @@ button.close.custom-hover:hover {
 .progress[data-percentage="55"] .progress-right .progress-bar {
   animation: loading-5 1.5s linear forwards;
 }
+
 .progress[data-percentage="55"] .progress-left .progress-bar {
   animation: loading-1-minus-half 1.5s linear forwards 1.5s;
 }
@@ -499,6 +523,7 @@ button.close.custom-hover:hover {
 .progress[data-percentage="60"] .progress-right .progress-bar {
   animation: loading-5 1.5s linear forwards;
 }
+
 .progress[data-percentage="60"] .progress-left .progress-bar {
   animation: loading-1 1.5s linear forwards 1.5s;
 }
@@ -506,6 +531,7 @@ button.close.custom-hover:hover {
 .progress[data-percentage="65"] .progress-right .progress-bar {
   animation: loading-5 1.5s linear forwards;
 }
+
 .progress[data-percentage="65"] .progress-left .progress-bar {
   animation: loading-1-add-half 1.5s linear forwards 1.5s;
 }
@@ -513,6 +539,7 @@ button.close.custom-hover:hover {
 .progress[data-percentage="70"] .progress-right .progress-bar {
   animation: loading-5 1.5s linear forwards;
 }
+
 .progress[data-percentage="70"] .progress-left .progress-bar {
   animation: loading-2 1.5s linear forwards 1.5s;
 }
@@ -520,6 +547,7 @@ button.close.custom-hover:hover {
 .progress[data-percentage="75"] .progress-right .progress-bar {
   animation: loading-5 1.5s linear forwards;
 }
+
 .progress[data-percentage="75"] .progress-left .progress-bar {
   animation: loading-2-add-half 1.5s linear forwards 1.5s;
 }
@@ -527,6 +555,7 @@ button.close.custom-hover:hover {
 .progress[data-percentage="80"] .progress-right .progress-bar {
   animation: loading-5 1.5s linear forwards;
 }
+
 .progress[data-percentage="80"] .progress-left .progress-bar {
   animation: loading-3 1.5s linear forwards 1.5s;
 }
@@ -534,6 +563,7 @@ button.close.custom-hover:hover {
 .progress[data-percentage="85"] .progress-right .progress-bar {
   animation: loading-5 1.5s linear forwards;
 }
+
 .progress[data-percentage="85"] .progress-left .progress-bar {
   animation: loading-3-add-half 1.5s linear forwards 1.5s;
 }
@@ -541,6 +571,7 @@ button.close.custom-hover:hover {
 .progress[data-percentage="90"] .progress-right .progress-bar {
   animation: loading-5 1.5s linear forwards;
 }
+
 .progress[data-percentage="90"] .progress-left .progress-bar {
   animation: loading-4 1.5s linear forwards 1.5s;
 }
@@ -548,6 +579,7 @@ button.close.custom-hover:hover {
 .progress[data-percentage="95"] .progress-right .progress-bar {
   animation: loading-5 1.5s linear forwards;
 }
+
 .progress[data-percentage="95"] .progress-left .progress-bar {
   animation: loading-4-add-half 1.5s linear forwards 1.5s;
 }
@@ -555,6 +587,7 @@ button.close.custom-hover:hover {
 .progress[data-percentage="100"] .progress-right .progress-bar {
   animation: loading-5 1.5s linear forwards;
 }
+
 .progress[data-percentage="100"] .progress-left .progress-bar {
   animation: loading-5 1.5s linear forwards 1.5s;
 }
@@ -564,6 +597,7 @@ button.close.custom-hover:hover {
     -webkit-transform: rotate(0deg);
     transform: rotate(0deg);
   }
+
   100% {
     -webkit-transform: rotate(18);
     transform: rotate(18deg);
@@ -575,6 +609,7 @@ button.close.custom-hover:hover {
     -webkit-transform: rotate(0deg);
     transform: rotate(0deg);
   }
+
   100% {
     -webkit-transform: rotate(36);
     transform: rotate(36deg);
@@ -586,6 +621,7 @@ button.close.custom-hover:hover {
     -webkit-transform: rotate(0deg);
     transform: rotate(0deg);
   }
+
   100% {
     -webkit-transform: rotate(54);
     transform: rotate(54deg);
@@ -597,6 +633,7 @@ button.close.custom-hover:hover {
     -webkit-transform: rotate(0deg);
     transform: rotate(0deg);
   }
+
   100% {
     -webkit-transform: rotate(72);
     transform: rotate(72deg);
@@ -608,6 +645,7 @@ button.close.custom-hover:hover {
     -webkit-transform: rotate(0deg);
     transform: rotate(0deg);
   }
+
   100% {
     -webkit-transform: rotate(90);
     transform: rotate(90deg);
@@ -619,6 +657,7 @@ button.close.custom-hover:hover {
     -webkit-transform: rotate(0deg);
     transform: rotate(0deg);
   }
+
   100% {
     -webkit-transform: rotate(108);
     transform: rotate(108deg);
@@ -630,6 +669,7 @@ button.close.custom-hover:hover {
     -webkit-transform: rotate(0deg);
     transform: rotate(0deg);
   }
+
   100% {
     -webkit-transform: rotate(126);
     transform: rotate(126deg);
@@ -641,6 +681,7 @@ button.close.custom-hover:hover {
     -webkit-transform: rotate(0deg);
     transform: rotate(0deg);
   }
+
   100% {
     -webkit-transform: rotate(144);
     transform: rotate(144deg);
@@ -652,6 +693,7 @@ button.close.custom-hover:hover {
     -webkit-transform: rotate(0deg);
     transform: rotate(0deg);
   }
+
   100% {
     -webkit-transform: rotate(162);
     transform: rotate(162deg);
@@ -663,6 +705,7 @@ button.close.custom-hover:hover {
     -webkit-transform: rotate(0deg);
     transform: rotate(0deg);
   }
+
   100% {
     -webkit-transform: rotate(180);
     transform: rotate(180deg);
@@ -685,7 +728,8 @@ button.close.custom-hover:hover {
   padding: 0;
   text-align: center;
 }
-.progress > li {
+
+.progress>li {
   display: inline-block;
   position: relative;
   text-align: center;
@@ -694,14 +738,16 @@ button.close.custom-hover:hover {
   font-weight: 100;
   margin: 2rem;
 }
-.progress > li:before {
+
+.progress>li:before {
   content: attr(data-name);
   position: absolute;
   width: 100%;
   bottom: -2rem;
   font-weight: 400;
 }
-.progress > li:after {
+
+.progress>li:after {
   content: attr(data-percent);
   position: absolute;
   width: 100%;
@@ -710,16 +756,19 @@ button.close.custom-hover:hover {
   font-size: 2rem;
   text-align: center;
 }
+
 .progress svg {
   width: 10rem;
   height: 10rem;
 }
+
 .progress svg:nth-child(2) {
   position: absolute;
   left: 0;
   top: 0;
   transform: rotate(-90deg);
 }
+
 .progress svg:nth-child(2) path {
   fill: none;
   stroke-width: 25;
@@ -734,6 +783,7 @@ button.close.custom-hover:hover {
   border-radius: 10px;
   background-color: rgba(255, 255, 255, 0.5);
 }
+
 /* new progress */
 
 .upgrade-btn-trial-expired {
@@ -745,7 +795,7 @@ button.close.custom-hover:hover {
 }
 
 .project-plan-nav {
-  font-family: 'Poppins','Roboto', 'Arial', sans-serif;
+  font-family: 'Poppins', 'Roboto', 'Arial', sans-serif;
   cursor: pointer;
   // background-color: #039be5;
   background-color: $brand-primary;
@@ -788,7 +838,7 @@ button.close.custom-hover:hover {
   height: 41px;
   line-height: 1.2;
   border: 1px solid #eee;
-  font-family:'Poppins','Roboto', 'Arial', sans-serif;
+  font-family: 'Poppins', 'Roboto', 'Arial', sans-serif;
   text-transform: capitalize;
   font-weight: 500;
 
@@ -801,6 +851,7 @@ button.close.custom-hover:hover {
   visibility: visible;
   opacity: 1;
 }
+
 /* // TOOLTIP END */
 
 .li-selected {
@@ -847,14 +898,14 @@ button.close.custom-hover:hover {
 
 .navbar-test-site-btn-wpr:hover {
   // opacity: 0.9;
-  background: rgba( 62, 207, 142, 0.7)
+  background: rgba(62, 207, 142, 0.7)
 }
 
 ::ng-deep .custom-mat-tooltip-navbar {
   background-color: #2d323e !important;
   font-size: 12px !important;
   border-radius: 2px !important;
-  font-family: 'Poppins','Roboto', 'Arial', sans-serif;
+  font-family: 'Poppins', 'Roboto', 'Arial', sans-serif;
   padding-top: 8px !important;
   padding-bottom: 8px !important;
 }
@@ -863,6 +914,7 @@ button.close.custom-hover:hover {
   margin-top: 6px !important;
   border-radius: 8px !important;
 }
+
 .menu-container {
   padding: 0 8px;
 
@@ -889,22 +941,40 @@ button.close.custom-hover:hover {
   margin-bottom: 2px;
 }
 
-.quote-modal-btn {
-  margin-top: 10px;
-  background-color: transparent;
-  display: flex;
-  padding: 4px;
-  border-radius: 20px;
-  border: solid 4px #9c9c9c;
-  color: #9c9c9c;
-  margin-right: 16px;
-
-  &:hover {
-    border: solid 4px #535353;
-    color: #535353;
-  }
-  
+.hide-expired-subscription-indicator {
+  display: none;
 }
+
+// .quote-modal-btn {
+//   margin-top: 10px;
+//   background-color: transparent;
+//   display: flex;
+//   padding: 4px;
+//   border-radius: 20px;
+//   border: solid 4px #9c9c9c;
+//   color: #9c9c9c;
+//   margin-right: 16px;
+
+//   &:hover {
+//     border: solid 4px #535353;
+//     color: #535353;
+//   }
+
+// }
+
+.quote-modal-btn {
+  background-color: #fff;
+  color: #fff;
+  box-shadow: unset;
+  margin-top: 5px; 
+  margin-right: 15px;
+  &:hover {
+    background-color: #0000001a;
+  }
+}
+
+
+
 
 .mat-progress-spinner {
   position: absolute;
@@ -913,7 +983,7 @@ button.close.custom-hover:hover {
   border-radius: 50%;
 }
 
-.mat-progress-spinner::ng-deep circle{
+.mat-progress-spinner::ng-deep circle {
   // background-color: #2196F2 !important;
   stroke: #2196F2 !important;
 }
@@ -932,10 +1002,10 @@ button.close.custom-hover:hover {
   padding: 4px;
   margin: 6px 0;
   border-radius: 6px;
-  display: flex; 
-  flex-direction: row; 
-  width: 100%; 
-  justify-content: space-between; 
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
   align-items: center;
 
   &:hover {
@@ -1000,7 +1070,7 @@ button.close.custom-hover:hover {
 }
 
 .upgrade-btn:hover {
-  padding: 0!important;
+  padding: 0 !important;
   width: 100%;
   background-color: #f5f7f9;
   color: #647491;
