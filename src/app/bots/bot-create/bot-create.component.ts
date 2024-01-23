@@ -860,6 +860,13 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
         // this.router.navigate(['project/' + this.project._id + '/tilebot/intents/' + this.newBot_Id + "/" + bot_type]);
         // this.router.navigate(['project/' + this.project._id + '/cds/', this.newBot_Id, 'intent', '0']);
         goToCDSVersion(this.router, this.newBot, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
+
+      } else if (this.botType === 'tiledesk-ai') {
+        bot_type = 'tiledesk-ai'
+        // this.router.navigate(['project/' + this.project._id + '/tilebot/intents/' + this.newBot_Id + "/" + bot_type]);
+        // this.router.navigate(['project/' + this.project._id + '/cds/', this.newBot_Id, 'intent', '0']);
+        goToCDSVersion(this.router, this.newBot, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
+
       } else {
         bot_type = this.botType;
         this.router.navigate(['project/' + this.project._id + '/bots/' + this.newBot_Id + "/" + bot_type]);

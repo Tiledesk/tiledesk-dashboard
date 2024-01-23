@@ -1601,6 +1601,7 @@
         "DonNotHaveGPTKey":"GPT anahtarınız yok mu?",
         "ContactUsAndWeWillBeGladToHelpYou":"Bizimle iletişime geçin, size yardımcı olmaktan memnuniyet duyarız"
     },
+    "AutomationsDemoPageDescription":"“API otomasyonlarımız” ile, API'lerimizin kolaylığıyla birlikte tasarımcının otomasyonlarını kullanarak Whatsapp'taki toplu yayın mesajlarını yönetebilir, favori CRM'nizdeki tüm kişilere mesaj gönderebilir, gönderilen mesajların durumunu (alındı, okundu vb.) alabilirsiniz. ) ve daha fazlası!",
     "Sunday": "Pazar",
     "Monday": "Pazartesi",
     "Tuesday": "Salı",

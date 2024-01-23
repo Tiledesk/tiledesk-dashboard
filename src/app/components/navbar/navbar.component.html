@@ -206,9 +206,8 @@
 
 
         <!--  ------------------------------------------------ -->
-        <!--   PLAN NAME (PROFILE TYPE = PAYMENTS)  && HOME_ROUTE_IS_ACTIVE === false-->
+        <!--   PLAN NAME (PROFILE TYPE = PAYMENTS)  && HOME_ROUTE_IS_ACTIVE === false -->
         <!--  ------------------------------------------------ -->
-       
         <ng-container *ngIf="isVisible">
           <li  [ngClass]="{'hide-expired-subscription-indicator': prjct_profile_type === 'payment' && subscription_is_active === true}" id="expired-subscription-indicator" *ngIf="project && prjct_profile_type === 'payment'">
             <a>

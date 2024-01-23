@@ -7,6 +7,18 @@
 - Adds reCaptcha 
 - Implements new pricing 
 
+### 2.4.94
+- Deploys in production
+- Adds the ability to access the design studio for the "tiledesk-ai" chatbot type
+
+### 2.4.93
+- Deploys in production
+- Change the request endpoint to retrieve chatbot templates
+
+### 2.4.92
+- Deploys in production
+- Improvements and bug fixing
+
 ### 2.4.91
 - Deploys in production
 - Improves the "Your Chatbots" home section

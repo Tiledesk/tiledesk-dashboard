@@ -1602,6 +1602,7 @@
         "DonNotHaveGPTKey": "Non hai una chiave GPT?",
         "ContactUsAndWeWillBeGladToHelpYou":"Contattaci e saremo lieti di aiutarti"
     },
+    "AutomationsDemoPageDescription": "Con le nostre “APIs automations” puoi gestire messaggi broadcast massivi su Whatsapp utilizzando le automazioni del designer uniti alla facilità delle nostre API, inviare messaggi a tutti i contatti del tuo CRM preferito, ricevere lo stato dei messaggi inviati (ricevuto, letto etc.) e molto altro ancora!",
     "Sunday": "Domenica",
     "Monday": "Lunedì",
     "Tuesday": "Martedì",

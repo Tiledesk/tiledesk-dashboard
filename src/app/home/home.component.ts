@@ -3106,6 +3106,13 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         // this.router.navigate(['project/' + this.project._id + '/cds/', bot._id, 'intent', '0']);
         goToCDSVersion(this.router, bot, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
       }
+    } else if (bot.type === 'tiledesk-ai') {
+      botType = 'tiledesk-ai'
+      if (this.USER_ROLE !== 'agent') {
+        // this.router.navigate(['project/' + this.project._id + '/tilebot/intents/', bot_id, botType]);
+        // this.router.navigate(['project/' + this.project._id + '/cds/', bot._id, 'intent', '0']);
+        goToCDSVersion(this.router, bot, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
+      }
     } else {
       botType = bot.type
 

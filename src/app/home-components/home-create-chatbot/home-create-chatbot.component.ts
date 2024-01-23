@@ -192,7 +192,7 @@ export class HomeCreateChatbotComponent extends PricingBaseComponent implements 
         });
         if (use_case === 'increase_online_sales') {
           this.templates = this.increaseSalesTemplates
-          console.log('[HOME-CREATE-CHATBOT] - TEMPLATES (Increase Sales)', this.templates)
+          this.logger.log('[HOME-CREATE-CHATBOT] - TEMPLATES (Increase Sales)', this.templates)
         }
         this.logger.log('[HOME-CREATE-CHATBOT] - TEMPLATES Increase Sales TEMPLATES', this.increaseSalesTemplates);
 
@@ -412,6 +412,13 @@ export class HomeCreateChatbotComponent extends PricingBaseComponent implements 
         // this.router.navigate(['project/' + this.projectId + '/cds/', bot._id, 'intent', '0', 'h']);
         goToCDSVersion(this.router, bot, this.projectId, this.appConfigService.getConfig().cdsBaseUrl)
       }
+     } else if (bot.type === 'tiledesk-ai') {
+        botType = 'tiledesk-ai'
+        if (this.USER_ROLE !== 'agent') {
+          // this.router.navigate(['project/' + this.project._id + '/tilebot/intents/', bot_id, botType]);
+          // this.router.navigate(['project/' + this.projectId + '/cds/', bot._id, 'intent', '0', 'h']);
+          goToCDSVersion(this.router, bot, this.projectId, this.appConfigService.getConfig().cdsBaseUrl)
+        }
     } else {
       botType = bot.type
 

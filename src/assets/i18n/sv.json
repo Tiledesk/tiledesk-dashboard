@@ -1601,6 +1601,7 @@
         "DonNotHaveGPTKey":"Har du ingen GPT-nyckel?",
         "ContactUsAndWeWillBeGladToHelpYou":"Kontakta oss så hjälper vi dig gärna"
     },
+    "AutomationsDemoPageDescription":"Med våra “API-automatiseringar” kan du hantera massutsändningsmeddelanden på Whatsapp med hjälp av designerns automatiseringar kombinerat med enkelheten hos våra API: er, skicka meddelanden till alla kontakter i din favorit-CRM, ta emot status för skickade meddelanden (mottagna, lästa, etc. ) och mycket mer!",
     "Sunday": "söndag",
     "Monday": "måndag",
     "Tuesday": "tisdag",

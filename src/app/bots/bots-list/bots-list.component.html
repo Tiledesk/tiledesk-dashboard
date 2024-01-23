@@ -198,9 +198,15 @@
                             <img class="bot-type-logo" src="assets/img/rasa_bot_logo.png" />
                           </span>
 
-                          <span *ngIf="faqkb.type === 'tilebot'">
-                            <img class="bot-type-logo" src="assets/img/tilebot_logo_small.png" />
+                          <span class="bot-type-logo-wpr"   *ngIf="faqkb.type === 'tilebot'">
+                            <img src="assets/img/tilebot_logo_small.png" />
                           </span>
+
+                          <!-- <span class="bot-type-logo-wpr"   *ngIf="faqkb.type === 'tiledesk-ai'">
+                            <img src="assets/img/tiledesk-ai-logo.png" />
+                          </span> -->
+
+                          
 
                           <!-- <span class="tooltiptext">
                         {{ 'BotsPage.BotId' | translate }}: <br> {{ faqkb?._id  }}
