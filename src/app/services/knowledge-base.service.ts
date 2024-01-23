@@ -96,10 +96,8 @@ export class KnowledgeBaseService {
         'Authorization': this.TOKEN
       })
     }
-
     const url = this.SERVER_BASE_PATH + this.project_id + "/kbsettings/" + settings_id;
     this.logger.log("[KNOWLEDGE BASE SERVICE] - add new kb URL ", url);
-
     return this.httpClient.post(url, kb, httpOptions);
   }
 

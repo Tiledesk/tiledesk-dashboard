@@ -197,8 +197,10 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
   }
 
   createConditionGroup(): FormGroup {
+    const namePattern = /^[^&<>]{3,}$/;
     return this.formBuilder.group({
-      url: ['', [Validators.required, Validators.pattern('(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?')]]
+      url: ['', [Validators.required, Validators.pattern('(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?')]],
+      name: ['', [Validators.required, Validators.pattern(namePattern)]]
     })
   }
 
@@ -221,29 +223,19 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
 
   saveKnowledgeBase() {
 
-    // let first_index = this.newKb.url.indexOf('://') + 3;
-    // let second_index = this.newKb.url.indexOf('www.') + 4;
+    // let first_index = this.newKb.url.indexOf('://');
+    // let second_index = this.newKb.url.indexOf('www.');
     // let split_index;
-    // if (second_index > first_index) {
-    //   split_index = second_index;
+    // if (first_index !== -1 || second_index !== -1) {
+    //   if (second_index > first_index) {
+    //     split_index = second_index + 4;
+    //   } else {
+    //     split_index = first_index + 3;
+    //   }
+    //   this.newKb.name = this.newKb.url.substring(split_index);
     // } else {
-    //   split_index = first_index;
+    //   this.newKb.name = this.newKb.url;
     // }
-    // this.newKb.name = this.newKb.url.substring(split_index);
-    let first_index = this.newKb.url.indexOf('://');
-    let second_index = this.newKb.url.indexOf('www.');
-
-    let split_index;
-    if (first_index !== -1 || second_index !== -1) {
-      if (second_index > first_index) {
-        split_index = second_index + 4;
-      } else {
-        split_index = first_index + 3;
-      }
-      this.newKb.name = this.newKb.url.substring(split_index);
-    } else {
-      this.newKb.name = this.newKb.url;
-    }
 
     this.kbService.addNewKb(this.kbSettings._id, this.newKb).subscribe((savedSettings: KbSettings) => {
       // console.log('[KNOWLEDGE BASES COMP] this.kbSettings addNewKb ', this.kbSettings)

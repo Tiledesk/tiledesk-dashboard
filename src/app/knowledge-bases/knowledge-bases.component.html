@@ -181,35 +181,39 @@
       </div>
 
       <div class="modal-body">
-        <div class="info-container">
-          <i class="material-icons-outlined info-icon">help_outline</i>
-          <div class="info-text">
-            <p>{{ 'KbPage.AddKbInfoFirstText' | translate }}</p>
-            <p>{{ 'KbPage.AddKbInfoSecondText' | translate }}</p>
-            <p [innerHTML]="'KbPage.AddKbInfoThirdText' | translate" style="margin-top: 8px;"></p>
-          </div>
-        </div>
+        <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
+          <mat-tab label="url page">
 
-        <div class="form-container">
-          <form [formGroup]="kbForm">
-
-            <div class="input-container">
-              <span class="input-label">URL</span>
-              <input type="url" name="url" class="custom-input" [(ngModel)]="newKb.url" formControlName="url"
-                placeholder="{{ 'KbPage.TypeKbUrlPlaceholder' | translate }}" (input)="onChangeInput($event)"
-                [class.invalid]="(kbForm.controls.url.errors?.pattern || kbForm.controls.url.errors?.required) && kbForm.controls.url.touched">
+            <div class="info-container">
+              <i class="material-icons-outlined info-icon">help_outline</i>
+              <div class="info-text">
+                <p>{{ 'KbPage.AddKbInfoFirstText' | translate }}</p>
+                <p>{{ 'KbPage.AddKbInfoSecondText' | translate }}</p>
+                <p [innerHTML]="'KbPage.AddKbInfoThirdText' | translate" style="margin-top: 8px;"></p>
+              </div>
             </div>
+    
+            <div class="form-container">
+              <form [formGroup]="kbForm">
+                <div class="input-container">
+                  <span class="input-label">Nome</span>
+                  <input type="text" name="name" class="custom-input" [(ngModel)]="newKb.name" formControlName="name"
+                    placeholder="{{ 'KbPage.TypeKbNamePlaceholder' | translate }}" (input)="onChangeInput($event)"
+                    [class.invalid]="(kbForm.controls.name.errors?.pattern || kbForm.controls.name.errors?.required) && kbForm.controls.name.touched">
 
-            <!-- <div class="input-container">
-              <span class="input-label">GPT Key</span>
-              <input type="text" name="gptkey" class="custom-input" [(ngModel)]="newKb.gptkey" formControlName="gptkey"
-                placeholder="{{ 'KbPage.TypeKbKeyPlaceholder' | translate }}" (input)="onChangeInput($event)"
-                [class.invalid]="kbForm.controls.gptkey.errors?.required && kbForm.controls.gptkey.touched">
-            </div> -->
-
-          </form>
-        </div>
-
+                  <span class="input-label">URL</span>
+                  <input type="url" name="url" class="custom-input" [(ngModel)]="newKb.url" formControlName="url"
+                    placeholder="{{ 'KbPage.TypeKbUrlPlaceholder' | translate }}" (input)="onChangeInput($event)"
+                    [class.invalid]="(kbForm.controls.url.errors?.pattern || kbForm.controls.url.errors?.required) && kbForm.controls.url.touched">
+                </div>
+              </form>
+            </div>
+          
+          </mat-tab>
+          <mat-tab label="text content">
+            <textarea name="" id="" cols="30" rows="10">dddd</textarea>
+          </mat-tab>
+        </mat-tab-group>
       </div>
 
       <div class="modal-footer">
