@@ -1,5 +1,12 @@
 # tiledesk-dashboard
 
+### 2.4.92-rc1
+- Deploys in pre
+- Adds integrations
+- Adds usage stats (quotas measurement)
+- Adds reCaptcha 
+- Implements new pricing 
+
 ### 2.4.91
 - Deploys in production
 - Improves the "Your Chatbots" home section
