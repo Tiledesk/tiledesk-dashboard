@@ -236,8 +236,30 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
     // } else {
     //   this.newKb.name = this.newKb.url;
     // }
+    let type = 'url-page';
+    let body = {
+      id: null,
+      name: "",
+      source: "",
+      type: "",
+      content: "",
+      gptkey: this.kbSettings.gptkey,
+      namespace: this.kbService.project_id 
+    }
+    // namespace: this.newKb.title 
+    if(type==='url-page'){
+      body.name = this.newKb.name;
+      body.source = this.newKb.url;
+      body.type = "url";
+    }
+    else if(type==='text-file'){
+      body.name = this.newKb.name;
+      body.content = this.newKb.url;
+      body.type = "text";
+    }
 
-    this.kbService.addNewKb(this.kbSettings._id, this.newKb).subscribe((savedSettings: KbSettings) => {
+
+    this.kbService.addNewKb(this.kbSettings._id, body).subscribe((savedSettings: KbSettings) => {
       // console.log('[KNOWLEDGE BASES COMP] this.kbSettings addNewKb ', this.kbSettings)
       this.getKnowledgeBaseSettings();
       let kb = savedSettings.kbs.find(kb => kb.url === this.newKb.url);

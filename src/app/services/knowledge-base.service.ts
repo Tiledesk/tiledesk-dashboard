@@ -89,7 +89,7 @@ export class KnowledgeBaseService {
     return this.httpClient.put(url, kb_settings, httpOptions);
   }
 
-  addNewKb(settings_id: string, kb: KB) {
+  addNewKb(settings_id: string, body: any) {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -98,9 +98,10 @@ export class KnowledgeBaseService {
     }
     const url = this.SERVER_BASE_PATH + this.project_id + "/kbsettings/" + settings_id;
     this.logger.log("[KNOWLEDGE BASE SERVICE] - add new kb URL ", url);
-    return this.httpClient.post(url, kb, httpOptions);
+    return this.httpClient.post(url, JSON.stringify(body), httpOptions);
   }
 
+  
   deleteKb(settings_id: string, kb_id: string){
     const httpOptions = {
       headers: new HttpHeaders({
