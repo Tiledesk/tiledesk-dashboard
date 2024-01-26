@@ -1630,6 +1630,11 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         this.subscription_payments = [];
         subscriptionPayments.forEach((subscriptionPayment, index) => {
           console.log('[PRJCT-EDIT-ADD] subscriptionPayment.stripe_event ', subscriptionPayment.stripe_event);
+          
+          if  (subscriptionPayment.stripe_event === "checkout.session.completed") {
+            this.subscription_creation_date = subscriptionPayment.object.start_date
+            console.log('[PRJCT-EDIT-ADD] -  subscriptionPayments (checkout.session.completed) > subscription creation date ', this.subscription_creation_date);
+          }
 
           if (subscriptionPayment.stripe_event === 'invoice.payment_succeeded') {
 
@@ -1637,10 +1642,10 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
              **! *** GET THE subscription_creation_date FROM THE SUBSCRIPTION PAYMENT OBJECT OF TYPE invoice.payment_succeeded ***
              *  AND billing_reason === 'subscription_create'
              */
-            // if (subscriptionPayment.object.data.object.billing_reason === 'subscription_create') {
-            //   this.subscription_creation_date = subscriptionPayment.object.data.object.lines.data[0].period.start
-            //   console.log('[PRJCT-EDIT-ADD] -  subscriptionPayments > subscription creation date ', this.subscription_creation_date);
-            // }
+            if (subscriptionPayment.object.data.object.billing_reason === 'subscription_create') {
+              this.subscription_creation_date = subscriptionPayment.object.data.object.lines.data[0].period.start
+              console.log('[PRJCT-EDIT-ADD] -  subscriptionPayments (invoice.payment_succeeded subscription_create) > subscription creation date ', this.subscription_creation_date);
+            }
 
             // get the last iteration in a _.forEach() loop
 
