@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.4.94-rc2
+- Deploys in pre
+- Improvements and bug fixing
+
 ### 2.4.94-rc1
 - Deploys in pre
 - Adds the ability to access the design studio for the "tiledesk-ai" chatbot type
