@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.4.94-rc3
+- Deploys in pre
+- Improvements and bug fixing
+
 ### 2.4.94-rc2
 - Deploys in pre
 - Improvements and bug fixing

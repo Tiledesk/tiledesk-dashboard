@@ -23,7 +23,7 @@ import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.comp
   styleUrls: ['./knowledge-bases.component.scss']
 })
 
-export class KnowledgeBasesComponent extends PricingBaseComponent  implements OnInit, OnDestroy {
+export class KnowledgeBasesComponent extends PricingBaseComponent implements OnInit, OnDestroy {
   private unsubscribe$: Subject<any> = new Subject<any>();
   public IS_OPEN_SETTINGS_SIDEBAR: boolean;
   public isChromeVerGreaterThan100: boolean;
@@ -89,7 +89,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent  implements On
     public dialog: MatDialog,
   ) {
     super(prjctPlanService, notify);
-   }
+  }
 
   ngOnInit(): void {
     this.getBrowserVersion();
@@ -141,16 +141,16 @@ export class KnowledgeBasesComponent extends PricingBaseComponent  implements On
 
   getLoggedUser() {
     this.auth.user_bs
-    .pipe(
-      takeUntil(this.unsubscribe$)
-    )
-    .subscribe((user) => {
-      this.logger.log('[KNOWLEDGE BASES COMP] - LOGGED USER ', user)
-      if (user) {
-        this.CURRENT_USER = user
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((user) => {
+        this.logger.log('[KNOWLEDGE BASES COMP] - LOGGED USER ', user)
+        if (user) {
+          this.CURRENT_USER = user
 
-      }
-    });
+        }
+      });
   }
 
   getUserRole() {
@@ -167,19 +167,19 @@ export class KnowledgeBasesComponent extends PricingBaseComponent  implements On
 
   getCurrentProject() {
     this.auth.project_bs
-    .pipe(
-      takeUntil(this.unsubscribe$)
-    )
-    .subscribe((project) => {
-      this.project = project
-      this.logger.log('[KNOWLEDGE BASES COMP] - GET CURRENT PROJECT ', this.project)
-      if (this.project) {
-        this.project_name = project.name;
-        this.id_project = project._id;
-        this.getProjectById(this.id_project)
-        this.logger.log('[KNOWLEDGE BASES COMP] - GET CURRENT PROJECT - PROJECT-NAME ', this.project_name, ' PROJECT-ID ', this.id_project)
-      }
-    });
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((project) => {
+        this.project = project
+        this.logger.log('[KNOWLEDGE BASES COMP] - GET CURRENT PROJECT ', this.project)
+        if (this.project) {
+          this.project_name = project.name;
+          this.id_project = project._id;
+          this.getProjectById(this.id_project)
+          this.logger.log('[KNOWLEDGE BASES COMP] - GET CURRENT PROJECT - PROJECT-NAME ', this.project_name, ' PROJECT-ID ', this.id_project)
+        }
+      });
   }
   getProjectById(projectId) {
     this.projectService.getProjectById(projectId).subscribe((project: any) => {
@@ -206,12 +206,12 @@ export class KnowledgeBasesComponent extends PricingBaseComponent  implements On
   // UTILS FUNCTION - Start
   getBrowserVersion() {
     this.auth.isChromeVerGreaterThan100
-    .pipe(
-      takeUntil(this.unsubscribe$)
-    )
-    .subscribe((isChromeVerGreaterThan100: boolean) => {
-      this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
-    })
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((isChromeVerGreaterThan100: boolean) => {
+        this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+      })
   }
 
   listenSidebarIsOpened() {
@@ -228,10 +228,13 @@ export class KnowledgeBasesComponent extends PricingBaseComponent  implements On
     this.kbService.getKbSettings().subscribe((kbSettings: KbSettings) => {
       this.logger.log("[KNOWLEDGE BASES COMP] get kbSettings: ", kbSettings);
       this.kbSettings = kbSettings;
-      if (this.kbSettings.kbs.length < kbSettings.maxKbsNumber) {
-        this.addButtonDisabled = false;
-      } else {
-        this.addButtonDisabled = true;
+      if (this.kbSettings && this.kbSettings.kbs) {
+        this.kbCount = this.kbSettings.kbs.length
+        if (this.kbSettings.kbs.length < kbSettings.maxKbsNumber) {
+          this.addButtonDisabled = false;
+        } else {
+          this.addButtonDisabled = true;
+        }
       }
       this.checkAllStatuses();
       this.startPooling();
@@ -272,7 +275,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent  implements On
     console.log('[KNOWLEDGE-BASES-COMP] KB Limit ', this.kbLimit)
     if (this.USER_ROLE !== 'agent') {
       if (this.kbLimit) {
-        if (this.kbCount < this.kbLimit) {
+        if (this.kbSettings.kbs.length < this.kbLimit) {
           this.addKnowledgeBaseModal = 'block';
         } else if (this.kbSettings.kbs.length >= this.kbLimit) {
 
@@ -332,18 +335,22 @@ export class KnowledgeBasesComponent extends PricingBaseComponent  implements On
     }
 
     this.kbService.addNewKb(this.kbSettings._id, this.newKb).subscribe((savedSettings: KbSettings) => {
-      // console.log('[KNOWLEDGE BASES COMP] this.kbSettings addNewKb ', this.kbSettings)
+      console.log('[KNOWLEDGE BASES COMP] this.kbSettings addNewKb savedSettings', savedSettings)
+      console.log('[KNOWLEDGE BASES COMP] this.kbSettings addNewKb kbSettings', this.kbSettings)
       this.getKnowledgeBaseSettings();
       let kb = savedSettings.kbs.find(kb => kb.url === this.newKb.url);
 
       if (!this.kbSettings.gptkey) {
+
         this.closeAddKnowledgeBaseModal();
         this.checkStatus(kb);
         setTimeout(() => {
+          console.log('[KNOWLEDGE BASES COMP] here 1 ')
           this.openMissingGptkeyModal();
         }, 600)
 
       } else {
+        console.log('[KNOWLEDGE BASES COMP] here 2 ')
         this.closeAddKnowledgeBaseModal();
         this.checkStatus(kb).then((status_code) => {
           if (status_code === 0) {
