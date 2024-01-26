@@ -17,6 +17,7 @@ import { takeUntil } from 'rxjs/operators'
 })
 export class HomeCdsComponent implements OnInit {
   @Output() goToCreateChatbot = new EventEmitter();
+  @Output() hasFinishedGetProjectBots = new EventEmitter();
   private unsubscribe$: Subject<any> = new Subject<any>();
   USER_ROLE: string;
   projectId: string;
@@ -26,7 +27,7 @@ export class HomeCdsComponent implements OnInit {
   chatbots:  Array<Chatbot> = [];
   chatbotName: string;
   lastUpdatedChatbot: Chatbot;
-  
+  showSpinner: boolean
 
   constructor(
     public appConfigService: AppConfigService,
@@ -50,6 +51,7 @@ export class HomeCdsComponent implements OnInit {
 
 
   getCurrentProjectAndPrjctBots() {
+    this.showSpinner = true
     this.auth.project_bs
       .pipe(
         takeUntil(this.unsubscribe$)
@@ -65,7 +67,7 @@ export class HomeCdsComponent implements OnInit {
         }
       }, (error) => {
         this.logger.error('[HOME-CDS] $UBSCIBE TO PUBLISHED PROJECT - ERROR ', error);
-
+        this.showSpinner = false
       }, () => {
         this.logger.log('[HOME-CDS] $UBSCIBE TO PUBLISHED PROJECT * COMPLETE *');
       });
@@ -130,9 +132,11 @@ export class HomeCdsComponent implements OnInit {
   
     }, (error) => {
       this.logger.error('[HOME-CDS] - GET FAQKB - ERROR ', error);
-
+      this.showSpinner = false
     }, () => {
       this.logger.log('[HOME-CDS] - GET FAQKB * COMPLETE *');
+      this.showSpinner = false
+      this.hasFinishedGetProjectBots.emit()
     });
   }
 

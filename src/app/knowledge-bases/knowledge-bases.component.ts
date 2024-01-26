@@ -1,29 +1,29 @@
 import { Component, OnDestroy, OnInit, isDevMode } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Route, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'app/core/auth.service';
 import { NotifyService } from 'app/core/notify.service';
 import { KB, KbSettings } from 'app/models/kbsettings-model';
 import { Project } from 'app/models/project-model';
-import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { OpenaiService } from 'app/services/openai.service';
 import { ProjectService } from 'app/services/project.service';
+import { ProjectPlanService } from 'app/services/project-plan.service';
+import { UsersService } from 'app/services/users.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
 import { MatDialog } from '@angular/material/dialog';
 import { KbModalComponent } from './kb-modal/kb-modal.component';
-import { ProjectPlanService } from 'app/services/project-plan.service';
-import { UsersService } from 'app/services/users.service';
-import { TranslateService } from '@ngx-translate/core';
+import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 
 @Component({
   selector: 'appdashboard-knowledge-bases',
   templateUrl: './knowledge-bases.component.html',
   styleUrls: ['./knowledge-bases.component.scss']
 })
-export class KnowledgeBasesComponent  extends PricingBaseComponent implements OnInit, OnDestroy {
+
+export class KnowledgeBasesComponent extends PricingBaseComponent  implements OnInit, OnDestroy {
   private unsubscribe$: Subject<any> = new Subject<any>();
   public IS_OPEN_SETTINGS_SIDEBAR: boolean;
   public isChromeVerGreaterThan100: boolean;
@@ -47,7 +47,6 @@ export class KnowledgeBasesComponent  extends PricingBaseComponent implements On
   callingPage: string;
   USER_ROLE: string;
   kbCount: number;
-
   kbForm: FormGroup;
   kbsList = [];
 
@@ -75,8 +74,6 @@ export class KnowledgeBasesComponent  extends PricingBaseComponent implements On
   kbid_selected: any;
 
   interval_id;
-  onlyOwnerCanManageTheAccountPlanMsg: string;
-  learnMoreAboutDefaultRoles: string;
 
   constructor(
     private auth: AuthService,
@@ -90,10 +87,9 @@ export class KnowledgeBasesComponent  extends PricingBaseComponent implements On
     public prjctPlanService: ProjectPlanService,
     public usersService: UsersService,
     public dialog: MatDialog,
-    private translate: TranslateService
-  ) { 
+  ) {
     super(prjctPlanService, notify);
-  }
+   }
 
   ngOnInit(): void {
     this.getBrowserVersion();
@@ -109,7 +105,7 @@ export class KnowledgeBasesComponent  extends PricingBaseComponent implements On
     this.getUserRole();
   }
 
-  ngOnDestroy(): void {
+  ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
     clearInterval(this.interval_id);
@@ -164,7 +160,7 @@ export class KnowledgeBasesComponent  extends PricingBaseComponent implements On
       )
       .subscribe((userRole) => {
 
-        this.logger.log('[KNOWLEDGE BASES COMP] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
+        this.logger.log('[BOTS-LIST] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
         this.USER_ROLE = userRole;
       })
   }
@@ -185,7 +181,6 @@ export class KnowledgeBasesComponent  extends PricingBaseComponent implements On
       }
     });
   }
-
   getProjectById(projectId) {
     this.projectService.getProjectById(projectId).subscribe((project: any) => {
       this.logger.log('[KNOWLEDGE BASES COMP] - GET PROJECT BY ID - PROJECT: ', project);
@@ -269,6 +264,45 @@ export class KnowledgeBasesComponent  extends PricingBaseComponent implements On
     } else {
       element.style.display = 'none';
     }
+  }
+
+
+  openAddKnowledgeBaseModal() {
+    console.log('[KNOWLEDGE-BASES-COMP] KB Lenght ', this.kbSettings.kbs.length)
+    console.log('[KNOWLEDGE-BASES-COMP] KB Limit ', this.kbLimit)
+    if (this.USER_ROLE !== 'agent') {
+      if (this.kbLimit) {
+        if (this.kbCount < this.kbLimit) {
+          this.addKnowledgeBaseModal = 'block';
+        } else if (this.kbSettings.kbs.length >= this.kbLimit) {
+
+          this.presentDialogReachedKbLimit()
+        }
+      } else if (!this.kbLimit) {
+        this.addKnowledgeBaseModal = 'block';
+      }
+    } else if (this.USER_ROLE === 'agent') {
+      this.presentModalOnlyOwnerCanManageTheAccountPlan()
+    }
+  }
+
+  presentDialogReachedKbLimit() {
+    console.log('[KNOWLEDGE-BASES-COMP] openDialog presentDialogReachedChatbotLimit prjct_profile_name ', this.prjct_profile_name)
+    const dialogRef = this.dialog.open(KbModalComponent, {
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+      hasBackdrop: true,
+      data: {
+        projectProfile: this.prjct_profile_name,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`[KNOWLEDGE-BASES-COMP] Dialog result: ${result}`);
+    });
+  }
+
+  presentModalOnlyOwnerCanManageTheAccountPlan() {
+    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan('Agents can\'t manage chatbots', 'Learn more about default roles')
   }
 
   saveKnowledgeBase() {
@@ -535,44 +569,9 @@ export class KnowledgeBasesComponent  extends PricingBaseComponent implements On
     // }
   }
 
-  openAddKnowledgeBaseModal() {
-    console.log('[KNOWLEDGE-BASES-COMP] KB Lenght ', this.kbSettings.kbs.length)
-    console.log('[KNOWLEDGE-BASES-COMP] KB Limit ', this.kbLimit)
-    if (this.USER_ROLE !== 'agent') {
-      if (this.kbLimit) {
-        if (this.kbSettings.kbs.length < this.kbLimit) {
-          this.addKnowledgeBaseModal = 'block';
-        } else if (this.kbSettings.kbs.length >= this.kbLimit) {
-
-          this.presentDialogReachedKbLimit()
-        }
-      } else if (!this.kbLimit) {
-        this.addKnowledgeBaseModal = 'block';
-      }
-    } else if (this.USER_ROLE === 'agent') {
-      this.presentModalOnlyOwnerCanManageTheAccountPlan()
-    }
-  }
-
-  presentDialogReachedKbLimit() {
-    console.log('[KNOWLEDGE-BASES-COMP] openDialog presentDialogReachedChatbotLimit prjct_profile_name ', this.prjct_profile_name)
-    const dialogRef = this.dialog.open(KbModalComponent, {
-      backdropClass: 'cdk-overlay-transparent-backdrop',
-      hasBackdrop: true,
-      data: {
-        projectProfile: this.prjct_profile_name,
-      },
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`[KNOWLEDGE-BASES-COMP] Dialog result: ${result}`);
-    });
-  }
-
-
-  presentModalOnlyOwnerCanManageTheAccountPlan() {
-    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles)
-  }
+  // openAddKnowledgeBaseModal() {
+  //   this.addKnowledgeBaseModal = 'block';
+  // }
 
   openPreviewKnowledgeBaseModal(kb) {
     this.kbid_selected = kb;
@@ -632,25 +631,11 @@ export class KnowledgeBasesComponent  extends PricingBaseComponent implements On
     this.missingGptkeyModal = 'none';
   }
 
- 
+
   contactSalesForChatGptKey() {
     this.closeSecretsModal()
     window.open(`mailto:support@tiledesk.com?subject=I don't have a GPT-Key`);
   }
 
-  translateString() {
-    this.translateModalOnlyOwnerCanManageProjectAccount()
-  }
-  translateModalOnlyOwnerCanManageProjectAccount() {
-    this.translate.get('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan')
-      .subscribe((translation: any) => {
-        this.onlyOwnerCanManageTheAccountPlanMsg = translation;
-      });
-
-    this.translate.get('LearnMoreAboutDefaultRoles')
-      .subscribe((translation: any) => {
-        this.learnMoreAboutDefaultRoles = translation;
-      });
-  }
 
 }

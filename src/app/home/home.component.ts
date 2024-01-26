@@ -352,8 +352,12 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       // this.getApps();
       setTimeout(() => {
         this.showskeleton = false;
-      }, 1200);
+      }, 1500);
     });
+  }
+
+  hasFinishedGetProjectBots() {
+    console.log('[HOME] - hasFinishedGetProjectBots in home-cds ');
   }
 
   operatingHoursPopoverClosed() {

@@ -19,7 +19,7 @@
             <div class="flex flex-col sm-flex-row flex-auto sm-items-center min-w-0 my-8 sm:my-12">
               <div class="flex flex-auto items-center min-w-0">
                 <div class="flex-0 w-16 h-16  overflow-hidden">
-                
+
                   <svg *ngIf="isVisiblePay" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
                     xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 65.2 65.2"
                     style="enable-background:new 0 0 65.2 65.2;" xml:space="preserve" class="td--logo">
@@ -49,10 +49,8 @@
                       C58,31.2,56.6,29.8,54.9,29.8" />
                     </g>
                     <g class="running">
-                      <path 
-                       d="M56.1,25.7H38.5c-1,0-1.8-0.8-1.8-1.8V6.3c0-1,0.8-1.8,1.8-1.8h17.6c1,0,1.8,0.8,1.8,1.8v17.6
-                      C58,24.9,57.1,25.7,56.1,25.7" 
-                      fill="#E5BBAD"/>
+                      <path d="M56.1,25.7H38.5c-1,0-1.8-0.8-1.8-1.8V6.3c0-1,0.8-1.8,1.8-1.8h17.6c1,0,1.8,0.8,1.8,1.8v17.6
+                      C58,24.9,57.1,25.7,56.1,25.7" fill="#E5BBAD" />
                     </g>
                   </svg>
 
@@ -62,17 +60,15 @@
                   <!-- leading-7 -->
                   <div class="text-2xl md-text-5xl font-w-400 tracking-tight  md-leading-snug truncate project---name">
                     <span style="font-family: 'Poppins', Arial, sans-serif;"> {{ prjct_name }} </span>
-                    <span class="material-icons home-edit-project-name-icon" 
-                      (click)="goToProjectSettingsGeneral()"
-                      matTooltipClass="custom-mat-tooltip" 
-                      matTooltip="{{'EditProjectName' | translate }}"
-                      #tooltip="matTooltip" 
-                      matTooltipPosition='below' matTooltipHideDelay="100">
+                    <span class="material-icons home-edit-project-name-icon" (click)="goToProjectSettingsGeneral()"
+                      matTooltipClass="custom-mat-tooltip" matTooltip="{{'EditProjectName' | translate }}"
+                      #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
                       mode_edit
                     </span>
                   </div>
 
-                  <div class="flex items-center" *ngIf="project_plan_badge"  style="cursor: pointer" (click)="goToPricingOrOpenModalSubsExpired()">
+                  <div class="flex items-center" *ngIf="project_plan_badge" style="cursor: pointer"
+                    (click)="goToPricingOrOpenModalSubsExpired()">
                     <div class="home-project-plan-badge" [ngClass]="{
                       'free-plan-badge': current_prjct?.plan_badge_background_type === 'free_plan_badge', 
                       'a-plan-badge':  current_prjct?.plan_badge_background_type === 'a_plan_badge',
@@ -80,7 +76,7 @@
                       'c-plan-badge': current_prjct?.plan_badge_background_type === 'c_plan_badge',
                       'unsupported-plan-badge': current_prjct?.plan_badge_background_type === 'unsupported_plan_badge'
                       }">
-                      <span  style="border-bottom: 1px dotted #2196f3;">  {{ prjct_profile_name }} </span> 
+                      <span style="border-bottom: 1px dotted #2196f3;"> {{ prjct_profile_name }} </span>
                     </div>
                   </div>
                 </div>
@@ -95,15 +91,10 @@
                 <!-- ------------------------------------ -->
                 <!-- {{'AdjustOperatingHours' | translate}} -->
                 <ng-container *ngIf="isVisibleOPH && USER_ROLE !== 'agent'">
-                  <button id="adjust-operating-hours-btn" 
-                    #editOperatingHoursBtn
-                    mat-mini-fab aria-label="date_range icon"
-                    [satPopoverAnchor]="editOperatingHours" 
-                    (click)="editOperatingHours.toggle();"
-                    matTooltipClass="custom-mat-tooltip" 
-                    matTooltip="Adjust operating hours" 
-                    #tooltip="matTooltip"
-                    matTooltipPosition='below'
+                  <button id="adjust-operating-hours-btn" #editOperatingHoursBtn mat-mini-fab
+                    aria-label="date_range icon" [satPopoverAnchor]="editOperatingHours"
+                    (click)="editOperatingHours.toggle();" matTooltipClass="custom-mat-tooltip"
+                    matTooltip="Adjust operating hours" #tooltip="matTooltip" matTooltipPosition='below'
                     matTooltipHideDelay="100">
                     <mat-icon style="position: relative;top: -2px;"
                       [ngClass]="{'oph-disabled': !OPERATING_HOURS_ACTIVE || DISPLAY_OPH_AS_DISABLED, 'oph-enabled': OPERATING_HOURS_ACTIVE && !DISPLAY_OPH_AS_DISABLED }">
@@ -111,22 +102,17 @@
                     </mat-icon>
                   </button>
 
-                  <sat-popover #editOperatingHours id="edit-operating-hours"
-                    horizontalAlign="center"
-                    verticalAlign="center" 
-                    hasBackdrop 
+                  <sat-popover #editOperatingHours id="edit-operating-hours" horizontalAlign="center"
+                    verticalAlign="center" hasBackdrop
                     (backdropClicked)="editOperatingHours.close(); operatingHoursPopoverClosed()"
-                    panelClass="edit-operating-hours" 
-                    interactiveClose="false">
-                    <div class="edit-operating-hours-content-wpr" 
-                    style="padding-top: 8px;padding-bottom: 8px;">
+                    panelClass="edit-operating-hours" interactiveClose="false">
+                    <div class="edit-operating-hours-content-wpr" style="padding-top: 8px;padding-bottom: 8px;">
 
                       <div
                         style="align-items: center;color: rgba(0,0,0,.55); display: flex;padding-left: 16px;padding-right: 16px;">
 
                         <div class="opicon" style=" padding-right: 8px;">
-                          <button mat-mini-fab 
-                              aria-label="Button with a date_range icon"
+                          <button mat-mini-fab aria-label="Button with a date_range icon"
                             [ngClass]="{'oph-btn-disabled': !OPERATING_HOURS_ACTIVE || DISPLAY_OPH_AS_DISABLED, 'oph-btn-enabled': OPERATING_HOURS_ACTIVE && !DISPLAY_OPH_AS_DISABLED }"
                             style="box-sizing: unset; cursor: default ;" disabled>
                             <mat-icon style="color: #fff;position: relative;top: -2px;">date_range</mat-icon>
@@ -165,25 +151,20 @@
                 <!-- ------------------------------------ -->
                 <!-- Settings  mat-primary ng-reflect-color="primary"  -->
                 <!-- ------------------------------------ -->
-                <button id="dashlet-filter-btn" *ngIf="USER_ROLE !== 'agent'" 
-                  mat-mini-fab aria-label="filter icon"
-                  [matMenuTriggerFor]="dashletMenu"
-                  matTooltipClass="custom-mat-tooltip" 
-                  matTooltip="Dashlets filter" 
-                  #tooltip="matTooltip"
-                  matTooltipPosition='below'
-                  matTooltipHideDelay="100">
+                <button id="dashlet-filter-btn" *ngIf="USER_ROLE !== 'agent'" mat-mini-fab aria-label="filter icon"
+                  [matMenuTriggerFor]="dashletMenu" matTooltipClass="custom-mat-tooltip" matTooltip="Dashlets filter"
+                  #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
                   <!-- <span class="mat-button-wrapper"> -->
-                    <mat-icon style="color: #2196f3;position: relative; top: -1px;">
-                      tune
-                    </mat-icon>
-                    <!-- <span class="ml-2 button-dashlet-settings">
+                  <mat-icon style="color: #2196f3;position: relative; top: -1px;">
+                    tune
+                  </mat-icon>
+                  <!-- <span class="ml-2 button-dashlet-settings">
                       <!- - {{'ViewOption' | translate}} - ->
                       View Options
                     </span> -->
                   <!-- </span> -->
-                
-  
+
+
                 </button>
 
                 <mat-menu #dashletMenu="matMenu">
@@ -314,8 +295,16 @@
         <div class="home-blocks-wpr">
 
 
-          <!-- // Skeleton START -->
+          <!-- // Skeleton START   -->
           <div *ngIf="showskeleton" class="skeleton">
+
+            <div class="first-card is-loading">
+              <div class="fake--circle"></div>
+              <div class="fake--box"></div>
+              <div class="sm--fake--box"></div>
+              <div class="fake--btn"></div>
+
+            </div>
 
             <!-- // CARD 1 -->
             <mat-card class="card mat-elevation-z3 is-loading">
@@ -422,7 +411,10 @@
           <ng-container *ngIf="!showskeleton ">
             <span *ngIf="USER_ROLE !== 'agent'">
 
-              <home-cds (goToCreateChatbot)="goToCreateChatbot()"> </home-cds>
+              <home-cds 
+                (goToCreateChatbot)="goToCreateChatbot()" 
+                (hasFinishedGetProjectBots)="hasFinishedGetProjectBots()"
+                > </home-cds>
 
               <div class="home--blocks" id="homeBlocks" *ngFor="let item of child_list_order">
 
@@ -430,12 +422,9 @@
                 <!-- Child 1 Convs Graph -->
                 <!-- ----------------------- -->
                 <ng-container *ngIf="item.type === 'child1'">
-                  <appdashboard-home-convs-graph 
-                    *ngIf="displayAnalyticsConvsGraph"
-                    [displayAnalyticsConvsGraph]="displayAnalyticsConvsGraph" 
-                    [projectId]="projectId"
-                    [USER_ROLE]="USER_ROLE" 
-                    (trackUserAction)="trackUserAction($event)">
+                  <appdashboard-home-convs-graph *ngIf="displayAnalyticsConvsGraph"
+                    [displayAnalyticsConvsGraph]="displayAnalyticsConvsGraph" [projectId]="projectId"
+                    [USER_ROLE]="USER_ROLE" (trackUserAction)="trackUserAction($event)">
                   </appdashboard-home-convs-graph>
                 </ng-container>
 
@@ -443,10 +432,8 @@
                 <!-- Child 2 Analytics Indicator-->
                 <!-- ----------------------- -->
                 <ng-container *ngIf="item.type === 'child2'">
-                  <appdashboard-home-analytics-indicator 
-                    *ngIf="displayAnalyticsIndicators" [projectId]="projectId"
-                    [USER_ROLE]="USER_ROLE" 
-                    (trackUserAction)="trackUserAction($event)">
+                  <appdashboard-home-analytics-indicator *ngIf="displayAnalyticsIndicators" [projectId]="projectId"
+                    [USER_ROLE]="USER_ROLE" (trackUserAction)="trackUserAction($event)">
                   </appdashboard-home-analytics-indicator>
                 </ng-container>
 
@@ -455,20 +442,13 @@
                 <!-- ----------------------- -->
                 <ng-container *ngIf="item.type === 'child3'">
                   <appdashboard-home-whatsapp-account-wizard *ngIf="displayWhatsappAccountWizard"
-                    style="margin-bottom: 18px;" 
-                    (goToConnectWA)="goToConnectWA()"
-                    (goToCreateChatbot)="goToCreateChatbot()"
-                    (hasTestedBotOnWa)="hasTestedBotOnWa()"
-                    [whatsAppIsConnected]="whatsAppIsConnected" 
-                    [wadepartmentName]="wadepartmentName"
-                    [chatbotConnectedWithWA]='chatbotConnectedWithWA' 
-                    [waBotId]="waBotId"
-                    [use_case_for_child]="use_case_for_child" 
-                    [solution_channel_for_child]="solution_channel_for_child"
-                    [solution_for_child]="solution_for_child" 
-                    [testBotOnWA]="testBotOnWA"
-                    [botIdForTestWA]="botIdForTestWA" 
-                    (hasCreatedChatbot)="hasCreatedChatbot($event)">
+                    style="margin-bottom: 18px;" (goToConnectWA)="goToConnectWA()"
+                    (goToCreateChatbot)="goToCreateChatbot()" (hasTestedBotOnWa)="hasTestedBotOnWa()"
+                    [whatsAppIsConnected]="whatsAppIsConnected" [wadepartmentName]="wadepartmentName"
+                    [chatbotConnectedWithWA]='chatbotConnectedWithWA' [waBotId]="waBotId"
+                    [use_case_for_child]="use_case_for_child" [solution_channel_for_child]="solution_channel_for_child"
+                    [solution_for_child]="solution_for_child" [testBotOnWA]="testBotOnWA"
+                    [botIdForTestWA]="botIdForTestWA" (hasCreatedChatbot)="hasCreatedChatbot($event)">
                   </appdashboard-home-whatsapp-account-wizard>
                 </ng-container>
 
@@ -476,16 +456,12 @@
                 <!-- Child 4 Whatsapp Account-->
                 <!-- ----------------------- -->
                 <ng-container *ngIf="item.type === 'child4'">
-                  <appdashboard-home-whatsapp-account 
-                    *ngIf="displayConnectWhatsApp" style=" z-index: 11;"
-                    #childWhatsappAccount 
-                    (onClickOnUnistallApp)="onClickOnUnistallApp()"
+                  <appdashboard-home-whatsapp-account *ngIf="displayConnectWhatsApp" style=" z-index: 11;"
+                    #childWhatsappAccount (onClickOnUnistallApp)="onClickOnUnistallApp()"
                     (onClickOnGoToLearnMoreOrManageApp)="onClickOnGoToLearnMoreOrManageApp()"
                     (onClickOnDisplayWhatsAppWizard)="onClickOnDisplayWhatsAppWizard()"
-                    [whatsAppIsInstalled]="whatsAppIsInstalled" 
-                    [whatsAppIsConnected]="whatsAppIsConnected"
-                    [solution_channel_for_child]="solution_channel_for_child" 
-                    [solution_for_child]="solution_for_child"
+                    [whatsAppIsInstalled]="whatsAppIsInstalled" [whatsAppIsConnected]="whatsAppIsConnected"
+                    [solution_channel_for_child]="solution_channel_for_child" [solution_for_child]="solution_for_child"
                     [userHasClickedDisplayWAWizard]="userHasClickedDisplayWAWizard">
                   </appdashboard-home-whatsapp-account>
                 </ng-container>
@@ -495,10 +471,8 @@
                 <!-- ----------------------- -->
                 <ng-container *ngIf="item.type === 'child5'">
                   <appdashboard-home-create-chatbot #childCreateChatbot *ngIf="displayCreateChatbot"
-                    [use_case_for_child]="use_case_for_child" 
-                    [solution_channel_for_child]="solution_channel_for_child"
-                    [waBotId]="waBotId" 
-                    [wadepartmentName]="wadepartmentName"
+                    [use_case_for_child]="use_case_for_child" [solution_channel_for_child]="solution_channel_for_child"
+                    [waBotId]="waBotId" [wadepartmentName]="wadepartmentName"
                     [chatbotConnectedWithWA]="chatbotConnectedWithWA"
                     (botHookedToDefaultDept)="botHookedToDefaultDept($event)"
                     (trackUserAction)="trackUserAction($event)">
