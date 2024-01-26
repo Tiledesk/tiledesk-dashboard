@@ -88,7 +88,8 @@ export class NotifyService {
   }
 
   closeContactUsModalToUpgradePlan() {
-    this.displayContactUsModalToUpgradePlan = 'none'
+    this.displayContactUsModalToUpgradePlan = 'none';
+    this.displayContactUsModal = 'none'
   }
 
 

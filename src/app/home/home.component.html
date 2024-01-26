@@ -18,9 +18,8 @@
 
             <div class="flex flex-col sm-flex-row flex-auto sm-items-center min-w-0 my-8 sm:my-12">
               <div class="flex flex-auto items-center min-w-0">
-                <!-- rounded-full -->
                 <div class="flex-0 w-16 h-16  overflow-hidden">
-                  <!-- <img src="assets/images/avatars/brian-hughes.jpg" class="w-full h-full object-cover"> -->
+                
                   <svg *ngIf="isVisiblePay" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
                     xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 65.2 65.2"
                     style="enable-background:new 0 0 65.2 65.2;" xml:space="preserve" class="td--logo">
@@ -71,21 +70,9 @@
                       matTooltipPosition='below' matTooltipHideDelay="100">
                       mode_edit
                     </span>
-
-                    <!-- <span *ngIf="project_plan_badge" class="home-project-plan-badge" 
-                    [ngClass]="{
-                      'free-plan-badge': current_prjct?.plan_badge_background_type === 'free_plan_badge', 
-                      'a-plan-badge':  current_prjct?.plan_badge_background_type === 'a_plan_badge',
-                      'b-plan-badge': current_prjct?.plan_badge_background_type === 'b_plan_badge', 
-                      'c-plan-badge': current_prjct?.plan_badge_background_type === 'c_plan_badge',
-                      'unsupported-plan-badge': current_prjct?.plan_badge_background_type === 'unsupported_plan_badge'
-                      }">
-                      {{ prjct_profile_name }}
-                    </span> -->
-
                   </div>
 
-                  <div class="flex items-center" *ngIf="project_plan_badge">
+                  <div class="flex items-center" *ngIf="project_plan_badge"  style="cursor: pointer" (click)="goToPricingOrOpenModalSubsExpired()">
                     <div class="home-project-plan-badge" [ngClass]="{
                       'free-plan-badge': current_prjct?.plan_badge_background_type === 'free_plan_badge', 
                       'a-plan-badge':  current_prjct?.plan_badge_background_type === 'a_plan_badge',
@@ -93,7 +80,7 @@
                       'c-plan-badge': current_prjct?.plan_badge_background_type === 'c_plan_badge',
                       'unsupported-plan-badge': current_prjct?.plan_badge_background_type === 'unsupported_plan_badge'
                       }">
-                      {{ prjct_profile_name }}
+                      <span  style="border-bottom: 1px dotted #2196f3;">  {{ prjct_profile_name }} </span> 
                     </div>
                   </div>
                 </div>

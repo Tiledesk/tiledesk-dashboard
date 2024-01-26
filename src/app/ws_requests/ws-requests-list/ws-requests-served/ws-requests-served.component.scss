@@ -846,11 +846,15 @@ $f21blue: #039be5;
   font-weight: 400;
 }
 
-.served-by-bot-type-logo {
+.bot-type-logo-wpr {
+  position: relative;
+}
+
+.served-by-bot--type-logo {
   width: 15px;
   height: 15px;
   position: absolute;
-  top: -2px;
+  top: -37px;
   left: -3px;
   border-radius: 50%;
   border: 1px solid #eee;

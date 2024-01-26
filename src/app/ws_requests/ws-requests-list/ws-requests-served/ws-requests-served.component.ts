@@ -18,6 +18,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { LoggerService } from '../../../services/logger/logger.service';
 import { ProjectService } from 'app/services/project.service';
 import { WsMsgsService } from 'app/services/websocket/ws-msgs.service';
+import { goToCDSVersion } from 'app/utils/util';
 
 const swal = require('sweetalert');
 
@@ -71,6 +72,8 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
 
   youCannotJoinChat: string;
   joinChatTitle: string;
+  learnMoreAboutDefaultRoles: string;
+  agentsCannotManageChatbots: string;
   /**
    * Constructor
    * @param botLocalDbService 
@@ -300,19 +303,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
       });
   }
 
-  getTranslations() {
-    this.translateArchivingRequestErrorMsg();
-    this.translateArchivingRequestMsg();
-    this.translateRequestHasBeenArchivedNoticationMsg_part1();
-    this.translateRequestHasBeenArchivedNoticationMsg_part2();
-    this.translateYouAreAboutToJoin();
-    this.translateWarning();
-    this.translateCancel();
-    this.translateJoinToChat();
-    this.translateAreYouSure();
-    this.translateAllConversationsHaveBeenArchived();
-    this.translateModalYouCannotJoinChat();
-  }
+
 
 
 
@@ -415,7 +406,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
       });
   }
 
-  
+
 
 
   // SERVED_BY : add this
@@ -443,28 +434,54 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
 
 
 
-  goToBotProfile(bot_id, bot_type) {
-    let botType = ''
-    if (bot_type === 'internal') {
-      botType = 'native'
-      if (this.ROLE_IS_AGENT === false) {
-        this.router.navigate(['project/' + this.projectId + '/bots/intents/', bot_id, botType]);
-      }
+  goToBotProfile(bot, bot_id: string, bot_type: string) {
 
-    } else if (bot_type === 'tilebot') {
-      botType = 'tilebot'
-      if (this.ROLE_IS_AGENT === false) {
-        this.router.navigate(['project/' + this.projectId + '/tilebot/intents/', bot_id, botType]);
+    console.log('[WS-REQUESTS-LIST][SERVED] goToBotProfile bot', bot)
+    console.log('[WS-REQUESTS-LIST][SERVED] goToBotProfile bot_id', bot_id)
+    if (this.ROLE_IS_AGENT === false) {
+      let botType = ''
+      // if (bot_type === 'internal') {
+      //   botType = 'native'
+      //   if (this.ROLE_IS_AGENT === false) {
+      //     this.router.navigate(['project/' + this.projectId + '/bots/intents/', bot_id, botType]);
+      //   }
+
+      // } else if (bot_type === 'tilebot') {
+      //   botType = 'tilebot'
+      //   if (this.ROLE_IS_AGENT === false) {
+      //     this.router.navigate(['project/' + this.projectId + '/tilebot/intents/', bot_id, botType]);
+      //   }
+      // } else {
+      //   botType = bot_type
+
+      //   if (this.ROLE_IS_AGENT === false) {
+      //     this.router.navigate(['project/' + this.projectId + '/bots', bot_id, botType]);
+      //   }
+      // }
+      if (bot.type === 'internal') {
+        botType = 'native'
+
+        this.router.navigate(['project/' + this.projectId + '/bots/intents/', bot._id, botType]);
+
+      } else if (bot.type === 'tilebot') {
+        botType = 'tilebot'
+        goToCDSVersion(this.router, bot, this.projectId, this.appConfigService.getConfig().cdsBaseUrl)
+
+      } else if (bot.type === 'tiledesk-ai') {
+        botType = 'tiledesk-ai'
+        goToCDSVersion(this.router, bot, this.projectId, this.appConfigService.getConfig().cdsBaseUrl)
+
+      } else {
+        botType = bot.type
+        this.router.navigate(['project/' + this.projectId + '/bots', bot._id, botType]);
       }
     } else {
-      botType = bot_type
-
-      if (this.ROLE_IS_AGENT === false) {
-        this.router.navigate(['project/' + this.projectId + '/bots', bot_id, botType]);
-      }
+      this.presentModalAgentCannotManageChatbot()
     }
+  }
 
-
+  presentModalAgentCannotManageChatbot() {
+    this.notify.presentModalAgentCannotManageChatbot(this.agentsCannotManageChatbots, this.learnMoreAboutDefaultRoles)
   }
 
 
@@ -494,7 +511,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
 
   goToRequestMsgs(request_id: string) {
     this.logger.log("[WS-REQUESTS-LIST][SERVED] GO TO REQUEST MSGS ")
-    this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_id + '/1' + '/messages' ]);
+    this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_id + '/1' + '/messages']);
   }
 
   // goToWsRequestsNoRealtimeServed() {
@@ -549,75 +566,75 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
     //   console.log('[WS-REQUESTS-LIST][SERVED] - joinRequest current user is joined', currentuserisjoined);
     //  console.log('[WS-REQUESTS-LIST][SERVED] - joinRequest participanting agents', participantingagents);
     //   console.log('[WS-REQUESTS-LIST][SERVED] - joinRequest channel ', channel);
-      
-      const participantingagentslength = participantingagents.length
-      this.logger.log('[WS-REQUESTS-LIST][SERVED] - joinRequest participanting agents length', participantingagentslength);
-  
-      let chatAgent = '';
-  
-      participantingagents.forEach((agent, index) => {
-        let stringEnd = ' '
-  
-        // if (participantingagentslength === 1) {
-        //   stringEnd = '.';
-        // }
-  
-        if (participantingagentslength - 1 === index) {
-          stringEnd = '.';
-        } else {
-          stringEnd = ', ';
-        }
-  
-        // if (participantingagentslength > 2 ) {
-        //   // this.logger.log('WS-REQUESTS-SERVED - joinRequest index length > 2', index);
-        //   if (participantingagentslength - 1 === index) {
-        //     this.logger.log('WS-REQUESTS-SERVED - joinRequest index length > 2 posizione lenght = index ', participantingagentslength - 1 === index ,'metto punto ');
-        //     stringEnd = '.';
-        //   } else if (participantingagentslength - 2) {
-        //     this.logger.log('WS-REQUESTS-SERVED - joinRequest index length > 2 index lenght - 2 ', index , 'participantingagentslength - 2', participantingagentslength - 2, 'metto and ');
-        //     stringEnd = ' and ';
-        //   } else {
-        //     this.logger.log('WS-REQUESTS-SERVED - joinRequest index length > 2 index', index ,'metto , ');
-        //     stringEnd = ', ';
-        //   }
-        // }
-  
-        if (agent.firstname && agent.lastname) {
-  
-          chatAgent += agent.firstname + ' ' + agent.lastname + stringEnd
-        }
-  
-        if (agent.name) {
-          chatAgent += agent.name + stringEnd
-        }
-  
-      });
-  
-  
-      this.logger.log('[WS-REQUESTS-LIST][SERVED] - joinRequest chatAgent', chatAgent);
-  
-      if (currentuserisjoined === false) {
-        if (channel.name === 'email' || channel.name === 'form') { 
-         if (participantingagents.length === 1) {
+
+    const participantingagentslength = participantingagents.length
+    this.logger.log('[WS-REQUESTS-LIST][SERVED] - joinRequest participanting agents length', participantingagentslength);
+
+    let chatAgent = '';
+
+    participantingagents.forEach((agent, index) => {
+      let stringEnd = ' '
+
+      // if (participantingagentslength === 1) {
+      //   stringEnd = '.';
+      // }
+
+      if (participantingagentslength - 1 === index) {
+        stringEnd = '.';
+      } else {
+        stringEnd = ', ';
+      }
+
+      // if (participantingagentslength > 2 ) {
+      //   // this.logger.log('WS-REQUESTS-SERVED - joinRequest index length > 2', index);
+      //   if (participantingagentslength - 1 === index) {
+      //     this.logger.log('WS-REQUESTS-SERVED - joinRequest index length > 2 posizione lenght = index ', participantingagentslength - 1 === index ,'metto punto ');
+      //     stringEnd = '.';
+      //   } else if (participantingagentslength - 2) {
+      //     this.logger.log('WS-REQUESTS-SERVED - joinRequest index length > 2 index lenght - 2 ', index , 'participantingagentslength - 2', participantingagentslength - 2, 'metto and ');
+      //     stringEnd = ' and ';
+      //   } else {
+      //     this.logger.log('WS-REQUESTS-SERVED - joinRequest index length > 2 index', index ,'metto , ');
+      //     stringEnd = ', ';
+      //   }
+      // }
+
+      if (agent.firstname && agent.lastname) {
+
+        chatAgent += agent.firstname + ' ' + agent.lastname + stringEnd
+      }
+
+      if (agent.name) {
+        chatAgent += agent.name + stringEnd
+      }
+
+    });
+
+
+    this.logger.log('[WS-REQUESTS-LIST][SERVED] - joinRequest chatAgent', chatAgent);
+
+    if (currentuserisjoined === false) {
+      if (channel.name === 'email' || channel.name === 'form') {
+        if (participantingagents.length === 1) {
           this.presentModalYouCannotJoinChat()
-         } else if (participantingagents.length === 0) {
-          this.displayModalAreYouSureToJoinThisChatAlreadyAssigned(chatAgent, request_id);
-         }
-        } else if (channel.name !== 'email' || channel.name !== 'form' || channel.name === 'telegram' || channel.name === 'whatsapp' || channel.name === 'messenger' || channel.name === 'chat21') {
+        } else if (participantingagents.length === 0) {
           this.displayModalAreYouSureToJoinThisChatAlreadyAssigned(chatAgent, request_id);
         }
+      } else if (channel.name !== 'email' || channel.name !== 'form' || channel.name === 'telegram' || channel.name === 'whatsapp' || channel.name === 'messenger' || channel.name === 'chat21') {
+        this.displayModalAreYouSureToJoinThisChatAlreadyAssigned(chatAgent, request_id);
       }
     }
+  }
 
-    presentModalYouCannotJoinChat() {
-      swal({
-        title: this.joinChatTitle,
-        text: this.youCannotJoinChat,
-        icon: "info",
-        buttons: 'OK',
-        dangerMode: false,
-      })
-    }
+  presentModalYouCannotJoinChat() {
+    swal({
+      title: this.joinChatTitle,
+      text: this.youCannotJoinChat,
+      icon: "info",
+      buttons: 'OK',
+      dangerMode: false,
+    })
+  }
 
   displayModalAreYouSureToJoinThisChatAlreadyAssigned(chatAgent, request_id) {
     swal({
@@ -724,106 +741,6 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
     agent['has__image'] = false
   }
 
-
-
-  // -----------------------------------------------
-  // @ Translate strings
-  // -----------------------------------------------
-  translateAreYouSure() {
-    this.translate.get('AreYouSure')
-      .subscribe((text: string) => {
-        this.areYouSureMsg = text;
-      });
-  }
-
-
-  translateJoinToChat() {
-    this.translate.get('RequestMsgsPage.Enter')
-      .subscribe((text: string) => {
-        this.joinToChatMsg = text;
-      });
-  }
-
-  translateCancel() {
-    this.translate.get('Cancel')
-      .subscribe((text: string) => {
-        this.cancelMsg = text;
-      });
-  }
-
-  translateWarning() {
-    this.translate.get('Warning')
-      .subscribe((text: string) => {
-        this.warningMsg = text;
-      });
-  }
-
-
-  translateYouAreAboutToJoin() {
-    this.translate.get('YouAreAboutToJoinThisChatAlreadyAssignedTo')
-      .subscribe((text: string) => {
-        this.youAreAboutToJoinMsg = text;
-
-      });
-  }
-
-  // TRANSLATION
-  translateArchivingRequestMsg() {
-    this.translate.get('ArchivingRequestNoticationMsg')
-      .subscribe((text: string) => {
-        this.archivingRequestNoticationMsg = text;
-        // this.logger.log('+ + + ArchivingRequestNoticationMsg', text)
-      });
-  }
-
-  // TRANSLATION
-  translateArchivingRequestErrorMsg() {
-    this.translate.get('ArchivingRequestErrorNoticationMsg')
-      .subscribe((text: string) => {
-
-        this.archivingRequestErrorNoticationMsg = text;
-        // this.logger.log('+ + + ArchivingRequestErrorNoticationMsg', text)
-      });
-  }
-
-  // TRANSLATION
-  translateRequestHasBeenArchivedNoticationMsg_part1() {
-    // this.translate.get('RequestHasBeenArchivedNoticationMsg_part1')
-    this.translate.get('RequestSuccessfullyClosed')
-      .subscribe((text: string) => {
-        this.requestHasBeenArchivedNoticationMsg_part1 = text;
-        // this.logger.log('+ + + RequestHasBeenArchivedNoticationMsg_part1', text)
-      });
-  }
-
-  // TRANSLATION
-  translateRequestHasBeenArchivedNoticationMsg_part2() {
-    this.translate.get('RequestHasBeenArchivedNoticationMsg_part2')
-      .subscribe((text: string) => {
-        this.requestHasBeenArchivedNoticationMsg_part2 = text;
-        // this.logger.log('+ + + RequestHasBeenArchivedNoticationMsg_part2', text)
-      });
-  }
-
-
-  translateAllConversationsHaveBeenArchived() {
-    this.translate.get('AllConversationsaveBeenArchived')
-      .subscribe((text: string) => {
-        this.allConversationsaveBeenArchivedMsg = text
-      })
-
-  }
-
-  translateModalYouCannotJoinChat() {
-    this.translate.get('YouCannotJoinChat')
-    .subscribe((text: string) => {
-      this.youCannotJoinChat = text
-    })
-
-    this.translate.get('RequestMsgsPage.Enter').subscribe((text: string) => {
-      this.joinChatTitle = text;
-    });
-  }
 
   _getProjectUserByUserId(member_id) {
     this.usersService.getProjectUserByUserId(member_id)
@@ -996,6 +913,133 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
         });
     })
   }
+
+
+  getTranslations() {
+    this.translateArchivingRequestErrorMsg();
+    this.translateArchivingRequestMsg();
+    this.translateRequestHasBeenArchivedNoticationMsg_part1();
+    this.translateRequestHasBeenArchivedNoticationMsg_part2();
+    this.translateYouAreAboutToJoin();
+    this.translateWarning();
+    this.translateCancel();
+    this.translateJoinToChat();
+    this.translateAreYouSure();
+    this.translateAllConversationsHaveBeenArchived();
+    this.translateModalYouCannotJoinChat();
+
+    this.translate
+      .get('LearnMoreAboutDefaultRoles')
+      .subscribe((translation: any) => {
+        this.learnMoreAboutDefaultRoles = translation
+      })
+
+    this.translate
+      .get('AgentsCannotManageChatbots')
+      .subscribe((translation: any) => {
+        this.agentsCannotManageChatbots = translation
+      })
+  }
+
+  // -----------------------------------------------
+  // @ Translate strings
+  // -----------------------------------------------
+  translateAreYouSure() {
+    this.translate.get('AreYouSure')
+      .subscribe((text: string) => {
+        this.areYouSureMsg = text;
+      });
+  }
+
+
+  translateJoinToChat() {
+    this.translate.get('RequestMsgsPage.Enter')
+      .subscribe((text: string) => {
+        this.joinToChatMsg = text;
+      });
+  }
+
+  translateCancel() {
+    this.translate.get('Cancel')
+      .subscribe((text: string) => {
+        this.cancelMsg = text;
+      });
+  }
+
+  translateWarning() {
+    this.translate.get('Warning')
+      .subscribe((text: string) => {
+        this.warningMsg = text;
+      });
+  }
+
+
+  translateYouAreAboutToJoin() {
+    this.translate.get('YouAreAboutToJoinThisChatAlreadyAssignedTo')
+      .subscribe((text: string) => {
+        this.youAreAboutToJoinMsg = text;
+
+      });
+  }
+
+  // TRANSLATION
+  translateArchivingRequestMsg() {
+    this.translate.get('ArchivingRequestNoticationMsg')
+      .subscribe((text: string) => {
+        this.archivingRequestNoticationMsg = text;
+        // this.logger.log('+ + + ArchivingRequestNoticationMsg', text)
+      });
+  }
+
+  // TRANSLATION
+  translateArchivingRequestErrorMsg() {
+    this.translate.get('ArchivingRequestErrorNoticationMsg')
+      .subscribe((text: string) => {
+
+        this.archivingRequestErrorNoticationMsg = text;
+        // this.logger.log('+ + + ArchivingRequestErrorNoticationMsg', text)
+      });
+  }
+
+  // TRANSLATION
+  translateRequestHasBeenArchivedNoticationMsg_part1() {
+    // this.translate.get('RequestHasBeenArchivedNoticationMsg_part1')
+    this.translate.get('RequestSuccessfullyClosed')
+      .subscribe((text: string) => {
+        this.requestHasBeenArchivedNoticationMsg_part1 = text;
+        // this.logger.log('+ + + RequestHasBeenArchivedNoticationMsg_part1', text)
+      });
+  }
+
+  // TRANSLATION
+  translateRequestHasBeenArchivedNoticationMsg_part2() {
+    this.translate.get('RequestHasBeenArchivedNoticationMsg_part2')
+      .subscribe((text: string) => {
+        this.requestHasBeenArchivedNoticationMsg_part2 = text;
+        // this.logger.log('+ + + RequestHasBeenArchivedNoticationMsg_part2', text)
+      });
+  }
+
+
+  translateAllConversationsHaveBeenArchived() {
+    this.translate.get('AllConversationsaveBeenArchived')
+      .subscribe((text: string) => {
+        this.allConversationsaveBeenArchivedMsg = text
+      })
+
+  }
+
+  translateModalYouCannotJoinChat() {
+    this.translate.get('YouCannotJoinChat')
+      .subscribe((text: string) => {
+        this.youCannotJoinChat = text
+      })
+
+    this.translate.get('RequestMsgsPage.Enter').subscribe((text: string) => {
+      this.joinChatTitle = text;
+    });
+  }
+
 
 
 

@@ -1,11 +1,8 @@
 # tiledesk-dashboard
 
-### 2.4.92-rc1
+### 2.4.94-rc1
 - Deploys in pre
-- Adds integrations
-- Adds usage stats (quotas measurement)
-- Adds reCaptcha 
-- Implements new pricing 
+- Adds the ability to access the design studio for the "tiledesk-ai" chatbot type
 
 ### 2.4.94
 - Deploys in production
@@ -18,6 +15,13 @@
 ### 2.4.92
 - Deploys in production
 - Improvements and bug fixing
+
+### 2.4.92-rc1
+- Deploys in pre
+- Adds integrations
+- Adds usage stats (quotas measurement)
+- Adds reCaptcha 
+- Implements new pricing 
 
 ### 2.4.91
 - Deploys in production

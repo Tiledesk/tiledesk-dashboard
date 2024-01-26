@@ -149,8 +149,9 @@ export class PricingBaseComponent implements OnInit {
                   this.kbLimit = 3
                   console.log('[P-BASE] - GET PROJECT PLAN - KB LIMIT ', this.kbLimit)
 
-                  // Translate params for static page
+                  // Translate params
                   this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.F }
+                  this.tParamsPlanNameTrialExpired = { plan_name: PLAN_NAME.B }
 
                   this.dispayBadgeAvaibleFromInAppStore = false;
 
@@ -186,8 +187,10 @@ export class PricingBaseComponent implements OnInit {
                   this.tParamsPlanAndKb = { plan_name: this.prjct_profile_name, allowed_kb_num: this.kbLimit }
                   console.log('[P-BASE] - GET PROJECT PLAN - KB LIMIT ', this.kbLimit)
 
-                  // Translate params for static page
+                  // Translate params 
                   this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.F }
+                  this.tParamsPlanNameTrialExpired = { plan_name: PLAN_NAME.E }
+
                   this.dispayBadgeAvaibleFromInAppStore = false;
                 } else if (this.areActivePay === false) {
                   console.log('[P-BASE] HERE YES plan areActivePay ' , this.areActivePay, ' prjct_profile_name ',  this.prjct_profile_name, ' TRIAL IS EXPIRED: ', this.trial_expired)
@@ -233,6 +236,7 @@ export class PricingBaseComponent implements OnInit {
                   this.tParamsMonitorAvailableFromPlan = { plan_name: PLAN_NAME.A }
                   this.tParamsCannedAvailableFromPlan = { plan_name: PLAN_NAME.A }
                   this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.A }
+                 
 
                   // --------------------------------------------------------------------------------
                   // @ Translate params for static page (Upgrade plan names reference new plan names)

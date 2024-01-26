@@ -543,7 +543,9 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
 
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
@@ -1216,16 +1218,17 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
         if (projectProfileData.subscription_creation_date) {
           this.subscription_creation_date = projectProfileData.subscription_creation_date;
-        } else {
-          this.subscription_creation_date = projectProfileData.subscription_start_date;
         }
+        // else {
+        //   this.subscription_creation_date = projectProfileData.subscription_start_date;
+        // }
         console.log('[PRJCT-EDIT-ADD] - getProjectPlan subscription_creation_date', this.subscription_creation_date)
         console.log('[PRJCT-EDIT-ADD] - getProjectPlan subscription_creation_date typeof', typeof this.subscription_creation_date)
 
         if (projectProfileData.subscription_id) {
           this.subscription_id = projectProfileData.subscription_id;
           console.log('[PRJCT-EDIT-ADD] - subscription_id ', this.subscription_id);
-          if ( this.subscription_id.startsWith('sub_')){
+          if (this.subscription_id.startsWith('sub_')) {
             this.isSripeSub = true;
             console.log('[PRJCT-EDIT-ADD] - is a stripe subscription ', this.isSripeSub);
           } else {
@@ -1268,7 +1271,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
           }
         }
 
-   
+
         // this.prjct_profile_type = projectProfileData.profile_type;
         // this.logger.log('[PRJCT-EDIT-ADD] - getProjectPlan project Profile Data > prjct_profile_type', this.prjct_profile_type)
 
@@ -1543,7 +1546,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         // If the subscription id is present in the project profile, the methods getSubscriptionPayments() getCustomerAndPaymentMethods() are executed
         // ------------------------------------------------------------------------------------------------------------------------------------------------
         console.log('[PRJCT-EDIT-ADD] this.subscription_id ', this.subscription_id, ' before to run getSubscriptionPayments & getCustomerAndPaymentMethods')
-        if (this.subscription_id && this.subscription_id.startsWith('sub_'))  {
+        if (this.subscription_id && this.subscription_id.startsWith('sub_')) {
           // this.subscription_id = projectProfileData.subscription_id;
           // this.logger.log('[PRJCT-EDIT-ADD] this.subscription_id ', this.subscription_id)
           this.getSubscriptionPayments(projectProfileData.subscription_id);
@@ -1619,10 +1622,10 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   // GET THE SUBSCRIPTION PAYMENT SAVED IN OUR DB
   getSubscriptionPayments(subscription_id) {
     this.projectService.getSubscriptionPayments(subscription_id).subscribe((subscriptionPayments: any) => {
-      this.logger.log('[PRJCT-EDIT-ADD] GET subscriptionPayments ', subscriptionPayments);
+      console.log('[PRJCT-EDIT-ADD] GET subscriptionPayments ', subscriptionPayments);
 
       this.subscriptionPaymentsLength = subscriptionPayments.length
-      this.logger.log('[PRJCT-EDIT-ADD] GET subscriptionPayments Length ', this.subscriptionPaymentsLength);
+      console.log('[PRJCT-EDIT-ADD] GET subscriptionPayments Length ', this.subscriptionPaymentsLength);
       if (subscriptionPayments) {
         this.subscription_payments = [];
         subscriptionPayments.forEach((subscriptionPayment, index) => {
@@ -1634,10 +1637,10 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
              **! *** GET THE subscription_creation_date FROM THE SUBSCRIPTION PAYMENT OBJECT OF TYPE invoice.payment_succeeded ***
              *  AND billing_reason === 'subscription_create'
              */
-            if (subscriptionPayment.object.data.object.billing_reason === 'subscription_create') {
-              this.subscription_creation_date = subscriptionPayment.object.data.object.lines.data[0].period.start
-              console.log('[PRJCT-EDIT-ADD] -  subscriptionPayments > subscription creation date ', this.subscription_creation_date);
-            }
+            // if (subscriptionPayment.object.data.object.billing_reason === 'subscription_create') {
+            //   this.subscription_creation_date = subscriptionPayment.object.data.object.lines.data[0].period.start
+            //   console.log('[PRJCT-EDIT-ADD] -  subscriptionPayments > subscription creation date ', this.subscription_creation_date);
+            // }
 
             // get the last iteration in a _.forEach() loop
 

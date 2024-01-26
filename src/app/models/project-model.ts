@@ -14,10 +14,12 @@ export interface Project {
     profile_name?: any;
     profile_agents?: any;
     trial_expired?: any;
+    trialExpired?: any;
     trial_days_left?: number;
     trial_days?: number;
     profile_type?: string;
     subscription_is_active?: any;
+    isActiveSubscription?: any;
     profile?: any;
     user_role?:string;
     subscription_end_date?: any;

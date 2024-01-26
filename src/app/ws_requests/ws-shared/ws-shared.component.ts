@@ -341,7 +341,7 @@ export class WsSharedComponent implements OnInit {
       } else {
         this.logger.log('[WS-SHARED][WS-REQUESTS-UNSERVED-X-PANEL][HISTORY & NORT-CONVS][WS-REQUESTS-LIST] - THE PARTICIP IS A BOT?', participantIsBot, 'GET USER FROM STORAGE');
         const user = this.usersLocalDbService.getMemberFromStorage(participantid);
-        this.logger.log('[WS-SHARED][WS-REQUESTS-UNSERVED-X-PANEL][HISTORY & NORT-CONVS][WS-REQUESTS-LIST] - USER GET FROM STORAGE ', user);
+        console.log('[WS-SHARED][WS-REQUESTS-UNSERVED-X-PANEL][HISTORY & NORT-CONVS][WS-REQUESTS-LIST] - USER GET FROM STORAGE ', user);
         if (user) {
           // check if user iamge exist  
           let imgUrl = ''

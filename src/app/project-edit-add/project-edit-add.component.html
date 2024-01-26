@@ -281,15 +281,15 @@
                             
 
                               <span *ngIf="!appSumoProfile">
-                                <span *ngIf="profile_name !== PLAN_NAME?.C">
-                                  ( {{ seatsLimit}} {{ "AgentSeats" | translate }} 
-                                  <span *ngIf="!isSripeSub"> 
+                                <!-- <span *ngIf="profile_name !== PLAN_NAME?.C && profile_name !== PLAN_NAME?.F"> -->
+                                  ( {{ seatsLimit}} {{ "AgentSeats" | translate }} )
+                                  <!-- <span *ngIf="!isSripeSub"> 
                                     )
                                   </span>
-                                  <span *ngIf="isSripeSub"> 
+                                  <span *ngIf="isSripeSub" > 
                                     x € {{ plan_amount / 100 }} .00 / {{ plan_interval | translate}} )
-                                  </span>
-                                </span>
+                                  </span> -->
+                                <!-- </span> -->
                               </span>
 
 
@@ -562,24 +562,22 @@
                             </i>
                             <span style="font-weight: 400;  padding: 5px;height:31px;position: relative;top: 2px;">
 
-                              <!-- IF THE  subscription_creation_date IS OBTAINED FROM THE PROJECT PROFILE -->
-                              <!-- {{ subscription_creation_date | date: 'dd/MM/yyyy' }} -->
-
                               <!-- IF THE  subscription_creation_date IS OBTAINED FROM THE SUBSCRIPTION PAYMENT OBJECT -->
-                              <span *ngIf="profile_name === PLAN_NAME?.C || profile_name === PLAN_NAME?.F">
-                                <!-- {{ subscription_creation_date | date: 'dd/MM/yyyy' }}  -->
+                              <!-- *ngIf="profile_name === PLAN_NAME?.C || profile_name === PLAN_NAME?.F" -->
+                              <span class="subscription-creation-date">
+                               
                                 {{ subscription_creation_date | amDateFormat: 'LL' }}
                                
                               </span>
-                              <span *ngIf="profile_name !== PLAN_NAME?.C || profile_name !== PLAN_NAME?.F">
-                                <!-- {{ subscription_creation_date * 1000 | date:'dd/MM/yyyy' }}  -->
+                              <!-- <span *ngIf="profile_name !== PLAN_NAME?.C && profile_name !== PLAN_NAME?.F">
+                    
                                 <span *ngIf="isSripeSub"> 
                                   {{ subscription_creation_date * 1000 | amDateFormat: 'LL' }}
                                 </span>
                                 <span  *ngIf="!isSripeSub"> 
                                   {{subscription_creation_date | amDateFormat: 'LL'}}
                                 </span> 
-                              </span>
+                              </span> -->
                             </span>
                           </span>
 
