@@ -22,6 +22,7 @@
     "Visitors": "Visitantes",
     "Requests": "Conversaciones",
     "Request": "Conversación",
+    "ConverationRemoved": "This conversation has been removed",
     "History": "Historial",
     "Settings": "Ajustes",
     "ViewOption": "View options",
