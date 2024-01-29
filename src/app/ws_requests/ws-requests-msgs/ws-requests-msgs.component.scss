@@ -5371,10 +5371,19 @@ label {
   font-weight: 400;
 }
 
-.transcript-option-wpr:hover span{
- color: #0f62ff!important;
+.transcript-option-wpr:hover span {
+  color: #0f62ff !important;
 }
 
-.transcript-option-wpr:hover .transcript-option-text{
-  color: #0f62ff!important;
- }
+.transcript-option-wpr:hover .transcript-option-text {
+  color: #0f62ff !important;
+}
+
+.request--removed {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: "Poppins","Roboto", "Arial", sans-serif;
+}

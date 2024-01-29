@@ -592,8 +592,7 @@
         <!-- ----------------------------------------------------------------------------- -->
         <!-- @ RIGHT SIDEBAR -->
         <!-- ----------------------------------------------------------------------------- -->
-        <div id="right-col" class="right-col"
-          [ngClass]="{'col-sm-5' : CHAT_PANEL_MODE === false, 'col-sm-12 no-padding' : CHAT_PANEL_MODE === true, 'chat-panel-mode-on-desktop' :CHAT_PANEL_MODE === true && !isMobile, 'chat-right-col': CHAT_PANEL_MODE === true}">
+        <div id="right-col" class="right-col" *ngIf="request" [ngClass]="{'col-sm-5' : CHAT_PANEL_MODE === false, 'col-sm-12 no-padding' : CHAT_PANEL_MODE === true, 'chat-panel-mode-on-desktop' :CHAT_PANEL_MODE === true && !isMobile, 'chat-right-col': CHAT_PANEL_MODE === true}">
           <!-- card  -->
           <div class="right-card" style="padding-top:0px; padding-bottom:5px;margin-bottom: 10px;"
             [ngClass]="{'right-card-chat-panel-mode' : CHAT_PANEL_MODE === true, 'right-card-normal-mode' : CHAT_PANEL_MODE === false}">
@@ -3445,6 +3444,19 @@
 
           </div>
         </div>
+
+        <div id="right-col" class="right-col" *ngIf="!request" [ngClass]="{'col-sm-5' : CHAT_PANEL_MODE === false, 'col-sm-12 no-padding' : CHAT_PANEL_MODE === true, 'chat-panel-mode-on-desktop' :CHAT_PANEL_MODE === true && !isMobile, 'chat-right-col': CHAT_PANEL_MODE === true}">
+          <!-- card  -->
+          <div class="right-card" style="padding-top:0px; padding-bottom:5px;margin-bottom: 10px;"
+            [ngClass]="{'right-card-chat-panel-mode' : CHAT_PANEL_MODE === true, 'right-card-normal-mode' : CHAT_PANEL_MODE === false}">
+
+            <div class="request--removed"> 
+              {{'ConverationRemoved' | translate }}
+            </div>
+            
+          </div>
+        </div>
+
       </div>
     </div>
 

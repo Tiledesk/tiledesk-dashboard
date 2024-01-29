@@ -1222,6 +1222,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
     } else {
       this.CHAT_PANEL_MODE = false;
+      // this.CHAT_PANEL_MODE = true; // Nikola to test chat mode
       // thia.logger.log('[WS-REQUESTS-MSGS] - CHAT_PANEL_MODE »»» ', this.CHAT_PANEL_MODE);
       const _elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
       // thia.logger.log('[WS-REQUESTS-MSGS] - CHAT_PANEL_MODE »»» _elemMainPanel', _elemMainPanel);
@@ -1597,7 +1598,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       )
       .subscribe((wsrequest) => {
 
-        this.logger.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** ', wsrequest)
+        // console.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** ', wsrequest)
         this.request = wsrequest;
 
         if (this.request) {
