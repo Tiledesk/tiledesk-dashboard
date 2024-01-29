@@ -276,7 +276,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     this.translateStrings();
     this.listenHasDeleteUserProfileImage();
 
-    // this.getQuotes();
+ 
 
   } // OnInit
 
@@ -289,7 +289,6 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   }
 
   getQuotes() {
-
     this.quotesService.getAllQuotes(this.projectId).subscribe((resp: any) => {
       console.log("quotes retrieved: ", resp)
 
@@ -868,13 +867,18 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
           this.projectId = project._id;
           this.projectName = project.name;
           this.OPERATING_HOURS_ACTIVE = this.project.operatingHours
-          this.getQuotes();
+          // this.getQuotes();
           this.logger.log('[NAVBAR] -> OPERATING_HOURS_ACTIVE ', this.OPERATING_HOURS_ACTIVE);
         }
     
         this.getProjects()
       }
     });
+  }
+
+  onOpenQuoteMenu() {
+   console.log('[NAVBAR] - on open quotes menu' )
+   this.getQuotes();
   }
 
   getTrialLeft() {

@@ -410,11 +410,10 @@
 
           <ng-container *ngIf="!showskeleton ">
             <span *ngIf="USER_ROLE !== 'agent'">
-
+              <!-- (hasFinishedGetProjectBots)="hasFinishedGetProjectBots()" -->
               <home-cds 
                 (goToCreateChatbot)="goToCreateChatbot()" 
-                (hasFinishedGetProjectBots)="hasFinishedGetProjectBots()"
-                > </home-cds>
+                [chatbots] = "chatbots"> </home-cds>
 
               <div class="home--blocks" id="homeBlocks" *ngFor="let item of child_list_order">
 

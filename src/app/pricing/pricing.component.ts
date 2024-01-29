@@ -121,6 +121,7 @@ export class PricingComponent implements OnInit, OnDestroy {
   DISPLAY_BTN_PLAN_LIVE_20_CENTSXUNIT_PROD: boolean = false;
   DISPLAY_BTN_PLAN_TEST_3_EURXUNIT_PRE: boolean = false;
   DISPLAY_BTN_PLAN_TEST_3_EURXDAY_LIVE: boolean = false;
+  ARE_VISIBLE_NEW_PRICING_BTN: boolean
 
   contactUsEmail: string;
   displayClosePricingPageBtn: boolean;
@@ -619,8 +620,17 @@ export class PricingComponent implements OnInit, OnDestroy {
           // console.log('[PRICING] - ROUTE-PARAMS DISPLAY_BTN_PLAN_TEST_3_EURXDAY_LIVE', this.DISPLAY_BTN_PLAN_TEST_3_EURXDAY_LIVE)
         }
       }
+      if (appID === "1:522823349790:web:0d4ba710f38b586e1fa00f") { // prod
+        this.ARE_VISIBLE_NEW_PRICING_BTN = false
+        console.log('[PRICING] ARE_VISIBLE_NEW_PRICING_BTN prod key: ', this.ARE_VISIBLE_NEW_PRICING_BTN);
+      } else if (appID === "1:269505353043:web:b82af070572669e3707da6") { // pre
+        this.ARE_VISIBLE_NEW_PRICING_BTN = true
+        console.log('[PRICING] ARE_VISIBLE_NEW_PRICING_BTN pre key: ', this.ARE_VISIBLE_NEW_PRICING_BTN);
+      }
     });
   }
+  // pre app id 1:269505353043:web:b82af070572669e3707da6
+  // prod app id 1:522823349790:web:0d4ba710f38b586e1fa00f
 
   setPlansPKandCode() {
     if (this.TILEDESK_V2 === true) {

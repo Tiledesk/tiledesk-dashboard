@@ -434,13 +434,16 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
             <!-- Plan D Montly -->
             <!-- --------------------- -->
             <!-- && planName === PLAN_NAME.D -->
-            <div class="checkout-btn-wpr" *ngIf="monthlyPeriod  && profileType === 'free'"
-              (click)="openPaymentLinkMontlyPlanD()">
-              <button id="monthly-plan-a" type="button"
-                class=" btn btn-new btn-size-xl-round btn--primary css-km1x31 epaijzs0">
-                <span> Go to checkout (Basic M) </span>
-              </button>
-            </div>
+          
+            <ng-container *ngIf="ARE_VISIBLE_NEW_PRICING_BTN"> 
+              <div class="checkout-btn-wpr" *ngIf="monthlyPeriod  && profileType === 'free'"
+                (click)="openPaymentLinkMontlyPlanD()">
+                <button id="monthly-plan-a" type="button"
+                  class=" btn btn-new btn-size-xl-round btn--primary css-km1x31 epaijzs0">
+                  <span> Go to checkout (Basic M) </span>
+                </button>
+              </div>
+            </ng-container>
             <!-- --------------------- -->
             <!-- Plan D Annually -->
             <!-- --------------------- -->
@@ -467,13 +470,16 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
             <!-- Plan E Montly -->
             <!-- --------------------- -->
             <!-- && planName === PLAN_NAME.E -->
-            <div class="checkout-btn-wpr" *ngIf="monthlyPeriod  && profileType === 'free'"
-              (click)="openPaymentLinkMontlyPlanE()">
-              <button id="monthly-plan-b" type="button"
-                class=" btn btn-new btn-size-xl-round btn--primary css-km1x31 epaijzs0">
-                <span> Go to checkout (Premium M) </span>
-              </button>
-            </div>
+         
+            <ng-container *ngIf="ARE_VISIBLE_NEW_PRICING_BTN"> 
+              <div class="checkout-btn-wpr" *ngIf="monthlyPeriod  && profileType === 'free'"
+                (click)="openPaymentLinkMontlyPlanE()">
+                <button id="monthly-plan-b" type="button"
+                  class=" btn btn-new btn-size-xl-round btn--primary css-km1x31 epaijzs0">
+                  <span> Go to checkout (Premium M) </span>
+                </button>
+              </div>
+            </ng-container>
 
             <!-- --------------------- -->
             <!-- Plan E Annually -->

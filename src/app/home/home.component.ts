@@ -316,7 +316,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           this.logger.log('[HOME] > OPERATING_HOURS_ACTIVE', this.OPERATING_HOURS_ACTIVE)
 
           this.findCurrentProjectAmongAll(this.projectId)
-          this.getProjectById(this.projectId)
+          this.getProjectById(this.projectId);
+          this.getProjectBots();
           this.init()
         }
       }, (error) => {
@@ -330,6 +331,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   getProjectById(projectId) {
     this.projectService.getProjectById(projectId).subscribe((project: any) => {
       this.logger.log('[HOME] - GET PROJECT BY ID - PROJECT: ', project);
+
       if (project && project.attributes && project.attributes.dashlets) {
         this.PROJECT_ATTRIBUTES = project.attributes;
         this.getDashlet(this.PROJECT_ATTRIBUTES)
@@ -350,15 +352,34 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     }, () => {
       this.logger.log('[HOME] - GET PROJECT BY ID * COMPLETE * ');
       // this.getApps();
-      setTimeout(() => {
-        this.showskeleton = false;
-      }, 1500);
+      // setTimeout(() => {
+      //   this.showskeleton = false;
+      //   console.log('[HOME] - skeleton showskeleton ', this.showskeleton );
+      // }, 1500);
     });
   }
 
-  hasFinishedGetProjectBots() {
-    console.log('[HOME] - hasFinishedGetProjectBots in home-cds ');
+  getProjectBots() {
+    this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
+      this.chatbots = faqKb
+      console.log('[HOME] - GET FAQKB * chatbots *', this.chatbots);
+  
+    }, (error) => {
+      this.logger.error('[HOME] - GET FAQKB - ERROR ', error);
+      this.showskeleton = false;
+      // this.showSpinner = false
+    }, () => {
+      console.log('[HOME] - GET FAQKB * COMPLETE *');
+      this.showskeleton = false;
+      // this.showSpinner = false
+     
+    });
   }
+
+  // hasFinishedGetProjectBots() {
+  //   // this.showskeleton = false;
+  //   console.log('[HOME] - skeleton hasFinishedGetProjectBots in home-cds ');
+  // }
 
   operatingHoursPopoverClosed() {
     this.logger.log('[HOME] - operatingHoursPopoverClosed');

@@ -53,7 +53,8 @@
           <li id="usage-stats">
 
             <button mat-mini-fab aria-label="trend icon" [matMenuTriggerFor]="menu" class="quote-modal-btn"
-              [ngClass]="{'quote-modal-btn-no-left-padding': prjct_profile_type === 'free'}">
+              [ngClass]="{'quote-modal-btn-no-left-padding': prjct_profile_type === 'free'}" 
+              (click)="onOpenQuoteMenu()">
               <!-- <span class="material-icons-round" style="font-size: 16px;">
                 storage
                 </span> -->

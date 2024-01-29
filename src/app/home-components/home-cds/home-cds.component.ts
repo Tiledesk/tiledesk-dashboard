@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'app/core/auth.service';
 import { Chatbot } from 'app/models/faq_kb-model';
@@ -15,16 +15,17 @@ import { takeUntil } from 'rxjs/operators'
   templateUrl: './home-cds.component.html',
   styleUrls: ['./home-cds.component.scss']
 })
-export class HomeCdsComponent implements OnInit {
+export class HomeCdsComponent implements OnInit, OnChanges{
   @Output() goToCreateChatbot = new EventEmitter();
-  @Output() hasFinishedGetProjectBots = new EventEmitter();
+  // @Output() hasFinishedGetProjectBots = new EventEmitter();
+  @Input() chatbots:  Array<Chatbot> = [];
   private unsubscribe$: Subject<any> = new Subject<any>();
   USER_ROLE: string;
   projectId: string;
   UPLOAD_ENGINE_IS_FIREBASE: boolean;
   storageBucket: string;
   baseUrl: string;
-  chatbots:  Array<Chatbot> = [];
+  // chatbots:  Array<Chatbot> = [];
   chatbotName: string;
   lastUpdatedChatbot: Chatbot;
   showSpinner: boolean
@@ -40,7 +41,13 @@ export class HomeCdsComponent implements OnInit {
 
     ngOnInit(): void {
     this.getUserRole()
-    this.getCurrentProjectAndPrjctBots()
+    // this.getCurrentProjectAndPrjctBots()
+   
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log('[HOME-CDS] - chatbots ngOnChanges', this.chatbots);
+    this.sortChatbots()
   }
 
   ngOnDestroy(): void {
@@ -50,28 +57,28 @@ export class HomeCdsComponent implements OnInit {
 
 
 
-  getCurrentProjectAndPrjctBots() {
-    this.showSpinner = true
-    this.auth.project_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((project) => {
-        this.logger.log('[HOME-CDS] $UBSCIBE TO PUBLISHED PROJECT - RES  ', project)
+  // getCurrentProjectAndPrjctBots() {
+  //   this.showSpinner = true
+  //   this.auth.project_bs
+  //     .pipe(
+  //       takeUntil(this.unsubscribe$)
+  //     )
+  //     .subscribe((project) => {
+  //       this.logger.log('[HOME-CDS] $UBSCIBE TO PUBLISHED PROJECT - RES  ', project)
 
-        if (project) {
+  //       if (project) {
 
-          this.projectId = project._id
+  //         this.projectId = project._id
 
-          this.getImageStorageThenBots();
-        }
-      }, (error) => {
-        this.logger.error('[HOME-CDS] $UBSCIBE TO PUBLISHED PROJECT - ERROR ', error);
-        this.showSpinner = false
-      }, () => {
-        this.logger.log('[HOME-CDS] $UBSCIBE TO PUBLISHED PROJECT * COMPLETE *');
-      });
-  }
+  //         this.getImageStorageThenBots();
+  //       }
+  //     }, (error) => {
+  //       this.logger.error('[HOME-CDS] $UBSCIBE TO PUBLISHED PROJECT - ERROR ', error);
+  //       this.showSpinner = false
+  //     }, () => {
+  //       this.logger.log('[HOME-CDS] $UBSCIBE TO PUBLISHED PROJECT * COMPLETE *');
+  //     });
+  // }
 
   getUserRole() {
     this.usersService.project_user_role_bs
@@ -85,31 +92,64 @@ export class HomeCdsComponent implements OnInit {
   }
 
 
-  getImageStorageThenBots() {
-    if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
+  // getImageStorageThenBots() {
+  //   if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
 
-      this.UPLOAD_ENGINE_IS_FIREBASE = true;
-      const firebase_conf = this.appConfigService.getConfig().firebase;
-      this.storageBucket = firebase_conf['storageBucket'];
-      this.logger.log('[HOME-CDS] - IMAGE STORAGE ', this.storageBucket, 'usecase firebase')
+  //     this.UPLOAD_ENGINE_IS_FIREBASE = true;
+  //     const firebase_conf = this.appConfigService.getConfig().firebase;
+  //     this.storageBucket = firebase_conf['storageBucket'];
+  //     this.logger.log('[HOME-CDS] - IMAGE STORAGE ', this.storageBucket, 'usecase firebase')
 
       
-      this.getProjectBots(this.storageBucket, this.UPLOAD_ENGINE_IS_FIREBASE) // USED FOR COUNT OF BOTS FOR THE NEW HOME-CDS-CREATE-CHATBOT-CREATE-CHATBOT
+  //     this.getProjectBots(this.storageBucket, this.UPLOAD_ENGINE_IS_FIREBASE) // USED FOR COUNT OF BOTS FOR THE NEW HOME-CDS-CREATE-CHATBOT-CREATE-CHATBOT
 
-    } else {
+  //   } else {
 
-      this.UPLOAD_ENGINE_IS_FIREBASE = false;
-      this.baseUrl = this.appConfigService.getConfig().baseImageUrl;
-      this.logger.log('[HOME-CDS] - IMAGE STORAGE ', this.baseUrl, 'usecase native')
+  //     this.UPLOAD_ENGINE_IS_FIREBASE = false;
+  //     this.baseUrl = this.appConfigService.getConfig().baseImageUrl;
+  //     this.logger.log('[HOME-CDS] - IMAGE STORAGE ', this.baseUrl, 'usecase native')
       
-      this.getProjectBots(this.baseUrl, this.UPLOAD_ENGINE_IS_FIREBASE) // USED FOR COUNT OF BOTS FOR THE NEW HOME-CDS-CREATE-CHATBOT-CREATE-CHATBOT
-    }
-  }
+  //     this.getProjectBots(this.baseUrl, this.UPLOAD_ENGINE_IS_FIREBASE) // USED FOR COUNT OF BOTS FOR THE NEW HOME-CDS-CREATE-CHATBOT-CREATE-CHATBOT
+  //   }
+  // }
 
 
-  getProjectBots(storage, uploadEngineIsFirebase) {
-    this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
-      this.chatbots = faqKb
+  // getProjectBots(storage, uploadEngineIsFirebase) {
+  //   this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
+  //     this.chatbots = faqKb
+  //     if (this.chatbots &&  this.chatbots.length > 0) {
+        
+  //       this.chatbots.sort(function compare(a: Chatbot, b: Chatbot) {
+  //         if (a['updatedAt'] > b['updatedAt']) {
+  //           return -1;
+  //         }
+  //         if (a['updatedAt'] < b['updatedAt']) {
+  //           return 1;
+  //         }
+  //         return 0;
+  //       });
+
+  //       this.logger.log('[HOME-CDS] - GET FAQKB RES (sorted)', this.chatbots);
+  
+  //       this.chatbotName = this.chatbots[0].name;
+  //       this.lastUpdatedChatbot = this.chatbots[0];
+  //       this.logger.log('[HOME-CDS] - lastUpdatedChatbot ', this.lastUpdatedChatbot);
+  //       this.logger.log('[HOME-CDS] - GET FAQKB lastUpdatedChatbot', this.lastUpdatedChatbot);
+  //     } 
+  
+  //   }, (error) => {
+  //     this.logger.error('[HOME-CDS] - GET FAQKB - ERROR ', error);
+  //     this.showSpinner = false
+  //   }, () => {
+  //     console.log('[HOME-CDS] - GET FAQKB * COMPLETE *');
+  //     this.showSpinner = false
+  //     this.hasFinishedGetProjectBots.emit()
+  //   });
+  // }
+
+  sortChatbots() {
+    // this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
+    //   this.chatbots = faqKb
       if (this.chatbots &&  this.chatbots.length > 0) {
         
         this.chatbots.sort(function compare(a: Chatbot, b: Chatbot) {
@@ -122,22 +162,23 @@ export class HomeCdsComponent implements OnInit {
           return 0;
         });
 
-        this.logger.log('[HOME-CDS] - GET FAQKB RES (sorted)', this.chatbots);
+        console.log('[HOME-CDS] - GET FAQKB RES (sorted)', this.chatbots);
   
         this.chatbotName = this.chatbots[0].name;
         this.lastUpdatedChatbot = this.chatbots[0];
-        this.logger.log('[HOME-CDS] - lastUpdatedChatbot ', this.lastUpdatedChatbot);
-        this.logger.log('[HOME-CDS] - GET FAQKB lastUpdatedChatbot', this.lastUpdatedChatbot);
+        console.log('[HOME-CDS] - lastUpdatedChatbot ', this.lastUpdatedChatbot);
+        console.log('[HOME-CDS] - GET FAQKB lastUpdatedChatbot', this.lastUpdatedChatbot);
       } 
   
-    }, (error) => {
-      this.logger.error('[HOME-CDS] - GET FAQKB - ERROR ', error);
-      this.showSpinner = false
-    }, () => {
-      this.logger.log('[HOME-CDS] - GET FAQKB * COMPLETE *');
-      this.showSpinner = false
-      this.hasFinishedGetProjectBots.emit()
-    });
+    // }
+    // , (error) => {
+    //   this.logger.error('[HOME-CDS] - GET FAQKB - ERROR ', error);
+    //   this.showSpinner = false
+    // }, () => {
+    //   console.log('[HOME-CDS] - GET FAQKB * COMPLETE *');
+    //   this.showSpinner = false
+    //   this.hasFinishedGetProjectBots.emit()
+    // });
   }
 
   goToBotProfile() {
