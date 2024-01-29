@@ -1,5 +1,21 @@
 # tiledesk-dashboard
 
+### 2.4.95
+- Deploys in production
+- Displays a message on the conversation details page when a conversation has been removed
+
+### 2.4.95-rc3
+- Deploys in pre
+- Improvements and bug fixing
+
+### 2.4.95-rc2
+- Deploys in pre
+- Improvements and bug fixing
+
+### 2.4.95-rc1
+- Deploys in pre
+- Adds the ability to access the design studio for the "tiledesk-ai" chatbot type
+
 ### 2.4.94
 - Deploys in production
 - Adds the ability to access the design studio for the "tiledesk-ai" chatbot type
