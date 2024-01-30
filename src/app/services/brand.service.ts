@@ -23,6 +23,7 @@ export class BrandService {
     "company_site_name": "tiledesk.com",
     "company_site_url": "https://www.tiledesk.com",
     "company_logo_white__url": "assets/img/logos/tiledesk-logo_white_orange.svg",
+    "company_logo_planet__url": "assets/img/logos/tiledesk_planet.svg",
     "company_logo_black__url": "assets/img/logos/tiledesk_4.0_logo_black_text.svg",
     "company_logo_allwhite__url": "assets/img/logos/tiledesk_3.0_logo_all_white_v2_no_version.svg",
     "company_logo_no_text__url": "assets/img/logos/tiledesk-solo-logo.png",
@@ -33,7 +34,19 @@ export class BrandService {
     "contact_us_email": "support@tiledesk.com",
     "footer": {
         "display_terms_and_conditions_link": true,
-        "display_contact_us_email": true
+        "display_contact_us_email": true,
+        "display_star_us_on_github": true,
+        "display_leave_us_a_feedback": true,
+        "display_followus_on_x": true,
+        "followus_on_x_URL": "https://twitter.com/tiledesk",
+        "display_followus_on_fb": true,
+        "followus_on_fb_URL": "https://www.facebook.com/tiledesk",
+        "display_followus_on_in": true,
+        "followus_on_in_URL": "https://www.linkedin.com/company/tiledesk",
+        "display_followus_on_instagram": true,
+        "followus_on_instagram_URL": "https://www.instagram.com/tiledesk/",
+        "display_followus_on_youtube": true,
+        "followus_on_youtube_URL": "https://www.youtube.com/@tiledesk"
     },
     "recent_project_page": {
         "company_logo_black__width": "130px"
@@ -108,39 +121,39 @@ export class BrandService {
           this.logger.log('[BRAND-SERV] loadBrand remoteConfig is false - env brandSrc is empty ? ', remoteBrandUrl);
           url = environment['brandSrc']
         } else {
-          this.logger.log('[BRAND-SERV] loadBrand remoteConfig is false - env brandSrc is empty ? ', remoteBrandUrl, ' -> load from assets')
+          console.log('[BRAND-SERV] loadBrand remoteConfig is false - env brandSrc is empty ? ', remoteBrandUrl, ' -> load from assets')
           this.brand =  this._brand;
         }
       } else {
-        this.logger.log('[BRAND-SERV] loadBrand remoteConfig is false - env NOT has Property brandSrc -> load from assets');
+        console.log('[BRAND-SERV] loadBrand remoteConfig is false - env NOT has Property brandSrc -> load from assets');
         this.brand = this._brand;
       }
     } else {
       const res = await this.httpClient.get(environment['remoteConfigUrl']).toPromise();
-      this.logger.log('[BRAND-SERV] loadBrand - remoteConfig -> true get remoteConfig response ', res);
+      console.log('[BRAND-SERV] loadBrand - remoteConfig -> true get remoteConfig response ', res);
 
-      // const remoteConfigData = JSON.parse(res['_body'])
+     
       const remoteConfigData = res
       // this.logger.log('BrandService loadBrand - remoteConfig is true - get remoteConfigData  res ', remoteConfigData);
 
       if (remoteConfigData.hasOwnProperty("brandSrc")) {
-        this.logger.log('[BRAND-SERV] loadBrand remoteConfig is true - remoteConfigData has Property brandSrc');
+        console.log('[BRAND-SERV] loadBrand remoteConfig is true - remoteConfigData has Property brandSrc');
 
         const remoteBrandUrl = this.isEmpty(remoteConfigData['brandSrc']);
         if (!remoteBrandUrl) {
-          this.logger.log('[BRAND-SERV] loadBrand remoteConfig is true - remoteConfigData brandSrc is empty ?', remoteBrandUrl);
+          console.log('[BRAND-SERV] loadBrand remoteConfig is true - remoteConfigData brandSrc is empty ?', remoteBrandUrl);
 
           url = remoteConfigData['brandSrc']
 
 
         } else {
-          this.logger.log('[BRAND-SERV] loadBrand remoteConfig is true - remoteConfigData brandSrc is empty ?', remoteBrandUrl, ' -> load from assets');
+          console.log('[BRAND-SERV] loadBrand remoteConfig is true - remoteConfigData brandSrc is empty ?', remoteBrandUrl, ' -> load from assets');
 
           this.brand = this._brand;
         }
 
       } else {
-        this.logger.log('[BRAND-SERV] loadBrand remoteConfig is true - remoteConfigData NOT has Property brandSrc -> load from assets');
+        console.log('[BRAND-SERV] loadBrand remoteConfig is true - remoteConfigData NOT has Property brandSrc -> load from assets');
         // this.setBrand(this.local_url)
         // url = this.local_url
         this.brand = this._brand;
@@ -151,14 +164,15 @@ export class BrandService {
       if (url) {
         const data = await this.httpClient.get(url).toPromise();
 
-        this.logger.log('[BRAND-SERV] **** GET BRAND FROM URL ****', url);
+        console.log('[BRAND-SERV] **** GET BRAND FROM URL ****', url);
 
-        this.brand = JSON.parse(data['_body'])
+        // this.brand = JSON.parse(data['_body'])
+        this.brand = data
 
-        this.logger.log('[BRAND-SERV] loadBrand - brand: ', this.brand);
+        console.log('[BRAND-SERV] loadBrand - brand: ', this.brand);
       }
     } catch (err) {
-      this.logger.error('[BRAND-SERV] loadBrand error : ', err);
+      console.error('[BRAND-SERV] loadBrand error : ', err);
 
       this.brand = this._brand;
       // this.notify.showNotificationChangeProject('ops', 2, 'done');
