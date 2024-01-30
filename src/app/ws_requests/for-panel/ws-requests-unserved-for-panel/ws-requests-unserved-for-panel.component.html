@@ -108,7 +108,7 @@
                 <div class="lead--avatar"
                   [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + request?.requester_fullname_fillColour + ')'}"
                   [ngClass]="{'requester_fullname-undefined' : !request?.snapshot?.lead?.fullname }">
-                  <span style="color: #ffffff"> {{ request?.requester_fullname_initial }} </span>
+                  <div style="color: #ffffff"> {{ request?.requester_fullname_initial }} </div>
                   <div class="requester-status-in-unserved-list"
                     [ngClass]="{'requester-is-online' : request?.REQUESTER_IS_ONLINE, 'requester-is-offline' : !request?.REQUESTER_IS_ONLINE }">
                   </div>
@@ -172,7 +172,7 @@
                   </div>
                 </div>
               </div>
-              <div class="arrow-container" (click)="displayDetails(request)">
+              <div style="display: none;" class="arrow-container" (click)="displayDetails(request)">
                 <div id="arrow_3" class="arrow-wrapper">
                   <div class="arrow arrow--right">
                     <span></span>

@@ -958,6 +958,7 @@ my-app .main-panel .main-content .card {
 
 .swal-size-sm {
   width: 260px !important;
+  background-color: var(--card-background-color);
 
   /* // .swal-icon {
   //   width: 60px !important;
@@ -972,12 +973,17 @@ my-app .main-panel .main-content .card {
 .swal-size-sm > .swal-title {
   font-size: 18px !important;
   padding-top: 0px !important;
+  color: var(--text-color);
 }
 
 .swal-size-sm > .swal-text {
   font-size: 14px;
   text-align: center;
+  color: var(--secondary-text-color);
 }
+
+
+
 
 /*  used for the message of type info in the chat section of the conversation detail page */
 .type-info-msg-text > p {
@@ -1727,6 +1733,7 @@ appdashboard-app-store > div > div > div > div > .card-app-store {
   background: $plan-c-background;
 }
 
+<<<<<<< HEAD
 
 /* -----------------------------------------
 /* New buttons > Btn Primary
@@ -2082,6 +2089,8 @@ appdashboard-app-store > div > div > div > div > .card-app-store {
 
 
 
+=======
+>>>>>>> features/change-style
 // https://github.com/ng-select/ng-select/issues/608
 // .ng-select.custom {
 //   .ng-select-container {

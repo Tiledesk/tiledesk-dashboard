@@ -591,7 +591,7 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
       )
       .pipe(skip(1))
       .subscribe((wsrequests) => {
-        // console.log("[WS-REQUESTS-UNSERVED-X-PANEL] - subscribe getWsRequests$", wsrequests);
+        console.log("[WS-REQUESTS-UNSERVED-X-PANEL] - subscribe getWsRequests$", wsrequests);
         if (wsrequests) {
           this.addDeptObject(wsrequests)
 

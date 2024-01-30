@@ -18,7 +18,7 @@ button:hover span {
     padding-top: 0px;
     margin-top: 0px !important;
     padding-bottom: 0px !important;
-    background: #fff;
+    background: var(--card-background-color);
     position: relative; // requirements for perfect scrollbar
     height: 400px; // requirements for perfect scrollbar
 
@@ -765,16 +765,16 @@ $f21blue: #039be5;
 }
 
 .project-name-in-unserved-top-bar {
-    color: #dbddde;
-    font-family: "Helvetica Neue", sans-serif;
+    color: var(--text-color-on-dark);
+    font-family: var(--header-font-family);
     font-weight: 400;
     margin-left: 20px;
 }
 
-.go-back-icon {
-    color: #dbddde;
-    vertical-align: middle;
-}
+// .go-back-icon {
+//     color: #dbddde;
+//     vertical-align: middle;
+// }
 
 .no-request-msg-wrapper {
     flex-direction: column;
@@ -787,17 +787,17 @@ $f21blue: #039be5;
     margin: 100px auto;
 }
 
-.no-request-icon {
-    vertical-align: middle;
-    color: #a9abad;
-    font-size: 48px;
-}
+// .no-request-icon {
+//     vertical-align: middle;
+//     color: #a9abad;
+//     font-size: 48px;
+// }
 
 .no-request-msg {
-    // font-weight: 600;
     font-size: 18px;
-    color: #a9abad;
+    color: var(--secondary-text-color);
     text-align: center;
+    font-family: var(--content-font-family) ;
 }
 
 .left-sidebar-unserved-requests-wrapper {
@@ -823,7 +823,8 @@ $f21blue: #039be5;
 }
 
 .left-sidebar-unserved-requests:hover {
-    background: rgb(245, 245, 245);
+    // background: rgb(245, 245, 245);
+    background: var(--list-item-input-row-hover-background)
 }
 
 .left-sidebar-unserved-requests-row {
@@ -968,11 +969,11 @@ $f21blue: #039be5;
 }
 
 .unserved-for-panel-title {
-    font-family: "Helvetica Neue", sans-serif;
+    font-family: var(--header-font-family);
     font-size: 16px;
-    font-weight: 600;
+    font-weight: 500;
     text-transform: lowercase;
-    // padding-left: 12px;
+    color: var(--text-color);
     text-align: center;
 }
 
@@ -986,7 +987,7 @@ $f21blue: #039be5;
 .selected-project-bar {
     padding-right: 10px;
     padding-bottom: 0px !important;
-    background: #2d323e;
+    background: var(--dark-background);
 }
 
 // --------------------------------------------------
@@ -1013,16 +1014,16 @@ $f21blue: #039be5;
     justify-content: center;
 }
 
-.h1---custom {
-    color: rgb(0, 20, 50);
-    opacity: 0.6;
-    text-align: center;
-    // text-transform: uppercase;
-    transition: opacity 0.3s;
-    font-size: 12px;
-    margin-top: 10px;
-    font-weight: 400;
-}
+// .h1---custom {
+//     color: rgb(0, 20, 50);
+//     opacity: 0.6;
+//     text-align: center;
+//     // text-transform: uppercase;
+//     transition: opacity 0.3s;
+//     font-size: 12px;
+//     margin-top: 10px;
+//     font-weight: 400;
+// }
 
 .arrow-wrapper:hover h1 {
     opacity: 1;
@@ -1046,7 +1047,7 @@ $f21blue: #039be5;
     & span,
     &:before,
     &:after {
-        background: #999999;
+        background: var(--secondary-text-color);
         content: "";
         display: block;
         width: $size;
@@ -1274,14 +1275,16 @@ $f21blue: #039be5;
     width: 50px;
     min-width: 50px;
     height: 50px;
-    padding: 13px 3px 0 3px;
-    margin: 0 8px 0 0;
+    /* padding: 13px 3px 0; */
+    /* margin: 0 8px 0 0; */
     border-radius: 50%;
     font-size: 20px;
     font-weight: 400;
-    text-align: center;
-    font-family: "Helvetica Neue", sans-serif;
-    display: block;
+    /* text-align: center; */
+    font-family: Helvetica Neue,sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .lead--name {
@@ -1292,6 +1295,7 @@ $f21blue: #039be5;
     font-weight: 400;
     font-family: Helvetica, Helvetica, Arial, sans-serif;
     margin-top: 4px;
+    color: var(--text-color);
 }
 
 .request--creation-time {
@@ -1300,7 +1304,7 @@ $f21blue: #039be5;
     text-align: right;
     overflow: hidden;
     text-overflow: ellipsis;
-    color: #666666;
+    color: var(--secondary-text-color);
     font-family: "Helvetica Neue", sans-serif;
 
     // color: #7695a5;
@@ -1326,7 +1330,7 @@ $f21blue: #039be5;
 .request--first-message {
     line-height: normal;
 
-    color: #999;
+    color: var(--secondary-text-color);
     font-size: 12px;
     font-weight: 400;
 
