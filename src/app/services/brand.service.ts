@@ -106,7 +106,7 @@ export class BrandService {
     // this.getData()
     //   .subscribe(data => {
     //     this.assetBrand = data
-    //     console.log('[BRAND-SERV] BRAND RETIEVED FROM ASSET assetBrand ', this.assetBrand);
+    //     this.logger.log('[BRAND-SERV] BRAND RETIEVED FROM ASSET assetBrand ', this.assetBrand);
     //   });
 
     let url = ''
@@ -121,39 +121,39 @@ export class BrandService {
           this.logger.log('[BRAND-SERV] loadBrand remoteConfig is false - env brandSrc is empty ? ', remoteBrandUrl);
           url = environment['brandSrc']
         } else {
-          console.log('[BRAND-SERV] loadBrand remoteConfig is false - env brandSrc is empty ? ', remoteBrandUrl, ' -> load from assets')
+          this.logger.log('[BRAND-SERV] loadBrand remoteConfig is false - env brandSrc is empty ? ', remoteBrandUrl, ' -> load from assets')
           this.brand =  this._brand;
         }
       } else {
-        console.log('[BRAND-SERV] loadBrand remoteConfig is false - env NOT has Property brandSrc -> load from assets');
+        this.logger.log('[BRAND-SERV] loadBrand remoteConfig is false - env NOT has Property brandSrc -> load from assets');
         this.brand = this._brand;
       }
     } else {
       const res = await this.httpClient.get(environment['remoteConfigUrl']).toPromise();
-      console.log('[BRAND-SERV] loadBrand - remoteConfig -> true get remoteConfig response ', res);
+      this.logger.log('[BRAND-SERV] loadBrand - remoteConfig -> true get remoteConfig response ', res);
 
      
       const remoteConfigData = res
       // this.logger.log('BrandService loadBrand - remoteConfig is true - get remoteConfigData  res ', remoteConfigData);
 
       if (remoteConfigData.hasOwnProperty("brandSrc")) {
-        console.log('[BRAND-SERV] loadBrand remoteConfig is true - remoteConfigData has Property brandSrc');
+        this.logger.log('[BRAND-SERV] loadBrand remoteConfig is true - remoteConfigData has Property brandSrc');
 
         const remoteBrandUrl = this.isEmpty(remoteConfigData['brandSrc']);
         if (!remoteBrandUrl) {
-          console.log('[BRAND-SERV] loadBrand remoteConfig is true - remoteConfigData brandSrc is empty ?', remoteBrandUrl);
+          this.logger.log('[BRAND-SERV] loadBrand remoteConfig is true - remoteConfigData brandSrc is empty ?', remoteBrandUrl);
 
           url = remoteConfigData['brandSrc']
 
 
         } else {
-          console.log('[BRAND-SERV] loadBrand remoteConfig is true - remoteConfigData brandSrc is empty ?', remoteBrandUrl, ' -> load from assets');
+          this.logger.log('[BRAND-SERV] loadBrand remoteConfig is true - remoteConfigData brandSrc is empty ?', remoteBrandUrl, ' -> load from assets');
 
           this.brand = this._brand;
         }
 
       } else {
-        console.log('[BRAND-SERV] loadBrand remoteConfig is true - remoteConfigData NOT has Property brandSrc -> load from assets');
+        this.logger.log('[BRAND-SERV] loadBrand remoteConfig is true - remoteConfigData NOT has Property brandSrc -> load from assets');
         // this.setBrand(this.local_url)
         // url = this.local_url
         this.brand = this._brand;
@@ -164,15 +164,15 @@ export class BrandService {
       if (url) {
         const data = await this.httpClient.get(url).toPromise();
 
-        console.log('[BRAND-SERV] **** GET BRAND FROM URL ****', url);
+        this.logger.log('[BRAND-SERV] **** GET BRAND FROM URL ****', url);
 
         // this.brand = JSON.parse(data['_body'])
         this.brand = data
 
-        console.log('[BRAND-SERV] loadBrand - brand: ', this.brand);
+        this.logger.log('[BRAND-SERV] loadBrand - brand: ', this.brand);
       }
     } catch (err) {
-      console.error('[BRAND-SERV] loadBrand error : ', err);
+      this.logger.error('[BRAND-SERV] loadBrand error : ', err);
 
       this.brand = this._brand;
       // this.notify.showNotificationChangeProject('ops', 2, 'done');
