@@ -365,8 +365,17 @@ import { AutomationsComponent } from './automations/automations.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { HomeCdsComponent } from './home-components/home-cds/home-cds.component';
 import { AutomationStaticComponent } from './static-pages/automation-static/automation-static.component';
+import { ModalPageUrlComponent } from './knowledge-bases/modals/modal-page-url/modal-page-url.component';
+import { ModalSiteMapComponent } from './knowledge-bases/modals/modal-site-map/modal-site-map.component';
+import { ModalTextFileComponent } from './knowledge-bases/modals/modal-text-file/modal-text-file.component';
+import { ModalGptKeyComponent } from './knowledge-bases/modals/modal-gpt-key/modal-gpt-key.component';
+import { ModalDeleteKnowledgeBaseComponent } from './knowledge-bases/modals/modal-delete-knowledge-base/modal-delete-knowledge-base.component';
+import { ModalPreviewKnowledgeBaseComponent } from './knowledge-bases/modals/modal-preview-knowledge-base/modal-preview-knowledge-base.component';
+import { ModalDetailKnowledgeBaseComponent } from './knowledge-bases/modals/modal-detail-knowledge-base/modal-detail-knowledge-base.component';
+import { KnowledgeBaseTableComponent } from './knowledge-bases/modals/knowledge-base-table/knowledge-base-table.component';
 
-
+import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort'; 
 
 // NOTE: Eliminazione del local storage produce inconsistenza delle instances Firebase. Si salta il logout.
 
@@ -645,7 +654,15 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     HomeNewsFeedModalComponent,
     AutomationsComponent,
     HomeCdsComponent,
-    AutomationStaticComponent
+    AutomationStaticComponent,
+    ModalPageUrlComponent,
+    ModalSiteMapComponent,
+    ModalTextFileComponent,
+    ModalGptKeyComponent,
+    ModalDeleteKnowledgeBaseComponent,
+    ModalPreviewKnowledgeBaseComponent,
+    ModalDetailKnowledgeBaseComponent,
+    KnowledgeBaseTableComponent
   ],
   imports: [
     TooltipModule.forRoot(CutomTooltipOptions as TooltipOptions),
@@ -696,6 +713,8 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     // SlideshowModule,
     NgSelectModule,
     BrowserAnimationsModule,
+    MatTableModule,
+    MatSortModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -703,6 +722,10 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
         deps: [HttpClient],
       },
     }),
+  ],
+  exports: [
+    MatTableModule,
+    MatSortModule
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },

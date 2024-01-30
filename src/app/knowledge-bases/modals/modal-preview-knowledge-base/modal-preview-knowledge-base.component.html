@@ -1,0 +1,61 @@
+<!-- PREVIEW KNOWLEDGE BASE MODAL - START -->
+<div class="modal" tabindex="-1" role="dialog" style="background-color: rgba(90,90,90,0.5); display:block">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="onCloseBaseModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+
+        <h4 class="modal-title">
+          <span style="vertical-align: middle;">
+            Preview Knowledge Base
+          </span>
+        </h4>
+      </div>
+
+      <div class="modal-body">
+
+        <div class="form-container">
+          <div class="kb-container">
+            <span class="material-icons-round">school</span>
+            <p>{{ kb?.url }}</p>
+          </div>
+        </div>
+
+        <div class="form-container">
+          <div class="fake-input">
+            <div class="fake-input-inner">
+              <input type="text" placeholder="{{ 'KbPage.AskQuestionPlaceholder' | translate }}" [(ngModel)]="question"
+                (input)="onInputPreviewChange()" (keyup.enter)="submitQuestion()"> 
+              <div id="enter-button" class="enter-button" (click)="submitQuestion()">Enter</div>
+            </div>
+          </div>
+        </div>
+        
+        <div *ngIf="searching" class="search-placeholder">
+          <div class="fake-input">
+            <loading-spinner class="custom-spinner"></loading-spinner>
+            <span style="margin-left: 8px;">{{ 'KbPage.SearchingAnswer' | translate }}</span>
+          </div>
+        </div>
+        <div *ngIf="show_answer" class="form-container" style="margin-bottom: 0px;">
+
+          <div id="answer" class="answer">
+            <p *ngIf="answer" class="answer-title">{{ 'KbPage.Answer' | translate }}</p>
+            {{ answer }}
+
+            <span *ngIf="error_answer">{{ 'KbPage.NoAnswerFound' | translate }}</span>
+            <hr *ngIf="source_url">
+            <span *ngIf="source_url">{{ 'KbPage.Source' | translate }}: {{ source_url }}</span>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- PREVIEW KNOWLEDGE BASE MODAL - END -->

@@ -9,8 +9,10 @@ export interface KbSettings {
 
 export interface KB {
     _id?: string;
-    name: string;
-    url: string;
+    type?: string;
+    name?: string;
+    url?: string;
+    content?: string;
     createdAt?: Date;
     status?: number;
 }

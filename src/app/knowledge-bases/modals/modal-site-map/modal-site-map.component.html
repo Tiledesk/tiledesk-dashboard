@@ -1,0 +1,38 @@
+
+<div class="info-container">
+    <i class="material-icons-outlined info-icon">help_outline</i>
+    <div class="info-text">
+      <p>{{ 'KbPage.AddKbInfoFirstText' | translate }}</p>
+      <p>{{ 'KbPage.AddKbInfoSecondText' | translate }}</p>
+      <p [innerHTML]="'KbPage.AddKbInfoThirdText' | translate" style="margin-top: 8px;"></p>
+    </div>
+</div>
+
+<div class="form-container">
+    <form [formGroup]="kbForm">
+      <div class="input-container">
+
+        <span class="input-label">Nome</span>
+        <input type="text" name="name" class="custom-input" [(ngModel)]="kb.name" formControlName="name"
+          placeholder="{{ 'KbPage.TypeKbNamePlaceholder' | translate }}" (input)="onChangeInput($event)"
+          [class.invalid]="(kbForm.controls.name.errors?.pattern || kbForm.controls.name.errors?.required) && kbForm.controls.name.touched">
+
+          <span class="input-label" for="file">File XML:</span>
+          <div class="preview-button">
+            <input type="file" id="file" (change)="onFileSelected($event)" accept=".xml" formControlName="file"
+            [class.invalid]="(kbForm.controls.file.errors?.pattern || kbForm.controls.file.errors?.required) && kbForm.controls.file.touched">
+            <div class="file-input-text">Seleziona un file</div>
+          </div>
+
+      </div>
+    </form>
+</div>
+
+<div class="modal-footer">
+    <button class="btn btn-white" style="padding:12px 16px;" (click)="onCloseAddKnowledgeBaseModal()">
+      {{ "Cancel" | translate }}
+    </button>
+    <button id="addkb-btn" class="btn btn-primary" [disabled]="buttonDisabled" (click)="onSaveKnowledgeBase()">
+      {{ 'KbPage.Add' | translate }}
+    </button>
+</div> 
