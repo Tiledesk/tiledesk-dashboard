@@ -37,7 +37,7 @@ export enum TYPE_STEP {
 })
 export class OnboardingContentComponent extends WidgetSetUpBaseComponent implements OnInit {
   previousUrl: string;
-  logo_x_rocket: string;
+  // logo_x_rocket: string;
   DISPLAY_SPINNER_SECTION = false;
   CLOSE_BTN_IS_HIDDEN = true;
   DISPLAY_SPINNER = false;
@@ -106,7 +106,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
   ) {
     super(translate);
     const brand = brandService.getBrand();
-    this.logo_x_rocket = brand['wizard_create_project_page']['logo_x_rocket'];
+    // this.logo_x_rocket = brand['wizard_create_project_page']['logo_x_rocket'];
     this.companyLogoBlack_Url = brand['company_logo_black__url'];
     this.companyLogoNoText_Url = brand['company_logo_no_text__url'];
     this.botid = this.route.snapshot.params['botid'];

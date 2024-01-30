@@ -399,6 +399,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   whatsAppPhoneNumber: string;
   telegramPhoneNumber: string;
   mailtoBody: any;
+  REQUEST_EXIST: boolean = true;
 
   /**
    * Constructor
@@ -559,7 +560,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     // this.getClickOutEditContactFullname()
   }
 
-  
+
 
   getProjectPlan() {
     this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
@@ -1359,6 +1360,24 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     });
   }
 
+  getRequesByIdRest(requestid) {
+    this.wsRequestsService.getConversationByIDWithRestRequest(requestid)
+      .subscribe((request: any) => {
+        this.logger.log('[WS-REQUESTS-MSGS] - GET REQUEST BY ID (REST CALL) - RES NIKO ', request);
+        if(request)  {
+          this.REQUEST_EXIST = true
+        }
+       
+      }, (error) => {
+        // this.showSpinner = false;
+        this.logger.error('[WS-REQUESTS-MSGS] - GET REQUEST BY ID (REST CALL) - ERROR  ', error);
+        this.REQUEST_EXIST = false
+      }, () => {
+        // this.showSpinner = false;
+        this.logger.log('[WS-REQUESTS-MSGS] - GET REQUEST BY ID  (REST CALL) * COMPLETE *');
+      });
+
+  }
 
 
   // ----------------------------------------------------------------------------
@@ -1367,12 +1386,17 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   // ----------------------------------------------------------------------------
   getParamRequestId() {
     this.route.params.subscribe((params) => {
-      // this.logger.log('[WS-REQUESTS-MSGS] - getParamRequestId  ', params);
+      this.logger.log('[WS-REQUESTS-MSGS] - getParamRequestId  ', params);
+      if (params.requestid) {
+        this.getRequesByIdRest(params.requestid)
+      }
       this.getBotConversationAttribute(params.requestid)
       if (this.id_request) {
         // this.logger.log('[WS-REQUESTS-MSGS] - UNSUB-REQUEST-BY-ID - id_request ', this.id_request);
 
         this.logger.log('[WS-REQUESTS-MSGS] - UNSUB-MSGS - id_request ', this.id_request);
+
+
 
         // Unsubcribe from old request
         this.unsuscribeRequestById(this.id_request);
@@ -1598,8 +1622,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       )
       .subscribe((wsrequest) => {
 
-        // console.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** ', wsrequest)
+        this.logger.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** NIKO', wsrequest)
         this.request = wsrequest;
+
 
         if (this.request) {
           this.getfromStorageIsOpenAppSidebar()
@@ -1922,16 +1947,16 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
             this.logger.log('[WS-REQUESTS-MSGS] - requester_id ', this.requester_id)
             // this.logger.log('this.request.lead ' , this.request.lead)
             if (this.request.lead.lead_id && this.request.lead.lead_id.startsWith('wab-')) {
-              this.logger.log('[WS-REQUESTS-MSGS] lead_id ',this.request.lead.lead_id)
+              this.logger.log('[WS-REQUESTS-MSGS] lead_id ', this.request.lead.lead_id)
               this.whatsAppPhoneNumber = this.request.lead.lead_id.slice(4);
-              this.logger.log('[WS-REQUESTS-MSGS] whatsAppPhoneNumber ',this.whatsAppPhoneNumber)
+              this.logger.log('[WS-REQUESTS-MSGS] whatsAppPhoneNumber ', this.whatsAppPhoneNumber)
             }
 
 
             if (this.request.lead.lead_id && this.request.lead.lead_id.startsWith('telegram-')) {
-              this.logger.log('[WS-REQUESTS-MSGS] lead_id ',this.request.lead.lead_id)
+              this.logger.log('[WS-REQUESTS-MSGS] lead_id ', this.request.lead.lead_id)
               this.telegramPhoneNumber = this.request.lead.lead_id.slice(9);
-              this.logger.log('[WS-REQUESTS-MSGS] telegramPhoneNumber ',this.telegramPhoneNumber)
+              this.logger.log('[WS-REQUESTS-MSGS] telegramPhoneNumber ', this.telegramPhoneNumber)
             }
 
             if (this.request.lead && this.request.lead.email) {
@@ -2252,8 +2277,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   onChangeContactEmail(event) {
-    this.logger.log('[WS-REQUESTS-MSGS] - ON CHANGE CONTACT EMAIL event ', event )
-   this.contactNewEmail = event;
+    this.logger.log('[WS-REQUESTS-MSGS] - ON CHANGE CONTACT EMAIL event ', event)
+    this.contactNewEmail = event;
   }
 
   goToEditContact() {
@@ -2391,7 +2416,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
             }
             if (message.attributes && message.attributes.sourceTitle && message.attributes.sourcePage) {
               const index = this.viewedPages.findIndex((e) => e.viewedPageLink === message.attributes.sourcePage);
-              this.logger.log('[WS-REQUESTS-MSGS] viewedPage index ', index )
+              this.logger.log('[WS-REQUESTS-MSGS] viewedPage index ', index)
               if (index === -1) {
                 this.viewedPages.push({ viewedPageTitle: viewedPageTitleValue, viewedPageLink: message.attributes.sourcePage })
               }
@@ -4093,28 +4118,28 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       if (emailBody) {
         this.sendTrancriptEmail(emailBody)
       }
-     
+
       this.logger.log('[WS-REQUESTS-MSGS] - GET TRANSCRIPT AS TXT emailBody type of', typeof emailBody);
       // let emailBodyStingify = JSON.stringify(emailBody)
-      
+
     }, error => {
       this.logger.error('[WS-REQUESTS-MSGS] - GET TRANSCRIPT AS TXT ERROR', error);
     }, () => {
-      
+
       this.logger.log('[WS-REQUESTS-MSGS] - GET TRANSCRIPT AS TXT - COMPLETE');
     });
   }
 
   sendTrancriptEmail(emailBody) {
     const date = moment().format('ll');
-    this.logger.log('[WS-REQUESTS-MSGS] SEND TRANSCRIT EMAIL - date ',   date)
-    this.logger.log('[WS-REQUESTS-MSGS] SEND TRANSCRIT EMAIL - CONTACT EMAIL ',   this.contactNewEmail)
+    this.logger.log('[WS-REQUESTS-MSGS] SEND TRANSCRIT EMAIL - date ', date)
+    this.logger.log('[WS-REQUESTS-MSGS] SEND TRANSCRIT EMAIL - CONTACT EMAIL ', this.contactNewEmail)
     this.mailtoBody = emailBody
     let contactEmail = ""
-    if(this.contactNewEmail){
+    if (this.contactNewEmail) {
       contactEmail = this.contactNewEmail
     }
-    window.open(`mailto:` +  contactEmail + `?subject=Chat transcript&body=` + encodeURIComponent(this.mailtoBody))
+    window.open(`mailto:` + contactEmail + `?subject=Chat transcript&body=` + encodeURIComponent(this.mailtoBody))
   }
 
   downloadTranscriptAsPDF() {
@@ -4162,7 +4187,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.logger.log(" Value is : ", value);
     this.transcriptDwnldPreference = value
   }
- // No more used
+  // No more used
   downloadTranscript() {
     this.closeModalTranscript();
     // this.logger.log('transcriptDwnldPreference', this.transcriptDwnldPreference)
@@ -4189,20 +4214,20 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         if (emailBody) {
           this.sendTrancriptEmail(emailBody)
         }
-       
+
         this.logger.log('[WS-REQUESTS-MSGS] - GET TRANSCRIPT AS TXT emailBody type of', typeof emailBody);
         // let emailBodyStingify = JSON.stringify(emailBody)
-        
+
       }, error => {
         this.logger.error('[WS-REQUESTS-MSGS] - GET TRANSCRIPT AS TXT ERROR', error);
       }, () => {
-        
+
         this.logger.log('[WS-REQUESTS-MSGS] - GET TRANSCRIPT AS TXT - COMPLETE');
       });
     }
 
   }
- // No more used
+  // No more used
   exportTranscriptToPDF() {
     this.logger.log('[WS-REQUESTS-MSGS - PDF HERE 2');
     this.wsRequestsService.exportTranscriptAsPDFFile(this.id_request).subscribe((res: any) => {
@@ -4216,7 +4241,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       // this.logger.log('[WS-REQUESTS-MSGS - EXPORT TRANSCRIPT TO PDF * COMPLETE *');
     });
   }
- // No more used
+  // No more used
   downloadTranscriptAsPDFFile(data) {
     const blob = new Blob([data], { type: 'application/pdf' });
     const dwldLink = document.createElement('a');
@@ -4968,7 +4993,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     const elemDropDownEditEmail = <HTMLElement>document.querySelector('.dropdown__menu_edit_email');
     this.logger.log('elemDropDownEditEmail ', elemDropDownEditEmail)
     elemDropDownEditEmail.classList.add("dropdown__menu_edit_email--active");
-   
+
   }
 
   closeDropdown() {

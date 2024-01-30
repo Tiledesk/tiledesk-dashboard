@@ -759,6 +759,22 @@ export class WsRequestsService implements OnDestroy {
   }
 
   // --------------------------------------------------
+  // @ Get request by id
+  // --------------------------------------------------
+  public getConversationByIDWithRestRequest(request_id) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    const url = this.SERVER_BASE_PATH + this.project_id + '/requests/' + request_id
+    this.logger.log('[WS-REQUESTS-SERV] - DELETE REQUEST - URL ', url)
+    return this._httpClient.get(url, httpOptions)
+  }
+
+  // --------------------------------------------------
   // @ Delete request using promise
   // --------------------------------------------------
   public deleteRequestOnPromise(request_id) {
