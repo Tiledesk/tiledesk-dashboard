@@ -40,10 +40,10 @@
                 <mat-icon>description</mat-icon>
                 <span>{{ 'add file text' | translate }}</span>
               </button>
-              <button mat-menu-item (click)="openAddKnowledgeBaseModal('site-map')">
+              <!-- <button mat-menu-item (click)="openAddKnowledgeBaseModal('site-map')">
                 <mat-icon>lan</mat-icon>
                 <span>{{ 'add site map' | translate }}</span>
-              </button>
+              </button> -->
             </mat-menu>
 
           </div>
@@ -51,9 +51,11 @@
 
           <!-- START TABLE -->
           <knowledge-base-table
-            [kbList]="kbSettings.kbs"
+            [kbsList]="kbsList"
+            [refresh]="refreshKbsList"
             (openBaseModalDelete)="onOpenBaseModalDelete($event)"
             (openBaseModalPreview)="onOpenBaseModalPreview()"
+            (runIndexing)="onRunIndexing($event)"
           ></knowledge-base-table>
           <!-- END TABLE -->
 
@@ -206,26 +208,26 @@
         </button>
         <h4 class="modal-title">
           <span style="vertical-align: middle;">
-            {{ 'KbPage.AddKb' | translate }}
+            {{ 'Aggiungi ' | translate }}
           </span>
         </h4>
       </div>
       <div class="modal-body">
           <div *ngIf="typeKnowledgeBaseModal == 'url-page'">
             <modal-page-url
-              (saveKnowledgeBase)="saveKnowledgeBase($event)"
+              (saveKnowledgeBase)="onAddKb($event)"
               (closeAddKnowledgeBaseModal)="closeAddKnowledgeBaseModal()">
             </modal-page-url>
           </div>
           <div *ngIf="typeKnowledgeBaseModal == 'text-file'">
             <modal-text-file
-              (saveKnowledgeBase)="saveKnowledgeBase($event)"
+              (saveKnowledgeBase)="onAddKb($event)"
               (closeAddKnowledgeBaseModal)="closeAddKnowledgeBaseModal()">
             </modal-text-file>
           </div>
           <div *ngIf="typeKnowledgeBaseModal == 'site-map'">
             <modal-site-map
-              (saveKnowledgeBase)="saveKnowledgeBase($event)"
+              (saveKnowledgeBase)="onAddKb($event)"
               (closeAddKnowledgeBaseModal)="closeAddKnowledgeBaseModal()">
             </modal-site-map>
           </div>
@@ -246,7 +248,7 @@
 
 <!-- DELETE KNOWLEDGE BASE MODAL - START -->
   <modal-preview-knowledge-base *ngIf="baseModalPreview" 
-    [kb]="kbid_selected"
+    [namespace]="id_project"
     (closeBaseModal)="onCloseBaseModal()"
   ></modal-preview-knowledge-base>
 <!--     //(previewKnowledgeBase)="onPreviewKnowledgeBase($event)" DELETE KNOWLEDGE BASE MODAL - END -->

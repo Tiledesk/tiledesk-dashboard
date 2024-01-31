@@ -9,7 +9,7 @@ import { OpenaiService } from 'app/services/openai.service';
   styleUrls: ['./modal-preview-knowledge-base.component.scss']
 })
 export class ModalPreviewKnowledgeBaseComponent implements OnInit {
-  @Input() kb: KB;
+  @Input() namespace: string;
   @Output() deleteKnowledgeBase = new EventEmitter();
   @Output() closeBaseModal = new EventEmitter();
 
@@ -31,8 +31,11 @@ export class ModalPreviewKnowledgeBaseComponent implements OnInit {
 
   submitQuestion(){
     let data = {
-      question: this.question,
+      "question": this.question,
+      "namespace": this.namespace,
+      "model": "gpt-3.5-turbo"
     }
+
     this.searching = true;
     this.show_answer = false;
     this.answer = null;

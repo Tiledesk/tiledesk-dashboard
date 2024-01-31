@@ -37,17 +37,21 @@
     <mat-form-field>
         <input matInput (keyup)="applyFilter($event)" placeholder="Filtra per Nome o Contenuto">
     </mat-form-field>
+
     <mat-form-field>
         <mat-label>Seleziona lo stato</mat-label>
-        <mat-select (change)="applyStatusFilter($event)">
+        <mat-select (selectionChange)="onOptionSelected($event)">
           <mat-option value="">Tutti</mat-option>
-          <mat-option value="0">0</mat-option>
-          <mat-option value="1">1</mat-option>
-          <mat-option value="2">2</mat-option>
+          <mat-option value="0">Not started</mat-option>
+          <mat-option value="2">Started</mat-option>
+          <mat-option value="3">Finished</mat-option>
+          <mat-option value="4">Error</mat-option>
         </mat-select>
       </mat-form-field>
 
-    <table mat-table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)">
+      
+    <table mat-table [dataSource]="dataSource" matSort > 
+        <!-- (matSortChange)="announceSortChange($event)" -->
   
         <!-- Type Column -->
         <ng-container matColumnDef="type">
@@ -64,23 +68,27 @@
             <th style="width: 70px; text-align:center;" mat-header-cell *matHeaderCellDef>Status</th>
             <td style="text-align:center;" mat-cell *matCellDef="let kb">
 
-                <loading-spinner *ngIf="kb.status != 0 && kb.status != 1 && kb.status != 2 && kb.status != -1" class="custom-spinner"></loading-spinner>
+                <loading-spinner *ngIf="kb.status == 0 || kb.status == 2" class="custom-spinner"></loading-spinner>
                 
-                <span *ngIf="kb.status == 2" id="done" class="material-icons-outlined status-icon"
-                    matTooltipClass="custom-mat-tooltip" matTooltip="Indexed" #tooltip="matTooltip"
-                    matTooltipPosition='right' matTooltipHideDelay="100">done</span>
+                <span *ngIf="kb.status == -1" id="error" class="material-icons-outlined status-icon"
+                    matTooltipClass="custom-mat-tooltip" matTooltip="Not indexed" #tooltip="matTooltip"
+                    matTooltipPosition='right' matTooltipHideDelay="100">void</span>
 
-                <span *ngIf="kb.status == 1" id="cached" class="material-icons-outlined status-icon animated-icon"
+                <!-- <span *ngIf="kb.status == 0" id="done" class="material-icons-outlined status-icon"
+                    matTooltipClass="custom-mat-tooltip" matTooltip="Not started" #tooltip="matTooltip"
+                    matTooltipPosition='right' matTooltipHideDelay="100">schedule</span> -->
+
+                <!-- <span *ngIf="kb.status == 2" id="cached" class="material-icons-outlined status-icon animated-icon"
                     matTooltipClass="custom-mat-tooltip" matTooltip="Indexing..." #tooltip="matTooltip"
-                    matTooltipPosition='right' matTooltipHideDelay="100">cached</span>
+                    matTooltipPosition='right' matTooltipHideDelay="100">cached</span> -->
 
-                <span *ngIf="kb.status == 0" id="close" class="material-icons-outlined status-icon"
-                    matTooltipClass="custom-mat-tooltip" matTooltip="Not indexed" #tooltip="matTooltip"
-                    matTooltipPosition='right' matTooltipHideDelay="100">close</span>
-
-                <span *ngIf="kb.status == -1" id="close" class="material-icons-outlined status-icon"
-                    matTooltipClass="custom-mat-tooltip" matTooltip="Not indexed" #tooltip="matTooltip"
-                    matTooltipPosition='right' matTooltipHideDelay="100">close</span>
+                <span *ngIf="kb.status == 3" id="close" class="material-icons-outlined status-icon"
+                    matTooltipClass="custom-mat-tooltip" matTooltip="Finished" #tooltip="matTooltip"
+                    matTooltipPosition='right' matTooltipHideDelay="100">check</span>
+                    
+                <span *ngIf="kb.status == 4" id="error" class="material-icons-outlined status-icon"
+                    matTooltipClass="custom-mat-tooltip" matTooltip="Error" #tooltip="matTooltip"
+                    matTooltipPosition='right' matTooltipHideDelay="100">error</span>
             
             </td>
         </ng-container>
@@ -113,11 +121,12 @@
                     <mat-icon>more_vert</mat-icon>
                 </button>
                 <mat-menu #menu="matMenu" xPosition="before" class="custom-menu">
-                    <button mat-menu-item (click)="runIndexing(kb)">
+                    <button mat-menu-item (click)="onRunIndexing(kb)">
                         <mat-icon>play_arrow</mat-icon>
                         <span>{{ 'KbPage.RunIndexing' | translate }}</span>
                     </button>
-                    <button mat-menu-item (click)="onOpenBaseModalDelete(kb)">
+                    <button mat-menu-item [disabled]="kb.status == -1 || kb.status == 0 || kb.status == 2"
+                        (click)="onOpenBaseModalDelete(kb)">
                         <mat-icon>close</mat-icon>
                         <span>{{ 'Delete' | translate }}</span>
                     </button>
@@ -130,6 +139,6 @@
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
 
-    <mat-paginator [pageSizeOptions]="[2, 10, 25, 100]" showFirstLastButtons></mat-paginator>
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
   </div>
   

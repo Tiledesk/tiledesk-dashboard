@@ -32,3 +32,16 @@ table {
         background: linear-gradient(rgba(239, 245, 246, 0.851) 0%, rgb(225, 241, 246) 100%), rgb(255, 255, 255);
     }
 }
+
+::ng-deep .custom-spinner {
+    display: flex;
+    justify-content: space-evenly;
+    .sk-fading-circle {
+        width: 20px;
+        height: 20px;
+        margin: 0px;
+    }
+    .sk-fading-circle .sk-circle:before {
+        background-color: rgb(98, 119, 140) !important;
+    }
+}

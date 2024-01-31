@@ -35,10 +35,11 @@ export class ModalTextFileComponent implements OnInit {
     const contentPattern = /^[^&<>]{3,}$/;
     const namePattern = /^[^&<>]{3,}$/;
     return this.formBuilder.group({
-      content: ['', [Validators.required, Validators.pattern(contentPattern)]],
+      content: ['', [Validators.required]],
       name: ['', [Validators.required, Validators.pattern(namePattern)]]
     })
   }
+
 
   onChangeInput(event): void {
     if (this.kbForm.valid) {

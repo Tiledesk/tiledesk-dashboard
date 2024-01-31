@@ -2,8 +2,8 @@
 <div class="info-container">
     <i class="material-icons-outlined info-icon">help_outline</i>
     <div class="info-text">
-      <p>{{ 'KbPage.AddKbInfoFirstText' | translate }}</p>
-      <p>{{ 'KbPage.AddKbInfoSecondText' | translate }}</p>
+      <p>{{ 'info' | translate }}</p>
+      <!-- <p>{{ 'KbPage.AddKbInfoSecondText' | translate }}</p> -->
       <p [innerHTML]="'KbPage.AddKbInfoThirdText' | translate" style="margin-top: 8px;"></p>
     </div>
 </div>
@@ -20,7 +20,8 @@
         <textarea type="text" name="content" class="custom-textarea" [(ngModel)]="kb.content" formControlName="content"
           placeholder="{{ 'KbPage.TypeKbContentPlaceholder' | translate }}" (input)="onChangeInput($event)" rows="4"
           [class.invalid]="(kbForm.controls.content.errors?.pattern || kbForm.controls.content.errors?.required) && kbForm.controls.content.touched"
-          ></textarea>
+        ></textarea>
+        
       </div>
     </form>
 </div>

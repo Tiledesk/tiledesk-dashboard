@@ -9,6 +9,7 @@ import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { OpenaiService } from 'app/services/openai.service';
 import { ProjectService } from 'app/services/project.service';
+import { timer } from 'rxjs';
 
 @Component({
   selector: 'appdashboard-knowledge-bases',
@@ -43,22 +44,11 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
   kbFormUrl: FormGroup;
   kbFormContent: FormGroup;
   kbsList = [];
+  refreshKbsList: boolean = true;
 
-  kbSettings: KbSettings = {
-    _id: null,
-    id_project: null,
-    gptkey: null,
-    maxKbsNumber: null,
-    maxPagesNumber: null,
-    kbs: []
-  }
-  newKb: KB = {
-    _id: null,
-    type: '',
-    name: '',
-    url: '',
-    content: ''
-  }
+
+
+
 
 
   // PREVIEW
@@ -86,8 +76,7 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.getBrowserVersion();
     this.listenSidebarIsOpened();
-    //this.getKnowledgeBases();
-    this.getKnowledgeBaseSettings();
+    this.getListOfKb();
     this.kbFormUrl = this.createConditionGroupUrl();
     this.kbFormContent = this.createConditionGroupContent();
     this.trackPage();
@@ -160,11 +149,11 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
     });
   }
 
-  startPooling() {
-    this.interval_id = setInterval(() => {
-      this.checkAllStatuses();
-    }, 30000);
-  }
+  // startPooling() {
+  //   this.interval_id = setInterval(() => {
+  //     this.checkAllStatuses();
+  //   }, 30000);
+  // }
 
   // ----------------------
   // UTILS FUNCTION - Start
@@ -185,21 +174,16 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
 
 
   // ---------------- SERVICE FUNCTIONS --------------- // 
+  
   /**
-   * getKnowledgeBaseSettings
+   * getListOfKb
    */
-  getKnowledgeBaseSettings() {
-    this.kbService.getKbSettings().subscribe((kbSettings: KbSettings) => {
-      this.logger.log("[KNOWLEDGE BASES COMP] get kbSettings: ", kbSettings);
-      this.kbSettings = kbSettings;
-      this.addButtonDisabled = false;
-      // if (this.kbSettings.kbs.length < kbSettings.maxKbsNumber) {
-      //   this.addButtonDisabled = false;
-      // } else {
-      //   this.addButtonDisabled = true;
-      // }
+  getListOfKb() {
+    this.logger.log("[KNOWLEDGE BASES COMP] getListOfKb ");
+    this.kbService.getListOfKb().subscribe((kbList:[KB]) => {
+      this.logger.log("[KNOWLEDGE BASES COMP] get kbList: ", kbList);
+      this.kbsList = kbList;
       this.checkAllStatuses();
-      this.startPooling();
     }, (error) => {
       this.logger.error("[KNOWLEDGE BASES COMP] ERROR get kbSettings: ", error);
     }, () => {
@@ -208,197 +192,135 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
     })
   }
 
-  /** 
-   * saveKnowledgeBase 
-   */
-  saveKnowledgeBase(body) {
-    // let body = {
-    //   id: null,
-    //   name: "",
-    //   source: "",
-    //   type: "",
-    //   content: "",
-    //   gptkey: this.kbSettings.gptkey,
-    //   namespace: this.kbService.project_id 
-    // }
-    // if(type==='url'){
-    //   body.name = this.newKb.name;
-    //   body.source = this.newKb.url;
-    //   body.type = "url";
-    // }
-    // else if(type==='text'){
-    //   body.name = this.newKb.name;
-    //   body.content = this.newKb.content;
-    //   body.type = "text";
-    // }
-    console.log("body:",body);
+  // /**
+  //  * getKnowledgeBaseSettings
+  //  */
+  // getKnowledgeBaseSettings() {
+  //   this.kbService.getKbSettings().subscribe((kbSettings: KbSettings) => {
+  //     this.logger.log("[KNOWLEDGE BASES COMP] get kbSettings: ", kbSettings);
+  //     // this.kbSettings = kbSettings;
+  //     this.kbsList = kbSettings.kbs;
+  //   }, (error) => {
+  //     this.logger.error("[KNOWLEDGE BASES COMP] ERROR get kbSettings: ", error);
+  //   }, () => {
+  //     this.logger.log("[KNOWLEDGE BASES COMP] get kbSettings *COMPLETE*");
+  //     this.showSpinner = false;
+  //   })
+  // }
 
-    this.kbService.addNewKb(this.kbSettings._id, body).subscribe((kb: any) => {
-      // console.log('[KNOWLEDGE BASES COMP] this.kbSettings addNewKb ', this.kbSettings)
-      this.getKnowledgeBaseSettings();
-      //let kb = savedSettings.kbs.find(kb => kb.url === this.newKb.url);
-      let namespace_list = [this.kbSettings.id_project];
-      if (!this.kbSettings.gptkey) {
-        this.closeAddKnowledgeBaseModal();
-        this.checkStatus(namespace_list, kb._id);
-        setTimeout(() => {
-          this.openMissingGptkeyModal();
-        }, 600)
-      } else {
-        this.closeAddKnowledgeBaseModal();
-        this.checkStatus(namespace_list, kb._id).then((response) => {
-          if (response['status_code'] === 0) {
-            this.runIndexing(kb);
-          }
-        })
-      }
+  /**
+   * onAddKb
+   */
+  onAddKb(body) {
+    // console.log("body:",body);
+    const that = this;
+    this.kbService.addKb(body).subscribe((kb: any) => {
+      that.kbsList.push(kb);
+      that.refreshKbsList = !that.refreshKbsList;
+      // console.log("kbsList:",that.kbsList);
+      that.onRunIndexing(kb);
+      that.closeAddKnowledgeBaseModal();
     }, (error) => {
       this.logger.error("[KNOWLEDGE BASES COMP] ERROR add new kb: ", error);
     }, () => {
       this.logger.log("[KNOWLEDGE BASES COMP] add new kb *COMPLETED*");
-      let gptkey = "empty"
-      if (this.kbSettings.gptkey !== "") {
-        gptkey = 'filled'
-      }
-      this.trackUserActioOnKB('Added Knowledge Base', gptkey)
+      //this.trackUserActioOnKB('Added Knowledge Base', gptkey)
     })
   }
 
   /**
-   * deleteKnowledgeBase
-   * @param id 
+   * onDeleteKb
    */
-  deleteKnowledgeBase(id) {
-    this.logger.log("[KNOWLEDGE BASES COMP] kb to delete id: ", id);
-    this.kbService.deleteKb(this.kbSettings._id, id).subscribe((response) => {
-      // console.log('[KNOWLEDGE BASES COMP] this.kbSettings delete > ', this.kbSettings.gptkey)
-      this.getKnowledgeBaseSettings();
-      this.closeDeleteKnowledgeBaseModal();
+  onDeleteKb(kb) {
+    let data = {
+      "id": kb._id,
+      "namespace": kb.id_project
+    }
+    // console.log("[KNOWLEDGE BASES COMP] kb to delete id: ", data);
+    this.kbService.deleteKb(data).subscribe((response:any) => {
+      // console.log('[KNOWLEDGE BASES COMP] this.kbSettings delete > ', response)
+      this.removeKb(kb._id,);
+      this.onCloseBaseModal();
     }, (error) => {
       this.logger.error("[KNOWLEDGE BASES COMP] ERROR delete kb: ", error);
     }, () => {
       this.logger.log("[KNOWLEDGE BASES COMP] delete kb *COMPLETE*");
-      let gptkey = "empty"
-      if (this.kbSettings.gptkey !== "") {
-        gptkey = 'filled'
-      }
-      // console.log("[KNOWLEDGE BASES COMP] gptkey ", gptkey)
-      this.trackUserActioOnKB('Deleted Knowledge Base', gptkey)
+      //this.trackUserActioOnKB('Deleted Knowledge Base', gptkey)
     })
   }
   // ---------------- END SERVICE FUNCTIONS --------------- // 
 
 
   // ---------------- OPEN AI FUNCTIONS --------------- //
-  /**
-   * checkStatus
-   * @param kb 
-   * @returns 
-   */
-  checkStatus(namespace_list=[], id=null) {
+
+  checkStatusWithRetry(kb) {
     let data = {
       "namespace_list": [],
-      "namespace": "",
-      "id": ""
+      "namespace": this.id_project,
+      "id": kb._id
     }
-    if(namespace_list.length>0){
-      data.namespace_list = namespace_list;
-    }
-    if(id){
-      data.id = id;
-      data.namespace = namespace_list[0];
-    }
-    return new Promise((resolve, reject) => {
-      this.openaiService.checkScrapingStatus(data).subscribe((response: any) => {
-        // check by single kb
-        if(response.status_code){
-          resolve(response);
-        } 
-        // check by namespace
-        else {
-          // trasformo in array
-          // let listOfKb = Object.values(response);
-          resolve(response);
-        }
-      }, (error) => {
-        this.logger.error(error);
-        reject(null)
-      })
-    })
+    this.openaiService.checkScrapingStatus(data).subscribe((response: any) => {
+      // console.log('Risposta ricevuta:', response);
+      if(response.status_code && response.status_code == -1){
+        // console.log('risorsa non indicizzata');
+        this.onRunIndexing(kb);
+      } else if(response.status_code == 0 || response.status_code == 2){
+        // console.log('riprova tra 10 secondi...');
+        this.updateStatusOfKb(kb._id, response.status_code);
+        timer(10000).subscribe(() => {
+          this.checkStatusWithRetry(kb);
+        });
+      } else { // status == 3 || status == 4
+        // console.log('Risposta corretta:', response.status_code);
+        this.updateStatusOfKb(kb._id, response.status_code);
+      }
+    },
+    error => {
+      console.error('Error: ', error);
+      this.updateStatusOfKb(kb._id, 4);
+    });
   }
 
   /**
-   * runIndexing
-   * @param kb 
+   * updateStatusOfKb
    */
-  runIndexing(kb) {
-    // let data = {
-    //   full_url: kb.url,
-    //   gptkey: this.kbSettings.gptkey
-    // }
-    console.log('runIndexing:: ', kb);
+  private updateStatusOfKb(kb_id, status_code){
+    let kb = this.kbsList.find(item => item._id === kb_id);
+    // console.log('AGGIORNO updateStatusOfKb:', kb_id, status_code, kb);
+    kb.status = status_code;
+  }
+
+  private removeKb(kb_id){
+    this.kbsList = this.kbsList.filter(item => item._id !== kb_id);
+    // console.log('AGGIORNO kbsList:', this.kbsList);
+  }
+
+
+  /**
+   * runIndexing
+   */
+  onRunIndexing(kb) {
     let data = {
       "id": kb._id,
       "source": kb.source,
       "type": kb.type,
-      "content": kb.content,
-      "namespace": kb.namespace
+      "content": kb.content?kb.content:'',
+      "namespace": this.id_project 
     }
     this.openaiService.startScraping(data).subscribe((response: any) => {
       this.logger.log("start scraping response: ", response);
-      if (response.message && response.message === "Invalid Openai API key") {
+      if (response.error) {
         this.notify.showWidgetStyleUpdateNotification("Invalid Openai API key", 4, 'report_problem');
+      } else {
+        this.updateStatusOfKb(kb._id, 0);
+        this.checkStatusWithRetry(kb);
       }
-      setTimeout(() => {
-        this.checkStatus(kb).then((status_code: number) => {
-          kb.status = status_code;
-        })
-      }, 1000);
     }, (error) => {
       this.logger.error("error start scraping response: ", error);
     }, () => {
       this.logger.log("start scraping *COMPLETE*");
     })
   }
-
-
-  /**
-   * submitQuestion
-   */
-  // submitQuestion(data) {
-  //   let data = {
-  //     question: this.question,
-  //     kbid: this.kbid_selected.url,
-  //     gptkey: this.kbSettings.gptkey
-  //   }
-  //   this.searching = true;
-  //   this.show_answer = false;
-  //   this.answer = null;
-  //   this.source_url = null;
-  //   this.openaiService.askGpt(data).subscribe((response: any) => {
-  //     console.log("ask gpt preview response: ", response);
-  //     if (response.success == false) {
-  //       this.error_answer = true;
-  //     } else {
-  //       this.answer = response.answer;
-  //       this.source_url = response.source_url;
-  //     }
-  //     this.show_answer = true;
-  //     this.searching = false;
-  //     setTimeout(() => {
-  //       let element = document.getElementById("answer");
-  //       element.classList.add('answer-active');
-  //     }, (200));
-  //   }, (error) => {
-  //     this.logger.error("ERROR ask gpt: ", error);
-  //     this.error_answer = true;
-  //     this.show_answer = true;
-  //     this.searching = false;
-  //   }, () => {
-  //     this.logger.log("ask gpt *COMPLETE*")
-  //     this.searching = false;
-  //   })
-  // }
 
   // ---------------- END OPEN AI FUNCTIONS --------------- //
 
@@ -434,15 +356,6 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
       }
     }
   }
-
-  // onInputPreviewChange() {
-  //   let element = document.getElementById('enter-button')
-  //   if (this.question !== "") {
-  //     element.style.display = 'inline-block';
-  //   } else {
-  //     element.style.display = 'none';
-  //   }
-  // }
 
   trackUserActioOnKB(event: any, gptkey: string) {
     if (!isDevMode()) {
@@ -492,68 +405,19 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
     }
   }
 
-  // saveKnowledgeBaseSettings() {
-  //   this.kbService.saveKbSettings(this.kbSettings).subscribe(((savedSettings) => {
-  //     // console.log('[KNOWLEDGE BASES COMP] save kb this.kbSettings > gptkey: ', this.kbSettings.gptkey)
-  //     // console.log('[KNOWLEDGE BASES COMP] save kb savedSettings: ', savedSettings)
-  //     this.getKnowledgeBaseSettings();
-  //     this.closeSecretsModal();
-  //   }), (error) => {
-  //     this.logger.error("[KNOWLEDGE BASES COMP] ERROR save kb settings: ", error);
-  //   }, () => {
-  //     this.logger.log("[KNOWLEDGE BASES COMP] save kb settings *COMPLETE*");
-  //     let gptkey = "empty"
-  //     if (this.kbSettings.gptkey !== "") {
-  //       gptkey = 'filled'
-  //     }
-  //     // console.log("[KNOWLEDGE BASES COMP] gptkey ", gptkey)
-  //     this.trackUserActioOnKB('Save Knowledge Base GPT-Key', gptkey)
-  //   })
-  // }
-
-
   /**
    * 
    */
   checkAllStatuses() {
-    let namespace_list = [this.kbSettings.id_project];
-    // console.log("---> checkAllStatuses:   ", namespace_list);
-    this.checkStatus(namespace_list, null).then((response: any) => {
-      const arrayOfKb = Object.entries(response).map(([key, value]) => ({ key, value: value }));
-      arrayOfKb.forEach((element) => {
-        console.log(`Chiave: ${element.key}, kb status: ${element.value['status_code']}`);
-        let kb = this.kbSettings.kbs.find(obj => obj._id === element.key);
-        if(kb){
-          kb.status = element.value['status_code'];
-        }
-        console.log("---> oggettoDaModificare:   ", kb, element);
-      });
-      console.log("---> checkAllStatuses:   ", this.kbSettings.kbs);
-    })
+    this.kbsList.forEach(kb => {
+      if(kb.status == -1){
+        this.onRunIndexing(kb);
+      } else if(kb.status != 3) {
+        this.checkStatusWithRetry(kb);
+      }
+    });
   }
 
-
-  // checkAllStatuses() {
-  //   // SCANDALOSO - DA ELIMINARE IL PRIMA POSSIBILE
-  //   // INDAGARE CON PUGLIA AI
-  //   // Anche perchè ogni tanto risponde con tutti status 0 anche con 500ms di delay
-  //   let promises = [];
-  //   for (let i = 0; i < this.kbSettings.kbs.length; i++) {
-  //     const delay = 500 * i;
-  //     let kb = this.kbSettings.kbs[i];
-  //     setTimeout(() => {
-  //       promises.push(this.checkStatus(kb).then((status_code: number) => {
-  //         kb.status = status_code;
-  //         i = i + 1;
-  //       }).catch((err) => {
-  //         this.logger.error("kb " + kb.url + " error: " + err);
-  //       }))
-  //     }, delay);
-  //   }
-  //   Promise.all(promises).then((response) => {
-  //     this.logger.log("Promise All *COMPLETED* ", response);
-  //   })
-  // }
 
 
   showHideSecret(target) {
@@ -590,13 +454,13 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
     this.missingGptkeyModal = 'none';
     setTimeout(() => {
       this.secretsModal = 'block';
-      if (this.kbSettings.gptkey) {
-        let el = <HTMLInputElement>document.getElementById('gptkey-key');
-        el.type = "password"
-        this.gptkeyVisible = false;
-      } else {
-        this.gptkeyVisible = true;
-      }
+      // if (this.kbSettings.gptkey) {
+      //   let el = <HTMLInputElement>document.getElementById('gptkey-key');
+      //   el.type = "password"
+      //   this.gptkeyVisible = false;
+      // } else {
+      //   this.gptkeyVisible = true;
+      // }
     }, 600);
   }
 
@@ -634,8 +498,8 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
 
 
   // ************** DELETE **************** //
-  onDeleteKnowledgeBase(id){
-    this.deleteKnowledgeBase(id);
+  onDeleteKnowledgeBase(kb){
+    this.onDeleteKb(kb);
     this.baseModalDelete = false;
   }
 
@@ -646,7 +510,7 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
   // ************** PREVIEW **************** //
 
   onOpenBaseModalPreview(){
-    console.log("onOpenBaseModalPreview:: ")
+    // console.log("onOpenBaseModalPreview:: ")
     //this.kbid_selected = kb;
     this.baseModalPreview = true;
   }
@@ -654,19 +518,6 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
   onPreviewKnowledgeBase(){
 
   }
-
-  // closePreviewKnowledgeBaseModal() {
-  //   this.previewKnowledgeBaseModal = 'none';
-  //   this.baseModalPreview = false;
-  //   // this.question = "";
-  //   // this.answer = "";
-  //   // this.source_url = null;
-  //   // this.searching = false;
-  //   // this.error_answer = false;
-  //   // this.show_answer = false;
-  //   let element = document.getElementById('enter-button')
-  //   element.style.display = 'none';
-  // }
 
 
 

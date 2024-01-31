@@ -21,7 +21,7 @@ export class ModalDeleteKnowledgeBaseComponent implements OnInit {
     this.closeBaseModal.emit();
   }
 
-  onDeleteKnowledgeBase(id){
-    this.deleteKnowledgeBase.emit(id);
+  onDeleteKnowledgeBase(kb){
+    this.deleteKnowledgeBase.emit(kb);
   }
 }
