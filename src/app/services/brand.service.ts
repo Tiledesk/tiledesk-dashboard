@@ -28,6 +28,9 @@ export class BrandService {
       "terms_and_conditions_url": "https://www.tiledesk.com/termsofservice.html",
       "contact_us_email": "support@tiledesk.com",
       "display-news-and-documentation": true,
+      "display_google_auth_btn": true,
+      "display_help_in_installation": true,
+      "display_invite_teammate_btn": true,
       "footer": {
         "display_terms_and_conditions_link": true,
         "display_contact_us_email": true,
@@ -73,6 +76,7 @@ export class BrandService {
       BASE_LOGO: "assets/img/logos/tiledesk_logo.svg",
       BASE_LOGO_NO_TEXT: "assets/img/logos/tiledesk_logo_no_text.svg",
       COMPANY_NAME: "Tiledesk",
+      BRAND_NAME: "Tiledesk",
       COMPANY_SITE_NAME: "tiledesk.com",
       COMPANY_SITE_URL: "https://www.tiledesk.com",
       CONTACT_US_EMAIL: "support@tiledesk.com",

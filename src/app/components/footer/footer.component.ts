@@ -51,7 +51,7 @@ export class FooterComponent implements OnInit {
     public appConfigService: AppConfigService
   ) {
     const brand = brandService.getBrand();
-    this.company_name = brand['COMPANY_NAME'];
+    this.company_name = brand['BRAND_NAME'];
     this.companySiteName = brand['COMPANY_SITE_NAME'];
     this.companySiteUrl = brand['COMPANY_SITE_URL'];
     this.privacyPolicyLinkName = brand['privacy_policy_link_text']

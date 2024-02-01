@@ -58,7 +58,7 @@ export class GetStartChatbotForkComponent implements OnInit {
     const brand = brandService.getBrand();
     this.companyLogo = brand['BASE_LOGO'];
     this.tparams = brand;
-    this.company_name = brand['COMPANY_NAME'];
+    this.company_name = brand['BRAND_NAME'];
     this.company_site_url = brand['COMPANY_SITE_URL'];
   }
 

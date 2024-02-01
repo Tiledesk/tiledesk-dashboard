@@ -79,6 +79,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
   selectedTranslationLabel: string;
   selectedTranslationCode: string;
   displaySocialProofContainer: string;
+  hideGoogleAuthBtn: string;
 
   // newUser = false; // to toggle login or signup form
   // passReset = false; // set to true when password reset is triggered
@@ -138,13 +139,14 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
     this.secondaryBrandColor = brand['BRAND_SECONDARY_COLOR']; 
     this.primaryBrandColor = brand['BRAND_PRIMARY_COLOR']; 
     this.companyLogoPlanet = brand['COMPANY_LOGO_PLANET'];
-    this.company_name = brand['COMPANY_NAME'];
+    this.company_name = brand['BRAND_NAME'];
     this.company_site_url = brand['COMPANY_SITE_URL'];
     this.privacy_policy_link_text = brand['privacy_policy_link_text'];
     this.terms_and_conditions_url = brand['terms_and_conditions_url'];
     this.privacy_policy_url = brand['privacy_policy_url'];
     this.display_terms_and_conditions_link = brand['signup_page'].display_terms_and_conditions_link;
     this.displaySocialProofContainer = brand['signup_page'].display_social_proof_container;
+    this.hideGoogleAuthBtn = brand['display_google_auth_btn'];
   }
 
   ngOnInit() {

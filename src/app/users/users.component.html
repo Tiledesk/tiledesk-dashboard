@@ -136,14 +136,15 @@
               <div class="card-header card-header-custom-bckgrnd"
                 style="height:55px; border-bottom:1px solid rgb(239, 242, 246);">
 
-
-                <button *ngIf="USER_ROLE !== 'agent'" class="btn btn-primary pull-right"
-                  style="padding: 8px 16px;margin:0px;" (click)="goToAddUser()">
-                  <span class="icon" style="padding-right:8px">
-                    <i class="material-icons">add_circle</i>
-                  </span>
-                  {{ "UsersPage.Invites" | translate }}
-                </button>
+                <ng-container *ngIf="displayInviteTeammateBtn"> 
+                  <button *ngIf="USER_ROLE !== 'agent'" class="btn btn-primary pull-right"
+                    style="padding: 8px 16px;margin:0px;" (click)="goToAddUser()">
+                    <span class="icon" style="padding-right:8px">
+                      <i class="material-icons">add_circle</i>
+                    </span>
+                    {{ "UsersPage.Invites" | translate }}
+                  </button>
+                </ng-container>
 
 
 

@@ -231,7 +231,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     public localDbService: LocalDbService
   ) {
     const brand = brandService.getBrand();
-    this.company_name = brand['COMPANY_NAME'];
+    this.company_name = brand['BRAND_NAME'];
     this.custom_company_home_logo = brand['CUSTOM_COMPANY_HOME_LOGO'];
     this.companyLogoNoText = brand['BASE_LOGO_NO_TEXT'];
     this.displayNewsAndDocumentation = brand['display-news-and-documentation'];

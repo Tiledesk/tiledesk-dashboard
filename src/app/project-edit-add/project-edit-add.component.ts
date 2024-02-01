@@ -664,7 +664,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         }
       }
 
-      // Auto sendd transcript by email 
+      // Auto send transcript by email 
       if (key.includes("AST")) {
         // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
         let mts = key.split(":");
@@ -677,6 +677,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
           // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - isVisibleAutoSendTranscript', this.isVisibleAutoSendTranscript);
         }
       }
+    
     });
 
     if (!this.public_Key.includes("PAY")) {

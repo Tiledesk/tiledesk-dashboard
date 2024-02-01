@@ -11,6 +11,7 @@ import { AppConfigService } from '../services/app-config.service'
 import { avatarPlaceholder, getColorBck, PLAN_SEATS, PLAN_NAME, APP_SUMO_PLAN_NAME, APPSUMO_PLAN_SEATS } from '../utils/util'
 import { URL_understanding_default_roles } from '../utils/util'
 import { LoggerService } from '../services/logger/logger.service'
+import { BrandService } from 'app/services/brand.service'
 
 const swal = require('sweetalert')
 
@@ -103,6 +104,7 @@ export class UsersComponent implements OnInit, OnDestroy {
   prjct_id: string;
   prjct_name: string;
   appSumoProfile: string;
+  displayInviteTeammateBtn: string;
   constructor(
     private usersService: UsersService,
     private router: Router,
@@ -112,9 +114,11 @@ export class UsersComponent implements OnInit, OnDestroy {
     private prjctPlanService: ProjectPlanService,
     public appConfigService: AppConfigService,
     private logger: LoggerService,
+    public brandService: BrandService
   ) {
     this.tParamsFreePlanSeatsNum = { free_plan_allowed_seats_num: PLAN_SEATS.free }
-
+    const brand = brandService.getBrand();
+    this.displayInviteTeammateBtn = brand['display_invite_teammate_btn']
   }
 
   ngOnInit() {

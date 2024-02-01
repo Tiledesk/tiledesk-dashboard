@@ -42,6 +42,7 @@ export class SigninComponent implements OnInit {
   isVisibleV1L: boolean = true;
   secondaryBrandColor: string;
   primaryBrandColor: string;
+  hideGoogleAuthBtn: string;
 
   // newUser = false; // to toggle login or signup form
   // passReset = false; // set to true when password reset is triggered
@@ -76,10 +77,11 @@ export class SigninComponent implements OnInit {
 
     this.companyLogo = brand['BASE_LOGO'];
     this.companyLogoNoText = brand['BASE_LOGO_NO_TEXT'];
-    this.company_name = brand['COMPANY_NAME'];
+    this.company_name = brand['BRAND_NAME'];
     this.company_site_url = brand['COMPANY_SITE_URL'];
     this.secondaryBrandColor = brand['BRAND_SECONDARY_COLOR']; 
-    this.primaryBrandColor = brand['BRAND_PRIMARY_COLOR']; 
+    this.primaryBrandColor = brand['BRAND_PRIMARY_COLOR'];
+    this.hideGoogleAuthBtn = brand['display_google_auth_btn'];
   }
 
   ngOnInit() {

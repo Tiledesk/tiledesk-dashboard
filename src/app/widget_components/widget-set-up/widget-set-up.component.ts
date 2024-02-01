@@ -385,6 +385,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   public onlyOwnerCanManageTheAccountPlanMsg: string;
   public learnMoreAboutDefaultRoles: string;
   public payIsVisible: boolean;
+  public isVisibleWidgetUnbranding: boolean;
   public featureIsAvailable: boolean;
   public user: any;
   @ViewChild('fileInputLauncherBtnlogo', { static: false }) fileInputLauncherBtnlogo: any;
@@ -415,7 +416,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     const brand = brandService.getBrand();
 
     this.tparams = brand;
-    this.company_name = brand['COMPANY_NAME'];
+    this.company_name = brand['BRAND_NAME'];
     this.company_site_url = brand['COMPANY_SITE_URL'];
     // this.t_params = { 'plan_name': PLAN_NAME.B }
   }
@@ -769,7 +770,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         }
 
         let userFullname = ''
-        if (this.user.firstname && this.user.lastname)  {
+        if (this.user.firstname && this.user.lastname) {
           userFullname = this.user.firstname + ' ' + this.user.lastname
         } else if (this.user.firstname && !this.user.lastname) {
           userFullname = this.user.firstname
@@ -1149,7 +1150,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
       var arrow_icon_div = firstAccordion.children[1];
 
-      
+
       // this.logger.log('[WIDGET-SET-UP] ACCORDION ARROW ICON WRAP DIV', arrow_icon_div);
 
       var arrow_icon = arrow_icon_div.children[0]
@@ -1206,18 +1207,47 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       }
 
       if (key.includes("PAY")) {
-        this.logger.log('[ANALYTICS-STATIC] PUBLIC-KEY - key', key);
+        this.logger.log('[WIDGET-SET-UP] PUBLIC-KEY - key', key);
         let pay = key.split(":");
         // this.logger.log('PUBLIC-KEY (Navbar) - pay key&value', pay);
         if (pay[1] === "F") {
           this.payIsVisible = false;
-          this.logger.log('[ANALYTICS-STATIC] - pay isVisible', this.payIsVisible);
+          this.logger.log('[WIDGET-SET-UP] - pay isVisible', this.payIsVisible);
         } else {
           this.payIsVisible = true;
-          this.logger.log('[ANALYTICS-STATIC] - pay isVisible', this.payIsVisible);
+          this.logger.log('[WIDGET-SET-UP] - pay isVisible', this.payIsVisible);
+        }
+      }
+
+      // Widget unbranding
+      if (key.includes("WUN")) {
+        // console.log('PUBLIC-KEY (WIDGET-SET-UP) - key', key);
+        let wun = key.split(":");
+        //  console.log('PUBLIC-KEY (WIDGET-SET-UP) - ips key&value', ips);
+        if (wun[1] === "F") {
+          this.isVisibleWidgetUnbranding = false;
+          // console.log('PUBLIC-KEY (WIDGET-SET-UP) - isVisibleWidgetUnbranding', this.isVisibleAutoSendTranscript);
+        } else {
+          this.isVisibleWidgetUnbranding = true;
+          // console.log('PUBLIC-KEY (WIDGET-SET-UP) - isVisibleWidgetUnbranding', this.isVisibleAutoSendTranscript);
         }
       }
     });
+
+    if (!this.public_Key.includes("PAY")) {
+      // this.logger.log('PUBLIC-KEY (WIDGET-SET-UP) - key.includes("PAY")', this.public_Key.includes("PAY"));
+      this.payIsVisible = false;
+    }
+
+    if (!this.public_Key.includes("WUN")) {
+      // this.logger.log('PUBLIC-KEY (WIDGET-SET-UP) - key.includes("PAY")', this.public_Key.includes("PAY"));
+      this.isVisibleWidgetUnbranding = false;
+    }
+
+    if (!this.public_Key.includes("MTL")) {
+      // this.logger.log('PUBLIC-KEY (WIDGET-SET-UP) - key.includes("PAY")', this.public_Key.includes("PAY"));
+      this.isVisible = false;
+    }
   }
 
   getLabels() {

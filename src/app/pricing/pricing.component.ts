@@ -195,7 +195,7 @@ export class PricingComponent implements OnInit, OnDestroy {
   ) {
 
     const brand = brandService.getBrand();
-    this.company_name = brand['COMPANY_NAME'];
+    this.company_name = brand['BRAND_NAME'];
     this.contactUsEmail = brand['CONTACT_US_EMAIL'];
   }
 
