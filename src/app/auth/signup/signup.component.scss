@@ -3,7 +3,7 @@
 /****** LOGIN ******/
 .signup-button {
   width: 100%;
-  background-color: $brand-auth-pages-buttons-color !important;
+  background-color: $brand-auth-pages-buttons-color;
   height: 56px;
   font-size: 16px;
   letter-spacing: 2px;
@@ -173,7 +173,17 @@ input:-webkit-autofill {
     color: #666666 !important;
     font-size: 1.1em !important;
     font-weight: 300 !important;
+    margin: auto !important;
   }
+}
+
+.left-logo>img {
+  // max-width: 150px;
+  height: auto;
+  top: -50px;
+  left: 25px;
+  position: absolute;
+  max-height: 60px;
 }
 
 @media (min-width: 992px) {
@@ -223,7 +233,7 @@ input:-webkit-autofill {
   /* text-align: left; */
   color: rgb(100, 116, 145);
   max-width: 400px;
-  padding: 0px 15px;
+  // padding: 0px 15px;
 
 }
 

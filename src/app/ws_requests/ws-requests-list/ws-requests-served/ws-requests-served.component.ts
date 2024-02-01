@@ -18,6 +18,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { LoggerService } from '../../../services/logger/logger.service';
 import { ProjectService } from 'app/services/project.service';
 import { WsMsgsService } from 'app/services/websocket/ws-msgs.service';
+import { BrandService } from 'app/services/brand.service';
 
 const swal = require('sweetalert');
 
@@ -71,6 +72,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
 
   youCannotJoinChat: string;
   joinChatTitle: string;
+  botLogo: string;
   /**
    * Constructor
    * @param botLocalDbService 
@@ -100,9 +102,13 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
     public translate: TranslateService,
     public logger: LoggerService,
     private projectService: ProjectService,
-    private wsMsgsService: WsMsgsService
+    private wsMsgsService: WsMsgsService,
+    public brandService: BrandService,
   ) {
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate);
+   
+    const brand = brandService.getBrand();
+    this.botLogo = brand['BASE_LOGO_NO_TEXT']
   }
 
   // -------------------------------------------------------------

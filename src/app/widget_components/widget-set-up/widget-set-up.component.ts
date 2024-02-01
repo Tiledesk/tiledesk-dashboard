@@ -415,8 +415,8 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     const brand = brandService.getBrand();
 
     this.tparams = brand;
-    this.company_name = brand['company_name'];
-    this.company_site_url = brand['company_site_url'];
+    this.company_name = brand['COMPANY_NAME'];
+    this.company_site_url = brand['COMPANY_SITE_URL'];
     // this.t_params = { 'plan_name': PLAN_NAME.B }
   }
 

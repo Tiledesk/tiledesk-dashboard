@@ -27,9 +27,7 @@
 
         <div class="left-logo" style="z-index: 1050;  position: relative;" (click)="goToCompanySite()">
 
-          <!-- <a [href]="company_site_url" target="_blank"> -->
-          <img [src]="companyLogoBlack_Url" class="img-fluid" style="max-width: 150px; height: auto; top: -50px;
-              left: 25px; position: absolute;" />
+          <img [src]="companyLogo" class="img-fluid" />
           <!-- <img src="assets/img/logos/tiledesk_planet.svg" class="img-fluid" style="width: 200px;" /> -->
           <!-- </a> -->
 
@@ -47,11 +45,13 @@
           <!-- The community-led no-code platform for customer engagement.
           <span style="display: block;"> Omni-channel live chat + AI-powered chatbots and conversational apps. </span> -->
           <div>
-            <span class="material-icons" style="color: #f0806f;">
+            <!-- style="color: #f0806f;" -->
+            <span class="material-icons"  [ngStyle]="{'color': secondaryBrandColor ? secondaryBrandColor : '#f0806f' }">
               arrow_circle_right
             </span>
           </div>
-          <div> Create your AI assistant with the <span style="color: #f0806f; font-weight: 500;">Visual Conversation
+          <!-- color: #f0806f; -->
+          <div> Create your AI assistant with the <span [ngStyle]="{'color': secondaryBrandColor ? secondaryBrandColor : '#f0806f' }" style=" font-weight: 500;">Visual Conversation
               Builder </span> </div>
 
         </div>
@@ -60,12 +60,14 @@
           <!-- The community-led no-code platform for customer engagement.
           <span style="display: block;"> Omni-channel live chat + AI-powered chatbots and conversational apps. </span> -->
           <div>
-            <span class="material-icons" style="color: #f0806f;">
+            <!-- style="color: #f0806f;" -->
+            <span class="material-icons"  [ngStyle]="{'color': secondaryBrandColor ? secondaryBrandColor : '#f0806f' }">
               arrow_circle_right
             </span>
           </div>
           <div>
-            <span style="color: #f0806f; font-weight: 500;"> Boost engagement by 4x </span> and be on all messaging
+            <!-- style="color: #f0806f; -->
+            <span [ngStyle]="{'color': secondaryBrandColor ? secondaryBrandColor : '#f0806f' }" style="font-weight: 500;"> Boost engagement by 4x </span> and be on all messaging
             channels
           </div>
 
@@ -75,12 +77,14 @@
           <!-- The community-led no-code platform for customer engagement.
           <span style="display: block;"> Omni-channel live chat + AI-powered chatbots and conversational apps. </span> -->
           <div>
-            <span class="material-icons" style="color: #f0806f;">
+            <!-- style="color: #f0806f;" -->
+            <span class="material-icons"  [ngStyle]="{'color': secondaryBrandColor ? secondaryBrandColor : '#f0806f' }">
               arrow_circle_right
             </span>
           </div>
           <div>
-            Turn leads into buying customers with <span style="color: #f0806f; font-weight: 500;"> WhatsApp automation
+            <!-- color: #f0806f; -->
+            Turn leads into buying customers with <span [ngStyle]="{'color': secondaryBrandColor ? secondaryBrandColor : '#f0806f' }" style="font-weight: 500;"> WhatsApp automation
             </span>
           </div>
 
@@ -89,7 +93,7 @@
         <!-- ---------------------------------- -->
         <!-- @ Social proof -->
         <!-- ---------------------------------- -->
-        <div class="social-proof-container">
+        <div class="social-proof-container" *ngIf="displaySocialProofContainer">
           <div class="satisfied-customers-num">
             Join 1,000+ Satisfied Customers
           </div>
@@ -157,13 +161,16 @@
       <div class="right-logo" style="text-align: center;">
         <a [href]="company_site_url" target="_blank">
 
-          <img [src]="companyLogoBlack_Url" class="img-fluid" style="max-width: 150px; height: auto;" />
+          <img [src]="companyLogo" class="img-fluid" style="max-width: 150px; height: auto;" />
         </a>
       </div>
       <div class="centered">
         <div [ngClass]="{'logos-wpr': appSumoActivationEmail}">
           <div class="logo-at-media-plus-992" style="height:48px">
-            <svg _ngcontent-pgl-c83="" xml:space="preserve" xmlns:xlink="http://www.w3.org/1999/xlink" height="48px"
+            <a [href]="company_site_url" target="_blank">
+              <img [src]="companyLogoNoText" class="img-fluid" style="max-width: 48px; height: auto;" />
+            </a>
+            <!-- <svg _ngcontent-pgl-c83="" xml:space="preserve" xmlns:xlink="http://www.w3.org/1999/xlink" height="48px"
               viewBox="0 0 60 60" width="48px" x="0px" xmlns="http://www.w3.org/2000/svg" y="0px">
               <path _ngcontent-pgl-c83=""
                 d="M51.8,28.2h-19c-1.7,0-3-1.3-3-3V6.4c0-1.7-1.3-3-3-3H8c-1.7,0-3,1.3-3,3v22v22c0,1.7,1.3,3,3,3H6.7h3.4  c0.8,0,1.3,0.2,1.9,0.8l2.3,2.3l2.1,2.1c0.8,0.8,1.7,0.8,2.4,0l2.1-2.1l2.3-2.3c0.6-0.6,1.1-0.8,1.9-0.8H52c1.7,0,3-1.3,3-3V31.2  C54.8,29.5,53.5,28.2,51.8,28.2"
@@ -171,7 +178,7 @@
               <path _ngcontent-pgl-c83=""
                 d="M52,24.2H36.8c-1.5,0-2.8-1.3-2.8-2.8V6.2c0-1.5,1.3-2.8,2.8-2.8H52c1.5,0,2.8,1.3,2.8,2.8v15.2  C54.8,22.9,53.5,24.2,52,24.2"
                 fill="#E5BBAD"></path>
-            </svg>
+            </svg> -->
           </div>
 
           <div class="plus-appsumo" *ngIf="appSumoActivationEmail">
@@ -324,7 +331,7 @@
 
             <!-- <div *ngIf="userForm.valid" class="notification is-success">Form is valid</div> -->
             <!-- SUBMIT -->
-            <button type="submit" class="btn signup-button" [disabled]="!userForm.valid || showSpinnerInLoginBtn">
+            <button [ngStyle]="{'background-color': primaryBrandColor ? primaryBrandColor : '#f0806f' }" type="submit" class="btn signup-button" [disabled]="!userForm.valid || showSpinnerInLoginBtn">
               <span *ngIf="!showSpinnerInLoginBtn">
 
                 <!-- {{ "SignUp" | translate }} -->

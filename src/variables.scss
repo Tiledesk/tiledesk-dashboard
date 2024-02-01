@@ -5,12 +5,22 @@
  // 8796af = rgb(135, 150, 175)
  //  --list-item-action-btn-color: rgb(100, 116, 145);
  // --conv-tag-color: #444950;
+
+ // https://www.rgbtohex.net/rgb/91-114-167  intessant link for the new color 5b72a7
+ // https://color.adobe.com/color-palette-free-download-color-theme-14037012/ intessant linkfor the new color  5b72a7
  body {
+      --brand-color: #f0806f;
      --conv-details-header-background: #ffffff;
      --conversation-detail-background: #f8fafc;
      --card-background-color: rgb(255, 255, 255);
      --card-elevation: rgb(0 27 71 / 8%) 0px 3px 8px;
      --icon-color: #8796af;
+     --light-periwinkle: #5b72a7;
+     --blue-turquoise: #2196f3;
+     --vivid-blue:#0d8aee;
+     --opal-violet: #7c8eb9;
+     --indigo: #6883d0;
+     --indigo-deep: #5b5dbc;
      --icon-hover-color: rgb(5, 102, 255);
      --text-color: #555555;
      --secondary-text-color: #8796af;
@@ -173,6 +183,13 @@
      --card-background-color: #101725;
      --card-elevation: rgb(0 27 71 / 8%) 0px 3px 8px;
      --icon-color: #8796af;
+     --icon-color: #8796af;
+     --light-periwinkle: #5b72a7;
+     --blue-turquoise: #2196f3;
+     --vivid-blue:#0d8aee;
+     --opal-violet: #7c8eb9;
+     --indigo: #6883d0;
+     --indigo-deep: #5b5dbc;
      --icon-hover-color: rgb(5, 102, 255);
      --text-color: #fff;
      --secondary-text-color: rgb(148, 163, 184);
@@ -191,18 +208,13 @@
      --conv-details-contact-location-color: #03a5e8;
      --active-tab-text-color: #fff;
      --conv-details-edit-contact-fullname-form-background-color: #1b2533;
-
      --error-color: #f44336;
      --header-font-family: Poppins, Roboto, Helvetica, Arial, sans-serif;
      --content-font-family: Roboto, Helvetica, Arial, sans-serif;
-
      --text-color-on-dark: #dbddde;
      --dark-background: #2d323e;
-
-
      --conv-details-help-tooltip-color: #7695a5;
      --tab-text-color: rgb(148, 163, 184);
-
      --accent-text-color: #3ea9f5;
      --list-wrapper-border-radius: 4px;
      --list-wrapper-padding: 10px 0px 10px;
@@ -261,7 +273,6 @@
      --no-tags-letter-spacing: -0.01em;
      --no-tags-line-clamp: 1;
      --contact-custom-property-font-weight: 500;
-
      --contact-tag-font-size: 14px;
      --contact-tag-line-height: 18px;
      --contact-tag-font-weight: 400;
@@ -283,7 +294,6 @@
      --conv-details-edit-contact-icon-color: rgb(135, 150, 175);
      --conv-details-edit-contact-fullname-form-elevation: unset !important;
      --conv-details-edit-contact-fullname-border: 1px solid #2d323e;
-     ;
      --conv-details-edit-contact-fullname-form-border-radius: 8px;
      --conv-details-edit-contact-fullname-form-input-border: 2px solid rgb(211, 219, 229);
      --conv-details-edit-contact-fullname-form-input-background-color: #1b2533;

@@ -93,6 +93,7 @@ export class BotListComponent implements OnInit {
   route: string
   dev_mode: boolean;
   isPanelRoute: boolean = false;
+  botLogo: string;
   public selectedProjectId: string;
   public projectname: string;
   public currentProjectId: string;
@@ -117,6 +118,7 @@ export class BotListComponent implements OnInit {
 
     const brand = brandService.getBrand();
     this.tparams = brand;
+    this.botLogo = brand['BASE_LOGO_NO_TEXT']
     this.dev_mode = isDevMode()
     this.logger.log('[BOTS-LIST] is dev mode ', this.dev_mode)
 

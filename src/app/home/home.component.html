@@ -20,7 +20,7 @@
               <div class="flex flex-auto items-center min-w-0">
                 <!-- rounded-full -->
                 <div class="flex-0 w-16 h-16  overflow-hidden">
-                  <!-- <img src="assets/images/avatars/brian-hughes.jpg" class="w-full h-full object-cover"> -->
+               
                   <svg *ngIf="isVisiblePay" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
                     xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 65.2 65.2"
                     style="enable-background:new 0 0 65.2 65.2;" xml:space="preserve" class="td--logo">
@@ -40,8 +40,11 @@
 		                    C58,24.9,57.1,25.7,56.1,25.7" />
                     </g>
                   </svg>
-
-                  <svg *ngIf="!isVisiblePay" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+                 
+                  <div *ngIf="!isVisiblePay && !custom_company_home_logo" class="logo-no--text">
+                    <img [src]="companyLogoNoText" class="img-fluid" style="max-width: 35px; height: auto;" />
+                  </div>
+                  <!-- <svg *ngIf="!isVisiblePay && !custom_company_home_logo" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
                     xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 65.2 65.2"
                     style="enable-background:new 0 0 65.2 65.2;" xml:space="preserve" class="td--logo">
                     <g>
@@ -55,7 +58,11 @@
                       C58,24.9,57.1,25.7,56.1,25.7" 
                       fill="#E5BBAD"/>
                     </g>
-                  </svg>
+                  </svg> -->
+
+                  <div *ngIf="!isVisiblePay && custom_company_home_logo">
+                    <img [src]="companyLogoNoText" class="img-fluid" style="max-width: 35px; height: auto;" />
+                  </div>
 
                 </div>
                 <!-- style="flex-direction: row !important;" -->
@@ -250,7 +257,7 @@
                   <!-- --------------------- -->
 
 
-                  <button mat-menu-item (click)="$event.stopPropagation()">
+                  <button *ngIf="displayNewsAndDocumentation" mat-menu-item (click)="$event.stopPropagation()">
                     <mat-checkbox class="home-settings-checkbox" [checked]="displayNewsFeed"
                       (change)="switchNewsFeed($event.checked)"></mat-checkbox>
                     <span>News Feed</span>
@@ -570,10 +577,12 @@
             </span>
           </ng-container>
         </div>
-        <div *ngIf="!showskeleton" class="news-feed-wpr">
-          <appdashboard-home-news-feed *ngIf="displayNewsFeed" [showskeleton]="showskeleton">
-          </appdashboard-home-news-feed>
-        </div>
+        <ng-container *ngIf="displayNewsAndDocumentation"> 
+          <div *ngIf="!showskeleton" class="news-feed-wpr">
+            <appdashboard-home-news-feed *ngIf="displayNewsFeed" [showskeleton]="showskeleton">
+            </appdashboard-home-news-feed>
+          </div>
+        </ng-container>
       </div>
 
 

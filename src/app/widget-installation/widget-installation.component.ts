@@ -41,7 +41,7 @@ export class WidgetInstallationComponent implements OnInit {
     ) { 
       const brand = brandService.getBrand();
       this.tparams = brand;
-      this.company_name = brand['company_name'];
+      this.company_name = brand['COMPANY_NAME'];
 
      }
 

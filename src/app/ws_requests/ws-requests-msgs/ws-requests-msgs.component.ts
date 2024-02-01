@@ -39,6 +39,7 @@ import { TooltipOptions } from 'ng2-tooltip-directive';
 import { ProjectPlanService } from 'app/services/project-plan.service';
 import { MatDialog } from '@angular/material/dialog';
 import { UpgradePlanModalComponent } from 'app/components/modals/upgrade-plan-modal/upgrade-plan-modal.component';
+import { BrandService } from 'app/services/brand.service';
 
 const swal = require('sweetalert');
 // './ws-requests-msgs.component.html',
@@ -400,6 +401,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   telegramPhoneNumber: string;
   mailtoBody: any;
   REQUEST_EXIST: boolean = true;
+  botLogo: string;
 
   /**
    * Constructor
@@ -446,7 +448,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     private uploadImageService: UploadImageService,
     private uploadImageNativeService: UploadImageNativeService,
     private prjctPlanService: ProjectPlanService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    public brandService: BrandService
 
   ) {
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate)
@@ -454,6 +457,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       { id: 10002, name: 'Task', avatar: 'https://tiledesk.atlassian.net/secure/viewavatar?size=medium&avatarId=10318&avatarType=issuetype' },
       { id: 10004, name: 'Bug', avatar: 'https://tiledesk.atlassian.net/secure/viewavatar?size=medium&avatarId=10303&avatarType=issuetype' },
     ];
+
+    const brand = brandService.getBrand();
+    this.botLogo = brand['BASE_LOGO_NO_TEXT']
   }
 
 

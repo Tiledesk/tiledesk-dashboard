@@ -12,7 +12,7 @@ import { UsersService } from 'app/services/users.service';
   styleUrls: ['./cnp-is-mobile.component.scss']
 })
 export class CnpIsMobileComponent implements OnInit {
-  companyLogoBlack_Url: string;
+  companyLogo: string;
   loginLinkSent: boolean = false;
   loginLinkResent: boolean = false;
   id_project: string;
@@ -26,7 +26,7 @@ export class CnpIsMobileComponent implements OnInit {
     private route: ActivatedRoute,
   ) {
     const brand = brandService.getBrand();
-    this.companyLogoBlack_Url = brand['company_logo_black__url'];
+    this.companyLogo = brand['BASE_LOGO'];
   }
 
   ngOnInit(): void {

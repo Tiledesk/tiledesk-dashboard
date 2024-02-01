@@ -42,8 +42,8 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
   CLOSE_BTN_IS_HIDDEN = true;
   DISPLAY_SPINNER = false;
 
-  companyLogoBlack_Url: string;
-  companyLogoNoText_Url: string;
+  companyLogo: string;
+  companyLogoNoText: string;
   temp_SelectedLangName: string;
   temp_SelectedLangCode: string;
   botid: string;
@@ -106,9 +106,9 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
   ) {
     super(translate);
     const brand = brandService.getBrand();
-    // this.logo_x_rocket = brand['wizard_create_project_page']['logo_x_rocket'];
-    this.companyLogoBlack_Url = brand['company_logo_black__url'];
-    this.companyLogoNoText_Url = brand['company_logo_no_text__url'];
+ 
+    this.companyLogo = brand['BASE_LOGO'];
+    this.companyLogoNoText = brand['BASE_LOGO_NO_TEXT'];
     this.botid = this.route.snapshot.params['botid'];
   }
 

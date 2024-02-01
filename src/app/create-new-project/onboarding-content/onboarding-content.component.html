@@ -8,8 +8,8 @@
     </div>
     <div *ngIf="!showSpinner" class="step-header" [ngClass]="{'step-header-full-width': arrayOfSteps[activeTypeStepNumber] === typeStep.TEMPLATES_INSTALLATION}">
 
-        <img *ngIf="displayLogoWithText" [src]="companyLogoBlack_Url" class="logo" />
-        <img *ngIf="!displayLogoWithText" [src]="companyLogoNoText_Url" class="logo no-text" />
+        <img *ngIf="displayLogoWithText" [src]="companyLogo" class="logo" />
+        <img *ngIf="!displayLogoWithText" [src]="companyLogoNoText" class="logo no-text" />
         <div class="close-wizard-page">
             <i *ngIf="!CLOSE_BTN_IS_HIDDEN" class="material-icons close-btn" (click)="goBack()">clear</i>
         </div>

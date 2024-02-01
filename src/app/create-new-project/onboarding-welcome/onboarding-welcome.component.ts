@@ -15,7 +15,7 @@ export class OnboardingWelcomeComponent implements OnInit {
     public brandService: BrandService,
   ) { 
     const brand = brandService.getBrand();
-    this.company_name = brand['company_name'];
+    this.company_name = brand['COMPANY_NAME'];
     this.companyNameParams = { 'company_name': this.company_name }
   }
 

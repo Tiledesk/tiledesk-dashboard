@@ -68,8 +68,8 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
     this.tparams = brand;
 
     if (brand) {
-      this.company_name = brand['company_name'];
-      this.contactUsEmail = brand['contact_us_email'];
+      this.company_name = brand['COMPANY_NAME'];
+      this.contactUsEmail = brand['CONTACT_US_EMAIL'];
     }
 
   }

@@ -164,7 +164,7 @@
 <a style="margin-top:3px; padding-left:30px; cursor: pointer;" class="navbar-brand">
 
   <!-- <img style="width:100px" src="assets/img/tiledesk-logo.png"/> -->
-  <img [ngStyle]="{'width':companyLogoBlack_width}" [src]="companyLogoBlack_Url"
+  <img [ngStyle]="{'height':companyLogo_height, 'top': companyLogo_top, 'left': companyLogo_left}" [src]="companyLogo"
     style="z-index: 1;position: relative;" />
 
 </a>
@@ -219,10 +219,10 @@
             style="border-radius:3px;">
             <div class="card-content" style="height:203px;">
               <!-- #55b9d1 -->
-              <h3 class="card-add-project-icon">
+              <h3 class="card-add-project-icon" [ngStyle]="{'color': company_brand_color ? company_brand_color : '#f0806f' }">
                 <i class="material-icons" style="font-size:48px">add</i>
               </h3>
-              <h4 class="card-add-project-text">
+              <h4 class="card-add-project-text" [ngStyle]="{'color': company_brand_color ? company_brand_color : '#f0806f' }">
                 {{ 'ProjectsPage.AddProject' | translate }}
               </h4>
             </div>

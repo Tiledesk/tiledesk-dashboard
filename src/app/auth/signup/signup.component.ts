@@ -30,21 +30,11 @@ type FormErrors = { [u in UserFields]: string };
 })
 export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit, AfterViewInit {
 
-
-  // tparams = brand;
-  // companyLogoBlack_Url = brand.company_logo_black__url;
-  // companyLogoAllWithe_Url = brand.company_logo_allwhite__url;
-  // company_name = brand.company_name;
-  // company_site_url = brand.company_site_url;
-  // privacy_policy_link_text = brand.privacy_policy_link_text;
-  // terms_and_conditions_url = brand.terms_and_conditions_url;
-  // privacy_policy_url = brand.privacy_policy_url;
-  // display_terms_and_conditions_link = brand.signup_page.display_terms_and_conditions_link;
-
-
   tparams: any;
-  companyLogoBlack_Url: string;
-  companyLogoAllWithe_Url: string;
+  companyLogo: string;
+  companyLogoNoText: string;
+  secondaryBrandColor : string;
+  primaryBrandColor: string;
   companyLogoPlanet: string;
   company_name: string;
   company_site_url: string;
@@ -88,6 +78,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
   temp_SelectedLangCode: string;
   selectedTranslationLabel: string;
   selectedTranslationCode: string;
+  displaySocialProofContainer: string;
 
   // newUser = false; // to toggle login or signup form
   // passReset = false; // set to true when password reset is triggered
@@ -142,16 +133,18 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
     // this.logger.log('>>> BRAND ' , brand) 
 
     this.tparams = brand;
-    this.companyLogoBlack_Url = brand['company_logo_black__url'];
-    this.companyLogoAllWithe_Url = brand['company_logo_allwhite__url'];
-    this.companyLogoPlanet = brand['company_logo_planet__url'];
-    // this.logger.log('>>> BRAND > companyLogoPlanet ' , this.companyLogoPlanet) 
-    this.company_name = brand['company_name'];
-    this.company_site_url = brand['company_site_url'];
+    this.companyLogo = brand['BASE_LOGO'];
+    this.companyLogoNoText = brand['BASE_LOGO_NO_TEXT'];
+    this.secondaryBrandColor = brand['BRAND_SECONDARY_COLOR']; 
+    this.primaryBrandColor = brand['BRAND_PRIMARY_COLOR']; 
+    this.companyLogoPlanet = brand['COMPANY_LOGO_PLANET'];
+    this.company_name = brand['COMPANY_NAME'];
+    this.company_site_url = brand['COMPANY_SITE_URL'];
     this.privacy_policy_link_text = brand['privacy_policy_link_text'];
     this.terms_and_conditions_url = brand['terms_and_conditions_url'];
     this.privacy_policy_url = brand['privacy_policy_url'];
     this.display_terms_and_conditions_link = brand['signup_page'].display_terms_and_conditions_link;
+    this.displaySocialProofContainer = brand['signup_page'].display_social_proof_container;
   }
 
   ngOnInit() {

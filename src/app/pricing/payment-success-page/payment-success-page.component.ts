@@ -16,7 +16,7 @@ import { Project } from 'app/models/project-model';
 })
 export class PaymentSuccessPageComponent implements OnInit, AfterViewInit {
   private unsubscribe$: Subject<any> = new Subject<any>();
-  // contact_us_email = brand.contact_us_email;
+
   contact_us_email: string;
   contactSalesEmail: string;
   id_project: string;
@@ -36,7 +36,7 @@ export class PaymentSuccessPageComponent implements OnInit, AfterViewInit {
     public projectService: ProjectService,
   ) {
     const brand = brandService.getBrand();
-    this.contact_us_email = brand['contact_us_email'];
+    this.contact_us_email = brand['CONTACT_US_EMAIL'];
     this.contactSalesEmail = "sales@tiledesk.com"
   }
 

@@ -25,7 +25,7 @@ export class HandleInvitationComponent implements OnInit {
   browser_lang: string;
   
   // tparams = brand;
-  // company_logo_45x45 = brand.handle_invitation_page.company_logo_45x45;
+ 
   tparams:any;
   company_logo_45x45: any;
 

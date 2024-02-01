@@ -20,7 +20,7 @@ export class PaymentCanceledPageComponent implements OnInit {
     public brandService: BrandService,
     private logger: LoggerService) { 
       const brand = brandService.getBrand();
-      this.contact_us_email = brand['contact_us_email'];
+      this.contact_us_email = brand['CONTACT_US_EMAIL'];
     }
 
   ngOnInit() {

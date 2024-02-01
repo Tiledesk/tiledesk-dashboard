@@ -16,15 +16,7 @@ export class FooterComponent implements OnInit {
   // public version: string = require( '../../../../package.json').version;
   public version: string = environment.VERSION;
 
-  // company_name = brand.company_name;
-  // companySiteName = brand.company_site_name;
-  // companySiteUrl = brand.company_site_url;
-  // privacyPolicyLinkName = brand.privacy_policy_link_text
-  // privacyPolicyUrl = brand.privacy_policy_url
-  // displayTermsAndConditionsLink = brand.footer.display_terms_and_conditions_link
-  // termsAndConditionsUrl = brand.terms_and_conditions_url
-  // display_contact_us_email = brand.footer.display_contact_us_email;
-  // contactUsEmail = brand.contact_us_email;
+
 
   company_name: string;
   companySiteName: string;
@@ -59,9 +51,9 @@ export class FooterComponent implements OnInit {
     public appConfigService: AppConfigService
   ) {
     const brand = brandService.getBrand();
-    this.company_name = brand['company_name'];
-    this.companySiteName = brand['company_site_name'];
-    this.companySiteUrl = brand['company_site_url'];
+    this.company_name = brand['COMPANY_NAME'];
+    this.companySiteName = brand['COMPANY_SITE_NAME'];
+    this.companySiteUrl = brand['COMPANY_SITE_URL'];
     this.privacyPolicyLinkName = brand['privacy_policy_link_text']
     this.privacyPolicyUrl = brand['privacy_policy_url']
     this.displayTermsAndConditionsLink = brand['footer']['display_terms_and_conditions_link']
@@ -79,7 +71,7 @@ export class FooterComponent implements OnInit {
     this.followus_on_instagram_URL = brand['footer']['followus_on_instagram_URL'];
     this.display_followus_on_youtube = brand['footer']['display_followus_on_youtube'];
     this.followus_on_youtube_URL = brand['footer']['followus_on_youtube_URL'];
-    this.contactUsEmail = brand['contact_us_email'];
+    this.contactUsEmail = brand['CONTACT_US_EMAIL'];
 
   }
 

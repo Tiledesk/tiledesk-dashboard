@@ -56,8 +56,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('editOperatingHoursBtn', { static: false, read: ElementRef }) public editOperatingHoursBtn;
   
 
-  // company_name = brand.company_name;
-  // tparams = brand;
+
   company_name: string;
   tparams: any;
 
@@ -188,6 +187,9 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   userHasClickedDisplayWAWizard: boolean = false
   PROJECT_ATTRIBUTES: any
   showskeleton: boolean = true;
+  custom_company_home_logo: string;
+  companyLogoNoText: string;
+  displayNewsAndDocumentation: string;
   // list_case1 = [
   //   { pos: 1, type: 'child1'},
   //   { pos: 2, type: 'child2'},
@@ -229,7 +231,11 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     public localDbService: LocalDbService
   ) {
     const brand = brandService.getBrand();
-    this.company_name = brand['company_name'];
+    this.company_name = brand['COMPANY_NAME'];
+    this.custom_company_home_logo = brand['CUSTOM_COMPANY_HOME_LOGO'];
+    this.companyLogoNoText = brand['BASE_LOGO_NO_TEXT'];
+    this.displayNewsAndDocumentation = brand['display-news-and-documentation'];
+    // console.log('[HOME] custom_company_home_logo ', this.custom_company_home_logo)
     this.tparams = brand;
     this.selectedDaysId = 7;
   }
@@ -2606,8 +2612,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         // this.logger.log('[HOME] PUBLIC-KEY - pay key&value', pay);
         if (pay[1] === "F") {
           this.isVisiblePay = false;
+        //  console.log('[HOME] PUBLIC-KEY - this.isVisiblePay', this.isVisiblePay);
         } else {
           this.isVisiblePay = true;
+          // console.log('[HOME] PUBLIC-KEY - this.isVisiblePay', this.isVisiblePay);
         }
       }
       if (key.includes("ANA")) {

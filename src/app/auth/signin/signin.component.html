@@ -25,13 +25,9 @@
       <div class="centered-horizontally" style="margin:auto; margin-top: 60px;">
 
         <div class="left-logo" style="z-index: 1050; position: relative;" (click)="goToCompanySite()">
-          <!-- <a [href]="company_site_url" target="_blank"> -->
-
-            <!-- <img [src]="companyLogoAllWithe_Url" class="img-fluid" style="width: 180px;"/> -->
-            <!-- <img src="assets/img/logos/tiledesk_planet.svg" class="img-fluid" style="width: 200px;" /> -->
-            <img [src]="companyLogoBlack_Url" class="img-fluid" style="max-width: 150px; height: auto; top: -50px;
-            left: 25px;position: absolute;" />
-          <!-- </a> -->
+          
+            <img [src]="companyLogo" class="img-fluid" />
+    
         </div>
 
         <!-- <div class="welcome-text">
@@ -76,14 +72,15 @@
       <!-- position: relative;  top: 16px; -->
       <div class="right-logo" style="text-align: center;">
         <a [href]="company_site_url" target="_blank">
-          <!-- [src]="companyLogoBlack_Url"  -->
-          <!-- assets/img/logos/tiledesk_2.0_logo_black_v2.svg -->
-          <img [src]="companyLogoBlack_Url" class="img-fluid" style="max-width: 150px; height: auto;" />
+          <img [src]="companyLogo" class="img-fluid" style="max-width: 150px; height: auto;" />
         </a>
       </div>
       <div class="centered">
         <div class="logo-at-media-plus-992">
-          <svg _ngcontent-pgl-c83="" xml:space="preserve" xmlns:xlink="http://www.w3.org/1999/xlink" height="48px"
+          <a [href]="company_site_url" target="_blank">
+            <img [src]="companyLogoNoText" class="img-fluid" style="max-width: 48px; height: auto;" />
+          </a>
+          <!-- <svg _ngcontent-pgl-c83="" xml:space="preserve" xmlns:xlink="http://www.w3.org/1999/xlink" height="48px"
             viewBox="0 0 60 60" width="48px" x="0px" xmlns="http://www.w3.org/2000/svg" y="0px">
             <path _ngcontent-pgl-c83=""
               d="M51.8,28.2h-19c-1.7,0-3-1.3-3-3V6.4c0-1.7-1.3-3-3-3H8c-1.7,0-3,1.3-3,3v22v22c0,1.7,1.3,3,3,3H6.7h3.4  c0.8,0,1.3,0.2,1.9,0.8l2.3,2.3l2.1,2.1c0.8,0.8,1.7,0.8,2.4,0l2.1-2.1l2.3-2.3c0.6-0.6,1.1-0.8,1.9-0.8H52c1.7,0,3-1.3,3-3V31.2  C54.8,29.5,53.5,28.2,51.8,28.2"
@@ -91,12 +88,12 @@
             <path _ngcontent-pgl-c83=""
               d="M52,24.2H36.8c-1.5,0-2.8-1.3-2.8-2.8V6.2c0-1.5,1.3-2.8,2.8-2.8H52c1.5,0,2.8,1.3,2.8,2.8v15.2  C54.8,22.9,53.5,24.2,52,24.2"
               fill="#E5BBAD"></path>
-          </svg>
+          </svg> -->
         </div>
         <div class="signin-title">
           <h2>
             {{ "SignIn" | translate}}
-            <!-- {{ "SignInTo" | translate}} {{ company_name }} -->
+          
           </h2>
           <!-- <div *ngIf="SUP === true" class="signin-subtitle">
             {{ "Dont" | translate }} {{ "HaveAnAccountYet" | translate }}
@@ -160,7 +157,7 @@
               {{ formErrors.password }}
             </div>
             <!-- [disabled]="!userForm.valid" -->
-            <button type="submit" class="btn signin-button">
+            <button type="submit" class="btn signin-button" [ngStyle]="{'background-color': primaryBrandColor ? primaryBrandColor : '#f0806f' }">
               <span *ngIf="!showSpinnerInLoginBtn">
                 <!-- Login  -->
                 {{ 'Login' | translate}}
@@ -203,94 +200,3 @@
   </div>
 </div>
 
-
-
-
-
-<!-- -------------------------------------------------------------------------------------------- -->
-<!-- Old login template -->
-<!-- -------------------------------------------------------------------------------------------- -->
-<!-- <div class="main-content" style="padding-top:0px; display: none;">
- 
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-md-12">
-     
-        <div style="text-align: center; cursor: pointer; margin-top: -70px;">
-       
-          <a [href]="company_site_url" target="_blank">
-          
-            <img [src]="companyLogoBlack_Url" class="img-fluid"
-              style="max-width: 150px; height: auto; padding-top:25px" />
-          </a>
-        </div>
-
-        <!- - ALERT WITH ERROR MESSAGE - ->
-        <div class="row" *ngIf="signin_errormsg" [ngStyle]="{'display':display}" style="transform: translateY(30%);">
-          <div class="col-md-4 col-md-offset-4" align="center">
-            <div class="alert alert-danger" style="max-width: 400px;">
-              <button type="button" aria-hidden="true" class="close" (click)="dismissAlert()">×</button>
-              <div class="glyphicon glyphicon-exclamation-sign" style="display:table-cell; font-size:1.2em"></div>
-              <div style="padding-left: 5px; display:table-cell;">{{ signin_errormsg }}</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="signin-title" style="text-align:center">
-          <h2 style="font-family: 'Google Sans', sans-serif !important;">
-           
-            {{ "SignInTo" | translate}} {{ company_name }}
-
-          </h2>
-        </div>
-
-        <div class="login-container" style="padding-top: 15px;">
-         
-          <form [formGroup]="userForm" (ngSubmit)="signin()">
-
-            <label for="email">Email</label>
-        
-            <input type="email" class="input" formControlName="email" id="email_old" required autocapitalize="off"
-              spellcheck="false">
-
-              <div *ngIf="formErrors.email" class="is-danger" translate>
-                {{ formErrors.email }}
-              </div>
-
-            <label for="password">Password</label>
-            <input type="password" id="password_old" class="input" formControlName="password" required>
-
-            <div *ngIf="formErrors.password" class="is-danger" translate>
-              {{ formErrors.password }}
-            </div>
-
-            <button type="submit" class="btn signin-button" [disabled]="!userForm.valid">
-              <span *ngIf="!showSpinnerInLoginBtn">
-                
-                {{ 'Login' | translate}}
-              </span>
-              <span *ngIf="showSpinnerInLoginBtn"> <i class="fa fa-spinner fa-spin"></i></span>
-            </button>
-
-          
-            <div style="margin-top:16px; text-align: center">
-              <a routerLink="/signup" style="color: #666666; font-size: 1.1em">
-                {{ "DontHaveAnAccountYet" | translate }}
-                <span style="color: #03a5e8">
-                  {{ "SignUp" | translate }}
-                </span>
-              </a>
-            </div>
-
-            <p style="color: #666666; font-size: 1.1em; text-align: center; margin-top: 16px;">
-              {{ "ForgotYourPassword" | translate }}?
-              <span style="color: #03a5e8; cursor:pointer" (click)="goToResetPsw()">
-                {{ "ClickHere" | translate }}
-              </span>
-            </p>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
-</div> -->

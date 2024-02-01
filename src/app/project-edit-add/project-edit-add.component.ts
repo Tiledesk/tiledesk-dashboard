@@ -272,7 +272,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     const brand = brandService.getBrand();
     this.tparams = brand;
     if (brand) {
-      this.contactUsEmail = brand['contact_us_email'];
+      this.contactUsEmail = brand['CONTACT_US_EMAIL'];
     }
     this.translationParams = { plan_name: PLAN_NAME.B }
     this.tParamsFreePlanSeatsNum = { free_plan_allowed_seats_num: PLAN_SEATS.free }

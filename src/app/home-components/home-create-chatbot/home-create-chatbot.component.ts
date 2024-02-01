@@ -104,7 +104,7 @@ export class HomeCreateChatbotComponent implements OnInit, OnChanges {
     this.faqKbService.getTemplates().subscribe((res: any) => {
 
       if (res) {
-        console.log('[HOME-CREATE-CHATBOT] res before filter' ,res)
+        // console.log('[HOME-CREATE-CHATBOT] res before filter' ,res)
         const filterdres = res.filter((item) => {
           return this.templtId.includes(item._id)
         });
@@ -116,7 +116,7 @@ export class HomeCreateChatbotComponent implements OnInit, OnChanges {
         });
         if (use_case === 'solve_customer_problems') {
           this.templates = this.customerSatisfactionTemplates
-          console.log('[HOME-CREATE-CHATBOT] - TEMPLATES (Customer Satisfaction)', this.templates)
+          // console.log('[HOME-CREATE-CHATBOT] - TEMPLATES (Customer Satisfaction)', this.templates)
         }
         this.logger.log('[HOME-CREATE-CHATBOT] - TEMPLATES Customer Satisfaction TEMPLATES', this.customerSatisfactionTemplates);
         // ---------------------------------------------------------------------

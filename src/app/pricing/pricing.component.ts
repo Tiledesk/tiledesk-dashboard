@@ -119,7 +119,7 @@ export class PricingComponent implements OnInit, OnDestroy {
   clientReferenceIdForPlanB: string;
   clientReferenceIdForPlanC: string;
   browser_lang: string;
-  // company_name = brand.company_name;
+  
   company_name: string;
 
   projectId: string;
@@ -195,8 +195,8 @@ export class PricingComponent implements OnInit, OnDestroy {
   ) {
 
     const brand = brandService.getBrand();
-    this.company_name = brand['company_name'];
-    this.contactUsEmail = brand['contact_us_email'];
+    this.company_name = brand['COMPANY_NAME'];
+    this.contactUsEmail = brand['CONTACT_US_EMAIL'];
   }
 
   /**

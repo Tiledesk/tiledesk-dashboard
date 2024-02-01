@@ -23,11 +23,7 @@ import { LocalDbService } from 'app/services/users-local-db.service';
 
 export class InstallWidgetComponent extends WidgetSetUpBaseComponent implements OnInit, OnDestroy {
   // tparams = brand;
-  // logo_on_rocket = brand.wizard_install_widget_page.logo_on_rocket
-
   tparams: any;
-  logo_on_rocket: string;
-
   projectName: string;
   projectId: string;
   sub: Subscription;
@@ -36,7 +32,7 @@ export class InstallWidgetComponent extends WidgetSetUpBaseComponent implements 
 
   // WIDGET_URL = environment.WIDGET_BASE_URL; // now get from appconfig
   WIDGET_URL: string;
-  companyLogoBlack_Url: string;
+  companyLogo: string;
   EXIST_STORED_ROUTE: boolean = false
   storedRoute: string;
   botid: string;
@@ -54,8 +50,7 @@ export class InstallWidgetComponent extends WidgetSetUpBaseComponent implements 
     super(translate);
     const brand = brandService.getBrand();
     this.tparams = brand;
-    this.companyLogoBlack_Url = brand['company_logo_black__url'];
-    this.logo_on_rocket = brand['wizard_install_widget_page']['logo_on_rocket'];
+    this.companyLogo = brand['BASE_LOGO'];
     const selectLangCode = this.route.snapshot.params['langcode'];
     const selectLangName = this.route.snapshot.params['langname'];
     this.logger.log('[WIZARD - INSTALL-WIDGET] selectLangCode in the previous step ', selectLangCode)

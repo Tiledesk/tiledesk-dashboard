@@ -17,7 +17,7 @@ export class OnboardingWidgetComponent implements OnInit {
   @ViewChild('widgetIframe', {static:true}) widgetIframe:ElementRef;
   
   CLOSE_BTN_IS_HIDDEN = true
-  companyLogoBlack_Url: string;
+  companyLogo: string;
   navigationBaseUrl: string;
   projectId: string;
   user: User;
@@ -33,7 +33,7 @@ export class OnboardingWidgetComponent implements OnInit {
     // super(translate);
     const brand = brandService.getBrand();
     this.projectId = this.route.snapshot.params['projectid'];
-    this.companyLogoBlack_Url = brand['company_logo_black__url'];
+    this.companyLogo = brand['BASE_LOGO'];
   }
 
   ngOnInit(): void {

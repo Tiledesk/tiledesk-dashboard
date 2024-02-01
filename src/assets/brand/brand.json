@@ -1,19 +1,14 @@
 {
-    "metaTitle": "Imagicle",
-    "favicon__url": "https://www.imagicle.com/wp-content/themes/imagicle/assets/img/favicon-32x32.png",
-    "company_name": "Imagicle",
-    "company_site_name": "magicle.com",
-    "company_site_url": "https://www.imagicle.com/en/",
-    "company_logo_white__url": "assets/img/logos/tiledesk-logo_white_orange.svg",
-    "company_logo_planet__url": "assets/img/logos/tiledesk_planet.svg",
-    "company_logo_black__url": "assets/img/logos/tiledesk_4.0_logo_black_text.svg",
-    "company_logo_allwhite__url": "assets/img/logos/tiledesk_3.0_logo_all_white_v2_no_version.svg",
-    "company_logo_no_text__url": "assets/img/logos/tiledesk-solo-logo.png",
+"DASHBOARD": {
+    "META_TITLE": "Imagicle",
+    "FAVICON_URL": "https://stage.imagicle.cloud/chat/convai/favicon.ico",
+    "CUSTOM_COMPANY_HOME_LOGO": true,
+    "COMPANY_LOGO_PLANET": "assets/img/logos/tiledesk_planet.svg",
     "privacy_policy_link_text": "Privacy & Cookie Policy",
     "privacy_policy_url": "https://www.imagicle.com/en/privacy-cookie-policy/privacy-policy/",
     "display_terms_and_conditions_link": true,
     "terms_and_conditions_url": "https://www.imagicle.com/en/legal-terms/terms-and-conditions-of-sale/",
-    "contact_us_email": "support@tiledesk.com",
+    "display-news-and-documentation": false,
     "footer": {
         "display_terms_and_conditions_link": true,
         "display_contact_us_email": false,
@@ -31,18 +26,40 @@
         "followus_on_youtube_URL": "https://www.youtube.com/user/imagicle"
     },
     "recent_project_page": {
-        "company_logo_black__width": "130px"
+      "company_logo_width": "130px",
+      "company_logo_height": "38px",
+      "company_logo_top": "-12px",
+      "company_logo_left": "-14px"
     },
     "signup_page": {
-        "display_terms_and_conditions_link": true
+      "display_terms_and_conditions_link": true, 
+      "display_social_proof_container":  false
     },
     "handle_invitation_page": {
-        "company_logo_45x45": "assets/img/logos/tiledesk-solo-logo.png"
-    },
-    "wizard_create_project_page": {
-        "logo_x_rocket": "assets/img/logos/logo_x_rocket4x4.svg"
-    },
-    "wizard_install_widget_page": {
-        "logo_on_rocket": "assets/img/logos/tiledesk-solo-logo.png"
+      "company_logo_45x45": "assets/img/logos/tiledesk-solo-logo.png"
     }
+  },
+  "CHAT": {
+
+  },
+  "CDS": {
+    "META_TITLE": "Design Studio",
+    "FAVICON_URL": "https://tiledesk.com/wp-content/uploads/2022/07/tiledesk_v13-300x300.png",
+    "INFO_MENU_ITEMS": [
+      { "key": "FEEDBACK", "icon": "", "src": "", "status": "inactive" },
+      { "key": "CHANGELOG", "icon": "", "src": "", "status": "inactive" }
+    ]
+  },
+  "COMMON": {
+    "COMPANY_LOGO": "https://stage.imagicle.cloud/chat/convai/LogoImagicle-ConTesto.svg",
+    "COMPANY_LOGO_NO_TEXT": "https://stage.imagicle.cloud/chat/convai/LogoImagicle-NoTesto.svg",
+    "BASE_LOGO": "https://stage.imagicle.cloud/chat/convai/LogoConvAI-ConTesto.svg",
+    "BASE_LOGO_NO_TEXT": "https://stage.imagicle.cloud/chat/convai/LogoConvAI-NoTesto.svg",
+    "COMPANY_NAME": "Conversational AI",
+    "COMPANY_SITE_NAME": "imagicle.com",
+    "COMPANY_SITE_URL": "https://www.imagicle.com/en/",
+    "CONTACT_US_EMAIL": "",
+    "BRAND_PRIMARY_COLOR": "#00c0f0",
+    "BRAND_SECONDARY_COLOR": "#002159"
+  }
 }

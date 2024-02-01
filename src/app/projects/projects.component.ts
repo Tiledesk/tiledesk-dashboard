@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, HostListener, OnDestroy } from '@angular/core';
+import { Component, OnInit, ElementRef, HostListener, OnDestroy, AfterContentInit } from '@angular/core';
 import { ProjectService } from '../services/project.service';
 import { Project } from '../models/project-model';
 import { Router } from '@angular/router';
@@ -23,19 +23,19 @@ import { APP_SUMO_PLAN_NAME, PLAN_NAME, tranlatedLanguage } from 'app/utils/util
   templateUrl: './projects.component.html',
   styleUrls: ['./projects.component.scss']
 })
-export class ProjectsComponent implements OnInit, OnDestroy {
-  // companyLogoBlack_Url = brand.company_logo_allwhite__url
-  // pageBackgroundColor = brand.recent_project_page.background_color;
+export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
 
+  // pageBackgroundColor = brand.recent_project_page.background_color;
   // tparams = brand;
-  // companyLogoBlack_Url = brand.company_logo_black__url;
-  // companyLogoBlack_width = brand.recent_project_page.company_logo_black__width;
   PLAN_NAME = PLAN_NAME
   APP_SUMO_PLAN_NAME = APP_SUMO_PLAN_NAME
   tparams: any;
-  companyLogoBlack_Url: string;
-  companyLogoBlack_width: string;
-
+  companyLogo: string;
+  companyLogo_width: string;
+  companyLogo_height: string;
+  companyLogo_top: string;
+  companyLogo_left: string;
+  company_brand_color: string;
   projects: Project[];
 
   id_project: string;
@@ -97,8 +97,15 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     const brand = brandService.getBrand();
 
     this.tparams = brand;
-    this.companyLogoBlack_Url = brand['company_logo_black__url'];
-    this.companyLogoBlack_width = brand['recent_project_page']['company_logo_black__width'];
+    this.companyLogo = brand['BASE_LOGO'];
+    this.companyLogo_width = brand['recent_project_page']['company_logo_width'];
+    this.companyLogo_height = brand['recent_project_page']['company_logo_height'];
+    this.companyLogo_top = brand['recent_project_page']['company_logo_top'];
+    this.companyLogo_left = brand['recent_project_page']['company_logo_left'];
+    
+
+    this.company_brand_color = brand['BRAND_PRIMARY_COLOR'];
+    console.log('[PROJECTS] company_brand_color' ,this.company_brand_color)
 
     this.logger.log('[PROJECTS] - IS DEV MODE ', isDevMode());
     this.APP_IS_DEV_MODE = isDevMode()
@@ -114,15 +121,21 @@ export class ProjectsComponent implements OnInit, OnDestroy {
 
     // this.checkUserImageUploadIsComplete();
     // this.checkUserImageExist();
-
-
-
+   
     // this.subscribeToLogoutPressedinSidebarNavMobilePrjctUndefined();
     // this.getStorageBucket();
     this.getOSCODE();
     this.listenHasDeleteUserProfileImage();
   }
 
+  ngAfterContentInit(): void {
+    if (this.company_brand_color)  {
+      this.element.nativeElement.querySelector('.project_background').style.setProperty('--brandColor' , this.company_brand_color)
+      console.log('[PROJECTS] project_background', this.element.nativeElement.querySelector('.project_background')) 
+      // this.element.nativeElement.querySelector('#create-prjct-card > .card-add-project-icon').style.setProperty('--brandColor' , this.company_brand_color)
+      // this.element.nativeElement.querySelector('#create-prjct-card > .card-add-project-text').style.setProperty('--brandColor' , this.company_brand_color)
+    }
+  }
 
   ngOnDestroy() {
     if (this.projects) {

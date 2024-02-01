@@ -1660,8 +1660,11 @@
                           <div *ngIf="agent.type === 'rasa'">
                             <img class="served-by-bot-type-logo" src="assets/img/rasa_bot_logo.png" />
                           </div>
-                          <div *ngIf="agent.type === 'tilebot'">
+                          <!-- <div *ngIf="agent.type === 'tilebot'">
                             <img class="served-by-bot-type-logo" src="assets/img/tilebot_logo_small.png" />
+                          </div> -->
+                          <div *ngIf="agent.type === 'tilebot'">
+                            <img class="served-by-bot-type-logo" [src]="botLogo"/>
                           </div>
                           <!-- <div *ngIf="agent.type === 'tiledesk-ai'">
                             <img class="served-by-bot-type-logo" src="assets/img/tiledesk-ai-logo.png" />
@@ -1824,8 +1827,12 @@
                             <img class="served-by-bot-type-logo" src="assets/img/rasa_bot_logo.png" />
                           </div>
 
-                          <div *ngIf="agent.type === 'tilebot'">
+                          <!-- <div *ngIf="agent.type === 'tilebot'">
                             <img class="served-by-bot-type-logo" src="assets/img/tilebot_logo_small.png" />
+                          </div> -->
+
+                          <div *ngIf="agent.type === 'tilebot'">
+                            <img class="served-by-bot-type-logo" [src]="botLogo"/>
                           </div>
 
                           <!-- <div *ngIf="agent.type === 'tiledesk-ai'">

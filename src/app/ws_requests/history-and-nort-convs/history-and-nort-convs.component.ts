@@ -30,6 +30,7 @@ import { ProjectService } from 'app/services/project.service';
 import { WsMsgsService } from 'app/services/websocket/ws-msgs.service';
 import { FormGroup, FormControl } from '@angular/forms';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
+import { BrandService } from 'app/services/brand.service';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -275,6 +276,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   featureAvailableFromBPlan: string;
   appSumoProfile: string;
   appSumoProfilefeatureAvailableFromBPlan: string;
+  botLogo: string;
   /**
    * 
    * @param router 
@@ -313,9 +315,13 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     public logger: LoggerService,
     private projectService: ProjectService,
     private wsMsgsService: WsMsgsService,
-    public route: ActivatedRoute
+    public route: ActivatedRoute,
+    public brandService: BrandService,
   ) {
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate);
+  
+    const brand = brandService.getBrand();
+    this.botLogo = brand['BASE_LOGO_NO_TEXT']
   }
 
   ngOnInit() {
