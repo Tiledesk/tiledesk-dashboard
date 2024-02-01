@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.4.96
+- Deploys in production
+- Improves whitelabeling
+
 ### 2.4.95
 - Deploys in production
 - Displays a message on the conversation details page when a conversation has been removed
