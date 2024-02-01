@@ -18,9 +18,11 @@ export class KnowledgeBaseTableComponent implements OnInit {
   @Output() runIndexing = new EventEmitter();
   
   
-
+  kbsListfilterTypeFilter: KB[] = [];
   dataSource: MatTableDataSource<KB>;
   displayedColumns: string[] = ['type','status','createdAt','name','actions'];
+  filterType: string;
+  filterText: string;
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -30,6 +32,8 @@ export class KnowledgeBaseTableComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.filterType = '';
+    this.filterText = '';
     this.dataSource = new MatTableDataSource(this.kbsList);
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
@@ -39,6 +43,8 @@ export class KnowledgeBaseTableComponent implements OnInit {
     console.log('ngOnChanges!!!', changes);
     if(this.kbsList) {
       this.dataSource = new MatTableDataSource(this.kbsList);
+      this.dataSource.sort = this.sort;
+      this.dataSource.paginator = this.paginator;
     }
   }
 
@@ -46,27 +52,31 @@ export class KnowledgeBaseTableComponent implements OnInit {
     this.dataSource.sort = this.sort;
   }
 
-  applyFilter(event: Event): void {
-   
-    const filterValue = (event.target as HTMLInputElement).value;
-    console.log('onOptionSelected:: ', filterValue);
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+  applyFilter(filterValue: string, column: string) {
+    if( column == 'type'){
+      this.filterType = filterValue;
+    } else if(column == 'name'){
+      this.filterText= filterValue;
+    }
+    // console.log('onOptionSelected:: ', filterValue, column, this.filterType, this.filterText);
+    this.dataSource.filterPredicate = (data: KB, filter: string) => {
+      if(this.filterType && this.filterText){
+        return data.name.toLowerCase().includes(this.filterText) && data.status.toString() === this.filterType;
+      } else if(this.filterText){
+        return data.name.toLowerCase().includes(this.filterText);
+      } else if(this.filterType){
+        return data.status.toString() === this.filterType;
+      } else {
+        return true;
+      }
+    }
+    this.dataSource.filter = filterValue;
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
   }
 
-  onOptionSelected(event): void {
-    console.log('onOptionSelected:: ', event);
-    const statusValue = event.value;
-    //(event.target as HTMLSelectElement).value;
-    //  console.log('onOptionSelected:: ', statusValue);
-    this.dataSource.filterPredicate = (data: KB, filter: string) => {
-      if (statusValue === '') {
-        return true; // Mostra tutti gli elementi se nessun filtro è selezionato
-      } else {
-        return data.status.toString() === statusValue;
-      }
-    };
-    this.dataSource.filter = statusValue;
-  }
 
   /** Announce the change in sort state for assistive technology. */
   announceSortChange(sortState: Sort) {

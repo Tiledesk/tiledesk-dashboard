@@ -35,12 +35,12 @@
 
   <div class="mat-elevation-z8">
     <mat-form-field>
-        <input matInput (keyup)="applyFilter($event)" placeholder="Filtra per Nome o Contenuto">
+        <input matInput (keyup)="applyFilter($event.target.value, 'name')" placeholder="Filtra per Nome o Contenuto">
     </mat-form-field>
 
     <mat-form-field>
         <mat-label>Seleziona lo stato</mat-label>
-        <mat-select (selectionChange)="onOptionSelected($event)">
+        <mat-select (selectionChange)="applyFilter($event.value, 'type')">
           <mat-option value="">Tutti</mat-option>
           <mat-option value="0">Not started</mat-option>
           <mat-option value="2">Started</mat-option>
