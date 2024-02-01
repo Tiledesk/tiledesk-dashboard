@@ -20,6 +20,7 @@
         <div class="form-container">
           <div class="kb-container">
             <span class="material-icons-round">school</span>
+            <p>{{ namespace }}</p>
           </div>
         </div>
 
@@ -42,12 +43,16 @@
         <div *ngIf="show_answer" class="form-container" style="margin-bottom: 0px;">
 
           <div id="answer" class="answer">
-            <p *ngIf="answer" class="answer-title">{{ 'KbPage.Answer' | translate }}</p>
-            {{ answer }}
 
+            <p *ngIf="answer" class="answer-title">{{ 'KbPage.Answer' | translate }}</p>
+            {{ qa.answer }}
             <span *ngIf="error_answer">{{ 'KbPage.NoAnswerFound' | translate }}</span>
-            <hr *ngIf="source_url">
-            <span *ngIf="source_url">{{ 'KbPage.Source' | translate }}: {{ source_url }}</span>
+            <hr *ngIf="qa.source">
+            <!-- <span *ngIf="qa.source">{{ 'KbPage.Source' | translate }}: {{ qa.source }}</span> -->
+            <span *ngIf="qa.source">{{ 'KbPage.Source' | translate }}: 
+                <a *ngIf="source_url" href="{{source_url}}" target="_blank">{{ source_url }}</a>
+                <span *ngIf="!source_url">{{ qa.source }}</span>
+            </span>
           </div>
 
         </div>

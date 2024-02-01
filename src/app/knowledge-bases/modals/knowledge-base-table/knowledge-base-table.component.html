@@ -1,43 +1,8 @@
-<!-- <table mat-table [dataSource]="dataSource" matSort>
-
-
-    <ng-container matColumnDef="type">
-      <th style="width: 80px;" mat-header-cell *matHeaderCellDef>{{ 'Type' | translate }}</th>
-      <td mat-cell *matCellDef="let object">{{ object.type }}</td>
-    </ng-container>
-  
-
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header><span class="column-th-span">{{ 'Name' | translate }}</span></th>
-      <td mat-cell *matCellDef="let object">{{ object.name }}</td>
-    </ng-container>
-  
-
-    <ng-container matColumnDef="state">
-      <th style="width: 80px;" mat-header-cell *matHeaderCellDef><span class="column-th-span">{{ 'Status' | translate }}</span></th>
-      <td mat-cell *matCellDef="let object">{{ object.status }}</td>
-    </ng-container>
-  
-
-    <ng-container matColumnDef="createdAt">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header><span class="column-th-span">{{ 'KbPage.CreationDate' | translate }}</span></th>
-      <td mat-cell *matCellDef="let object">{{ object.createdAt }}</td>
-    </ng-container>
-
-
-  
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-
-
-  </table> -->
-  
-
-  <div class="mat-elevation-z8">
-    <mat-form-field>
+<div class="mat-elevation-z8">
+    <!-- <mat-form-field>
         <input matInput (keyup)="applyFilter($event.target.value, 'name')" placeholder="Filtra per Nome o Contenuto">
-    </mat-form-field>
-
+    </mat-form-field> -->
+    <!-- 
     <mat-form-field>
         <mat-label>Seleziona lo stato</mat-label>
         <mat-select (selectionChange)="applyFilter($event.value, 'type')">
@@ -46,13 +11,53 @@
           <mat-option value="2">Started</mat-option>
           <mat-option value="3">Finished</mat-option>
           <mat-option value="4">Error</mat-option>
-        </mat-select>
-      </mat-form-field>
+        </mat-select> 
+    </mat-form-field>
+    -->
+    <!-- <select class="select-status" (change)="applyFilter($event.value, 'type')">
+        <label>Seleziona lo stato</label>
+        <option value=""> All </option>
+        <option value="0"> Not started </option>
+        <option value="2"> Started </option>
+        <option value="2"> Finished </option>
+        <option value="2"> Error </option>
+    </select> -->
 
-      
+    <div class="form-group">
+
+        <div class="cerca">
+            <label class="col-sm-12 control-label">
+                {{ 'Cerca nel nome' | translate }}
+            </label>
+            <div class="col-sm-12">
+                <input (keyup)="applyFilter($event.target.value, 'name')" placeholder="Filtra per Nome o Contenuto">
+            </div>
+        </div>
+
+        <div class="stato">
+            <label class="col-sm-12 control-label">
+                {{ 'Seleziona lo stato' | translate }}
+            </label>
+            <div class="col-sm-12">
+                <ng-select class="custom-input" 
+                    [clearable]='false' 
+                    [ngModel]="filterType" 
+                    dropdownPosition='bottom' 
+                    (ngModelChange)="applyFilter($event, 'type')">
+                    <ng-option value=""> All </ng-option>
+                    <ng-option value="0"> Not started </ng-option>
+                    <ng-option value="2"> Started </ng-option>
+                    <ng-option value="3"> Finished </ng-option>
+                    <ng-option value="4"> Error </ng-option>
+                  </ng-select>
+
+            </div>
+        </div>
+        
+    </div>
+    
+
     <table mat-table [dataSource]="dataSource" matSort > 
-        <!-- (matSortChange)="announceSortChange($event)" -->
-  
         <!-- Type Column -->
         <ng-container matColumnDef="type">
         <th mat-header-cell *matHeaderCellDef>Tipo</th>
@@ -70,7 +75,7 @@
 
                 <loading-spinner *ngIf="kb.status == 0 || kb.status == 2" class="custom-spinner"></loading-spinner>
                 
-                <span *ngIf="kb.status == -1" id="error" class="material-icons-outlined status-icon"
+                <span *ngIf="kb.status == -1" id="error" class="material-icons-outlined status-icon status-void"
                     matTooltipClass="custom-mat-tooltip" matTooltip="Not indexed" #tooltip="matTooltip"
                     matTooltipPosition='right' matTooltipHideDelay="100">void</span>
 
@@ -82,11 +87,11 @@
                     matTooltipClass="custom-mat-tooltip" matTooltip="Indexing..." #tooltip="matTooltip"
                     matTooltipPosition='right' matTooltipHideDelay="100">cached</span> -->
 
-                <span *ngIf="kb.status == 3" id="close" class="material-icons-outlined status-icon"
+                <span *ngIf="kb.status == 3" id="close" class="material-icons-outlined status-icon status-done"
                     matTooltipClass="custom-mat-tooltip" matTooltip="Finished" #tooltip="matTooltip"
                     matTooltipPosition='right' matTooltipHideDelay="100">check</span>
                     
-                <span *ngIf="kb.status == 4" id="error" class="material-icons-outlined status-icon"
+                <span *ngIf="kb.status == 4" id="error" class="material-icons-outlined status-icon status-error"
                     matTooltipClass="custom-mat-tooltip" matTooltip="Error" #tooltip="matTooltip"
                     matTooltipPosition='right' matTooltipHideDelay="100">error</span>
             
@@ -95,8 +100,8 @@
 
         <!-- Created At Column -->
         <ng-container matColumnDef="createdAt">
-            <th style="width: 120px;" mat-header-cell *matHeaderCellDef mat-sort-header>Data di Creazione</th>
-            <td mat-cell *matCellDef="let kb">{{ kb.createdAt | amTimeAgo }}</td>
+            <th style="width:140px; text-align:center;" mat-header-cell *matHeaderCellDef mat-sort-header>Data di Creazione</th>
+            <td style="text-align:center;" mat-cell *matCellDef="let kb">{{ kb.createdAt | amTimeAgo }}</td>
         </ng-container>
 
         <!-- Name Column -->

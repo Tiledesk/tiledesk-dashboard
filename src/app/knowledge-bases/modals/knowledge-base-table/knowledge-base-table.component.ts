@@ -34,9 +34,6 @@ export class KnowledgeBaseTableComponent implements OnInit {
   ngOnInit(): void {
     this.filterType = '';
     this.filterText = '';
-    this.dataSource = new MatTableDataSource(this.kbsList);
-    this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
   }
 
   ngOnChanges(changes: SimpleChanges){
@@ -49,7 +46,11 @@ export class KnowledgeBaseTableComponent implements OnInit {
   }
 
   ngAfterViewInit() {
+    this.dataSource = new MatTableDataSource(this.kbsList);
     this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
+    this.paginator.length = this.dataSource.data.length;
+    this.paginator.pageSize = 10;
   }
 
 
@@ -59,17 +60,19 @@ export class KnowledgeBaseTableComponent implements OnInit {
     } else if(column == 'name'){
       this.filterText= filterValue;
     }
-    // console.log('onOptionSelected:: ', filterValue, column, this.filterType, this.filterText);
+    console.log('onOptionSelected:: ', filterValue, column, this.filterType, this.filterText);
     this.dataSource.filterPredicate = (data: KB, filter: string) => {
       if(this.filterType && this.filterText){
         return data.name.toLowerCase().includes(this.filterText) && data.status.toString() === this.filterType;
-      } else if(this.filterText){
+      } 
+      if(this.filterText && this.filterText != ""){
         return data.name.toLowerCase().includes(this.filterText);
-      } else if(this.filterType){
+      } 
+      if(this.filterType && this.filterType != ""){
         return data.status.toString() === this.filterType;
-      } else {
-        return true;
-      }
+      } 
+      return true;
+      
     }
     this.dataSource.filter = filterValue;
     if (this.dataSource.paginator) {

@@ -136,3 +136,28 @@
         }
     }
 }
+
+
+.kb-container {
+    width: fit-content;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border: solid 1px #c2c2c2;
+    border-radius: 12px;
+    padding: 2px 10px;
+    background: linear-gradient(rgba(239, 245, 246, 0.64) 0%, rgb(238, 244, 246) 100%), rgb(255, 255, 255);
+    box-shadow: rgb(212, 217, 230) 0px 1px 0px;
+
+    p {
+        font-size: 12px;
+        margin-bottom: 0px;
+        color: rgb(98, 119, 140);
+    }
+
+    .material-icons-round {
+        font-size: 20px;
+        margin-right: 8px;
+        color: rgb(98, 119, 140);
+    }
+}

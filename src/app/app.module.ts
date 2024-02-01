@@ -375,6 +375,7 @@ import { ModalDetailKnowledgeBaseComponent } from './knowledge-bases/modals/moda
 import { KnowledgeBaseTableComponent } from './knowledge-bases/modals/knowledge-base-table/knowledge-base-table.component';
 
 import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort'; 
 
 // NOTE: Eliminazione del local storage produce inconsistenza delle instances Firebase. Si salta il logout.
@@ -714,6 +715,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     NgSelectModule,
     BrowserAnimationsModule,
     MatTableModule,
+    MatPaginatorModule,
     MatSortModule,
     TranslateModule.forRoot({
       loader: {
@@ -725,6 +727,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
   ],
   exports: [
     MatTableModule,
+    MatPaginatorModule,
     MatSortModule
   ],
   providers: [

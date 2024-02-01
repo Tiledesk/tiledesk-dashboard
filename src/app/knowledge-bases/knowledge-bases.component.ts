@@ -307,12 +307,12 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
       "content": kb.content?kb.content:'',
       "namespace": this.id_project 
     }
+    this.updateStatusOfKb(kb._id, 0);
     this.openaiService.startScraping(data).subscribe((response: any) => {
       this.logger.log("start scraping response: ", response);
       if (response.error) {
         this.notify.showWidgetStyleUpdateNotification("Invalid Openai API key", 4, 'report_problem');
       } else {
-        this.updateStatusOfKb(kb._id, 0);
         this.checkStatusWithRetry(kb);
       }
     }, (error) => {

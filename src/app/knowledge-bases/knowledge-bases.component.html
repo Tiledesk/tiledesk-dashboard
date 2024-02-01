@@ -28,9 +28,11 @@
             <!-- <button class="btn btn-primary" (click)="openAddKnowledgeBaseModal()" [disabled]="addButtonDisabled">
               {{ 'KbPage.AddKb' | translate }}
             </button> -->
-            <button class="btn btn-primary" mat-icon-button [disabled]="addButtonDisabled" [matMenuTriggerFor]="menu" aria-label="Actions">
-              <mat-icon>add</mat-icon>
+            <button class="btn btn-primary" [disabled]="addButtonDisabled" [matMenuTriggerFor]="menu" aria-label="Actions">
+              <span class="btn-bottonazzo">{{ 'Aggiungi un knowledge base' | translate }} </span>
+              <mat-icon class="icon-bottonazzo">add</mat-icon>
             </button>
+
             <mat-menu #menu="matMenu" xPosition="before" class="custom-menu">
               <button mat-menu-item (click)="openAddKnowledgeBaseModal('url-page')">
                 <mat-icon>link</mat-icon>

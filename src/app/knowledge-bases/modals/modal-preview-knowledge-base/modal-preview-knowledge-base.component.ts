@@ -13,6 +13,8 @@ export class ModalPreviewKnowledgeBaseComponent implements OnInit {
   @Output() deleteKnowledgeBase = new EventEmitter();
   @Output() closeBaseModal = new EventEmitter();
 
+  qa: any;
+
   question: string = "";
   answer: string = "";
   source_url: any;
@@ -35,18 +37,21 @@ export class ModalPreviewKnowledgeBaseComponent implements OnInit {
       "namespace": this.namespace,
       "model": "gpt-3.5-turbo"
     }
-
+    this.error_answer = false;
     this.searching = true;
     this.show_answer = false;
     this.answer = null;
     this.source_url = null;
     this.openaiService.askGpt(data).subscribe((response: any) => {
       console.log("ask gpt preview response: ", response);
+      this.qa = response;
       if (response.success == false) {
         this.error_answer = true;
       } else {
         this.answer = response.answer;
-        this.source_url = response.source_url;
+        if(this.isValidURL(response.source)){
+          this.source_url = response.source;
+        }
       }
       this.show_answer = true;
       this.searching = false;
@@ -65,6 +70,10 @@ export class ModalPreviewKnowledgeBaseComponent implements OnInit {
     })
   }
 
+  private isValidURL(url) {
+    var urlPattern = /^(ftp|http|https):\/\/[^ "]+$/;
+    return urlPattern.test(url);
+  }
 
 
   onInputPreviewChange() {
