@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.4.97
+- Deploys in production
+- Improves whitelabeling
+
 ### 2.4.96
 - Deploys in production
 - Improves whitelabeling
