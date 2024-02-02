@@ -13,6 +13,7 @@ import {LiveAnnouncer} from '@angular/cdk/a11y';
 export class KnowledgeBaseTableComponent implements OnInit {
   @Input() refresh: boolean;
   @Input() kbsList: KB[];
+  @Output() openBaseModalDetail = new EventEmitter();
   @Output() openBaseModalDelete = new EventEmitter();
   @Output() openBaseModalPreview = new EventEmitter();
   @Output() runIndexing = new EventEmitter();
@@ -46,6 +47,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
   }
 
   ngAfterViewInit() {
+    console.log('ngAfterViewInit!!!-->', this.kbsList);
     this.dataSource = new MatTableDataSource(this.kbsList);
     this.dataSource.sort = this.sort;
     this.sort.active = "updatedAt";
@@ -107,6 +109,10 @@ export class KnowledgeBaseTableComponent implements OnInit {
     this.openBaseModalDelete.emit(kb);
   }
 
+  onOpenBaseModalDetail(kb){
+    console.log("OPEN DETAIL:: ",kb);
+    this.openBaseModalDetail.emit(kb);
+  }
 
 }
 

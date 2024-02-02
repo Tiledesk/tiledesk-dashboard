@@ -52,7 +52,8 @@ export class ModalTextFileComponent implements OnInit {
   onSaveKnowledgeBase(){
     let body = {
       'name': this.kb.name,
-      'source': this.kb.content,
+      'source': this.kb.name,
+      'content': this.kb.content,
       'type': 'text'
     }
     this.saveKnowledgeBase.emit(body);

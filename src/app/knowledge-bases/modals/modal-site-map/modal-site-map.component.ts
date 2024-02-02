@@ -100,6 +100,7 @@ export class ModalSiteMapComponent implements OnInit {
     let body = {
       'name': this.kb.name,
       'source': this.fileContent,
+      'content': '',
       'type': 'map'
     }
     this.saveKnowledgeBase.emit(body);

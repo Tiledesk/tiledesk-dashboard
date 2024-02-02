@@ -27,12 +27,16 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
   baseModalDelete: boolean = false;
   baseModalPreview: boolean = false;
   baseModalError: boolean = false;
+  baseModalDetail: boolean = false;
+
   secretsModal = 'none';
   missingGptkeyModal = 'none';
   showSpinner: boolean = true;
   buttonDisabled: boolean = true;
   addButtonDisabled: boolean = false;
   gptkeyVisible: boolean = false;
+
+
 
   //analytics
   CURRENT_USER: any;
@@ -228,7 +232,7 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
         that.kbsList.push(kb.value);
         this.notify.showWidgetStyleUpdateNotification('KB aggiunto con successo', 2, 'done');
       }
-      this.updateStatusOfKb(kb._id, kb.status);
+      this.updateStatusOfKb(kb._id, 0);
       that.refreshKbsList = !that.refreshKbsList;
       // console.log("kbsList:",that.kbsList);
       // that.onRunIndexing(kb);
@@ -337,8 +341,9 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
     this.openaiService.startScraping(data).subscribe((response: any) => {
       this.logger.log("start scraping response: ", response);
       if (response.error) {
-        this.notify.showWidgetStyleUpdateNotification("Invalid Openai API key", 4, 'report_problem');
+        this.notify.showWidgetStyleUpdateNotification("Indicizzazione non riuscita", 4, 'report_problem');
       } else {
+        this.notify.showWidgetStyleUpdateNotification('Indicizzazione terminata con successo', 2, 'done');
         this.checkStatusWithRetry(kb);
       }
     }, (error) => {
@@ -536,6 +541,12 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
   }
   // ************** PREVIEW **************** //
 
+  onOpenBaseModalDetail(kb){
+    this.kbid_selected = kb;
+    console.log('onOpenBaseModalDetail:: ', this.kbid_selected);
+    // this.baseModalDetail=true;
+  }
+
   onOpenBaseModalPreview(){
     // console.log("onOpenBaseModalPreview:: ")
     //this.kbid_selected = kb;
@@ -556,6 +567,7 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
     this.baseModalDelete = false;
     this.baseModalPreview = false;
     this.baseModalError = false;
+    this.baseModalDetail = false;
     this.typeKnowledgeBaseModal = '';
   }
 

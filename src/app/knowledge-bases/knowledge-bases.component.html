@@ -40,6 +40,7 @@
           <knowledge-base-table
             [kbsList]="kbsList"
             [refresh]="refreshKbsList"
+            (openBaseModalDetail)="onOpenBaseModalDetail($event)"
             (openBaseModalDelete)="onOpenBaseModalDelete($event)"
             (openBaseModalPreview)="onOpenBaseModalPreview()"
             (runIndexing)="onRunIndexing($event)"
@@ -71,6 +72,12 @@
 <!-- ADD KNOWLEDGE BASE MODAL - END -->
 
 
+<!-- DETAIL KNOWLEDGE BASE MODAL - START -->
+<modal-detail-knowledge-base *ngIf="baseModalDetail"
+  [kb]="kbid_selected"
+  (closeBaseModal)="onCloseBaseModal()"
+></modal-detail-knowledge-base>
+<!-- DETAIL KNOWLEDGE BASE MODAL - END -->
 
 <!-- DELETE KNOWLEDGE BASE MODAL - START -->
 <modal-delete-knowledge-base *ngIf="baseModalDelete"
