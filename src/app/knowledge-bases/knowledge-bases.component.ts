@@ -9,14 +9,22 @@ import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { OpenaiService } from 'app/services/openai.service';
 import { ProjectService } from 'app/services/project.service';
+import { ProjectPlanService } from 'app/services/project-plan.service';
+import { UsersService } from 'app/services/users.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators'
+import { MatDialog } from '@angular/material/dialog';
+import { KbModalComponent } from './kb-modal/kb-modal.component';
+import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 
 @Component({
   selector: 'appdashboard-knowledge-bases',
   templateUrl: './knowledge-bases.component.html',
   styleUrls: ['./knowledge-bases.component.scss']
 })
-export class KnowledgeBasesComponent implements OnInit, OnDestroy {
 
+export class KnowledgeBasesComponent extends PricingBaseComponent implements OnInit, OnDestroy {
+  private unsubscribe$: Subject<any> = new Subject<any>();
   public IS_OPEN_SETTINGS_SIDEBAR: boolean;
   public isChromeVerGreaterThan100: boolean;
 
@@ -37,7 +45,8 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
   id_project: string;
   profile_name: string;
   callingPage: string;
-
+  USER_ROLE: string;
+  kbCount: number;
   kbForm: FormGroup;
   kbsList = [];
 
@@ -74,8 +83,13 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
     private kbService: KnowledgeBaseService,
     private projectService: ProjectService,
     public route: ActivatedRoute,
-    private notify: NotifyService
-  ) { }
+    public notify: NotifyService,
+    public prjctPlanService: ProjectPlanService,
+    public usersService: UsersService,
+    public dialog: MatDialog,
+  ) {
+    super(prjctPlanService, notify);
+  }
 
   ngOnInit(): void {
     this.getBrowserVersion();
@@ -86,7 +100,15 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
     this.trackPage();
     this.getLoggedUser();
     this.getCurrentProject()
-    this.getRouteParams()
+    this.getRouteParams();
+    this.getProjectPlan();
+    this.getUserRole();
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+    clearInterval(this.interval_id);
   }
 
   getRouteParams() {
@@ -118,25 +140,46 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
   }
 
   getLoggedUser() {
-    this.auth.user_bs.subscribe((user) => {
-      this.logger.log('[KNOWLEDGE BASES COMP] - LOGGED USER ', user)
-      if (user) {
-        this.CURRENT_USER = user
+    this.auth.user_bs
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((user) => {
+        this.logger.log('[KNOWLEDGE BASES COMP] - LOGGED USER ', user)
+        if (user) {
+          this.CURRENT_USER = user
 
-      }
-    });
+        }
+      });
   }
+
+  getUserRole() {
+    this.usersService.project_user_role_bs
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((userRole) => {
+
+        this.logger.log('[BOTS-LIST] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
+        this.USER_ROLE = userRole;
+      })
+  }
+
   getCurrentProject() {
-    this.auth.project_bs.subscribe((project) => {
-      this.project = project
-      this.logger.log('[KNOWLEDGE BASES COMP] - GET CURRENT PROJECT ', this.project)
-      if (this.project) {
-        this.project_name = project.name;
-        this.id_project = project._id;
-        this.getProjectById(this.id_project)
-        this.logger.log('[KNOWLEDGE BASES COMP] - GET CURRENT PROJECT - PROJECT-NAME ', this.project_name, ' PROJECT-ID ', this.id_project)
-      }
-    });
+    this.auth.project_bs
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((project) => {
+        this.project = project
+        this.logger.log('[KNOWLEDGE BASES COMP] - GET CURRENT PROJECT ', this.project)
+        if (this.project) {
+          this.project_name = project.name;
+          this.id_project = project._id;
+          this.getProjectById(this.id_project)
+          this.logger.log('[KNOWLEDGE BASES COMP] - GET CURRENT PROJECT - PROJECT-NAME ', this.project_name, ' PROJECT-ID ', this.id_project)
+        }
+      });
   }
   getProjectById(projectId) {
     this.projectService.getProjectById(projectId).subscribe((project: any) => {
@@ -162,9 +205,13 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
   // ----------------------
   // UTILS FUNCTION - Start
   getBrowserVersion() {
-    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
-      this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
-    })
+    this.auth.isChromeVerGreaterThan100
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((isChromeVerGreaterThan100: boolean) => {
+        this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+      })
   }
 
   listenSidebarIsOpened() {
@@ -181,10 +228,13 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
     this.kbService.getKbSettings().subscribe((kbSettings: KbSettings) => {
       this.logger.log("[KNOWLEDGE BASES COMP] get kbSettings: ", kbSettings);
       this.kbSettings = kbSettings;
-      if (this.kbSettings.kbs.length < kbSettings.maxKbsNumber) {
-        this.addButtonDisabled = false;
-      } else {
-        this.addButtonDisabled = true;
+      if (this.kbSettings && this.kbSettings.kbs) {
+        this.kbCount = this.kbSettings.kbs.length
+        if (this.kbSettings.kbs.length < kbSettings.maxKbsNumber) {
+          this.addButtonDisabled = false;
+        } else {
+          this.addButtonDisabled = true;
+        }
       }
       this.checkAllStatuses();
       this.startPooling();
@@ -219,6 +269,45 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
     }
   }
 
+
+  openAddKnowledgeBaseModal() {
+    console.log('[KNOWLEDGE-BASES-COMP] KB Lenght ', this.kbSettings.kbs.length)
+    console.log('[KNOWLEDGE-BASES-COMP] KB Limit ', this.kbLimit)
+    if (this.USER_ROLE !== 'agent') {
+      if (this.kbLimit) {
+        if (this.kbSettings.kbs.length < this.kbLimit) {
+          this.addKnowledgeBaseModal = 'block';
+        } else if (this.kbSettings.kbs.length >= this.kbLimit) {
+
+          this.presentDialogReachedKbLimit()
+        }
+      } else if (!this.kbLimit) {
+        this.addKnowledgeBaseModal = 'block';
+      }
+    } else if (this.USER_ROLE === 'agent') {
+      this.presentModalOnlyOwnerCanManageTheAccountPlan()
+    }
+  }
+
+  presentDialogReachedKbLimit() {
+    console.log('[KNOWLEDGE-BASES-COMP] openDialog presentDialogReachedChatbotLimit prjct_profile_name ', this.prjct_profile_name)
+    const dialogRef = this.dialog.open(KbModalComponent, {
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+      hasBackdrop: true,
+      data: {
+        projectProfile: this.prjct_profile_name,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`[KNOWLEDGE-BASES-COMP] Dialog result: ${result}`);
+    });
+  }
+
+  presentModalOnlyOwnerCanManageTheAccountPlan() {
+    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan('Agents can\'t manage chatbots', 'Learn more about default roles')
+  }
+
   saveKnowledgeBase() {
 
     // let first_index = this.newKb.url.indexOf('://') + 3;
@@ -246,18 +335,22 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
     }
 
     this.kbService.addNewKb(this.kbSettings._id, this.newKb).subscribe((savedSettings: KbSettings) => {
-      // console.log('[KNOWLEDGE BASES COMP] this.kbSettings addNewKb ', this.kbSettings)
+      console.log('[KNOWLEDGE BASES COMP] this.kbSettings addNewKb savedSettings', savedSettings)
+      console.log('[KNOWLEDGE BASES COMP] this.kbSettings addNewKb kbSettings', this.kbSettings)
       this.getKnowledgeBaseSettings();
       let kb = savedSettings.kbs.find(kb => kb.url === this.newKb.url);
 
       if (!this.kbSettings.gptkey) {
+
         this.closeAddKnowledgeBaseModal();
         this.checkStatus(kb);
         setTimeout(() => {
+          console.log('[KNOWLEDGE BASES COMP] here 1 ')
           this.openMissingGptkeyModal();
         }, 600)
 
       } else {
+        console.log('[KNOWLEDGE BASES COMP] here 2 ')
         this.closeAddKnowledgeBaseModal();
         this.checkStatus(kb).then((status_code) => {
           if (status_code === 0) {
@@ -483,9 +576,9 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
     // }
   }
 
-  openAddKnowledgeBaseModal() {
-    this.addKnowledgeBaseModal = 'block';
-  }
+  // openAddKnowledgeBaseModal() {
+  //   this.addKnowledgeBaseModal = 'block';
+  // }
 
   openPreviewKnowledgeBaseModal(kb) {
     this.kbid_selected = kb;
@@ -545,9 +638,7 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
     this.missingGptkeyModal = 'none';
   }
 
-  ngOnDestroy(): void {
-    clearInterval(this.interval_id);
-  }
+
   contactSalesForChatGptKey() {
     this.closeSecretsModal()
     window.open(`mailto:support@tiledesk.com?subject=I don't have a GPT-Key`);

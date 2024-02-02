@@ -2,7 +2,7 @@
     <img [src]="companyLogo" class="logo" />
 
     <div class="close-wizard-page">
-        <i class="material-icons close-btn" (click)="goToGetStartChatbot()">arrow_back</i>
+        <i class="material-icons close-btn" (click)="goBack()">arrow_back</i>
     </div>
 
 
@@ -18,9 +18,8 @@
             </div>
 
             <div class="template-detail-btns-wpr">
-                <button type="button" class="btn btn-new btn-size-l btn--primary" (click)="forkTemplate()">
-                    <!-- <span *ngIf="template?.certified === true" >Use template</span> -->
-                    <!-- *ngIf="template?.certified === false" -->
+                <!-- (click)="forkTemplate() -->
+                <button type="button" class="btn btn-new btn-size-l btn--primary" (click)="importTemplate()">
                     <span>Import template</span>
                 </button>
                 <button type="button" class="btn btn-new btn-size-l btn--default" (click)="openTestSiteInPopupWindow()">
@@ -56,7 +55,7 @@
                             <!-- ------------------------------------------- -->
                             <!-- @ Chatbot name and description  -->
                             <!-- ------------------------------------------- -->
-                            <!--   
+                              
                             <h2 weight="normal" class="template-name template-card-title">
                                 {{ botname}}
                             </h2>
@@ -64,19 +63,13 @@
                             <p weight="normal" class="template-description">
                                 {{botDescription}}
                             </p>
-                             -->
+                            
                             <!-- ------------------------------------------- -->
                             <!-- @ end Chatbot name and description  -->
                             <!-- ------------------------------------------- -->
 
-                            <!-- <div class="use-template-btn-row use-template-btn-wpr">
-                                <button type="button" class="btn btn-new btn-size-l btn--primary btn-block"
-                                    (click)="openDialog(template)">
-                                    <span>Use template</span>
-                                </button>
-                            </div> -->
-                            <p weight="normal" *ngIf="templatesCertifiedTags" class="install-template-tags-section-name">Categories</p>
-                            <p weight="normal" *ngIf="templateTags" class="install-template-tags-section-name">Tags</p>
+                            <p weight="normal" *ngIf="templatesCertifiedTags && templatesCertifiedTags.length > 0" class="install-template-tags-section-name">Categories</p>
+                            <p weight="normal" *ngIf="templateTags && templateTags.length > 0" class="install-template-tags-section-name">Tags</p>
                             <div class="template-card-footer template-footer">
                                 <div class="template-tags-wpr">
 

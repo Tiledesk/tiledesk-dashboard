@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, isDevMode } from '@angular/core';
+import { Component, OnInit, AfterViewInit, isDevMode, ViewChild, ElementRef } from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../../core/auth.service';
 import { Router } from '@angular/router';
@@ -16,6 +16,7 @@ import { ProjectService } from 'app/services/project.service';
 import { Project } from 'app/models/project-model';
 import { emailDomainWhiteList, tranlatedLanguage } from 'app/utils/util';
 import { TitleCasePipe } from '@angular/common';
+declare const grecaptcha: any;
 import { WidgetSetUpBaseComponent } from 'app/widget_components/widget-set-up/widget-set-up-base/widget-set-up-base.component';
 import { WidgetService } from 'app/services/widget.service';
 
@@ -28,7 +29,9 @@ type FormErrors = { [u in UserFields]: string };
   styleUrls: ['./signup.component.scss'],
   providers: [TitleCasePipe]
 })
+
 export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit, AfterViewInit {
+  @ViewChild('recaptcha', { static: false }) el: ElementRef;
 
   tparams: any;
   companyLogo: string;
@@ -57,6 +60,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
   storedRoute: string;
 
   public_Key: string;
+  reCaptchaSiteKey: string;
   areActivePay: boolean;
   MT: boolean;
  
@@ -155,14 +159,42 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
     this.getBrowserLang();
     this.getOSCODE();
     this.getQueryParamsAndSegmentRecordPageAndIdentify();
+    this.getReCaptchaSiteKey()
 
     const hasSigninWithGoogle = this.localDbService.getFromStorage('swg')
     if (hasSigninWithGoogle) {
       this.localDbService.removeFromStorage('swg')
       // this.logger.log('[SIGN-UP] removeFromStorage swg')
     }
-
   }
+  getReCaptchaSiteKey() {
+    this.reCaptchaSiteKey = this.appConfigService.getConfig().reCaptchaSiteKey;
+    // console.log('[SIGN-UP] reCaptchaSiteKey ',  this.reCaptchaSiteKey)
+  }
+  
+
+  ngAfterViewInit() {
+    const elemPswInput = <HTMLInputElement>document.getElementById('signup-password');
+    // this.logger.log('ELEMENT INPUT PSW ', elemPswInput)
+    const style = window.getComputedStyle(elemPswInput);
+    // this.logger.log('ELEMENT INPUT PSW STYLE', style)
+
+    /**
+     * THE HTML ELEMENT FOR INSERTING THE PASSWORD IS OF TEXT TYPE (instead of PASSWORD TYPE) TO AVOID THE CHROME SELF-COMPLETION
+     * (e.g., "USE PASSWORD FOR"").
+     * TO AVOID THAT THE TEXT INSERTED IN THE PASSWORD FIELD IS DISPLAYED AT ELEMEMT HAS BEEN SETTED THE STYLE
+     * 'webkitTextSecurity' THAT HIDES THE USER INPUT.
+     * HOWEVER THE STYLE 'webkitTextSecurity' IS NOT COMPATIPLE ON ALL THE BROWSER,
+     * FOR WHETHER IF THE webkitTextSecurity STYLE THERE IS NOT, IS ADDED THE ATTRIBUTE PASSWORD TO THE FIELD
+     */
+    if (style['-webkitTextSecurity']) {
+      this.logger.log('[SIGN-UP] ngAfterViewInit ELEMENT INPUT PSW HAS STYLE webkitTextSecurity: YES')
+    } else {
+      this.logger.log('[SIGN-UP] ngAfterViewInit ELEMENT INPUT PSW HAS STYLE webkitTextSecurity: FALSE')
+      elemPswInput.setAttribute('type', 'password');
+    }
+  }
+
 
   // 
   // 'email': [{ value: '', disabled: true }, [
@@ -422,6 +454,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
         // this.logger.log('[SIGN-UP] this.appSumoActivationEmail ', this.appSumoActivationEmail)
         this.userForm.patchValue({ 'email': this.appSumoActivationEmail })
         this.isValidAppSumoActivationEmail = this.validateEmail(this.appSumoActivationEmail)
+        // console.log('[SIGN-UP] this.isValidAppSumoActivationEmail ', this.isValidAppSumoActivationEmail)
         // this.logger.log('[SIGN-UP] this.isValidAppSumoActivationEmail ', this.isValidAppSumoActivationEmail)
         const emailInputElm = document.getElementById("user-email") as HTMLInputElement;
         // this.logger.log('[SIGN-UP] emailInputElm ', emailInputElm)
@@ -430,7 +463,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
     }
 
 
-    
+    // console.log('[SIGN-UP] checkCurrentUrlAndSkipWizard router.url  ', this.router.url)
 
 
     if (this.router.url.indexOf('/signup-on-invitation') !== -1) {
@@ -477,26 +510,17 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
     }
   }
 
-  ngAfterViewInit() {
-    const elemPswInput = <HTMLInputElement>document.getElementById('signup-password');
-    // this.logger.log('ELEMENT INPUT PSW ', elemPswInput)
-    const style = window.getComputedStyle(elemPswInput);
-    // this.logger.log('ELEMENT INPUT PSW STYLE', style)
 
-    /**
-     * THE HTML ELEMENT FOR INSERTING THE PASSWORD IS OF TEXT TYPE (instead of PASSWORD TYPE) TO AVOID THE CHROME SELF-COMPLETION
-     * (e.g., "USE PASSWORD FOR"").
-     * TO AVOID THAT THE TEXT INSERTED IN THE PASSWORD FIELD IS DISPLAYED AT ELEMEMT HAS BEEN SETTED THE STYLE
-     * 'webkitTextSecurity' THAT HIDES THE USER INPUT.
-     * HOWEVER THE STYLE 'webkitTextSecurity' IS NOT COMPATIPLE ON ALL THE BROWSER,
-     * FOR WHETHER IF THE webkitTextSecurity STYLE THERE IS NOT, IS ADDED THE ATTRIBUTE PASSWORD TO THE FIELD
-     */
-    if (style['-webkitTextSecurity']) {
-      this.logger.log('[SIGN-UP] ngAfterViewInit ELEMENT INPUT PSW HAS STYLE webkitTextSecurity: YES')
-    } else {
-      this.logger.log('[SIGN-UP] ngAfterViewInit ELEMENT INPUT PSW HAS STYLE webkitTextSecurity: FALSE')
-      elemPswInput.setAttribute('type', 'password');
-    }
+  signUp() { 
+    grecaptcha.ready(() => {
+      grecaptcha.execute(this.reCaptchaSiteKey, {action: 'submit'}).then((token) => {
+          // Add your logic to submit to your backend server here.
+          console.log('[SIGN-UP] grecaptcha ', token) 
+          if (token) {
+            this.signup()
+          }
+      });
+    });
   }
 
 
@@ -687,6 +711,9 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
 
         // this.logger.log('self.EXIST_STORED_ROUTE: ', self.EXIST_STORED_ROUTE, self.storedRoute);
         // this.logger.log('self.SKIP_WIZARD: ', self.SKIP_WIZARD);
+
+        // console.log('self.EXIST_STORED_ROUTE: ', self.EXIST_STORED_ROUTE, self.storedRoute);
+        // console.log('self.SKIP_WIZARD: ', self.SKIP_WIZARD);
 
         if (!self.EXIST_STORED_ROUTE) {
           if (self.SKIP_WIZARD === false) {

@@ -10,23 +10,73 @@
 
     <div class="home-block-description-and-action-btn-wpr">
         <div class="home-block-description" style="padding-right:55px">
-            Upload URLs to streamline content creation and seamlessly integrate your knowledge base content for a Chat-GPT-like experience
+            Upload URLs to streamline content creation and seamlessly integrate your knowledge base content for a
+            Chat-GPT-like experience
         </div>
 
         <div class="kb-counter">
             <!-- {{ 'KbPage.KbCounterFooter' | translate: { counter: kbSettings?.kbs?.length } }} -->
-           {{kbSettings?.kbs?.length }} of 3 Knowledge Bases added
+            <!-- {{kbSettings?.kbs?.length }} of 3 Knowledge Bases added -->
+            <!-- {{ 'KbPage.KbCounterFooter_es' | translate: { counter: kbCount, allowed_kb_num: kbLimit, plan_name: prjct_profile_name } }} -->
+            <span [ngStyle]="{'color': kbCount > kbLimit ? '#f44336' : '#2196f3'}" class="kb-reedemed-number"
+                matTooltipClass="h-custom-mat-tooltip"
+                matTooltip="View detail in Knowledge Bases" 
+                #tooltip="matTooltip" 
+                matTooltipPosition='below'
+                matTooltipHideDelay="100" 
+                (click)="goToKnowledgeBases()">
+                {{ 'KbPage.KbCounterFooter1' | translate: { counter: kbCount } }} 
+            </span>
+            {{ 'KbPage.KbCounterFooter2' | translate: {allowed_kb_num: kbLimit, plan_name: prjct_profile_name} }}
+
+            <span *ngIf="(!subscription_is_active && prjct_profile_type === 'payment') && (kbCount > kbLimit)">
+                <i class="material-icons" 
+                    matTooltipClass="h-custom-mat-tooltip"
+                    matTooltip="Subscription payment problem" 
+                    #tooltip="matTooltip" 
+                    matTooltipPosition='below'
+                    matTooltipHideDelay="100" 
+                    (click)="openModalSubsExpired()"
+                    style="vertical-align: middle; color: #f44336; cursor: pointer; font-size: 20px;">
+                    error
+                </i>
+            </span>
+
+            <span *ngIf="(trial_expired && prjct_profile_type === 'free') && (kbCount > kbLimit)">
+                <i class="material-icons" 
+                    matTooltipClass="h-custom-mat-tooltip"
+                    matTooltip="Your 14-day free trial has expired" 
+                    #tooltip="matTooltip" 
+                    matTooltipPosition='below'
+                    matTooltipHideDelay="100" 
+                    (click)="openModalTrialExpired()"
+                    style="vertical-align: middle; color: #f44336; cursor: pointer; font-size: 20px;">
+                    error
+                </i>
+            </span>
+
+            <span *ngIf="(((prjct_profile_type === 'payment' && subscription_is_active === true) ||
+                (prjct_profile_type === 'free' && trial_expired === false) || 
+                (prjct_profile_type === 'free' && trial_expired === true))  &&
+                (kbCount > kbLimit))">
+                <i class="material-icons" 
+                    matTooltipClass="h-custom-mat-tooltip"
+                    matTooltip="The number of Knowledge Base exceeds the number allowed for the {{ prjct_profile_name }}" 
+                    #tooltip="matTooltip" 
+                    matTooltipPosition='above'
+                    matTooltipHideDelay="100" 
+                    style="vertical-align: middle; color: #f44336; cursor: pointer; font-size: 20px;">
+                    error
+                </i>
+            </span>
         </div>
-       
+
         <div class="actions--btn-wpr">
-            <button id="home-material-btn"
-                class="mat-focus-indicator mat-flat-button mat-button-base"
-               
+            <button id="home-material-btn" class="mat-focus-indicator mat-flat-button mat-button-base"
                 (click)="goToKnowledgeBases()">
                 <span class="mat-button-wrapper">
-                
-                    <span class="ml-2"
-                        style="font-size: 15px;">
+
+                    <span class="ml-2" style="font-size: 15px;">
                         Add Knowledge Base
                     </span>
 

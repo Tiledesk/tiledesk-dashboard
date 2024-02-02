@@ -34,4 +34,3 @@ export const environment = {
       vapidKey: 'CHANGEIT'
   }
 };
-

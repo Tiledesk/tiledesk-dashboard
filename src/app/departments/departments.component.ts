@@ -13,16 +13,18 @@ import { APP_SUMO_PLAN_NAME, avatarPlaceholder, getColorBck, PLAN_NAME } from '.
 import { AppConfigService } from '../services/app-config.service';
 import { ProjectPlanService } from '../services/project-plan.service';
 import { LoggerService } from '../services/logger/logger.service';
+import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
+
 @Component({
-  selector: 'mongodb-departments',
+  selector: 'departments',
   templateUrl: './departments.component.html',
   styleUrls: ['./departments.component.scss'],
 })
 
-export class DepartmentsComponent implements OnInit {
+export class DepartmentsComponent extends PricingBaseComponent implements OnInit {
   PLAN_NAME = PLAN_NAME;
   APP_SUMO_PLAN_NAME = APP_SUMO_PLAN_NAME
-  t_params: any;
+  // t_params: any;
   departments: Department[] = [];
 
   dept_name: string;
@@ -58,8 +60,8 @@ export class DepartmentsComponent implements OnInit {
   public_Key: string;
 
   prjct_profile_type: string;
-  subscription_is_active: boolean;
-  trialExpired: boolean;
+  // subscription_is_active: boolean;
+  // trialExpired: boolean;
   profile_name: string;
   subscriptionInactiveOrTrialExpired: boolean;
   IS_OPEN_SETTINGS_SIDEBAR: boolean;
@@ -74,12 +76,12 @@ export class DepartmentsComponent implements OnInit {
     private groupsService: GroupService,
     private faqKbService: FaqKbService,
     public translate: TranslateService,
-    private notify: NotifyService,
-    private prjctPlanService: ProjectPlanService,
+    public notify: NotifyService,
+    public prjctPlanService: ProjectPlanService,
     public appConfigService: AppConfigService,
     private logger: LoggerService
   ) { 
-   
+    super(prjctPlanService, notify);
   }
 
   ngOnInit() {
@@ -331,51 +333,57 @@ export class DepartmentsComponent implements OnInit {
   }
 
 
-  getProjectPlan() {
-    this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-      this.logger.log('[DEPTS] getProjectPlan project Profile Data', projectProfileData)
-      if (projectProfileData) {
-        this.profile_name = projectProfileData.profile_name;
-        this.prjct_profile_type = projectProfileData.profile_type;
-        this.logger.log('[DEPTS] getProjectPlan prjct_profile_type', this.prjct_profile_type)
-        this.subscription_is_active = projectProfileData.subscription_is_active;
-        this.logger.log('[DEPTS] getProjectPlan subscription_is_active', this.subscription_is_active)
-        this.trialExpired = projectProfileData.trial_expired;
-        this.logger.log('[DEPTS] getProjectPlan trialExpired', this.trialExpired)
+  // getProjectPlan() {
+  //   this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
+  //     this.logger.log('[DEPTS] getProjectPlan project Profile Data', projectProfileData)
+  //     if (projectProfileData) {
+  //       this.profile_name = projectProfileData.profile_name;
+  //       this.prjct_profile_type = projectProfileData.profile_type;
+  //       this.logger.log('[DEPTS] getProjectPlan prjct_profile_type', this.prjct_profile_type)
+  //       this.subscription_is_active = projectProfileData.subscription_is_active;
+  //       this.logger.log('[DEPTS] getProjectPlan subscription_is_active', this.subscription_is_active)
+  //       this.trialExpired = projectProfileData.trial_expired;
+  //       this.logger.log('[DEPTS] getProjectPlan trialExpired', this.trialExpired)
 
        
-        if (projectProfileData.extra3) {
-          this.appSumoProfile = APP_SUMO_PLAN_NAME[projectProfileData.extra3]
-          this.appSumoProfilefeatureAvailableFromBPlan = APP_SUMO_PLAN_NAME['tiledesk_tier3']
+  //       if (projectProfileData.extra3) {
+  //         this.appSumoProfile = APP_SUMO_PLAN_NAME[projectProfileData.extra3]
+  //         this.appSumoProfilefeatureAvailableFromBPlan = APP_SUMO_PLAN_NAME['tiledesk_tier3']
 
-          this.t_params = { 'plan_name': this.appSumoProfilefeatureAvailableFromBPlan }
+  //         this.t_params = { 'plan_name': this.appSumoProfilefeatureAvailableFromBPlan }
 
-        } else if (!projectProfileData.extra3) {
-          this.t_params = { 'plan_name': PLAN_NAME.B }
-        }
+  //       } else if (!projectProfileData.extra3) {
+  //         this.t_params = { 'plan_name': PLAN_NAME.B }
+  //       }
 
-        if ((this.prjct_profile_type === 'payment' && this.subscription_is_active === false) || (this.prjct_profile_type === 'free' && this.trialExpired === true)) {
-          this.subscriptionInactiveOrTrialExpired = true;
-          this.logger.log('[DEPTS] getProjectPlan subscriptionInactiveOrTrialExpired', this.subscriptionInactiveOrTrialExpired)
-        } else {
-          this.subscriptionInactiveOrTrialExpired = false;
-          this.logger.log('[DEPTS] getProjectPlan subscriptionInactiveOrTrialExpired', this.subscriptionInactiveOrTrialExpired)
-        }
-      }
-    }, error => {
+  //       if ((this.prjct_profile_type === 'payment' && this.subscription_is_active === false) || (this.prjct_profile_type === 'free' && this.trialExpired === true)) {
+  //         this.subscriptionInactiveOrTrialExpired = true;
+  //         this.logger.log('[DEPTS] getProjectPlan subscriptionInactiveOrTrialExpired', this.subscriptionInactiveOrTrialExpired)
+  //       } else {
+  //         this.subscriptionInactiveOrTrialExpired = false;
+  //         this.logger.log('[DEPTS] getProjectPlan subscriptionInactiveOrTrialExpired', this.subscriptionInactiveOrTrialExpired)
+  //       }
+  //     }
+  //   }, error => {
     
-      this.logger.error('[DEPTS] - getProjectPlan - ERROR', error);
-    }, () => {
+  //     this.logger.error('[DEPTS] - getProjectPlan - ERROR', error);
+  //   }, () => {
      
-      this.logger.log('[DEPTS] - getProjectPlan - COMPLETE')
+  //     this.logger.log('[DEPTS] - getProjectPlan - COMPLETE')
 
-    });
-  }
+  //   });
+  // }
 
 
   // GO TO  BOT-EDIT-ADD COMPONENT
   goToEditAddPage_CREATE() {
-    if ((this.prjct_profile_type === 'payment' && this.subscription_is_active === false) || (this.prjct_profile_type === 'free' && this.trialExpired === true)) {
+    console.log('DEPTS prjct_profile_type ', this.prjct_profile_type) 
+    console.log('DEPTS subscription_is_active ', this.subscription_is_active) 
+    console.log('DEPTS trial_expired ', this.trial_expired) 
+    
+
+
+    if ((this.prjct_profile_type === 'payment' && this.subscription_is_active === false) || (this.prjct_profile_type === 'free' && this.trial_expired === true)) {
       this.router.navigate(['project/' + this.project._id + '/departments-demo']);
     } else {
       this.router.navigate(['project/' + this.project._id + '/department/create']);
@@ -385,15 +393,21 @@ export class DepartmentsComponent implements OnInit {
       (this.profile_name === PLAN_NAME.A) ||
       (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
       (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
-      (this.prjct_profile_type === 'free' && this.trialExpired === true) 
-     
+      (this.profile_name === 'free' && this.trial_expired === true) ||  
+      (this.profile_name === PLAN_NAME.D) ||
+      (this.profile_name === PLAN_NAME.E && this.subscription_is_active === false) ||
+      (this.profile_name === PLAN_NAME.F && this.subscription_is_active === false) ||
+      (this.profile_name === 'Sandbox' && this.trial_expired === true)
       ) {
         this.router.navigate(['project/' + this.project._id + '/departments-demo']);
       // console.log('[WIDGET-SET-UP] - featureIsAvailable IS NOT AVAIBLE ')
     } else if (
       (this.profile_name === PLAN_NAME.B && this.subscription_is_active === true) ||
       (this.profile_name === PLAN_NAME.C && this.subscription_is_active === true) ||
-      (this.prjct_profile_type === 'free' && this.trialExpired === false)
+      (this.profile_name === 'free' && this.trial_expired === false) ||
+      (this.profile_name === PLAN_NAME.D && this.subscription_is_active === true) ||
+      (this.profile_name === PLAN_NAME.F && this.subscription_is_active === true) ||
+      (this.profile_name === 'Sandbox' && this.trial_expired === false)
      
       ) {
         this.router.navigate(['project/' + this.project._id + '/department/create']);

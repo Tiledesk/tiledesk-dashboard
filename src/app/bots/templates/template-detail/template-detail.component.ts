@@ -11,8 +11,15 @@ import { LoggerService } from 'app/services/logger/logger.service';
 import { ProjectService } from 'app/services/project.service';
 import { LocalDbService } from 'app/services/users-local-db.service';
 import { UsersService } from 'app/services/users.service';
-import { goToCDSVersion } from 'app/utils/util';
 
+import { CHATBOT_MAX_NUM, PLAN_NAME, goToCDSVersion } from 'app/utils/util';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators'
+import { ChatbotModalComponent } from 'app/bots/bots-list/chatbot-modal/chatbot-modal.component';
+import { ProjectPlanService } from 'app/services/project-plan.service';
+import { NotifyService } from 'app/core/notify.service';
+import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
+import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'appdashboard-template-detail',
   templateUrl: './template-detail.component.html',
@@ -20,9 +27,10 @@ import { goToCDSVersion } from 'app/utils/util';
 })
 
 
-export class TemplateDetailComponent implements OnInit {
+export class TemplateDetailComponent extends PricingBaseComponent implements OnInit {
   // public templateName: string;
   // public templateDescription: string;
+  private unsubscribe$: Subject<any> = new Subject<any>();
   UPLOAD_ENGINE_IS_FIREBASE: boolean;
   storageBucket: string;
   baseUrl: string;
@@ -44,6 +52,16 @@ export class TemplateDetailComponent implements OnInit {
   public user: any;
   public callingPage: string;
   public prjct_profile_name: string;
+  public projectPlanAgentsNo: any;
+  public prjct_profile_type: string;
+  public subscription_is_active: any;
+  public subscription_end_date: string;
+  public profile_name: string;
+  public trial_expired: any;
+  public chatBotLimit: any;
+  public chatBotCount: any;
+  learnMoreAboutDefaultRoles: string;
+  agentsCannotManageChatbots: string;
   // public depts_length: number;
   // public DISPLAY_SELECT_DEPTS_WITHOUT_BOT: boolean;
   // public dept_id: string;
@@ -73,12 +91,18 @@ export class TemplateDetailComponent implements OnInit {
     private departmentService: DepartmentService,
     private botLocalDbService: BotLocalDbService,
     private projectService: ProjectService,
+    public prjctPlanService: ProjectPlanService,
+    public notify: NotifyService,
+    private translate: TranslateService,
   ) {
+    super(prjctPlanService, notify);
     this.logger.log('[TEMPLATE DETAIL] data ', data)
     this.projectid = data.projectId
     this.template = data.template;
     this._newlyCreatedProject = data.newlyCreatedProject
-    this.callingPage = data.callingPage
+    this.callingPage = data.callingPage;
+    this.prjct_profile_name = data.projectProfile
+    console.log('[TEMPLATE DETAIL] prjct_profile_name ', this.prjct_profile_name)
     // console.log('[TEMPLATE DETAIL] template ', this.template)
     // this.logger.log('[TEMPLATE DETAIL] projectid ', this.projectid)
     if (this.template) {
@@ -99,7 +123,32 @@ export class TemplateDetailComponent implements OnInit {
     this.getProjectUserRole()
     this.getLoggedUser();
     this.getImageBaseUrl()
+    this.getProjectPlan()
+    this.getFaqKbByProjectId();
+    this.traslateString()
   }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
+  getFaqKbByProjectId() {
+    // this.faqKbService.getAllBotByProjectId().subscribe((faqKb: any) => {
+    this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
+      console.log('[TEMPLATE DETAIL] - GET BOTS BY PROJECT ID > RES', faqKb);
+      if (faqKb) {
+        this.chatBotCount = faqKb.length;
+        console.log('[TEMPLATE DETAIL] - GET BOTS BY PROJECT ID > chatBotCount', this.chatBotCount);
+      }
+    }, (error) => {
+      this.logger.error('[TEMPLATE DETAIL] GET BOTS ERROR ', error);
+
+    }, () => {
+      this.logger.log('[TEMPLATE DETAIL] GET BOTS COMPLETE');
+    })
+  }
+
 
   getImageBaseUrl() {
     if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
@@ -107,14 +156,14 @@ export class TemplateDetailComponent implements OnInit {
       this.UPLOAD_ENGINE_IS_FIREBASE = true;
       const firebase_conf = this.appConfigService.getConfig().firebase;
       this.storageBucket = firebase_conf['storageBucket'];
-      this.logger.log('[HOME-CREATE-CHATBOT] - IMAGE STORAGE ', this.storageBucket, 'usecase firebase')
+      this.logger.log('[TEMPLATE DETAIL] - IMAGE STORAGE ', this.storageBucket, 'usecase firebase')
 
 
     } else {
 
       this.UPLOAD_ENGINE_IS_FIREBASE = false;
       this.baseUrl = this.appConfigService.getConfig().baseImageUrl;
-      this.logger.log('[HOME-CREATE-CHATBOT] - IMAGE STORAGE ', this.baseUrl, 'usecase native')
+      this.logger.log('[TEMPLATE DETAIL] - IMAGE STORAGE ', this.baseUrl, 'usecase native')
     
     }
   }
@@ -145,13 +194,13 @@ export class TemplateDetailComponent implements OnInit {
 
   getProjectById(projectId) {
     this.projectService.getProjectById(projectId).subscribe((project: any) => {
-      this.logger.log('[BOT-CREATE] - GET PROJECT BY ID - PROJECT: ', project);
-      this.prjct_profile_name = project.profile.name
-      this.logger.log('[BOT-CREATE] - GET PROJECT BY ID - PROJECT > prjct_profile_name: ', this.prjct_profile_name);
+      this.logger.log('[TEMPLATE DETAIL] - GET PROJECT BY ID - PROJECT: ', project);
+      // this.prjct_profile_name = project.profile.name
+      // this.logger.log('[TEMPLATE DETAIL] - GET PROJECT BY ID - PROJECT > prjct_profile_name: ', this.prjct_profile_name);
     }, error => {
-      this.logger.error('[BOT-CREATE] - GET PROJECT BY ID - ERROR ', error);
+      this.logger.error('[TEMPLATE DETAIL] - GET PROJECT BY ID - ERROR ', error);
     }, () => {
-      this.logger.log('[BOT-CREATE] - GET PROJECT BY ID * COMPLETE * ');
+      this.logger.log('[TEMPLATE DETAIL] - GET PROJECT BY ID * COMPLETE * ');
     });
   }
 
@@ -172,9 +221,9 @@ export class TemplateDetailComponent implements OnInit {
 
     }, error => {
 
-      this.logger.error('[FAQ-EDIT-ADD] - DEPT - GET DEPTS  - ERROR', error);
+      this.logger.error('[TEMPLATE DETAIL] - DEPT - GET DEPTS  - ERROR', error);
     }, () => {
-      this.logger.log('[FAQ-EDIT-ADD] - DEPT - GET DEPTS - COMPLETE')
+      this.logger.log('[TEMPLATE DETAIL] - DEPT - GET DEPTS - COMPLETE')
 
     });
   }
@@ -206,6 +255,58 @@ export class TemplateDetailComponent implements OnInit {
 
     let params = `toolbar=no,menubar=no,width=815,height=727,left=100,top=100`;
     window.open(url, '_blank', params);
+  }
+
+
+  importTempalte() {
+    console.log('[TEMPLATE DETAIL] importTempalte chatBotCount ',this.chatBotCount ,' chatBotLimit ', this.chatBotLimit, ' USER_ROLE ', this.USER_ROLE) 
+    // if (this.chatBotCount < this.chatBotLimit) {
+    //   this.forkTemplate()
+    // } else if (this.chatBotCount >= this.chatBotLimit) {
+
+    //   if (this.USER_ROLE !== 'agent') {
+    //     this.presentDialogReachedChatbotLimit()
+    //   } else if (this.USER_ROLE === 'agent')  {
+    //     this.presentModalOnlyOwnerCanManageTheAccountPlan()
+    //   }
+    // }
+
+    if (this.USER_ROLE !== 'agent') {
+      if (this.chatBotLimit) {
+        if (this.chatBotCount < this.chatBotLimit) {
+          console.log('[INSTALL-TEMPLATE] USECASE  chatBotCount < chatBotLimit: RUN FORK')
+          this.forkTemplate()
+        } else if (this.chatBotCount >= this.chatBotLimit) {
+          console.log('[INSTALL-TEMPLATE] USECASE  chatBotCount >= chatBotLimit DISPLAY MODAL')
+          this.presentDialogReachedChatbotLimit()
+        }
+      } else if (!this.chatBotLimit) {
+        console.log('[INSTALL-TEMPLATE] USECASE  NO chatBotLimit: RUN FORK')
+        this.forkTemplate()
+      }
+    } if (this.USER_ROLE === 'agent') {
+      this.presentModalAgentCannotManageChatbot()
+    }
+  }
+
+  presentModalAgentCannotManageChatbot() {
+    this.notify.presentModalAgentCannotManageChatbot(this.agentsCannotManageChatbots, this.learnMoreAboutDefaultRoles)
+  }
+
+  presentDialogReachedChatbotLimit() {
+    this.closeDialog()
+    console.log('[TEMPLATE DETAIL] openDialog presentDialogReachedChatbotLimit prjct_profile_name ', this.prjct_profile_name)
+    const dialogRef = this.dialog.open(ChatbotModalComponent, {
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+      hasBackdrop: true,
+      data: {
+        projectProfile: this.prjct_profile_name,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`[TEMPLATE DETAIL] Dialog result: ${result}`);
+    });
   }
 
 
@@ -360,7 +461,19 @@ export class TemplateDetailComponent implements OnInit {
   //   this.displayModalAttacchBotToDept = 'none'
   // }
 
+  traslateString() {
+    this.translate
+      .get('LearnMoreAboutDefaultRoles')
+      .subscribe((translation: any) => {
+        this.learnMoreAboutDefaultRoles = translation
+      })
 
+    this.translate
+      .get('AgentsCannotManageChatbots')
+      .subscribe((translation: any) => {
+        this.agentsCannotManageChatbots = translation
+      })
+  }
 
 
 }

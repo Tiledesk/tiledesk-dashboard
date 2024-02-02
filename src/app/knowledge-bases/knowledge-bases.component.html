@@ -15,6 +15,8 @@
       <appdashboard-settings-sidebar style="border-right:1px solid #e5effe !important"> </appdashboard-settings-sidebar>
       <div class="teplate-content" style="flex: 1 1 auto; margin: 0 20px;">
 
+        <appdashboard-kb-alert *ngIf="kbLimit && kbSettings.kbs.length > kbLimit"> </appdashboard-kb-alert>
+
         <loading-spinner *ngIf="showSpinner"></loading-spinner>
 
         <div class="card-content" *ngIf="!showSpinner" style="padding-top: 10px;">
@@ -149,7 +151,9 @@
 
           <div class="counter-box">
             <p>
-              {{ 'KbPage.KbCounterFooter' | translate: { counter: kbSettings?.kbs?.length } }}
+              <!-- {{ 'KbPage.KbCounterFooter' | translate: { counter: kbSettings?.kbs?.length } }} -->
+              <!-- {{ 'KbPage.KbCounterFooter_2' | translate: { counter: kbCount, allowed_kb_num: kbLimit, plan_name: prjct_profile_name } }} -->
+              {{ 'KbPage.KbCounterFooter1' | translate: { counter: kbCount } }}  {{ 'KbPage.KbCounterFooter2' | translate: {allowed_kb_num: kbLimit, plan_name: prjct_profile_name} }}
             </p>
           </div>
 
@@ -216,7 +220,7 @@
         <button class="btn btn-white" style="padding:12px 16px;" (click)="closeAddKnowledgeBaseModal()">
           {{ "Cancel" | translate }}
         </button>
-        <button id="addkb-btn" class="btn btn-primary" [disabled]="buttonDisabled" (click)="saveKnowledgeBase()">
+        <button id="addkb-btn" class="btn btn-primary" [disabled]="buttonDisabled || newKb?.url?.length === 0" (click)="saveKnowledgeBase()">
           {{ 'KbPage.Add' | translate }}
         </button>
       </div>

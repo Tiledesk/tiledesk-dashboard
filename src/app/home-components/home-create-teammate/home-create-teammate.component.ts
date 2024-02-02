@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, SimpleChanges, isDevMode } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, SimpleChanges, isDevMode } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'app/core/auth.service';
 import { AppConfigService } from 'app/services/app-config.service';
@@ -13,13 +13,15 @@ import { MatDialog } from '@angular/material/dialog';
 import { ProjectPlanService } from 'app/services/project-plan.service';
 import { NotifyService } from 'app/core/notify.service';
 import { HomeInviteTeammateErrorModalComponent } from './home-invite-teammate-error-modal/home-invite-teammate-error-modal.component';
+import { TranslateService } from '@ngx-translate/core';
+import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 
 @Component({
   selector: 'appdashboard-home-create-teammate',
   templateUrl: './home-create-teammate.component.html',
   styleUrls: ['./home-create-teammate.component.scss']
 })
-export class HomeCreateTeammateComponent implements OnInit {
+export class HomeCreateTeammateComponent extends PricingBaseComponent implements OnInit, OnDestroy {
   PLAN_NAME = PLAN_NAME;
   PLAN_SEATS = PLAN_SEATS;
   APP_SUMO_PLAN_NAME = APP_SUMO_PLAN_NAME;
@@ -60,6 +62,9 @@ export class HomeCreateTeammateComponent implements OnInit {
   public_Key: string;
   areActivePay: boolean;
 
+  onlyOwnerCanManageTheAccountPlanMsg: string;
+  learnMoreAboutDefaultRoles: string;
+
   constructor(
     public auth: AuthService,
     private logger: LoggerService,
@@ -68,9 +73,12 @@ export class HomeCreateTeammateComponent implements OnInit {
     private groupsService: GroupService,
     public router: Router,
     public dialog: MatDialog,
-    private prjctPlanService: ProjectPlanService,
-    private notify: NotifyService,
-  ) { }
+    public prjctPlanService: ProjectPlanService,
+    public notify: NotifyService,
+    private translate: TranslateService
+  ) {
+    super(prjctPlanService, notify);
+   }
 
   ngOnInit(): void {
     this.logger.log('[HOME-CREATE-TEAMMATE] OnInit  ')
@@ -80,7 +88,13 @@ export class HomeCreateTeammateComponent implements OnInit {
     this.getPendingInvitation()
     this.getCurrentProject()
     this.getLoggedUser()
+    this.translateString()
     this.getOSCODE()
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   getOSCODE() {
@@ -112,7 +126,11 @@ export class HomeCreateTeammateComponent implements OnInit {
   }
 
   getCurrentProject() {
-    this.auth.project_bs.subscribe((project) => {
+    this.auth.project_bs
+    .pipe(
+      takeUntil(this.unsubscribe$)
+    )
+    .subscribe((project) => {
       this.project = project
       this.logger.log('[HOME-CREATE-TEAMMATE] - GET CURRENT PROJECT ', this.project)
       if (this.project) {
@@ -142,129 +160,6 @@ export class HomeCreateTeammateComponent implements OnInit {
       });
   }
 
-  getProjectPlan() {
-    this.prjctPlanService.projectPlan$
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((projectProfileData: any) => {
-        this.logger.log('[HOME-CREATE-TEAMMATE] - GET PROJECT PROFILE - RES', projectProfileData)
-        if (projectProfileData) {
-
-          this.projectPlanAgentsNo = projectProfileData.profile_agents;
-          // this.logger.log('[HOME-CREATE-TEAMMATE]  - GET PROJECT PROFILE - projectPlanAgentsNo ', this.projectPlanAgentsNo);
-
-          this.prjct_profile_type = projectProfileData.profile_type;
-          // this.logger.log('[HOME-CREATE-TEAMMATE]  - GET PROJECT PROFILE - prjct_profile_type ', this.prjct_profile_type);
-
-          this.subscription_is_active = projectProfileData.subscription_is_active;
-          // this.logger.log('[HOME-CREATE-TEAMMATE]  - GET PROJECT PROFILE - subscription_is_active ', this.projectPlanAgentsNo);
-          this.subscription_end_date = projectProfileData.subscription_end_date
-          // this.logger.log('[HOME-CREATE-TEAMMATE]  - GET PROJECT PROFILE - subscription_end_date ', this.subscription_end_date);
-          this.profile_name = projectProfileData.profile_name
-          // this.logger.log('[HOME-CREATE-TEAMMATE]  - GET PROJECT PROFILE - profile_name ', this.profile_name);
-          this.trial_expired = projectProfileData.trial_expired
-          // this.logger.log('[HOME-CREATE-TEAMMATE]  - GET PROJECT PROFILE - trial_expired ', this.trial_expired);
-          if (projectProfileData && projectProfileData.extra3) {
-            this.logger.log('[HOME-CREATE-TEAMMATE] Find Current Project Among All extra3 ', projectProfileData.extra3)
-            this.appSumoProfile = APP_SUMO_PLAN_NAME[projectProfileData.extra3]
-            this.logger.log('[HOME-CREATE-TEAMMATE] Find Current Project appSumoProfile ', this.appSumoProfile)
-          }
-
-          if (projectProfileData.profile_type === 'free') {
-
-            if (projectProfileData.trial_expired === false) {
-              this.prjct_profile_name = PLAN_NAME.B + " (trial)"
-              this.profile_name_for_segment = PLAN_NAME.B + " (trial)"
-              if (this.areActivePay) {
-                this.seatsLimit = PLAN_SEATS[PLAN_NAME.B]
-              } else {
-                this.seatsLimit = 1000;
-              }
-              this.logger.log('[HOME-CREATE-TEAMMATE] - GET PROJECT PLAN - PLAN_NAME ', 'FREE TRIAL', ' SEATS LIMIT: ', this.seatsLimit)
-            } else {
-              this.prjct_profile_name = "Free plan";
-              this.profile_name_for_segment = "Free plan";
-              if (this.areActivePay) {
-                this.seatsLimit = PLAN_SEATS.free
-              } else {
-                this.seatsLimit = 1000;
-              }
-              this.logger.log('[HOME-CREATE-TEAMMATE] - GET PROJECT PLAN - PLAN_NAME ', 'FREE TRIAL', ' SEATS LIMIT: ', this.seatsLimit)
-            }
-          } else if (projectProfileData.profile_type === 'payment') {
-            if (this.subscription_is_active === true) {
-              if (projectProfileData.profile_name === PLAN_NAME.A) {
-                if (!this.appSumoProfile) {
-                  this.prjct_profile_name = PLAN_NAME.A + " plan";
-                  this.seatsLimit = PLAN_SEATS[PLAN_NAME.A]
-                  this.profile_name_for_segment = PLAN_NAME.A + " plan";
-
-                  this.logger.log('[HOME-CREATE-TEAMMATE] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.A, ' SEATS LIMIT: ', this.seatsLimit)
-                  this.logger.log('[HOME-CREATE-TEAMMATE] - GET PROJECT PLAN - prjct_profile_name: ', this.prjct_profile_name)
-                } else {
-                  this.prjct_profile_name = PLAN_NAME.A + " plan " + '(' + this.appSumoProfile + ')';
-                  this.profile_name_for_segment = PLAN_NAME.A + " plan " + '(' + this.appSumoProfile + ')';;
-                  this.seatsLimit = APPSUMO_PLAN_SEATS[projectProfileData.extra3];
-                  this.logger.log('[HOME-CREATE-TEAMMATE] - GET PROJECT PLAN - prjct_profile_name ', this.prjct_profile_name, ' SEATS LIMIT: ', this.seatsLimit)
-                }
-
-              } else if (projectProfileData.profile_name === PLAN_NAME.B) {
-                if (!this.appSumoProfile) {
-                  this.prjct_profile_name = PLAN_NAME.B + " plan";
-                  this.profile_name_for_segment = PLAN_NAME.B + " plan";
-                  this.seatsLimit = PLAN_SEATS[PLAN_NAME.B]
-                  this.logger.log('[HOME-CREATE-TEAMMATE] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.B, ' SEATS LIMIT: ', this.seatsLimit)
-                  this.logger.log('[HOME-CREATE-TEAMMATE] - GET PROJECT PLAN - prjct_profile_name: ', this.prjct_profile_name)
-                } else {
-                  this.prjct_profile_name = PLAN_NAME.B + " plan " + '(' + this.appSumoProfile + ')';
-                  this.profile_name_for_segment = this.prjct_profile_name
-                  this.seatsLimit = APPSUMO_PLAN_SEATS[projectProfileData.extra3];
-                  this.logger.log('[HOME-CREATE-TEAMMATE] - GET PROJECT PLAN - prjct_profile_name ', this.prjct_profile_name, ' SEATS LIMIT: ', this.seatsLimit)
-                }
-
-              } else if (projectProfileData.profile_name === PLAN_NAME.C) {
-                this.prjct_profile_name = PLAN_NAME.C + " plan";
-                this.profile_name_for_segment = PLAN_NAME.C + " plan";
-                this.seatsLimit = projectProfileData.profile_agents
-                this.logger.log('[HOME-CREATE-TEAMMATE] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.C, ' SEATS LIMIT: ', this.seatsLimit)
-                this.logger.log('[HOME-CREATE-TEAMMATE] - GET PROJECT PLAN - prjct_profile_name: ', this.prjct_profile_name)
-              }
-            }
-
-            else if (this.subscription_is_active === false) {
-              // this.seatsLimit = PLAN_SEATS.free
-              if (projectProfileData.profile_name === PLAN_NAME.A) {
-                this.prjct_profile_name = PLAN_NAME.A + " plan";
-                this.profile_name_for_segment = PLAN_NAME.A + " plan";
-                this.seatsLimit = PLAN_SEATS.free
-
-                this.logger.log('[HOME-CREATE-TEAMMATE] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.A, ' SEATS LIMIT: ', this.seatsLimit)
-
-              } else if (projectProfileData.profile_name === PLAN_NAME.B) {
-                this.prjct_profile_name = PLAN_NAME.B + " plan";
-                this.profile_name_for_segment = PLAN_NAME.B + " plan";
-                this.seatsLimit = PLAN_SEATS.free
-
-                this.logger.log('[HOME-CREATE-TEAMMATE] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.B, ' SEATS LIMIT: ', this.seatsLimit)
-
-              } else if (projectProfileData.profile_name === PLAN_NAME.C) {
-                this.prjct_profile_name = PLAN_NAME.C + " plan";
-                this.profile_name_for_segment = PLAN_NAME.C + " plan";
-                this.seatsLimit = PLAN_SEATS.free
-
-                this.logger.log('[HOME-CREATE-TEAMMATE] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.C, ' SEATS LIMIT: ', this.seatsLimit)
-              }
-            }
-          }
-          // this.buildPlanName(projectProfileData.profile_name, this.browserLang, this.prjct_profile_type);
-        }
-      }, err => {
-        this.logger.error('[HOME-CREATE-TEAMMATE] GET PROJECT PROFILE - ERROR', err);
-      }, () => {
-        this.logger.log('[HOME-CREATE-TEAMMATE] GET PROJECT PROFILE * COMPLETE *');
-      });
-  }
 
   getUserRole() {
     this.usersService.project_user_role_bs
@@ -279,7 +174,11 @@ export class HomeCreateTeammateComponent implements OnInit {
   }
 
   getLoggedUser() {
-    this.auth.user_bs.subscribe((user) => {
+    this.auth.user_bs
+    .pipe(
+      takeUntil(this.unsubscribe$)
+    )
+    .subscribe((user) => {
       //  this.logger.log('[HOME-CREATE-TEAMMATE]  - LOGGED USER ', user)
       if (user) {
         this.CURRENT_USER = user
@@ -306,10 +205,7 @@ export class HomeCreateTeammateComponent implements OnInit {
     });
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    this.logger.log('[HOME-CREATE-TEAMMATE] changes  ', changes)
-    // this.getCurrentProjectAndPrjctTeammates();
-  }
+
 
   getCurrentProjectAndPrjctTeammates() {
     this.auth.project_bs
@@ -485,6 +381,20 @@ export class HomeCreateTeammateComponent implements OnInit {
     this.router.navigate(['project/' + this.projectId + '/users'])
   }
 
+  inviteTeammate() {
+    if (this.projectUsersLength + this.countOfPendingInvites < this.seatsLimit) { 
+      this.presentModalInviteTeammate()
+    } else if (this.projectUsersLength + this.countOfPendingInvites >= this.seatsLimit) { 
+      if (this.USER_ROLE === 'owner') {
+        this.notify._displayContactUsModal(true, 'operators_seats_unavailable')
+      } else {
+        this.presentModalOnlyOwnerCanManageTheAccountPlan()
+      }
+    }
+  }
+
+
+
   presentModalInviteTeammate() {
     this.logger.log('[HOME-CREATE-TEAMMATE] - presentModalAddKb ');
     const addKbBtnEl = <HTMLElement>document.querySelector('#home-material-btn');
@@ -518,9 +428,9 @@ export class HomeCreateTeammateComponent implements OnInit {
     });
   }
 
-  presentModalOnlyOwnerCanManageTheAccountPlan() {
-    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan('Only teammates with the owner role can manage the account’s plan', 'Learn more about default roles')
 
+  presentModalOnlyOwnerCanManageTheAccountPlan() {
+    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles)
   }
 
   doInviteUser(email, role) {
@@ -671,6 +581,46 @@ export class HomeCreateTeammateComponent implements OnInit {
         this.logger.error('[HOME-CREATE-TEAMMATE] - GET projectUser by USER-ID - ERROR ', error);
       }, () => {
         this.logger.log('[HOME-CREATE-TEAMMATE] - GET projectUser by USER-ID * COMPLETE *');
+      });
+  }
+
+  openModalSubsExpired() {
+    console.log('[HOME-CREATE-TEAMMATE] openModalSubsExpired ')
+    if (this.USER_ROLE === 'owner') {
+      if (this.profile_name !== PLAN_NAME.C && this.profile_name !== PLAN_NAME.F ) {
+        this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
+      } else if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
+        this.notify.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
+      }
+    } else {
+      this.presentModalOnlyOwnerCanManageTheAccountPlan();
+    }
+  }
+
+  openModalTrialExpired() {
+    if (this.USER_ROLE === 'owner') {  
+        this.notify.displayTrialHasExpiredModal();
+    } else {
+      this.presentModalOnlyOwnerCanManageTheAccountPlan();
+    }
+  }
+
+ 
+
+
+
+  translateString() {
+    this.translateModalOnlyOwnerCanManageProjectAccount()
+  }
+  translateModalOnlyOwnerCanManageProjectAccount() {
+    this.translate.get('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan')
+      .subscribe((translation: any) => {
+        this.onlyOwnerCanManageTheAccountPlanMsg = translation;
+      });
+
+    this.translate.get('LearnMoreAboutDefaultRoles')
+      .subscribe((translation: any) => {
+        this.learnMoreAboutDefaultRoles = translation;
       });
   }
 

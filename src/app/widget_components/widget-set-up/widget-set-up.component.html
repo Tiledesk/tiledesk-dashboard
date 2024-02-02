@@ -1310,6 +1310,7 @@
 											</i>
 										</div>
 									</button>
+									
 									<div class="widget-section-container"
 										[ngClass]="{'feature-not-available' : featureIsAvailable === false}"
 										style="height: auto; transition-duration: 0.613s;">
@@ -1320,15 +1321,19 @@
 											<div class="form-group"
 												style="max-width: 640px; margin-left: -15px; margin-right: -15px; margin-top: 0px;">
 
-												<div class="col-xs-12">
-													<button class="btn btn-get-feature-no-boxshadow pull-right"
-														style="margin-bottom: 0px;" *ngIf="(profile_name === PLAN_NAME.A) || 
+												<!-- *ngIf="(profile_name === PLAN_NAME.A) || 
 													(profile_name === PLAN_NAME.B && subscription_is_active === false) || 
 													(profile_name === PLAN_NAME.C && subscription_is_active === false) ||
-													(prjct_profile_type === 'free' && prjct_trial_expired === true)" (click)="goToPricing()"
+													(prjct_profile_type === 'free' && prjct_trial_expired === true)" -->
+												<div class="col-xs-12">
+													<button class="btn btn-get-feature-no-boxshadow pull-right"
+														style="margin-bottom: 0px;"  
+														*ngIf="featureIsAvailable === false"
+														(click)="goToPricing()"
 														matTooltipClass="custom-mat-tooltip-in-widget-setup"
 														matTooltip=" {{'UpgradePlanToGetTheFeature' | translate}}"
-														#tooltip="matTooltip" matTooltipPosition='below'
+														#tooltip="matTooltip" 
+														matTooltipPosition='below'
 														matTooltipHideDelay="100">
 														<span
 															class="material-icons-outlined get-feature-upgrade-plan-icon">
@@ -1362,15 +1367,15 @@
 													</span>
 												</label>
 
-
+												<!-- [disabled]="(profile_name === PLAN_NAME.A) || 
+												(profile_name === PLAN_NAME.B && subscription_is_active === false) || 
+												(profile_name === PLAN_NAME.C && subscription_is_active === false) ||
+												(prjct_profile_type === 'free' && prjct_trial_expired === true)" -->
 												<div class="col-sm-12">
 													<textarea (focus)="onFocusFooterBranding()"
 														[(ngModel)]="footerBrand"
 														(ngModelChange)="onChangeFooterBrand($event)" rows="3"
-														class="widget-setup-texarea" [disabled]="(profile_name === PLAN_NAME.A) || 
-													(profile_name === PLAN_NAME.B && subscription_is_active === false) || 
-													(profile_name === PLAN_NAME.C && subscription_is_active === false) ||
-													(prjct_profile_type === 'free' && prjct_trial_expired === true)">	</textarea>
+														class="widget-setup-texarea" [disabled]="!featureIsAvailable">	</textarea>
 													<!-- <div *ngIf="footerBrand?.length <= 0"
 													style="font-size: 11px; color: #f44336;">
 													{{ 'RequiredField' | translate}}
@@ -1630,7 +1635,8 @@
 																		<label class="btn btn-white upload-launcher-btn"
 																			for="upload-launcher-button-logo"
 																			matTooltipClass="custom-mat-tooltip"
-																			matTooltip="Edit App" #tooltip="matTooltip"
+																			matTooltip="Edit App"
+																			#tooltip="matTooltip"
 																			matTooltipPosition='above'
 																			matTooltipHideDelay="100"
 																			[matTooltipDisabled]="!hasOwnLauncherBtn">

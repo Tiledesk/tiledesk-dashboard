@@ -32,6 +32,11 @@
       </appdashboard-bots-sidebar>
       <div class="teplate-content" style="flex: 1 1 auto; margin-left: 20px;">
 
+        <!-- -------------------------------------------------------------------- -->
+        <!-- Alert displayed when the number of chatbot exceed the chatbot limit -->
+        <!-- -------------------------------------------------------------------- -->
+        <appdashboard-chatbot-alert *ngIf="chatBotLimit && chatBotCount > chatBotLimit" ></appdashboard-chatbot-alert>
+
         <div class="row">
           <div class="col-xs-12">
             <button class="btn btn-new btn-size-m btn--primary pull-right" (click)="createBlankTilebot()"

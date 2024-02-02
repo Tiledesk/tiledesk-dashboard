@@ -236,7 +236,7 @@
 
         <div class="login-container">
 
-          <form [formGroup]="userForm" (ngSubmit)="signup()" autocomplete="off">
+          <form id="signup-form" [formGroup]="userForm" (ngSubmit)="signUp()" autocomplete="off">
 
             <!-- <label for="firstName">
               {{ "FirstName" | translate }} <span style="color:#ff5252">*</span>
@@ -333,15 +333,19 @@
             <!-- SUBMIT -->
             <button [ngStyle]="{'background-color': primaryBrandColor ? primaryBrandColor : '#f0806f' }" type="submit" class="btn signup-button" [disabled]="!userForm.valid || showSpinnerInLoginBtn">
               <span *ngIf="!showSpinnerInLoginBtn">
-
-                <!-- {{ "SignUp" | translate }} -->
-                <!-- {{ 'CreateAFreeAccount' | translate}} -->
                 {{ "GetStarted" | translate}}
               </span>
               <span *ngIf="showSpinnerInLoginBtn"> 
                 <i class="fa fa-spinner fa-spin"></i>
               </span>
             </button>
+            <!-- <script>window.onSubmit = function() { alert("HI"); }</script> -->
+            <!-- <script src='https://www.google.com/recaptcha/api.js'></script> -->
+
+            <!-- <button #recaptcha class="g-recaptcha" data-sitekey="6Lf1khcpAAAAABMNHJfnJm43vVTxFzXM7ADqDAp5" 
+              data-callback='onSubmit' data-action='submit'>
+              Submit
+            </button> -->
 
             <div class="signup-subtitle" *ngIf="!appSumoActivationEmail">
               {{ "AlreadyHaveAnAccount" | translate }}

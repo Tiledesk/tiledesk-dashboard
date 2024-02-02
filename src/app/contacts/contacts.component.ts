@@ -31,6 +31,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
   upgradePlan: string;
   cancel: string;
   featureAvailableFromBPlan: string;
+  featureAvailableFromEPlan: string;
 
   public colours = [
     '#1abc9c', '#2ecc71', '#3498db', '#9b59b6', '#34495e', '#16a085',
@@ -195,6 +196,17 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   getTranslation() {
+
+    this.translate.get('AvailableFromThePlan', { plan_name: PLAN_NAME.E })
+      .subscribe((translation: any) => {
+        this.featureAvailableFromEPlan = translation;
+      });
+
+    this.translate.get('AvailableFromThePlan', { plan_name: PLAN_NAME.B })
+      .subscribe((translation: any) => {
+        this.featureAvailableFromBPlan = translation;
+      });
+
     this.translate.get('DeleteLeadSuccessNoticationMsg')
       .subscribe((text: string) => {
         this.deleteLeadSuccessNoticationMsg = text;
@@ -269,11 +281,6 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
     this.translate.get('Cancel')
       .subscribe((translation: any) => {
         this.cancel = translation;
-      });
-
-    this.translate.get('AvailableFromThePlan', { plan_name: PLAN_NAME.B })
-      .subscribe((translation: any) => {
-        this.featureAvailableFromBPlan = translation;
       });
 
     this.translate.get('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan')
@@ -471,14 +478,14 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
 
       this.fullTextIsAValidEmail = this.validateEmail(this.fullText)
       // console.log('[CONTACTS-COMP] - FULL TEXT IS A VALID EMAIL: ',  this.fullTextIsAValidEmail);
-      
 
-      if ( this.fullTextIsAValidEmail === false) {
+
+      if (this.fullTextIsAValidEmail === false) {
         this.fullTextValue = this.fullText;
       } else {
         this.selectedContactEmail = this.fullText;
         this.fullTextValue = '';
-        this.fullText = undefined 
+        this.fullText = undefined
       }
 
     } else {
@@ -618,7 +625,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
     this.logger.log('[CONTACTS-COMP] - selectedContactTAG ', this.selectedContactTAG);
   }
 
-  emailSelected () {
+  emailSelected() {
     this.logger.log('[CONTACTS-COMP] - selectedContactEmail ', this.selectedContactEmail);
   }
 
@@ -678,7 +685,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
 
       this.contacts = leads_object['leads'];
       this.logger.log('[CONTACTS-COMP] - CONTACTS LIST ', this.contacts);
- 
+
 
       const contactsCount = leads_object['count'];
       this.logger.log('[CONTACTS-COMP] - CONTACTS COUNT ', contactsCount);
@@ -1029,81 +1036,62 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
 
   }
 
+  checkPlanAndPresentModal() {
+    if ((this.profile_name === PLAN_NAME.A) ||
+      (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
+      (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
+      (this.profile_name === 'free' && this.trial_expired === true)) {
 
+      if (!this.appSumoProfile) {
+
+        this.presentModalFeautureAvailableFromTier2Plan(this.featureAvailableFromBPlan)
+        return false
+      } else {
+        this.presentModalAppSumoFeautureAvailableFromBPlan()
+        return false
+      }
+    } else if ((this.profile_name === PLAN_NAME.D) ||
+      (this.profile_name === PLAN_NAME.E && this.subscription_is_active === false) ||
+      (this.profile_name === PLAN_NAME.F && this.subscription_is_active === false) ||
+      (this.profile_name === 'Sandbox' && this.trial_expired === true)) {
+      if (!this.appSumoProfile) {
+        this.presentModalFeautureAvailableFromTier2Plan(this.featureAvailableFromEPlan)
+        return false
+      }
+
+    }
+  }
 
 
   exportContactsToCsv() {
-
     if (this.payIsVisible) {
-      if (
-        (this.profile_name === PLAN_NAME.A) ||
-        (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
-        (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
-        (this.prjct_profile_type === 'free' && this.trial_expired === true)
-
-      ) {
-        if (!this.appSumoProfile) {
-          this.presentModalFeautureAvailableOnlyWithPaidPlans()
-        } else if (this.appSumoProfile) {
-          this.presentModalAppSumoFeautureAvailableFromBPlan()
-        }
-        // console.log('[CONTACTS-COMP] -  EXPORT DATA IS NOT AVAILABLE ')
-      } else if (
-        (this.profile_name === PLAN_NAME.B && this.subscription_is_active === true) ||
-        (this.profile_name === PLAN_NAME.C && this.subscription_is_active === true) ||
-        (this.prjct_profile_type === 'free' && this.trial_expired === false)
-
-      ) {
-        this.contactsService.exportLeadToCsv(this.queryString, 0, this.hasClickedTrashed).subscribe((leads_object: any) => {
-          this.logger.log('[CONTACTS-COMP] - EXPORT CONTACT TO CSV RESPONSE ', leads_object);
-          if (leads_object) {
-            this.logger.log('[CONTACTS-COMP] - EXPORT CONTACTS TO CSV RESPONSE', leads_object);
-            this.downloadFile(leads_object);
-          }
-        }, (error) => {
-          this.logger.error('[CONTACTS-COMP]- EXPORT CONTACT TO CSV - ERROR  ', error);
-        }, () => {
-          this.logger.log('[CONTACTS-COMP] - EXPORT CONTACT TO CSV * COMPLETE *');
-        });
-        // console.log('[CONTACTS-COMP] - EXPORT DATA IS  AVAILABLE ')
+      const isAvailable = this.checkPlanAndPresentModal()
+      console.log('[CONTACTS-COMP] isAvaibleFromPlan ', isAvailable)
+      if (isAvailable === false) {
+        return
       }
 
+      this.contactsService.exportLeadToCsv(this.queryString, 0, this.hasClickedTrashed).subscribe((leads_object: any) => {
+        this.logger.log('[CONTACTS-COMP] - EXPORT CONTACT TO CSV RESPONSE ', leads_object);
+        if (leads_object) {
+          this.logger.log('[CONTACTS-COMP] - EXPORT CONTACTS TO CSV RESPONSE', leads_object);
+          this.downloadFile(leads_object);
+        }
+      }, (error) => {
+        this.logger.error('[CONTACTS-COMP]- EXPORT CONTACT TO CSV - ERROR  ', error);
+      }, () => {
+        this.logger.log('[CONTACTS-COMP] - EXPORT CONTACT TO CSV * COMPLETE *');
+      });
+      // console.log('[CONTACTS-COMP] - EXPORT DATA IS  AVAILABLE ')
     } else {
       this.notify._displayContactUsModal(true, 'upgrade_plan');
     }
-
-
-    // if (this.payIsVisible) {
-    //   if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false || this.prjct_profile_type === 'free' && this.trial_expired === true) {
-    //     this.notify.openDataExportNotAvailable()
-    //   } else {
-    //     const exportToCsvBtn = <HTMLElement>document.querySelector('.export-to-csv-btn');
-    //     this.logger.log('[CONTACTS-COMP] - EXPORT TO CSV BTN', exportToCsvBtn)
-    //     exportToCsvBtn.blur()
-
-    //     this.contactsService.exportLeadToCsv(this.queryString, 0, this.hasClickedTrashed).subscribe((leads_object: any) => {
-    //       this.logger.log('!!!! CONTACTS - EXPORT CONTACT TO CSV RESPONSE ', leads_object);
-
-    //       // this.logger.log('!!!! CONTACTS - CONTACTS LIST ', this.contacts);
-    //       if (leads_object) {
-    //         this.logger.log('[CONTACTS-COMP] - EXPORT CONTACTS TO CSV RESPONSE', leads_object);
-    //         this.downloadFile(leads_object);
-    //       }
-    //     }, (error) => {
-    //       this.logger.error('[CONTACTS-COMP]- EXPORT CONTACT TO CSV - ERROR  ', error);
-    //     }, () => {
-    //       this.logger.log('[CONTACTS-COMP] - EXPORT CONTACT TO CSV * COMPLETE *');
-    //     });
-    //   }
-    // } else {
-    //   this.notify._displayContactUsModal(true, 'upgrade_plan');
-    // }
   }
 
   // Export CSV
-  presentModalFeautureAvailableOnlyWithPaidPlans() {
+  presentModalFeautureAvailableFromTier2Plan(planName: string) {
     const el = document.createElement('div')
-    el.innerHTML = this.featureAvailableFromBPlan
+    el.innerHTML = planName // this.featureAvailableFromBPlan
     swal({
       // title: this.onlyOwnerCanManageTheAccountPlanMsg,
       content: el,
@@ -1119,28 +1107,14 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
       dangerMode: false,
     }).then((value) => {
       if (value === 'catch') {
-        // console.log('featureAvailableFromBPlan value', value)
-        // if (this.payIsVisible) {
-        //   if (this.USER_ROLE === 'owner') {
-        //     if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
-        //       this.notify._displayContactUsModal(true, 'upgrade_plan');
-        //     } else {
-        //       this.router.navigate(['project/' + this.projectId + '/pricing']);
 
-        //     }
-        //   } else {
-        //     this.presentModalOnlyOwnerCanManageTheAccountPlan();
-        //   }
-        // } else {
-        //   this.notify._displayContactUsModal(true, 'upgrade_plan');
-        // }
         if (this.payIsVisible) {
 
           if (this.USER_ROLE === 'owner') {
             if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
-              if (this.profile_name !== PLAN_NAME.C) {
+              if (this.profile_name !== PLAN_NAME.C && this.profile_name !== PLAN_NAME.F) {
                 this.notify.displaySubscripionHasExpiredModal(true, this.profile_name, this.subscription_end_date);
-              } else if (this.profile_name === PLAN_NAME.C) {
+              } else if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
                 this.notify.displayEnterprisePlanHasExpiredModal(true, this.profile_name, this.subscription_end_date);
               }
 

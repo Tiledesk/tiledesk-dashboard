@@ -1,6 +1,9 @@
 <!-- margin-top:6px;  -->
 <p style="z-index: 1050;position: relative;padding-left:30px" class="navbar-brand"
 [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }">
+  <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;" (click)="goBack()">
+    keyboard_arrow_left
+  </i>  
   {{ "Hours" | translate }}
 </p> 
 
@@ -13,15 +16,15 @@
           <div class="row"> 
             <div class="col-sm-12"> 
               <h2 class="demopage-title">
-               
-                {{ "AvailableFromThePlan" | translate: tparams }}
+                <!-- {{ "AvailableFromThePlan" | translate: tparams }} -->
+                {{ "AvailableFromThePlan" | translate: tParamsHoursAvailableFromPlan }}
               </h2>
             </div>
           </div>
 
           <div class="row">
             <div class="col-sm-12">
-              <h3 class="demopage-subtitle" style=""> 
+              <h3 class="demopage-subtitle"> 
                 <!-- Upgrade Your Account to set team office hours and let visitors know when your agents is working! -->
               {{ "HoursPage.UpgradeYourAccountToSetTeamOfficeHours" | translate }}
               </h3>

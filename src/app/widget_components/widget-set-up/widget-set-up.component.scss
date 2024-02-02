@@ -555,6 +555,7 @@ input {
   font-size: 14px;
   width: 100%;
   -webkit-appearance: none;
+  appearance: none;
   border: 1px solid #ccc !important;
   padding: 0 8px;
   box-sizing: border-box;
@@ -803,6 +804,7 @@ input[type="text"]:disabled {
   font-size: 14px;
   width: 100%;
   -webkit-appearance: none;
+  appearance: none;
   border: 1px solid #ccc !important;
   padding: 0 8px;
   box-sizing: border-box;
@@ -815,6 +817,7 @@ input[type="text"]:disabled {
   font-size: 14px;
   width: 100%;
   -webkit-appearance: none;
+  appearance: none;
   border: 1px solid #ccc !important;
   padding: 0 8px;
   box-sizing: border-box;
@@ -1890,6 +1893,7 @@ button.buttonRounded:hover {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
+  user-select: none;
 }
 .onoffswitch-checkbox {
   display: none;
@@ -2246,6 +2250,7 @@ button.buttonRounded:hover {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
+  user-select: none;
 }
 .nw-onoffswitch-checkbox {
   position: absolute;

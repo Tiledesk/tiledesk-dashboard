@@ -77,10 +77,10 @@
             <div class="row">
                 <div class="col-sm-12">
 
-                    <button *ngIf="projects && projects?.length > 1" class="btn btn-lg btn-primary" (click)="goToInstallTemplate()" [disabled]="!selectedProject">
+                    <button *ngIf="projects && projects?.length > 1" class="btn btn-lg btn-primary" (click)="importTemplate()" [disabled]="!selectedProject && !getChatBotCompleted">
                         {{ "ProjectsPage.Continue" | translate }}
                     </button>
-                    <button *ngIf="projects && projects?.length === 1" class="btn btn-lg btn-primary" (click)="goToInstallTemplate()">
+                    <button *ngIf="projects && projects?.length === 1" class="btn btn-lg btn-primary" (click)="importTemplate()" [disabled]="!getChatBotCompleted">
                         {{ "ProjectsPage.Continue" | translate }}
                     </button>
 

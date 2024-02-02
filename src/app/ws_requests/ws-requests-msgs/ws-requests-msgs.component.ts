@@ -54,6 +54,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   appSumoProfile: string;
   appSumoProfilefeatureAvailableFromBPlan: string;
   featureAvailableFromBPlan: string;
+  featureAvailableFromEPlan: string;
   cancel: string;
   upgradePlan: string;
 
@@ -390,7 +391,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   agentCannotManageAdvancedOptions: string;
   subscription_end_date: any;
   onlyAvailableWithEnterprisePlan: string;
-  cPlanOnly: string
+  cPlanOnly: string;
+  fPlanOnly:  string;
   learnMoreAboutDefaultRoles: string;
   onlyUserWithOwnerRoleCanManageAdvancedProjectSettings: string;
   displayChatRatings: boolean = true;
@@ -612,7 +614,16 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           // this.logger.log('[WS-REQUESTS-MSGS] GET PROJECT PLAN elemTexareaSendMsg USE CASE PRIVATE NOTE (ID 2)', elemTexareaSendMsg);
           if (elemTexareaSendMsg && this.isVisiblePaymentTab) {
             elemTexareaSendMsg.disabled = true;
-            this.openUpgradePlanDialog(projectProfileData._id)
+            this.openUpgradePlanDialog(projectProfileData._id, PLAN_NAME.A)
+          }
+        }
+
+        if (projectProfileData.profile_name === 'Sandbox' && projectProfileData.trial_expired === true && this.selectedResponseTypeID === 2) {
+          const elemTexareaSendMsg = <HTMLInputElement>document.querySelector('.send-message-texarea')
+          // this.logger.log('[WS-REQUESTS-MSGS] GET PROJECT PLAN elemTexareaSendMsg USE CASE PRIVATE NOTE (ID 2)', elemTexareaSendMsg);
+          if (elemTexareaSendMsg && this.isVisiblePaymentTab) {
+            elemTexareaSendMsg.disabled = true;
+            this.openUpgradePlanDialog(projectProfileData._id, PLAN_NAME.D)
           }
         }
       }
@@ -665,10 +676,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   }
 
-  openUpgradePlanDialog(projectid) {
+  openUpgradePlanDialog(projectid, planName) {
     const dialogRef = this.dialog.open(UpgradePlanModalComponent, {
       data: {
-        featureAvailableFrom: PLAN_NAME.A,
+        featureAvailableFrom:  planName,
         projectId: projectid,
         userRole: this.CURRENT_USER_ROLE
       },
@@ -4066,41 +4077,46 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     }
   }
 
-  // -----------------------------------------------------------------------------------------------------
-  // @ goTo & Navigate
-  // -----------------------------------------------------------------------------------------------------
+ 
+  checkPlanAndPresentModal() {
 
+    if ((this.profile_name === PLAN_NAME.A) ||
+      (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
+      (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
+      (this.profile_name === 'free' && this.trial_expired === true)) {
+      if (!this.appSumoProfile) {
+       
+        this.presentModalFeautureAvailableFromTier2Plan(this.featureAvailableFromBPlan)
+        return false
+      } else {
+        this.presentModalAppSumoFeautureAvailableFromBPlan()
+        return false
+      }
+    } else if ((this.profile_name === PLAN_NAME.D) ||
+      (this.profile_name === PLAN_NAME.E && this.subscription_is_active === false) ||
+      (this.profile_name === PLAN_NAME.F && this.subscription_is_active === false) ||
+      (this.profile_name === 'Sandbox' && this.trial_expired === true)) {
+
+      if (!this.appSumoProfile) {
+        this.presentModalFeautureAvailableFromTier2Plan(this.featureAvailableFromEPlan)
+        return false
+      }
+    }
+  }
 
 
 
   displayModalDownloadTranscript() {
     if (this.isVisiblePaymentTab) {
-      // if (this.CURRENT_USER_ROLE === 'owner') {
-      if (
-        (this.profile_name === PLAN_NAME.A) ||
-        (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
-        (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
-        (this.prjct_profile_type === 'free' && this.trial_expired === true)
-
-      ) {
-        if (!this.appSumoProfile) {
-          this.presentModalFeautureAvailableFromBPlan()
-        } else if (this.appSumoProfile) {
-          this.presentModalAppSumoFeautureAvailableFromBPlan()
-        }
-        // this.logger.log('[HISTORY & NORT-CONVS] -  EXPORT DATA IS NOT AVAILABLE ')
-      } else if (
-        (this.profile_name === PLAN_NAME.B && this.subscription_is_active === true) ||
-        (this.profile_name === PLAN_NAME.C && this.subscription_is_active === true) ||
-        (this.prjct_profile_type === 'free' && this.trial_expired === false)
-
-      ) {
-        this.displayModalTranscript = 'block'
-        // this.logger.log('[HISTORY & NORT-CONVS] - EXPORT DATA IS AVAILABLE ')
+      
+      const isAvailable = this.checkPlanAndPresentModal()
+      console.log('[WS-REQUESTS-MSGS] feature is available ', isAvailable)
+      if (isAvailable === false) {
+        return
       }
-      // } else {
-      //   this.presentModalAgentCannotManageAvancedSettings()
-      // }
+
+      this.displayModalTranscript = 'block'
+
 
     } else {
       this.notify._displayContactUsModal(true, 'upgrade_plan');
@@ -4273,45 +4289,30 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     // this.logger.log('[WS-REQUESTS-MSGS] displayModalBanVisitor PLAN_NAME.C: ', PLAN_NAME.C)
     // this.logger.log('[WS-REQUESTS-MSGS] displayModalBanVisitor subscription_is_active: ', this.subscription_is_active)
     // if ((this.profile_name === PLAN_NAME.B && this.subscription_is_active === true) || (this.prjct_profile_type === 'free' && this.trial_expired === false)) {
-    this.logger.log('displayModalBanVisitor leadid ', leadid)
-    this.logger.log('displayModalBanVisitor bannedVisitorsArray ', this.bannedVisitorsArray)
-    // if (this.CURRENT_USER_ROLE === 'owner') {
+   console.log('displayModalBanVisitor leadid ', leadid)
+   console.log('displayModalBanVisitor bannedVisitorsArray ', this.bannedVisitorsArray)
 
-    //   if (
-    //     (this.profile_name === PLAN_NAME.A) ||
-    //     (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
-    //     (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
-    //     (this.prjct_profile_type === 'free' && this.trial_expired === true)
-
-    //   ) {
-    //     this.presentModalFeautureAvailableOnlyWithPlanC();
-    //     this.logger.log('[WIDGET-SET-UP] - featureIsAvailable IS NOT AVAILABLE')
-    //   } else if (
-
-    //     (this.profile_name === PLAN_NAME.C && this.subscription_is_active === true)
-
-
-    //   ) {
-    //     this.banVisitors(leadid, ipaddress)
-    //     this.logger.log('[WS-REQUESTS-MSGS] - featureIsAvailable IS AVAILABLE')
-    //   }
-
-    // } else {
-    //   this.presentModalAgentCannotManageAvancedSettings()
-    // }
 
     if (this.CURRENT_USER_ROLE === 'owner') {
-      if (this.profile_name === PLAN_NAME.C) {
-        // this.logger.log('displayModalBanVisitor HERE 1 ')
+      if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
+        console.log('displayModalBanVisitor HERE 1 ')
         if (this.subscription_is_active === true) {
           this.banVisitors(leadid, ipaddress)
         } else if (this.subscription_is_active === false) {
           // this.logger.log('displayModalBanVisitor HERE 3 ')
-          this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.C, this.subscription_end_date);
+          if (this.profile_name === PLAN_NAME.C) {
+            this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.F, this.subscription_end_date);
+          } else if (this.profile_name === PLAN_NAME.F) {
+            this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.F, this.subscription_end_date);
+          } 
         }
-      } else if (this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.B || this.prjct_profile_type === 'free') {
-        // this.logger.log('displayModalBanVisitor HERE 4 ')
-        this.presentModalFeautureAvailableOnlyWithPlanC()
+      } else if (this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.B || this.profile_name === 'free') {
+        console.log('displayModalBanVisitor HERE 4 ')
+        // this.presentModalFeautureAvailableOnlyWithTier3Plans(this.cPlanOnly)
+        this.presentModalFeautureAvailableOnlyWithTier3Plans(this.fPlanOnly)
+      } else if (this.profile_name === PLAN_NAME.D || this.profile_name === PLAN_NAME.E || this.profile_name === 'Sandbox') {
+        this.presentModalFeautureAvailableOnlyWithTier3Plans(this.fPlanOnly)
+        console.log('displayModalBanVisitor HERE 5 ')
       }
     } else {
       // this.logger.log('displayModalBanVisitor HERE 5 ')
@@ -4375,9 +4376,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
 
   // Download transcript
-  presentModalFeautureAvailableFromBPlan() {
+  presentModalFeautureAvailableFromTier2Plan(planName) {
     const el = document.createElement('div')
-    el.innerHTML = this.featureAvailableFromBPlan
+    el.innerHTML = planName // this.featureAvailableFromBPlan
     swal({
       // title: this.onlyOwnerCanManageTheAccountPlanMsg,
       content: el,
@@ -4399,9 +4400,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
           if (this.CURRENT_USER_ROLE === 'owner') {
             if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
-              if (this.profile_name !== PLAN_NAME.C) {
+              if (this.profile_name !== PLAN_NAME.C && this.profile_name !== PLAN_NAME.F) {
                 this.notify.displaySubscripionHasExpiredModal(true, this.profile_name, this.subscription_end_date);
-              } else if (this.profile_name === PLAN_NAME.C) {
+              } else if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
                 this.notify.displayEnterprisePlanHasExpiredModal(true, this.profile_name, this.subscription_end_date);
               }
             } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true) {
@@ -4449,10 +4450,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
 
-  // Banned visitors tab
-  presentModalFeautureAvailableOnlyWithPlanC() {
+  // Banned visitors 
+  presentModalFeautureAvailableOnlyWithTier3Plans(planName) {
     const el = document.createElement('div')
-    el.innerHTML = this.cPlanOnly
+    el.innerHTML = planName // this.cPlanOnly
     swal({
       content: el,
       icon: "info",
@@ -4470,7 +4471,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         // this.logger.log('featureAvailableFromPlanC value', value)
         if (this.isVisiblePaymentTab) {
           if (this.CURRENT_USER_ROLE === 'owner') {
-            if (this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.B) {
+            if (this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.B || this.profile_name === PLAN_NAME.D || this.profile_name === PLAN_NAME.E) {
               // if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
               this.notify._displayContactUsModal(true, 'upgrade_plan');
             } else if (this.prjct_profile_type === 'free') {
@@ -4952,6 +4953,12 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         this.cPlanOnly = translation;
       });
 
+    this.translate.get('AvailableWithThePlan', { plan_name: PLAN_NAME.F })
+      .subscribe((translation: any) => {
+        this.fPlanOnly = translation;
+      });
+
+
     this.translate.get('LearnMoreAboutDefaultRoles')
       .subscribe((translation: any) => {
 
@@ -4978,6 +4985,13 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       .subscribe((translation: any) => {
         this.featureAvailableFromBPlan = translation;
       });
+
+      
+    this.translate.get('AvailableFromThePlan', { plan_name: PLAN_NAME.E })
+    .subscribe((translation: any) => {
+      this.featureAvailableFromEPlan = translation;
+    });
+
 
     this.translate.get('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan')
       .subscribe((translation: any) => {

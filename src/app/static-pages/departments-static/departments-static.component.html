@@ -1,7 +1,10 @@
 <!-- margin-top:6px; -->
 <p style="z-index: 1050;position: relative; padding-left:30px" class="navbar-brand"
 [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }">
-    {{ "Departments" | translate }}
+<i class="material-icons" style="vertical-align: middle !important; cursor: pointer;" (click)="goBack()">
+  keyboard_arrow_left
+</i>
+{{ "Departments" | translate }}
   </p> 
   
   <div class="main-content" style="padding-top:0px">
@@ -13,7 +16,8 @@
             <div class="row"> 
               <div class="col-sm-12"> 
                 <h2 class="demopage-title">
-                 {{'AvailableFromThePlan'| translate: tparams }}
+                 <!-- {{'AvailableFromThePlan'| translate: tparams }} -->
+                 {{'AvailableFromThePlan'| translate: tParamsAvailableFromTier2 }}
                 </h2>
               </div>
             </div>

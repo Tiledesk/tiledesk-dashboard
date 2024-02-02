@@ -46,6 +46,8 @@
     display: flex;
     justify-content: flex-start;
     color: #647491;
+    flex-direction: row;
+    gap: 6px;
 }
 
 .actions--btn-wpr {
@@ -81,4 +83,11 @@
 .mat-button .mat-button-wrapper>*,
 .mat-flat-button .mat-button-wrapper>* {
     vertical-align: middle;
+}
+
+.kb-reedemed-number {
+    cursor: pointer;
+}
+.kb-reedemed-number:hover {
+    text-decoration: underline;
 }

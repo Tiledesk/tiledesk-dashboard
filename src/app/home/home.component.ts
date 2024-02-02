@@ -88,7 +88,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   showSpinner = true;
 
   subscription: Subscription;
-  
+
   installWidgetText: string;
 
   //** FOR THE NEW DASHBOARD **//
@@ -322,7 +322,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           this.logger.log('[HOME] > OPERATING_HOURS_ACTIVE', this.OPERATING_HOURS_ACTIVE)
 
           this.findCurrentProjectAmongAll(this.projectId)
-          this.getProjectById(this.projectId)
+          this.getProjectById(this.projectId);
+          this.getProjectBots();
           this.init()
         }
       }, (error) => {
@@ -336,6 +337,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   getProjectById(projectId) {
     this.projectService.getProjectById(projectId).subscribe((project: any) => {
       this.logger.log('[HOME] - GET PROJECT BY ID - PROJECT: ', project);
+
       if (project && project.attributes && project.attributes.dashlets) {
         this.PROJECT_ATTRIBUTES = project.attributes;
         this.getDashlet(this.PROJECT_ATTRIBUTES)
@@ -356,11 +358,34 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     }, () => {
       this.logger.log('[HOME] - GET PROJECT BY ID * COMPLETE * ');
       // this.getApps();
-      setTimeout(() => {
-        this.showskeleton = false;
-      }, 1200);
+      // setTimeout(() => {
+      //   this.showskeleton = false;
+      //   console.log('[HOME] - skeleton showskeleton ', this.showskeleton );
+      // }, 1500);
     });
   }
+
+  getProjectBots() {
+    this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
+      this.chatbots = faqKb
+      console.log('[HOME] - GET FAQKB * chatbots *', this.chatbots);
+  
+    }, (error) => {
+      this.logger.error('[HOME] - GET FAQKB - ERROR ', error);
+      this.showskeleton = false;
+      // this.showSpinner = false
+    }, () => {
+      console.log('[HOME] - GET FAQKB * COMPLETE *');
+      this.showskeleton = false;
+      // this.showSpinner = false
+     
+    });
+  }
+
+  // hasFinishedGetProjectBots() {
+  //   // this.showskeleton = false;
+  //   console.log('[HOME] - skeleton hasFinishedGetProjectBots in home-cds ');
+  // }
 
   operatingHoursPopoverClosed() {
     this.logger.log('[HOME] - operatingHoursPopoverClosed');
@@ -439,7 +464,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       }
 
       this.current_prjct = projects.find(prj => prj.id_project.id === projectId);
-      this.logger.log('[HOME] - CURRENT PROJECT - current_prjct (findCurrentProjectAmongAll)', this.current_prjct);
+      console.log('[HOME] - CURRENT PROJECT - current_prjct (findCurrentProjectAmongAll)', this.current_prjct);
       if (this.current_prjct) {
         this.logger.log('[HOME] - CURRENT PROJECT - current_prjct  > attributes', this.current_prjct.id_project.attributes);
       }
@@ -462,12 +487,26 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       const projectProfileData = this.current_prjct.id_project.profile
 
       this.prjct_name = this.current_prjct.id_project.name;
+      console.log('[HOME] CURRENT PROJECT - NAME ', this.prjct_name)
+
       this.prjct_profile_name = projectProfileData.name;
+      console.log('[HOME] CURRENT PROJECT - Profile name (prjct_profile_name)', this.prjct_profile_name)
+
       this.profile_name = projectProfileData.name;
+      console.log('[HOME] CURRENT PROJECT - Profile name (profile_name)', this.profile_name)
+
       this.prjct_trial_expired = this.current_prjct.id_project.trialExpired;
+      console.log('[HOME] CURRENT PROJECT - TRIAL EXIPIRED', this.prjct_trial_expired)
+
       this.prjct_profile_type = projectProfileData.type;
+      console.log('[HOME] CURRENT PROJECT - PROFILE TYPE', this.prjct_profile_type)
+
       this.subscription_is_active = this.current_prjct.id_project.isActiveSubscription;
+      console.log('[HOME] CURRENT PROJECT - SUB IS ACTIVE', this.subscription_is_active)
+
       this.subscription_end_date = projectProfileData.subEnd;
+      console.log('[HOME] CURRENT PROJECT - SUB END DATE', this.subscription_end_date)
+
       if (projectProfileData && projectProfileData.extra3) {
         this.logger.log('[HOME] Find Current Project Among All extra3 ', projectProfileData.extra3)
 
@@ -500,30 +539,43 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       if (this.prjct_profile_type === 'free') {
         if (this.prjct_trial_expired === false) {
 
-          // this.isVisibleANA = true
+          if (this.profile_name === 'free') {
+            this.profile_name_for_segment = PLAN_NAME.B + " (trial)"
+            this.prjct_profile_name = PLAN_NAME.B + " (trial)"
+            this.auth.projectProfile(this.profile_name_for_segment)
+          } else if (this.profile_name === 'Sandbox') {
 
-          this.logger.log('[HOME] Find Current Project Among All BRS-LANG 2 ', this.browserLang);
-          this.profile_name_for_segment = PLAN_NAME.B + " (trial)"
-          this.prjct_profile_name = PLAN_NAME.B + " (trial)"
-          this.auth.projectProfile(this.profile_name_for_segment)
+            // --------------------------------------------------
+            // New pricing
+            // --------------------------------------------------
+            this.profile_name_for_segment = PLAN_NAME.E + " (trial)"
+            this.prjct_profile_name = PLAN_NAME.E + " (trial)"
+            this.auth.projectProfile(this.profile_name_for_segment)
+          }
+
           this.current_prjct['plan_badge_background_type'] = 'b_plan_badge'
-          // this.getProPlanTrialTranslation();
+
 
         } else {
-          // this.isVisibleANA = false;
 
-          this.profile_name_for_segment = "Free plan"
-          this.auth.projectProfile(this.profile_name_for_segment)
-          this.prjct_profile_name = "Free plan";
-          this.current_prjct['plan_badge_background_type'] = 'free_plan_badge'
-          // this.getPaidPlanTranslation(this.prjct_profile_name);
-          this.logger.log('[HOME] Find Current Project Among All BRS-LANG 3 ', this.browserLang);
+          if (this.profile_name === 'free') {
+            this.profile_name_for_segment = "Free plan"
+            this.auth.projectProfile(this.profile_name_for_segment)
+            this.prjct_profile_name = "Free plan";
+            this.current_prjct['plan_badge_background_type'] = 'free_plan_badge'
+
+          } else if (this.profile_name === 'Sandbox') {
+            this.profile_name_for_segment = "Sandbox plan"
+            this.auth.projectProfile(this.profile_name_for_segment)
+            this.prjct_profile_name = "Sandbox plan";
+            this.current_prjct['plan_badge_background_type'] = 'free_plan_badge'
+          }
+
 
         }
       } else if (this.prjct_profile_type === 'payment') {
-        // this.getPaidPlanTranslation(this.prjct_profile_name);
 
-        this.logger.log('[HOME] Find Current Project Among All BRS-LANG 4 ', this.browserLang);
+        // Growth plan
         if (this.prjct_profile_name === PLAN_NAME.A) {
           if (!this.appSumoProfile) {
             this.prjct_profile_name = PLAN_NAME.A + ' plan'
@@ -535,9 +587,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
             this.auth.projectProfile(this.profile_name_for_segment)
           }
           this.current_prjct['plan_badge_background_type'] = 'a_plan_badge'
-          // this.isVisibleANA = false;
 
-
+          // Scale plan
         } else if (this.prjct_profile_name === PLAN_NAME.B) {
           if (!this.appSumoProfile) {
             this.prjct_profile_name = PLAN_NAME.B + ' plan'
@@ -550,17 +601,44 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           }
           this.current_prjct['plan_badge_background_type'] = 'b_plan_badge'
 
+          // Plus plan
         } else if (this.prjct_profile_name === PLAN_NAME.C) {
           this.prjct_profile_name = PLAN_NAME.C + ' plan'
           this.profile_name_for_segment = PLAN_NAME.C
           this.auth.projectProfile(this.profile_name_for_segment)
           this.current_prjct['plan_badge_background_type'] = 'c_plan_badge'
-          if (this.subscription_is_active) {
-            // this.isVisibleANA = true;
-          } else {
-            // this.isVisibleANA = false;
-          }
-        } else if (this.prjct_profile_name !== PLAN_NAME.A && this.prjct_profile_name !== PLAN_NAME.B && this.prjct_profile_name !== PLAN_NAME.C) {
+
+          // Basic plan
+        } else if (this.prjct_profile_name === PLAN_NAME.D) {
+          this.prjct_profile_name = PLAN_NAME.D + ' plan'
+          this.profile_name_for_segment = PLAN_NAME.D
+          this.auth.projectProfile(this.profile_name_for_segment)
+          this.current_prjct['plan_badge_background_type'] = 'a_plan_badge'
+
+          // Premium plan
+        } else if (this.prjct_profile_name === PLAN_NAME.E) {
+          this.prjct_profile_name = PLAN_NAME.E + ' plan'
+          this.profile_name_for_segment = PLAN_NAME.E
+          this.auth.projectProfile(this.profile_name_for_segment)
+          this.current_prjct['plan_badge_background_type'] = 'b_plan_badge'
+
+          // Custom plan
+        } else if (this.prjct_profile_name === PLAN_NAME.F) {
+          this.prjct_profile_name = PLAN_NAME.F + ' plan'
+          this.profile_name_for_segment = PLAN_NAME.F
+          this.auth.projectProfile(this.profile_name_for_segment)
+          this.current_prjct['plan_badge_background_type'] = 'c_plan_badge'
+
+
+
+        } else if (
+          this.prjct_profile_name !== PLAN_NAME.A &&
+          this.prjct_profile_name !== PLAN_NAME.B &&
+          this.prjct_profile_name !== PLAN_NAME.C &&
+          this.prjct_profile_name !== PLAN_NAME.D &&
+          this.prjct_profile_name !== PLAN_NAME.E &&
+          this.prjct_profile_name !== PLAN_NAME.F
+        ) {
           this.prjct_profile_name = this.prjct_profile_name + ' plan (UNSUPPORTED)'
           this.current_prjct['plan_badge_background_type'] = 'unsupported_plan_badge'
         }
@@ -579,27 +657,27 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.logger.log('[HOME] - Find Current Project Among All project daysDiffNowFromProjctCreated', daysDiffNowFromProjctCreated)
 
       const hasEmittedTrialEnded = localStorage.getItem('dshbrd----' + this.current_prjct.id_project._id)
-      this.logger.log('[HOME] - Find Current Project Among All hasEmittedTrialEnded  ', hasEmittedTrialEnded, '  for project id', this.current_prjct.id_project._id)
+      console.log('[HOME] - Find Current Project Among All hasEmittedTrialEnded  ', hasEmittedTrialEnded, '  for project id', this.current_prjct.id_project._id)
       this.logger.log('[HOME] - Find Current Project Among All - current_prjct - prjct_profile_type 2', this.prjct_profile_type);
       // if ((this.prjct_profile_type === 'free' && daysDiffNowFromProjctCreated >= 30) || (this.prjct_profile_type === 'payment' && daysDiffNowFromProjctCreated < 30)) {
       if ((this.prjct_trial_expired === true && hasEmittedTrialEnded === null) || (this.prjct_profile_type === 'payment' && hasEmittedTrialEnded === null)) {
         // this.logger.log('[HOME] - Find Current Project Among All - BEFORE  Emitting TRIAL ENDED')
         // if (hasEmittedTrialEnded === null) {
 
-
+        console.log('[HOME] - Find Current Project Among All - Emitting TRIAL ENDED profile_name_for_segment', this.profile_name_for_segment)
         // ------------------------------------
         // @ Segment: emit Trial Ended
         // ------------------------------------
         if (!isDevMode()) {
           setTimeout(() => {
             if (window['analytics']) {
-              this.logger.log('[HOME] - Find Current Project Among All - Emitting TRIAL ENDED')
+              console.log('[HOME] - Find Current Project Among All - Emitting TRIAL ENDED profile_name_for_segment', this.profile_name_for_segment)
               try {
                 window['analytics'].track('Trial Ended', {
                   "userId": this.user._id,
                   "trial_start_date": trialStarDate,
                   "trial_end_date": trialEndDate,
-                  "trial_plan_name": "Scale (trial) "
+                  "trial_plan_name": this.profile_name_for_segment,
                 }, {
                   "context": {
                     "groupId": this.current_prjct.id_project._id
@@ -2066,7 +2144,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   presentModalAgentCannotManageAvancedSettings() {
-    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.agentCannotManageAdvancedOptions, this.learnMoreAboutDefaultRoles)
+    // this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.agentCannotManageAdvancedOptions, this.learnMoreAboutDefaultRoles)
+    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles)
   }
 
 
@@ -2915,7 +2994,11 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   goToProjectSettingsGeneral() {
-    this.router.navigate(['project/' + this.projectId + '/project-settings/general']);
+    if (this.USER_ROLE === 'owner') {
+      this.router.navigate(['project/' + this.projectId + '/project-settings/general']);
+    } else {
+      this.presentModalOnlyOwnerCanManageTheAccountPlan()
+    }
   }
 
 

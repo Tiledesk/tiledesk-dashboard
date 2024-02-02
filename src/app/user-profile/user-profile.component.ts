@@ -127,32 +127,32 @@ export class UserProfileComponent implements OnInit {
       avatar: 'assets/img/language_flag/sr.png'
     },
     {
-      id: 9,
+      id: 10,
       name: 'ar',
       avatar: 'assets/img/language_flag/ar.png'
     },
     {
-      id: 10,
+      id: 11,
       name: 'uk',
       avatar: 'assets/img/language_flag/uk.png'
     },
     {
-      id: 11,
+      id: 12,
       name: 'sv',
       avatar: 'assets/img/language_flag/sv.png'
     },
     {
-      id: 12,
+      id: 13,
       name: 'az',
       avatar: 'assets/img/language_flag/az.png'
     },
     {
-      id: 13,
+      id: 14,
       name: 'kk',
       avatar: 'assets/img/language_flag/kk.png'
     },
     {
-      id: 13,
+      id: 15,
       name: 'uz',
       avatar: 'assets/img/language_flag/uz.png'
     }
@@ -196,6 +196,20 @@ export class UserProfileComponent implements OnInit {
     });
     this.getBrowserVersion();
     this.getProjectPlan();
+    this.trackPage()
+  }
+  trackPage() {
+    if (!isDevMode()) {
+      if (window['analytics']) {
+        try {
+          window['analytics'].page("User Profile Page, Profile", {
+
+          });
+        } catch (err) {
+          this.logger.error('User Profile page error', err);
+        }
+      }
+    }
   }
 
   getProjectPlan() {
@@ -304,19 +318,50 @@ export class UserProfileComponent implements OnInit {
 
   getLoggedUser() {
     this.auth.user_bs.subscribe((user) => {
-      this.logger.log('[USER-PROFILE] - USER GET IN USER PROFILE - USER', user)
+      console.log('[USER-PROFILE] - USER GET IN USER PROFILE - USER', user)
 
       if (user) {
         this.user = user;
         this.userFirstname = user.firstname;
+        console.log('[USER-PROFILE] - USER GET IN USER PROFILE - userFirstname ', this.userFirstname)
         this.userLastname = user.lastname;
+        console.log('[USER-PROFILE] - USER GET IN USER PROFILE - userLastname ', this.userLastname)
         this.userId = user._id;
         this.userEmail = user.email;
         this.firstnameCurrentValue = user.firstname;
+        console.log('[USER-PROFILE] - USER GET IN USER PROFILE - firstnameCurrentValue ', this.firstnameCurrentValue)
         this.lastnameCurrentValue = user.lastname;
+        console.log('[USER-PROFILE] - USER GET IN USER PROFILE - firstnameCurrentValue ', this.lastnameCurrentValue)
         this.emailverified = user.emailverified;
         this.logger.log('[USER-PROFILE] - USER GET IN USER PROFILE - EMAIL VERIFIED ', this.emailverified)
         this.logger.log('[USER-PROFILE] - USER GET IN USER PROFILE - this.user ', this.user)
+
+        const storedUser = this.usersLocalDbService.getMemberFromStorage(this.userId);
+        console.log('[USER-PROFILE] - USER GET IN USER PROFILE - storedUser ', storedUser)
+        console.log('[USER-PROFILE] - USER GET IN USER PROFILE - storedUser typeof', typeof storedUser)
+        if (storedUser) {
+          
+      
+          if (this.userFirstname && this.userLastname) {
+            console.log('Stored user Firstname ', storedUser['firstname'])
+            console.log('Stored user Lastname ', storedUser['lastname'])
+            if (this.userFirstname !== storedUser['firstname']) {
+              storedUser['firstname'] = this.userFirstname
+              this.usersLocalDbService.saveMembersInStorage(user['_id'], storedUser, 'user profile');
+            }
+            if (this.userLastname !== storedUser['lastname']) {
+              storedUser['lastname'] = this.userLastname
+              this.usersLocalDbService.saveMembersInStorage(user['_id'], storedUser, 'user profile');
+            }
+          } else if (this.userFirstname && !this.userFirstname) {
+            if (this.userFirstname !== storedUser['firstname']) {
+              storedUser['firstname'] = this.userFirstname
+              this.usersLocalDbService.saveMembersInStorage(user['_id'], storedUser, 'user profile');
+            }
+          }
+        }
+
+
         this.showSpinner = false;
 
         this.createUserAvatar(user);
@@ -689,6 +734,8 @@ export class UserProfileComponent implements OnInit {
     }
   }
 
+
+
   updateCurrentUserFirstnameLastname() {
     this.displayModalUpdatingUser = 'block';
     this.SHOW_CIRCULAR_SPINNER = true;
@@ -697,47 +744,14 @@ export class UserProfileComponent implements OnInit {
     this.logger.log('[USER-PROFILE] - UPDATE CURRENT USER - WHEN CLICK UPDATE - USER LAST NAME ', this.userLastname);
     this.usersService.updateCurrentUserLastnameFirstname(this.userFirstname, this.userLastname, (response) => {
 
-      this.logger.log('[USER-PROFILE] - CALLBACK RESPONSE ', response)
+      console.log('[USER-PROFILE] - update Current User Firstname Lastname RES ', response)
+
+
+
       if (response === 'success') {
-        if (!isDevMode()) {
-          if (window['analytics']) {
-            try {
-              window['analytics'].page("User Profile Page, Profile", {
 
-              });
-            } catch (err) {
-              this.logger.error('User Profile page error', err);
-            }
-
-            let userFullname = ''
-            if (this.user.firstname && this.user.lastname) {
-              userFullname = this.user.firstname + ' ' + this.user.lastname
-            } else if (this.user.firstname && !this.user.lastname) {
-              userFullname = this.user.firstname
-            }
-
-
-            try {
-              window['analytics'].identify(this.user._id, {
-                name: userFullname,
-                email: this.user.email,
-                plan: this.prjct_profile_name
-
-              });
-            } catch (err) {
-              this.logger.error('identify in User Profile error', err);
-            }
-
-            try {
-              window['analytics'].group(this.prjct_id, {
-                name: this.prjct_name,
-                plan: this.prjct_profile_name,
-              });
-            } catch (err) {
-              this.logger.error('group Signed Out error', err);
-            }
-          }
-        }
+        this.trackUpdateProfileName()
+        this.getLoggedUser()
 
         this.SHOW_CIRCULAR_SPINNER = false;
         this.UPDATE_USER_ERROR = false;
@@ -753,6 +767,50 @@ export class UserProfileComponent implements OnInit {
       }
     });
   }
+
+  trackUpdateProfileName() {
+    if (!isDevMode()) {
+      if (window['analytics']) {
+        try {
+          window['analytics'].page("User Profile Page, Profile", {
+
+          });
+        } catch (err) {
+          this.logger.error('User Profile page error', err);
+        }
+
+        let userFullname = ''
+        if (this.user.firstname && this.user.lastname) {
+          userFullname = this.user.firstname + ' ' + this.user.lastname
+        } else if (this.user.firstname && !this.user.lastname) {
+          userFullname = this.user.firstname
+        }
+
+
+        try {
+          window['analytics'].identify(this.user._id, {
+            name: userFullname,
+            email: this.user.email,
+            plan: this.prjct_profile_name
+
+          });
+        } catch (err) {
+          this.logger.error('identify in User Profile error', err);
+        }
+
+        try {
+          window['analytics'].group(this.prjct_id, {
+            name: this.prjct_name,
+            plan: this.prjct_profile_name,
+          });
+        } catch (err) {
+          this.logger.error('group in User Profile error', err);
+        }
+      }
+    }
+  }
+
+
 
   closeModalUpdatingUser() {
     this.displayModalUpdatingUser = 'none';

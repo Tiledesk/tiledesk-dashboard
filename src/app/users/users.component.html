@@ -99,7 +99,7 @@
                 </div>
               </div>
               <div class="card-content" style="background: #f44336;color: #fff;text-align: center;"
-                *ngIf="prjct_profile_type === 'payment' && subscription_is_active === false">
+                *ngIf="prjct_profile_type === 'payment' && subscription_is_active === false && projectUsersLength + countOfPendingInvites > PLAN_SEATS.free">
 
                
                 <span class="msg-alert">{{ "Pricing.YourSubscriptionToThe" | translate}}
@@ -111,6 +111,7 @@
                   <span style="display: block;" *ngIf="projectUsersLength + countOfPendingInvites > PLAN_SEATS.free">
                     {{'NumberOfTeammatesExceedsThePlan' | translate: tParamsFreePlanSeatsNum}}
                   </span>
+                  
                   <div class="upgrade--plan-btn-wpr" style="text-align: center;">
                     <button class="upgrade--plan-btn" (click)="openModalSubsExpired()">
                       {{ "Pricing.UpgradePlan" | translate }}
@@ -306,9 +307,12 @@
 
                       <td>
                         <span>
-                          <span class="White__Tooltip" matTooltipClass="custom-mat-tooltip"
+                          <span class="White__Tooltip" 
+                            matTooltipClass="custom-mat-tooltip"
                             matTooltip="{{ 'ChatWith' | translate }}  {{projectUser?.id_user?.firstname}} {{projectUser?.id_user?.lastname }}"
-                            #tooltip="matTooltip" matTooltipPosition='above' matTooltipHideDelay="100">
+                            #tooltip="matTooltip" 
+                            matTooltipPosition='above' 
+                            matTooltipHideDelay="100">
                             <i class="material-icons chat-with-agent"
                               (click)="chatWithAgent(projectUser?.id_user?._id, projectUser?.id_user?.firstname, projectUser?.id_user?.lastname)">
                               chat
@@ -326,7 +330,7 @@
 
                       <!-- goToMemberProfile(projectUser?.id_user?._id)     -->
                       <td (click)="goToEditUser(projectUser?._id)" style="cursor:pointer">
-                        <span class="White__Tooltip">
+                        <!-- <span class="White__Tooltip"> -->
                           <span style="font-weight:400; font-size: 13px">
                             {{ projectUser?.role | translate}}
                           </span>
@@ -334,7 +338,7 @@
                         {{"UsersPage.ViewProfileUser" | translate }} <span style="font-size:10px; display:block">
                           {{projectUser?.id_user?._id}}</span>
                       </span> -->
-                        </span>
+                        <!-- </span> -->
                       </td>
 
 
@@ -374,18 +378,29 @@
                         <!-- *ngIf="projectUser?.role !== 'owner' && CURRENT_USER_ID !== projectUser?.id_user?._id" -->
                         <span style="position: relative;top: 15px;">
                           <button type="button" rel="tooltip" title=""
-                            class="btn btn-primary btn-simple btn-xs White__Tooltip"
-                            (click)='goToEditUser(projectUser?._id)'>
+                            class="btn btn-primary btn-simple btn-xs"
+                            (click)='goToEditUser(projectUser?._id)'
+                            matTooltipClass="custom-mat-tooltip"
+                            matTooltip="{{ 'UsersPage.tootipEditUser' | translate }}"
+                            #tooltip="matTooltip" 
+                            matTooltipPosition='above' 
+                            matTooltipHideDelay="100">
                             <i class="material-icons">edit</i>
-                            <span class="White__Tooltiptext" style="text-transform:capitalize">
-                              {{ 'UsersPage.tootipEditUser' | translate }} </span>
+                            <!-- <span class="White__Tooltiptext" style="text-transform:capitalize">
+                              {{ 'UsersPage.tootipEditUser' | translate }} 
+                            </span> -->
                           </button>
 
 
                           <button *ngIf="projectUser?.role !== 'owner' && CURRENT_USER_ID !== projectUser?.id_user?._id"
-                            type="button" rel="tooltip" title="{{ 'UsersPage.tootipDeleteUser' | translate }}"
+                            type="button"
                             class="btn btn-danger btn-simple btn-xs"
-                            (click)='openDeleteModal(projectUser?._id, projectUser?.id_user?._id, projectUser?.id_user?.firstname, projectUser?.id_user?.lastname)'>
+                            (click)='openDeleteModal(projectUser?._id, projectUser?.id_user?._id, projectUser?.id_user?.firstname, projectUser?.id_user?.lastname)'
+                            matTooltipClass="custom-mat-tooltip"
+                            matTooltip="{{ 'UsersPage.tootipDeleteUser' | translate }}"
+                            #tooltip="matTooltip" 
+                            matTooltipPosition='above' 
+                            matTooltipHideDelay="100">
                             <i class="material-icons">close</i>
                           </button>
                         </span>

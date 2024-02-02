@@ -40,17 +40,19 @@ export class FaqKbService {
       this.user = user;
       this.checkIfExistUserAndGetToken()
     });
-
     this.getCurrentProject();
-
     this.getAppConfig();
   }
 
   getAppConfig() {
     // this.DLGFLW_BOT_CREDENTIAL_BASE_URL = this.appConfigService.getConfig().botcredendialsURL;
     this.SERVER_BASE_PATH = this.appConfigService.getConfig().SERVER_BASE_URL;
-    this.TEMPLATES_URL = this.appConfigService.getConfig().templatesUrl
-    this.COMMUNITY_TEMPLATES_URL = this.appConfigService.getConfig().communityTemplatesUrl
+    // this.TEMPLATES_URL = this.appConfigService.getConfig().templatesUrl
+    // this.COMMUNITY_TEMPLATES_URL = this.appConfigService.getConfig().communityTemplatesUrl
+  
+    this.TEMPLATES_URL = this.appConfigService.getConfig().SERVER_BASE_URL + "modules/templates/public/templates"
+    this.COMMUNITY_TEMPLATES_URL = this.appConfigService.getConfig().SERVER_BASE_URL + "modules/templates/public/community"
+
     this.logger.log('AppConfigService getAppConfig (FAQ-KB SERV.) DLGFLW_BOT_CREDENTIAL_BASE_URL ', this.DLGFLW_BOT_CREDENTIAL_BASE_URL);
     this.logger.log('AppConfigService getAppConfig (FAQ-KB SERV.) SERVER_BASE_PATH ', this.SERVER_BASE_PATH);
     // console.log('AppConfigService getAppConfig (FAQ-KB SERV.) COMMUNITY_TEMPLATES_URL ', this.COMMUNITY_TEMPLATES_URL);
@@ -66,7 +68,7 @@ export class FaqKbService {
       // debugger
 
       if (this.project) {
-        //  console.log('00 -> FAQKB SERVICE project ID from AUTH service subscription  ', this.project._id)
+        console.log('00 -> FAQKB SERVICE project ID from AUTH service subscription  ', this.project._id)
         this.FAQKB_URL = this.SERVER_BASE_PATH + this.project._id + '/faq_kb/'
 
 
@@ -219,6 +221,40 @@ export class FaqKbService {
           })
       );
   }
+
+  public getFaqKbByPassingProjectId(projectid): Observable<FaqKb[]> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    const url = this.SERVER_BASE_PATH + projectid + '/faq_kb/'
+    this.logger.log('[FAQ-KB.SERV] - GET FAQ-KB BY PROJECT ID - URL', url);
+
+    return this._httpClient
+      .get<FaqKb[]>(url, httpOptions)
+      .pipe(
+        map(
+          (response) => {
+            const data = response;
+            // Does something on data.data
+            this.logger.log('[FAQ-KB.SERV] GET FAQ-KB BY PROJECT ID - data', data);
+
+            data.forEach(d => {
+              this.logger.log('[FAQ-KB.SERV] - GET FAQ-KB BY PROJECT ID URL data d', d);
+              if (d.description) {
+                let stripHere = 20;
+                d['truncated_desc'] = d.description.substring(0, stripHere) + '...';
+              }
+            });
+            // return the modified data:
+            return data;
+          })
+      );
+  }
+
 
   // ------------------------------------------------------------
   // with all=true the response return also the identity bot 

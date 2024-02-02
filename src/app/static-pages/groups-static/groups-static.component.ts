@@ -10,6 +10,10 @@ import { UsersService } from '../../services/users.service';
 import { LoggerService } from '../../services/logger/logger.service';
 import { AppConfigService } from 'app/services/app-config.service';
 import { APP_SUMO_PLAN_NAME, PLAN_NAME } from 'app/utils/util';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators'
+import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
+import { Location } from '@angular/common';
 const swal = require('sweetalert');
 
 @Component({
@@ -17,7 +21,9 @@ const swal = require('sweetalert');
   templateUrl: './groups-static.component.html',
   styleUrls: ['./groups-static.component.scss']
 })
-export class GroupsStaticComponent extends StaticPageBaseComponent implements OnInit, OnDestroy {
+// extends StaticPageBaseComponent
+export class GroupsStaticComponent extends PricingBaseComponent implements OnInit, OnDestroy {
+  private unsubscribe$: Subject<any> = new Subject<any>();
   PLAN_NAME = PLAN_NAME;
   APP_SUMO_PLAN_NAME = APP_SUMO_PLAN_NAME;
   appSumoProfile: string;
@@ -28,7 +34,9 @@ export class GroupsStaticComponent extends StaticPageBaseComponent implements On
   subscription_is_active: any;
   prjct_profile_name: string;
   subscription_end_date: Date;
-  tparams: any;
+  // tparams: any;
+  public_Key: any;
+  payIsVisible: boolean;
 
   imageObject = [
     {
@@ -52,14 +60,16 @@ export class GroupsStaticComponent extends StaticPageBaseComponent implements On
     private router: Router,
     public auth: AuthService,
     public translate: TranslateService,
-    private prjctPlanService: ProjectPlanService,
-    private notify: NotifyService,
+    public prjctPlanService: ProjectPlanService,
+    public notify: NotifyService,
     private usersService: UsersService,
     private logger: LoggerService,
-    public appConfigService: AppConfigService
-  ) {
-    super(translate);
+    public appConfigService: AppConfigService,
+    public location: Location
 
+  ) {
+    // super(translate);
+    super(prjctPlanService, notify);
   }
 
   ngOnInit() {
@@ -67,14 +77,24 @@ export class GroupsStaticComponent extends StaticPageBaseComponent implements On
     this.getCurrentProject();
     this.getBrowserLang();
     this.getProjectPlan();
-
     this.getProjectUserRole();
     this.getTranslationStrings();
     this.getBrowserVersion();
+    this.presentModalsOnInit();
+  }
+
+  ngOnDestroy() {
+    // this.subscription.unsubscribe();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   getBrowserVersion() {
-    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
+    this.auth.isChromeVerGreaterThan100
+    .pipe(
+      takeUntil(this.unsubscribe$)
+    )
+    .subscribe((isChromeVerGreaterThan100: boolean) => {
       this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
       //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
     })
@@ -111,40 +131,26 @@ export class GroupsStaticComponent extends StaticPageBaseComponent implements On
   }
 
   getProjectUserRole() {
-    this.usersService.project_user_role_bs.subscribe((user_role) => {
+    this.usersService.project_user_role_bs
+    .pipe(
+      takeUntil(this.unsubscribe$)
+    )
+    .subscribe((user_role) => {
       this.USER_ROLE = user_role;
       this.logger.log('[GROUPS-STATIC] - PROJECT USER ROLE: ', this.USER_ROLE);
     });
   }
-
-  getTranslationStrings() {
-    this.translateModalOnlyOwnerCanManageProjectAccount()
-  }
-
-  translateModalOnlyOwnerCanManageProjectAccount() {
-    this.translate.get('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan')
-      .subscribe((translation: any) => {
-        // this.logger.log('[GROUPS-STATIC] onlyOwnerCanManageTheAccountPlanMsg text', translation)
-        this.onlyOwnerCanManageTheAccountPlanMsg = translation;
-      });
-
-
-    this.translate.get('LearnMoreAboutDefaultRoles')
-      .subscribe((translation: any) => {
-        // this.logger.log('[GROUPS-STATIC]  onlyOwnerCanManageTheAccountPlanMsg text', translation)
-        this.learnMoreAboutDefaultRoles = translation;
-      });
-  }
-
-
-
 
   getBrowserLang() {
     this.browserLang = this.translate.getBrowserLang();
   }
 
   getCurrentProject() {
-    this.auth.project_bs.subscribe((project) => {
+    this.auth.project_bs
+    .pipe(
+      takeUntil(this.unsubscribe$)
+    )
+    .subscribe((project) => {
       // this.logger.log('[GROUPS-STATIC] - project ', project)
       if (project) {
         this.projectId = project._id
@@ -153,44 +159,17 @@ export class GroupsStaticComponent extends StaticPageBaseComponent implements On
     });
   }
 
-  getProjectPlan() {
-    this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-      this.logger.log('[GROUPS-STATIC] GET PROJECT PROFILE', projectProfileData)
-      if (projectProfileData) {
+  presentModalsOnInit() {
+    if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
 
-        this.prjct_profile_type = projectProfileData.profile_type;
-        this.subscription_is_active = projectProfileData.subscription_is_active;
-
-        this.subscription_end_date = projectProfileData.subscription_end_date
-        this.profile_name = projectProfileData.profile_name
-        this.buildPlanName(projectProfileData.profile_name, this.browserLang, this.prjct_profile_type);
-
-
-        if (projectProfileData.extra3) {
-          this.appSumoProfile = APP_SUMO_PLAN_NAME[projectProfileData.extra3]
-          this.appSumoProfilefeatureAvailableFromBPlan = APP_SUMO_PLAN_NAME['tiledesk_tier3']
-
-          this.tparams = { 'plan_name': this.appSumoProfilefeatureAvailableFromBPlan }
-        } else if (!projectProfileData.extra3) {
-          this.tparams = { 'plan_name': PLAN_NAME.B }
-        }
-
-        if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
-
-          if (this.USER_ROLE === 'owner') {
-            if (this.profile_name !== PLAN_NAME.C) {
-              this.notify.displaySubscripionHasExpiredModal(true, this.profile_name, this.subscription_end_date);
-            } else if (this.profile_name === PLAN_NAME.C) {
-              this.notify.displayEnterprisePlanHasExpiredModal(true, this.profile_name, this.subscription_end_date);
-            }
-          }
+      if (this.USER_ROLE === 'owner') {
+        if (this.profile_name !== PLAN_NAME.C  && this.profile_name !== PLAN_NAME.F) {
+          this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
+        } else if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
+          this.notify.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
         }
       }
-    }, err => {
-      this.logger.error('[GROUPS-STATIC] GET PROJECT PROFILE - ERROR', err);
-    }, () => {
-      this.logger.log('[GROUPS-STATIC] GET PROJECT PROFILE * COMPLETE *');
-    });
+    }
   }
 
 
@@ -221,9 +200,27 @@ export class GroupsStaticComponent extends StaticPageBaseComponent implements On
     this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles)
   }
 
+  goBack() {
+    this.location.back();
+  }
 
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
+  getTranslationStrings() {
+    this.translateModalOnlyOwnerCanManageProjectAccount()
+  }
+
+  translateModalOnlyOwnerCanManageProjectAccount() {
+    this.translate.get('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan')
+      .subscribe((translation: any) => {
+        // this.logger.log('[GROUPS-STATIC] onlyOwnerCanManageTheAccountPlanMsg text', translation)
+        this.onlyOwnerCanManageTheAccountPlanMsg = translation;
+      });
+
+
+    this.translate.get('LearnMoreAboutDefaultRoles')
+      .subscribe((translation: any) => {
+        // this.logger.log('[GROUPS-STATIC]  onlyOwnerCanManageTheAccountPlanMsg text', translation)
+        this.learnMoreAboutDefaultRoles = translation;
+      });
   }
 
 }
