@@ -17,7 +17,7 @@
 
         <loading-spinner *ngIf="showSpinner"></loading-spinner>
 
-        <div class="card-content" *ngIf="!showSpinner" style="padding-top: 10px;">
+        <div class="card-content" *ngIf="!showSpinner" style="padding-top: 10px; margin: 0 60px">
 
           <div class="add-kb-div">
             <!-- 
@@ -63,134 +63,6 @@
 
 
 
-
-          <!-- <table class="table table-hover">
-            <thead>
-              <tr>
-                <th style="width: 80px;">
-                  <span class="column-th-span">
-                    {{ 'Type' | translate }}
-                  </span>
-                </th>
-
-                <th>
-                  <span class="column-th-span">
-                    {{ 'Name' | translate }}
-                  </span>
-                </th>
-
-                <th style="width: 80px;">
-                  <span class="column-th-span">
-                    {{ 'Status' | translate }}
-                  </span>
-                </th>
-
-                <th>
-                  <span class="column-th-span">
-                    {{ 'KbPage.CreationDate' | translate }}
-                  </span>
-                </th>
-
-                <th>
-                  <span class="column-th-span" style="float:right">
-                    <button class="preview-button" (click)="onOpenBaseModalPreview(kb)">
-                      <span class="material-icon material-icons-round">play_arrow</span>Preview
-                    </button>
-                  </span>
-                </th>
-
-              </tr>
-            </thead>
-
-
-            <tbody class="custom-body">
-              <!- - <tr *ngIf="kbsList && kbsList.length === 0"> - ->
-              <tr *ngIf="kbSettings.kbs && kbSettings.kbs.length === 0">
-
-                <td colspan="4" style="text-align: center; padding-top: 24px;">
-                  <p style="font-size:1em; margin-bottom: 0px; color:#7695a5; font-weight: 400">
-                    <i class="material-icons"
-                      style="vertical-align: middle; margin-bottom: 2px;color: #00bcd4;">info</i>
-                    {{ 'KbPage.NoKbAdded' | translate }}
-                  </p>
-                </td>
-              </tr>
-
-              <tr *ngFor="let kb of kbSettings.kbs; let i = index">
-
-                <!- - Knowledge Base type - ->
-                <td>
-                  <span *ngIf="kb.type == 'text'" id="description" class="material-icons-outlined">description</span>
-                  <span *ngIf="kb.type == 'url'" id="link" class="material-icons-outlined">link</span>
-                </td>
-
-                <!- - Knowledge Base name - ->
-                <td>
-                  <p class="title">{{ kb.name }}</p>
-                </td>
-
-                <!- - Knowledge Base status - ->
-                <td>
-                  <loading-spinner *ngIf="kb.status != 0 && kb.status != 1 && kb.status != 2" class="custom-spinner"></loading-spinner>
-                  
-                  <span *ngIf="kb.status == 2" id="done" class="material-icons-outlined status-icon"
-                    matTooltipClass="custom-mat-tooltip" matTooltip="Indexed" #tooltip="matTooltip"
-                    matTooltipPosition='right' matTooltipHideDelay="100">done</span>
-
-                  <span *ngIf="kb.status == 1" id="cached" class="material-icons-outlined status-icon animated-icon"
-                    matTooltipClass="custom-mat-tooltip" matTooltip="Indexing..." #tooltip="matTooltip"
-                    matTooltipPosition='right' matTooltipHideDelay="100">cached</span>
-
-                  <span *ngIf="kb.status == 0" id="close" class="material-icons-outlined status-icon"
-                    matTooltipClass="custom-mat-tooltip" matTooltip="Not indexed" #tooltip="matTooltip"
-                    matTooltipPosition='right' matTooltipHideDelay="100">close</span>
-                </td>
-
-                <!- - Created at - ->
-                <td>
-                  {{ kb.createdAt | amTimeAgo }}
-                </td>
-
-                <!- - Actions - ->
-                <td style="text-align: end;">
-
-                  <div style="width: 100%; display: flex; flex-direction: row; align-items: center; justify-content: flex-end;">
-                    <!- - <button class="preview-button" (click)="openPreviewKnowledgeBaseModal(kb)">
-                      <span class="material-icon material-icons-round">play_arrow</span>
-                      Preview
-                    </button> - ->
-                    <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Actions">
-                      <mat-icon>more_vert</mat-icon>
-                    </button>
-                    <mat-menu #menu="matMenu" xPosition="before" class="custom-menu">
-                      <button mat-menu-item (click)="runIndexing(kb)">
-                        <mat-icon>play_arrow</mat-icon>
-                        <span>{{ 'KbPage.RunIndexing' | translate }}</span>
-                      </button>
-                      <button mat-menu-item (click)="onOpenBaseModalDelete(kb)">
-                        <mat-icon>close</mat-icon>
-                        <span>{{ 'Delete' | translate }}</span>
-                      </button>
-                    </mat-menu>
-                  </div>
-
-                </td>
-
-              </tr>
-            </tbody>
-
-
-          </table> -->
-
-
-
-
-          <!-- <div class="counter-box">
-            <p>
-              {{ 'KbPage.KbCounterFooter' | translate: { counter: kbSettings?.kbs?.length } }}
-            </p>
-          </div> -->
-
         </div>
       </div>
 
@@ -201,56 +73,82 @@
 
 
 <!-- ADD KNOWLEDGE BASE MODAL - START -->
-<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{display: addKnowledgeBaseModal}" style="background-color: rgba(90,90,90,0.5);">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" aria-label="Close" (click)="closeAddKnowledgeBaseModal()">
-          <span aria-hidden="true">&times;</span>
-        </button>
-        <h4 class="modal-title">
-          <span style="vertical-align: middle;">
-            {{ 'Aggiungi ' | translate }}
-          </span>
-        </h4>
-      </div>
-      <div class="modal-body">
-          <div *ngIf="typeKnowledgeBaseModal == 'url-page'">
-            <modal-page-url
-              (saveKnowledgeBase)="onAddKb($event)"
-              (closeAddKnowledgeBaseModal)="closeAddKnowledgeBaseModal()">
-            </modal-page-url>
-          </div>
-          <div *ngIf="typeKnowledgeBaseModal == 'text-file'">
-            <modal-text-file
-              (saveKnowledgeBase)="onAddKb($event)"
-              (closeAddKnowledgeBaseModal)="closeAddKnowledgeBaseModal()">
-            </modal-text-file>
-          </div>
-          <div *ngIf="typeKnowledgeBaseModal == 'site-map'">
-            <modal-site-map
-              (saveKnowledgeBase)="onAddKb($event)"
-              (closeAddKnowledgeBaseModal)="closeAddKnowledgeBaseModal()">
-            </modal-site-map>
-          </div>
-      </div>
-    </div>
-  </div>
-</div>
+<modal-page-url *ngIf="typeKnowledgeBaseModal == 'url-page'"
+  (saveKnowledgeBase)="onAddKb($event)"
+  (closeBaseModal)="onCloseBaseModal()">
+</modal-page-url>
+
+<modal-text-file *ngIf="typeKnowledgeBaseModal == 'text-file'"
+  (saveKnowledgeBase)="onAddKb($event)"
+  (closeBaseModal)="onCloseBaseModal()">
+</modal-text-file>
+
+<modal-site-map *ngIf="typeKnowledgeBaseModal == 'site-map'"
+  (saveKnowledgeBase)="onAddKb($event)"
+  (closeBaseModal)="onCloseBaseModal()">
+</modal-site-map>
 <!-- ADD KNOWLEDGE BASE MODAL - END -->
 
 
 <!-- DELETE KNOWLEDGE BASE MODAL - START -->
-  <modal-delete-knowledge-base *ngIf="baseModalDelete"
-    [kb]="kbid_selected"
-    (deleteKnowledgeBase)="onDeleteKnowledgeBase($event)"
-    (closeBaseModal)="onCloseBaseModal()"
-  ></modal-delete-knowledge-base>
+<modal-delete-knowledge-base *ngIf="baseModalDelete"
+  [kb]="kbid_selected"
+  (deleteKnowledgeBase)="onDeleteKnowledgeBase($event)"
+  (closeBaseModal)="onCloseBaseModal()"
+></modal-delete-knowledge-base>
 <!-- DELETE KNOWLEDGE BASE MODAL - END -->
 
-<!-- DELETE KNOWLEDGE BASE MODAL - START -->
-  <modal-preview-knowledge-base *ngIf="baseModalPreview" 
-    [namespace]="id_project"
-    (closeBaseModal)="onCloseBaseModal()"
-  ></modal-preview-knowledge-base>
-<!--     //(previewKnowledgeBase)="onPreviewKnowledgeBase($event)" DELETE KNOWLEDGE BASE MODAL - END -->
+<!-- PREVIEW KNOWLEDGE BASE MODAL - START -->
+<modal-preview-knowledge-base *ngIf="baseModalPreview" 
+  [namespace]="id_project"
+  (closeBaseModal)="onCloseBaseModal()"
+></modal-preview-knowledge-base>
+<!-- PREVIEW KNOWLEDGE BASE MODAL - END -->
+
+
+
+<!-- ------------------------------------------- -->
+<!-- DELETE PROJECT MODAL WINDOW -->
+<!-- ------------------------------------------- -->
+<div *ngIf="baseModalError" class="modal" tabindex="-1" role="dialog"
+  style="background-color: rgba(90,90,90,0.5); display:block">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header" style="background-color:#ff5252; padding-bottom:24px">
+        <button style="color:#ffffff" type="button" class="close" aria-label="Close" (click)="onCloseBaseModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+
+        <h4 class="modal-title" style="color: #fff">
+          <i class="material-icons" style="vertical-align: middle">report_problem</i>
+          <span style="vertical-align: middle; padding-left:8px">
+            {{ "Si è verificato un problema" | translate }}
+          </span>
+        </h4>
+        <!-- <h4 class="modal-title" style="color: #fff; padding-top:10px; font-size: 1.1em ">
+          {{ "messaggio" | translate }}
+        </h4> -->
+      </div>
+      <div class="modal-body" style="min-height: 135px;">
+
+
+
+          <label style="font-weight:100; text-align: left; padding-bottom:12px" class="col-sm-10 ">
+            {{ errorMessage }}:
+            <!-- <span style="color:#212121">
+              <strong> {{ id_project }}</strong>
+            </span> -->
+          </label>
+
+
+
+      </div>
+
+      <div class="modal-footer">
+        <button (click)="onCloseBaseModal()" style="margin-top:0px" class="btn btn-danger">
+          {{ "close" | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

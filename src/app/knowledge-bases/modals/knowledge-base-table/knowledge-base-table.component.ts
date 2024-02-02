@@ -48,9 +48,12 @@ export class KnowledgeBaseTableComponent implements OnInit {
   ngAfterViewInit() {
     this.dataSource = new MatTableDataSource(this.kbsList);
     this.dataSource.sort = this.sort;
+    this.sort.active = "updatedAt";
+    this.sort.direction = "desc"
+    this.dataSource.sortData(this.dataSource.data, this.sort);
     this.dataSource.paginator = this.paginator;
     this.paginator.length = this.dataSource.data.length;
-    this.paginator.pageSize = 5;
+    this.paginator.pageSize = 20;
   }
 
 

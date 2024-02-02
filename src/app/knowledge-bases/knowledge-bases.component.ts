@@ -26,6 +26,7 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
   deleteKnowledgeBaseModal = 'none';
   baseModalDelete: boolean = false;
   baseModalPreview: boolean = false;
+  baseModalError: boolean = false;
   secretsModal = 'none';
   missingGptkeyModal = 'none';
   showSpinner: boolean = true;
@@ -40,6 +41,7 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
   id_project: string;
   profile_name: string;
   callingPage: string;
+  errorMessage: string;
 
   kbFormUrl: FormGroup;
   kbFormContent: FormGroup;
@@ -224,12 +226,12 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
       } else {
         that.kbsList.push(kb.value);
       }
-      
+      this.updateStatusOfKb(kb._id, kb.status);
       that.refreshKbsList = !that.refreshKbsList;
       // console.log("kbsList:",that.kbsList);
       // that.onRunIndexing(kb);
       that.checkStatusWithRetry(kb);
-      that.closeAddKnowledgeBaseModal();
+      that.onCloseBaseModal();
     }, (error) => {
       this.logger.error("[KNOWLEDGE BASES COMP] ERROR add new kb: ", error);
     }, () => {
@@ -247,12 +249,22 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
       "namespace": kb.id_project
     }
     // console.log("[KNOWLEDGE BASES COMP] kb to delete id: ", data);
+    this.onCloseBaseModal();
     this.kbService.deleteKb(data).subscribe((response:any) => {
-      // console.log('[KNOWLEDGE BASES COMP] this.kbSettings delete > ', response)
-      this.removeKb(kb._id,);
-      this.onCloseBaseModal();
+      console.log('onDeleteKb:: ', response);
+      if(!response || (response.success && response.success === false)){
+        let error = response.error?response.error:"Errore generico";
+        this.onOpenErrorModal(error);
+      } else {
+        let error = response.error?response.error:"Errore generico";
+        // this.onOpenErrorModal(error);
+        // this.notify.showWidgetStyleUpdateNotification(error, 4, 'report_problem');
+        this.removeKb(kb._id,);
+      }
+
     }, (error) => {
       this.logger.error("[KNOWLEDGE BASES COMP] ERROR delete kb: ", error);
+      this.onOpenErrorModal(error);
     }, () => {
       this.logger.log("[KNOWLEDGE BASES COMP] delete kb *COMPLETE*");
       //this.trackUserActioOnKB('Deleted Knowledge Base', gptkey)
@@ -271,11 +283,12 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
     }
     this.openaiService.checkScrapingStatus(data).subscribe((response: any) => {
       // console.log('Risposta ricevuta:', response);
-      // if(response.status_code && response.status_code == -1){
-      //   // console.log('risorsa non indicizzata');
-      //   // this.onRunIndexing(kb);
-      // } 
-      if(response.status_code == -1 || response.status_code == 0 || response.status_code == 2){
+      if(response.status_code && response.status_code == -1){
+        // console.log('risorsa non indicizzata');
+        // this.onRunIndexing(kb);
+        // this.checkStatusWithRetry(kb);
+      } 
+      if(response.status_code == 0 || response.status_code == 2){
         // console.log('riprova tra 10 secondi...');
         this.updateStatusOfKb(kb._id, response.status_code);
         timer(10000).subscribe(() => {
@@ -288,7 +301,7 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
     },
     error => {
       console.error('Error: ', error);
-      this.updateStatusOfKb(kb._id, 4);
+      this.updateStatusOfKb(kb._id, -2);
     });
   }
 
@@ -421,9 +434,10 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
    */
   checkAllStatuses() {
     this.kbsList.forEach(kb => {
-      if(kb.status == -1){
-        this.onRunIndexing(kb);
-      } else if(kb.status != 3) {
+      // if(kb.status == -1){
+      //   this.onRunIndexing(kb);
+      // } else 
+      if(kb.status != 3) {
         this.checkStatusWithRetry(kb);
       }
     });
@@ -511,7 +525,7 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
   // ************** DELETE **************** //
   onDeleteKnowledgeBase(kb){
     this.onDeleteKb(kb);
-    this.baseModalDelete = false;
+    //this.baseModalDelete = false;
   }
 
   onOpenBaseModalDelete(kb){
@@ -526,8 +540,11 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
     this.baseModalPreview = true;
   }
 
-  onPreviewKnowledgeBase(){
 
+
+  onOpenErrorModal(response){
+    this.errorMessage = response;
+    this.baseModalError = true;
   }
 
 
@@ -536,6 +553,8 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
   onCloseBaseModal(){
     this.baseModalDelete = false;
     this.baseModalPreview = false;
+    this.baseModalError = false;
+    this.typeKnowledgeBaseModal = '';
   }
 
 

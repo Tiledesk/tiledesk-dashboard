@@ -130,7 +130,7 @@
                         <mat-icon>play_arrow</mat-icon>
                         <span>{{ 'KbPage.RunIndexing' | translate }}</span>
                     </button>
-                    <button mat-menu-item [disabled]="kb.status == -1 || kb.status == 0 || kb.status == 2"
+                    <button mat-menu-item [disabled]="kb.status == 2"
                         (click)="onOpenBaseModalDelete(kb)">
                         <mat-icon>close</mat-icon>
                         <span>{{ 'Delete' | translate }}</span>

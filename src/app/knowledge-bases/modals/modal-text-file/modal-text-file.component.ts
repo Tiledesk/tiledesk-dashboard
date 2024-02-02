@@ -10,7 +10,7 @@ import { KB, KbSettings } from 'app/models/kbsettings-model';
 export class ModalTextFileComponent implements OnInit {
 
   @Output() saveKnowledgeBase = new EventEmitter();
-  @Output() closeAddKnowledgeBaseModal = new EventEmitter();
+  @Output() closeBaseModal = new EventEmitter();
 
   kbForm: FormGroup;
   buttonDisabled: boolean = true;
@@ -49,10 +49,6 @@ export class ModalTextFileComponent implements OnInit {
     }
   }
 
-  onCloseAddKnowledgeBaseModal() {
-    this.closeAddKnowledgeBaseModal.emit();
-  }
-
   onSaveKnowledgeBase(){
     let body = {
       'name': this.kb.name,
@@ -62,5 +58,8 @@ export class ModalTextFileComponent implements OnInit {
     this.saveKnowledgeBase.emit(body);
   }
 
+  onCloseBaseModal() {
+    this.closeBaseModal.emit();
+  }
 
 }

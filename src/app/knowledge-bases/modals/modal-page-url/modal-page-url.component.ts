@@ -9,7 +9,7 @@ import { KB, KbSettings } from 'app/models/kbsettings-model';
 })
 export class ModalPageUrlComponent implements OnInit {
   @Output() saveKnowledgeBase = new EventEmitter();
-  @Output() closeAddKnowledgeBaseModal = new EventEmitter();
+  @Output() closeBaseModal = new EventEmitter();
 
   kbForm: FormGroup;
   buttonDisabled: boolean = true;
@@ -46,8 +46,8 @@ export class ModalPageUrlComponent implements OnInit {
     }
   }
 
-  onCloseAddKnowledgeBaseModal() {
-    this.closeAddKnowledgeBaseModal.emit();
+  onCloseBaseModal() {
+    this.closeBaseModal.emit();
   }
 
   onSaveKnowledgeBase(){
