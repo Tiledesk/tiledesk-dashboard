@@ -33,9 +33,8 @@ export class InstallTemplateComponent extends WidgetSetUpBaseComponent implement
   selectedTemplate: any;
 
   public companyLogo: string;
-  public tparams: any;
-  public company_name: any;
-  public company_site_url: any;
+  // public company_name: any;
+  // public company_site_url: any;
   public templateImg: string;
   public templateNameOnSite: string;
   public langCode: string;
@@ -73,9 +72,8 @@ export class InstallTemplateComponent extends WidgetSetUpBaseComponent implement
     super(translate);
     const brand = brandService.getBrand();
     this.companyLogo = brand['BASE_LOGO'];
-    this.tparams = brand;
-    this.company_name = brand['BRAND_NAME'];
-    this.company_site_url = brand['COMPANY_SITE_URL'];
+    // this.company_name = brand['BRAND_NAME'];
+    // this.company_site_url = brand['COMPANY_SITE_URL'];
   }
 
   ngOnInit(): void {

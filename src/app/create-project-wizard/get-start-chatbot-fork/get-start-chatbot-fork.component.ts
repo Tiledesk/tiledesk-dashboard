@@ -25,9 +25,9 @@ export class GetStartChatbotForkComponent implements OnInit {
   APP_SUMO_PLAN_NAME = APP_SUMO_PLAN_NAME
   PLAN_NAME = PLAN_NAME
   public companyLogo: string;
-  public tparams: any;
-  public company_name: any;
-  public company_site_url: any;
+
+  // public company_name: any;
+  // public company_site_url: any;
   public selectedProject: any;
   public selectedTemplate: any;
   public templateImg: string;
@@ -57,9 +57,8 @@ export class GetStartChatbotForkComponent implements OnInit {
   ) {
     const brand = brandService.getBrand();
     this.companyLogo = brand['BASE_LOGO'];
-    this.tparams = brand;
-    this.company_name = brand['BRAND_NAME'];
-    this.company_site_url = brand['COMPANY_SITE_URL'];
+    // this.company_name = brand['BRAND_NAME'];
+    // this.company_site_url = brand['COMPANY_SITE_URL'];
   }
 
   ngOnInit(): void {
