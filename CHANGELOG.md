@@ -2,7 +2,7 @@
 
 ### 2.4.98
 - Deploys in production
-- fixes the bug: brand name is not displayed on the first onboarding page
+- Fixes the bug: brand name is not displayed on the first onboarding page
 
 ### 2.4.97
 - Deploys in production
