@@ -1,12 +1,16 @@
 # tiledesk-dashboard
 
+### 2.4.98
+- Deploys in production
+- fixes the bug: brand name is not displayed on the first onboarding page
+
 ### 2.4.97
 - Deploys in production
-- Improves whitelabeling
+- Improves whitelabelling
 
 ### 2.4.96
 - Deploys in production
-- Improves whitelabeling
+- Improves whitelabelling
 
 ### 2.4.95
 - Deploys in production
