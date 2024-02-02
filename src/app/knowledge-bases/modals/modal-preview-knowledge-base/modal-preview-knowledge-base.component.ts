@@ -8,10 +8,17 @@ import { OpenaiService } from 'app/services/openai.service';
   templateUrl: './modal-preview-knowledge-base.component.html',
   styleUrls: ['./modal-preview-knowledge-base.component.scss']
 })
+
 export class ModalPreviewKnowledgeBaseComponent implements OnInit {
   @Input() namespace: string;
   @Output() deleteKnowledgeBase = new EventEmitter();
   @Output() closeBaseModal = new EventEmitter();
+
+  models_list = [
+    { name: "GPT-3.5 Turbo (ChatGPT)", value: "gpt-3.5-turbo" }, 
+    { name: "GPT-4 (ChatGPT)", value: "gpt-4" }
+  ];
+  selectedModel: any = this.models_list[0].value;
 
   qa: any;
 
@@ -35,15 +42,16 @@ export class ModalPreviewKnowledgeBaseComponent implements OnInit {
     let data = {
       "question": this.question,
       "namespace": this.namespace,
-      "model": "gpt-3.5-turbo"
+      "model": this.selectedModel
     }
     this.error_answer = false;
     this.searching = true;
     this.show_answer = false;
     this.answer = null;
     this.source_url = null;
+    console.log("ask gpt preview response: ", data);
     this.openaiService.askGpt(data).subscribe((response: any) => {
-      console.log("ask gpt preview response: ", response);
+      // console.log("ask gpt preview response: ", response);
       this.qa = response;
       if (response.success == false) {
         this.error_answer = true;

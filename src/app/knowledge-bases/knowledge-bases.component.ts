@@ -61,7 +61,6 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
   // error_answer: boolean = false;
   // show_answer: boolean = false;
   kbid_selected: any;
-
   interval_id;
 
   constructor(
@@ -216,22 +215,25 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
   onAddKb(body) {
     // console.log("body:",body);
     const that = this;
+    this.onCloseBaseModal();
     this.kbService.addKb(body).subscribe((kb: any) => {
       console.log("onAddKb:", kb);
       if(kb.lastErrorObject && kb.lastErrorObject.updatedExisting === true){
         const index = this.kbsList.findIndex(item => item._id === kb.value._id);
         if (index !== -1) {
           this.kbsList[index] = kb.value;
+          this.notify.showWidgetStyleUpdateNotification('KB modificato con successo', 2, 'done');
         }
       } else {
         that.kbsList.push(kb.value);
+        this.notify.showWidgetStyleUpdateNotification('KB aggiunto con successo', 2, 'done');
       }
       this.updateStatusOfKb(kb._id, kb.status);
       that.refreshKbsList = !that.refreshKbsList;
       // console.log("kbsList:",that.kbsList);
       // that.onRunIndexing(kb);
       that.checkStatusWithRetry(kb);
-      that.onCloseBaseModal();
+      //that.onCloseBaseModal();
     }, (error) => {
       this.logger.error("[KNOWLEDGE BASES COMP] ERROR add new kb: ", error);
     }, () => {
@@ -256,9 +258,9 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
         let error = response.error?response.error:"Errore generico";
         this.onOpenErrorModal(error);
       } else {
-        let error = response.error?response.error:"Errore generico";
+        this.notify.showWidgetStyleUpdateNotification('KB eliminato con successo', 2, 'done');
+        // let error = response.error?response.error:"Errore generico";
         // this.onOpenErrorModal(error);
-        // this.notify.showWidgetStyleUpdateNotification(error, 4, 'report_problem');
         this.removeKb(kb._id,);
       }
 

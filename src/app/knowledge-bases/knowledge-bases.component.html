@@ -1,9 +1,7 @@
 <span class="navbar-brand navbar-brand-sidebar-settings"
   [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }"
   [ngClass]="{'is_opened':IS_OPEN_SETTINGS_SIDEBAR, 'is_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
-
   <i class="material-icons">settings</i>
-
   <span *ngIf="IS_OPEN_SETTINGS_SIDEBAR">{{ 'Settings' | translate }} </span>
 </span>
 
@@ -14,25 +12,14 @@
     <div class="content-wpr" style="display: flex;">
       <appdashboard-settings-sidebar style="border-right:1px solid #e5effe !important"> </appdashboard-settings-sidebar>
       <div class="teplate-content" style="flex: 1 1 auto; margin: 0 20px;">
-
         <loading-spinner *ngIf="showSpinner"></loading-spinner>
-
         <div class="card-content" *ngIf="!showSpinner" style="padding-top: 10px; margin: 0 60px">
 
           <div class="add-kb-div">
-            <!-- 
-              <button class="btn btn-primary" (click)="openSecretsModal()">
-                GPT-Key
-              </button> 
-            -->
-            <!-- <button class="btn btn-primary" (click)="openAddKnowledgeBaseModal()" [disabled]="addButtonDisabled">
-              {{ 'KbPage.AddKb' | translate }}
-            </button> -->
             <button class="btn btn-primary" [disabled]="addButtonDisabled" [matMenuTriggerFor]="menu" aria-label="Actions">
               <span class="btn-bottonazzo">{{ 'Aggiungi un knowledge base' | translate }} </span>
               <mat-icon class="icon-bottonazzo">add</mat-icon>
             </button>
-
             <mat-menu #menu="matMenu" xPosition="before" class="custom-menu">
               <button mat-menu-item (click)="openAddKnowledgeBaseModal('url-page')">
                 <mat-icon>link</mat-icon>
@@ -47,9 +34,7 @@
                 <span>{{ 'add site map' | translate }}</span>
               </button> -->
             </mat-menu>
-
           </div>
-
 
           <!-- START TABLE -->
           <knowledge-base-table
@@ -61,12 +46,8 @@
           ></knowledge-base-table>
           <!-- END TABLE -->
 
-
-
         </div>
       </div>
-
-
     </div>
   </div>
 </div>
@@ -90,6 +71,7 @@
 <!-- ADD KNOWLEDGE BASE MODAL - END -->
 
 
+
 <!-- DELETE KNOWLEDGE BASE MODAL - START -->
 <modal-delete-knowledge-base *ngIf="baseModalDelete"
   [kb]="kbid_selected"
@@ -107,48 +89,9 @@
 
 
 
-<!-- ------------------------------------------- -->
-<!-- DELETE PROJECT MODAL WINDOW -->
-<!-- ------------------------------------------- -->
-<div *ngIf="baseModalError" class="modal" tabindex="-1" role="dialog"
-  style="background-color: rgba(90,90,90,0.5); display:block">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header" style="background-color:#ff5252; padding-bottom:24px">
-        <button style="color:#ffffff" type="button" class="close" aria-label="Close" (click)="onCloseBaseModal()">
-          <span aria-hidden="true">&times;</span>
-        </button>
-
-        <h4 class="modal-title" style="color: #fff">
-          <i class="material-icons" style="vertical-align: middle">report_problem</i>
-          <span style="vertical-align: middle; padding-left:8px">
-            {{ "Si è verificato un problema" | translate }}
-          </span>
-        </h4>
-        <!-- <h4 class="modal-title" style="color: #fff; padding-top:10px; font-size: 1.1em ">
-          {{ "messaggio" | translate }}
-        </h4> -->
-      </div>
-      <div class="modal-body" style="min-height: 135px;">
-
-
-
-          <label style="font-weight:100; text-align: left; padding-bottom:12px" class="col-sm-10 ">
-            {{ errorMessage }}:
-            <!-- <span style="color:#212121">
-              <strong> {{ id_project }}</strong>
-            </span> -->
-          </label>
-
-
-
-      </div>
-
-      <div class="modal-footer">
-        <button (click)="onCloseBaseModal()" style="margin-top:0px" class="btn btn-danger">
-          {{ "close" | translate }}
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
+<!-- ERROR KNOWLEDGE BASE MODAL - START -->
+<modal-error-knowledge-base *ngIf="baseModalError" 
+[errorMessage]="errorMessage"
+(closeBaseModal)="onCloseBaseModal()"
+></modal-error-knowledge-base>
+<!-- ERROR KNOWLEDGE BASE MODAL - END -->

@@ -24,6 +24,23 @@
           </div>
         </div>
 
+        <div class="stato">
+          <label class="control-label">
+              {{ 'select engine' | translate }}
+          </label>
+          <div class="">
+            <ng-select class="custom-input" 
+                [items]="models_list"
+                bindLabel="name"
+                bindValue="value"
+                placeholder="Seleziona un elemento"
+                [clearable]="false"
+                [(ngModel)]="selectedModel">
+            </ng-select>
+          </div>
+      </div>
+
+
         <div class="form-container">
           <div class="fake-input">
             <div class="fake-input-inner">
