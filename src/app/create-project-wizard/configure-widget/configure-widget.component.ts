@@ -27,7 +27,7 @@ export class ConfigureWidgetComponent extends WidgetSetUpBaseComponent implement
   projectName: string;
   projectId: string;
   sub: Subscription;
-  tparams: any;
+  // tparams: any;
   // CLOSE_BTN_IS_HIDDEN = true;
   DISPLAY_WIDGET_HOME = true;
   DISPLAY_CALLOUT = false;
@@ -94,7 +94,7 @@ export class ConfigureWidgetComponent extends WidgetSetUpBaseComponent implement
     super(translate);
     const brand = brandService.getBrand();
     this.companyLogo = brand['BASE_LOGO'];
-    this.tparams = brand;
+    // this.tparams = brand;
     this.company_name = brand['BRAND_NAME'];
     this.company_site_url = brand['COMPANY_SITE_URL'];
   }
