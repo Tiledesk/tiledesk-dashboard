@@ -50,7 +50,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
     this.paginator.length = this.dataSource.data.length;
-    this.paginator.pageSize = 10;
+    this.paginator.pageSize = 5;
   }
 
 

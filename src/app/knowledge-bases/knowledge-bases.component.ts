@@ -215,10 +215,20 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
     // console.log("body:",body);
     const that = this;
     this.kbService.addKb(body).subscribe((kb: any) => {
-      that.kbsList.push(kb);
+      console.log("onAddKb:", kb);
+      if(kb.lastErrorObject && kb.lastErrorObject.updatedExisting === true){
+        const index = this.kbsList.findIndex(item => item._id === kb.value._id);
+        if (index !== -1) {
+          this.kbsList[index] = kb.value;
+        }
+      } else {
+        that.kbsList.push(kb.value);
+      }
+      
       that.refreshKbsList = !that.refreshKbsList;
       // console.log("kbsList:",that.kbsList);
-      that.onRunIndexing(kb);
+      // that.onRunIndexing(kb);
+      that.checkStatusWithRetry(kb);
       that.closeAddKnowledgeBaseModal();
     }, (error) => {
       this.logger.error("[KNOWLEDGE BASES COMP] ERROR add new kb: ", error);
@@ -261,10 +271,11 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
     }
     this.openaiService.checkScrapingStatus(data).subscribe((response: any) => {
       // console.log('Risposta ricevuta:', response);
-      if(response.status_code && response.status_code == -1){
-        // console.log('risorsa non indicizzata');
-        this.onRunIndexing(kb);
-      } else if(response.status_code == 0 || response.status_code == 2){
+      // if(response.status_code && response.status_code == -1){
+      //   // console.log('risorsa non indicizzata');
+      //   // this.onRunIndexing(kb);
+      // } 
+      if(response.status_code == -1 || response.status_code == 0 || response.status_code == 2){
         // console.log('riprova tra 10 secondi...');
         this.updateStatusOfKb(kb._id, response.status_code);
         timer(10000).subscribe(() => {
@@ -286,8 +297,8 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
    */
   private updateStatusOfKb(kb_id, status_code){
     let kb = this.kbsList.find(item => item._id === kb_id);
+    if(kb)kb.status = status_code;
     // console.log('AGGIORNO updateStatusOfKb:', kb_id, status_code, kb);
-    kb.status = status_code;
   }
 
   private removeKb(kb_id){
