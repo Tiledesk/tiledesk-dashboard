@@ -7,6 +7,7 @@ input[type="text"] {
   width: 100%;
   margin-bottom: 10px;
   -webkit-appearance: none;
+  appearance: none;
   background: #fff;
   border: 1px solid #d9d9d9 !important;
   border-top: 1px solid #c0c0c0;
@@ -97,6 +98,7 @@ input[type="text"] {
 
 button.close {
   -webkit-appearance: none;
+  appearance: none;
   padding: 0;
   cursor: pointer;
   background: 0 0;
@@ -245,16 +247,16 @@ input[type="checkbox"]:disabled {
   display: flex;
   position: absolute;
   top: 0;
-  left: -4px;
+  // left: -4px;
   justify-content: center;
   align-items: center;
-  border: 1px solid #eee;
+  // border: 1px solid #eee;
   border-radius: 9999px;
 }
 
-.bot-type-logo-wpr > img {
-  padding: 1px;
-}
+// .bot-type-logo-wpr > img {
+//   padding: 1px;
+// }
 
 @media (min-width: 768px) {
   .bot--full--desc {

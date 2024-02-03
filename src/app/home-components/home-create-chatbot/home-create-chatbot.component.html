@@ -101,13 +101,13 @@
         Your chatbots
       </div>
       <div class="hc-chatbot-count-btn-wpr">
-        <button id="hc-chatbot-count-btn" class="btn btn-size-xl btn-p-outline btn-p-ripple" style=""
+        <button id="hc-chatbot-count-btn" class="btn btn-size-xl btn-p-outline btn-p-ripple"
           (click)="goToMyChatbots()">
-          <div class="btn-content" style="">
+          <div class="btn-content">
             <div class="btn--text">
               Your chatbots
             </div>
-            <div class="btn--bot-count" style="">
+            <div class="btn--bot-count">
               {{countOfChatbots}}
             </div>
           </div>
@@ -289,7 +289,8 @@
       #tooltip="matTooltip" 
       matTooltipPosition='below' 
       matTooltipHideDelay="100" (click)="goToMyChatbots()"
-      [ngStyle]="{'color': countOfChatbots > chatBotLimit ? '#f44336' : '#2196f3'}">
+      [ngStyle]="{'color': countOfChatbots > chatBotLimit ? '#f44336' : '#2196f3'}"
+      style="cursor: pointer;" >
       {{ countOfChatbots }} chatbots
     </span>
     <span>

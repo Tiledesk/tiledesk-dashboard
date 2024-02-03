@@ -182,19 +182,19 @@
 
                             
 
-                          <span *ngIf="faqkb.type === 'internal'">
+                          <span class="bot-type-logo-wpr" *ngIf="faqkb.type === 'internal'">
                             <img class="bot-type-logo" src="assets/img/tiledesk_logo_no_text.png" />
                           </span>
 
-                          <span *ngIf="faqkb.type === 'external'">
+                          <span class="bot-type-logo-wpr" *ngIf="faqkb.type === 'external'">
                             <img class="bot-type-logo" src="assets/img/external_bot_logo.png" />
                           </span>
 
-                          <span *ngIf="faqkb.type === 'dialogflow'">
+                          <span class="bot-type-logo-wpr" *ngIf="faqkb.type === 'dialogflow'">
                             <img class="bot-type-logo" src="assets/img/Dialogflow_logo_no_text.png" />
                           </span>
 
-                          <span *ngIf="faqkb.type === 'rasa'">
+                          <span class="bot-type-logo-wpr" *ngIf="faqkb.type === 'rasa'">
                             <img class="bot-type-logo" src="assets/img/rasa_bot_logo.png" />
                           </span>
 
@@ -203,7 +203,7 @@
                           </span> -->
 
                           <span class="bot-type-logo-wpr" *ngIf="faqkb.type === 'tilebot'">
-                            <img [src]="botLogo" />
+                            <img class="bot-type-logo" [src]="botLogo" />
                           </span>
 
                          

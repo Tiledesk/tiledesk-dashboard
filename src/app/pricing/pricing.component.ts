@@ -12,7 +12,7 @@ import { BrandService } from '../services/brand.service';
 import { LoggerService } from '../services/logger/logger.service';
 import { AppConfigService } from '../services/app-config.service';
 import { TranslateService } from '@ngx-translate/core';
-import { featuresPlanA, featuresPlanB, featuresPlanC, highlightedFeaturesPlanA, highlightedFeaturesPlanB, highlightedFeaturesPlanC, PLAN_NAME } from 'app/utils/util';
+import {  additionalFeaturesPlanD, additionalFeaturesPlanE, featuresPlanA, featuresPlanB, featuresPlanC, featuresPlanD, featuresPlanE, featuresPlanF, highlightedFeaturesPlanA, highlightedFeaturesPlanB, highlightedFeaturesPlanC, highlightedFeaturesPlanD, highlightedFeaturesPlanE, highlightedFeaturesPlanF, PLAN_NAME } from 'app/utils/util';
 import { NotifyService } from 'app/core/notify.service';
 
 declare var Stripe: any;
@@ -60,6 +60,7 @@ export class PricingComponent implements OnInit, OnDestroy {
   planDecription: string;
   profileType: string;
   planFeatures: Array<string>;
+  additionalFeatures: Array<any>;
   annualPrice: string;
   monthlyPrice: string;
   annualPeriod: boolean;
@@ -195,13 +196,14 @@ export class PricingComponent implements OnInit, OnDestroy {
     this.translateString();
     this.getBrowserLanguage();
 
-    this.planName = PLAN_NAME.A
-    this.planDecription = PLAN_DESC[PLAN_NAME.A]
-    this.planFeatures = featuresPlanA;
-    this.highlightedFeatures = highlightedFeaturesPlanA
+    this.planName =  PLAN_NAME.D; // PLAN_NAME.A
+    this.planDecription = PLAN_DESC[PLAN_NAME.D];  //PLAN_DESC[PLAN_NAME.A] 
+    this.planFeatures = featuresPlanD; // featuresPlanA;
+    this.highlightedFeatures = highlightedFeaturesPlanD; //highlightedFeaturesPlanA
+    this.additionalFeatures = additionalFeaturesPlanD
     this.monthlyPeriod = true;
     this.annualPeriod = false;
-    this.monthlyPrice = MONTHLY_PRICE[PLAN_NAME.A]
+    this.monthlyPrice =  MONTHLY_PRICE[PLAN_NAME.D] // MONTHLY_PRICE[PLAN_NAME.A]
 
     // console.log('[PRICING] ROUTER URL ', this.router.url)
     const current_url = this.router.url;
@@ -536,6 +538,7 @@ export class PricingComponent implements OnInit, OnDestroy {
   selected_Plan(planname) {
     this.planFeatures = [];
     this.highlightedFeatures = [];
+    this.additionalFeatures = [];
     this.planName = planname;
 
 
@@ -543,21 +546,40 @@ export class PricingComponent implements OnInit, OnDestroy {
     this.planDecription = PLAN_DESC[planname]
     // console.log('select planDecription', this.planDecription);
 
-    if (planname === PLAN_NAME.A) {
-      // console.log(' PLAN A Features')
-      this.planFeatures = featuresPlanA;
-      this.highlightedFeatures = highlightedFeaturesPlanA;
+    // if (planname === PLAN_NAME.A) {
+    //   // console.log(' PLAN A Features')
+    //   this.planFeatures = featuresPlanA;
+    //   this.highlightedFeatures = highlightedFeaturesPlanA;
+    // }
+    // if (planname === PLAN_NAME.B) {
+    //   // console.log(' PLAN B Features')
+    //   this.planFeatures = featuresPlanB;
+    //   this.highlightedFeatures = highlightedFeaturesPlanB;
+    // }
+
+    // if (planname === PLAN_NAME.C) {
+    //   // console.log(' PLAN C Features');
+    //   this.planFeatures = featuresPlanC;
+    //   this.highlightedFeatures = highlightedFeaturesPlanC;
+    // }
+
+    if (planname === PLAN_NAME.D) {
+      console.log(' PLAN D Features')
+      this.planFeatures = featuresPlanD;
+      this.highlightedFeatures = highlightedFeaturesPlanD;
+      this.additionalFeatures = additionalFeaturesPlanD
     }
-    if (planname === PLAN_NAME.B) {
-      // console.log(' PLAN B Features')
-      this.planFeatures = featuresPlanB;
-      this.highlightedFeatures = highlightedFeaturesPlanB;
+    if (planname === PLAN_NAME.E) {
+      // console.log(' PLAN E Features')
+      this.planFeatures = featuresPlanE;
+      this.highlightedFeatures = highlightedFeaturesPlanE;
+      this.additionalFeatures = additionalFeaturesPlanE
     }
 
-    if (planname === PLAN_NAME.C) {
-      // console.log(' PLAN C Features');
-      this.planFeatures = featuresPlanC;
-      this.highlightedFeatures = highlightedFeaturesPlanC;
+    if (planname === PLAN_NAME.F) {
+      console.log(' PLAN F Features');
+      this.planFeatures = featuresPlanF;
+      this.highlightedFeatures = highlightedFeaturesPlanF;
     }
 
     this.selectedPeriod('monthly')
@@ -571,14 +593,24 @@ export class PricingComponent implements OnInit, OnDestroy {
     if (period === 'monthly') {
       this.monthlyPeriod = true;
       this.annualPeriod = false;
-      if (this.planName === PLAN_NAME.A) {
-        this.monthlyPrice = MONTHLY_PRICE[PLAN_NAME.A]
+      // if (this.planName === PLAN_NAME.A) {
+      //   this.monthlyPrice = MONTHLY_PRICE[PLAN_NAME.A]
+      // }
+      // if (this.planName === PLAN_NAME.B) {
+      //   this.monthlyPrice = MONTHLY_PRICE[PLAN_NAME.B]
+      // }
+      // if (this.planName === PLAN_NAME.C) {
+      //   this.monthlyPrice = MONTHLY_PRICE[PLAN_NAME.C]
+      // }
+
+      if (this.planName === PLAN_NAME.D) {
+        this.monthlyPrice = MONTHLY_PRICE[PLAN_NAME.D]
       }
-      if (this.planName === PLAN_NAME.B) {
-        this.monthlyPrice = MONTHLY_PRICE[PLAN_NAME.B]
+      if (this.planName === PLAN_NAME.E) {
+        this.monthlyPrice = MONTHLY_PRICE[PLAN_NAME.E]
       }
-      if (this.planName === PLAN_NAME.C) {
-        this.monthlyPrice = MONTHLY_PRICE[PLAN_NAME.C]
+      if (this.planName === PLAN_NAME.F) {
+        this.monthlyPrice = MONTHLY_PRICE[PLAN_NAME.F]
       }
 
     }
@@ -586,14 +618,24 @@ export class PricingComponent implements OnInit, OnDestroy {
     if (period === 'annual') {
       this.monthlyPeriod = false;
       this.annualPeriod = true;
-      if (this.planName === PLAN_NAME.A) {
-        this.annualPrice = ANNUAL_PRICE[PLAN_NAME.A]
+      // if (this.planName === PLAN_NAME.A) {
+      //   this.annualPrice = ANNUAL_PRICE[PLAN_NAME.A]
+      // }
+      // if (this.planName === PLAN_NAME.B) {
+      //   this.annualPrice = ANNUAL_PRICE[PLAN_NAME.B]
+      // }
+      // if (this.planName === PLAN_NAME.C) {
+      //   this.annualPrice = ANNUAL_PRICE[PLAN_NAME.C]
+      // }
+
+      if (this.planName === PLAN_NAME.D) {
+        this.annualPrice = ANNUAL_PRICE[PLAN_NAME.D]
       }
-      if (this.planName === PLAN_NAME.B) {
-        this.annualPrice = ANNUAL_PRICE[PLAN_NAME.B]
+      if (this.planName === PLAN_NAME.E) {
+        this.annualPrice = ANNUAL_PRICE[PLAN_NAME.E]
       }
-      if (this.planName === PLAN_NAME.C) {
-        this.annualPrice = ANNUAL_PRICE[PLAN_NAME.C]
+      if (this.planName === PLAN_NAME.F) {
+        this.annualPrice = ANNUAL_PRICE[PLAN_NAME.F]
       }
     }
   }
@@ -620,13 +662,13 @@ export class PricingComponent implements OnInit, OnDestroy {
           // console.log('[PRICING] - ROUTE-PARAMS DISPLAY_BTN_PLAN_TEST_3_EURXDAY_LIVE', this.DISPLAY_BTN_PLAN_TEST_3_EURXDAY_LIVE)
         }
       }
-      if (appID === "1:522823349790:web:0d4ba710f38b586e1fa00f") { // prod
-        this.ARE_VISIBLE_NEW_PRICING_BTN = false
-        console.log('[PRICING] ARE_VISIBLE_NEW_PRICING_BTN prod key: ', this.ARE_VISIBLE_NEW_PRICING_BTN);
-      } else if (appID === "1:269505353043:web:b82af070572669e3707da6") { // pre
-        this.ARE_VISIBLE_NEW_PRICING_BTN = true
-        console.log('[PRICING] ARE_VISIBLE_NEW_PRICING_BTN pre key: ', this.ARE_VISIBLE_NEW_PRICING_BTN);
-      }
+      // if (appID === "1:522823349790:web:0d4ba710f38b586e1fa00f") { // prod
+      //   this.ARE_VISIBLE_NEW_PRICING_BTN = false
+      //   console.log('[PRICING] ARE_VISIBLE_NEW_PRICING_BTN prod key: ', this.ARE_VISIBLE_NEW_PRICING_BTN);
+      // } else if (appID === "1:269505353043:web:b82af070572669e3707da6") { // pre
+      //   this.ARE_VISIBLE_NEW_PRICING_BTN = true
+      //   console.log('[PRICING] ARE_VISIBLE_NEW_PRICING_BTN pre key: ', this.ARE_VISIBLE_NEW_PRICING_BTN);
+      // }
     });
   }
   // pre app id 1:269505353043:web:b82af070572669e3707da6

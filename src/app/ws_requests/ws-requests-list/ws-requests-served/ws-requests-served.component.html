@@ -838,23 +838,23 @@
                     <span class="served-by-agent">
                       {{ agent.name}}
                     </span>
-                    <div *ngIf="agent.type === 'internal'">
-                      <img class="served-by-bot-type-logo" src="assets/img/tiledesk_logo_no_text.png" />
+                    <div class="bot-type-logo-wpr" *ngIf="agent.type === 'internal'">
+                      <img class="served-by-bot--type-logo" src="assets/img/tiledesk_logo_no_text.png" />
                     </div>
-                    <div *ngIf="agent.type === 'external'">
-                      <img class="served-by-bot-type-logo" src="assets/img/external_bot_logo.png" />
+                    <div class="bot-type-logo-wpr" *ngIf="agent.type === 'external'">
+                      <img class="served-by-bot--type-logo" src="assets/img/external_bot_logo.png" />
                     </div>
-                    <div *ngIf="agent.type === 'dialogflow'">
-                      <img class="served-by-bot-type-logo" src="assets/img/Dialogflow_logo_no_text.png" />
+                    <div class="bot-type-logo-wpr" *ngIf="agent.type === 'dialogflow'">
+                      <img class="served-by-bot--type-logo" src="assets/img/Dialogflow_logo_no_text.png" />
                     </div>
-                    <div *ngIf="agent.type === 'rasa'">
-                      <img class="served-by-bot-type-logo" src="assets/img/rasa_bot_logo.png" />
+                    <div class="bot-type-logo-wpr" *ngIf="agent.type === 'rasa'">
+                      <img class="served-by-bot--type-logo" src="assets/img/rasa_bot_logo.png" />
                     </div>
-                    <!-- <div *ngIf="agent.type === 'tilebot'">
-                      <img class="served-by-bot-type-logo" src="assets/img/tilebot_logo_small.png" />
+                    <!-- <div class="bot-type-logo-wpr" *ngIf="agent.type === 'tilebot'">
+                      <img class="served-by-bot--type-logo" src="assets/img/tilebot_logo_small.png" />
                     </div> -->
-                    <div *ngIf="agent.type === 'tilebot'">
-                      <img class="served-by-bot-type-logo" [src]="botLogo" />
+                    <div class="bot-type-logo-wpr" *ngIf="agent.type === 'tilebot'">
+                      <img class="served-by-bot--type-logo" [src]="botLogo" />
                     </div>
                     <!-- <div *ngIf="agent.type === 'tiledesk-ai'">
                       <img class="served-by-bot-type-logo" src="assets/img/tiledesk-ai-logo.png" />
@@ -1030,8 +1030,8 @@
                       <img class="served-by-bot-type-logo" src="assets/img/tilebot_logo_small.png" />
                     </div> -->
 
-                    <div *ngIf="agent.type === 'tilebot'">
-                      <img class="served-by-bot-type-logo" [src]="botLogo" />
+                    <div class="bot-type-logo-wpr" *ngIf="agent.type === 'tilebot'">
+                      <img class="served-by-bot--type-logo" [src]="botLogo" />
                     </div>
                     
                     <!-- <div *ngIf="agent.type === 'tiledesk-ai'">
