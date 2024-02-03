@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.4.99
+- Deploys in production
+- Externalize the accordion colors of the "Chatbot attributes" and of the accordion "Trusted info"
+
 ### 2.4.98
 - Deploys in production
 - Fixes the bug: brand name is not displayed on the first onboarding page
