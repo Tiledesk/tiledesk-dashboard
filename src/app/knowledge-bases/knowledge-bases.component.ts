@@ -52,7 +52,7 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
   kbsList = [];
   refreshKbsList: boolean = true;
 
-
+  
 
 
 
@@ -218,7 +218,6 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
    */
   onAddKb(body) {
     // console.log("body:",body);
-    const that = this;
     this.onCloseBaseModal();
     this.kbService.addKb(body).subscribe((kb: any) => {
       console.log("onAddKb:", kb);
@@ -229,14 +228,16 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
           this.notify.showWidgetStyleUpdateNotification('KB modificato con successo', 2, 'done');
         }
       } else {
-        that.kbsList.push(kb.value);
+        this.kbsList.push(kb.value);
         this.notify.showWidgetStyleUpdateNotification('KB aggiunto con successo', 2, 'done');
       }
       this.updateStatusOfKb(kb._id, 0);
-      that.refreshKbsList = !that.refreshKbsList;
+      this.refreshKbsList = !this.refreshKbsList;
       // console.log("kbsList:",that.kbsList);
       // that.onRunIndexing(kb);
-      that.checkStatusWithRetry(kb);
+      setTimeout(() => {
+        this.checkStatusWithRetry(kb);
+      }, 2000);
       //that.onCloseBaseModal();
     }, (error) => {
       this.logger.error("[KNOWLEDGE BASES COMP] ERROR add new kb: ", error);
@@ -250,6 +251,7 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
    * onDeleteKb
    */
   onDeleteKb(kb) {
+
     let data = {
       "id": kb._id,
       "namespace": kb.id_project
@@ -259,13 +261,15 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
     this.kbService.deleteKb(data).subscribe((response:any) => {
       console.log('onDeleteKb:: ', response);
       if(!response || (response.success && response.success === false)){
-        let error = response.error?response.error:"Errore generico";
+        let error = "Non è stato possibile eliminare il kb";
+        this.updateStatusOfKb(kb._id, 0);
         this.onOpenErrorModal(error);
       } else {
         this.notify.showWidgetStyleUpdateNotification('KB eliminato con successo', 2, 'done');
         // let error = response.error?response.error:"Errore generico";
         // this.onOpenErrorModal(error);
-        this.removeKb(kb._id,);
+        this.removeKb(kb._id);
+
       }
 
     }, (error) => {
@@ -293,8 +297,7 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
         // console.log('risorsa non indicizzata');
         // this.onRunIndexing(kb);
         // this.checkStatusWithRetry(kb);
-      } 
-      if(response.status_code == 0 || response.status_code == 2){
+      } else if(response.status_code == -1 || response.status_code == 0 || response.status_code == 2){
         // console.log('riprova tra 10 secondi...');
         this.updateStatusOfKb(kb._id, response.status_code);
         timer(10000).subscribe(() => {
@@ -441,10 +444,10 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
    */
   checkAllStatuses() {
     this.kbsList.forEach(kb => {
-      // if(kb.status == -1){
+      //if(kb.status == -1){
       //   this.onRunIndexing(kb);
-      // } else 
-      if(kb.status != 3) {
+      //} else 
+      if(kb.status == -1 || kb.status == 0 || kb.status == 2) {
         this.checkStatusWithRetry(kb);
       }
     });
@@ -544,7 +547,7 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
   onOpenBaseModalDetail(kb){
     this.kbid_selected = kb;
     console.log('onOpenBaseModalDetail:: ', this.kbid_selected);
-    // this.baseModalDetail=true;
+    this.baseModalDetail=true;
   }
 
   onOpenBaseModalPreview(){

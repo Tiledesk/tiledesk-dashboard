@@ -1,4 +1,15 @@
 
+.modal-body {
+    display: inline-block;
+    width: 100%;
+}
+
+.modal-state {
+    width: 40%;
+    text-align: right;
+    float: right;
+}
+
 .fake-input {
     height: 37px;
     border-radius: 6px;
@@ -95,7 +106,8 @@
 .form-container {
     margin-top: 12px;
     margin-bottom: 12px;
-
+    display: inline-block;
+    width: 100%;
     .input-container {
         margin-bottom: 14px;
     }

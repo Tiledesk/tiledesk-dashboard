@@ -45,6 +45,7 @@
         color: #22272d;
         line-height: 35px;
         font-weight: 400;
+        resize: vertical;
         &.invalid {
             border: 2px solid red !important;
             outline: 0px solid red !important;
@@ -56,6 +57,7 @@
 .modal-footer {
     padding: 18px;
     background-color: #fff;
+    border-radius: 6px;
     button {
         border-radius: 6px;
     }

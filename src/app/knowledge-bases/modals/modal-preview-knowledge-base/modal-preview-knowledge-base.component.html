@@ -17,29 +17,12 @@
 
       <div class="modal-body">
 
-        <div class="form-container">
+        <!-- <div class="form-container">
           <div class="kb-container">
             <span class="material-icons-round">school</span>
             <p>{{ namespace }}</p>
           </div>
-        </div>
-
-        <div class="stato">
-          <label class="control-label">
-              {{ 'select engine' | translate }}
-          </label>
-          <div class="">
-            <ng-select class="custom-input" 
-                [items]="models_list"
-                bindLabel="name"
-                bindValue="value"
-                placeholder="Seleziona un elemento"
-                [clearable]="false"
-                [(ngModel)]="selectedModel">
-            </ng-select>
-          </div>
-      </div>
-
+        </div> -->
 
         <div class="form-container">
           <div class="fake-input">
@@ -57,10 +40,9 @@
             <span style="margin-left: 8px;">{{ 'KbPage.SearchingAnswer' | translate }}</span>
           </div>
         </div>
+
         <div *ngIf="show_answer" class="form-container" style="margin-bottom: 0px;">
-
           <div id="answer" class="answer">
-
             <p *ngIf="answer" class="answer-title">{{ 'KbPage.Answer' | translate }}</p>
             {{ qa.answer }}
             <span *ngIf="error_answer">{{ 'KbPage.NoAnswerFound' | translate }}</span>
@@ -71,8 +53,24 @@
                 <span *ngIf="!source_url">{{ qa.source }}</span>
             </span>
           </div>
-
         </div>
+
+        <div class="modal-state">
+          <label class="control-label">
+              {{ 'select engine' | translate }}
+          </label>
+          <div class="">
+            <ng-select class="custom-input" 
+                [items]="models_list"
+                bindLabel="name"
+                bindValue="value"
+                placeholder="Seleziona un elemento"
+                [clearable]="false"
+                [(ngModel)]="selectedModel">
+            </ng-select>
+          </div>
+        </div>
+
 
       </div>
 

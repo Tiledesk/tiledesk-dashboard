@@ -106,6 +106,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
   }
 
   onOpenBaseModalDelete(kb){
+    kb.status = 2;
     this.openBaseModalDelete.emit(kb);
   }
 
