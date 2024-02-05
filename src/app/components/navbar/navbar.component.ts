@@ -36,12 +36,11 @@ import { Subscription } from 'rxjs'
 import { BrandService } from './../../services/brand.service';
 import { LocalDbService } from '../../services/users-local-db.service';
 import { LoggerService } from '../../services/logger/logger.service';
-import { APP_SUMO_PLAN_NAME, PLANS_LIST, PLAN_NAME, URL_understanding_default_roles } from '../../utils/util';
-
 import { ThemePalette} from '@angular/material/core';
 import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
 import { QuotesService } from 'app/services/quotes.service';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
+import { APP_SUMO_PLAN_NAME, PLANS_LIST, PLAN_NAME, URL_understanding_default_roles } from 'app/utils/util';
 
 const swal = require('sweetalert');
 
@@ -54,6 +53,7 @@ const swal = require('sweetalert');
 export class NavbarComponent extends PricingBaseComponent implements OnInit, AfterViewInit, AfterContentChecked, OnDestroy, AfterViewChecked {
 
   PLAN_NAME = PLAN_NAME;
+  PLANS_LIST = PLANS_LIST;
   APP_SUMO_PLAN_NAME = APP_SUMO_PLAN_NAME;
   appSumoProfile: string;
   prjct_profile_name_for_segment: string;

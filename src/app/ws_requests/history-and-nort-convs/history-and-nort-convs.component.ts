@@ -9,7 +9,7 @@ import { LocalDbService } from '../../services/users-local-db.service';
 import { BotLocalDbService } from '../../services/bot-local-db.service';
 import { UsersService } from '../../services/users.service';
 import { FaqKbService } from '../../services/faq-kb.service';
-import { APP_SUMO_PLAN_NAME, avatarPlaceholder, getColorBck, PLAN_NAME } from '../../utils/util';
+import { APP_SUMO_PLAN_NAME, avatarPlaceholder, getColorBck, goToCDSVersion, PLAN_NAME } from '../../utils/util';
 import { Subscription } from 'rxjs';
 import { ProjectPlanService } from '../../services/project-plan.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -2501,7 +2501,8 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       });
   }
 
-  goToBotProfile(bot_id, bot_type) {
+  goToBotProfile(bot, bot_id, bot_type) {
+   console.log('[HISTORY & NORT-CONVS] - goToBotProfile  ', bot)
     let botType = ''
     if (bot_type === 'internal') {
       botType = 'native'
@@ -2512,7 +2513,8 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     } else if (bot_type === 'tilebot') {
       botType = 'tilebot'
       if (this.ROLE_IS_AGENT === false) {
-        this.router.navigate(['project/' + this.projectId + '/tilebot/intents/', bot_id, botType]);
+        // this.router.navigate(['project/' + this.projectId + '/tilebot/intents/', bot_id, botType]);
+        goToCDSVersion(this.router, bot, this.projectId, this.appConfigService.getConfig().cdsBaseUrl)
       }
     } else {
       botType = bot_type

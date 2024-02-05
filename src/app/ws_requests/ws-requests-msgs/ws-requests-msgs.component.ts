@@ -24,7 +24,7 @@ import { TagsService } from '../../services/tags.service';
 
 import { UAParser } from 'ua-parser-js';
 import { ContactsService } from '../../services/contacts.service';
-import { APP_SUMO_PLAN_NAME, avatarPlaceholder, getColorBck, PLAN_NAME } from '../../utils/util';
+import { APP_SUMO_PLAN_NAME, avatarPlaceholder, getColorBck, goToCDSVersion, PLAN_NAME } from '../../utils/util';
 import { LoggerService } from '../../services/logger/logger.service';
 
 import 'firebase/database';
@@ -4615,8 +4615,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     window.open(url, '_blank');
   }
 
-  goToMemberProfile(member_id: any) {
-    this.logger.log('[WS-REQUESTS-MSGS] - goToMemberProfile - has clicked GO To MEMBER ', member_id);
+  goToMemberProfile(member, member_id: any) {
+   console.log('[WS-REQUESTS-MSGS] - goToMemberProfile - has clicked GO To MEMBER member ', member);
 
     if (this.CHAT_PANEL_MODE === false) {
       if (member_id.indexOf('bot_') !== -1) {
@@ -4625,7 +4625,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         const id_bot = member_id.substring(4);
         // this.router.navigate(['project/' + this.id_project + '/botprofile/' + member_id]);
         const bot = this.botLocalDbService.getBotFromStorage(id_bot);
-        // this.logger.log('[WS-REQUESTS-MSGS] - goToMemberProfile - BOT FROM STORAGE ', bot)
+        console.log('[WS-REQUESTS-MSGS] - goToMemberProfile - BOT FROM STORAGE ', bot)
 
         let botType = ''
         if (bot.type === 'internal') {
@@ -4638,7 +4638,13 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         } else if (bot.type === 'tilebot') {
           botType = 'tilebot'
           if (this.CURRENT_USER_ROLE !== 'agent') {
-            this.router.navigate(['project/' + this.id_project + '/tilebot/intents/', id_bot, botType]);
+            // this.router.navigate(['project/' + this.id_project + '/tilebot/intents/', id_bot, botType]);
+            goToCDSVersion(this.router, bot, this.id_project, this.appConfigService.getConfig().cdsBaseUrl)
+          }
+        } else if (bot.type === 'tiledesk-ai') {
+          botType = 'tiledesk-ai'
+          if (this.CURRENT_USER_ROLE !== 'agent') {
+            goToCDSVersion(this.router, bot, this.id_project, this.appConfigService.getConfig().cdsBaseUrl)
           }
         } else {
           if (this.CURRENT_USER_ROLE !== 'agent') {

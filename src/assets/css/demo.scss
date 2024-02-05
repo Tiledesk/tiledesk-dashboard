@@ -1786,8 +1786,8 @@ appdashboard-app-store>div>div>div>div>.card-app-store {
 /* New buttons > Btn Primary
 /* ----------------------------------------- */
 .btn--primary {
-  background-color: #0566ff;
-  border-color: #0566ff;
+  background-color: var(--blue-light);
+  border-color: var(--blue-light);
   color: #fff;
   text-transform: none;
   border-radius: 999px;
@@ -1796,22 +1796,22 @@ appdashboard-app-store>div>div>div>div>.card-app-store {
 }
 
 .btn--primary:hover {
-  background-color: #0049bd;
-  border-color: #0049bd;
+  background-color: var(--blue-light);
+  border-color: var(--blue-light);
   color: #fff;
   box-shadow: unset;
 }
 
 .btn--primary:focus {
-  background-color: #0049bd;
-  border-color: #0049bd;
+  background-color: var(--blue-light);
+  border-color: var(--blue-light);
   color: #fff;
   box-shadow: unset;
 }
 
 .btn--primary:active {
-  background-color: #0049bd;
-  border-color: #0049bd;
+  background-color: var(--blue-light);
+  border-color: var(--blue-light);
 }
 
 .btn--ripple-primary {
@@ -1833,8 +1833,8 @@ appdashboard-app-store>div>div>div>div>.card-app-store {
 /* New buttons > Btn Primary no background
 /* ---------------------------------------- */
 .btn.btn--primary-no-bkgnd {
-  border: 1px solid #0566ff;
-  color: #0566ff;
+  border: 1px solid var(--blue-light);
+  color: var(--blue-light);
   background-color: #fff;
   border-radius: 999px;
   box-shadow: unset;
@@ -1844,21 +1844,21 @@ appdashboard-app-store>div>div>div>div>.card-app-store {
 
 .btn.btn--primary-no-bkgnd:hover {
   background-color: rgba(5, 102, 255, .2);
-  border: 1px solid #0049bd;
-  color: #0566ff;
+  border: 1px solid var(--blue-light);
+  color: var(--blue-light);
   box-shadow: unset;
 }
 
 .btn.btn--primary-no-bkgnd:focus {
   background-color: rgba(5, 102, 255, .2);
-  border: 1px solid #0049bd;
+  border: 1px solid var(--blue-light);
   color: #0566ff;
   box-shadow: unset;
 }
 
 .btn.btn--primary-no-bkgnd:active {
   background-color: rgba(5, 102, 255, .2);
-  border: 1px solid #0049bd;
+  border: 1px solid var(--blue-light);
   color: #0566ff;
   box-shadow: unset;
 }
@@ -2040,8 +2040,8 @@ appdashboard-app-store>div>div>div>div>.card-app-store {
 .btn.btn-p-outline {
   // border:1px solid var(--indigo) !important;
   // color: var(--indigo);
-  border: 1px solid var(--blue-turquoise) !important;
-  color: var(--blue-turquoise);
+  border: 1px solid var(--blue-light) !important;
+  color: var(--blue-light);
   background-color: #fff;
   border-radius: 999px !important;
   box-shadow: unset;

@@ -133,7 +133,7 @@
     min-width: 36px;
     height: 36px;
     border-radius: 50%;
-    background-color: #2196f3;
+    background-color: var(--blue-light);
 }
 
 .connect-whatsapp-wizard-title {
@@ -173,7 +173,7 @@ height: 40px;
 
 .wa-wizard-connect-support-text {
     font-size: 18px;
-    color: #2196f3;
+    color: var(--blue-light);
     cursor: pointer;
     font-family: Poppins,Roboto,Arial,sans-serif;
     font-weight: 400;

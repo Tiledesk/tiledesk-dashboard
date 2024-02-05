@@ -18,7 +18,7 @@
             <!-- {{ 'KbPage.KbCounterFooter' | translate: { counter: kbSettings?.kbs?.length } }} -->
             <!-- {{kbSettings?.kbs?.length }} of 3 Knowledge Bases added -->
             <!-- {{ 'KbPage.KbCounterFooter_es' | translate: { counter: kbCount, allowed_kb_num: kbLimit, plan_name: prjct_profile_name } }} -->
-            <span [ngStyle]="{'color': kbCount > kbLimit ? '#f44336' : '#2196f3'}" class="kb-reedemed-number"
+            <span [ngStyle]="{'color': kbCount > kbLimit ? '#f44336' : '#3ea9f5'}" class="kb-reedemed-number"
                 matTooltipClass="h-custom-mat-tooltip"
                 matTooltip="View detail in Knowledge Bases" 
                 #tooltip="matTooltip" 
@@ -55,7 +55,7 @@
                 </i>
             </span>
 
-            <span *ngIf="(((prjct_profile_type === 'payment' && subscription_is_active === true) ||
+            <!-- <span *ngIf="(((prjct_profile_type === 'payment' && subscription_is_active === true) ||
                 (prjct_profile_type === 'free' && trial_expired === false) || 
                 (prjct_profile_type === 'free' && trial_expired === true))  &&
                 (kbCount > kbLimit))">
@@ -68,7 +68,7 @@
                     style="vertical-align: middle; color: #f44336; cursor: pointer; font-size: 20px;">
                     error
                 </i>
-            </span>
+            </span> -->
         </div>
 
         <div class="actions--btn-wpr">

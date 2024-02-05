@@ -931,7 +931,7 @@
                                     <div class="sat-popover-agent-fullname">
                                       {{agent?.firstname}} {{agent?.lastname}}
                                     </div>
-                                    <button class="sat-popover-view-profile" (click)="goToMemberProfile( agent?._id )">
+                                    <button class="sat-popover-view-profile" (click)="goToMemberProfile(agent, agent?._id )">
                                       {{'ViewProfile' | translate }}
                                     </button>
                                     <button class="sat-popover-chat-with"
@@ -959,7 +959,7 @@
                                     <div class="sat-popover-agent-fullname">
                                       {{agent?.firstname}} {{agent?.lastname}}
                                     </div>
-                                    <button class="sat-popover-view-profile" (click)="goToMemberProfile( agent?._id )">
+                                    <button class="sat-popover-view-profile" (click)="goToMemberProfile(agent, agent?._id )">
                                       {{'ViewProfile' | translate }}
                                     </button>
                                     <button class="sat-popover-chat-with"
@@ -973,7 +973,7 @@
                                 <!-- ---------------------------------------------------------------------------- -->
                                 <!-- @ Human agent avatar with name initials - USE CASE: AGENT NOT HAS IMAGE  -->
                                 <!-- ---------------------------------------------------------------------------- -->
-                                <!-- goToMemberProfile( agent?._id ) -->
+                      
                                 <!-- (mouseenter)="agentnoimg.open()" -->
                                 <div *ngIf="agent.isBot === false && !agent.hasImage" class="served-by-avatar--no-img"
                                   [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + agent?.userfillColour + ')'}"
@@ -990,7 +990,7 @@
                                     <div class="sat-popover-agent-fullname">
                                       {{agent?.firstname}} {{agent?.lastname}}
                                     </div>
-                                    <button class="sat-popover-view-profile" (click)="goToMemberProfile( agent?._id )">
+                                    <button class="sat-popover-view-profile" (click)="goToMemberProfile(agent, agent?._id )">
                                       {{'ViewProfile' | translate }}
                                     </button>
                                     <button class="sat-popover-chat-with"
@@ -1020,7 +1020,7 @@
                                     <div class="sat-popover-agent-fullname">
                                       {{agent?.firstname}} {{agent?.lastname}} (bot)
                                     </div>
-                                    <button class="sat-popover-view-profile" (click)="goToMemberProfile( agent?._id )">
+                                    <button class="sat-popover-view-profile" (click)="goToMemberProfile(agent, agent?._id )">
                                       {{'ViewProfile' | translate }}
                                     </button>
                                   </div>
@@ -1034,16 +1034,18 @@
                                   class="served-by-avatar--img"
                                   src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?._id | slice:4}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                                   onerror="this.src='assets/img/avatar_bot_tiledesk.svg'"
-                                  (click)="goToMemberProfile( agent?._id )" matTooltipClass="custom-mat-tooltip"
+                                  (click)="goToMemberProfile(agent, agent?._id )" 
+                                  matTooltipClass="custom-mat-tooltip"
                                   matTooltip="{{'VisitorsPage.AssignedTo' | translate }} {{agent?.firstname}} {{agent?.lastname}} (bot)"
-                                  #tooltip="matTooltip" matTooltipPosition='left' matTooltipHideDelay="100" />
+                                  #tooltip="matTooltip" 
+                                  matTooltipPosition='left' matTooltipHideDelay="100" />
 
                                 <!-- <sat-popover #botntengine horizontalAlign="before">
                                   <div class="popover-wrapper">
                                     <div class="sat-popover-agent-fullname">
                                       {{agent?.firstname}} {{agent?.lastname}} (bot)
                                     </div>
-                                    <button class="sat-popover-view-profile" (click)="goToMemberProfile( agent?._id )">
+                                    <button class="sat-popover-view-profile" (click)="goToMemberProfile(agent, agent?._id )">
                                       {{'ViewProfile' | translate }}
                                     </button>
                                   </div>
@@ -1080,7 +1082,7 @@
                                           </span>
                                           <div class="dropdown-btn-wpr">
                                             <button class="dropdown-btn-view-profile"
-                                              (click)="goToMemberProfile( agent?._id )">
+                                              (click)="goToMemberProfile(agent, agent?._id )">
                                               {{'ViewProfile' | translate }}
                                             </button>
                                             <button class="dropdown-btn-chat-with"
@@ -1096,13 +1098,13 @@
                                           *ngIf="agent.isBot === false && agent.hasImage && !UPLOAD_ENGINE_IS_FIREBASE">
                                           <img
                                             src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
-                                            class="served-by-avatar--img" (click)="goToMemberProfile( agent?._id )" />
+                                            class="served-by-avatar--img" (click)="goToMemberProfile(agent, agent?._id )" />
                                           <span style="margin-left: 8px;font-size: 12px; font-weight: 400;">
                                             {{agent?.firstname}} {{agent?.lastname}}
                                           </span>
                                           <div class="dropdown-btn-wpr">
                                             <button class="dropdown-btn-view-profile"
-                                              (click)="goToMemberProfile( agent?._id )">
+                                              (click)="goToMemberProfile(agent, agent?._id )">
                                               {{'ViewProfile' | translate }}
                                             </button>
                                             <button class="dropdown-btn-chat-with"
@@ -1130,7 +1132,7 @@
                                           </div>
                                           <div class="dropdown-btn-wpr">
                                             <button class="dropdown-btn-view-profile"
-                                              (click)="goToMemberProfile( agent?._id )">
+                                              (click)="goToMemberProfile(agent, agent?._id )">
                                               {{'ViewProfile' | translate }}
                                             </button>
                                             <button class="dropdown-btn-chat-with"
@@ -1153,7 +1155,7 @@
                                           </span>
                                           <div class="dropdown-btn-wpr">
                                             <button class="dropdown-btn-view-profile"
-                                              (click)="goToMemberProfile( agent?._id )">
+                                              (click)="goToMemberProfile(agent, agent?._id )">
                                               {{'ViewProfile' | translate }}
                                             </button>
 
@@ -1174,7 +1176,7 @@
                                           </span>
                                           <div class="dropdown-btn-wpr">
                                             <button class="dropdown-btn-view-profile"
-                                              (click)="goToMemberProfile( agent?._id )">
+                                              (click)="goToMemberProfile(agent, agent?._id )">
                                               {{'ViewProfile' | translate }}
                                             </button>
                                           </div>

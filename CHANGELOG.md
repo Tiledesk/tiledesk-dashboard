@@ -1,5 +1,13 @@
 # tiledesk-dashboard
 
+### 2.5.0-rc2
+- Deploys in pre
+- New pricing (bug fixing)
+
+### 2.5.0-rc1
+- Deploys in pre
+- New pricing (in progress)
+
 ### 2.4.99
 - Deploys in production
 - Externalize the accordion colors of the "Chatbot attributes" and of the accordion "Trusted info"

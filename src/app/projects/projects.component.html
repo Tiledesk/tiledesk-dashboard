@@ -54,12 +54,13 @@
                 <i class="material-icons open-user-profile-person-icon">person</i>
                 <!-- <p class="hidden-lg hidden-md">Profile</p> -->
 
-                <span class="tooltip-x"  
-                    matTooltipClass="custom-mat-tooltip"
-                    matTooltip="{{'NavBar.PendingVerification' | translate }}"
-                    #tooltip="matTooltip" 
-                    matTooltipPosition='below'
-                    matTooltipHideDelay="100">
+                <!-- matTooltipClass="custom-mat-tooltip"
+                matTooltip="{{'NavBar.PendingVerification' | translate }}"
+                #tooltip="matTooltip" 
+                matTooltipPosition='below'
+                matTooltipHideDelay="100" -->
+
+                <span class="tooltip-x">
                   <span *ngIf="user?.emailverified == false" class="pending-email-verificaton-notification">
                     <span class="material-icons-outlined">
                       error

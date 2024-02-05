@@ -826,8 +826,8 @@ li:before {
   justify-content: center;
 }
 .btn--primary {
-  background-color: #0566ff;
-  border-color: #0566ff;
+  background-color: var(--blue-light);
+  border-color: var(--blue-light);
   color: #fff;
 }
 
