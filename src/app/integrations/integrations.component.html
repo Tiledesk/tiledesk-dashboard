@@ -155,8 +155,14 @@
         <div *ngIf="integrationLocked === true" style="width: 100%;">
             <div class="lock-container">
                 <img src="assets/img/int/upgrade-icon.svg" alt="Upgrade Plan">
-                <p class="upgrade-title">Upgrade your plan!</p>
-                <p class="upgrade-subtitle">This integration is available starting from <b>{{ plan_require }}</b> Plan. Unlock it by upgrading your plan.</p>
+                
+                <p *ngIf="integrationSelectedName === INT_KEYS.OPENAI" class="upgrade-title">Upgrade your plan!</p>
+                <p *ngIf="integrationSelectedName === INT_KEYS.OPENAI" class="upgrade-subtitle">Tiledesk provides a managed ChatGPT integration. You don't need to use your own OpenAI api-key. This option simplifies using OpenAI features through all the Tiledesk modules supporting it (Ask Knowledge base, Designer's ChatGPT Task Action etc.)</p>
+                <p *ngIf="integrationSelectedName === INT_KEYS.OPENAI" class="upgrade-subtitle">This integration is available to allow you to use your own OpenAI API-KEY, if needed.</p>
+                <p *ngIf="integrationSelectedName === INT_KEYS.OPENAI" class="upgrade-subtitle">Available from <b>{{ plan_require }} Plan</b> </p>
+
+                <p *ngIf="integrationSelectedName !== INT_KEYS.OPENAI" class="upgrade-title">Upgrade your plan!</p>
+                <p *ngIf="integrationSelectedName !== INT_KEYS.OPENAI" class="upgrade-subtitle">This integration is available starting from <b>{{ plan_require }}</b> Plan. Unlock it by upgrading your plan.</p>
     
                 <button class="custom-upgrade-primary-button" (click)="goToPricing()">Upgrade now</button>
             </div>

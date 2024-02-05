@@ -315,7 +315,7 @@ export class IntegrationsComponent implements OnInit {
 
       // BASIC PLAN
       else if (this.project_plan === 'Growth' || this.project_plan === 'Basic') {
-        if (integration_plan === 'Premium') {
+        if (integration_plan === 'Premium' || integration_plan === 'Custom') {
           reject(false);
         }
         resolve(true)
@@ -323,6 +323,9 @@ export class IntegrationsComponent implements OnInit {
 
       // PREMIUM PLAN
       else if (this.project_plan === 'Scale' || this.project_plan === 'Premium') {
+        if ( integration_plan === 'Custom') {
+          reject(false);
+        }
         resolve(true)
       }
 

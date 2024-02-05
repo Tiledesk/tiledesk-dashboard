@@ -379,6 +379,7 @@ import { HubspotIntegrationComponent } from './integrations/list/hubspot-integra
 import { BrevoIntegrationComponent } from './integrations/list/brevo-integration/brevo-integration.component';
 import { GsheetsIntegrationComponent } from './integrations/list/gsheets-integration/gsheets-integration.component';
 import { IntegrationHeaderComponent } from './integrations/base-components/integration-header/integration-header.component';
+import { MakeIntegrationComponent } from './integrations/list/make-integration/make-integration.component';
 
 
 
@@ -671,7 +672,8 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     HubspotIntegrationComponent,
     BrevoIntegrationComponent,
     GsheetsIntegrationComponent,
-    IntegrationHeaderComponent
+    IntegrationHeaderComponent,
+    MakeIntegrationComponent
   ],
   imports: [
     TooltipModule.forRoot(CutomTooltipOptions as TooltipOptions),
