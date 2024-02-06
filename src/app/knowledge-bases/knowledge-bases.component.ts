@@ -219,16 +219,17 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
   onAddKb(body) {
     // console.log("body:",body);
     this.onCloseBaseModal();
-    this.kbService.addKb(body).subscribe((kb: any) => {
+    this.kbService.addKb(body).subscribe((resp: any) => {
+      let kb = resp.value;
       console.log("onAddKb:", kb);
       if(kb.lastErrorObject && kb.lastErrorObject.updatedExisting === true){
-        const index = this.kbsList.findIndex(item => item._id === kb.value._id);
+        const index = this.kbsList.findIndex(item => item._id === kb._id);
         if (index !== -1) {
-          this.kbsList[index] = kb.value;
+          this.kbsList[index] = kb;
           this.notify.showWidgetStyleUpdateNotification('KB modificato con successo', 2, 'done');
         }
       } else {
-        this.kbsList.push(kb.value);
+        this.kbsList.push(kb);
         this.notify.showWidgetStyleUpdateNotification('KB aggiunto con successo', 2, 'done');
       }
       this.updateStatusOfKb(kb._id, 0);
