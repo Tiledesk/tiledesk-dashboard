@@ -1602,6 +1602,7 @@
         "StateFilter": "Filter by State",
         "Type": "Type",
         "Status": "Status",
+        "CreatedAt": "Created At",
         "KBDetail": "Knowledge Base Detail",
         "Url": "URL",
         "FileText": "File Text",
@@ -1612,7 +1613,12 @@
         "PlaceholderSelectEngine": "Select an element",
         "TypeKbContentPlaceholder": "Text content of the Knowledge Base",
         "AddKbInfoTextContent": "Set a valid Text Content for your Knowledge Base.",
-        "AddKbInfoTextContentMsg1": "Attention! The maximum number of characters is 32768."
+        "AddKbInfoTextContentMsg1": "Attention! The maximum number of characters is 32768.",
+        "StatusAll": "All",
+        "StatusNotStarted": "Not started",
+        "StatusStarted": "Started",
+        "StatusFinished": "Finished",
+        "StatusError": "Error"
     },
     "AutomationsDemoPageDescription": "With our “APIs automations” you can manage mass broadcast messages on Whatsapp using the designer's automations combined with the ease of our APIs, send messages to all the contacts of your favorite CRM, receive the status of sent messages (received, read, etc.) and much more!",
     "Sunday": "Sunday",

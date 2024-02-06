@@ -44,11 +44,11 @@
                     [ngModel]="filterType" 
                     dropdownPosition='bottom' 
                     (ngModelChange)="applyFilter($event, 'type')">
-                    <ng-option value=""> All </ng-option>
-                    <ng-option value="0"> Not started </ng-option>
-                    <ng-option value="2"> Started </ng-option>
-                    <ng-option value="3"> Finished </ng-option>
-                    <ng-option value="4"> Error </ng-option>
+                    <ng-option value=""> {{ 'KbPage.StatusAll' | translate }}</ng-option>
+                    <ng-option value="0"> {{ 'KbPage.StatusNotStarted' | translate }}</ng-option>
+                    <ng-option value="2"> {{ 'KbPage.StatusStarted' | translate }}</ng-option>
+                    <ng-option value="3"> {{ 'KbPage.StatusFinished' | translate }}</ng-option>
+                    <ng-option value="4"> {{ 'KbPage.StatusError' | translate }}</ng-option>
                   </ng-select>
 
             </div>
@@ -87,13 +87,13 @@
 
         <!-- Created At Column -->
         <ng-container matColumnDef="createdAt">
-            <th style="width:140px;" mat-header-cell *matHeaderCellDef mat-sort-header>{{'createdAt' | translate }}</th>
+            <th style="width:140px;" mat-header-cell *matHeaderCellDef mat-sort-header>{{'KbPage.CreatedAt' | translate }}</th>
             <td mat-cell *matCellDef="let kb" (click)="onOpenBaseModalDetail(kb)">{{ kb.createdAt | amTimeAgo }}</td>
         </ng-container>
 
         <!-- Name Column -->
         <ng-container matColumnDef="name">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'name' | translate }}</th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'Name' | translate }}</th>
             <td mat-cell *matCellDef="let kb" (click)="onOpenBaseModalDetail(kb)">{{ kb.name }}</td>
         </ng-container>
 
@@ -102,7 +102,7 @@
         <th style="width:40px;" mat-header-cell *matHeaderCellDef>
             <span class="column-th-span" style="float:right">
                 <button class="preview-button" (click)="$event.stopPropagation(); onOpenBaseModalPreview($event)">
-                  <span class="material-icon material-icons-round">play_arrow</span>Preview
+                  <span class="material-icon material-icons-round">play_arrow</span>{{'Preview' | translate}}
                 </button>
             </span>
         </th>
