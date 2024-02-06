@@ -1,5 +1,54 @@
 # tiledesk-dashboard
 
+### 2.5.0-rc2
+- Deploys in pre
+- New pricing (bug fixing)
+
+### 2.5.0-rc1
+- Deploys in pre
+- New pricing (in progress)
+
+### 2.4.99
+- Deploys in production
+- Externalize the accordion colors of the "Chatbot attributes" and of the accordion "Trusted info"
+
+### 2.4.98
+- Deploys in production
+- Fixes the bug: brand name is not displayed on the first onboarding page
+
+### 2.4.97
+- Deploys in production
+- Improves whitelabelling
+
+### 2.4.96
+- Deploys in production
+- Improves whitelabelling
+
+### 2.4.95
+- Deploys in production
+- Displays a message on the conversation details page when a conversation has been removed
+
+### 2.4.95-rc3
+- Deploys in pre
+- Improvements and bug fixing
+
+### 2.4.95-rc2
+- Deploys in pre
+- Improvements and bug fixing
+
+### 2.4.95-rc1
+### 2.4.94-rc3
+- Deploys in pre
+- Improvements and bug fixing
+
+### 2.4.94-rc2
+- Deploys in pre
+- Improvements and bug fixing
+
+### 2.4.94-rc1
+- Deploys in pre
+- Adds the ability to access the design studio for the "tiledesk-ai" chatbot type
+
 ### 2.4.94
 - Deploys in production
 - Adds the ability to access the design studio for the "tiledesk-ai" chatbot type
@@ -11,6 +60,13 @@
 ### 2.4.92
 - Deploys in production
 - Improvements and bug fixing
+
+### 2.4.92-rc1
+- Deploys in pre
+- Adds integrations
+- Adds usage stats (quotas measurement)
+- Adds reCaptcha 
+- Implements new pricing 
 
 ### 2.4.91
 - Deploys in production
@@ -59,6 +115,14 @@
 
 ### 2.4.80
 - Improvements and bug fixing
+
+### 2.4.79-rc2
+- Implements google reCAPTCHA on the sign up page 
+- Removes the last "Get Template" onboarding step
+
+### 2.4.79-rc1
+- Adds the ability to select the "Business Owner" role in the first step of onboarding
+- Bug fixes in Knowledge Base
 
 ### 2.4.79
 - Adds the "News and documentation" section to the home page

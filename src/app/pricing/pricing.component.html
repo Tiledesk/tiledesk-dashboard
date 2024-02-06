@@ -9,7 +9,7 @@ background-size: 475px 449px, 188px 100%, 179px 100%;
 background-position: right -12px bottom,right,calc(100% - 179px);    background-repeat: no-repeat; -->
 
   <div style="min-height: calc(100vh - 53px);" class="plan-bckgrnd"
-    [ngClass]="{'a-plan-bckgrnd' : planName === PLAN_NAME.A, 'b-plan-bckgrnd' : planName === PLAN_NAME.B, 'c-plan-bckgrnd' : planName === PLAN_NAME.C}">
+    [ngClass]="{'a-plan-bckgrnd' : planName === PLAN_NAME.D, 'b-plan-bckgrnd' : planName === PLAN_NAME.E, 'c-plan-bckgrnd' : planName === PLAN_NAME.F}">
     <!-- <div class="row">
       <div class="col-md-12"> -->
     <div class="close-pricing-page" *ngIf=displayClosePricingPageBtn>
@@ -32,268 +32,139 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
                   <span class="css-1ff36h2 eab6zq53 pricing-page-header-title-text">Upgrade</span>
                 </div>
               </h2>
-              <!-- <div class="css-le9b4r ev1261q3 pricing-page-header-period-switch-wpr">
+
+
+              <!-- <div *ngIf="planName !== PLAN_NAME.F" class="css-le9b4r ev1261q3 pricing-page-header-period-switch-wpr">
                 <div class="css-rx6g2d ev1261q2 pricing-page-header-period-switch">
-                  <button class="css-xie4lp ev1261q1 selected-period-btn ">Monthly</button>
-                  <button class="css-ppa1gj ev1261q1 period-btn">Annually</button>
+                  <button class="css-xie4lp ev1261q1 period-btn" [ngClass]="{'selected-period-btn': monthlyPeriod}"
+                    (click)="selectedPeriod('monthly')">
+                    Monthly
+                  </button>
+                  <button class="css-ppa1gj ev1261q1 period-btn" [ngClass]="{'selected-period-btn': annualPeriod}"
+                    (click)="selectedPeriod('annual')">
+                    Annually
+                  </button>
                 </div>
-                <span class="css-ji9n63 ev1261q0">😍<span size="4" class="css-1mug68f e1soz8mc0">
-                  </span>2 months free
-                  <span size="4" class="css-1mug68f e1soz8mc0">
-                  </span>
-                  <svg width="24" height="24" viewBox="0 0 19 18" xmlns="http://www.w3.org/2000/svg" fill="none"
-                    class="css-0 e11k6mr30" style="min-width: 24px; min-height: 24px;">
+                <span class="css-ji9n63 ev1261q0 two-months-free-text-container">
+                  <span size="4" class="css-1mug68f"></span>
+                  25% OFF
+                  <span size="4" class="css-1mug68fspan-4"></span>
+                  <svg width="23" height="26" viewBox="0 0 23 26" fill="#647491" xmlns="http://www.w3.org/2000/svg"
+                    class="absolute left-full ml-2.5" style="transform: translate(68px, -30px);">
                     <path
-                      d="M13.5 7.5l-1.057 1.058-.066-.058-1.627-1.627v3.277c0 2.07-1.68 3.75-3.75 3.75H3.5v-1.5H7a2.257 2.257 0 002.25-2.25V6.873L7.565 8.558 6.5 7.5 10 4l3.5 3.5z"
-                      fill="#080F1A"></path>
+                      d="M1.15324 17.5239C0.890232 17.4397 0.608797 17.5847 0.524632 17.8477C0.440467 18.1107 0.585444 18.3921 0.848448 18.4763L1.15324 17.5239ZM15.7704 4.40175C15.5065 4.32035 15.2266 4.46828 15.1452 4.73215L13.8187 9.0322C13.7373 9.29607 13.8852 9.57597 14.1491 9.65737C14.413 9.73877 14.6929 9.59084 14.7743 9.32697L15.9534 5.50471L19.7756 6.68381C20.0395 6.76521 20.3194 6.61729 20.4008 6.35342C20.4822 6.08954 20.3343 5.80965 20.0704 5.72825L15.7704 4.40175ZM0.848448 18.4763C7.16209 20.4968 12.5024 20.0472 15.5257 17.4918C18.6129 14.8825 19.0555 10.3044 16.065 4.64591L15.1809 5.11316C18.0675 10.5751 17.4486 14.5573 14.8802 16.7281C12.248 18.9529 7.33875 19.5033 1.15324 17.5239L0.848448 18.4763Z">
+                    </path>
                   </svg>
+
                 </span>
               </div> -->
+
+
             </div>
             <div class="css-sjtw19 eg3bate2 plan-switch-wpr">
               <div class="css-rx6g2d eg3bate1 plan-switch-btns-wpr">
-                <button class="css-xie4lp eg3bate0 plan-btn" [ngClass]="{'selected-plan-btn': planName === PLAN_NAME.A}"
-                  (click)="selected_Plan(PLAN_NAME.A)">
-                  For small teams & startups
+                <button class="css-xie4lp eg3bate0 plan-btn" [ngClass]="{'selected-plan-btn': planName === PLAN_NAME.D}"
+                  (click)="selected_Plan(PLAN_NAME.D)">
+                  Basic
 
                 </button>
-                <button class="css-ppa1gj eg3bate0 plan-btn" [ngClass]="{'selected-plan-btn': planName === PLAN_NAME.B}"
-                  (click)="selected_Plan(PLAN_NAME.B)">
-                  For larger teams & scale-ups
+                <button class="css-ppa1gj eg3bate0 plan-btn" [ngClass]="{'selected-plan-btn': planName === PLAN_NAME.E}"
+                  (click)="selected_Plan(PLAN_NAME.E)">
+                  Premium
                 </button>
-                <button class="css-ppa1gj eg3bate0 plan-btn" [ngClass]="{'selected-plan-btn': planName === PLAN_NAME.C}"
-                  (click)="selected_Plan(PLAN_NAME.C)">
-                  For medium & large enterprises
+                <button class="css-ppa1gj eg3bate0 plan-btn" [ngClass]="{'selected-plan-btn': planName === PLAN_NAME.F}"
+                  (click)="selected_Plan(PLAN_NAME.F)">
+                  Custom
                 </button>
               </div>
-            </div>
-            <span size="24" class="css-5ovca5 e1soz8mc0 span-24"></span>
-            <!-- <div class="all-plan-features" style="display: flex;">
-              <div class="plan-features-icon">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 16 16" fill="primary"
-                  class="css-zbzjbd e11k6mr30 check-icon" style="min-width: 14px; min-height: 14px;">
-                  <path  fill="none" d="M0 0h16v16H0z"></path>
-                  <path d="M6 10.8L3.2 8l-.933.933L6 12.667l8-8-.933-.934z"></path>
-                </svg>
-              </div>
-              <span size="8" class="span-8"></span>
-              <div class="plan-features-text">14 days free trial</div>
-              
-              <div class="plan-features-icon">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 16 16" fill="primary"
-                  class="css-zbzjbd e11k6mr30 check-icon" style="min-width: 14px; min-height: 14px;">
-                  <path  fill="none" d="M0 0h16v16H0z"></path>
-                  <path d="M6 10.8L3.2 8l-.933.933L6 12.667l8-8-.933-.934z"></path>
-                </svg>
-              </div>
-              <span size="8" class="span-8"></span>
-              <div class="plan-features-text">No credit card required</div>
 
-              <div class="plan-features-icon">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 16 16" fill="primary"
-                  class="css-zbzjbd e11k6mr30 check-icon" style="min-width: 14px; min-height: 14px;">
-                  <path  fill="none" d="M0 0h16v16H0z"></path>
-                  <path d="M6 10.8L3.2 8l-.933.933L6 12.667l8-8-.933-.934z"></path>
-                </svg>
-              </div>
-              <span size="8" class="span-8"></span>
-              <div class="plan-features-text">Auto switch to Free after trial</div>
-           
-            </div> -->
-
-            <span size="24" class="css-5ovca5 e1soz8mc0 span-24"></span>
-            <div  class="css-4lq111 e194a3xf5 plan-card-wpr">
-              <div class="css-82a6rk e194a3xf2 plan-card-left-content">
-                <h2 weight="500" class="e194a3xf4 css-ai3f0v eimqq0f0 plan-card-title">
-                  {{ planName }}
-                </h2>
-                <span size="8" class="css-yn1por e1soz8mc0 span-8"></span>
-                <p weight="400" class="e194a3xf3 css-1rr139x eimqq0f0 plan-description">
+              <div>
+                <p weight="400" class="e194a3xf3 css-1rr139x eimqq0f0 plan-description" style="margin-top: 8px">
                   <span>
                     {{planDecription}}
                   </span>
                 </p>
-                <span size="8" class="css-1sx5jt9 e1soz8mc0 span-8"> </span>
+
+              </div>
+            </div>
+
+            <span size="16" class="css-5ovca5 span-16"></span>
+            <span size="24" class="css-5ovca5 span-24"></span>
+
+            <div class="css-4lq111 e194a3xf5 plan-card-wpr">
+              <div class="css-82a6rk e194a3xf2 plan-card-left-content">
+                <h2 weight="500" class="e194a3xf4 css-ai3f0v eimqq0f0 plan-card-title">
+                  {{ planName }}
+                </h2>
+                <!-- <span size="8" class="css-yn1por span-8"></span>
+                <p weight="400" class="e194a3xf3 css-1rr139x eimqq0f0 plan-description">
+                  <span>
+                    {{planDecription}}
+                  </span>
+                </p> -->
+                <span size="8" class="css-1sx5jt9 span-8"> </span>
 
                 <div class="highlighted-features-wpr">
                   <span *ngFor="let feature of highlightedFeatures" class="highlighted-features"
                     [ngStyle]="{'color': feature.color, 'background-color':  feature.background}">
                     <div class="highlighted-feature"> {{feature.feature}} </div>
                   </span>
+
                 </div>
+                <!-- <div *ngIf="planName === PLAN_NAME.D">
+                  Need more seats? 8€ / Seat
+                  Need more Conversations? 10€ / 500 Conversations
+                </div> -->
 
-                <span size="16" class="css-1sx5jt9 e1soz8mc0 span-16"> </span>
-                <div class="css-w1ej1e eaklcf32 plan-features">
-                  <ul class="css-1b45418 eaklcf34 plan-features-wpr">
+                <span size="16" class="css-1sx5jt9 span-16"> </span>
+                <div class="plan-features">
+                  <ul class="plan-features-wpr">
 
 
-                    <li class="css-1655qqu eaklcf33 plan-features" *ngFor="let feature of planFeatures">
-                      <div class="css-u49bkm e15c8v5c0 plan-features-text-and-icon-wpr" style="position: relative;">
-                        <div class="css-i03ybx eaklcf31 plan-features-icon">
+                    <li class="plan-features" *ngFor="let feature of planFeatures">
+                      <div class="plan-features-text-and-icon-wpr" style="position: relative;">
+                        <div class="plan-features-icon">
                           <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 16 16"
-                            fill="primary" class="css-zbzjbd e11k6mr30 check-icon"
+                            fill="primary" class="check-icon"
                             style="min-width: 14px; min-height: 14px;">
                             <path fill="none" d="M0 0h16v16H0z"></path>
                             <path d="M6 10.8L3.2 8l-.933.933L6 12.667l8-8-.933-.934z"></path>
                           </svg>
                         </div>
-                        <span size="16" class="css-1pmigyd e1soz8mc0 span-16"></span>
+                        <span size="16" class="span-16"></span>
+                        <div class="css-1sdeyeu eaklcf30 plan-features-text">{{feature}}</div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+                <!-- --------------------------------- -->
+                <!-- Additional Features -->
+                <!-- --------------------------------- -->
+                <div class="additional-plan-features">
+                  <div class="contact-sales-additional-features" *ngIf="planName !== PLAN_NAME.F">
+                   Additional Features
+                  </div>
+                  <ul class="plan-features-wpr">
+                    <li class="plan-features" *ngFor="let feature of additionalFeatures">
+                      <div class="plan-features-text-and-icon-wpr" style="position: relative;">
+                        <div class="plan-features-icon">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 16 16"
+                            fill="primary" class="check-icon"
+                            style="min-width: 14px; min-height: 14px;">
+                            <path fill="none" d="M0 0h16v16H0z"></path>
+                            <path d="M6 10.8L3.2 8l-.933.933L6 12.667l8-8-.933-.934z"></path>
+                          </svg>
+                        </div>
+                        <span size="16" class="span-16"></span>
                         <div class="css-1sdeyeu eaklcf30 plan-features-text">{{feature}}</div>
                       </div>
                     </li>
 
-
-                    <!-- <li class="css-1655qqu eaklcf33 plan-features">
-                      <div class="css-u49bkm e15c8v5c0 plan-features-text-and-icon-wpr" style="position: relative;">
-                        <div class="css-i03ybx eaklcf31 plan-features-icon">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 16 16"
-                            fill="primary" class="css-zbzjbd e11k6mr30" style="min-width: 14px; min-height: 14px;">
-                            <path fill="none" d="M0 0h16v16H0z"></path>
-                            <path d="M6 10.8L3.2 8l-.933.933L6 12.667l8-8-.933-.934z"></path>
-                          </svg>
-                        </div>
-                        <span size="16" class="css-1pmigyd e1soz8mc0 span-16"></span>
-                        <div class="css-1sdeyeu eaklcf30 plan-features-text">Live Visitors List</div>
-                      </div>
-                    </li> -->
-
-
-                    <!-- <li class="css-1655qqu eaklcf33 plan-features">
-                      <div class="css-u49bkm e15c8v5c0 plan-features-text-and-icon-wpr" style="position: relative;">
-                        <div class="css-i03ybx eaklcf31 plan-features-icon">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 16 16"
-                            fill="primary" class="css-zbzjbd e11k6mr30" style="min-width: 14px; min-height: 14px;">
-                            <path fill="none" d="M0 0h16v16H0z"></path>
-                            <path d="M6 10.8L3.2 8l-.933.933L6 12.667l8-8-.933-.934z"></path>
-                          </svg>
-                        </div>
-                        <span size="16" class="css-1pmigyd e1soz8mc0 span-16"></span>
-                        <div class="css-1sdeyeu eaklcf30 plan-features-text">Viewed Pages</div>
-                      </div>
-                    </li> -->
-
-
-
-                    <!-- <li class="css-1655qqu eaklcf33 plan-features">
-                      <div class="css-u49bkm e15c8v5c0 plan-features-text-and-icon-wpr" style="position: relative;">
-                        <div class="css-i03ybx eaklcf31 plan-features-icon">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 16 16"
-                            fill="primary" class="css-zbzjbd e11k6mr30" style="min-width: 14px; min-height: 14px;">
-                            <path fill="none" d="M0 0h16v16H0z"></path>
-                            <path d="M6 10.8L3.2 8l-.933.933L6 12.667l8-8-.933-.934z"></path>
-                          </svg>
-                        </div>
-                        <span size="16" class="css-1pmigyd e1soz8mc0 span-16"></span>
-                        <div class="css-1sdeyeu eaklcf30 plan-features-text">Advanced Shopify integration</div>
-                      </div>
-                    </li> -->
-
-                    <!-- <li class="css-1655qqu eaklcf33 plan-features">
-                      <div class="css-u49bkm e15c8v5c0 plan-features-text-and-icon-wpr" style="position: relative;">
-                        <div class="css-i03ybx eaklcf31 plan-features-icon">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 16 16"
-                            fill="primary" class="css-zbzjbd e11k6mr30" style="min-width: 14px; min-height: 14px;">
-                            <path fill="none" d="M0 0h16v16H0z"></path>
-                            <path d="M6 10.8L3.2 8l-.933.933L6 12.667l8-8-.933-.934z"></path>
-                          </svg>
-                        </div>
-                        <span size="16" class="css-1pmigyd e1soz8mc0 span-16"></span>
-                        <div class="css-1sdeyeu eaklcf30 plan-features-text">Additional operator seats</div>
-                      </div>
-                    </li> -->
-
-
-                    <!-- <li class="css-1655qqu eaklcf33 plan-features">
-                      <div class="css-u49bkm e15c8v5c0 plan-features-text-and-icon-wpr" style="position: relative;">
-                        <div class="css-i03ybx eaklcf31 plan-features-icon">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 16 16"
-                            fill="primary" class="css-zbzjbd e11k6mr30" style="min-width: 14px; min-height: 14px;">
-                            <path fill="none" d="M0 0h16v16H0z"></path>
-                            <path d="M6 10.8L3.2 8l-.933.933L6 12.667l8-8-.933-.934z"></path>
-                          </svg>
-                        </div>
-                        <span size="16" class="css-1pmigyd e1soz8mc0 span-16"></span>
-                        <div class="css-1sdeyeu eaklcf30 plan-features-text">Unlimited conversations</div>
-                      </div>
-                    </li> -->
-
-
-                    <!-- <li class="css-1655qqu eaklcf33 plan-features">
-                      <div class="css-u49bkm e15c8v5c0 plan-features-text-and-icon-wpr" style="position: relative;">
-                        <div class="css-i03ybx eaklcf31 plan-features-icon">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 16 16"
-                            fill="primary" class="css-zbzjbd e11k6mr30" style="min-width: 14px; min-height: 14px;">
-                            <path fill="none" d="M0 0h16v16H0z"></path>
-                            <path d="M6 10.8L3.2 8l-.933.933L6 12.667l8-8-.933-.934z"></path>
-                          </svg>
-                        </div>
-                        <span size="16" class="css-1pmigyd e1soz8mc0 span-16"></span>
-                        <div class="css-1sdeyeu eaklcf30 plan-features-text">Analytics</div>
-                      </div>
-                    </li> -->
-
-                    <!-- <li class="css-1655qqu eaklcf33 plan-features">
-                      <div class="css-u49bkm e15c8v5c0 plan-features-text-and-icon-wpr" style="position: relative;">
-                        <div class="css-i03ybx eaklcf31 plan-features-icon">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 16 16"
-                            fill="primary" class="css-zbzjbd e11k6mr30" style="min-width: 14px; min-height: 14px;">
-                            <path fill="none" d="M0 0h16v16H0z"></path>
-                            <path d="M6 10.8L3.2 8l-.933.933L6 12.667l8-8-.933-.934z"></path>
-                          </svg>
-                        </div>
-                        <span size="16" class="css-1pmigyd e1soz8mc0 span-16"></span>
-                        <div class="css-1sdeyeu eaklcf30 plan-features-text">Agent permissions</div>
-                      </div>
-                    </li> -->
-
-
-                    <!-- <li class="css-1655qqu eaklcf33 plan-features">
-                      <div class="css-u49bkm e15c8v5c0 plan-features-text-and-icon-wpr" style="position: relative;">
-                        <div class="css-i03ybx eaklcf31 plan-features-icon">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 16 16"
-                            fill="primary" class="css-zbzjbd e11k6mr30" style="min-width: 14px; min-height: 14px;">
-                            <path fill="none" d="M0 0h16v16H0z"></path>
-                            <path d="M6 10.8L3.2 8l-.933.933L6 12.667l8-8-.933-.934z"></path>
-                          </svg>
-                        </div>
-                        <span size="16" class="css-1pmigyd e1soz8mc0 span-16"></span>
-                        <div class="css-1sdeyeu eaklcf30 plan-features-text">Customer notes</div>
-                      </div>
-                    </li> -->
-
-                    <!-- <li class="css-1655qqu eaklcf33 plan-features">
-                      <div class="css-u49bkm e15c8v5c0 plan-features-text-and-icon-wpr" style="position: relative;">
-                        <div class="css-i03ybx eaklcf31 plan-features-icon">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 16 16"
-                            fill="primary" class="css-zbzjbd e11k6mr30" style="min-width: 14px; min-height: 14px;">
-                            <path fill="none" d="M0 0h16v16H0z"></path>
-                            <path d="M6 10.8L3.2 8l-.933.933L6 12.667l8-8-.933-.934z"></path>
-                          </svg>
-                        </div>
-                        <span size="16" class="css-1pmigyd e1soz8mc0 span-16"></span>
-                        <div class="css-1sdeyeu eaklcf30 plan-features-text">Departments</div>
-                      </div>
-                    </li> -->
-
-                    <!-- <li class="css-1655qqu eaklcf33 plan-features">
-                      <div class="css-u49bkm e15c8v5c0 plan-features-text-and-icon-wpr" style="position: relative;">
-                        <div class="css-i03ybx eaklcf31 plan-features-icon">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 16 16"
-                            fill="primary" class="css-zbzjbd e11k6mr30" style="min-width: 14px; min-height: 14px;">
-                            <path fill="none" d="M0 0h16v16H0z"></path>
-                            <path d="M6 10.8L3.2 8l-.933.933L6 12.667l8-8-.933-.934z"></path>
-                          </svg>
-                        </div>
-                        <span size="16" class="css-1pmigyd e1soz8mc0 span-16"></span>
-                        <div class="css-1sdeyeu eaklcf30 plan-features-text">24/5 Live Chat Support</div>
-                      </div>
-                    </li> -->
                   </ul>
+                  
                 </div>
-                <!-- <span size="24" class="css-5ovca5 e1soz8mc0"></span>
+
+                <!-- <span size="24" class="css-5ovca5"></span>
                 <button type="button"
                   class=" btn btn-new btn-size-m btn-link btn-inline undefined"><span>
                     <div class="css-u49bkm e15c8v5c0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -312,17 +183,17 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
                     <span class="e1q33r5y1 css-1wzstm6 eeqvxqv0 plan-card-price">
                       <span *ngIf="monthlyPeriod"> {{monthlyPrice}} </span>
                       <span *ngIf="annualPeriod"> {{annualPrice}} </span>
-                      <span *ngIf="planName !== PLAN_NAME.C" class="plan-card-currency">EUR</span>
+                      <span *ngIf="planName !== PLAN_NAME.F" class="plan-card-currency">EUR</span>
                     </span>
-                    <span *ngIf="planName !== PLAN_NAME.C">
+                    <span *ngIf="planName !== PLAN_NAME.F">
                       <span *ngIf="monthlyPeriod" class="css-1y0ino5 e1q33r5y0 plan-card-price-period">/mo.</span>
                       <span *ngIf="annualPeriod" class="css-1y0ino5 e1q33r5y0 plan-card-price-period">/yr.</span>
                     </span>
                   </span>
                 </div>
-                <span size="12" class="css-14ola99 e1soz8mc0 span-12"></span>
+                <span size="12" class="css-14ola99 span-12"></span>
 
-                <div *ngIf="planName !== PLAN_NAME.C" class="css-le9b4r ev1261q3 pricing-page-header-period-switch-wpr">
+                <div *ngIf="planName !== PLAN_NAME.F" class="css-le9b4r ev1261q3 pricing-page-header-period-switch-wpr">
                   <div class="css-rx6g2d ev1261q2 pricing-page-header-period-switch">
                     <button class="css-xie4lp ev1261q1 period-btn" [ngClass]="{'selected-period-btn': monthlyPeriod}"
                       (click)="selectedPeriod('monthly')">
@@ -334,36 +205,81 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
                     </button>
                   </div>
                   <span class="css-ji9n63 ev1261q0 two-months-free-text-container">
-                    <span size="4" class="css-1mug68f e1soz8mc0"></span>
-                    25% OFF
-                    <span size="4" class="css-1mug68f e1soz8mc0 span-4"></span>
+                    <span size="4" class="css-1mug68f"></span>
+                    <!-- 25% OFF -->
+                    2 months for free
+                    <span size="4" class="css-1mug68f span-4"></span>
                     <svg width="23" height="26" viewBox="0 0 23 26" fill="#647491" xmlns="http://www.w3.org/2000/svg"
-                      class="absolute left-full ml-2.5" style="transform: translate(68px, -30px);">
+                      class="absolute left-full ml-2.5" style="transform: translate(112px, -30px);">
                       <path
                         d="M1.15324 17.5239C0.890232 17.4397 0.608797 17.5847 0.524632 17.8477C0.440467 18.1107 0.585444 18.3921 0.848448 18.4763L1.15324 17.5239ZM15.7704 4.40175C15.5065 4.32035 15.2266 4.46828 15.1452 4.73215L13.8187 9.0322C13.7373 9.29607 13.8852 9.57597 14.1491 9.65737C14.413 9.73877 14.6929 9.59084 14.7743 9.32697L15.9534 5.50471L19.7756 6.68381C20.0395 6.76521 20.3194 6.61729 20.4008 6.35342C20.4822 6.08954 20.3343 5.80965 20.0704 5.72825L15.7704 4.40175ZM0.848448 18.4763C7.16209 20.4968 12.5024 20.0472 15.5257 17.4918C18.6129 14.8825 19.0555 10.3044 16.065 4.64591L15.1809 5.11316C18.0675 10.5751 17.4486 14.5573 14.8802 16.7281C12.248 18.9529 7.33875 19.5033 1.15324 17.5239L0.848448 18.4763Z">
                       </path>
                     </svg>
-
                   </span>
+
                 </div>
 
               </div> <!-- right-content -->
             </div>
+
             <!-- --------------------- -->
             <!-- Plan A Montly -->
             <!-- --------------------- -->
-            <div class="checkout-btn-wpr" *ngIf="monthlyPeriod && planName === PLAN_NAME.A && profileType === 'free'"
+            <!-- <div class="checkout-btn-wpr" (click)="openPaymentLinkMontlyPlanA()">
+              <button id="monthly-plan-a" type="button"
+                class=" btn btn-new btn-size-xl-round btn--primary css-km1x31 epaijzs0">
+                <span> Go to checkout Growth M </span>
+              </button>
+            </div> -->
+
+            <!-- --------------------- -->
+            <!-- Plan A Annualy -->
+            <!-- --------------------- -->
+            <!-- <div class="checkout-btn-wpr"
               (click)="openPaymentLinkMontlyPlanA()">
+              <button id="monthly-plan-a" type="button"
+                class=" btn btn-new btn-size-xl-round btn--primary css-km1x31 epaijzs0">
+                <span> Go to checkout Growth M </span>
+              </button>
+            </div> -->
+
+            <!-- --------------------- -->
+            <!-- Plan B Montly -->
+            <!-- --------------------- -->
+            <!-- <div class="checkout-btn-wpr"
+              (click)="openPaymentLinkMontlyPlanB()">
+              <button id="monthly-plan-a" type="button"
+                class=" btn btn-new btn-size-xl-round btn--primary css-km1x31 epaijzs0">
+                <span> Go to checkout Scale M </span>
+              </button>
+            </div> -->
+
+            <!-- --------------------- -->
+            <!-- Plan A Montly -->
+            <!-- --------------------- -->
+            <!-- <div class="checkout-btn-wpr"
+              (click)="openPaymentLinkAnnuallyPlanB()">
+              <button id="monthly-plan-a" type="button"
+                class=" btn btn-new btn-size-xl-round btn--primary css-km1x31 epaijzs0">
+                <span> Go to checkout Scale A </span>
+              </button>
+            </div> -->
+
+            <!-- --------------------- -->
+            <!-- Plan D Montly -->
+            <!-- --------------------- -->
+            <div class="checkout-btn-wpr" *ngIf="monthlyPeriod && planName === PLAN_NAME.D && profileType === 'free'"
+              (click)="openPaymentLinkMontlyPlanD()">
               <button id="monthly-plan-a" type="button"
                 class=" btn btn-new btn-size-xl-round btn--primary css-km1x31 epaijzs0">
                 <span> Go to checkout </span>
               </button>
             </div>
             <!-- --------------------- -->
-            <!-- Plan A Annually -->
+            <!-- Plan D Annually -->
             <!-- --------------------- -->
-            <div class="checkout-btn-wpr" *ngIf="annualPeriod && planName === PLAN_NAME.A && profileType === 'free'"
-              (click)="openPaymentLinkAnnuallyPlanA()">
+            <div class="checkout-btn-wpr" *ngIf="annualPeriod && planName === PLAN_NAME.D && profileType === 'free'"
+              (click)="openPaymentLinkAnnuallyPlanD()">
               <button id="annually-plan-a" type="button"
                 class=" btn btn-new btn-size-xl-round btn--primary css-km1x31 epaijzs0">
                 <span> Go to checkout </span>
@@ -371,9 +287,9 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
             </div>
 
             <!-- --------------------------------- -->
-            <!-- Plan A when already exist a Plan  -->
+            <!-- Plan D when already exist a Plan  -->
             <!-- --------------------------------- -->
-            <div class="checkout-btn-wpr" *ngIf="planName === PLAN_NAME.A && profileType !== 'free'"
+            <div class="checkout-btn-wpr" *ngIf="planName === PLAN_NAME.D && profileType !== 'free'"
               (click)="contactUs(planName)">
               <button id="plan-a-contact-us" type="button"
                 class=" btn btn-new btn-size-xl-round btn--primary css-km1x31 epaijzs0">
@@ -382,10 +298,10 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
             </div>
 
             <!-- --------------------- -->
-            <!-- Plan B Montly -->
+            <!-- Plan E Montly -->
             <!-- --------------------- -->
-            <div class="checkout-btn-wpr" *ngIf="monthlyPeriod && planName === PLAN_NAME.B && profileType === 'free'"
-              (click)="openPaymentLinkMontlyPlanB()">
+            <div class="checkout-btn-wpr" *ngIf="monthlyPeriod && planName === PLAN_NAME.E && profileType === 'free'"
+              (click)="openPaymentLinkMontlyPlanE()">
               <button id="monthly-plan-b" type="button"
                 class=" btn btn-new btn-size-xl-round btn--primary css-km1x31 epaijzs0">
                 <span> Go to checkout </span>
@@ -393,10 +309,10 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
             </div>
 
             <!-- --------------------- -->
-            <!-- Plan B Annually -->
+            <!-- Plan E Annually -->
             <!-- --------------------- -->
-            <div class="checkout-btn-wpr" *ngIf="annualPeriod && planName === PLAN_NAME.B && profileType === 'free'"
-              (click)="openPaymentLinkAnnuallyPlanB()">
+            <div class="checkout-btn-wpr" *ngIf="annualPeriod && planName === PLAN_NAME.E && profileType === 'free'"
+              (click)="openPaymentLinkAnnuallyPlanE()">
               <button id="annually-plan-b" type="button"
                 class=" btn btn-new btn-size-xl-round btn--primary css-km1x31 epaijzs0">
                 <span> Go to checkout </span>
@@ -404,9 +320,9 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
             </div>
 
             <!-- ----------------------------------------------- -->
-            <!-- Plan B when already exist a  payment type Plan -->
+            <!-- Plan E when already exist a  payment type Plan -->
             <!-- ----------------------------------------------- -->
-            <div class="checkout-btn-wpr" *ngIf="planName === PLAN_NAME.B && profileType !== 'free'"
+            <div class="checkout-btn-wpr" *ngIf="planName === PLAN_NAME.E && profileType !== 'free'"
               (click)="contactUs(planName)">
               <button id="plan-b-contact-us" type="button"
                 class=" btn btn-new btn-size-xl-round btn--primary css-km1x31 epaijzs0">
@@ -415,9 +331,9 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
             </div>
 
             <!-- ----------------------------------------------- -->
-            <!-- Plan C  openPaymentLinkPlanC() -->
+            <!-- Plan F openPaymentLinkPlanC() -->
             <!-- ----------------------------------------------- -->
-            <div class="checkout-btn-wpr" *ngIf="planName === PLAN_NAME.C" (click)="contactUs(planName)">
+            <div class="checkout-btn-wpr" *ngIf="planName === PLAN_NAME.F" (click)="contactUs(planName)">
               <button id="plan-c" type="button" class=" btn btn-new btn-size-xl-round btn--primary css-km1x31 epaijzs0">
                 <span> Contact Sales </span>
               </button>
@@ -433,287 +349,17 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
             <!-- ----------------------------------------------- -->
             <!-- TEST LIVE PLAN 3.00 Eur/Daily-->
             <!-- ----------------------------------------------- -->
-            <div class="checkout-btn-wpr" *ngIf="DISPLAY_BTN_PLAN_TEST_3_EURXDAY_LIVE === true" (click)="openPaymentTestLivePaymentLink()">
-              <button id="test-live-plan" type="button" class=" btn btn-new btn-size-xl-round btn--primary css-km1x31 epaijzs0">
+            <div class="checkout-btn-wpr" *ngIf="DISPLAY_BTN_PLAN_TEST_3_EURXDAY_LIVE === true"
+              (click)="openPaymentTestLivePaymentLink()">
+              <button id="test-live-plan" type="button"
+                class=" btn btn-new btn-size-xl-round btn--primary css-km1x31 epaijzs0">
                 <span> TEST LIVE PLAN 3.00 Eur/Daily </span>
               </button>
             </div>
 
-            <span size="20" class="css-g4vijh e1soz8mc0"></span>
-            <!-- <div data-testid="automation" class="css-4lq111 e194a3xf5">
-              <div class="css-82a6rk e194a3xf2">
-                <h2 weight="500" class="e194a3xf4 css-ai3f0v eimqq0f0">Chatbots</h2><span size="8"
-                  class="css-yn1por e1soz8mc0"></span>
-                <p weight="400" class="e194a3xf3 css-1rr139x eimqq0f0"><span>Reach your customers with advanced
-                    chatbots</span></p><span size="32" class="css-1sx5jt9 e1soz8mc0"></span>
-                <div class="css-w1ej1e eaklcf32">
-                  <ul class="css-1b45418 eaklcf34">
-                    <li class="css-1655qqu eaklcf33">
-                      <div class="css-u49bkm e15c8v5c0" style="position: relative;">
-                        <div class="css-i03ybx eaklcf31"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
-                            viewBox="0 0 16 16" fill="primary" class="css-zbzjbd e11k6mr30"
-                            style="min-width: 14px; min-height: 14px;">
-                            <path fill="none" d="M0 0h16v16H0z"></path>
-                            <path d="M6 10.8L3.2 8l-.933.933L6 12.667l8-8-.933-.934z"></path>
-                          </svg></div><span size="16" class="css-1pmigyd e1soz8mc0"></span>
-                        <div class="css-1sdeyeu eaklcf30">Generate more leads</div>
-                      </div>
-                    </li>
-                    <li class="css-1655qqu eaklcf33">
-                      <div class="css-u49bkm e15c8v5c0" style="position: relative;">
-                        <div class="css-i03ybx eaklcf31"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
-                            viewBox="0 0 16 16" fill="primary" class="css-zbzjbd e11k6mr30"
-                            style="min-width: 14px; min-height: 14px;">
-                            <path fill="none" d="M0 0h16v16H0z"></path>
-                            <path d="M6 10.8L3.2 8l-.933.933L6 12.667l8-8-.933-.934z"></path>
-                          </svg></div><span size="16" class="css-1pmigyd e1soz8mc0"></span>
-                        <div class="css-1sdeyeu eaklcf30">Recover abandoned carts</div>
-                      </div>
-                    </li>
-                    <li class="css-1655qqu eaklcf33">
-                      <div class="css-u49bkm e15c8v5c0" style="position: relative;">
-                        <div class="css-i03ybx eaklcf31"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
-                            viewBox="0 0 16 16" fill="primary" class="css-zbzjbd e11k6mr30"
-                            style="min-width: 14px; min-height: 14px;">
-                            <path fill="none" d="M0 0h16v16H0z"></path>
-                            <path d="M6 10.8L3.2 8l-.933.933L6 12.667l8-8-.933-.934z"></path>
-                          </svg></div><span size="16" class="css-1pmigyd e1soz8mc0"></span>
-                        <div class="css-1sdeyeu eaklcf30">Welcome your visitors</div>
-                      </div>
-                    </li>
-                    <li class="css-1655qqu eaklcf33">
-                      <div class="css-u49bkm e15c8v5c0" style="position: relative;">
-                        <div class="css-i03ybx eaklcf31"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
-                            viewBox="0 0 16 16" fill="primary" class="css-zbzjbd e11k6mr30"
-                            style="min-width: 14px; min-height: 14px;">
-                            <path fill="none" d="M0 0h16v16H0z"></path>
-                            <path d="M6 10.8L3.2 8l-.933.933L6 12.667l8-8-.933-.934z"></path>
-                          </svg></div><span size="16" class="css-1pmigyd e1soz8mc0"></span>
-                        <div class="css-1sdeyeu eaklcf30">Answer common questions</div>
-                      </div>
-                    </li>
-                    <li class="css-1655qqu eaklcf33">
-                      <div class="css-u49bkm e15c8v5c0" style="position: relative;">
-                        <div class="css-i03ybx eaklcf31"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
-                            viewBox="0 0 16 16" fill="primary" class="css-zbzjbd e11k6mr30"
-                            style="min-width: 14px; min-height: 14px;">
-                            <path fill="none" d="M0 0h16v16H0z"></path>
-                            <path d="M6 10.8L3.2 8l-.933.933L6 12.667l8-8-.933-.934z"></path>
-                          </svg></div><span size="16" class="css-1pmigyd e1soz8mc0"></span>
-                        <div class="css-1sdeyeu eaklcf30">Engage specific customers</div>
-                      </div>
-                    </li>
-                    <li class="css-1655qqu eaklcf33">
-                      <div class="css-u49bkm e15c8v5c0" style="position: relative;">
-                        <div class="css-i03ybx eaklcf31"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
-                            viewBox="0 0 16 16" fill="primary" class="css-zbzjbd e11k6mr30"
-                            style="min-width: 14px; min-height: 14px;">
-                            <path fill="none" d="M0 0h16v16H0z"></path>
-                            <path d="M6 10.8L3.2 8l-.933.933L6 12.667l8-8-.933-.934z"></path>
-                          </svg></div><span size="16" class="css-1pmigyd e1soz8mc0"></span>
-                        <div class="css-1sdeyeu eaklcf30">24/5 Live Chat Support</div>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-                <span size="24" class="css-5ovca5 e1soz8mc0"></span>
-                <button type="button"
-                  class=" btn btn-new btn-size-m btn-link btn-inline undefined"><span>
-                    <div class="css-u49bkm e15c8v5c0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                        viewBox="0 0 24 24" class="eaklcf35 css-sn499c e11k6mr30"
-                        style="min-width: 24px; min-height: 24px;">
-                        <path d="M7 10l5 5 5-5z"></path>
-                        <path d="M0 0h24v24H0z" fill="none"></path>
-                      </svg><span>See all features</span></div>
-                  </span>
-                </button>
-              </div>
-              <div class="css-4xzedf e194a3xf0"></div>
-              <div class="css-sm9en9 e194a3xf1">
-                <div class="css-1xm9zcw exhfskr0"><span class=""><span class="e1q33r5y1 css-1wzstm6 eeqvxqv0">39<span
-                        class="currency">EUR</span></span><span class="css-1y0ino5 e1q33r5y0">/mo.</span></span></div>
-                <span size="12" class="css-14ola99 e1soz8mc0"></span>
-                <div class="css-12e6gyj e77tja70">
-                  <div width="100%" class="css-leej9y e1crryeb2">
-                    <div class="css-fyxnnm e1crryeb1">
-                      <fieldset class="css-1qhn8e6 e144t2b01">
-                        <legend class="css-goc7yl e144t2b00"><span></span></legend>
-                      </fieldset>
-                      <div aria-activedescendant="" aria-controls="downshift-5-menu" aria-expanded="false"
-                        aria-haspopup="listbox" aria-labelledby="downshift-5-label" id="downshift-5-toggle-button"
-                        role="combobox" tabindex="0" class="css-aumheb e7vvrml3">
-                        <div class="css-y18qpr e7vvrml2">
-                          <div class="css-e81bce ex98fx71"><span>For 40k visitors reached</span></div>
-                        </div>
-                        <div class="css-1o7dtzw e15c8v5c0"><svg xmlns="http://www.w3.org/2000/svg" width="24"
-                            height="24" viewBox="0 0 24 24" class="e1ih5s1 css-ovx0f7 e11k6mr30"
-                            style="min-width: 24px; min-height: 24px;">
-                            <path d="M7 10l5 5 5-5z"></path>
-                            <path d="M0 0h24v24H0z" fill="none"></path>
-                          </svg></div>
-                      </div>
-                    </div>
-                    <ul id="downshift-5-menu" role="listbox" aria-labelledby="downshift-5-label" tabindex="-1"
-                      class="css-1on1jon e1crryeb0"></ul>
-                  </div>
-                </div><span size="12" class="css-14ola99 e1soz8mc0"></span><button type="button"
-                  class=" btn btn-new btn-size-xl btn-primary css-km1x31 epaijzs0"><span>Add to order</span></button>
-              </div>
-            </div> -->
-            <span size="20" class="css-g4vijh e1soz8mc0"></span>
-            <!-- <div data-testid="no_branding" class="css-4lq111 e194a3xf5">
-              <div class="css-82a6rk e194a3xf2">
-                <h2 weight="500" class="e194a3xf4 css-ai3f0v eimqq0f0">Remove Tidio Branding</h2><span size="8"
-                  class="css-yn1por e1soz8mc0"></span>
-                <p weight="400" class="e194a3xf3 css-1rr139x eimqq0f0"><span>Our "Powered by Tidio" logo won't be
-                    displayed to your clients</span></p><span size="32" class="css-1sx5jt9 e1soz8mc0"></span>
-                <div class="css-1qr390g eaklcf32">
-                  <ul class="css-1b45418 eaklcf34">
-                    <li class="css-1655qqu eaklcf33">
-                      <div class="css-u49bkm e15c8v5c0" style="position: relative;">
-                        <div class="css-i03ybx eaklcf31"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
-                            viewBox="0 0 16 16" fill="primary" class="css-zbzjbd e11k6mr30"
-                            style="min-width: 14px; min-height: 14px;">
-                            <path fill="none" d="M0 0h16v16H0z"></path>
-                            <path d="M6 10.8L3.2 8l-.933.933L6 12.667l8-8-.933-.934z"></path>
-                          </svg></div><span size="16" class="css-1pmigyd e1soz8mc0"></span>
-                        <div class="css-1sdeyeu eaklcf30">No Tidio logo in your chat widget</div>
-                      </div>
-                    </li>
-                    <li class="css-1655qqu eaklcf33">
-                      <div class="css-u49bkm e15c8v5c0" style="position: relative;">
-                        <div class="css-i03ybx eaklcf31"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
-                            viewBox="0 0 16 16" fill="primary" class="css-zbzjbd e11k6mr30"
-                            style="min-width: 14px; min-height: 14px;">
-                            <path fill="none" d="M0 0h16v16H0z"></path>
-                            <path d="M6 10.8L3.2 8l-.933.933L6 12.667l8-8-.933-.934z"></path>
-                          </svg></div><span size="16" class="css-1pmigyd e1soz8mc0"></span>
-                        <div class="css-1sdeyeu eaklcf30">No Tidio logo in your email footer</div>
-                      </div>
-                    </li>
-                  </ul>
-                </div><span size="24" class="css-5ovca5 e1soz8mc0"></span>
-              </div>
-              <div class="css-4xzedf e194a3xf0"></div>
-              <div class="css-sm9en9 e194a3xf1">
-                <div class="css-1xm9zcw exhfskr0"><span class=""><span class="e1q33r5y1 css-1wzstm6 eeqvxqv0">20<span
-                        class="currency">EUR</span></span><span class="css-1y0ino5 e1q33r5y0">/mo.</span></span></div>
-                <span size="12" class="css-14ola99 e1soz8mc0"></span><button type="button"
-                  class=" btn btn-new btn-size-xl btn-primary css-km1x31 epaijzs0"><span>Add to order</span></button>
-              </div>
-            </div> -->
-            <span size="20" class="css-g4vijh e1soz8mc0"></span>
+  
           </div>
-          <!-- <div class="css-1qe1uid eab6zq56">
-            <div class="css-1jjcpf8 em7mmwy2">
-              <div class="css-ezk3pk em7mmwy1">
-                <div class="css-18eua7s e1ihm3gv0">
-                  <ul class="css-17ahj8h enwu2w10">
-                    <li class="css-dsvc6p eapie0y0">Order Summary</li>
-                    <li data-testid="communicator"
-                      style="transform: translate3d(0px, 0px, 0px); max-height: 120px; opacity: 1;">
-                      <div class="css-x2zuam es7ipuw0">
-                        <div class="css-vhqjvd eowexd0">Communicator</div>
-                        <div class="css-6ic3ly e1g8tgre1">
-                          <div class="css-fgaqwq e1g8tgre0">
-                            <div class="css-12e6gyj ei1364b0">
-                              <div class="type-secondary select-container css-2b097c-container"><span aria-live="polite"
-                                  aria-atomic="false" aria-relevant="additions text" class="css-7pg0cj-a11yText"></span>
-                                <div class="type-secondary size-l select-content__control css-1bi0jn-control">
-                                  <div
-                                    class="type-secondary size-l select-content__value-container type-secondary size-l select-content__value-container--has-value css-1hwfws3">
-                                    <div
-                                      class="type-secondary size-l select-content__single-value css-1uccc91-singleValue">
-                                      <div class="css-1diyr2h eh3digu1"><span>For 3 operators</span></div>
-                                    </div><input id="react-select-2-input" readonly="" tabindex="0"
-                                      aria-autocomplete="list" class="css-62g3xt-dummyInput" value="">
-                                  </div>
-                                  <div class="type-secondary size-l select-content__indicators css-1wy0on6"><span
-                                      class="type-secondary size-l select-content__indicator-separator css-1okebmr-indicatorSeparator"></span>
-                                    <div
-                                      class="type-secondary size-l select-content__indicator type-secondary size-l select-content__dropdown-indicator css-tlfecz-indicatorContainer"
-                                      aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                        viewBox="0 0 24 24">
-                                        <path d="M7 10l5 5 5-5z"></path>
-                                        <path d="M0 0h24v24H0z" fill="none"></path>
-                                      </svg></div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="css-1tulx1v e1xb40060"><span class=""><span
-                                class="e1q33r5y1 css-qmszw0 eeqvxqv0">57<span class="currency">EUR</span></span><span
-                                class="css-1dhynug e1q33r5y0">/mo.</span></span></div><button color="#647491"
-                            type="button" class="icon button  css-1o9ebhp e1riv9iy0"><svg
-                              xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
-                              <path d="M0 0h24v24H0V0z" fill="none"></path>
-                              <path
-                                d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5l-1-1h-5l-1 1H5v2h14V4h-3.5z">
-                              </path>
-                            </svg>
-                          </button>
-                        </div>
-                      </div>
-                    </li>
-                    <div class="css-x934ki e15anyr80"></div>
-                    <div class="css-7fbm1d e7w2x366">
-                      <div class="css-1eulqrd e7w2x364">
-                        <p weight="500" class="e7w2x365 css-1etkzix eimqq0f0">Add a discount code</p><svg
-                          xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 24 24" width="20"
-                          class="css-0 e11k6mr30" style="min-width: 20px; min-height: 20px;">
-                          <path d="M0 0h24v24H0z" fill="none"></path>
-                          <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path>
-                        </svg>
-                      </div>
-                    </div>
-                    <div class="css-x934ki e15anyr80"></div>
-                    <li style="transform: translate3d(0px, 0px, 0px); height: 46px; opacity: 1;">
-                      <div class="css-luth1l es7ipuw0">
-                        <div class="css-vhqjvd eowexd0">Total:</div>
-                        <div class="css-1tulx1v e1xb40060">
-                          <div><span class=""><span class="e1q33r5y1 css-1yuoer6 eeqvxqv0">57<span
-                                  class="currency">EUR</span></span><span
-                                class="css-1eozk43 e1q33r5y0">/mo.</span></span></div>
-                        </div>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-                <div class="css-4hrzlh ejmtfx50">
-                  <div class="expand-btn-wrapper"><button type="button"
-                      class=" btn btn-new btn-size-xl btn-primary undefined"><span>Update my account</span></button>
-                    <p class="help-text">Change or cancel your plan at any time</p>
-                  </div>
-                </div>
-              </div>
-              <div class="css-87gap3 eeiuv7k3">Monthly<label class="eeiuv7k2 css-aqqgh1 ejwv6lm3"><input type="checkbox"
-                    role="switch" class="css-yzoe38 ejwv6lm1" checked="">
-                  <div class="css-18cdu9c ejwv6lm2"></div>
-                </label>
-                <div class="css-1yuhvjn eeiuv7k1">Yearly<div class="css-7h6p3p eeiuv7k0">(2 months free <svg
-                      xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="css-0 e11k6mr30"
-                      style="min-width: 16px; min-height: 16px;">
-                      <g fill="none">
-                        <path fill="#FDD888"
-                          d="M16.5 14.58c0 1.056-.9 1.92-2 1.92h-11c-1.1 0-2-.864-2-1.92V6.42c0-1.056.9-1.92 2-1.92h11c1.1 0 2 .864 2 1.92v8.16z">
-                        </path>
-                        <path fill="#FDD888"
-                          d="M18 4.875c0 1.031-.9 1.875-2 1.875H2c-1.1 0-2-.844-2-1.875C0 3.844.9 3 2 3h14c1.1 0 2 .844 2 1.875z">
-                        </path>
-                        <path fill="#FCAB40" d="M1.5 6.75h15v.75h-15z"></path>
-                        <path fill="#DA2F47"
-                          d="M9.844.75h-.938C8.13.75 7.5 1.411 7.5 2.227V16.5h3.75V2.227c0-.815-.63-1.477-1.406-1.477z">
-                        </path>
-                        <path fill="#DA2F47"
-                          d="M7.98 3c.561 0 .644-.25.184-.555L4.737.166a.942.942 0 00-1.341.285L2.368 2.16c-.278.463-.047.841.514.841H7.98zm2.04 0c-.561 0-.644-.25-.184-.555L13.263.166a.943.943 0 011.342.285l1.027 1.708c.278.463.047.841-.514.841H10.02z">
-                        </path>
-                      </g>
-                    </svg>)</div>
-                </div>
-              </div>
-            </div>
-          </div> -->
+
         </div>
       </div>
     </div>

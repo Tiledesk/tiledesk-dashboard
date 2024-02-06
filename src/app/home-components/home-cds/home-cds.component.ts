@@ -1,6 +1,7 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'app/core/auth.service';
+import { NotifyService } from 'app/core/notify.service';
 import { Chatbot } from 'app/models/faq_kb-model';
 import { AppConfigService } from 'app/services/app-config.service';
 import { FaqKbService } from 'app/services/faq-kb.service';
@@ -15,18 +16,20 @@ import { takeUntil } from 'rxjs/operators'
   templateUrl: './home-cds.component.html',
   styleUrls: ['./home-cds.component.scss']
 })
-export class HomeCdsComponent implements OnInit {
+export class HomeCdsComponent implements OnInit, OnChanges{
   @Output() goToCreateChatbot = new EventEmitter();
+  // @Output() hasFinishedGetProjectBots = new EventEmitter();
+  @Input() chatbots:  Array<Chatbot> = [];
   private unsubscribe$: Subject<any> = new Subject<any>();
   USER_ROLE: string;
   projectId: string;
   UPLOAD_ENGINE_IS_FIREBASE: boolean;
   storageBucket: string;
   baseUrl: string;
-  chatbots:  Array<Chatbot> = [];
+  // chatbots:  Array<Chatbot> = [];
   chatbotName: string;
   lastUpdatedChatbot: Chatbot;
-  
+  showSpinner: boolean
 
   constructor(
     public appConfigService: AppConfigService,
@@ -34,12 +37,19 @@ export class HomeCdsComponent implements OnInit {
     private usersService: UsersService,
     private logger: LoggerService,
     private router: Router,
-    public auth: AuthService
+    public auth: AuthService,
+    public notify: NotifyService,
   ) { }
 
     ngOnInit(): void {
     this.getUserRole()
-    this.getCurrentProjectAndPrjctBots()
+    this.getCurrentProject()
+   
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log('[HOME-CDS] - chatbots ngOnChanges', this.chatbots);
+    this.sortChatbots()
   }
 
   ngOnDestroy(): void {
@@ -49,7 +59,7 @@ export class HomeCdsComponent implements OnInit {
 
 
 
-  getCurrentProjectAndPrjctBots() {
+  getCurrentProject() {
     this.auth.project_bs
       .pipe(
         takeUntil(this.unsubscribe$)
@@ -58,14 +68,10 @@ export class HomeCdsComponent implements OnInit {
         this.logger.log('[HOME-CDS] $UBSCIBE TO PUBLISHED PROJECT - RES  ', project)
 
         if (project) {
-
           this.projectId = project._id
-
-          this.getImageStorageThenBots();
         }
       }, (error) => {
         this.logger.error('[HOME-CDS] $UBSCIBE TO PUBLISHED PROJECT - ERROR ', error);
-
       }, () => {
         this.logger.log('[HOME-CDS] $UBSCIBE TO PUBLISHED PROJECT * COMPLETE *');
       });
@@ -83,31 +89,64 @@ export class HomeCdsComponent implements OnInit {
   }
 
 
-  getImageStorageThenBots() {
-    if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
+  // getImageStorageThenBots() {
+  //   if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
 
-      this.UPLOAD_ENGINE_IS_FIREBASE = true;
-      const firebase_conf = this.appConfigService.getConfig().firebase;
-      this.storageBucket = firebase_conf['storageBucket'];
-      this.logger.log('[HOME-CDS] - IMAGE STORAGE ', this.storageBucket, 'usecase firebase')
+  //     this.UPLOAD_ENGINE_IS_FIREBASE = true;
+  //     const firebase_conf = this.appConfigService.getConfig().firebase;
+  //     this.storageBucket = firebase_conf['storageBucket'];
+  //     this.logger.log('[HOME-CDS] - IMAGE STORAGE ', this.storageBucket, 'usecase firebase')
 
       
-      this.getProjectBots(this.storageBucket, this.UPLOAD_ENGINE_IS_FIREBASE) // USED FOR COUNT OF BOTS FOR THE NEW HOME-CDS-CREATE-CHATBOT-CREATE-CHATBOT
+  //     this.getProjectBots(this.storageBucket, this.UPLOAD_ENGINE_IS_FIREBASE) // USED FOR COUNT OF BOTS FOR THE NEW HOME-CDS-CREATE-CHATBOT-CREATE-CHATBOT
 
-    } else {
+  //   } else {
 
-      this.UPLOAD_ENGINE_IS_FIREBASE = false;
-      this.baseUrl = this.appConfigService.getConfig().baseImageUrl;
-      this.logger.log('[HOME-CDS] - IMAGE STORAGE ', this.baseUrl, 'usecase native')
+  //     this.UPLOAD_ENGINE_IS_FIREBASE = false;
+  //     this.baseUrl = this.appConfigService.getConfig().baseImageUrl;
+  //     this.logger.log('[HOME-CDS] - IMAGE STORAGE ', this.baseUrl, 'usecase native')
       
-      this.getProjectBots(this.baseUrl, this.UPLOAD_ENGINE_IS_FIREBASE) // USED FOR COUNT OF BOTS FOR THE NEW HOME-CDS-CREATE-CHATBOT-CREATE-CHATBOT
-    }
-  }
+  //     this.getProjectBots(this.baseUrl, this.UPLOAD_ENGINE_IS_FIREBASE) // USED FOR COUNT OF BOTS FOR THE NEW HOME-CDS-CREATE-CHATBOT-CREATE-CHATBOT
+  //   }
+  // }
 
 
-  getProjectBots(storage, uploadEngineIsFirebase) {
-    this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
-      this.chatbots = faqKb
+  // getProjectBots(storage, uploadEngineIsFirebase) {
+  //   this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
+  //     this.chatbots = faqKb
+  //     if (this.chatbots &&  this.chatbots.length > 0) {
+        
+  //       this.chatbots.sort(function compare(a: Chatbot, b: Chatbot) {
+  //         if (a['updatedAt'] > b['updatedAt']) {
+  //           return -1;
+  //         }
+  //         if (a['updatedAt'] < b['updatedAt']) {
+  //           return 1;
+  //         }
+  //         return 0;
+  //       });
+
+  //       this.logger.log('[HOME-CDS] - GET FAQKB RES (sorted)', this.chatbots);
+  
+  //       this.chatbotName = this.chatbots[0].name;
+  //       this.lastUpdatedChatbot = this.chatbots[0];
+  //       this.logger.log('[HOME-CDS] - lastUpdatedChatbot ', this.lastUpdatedChatbot);
+  //       this.logger.log('[HOME-CDS] - GET FAQKB lastUpdatedChatbot', this.lastUpdatedChatbot);
+  //     } 
+  
+  //   }, (error) => {
+  //     this.logger.error('[HOME-CDS] - GET FAQKB - ERROR ', error);
+  //     this.showSpinner = false
+  //   }, () => {
+  //     console.log('[HOME-CDS] - GET FAQKB * COMPLETE *');
+  //     this.showSpinner = false
+  //     this.hasFinishedGetProjectBots.emit()
+  //   });
+  // }
+
+  sortChatbots() {
+    // this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
+    //   this.chatbots = faqKb
       if (this.chatbots &&  this.chatbots.length > 0) {
         
         this.chatbots.sort(function compare(a: Chatbot, b: Chatbot) {
@@ -120,23 +159,27 @@ export class HomeCdsComponent implements OnInit {
           return 0;
         });
 
-        this.logger.log('[HOME-CDS] - GET FAQKB RES (sorted)', this.chatbots);
+        console.log('[HOME-CDS] - GET FAQKB RES (sorted)', this.chatbots);
   
         this.chatbotName = this.chatbots[0].name;
         this.lastUpdatedChatbot = this.chatbots[0];
-        this.logger.log('[HOME-CDS] - lastUpdatedChatbot ', this.lastUpdatedChatbot);
-        this.logger.log('[HOME-CDS] - GET FAQKB lastUpdatedChatbot', this.lastUpdatedChatbot);
+        console.log('[HOME-CDS] - lastUpdatedChatbot ', this.lastUpdatedChatbot);
+        console.log('[HOME-CDS] - GET FAQKB lastUpdatedChatbot', this.lastUpdatedChatbot);
       } 
   
-    }, (error) => {
-      this.logger.error('[HOME-CDS] - GET FAQKB - ERROR ', error);
-
-    }, () => {
-      this.logger.log('[HOME-CDS] - GET FAQKB * COMPLETE *');
-    });
+    // }
+    // , (error) => {
+    //   this.logger.error('[HOME-CDS] - GET FAQKB - ERROR ', error);
+    //   this.showSpinner = false
+    // }, () => {
+    //   console.log('[HOME-CDS] - GET FAQKB * COMPLETE *');
+    //   this.showSpinner = false
+    //   this.hasFinishedGetProjectBots.emit()
+    // });
   }
 
   goToBotProfile() {
+    console.log('[HOME-CDS] - goToBotProfile  projectId ', this.projectId);
     if (this.USER_ROLE !== 'agent') {
       if (this.chatbots?.length > 0) {
           // this.router.navigate(['project/' + this.project._id + '/tilebot/intents/', bot_id, botType]);
@@ -145,7 +188,13 @@ export class HomeCdsComponent implements OnInit {
         } else if (this.chatbots?.length === 0) {
           this.goToCreateChatbot.emit()
         }
+    } else {
+      this.presentModalAgentCannotManageChatbot()
     }
+  }
+
+  presentModalAgentCannotManageChatbot() {
+    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan('Agents can\'t manage chatbots', 'Learn more about default roles')
   }
 
   checkImageExists(imageUrl, callBack) {

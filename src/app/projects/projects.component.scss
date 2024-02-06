@@ -1,5 +1,9 @@
 @import "./src/assets/sass/md/_variables.scss";
 
+:host{
+ --brandColor: #{var(--brand-color)};
+}
+
 /* MODAL START */
 .modal {
   top: 0;
@@ -29,6 +33,7 @@
 
 button.close {
   -webkit-appearance: none;
+  appearance: none;
   padding: 0;
   cursor: pointer;
   background: 0 0;
@@ -90,6 +95,7 @@ input[type="text"] {
   width: 100%;
   margin-bottom: 10px;
   -webkit-appearance: none;
+  appearance: none;
   background: #fff;
   border: 1px solid #d9d9d9 !important;
   border-top: 1px solid #c0c0c0;
@@ -468,7 +474,8 @@ input[type="text"] {
   width: 100%;
   transform: skewY(-12deg);
   transform-origin: 0px center;
-  background: $brand-recent-project-bckgrnd;
+  // background: $brand-recent-project-bckgrnd;
+  background: var(--brandColor);
   // background: linear-gradient(90deg,#0e2a3b 0,#34306b); // new
   height: 500px;
   left: 0;
@@ -497,13 +504,15 @@ input[type="text"] {
 }
 
 .card-add-project-icon {
-  color: $brand-secodary;
+  // color: $brand-secodary;
+  color: var(--brandColor);
   text-align: center;
   padding-top: 25px;
 }
 
 .card-add-project-text {
-  color: $brand-secodary;
+  // color: $brand-secodary;
+  color: var(--brandColor);
   text-align: center;
   margin-bottom: 15px;
   font-family: "Poppins", Arial, sans-serif;
@@ -670,6 +679,7 @@ input[type="text"] {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
+  user-select: none;
 }
 .onoffswitch-checkbox--prjct-for-panel {
   position: absolute;
@@ -832,6 +842,18 @@ background-color: #3ea9f5;
   margin-left: 0px !important;
 }
 
+.pending-email-verificaton-notification {
+  right: 11px!important;
+  top: 3px!important;
+  position: absolute!important;
+}
+
+.pending-email-verificaton-notification > span {  
+  font-size: 16px;
+  color: #f55a4e;
+  background: white;
+  border-radius: 9999px;
+}
 // .select-pu-status{
 //   background: #fff;
 //   border-radius: 5px;

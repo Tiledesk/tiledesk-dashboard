@@ -11,7 +11,7 @@
         <i id="left" class="material-icons" [ngStyle]="{'opacity':displayScrollLeftBtn === false ? '0' : '1' }">
             navigate_before
         </i>
-        <ul id="feed-carousel" class="carousel" #scrollableElement>
+        <ul id="feed-carousel" class="news-feed-carousel" #scrollableElement>
             <!--   -->
             <li class="news-card" [ngClass]="{'highlighted-card': news?.highlighted }" 
                 style="position: relative;"  *ngFor="let news of newsFeedList" 

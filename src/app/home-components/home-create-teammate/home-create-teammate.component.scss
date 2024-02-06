@@ -170,7 +170,7 @@
 }
 
 #home-material-btn {
-  background-color: #2196f3;
+  background-color: var(--blue-light);
   color: #fff;
   margin-right: 4px;
 }
@@ -201,6 +201,26 @@
 }
 
 ::ng-deep .ct-custom-mat-tooltip-error {
+  background-color: #f44336 !important;
+  color: #fff;
+  font-size: 12px !important;
+  border-radius: 2px !important;
+  font-family: "Poppins", "Roboto", "Arial", sans-serif !important;
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+  line-height: 1.3;
+}
+
+::ng-deep .h-custom-mat-tooltip {
+  background-color: #2d323e !important;
+  font-size: 12px !important;
+  border-radius: 2px !important;
+  font-family: "Poppins", "Roboto", "Arial", sans-serif !important;
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+}
+
+::ng-deep .h-custom-mat-tooltip-error {
   background-color: #f44336 !important;
   color: #fff;
   font-size: 12px !important;

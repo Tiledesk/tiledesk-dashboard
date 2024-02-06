@@ -471,7 +471,7 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
 
   removeTagFromTaglistIfAlreadyAssigned(contactTempTags: any, contactTags: any) {
     // remove from the contactTempTags (tags that the administrator has set on the tag management page and that are displayed in the combo box 'Add tag' of this template)
-    if (contactTempTags) {
+    if (contactTempTags && contactTags) {
       for (var i = contactTempTags.length - 1; i >= 0; i--) {
         for (var j = 0; j < contactTags.length; j++) {
           if (contactTempTags[i] && (contactTempTags[i].tag === contactTags[j])) {
@@ -604,7 +604,9 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
   // @ Lead Address
   // -----------------------------------------------------
   toggleAddress() {
+    
     this.showAllAddress = !this.showAllAddress;
+    console.log('here yes' , this.showAllAddress)
     const addressArrowIconElem = <HTMLElement>document.querySelector('#address-arrow-down');
     this.logger.log('toggleAddress ', addressArrowIconElem)
     if (this.showAllAddress === true) {

@@ -1,4 +1,4 @@
-import { Component, OnInit, isDevMode } from '@angular/core';
+import { Component, OnInit, isDevMode, OnDestroy } from '@angular/core';
 import { AppStoreService } from '../services/app-store.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../core/auth.service';
@@ -13,13 +13,14 @@ import { UsersService } from 'app/services/users.service';
 import { takeUntil } from 'rxjs/operators'
 import { Subject } from 'rxjs';
 import { AppConfigService } from 'app/services/app-config.service';
+import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 const swal = require('sweetalert');
 @Component({
   selector: 'appdashboard-app-store',
   templateUrl: './app-store.component.html',
   styleUrls: ['./app-store.component.scss']
 })
-export class AppStoreComponent implements OnInit {
+export class AppStoreComponent extends PricingBaseComponent implements OnInit, OnDestroy {
   PLAN_NAME = PLAN_NAME;
   APP_SUMO_PLAN_NAME = APP_SUMO_PLAN_NAME;
   private unsubscribe$: Subject<any> = new Subject<any>();
@@ -42,6 +43,7 @@ export class AppStoreComponent implements OnInit {
   subscription_end_date: any;
   trial_expired: any;
   featureAvailableFromBPlan: string;
+  featureAvailableFromEPlan: string;
   cancel: string;
   upgradePlan: string;
   USER_ROLE: string;
@@ -56,19 +58,21 @@ export class AppStoreComponent implements OnInit {
   user: any;
   project: any;
   callingPage: string;
+  onlyOwnerCanManageTheAccountPlanMsg: string;
   constructor(
     public appStoreService: AppStoreService,
     private router: Router,
     public auth: AuthService,
     private logger: LoggerService,
-    private notify: NotifyService,
+    public notify: NotifyService,
     private translate: TranslateService,
     public brandService: BrandService,
-    private prjctPlanService: ProjectPlanService,
+    public prjctPlanService: ProjectPlanService,
     public usersService: UsersService,
     public appConfigService: AppConfigService,
     public route: ActivatedRoute,
   ) {
+    super(prjctPlanService, notify);
     const brand = brandService.getBrand();
     this.tparams = brand;
 
@@ -87,6 +91,13 @@ export class AppStoreComponent implements OnInit {
     this.getLoggedUser();
     this.getRouteParams();
     this.listenToParentPostMessage()
+  }
+
+
+  ngOnDestroy() {
+    // this.subscription.unsubscribe();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   getRouteParams() {
@@ -132,17 +143,17 @@ export class AppStoreComponent implements OnInit {
     })
   }
 
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
-  }
+
 
   getBrowserVersion() {
-    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
-      this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
-      //  this.logger.log("APP-STORE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
-    })
+    this.auth.isChromeVerGreaterThan100
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((isChromeVerGreaterThan100: boolean) => {
+        this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+        //  this.logger.log("APP-STORE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+      })
   }
 
   getLoggedUser() {
@@ -192,7 +203,7 @@ export class AppStoreComponent implements OnInit {
   }
 
   getCurrentProject() {
-    this.subscription = this.auth.project_bs
+    this.auth.project_bs
       .pipe(
         takeUntil(this.unsubscribe$)
       )
@@ -240,32 +251,6 @@ export class AppStoreComponent implements OnInit {
         }
       ]
 
-      // if (!this.isVisiblePAY) {
-      //   // this.apps =  _apps.apps.filter(a => !paidApps.some(p => p.title == a.title));
-
-      //   this.logger.log('APP-STORE - Here yes')
-      //   // console.log('APP-STORE - getApps APPS after filter', this.apps)
-
-      //   const sendWAAppIndex = this.apps.findIndex(object => {
-      //     return object.title === "WhatsApp Business";
-      //   });
-
-      //   this.apps.splice(sendWAAppIndex, 1);
-
-      //   const sendFMAppIndex = this.apps.findIndex(object => {
-      //     return object.title === "Facebook Messenger";
-      //   });
-        
-      //   this.apps.splice(sendFMAppIndex, 1);
-
-      //   const sendHCAppIndex = this.apps.findIndex(object => {
-      //     return object.title === "Help Center";
-      //   });
-        
-      //   this.apps.splice(sendHCAppIndex, 1);
-
-      // }
-
       const sendTranscriptAppIndex = this.apps.findIndex(object => {
         return object.title === "Send transcript by email";
       });
@@ -276,7 +261,7 @@ export class AppStoreComponent implements OnInit {
       this.apps.forEach(app => {
 
 
-      
+
         if (app.description.length > 118) {
           app.description = app.description.slice(0, 118) + '...'
         }
@@ -288,17 +273,6 @@ export class AppStoreComponent implements OnInit {
           }
         }
 
-        // console.log('app.title', app.title)
-        // console.log('profile_name', this.profile_name)  
-
-        // if ((app.title === "WhatsApp Business" || app.title === "Facebook Messenger" || app.title === "Zapier") &&
-        //   ((this.profile_name === PLAN_NAME.A) ||
-        //     (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
-        //     (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
-        //     (this.prjct_profile_type === 'free' && this.trial_expired === true))) {
-        //   app['isAvailable'] = false
-        //   console.log('here YES')
-        // }
       });
 
 
@@ -328,70 +302,51 @@ export class AppStoreComponent implements OnInit {
     });
   }
 
-  // if (
-  //   (this.profile_name === PLAN_NAME.A) 
-  //   (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) 
-  //   (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) 
-  //   (this.prjct_profile_type === 'free' && this.trialExpired === true) 
-
-  //   ) {
-  //     not authorized
-  //   console.log('[WIDGET-SET-UP] - featureIsAvailable IS NOT AVAIBLE ')
-  // } else if (
-  //   (this.profile_name === PLAN_NAME.B && this.subscription_is_active === true) 
-  //   (this.profile_name === PLAN_NAME.C && this.subscription_is_active === true) ||
-  //   (this.prjct_profile_type === 'free' && this.trialExpired === false)
-
-  //   ) {
-  //    authorized
-  //     console.log('[WIDGET-SET-UP] - featureIsAvailable IS AVAIBLE' )
-  //   }
-  getProjectPlan() {
-    this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-      this.logger.log('[APP-STORE] getProjectPlan project Profile Data', projectProfileData)
-
-      if (projectProfileData) {
-        this.profile_name = projectProfileData.profile_name
-        this.prjct_profile_type = projectProfileData.profile_type;
-        this.subscription_is_active = projectProfileData.subscription_is_active;
-
-        this.subscription_end_date = projectProfileData.subscription_end_date;
-        this.trial_expired = projectProfileData.trial_expired;
-        if (projectProfileData.extra3) {
-          this.appSumoProfile = APP_SUMO_PLAN_NAME[projectProfileData.extra3]
-          this.appSumoProfilefeatureAvailableFromBPlan = APP_SUMO_PLAN_NAME['tiledesk_tier3']
-
-          this.tPlanParams = { 'plan_name': this.appSumoProfilefeatureAvailableFromBPlan }
-
-        } else if (!projectProfileData.extra3) {
-          this.tPlanParams = { 'plan_name': PLAN_NAME.B }
-        }
-      }
-    }, error => {
-
-      this.logger.error('[APP-STORE] - getProjectPlan - ERROR', error);
-    }, () => {
-
-      this.logger.log('[APP-STORE] - getProjectPlan * COMPLETE *')
-
-    });
-  }
-
-  installApp(app, installationType: string, installationUrl: string, appTitle: string, appId: string) {
-    // console.log('[APP-STORE] appId ', appId)
-    if ((appTitle === "WhatsApp Business" || appTitle === "Facebook Messenger" || appTitle === "Zapier" || appTitle === 'Help Center') &&
+  checkPlanAndPresentModal(appTitle) {
+    if (
+      (appTitle === "WhatsApp Business" ||
+        appTitle === "Facebook Messenger" ||
+        appTitle === "Zapier" ||
+        appTitle === 'Help Center' ||
+        appTitle === 'Send transcript by email') &&
       ((this.profile_name === PLAN_NAME.A) ||
         (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
         (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
-        (this.prjct_profile_type === 'free' && this.trial_expired === true))) {
+        (this.profile_name === 'free' && this.trial_expired === true))) {
 
       if (!this.appSumoProfile) {
-        this.presentModalFeautureAvailableFromBPlan()
-        return
+        // this.presentModalFeautureAvailableFromBPlan()
+        this.presentModalFeautureAvailableFromTier2Plan(this.featureAvailableFromBPlan)
+        return false
       } else {
         this.presentModalAppSumoFeautureAvailableFromBPlan()
-        return
+        return false
       }
+    } else if (
+      (appTitle === "WhatsApp Business" ||
+        appTitle === "Facebook Messenger" ||
+        appTitle === "Zapier" ||
+        appTitle === 'Help Center' ||
+        appTitle === 'Send transcript by email') &&
+      ((this.profile_name === PLAN_NAME.D) ||
+        (this.profile_name === PLAN_NAME.E && this.subscription_is_active === false) ||
+        (this.profile_name === PLAN_NAME.F && this.subscription_is_active === false) ||
+        (this.profile_name === 'Sandbox' && this.trial_expired === true))) {
+      if (!this.appSumoProfile) {
+        this.presentModalFeautureAvailableFromTier2Plan(this.featureAvailableFromEPlan)
+        return false
+      }
+
+    }
+  }
+
+
+  installApp(app, installationType: string, installationUrl: string, appTitle: string, appId: string) {
+    console.log('[APP-STORE] appId ', appId, 'appTitle ', appTitle)
+    const isAvailable = this.checkPlanAndPresentModal(appTitle)
+    console.log('[APP-STORE] isAvaibleFromPlan ', isAvailable)
+    if (isAvailable === false) {
+      return
     }
 
     // console.log('[APP-STORE] app ', app)
@@ -426,112 +381,26 @@ export class AppStoreComponent implements OnInit {
 
   }
 
-  presentModalFeautureAvailableFromBPlan() {
-    const el = document.createElement('div')
-    el.innerHTML = this.featureAvailableFromBPlan
-    swal({
-      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
-      content: el,
-      icon: "info",
-      // buttons: true,
-      buttons: {
-        cancel: this.cancel,
-        catch: {
-          text: this.upgradePlan,
-          value: "catch",
-        },
-      },
-      dangerMode: false,
-    }).then((value) => {
-      if (value === 'catch') {
-        // console.log('featureAvailableFromPlanC value', value)
-        // console.log('[APP-STORE] prjct_profile_type', this.prjct_profile_type)
-        // console.log('[APP-STORE] subscription_is_active', this.subscription_is_active)
-        // console.log('[APP-STORE] prjct_profile_type', this.prjct_profile_type)
-        // console.log('[APP-STORE] trial_expired', this.trial_expired)
-        // console.log('[APP-STORE] isVisiblePAY', this.isVisiblePAY)
-        if (this.isVisiblePAY) {
-          // console.log('[APP-STORE] HERE 1')
-          if (this.USER_ROLE === 'owner') {
-            // console.log('[APP-STORE] HERE 2')
-            if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
-              // console.log('[APP-STORE] HERE 3')
-              this.notify._displayContactUsModal(true, 'upgrade_plan');
-            } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true && this.profile_name === PLAN_NAME.A) {
-              this.notify._displayContactUsModal(true, 'upgrade_plan');
-            } else if (this.prjct_profile_type === 'free' && this.trial_expired === true) {
-              // console.log('[APP-STORE] HERE 4')
-              this.router.navigate(['project/' + this.projectId + '/pricing']);
-            }
-          } else {
-            // console.log('[APP-STORE] HERE 5')
-            this.presentModalAgentCannotManageAvancedSettings();
-          }
-        } else {
-          // console.log('[APP-STORE] HERE 6')
-          this.notify._displayContactUsModal(true, 'upgrade_plan');
-        }
-      }
-    });
-  }
 
-  presentModalAppSumoFeautureAvailableFromBPlan() {
-    const el = document.createElement('div')
-    el.innerHTML = 'Available from ' + this.appSumoProfilefeatureAvailableFromBPlan
-    swal({
-      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
-      content: el,
-      icon: "info",
-      // buttons: true,
-      buttons: {
-        cancel: this.cancel,
-        catch: {
-          text: this.upgradePlan,
-          value: "catch",
-        },
-      },
-      dangerMode: false,
-    }).then((value) => {
-      if (value === 'catch') {
-        if (this.USER_ROLE === 'owner') {
-          this.router.navigate(['project/' + this.projectId + '/project-settings/payments']);
-        } else {
-          // console.log('[APP-STORE] HERE 5')
-          this.presentModalAgentCannotManageAvancedSettings();
-        }
-      }
-    });
 
-  }
 
-  presentModalAgentCannotManageAvancedSettings() {
-    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.agentCannotManageAdvancedOptions, this.learnMoreAboutDefaultRoles)
-  }
-
-  openInAppStoreInstall(app) {
-    if ((app.title === "WhatsApp Business" || app.title === "Facebook Messenger") &&
-      ((this.profile_name === PLAN_NAME.A) ||
-        (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
-        (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
-        (this.prjct_profile_type === 'free' && this.trial_expired === true))) {
-
-      // this.presentModalFeautureAvailableFromBPlan()
-      // return
-
-      if (!this.appSumoProfile) {
-        this.presentModalFeautureAvailableFromBPlan()
-        return
-      } else {
-        this.presentModalAppSumoFeautureAvailableFromBPlan()
-        return
-      }
-
+  openInAppStoreInstall(app, appTitle) {
+    const isAvailable = this.checkPlanAndPresentModal(appTitle)
+    console.log('[APP-STORE] isAvaibleFromPlan ', isAvailable)
+    if (isAvailable === false) {
+      return
     }
+
     this.logger.log('openInAppStoreInstall app ', app)
     this.router.navigate(['project/' + this.projectId + '/app-store-install/' + app._id + '/run'])
   }
 
-  openConfigureUrlInAppStoreInstall(app) {
+  openConfigureUrlInAppStoreInstall(app, appTitle) {
+    const isAvailable = this.checkPlanAndPresentModal(appTitle)
+    console.log('[APP-STORE] isAvaibleFromPlan ', isAvailable)
+    if (isAvailable === false) {
+      return
+    }
     this.router.navigate(['project/' + this.projectId + '/app-store-install/' + app._id + '/configure'])
   }
 
@@ -800,6 +669,96 @@ export class AppStoreComponent implements OnInit {
     this.router.navigate(['project/' + this.projectId + '/bot/rasa/create']);
   }
 
+  // -----------------------------
+  // Modals
+  // -----------------------------
+  presentModalFeautureAvailableFromTier2Plan(planName) {
+    const el = document.createElement('div')
+    el.innerHTML = planName //this.featureAvailableFromBPlan
+    swal({
+      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
+      content: el,
+      icon: "info",
+      // buttons: true,
+      buttons: {
+        cancel: this.cancel,
+        catch: {
+          text: this.upgradePlan,
+          value: "catch",
+        },
+      },
+      dangerMode: false,
+    }).then((value) => {
+      if (value === 'catch') {
+        // console.log('featureAvailableFromPlanC value', value)
+        // console.log('[APP-STORE] prjct_profile_type', this.prjct_profile_type)
+        // console.log('[APP-STORE] subscription_is_active', this.subscription_is_active)
+        // console.log('[APP-STORE] prjct_profile_type', this.prjct_profile_type)
+        // console.log('[APP-STORE] trial_expired', this.trial_expired)
+        // console.log('[APP-STORE] isVisiblePAY', this.isVisiblePAY)
+        if (this.isVisiblePAY) {
+          // console.log('[APP-STORE] HERE 1')
+          if (this.USER_ROLE === 'owner') {
+            // console.log('[APP-STORE] HERE 2')
+            if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
+              // console.log('[APP-STORE] HERE 3')
+              this.notify._displayContactUsModal(true, 'upgrade_plan');
+            } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true && (this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.D)) {
+              this.notify._displayContactUsModal(true, 'upgrade_plan');
+            } else if (this.prjct_profile_type === 'free' && this.trial_expired === true) {
+              // console.log('[APP-STORE] HERE 4')
+              this.router.navigate(['project/' + this.projectId + '/pricing']);
+            }
+          } else {
+            // console.log('[APP-STORE] HERE 5')
+
+            this.presentModalOnlyOwnerCanManageTheAccountPlan();
+          }
+        } else {
+          // console.log('[APP-STORE] HERE 6')
+          this.notify._displayContactUsModal(true, 'upgrade_plan');
+        }
+      }
+    });
+  }
+
+  presentModalAppSumoFeautureAvailableFromBPlan() {
+    const el = document.createElement('div')
+    el.innerHTML = 'Available from ' + this.appSumoProfilefeatureAvailableFromBPlan
+    swal({
+      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
+      content: el,
+      icon: "info",
+      // buttons: true,
+      buttons: {
+        cancel: this.cancel,
+        catch: {
+          text: this.upgradePlan,
+          value: "catch",
+        },
+      },
+      dangerMode: false,
+    }).then((value) => {
+      if (value === 'catch') {
+        if (this.USER_ROLE === 'owner') {
+          this.router.navigate(['project/' + this.projectId + '/project-settings/payments']);
+        } else {
+          // console.log('[APP-STORE] HERE 5')
+          this.presentModalOnlyOwnerCanManageTheAccountPlan();
+        }
+      }
+    });
+
+  }
+
+  presentModalOnlyOwnerCanManageTheAccountPlan() {
+    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles)
+  }
+
+
+  // -----------------------------
+  // Translations
+  // -----------------------------
   translateLabels() {
     this.translateAreYouSure();
     this.translateAppWillBeDeleted();
@@ -812,6 +771,12 @@ export class AppStoreComponent implements OnInit {
       .subscribe((translation: any) => {
         this.featureAvailableFromBPlan = translation;
       });
+
+    this.translate.get('AvailableFromThePlan', { plan_name: PLAN_NAME.E })
+      .subscribe((translation: any) => {
+        this.featureAvailableFromEPlan = translation;
+      });
+
 
     this.translate.get('Pricing.UpgradePlan')
       .subscribe((translation: any) => {

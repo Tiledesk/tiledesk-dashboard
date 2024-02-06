@@ -7,6 +7,16 @@
     top: 2px;
  }
 
+ 
+ .followus-on-youtube > svg {
+   position: relative;
+   top: 3px;
+}
+
+.followus-on-youtube:hover > svg {
+   fill: #269ef4
+}
+
  .star-us-on-github-text {
     cursor: pointer;
  }
@@ -24,4 +34,6 @@
     font-size: 12px;
     font-weight: 400;
  }
+
+
 

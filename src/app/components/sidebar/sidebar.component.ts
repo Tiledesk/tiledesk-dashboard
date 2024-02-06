@@ -69,11 +69,11 @@ declare interface RouteInfo {
 export class SidebarComponent implements OnInit, AfterViewInit {
 
   // tparams = brand;
-  // sidebarLogoWhite_Url = brand.company_logo_white__url;
+ 
   // hidechangelogrocket = brand.sidebar__hide_changelog_rocket;
   tparams: any;
   sidebarLogoWhite_Url: string;
-  sidebarLogoNoText: string;
+  companyLogoNoText: string;
   // hidechangelogrocket: boolean;
 
   // background_bottom_section = brand.sidebar.background_bottom_section
@@ -184,6 +184,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   CONV_DETAIL_ROUTE_IS_ACTIVE: boolean;
   CONTACT_EDIT_ROUTE_IS_ACTIVE: boolean;
   CONTACT_CONVS_ROUTE_IS_ACTIVE: boolean;
+  INTEGRATIONS_ROUTE_IS_ACTIVE: boolean = true;
 
   IS_REQUEST_FOR_PANEL_ROUTE: boolean;
   IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE: boolean;
@@ -228,6 +229,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   currentUrl: string;
   audio: any;
   myChatbotCount: number;
+  companySiteUrl: string;
+  companyName: string;
   constructor(
     private router: Router,
     public location: Location,
@@ -254,8 +257,9 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
     this.tparams = brand;
     if (brand) {
-      this.sidebarLogoWhite_Url = brand['company_logo_white__url'];
-      this.sidebarLogoNoText = brand['company_logo_no_text__url'];
+      this.companyLogoNoText = brand['COMPANY_LOGO_NO_TEXT'];
+      this.companySiteUrl = brand["COMPANY_SITE_URL"]
+      this.companyName = brand["COMPANY_NAME"] 
     }
   }
 
@@ -586,7 +590,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     }
 
 
-    
+
   }
 
 

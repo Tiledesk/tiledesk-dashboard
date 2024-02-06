@@ -90,7 +90,7 @@
 /****** new LOGIN ******/
 .signin-button {
   width: 100%;
-  background-color: $brand-auth-pages-buttons-color !important;
+  background-color: $brand-auth-pages-buttons-color;
   height: 56px;
   font-size: 16px;
   letter-spacing: 2px;
@@ -285,6 +285,15 @@ label {
   }
 }
 
+.left-logo>img {
+  // max-width: 150px;
+  height: auto;
+  top: -50px;
+  left: 25px;
+  position: absolute;
+  max-height: 45px;
+}
+
 @media (min-width: 992px) {
   .right-logo {
     display: none;
@@ -415,7 +424,7 @@ label {
   background-color: #4285f4;
   height: 56px;
   // color: #8ab4f8;
-  color: #fff!important ;
+  color: #fff !important;
   font-size: 18px;
   text-transform: none;
   box-shadow: unset;

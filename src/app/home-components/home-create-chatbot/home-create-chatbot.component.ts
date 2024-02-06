@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, Output, SimpleChanges, EventEmitter, Type } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, Output, SimpleChanges, EventEmitter, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'app/core/auth.service';
 import { FaqKb } from 'app/models/faq_kb-model';
@@ -7,7 +7,7 @@ import { DepartmentService } from 'app/services/department.service';
 import { FaqKbService } from 'app/services/faq-kb.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { UsersService } from 'app/services/users.service';
-import { goToCDSVersion } from 'app/utils/util';
+import { PLAN_NAME, goToCDSVersion } from 'app/utils/util';
 
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
@@ -15,13 +15,20 @@ import { MatDialog } from '@angular/material/dialog';
 import { TemplateDetailComponent } from 'app/bots/templates/template-detail/template-detail.component';
 import { HomeCreateChatbotModalComponent } from './home-create-chatbot-modal/home-create-chatbot-modal.component';
 import { BotLocalDbService } from 'app/services/bot-local-db.service';
+import { ProjectPlanService } from 'app/services/project-plan.service';
+import { ChatbotModalComponent } from 'app/bots/bots-list/chatbot-modal/chatbot-modal.component';
+import { NotifyService } from 'app/core/notify.service';
+import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'appdashboard-home-create-chatbot',
   templateUrl: './home-create-chatbot.component.html',
   styleUrls: ['./home-create-chatbot.component.scss']
 })
-export class HomeCreateChatbotComponent implements OnInit, OnChanges {
+export class HomeCreateChatbotComponent extends PricingBaseComponent implements OnInit, OnChanges, OnDestroy {
+
+  PLAN_NAME = PLAN_NAME
   @Input() use_case_for_child: string;
   @Input() solution_channel_for_child: string;
   @Input() waBotId: string;
@@ -50,26 +57,69 @@ export class HomeCreateChatbotComponent implements OnInit, OnChanges {
   chatbotName: string
   newBot_Id: string;
   templtId = ['651a87648cb2c70013d80d8b', '6529582c23034f0013ee1af6', '651ecc5749598e0013305876', '651ad6c1bfdf310013ca90d7']
-  showSpinner: boolean
-  
+  showSpinner: boolean;
+
+  onlyOwnerCanManageTheAccountPlanMsg: string;
+  learnMoreAboutDefaultRoles: string;
+  public_Key: string;
+  areActivePay: boolean;
+
   constructor(
     public appConfigService: AppConfigService,
     public auth: AuthService,
     private logger: LoggerService,
     private router: Router,
     private faqKbService: FaqKbService,
-    private usersService: UsersService,
+    public usersService: UsersService,
     private departmentService: DepartmentService,
     public dialog: MatDialog,
     private botLocalDbService: BotLocalDbService,
-  ) { }
+    public prjctPlanService: ProjectPlanService,
+    public notify: NotifyService,
+    private translate: TranslateService
+  ) {
+    super(prjctPlanService, notify);
+  }
 
   ngOnInit(): void {
     // this.getCurrentProjectAndPrjctBots();
-    this.getUserRole()
+    this.getUserRole();
+    // this.getProjectPlan();
+    this.translateString();
+    this.getOSCODE()
+  }
+  getOSCODE() {
+    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
+    // this.logger.log('[HOME-CREATE-CHATBOT] AppConfigService getAppConfig public_Key', this.public_Key);
+    let keys = this.public_Key.split("-");
+    // this.logger.log('[HOME-CREATE-CHATBOT] PUBLIC-KEY keys', keys)
+    keys.forEach(key => {
+      // this.logger.log('[HOME-CREATE-CHATBOT] public_Key key', key)
+      if (key.includes("PAY")) {
+        // this.logger.log('[HOME-CREATE-CHATBOT] PUBLIC-KEY - key', key);
+        let psa = key.split(":");
+        // this.logger.log('[HOME-CREATE-CHATBOT] PUBLIC-KEY - pay key&value', psa);
+        if (psa[1] === "F") {
+          this.areActivePay = false;
+        } else {
+          this.areActivePay = true;
+        }
+      }
+    });
+
+    if (!this.public_Key.includes("PAY")) {
+      // this.logger.log('[HOME-CREATE-CHATBOT] PUBLIC-KEY  - key.includes("PAY")', this.public_Key.includes("PAY"));
+      this.areActivePay = false;
+    }
+
+    this.getProjectPlan();
+
   }
 
-
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     this.logger.log('[HOME-CREATE-CHATBOT] - ngOnChanges waBotId  ', this.waBotId)
@@ -97,6 +147,21 @@ export class HomeCreateChatbotComponent implements OnInit, OnChanges {
 
   }
 
+  translateString() {
+    this.translateModalOnlyOwnerCanManageProjectAccount()
+  }
+  translateModalOnlyOwnerCanManageProjectAccount() {
+    this.translate.get('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan')
+      .subscribe((translation: any) => {
+        this.onlyOwnerCanManageTheAccountPlanMsg = translation;
+      });
+
+    this.translate.get('LearnMoreAboutDefaultRoles')
+      .subscribe((translation: any) => {
+        this.learnMoreAboutDefaultRoles = translation;
+      });
+  }
+
   getTemplates(use_case) {
     this.showSpinner = true;
     // this.route = this.router.url
@@ -104,7 +169,7 @@ export class HomeCreateChatbotComponent implements OnInit, OnChanges {
     this.faqKbService.getTemplates().subscribe((res: any) => {
 
       if (res) {
-        console.log('[HOME-CREATE-CHATBOT] res before filter' ,res)
+        // console.log('[HOME-CREATE-CHATBOT] res before filter' ,res)
         const filterdres = res.filter((item) => {
           return this.templtId.includes(item._id)
         });
@@ -116,7 +181,7 @@ export class HomeCreateChatbotComponent implements OnInit, OnChanges {
         });
         if (use_case === 'solve_customer_problems') {
           this.templates = this.customerSatisfactionTemplates
-          console.log('[HOME-CREATE-CHATBOT] - TEMPLATES (Customer Satisfaction)', this.templates)
+          // console.log('[HOME-CREATE-CHATBOT] - TEMPLATES (Customer Satisfaction)', this.templates)
         }
         this.logger.log('[HOME-CREATE-CHATBOT] - TEMPLATES Customer Satisfaction TEMPLATES', this.customerSatisfactionTemplates);
         // ---------------------------------------------------------------------
@@ -151,12 +216,13 @@ export class HomeCreateChatbotComponent implements OnInit, OnChanges {
 
   openDialog(template) {
     this.logger.log('openDialog TemplateDetailComponent template ', template)
-  
+
     const dialogRef = this.dialog.open(TemplateDetailComponent, {
       data: {
         template: template,
         projectId: this.projectId,
-        callingPage: "Home"
+        callingPage: "Home",
+        projectProfile: this.prjct_profile_name
       },
     });
 
@@ -333,54 +399,59 @@ export class HomeCreateChatbotComponent implements OnInit, OnChanges {
   }
 
   goToBotProfile(bot: FaqKb) {
-    let botType = ''
-    if (bot.type === 'internal') {
-      botType = 'native'
-      if (this.USER_ROLE !== 'agent') {
+    if (this.USER_ROLE !== 'agent') {
+      let botType = ''
+      if (bot.type === 'internal') {
+        botType = 'native'
+
         this.router.navigate(['project/' + this.projectId + '/bots/intents/', bot._id, botType]);
-      }
-    } else if (bot.type === 'tilebot') {
-      botType = 'tilebot'
-      if (this.USER_ROLE !== 'agent') {
+
+      } else if (bot.type === 'tilebot') {
+        botType = 'tilebot'
+
         // this.router.navigate(['project/' + this.project._id + '/tilebot/intents/', bot_id, botType]);
         // this.router.navigate(['project/' + this.projectId + '/cds/', bot._id, 'intent', '0', 'h']);
         goToCDSVersion(this.router, bot, this.projectId, this.appConfigService.getConfig().cdsBaseUrl)
-      }
-     } else if (bot.type === 'tiledesk-ai') {
-        botType = 'tiledesk-ai'
-        if (this.USER_ROLE !== 'agent') {
-          // this.router.navigate(['project/' + this.project._id + '/tilebot/intents/', bot_id, botType]);
-          // this.router.navigate(['project/' + this.projectId + '/cds/', bot._id, 'intent', '0', 'h']);
-          goToCDSVersion(this.router, bot, this.projectId, this.appConfigService.getConfig().cdsBaseUrl)
-        }
-    } else {
-      botType = bot.type
 
-      if (this.USER_ROLE !== 'agent') {
-        this.router.navigate(['project/' + this.projectId + '/bots', bot._id, botType]);
+      } else if (bot.type === 'tiledesk-ai') {
+        botType = 'tiledesk-ai'
+
+        // this.router.navigate(['project/' + this.project._id + '/tilebot/intents/', bot_id, botType]);
+        // this.router.navigate(['project/' + this.projectId + '/cds/', bot._id, 'intent', '0', 'h']);
+        goToCDSVersion(this.router, bot, this.projectId, this.appConfigService.getConfig().cdsBaseUrl)
+
+      } else {
+        botType = bot.type
+
+        if (this.USER_ROLE !== 'agent') {
+          this.router.navigate(['project/' + this.projectId + '/bots', bot._id, botType]);
+        }
       }
+    } else {
+      this.presentModalAgentCannotManageChatbot()
     }
   }
 
+  
   goToTemplates() {
     if (this.use_case_for_child === 'solve_customer_problems') {
       this.router.navigate(['project/' + this.projectId + '/bots/templates/customer-satisfaction']);
     } else if (this.use_case_for_child === 'increase_online_sales') {
       this.router.navigate(['project/' + this.projectId + '/bots/templates/increase-sales']);
     } else if (this.use_case_for_child === undefined || !this.use_case_for_child) {
-      this.trackUserAction.emit({action:'Explore Templates', actionRes: 'All' })
+      this.trackUserAction.emit({ action: 'Explore Templates', actionRes: 'All' })
       this.router.navigate(['project/' + this.projectId + '/bots/templates/all']);
     }
     localStorage.setItem('wawizard', 'hookbot')
   }
 
   goToIncreaseSalesTemplates() {
-    this.trackUserAction.emit({action:'Explore Templates', actionRes: 'Increase Sales' })
+    this.trackUserAction.emit({ action: 'Explore Templates', actionRes: 'Increase Sales' })
     this.router.navigate(['project/' + this.projectId + '/bots/templates/increase-sales']);
   }
 
   goToCustomerSatisfactionTemplates() {
-    this.trackUserAction.emit({action:'Explore Templates', actionRes: 'Customer Satisfaction' })
+    this.trackUserAction.emit({ action: 'Explore Templates', actionRes: 'Customer Satisfaction' })
     this.router.navigate(['project/' + this.projectId + '/bots/templates/customer-satisfaction']);
   }
 
@@ -394,8 +465,29 @@ export class HomeCreateChatbotComponent implements OnInit, OnChanges {
     localStorage.setItem('wawizard', 'hookbot')
   }
 
+  createBlankTilebot() {
+    console.log('[BOTS-LIST] createBlankTilebot chatBotCount ', this.countOfChatbots, ' chatBotLimit ', this.chatBotLimit, ' PROJECT PLAN ', this.profile_name)
+
+
+    if (this.USER_ROLE !== 'agent') {
+      if (this.chatBotLimit) {
+        if (this.countOfChatbots < this.chatBotLimit) {
+          console.log('[HOME-CREATE-CHATBOT] USECASE  countOfChatbots < chatBotLimit: RUN IMPORT CHATBOT FROM JSON')
+          this.presentModalAddBotFromScratch()
+        } else if (this.countOfChatbots >= this.chatBotLimit) {
+          console.log('[HOME-CREATE-CHATBOT] USECASE  countOfChatbots >= chatBotLimit DISPLAY MODAL')
+          this.presentDialogReachedChatbotLimit()
+        }
+      } else if (!this.chatBotLimit) {
+        console.log('[HOME-CREATE-CHATBOT] USECASE  NO chatBotLimit: RUN IMPORT CHATBOT FROM JSON')
+        this.presentModalAddBotFromScratch()
+      }
+    } if (this.USER_ROLE === 'agent') {
+      this.presentModalAgentCannotManageChatbot()
+    }
+  }
+
   presentModalAddBotFromScratch() {
- 
     this.logger.log('[HOME-CREATE-CHATBOT] - presentModalAddBotFromScratch ');
     const createBotFromScratchBtnEl = <HTMLElement>document.querySelector('#home-material-btn');
     // this.logger.log('[HOME-CREATE-CHATBOT] - presentModalAddBotFromScratch addKbBtnEl ', addKbBtnEl);
@@ -433,8 +525,8 @@ export class HomeCreateChatbotComponent implements OnInit, OnChanges {
           // this.translateparamBotName = { bot_name: this.newBot_name }
           // SAVE THE BOT IN LOCAL STORAGE
           this.botLocalDbService.saveBotsInStorage(faqKb['_id'], faqKb);
-          
-          this.trackUserAction.emit({action:'Create chatbot',actionRes: faqKb })
+
+          this.trackUserAction.emit({ action: 'Create chatbot', actionRes: faqKb })
 
           // this.router.navigate(['project/' + this.projectId + '/cds/', this.newBot_Id, 'intent', '0', 'h']);
           goToCDSVersion(this.router, faqKb, this.projectId, this.appConfigService.getConfig().cdsBaseUrl)
@@ -447,15 +539,61 @@ export class HomeCreateChatbotComponent implements OnInit, OnChanges {
 
       }, () => {
         this.logger.log('[HOME-CREATE-CHATBOT] CREATE FAQKB - POST REQUEST * COMPLETE *');
-        
+
 
       })
   }
+
+
+  presentDialogReachedChatbotLimit() {
+    console.log('[HOME-CREATE-CHATBOT] openDialog presentDialogReachedChatbotLimit prjct_profile_name ', this.prjct_profile_name)
+    const dialogRef = this.dialog.open(ChatbotModalComponent, {
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+      hasBackdrop: true,
+      data: {
+        projectProfile: this.prjct_profile_name,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`[HOME-CREATE-CHATBOT] Dialog result: ${result}`);
+    });
+  }
+
+  presentModalAgentCannotManageChatbot() {
+    this.notify.presentModalAgentCannotManageChatbot('Agents can\'t manage chatbots', 'Learn more about default roles')
+  }
+
+  // presentModalAgentCannotManageChatbot() {
+  //    this.notify.presentModalAgentCannotManageChatbot(this.agentsCannotManageChatbots, this.learnMoreAboutDefaultRoles)
+  // }
 
   goToMyChatbots() {
     // console.log('goToMyChatbots')
     this.router.navigate(['project/' + this.projectId + '/bots/my-chatbots/all']);
   }
 
+  openModalSubsExpired() {
+    if (this.USER_ROLE === 'owner') {
+      if (this.profile_name !== PLAN_NAME.C && this.profile_name !== PLAN_NAME.F) {
+        this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
+      } else if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
+        this.notify.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
+      }
+    } else {
+      this.presentModalAgentCannotManageChatbot();
+    }
+  }
 
+  openModalTrialExpired() {
+    if (this.USER_ROLE === 'owner') {
+      this.notify.displayTrialHasExpiredModal();
+    } else {
+      this.presentModalOnlyOwnerCanManageTheAccountPlan();
+    }
+  }
+
+  presentModalOnlyOwnerCanManageTheAccountPlan() {
+    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles)
+  }
 }

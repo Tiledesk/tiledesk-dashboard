@@ -16,15 +16,7 @@ export class FooterComponent implements OnInit {
   // public version: string = require( '../../../../package.json').version;
   public version: string = environment.VERSION;
 
-  // company_name = brand.company_name;
-  // companySiteName = brand.company_site_name;
-  // companySiteUrl = brand.company_site_url;
-  // privacyPolicyLinkName = brand.privacy_policy_link_text
-  // privacyPolicyUrl = brand.privacy_policy_url
-  // displayTermsAndConditionsLink = brand.footer.display_terms_and_conditions_link
-  // termsAndConditionsUrl = brand.terms_and_conditions_url
-  // display_contact_us_email = brand.footer.display_contact_us_email;
-  // contactUsEmail = brand.contact_us_email;
+
 
   company_name: string;
   companySiteName: string;
@@ -34,6 +26,18 @@ export class FooterComponent implements OnInit {
   displayTermsAndConditionsLink: boolean;
   termsAndConditionsUrl: string;
   display_contact_us_email: string;
+  display_star_us_on_github: string;
+  display_leave_us_a_feedback: string;
+  display_followus_on_x: string;
+  followus_on_x_URL: string;
+  display_followus_on_fb: string;
+  followus_on_fb_URL: string;
+  display_followus_on_in: string;
+  followus_on_in_URL: string;
+  display_followus_on_instagram: string;
+  followus_on_instagram_URL: string;
+  display_followus_on_youtube: string;
+  followus_on_youtube_URL: string;
   contactUsEmail: string;
   displayContactUs: boolean;
 
@@ -47,15 +51,27 @@ export class FooterComponent implements OnInit {
     public appConfigService: AppConfigService
   ) {
     const brand = brandService.getBrand();
-    this.company_name = brand['company_name'];
-    this.companySiteName = brand['company_site_name'];
-    this.companySiteUrl = brand['company_site_url'];
+    this.company_name = brand['BRAND_NAME'];
+    this.companySiteName = brand['COMPANY_SITE_NAME'];
+    this.companySiteUrl = brand['COMPANY_SITE_URL'];
     this.privacyPolicyLinkName = brand['privacy_policy_link_text']
     this.privacyPolicyUrl = brand['privacy_policy_url']
     this.displayTermsAndConditionsLink = brand['footer']['display_terms_and_conditions_link']
     this.termsAndConditionsUrl = brand['terms_and_conditions_url']
     this.display_contact_us_email = brand['footer']['display_contact_us_email'];
-    this.contactUsEmail = brand['contact_us_email'];
+    this.display_star_us_on_github = brand['footer']['display_star_us_on_github'];
+    this.display_leave_us_a_feedback =  brand['footer']['display_leave_us_a_feedback'];
+    this.display_followus_on_x = brand['footer']['display_followus_on_x'];
+    this.followus_on_x_URL=  brand['footer']['followus_on_x_URL'];
+    this.display_followus_on_fb = brand['footer']['display_followus_on_fb'];
+    this.followus_on_fb_URL = brand['footer']['followus_on_fb_URL'];
+    this.display_followus_on_in = brand['footer']['display_followus_on_in'];
+    this.followus_on_in_URL = brand['footer']['followus_on_in_URL'];
+    this.display_followus_on_instagram = brand['footer']['display_followus_on_instagram'];
+    this.followus_on_instagram_URL = brand['footer']['followus_on_instagram_URL'];
+    this.display_followus_on_youtube = brand['footer']['display_followus_on_youtube'];
+    this.followus_on_youtube_URL = brand['footer']['followus_on_youtube_URL'];
+    this.contactUsEmail = brand['CONTACT_US_EMAIL'];
 
   }
 

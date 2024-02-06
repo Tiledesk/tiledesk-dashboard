@@ -27,7 +27,7 @@ export class ActivateAppsumoProductComponent extends WidgetSetUpBaseComponent im
   public projectname: string;
   public selectedProjectId: string;
   public new_project: any;
-  public companyLogoBlack_Url: string;
+  public companyLogo: string;
   public tparams: any;
   public company_name: any;
   public company_site_url: any;
@@ -62,10 +62,10 @@ export class ActivateAppsumoProductComponent extends WidgetSetUpBaseComponent im
   ) {
     super(translate);
     const brand = brandService.getBrand();
-    this.companyLogoBlack_Url = brand['company_logo_black__url'];
+    this.companyLogo = brand['BASE_LOGO'];
     this.tparams = brand;
-    this.company_name = brand['company_name'];
-    this.company_site_url = brand['company_site_url'];
+    this.company_name = brand['BRAND_NAME'];
+    this.company_site_url = brand['COMPANY_SITE_URL'];
     this.contactSalesEmail = "sales@tiledesk.com"
   }
 

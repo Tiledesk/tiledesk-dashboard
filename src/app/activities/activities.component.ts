@@ -16,6 +16,8 @@ import { Subscription } from 'rxjs'
 import { LoggerService } from '../services/logger/logger.service';
 import { ActivitiesService } from './activities-service/activities.service';
 import { FormGroup, FormControl } from '@angular/forms';
+import { goToCDSVersion } from 'app/utils/util';
+import { AppConfigService } from 'app/services/app-config.service';
 @Component({
   selector: 'appdashboard-activities',
   templateUrl: './activities.component.html',
@@ -85,7 +87,8 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
     private usersLocalDbService: LocalDbService,
     private botLocalDbService: BotLocalDbService,
     private logger: LoggerService,
-    private activitiesService: ActivitiesService
+    private activitiesService: ActivitiesService,
+    public appConfigService: AppConfigService,
   ) { }
 
   ngOnInit() {
@@ -100,6 +103,8 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
     this.buildActivitiesOptions();
     this.getBrowserVersion();
   }
+
+  
 
   ngOnDestroy() {
     this.logger.log('[ActivitiesComponent] % »»» WebSocketJs WF +++++ ws-requests--- activities ngOnDestroy')
@@ -165,7 +170,7 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
     });
   }
 
- 
+
 
   addEventStartDate(value) {
     this.logger.log('[ActivitiesComponent] - addEventEndDate value', value);
@@ -183,7 +188,7 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
     this.logger.log('[ActivitiesComponent] - CLEAR DATE RANGE');
     this.startDateTemp = null
     this.startDateTemp = null
-    this.startDate  = null
+    this.startDate = null
     this.endDate = null
   }
 
@@ -267,7 +272,7 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
       });
   }
 
- 
+
 
   search() {
     // RESOLVE THE BUG: THE BUTTON SEARCH REMAIN FOCUSED AFTER PRESSED
@@ -329,7 +334,7 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
   }
 
 
- 
+
   getActivities() {
     this.showSpinner = true;
     this.activitiesService.getUsersActivities(this.queryString, this.pageNo)
@@ -385,13 +390,13 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
                     } else {
                       this.usersService.getProjectUserByUserId(activity.actor.id)
                         .subscribe((projectUser: any) => {
-                      
+
                           if (projectUser && projectUser[0] && projectUser[0].id_user) {
                             this.usersLocalDbService.saveMembersInStorage(projectUser[0].id_user._id, projectUser[0].id_user, 'activities');
                             this.logger.log('ActivitiesComponent] GET projectUser by USER-ID projectUser id', projectUser);
                             activity['closed_by_label'] = projectUser[0].id_user.firstname + ' ' + projectUser[0].id_user.lastname
                           } else {
-                        
+
                             activity['closed_by_label'] = activity.target.object.userFullname
                           }
                         }, (error) => {
@@ -467,7 +472,8 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
                           } else {
                             botType = bot.type
                           }
-                          activity.participant_fullname = bot.name + ` (${botType} bot)`
+                          // activity.participant_fullname = bot.name + ` (${botType} bot)`
+                          activity.participant_fullname = bot.name + ` (chatbot)`
                           this.logger.log('[ActivitiesComponent] participant bot name', activity.participant_fullname);
                         }
                       }, 50);
@@ -551,22 +557,66 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
     document.body.removeChild(dwldLink);
   }
 
+  // goToBotProfile(bot: FaqKb) {
+  //   let botType = ''
+  //   if (bot.type === 'internal') {
+  //     botType = 'native'
+
+  //       this.router.navigate(['project/' + this.project._id + '/bots/intents/', bot._id, botType]);
+  //     }
+  //   } else if (bot.type === 'tilebot') {
+  //     botType = 'tilebot'
+
+  //       // this.router.navigate(['project/' + this.project._id + '/tilebot/intents/', bot_id, botType]);
+  //       // this.router.navigate(['project/' + this.project._id + '/cds/', bot._id, 'intent', '0']);
+  //       goToCDSVersion(this.router, bot, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
+  //     }
+  //   } else if (bot.type === 'tiledesk-ai') {
+  //     botType = 'tiledesk-ai'
+
+  //       // this.router.navigate(['project/' + this.project._id + '/tilebot/intents/', bot_id, botType]);
+  //       // this.router.navigate(['project/' + this.project._id + '/cds/', bot._id, 'intent', '0']);
+  //       goToCDSVersion(this.router, bot, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
+  //     }
+  //   } else {
+  //     botType = bot.type
+
+
+  //       this.router.navigate(['project/' + this.projectId + '/bots', bot._id, botType]);
+  //     }
+  //   }
+
+  // }
+
   // --------------------------------------------
-  // Navigation
+  // Navigation  
   // --------------------------------------------
   goToMemberProfile(participantId: any) {
+    console.log('goToMemberProfile, ', participantId)
     if (participantId.includes('bot_')) {
       const bot_id = participantId.slice(4);
       const bot = this.botLocalDbService.getBotFromStorage(bot_id);
+      console.log('[ActivitiesComponent] stored bot ', bot)
 
       let botType = ''
       if (bot.type === 'internal') {
         botType = 'native'
-        this.router.navigate(['project/' + this.projectId + '/bots/intents/' + bot_id + "/" + botType]);
+
+        this.router.navigate(['project/' + this.projectId + '/bots/intents/', bot._id, botType]);
+
+      } else if (bot.type === 'tilebot') {
+        botType = 'tilebot'
+        goToCDSVersion(this.router, bot, this.projectId, this.appConfigService.getConfig().cdsBaseUrl)
+
+      } else if (bot.type === 'tiledesk-ai') {
+        botType = 'tiledesk-ai'
+        goToCDSVersion(this.router, bot, this.projectId, this.appConfigService.getConfig().cdsBaseUrl)
+
       } else {
         botType = bot.type
-        this.router.navigate(['project/' + this.projectId + '/bots', bot_id, botType]);
+        this.router.navigate(['project/' + this.projectId + '/bots', bot._id, botType]);
       }
+      
     } else {
 
       this.logger.log('[ActivitiesComponent] has clicked GO To MEMBER ', participantId);

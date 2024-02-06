@@ -1,8 +1,5 @@
 <div id="user-details">
-    <!-- matTooltipClass="custom-mat-tooltip" matTooltip="{{'TheDashboardIsTranslatedInto' | translate: tlangparams }}" #tooltip="matTooltip"
-    matTooltipPosition='left' matTooltipHideDelay="100"  -->
-
-
+   
     <div class="user-details-dshbrd-lang" (click)="goToUserProfileLanguageSection()">
 
         <span class="user-details-dshbrd-lang-code" style="text-transform: uppercase;color: #647491;">
@@ -50,9 +47,6 @@
 
     </div>
 
-    <!-- style="cursor:pointer"
-        matTooltipClass="user-sidebar-custom-mat-tooltip" matTooltip="{{ 'Busy' | translate }}" #tooltip="matTooltip"
-        matTooltipPosition='right' matTooltipHideDelay="100" -->
     <div class="user-details-user-isbusy" *ngIf="IS_BUSY === true">
         <span class="material-icons user-details-user-isbusy-icon">
             access_time
@@ -127,7 +121,7 @@
             <div> {{prjct_name}} </div>
             <div style="display: inline-block; margin-left: 26px;"> {{ _prjct_profile_name }} </div>
 
-            <div *ngIf="plan_type === 'payment' && plan_subscription_is_active === false"
+            <!-- <div *ngIf="plan_type === 'payment' && plan_subscription_is_active === false"
                 style="color:#f44336; position:relative; top: -1px;display: inline-block;">
                 <i *ngIf="plan_name !== PLAN_NAME?.C" class="material-icons" style="vertical-align: middle; color:#f44336; cursor:pointer;    
                 font-size: 16px;" 
@@ -142,7 +136,7 @@
                     matTooltipPosition='right' matTooltipHideDelay="100">
                     error_outline
                 </i>
-            </div>
+            </div> -->
         </span>
     </section>
 

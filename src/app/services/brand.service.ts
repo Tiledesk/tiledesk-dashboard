@@ -15,42 +15,76 @@ export class BrandService {
   // "brandSrc":"https://tiledeskbrand.nicolan74.repl.co/mybrand",
 
   public brand: any;
-  // "company_logo_black__url": "assets/img/logos/tiledesk_3.0_logo_black_v2_no_version.svg",
-   _brand = {
-    "metaTitle": "Tiledesk Design Studio",
-    "favicon__url": "https://tiledesk.com/wp-content/uploads/2022/07/tiledesk_v13-300x300.png",
-    "company_name": "Tiledesk",
-    "company_site_name": "tiledesk.com",
-    "company_site_url": "https://www.tiledesk.com",
-    "company_logo_white__url": "assets/img/logos/tiledesk-logo_white_orange.svg",
-    "company_logo_black__url": "assets/img/logos/tiledesk_4.0_logo_black_text.svg",
-    "company_logo_allwhite__url": "assets/img/logos/tiledesk_3.0_logo_all_white_v2_no_version.svg",
-    "company_logo_no_text__url": "assets/img/logos/tiledesk-solo-logo.png",
-    "privacy_policy_link_text": "Privacy Policy",
-    "privacy_policy_url": "https://www.tiledesk.com/privacy.html",
-    "display_terms_and_conditions_link": true,
-    "terms_and_conditions_url": "https://www.tiledesk.com/termsofservice.html",
-    "contact_us_email": "support@tiledesk.com",
-    "footer": {
+
+  _brand = {
+    DASHBOARD: {
+      META_TITLE: "Tiledesk Design Studio",
+      FAVICON_URL: "https://tiledesk.com/wp-content/uploads/2022/07/tiledesk_v13-300x300.png",
+      CUSTOM_COMPANY_HOME_LOGO: false,
+      COMPANY_LOGO_PLANET: "assets/img/logos/tiledesk_planet.svg",
+      "privacy_policy_link_text": "Privacy Policy",
+      "privacy_policy_url": "https://www.tiledesk.com/privacy.html",
+      "display_terms_and_conditions_link": true,
+      "terms_and_conditions_url": "https://www.tiledesk.com/termsofservice.html",
+      "contact_us_email": "support@tiledesk.com",
+      "display-news-and-documentation": true,
+      "display_google_auth_btn": true,
+      "display_help_in_installation": true,
+      "display_invite_teammate_btn": true,
+      "footer": {
         "display_terms_and_conditions_link": true,
-        "display_contact_us_email": true
-    },
-    "recent_project_page": {
-        "company_logo_black__width": "130px"
-    },
-    "signup_page": {
-        "display_terms_and_conditions_link": true
-    },
-    "handle_invitation_page": {
+        "display_contact_us_email": true,
+        "display_star_us_on_github": true,
+        "display_leave_us_a_feedback": true,
+        "display_followus_on_x": true,
+        "followus_on_x_URL": "https://twitter.com/tiledesk",
+        "display_followus_on_fb": true,
+        "followus_on_fb_URL": "https://www.facebook.com/tiledesk",
+        "display_followus_on_in": true,
+        "followus_on_in_URL": "https://www.linkedin.com/company/tiledesk",
+        "display_followus_on_instagram": true,
+        "followus_on_instagram_URL": "https://www.instagram.com/tiledesk/",
+        "display_followus_on_youtube": true,
+        "followus_on_youtube_URL": "https://www.youtube.com/@tiledesk"
+      },
+      "recent_project_page": {
+        "company_logo_width": "130px",
+        "company_logo_height": "38px"
+      },
+      "signup_page": {
+        "display_terms_and_conditions_link": true,
+        "display_social_proof_container":  true
+      },
+      "handle_invitation_page": {
         "company_logo_45x45": "assets/img/logos/tiledesk-solo-logo.png"
+      },
     },
-    "wizard_create_project_page": {
-        "logo_x_rocket": "assets/img/logos/logo_x_rocket4x4.svg"
+    CHAT: {
+
     },
-    "wizard_install_widget_page": {
-        "logo_on_rocket": "assets/img/logos/tiledesk-solo-logo.png"
+    CDS: {
+      META_TITLE: "Design Studio",
+      FAVICON_URL: "https://tiledesk.com/wp-content/uploads/2022/07/tiledesk_v13-300x300.png",
+      INFO_MENU_ITEMS: [
+        { key: 'FEEDBACK', icon: "", src: "", status: "inactive" },
+        { key: 'CHANGELOG', icon: "", src: "", status: "inactive" },
+      ]
+    },
+    COMMON: {
+      COMPANY_LOGO: "assets/img/logos/tiledesk_logo.svg",
+      COMPANY_LOGO_NO_TEXT: "assets/img/logos/tiledesk_logo_no_text.svg",
+      BASE_LOGO: "assets/img/logos/tiledesk_logo.svg",
+      BASE_LOGO_NO_TEXT: "assets/img/logos/tiledesk_logo_no_text.svg",
+      COMPANY_NAME: "Tiledesk",
+      BRAND_NAME: "Tiledesk",
+      COMPANY_SITE_NAME: "tiledesk.com",
+      COMPANY_SITE_URL: "https://www.tiledesk.com",
+      CONTACT_US_EMAIL: "support@tiledesk.com",
+      BRAND_PRIMARY_COLOR: "#f0806f",
+      BRAND_SECONDARY_COLOR: "#f0806f",
+
     }
-}
+  }
 
   public assetBrand: any;
   // public brand = brand
@@ -93,7 +127,7 @@ export class BrandService {
     // this.getData()
     //   .subscribe(data => {
     //     this.assetBrand = data
-    //     console.log('[BRAND-SERV] BRAND RETIEVED FROM ASSET assetBrand ', this.assetBrand);
+    //     this.logger.log('[BRAND-SERV] BRAND RETIEVED FROM ASSET assetBrand ', this.assetBrand);
     //   });
 
     let url = ''
@@ -109,7 +143,7 @@ export class BrandService {
           url = environment['brandSrc']
         } else {
           this.logger.log('[BRAND-SERV] loadBrand remoteConfig is false - env brandSrc is empty ? ', remoteBrandUrl, ' -> load from assets')
-          this.brand =  this._brand;
+          this.brand = this._brand;
         }
       } else {
         this.logger.log('[BRAND-SERV] loadBrand remoteConfig is false - env NOT has Property brandSrc -> load from assets');
@@ -119,7 +153,7 @@ export class BrandService {
       const res = await this.httpClient.get(environment['remoteConfigUrl']).toPromise();
       this.logger.log('[BRAND-SERV] loadBrand - remoteConfig -> true get remoteConfig response ', res);
 
-      // const remoteConfigData = JSON.parse(res['_body'])
+
       const remoteConfigData = res
       // this.logger.log('BrandService loadBrand - remoteConfig is true - get remoteConfigData  res ', remoteConfigData);
 
@@ -153,7 +187,8 @@ export class BrandService {
 
         this.logger.log('[BRAND-SERV] **** GET BRAND FROM URL ****', url);
 
-        this.brand = JSON.parse(data['_body'])
+        // this.brand = JSON.parse(data['_body'])
+        this.brand = data
 
         this.logger.log('[BRAND-SERV] loadBrand - brand: ', this.brand);
       }
@@ -176,10 +211,14 @@ export class BrandService {
     })
   }
 
+  // getBrand() {
+  //   // this.logger.log('BrandService getBrand has been called - brand: ', this.brand);
+  //   return this.brand;
+  // }
   getBrand() {
-    // this.logger.log('BrandService getBrand has been called - brand: ', this.brand);
-    return this.brand;
-    
+    this.logger.log('BrandService getBrand has been called - brand: ', this.brand);
+    return { ...this.brand['DASHBOARD'], ...this.brand['COMMON'] };
+
   }
 
 

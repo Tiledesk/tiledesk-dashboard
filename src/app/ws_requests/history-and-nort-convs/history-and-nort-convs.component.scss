@@ -7,6 +7,7 @@ input[type="text"] {
   width: 100%;
   margin-bottom: 10px;
   -webkit-appearance: none;
+  appearance: none;
   background: #fff;
   border: 1px solid #d9d9d9 !important;
   // border-top: 1px solid #c0c0c0;
@@ -334,17 +335,35 @@ p.member:hover {
   margin-bottom: 1px;
   object-fit: cover;
 }
+.bot-type-logo-wpr {
+  position: relative;
+}
 
-.served-by-bot-type-logo {
-  width: 15px;
-  height: 15px;
-  position: absolute;
-  top: -2px;
-  left: -3px;
-  border-radius: 50%;
+.bot-type-logo-img-wpr {
   border: 1px solid #eee;
-  padding: 1px;
+  height: 15px;
+  width: 15px;
+  position: absolute;
+  top: -34px;
+  left: -3px;
+  border-radius: 999px;
   background: #fff;
+}
+
+.served-by-bot--type-logo {
+  // width: 15px;
+  // height: 15px;
+  // position: absolute;
+  // top: -34px;
+  // left: -3px;
+  // border-radius: 50%;
+  // border: 1px solid #eee;
+  // padding: 1px;
+  // background: #fff;
+  position: relative;
+  top: -5px;
+  padding: 2px;
+
 }
 
 .lead_data {

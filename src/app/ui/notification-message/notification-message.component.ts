@@ -13,6 +13,7 @@ import { LoggerService } from '../../services/logger/logger.service';
 import { UsersService } from '../../services/users.service';
 import { takeUntil } from 'rxjs/operators';
 import { PLAN_NAME } from 'app/utils/util';
+import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 const swal = require('sweetalert');
 @Component({
   selector: 'notification-message',
@@ -20,7 +21,7 @@ const swal = require('sweetalert');
   styleUrls: ['./notification-message.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class NotificationMessageComponent implements OnInit, OnDestroy {
+export class NotificationMessageComponent extends PricingBaseComponent implements OnInit, OnDestroy {
   PLAN_NAME = PLAN_NAME
   private unsubscribe$: Subject<any> = new Subject<any>();
   tparams: any;
@@ -58,18 +59,19 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
     public projectService: ProjectService,
     private router: Router,
     private translate: TranslateService,
-    private prjctPlanService: ProjectPlanService,
+    public prjctPlanService: ProjectPlanService,
     public appConfigService: AppConfigService,
     public brandService: BrandService,
     private logger: LoggerService,
     private usersService: UsersService,
   ) {
+    super(prjctPlanService, notify);
     const brand = brandService.getBrand();
     this.tparams = brand;
 
     if (brand) {
-      this.company_name = brand['company_name'];
-      this.contactUsEmail = brand['contact_us_email'];
+      this.company_name = brand['BRAND_NAME'];
+      this.contactUsEmail = brand['CONTACT_US_EMAIL'];
     }
 
   }
@@ -88,6 +90,10 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
     this.getChatUrl();
     this.translateModalOnlyOwnerCanManageProjectAccount();
     this.getUserAvailability()
+  }
+
+  ngOnDestroy() {
+    // this.subscription.unsubscribe();
   }
 
   getUserAvailability() {
@@ -131,87 +137,7 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
   getWidgetUrl() {
     this.WIDGET_URL = this.appConfigService.getConfig().WIDGET_BASE_URL + 'launch.js';
   }
-
-  getProjectPlan() {
-    this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-      this.logger.log('[NOTIFICATION-MSG] - GET PROJECT PROFILE', projectProfileData)
-      if (projectProfileData) {
-        this.prjct_name = projectProfileData.name;
-        this.prjct_profile_type = projectProfileData.profile_type;
-        this.logger.log('[NOTIFICATION-MSG] - GET PROJECT PROFILE prjct_profile_type ', this.prjct_profile_type);
-        this.subscription_is_active = projectProfileData.subscription_is_active;
-        this.trial_expired = projectProfileData.trial_expired;
-        this.subscription_end_date = projectProfileData.subscription_end_date;
-        const projectprofile = projectProfileData.profile_name.toUpperCase()
-        this.tprojectprofilemane = { projectprofile: projectprofile }
-        this.profile_name = projectProfileData.profile_name;
-        this.buildPlanName(projectProfileData.profile_name, this.browserLang, this.prjct_profile_type);
-
-
-        if (projectProfileData.profile_type === 'free') {
-          if (projectProfileData.trial_expired === false) {
-            this.profile_name_for_segment = PLAN_NAME.B + " (trial)"
-          } else {
-            this.profile_name_for_segment = "Free"
-          }
-        } else if (projectProfileData.profile_type === 'payment') {
-          if (projectProfileData.profile_name === PLAN_NAME.A) {
-            this.profile_name_for_segment = PLAN_NAME.A
-          } else if (projectProfileData.profile_name === PLAN_NAME.B) {
-            this.profile_name_for_segment = PLAN_NAME.B
-          } else if (projectProfileData.profile_name === PLAN_NAME.C) {
-            this.profile_name_for_segment = PLAN_NAME.C
-          }
-        }
-      }
-    }, err => {
-      this.logger.error('[NOTIFICATION-MSG] GET PROJECT PROFILE - ERROR', err);
-    }, () => {
-      this.logger.log('[NOTIFICATION-MSG] GET PROJECT PROFILE * COMPLETE *');
-    });
-  }
-
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
-  }
-
-  buildPlanName(planName: string, browserLang: string, planType: string) {
-    this.logger.log('[NOTIFICATION-MSG] buildPlanName - planName ', planName, ' browserLang  ', browserLang);
-
-    if (planType === 'payment') {
-
-      if (planName === PLAN_NAME.A) {
-        this.prjct_profile_name = PLAN_NAME.A + 'plan'
-        this.profile_name_for_segment = PLAN_NAME.A
-      } else if (this.prjct_profile_name === PLAN_NAME.B) {
-        this.prjct_profile_name = PLAN_NAME.B + 'plan'
-        this.profile_name_for_segment = PLAN_NAME.B
-      } else if (this.prjct_profile_name === PLAN_NAME.C) {
-        this.prjct_profile_name = PLAN_NAME.C + 'plan'
-        this.profile_name_for_segment = PLAN_NAME.C
-      }
-
-
-
-      // this.getPaidPlanTranslation(planName)
-      // if (browserLang === 'it') {
-      //   this.prjct_profile_name = 'Piano ' + planName;
-      //   return this.prjct_profile_name
-      // } else if (browserLang !== 'it') {
-      //   this.prjct_profile_name = planName + ' Plan';
-      //   return this.prjct_profile_name
-      // }
-    }
-  }
-
-  // getPaidPlanTranslation(project_profile_name) {
-  //   this.translate.get('PaydPlanName', { projectprofile: project_profile_name })
-  //     .subscribe((text: string) => {
-  //       this.prjct_profile_name = text;
-
-  //       // this.logger.log('+ + + PaydPlanName ', text)
-  //     });
-  // }
+  
 
 
   openModalExpiredSubscOrGoToPricing() {
@@ -236,6 +162,12 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
       this.notify.closeDataExportNotAvailable()
       this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles);
     }
+  }
+
+  goTo_Pricing() {
+    this.router.navigate(['project/' + this.projectId + '/pricing']);
+
+    this.notify.closeModalTrialExpired()
   }
 
   onLogoutModalHandled() {
@@ -291,72 +223,87 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
 
 
   cancelSubscription() {
+    console.log('NOTIFICATION-MSG profile_name_for_segment ', this.profile_name_for_segment)
+    console.log('NOTIFICATION-MSG subscription_id ', this.subscription_id)
     if (this.USER_ROLE === 'owner') {
       this.notify.cancelSubscriptionCompleted(false)
 
-      // this.showSpinner = true;
-      this.projectService.cancelSubscription().subscribe((confirmation: any) => {
-        this.logger.log('[NOTIFICATION-MSG] - cancelSubscription RES ', confirmation);
-
-        if (confirmation && confirmation.status === 'canceled') {
-          this.notify.showWidgetStyleUpdateNotification(this.subscriptionCanceledSuccessfully, 2, 'done');
-          if (!isDevMode()) {
-            if (window['analytics']) {
-
-              let userFullname = ''
-              if (this.currentUser.firstname && this.currentUser.lastname)  {
-                userFullname = this.currentUser.firstname + ' ' + this.currentUser.lastname
-              } else if (this.currentUser.firstname && !this.currentUser.lastname) {
-                userFullname = this.currentUser.firstname
-              }
-
-              try {
-                window['analytics'].identify(this.currentUser._id, {
-                  name: userFullname,
-                  email: this.currentUser.email,
-                  logins: 5,
-                  plan: this.profile_name_for_segment,
-                });
-              } catch (err) {
-                this.logger.error('identify [NOTIFICATION-MSG] Cancel subscription error', err);
-              }
-
-              try {
-                window['analytics'].track('Cancel Subscription', {
-                  "email": this.currentUser.email,
-                }, {
-                  "context": {
-                    "groupId": this.projectId
-                  }
-                });
-              } catch (err) {
-                this.logger.error('track [NOTIFICATION-MSG] Cancel subscrption error', err);
-              }
-
-              try {
-                window['analytics'].group(this.projectId, {
-                  name: this.prjct_name,
-                  plan: this.profile_name_for_segment,
-                });
-              } catch (err) {
-                this.logger.error('group [NOTIFICATION-MSG] Cancel subscrption error', err);
-              }
-            }
-          }
-
-          this.notify.cancelSubscriptionCompleted(true);
-        }
-      }, error => {
-        this.logger.error('[NOTIFICATION-MSG] - cancelSubscription - ERROR: ', error);
-        this.notify.showNotification(this.subscriptionCanceledError, 4, 'report_problem');
-
-        this.notify.cancelSubscriptionCompleted(true)
-      }, () => {
-        this.logger.log('[NOTIFICATION-MSG] - cancelSubscription * COMPLETE *');
-
-      });
+      if (!this.subscription_id.startsWith("XX")) {
+        this._cancelSubscription()
+      } else if (this.subscription_id.startsWith("XX")) {
+        window.open(`mailto:sales@tiledesk.com?subject=Cancel subscription for project with id  ${this.projectId}`);
+        this.notify.cancelSubscriptionCompleted(true);
+      }
     } else {
       this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles);
+    }
+  }
+
+  _cancelSubscription() {
+    this.projectService.cancelSubscription().subscribe((confirmation: any) => {
+      this.logger.log('[NOTIFICATION-MSG] - cancelSubscription RES ', confirmation);
+
+      if (confirmation && confirmation.status === 'canceled') {
+        this.notify.showWidgetStyleUpdateNotification(this.subscriptionCanceledSuccessfully, 2, 'done');
+
+        this.trackCancelSubscription()
+
+        this.notify.cancelSubscriptionCompleted(true);
+      }
+    }, error => {
+      this.logger.error('[NOTIFICATION-MSG] - cancelSubscription - ERROR: ', error);
+      this.notify.showNotification(this.subscriptionCanceledError, 4, 'report_problem');
+
+      this.notify.cancelSubscriptionCompleted(true)
+    }, () => {
+      this.logger.log('[NOTIFICATION-MSG] - cancelSubscription * COMPLETE *');
+
+    });
+  }
+
+  trackCancelSubscription() {
+    if (!isDevMode()) {
+      if (window['analytics']) {
+
+        let userFullname = ''
+        if (this.currentUser.firstname && this.currentUser.lastname) {
+          userFullname = this.currentUser.firstname + ' ' + this.currentUser.lastname
+        } else if (this.currentUser.firstname && !this.currentUser.lastname) {
+          userFullname = this.currentUser.firstname
+        }
+
+        try {
+          window['analytics'].identify(this.currentUser._id, {
+            name: userFullname,
+            email: this.currentUser.email,
+            logins: 5,
+            plan: this.profile_name_for_segment,
+          });
+        } catch (err) {
+          this.logger.error('identify [NOTIFICATION-MSG] Cancel subscription error', err);
+        }
+
+        try {
+          window['analytics'].track('Cancel Subscription', {
+            "email": this.currentUser.email,
+          }, {
+            "context": {
+              "groupId": this.projectId
+            }
+          });
+        } catch (err) {
+          this.logger.error('track [NOTIFICATION-MSG] Cancel subscrption error', err);
+        }
+
+        try {
+          window['analytics'].group(this.projectId, {
+            name: this.prjct_name,
+            plan: this.profile_name_for_segment,
+          });
+        } catch (err) {
+          this.logger.error('group [NOTIFICATION-MSG] Cancel subscrption error', err);
+        }
+      }
     }
   }
 

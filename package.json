@@ -1,6 +1,6 @@
 {
   "name": "@tiledesk/tiledesk-dashboard",
-  "version": "2.4.94",
+  "version": "2.5.0-rc2",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --aot",
@@ -41,6 +41,7 @@
     "@ng-select/ng-select": "^9.0.2",
     "@ngx-translate/core": "^14.0.0",
     "@ngx-translate/http-loader": "^7.0.0",
+    "@types/grecaptcha": "^3.0.7",
     "angular-cc-library": "^3.0.0",
     "apexcharts": "^3.36.0",
     "arrive": "2.4.1",

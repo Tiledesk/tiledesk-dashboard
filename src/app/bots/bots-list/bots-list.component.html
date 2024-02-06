@@ -32,6 +32,11 @@
       </appdashboard-bots-sidebar>
       <div class="teplate-content" style="flex: 1 1 auto; margin-left: 20px;">
 
+        <!-- -------------------------------------------------------------------- -->
+        <!-- Alert displayed when the number of chatbot exceed the chatbot limit -->
+        <!-- -------------------------------------------------------------------- -->
+        <appdashboard-chatbot-alert *ngIf="chatBotLimit && chatBotCount > chatBotLimit" ></appdashboard-chatbot-alert>
+
         <div class="row">
           <div class="col-xs-12">
             <button class="btn btn-new btn-size-m btn--primary pull-right" (click)="createBlankTilebot()"
@@ -177,25 +182,41 @@
 
                             
 
-                          <span *ngIf="faqkb.type === 'internal'">
-                            <img class="bot-type-logo" src="assets/img/tiledesk_logo_no_text.png" />
-                          </span>
+                          <div class="bot-type-logo-wpr" *ngIf="faqkb.type === 'internal'">
+                            <div class="bot-type-logo--img-wpr ">  
+                              <img class="bot-type-logo" src="assets/img/tiledesk_logo_no_text.png" />
+                            </div>
+                          </div>
 
-                          <span *ngIf="faqkb.type === 'external'">
-                            <img class="bot-type-logo" src="assets/img/external_bot_logo.png" />
-                          </span>
+                          <div class="bot-type-logo-wpr" *ngIf="faqkb.type === 'external'">
+                            <div class="bot-type-logo--img-wpr ">  
+                              <img class="bot-type-logo" src="assets/img/external_bot_logo.png" />
+                            </div>
+                          </div>
 
-                          <span *ngIf="faqkb.type === 'dialogflow'">
-                            <img class="bot-type-logo" src="assets/img/Dialogflow_logo_no_text.png" />
-                          </span>
+                          <div class="bot-type-logo-wpr" *ngIf="faqkb.type === 'dialogflow'">
+                            <div class="bot-type-logo--img-wpr ">  
+                              <img class="bot-type-logo" src="assets/img/Dialogflow_logo_no_text.png" />
+                            </div>
+                          </div>
 
-                          <span *ngIf="faqkb.type === 'rasa'">
-                            <img class="bot-type-logo" src="assets/img/rasa_bot_logo.png" />
-                          </span>
+                          <div class="bot-type-logo-wpr" *ngIf="faqkb.type === 'rasa'">
+                            <div class="bot-type-logo--img-wpr ">  
+                              <img class="bot-type-logo" src="assets/img/rasa_bot_logo.png" />
+                            </div>  
+                          </div>
 
-                          <span class="bot-type-logo-wpr"   *ngIf="faqkb.type === 'tilebot'">
+                          <!-- <span class="bot-type-logo-wpr" *ngIf="faqkb.type === 'tilebot'">
                             <img src="assets/img/tilebot_logo_small.png" />
-                          </span>
+                          </span> -->
+
+                          <div class="bot-type-logo-wpr" *ngIf="faqkb.type === 'tilebot'">
+                            <div class="bot-type-logo--img-wpr ">  
+                              <img class="bot-type-logo" [src]="botLogo" />
+                            </div>
+                          </div>
+
+                         
 
                           <!-- <span class="bot-type-logo-wpr"   *ngIf="faqkb.type === 'tiledesk-ai'">
                             <img src="assets/img/tiledesk-ai-logo.png" />
@@ -204,15 +225,15 @@
                           
 
                           <!-- <span class="tooltiptext">
-                        {{ 'BotsPage.BotId' | translate }}: <br> {{ faqkb?._id  }}
-                      </span> -->
+                            {{ 'BotsPage.BotId' | translate }}: <br> {{ faqkb?._id  }}
+                           </span> -->
 
-                          <div class="right" style="padding: 2px 9px;min-width: fit-content;">
+                          <!-- <div class="right" style="padding: 2px 9px;min-width: fit-content;">
                             <h4>{{ 'BotsPage.BotId' | translate }}</h4>
 
                             {{ faqkb?._id }}
                             <i></i>
-                          </div>
+                          </div> -->
 
                         </span>
 

@@ -100,7 +100,20 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.router.events.subscribe((event) => {
             if (event instanceof NavigationEnd) {
+                // console.log('NavigationEnd event ', event)
                 gtag('config', 'G-3DMYV3HG61', { 'page_path': event.urlAfterRedirects });
+
+                const grecaptchaBadgeEl = <HTMLElement>document.querySelector('.grecaptcha-badge');
+                if (event.url !== '/signup') {
+                    console.log('[APP-COMPONENT] grecaptchaBadgeEl ', grecaptchaBadgeEl)
+                    if (grecaptchaBadgeEl) {
+                        grecaptchaBadgeEl.style.visibility = 'hidden'
+                    }
+                } else {
+                    if (grecaptchaBadgeEl) {
+                        grecaptchaBadgeEl.style.visibility = 'visible'
+                    }
+                }
             }
         })
 
@@ -148,7 +161,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         // console.log('[APP-COMPONENT] - GET BRAND brandService > brand ', brand)
 
         if (brand) {
-            this.metaTitle.setTitle(brand['metaTitle']); // here used with: "import brand from ..." now see in getBrand()
+            this.metaTitle.setTitle(brand['META_TITLE']); // here used with: "import brand from ..." now see in getBrand()
         }
         this.setFavicon(brand); // here used with "import brand from ..." now see in getBrand()
 
@@ -276,15 +289,17 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
         const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
         const elemSidebar = <HTMLElement>document.querySelector('.sidebar .sidebar-wrapper');
+
+
         this._router = this.router.events
             .pipe(
                 filter(event => event instanceof NavigationEnd)
             )
             .subscribe((event: NavigationEvent) => {
-                    // console.log('[APP-COMPONENT] NavigationEvent ', event);
-                    elemMainPanel.scrollTop = 0;
-                    elemSidebar.scrollTop = 0;
-                }
+                // console.log('[APP-COMPONENT] NavigationEvent ', event);
+                elemMainPanel.scrollTop = 0;
+                elemSidebar.scrollTop = 0;
+            }
             )
 
         if (window.matchMedia(`(min-width: 960px)`).matches && !this.isMac()) {
@@ -354,7 +369,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         this.wsRequestsService.publishAndStoreForegroundRequestCount(foregrondNotificationsCount)
         if (this.count === 0) {
             const brand = this.brandService.getBrand();
-            document.title = brand['metaTitle']
+            document.title = brand['META_TITLE']
         }
 
         if (event.key === 'dshbrd----sound') {
@@ -396,7 +411,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             this.setIntervalTime = window.setInterval(function () {
 
                 // console.log('[APP-COMPONENT] - stored FOREGROUND NOTIFICATION COUNT USECASE 1  WINDOW NOT HAS FOCUS  HERE YES  document.title ', document.title)
-                document.title = document.title == brand['metaTitle'] ? '(' + that.count + ')' + ' ' + brand['metaTitle'] : brand['metaTitle'];
+                document.title = document.title == brand['META_TITLE'] ? '(' + that.count + ')' + ' ' + brand['META_TITLE'] : brand['META_TITLE'];
 
             }, 1000);
         }
@@ -405,7 +420,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             // console.log('[APP-COMPONENT] - stored FOREGROUND NOTIFICATION isTabVisible ', this.isTabVisible)
             // console.log('[APP-COMPONENT] - stored FOREGROUND NOTIFICATION COUNT USECASE 2  WINDOW HAS FOCUS ')
             isBlurred = false;
-            document.title = brand['metaTitle']
+            document.title = brand['META_TITLE']
             clearInterval(this.setIntervalTime);
         }
     }
@@ -549,7 +564,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         link['type'] = 'image/x-icon';
         link['rel'] = 'shortcut icon';
         if (brand) {
-            link['href'] = brand.favicon__url;
+            link['href'] = brand.FAVICON_URL;
         }
         document.getElementsByTagName('head')[0].appendChild(link);
 
@@ -790,7 +805,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                     (this.route.indexOf('/createfaq') !== -1) ||
                     (this.route.indexOf('/cds') !== -1) ||
                     (this.route.indexOf('/desktop-access') !== -1)
-                  
+
 
                 ) {
 

@@ -15,27 +15,33 @@ import { Location } from '@angular/common';
 import { BotLocalDbService } from 'app/services/bot-local-db.service';
 import { DepartmentService } from 'app/services/department.service';
 import { AppConfigService } from 'app/services/app-config.service';
-import { APP_SUMO_PLAN_NAME, goToCDSVersion, PLAN_NAME } from 'app/utils/util';
+import { APP_SUMO_PLAN_NAME, CHATBOT_MAX_NUM, goToCDSVersion, PLAN_NAME } from 'app/utils/util';
 import { FaqKb } from 'app/models/faq_kb-model';
+import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
+import { ProjectPlanService } from 'app/services/project-plan.service';
+import { UsersService } from 'app/services/users.service';
+import { NotifyService } from 'app/core/notify.service';
+import { ChatbotModalComponent } from 'app/bots/bots-list/chatbot-modal/chatbot-modal.component';
 @Component({
   selector: 'appdashboard-install-template',
   templateUrl: './install-template.component.html',
   styleUrls: ['./install-template.component.scss']
 })
-export class InstallTemplateComponent extends WidgetSetUpBaseComponent implements OnInit {
+// extends  WidgetSetUpBaseComponent 
+export class InstallTemplateComponent extends PricingBaseComponent implements OnInit {
   PLAN_NAME = PLAN_NAME;
   APP_SUMO_PLAN_NAME = APP_SUMO_PLAN_NAME;
   appSumoProfile: string
   projectId: string;
   projectName: string;
+  projectPlanName: string;
   projectPlan: string;
   botId: string;
   selectedTemplate: any;
 
-  public companyLogoBlack_Url: string;
-  public tparams: any;
-  public company_name: any;
-  public company_site_url: any;
+  public companyLogo: string;
+  // public company_name: any;
+  // public company_site_url: any;
   public templateImg: string;
   public templateNameOnSite: string;
   public langCode: string;
@@ -52,7 +58,19 @@ export class InstallTemplateComponent extends WidgetSetUpBaseComponent implement
   public templatesCertifiedTags: any;
   project: Project;
   public TESTSITE_BASE_URL: string;
-  prjct_profile_name: string
+  public prjct_profile_name: string;
+  public chatBotCount: number;
+  public USER_ROLE: string;
+  public projectProfile: any;
+  public profile_name: string;
+  public subscription_is_active: boolean;
+  public trial_expired: boolean;
+  public chatBotLimit: any;
+  public tParamsPlanAndChatBot: any;
+  availableTranslations: Array<any> = [];
+  learnMoreAboutDefaultRoles : string;
+  agentsCannotManageChatbots: string;
+
   constructor(
     private route: ActivatedRoute,
     private faqKbService: FaqKbService,
@@ -68,20 +86,40 @@ export class InstallTemplateComponent extends WidgetSetUpBaseComponent implement
     private botLocalDbService: BotLocalDbService,
     private departmentService: DepartmentService,
     public appConfigService: AppConfigService,
+    public prjctPlanService: ProjectPlanService,
+    public usersService: UsersService,
+    public notify: NotifyService,
 
   ) {
-    super(translate);
+    // super(translate);
+    super(prjctPlanService, notify);
     const brand = brandService.getBrand();
-    this.companyLogoBlack_Url = brand['company_logo_black__url'];
-    this.tparams = brand;
-    this.company_name = brand['company_name'];
-    this.company_site_url = brand['company_site_url'];
+    this.companyLogo = brand['BASE_LOGO'];
+    // this.company_name = brand['BRAND_NAME'];
+    // this.company_site_url = brand['COMPANY_SITE_URL'];
   }
 
   ngOnInit(): void {
     this.getParamsTemplatesAndProjects()
     this.getLoggedUser();
-    this.getTestSiteUrl()
+    this.getTestSiteUrl();
+    this.getTranslations();
+  }
+
+  getProjectBots() {
+    this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
+      console.log('[INSTALL-TEMPLATE] - GET CHATBOTS RES', faqKb);
+
+      if (faqKb) {
+        this.chatBotCount = faqKb.length;
+        console.log('[INSTALL-TEMPLATE] - COUNT OF CHATBOTS', this.chatBotCount);
+      }
+    }, (error) => {
+      console.error('[INSTALL-TEMPLATE] - GET CHATBOTS - ERROR ', error);
+
+    }, () => {
+      console.log('[INSTALL-TEMPLATE] - GET CHATBOTS * COMPLETE *');
+    });
   }
 
   getLoggedUser() {
@@ -94,6 +132,15 @@ export class InstallTemplateComponent extends WidgetSetUpBaseComponent implement
       });
   }
 
+  getUserRole() {
+    this.usersService.project_user_role_bs
+      .subscribe((userRole) => {
+
+        console.log('[INSTALL-TEMPLATE] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
+        this.USER_ROLE = userRole;
+      })
+  }
+
   getParamsTemplatesAndProjects() {
     this.route.params.subscribe((params) => {
 
@@ -104,10 +151,10 @@ export class InstallTemplateComponent extends WidgetSetUpBaseComponent implement
       this.langCode = params.langcode;
       this.langName = params.langname;
       // console.log('[INSTALL-TEMPLATE] params langCode: ', this.langCode, ' - langName: ', this.langName)
-      if (this.langCode && this.langName) {
-        this.addNewLanguage(this.langCode, this.langName)
-        this.newlyCreatedProject = true
-      }
+      // if (this.langCode && this.langName) {
+      //   this.addNewLanguage(this.langCode, this.langName)
+      //   this.newlyCreatedProject = true
+      // }
 
       this.getTemplates(params['botid'])
 
@@ -150,49 +197,22 @@ export class InstallTemplateComponent extends WidgetSetUpBaseComponent implement
         projects.forEach(project => {
           // this.logger.log('[INSTALL-TEMPLATE] - GET PROJECTS  project ', project);
           if (project.id_project.id === projectid) {
-            this.logger.log('[INSTALL-TEMPLATE] - GET PROJECTS selected project ', project);
+            // console.log('[INSTALL-TEMPLATE] - GET PROJECTS selected project ', project);
             this.project = project.id_project
             this.projectName = project.id_project.name;
-            this.projectPlan = project.id_project.profile.name
+            this.projectProfile = project.id_project.profile
+            this.profile_name = this.projectProfile.name;
+            this.trial_expired = this.project.trialExpired
+            this.subscription_is_active = this.project.isActiveSubscription
 
-            if (project.id_project.profile.extra3) {
-              
-              this.appSumoProfile = APP_SUMO_PLAN_NAME[project.id_project.profile.extra3]
-              this.logger.log('[INSTALL-TEMPLATE] Find Current Project appSumoProfile ', this.appSumoProfile)
-            }
+            console.log('[INSTALL-TEMPLATE] project ', this.project)
+            console.log('[INSTALL-TEMPLATE] projectName ', this.projectName)
+            console.log('[INSTALL-TEMPLATE] projectProfile ', this.projectProfile)
+            console.log('[INSTALL-TEMPLATE] profile_name ', this.profile_name)
+            console.log('[INSTALL-TEMPLATE] trial_expired ', this.trial_expired)
+            console.log('[INSTALL-TEMPLATE] subscription_is_active ', this.subscription_is_active)
 
-
-            if (project.id_project.profile.type === 'free') {
-              if (project.id_project.trial_expired === false) {
-                this.prjct_profile_name = PLAN_NAME.B + " plan (trial)"
-               
-                
-              } else {
-                this.prjct_profile_name = "Free plan";
-              
-              }
-            } else if (project.id_project.profile.type === 'payment') {
-            
-                if (project.id_project.profile.name === PLAN_NAME.A) {
-                  if (!this.appSumoProfile) {
-                    this.prjct_profile_name = PLAN_NAME.A + " plan";
-                  
-                  } else {
-                    this.prjct_profile_name = PLAN_NAME.A + " plan " + '(' + this.appSumoProfile + ')';
-                  
-                  }
-                } else if (project.id_project.profile.name === PLAN_NAME.B) {
-                  if (!this.appSumoProfile) {
-                    this.prjct_profile_name = PLAN_NAME.B + " plan";
-                   
-                  } else {
-                    this.prjct_profile_name = PLAN_NAME.B + " plan " + '(' + this.appSumoProfile + ')';;
-                  
-                  }
-                } else if (project.id_project.profile.name === PLAN_NAME.C) {
-                  this.prjct_profile_name = PLAN_NAME.C + " plan";
-                }
-            }
+        
 
             const selectedProject: Project = {
               _id: project['id_project']['_id'],
@@ -204,7 +224,17 @@ export class InstallTemplateComponent extends WidgetSetUpBaseComponent implement
             }
             this.auth.projectSelected(selectedProject)
 
-            this.getDeptsByProjectId()
+            this.getDeptsByProjectId();
+            this.getProjectBots();
+            this.getUserRole();
+            this.getProjectPlan()
+
+            if (this.langCode && this.langName) {
+              this.addNewLanguage(this.langCode, this.langName)
+              this.newlyCreatedProject = true
+            }
+
+
           }
         });
       }
@@ -383,16 +413,55 @@ export class InstallTemplateComponent extends WidgetSetUpBaseComponent implement
   //   });
   // }
 
-  goToGetStartChatbot() {
-    // this.router.navigate([`/get-chatbot/${this.botId}`]);
-    this.location.back();
+  // goToGetStartChatbot() {
+  //   // this.router.navigate([`/get-chatbot/${this.botId}`]);
+  //   this.location.back();
 
+  // }
+  goBack() {
+    // this.router.navigate([`/get-chatbot/${this.botId}`]);
+    if (!this.chatBotLimit) {
+      this.location.back();
+    } else if (this.chatBotLimit) {
+      if (this.chatBotCount < this.chatBotLimit) {
+        this.location.back();
+      } else if (this.chatBotCount >= this.chatBotLimit) {
+        this.router.navigate([`/project/${this.projectId}/home`]);
+      }
+
+    }
+  }
+
+  importTemplate() {
+    console.log('[INSTALL-TEMPLATE] importTemplate chatBotCount ', this.chatBotCount, ' chatBotLimit ', this.chatBotLimit, ' USER_ROLE ', this.USER_ROLE, ' profile_name ', this.profile_name)
+    if (this.USER_ROLE !== 'agent') {
+      if (this.chatBotLimit) {
+        if (this.chatBotCount < this.chatBotLimit) {
+          console.log('[INSTALL-TEMPLATE] USECASE  chatBotCount < chatBotLimit: RUN FORK')
+          this.forkTemplate()
+        } else if (this.chatBotCount >= this.chatBotLimit) {
+          console.log('[INSTALL-TEMPLATE] USECASE  chatBotCount >= chatBotLimit DISPLAY MODAL')
+          this.presentDialogReachedChatbotLimit()
+        }
+      } else if (!this.chatBotLimit) {
+        console.log('[INSTALL-TEMPLATE] USECASE  NO chatBotLimit: RUN FORK')
+        this.forkTemplate()
+      }
+    } if (this.USER_ROLE === 'agent') {
+      this.presentModalAgentCannotManageChatbot()
+    }
+  }
+
+
+  presentModalAgentCannotManageChatbot() {
+    // this.notify.presentModalAgentCannotManageChatbot('Agents can\'t manage chatbots', 'Learn more about default roles')
+    this.notify.presentModalAgentCannotManageChatbot(this.agentsCannotManageChatbots, this.learnMoreAboutDefaultRoles)
   }
 
 
   forkTemplate() {
     this.faqKbService.installTemplate(this.templates._id, this.projectId, true, this.templates._id).subscribe((res: any) => {
-      this.logger.log('[INSTALL-TEMPLATE] - FORK TEMPLATE RES', res);
+      console.log('[INSTALL-TEMPLATE] - FORK TEMPLATE RES', res);
       this.botid = res.bot_id
 
     }, (error) => {
@@ -403,56 +472,24 @@ export class InstallTemplateComponent extends WidgetSetUpBaseComponent implement
       if (this.newlyCreatedProject) {
         this.hookBotToDept()
       }
-
       this.getFaqKbById(this.botid);
-     
-      if (!isDevMode()) {
-        if (window['analytics']) {
+      this.trackImportTemplate()
 
-          let userFullname = ''
-          if (this.user.firstname && this.user.lastname)  {
-            userFullname = this.user.firstname + ' ' + this.user.lastname
-          } else if (this.user.firstname && !this.user.lastname) {
-            userFullname = this.user.firstname
-          }
+    });
+  }
 
-          try {
-            window['analytics'].track('Create chatbot', {
-              "username": userFullname,
-              "email": this.user.email,
-              "userId": this.user._id,
-              "chatbotName": this.botname,
-              'chatbotId':  this.botid,
-              'page': 'Onboarding, Install template',
-              'button': 'Import Template',
-            });
-          } catch (err) {
-            this.logger.error('track Use template (install template) event error', err);
-          }
+  presentDialogReachedChatbotLimit() {
+    console.log('[INSTALL-TEMPLATE] openDialog presentDialogReachedChatbotLimit prjct_profile_name ', this.prjct_profile_name)
+    const dialogRef = this.dialog.open(ChatbotModalComponent, {
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+      hasBackdrop: true,
+      data: {
+        projectProfile: this.prjct_profile_name,
+      },
+    });
 
-          try {
-            window['analytics'].identify(this.user._id, {
-              name: userFullname,
-              email: this.user.email,
-              logins: 5,
-
-            });
-          } catch (err) {
-            this.logger.error('Identify Use template (install template) event error', err);
-          }
-
-          try {
-            window['analytics'].group(this.projectId, {
-              name: this.projectName,
-              plan: this.prjct_profile_name,
-            });
-          } catch (err) {
-            this.logger.error('Group tUse template (install template) error', err);
-          }
-
-        }
-      }
-
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`[INSTALL-TEMPLATE] Dialog result: ${result}`);
     });
   }
 
@@ -527,6 +564,70 @@ export class InstallTemplateComponent extends WidgetSetUpBaseComponent implement
 
     let params = `toolbar=no,menubar=no,width=815,height=727,left=100,top=100`;
     window.open(url, '_blank', params);
+  }
+
+
+  trackImportTemplate() {
+    if (!isDevMode()) {
+      if (window['analytics']) {
+
+        let userFullname = ''
+        if (this.user.firstname && this.user.lastname) {
+          userFullname = this.user.firstname + ' ' + this.user.lastname
+        } else if (this.user.firstname && !this.user.lastname) {
+          userFullname = this.user.firstname
+        }
+
+        try {
+          window['analytics'].track('Create chatbot', {
+            "username": userFullname,
+            "email": this.user.email,
+            "userId": this.user._id,
+            "chatbotName": this.botname,
+            'chatbotId': this.botid,
+            'page': 'Onboarding, Install template',
+            'button': 'Import Template',
+          });
+        } catch (err) {
+          this.logger.error('track Import template (install template) event error', err);
+        }
+
+        try {
+          window['analytics'].identify(this.user._id, {
+            name: userFullname,
+            email: this.user.email,
+            logins: 5,
+
+          });
+        } catch (err) {
+          this.logger.error('Identify Import template (install template) event error', err);
+        }
+
+        try {
+          window['analytics'].group(this.projectId, {
+            name: this.projectName,
+            plan: this.prjct_profile_name,
+          });
+        } catch (err) {
+          this.logger.error('Group Import template (install template) error', err);
+        }
+
+      }
+    }
+  }
+
+  getTranslations() {
+      this.translate
+      .get('LearnMoreAboutDefaultRoles')
+      .subscribe((translation: any) => {
+        this.learnMoreAboutDefaultRoles = translation
+      })
+
+    this.translate
+      .get('AgentsCannotManageChatbots')
+      .subscribe((translation: any) => {
+        this.agentsCannotManageChatbots = translation
+      })
   }
 
 

@@ -1331,8 +1331,9 @@ li:hover > a > .realtime-icon-wpr > svg > path {
   border-radius: 10px !important;
 }
 
-::ng-deep .custom-mat-tooltip {
+::ng-deep .sb-mat-tooltip {
   background-color: #2d323e !important;
+  color:#fff !important;
   font-size: 12px !important;
   border-radius: 2px !important;
   font-family: "Poppins", "Roboto", "Arial", sans-serif !important;

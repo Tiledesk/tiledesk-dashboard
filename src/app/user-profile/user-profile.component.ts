@@ -19,6 +19,7 @@ import { LocalDbService } from 'app/services/users-local-db.service';
 import { environment } from '../../environments/environment';
 import { ProjectPlanService } from 'app/services/project-plan.service';
 import { DomSanitizer } from '@angular/platform-browser';
+import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 const swal = require('sweetalert');
 
 
@@ -27,7 +28,7 @@ const swal = require('sweetalert');
   templateUrl: './user-profile.component.html',
   styleUrls: ['./user-profile.component.scss']
 })
-export class UserProfileComponent implements OnInit {
+export class UserProfileComponent extends PricingBaseComponent implements OnInit {
   PLAN_NAME = PLAN_NAME;
   APP_SUMO_PLAN_NAME = APP_SUMO_PLAN_NAME;
   appSumoProfile: string;
@@ -127,32 +128,32 @@ export class UserProfileComponent implements OnInit {
       avatar: 'assets/img/language_flag/sr.png'
     },
     {
-      id: 9,
+      id: 10,
       name: 'ar',
       avatar: 'assets/img/language_flag/ar.png'
     },
     {
-      id: 10,
+      id: 11,
       name: 'uk',
       avatar: 'assets/img/language_flag/uk.png'
     },
     {
-      id: 11,
+      id: 12,
       name: 'sv',
       avatar: 'assets/img/language_flag/sv.png'
     },
     {
-      id: 12,
+      id: 13,
       name: 'az',
       avatar: 'assets/img/language_flag/az.png'
     },
     {
-      id: 13,
+      id: 14,
       name: 'kk',
       avatar: 'assets/img/language_flag/kk.png'
     },
     {
-      id: 13,
+      id: 15,
       name: 'uz',
       avatar: 'assets/img/language_flag/uz.png'
     }
@@ -172,9 +173,11 @@ export class UserProfileComponent implements OnInit {
     private logger: LoggerService,
     private route: ActivatedRoute,
     private usersLocalDbService: LocalDbService,
-    private prjctPlanService: ProjectPlanService,
+    public prjctPlanService: ProjectPlanService,
     private sanitizer: DomSanitizer
-  ) { }
+  ) {
+    super(prjctPlanService, notify);
+   }
 
   ngOnInit() {
 
@@ -196,89 +199,103 @@ export class UserProfileComponent implements OnInit {
     });
     this.getBrowserVersion();
     this.getProjectPlan();
+    this.trackPage()
   }
+  trackPage() {
+    if (!isDevMode()) {
+      if (window['analytics']) {
+        try {
+          window['analytics'].page("User Profile Page, Profile", {
 
-  getProjectPlan() {
-    this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-      // this.logger..log('[USER-PROFILE] - getProjectPlan project Profile Data', projectProfileData)
-      if (projectProfileData) {
-        this.prjct_id = projectProfileData._id
-        this.prjct_name = projectProfileData.name
-
-        if (projectProfileData && projectProfileData.extra3) {
-          this.logger.log('[HOME] Find Current Project Among All extra3 ', projectProfileData.extra3)
-          this.appSumoProfile = APP_SUMO_PLAN_NAME[projectProfileData.extra3]
-          this.logger.log('[USERS] Find Current Project appSumoProfile ', this.appSumoProfile)
+          });
+        } catch (err) {
+          this.logger.error('User Profile page error', err);
         }
-
-
-        if (projectProfileData.profile_type === 'free') {
-          if (projectProfileData.trial_expired === false) {
-            this.prjct_profile_name = PLAN_NAME.B + " plan (trial)"
-
-          } else {
-            this.prjct_profile_name = "Free plan";
-
-          }
-        } else if (projectProfileData.profile_type === 'payment') {
-
-          if (projectProfileData.profile_name === PLAN_NAME.A) {
-            if (!this.appSumoProfile) {
-              this.prjct_profile_name = PLAN_NAME.A + " plan";
-
-            } else {
-              this.prjct_profile_name = PLAN_NAME.A + " plan " + '(' + this.appSumoProfile + ')';
-            }
-          } else if (projectProfileData.profile_name === PLAN_NAME.B) {
-            if (!this.appSumoProfile) {
-              this.prjct_profile_name = PLAN_NAME.B + " plan";
-
-            } else {
-              this.prjct_profile_name = PLAN_NAME.B + " plan " + '(' + this.appSumoProfile + ')';;
-
-            }
-          } else if (projectProfileData.profile_name === PLAN_NAME.C) {
-            this.prjct_profile_name = PLAN_NAME.C + " plan";
-          }
-        }
-
-        // if (projectProfileData.profile_type === 'free') {
-        //   if (projectProfileData.trial_expired === false) {
-
-        //     this.prjct_profile_name = PLAN_NAME.B + " plan (trial)"
-        //   } else {
-
-        //     this.prjct_profile_name = "Free plan"
-
-        //   }
-        // } else if (projectProfileData.profile_type === 'payment') {
-
-        //   if (projectProfileData.profile_name === PLAN_NAME.A) {
-        //     this.prjct_profile_name = PLAN_NAME.A + " plan";
-
-        //     // console.log('[USER-PROFILE] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.A)
-
-        //   } else if (projectProfileData.profile_name === PLAN_NAME.B) {
-        //     this.prjct_profile_name = PLAN_NAME.B + " plan";
-
-        //     // console.log('[USER-PROFILE] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.B)
-
-        //   } else if (projectProfileData.profile_name === PLAN_NAME.C) {
-        //     this.prjct_profile_name = PLAN_NAME.C + " plan";
-
-        //     // console.log('[USER-PROFILE] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.C)
-        //   }
-
-        // }
       }
-    }, error => {
-      this.logger.error('[USER-PROFILE][ACCOUNT-SETTINGS]] - getProjectPlan - ERROR', error);
-    }, () => {
-
-      this.logger.log('[USER-PROFILE][ACCOUNT-SETTINGS] - getProjectPlan * COMPLETE *')
-
-    });
+    }
   }
+
+  // getProjectPlan() {
+  //   this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
+  //     // this.logger..log('[USER-PROFILE] - getProjectPlan project Profile Data', projectProfileData)
+  //     if (projectProfileData) {
+  //       this.prjct_id = projectProfileData._id
+  //       this.prjct_name = projectProfileData.name
+
+  //       if (projectProfileData && projectProfileData.extra3) {
+  //         this.logger.log('[HOME] Find Current Project Among All extra3 ', projectProfileData.extra3)
+  //         this.appSumoProfile = APP_SUMO_PLAN_NAME[projectProfileData.extra3]
+  //         this.logger.log('[USERS] Find Current Project appSumoProfile ', this.appSumoProfile)
+  //       }
+
+
+  //       if (projectProfileData.profile_type === 'free') {
+  //         if (projectProfileData.trial_expired === false) {
+  //           this.prjct_profile_name = PLAN_NAME.B + " plan (trial)"
+
+  //         } else {
+  //           this.prjct_profile_name = "Free plan";
+
+  //         }
+  //       } else if (projectProfileData.profile_type === 'payment') {
+
+  //         if (projectProfileData.profile_name === PLAN_NAME.A) {
+  //           if (!this.appSumoProfile) {
+  //             this.prjct_profile_name = PLAN_NAME.A + " plan";
+
+  //           } else {
+  //             this.prjct_profile_name = PLAN_NAME.A + " plan " + '(' + this.appSumoProfile + ')';
+  //           }
+  //         } else if (projectProfileData.profile_name === PLAN_NAME.B) {
+  //           if (!this.appSumoProfile) {
+  //             this.prjct_profile_name = PLAN_NAME.B + " plan";
+
+  //           } else {
+  //             this.prjct_profile_name = PLAN_NAME.B + " plan " + '(' + this.appSumoProfile + ')';;
+
+  //           }
+  //         } else if (projectProfileData.profile_name === PLAN_NAME.C) {
+  //           this.prjct_profile_name = PLAN_NAME.C + " plan";
+  //         }
+  //       }
+
+  //       // if (projectProfileData.profile_type === 'free') {
+  //       //   if (projectProfileData.trial_expired === false) {
+
+  //       //     this.prjct_profile_name = PLAN_NAME.B + " plan (trial)"
+  //       //   } else {
+
+  //       //     this.prjct_profile_name = "Free plan"
+
+  //       //   }
+  //       // } else if (projectProfileData.profile_type === 'payment') {
+
+  //       //   if (projectProfileData.profile_name === PLAN_NAME.A) {
+  //       //     this.prjct_profile_name = PLAN_NAME.A + " plan";
+
+  //       //     // console.log('[USER-PROFILE] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.A)
+
+  //       //   } else if (projectProfileData.profile_name === PLAN_NAME.B) {
+  //       //     this.prjct_profile_name = PLAN_NAME.B + " plan";
+
+  //       //     // console.log('[USER-PROFILE] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.B)
+
+  //       //   } else if (projectProfileData.profile_name === PLAN_NAME.C) {
+  //       //     this.prjct_profile_name = PLAN_NAME.C + " plan";
+
+  //       //     // console.log('[USER-PROFILE] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.C)
+  //       //   }
+
+  //       // }
+  //     }
+  //   }, error => {
+  //     this.logger.error('[USER-PROFILE][ACCOUNT-SETTINGS]] - getProjectPlan - ERROR', error);
+  //   }, () => {
+
+  //     this.logger.log('[USER-PROFILE][ACCOUNT-SETTINGS] - getProjectPlan * COMPLETE *')
+
+  //   });
+  // }
 
   getBrowserVersion() {
     this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
@@ -304,19 +321,50 @@ export class UserProfileComponent implements OnInit {
 
   getLoggedUser() {
     this.auth.user_bs.subscribe((user) => {
-      this.logger.log('[USER-PROFILE] - USER GET IN USER PROFILE - USER', user)
+      console.log('[USER-PROFILE] - USER GET IN USER PROFILE - USER', user)
 
       if (user) {
         this.user = user;
         this.userFirstname = user.firstname;
+        console.log('[USER-PROFILE] - USER GET IN USER PROFILE - userFirstname ', this.userFirstname)
         this.userLastname = user.lastname;
+        console.log('[USER-PROFILE] - USER GET IN USER PROFILE - userLastname ', this.userLastname)
         this.userId = user._id;
         this.userEmail = user.email;
         this.firstnameCurrentValue = user.firstname;
+        console.log('[USER-PROFILE] - USER GET IN USER PROFILE - firstnameCurrentValue ', this.firstnameCurrentValue)
         this.lastnameCurrentValue = user.lastname;
+        console.log('[USER-PROFILE] - USER GET IN USER PROFILE - firstnameCurrentValue ', this.lastnameCurrentValue)
         this.emailverified = user.emailverified;
         this.logger.log('[USER-PROFILE] - USER GET IN USER PROFILE - EMAIL VERIFIED ', this.emailverified)
         this.logger.log('[USER-PROFILE] - USER GET IN USER PROFILE - this.user ', this.user)
+
+        const storedUser = this.usersLocalDbService.getMemberFromStorage(this.userId);
+        console.log('[USER-PROFILE] - USER GET IN USER PROFILE - storedUser ', storedUser)
+        console.log('[USER-PROFILE] - USER GET IN USER PROFILE - storedUser typeof', typeof storedUser)
+        if (storedUser) {
+          
+      
+          if (this.userFirstname && this.userLastname) {
+            console.log('Stored user Firstname ', storedUser['firstname'])
+            console.log('Stored user Lastname ', storedUser['lastname'])
+            if (this.userFirstname !== storedUser['firstname']) {
+              storedUser['firstname'] = this.userFirstname
+              this.usersLocalDbService.saveMembersInStorage(user['_id'], storedUser, 'user profile');
+            }
+            if (this.userLastname !== storedUser['lastname']) {
+              storedUser['lastname'] = this.userLastname
+              this.usersLocalDbService.saveMembersInStorage(user['_id'], storedUser, 'user profile');
+            }
+          } else if (this.userFirstname && !this.userFirstname) {
+            if (this.userFirstname !== storedUser['firstname']) {
+              storedUser['firstname'] = this.userFirstname
+              this.usersLocalDbService.saveMembersInStorage(user['_id'], storedUser, 'user profile');
+            }
+          }
+        }
+
+
         this.showSpinner = false;
 
         this.createUserAvatar(user);
@@ -689,6 +737,8 @@ export class UserProfileComponent implements OnInit {
     }
   }
 
+
+
   updateCurrentUserFirstnameLastname() {
     this.displayModalUpdatingUser = 'block';
     this.SHOW_CIRCULAR_SPINNER = true;
@@ -697,47 +747,14 @@ export class UserProfileComponent implements OnInit {
     this.logger.log('[USER-PROFILE] - UPDATE CURRENT USER - WHEN CLICK UPDATE - USER LAST NAME ', this.userLastname);
     this.usersService.updateCurrentUserLastnameFirstname(this.userFirstname, this.userLastname, (response) => {
 
-      this.logger.log('[USER-PROFILE] - CALLBACK RESPONSE ', response)
+      console.log('[USER-PROFILE] - update Current User Firstname Lastname RES ', response)
+
+
+
       if (response === 'success') {
-        if (!isDevMode()) {
-          if (window['analytics']) {
-            try {
-              window['analytics'].page("User Profile Page, Profile", {
 
-              });
-            } catch (err) {
-              this.logger.error('User Profile page error', err);
-            }
-
-            let userFullname = ''
-            if (this.user.firstname && this.user.lastname) {
-              userFullname = this.user.firstname + ' ' + this.user.lastname
-            } else if (this.user.firstname && !this.user.lastname) {
-              userFullname = this.user.firstname
-            }
-
-
-            try {
-              window['analytics'].identify(this.user._id, {
-                name: userFullname,
-                email: this.user.email,
-                plan: this.prjct_profile_name
-
-              });
-            } catch (err) {
-              this.logger.error('identify in User Profile error', err);
-            }
-
-            try {
-              window['analytics'].group(this.prjct_id, {
-                name: this.prjct_name,
-                plan: this.prjct_profile_name,
-              });
-            } catch (err) {
-              this.logger.error('group Signed Out error', err);
-            }
-          }
-        }
+        this.trackUpdateProfileName()
+        this.getLoggedUser()
 
         this.SHOW_CIRCULAR_SPINNER = false;
         this.UPDATE_USER_ERROR = false;
@@ -753,6 +770,51 @@ export class UserProfileComponent implements OnInit {
       }
     });
   }
+
+  trackUpdateProfileName() {
+    this.logger.log('[USER-PROFILE] - trackUpdateProfileName  ', this.prjct_profile_name);
+    if (!isDevMode()) {
+      if (window['analytics']) {
+        try {
+          window['analytics'].page("User Profile Page, Profile", {
+
+          });
+        } catch (err) {
+          this.logger.error('User Profile page error', err);
+        }
+
+        let userFullname = ''
+        if (this.user.firstname && this.user.lastname) {
+          userFullname = this.user.firstname + ' ' + this.user.lastname
+        } else if (this.user.firstname && !this.user.lastname) {
+          userFullname = this.user.firstname
+        }
+
+
+        try {
+          window['analytics'].identify(this.user._id, {
+            name: userFullname,
+            email: this.user.email,
+            plan: this.prjct_profile_name
+
+          });
+        } catch (err) {
+          this.logger.error('identify in User Profile error', err);
+        }
+
+        try {
+          window['analytics'].group(this.prjct_id, {
+            name: this.prjct_name,
+            plan: this.prjct_profile_name,
+          });
+        } catch (err) {
+          this.logger.error('group in User Profile error', err);
+        }
+      }
+    }
+  }
+
+
 
   closeModalUpdatingUser() {
     this.displayModalUpdatingUser = 'none';

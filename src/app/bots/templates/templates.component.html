@@ -19,6 +19,11 @@
 
             <div class="teplate-content" style="flex: 1 1 auto;">
 
+                <!-- -------------------------------------------------------------------- -->
+                <!-- Alert displayed when the number of chatbot exceed the chatbot limit -->
+                <!-- -------------------------------------------------------------------- -->
+                <appdashboard-chatbot-alert *ngIf="chatBotLimit && chatBotCount > chatBotLimit" ></appdashboard-chatbot-alert>
+
                 <div class="row button-row">
                     <div class="col-sm-12">
                         <div class="t--btn-wpr">

@@ -12,88 +12,39 @@ import { BrandService } from '../services/brand.service';
 import { LoggerService } from '../services/logger/logger.service';
 import { AppConfigService } from '../services/app-config.service';
 import { TranslateService } from '@ngx-translate/core';
-import { featuresPlanA, featuresPlanB, featuresPlanC, highlightedFeaturesPlanA, highlightedFeaturesPlanB, highlightedFeaturesPlanC, PLAN_NAME } from 'app/utils/util';
+import {  additionalFeaturesPlanD, additionalFeaturesPlanE, featuresPlanA, featuresPlanB, featuresPlanC, featuresPlanD, featuresPlanE, featuresPlanF, highlightedFeaturesPlanA, highlightedFeaturesPlanB, highlightedFeaturesPlanC, highlightedFeaturesPlanD, highlightedFeaturesPlanE, highlightedFeaturesPlanF, PLAN_NAME } from 'app/utils/util';
 import { NotifyService } from 'app/core/notify.service';
 
 declare var Stripe: any;
 
-// enum PLAN_NAME {
-//   A = 'Growth',
-//   B = 'Scale',
-//   C = 'Plus',
-// }
+
 enum PLAN_DESC {
   Growth = 'Improve customer experience and qualify leads better with premium features',
   Scale = 'Go omni-channel & find your customers where they already are: WhatsApp, Facebook, etc.',
   Plus = 'Exploit all the premium features and receive support to design chatbots tailor-made',
+  Basic = 'Improve customer experience and qualify leads better with premium features',
+  Premium = 'Go omni-channel & find your customers where they already are: WhatsApp, Facebook, etc.',
+  Custom = 'Exploit all the premium features and receive support to design chatbots tailor-made'
 }
 
 enum MONTHLY_PRICE {
   Growth = "25",
   Scale = "89",
-  Plus = 'Custom'
+  Plus = 'Custom',
+  Basic = "15",
+  Premium = "100",
+  Custom = 'Starting at 300€'
 }
 
 enum ANNUAL_PRICE {
   Growth = "225",
   Scale = "790",
-  Plus = 'Custom'
+  Plus = 'Custom',
+  Basic = "150",
+  Premium = "1,000",
+  Custom = 'Starting at 300€'
 }
 
-// const featuresPlanA = [
-//   'CRM',
-//   'Private Notes',
-//   'Unlimited Conversations History',
-//   'Working Hours',
-//   'Email Ticketing',
-//   'User Ratings',
-//   'Canned Responses',
-//   'Webhooks',
-//   'Email Support',
-//   'Team Inbox'
-// ]
-// const highlightedFeaturesPlanA = [
-//   { 'color': '#a613ec', 'background': 'rgba(166,19,236,.2)', 'feature': '4 Seats' },
-//   { 'color': '#0d8cff', 'background': 'rgba(13,140,255,.2)', 'feature': '800 Chat/mo.' }
-// ]
-
-// const featuresPlanB = [
-//   'Widget Unbranding',
-//   'WhatsApp Business',
-//   'Facebook Messenger',
-//   'Unlimited Departments',
-//   'Unlimited Groups',
-//   'Zapier connector',
-//   'Data export',
-//   'Livechat Support',
-//   'Knowledge Base',
-//   'Analytics'
-// ]
-
-// const highlightedFeaturesPlanB = [
-//   { 'color': '#a613ec', 'background': 'rgba(166,19,236,.2)', 'feature': '20 Seats' },
-//   { 'color': '#0d8cff', 'background': 'rgba(13,140,255,.2)', 'feature': '3000 Chat/mo.' }
-// ]
-
-// const featuresPlanC = [
-//   'Dedicated Customer Success Manager',
-//   'Chatbot Design Assistance',
-//   'Onboarding and Training',
-//   'Smart Assignment',
-//   'IP Filtering',
-//   'Email Templates Customisation',
-//   'Activities Log',
-//   'Ban Visitors',
-//   'Dialogflow connector',
-//   'Rasa connector',
-//   'SMTP Settings',
-//   'Support to host Tiledesk on your Infrastructure',
-//   'Premium Customer Support',
-// ]
-
-// const highlightedFeaturesPlanC = [
-//   { 'color': '#a613ec', 'background': 'rgba(166,19,236,.2)', 'feature': 'Tailored solutions' }
-// ]
 
 @Component({
   selector: 'appdashboard-pricing',
@@ -109,6 +60,7 @@ export class PricingComponent implements OnInit, OnDestroy {
   planDecription: string;
   profileType: string;
   planFeatures: Array<string>;
+  additionalFeatures: Array<any>;
   annualPrice: string;
   monthlyPrice: string;
   annualPeriod: boolean;
@@ -118,8 +70,12 @@ export class PricingComponent implements OnInit, OnDestroy {
   clientReferenceIdForPlanA: string;
   clientReferenceIdForPlanB: string;
   clientReferenceIdForPlanC: string;
+  // NEW PLAN
+  clientReferenceIdForPlanD: string;
+  clientReferenceIdForPlanE: string;
+
   browser_lang: string;
-  // company_name = brand.company_name;
+  
   company_name: string;
 
   projectId: string;
@@ -161,24 +117,33 @@ export class PricingComponent implements OnInit, OnDestroy {
 
   TILEDESK_V2 = true;
 
-  public TEST_PAYMENT_LINKS = false;
+  public TEST_PAYMENT_LINKS = true;
 
   DISPLAY_BTN_PLAN_LIVE_20_CENTSXUNIT_PROD: boolean = false;
   DISPLAY_BTN_PLAN_TEST_3_EURXUNIT_PRE: boolean = false;
   DISPLAY_BTN_PLAN_TEST_3_EURXDAY_LIVE: boolean = false;
+  ARE_VISIBLE_NEW_PRICING_BTN: boolean
 
   contactUsEmail: string;
   displayClosePricingPageBtn: boolean;
+  // old Plan link
   PAYMENT_LINK_MONTLY_PLAN_A: string;
   PAYMENT_LINK_MONTLY_PLAN_B: string;
-
   PAYMENT_LINK_ANNUALLY_PLAN_A: string;
   PAYMENT_LINK_ANNUALLY_PLAN_B: string;
   PAYMENT_LINK_PLAN_C: string;
+
+  // new Plan link
+  PAYMENT_LINK_MONTLY_PLAN_D: string;
+  PAYMENT_LINK_ANNUALLY_PLAN_D: string;
+  PAYMENT_LINK_MONTLY_PLAN_E: string;
+  PAYMENT_LINK_ANNUALLY_PLAN_E: string;
+
   user: any;
   USER_ROLE: any;
   agentCannotManageAdvancedOptions: string;
   learnMoreAboutDefaultRoles: string;
+
   constructor(
     public location: Location,
     public auth: AuthService,
@@ -195,8 +160,8 @@ export class PricingComponent implements OnInit, OnDestroy {
   ) {
 
     const brand = brandService.getBrand();
-    this.company_name = brand['company_name'];
-    this.contactUsEmail = brand['contact_us_email'];
+    this.company_name = brand['BRAND_NAME'];
+    this.contactUsEmail = brand['CONTACT_US_EMAIL'];
   }
 
   /**
@@ -222,25 +187,23 @@ export class PricingComponent implements OnInit, OnDestroy {
     this.getBaseUrl()
     // this.getAllUsersOfCurrentProject();
     this.getNoOfProjectUsersAndPendingInvitations();
-
     this.getProjectPlan();
-
     this.setPlansPKandCode();
     this.setpaymentLinks()
     this.getRouteParamsAndAppId();
     this.getLoggedUser();
     this.getProjectUserRole();
     this.translateString();
+    this.getBrowserLanguage();
 
-
-
-    this.planName = PLAN_NAME.A
-    this.planDecription = PLAN_DESC[PLAN_NAME.A]
-    this.planFeatures = featuresPlanA;
-    this.highlightedFeatures = highlightedFeaturesPlanA
+    this.planName =  PLAN_NAME.D; // PLAN_NAME.A
+    this.planDecription = PLAN_DESC[PLAN_NAME.D];  //PLAN_DESC[PLAN_NAME.A] 
+    this.planFeatures = featuresPlanD; // featuresPlanA;
+    this.highlightedFeatures = highlightedFeaturesPlanD; //highlightedFeaturesPlanA
+    this.additionalFeatures = additionalFeaturesPlanD
     this.monthlyPeriod = true;
     this.annualPeriod = false;
-    this.monthlyPrice = MONTHLY_PRICE[PLAN_NAME.A]
+    this.monthlyPrice =  MONTHLY_PRICE[PLAN_NAME.D] // MONTHLY_PRICE[PLAN_NAME.A]
 
     // console.log('[PRICING] ROUTER URL ', this.router.url)
     const current_url = this.router.url;
@@ -317,6 +280,14 @@ export class PricingComponent implements OnInit, OnDestroy {
       // console.log('[PRICING] clientReferenceIdForPlanB ', this.clientReferenceIdForPlanB)
       this.clientReferenceIdForPlanC = this.currentUserID + '_' + this.projectId + '_' + PLAN_NAME.C
       // console.log('[PRICING] clientReferenceIdForPlanB ', this.clientReferenceIdForPlanC)
+
+      // -------------------------------------------------------------------------------------------
+      // New pricing
+      // -------------------------------------------------------------------------------------------
+      this.clientReferenceIdForPlanD = this.currentUserID + '_' + this.projectId + '_' + PLAN_NAME.D + '_' + 1
+      console.log('[PRICING] clientReferenceIdForPlanD ', this.clientReferenceIdForPlanD)
+      this.clientReferenceIdForPlanE = this.currentUserID + '_' + this.projectId + '_' + PLAN_NAME.E + '_' + 2
+      console.log('[PRICING] clientReferenceIdForPlanE ', this.clientReferenceIdForPlanB)
     } else {
       // this.logger.log('No user is signed in');
     }
@@ -328,14 +299,89 @@ export class PricingComponent implements OnInit, OnDestroy {
       this.PAYMENT_LINK_MONTLY_PLAN_B = "https://buy.stripe.com/test_7sI6pkce24T0d8YdQT";
       this.PAYMENT_LINK_ANNUALLY_PLAN_B = "https://buy.stripe.com/test_fZeeVQ6TI85cglabIK";
       this.PAYMENT_LINK_PLAN_C = "https://buy.stripe.com/test_4gw1502Ds5X4ed26ot";
+
+      // New pricing test link
+      this.PAYMENT_LINK_MONTLY_PLAN_D = "https://buy.stripe.com/test_7sI150fqedpwfh6dRc",
+      this.PAYMENT_LINK_ANNUALLY_PLAN_D = "https://buy.stripe.com/test_9AQdRMb9Y4T03yo8wT", 
+      this.PAYMENT_LINK_MONTLY_PLAN_E = "https://buy.stripe.com/test_3cs8xs5PE5X4d8Y8wQ", 
+      this.PAYMENT_LINK_ANNUALLY_PLAN_E = "https://buy.stripe.com/test_9AQdRMdi699gc4U00l" 
+
+
     } else if (this.TEST_PAYMENT_LINKS === false) {
       this.PAYMENT_LINK_MONTLY_PLAN_A = "https://buy.stripe.com/5kA3ck5K604y9qg3ck"; // "https://buy.stripe.com/aEU3ckc8ug3wdGwdQS";
-      this.PAYMENT_LINK_ANNUALLY_PLAN_A = "https://buy.stripe.com/fZefZ6egCeZsgSI14d",// "https://buy.stripe.com/28oaEM1tQeZs6e4fYZ";
+      this.PAYMENT_LINK_ANNUALLY_PLAN_A = "https://buy.stripe.com/fZefZ6egCeZsgSI14d";// "https://buy.stripe.com/28oaEM1tQeZs6e4fYZ";
       this.PAYMENT_LINK_MONTLY_PLAN_B = "https://buy.stripe.com/cN2aEMfkGaJc1XObIO"; //"https://buy.stripe.com/8wM9AI0pMeZsbyo28c";
       this.PAYMENT_LINK_ANNUALLY_PLAN_B = "https://buy.stripe.com/8wM14cc8ug3weKA003";
 
     }
   }
+
+ // -------------------------------
+  // PLAN D 
+  // -------------------------------
+  openPaymentLinkMontlyPlanD() {
+    if (this.USER_ROLE === 'owner') {
+      console.log('[PRICING] PLAN A Montly')
+      // const url = `https://buy.stripe.com/test_3cseVQ6TIadkd8Y4gg?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanA}&locale=${this.browser_lang}`
+      const url = `${this.PAYMENT_LINK_MONTLY_PLAN_D}?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanD}&locale=${this.browser_lang}"`
+      console.log('[PRICING] PLAN D Montly url ', url)
+      window.open(url, '_self');
+
+      this.trackGoToCheckout(PLAN_NAME.D, 'montly') 
+    
+    } else {
+      this.presentModalAgentCannotManageAvancedSettings()
+    }
+  }
+
+  openPaymentLinkAnnuallyPlanD() {
+    if (this.USER_ROLE === 'owner') {
+      console.log('[PRICING] PLAN D Annually')
+      // const url = `https://buy.stripe.com/test_8wMbJE4LA3OW9WMeUV?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanA}&locale=${this.browser_lang}`
+      const url = `${this.PAYMENT_LINK_ANNUALLY_PLAN_D}?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanD}&locale=${this.browser_lang}`
+      window.open(url, '_self');
+
+      this.trackGoToCheckout(PLAN_NAME.D, 'annually')
+
+    } else {
+      this.presentModalAgentCannotManageAvancedSettings()
+    }
+  }
+
+
+  // -------------------------------
+  // PLAN E 
+  // -------------------------------
+  openPaymentLinkMontlyPlanE() {
+    if (this.USER_ROLE === 'owner') {
+      console.log('[PRICING] PLAN E Montly')
+      // const url = `https://buy.stripe.com/test_3cseVQ6TIadkd8Y4gg?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanA}&locale=${this.browser_lang}`
+      const url = `${this.PAYMENT_LINK_MONTLY_PLAN_E}?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanE}&locale=${this.browser_lang}"`
+      console.log('[PRICING] PLAN A Montly url ', url)
+      window.open(url, '_self');
+     
+      this.trackGoToCheckout(PLAN_NAME.E, 'montly')
+   
+    } else {
+      this.presentModalAgentCannotManageAvancedSettings()
+    }
+  }
+
+  openPaymentLinkAnnuallyPlanE() {
+    if (this.USER_ROLE === 'owner') {
+      console.log('[PRICING] PLAN E Annually')
+      // const url = `https://buy.stripe.com/test_8wMbJE4LA3OW9WMeUV?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanA}&locale=${this.browser_lang}`
+      const url = `${this.PAYMENT_LINK_ANNUALLY_PLAN_E}?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanE}&locale=${this.browser_lang}`
+      window.open(url, '_self');
+
+      this.trackGoToCheckout(PLAN_NAME.E, 'annually') 
+    
+    } else {
+      this.presentModalAgentCannotManageAvancedSettings()
+    }
+  }
+
+
 
   // -------------------------------
   // PLAN A 
@@ -347,27 +393,8 @@ export class PricingComponent implements OnInit, OnDestroy {
       const url = `${this.PAYMENT_LINK_MONTLY_PLAN_A}?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanA}&locale=${this.browser_lang}"`
       window.open(url, '_self');
 
-      if (!isDevMode()) {
-        try {
-          window['analytics'].page('Pricing page', {
-
-          });
-        } catch (err) {
-          this.logger.error('Pricing page error', err);
-        }
-
-        try {
-          window['analytics'].track('Go to checkout for plan' + PLAN_NAME.A + ' /montly', {
-            "email": this.user.email,
-          }, {
-            "context": {
-              "groupId": this.projectId
-            }
-          });
-        } catch (err) {
-          this.logger.error('track go to checkout error', err);
-        }
-      }
+      this.trackGoToCheckout(PLAN_NAME.A, 'montly')  
+    
     } else {
       this.presentModalAgentCannotManageAvancedSettings()
     }
@@ -380,27 +407,8 @@ export class PricingComponent implements OnInit, OnDestroy {
       const url = `${this.PAYMENT_LINK_ANNUALLY_PLAN_A}?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanA}&locale=${this.browser_lang}`
       window.open(url, '_self');
 
-      if (!isDevMode()) {
-        try {
-          window['analytics'].page('Pricing page', {
+      this.trackGoToCheckout(PLAN_NAME.A, 'annually')   
 
-          });
-        } catch (err) {
-          this.logger.error('Pricing page error', err);
-        }
-
-        try {
-          window['analytics'].track('Go to checkout for plan' + PLAN_NAME.A + ' /annually', {
-            "email": this.user.email,
-          }, {
-            "context": {
-              "groupId": this.projectId
-            }
-          });
-        } catch (err) {
-          this.logger.error('track go to checkout error', err);
-        }
-      }
     } else {
       this.presentModalAgentCannotManageAvancedSettings()
     }
@@ -415,27 +423,9 @@ export class PricingComponent implements OnInit, OnDestroy {
       // const url = `https://buy.stripe.com/test_7sI6pkce24T0d8YdQT?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanB}&locale=${this.browser_lang}`
       const url = `${this.PAYMENT_LINK_MONTLY_PLAN_B}?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanB}&locale=${this.browser_lang}`
       window.open(url, '_self');
-      if (!isDevMode()) {
-        try {
-          window['analytics'].page('Pricing page', {
+     
+      this.trackGoToCheckout(PLAN_NAME.B, 'montly')   
 
-          });
-        } catch (err) {
-          this.logger.error('Pricing page error', err);
-        }
-
-        try {
-          window['analytics'].track('Go to checkout for plan' + PLAN_NAME.B + ' /montly', {
-            "email": this.user.email,
-          }, {
-            "context": {
-              "groupId": this.projectId
-            }
-          });
-        } catch (err) {
-          this.logger.error('track go to checkout error', err);
-        }
-      }
     } else {
       this.presentModalAgentCannotManageAvancedSettings()
     }
@@ -447,27 +437,9 @@ export class PricingComponent implements OnInit, OnDestroy {
       // const url = `https://buy.stripe.com/test_fZeeVQ6TI85cglabIK?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanB}&locale=${this.browser_lang}`
       const url = `${this.PAYMENT_LINK_ANNUALLY_PLAN_B}?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanB}&locale=${this.browser_lang}`
       window.open(url, '_self');
-      if (!isDevMode()) {
-        try {
-          window['analytics'].page('Pricing page', {
 
-          });
-        } catch (err) {
-          this.logger.error('Pricing page error', err);
-        }
-
-        try {
-          window['analytics'].track('Go to checkout for plan' + PLAN_NAME.B + ' /annually', {
-            "email": this.user.email,
-          }, {
-            "context": {
-              "groupId": this.projectId
-            }
-          });
-        } catch (err) {
-          this.logger.error('track go to checkout error', err);
-        }
-      }
+      this.trackGoToCheckout(PLAN_NAME.B, 'annually')   
+    
     } else {
       this.presentModalAgentCannotManageAvancedSettings()
     }
@@ -481,6 +453,30 @@ export class PricingComponent implements OnInit, OnDestroy {
       window.open(url, '_self');
     } else {
       this.presentModalAgentCannotManageAvancedSettings()
+    }
+  }
+
+  trackGoToCheckout(plan: string, period: string) {
+    if (!isDevMode()) {
+      try {
+        window['analytics'].page('Pricing page', {
+
+        });
+      } catch (err) {
+        this.logger.error('Pricing page error', err);
+      }
+
+      try {
+        window['analytics'].track('Go to checkout for plan' + plan + ' /' + period, {
+          "email": this.user.email,
+        }, {
+          "context": {
+            "groupId": this.projectId
+          }
+        });
+      } catch (err) {
+        this.logger.error('track go to checkout error', err);
+      }
     }
   }
 
@@ -542,6 +538,7 @@ export class PricingComponent implements OnInit, OnDestroy {
   selected_Plan(planname) {
     this.planFeatures = [];
     this.highlightedFeatures = [];
+    this.additionalFeatures = [];
     this.planName = planname;
 
 
@@ -549,21 +546,40 @@ export class PricingComponent implements OnInit, OnDestroy {
     this.planDecription = PLAN_DESC[planname]
     // console.log('select planDecription', this.planDecription);
 
-    if (planname === PLAN_NAME.A) {
-      // console.log(' PLAN A Features')
-      this.planFeatures = featuresPlanA;
-      this.highlightedFeatures = highlightedFeaturesPlanA;
+    // if (planname === PLAN_NAME.A) {
+    //   // console.log(' PLAN A Features')
+    //   this.planFeatures = featuresPlanA;
+    //   this.highlightedFeatures = highlightedFeaturesPlanA;
+    // }
+    // if (planname === PLAN_NAME.B) {
+    //   // console.log(' PLAN B Features')
+    //   this.planFeatures = featuresPlanB;
+    //   this.highlightedFeatures = highlightedFeaturesPlanB;
+    // }
+
+    // if (planname === PLAN_NAME.C) {
+    //   // console.log(' PLAN C Features');
+    //   this.planFeatures = featuresPlanC;
+    //   this.highlightedFeatures = highlightedFeaturesPlanC;
+    // }
+
+    if (planname === PLAN_NAME.D) {
+      console.log(' PLAN D Features')
+      this.planFeatures = featuresPlanD;
+      this.highlightedFeatures = highlightedFeaturesPlanD;
+      this.additionalFeatures = additionalFeaturesPlanD
     }
-    if (planname === PLAN_NAME.B) {
-      // console.log(' PLAN B Features')
-      this.planFeatures = featuresPlanB;
-      this.highlightedFeatures = highlightedFeaturesPlanB;
+    if (planname === PLAN_NAME.E) {
+      // console.log(' PLAN E Features')
+      this.planFeatures = featuresPlanE;
+      this.highlightedFeatures = highlightedFeaturesPlanE;
+      this.additionalFeatures = additionalFeaturesPlanE
     }
 
-    if (planname === PLAN_NAME.C) {
-      // console.log(' PLAN C Features');
-      this.planFeatures = featuresPlanC;
-      this.highlightedFeatures = highlightedFeaturesPlanC;
+    if (planname === PLAN_NAME.F) {
+      console.log(' PLAN F Features');
+      this.planFeatures = featuresPlanF;
+      this.highlightedFeatures = highlightedFeaturesPlanF;
     }
 
     this.selectedPeriod('monthly')
@@ -577,14 +593,24 @@ export class PricingComponent implements OnInit, OnDestroy {
     if (period === 'monthly') {
       this.monthlyPeriod = true;
       this.annualPeriod = false;
-      if (this.planName === PLAN_NAME.A) {
-        this.monthlyPrice = MONTHLY_PRICE[PLAN_NAME.A]
+      // if (this.planName === PLAN_NAME.A) {
+      //   this.monthlyPrice = MONTHLY_PRICE[PLAN_NAME.A]
+      // }
+      // if (this.planName === PLAN_NAME.B) {
+      //   this.monthlyPrice = MONTHLY_PRICE[PLAN_NAME.B]
+      // }
+      // if (this.planName === PLAN_NAME.C) {
+      //   this.monthlyPrice = MONTHLY_PRICE[PLAN_NAME.C]
+      // }
+
+      if (this.planName === PLAN_NAME.D) {
+        this.monthlyPrice = MONTHLY_PRICE[PLAN_NAME.D]
       }
-      if (this.planName === PLAN_NAME.B) {
-        this.monthlyPrice = MONTHLY_PRICE[PLAN_NAME.B]
+      if (this.planName === PLAN_NAME.E) {
+        this.monthlyPrice = MONTHLY_PRICE[PLAN_NAME.E]
       }
-      if (this.planName === PLAN_NAME.C) {
-        this.monthlyPrice = MONTHLY_PRICE[PLAN_NAME.C]
+      if (this.planName === PLAN_NAME.F) {
+        this.monthlyPrice = MONTHLY_PRICE[PLAN_NAME.F]
       }
 
     }
@@ -592,14 +618,24 @@ export class PricingComponent implements OnInit, OnDestroy {
     if (period === 'annual') {
       this.monthlyPeriod = false;
       this.annualPeriod = true;
-      if (this.planName === PLAN_NAME.A) {
-        this.annualPrice = ANNUAL_PRICE[PLAN_NAME.A]
+      // if (this.planName === PLAN_NAME.A) {
+      //   this.annualPrice = ANNUAL_PRICE[PLAN_NAME.A]
+      // }
+      // if (this.planName === PLAN_NAME.B) {
+      //   this.annualPrice = ANNUAL_PRICE[PLAN_NAME.B]
+      // }
+      // if (this.planName === PLAN_NAME.C) {
+      //   this.annualPrice = ANNUAL_PRICE[PLAN_NAME.C]
+      // }
+
+      if (this.planName === PLAN_NAME.D) {
+        this.annualPrice = ANNUAL_PRICE[PLAN_NAME.D]
       }
-      if (this.planName === PLAN_NAME.B) {
-        this.annualPrice = ANNUAL_PRICE[PLAN_NAME.B]
+      if (this.planName === PLAN_NAME.E) {
+        this.annualPrice = ANNUAL_PRICE[PLAN_NAME.E]
       }
-      if (this.planName === PLAN_NAME.C) {
-        this.annualPrice = ANNUAL_PRICE[PLAN_NAME.C]
+      if (this.planName === PLAN_NAME.F) {
+        this.annualPrice = ANNUAL_PRICE[PLAN_NAME.F]
       }
     }
   }
@@ -626,8 +662,17 @@ export class PricingComponent implements OnInit, OnDestroy {
           // console.log('[PRICING] - ROUTE-PARAMS DISPLAY_BTN_PLAN_TEST_3_EURXDAY_LIVE', this.DISPLAY_BTN_PLAN_TEST_3_EURXDAY_LIVE)
         }
       }
+      // if (appID === "1:522823349790:web:0d4ba710f38b586e1fa00f") { // prod
+      //   this.ARE_VISIBLE_NEW_PRICING_BTN = false
+      //   console.log('[PRICING] ARE_VISIBLE_NEW_PRICING_BTN prod key: ', this.ARE_VISIBLE_NEW_PRICING_BTN);
+      // } else if (appID === "1:269505353043:web:b82af070572669e3707da6") { // pre
+      //   this.ARE_VISIBLE_NEW_PRICING_BTN = true
+      //   console.log('[PRICING] ARE_VISIBLE_NEW_PRICING_BTN pre key: ', this.ARE_VISIBLE_NEW_PRICING_BTN);
+      // }
     });
   }
+  // pre app id 1:269505353043:web:b82af070572669e3707da6
+  // prod app id 1:522823349790:web:0d4ba710f38b586e1fa00f
 
   setPlansPKandCode() {
     if (this.TILEDESK_V2 === true) {

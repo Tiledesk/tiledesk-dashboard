@@ -387,14 +387,6 @@
                   </div>
                 </div>
               </div>
-
-              <!-- <a id="fixed-button" class="button" [ngStyle]="{'display':displayBtnScrollToBottom }"
-                (click)="scrollToBottom()">
-                <span class="icon is-small">
-                  <i class="fa fa-chevron-down"></i>
-                </span>
-              </a> -->
-
             </div>
 
             <div class="card---footer">
@@ -405,8 +397,11 @@
                   <div class="col-xs-12 plr-0">
                     <div class="row w-100">
                       <div class="col-xs-12 h-100 plr-0">
-                        <ng-select class="select-response-type" [clearable]="false" [searchable]="false"
-                          [items]="responseType" bindLabel="name" bindValue="id" [(ngModel)]="selectedResponseTypeID"
+                        <ng-select class="select-response-type" 
+                          [clearable]="false" [searchable]="false"
+                          [items]="responseType" 
+                          bindLabel="name" bindValue="id" 
+                          [(ngModel)]="selectedResponseTypeID"
                           (change)="onChangeReplyType(selectedResponseTypeID)">
                           <ng-template ng-label-tmp let-item="item">
                             <img height="15" width="15" style="width: 15px; height: auto; margin-right:3px "
@@ -592,62 +587,24 @@
         <!-- ----------------------------------------------------------------------------- -->
         <!-- @ RIGHT SIDEBAR -->
         <!-- ----------------------------------------------------------------------------- -->
-        <div id="right-col" class="right-col"
-          [ngClass]="{'col-sm-5' : CHAT_PANEL_MODE === false, 'col-sm-12 no-padding' : CHAT_PANEL_MODE === true, 'chat-panel-mode-on-desktop' :CHAT_PANEL_MODE === true && !isMobile, 'chat-right-col': CHAT_PANEL_MODE === true}">
+        <div id="right-col" class="right-col" *ngIf="REQUEST_EXIST" [ngClass]="{'col-sm-5' : CHAT_PANEL_MODE === false, 'col-sm-12 no-padding' : CHAT_PANEL_MODE === true, 'chat-panel-mode-on-desktop' :CHAT_PANEL_MODE === true && !isMobile, 'chat-right-col': CHAT_PANEL_MODE === true}">
           <!-- card  -->
           <div class="right-card" style="padding-top:0px; padding-bottom:5px;margin-bottom: 10px;"
             [ngClass]="{'right-card-chat-panel-mode' : CHAT_PANEL_MODE === true, 'right-card-normal-mode' : CHAT_PANEL_MODE === false}">
-            <!---->
-
-            <!-- <div *ngIf="showSpinner && !isMobile" class="stretchspinner">
-              <div class="rect1"></div>
-              <div class="rect2"></div>
-              <div class="rect3"></div>
-              <div class="rect4"></div>
-              <div class="rect5"></div>
-            </div> -->
-
-            <!-- <div *ngIf="showSpinner && isMobile && CHAT_PANEL_MODE === true" class="spinner-for-mobile">
-              <div class="sk-fading-circle">
-                <div class="sk-circle1 sk-circle"></div>
-                <div class="sk-circle2 sk-circle"></div>
-                <div class="sk-circle3 sk-circle"></div>
-                <div class="sk-circle4 sk-circle"></div>
-                <div class="sk-circle5 sk-circle"></div>
-                <div class="sk-circle6 sk-circle"></div>
-                <div class="sk-circle7 sk-circle"></div>
-                <div class="sk-circle8 sk-circle"></div>
-                <div class="sk-circle9 sk-circle"></div>
-                <div class="sk-circle10 sk-circle"></div>
-                <div class="sk-circle11 sk-circle"></div>
-                <div class="sk-circle12 sk-circle"></div>
-              </div>
-            </div> -->
-
-            <!-- class="card-content" padding-top: 5px;padding-bottom: 5px;-->
+          
             <div style="min-height: 510px;">
-              <!-- *ngIf="!showSpinner" -->
+             
               <div class="content-wrap">
-
-
                 <!-- --- new ---- -->
                 <div class="conv-info-sidebar-wpr"
                   [ngClass]="{'conv-info-sidebar-wpr-sidebar-open': OPEN_RIGHT_SIDEBAR === true }">
                   <div class="conv-info-sidebar-header-wpr"
                     [ngClass]="{'conv-info-sidebar-header-wpr-chat': CHAT_PANEL_MODE === true}">
-                    <!-- [ngClass]="{'chat-right-sidebar-actions' : CHAT_PANEL_MODE === true}" -->
+                    
                     <div class="right-sidebar-actions">
-
                       <div class="dropdown pull-right">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-
-
-                          <!-- <span class="material-icons" *ngIf="CHAT_PANEL_MODE === true"
-                            style="color:rgba(0, 0, 0, 0.87);position: relative; right: 6px;top: 6px;">
-                            more_horiz
-                          </span> -->
-                          <!-- *ngIf="CHAT_PANEL_MODE === false" -->
-                          <span class="material-icons" style="color: #8796af;margin-top: 0px;">
+                          <span class="material-icons">
                             more_vert
                           </span>
                         </a>
@@ -687,7 +644,7 @@
                           </li>
 
                           <li class="divider"></li>
-
+                         
                           <li [ngClass]="{'disable-dropdown-menu-btn' : IS_CURRENT_USER_JOINED === false }">
 
                             <a (click)='openleaveChatModal()' style="padding-left: 15px; padding-right: 15px;">
@@ -799,7 +756,7 @@
                       <!-- contact status icon  -->
                       <!-- ----------------------------------- -->
                       <div class="contact--offline-status"
-                        [ngClass]="{'contact--oline-status' : REQUESTER_IS_ONLINE, 'contact--offline-status-chat': CHAT_PANEL_MODE === true}">
+                        [ngClass]="{'contact--online-status' : REQUESTER_IS_ONLINE, 'contact--offline-status-chat': CHAT_PANEL_MODE === true}">
                       </div>
 
 
@@ -871,7 +828,7 @@
                           <!-- ----------------------------------- -->
                           <!-- @ Served by (new) -->
                           <!-- ----------------------------------- -->
-                          <div class="served-by-wpr  eyj5dak5">
+                          <div class="served-by-wpr">
 
                             <!-- ------------------------------------------------------ -->
                             <!-- No Agent Unserved conversation / ticket -->
@@ -974,7 +931,7 @@
                                     <div class="sat-popover-agent-fullname">
                                       {{agent?.firstname}} {{agent?.lastname}}
                                     </div>
-                                    <button class="sat-popover-view-profile" (click)="goToMemberProfile( agent?._id )">
+                                    <button class="sat-popover-view-profile" (click)="goToMemberProfile(agent, agent?._id )">
                                       {{'ViewProfile' | translate }}
                                     </button>
                                     <button class="sat-popover-chat-with"
@@ -1002,7 +959,7 @@
                                     <div class="sat-popover-agent-fullname">
                                       {{agent?.firstname}} {{agent?.lastname}}
                                     </div>
-                                    <button class="sat-popover-view-profile" (click)="goToMemberProfile( agent?._id )">
+                                    <button class="sat-popover-view-profile" (click)="goToMemberProfile(agent, agent?._id )">
                                       {{'ViewProfile' | translate }}
                                     </button>
                                     <button class="sat-popover-chat-with"
@@ -1016,7 +973,7 @@
                                 <!-- ---------------------------------------------------------------------------- -->
                                 <!-- @ Human agent avatar with name initials - USE CASE: AGENT NOT HAS IMAGE  -->
                                 <!-- ---------------------------------------------------------------------------- -->
-                                <!-- goToMemberProfile( agent?._id ) -->
+                      
                                 <!-- (mouseenter)="agentnoimg.open()" -->
                                 <div *ngIf="agent.isBot === false && !agent.hasImage" class="served-by-avatar--no-img"
                                   [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + agent?.userfillColour + ')'}"
@@ -1033,7 +990,7 @@
                                     <div class="sat-popover-agent-fullname">
                                       {{agent?.firstname}} {{agent?.lastname}}
                                     </div>
-                                    <button class="sat-popover-view-profile" (click)="goToMemberProfile( agent?._id )">
+                                    <button class="sat-popover-view-profile" (click)="goToMemberProfile(agent, agent?._id )">
                                       {{'ViewProfile' | translate }}
                                     </button>
                                     <button class="sat-popover-chat-with"
@@ -1063,7 +1020,7 @@
                                     <div class="sat-popover-agent-fullname">
                                       {{agent?.firstname}} {{agent?.lastname}} (bot)
                                     </div>
-                                    <button class="sat-popover-view-profile" (click)="goToMemberProfile( agent?._id )">
+                                    <button class="sat-popover-view-profile" (click)="goToMemberProfile(agent, agent?._id )">
                                       {{'ViewProfile' | translate }}
                                     </button>
                                   </div>
@@ -1077,16 +1034,18 @@
                                   class="served-by-avatar--img"
                                   src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?._id | slice:4}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                                   onerror="this.src='assets/img/avatar_bot_tiledesk.svg'"
-                                  (click)="goToMemberProfile( agent?._id )" matTooltipClass="custom-mat-tooltip"
+                                  (click)="goToMemberProfile(agent, agent?._id )" 
+                                  matTooltipClass="custom-mat-tooltip"
                                   matTooltip="{{'VisitorsPage.AssignedTo' | translate }} {{agent?.firstname}} {{agent?.lastname}} (bot)"
-                                  #tooltip="matTooltip" matTooltipPosition='left' matTooltipHideDelay="100" />
+                                  #tooltip="matTooltip" 
+                                  matTooltipPosition='left' matTooltipHideDelay="100" />
 
                                 <!-- <sat-popover #botntengine horizontalAlign="before">
                                   <div class="popover-wrapper">
                                     <div class="sat-popover-agent-fullname">
                                       {{agent?.firstname}} {{agent?.lastname}} (bot)
                                     </div>
-                                    <button class="sat-popover-view-profile" (click)="goToMemberProfile( agent?._id )">
+                                    <button class="sat-popover-view-profile" (click)="goToMemberProfile(agent, agent?._id )">
                                       {{'ViewProfile' | translate }}
                                     </button>
                                   </div>
@@ -1123,7 +1082,7 @@
                                           </span>
                                           <div class="dropdown-btn-wpr">
                                             <button class="dropdown-btn-view-profile"
-                                              (click)="goToMemberProfile( agent?._id )">
+                                              (click)="goToMemberProfile(agent, agent?._id )">
                                               {{'ViewProfile' | translate }}
                                             </button>
                                             <button class="dropdown-btn-chat-with"
@@ -1139,13 +1098,13 @@
                                           *ngIf="agent.isBot === false && agent.hasImage && !UPLOAD_ENGINE_IS_FIREBASE">
                                           <img
                                             src="{{baseUrl}}images?path=uploads%2Fusers%2F{{agent?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
-                                            class="served-by-avatar--img" (click)="goToMemberProfile( agent?._id )" />
+                                            class="served-by-avatar--img" (click)="goToMemberProfile(agent, agent?._id )" />
                                           <span style="margin-left: 8px;font-size: 12px; font-weight: 400;">
                                             {{agent?.firstname}} {{agent?.lastname}}
                                           </span>
                                           <div class="dropdown-btn-wpr">
                                             <button class="dropdown-btn-view-profile"
-                                              (click)="goToMemberProfile( agent?._id )">
+                                              (click)="goToMemberProfile(agent, agent?._id )">
                                               {{'ViewProfile' | translate }}
                                             </button>
                                             <button class="dropdown-btn-chat-with"
@@ -1173,7 +1132,7 @@
                                           </div>
                                           <div class="dropdown-btn-wpr">
                                             <button class="dropdown-btn-view-profile"
-                                              (click)="goToMemberProfile( agent?._id )">
+                                              (click)="goToMemberProfile(agent, agent?._id )">
                                               {{'ViewProfile' | translate }}
                                             </button>
                                             <button class="dropdown-btn-chat-with"
@@ -1196,7 +1155,7 @@
                                           </span>
                                           <div class="dropdown-btn-wpr">
                                             <button class="dropdown-btn-view-profile"
-                                              (click)="goToMemberProfile( agent?._id )">
+                                              (click)="goToMemberProfile(agent, agent?._id )">
                                               {{'ViewProfile' | translate }}
                                             </button>
 
@@ -1217,7 +1176,7 @@
                                           </span>
                                           <div class="dropdown-btn-wpr">
                                             <button class="dropdown-btn-view-profile"
-                                              (click)="goToMemberProfile( agent?._id )">
+                                              (click)="goToMemberProfile(agent, agent?._id )">
                                               {{'ViewProfile' | translate }}
                                             </button>
                                           </div>
@@ -1233,69 +1192,7 @@
                       </div>
                     </div>
                     <div class="header-badge-wpr">
-                      <!-- ------------------------------------------------------------------------------------ -->
-                      <!-- Working status badge !!! Diplay none - Replaced by Working status dropdown -->
-                      <!-- ------------------------------------------------------------------------------------ -->
-                      <div style="display: none;" class="request-working-status"
-                        [ngClass]="{
-                        'working-status-open' : (request?.workingStatus === 'open' || !request?.workingStatus || request?.workingStatus === 'new' ) && request?.status !== 1000,
-                        'working-status-pending' : request?.workingStatus === 'pending' && request?.status !== 1000,
-                        'working-status-resolved' : (request?.workingStatus === '' && request?.status === 1000) || (!request?.workingStatus && request?.status === 1000) || (request?.workingStatus === 'new' && request?.status === 1000)}">
-                        <div class="open-conv"
-                          *ngIf="(request?.workingStatus === 'open' || !request?.workingStatus || request?.workingStatus === 'new' ) && request?.status !== 1000">
-                          <!-- use case: conversation assigned -->
-                          <div class="conversation-open-assigned" *ngIf="!request?.subject && request?.status === 200"
-                            matTooltipClass="custom-mat-tooltip"
-                            matTooltip="{{'Open' | translate}} - {{ 'ConversationBeingProcessed' | translate }}"
-                            #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
-                            {{'Open' | translate}}
-                          </div>
-                          <!-- use case: conversation unsassigned -->
-                          <div class="conversation-unsassigned" *ngIf="!request?.subject && request?.status === 100"
-                            matTooltipClass="custom-mat-tooltip" matTooltip="{{'Open' | translate}}"
-                            #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
-                            {{'Open' | translate}}
-                          </div>
-                          <!-- use case: Ticket assigned  -->
-                          <div class="ticket-assigned" *ngIf="request?.subject && request?.status === 200"
-                            matTooltipClass="custom-mat-tooltip"
-                            matTooltip="{{'Open' | translate}} - {{ 'TicketBeingProcessed' | translate }}"
-                            #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
-                            {{'Open' | translate}}
-                          </div>
-                          <!-- use case: Ticket assigned  -->
-                          <div class="ticket-unassigned" *ngIf="request?.subject && request?.status === 100"
-                            matTooltipClass="custom-mat-tooltip" matTooltip="{{'Open' | translate}}"
-                            #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
-                            {{'Open' | translate}}
-                          </div>
-                        </div>
-                        <div class="pending-conv-ticket"
-                          *ngIf="request?.workingStatus === 'pending' && request?.status !== 1000">
-                          <div class="pending" matTooltipClass="custom-mat-tooltip"
-                            matTooltip="{{'Pending' | translate }} - {{ 'WaitingForReplyFromTheRequester' | translate }}"
-                            #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
-                            {{'Pending' | translate}}
-                          </div>
-
-                        </div>
-                        <div class="resolved-conv"
-                          *ngIf="(request?.workingStatus === '' && request?.status === 1000) || (!request?.workingStatus && request?.status === 1000) || (request?.workingStatus === 'new' && request?.status === 1000) ">
-                          <!-- use case: conversation  -->
-                          <div class="conversation-resolved" *ngIf="!request?.subject"
-                            matTooltipClass="custom-mat-tooltip"
-                            matTooltip="{{ 'TheConversationWasResolved' | translate }} ({{request?.closed_by_label}})"
-                            #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
-                            {{'Resolved' | translate}}
-                          </div>
-                          <!-- use case: Ticket  -->
-                          <div class="ticket-resolved" *ngIf="request?.subject" matTooltipClass="custom-mat-tooltip"
-                            matTooltip="{{ 'TheTicketWasResolved' | translate }} ({{request?.closed_by_label}})"
-                            #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
-                            {{'Resolved' | translate}}
-                          </div>
-                        </div>
-                      </div>
+                
                       <!-- ----------------------------------------------------------  -->
                       <!-- Working status dropdow -->
                       <!-- ----------------------------------------------------------  -->
@@ -1304,9 +1201,9 @@
                           data-toggle="dropdown"
                           [ngClass]="{
                           'working-status-dropdown-btn-chat': CHAT_PANEL_MODE === true,
-                          'btn-deepred' : (request?.workingStatus === 'open' || !request?.workingStatus || request?.workingStatus === 'new' ) && request?.status !== 1000,
-                          'btn-tdblu' : request?.workingStatus === 'pending' && request?.status !== 1000,
-                          'btn-default' : (request?.workingStatus === '' && request?.status === 1000) || (!request?.workingStatus && request?.status === 1000) || (request?.workingStatus === 'new' && request?.status === 1000) || (request?.workingStatus === 'open' && request?.status === 1000)}">
+                          'open' : (request?.workingStatus === 'open' || !request?.workingStatus || request?.workingStatus === 'new' ) && request?.status !== 1000,
+                          'pending' : request?.workingStatus === 'pending' && request?.status !== 1000,
+                          'closed' : (request?.workingStatus === '' && request?.status === 1000) || (!request?.workingStatus && request?.status === 1000) || (request?.workingStatus === 'new' && request?.status === 1000) || (request?.workingStatus === 'open' && request?.status === 1000)}">
                           <!-- use case: conversation assigned -->
                           <span class="open-conv"
                             *ngIf="(request?.workingStatus === 'open' || !request?.workingStatus || request?.workingStatus === 'new' ) && request?.status !== 1000">
@@ -1322,51 +1219,70 @@
                           </span>
                           <b class="caret"></b>
                         </a>
-                        <ul class="dropdown-menu" style="cursor: pointer;"
+                        <ul class="dropdown-menu dropdown-menu-working-status" style="cursor: pointer;"
                           [ngClass]="{'dropdown-menu-working-status-chat': CHAT_PANEL_MODE === true}">
                           <li [ngClass]="{'disable-dropdown-menu-btn' : disableReopeRequest }"
                             (click)="hasSelectedOpen('updatedWorkingStatus', request)"
-                            class="conversation-open-assigned" *ngIf="!request?.subject"
+                            class="conversation-open-assigned" 
+                            *ngIf="!request?.subject"
                             matTooltipClass="custom-mat-tooltip"
-                            matTooltip="{{'ConversationBeingProcessed' | translate }}" #tooltip="matTooltip"
-                            matTooltipPosition='above' matTooltipHideDelay="100">
+                            matTooltip="{{'ConversationBeingProcessed' | translate }}" 
+                            #tooltip="matTooltip"
+                            matTooltipPosition='above'
+                            matTooltipHideDelay="100">
                             <a style="padding-left: 15px; padding-right: 15px;">
-                              <i class="material-icons" style="padding-right: 5px;color: rgb(197, 44, 36);">stop</i>
-                              <span style="font-weight:500; position: relative; top: 1px;"> {{'Open' | translate}}
+                              <i class="material-icons" style="padding-right: 5px;">stop</i>
+                              <span style="font-weight:500; position: relative; top: 1px;"> 
+                                {{'Open' | translate}}
                               </span>
                             </a>
                           </li>
                           <li [ngClass]="{'disable-dropdown-menu-btn' : disableReopeRequest }"
                             (click)="hasSelectedOpen('updatedWorkingStatus', request)" class="ticket-open-assigned"
-                            *ngIf="request?.subject" matTooltipClass="custom-mat-tooltip"
-                            matTooltip="{{'TicketBeingProcessed' | translate }}" #tooltip="matTooltip"
-                            matTooltipPosition='above' matTooltipHideDelay="100">
+                            *ngIf="request?.subject" 
+                            class="ticket-open-assigned" 
+                            matTooltipClass="custom-mat-tooltip"
+                            matTooltip="{{'TicketBeingProcessed' | translate }}" 
+                            #tooltip="matTooltip"
+                            matTooltipPosition='above'
+                            matTooltipHideDelay="100">
                             <a style="padding-left: 15px; padding-right: 15px;">
-                              <i class="material-icons" style="padding-right: 5px;color: rgb(197, 44, 36);">stop</i>
-                              <span style="font-weight:500; position: relative; top: 1px;"> {{'Open' | translate}}
+                              <i class="material-icons" 
+                                style="padding-right: 5px;">stop</i>
+                              <span style="font-weight:500; position: relative; top: 1px;"> 
+                                {{'Open' | translate}}
                               </span>
                             </a>
                           </li>
 
                           <li [ngClass]="{'disable-dropdown-menu-btn' : disableReopeRequest }"
-                            (click)="hasSelectedPending('updatedWorkingStatus', request)" class="pending"
+                            (click)="hasSelectedPending('updatedWorkingStatus', request)" 
+                            class="pending"
                             matTooltipClass="custom-mat-tooltip"
-                            matTooltip="{{ 'WaitingForReplyFromTheRequester' | translate }}" #tooltip="matTooltip"
-                            matTooltipPosition='above' matTooltipHideDelay="100">
+                            matTooltip="{{ 'WaitingForReplyFromTheRequester' | translate }}" 
+                            #tooltip="matTooltip"
+                            matTooltipPosition='above'
+                            matTooltipHideDelay="100">
                             <a style="padding-left: 15px; padding-right: 15px;">
-                              <i class="material-icons" style="padding-right: 5px;color:  rgb(55,147,233);">stop</i>
-                              <span style="font-weight:500; position: relative; top: 1px;"> {{'Pending' | translate}}
+                              <i class="material-icons" 
+                                style="padding-right: 5px;">stop</i>
+                              <span style="font-weight:500; position: relative; top: 1px;"> 
+                                {{'Pending' | translate}}
                               </span>
                             </a>
                           </li>
                           <li
                             [ngClass]="{'disable-dropdown-menu-btn' : request?.status == 1000 || DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true }"
-                            (click)="hasSelectedSolved('updatedWorkingStatus')" class="conversation-resolved"
-                            *ngIf="!request?.subject" matTooltipClass="custom-mat-tooltip"
-                            matTooltip="{{ 'ClosesTheCurrentConversation' | translate }}" #tooltip="matTooltip"
-                            matTooltipPosition='above' matTooltipHideDelay="100">
+                            (click)="hasSelectedSolved('updatedWorkingStatus')" 
+                            class="conversation-resolved"
+                            *ngIf="!request?.subject" 
+                            matTooltipClass="custom-mat-tooltip"
+                            matTooltip="{{ 'ClosesTheCurrentConversation' | translate }}" 
+                            #tooltip="matTooltip"
+                            matTooltipPosition='above' 
+                            matTooltipHideDelay="100">
                             <a style="padding-left: 15px; padding-right: 15px;">
-                              <i class="material-icons" style="padding-right: 5px; color: #999;">stop</i>
+                              <i class="material-icons" style="padding-right: 5px; ">stop</i>
                               <span style="font-weight:500; position: relative; top: 1px;">
                                 {{'VisitorsPage.Resolve' | translate}} </span>
                             </a>
@@ -1605,7 +1521,7 @@
                         <mat-tab label="Attributes">Content 5</mat-tab>
                       </mat-tab-group> -->
 
-                      <div class="more-options-dropdown-wpr e4erhsw2">
+                      <div class="more-options-dropdown-wpr">
 
                         <div width="57" offset="0" class="sidebar-tabs"
                           [ngClass]="{
@@ -1692,9 +1608,13 @@
                       <div class="contact-row">
                         <span>
                           <svg class="project-icon" fill="none" height="22" viewBox="0 0 24 24" width="22"
-                            xmlns="http://www.w3.org/2000/svg" style="min-width: 22px; min-height: 22px;"
-                            matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'Project' | translate }}"
-                            #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
+                            xmlns="http://www.w3.org/2000/svg" 
+                            style="min-width: 22px; min-height: 22px;"
+                            matTooltipClass="custom-mat-tooltip" 
+                            matTooltip="{{ 'Project' | translate }}"
+                            #tooltip="matTooltip" 
+                            matTooltipPosition='right' 
+                            matTooltipHideDelay="100">
                             <path class="project-name-icon"
                               d="M22.002 12C22.002 6.477 17.524 2 12 2 6.476 1.999 2 6.477 2 12.001c0 5.186 3.947 9.45 9.001 9.952V20.11c-.778-.612-1.478-1.905-1.939-3.61h1.94V15H8.737a18.969 18.969 0 0 1-.135-5h6.794c.068.64.105 1.31.105 2h1.5c0-.684-.033-1.353-.095-2h3.358c.154.64.237 1.31.237 2h1.5ZM4.786 16.5h2.722l.102.396c.317 1.17.748 2.195 1.27 3.015a8.532 8.532 0 0 1-4.094-3.41ZM3.736 10h3.358a20.847 20.847 0 0 0-.095 2c0 1.043.075 2.051.217 3H4.043a8.483 8.483 0 0 1-.544-3c0-.682.08-1.347.232-1.983L3.736 10Zm5.122-5.902.023-.008C8.16 5.222 7.611 6.748 7.298 8.5H4.25c.905-2 2.56-3.587 4.608-4.402Zm3.026-.594L12 3.5l.126.006c1.262.126 2.48 2.125 3.045 4.995H8.83c.568-2.878 1.79-4.88 3.055-4.996Zm3.343.76-.107-.174.291.121a8.533 8.533 0 0 1 4.339 4.29h-3.048c-.298-1.665-.806-3.125-1.475-4.237Z M12 19a1 1 0 0 0 1 1h3v2h-.5a.5.5 0 1 0 0 1h4a.5.5 0 0 0 0-1H19v-2h3a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1h-9a1 1 0 0 0-1 1v5Z"
                               fill="none"></path>
@@ -1702,7 +1622,9 @@
                         </span>
                         <div class="form-group" style="margin-top: 10px;">
                           <input *ngIf="!showSpinner" name="project" type="text" data-id="project"
-                            class="form-control input-md" style="width: 240px;cursor: default;" title="{{project_name}}"
+                            class="form-control input-md" 
+                            style="width: 240px;cursor: default;" 
+                            title="{{project_name}}"
                             value="{{project_name}}" disabled>
                         </div>
                       </div>
@@ -1710,90 +1632,22 @@
 
 
                     <!-- ------------------------------------- -->
-                    <!-- Contact email -->
-                    <!-- ------------------------------------- -->
-                    <!-- <li class="email">
-                      <div class="contact-row">
-                        <span>
-                          <svg xmlns="http://www.w3.org/2000/svg" height="22px" viewBox="0 0 24 24"
-                            style="min-width: 22px; min-height: 22px;" fill="none" matTooltipClass="custom-mat-tooltip"
-                            matTooltip="{{ 'ContactEmail' | translate }}" #tooltip="matTooltip"
-                            matTooltipPosition='right' matTooltipHideDelay="100">
-                            <path d="M0 0h24v24H0V0z" fill="none" />
-                            <path
-                              d="M22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6zm-2 0l-8 5-8-5h16zm0 12H4V8l8 5 8-5v10z" />
-                          </svg>
-                        </span>
-
-                        <div class="form-group" style="margin-top: 2px;"
-                          [ngStyle]="{'width':CHAT_PANEL_MODE === true ? 'unset' : '100%' }">
-                          <input type="email" name="email" data-id="email" class="form-control input-md"
-                            [(ngModel)]="contactNewEmail" (ngModelChange)="emailChange($event)"
-                            pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}" placeholder="Email..."
-                            maxlength="255" (keydown.enter)='editContactEmail()' [(ngModel)]="contactNewEmail"
-                            autocomplete="off" style="padding-bottom: 2px;"
-                            [ngStyle]="{'width':CHAT_PANEL_MODE === true ? '200px' : '100%' }">
-                        </div>
-                        <div class="action-btns">
-                          <button type="button" data-id="email" (click)="removeEmailAnUpdateContact()">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
-                              style="min-width: 20px; min-height: 20px;">
-                              <path
-                                d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z">
-                              </path>
-                              <path d="M0 0h24v24H0z" fill="none"></path>
-                            </svg>
-                          </button>
-                        </div>
-                      </div>
-                      <div class="invalid--email" *ngIf="!EMAIL_IS_VALID">
-                        {{ "EnterValidEmail" | translate }}
-                      </div>
-                    </li> -->
-
-                    <!-- ------------------------------------- -->
-                    <!-- Creation date -->
-                    <!-- ------------------------------------- -->
-                    <!-- <li class="created-at">
-                        <div class="contact-row">
-                          <span>
-                            <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="22px"
-                              viewBox="0 0 24 24" fill="none" style="min-width: 22px; min-height: 22px;"
-                              matTooltipClass="custom-mat-tooltip" 
-                              matTooltip="{{ 'Created' | translate }}"
-                              #tooltip="matTooltip" 
-                              matTooltipPosition='right' 
-                              matTooltipHideDelay="100">
-                              <g>
-                                <rect fill="none" height="22" width="22" />
-                              </g>
-                              <g>
-                                <path
-                                  d="M19,4h-1V2h-2v2H8V2H6v2H5C3.89,4,3.01,4.9,3.01,6L3,20c0,1.1,0.89,2,2,2h14c1.1,0,2-0.9,2-2V6C21,4.9,20.1,4,19,4z M19,20 H5V10h14V20z M19,8H5V6h14V8z M9,14H7v-2h2V14z M13,14h-2v-2h2V14z M17,14h-2v-2h2V14z M9,18H7v-2h2V18z M13,18h-2v-2h2V18z M17,18 h-2v-2h2V18z" />
-                              </g>
-                            </svg>
-                          </span>
-                          <div class="form-group" style="margin-top: 10px;">
-                            <input *ngIf="!showSpinner" name="createdat" type="text" data-id="createdat"
-                              class="form-control input-md" style="width: 240px;cursor: default;"
-                              title="{{ request?.createdAt | amTimeAgo }} ({{ request?.createdAt | date: 'd/M/y HH:mm:ss' }})"
-                              value="{{ request?.createdAt | amTimeAgo }} ({{ request?.createdAt | date: 'd/M/y HH:mm:ss' }})"
-                              disabled>
-                          </div>
-                        </div>
-                      </li> -->
-
-                    <!-- ------------------------------------- -->
                     <!-- Browser & Operating sistem -->
                     <!-- ------------------------------------- -->
                     <li class="browser">
                       <div class="contact-row">
                         <span>
-                          <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="22px"
-                            viewBox="0 0 24 24" width="22px" fill="none" style="min-width: 22px; min-height: 22px;"
+                          <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" 
+                            height="22px"
+                            viewBox="0 0 24 24" 
+                            width="22px" 
+                            fill="none"
+                            style="min-width: 22px; min-height: 22px;"
                             matTooltipClass="custom-mat-tooltip"
                             matTooltip="{{ 'Browser' | translate }}, {{ 'OperatingSystem' | translate }}"
-                            #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
+                            #tooltip="matTooltip" 
+                            matTooltipPosition='right' 
+                            matTooltipHideDelay="100">
                             <g>
                               <rect fill="none" height="24" width="24" y="0" />
                             </g>
@@ -1807,8 +1661,10 @@
                         </span>
                         <div class="form-group" style="margin-top: 9px;">
                           <input *ngIf="!showSpinner" name="browser" type="text" data-id="browser"
-                            class="form-control input-md" title="{{ request?.ua_browser }}, {{ request?.ua_os }}"
-                            disabled style="width: 240px;cursor: default;"
+                            class="form-control input-md" 
+                            title="{{ request?.ua_browser }}, {{ request?.ua_os }}"
+                            disabled 
+                            style="width: 240px;cursor: default;"
                             value="{{ request?.ua_browser }}, {{ request?.ua_os }}">
 
                         </div>
@@ -1861,9 +1717,14 @@
                     <li class="language" *ngIf="request?.language">
                       <div class="contact-row">
                         <span>
-                          <svg xmlns="http://www.w3.org/2000/svg" height="22px" viewBox="0 0 24 24"
-                            style="min-width: 22px; min-height: 22px;" fill="none" matTooltipClass="custom-mat-tooltip"
-                            matTooltip="{{ 'Language' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
+                          <svg xmlns="http://www.w3.org/2000/svg" 
+                            height="22px" 
+                            width="22px"
+                            viewBox="0 0 24 24"
+                            style="min-width: 22px; min-height: 22px;" 
+                            fill="none" matTooltipClass="custom-mat-tooltip"
+                            matTooltip="{{ 'Language' | translate }}" 
+                            #tooltip="matTooltip" matTooltipPosition='right'
                             matTooltipHideDelay="100">
                             <path d="M0 0h24v24H0V0z" fill="none" />
                             <path
@@ -1872,8 +1733,11 @@
                         </span>
                         <div class="form-group" style="margin-top: 9px;">
                           <input *ngIf="!showSpinner" name="language" type="text" data-id="language"
-                            class="form-control input-md" title="{{ request?.language }}" disabled
-                            value="{{ request?.language }}" style="cursor: default;text-transform: capitalize;">
+                            class="form-control input-md" 
+                            title="{{ request?.language }}" 
+                            disabled
+                            value="{{ request?.language }}" 
+                            style="cursor: default;text-transform: capitalize;">
                         </div>
                       </div>
                     </li>
@@ -1885,9 +1749,15 @@
                       *ngIf="request?.department && request?.department?.name !== 'Default Department'">
                       <div class="contact-row">
                         <span>
-                          <svg xmlns="http://www.w3.org/2000/svg" height="22px" viewBox="0 0 24 24"
-                            style="min-width: 22px; min-height: 22px;" fill="none" matTooltipClass="custom-mat-tooltip"
-                            matTooltip="{{ 'Department' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
+                          <svg xmlns="http://www.w3.org/2000/svg" 
+                            height="22px" 
+                            width="22px"
+                            viewBox="0 0 24 24"
+                            style="min-width: 22px; min-height: 22px;" 
+                            fill="none" matTooltipClass="custom-mat-tooltip"
+                            matTooltip="{{ 'Department' | translate }}" 
+                            #tooltip="matTooltip" 
+                            matTooltipPosition='right'
                             matTooltipHideDelay="100">
                             <path d="M0 0h24v24H0V0z" fill="none" />
                             <path
@@ -1895,15 +1765,21 @@
                           </svg>
                         </span>
                         <div class="form-group" style="margin-top: 9px;">
-                          <input *ngIf="!showSpinner" name="deparment" type="text" data-id="deparment"
-                            class="form-control input-md" title="{{request?.department?.name}}" disabled
-                            value="{{request?.department?.name}}" style="cursor: default;width: 240px;">
+                          <input *ngIf="!showSpinner" 
+                            name="deparment" 
+                            type="text" 
+                            data-id="deparment"
+                            class="form-control input-md" 
+                            title="{{request?.department?.name}}" 
+                            disabled
+                            value="{{request?.department?.name}}" 
+                            style="cursor: default;width: 240px;">
                         </div>
                       </div>
                     </li>
 
                     <!-- ------------------------------------- -->
-                    <!-- viewed-pages -->
+                    <!-- Viewed-pages -->
                     <!-- ------------------------------------- -->
                     <li class="viewed-pages" *ngIf="viewedPages && viewedPages?.length > 0">
                       <div id="contact-row-source-pages" class="contact-row input-row">
@@ -1917,7 +1793,9 @@
                               d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM4 12c0-.61.08-1.21.21-1.78L8.99 15v1c0 1.1.9 2 2 2v1.93C7.06 19.43 4 16.07 4 12zm13.89 5.4c-.26-.81-1-1.4-1.9-1.4h-1v-3c0-.55-.45-1-1-1h-6v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41C17.92 5.77 20 8.65 20 12c0 2.08-.81 3.98-2.11 5.4z" />
                           </svg> -->
 
-                          <svg xmlns="http://www.w3.org/2000/svg" height="22px" viewBox="0 0 24 24" width="22px"
+                          <svg xmlns="http://www.w3.org/2000/svg" 
+                            height="22px" viewBox="0 0 24 24" 
+                            width="22px"
                             style="min-width: 22px; min-height: 22px;" fill="none" matTooltipClass="custom-mat-tooltip"
                             matTooltip="{{'ViewedPages' | translate}}" #tooltip="matTooltip" matTooltipPosition='right'
                             matTooltipHideDelay="100">
@@ -1926,12 +1804,21 @@
                               d="M21 3H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h5v2h8v-2h5c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 14H3V5h18v12zm-2-9H8v2h11V8zm0 4H8v2h11v-2zM7 8H5v2h2V8zm0 4H5v2h2v-2z" />
                           </svg>
                         </span>
-                        <div class="form-group" style="margin-top: 9px;" (click)="toggleViewedPages()"
+
+                        <div class="form-group" 
+                          style="margin-top: 9px;" 
+                          (click)="toggleViewedPages()"
                           [ngStyle]="{'width':CHAT_PANEL_MODE === true ? 'unset' : '100%' }">
-                          <input id="source-page-input" name="sourcepage" type="text" data-id="sourcepage"
-                            class="form-control input-md" disabled value="{{'ViewedPages' | translate}}"
-                            style="cursor: pointer;" [ngStyle]="{'width':CHAT_PANEL_MODE === true ? '220px' : '100%' }">
+                          <input id="source-page-input" 
+                            name="sourcepage" type="text" 
+                            data-id="sourcepage"
+                            class="form-control input-md" 
+                            disabled 
+                            value="{{'ViewedPages' | translate}}"
+                            style="cursor: pointer;" 
+                            [ngStyle]="{'width':CHAT_PANEL_MODE === true ? '220px' : '100%' }">
                         </div>
+
                         <div class="action-btns-arrow" (click)="toggleViewedPages()">
                           <button type="button" data-id="toggle-viewed-pages"
                             [ngStyle]="{'margin-right':CHAT_PANEL_MODE === true ? '0px' : '-11px' }">
@@ -1948,30 +1835,40 @@
 
                     <li *ngIf="showViewedPages" class="viewed-pages-list">
                       <ul>
-                        <li *ngFor="let page of viewedPages" class="viewed-pages-wpr" style="padding-left: 8px;">
-                          <a style="font-weight: 400;" class="viewed-pages-anchor" title="{{page?.viewedPageTitle}}"
-                            href="{{page?.viewedPageLink}}" target="_blank">
+                        <li *ngFor="let page of viewedPages" class="viewed-pages-wpr" 
+                          style="padding-left: 8px;">
+                          <a style="font-weight: 400;" class="viewed-pages-anchor" 
+                            title="{{page?.viewedPageTitle}}"
+                            href="{{page?.viewedPageLink}}" 
+                            target="_blank">
                             <div class="viewed-pages-dot"> </div>
-                            {{page?.viewedPageTitle}}
-                            <div class="viewed-pages-url"> {{page?.viewedPageLink}} </div>
+                            <span class="viewed-pages-title"> 
+                              {{page?.viewedPageTitle}} 
+                            </span> 
+                            <div class="viewed-pages-url"> 
+                              {{page?.viewedPageLink}} 
+                            </div>
                           </a>
                         </li>
                       </ul>
-
                     </li>
 
                     <!-- ---------------------------------------- -->
                     <!-- Request Channel telegram  -->
                     <!-- ---------------------------------------- -->
-
                     <li class="telegram-channel" *ngIf="request?.channel?.name === 'telegram'">
                       <div id="contact-row-telegram-channel" class="contact-row">
                         <span>
 
-                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512" height="21px" width="21px"
-                            style="min-width: 21px; min-height: 21px;" fill="none" matTooltipClass="custom-mat-tooltip"
-                            matTooltip="{{ 'MessageChannel' | translate }}: Telegram" #tooltip="matTooltip"
-                            matTooltipPosition='right' matTooltipHideDelay="100">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512" 
+                            height="20px" 
+                            width="20px"
+                            style="min-width: 20px; min-height: 20px;margin-right: 13px;" 
+                            fill="none" matTooltipClass="custom-mat-tooltip"
+                            matTooltip="{{ 'MessageChannel' | translate }}: Telegram" 
+                            #tooltip="matTooltip"
+                            matTooltipPosition='right' 
+                            matTooltipHideDelay="100">
 
                             <path
                               d="M248,8C111.033,8,0,119.033,0,256S111.033,504,248,504,496,392.967,496,256,384.967,8,248,8ZM362.952,176.66c-3.732,39.215-19.881,134.378-28.1,178.3-3.476,18.584-10.322,24.816-16.948,25.425-14.4,1.326-25.338-9.517-39.287-18.661-21.827-14.308-34.158-23.215-55.346-37.177-24.485-16.135-8.612-25,5.342-39.5,3.652-3.793,67.107-61.51,68.335-66.746.153-.655.3-3.1-1.154-4.384s-3.59-.849-5.135-.5q-3.283.746-104.608,69.142-14.845,10.194-26.894,9.934c-8.855-.191-25.888-5.006-38.551-9.123-15.531-5.048-27.875-7.717-26.8-16.291q.84-6.7,18.45-13.7,108.446-47.248,144.628-62.3c68.872-28.647,83.183-33.623,92.511-33.789,2.052-.034,6.639.474,9.61,2.885a10.452,10.452,0,0,1,3.53,6.716A43.765,43.765,0,0,1,362.952,176.66Z" />
@@ -1988,7 +1885,6 @@
                     <!-- ---------------------------------------- -->
                     <!-- Request Channel whatsapp   -->
                     <!-- ---------------------------------------- -->
-
                     <li class="whatsapp-channel" *ngIf="request?.channel?.name === 'whatsapp'">
                       <div id="contact-row-whatsapp-channel" class="contact-row">
                         <span>
@@ -2000,10 +1896,15 @@
                               d="M224 122.8c-72.7 0-131.8 59.1-131.9 131.8 0 24.9 7 49.2 20.2 70.1l3.1 5-13.3 48.6 49.9-13.1 4.8 2.9c20.2 12 43.4 18.4 67.1 18.4h.1c72.6 0 133.3-59.1 133.3-131.8 0-35.2-15.2-68.3-40.1-93.2-25-25-58-38.7-93.2-38.7zm77.5 188.4c-3.3 9.3-19.1 17.7-26.7 18.8-12.6 1.9-22.4.9-47.5-9.9-39.7-17.2-65.7-57.2-67.7-59.8-2-2.6-16.2-21.5-16.2-41s10.2-29.1 13.9-33.1c3.6-4 7.9-5 10.6-5 2.6 0 5.3 0 7.6.1 2.4.1 5.7-.9 8.9 6.8 3.3 7.9 11.2 27.4 12.2 29.4s1.7 4.3.3 6.9c-7.6 15.2-15.7 14.6-11.6 21.6 15.3 26.3 30.6 35.4 53.9 47.1 4 2 6.3 1.7 8.6-1 2.3-2.6 9.9-11.6 12.5-15.5 2.6-4 5.3-3.3 8.9-2 3.6 1.3 23.1 10.9 27.1 12.9s6.6 3 7.6 4.6c.9 1.9.9 9.9-2.4 19.1zM400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zM223.9 413.2c-26.6 0-52.7-6.7-75.8-19.3L64 416l22.5-82.2c-13.9-24-21.2-51.3-21.2-79.3C65.4 167.1 136.5 96 223.9 96c42.4 0 82.2 16.5 112.2 46.5 29.9 30 47.9 69.8 47.9 112.2 0 87.4-72.7 158.5-160.1 158.5z" />
                           </svg> -->
 
-                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" height="22px" width="22px"
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" 
+                            height="22px" 
+                            width="22px"
+                            style="min-width: 22px; min-height: 22px; margin-left: -1px;margin-right: 13px;"
                             matTooltipClass="custom-mat-tooltip"
-                            matTooltip="{{ 'MessageChannel' | translate }}: WhatsApp" #tooltip="matTooltip"
-                            matTooltipPosition='right' matTooltipHideDelay="100">
+                            matTooltip="{{ 'MessageChannel' | translate }}: WhatsApp" 
+                            #tooltip="matTooltip"
+                            matTooltipPosition='right'
+                            matTooltipHideDelay="100">
 
                             <path
                               d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z" />
@@ -2024,10 +1925,16 @@
                       <div id="contact-row-messenger-channel" class="contact-row">
                         <span>
 
-                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" height="21px" width="21px"
-                            style="min-width: 21px; min-height: 21px;" fill="none" matTooltipClass="custom-mat-tooltip"
-                            matTooltip="{{ 'MessageChannel' | translate }}: Facebook Messenger" #tooltip="matTooltip"
-                            matTooltipPosition='right' matTooltipHideDelay="100">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" 
+                            height="20px" 
+                            width="20px"
+                            style="min-width: 20px; min-height: 20px; margin-right: 14px;" 
+                            fill="none" 
+                            matTooltipClass="custom-mat-tooltip"
+                            matTooltip="{{ 'MessageChannel' | translate }}: Facebook Messenger" 
+                            #tooltip="matTooltip"
+                            matTooltipPosition='right' 
+                            matTooltipHideDelay="100">
                             <path
                               d="M256.55 8C116.52 8 8 110.34 8 248.57c0 72.3 29.71 134.78 78.07 177.94 8.35 7.51 6.63 11.86 8.05 58.23A19.92 19.92 0 0 0 122 502.31c52.91-23.3 53.59-25.14 62.56-22.7C337.85 521.8 504 423.7 504 248.57 504 110.34 396.59 8 256.55 8zm149.24 185.13l-73 115.57a37.37 37.37 0 0 1-53.91 9.93l-58.08-43.47a15 15 0 0 0-18 0l-78.37 59.44c-10.46 7.93-24.16-4.6-17.11-15.67l73-115.57a37.36 37.36 0 0 1 53.91-9.93l58.06 43.46a15 15 0 0 0 18 0l78.41-59.38c10.44-7.98 24.14 4.54 17.09 15.62z" />
                           </svg>
@@ -2043,7 +1950,7 @@
 
 
                     <!-- ---------------------------------------- -->
-                    <!-- Request Channel email  -->
+                    <!-- Request Channel email    -->
                     <!-- ---------------------------------------- -->
                     <li class="email-channel" *ngIf="request?.channel?.name === 'email'">
                       <div id="contact-row-email-channel" class="contact-row">
@@ -2057,10 +1964,15 @@
                               d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48H48zM0 176V384c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V176L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z" />
                           </svg> -->
 
-                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" eight="20px" width="20px"
-                            style="min-width: 20px; min-height: 20px; margin-right: 13px;" fill="none"
-                            matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'MessageChannel' | translate }}: Email"
-                            #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" 
+                            height="18px" width="18px"
+                            style="min-width: 18px; min-height: 18px; margin-right: 15px; margin-left: 1px;" 
+                            fill="none"
+                            matTooltipClass="custom-mat-tooltip" 
+                            matTooltip="{{ 'MessageChannel' | translate }}: Email"
+                            #tooltip="matTooltip" 
+                            matTooltipPosition='right' 
+                            matTooltipHideDelay="100">
 
                             <path
                               d="M256 64C150 64 64 150 64 256s86 192 192 192c17.7 0 32 14.3 32 32s-14.3 32-32 32C114.6 512 0 397.4 0 256S114.6 0 256 0S512 114.6 512 256v32c0 53-43 96-96 96c-29.3 0-55.6-13.2-73.2-33.9C320 371.1 289.5 384 256 384c-70.7 0-128-57.3-128-128s57.3-128 128-128c27.9 0 53.7 8.9 74.7 24.1c5.7-5 13.1-8.1 21.3-8.1c17.7 0 32 14.3 32 32v80 32c0 17.7 14.3 32 32 32s32-14.3 32-32V256c0-106-86-192-192-192zm64 192a64 64 0 1 0 -128 0 64 64 0 1 0 128 0z" />
@@ -2076,16 +1988,22 @@
                     </li>
 
                     <!-- ---------------------------------------- -->
-                    <!-- Request Channel Form   -->
+                    <!-- Request Channel Form -->
                     <!-- ---------------------------------------- -->
                     <li class="form-channel" *ngIf="request?.channel?.name === 'form'">
                       <div id="contact-row-form-channel" class="contact-row">
                         <span>
 
-                          <svg xmlns="http://www.w3.org/2000/svg" height="22px" viewBox="0 0 24 24" width="22px"
-                            style="min-width: 22px; min-height: 22px;" fill="none" matTooltipClass="custom-mat-tooltip"
-                            matTooltip="{{ 'MessageChannel' | translate }}: Form" #tooltip="matTooltip"
-                            matTooltipPosition='right' matTooltipHideDelay="100">
+                          <svg xmlns="http://www.w3.org/2000/svg" 
+                            height="22px" 
+                            viewBox="0 0 24 24" 
+                            width="22px"
+                            style="min-width: 22px; min-height: 22px; margin-left: -1px;margin-right: 13px; " fill="none" 
+                            matTooltipClass="custom-mat-tooltip"
+                            matTooltip="{{ 'MessageChannel' | translate }}: Form" 
+                            #tooltip="matTooltip"
+                            matTooltipPosition='right' 
+                            matTooltipHideDelay="100">
                             <path d="M0 0h24v24H0V0z" fill="none" />
                             <path
                               d="M11 7h6v2h-6zm0 4h6v2h-6zm0 4h6v2h-6zM7 7h2v2H7zm0 4h2v2H7zm0 4h2v2H7zM20.1 3H3.9c-.5 0-.9.4-.9.9v16.2c0 .4.4.9.9.9h16.2c.4 0 .9-.5.9-.9V3.9c0-.5-.5-.9-.9-.9zM19 19H5V5h14v14z" />
@@ -2093,84 +2011,16 @@
 
                         </span>
                         <div class="form-group" style="margin-top: 9px;">
-                          <input *ngIf="!showSpinner" name="form-channel" type="text" data-id="form-channel"
-                            class="form-control input-md" title="Form" disabled value="Form"
+                          <input *ngIf="!showSpinner" name="form-channel" 
+                            type="text" data-id="form-channel"
+                            class="form-control input-md" 
+                            title="Form" disabled 
+                            value="Form"
                             style="cursor: default;width: 240px;">
                         </div>
                       </div>
                     </li>
                   </ul>
-
-                  <!-- ------------------------------------------ -->
-                  <!-- @ Conversation Tags (new) -->
-                  <!-- ------------------------------------------ -->
-                  <!-- <div *ngIf="isVisibleLBS === true" class="tag-content-wpr"
-                    [ngClass]="{'tag-content-wpr-chat': CHAT_PANEL_MODE === true}">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
-                      style="min-width: 22px; min-height: 22px;" matTooltipClass="custom-mat-tooltip"
-                      matTooltip="{{ 'Tags.Tags' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
-                      matTooltipHideDelay="100">
-                      <path d="M0 0h22v22H0z" fill="none"></path>
-                      <path
-                        d="M19.626 10.615l-8.25-8.25a1.822 1.822 0 00-1.293-.532H3.667a1.839 1.839 0 00-1.834 1.834v6.416c0 .505.202.963.541 1.302l8.25 8.25c.33.33.788.532 1.293.532.504 0 .962-.202 1.292-.541l6.417-6.417c.339-.33.54-.788.54-1.292 0-.505-.21-.972-.54-1.302zM5.042 6.417c-.761 0-1.375-.614-1.375-1.375s.614-1.375 1.375-1.375c.76 0 1.375.614 1.375 1.375 0 .76-.614 1.375-1.375 1.375z">
-                      </path>
-                    </svg>
-
-                    <form>
-                      <div class="tags--container-wpr">
-                        <div class="tags--container">
-                          <div class="tag" *ngFor="let tag of request?.tags" role="button">
-
-                            <! -- --------------------------------------------------------------------------------------------------------------------------------------- -- >
-                            <! -- Revove tag (note: the request to remove tag in is not called if the current user has agent role and is not among the participants) -->
-                  <!-- --------------------------------------------------------------------------------------------------------------------------------------- -- >
-                            <div (click)="removeTag(tag)">
-                              <div class="icon-container" style="display: inline-block;">
-                                <svg style="width: 13px; height: auto;position:absolute;margin-top: 6px;"
-                                  aria-hidden="true" focusable="false" data-prefix="fas" data-icon="tag"
-                                  class="svg-inline--fa-tag-icon fa-tag fa-w-16" role="img"
-                                  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-
-                                  <path [ngStyle]="{'fill':tag.color}" class="tag_icon_in_ws_msgs"
-                                    d="M0 252.118V48C0 21.49 21.49 0 48 0h204.118a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882 0L14.059 286.059A48 48 0 0 1 0 252.118zM112 64c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z">
-                                  </path>
-                                </svg>
-                                <span class="tag-delete">
-                                  <i class="material-icons delete_note_icon" style="font-size: 16px;"> close </i>
-                                </span>
-                              </div>
-                              {{ tag.tag}}
-                            </div>
-
-                          </div>
-                        </div>
-                        <div class="ng-select-tags-wpr"
-                          [ngStyle]="{'width':CHAT_PANEL_MODE === true ? '240px' : 'auto' }">
-
-                          <ng-select class="ng-select-tags" id="select-tag" #ngSelect (change)="addTag()"
-                            [items]="tagsList" bindLabel="tag" bindValue="_id" [clearable]="false"
-                            [clearSearchOnAdd]="true" [hideSelected]="true" placeholder="{{ typeALabelAndPressEnter}}"
-                            [(ngModel)]="tag" addTagText="Create New" [addTag]="createNewTag"
-                            (keyup.enter)="ngSelect.close()" notFoundText="No tags found. Type to create a tag"
-                            [disabled]="DISABLE_ADD_NOTE_AND_TAGS === true">
-
-                            <ng-template ng-label-tmp let-item="item">
-                              <i [style.color]="item.color" class="fa fa-tag"
-                                style="font-size: 18px;position: relative;top: 2px;margin-right: 5px;"></i>
-
-                              {{item.tag}}
-                            </ng-template>
-                            <ng-template ng-option-tmp let-item="item" let-index="index">
-                              <i [style.color]="item.color" class="fa fa-tag"
-                                style="font-size: 18px;position: relative;top: 2px;margin-right: 5px;"></i>
-                              {{item.tag}}
-                            </ng-template>
-                          </ng-select>
-                        </div>
-
-                      </div>
-                    </form>
-                  </div> -->
                 </div>
 
                 <!-- ------------------------------------- -->
@@ -2180,13 +2030,19 @@
                   <div class="tab0-card2-content-wpr"
                     [ngClass]="{'tab0-card2-content-wpr-chat': CHAT_PANEL_MODE === true}">
                     <ng-container *ngIf="displayChatRatings">
-                      <div class="tab0-card2-content" [ngClass]="{'tab0-card2-content-chat': CHAT_PANEL_MODE === true}">
-                        <header class="tab0-card2-header ">
-                          <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="22px"
-                            viewBox="0 0 24 24" fill="none" style="min-width: 22px; min-height: 22px;"
-                            class="rating-icon" matTooltipClass="custom-mat-tooltip"
+                      <div class="tab0-card2-content" 
+                        [ngClass]="{'tab0-card2-content-chat': CHAT_PANEL_MODE === true}">
+                        <header class="tab0-card2-header">
+                          <svg xmlns="http://www.w3.org/2000/svg" 
+                            enable-background="new 0 0 24 24" height="22px"
+                            viewBox="0 0 24 24" 
+                            fill="none" 
+                            style="min-width: 22px; min-height: 22px;"
+                            class="rating-icon" 
+                            matTooltipClass="custom-mat-tooltip"
                             matTooltip="{{ 'RequestMsgsPage.Rating' | translate }}" #tooltip="matTooltip"
-                            matTooltipPosition='right' matTooltipHideDelay="100">
+                            matTooltipPosition='right' 
+                            matTooltipHideDelay="100">
                             <g>
                               <path d="M0,0h24v24H0V0z" fill="none" />
                             </g>
@@ -2199,7 +2055,7 @@
                             </g>
                           </svg>
                           <div>
-                            <div class="rating-group e9elja63" *ngIf="request">
+                            <div class="rating-group" *ngIf="request">
 
                               <span class="material-icons"
                                 [ngClass]="{'yellow-star': request?.rating === 1 || request?.rating === 2 || request?.rating === 3 || request?.rating === 4 || request?.rating === 5}">
@@ -2233,14 +2089,22 @@
                         </header>
                       </div>
                     </ng-container>
+                    <!--  -->
                     <ng-container *ngIf="!displayChatRatings">
                       <div class="tab0-card2-content" [ngClass]="{'tab0-card2-content-chat': CHAT_PANEL_MODE === true}">
                         <header class="tab0-card2-header ">
-                          <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="22px"
-                            viewBox="0 0 24 24" fill="none" style="min-width: 22px; min-height: 22px;"
-                            class="rating-icon" matTooltipClass="custom-mat-tooltip"
-                            matTooltip="{{ 'RequestMsgsPage.Rating' | translate }}" #tooltip="matTooltip"
-                            matTooltipPosition='right' matTooltipHideDelay="100">
+                          <svg xmlns="http://www.w3.org/2000/svg" 
+                            enable-background="new 0 0 24 24" 
+                            height="22px"
+                            viewBox="0 0 24 24" 
+                            fill="none" 
+                            style="min-width: 22px; min-height: 22px;"
+                            class="rating-icon" 
+                            matTooltipClass="custom-mat-tooltip"
+                            matTooltip="{{ 'RequestMsgsPage.Rating' | translate }}" 
+                            #tooltip="matTooltip"
+                            matTooltipPosition='right' 
+                            matTooltipHideDelay="100">
                             <g>
                               <path d="M0,0h24v24H0V0z" fill="none" />
                             </g>
@@ -2253,7 +2117,7 @@
                             </g>
                           </svg>
                           <div>
-                            <div class="rating-group e9elja63">
+                            <div class="rating-group">
                               <span class="material-icons">
                                 star
                               </span>
@@ -2271,10 +2135,13 @@
                               </span>
 
                             </div>
-                            <button class="btn btn-get--feature-no-boxshadow pull-right" (click)="goToPricingFromChat()"
+                            <button class="btn btn-get--feature-no-boxshadow pull-right" 
+                              (click)="goToPricingFromChat()"
                               matTooltipClass="custom-mat-tooltip"
-                              matTooltip=" {{'UpgradePlanToGetTheFeature' | translate}}" #tooltip="matTooltip"
-                              matTooltipPosition='below' matTooltipHideDelay="100">
+                              matTooltip=" {{'UpgradePlanToGetTheFeature' | translate}}" 
+                              #tooltip="matTooltip"
+                              matTooltipPosition='below' 
+                              matTooltipHideDelay="100">
                               <span class="material-icons-outlined get--feature-upgrade-plan-icon">
                                 upgrade
                               </span>
@@ -2305,10 +2172,8 @@
                               d="M4 8h4V4H4v4zm6 12h4v-4h-4v4zm-6 0h4v-4H4v4zm0-6h4v-4H4v4zm6 0h4v-4h-4v4zm6-10v4h4V4h-4zm-6 4h4V4h-4v4zm6 6h4v-4h-4v4zm0 6h4v-4h-4v4z" />
                           </svg>
 
-                          <div class="css-6yy0si e1actr432">
-                            <span style="font-weight: 400;
-                                position: relative;
-                                top: 1px;">Apps</span>
+                          <div class="tab0-card3-text">
+                            <span>Apps</span>
                           </div>
 
                         </button>
@@ -2346,7 +2211,7 @@
                           </g>
                         </svg>
 
-                        <span style="position: relative;top: -6px; font-weight: 400;margin-left: -6px;">
+                        <span class="pre-chat-accordion-title">
                           {{ "PreChatFormData" | translate }}
                         </span>
                       </div>
@@ -2362,7 +2227,7 @@
                                 </div>
                                 <!-- attribute_cutted_text -->
                                 <div aria-expanded="false" [id]="attribute?.attributeName +'_value'"
-                                  class="attribute  position: relative">
+                                  class="attribute">
                                   {{attribute?.attributeValue }}
                                 </div>
                               </div>
@@ -2383,9 +2248,9 @@
                     </div>
                   </div> <!-- ./ end pre-chat form accordion -->
 
-                  <!--  ---------------------------------------------------------------- -->
-                  <!--  @ Chatbot attributes accordion -->
-                  <!--  ---------------------------------------------------------------- -->
+                  <!--  ------------------------------------------------------------------------------------- -->
+                  <!--  @ Chatbot attributes accordion  Not used (see in ts this.getBotConversationAttribute) -->
+                  <!--  ------------------------------------------------------------------------------------- -->
                   <div id="chatbot-attributes-accordion"
                     *ngIf="tab0 && botConversationArray && botConversationArray.length > 0">
                     <div class="chatbot-conv-accordion-wpr"
@@ -2414,8 +2279,8 @@
                           </g>
                         </svg>
 
-                        <span style="position: relative;top: -6px;font-weight: 400; margin-left: -2px;">{{
-                          "ChatbotAttributes" | translate }}
+                        <span class="chatbot-attributes-accordion-title"  style="">
+                          {{ "ChatbotAttributes" | translate }}
                         </span>
                       </div>
 
@@ -2435,15 +2300,7 @@
                                 </div>
                               </div>
 
-                              <!-- <div class="col-xs-2 copy-icon-wpr"
-                                (click)="copyToClipboardPreChatFormValue(attribute?.attributeValue, attribute?.attributeName +'_tooltip')">
-                                <div [id]="attribute?.attributeName +'_tooltip'" class="has-copied-tooltip">
-                                  {{ 'Copied' | translate }}
-                                </div>
-                                <span class="material-icons-outlined copy-icon">
-                                  content_copy
-                                </span>
-                              </div> -->
+                              
                             </div>
                           </div>
                         </div>
@@ -2529,7 +2386,7 @@
                 <!-- ----------------------------------------------------------------------------- -->
                 <div class="row ticket--panel" [ngClass]="{'ticket--panel-chat': CHAT_PANEL_MODE === true}">
                   <div class="col-sm-12">
-                    <p class="row-header">
+                    <p class="ticket--panel-row-header">
 
                       <span style="vertical-align: middle">
                         {{ 'Priority' | translate }}
@@ -2539,8 +2396,11 @@
 
                   <div class="col-sm-12" style="margin-bottom: 8px;">
 
-                    <ng-select [items]="priority" bindLabel="name" bindValue="name" [clearable]="false"
-                      [hideSelected]="true" [(ngModel)]="selectedPriority"
+                    <ng-select class="ticket-priority" [items]="priority"
+                      bindLabel="name" bindValue="name" 
+                      [clearable]="false"
+                      [hideSelected]="true" 
+                      [(ngModel)]="selectedPriority"
                       (change)="onChangeSelectedPriority(selectedPriority)">
                       <ng-template ng-label-tmp let-item="item">
                         <img style="width: 15px;height: 15px;" height="15" width="15" [src]="item.avatar" />
@@ -2560,7 +2420,7 @@
                 <!-- ----------------------------------------------------------------------------- -->
                 <div class="row ticket--panel">
                   <div class="col-sm-12">
-                    <div class="row-header">
+                    <div class="ticket--panel-row-header">
                       <!-- <i class="material-icons" style="vertical-align: middle"> group  </i>  -->
                       <span style="vertical-align: middle">
                         <span class="followers-label" [ngClass]="{'followers-label-chat':CHAT_PANEL_MODE === true}">
@@ -2569,8 +2429,7 @@
                         <span matTooltipClass="custom-mat-tooltip"
                           matTooltip="{{ 'AddTeammatesAsFollowers' | translate }}" #tooltip="matTooltip"
                           matTooltipPosition='right' matTooltipHideDelay="100">
-                          <i class="material-icons"
-                            style="font-size:16px; color:#7695a5;vertical-align: middle; cursor:pointer">
+                          <i class="material-icons">
                             help_outline
                           </i>
                         </span>
@@ -2595,9 +2454,14 @@
 
                       <div class="followers">
                         <!-- (change)="getValues($event)" -->
-                        <ng-select [items]="projectTeammates" bindLabel="label" [multiple]="true"
-                          placeholder="Search teammate" [(ngModel)]="selectedFollowers" (add)="addFollower($event)"
-                          (remove)="removeFollower($event)" [hideSelected]="true" (clear)="removeAllFollowers($event)">
+                        <ng-select class="ticket-followers"
+                          [items]="projectTeammates" bindLabel="label" 
+                          [multiple]="true"
+                          placeholder="Search teammate" 
+                          [(ngModel)]="selectedFollowers" 
+                          (add)="addFollower($event)"
+                          (remove)="removeFollower($event)" 
+                          [hideSelected]="true" (clear)="removeAllFollowers($event)">
                         </ng-select>
 
                         <div *ngIf="request?.channel?.name === 'chat21'" class="convert-to-offline-btn-wpr"
@@ -2609,8 +2473,7 @@
                             <span matTooltipClass="custom-mat-tooltip"
                               matTooltip="{{'SmartReassignmentForThisConversationWillBeDisabled' | translate}}"
                               #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100">
-                              <i class="material-icons"
-                                style=" font-size:16px; color:#7695a5;vertical-align: middle; cursor:pointer;position: relative;top: -2px;">
+                              <i class="material-icons">
                                 help_outline
                               </i>
                             </span>
@@ -2673,7 +2536,7 @@
                                 </path>
                               </svg>
                               <span class="tag-delete">
-                                <i class="material-icons delete_note_icon" style="font-size: 16px;"> close
+                                <i class="material-icons delete_icon" style="font-size: 16px;"> close
                                 </i>
                               </span>
                             </div>
@@ -2685,7 +2548,7 @@
                       <div class="ng-select-tags-wpr" [ngStyle]="{'width':CHAT_PANEL_MODE === true ? 'auto' : 'auto' }">
 
                         <ng-select style="margin-right: 13px;" 
-                          class="ng-select-tags" 
+                          class="convs-tags" 
                           id="select-tag" 
                           #ngSelect
                           (change)="addTag()" 
@@ -2731,13 +2594,10 @@
                 <div class="note--container" [ngClass]="{'note--container-chat': CHAT_PANEL_MODE === true}">
                   <div class="note--panel" [ngClass]="{'note--panel-chat': CHAT_PANEL_MODE === true}">
                     <div class="ws_msgs_note__textarea">
-                      <textarea [(ngModel)]="new_note" placeholder="{{ 'Notes.AddANote' | translate  }}" rows="2" style="width: 100%;
-                              display: block;
-                              border: 1px solid #dee2e7;
-                              padding: 12px;
-                              border-radius: 3px;
-                              resize: none;
-                              margin-bottom: 8px;"> </textarea>
+                      <textarea [(ngModel)]="new_note" 
+                        placeholder="{{ 'Notes.AddANote' | translate  }}" rows="2" 
+                        style="width: 100%;"> 
+                      </textarea>
 
 
 
@@ -2785,7 +2645,7 @@
                         <!-- ------------------------------------------------------------ -->
                         <button *ngIf="currentUserID === note.createdBy " (click)="deleteNote(note._id)" type="button"
                           class="note__delete">
-                          <i class="material-icons delete_note_icon" style="font-size:16px">close</i>
+                          <i class="material-icons delete_icon" style="font-size:16px">close</i>
                         </button>
                       </div>
 
@@ -2811,7 +2671,7 @@
                           <!-- ===== IF THERE ISN'T CONTACT REQUEST ===== -->
                           <tr *ngIf="contact_requests && contact_requests?.length === 0">
                             <td colspan="2" style="text-align: center; padding-top: 16px;">
-                              <p style="font-size:1em; color:#7695a5; font-weight: 400">
+                              <p class="contact--conversations-no-requests">
                                 {{ 'HistoryPage.NoRequests' | translate }}
                               </p>
                             </td>
@@ -3079,14 +2939,15 @@
                               </span>
                             </td>
 
-
-                            <!-- ===== REQUEST FIRST TEXT style="cursor:pointer"  ===== -->
-                            <!-- [ngStyle]="{'cursor': CHAT_PANEL_MODE === false ? 'pointer' : null}" -->
+                            <!-- ------------------------------------------------------------- -->
+                            <!-- REQUEST FIRST TEXT style="cursor:pointer"  -->
+                            <!-- ------------------------------------------------------------- -->
                             <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
-                              <p style="font-size:14px; line-height:14px; font-weight: 400; margin-bottom: 0px;"
-                                [innerHTML]="getRequestText(request?.first_text)"> </p>
+                              <p class="contact--conversations-first_text"
+                                [innerHTML]="getRequestText(request?.first_text)"> 
+                              </p>
 
-                              <span style="color: #7695a5; font-weight: 400; line-height:18px; font-size:12px">
+                              <span class="contact--conversations-request-sent-to">
                                 {{ 'SentThe' | translate}} {{ request?.createdAt | date: 'dd/MM/yyyy' }}
                                 <span *ngIf="request?.department?.name && CHAT_PANEL_MODE === false">
                                   <span>{{ 'ToTheDepartment' | translate}} </span>
@@ -3162,8 +3023,8 @@
                           d="M6.21 13.97l1.2 2.07c.08.13.23.18.37.13l1.49-.6c.31.24.64.44 1.01.59l.22 1.59c.03.14.15.25.3.25h2.4c.15 0 .27-.11.3-.26l.22-1.59c.36-.15.7-.35 1.01-.59l1.49.6c.14.05.29 0 .37-.13l1.2-2.07c.08-.13.04-.29-.07-.39l-1.27-.99c.03-.19.04-.39.04-.58 0-.2-.02-.39-.04-.59l1.27-.99c.11-.09.15-.26.07-.39l-1.2-2.07c-.08-.13-.23-.18-.37-.13l-1.49.6c-.31-.24-.64-.44-1.01-.59l-.22-1.59c-.03-.14-.15-.25-.3-.25h-2.4c-.15 0-.27.11-.3.26l-.22 1.59c-.36.15-.71.34-1.01.58l-1.49-.6c-.14-.05-.29 0-.37.13l-1.2 2.07c-.08.13-.04.29.07.39l1.27.99c-.03.2-.05.39-.05.59 0 .2.02.39.04.59l-1.27.99c-.11.1-.14.26-.06.39zM12 10.29c.94 0 1.71.77 1.71 1.71s-.77 1.71-1.71 1.71-1.71-.77-1.71-1.71.77-1.71 1.71-1.71zM19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.11 0 2-.9 2-2V5c0-1.1-.89-2-2-2zm0 16H5V5h14v14z" />
                       </svg>
 
-                      <span class="attribute-accordion-name" style="position: relative;top: -3px; font-weight: 400;">{{
-                        "Attributes" | translate }}
+                      <span class="attribute-accordion-name">
+                        {{ "Attributes" | translate }}
                       </span>
                     </div>
 
@@ -3208,8 +3069,8 @@
                           d="M6.21 13.97l1.2 2.07c.08.13.23.18.37.13l1.49-.6c.31.24.64.44 1.01.59l.22 1.59c.03.14.15.25.3.25h2.4c.15 0 .27-.11.3-.26l.22-1.59c.36-.15.7-.35 1.01-.59l1.49.6c.14.05.29 0 .37-.13l1.2-2.07c.08-.13.04-.29-.07-.39l-1.27-.99c.03-.19.04-.39.04-.58 0-.2-.02-.39-.04-.59l1.27-.99c.11-.09.15-.26.07-.39l-1.2-2.07c-.08-.13-.23-.18-.37-.13l-1.49.6c-.31-.24-.64-.44-1.01-.59l-.22-1.59c-.03-.14-.15-.25-.3-.25h-2.4c-.15 0-.27.11-.3.26l-.22 1.59c-.36.15-.71.34-1.01.58l-1.49-.6c-.14-.05-.29 0-.37.13l-1.2 2.07c-.08.13-.04.29.07.39l1.27.99c-.03.2-.05.39-.05.59 0 .2.02.39.04.59l-1.27.99c-.11.1-.14.26-.06.39zM12 10.29c.94 0 1.71.77 1.71 1.71s-.77 1.71-1.71 1.71-1.71-.77-1.71-1.71.77-1.71 1.71-1.71zM19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.11 0 2-.9 2-2V5c0-1.1-.89-2-2-2zm0 16H5V5h14v14z" />
                       </svg>
 
-                      <span class="attribute-accordion-name" style="position: relative;top: -3px; font-weight: 400;">{{
-                        "Attributes" | translate }}
+                      <span class="attribute-accordion-name">
+                        {{"Attributes" | translate }}
                       </span>
                     </div>
                     <!-- ------------------------------------------------------ -->
@@ -3254,7 +3115,8 @@
                 <!-- ------------------------------------------------------ -->
                 <!-- @ Attributes decoded JWT accordion -->
                 <!-- ------------------------------------------------------ -->
-                <div id="decoded-jwt-accordion" *ngIf="request?.attributes?.decoded_jwt && REQUESTER_IS_VERIFIED">
+                <!--  -->
+                <div id="decoded-jwt-accordion"  *ngIf="request?.attributes?.decoded_jwt && REQUESTER_IS_VERIFIED">
                   <div class="attributes-jwt-decoded-accordion-wpr"
                     [ngClass]="{'attributes-jwt-decoded-accordion-wpr-chat': CHAT_PANEL_MODE === true}">
                     <div class="attributes-decoded-jwt-accordion"
@@ -3271,7 +3133,8 @@
                             d="M12,2L4,5v6.09c0,5.05,3.41,9.76,8,10.91c4.59-1.15,8-5.86,8-10.91V5L12,2z M18,11.09c0,4-2.55,7.7-6,8.83 c-3.45-1.13-6-4.82-6-8.83V6.31l6-2.12l6,2.12V11.09z M8.82,10.59L7.4,12l3.54,3.54l5.66-5.66l-1.41-1.41l-4.24,4.24L8.82,10.59z" />
                         </g>
                       </svg>
-                      <span style="position: relative; top: -3px; font-weight: 400;">{{ "decodedJWT" | translate }}
+                      <span class="decoded-jwt-accordion-title">
+                        {{ "decodedJWT" | translate }}
                       </span>
                     </div>
                     <!-- ------------------------------------------------------ -->
@@ -3445,6 +3308,19 @@
 
           </div>
         </div>
+
+        <div id="right-col" class="right-col" *ngIf="!REQUEST_EXIST" [ngClass]="{'col-sm-5' : CHAT_PANEL_MODE === false, 'col-sm-12 no-padding' : CHAT_PANEL_MODE === true, 'chat-panel-mode-on-desktop' :CHAT_PANEL_MODE === true && !isMobile, 'chat-right-col': CHAT_PANEL_MODE === true}">
+          <!-- card  -->
+          <div class="right-card" style="padding-top:0px; padding-bottom:5px;margin-bottom: 10px;"
+            [ngClass]="{'right-card-chat-panel-mode' : CHAT_PANEL_MODE === true, 'right-card-normal-mode' : CHAT_PANEL_MODE === false}">
+
+            <div class="request--removed"> 
+              {{'ConverationRemoved' | translate }}
+            </div>
+            
+          </div>
+        </div>
+
       </div>
     </div>
 
@@ -3457,37 +3333,36 @@
 <!-- ---------------------------------------------------------------------------------------- -->
 <!--  USERS - BOTS - DEPTS LIST MODAL - FULL WIDTH MODAL -->
 <!-- ---------------------------------------------------------------------------------------- -->
-<div class="modal" tabindex="-1" role="dialog"
+<div id="assign-reassign-modal" class="modal" tabindex="-1" role="dialog"
   [ngClass]="{'users-list-modal-margin-left-on-desktop': CHAT_PANEL_MODE === false}"
   [ngStyle]="{'display': displayUsersListModal , 'height': users_list_modal_height}"
   style="background-color: rgba(90,90,90,0.5);">
+
   <div class="modal-dialog modal-lg users-list-modal"
     [ngClass]="{'users-list-modal-dashboard-mode' : CHAT_PANEL_MODE === false, 'users-list-modal-chat-panel-mode' : CHAT_PANEL_MODE === true}"
     role="document" style="width: 100%; height: 100vh; margin:0; padding: 0;">
-    <div class="modal-content" style="height: auto; min-height: 100%; border-radius: 0; border:none;">
+    <div class="modal-content assign-reassign-modal-content" style="height: auto; min-height: 100%; border-radius: 0; border:none;">
 
-      <div class="modal-header" [ngClass]="{'modal-header-chat-panel-mode' : CHAT_PANEL_MODE === true}">
-        <!-- class="close" -->
-        <button type="button" class="close-modal-btn"
-          style="border: none !important; float: right !important; border-radius: 50%; color: rgb(235,234,235);  height: 36px; width: 36px;background-color: rgb(221,223,230)"
-          aria-label="Close" (click)="closeSelectUsersModal()">
-          <span aria-hidden="true" style="font-size:31px; color: rgb(60, 72, 88) !important;">&times;</span>
+      <div class="modal-header assign-reassign-modal-header" [ngClass]="{'modal-header-chat-panel-mode' : CHAT_PANEL_MODE === true}">
+        <button type="button" class="close--round-btn" aria-label="Close" (click)="closeSelectUsersModal()">
+          <span aria-hidden="true">&times;</span>
         </button>
 
         <h4 class="modal-title">
           <div class="title-wpr">
-            <span *ngIf="actionInModal === 'reassign'"> {{ "VisitorsPage.ReassignRequest" | translate }} </span>
-            <span *ngIf="actionInModal === 'invite'"> {{ "VisitorsPage.AddAgent" | translate }} </span>
+            <span *ngIf="actionInModal === 'reassign'"> 
+              {{ "VisitorsPage.ReassignRequest" | translate }} 
+            </span>
+            <span *ngIf="actionInModal === 'invite'"> 
+              {{ "VisitorsPage.AddAgent" | translate }} 
+            </span>
           </div>
         </h4>
       </div>
 
       <div class="modal-body" [ngClass]="{'modal-body-chat-panel-mode' : CHAT_PANEL_MODE === true}"
         style="padding-right: 15px; padding-top:15px; padding-bottom:15px; max-width: 936px; margin:auto ">
-
         <div class="row">
-
-
           <!-- --------------------------------------------------------------------------------------------- -->
           <!-- modal subtitle -->
           <!-- --------------------------------------------------------------------------------------------- -->
@@ -3507,7 +3382,7 @@
 
           <div class="col-md-12" [ngClass]="{'no-padding' : CHAT_PANEL_MODE === true}">
 
-            <div class="card" style="margin-top:5px; margin-bottom:5px"
+            <div class="card assign-reassign-modal-card" style="margin-top:5px; margin-bottom:5px"
               [ngClass]="{'modal-card-chat-panel-mode' : CHAT_PANEL_MODE === true, 'card--no-border' : CHAT_PANEL_MODE === true}">
 
               <loading-spinner *ngIf="showSpinner_inModalUserList"></loading-spinner>
@@ -3516,18 +3391,15 @@
               <div *ngIf="!showSpinner_inModalUserList" class="card-content table-responsive"
                 [ngClass]="{'card-content-chat-panel-mode' : CHAT_PANEL_MODE === true}">
 
-                <table class="table table-hover">
+                <table class="table table-hover assign-reassign-modal-table">
                   <thead>
                     <tr>
-                      <th colspan="2" [ngClass]="{'grey-background' : CHAT_PANEL_MODE === true}">
+
+                      <th colspan="2" [ngClass]="{'sub-header-background' : CHAT_PANEL_MODE === true}">
                         <span style="color: #566787"
                           [ngClass]="{'hidden-if-chat-panel-mode' : CHAT_PANEL_MODE === true}">
-
                           {{ "UsersPage.User" | translate }}
-
                         </span>
-
-
 
                         <!-- --------------------------------------------------------------------------------------------------- -->
                         <!-- the table header if CHAT_PANEL_MODE === true (replace the label User abd the above modal subtitle) -->
@@ -3607,20 +3479,19 @@
 
                       <td style="cursor:pointer"
                         (click)="selectUser(projectUser?.id_user._id, projectUser?.id_user.firstname, projectUser?.id_user.lastname, projectUser?.id_user?.email)">
-                        <p style="font-size:14px; font-weight: 500; margin-bottom: 0px;">
+                        <p class="assign-reassign-modal-text-col1">
                           {{ projectUser?.id_user?.firstname }} {{ projectUser?.id_user?.lastname }}
 
 
                           <!-- --------------------------------------------------- -->
                           <!-- user role in CHAT_PANEL_MODE x Project Users -->
                           <!-- --------------------------------------------------- -->
-                          <span *ngIf="CHAT_PANEL_MODE === true"
-                            style="color: #7695a5; line-height:18px; font-size:12px;">
-                            <span style="font-weight: 200;"> ({{ projectUser?.role | translate}}) </span>
+                          <span *ngIf="CHAT_PANEL_MODE === true" class="assign-reassign-modal-subtext-col1">
+                            <span> ({{ projectUser?.role | translate}}) </span>
                           </span>
                         </p>
-                        <span style="color: #7695a5; line-height:18px; font-size:12px; text-transform: lowercase;">
-                          <span style="font-weight: 400;"> {{ projectUser?.id_user?.email }} </span>
+                        <span class="assign-reassign-modal-text-col2">
+                          <span > {{ projectUser?.id_user?.email }} </span>
                         </span>
 
                         <!-- --------------------------------------------------- -->
@@ -3629,7 +3500,7 @@
                         <div class="done-wpr" style="position: relative;" *ngIf="CHAT_PANEL_MODE === true">
                           <div style="position: absolute; top: -33px; right: 0;"
                             *ngIf="projectUser?.is_joined_to_request === true">
-                            <i class="material-icons" style="color: #73AF55;">
+                            <i class="material-icons assign-reassign-modal-assignee-icon">
                               done
                             </i>
                           </div>
@@ -3643,10 +3514,8 @@
                             done
                           </i>
                         </div>
-
                       </td>
 
-                      <!-- *ngIf="projectUser?.id_user._id !== currentUserID" -->
                       <td *ngIf="CHAT_PANEL_MODE === false" style="cursor:pointer"
                         (click)="selectUser(projectUser?.id_user._id, projectUser?.id_user.firstname, projectUser?.id_user.lastname, projectUser?.id_user?.email)">
                         {{ projectUser?.role | translate}}
@@ -3658,11 +3527,8 @@
                       <!-- ------------------------------------------------------ -->
                       <td *ngIf="!isMobile && CHAT_PANEL_MODE === false" style="cursor:pointer;"
                         (click)="selectUser(projectUser?.id_user._id, projectUser?.id_user.firstname, projectUser?.id_user.lastname, projectUser?.id_user?.email)">
-                        <!-- <span class="tooltipx"> -->
+                       
                         <div class="assign-request">
-                          <!-- <i class="material-icons" style="cursor: pointer">
-                            swap_horiz
-                          </i> -->
                           <p style="color: #00bcd4 ;margin-bottom:0px; font-size:12px; font-weight: 500;">
                             <span *ngIf="actionInModal === 'reassign'">
                               {{ 'VisitorsPage.ReassignTo' | translate}}
@@ -3676,7 +3542,6 @@
                             {{ projectUser?.id_user?.email }}
                           </span>
                         </div>
-
                       </td>
                     </tr>
 
@@ -3731,32 +3596,38 @@
                           </span>
 
 
-                          <span *ngIf="bot.type === 'tilebot'">
+                          <!-- <span *ngIf="bot.type === 'tilebot'">
                             <img class="ws-request-msgs-bot-type-logo"
                               [ngClass]="{'ws-request-msgs-bot-type-logo-chat-panel-mode' : CHAT_PANEL_MODE === true}"
                               src="assets/img/tilebot_logo_small.png" />
+                          </span> -->
+
+                          <span *ngIf="bot.type === 'tilebot'">
+                            <img class="ws-request-msgs-bot-type-logo"
+                              [ngClass]="{'ws-request-msgs-bot-type-logo-chat-panel-mode' : CHAT_PANEL_MODE === true}"
+                              [src]="botLogo" />
                           </span>
+
+        
                           <!-- <span *ngIf="bot.type === 'tiledesk-ai'">
                             <img class="ws-request-msgs-bot-type-logo"
                               [ngClass]="{'ws-request-msgs-bot-type-logo-chat-panel-mode' : CHAT_PANEL_MODE === true}"
                               src="assets/img/tiledesk-ai-logo.png" />
                           </span> -->
                         </td>
-                        <!-- line-height:10px; -->
+                       
                         <td style="cursor:pointer" (click)="selectBot(bot?._id, bot?.name)">
-                          <p style="font-size:14px; font-weight: 500; margin-bottom: 0px;">
+                          <p class="assign-reassign-modal-text-col1">
                             {{ bot?.name }}
 
                             <!-- --------------------------------------------------- -->
                             <!-- string in CHAT_PANEL_MODE x Project Users -->
                             <!-- --------------------------------------------------- -->
-                            <span *ngIf="CHAT_PANEL_MODE === true"
-                              style="color: #7695a5; line-height:18px; font-size:12px;">
-                              <span style="font-weight: 200;"> (Bot) </span>
+                            <span *ngIf="CHAT_PANEL_MODE === true" class="assign-reassign-modal-subtext-col1">
+                              <span> (Bot) </span>
                             </span>
-
                           </p>
-                          <span style="color: #7695a5; line-height:18px; font-size:12px">
+                          <!-- <span class="assign-reassign-modal-text-col2">
                             {{ 'Type' | translate }}:
                             <span style="text-transform: capitalize;font-weight: 400; ">
                               <span *ngIf="bot.type !== 'internal'">
@@ -3766,7 +3637,7 @@
                                 Resolution
                               </span>
                             </span>
-                          </span>
+                          </span> -->
 
                           <!-- --------------------------------------------------- -->
                           <!-- icon 'done' in CHAT_PANEL_MODE x Bot -->
@@ -3774,7 +3645,7 @@
                           <div class="done-wpr" style="position: relative;" *ngIf="CHAT_PANEL_MODE === true">
                             <div style="position: absolute; top: -33px; right: 0;"
                               *ngIf="bot?._id === bot_participant_id">
-                              <i class="material-icons" style="color: #73AF55;">
+                              <i class="material-icons assign-reassign-modal-assignee-icon">
                                 done
                               </i>
                             </div>
@@ -3842,25 +3713,22 @@
             </div>
             <div class="col-md-12" [ngClass]="{'no-padding' : CHAT_PANEL_MODE === true}">
 
-              <div class="card" style="margin-top:5px; margin-bottom:5px"
-                [ngClass]="{'modal-card-chat-panel-mode' : CHAT_PANEL_MODE === true}">
+              <div class="card assign-reassign-modal-card" style="margin-top:5px; margin-bottom:5px"
+                [ngClass]="{'modal-card-chat-panel-mode' : CHAT_PANEL_MODE === true, 'card--no-border' : CHAT_PANEL_MODE === true}">
 
                 <loading-spinner *ngIf="showSpinner_inModalUserList"></loading-spinner>
-                <!-- table-responsive -->
+               
                 <div *ngIf="!showSpinner_inModalUserList" class="card-content"
                   [ngClass]="{'card-content-chat-panel-mode' : CHAT_PANEL_MODE === true}">
 
-                  <table class="table table-hover">
+                  <table class="table table-hover assign-reassign-modal-table">
                     <thead>
                       <tr>
-                        <th colspan="2" [ngClass]="{'grey-background' : CHAT_PANEL_MODE === true}">
+                        <th colspan="2" [ngClass]="{'sub-header-background' : CHAT_PANEL_MODE === true}">
                           <span style="color: #566787"
                             [ngClass]="{'hidden-if-chat-panel-mode' : CHAT_PANEL_MODE === true}">
-
                             {{ "Department" | translate }}
-
                           </span>
-
 
                           <!-- ------------------------------------------------------------------------------------------------ -->
                           <!-- the table header if CHAT_PANEL_MODE === true (replace Department abd the above modal subtitle) -->
@@ -3875,17 +3743,13 @@
 
                         <th *ngIf="CHAT_PANEL_MODE === false">
                           <span style="color: #566787">
-
                             {{ "Assignee" | translate }}
-
                           </span>
                         </th>
 
                         <th *ngIf="CHAT_PANEL_MODE === false">
                           <span style="color: #566787">
-
                             {{ "Agents" | translate }}
-
                           </span>
                         </th>
 
@@ -3895,9 +3759,7 @@
                     <tbody>
 
                       <tr *ngFor="let dept of departments;" class="table-row">
-                        <!-- *ngIf="dept.default === false" -->
                         <ng-container>
-                          <!-- *ngIf="CHAT_PANEL_MODE === false" -->
                           <td style="cursor:pointer; width:1%;" [ngClass]="{'top-alignment' : CHAT_PANEL_MODE === true}"
                             (click)="selectDept(dept?.name, dept?._id)">
                             <div class="dept---avatar-in-modal"
@@ -3914,7 +3776,7 @@
                                   <span class="right" style="white-space: normal;padding: 5px;font-weight: 200;">
                                     <h4 style="font-weight:400"> Default Department {{ 'Disabled' | translate }}
                                     </h4>
-                                    <!-- {{'TheDefaulDeptIsDisabledBecause' | translate}} -->
+                                   
                                     {{'TheDefaulDeptIsDisabledBecause_2' | translate}}
                                     <i></i>
                                   </span>
@@ -3976,7 +3838,7 @@
                           </td>
 
                           <td style="cursor:pointer" (click)="selectDept(dept?.name, dept?._id)">
-                            <p style="font-size:14px; line-height:21px; font-weight: 500; margin-bottom: 0px;"
+                            <p style="margin-bottom: 0px;"
                               [ngStyle]="{'line-height':  (CHAT_PANEL_MODE === true ) ? '14px' : '' }">
 
                               <span class="dept---name" style="display: block;"
@@ -3984,8 +3846,8 @@
                                 {{ dept?.name }}
                               </span>
 
-                              <span class="dept---routing-wpr" style="color: #7695a5; font-size: 12px; display: block;">
-                                <span style="font-weight:100;">
+                              <span class="dept---routing-wpr">
+                                <span style="font-weight:300;">
                                   Routing:
                                 </span>
                                 {{ dept?.routing }}
@@ -3994,10 +3856,10 @@
 
                               <span *ngIf="CHAT_PANEL_MODE === true">
                                 <span *ngIf="dept?.hasGroupName && !dept?.groupHasBeenTrashed">
-                                  <span style="color: #7695a5; font-size: 12px; font-weight:100">
+                                  <span class="group-label">
                                     {{ 'DepartmentsPage.Group' | translate }}
                                   </span>
-                                  <span [ngClass]="{'group-name' : CHAT_PANEL_MODE === true}" class="">
+                                  <span [ngClass]="{'group-name' : CHAT_PANEL_MODE === true}" >
                                     {{ dept?.hasGroupName}}
                                   </span>
                                 </span>
@@ -4010,22 +3872,19 @@
                                   </span>
                                 </span>
 
-                                <span *ngIf="!dept?.hasGroupName" style="font-size:12px; color: #7695a5">
+                                <span *ngIf="!dept?.hasGroupName" class="group-name">
                                   {{ 'DepartmentsPage.AllUsers' | translate }}
                                 </span>
 
                                 <span *ngIf="dept?.id_bot" style="display: block;">
-                                  <span style="color: #7695a5; font-size: 12px; font-weight:100">
+                                  <span class="bot-label">
                                     Bot:
-                                    <!-- {{ 'DepartmentsPage.ActivatedBot' | translate }} -->
                                   </span>
 
-                                  <span *ngIf="dept?.hasBot === true"
-                                    style="font-size:12px; font-weight:400; color: #7695a5">
+                                  <span *ngIf="dept?.hasBot === true" class="bot-name">
                                     {{ dept?.hasBotName }}
                                   </span>
-                                  <span *ngIf="dept?.hasBot === false"
-                                    style="font-size:12px; font-weight:400; color: #bdbdbd;  font-style: italic;">
+                                  <span *ngIf="dept?.hasBot === false" class="no-bot">
                                     no bot
                                   </span>
                                   <span *ngIf="dept.bot_only == true"
@@ -4035,8 +3894,8 @@
                                   <span *ngIf="dept.botHasBeenTrashed == true">
                                     <i class="material-icons"
                                       style="vertical-align: middle; font-size:12px; color: #ff5252; padding-left: 8px">report_problem</i>
-                                    <span style="color: #ff5252; vertical-align: middle; font-size:12px;">{{
-                                      'BotsPage.TheBotHasBeenTrashed' | translate }}
+                                    <span style="color: #ff5252; vertical-align: middle; font-size:12px;">
+                                      {{ 'BotsPage.TheBotHasBeenTrashed' | translate }}
                                     </span>
                                   </span>
                                 </span>
@@ -4048,7 +3907,7 @@
                             <div class="done-wpr" style="position: relative;" *ngIf="CHAT_PANEL_MODE === true">
                               <div style="position: absolute; top: -43px; right: 0;"
                                 *ngIf="request?.department?._id === dept?._id">
-                                <i class="material-icons" style="color: #73AF55;">
+                                <i class="material-icons assign-reassign-modal-assignee-icon">
                                   done
                                 </i>
                               </div>
@@ -4274,19 +4133,23 @@
 <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display': displayModalTranscript}"
   style="background-color: rgba(90,90,90,0.9);">
   <div class="modal-dialog" role="document">
-    <div class="modal-content" style="border-top-left-radius:6px; border-top-right-radius:6px">
-      <div class="modal-header" style=" border-bottom:none!important;">
+    <div class="modal-content transcript-modal-content" style="border-top-left-radius:6px; border-top-right-radius:6px">
+      <div class="modal-header transcript-modal-header" style=" border-bottom:none!important; position: relative;">
 
-        <button type="button" class="close" aria-label="Close" (click)="closeModalTranscript()"
+        <!-- <button type="button" class="close" aria-label="Close" (click)="closeModalTranscript()"
           style="position: absolute; right: 14px;top: 16px;">
           <span aria-hidden="true">
-            <!-- &times; -->
+           
             <svg class="tide-icon" width="24" height="24" viewBox="0 0 24 24">
               <path
                 d="M13.357 11.993l10.256 10.295c0.39 0.391 0.39 1.024 0 1.415-0.194 0.195-0.449 0.292-0.704 0.292s-0.51-0.097-0.705-0.292l-10.257-10.295-10.256 10.295c-0.194 0.195-0.449 0.292-0.704 0.292s-0.51-0.097-0.705-0.292c-0.39-0.391-0.39-1.024 0-1.415l10.256-10.295-10.256-10.294c-0.39-0.391-0.39-1.024 0-1.415s1.020-0.391 1.409 0l10.256 10.294 10.256-10.294c0.39-0.391 1.020-0.391 1.41 0 0.389 0.391 0.389 1.024 0 1.415l-10.256 10.294z">
               </path>
             </svg>
           </span>
+        </button> -->
+
+        <button type="button" style="position: absolute; right: 12px;" class="close--round-btn" aria-label="Close" (click)="closeModalTranscript()">
+          <span aria-hidden="true">&times;</span>
         </button>
 
         <h2 class="modal-title custom__modal__title">
@@ -4296,52 +4159,15 @@
         </h2>
 
       </div>
-      <hr class="custom-hr" style="margin-top:0px; margin-bottom:3px">
+      <hr *ngIf="CHAT_PANEL_MODE === false" class="transcript-custom-hr" >
       <div class="modal-body transcript-modal-body">
-
-        <!--   <h4><span class="custom-link" (click)="openTranscriptAsHtml()">{{'ViewAsHTML' | translate}}
-                  </span> or download it as a:</h4>
-                <div class="radio">
-                  <label style="color: #222;">
-                    <input type="radio" name="downloadType" value="PDF"
-                      (change)="onChangeTranscriptDownloadPreference($event.target.value)">
-                      {{'DownloadAsPDF' | translate}}
-                  </label>
-                </div>
-
-                <div class="radio">
-                  <label style="color: #222;">
-                    <input type="radio" name="downloadType" value="CSV"
-                      (change)="onChangeTranscriptDownloadPreference($event.target.value)">
-                      {{'DownloadAsCSV' | translate}}
-                  </label>
-                  <label style="color: #222;">
-                    <input type="radio" name="downloadType" value="TXT"
-                      (change)="onChangeTranscriptDownloadPreference($event.target.value)">
-                     {{ 'SendByEmail' | translate }}
-                  </label>
-                </div>
-
-                 <div class="radio" style="margin-left: 7px;" >
-              <label style="color: #222;">
-                <input type="radio" name="downloadType" value="TEXT"
-                (change)="onChangeTranscriptDownloadPreference($event.target.value)">
-                TEXT
-              </label>
-            </div> -->
 
         <div class="transcript-options-wpr">
           <div class="transcript-option-wpr" (click)="sendTranscriptByEmail()">
             <div class="transcript-option-icon">
-              <span class="material-icons" style="font-size: 20px;
-              rotate: -35deg;
-              margin-left: -22px;">
+              <span class="material-icons send-by-email">
                 send
               </span>
-              <!-- <span class="material-icons" style="margin-left: -24px;
-              font-size: 20px;">
-                forward_to_inbox
-              </span> -->
             </div>
             <div class="transcript-option-text">
               {{ 'SendByEmail' | translate }}
@@ -4350,8 +4176,7 @@
 
           <div class="transcript-option-wpr" (click)="openTranscriptAsHtml()">
             <div class="transcript-option-icon">
-              <span class="material-icons" style="margin-left: -23px;
-              font-size: 20px;">
+              <span class="material-icons">
                 launch
               </span>
             </div>
@@ -4386,7 +4211,7 @@
         </div>
       </div>
 
-      <div class="modal-footer custom__modal__footer">
+      <div class="modal-footer transcript__modal__footer">
         <div style="text-align: center; margin-bottom: 15px;">
 
           <button style="padding-left: 24px; padding-right: 24px;" type="button" class="btn btn-white"

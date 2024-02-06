@@ -28,9 +28,7 @@ import { AppConfigService } from 'app/services/app-config.service';
 
 
 export class CreateProjectComponent extends WidgetSetUpBaseComponent implements OnInit {
-  // company_logo_in_spinner = brand.wizard_create_project_page.company_logo_in_spinner; // no more used - removed from brand
-  // logo_x_rocket = brand.wizard_create_project_page.logo_x_rocket
-  logo_x_rocket: string;
+
   projects: Project[];
   project_name: string;
   id_project: string;
@@ -40,7 +38,7 @@ export class CreateProjectComponent extends WidgetSetUpBaseComponent implements 
   CLOSE_BTN_IS_HIDDEN = true
   new_project: any;
   user: any;
-  companyLogoBlack_Url: string;
+  companyLogo: string;
   CREATE_PRJCT_FOR_TEMPLATE_INSTALLATION: boolean = false;
 
   temp_SelectedLangName: string;
@@ -66,8 +64,8 @@ export class CreateProjectComponent extends WidgetSetUpBaseComponent implements 
   ) {
     super(translate);
     const brand = brandService.getBrand();
-    this.logo_x_rocket = brand['wizard_create_project_page']['logo_x_rocket'];
-    this.companyLogoBlack_Url = brand['company_logo_black__url'];
+   
+    this.companyLogo = brand['BASE_LOGO'];
     this.botid = this.route.snapshot.params['botid'];
   }
 

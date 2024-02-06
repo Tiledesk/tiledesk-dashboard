@@ -1,36 +1,69 @@
 {
-    "metaTitle": "Tiledesk Support Dashboard",
-    "favicon__url": "https://tiledesk.com/wp-content/uploads/2022/07/tiledesk_v13-300x300.png",
-    "company_name": "Tiledesk",
-    "company_site_name": "tiledesk.com",
-    "company_site_url": "https://www.tiledesk.com",
-    "company_logo_white__url": "assets/img/logos/tiledesk-logo_white_orange.svg",
-    "company_logo_black__url": "assets/img/logos/tiledesk_3.0_logo_black_v2_no_version.svg",
-    "company_logo_allwhite__url": "assets/img/logos/tiledesk_3.0_logo_all_white_v2_no_version.svg",
-    "company_logo_planet__url": "assets/img/logos/tiledesk_planet.svg",
-    "company_logo_no_text__url": "assets/img/logos/tiledesk-solo-logo.png",
-    "privacy_policy_link_text": "Privacy Policy",
-    "privacy_policy_url": "https://www.tiledesk.com/privacy.html",
+"DASHBOARD": {
+    "META_TITLE": "Imagicle",
+    "FAVICON_URL": "https://stage.imagicle.cloud/chat/convai/favicon.ico",
+    "CUSTOM_COMPANY_HOME_LOGO": true,
+    "COMPANY_LOGO_PLANET": "assets/img/logos/tiledesk_planet.svg",
+    "privacy_policy_link_text": "Privacy & Cookie Policy",
+    "privacy_policy_url": "https://www.imagicle.com/en/privacy-cookie-policy/privacy-policy/",
     "display_terms_and_conditions_link": true,
-    "terms_and_conditions_url": "https://www.tiledesk.com/termsofservice.html",
-    "contact_us_email": "support@tiledesk.com",
+    "terms_and_conditions_url": "https://www.imagicle.com/en/legal-terms/terms-and-conditions-of-sale/",
+    "display-news-and-documentation": false,
+    "display_google_auth_btn": false,
+    "display_help_in_installation": false,
+    "display_invite_teammate_btn": false,
     "footer": {
         "display_terms_and_conditions_link": true,
-        "display_contact_us_email": true
+        "display_contact_us_email": false,
+        "display_star_us_on_github": false,
+        "display_leave_us_a_feedback": false,
+        "display_followus_on_x": true,
+        "followus_on_x_URL": "https://twitter.com/imagicle",
+        "display_followus_on_fb": true,
+        "followus_on_fb_URL": "https://www.facebook.com/imagicle",
+        "display_followus_on_in": true,
+        "followus_on_in_URL": "https://www.linkedin.com/company/imagicle-spa/?originalSubdomain=it",
+        "display_followus_on_instagram": false,
+        "followus_on_instagram_URL": "",
+        "display_followus_on_youtube": true,
+        "followus_on_youtube_URL": "https://www.youtube.com/user/imagicle"
     },
     "recent_project_page": {
-        "company_logo_black__width": "130px"
+      "company_logo_width": "130px",
+      "company_logo_height": "38px",
+      "company_logo_top": "-12px",
+      "company_logo_left": "-14px"
     },
     "signup_page": {
-        "display_terms_and_conditions_link": true
+      "display_terms_and_conditions_link": true, 
+      "display_social_proof_container":  false
     },
     "handle_invitation_page": {
-        "company_logo_45x45": "assets/img/logos/tiledesk-solo-logo.png"
-    },
-    "wizard_create_project_page": {
-        "logo_x_rocket": "assets/img/logos/logo_x_rocket4x4.svg"
-    },
-    "wizard_install_widget_page": {
-        "logo_on_rocket": "assets/img/logos/tiledesk-solo-logo.png"
+      "company_logo_45x45": "assets/img/logos/tiledesk-solo-logo.png"
     }
+  },
+  "CHAT": {
+
+  },
+  "CDS": {
+    "META_TITLE": "Design Studio",
+    "FAVICON_URL": "https://tiledesk.com/wp-content/uploads/2022/07/tiledesk_v13-300x300.png",
+    "INFO_MENU_ITEMS": [
+      { "key": "FEEDBACK", "icon": "", "src": "", "status": "inactive" },
+      { "key": "CHANGELOG", "icon": "", "src": "", "status": "inactive" }
+    ]
+  },
+  "COMMON": {
+    "COMPANY_LOGO": "https://stage.imagicle.cloud/chat/convai/LogoImagicle-ConTesto.svg",
+    "COMPANY_LOGO_NO_TEXT": "https://stage.imagicle.cloud/chat/convai/LogoImagicle-NoTesto.svg",
+    "BASE_LOGO": "https://stage.imagicle.cloud/chat/convai/LogoConvAI-ConTesto.svg",
+    "BASE_LOGO_NO_TEXT": "https://stage.imagicle.cloud/chat/convai/LogoConvAI-NoTesto.svg",
+    "COMPANY_NAME": "Imagicle",
+    "BRAND_NAME": "Conversational AI",
+    "COMPANY_SITE_NAME": "imagicle.com",
+    "COMPANY_SITE_URL": "https://www.imagicle.com/en/",
+    "CONTACT_US_EMAIL": "",
+    "BRAND_PRIMARY_COLOR": "#00c0f0",
+    "BRAND_SECONDARY_COLOR": "#002159"
+  }
 }

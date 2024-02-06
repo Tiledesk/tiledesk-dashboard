@@ -1,6 +1,6 @@
 <!-- configure-wizard -->
 <div class="css-configure-widget">
-  <img [src]="companyLogoBlack_Url" class="logo" />
+  <img [src]="companyLogo" class="logo" />
 
   <div class="col-left">
 
@@ -17,7 +17,7 @@
       <div class="row">
         <div class="col-md-12">
           <h1 class="title">
-            {{ 'WidgetAppearanceAndDefaultLanguage' | translate: tparams }}
+            {{ 'WidgetAppearanceAndDefaultLanguage' }}
           </h1>
         </div>
       </div>
@@ -276,13 +276,23 @@
 
       <appdashboard-widget-home [primaryColorGradiend]="primaryColorGradiend" [LOGO_IS_ON]="LOGO_IS_ON"
         [hasOwnLogo]="hasOwnLogo" [logoUrl]="logoUrl" [secondaryColor]="secondaryColor"
-        [primaryColorBorder]="primaryColorBorder" [company_name]="company_name" [primaryColor]="primaryColor"
-        [selected_translation]="selected_translation" [company_site_url]="company_site_url"
-        [hasSelectedRightAlignment]="hasSelectedRightAlignment" [hasSelectedLeftAlignment]="hasSelectedLeftAlignment"
-        [C21_BODY_HOME]="C21_BODY_HOME" [welcomeTitle]="welcomeTitle" [welcomeMsg]="welcomeMsg"
-        [waitingTimeNotFoundMsg]="waitingTimeNotFoundMsg" [waitingTimeFoundMsg]="waitingTimeFoundMsg"
-        [newConversation]="newConversation" [noConversation]="noConversation" [currentUserId]="currentUserId"
-        [UPLOAD_ENGINE_IS_FIREBASE]="UPLOAD_ENGINE_IS_FIREBASE" [imageUrl]="imageUrl"
+        [primaryColorBorder]="primaryColorBorder" 
+        [company_name]="company_name" 
+        [primaryColor]="primaryColor"
+        [selected_translation]="selected_translation" 
+        [company_site_url]="company_site_url"
+        [hasSelectedRightAlignment]="hasSelectedRightAlignment" 
+        [hasSelectedLeftAlignment]="hasSelectedLeftAlignment"
+        [C21_BODY_HOME]="C21_BODY_HOME" 
+        [welcomeTitle]="welcomeTitle" 
+        [welcomeMsg]="welcomeMsg"
+        [waitingTimeNotFoundMsg]="waitingTimeNotFoundMsg" 
+        [waitingTimeFoundMsg]="waitingTimeFoundMsg"
+        [newConversation]="newConversation" 
+        [noConversation]="noConversation" 
+        [currentUserId]="currentUserId"
+        [UPLOAD_ENGINE_IS_FIREBASE]="UPLOAD_ENGINE_IS_FIREBASE" 
+        [imageUrl]="imageUrl"
         [waitingTimeNotFoundMsg]="waitingTimeNotFoundMsg"
         [HAS_SELECT_STATIC_REPLY_TIME_MSG]="HAS_SELECT_STATIC_REPLY_TIME_MSG">
       </appdashboard-widget-home>

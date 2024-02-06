@@ -1,0 +1,32 @@
+<h1 *ngIf="!callingPage" mat-dialog-title style="text-align: center;">
+    {{ "Pricing.PlanChange" | translate }}
+</h1>
+<h1 *ngIf="callingPage" mat-dialog-title style="text-align: center;">
+    Oops!… 
+</h1>
+<div mat-dialog-content>
+
+    <div class="dialog--content">
+        <div class="dialog--content-first-row">
+            {{chatbotLimitReached}}
+        </div>
+        <div class="dialog--content-second-row">
+            {{ "Pricing.ContactUsViaEmailToUpgradeYourPricingPlan" | translate }}.
+        </div>
+    </div>
+
+
+</div>
+<div  mat-dialog-actions style="justify-content: center;">
+    <button *ngIf="!callingPage" class="mat-dialog-close-btn" mat-button (click)="onNoClick()">
+        {{ "Cancel" | translate }}
+    </button>
+    <!-- cdkFocusInitial -->
+    <button class="mat-dialog-ok-btn" mat-button (click)="onOkPresssed()">
+        {{'ContactUs' | translate}}
+    </button>
+    <button *ngIf="callingPage" class="mat-dialog-ok-btn" mat-button (click)="onGoToHomePresssed()">
+        Go to Home
+    </button>
+</div>
+

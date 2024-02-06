@@ -24,7 +24,7 @@ import { TagsService } from '../../services/tags.service';
 
 import { UAParser } from 'ua-parser-js';
 import { ContactsService } from '../../services/contacts.service';
-import { APP_SUMO_PLAN_NAME, avatarPlaceholder, getColorBck, PLAN_NAME } from '../../utils/util';
+import { APP_SUMO_PLAN_NAME, avatarPlaceholder, getColorBck, goToCDSVersion, PLAN_NAME } from '../../utils/util';
 import { LoggerService } from '../../services/logger/logger.service';
 
 import 'firebase/database';
@@ -39,6 +39,7 @@ import { TooltipOptions } from 'ng2-tooltip-directive';
 import { ProjectPlanService } from 'app/services/project-plan.service';
 import { MatDialog } from '@angular/material/dialog';
 import { UpgradePlanModalComponent } from 'app/components/modals/upgrade-plan-modal/upgrade-plan-modal.component';
+import { BrandService } from 'app/services/brand.service';
 
 const swal = require('sweetalert');
 // './ws-requests-msgs.component.html',
@@ -53,6 +54,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   appSumoProfile: string;
   appSumoProfilefeatureAvailableFromBPlan: string;
   featureAvailableFromBPlan: string;
+  featureAvailableFromEPlan: string;
   cancel: string;
   upgradePlan: string;
 
@@ -218,7 +220,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   subscription: Subscription;
   CURRENT_USER_ROLE: string;
 
-  CHAT_PANEL_MODE: boolean;
+  CHAT_PANEL_MODE: boolean // = true; // nk for test change color
   dshbrdBaseUrl: string;
   project_name: string;
 
@@ -389,7 +391,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   agentCannotManageAdvancedOptions: string;
   subscription_end_date: any;
   onlyAvailableWithEnterprisePlan: string;
-  cPlanOnly: string
+  cPlanOnly: string;
+  fPlanOnly:  string;
   learnMoreAboutDefaultRoles: string;
   onlyUserWithOwnerRoleCanManageAdvancedProjectSettings: string;
   displayChatRatings: boolean = true;
@@ -399,6 +402,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   whatsAppPhoneNumber: string;
   telegramPhoneNumber: string;
   mailtoBody: any;
+  REQUEST_EXIST: boolean = true;
+  botLogo: string;
 
   /**
    * Constructor
@@ -445,7 +450,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     private uploadImageService: UploadImageService,
     private uploadImageNativeService: UploadImageNativeService,
     private prjctPlanService: ProjectPlanService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    public brandService: BrandService
 
   ) {
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate)
@@ -453,6 +459,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       { id: 10002, name: 'Task', avatar: 'https://tiledesk.atlassian.net/secure/viewavatar?size=medium&avatarId=10318&avatarType=issuetype' },
       { id: 10004, name: 'Bug', avatar: 'https://tiledesk.atlassian.net/secure/viewavatar?size=medium&avatarId=10303&avatarType=issuetype' },
     ];
+
+    const brand = brandService.getBrand();
+    this.botLogo = brand['BASE_LOGO_NO_TEXT']
   }
 
 
@@ -559,7 +568,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     // this.getClickOutEditContactFullname()
   }
 
-  
+
 
   getProjectPlan() {
     this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
@@ -605,7 +614,16 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           // this.logger.log('[WS-REQUESTS-MSGS] GET PROJECT PLAN elemTexareaSendMsg USE CASE PRIVATE NOTE (ID 2)', elemTexareaSendMsg);
           if (elemTexareaSendMsg && this.isVisiblePaymentTab) {
             elemTexareaSendMsg.disabled = true;
-            this.openUpgradePlanDialog(projectProfileData._id)
+            this.openUpgradePlanDialog(projectProfileData._id, PLAN_NAME.A)
+          }
+        }
+
+        if (projectProfileData.profile_name === 'Sandbox' && projectProfileData.trial_expired === true && this.selectedResponseTypeID === 2) {
+          const elemTexareaSendMsg = <HTMLInputElement>document.querySelector('.send-message-texarea')
+          // this.logger.log('[WS-REQUESTS-MSGS] GET PROJECT PLAN elemTexareaSendMsg USE CASE PRIVATE NOTE (ID 2)', elemTexareaSendMsg);
+          if (elemTexareaSendMsg && this.isVisiblePaymentTab) {
+            elemTexareaSendMsg.disabled = true;
+            this.openUpgradePlanDialog(projectProfileData._id, PLAN_NAME.D)
           }
         }
       }
@@ -658,10 +676,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   }
 
-  openUpgradePlanDialog(projectid) {
+  openUpgradePlanDialog(projectid, planName) {
     const dialogRef = this.dialog.open(UpgradePlanModalComponent, {
       data: {
-        featureAvailableFrom: PLAN_NAME.A,
+        featureAvailableFrom:  planName,
         projectId: projectid,
         userRole: this.CURRENT_USER_ROLE
       },
@@ -1221,7 +1239,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       _elemMainPanel.classList.add("main-panel-chat-panel-mode");
 
     } else {
+      // this.CHAT_PANEL_MODE = true; // nk for test change color
       this.CHAT_PANEL_MODE = false;
+      // this.CHAT_PANEL_MODE = true; // Nikola to test chat mode
       // thia.logger.log('[WS-REQUESTS-MSGS] - CHAT_PANEL_MODE »»» ', this.CHAT_PANEL_MODE);
       const _elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
       // thia.logger.log('[WS-REQUESTS-MSGS] - CHAT_PANEL_MODE »»» _elemMainPanel', _elemMainPanel);
@@ -1358,6 +1378,24 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     });
   }
 
+  getRequesByIdRest(requestid) {
+    this.wsRequestsService.getConversationByIDWithRestRequest(requestid)
+      .subscribe((request: any) => {
+        this.logger.log('[WS-REQUESTS-MSGS] - GET REQUEST BY ID (REST CALL) - RES NIKO ', request);
+        if(request)  {
+          this.REQUEST_EXIST = true
+        }
+       
+      }, (error) => {
+        // this.showSpinner = false;
+        this.logger.error('[WS-REQUESTS-MSGS] - GET REQUEST BY ID (REST CALL) - ERROR  ', error);
+        this.REQUEST_EXIST = false
+      }, () => {
+        // this.showSpinner = false;
+        this.logger.log('[WS-REQUESTS-MSGS] - GET REQUEST BY ID  (REST CALL) * COMPLETE *');
+      });
+
+  }
 
 
   // ----------------------------------------------------------------------------
@@ -1366,12 +1404,17 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   // ----------------------------------------------------------------------------
   getParamRequestId() {
     this.route.params.subscribe((params) => {
-      // this.logger.log('[WS-REQUESTS-MSGS] - getParamRequestId  ', params);
+      this.logger.log('[WS-REQUESTS-MSGS] - getParamRequestId  ', params);
+      if (params.requestid) {
+        this.getRequesByIdRest(params.requestid)
+      }
       this.getBotConversationAttribute(params.requestid)
       if (this.id_request) {
         // this.logger.log('[WS-REQUESTS-MSGS] - UNSUB-REQUEST-BY-ID - id_request ', this.id_request);
 
         this.logger.log('[WS-REQUESTS-MSGS] - UNSUB-MSGS - id_request ', this.id_request);
+
+
 
         // Unsubcribe from old request
         this.unsuscribeRequestById(this.id_request);
@@ -1597,8 +1640,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       )
       .subscribe((wsrequest) => {
 
-        this.logger.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** ', wsrequest)
+        this.logger.log('[WS-REQUESTS-MSGS] - getWsRequestById$ *** wsrequest *** NIKO', wsrequest)
         this.request = wsrequest;
+
 
         if (this.request) {
           this.getfromStorageIsOpenAppSidebar()
@@ -1921,16 +1965,16 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
             this.logger.log('[WS-REQUESTS-MSGS] - requester_id ', this.requester_id)
             // this.logger.log('this.request.lead ' , this.request.lead)
             if (this.request.lead.lead_id && this.request.lead.lead_id.startsWith('wab-')) {
-              this.logger.log('[WS-REQUESTS-MSGS] lead_id ',this.request.lead.lead_id)
+              this.logger.log('[WS-REQUESTS-MSGS] lead_id ', this.request.lead.lead_id)
               this.whatsAppPhoneNumber = this.request.lead.lead_id.slice(4);
-              this.logger.log('[WS-REQUESTS-MSGS] whatsAppPhoneNumber ',this.whatsAppPhoneNumber)
+              this.logger.log('[WS-REQUESTS-MSGS] whatsAppPhoneNumber ', this.whatsAppPhoneNumber)
             }
 
 
             if (this.request.lead.lead_id && this.request.lead.lead_id.startsWith('telegram-')) {
-              this.logger.log('[WS-REQUESTS-MSGS] lead_id ',this.request.lead.lead_id)
+              this.logger.log('[WS-REQUESTS-MSGS] lead_id ', this.request.lead.lead_id)
               this.telegramPhoneNumber = this.request.lead.lead_id.slice(9);
-              this.logger.log('[WS-REQUESTS-MSGS] telegramPhoneNumber ',this.telegramPhoneNumber)
+              this.logger.log('[WS-REQUESTS-MSGS] telegramPhoneNumber ', this.telegramPhoneNumber)
             }
 
             if (this.request.lead && this.request.lead.email) {
@@ -2251,8 +2295,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   onChangeContactEmail(event) {
-    this.logger.log('[WS-REQUESTS-MSGS] - ON CHANGE CONTACT EMAIL event ', event )
-   this.contactNewEmail = event;
+    this.logger.log('[WS-REQUESTS-MSGS] - ON CHANGE CONTACT EMAIL event ', event)
+    this.contactNewEmail = event;
   }
 
   goToEditContact() {
@@ -2390,7 +2434,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
             }
             if (message.attributes && message.attributes.sourceTitle && message.attributes.sourcePage) {
               const index = this.viewedPages.findIndex((e) => e.viewedPageLink === message.attributes.sourcePage);
-              this.logger.log('[WS-REQUESTS-MSGS] viewedPage index ', index )
+              this.logger.log('[WS-REQUESTS-MSGS] viewedPage index ', index)
               if (index === -1) {
                 this.viewedPages.push({ viewedPageTitle: viewedPageTitleValue, viewedPageLink: message.attributes.sourcePage })
               }
@@ -4033,41 +4077,46 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     }
   }
 
-  // -----------------------------------------------------------------------------------------------------
-  // @ goTo & Navigate
-  // -----------------------------------------------------------------------------------------------------
+ 
+  checkPlanAndPresentModal() {
 
+    if ((this.profile_name === PLAN_NAME.A) ||
+      (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
+      (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
+      (this.profile_name === 'free' && this.trial_expired === true)) {
+      if (!this.appSumoProfile) {
+       
+        this.presentModalFeautureAvailableFromTier2Plan(this.featureAvailableFromBPlan)
+        return false
+      } else {
+        this.presentModalAppSumoFeautureAvailableFromBPlan()
+        return false
+      }
+    } else if ((this.profile_name === PLAN_NAME.D) ||
+      (this.profile_name === PLAN_NAME.E && this.subscription_is_active === false) ||
+      (this.profile_name === PLAN_NAME.F && this.subscription_is_active === false) ||
+      (this.profile_name === 'Sandbox' && this.trial_expired === true)) {
+
+      if (!this.appSumoProfile) {
+        this.presentModalFeautureAvailableFromTier2Plan(this.featureAvailableFromEPlan)
+        return false
+      }
+    }
+  }
 
 
 
   displayModalDownloadTranscript() {
     if (this.isVisiblePaymentTab) {
-      // if (this.CURRENT_USER_ROLE === 'owner') {
-      if (
-        (this.profile_name === PLAN_NAME.A) ||
-        (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
-        (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
-        (this.prjct_profile_type === 'free' && this.trial_expired === true)
-
-      ) {
-        if (!this.appSumoProfile) {
-          this.presentModalFeautureAvailableFromBPlan()
-        } else if (this.appSumoProfile) {
-          this.presentModalAppSumoFeautureAvailableFromBPlan()
-        }
-        // this.logger.log('[HISTORY & NORT-CONVS] -  EXPORT DATA IS NOT AVAILABLE ')
-      } else if (
-        (this.profile_name === PLAN_NAME.B && this.subscription_is_active === true) ||
-        (this.profile_name === PLAN_NAME.C && this.subscription_is_active === true) ||
-        (this.prjct_profile_type === 'free' && this.trial_expired === false)
-
-      ) {
-        this.displayModalTranscript = 'block'
-        // this.logger.log('[HISTORY & NORT-CONVS] - EXPORT DATA IS AVAILABLE ')
+      
+      const isAvailable = this.checkPlanAndPresentModal()
+      console.log('[WS-REQUESTS-MSGS] feature is available ', isAvailable)
+      if (isAvailable === false) {
+        return
       }
-      // } else {
-      //   this.presentModalAgentCannotManageAvancedSettings()
-      // }
+
+      this.displayModalTranscript = 'block'
+
 
     } else {
       this.notify._displayContactUsModal(true, 'upgrade_plan');
@@ -4092,28 +4141,28 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       if (emailBody) {
         this.sendTrancriptEmail(emailBody)
       }
-     
+
       this.logger.log('[WS-REQUESTS-MSGS] - GET TRANSCRIPT AS TXT emailBody type of', typeof emailBody);
       // let emailBodyStingify = JSON.stringify(emailBody)
-      
+
     }, error => {
       this.logger.error('[WS-REQUESTS-MSGS] - GET TRANSCRIPT AS TXT ERROR', error);
     }, () => {
-      
+
       this.logger.log('[WS-REQUESTS-MSGS] - GET TRANSCRIPT AS TXT - COMPLETE');
     });
   }
 
   sendTrancriptEmail(emailBody) {
     const date = moment().format('ll');
-    this.logger.log('[WS-REQUESTS-MSGS] SEND TRANSCRIT EMAIL - date ',   date)
-    this.logger.log('[WS-REQUESTS-MSGS] SEND TRANSCRIT EMAIL - CONTACT EMAIL ',   this.contactNewEmail)
+    this.logger.log('[WS-REQUESTS-MSGS] SEND TRANSCRIT EMAIL - date ', date)
+    this.logger.log('[WS-REQUESTS-MSGS] SEND TRANSCRIT EMAIL - CONTACT EMAIL ', this.contactNewEmail)
     this.mailtoBody = emailBody
     let contactEmail = ""
-    if(this.contactNewEmail){
+    if (this.contactNewEmail) {
       contactEmail = this.contactNewEmail
     }
-    window.open(`mailto:` +  contactEmail + `?subject=Chat transcript&body=` + encodeURIComponent(this.mailtoBody))
+    window.open(`mailto:` + contactEmail + `?subject=Chat transcript&body=` + encodeURIComponent(this.mailtoBody))
   }
 
   downloadTranscriptAsPDF() {
@@ -4161,7 +4210,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.logger.log(" Value is : ", value);
     this.transcriptDwnldPreference = value
   }
- // No more used
+  // No more used
   downloadTranscript() {
     this.closeModalTranscript();
     // this.logger.log('transcriptDwnldPreference', this.transcriptDwnldPreference)
@@ -4188,20 +4237,20 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         if (emailBody) {
           this.sendTrancriptEmail(emailBody)
         }
-       
+
         this.logger.log('[WS-REQUESTS-MSGS] - GET TRANSCRIPT AS TXT emailBody type of', typeof emailBody);
         // let emailBodyStingify = JSON.stringify(emailBody)
-        
+
       }, error => {
         this.logger.error('[WS-REQUESTS-MSGS] - GET TRANSCRIPT AS TXT ERROR', error);
       }, () => {
-        
+
         this.logger.log('[WS-REQUESTS-MSGS] - GET TRANSCRIPT AS TXT - COMPLETE');
       });
     }
 
   }
- // No more used
+  // No more used
   exportTranscriptToPDF() {
     this.logger.log('[WS-REQUESTS-MSGS - PDF HERE 2');
     this.wsRequestsService.exportTranscriptAsPDFFile(this.id_request).subscribe((res: any) => {
@@ -4215,7 +4264,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       // this.logger.log('[WS-REQUESTS-MSGS - EXPORT TRANSCRIPT TO PDF * COMPLETE *');
     });
   }
- // No more used
+  // No more used
   downloadTranscriptAsPDFFile(data) {
     const blob = new Blob([data], { type: 'application/pdf' });
     const dwldLink = document.createElement('a');
@@ -4240,45 +4289,30 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     // this.logger.log('[WS-REQUESTS-MSGS] displayModalBanVisitor PLAN_NAME.C: ', PLAN_NAME.C)
     // this.logger.log('[WS-REQUESTS-MSGS] displayModalBanVisitor subscription_is_active: ', this.subscription_is_active)
     // if ((this.profile_name === PLAN_NAME.B && this.subscription_is_active === true) || (this.prjct_profile_type === 'free' && this.trial_expired === false)) {
-    this.logger.log('displayModalBanVisitor leadid ', leadid)
-    this.logger.log('displayModalBanVisitor bannedVisitorsArray ', this.bannedVisitorsArray)
-    // if (this.CURRENT_USER_ROLE === 'owner') {
+   console.log('displayModalBanVisitor leadid ', leadid)
+   console.log('displayModalBanVisitor bannedVisitorsArray ', this.bannedVisitorsArray)
 
-    //   if (
-    //     (this.profile_name === PLAN_NAME.A) ||
-    //     (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
-    //     (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
-    //     (this.prjct_profile_type === 'free' && this.trial_expired === true)
-
-    //   ) {
-    //     this.presentModalFeautureAvailableOnlyWithPlanC();
-    //     this.logger.log('[WIDGET-SET-UP] - featureIsAvailable IS NOT AVAILABLE')
-    //   } else if (
-
-    //     (this.profile_name === PLAN_NAME.C && this.subscription_is_active === true)
-
-
-    //   ) {
-    //     this.banVisitors(leadid, ipaddress)
-    //     this.logger.log('[WS-REQUESTS-MSGS] - featureIsAvailable IS AVAILABLE')
-    //   }
-
-    // } else {
-    //   this.presentModalAgentCannotManageAvancedSettings()
-    // }
 
     if (this.CURRENT_USER_ROLE === 'owner') {
-      if (this.profile_name === PLAN_NAME.C) {
-        // this.logger.log('displayModalBanVisitor HERE 1 ')
+      if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
+        console.log('displayModalBanVisitor HERE 1 ')
         if (this.subscription_is_active === true) {
           this.banVisitors(leadid, ipaddress)
         } else if (this.subscription_is_active === false) {
           // this.logger.log('displayModalBanVisitor HERE 3 ')
-          this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.C, this.subscription_end_date);
+          if (this.profile_name === PLAN_NAME.C) {
+            this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.F, this.subscription_end_date);
+          } else if (this.profile_name === PLAN_NAME.F) {
+            this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.F, this.subscription_end_date);
+          } 
         }
-      } else if (this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.B || this.prjct_profile_type === 'free') {
-        // this.logger.log('displayModalBanVisitor HERE 4 ')
-        this.presentModalFeautureAvailableOnlyWithPlanC()
+      } else if (this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.B || this.profile_name === 'free') {
+        console.log('displayModalBanVisitor HERE 4 ')
+        // this.presentModalFeautureAvailableOnlyWithTier3Plans(this.cPlanOnly)
+        this.presentModalFeautureAvailableOnlyWithTier3Plans(this.fPlanOnly)
+      } else if (this.profile_name === PLAN_NAME.D || this.profile_name === PLAN_NAME.E || this.profile_name === 'Sandbox') {
+        this.presentModalFeautureAvailableOnlyWithTier3Plans(this.fPlanOnly)
+        console.log('displayModalBanVisitor HERE 5 ')
       }
     } else {
       // this.logger.log('displayModalBanVisitor HERE 5 ')
@@ -4342,9 +4376,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
 
   // Download transcript
-  presentModalFeautureAvailableFromBPlan() {
+  presentModalFeautureAvailableFromTier2Plan(planName) {
     const el = document.createElement('div')
-    el.innerHTML = this.featureAvailableFromBPlan
+    el.innerHTML = planName // this.featureAvailableFromBPlan
     swal({
       // title: this.onlyOwnerCanManageTheAccountPlanMsg,
       content: el,
@@ -4366,9 +4400,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
           if (this.CURRENT_USER_ROLE === 'owner') {
             if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
-              if (this.profile_name !== PLAN_NAME.C) {
+              if (this.profile_name !== PLAN_NAME.C && this.profile_name !== PLAN_NAME.F) {
                 this.notify.displaySubscripionHasExpiredModal(true, this.profile_name, this.subscription_end_date);
-              } else if (this.profile_name === PLAN_NAME.C) {
+              } else if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
                 this.notify.displayEnterprisePlanHasExpiredModal(true, this.profile_name, this.subscription_end_date);
               }
             } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true) {
@@ -4416,10 +4450,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
 
-  // Banned visitors tab
-  presentModalFeautureAvailableOnlyWithPlanC() {
+  // Banned visitors 
+  presentModalFeautureAvailableOnlyWithTier3Plans(planName) {
     const el = document.createElement('div')
-    el.innerHTML = this.cPlanOnly
+    el.innerHTML = planName // this.cPlanOnly
     swal({
       content: el,
       icon: "info",
@@ -4437,7 +4471,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         // this.logger.log('featureAvailableFromPlanC value', value)
         if (this.isVisiblePaymentTab) {
           if (this.CURRENT_USER_ROLE === 'owner') {
-            if (this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.B) {
+            if (this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.B || this.profile_name === PLAN_NAME.D || this.profile_name === PLAN_NAME.E) {
               // if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
               this.notify._displayContactUsModal(true, 'upgrade_plan');
             } else if (this.prjct_profile_type === 'free') {
@@ -4581,8 +4615,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     window.open(url, '_blank');
   }
 
-  goToMemberProfile(member_id: any) {
-    this.logger.log('[WS-REQUESTS-MSGS] - goToMemberProfile - has clicked GO To MEMBER ', member_id);
+  goToMemberProfile(member, member_id: any) {
+   console.log('[WS-REQUESTS-MSGS] - goToMemberProfile - has clicked GO To MEMBER member ', member);
 
     if (this.CHAT_PANEL_MODE === false) {
       if (member_id.indexOf('bot_') !== -1) {
@@ -4591,7 +4625,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         const id_bot = member_id.substring(4);
         // this.router.navigate(['project/' + this.id_project + '/botprofile/' + member_id]);
         const bot = this.botLocalDbService.getBotFromStorage(id_bot);
-        // this.logger.log('[WS-REQUESTS-MSGS] - goToMemberProfile - BOT FROM STORAGE ', bot)
+        console.log('[WS-REQUESTS-MSGS] - goToMemberProfile - BOT FROM STORAGE ', bot)
 
         let botType = ''
         if (bot.type === 'internal') {
@@ -4604,7 +4638,13 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         } else if (bot.type === 'tilebot') {
           botType = 'tilebot'
           if (this.CURRENT_USER_ROLE !== 'agent') {
-            this.router.navigate(['project/' + this.id_project + '/tilebot/intents/', id_bot, botType]);
+            // this.router.navigate(['project/' + this.id_project + '/tilebot/intents/', id_bot, botType]);
+            goToCDSVersion(this.router, bot, this.id_project, this.appConfigService.getConfig().cdsBaseUrl)
+          }
+        } else if (bot.type === 'tiledesk-ai') {
+          botType = 'tiledesk-ai'
+          if (this.CURRENT_USER_ROLE !== 'agent') {
+            goToCDSVersion(this.router, bot, this.id_project, this.appConfigService.getConfig().cdsBaseUrl)
           }
         } else {
           if (this.CURRENT_USER_ROLE !== 'agent') {
@@ -4919,6 +4959,12 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         this.cPlanOnly = translation;
       });
 
+    this.translate.get('AvailableWithThePlan', { plan_name: PLAN_NAME.F })
+      .subscribe((translation: any) => {
+        this.fPlanOnly = translation;
+      });
+
+
     this.translate.get('LearnMoreAboutDefaultRoles')
       .subscribe((translation: any) => {
 
@@ -4946,6 +4992,13 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         this.featureAvailableFromBPlan = translation;
       });
 
+      
+    this.translate.get('AvailableFromThePlan', { plan_name: PLAN_NAME.E })
+    .subscribe((translation: any) => {
+      this.featureAvailableFromEPlan = translation;
+    });
+
+
     this.translate.get('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan')
       .subscribe((translation: any) => {
 
@@ -4967,7 +5020,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     const elemDropDownEditEmail = <HTMLElement>document.querySelector('.dropdown__menu_edit_email');
     this.logger.log('elemDropDownEditEmail ', elemDropDownEditEmail)
     elemDropDownEditEmail.classList.add("dropdown__menu_edit_email--active");
-   
+
   }
 
   closeDropdown() {
@@ -5538,16 +5591,6 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
     if (clicked_element_id.startsWith("edit-fullname")) {
       this.logger.log('>>> click inside')
-      // const elemDropDown = <HTMLElement>document.querySelector('.dropdown__menu-form');
-      // // this.logger.log('elemDropDown EDIT CONTACT NAME ', elemDropDown)
-      // if (!elemDropDown.classList.contains("dropdown__menu-form--active")) {
-
-      //   elemDropDown.classList.add("dropdown__menu-form--active");
-      //   // this.logger.log('here 1 A')
-      // } else if (elemDropDown.classList.contains("dropdown__menu-form--active")) {
-      //   elemDropDown.classList.remove("dropdown__menu-form--active");
-      //   // this.logger.log('here 2 A')
-      // }
     } else {
       this.logger.log('[WS-REQUESTS-MSGS] >>> click outside')
       this.closeEditContactFullnameDropdown()

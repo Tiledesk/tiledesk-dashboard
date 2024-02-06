@@ -137,7 +137,7 @@
 
             <button mat-flat-button=""
                 class="mat-focus-indicator mat-flat-button mat-button-base"
-                [ngStyle]="{'background-color':whatsAppIsInstalled === true ? '#0d9488' : '#2196f3' }"
+                [ngStyle]="{'background-color':whatsAppIsInstalled === true ? '#0d9488' : '#3ea9f5' }"
                 style=" color: #fff;" (click)="gotToLearMoreOrManageApp()">
                 <span class="mat-button-wrapper">
                     <!-- ---------------------------------------------------- -->
@@ -173,10 +173,14 @@
                     <!-- ---------------------------------------------------- -->
                     <!-- WhatsApp is installed but is not connected  -->
                     <!-- ---------------------------------------------------- -->
-                    <mat-icon *ngIf="whatsAppIsInstalled && !whatsAppIsConnected" role="img"
-                        class="mat-icon notranslate icon-size-5 mat-icon-no-color" aria-hidden="true"
-                        ng-reflect-svg-icon="heroicons_solid:manage" data-mat-icon-type="svg"
-                        data-mat-icon-name="manage" data-mat-icon-namespace="heroicons_solid"
+                    <mat-icon *ngIf="whatsAppIsInstalled && !whatsAppIsConnected" 
+                        role="img"
+                        class="mat-icon notranslate icon-size-5 mat-icon-no-color" 
+                        aria-hidden="true"
+                        ng-reflect-svg-icon="heroicons_solid:manage" 
+                        data-mat-icon-type="svg"
+                        data-mat-icon-name="manage" 
+                        data-mat-icon-namespace="heroicons_solid"
                         style="margin-right: 8px;width: 20px! important; height: 20px !important;">
 
 

@@ -13,9 +13,7 @@ import { LoggerService } from '../services/logger/logger.service';
 })
 export class VerifyEmailComponent implements OnInit {
 
-  // company_logo_black__url = brand.company_logo_black__url;
-  // company_site_url = brand.company_site_url;
-  company_logo_black__url: string;
+  company_logo_black: string;
   company_site_url: string;
 
   user_id: string;
@@ -31,8 +29,8 @@ export class VerifyEmailComponent implements OnInit {
     private logger: LoggerService
   ) { 
     const brand = brandService.getBrand();
-    this.company_logo_black__url = brand['company_logo_black__url'];
-    this.company_site_url = brand['company_site_url'];
+    this.company_logo_black = brand['BASE_LOGO'];
+    this.company_site_url = brand['COMPANY_SITE_URL'];
   }
 
   ngOnInit() {

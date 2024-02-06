@@ -10,14 +10,22 @@ import { LoggerService } from 'app/services/logger/logger.service';
 import { OpenaiService } from 'app/services/openai.service';
 import { ProjectService } from 'app/services/project.service';
 import { timer } from 'rxjs';
+import { ProjectPlanService } from 'app/services/project-plan.service';
+import { UsersService } from 'app/services/users.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators'
+import { MatDialog } from '@angular/material/dialog';
+import { KbModalComponent } from './kb-modal/kb-modal.component';
+import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 
 @Component({
   selector: 'appdashboard-knowledge-bases',
   templateUrl: './knowledge-bases.component.html',
   styleUrls: ['./knowledge-bases.component.scss']
 })
-export class KnowledgeBasesComponent implements OnInit, OnDestroy {
 
+export class KnowledgeBasesComponent  implements OnInit, OnDestroy {
+  private unsubscribe$: Subject<any> = new Subject<any>();
   public IS_OPEN_SETTINGS_SIDEBAR: boolean;
   public isChromeVerGreaterThan100: boolean;
   typeKnowledgeBaseModal: string;
@@ -49,6 +57,9 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
 
   kbFormUrl: FormGroup;
   kbFormContent: FormGroup;
+  USER_ROLE: string;
+  kbCount: number;
+  kbForm: FormGroup;
   kbsList = [];
   refreshKbsList: boolean = true;
 
@@ -75,8 +86,13 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
     private kbService: KnowledgeBaseService,
     private projectService: ProjectService,
     public route: ActivatedRoute,
-    private notify: NotifyService
-  ) { }
+    public notify: NotifyService,
+    public prjctPlanService: ProjectPlanService,
+    public usersService: UsersService,
+    public dialog: MatDialog,
+  ) {
+ 
+  }
 
   ngOnInit(): void {
     this.getBrowserVersion();
@@ -87,12 +103,17 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
     this.trackPage();
     this.getLoggedUser();
     this.getCurrentProject()
-    this.getRouteParams()
+    this.getRouteParams();
+
   }
 
-  ngOnDestroy(): void {
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
     clearInterval(this.interval_id);
   }
+
+
 
   getRouteParams() {
     this.route.params.subscribe((params) => {
@@ -130,16 +151,20 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
   }
 
   getCurrentProject() {
-    this.auth.project_bs.subscribe((project) => {
-      this.project = project
-      this.logger.log('[KNOWLEDGE BASES COMP] - GET CURRENT PROJECT ', this.project)
-      if (this.project) {
-        this.project_name = project.name;
-        this.id_project = project._id;
-        this.getProjectById(this.id_project)
-        this.logger.log('[KNOWLEDGE BASES COMP] - GET CURRENT PROJECT - PROJECT-NAME ', this.project_name, ' PROJECT-ID ', this.id_project)
-      }
-    });
+    this.auth.project_bs
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((project) => {
+        this.project = project
+        this.logger.log('[KNOWLEDGE BASES COMP] - GET CURRENT PROJECT ', this.project)
+        if (this.project) {
+          this.project_name = project.name;
+          this.id_project = project._id;
+          this.getProjectById(this.id_project)
+          this.logger.log('[KNOWLEDGE BASES COMP] - GET CURRENT PROJECT - PROJECT-NAME ', this.project_name, ' PROJECT-ID ', this.id_project)
+        }
+      });
   }
 
   getProjectById(projectId) {
@@ -163,9 +188,13 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
   // ----------------------
   // UTILS FUNCTION - Start
   getBrowserVersion() {
-    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
-      this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
-    })
+    this.auth.isChromeVerGreaterThan100
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((isChromeVerGreaterThan100: boolean) => {
+        this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
+      })
   }
 
   listenSidebarIsOpened() {

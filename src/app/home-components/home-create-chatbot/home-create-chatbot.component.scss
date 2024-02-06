@@ -74,7 +74,7 @@
 }
 
 #home-material-btn {
-  background-color: #2196f3;
+  background-color: var(--blue-light);
   color: #fff;
   margin-right: 4px;
 }
@@ -83,7 +83,7 @@
   min-width: 270px;
   max-height: 45px;
   font-size: 16px;
-  background-color: var(--blue-turquoise);
+  background-color: var(--blue-light);
 }
 
 #start-from-scratch-btn>.btn-content {
@@ -173,7 +173,7 @@
 
 .suggested-templates-use-template>span {
   cursor: pointer;
-  color: #2196f3;
+  color: var(--blue-light);
   font-weight: 400;
 }
 
@@ -242,8 +242,8 @@
 }
 
 .hut-btn-primary {
-  background-color: #2196f3;
-  border-color: #2196f3;
+  background-color: var(--blue-light);
+  border-color: var(--blue-light);
   color: #fff;
   text-transform: none;
   box-shadow: unset;
@@ -280,6 +280,10 @@
       display: none;
     }
   }
+}
+
+.chatbots-created-num:hover {
+  text-decoration: underline;
 }
 
 // .find-all-template:hover {
@@ -804,7 +808,7 @@ body {
   // background-size: cover;
   // background-position: -16px -0px;
   background: #fff !important;
-  border: 1px solid #2196f3;
+  border: 1px solid var(--blue-light);
 }
 
 .customer-satisfaction {
@@ -813,7 +817,7 @@ body {
   // background-size: cover;
   // background-position: -16px -0px;
   background: #fff !important;
-  border: 1px solid #2196f3;
+  border: 1px solid var(--blue-light);
 }
 
 .increase-sales {
@@ -822,7 +826,7 @@ body {
   // background-size: cover;
   // background-position: -16px -0px;
   background: #fff !important;
-  border: 1px solid #2196f3;
+  border: 1px solid var(--blue-light);
 }
 
 .button-card-content {
@@ -838,14 +842,14 @@ body {
 .svg-icon>svg {
   width: 50px;
   height: auto;
-  fill: #2196f3;
+  fill: var(--blue-light);
 }
 
 .explore-templates {
   text-align: center;
   font-weight: 400;
   line-height: 1.3em;
-  color: #2196f3;
+  color: var(--blue-light);
   margin-top: 12px;
   display: flex;
   align-items: center;
@@ -859,7 +863,7 @@ body {
   font-family: 'Poppins', 'Roboto', 'Arial', sans-serif;
   text-transform: uppercase;
   margin-top: -40px;
-  color: var(--blue-turquoise);
+  color: var(--blue-light);
 }
 
 .right-title {
@@ -873,7 +877,7 @@ body {
 .right-title>.right-title-icon svg {
   width: auto;
   height: 28px;
-  fill: var(--blue-turquoise);
+  fill: var(--blue-light);
 }
 
 .right-title>.right-title-text {
@@ -916,4 +920,33 @@ body {
   background-repeat: no-repeat;
   background-size: cover;
   background-position: -16px -0px;
+}
+
+::ng-deep .h-custom-mat-tooltip {
+  background-color: #2d323e !important;
+  font-size: 12px !important;
+  border-radius: 2px !important;
+  font-family: "Poppins", "Roboto", "Arial", sans-serif !important;
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+}
+
+::ng-deep .h-custom-mat-tooltip-error {
+  background-color: #f44336 !important;
+  color: #fff;
+  font-size: 12px !important;
+  border-radius: 2px !important;
+  font-family: "Poppins", "Roboto", "Arial", sans-serif !important;
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+  line-height: 1.3;
+}
+
+.chatbots-created  {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 3px;
+  margin-top: 16px;
 }

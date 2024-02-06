@@ -54,13 +54,20 @@
                 <i class="material-icons open-user-profile-person-icon">person</i>
                 <!-- <p class="hidden-lg hidden-md">Profile</p> -->
 
-                <span class="tooltipx">
-                  <span *ngIf="user?.emailverified == false" class="notification"
-                    style="font-weight: 200; font-size:9px; right:11px!important; top:3px!important; position: absolute!important;">
-                    !
-                    <span class="tooltiptext">
-                      {{"NavBar.PendingVerification" | translate }}
+                <!-- matTooltipClass="custom-mat-tooltip"
+                matTooltip="{{'NavBar.PendingVerification' | translate }}"
+                #tooltip="matTooltip" 
+                matTooltipPosition='below'
+                matTooltipHideDelay="100" -->
+
+                <span class="tooltip-x">
+                  <span *ngIf="user?.emailverified == false" class="pending-email-verificaton-notification">
+                    <span class="material-icons-outlined">
+                      error
                     </span>
+                    <!-- <span class="tooltiptext">
+                      {{"NavBar.PendingVerification" | translate }}
+                    </span> -->
                   </span>
                 </span>
               </a>
@@ -134,7 +141,11 @@
   <span>
     <div routerLink="/user-profile" *ngIf="user?.emailverified == false" data-notify="container"
       class="alert alert-danger animated fadeInDown alert-pending-email-prjct-page" role="alert"
-      data-notify-position="top-center">
+      data-notify-position="top-center"  matTooltipClass="custom-mat-tooltip"
+      matTooltip="{{ 'NavBar.WhenPendingEmailVerification' | translate}}"
+      #tooltip="matTooltip" 
+      matTooltipPosition='below'
+      matTooltipHideDelay="100">
       <!-- <button type="button" aria-hidden="true" class="close" data-notify="dismiss" style="position: absolute; right: 10px; top: 5px; z-index: 1033;">×</button> -->
       <span data-notify="icon" class="notifications">
         <i class="fa fa-exclamation-circle" style="font-size: 13px;position: relative;top: -1px;"></i>
@@ -142,18 +153,13 @@
           style="font-family: 'Poppins', sans-serif;font-weight: 400; display: inline; position: relative;top: -2px; font-size: 11px; padding-left: 5px;">
           {{"NavBar.PendingVerification" | translate }}
         </span>
-        <span class="tooltipx" style="display: inline-block; float: right;">
+        <!-- <span  class="mat-tool--tip">
           <span>
             <i class="material-icons" style="position: relative;top: 2px; font-size:14px; color:#ffffff">
               help_outline
             </i>
           </span>
-          <!-- display: inline-block -->
-          <span class="tooltiptext"
-            style="min-width: 231px;line-height: 1.1;min-height: 34px; top: -5px; right: 105%;  ">
-            {{ "NavBar.WhenPendingEmailVerification" | translate}}
-          </span>
-        </span>
+        </span> -->
       </span>
       <!-- <span data-notify="title" style="max-width: 100%;">{{"NavBar.SomeSystemAreDisabled" | translate }}</span>  -->
     </div>
@@ -164,7 +170,7 @@
 <a style="margin-top:3px; padding-left:30px; cursor: pointer;" class="navbar-brand">
 
   <!-- <img style="width:100px" src="assets/img/tiledesk-logo.png"/> -->
-  <img [ngStyle]="{'width':companyLogoBlack_width}" [src]="companyLogoBlack_Url"
+  <img [ngStyle]="{'height':companyLogo_height, 'top': companyLogo_top, 'left': companyLogo_left}" [src]="companyLogo"
     style="z-index: 1;position: relative;" />
 
 </a>
@@ -219,10 +225,10 @@
             style="border-radius:3px;">
             <div class="card-content" style="height:203px;">
               <!-- #55b9d1 -->
-              <h3 class="card-add-project-icon">
+              <h3 class="card-add-project-icon" [ngStyle]="{'color': company_brand_color ? company_brand_color : '#f0806f' }">
                 <i class="material-icons" style="font-size:48px">add</i>
               </h3>
-              <h4 class="card-add-project-text">
+              <h4 class="card-add-project-text" [ngStyle]="{'color': company_brand_color ? company_brand_color : '#f0806f' }">
                 {{ 'ProjectsPage.AddProject' | translate }}
               </h4>
             </div>

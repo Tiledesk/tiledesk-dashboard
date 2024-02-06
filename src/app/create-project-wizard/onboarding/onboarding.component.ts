@@ -28,7 +28,7 @@ export class OnboardingComponent extends WidgetSetUpBaseComponent implements OnI
   selectedLangName: string = "English";
   buttonBackMenu: string = "\n* ↩️ Menu tdIntent:start";
   buttonAgent: string = "\agent";
-  companyLogoBlack_Url:string;
+  companyLogo:string;
   
   projectId: string;
   projectName: string;
@@ -90,7 +90,7 @@ export class OnboardingComponent extends WidgetSetUpBaseComponent implements OnI
   ) { 
     super(translate);
     const brand = brandService.getBrand(); 
-    this.companyLogoBlack_Url = brand['company_logo_black__url'];
+    this.companyLogo = brand['BASE_LOGO'];
     this.projectId = this.route.snapshot.params['projectid'];
     this.selectedLangCode = this.route.snapshot.params['langcode'];
     this.selectedLangName = this.route.snapshot.params['langname'];

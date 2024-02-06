@@ -12,6 +12,7 @@ export class OpenaiService {
   SERVER_BASE_PATH: string;
   TOKEN: string;
   GPT_API_URL: string;
+  OPENAI_API_URL: string;
   user: any;
   project_id: any;
 
@@ -32,6 +33,8 @@ export class OpenaiService {
     this.getAppConfig();
     //this.GPT_API_URL = "http://tiledesk-backend.h8dahhe4edc7cahh.francecentral.azurecontainer.io:8000/api";
     this.GPT_API_URL = "https://tiledesk-dev.blackwave-d2bf4ee1.westus2.azurecontainerapps.io/api";
+    this.GPT_API_URL = "http://tiledesk-backend.h8dahhe4edc7cahh.francecentral.azurecontainer.io:8000/api";
+    this.OPENAI_API_URL = "https://api.openai.com/v1";
   }
 
   checkIfUserExistAndGetToken() {
@@ -124,4 +127,20 @@ export class OpenaiService {
     this.logger.debug('[OPENAI.SERVICE] - check scraping URL: ', url);
     return this.httpClient.post(url, JSON.stringify(data), httpOptions);
   }
+
+
+  checkKeyValidity(key) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + key
+      })
+    }
+
+    const url = this.OPENAI_API_URL + "/models";
+    this.logger.debug('[OPENAI.SERVICE] - key validity URL: ', url);
+
+    return this.httpClient.get(url, httpOptions);
+  }
+  
 }

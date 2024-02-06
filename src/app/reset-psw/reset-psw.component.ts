@@ -22,11 +22,8 @@ type PswFormErrors = { [u in PswFields]: string };
 })
 export class ResetPswComponent implements OnInit {
 
-  // companyLogoBlack_Url = brand.company_logo_black__url;
-  // contact_us_email = brand.contact_us_email;
-  // company_site_url = brand.company_site_url;
 
-  companyLogoBlack_Url: string;
+  companyLogo: string;
   contact_us_email: string;
   company_site_url: string;
 
@@ -89,9 +86,9 @@ export class ResetPswComponent implements OnInit {
 
     const brand = brandService.getBrand();
 
-    this.companyLogoBlack_Url = brand['company_logo_black__url'];
-    this.contact_us_email = brand['contact_us_email'];
-    this.company_site_url = brand['company_site_url'];
+    this.companyLogo = brand['BASE_LOGO'];
+    this.contact_us_email = brand['CONTACT_US_EMAIL'];
+    this.company_site_url = brand['COMPANY_SITE_URL'];
   }
 
   ngOnInit() {

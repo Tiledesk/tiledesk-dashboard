@@ -10,13 +10,19 @@ import { UsersService } from '../../services/users.service';
 import { LoggerService } from '../../services/logger/logger.service';
 import { AppConfigService } from 'app/services/app-config.service';
 import { PLAN_NAME } from 'app/utils/util';
+import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators'
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'appdashboard-contacts-static',
   templateUrl: './contacts-static.component.html',
   styleUrls: ['./contacts-static.component.scss']
 })
-export class ContactsStaticComponent extends StaticPageBaseComponent implements OnInit, OnDestroy {
+// extends StaticPageBaseComponent
+export class ContactsStaticComponent extends  PricingBaseComponent implements OnInit, OnDestroy {
+  private unsubscribe$: Subject<any> = new Subject<any>();
   tparams: any;
   imageObject = [
     {
@@ -44,17 +50,23 @@ export class ContactsStaticComponent extends StaticPageBaseComponent implements 
   learnMoreAboutDefaultRoles: string;
   profile_name: string;
   isChromeVerGreaterThan100: boolean;
-  PLAN_NAME = PLAN_NAME
+  PLAN_NAME = PLAN_NAME;
+  public_Key:any;
+  payIsVisible: boolean;
+
   constructor(
     private router: Router,
     public auth: AuthService,
-    private prjctPlanService: ProjectPlanService,
-    private notify: NotifyService,
+    public prjctPlanService: ProjectPlanService,
+    public notify: NotifyService,
     public translate: TranslateService,
     private usersService: UsersService,
     private logger: LoggerService,
-    public appConfigService: AppConfigService
-  ) { super(translate);}
+    public appConfigService: AppConfigService,
+    public location: Location
+  ) { 
+    super(prjctPlanService, notify);
+  }
 
   ngOnInit(): void {
     this.getOSCODE();
@@ -63,11 +75,23 @@ export class ContactsStaticComponent extends StaticPageBaseComponent implements 
     this.getProjectUserRole();
     this.getTranslationStrings();
     this.getBrowserVersion();
-    this.tparams = {'plan_name': PLAN_NAME.A}
+    this.presentModalsOnInit()
+    // this.tparams = {'plan_name': PLAN_NAME.A}
+  }
+
+
+  ngOnDestroy() {
+    // this.subscription.unsubscribe();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   getBrowserVersion() {
-    this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
+    this.auth.isChromeVerGreaterThan100
+    .pipe(
+      takeUntil(this.unsubscribe$)
+    )
+    .subscribe((isChromeVerGreaterThan100: boolean) => {
       this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
       //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
     })
@@ -104,39 +128,26 @@ export class ContactsStaticComponent extends StaticPageBaseComponent implements 
   }
 
   getProjectUserRole() {
-    this.usersService.project_user_role_bs.subscribe((user_role) => {
+    this.usersService.project_user_role_bs
+    .pipe(
+      takeUntil(this.unsubscribe$)
+    )
+    .subscribe((user_role) => {
       this.USER_ROLE = user_role;
       this.logger.log('[CNTCTS-STATIC] - PROJECT USER ROLE: ', this.USER_ROLE);
     });
   }
-
-
-  getTranslationStrings() {
-    this.translateModalOnlyOwnerCanManageProjectAccount()
-  }
-
-  translateModalOnlyOwnerCanManageProjectAccount() {
-    this.translate.get('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan')
-      .subscribe((translation: any) => {
-        // this.logger.log('[DEPTS-STATIC]  onlyOwnerCanManageTheAccountPlanMsg text', translation)
-        this.onlyOwnerCanManageTheAccountPlanMsg = translation;
-      });
-
-
-    this.translate.get('LearnMoreAboutDefaultRoles')
-      .subscribe((translation: any) => {
-        // this.logger.log('[DEPTS-STATIC] onlyOwnerCanManageTheAccountPlanMsg text', translation)
-        this.learnMoreAboutDefaultRoles = translation;
-      });
-  }
-
 
   getBrowserLang() {
     this.browserLang = this.translate.getBrowserLang();
   }
 
   getCurrentProject() {
-    this.auth.project_bs.subscribe((project) => {
+    this.auth.project_bs
+    .pipe(
+      takeUntil(this.unsubscribe$)
+    )
+    .subscribe((project) => {
       // this.logger.log('[DEPTS-STATIC] - project ', project)
 
       if (project) {
@@ -146,38 +157,23 @@ export class ContactsStaticComponent extends StaticPageBaseComponent implements 
     });
   }
 
-  getProjectPlan() {
-    this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-      this.logger.log('[CNTCTS-STATIC] GET PROJECT PROFILE', projectProfileData)
-      if (projectProfileData) {
-        this.prjct_profile_type = projectProfileData.profile_type;
-        this.subscription_is_active = projectProfileData.subscription_is_active;
-        this.subscription_end_date = projectProfileData.subscription_end_date
-        this.profile_name = projectProfileData.profile_name
-        this.buildPlanName(projectProfileData.profile_name, this.browserLang, this.prjct_profile_type);
+  presentModalsOnInit() {
 
-        if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
+    if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
+      if (this.USER_ROLE === 'owner') {
+        if (this.profile_name !== PLAN_NAME.C && this.profile_name !== PLAN_NAME.F) {
 
-          if (this.USER_ROLE === 'owner') {
+          this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date)
 
-            if (this.profile_name !== PLAN_NAME.C) {
+        } else if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
 
-              this.notify.displaySubscripionHasExpiredModal(true, this.profile_name, this.subscription_end_date)
-
-            } else if (this.profile_name === PLAN_NAME.C) {
-
-              this.notify.displayEnterprisePlanHasExpiredModal(true, this.profile_name, this.subscription_end_date);
-            }
-          }
-
+          this.notify.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
         }
       }
-    }, err => {
-      this.logger.error('[CNTCTS-STATIC] GET PROJECT PROFILE - ERROR', err);
-    }, () => {
-      this.logger.log('[CNTCTS-STATIC] GET PROJECT PROFILE * COMPLETE *');
-    });
+    }
+
   }
+
 
   goToPricing() {
     this.logger.log('[CNTCTS-STATIC] - goToPricing projectId ', this.projectId);
@@ -202,9 +198,27 @@ export class ContactsStaticComponent extends StaticPageBaseComponent implements 
     this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles)
   }
 
+  goBack() {
+    this.location.back();
+  }
 
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
+  getTranslationStrings() {
+    this.translateModalOnlyOwnerCanManageProjectAccount()
+  }
+
+  translateModalOnlyOwnerCanManageProjectAccount() {
+    this.translate.get('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan')
+      .subscribe((translation: any) => {
+        // this.logger.log('[DEPTS-STATIC]  onlyOwnerCanManageTheAccountPlanMsg text', translation)
+        this.onlyOwnerCanManageTheAccountPlanMsg = translation;
+      });
+
+
+    this.translate.get('LearnMoreAboutDefaultRoles')
+      .subscribe((translation: any) => {
+        // this.logger.log('[DEPTS-STATIC] onlyOwnerCanManageTheAccountPlanMsg text', translation)
+        this.learnMoreAboutDefaultRoles = translation;
+      });
   }
 
 

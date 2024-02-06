@@ -27,17 +27,14 @@ export class ProjectsForPanelComponent implements OnInit, OnDestroy {
 
   // @ViewChildren(PerfectScrollbarTdDirective)
   // perfectScrollbarTdDirective: QueryList<PerfectScrollbarTdDirective>;
-
-  // companyLogoBlack_Url = brand.company_logo_allwhite__url
   // pageBackgroundColor = brand.recent_project_page.background_color;
 
   // tparams = brand;
-  // companyLogoBlack_Url = brand.company_logo_black__url;
-  // companyLogoBlack_width = brand.recent_project_page.company_logo_black__width;
+ 
 
   tparams: any;
-  companyLogoBlack_Url: string;
-  companyLogoBlack_width: string;
+  companyLogo: string;
+  companyLogo_width: string;
 
   projects: Project[];
   id_project: string;
@@ -88,9 +85,9 @@ export class ProjectsForPanelComponent implements OnInit, OnDestroy {
   ) {
     const brand = brandService.getBrand();
     this.tparams = brand;
-    this.companyLogoBlack_Url = brand['company_logo_black__url'];
-    this.companyLogoBlack_width = brand['recent_project_page']['company_logo_black__width'];
-
+    this.companyLogo = brand['BASE_LOGO'];
+    this.companyLogo_width = brand['recent_project_page']['company_logo_width'];
+    this.companyLogo_width = brand['recent_project_page']['company_logo_width'];
 
     this.logger.log('[PROJECTS-X-PANEL] - IS DEV MODE ', isDevMode());
     this.APP_IS_DEV_MODE = isDevMode()

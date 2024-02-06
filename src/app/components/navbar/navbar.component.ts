@@ -1,7 +1,7 @@
 // tslint:disable:max-line-length
-import { Component, OnInit, ElementRef, AfterContentChecked, AfterViewInit, AfterViewChecked, OnDestroy } from '@angular/core';
+import { Component, OnInit, ElementRef, AfterContentChecked, AfterViewInit, AfterViewChecked, OnDestroy, Inject } from '@angular/core';
 // import { ROUTES } from '../sidebar/sidebar.component';
-import { Location, LocationStrategy, PathLocationStrategy } from '@angular/common';
+import { DOCUMENT, Location, LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { AuthService } from '../../core/auth.service';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthGuard } from '../../core/auth.guard';
@@ -36,7 +36,11 @@ import { Subscription } from 'rxjs'
 import { BrandService } from './../../services/brand.service';
 import { LocalDbService } from '../../services/users-local-db.service';
 import { LoggerService } from '../../services/logger/logger.service';
-import { APP_SUMO_PLAN_NAME, PLAN_NAME, URL_understanding_default_roles } from '../../utils/util';
+import { ThemePalette} from '@angular/material/core';
+import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
+import { QuotesService } from 'app/services/quotes.service';
+import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
+import { APP_SUMO_PLAN_NAME, PLANS_LIST, PLAN_NAME, URL_understanding_default_roles } from 'app/utils/util';
 
 const swal = require('sweetalert');
 
@@ -46,10 +50,11 @@ const swal = require('sweetalert');
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss']
 })
-export class NavbarComponent implements OnInit, AfterViewInit, AfterContentChecked, OnDestroy, AfterViewChecked {
+export class NavbarComponent extends PricingBaseComponent implements OnInit, AfterViewInit, AfterContentChecked, OnDestroy, AfterViewChecked {
 
   PLAN_NAME = PLAN_NAME;
-  APP_SUMO_PLAN_NAME: APP_SUMO_PLAN_NAME;
+  // PLANS_LIST = PLANS_LIST;
+  APP_SUMO_PLAN_NAME = APP_SUMO_PLAN_NAME;
   appSumoProfile: string;
   prjct_profile_name_for_segment: string;
   URL_UNDERSTANDING_DEFAULT_ROLES = URL_understanding_default_roles
@@ -58,7 +63,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
   // tparams = brand;
   tparams: any;
-  translationParams: any;
+  // translationParams: any;
 
   // public_Key = environment.t2y12PruGU9wUtEGzBJfolMIgK; // now get from appconfig
   public_Key: string;
@@ -156,7 +161,27 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
   dsbrd_lang: string;
   tlangparams: any;
 
+  // QUOTES
+  color: ThemePalette = 'primary';
+  mode: ProgressSpinnerMode = 'determinate';
+  requests_count = 0;
+  requests_perc = 0;
+  requests_limit = 0;
+  
+  messages_count = 0;
+  messages_perc = 0;
+  messages_limit = 0;
+  
+  email_count = 0;
+  email_perc = 0;
+  email_limit = 0;
+
+  tokens_count = 0;
+  tokens_perc = 0;
+  tokens_limit = 0;
+
   constructor(
+    @Inject(DOCUMENT) private document: Document,
     location: Location,
     private element: ElementRef,
     public auth: AuthService,
@@ -166,23 +191,21 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     private usersService: UsersService,
     private uploadImageService: UploadImageService,
     private uploadImageNativeService: UploadImageNativeService,
-    private notifyService: NotifyService,
-    private prjctPlanService: ProjectPlanService,
+    public notifyService: NotifyService,
+    public prjctPlanService: ProjectPlanService,
     private projectService: ProjectService,
     public wsRequestsService: WsRequestsService,
     public appConfigService: AppConfigService,
     public brandService: BrandService,
     public localDbService: LocalDbService,
     private logger: LoggerService,
-
+    private quotesService: QuotesService
   ) {
 
-
+    super(prjctPlanService, notifyService);
+    
     const brand = brandService.getBrand();
     this.tparams = brand;
-    this.translationParams = { plan_name: PLAN_NAME.B }
-
-
     this.location = location;
     this.sidebarVisible = false;
     // this.unservedRequestCount = 0
@@ -236,6 +259,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     // this.subscribeToLogoutPressedinSidebarNavMobile();
 
     this.getProjectPlan();
+    this.getTrialLeft()
     this.getBrowserLanguage();
     this.listenCancelSubscription();
     this.getIfIsCreatedNewProject();
@@ -250,6 +274,8 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     this.translateStrings();
     this.listenHasDeleteUserProfileImage();
 
+ 
+
   } // OnInit
 
 
@@ -260,6 +286,105 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     this.unsubscribe$.complete();
   }
 
+  getQuotes() {
+    this.quotesService.getAllQuotes(this.projectId).subscribe((resp: any) => {
+      console.log("quotes retrieved: ", resp)
+
+      // let profile_name = this.project.profile_name;
+      console.log('[NAVBAR] project ', this.project)
+      // console.log('[NAVBAR] project > profile_name ', profile_name)
+      console.log('[NAVBAR] prjct_profile_name ', this.prjct_profile_name)
+      console.log('[NAVBAR] profile_name ', this.profile_name)
+
+
+      switch(this.profile_name) {
+        case PLAN_NAME.A:
+          this.profile_name = PLAN_NAME.D;
+          break;
+        case PLAN_NAME.B:
+          this.profile_name = PLAN_NAME.E
+          break;
+        case PLAN_NAME.C:
+          this.profile_name = PLAN_NAME.F
+          break;
+      }
+
+      console.log('[NAVBAR] PLANS_LIST ', PLANS_LIST)
+      console.log('[NAVBAR] PLANS_LIST[profile_name] ', PLANS_LIST[this.profile_name])
+      console.log('[NAVBAR] PLANS_LIST[profile_name].requests ', PLANS_LIST[this.profile_name].requests)
+      this.requests_limit = PLANS_LIST[this.profile_name].requests;
+      this.messages_limit = PLANS_LIST[this.profile_name].messages;
+      this.email_limit = PLANS_LIST[this.profile_name].email;
+      this.tokens_limit = PLANS_LIST[this.profile_name].tokens;
+
+      if (resp.quotes.requests.quote === null) {
+        resp.quotes.requests.quote = 0;
+      }
+      if (resp.quotes.messages.quote === null) {
+        resp.quotes.messages.quote = 0;
+      }
+      if (resp.quotes.email.quote === null) {
+        resp.quotes.email.quote = 0;
+      }
+      if (resp.quotes.tokens.quote === null) {
+        resp.quotes.tokens.quote = 0;
+      }
+      
+      this.requests_perc = Math.floor((resp.quotes.requests.quote / this.requests_limit) * 100);
+      this.messages_perc = Math.floor((resp.quotes.messages.quote / this.messages_limit) * 100);
+      this.email_perc = Math.floor((resp.quotes.email.quote / this.email_limit) * 100);
+      this.tokens_perc = Math.floor((resp.quotes.tokens.quote / this.tokens_limit) * 100);
+
+      // this.requests_count = this.getformat(resp.quotes.requests.quote, null);
+      // this.messages_count = this.getformat(resp.quotes.messages.quote, null);
+      // this.email_count = this.getformat(resp.quotes.email.quote, null);
+      // this.tokens_count = this.getformat(resp.quotes.tokens.quote, null)
+
+      this.requests_count = resp.quotes.requests.quote;
+      this.messages_count = resp.quotes.messages.quote;
+      this.email_count = resp.quotes.email.quote;
+      this.tokens_count = resp.quotes.tokens.quote;
+
+      // this.requests_limit = this.getformat(this.requests_limit, true);
+      // this.messages_limit = this.getformat(this.messages_limit, true);
+      // this.tokens_limit = this.getformat(this.tokens_limit, true);
+      // this.email_limit = this.getformat(this.email_limit, true);
+
+    }, (error) => {
+      console.error("get all quotes error: ", error)
+    }, () => {
+      console.log("get all quotes *COMPLETE*");
+    })
+  }
+
+  getformat(number, intg: Boolean | null){
+    if(number == 0) {
+      return 0;
+    }
+    else
+    {        
+      // hundreds
+      if(number <= 999){
+        return number ;
+      }
+      // thousands
+      else if(number >= 1000 && number <= 999999){
+        if (intg) {
+          return (number / 1000).toFixed(0) + 'K';  
+        }
+        return (number / 1000).toFixed(1) + 'K';
+      }
+      // millions
+      else if(number >= 1000000 && number <= 999999999){
+        if (intg) {
+          return (number / 1000000).toFixed(0) + 'M';
+        }
+        return (number / 1000000).toFixed(1) + 'M';
+      }
+      else
+        return number ;
+      }
+    }
 
   getLoggedUser() {
     this.auth.user_bs.subscribe((user) => {
@@ -748,7 +873,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
           this.projectId = project._id;
           this.projectName = project.name;
           this.OPERATING_HOURS_ACTIVE = this.project.operatingHours
-
+          // this.getQuotes();
           this.logger.log('[NAVBAR] -> OPERATING_HOURS_ACTIVE ', this.OPERATING_HOURS_ACTIVE);
         }
     
@@ -757,57 +882,21 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     });
   }
 
+  onOpenQuoteMenu() {
+   console.log('[NAVBAR] - on open quotes menu' )
+   this.getQuotes();
+  }
 
-  getProjectPlan() {
+  getTrialLeft() {
     this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
       // console.log('[NAVBAR] - getProjectPlan project Profile Data', projectProfileData)
       if (projectProfileData) {
-        this.prjct_profile_name = projectProfileData.profile_name;
-        this.profile_name = projectProfileData.profile_name;
+
         this.prjct_trial_expired = projectProfileData.trial_expired;
         this.prjc_trial_days_left = projectProfileData.trial_days_left;
-        this.prjct_profile_type = projectProfileData.profile_type;
-        this.subscription_end_date = projectProfileData.subscription_end_date;
-        this.subscription_is_active = projectProfileData.subscription_is_active;
-
-        if (projectProfileData && projectProfileData.extra3) {
-          this.logger.log('[NAVBAR] projectProfileData extra3', projectProfileData.extra3)
-          this.appSumoProfile = APP_SUMO_PLAN_NAME[projectProfileData.extra3]
-          this.logger.log('[NAVBAR] projectProfileData appSumoProfile ', this.appSumoProfile)
-        }
-
-        if (projectProfileData.profile_type === 'free') {
-          if (projectProfileData.trial_expired === false) {
-            this.prjct_profile_name_for_segment = PLAN_NAME.B + " plan (trial)"
-
-          } else {
-            this.prjct_profile_name_for_segment = "Free plan";
-          }
-        } else if (projectProfileData.profile_type === 'payment') {
-
-          if (projectProfileData.profile_name === PLAN_NAME.A) {
-            if (!this.appSumoProfile) {
-              this.prjct_profile_name_for_segment = PLAN_NAME.A + " plan";
-
-            } else {
-              this.prjct_profile_name_for_segment = PLAN_NAME.A + " plan " + '(' + this.appSumoProfile + ')';
-
-            }
-          } else if (projectProfileData.profile_name === PLAN_NAME.B) {
-            if (!this.appSumoProfile) {
-              this.prjct_profile_name_for_segment = PLAN_NAME.B + " plan";
-
-            } else {
-              this.prjct_profile_name_for_segment = PLAN_NAME.B + " plan " + '(' + this.appSumoProfile + ')';
-            }
-          } else if (projectProfileData.profile_name === PLAN_NAME.C) {
-            this.prjct_profile_name_for_segment = PLAN_NAME.C + " plan";
-          }
-
-
-        }
-        // this.prjc_trial_days_left_percentage = ((this.prjc_trial_days_left *= -1) * 100) / 30
-        // console.log('[NAVBAR]  prjc_trial_days_left ', this.prjc_trial_days_left)
+       
+     
+      
 
         if (this.prjct_trial_expired === false) {
           this.prjc_trial_days_left_percentage = (this.prjc_trial_days_left * 100) / 14;
@@ -835,13 +924,12 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     });
   }
 
-  // getPaidPlanTranslation(project_profile_name) {
-  //   this.translate.get('PaydPlanName', { projectprofile: project_profile_name })
-  //     .subscribe((text: string) => {
-  //       this.prjct_profile_name = text;
-  //       this.logger.log('+ + + PaydPlanName ', text)
-  //     });
-  // }
+  round5(x) {
+    // const percentageRounded = Math.ceil(x / 5) * 5;
+    // this.logger.log('[NAVBAR] project trial days left % rounded', percentageRounded);
+    // return Math.ceil(x / 5) * 5;
+    return x % 5 < 3 ? (x % 5 === 0 ? x : Math.floor(x / 5) * 5) : Math.ceil(x / 5) * 5
+  }
 
   /**
    * *! ############ CANCEL SUBSCRIPTION ############ !*
@@ -871,23 +959,17 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
   openModalSubsExpired() {
     if (this.USER_ROLE === 'owner') {
-      if (this.profile_name !== PLAN_NAME.C) {
+      if (this.profile_name !== PLAN_NAME.C && this.profile_name !== PLAN_NAME.F ) {
         this.notifyService.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
-      } else if (this.profile_name === PLAN_NAME.C) {
+      } else if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
         this.notifyService.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
       }
     } else {
       this.presentModalOnlyOwnerCanManageTheAccountPlan();
     }
-
   }
 
-  round5(x) {
-    // const percentageRounded = Math.ceil(x / 5) * 5;
-    // this.logger.log('[NAVBAR] project trial days left % rounded', percentageRounded);
-    // return Math.ceil(x / 5) * 5;
-    return x % 5 < 3 ? (x % 5 === 0 ? x : Math.floor(x / 5) * 5) : Math.ceil(x / 5) * 5
-  }
+
 
   goToPricing() {
     // if (this.ROLE_IS_AGENT === false) {
@@ -1650,4 +1732,8 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
       this.logger.log('[NAVBAR] + + + HAS OPENED THE CHAT ', this.HAS_OPENED_THE_CHAT);
     }
   }
+
+  // changeThemeColor() {
+  //   this.document.body.classList.add('dark');
+  // }
 }

@@ -21,6 +21,7 @@ import { Subject, Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
 import { FaqKb } from 'app/models/faq_kb-model';
 import { ProjectPlanService } from 'app/services/project-plan.service';
+import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 declare const $: any;
 const swal = require('sweetalert');
 
@@ -33,7 +34,7 @@ const swal = require('sweetalert');
   // host: { '[@slideInOutAnimation]': '' }
 })
 // , ComponentCanDeactivate
-export class DepartmentEditAddComponent implements OnInit, AfterViewInit, ComponentCanDeactivate {
+export class DepartmentEditAddComponent extends PricingBaseComponent implements OnInit, AfterViewInit, ComponentCanDeactivate {
   private unsubscribe$: Subject<any> = new Subject<any>();
 
   @Input() ws_requestslist_deptIdSelected: string;
@@ -116,21 +117,30 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
   areTouSureYouWantToNavigateAwayFromThisPageWithoutSaving: string
   isChromeVerGreaterThan100: boolean;
   USER_ROLE: string;
+  featureAvailableFromBPlan: string;
+  featureAvailableFromEPlan: string;
+  cancel: string;
+  upgradePlan: string;
+  isVisiblePAY: boolean;
   public_Key: string;
+  projectId: string;
+  
   isVisibleGroups: boolean;
-
-  prjct_id: string
-  prjct_name: string
-  profile_name: string
-  projectPlanAgentsNo: number
-  prjct_profile_name: string
-  browserLang: string
-  prjct_profile_type: any;
-  subscription_is_active: any
-  subscription_end_date: any
-  seatsLimit: any;
-  trial_expired: any;
-  appSumoProfile: string
+  // prjct_id: string
+  // prjct_name: string
+  // profile_name: string
+  // projectPlanAgentsNo: number
+  // prjct_profile_name: string
+  // browserLang: string
+  // prjct_profile_type: any;
+  // subscription_is_active: any
+  // subscription_end_date: any
+  // seatsLimit: any;
+  // trial_expired: any;
+  // appSumoProfile: string
+  agentCannotManageAdvancedOptions: string;
+  learnMoreAboutDefaultRoles: string;
+  onlyOwnerCanManageTheAccountPlanMsg: string;
 
   constructor(
     private router: Router,
@@ -141,12 +151,14 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
     private groupService: GroupService,
     public location: Location,
     public translate: TranslateService,
-    private notify: NotifyService,
+    public notify: NotifyService,
     private usersService: UsersService,
     public appConfigService: AppConfigService,
     private logger: LoggerService,
-    private prjctPlanService: ProjectPlanService
-  ) { }
+    public prjctPlanService: ProjectPlanService
+  ) { 
+    super(prjctPlanService, notify);
+  }
 
 
   // ------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -230,7 +242,7 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
   ngOnInit() {
     this.auth.checkRoleForCurrentProject();
     this.getProfileImageStorage();
-    this.getOSCODE()
+   
 
     this.logger.log('[DEPT-EDIT-ADD] selectedDeptId FROM @INPUT: ', this.ws_requestslist_deptIdSelected)
     this.logger.log('[DEPT-EDIT-ADD] display_dept_sidebar FROM @INPUT: ', this.display_dept_sidebar)
@@ -305,6 +317,8 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
 
     this.translateLabels()
     this.getBrowserVersion()
+    this.getProjectPlan();
+    this.getOSCODE();
   }
 
   getOSCODE() {
@@ -326,95 +340,33 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
           // this.logger.log('[DEPT-EDIT-ADD] - PUBLIC-KEY (Users) - gro isVisibleGroups', this.isVisibleGroups);
         }
       }
+
+      if (key.includes("PAY")) {
+
+        let pay = key.split(":");
+
+        if (pay[1] === "F") {
+          this.isVisiblePAY = false;
+        } else {
+          this.isVisiblePAY = true;
+        }
+      }
+
     })
 
     if (!this.public_Key.includes("GRO")) {
       this.isVisibleGroups = false;
     }
-    if (this.isVisibleGroups === true) {
-      this.getProjectPlan()
+
+    if (!this.public_Key.includes("PAY")) {
+      this.isVisiblePAY = false;
     }
+    // if (this.isVisibleGroups === true) {
+    //   this.getProjectPlan()
+    // }
   }
 
-  getProjectPlan() {
-    this.prjctPlanService.projectPlan$.subscribe(
-      (projectProfileData: any) => {
-        this.logger.log('[USERS] - GET PROJECT PLAN - RES ', projectProfileData)
-        if (projectProfileData) {
-          this.prjct_id = projectProfileData._id
-          this.prjct_name = projectProfileData.name
-          this.projectPlanAgentsNo = projectProfileData.profile_agents;
-          this.subscription_is_active = projectProfileData.subscription_is_active;
-          this.subscription_end_date = projectProfileData.subscription_end_date;
-          this.prjct_profile_type = projectProfileData.profile_type;
-          this.profile_name = projectProfileData.profile_name;
-          this.trial_expired = projectProfileData.trial_expired;
-
-          if (projectProfileData && projectProfileData.extra3) {
-            this.logger.log('[HOME] Find Current Project Among All extra3 ', projectProfileData.extra3)
-            this.appSumoProfile = APP_SUMO_PLAN_NAME[projectProfileData.extra3]
-            this.logger.log('[USERS] Find Current Project appSumoProfile ', this.appSumoProfile)
-          }
-
-          if (projectProfileData.profile_type === 'free') {
-            if (projectProfileData.trial_expired === false) {
-              this.prjct_profile_name = PLAN_NAME.B + " plan (trial)"
-              this.isVisibleGroups = true
-            } else {
-              this.prjct_profile_name = "Free plan";
-              this.isVisibleGroups = false
-
-            }
-          } else if (projectProfileData.profile_type === 'payment') {
-            if (this.subscription_is_active === true) {
-              if (projectProfileData.profile_name === PLAN_NAME.A) {
-                if (!this.appSumoProfile) {
-                  this.prjct_profile_name = PLAN_NAME.A + " plan";
-                  this.isVisibleGroups = false
-                } else {
-                  this.prjct_profile_name = PLAN_NAME.A + " plan " + '(' + this.appSumoProfile + ')';
-                  this.isVisibleGroups = false
-                }
-              } else if (projectProfileData.profile_name === PLAN_NAME.B) {
-                if (!this.appSumoProfile) {
-                  this.prjct_profile_name = PLAN_NAME.B + " plan";
-                  this.isVisibleGroups = true
-                } else {
-                  this.prjct_profile_name = PLAN_NAME.B + " plan " + '(' + this.appSumoProfile + ')';;
-                  this.isVisibleGroups = true
-                }
-              } else if (projectProfileData.profile_name === PLAN_NAME.C) {
-                this.prjct_profile_name = PLAN_NAME.C + " plan";
-                this.isVisibleGroups = true
-
-              }
-
-            } else if (this.subscription_is_active === false) {
-
-              if (projectProfileData.profile_name === PLAN_NAME.A) {
-                this.prjct_profile_name = PLAN_NAME.A + " plan";
-                this.isVisibleGroups = false
-
-              } else if (projectProfileData.profile_name === PLAN_NAME.B) {
-                this.prjct_profile_name = PLAN_NAME.B + " plan";
-                this.isVisibleGroups = false
-
-              } else if (projectProfileData.profile_name === PLAN_NAME.C) {
-                this.prjct_profile_name = PLAN_NAME.C + " plan";
-                this.isVisibleGroups = false
-              }
-            }
-          }
-        }
-      },
-      (err) => {
-        this.logger.error('[USERS] GET PROJECT PROFILE - ERROR', err)
-      },
-      () => {
-        this.logger.log('[USERS] GET PROJECT PROFILE * COMPLETE *')
-      },
-    )
-  }
+ 
 
   getUserRole() {
     this.usersService.project_user_role_bs
@@ -454,9 +406,119 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
   // -----------------------------------------------------------------------------
   // @ CREATE GROUP RIGHT SIDEBAR
   // -----------------------------------------------------------------------------
+  checkPlanAndPresentModal() {
+
+    if ((this.profile_name === PLAN_NAME.A) ||
+      (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
+      (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
+      (this.profile_name === 'free' && this.trial_expired === true)) {
+      if (!this.appSumoProfile) {
+        // this.presentModalFeautureAvailableFromBPlan()
+        this.presentModalFeautureAvailableFromTier2Plan(this.featureAvailableFromBPlan)
+        return false
+      } else {
+        this.presentModalAppSumoFeautureAvailableFromBPlan()
+        return false
+      }
+    } else if ((this.profile_name === PLAN_NAME.D) ||
+      (this.profile_name === PLAN_NAME.E && this.subscription_is_active === false) ||
+      (this.profile_name === PLAN_NAME.F && this.subscription_is_active === false) ||
+      (this.profile_name === 'Sandbox' && this.trial_expired === true)) {
+
+      if (!this.appSumoProfile) {
+        this.presentModalFeautureAvailableFromTier2Plan(this.featureAvailableFromEPlan)
+        return false
+      }
+    }
+  }
+
+  presentModalFeautureAvailableFromTier2Plan(planName) {
+    const el = document.createElement('div')
+    el.innerHTML = planName //this.featureAvailableFromBPlan
+    swal({
+      content: el,
+      icon: "info",
+      // buttons: true,
+      buttons: {
+        cancel: this.cancel,
+        catch: {
+          text: this.upgradePlan,
+          value: "catch",
+        },
+      },
+      dangerMode: false,
+    }).then((value) => {
+      if (value === 'catch') {
+        if (this.isVisiblePAY) {
+          console.log('[DEPT-EDIT-ADD] HERE 1')
+          if (this.USER_ROLE === 'owner') {
+            console.log('[DEPT-EDIT-ADD] HERE 2')
+            if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
+              console.log('[DEPT-EDIT-ADD] HERE 3')
+              this.notify._displayContactUsModal(true, 'upgrade_plan');
+            } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true && (this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.D)) {
+              this.notify._displayContactUsModal(true, 'upgrade_plan');
+            } else if (this.prjct_profile_type === 'free' && this.trial_expired === true) {
+              console.log('[DEPT-EDIT-ADD] HERE 4')
+              this.router.navigate(['project/' + this.projectId + '/pricing']);
+            }
+          } else {
+            console.log('[DEPT-EDIT-ADD] HERE 5')
+            this.presentModalAgentCannotManageAvancedSettings();
+          }
+        } else {
+          console.log('[DEPT-EDIT-ADD] HERE 6')
+          this.notify._displayContactUsModal(true, 'upgrade_plan');
+        }
+      }
+    });
+  }
+
+  presentModalAppSumoFeautureAvailableFromBPlan() {
+    const el = document.createElement('div')
+    el.innerHTML = 'Available from ' + this.appSumoProfilefeatureAvailableFromBPlan
+    swal({
+      content: el,
+      icon: "info",
+      // buttons: true,
+      buttons: {
+        cancel: this.cancel,
+        catch: {
+          text: this.upgradePlan,
+          value: "catch",
+        },
+      },
+      dangerMode: false,
+    }).then((value) => {
+      if (value === 'catch') {
+        if (this.USER_ROLE === 'owner') {
+          this.router.navigate(['project/' + this.projectId + '/project-settings/payments']);
+        } else {
+          // console.log('[APP-STORE] HERE 5')
+          // this.presentModalAgentCannotManageAvancedSettings();
+          this.presentModalOnlyOwnerCanManageTheAccountPlan();
+        }
+      }
+    });
+
+  }
+
+  presentModalOnlyOwnerCanManageTheAccountPlan() {
+    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles)
+  }
+
+  presentModalAgentCannotManageAvancedSettings() {
+    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.agentCannotManageAdvancedOptions, this.learnMoreAboutDefaultRoles)
+  }
+
 
   // OPEN * CREATE GROUP RIGHT SIDEBAR *
   openCreateGroupRightSideBar() {
+    const isAvailable = this.checkPlanAndPresentModal()
+    console.log('[DEPT-EDIT-ADD] isAvaibleFromPlan ', isAvailable)
+    if (isAvailable === false) {
+      return
+    }
 
     // SCOLL TO TOP WHEN THE USER CLICK 'CREATE A NEW GROUP'
     this.navbarbrandRef.nativeElement.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -592,6 +654,46 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
         this.areTouSureYouWantToNavigateAwayFromThisPageWithoutSaving = translation.AreTouSureYouWantToNavigateAwayFromThisPageWithoutSaving;
 
       });
+
+
+      this.translate.get('AvailableFromThePlan', { plan_name: PLAN_NAME.B })
+      .subscribe((translation: any) => {
+        this.featureAvailableFromBPlan = translation;
+      });
+
+    this.translate.get('AvailableFromThePlan', { plan_name: PLAN_NAME.E })
+      .subscribe((translation: any) => {
+        this.featureAvailableFromEPlan = translation;
+      });
+
+
+    this.translate.get('Cancel')
+      .subscribe((text: string) => {
+        this.cancel = text;
+      });
+
+    this.translate.get('Pricing.UpgradePlan')
+      .subscribe((translation: any) => {
+        this.upgradePlan = translation;
+      });
+
+    this.translate.get('UsersWiththeAgentroleCannotManageTheAdvancedOptionsOfTheProject')
+      .subscribe((translation: any) => {
+        this.agentCannotManageAdvancedOptions = translation;
+      });
+
+    this.translate.get('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan')
+      .subscribe((translation: any) => {
+        this.onlyOwnerCanManageTheAccountPlanMsg = translation;
+      });
+
+    this.translate.get('LearnMoreAboutDefaultRoles')
+      .subscribe((translation: any) => {
+
+        this.learnMoreAboutDefaultRoles = translation;
+      });
+
+
   }
 
   // ============ NEW - SUBSTITUTES has_clicked_fixed ============
@@ -770,7 +872,11 @@ export class DepartmentEditAddComponent implements OnInit, AfterViewInit, Compon
   }
 
   getCurrentProject() {
-    this.auth.project_bs.subscribe((project) => {
+    this.auth.project_bs
+    .pipe(
+      takeUntil(this.unsubscribe$)
+    )
+    .subscribe((project) => {
       this.project = project
       // this.logger.log('[DEPT-EDIT-ADD] project ID from AUTH service subscription  ', this.project._id)
     });

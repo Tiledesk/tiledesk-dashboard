@@ -15,6 +15,10 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { SidebarUserDetailsComponent } from './sidebar-user-details/sidebar-user-details.component';
 import {FormsModule} from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatButtonModule } from '@angular/material/button';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatIconModule } from '@angular/material/icon';
 
 
 @NgModule({
@@ -25,6 +29,10 @@ import { NgSelectModule } from '@ng-select/ng-select';
     MatTooltipModule,
     MatSlideToggleModule,
     MatSnackBarModule,
+    MatMenuModule,
+    MatButtonModule,
+    MatIconModule,
+    MatProgressSpinnerModule,
     FormsModule,
     NgSelectModule
   ],

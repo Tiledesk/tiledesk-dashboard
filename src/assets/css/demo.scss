@@ -1,5 +1,6 @@
 @import "./src/assets/sass/md/_variables.scss";
 @import "./src/assets/sass/cds/_variables.scss";
+
 my-app .main-panel .main-content .card {
   animation-duration: 750ms;
   opacity: 0;
@@ -16,6 +17,7 @@ my-app .main-panel .main-content .card {
     opacity: 1;
   }
 }
+
 @media (min-width: 992px) {
   .typo-line {
     padding-left: 140px;
@@ -47,30 +49,34 @@ my-app .main-panel .main-content .card {
   display: block;
 }
 
-.sidebar .nav > li.active-pro {
+.sidebar .nav>li.active-pro {
   position: absolute;
   width: 100%;
   bottom: 10px;
 }
+
 @media (max-width: 991px) {
-  .sidebar .nav > li.active-pro {
+  .sidebar .nav>li.active-pro {
     position: relative;
     width: 100%;
     bottom: 10px;
   }
-  .sidebar .nav > li.active-pro > a {
+
+  .sidebar .nav>li.active-pro>a {
     margin-top: 20px;
   }
 }
 
 /* /* START - SETTINGS SUB MENU - WHEN THE ITEM ARE ACTIVE */
-.sidebar .nav > li.active-custom > a {
+.sidebar .nav>li.active-custom>a {
   color: #e25242;
   background-color: #eeeeee;
 }
-.sidebar .nav > li.active-custom > a > i {
+
+.sidebar .nav>li.active-custom>a>i {
   color: #e25242;
 }
+
 /*  END SETTINGS SUB MENU */
 
 .tim-row {
@@ -82,6 +88,7 @@ my-app .main-panel .main-content .card {
   margin-bottom: 40px;
   position: relative;
 }
+
 .tim-typo .tim-note {
   bottom: 10px;
   color: #c0c1c2;
@@ -94,9 +101,11 @@ my-app .main-panel .main-content .card {
   position: absolute;
   width: 260px;
 }
+
 .tim-row {
   padding-top: 50px;
 }
+
 .tim-row h3 {
   margin-top: 0;
 }
@@ -166,6 +175,7 @@ my-app .main-panel .main-content .card {
   opacity: 1;
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
 }
+
 /* ./end tootip top  */
 
 /* ----------------------------
@@ -225,6 +235,7 @@ my-app .main-panel .main-content .card {
   background-color: #394f5a;
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
 }
+
 /* /. tootip bottom for home header */
 
 /* ------------------------
@@ -277,6 +288,7 @@ my-app .main-panel .main-content .card {
   background-color: #394f5a;
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
 }
+
 /* ./tootip bottom  */
 
 /* -----------
@@ -322,6 +334,7 @@ my-app .main-panel .main-content .card {
   width: 400px;
   border-radius: 8px 8px 0 0;
 }
+
 .tool_tip .text-content {
   padding: 10px 20px;
 }
@@ -335,6 +348,7 @@ my-app .main-panel .main-content .card {
   height: 24px;
   overflow: hidden;
 }
+
 .tool_tip .right i::after {
   content: "";
   position: absolute;
@@ -346,6 +360,7 @@ my-app .main-panel .main-content .card {
   background-color: #444444;
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
 }
+
 /* ./tootip right  */
 
 /**
@@ -356,6 +371,7 @@ my-app .main-panel .main-content .card {
   position: relative;
   cursor: pointer;
 }
+
 [data-tooltip]:before,
 [data-tooltip]:after {
   line-height: 1;
@@ -366,11 +382,13 @@ my-app .main-panel .main-content .card {
   display: none;
   opacity: 0;
 }
+
 [data-tooltip]:before {
   content: "";
   border: 5px solid transparent;
   z-index: 100;
 }
+
 [data-tooltip]:after {
   content: attr(data-tooltip);
   text-align: center;
@@ -385,21 +403,25 @@ my-app .main-panel .main-content .card {
   color: #ffffff;
   z-index: 99;
 }
+
 [data-tooltip]:hover:before,
 [data-tooltip]:hover:after {
   display: block;
   opacity: 1;
 }
+
 [data-tooltip]:not([data-flow])::before,
 [data-tooltip][data-flow="top"]::before {
   bottom: 100%;
   border-bottom-width: 0;
   border-top-color: #394f5a;
 }
+
 [data-tooltip]:not([data-flow])::after,
 [data-tooltip][data-flow="top"]::after {
   bottom: calc(100% + 5px);
 }
+
 [data-tooltip]:not([data-flow])::before,
 [tooltip]:not([data-flow])::after,
 [data-tooltip][data-flow="top"]::before,
@@ -408,20 +430,24 @@ my-app .main-panel .main-content .card {
   -webkit-transform: translate(-50%, -4px);
   transform: translate(-50%, -4px);
 }
+
 [data-tooltip][data-flow="bottom"]::before {
   top: 100%;
   border-top-width: 0;
   border-bottom-color: #394f5a;
 }
+
 [data-tooltip][data-flow="bottom"]::after {
   top: calc(100% + 5px);
 }
+
 [data-tooltip][data-flow="bottom"]::before,
 [data-tooltip][data-flow="bottom"]::after {
   left: 50%;
   -webkit-transform: translate(-50%, 8px);
   transform: translate(-50%, 8px);
 }
+
 [data-tooltip][data-flow="left"]::before {
   top: 50%;
   border-right-width: 0;
@@ -430,12 +456,14 @@ my-app .main-panel .main-content .card {
   -webkit-transform: translate(-8px, -50%);
   transform: translate(-8px, -50%);
 }
+
 [data-tooltip][data-flow="left"]::after {
   top: 50%;
   right: calc(100% + 5px);
   -webkit-transform: translate(-8px, -50%);
   transform: translate(-8px, -50%);
 }
+
 [data-tooltip][data-flow="right"]::before {
   top: 50%;
   border-left-width: 0;
@@ -444,25 +472,28 @@ my-app .main-panel .main-content .card {
   -webkit-transform: translate(8px, -50%);
   transform: translate(8px, -50%);
 }
+
 [data-tooltip][data-flow="right"]::after {
   top: 50%;
   left: calc(100% + 5px);
   -webkit-transform: translate(8px, -50%);
   transform: translate(8px, -50%);
 }
+
 [data-tooltip=""]::after,
 [data-tooltip=""]::before {
   display: none !important;
 }
+
 /* tooltip top using attribute */
 
 /* table style overwrite */
-.table > thead > tr > th,
-.table > tbody > tr > th,
-.table > tfoot > tr > th,
-.table > thead > tr > td,
-.table > tbody > tr > td,
-.table > tfoot > tr > td {
+.table>thead>tr>th,
+.table>tbody>tr>th,
+.table>tfoot>tr>th,
+.table>thead>tr>td,
+.table>tbody>tr>td,
+.table>tfoot>tr>td {
   border-top: unset !important;
 }
 
@@ -471,7 +502,7 @@ my-app .main-panel .main-content .card {
   padding-bottom: 6px !important;
 }
 
-.table > thead > tr > th {
+.table>thead>tr>th {
   padding-bottom: 12px !important;
   border-bottom: 1px solid #e5effe !important;
 }
@@ -526,6 +557,7 @@ my-app .main-panel .main-content .card {
   background: #3ecf8e !important;
   opacity: 0.6;
 }
+
 .btn-success-no-boxshadow:focus {
   background: #3ecf8e !important;
   opacity: 0.6;
@@ -670,6 +702,7 @@ my-app .main-panel .main-content .card {
 .home-header-whats-new-d {
   position: relative;
 }
+
 .home-header-whats-new-e {
   margin: 0px auto;
   display: inline-block;
@@ -722,6 +755,7 @@ my-app .main-panel .main-content .card {
 .served-by-conv-d {
   position: relative;
 }
+
 .served-by-conv-e {
   margin: 0px auto;
   border-radius: 50%;
@@ -750,6 +784,7 @@ my-app .main-panel .main-content .card {
   position: relative;
   top: 2px;
 }
+
 .altenative-conv-avatar {
   color: #ffffff;
   line-height: 38px;
@@ -774,6 +809,7 @@ my-app .main-panel .main-content .card {
   0% {
     background-position: -100px;
   }
+
   40%,
   100% {
     background-position: 200px;
@@ -819,6 +855,7 @@ my-app .main-panel .main-content .card {
 .served-by-desktop-d {
   position: relative;
 }
+
 .served-by-desktop-e {
   margin: 0px auto;
   border-radius: 50%;
@@ -847,6 +884,7 @@ my-app .main-panel .main-content .card {
   position: relative;
   top: 2px;
 }
+
 .altenative-avatar {
   color: #ffffff;
   line-height: 30px;
@@ -867,8 +905,11 @@ my-app .main-panel .main-content .card {
   position: relative;
   top: -3px;
 }
+
 .bot---avatar {
   cursor: pointer;
+  height: 32px;
+  width: 32px;
 }
 
 .bot---avatar:hover {
@@ -908,6 +949,7 @@ my-app .main-panel .main-content .card {
 .served-by-desktop-d-in-tooltip {
   position: relative;
 }
+
 .served-by-desktop-e-in-tooltip {
   margin: 0px auto;
   border-radius: 50%;
@@ -926,6 +968,7 @@ my-app .main-panel .main-content .card {
   object-fit: cover;
   border: 1px solid #444444;
 }
+
 /* /. Avatar inline in unserved conversation tooltip
 ---------------------------------------------------- */
 
@@ -958,6 +1001,7 @@ my-app .main-panel .main-content .card {
 
 .swal-size-sm {
   width: 260px !important;
+  background-color: var(--card-background-color);
 
   /* // .swal-icon {
   //   width: 60px !important;
@@ -969,18 +1013,24 @@ my-app .main-panel .main-content .card {
   //   top: 5px !important;
   // } */
 }
-.swal-size-sm > .swal-title {
+
+.swal-size-sm>.swal-title {
   font-size: 18px !important;
   padding-top: 0px !important;
+  color: var(--text-color);
 }
 
-.swal-size-sm > .swal-text {
+.swal-size-sm>.swal-text {
   font-size: 14px;
   text-align: center;
+  color: var(--secondary-text-color);
 }
 
+
+
+
 /*  used for the message of type info in the chat section of the conversation detail page */
-.type-info-msg-text > p {
+.type-info-msg-text>p {
   margin-bottom: 0px;
 }
 
@@ -988,7 +1038,7 @@ my-app .main-panel .main-content .card {
  * CUSTOM STYLE FOR THE CHAT SECTION IN REQUEST DETAIL FOR PANEL
  * ------------------------------------------------------------- */
 /* Removes in "ws-request-detail-for-panel.component" the bottom margin from the paragraph created by the marked pipe */
-#chat-content > div > div > div > div.message > p {
+#chat-content>div>div>div>div.message>p {
   margin-bottom: 0px !important;
 }
 
@@ -996,42 +1046,44 @@ my-app .main-panel .main-content .card {
  * CUSTOM STYLE FOT THE CHAT SECTION IN CONVERSATION DETAIL 
  * -------------------------------------------------------- */
 /* Removes the bottom margin from the paragraph created by the marked pipe */
-div.card-content > .chat-body > div > div > div > div > div > div.txt > p.message.ow > p {
+div.card-content>.chat-body>div>div>div>div>div>div.txt>p.message.ow>p {
   margin-bottom: 0px !important;
 }
 
 /*  USE CASE LINK IN MESSAGE - When the sender is the agent changes the color of the links  */
-div.card-content > div > div > div > div > div > div > div.txt > p.message.ow.alt > p > a {
+div.card-content>div>div>div>div>div>div>div.txt>p.message.ow.alt>p>a {
   color: #fff;
   text-decoration: underline;
   font-weight: 300;
 }
+
 /* - USE CASE LINK IN IFRAME - When the sender is the agent changes the color of the links "  */
-div.card-content > div > div > div > div > div > div > div.txt > div.message.ow.alt > div > p > p > a {
+div.card-content>div>div>div>div>div>div>div.txt>div.message.ow.alt>div>p>p>a {
   color: #fff;
   text-decoration: underline;
   font-weight: 300;
 }
+
 /* - USE CASE IMAGE WITH TEXT - When the sender is the agent changes the color of the text   */
-div.card-content > div > div > div > div > div > div > div.txt > div.message.ow.alt > div > p > p {
+div.card-content>div>div>div>div>div>div>div.txt>div.message.ow.alt>div>p>p {
   color: #fff;
   font-weight: 300;
   margin-bottom: 0px !important;
   margin-top: 5px !important;
 }
 
-div.card-content > div > div > div > div > div > div > div.txt > div.message.ow > div > p > p {
+div.card-content>div>div>div>div>div>div>div.txt>div.message.ow>div>p>p {
   font-weight: 400;
   margin-bottom: 0px !important;
   margin-top: 0px !important;
 }
 
 /* USE CASE MESSSAGE SENT BY THE AGENT */
-div.card-content > div > div > div > div > div > div > div.txt > p.message.ow.alt > p {
+div.card-content>div>div>div>div>div>div>div.txt>p.message.ow.alt>p {
   color: #fff;
 }
 
-div.card-content > div > div > div > div > div > div > div.txt > p.internal-note-text-color > p {
+div.card-content>div>div>div>div>div>div>div.txt>p.internal-note-text-color>p {
   color: #222 !important;
 }
 
@@ -1127,6 +1179,7 @@ span.navbar-brand-sidebar-settings {
 
   border-right: 1px solid #e5effe;
 }
+
 span.navbar-brand-sidebar-settings.is_opened {
   width: 226px;
 }
@@ -1135,13 +1188,13 @@ span.navbar-brand-sidebar-settings.is_closed {
   width: 51px;
 }
 
-span.navbar-brand-sidebar-settings > i {
+span.navbar-brand-sidebar-settings>i {
   vertical-align: middle;
   margin-right: 3px;
   margin-left: -2px;
 }
 
-span.navbar-brand-sidebar-settings > span {
+span.navbar-brand-sidebar-settings>span {
   vertical-align: middle;
 }
 
@@ -1215,6 +1268,7 @@ span.navbar-brand-title {
   font-weight: 400;
   margin-right: 12px;
 }
+
 .ng2-tooltip-badge--assigned {
   text-transform: uppercase;
   background: #05bdd4;
@@ -1318,7 +1372,8 @@ span.navbar-brand-title {
   font-size: 10px;
   margin-bottom: 0px;
 }
-.ng2-latest-comment > p {
+
+.ng2-latest-comment>p {
   margin-bottom: 0px;
 }
 
@@ -1332,13 +1387,15 @@ span.navbar-brand-title {
   color: #ddd;
   font-size: 10px;
 }
+
 .ng2-latest-comment-loading:after {
   overflow: hidden;
   display: inline-block;
   vertical-align: bottom;
   -webkit-animation: ellipsis steps(4, end) 900ms infinite;
   animation: ellipsis steps(4, end) 900ms infinite;
-  content: "\2026"; /* ascii code for the ellipsis character */
+  content: "\2026";
+  /* ascii code for the ellipsis character */
   width: 0px;
   color: #ddd;
   font-weight: 100 !important;
@@ -1370,6 +1427,7 @@ footer ul {
 .ng-select.select-response-type:focus {
   outline: none !important;
 }
+
 .ng-select.select-response-type .ng-select-container {
   display: flex !important;
   display: -webkit-box !important;
@@ -1389,7 +1447,8 @@ footer ul {
   cursor: pointer;
   min-width: 300px;
 }
-.alert-minimalist > [data-notify="header"] {
+
+.alert-minimalist>[data-notify="header"] {
   height: 25px;
   // background-color: rgb(235, 235, 235 );
   background-color: #0d6efd !important;
@@ -1400,18 +1459,19 @@ footer ul {
   padding: 3px 16px;
 }
 
-.alert-minimalist > [data-notify="icon"] {
+.alert-minimalist>[data-notify="icon"] {
   height: 50px;
   margin-right: 12px;
 }
 
-.alert-minimalist > .foreground-notification-img-circle {
+.alert-minimalist>.foreground-notification-img-circle {
   height: 50px;
   margin-right: 12px;
   width: 50px;
   text-align: center;
 }
-.alert-minimalist > [data-notify="title"] {
+
+.alert-minimalist>[data-notify="title"] {
   color: rgb(51, 51, 51);
   display: block;
   font-weight: bold;
@@ -1420,7 +1480,8 @@ footer ul {
   padding: 0px 10px;
   margin-top: 5px;
 }
-.alert-minimalist > [data-notify="message"] {
+
+.alert-minimalist>[data-notify="message"] {
   font-size: 14px;
   white-space: nowrap;
   overflow: hidden;
@@ -1429,7 +1490,8 @@ footer ul {
   padding: 0px 10px;
   padding-bottom: 10px;
 }
-.alert-minimalist > span {
+
+.alert-minimalist>span {
   display: block;
   max-width: 100%;
 }
@@ -1447,7 +1509,8 @@ footer ul {
   cursor: pointer;
   min-width: 300px;
 }
-.alert-minimalist-pooled > [data-notify="header"] {
+
+.alert-minimalist-pooled>[data-notify="header"] {
   height: 25px;
   // background-color: rgb(235, 235, 235 );
   background-color: #ffc107;
@@ -1458,18 +1521,19 @@ footer ul {
   padding: 3px 16px;
 }
 
-.alert-minimalist-pooled > [data-notify="icon"] {
+.alert-minimalist-pooled>[data-notify="icon"] {
   height: 50px;
   margin-right: 12px;
 }
 
-.alert-minimalist-pooled > .foreground-notification-img-circle {
+.alert-minimalist-pooled>.foreground-notification-img-circle {
   height: 50px;
   margin-right: 12px;
   width: 50px;
   text-align: center;
 }
-.alert-minimalist-pooled > [data-notify="title"] {
+
+.alert-minimalist-pooled>[data-notify="title"] {
   color: rgb(51, 51, 51);
   display: block;
   font-weight: bold;
@@ -1478,7 +1542,8 @@ footer ul {
   padding: 0px 10px;
   margin-top: 5px;
 }
-.alert-minimalist-pooled > [data-notify="message"] {
+
+.alert-minimalist-pooled>[data-notify="message"] {
   font-size: 14px;
   white-space: nowrap;
   overflow: hidden;
@@ -1487,7 +1552,8 @@ footer ul {
   padding: 0px 10px;
   padding-bottom: 10px;
 }
-.alert-minimalist-pooled > span {
+
+.alert-minimalist-pooled>span {
   display: block;
   max-width: 100%;
 }
@@ -1527,36 +1593,17 @@ footer ul {
   top: 2px !important;
 }
 
-.custom-date-range-picker
-  .mat-form-field-wrapper
-  .mat-form-field-flex
-  .mat-form-field-infix
-  .mat-date-range-input
-  .mat-date-range-input-container
-  .mat-date-range-input-start-wrapper
-  .mat-date-range-input-inner {
-  position: relative !important ;
-  vertical-align: middle !important ;
+.custom-date-range-picker .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-infix .mat-date-range-input .mat-date-range-input-container .mat-date-range-input-start-wrapper .mat-date-range-input-inner {
+  position: relative !important;
+  vertical-align: middle !important;
 }
-.custom-date-range-picker
-  .mat-form-field-wrapper
-  .mat-form-field-flex
-  .mat-form-field-infix
-  .mat-date-range-input
-  .mat-date-range-input-container
-  .mat-date-range-input-separator {
+
+.custom-date-range-picker .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-infix .mat-date-range-input .mat-date-range-input-container .mat-date-range-input-separator {
   margin-bottom: 6px !important;
 }
 
-.custom-date-range-picker
-  .mat-form-field-wrapper
-  .mat-form-field-flex
-  .mat-form-field-infix
-  .mat-date-range-input
-  .mat-date-range-input-container
-  .mat-date-range-input-start-wrapper
-  .mat-date-range-input-mirror {
-  display: none !important ;
+.custom-date-range-picker .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-infix .mat-date-range-input .mat-date-range-input-container .mat-date-range-input-start-wrapper .mat-date-range-input-mirror {
+  display: none !important;
 }
 
 /* Mat Date picker in Activities */
@@ -1581,12 +1628,7 @@ footer ul {
   // top: -1px;
 }
 
-.activity-date-range-picker
-  .mat-form-field-wrapper
-  .mat-form-field-flex
-  .mat-form-field-suffix
-  .mat-datepicker-toggle
-  .mat-focus-indicator {
+.activity-date-range-picker .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-suffix .mat-datepicker-toggle .mat-focus-indicator {
   vertical-align: middle !important;
 }
 
@@ -1597,7 +1639,7 @@ footer ul {
   border: 1px solid #2d323e;
 }
 
-.ng-select.teammate-status-in-drawer.ng-select-opened > .ng-select-container {
+.ng-select.teammate-status-in-drawer.ng-select-opened>.ng-select-container {
   background-color: #2d323e;
   border: 1px solid #2d323e;
 }
@@ -1633,7 +1675,7 @@ footer ul {
 }
 
 // removes the blu google blue border
-.ng-select.teammate-status-in-drawer.ng-select-focused:not(.ng-select-opened) > .ng-select-container {
+.ng-select.teammate-status-in-drawer.ng-select-focused:not(.ng-select-opened)>.ng-select-container {
   background-color: #2d323e;
   box-shadow: unset;
 }
@@ -1657,6 +1699,7 @@ footer ul {
   margin-top: 0px !important;
   margin-left: 0px !important;
 }
+
 .ng-select.ng-select-tags .ng-select-container:hover {
   box-shadow: unset !important;
 }
@@ -1670,6 +1713,7 @@ footer ul {
   border-bottom: 1px solid $icon-color;
   outline: 1px solid $icon-color;
 }
+
 // ::ng-deep
 .cds-mat-tooltip {
   // background-color: #fff !important;
@@ -1691,29 +1735,39 @@ footer ul {
   text-transform: capitalize;
   font-size: 14px;
   padding: 6px 12px;
+
   &:hover {
     background: rgba(138, 180, 248, 0.8);
   }
 }
 
 // Badge in app store
-appdashboard-app-store > div > div > div > div > div > div.card-content > div.available-from-b-plan-badge {
+appdashboard-app-store>div>div>div>div>div>div.card-content>div.available-from-b-plan-badge {
 
+  // font-size: 11px;
+  // display: block;
+  // font-weight: 400;
+  // width: fit-content;
+  // padding: 0 4px;
+  // line-height: 20px;
+  // border-radius: 3px;
+  // margin-bottom: 3px;
   font-size: 11px;
   display: block;
   font-weight: 400;
+  width: --moz-fit-content;
   width: fit-content;
   padding: 0 4px;
-  line-height: 20px;
   border-radius: 3px;
   margin-bottom: 3px;
+  margin-top: -25px;
 }
 
-appdashboard-app-store > div > div > div > div > div > div.card-content > .app-store-card-no-badge {
+appdashboard-app-store>div>div>div>div>div>div.card-content>.app-store-card-no-badge {
   height: 48px !important;
 }
 
-appdashboard-app-store > div > div > div > div > .card-app-store {
+appdashboard-app-store>div>div>div>div>.card-app-store {
   height: 269px;
 }
 
@@ -1732,41 +1786,43 @@ appdashboard-app-store > div > div > div > div > .card-app-store {
 /* New buttons > Btn Primary
 /* ----------------------------------------- */
 .btn--primary {
-  background-color: #0566ff;
-  border-color: #0566ff;
+  background-color: var(--blue-light);
+  border-color: var(--blue-light);
   color: #fff;
   text-transform: none;
   border-radius: 999px;
   box-shadow: unset;
-  font-family: "Poppins","Roboto", "Arial", sans-serif;
+  font-family: "Poppins", "Roboto", "Arial", sans-serif;
 }
 
 .btn--primary:hover {
-  background-color: #0049bd;
-  border-color: #0049bd;
+  background-color: var(--blue-light);
+  border-color: var(--blue-light);
   color: #fff;
   box-shadow: unset;
 }
 
 .btn--primary:focus {
-  background-color: #0049bd;
-  border-color: #0049bd;
+  background-color: var(--blue-light);
+  border-color: var(--blue-light);
   color: #fff;
   box-shadow: unset;
 }
 
 .btn--primary:active {
-  background-color: #0049bd;
-  border-color: #0049bd;
+  background-color: var(--blue-light);
+  border-color: var(--blue-light);
 }
 
 .btn--ripple-primary {
   background-position: center;
   transition: background 0.3s;
 }
+
 .btn--ripple-primary:hover {
   background: #0049bd radial-gradient(circle, transparent 1%, #0566ff 1%) center/15000%;
 }
+
 .btn--ripple-primary:active {
   background-color: #0049bd;
   background-size: 100%;
@@ -1777,32 +1833,32 @@ appdashboard-app-store > div > div > div > div > .card-app-store {
 /* New buttons > Btn Primary no background
 /* ---------------------------------------- */
 .btn.btn--primary-no-bkgnd {
-  border:1px solid #0566ff;
-  color: #0566ff;
+  border: 1px solid var(--blue-light);
+  color: var(--blue-light);
   background-color: #fff;
   border-radius: 999px;
   box-shadow: unset;
-  font-family: "Poppins","Roboto", "Arial", sans-serif;
+  font-family: "Poppins", "Roboto", "Arial", sans-serif;
   text-transform: unset;
 }
 
 .btn.btn--primary-no-bkgnd:hover {
   background-color: rgba(5, 102, 255, .2);
-  border: 1px solid #0049bd;
-  color: #0566ff;
+  border: 1px solid var(--blue-light);
+  color: var(--blue-light);
   box-shadow: unset;
 }
 
 .btn.btn--primary-no-bkgnd:focus {
   background-color: rgba(5, 102, 255, .2);
-  border: 1px solid #0049bd;
+  border: 1px solid var(--blue-light);
   color: #0566ff;
   box-shadow: unset;
 }
 
 .btn.btn--primary-no-bkgnd:active {
   background-color: rgba(5, 102, 255, .2);
-  border: 1px solid #0049bd;
+  border: 1px solid var(--blue-light);
   color: #0566ff;
   box-shadow: unset;
 }
@@ -1811,6 +1867,7 @@ appdashboard-app-store > div > div > div > div > .card-app-store {
   background-position: center;
   transition: background 0.3s;
 }
+
 .btn.btn.btn--ripple-primary-no-bkgnd:hover {
   background: rgba(5, 102, 255, 1) radial-gradient(circle, transparent 1%, rgba(5, 102, 255, .2) 1%) center/15000%;
 }
@@ -1833,7 +1890,7 @@ appdashboard-app-store > div > div > div > div > .card-app-store {
   text-transform: none;
   border-radius: 999px;
   box-shadow: unset;
-  font-family: "Poppins","Roboto", "Arial", sans-serif;
+  font-family: "Poppins", "Roboto", "Arial", sans-serif;
 }
 
 .btn.btn--blu:hover {
@@ -1859,9 +1916,11 @@ appdashboard-app-store > div > div > div > div > .card-app-store {
   background-position: center;
   transition: background 0.3s;
 }
+
 .btn.btn--ripple-blu:hover {
-  background: #7c8eb9  radial-gradient(circle, transparent 1%, #5B72A7 1%) center/15000%;
+  background: #7c8eb9 radial-gradient(circle, transparent 1%, #5B72A7 1%) center/15000%;
 }
+
 .btn.btn--ripple-blu:active {
   background-color: #7c8eb9;
   background-size: 100%;
@@ -1874,12 +1933,12 @@ appdashboard-app-store > div > div > div > div > .card-app-store {
 // rgb(91, 114, 167) = 5b72a7 (--light-periwinkle)
 // 7c8eb9  (--opal-violet;)
 .btn.btn--blu-outline {
-  border:1px solid rgb(91, 114, 167) !important;
+  border: 1px solid rgb(91, 114, 167) !important;
   color: rgb(91, 114, 167);
   background-color: #fff;
   border-radius: 999px !important;
   box-shadow: unset;
-  font-family: "Poppins","Roboto", "Arial", sans-serif;
+  font-family: "Poppins", "Roboto", "Arial", sans-serif;
   text-transform: unset;
 }
 
@@ -1908,6 +1967,7 @@ appdashboard-app-store > div > div > div > div > .card-app-store {
   background-position: center;
   transition: background 0.3s;
 }
+
 .btn.btn.btn--ripple-blu-outline:hover {
   background: rgba(91, 114, 167, .1) radial-gradient(circle, transparent 1%, rgba(91, 114, 167, .3) 1%) center/15000%;
 }
@@ -1934,7 +1994,7 @@ appdashboard-app-store > div > div > div > div > .card-app-store {
   text-transform: none;
   border-radius: 999px;
   box-shadow: unset;
-  font-family: "Poppins","Roboto", "Arial", sans-serif;
+  font-family: "Poppins", "Roboto", "Arial", sans-serif;
 }
 
 .btn.btn-p:hover {
@@ -1960,9 +2020,11 @@ appdashboard-app-store > div > div > div > div > .card-app-store {
   background-position: center;
   transition: background 0.3s;
 }
+
 .btn.btn-p-ripple:hover {
-  background: var(--indigo-deep)  radial-gradient(circle, transparent 1%, var(--indigo) 1%) center/15000%;
+  background: var(--indigo-deep) radial-gradient(circle, transparent 1%, var(--indigo) 1%) center/15000%;
 }
+
 .btn.btn-p-ripple:active {
   background-color: #7c8eb9;
   background-size: 100%;
@@ -1978,12 +2040,12 @@ appdashboard-app-store > div > div > div > div > .card-app-store {
 .btn.btn-p-outline {
   // border:1px solid var(--indigo) !important;
   // color: var(--indigo);
-  border:1px solid var(--blue-turquoise) !important;
-  color: var(--blue-turquoise);
+  border: 1px solid var(--blue-light) !important;
+  color: var(--blue-light);
   background-color: #fff;
   border-radius: 999px !important;
   box-shadow: unset;
-  font-family: "Poppins","Roboto", "Arial", sans-serif;
+  font-family: "Poppins", "Roboto", "Arial", sans-serif;
   text-transform: unset;
 }
 
@@ -2014,6 +2076,7 @@ appdashboard-app-store > div > div > div > div > .card-app-store {
   background-position: center;
   transition: background 0.3s;
 }
+
 // .btn.btn.btn-p-outline-ripple:hover {
 //   background: var(--indigo-deep) radial-gradient(circle, transparent 1%, var(--indigo) 1%) center/15000%;
 // }
@@ -2105,13 +2168,13 @@ appdashboard-app-store > div > div > div > div > .card-app-store {
 // ------------------------------
 // ticket-priority select
 // ------------------------------
-.ng-select.ticket-priority .ng-select-container { 
+.ng-select.ticket-priority .ng-select-container {
   background-color: var(--select-background);
   color: var(--text-color);
   // border: var(--select-border);
 }
 
-.ng-select.ticket-priority .ng-select-container  .ng-value-container .ng-placeholder {
+.ng-select.ticket-priority .ng-select-container .ng-value-container .ng-placeholder {
   color: var(--secondary-text-color);
 }
 
@@ -2124,7 +2187,7 @@ appdashboard-app-store > div > div > div > div > .card-app-store {
   background-color: var(--select-background);
 }
 
-.ng-select.ticket-priority.ng-select-opened > .ng-select-container {
+.ng-select.ticket-priority.ng-select-opened>.ng-select-container {
   background-color: var(--select-background) !important;
   // border: var(--select-opened-border);
 }
@@ -2135,7 +2198,7 @@ appdashboard-app-store > div > div > div > div > .card-app-store {
 }
 
 .ticket-priority .ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
-  background-color: var(--select-background)!important;
+  background-color: var(--select-background) !important;
   color: var(--text-color);
 }
 
@@ -2147,17 +2210,17 @@ appdashboard-app-store > div > div > div > div > .card-app-store {
 // ------------------------------
 // ticket-followers select
 // ------------------------------
-.ng-select.ticket-followers .ng-select-container { 
+.ng-select.ticket-followers .ng-select-container {
   background-color: var(--select-background);
   color: var(--text-color);
   // border: var(--select-border);
 }
 
-.ng-select.ticket-followers .ng-select-container  .ng-value-container .ng-placeholder {
+.ng-select.ticket-followers .ng-select-container .ng-value-container .ng-placeholder {
   color: var(--secondary-text-color);
 }
 
-.ng-dropdown-panel.ticket-followers{
+.ng-dropdown-panel.ticket-followers {
   background-color: var(--select-background);
   border: 1px solid var(--select-background);
 }
@@ -2166,7 +2229,7 @@ appdashboard-app-store > div > div > div > div > .card-app-store {
   background-color: var(--select-background);
 }
 
-.ng-select.ticket-followers.ng-select-opened > .ng-select-container {
+.ng-select.ticket-followers.ng-select-opened>.ng-select-container {
   background-color: var(--select-background) !important;
   // border: var(--select-opened-border);
 }
@@ -2177,7 +2240,7 @@ appdashboard-app-store > div > div > div > div > .card-app-store {
 }
 
 .ticket-followers .ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
-  background-color: var(--select-background)!important;
+  background-color: var(--select-background) !important;
   color: var(--text-color);
 }
 
@@ -2190,13 +2253,13 @@ appdashboard-app-store > div > div > div > div > .card-app-store {
 // ----------------------------
 // convs-tags select
 // ----------------------------
-.ng-select.convs-tags .ng-select-container { 
+.ng-select.convs-tags .ng-select-container {
   background-color: var(--select-background);
   color: var(--text-color);
   // border: var(--select-border);
 }
 
-.ng-select.convs-tags .ng-select-container  .ng-value-container .ng-placeholder {
+.ng-select.convs-tags .ng-select-container .ng-value-container .ng-placeholder {
   color: var(--secondary-text-color)
 }
 
@@ -2209,7 +2272,7 @@ appdashboard-app-store > div > div > div > div > .card-app-store {
   background-color: var(--select-background);
 }
 
-.ng-select.convs-tags.ng-select-opened > .ng-select-container {
+.ng-select.convs-tags.ng-select-opened>.ng-select-container {
   background-color: var(--select-background) !important;
   // border: var(--select-opened-border);
 }
@@ -2220,7 +2283,7 @@ appdashboard-app-store > div > div > div > div > .card-app-store {
 }
 
 .convs-tags .ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
-  background-color: var(--select-background)!important;
+  background-color: var(--select-background) !important;
   color: var(--text-color);
 }
 
@@ -2232,13 +2295,13 @@ appdashboard-app-store > div > div > div > div > .card-app-store {
 // -------------------------
 // add-contact-t select
 // -------------------------
-.ng-select.add-contact-tag .ng-select-container { 
+.ng-select.add-contact-tag .ng-select-container {
   background-color: var(--select-background) !important;
   color: var(--text-color);
   border: var(--select-border);
 }
 
-.ng-select.add-contact-tag .ng-select-container  .ng-value-container .ng-placeholder {
+.ng-select.add-contact-tag .ng-select-container .ng-value-container .ng-placeholder {
   color: var(--secondary-text-color);
 }
 
@@ -2251,7 +2314,7 @@ appdashboard-app-store > div > div > div > div > .card-app-store {
   background-color: var(--select-background);
 }
 
-.ng-select.add-contact-tag.ng-select-opened > .ng-select-container {
+.ng-select.add-contact-tag.ng-select-opened>.ng-select-container {
   background-color: var(--select-background) !important;
   // border: var(--select-opened-border);
 }
@@ -2262,7 +2325,7 @@ appdashboard-app-store > div > div > div > div > .card-app-store {
 }
 
 .add-contact-tag .ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
-  background-color: var(--select-background)!important;
+  background-color: var(--select-background) !important;
   color: var(--text-color);
 }
 
@@ -2274,13 +2337,14 @@ appdashboard-app-store > div > div > div > div > .card-app-store {
 // ----------------------------------
 // add contact property select 
 // ----------------------------------
-.ng-select.contact-property .ng-select-container { 
-  background-color: var(--select-background) !important;;
+.ng-select.contact-property .ng-select-container {
+  background-color: var(--select-background) !important;
+  ;
   color: var(--text-color);
   border: var(--select-border);
 }
 
-.ng-select.contact-property .ng-select-container  .ng-value-container .ng-placeholder {
+.ng-select.contact-property .ng-select-container .ng-value-container .ng-placeholder {
   color: var(--secondary-text-color)
 }
 
@@ -2289,11 +2353,11 @@ appdashboard-app-store > div > div > div > div > .card-app-store {
   border: 1px solid var(--select-background);
 }
 
-.add-contact-tag .contact-property  {
+.add-contact-tag .contact-property {
   background-color: var(--select-background);
 }
 
-.ng-select.contact-property.ng-select-opened > .ng-select-container {
+.ng-select.contact-property.ng-select-opened>.ng-select-container {
   background-color: var(--select-background) !important;
   // border: var(--select-opened-border);
 }
@@ -2305,7 +2369,7 @@ appdashboard-app-store > div > div > div > div > .card-app-store {
 }
 
 .contact-property .ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
-  background-color: var(--select-background)!important;
+  background-color: var(--select-background) !important;
   color: var(--text-color);
 }
 
@@ -2349,3 +2413,43 @@ appdashboard-app-store > div > div > div > div > .card-app-store {
   text-align: center !important;
   line-height: 17px !important;
 }
+
+.custom-mat-tooltip {
+  background-color: #2d323e !important;
+  font-size: 12px !important;
+  border-radius: 2px !important;
+  font-family: "Poppins", "Roboto", "Arial", sans-serif !important;
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+}
+
+
+.demopage-title {
+  margin-top: 10px;
+  margin-bottom: 5px;
+  font-family: "Poppins", "Roboto", "Arial", sans-serif;
+  text-align: center;
+  color: #1e88e5;
+  line-height: 41px;
+  font-weight: 500;
+  font-size: 30px;
+  margin-top: 10px;
+}
+
+.demopage-subtitle {
+  margin-top: 5px !important;
+  font-family: "Poppins", "Roboto", "Arial", sans-serif;
+  text-align: center;
+  font-size: 21px;
+  font-weight: 400;
+}
+
+// /* hide recaptcha badge*/
+.grecaptcha-badge {
+  visibility: hidden;
+}
+
+// /* only show recaptcha badge on needed pages */
+// .recaptcha .grecaptcha-badge {
+//   visibility: visible;
+// }

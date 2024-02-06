@@ -276,7 +276,7 @@
       <!-- -------------------------------------------------------------------- -->
       <div *ngFor="let app of apps" class="col-lg-4 col-md-4 col-sm-6" style="cursor:pointer"
         [ngClass]="{'hide-paid-app': !this.isVisiblePAY && (app.title === 'WhatsApp Business' || app.title === 'Facebook Messenger' || app.title === 'Help Center') }">
-        <div class="card card-app-store">
+        <div class="card card-app-store" >
 
           <div class="card-content">
             <div class="row app-card-header">
@@ -293,19 +293,22 @@
                     <div class="col-xs-4"> </div>
                     <div class="col-xs-4" style="padding-right: 2px; padding-left: 3px;" (click)="goToEditApp(app._id)">
                       <div class="edit-app-btn" role="button" 
-                        matTooltipClass="custom-mat-tooltip" 
-                        matTooltip="Edit App"
-                        #tooltip="matTooltip" 
-                        matTooltipPosition='below' 
-                        matTooltipHideDelay="100">
+                          matTooltipClass="custom-mat-tooltip" 
+                          matTooltip="Edit App"
+                          #tooltip="matTooltip" 
+                          matTooltipPosition='below' 
+                          matTooltipHideDelay="100">
                         <span class="material-icons app-card-icon">
                           mode_edit
                         </span>
                       </div>
                     </div>
                     <div class="col-xs-4" style="padding-left: 2px;" (click)="deleteNewApp(app._id, app?.title)">
-                      <div class="delete-app-btn" role="button" matTooltipClass="custom-mat-tooltip"
-                        matTooltip="Delete App" #tooltip="matTooltip" matTooltipPosition='below'
+                      <div class="delete-app-btn" role="button" 
+                        matTooltipClass="custom-mat-tooltip"
+                        matTooltip="Delete App"
+                        #tooltip="matTooltip" 
+                        matTooltipPosition='below'
                         matTooltipHideDelay="100">
                         <span class="material-icons app-card-icon">
                           delete_forever
@@ -319,18 +322,30 @@
               </div>
             </div>
             <!-- padding: 0px 20px; min-height: 52px; -->
-            <h5 class="card-title" style="margin-bottom: 5px;" [ngClass]="{
-              'app-store-card-no-badge': (app?.title !== 'Zapier') && 
-                                          (app?.title !== 'WhatsApp Business') && 
-                                          (app?.title !== 'Facebook Messenger') && 
-                                          (app?.title !== 'Help Center')}">
+            <h5 class="card-title" style="margin-bottom: 28px;"
+              [ngClass]="{'app-store-card-no-badge': 
+                (app?.title !== 'Zapier') &&
+                (app?.title !== 'WhatsApp Business') && 
+                (app?.title !== 'Facebook Messenger') && 
+                (app?.title !== 'Help Center') && 
+                (app?.title !== 'Send transcript by email') && 
+                (app?.title !== 'Telegram')}">
               {{ app.title}}
             </h5>
-    
-            <div class="available-from-b-plan-badge b-plan-badge-color"
-              *ngIf="(app?.title === 'Zapier') || (app?.title === 'WhatsApp Business') || (app?.title === 'Facebook Messenger') || (app?.title === 'Help Center')">
-              {{ 'AvailableFromThePlan' | translate: tPlanParams }}
-            </div>
+
+            <ng-container *ngIf="projectProfileData?.extra3 && projectProfileData?.extra3 !== 'tiledesk_tier3' && projectProfileData?.extra3 !== 'tiledesk_tier4'">
+              <div class="available-from-b-plan-badge b-plan-badge-color"
+                *ngIf="(app?.title === 'Zapier') || (app?.title === 'WhatsApp Business') || (app?.title === 'Facebook Messenger') || (app?.title === 'Help Center')">
+                {{ 'AvailableFromThePlan' | translate: tParamsAvailableFromAppSumoTier3 }}
+              </div>
+            </ng-container>
+            <!-- !projectProfileData?.extra3 || (profile_name === PLAN_NAME.A) || (profile_name === PLAN_NAME.D) || (profile_name === PLAN_NAME.B && !subscription_is_active) ||  (profile_name === PLAN_NAME.E && !subscription_is_active) || (profile_name === 'Sandbox' && trial_expired) || (profile_name === 'free' && trial_expired) -->
+            <ng-container *ngIf="dispayBadgeAvaibleFromInAppStore ">
+              <div class="available-from-b-plan-badge b-plan-badge-color"
+                *ngIf="((app?.title === 'Zapier') || (app?.title === 'WhatsApp Business') || (app?.title === 'Facebook Messenger') || (app?.title === 'Help Center') || (app?.title === 'Send transcript by email'))">
+                {{ 'AvailableFromThePlan' | translate: tParamsAvailableFromTier2 }}
+              </div>
+            </ng-container>
 
             <p class="card-content card-content-app-store" style="padding-top: 5px;">
               {{ app.description}}
@@ -372,7 +387,7 @@
               <ng-container *ngIf="app.version === 'v2'">
                 <div *ngIf="app.installActionURL === undefined"
                   [ngClass]="{'col-xs-4': app.where.appsstore === true && app.installed, 'col-xs-6': (app.where.appsstore === false || !app.where.appsstore) || !app.installed}"
-                  class="app-store-left-col-btn" (click)="learnmore(app.learnMore, app._id)">
+                  class="app-store-left-col-btn" (click)="learnmore(app.learnMore, app._id, app.title)">
                   <a>
                     {{'LearnMore' | translate}}
                   </a>
@@ -381,7 +396,7 @@
 
                 <div *ngIf="app.installActionURL !== undefined"
                   [ngClass]="{'col-xs-3': app.where.appsstore === true && app.installed, 'col-xs-4': ((app.where.appsstore === false || !app.where.appsstore) && app.installed), 'col-xs-6': ((app.where.appsstore === false || !app.where.appsstore) && !app.installed) ||  (app.where.appsstore === true && !app.installed)}"
-                  class="app-store-left-col-btn" (click)="learnmore(app.learnMore, app._id)">
+                  class="app-store-left-col-btn" (click)="learnmore(app.learnMore, app._id, app.title)">
                   <a>
                     {{'LearnMore' | translate}}
                   </a>
@@ -412,7 +427,7 @@
                 </div>
 
                 <div *ngIf="app.where.appsstore === true && app?.installed &&  app.installActionURL === undefined"
-                  class="col-xs-4 app-store-right-col-btn" (click)="openInAppStoreInstall(app)"
+                  class="col-xs-4 app-store-right-col-btn" (click)="openInAppStoreInstall(app, app.title)"
                   [ngClass]="{'app-not-installed-wpr': !app?.installed, 'app-installed-wpr': app?.installed}">
                   <a [ngClass]="{'app-not-installed': !app?.installed, 'app-installed': app?.installed}">
                     <!-- <span class="material-icons icon-start-app-in-app-store-istall">
@@ -423,7 +438,7 @@
                 </div>
 
                 <div *ngIf="app.where.appsstore === true && app?.installed &&  app.installActionURL !== undefined"
-                  class="col-xs-3 app-store-right-col-btn" (click)="openInAppStoreInstall(app)"
+                  class="col-xs-3 app-store-right-col-btn" (click)="openInAppStoreInstall(app, app.title)"
                   [ngClass]="{'app-not-installed-wpr': !app?.installed, 'app-installed-wpr': app?.installed}">
                   <a [ngClass]="{'app-not-installed': !app?.installed, 'app-installed': app?.installed}">
                     <!-- <span class="material-icons icon-start-app-in-app-store-istall">
@@ -437,18 +452,18 @@
 
                 <div *ngIf="app.installed && app.where.appsstore === true &&  app.installActionURL !== undefined"
                   class="col-xs-3 app-store-right-col-btn manage-btn"
-                  (click)="openConfigureUrlInAppStoreInstall(app, app.installActionType, app.installActionURL, app.title, app._id)">
+                  (click)="openConfigureUrlInAppStoreInstall(app,  app.title, app._id)">
                   <a style="color: white;">
                     <!-- {{'Manage' | translate}} -->
                     <!-- Configure -->
-                   {{'OnboardPage.Configure' | translate}}
+                    {{'OnboardPage.Configure' | translate}}
                   </a>
                 </div>
 
                 <div
                   *ngIf="app.installed && (app.where.appsstore === false || !app.where.appsstore)  &&  app.installActionURL !== undefined"
                   class="col-xs-4 app-store-right-col-btn manage-btn"
-                  (click)="openConfigureUrlInAppStoreInstall(app, app.installActionType, app.installActionURL, app.title, app._id)">
+                  (click)="openConfigureUrlInAppStoreInstall(app,  app.title, app._id)">
                   <a style="color: white;">
                     <!-- {{'Manage' | translate}} -->
                     <!-- Configure -->

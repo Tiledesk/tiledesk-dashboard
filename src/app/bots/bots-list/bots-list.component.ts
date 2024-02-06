@@ -1,4 +1,4 @@
-import { Component, isDevMode, OnInit } from '@angular/core';
+import { Component, isDevMode, OnInit, OnDestroy } from '@angular/core';
 import { FaqKbService } from '../../services/faq-kb.service';
 import { FaqKb } from '../../models/faq_kb-model';
 import { Router, RoutesRecognized } from '@angular/router';
@@ -18,7 +18,15 @@ import { ProjectService } from 'app/services/project.service';
 import { BotLocalDbService } from 'app/services/bot-local-db.service';
 import { MatDialog } from '@angular/material/dialog';
 import { CloneBotComponent } from './clone-bot/clone-bot.component';
-import { goToCDSVersion } from 'app/utils/util';
+// import { goToCDSVersion } from 'app/utils/util';
+import { CHATBOT_MAX_NUM, goToCDSVersion, PLAN_NAME } from 'app/utils/util';
+import { ProjectPlanService } from 'app/services/project-plan.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators'
+import { UsersService } from 'app/services/users.service';
+import { ChatbotModalComponent } from './chatbot-modal/chatbot-modal.component';
+import { BotsBaseComponent } from '../bots-base/bots-base.component';
+import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 
 const swal = require('sweetalert');
 @Component({
@@ -27,8 +35,10 @@ const swal = require('sweetalert');
   styleUrls: ['./bots-list.component.scss'],
 })
 
-export class BotListComponent implements OnInit {
-  // tparams = brand;
+export class BotListComponent extends PricingBaseComponent implements OnInit, OnDestroy {
+  PLAN_NAME = PLAN_NAME;
+  CHATBOT_MAX_NUM = CHATBOT_MAX_NUM;
+  private unsubscribe$: Subject<any> = new Subject<any>();
   tparams: any;
 
   faqkbList: FaqKb[];
@@ -93,18 +103,35 @@ export class BotListComponent implements OnInit {
   route: string
   dev_mode: boolean;
   isPanelRoute: boolean = false;
+  botLogo: string;
   public selectedProjectId: string;
   public projectname: string;
   public currentProjectId: string;
   public botProfileImageExist: boolean;
   public botProfileImageurl: string;
+
+  public projectPlanAgentsNo: any;
+  public prjct_profile_type: any;
+  public subscription_is_active: any;
+  public subscription_end_date: any;
+  public profile_name: any;
+  public trial_expired: any;
+  public prjct_profile_name: string;
+  // public chatBotLimit: any;
+
+  public chatBotCount: any;
+  public USER_ROLE: string;
+  public contactUs: string;
+  learnMoreAboutDefaultRoles: string;
+  agentsCannotManageChatbots: string;
+
   constructor(
     private faqKbService: FaqKbService,
     private router: Router,
     private faqService: FaqService,
     private auth: AuthService,
     private _location: Location,
-    private notify: NotifyService,
+    public notify: NotifyService,
     public appConfigService: AppConfigService,
     private translate: TranslateService,
     public brandService: BrandService,
@@ -112,11 +139,14 @@ export class BotListComponent implements OnInit {
     private logger: LoggerService,
     private projectService: ProjectService,
     private botLocalDbService: BotLocalDbService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    public prjctPlanService: ProjectPlanService,
+    public usersService: UsersService
   ) {
-
+    super(prjctPlanService, notify);
     const brand = brandService.getBrand();
     this.tparams = brand;
+    this.botLogo = brand['BASE_LOGO_NO_TEXT']
     this.dev_mode = isDevMode()
     this.logger.log('[BOTS-LIST] is dev mode ', this.dev_mode)
 
@@ -126,8 +156,7 @@ export class BotListComponent implements OnInit {
     this.getBrowserVersion();
     this.auth.checkRoleForCurrentProject();
     this.getProfileImageStorage();
-    this.translateTrashBotSuccessMsg();
-    this.translateTrashBotErrorMsg();
+
     this.getCurrentProject();
     this.getOSCODE();
     // this.getFaqKb();
@@ -136,6 +165,25 @@ export class BotListComponent implements OnInit {
     this.getTemplates()
     this.getCommunityTemplates()
     this.getNavigationBaseUrl()
+    this.getProjectPlan();
+    this.getUserRole();
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
+  getUserRole() {
+    this.usersService.project_user_role_bs
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((userRole) => {
+
+        this.logger.log('[BOTS-LIST] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
+        this.USER_ROLE = userRole;
+      })
   }
 
   getNavigationBaseUrl() {
@@ -219,7 +267,25 @@ export class BotListComponent implements OnInit {
   }
 
   duplicateChatbot(bot_id, bot_name) {
-    this.getProjects(bot_id, bot_name)
+    console.log('[BOTS-LIST] duplicateChatbot chatBotCount ', this.chatBotCount, ' chatBotLimit ', this.chatBotLimit, ' USER_ROLE ', this.USER_ROLE, ' profile_name ', this.profile_name)
+
+
+    if (this.USER_ROLE !== 'agent') {
+      if (this.chatBotLimit) {
+        if (this.chatBotCount < this.chatBotLimit) {
+          console.log('[BOTS-LIST] USECASE  chatBotCount < chatBotLimit: RUN GET PRJCTS')
+          this.getProjects(bot_id, bot_name)
+        } else if (this.chatBotCount >= this.chatBotLimit) {
+          console.log('[BOTS-LIST] USECASE  chatBotCount >= chatBotLimit DISPLAY MODAL')
+          this.presentDialogReachedChatbotLimit()
+        }
+      } else if (!this.chatBotLimit) {
+        console.log('[BOTS-LIST] USECASE  NO chatBotLimit: RUN PRJCTS')
+        this.getProjects(bot_id, bot_name)
+      }
+    } else if (this.USER_ROLE === 'agent') {
+      this.presentModalAgentCannotManageChatbot()
+    }
   }
 
   getProjects(bot_id, bot_name) {
@@ -294,27 +360,6 @@ export class BotListComponent implements OnInit {
   }
 
 
-  getTranslations() {
-    this.translate.get('BotsPage')
-      .subscribe((text: string) => {
-        // this.deleteContact_msg = text;
-        this.logger.log('[BOTS-LIST] getTranslations BotsPage : ', text)
-
-        this.botIsAssociatedWithDepartments = text['TheBotIsAssociatedWithDepartments'];
-        this.botIsAssociatedWithTheDepartment = text['TheBotIsAssociatedWithTheDepartment'];
-        this.disassociateTheBot = text['DisassociateTheBot'];
-      });
-
-
-    this.translate.get('Warning')
-      .subscribe((text: string) => {
-        // this.deleteContact_msg = text;
-        // this.logger.log('+ + + BotsPage translation: ', text)
-        this.warning = text;
-      });
-
-  }
-
   getProfileImageStorage() {
     if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
       this.UPLOAD_ENGINE_IS_FIREBASE = true;
@@ -331,24 +376,9 @@ export class BotListComponent implements OnInit {
     }
   }
 
-  
 
-  translateTrashBotSuccessMsg() {
-    this.translate.get('TrashBotSuccessNoticationMsg')
-      .subscribe((text: string) => {
-        this.trashBotSuccessNoticationMsg = text;
-        // this.logger.log('+ + + TrashBotSuccessNoticationMsg', text)
-      });
-  }
 
-  translateTrashBotErrorMsg() {
-    this.translate.get('TrashBotErrorNoticationMsg')
-      .subscribe((text: string) => {
 
-        this.trashBotErrorNoticationMsg = text;
-        // this.logger.log('+ + + TrashBotErrorNoticationMsg', text)
-      });
-  }
 
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
@@ -372,11 +402,11 @@ export class BotListComponent implements OnInit {
       if (faqKb) {
 
         this.faqkbList = faqKb;
-
+        this.chatBotCount = this.faqkbList.length;
         this.faqkbList.forEach(bot => {
           this.logger.log('[BOTS-LIST] getFaqKbByProjectId bot ', bot)
-          this.getBotProfileImage(bot) 
-          
+          this.getBotProfileImage(bot)
+
         });
 
         this.myChatbotOtherCount = faqKb.length
@@ -484,7 +514,7 @@ export class BotListComponent implements OnInit {
     const self = this;
     this.logger.log('[BOTS-LIST] HERE YES 1')
     this.verifyImageURL(imageUrl, function (imageExists) {
- 
+
       if (imageExists === true) {
         self.botProfileImageExist = imageExists
         self.logger.log('[BOTS-LIST] BOT PROFILE IMAGE (FAQ-COMP) - BOT PROFILE IMAGE EXIST ? ', imageExists, 'usecase native')
@@ -496,7 +526,7 @@ export class BotListComponent implements OnInit {
         self.botProfileImageExist = imageExists
 
         self.logger.log('[CDS-CHATBOT-DTLS] BOT PROFILE IMAGE (FAQ-COMP) - BOT PROFILE IMAGE EXIST ? ', imageExists, 'usecase native')
-        
+
       }
     })
   }
@@ -817,11 +847,49 @@ export class BotListComponent implements OnInit {
   }
 
   createBlankTilebot() {
-    this.router.navigate(['project/' + this.project._id + '/bots/create/tilebot/blank']);
-    // this.router.navigate(['project/' + this.project._id + '/chatbot/create']);
+    console.log('[BOTS-LIST] createBlankTilebot chatBotCount ', this.chatBotCount, ' chatBotLimit ', this.chatBotLimit)
 
+
+    if (this.USER_ROLE !== 'agent') {
+      if (this.chatBotLimit) {
+        if (this.chatBotCount < this.chatBotLimit) {
+          console.log('[BOTS-LIST] USECASE  chatBotCount < chatBotLimit: RUN NAVIGATE')
+          this.router.navigate(['project/' + this.project._id + '/bots/create/tilebot/blank']);
+        } else if (this.chatBotCount >= this.chatBotLimit) {
+          console.log('[BOTS-LIST] USECASE  chatBotCount >= chatBotLimit DISPLAY MODAL')
+          this.presentDialogReachedChatbotLimit()
+        }
+      } else if (!this.chatBotLimit) {
+        console.log('[BOTS-LIST] USECASE  NO chatBotLimit: RUN NAVIGATE')
+        this.router.navigate(['project/' + this.project._id + '/bots/create/tilebot/blank'])
+      }
+    } if (this.USER_ROLE === 'agent') {
+      this.presentModalAgentCannotManageChatbot()
+    }
   }
 
+  presentDialogReachedChatbotLimit() {
+    console.log('[BOTS-LIST] openDialog presentDialogReachedChatbotLimit prjct_profile_name ', this.prjct_profile_name)
+    const dialogRef = this.dialog.open(ChatbotModalComponent, {
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+      hasBackdrop: true,
+      data: {
+        projectProfile: this.prjct_profile_name,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`[BOTS-LIST] Dialog result: ${result}`);
+    });
+  }
+
+  presentModalAgentCannotManageChatbot() {
+    this.notify.presentModalAgentCannotManageChatbot(this.agentsCannotManageChatbots, this.learnMoreAboutDefaultRoles)
+  }
+
+  contacUsViaEmail() {
+    window.open('mailto:sales@tiledesk.com?subject=Upgrade Tiledesk plan');
+  }
 
   // goToEditAddPage_EDIT(faq_id: string) {
   //   this.logger.log('[TILEBOT] ID OF FAQ ', faq_id);
@@ -909,6 +977,58 @@ export class BotListComponent implements OnInit {
   goToTestFaqPage(remoteFaqKbKey: string) {
     this.logger.log('[BOTS-LIST] REMOTE FAQKB KEY SELECTED ', remoteFaqKbKey);
     this.router.navigate(['project/' + this.project._id + '/faq/test', remoteFaqKbKey]);
+  }
+
+  getTranslations() {
+    this.translate.get('BotsPage')
+      .subscribe((text: string) => {
+        // this.deleteContact_msg = text;
+        this.logger.log('[BOTS-LIST] getTranslations BotsPage : ', text)
+
+        this.botIsAssociatedWithDepartments = text['TheBotIsAssociatedWithDepartments'];
+        this.botIsAssociatedWithTheDepartment = text['TheBotIsAssociatedWithTheDepartment'];
+        this.disassociateTheBot = text['DisassociateTheBot'];
+      });
+
+
+    this.translate.get('Warning')
+      .subscribe((text: string) => {
+        // this.deleteContact_msg = text;
+        // this.logger.log('+ + + BotsPage translation: ', text)
+        this.warning = text;
+      });
+
+    this.translate
+      .get('LearnMoreAboutDefaultRoles')
+      .subscribe((translation: any) => {
+        this.learnMoreAboutDefaultRoles = translation
+      })
+
+    this.translate
+      .get('AgentsCannotManageChatbots')
+      .subscribe((translation: any) => {
+        this.agentsCannotManageChatbots = translation
+      })
+
+    this.translateTrashBotSuccessMsg();
+    this.translateTrashBotErrorMsg();
+  }
+
+  translateTrashBotSuccessMsg() {
+    this.translate.get('TrashBotSuccessNoticationMsg')
+      .subscribe((text: string) => {
+        this.trashBotSuccessNoticationMsg = text;
+        // this.logger.log('+ + + TrashBotSuccessNoticationMsg', text)
+      });
+  }
+
+  translateTrashBotErrorMsg() {
+    this.translate.get('TrashBotErrorNoticationMsg')
+      .subscribe((text: string) => {
+
+        this.trashBotErrorNoticationMsg = text;
+        // this.logger.log('+ + + TrashBotErrorNoticationMsg', text)
+      });
   }
 
 }

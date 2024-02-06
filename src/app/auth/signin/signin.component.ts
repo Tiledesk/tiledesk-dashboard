@@ -20,18 +20,14 @@ type FormErrors = { [u in UserFields]: string };
   styleUrls: ['./signin.component.scss']
 })
 export class SigninComponent implements OnInit {
-  // companyLogoBlack_Url = brand.company_logo_black__url;
-  // companyLogoAllWithe_Url = brand.company_logo_allwhite__url;
-  // company_name = brand.company_name;
-  // company_site_url = brand.company_site_url;
+
   EXIST_STORED_ROUTE: boolean = false
   storedRoute: string;
-  companyLogoBlack_Url: string;
+  companyLogo: string;
+  companyLogoNoText: string;
   companyLogoAllWithe_Url: string;
   company_name: string;
   company_site_url: string;
-
-
   showSpinnerInLoginBtn = false;
 
   hide_left_panel: boolean;
@@ -44,6 +40,9 @@ export class SigninComponent implements OnInit {
   public_Key: string;
   SUP: boolean = true;
   isVisibleV1L: boolean = true;
+  secondaryBrandColor: string;
+  primaryBrandColor: string;
+  hideGoogleAuthBtn: string;
 
   // newUser = false; // to toggle login or signup form
   // passReset = false; // set to true when password reset is triggered
@@ -76,11 +75,13 @@ export class SigninComponent implements OnInit {
   ) {
     const brand = brandService.getBrand();
 
-    this.companyLogoBlack_Url = brand['company_logo_black__url'];
-    this.companyLogoAllWithe_Url = brand['company_logo_allwhite__url'];
-    this.company_name = brand['company_name'];
-    this.company_site_url = brand['company_site_url'];
-
+    this.companyLogo = brand['BASE_LOGO'];
+    this.companyLogoNoText = brand['BASE_LOGO_NO_TEXT'];
+    this.company_name = brand['BRAND_NAME'];
+    this.company_site_url = brand['COMPANY_SITE_URL'];
+    this.secondaryBrandColor = brand['BRAND_SECONDARY_COLOR']; 
+    this.primaryBrandColor = brand['BRAND_PRIMARY_COLOR'];
+    this.hideGoogleAuthBtn = brand['display_google_auth_btn'];
   }
 
   ngOnInit() {

@@ -27,8 +27,8 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
   @Input() updatedProject: any;
 
   displayLogoWithText: boolean = true;
-  companyLogoBlack_Url: string;
-  companyLogoNoText_Url: string;
+  companyLogo: string;
+  companyLogoNoText: string;
 
   selectedIndex: number;
   template: any;
@@ -79,8 +79,8 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
 
     const brand = brandService.getBrand();
 
-    this.companyLogoBlack_Url = brand['company_logo_black__url'];
-    this.companyLogoNoText_Url = brand['company_logo_no_text__url'];
+    this.companyLogo = brand['BASE_LOGO'];
+    this.companyLogoNoText = brand['BASE_LOGO_NO_TEXT'];
   }
 
   ngOnInit(): void {

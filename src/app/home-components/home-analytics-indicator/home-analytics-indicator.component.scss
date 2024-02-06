@@ -203,7 +203,7 @@
 // ---
 .text-accent-link-on-white {
     // color: #673ab7;
-    color: #2196f3;
+    color: var(--blue-light);
     font-weight: 400;
     cursor: pointer;
 }
@@ -211,7 +211,7 @@
 .text-accent-link-on-white .m-i-arrow-on-white {
     vertical-align: middle;
     // color: #673ab7;
-    color: #2196f3;
+    color: var(--blue-light);
     margin-left: -4px;
     transition: 0.1s ease-in;
 }

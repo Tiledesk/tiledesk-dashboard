@@ -1,18 +1,20 @@
-<!-- height: calc(100vh - 60px)" height: 100vh -->
-<div class="apps-right-side-bar" style=" box-shadow: 0 2px 6px rgb(0 27 71 / 12%);"
+
+<div class="apps-right-side-bar"
   [ngClass]="{'apps-right-side-bar-panel-mode': SIDEBAR_APPS_IN_CHAT_PANEL_MODE, 'apps-right-side-bar-dshbrd-mode': !SIDEBAR_APPS_IN_CHAT_PANEL_MODE}">
 
-  <div #appsSidebar id="apps-sidebar-header" style="border-bottom: 1px solid #eeeeee; background-color: #3c4252!important;
-    color: #fff!important; margin-left:-20px; margin-right:-20px; margin-top:-15px">
-    <h5
-      style="font-weight: 400; text-transform: none; margin-top:0px; font-size: 16px; padding-top: 15px;padding-left: 36px;">
-      <!-- Train Bot -->
+  <div #appsSidebar id="apps-sidebar-header">
+    <!-- [ngStyle]="{'fill':APP_SIDEBAR_WIDE === true ? '#039be5' : '#fff'}" -->
+
+    <h5>
       {{ 'Apps' | translate }}
-      <!-- "{'margin-top':isChromeVerGreaterThan100 === true ? '-61px' : '6px', 'margin-left':isChromeVerGreaterThan100 === true ? '55px' : '4px'}"></svg> -->
-      <span class="width-wide-btn-wpr" style="position: absolute;right: 38px; cursor:pointer"
+      <span class="width-wide-btn-wpr"
         (click)="enlargeSidebarWide()">
-        <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24"
-          width="24px" fill="#fff" [ngStyle]="{'fill':APP_SIDEBAR_WIDE === true ? '#039be5' : '#fff'}">
+        <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" 
+          height="24px" 
+          viewBox="0 0 24 24"
+          width="24px" 
+          
+          [ngClass]="{'isWide':APP_SIDEBAR_WIDE === true , 'isClose':APP_SIDEBAR_WIDE === false}">
           <g>
             <rect fill="none" height="24" width="24" />
           </g>

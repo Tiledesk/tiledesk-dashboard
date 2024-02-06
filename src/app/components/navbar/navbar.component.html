@@ -49,18 +49,103 @@
           </a>
         </li> -->
 
+        <ng-container>
+          <li id="usage-stats">
+
+            <button mat-mini-fab aria-label="trend icon" [matMenuTriggerFor]="menu" class="quote-modal-btn"
+              [ngClass]="{'quote-modal-btn-no-left-padding': prjct_profile_type === 'free'}" 
+              (click)="onOpenQuoteMenu()">
+              <!-- <span class="material-icons-round" style="font-size: 16px;">
+                storage
+                </span> -->
+
+              <mat-icon style="color: #555555">
+                <!-- trending_up -->
+                data_usage
+              </mat-icon>
+            </button>
+            <mat-menu #menu="matMenu" xPosition="before" style="margin-top: 6px !important; width: 220px !important;">
+
+              <div class="menu-container">
+                <p class="menu-title">Usage</p>
+
+                <!-- // Alternative: follow the example on https://codepen.io/nikitahl/pen/ZEjRBEE -->
+
+                <div class="quotes-container">
+
+                  <div class="quote-container">
+
+                    <div>
+                      <p class="quote-title">Convesations</p>
+                      <div class="quote-count">{{requests_count}} / {{requests_limit}}</div>
+                    </div>
+
+                    <div class="quote">
+                      <mat-progress-spinner class="example-margin" [strokeWidth]="5" [diameter]="50" [color]="'primary'"
+                        [mode]="'determinate'" [value]="requests_perc">
+                      </mat-progress-spinner>
+
+                      <div class="percentage">{{ requests_perc }}<span
+                          style="font-size: 10px; margin-top: 2px; margin-left: 1px"> %</span></div>
+                    </div>
+
+                  </div>
+
+                  <div class="quote-container">
+
+                    <div>
+                      <p class="quote-title">AI Tokens</p>
+                      <div class="quote-count">{{tokens_count}} / {{tokens_limit}}</div>
+                    </div>
+
+                    <div class="quote">
+                      <mat-progress-spinner class="example-margin" [strokeWidth]="5" [diameter]="50" [color]="'primary'"
+                        [mode]="'determinate'" [value]="tokens_perc">
+                      </mat-progress-spinner>
+
+                      <div class="percentage">{{ tokens_perc }}<span
+                          style="font-size: 10px; margin-top: 2px; margin-left: 1px"> %</span></div>
+                    </div>
+
+                  </div>
+
+                  <div class="quote-container">
+
+                    <div>
+                      <p class="quote-title">Email</p>
+                      <div class="quote-count">{{email_count}} / {{email_limit}}</div>
+                    </div>
+
+                    <div class="quote">
+                      <mat-progress-spinner class="example-margin" [strokeWidth]="5" [diameter]="50" [color]="'primary'"
+                        [mode]="'determinate'" [value]="email_perc">
+                      </mat-progress-spinner>
+
+                      <div class="percentage">{{ email_perc }}<span
+                          style="font-size: 10px; margin-top: 2px; margin-left: 1px"> %</span></div>
+                    </div>
+                  </div>
+                </div>
 
 
+                <button mat-flat-button class="upgrade-btn" (click)="goToPricing()">
+                  <span class="material-icons-outlined">bolt</span>
+                  {{ "Pricing.UpgradePlan" | translate }}
+                </button>
 
+              </div>
+
+            </mat-menu>
+          </li>
+        </ng-container>
 
         <!-- ------------------------------------------------  -->
         <!--  UPGRADE (PROFILE TYPE = FREE) -->
         <!-- ------------------------------------------------  -->
         <ng-container *ngIf="isVisible">
-          <li *ngIf="project && prjct_profile_type === 'free'">
+          <li id="trial-days-indicator" *ngIf="project && prjct_profile_type === 'free'">
 
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown"
-              style="padding-top:0px; padding-bottom:0px; padding-right: 0px;">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="padding:0px;">
               <div id="progress" class="progress" [attr.data-percentage]="prjc_trial_days_left_percentage">
                 <span class="progress-left">
                   <span class="progress-bar"
@@ -83,12 +168,12 @@
               </div>
             </a>
 
-            <ul class="dropdown-menu" style="margin-top: 11px; padding-left:20px;padding-right:20px;width: 200px;">
+            <ul class="dropdown-menu" style="margin-top: 11px; padding-left:20px;padding-right:20px;width: 200px; left: -82px;">
               <p *ngIf="prjct_trial_expired === false" style="margin-bottom:0px">
                 {{ "Pricing.Your" | translate }}
 
                 <span style="font-weight:600">
-                  {{ "Pricing.30DaysFreeTrial" | translate: translationParams }}
+                  {{ "Pricing.30DaysFreeTrial" | translate: tParamsPlanNameTrialExpired }}
                 </span>
 
                 {{ "Pricing.WillExpireIn" | translate }}
@@ -105,7 +190,7 @@
               <p *ngIf="prjct_trial_expired === true" style="margin-bottom:0px">
                 {{ "Pricing.Your" | translate }}
                 <span style="font-weight:600">
-                  {{ "Pricing.30DaysFreeTrial" | translate: translationParams }}
+                  {{ "Pricing.30DaysFreeTrial" | translate: tParamsPlanNameTrialExpired }}
                 </span>
                 {{ "Pricing.HasExpired" | translate }}
               </p>
@@ -118,7 +203,7 @@
         <!--    UPGRADE BTN (PROFILE TYPE = FREE)  -->
         <!--  ------------------------------------------------ -->
         <ng-container *ngIf="isVisible">
-          <li *ngIf="project && prjct_profile_type === 'free'">
+          <li id="upgrade-plan-link" *ngIf="project && prjct_profile_type === 'free'">
             <a class="upgrade-btn-trial-expired" (click)="goToPricing()"> {{ "Pricing.UpgradePlan" | translate }} </a>
           </li>
         </ng-container>
@@ -128,11 +213,10 @@
         <!--   PLAN NAME (PROFILE TYPE = PAYMENTS)  && HOME_ROUTE_IS_ACTIVE === false -->
         <!--  ------------------------------------------------ -->
         <ng-container *ngIf="isVisible">
-          <li *ngIf="project && prjct_profile_type === 'payment' ">
+          <li
+            [ngClass]="{'hide-expired-subscription-indicator': prjct_profile_type === 'payment' && subscription_is_active === true}"
+            id="expired-subscription-indicator" *ngIf="project && prjct_profile_type === 'payment'">
             <a>
-          
-
-
               <!--  ------------------------------------------------ -->
               <!--  TOOLTIP SUB EXPIRED (PROFILE TYPE = PAYMENTS) -->
               <!--  ------------------------------------------------ -->
@@ -145,10 +229,10 @@
                 <span class="expired__Tooltiptext"
                   style="font-size:12px; top: 27px;text-transform:none; cursor: pointer; height: fit-content;vertical-align: middle;">
 
-                  <span *ngIf="profile_name !== PLAN_NAME?.C">
+                  <span *ngIf="profile_name !== PLAN_NAME?.C && profile_name !== PLAN_NAME?.F">
                     {{ 'Pricing.SubscriptionPaymentProblem' | translate }}
                   </span>
-                  <span *ngIf="profile_name === PLAN_NAME?.C">
+                  <span *ngIf="profile_name === PLAN_NAME?.C || profile_name === PLAN_NAME?.F">
                     {{ 'Pricing.ThePlanHasExpired' | translate }}
                   </span>
                 </span>
@@ -180,6 +264,12 @@
           </li>
         </ng-container> -->
 
+        <!-- ------------------------------------------------------ -->
+        <!-- Switch theme color -->
+        <!-- ------------------------------------------------------ -->
+        <!-- <div>
+            <input type="checkbox" (change)="changeThemeColor()">
+        </div> -->
 
         <!-- ------------------------------------------------------ -->
         <!-- test site btn -->
@@ -433,7 +523,9 @@
 <span *ngIf="HIDE_PENDING_EMAIL_NOTIFICATION === false">
   <div (click)="goToUserProfile()" *ngIf="user?.emailverified == false" data-notify="container" style="z-index: 1055;"
     class="alert alert-danger animated fadeInDown alert-pending-email-verification" role="alert"
-    data-notify-position="top-center" [ngClass]="{'is-user-profile-page' : DETECTED_USER_PROFILE_PAGE === true }">
+    data-notify-position="top-center" [ngClass]="{'is-user-profile-page' : DETECTED_USER_PROFILE_PAGE === true }"
+    matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'NavBar.WhenPendingEmailVerification' | translate}}"
+    #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
     <!-- <button type="button" aria-hidden="true" class="close" data-notify="dismiss" style="position: absolute; right: 10px; top: 5px; z-index: 1033;">×</button> -->
     <span data-notify="icon" class="notifications">
       <i class="fa fa-exclamation-circle" style="font-size: 13px; position: relative;top: -1px;"></i>
@@ -441,7 +533,7 @@
         style="font-family: 'Poppins', sans-serif;font-weight: 400; display: inline; position: relative;top: -2px; font-size: 11px; padding-left: 5px;">
         {{"NavBar.PendingVerification" | translate }}
 
-        <span class="tooltipx" style="float: right;">
+        <!-- <span class="tooltipx" style="float: right;">
           <span>
             <i class="material-icons" style="position: relative;top: 4px; font-size:14px; color:#ffffff">
               help_outline
@@ -451,7 +543,7 @@
             style="min-width: 231px;line-height: 1.1;min-height: 34px; top: -5px; right: 105%; ">
             {{ "NavBar.WhenPendingEmailVerification" | translate}}
           </span>
-        </span>
+        </span> -->
       </span>
     </span>
     <!-- <span data-notify="title" style="max-width: 100%;">
@@ -506,5 +598,3 @@
   </div>
   <!-- /.modal-dialog -->
 </div>
-
-

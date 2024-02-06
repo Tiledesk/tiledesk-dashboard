@@ -30,6 +30,7 @@ export class WidgetInstallationComponent implements OnInit {
   id_project: string;
 
   elActive: any;
+  displayHelpInInstallation: string;
   // get nativeWindow() : any {
   //   return _window();
   // }
@@ -41,8 +42,8 @@ export class WidgetInstallationComponent implements OnInit {
     ) { 
       const brand = brandService.getBrand();
       this.tparams = brand;
-      this.company_name = brand['company_name'];
-
+      this.company_name = brand['BRAND_NAME'];
+      this.displayHelpInInstallation = brand['display_help_in_installation'];
      }
 
   ngOnInit() {
