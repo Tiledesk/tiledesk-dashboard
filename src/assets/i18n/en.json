@@ -1613,7 +1613,7 @@
         "PlaceholderSelectEngine": "Select an element",
         "TypeKbContentPlaceholder": "Text content of the Knowledge Base",
         "AddKbInfoTextContent": "Set a valid Text Content for your Knowledge Base.",
-        "AddKbInfoTextContentMsg1": "Attention! The maximum number of characters is 32768.",
+        "AddKbInfoTextContentMsg1": "Attention, the maximum number of characters allowed for each text content is 32768.",
         "StatusAll": "All",
         "StatusNotStarted": "Not started",
         "StatusStarted": "Started",

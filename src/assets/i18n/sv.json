@@ -1613,7 +1613,12 @@
         "PlaceholderSelectEngine": "Välj ett element",
         "TypeKbContentPlaceholder": "Textinnehållet i Kunskapsbasen",
         "AddKbInfoTextContent": "Ställ in ett giltigt textinnehåll för din kunskapsbas.",
-        "AddKbInfoTextContentMsg1": "Uppmärksamhet! "
+        "AddKbInfoTextContentMsg1": "Observera, det maximala antalet tillåtna tecken för varje textinnehåll är 32768.",
+        "StatusAll": "Allt",
+        "StatusNotStarted": "Ej påbörjad",
+        "StatusStarted": "Satte igång",
+        "StatusFinished": "Färdiga",
+        "StatusError": "Fel"
     },
     "AutomationsDemoPageDescription":"Med våra “API-automatiseringar” kan du hantera massutsändningsmeddelanden på Whatsapp med hjälp av designerns automatiseringar kombinerat med enkelheten hos våra API: er, skicka meddelanden till alla kontakter i din favorit-CRM, ta emot status för skickade meddelanden (mottagna, lästa, etc. ) och mycket mer!",
     "Sunday": "söndag",

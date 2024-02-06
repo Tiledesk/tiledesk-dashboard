@@ -1613,7 +1613,12 @@
         "PlaceholderSelectEngine": "Element seçin",
         "TypeKbContentPlaceholder": "Bilik bazasının mətn məzmunu",
         "AddKbInfoTextContent": "Bilik bazanız üçün etibarlı Mətn Məzmunu təyin edin.",
-        "AddKbInfoTextContentMsg1": "Diqqət! "
+        "AddKbInfoTextContentMsg1": "Diqqət, hər mətn məzmunu üçün icazə verilən simvolların maksimum sayı 32768-dir.",
+        "StatusAll": "Hamısı",
+        "StatusNotStarted": "Başlanmayıb",
+        "StatusStarted": "başladı",
+        "StatusFinished": "Bitdi",
+        "StatusError": "Xəta"
     },
     "AutomationsDemoPageDescription":"Bizim “API avtomatlaşdırmalarımız” ilə siz API-lərimizin asanlığı ilə birləşdirilən dizayner avtomatlaşdırmalarından istifadə edərək Whatsapp-da kütləvi yayım mesajlarını idarə edə, sevimli CRM-nin bütün kontaktlarına mesaj göndərə, göndərilən mesajların statusunu (qəbul edildi, oxundu və s.) ala bilərsiniz. ) və daha çox!",
     "Sunday": "bazar günü",

@@ -128,6 +128,18 @@ export class KnowledgeBaseTableComponent implements OnInit {
     this.openBaseModalDetail.emit(kb);
   }
 
+  getSubtitle(kb){
+    let subtitle = kb.source;
+    if(kb.type !== 'url'){
+      const maxLength = 100;
+      if (kb.content.length > maxLength) {
+        subtitle = kb.content.substring(0, maxLength) + '...';
+      } else {
+        subtitle = kb.content;
+      }
+    }
+    return subtitle;
+  }
 }
 
 

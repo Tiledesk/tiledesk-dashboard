@@ -1613,7 +1613,12 @@
         "PlaceholderSelectEngine": "Bir öğe seçin",
         "TypeKbContentPlaceholder": "Bilgi Bankasının metin içeriği",
         "AddKbInfoTextContent": "Bilgi Tabanınız için geçerli bir Metin İçeriği ayarlayın.",
-        "AddKbInfoTextContentMsg1": "Dikkat! "
+        "AddKbInfoTextContentMsg1": "Dikkat, her metin içeriği için izin verilen maksimum karakter sayısı 32768'dir.",
+        "StatusAll": "Tüm",
+        "StatusNotStarted": "Başlatılmadı",
+        "StatusStarted": "Başlatıldı",
+        "StatusFinished": "Bitti",
+        "StatusError": "Hata"
     },
     "AutomationsDemoPageDescription":"“API otomasyonlarımız” ile, API'lerimizin kolaylığıyla birlikte tasarımcının otomasyonlarını kullanarak Whatsapp'taki toplu yayın mesajlarını yönetebilir, favori CRM'nizdeki tüm kişilere mesaj gönderebilir, gönderilen mesajların durumunu (alındı, okundu vb.) alabilirsiniz. ) ve daha fazlası!",
     "Sunday": "Pazar",

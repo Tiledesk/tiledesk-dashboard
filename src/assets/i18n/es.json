@@ -1613,7 +1613,12 @@
         "PlaceholderSelectEngine": "Seleccione un elemento",
         "TypeKbContentPlaceholder": "Contenido del texto de la base de conocimientos.",
         "AddKbInfoTextContent": "Establezca un contenido de texto válido para su base de conocimientos.",
-        "AddKbInfoTextContentMsg1": "¡Atención! "
+        "AddKbInfoTextContentMsg1": "Atención, el número máximo de caracteres permitidos para cada contenido de texto es 32768.",
+        "StatusAll": "Todo",
+        "StatusNotStarted": "No empezado",
+        "StatusStarted": "Comenzó",
+        "StatusFinished": "Finalizado",
+        "StatusError": "Error"
     },
     "AutomationsDemoPageDescription":"Con nuestras “automatizaciones APIs” podrás gestionar mensajes de difusión masiva en Whatsapp utilizando las automatizaciones del diseñador combinadas con la facilidad de nuestras APIs, enviar mensajes a todos los contactos de tu CRM favorito, recibir el estado de los mensajes enviados (recibidos, leídos, etc.) ) ¡y mucho más!",
     "Sunday": "Domingo",

@@ -1614,7 +1614,12 @@
 		"PlaceholderSelectEngine": "Wählen Sie ein Element aus",
 		"TypeKbContentPlaceholder": "Textinhalt der Wissensdatenbank",
 		"AddKbInfoTextContent": "Legen Sie einen gültigen Textinhalt für Ihre Wissensdatenbank fest.",
-		"AddKbInfoTextContentMsg1": "Aufmerksamkeit! "
+		"AddKbInfoTextContentMsg1": "Achtung, die maximal zulässige Zeichenanzahl für jeden Textinhalt beträgt 32768.",
+		"StatusAll": "Alle",
+		"StatusNotStarted": "Nicht angefangen",
+		"StatusStarted": "Gestartet",
+		"StatusFinished": "Fertig",
+		"StatusError": "Fehler"
 	},
 	"AutomationsDemoPageDescription":"Mit unseren „APIs-Automatisierungen“ können Sie Massennachrichten auf WhatsApp verwalten, indem Sie die Automatisierungen des Designers in Kombination mit der Benutzerfreundlichkeit unserer APIs nutzen, Nachrichten an alle Kontakte Ihres bevorzugten CRM senden, den Status gesendeter Nachrichten (empfangen, gelesen usw.) erhalten. ) und vieles mehr!",
 	"Sunday": "Sonntag",

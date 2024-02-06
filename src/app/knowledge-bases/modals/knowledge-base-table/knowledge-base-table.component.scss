@@ -38,7 +38,6 @@ select.select-status {
 table {
     width: 100%;
   }
-  
   th {
     font-family: "Roboto", "Helvetica", "Arial", sans-serif;
     font-size: 14px;
@@ -47,6 +46,12 @@ table {
 
   th.mat-sort-header-sorted {
     color: black;
+  }
+
+  .subtitle {
+    margin: 0;
+    font-size: 11px;
+    line-height: 11px;
   }
 
   .mat-elevation-z8{
