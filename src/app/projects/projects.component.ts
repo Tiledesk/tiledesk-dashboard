@@ -105,7 +105,7 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
     
 
     this.company_brand_color = brand['BRAND_PRIMARY_COLOR'];
-    console.log('[PROJECTS] company_brand_color' ,this.company_brand_color)
+    // console.log('[PROJECTS] company_brand_color' ,this.company_brand_color)
 
     this.logger.log('[PROJECTS] - IS DEV MODE ', isDevMode());
     this.APP_IS_DEV_MODE = isDevMode()
@@ -131,7 +131,7 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
   ngAfterContentInit(): void {
     if (this.company_brand_color)  {
       this.element.nativeElement.querySelector('.project_background').style.setProperty('--brandColor' , this.company_brand_color)
-      console.log('[PROJECTS] project_background', this.element.nativeElement.querySelector('.project_background')) 
+      // console.log('[PROJECTS] project_background', this.element.nativeElement.querySelector('.project_background')) 
       // this.element.nativeElement.querySelector('#create-prjct-card > .card-add-project-icon').style.setProperty('--brandColor' , this.company_brand_color)
       // this.element.nativeElement.querySelector('#create-prjct-card > .card-add-project-text').style.setProperty('--brandColor' , this.company_brand_color)
     }
