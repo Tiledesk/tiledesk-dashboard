@@ -467,23 +467,7 @@ export class HomeCreateChatbotComponent extends PricingBaseComponent implements 
 
   createBlankTilebot() {
     console.log('[BOTS-LIST] createBlankTilebot chatBotCount ', this.countOfChatbots, ' chatBotLimit ', this.chatBotLimit, ' PROJECT PLAN ', this.profile_name)
-    // if (this.profile_name === 'Sandbox' || this.profile_name === PLAN_NAME.D || this.profile_name === PLAN_NAME.E || this.profile_name === PLAN_NAME.F) {
-    //   if (this.chatBotCount < this.chatBotLimit) {
 
-    //     this.presentModalAddBotFromScratch()
-
-    //   } else if (this.chatBotCount >= this.chatBotLimit) {
-
-    //     if (this.USER_ROLE !== 'agent') {
-    //       this.presentDialogReachedChatbotLimit()
-    //     } else if (this.USER_ROLE === 'agent') {
-    //       this.presentModalOnlyOwnerCanManageTheAccountPlan()
-    //     }
-    //   }
-    // } else if (this.profile_name === 'free' || this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.B || this.profile_name === PLAN_NAME.C) {
-
-    //   this.presentModalAddBotFromScratch()
-    // }
 
     if (this.USER_ROLE !== 'agent') {
       if (this.chatBotLimit) {

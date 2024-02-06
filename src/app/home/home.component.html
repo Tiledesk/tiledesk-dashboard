@@ -66,11 +66,17 @@
                 <div class="flex flex-col min-w-0 ml-4">
                   <!-- leading-7 -->
                   <div class="text-2xl md-text-5xl font-w-400 tracking-tight  md-leading-snug truncate project---name">
-                    <span style="font-family: 'Poppins', Arial, sans-serif;"> {{ prjct_name }} </span>
-                    <span class="material-icons home-edit-project-name-icon" (click)="goToProjectSettingsGeneral()"
-                      matTooltipClass="custom-mat-tooltip" matTooltip="{{'EditProjectName' | translate }}"
-                      #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
-                      mode_edit
+                    <span style="font-family: 'Poppins', Arial, sans-serif;"> 
+                      {{ prjct_name }} 
+                    </span>
+                    <span class="material-icons home-edit-project-name-icon" 
+                      (click)="goToProjectSettingsGeneral()"
+                      matTooltipClass="custom-mat-tooltip" 
+                      matTooltip="{{'EditProjectName' | translate }}"
+                      #tooltip="matTooltip" 
+                      matTooltipPosition='below'
+                      matTooltipHideDelay="100">
+                        mode_edit
                     </span>
                   </div>
 
@@ -83,7 +89,9 @@
                       'c-plan-badge': current_prjct?.plan_badge_background_type === 'c_plan_badge',
                       'unsupported-plan-badge': current_prjct?.plan_badge_background_type === 'unsupported_plan_badge'
                       }">
-                      <span style="border-bottom: 1px dotted #3ea9f5;"> {{ prjct_profile_name }} </span>
+                      <span style="border-bottom: 1px dotted #3ea9f5;"> 
+                        {{ prjct_profile_name }} 
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -195,7 +203,7 @@
                   <!-- --------------------- -->
                   <!-- From here -->
                   <!-- --------------------- -->
-                  <!-- <button mat-menu-item (click)="$event.stopPropagation()">
+                  <button mat-menu-item (click)="$event.stopPropagation()">
                     <mat-checkbox class="home-settings-checkbox" [checked]="displayConnectWhatsApp"
                       (change)="switchConnectWhatsApp($event.checked)"></mat-checkbox>
                     <span>Connect WhatsApp </span>
@@ -219,7 +227,7 @@
                     <mat-checkbox class="home-settings-checkbox" [checked]="displayCustomizeWidget"
                       (change)="switchCustomizeWidget($event.checked)"></mat-checkbox>
                     <span>Customize widget</span>
-                  </button>    -->
+                  </button>   
 
                   <!-- --------------------- -->
                   <!-- To here -->
@@ -620,10 +628,10 @@
               </i>
               <span class="expired__Tooltiptext"
                 style="font-size:14px; top: 43px;padding: 5px; height: 44px; cursor:pointer">
-                <span *ngIf="profile_name !== PLAN_NAME.C">
+                <span *ngIf="profile_name !== PLAN_NAME.C && this.profile_name !== PLAN_NAME.F">
                   {{ 'Pricing.SubscriptionPaymentProblem' | translate }}
                 </span>
-                <span *ngIf="profile_name === PLAN_NAME.C">
+                <span *ngIf="profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F">
                   {{ 'Pricing.ThePlanHasExpired' | translate }}
                 </span>
               </span>

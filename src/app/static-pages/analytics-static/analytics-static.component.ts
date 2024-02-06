@@ -85,7 +85,6 @@ export class AnalyticsStaticComponent extends PricingBaseComponent implements On
   ) {
     super(prjctPlanService, notify);
     // super(translate);
-    // this.tparams = { 'plan_name': PLAN_NAME.B }
    
   }
 

@@ -1306,6 +1306,8 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
               this.tParamsPlanAndSeats = { plan_name: 'Free', allowed_seats_num: this.seatsLimit }
               this.tParamsFeatureAvailableWith = { plan_name: PLAN_NAME.F }
               this.translateAvailableWithPlusOrCustomPlan(PLAN_NAME.F)
+              this.translationParams = { plan_name: PLAN_NAME.B } // Scale
+   
 
             } else if (this.profile_name === 'Sandbox') {
               this.prjct_profile_name = "Sandbox";
@@ -1313,6 +1315,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
               this.tParamsPlanAndSeats = { plan_name: 'Sandbox', allowed_seats_num: this.seatsLimit }
               this.tParamsFeatureAvailableWith = { plan_name: PLAN_NAME.F }
               this.translateAvailableWithPlusOrCustomPlan(PLAN_NAME.F)
+              this.translationParams = { plan_name: PLAN_NAME.E } // Premium
             }
           }
         } else if (projectProfileData.profile_type === 'payment') {

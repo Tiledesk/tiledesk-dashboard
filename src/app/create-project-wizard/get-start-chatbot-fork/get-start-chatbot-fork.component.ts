@@ -656,6 +656,7 @@ export class GetStartChatbotForkComponent implements OnInit {
 
         }
         else if (project.profile.name === PLAN_NAME.E) {
+          this.prjct_profile_name = PLAN_NAME.E + " plan";
           this.chatBotLimit = CHATBOT_MAX_NUM.free
           console.log('[GET START CHATBOT FORK] - GET PROJECT PLAN - project profile type ', project.profile.type, 'prjct_profile_name', this.prjct_profile_name, ' chatBotLimit', this.chatBotLimit)
 

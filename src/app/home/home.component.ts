@@ -129,6 +129,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   appSumoProfile: string;
   project_plan_badge: boolean;
   featureAvailableFromBPlan: string;
+  featureAvailableFromEPlan: string;
   appSumoProfilefeatureAvailableFromBPlan: string;
   agentCannotManageAdvancedOptions: string;
   tPlanParams: any;
@@ -540,16 +541,16 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         if (this.prjct_trial_expired === false) {
 
           if (this.profile_name === 'free') {
-            this.profile_name_for_segment = PLAN_NAME.B + " (trial)"
             this.prjct_profile_name = PLAN_NAME.B + " (trial)"
+            this.profile_name_for_segment = this.prjct_profile_name;
             this.auth.projectProfile(this.profile_name_for_segment)
           } else if (this.profile_name === 'Sandbox') {
 
             // --------------------------------------------------
             // New pricing
             // --------------------------------------------------
-            this.profile_name_for_segment = PLAN_NAME.E + " (trial)"
             this.prjct_profile_name = PLAN_NAME.E + " (trial)"
+            this.profile_name_for_segment = this.prjct_profile_name;
             this.auth.projectProfile(this.profile_name_for_segment)
           }
 
@@ -559,15 +560,15 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         } else {
 
           if (this.profile_name === 'free') {
-            this.profile_name_for_segment = "Free plan"
-            this.auth.projectProfile(this.profile_name_for_segment)
             this.prjct_profile_name = "Free plan";
+            this.profile_name_for_segment = this.prjct_profile_name
+            this.auth.projectProfile(this.profile_name_for_segment)
             this.current_prjct['plan_badge_background_type'] = 'free_plan_badge'
 
           } else if (this.profile_name === 'Sandbox') {
-            this.profile_name_for_segment = "Sandbox plan"
-            this.auth.projectProfile(this.profile_name_for_segment)
             this.prjct_profile_name = "Sandbox plan";
+            this.profile_name_for_segment = this.prjct_profile_name
+            this.auth.projectProfile(this.profile_name_for_segment)
             this.current_prjct['plan_badge_background_type'] = 'free_plan_badge'
           }
 
@@ -579,11 +580,11 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         if (this.prjct_profile_name === PLAN_NAME.A) {
           if (!this.appSumoProfile) {
             this.prjct_profile_name = PLAN_NAME.A + ' plan'
-            this.profile_name_for_segment = PLAN_NAME.A
+            this.profile_name_for_segment = this.prjct_profile_name
             this.auth.projectProfile(this.profile_name_for_segment)
           } else {
             this.prjct_profile_name = PLAN_NAME.A + ' plan ' + '(' + this.appSumoProfile + ')'
-            this.profile_name_for_segment = PLAN_NAME.A + '(' + this.appSumoProfile + ')'
+            this.profile_name_for_segment = this.prjct_profile_name;
             this.auth.projectProfile(this.profile_name_for_segment)
           }
           this.current_prjct['plan_badge_background_type'] = 'a_plan_badge'
@@ -592,11 +593,11 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         } else if (this.prjct_profile_name === PLAN_NAME.B) {
           if (!this.appSumoProfile) {
             this.prjct_profile_name = PLAN_NAME.B + ' plan'
-            this.profile_name_for_segment = PLAN_NAME.B
+            this.profile_name_for_segment =   this.prjct_profile_name
             this.auth.projectProfile(this.profile_name_for_segment)
           } else {
             this.prjct_profile_name = PLAN_NAME.B + ' plan ' + '(' + this.appSumoProfile + ')'
-            this.profile_name_for_segment = PLAN_NAME.B + '(' + this.appSumoProfile + ')'
+            this.profile_name_for_segment = this.prjct_profile_name
             this.auth.projectProfile(this.profile_name_for_segment)
           }
           this.current_prjct['plan_badge_background_type'] = 'b_plan_badge'
@@ -604,28 +605,28 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           // Plus plan
         } else if (this.prjct_profile_name === PLAN_NAME.C) {
           this.prjct_profile_name = PLAN_NAME.C + ' plan'
-          this.profile_name_for_segment = PLAN_NAME.C
+          this.profile_name_for_segment = this.prjct_profile_name;
           this.auth.projectProfile(this.profile_name_for_segment)
           this.current_prjct['plan_badge_background_type'] = 'c_plan_badge'
 
           // Basic plan
         } else if (this.prjct_profile_name === PLAN_NAME.D) {
           this.prjct_profile_name = PLAN_NAME.D + ' plan'
-          this.profile_name_for_segment = PLAN_NAME.D
+          this.profile_name_for_segment = this.prjct_profile_name;
           this.auth.projectProfile(this.profile_name_for_segment)
           this.current_prjct['plan_badge_background_type'] = 'a_plan_badge'
 
           // Premium plan
         } else if (this.prjct_profile_name === PLAN_NAME.E) {
           this.prjct_profile_name = PLAN_NAME.E + ' plan'
-          this.profile_name_for_segment = PLAN_NAME.E
+          this.profile_name_for_segment = this.prjct_profile_name
           this.auth.projectProfile(this.profile_name_for_segment)
           this.current_prjct['plan_badge_background_type'] = 'b_plan_badge'
 
           // Custom plan
         } else if (this.prjct_profile_name === PLAN_NAME.F) {
           this.prjct_profile_name = PLAN_NAME.F + ' plan'
-          this.profile_name_for_segment = PLAN_NAME.F
+          this.profile_name_for_segment = this.prjct_profile_name
           this.auth.projectProfile(this.profile_name_for_segment)
           this.current_prjct['plan_badge_background_type'] = 'c_plan_badge'
 
@@ -1420,52 +1421,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
               }
             }
           }
-
-          // if (res.length === 0) {
-          // console.log("[HOME] USE CASE RES 0 ")
-          // if (this.solution_channel_for_child === 'whatsapp_fb_messenger') {
-          //   this.logger.log("[HOME] GET APPS - BEFORE TO INSTALL WA solution_channel_for_child ", this.solution_channel_for_child)
-          //   this.logger.log("[HOME] GET APPS - BEFORE TO INSTALL WA userHasUnistalledWa ", this.userHasUnistalledWa)
-          //   this.logger.log("[HOME] GET APPS - BEFORE TO INSTALL WA whatsAppIsInstalled ", this.whatsAppIsInstalled)
-          //   if (this.userHasUnistalledWa === false) {
-          //     if (this.whatsAppIsInstalled === false || this.whatsAppIsInstalled === null) {
-          //       console.log("[HOME] getInstallations RUN INSTALL 1" )
-          //       this.installApp()
-          //     }
-          //   }
-          // }
-          // }
-          // if (res.length > 0) {
-          //   console.log("[HOME] USE CASE RES > 0 ")
-          //   res.forEach(r => {
-          //     this.logger.log("[HOME] getInstallations r: ", r)
-          //     if (r.app_id === this.whatsAppAppId) {
-          //       console.log('[HOME] here yes r.app_id ', r.app_id, 'whatsAppAppId ', this.whatsAppAppId)
-          //       this.whatsAppIsInstalled = true;
-          //       this.updatedProjectWithUserHasUnistalledWA(false)
-
-          //     } else {
-          //       console.log("[HOME] r.app_id", r.app_id )
-          //       this.whatsAppIsInstalled = false;
-          //       console.log("[HOME] getInstallations BEFORE TO INSTALL WA  whatsAppIsInstalled (else)", this.whatsAppIsInstalled)
-          //       console.log("[HOME] getInstallations BEFORE TO INSTALL WA solution_channel (else)", this.solution_channel_for_child)
-          //       console.log("[HOME] getInstallations BEFORE TO INSTALL WA userHasUnistalledWa (else) ", this.userHasUnistalledWa)
-          //       if (this.solution_channel_for_child === 'whatsapp_fb_messenger') {
-          //         if (this.userHasUnistalledWa === false) {
-
-          //           if (this.whatsAppIsInstalled === false || this.whatsAppIsInstalled === null) {
-          //             console.log("[HOME] getInstallations RUN INSTALL 2" )
-          //             this.installApp()
-          //           }
-          //         }
-          //       }
-          //     }
-          //   });
-          // } 
-
-          // else {
-          //   this.whatsAppIsInstalled = false;
-          // }
         } else {
           this.whatsAppIsInstalled = false;
         }
@@ -1495,22 +1450,28 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
 
-
   installApp() {
-    if ((this.appTitle === "WhatsApp Business" || this.appTitle === "Facebook Messenger" || this.appTitle === "Zapier" || this.appTitle === 'Help Center') &&
-      ((this.profile_name === PLAN_NAME.A) ||
-        (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
-        (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
-        (this.prjct_profile_type === 'free' && this.prjct_trial_expired === true))) {
-
-      if (!this.appSumoProfile) {
-        this.presentModalFeautureAvailableFromBPlan()
-        return
-      } else {
-        this.presentModalAppSumoFeautureAvailableFromBPlan()
-        return
-      }
+    console.log('[HOME] installApp appTitle ' , this.appTitle) 
+    const isAvailable = this.checkPlanAndPresentModal(this.appTitle)
+    console.log('[APP-STORE] isAvaibleFromPlan ', isAvailable)
+    if (isAvailable === false) {
+      return
     }
+
+    // if ((this.appTitle === "WhatsApp Business" || this.appTitle === "Facebook Messenger" || this.appTitle === "Zapier" || this.appTitle === 'Help Center') &&
+    //   ((this.profile_name === PLAN_NAME.A) ||
+    //     (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
+    //     (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
+    //     (this.prjct_profile_type === 'free' && this.prjct_trial_expired === true))) {
+
+    //   if (!this.appSumoProfile) {
+    //     this.presentModalFeautureAvailableFromBPlan()
+    //     return
+    //   } else {
+    //     this.presentModalAppSumoFeautureAvailableFromBPlan()
+    //     return
+    //   }
+    // }
 
     this.logger.log('[HOME] appId installApp', this.whatsAppAppId)
     this.logger.log('[HOME] app app version installApp', this.appVersion)
@@ -1679,24 +1640,45 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  goToWhatsAppDetails() {
-
-    this.logger.log('goToWhatsAppDetails appTitle ', this.appTitle)
-    if ((this.appTitle === "WhatsApp Business" || this.appTitle === "Facebook Messenger") &&
+  checkPlanAndPresentModal(appTitle) {
+    if (
+      (appTitle === "WhatsApp Business" || appTitle === "Facebook Messenger") &&
       ((this.profile_name === PLAN_NAME.A) ||
         (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
         (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
-        (this.prjct_profile_type === 'free' && this.prjct_trial_expired === true))) {
-      // this.presentModalFeautureAvailableFromBPlan()
-      // return
+        (this.profile_name === 'free' && this.prjct_trial_expired === true))) {
+
       if (!this.appSumoProfile) {
-        this.presentModalFeautureAvailableFromBPlan()
-        return
+        // this.presentModalFeautureAvailableFromBPlan()
+        this.presentModalFeautureAvailableFromTier2Plan(this.featureAvailableFromBPlan)
+        return false
       } else {
         this.presentModalAppSumoFeautureAvailableFromBPlan()
-        return
+        return false
       }
+    } else if (
+      (appTitle === "WhatsApp Business" || appTitle === "Facebook Messenger" ) &&
+      ((this.profile_name === PLAN_NAME.D) ||
+        (this.profile_name === PLAN_NAME.E && this.subscription_is_active === false) ||
+        (this.profile_name === PLAN_NAME.F && this.subscription_is_active === false) ||
+        (this.profile_name === 'Sandbox' && this.prjct_trial_expired === true))) {
+      if (!this.appSumoProfile) {
+        this.presentModalFeautureAvailableFromTier2Plan(this.featureAvailableFromEPlan)
+        return false
+      }
+
     }
+  }
+
+
+  goToWhatsAppDetails() {
+    console.log('[HOME] goToWhatsAppDetails appTitle ', this.appTitle)
+    const isAvailable = this.checkPlanAndPresentModal(this.appTitle)
+    console.log('[HOME] isAvaibleFromPlan ', isAvailable)
+    if (isAvailable === false) {
+      return
+    }
+
 
     if (this.appTitle === "WhatsApp Business" || this.appTitle === "Facebook Messenger") {
       this.router.navigate(['project/' + this.projectId + '/app-store-install/' + this.whatsAppAppId + '/detail/h'])
@@ -1705,27 +1687,16 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   openInAppStoreInstall() {
-    // this.trackUserAction({ action: 'Home, Connect WhatsApp clicked', actionRes: null })
-    if ((this.appTitle === "WhatsApp Business" || this.appTitle === "Facebook Messenger") &&
-      ((this.profile_name === PLAN_NAME.A) ||
-        (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
-        (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
-        (this.prjct_profile_type === 'free' && this.prjct_trial_expired === true))) {
-      // this.presentModalFeautureAvailableFromBPlan()
-      // return
-      if (!this.appSumoProfile) {
-        this.presentModalFeautureAvailableFromBPlan()
-        return
-      } else {
-        this.presentModalAppSumoFeautureAvailableFromBPlan()
-        return
-      }
-
+    console.log('[HOME] openInAppStoreInstall appTitle ', this.appTitle)
+    const isAvailable = this.checkPlanAndPresentModal(this.appTitle)
+    console.log('[APP-STORE] isAvaibleFromPlan ', isAvailable)
+    if (isAvailable === false) {
+      return
     }
+
 
     if (this.appTitle === "WhatsApp Business" || this.appTitle === "Facebook Messenger") {
       // this.router.navigate(['project/' + this.projectId + '/app-store-install/' + this.whatsAppAppId + '/connect/h'])
-
       this.openAppStoreInPopupWindow()
     }
   }
@@ -2063,7 +2034,52 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
 
+  presentModalFeautureAvailableFromTier2Plan(planName) {
+    const el = document.createElement('div')
+    el.innerHTML = planName //this.featureAvailableFromBPlan
+    swal({
+      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
+      content: el,
+      icon: "info",
+      // buttons: true,
+      buttons: {
+        cancel: this.cancel,
+        catch: {
+          text: this.upgradePlan,
+          value: "catch",
+        },
+      },
+      dangerMode: false,
+    }).then((value) => {
+      if (value === 'catch') {
 
+        if (this.isVisiblePay) {
+          // console.log('[APP-STORE] HERE 1')
+          if (this.USER_ROLE === 'owner') {
+            // console.log('[APP-STORE] HERE 2')
+            if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
+              // console.log('[APP-STORE] HERE 3')
+              this.notify._displayContactUsModal(true, 'upgrade_plan');
+            } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true && (this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.D)) {
+              this.notify._displayContactUsModal(true, 'upgrade_plan');
+            } else if (this.prjct_profile_type === 'free' && this.prjct_trial_expired === true) {
+              // console.log('[APP-STORE] HERE 4')
+              this.router.navigate(['project/' + this.projectId + '/pricing']);
+            }
+          } else {
+            // console.log('[APP-STORE] HERE 5')
+
+            this.presentModalOnlyOwnerCanManageTheAccountPlan();
+          }
+        } else {
+          // console.log('[APP-STORE] HERE 6')
+          this.notify._displayContactUsModal(true, 'upgrade_plan');
+        }
+      }
+    });
+  }
+
+  // No more used - replaced by presentModalFeautureAvailableFromTier2Plan
   presentModalFeautureAvailableFromBPlan() {
     const el = document.createElement('div')
     el.innerHTML = this.featureAvailableFromBPlan
@@ -2969,14 +2985,15 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.USER_ROLE === 'owner') {
       if (this.prjct_profile_type === 'free') {
 
-        this.router.navigate(['project/' + this.projectId + '/pricing']);
-        // this.notify.presentContactUsModalToUpgradePlan(true);
+        // this.router.navigate(['project/' + this.projectId + '/pricing']);
+        this.router.navigate(['project/' + this.projectId + '/project-settings/payments']);
 
       } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
 
-        if (this.profile_name !== PLAN_NAME.C) {
+        if (this.profile_name !== PLAN_NAME.C && this.profile_name !== PLAN_NAME.F) {
           this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
-        } else if (this.profile_name === PLAN_NAME.C) {
+       
+        } else if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
 
           this.notify.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
         }
@@ -3718,6 +3735,11 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.translate.get('AvailableFromThePlan', { plan_name: PLAN_NAME.B })
       .subscribe((translation: any) => {
         this.featureAvailableFromBPlan = translation;
+      });
+
+      this.translate.get('AvailableFromThePlan', { plan_name: PLAN_NAME.E })
+      .subscribe((translation: any) => {
+        this.featureAvailableFromEPlan = translation;
       });
 
     this.translate.get('Pricing.UpgradePlan')

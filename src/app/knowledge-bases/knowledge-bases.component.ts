@@ -305,7 +305,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   }
 
   presentModalOnlyOwnerCanManageTheAccountPlan() {
-    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan('Agents can\'t manage chatbots', 'Learn more about default roles')
+    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan('Agents can\'t manage this feature', 'Learn more about default roles')
   }
 
   saveKnowledgeBase() {

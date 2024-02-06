@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'app/core/auth.service';
+import { NotifyService } from 'app/core/notify.service';
 import { Chatbot } from 'app/models/faq_kb-model';
 import { AppConfigService } from 'app/services/app-config.service';
 import { FaqKbService } from 'app/services/faq-kb.service';
@@ -36,12 +37,13 @@ export class HomeCdsComponent implements OnInit, OnChanges{
     private usersService: UsersService,
     private logger: LoggerService,
     private router: Router,
-    public auth: AuthService
+    public auth: AuthService,
+    public notify: NotifyService,
   ) { }
 
     ngOnInit(): void {
     this.getUserRole()
-    // this.getCurrentProjectAndPrjctBots()
+    this.getCurrentProject()
    
   }
 
@@ -57,28 +59,23 @@ export class HomeCdsComponent implements OnInit, OnChanges{
 
 
 
-  // getCurrentProjectAndPrjctBots() {
-  //   this.showSpinner = true
-  //   this.auth.project_bs
-  //     .pipe(
-  //       takeUntil(this.unsubscribe$)
-  //     )
-  //     .subscribe((project) => {
-  //       this.logger.log('[HOME-CDS] $UBSCIBE TO PUBLISHED PROJECT - RES  ', project)
+  getCurrentProject() {
+    this.auth.project_bs
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((project) => {
+        this.logger.log('[HOME-CDS] $UBSCIBE TO PUBLISHED PROJECT - RES  ', project)
 
-  //       if (project) {
-
-  //         this.projectId = project._id
-
-  //         this.getImageStorageThenBots();
-  //       }
-  //     }, (error) => {
-  //       this.logger.error('[HOME-CDS] $UBSCIBE TO PUBLISHED PROJECT - ERROR ', error);
-  //       this.showSpinner = false
-  //     }, () => {
-  //       this.logger.log('[HOME-CDS] $UBSCIBE TO PUBLISHED PROJECT * COMPLETE *');
-  //     });
-  // }
+        if (project) {
+          this.projectId = project._id
+        }
+      }, (error) => {
+        this.logger.error('[HOME-CDS] $UBSCIBE TO PUBLISHED PROJECT - ERROR ', error);
+      }, () => {
+        this.logger.log('[HOME-CDS] $UBSCIBE TO PUBLISHED PROJECT * COMPLETE *');
+      });
+  }
 
   getUserRole() {
     this.usersService.project_user_role_bs
@@ -182,6 +179,7 @@ export class HomeCdsComponent implements OnInit, OnChanges{
   }
 
   goToBotProfile() {
+    console.log('[HOME-CDS] - goToBotProfile  projectId ', this.projectId);
     if (this.USER_ROLE !== 'agent') {
       if (this.chatbots?.length > 0) {
           // this.router.navigate(['project/' + this.project._id + '/tilebot/intents/', bot_id, botType]);
@@ -190,7 +188,13 @@ export class HomeCdsComponent implements OnInit, OnChanges{
         } else if (this.chatbots?.length === 0) {
           this.goToCreateChatbot.emit()
         }
+    } else {
+      this.presentModalAgentCannotManageChatbot()
     }
+  }
+
+  presentModalAgentCannotManageChatbot() {
+    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan('Agents can\'t manage chatbots', 'Learn more about default roles')
   }
 
   checkImageExists(imageUrl, callBack) {

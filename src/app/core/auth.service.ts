@@ -123,52 +123,6 @@ export class AuthService {
     // this.getProjectPlan()
   }
 
-  // getProjectPlan() {
-  //   this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-  //     console.log('[NAVBAR] - getProjectPlan project Profile Data', projectProfileData)
-  //     if (projectProfileData) {
-        
-  //       if (projectProfileData && projectProfileData.extra3) {
-  //         this.logger.log('[NAVBAR] projectProfileData extra3', projectProfileData.extra3)
-  //         this.appSumoProfile = APP_SUMO_PLAN_NAME[projectProfileData.extra3]
-  //         this.logger.log('[NAVBAR] projectProfileData appSumoProfile ', this.appSumoProfile)
-  //       }
-
-  //       if (projectProfileData.profile_type === 'free') {
-  //         if (projectProfileData.trial_expired === false) {
-  //           this.prjct_profile_name_for_segment = PLAN_NAME.B + " plan (trial)"
-
-  //         } else {
-  //           this.prjct_profile_name_for_segment = "Free plan";
-  //         }
-  //       } else if (projectProfileData.profile_type === 'payment') {
-
-  //         if (projectProfileData.profile_name === PLAN_NAME.A) {
-  //           if (!this.appSumoProfile) {
-  //             this.prjct_profile_name_for_segment = PLAN_NAME.A + " plan";
-
-  //           } else {
-  //             this.prjct_profile_name_for_segment = PLAN_NAME.A + " plan " + '(' + this.appSumoProfile + ')';
-
-  //           }
-  //         } else if (projectProfileData.profile_name === PLAN_NAME.B) {
-  //           if (!this.appSumoProfile) {
-  //             this.prjct_profile_name_for_segment = PLAN_NAME.B + " plan";
-
-  //           } else {
-  //             this.prjct_profile_name_for_segment = PLAN_NAME.B + " plan " + '(' + this.appSumoProfile + ')';
-  //           }
-  //         } else if (projectProfileData.profile_name === PLAN_NAME.C) {
-  //           this.prjct_profile_name_for_segment = PLAN_NAME.C + " plan";
-  //         }
-  //       }
-  //     }
-  //   }, error => {
-  //     this.logger.error('[NAVBAR] - getProjectPlan - ERROR', error);
-  //   }, () => {
-  //     this.logger.log('[NAVBAR] - getProjectPlan - COMPLETE')
-  //   });
-  // }
 
 
   browserNameAndVersion(browserName, browserVersion) {
@@ -304,7 +258,7 @@ export class AuthService {
   }
 
   projectProfile(projectprofile) {
-    // console.log('[AUTH-SERV] - PROJECT PROFILE ', projectprofile)
+    console.log('[AUTH-SERV] - PROJECT PROFILE ', projectprofile)
     this.prjct_profile_name_for_segment = projectprofile
   }
 
@@ -411,12 +365,9 @@ export class AuthService {
 
                 const project_name = storedProjectObject['name']
                 const project_profile_name = storedProjectObject['profile_name']
-                const project_trial_expired =
-                  storedProjectObject['trial_expired']
-                const project_trial_days_left =
-                  storedProjectObject['trial_days_left']
-                this.project_trial_expired =
-                  storedProjectObject['trial_expired']
+                const project_trial_expired = storedProjectObject['trial_expired']
+                const project_trial_days_left = storedProjectObject['trial_days_left']
+                this.project_trial_expired = storedProjectObject['trial_expired']
                 const storedProjectOH = storedProjectObject['operatingHours']
 
                 // tslint:disable-next-line:max-line-length
@@ -494,18 +445,12 @@ export class AuthService {
           this._user_role === 'admin' ||
           this._user_role === undefined
         ) {
-          this.logger.log(
-            '[AUTH-SERV] - CHECK ROLE (GOT FROM STORAGE) »»» ',
-            this._user_role,
-          )
+          this.logger.log( '[AUTH-SERV] - CHECK ROLE (GOT FROM STORAGE) »»» ',this._user_role)
 
           this.router.navigate([`project/${project_id}/unauthorized`])
           // this.router.navigate(['/unauthorized']);
         } else {
-          this.logger.log(
-            '[AUTH-SERV] - CHECK ROLE (GOT FROM STORAGE) »»» ',
-            this._user_role,
-          )
+          this.logger.log( '[AUTH-SERV] - CHECK ROLE (GOT FROM STORAGE) »»» ', this._user_role )
         }
       }
     }
@@ -566,18 +511,12 @@ export class AuthService {
           this._user_role === 'admin' ||
           this._user_role === undefined
         ) {
-          this.logger.log(
-            '[AUTH-SERV] - CHECK ROLE (GOT FROM STORAGE) »»» ',
-            this._user_role,
-          )
+          this.logger.log( '[AUTH-SERV] - CHECK ROLE (GOT FROM STORAGE) »»» ', this._user_role )
 
           this.router.navigate([`project/${project_id}/unauthorized-access`])
           // this.router.navigate(['/unauthorized']);
         } else {
-          this.logger.log(
-            '[AUTH-SERV] - CHECK ROLE (GOT FROM STORAGE) »»» ',
-            this._user_role,
-          )
+          this.logger.log( '[AUTH-SERV] - CHECK ROLE (GOT FROM STORAGE) »»» ',this._user_role )
         }
       }
     }
@@ -1006,30 +945,7 @@ export class AuthService {
       // console.log('[AUTH-SERV] projectId ', projectId)
 
       if (projectId) {
-        const storedProject = localStorage.getItem(projectId)
-        if (storedProject) {
-          storedPrjctParsed = JSON.parse(storedProject)
-          // console.log('[AUTH-SERV] storedPrjctParsed ', storedPrjctParsed)
-        }
-
-
-        if (storedPrjctParsed.profile_type === 'free') {
-          if (storedPrjctParsed.trial_expired === false) {
-            projectProfileName = PLAN_NAME.B + " (trial)"
-          } else {
-            projectProfileName = "Free"
-          }
-        } else if (storedPrjctParsed.profile_type === 'payment') {
-
-          if (storedPrjctParsed.profile_name === PLAN_NAME.A) {
-            projectProfileName = PLAN_NAME.A
-          } else if (storedPrjctParsed.profile_name === PLAN_NAME.B) {
-            projectProfileName = PLAN_NAME.B
-          } else if (storedPrjctParsed.profile_name === PLAN_NAME.B) {
-            projectProfileName = PLAN_NAME.B
-          }
-
-        }
+       
         // console.log('[AUTH-SERV] projectProfileName ', projectProfileName)
         if (!isDevMode()) {
           if (window['analytics']) {

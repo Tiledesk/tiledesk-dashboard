@@ -53,7 +53,7 @@ const swal = require('sweetalert');
 export class NavbarComponent extends PricingBaseComponent implements OnInit, AfterViewInit, AfterContentChecked, OnDestroy, AfterViewChecked {
 
   PLAN_NAME = PLAN_NAME;
-  PLANS_LIST = PLANS_LIST;
+  // PLANS_LIST = PLANS_LIST;
   APP_SUMO_PLAN_NAME = APP_SUMO_PLAN_NAME;
   appSumoProfile: string;
   prjct_profile_name_for_segment: string;
@@ -206,9 +206,6 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     
     const brand = brandService.getBrand();
     this.tparams = brand;
-    // this.translationParams = { plan_name: PLAN_NAME.B }
-
-
     this.location = location;
     this.sidebarVisible = false;
     // this.unservedRequestCount = 0
@@ -293,24 +290,32 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     this.quotesService.getAllQuotes(this.projectId).subscribe((resp: any) => {
       console.log("quotes retrieved: ", resp)
 
-      let profile_name = this.project.profile_name;
+      // let profile_name = this.project.profile_name;
+      console.log('[NAVBAR] project ', this.project)
+      // console.log('[NAVBAR] project > profile_name ', profile_name)
+      console.log('[NAVBAR] prjct_profile_name ', this.prjct_profile_name)
+      console.log('[NAVBAR] profile_name ', this.profile_name)
 
-      switch(profile_name) {
+
+      switch(this.profile_name) {
         case PLAN_NAME.A:
-          profile_name = PLAN_NAME.D;
+          this.profile_name = PLAN_NAME.D;
           break;
         case PLAN_NAME.B:
-          profile_name = PLAN_NAME.E
+          this.profile_name = PLAN_NAME.E
           break;
         case PLAN_NAME.C:
-          profile_name = PLAN_NAME.F
+          this.profile_name = PLAN_NAME.F
           break;
       }
 
-      this.requests_limit = PLANS_LIST[profile_name].requests;
-      this.messages_limit = PLANS_LIST[profile_name].messages;
-      this.email_limit = PLANS_LIST[profile_name].email;
-      this.tokens_limit = PLANS_LIST[profile_name].tokens;
+      console.log('[NAVBAR] PLANS_LIST ', PLANS_LIST)
+      console.log('[NAVBAR] PLANS_LIST[profile_name] ', PLANS_LIST[this.profile_name])
+      console.log('[NAVBAR] PLANS_LIST[profile_name].requests ', PLANS_LIST[this.profile_name].requests)
+      this.requests_limit = PLANS_LIST[this.profile_name].requests;
+      this.messages_limit = PLANS_LIST[this.profile_name].messages;
+      this.email_limit = PLANS_LIST[this.profile_name].email;
+      this.tokens_limit = PLANS_LIST[this.profile_name].tokens;
 
       if (resp.quotes.requests.quote === null) {
         resp.quotes.requests.quote = 0;

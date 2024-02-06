@@ -333,48 +333,6 @@ export class DepartmentsComponent extends PricingBaseComponent implements OnInit
   }
 
 
-  // getProjectPlan() {
-  //   this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-  //     this.logger.log('[DEPTS] getProjectPlan project Profile Data', projectProfileData)
-  //     if (projectProfileData) {
-  //       this.profile_name = projectProfileData.profile_name;
-  //       this.prjct_profile_type = projectProfileData.profile_type;
-  //       this.logger.log('[DEPTS] getProjectPlan prjct_profile_type', this.prjct_profile_type)
-  //       this.subscription_is_active = projectProfileData.subscription_is_active;
-  //       this.logger.log('[DEPTS] getProjectPlan subscription_is_active', this.subscription_is_active)
-  //       this.trialExpired = projectProfileData.trial_expired;
-  //       this.logger.log('[DEPTS] getProjectPlan trialExpired', this.trialExpired)
-
-       
-  //       if (projectProfileData.extra3) {
-  //         this.appSumoProfile = APP_SUMO_PLAN_NAME[projectProfileData.extra3]
-  //         this.appSumoProfilefeatureAvailableFromBPlan = APP_SUMO_PLAN_NAME['tiledesk_tier3']
-
-  //         this.t_params = { 'plan_name': this.appSumoProfilefeatureAvailableFromBPlan }
-
-  //       } else if (!projectProfileData.extra3) {
-  //         this.t_params = { 'plan_name': PLAN_NAME.B }
-  //       }
-
-  //       if ((this.prjct_profile_type === 'payment' && this.subscription_is_active === false) || (this.prjct_profile_type === 'free' && this.trialExpired === true)) {
-  //         this.subscriptionInactiveOrTrialExpired = true;
-  //         this.logger.log('[DEPTS] getProjectPlan subscriptionInactiveOrTrialExpired', this.subscriptionInactiveOrTrialExpired)
-  //       } else {
-  //         this.subscriptionInactiveOrTrialExpired = false;
-  //         this.logger.log('[DEPTS] getProjectPlan subscriptionInactiveOrTrialExpired', this.subscriptionInactiveOrTrialExpired)
-  //       }
-  //     }
-  //   }, error => {
-    
-  //     this.logger.error('[DEPTS] - getProjectPlan - ERROR', error);
-  //   }, () => {
-     
-  //     this.logger.log('[DEPTS] - getProjectPlan - COMPLETE')
-
-  //   });
-  // }
-
-
   // GO TO  BOT-EDIT-ADD COMPONENT
   goToEditAddPage_CREATE() {
     console.log('DEPTS prjct_profile_type ', this.prjct_profile_type) 

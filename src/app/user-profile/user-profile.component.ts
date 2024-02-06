@@ -19,6 +19,7 @@ import { LocalDbService } from 'app/services/users-local-db.service';
 import { environment } from '../../environments/environment';
 import { ProjectPlanService } from 'app/services/project-plan.service';
 import { DomSanitizer } from '@angular/platform-browser';
+import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 const swal = require('sweetalert');
 
 
@@ -27,7 +28,7 @@ const swal = require('sweetalert');
   templateUrl: './user-profile.component.html',
   styleUrls: ['./user-profile.component.scss']
 })
-export class UserProfileComponent implements OnInit {
+export class UserProfileComponent extends PricingBaseComponent implements OnInit {
   PLAN_NAME = PLAN_NAME;
   APP_SUMO_PLAN_NAME = APP_SUMO_PLAN_NAME;
   appSumoProfile: string;
@@ -172,9 +173,11 @@ export class UserProfileComponent implements OnInit {
     private logger: LoggerService,
     private route: ActivatedRoute,
     private usersLocalDbService: LocalDbService,
-    private prjctPlanService: ProjectPlanService,
+    public prjctPlanService: ProjectPlanService,
     private sanitizer: DomSanitizer
-  ) { }
+  ) {
+    super(prjctPlanService, notify);
+   }
 
   ngOnInit() {
 
@@ -212,87 +215,87 @@ export class UserProfileComponent implements OnInit {
     }
   }
 
-  getProjectPlan() {
-    this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-      // this.logger..log('[USER-PROFILE] - getProjectPlan project Profile Data', projectProfileData)
-      if (projectProfileData) {
-        this.prjct_id = projectProfileData._id
-        this.prjct_name = projectProfileData.name
+  // getProjectPlan() {
+  //   this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
+  //     // this.logger..log('[USER-PROFILE] - getProjectPlan project Profile Data', projectProfileData)
+  //     if (projectProfileData) {
+  //       this.prjct_id = projectProfileData._id
+  //       this.prjct_name = projectProfileData.name
 
-        if (projectProfileData && projectProfileData.extra3) {
-          this.logger.log('[HOME] Find Current Project Among All extra3 ', projectProfileData.extra3)
-          this.appSumoProfile = APP_SUMO_PLAN_NAME[projectProfileData.extra3]
-          this.logger.log('[USERS] Find Current Project appSumoProfile ', this.appSumoProfile)
-        }
+  //       if (projectProfileData && projectProfileData.extra3) {
+  //         this.logger.log('[HOME] Find Current Project Among All extra3 ', projectProfileData.extra3)
+  //         this.appSumoProfile = APP_SUMO_PLAN_NAME[projectProfileData.extra3]
+  //         this.logger.log('[USERS] Find Current Project appSumoProfile ', this.appSumoProfile)
+  //       }
 
 
-        if (projectProfileData.profile_type === 'free') {
-          if (projectProfileData.trial_expired === false) {
-            this.prjct_profile_name = PLAN_NAME.B + " plan (trial)"
+  //       if (projectProfileData.profile_type === 'free') {
+  //         if (projectProfileData.trial_expired === false) {
+  //           this.prjct_profile_name = PLAN_NAME.B + " plan (trial)"
 
-          } else {
-            this.prjct_profile_name = "Free plan";
+  //         } else {
+  //           this.prjct_profile_name = "Free plan";
 
-          }
-        } else if (projectProfileData.profile_type === 'payment') {
+  //         }
+  //       } else if (projectProfileData.profile_type === 'payment') {
 
-          if (projectProfileData.profile_name === PLAN_NAME.A) {
-            if (!this.appSumoProfile) {
-              this.prjct_profile_name = PLAN_NAME.A + " plan";
+  //         if (projectProfileData.profile_name === PLAN_NAME.A) {
+  //           if (!this.appSumoProfile) {
+  //             this.prjct_profile_name = PLAN_NAME.A + " plan";
 
-            } else {
-              this.prjct_profile_name = PLAN_NAME.A + " plan " + '(' + this.appSumoProfile + ')';
-            }
-          } else if (projectProfileData.profile_name === PLAN_NAME.B) {
-            if (!this.appSumoProfile) {
-              this.prjct_profile_name = PLAN_NAME.B + " plan";
+  //           } else {
+  //             this.prjct_profile_name = PLAN_NAME.A + " plan " + '(' + this.appSumoProfile + ')';
+  //           }
+  //         } else if (projectProfileData.profile_name === PLAN_NAME.B) {
+  //           if (!this.appSumoProfile) {
+  //             this.prjct_profile_name = PLAN_NAME.B + " plan";
 
-            } else {
-              this.prjct_profile_name = PLAN_NAME.B + " plan " + '(' + this.appSumoProfile + ')';;
+  //           } else {
+  //             this.prjct_profile_name = PLAN_NAME.B + " plan " + '(' + this.appSumoProfile + ')';;
 
-            }
-          } else if (projectProfileData.profile_name === PLAN_NAME.C) {
-            this.prjct_profile_name = PLAN_NAME.C + " plan";
-          }
-        }
+  //           }
+  //         } else if (projectProfileData.profile_name === PLAN_NAME.C) {
+  //           this.prjct_profile_name = PLAN_NAME.C + " plan";
+  //         }
+  //       }
 
-        // if (projectProfileData.profile_type === 'free') {
-        //   if (projectProfileData.trial_expired === false) {
+  //       // if (projectProfileData.profile_type === 'free') {
+  //       //   if (projectProfileData.trial_expired === false) {
 
-        //     this.prjct_profile_name = PLAN_NAME.B + " plan (trial)"
-        //   } else {
+  //       //     this.prjct_profile_name = PLAN_NAME.B + " plan (trial)"
+  //       //   } else {
 
-        //     this.prjct_profile_name = "Free plan"
+  //       //     this.prjct_profile_name = "Free plan"
 
-        //   }
-        // } else if (projectProfileData.profile_type === 'payment') {
+  //       //   }
+  //       // } else if (projectProfileData.profile_type === 'payment') {
 
-        //   if (projectProfileData.profile_name === PLAN_NAME.A) {
-        //     this.prjct_profile_name = PLAN_NAME.A + " plan";
+  //       //   if (projectProfileData.profile_name === PLAN_NAME.A) {
+  //       //     this.prjct_profile_name = PLAN_NAME.A + " plan";
 
-        //     // console.log('[USER-PROFILE] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.A)
+  //       //     // console.log('[USER-PROFILE] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.A)
 
-        //   } else if (projectProfileData.profile_name === PLAN_NAME.B) {
-        //     this.prjct_profile_name = PLAN_NAME.B + " plan";
+  //       //   } else if (projectProfileData.profile_name === PLAN_NAME.B) {
+  //       //     this.prjct_profile_name = PLAN_NAME.B + " plan";
 
-        //     // console.log('[USER-PROFILE] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.B)
+  //       //     // console.log('[USER-PROFILE] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.B)
 
-        //   } else if (projectProfileData.profile_name === PLAN_NAME.C) {
-        //     this.prjct_profile_name = PLAN_NAME.C + " plan";
+  //       //   } else if (projectProfileData.profile_name === PLAN_NAME.C) {
+  //       //     this.prjct_profile_name = PLAN_NAME.C + " plan";
 
-        //     // console.log('[USER-PROFILE] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.C)
-        //   }
+  //       //     // console.log('[USER-PROFILE] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.C)
+  //       //   }
 
-        // }
-      }
-    }, error => {
-      this.logger.error('[USER-PROFILE][ACCOUNT-SETTINGS]] - getProjectPlan - ERROR', error);
-    }, () => {
+  //       // }
+  //     }
+  //   }, error => {
+  //     this.logger.error('[USER-PROFILE][ACCOUNT-SETTINGS]] - getProjectPlan - ERROR', error);
+  //   }, () => {
 
-      this.logger.log('[USER-PROFILE][ACCOUNT-SETTINGS] - getProjectPlan * COMPLETE *')
+  //     this.logger.log('[USER-PROFILE][ACCOUNT-SETTINGS] - getProjectPlan * COMPLETE *')
 
-    });
-  }
+  //   });
+  // }
 
   getBrowserVersion() {
     this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
@@ -769,6 +772,7 @@ export class UserProfileComponent implements OnInit {
   }
 
   trackUpdateProfileName() {
+    this.logger.log('[USER-PROFILE] - trackUpdateProfileName  ', this.prjct_profile_name);
     if (!isDevMode()) {
       if (window['analytics']) {
         try {
