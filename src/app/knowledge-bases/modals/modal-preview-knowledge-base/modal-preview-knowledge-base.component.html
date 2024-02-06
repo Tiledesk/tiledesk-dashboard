@@ -10,7 +10,7 @@
 
         <h4 class="modal-title">
           <span style="vertical-align: middle;">
-            Preview Knowledge Base
+            {{ 'KbPage.PreviewKB' | translate }}
           </span>
         </h4>
       </div>
@@ -45,7 +45,7 @@
           <div id="answer" class="answer">
             <p *ngIf="answer" class="answer-title">{{ 'KbPage.Answer' | translate }}</p>
             {{ qa.answer }}
-            <span *ngIf="error_answer">{{ 'KbPage.NoAnswerFound' | translate }}</span>
+            <span *ngIf="!qa.answer || qa.answer == ''">{{ 'KbPage.NoAnswerFound' | translate }}</span>
             <hr *ngIf="qa.source">
             <!-- <span *ngIf="qa.source">{{ 'KbPage.Source' | translate }}: {{ qa.source }}</span> -->
             <span *ngIf="qa.source">{{ 'KbPage.Source' | translate }}: 
@@ -55,21 +55,21 @@
           </div>
         </div>
 
-        <div class="modal-state">
+        <!-- <div class="modal-state">
           <label class="control-label">
-              {{ 'select engine' | translate }}
+              {{ 'KbPage.SelectEngine' | translate }}
           </label>
           <div class="">
             <ng-select class="custom-input" 
                 [items]="models_list"
                 bindLabel="name"
                 bindValue="value"
-                placeholder="Seleziona un elemento"
+                placeholder="{{ 'KbPage.PlaceholderSelectEngine' | translate }}"
                 [clearable]="false"
                 [(ngModel)]="selectedModel">
             </ng-select>
           </div>
-        </div>
+        </div> -->
 
 
       </div>

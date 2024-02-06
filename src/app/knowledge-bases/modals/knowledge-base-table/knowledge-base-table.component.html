@@ -27,16 +27,16 @@
 
         <div class="cerca">
             <label class="col-sm-12 control-label">
-                {{ 'Cerca nel nome' | translate }}
+                {{ 'KbPage.TextSearch' | translate }}
             </label>
             <div class="col-sm-12">
-                <input (keyup)="applyFilter($event.target.value, 'name')" placeholder="Filtra per Nome o Contenuto">
+                <input (keyup)="applyFilter($event.target.value, 'name')" placeholder="{{ 'KbPage.PlaceholderTextFilter' | translate }}">
             </div>
         </div>
 
         <div class="stato">
             <label class="col-sm-12 control-label">
-                {{ 'Seleziona lo stato' | translate }}
+                {{ 'KbPage.StateFilter' | translate }}
             </label>
             <div class="col-sm-12">
                 <ng-select class="custom-input" 
@@ -60,7 +60,7 @@
     <table mat-table [dataSource]="dataSource" matSort > 
         <!-- Type Column -->
         <ng-container matColumnDef="type">
-        <th mat-header-cell *matHeaderCellDef>Tipo</th>
+        <th mat-header-cell *matHeaderCellDef>{{ 'KbPage.Type' | translate }}</th>
         <td style="width: 70px;" mat-cell *matCellDef="let kb" (click)="onOpenBaseModalDetail(kb)">
             <span *ngIf="kb.type == 'text'" id="description" class="material-icons-outlined">description</span>
             <span *ngIf="kb.type == 'url'" id="link" class="material-icons-outlined">link</span>
@@ -70,37 +70,30 @@
 
         <!-- Status Column -->
         <ng-container matColumnDef="status">
-            <th style="width: 70px; text-align:center;" mat-header-cell *matHeaderCellDef>Status</th>
+            <th style="width: 70px; text-align:center;" mat-header-cell *matHeaderCellDef>{{ 'KbPage.Status' | translate }}</th>
             <td style="text-align:center;" mat-cell *matCellDef="let kb" (click)="onOpenBaseModalDetail(kb)">
-
                 <loading-spinner *ngIf="kb.status == 0 || kb.status == 2" class="custom-spinner"></loading-spinner>
-                
                 <span *ngIf="kb.status == -1" id="error" class="material-icons-outlined status-icon status-void">block</span>
-
                 <!-- <span *ngIf="kb.status == 0" id="done" class="material-icons-outlined status-icon"
                     matTooltipClass="custom-mat-tooltip" matTooltip="Not started" #tooltip="matTooltip"
                     matTooltipPosition='right' matTooltipHideDelay="100">schedule</span> -->
-
                 <!-- <span *ngIf="kb.status == 2" id="cached" class="material-icons-outlined status-icon animated-icon"
                     matTooltipClass="custom-mat-tooltip" matTooltip="Indexing..." #tooltip="matTooltip"
                     matTooltipPosition='right' matTooltipHideDelay="100">cached</span> -->
-
                 <span *ngIf="kb.status == 3" id="close" class="material-icons-outlined status-icon status-done">check</span>
-                    
                 <span *ngIf="kb.status == 4" id="error" class="material-icons-outlined status-icon status-error">error</span>
-            
             </td>
         </ng-container>
 
         <!-- Created At Column -->
         <ng-container matColumnDef="createdAt">
-            <th style="width:140px; text-align:center;" mat-header-cell *matHeaderCellDef mat-sort-header>Data di Creazione</th>
-            <td style="text-align:center;" mat-cell *matCellDef="let kb" (click)="onOpenBaseModalDetail(kb)">{{ kb.createdAt | amTimeAgo }}</td>
+            <th style="width:140px;" mat-header-cell *matHeaderCellDef mat-sort-header>{{'createdAt' | translate }}</th>
+            <td mat-cell *matCellDef="let kb" (click)="onOpenBaseModalDetail(kb)">{{ kb.createdAt | amTimeAgo }}</td>
         </ng-container>
 
         <!-- Name Column -->
         <ng-container matColumnDef="name">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Nome</th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'name' | translate }}</th>
             <td mat-cell *matCellDef="let kb" (click)="onOpenBaseModalDetail(kb)">{{ kb.name }}</td>
         </ng-container>
 
@@ -122,12 +115,12 @@
                 <mat-menu #menu="matMenu" xPosition="before" class="custom-menu">
                     <button mat-menu-item (click)="onRunIndexing(kb)">
                         <mat-icon>play_arrow</mat-icon>
-                        <span>{{ 'KbPage.RunIndexing' | translate }}</span>
+                        <span>{{'KbPage.RunIndexing' | translate}}</span>
                     </button>
                     <button mat-menu-item [disabled]="kb.status == 2"
                         (click)="onOpenBaseModalDelete(kb)">
                         <mat-icon>close</mat-icon>
-                        <span>{{ 'Delete' | translate }}</span>
+                        <span>{{'Delete' | translate}}</span>
                     </button>
                 </mat-menu>
             </div>

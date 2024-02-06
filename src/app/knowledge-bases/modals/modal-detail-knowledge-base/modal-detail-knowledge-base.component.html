@@ -9,7 +9,7 @@
                 </button>
                 <h4 class="modal-title">
                     <span style="vertical-align: middle;">
-                        {{ 'Dettaglio ' | translate }}
+                        {{ 'KbPage.KBDetail' | translate }}
                     </span>
                 </h4>
             </div>
@@ -26,16 +26,16 @@
                 <div class="form-container">
 
                         <div class="input-container">
-                            <span class="input-label">Nome</span>
+                            <span class="input-label">{{ 'Name' | translate }}</span>
                             <input type="text" name="name" class="custom-input" [value]="kb.name" formControlName="name" disabled>
                             
                             <div *ngIf="kb.type === 'url'">
-                                <span class="input-label">URL</span>
+                                <span class="input-label">{{ 'KbPage.Url' | translate }}</span>
                                 <input type="url" name="url" class="custom-input" [value]="kb.source" formControlName="url" disabled>
                             </div>
                             
                             <div *ngIf="kb.type === 'text'">
-                                <span class="input-label">File Text</span>
+                                <span class="input-label">{{ 'KbPage.FileText' | translate }}</span>
                                 <textarea type="text" name="content" class="custom-textarea" [value]="kb.content" formControlName="content" rows="4" disabled></textarea>
                             </div>
                             
@@ -49,7 +49,7 @@
                 {{ "Cancel" | translate }}
                 </button> -->
                 <button id="addkb-btn" class="btn btn-primary" (click)="onCloseBaseModal()">
-                {{ 'ok' | translate }}
+                {{ 'OK' | translate }}
                 </button>
             </div> 
 

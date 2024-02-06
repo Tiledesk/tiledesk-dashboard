@@ -18,7 +18,7 @@ export class ModalPreviewKnowledgeBaseComponent implements OnInit {
     { name: "GPT-3.5 Turbo (ChatGPT)", value: "gpt-3.5-turbo" }, 
     { name: "GPT-4 (ChatGPT)", value: "gpt-4" }
   ];
-  selectedModel: any = this.models_list[0].value;
+  selectedModel: any = this.models_list[1].value;
 
   qa: any;
 
@@ -49,7 +49,7 @@ export class ModalPreviewKnowledgeBaseComponent implements OnInit {
     this.show_answer = false;
     this.answer = null;
     this.source_url = null;
-    console.log("ask gpt preview response: ", data);
+    // console.log("ask gpt preview response: ", data);
     this.openaiService.askGpt(data).subscribe((response: any) => {
       // console.log("ask gpt preview response: ", response);
       this.qa = response;

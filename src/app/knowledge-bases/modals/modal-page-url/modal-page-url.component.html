@@ -9,7 +9,7 @@
                 </button>
                 <h4 class="modal-title">
                     <span style="vertical-align: middle;">
-                        {{ 'Aggiungi ' | translate }}
+                        {{ 'KbPage.Add' | translate }}
                     </span>
                 </h4>
             </div>
@@ -18,7 +18,7 @@
                 <div class="info-container">
                     <i class="material-icons-outlined info-icon">help_outline</i>
                     <div class="info-text">
-                        <p>{{ 'info' | translate }}</p>
+                        <p>{{'KbPage.AddKbInfoURL' | translate}}</p>
                         <!-- <p>{{ 'KbPage.AddKbInfoSecondText' | translate }}</p> -->
                         <!-- <p [innerHTML]="'KbPage.AddKbInfoThirdText' | translate" style="margin-top: 8px;"></p> -->
                     </div>
@@ -26,11 +26,11 @@
                 <div class="form-container">
                     <form [formGroup]="kbForm">
                         <div class="input-container">
-                            <span class="input-label">Nome</span>
+                            <span class="input-label">{{ 'Name' | translate }}</span>
                             <input type="text" name="name" class="custom-input" [(ngModel)]="kb.name" formControlName="name"
                                 placeholder="{{ 'KbPage.TypeKbNamePlaceholder' | translate }}" (input)="onChangeInput($event)"
                                 [class.invalid]="(kbForm.controls.name.errors?.pattern || kbForm.controls.name.errors?.required) && kbForm.controls.name.touched">
-                            <span class="input-label">URL</span>
+                            <span class="input-label">{{ 'KbPage.Url' | translate }}</span>
                             <input type="url" name="url" class="custom-input" [(ngModel)]="kb.url" formControlName="url"
                                 placeholder="{{ 'KbPage.TypeKbUrlPlaceholder' | translate }}" (input)="onChangeInput($event)"
                                 [class.invalid]="(kbForm.controls.url.errors?.pattern || kbForm.controls.url.errors?.required) && kbForm.controls.url.touched">
@@ -44,7 +44,7 @@
                 {{ "Cancel" | translate }}
                 </button>
                 <button id="addkb-btn" class="btn btn-primary" [disabled]="buttonDisabled" (click)="onSaveKnowledgeBase()">
-                {{ 'KbPage.Add' | translate }}
+                {{ 'Add' | translate }}
                 </button>
             </div> 
 

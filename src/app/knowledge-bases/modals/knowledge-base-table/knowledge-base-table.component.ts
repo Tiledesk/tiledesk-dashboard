@@ -1,15 +1,18 @@
 import { Component, Input, OnInit, ViewChild, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort, Sort } from '@angular/material/sort';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { KB, KbSettings } from 'app/models/kbsettings-model';
 import {LiveAnnouncer} from '@angular/cdk/a11y';
+
 
 @Component({
   selector: 'knowledge-base-table',
   templateUrl: './knowledge-base-table.component.html',
   styleUrls: ['./knowledge-base-table.component.scss']
 })
+
+
 export class KnowledgeBaseTableComponent implements OnInit {
   @Input() refresh: boolean;
   @Input() kbsList: KB[];
@@ -29,16 +32,26 @@ export class KnowledgeBaseTableComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
-    private _liveAnnouncer: LiveAnnouncer
+    private _liveAnnouncer: LiveAnnouncer,
+    public pag: MatPaginatorIntl
   ) { }
 
   ngOnInit(): void {
     this.filterType = '';
     this.filterText = '';
+    this.pag.firstPageLabel = 'first page:';
+    this.pag.itemsPerPageLabel = 'items per page';
+    this.pag.lastPageLabel = 'last page';
+    this.pag.nextPageLabel = 'next page';
+    this.pag.previousPageLabel = 'previous page';
   }
 
   ngOnChanges(changes: SimpleChanges){
-    console.log('ngOnChanges!!!', changes);
+    //console.log('ngOnChanges!!!', changes);
+    //let xx: MatPaginatorIntl;
+    //xx.itemsPerPageLabel = "xxx";
+
+    this.dataSource = new MatTableDataSource(this.kbsList);
     if(this.kbsList) {
       this.dataSource = new MatTableDataSource(this.kbsList);
       this.dataSource.sort = this.sort;
@@ -47,7 +60,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    console.log('ngAfterViewInit!!!-->', this.kbsList);
+    //console.log('ngAfterViewInit!!!-->', this.kbsList);
     this.dataSource = new MatTableDataSource(this.kbsList);
     this.dataSource.sort = this.sort;
     this.sort.active = "updatedAt";
@@ -65,7 +78,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
     } else if(column == 'name'){
       this.filterText= filterValue;
     }
-    console.log('onOptionSelected:: ', filterValue, column, this.filterType, this.filterText);
+    //console.log('onOptionSelected:: ', filterValue, column, this.filterType, this.filterText);
     this.dataSource.filterPredicate = (data: KB, filter: string) => {
       if(this.filterType && this.filterText){
         return data.name.toLowerCase().includes(this.filterText) && data.status.toString() === this.filterType;

@@ -17,17 +17,17 @@
 
           <div class="add-kb-div">
             <button class="btn btn-primary" [disabled]="addButtonDisabled" [matMenuTriggerFor]="menu" aria-label="Actions">
-              <span class="btn-bottonazzo">{{ 'Aggiungi un knowledge base' | translate }} </span>
+              <span class="btn-bottonazzo">{{ 'KbPage.Add' | translate }} </span>
               <mat-icon class="icon-bottonazzo">add</mat-icon>
             </button>
             <mat-menu #menu="matMenu" xPosition="before" class="custom-menu">
               <button mat-menu-item (click)="openAddKnowledgeBaseModal('url-page')">
                 <mat-icon>link</mat-icon>
-                <span>{{ 'add url page' | translate }}</span>
+                <span>{{ 'KbPage.AddKbURL' | translate }}</span>
               </button>
               <button mat-menu-item (click)="openAddKnowledgeBaseModal('text-file')">
                 <mat-icon>description</mat-icon>
-                <span>{{ 'add file text' | translate }}</span>
+                <span>{{ 'KbPage.AddKbText' | translate }}</span>
               </button>
               <!-- <button mat-menu-item (click)="openAddKnowledgeBaseModal('site-map')">
                 <mat-icon>lan</mat-icon>
