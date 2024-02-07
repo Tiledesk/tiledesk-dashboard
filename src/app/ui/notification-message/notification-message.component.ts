@@ -52,6 +52,7 @@ export class NotificationMessageComponent extends PricingBaseComponent implement
   IS_AVAILABLE: boolean;
   currentUser: any;
   profile_name_for_segment: string;
+  salesEmail: string;
 
   constructor(
     public notify: NotifyService,
@@ -72,6 +73,7 @@ export class NotificationMessageComponent extends PricingBaseComponent implement
     if (brand) {
       this.company_name = brand['BRAND_NAME'];
       this.contactUsEmail = brand['CONTACT_US_EMAIL'];
+      this.salesEmail = brand['CONTACT_SALES_EMAIL'];
     }
 
   }
@@ -150,9 +152,9 @@ export class NotificationMessageComponent extends PricingBaseComponent implement
 
       } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
         this.notify.closeDataExportNotAvailable();
-        if (this.profile_name !== PLAN_NAME.C) {
+        if (this.profile_name !== PLAN_NAME.C  && this.profile_name !== PLAN_NAME.F ) {
           this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
-        } else if (this.profile_name === PLAN_NAME.C) {
+        } else if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
 
           this.notify.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
         }
@@ -231,7 +233,7 @@ export class NotificationMessageComponent extends PricingBaseComponent implement
       if (!this.subscription_id.startsWith("XX")) {
         this._cancelSubscription()
       } else if (this.subscription_id.startsWith("XX")) {
-        window.open(`mailto:sales@tiledesk.com?subject=Cancel subscription for project with id  ${this.projectId}`);
+        window.open(`mailto:${this.salesEmail}?subject=Cancel subscription for project with id  ${this.projectId}`);
         this.notify.cancelSubscriptionCompleted(true);
       }
     } else {

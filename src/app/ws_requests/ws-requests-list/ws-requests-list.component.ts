@@ -436,7 +436,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
         this.upgradePlan = translation;
       });
 
-    this.translate.get('AvailableWithThePlan', { plan_name: PLAN_NAME.C })
+    this.translate.get('AvailableWithThePlan', { plan_name: PLAN_NAME.F })
       .subscribe((translation: any) => {
         this.cPlanOnly = translation;
       });
@@ -937,16 +937,17 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     //   this.presentModalAgentCannotManageAvancedSettings();
     // }
     if (this.CURRENT_USER_ROLE === 'owner') {
-      if (this.profile_name === PLAN_NAME.C && this.subscription_is_active === true) {
+      if ((this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) && this.subscription_is_active === true) {
 
         // console.log('[PRJCT-EDIT-ADD] - HAS CLICKED goToProjectSettings_Advanced');
         this.router.navigate(['project/' + this.projectId + '/project-settings/advanced']);
 
-      } else if (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) {
+      } else if ((this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) && this.subscription_is_active === false) {
         this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.C, this.subscription_end_date);
-      } else if (this.profile_name !== PLAN_NAME.C) {
+      } else if (this.profile_name !== PLAN_NAME.C  && this.profile_name !== PLAN_NAME.F) {
         this.presentModalFeautureAvailableOnlyWithPlanC()
       }
+      
     } else {
       this.presentModalAgentCannotManageAvancedSettings()
     }

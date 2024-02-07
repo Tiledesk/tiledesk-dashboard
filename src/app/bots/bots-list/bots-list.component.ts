@@ -124,7 +124,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
   public contactUs: string;
   learnMoreAboutDefaultRoles: string;
   agentsCannotManageChatbots: string;
-
+  salesEmail:string;
   constructor(
     private faqKbService: FaqKbService,
     private router: Router,
@@ -149,6 +149,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     this.botLogo = brand['BASE_LOGO_NO_TEXT']
     this.dev_mode = isDevMode()
     this.logger.log('[BOTS-LIST] is dev mode ', this.dev_mode)
+    this.salesEmail = brand['CONTACT_SALES_EMAIL'];
 
   }
 
@@ -888,7 +889,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
   }
 
   contacUsViaEmail() {
-    window.open('mailto:sales@tiledesk.com?subject=Upgrade Tiledesk plan');
+    window.open(`mailto:${this.salesEmail}?subject=Upgrade plan`);
   }
 
   // goToEditAddPage_EDIT(faq_id: string) {

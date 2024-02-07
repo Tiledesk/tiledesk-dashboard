@@ -327,13 +327,13 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, OnDe
 
   openModalSubsExpired() {
     if (this.USER_ROLE === 'owner') {
-      if (this.profile_name !== PLAN_NAME.C) {
+      if (this.profile_name !== PLAN_NAME.C && this.profile_name !== PLAN_NAME.F ) {
         this.notify.displaySubscripionHasExpiredModal(
           true,
           this.prjct_profile_name,
           this.subscription_end_date,
         )
-      } else if (this.profile_name === PLAN_NAME.C) {
+      } else if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
         this.notify.displayEnterprisePlanHasExpiredModal(
           true,
           this.prjct_profile_name,

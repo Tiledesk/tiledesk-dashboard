@@ -37,7 +37,7 @@ export class PaymentSuccessPageComponent implements OnInit, AfterViewInit {
   ) {
     const brand = brandService.getBrand();
     this.contact_us_email = brand['CONTACT_US_EMAIL'];
-    this.contactSalesEmail = "sales@tiledesk.com"
+    this.contactSalesEmail = brand['CONTACT_SALES_EMAIL'];
   }
 
   ngOnInit() {

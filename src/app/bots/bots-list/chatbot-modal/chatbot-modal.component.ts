@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import { BrandService } from 'app/services/brand.service';
 
 @Component({
   selector: 'appdashboard-chatbot-modal',
@@ -12,11 +13,13 @@ export class ChatbotModalComponent implements OnInit {
   public chatbotLimitReached: string;
   public callingPage: string;
   public id_project: string;
+  salesEmail: string;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<ChatbotModalComponent>,
     private translate: TranslateService,
     private router: Router,
+    public brandService: BrandService,
   ) {
     console.log('[CHATBOT-MODAL] data ', data)
     if (data && data.projectProfile) {
@@ -29,8 +32,10 @@ export class ChatbotModalComponent implements OnInit {
     }
     if (data && data.projectId) {
       this.id_project = data.projectId
-
     }
+
+    const brand = brandService.getBrand();
+    this.salesEmail = brand['CONTACT_SALES_EMAIL'];
    
   }
 
@@ -62,7 +67,7 @@ export class ChatbotModalComponent implements OnInit {
 
   contacUsViaEmail() {
     this.dialogRef.close();
-    window.open('mailto:sales@tiledesk.com?subject=Upgrade Tiledesk plan');
+    window.open(`mailto:${this.salesEmail}?subject=Upgrade plan`);
   }
 
 }

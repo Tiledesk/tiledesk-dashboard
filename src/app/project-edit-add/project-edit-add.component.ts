@@ -217,6 +217,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   highlightedFeatures: any;
   isTier3Plans: boolean // Plus or Custom
   isSripeSub: boolean;
+  salesEmail: string;
 
   formErrors: FormErrors = {
     'creditCard': '',
@@ -276,6 +277,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     this.tparams = brand;
     if (brand) {
       this.contactUsEmail = brand['CONTACT_US_EMAIL'];
+      this.salesEmail = brand['CONTACT_SALES_EMAIL'];
     }
     // this.translationParams = { plan_name: PLAN_NAME.B } // Scale
     this.translationParams = { plan_name: PLAN_NAME.E } // Premium
@@ -2003,7 +2005,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     // }
     // window.open('mailto:' + this.contactUsEmail, 'mail')
     if (this.USER_ROLE === 'owner') {
-      window.open('mailto:sales@tiledesk.com?subject=Upgrade Tiledesk plan');
+      window.open(`mailto:${this.salesEmail}?subject=Upgrade plan`);
     } else {
       this.presentModalOnlyOwnerCanManageTheAccountPlan()
     }
@@ -2846,13 +2848,15 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
           if (this.USER_ROLE === 'owner') {
             if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
-              if (this.profile_name !== PLAN_NAME.C) {
+              if (this.profile_name !== PLAN_NAME.C && this.profile_name !== PLAN_NAME.F ) {
                 this.notify.displaySubscripionHasExpiredModal(true, this.profile_name, this.subscription_end_date);
-              } else if (this.profile_name === PLAN_NAME.C) {
+              } else if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
                 this.notify.displayEnterprisePlanHasExpiredModal(true, this.profile_name, this.subscription_end_date);
               }
 
-            } else if (this.profile_name === 'free' && this.prjct_trial_expired === true) {  // 
+              console.log('[PRJCT-EDIT-ADD] profile_name ', this.profile_name) 
+            } else if (this.profile_name === 'free' && this.prjct_trial_expired === true || this.profile_name === 'Sandbox' && this.prjct_trial_expired === true) {  //
+               
               this.router.navigate(['project/' + this.projectId + '/pricing']);
               // this.notify.presentContactUsModalToUpgradePlan(true);
             }

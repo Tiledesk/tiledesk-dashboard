@@ -12,6 +12,8 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
 import { ProjectPlanService } from 'app/services/project-plan.service';
 import { APP_SUMO_PLAN_NAME, PLAN_NAME } from 'app/utils/util';
+import { NotifyService } from 'app/core/notify.service';
+import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 const swal = require('sweetalert');
 
 @Component({
@@ -19,7 +21,7 @@ const swal = require('sweetalert');
   templateUrl: './account-settings.component.html',
   styleUrls: ['./account-settings.component.scss']
 })
-export class AccountSettingsComponent implements OnInit, OnDestroy {
+export class AccountSettingsComponent extends PricingBaseComponent implements OnInit, OnDestroy {
   PLAN_NAME = PLAN_NAME;
   APP_SUMO_PLAN_NAME= APP_SUMO_PLAN_NAME;
   appSumoProfile:string
@@ -46,7 +48,9 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
   isChromeVerGreaterThan100: boolean;
   currentUser: any;
   project: any;
+  
   constructor(
+    public notify: NotifyService,
     private _location: Location,
     private route: ActivatedRoute,
     private usersService: UsersService,
@@ -55,8 +59,10 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
     private projectService: ProjectService,
     private logger: LoggerService,
     private translate: TranslateService,
-    private prjctPlanService: ProjectPlanService,
-  ) { }
+    public prjctPlanService: ProjectPlanService,
+  ) { 
+    super(prjctPlanService, notify);
+  }
 
   ngOnInit() {
     this.getUserIdFromRouteParams();
@@ -92,90 +98,60 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe()
   }
 
-  getProjectPlan() {
-    this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-      this.logger.log('[USER-PROFILE][ACCOUNT-SETTINGS] - getProjectPlan project Profile Data', projectProfileData)
-      if (projectProfileData) {
+  // getProjectPlan() {
+  //   this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
+  //     this.logger.log('[USER-PROFILE][ACCOUNT-SETTINGS] - getProjectPlan project Profile Data', projectProfileData)
+  //     if (projectProfileData) {
 
-        this.prjct_profile_type = projectProfileData.profile_type;
-        this.logger.log('[USER-PROFILE][ACCOUNT-SETTINGS] - getProjectPlan project Profile Data > prjct_profile_type', this.prjct_profile_type)
-
-
-        if (projectProfileData && projectProfileData.extra3) {
-          this.logger.log('[HOME] Find Current Project Among All extra3 ', projectProfileData.extra3)
-          this.appSumoProfile = APP_SUMO_PLAN_NAME[projectProfileData.extra3]
-          this.logger.log('[USER-PROFILE][ACCOUNT-SETTINGS] Find Current Project appSumoProfile ', this.appSumoProfile)
-        }
+  //       this.prjct_profile_type = projectProfileData.profile_type;
+  //       this.logger.log('[USER-PROFILE][ACCOUNT-SETTINGS] - getProjectPlan project Profile Data > prjct_profile_type', this.prjct_profile_type)
 
 
-        if (projectProfileData.profile_type === 'free') {
-          if (projectProfileData.trial_expired === false) {
-            this.prjct_profile_name = PLAN_NAME.B + " plan (trial)"
+  //       if (projectProfileData && projectProfileData.extra3) {
+  //         this.logger.log('[HOME] Find Current Project Among All extra3 ', projectProfileData.extra3)
+  //         this.appSumoProfile = APP_SUMO_PLAN_NAME[projectProfileData.extra3]
+  //         this.logger.log('[USER-PROFILE][ACCOUNT-SETTINGS] Find Current Project appSumoProfile ', this.appSumoProfile)
+  //       }
+
+
+  //       if (projectProfileData.profile_type === 'free') {
+  //         if (projectProfileData.trial_expired === false) {
+  //           this.prjct_profile_name = PLAN_NAME.B + " plan (trial)"
        
-          } else {
-            this.prjct_profile_name = "Free plan";
+  //         } else {
+  //           this.prjct_profile_name = "Free plan";
            
-          }
-        } else if (projectProfileData.profile_type === 'payment') {
+  //         }
+  //       } else if (projectProfileData.profile_type === 'payment') {
          
-            if (projectProfileData.profile_name === PLAN_NAME.A) {
-              if (!this.appSumoProfile) {
-                this.prjct_profile_name = PLAN_NAME.A + " plan";
+  //           if (projectProfileData.profile_name === PLAN_NAME.A) {
+  //             if (!this.appSumoProfile) {
+  //               this.prjct_profile_name = PLAN_NAME.A + " plan";
       
-              } else {
-                this.prjct_profile_name = PLAN_NAME.A + " plan " + '(' + this.appSumoProfile + ')';
-              }
-            } else if (projectProfileData.profile_name === PLAN_NAME.B) {
-              if (!this.appSumoProfile) {
-                this.prjct_profile_name = PLAN_NAME.B + " plan";
+  //             } else {
+  //               this.prjct_profile_name = PLAN_NAME.A + " plan " + '(' + this.appSumoProfile + ')';
+  //             }
+  //           } else if (projectProfileData.profile_name === PLAN_NAME.B) {
+  //             if (!this.appSumoProfile) {
+  //               this.prjct_profile_name = PLAN_NAME.B + " plan";
              
-              } else {
-                this.prjct_profile_name = PLAN_NAME.B + " plan " + '(' + this.appSumoProfile + ')';;
+  //             } else {
+  //               this.prjct_profile_name = PLAN_NAME.B + " plan " + '(' + this.appSumoProfile + ')';;
            
-              }
-            } else if (projectProfileData.profile_name === PLAN_NAME.C) {
-              this.prjct_profile_name = PLAN_NAME.C + " plan";
-            }
-        }
+  //             }
+  //           } else if (projectProfileData.profile_name === PLAN_NAME.C) {
+  //             this.prjct_profile_name = PLAN_NAME.C + " plan";
+  //           }
+  //       }
+  //     }
+  //   }, error => {
+  //     this.logger.error('[USER-PROFILE][ACCOUNT-SETTINGS]] - getProjectPlan - ERROR', error);
+  //   }, () => {
 
+  //     this.logger.log('[USER-PROFILE][ACCOUNT-SETTINGS] - getProjectPlan * COMPLETE *')
 
-
-        // if (this.prjct_profile_type === 'free') {
-        //   if (projectProfileData.trial_expired === false) {
-        //     this.prjct_profile_name = PLAN_NAME.B + " plan (trial)"
-        //   } else {
-
-        //     this.prjct_profile_name = "Free plan"
-
-        //   }
-        // } else if (this.prjct_profile_type === 'payment') {
-
-        //   if (projectProfileData.profile_name === PLAN_NAME.A) {
-        //     this.prjct_profile_name = PLAN_NAME.A + " plan";
-           
-        //     // console.log('[USER-PROFILE][ACCOUNT-SETTINGS] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.A)
-
-        //   } else if (projectProfileData.profile_name === PLAN_NAME.B) {
-        //     this.prjct_profile_name = PLAN_NAME.B + " plan";
-           
-        //     // console.log('[USER-PROFILE][ACCOUNT-SETTINGS] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.B)
-
-        //   } else if (projectProfileData.profile_name === PLAN_NAME.C) {
-        //     this.prjct_profile_name = PLAN_NAME.C + " plan";
-           
-        //     // console.log('[USER-PROFILE][ACCOUNT-SETTINGS] - GET PROJECT PLAN - PLAN_NAME ', PLAN_NAME.C)
-        //   }
-
-        // }
-      }
-    }, error => {
-      this.logger.error('[USER-PROFILE][ACCOUNT-SETTINGS]] - getProjectPlan - ERROR', error);
-    }, () => {
-
-      this.logger.log('[USER-PROFILE][ACCOUNT-SETTINGS] - getProjectPlan * COMPLETE *')
-
-    });
-  }
+  //   });
+  // }
 
 
   getProjectUserRole() {
@@ -311,57 +287,8 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
       this.logger.log('[USER-PROFILE][ACCOUNT-SETTINGS] - DELETE-USER-ACCOUNT RES ', res);
 
       if (res) {
-        if (!isDevMode()) {
-          if (window['analytics']) {
-            try {
-              window['analytics'].page("User Profile Page, Settings", {
-
-              });
-            } catch (err) {
-              this.logger.error('Account Deleted page error', err);
-            }
-
-            let userFullname = ''
-            if (this.currentUser.firstname && this.currentUser.lastname)  {
-              userFullname = this.currentUser.firstname + ' ' + this.currentUser.lastname
-            } else if (this.currentUser.firstname && !this.currentUser.lastname) {
-              userFullname = this.currentUser.firstname
-            }
-
-
-            try {
-              window['analytics'].identify(this.currentUser._id, {
-                name: userFullname,
-                email: this.currentUser.email,
-                plan: this.prjct_profile_name
-
-              });
-            } catch (err) {
-              this.logger.error('identify in Account Deleted  error', err);
-            }
-
-            try {
-              window['analytics'].track('Account Deleted', {
-                "account_name": this.prjct_profile_name,
-              }, {
-                "context": {
-                  "groupId": this.projectId
-                }
-              });
-            } catch (err) {
-              this.logger.error('track Account Deleted event error', err);
-            }
-
-            try {
-              window['analytics'].group(this.project._id, {
-                name: this.project.name,
-                plan: this.prjct_profile_name,
-              });
-            } catch (err) {
-              this.logger.error('group Signed Out error', err);
-            }
-          }
-        }
+        this.trackDeleteUserAccount()
+       
       }
     }, (error) => {
       this.logger.error('[USER-PROFILE][ACCOUNT-SETTINGS] - DELETE-USER-ACCOUNT ', error);
@@ -381,7 +308,59 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
     });
   }
 
+  trackDeleteUserAccount() {
+    if (!isDevMode()) {
+      if (window['analytics']) {
+        try {
+          window['analytics'].page("User Profile Page, Settings", {
 
+          });
+        } catch (err) {
+          this.logger.error('Account Deleted page error', err);
+        }
+
+        let userFullname = ''
+        if (this.currentUser.firstname && this.currentUser.lastname)  {
+          userFullname = this.currentUser.firstname + ' ' + this.currentUser.lastname
+        } else if (this.currentUser.firstname && !this.currentUser.lastname) {
+          userFullname = this.currentUser.firstname
+        }
+
+
+        try {
+          window['analytics'].identify(this.currentUser._id, {
+            name: userFullname,
+            email: this.currentUser.email,
+            plan: this.prjct_profile_name
+
+          });
+        } catch (err) {
+          this.logger.error('identify in Account Deleted  error', err);
+        }
+
+        try {
+          window['analytics'].track('Account Deleted', {
+            "account_name": this.prjct_profile_name,
+          }, {
+            "context": {
+              "groupId": this.projectId
+            }
+          });
+        } catch (err) {
+          this.logger.error('track Account Deleted event error', err);
+        }
+
+        try {
+          window['analytics'].group(this.project._id, {
+            name: this.project.name,
+            plan: this.prjct_profile_name,
+          });
+        } catch (err) {
+          this.logger.error('group Signed Out error', err);
+        }
+      }
+    }
+  }
 
   // --------------------------------------------------------------
   // Go to

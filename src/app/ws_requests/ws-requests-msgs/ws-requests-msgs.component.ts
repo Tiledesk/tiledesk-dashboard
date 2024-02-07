@@ -4954,7 +4954,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       });
 
 
-    this.translate.get('AvailableWithThePlan', { plan_name: PLAN_NAME.C })
+    this.translate.get('AvailableWithThePlan', { plan_name: PLAN_NAME.F })
       .subscribe((translation: any) => {
         this.cPlanOnly = translation;
       });

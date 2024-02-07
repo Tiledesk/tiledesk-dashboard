@@ -143,6 +143,8 @@ export class PricingComponent implements OnInit, OnDestroy {
   USER_ROLE: any;
   agentCannotManageAdvancedOptions: string;
   learnMoreAboutDefaultRoles: string;
+  salesEmail: string;
+
 
   constructor(
     public location: Location,
@@ -162,6 +164,7 @@ export class PricingComponent implements OnInit, OnDestroy {
     const brand = brandService.getBrand();
     this.company_name = brand['BRAND_NAME'];
     this.contactUsEmail = brand['CONTACT_US_EMAIL'];
+    this.salesEmail = brand['CONTACT_SALES_EMAIL'];
   }
 
   /**
@@ -494,7 +497,7 @@ export class PricingComponent implements OnInit, OnDestroy {
   contactUs(planname) {
     if (this.USER_ROLE === 'owner') {
       // console.log('[PRICING] contactUs planname ', planname)
-      window.open(`mailto:sales@tiledesk.com?subject=Upgrade to Tiledesk ${planname}`);
+      window.open(`mailto:${this.salesEmail}?subject=Upgrade to ${planname}`);
 
       // if (!isDevMode()) {
       try {
@@ -1051,7 +1054,7 @@ export class PricingComponent implements OnInit, OnDestroy {
     // const mailTo = "mailto:info@tiledesk.com";
     // window.location.href = mailTo;
     // window.open('mailto:{{contactUsEmail}}', 'mail')
-    window.open('mailto:sales@tiledesk.com?subject=Upgrade Tiledesk plan');
+    window.open(`mailto:${this.salesEmail}?subject=Upgrade plan`);
 
   }
 

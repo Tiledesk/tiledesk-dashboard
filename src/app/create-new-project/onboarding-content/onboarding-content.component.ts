@@ -598,7 +598,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
               name: userFullname,
               email: this.user.email,
               logins: 5,
-              plan: "Scale (trial)"
+              plan: "Premium (trial)"
             });
           } catch (err) {
             this.logger.error('Wizard Create project identify error', err);
@@ -608,7 +608,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
               "userId": this.user._id,
               "trial_start_date": trialStarDate,
               "trial_end_date": trialEndDate,
-              "trial_plan_name": "Scale (trial)",
+              "trial_plan_name": "Premium (trial)",
               "context": {
                 "groupId": this.newProject._id
               }
@@ -619,7 +619,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
           try {
             window['analytics'].group(this.newProject._id, {
               name: this.newProject.name,
-              plan: "Scale (trial)",
+              plan: "Premium (trial)",
             });
           } catch (err) {
             this.logger.error('Wizard Create project group error', err);

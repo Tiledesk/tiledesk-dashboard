@@ -3,6 +3,7 @@ import { Subject, BehaviorSubject } from 'rxjs';
 import { Location } from '@angular/common';
 import { LoggerService } from '../services/logger/logger.service';
 import { PLAN_NAME, URL_understanding_default_roles } from './../utils/util';
+import { BrandService } from 'app/services/brand.service';
 const swal = require('sweetalert');
 declare var $: any;
 /// Notify users about errors and other helpful stuff
@@ -57,15 +58,19 @@ export class NotifyService {
   showSubtitleAllOperatorsSeatsUsed: boolean;
   displayLogoutModal = 'none';
   prjct_profile_name: string;
+  salesEmail: string;
 
   public URL_UNDERSTANDING_DEFAULT_ROLES = URL_understanding_default_roles
   public displayContactUsModalToUpgradePlan = 'none';
   constructor(
     public location: Location,
+    public brandService: BrandService,
     private logger: LoggerService
 
   ) {
-
+    const brand = brandService.getBrand();
+    this.salesEmail = brand['CONTACT_SALES_EMAIL'];
+    console.log('[NOTIFY-SERVICE] salesEmail ' ,  this.salesEmail) 
   }
 
   presentContactUsModalToUpgradePlan(displayModal: boolean) {
@@ -79,11 +84,11 @@ export class NotifyService {
     this.closeContactUsModalToUpgradePlan();
     this.closeModalSubsExpired()
     this.closeContactUsModal();
-    window.open('mailto:sales@tiledesk.com?subject=Upgrade Tiledesk plan');
+    window.open(`mailto:${this.salesEmail}?subject=Upgrade plan`);
   }
   
   contacUsViaEmailPlanC() {
-    window.open(`mailto:sales@tiledesk.com?subject=Upgrade Tiledesk plan (${PLAN_NAME.C} expired)`);
+    window.open(`mailto:${this.salesEmail}?subject=Upgrade plan (${this.prjct_profile_name} expired)`);
     this.closeModalEnterpiseSubsExpired()
   }
 
@@ -114,11 +119,12 @@ export class NotifyService {
   }
 
   displayEnterprisePlanHasExpiredModal(subHasExpired: boolean, prjctPlanName: string, prjctPlanSubsEndDate: Date) {
+    
     if (subHasExpired === true) {
       this.displayModalEnterpiseSubsExpired = 'block';
       this.prjct_profile_name = prjctPlanName // + ' plan'
     }
-    this.logger.log('[NOTIFY-SERVICE] - HasExpiredEnterpriseModal prjctPlanName ', prjctPlanName);
+    console.log('[NOTIFY-SERVICE] - HasExpiredEnterpriseModal prjctPlanName ', prjctPlanName);
   }
 
   closeModalEnterpiseSubsExpired() {

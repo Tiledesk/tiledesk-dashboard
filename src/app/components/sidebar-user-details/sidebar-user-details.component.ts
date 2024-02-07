@@ -208,21 +208,13 @@ export class SidebarUserDetailsComponent implements OnInit {
                 this._prjct_profile_name = PLAN_NAME.B + " plan " + '(' + this.appSumoProfile + ')';
               }
             } else if (this.plan_name === PLAN_NAME.C) {
-
               this._prjct_profile_name = PLAN_NAME.C + " plan";
-
             } else if (this.plan_name === PLAN_NAME.D) {
-
               this._prjct_profile_name = PLAN_NAME.D + " plan";
-
             } else if (this.plan_name === PLAN_NAME.E) {
-
               this._prjct_profile_name = PLAN_NAME.E + " plan";
-
             } else if (this.plan_name === PLAN_NAME.F) {
-
               this._prjct_profile_name = PLAN_NAME.F + " plan";
-
             }
 
           } else if (this.is_active_subscription === false) {
