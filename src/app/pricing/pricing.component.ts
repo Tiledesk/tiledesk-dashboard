@@ -33,7 +33,7 @@ enum MONTHLY_PRICE {
   Plus = 'Custom',
   Basic = "15",
   Premium = "100",
-  Custom = 'Starting at 300€'
+  Custom = 'Starting at 500€'
 }
 
 enum ANNUAL_PRICE {
@@ -42,7 +42,7 @@ enum ANNUAL_PRICE {
   Plus = 'Custom',
   Basic = "150",
   Premium = "1,000",
-  Custom = 'Starting at 300€'
+  Custom = 'Starting at 500€'
 }
 
 
@@ -117,7 +117,7 @@ export class PricingComponent implements OnInit, OnDestroy {
 
   TILEDESK_V2 = true;
 
-  public TEST_PAYMENT_LINKS = true;
+  public TEST_PAYMENT_LINKS = false;
 
   DISPLAY_BTN_PLAN_LIVE_20_CENTSXUNIT_PROD: boolean = false;
   DISPLAY_BTN_PLAN_TEST_3_EURXUNIT_PRE: boolean = false;
@@ -311,11 +311,17 @@ export class PricingComponent implements OnInit, OnDestroy {
 
 
     } else if (this.TEST_PAYMENT_LINKS === false) {
-      this.PAYMENT_LINK_MONTLY_PLAN_A = "https://buy.stripe.com/5kA3ck5K604y9qg3ck"; // "https://buy.stripe.com/aEU3ckc8ug3wdGwdQS";
-      this.PAYMENT_LINK_ANNUALLY_PLAN_A = "https://buy.stripe.com/fZefZ6egCeZsgSI14d";// "https://buy.stripe.com/28oaEM1tQeZs6e4fYZ";
-      this.PAYMENT_LINK_MONTLY_PLAN_B = "https://buy.stripe.com/cN2aEMfkGaJc1XObIO"; //"https://buy.stripe.com/8wM9AI0pMeZsbyo28c";
-      this.PAYMENT_LINK_ANNUALLY_PLAN_B = "https://buy.stripe.com/8wM14cc8ug3weKA003";
+      // this.PAYMENT_LINK_MONTLY_PLAN_A = "https://buy.stripe.com/5kA3ck5K604y9qg3ck"; // "https://buy.stripe.com/aEU3ckc8ug3wdGwdQS";
+      // this.PAYMENT_LINK_ANNUALLY_PLAN_A = "https://buy.stripe.com/fZefZ6egCeZsgSI14d";// "https://buy.stripe.com/28oaEM1tQeZs6e4fYZ";
+      // this.PAYMENT_LINK_MONTLY_PLAN_B = "https://buy.stripe.com/cN2aEMfkGaJc1XObIO"; //"https://buy.stripe.com/8wM9AI0pMeZsbyo28c";
+      // this.PAYMENT_LINK_ANNUALLY_PLAN_B = "https://buy.stripe.com/8wM14cc8ug3weKA003";
 
+
+      this.PAYMENT_LINK_MONTLY_PLAN_D = " https://buy.stripe.com/4gw0082xUeZs7i83ct"; // Basic Montly
+      this.PAYMENT_LINK_ANNUALLY_PLAN_D = "https://buy.stripe.com/9AQbIQc8u04y8mcaEW"; // Basic Annually 
+      this.PAYMENT_LINK_MONTLY_PLAN_E = "https://buy.stripe.com/14k0086OacRk6e4cN1"; // Premium €50.00 EUR / month
+      this.PAYMENT_LINK_ANNUALLY_PLAN_E = "https://buy.stripe.com/3cs6owfkGeZseKAaEU"; // Premium Annually
+     
     }
   }
 
