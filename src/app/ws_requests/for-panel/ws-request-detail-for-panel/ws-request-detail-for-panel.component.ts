@@ -197,7 +197,7 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
 
   joinRequest(request_id: string) {
     const msg = { action: 'openJoinConversationModal', parameter: request_id, calledBy: 'ws_request_detail_for_panel' }
-    window.top.postMessage(msg, '*')
+    window.parent.postMessage(msg, '*')
     this.logger.log('[REQUEST-DTLS-X-PANEL] JOIN-REQUEST - currentUserID ', this.currentUserID);
     // ------------------------
     // For test

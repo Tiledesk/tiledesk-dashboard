@@ -62,7 +62,7 @@ export class HomeKbComponent extends PricingBaseComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getKnowledgeBaseSettings();
+    // this.getKnowledgeBaseSettings();
     this.getCurrentProject();
     this.getProjectPlan();
     this.translateString()
@@ -81,83 +81,83 @@ export class HomeKbComponent extends PricingBaseComponent implements OnInit {
   }
 
 
-  presentModalAddKb() {
-    this.logger.log('[HOME-KB] - presentModalAddKb ');
-    const addKbBtnEl = <HTMLElement>document.querySelector('#home-material-btn'); 
-    this.logger.log('[HOME-KB] - presentModalAddKb addKbBtnEl ', addKbBtnEl);
-    addKbBtnEl.blur()
-    const dialogRef = this.dialog.open(HomeKbModalComponent, {
-      width: '600px',
-      // data: {
-      //   calledBy: 'step1'
-      // },
-    })
+  // presentModalAddKb() {
+  //   this.logger.log('[HOME-KB] - presentModalAddKb ');
+  //   const addKbBtnEl = <HTMLElement>document.querySelector('#home-material-btn'); 
+  //   this.logger.log('[HOME-KB] - presentModalAddKb addKbBtnEl ', addKbBtnEl);
+  //   addKbBtnEl.blur()
+  //   const dialogRef = this.dialog.open(HomeKbModalComponent, {
+  //     width: '600px',
+  //     // data: {
+  //     //   calledBy: 'step1'
+  //     // },
+  //   })
 
-    dialogRef.afterClosed().subscribe(result => {
-      this.logger.log(`[HOME-KB] Dialog result:`, result);
+  //   dialogRef.afterClosed().subscribe(result => {
+  //     this.logger.log(`[HOME-KB] Dialog result:`, result);
 
-      if (result) {
-        this.newKb = result.newKb;
-        this.kbSettings = result.kbSettings;
+  //     if (result) {
+  //       this.newKb = result.newKb;
+  //       this.kbSettings = result.kbSettings;
 
-        this.logger.log(`[HOME-KB] Dialog this.newKb:`, this.newKb);
+  //       this.logger.log(`[HOME-KB] Dialog this.newKb:`, this.newKb);
 
-        if (this.newKb) {
-          this.saveKnowledgeBase()
-        }
-      }
-    });
-  }
+  //       if (this.newKb) {
+  //         this.saveKnowledgeBase()
+  //       }
+  //     }
+  //   });
+  // }
 
 
-  saveKnowledgeBase() {
+  // saveKnowledgeBase() {
 
-    let first_index = this.newKb.url.indexOf('://') + 3;
-    let second_index = this.newKb.url.indexOf('www.') + 4;
-    let split_index;
-    if (second_index > first_index) {
-      split_index = second_index;
-    } else {
-      split_index = first_index;
-    }
-    this.newKb.name = this.newKb.url.substring(split_index);
+  //   let first_index = this.newKb.url.indexOf('://') + 3;
+  //   let second_index = this.newKb.url.indexOf('www.') + 4;
+  //   let split_index;
+  //   if (second_index > first_index) {
+  //     split_index = second_index;
+  //   } else {
+  //     split_index = first_index;
+  //   }
+  //   this.newKb.name = this.newKb.url.substring(split_index);
 
-    this.kbService.addNewKb(this.kbSettings._id, this.newKb).subscribe((savedSettings: KbSettings) => {
-      this.getKnowledgeBaseSettings();
-      let kb = savedSettings.kbs.find(kb => kb.url === this.newKb.url);
-      this.checkStatus(kb).then((status_code) => {
-        if (status_code === 0) {
-          this.runIndexing(kb);
-        }
-      })
-    }, (error) => {
-      this.logger.error("[HOME-KB] ERROR add new kb: ", error);
-    }, () => {
-      this.logger.info("[HOME-KB] add new kb *COMPLETED*");
-    })
-  }
+  //   this.kbService.addNewKb(this.kbSettings._id, this.newKb).subscribe((savedSettings: KbSettings) => {
+  //     this.getKnowledgeBaseSettings();
+  //     let kb = savedSettings.kbs.find(kb => kb.url === this.newKb.url);
+  //     this.checkStatus(kb).then((status_code) => {
+  //       if (status_code === 0) {
+  //         this.runIndexing(kb);
+  //       }
+  //     })
+  //   }, (error) => {
+  //     this.logger.error("[HOME-KB] ERROR add new kb: ", error);
+  //   }, () => {
+  //     this.logger.info("[HOME-KB] add new kb *COMPLETED*");
+  //   })
+  // }
 
-  getKnowledgeBaseSettings() {
-    this.kbService.getKbSettings().subscribe((kbSettings: KbSettings) => {
-      this.logger.log("[HOME-KB] get kbSettings: ", kbSettings);
-      this.kbSettings = kbSettings;
-      if (this.kbSettings) {
-        this.kbCount = this.kbSettings.kbs.length
-        console.log("[HOME-KB] KbCount: ", this.kbCount);
-      }
+  // getKnowledgeBaseSettings() {
+  //   this.kbService.getKbSettings().subscribe((kbSettings: KbSettings) => {
+  //     this.logger.log("[HOME-KB] get kbSettings: ", kbSettings);
+  //     this.kbSettings = kbSettings;
+  //     if (this.kbSettings) {
+  //       this.kbCount = this.kbSettings.kbs.length
+  //       console.log("[HOME-KB] KbCount: ", this.kbCount);
+  //     }
     
-      // if (this.kbSettings.kbs.length < kbSettings.maxKbsNumber) {
-      //   this.addButtonDisabled = false;
-      // } else {
-      //   this.addButtonDisabled = true;
-      // }
-      // this.checkAllStatuses();
-    }, (error) => {
-      this.logger.error("[HOME-KB] ERROR get kbSettings: ", error);
-    }, () => {
-      this.logger.log("[HOME-KB] get kbSettings *COMPLETE*");
-    })
-  }
+  //     // if (this.kbSettings.kbs.length < kbSettings.maxKbsNumber) {
+  //     //   this.addButtonDisabled = false;
+  //     // } else {
+  //     //   this.addButtonDisabled = true;
+  //     // }
+  //     // this.checkAllStatuses();
+  //   }, (error) => {
+  //     this.logger.error("[HOME-KB] ERROR get kbSettings: ", error);
+  //   }, () => {
+  //     this.logger.log("[HOME-KB] get kbSettings *COMPLETE*");
+  //   })
+  // }
 
   checkStatus(kb) {
     let data = {

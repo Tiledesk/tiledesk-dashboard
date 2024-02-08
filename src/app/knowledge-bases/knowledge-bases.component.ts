@@ -11,7 +11,7 @@ import { OpenaiService } from 'app/services/openai.service';
 import { ProjectService } from 'app/services/project.service';
 import { timer } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
-import { Router } from '@angular/router';
+//import { Router } from '@angular/router';
 
 @Component({
   selector: 'appdashboard-knowledge-bases',
@@ -82,41 +82,41 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
     private kbService: KnowledgeBaseService,
     private projectService: ProjectService,
     public route: ActivatedRoute,
-    private router: Router,
+    //private router: Router,
     private notify: NotifyService,
     private translate: TranslateService
   ) { }
 
   ngOnInit(): void {
-    this.loadKbSettings();
+
     this.getBrowserVersion();
     this.getTranslations();
     this.listenSidebarIsOpened();
-    // this.getListOfKb();
-    // this.kbFormUrl = this.createConditionGroupUrl();
-    // this.kbFormContent = this.createConditionGroupContent();
-    // this.trackPage();
-    // this.getLoggedUser();
-    // this.getCurrentProject();
-    // this.getRouteParams();
+    this.getListOfKb();
+    this.kbFormUrl = this.createConditionGroupUrl();
+    this.kbFormContent = this.createConditionGroupContent();
+    this.trackPage();
+    this.getLoggedUser();
+    this.getCurrentProject();
+    this.getRouteParams();
   }
 
   ngOnDestroy(): void {
     clearInterval(this.interval_id);
   }
 
-  loadKbSettings(){
-    this.kbService.getKbSettings().subscribe((kb: any) => {
-      if(kb.kbs && kb.kbs.length>0){
-        console.log('REDIRECT getKbSettings'+kb.kbs);
-        this.router.navigate(['project/' + this.id_project + '/knowledge-bases-pre']);
-      }
-    }, (error) => {
-      this.logger.error("[KNOWLEDGE BASES COMP] ERROR get kbSettings: ", error);
-    }, () => {
-      this.logger.log("[KNOWLEDGE BASES COMP] get kbSettings *COMPLETE*");
-    })
-  }
+  // loadKbSettings(){
+  //   this.kbService.getKbSettings().subscribe((kb: any) => {
+  //     if(kb.kbs && kb.kbs.length>0){
+  //       console.log('REDIRECT getKbSettings'+kb.kbs);
+  //       this.router.navigate(['project/' + this.id_project + '/knowledge-bases-pre']);
+  //     }
+  //   }, (error) => {
+  //     this.logger.error("[KNOWLEDGE BASES COMP] ERROR get kbSettings: ", error);
+  //   }, () => {
+  //     this.logger.log("[KNOWLEDGE BASES COMP] get kbSettings *COMPLETE*");
+  //   })
+  // }
 
 
   getTranslations() {

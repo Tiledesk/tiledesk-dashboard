@@ -185,7 +185,7 @@
           <i class="material-icons-outlined info-icon">help_outline</i>
           <div class="info-text">
             <p>{{ 'KbPage.AddKbInfoFirstText' | translate }}</p>
-            <p>{{ 'KbPage.AddKbInfoSecondText' | translate }}</p>
+            <p>{{ 'KbPage.AddKbInfoSecondText' | translate : companyNameParams }}</p>
             <p [innerHTML]="'KbPage.AddKbInfoThirdText' | translate" style="margin-top: 8px;"></p>
           </div>
         </div>
@@ -399,7 +399,7 @@
           <div>
             <!-- Don't have a GPT-key?  -->
             {{'KbPage.DonNotHaveGPTKey' | translate}}
-            <span class="contact-us-via-email" (click)="contactSalesForChatGptKey()">
+            <span class="contact-us-via-email" (click)="contactUsForChatGptKey()">
               <!-- Contact us and we will be glad to help you. -->
               {{'KbPage.ContactUsAndWeWillBeGladToHelpYou' | translate }}
             </span>

@@ -38,26 +38,26 @@ export class HomeKbModalComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.getKnowledgeBaseSettings()
+    // this.getKnowledgeBaseSettings()
   }
 
-  getKnowledgeBaseSettings() {
-    this.kbService.getKbSettings().subscribe((kbSettings: KbSettings) => {
-      this.logger.log("[HOME-KB MODAL] get kbSettings: ", kbSettings);
-      this.kbSettings = kbSettings;
-      // this.kbsList = kbSettings.kbs;
-      if (this.kbSettings.kbs.length < kbSettings.maxKbsNumber) {
-        // this.addButtonDisabled = false;
-      } else {
-        // this.addButtonDisabled = true;
-      }
-      // this.checkAllStatuses();
-    }, (error) => {
-      this.logger.error("[HOME-KB  MODAL] ERROR get kbSettings: ", error);
-    }, () => {
-      this.logger.log("[HOME-KB MODAL] get kbSettings *COMPLETE*");
-    })
-  }
+  // getKnowledgeBaseSettings() {
+  //   this.kbService.getKbSettings().subscribe((kbSettings: KbSettings) => {
+  //     this.logger.log("[HOME-KB MODAL] get kbSettings: ", kbSettings);
+  //     this.kbSettings = kbSettings;
+  //     // this.kbsList = kbSettings.kbs;
+  //     if (this.kbSettings.kbs.length < kbSettings.maxKbsNumber) {
+  //       // this.addButtonDisabled = false;
+  //     } else {
+  //       // this.addButtonDisabled = true;
+  //     }
+  //     // this.checkAllStatuses();
+  //   }, (error) => {
+  //     this.logger.error("[HOME-KB  MODAL] ERROR get kbSettings: ", error);
+  //   }, () => {
+  //     this.logger.log("[HOME-KB MODAL] get kbSettings *COMPLETE*");
+  //   })
+  // }
 
   onOkPresssed(newKb ){
     this.dialogRef.close({'newKb': newKb, kbSettings: this.kbSettings });

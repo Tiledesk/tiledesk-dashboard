@@ -830,7 +830,7 @@ export class WsSharedComponent implements OnInit {
 
       this.you_are_successfully_added_to_the_chat = text;
       const msg = { action: 'display_toast_join_complete', text: this.you_are_successfully_added_to_the_chat }
-      window.top.postMessage(msg, '*')
+      window.parent.postMessage(msg, '*')
     });
   }
 

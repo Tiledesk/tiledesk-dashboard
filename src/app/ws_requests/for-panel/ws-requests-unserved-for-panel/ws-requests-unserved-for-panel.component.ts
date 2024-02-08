@@ -219,7 +219,7 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
     this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] JOIN-REQUEST request_id', request_id, ' - CURRENT-USER-ID ', this.currentUserID);
 
     const msg = { action: 'openJoinConversationModal', parameter: request_id, calledBy: 'ws_unserved_for_panel' }
-    window.top.postMessage(msg, '*')
+    window.parent.postMessage(msg, '*')
     // this.onJoinHandled(request_id, this.currentUserID);
 
     // ------------------------

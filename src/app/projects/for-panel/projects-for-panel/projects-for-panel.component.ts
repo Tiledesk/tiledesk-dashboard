@@ -119,7 +119,7 @@ export class ProjectsForPanelComponent implements OnInit, OnDestroy {
 
     this.setPerfectScrollbar();
     this.listenHasDeleteUserProfileImage();
-    window.top.postMessage('onInitProjectsForPanel', '*')
+    window.parent.postMessage('onInitProjectsForPanel', '*')
 
     this.getLastStoredProject()
   }
@@ -155,7 +155,7 @@ export class ProjectsForPanelComponent implements OnInit, OnDestroy {
 
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
-    window.top.postMessage('onDestroyProjectsForPanel', '*')
+    window.parent.postMessage('onDestroyProjectsForPanel', '*')
   }
 
 
@@ -253,13 +253,13 @@ export class ProjectsForPanelComponent implements OnInit, OnDestroy {
     // POST MESSAGE hasChangedProject (communicates to the parent (chat-ionic) that the agent has changed project)
     // ------------------------------------------------------------------------------------------------------------
     localStorage.setItem('last_project', JSON.stringify(project))
-    window.top.postMessage('hasChangedProject', '*')
+    window.parent.postMessage('hasChangedProject', '*')
 
     this.logger.log('[PROJECTS-X-PANEL] - hasChangedPRJCT - PROJECT status ', project_status)
 
     if (project_status !== 0) {
 
-      window.top.postMessage('open', '*')
+      window.parent.postMessage('open', '*')
 
       // this.router.navigate([`/project/${project_id}/unserved-request-for-panel`]);
 

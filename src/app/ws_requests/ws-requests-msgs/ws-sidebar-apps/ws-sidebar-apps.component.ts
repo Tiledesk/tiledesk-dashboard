@@ -97,7 +97,7 @@ export class WsSidebarAppsComponent implements OnInit, AfterViewInit, OnDestroy 
         // }
       } else if (this.SIDEBAR_APPS_IN_CHAT_PANEL_MODE === true) {
         const msg = { action: 'openAppsSidebarWideMode', parameter: this.APP_SIDEBAR_WIDE }
-        window.top.postMessage(msg, '*')
+        window.parent.postMessage(msg, '*')
       }
     }
   }
@@ -354,7 +354,7 @@ export class WsSidebarAppsComponent implements OnInit, AfterViewInit, OnDestroy 
     } else if (this.SIDEBAR_APPS_IN_CHAT_PANEL_MODE === true) {
       if (this.APP_SIDEBAR_WIDE === true) {
         const msg = { action: 'closeAppsSidebarWideMode', parameter: this.APP_SIDEBAR_WIDE }
-        window.top.postMessage(msg, '*')
+        window.parent.postMessage(msg, '*')
       }
     }
 
@@ -385,7 +385,7 @@ export class WsSidebarAppsComponent implements OnInit, AfterViewInit, OnDestroy 
       }
     } else if (this.SIDEBAR_APPS_IN_CHAT_PANEL_MODE === true) {
       const msg = { action: 'openAppsSidebarWideMode', parameter: this.APP_SIDEBAR_WIDE }
-      window.top.postMessage(msg, '*')
+      window.parent.postMessage(msg, '*')
     }
   }
 

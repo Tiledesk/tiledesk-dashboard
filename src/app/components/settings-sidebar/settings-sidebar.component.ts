@@ -414,7 +414,7 @@ export class SettingsSidebarComponent implements OnInit {
   }
 
   goToKnowledgeBases() {
-    this.logger.log("goToKnowledgeBases -----> project._id: ", this.project._id);
+    console.log("goToKnowledgeBases -----> project._id: ", this.project._id);
     this.router.navigate(['project/' + this.project._id + '/knowledge-bases'])
   }
 

@@ -5,6 +5,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { LoggerService } from './logger/logger.service';
 import { KB } from 'app/models/kbsettings-model';
 
+
+
 @Injectable({
   providedIn: 'root'
 })
@@ -28,7 +30,6 @@ export class KnowledgeBaseService {
     this.getCurrentProject();
     this.getAppConfig();
   }
-
   // ******************************************
   // ********** INITIALIZING SERVICE **********
   // ***************** START ******************
@@ -56,6 +57,7 @@ export class KnowledgeBaseService {
       this.logger.log("*COMPLETE*")
     });
   }
+
   // ******************************************
   // ********** INITIALIZING SERVICE **********
   // ***************** END ********************
@@ -73,7 +75,7 @@ export class KnowledgeBaseService {
   //   return this.httpClient.get(url, httpOptions);
   // }
 
-  getKbSettings() {
+  getKbSettingsPrev() {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -96,7 +98,19 @@ export class KnowledgeBaseService {
     const url = this.SERVER_BASE_PATH + this.project_id + "/kb/" + kb_settings._id;
     // const url = this.SERVER_BASE_PATH + this.project_id + "/kbsettings/" + kb_settings._id;
     this.logger.log("[KNOWLEDGE BASE SERVICE] - save settings URL ", url);
+    return this.httpClient.put(url, kb_settings, httpOptions);
+  }
 
+  saveKbSettingsPrev(kb_settings) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    }
+    //const url = this.SERVER_BASE_PATH + this.project_id + "/kb/" + kb_settings._id;
+    const url = this.SERVER_BASE_PATH + this.project_id + "/kbsettings/" + kb_settings._id;
+    this.logger.log("[KNOWLEDGE BASE SERVICE] - save settings URL ", url);
     return this.httpClient.put(url, kb_settings, httpOptions);
   }
 
@@ -112,6 +126,7 @@ export class KnowledgeBaseService {
     this.logger.log("[KNOWLEDGE BASE SERVICE] - get settings URL ", url);
     return this.httpClient.get(url, httpOptions);
   }
+
 
 
   addKb(body: any) {
@@ -140,8 +155,24 @@ export class KnowledgeBaseService {
     return this.httpClient.delete(url, httpOptions);
   }
 
+  deleteKbPrev(settings_id: string, id: any){
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      }), 
+      //body: JSON.stringify(data)
+    }
+    // https://api.tiledesk.com/v3/649007cf2b0ceb0013adb39a/kbsettings/6581af98e677a60013cdccbe/65c4abc25fc7b7001300069a
 
-  addNewKb(settings_id: string, body: any) {
+    const url = this.SERVER_BASE_PATH + this.project_id + "/kbsettings/"+settings_id+"/"+id;
+    // const url = this.SERVER_BASE_PATH + this.project_id + "/kb/"+data.id;
+    this.logger.log("[KNOWLEDGE BASE SERVICE] - delete kb URL ", url);
+    return this.httpClient.delete(url, httpOptions);
+  }
+
+
+  addNewKbPrev(settings_id: string, body: any) {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',

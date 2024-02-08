@@ -9,6 +9,8 @@ import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { OpenaiService } from 'app/services/openai.service';
 import { ProjectService } from 'app/services/project.service';
+import { Router } from '@angular/router';
+import { BrandService } from 'app/services/brand.service';
 
 @Component({
   selector: 'appdashboard-knowledge-bases-previous',
@@ -30,6 +32,9 @@ export class KnowledgeBasesPreviousComponent implements OnInit, OnDestroy {
   buttonDisabled: boolean = true;
   addButtonDisabled: boolean = false;
   gptkeyVisible: boolean = false;
+  companyNameParams: any;
+  company_name: string;
+  contactUsEmail: string;
 
   //analytics
   CURRENT_USER: any;
@@ -75,8 +80,16 @@ export class KnowledgeBasesPreviousComponent implements OnInit, OnDestroy {
     private kbService: KnowledgeBaseService,
     private projectService: ProjectService,
     public route: ActivatedRoute,
-    private notify: NotifyService
-  ) { }
+    private notify: NotifyService,
+    private router: Router,
+    public brandService: BrandService
+  ) { 
+
+    const brand = brandService.getBrand();
+    this.company_name = brand['BRAND_NAME'];
+    this.companyNameParams = { 'BRAND_NAME': this.company_name }
+    this.contactUsEmail = brand['CONTACT_US_EMAIL'];
+  }
 
   ngOnInit(): void {
     this.getBrowserVersion();
@@ -127,6 +140,7 @@ export class KnowledgeBasesPreviousComponent implements OnInit, OnDestroy {
       }
     });
   }
+
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
       this.project = project
@@ -139,6 +153,7 @@ export class KnowledgeBasesPreviousComponent implements OnInit, OnDestroy {
       }
     });
   }
+
   getProjectById(projectId) {
     this.projectService.getProjectById(projectId).subscribe((project: any) => {
       this.logger.log('[KNOWLEDGE BASES COMP] - GET PROJECT BY ID - PROJECT: ', project);
@@ -179,16 +194,20 @@ export class KnowledgeBasesPreviousComponent implements OnInit, OnDestroy {
 
 
   getKnowledgeBaseSettings() {
-    this.kbService.getKbSettings().subscribe((kbSettings: KbSettings) => {
+    this.kbService.getKbSettingsPrev().subscribe((kbSettings: KbSettings) => {
       this.logger.log("[KNOWLEDGE BASES COMP] get kbSettings: ", kbSettings);
       this.kbSettings = kbSettings;
+      if (this.kbSettings.kbs.length == 0){
+        this.router.navigate(['project/' + this.id_project + '/knowledge-bases']);
+      }
+      
       if (this.kbSettings.kbs.length < kbSettings.maxKbsNumber) {
         this.addButtonDisabled = false;
       } else {
         this.addButtonDisabled = true;
       }
       this.checkAllStatuses();
-      this.startPooling();
+      //this.startPooling();
     }, (error) => {
       this.logger.error("[KNOWLEDGE BASES COMP] ERROR get kbSettings: ", error);
     }, () => {
@@ -246,7 +265,7 @@ export class KnowledgeBasesPreviousComponent implements OnInit, OnDestroy {
       this.newKb.name = this.newKb.url;
     }
 
-    this.kbService.addNewKb(this.kbSettings._id, this.newKb).subscribe((savedSettings: KbSettings) => {
+    this.kbService.addNewKbPrev(this.kbSettings._id, this.newKb).subscribe((savedSettings: KbSettings) => {
       // console.log('[KNOWLEDGE BASES COMP] this.kbSettings addNewKb ', this.kbSettings)
       this.getKnowledgeBaseSettings();
       let kb = savedSettings.kbs.find(kb => kb.url === this.newKb.url);
@@ -331,8 +350,7 @@ export class KnowledgeBasesPreviousComponent implements OnInit, OnDestroy {
   }
 
   saveKnowledgeBaseSettings() {
-    this.kbService.saveKbSettings(this.kbSettings).subscribe(((savedSettings) => {
-
+    this.kbService.saveKbSettingsPrev(this.kbSettings).subscribe(((savedSettings) => {
       // console.log('[KNOWLEDGE BASES COMP] save kb this.kbSettings > gptkey: ', this.kbSettings.gptkey)
       // console.log('[KNOWLEDGE BASES COMP] save kb savedSettings: ', savedSettings)
       this.getKnowledgeBaseSettings();
@@ -351,11 +369,8 @@ export class KnowledgeBasesPreviousComponent implements OnInit, OnDestroy {
   }
 
   deleteKnowledgeBase(id) {
-    this.logger.log("[KNOWLEDGE BASES COMP] kb to delete id: ", id);
-    this.kbService.deleteKb(this.kbSettings._id).subscribe((response) => {
-
+    this.kbService.deleteKbPrev(this.kbSettings._id, id).subscribe((response) => {
       // console.log('[KNOWLEDGE BASES COMP] this.kbSettings delete > ', this.kbSettings.gptkey)
-
       this.getKnowledgeBaseSettings();
       this.closeDeleteKnowledgeBaseModal();
     }, (error) => {
@@ -376,7 +391,7 @@ export class KnowledgeBasesPreviousComponent implements OnInit, OnDestroy {
       full_url: kb.url,
       gptkey: this.kbSettings.gptkey
     }
-    this.openaiService.startScraping(data).subscribe((response: any) => {
+    this.openaiService.startScrapingPrev(data).subscribe((response: any) => {
       this.logger.log("start scraping response: ", response);
       if (response.message && response.message === "Invalid Openai API key") {
         this.notify.showWidgetStyleUpdateNotification("Invalid Openai API key", 4, 'report_problem');
@@ -394,7 +409,6 @@ export class KnowledgeBasesPreviousComponent implements OnInit, OnDestroy {
   }
 
   checkAllStatuses() {
-
     // SCANDALOSO - DA ELIMINARE IL PRIMA POSSIBILE
     // INDAGARE CON PUGLIA AI
     // Anche perchè ogni tanto risponde con tutti status 0 anche con 500ms di delay
@@ -402,7 +416,6 @@ export class KnowledgeBasesPreviousComponent implements OnInit, OnDestroy {
     for (let i = 0; i < this.kbSettings.kbs.length; i++) {
       const delay = 500 * i;
       let kb = this.kbSettings.kbs[i];
-
       setTimeout(() => {
         promises.push(this.checkStatus(kb).then((status_code: number) => {
           kb.status = status_code;
@@ -412,7 +425,6 @@ export class KnowledgeBasesPreviousComponent implements OnInit, OnDestroy {
         }))
       }, delay);
     }
-
     Promise.all(promises).then((response) => {
       this.logger.log("Promise All *COMPLETED* ", response);
     })
@@ -424,7 +436,7 @@ export class KnowledgeBasesPreviousComponent implements OnInit, OnDestroy {
       "full_url": kb.url
     }
     return new Promise((resolve, reject) => {
-      this.openaiService.checkScrapingStatus(data).subscribe((response: any) => {
+      this.openaiService.checkScrapingStatusPrev(data).subscribe((response: any) => {
         resolve(response.status_code);
       }, (error) => {
         this.logger.error(error);
@@ -446,7 +458,7 @@ export class KnowledgeBasesPreviousComponent implements OnInit, OnDestroy {
     this.answer = null;
     this.source_url = null;
 
-    this.openaiService.askGpt(data).subscribe((response: any) => {
+    this.openaiService.askGptPrev(data).subscribe((response: any) => {
       console.log("ask gpt preview response: ", response);
       if (response.success == false) {
         this.error_answer = true;
@@ -454,7 +466,6 @@ export class KnowledgeBasesPreviousComponent implements OnInit, OnDestroy {
         this.answer = response.answer;
         this.source_url = response.source_url;
       }
-
       this.show_answer = true;
       this.searching = false;
       setTimeout(() => {
@@ -549,9 +560,9 @@ export class KnowledgeBasesPreviousComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     clearInterval(this.interval_id);
   }
-  contactSalesForChatGptKey() {
+  contactUsForChatGptKey() {
     this.closeSecretsModal()
-    window.open(`mailto:support@tiledesk.com?subject=I don't have a GPT-Key`);
+    window.open(`mailto:${this.contactUsEmail}?subject=I don't have a GPT-Key`);
   }
 
 

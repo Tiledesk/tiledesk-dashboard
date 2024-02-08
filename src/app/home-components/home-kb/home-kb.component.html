@@ -14,10 +14,8 @@
             Chat-GPT-like experience
         </div>
 
-        <div class="kb-counter">
-            <!-- {{ 'KbPage.KbCounterFooter' | translate: { counter: kbSettings?.kbs?.length } }} -->
-            <!-- {{kbSettings?.kbs?.length }} of 3 Knowledge Bases added -->
-            <!-- {{ 'KbPage.KbCounterFooter_es' | translate: { counter: kbCount, allowed_kb_num: kbLimit, plan_name: prjct_profile_name } }} -->
+        <!-- <div class="kb-counter">
+
             <span [ngStyle]="{'color': kbCount > kbLimit ? '#f44336' : '#3ea9f5'}" class="kb-reedemed-number"
                 matTooltipClass="h-custom-mat-tooltip"
                 matTooltip="View detail in Knowledge Bases" 
@@ -54,22 +52,7 @@
                     error
                 </i>
             </span>
-
-            <!-- <span *ngIf="(((prjct_profile_type === 'payment' && subscription_is_active === true) ||
-                (prjct_profile_type === 'free' && trial_expired === false) || 
-                (prjct_profile_type === 'free' && trial_expired === true))  &&
-                (kbCount > kbLimit))">
-                <i class="material-icons" 
-                    matTooltipClass="h-custom-mat-tooltip"
-                    matTooltip="The number of Knowledge Base exceeds the number allowed for the {{ prjct_profile_name }}" 
-                    #tooltip="matTooltip" 
-                    matTooltipPosition='above'
-                    matTooltipHideDelay="100" 
-                    style="vertical-align: middle; color: #f44336; cursor: pointer; font-size: 20px;">
-                    error
-                </i>
-            </span> -->
-        </div>
+        </div> -->
 
         <div class="actions--btn-wpr">
             <button id="home-material-btn" class="mat-focus-indicator mat-flat-button mat-button-base"
@@ -77,7 +60,8 @@
                 <span class="mat-button-wrapper">
 
                     <span class="ml-2" style="font-size: 15px;">
-                        Add Knowledge Base
+                        Add  
+                        <!-- Knowledge Base -->
                     </span>
 
                 </span>

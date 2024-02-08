@@ -23,7 +23,7 @@ export class UnauthorizedForProjectComponent implements OnInit {
   inIframe() {
     try {
 
-      return window.self !== window.top;
+      return window.self !== window.parent;
     } catch (e) {
       this.logger.log('[UNAUTHORIZED-FOR-PROJECT] error ' ,e)
       return true;
