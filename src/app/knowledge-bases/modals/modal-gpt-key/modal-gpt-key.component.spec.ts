@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { KbAlertComponent } from './kb-alert.component';
+import { ModalGptKeyComponent } from './modal-gpt-key.component';
 
-describe('KbAlertComponent', () => {
-  let component: KbAlertComponent;
-  let fixture: ComponentFixture<KbAlertComponent>;
+describe('ModalGptKeyComponent', () => {
+  let component: ModalGptKeyComponent;
+  let fixture: ComponentFixture<ModalGptKeyComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ KbAlertComponent ]
+      declarations: [ ModalGptKeyComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(KbAlertComponent);
+    fixture = TestBed.createComponent(ModalGptKeyComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

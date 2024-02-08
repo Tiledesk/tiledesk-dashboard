@@ -1,0 +1,123 @@
+td {
+    cursor: pointer;
+}
+
+select.select-status {
+    height: 30px;
+    background: #fff;
+    border-radius: 5px;
+    border-color: #d9d9d9;
+    width: 130px;
+    text-transform: capitalize;
+}
+.form-group {
+    width: max-content;
+    margin-top: 0;
+    display: flex;
+    input {
+        height: 36px;
+        font-size: 14px;
+        width: 100%;
+        appearance: none;
+        border: 1px solid #ccc;
+        padding: 0 8px;
+        box-sizing: border-box;
+        border-radius: 5px;
+    }
+}
+
+.custom-input  {
+    background-color:#fff; 
+    color:#333333;
+}
+.control-label {
+    padding-top: 0px;
+    margin-top: 0px;
+}
+
+table {
+    width: 100%;
+  }
+  th {
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  th.mat-sort-header-sorted {
+    color: black;
+  }
+
+  .subtitle {
+    margin: 0;
+    font-size: 11px;
+    line-height: 11px;
+  }
+
+  .mat-elevation-z8{
+    box-shadow: none;
+  }
+  
+  .preview-button {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    //background-color: #006cff;
+    color: white;
+    border: none;
+    padding: 4px 12px 4px 8px;
+    border-radius: 10px;
+    font-weight: 500;
+    font-size: 13px;
+    color: rgb(98, 119, 140);
+    background: linear-gradient(rgba(239, 245, 246, 0.64) 0%, rgb(238, 244, 246) 100%), rgb(255, 255, 255);
+    box-shadow: rgb(212, 217, 230) 0px 1px 0px;
+    .material-icons {
+        font-size: 19px;
+    }
+    &:hover {
+        background: linear-gradient(rgba(239, 245, 246, 0.851) 0%, rgb(225, 241, 246) 100%), rgb(255, 255, 255);
+    }
+}
+
+.animated-icon {
+    animation: rotate 1.5s linear infinite;
+    animation-direction: reverse !important;
+}
+
+::ng-deep .custom-spinner {
+    display: flex;
+    justify-content: space-evenly;
+    .sk-fading-circle {
+        width: 20px;
+        height: 20px;
+        margin: 0px;
+    }
+    .sk-fading-circle .sk-circle:before {
+        background-color: rgb(98, 119, 140) !important;
+    }
+}
+
+th.mat-header-cell:last-of-type, td.mat-cell:last-of-type, td.mat-footer-cell:last-of-type {
+    padding-right: 0px;
+}
+
+.material-icons-outlined {
+    color: #647491;
+}
+.material-icons-outlined.status-error{
+    color: #e50b0b;
+}
+.material-icons-outlined.status-done {
+    color: green;
+}
+.material-icons-outlined.status-void{
+    color: gray;
+}
+
+.ellipsis-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

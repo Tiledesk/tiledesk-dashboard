@@ -60,6 +60,18 @@ export class KnowledgeBaseService {
   // ********** INITIALIZING SERVICE **********
   // ***************** END ********************
 
+  // getKbSettings() {
+  //   const httpOptions = {
+  //     headers: new HttpHeaders({
+  //       'Content-Type': 'application/json',
+  //       'Authorization': this.TOKEN
+  //     })
+  //   }
+  //   const url = this.SERVER_BASE_PATH + this.project_id + "/kb";
+  //   //const url = this.SERVER_BASE_PATH + this.project_id + "/kbsettings";
+  //   this.logger.log("[KNOWLEDGE BASE SERVICE] - get settings URL ", url);
+  //   return this.httpClient.get(url, httpOptions);
+  // }
 
   getKbSettings() {
     const httpOptions = {
@@ -68,10 +80,9 @@ export class KnowledgeBaseService {
         'Authorization': this.TOKEN
       })
     }
-
+    //const url = this.SERVER_BASE_PATH + this.project_id + "/kb";
     const url = this.SERVER_BASE_PATH + this.project_id + "/kbsettings";
     this.logger.log("[KNOWLEDGE BASE SERVICE] - get settings URL ", url);
-
     return this.httpClient.get(url, httpOptions);
   }
 
@@ -82,40 +93,80 @@ export class KnowledgeBaseService {
         'Authorization': this.TOKEN
       })
     }
-
-    const url = this.SERVER_BASE_PATH + this.project_id + "/kbsettings/" + kb_settings._id;
+    const url = this.SERVER_BASE_PATH + this.project_id + "/kb/" + kb_settings._id;
+    // const url = this.SERVER_BASE_PATH + this.project_id + "/kbsettings/" + kb_settings._id;
     this.logger.log("[KNOWLEDGE BASE SERVICE] - save settings URL ", url);
 
     return this.httpClient.put(url, kb_settings, httpOptions);
   }
 
-  addNewKb(settings_id: string, kb: KB) {
+  getListOfKb() {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         'Authorization': this.TOKEN
       })
     }
-
-    const url = this.SERVER_BASE_PATH + this.project_id + "/kbsettings/" + settings_id;
-    this.logger.log("[KNOWLEDGE BASE SERVICE] - add new kb URL ", url);
-
-    return this.httpClient.post(url, kb, httpOptions);
+    const url = this.SERVER_BASE_PATH + this.project_id + "/kb";
+    //const url = this.SERVER_BASE_PATH + this.project_id + "/kbsettings";
+    this.logger.log("[KNOWLEDGE BASE SERVICE] - get settings URL ", url);
+    return this.httpClient.get(url, httpOptions);
   }
 
-  deleteKb(settings_id: string, kb_id: string){
+
+  addKb(body: any) {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         'Authorization': this.TOKEN
       })
     }
+    const url = this.SERVER_BASE_PATH + this.project_id + "/kb";
+    this.logger.log("[KNOWLEDGE BASE SERVICE] - add new kb URL ", url);
+    return this.httpClient.post(url, JSON.stringify(body), httpOptions); 
+  }
 
-    const url = this.SERVER_BASE_PATH + this.project_id + "/kbsettings/" + settings_id + "/" + kb_id;
+  deleteKb(data: any){
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      }), 
+      //body: JSON.stringify(data)
+    }
+    //const url = this.SERVER_BASE_PATH + this.project_id + "/kb/delete/";
+    const url = this.SERVER_BASE_PATH + this.project_id + "/kb/"+data.id;
     this.logger.log("[KNOWLEDGE BASE SERVICE] - delete kb URL ", url);
-
     return this.httpClient.delete(url, httpOptions);
   }
+
+
+  addNewKb(settings_id: string, body: any) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    }
+    const url = this.SERVER_BASE_PATH + this.project_id + "/kbsettings/" + settings_id;
+    //const url = this.SERVER_BASE_PATH + this.project_id + "/kb";
+    this.logger.log("[KNOWLEDGE BASE SERVICE] - add new kb URL ", url);
+    return this.httpClient.post(url, JSON.stringify(body), httpOptions); 
+  }
+
+
+  // deleteKb(settings_id: string, kb_id: string){
+  //   const httpOptions = {
+  //     headers: new HttpHeaders({
+  //       'Content-Type': 'application/json',
+  //       'Authorization': this.TOKEN
+  //     })
+  //   }
+  //   //const url = this.SERVER_BASE_PATH + this.project_id + "/kb/" + kb_id;
+  //   const url = this.SERVER_BASE_PATH + this.project_id + "/kbsettings/" + settings_id + "/" + kb_id;
+  //   this.logger.log("[KNOWLEDGE BASE SERVICE] - delete kb URL ", url);
+  //   return this.httpClient.delete(url, httpOptions);
+  // }
 
   
 

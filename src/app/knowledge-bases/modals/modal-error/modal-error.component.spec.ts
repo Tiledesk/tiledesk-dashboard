@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { KbModalComponent } from './kb-modal.component';
+import { ModalErrorComponent } from './modal-error.component';
 
-describe('KbModalComponent', () => {
-  let component: KbModalComponent;
-  let fixture: ComponentFixture<KbModalComponent>;
+describe('ModalErrorComponent', () => {
+  let component: ModalErrorComponent;
+  let fixture: ComponentFixture<ModalErrorComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ KbModalComponent ]
+      declarations: [ ModalErrorComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(KbModalComponent);
+    fixture = TestBed.createComponent(ModalErrorComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

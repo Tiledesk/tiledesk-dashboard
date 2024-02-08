@@ -9,8 +9,14 @@ export interface KbSettings {
 
 export interface KB {
     _id?: string;
-    name: string;
-    url: string;
+    type?: string;
+    id_project?: string;
+    namespace?: string;
+    source?: string;
+    name?: string;
+    url?: string;
+    content?: string;
     createdAt?: Date;
+    updatedAt?: Date;
     status?: number;
 }
