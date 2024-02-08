@@ -1859,6 +1859,10 @@
     "EngageMoreCustomersWithAppsAndIntegrations": "Coinvolgi più clienti con app e integrazioni",
     "ReadManageAssignAndReplyToCustomerConversations": "Leggi, gestisci, assegna e rispondi alle conversazioni dei clienti",
     "Integrations": "Integrazioni",
+    "Integration": {
+        "UpgradePlan": "Aggiorna il tuo piano!",
+        "UpgradeNow": "Aggiorna ora"
+    },
     "ViewTeammates": "Visualizza collaboratori",
     "AddNewTeammate": "Aggiungi collaboratore",
     "InviteYourFirstTeammate": "Invita il tuo primo collaboratore",
