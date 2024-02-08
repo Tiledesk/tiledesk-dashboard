@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { LoggerService } from 'app/services/logger/logger.service';
 
 @Component({
-  selector: 'appdashboard-make-integration',
+  selector: 'make-integration',
   templateUrl: './make-integration.component.html',
   styleUrls: ['./make-integration.component.scss']
 })

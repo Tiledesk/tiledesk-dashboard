@@ -136,6 +136,13 @@
                 (onDeleteIntegration)=integrationDeletedEvent($event)>
             </hubspot-integration>
 
+            <make-integration 
+                *ngIf="integrationSelectedName === INT_KEYS.MAKE"
+                [integration]="selectedIntegration" 
+                (onUpdateIntegration)=integrationUpdateEvent($event)
+                (onDeleteIntegration)=integrationDeletedEvent($event)>
+            </make-integration>
+
             <openai-integration 
                 *ngIf="integrationSelectedName === INT_KEYS.OPENAI" 
                 [integration]="selectedIntegration"
@@ -168,6 +175,10 @@
             </div>
         </div>
 
+    </div>
+
+    <div *ngIf="integrationSelectedName === 'none'" class="empty-menu-container">
+            <p class="no-integration-selected">Select an integration to start</p>
     </div>
     
 
