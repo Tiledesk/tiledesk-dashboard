@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.5.0-rc4
+- New KB
+
 ### 2.5.0-rc3
 - New pricing
 
