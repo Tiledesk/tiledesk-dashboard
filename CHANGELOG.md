@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.5.0-rc3
+- New pricing
+
 ### 2.5.0-rc2
 - Deploys in pre
 - New pricing (bug fixing)
