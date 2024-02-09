@@ -590,6 +590,8 @@
         "ContactUsViaEmailToUpgradeYourPricingPlan": "Баға жоспарын жаңарту үшін электрондық пошта арқылы бізге хабарласыңыз",
         "NoPayments": "Төлемдер жоқ",
         "ToEnableAllFeatures": "барлық мүмкіндіктерді қосу үшін",
+        "YourTrialHasEnded": "Your trial has ended",
+        "YouHaveBeenRevertedToOurFreePlan":  "You have been reverted to our free plan and the paid features have been paused. To keep using our paid features, upgrade to one of our paid plans",
         "AutoSendTranscriptByEmailIsUnavailable": "Электрондық пошта арқылы транскрипцияны автоматты түрде жіберу ағымдағы жоспарыңызда қолжетімді емес"
     },
     "ActivitiesOptions": {
@@ -1146,11 +1148,11 @@
         "ReassignRequest": "Әңгімені қайта тағайындаңыз",
         "AssignRequest": "Сөйлесуді тағайындау",
         "AddAgent": "Командаласты қосыңыз",
-        "InviteAnotherUserToServe": "Әңгімеге қызмет ету үшін басқа әріптесті шақырыңыз",
+        "InviteAnotherUserToServe": "Әңгімелесуге қызмет ету үшін басқа командаласты қосыңыз",
         "ReassignTo": "Қайта тағайындау:",
         "AssignTo": "Тағайындау:",
         "TheRequestWillBeReassignedTo": "Әңгімелесу келесіге қайта тағайындалады",
-        "TheRequestWillBeAssignedTo": "Әңгімелесу келесіге тағайындалады",
+        "TheRequestWillBeAssignedTo": "Әңгімеге {{user}} қосылады",
         "LeaveChat": "Чаттан шығыңыз",
         "Leave": "Кетіңіз",
         "AreYouSureLeftTheChat": "Чаттан шынымен шыққыңыз келе ме?",

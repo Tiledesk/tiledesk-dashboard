@@ -590,6 +590,8 @@
         "ContactUsViaEmailToUpgradeYourPricingPlan": "Narxlar rejangizni yangilash uchun elektron pochta orqali biz bilan bog'laning",
         "NoPayments": "Toʻlovlar yoʻq",
         "ToEnableAllFeatures": "barcha xususiyatlarni yoqish uchun",
+        "YourTrialHasEnded": "Your trial has ended",
+        "YouHaveBeenRevertedToOurFreePlan":  "You have been reverted to our free plan and the paid features have been paused. To keep using our paid features, upgrade to one of our paid plans",
         "AutoSendTranscriptByEmailIsUnavailable": "Elektron pochta orqali transkriptni avtomatik yuborish joriy rejangizda mavjud emas"
     },
     "ActivitiesOptions": {
@@ -1146,11 +1148,11 @@
         "ReassignRequest": "Suhbatni qayta tayinlash",
         "AssignRequest": "Suhbatni tayinlash",
         "AddAgent": "Jamoadosh qo'shing",
-        "InviteAnotherUserToServe": "Suhbatga xizmat qilish uchun boshqa jamoadoshingizni taklif qiling",
+        "InviteAnotherUserToServe": "Suhbatga xizmat qilish uchun boshqa jamoadoshingizni qo'shing",
         "ReassignTo": "Qayta tayinlash:",
         "AssignTo": "Quyidagilarga tayinlash:",
         "TheRequestWillBeReassignedTo": "Suhbat qayta tayinlanadi",
-        "TheRequestWillBeAssignedTo": "Suhbat tayinlanadi",
+        "TheRequestWillBeAssignedTo": "Suhbatga {{user}} qo‘shiladi",
         "LeaveChat": "Chatni tark eting",
         "Leave": "Ketish",
         "AreYouSureLeftTheChat": "Haqiqatan ham chatni tark etmoqchimisiz?",

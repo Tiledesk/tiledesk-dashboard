@@ -322,7 +322,14 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, OnDe
     } else {
       this.presentModalOnlyOwnerCanManageTheAccountPlan()
     }
+  }
 
+  openModalTrialExpired() {
+    if (this.USER_ROLE === 'owner') {
+      this.notify.displayTrialHasExpiredModal();
+    } else {
+      this.presentModalOnlyOwnerCanManageTheAccountPlan();
+    }
   }
 
   openModalSubsExpired() {

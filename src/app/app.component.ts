@@ -35,6 +35,7 @@ import { NotifyService } from './core/notify.service';
 import { avatarPlaceholder, getColorBck } from './utils/util';
 import { LocalDbService } from './services/users-local-db.service';
 import { ProjectService } from './services/project.service';
+import { style } from '@angular/animations';
 
 
 declare const gtag: Function;
@@ -116,6 +117,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
             }
         })
+
+        
 
         this.auth.project_bs.subscribe((project) => {
             if (project) {
@@ -247,7 +250,38 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         //     }}();` 
         //     head.appendChild(script)
         // }
+        this.loadStyle(JSON.parse(localStorage.getItem('custom_style')))
     }
+
+    async loadStyle(data){
+       
+        if(!data.parameter){
+          let className =  document.body.className.replace(new RegExp(/style-\S*/gm), '')
+          document.body.className = className
+          document.body.classList.remove('light')
+          document.body.classList.remove('dark')
+          document.body.classList.remove('custom')
+          let link = document.getElementById('themeCustom');
+          if(link){
+            link.remove();
+          }
+          return;
+        } 
+    
+        // Create link
+        let link = document.createElement('link');
+        link.id= 'themeCustom'
+        link.href = data.parameter;
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.media='all';
+        
+        console.log('linkkkk', link, document)
+        let head = document.getElementsByTagName('head')[0];
+        head.appendChild(link);
+        document.body.classList.add(data.type) //ADD class to body element as theme type ('light', 'dark', 'custom')
+        return;
+      }
 
 
     ngOnInit() {
