@@ -116,7 +116,15 @@ th.mat-header-cell:last-of-type, td.mat-cell:last-of-type, td.mat-footer-cell:la
     color: gray;
 }
 
+
+table {
+    max-width: 100%;
+    width: 100%; 
+}
+
 .ellipsis-text {
+    max-width: 500px;
+    width: 90%;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
