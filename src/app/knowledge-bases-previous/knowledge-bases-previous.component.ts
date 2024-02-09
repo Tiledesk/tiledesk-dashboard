@@ -200,7 +200,6 @@ export class KnowledgeBasesPreviousComponent implements OnInit, OnDestroy {
       if (this.kbSettings.kbs.length == 0){
         this.router.navigate(['project/' + this.id_project + '/knowledge-bases']);
       }
-      
       if (this.kbSettings.kbs.length < kbSettings.maxKbsNumber) {
         this.addButtonDisabled = false;
       } else {

@@ -44,7 +44,7 @@
         <div *ngIf="show_answer" class="form-container" style="margin-bottom: 0px;">
           <div id="answer" class="answer">
             <p *ngIf="answer" class="answer-title">{{ 'KbPage.Answer' | translate }}</p>
-            {{ qa.answer }}
+            {{ answer }}
             <span *ngIf="!qa.answer || qa.answer == ''">{{ 'KbPage.NoAnswerFound' | translate }}</span>
             <hr *ngIf="qa.source">
             <!-- <span *ngIf="qa.source">{{ 'KbPage.Source' | translate }}: {{ qa.source }}</span> -->
@@ -52,7 +52,9 @@
                 <a *ngIf="source_url" href="{{source_url}}" target="_blank">{{ source_url }}</a>
                 <span *ngIf="!source_url">{{ qa.source }}</span>
             </span>
+  
           </div>
+          <label class="control-label">{{ 'KbPage.LabelResponseTime' | translate: translateparam }}</label>
         </div>
 
         <div class="modal-state">

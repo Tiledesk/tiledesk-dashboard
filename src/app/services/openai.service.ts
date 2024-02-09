@@ -92,7 +92,6 @@ export class OpenaiService {
         'Authorization': this.TOKEN // remove it for pugliai endpoint
       })
     }
-
     // const url = this.GPT_API_URL + "/qa";
     const url = this.SERVER_BASE_PATH + this.project_id + "/kb/qa";
     //const url = this.SERVER_BASE_PATH + this.project_id + "/kbsettings/qa";

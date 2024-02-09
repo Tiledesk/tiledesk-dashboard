@@ -101,7 +101,7 @@
 
       <!-- Aggiunta della colonna personalizzata -->
       <ng-container matColumnDef="actions">
-        <th style="max-width:40px;" mat-header-cell *matHeaderCellDef>
+        <th style="max-width:100px;" mat-header-cell *matHeaderCellDef>
             <span class="column-th-span" style="float:right">
                 <button class="preview-button" (click)="$event.stopPropagation(); onOpenBaseModalPreview($event)">
                   <span class="material-icon material-icons-round">play_arrow</span>{{'Preview' | translate}}

@@ -25,10 +25,12 @@ export class ModalPreviewKnowledgeBaseComponent implements OnInit {
   question: string = "";
   answer: string = "";
   source_url: any;
+  responseTime: number = 0;
 
   searching: boolean = false;
   show_answer: boolean = false;
   error_answer: boolean = false;
+  translateparam: any;
 
   constructor(
     private logger: LoggerService,
@@ -47,28 +49,30 @@ export class ModalPreviewKnowledgeBaseComponent implements OnInit {
     this.error_answer = false;
     this.searching = true;
     this.show_answer = false;
-    this.answer = null;
-    this.source_url = null;
+    this.answer = '';
+    this.source_url = '';
     // console.log("ask gpt preview response: ", data);
+    const startTime = performance.now();
     this.openaiService.askGpt(data).subscribe((response: any) => {
-      // console.log("ask gpt preview response: ", response);
-      this.qa = response;
+      const endTime = performance.now();
+      this.responseTime =  Math.round((endTime - startTime)/1000);
+      this.translateparam = { respTime: this.responseTime };
+      // console.log("ask gpt preview response: ", response, startTime, endTime, this.responseTime);
       if (response.success == false) {
         this.error_answer = true;
       } else {
+        this.qa = response;
         this.answer = response.answer;
         if(this.isValidURL(response.source)){
           this.source_url = response.source;
         }
+        this.show_answer = true;
       }
-      this.show_answer = true;
       this.searching = false;
-      setTimeout(() => {
-        let element = document.getElementById("answer");
-        element.classList.add('answer-active');
-      }, (200));
     }, (error) => {
-      this.logger.error("ERROR ask gpt: ", error);
+      console.log("ask gpt preview response error: ", error.message);
+      this.logger.error("ERROR ask gpt: ", error.message);
+      this.answer = error.message;
       this.error_answer = true;
       this.show_answer = true;
       this.searching = false;
