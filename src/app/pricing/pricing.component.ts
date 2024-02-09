@@ -319,8 +319,8 @@ export class PricingComponent implements OnInit, OnDestroy {
 
       this.PAYMENT_LINK_MONTLY_PLAN_D = " https://buy.stripe.com/4gw0082xUeZs7i83ct"; // Basic Montly
       this.PAYMENT_LINK_ANNUALLY_PLAN_D = "https://buy.stripe.com/9AQbIQc8u04y8mcaEW"; // Basic Annually 
-      this.PAYMENT_LINK_MONTLY_PLAN_E = "https://buy.stripe.com/14k0086OacRk6e4cN1"; // Premium €50.00 EUR / month
-      this.PAYMENT_LINK_ANNUALLY_PLAN_E = "https://buy.stripe.com/3cs6owfkGeZseKAaEU"; // Premium Annually
+      this.PAYMENT_LINK_MONTLY_PLAN_E =  "https://buy.stripe.com/00g6ow0pM5oSdGw8wQ"; // "https://buy.stripe.com/14k0086OacRk6e4cN1"; // Premium €50.00 EUR / month
+      this.PAYMENT_LINK_ANNUALLY_PLAN_E = "https://buy.stripe.com/3cs9AI6Oa9F8gSI3cx"; // "https://buy.stripe.com/3cs6owfkGeZseKAaEU"; // Premium Annually
      
     }
   }
