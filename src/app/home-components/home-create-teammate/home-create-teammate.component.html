@@ -208,14 +208,14 @@
             </span>
 
             <span *ngIf="(trial_expired && prjct_profile_type === 'free') && (countOfPendingInvites + projectUsersLength > seatsLimit)">
+                <!-- (click)="openModalTrialExpired()" -->
                 <i class="material-icons" 
                     matTooltipClass="h-custom-mat-tooltip"
                     matTooltip="Your 14-day free trial has expired" 
                     #tooltip="matTooltip" 
                     matTooltipPosition='below'
                     matTooltipHideDelay="100" 
-                    (click)="openModalTrialExpired()"
-                    style="vertical-align: middle; color: #f44336; cursor: pointer; font-size: 20px;"> 
+                    style="vertical-align: middle; color: #f44336; cursor: pointer;font-size: 20px;"> 
                     error 
                 </i>
             </span>

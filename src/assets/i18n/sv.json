@@ -590,6 +590,8 @@
         "ContactUsViaEmailToUpgradeYourPricingPlan": "Kontakta oss via e-post för att uppgradera din prisplan",
         "NoPayments": "Inga betalningar",
         "ToEnableAllFeatures": "för att aktivera alla funktioner",
+        "YourTrialHasEnded": "Your trial has ended",
+        "YouHaveBeenRevertedToOurFreePlan":  "You have been reverted to our free plan and the paid features have been paused. To keep using our paid features, upgrade to one of our paid plans",
         "AutoSendTranscriptByEmailIsUnavailable": "Auto-skicka avskrift via e-post är inte tillgängligt i din nuvarande plan"
     },
     "ActivitiesOptions": {
@@ -1146,11 +1148,11 @@
         "ReassignRequest": "Tilldela om konversation",
         "AssignRequest": "Tilldela konversation",
         "AddAgent": "Lägg till lagkamrat",
-        "InviteAnotherUserToServe": "Bjud in en annan lagkamrat att tjäna samtalet",
+        "InviteAnotherUserToServe": "Lägg till en annan lagkamrat för att betjäna konversationen",
         "ReassignTo": "Tilldela om till:",
         "AssignTo": "Tilldela till:",
         "TheRequestWillBeReassignedTo": "Konversationen kommer att omtilldelas till",
-        "TheRequestWillBeAssignedTo": "Konversationen kommer att tilldelas",
+        "TheRequestWillBeAssignedTo": "{{user}} kommer att läggas till i konversationen",
         "LeaveChat": "Lämna chatten",
         "Leave": "Lämna",
         "AreYouSureLeftTheChat": "Är du säker på att du vill lämna chatten?",

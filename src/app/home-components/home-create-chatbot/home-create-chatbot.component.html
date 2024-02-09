@@ -298,23 +298,26 @@
     </span>
 
     <div *ngIf="(!subscription_is_active && prjct_profile_type === 'payment') && (countOfChatbots > chatBotLimit)">
+      <!-- (click)="openModalSubsExpired()" -->
       <i class="material-icons" 
         matTooltipClass="h-custom-mat-tooltip" 
         matTooltip="Subscription payment problem"
         #tooltip="matTooltip" matTooltipPosition='below' 
-        matTooltipHideDelay="100" (click)="openModalSubsExpired()"
-        style="vertical-align: middle; color: #f44336; cursor: pointer; font-size: 20px;">
+        matTooltipHideDelay="100" 
+      
+        style="vertical-align: middle; color: #f44336; font-size: 20px;">
         error
       </i>
     </div>
     <div *ngIf="(trial_expired && prjct_profile_type === 'free') && (countOfChatbots > chatBotLimit)">
+      <!-- (click)="openModalTrialExpired()" -->
       <i class="material-icons" 
         matTooltipClass="h-custom-mat-tooltip" 
         matTooltip="Your 14-day free trial has expired"
         #tooltip="matTooltip" 
         matTooltipPosition='below' 
-        matTooltipHideDelay="100" (click)="openModalTrialExpired()"
-        style="vertical-align: middle; color: #f44336; cursor: pointer; font-size: 20px;">
+        matTooltipHideDelay="100" 
+        style="vertical-align: middle; cursor: pointer; color: #f44336; font-size: 20px;">
         error
       </i>
     </div>

@@ -95,21 +95,22 @@ export class ChatbotAlertComponent extends PricingBaseComponent implements OnIni
 
   openModalSubsExpired() {
     if (this.USER_ROLE === 'owner') {
-      if (this.profile_name !== PLAN_NAME.F) {
-        this.notify.displaySubscripionHasExpiredModal(
-          true,
-          this.prjct_profile_name,
-          this.subscription_end_date,
-        )
-      } else if (this.profile_name === PLAN_NAME.F) {
-        this.notify.displayEnterprisePlanHasExpiredModal(
-          true,
-          this.prjct_profile_name,
-          this.subscription_end_date,
+      if (this.profile_name !== PLAN_NAME.C && this.profile_name !== PLAN_NAME.F) {
+        this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date )
+      } else if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
+        this.notify.displayEnterprisePlanHasExpiredModal( true, this.prjct_profile_name, this.subscription_end_date,
         )
       }
     } else {
       this.presentModalOnlyOwnerCanManageTheAccountPlan()
+    }
+  }
+
+  openModalTrialExpired() {
+    if (this.USER_ROLE === 'owner') {
+      this.notify.displayTrialHasExpiredModal();
+    } else {
+      this.presentModalOnlyOwnerCanManageTheAccountPlan();
     }
   }
 

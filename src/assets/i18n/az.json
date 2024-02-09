@@ -590,6 +590,8 @@
         "ContactUsViaEmailToUpgradeYourPricingPlan": "Qiymət planınızı təkmilləşdirmək üçün e-poçt vasitəsilə bizimlə əlaqə saxlayın",
         "NoPayments": "Ödəniş yoxdur",
         "ToEnableAllFeatures": "bütün xüsusiyyətləri aktivləşdirmək üçün",
+        "YourTrialHasEnded": "Your trial has ended",
+        "YouHaveBeenRevertedToOurFreePlan":  "You have been reverted to our free plan and the paid features have been paused. To keep using our paid features, upgrade to one of our paid plans",
         "AutoSendTranscriptByEmailIsUnavailable": "Transkripti e-poçtla avtomatik göndərmək cari planınızda mövcud deyil"
     },
     "ActivitiesOptions": {
@@ -1146,11 +1148,11 @@
         "ReassignRequest": "Söhbəti yenidən təyin edin",
         "AssignRequest": "Söhbət təyin edin",
         "AddAgent": "Komanda yoldaşı əlavə edin",
-        "InviteAnotherUserToServe": "Söhbətə xidmət etmək üçün başqa bir komanda yoldaşını dəvət edin",
+        "InviteAnotherUserToServe": "Söhbətə xidmət etmək üçün başqa komanda yoldaşı əlavə edin",
         "ReassignTo": "Yenidən təyin edin:",
         "AssignTo": "Təyin edin:",
         "TheRequestWillBeReassignedTo": "Söhbət yenidən təyin olunacaq",
-        "TheRequestWillBeAssignedTo": "Söhbət təyin olunacaq",
+        "TheRequestWillBeAssignedTo": "{{user}} söhbətə əlavə olunacaq",
         "LeaveChat": "Söhbəti tərk edin",
         "Leave": "tərk et",
         "AreYouSureLeftTheChat": "Çatı tərk etmək istədiyinizə əminsiniz?",

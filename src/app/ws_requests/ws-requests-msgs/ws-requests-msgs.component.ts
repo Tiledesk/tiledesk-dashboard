@@ -45,7 +45,7 @@ const swal = require('sweetalert');
 // './ws-requests-msgs.component.html',
 @Component({
   selector: 'appdashboard-ws-requests-msgs',
-  templateUrl: './ws-requests-msgs-new.component.html',
+  templateUrl: './ws-requests-msgs.component.html',
   styleUrls: ['./ws-requests-msgs.component.scss']
 })
 export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit, OnDestroy, AfterViewInit {
@@ -3521,7 +3521,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
 
   selectUser(user_id: string, user_firstname: string, user_lastname: string, user_email: string) {
-    this.logger.log('[WS-REQUESTS-MSGS] - SELECTED USER ID ', user_id);
+    console.log('[WS-REQUESTS-MSGS] - SELECTED USER ID ', user_id);
     this.logger.log('[WS-REQUESTS-MSGS] - SELECTED USER FIRSTNAME ', user_firstname);
     this.logger.log('[WS-REQUESTS-MSGS] - SELECTED USER LASTNAME ', user_lastname);
     this.logger.log('[WS-REQUESTS-MSGS] - SELECTED USER EMAIL ', user_email);
@@ -3535,10 +3535,12 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     // this.displayConfirmReassignmentModal = 'block';
 
     if (this.actionInModal === 'reassign') {
+      console.log('[WS-REQUESTS-MSGS] selectUser actionInModal ', this.actionInModal)
       this.presentSwalModalReassignConversationToAgent(this.userid_selected, this.userfirstname_selected, this.userlastname_selected);
     }
 
     if (this.actionInModal === 'invite') {
+      console.log('[WS-REQUESTS-MSGS] selectUser actionInModal ', this.actionInModal)
       this.presentSwalModalAddAgentToConversation(this.userid_selected, this.userfirstname_selected, this.userlastname_selected);
     }
   }
@@ -3582,16 +3584,17 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
           });
         } else {
-          this.logger.log('[WS-REQUESTS-MSGS] ReassignConversationToAgent  swal willReassign', willReassign)
+          this.logger.log('[WS-REQUESTS-MSGS] + ReassignConversationToAgent  swal willReassign', willReassign)
           // swal("Your imaginary file is safe!");
         }
       });
   }
 
   presentSwalModalAddAgentToConversation(userid, userfirstname, userlastname) {
+    console.log('[WS-REQUESTS-MSGS] presentSwalModalAddAgentToConversation' )
     swal({
       title: this.addAgentMsg,
-      text: this.requestWillBeAssignedToMsg + ' ' + userfirstname + ' ' + userlastname,
+      text: this.translate.instant('VisitorsPage.TheRequestWillBeAssignedTo', {user: userfirstname + ' ' + userlastname}),
       icon: "info",
       buttons: true,
       dangerMode: false,

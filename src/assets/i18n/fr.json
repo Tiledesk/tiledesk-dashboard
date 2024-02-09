@@ -590,6 +590,8 @@
         "ContactUsViaEmailToUpgradeYourPricingPlan": "Contactez-nous par e-mail pour mettre à jour votre plan tarifaire",
         "NoPayments": "Aucun paiement",
         "ToEnableAllFeatures": "pour activer toutes les fonctionnalités",
+        "YourTrialHasEnded": "Your trial has ended",
+        "YouHaveBeenRevertedToOurFreePlan":  "You have been reverted to our free plan and the paid features have been paused. To keep using our paid features, upgrade to one of our paid plans",
         "AutoSendTranscriptByEmailIsUnavailable": "L'envoi automatique de transcription par e-mail n'est pas disponible dans votre forfait actuel"
     },
     "ActivitiesOptions": {
@@ -1146,11 +1148,11 @@
         "ReassignRequest": "Réaffecter la conversation",
         "AssignRequest": "Attribuer une conversation",
         "AddAgent": "Ajouter un joueur",
-        "InviteAnotherUserToServe": "Invitez un autre coéquipier à servir la conversation",
+        "InviteAnotherUserToServe": "Ajouter un autre coéquipier pour servir la conversation",
         "ReassignTo": "Réaffecter à :",
         "AssignTo": "Affecter à:",
         "TheRequestWillBeReassignedTo": "La conversation sera réaffectée à",
-        "TheRequestWillBeAssignedTo": "La conversation sera attribuée à",
+        "TheRequestWillBeAssignedTo": "{{user}} sera ajouté à la conversation",
         "LeaveChat": "Quitter le chat",
         "Leave": "Laisser",
         "AreYouSureLeftTheChat": "Voulez-vous vraiment quitter le chat?",

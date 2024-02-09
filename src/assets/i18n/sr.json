@@ -590,6 +590,8 @@
         "ContactUsViaEmailToUpgradeYourPricingPlan": "Контактирајте нас путем е-поште да бисте надоградили свој план цена",
         "NoPayments": "Без плаћања",
         "ToEnableAllFeatures": "да бисте омогућили све функције",
+        "YourTrialHasEnded": "Your trial has ended",
+        "YouHaveBeenRevertedToOurFreePlan":  "You have been reverted to our free plan and the paid features have been paused. To keep using our paid features, upgrade to one of our paid plans",
         "AutoSendTranscriptByEmailIsUnavailable": "Аутоматско слање транскрипта путем е-поште није доступно у вашем тренутном плану"
     },
     "ActivitiesOptions": {
@@ -1146,11 +1148,11 @@
         "ReassignRequest": "Поново доделите разговор",
         "AssignRequest": "Додели разговор",
         "AddAgent": "Додај саиграча",
-        "InviteAnotherUserToServe": "Позовите другог саиграча да послужи разговору",
+        "InviteAnotherUserToServe": "Додајте још једног саиграча који ће служити разговору",
         "ReassignTo": "Поново доделити:",
         "AssignTo": "Додели:",
         "TheRequestWillBeReassignedTo": "Конверзација ће бити поново додељена",
-        "TheRequestWillBeAssignedTo": "Конверзација ће бити додељена",
+        "TheRequestWillBeAssignedTo": "{{user}} ће бити додат у конверзацију",
         "LeaveChat": "Напусти ћаскање",
         "Leave": "Остави",
         "AreYouSureLeftTheChat": "Да ли сте сигурни да желите да напустите ћаскање?",

@@ -87,17 +87,21 @@
                (prjct_profile_type === 'free' && trial_expired === false) || 
                (prjct_profile_type === 'free' && trial_expired === true))  &&
                (projectUsersLength + countOfPendingInvites > seatsLimit))">
+               <!-- <div class="card-content" style="background: #f44336;color: #fff;text-align: center;" 
+               *ngIf="(trial_expired && prjct_profile_type === 'free') && (projectUsersLength + countOfPendingInvites > seatsLimit)"> -->
 
-                <!-- <i class="material-icons" style="vertical-align: middle; color: #039be5;"> info </i> -->
+              
                 <span class="msg-alert">
                   {{ 'NumberOfTeammatesExceedsThePlan_2' | translate: tParamsPlanAndSeats }}
                 </span>
+                <!-- (click)="openModalTrialExpired()" -->
                 <div class="upgrade--plan-btn-wpr" style="text-align: center;">
                   <button class="upgrade--plan-btn" (click)="presentContactUsModal()">
                     {{ "Pricing.UpgradePlan" | translate }}
                   </button>
                 </div>
               </div>
+
               <div class="card-content" style="background: #f44336;color: #fff;text-align: center;"
                 *ngIf="prjct_profile_type === 'payment' && subscription_is_active === false && projectUsersLength + countOfPendingInvites > PLAN_SEATS.free">
 

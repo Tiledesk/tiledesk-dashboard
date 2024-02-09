@@ -590,6 +590,8 @@
         "ContactUsViaEmailToUpgradeYourPricingPlan": "Зв’яжіться з нами електронною поштою, щоб оновити тарифний план",
         "NoPayments": "Без платежів",
         "ToEnableAllFeatures": "Щоб увімкнути всі функції",
+        "YourTrialHasEnded": "Your trial has ended",
+        "YouHaveBeenRevertedToOurFreePlan":  "You have been reverted to our free plan and the paid features have been paused. To keep using our paid features, upgrade to one of our paid plans",
         "AutoSendTranscriptByEmailIsUnavailable": "Автоматичне надсилання стенограми електронною поштою недоступне у вашому поточному плані"
     },
     "ActivitiesOptions": {
@@ -1150,7 +1152,7 @@
         "ReassignTo": "Перепризначити:",
         "AssignTo": "Призначити:",
         "TheRequestWillBeReassignedTo": "Розмову буде перепризначено до",
-        "TheRequestWillBeAssignedTo": "Розмову буде призначено до",
+        "TheRequestWillBeAssignedTo": "{{user}} буде додано до розмови",
         "LeaveChat": "Залишити чат",
         "Leave": "Залишати",
         "AreYouSureLeftTheChat": "Ви впевнені, що бажаєте залишити чат?",

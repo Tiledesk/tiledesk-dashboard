@@ -590,6 +590,8 @@
         "ContactUsViaEmailToUpgradeYourPricingPlan": "Fiyatlandırma planınızı yükseltmek için e-posta yoluyla bize ulaşın",
         "NoPayments": "Ödeme Yok",
         "ToEnableAllFeatures": "tüm özellikleri etkinleştirmek için",
+        "YourTrialHasEnded": "Your trial has ended",
+        "YouHaveBeenRevertedToOurFreePlan":  "You have been reverted to our free plan and the paid features have been paused. To keep using our paid features, upgrade to one of our paid plans",
         "AutoSendTranscriptByEmailIsUnavailable": "E-posta ile otomatik transkript gönder, mevcut planınızda kullanılamıyor"
     },
     "ActivitiesOptions": {
@@ -1146,11 +1148,11 @@
         "ReassignRequest": "Görüşmeyi yeniden ata",
         "AssignRequest": "Görüşme ata",
         "AddAgent": "Takım arkadaşı ekle",
-        "InviteAnotherUserToServe": "Sohbeti sunmak için başka bir takım arkadaşını davet edin",
+        "InviteAnotherUserToServe": "Konuşmayı yürütmek için başka bir ekip arkadaşı ekleyin",
         "ReassignTo": "Şuraya yeniden atayın:",
         "AssignTo": "Atamak:",
         "TheRequestWillBeReassignedTo": "Görüşme şuraya atanacak",
-        "TheRequestWillBeAssignedTo": "Konuşma atanacak",
+        "TheRequestWillBeAssignedTo": "{{user}} görüşmeye eklenecek",
         "LeaveChat": "Sohbetten ayrıl",
         "Leave": "Çıkmak",
         "AreYouSureLeftTheChat": "Sohbetten ayrılmak istediğinizden emin misiniz?",

@@ -590,6 +590,8 @@
 		"ContactUsViaEmailToUpgradeYourPricingPlan": "Kontaktieren Sie uns per E-Mail, um Ihren Preisplan zu aktualisieren",
 		"NoPayments": "Keine Zahlungen",
 		"ToEnableAllFeatures": "um alle Funktionen zu aktivieren",
+		"YourTrialHasEnded": "Your trial has ended",
+        "YouHaveBeenRevertedToOurFreePlan":  "You have been reverted to our free plan and the paid features have been paused. To keep using our paid features, upgrade to one of our paid plans",
 		"AutoSendTranscriptByEmailIsUnavailable": "Das automatische Senden eines Transkripts per e-mail ist in ihrem aktuellen plan nicht verfügbar."
 	},
 	"ActivitiesOptions": {
@@ -1147,11 +1149,11 @@
 		"ReassignRequest": "Anfrage neu zuweisen",
 		"AssignRequest": "Anfrage zuweisen",
 		"AddAgent": "Teamkollege hinzufügen",
-		"InviteAnotherUserToServe": "Einen anderen Teamkollegen einladen um die Anfrage zu bearbeiten",
+		"InviteAnotherUserToServe": "Fügen Sie einen weiteren Teamkollegen hinzu, um das Gespräch zu führen",
 		"ReassignTo": "Neu zuweisen an:",
 		"AssignTo": "Zuweisen an:",
 		"TheRequestWillBeReassignedTo": "Die Anfrage wird neu zugewiesen an",
-		"TheRequestWillBeAssignedTo": "Die Anfrage wird zugewiesen an",
+		"TheRequestWillBeAssignedTo": "{{user}} wird zur Konversation hinzugefügt",
 		"LeaveChat": "Chat verlassen",
 		"Leave": "Verlassen",
 		"AreYouSureLeftTheChat": "Bist du sicher, dass du den Chat verlassen möchtest?",
