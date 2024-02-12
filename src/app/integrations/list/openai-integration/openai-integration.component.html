@@ -1,5 +1,9 @@
 <div class="header">
-    <p><a href="https://openai.com/" target="_blank">Sign up</a> for a free <b>OpenAI</b> account!</p>
+
+    <div class="signup">
+        <a href="https://openai.com/" target="_blank">{{ 'Integration.Signup' | translate }}</a><p [innerHTML]="'Integration.FreeAccount' | translate: translateparams"></p>
+    </div>
+    <!-- <p><a href="https://openai.com/" target="_blank">Sign up</a> for a free <b>OpenAI</b> account!</p> -->
 
     <div *ngIf="isVerified === true" class="status">
         <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130.2 130.2">
@@ -8,7 +12,7 @@
             <polyline class="path check" fill="none" stroke="#73AF55" stroke-width="6" stroke-linecap="round"
                 stroke-miterlimit="10" points="100.2,40.2 51.5,88.8 29.8,67.5 " />
         </svg>
-        <p class="success">Verified!</p>
+        <p class="success">{{ 'Integration.Verified' | translate }}</p>
     </div>
 
     <div *ngIf="isVerified === false" class="status">
@@ -20,7 +24,7 @@
             <line class="path line" fill="none" stroke="#D06079" stroke-width="6" stroke-linecap="round"
                 stroke-miterlimit="10" x1="95.8" y1="38" x2="34.4" y2="92.2" />
         </svg>
-        <p class="error">Failed!</p>
+        <p class="error">{{ 'Integration.Verified' | translate }}</p>
     </div>
 </div>
 
@@ -30,7 +34,7 @@
         <label>Api Key</label>
 
         <div class="password-input">
-            <input id="api-key-input" type="password" placeholder="Your api key"
+            <input id="api-key-input" type="password" placeholder="{{ 'Integration.YourApikey' | translate }}"
                 [(ngModel)]="integration.value.apikey">
             <div class="show-hide-button">
                 <span *ngIf="keyVisibile === false" class="material-icons-outlined"
@@ -43,15 +47,15 @@
     </div>
 
     <div class="input-field">
-        <label>Organization (optional)</label>
+        <label>{{ 'Integration.OrganizationOptional' | translate }}</label>
         <input class="custom-input" type="text" [(ngModel)]="integration.value.organization"
-            placeholder="Your organization name">
+            placeholder="{{ 'Integration.YourOrganization' | translate }}">
     </div>
 
     <div class="footer">
-        <button class="custom-primary-button" (click)="saveIntegration()">Save</button>
-        <button *ngIf="integration._id" class="custom-danger-button" (click)="deleteIntegration()">Delete</button>
-        <button *ngIf="!integration._id" class="custom-danger-button" (click)="resetValues()">Clear</button>
+        <button class="custom-primary-button" (click)="saveIntegration()">{{ 'Integration.Save' | translate }}</button>
+        <button *ngIf="integration._id" class="custom-danger-button" (click)="deleteIntegration()">{{ 'Integration.Delete' | translate }}</button>
+        <button *ngIf="!integration._id" class="custom-danger-button" (click)="resetValues()">{{ 'Integration.Clear' | translate }}</button>
         <!-- <button class="custom-danger-button" (click)="deleteIntegration()" [disabled]="integration == null">Delete</button> -->
     </div>
 
