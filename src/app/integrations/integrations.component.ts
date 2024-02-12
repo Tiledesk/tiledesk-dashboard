@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from 'app/core/auth.service';
 import { IntegrationService } from 'app/services/integration.service';
 import { BrevoIntegration, CATEGORIES_LIST, CustomerioIntegration, HubspotIntegration, INTEGRATIONS_KEYS, INTEGRATION_LIST_ARRAY, MakeIntegration, OpenaiIntegration, QaplaIntegration } from './utils';
@@ -13,6 +13,7 @@ import { BrandService } from 'app/services/brand.service';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { ProjectPlanService } from 'app/services/project-plan.service';
 import { PLAN_NAME } from 'app/utils/util';
+import { ProjectService } from 'app/services/project.service';
 
 const swal = require('sweetalert');
 
@@ -21,10 +22,12 @@ const swal = require('sweetalert');
   templateUrl: './integrations.component.html',
   styleUrls: ['./integrations.component.scss']
 })
-export class IntegrationsComponent extends PricingBaseComponent implements OnInit{
 
+// extends PricingBaseComponent
+export class IntegrationsComponent implements OnInit, OnDestroy {
   project: any;
   project_plan: any;
+  profile_name: string;
   isChromeVerGreaterThan100: boolean;
   panelOpenState = true;
   integrationSelectedName: string = "none";
@@ -33,6 +36,7 @@ export class IntegrationsComponent extends PricingBaseComponent implements OnIni
   selectedIntegration: any;
   selectedIntegrationModel: null;
   integrationLocked: boolean = false;
+  intName: string;
 
   INT_KEYS = INTEGRATIONS_KEYS;
   INTEGRATIONS = INTEGRATION_LIST_ARRAY;
@@ -59,45 +63,106 @@ export class IntegrationsComponent extends PricingBaseComponent implements OnIni
     private route: ActivatedRoute,
     private translate: TranslateService,
     private brand: BrandService,
-    public prjctPlanService: ProjectPlanService
-  ) { 
-    super(prjctPlanService, notify);;
+    public prjctPlanService: ProjectPlanService,
+    private projectService: ProjectService,
+  ) {
+
+    const _brand = this.brand.getBrand();
+    console.log("[INTEGRATION-COMP] brand: ", _brand);
+    this.translateparams = _brand;
+
   }
 
   ngOnInit(): void {
-    this.getProjectPlan();
-    console.log("xxxx profile_name: ", this.profile_name);
+    // this.getProjectPlan();
     this.getCurrentProject();
     this.getBrowserVersion();
     this.translateModalOnlyOwnerCanManageProjectAccount();
+    // this.getAllIntegrations().then(() => {
+    //   this.intName = this.route.snapshot.queryParamMap.get('name');
+    //   console.log("[INTEGRATION-COMP] intName: ", this.intName);
+    //   if (this.intName) {
+    //     this.onIntegrationSelect(this.INTEGRATIONS.find(i => i.key === this.intName));
+    //   }
+
+    // })
+
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
+
+  // getProjectPlan() {
+  //   this.prjctPlanService.projectPlan$
+  //     .pipe(
+  //       takeUntil(this.unsubscribe$)
+  //     )
+  //     .subscribe((projectProfileData: any) => {
+  //       console.log('[INTEGRATION-COMP] - getProjectPlan - project Profile Data', projectProfileData)
+  //       if (projectProfileData) {
+
+  //         this.profile_name = projectProfileData.profile_name;
+  //         console.log('[INTEGRATION-COMP] - getProjectPlan -profile_name ', this.profile_name)
+
+
+  //       }
+  //     }, error => {
+
+  //       this.logger.error('[INTEGRATION-COMP] - getProjectPlan - ERROR', error);
+  //     }, () => {
+
+  //       this.logger.log('[INTEGRATION-COMP] - getProjectPlan - COMPLETE')
+
+
+  //     });
+  // }
+
+  getCurrentProject() {
+    this.auth.project_bs
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((project) => {
+        this.project = project
+        console.log("[INTEGRATION-COMP] Project: ", this.project);
+        // this.project_plan = this.project.profile_name;
+        // console.log("Current project plan: ", this.project_plan);
+        // if ((this.project.profile_name === 'Sandbox' || this.project.profile_name === 'free') && this.project.trial_expired === true) {
+        //   this.plan_expired = true;
+        // }
+        this.getProjectById(this.project._id);
+      });
+  }
+
+  getProjectById(projectId) {
+    this.projectService.getProjectById(projectId).subscribe((project: any) => {
+      console.log('[INTEGRATION-COMP] - GET PROJECT BY ID - PROJECT: ', project);
+
+      this.profile_name = project.profile.name;
+      console.log('[INTEGRATION-COMP] - GET PROJECT BY ID - PROJECT > profile_name : ', this.profile_name);
+
+    }, error => {
+      this.logger.error('[INTEGRATION-COMP] - GET PROJECT BY ID - ERROR ', error);
+    }, () => {
+      this.logger.log('[INTEGRATION-COMP] - GET PROJECT BY ID * COMPLETE * ');
+      this.getIntegratons()
+    });
+  }
+
+  getIntegratons() {
     this.getAllIntegrations().then(() => {
-
-      const brand = this.brand.getBrand();
-      console.log("brand: ", brand);
-      this.translateparams = brand;
-
-      const name = this.route.snapshot.queryParamMap.get('name');
-      console.log("name: ", name);
-
-      if (name) {
-        this.onIntegrationSelect(this.INTEGRATIONS.find(i => i.key === name));
+      this.intName = this.route.snapshot.queryParamMap.get('name');
+      console.log("[INTEGRATION-COMP] intName: ", this.intName);
+      if (this.intName) {
+        this.onIntegrationSelect(this.INTEGRATIONS.find(i => i.key === this.intName));
       }
 
     })
-
   }
 
-  getCurrentProject() {
-    this.auth.project_bs.subscribe((project) => {
-      this.project = project
-      console.log("Project: ", this.project);
-      // this.project_plan = this.project.profile_name;
-      // console.log("Current project plan: ", this.project_plan);
-      // if ((this.project.profile_name === 'Sandbox' || this.project.profile_name === 'free') && this.project.trial_expired === true) {
-      //   this.plan_expired = true;
-      // }
-    });
-  }
 
   getBrowserVersion() {
     this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
@@ -131,7 +196,7 @@ export class IntegrationsComponent extends PricingBaseComponent implements OnIni
   getAllIntegrations() {
     return new Promise((resolve, reject) => {
       this.integrationService.getAllIntegrations().subscribe((integrations: Array<any>) => {
-        this.logger.debug("[INTEGRATION-COMP] Integrations for this project ", integrations)
+        console.log("[INTEGRATION-COMP] Integrations for this project ", integrations)
         console.log("[INTEGRATION-COMP] Integrations for this project ", integrations)
         this.integrations = integrations;
         resolve(true);
@@ -142,7 +207,7 @@ export class IntegrationsComponent extends PricingBaseComponent implements OnIni
     })
   }
 
-  
+
   onIntegrationSelect(integration) {
     this.integrationLocked = false;
     this.checkPlan(integration.plan).then(() => {
@@ -344,7 +409,7 @@ export class IntegrationsComponent extends PricingBaseComponent implements OnIni
 
       // PREMIUM PLAN
       else if (this.profile_name === PLAN_NAME.B || this.profile_name === PLAN_NAME.E) {
-        if ( integration_plan === PLAN_NAME.F) {
+        if (integration_plan === PLAN_NAME.F) {
           reject(false);
         }
         resolve(true)

@@ -576,7 +576,7 @@
 
 
 
-          <div class="row" style="margin-top:5px">
+          <div *ngIf="!showSpinner" class="row" style="margin-top:5px">
 
             <appdashboard-contact-info [contact_details]="contact_details"> </appdashboard-contact-info>
 
