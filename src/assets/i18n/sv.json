@@ -586,6 +586,7 @@
         "HasExpiredOn": "har gått ut den",
         "DowngradeTo": "Nedgradera till gratis",
         "YouCurrentlyAreUsingAllActiveOperatorSeats": "Du använder för närvarande alla platser",
+        "YouAreCurrentlyUsingAllChatbots": "Du använder för närvarande alla chatbots",
         "ContactUsViaChatToUpgradeYourPricingPlan": "Kontakta oss via chatt för att uppgradera din prisplan",
         "ContactUsViaEmailToUpgradeYourPricingPlan": "Kontakta oss via e-post för att uppgradera din prisplan",
         "NoPayments": "Inga betalningar",

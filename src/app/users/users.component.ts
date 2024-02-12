@@ -318,11 +318,20 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, OnDe
 
   presentContactUsModal() {
     if (this.USER_ROLE === 'owner') {
-      this.notify._displayContactUsModal(true, 'upgrade_plan')
+      this.notify._displayContactUsModal(true, 'operators_seats_unavailable')
     } else {
       this.presentModalOnlyOwnerCanManageTheAccountPlan()
     }
   }
+
+  presentGoToPricingModal() {
+    if (this.USER_ROLE === 'owner') {
+      this.notify.displayGoToPricingModal('user_exceeds')
+    } else {
+      this.presentModalOnlyOwnerCanManageTheAccountPlan()
+    }
+  }
+
 
   openModalTrialExpired() {
     if (this.USER_ROLE === 'owner') {
@@ -589,6 +598,9 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, OnDe
       this.router.navigate(['project/' + this.id_project + '/user/add'])
     } else if (this.projectUsersLength + this.countOfPendingInvites >= this.seatsLimit) {
       if (this.USER_ROLE === 'owner') {
+       if (this.prjct_profile_type === 'free') {
+        this.presentGoToPricingModal()
+       } else if (this.prjct_profile_type === 'payment' && (this.subscription_is_active === false || this.subscription_is_active === true)) 
         this.notify._displayContactUsModal(true, 'operators_seats_unavailable')
       } else {
         this.presentModalOnlyOwnerCanManageTheAccountPlan()

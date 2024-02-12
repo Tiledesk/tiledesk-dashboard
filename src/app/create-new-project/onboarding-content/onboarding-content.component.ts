@@ -544,7 +544,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
           trial_expired: project['trialExpired']
         }
         // SENT THE NEW PROJECT TO THE AUTH SERVICE THAT PUBLISH
-        this.auth.projectSelected(newproject)
+        this.auth.projectSelected(newproject, 'onboarding-content')
         // this.logger.log('[ONBOARDING-D] NEW CREATED PROJECT ', newproject)
         this.projectID = newproject._id
       }

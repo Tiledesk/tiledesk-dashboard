@@ -13,7 +13,10 @@ export class ChatbotModalComponent implements OnInit {
   public chatbotLimitReached: string;
   public callingPage: string;
   public id_project: string;
-  salesEmail: string;
+  public prjctProfileType : string;
+  public subscriptionIsActive : boolean;
+  public trialExpired: boolean;
+  public salesEmail: string;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<ChatbotModalComponent>,
@@ -23,6 +26,7 @@ export class ChatbotModalComponent implements OnInit {
   ) {
     console.log('[CHATBOT-MODAL] data ', data)
     if (data && data.projectProfile) {
+      console.log('[CHATBOT-MODAL] id_project ', data.projectProfile)
       this.getTranslatedStringChatbotLimitReached(data.projectProfile)
     }
     if (data && data.callingPage) { 
@@ -31,8 +35,25 @@ export class ChatbotModalComponent implements OnInit {
       this.callingPage = null;
     }
     if (data && data.projectId) {
-      this.id_project = data.projectId
+      this.id_project = data.projectId;
+      console.log('[CHATBOT-MODAL] id_project ', this.id_project)
     }
+
+    if (data && data.prjctProfileType) {
+      this.prjctProfileType = data.prjctProfileType;
+      console.log('[CHATBOT-MODAL] prjctProfileType ', this.prjctProfileType)
+    }
+
+    if (data && data.subscriptionIsActive) {
+      this.subscriptionIsActive = data.subscriptionIsActive;
+      console.log('[CHATBOT-MODAL] subscriptionIsActive ', this.subscriptionIsActive)
+    }
+
+    if (data && data.trialExpired) {
+      this.trialExpired = data.trialExpired;
+      console.log('[CHATBOT-MODAL] trialExpired ', this.trialExpired)
+    }
+ 
 
     const brand = brandService.getBrand();
     this.salesEmail = brand['CONTACT_SALES_EMAIL'];
@@ -58,6 +79,11 @@ export class ChatbotModalComponent implements OnInit {
   onOkPresssed() {
     this.dialogRef.close();
     this.contacUsViaEmail()
+  }
+
+  onUpgradePlan() {
+    this.dialogRef.close();
+    this.router.navigate(['project/' + this.id_project + '/pricing']);
   }
 
   onGoToHomePresssed () {

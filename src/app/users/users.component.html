@@ -33,26 +33,19 @@
         </ul>
 
         <div class="link-to-teammates-roles-docs">
-          <div class="row" style="background-color: rgb(241,241,241);
-        margin-right: 0px;
-        margin-left: 0px;
-        padding-bottom: 12px;">
+          <div class="row">
             <div class="col-md-12">
-              <span style="margin-left: 15px;">
-                <svg style="width: 25px;height:auto; vertical-align: middle;" aria-hidden="true" focusable="false"
-                  data-prefix="fab" data-icon="readme" class="svg-inline--fa fa-readme fa-w-18" role="img"
-                  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+              <span>
+                <svg aria-hidden="true" focusable="false" data-prefix="fab" data-icon="readme"
+                  class="svg-inline--fa fa-readme fa-w-18" role="img" xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 576 512">
                   <path fill="#0f62ff"
                     d="M528.3 46.5H388.5c-48.1 0-89.9 33.3-100.4 80.3-10.6-47-52.3-80.3-100.4-80.3H48c-26.5 0-48 21.5-48 48v245.8c0 26.5 21.5 48 48 48h89.7c102.2 0 132.7 24.4 147.3 75 .7 2.8 5.2 2.8 6 0 14.7-50.6 45.2-75 147.3-75H528c26.5 0 48-21.5 48-48V94.6c0-26.4-21.3-47.9-47.7-48.1zM242 311.9c0 1.9-1.5 3.5-3.5 3.5H78.2c-1.9 0-3.5-1.5-3.5-3.5V289c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5v22.9zm0-60.9c0 1.9-1.5 3.5-3.5 3.5H78.2c-1.9 0-3.5-1.5-3.5-3.5v-22.9c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5V251zm0-60.9c0 1.9-1.5 3.5-3.5 3.5H78.2c-1.9 0-3.5-1.5-3.5-3.5v-22.9c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5v22.9zm259.3 121.7c0 1.9-1.5 3.5-3.5 3.5H337.5c-1.9 0-3.5-1.5-3.5-3.5v-22.9c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5v22.9zm0-60.9c0 1.9-1.5 3.5-3.5 3.5H337.5c-1.9 0-3.5-1.5-3.5-3.5V228c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5v22.9zm0-60.9c0 1.9-1.5 3.5-3.5 3.5H337.5c-1.9 0-3.5-1.5-3.5-3.5v-22.8c0-1.9 1.5-3.5 3.5-3.5h160.4c1.9 0 3.5 1.5 3.5 3.5V190z">
                   </path>
                 </svg>
               </span>
-              <a style="color:#0f62ff !important; vertical-align: middle; font-size: 14px; font-weight: 400;
-            cursor: pointer; margin-left: 8px; text-decoration: underline;" (click)="goToTeammatesRolesDoc()">
-
+              <a (click)="goToTeammatesRolesDoc()">
                 {{ 'LearnMoreAboutDefaultRoles' | translate }}
-
-
               </a>
             </div>
           </div>
@@ -82,19 +75,32 @@
 
               </div>
 
-              <div class="card-content" style="background: #f44336;color: #fff;text-align: center;" 
+              <!-- <div class="card-content alert-number-of-teammates-exceeds" style="background: #f44336;color: #fff;text-align: center;" 
               *ngIf="(((prjct_profile_type === 'payment' && subscription_is_active === true) ||
                (prjct_profile_type === 'free' && trial_expired === false) || 
                (prjct_profile_type === 'free' && trial_expired === true))  &&
-               (projectUsersLength + countOfPendingInvites > seatsLimit))">
-               <!-- <div class="card-content" style="background: #f44336;color: #fff;text-align: center;" 
-               *ngIf="(trial_expired && prjct_profile_type === 'free') && (projectUsersLength + countOfPendingInvites > seatsLimit)"> -->
-
-              
+               (projectUsersLength + countOfPendingInvites > seatsLimit))"> -->
+              <div class="card-content alert-number-of-teammates-exceeds"
+                style="background: #f44336;color: #fff;text-align: center;"
+                *ngIf="(prjct_profile_type === 'free') && (projectUsersLength + countOfPendingInvites > seatsLimit)">
                 <span class="msg-alert">
                   {{ 'NumberOfTeammatesExceedsThePlan_2' | translate: tParamsPlanAndSeats }}
                 </span>
-                <!-- (click)="openModalTrialExpired()" -->
+                <!-- (click)="openModalTrialExpired() presentContactUsModal()" -->
+                <div class="upgrade--plan-btn-wpr" style="text-align: center;">
+                  <button class="upgrade--plan-btn" (click)="presentGoToPricingModal()">
+                    {{ "Pricing.UpgradePlan" | translate }}
+                  </button>
+                </div>
+              </div>
+
+              <div class="card-content alert-number-of-teammates-exceeds"
+                style="background: #f44336;color: #fff;text-align: center;"
+                *ngIf="(prjct_profile_type === 'payment' && subscription_is_active === true) && (projectUsersLength + countOfPendingInvites > seatsLimit)">
+                <span class="msg-alert">
+                  {{ 'NumberOfTeammatesExceedsThePlan_2' | translate: tParamsPlanAndSeats }}
+                </span>
+                <!-- (click)="openModalTrialExpired() presentContactUsModal()" -->
                 <div class="upgrade--plan-btn-wpr" style="text-align: center;">
                   <button class="upgrade--plan-btn" (click)="presentContactUsModal()">
                     {{ "Pricing.UpgradePlan" | translate }}
@@ -102,10 +108,11 @@
                 </div>
               </div>
 
-              <div class="card-content" style="background: #f44336;color: #fff;text-align: center;"
-                *ngIf="prjct_profile_type === 'payment' && subscription_is_active === false && projectUsersLength + countOfPendingInvites > PLAN_SEATS.free">
+              <div class="card-content  alert-number-of-teammates-exceeds"
+                style="background: #f44336;color: #fff;text-align: center;"
+                *ngIf="(prjct_profile_type === 'payment' && subscription_is_active === false) && (projectUsersLength + countOfPendingInvites > PLAN_SEATS.free)">
 
-               
+
                 <span class="msg-alert">{{ "Pricing.YourSubscriptionToThe" | translate}}
                   <span style="text-transform: capitalize">
                     {{ prjct_profile_name }}
@@ -115,7 +122,7 @@
                   <span style="display: block;" *ngIf="projectUsersLength + countOfPendingInvites > PLAN_SEATS.free">
                     {{'NumberOfTeammatesExceedsThePlan' | translate: tParamsFreePlanSeatsNum}}
                   </span>
-                  
+
                   <div class="upgrade--plan-btn-wpr" style="text-align: center;">
                     <button class="upgrade--plan-btn" (click)="openModalSubsExpired()">
                       {{ "Pricing.UpgradePlan" | translate }}
@@ -141,7 +148,7 @@
               <div class="card-header card-header-custom-bckgrnd"
                 style="height:55px; border-bottom:1px solid rgb(239, 242, 246);">
 
-                <ng-container *ngIf="displayInviteTeammateBtn"> 
+                <ng-container *ngIf="displayInviteTeammateBtn">
                   <button *ngIf="USER_ROLE !== 'agent'" class="btn btn-primary pull-right"
                     style="padding: 8px 16px;margin:0px;" (click)="goToAddUser()">
                     <span class="icon" style="padding-right:8px">
@@ -311,12 +318,9 @@
 
                       <td>
                         <span>
-                          <span class="White__Tooltip" 
-                            matTooltipClass="custom-mat-tooltip"
+                          <span class="White__Tooltip" matTooltipClass="custom-mat-tooltip"
                             matTooltip="{{ 'ChatWith' | translate }}  {{projectUser?.id_user?.firstname}} {{projectUser?.id_user?.lastname }}"
-                            #tooltip="matTooltip" 
-                            matTooltipPosition='above' 
-                            matTooltipHideDelay="100">
+                            #tooltip="matTooltip" matTooltipPosition='above' matTooltipHideDelay="100">
                             <i class="material-icons chat-with-agent"
                               (click)="chatWithAgent(projectUser?.id_user?._id, projectUser?.id_user?.firstname, projectUser?.id_user?.lastname)">
                               chat
@@ -335,10 +339,10 @@
                       <!-- goToMemberProfile(projectUser?.id_user?._id)     -->
                       <td (click)="goToEditUser(projectUser?._id)" style="cursor:pointer">
                         <!-- <span class="White__Tooltip"> -->
-                          <span style="font-weight:400; font-size: 13px">
-                            {{ projectUser?.role | translate}}
-                          </span>
-                          <!-- <span class="White__Tooltiptext">
+                        <span style="font-weight:400; font-size: 13px">
+                          {{ projectUser?.role | translate}}
+                        </span>
+                        <!-- <span class="White__Tooltiptext">
                         {{"UsersPage.ViewProfileUser" | translate }} <span style="font-size:10px; display:block">
                           {{projectUser?.id_user?._id}}</span>
                       </span> -->
@@ -381,14 +385,10 @@
                       <td class="td-actions text-right">
                         <!-- *ngIf="projectUser?.role !== 'owner' && CURRENT_USER_ID !== projectUser?.id_user?._id" -->
                         <span style="position: relative;top: 15px;">
-                          <button type="button" rel="tooltip" title=""
-                            class="btn btn-primary btn-simple btn-xs"
-                            (click)='goToEditUser(projectUser?._id)'
-                            matTooltipClass="custom-mat-tooltip"
-                            matTooltip="{{ 'UsersPage.tootipEditUser' | translate }}"
-                            #tooltip="matTooltip" 
-                            matTooltipPosition='above' 
-                            matTooltipHideDelay="100">
+                          <button type="button" rel="tooltip" title="" class="btn btn-primary btn-simple btn-xs"
+                            (click)='goToEditUser(projectUser?._id)' matTooltipClass="custom-mat-tooltip"
+                            matTooltip="{{ 'UsersPage.tootipEditUser' | translate }}" #tooltip="matTooltip"
+                            matTooltipPosition='above' matTooltipHideDelay="100">
                             <i class="material-icons">edit</i>
                             <!-- <span class="White__Tooltiptext" style="text-transform:capitalize">
                               {{ 'UsersPage.tootipEditUser' | translate }} 
@@ -397,14 +397,11 @@
 
 
                           <button *ngIf="projectUser?.role !== 'owner' && CURRENT_USER_ID !== projectUser?.id_user?._id"
-                            type="button"
-                            class="btn btn-danger btn-simple btn-xs"
+                            type="button" class="btn btn-danger btn-simple btn-xs"
                             (click)='openDeleteModal(projectUser?._id, projectUser?.id_user?._id, projectUser?.id_user?.firstname, projectUser?.id_user?.lastname)'
                             matTooltipClass="custom-mat-tooltip"
-                            matTooltip="{{ 'UsersPage.tootipDeleteUser' | translate }}"
-                            #tooltip="matTooltip" 
-                            matTooltipPosition='above' 
-                            matTooltipHideDelay="100">
+                            matTooltip="{{ 'UsersPage.tootipDeleteUser' | translate }}" #tooltip="matTooltip"
+                            matTooltipPosition='above' matTooltipHideDelay="100">
                             <i class="material-icons">close</i>
                           </button>
                         </span>

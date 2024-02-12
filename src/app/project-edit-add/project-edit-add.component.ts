@@ -2482,7 +2482,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
             _id: this.id_project,
             name: prjct['name'],
           }
-          this.auth.projectSelected(project)
+          this.auth.projectSelected(project, 'project-edit-add update-project-name')
 
           const storedProjectJson = localStorage.getItem(this.id_project);
           this.logger.log('[PRJCT-EDIT-ADD] - STORED PROJECT JSON ', storedProjectJson);
@@ -2576,7 +2576,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
           operatingHours: prjct['activeOperatingHours']
         }
 
-        this.auth.projectSelected(_project)
+        this.auth.projectSelected(_project, 'project-edit-add update-advanced-settings')
 
 
       }, (error) => {

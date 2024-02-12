@@ -491,7 +491,9 @@ export class PricingComponent implements OnInit, OnDestroy {
 
   // To test Live Plan 3.00 / Daily
   openPaymentTestLivePaymentLink() {
-    const url = `https://buy.stripe.com/9AQ7sAfkGdVo7i8cMR?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanB}&locale=${this.browser_lang}`
+    // const url = `https://buy.stripe.com/9AQ7sAfkGdVo7i8cMR?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanB}&locale=${this.browser_lang}`
+    // window.open(url, '_self');
+    const url = `https://buy.stripe.com/9AQ7sAfkGdVo7i8cMR?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanE}&locale=${this.browser_lang}`
     window.open(url, '_self');
   }
 

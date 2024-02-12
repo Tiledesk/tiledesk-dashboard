@@ -609,7 +609,7 @@ export class HoursComponent implements OnInit, OnDestroy {
           this.logger.log('[HOURS] - UPDATED PROJECT _project set in storage', _project);
           localStorage.setItem(project['_id'], JSON.stringify(_project));
 
-          this.auth.projectSelected(_project)
+          this.auth.projectSelected(_project, 'hours')
 
 
         }, (error) => {

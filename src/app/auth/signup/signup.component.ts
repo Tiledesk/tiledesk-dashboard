@@ -791,7 +791,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
           }
 
           // SENT THE NEW PROJECT TO THE AUTH SERVICE THAT PUBLISH
-          this.auth.projectSelected(newproject)
+          this.auth.projectSelected(newproject, 'sign-up')
           this.logger.log('[SIGN-UP] CREATED PROJECT ', newproject)
 
           this.id_project = newproject._id

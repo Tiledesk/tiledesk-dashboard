@@ -10,7 +10,7 @@
         <div class="dialog--content-first-row">
             {{chatbotLimitReached}}
         </div>
-        <div class="dialog--content-second-row">
+        <div *ngIf="prjctProfileType === 'payment'" class="dialog--content-second-row">
             {{ "Pricing.ContactUsViaEmailToUpgradeYourPricingPlan" | translate }}.
         </div>
     </div>
@@ -22,8 +22,11 @@
         {{ "Cancel" | translate }}
     </button>
     <!-- cdkFocusInitial -->
-    <button class="mat-dialog-ok-btn" mat-button (click)="onOkPresssed()">
+    <button *ngIf="prjctProfileType === 'payment'"  class="mat-dialog-ok-btn" mat-button (click)="onOkPresssed()">
         {{'ContactUs' | translate}}
+    </button>
+    <button *ngIf="prjctProfileType === 'free'"  class="mat-dialog-ok-btn" mat-button (click)="onUpgradePlan()">
+        {{'Pricing.UpgradePlan' | translate}}
     </button>
     <button *ngIf="callingPage" class="mat-dialog-ok-btn" mat-button (click)="onGoToHomePresssed()">
         Go to Home

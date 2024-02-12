@@ -586,6 +586,7 @@
         "HasExpiredOn": "muddati tugagan",
         "DowngradeTo": "Bepulga pasaytirish",
         "YouCurrentlyAreUsingAllActiveOperatorSeats": "Siz hozir barcha oʻrindiqlardan foydalanyapsiz",
+        "YouAreCurrentlyUsingAllChatbots": "Siz hozirda barcha chatbotlardan foydalanyapsiz",
         "ContactUsViaChatToUpgradeYourPricingPlan": "Narxlar rejangizni yangilash uchun chat orqali biz bilan bog'laning",
         "ContactUsViaEmailToUpgradeYourPricingPlan": "Narxlar rejangizni yangilash uchun elektron pochta orqali biz bilan bog'laning",
         "NoPayments": "Toʻlovlar yoʻq",

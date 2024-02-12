@@ -255,7 +255,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
     async loadStyle(data){
        
-        if(!data.parameter){
+        if(!data || !data.parameter){
           let className =  document.body.className.replace(new RegExp(/style-\S*/gm), '')
           document.body.className = className
           document.body.classList.remove('light')
@@ -265,6 +265,9 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
           if(link){
             link.remove();
           }
+          /** remove style INFO from storage */
+         localStorage.removeItem('custom_style')
+
           return;
         } 
     

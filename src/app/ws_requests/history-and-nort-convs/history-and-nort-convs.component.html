@@ -261,10 +261,11 @@
                   <div class="col-sm-12">
                     <ng-select name="agent" [(ngModel)]="selectedAgentId" [clearable]="false"
                       (change)="agentSelected(selectedAgentId)">
-                      <ng-option [value]="''">{{ 'HistoryPage.AllAgents' | translate }}</ng-option>
+                      <ng-option [value]="''">
+                        {{ 'HistoryPage.AllAgents' | translate }}
+                      </ng-option>
                       <ng-option *ngFor="let agent of user_and_bot_array" [value]="agent._id">
                         {{ agent.firstname }} {{ agent.lastname }}
-
                       </ng-option>
                     </ng-select>
                   </div>
@@ -311,13 +312,27 @@
                     {{ 'ConversationType' | translate }}
                   </label>
                   <div class="col-sm-12">
-                    <ng-select name="conversationtype" [(ngModel)]="conversation_type"
-                      style="text-transform: capitalize;" (change)="requestsTypeSelectFromAdvancedOption()"
+                    <ng-select name="conversationtype" 
+                      [(ngModel)]="conversation_type"
+                      style="text-transform: capitalize;"
+                      (change)="requestsTypeSelectFromAdvancedOption()"
                       [items]="conversationType | selectOptionsTranslate" bindLabel="name" [clearable]='false'
-                      [searchable]="false" bindValue="id" placeholder="{{'SelectConversationType' | translate }}">
+                      [searchable]="false" bindValue="id" 
+                      placeholder="{{'SelectConversationType' | translate }}">
                     </ng-select>
                   </div>
+                </div>
 
+
+                <!-- // SEARCH FOR EMAIL -->
+                <div class="col-sm-6" *ngIf="IS_HERE_FOR_HISTORY"> 
+                  <label class="col-sm-12 label-7695a5">
+                      Email
+                  </label>
+                  <div style="padding-left: 15px; padding-right: 15px ">
+                    <input name="requester_email" type="email" [(ngModel)]="requester_email" class="" autocomplete="off"
+                    placeholder="Email" style="height: 36px; width: 100%; border-radius: 4px; border-color: #ccc; border-width:1px; border-style:solid; padding-left: 10px;">
+                  </div>
                 </div>
               </div>
 

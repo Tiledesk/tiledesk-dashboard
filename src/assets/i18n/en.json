@@ -586,6 +586,7 @@
         "HasExpiredOn": "has expired on",
         "DowngradeTo": "Downgrade to Free",
         "YouCurrentlyAreUsingAllActiveOperatorSeats": "You currently are using all seats",
+        "YouAreCurrentlyUsingAllChatbots": "You are currently using all chatbots",
         "ContactUsViaChatToUpgradeYourPricingPlan": "Contact us via chat to upgrade your pricing plan",
         "ContactUsViaEmailToUpgradeYourPricingPlan": "Contact us via email to upgrade your pricing plan",
         "NoPayments": "No Payments",

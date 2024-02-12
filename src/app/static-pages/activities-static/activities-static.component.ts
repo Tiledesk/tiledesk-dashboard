@@ -164,17 +164,18 @@ export class ActivitiesStaticComponent extends PricingBaseComponent implements O
   presentModalsOnInit() {
 
     if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
-      if (this.USER_ROLE === 'owner') {
-        // if (this.profile_name !== PLAN_NAME.C && this.profile_name !== PLAN_NAME.F) {
 
-        //   this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date)
-
-        // } else 
-        if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
-
-          this.notify.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
+        if (this.USER_ROLE === 'owner') {
+          if (this.profile_name !== PLAN_NAME.C && this.profile_name !== PLAN_NAME.F) {
+  
+            this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date)
+  
+          } else if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
+  
+            this.notify.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
+          }
         }
-      }
+      
     }
   }
 
@@ -187,8 +188,9 @@ export class ActivitiesStaticComponent extends PricingBaseComponent implements O
           if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
             this.notify._displayContactUsModal(true, 'upgrade_plan');
           } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true) {
-            // this.router.navigate(['project/' + this.projectId + '/pricing']);
-            this.notify.presentContactUsModalToUpgradePlan(true);
+           
+            // this.notify.presentContactUsModalToUpgradePlan(true);
+            this.notify._displayContactUsModal(true, 'upgrade_plan');
           } else if (this.prjct_profile_type === 'free') {
             this.router.navigate(['project/' + this.projectId + '/pricing']);
           }

@@ -222,7 +222,7 @@ export class InstallTemplateComponent extends PricingBaseComponent implements On
               profile_name: project['id_project']['profile'].name,
               trial_expired: project['id_project']['trialExpired']
             }
-            this.auth.projectSelected(selectedProject)
+            this.auth.projectSelected(selectedProject, 'install-tempalte')
 
             this.getDeptsByProjectId();
             this.getProjectBots();
@@ -485,6 +485,9 @@ export class InstallTemplateComponent extends PricingBaseComponent implements On
       hasBackdrop: true,
       data: {
         projectProfile: this.prjct_profile_name,
+        subscriptionIsActive: this.subscription_is_active,
+        prjctProfileType: this.prjct_profile_type,
+        trialExpired: this.trial_expired
       },
     });
 

@@ -266,7 +266,7 @@ export class AutologinComponent implements OnInit {
           operatingHours: prjct[0].id_project.activeOperatingHours
         }
         // PROJECT ID and NAME ARE SENT TO THE AUTH SERVICE THAT PUBLISHES
-        this.auth.projectSelected(project);
+        this.auth.projectSelected(project, 'auto-login');
         this.logger.log('[AUTOLOGIN] - PROJECT THAT IS PUBLISHED ', project);
         // this.project_bs.next(project);
 

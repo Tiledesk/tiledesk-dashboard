@@ -54,7 +54,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('childWhatsappAccount', { static: false, read: ElementRef }) public childWhatsappAccount;
   @ViewChild('childCreateChatbot', { static: false, read: ElementRef }) public childCreateChatbot;
   @ViewChild('editOperatingHoursBtn', { static: false, read: ElementRef }) public editOperatingHoursBtn;
-  
+
 
 
   company_name: string;
@@ -110,7 +110,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   chatbots: any // TO DISPLAY THE CHATBOT IN THE NEW HOME HEADER
   DISPLAY_TEAMMATES: boolean = false;
   DISPLAY_CHATBOTS: boolean = false;
-  
+
   public_Key: string;
   isVisibleANA: boolean;
   isVisibleAPP: boolean;
@@ -347,7 +347,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       if (project && project.attributes && project.attributes.userPreferences) {
         this.PROJECT_ATTRIBUTES = project.attributes;
         this.getOnbordingPreferences(this.PROJECT_ATTRIBUTES)
-        
+
       } else {
         this.logger.log('[HOME] USECASE  PROJECT_ATTRIBUTES UNDEFINED', this.PROJECT_ATTRIBUTES)
         this.setDefaultPreferences()
@@ -370,7 +370,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
       this.chatbots = faqKb
       console.log('[HOME] - GET FAQKB * chatbots *', this.chatbots);
-  
+
     }, (error) => {
       this.logger.error('[HOME] - GET FAQKB - ERROR ', error);
       this.showskeleton = false;
@@ -379,7 +379,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       console.log('[HOME] - GET FAQKB * COMPLETE *');
       this.showskeleton = false;
       // this.showSpinner = false
-     
+
     });
   }
 
@@ -593,7 +593,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         } else if (this.prjct_profile_name === PLAN_NAME.B) {
           if (!this.appSumoProfile) {
             this.prjct_profile_name = PLAN_NAME.B + ' plan'
-            this.profile_name_for_segment =   this.prjct_profile_name
+            this.profile_name_for_segment = this.prjct_profile_name
             this.auth.projectProfile(this.profile_name_for_segment)
           } else {
             this.prjct_profile_name = PLAN_NAME.B + ' plan ' + '(' + this.appSumoProfile + ')'
@@ -773,15 +773,15 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       trackObjct['button'] = "Connect"
     }
 
-    if (userAction === 'Explore Templates' &&  userActionRes !== null) {
+    if (userAction === 'Explore Templates' && userActionRes !== null) {
       trackObjct['category'] = userActionRes
     }
 
-    if (userAction === 'Customize widget' &&  userActionRes === null) {
+    if (userAction === 'Customize widget' && userActionRes === null) {
       trackObjct['button'] = 'Customize'
     }
 
-    
+
 
     this.logger.log('[HOME] - trackUserAction trackObjct', trackObjct);
     if (!isDevMode()) {
@@ -1410,7 +1410,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
             } else {
               this.logger.log('HERE YES 2 whatsAppIsInstalled ', this.whatsAppIsInstalled)
               this.whatsAppIsInstalled = true
-            
+
 
             }
           } else if (res.length === 0) {
@@ -1451,7 +1451,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   installApp() {
-    console.log('[HOME] installApp appTitle ' , this.appTitle) 
+    console.log('[HOME] installApp appTitle ', this.appTitle)
     const isAvailable = this.checkPlanAndPresentModal(this.appTitle)
     console.log('[APP-STORE] isAvaibleFromPlan ', isAvailable)
     if (isAvailable === false) {
@@ -1657,7 +1657,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         return false
       }
     } else if (
-      (appTitle === "WhatsApp Business" || appTitle === "Facebook Messenger" ) &&
+      (appTitle === "WhatsApp Business" || appTitle === "Facebook Messenger") &&
       ((this.profile_name === PLAN_NAME.D) ||
         (this.profile_name === PLAN_NAME.E && this.subscription_is_active === false) ||
         (this.profile_name === PLAN_NAME.F && this.subscription_is_active === false) ||
@@ -2707,7 +2707,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         // this.logger.log('[HOME] PUBLIC-KEY - pay key&value', pay);
         if (pay[1] === "F") {
           this.isVisiblePay = false;
-        //  console.log('[HOME] PUBLIC-KEY - this.isVisiblePay', this.isVisiblePay);
+          //  console.log('[HOME] PUBLIC-KEY - this.isVisiblePay', this.isVisiblePay);
         } else {
           this.isVisiblePay = true;
           // console.log('[HOME] PUBLIC-KEY - this.isVisiblePay', this.isVisiblePay);
@@ -2792,7 +2792,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         }
       }
 
-     
+
     });
 
     if (!this.public_Key.includes("ANA")) {
@@ -2979,8 +2979,19 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  goToPricingOrOpenModalSubsExpired() {
-    this.logger.log('[HOME] goToPricingOrOpenModalSubsExpired')
+  goToSubscription() {
+    console.log('[HOME] goToSubscription')
+
+    if (this.USER_ROLE === 'owner') {
+      this.router.navigate(['project/' + this.projectId + '/project-settings/payments']);
+    } else {
+      this.presentModalOnlyOwnerCanManageTheAccountPlan();
+    }
+  }
+
+  // Not used
+  goToSubscriptionOrOpenModalSubsExpired() {
+    console.log('[HOME] goToSubscriptionOrOpenModalSubsExpired')
 
     if (this.USER_ROLE === 'owner') {
       if (this.prjct_profile_type === 'free') {
@@ -2992,7 +3003,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
         if (this.profile_name !== PLAN_NAME.C && this.profile_name !== PLAN_NAME.F) {
           this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
-       
+
         } else if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
 
           this.notify.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
@@ -3050,7 +3061,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     })
   }
 
- 
+
 
 
 
@@ -3737,7 +3748,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         this.featureAvailableFromBPlan = translation;
       });
 
-      this.translate.get('AvailableFromThePlan', { plan_name: PLAN_NAME.E })
+    this.translate.get('AvailableFromThePlan', { plan_name: PLAN_NAME.E })
       .subscribe((translation: any) => {
         this.featureAvailableFromEPlan = translation;
       });
@@ -3974,7 +3985,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         trial_days_left: project_trial_days_left,
         operatingHours: activeOperatingHours
       }
-      this.auth.projectSelected(project)
+      this.auth.projectSelected(project, 'home')
       this.logger.log('[HOME] !!! GO TO HOME - PROJECT ', project)
     }
   }

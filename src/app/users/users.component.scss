@@ -41,6 +41,7 @@
 .modal {
   top: 0;
 }
+
 .modal-content {
   position: relative;
   background-color: #fff;
@@ -71,6 +72,7 @@ button.close {
   background: 0 0;
   border: 0;
 }
+
 .close {
   float: right;
   font-size: 21px;
@@ -147,11 +149,11 @@ button.close {
   transition: 0.4s;
 }
 
-input:checked + .slider:before {
+input:checked+.slider:before {
   background-color: #1eb848;
 }
 
-input:checked + .slider {
+input:checked+.slider {
   // background-color: #2196F3;
   background: #fff;
 }
@@ -160,7 +162,7 @@ input:checked + .slider {
 //     box-shadow: 0 0 1px #2196F3;
 //   }
 
-input:checked + .slider:before {
+input:checked+.slider:before {
   -webkit-transform: translateX(40px);
   -ms-transform: translateX(40px);
   transform: translateX(40px);
@@ -174,6 +176,7 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+
 // <!-- END SWITCH  -->
 
 // start TOOLTIP
@@ -202,7 +205,8 @@ input:checked + .slider:before {
   /* Position the tooltip text - TOP */
   bottom: 100%;
   left: 50%;
-  margin-left: -60px; /* Use half of the width (120/2 = 60), to center the tooltip */
+  margin-left: -60px;
+  /* Use half of the width (120/2 = 60), to center the tooltip */
 
   // NEW
   box-shadow: 0 1em 2em -0.5em rgba(0, 0, 0, 0.35);
@@ -213,6 +217,7 @@ input:checked + .slider:before {
 .tooltipx:hover .tooltiptext {
   visibility: visible;
 }
+
 // end TOOLTIP
 
 /*
@@ -306,9 +311,9 @@ and also iPads specifically.
 //     0 8px 10px -5px rgba(3, 155, 229, 0.2) !important;
 // }
 
-.nav-pills.nav-pills-info.custom > li.active > a,
-.nav-pills.nav-pills-info.custom > li.active > a:focus,
-.nav-pills.nav-pills-info.custom > li.active > a:hover {
+.nav-pills.nav-pills-info.custom>li.active>a,
+.nav-pills.nav-pills-info.custom>li.active>a:focus,
+.nav-pills.nav-pills-info.custom>li.active>a:hover {
   // background-color: #00bcd4;
   background-color: #039be5 !important;
   -webkit-box-shadow: 0 12px 20px -10px rgba(3, 115, 229, 0.28), 0 4px 20px 0px rgba(0, 0, 0, 0.12),
@@ -494,6 +499,7 @@ $f21blue: #039be5;
     height: 39px;
   }
 }
+
 // - end - BOTTOM NAVBAR  //
 
 .msg-alert {
@@ -582,6 +588,7 @@ $f21blue: #039be5;
   text-align: center;
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.35);
 }
+
 .is-busy-text {
   position: absolute;
   left: -8px;
@@ -589,6 +596,7 @@ $f21blue: #039be5;
   font-size: 12px;
   font-weight: 400;
 }
+
 .user-avatar-wrap {
   position: relative;
   display: -webkit-box;
@@ -621,11 +629,14 @@ $f21blue: #039be5;
   font-size: 18px;
   text-align: center;
 }
+
 .is-busy-color-transition {
   color: #fedd00;
   animation: myfirst 5s;
-  -moz-animation: myfirst 5s infinite; /* Firefox */
-  -webkit-animation: myfirst 5s infinite; /* Safari and Chrome */
+  -moz-animation: myfirst 5s infinite;
+  /* Firefox */
+  -webkit-animation: myfirst 5s infinite;
+  /* Safari and Chrome */
 }
 
 @keyframes myfirst {
@@ -633,16 +644,19 @@ $f21blue: #039be5;
     // background: #4caf50;
     color: #7695a5;
   }
+
   50% {
     // background: #fedd00;
     color: #fedd00;
   }
+
   100% {
     // background: #4caf50;
     // color: #1e2129;
     color: #7695a5;
   }
 }
+
 /* Firefox */
 @-moz-keyframes myfirst {
   0% {
@@ -650,16 +664,19 @@ $f21blue: #039be5;
     // color: #1e2129;
     color: #7695a5;
   }
+
   50% {
     // background: #fedd00;
     color: #fedd00;
   }
+
   100% {
     // background: #4caf50;
     // color: #1e2129;
     color: #7695a5;
   }
 }
+
 /* Safari and Chrome */
 @-webkit-keyframes myfirst {
   0% {
@@ -667,10 +684,12 @@ $f21blue: #039be5;
     // color: #1e2129;
     color: #7695a5;
   }
+
   50% {
     // background: #fedd00;
     color: #fedd00;
   }
+
   100% {
     // background: #4caf50;
     // color: #1e2129;
@@ -740,6 +759,7 @@ $f21blue: #039be5;
   opacity: 1;
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
 }
+
 /* ./end tootip top  */
 
 .select-teammate-status {
@@ -754,9 +774,11 @@ $f21blue: #039be5;
 .is-user-online {
   background-color: #4caf50;
 }
+
 .is-user-offline {
   background-color: #f44336;
 }
+
 .is-user-inactive {
   background-color: #697482;
 }
@@ -802,3 +824,31 @@ $f21blue: #039be5;
 //     position: absolute;
 //     right: -1.5em;
 //   }
+
+.link-to-teammates-roles-docs>.row {
+  background-color: rgb(241, 241, 241);
+  margin-right: 0px;
+  margin-left: 0px;
+  padding-bottom: 12px;
+}
+
+.link-to-teammates-roles-docs>.row > div >a {
+  color: #0f62ff !important;
+  vertical-align: middle;
+  font-size: 14px;
+  font-weight: 400;
+  cursor: pointer;
+  margin-left: 8px;
+}
+
+.link-to-teammates-roles-docs>.row > div >span { 
+  margin-left: 15px;
+}
+
+.link-to-teammates-roles-docs>.row > div >span > svg{ 
+  width: 25px;height:auto; vertical-align: middle;
+}
+
+.link-to-teammates-roles-docs>.row > div >a:hover {
+  text-decoration: underline;
+}

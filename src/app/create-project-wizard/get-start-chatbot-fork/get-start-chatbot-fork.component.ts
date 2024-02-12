@@ -226,7 +226,7 @@ export class GetStartChatbotForkComponent implements OnInit {
                   profile_name: this.project['profile'].name,
                   trial_expired: this.project['trialExpired']
                 }
-                this.auth.projectSelected(selectedProject)
+                this.auth.projectSelected(selectedProject, 'get-start-chatbot-fork')
 
 
                 this.getProjectBots();
@@ -331,7 +331,10 @@ export class GetStartChatbotForkComponent implements OnInit {
       data: {
         projectProfile: this.prjct_profile_name,
         callingPage: "getStartChatbotFork",
-        projectId: this.project._id
+        projectId: this.project._id,
+        // subscriptionIsActive: this.subscription_is_active,
+        // prjctProfileType: this.prjct_profile_type,
+        // trialExpired: this.trial_expired
       },
     });
 

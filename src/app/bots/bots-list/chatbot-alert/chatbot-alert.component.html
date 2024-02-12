@@ -1,22 +1,33 @@
 <div class="chatbot-alert-content" [ngClass]="{'chatbot-alert-content-no-lm': IS_TEMPLATE_ROUTE}">
-  <div class="sub-active-cb-num-greater-than-the-allowed" *ngIf="((
+  <!-- <div class="sub-active-cb-num-greater-than-the-allowed" *ngIf="((
 ((profile_name === PLAN_NAME.A || profile_name === PLAN_NAME.B || profile_name === PLAN_NAME.C || profile_name === PLAN_NAME.D || profile_name === PLAN_NAME.E || profile_name === PLAN_NAME.F) && subscription_is_active === true) ||
 (profile_name === 'Sandbox' && trial_expired === false) || 
 (profile_name === 'Sandbox' && trial_expired === true) || 
 (profile_name === 'free' && trial_expired === false) || 
 (profile_name === 'free' && trial_expired === true))  &&
-(chatBotCount > chatBotLimit))">
-  <!-- <div class="sub-active-cb-num-greater-than-the-allowed" *ngIf="(trial_expired && prjct_profile_type === 'free') && (chatBotCount > chatBotLimit)"> -->
+(chatBotCount > chatBotLimit))"> -->
+  <div class="sub-active-cb-num-greater-than-the-allowed" *ngIf="(prjct_profile_type === 'free') && (chatBotCount > chatBotLimit)">
     <span class="msg-alert">
       {{ 'NumberOfChatbotExceedsThePlan' | translate: tParamsPlanAndChatBot }}
     </span>
-    <!-- (click)="presentContactUsModal() openModalTrialExpired" -->
+    <!-- (click)=" openModalTrialExpired" -->
+    <div class="upgrade--plan-btn-wpr" style="text-align: center;">
+      <button class="upgrade--plan-btn" (click)="presentGoToPricingModal()">
+        {{ "Pricing.UpgradePlan" | translate }}
+      </button>
+    </div>
+  </div>
+
+  <div class="sub-active-cb-num-greater-than-the-allowed" *ngIf="(subscription_is_active && prjct_profile_type === 'payment') && (chatBotCount > chatBotLimit)">
+    <span class="msg-alert">
+      {{ 'NumberOfChatbotExceedsThePlan' | translate: tParamsPlanAndChatBot }}
+    </span>
+    <!-- (click)=" openModalTrialExpired" -->
     <div class="upgrade--plan-btn-wpr" style="text-align: center;">
       <button class="upgrade--plan-btn" (click)="presentContactUsModal()">
         {{ "Pricing.UpgradePlan" | translate }}
       </button>
     </div>
-
   </div>
 
   <!-- <div class="sub-expired-cb-num-greater-than-the-allowed" *ngIf="(

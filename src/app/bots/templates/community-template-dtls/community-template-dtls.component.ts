@@ -213,6 +213,9 @@ export class CommunityTemplateDtlsComponent extends PricingBaseComponent impleme
       hasBackdrop: true,
       data: {
         projectProfile: this.prjct_profile_name,
+        subscriptionIsActive: this.subscription_is_active,
+        prjctProfileType: this.prjct_profile_type,
+        trialExpired: this.trial_expired
       },
     });
 
@@ -238,6 +241,7 @@ export class CommunityTemplateDtlsComponent extends PricingBaseComponent impleme
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
       this.project = project;
+      this.projectName = project.name
       this.logger.log('[COMMUNITY-TEMPLATE-DTLS] project from AUTH service subscription  ', this.project)
     });
   }

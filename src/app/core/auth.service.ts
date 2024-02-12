@@ -248,9 +248,10 @@ export class AuthService {
   }
 
   // RECEIVE FROM VARIOUS COMP THE OBJECT PROJECT AND PUBLISH
-  projectSelected(project: Project) {
+  projectSelected(project: Project, calledBy) {
     // PUBLISH THE project
-    // console.log('[AUTH-SERV] - PUBLISH THE PROJECT OBJECT RECEIVED ', project)
+    console.log('[AUTH-SERV] - PUBLISH THE PROJECT OBJECT RECEIVED project', project)
+    console.log('[AUTH-SERV] - PUBLISH THE PROJECT OBJECT RECEIVED calledBy', calledBy)
 
     this.logger.log('[AUTH-SERV] PUBLISH THE PROJECT OBJECT RECEIVED  > selected_project_id ', project._id,)
     this.selected_project_id = project._id // used in checkRoleForCurrentProject if nav_project_id is undefined
@@ -290,7 +291,7 @@ export class AuthService {
   // getAndPublish_NavProjectIdAndProjectName() {
   checkStoredProjectAndPublishIfPublishedProjectIsNull() {
     this.project_bs.subscribe((prjct) => {
-      this.logger.log('[AUTH-SERV] - PROJECT FROM SUBSCRIPTION TO project_bs ', prjct)
+     console.log('[AUTH-SERV] - PROJECT FROM SUBSCRIPTION TO project_bs ', prjct)
 
       if (prjct !== null && prjct._id !== undefined) {
         this.project_trial_expired = prjct.trial_expired
@@ -353,10 +354,8 @@ export class AuthService {
 
               this.subscription.unsubscribe()
 
-              const storedProjectJson = localStorage.getItem(
-                this.nav_project_id,
-              )
-              this.logger.log('[AUTH-SERV] - JSON OF STORED PROJECT: ', storedProjectJson)
+              const storedProjectJson = localStorage.getItem(this.nav_project_id )
+              console.log('[AUTH-SERV] - JSON OF STORED PROJECT: ', storedProjectJson)
 
               // RUN THE BELOW ONLY IF EXIST THE PROJECT JSON SAVED IN THE STORAGE
               if (storedProjectJson) {
@@ -381,15 +380,14 @@ export class AuthService {
                   trial_days_left: project_trial_days_left,
                   operatingHours: storedProjectOH,
                 }
-                // this.logger.log('!! AUTH in auth.serv  - 1) PROJECT THAT IS PUBLISHED: ', project);
+                console.log('!! AUTH in auth.serv  - 1) PROJECT THAT IS PUBLISHED: ', project);
                 // SE NN C'è IL PROJECT NAME COMUNQUE PUBBLICO PERCHè CON L'ID DEL PROGETTO VENGONO EFFETTUATE DIVERSE CALLBACK
 
                 /**** ******* ******* NEW BUG FIX ***** *** ** ***/
 
-                this.logger.log(
-                  '[AUTH-SERV] BEFORE TO PUBLISH this.project_bs.value ', this.project_bs.value)
+                console.log('[AUTH-SERV] BEFORE TO PUBLISH this.project_bs.value ', this.project_bs.value)
                 if (this.project_bs.value == null) {
-                  this.logger.log('[AUTH-SERV] PROJECT (get from storage) THAT IS PUBLISHED ', project)
+                  console.log('[AUTH-SERV] PROJECT (get from storage) THAT IS PUBLISHED ', project)
                   this.project_bs.next(project)
                 }
               } else {
@@ -810,10 +808,7 @@ export class AuthService {
 
   hasClickedGoToProjects() {
     this.project_bs.next(null)
-    this.logger.log(
-      '[AUTH-SERV] - HAS CLICKED GO TO PROJECT - PUBLISH PRJCT = ',
-      this.project_bs.next(null),
-    )
+    this.logger.log('[AUTH-SERV] - HAS CLICKED GO TO PROJECT - PUBLISH PRJCT = ',this.project_bs.next(null))
     this.logger.log('[AUTH-SERV] - HAS CLICKED GO TO PROJECT - PRJCT VALUE = ', this.project_bs.value)
     // this.logger.log('!!C-U »»»»» AUTH SERV - HAS BEEN CALLED "HAS CLICKED GOTO PROJECTS" - PUBLISH PRJCT = ', this.project_bs.next(null))
     localStorage.removeItem('project') // NOTE: questo serve????
