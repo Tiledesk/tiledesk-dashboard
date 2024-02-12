@@ -18,6 +18,7 @@ export class ModalDeleteKnowledgeBaseComponent implements OnInit {
   }
 
   onCloseBaseModal() {
+    this.kb.deleting = false;
     this.closeBaseModal.emit();
   }
 

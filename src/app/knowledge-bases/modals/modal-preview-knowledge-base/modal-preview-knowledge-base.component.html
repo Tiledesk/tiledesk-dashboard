@@ -61,7 +61,7 @@
           <label class="control-label">
               {{ 'KbPage.SelectEngine' | translate }}
           </label>
-          <div class="">
+          <div class="selectEngine">
             <ng-select class="custom-input" 
                 [items]="models_list"
                 bindLabel="name"
@@ -75,6 +75,15 @@
 
 
       </div>
+
+      <div class="modal-footer">
+          <button class="btn btn-white" style="padding:12px 16px;" (click)="onCloseBaseModal()">
+          {{ "Cancel" | translate }}
+          </button>
+          <!-- <button id="addkb-btn" class="btn btn-primary" [disabled]="buttonDisabled" (click)="onSaveKnowledgeBase()">
+          {{ 'Add' | translate }}
+          </button> -->
+      </div> 
 
     </div>
   </div>
