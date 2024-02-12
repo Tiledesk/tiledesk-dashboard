@@ -1,3 +1,14 @@
+.modal-header {
+    .modal-title {
+        font-weight: 400;
+    }
+    .close{
+        opacity: 0.5;
+    }
+    .close:hover{
+        opacity: 1;
+    }
+}
 
 .modal-body {
     display: inline-block;
@@ -91,7 +102,7 @@
     max-height: auto;
     border-radius: 6px;
     border: solid 2px #c6cdd4;
-    padding: 6px 12px;
+    padding: 6px 12px 20px;
     cursor: text;
     overflow: hidden;
     transition: max-height 0.5s ease-out;
@@ -171,5 +182,11 @@
         font-size: 20px;
         margin-right: 8px;
         color: rgb(98, 119, 140);
+    }
+}
+
+.selectEngine {
+    ::ng-deep .ng-select-container { 
+        border: 2px solid #c6cdd4;
     }
 }

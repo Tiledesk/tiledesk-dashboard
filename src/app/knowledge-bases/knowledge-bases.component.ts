@@ -303,7 +303,8 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
     this.onCloseBaseModal();
     let error = this.msgErrorDeleteKb; //"Non è stato possibile eliminare il kb";
     this.kbService.deleteKb(data).subscribe((response:any) => {
-      console.log('onDeleteKb:: ', response);
+      //console.log('onDeleteKb:: ', response);
+      kb.deleting = false;
       if(!response || (response.success && response.success === false)){
         this.updateStatusOfKb(kb._id, 0);
         this.onOpenErrorModal(error);
@@ -315,6 +316,8 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
       }
     }, (err) => {
       this.logger.error("[KNOWLEDGE BASES COMP] ERROR delete kb: ", err);
+      kb.deleting = false;
+      //this.kbid_selected.deleting = false;
       this.onOpenErrorModal(error);
     }, () => {
       this.logger.log("[KNOWLEDGE BASES COMP] delete kb *COMPLETE*");
@@ -576,11 +579,12 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
   // ************** DELETE **************** //
   onDeleteKnowledgeBase(kb){
     this.onDeleteKb(kb);
-    //this.baseModalDelete = false;
+    // this.baseModalDelete = false;
   }
 
   onOpenBaseModalDelete(kb){
     this.kbid_selected = kb;
+    this.kbid_selected.deleting = true;
     this.baseModalDelete = true;
   }
   // ************** PREVIEW **************** //

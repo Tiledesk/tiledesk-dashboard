@@ -19,4 +19,5 @@ export interface KB {
     createdAt?: Date;
     updatedAt?: Date;
     status?: number;
+    deleting?: boolean;
 }
