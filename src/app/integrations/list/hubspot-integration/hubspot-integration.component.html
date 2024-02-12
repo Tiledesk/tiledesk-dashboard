@@ -1,5 +1,7 @@
 <div class="header">
-    <p><a href="https://www.hubspot.com/" target="_blank">Sign up </a> for a free <b>HubSpot</b> account!</p>
+    <div class="signup">
+        <a href="https://www.hubspot.com/" target="_blank">{{ 'Integration.Signup' | translate }}</a><p [innerHTML]="'Integration.FreeAccount' | translate: translateparams"></p>
+    </div>
 
     <!-- // check the verify service function -->
     <!-- <div *ngIf="isVerified === true" class="status">
@@ -32,7 +34,7 @@
         <label>Api Key</label>
 
         <div class="password-input">
-            <input id="api-key-input" type="password" placeholder="Your api key"
+            <input id="api-key-input" type="password" placeholder="{{ 'Integration.YourApikey' | translate }}"
                 [(ngModel)]="integration.value.apikey">
             <div class="show-hide-button">
                 <span *ngIf="keyVisibile === false" class="material-icons-outlined"
@@ -46,9 +48,9 @@
 
 
     <div class="footer">
-        <button class="custom-primary-button" (click)="saveIntegration()">Save</button>
-        <button *ngIf="integration._id" class="custom-danger-button" (click)="deleteIntegration()">Delete</button>
-        <button *ngIf="!integration._id" class="custom-danger-button" (click)="resetValues()">Clear</button>
+        <button class="custom-primary-button" (click)="saveIntegration()">{{ 'Integration.Save' | translate }}</button>
+        <button *ngIf="integration._id" class="custom-danger-button" (click)="deleteIntegration()">{{ 'Integration.Delete' | translate }}</button>
+        <button *ngIf="!integration._id" class="custom-danger-button" (click)="resetValues()">{{ 'Integration.Clear' | translate }}</button>
     </div>
 
 </div>

@@ -16,6 +16,7 @@ export class QaplaIntegrationComponent implements OnInit {
   keyVisibile: boolean = false;
   isVerified: boolean;
 
+  translateparams: any;
 
   constructor(
     private integrationService: IntegrationService,
@@ -24,6 +25,7 @@ export class QaplaIntegrationComponent implements OnInit {
 
   ngOnInit(): void {
     this.logger.debug("[INT-Qapla] integration ", this.integration)
+    this.translateparams = { intname: "Qapla'" };
     if (this.integration.value.apikey) {
       this.checkKey(this.integration.value.apikey);
     }

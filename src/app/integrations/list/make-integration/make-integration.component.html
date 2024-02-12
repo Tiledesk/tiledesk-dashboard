@@ -1,5 +1,8 @@
 <div class="header">
-    <p><a href="https://www.make.com/en/register" target="_blank">Sign up </a> for a free <b>Make</b> account!</p>
+    <!-- <p><a href="https://www.make.com/en/register" target="_blank">Sign up </a> for a free <b>Make</b> account!</p> -->
+    <div class="signup">
+        <a href="https://www.make.com/en/register" target="_blank">{{ 'Integration.Signup' | translate }}</a><p [innerHTML]="'Integration.FreeAccount' | translate: translateparams"></p>
+    </div>
 
     <!-- // check the verify service function -->
     <!-- <div *ngIf="isVerified === true" class="status">
@@ -28,6 +31,7 @@
 
 <div class="content">
 
-    <p><b>Good news!</b></p>
-    <p>This integration does not need an API key. Use the Make action into the <b>Tiledesk Design Studio</b>.</p>
+    <p [innerHTML]="'Integration.GoodNews' | translate"></p>
+    <p [innerHTML]="'Integration.NoNeedApikey' | translate: translateparams" ></p>
+    
 </div>

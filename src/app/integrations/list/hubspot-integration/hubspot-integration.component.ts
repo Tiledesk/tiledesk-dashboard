@@ -15,6 +15,7 @@ export class HubspotIntegrationComponent implements OnInit {
 
   keyVisibile: boolean = false;
   isVerified: boolean;
+  translateparams: any;
   
   constructor(
     private integrationService: IntegrationService,
@@ -24,6 +25,7 @@ export class HubspotIntegrationComponent implements OnInit {
   ngOnInit(): void {
     console.log("[INT-Hubspot] integration ", this.integration)
     this.logger.debug("[INT-Hubspot] integration ", this.integration)
+    this.translateparams = { intname: 'Hubspot' };
     if (this.integration.value.apikey) {
       this.checkKey(this.integration.value.apikey);
     }

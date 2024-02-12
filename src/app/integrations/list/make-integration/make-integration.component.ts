@@ -12,12 +12,15 @@ export class MakeIntegrationComponent implements OnInit {
   @Output() onUpdateIntegration = new EventEmitter;
   @Output() onDeleteIntegration = new EventEmitter;
 
+  translateparams: any;
+
   constructor(
     private logger: LoggerService
   ) { }
 
   ngOnInit(): void {
     console.log("[INT-Make] integration ", this.integration);
+    this.translateparams = { intname: 'Make' };
   }
 
 }
