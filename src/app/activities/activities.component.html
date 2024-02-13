@@ -240,8 +240,8 @@
                       <!-- ---------------------------------------------------------------------------- -->
                       <span
                         *ngIf="objectKeys(activity?.actionObj)[0] === 'user_available'; else user_available_is_not_first_key">
-                        <!-- == EN -->
-                        <p *ngIf="browser_lang === 'en'" style="margin-bottom:0px; font-weight:500; font-size:13px">
+                        <!-- == EN *ngIf="browser_lang === 'en'"-->
+                        <p  style="margin-bottom:0px; font-weight:500; font-size:13px">
                           <span class="link-to-user-profile"
                             (click)="goToMemberProfile(activity?.target?.object?.id_user?._id)"
                             [ngClass]="{'highlight' : activity?.target?.object?.id_user?._id === selectedAgentId}">
@@ -250,19 +250,23 @@
                           </span>
                           's
                           availability status has been changed into
-                          <span *ngIf="activity?.actionObj?.user_available === false && activity?.actionObj?.activity?.profileStatus === ''">
+                          
+                          <!-- <span *ngIf="activity?.actionObj?.user_available === false && activity?.actionObj?.activity?.profileStatus === ''"> -->
+                          <span *ngIf="activity?.actionObj?.user_available === false && activity?.actionObj?.profileStatus === ''" style="text-transform: capitalize;">
                             {{ 'Unavailable' | translate }}
                           </span>
-                          <span *ngIf="activity?.actionObj?.user_available === true && activity?.actionObj?.activity?.profileStatus === ''">
+                          <!-- <span *ngIf="activity?.actionObj?.user_available === true && activity?.actionObj?.activity?.profileStatus === ''"> -->
+                          <span *ngIf="activity?.actionObj?.user_available === true && activity?.actionObj?.profileStatus === ''" style="text-transform: capitalize;">
                             {{ 'Available' | translate }}
                           </span>
-                          <span *ngIf="activity?.actionObj?.user_available === false && activity?.actionObj?.activity?.profileStatus === 'inactive'">
-                            {{ 'Unavailable' | translate }}
+                          <!-- <span *ngIf="activity?.actionObj?.user_available === false && activity?.actionObj?.activity?.profileStatus === 'inactive'"> -->
+                          <span *ngIf="activity?.actionObj?.user_available === false && activity?.actionObj?.profileStatus === 'inactive'" >
+                            {{ 'Inactive' | translate }}
                           </span>
                         </p>
 
                         <!-- != EN -->
-                        <p *ngIf="browser_lang !== 'en'" style="margin-bottom:0px; font-weight:500; font-size:13px">
+                        <!-- <p *ngIf="browser_lang !== 'en'" style="margin-bottom:0px; font-weight:500; font-size:13px">
                           Lo stato di disponibilità di
                           <span class="link-to-user-profile"
                             (click)="goToMemberProfile(activity?.target?.object?.id_user?._id)"
@@ -272,16 +276,16 @@
                           </span>
 
                           è stato cambiato in
-                          <span *ngIf="activity?.actionObj?.user_available === false && activity?.actionObj?.profileStatus === ''">
+                          <span *ngIf="activity?.actionObj?.user_available === false && activity?.actionObj?.profileStatus === ''" style="text-transform: capitalize;">
                             {{ 'Unavailable' | translate }}
                           </span>
-                          <span *ngIf="activity?.actionObj?.user_available === true && activity?.actionObj?.profileStatus === ''">
+                          <span *ngIf="activity?.actionObj?.user_available === true && activity?.actionObj?.profileStatus === ''" style="text-transform: capitalize;">
                             {{ 'Available' | translate }}
                           </span>
                           <span *ngIf="activity?.actionObj?.user_available === false && activity?.actionObj?.profileStatus === 'inactive'">
-                            {{ 'Unavailable' | translate }}
+                            {{ 'Inactive' | translate }}
                           </span>
-                        </p>
+                        </p> -->
                       </span>
 
 
@@ -289,8 +293,8 @@
                       <!-- If other cases -->
                       <!-- ---------------------------------------------------------------------------- -->
                       <ng-template #user_available_is_not_first_key>
-                        <!-- == EN -->
-                        <p *ngIf="browser_lang === 'en'" style="margin-bottom:0px; font-weight:500; font-size:13px ">
+                        <!-- == EN *ngIf="browser_lang === 'en'" -->
+                        <p  style="margin-bottom:0px; font-weight:500; font-size:13px ">
                           <span class="link-to-user-profile"
                             (click)="goToMemberProfile(activity?.target?.object?.id_user?._id)"
                             [ngClass]="{'highlight' : activity?.target?.object?.id_user?._id === selectedAgentId}">
@@ -306,7 +310,7 @@
                         </p>
 
                         <!-- != EN -->
-                        <p *ngIf="browser_lang !== 'en'" style="margin-bottom:0px; font-weight:500; font-size:13px ">
+                        <!-- <p *ngIf="browser_lang !== 'en'" style="margin-bottom:0px; font-weight:500; font-size:13px ">
                           <code>{{_key}}</code> di
                           <span class="link-to-user-profile"
                             (click)="goToMemberProfile(activity?.target?.object?.id_user?._id)"
@@ -318,7 +322,7 @@
                           <span *ngFor="let _key of objectKeys(activity?.actionObj)">
                             è stato aggiornato con <var>valore: {{ activity?.actionObj[_key]}}</var>
                           </span>
-                        </p>
+                        </p> -->
 
                       </ng-template>
 
@@ -384,19 +388,19 @@
                           </span>
                         </span>
                         {{ 'Into' | translate }}
-                        <span *ngIf="activity?.actionObj?.user_available === false && activity?.actionObj?.profileStatus === ''">
+                        <span *ngIf="activity?.actionObj?.user_available === false && activity?.actionObj?.profileStatus === ''" style="text-transform: capitalize;">
                           <!-- non disponibile -->
                           {{ 'Unavailable' | translate }}
                         </span>
 
-                        <span *ngIf="activity?.actionObj?.user_available === true && activity?.actionObj?.profileStatus === ''">
+                        <span *ngIf="activity?.actionObj?.user_available === true && activity?.actionObj?.profileStatus === ''" style="text-transform: capitalize;">
                           <!-- disponibile -->
                           {{ 'Available' | translate }}
                         </span>
 
                         <span *ngIf="activity?.actionObj?.user_available === false && activity?.actionObj?.profileStatus === 'inactive'">
                           <!-- non disponibile -->
-                          {{ 'Unavailable' | translate }}
+                          {{ 'Inactive' | translate }}
                         </span>
 
                         <span *ngIf="activity?.actionObj?.role === 'admin'">

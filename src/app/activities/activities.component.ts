@@ -339,7 +339,7 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
     this.showSpinner = true;
     this.activitiesService.getUsersActivities(this.queryString, this.pageNo)
       .subscribe((res: any) => {
-        this.logger.log('[ActivitiesComponent] - getActivities - **** RESPONSE **** ', res);
+       console.log('[ActivitiesComponent] - getActivities - **** RESPONSE **** ', res);
         if (res) {
           const perPage = res.perPage;
           const count = res.count;
