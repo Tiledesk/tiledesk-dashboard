@@ -52,6 +52,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
   learnMoreAboutDefaultRoles: string;
 
   translateparams: any;
+  showSpinner: boolean = true;
 
   constructor(
     private auth: AuthService,
@@ -159,7 +160,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
       if (this.intName) {
         this.onIntegrationSelect(this.INTEGRATIONS.find(i => i.key === this.intName));
       }
-
+      
     })
   }
 
@@ -199,8 +200,10 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
         console.log("[INTEGRATION-COMP] Integrations for this project ", integrations)
         console.log("[INTEGRATION-COMP] Integrations for this project ", integrations)
         this.integrations = integrations;
+        this.showSpinner = false
         resolve(true);
       }, (error) => {
+        this.showSpinner = false
         this.logger.error("[INTEGRATION-COMP] Get all integrations error: ", error);
         reject()
       })
