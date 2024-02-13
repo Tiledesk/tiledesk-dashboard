@@ -4,6 +4,7 @@ input[type="text"] {
   width: 100%;
   margin-bottom: 10px;
   -webkit-appearance: none;
+  appearance: none;
   border: 1px solid #d9d9d9 !important;
   border-top: 1px solid #c0c0c0;
   padding: 0 8px;
@@ -25,6 +26,7 @@ input[type="email"] {
   width: 100%;
   margin-bottom: 10px;
   -webkit-appearance: none;
+  appearance: none;
   border: 1px solid #d9d9d9 !important;
   padding: 0 8px;
   box-sizing: border-box;
@@ -42,6 +44,7 @@ input[type="number"] {
   width: 100%;
   margin-bottom: 10px;
   -webkit-appearance: none;
+  appearance: none;
   border: 1px solid #d9d9d9 !important;
   padding: 0 8px;
   box-sizing: border-box;
@@ -141,6 +144,7 @@ select[disabled] {
 
 button.close {
   -webkit-appearance: none;
+  appearance: none;
   padding: 0;
   cursor: pointer;
   background: 0 0;
@@ -277,6 +281,7 @@ input:checked + .slider:before {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
+  user-select: none;
 }
 .onoffswitch-checkbox__availability_status {
   display: none;
@@ -394,6 +399,7 @@ input:checked + .slider:before {
   //   width: 100%;
   margin-bottom: 10px;
   -webkit-appearance: none;
+  appearance: none;
   background: #fff;
   border: 1px solid #d9d9d9;
   padding-right: 8px;
@@ -548,7 +554,7 @@ input:checked + .slider:before {
   padding-top: 6px;
   padding-bottom: 6px;
 }
-.alert-exceed-numb-of-seats-allowed-sub-active {
+.alert-exceed-numb-of-seats-allowed {
   background: #f44336;
   position: relative;
   margin-left: -30px;

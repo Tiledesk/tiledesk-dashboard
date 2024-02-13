@@ -222,19 +222,10 @@
         </div>
 
         <div *ngIf="USER_ROLE === 'agent' && areActivePay" class="temmates-redeemed">
-            <span class="material-icons" *ngIf="(((prjct_profile_type === 'payment' && subscription_is_active === true) ||
-            (prjct_profile_type === 'free' && trial_expired === false) || 
-            (prjct_profile_type === 'free' && trial_expired === true))  &&
-            (projectUsersLength + countOfPendingInvites > seatsLimit))" style="color: #f44336;"
-                matTooltipClass="h-custom-mat-tooltip-error"
-                matTooltip="The number of teammates exceeds the number allowed for the {{ prjct_profile_name }}. Update the plan or manually remove excess teammates (the system will do it automatically in a month) "
-                #tooltip="matTooltip" 
-                matTooltipPosition='above' 
-                matTooltipHideDelay="100">
-                error
-            </span>
-            <span class="redeemed-temmates-redeemed-num">
-                <span [ngStyle]="{'color': countOfPendingInvites + projectUsersLength > seatsLimit ? '#f44336' : '#3ea9f5'}">
+            
+            <span class="redeemed-temmates-redeemed-num-agent-role">
+                <!-- -->
+                <span  [ngStyle]="{'color': countOfPendingInvites + projectUsersLength > seatsLimit ? '#f44336' : '#3c4858'}">
                     {{countOfPendingInvites + projectUsersLength}} seats redeemed
                 </span>
                 <span class="pending--invitation" *ngIf="countOfPendingInvites > 0">
@@ -242,6 +233,18 @@
                 </span>
             </span>
             of {{ seatsLimit }} available for the {{prjct_profile_name}}.
+
+            <span class="material-icons" *ngIf="(((prjct_profile_type === 'payment' && subscription_is_active === true) ||
+            (prjct_profile_type === 'free' && trial_expired === false) || 
+            (prjct_profile_type === 'free' && trial_expired === true))  &&
+            (projectUsersLength + countOfPendingInvites > seatsLimit))" style="color: #f44336;cursor: pointer;"
+                matTooltipClass="h-custom-mat-tooltip-error"
+                matTooltip="The number of teammates exceeds the number allowed for the {{ prjct_profile_name }}"
+                #tooltip="matTooltip" 
+                matTooltipPosition='above' 
+                matTooltipHideDelay="100">
+                error
+            </span>
         </div>
 
         <div class="ct-action-btns-wpr" *ngIf="USER_ROLE !== 'agent'">

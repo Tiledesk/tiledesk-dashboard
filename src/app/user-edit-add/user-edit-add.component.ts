@@ -280,7 +280,7 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
       this.areActivePay = false;
     }
 
-    
+
   }
 
   getLoggedUser() {
@@ -395,7 +395,7 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
     });
   }
 
- 
+
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
@@ -407,6 +407,22 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
 
   getMoreOperatorsSeats() {
     this.notify._displayContactUsModal(true, 'upgrade_plan');
+  }
+
+  presentContactUsModal() {
+    if (this.USER_ROLE === 'owner') {
+      this.notify._displayContactUsModal(true, 'operators_seats_unavailable')
+    } else {
+      this.presentModalOnlyOwnerCanManageTheAccountPlan()
+    }
+  }
+
+  presentGoToPricingModal() {
+    if (this.USER_ROLE === 'owner') {
+      this.notify.displayGoToPricingModal('user_exceeds')
+    } else {
+      this.presentModalOnlyOwnerCanManageTheAccountPlan()
+    }
   }
 
   openModalSubsExpired() {
@@ -736,14 +752,20 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
 
     // if (this.prjct_profile_type === 'payment') {
     // this.seatsLimit
-    if (this.projectUsersLength + this.countOfPendingInvites < this.seatsLimit) {
-      this.doInviteUser();
-    } else if ((this.projectUsersLength + this.countOfPendingInvites) >= this.seatsLimit) {
-      if (this.CURRENT_USER_ROLE === 'owner') {
-        this.notify._displayContactUsModal(true, 'operators_seats_unavailable')
-      } else {
-        this.presentModalOnlyOwnerCanManageTheAccountPlan()
+    if (this.CURRENT_USER_ROLE === 'owner') {
+      if (this.projectUsersLength + this.countOfPendingInvites < this.seatsLimit) {
+        this.doInviteUser();
+      } else if ((this.projectUsersLength + this.countOfPendingInvites) >= this.seatsLimit) {
+
+        // this.notify._displayContactUsModal(true, 'operators_seats_unavailable')
+        if (this.prjct_profile_type === 'free') {
+          this.presentGoToPricingModal()
+        } else if (this.prjct_profile_type === 'payment' && (this.subscription_is_active === false || this.subscription_is_active === true)) {
+          this.notify._displayContactUsModal(true, 'operators_seats_unavailable')
+        }
       }
+    } else {
+      this.presentModalOnlyOwnerCanManageTheAccountPlan()
     }
     /* IN THE "FREE TYPE PLAN" THERE ISN'T LIMIT TO THE NUMBER OF INVITED USER */
 
