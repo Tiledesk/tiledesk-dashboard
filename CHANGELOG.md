@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.5.0-rc9
+- Fixing of the pricing page
+- reCaptcha fixing
+
 ### 2.5.0-rc8
 - Adds a loading spinner on the integrations page
 
