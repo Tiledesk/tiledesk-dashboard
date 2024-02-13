@@ -29,7 +29,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, OnDe
   PLAN_SEATS = PLAN_SEATS;
   APP_SUMO_PLAN_NAME = APP_SUMO_PLAN_NAME;
   APPSUMO_PLAN_SEATS = APPSUMO_PLAN_SEATS;
- 
+
 
   public_Key: string
   showSpinner = true
@@ -45,7 +45,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, OnDe
   display = 'none'
   displayCancelInvitationModal = 'none'
   project: Project
-  
+
   USER_ROLE: string
   CURRENT_USER_ID: string
   CURRENT_USER: any
@@ -193,43 +193,43 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, OnDe
       this.areActivePay = false;
     }
 
-    
+
   }
 
   getCurrentProject() {
     this.auth.project_bs
-    .pipe(
-      takeUntil(this.unsubscribe$)
-    )
-    .subscribe((project) => {
-      if (project) {
-        this.project = project;
-        this.id_project = project._id;
-        this.logger.log(
-          '[USERS] - GET CURRENT PROJECT -> project ID',
-          this.id_project,
-        )
-      }
-    })
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((project) => {
+        if (project) {
+          this.project = project;
+          this.id_project = project._id;
+          this.logger.log(
+            '[USERS] - GET CURRENT PROJECT -> project ID',
+            this.id_project,
+          )
+        }
+      })
   }
 
 
   getLoggedUser() {
     this.auth.user_bs
-    .pipe(
-      takeUntil(this.unsubscribe$)
-    )
-    .subscribe((user) => {
-      this.logger.log('[USERS] LOGGED USER GET IN USERS-COMP - USER', user)
-      if (user) {
-        this.CURRENT_USER = user;
-        this.CURRENT_USER_ID = user._id;
-        this.logger.log(
-          '[USERS] LOGGED USER GET IN USERS-COMP - Current USER ID ',
-          this.CURRENT_USER_ID,
-        )
-      }
-    })
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((user) => {
+        this.logger.log('[USERS] LOGGED USER GET IN USERS-COMP - USER', user)
+        if (user) {
+          this.CURRENT_USER = user;
+          this.CURRENT_USER_ID = user._id;
+          this.logger.log(
+            '[USERS] LOGGED USER GET IN USERS-COMP - Current USER ID ',
+            this.CURRENT_USER_ID,
+          )
+        }
+      })
   }
 
   getProjectUserRole() {
@@ -243,7 +243,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, OnDe
           '[USERS] - GET PROJECT USER ROLE - USER_ROLE : ',
           this.USER_ROLE,
         )
-    })
+      })
   }
 
   getBrowserVersion() {
@@ -294,7 +294,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, OnDe
   // }
 
   goToEditUser(projectUser_id) {
-    this.router.navigate([ 'project/' + this.id_project + '/user/edit/' + projectUser_id ])
+    this.router.navigate(['project/' + this.id_project + '/user/edit/' + projectUser_id])
   }
 
   goToGroups() {
@@ -343,7 +343,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, OnDe
 
   openModalSubsExpired() {
     if (this.USER_ROLE === 'owner') {
-      if (this.profile_name !== PLAN_NAME.C && this.profile_name !== PLAN_NAME.F ) {
+      if (this.profile_name !== PLAN_NAME.C && this.profile_name !== PLAN_NAME.F) {
         this.notify.displaySubscripionHasExpiredModal(
           true,
           this.prjct_profile_name,
@@ -594,17 +594,19 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, OnDe
 
     // this.router.navigate(['project/' + this.id_project + '/user/add']);
     // if (this.prjct_profile_type === 'payment') {
-    if (this.projectUsersLength + this.countOfPendingInvites < this.seatsLimit) {
-      this.router.navigate(['project/' + this.id_project + '/user/add'])
-    } else if (this.projectUsersLength + this.countOfPendingInvites >= this.seatsLimit) {
-      if (this.USER_ROLE === 'owner') {
-       if (this.prjct_profile_type === 'free') {
-        this.presentGoToPricingModal()
-       } else if (this.prjct_profile_type === 'payment' && (this.subscription_is_active === false || this.subscription_is_active === true)) 
-        this.notify._displayContactUsModal(true, 'operators_seats_unavailable')
-      } else {
-        this.presentModalOnlyOwnerCanManageTheAccountPlan()
+    if (this.USER_ROLE === 'owner') {
+      if (this.projectUsersLength + this.countOfPendingInvites < this.seatsLimit) {
+        this.router.navigate(['project/' + this.id_project + '/user/add'])
+      } else if (this.projectUsersLength + this.countOfPendingInvites >= this.seatsLimit) {
+
+        if (this.prjct_profile_type === 'free') {
+          this.presentGoToPricingModal()
+        } else if (this.prjct_profile_type === 'payment' && (this.subscription_is_active === false || this.subscription_is_active === true)) {
+          this.notify._displayContactUsModal(true, 'operators_seats_unavailable')
+        }
       }
+    } else {
+      this.presentModalOnlyOwnerCanManageTheAccountPlan()
     }
     // } else {
     //   this.router.navigate(['project/' + this.id_project + '/user/add'])
@@ -815,82 +817,82 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, OnDe
   }
 
 
-    // TRANSLATION
-    translateChangeAvailabilitySuccessMsg() {
-      this.translate
-        .get('ChangeAvailabilitySuccessNoticationMsg')
-        .subscribe((text: string) => {
-          this.changeAvailabilitySuccessNoticationMsg = text
-          // this.logger.log('[USERS] + + + change Availability Success Notication Msg', text)
-        })
-    }
-  
-    // TRANSLATION
-    translateChangeAvailabilityErrorMsg() {
-      this.translate
-        .get('ChangeAvailabilityErrorNoticationMsg')
-        .subscribe((text: string) => {
-          this.changeAvailabilityErrorNoticationMsg = text
-          // this.logger.log('[USERS] + + + change Availability Error Notication Msg', text)
-        })
-    }
-  
-    // TRANSLATION
-    translateRemoveProjectUserSuccessMsg() {
-      this.translate
-        .get('RemoveProjectUserSuccessNoticationMsg')
-        .subscribe((text: string) => {
-          this.deleteProjectUserSuccessNoticationMsg = text
-          // this.logger.log('[USERS] + + + RemoveProjectUserSuccessNoticationMsg ', text)
-        })
-    }
-  
-    // TRANSLATION
-    translateRemoveProjectUserErrorMsg() {
-      this.translate
-        .get('RemoveProjectUserErrorNoticationMsg')
-        .subscribe((text: string) => {
-          this.deleteProjectUserErrorNoticationMsg = text
-          // this.logger.log('[USERS] + + + RemoveProjectUserErrorNoticationMsg ', text)
-        })
-    }
+  // TRANSLATION
+  translateChangeAvailabilitySuccessMsg() {
+    this.translate
+      .get('ChangeAvailabilitySuccessNoticationMsg')
+      .subscribe((text: string) => {
+        this.changeAvailabilitySuccessNoticationMsg = text
+        // this.logger.log('[USERS] + + + change Availability Success Notication Msg', text)
+      })
+  }
+
+  // TRANSLATION
+  translateChangeAvailabilityErrorMsg() {
+    this.translate
+      .get('ChangeAvailabilityErrorNoticationMsg')
+      .subscribe((text: string) => {
+        this.changeAvailabilityErrorNoticationMsg = text
+        // this.logger.log('[USERS] + + + change Availability Error Notication Msg', text)
+      })
+  }
+
+  // TRANSLATION
+  translateRemoveProjectUserSuccessMsg() {
+    this.translate
+      .get('RemoveProjectUserSuccessNoticationMsg')
+      .subscribe((text: string) => {
+        this.deleteProjectUserSuccessNoticationMsg = text
+        // this.logger.log('[USERS] + + + RemoveProjectUserSuccessNoticationMsg ', text)
+      })
+  }
+
+  // TRANSLATION
+  translateRemoveProjectUserErrorMsg() {
+    this.translate
+      .get('RemoveProjectUserErrorNoticationMsg')
+      .subscribe((text: string) => {
+        this.deleteProjectUserErrorNoticationMsg = text
+        // this.logger.log('[USERS] + + + RemoveProjectUserErrorNoticationMsg ', text)
+      })
+  }
 
 
-    translateCanceledInviteSuccessMsg() {
-      this.translate
-        .get('UsersPage.CanceledInviteSuccessMsg')
-        .subscribe((text: string) => {
-          this.canceledInviteSuccessMsg = text
-          // this.logger.log('[USERS] + + + canceledInviteSuccessMsg Invite Success Notication Msg', text)
-        })
-    }
-  
-    translateCanceledInviteErrorMsg() {
-      this.translate
-        .get('UsersPage.CanceledInviteErrorMsg')
-        .subscribe((text: string) => {
-          this.canceledInviteErrorMsg = text
-          // this.logger.log('[USERS] + + + canceledInviteErrorMsg Invite Success Notication Msg', text)
-        })
-    }
-  
-    translateResendInviteSuccessMsg() {
-      this.translate
-        .get('UsersPage.ResendInviteSuccessNoticationMsg')
-        .subscribe((text: string) => {
-          this.resendInviteSuccessNoticationMsg = text
-          // this.logger.log('[USERS] + + + resend Invite Success Notication Msg', text)
-        })
-    }
-  
-    translateResendInviteErrorMsg() {
-      this.translate
-        .get('UsersPage.ResendInviteErrorNoticationMsg')
-        .subscribe((text: string) => {
-          this.resendInviteErrorNoticationMsg = text
-          // this.logger.log('[USERS] + + + resend Invite Error Notication Msg', text)
-        })
-    }
+  translateCanceledInviteSuccessMsg() {
+    this.translate
+      .get('UsersPage.CanceledInviteSuccessMsg')
+      .subscribe((text: string) => {
+        this.canceledInviteSuccessMsg = text
+        // this.logger.log('[USERS] + + + canceledInviteSuccessMsg Invite Success Notication Msg', text)
+      })
+  }
+
+  translateCanceledInviteErrorMsg() {
+    this.translate
+      .get('UsersPage.CanceledInviteErrorMsg')
+      .subscribe((text: string) => {
+        this.canceledInviteErrorMsg = text
+        // this.logger.log('[USERS] + + + canceledInviteErrorMsg Invite Success Notication Msg', text)
+      })
+  }
+
+  translateResendInviteSuccessMsg() {
+    this.translate
+      .get('UsersPage.ResendInviteSuccessNoticationMsg')
+      .subscribe((text: string) => {
+        this.resendInviteSuccessNoticationMsg = text
+        // this.logger.log('[USERS] + + + resend Invite Success Notication Msg', text)
+      })
+  }
+
+  translateResendInviteErrorMsg() {
+    this.translate
+      .get('UsersPage.ResendInviteErrorNoticationMsg')
+      .subscribe((text: string) => {
+        this.resendInviteErrorNoticationMsg = text
+        // this.logger.log('[USERS] + + + resend Invite Error Notication Msg', text)
+      })
+  }
 
   // trackByFn(index, item) {
   //   this.logger.log('USER COMP ***** trackByFn ***** ', index)
