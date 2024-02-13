@@ -61,7 +61,7 @@ export class CloneBotComponent implements OnInit {
           profile_name: project['id_project']['profile'].name,
           trial_expired: project['id_project']['trialExpired']
         }
-        this.auth.projectSelected(selectedProject)
+        this.auth.projectSelected(selectedProject, 'clone-bot')
         this.router.navigate(['project/' + this.selectedProjectId + '/bots/my-chatbots/all']);
       }
     });

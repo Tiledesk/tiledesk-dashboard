@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'app/core/auth.service';
 import { IntegrationService } from 'app/services/integration.service';
-import { BrevoIntegration, CATEGORIES_LIST, CustomerioIntegration, HubspotIntegration, INTEGRATIONS_KEYS, INTEGRATION_LIST_ARRAY, OpenaiIntegration, QaplaIntegration } from './utils';
+import { BrevoIntegration, CATEGORIES_LIST, CustomerioIntegration, HubspotIntegration, INTEGRATIONS_KEYS, INTEGRATION_LIST_ARRAY, MakeIntegration, OpenaiIntegration, QaplaIntegration } from './utils';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { NotifyService } from 'app/core/notify.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -9,6 +9,10 @@ import { UsersService } from 'app/services/users.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
+import { BrandService } from 'app/services/brand.service';
+import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
+import { ProjectPlanService } from 'app/services/project-plan.service';
+import { PLAN_NAME } from 'app/utils/util';
 
 const swal = require('sweetalert');
 
@@ -17,9 +21,10 @@ const swal = require('sweetalert');
   templateUrl: './integrations.component.html',
   styleUrls: ['./integrations.component.scss']
 })
-export class IntegrationsComponent implements OnInit {
+export class IntegrationsComponent extends PricingBaseComponent implements OnInit{
 
   project: any;
+  project_plan: any;
   isChromeVerGreaterThan100: boolean;
   panelOpenState = true;
   integrationSelectedName: string = "none";
@@ -34,7 +39,6 @@ export class IntegrationsComponent implements OnInit {
   CATEGORIES = CATEGORIES_LIST;
 
   plan_expired: boolean = false;
-  project_plan: null;
   plan_require: string = "";
   private unsubscribe$: Subject<any> = new Subject<any>();
   USER_ROLE: string;
@@ -43,22 +47,34 @@ export class IntegrationsComponent implements OnInit {
   onlyOwnerCanManageTheAccountPlanMsg: string;
   learnMoreAboutDefaultRoles: string;
 
+  translateparams: any;
+
   constructor(
     private auth: AuthService,
     private usersService: UsersService,
     private integrationService: IntegrationService,
-    private notify: NotifyService,
+    public notify: NotifyService,
     private logger: LoggerService,
     private router: Router,
     private route: ActivatedRoute,
-    private translate: TranslateService
-  ) { }
+    private translate: TranslateService,
+    private brand: BrandService,
+    public prjctPlanService: ProjectPlanService
+  ) { 
+    super(prjctPlanService, notify);;
+  }
 
   ngOnInit(): void {
+    this.getProjectPlan();
+    console.log("xxxx profile_name: ", this.profile_name);
     this.getCurrentProject();
     this.getBrowserVersion();
     this.translateModalOnlyOwnerCanManageProjectAccount();
     this.getAllIntegrations().then(() => {
+
+      const brand = this.brand.getBrand();
+      console.log("brand: ", brand);
+      this.translateparams = brand;
 
       const name = this.route.snapshot.queryParamMap.get('name');
       console.log("name: ", name);
@@ -75,8 +91,8 @@ export class IntegrationsComponent implements OnInit {
     this.auth.project_bs.subscribe((project) => {
       this.project = project
       console.log("Project: ", this.project);
-      this.project_plan = this.project.profile_name;
-      console.log("Current project plan: ", this.project_plan);
+      // this.project_plan = this.project.profile_name;
+      // console.log("Current project plan: ", this.project_plan);
       // if ((this.project.profile_name === 'Sandbox' || this.project.profile_name === 'free') && this.project.trial_expired === true) {
       //   this.plan_expired = true;
       // }
@@ -126,6 +142,7 @@ export class IntegrationsComponent implements OnInit {
     })
   }
 
+  
   onIntegrationSelect(integration) {
     this.integrationLocked = false;
     this.checkPlan(integration.plan).then(() => {
@@ -201,7 +218,7 @@ export class IntegrationsComponent implements OnInit {
           swal("Deleted" + "!", "You will no longer use this integration", {
             icon: "success",
           }).then((okpressed) => {
-            console.log("ok pressed")
+            console.log("[INTEGRATION-COMP]  ok pressed")
           });
           this.reloadSelectedIntegration(integration);
 
@@ -212,13 +229,13 @@ export class IntegrationsComponent implements OnInit {
           });
         })
       } else {
-        this.logger.log('operation aborted')
+        this.logger.log('[INTEGRATION-COMP] operation aborted')
       }
     });
   }
 
   presentUpgradePlanModal() {
-    console.log("apro la modale");
+    console.log("[INTEGRATION-COMP] apro la modale");
     swal({
       title: "Upgrade plan",
       text: "Upgrade your plan to get this feature",
@@ -228,7 +245,7 @@ export class IntegrationsComponent implements OnInit {
     }).then((WillUpgrade) => {
       if (WillUpgrade) {
 
-        console.log("route verso gestione piani");
+        console.log("[INTEGRATION-COMP] route vs plan management");
         this.goToPricing();
         // this.integrationService.deleteIntegration(integration._id).subscribe((result) => {
         //   this.logger.debug("[INTEGRATION-COMP] Delete integration result: ", result);
@@ -246,13 +263,13 @@ export class IntegrationsComponent implements OnInit {
         //   });
         // })
       } else {
-        this.logger.log('operation aborted')
+        this.logger.log('[INTEGRATION-COMP]  operation aborted')
       }
     });
   }
 
   changeRoute(key) {
-    console.log("change route in ", key);
+    console.log("[INTEGRATION-COMP] change route in ", key);
     this.router.navigate(['project/' + this.project._id + '/integrations/'], { queryParams: { name: key } })
   }
 
@@ -284,8 +301,12 @@ export class IntegrationsComponent implements OnInit {
 
 
   initializeIntegration(key: INTEGRATIONS_KEYS) {
+    console.log("[INTEGRATION-COMP] initializeIntegration key ", key, 'INTEGRATIONS_KEYS ', INTEGRATIONS_KEYS);
     if (key === INTEGRATIONS_KEYS.OPENAI) {
       return new OpenaiIntegration();
+    }
+    if (key === INTEGRATIONS_KEYS.MAKE) {
+      return new MakeIntegration();
     }
     if (key === INTEGRATIONS_KEYS.QAPLA) {
       return new QaplaIntegration();
@@ -302,11 +323,11 @@ export class IntegrationsComponent implements OnInit {
   }
 
   checkPlan(integration_plan) {
-    console.log("check if " + this.project_plan + " > " + integration_plan);
+    console.log("INTEGRATIONS_KEYS checkPlan profile_name: " + this.profile_name + " integration_plan: " + integration_plan);
 
     return new Promise((resolve, reject) => {
       // FREE or SANDBOX PLAN
-      if (this.project_plan === 'free' || this.project_plan === 'Sandbox') {
+      if (this.profile_name === 'free' || this.profile_name === 'Sandbox') {
         if (integration_plan !== 'Sandbox') {
           reject(false);
         }
@@ -314,15 +335,18 @@ export class IntegrationsComponent implements OnInit {
       }
 
       // BASIC PLAN
-      else if (this.project_plan === 'Growth' || this.project_plan === 'Basic') {
-        if (integration_plan === 'Premium') {
+      else if (this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.D) {
+        if (integration_plan === PLAN_NAME.E || integration_plan === PLAN_NAME.F) {
           reject(false);
         }
         resolve(true)
       }
 
       // PREMIUM PLAN
-      else if (this.project_plan === 'Scale' || this.project_plan === 'Premium') {
+      else if (this.profile_name === PLAN_NAME.B || this.profile_name === PLAN_NAME.E) {
+        if ( integration_plan === PLAN_NAME.F) {
+          reject(false);
+        }
         resolve(true)
       }
 

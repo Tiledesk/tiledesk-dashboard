@@ -552,6 +552,9 @@ export class HomeCreateChatbotComponent extends PricingBaseComponent implements 
       hasBackdrop: true,
       data: {
         projectProfile: this.prjct_profile_name,
+        subscriptionIsActive: this.subscription_is_active,
+        prjctProfileType: this.prjct_profile_type,
+        trialExpired: this.trial_expired
       },
     });
 

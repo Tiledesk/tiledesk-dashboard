@@ -266,7 +266,7 @@ export class ActivateAppsumoProductComponent extends WidgetSetUpBaseComponent im
           }
 
           // SENT THE NEW PROJECT TO THE AUTH SERVICE THAT PUBLISH
-          this.auth.projectSelected(newproject)
+          this.auth.projectSelected(newproject, 'activate-appsumo')
           this.logger.log('[ACTIVATE-APPSUMO-PRODUCT] CREATED PROJECT ', newproject)
           this.addNewLanguage(this.langCode, this.langName)
         }

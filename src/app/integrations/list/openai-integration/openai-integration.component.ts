@@ -15,6 +15,7 @@ export class OpenaiIntegrationComponent implements OnInit {
 
   keyVisibile: boolean = false;
   isVerified: boolean;
+  translateparams: any;
 
   constructor(
     private openaiService: OpenaiService,
@@ -23,6 +24,7 @@ export class OpenaiIntegrationComponent implements OnInit {
 
   ngOnInit(): void {
     this.logger.debug("[INT-OpenAI] integration ", this.integration)
+    this.translateparams = { intname: 'OpenAI' };
     if (this.integration.value.apikey) {
       this.checkKey(this.integration.value.apikey);
     }

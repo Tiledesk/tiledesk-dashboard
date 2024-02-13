@@ -154,7 +154,7 @@ export class CreateProjectComponent extends WidgetSetUpBaseComponent implements 
           }
 
           // SENT THE NEW PROJECT TO THE AUTH SERVICE THAT PUBLISH
-          this.auth.projectSelected(newproject)
+          this.auth.projectSelected(newproject, 'create-project')
           this.logger.log('[WIZARD - CREATE-PRJCT] CREATED PROJECT ', newproject)
 
           this.id_project = this.new_project._id

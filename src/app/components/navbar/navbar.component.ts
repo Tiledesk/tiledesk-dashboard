@@ -874,7 +874,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
           this.projectName = project.name;
           this.OPERATING_HOURS_ACTIVE = this.project.operatingHours
           // this.getQuotes();
-          this.logger.log('[NAVBAR] -> OPERATING_HOURS_ACTIVE ', this.OPERATING_HOURS_ACTIVE);
+         console.log('[NAVBAR] -> OPERATING_HOURS_ACTIVE ', this.OPERATING_HOURS_ACTIVE);
         }
     
         this.getProjects()
@@ -1105,7 +1105,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
         trial_days_left: project_trial_days_left,
         operatingHours: activeOperatingHours
       }
-      this.auth.projectSelected(project)
+      this.auth.projectSelected(project, 'navbar')
       this.logger.log('[NAVBAR] !!! GO TO HOME - PROJECT ', project)
     }
   }

@@ -149,8 +149,9 @@ import { CnpTemplatesComponent } from './create-new-project/cnp-templates/cnp-te
 import { OnboardingWelcomeComponent } from './create-new-project/onboarding-welcome/onboarding-welcome.component';
 import { AutomationsComponent } from './automations/automations.component';
 
-import { IntegrationsComponent } from './integrations/integrations.component';
+
 import { KnowledgeBasesPreviousComponent } from './knowledge-bases-previous/knowledge-bases-previous.component';
+import { IntegrationsComponent } from './integrations/integrations.component';
 
 
 

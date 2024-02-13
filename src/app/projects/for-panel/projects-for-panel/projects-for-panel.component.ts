@@ -272,7 +272,7 @@ export class ProjectsForPanelComponent implements OnInit, OnDestroy {
         trial_days_left: project_trial_days_left
       }
 
-      this.auth.projectSelected(project)
+      this.auth.projectSelected(project, 'projects-for-panel')
       this.logger.log('[PROJECTS-X-PANEL] - hasChangedPRJCT - PROJECT ', project)
 
     }

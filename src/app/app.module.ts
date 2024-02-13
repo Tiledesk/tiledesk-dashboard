@@ -370,7 +370,6 @@ import { AutomationStaticComponent } from './static-pages/automation-static/auto
 // import { KbModalComponent } from './knowledge-bases/kb-modal/kb-modal.component';
 // import { KbAlertComponent } from './knowledge-bases/kb-alert/kb-alert.component';
 
-
 import { IntegrationsComponent } from './integrations/integrations.component';
 import { OpenaiIntegrationComponent } from './integrations/list/openai-integration/openai-integration.component';
 import { QaplaIntegrationComponent } from './integrations/list/qapla-integration/qapla-integration.component';
@@ -378,7 +377,9 @@ import { CustomerioIntegrationComponent } from './integrations/list/customerio-i
 import { HubspotIntegrationComponent } from './integrations/list/hubspot-integration/hubspot-integration.component';
 import { BrevoIntegrationComponent } from './integrations/list/brevo-integration/brevo-integration.component';
 import { GsheetsIntegrationComponent } from './integrations/list/gsheets-integration/gsheets-integration.component';
+import { MakeIntegrationComponent } from './integrations/list/make-integration/make-integration.component';
 import { IntegrationHeaderComponent } from './integrations/base-components/integration-header/integration-header.component';
+
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
@@ -682,6 +683,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     QaplaIntegrationComponent,
     CustomerioIntegrationComponent,
     HubspotIntegrationComponent,
+    MakeIntegrationComponent,
     BrevoIntegrationComponent,
     GsheetsIntegrationComponent,
     IntegrationHeaderComponent,

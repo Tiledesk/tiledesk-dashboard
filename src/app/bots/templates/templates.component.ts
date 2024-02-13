@@ -376,8 +376,9 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
     let stripHere = 115;
     templates.forEach(template => {
       this.logger.log('[BOTS-TEMPLATES] startChatBot', template);
-      template['shortDescription'] = template['description'].substring(0, stripHere) + '...';
-
+      if ( template['description']) { 
+        template['shortDescription'] = template['description'].substring(0, stripHere) + '...';
+      }
     });
   }
 
@@ -470,6 +471,9 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
       hasBackdrop: true,
       data: {
         projectProfile: this.prjct_profile_name,
+        subscriptionIsActive: this.subscription_is_active,
+        prjctProfileType: this.prjct_profile_type,
+        trialExpired: this.trial_expired
       },
     });
 

@@ -2058,9 +2058,9 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     // !!!!! NOT USED ????
     if (this.requester_email) {
       this.emailValue = this.requester_email;
-      this.logger.log('[HISTORY & NORT-CONVS] - SEARCH FOR email ', this.emailValue);
+     console.log('[HISTORY & NORT-CONVS] - SEARCH FOR email ', this.emailValue);
     } else {
-      this.logger.log('[HISTORY & NORT-CONVS] - SEARCH FOR email ', this.requester_email);
+      console.log('[HISTORY & NORT-CONVS] - SEARCH FOR email ', this.requester_email);
       this.emailValue = ''
     }
 

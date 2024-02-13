@@ -35,7 +35,7 @@ export class QuotesService {
     if (this.user) {
       this.TOKEN = this.user.token
     } else {
-      this.logger.log('[QUOTE.SERVICE] - No user signed in');
+      this.logger.log('[QUOTE-SERVICE] - No user signed in');
     }
   }
 
@@ -46,15 +46,15 @@ export class QuotesService {
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
 
-      console.log("project: ", project);
+      console.log("[QUOTE-SERVICE] - getCurrentProject project: ", project);
       if (project) {
-        console.log("qui entro: ", project._id);
+        console.log("QUOTE-SERVICE] project._id: ", project._id);
         this.project_id = project._id
       }
     }, (error) => {
-      this.logger.error('[QUOTE.SERVICE] - get current project ERROR: ', error);
+      this.logger.error('[QUOTE-SERVICE] - get current project ERROR: ', error);
     }, () => {
-      this.logger.debug('[QUOTE.SERVICE] - get current project *COMPLETE*');
+      this.logger.debug('[QUOTE-SERVICE] - get current project *COMPLETE*');
     });
   }
 
@@ -67,7 +67,7 @@ export class QuotesService {
       })
     };
     const url = this.SERVER_BASE_PATH + project_id + "/quotes";
-    console.log('[QUOTE.SERVICE] - GET ALL QUOTES URL', url);
+    console.log('[QUOTE-SERVICE] - GET ALL QUOTES URL', url);
 
     const data = {
       createdAt: new Date()

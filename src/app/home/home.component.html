@@ -79,9 +79,9 @@
                         mode_edit
                     </span>
                   </div>
-
+                  <!-- (click)="goToSubscriptionOrOpenModalSubsExpired()" -->
                   <div class="flex items-center" *ngIf="project_plan_badge" style="cursor: pointer"
-                    (click)="goToPricingOrOpenModalSubsExpired()">
+                    (click)="goToSubscription()">
                     <div class="home-project-plan-badge" [ngClass]="{
                       'free-plan-badge': current_prjct?.plan_badge_background_type === 'free_plan_badge', 
                       'a-plan-badge':  current_prjct?.plan_badge_background_type === 'a_plan_badge',

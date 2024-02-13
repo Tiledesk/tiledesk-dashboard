@@ -435,7 +435,7 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
         operatingHours: activeOperatingHours
       }
 
-      this.auth.projectSelected(project)
+      this.auth.projectSelected(project, 'projects')
       this.logger.log('[PROJECTS] - GO TO HOME - PROJECT ', project)
 
       setTimeout(() => {

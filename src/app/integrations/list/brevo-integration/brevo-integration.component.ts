@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { IntegrationService } from 'app/services/integration.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 
@@ -18,7 +19,8 @@ export class BrevoIntegrationComponent implements OnInit {
 
   constructor(
     private integrationService: IntegrationService,
-    private logger: LoggerService
+    private logger: LoggerService,
+    private translate: TranslateService
   ) { }
 
   ngOnInit(): void {

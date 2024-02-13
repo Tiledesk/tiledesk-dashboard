@@ -142,7 +142,7 @@ export class CreateProjectGsComponent implements OnInit {
           }
 
           // SENT THE NEW PROJECT TO THE AUTH SERVICE THAT PUBLISH
-          this.auth.projectSelected(newproject)
+          this.auth.projectSelected(newproject, 'create-project-gs')
           this.logger.log('[CREATE-PROJECT-GOOGLE-AUTH] CREATED PROJECT ', newproject)
 
           this.id_project = newproject._id

@@ -140,10 +140,9 @@ export class NotificationMessageComponent extends PricingBaseComponent implement
     this.WIDGET_URL = this.appConfigService.getConfig().WIDGET_BASE_URL + 'launch.js';
   }
   
-
+ 
 
   openModalExpiredSubscOrGoToPricing() {
-
     if (this.USER_ROLE === 'owner') {
       if (this.prjct_profile_type === 'free' && this.trial_expired === true) {
         this.notify.closeDataExportNotAvailable();
@@ -315,6 +314,7 @@ export class NotificationMessageComponent extends PricingBaseComponent implement
     this.router.navigate(['project/' + this.projectId + '/pricing']);
 
     this.notify.closeModalSubsExpired();
+    this.notify.closeGoToPricingModal();
     // this.notify.presentContactUsModalToUpgradePlan(true);
   }
 

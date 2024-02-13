@@ -37,6 +37,8 @@ export class NotifyService {
   displayModalTrialExpired= 'none';
   
   displayContactUsModal = 'none';
+
+  goToPricingModal = 'none';
   
   viewCancelSubscriptionModal = 'none';
   displayDataExportNotAvailable = 'none';
@@ -56,6 +58,7 @@ export class NotifyService {
   public cancelSubscriptionCompleted$ = new Subject();
 
   showSubtitleAllOperatorsSeatsUsed: boolean;
+  showSubtitleAllChatbotUsed: boolean;
   displayLogoutModal = 'none';
   prjct_profile_name: string;
   salesEmail: string;
@@ -158,10 +161,28 @@ export class NotifyService {
 
   closeContactUsModal() {
     this.displayContactUsModal = 'none';
+    
+  }
+
+  displayGoToPricingModal(reason) {
+    this.goToPricingModal = 'block';
+    if (reason === 'user_exceeds') {
+      this.showSubtitleAllOperatorsSeatsUsed = true;
+      this.showSubtitleAllChatbotUsed = false;
+    } else if (reason === 'chatbot_exceeds')  {
+      this.showSubtitleAllOperatorsSeatsUsed = false;
+      this.showSubtitleAllChatbotUsed = true;
+    } 
+   
+    
+
+  }
+
+  closeGoToPricingModal() {
+    this.goToPricingModal = 'none';
   }
 
  
-
   
 
   // -----------------------------------------------

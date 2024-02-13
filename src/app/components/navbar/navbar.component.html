@@ -49,18 +49,17 @@
           </a>
         </li> -->
 
-        <ng-container *ngIf="project">
+        <!-- -------------------------------------------- -->
+        <!-- Quote - usage stats  indicator -->
+        <!-- -------------------------------------------- -->
+        <!-- // Alternative: follow the example on https://codepen.io/nikitahl/pen/ZEjRBEE -->
+        <!-- <ng-container *ngIf="project">
           <li id="usage-stats">
 
             <button mat-mini-fab aria-label="trend icon" [matMenuTriggerFor]="menu" class="quote-modal-btn"
-              [ngClass]="{'quote-modal-btn-no-left-padding': prjct_profile_type === 'free'}" 
+              [ngClass]="{'quote-modal-btn-no-left-padding': prjct_profile_type === 'free'}"
               (click)="onOpenQuoteMenu()">
-              <!-- <span class="material-icons-round" style="font-size: 16px;">
-                storage
-                </span> -->
-
               <mat-icon style="color: #555555">
-                <!-- trending_up -->
                 data_usage
               </mat-icon>
             </button>
@@ -68,9 +67,6 @@
 
               <div class="menu-container">
                 <p class="menu-title">Usage</p>
-
-                <!-- // Alternative: follow the example on https://codepen.io/nikitahl/pen/ZEjRBEE -->
-
                 <div class="quotes-container">
 
                   <div class="quote-container">
@@ -137,7 +133,7 @@
 
             </mat-menu>
           </li>
-        </ng-container>
+        </ng-container> -->
 
         <!-- ------------------------------------------------  -->
         <!--  UPGRADE (PROFILE TYPE = FREE) -->
@@ -168,7 +164,8 @@
               </div>
             </a>
 
-            <ul class="dropdown-menu" style="margin-top: 11px; padding-left:20px;padding-right:20px;width: 200px; left: -82px;">
+            <ul class="dropdown-menu"
+              style="margin-top: 11px; padding-left:20px;padding-right:20px;width: 200px; left: -82px;">
               <p *ngIf="prjct_trial_expired === false" style="margin-bottom:0px">
                 {{ "Pricing.Your" | translate }}
 

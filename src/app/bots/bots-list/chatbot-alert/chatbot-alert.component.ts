@@ -82,6 +82,13 @@ export class ChatbotAlertComponent extends PricingBaseComponent implements OnIni
     });
   }
 
+  presentGoToPricingModal() {
+    if (this.USER_ROLE === 'owner') {
+      this.notify.displayGoToPricingModal('chatbot_exceeds')
+    } else {
+      this.presentModalOnlyOwnerCanManageTheAccountPlan()
+    }
+  }
 
   presentContactUsModal() {
     if (this.USER_ROLE === 'owner') {

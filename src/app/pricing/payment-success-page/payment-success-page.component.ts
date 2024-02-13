@@ -200,7 +200,7 @@ export class PaymentSuccessPageComponent implements OnInit, AfterViewInit {
         trial_days_left: current_prjct.id_project.trialDaysLeft,
         operatingHours: current_prjct.id_project.activeOperatingHours
       }
-      this.auth.projectSelected(project)
+      this.auth.projectSelected(project, 'payment-succcess-page')
 
       if (!isDevMode()) {
         if (window['analytics']) {
