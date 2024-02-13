@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.5.0-rc8
+- Adds a loading spinner on the integrations page
+
 ### 2.5.0-rc7
 - Bug fixing
 
