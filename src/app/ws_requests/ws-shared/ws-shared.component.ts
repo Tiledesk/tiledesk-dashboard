@@ -202,8 +202,12 @@ export class WsSharedComponent implements OnInit {
                   storeduser['hasImage'] = true
                   console.log('HERE Y2 USER storeduser  hasImage', storeduser, 'this.agents_array ', this.agents_array)
                   this.createAgentAvatar(storeduser)
-                  const index = this.agents_array.findIndex(object => object.id === storeduser['_id']);
+                  console.log('HERE Y2 USER index (1) storeduser id', storeduser['_id'])
+                  console.log('HERE Y2 USER index (1) member_id', member_id)
+                  // const index = this.agents_array.findIndex(object => object.id === storeduser['_id']);
+                  const index = this.agents_array.findIndex(object => object.id === member_id);
                   console.log('HERE Y2 USER index (1)', index)
+                  
                   if (index === -1) {
                     this.agents_array.push({ '_id': storeduser['_id'], 'firstname': storeduser['firstname'], 'lastname': storeduser['lastname'], 'isBot': false, 'hasImage': storeduser['hasImage'], 'userfillColour': storeduser['fillColour'], 'userFullname': storeduser['fullname_initial'] })
                   }
@@ -212,7 +216,10 @@ export class WsSharedComponent implements OnInit {
                   storeduser['hasImage'] = false
                   console.log('HERE Y2 USER storeduser  !hasImage', storeduser, 'this.agents_array ', this.agents_array)
                   this.createAgentAvatar(storeduser)
-                  const index = this.agents_array.findIndex(object => object.id === storeduser['_id']);
+                  console.log('HERE Y2 USER index (2) storeduser id', storeduser['_id'])
+                  console.log('HERE Y2 USER index (2) member_id', member_id)
+                  // const index = this.agents_array.findIndex(object => object.id === storeduser['_id']);
+                  const index = this.agents_array.findIndex(object => object.id === member_id);
                   console.log('HERE Y2 USER index (2)', index)
                   if (index === -1) {
                     this.agents_array.push({ '_id': storeduser['_id'], 'firstname': storeduser['firstname'], 'lastname': storeduser['lastname'], 'isBot': false, 'hasImage': storeduser['hasImage'], 'userfillColour': storeduser['fillColour'], 'userFullname': storeduser['fullname_initial'] })
