@@ -29,7 +29,7 @@ export class ModalPreviewKnowledgeBaseComponent implements OnInit {
 
   searching: boolean = false;
   show_answer: boolean = false;
-  error_answer: boolean = false;
+  // error_answer: boolean = false;
   translateparam: any;
 
   constructor(
@@ -46,7 +46,7 @@ export class ModalPreviewKnowledgeBaseComponent implements OnInit {
       "namespace": this.namespace,
       "model": this.selectedModel
     }
-    this.error_answer = false;
+    // this.error_answer = false;
     this.searching = true;
     this.show_answer = false;
     this.answer = '';
@@ -57,23 +57,25 @@ export class ModalPreviewKnowledgeBaseComponent implements OnInit {
       const endTime = performance.now();
       this.responseTime =  Math.round((endTime - startTime)/1000);
       this.translateparam = { respTime: this.responseTime };
+      this.qa = response;
       // console.log("ask gpt preview response: ", response, startTime, endTime, this.responseTime);
-      if (response.success == false) {
-        this.error_answer = true;
-      } else {
-        this.qa = response;
-        this.answer = response.answer;
-        if(this.isValidURL(response.source)){
-          this.source_url = response.source;
-        }
-        this.show_answer = true;
+      if(response.answer)this.answer = response.answer;
+      if(response.source && this.isValidURL(response.source)){
+        this.source_url = response.source;
       }
+
+      if (response.success == false ) {
+        // this.error_answer = true;
+      } else {
+        //this.answer = response.answer;
+      }
+      this.show_answer = true;
       this.searching = false;
     }, (error) => {
       this.logger.log("ask gpt preview response error: ", error.message);
       this.logger.error("ERROR ask gpt: ", error.message);
       this.answer = error.message;
-      this.error_answer = true;
+      // this.error_answer = true;
       this.show_answer = true;
       this.searching = false;
     }, () => {
@@ -102,7 +104,7 @@ export class ModalPreviewKnowledgeBaseComponent implements OnInit {
     this.answer = "";
     this.source_url = null;
     this.searching = false;
-    this.error_answer = false;
+    // this.error_answer = false;
     this.show_answer = false;
     let element = document.getElementById('enter-button')
     element.style.display = 'none';

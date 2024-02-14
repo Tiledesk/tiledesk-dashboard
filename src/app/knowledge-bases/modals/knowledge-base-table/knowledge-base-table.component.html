@@ -74,12 +74,8 @@
             <td style="min-width: 70px; width: 70px; text-align:center;" mat-cell *matCellDef="let kb" (click)="onOpenBaseModalDetail(kb)">
                 <loading-spinner *ngIf="kb.status < 0 || kb.status > 4" class="custom-spinner"></loading-spinner>
                 <!-- <span *ngIf="kb.status == -1" id="error" class="material-icons-outlined status-icon status-void">block</span> -->
-                <span *ngIf="kb.status == 0" id="done" class="material-icons-outlined status-icon"
-                    matTooltipClass="custom-mat-tooltip" matTooltip="Not started" #tooltip="matTooltip"
-                    matTooltipPosition='right' matTooltipHideDelay="100">schedule</span>
-                <span *ngIf="kb.status == 2" id="cached" class="material-icons-outlined status-icon animated-icon"
-                    matTooltipClass="custom-mat-tooltip" matTooltip="Indexing..." #tooltip="matTooltip"
-                    matTooltipPosition='right' matTooltipHideDelay="100">cached</span>
+                <span *ngIf="kb.status == 0" id="done" class="material-icons-outlined status-icon">schedule</span>
+                <span *ngIf="kb.status == 2" id="cached" class="material-icons-outlined status-icon animated-icon">cached</span>
                 <span *ngIf="kb.status == 3" id="close" class="material-icons-outlined status-icon status-done">check</span>
                 <span *ngIf="kb.status == 4" id="error" class="material-icons-outlined status-icon status-error">error</span>
             </td>
@@ -133,6 +129,6 @@
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
 
-    <mat-paginator [pageSize]="20" [pageSizeOptions]="[10, 20, 100]" showFirstLastButtons></mat-paginator>
+    <!-- <mat-paginator [pageSize]="20" [pageSizeOptions]="[10, 20, 100]" showFirstLastButtons></mat-paginator> -->
   </div>
   

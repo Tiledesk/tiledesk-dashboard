@@ -137,6 +137,7 @@
         color: #22272d;
         line-height: 35px;
         font-weight: 400;
+        margin-bottom: 10px;
         // letter-spacing: 0.5px;
         &.invalid {
             border: 2px solid red !important;
@@ -188,5 +189,20 @@
 .selectEngine {
     ::ng-deep .ng-select-container { 
         border: 2px solid #c6cdd4;
+    }
+}
+
+.info-container {
+    display: flex;
+    flex-direction: row;
+    padding: 12px 15px;
+    border-radius: 4px;
+    background-color: #d7ebfa6e;
+    .info-icon {
+        margin-right: 8px;
+        font-size: 20px;
+    }
+    p {
+        margin-bottom: 0px;
     }
 }
