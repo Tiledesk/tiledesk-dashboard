@@ -1,5 +1,10 @@
 # tiledesk-dashboard
 
+### 2.5.0
+- Adds the integrations page 
+- Improves the Knowledge Bases
+- New Pricing
+
 ### 2.5.0-rc9
 - Fixing of the pricing page
 - reCaptcha fixing
