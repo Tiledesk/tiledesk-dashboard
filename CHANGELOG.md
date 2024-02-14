@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.5.2
+- Minor improvements
+
 ### 2.5.1
 - Fixes bug: old knowledge bases are not visible
 
