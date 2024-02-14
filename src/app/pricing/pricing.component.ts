@@ -288,9 +288,9 @@ export class PricingComponent implements OnInit, OnDestroy {
       // New pricing
       // -------------------------------------------------------------------------------------------
       this.clientReferenceIdForPlanD = this.currentUserID + '_' + this.projectId + '_' + PLAN_NAME.D + '_' + 1
-      console.log('[PRICING] clientReferenceIdForPlanD ', this.clientReferenceIdForPlanD)
+      this.logger.log('[PRICING] clientReferenceIdForPlanD ', this.clientReferenceIdForPlanD)
       this.clientReferenceIdForPlanE = this.currentUserID + '_' + this.projectId + '_' + PLAN_NAME.E + '_' + 2
-      console.log('[PRICING] clientReferenceIdForPlanE ', this.clientReferenceIdForPlanB)
+      this.logger.log('[PRICING] clientReferenceIdForPlanE ', this.clientReferenceIdForPlanB)
     } else {
       // this.logger.log('No user is signed in');
     }
@@ -330,10 +330,10 @@ export class PricingComponent implements OnInit, OnDestroy {
   // -------------------------------
   openPaymentLinkMontlyPlanD() {
     if (this.USER_ROLE === 'owner') {
-      console.log('[PRICING] PLAN A Montly')
+      this.logger.log('[PRICING] PLAN A Montly')
       // const url = `https://buy.stripe.com/test_3cseVQ6TIadkd8Y4gg?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanA}&locale=${this.browser_lang}`
       const url = `${this.PAYMENT_LINK_MONTLY_PLAN_D}?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanD}&locale=${this.browser_lang}"`
-      console.log('[PRICING] PLAN D Montly url ', url)
+      this.logger.log('[PRICING] PLAN D Montly url ', url)
       window.open(url, '_self');
 
       this.trackGoToCheckout(PLAN_NAME.D, 'montly') 
@@ -345,7 +345,7 @@ export class PricingComponent implements OnInit, OnDestroy {
 
   openPaymentLinkAnnuallyPlanD() {
     if (this.USER_ROLE === 'owner') {
-      console.log('[PRICING] PLAN D Annually')
+      this.logger.log('[PRICING] PLAN D Annually')
       // const url = `https://buy.stripe.com/test_8wMbJE4LA3OW9WMeUV?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanA}&locale=${this.browser_lang}`
       const url = `${this.PAYMENT_LINK_ANNUALLY_PLAN_D}?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanD}&locale=${this.browser_lang}`
       window.open(url, '_self');
@@ -363,10 +363,10 @@ export class PricingComponent implements OnInit, OnDestroy {
   // -------------------------------
   openPaymentLinkMontlyPlanE() {
     if (this.USER_ROLE === 'owner') {
-      console.log('[PRICING] PLAN E Montly')
+      this.logger.log('[PRICING] PLAN E Montly')
       // const url = `https://buy.stripe.com/test_3cseVQ6TIadkd8Y4gg?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanA}&locale=${this.browser_lang}`
       const url = `${this.PAYMENT_LINK_MONTLY_PLAN_E}?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanE}&locale=${this.browser_lang}"`
-      console.log('[PRICING] PLAN A Montly url ', url)
+      this.logger.log('[PRICING] PLAN A Montly url ', url)
       window.open(url, '_self');
      
       this.trackGoToCheckout(PLAN_NAME.E, 'montly')
@@ -378,7 +378,7 @@ export class PricingComponent implements OnInit, OnDestroy {
 
   openPaymentLinkAnnuallyPlanE() {
     if (this.USER_ROLE === 'owner') {
-      console.log('[PRICING] PLAN E Annually')
+      this.logger.log('[PRICING] PLAN E Annually')
       // const url = `https://buy.stripe.com/test_8wMbJE4LA3OW9WMeUV?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanA}&locale=${this.browser_lang}`
       const url = `${this.PAYMENT_LINK_ANNUALLY_PLAN_E}?prefilled_email=${this.currentUserEmail}&client_reference_id=${this.clientReferenceIdForPlanE}&locale=${this.browser_lang}`
       window.open(url, '_self');
@@ -575,20 +575,20 @@ export class PricingComponent implements OnInit, OnDestroy {
     // }
 
     if (planname === PLAN_NAME.D) {
-      console.log(' PLAN D Features')
+      this.logger.log(' PLAN D Features')
       this.planFeatures = featuresPlanD;
       this.highlightedFeatures = highlightedFeaturesPlanD;
       this.additionalFeatures = additionalFeaturesPlanD
     }
     if (planname === PLAN_NAME.E) {
-      // console.log(' PLAN E Features')
+      this.logger.log(' PLAN E Features')
       this.planFeatures = featuresPlanE;
       this.highlightedFeatures = highlightedFeaturesPlanE;
       this.additionalFeatures = additionalFeaturesPlanE
     }
 
     if (planname === PLAN_NAME.F) {
-      console.log(' PLAN F Features');
+      this.logger.log(' PLAN F Features');
       this.planFeatures = featuresPlanF;
       this.highlightedFeatures = highlightedFeaturesPlanF;
     }

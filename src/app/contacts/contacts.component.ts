@@ -1066,7 +1066,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
   exportContactsToCsv() {
     if (this.payIsVisible) {
       const isAvailable = this.checkPlanAndPresentModal()
-      console.log('[CONTACTS-COMP] isAvaibleFromPlan ', isAvailable)
+      this.logger.log('[CONTACTS-COMP] isAvaibleFromPlan ', isAvailable)
       if (isAvailable === false) {
         return
       }

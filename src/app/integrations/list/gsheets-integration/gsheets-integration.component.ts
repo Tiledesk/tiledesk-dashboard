@@ -15,8 +15,8 @@ export class GsheetsIntegrationComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    console.log("gsheets loaded")
-    console.log("gsheet integration: ", this.integration)
+    // console.log("gsheets loaded")
+    // console.log("gsheet integration: ", this.integration)
   }
 
   

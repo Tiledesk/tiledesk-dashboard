@@ -87,7 +87,7 @@ export class AutomationsComponent implements OnInit {
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
       this.project = project
-      console.log('[AUTOMATION] project',  this.project ) 
+      this.logger.log('[AUTOMATION] project',  this.project ) 
       // if ((this.project.profile_name === 'Sandbox' || this.project.profile_name === 'free') && this.project.trial_expired === true) {
       //   this.plan_expired = true;
       // }
@@ -117,7 +117,7 @@ export class AutomationsComponent implements OnInit {
       this.showSpinner = false;
 
     }, (error) => {
-      console.error("get transactions error: ", error)
+      this.logger.error("get transactions error: ", error)
     })
   }
 

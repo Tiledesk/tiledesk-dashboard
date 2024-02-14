@@ -49,12 +49,12 @@ export class ChatbotAlertComponent extends PricingBaseComponent implements OnIni
 
   getActiveRoute() {
     const currentUrl = this.router.url;
-    console.log('[CHATBOT-ALERT] currentUrl route' ,currentUrl)
+    this.logger.log('[CHATBOT-ALERT] currentUrl route' ,currentUrl)
     if (currentUrl.indexOf('/templates/') !== -1) {
-      console.log('[CHATBOT-ALERT] template route')
+      this.logger.log('[CHATBOT-ALERT] template route')
       this.IS_TEMPLATE_ROUTE = true
     } else if (currentUrl.indexOf('/my-chatbots/') !== -1) {
-      console.log('[CHATBOT-ALERT] chatbots route')
+      this.logger.log('[CHATBOT-ALERT] chatbots route')
       this.IS_TEMPLATE_ROUTE = false
     }
    
@@ -69,10 +69,10 @@ export class ChatbotAlertComponent extends PricingBaseComponent implements OnIni
 
   getFaqKbByProjectId() {
     this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
-      console.log('[CHATBOT-ALERT] - GET BOTS BY PROJECT ID > RES', faqKb);
+      this.logger.log('[CHATBOT-ALERT] - GET BOTS BY PROJECT ID > RES', faqKb);
       if (faqKb) {
         this.chatBotCount = faqKb.length;
-        console.log('[CHATBOT-ALERT] - GET BOTS BY PROJECT ID > chatBotCount', this.chatBotCount);
+        this.logger.log('[CHATBOT-ALERT] - GET BOTS BY PROJECT ID > chatBotCount', this.chatBotCount);
       }
     }, (error) => {
       this.logger.error('[CHATBOT-ALERT] GET BOTS ERROR ', error);

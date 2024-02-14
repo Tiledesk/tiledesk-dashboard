@@ -69,7 +69,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
   ) {
 
     const _brand = this.brand.getBrand();
-    console.log("[INTEGRATION-COMP] brand: ", _brand);
+    this.logger.log("[INTEGRATION-COMP] brand: ", _brand);
     this.translateparams = _brand;
 
   }
@@ -128,7 +128,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
       )
       .subscribe((project) => {
         this.project = project
-        console.log("[INTEGRATION-COMP] Project: ", this.project);
+        this.logger.log("[INTEGRATION-COMP] Project: ", this.project);
         // this.project_plan = this.project.profile_name;
         // console.log("Current project plan: ", this.project_plan);
         // if ((this.project.profile_name === 'Sandbox' || this.project.profile_name === 'free') && this.project.trial_expired === true) {
@@ -140,10 +140,10 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
 
   getProjectById(projectId) {
     this.projectService.getProjectById(projectId).subscribe((project: any) => {
-      console.log('[INTEGRATION-COMP] - GET PROJECT BY ID - PROJECT: ', project);
+      this.logger.log('[INTEGRATION-COMP] - GET PROJECT BY ID - PROJECT: ', project);
 
       this.profile_name = project.profile.name;
-      console.log('[INTEGRATION-COMP] - GET PROJECT BY ID - PROJECT > profile_name : ', this.profile_name);
+      this.logger.log('[INTEGRATION-COMP] - GET PROJECT BY ID - PROJECT > profile_name : ', this.profile_name);
 
     }, error => {
       this.logger.error('[INTEGRATION-COMP] - GET PROJECT BY ID - ERROR ', error);
@@ -156,7 +156,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
   getIntegratons() {
     this.getAllIntegrations().then(() => {
       this.intName = this.route.snapshot.queryParamMap.get('name');
-      console.log("[INTEGRATION-COMP] intName: ", this.intName);
+      this.logger.log("[INTEGRATION-COMP] intName: ", this.intName);
       if (this.intName) {
         this.onIntegrationSelect(this.INTEGRATIONS.find(i => i.key === this.intName));
       }
@@ -181,7 +181,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
         takeUntil(this.unsubscribe$)
       )
       .subscribe((user_role) => {
-        console.log("[INTEGRATION-COMP] user is ", user_role);
+        this.logger.log("[INTEGRATION-COMP] user is ", user_role);
         if (user_role) {
           this.USER_ROLE = user_role
           if (user_role === 'agent') {
@@ -197,8 +197,8 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
   getAllIntegrations() {
     return new Promise((resolve, reject) => {
       this.integrationService.getAllIntegrations().subscribe((integrations: Array<any>) => {
-        console.log("[INTEGRATION-COMP] Integrations for this project ", integrations)
-        console.log("[INTEGRATION-COMP] Integrations for this project ", integrations)
+        this.logger.log("[INTEGRATION-COMP] Integrations for this project ", integrations)
+        this.logger.log("[INTEGRATION-COMP] Integrations for this project ", integrations)
         this.integrations = integrations;
         this.showSpinner = false
         resolve(true);
@@ -235,8 +235,8 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
       // this.integrationSelectedName = 'none';
       // this.integrationLocked = true;
       // this.plan_require = integration.plan;
-      console.log("Integration unavailable for your project")
-      console.log("available for plan ", integration.plan)
+      this.logger.log("Integration unavailable for your project")
+      this.logger.log("available for plan ", integration.plan)
     })
   }
 
@@ -286,7 +286,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
           swal("Deleted" + "!", "You will no longer use this integration", {
             icon: "success",
           }).then((okpressed) => {
-            console.log("[INTEGRATION-COMP]  ok pressed")
+            this.logger.log("[INTEGRATION-COMP]  ok pressed")
           });
           this.reloadSelectedIntegration(integration);
 
@@ -303,7 +303,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
   }
 
   presentUpgradePlanModal() {
-    console.log("[INTEGRATION-COMP] apro la modale");
+    this.logger.log("[INTEGRATION-COMP] apro la modale");
     swal({
       title: "Upgrade plan",
       text: "Upgrade your plan to get this feature",
@@ -313,7 +313,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
     }).then((WillUpgrade) => {
       if (WillUpgrade) {
 
-        console.log("[INTEGRATION-COMP] route vs plan management");
+        this.logger.log("[INTEGRATION-COMP] route vs plan management");
         this.goToPricing();
         // this.integrationService.deleteIntegration(integration._id).subscribe((result) => {
         //   this.logger.debug("[INTEGRATION-COMP] Delete integration result: ", result);
@@ -337,7 +337,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
   }
 
   changeRoute(key) {
-    console.log("[INTEGRATION-COMP] change route in ", key);
+    this.logger.log("[INTEGRATION-COMP] change route in ", key);
     this.router.navigate(['project/' + this.project._id + '/integrations/'], { queryParams: { name: key } })
   }
 
@@ -369,7 +369,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
 
 
   initializeIntegration(key: INTEGRATIONS_KEYS) {
-    console.log("[INTEGRATION-COMP] initializeIntegration key ", key, 'INTEGRATIONS_KEYS ', INTEGRATIONS_KEYS);
+    this.logger.log("[INTEGRATION-COMP] initializeIntegration key ", key, 'INTEGRATIONS_KEYS ', INTEGRATIONS_KEYS);
     if (key === INTEGRATIONS_KEYS.OPENAI) {
       return new OpenaiIntegration();
     }
@@ -391,7 +391,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
   }
 
   checkPlan(integration_plan) {
-    console.log("INTEGRATIONS_KEYS checkPlan profile_name: " + this.profile_name + " integration_plan: " + integration_plan);
+    this.logger.log("INTEGRATIONS_KEYS checkPlan profile_name: " + this.profile_name + " integration_plan: " + integration_plan);
 
     return new Promise((resolve, reject) => {
       // FREE or SANDBOX PLAN
@@ -419,7 +419,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
       }
 
       else {
-        console.log("Custom plan?")
+        this.logger.log("Custom plan?")
         resolve(true)
       }
     })

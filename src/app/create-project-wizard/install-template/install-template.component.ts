@@ -108,17 +108,17 @@ export class InstallTemplateComponent extends PricingBaseComponent implements On
 
   getProjectBots() {
     this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
-      console.log('[INSTALL-TEMPLATE] - GET CHATBOTS RES', faqKb);
+      this.logger.log('[INSTALL-TEMPLATE] - GET CHATBOTS RES', faqKb);
 
       if (faqKb) {
         this.chatBotCount = faqKb.length;
-        console.log('[INSTALL-TEMPLATE] - COUNT OF CHATBOTS', this.chatBotCount);
+        this.logger.log('[INSTALL-TEMPLATE] - COUNT OF CHATBOTS', this.chatBotCount);
       }
     }, (error) => {
-      console.error('[INSTALL-TEMPLATE] - GET CHATBOTS - ERROR ', error);
+      this.logger.error('[INSTALL-TEMPLATE] - GET CHATBOTS - ERROR ', error);
 
     }, () => {
-      console.log('[INSTALL-TEMPLATE] - GET CHATBOTS * COMPLETE *');
+      this.logger.log('[INSTALL-TEMPLATE] - GET CHATBOTS * COMPLETE *');
     });
   }
 
@@ -136,7 +136,7 @@ export class InstallTemplateComponent extends PricingBaseComponent implements On
     this.usersService.project_user_role_bs
       .subscribe((userRole) => {
 
-        console.log('[INSTALL-TEMPLATE] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
+        this.logger.log('[INSTALL-TEMPLATE] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
         this.USER_ROLE = userRole;
       })
   }
@@ -205,12 +205,12 @@ export class InstallTemplateComponent extends PricingBaseComponent implements On
             this.trial_expired = this.project.trialExpired
             this.subscription_is_active = this.project.isActiveSubscription
 
-            console.log('[INSTALL-TEMPLATE] project ', this.project)
-            console.log('[INSTALL-TEMPLATE] projectName ', this.projectName)
-            console.log('[INSTALL-TEMPLATE] projectProfile ', this.projectProfile)
-            console.log('[INSTALL-TEMPLATE] profile_name ', this.profile_name)
-            console.log('[INSTALL-TEMPLATE] trial_expired ', this.trial_expired)
-            console.log('[INSTALL-TEMPLATE] subscription_is_active ', this.subscription_is_active)
+            this.logger.log('[INSTALL-TEMPLATE] project ', this.project)
+            this.logger.log('[INSTALL-TEMPLATE] projectName ', this.projectName)
+            this.logger.log('[INSTALL-TEMPLATE] projectProfile ', this.projectProfile)
+            this.logger.log('[INSTALL-TEMPLATE] profile_name ', this.profile_name)
+            this.logger.log('[INSTALL-TEMPLATE] trial_expired ', this.trial_expired)
+            this.logger.log('[INSTALL-TEMPLATE] subscription_is_active ', this.subscription_is_active)
 
         
 
@@ -433,18 +433,18 @@ export class InstallTemplateComponent extends PricingBaseComponent implements On
   }
 
   importTemplate() {
-    console.log('[INSTALL-TEMPLATE] importTemplate chatBotCount ', this.chatBotCount, ' chatBotLimit ', this.chatBotLimit, ' USER_ROLE ', this.USER_ROLE, ' profile_name ', this.profile_name)
+    this.logger.log('[INSTALL-TEMPLATE] importTemplate chatBotCount ', this.chatBotCount, ' chatBotLimit ', this.chatBotLimit, ' USER_ROLE ', this.USER_ROLE, ' profile_name ', this.profile_name)
     if (this.USER_ROLE !== 'agent') {
       if (this.chatBotLimit) {
         if (this.chatBotCount < this.chatBotLimit) {
-          console.log('[INSTALL-TEMPLATE] USECASE  chatBotCount < chatBotLimit: RUN FORK')
+          this.logger.log('[INSTALL-TEMPLATE] USECASE  chatBotCount < chatBotLimit: RUN FORK')
           this.forkTemplate()
         } else if (this.chatBotCount >= this.chatBotLimit) {
-          console.log('[INSTALL-TEMPLATE] USECASE  chatBotCount >= chatBotLimit DISPLAY MODAL')
+          this.logger.log('[INSTALL-TEMPLATE] USECASE  chatBotCount >= chatBotLimit DISPLAY MODAL')
           this.presentDialogReachedChatbotLimit()
         }
       } else if (!this.chatBotLimit) {
-        console.log('[INSTALL-TEMPLATE] USECASE  NO chatBotLimit: RUN FORK')
+        this.logger.log('[INSTALL-TEMPLATE] USECASE  NO chatBotLimit: RUN FORK')
         this.forkTemplate()
       }
     } if (this.USER_ROLE === 'agent') {
@@ -461,7 +461,7 @@ export class InstallTemplateComponent extends PricingBaseComponent implements On
 
   forkTemplate() {
     this.faqKbService.installTemplate(this.templates._id, this.projectId, true, this.templates._id).subscribe((res: any) => {
-      console.log('[INSTALL-TEMPLATE] - FORK TEMPLATE RES', res);
+      this.logger.log('[INSTALL-TEMPLATE] - FORK TEMPLATE RES', res);
       this.botid = res.bot_id
 
     }, (error) => {
@@ -479,7 +479,7 @@ export class InstallTemplateComponent extends PricingBaseComponent implements On
   }
 
   presentDialogReachedChatbotLimit() {
-    console.log('[INSTALL-TEMPLATE] openDialog presentDialogReachedChatbotLimit prjct_profile_name ', this.prjct_profile_name)
+    this.logger.log('[INSTALL-TEMPLATE] openDialog presentDialogReachedChatbotLimit prjct_profile_name ', this.prjct_profile_name)
     const dialogRef = this.dialog.open(ChatbotModalComponent, {
       backdropClass: 'cdk-overlay-transparent-backdrop',
       hasBackdrop: true,
@@ -492,7 +492,7 @@ export class InstallTemplateComponent extends PricingBaseComponent implements On
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(`[INSTALL-TEMPLATE] Dialog result: ${result}`);
+      this.logger.log(`[INSTALL-TEMPLATE] Dialog result: ${result}`);
     });
   }
 

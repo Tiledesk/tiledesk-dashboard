@@ -46,15 +46,15 @@ export class QuotesService {
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
 
-      console.log("[QUOTE-SERVICE] - getCurrentProject project: ", project);
+      this.logger.log("[QUOTE-SERVICE] - getCurrentProject project: ", project);
       if (project) {
-        console.log("QUOTE-SERVICE] project._id: ", project._id);
+        this.logger.log("QUOTE-SERVICE] project._id: ", project._id);
         this.project_id = project._id
       }
     }, (error) => {
       this.logger.error('[QUOTE-SERVICE] - get current project ERROR: ', error);
     }, () => {
-      this.logger.debug('[QUOTE-SERVICE] - get current project *COMPLETE*');
+      this.logger.log('[QUOTE-SERVICE] - get current project *COMPLETE*');
     });
   }
 
@@ -67,7 +67,7 @@ export class QuotesService {
       })
     };
     const url = this.SERVER_BASE_PATH + project_id + "/quotes";
-    console.log('[QUOTE-SERVICE] - GET ALL QUOTES URL', url);
+    this.logger.log('[QUOTE-SERVICE] - GET ALL QUOTES URL', url);
 
     const data = {
       createdAt: new Date()

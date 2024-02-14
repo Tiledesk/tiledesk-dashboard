@@ -547,8 +547,8 @@ export const botDefaultLanguages = [
   ];
 
   export function getIndexOfbotDefaultLanguages(langcode: string): number {
-    console.log('getIndexOfbotDefaultLanguages langcode ' , langcode) 
-    console.log('getIndexOfbotDefaultLanguages index' , langcode) 
+    this.logger.log('getIndexOfbotDefaultLanguages langcode ' , langcode) 
+    this.logger.log('getIndexOfbotDefaultLanguages index' , langcode) 
     const index = botDefaultLanguages.findIndex(x => x.code === langcode);
     return index
   }

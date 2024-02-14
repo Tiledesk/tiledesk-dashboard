@@ -24,7 +24,7 @@ export class HubspotIntegrationComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log("[INT-Hubspot] integration ", this.integration)
+    this.logger.log("[INT-Hubspot] integration ", this.integration)
     this.logger.debug("[INT-Hubspot] integration ", this.integration)
     this.translateparams = { intname: 'Hubspot' };
     if (this.integration.value.apikey) {
@@ -33,7 +33,7 @@ export class HubspotIntegrationComponent implements OnInit {
   }
 
   showHideKey() {
-    console.log("showHideKey called");
+    this.logger.log("showHideKey called");
     let input = <HTMLInputElement>document.getElementById('api-key-input');
     if (this.keyVisibile === false) {
       input.type = 'text';

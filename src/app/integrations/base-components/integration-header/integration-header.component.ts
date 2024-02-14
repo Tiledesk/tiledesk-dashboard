@@ -12,7 +12,7 @@ export class IntegrationHeaderComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    console.log("header laoded: ", this.integrationModel);
+    // console.log("header laoded: ", this.integrationModel);
   }
 
 }

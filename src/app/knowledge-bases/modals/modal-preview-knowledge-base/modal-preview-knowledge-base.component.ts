@@ -70,7 +70,7 @@ export class ModalPreviewKnowledgeBaseComponent implements OnInit {
       }
       this.searching = false;
     }, (error) => {
-      console.log("ask gpt preview response error: ", error.message);
+      this.logger.log("ask gpt preview response error: ", error.message);
       this.logger.error("ERROR ask gpt: ", error.message);
       this.answer = error.message;
       this.error_answer = true;

@@ -155,7 +155,7 @@ export class TiledeskStage {
         let pos_mouse_y;
         element.onmousedown = (function(event) {
             this.isDraggingElement = true;
-            console.log('dragMouseDown', event, this.classDraggable, element);
+            this.logger.log('dragMouseDown', event, this.classDraggable, element);
             if (!event.target.classList.contains(this.classDraggable)) {
                 return false;
             }
@@ -173,7 +173,7 @@ export class TiledeskStage {
 
             // console.log("pos_mouse_x:", pos_mouse_x, "pos_mouse_y:", pos_mouse_y);
             document.onmousemove = (function(event) {
-                console.log('elementDrag', element, this.scale);
+                this.logger.log('elementDrag', element, this.scale);
                 event = event || window.event;
                 event.preventDefault();
                 const delta_x = event.clientX - pos_mouse_x;

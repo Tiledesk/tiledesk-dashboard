@@ -1212,14 +1212,14 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   // @ Subscribe to get the published requests (called On init)
   // -----------------------------------------------------------------------------------------------------
   getWsRequests$() {
-    console.log("[WS-REQUESTS-LIST] - enter NOW in getWsRequests$");
+    this.logger.log("[WS-REQUESTS-LIST] - enter NOW in getWsRequests$");
     this.wsRequestsService.wsRequestsList$
       .pipe(
         takeUntil(this.unsubscribe$)
       )
 
       .subscribe((wsrequests) => {
-        console.log("[WS-REQUESTS-LIST] - enter subscribe to  getWsRequests$", wsrequests);
+        this.logger.log("[WS-REQUESTS-LIST] - enter subscribe to  getWsRequests$", wsrequests);
         if (wsrequests) {
           this.logger.log("[WS-REQUESTS-LIST] - getWsRequests > if (wsrequests) ", wsrequests);
           this.browserRefresh = browserRefresh;

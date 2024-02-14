@@ -2058,9 +2058,9 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     // !!!!! NOT USED ????
     if (this.requester_email) {
       this.emailValue = this.requester_email;
-     console.log('[HISTORY & NORT-CONVS] - SEARCH FOR email ', this.emailValue);
+      this.logger.log('[HISTORY & NORT-CONVS] - SEARCH FOR email ', this.emailValue);
     } else {
-      console.log('[HISTORY & NORT-CONVS] - SEARCH FOR email ', this.requester_email);
+      this.logger.log('[HISTORY & NORT-CONVS] - SEARCH FOR email ', this.requester_email);
       this.emailValue = ''
     }
 
@@ -2369,24 +2369,24 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     }).then((value) => {
       if (value === 'catch') {
         if (this.payIsVisible) {
-          console.log('[HISTORY & NORT-CONVS] HERE 1')
+          this.logger.log('[HISTORY & NORT-CONVS] HERE 1')
           if (this.USER_ROLE === 'owner') {
-            console.log('[HISTORY & NORT-CONVS] HERE 2')
+            this.logger.log('[HISTORY & NORT-CONVS] HERE 2')
             if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
-              console.log('[HISTORY & NORT-CONVS] HERE 3')
+              this.logger.log('[HISTORY & NORT-CONVS] HERE 3')
               this.notify._displayContactUsModal(true, 'upgrade_plan');
             } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true && (this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.D)) {
               this.notify._displayContactUsModal(true, 'upgrade_plan');
             } else if (this.prjct_profile_type === 'free') { // && this.trial_expired === true
-              console.log('[HISTORY & NORT-CONVS] HERE 4')
+              this.logger.log('[HISTORY & NORT-CONVS] HERE 4')
               this.router.navigate(['project/' + this.projectId + '/pricing']);
             }
           } else {
-            console.log('[HISTORY & NORT-CONVS] HERE 5')
+            this.logger.log('[HISTORY & NORT-CONVS] HERE 5')
             this.presentModalOnlyOwnerCanManageTheAccountPlan();
           }
         } else {
-          console.log('[DEPT-EDIT-ADD] HERE 6')
+          this.logger.log('[DEPT-EDIT-ADD] HERE 6')
           this.notify._displayContactUsModal(true, 'upgrade_plan');
         }
       }
@@ -2397,7 +2397,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   exportRequestsToCSV() {
     if (this.payIsVisible) {
       const isAvailable = this.checkPlanAndPresentModal()
-      console.log('[HISTORY & NORT-CONVS] isAvaibleFromPlan ', isAvailable)
+      this.logger.log('[HISTORY & NORT-CONVS] isAvaibleFromPlan ', isAvailable)
       if (isAvailable === false) {
         return
       }
@@ -2502,7 +2502,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   }
 
   goToBotProfile(bot, bot_id, bot_type) {
-   console.log('[HISTORY & NORT-CONVS] - goToBotProfile  ', bot)
+    this.logger.log('[HISTORY & NORT-CONVS] - goToBotProfile  ', bot)
     let botType = ''
     if (bot_type === 'internal') {
       botType = 'native'

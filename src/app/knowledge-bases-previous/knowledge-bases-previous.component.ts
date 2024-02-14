@@ -458,7 +458,7 @@ export class KnowledgeBasesPreviousComponent implements OnInit, OnDestroy {
     this.source_url = null;
 
     this.openaiService.askGptPrev(data).subscribe((response: any) => {
-      console.log("ask gpt preview response: ", response);
+      this.logger.log("ask gpt preview response: ", response);
       if (response.success == false) {
         this.error_answer = true;
       } else {

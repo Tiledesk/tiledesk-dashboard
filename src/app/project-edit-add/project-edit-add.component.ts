@@ -1186,38 +1186,38 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     //   }
     this.translate.get('AvailableWithThePlan', { plan_name: planName })
       .subscribe((translation: any) => {
-        console.log('[PRJCT-EDIT-ADD] AvailableWithThePlan translation ', translation)
+        this.logger.log('[PRJCT-EDIT-ADD] AvailableWithThePlan translation ', translation)
         this.cPlanOnly = translation;
       });
   }
 
   getProjectPlan() {
     this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-      console.log('[PRJCT-EDIT-ADD] - getProjectPlan project Profile Data', projectProfileData)
+      this.logger.log('[PRJCT-EDIT-ADD] - getProjectPlan project Profile Data', projectProfileData)
       if (projectProfileData) {
         this.prjct_name = projectProfileData.name;
-        console.log('[PRJCT-EDIT-ADD] - getProjectPlan prjct_name', this.prjct_name);
+        this.logger.log('[PRJCT-EDIT-ADD] - getProjectPlan prjct_name', this.prjct_name);
 
         this.profile_name = projectProfileData.profile_name;
-        console.log('[PRJCT-EDIT-ADD] - getProjectPlan profile_name', this.profile_name);
+        this.logger.log('[PRJCT-EDIT-ADD] - getProjectPlan profile_name', this.profile_name);
 
         this.prjct_trial_expired = projectProfileData.trial_expired;
-        console.log('[PRJCT-EDIT-ADD] - getProjectPlan prjct_trial_expired', this.prjct_trial_expired);
+        this.logger.log('[PRJCT-EDIT-ADD] - getProjectPlan prjct_trial_expired', this.prjct_trial_expired);
 
         this.prjc_trial_days_left = projectProfileData.trial_days_left;
-        console.log('[PRJCT-EDIT-ADD] - getProjectPlan prjc_trial_days_left', this.prjc_trial_days_left);
+        this.logger.log('[PRJCT-EDIT-ADD] - getProjectPlan prjc_trial_days_left', this.prjc_trial_days_left);
 
         this.subscription_is_active = projectProfileData.subscription_is_active;
-        console.log('[PRJCT-EDIT-ADD] - getProjectPlan subscription_is_active', this.subscription_is_active);
+        this.logger.log('[PRJCT-EDIT-ADD] - getProjectPlan subscription_is_active', this.subscription_is_active);
 
         this.subscription_end_date = projectProfileData.subscription_end_date;
-        console.log('[PRJCT-EDIT-ADD] - getProjectPlan subscription_end_date', this.subscription_end_date)
+        this.logger.log('[PRJCT-EDIT-ADD] - getProjectPlan subscription_end_date', this.subscription_end_date)
 
         this.subscription_start_date = projectProfileData.subscription_start_date;
-        console.log('[PRJCT-EDIT-ADD] - getProjectPlan subscription_start_date', this.subscription_start_date);
+        this.logger.log('[PRJCT-EDIT-ADD] - getProjectPlan subscription_start_date', this.subscription_start_date);
 
         this.prjct_profile_type = projectProfileData.profile_type;
-        console.log('[PRJCT-EDIT-ADD] - getProjectPlan prjct_profile_type', this.prjct_profile_type)
+        this.logger.log('[PRJCT-EDIT-ADD] - getProjectPlan prjct_profile_type', this.prjct_profile_type)
 
         if (projectProfileData.subscription_creation_date) {
           this.subscription_creation_date = projectProfileData.subscription_creation_date;
@@ -1225,22 +1225,22 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         // else {
         //   this.subscription_creation_date = projectProfileData.subscription_start_date;
         // }
-        console.log('[PRJCT-EDIT-ADD] - getProjectPlan subscription_creation_date', this.subscription_creation_date)
-        console.log('[PRJCT-EDIT-ADD] - getProjectPlan subscription_creation_date typeof', typeof this.subscription_creation_date)
+        this.logger.log('[PRJCT-EDIT-ADD] - getProjectPlan subscription_creation_date', this.subscription_creation_date)
+        this.logger.log('[PRJCT-EDIT-ADD] - getProjectPlan subscription_creation_date typeof', typeof this.subscription_creation_date)
 
         if (projectProfileData.subscription_id) {
           this.subscription_id = projectProfileData.subscription_id;
-          console.log('[PRJCT-EDIT-ADD] - subscription_id ', this.subscription_id);
+          this.logger.log('[PRJCT-EDIT-ADD] - subscription_id ', this.subscription_id);
           if (this.subscription_id.startsWith('sub_')) {
             this.isSripeSub = true;
-            console.log('[PRJCT-EDIT-ADD] - is a stripe subscription ', this.isSripeSub);
+            this.logger.log('[PRJCT-EDIT-ADD] - is a stripe subscription ', this.isSripeSub);
           } else {
             this.isSripeSub = false;
-            console.log('[PRJCT-EDIT-ADD] - NOT is a stripe subscription ', this.isSripeSub);
+            this.logger.log('[PRJCT-EDIT-ADD] - NOT is a stripe subscription ', this.isSripeSub);
           }
         } else {
           this.isSripeSub = false;
-          console.log('[PRJCT-EDIT-ADD] - NOT is a stripe subscription ', this.isSripeSub);
+          this.logger.log('[PRJCT-EDIT-ADD] - NOT is a stripe subscription ', this.isSripeSub);
         }
 
         if (projectProfileData.extra3) {
@@ -1551,7 +1551,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         // ------------------------------------------------------------------------------------------------------------------------------------------------
         // If the subscription id is present in the project profile, the methods getSubscriptionPayments() getCustomerAndPaymentMethods() are executed
         // ------------------------------------------------------------------------------------------------------------------------------------------------
-        console.log('[PRJCT-EDIT-ADD] this.subscription_id ', this.subscription_id, ' before to run getSubscriptionPayments & getCustomerAndPaymentMethods')
+        this.logger.log('[PRJCT-EDIT-ADD] this.subscription_id ', this.subscription_id, ' before to run getSubscriptionPayments & getCustomerAndPaymentMethods')
         if (this.subscription_id && this.subscription_id.startsWith('sub_')) {
           // this.subscription_id = projectProfileData.subscription_id;
           // this.logger.log('[PRJCT-EDIT-ADD] this.subscription_id ', this.subscription_id)
@@ -1628,18 +1628,18 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   // GET THE SUBSCRIPTION PAYMENT SAVED IN OUR DB
   getSubscriptionPayments(subscription_id) {
     this.projectService.getSubscriptionPayments(subscription_id).subscribe((subscriptionPayments: any) => {
-      console.log('[PRJCT-EDIT-ADD] GET subscriptionPayments ', subscriptionPayments);
+      this.logger.log('[PRJCT-EDIT-ADD] GET subscriptionPayments ', subscriptionPayments);
 
       this.subscriptionPaymentsLength = subscriptionPayments.length
-      console.log('[PRJCT-EDIT-ADD] GET subscriptionPayments Length ', this.subscriptionPaymentsLength);
+      this.logger.log('[PRJCT-EDIT-ADD] GET subscriptionPayments Length ', this.subscriptionPaymentsLength);
       if (subscriptionPayments) {
         this.subscription_payments = [];
         subscriptionPayments.forEach((subscriptionPayment, index) => {
-          console.log('[PRJCT-EDIT-ADD] subscriptionPayment.stripe_event ', subscriptionPayment.stripe_event);
+          this.logger.log('[PRJCT-EDIT-ADD] subscriptionPayment.stripe_event ', subscriptionPayment.stripe_event);
           
           if  (subscriptionPayment.stripe_event === "checkout.session.completed") {
             this.subscription_creation_date = subscriptionPayment.object.start_date
-            console.log('[PRJCT-EDIT-ADD] -  subscriptionPayments (checkout.session.completed) > subscription creation date ', this.subscription_creation_date);
+            this.logger.log('[PRJCT-EDIT-ADD] -  subscriptionPayments (checkout.session.completed) > subscription creation date ', this.subscription_creation_date);
           }
 
           if (subscriptionPayment.stripe_event === 'invoice.payment_succeeded') {
@@ -1650,22 +1650,22 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
              */
             if (subscriptionPayment.object.data.object.billing_reason === 'subscription_create') {
               this.subscription_creation_date = subscriptionPayment.object.data.object.lines.data[0].period.start
-              console.log('[PRJCT-EDIT-ADD] -  subscriptionPayments (invoice.payment_succeeded subscription_create) > subscription creation date ', this.subscription_creation_date);
+              this.logger.log('[PRJCT-EDIT-ADD] -  subscriptionPayments (invoice.payment_succeeded subscription_create) > subscription creation date ', this.subscription_creation_date);
             }
 
             // get the last iteration in a _.forEach() loop
 
             this.plan_amount = subscriptionPayment.object.data.object.lines.data[0].plan.amount;
-            console.log('[PRJCT-EDIT-ADD] - subscriptionPayments plan_amount ', this.plan_amount);
+            this.logger.log('[PRJCT-EDIT-ADD] - subscriptionPayments plan_amount ', this.plan_amount);
 
             this.plan_interval = subscriptionPayment.object.data.object.lines.data[0].plan.interval;
-            console.log('[PRJCT-EDIT-ADD] - subscriptionPayments plan_interval ', this.plan_interval);
+            this.logger.log('[PRJCT-EDIT-ADD] - subscriptionPayments plan_interval ', this.plan_interval);
 
             const plan_description = subscriptionPayment.object.data.object.lines.data[0].description;
-            console.log('[PRJCT-EDIT-ADD] subscriptionPayment plan_description: ', plan_description);
+            this.logger.log('[PRJCT-EDIT-ADD] subscriptionPayment plan_description: ', plan_description);
             if (plan_description.indexOf('×') !== -1) {
               const planSubstring = plan_description.split('×').pop();
-              console.log('[PRJCT-EDIT-ADD] subscriptionPayment planSubstring: ', planSubstring);
+              this.logger.log('[PRJCT-EDIT-ADD] subscriptionPayment planSubstring: ', planSubstring);
               if (plan_description.indexOf('(') !== -1) {
                 const planName = planSubstring.substring(0, planSubstring.indexOf('('));
                 this.logger.log('[PRJCT-EDIT-ADD] subscriptionPayment planName: ', planName);
@@ -1698,10 +1698,10 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
   getCustomerAndPaymentMethods() {
     this.projectService.getStripeCustomer().subscribe((customer: any) => {
-      console.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT METHODS - customer ', customer);
+      this.logger.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT METHODS - customer ', customer);
       if (customer) {
         this.customer_id = customer.id
-        console.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT METHODS - customer id', this.customer_id);
+        this.logger.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT METHODS - customer id', this.customer_id);
         if (customer.invoice_settings && customer.invoice_settings.default_payment_method !== null) {
           this.customer_default_payment_method_id = customer.invoice_settings.default_payment_method
           this.logger.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT METHODS - customer_default_payment_method_id (from invoice_settings > default_payment_method)', this.customer_default_payment_method_id);
@@ -1735,7 +1735,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       this.logger.error('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER error ', error);
 
     }, () => {
-      console.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER * COMPLETE * ');
+      this.logger.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER * COMPLETE * ');
 
     });
   }
@@ -2033,7 +2033,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
           this.prjct_profile_type === 'free'
 
         ) {
-          console.log('goToManageEmailSettings HERE 4 ')
+          this.logger.log('goToManageEmailSettings HERE 4 ')
           this.presentModalFeautureAvailableOnlyWithPlanC()
         }
       } else {
@@ -2854,7 +2854,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
                 this.notify.displayEnterprisePlanHasExpiredModal(true, this.profile_name, this.subscription_end_date);
               }
 
-              console.log('[PRJCT-EDIT-ADD] profile_name ', this.profile_name) 
+              this.logger.log('[PRJCT-EDIT-ADD] profile_name ', this.profile_name) 
             } else if (this.profile_name === 'free' && this.prjct_trial_expired === true || this.profile_name === 'Sandbox' && this.prjct_trial_expired === true) {  //
                
               this.router.navigate(['project/' + this.projectId + '/pricing']);

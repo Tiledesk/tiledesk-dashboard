@@ -335,9 +335,9 @@ export class DepartmentsComponent extends PricingBaseComponent implements OnInit
 
   // GO TO  BOT-EDIT-ADD COMPONENT
   goToEditAddPage_CREATE() {
-    console.log('DEPTS prjct_profile_type ', this.prjct_profile_type) 
-    console.log('DEPTS subscription_is_active ', this.subscription_is_active) 
-    console.log('DEPTS trial_expired ', this.trial_expired) 
+    this.logger.log('DEPTS prjct_profile_type ', this.prjct_profile_type) 
+    this.logger.log('DEPTS subscription_is_active ', this.subscription_is_active) 
+    this.logger.log('DEPTS trial_expired ', this.trial_expired) 
     
 
 

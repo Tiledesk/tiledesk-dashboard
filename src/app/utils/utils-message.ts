@@ -129,7 +129,7 @@ export function getSizeImg(message: any, maxWidthImage?: number): any {
       }
       return sizeImage;
     } catch (err) {
-      console.log('error: ', err);
+      this.logger.log('error: ', err);
       return;
     }
 }

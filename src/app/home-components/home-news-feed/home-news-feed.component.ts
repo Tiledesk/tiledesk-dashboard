@@ -189,7 +189,7 @@ export class HomeNewsFeedComponent implements OnInit, AfterViewInit {
         arrowBtns.forEach(btn => {
           btn.addEventListener("click", () => {
             carousel.scrollLeft += btn.id == "left" ? -firstCardWidth : firstCardWidth + 55;
-            console.log('[HOME-NEWS-FEED] carousel.scrollLeft ', carousel.scrollLeft)
+            this.logger.log('[HOME-NEWS-FEED] carousel.scrollLeft ', carousel.scrollLeft)
 
 
 

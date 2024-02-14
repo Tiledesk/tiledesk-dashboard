@@ -80,17 +80,17 @@ export class CommunityTemplateDtlsComponent extends PricingBaseComponent impleme
 
   getProjectBots() {
     this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
-      console.log('[COMMUNITY-TEMPLATE-DTLS] - GET CHATBOTS RES', faqKb);
+      this.logger.log('[COMMUNITY-TEMPLATE-DTLS] - GET CHATBOTS RES', faqKb);
 
       if (faqKb) {
         this.chatBotCount = faqKb.length;
-        console.log('[COMMUNITY-TEMPLATE-DTLS] - COUNT OF CHATBOTS', this.chatBotCount);
+        this.logger.log('[COMMUNITY-TEMPLATE-DTLS] - COUNT OF CHATBOTS', this.chatBotCount);
       }
     }, (error) => {
-      console.error('[COMMUNITY-TEMPLATE-DTLS] - GET CHATBOTS - ERROR ', error);
+      this.logger.error('[COMMUNITY-TEMPLATE-DTLS] - GET CHATBOTS - ERROR ', error);
 
     }, () => {
-      console.log('[COMMUNITY-TEMPLATE-DTLS] - GET CHATBOTS * COMPLETE *');
+      this.logger.log('[COMMUNITY-TEMPLATE-DTLS] - GET CHATBOTS * COMPLETE *');
     });
   }
 
@@ -106,7 +106,7 @@ export class CommunityTemplateDtlsComponent extends PricingBaseComponent impleme
   getUserRole() {
     this.usersService.project_user_role_bs
       .subscribe((userRole) => {
-        console.log('[COMMUNITY-TEMPLATE-DTLS] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
+        this.logger.log('[COMMUNITY-TEMPLATE-DTLS] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
         this.USER_ROLE = userRole;
       })
   }
@@ -170,18 +170,18 @@ export class CommunityTemplateDtlsComponent extends PricingBaseComponent impleme
     //   this.logger.log('[COMMUNITY-TEMPLATE-DTLS] FORK TEMPLATE COMPLETE');
     //   this.goToBotDetails()
     // });
-    console.log('[COMMUNITY-TEMPLATE-DTLS] importTemplate chatBotCount ', this.chatBotCount, ' chatBotLimit ', this.chatBotLimit, ' USER_ROLE ', this.USER_ROLE, ' profile_name ', this.profile_name)
+    this.logger.log('[COMMUNITY-TEMPLATE-DTLS] importTemplate chatBotCount ', this.chatBotCount, ' chatBotLimit ', this.chatBotLimit, ' USER_ROLE ', this.USER_ROLE, ' profile_name ', this.profile_name)
     if (this.USER_ROLE !== 'agent') {
       if (this.chatBotLimit) {
         if (this.chatBotCount < this.chatBotLimit) {
-          console.log('[COMMUNITY-TEMPLATE-DTLS] USECASE  chatBotCount < chatBotLimit: RUN FORK')
+          this.logger.log('[COMMUNITY-TEMPLATE-DTLS] USECASE  chatBotCount < chatBotLimit: RUN FORK')
           this.forkTemplate()
         } else if (this.chatBotCount >= this.chatBotLimit) {
-          console.log('[COMMUNITY-TEMPLATE-DTLS] USECASE  chatBotCount >= chatBotLimit DISPLAY MODAL')
+          this.logger.log('[COMMUNITY-TEMPLATE-DTLS] USECASE  chatBotCount >= chatBotLimit DISPLAY MODAL')
           this.presentDialogReachedChatbotLimit()
         }
       } else if (!this.chatBotLimit) {
-        console.log('[COMMUNITY-TEMPLATE-DTLS] USECASE  NO chatBotLimit: RUN FORK')
+        this.logger.log('[COMMUNITY-TEMPLATE-DTLS] USECASE  NO chatBotLimit: RUN FORK')
         this.forkTemplate()
       }
     } if (this.USER_ROLE === 'agent') {
@@ -207,7 +207,7 @@ export class CommunityTemplateDtlsComponent extends PricingBaseComponent impleme
   }
 
   presentDialogReachedChatbotLimit() {
-    console.log('[COMMUNITY-TEMPLATE-DTLS] openDialog presentDialogReachedChatbotLimit prjct_profile_name ', this.prjct_profile_name)
+    this.logger.log('[COMMUNITY-TEMPLATE-DTLS] openDialog presentDialogReachedChatbotLimit prjct_profile_name ', this.prjct_profile_name)
     const dialogRef = this.dialog.open(ChatbotModalComponent, {
       backdropClass: 'cdk-overlay-transparent-backdrop',
       hasBackdrop: true,
@@ -220,7 +220,7 @@ export class CommunityTemplateDtlsComponent extends PricingBaseComponent impleme
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(`[COMMUNITY-TEMPLATE-DTLS] Dialog result: ${result}`);
+      this.logger.log(`[COMMUNITY-TEMPLATE-DTLS] Dialog result: ${result}`);
     });
   }
 

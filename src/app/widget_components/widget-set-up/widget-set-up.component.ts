@@ -606,7 +606,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
             this.appSumoProfilefeatureAvailableFromBPlan = APP_SUMO_PLAN_NAME['tiledesk_tier3']
             if (projectProfileData.extra3 === "tiledesk_tier1" || projectProfileData.extra3 === "tiledesk_tier2") {
               // this.t_params = { 'plan_name': this.appSumoProfilefeatureAvailableFromBPlan }
-              console.log('[WIDGET-SET-UP] H0 ')
+              this.logger.log('[WIDGET-SET-UP] H0 ')
             }
           }
           // else if (!projectProfileData.extra3) {
@@ -620,10 +620,10 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
               if (this.profile_name === 'free') {
                 this.prjct_profile_name_for_segment = PLAN_NAME.B + " plan (trial)"
                 this.prjct_profile_name  = PLAN_NAME.B + " plan (trial)"
-                console.log('[WIDGET-SET-UP] n0 ')
+                this.logger.log('[WIDGET-SET-UP] n0 ')
                 this.featureIsAvailable = true;
               } else if (this.profile_name === 'Sandbox') {
-                console.log('[WIDGET-SET-UP] n1 ')
+                this.logger.log('[WIDGET-SET-UP] n1 ')
                 this.featureIsAvailable = true;
                 this.prjct_profile_name_for_segment = PLAN_NAME.E + " plan (trial)"
                 this.prjct_profile_name = PLAN_NAME.E + " plan (trial)"
@@ -634,13 +634,13 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
               if (this.profile_name === 'free') {
                 this.prjct_profile_name_for_segment = "Free plan";
                 this.prjct_profile_name = "Free plan";
-                console.log('[WIDGET-SET-UP] n2 ')
+                this.logger.log('[WIDGET-SET-UP] n2 ')
                 this.t_params = { 'plan_name': PLAN_NAME.B }
                 this.featureIsAvailable = false;
 
               } else if (this.profile_name === 'Sandbox') {
 
-                console.log('[WIDGET-SET-UP] n3 ')
+                this.logger.log('[WIDGET-SET-UP] n3 ')
                 this.t_params = { 'plan_name': PLAN_NAME.E }
                 this.featureIsAvailable = false;
 

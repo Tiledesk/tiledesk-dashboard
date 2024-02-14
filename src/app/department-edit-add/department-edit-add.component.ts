@@ -450,24 +450,24 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
     }).then((value) => {
       if (value === 'catch') {
         if (this.isVisiblePAY) {
-          console.log('[DEPT-EDIT-ADD] HERE 1')
+          this.logger.log('[DEPT-EDIT-ADD] HERE 1')
           if (this.USER_ROLE === 'owner') {
-            console.log('[DEPT-EDIT-ADD] HERE 2')
+            this.logger.log('[DEPT-EDIT-ADD] HERE 2')
             if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
-              console.log('[DEPT-EDIT-ADD] HERE 3')
+              this.logger.log('[DEPT-EDIT-ADD] HERE 3')
               this.notify._displayContactUsModal(true, 'upgrade_plan');
             } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true && (this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.D)) {
               this.notify._displayContactUsModal(true, 'upgrade_plan');
             } else if (this.prjct_profile_type === 'free' && this.trial_expired === true) {
-              console.log('[DEPT-EDIT-ADD] HERE 4')
+              this.logger.log('[DEPT-EDIT-ADD] HERE 4')
               this.router.navigate(['project/' + this.projectId + '/pricing']);
             }
           } else {
-            console.log('[DEPT-EDIT-ADD] HERE 5')
+            this.logger.log('[DEPT-EDIT-ADD] HERE 5')
             this.presentModalAgentCannotManageAvancedSettings();
           }
         } else {
-          console.log('[DEPT-EDIT-ADD] HERE 6')
+          this.logger.log('[DEPT-EDIT-ADD] HERE 6')
           this.notify._displayContactUsModal(true, 'upgrade_plan');
         }
       }
@@ -515,7 +515,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
   // OPEN * CREATE GROUP RIGHT SIDEBAR *
   openCreateGroupRightSideBar() {
     const isAvailable = this.checkPlanAndPresentModal()
-    console.log('[DEPT-EDIT-ADD] isAvaibleFromPlan ', isAvailable)
+    this.logger.log('[DEPT-EDIT-ADD] isAvaibleFromPlan ', isAvailable)
     if (isAvailable === false) {
       return
     }

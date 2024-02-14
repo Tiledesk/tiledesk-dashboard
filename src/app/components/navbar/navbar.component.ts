@@ -288,13 +288,13 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
   getQuotes() {
     this.quotesService.getAllQuotes(this.projectId).subscribe((resp: any) => {
-      console.log("quotes retrieved: ", resp)
+      this.logger.log("quotes retrieved: ", resp)
 
       // let profile_name = this.project.profile_name;
-      console.log('[NAVBAR] project ', this.project)
-      // console.log('[NAVBAR] project > profile_name ', profile_name)
-      console.log('[NAVBAR] prjct_profile_name ', this.prjct_profile_name)
-      console.log('[NAVBAR] profile_name ', this.profile_name)
+      this.logger.log('[NAVBAR] project ', this.project)
+      // this.logger.log('[NAVBAR] project > profile_name ', profile_name)
+      this.logger.log('[NAVBAR] prjct_profile_name ', this.prjct_profile_name)
+      this.logger.log('[NAVBAR] profile_name ', this.profile_name)
 
 
       switch(this.profile_name) {
@@ -309,9 +309,9 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
           break;
       }
 
-      console.log('[NAVBAR] PLANS_LIST ', PLANS_LIST)
-      console.log('[NAVBAR] PLANS_LIST[profile_name] ', PLANS_LIST[this.profile_name])
-      console.log('[NAVBAR] PLANS_LIST[profile_name].requests ', PLANS_LIST[this.profile_name].requests)
+      this.logger.log('[NAVBAR] PLANS_LIST ', PLANS_LIST)
+      this.logger.log('[NAVBAR] PLANS_LIST[profile_name] ', PLANS_LIST[this.profile_name])
+      this.logger.log('[NAVBAR] PLANS_LIST[profile_name].requests ', PLANS_LIST[this.profile_name].requests)
       this.requests_limit = PLANS_LIST[this.profile_name].requests;
       this.messages_limit = PLANS_LIST[this.profile_name].messages;
       this.email_limit = PLANS_LIST[this.profile_name].email;
@@ -351,9 +351,9 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
       // this.email_limit = this.getformat(this.email_limit, true);
 
     }, (error) => {
-      console.error("get all quotes error: ", error)
+      this.logger.error("get all quotes error: ", error)
     }, () => {
-      console.log("get all quotes *COMPLETE*");
+      this.logger.log("get all quotes *COMPLETE*");
     })
   }
 
@@ -388,7 +388,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
   getLoggedUser() {
     this.auth.user_bs.subscribe((user) => {
-      //  console.log('[NAVBAR] »»» »»» USER GET IN NAVBAR ', user)
+      //  this.logger.log('[NAVBAR] »»» »»» USER GET IN NAVBAR ', user)
       // tslint:disable-next-line:no-debugger
       // debugger
       this.user = user;
@@ -696,11 +696,11 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     this.router.events
       .subscribe((event: NavigationEvent) => {
         if (event instanceof NavigationEnd) {
-          // console.log('[NAVBAR]  NavigationEnd ', event.url);
+          // this.logger.log('[NAVBAR]  NavigationEnd ', event.url);
 
           /** HIDE THE PLAN NAME IF THE ROUTE ACTIVE IS THE HOME */
           if (event.url.indexOf('/home') !== -1) {
-            // console.log('[NAVBAR] NavigationEnd - THE home route IS ACTIVE  ', event.url);
+            // this.logger.log('[NAVBAR] NavigationEnd - THE home route IS ACTIVE  ', event.url);
             this.HOME_ROUTE_IS_ACTIVE = true;
           } else {
             // this.logger.log('[NAVBAR] NavigationEnd - THE home route IS NOT ACTIVE  ', event.url);
@@ -779,15 +779,15 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
         }
 
         // const navigationEndVal = val instanceof NavigationEnd
-        // console.log('[NAVBAR] navigationEndVal ' ,navigationEndVal  )
+        // this.logger.log('[NAVBAR] navigationEndVal ' ,navigationEndVal  )
 
         // if (navigationEndVal) {
         //   const hasSignedup = this.localDbService.getFromStorage('signedup')
-        //   console.log('[NAVBAR] hasSignedup ', hasSignedup) 
+        //   this.logger.log('[NAVBAR] hasSignedup ', hasSignedup) 
         //   if (hasSignedup) {
         //     this.HIDE_PENDING_EMAIL_NOTIFICATION = true;
 
-        //     console.log('[NAVBAR] HIDE_PENDING_EMAIL_NOTIFICATION ' ,this.HIDE_PENDING_EMAIL_NOTIFICATION  )
+        //     this.logger.log('[NAVBAR] HIDE_PENDING_EMAIL_NOTIFICATION ' ,this.HIDE_PENDING_EMAIL_NOTIFICATION  )
         //   }
         // }
 
@@ -869,12 +869,12 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
       if (project) {
         if (project.name) {
           this.project = project
-          // console.log('[NAVBAR] project from AUTH service subscription ', this.project);
+          // this.logger.log('[NAVBAR] project from AUTH service subscription ', this.project);
           this.projectId = project._id;
           this.projectName = project.name;
           this.OPERATING_HOURS_ACTIVE = this.project.operatingHours
           // this.getQuotes();
-         console.log('[NAVBAR] -> OPERATING_HOURS_ACTIVE ', this.OPERATING_HOURS_ACTIVE);
+          this.logger.log('[NAVBAR] -> OPERATING_HOURS_ACTIVE ', this.OPERATING_HOURS_ACTIVE);
         }
     
         this.getProjects()
@@ -883,13 +883,13 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   }
 
   onOpenQuoteMenu() {
-   console.log('[NAVBAR] - on open quotes menu' )
+    this.logger.log('[NAVBAR] - on open quotes menu' )
    this.getQuotes();
   }
 
   getTrialLeft() {
     this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-      // console.log('[NAVBAR] - getProjectPlan project Profile Data', projectProfileData)
+      // this.logger.log('[NAVBAR] - getProjectPlan project Profile Data', projectProfileData)
       if (projectProfileData) {
 
         this.prjct_trial_expired = projectProfileData.trial_expired;
@@ -900,11 +900,11 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
         if (this.prjct_trial_expired === false) {
           this.prjc_trial_days_left_percentage = (this.prjc_trial_days_left * 100) / 14;
-          // console.log('[NAVBAR] prjc_trial_days_left_percentage ', this.prjc_trial_days_left_percentage)
+          // this.logger.log('[NAVBAR] prjc_trial_days_left_percentage ', this.prjc_trial_days_left_percentage)
           // this.prjc_trial_days_left_percentage IT IS 
           // A NEGATIVE NUMBER AND SO TO DETERMINE THE PERCENT IS MADE AN ADDITION
           const perc = 100 + this.prjc_trial_days_left_percentage
-          // console.log('[NAVBAR] project perc ', perc)
+          // this.logger.log('[NAVBAR] project perc ', perc)
 
           this.prjc_trial_days_left_percentage = this.round5(perc);
           // this.logger.log('ProjectPlanService (navbar) trial days left % rounded', this.prjc_trial_days_left_percentage);
@@ -1085,7 +1085,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     project_trial_expired: string,
     project_trial_days_left: number,
     activeOperatingHours: boolean) {
-    // console.log('!NAVBAR  goToHome prjct ', project)
+    // this.logger.log('!NAVBAR  goToHome prjct ', project)
     this.logger.log('[NAVBAR] goToHome id_project ', id_project, 'project_name', project_name, 'project_trial_expired ', project_trial_expired, 'project_trial_days_left ', project_trial_days_left, ' activeOperatingHours ', activeOperatingHours)
     localStorage.setItem('last_project', JSON.stringify(project))
     // RUNS ONLY IF THE THE USER CLICK OVER A PROJECT WITH THE ID DIFFERENT FROM THE CURRENT PROJECT ID

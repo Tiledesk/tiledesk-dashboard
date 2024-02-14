@@ -268,20 +268,20 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
   }
 
   duplicateChatbot(bot_id, bot_name) {
-    console.log('[BOTS-LIST] duplicateChatbot chatBotCount ', this.chatBotCount, ' chatBotLimit ', this.chatBotLimit, ' USER_ROLE ', this.USER_ROLE, ' profile_name ', this.profile_name)
+    this.logger.log('[BOTS-LIST] duplicateChatbot chatBotCount ', this.chatBotCount, ' chatBotLimit ', this.chatBotLimit, ' USER_ROLE ', this.USER_ROLE, ' profile_name ', this.profile_name)
 
 
     if (this.USER_ROLE !== 'agent') {
       if (this.chatBotLimit) {
         if (this.chatBotCount < this.chatBotLimit) {
-          console.log('[BOTS-LIST] USECASE  chatBotCount < chatBotLimit: RUN GET PRJCTS')
+          this.logger.log('[BOTS-LIST] USECASE  chatBotCount < chatBotLimit: RUN GET PRJCTS')
           this.getProjects(bot_id, bot_name)
         } else if (this.chatBotCount >= this.chatBotLimit) {
-          console.log('[BOTS-LIST] USECASE  chatBotCount >= chatBotLimit DISPLAY MODAL')
+          this.logger.log('[BOTS-LIST] USECASE  chatBotCount >= chatBotLimit DISPLAY MODAL')
           this.presentDialogReachedChatbotLimit()
         }
       } else if (!this.chatBotLimit) {
-        console.log('[BOTS-LIST] USECASE  NO chatBotLimit: RUN PRJCTS')
+        this.logger.log('[BOTS-LIST] USECASE  NO chatBotLimit: RUN PRJCTS')
         this.getProjects(bot_id, bot_name)
       }
     } else if (this.USER_ROLE === 'agent') {
@@ -848,20 +848,20 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
   }
 
   createBlankTilebot() {
-    console.log('[BOTS-LIST] createBlankTilebot chatBotCount ', this.chatBotCount, ' chatBotLimit ', this.chatBotLimit)
+    this.logger.log('[BOTS-LIST] createBlankTilebot chatBotCount ', this.chatBotCount, ' chatBotLimit ', this.chatBotLimit)
 
 
     if (this.USER_ROLE !== 'agent') {
       if (this.chatBotLimit) {
         if (this.chatBotCount < this.chatBotLimit) {
-          console.log('[BOTS-LIST] USECASE  chatBotCount < chatBotLimit: RUN NAVIGATE')
+          this.logger.log('[BOTS-LIST] USECASE  chatBotCount < chatBotLimit: RUN NAVIGATE')
           this.router.navigate(['project/' + this.project._id + '/bots/create/tilebot/blank']);
         } else if (this.chatBotCount >= this.chatBotLimit) {
-          console.log('[BOTS-LIST] USECASE  chatBotCount >= chatBotLimit DISPLAY MODAL')
+          this.logger.log('[BOTS-LIST] USECASE  chatBotCount >= chatBotLimit DISPLAY MODAL')
           this.presentDialogReachedChatbotLimit()
         }
       } else if (!this.chatBotLimit) {
-        console.log('[BOTS-LIST] USECASE  NO chatBotLimit: RUN NAVIGATE')
+        this.logger.log('[BOTS-LIST] USECASE  NO chatBotLimit: RUN NAVIGATE')
         this.router.navigate(['project/' + this.project._id + '/bots/create/tilebot/blank'])
       }
     } if (this.USER_ROLE === 'agent') {
@@ -870,7 +870,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
   }
 
   presentDialogReachedChatbotLimit() {
-    console.log('[BOTS-LIST] openDialog presentDialogReachedChatbotLimit prjct_profile_name ', this.prjct_profile_name)
+    this.logger.log('[BOTS-LIST] openDialog presentDialogReachedChatbotLimit prjct_profile_name ', this.prjct_profile_name)
     const dialogRef = this.dialog.open(ChatbotModalComponent, {
       backdropClass: 'cdk-overlay-transparent-backdrop',
       hasBackdrop: true,
@@ -883,7 +883,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(`[BOTS-LIST] Dialog result: ${result}`);
+      this.logger.log(`[BOTS-LIST] Dialog result: ${result}`);
     });
   }
 

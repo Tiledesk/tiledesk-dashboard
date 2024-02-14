@@ -451,7 +451,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
         // this.logger.log('[SIGN-UP] this.appSumoActivationEmail ', this.appSumoActivationEmail)
         this.userForm.patchValue({ 'email': this.appSumoActivationEmail })
         this.isValidAppSumoActivationEmail = this.validateEmail(this.appSumoActivationEmail)
-        // console.log('[SIGN-UP] this.isValidAppSumoActivationEmail ', this.isValidAppSumoActivationEmail)
+        // this.logger.log('[SIGN-UP] this.isValidAppSumoActivationEmail ', this.isValidAppSumoActivationEmail)
         // this.logger.log('[SIGN-UP] this.isValidAppSumoActivationEmail ', this.isValidAppSumoActivationEmail)
         const emailInputElm = document.getElementById("user-email") as HTMLInputElement;
         // this.logger.log('[SIGN-UP] emailInputElm ', emailInputElm)
@@ -460,7 +460,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
     }
 
 
-    // console.log('[SIGN-UP] checkCurrentUrlAndSkipWizard router.url  ', this.router.url)
+    // this.logger.log('[SIGN-UP] checkCurrentUrlAndSkipWizard router.url  ', this.router.url)
 
 
     if (this.router.url.indexOf('/signup-on-invitation') !== -1) {
@@ -509,31 +509,31 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
 
   getReCaptchaSiteKey() {
     this.reCaptchaSiteKey = this.appConfigService.getConfig().reCaptchaSiteKey;
-    console.log('[SIGN-UP] reCaptchaSiteKey ', this.reCaptchaSiteKey)
+    this.logger.log('[SIGN-UP] reCaptchaSiteKey ', this.reCaptchaSiteKey)
   }
 
   signUp() {
     if (window && window['grecaptcha']) {
-      console.log('[SIGN-UP] window grecaptcha', window['grecaptcha'])
-      console.log('[SIGN-UP] signup with recaptcha', window['grecaptcha'])
+      this.logger.log('[SIGN-UP] window grecaptcha', window['grecaptcha'])
+      this.logger.log('[SIGN-UP] signup with recaptcha', window['grecaptcha'])
       grecaptcha.ready(() => {
         grecaptcha.execute(this.reCaptchaSiteKey, { action: 'submit' }).then((token) => {
           // Add your logic to submit to your backend server here.
-          console.log('[SIGN-UP] grecaptcha ', token)
+          this.logger.log('[SIGN-UP] grecaptcha ', token)
           if (token) {
             this.signup()
           }
         });
       });
     } else {
-      console.log('[SIGN-UP] signup without recaptcha' )
+      this.logger.log('[SIGN-UP] signup without recaptcha' )
       this.signup()
     }
   }
 
 
   signup() {
-    console.log('[SIGN-UP] !!!! ')
+    this.logger.log('[SIGN-UP] !!!! ')
     this.showSpinnerInLoginBtn = true;
     const email = this.userForm.value['email']
     this.logger.log('[SIGN-UP] signup  email ', email)
@@ -721,8 +721,8 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
         // this.logger.log('self.EXIST_STORED_ROUTE: ', self.EXIST_STORED_ROUTE, self.storedRoute);
         // this.logger.log('self.SKIP_WIZARD: ', self.SKIP_WIZARD);
 
-        // console.log('self.EXIST_STORED_ROUTE: ', self.EXIST_STORED_ROUTE, self.storedRoute);
-        // console.log('self.SKIP_WIZARD: ', self.SKIP_WIZARD);
+        // this.logger.log('self.EXIST_STORED_ROUTE: ', self.EXIST_STORED_ROUTE, self.storedRoute);
+        // this.logger.log('self.SKIP_WIZARD: ', self.SKIP_WIZARD);
 
         if (!self.EXIST_STORED_ROUTE) {
           if (self.SKIP_WIZARD === false) {
