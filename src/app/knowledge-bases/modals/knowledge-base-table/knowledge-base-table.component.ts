@@ -67,8 +67,8 @@ export class KnowledgeBaseTableComponent implements OnInit {
     this.sort.direction = "desc"
     this.dataSource.sortData(this.dataSource.data, this.sort);
     this.dataSource.paginator = this.paginator;
-    this.paginator.length = this.dataSource.data.length;
-    this.paginator.pageSize = 20;
+    // this.paginator.length = this.dataSource.data.length;
+    // this.paginator.pageSize = 20;
   }
 
 
