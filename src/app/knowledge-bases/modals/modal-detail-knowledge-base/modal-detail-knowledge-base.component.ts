@@ -8,15 +8,30 @@ import { KB } from 'app/models/kbsettings-model';
 })
 export class ModalDetailKnowledgeBaseComponent implements OnInit {
   @Input() kb: KB;
-  @Output() deleteKnowledgeBase = new EventEmitter();
   @Output() closeBaseModal = new EventEmitter();
+  @Output() updateKnowledgeBase = new EventEmitter();
   constructor() { }
 
   ngOnInit(): void {
   }
 
+
+  onChangeInput(event): void {
+    // if (this.kbForm.valid) {
+    //   this.buttonDisabled = false;
+    // } else {
+    //   this.buttonDisabled = true;
+    // }
+  }
+
   onCloseBaseModal() {
     this.closeBaseModal.emit();
   }
+
+  onUpdateKnowledgeBase(){
+    // console.log('onUpdateKnowledgeBase: ', this.kb);
+    this.updateKnowledgeBase.emit(this.kb);
+  }
+
 
 }

@@ -27,16 +27,16 @@
 
                         <div class="input-container">
                             <span class="input-label">{{ 'Name' | translate }}</span>
-                            <input type="text" name="name" class="custom-input" [value]="kb.name" formControlName="name" disabled>
+                            <input type="text" name="name" class="custom-input" [(ngModel)]="kb.name" [value]="kb.name">
                             
                             <div *ngIf="kb.type === 'url'">
                                 <span class="input-label">{{ 'KbPage.Url' | translate }}</span>
-                                <input type="url" name="url" class="custom-input" [value]="kb.source" formControlName="url" disabled>
+                                <input type="url" name="url" class="custom-input" [(ngModel)]="kb.source" [value]="kb.source">
                             </div>
                             
                             <div *ngIf="kb.type === 'text'">
                                 <span class="input-label">{{ 'KbPage.FileText' | translate }}</span>
-                                <textarea type="text" name="content" class="custom-textarea" [value]="kb.content" formControlName="content" rows="4" disabled></textarea>
+                                <textarea type="text" name="content" class="custom-textarea" [(ngModel)]="kb.content" [value]="kb.content" rows="4"></textarea>
                             </div>
                             
                         </div>
@@ -45,10 +45,10 @@
             </div>
             
             <div class="modal-footer">
-                <!-- <button class="btn btn-white" style="padding:12px 16px;" (click)="onCloseBaseModal()">
-                {{ "Cancel" | translate }}
-                </button> -->
-                <button id="addkb-btn" class="btn btn-primary" (click)="onCloseBaseModal()">
+                <button class="btn btn-white" style="padding:12px 16px;" (click)="onCloseBaseModal()">
+                {{ 'Cancel' | translate }}
+                </button>
+                <button id="addkb-btn" class="btn btn-primary" (click)="onUpdateKnowledgeBase()">
                 {{ 'OK' | translate }}
                 </button>
             </div> 

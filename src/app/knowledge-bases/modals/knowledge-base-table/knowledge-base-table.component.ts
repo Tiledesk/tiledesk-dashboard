@@ -50,7 +50,6 @@ export class KnowledgeBaseTableComponent implements OnInit {
     //console.log('ngOnChanges!!!', changes);
     //let xx: MatPaginatorIntl;
     //xx.itemsPerPageLabel = "xxx";
-
     this.dataSource = new MatTableDataSource(this.kbsList);
     if(this.kbsList) {
       this.dataSource = new MatTableDataSource(this.kbsList);
@@ -65,10 +64,12 @@ export class KnowledgeBaseTableComponent implements OnInit {
     this.dataSource.sort = this.sort;
     this.sort.active = "updatedAt";
     this.sort.direction = "desc"
-    this.dataSource.sortData(this.dataSource.data, this.sort);
     this.dataSource.paginator = this.paginator;
-    this.paginator.length = this.dataSource.data.length;
-    this.paginator.pageSize = 20;
+    this.dataSource.sortData(this.dataSource.data, this.sort);
+    if(this.paginator) {
+      this.paginator.length = this.dataSource.data.length;
+      this.paginator.pageSize = 20;
+    }
   }
 
 

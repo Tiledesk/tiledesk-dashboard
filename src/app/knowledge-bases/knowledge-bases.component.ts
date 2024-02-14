@@ -324,6 +324,69 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
       //this.trackUserActioOnKB('Deleted Knowledge Base', gptkey)
     })
   }
+
+
+  onUpdateKb(kb) {
+    // console.log("onUpdateKb: ",kb);
+    this.onCloseBaseModal();
+    let error = "update fallito"
+    let dataDelete = {
+      "id": kb._id,
+      "namespace": kb.id_project
+    }
+    let dataAdd = {
+      'name': kb.name,
+      'source': kb.url,
+      'content': '',
+      'type': 'url'
+    };
+    if(kb.type === 'text'){
+      dataAdd.source = kb.name;
+      dataAdd.content = kb.content,
+      dataAdd.type = 'text'
+    }
+
+    kb.deleting = true;
+    this.kbService.deleteKb(dataDelete).subscribe((response:any) => {
+      kb.deleting = false;
+      if(!response || (response.success && response.success === false)){
+        this.onOpenErrorModal(error);
+      } else {
+        
+        this.kbService.addKb(dataAdd).subscribe((resp: any) => {
+          let kb = resp.value;
+          if(kb.lastErrorObject && kb.lastErrorObject.updatedExisting === true){
+            const index = this.kbsList.findIndex(item => item._id === kb._id);
+            if (index !== -1) {
+              this.kbsList[index] = kb;
+              this.notify.showWidgetStyleUpdateNotification(this.msgSuccesUpdateKb, 2, 'done');
+            }
+          } else {
+            this.kbsList.push(kb);
+            this.notify.showWidgetStyleUpdateNotification(this.msgSuccesAddKb, 2, 'done');
+          }
+          this.removeKb(kb._id);
+          this.updateStatusOfKb(kb._id, 0);
+          this.refreshKbsList = !this.refreshKbsList;
+          setTimeout(() => {
+            this.checkStatusWithRetry(kb);
+          }, 2000);
+        }, (err) => {
+          this.logger.error("[KNOWLEDGE BASES COMP] ERROR add new kb: ", err);
+          this.onOpenErrorModal(error);
+        }, () => {
+          this.logger.log("[KNOWLEDGE BASES COMP] add new kb *COMPLETED*");
+        })
+      }
+    }, (err) => {
+      this.logger.error("[KNOWLEDGE BASES COMP] ERROR delete kb: ", err);
+      kb.deleting = false;
+      this.onOpenErrorModal(error);
+    }, () => {
+      this.logger.log("[KNOWLEDGE BASES COMP] delete kb *COMPLETE*");
+      kb.deleting = false;
+    })
+  }
   // ---------------- END SERVICE FUNCTIONS --------------- // 
 
 
