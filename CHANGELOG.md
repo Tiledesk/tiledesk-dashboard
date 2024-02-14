@@ -1,6 +1,7 @@
 # tiledesk-dashboard
 
 ### 2.5.0
+- Deploys in production
 - Adds the integrations page 
 - Improves the Knowledge Bases
 - New Pricing
