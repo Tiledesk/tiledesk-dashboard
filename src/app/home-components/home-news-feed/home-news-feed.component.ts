@@ -109,7 +109,7 @@ export class HomeNewsFeedComponent implements OnInit, AfterViewInit {
         const firstCardWidth = _firstCardWidth.offsetWidth;
         this.logger.log('[HOME-NEWS-FEED] firstCardWidth', firstCardWidth)
 
-        const arrowBtns = document.querySelectorAll(".wrapper i");
+        const arrowBtns = document.querySelectorAll(".news-wrapper i");
         const carouselChildrens = [...[carousel.children]];
         // console.log('[HOME-NEWS-FEED] carouselChildrens ', carouselChildrens)
         // console.log('[HOME-NEWS-FEED] arrowBtns ', arrowBtns)
@@ -189,7 +189,7 @@ export class HomeNewsFeedComponent implements OnInit, AfterViewInit {
         arrowBtns.forEach(btn => {
           btn.addEventListener("click", () => {
             carousel.scrollLeft += btn.id == "left" ? -firstCardWidth : firstCardWidth + 55;
-            this.logger.log('[HOME-NEWS-FEED] carousel.scrollLeft ', carousel.scrollLeft)
+            console.log('[HOME-NEWS-FEED] carousel.scrollLeft ', carousel.scrollLeft)
 
 
 
