@@ -684,9 +684,10 @@
 
                     <!-- ------------------------------------------------------------------------------------------------ -->
                     <!-- SUBSCRIPTION STATUS - PROFILE TYPE: PAYMENT - SEE PAYMENTS BTN  -->
+                    <!-- && profile_name !== PLAN_NAME?.C && profile_name !== PLAN_NAME?.F -->
                     <!-- ------------------------------------------------------------------------------------------------ -->
                     <ng-container *ngIf="!appSumoProfile && isSripeSub">
-                      <div class="row" *ngIf="prjct_profile_type !== 'free' && profile_name !== PLAN_NAME?.C && profile_name !== PLAN_NAME?.F"
+                      <div class="row" *ngIf="prjct_profile_type !== 'free'"
                         style="margin-top: 16px;">
                         <label class="col-sm-3 custom-label">
                           {{ "ProjectEditPage.Payments" | translate }}
@@ -703,8 +704,10 @@
                     <!-- ------------------------------------------------------------------------------------------------ -->
                     <!-- SUBSCRIPTION STATUS - PROFILE TYPE: PAYMENT - CANCEL SUBSCRIPTION  -->
                     <!-- ------------------------------------------------------------------------------------------------ -->
+                
+                    <!-- *ngIf="prjct_profile_type !== 'free' && profile_name !== PLAN_NAME?.C && profile_name !== PLAN_NAME?.F" -->
                     <ng-container *ngIf="!appSumoProfile && isSripeSub">
-                      <div class="row" *ngIf="prjct_profile_type !== 'free' && profile_name !== PLAN_NAME?.C && profile_name !== PLAN_NAME?.F">
+                      <div class="row">
                         <label class="col-sm-3"> </label>
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                           <button class="btn btn-danger" (click)="viewCancelSubscription()"
