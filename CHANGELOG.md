@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.5.1
+- Fixes bug: old knowledge bases are not visible
+
 ### 2.5.0
 - Deploys in production
 - Adds the integrations page 
