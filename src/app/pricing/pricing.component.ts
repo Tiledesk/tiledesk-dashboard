@@ -22,8 +22,8 @@ enum PLAN_DESC {
   Growth = 'Improve customer experience and qualify leads better with premium features',
   Scale = 'Go omni-channel & find your customers where they already are: WhatsApp, Facebook, etc.',
   Plus = 'Exploit all the premium features and receive support to design chatbots tailor-made',
-  Basic = 'Improve customer experience and qualify leads better with premium features',
-  Premium = 'Go omni-channel & find your customers where they already are: WhatsApp, Facebook, etc.',
+  Basic = 'Automate simple website conversations as an individual',
+  Premium = 'Expand automation across channels for individuals and small teams',
   Custom = 'Exploit all the premium features and receive support to design chatbots tailor-made'
 }
 

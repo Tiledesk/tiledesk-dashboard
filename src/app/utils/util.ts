@@ -444,7 +444,7 @@ export const featuresPlanE = [
     'Help center',
     'Unlimited Departments',
     'Unlimited Groups',
-    'Qapla integration',
+    'Qapla\' integration',
     'Data export',
     'Livechat Support',
     'Analytics',
