@@ -242,14 +242,17 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
 
   integrationUpdateEvent(data) {
     this.integrationService.saveIntegration(data.integration).subscribe((result) => {
-      this.logger.debug("[INTEGRATION-COMP] Save integration result: ", result);
+      this.logger.log("[INTEGRATION-COMP] Save integration result: ", result);
       // this.notify.showNotification("Saved successfully", 2, 'done');
       this.reloadSelectedIntegration(data.integration);
-      if (data.isVerified === true) {
-        this.notify.showWidgetStyleUpdateNotification("Saved successfully", 2, 'done');
-      } else {
-        this.notify.showWidgetStyleUpdateNotification("Saved but not verified", 3, 'priority_high');
-      }
+      // if (data.isVerified === true) {
+      //   this.notify.showWidgetStyleUpdateNotification("Saved successfully", 2, 'done');
+      // } else {
+      //   this.notify.showWidgetStyleUpdateNotification("Saved but not verified", 3, 'priority_high');
+      // }
+    
+      this.notify.showWidgetStyleUpdateNotification("Saved successfully", 2, 'done');
+      
     }, (error) => {
       this.logger.error("[INTEGRATION-COMP] Save integration error: ", error);
     })
