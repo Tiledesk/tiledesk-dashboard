@@ -141,11 +141,9 @@
   <span>
     <div routerLink="/user-profile" *ngIf="user?.emailverified == false" data-notify="container"
       class="alert alert-danger animated fadeInDown alert-pending-email-prjct-page" role="alert"
-      data-notify-position="top-center"  matTooltipClass="custom-mat-tooltip"
-      matTooltip="{{ 'NavBar.WhenPendingEmailVerification' | translate}}"
-      #tooltip="matTooltip" 
-      matTooltipPosition='below'
-      matTooltipHideDelay="100">
+      data-notify-position="top-center" matTooltipClass="custom-mat-tooltip"
+      matTooltip="{{ 'NavBar.WhenPendingEmailVerification' | translate}}" #tooltip="matTooltip"
+      matTooltipPosition='below' matTooltipHideDelay="100">
       <!-- <button type="button" aria-hidden="true" class="close" data-notify="dismiss" style="position: absolute; right: 10px; top: 5px; z-index: 1033;">×</button> -->
       <span data-notify="icon" class="notifications">
         <i class="fa fa-exclamation-circle" style="font-size: 13px;position: relative;top: -1px;"></i>
@@ -194,12 +192,13 @@
       style="height: 64px; position: absolute; width: 40%; bottom: 0px; right: 12%; background: rgba(255, 255, 255, 0.45);"></span>
     <span
       style="height: 64px; position: absolute; width: 35%; bottom: -64px; right: 6%; background: rgba(50, 50, 93, 0.05);"></span>
- 
+
   </div>
 
   <!-- // added for new style start -->
   <div class="container">
-    <div class="row text-center" style="margin-bottom:90px ">
+    <!-- style="margin-bottom:90px " -->
+    <div class="row text-center">
       <div class="col-md-12 text-center align-self-center my-5">
         <h1 class="display-1 head-title">
           <!-- {{ 'ProjectsPage.Welcome' | translate }} {{ 'to' | translate}} tiledesk.  -->
@@ -212,23 +211,26 @@
   <!-- // added for new style end -->
 
 
-  <div class="container-fluid" style="max-width: 960px;">
+  <div class="container-fluid">
 
-    <div class="projects-cards" style="position: relative;top: -57px;">
+    <loading-spinner *ngIf="showSpinner"></loading-spinner>
+
+    <div *ngIf="!showSpinner" class="projects-cards">
       <div class="row">
-        <div *ngIf="MT === true" class="col-lg-4 col-md-4 col-sm-6" style="cursor:pointer">
+        <div *ngIf="MT === true" class="col-lg-4 col-md-4 col-sm-6 col-xs-12" style="cursor:pointer">
 
           <!-- CARD ADD PROJECT -->
           <!-- style="max-width: 256px;" -->
           <!-- openCreateModal()  -->
-          <div id="create-prjct-card" class="card custom-card-box-shadow" (click)='goToCreateProject()'
-            style="border-radius:3px;">
+          <div id="create-prjct-card" class="card custom-card-box-shadow" (click)='goToCreateProject()'>
             <div class="card-content" style="height:203px;">
               <!-- #55b9d1 -->
-              <h3 class="card-add-project-icon" [ngStyle]="{'color': company_brand_color ? company_brand_color : '#f0806f' }">
-                <i class="material-icons" style="font-size:48px">add</i>
+              <h3 class="card-add-project-icon"
+                [ngStyle]="{'color': company_brand_color ? company_brand_color : '#f0806f' }">
+                <i class="material-icons" style="font-size:48px">add_circle_outline</i>
               </h3>
-              <h4 class="card-add-project-text" [ngStyle]="{'color': company_brand_color ? company_brand_color : '#f0806f' }">
+              <h4 class="card-add-project-text"
+                [ngStyle]="{'color': company_brand_color ? company_brand_color : '#f0806f' }">
                 {{ 'ProjectsPage.AddProject' | translate }}
               </h4>
             </div>
@@ -236,35 +238,32 @@
 
         </div>
 
-        <loading-spinner *ngIf="showSpinner"></loading-spinner>
 
-        <span *ngIf="!showSpinner">
+        <div *ngIf="projects?.length === 0 && MT === false">
+          <div class="col-xs-4 col-xs-offset-4" style="cursor:pointer">
 
-          <div *ngIf="projects?.length === 0 && MT === false">
-            <div class="col-xs-4 col-xs-offset-4" style="cursor:pointer">
-
-              <div class="card custom-card-box-shadow" style="border-radius:3px">
-                <div class="card-content" style="height:203px">
-                  <!-- #55b9d1 -->
-                  <h3 class="card-add-project-icon">
-                    😱
-                  </h3>
-                  <h4 class="card-add-project-text">
-                    {{ 'NoProjects' | translate }}
-                  </h4>
-                </div>
+            <div class="card custom-card-box-shadow">
+              <div class="card-content" style="height:203px">
+                <!-- #55b9d1 -->
+                <h3 class="card-add-project-icon">
+                  😱
+                </h3>
+                <h4 class="card-add-project-text">
+                  {{ 'NoProjects' | translate }}
+                </h4>
               </div>
             </div>
           </div>
+        </div>
 
-          <!-- [ngClass]="{'col-lg-4 col-md-4 col-sm-6' : projects?.length >= 1 && 'MT' === true, 'col-md-4 col-md-offset-4' : projects?.length === 1 && 'MT' === false}" -->
-          <div *ngFor="let project of projects" class="col-lg-4 col-md-4 col-sm-6" style="cursor:pointer">
+        <!-- [ngClass]="{'col-lg-4 col-md-4 col-sm-6' : projects?.length >= 1 && 'MT' === true, 'col-md-4 col-md-offset-4' : projects?.length === 1 && 'MT' === false}" -->
+        <div *ngFor="let project of projects" class="col-lg-4 col-md-4 col-sm-6" style="cursor:pointer">
 
-            <!-- CARDS FROM THE PROJECT 'FOR' -->
-            <!-- style="max-width: 256px;" display_loading(project?.id_project?._id);  -->
-            <div class="card custom-card-box-shadow"
-              [ngClass]="{'project-deleted-card' : project?.id_project?.status === 0, 'delete-image-bckground':project?.id_project?.status === 0}"
-              style="border-bottom-left-radius: 3px; border-bottom-right-radius: 3px;" (click)='goToHome(
+          <!-- CARDS FROM THE PROJECT 'FOR' -->
+          <!-- style="max-width: 256px;" display_loading(project?.id_project?._id);  -->
+          <div class="card custom-card-box-shadow"
+            [ngClass]="{'project-deleted-card' : project?.id_project?.status === 0, 'delete-image-bckground':project?.id_project?.status === 0}"
+            (click)='goToHome(
                 project,
                 project?.id_project?._id, 
                 project?.id_project?.name, 
@@ -273,156 +272,140 @@
                 project?.id_project?.trialDaysLeft, 
                 project?.id_project?.status, 
                 project?.id_project?.activeOperatingHours)'>
-              <!-- <div class="card-header card-header-custom-bkgrnd-project"> </div> -->
+            <!-- <div class="card-header card-header-custom-bkgrnd-project"> </div> -->
 
-              <div class="card-content card-content-custom-height">
-                <h3 class="project-title"
-                  [ngClass]="{'project-deleted-card-text-color' : project?.id_project?.status === 0}">
-                  {{ project?.id_project?.name }}
-                </h3>
-
-                <p class="id-project"
-                  [ngClass]="{'project-deleted-card-text-color' : project?.id_project?.status === 0}">
-                  {{ project?.id_project?._id }}
-                </p>
-
-                <div *ngIf="project_plan_badge" class="project-plan-badge" 
-                [ngClass]="{
-                  'free-plan-badge': project?.plan_badge_background_type === 'free_plan_badge', 
-                  'a-plan-badge':  project?.plan_badge_background_type === 'a_plan_badge',
-                  'b-plan-badge': project?.plan_badge_background_type === 'b_plan_badge', 
-                  'c-plan-badge': project?.plan_badge_background_type === 'c_plan_badge',
+            <div class="card-content project-card-content">
+              <div *ngIf="project_plan_badge" class="project-plan-badge" [ngClass]="{
+                  'free--plan-badge': project?.plan_badge_background_type === 'free_plan_badge', 
+                  'a--plan-badge':  project?.plan_badge_background_type === 'a_plan_badge',
+                  'b--plan-badge': project?.plan_badge_background_type === 'b_plan_badge', 
+                  'c--plan-badge': project?.plan_badge_background_type === 'c_plan_badge',
                   'unsupported-plan-badge': project?.plan_badge_background_type === 'unsupported_plan_badge'
                 }">
-                  {{ project?.prjct_profile_name }}
-                </div>
+                {{ project?.prjct_profile_name }}
+              </div>
 
-                <h4 class="category project-user-role" style="margin-top:5px"
-                  [ngClass]="{'project-deleted-card-text-color' : project?.id_project?.status === 0}">
-                  {{ project?.role | translate}}
+              <h3 class="project-title"
+                [ngClass]="{'project-deleted-card-text-color' : project?.id_project?.status === 0}">
+                {{ project?.id_project?.name }}
+              </h3>
 
-                  <span id="pu-status-icon" class="pu-status-icon"
-                  [ngClass]="{
-                  'pu-status-icon-no-ppb': !project_plan_badge,  
-                  'is-user-online' : project?.ws_projct_user_available === true && (project?.ws_projct_user_profileStatus === '' || !project?.ws_projct_user_profileStatus), 
-                  'is-user-offline' : project?.ws_projct_user_available === false && (project?.ws_projct_user_profileStatus === '' || !project?.ws_projct_user_profileStatus), 
-                  'is-user-inactive': project?.ws_projct_user_available === false && project?.ws_projct_user_profileStatus=== 'inactive',
-                  'pu-status-icon--is-busy': project?.ws_projct_user_isBusy === true}">
-                  </span>
+              <p class="id-project" [ngClass]="{'project-deleted-card-text-color' : project?.id_project?.status === 0}">
+                {{ project?.id_project?._id }}
+              </p>
 
-                  <span class="project-for-panel--isBusy-icon-wpr" *ngIf="project?.ws_projct_user_isBusy === true">
-
-                    <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="16px"
-                      viewBox="0 0 24 24" width="16px" fill="#FEB92C">
-                      <g>
-                        <path d="M0,0h24v24H0V0z" fill="none" />
-                      </g>
-                      <g>
-                        <path
-                          d="M11.99,2C6.47,2,2,6.48,2,12s4.47,10,9.99,10C17.52,22,22,17.52,22,12S17.52,2,11.99,2z M15.29,16.71L11,12.41V7h2v4.59 l3.71,3.71L15.29,16.71z" />
-                      </g>
+              <div class="role-and-avalibility-wpr">
+                <div class="role-and-avalibility-icon">
+                  <!-- Role icon -->
+                  <div class="role-icon">
+                    <svg *ngIf="project?.role === 'admin'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                      <path
+                        d="M224 256A128 128 0 1 1 224 0a128 128 0 1 1 0 256zM209.1 359.2l-18.6-31c-6.4-10.7 1.3-24.2 13.7-24.2H224h19.7c12.4 0 20.1 13.6 13.7 24.2l-18.6 31 33.4 123.9 36-146.9c2-8.1 9.8-13.4 17.9-11.3c70.1 17.6 121.9 81 121.9 156.4c0 17-13.8 30.7-30.7 30.7H285.5c-2.1 0-4-.4-5.8-1.1l.3 1.1H168l.3-1.1c-1.8 .7-3.8 1.1-5.8 1.1H30.7C13.8 512 0 498.2 0 481.3c0-75.5 51.9-138.9 121.9-156.4c8.1-2 15.9 3.3 17.9 11.3l36 146.9 33.4-123.9z">
+                      </path>
                     </svg>
 
-                    <span *ngIf="project?.ws_projct_user_isBusy === true"
-                    class="project-for-panel--isBusy-busy-text project-for-panel--text-pulse-animation">
-                    {{'Busy' | translate}}   </span>
-                  </span>
-                 
-            
-                </h4>
+                    <svg *ngIf="project?.role === 'owner'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+                      <path
+                        d="M309 106c11.4-7 19-19.7 19-34c0-22.1-17.9-40-40-40s-40 17.9-40 40c0 14.4 7.6 27 19 34L209.7 220.6c-9.1 18.2-32.7 23.4-48.6 10.7L72 160c5-6.7 8-15 8-24c0-22.1-17.9-40-40-40S0 113.9 0 136s17.9 40 40 40c.2 0 .5 0 .7 0L86.4 427.4c5.5 30.4 32 52.6 63 52.6H426.6c30.9 0 57.4-22.1 63-52.6L535.3 176c.2 0 .5 0 .7 0c22.1 0 40-17.9 40-40s-17.9-40-40-40s-40 17.9-40 40c0 9 3 17.3 8 24l-89.1 71.3c-15.9 12.7-39.5 7.5-48.6-10.7L309 106z">
+                      </path>
+                    </svg>
 
-                <div class="availabily-and-busy-wpr--prjcts-for-panel"  style="display: inline-block;" [ngClass]="{'availabily-and-busy-wpr--prjcts-for-panel-no-ppb': !project_plan_badge}">
+                    <svg *ngIf="project?.role === 'agent'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                      <path
+                        d="M256 48C141.1 48 48 141.1 48 256v40c0 13.3-10.7 24-24 24s-24-10.7-24-24V256C0 114.6 114.6 0 256 0S512 114.6 512 256V400.1c0 48.6-39.4 88-88.1 88L313.6 488c-8.3 14.3-23.8 24-41.6 24H240c-26.5 0-48-21.5-48-48s21.5-48 48-48h32c17.8 0 33.3 9.7 41.6 24l110.4 .1c22.1 0 40-17.9 40-40V256c0-114.9-93.1-208-208-208zM144 208h16c17.7 0 32 14.3 32 32V352c0 17.7-14.3 32-32 32H144c-35.3 0-64-28.7-64-64V272c0-35.3 28.7-64 64-64zm224 0c35.3 0 64 28.7 64 64v48c0 35.3-28.7 64-64 64H352c-17.7 0-32-14.3-32-32V240c0-17.7 14.3-32 32-32h16z">
+                      </path>
+                    </svg>
+                  </div>
+                  <!-- Role -->
+                  <div class="project-user-role"
+                    [ngClass]="{'project-deleted-card-text-color' : project?.id_project?.status === 0}">
+                    {{ project?.role | translate}}
+                  </div>
+                  <!-- --------------------------------------- -->
+                  <!-- Availabilty icon -->
+                  <!-- --------------------------------------- -->
+                  <!-- <div id="pu-status-icon" class="pu-status-icon" [ngClass]="{
+                      'pu-status-icon-no-ppb': !project_plan_badge,  
+                      'is-user-online' : project?.ws_projct_user_available === true && (project?.ws_projct_user_profileStatus === '' || !project?.ws_projct_user_profileStatus), 
+                      'is-user-offline' : project?.ws_projct_user_available === false && (project?.ws_projct_user_profileStatus === '' || !project?.ws_projct_user_profileStatus), 
+                      'is-user-inactive': project?.ws_projct_user_available === false && project?.ws_projct_user_profileStatus=== 'inactive',
+                      'pu-status-icon--is-busy': project?.ws_projct_user_isBusy === true}">
+                    </div> -->
+
+                  <!-- --------------------------------------- -->
+                  <!-- Busy -->
+                  <!-- --------------------------------------- -->
+                  <!-- <span class="project-for-panel--isBusy-icon-wpr" *ngIf="project?.ws_projct_user_isBusy === true">
+                      <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="16px"
+                        viewBox="0 0 24 24" width="16px" fill="#FEB92C">
+                        <g>
+                          <path d="M0,0h24v24H0V0z" fill="none" />
+                        </g>
+                        <g>
+                          <path
+                            d="M11.99,2C6.47,2,2,6.48,2,12s4.47,10,9.99,10C17.52,22,22,17.52,22,12S17.52,2,11.99,2z M15.29,16.71L11,12.41V7h2v4.59 l3.71,3.71L15.29,16.71z" />
+                        </g>
+                      </svg>
+
+                      <span *ngIf="project?.ws_projct_user_isBusy === true"
+                        class="project-for-panel--isBusy-busy-text project-for-panel--text-pulse-animation">
+                        {{'Busy' | translate}} </span>
+                    </span> -->
+
+
+                </div>
+                <!-- Availabilty select -->
+                <div class="availabily-and-busy-wpr--prjcts-for-panel" style="display: inline-block;"
+                  [ngClass]="{'availabily-and-busy-wpr--prjcts-for-panel-no-ppb': !project_plan_badge}">
 
 
                   <div class="availabily---wpr--prjct-for-panel"
-                  (click)="$event.stopPropagation(); $event.stopImmediatePropagation(); $event.preventDefault();">
-                    <!-- <div class="onoffswitch--prjct-for-panel"
-                      (click)="$event.stopPropagation();changeAvailabilityState(project?.id_project?._id, project?.ws_projct_user_available)">
-                      <input type="checkbox" name="onoffswitch_{{project?.id_project?._id}}"
-                        class="onoffswitch-checkbox--prjct-for-panel"
-                        id="availabilityswitch_{{project?.id_project?._id}}" tabindex="0"
-                        [checked]="project?.ws_projct_user_available">
-                      <label class="onoffswitch-label--prjct-for-panel"
-                        for="availabilityswitch_{{project?.id_project?._id}}">
-                      </label>
-                    </div> -->
+                    (click)="$event.stopPropagation(); $event.stopImmediatePropagation(); $event.preventDefault();">
 
-                    <select class="select-pu-status" #selectStatus name="status_{{project?.id_project?._id}}" id="{{project?.id_project?._id}}"
-                    (change)=" changeAvailabilityState(project?.id_project?._id, selectStatus.value)" style="border: 1px solid #d9d9d9;background: #fff;
-                    border-radius: 4px;
-                    text-transform: capitalize;">
-                    
-                    <option value="available" 
-                     [selected]="project?.ws_projct_user_available === true && (project?.ws_projct_user_profileStatus === '' || !ws_projct_user_profileStatus?.profileStatus)"> 
-                       {{'Available' | translate}} 
-                    </option>
+                    <select class="select-pu-status" #selectStatus name="status_{{project?.id_project?._id}}"
+                      id="{{project?.id_project?._id}}"
+                      (change)=" changeAvailabilityState(project?.id_project?._id, selectStatus.value)"
+                      [ngClass]="{'available-color':project?.ws_projct_user_available === true && (project?.ws_projct_user_profileStatus === '' || !ws_projct_user_profileStatus?.profileStatus),
+                                     'unavailable-color':project?.ws_projct_user_available === false && (project?.ws_projct_user_profileStatus === '' || !ws_projct_user_profileStatus?.profileStatus),
+                                     'inactive-color': project?.ws_projct_user_available === false && project?.ws_projct_user_profileStatus === 'inactive'}">
 
-                    <option value="unavailable"
-                     [selected]="project?.ws_projct_user_available === false && (project?.ws_projct_user_profileStatus === '' || !ws_projct_user_profileStatus?.profileStatus)">
-                      {{'Unavailable' | translate}} 
-                    </option>
+                      <option value="available"
+                        [selected]="project?.ws_projct_user_available === true && (project?.ws_projct_user_profileStatus === '' || !ws_projct_user_profileStatus?.profileStatus)">
 
-                    <option value="inactive" 
-                     [selected]="project?.ws_projct_user_available === false && project?.ws_projct_user_profileStatus === 'inactive'">
-                      {{'Inactive' | translate}}  
-                    </option>
-                  </select>
+                        {{'Available' | translate}}
+                      </option>
 
-                  </div>
+                      <option value="unavailable"
+                        [selected]="project?.ws_projct_user_available === false && (project?.ws_projct_user_profileStatus === '' || !ws_projct_user_profileStatus?.profileStatus)">
+                        {{'Unavailable' | translate}}
 
+                      </option>
 
-                  <!-- <div id="pu-status-icon" class="pu-status-icon"
-                  [ngClass]="{
-                  'is-user-online' : project?.ws_projct_user_available === true && (project?.ws_projct_user_profileStatus === '' || !project?.ws_projct_user_profileStatus), 
-                  'is-user-offline' : project?.ws_projct_user_available === false && (project?.ws_projct_user_profileStatus === '' || !project?.ws_projct_user_profileStatus), 
-                  'is-user-inactive': project?.ws_projct_user_available === false && project?.ws_projct_user_profileStatus=== 'inactive'}">
-                  </div> -->
+                      <option value="inactive"
+                        [selected]="project?.ws_projct_user_available === false && project?.ws_projct_user_profileStatus === 'inactive'">
+                        {{'Inactive' | translate}}
 
-                  <!-- <span *ngIf="project?.ws_projct_user_available === true"
-                    class="availibility-status-text--prjct-for-panel"
-                    [ngClass]="{'online-text-color' : project?.ws_projct_user_available === true, 'offline-text-color' : project?.ws_projct_user_available === false}">
-                    {{'Available' | translate}}
-                  </span>
+                      </option>
+                    </select>
 
-                  <span *ngIf="project?.ws_projct_user_available === false"
-                    class="availibility-status-text--prjct-for-panel"
-                    [ngClass]="{'online-text-color' : project?.ws_projct_user_available === true, 'offline-text-color' : project?.ws_projct_user_available === false}">
-                    {{'Unavailable' | translate}}
-                  </span> -->
-
-                  <!-- <div class="project-for-panel--isBusy-icon-wpr" *ngIf="project?.ws_projct_user_isBusy === true">
-
-                    <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="16px"
-                      viewBox="0 0 24 24" width="16px" fill="#FEB92C">
-                      <g>
-                        <path d="M0,0h24v24H0V0z" fill="none" />
-                      </g>
-                      <g>
-                        <path
-                          d="M11.99,2C6.47,2,2,6.48,2,12s4.47,10,9.99,10C17.52,22,22,17.52,22,12S17.52,2,11.99,2z M15.29,16.71L11,12.41V7h2v4.59 l3.71,3.71L15.29,16.71z" />
-                      </g>
-                    </svg>
-                  </div>
-                  <span *ngIf="project?.ws_projct_user_isBusy === true"
-                    class="project-for-panel--isBusy-busy-text project-for-panel--text-pulse-animation">
-                    {{'Busy' | translate}}
-                  </span> -->
-
-                </div>
-
-
-
-                <div id="{{'loading_'+ project?.id_project?._id}}" *ngIf="project?.is_selected === true">
-                  <div class="spinner">
-                    <div class="bounce1"></div>
-                    <div class="bounce2"></div>
-                    <div class="bounce3"></div>
                   </div>
                 </div>
+              </div>
 
 
 
-                <!-- <div class="onoffswitch">
+
+              <div id="{{'loading_'+ project?.id_project?._id}}" *ngIf="project?.is_selected === true">
+                <div class="spinner">
+                  <div class="bounce1"></div>
+                  <div class="bounce2"></div>
+                  <div class="bounce3"></div>
+                </div>
+              </div>
+
+
+
+              <!-- <div class="onoffswitch">
                   <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" tabindex="0" checked>
                   <label class="onoffswitch-label" for="myonoffswitch">
                       <span class="onoffswitch-inner"></span>
@@ -431,21 +414,21 @@
               </div> -->
 
 
-              </div>
+            </div>
 
-              <div class="card-footer">
-                <div [ngClass]="{'project-deleted-card-text-color' : project?.id_project?.status === 0}" class="stats"
-                  style="color:#7695a5">
-                  <i class="material-icons">date_range</i> {{ project?.id_project?.createdAt | date: 'dd/MM/yyyy'}}
+            <div class="card-footer project-card-footer">
+              <div [ngClass]="{'project-deleted-card-text-color' : project?.id_project?.status === 0}" class="stats"
+                style="color:#7695a5">
+                <i class="material-icons">date_range</i> {{ project?.id_project?.createdAt | date: 'dd/MM/yyyy'}}
 
-                  <!-- <button type="button" rel="tooltip" title="Modifica Progetto" class="btn btn-primary btn-simple btn-xs" (click)='goToEditAddPage_EDIT(project?._id)'> -->
-                  <!-- <i class="material-icons">edit</i> -->
-                  <!-- </button> -->
-                </div>
+                <!-- <button type="button" rel="tooltip" title="Modifica Progetto" class="btn btn-primary btn-simple btn-xs" (click)='goToEditAddPage_EDIT(project?._id)'> -->
+                <!-- <i class="material-icons">edit</i> -->
+                <!-- </button> -->
               </div>
             </div>
           </div>
-        </span>
+        </div>
+
 
       </div>
     </div>

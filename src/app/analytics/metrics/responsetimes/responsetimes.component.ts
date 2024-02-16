@@ -311,10 +311,8 @@ export class ResponseTimesComponent implements OnInit {
   }
 
   setToNa() {
-    // this.numberAVGtime = 'N.a.'
     this.numberAVGtime = '0'
     this.unitAVGtime = ''
-    // this.responseAVGtime = 'N.a.'
     this.responseAVGtime = '0'
   }
 

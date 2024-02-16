@@ -535,9 +535,9 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
       }
       else {
 
-        this.numberAVGtime = 'n.a'
+        this.numberAVGtime = 'n/a'
         this.unitAVGtime = ''
-        this.responseAVGtime = 'n.a.'
+        this.responseAVGtime = 'n/a'
 
         this.logger.log('[ANALYTICS] avarageWaitingTimeCLOCK humanize', this.humanizer.humanize(0))
         this.logger.log('[ANALYTICS] avarageWaitingTimeCLOCK waiting time funtion:', avarageWaitingTimestring);

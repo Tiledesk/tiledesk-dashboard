@@ -138,8 +138,8 @@ export class SentimentComponent implements OnInit, OnDestroy {
 
       } else {
 
-        this.numberSentimentHEART = 'N.a.'
-        this.responseSentimentHEART = 'N.a.'
+        this.numberSentimentHEART = 'n/a'
+        this.responseSentimentHEART = 'n/a'
 
         this.logger.log('[ANALYTICS - SENTIMENT] Median Satisfaction value:', this.numberSentimentHEART);
 
@@ -148,8 +148,8 @@ export class SentimentComponent implements OnInit, OnDestroy {
 
     }, (error) => {
       this.logger.error('[ANALYTICS - SENTIMENT] - SENTIMENT RATE HEART REQUEST  - ERROR ', error);
-      this.numberSentimentHEART = 'N.a.'
-      this.responseSentimentHEART = 'N.a.'
+      this.numberSentimentHEART = 'n/a'
+      this.responseSentimentHEART = 'n/a'
     }, () => {
       this.logger.log('[ANALYTICS - SENTIMENT] - SENTIMENT RATE HEART REQUEST * COMPLETE *');
     });

@@ -1986,7 +1986,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
             }
             this.getRequesterAvailabilityStatus(this.requester_id);
           } else {
-            this.requester_id = "n.a.";
+            this.requester_id = "n/a";
           }
 
           // ---------------------------------------------------------
@@ -1996,13 +1996,13 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
             this.rating = this.request.rating + '/5'
             this.logger.log('<<<<  this.rating ', this.rating)
           } else {
-            this.rating = 'n.a./5'
+            this.rating = 'n/a/5'
           }
 
           if (this.request.rating_message) {
             this.rating_message = this.request.rating_message
           } else {
-            this.rating_message = 'n.a.'
+            this.rating_message = 'n/a'
           }
 
           // ---------------------------------------------------------

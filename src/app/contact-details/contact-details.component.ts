@@ -828,7 +828,7 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
 
         this.logger.error('[CONTACTS-DTLS] - GET LEAD BY REQUESTER ID - ERROR ', error);
         this.fillColour = '#eeeeee';
-        this.contact_fullname_initial = 'n.a.';
+        this.contact_fullname_initial = 'n/a';
 
       }, () => {
         this.logger.log('[CONTACTS-DTLS] - GET LEAD BY REQUESTER ID * COMPLETE *');

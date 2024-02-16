@@ -926,13 +926,13 @@ export class PanoramicaComponent implements OnInit {
 
   setToNa(section: string) {
     if (section === 'avg') {
-      this.numberAVGtime = 'N.a.'
+      this.numberAVGtime = 'n/a'
       this.unitAVGtime = ''
-      this.responseAVGtime = 'N.a.'
+      this.responseAVGtime = 'n/a'
     } else if (section === 'duration') {
-      this.numberDurationCNVtime = 'N.a.'
+      this.numberDurationCNVtime = 'n/a.'
       this.unitDurationCNVtime = '';
-      this.responseDurationtime = 'N.a.'
+      this.responseDurationtime = 'n/a'
     }
   }
 

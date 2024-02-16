@@ -80,6 +80,7 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
   languageNotSupported: boolean = false
   private unsubscribe$: Subject<any> = new Subject<any>();
   prjct_profile_name: string;
+  
   constructor(
     private projectService: ProjectService,
     private router: Router,
@@ -644,18 +645,23 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
   }
 
   changeAvailabilityState(projectid, selectedStatusValue) {
-    // console.log('[PROJECTS] - changeAvailabilityState projectid', projectid, ' selectedStatusValue: ', selectedStatusValue);
+    console.log('[PROJECTS] - changeAvailabilityState projectid', projectid, ' selectedStatusValue: ', selectedStatusValue);
 
     // available = !available
     let IS_AVAILABLE = null
     let profilestatus = ''
     if (selectedStatusValue === 'available') {
+      
       IS_AVAILABLE = true
+      console.log('[PROJECTS] changeAvailabilityState IS_AVAILABLE' , IS_AVAILABLE , ' profilestatus ', profilestatus) 
     } else if (selectedStatusValue === 'unavailable') {
       IS_AVAILABLE = false
+      console.log('[PROJECTS] changeAvailabilityState IS_AVAILABLE' , IS_AVAILABLE , ' profilestatus ', profilestatus)
+
     } else if (selectedStatusValue === 'inactive') {
       IS_AVAILABLE = false
       profilestatus = 'inactive'
+      console.log('[PROJECTS] changeAvailabilityState IS_AVAILABLE' , IS_AVAILABLE , ' profilestatus ', profilestatus)
     }
     // console.log('[PROJECTS] - changeAvailabilityState projectid', projectid, ' selectedStatusValue: ', selectedStatusValue);
     this.usersService.updateCurrentUserAvailability(projectid, IS_AVAILABLE, profilestatus).subscribe((projectUser: any) => { // non 
@@ -665,7 +671,11 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
       // this.usersService.availability_btn_clicked(true)
       this.projects.forEach(project => {
         if (project.id_project._id === projectUser.id_project) {
+          console.log('[PROJECTS] - PROJECT-USER UPDATED ', projectUser)
           project['ws_projct_user_available'] = projectUser.user_available;
+          console.log('[PROJECTS] - changeAvailabilityState  projectUser.user_available',  projectUser.user_available);
+          console.log('[PROJECTS] - changeAvailabilityState  projectUser.profileStatus',  projectUser.profileStatus);
+          project['ws_projct_user_profileStatus'] = projectUser.profileStatus
           // project['ws_projct_user_isBusy'] = projectUser['isBusy']
         }
       });
@@ -693,6 +703,7 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
             if (projectUser['profileStatus']) {
               // console.log('PROJECT COMP $UBSC  TO WS USER AVAILABILITY & BUSY STATUS DATA (listenTo)', projectUser);
               project['ws_projct_user_profileStatus'] = projectUser['profileStatus']
+              // console.log('PROJECT COMP $UBSC  TO WS USER AVAILABILITY & BUSY STATUS DATA (listenTo) projectUser[profileStatus]', projectUser['profileStatus']);
             } 
           }
         });

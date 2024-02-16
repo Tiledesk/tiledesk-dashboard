@@ -171,7 +171,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   }
 
   ngOnChanges() {
-    // console.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges wsRequestsServed', this.wsRequestsServed)
+    console.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges wsRequestsServed', this.wsRequestsServed)
     // this.subscribeToWs_MsgsByRequestId(request, request.request_id)
     // if (this.wsRequestsServed && this.wsRequestsServed.length > 0) {
     //   this.wsRequestsServed.forEach(request => {
