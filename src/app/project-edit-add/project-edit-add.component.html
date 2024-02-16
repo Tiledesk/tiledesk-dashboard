@@ -706,7 +706,7 @@
                     <!-- ------------------------------------------------------------------------------------------------ -->
                 
                     <!-- *ngIf="prjct_profile_type !== 'free' && profile_name !== PLAN_NAME?.C && profile_name !== PLAN_NAME?.F" -->
-                    <ng-container *ngIf="!appSumoProfile && isSripeSub">
+                    <ng-container *ngIf="!appSumoProfile && isSripeSub && prjct_profile_type !== 'free'">
                       <div class="row">
                         <label class="col-sm-3"> </label>
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
