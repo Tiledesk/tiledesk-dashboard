@@ -414,7 +414,11 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
 
     this.logger.log('[PROJECTS] - GO TO HOME - PROJECT status ', project_status)
 
-    project['is_selected'] = true
+    project['is_selected'] = true;
+
+    if (project_status === 0) { 
+      project['is_selected'] = false;
+    }
 
     // const loadingInProjectCardEle = <HTMLElement>document.querySelector('#loading_' + project_id);
     // loadingInProjectCardEle.classList.add("display_loading")
