@@ -2216,7 +2216,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
         if (pair && pair._leads['leads']) {
           pair._leads.leads.forEach(lead => {
 
-            let e_mail = 'n/a'
+            let e_mail = 'N/A'
             if (lead.email) {
               e_mail = lead.email
             }

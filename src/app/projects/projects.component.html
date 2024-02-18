@@ -222,7 +222,7 @@
           <!-- CARD ADD PROJECT -->
           <!-- style="max-width: 256px;" -->
           <!-- openCreateModal()  -->
-          <div id="create-prjct-card" class="card custom-card-box-shadow" (click)='goToCreateProject()'>
+          <div id="create-prjct-card" class="card prjct-card" (click)='goToCreateProject()'>
             <div class="card-content" style="height:203px;">
               <!-- #55b9d1 -->
               <h3 class="card-add-project-icon"
@@ -242,7 +242,7 @@
         <div *ngIf="projects?.length === 0 && MT === false">
           <div class="col-xs-4 col-xs-offset-4" style="cursor:pointer">
 
-            <div class="card custom-card-box-shadow">
+            <div class="card prjct-card">
               <div class="card-content" style="height:203px">
                 <!-- #55b9d1 -->
                 <h3 class="card-add-project-icon">
@@ -261,7 +261,7 @@
 
           <!-- CARDS FROM THE PROJECT 'FOR' -->
           <!-- style="max-width: 256px;" display_loading(project?.id_project?._id);  -->
-          <div class="card custom-card-box-shadow"
+          <div class="card prjct-card"
             [ngClass]="{'project-deleted-card' : project?.id_project?.status === 0, 'delete-image-bckground':project?.id_project?.status === 0}"
             (click)='goToHome(
                 project,
@@ -272,7 +272,7 @@
                 project?.id_project?.trialDaysLeft, 
                 project?.id_project?.status, 
                 project?.id_project?.activeOperatingHours)'>
-            <!-- <div class="card-header card-header-custom-bkgrnd-project"> </div> -->
+           
 
             <div class="card-content project-card-content">
               <div *ngIf="project_plan_badge" class="project-plan-badge" [ngClass]="{

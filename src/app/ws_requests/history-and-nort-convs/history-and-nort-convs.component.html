@@ -1430,7 +1430,7 @@
                    {{request?.ticket_id }}
                   </p>
                   <p *ngIf="!request?.ticket_id" class="column-td">
-                   n/a
+                   N/A
                   </p>
                 </td> -->
 
@@ -1495,7 +1495,7 @@
 
                       <span class="requester-email-undefined" *ngIf="!request?.lead?.email"
                         [ngClass]="{'requester-verified-email' : request?.requester_is_verified === true}">
-                        n/a
+                        N/A
                       </span>
                     </span>
 
@@ -1630,7 +1630,7 @@
 
                     <span class="tooltiptext" style="font-size: 10px !important; padding: 3px;">
                       <span *ngIf="request?.ua_browser !== 'undefined undefined'"> {{ request?.ua_browser }} </span>
-                      <span *ngIf="request?.ua_browser === 'undefined undefined'"> n/a </span>
+                      <span *ngIf="request?.ua_browser === 'undefined undefined'"> N/A </span>
                     </span>
                   </span>
                 </td>
@@ -1642,7 +1642,7 @@
                     {{ request?.dept?.name }}
                   </p>
                   <p *ngIf="!request?.dept?.name" class="column-td">
-                    n/a
+                    N/A
                   </p>
                 </td>
 

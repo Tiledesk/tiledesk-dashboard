@@ -1001,7 +1001,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
         newFillColour = getColorBck(dept.name)
       } else {
 
-        newInitials = 'n/a';
+        newInitials = 'N/A';
         newFillColour = '#eeeeee';
       }
 

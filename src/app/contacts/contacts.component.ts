@@ -741,7 +741,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
         } else {
-          newInitials = 'n/a';
+          newInitials = 'N/A';
           newFillColour = '#6264a7';
 
         }

@@ -984,7 +984,7 @@ export class WsSharedComponent implements OnInit {
         this.user_name = attributes.userFullname;
         this.logger.log('* USER NAME: ', this.user_name);
       } else {
-        this.user_name = 'n/a'
+        this.user_name = 'N/A'
       }
 
       /**
@@ -994,7 +994,7 @@ export class WsSharedComponent implements OnInit {
         this.user_email = attributes.userEmail;
         this.logger.log('* USER EMAIL: ', this.user_email);
       } else {
-        this.user_email = 'n/a'
+        this.user_email = 'N/A'
       }
 
       /**
@@ -1014,7 +1014,7 @@ export class WsSharedComponent implements OnInit {
         this.department_id = attributes.departmentId;
         this.logger.log('* DEPATMENT ID: ', this.department_id);
       } else {
-        this.department_id = 'n/a '
+        this.department_id = 'N/A'
       }
 
       /**
@@ -1024,16 +1024,16 @@ export class WsSharedComponent implements OnInit {
         this.source_page = attributes.sourcePage;
         this.logger.log('* SOURCE PAGE: ', this.source_page);
       } else {
-        this.source_page = 'n/a'
+        this.source_page = 'N/A'
         this.logger.log('* SOURCE PAGE: ', this.source_page);
       }
 
     } else {
-      this.user_name = 'n/a';
-      this.user_email = 'n/a';
-      this.department_name = 'n/a';
-      this.department_id = 'n/a ';
-      this.source_page = 'n/a';
+      this.user_name = 'N/A';
+      this.user_email = 'N/A';
+      this.department_name = 'N/A';
+      this.department_id = 'N/A';
+      this.source_page = 'N/A';
     }
 
   }

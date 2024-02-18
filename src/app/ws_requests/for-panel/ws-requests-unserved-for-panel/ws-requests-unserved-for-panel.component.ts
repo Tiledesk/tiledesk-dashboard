@@ -858,7 +858,7 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
                 newInitials = avatarPlaceholder(request.dept.name);
                 newFillColour = getColorBck(request.dept.name)
               } else {
-                newInitials = 'n/a';
+                newInitials = 'N/A';
                 newFillColour = '#eeeeee';
               }
               request.dept['dept_name_initial'] = newInitials;
@@ -880,7 +880,7 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
                 newFillColour = getColorBck(request.dept.name)
               } else {
 
-                newInitials = 'n/a';
+                newInitials = 'N/A';
                 newFillColour = '#eeeeee';
               }
 
