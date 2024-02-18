@@ -200,7 +200,7 @@ input[type="text"] {
 
 
 
-.availabily---wpr--prjct-for-panel>select {
+.availabily---wpr--prjct-for-panel>.select-pu-status {
   // border: 1px solid #d9d9d9;
   border: unset !important;
   background: #fff;
@@ -213,6 +213,13 @@ input[type="text"] {
   //   top: 3px;
   //   margin-right: 6px;
 }
+
+.availabily---wpr--prjct-for-panel>.select-pu-status.deleted-project { 
+  background: #eee;
+  color: #999!important;
+  opacity: .4;
+}
+
 
 .available-color {
   color: #4caf50;
@@ -917,6 +924,11 @@ input[type="text"] {
   color: #ed006b;
 }
 
+.deleted-project-badge {
+  color: #999!important;
+  opacity: .4;
+}
+
 .project-plan-badge {
   // width: fit-content;
   // border-radius: 4px;
@@ -930,6 +942,8 @@ input[type="text"] {
   font-size: 12px;
   font-weight: 500;
 }
+
+
 
 
 .is-user-online {
@@ -971,6 +985,11 @@ input[type="text"] {
   top: -2px;
   height: 14px;
   width: 14px;
+}
+
+.role-and-avalibility-wpr>.role-and-avalibility-icon>.role-icon.role-icon-deleted-project>svg {
+  fill: #999!important;
+  opacity: .4;
 }
 
 .project-user-role {
@@ -1019,9 +1038,3 @@ input[type="text"] {
   border-radius: 9999px;
 }
 
-// .select-pu-status{
-//   background: #fff;
-//   border-radius: 5px;
-//   border-color: #d9d9d9;
-//   text-transform: capitalize
-// }
