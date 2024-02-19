@@ -1633,7 +1633,7 @@
         "msgSuccesUpdateKb": "Knowledge Base successfully modified",
         "msgSuccesAddKb": "Knowledge Base added successfully",
         "msgSuccesDeleteKb": "Knowledge Base successfully deleted",
-        "msgErrorDeleteKb": "The Knowledge Base could not be deleted",
+        "msgErrorDeleteKb": "Sorry, this action could not be completed successfully. Please try again later.",
         "msgErrorIndexingKb": "Indexing failed",
         "msgSuccesIndexingKb": "Indexing completed successfully",
         "msgErrorAddUpdateKb": "The Knowledge Base could not be added or edited"

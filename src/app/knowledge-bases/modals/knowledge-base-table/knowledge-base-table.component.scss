@@ -129,3 +129,24 @@ table {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+
+
+
+.orderBy {
+    cursor: pointer;
+    &:hover {
+        .icon-direction{
+            opacity: 1;
+        }
+        
+    }
+}
+
+.icon-direction {
+    margin: 0 10px;
+    opacity: 0;
+    position: absolute;
+    font-size: 20px;
+}
+

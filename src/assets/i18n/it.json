@@ -1633,7 +1633,7 @@
         "msgSuccesUpdateKb": "Knowledge Base modificata con successo",
         "msgSuccesAddKb": "Knowledge Base aggiunta con successo",
         "msgSuccesDeleteKb": "Knowledge Base eliminata con successo",
-        "msgErrorDeleteKb": "Impossibile eliminare la Knowledge Base",
+        "msgErrorDeleteKb": "Spiacenti, non è stato possibile eliminare la Knowledge Base. Per favore riprova più tardi.",
         "msgErrorIndexingKb": "Indicizzazione non riuscita",
         "msgSuccesIndexingKb": "Indicizzazione completata con successo",
         "msgErrorAddUpdateKb": "Impossibile aggiungere o modificare la Knowledge Base"

@@ -51,7 +51,9 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
 
   kbFormUrl: FormGroup;
   kbFormContent: FormGroup;
+  kbs: any;
   kbsList = [];
+  kbsListCount: number = 0;
   refreshKbsList: boolean = true;
 
   // PREVIEW
@@ -224,12 +226,17 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
   /**
    * getListOfKb
    */
-  getListOfKb() {
+  getListOfKb(params?) {
     this.logger.log("[KNOWLEDGE BASES COMP] getListOfKb ");
-    this.kbService.getListOfKb().subscribe((kbList:[KB]) => {
-      this.logger.log("[KNOWLEDGE BASES COMP] get kbList: ", kbList);
-      this.kbsList = kbList;
+    let paramsDefault = "?limit=10&page=0";
+    let urlParams = params?params:paramsDefault;
+    this.kbService.getListOfKb(urlParams).subscribe((kbResp:any) => {
+      this.logger.log("[KNOWLEDGE BASES COMP] get kbList: ", kbResp);
+      this.kbs = kbResp;
+      this.kbsList = kbResp.kbs;
+      //this.kbsListCount = kbList.count;
       this.checkAllStatuses();
+      this.refreshKbsList = !this.refreshKbsList;
     }, (error) => {
       this.logger.error("[KNOWLEDGE BASES COMP] ERROR get kbSettings: ", error);
     }, () => {
@@ -463,6 +470,10 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
     })
   }
 
+
+  onReloadKbs(params){
+    this.getListOfKb(params);
+  }
   // ---------------- END OPEN AI FUNCTIONS --------------- //
 
   createConditionGroupUrl(): FormGroup {

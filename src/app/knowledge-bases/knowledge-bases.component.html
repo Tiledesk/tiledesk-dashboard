@@ -38,12 +38,13 @@
 
           <!-- START TABLE -->
           <knowledge-base-table
-            [kbsList]="kbsList"
+            [kbs]="kbs"
             [refresh]="refreshKbsList"
             (openBaseModalDetail)="onOpenBaseModalDetail($event)"
             (openBaseModalDelete)="onOpenBaseModalDelete($event)"
             (openBaseModalPreview)="onOpenBaseModalPreview()"
             (runIndexing)="onRunIndexing($event)"
+            (reloadKbs)="onReloadKbs($event)"
           ></knowledge-base-table>
           <!-- END TABLE -->
 
