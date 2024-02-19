@@ -380,6 +380,13 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, OnDe
     )
     // https://github.com/t4t5/sweetalert/issues/845
   }
+  presentModalAgentCannotInviteTeammates() {
+    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(
+      'Teammates with agent roles cannot invite teammates',
+      this.learnMoreAboutDefaultRoles,
+    )
+  }
+
 
   getUploadEgine() {
     if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
@@ -594,24 +601,32 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, OnDe
 
     // this.router.navigate(['project/' + this.id_project + '/user/add']);
     // if (this.prjct_profile_type === 'payment') {
-    if (this.USER_ROLE === 'owner') {
-      if (this.projectUsersLength + this.countOfPendingInvites < this.seatsLimit) {
-        this.router.navigate(['project/' + this.id_project + '/user/add'])
-      } else if (this.projectUsersLength + this.countOfPendingInvites >= this.seatsLimit) {
 
+    if (this.projectUsersLength + this.countOfPendingInvites < this.seatsLimit) {
+      if (this.USER_ROLE !== 'agent') {
+        this.router.navigate(['project/' + this.id_project + '/user/add'])
+      } else {
+        this.presentModalAgentCannotInviteTeammates()
+      }
+    } else if (this.projectUsersLength + this.countOfPendingInvites >= this.seatsLimit) {
+      if (this.USER_ROLE === 'owner') {
         if (this.prjct_profile_type === 'free') {
           this.presentGoToPricingModal()
         } else if (this.prjct_profile_type === 'payment' && (this.subscription_is_active === false || this.subscription_is_active === true)) {
           this.notify._displayContactUsModal(true, 'operators_seats_unavailable')
         }
+      } else {
+        this.presentModalOnlyOwnerCanManageTheAccountPlan()
       }
-    } else {
-      this.presentModalOnlyOwnerCanManageTheAccountPlan()
+
     }
     // } else {
     //   this.router.navigate(['project/' + this.id_project + '/user/add'])
     // }
   }
+
+
+
 
   openDeleteModal(
     projectUser_id: string,

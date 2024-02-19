@@ -752,27 +752,57 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
 
     // if (this.prjct_profile_type === 'payment') {
     // this.seatsLimit
-    if (this.CURRENT_USER_ROLE === 'owner') {
-      if (this.projectUsersLength + this.countOfPendingInvites < this.seatsLimit) {
-        this.doInviteUser();
-      } else if ((this.projectUsersLength + this.countOfPendingInvites) >= this.seatsLimit) {
+    // if (this.CURRENT_USER_ROLE === 'owner') {
+    //   if (this.projectUsersLength + this.countOfPendingInvites < this.seatsLimit) {
+    //     this.doInviteUser();
+    //   } else if ((this.projectUsersLength + this.countOfPendingInvites) >= this.seatsLimit) {
 
+    //     // this.notify._displayContactUsModal(true, 'operators_seats_unavailable')
+    //     if (this.prjct_profile_type === 'free') {
+    //       this.presentGoToPricingModal()
+    //     } else if (this.prjct_profile_type === 'payment' && (this.subscription_is_active === false || this.subscription_is_active === true)) {
+    //       this.notify._displayContactUsModal(true, 'operators_seats_unavailable')
+    //     }
+    //   }
+    // } else {
+    //   this.presentModalOnlyOwnerCanManageTheAccountPlan()
+    // }
+
+
+
+    if (this.projectUsersLength + this.countOfPendingInvites < this.seatsLimit) {
+      if (this.CURRENT_USER_ROLE !== 'agent') {
+        this.doInviteUser();
+      } else {
+        this.presentModalAgentCannotInviteTeammates()
+      }
+    } else if ((this.projectUsersLength + this.countOfPendingInvites) >= this.seatsLimit) {
+      if (this.CURRENT_USER_ROLE === 'owner') {
         // this.notify._displayContactUsModal(true, 'operators_seats_unavailable')
         if (this.prjct_profile_type === 'free') {
           this.presentGoToPricingModal()
         } else if (this.prjct_profile_type === 'payment' && (this.subscription_is_active === false || this.subscription_is_active === true)) {
           this.notify._displayContactUsModal(true, 'operators_seats_unavailable')
         }
+      } else {
+        this.presentModalOnlyOwnerCanManageTheAccountPlan()
       }
-    } else {
-      this.presentModalOnlyOwnerCanManageTheAccountPlan()
     }
-    /* IN THE "FREE TYPE PLAN" THERE ISN'T LIMIT TO THE NUMBER OF INVITED USER */
 
 
-    //  } else {
-    //   this.doInviteUser();
+    // } 
+
+    // else {
+    //   this.presentModalOnlyOwnerCanManageTheAccountPlan()
     // }
+    /* IN THE "FREE TYPE PLAN" THERE ISN'T LIMIT TO THE NUMBER OF INVITED USER */
+  }
+
+  presentModalAgentCannotInviteTeammates() {
+    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(
+      'Teammates with agent roles cannot invite teammates',
+      this.learnMoreAboutDefaultRoles,
+    )
   }
 
   doInviteUser() {
