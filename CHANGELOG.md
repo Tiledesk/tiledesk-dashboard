@@ -1,7 +1,8 @@
 # tiledesk-dashboard
 
 ### 2.5.4
-- Restyle the "Your Projects" page
+- Deploys in production
+- Restyles the "Your Projects" page
 
 ### 2.5.3
 - Minor improvements
