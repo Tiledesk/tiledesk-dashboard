@@ -566,31 +566,31 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
           if (this.contact_details.streetAddress && this.contact_details.streetAddress !== "") {
             this.streetAddress = this.contact_details.streetAddress
           } else {
-            this.streetAddress = 'n/a'
+            this.streetAddress = 'N/A'
           }
 
           if (this.contact_details.city && this.contact_details.city !== "") {
             this.city = this.contact_details.city
           } else {
-            this.city = 'n/a'
+            this.city = 'N/A'
           }
 
           if (this.contact_details.region && this.contact_details.region !== "") {
             this.region = this.contact_details.region
           } else {
-            this.region = 'n/a'
+            this.region = 'N/A'
           }
 
           if (this.contact_details.zipcode && this.contact_details.zipcode !== "") {
             this.zipcode = this.contact_details.zipcode
           } else {
-            this.zipcode = 'n/a'
+            this.zipcode = 'N/A'
           }
 
           if (this.contact_details.country && this.contact_details.country !== "") {
             this.country = this.contact_details.country
           } else {
-            this.country = 'n/a'
+            this.country = 'N/A'
           }
 
           if (this.contact_details.fullname) {
@@ -828,7 +828,7 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
 
         this.logger.error('[CONTACTS-DTLS] - GET LEAD BY REQUESTER ID - ERROR ', error);
         this.fillColour = '#eeeeee';
-        this.contact_fullname_initial = 'n.a.';
+        this.contact_fullname_initial = 'N/A';
 
       }, () => {
         this.logger.log('[CONTACTS-DTLS] - GET LEAD BY REQUESTER ID * COMPLETE *');

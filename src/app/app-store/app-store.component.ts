@@ -236,7 +236,7 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
   getApps() {
     this.appStoreService.getApps().subscribe((_apps: any) => {
       this.apps = _apps.apps;
-      console.log('APP-STORE - getApps APPS ', this.apps);
+      this.logger.log('APP-STORE - getApps APPS ', this.apps);
 
 
       const paidApps = [
@@ -265,10 +265,10 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
         if (app.description.length > 118) {
           app.description = app.description.slice(0, 118) + '...'
         }
-        // console.log('APP-STORE - getApps APPS app ', app )
+        // this.logger.log('APP-STORE - getApps APPS app ', app )
         if (app && app.version === "v2") {
           if (app.installActionURL === "") {
-            // console.log('APP-STORE - getApps APPS app installActionURL', app.installActionURL)
+            // this.logger.log('APP-STORE - getApps APPS app installActionURL', app.installActionURL)
             delete app.installActionURL
           }
         }
@@ -284,8 +284,8 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
       this.getInstallations().then((res: any) => {
 
         for (let installation of res) {
-          // console.log("[APP-STORE] getInstallations INSTALLATION - res", res)
-          // console.log("[APP-STORE] getInstallations INSTALLATION: ", this.apps.findIndex(x => x._id === installation.app_id))
+          // this.logger.log("[APP-STORE] getInstallations INSTALLATION - res", res)
+          // this.logger.log("[APP-STORE] getInstallations INSTALLATION: ", this.apps.findIndex(x => x._id === installation.app_id))
           let index = this.apps.findIndex(x => x._id === installation.app_id);
           if (this.apps[index]) {
             this.apps[index].installed = true;
@@ -342,14 +342,14 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
 
 
   installApp(app, installationType: string, installationUrl: string, appTitle: string, appId: string) {
-    console.log('[APP-STORE] appId ', appId, 'appTitle ', appTitle)
+    this.logger.log('[APP-STORE] appId ', appId, 'appTitle ', appTitle)
     const isAvailable = this.checkPlanAndPresentModal(appTitle)
-    console.log('[APP-STORE] isAvaibleFromPlan ', isAvailable)
+    this.logger.log('[APP-STORE] isAvaibleFromPlan ', isAvailable)
     if (isAvailable === false) {
       return
     }
 
-    // console.log('[APP-STORE] app ', app)
+    // this.logger.log('[APP-STORE] app ', app)
     this.logger.log('[APP-STORE] app app version', app.version)
     this.logger.log('[APP-STORE] installationType ', installationType);
     this.logger.log('[APP-STORE] installationUrl ', installationUrl);
@@ -386,7 +386,7 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
 
   openInAppStoreInstall(app, appTitle) {
     const isAvailable = this.checkPlanAndPresentModal(appTitle)
-    console.log('[APP-STORE] isAvaibleFromPlan ', isAvailable)
+    this.logger.log('[APP-STORE] isAvaibleFromPlan ', isAvailable)
     if (isAvailable === false) {
       return
     }
@@ -397,7 +397,7 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
 
   openConfigureUrlInAppStoreInstall(app, appTitle) {
     const isAvailable = this.checkPlanAndPresentModal(appTitle)
-    console.log('[APP-STORE] isAvaibleFromPlan ', isAvailable)
+    this.logger.log('[APP-STORE] isAvaibleFromPlan ', isAvailable)
     if (isAvailable === false) {
       return
     }
@@ -578,12 +578,12 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
   }
 
   learnmore(learnmoreUrl: string, app_id) {
-    // console.log('[APP-STORE] learnmoreUrl ', learnmoreUrl);
+    // this.logger.log('[APP-STORE] learnmoreUrl ', learnmoreUrl);
     if (learnmoreUrl.startsWith('{')) {
-      // console.log('[APP-STORE] installationUrl start with curly bracket ');
+      // this.logger.log('[APP-STORE] installationUrl start with curly bracket ');
       const learnmoreUrlString = learnmoreUrl.replace(/&quot;/ig, '"');
       const learnMoreObjct = JSON.parse(learnmoreUrlString)
-      // console.log('[APP-STORE] learnmoreUrl start with curly bracket - learnMoreObjct, ', learnMoreObjct);
+      // this.logger.log('[APP-STORE] learnmoreUrl start with curly bracket - learnMoreObjct, ', learnMoreObjct);
       // URL = learnMoreObjct.url
       const target = learnMoreObjct.target;
 
@@ -591,14 +591,14 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
         this.openAppDetails(URL, app_id)
       }
     } else if (learnmoreUrl.startsWith('http')) {
-      // console.log('[APP-STORE] learnmoreUrl NOT start with curly bracket ');
+      // this.logger.log('[APP-STORE] learnmoreUrl NOT start with curly bracket ');
       const URL = learnmoreUrl
       window.open(URL, '_blank')
     }
     //   // const url = learnmoreUrl;
   }
   openAppDetails(URL, app_id) {
-    // console.log('HERE Y')
+    // this.logger.log('HERE Y')
     this.router.navigate(['project/' + this.projectId + '/app-store-install/' + app_id + '/detail'])
   }
 
@@ -612,10 +612,10 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
   getInstallations() {
     let promise = new Promise((resolve, reject) => {
       this.appStoreService.getInstallation(this.projectId).then((res) => {
-        //  console.log("[APP-STORE] Get Installation Response: ", res);
+        //  this.logger.log("[APP-STORE] Get Installation Response: ", res);
         resolve(res);
       }).catch((err) => {
-        // console.error("[APP-STORE] Error getting installation: ", err);
+        // this.logger.error("[APP-STORE] Error getting installation: ", err);
         reject(err);
       })
     })
@@ -652,7 +652,7 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
   }
 
   goToCreateBot(type: string) {
-    //  console.log('[BOT-TYPE-SELECT] Bot Type Selected type ', type)
+    //  this.logger.log('[BOT-TYPE-SELECT] Bot Type Selected type ', type)
     if (type !== 'native' && type !== 'tilebot') {
       this.router.navigate(['project/' + this.projectId + '/bots/create/' + type]);
     } else if (type === 'native') {
@@ -660,7 +660,7 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
       // this.router.navigate(['project/' + this.projectId + '/bots/create/' + type]);
 
     } else if (type === 'tilebot') {
-      // console.log('[BOT-TYPE-SELECT] HERE Y ')
+      // this.logger.log('[BOT-TYPE-SELECT] HERE Y ')
       this.router.navigate(['project/' + this.projectId + '/tilebot/prebuilt']);
     }
   }
@@ -690,32 +690,32 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
       dangerMode: false,
     }).then((value) => {
       if (value === 'catch') {
-        // console.log('featureAvailableFromPlanC value', value)
-        // console.log('[APP-STORE] prjct_profile_type', this.prjct_profile_type)
-        // console.log('[APP-STORE] subscription_is_active', this.subscription_is_active)
-        // console.log('[APP-STORE] prjct_profile_type', this.prjct_profile_type)
-        // console.log('[APP-STORE] trial_expired', this.trial_expired)
-        // console.log('[APP-STORE] isVisiblePAY', this.isVisiblePAY)
+        // this.logger.log('featureAvailableFromPlanC value', value)
+        // this.logger.log('[APP-STORE] prjct_profile_type', this.prjct_profile_type)
+        // this.logger.log('[APP-STORE] subscription_is_active', this.subscription_is_active)
+        // this.logger.log('[APP-STORE] prjct_profile_type', this.prjct_profile_type)
+        // this.logger.log('[APP-STORE] trial_expired', this.trial_expired)
+        // this.logger.log('[APP-STORE] isVisiblePAY', this.isVisiblePAY)
         if (this.isVisiblePAY) {
-          // console.log('[APP-STORE] HERE 1')
+          // this.logger.log('[APP-STORE] HERE 1')
           if (this.USER_ROLE === 'owner') {
-            // console.log('[APP-STORE] HERE 2')
+            // this.logger.log('[APP-STORE] HERE 2')
             if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
-              // console.log('[APP-STORE] HERE 3')
+              // this.logger.log('[APP-STORE] HERE 3')
               this.notify._displayContactUsModal(true, 'upgrade_plan');
             } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true && (this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.D)) {
               this.notify._displayContactUsModal(true, 'upgrade_plan');
             } else if (this.prjct_profile_type === 'free' && this.trial_expired === true) {
-              // console.log('[APP-STORE] HERE 4')
+              // this.logger.log('[APP-STORE] HERE 4')
               this.router.navigate(['project/' + this.projectId + '/pricing']);
             }
           } else {
-            // console.log('[APP-STORE] HERE 5')
+            // this.logger.log('[APP-STORE] HERE 5')
 
             this.presentModalOnlyOwnerCanManageTheAccountPlan();
           }
         } else {
-          // console.log('[APP-STORE] HERE 6')
+          // this.logger.log('[APP-STORE] HERE 6')
           this.notify._displayContactUsModal(true, 'upgrade_plan');
         }
       }
@@ -743,7 +743,7 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
         if (this.USER_ROLE === 'owner') {
           this.router.navigate(['project/' + this.projectId + '/project-settings/payments']);
         } else {
-          // console.log('[APP-STORE] HERE 5')
+          // this.logger.log('[APP-STORE] HERE 5')
           this.presentModalOnlyOwnerCanManageTheAccountPlan();
         }
       }

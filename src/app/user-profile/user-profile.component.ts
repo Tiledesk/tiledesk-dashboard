@@ -321,33 +321,33 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
 
   getLoggedUser() {
     this.auth.user_bs.subscribe((user) => {
-      console.log('[USER-PROFILE] - USER GET IN USER PROFILE - USER', user)
+      this.logger.log('[USER-PROFILE] - USER GET IN USER PROFILE - USER', user)
 
       if (user) {
         this.user = user;
         this.userFirstname = user.firstname;
-        console.log('[USER-PROFILE] - USER GET IN USER PROFILE - userFirstname ', this.userFirstname)
+        this.logger.log('[USER-PROFILE] - USER GET IN USER PROFILE - userFirstname ', this.userFirstname)
         this.userLastname = user.lastname;
-        console.log('[USER-PROFILE] - USER GET IN USER PROFILE - userLastname ', this.userLastname)
+        this.logger.log('[USER-PROFILE] - USER GET IN USER PROFILE - userLastname ', this.userLastname)
         this.userId = user._id;
         this.userEmail = user.email;
         this.firstnameCurrentValue = user.firstname;
-        console.log('[USER-PROFILE] - USER GET IN USER PROFILE - firstnameCurrentValue ', this.firstnameCurrentValue)
+        this.logger.log('[USER-PROFILE] - USER GET IN USER PROFILE - firstnameCurrentValue ', this.firstnameCurrentValue)
         this.lastnameCurrentValue = user.lastname;
-        console.log('[USER-PROFILE] - USER GET IN USER PROFILE - firstnameCurrentValue ', this.lastnameCurrentValue)
+        this.logger.log('[USER-PROFILE] - USER GET IN USER PROFILE - firstnameCurrentValue ', this.lastnameCurrentValue)
         this.emailverified = user.emailverified;
         this.logger.log('[USER-PROFILE] - USER GET IN USER PROFILE - EMAIL VERIFIED ', this.emailverified)
         this.logger.log('[USER-PROFILE] - USER GET IN USER PROFILE - this.user ', this.user)
 
         const storedUser = this.usersLocalDbService.getMemberFromStorage(this.userId);
-        console.log('[USER-PROFILE] - USER GET IN USER PROFILE - storedUser ', storedUser)
-        console.log('[USER-PROFILE] - USER GET IN USER PROFILE - storedUser typeof', typeof storedUser)
+        this.logger.log('[USER-PROFILE] - USER GET IN USER PROFILE - storedUser ', storedUser)
+        this.logger.log('[USER-PROFILE] - USER GET IN USER PROFILE - storedUser typeof', typeof storedUser)
         if (storedUser) {
           
       
           if (this.userFirstname && this.userLastname) {
-            console.log('Stored user Firstname ', storedUser['firstname'])
-            console.log('Stored user Lastname ', storedUser['lastname'])
+            this.logger.log('Stored user Firstname ', storedUser['firstname'])
+            this.logger.log('Stored user Lastname ', storedUser['lastname'])
             if (this.userFirstname !== storedUser['firstname']) {
               storedUser['firstname'] = this.userFirstname
               this.usersLocalDbService.saveMembersInStorage(user['_id'], storedUser, 'user profile');
@@ -747,7 +747,7 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
     this.logger.log('[USER-PROFILE] - UPDATE CURRENT USER - WHEN CLICK UPDATE - USER LAST NAME ', this.userLastname);
     this.usersService.updateCurrentUserLastnameFirstname(this.userFirstname, this.userLastname, (response) => {
 
-      console.log('[USER-PROFILE] - update Current User Firstname Lastname RES ', response)
+      this.logger.log('[USER-PROFILE] - update Current User Firstname Lastname RES ', response)
 
 
 

@@ -22,7 +22,7 @@ export class CustomerioIntegrationComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log("[INT-Customer.io] integration ", this.integration)
+    this.logger.log("[INT-Customer.io] integration ", this.integration)
     this.logger.debug("[INT-Customer.io] integration ", this.integration)
     if (this.integration.value.apikey) {
       this.checkKey(this.integration.value.apikey);
@@ -30,7 +30,7 @@ export class CustomerioIntegrationComponent implements OnInit {
   }
 
   showHideKey() {
-    console.log("showHideKey called");
+    this.logger.log("showHideKey called");
     let input = <HTMLInputElement>document.getElementById('api-key-input');
     if (this.keyVisibile === false) {
       input.type = 'text';

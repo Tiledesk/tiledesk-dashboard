@@ -36,7 +36,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
   tparams: any;
   companyLogo: string;
   companyLogoNoText: string;
-  secondaryBrandColor : string;
+  secondaryBrandColor: string;
   primaryBrandColor: string;
   companyLogoPlanet: string;
   company_name: string;
@@ -63,7 +63,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
   reCaptchaSiteKey: string;
   areActivePay: boolean;
   MT: boolean;
- 
+
   templateName: string;
   strongPassword = false;
   userForm: FormGroup;
@@ -140,8 +140,8 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
     this.tparams = brand;
     this.companyLogo = brand['BASE_LOGO'];
     this.companyLogoNoText = brand['BASE_LOGO_NO_TEXT'];
-    this.secondaryBrandColor = brand['BRAND_SECONDARY_COLOR']; 
-    this.primaryBrandColor = brand['BRAND_PRIMARY_COLOR']; 
+    this.secondaryBrandColor = brand['BRAND_SECONDARY_COLOR'];
+    this.primaryBrandColor = brand['BRAND_PRIMARY_COLOR'];
     this.companyLogoPlanet = brand['COMPANY_LOGO_PLANET'];
     this.company_name = brand['BRAND_NAME'];
     this.company_site_url = brand['COMPANY_SITE_URL'];
@@ -167,11 +167,8 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
       // this.logger.log('[SIGN-UP] removeFromStorage swg')
     }
   }
-  getReCaptchaSiteKey() {
-    this.reCaptchaSiteKey = this.appConfigService.getConfig().reCaptchaSiteKey;
-    // console.log('[SIGN-UP] reCaptchaSiteKey ',  this.reCaptchaSiteKey)
-  }
-  
+
+
 
   ngAfterViewInit() {
     const elemPswInput = <HTMLInputElement>document.getElementById('signup-password');
@@ -454,7 +451,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
         // this.logger.log('[SIGN-UP] this.appSumoActivationEmail ', this.appSumoActivationEmail)
         this.userForm.patchValue({ 'email': this.appSumoActivationEmail })
         this.isValidAppSumoActivationEmail = this.validateEmail(this.appSumoActivationEmail)
-        // console.log('[SIGN-UP] this.isValidAppSumoActivationEmail ', this.isValidAppSumoActivationEmail)
+        // this.logger.log('[SIGN-UP] this.isValidAppSumoActivationEmail ', this.isValidAppSumoActivationEmail)
         // this.logger.log('[SIGN-UP] this.isValidAppSumoActivationEmail ', this.isValidAppSumoActivationEmail)
         const emailInputElm = document.getElementById("user-email") as HTMLInputElement;
         // this.logger.log('[SIGN-UP] emailInputElm ', emailInputElm)
@@ -463,7 +460,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
     }
 
 
-    // console.log('[SIGN-UP] checkCurrentUrlAndSkipWizard router.url  ', this.router.url)
+    // this.logger.log('[SIGN-UP] checkCurrentUrlAndSkipWizard router.url  ', this.router.url)
 
 
     if (this.router.url.indexOf('/signup-on-invitation') !== -1) {
@@ -510,21 +507,33 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
     }
   }
 
+  getReCaptchaSiteKey() {
+    this.reCaptchaSiteKey = this.appConfigService.getConfig().reCaptchaSiteKey;
+    this.logger.log('[SIGN-UP] reCaptchaSiteKey ', this.reCaptchaSiteKey)
+  }
 
-  signUp() { 
-    grecaptcha.ready(() => {
-      grecaptcha.execute(this.reCaptchaSiteKey, {action: 'submit'}).then((token) => {
+  signUp() {
+    if (window && window['grecaptcha']) {
+      this.logger.log('[SIGN-UP] window grecaptcha', window['grecaptcha'])
+      this.logger.log('[SIGN-UP] signup with recaptcha', window['grecaptcha'])
+      grecaptcha.ready(() => {
+        grecaptcha.execute(this.reCaptchaSiteKey, { action: 'submit' }).then((token) => {
           // Add your logic to submit to your backend server here.
-          console.log('[SIGN-UP] grecaptcha ', token) 
+          this.logger.log('[SIGN-UP] grecaptcha ', token)
           if (token) {
             this.signup()
           }
+        });
       });
-    });
+    } else {
+      this.logger.log('[SIGN-UP] signup without recaptcha' )
+      this.signup()
+    }
   }
 
 
   signup() {
+    this.logger.log('[SIGN-UP] !!!! ')
     this.showSpinnerInLoginBtn = true;
     const email = this.userForm.value['email']
     this.logger.log('[SIGN-UP] signup  email ', email)
@@ -712,15 +721,15 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
         // this.logger.log('self.EXIST_STORED_ROUTE: ', self.EXIST_STORED_ROUTE, self.storedRoute);
         // this.logger.log('self.SKIP_WIZARD: ', self.SKIP_WIZARD);
 
-        // console.log('self.EXIST_STORED_ROUTE: ', self.EXIST_STORED_ROUTE, self.storedRoute);
-        // console.log('self.SKIP_WIZARD: ', self.SKIP_WIZARD);
+        // this.logger.log('self.EXIST_STORED_ROUTE: ', self.EXIST_STORED_ROUTE, self.storedRoute);
+        // this.logger.log('self.SKIP_WIZARD: ', self.SKIP_WIZARD);
 
         if (!self.EXIST_STORED_ROUTE) {
           if (self.SKIP_WIZARD === false) {
 
             self.logger.log('self.areActivePay: ', self.areActivePay);
             // self.router.navigate(['/create-project']);
-            
+
             // self.createNewProject(signupResponse)
 
             // self.router.navigate(['/create-new-project']);
@@ -731,7 +740,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
             } else if (!self.areActivePay) {
               // self.router.navigate(['/create-new-project']);
               self.createNewProject(signupResponse)
-              
+
             }
 
           } else {
@@ -809,15 +818,15 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
         this.logger.log('[SIGN-UP] CREATE NEW PROJECT - POST REQUEST * COMPLETE *');
         this.projectService.newProjectCreated(true);
 
-        
+
 
         const trialStarDate = moment(new Date(this.new_project.createdAt)).format("YYYY-MM-DD hh:mm:ss")
         // this.logger.log('[WIZARD - CREATE-PRJCT] POST DATA PROJECT trialStarDate ', trialStarDate);
         const trialEndDate = moment(new Date(this.new_project.createdAt)).add(14, 'days').format("YYYY-MM-DD hh:mm:ss")
         // this.logger.log('[WIZARD - CREATE-PRJCT] POST DATA PROJECT trialEndDate', trialEndDate)
 
-        this.trackCreateProject(signupResponse, trialStarDate,  trialEndDate)
-        
+        this.trackCreateProject(signupResponse, trialStarDate, trialEndDate)
+
 
         // setTimeout(() => {
         //   this.DISPLAY_SPINNER = false;
@@ -903,7 +912,7 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
     });
   }
 
-  trackCreateProject(signupResponse, trialStarDate,  trialEndDate) {
+  trackCreateProject(signupResponse, trialStarDate, trialEndDate) {
     if (!isDevMode()) {
       if (window['analytics']) {
         try {

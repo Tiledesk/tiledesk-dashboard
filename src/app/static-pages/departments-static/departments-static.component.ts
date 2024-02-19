@@ -185,7 +185,7 @@ export class DepartmentsStaticComponent  extends PricingBaseComponent implements
 
 
   goToPricing() {
-    console.log('[DEPTS-STATIC] - goToPricing projectId ', this.projectId);
+    this.logger.log('[DEPTS-STATIC] - goToPricing projectId ', this.projectId);
     if (!this.appSumoProfile) {
       if (this.payIsVisible) {
         if (this.USER_ROLE === 'owner') {

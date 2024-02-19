@@ -13,7 +13,7 @@ import { HomeNewsFeedModalComponent } from './home-news-feed-modal/home-news-fee
 export class HomeNewsFeedComponent implements OnInit, AfterViewInit {
   @ViewChild('scrollableElement') scrollableElement: ElementRef;
 
-  @Input() showskeleton: any;
+  // @Input() showskeleton: any;
   newsFeedList: any;
   displayScrollLeftBtn = false;
   displayScrollRightBtn = true;
@@ -32,7 +32,7 @@ export class HomeNewsFeedComponent implements OnInit, AfterViewInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.logger.log('[HOME-NEWS-FEED] showskeleton', this.showskeleton)
+    // this.logger.log('[HOME-NEWS-FEED] showskeleton', this.showskeleton)
   }
 
 
@@ -109,7 +109,7 @@ export class HomeNewsFeedComponent implements OnInit, AfterViewInit {
         const firstCardWidth = _firstCardWidth.offsetWidth;
         this.logger.log('[HOME-NEWS-FEED] firstCardWidth', firstCardWidth)
 
-        const arrowBtns = document.querySelectorAll(".wrapper i");
+        const arrowBtns = document.querySelectorAll(".news-wrapper i");
         const carouselChildrens = [...[carousel.children]];
         // console.log('[HOME-NEWS-FEED] carouselChildrens ', carouselChildrens)
         // console.log('[HOME-NEWS-FEED] arrowBtns ', arrowBtns)

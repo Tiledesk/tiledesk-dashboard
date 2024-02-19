@@ -114,7 +114,7 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
   getBrowserVersion() {
     this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
       this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
-      //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+      //  this.logger.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
     })
   }
 
@@ -148,7 +148,7 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
 
   getBrowserLanguage() {
     this.browser_lang = this.translate.getBrowserLang();
-    // console.log('[ActivitiesComponent] - browser_lang ', this.browser_lang)
+    // this.logger.log('[ActivitiesComponent] - browser_lang ', this.browser_lang)
   }
 
   getCurrentProject() {
@@ -592,11 +592,11 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
   // Navigation  
   // --------------------------------------------
   goToMemberProfile(participantId: any) {
-    console.log('goToMemberProfile, ', participantId)
+    this.logger.log('goToMemberProfile, ', participantId)
     if (participantId.includes('bot_')) {
       const bot_id = participantId.slice(4);
       const bot = this.botLocalDbService.getBotFromStorage(bot_id);
-      console.log('[ActivitiesComponent] stored bot ', bot)
+      this.logger.log('[ActivitiesComponent] stored bot ', bot)
 
       let botType = ''
       if (bot.type === 'internal') {

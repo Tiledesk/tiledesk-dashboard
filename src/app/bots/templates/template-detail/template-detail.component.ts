@@ -102,8 +102,8 @@ export class TemplateDetailComponent extends PricingBaseComponent implements OnI
     this._newlyCreatedProject = data.newlyCreatedProject
     this.callingPage = data.callingPage;
     this.prjct_profile_name = data.projectProfile
-    console.log('[TEMPLATE DETAIL] prjct_profile_name ', this.prjct_profile_name)
-    // console.log('[TEMPLATE DETAIL] template ', this.template)
+    this.logger.log('[TEMPLATE DETAIL] prjct_profile_name ', this.prjct_profile_name)
+    // this.logger.log('[TEMPLATE DETAIL] template ', this.template)
     // this.logger.log('[TEMPLATE DETAIL] projectid ', this.projectid)
     if (this.template) {
       this.bot = this.template
@@ -136,10 +136,10 @@ export class TemplateDetailComponent extends PricingBaseComponent implements OnI
   getFaqKbByProjectId() {
     // this.faqKbService.getAllBotByProjectId().subscribe((faqKb: any) => {
     this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
-      console.log('[TEMPLATE DETAIL] - GET BOTS BY PROJECT ID > RES', faqKb);
+      this.logger.log('[TEMPLATE DETAIL] - GET BOTS BY PROJECT ID > RES', faqKb);
       if (faqKb) {
         this.chatBotCount = faqKb.length;
-        console.log('[TEMPLATE DETAIL] - GET BOTS BY PROJECT ID > chatBotCount', this.chatBotCount);
+        this.logger.log('[TEMPLATE DETAIL] - GET BOTS BY PROJECT ID > chatBotCount', this.chatBotCount);
       }
     }, (error) => {
       this.logger.error('[TEMPLATE DETAIL] GET BOTS ERROR ', error);
@@ -259,7 +259,7 @@ export class TemplateDetailComponent extends PricingBaseComponent implements OnI
 
 
   importTempalte() {
-    console.log('[TEMPLATE DETAIL] importTempalte chatBotCount ',this.chatBotCount ,' chatBotLimit ', this.chatBotLimit, ' USER_ROLE ', this.USER_ROLE) 
+    this.logger.log('[TEMPLATE DETAIL] importTempalte chatBotCount ',this.chatBotCount ,' chatBotLimit ', this.chatBotLimit, ' USER_ROLE ', this.USER_ROLE) 
     // if (this.chatBotCount < this.chatBotLimit) {
     //   this.forkTemplate()
     // } else if (this.chatBotCount >= this.chatBotLimit) {
@@ -274,14 +274,14 @@ export class TemplateDetailComponent extends PricingBaseComponent implements OnI
     if (this.USER_ROLE !== 'agent') {
       if (this.chatBotLimit) {
         if (this.chatBotCount < this.chatBotLimit) {
-          console.log('[INSTALL-TEMPLATE] USECASE  chatBotCount < chatBotLimit: RUN FORK')
+          this.logger.log('[INSTALL-TEMPLATE] USECASE  chatBotCount < chatBotLimit: RUN FORK')
           this.forkTemplate()
         } else if (this.chatBotCount >= this.chatBotLimit) {
-          console.log('[INSTALL-TEMPLATE] USECASE  chatBotCount >= chatBotLimit DISPLAY MODAL')
+          this.logger.log('[INSTALL-TEMPLATE] USECASE  chatBotCount >= chatBotLimit DISPLAY MODAL')
           this.presentDialogReachedChatbotLimit()
         }
       } else if (!this.chatBotLimit) {
-        console.log('[INSTALL-TEMPLATE] USECASE  NO chatBotLimit: RUN FORK')
+        this.logger.log('[INSTALL-TEMPLATE] USECASE  NO chatBotLimit: RUN FORK')
         this.forkTemplate()
       }
     } if (this.USER_ROLE === 'agent') {
@@ -295,7 +295,7 @@ export class TemplateDetailComponent extends PricingBaseComponent implements OnI
 
   presentDialogReachedChatbotLimit() {
     this.closeDialog()
-    console.log('[TEMPLATE DETAIL] openDialog presentDialogReachedChatbotLimit prjct_profile_name ', this.prjct_profile_name)
+    this.logger.log('[TEMPLATE DETAIL] openDialog presentDialogReachedChatbotLimit prjct_profile_name ', this.prjct_profile_name)
     const dialogRef = this.dialog.open(ChatbotModalComponent, {
       backdropClass: 'cdk-overlay-transparent-backdrop',
       hasBackdrop: true,
@@ -308,7 +308,7 @@ export class TemplateDetailComponent extends PricingBaseComponent implements OnI
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(`[TEMPLATE DETAIL] Dialog result: ${result}`);
+      this.logger.log(`[TEMPLATE DETAIL] Dialog result: ${result}`);
     });
   }
 

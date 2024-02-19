@@ -158,7 +158,7 @@ export class SidebarUserDetailsComponent implements OnInit {
 
 
       if (this.current_prjct) {
-        console.log('[SIDEBAR] PROJECT current_prjct', this.current_prjct);
+        this.logger.log('[SIDEBAR] PROJECT current_prjct', this.current_prjct);
 
         this.is_active_subscription = this.current_prjct.id_project.isActiveSubscription;
         this.plan_name = this.current_prjct.id_project.profile.name;
@@ -166,11 +166,11 @@ export class SidebarUserDetailsComponent implements OnInit {
         this.prjct_name = this.current_prjct.id_project.name;
         this.trialExpired = this.current_prjct.id_project.trialExpired
         this.extra3 = this.current_prjct.id_project.profile.extra3;
-        console.log('[SIDEBAR] PROJECT is_active_subscription', this.is_active_subscription);
-        console.log('[SIDEBAR] PROJECT plan_name ', this.plan_name);
-        console.log('[SIDEBAR] PROJECT plan_typeD', this.plan_type);
-        console.log('[SIDEBAR] PROJECT trialExpired', this.trialExpired);
-        console.log('[SIDEBAR] PROJECT extra3', this.extra3);
+        this.logger.log('[SIDEBAR] PROJECT is_active_subscription', this.is_active_subscription);
+        this.logger.log('[SIDEBAR] PROJECT plan_name ', this.plan_name);
+        this.logger.log('[SIDEBAR] PROJECT plan_typeD', this.plan_type);
+        this.logger.log('[SIDEBAR] PROJECT trialExpired', this.trialExpired);
+        this.logger.log('[SIDEBAR] PROJECT extra3', this.extra3);
 
         if (this.extra3) {
           this.appSumoProfile = APP_SUMO_PLAN_NAME[this.extra3];

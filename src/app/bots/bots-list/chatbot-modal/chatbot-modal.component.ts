@@ -3,6 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { BrandService } from 'app/services/brand.service';
+import { LoggerService } from 'app/services/logger/logger.service';
 
 @Component({
   selector: 'appdashboard-chatbot-modal',
@@ -23,10 +24,11 @@ export class ChatbotModalComponent implements OnInit {
     private translate: TranslateService,
     private router: Router,
     public brandService: BrandService,
+    private logger: LoggerService
   ) {
-    console.log('[CHATBOT-MODAL] data ', data)
+    this.logger.log('[CHATBOT-MODAL] data ', data)
     if (data && data.projectProfile) {
-      console.log('[CHATBOT-MODAL] id_project ', data.projectProfile)
+      this.logger.log('[CHATBOT-MODAL] id_project ', data.projectProfile)
       this.getTranslatedStringChatbotLimitReached(data.projectProfile)
     }
     if (data && data.callingPage) { 
@@ -36,22 +38,22 @@ export class ChatbotModalComponent implements OnInit {
     }
     if (data && data.projectId) {
       this.id_project = data.projectId;
-      console.log('[CHATBOT-MODAL] id_project ', this.id_project)
+      this.logger.log('[CHATBOT-MODAL] id_project ', this.id_project)
     }
 
     if (data && data.prjctProfileType) {
       this.prjctProfileType = data.prjctProfileType;
-      console.log('[CHATBOT-MODAL] prjctProfileType ', this.prjctProfileType)
+      this.logger.log('[CHATBOT-MODAL] prjctProfileType ', this.prjctProfileType)
     }
 
     if (data && data.subscriptionIsActive) {
       this.subscriptionIsActive = data.subscriptionIsActive;
-      console.log('[CHATBOT-MODAL] subscriptionIsActive ', this.subscriptionIsActive)
+      this.logger.log('[CHATBOT-MODAL] subscriptionIsActive ', this.subscriptionIsActive)
     }
 
     if (data && data.trialExpired) {
       this.trialExpired = data.trialExpired;
-      console.log('[CHATBOT-MODAL] trialExpired ', this.trialExpired)
+      this.logger.log('[CHATBOT-MODAL] trialExpired ', this.trialExpired)
     }
  
 
@@ -68,7 +70,7 @@ export class ChatbotModalComponent implements OnInit {
       .subscribe((text: string) => {
 
         this.chatbotLimitReached = text;
-        console.log('+ + + ChatbotLimitReached', text)
+        this.logger.log('+ + + ChatbotLimitReached', text)
       });
   }
 

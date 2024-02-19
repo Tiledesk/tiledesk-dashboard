@@ -606,7 +606,7 @@ export class ContactInfoComponent implements OnInit, OnChanges, OnDestroy, After
   toggleAddress() {
     
     this.showAllAddress = !this.showAllAddress;
-    console.log('here yes' , this.showAllAddress)
+    this.logger.log('here yes' , this.showAllAddress)
     const addressArrowIconElem = <HTMLElement>document.querySelector('#address-arrow-down');
     this.logger.log('toggleAddress ', addressArrowIconElem)
     if (this.showAllAddress === true) {

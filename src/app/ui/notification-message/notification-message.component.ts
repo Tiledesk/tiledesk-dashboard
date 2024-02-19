@@ -224,8 +224,8 @@ export class NotificationMessageComponent extends PricingBaseComponent implement
 
 
   cancelSubscription() {
-    console.log('NOTIFICATION-MSG profile_name_for_segment ', this.profile_name_for_segment)
-    console.log('NOTIFICATION-MSG subscription_id ', this.subscription_id)
+    this.logger.log('NOTIFICATION-MSG profile_name_for_segment ', this.profile_name_for_segment)
+    this.logger.log('NOTIFICATION-MSG subscription_id ', this.subscription_id)
     if (this.USER_ROLE === 'owner') {
       this.notify.cancelSubscriptionCompleted(false)
 

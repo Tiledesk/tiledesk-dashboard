@@ -270,7 +270,7 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
     let error = this.msgErrorAddUpdateKb;
     this.kbService.addKb(body).subscribe((resp: any) => {
       let kb = resp.value;
-      console.log("onAddKb:", kb);
+      this.logger.log("onAddKb:", kb);
       if(kb.lastErrorObject && kb.lastErrorObject.updatedExisting === true){
         const index = this.kbsList.findIndex(item => item._id === kb._id);
         if (index !== -1) {
@@ -665,7 +665,7 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
 
   onOpenBaseModalDetail(kb){
     this.kbid_selected = kb;
-    console.log('onOpenBaseModalDetail:: ', this.kbid_selected);
+    this.logger.log('onOpenBaseModalDetail:: ', this.kbid_selected);
     this.baseModalDetail=true;
   }
 

@@ -17,9 +17,11 @@
 </div>
 <div class="main-content" style="padding-top: 0px">
   <div class="container-fluid">
-
-    <div class="row">
-      <div class="col-xs-12" class="alert-exceed-numb-of-seats-allowed"
+    <!-- -------------------------------------------------- -->
+    <!--  PROJECT PROFILE INFO  -->
+    <!-- -------------------------------------------------- -->
+    <div class="row" *ngIf="areActivePay">
+      <!-- <div class="col-xs-12" class="alert-exceed-numb-of-seats-allowed"
         *ngIf="prjct_profile_type === 'payment' && subscription_is_active === false">
         <i class="material-icons" style="vertical-align: middle; color: #f44336;">error_outline</i>
         <span class="msg-alert">{{ "Pricing.YourSubscriptionToThe" | translate}}
@@ -38,11 +40,9 @@
             </button>
           </div>
         </span>
-      </div>
+      </div> -->
 
-      <!-- -------------------------------------------------- -->
-      <!--  PROJECT PROFILE INFO  -->
-      <!-- -------------------------------------------------- -->
+
       <div class="row" *ngIf="areActivePay">
         <div class="col-md-12">
           <div class="card card card--no-border" style="margin-top: 0px; margin-bottom: 0px;">
@@ -50,34 +50,77 @@
             (prjct_profile_type === 'free' && trial_expired === false) || 
             (prjct_profile_type === 'free' && trial_expired === true)) && 
             (projectUsersLength + countOfPendingInvites <= seatsLimit))">
-            
-                <i class="material-icons" style="vertical-align: middle; color: #039be5;"> info </i>
-                <span class="msg-alert">
-                  {{ "YouCurrentlyAreUsing" | translate }}
-                  {{ this.projectUsersLength + this.countOfPendingInvites }}
-                  {{ "Of" | translate }} {{ seatsLimit }} {{ "ActiveOperatorSeatsInThe" | translate }}
-                  <span style="text-transform: capitalize">
-                    {{ prjct_profile_name }}</span> - <span style="color: #039be5; cursor:pointer"
-                    (click)="getMoreOperatorsSeats()">{{ "GetMore" | translate }} </span>
-                </span>
-              
+
+              <i class="material-icons" style="vertical-align: middle; color: #039be5;"> info </i>
+              <span class="msg-alert">
+                {{ "YouCurrentlyAreUsing" | translate }}
+                {{ this.projectUsersLength + this.countOfPendingInvites }}
+                {{ "Of" | translate }} {{ seatsLimit }} {{ "ActiveOperatorSeatsInThe" | translate }}
+                <span style="text-transform: capitalize">
+                  {{ prjct_profile_name }}</span> - <span style="color: #039be5; cursor:pointer"
+                  (click)="getMoreOperatorsSeats()">{{ "GetMore" | translate }} </span>
+              </span>
+
             </div>
-            <div class="card-content alert-exceed-numb-of-seats-allowed-sub-active" *ngIf="(((prjct_profile_type === 'payment' && subscription_is_active === true) ||
+            <!-- <div class="card-content alert-exceed-numb-of-seats-allowed-sub-active" 
+            *ngIf="(((prjct_profile_type === 'payment' && subscription_is_active === true) ||
             (prjct_profile_type === 'free' && trial_expired === false) || 
             (prjct_profile_type === 'free' && trial_expired === true))  &&
-            (projectUsersLength + countOfPendingInvites > seatsLimit))">
-          
-                <!-- <i class="material-icons" style="vertical-align: middle; color: #039be5;"> info </i> -->
+            (projectUsersLength + countOfPendingInvites > seatsLimit))"> -->
+            <div class="card-content  alert-exceed-numb-of-seats-allowed"
+              style="background: #f44336;color: #fff;text-align: center;"
+              *ngIf="(prjct_profile_type === 'free') && (projectUsersLength + countOfPendingInvites > seatsLimit)">
+
+              <span class="msg-alert">
+                {{ 'NumberOfTeammatesExceedsThePlan_2' | translate: tParamsPlanAndSeats }}
+              </span>
+              <div class="upgrade---plan-btn-wpr" style="text-align: center;">
+                <button class="upgrade---plan-btn" (click)="presentGoToPricingModal()">
+                  {{ "Pricing.UpgradePlan" | translate }}
+                </button>
+              </div>
+
+            </div>
+
+            <div class="card-content alert-exceed-numb-of-seats-allowed"
+                style="background: #f44336;color: #fff;text-align: center;"
+                *ngIf="(prjct_profile_type === 'payment' && subscription_is_active === true) && (projectUsersLength + countOfPendingInvites > seatsLimit)">
                 <span class="msg-alert">
                   {{ 'NumberOfTeammatesExceedsThePlan_2' | translate: tParamsPlanAndSeats }}
                 </span>
+                <!-- (click)="openModalTrialExpired() presentContactUsModal()" -->
+                <div class="upgrade---plan-btn-wpr" style="text-align: center;">
+                  <button class="upgrade---plan-btn" (click)="presentContactUsModal()">
+                    {{ "Pricing.UpgradePlan" | translate }}
+                  </button>
+                </div>
+              </div>
+
+              <div class="card-content  alert-exceed-numb-of-seats-allowed"
+              style="background: #f44336;color: #fff;text-align: center;"
+              *ngIf="(prjct_profile_type === 'payment' && subscription_is_active === false) && (projectUsersLength + countOfPendingInvites > PLAN_SEATS.free)">
+
+
+              <span class="msg-alert">{{ "Pricing.YourSubscriptionToThe" | translate}}
+                <span style="text-transform: capitalize">
+                  {{ prjct_profile_name }}
+                </span>
+                {{ "Pricing.HasExpiredOn" | translate}} {{ subscription_end_date | amDateFormat: 'LL' }}
+
+                <span style="display: block;" *ngIf="projectUsersLength + countOfPendingInvites > PLAN_SEATS.free">
+                  {{'NumberOfTeammatesExceedsThePlan' | translate: tParamsFreePlanSeatsNum}}
+                </span>
+
                 <div class="upgrade---plan-btn-wpr" style="text-align: center;">
                   <button class="upgrade---plan-btn" (click)="openModalSubsExpired()">
                     {{ "Pricing.UpgradePlan" | translate }}
                   </button>
                 </div>
-             
+              </span>
+
             </div>
+
+
           </div>
         </div>
       </div>
@@ -311,7 +354,7 @@
               <!-- -------------------------------------------------------- -->
               <div *ngIf="CURRENT_USER_ROLE !== 'agent'" class="row" style="margin-top: 12px;">
                 <label class="col-sm-2 custom-label" style="white-space: nowrap;">
-                  {{'Tags.Tag'  | translate}}
+                  {{'Tags.Tag' | translate}}
                 </label>
                 <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                   <div class="pu-tag-input-wrapper">

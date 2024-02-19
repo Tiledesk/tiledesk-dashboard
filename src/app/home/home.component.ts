@@ -188,6 +188,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   userHasClickedDisplayWAWizard: boolean = false
   PROJECT_ATTRIBUTES: any
   showskeleton: boolean = true;
+  showsNewsFeedSkeleton : boolean = true;
   custom_company_home_logo: string;
   companyLogoNoText: string;
   displayNewsAndDocumentation: string;
@@ -369,19 +370,30 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   getProjectBots() {
     this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
       this.chatbots = faqKb
-      console.log('[HOME] - GET FAQKB * chatbots *', this.chatbots);
+      this.logger.log('[HOME] - GET FAQKB * chatbots *', this.chatbots);
 
     }, (error) => {
       this.logger.error('[HOME] - GET FAQKB - ERROR ', error);
       this.showskeleton = false;
-      // this.showSpinner = false
+      this.delayNewsFeedSkeleton()
+
+      
     }, () => {
-      console.log('[HOME] - GET FAQKB * COMPLETE *');
+      this.logger.log('[HOME] - GET FAQKB * COMPLETE *');
       this.showskeleton = false;
-      // this.showSpinner = false
+      this.delayNewsFeedSkeleton()
 
     });
   }
+
+  delayNewsFeedSkeleton() {
+     setTimeout(() => {
+        this.showsNewsFeedSkeleton = false;
+        console.log('[HOME] - skeleton showskeleton ', this.showskeleton );
+      }, 500);
+  }
+
+
 
   // hasFinishedGetProjectBots() {
   //   // this.showskeleton = false;
@@ -465,7 +477,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       }
 
       this.current_prjct = projects.find(prj => prj.id_project.id === projectId);
-      console.log('[HOME] - CURRENT PROJECT - current_prjct (findCurrentProjectAmongAll)', this.current_prjct);
+      this.logger.log('[HOME] - CURRENT PROJECT - current_prjct (findCurrentProjectAmongAll)', this.current_prjct);
       if (this.current_prjct) {
         this.logger.log('[HOME] - CURRENT PROJECT - current_prjct  > attributes', this.current_prjct.id_project.attributes);
       }
@@ -488,25 +500,25 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       const projectProfileData = this.current_prjct.id_project.profile
 
       this.prjct_name = this.current_prjct.id_project.name;
-      console.log('[HOME] CURRENT PROJECT - NAME ', this.prjct_name)
+      this.logger.log('[HOME] CURRENT PROJECT - NAME ', this.prjct_name)
 
       this.prjct_profile_name = projectProfileData.name;
-      console.log('[HOME] CURRENT PROJECT - Profile name (prjct_profile_name)', this.prjct_profile_name)
+      this.logger.log('[HOME] CURRENT PROJECT - Profile name (prjct_profile_name)', this.prjct_profile_name)
 
       this.profile_name = projectProfileData.name;
-      console.log('[HOME] CURRENT PROJECT - Profile name (profile_name)', this.profile_name)
+      this.logger.log('[HOME] CURRENT PROJECT - Profile name (profile_name)', this.profile_name)
 
       this.prjct_trial_expired = this.current_prjct.id_project.trialExpired;
-      console.log('[HOME] CURRENT PROJECT - TRIAL EXIPIRED', this.prjct_trial_expired)
+      this.logger.log('[HOME] CURRENT PROJECT - TRIAL EXIPIRED', this.prjct_trial_expired)
 
       this.prjct_profile_type = projectProfileData.type;
-      console.log('[HOME] CURRENT PROJECT - PROFILE TYPE', this.prjct_profile_type)
+      this.logger.log('[HOME] CURRENT PROJECT - PROFILE TYPE', this.prjct_profile_type)
 
       this.subscription_is_active = this.current_prjct.id_project.isActiveSubscription;
-      console.log('[HOME] CURRENT PROJECT - SUB IS ACTIVE', this.subscription_is_active)
+      this.logger.log('[HOME] CURRENT PROJECT - SUB IS ACTIVE', this.subscription_is_active)
 
       this.subscription_end_date = projectProfileData.subEnd;
-      console.log('[HOME] CURRENT PROJECT - SUB END DATE', this.subscription_end_date)
+      this.logger.log('[HOME] CURRENT PROJECT - SUB END DATE', this.subscription_end_date)
 
       if (projectProfileData && projectProfileData.extra3) {
         this.logger.log('[HOME] Find Current Project Among All extra3 ', projectProfileData.extra3)
@@ -658,21 +670,21 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.logger.log('[HOME] - Find Current Project Among All project daysDiffNowFromProjctCreated', daysDiffNowFromProjctCreated)
 
       const hasEmittedTrialEnded = localStorage.getItem('dshbrd----' + this.current_prjct.id_project._id)
-      console.log('[HOME] - Find Current Project Among All hasEmittedTrialEnded  ', hasEmittedTrialEnded, '  for project id', this.current_prjct.id_project._id)
+      this.logger.log('[HOME] - Find Current Project Among All hasEmittedTrialEnded  ', hasEmittedTrialEnded, '  for project id', this.current_prjct.id_project._id)
       this.logger.log('[HOME] - Find Current Project Among All - current_prjct - prjct_profile_type 2', this.prjct_profile_type);
       // if ((this.prjct_profile_type === 'free' && daysDiffNowFromProjctCreated >= 30) || (this.prjct_profile_type === 'payment' && daysDiffNowFromProjctCreated < 30)) {
       if ((this.prjct_trial_expired === true && hasEmittedTrialEnded === null) || (this.prjct_profile_type === 'payment' && hasEmittedTrialEnded === null)) {
         // this.logger.log('[HOME] - Find Current Project Among All - BEFORE  Emitting TRIAL ENDED')
         // if (hasEmittedTrialEnded === null) {
 
-        console.log('[HOME] - Find Current Project Among All - Emitting TRIAL ENDED profile_name_for_segment', this.profile_name_for_segment)
+        this.logger.log('[HOME] - Find Current Project Among All - Emitting TRIAL ENDED profile_name_for_segment', this.profile_name_for_segment)
         // ------------------------------------
         // @ Segment: emit Trial Ended
         // ------------------------------------
         if (!isDevMode()) {
           setTimeout(() => {
             if (window['analytics']) {
-              console.log('[HOME] - Find Current Project Among All - Emitting TRIAL ENDED profile_name_for_segment', this.profile_name_for_segment)
+              this.logger.log('[HOME] - Find Current Project Among All - Emitting TRIAL ENDED profile_name_for_segment', this.profile_name_for_segment)
               try {
                 window['analytics'].track('Trial Ended', {
                   "userId": this.user._id,
@@ -1451,9 +1463,9 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   installApp() {
-    console.log('[HOME] installApp appTitle ', this.appTitle)
+    this.logger.log('[HOME] installApp appTitle ', this.appTitle)
     const isAvailable = this.checkPlanAndPresentModal(this.appTitle)
-    console.log('[APP-STORE] isAvaibleFromPlan ', isAvailable)
+    this.logger.log('[APP-STORE] isAvaibleFromPlan ', isAvailable)
     if (isAvailable === false) {
       return
     }
@@ -1672,9 +1684,9 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   goToWhatsAppDetails() {
-    console.log('[HOME] goToWhatsAppDetails appTitle ', this.appTitle)
+    this.logger.log('[HOME] goToWhatsAppDetails appTitle ', this.appTitle)
     const isAvailable = this.checkPlanAndPresentModal(this.appTitle)
-    console.log('[HOME] isAvaibleFromPlan ', isAvailable)
+    this.logger.log('[HOME] isAvaibleFromPlan ', isAvailable)
     if (isAvailable === false) {
       return
     }
@@ -1687,9 +1699,9 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   openInAppStoreInstall() {
-    console.log('[HOME] openInAppStoreInstall appTitle ', this.appTitle)
+    this.logger.log('[HOME] openInAppStoreInstall appTitle ', this.appTitle)
     const isAvailable = this.checkPlanAndPresentModal(this.appTitle)
-    console.log('[APP-STORE] isAvaibleFromPlan ', isAvailable)
+    this.logger.log('[APP-STORE] isAvaibleFromPlan ', isAvailable)
     if (isAvailable === false) {
       return
     }
@@ -2980,7 +2992,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   goToSubscription() {
-    console.log('[HOME] goToSubscription')
+    this.logger.log('[HOME] goToSubscription')
 
     if (this.USER_ROLE === 'owner') {
       this.router.navigate(['project/' + this.projectId + '/project-settings/payments']);
@@ -2991,7 +3003,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   // Not used
   goToSubscriptionOrOpenModalSubsExpired() {
-    console.log('[HOME] goToSubscriptionOrOpenModalSubsExpired')
+    this.logger.log('[HOME] goToSubscriptionOrOpenModalSubsExpired')
 
     if (this.USER_ROLE === 'owner') {
       if (this.prjct_profile_type === 'free') {

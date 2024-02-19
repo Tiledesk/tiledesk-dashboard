@@ -206,6 +206,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   isVisiblePAY: boolean;
   isVisibleMON: boolean;
   isVisibleCNT: boolean;
+  isVisibleINT: boolean;
   storageBucket: string;
   baseUrl: string;
   default_dept_id: string;
@@ -565,7 +566,20 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           this.isVisibleCNT = true;
         }
       }
+
+      if (key.includes("INT")) {
+        let int = key.split(":");
+        if (int[1] === "F") {
+          this.isVisibleINT = false;
+        } else {
+          this.isVisibleINT = true;
+        }
+      }
     });
+
+    if (!this.public_Key.includes("INT")) {
+      this.isVisibleINT = false;
+    }
 
     if (!this.public_Key.includes("CAR")) {
       this.isVisibleCAR = false;

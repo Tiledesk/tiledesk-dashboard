@@ -1,5 +1,35 @@
 # tiledesk-dashboard
 
+### 2.5.5
+- Deploys in production
+- Fixes bug: Admins can't invite teammates
+
+### 2.5.4
+- Deploys in production
+- Restyles the "Your Projects" page
+
+### 2.5.3
+- Minor improvements
+
+### 2.5.2
+- Minor improvements
+
+### 2.5.1
+- Fixes bug: old knowledge bases are not visible
+
+### 2.5.0
+- Deploys in production
+- Adds the integrations page 
+- Improves the Knowledge Bases
+- New Pricing
+
+### 2.5.0-rc9
+- Fixing of the pricing page
+- reCaptcha fixing
+
+### 2.5.0-rc8
+- Adds a loading spinner on the integrations page
+
 ### 2.5.0-rc7
 - Bug fixing
 

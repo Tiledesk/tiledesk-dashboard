@@ -202,7 +202,7 @@ export class ProjectPlanService {
   }
 
   getProjectByIdAndPublish(project_id: string, calledBy: string) {
-     console.log('[PROJECT-PLAN-SERV] - getProjectByIdAndPublish (called', calledBy );
+    this.logger.log('[PROJECT-PLAN-SERV] - getProjectByIdAndPublish (called', calledBy );
     
     this.projectService.getProjectById(project_id).subscribe((project: any) => {
       this.logger.log('[PROJECT-PLAN-SERV] - GET PROJECT BY ID - project ', project, '(called', calledBy, ')');

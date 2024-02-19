@@ -585,7 +585,7 @@ export class HomeCreateTeammateComponent extends PricingBaseComponent implements
   }
 
   openModalSubsExpired() {
-    console.log('[HOME-CREATE-TEAMMATE] openModalSubsExpired ')
+    this.logger.log('[HOME-CREATE-TEAMMATE] openModalSubsExpired ')
     if (this.USER_ROLE === 'owner') {
       if (this.profile_name !== PLAN_NAME.C && this.profile_name !== PLAN_NAME.F ) {
         this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);

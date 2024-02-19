@@ -173,7 +173,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
     this.getFaqKbByProjectId();
     this.getProjectPlan();
     this.getUserRole();
-    console.log('[BOT-CREATE] dlgflwSelectedLang ', this.dlgflwSelectedLang)
+    this.logger.log('[BOT-CREATE] dlgflwSelectedLang ', this.dlgflwSelectedLang)
   }
 
   ngOnDestroy() {
@@ -196,10 +196,10 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
 
   getFaqKbByProjectId() {
     this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
-      console.log('[BOT-CREATE] - GET BOTS BY PROJECT ID > RES', faqKb);
+      this.logger.log('[BOT-CREATE] - GET BOTS BY PROJECT ID > RES', faqKb);
       if (faqKb) {
         this.chatBotCount = faqKb.length;
-        console.log('[BOT-CREATE] - GET BOTS BY PROJECT ID > chatBotCount', this.chatBotCount);
+        this.logger.log('[BOT-CREATE] - GET BOTS BY PROJECT ID > chatBotCount', this.chatBotCount);
       }
     }, (error) => {
       this.logger.error('[BOT-CREATE] GET BOTS ERROR ', error);
@@ -222,7 +222,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    // console.log('[BOT-CREATE] HAS_SELECTED_CREATE_BOT ', this.HAS_SELECTED_CREATE_BOT)
+    // this.logger.log('[BOT-CREATE] HAS_SELECTED_CREATE_BOT ', this.HAS_SELECTED_CREATE_BOT)
     if (this.HAS_SELECTED_CREATE_BOT === true) {
       if (!isDevMode()) {
         if (window['analytics']) {
@@ -261,7 +261,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
   toggleTabCreateImport(tabcreate) {
     //  this.logger.log("[BOT-CREATE] toggleTabCreateImport tabcreate", tabcreate);
     this.HAS_SELECTED_CREATE_BOT = tabcreate
-    // console.log("[BOT-CREATE] toggleTabCreateImport HAS_SELECTED_CREATE_BOT", this.HAS_SELECTED_CREATE_BOT);
+    // this.logger.log("[BOT-CREATE] toggleTabCreateImport HAS_SELECTED_CREATE_BOT", this.HAS_SELECTED_CREATE_BOT);
     if (this.HAS_SELECTED_CREATE_BOT === false) {
       if (!isDevMode()) {
         if (window['analytics']) {
@@ -303,14 +303,14 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
     if (this.USER_ROLE !== 'agent') {
       if (this.chatBotLimit) {
         if (this.chatBotCount < this.chatBotLimit) {
-          console.log('[BOT-CREATE] USECASE  chatBotCount < chatBotLimit: RUN IMPORT CHATBOT FROM JSON')
+          this.logger.log('[BOT-CREATE] USECASE  chatBotCount < chatBotLimit: RUN IMPORT CHATBOT FROM JSON')
           this.importChatbotFromJSON(formData)
         } else if (this.chatBotCount >= this.chatBotLimit) {
-          console.log('[BOT-CREATE] USECASE  chatBotCount >= chatBotLimit DISPLAY MODAL')
+          this.logger.log('[BOT-CREATE] USECASE  chatBotCount >= chatBotLimit DISPLAY MODAL')
           this.presentDialogReachedChatbotLimit()
         }
       } else if (!this.chatBotLimit) {
-        console.log('[BOT-CREATE] USECASE  NO chatBotLimit: RUN IMPORT CHATBOT FROM JSON')
+        this.logger.log('[BOT-CREATE] USECASE  NO chatBotLimit: RUN IMPORT CHATBOT FROM JSON')
         this.importChatbotFromJSON(formData)
       }
     } if (this.USER_ROLE === 'agent') {
@@ -343,7 +343,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
   }
 
   presentDialogReachedChatbotLimit() {
-    console.log('[BOT-CREATE] openDialog presentDialogReachedChatbotLimit prjct_profile_name ', this.prjct_profile_name)
+    this.logger.log('[BOT-CREATE] openDialog presentDialogReachedChatbotLimit prjct_profile_name ', this.prjct_profile_name)
     const dialogRef = this.dialog.open(ChatbotModalComponent, {
       backdropClass: 'cdk-overlay-transparent-backdrop',
       hasBackdrop: true,
@@ -356,7 +356,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(`[BOT-CREATE] Dialog result: ${result}`);
+      this.logger.log(`[BOT-CREATE] Dialog result: ${result}`);
     });
   }
 
@@ -556,15 +556,15 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
         this.project = project
         this.getProjectById(this.project._id)
       }
-      // console.log('[BOT-CREATE] 00 -> FAQ-KB EDIT ADD COMP project ID from AUTH service subscription  ', this.project._id)
+      // this.logger.log('[BOT-CREATE] 00 -> FAQ-KB EDIT ADD COMP project ID from AUTH service subscription  ', this.project._id)
     });
   }
 
   getProjectById(projectId) {
     this.projectService.getProjectById(projectId).subscribe((project: any) => {
-      // console.log('[BOT-CREATE] - GET PROJECT BY ID - PROJECT: ', project);
+      // this.logger.log('[BOT-CREATE] - GET PROJECT BY ID - PROJECT: ', project);
       this.prjct_profile_name = project.profile.name
-      // console.log('[BOT-CREATE] - GET PROJECT BY ID - PROJECT > prjct_profile_name: ', this.prjct_profile_name);
+      // this.logger.log('[BOT-CREATE] - GET PROJECT BY ID - PROJECT > prjct_profile_name: ', this.prjct_profile_name);
 
 
     }, error => {
@@ -604,18 +604,18 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
 
 
   createBlankTilebot() {
-    console.log('[BOTS-CREATE] createBlankTilebot chatBotCount ', this.chatBotCount, ' chatBotLimit ', this.chatBotLimit)
+    this.logger.log('[BOTS-CREATE] createBlankTilebot chatBotCount ', this.chatBotCount, ' chatBotLimit ', this.chatBotLimit)
     if (this.USER_ROLE !== 'agent') {
       if (this.chatBotLimit) {
         if (this.chatBotCount < this.chatBotLimit) {
-          console.log('[BOTS-CREATE] USECASE  chatBotCount < chatBotLimit: RUN CREATE FROM SCRATCH')
+          this.logger.log('[BOTS-CREATE] USECASE  chatBotCount < chatBotLimit: RUN CREATE FROM SCRATCH')
           this.createTilebotBotFromScratch()
         } else if (this.chatBotCount >= this.chatBotLimit) {
-          console.log('[BOTS-CREATE] USECASE  chatBotCount >= chatBotLimit DISPLAY MODAL')
+          this.logger.log('[BOTS-CREATE] USECASE  chatBotCount >= chatBotLimit DISPLAY MODAL')
           this.presentDialogReachedChatbotLimit()
         }
       } else if (!this.chatBotLimit) {
-        console.log('[BOTS-CREATE] USECASE  NO chatBotLimit: RUN CREATE FROM SCRATCH')
+        this.logger.log('[BOTS-CREATE] USECASE  NO chatBotLimit: RUN CREATE FROM SCRATCH')
         this.createTilebotBotFromScratch()
       } 
     } if (this.USER_ROLE === 'agent') {

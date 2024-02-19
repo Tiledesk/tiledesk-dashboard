@@ -120,7 +120,7 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
       this.UPLOAD_ENGINE_IS_FIREBASE = false;
       this.baseUrl = this.appConfigService.getConfig().baseImageUrl;
 
-      // console.log('[BOTS-TEMPLATES] IMAGE STORAGE ', this.baseUrl, 'usecase native')
+      // this.logger.log('[BOTS-TEMPLATES] IMAGE STORAGE ', this.baseUrl, 'usecase native')
     }
   }
 
@@ -166,7 +166,7 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
   }
 
   openDialog(template) {
-   console.log('openDialog TemplateDetailComponent')
+    this.logger.log('openDialog TemplateDetailComponent')
     const dialogRef = this.dialog.open(TemplateDetailComponent, {
       data: {
         template: template,
@@ -270,9 +270,9 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
   }
 
   getUserCommunityProfile(communityTemplates) {
-    console.log('[BOTS-TEMPLATES] USER CMNTY PROFILE ',communityTemplates);
+    this.logger.log('[BOTS-TEMPLATES] USER CMNTY PROFILE ',communityTemplates);
     communityTemplates.forEach(tmplt => {
-      console.log('BOTS-TEMPLATES] created by  ', tmplt.createdBy)
+      this.logger.log('BOTS-TEMPLATES] created by  ', tmplt.createdBy)
 
       this.usersService.getCurrentUserCommunityProfile(tmplt.createdBy)
         .subscribe((userCmntyProfile: any) => {
@@ -285,8 +285,8 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
             this.communityTemplates['createdByFullName'] = createdByFullName
           }
 
-          console.log('[BOTS-TEMPLATES] USER CMNTY PROFILE >  createdBy', createdByFullName);
-          // console.log('[BOTS-TEMPLATES] USER CMNTY PROFILE >  communityTemplates', this.communityTemplates);
+          this.logger.log('[BOTS-TEMPLATES] USER CMNTY PROFILE >  createdBy', createdByFullName);
+          // this.logger.log('[BOTS-TEMPLATES] USER CMNTY PROFILE >  communityTemplates', this.communityTemplates);
         })
     });
   }
@@ -439,19 +439,19 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
   createBlankTilebot() {
     // this.router.navigate(['project/' + this.project._id + '/bots/create/tilebot/blank']);
     // this.router.navigate(['project/' + this.project._id + '/chatbot/create']);
-    console.log('[BOTS-TEMPLATES] createBlankTilebot chatBotCount ', this.chatBotCount, ' chatBotLimit ', this.chatBotLimit, ' USER_ROLE ', this.USER_ROLE)
+    this.logger.log('[BOTS-TEMPLATES] createBlankTilebot chatBotCount ', this.chatBotCount, ' chatBotLimit ', this.chatBotLimit, ' USER_ROLE ', this.USER_ROLE)
     if (this.USER_ROLE !== 'agent') {
       if (this.chatBotLimit) {
         if (this.chatBotCount < this.chatBotLimit) {
-          console.log('[BOTS-TEMPLATES] USECASE  chatBotCount < chatBotLimit: RUN NAVIGATE')
+          this.logger.log('[BOTS-TEMPLATES] USECASE  chatBotCount < chatBotLimit: RUN NAVIGATE')
           this.router.navigate(['project/' + this.project._id + '/bots/create/tilebot/blank']);
 
         } else if (this.chatBotCount >= this.chatBotLimit) {
-          console.log('[BOTS-TEMPLATES] USECASE  chatBotCount >= chatBotLimit DISPLAY MODAL')
+          this.logger.log('[BOTS-TEMPLATES] USECASE  chatBotCount >= chatBotLimit DISPLAY MODAL')
           this.presentDialogReachedChatbotLimit()
         }
       } else if (!this.chatBotLimit) {
-        console.log('[BOTS-TEMPLATES] USECASE  NO chatBotLimit: RUN NAVIGATE')
+        this.logger.log('[BOTS-TEMPLATES] USECASE  NO chatBotLimit: RUN NAVIGATE')
         this.router.navigate(['project/' + this.project._id + '/bots/create/tilebot/blank']);
       }
     } if (this.USER_ROLE === 'agent') {
@@ -465,7 +465,7 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
   }
 
   presentDialogReachedChatbotLimit() {
-    console.log('[BOTS-TEMPLATES] openDialog presentDialogReachedChatbotLimit prjct_profile_name ', this.prjct_profile_name)
+    this.logger.log('[BOTS-TEMPLATES] openDialog presentDialogReachedChatbotLimit prjct_profile_name ', this.prjct_profile_name)
     const dialogRef = this.dialog.open(ChatbotModalComponent, {
       backdropClass: 'cdk-overlay-transparent-backdrop',
       hasBackdrop: true,
@@ -478,7 +478,7 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
+      this.logger.log(`Dialog result: ${result}`);
     });
   }
 

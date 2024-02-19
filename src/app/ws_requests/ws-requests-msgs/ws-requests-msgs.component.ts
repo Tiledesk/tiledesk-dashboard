@@ -1961,7 +1961,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           if (this.request.lead) {
             this.requester_id = this.request.lead.lead_id;
             this.contact_details = this.request.lead;
-            console.log('[WS-REQUESTS-MSGS] - contact_details ', this.contact_details)
+            this.logger.log('[WS-REQUESTS-MSGS] - contact_details ', this.contact_details)
             this.logger.log('[WS-REQUESTS-MSGS] - requester_id ', this.requester_id)
             // this.logger.log('this.request.lead ' , this.request.lead)
             if (this.request.lead.lead_id && this.request.lead.lead_id.startsWith('wab-')) {
@@ -1986,7 +1986,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
             }
             this.getRequesterAvailabilityStatus(this.requester_id);
           } else {
-            this.requester_id = "n.a.";
+            this.requester_id = "N/A";
           }
 
           // ---------------------------------------------------------
@@ -1996,13 +1996,13 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
             this.rating = this.request.rating + '/5'
             this.logger.log('<<<<  this.rating ', this.rating)
           } else {
-            this.rating = 'n.a./5'
+            this.rating = 'N/A 5'
           }
 
           if (this.request.rating_message) {
             this.rating_message = this.request.rating_message
           } else {
-            this.rating_message = 'n.a.'
+            this.rating_message = 'n/a'
           }
 
           // ---------------------------------------------------------
@@ -3521,7 +3521,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
 
   selectUser(user_id: string, user_firstname: string, user_lastname: string, user_email: string) {
-    console.log('[WS-REQUESTS-MSGS] - SELECTED USER ID ', user_id);
+    this.logger.log('[WS-REQUESTS-MSGS] - SELECTED USER ID ', user_id);
     this.logger.log('[WS-REQUESTS-MSGS] - SELECTED USER FIRSTNAME ', user_firstname);
     this.logger.log('[WS-REQUESTS-MSGS] - SELECTED USER LASTNAME ', user_lastname);
     this.logger.log('[WS-REQUESTS-MSGS] - SELECTED USER EMAIL ', user_email);
@@ -3535,12 +3535,12 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     // this.displayConfirmReassignmentModal = 'block';
 
     if (this.actionInModal === 'reassign') {
-      console.log('[WS-REQUESTS-MSGS] selectUser actionInModal ', this.actionInModal)
+      this.logger.log('[WS-REQUESTS-MSGS] selectUser actionInModal ', this.actionInModal)
       this.presentSwalModalReassignConversationToAgent(this.userid_selected, this.userfirstname_selected, this.userlastname_selected);
     }
 
     if (this.actionInModal === 'invite') {
-      console.log('[WS-REQUESTS-MSGS] selectUser actionInModal ', this.actionInModal)
+      this.logger.log('[WS-REQUESTS-MSGS] selectUser actionInModal ', this.actionInModal)
       this.presentSwalModalAddAgentToConversation(this.userid_selected, this.userfirstname_selected, this.userlastname_selected);
     }
   }
@@ -3591,7 +3591,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   presentSwalModalAddAgentToConversation(userid, userfirstname, userlastname) {
-    console.log('[WS-REQUESTS-MSGS] presentSwalModalAddAgentToConversation' )
+    this.logger.log('[WS-REQUESTS-MSGS] presentSwalModalAddAgentToConversation' )
     swal({
       title: this.addAgentMsg,
       text: this.translate.instant('VisitorsPage.TheRequestWillBeAssignedTo', {user: userfirstname + ' ' + userlastname}),
@@ -4113,7 +4113,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     if (this.isVisiblePaymentTab) {
       
       const isAvailable = this.checkPlanAndPresentModal()
-      console.log('[WS-REQUESTS-MSGS] feature is available ', isAvailable)
+      this.logger.log('[WS-REQUESTS-MSGS] feature is available ', isAvailable)
       if (isAvailable === false) {
         return
       }
@@ -4292,13 +4292,13 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     // this.logger.log('[WS-REQUESTS-MSGS] displayModalBanVisitor PLAN_NAME.C: ', PLAN_NAME.C)
     // this.logger.log('[WS-REQUESTS-MSGS] displayModalBanVisitor subscription_is_active: ', this.subscription_is_active)
     // if ((this.profile_name === PLAN_NAME.B && this.subscription_is_active === true) || (this.prjct_profile_type === 'free' && this.trial_expired === false)) {
-   console.log('displayModalBanVisitor leadid ', leadid)
-   console.log('displayModalBanVisitor bannedVisitorsArray ', this.bannedVisitorsArray)
+    this.logger.log('displayModalBanVisitor leadid ', leadid)
+    this.logger.log('displayModalBanVisitor bannedVisitorsArray ', this.bannedVisitorsArray)
 
 
     if (this.CURRENT_USER_ROLE === 'owner') {
       if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
-        console.log('displayModalBanVisitor HERE 1 ')
+        this.logger.log('displayModalBanVisitor HERE 1 ')
         if (this.subscription_is_active === true) {
           this.banVisitors(leadid, ipaddress)
         } else if (this.subscription_is_active === false) {
@@ -4310,12 +4310,12 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           } 
         }
       } else if (this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.B || this.profile_name === 'free') {
-        console.log('displayModalBanVisitor HERE 4 ')
+        this.logger.log('displayModalBanVisitor HERE 4 ')
         // this.presentModalFeautureAvailableOnlyWithTier3Plans(this.cPlanOnly)
         this.presentModalFeautureAvailableOnlyWithTier3Plans(this.fPlanOnly)
       } else if (this.profile_name === PLAN_NAME.D || this.profile_name === PLAN_NAME.E || this.profile_name === 'Sandbox') {
         this.presentModalFeautureAvailableOnlyWithTier3Plans(this.fPlanOnly)
-        console.log('displayModalBanVisitor HERE 5 ')
+        this.logger.log('displayModalBanVisitor HERE 5 ')
       }
     } else {
       // this.logger.log('displayModalBanVisitor HERE 5 ')
@@ -4619,7 +4619,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   goToMemberProfile(member, member_id: any) {
-   console.log('[WS-REQUESTS-MSGS] - goToMemberProfile - has clicked GO To MEMBER member ', member);
+    this.logger.log('[WS-REQUESTS-MSGS] - goToMemberProfile - has clicked GO To MEMBER member ', member);
 
     if (this.CHAT_PANEL_MODE === false) {
       if (member_id.indexOf('bot_') !== -1) {
@@ -4628,7 +4628,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         const id_bot = member_id.substring(4);
         // this.router.navigate(['project/' + this.id_project + '/botprofile/' + member_id]);
         const bot = this.botLocalDbService.getBotFromStorage(id_bot);
-        console.log('[WS-REQUESTS-MSGS] - goToMemberProfile - BOT FROM STORAGE ', bot)
+        this.logger.log('[WS-REQUESTS-MSGS] - goToMemberProfile - BOT FROM STORAGE ', bot)
 
         let botType = ''
         if (bot.type === 'internal') {

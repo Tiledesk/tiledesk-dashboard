@@ -73,7 +73,7 @@ export class NotifyService {
   ) {
     const brand = brandService.getBrand();
     this.salesEmail = brand['CONTACT_SALES_EMAIL'];
-    console.log('[NOTIFY-SERVICE] salesEmail ' ,  this.salesEmail) 
+    this.logger.log('[NOTIFY-SERVICE] salesEmail ' ,  this.salesEmail) 
   }
 
   presentContactUsModalToUpgradePlan(displayModal: boolean) {
@@ -127,7 +127,7 @@ export class NotifyService {
       this.displayModalEnterpiseSubsExpired = 'block';
       this.prjct_profile_name = prjctPlanName // + ' plan'
     }
-    console.log('[NOTIFY-SERVICE] - HasExpiredEnterpriseModal prjctPlanName ', prjctPlanName);
+    this.logger.log('[NOTIFY-SERVICE] - HasExpiredEnterpriseModal prjctPlanName ', prjctPlanName);
   }
 
   closeModalEnterpiseSubsExpired() {

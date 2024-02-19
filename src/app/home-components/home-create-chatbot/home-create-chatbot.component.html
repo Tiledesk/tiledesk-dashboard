@@ -297,27 +297,29 @@
       {{ 'NumberOfChatbotCreated' | translate: tParamsPlanAndChatBot }}
     </span>
 
-    <div *ngIf="(!subscription_is_active && prjct_profile_type === 'payment') && (countOfChatbots > chatBotLimit)">
-      <!-- (click)="openModalSubsExpired()" -->
-      <i class="material-icons" 
-        matTooltipClass="h-custom-mat-tooltip" 
-        matTooltip="Subscription payment problem"
-        #tooltip="matTooltip" matTooltipPosition='below' 
-        matTooltipHideDelay="100" 
-      
-        style="vertical-align: middle; color: #f44336; font-size: 20px;">
+    <div *ngIf="(!subscription_is_active && prjct_profile_type === 'payment') && (countOfChatbots > chatBotLimit)"
+      matTooltipClass="h-custom-mat-tooltip" 
+      matTooltip="Subscription payment problem"
+      #tooltip="matTooltip" matTooltipPosition='below' 
+      matTooltipHideDelay="100"
+      (click)="openModalSubsExpired()">
+      <!--  -->
+      <i class="material-icons"
+        style="vertical-align: middle; cursor: pointer; color: #f44336; font-size: 20px;     position: relative;
+        top: -1px;">
         error
       </i>
     </div>
-    <div *ngIf="(trial_expired && prjct_profile_type === 'free') && (countOfChatbots > chatBotLimit)">
-      <!-- (click)="openModalTrialExpired()" -->
+    <!-- (click)="openModalTrialExpired()" -->
+    <div style="cursor: pointer;" *ngIf="(trial_expired && prjct_profile_type === 'free') && (countOfChatbots > chatBotLimit)"
+      matTooltipClass="h-custom-mat-tooltip" 
+      matTooltip="Your 14-day free trial has expired"
+      #tooltip="matTooltip" 
+      matTooltipPosition='below' 
+      matTooltipHideDelay="100">
       <i class="material-icons" 
-        matTooltipClass="h-custom-mat-tooltip" 
-        matTooltip="Your 14-day free trial has expired"
-        #tooltip="matTooltip" 
-        matTooltipPosition='below' 
-        matTooltipHideDelay="100" 
-        style="vertical-align: middle; cursor: pointer; color: #f44336; font-size: 20px;">
+        style="vertical-align: middle; cursor: pointer; color: #f44336; font-size: 20px;  position: relative;
+        top: -1px;">
         error
       </i>
     </div>

@@ -128,7 +128,7 @@ export class IntegrationService {
     }
 
     const url = "https://api.qapla.it/1.2/getCouriers/?apiKey=" + key;
-    this.logger.debug('[INTEGRATION.SERV] - save integration URL: ', url);
+    this.logger.log('[INTEGRATION.SERV] - save integration URL: ', url);
 
     return this.http.get(url, httpOptions);
   }

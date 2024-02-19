@@ -183,7 +183,7 @@ export class ProjectService {
       })
     };
     const url = this.SERVER_BASE_PATH + 'modules/payments/stripe/' + subscriptionId;
-    console.log('[PROJECT-SERV] - GET SUBSCRIPTION PAYMENTS - URL', url);
+    this.logger.log('[PROJECT-SERV] - GET SUBSCRIPTION PAYMENTS - URL', url);
 
     return this._httpclient
       .get<[any]>(url, httpOptions)

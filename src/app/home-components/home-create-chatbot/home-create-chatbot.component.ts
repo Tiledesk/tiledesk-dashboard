@@ -466,20 +466,20 @@ export class HomeCreateChatbotComponent extends PricingBaseComponent implements 
   }
 
   createBlankTilebot() {
-    console.log('[BOTS-LIST] createBlankTilebot chatBotCount ', this.countOfChatbots, ' chatBotLimit ', this.chatBotLimit, ' PROJECT PLAN ', this.profile_name)
+    this.logger.log('[HOME-CREATE-CHATBOT] createBlankTilebot chatBotCount ', this.countOfChatbots, ' chatBotLimit ', this.chatBotLimit, ' PROJECT PLAN ', this.profile_name)
 
 
     if (this.USER_ROLE !== 'agent') {
       if (this.chatBotLimit) {
         if (this.countOfChatbots < this.chatBotLimit) {
-          console.log('[HOME-CREATE-CHATBOT] USECASE  countOfChatbots < chatBotLimit: RUN IMPORT CHATBOT FROM JSON')
+          this.logger.log('[HOME-CREATE-CHATBOT] USECASE  countOfChatbots < chatBotLimit: RUN IMPORT CHATBOT FROM JSON')
           this.presentModalAddBotFromScratch()
         } else if (this.countOfChatbots >= this.chatBotLimit) {
-          console.log('[HOME-CREATE-CHATBOT] USECASE  countOfChatbots >= chatBotLimit DISPLAY MODAL')
+          this.logger.log('[HOME-CREATE-CHATBOT] USECASE  countOfChatbots >= chatBotLimit DISPLAY MODAL')
           this.presentDialogReachedChatbotLimit()
         }
       } else if (!this.chatBotLimit) {
-        console.log('[HOME-CREATE-CHATBOT] USECASE  NO chatBotLimit: RUN IMPORT CHATBOT FROM JSON')
+        this.logger.log('[HOME-CREATE-CHATBOT] USECASE  NO chatBotLimit: RUN IMPORT CHATBOT FROM JSON')
         this.presentModalAddBotFromScratch()
       }
     } if (this.USER_ROLE === 'agent') {
@@ -546,7 +546,7 @@ export class HomeCreateChatbotComponent extends PricingBaseComponent implements 
 
 
   presentDialogReachedChatbotLimit() {
-    console.log('[HOME-CREATE-CHATBOT] openDialog presentDialogReachedChatbotLimit prjct_profile_name ', this.prjct_profile_name)
+    this.logger.log('[HOME-CREATE-CHATBOT] openDialog presentDialogReachedChatbotLimit prjct_profile_name ', this.prjct_profile_name)
     const dialogRef = this.dialog.open(ChatbotModalComponent, {
       backdropClass: 'cdk-overlay-transparent-backdrop',
       hasBackdrop: true,
@@ -559,7 +559,7 @@ export class HomeCreateChatbotComponent extends PricingBaseComponent implements 
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(`[HOME-CREATE-CHATBOT] Dialog result: ${result}`);
+      this.logger.log(`[HOME-CREATE-CHATBOT] Dialog result: ${result}`);
     });
   }
 

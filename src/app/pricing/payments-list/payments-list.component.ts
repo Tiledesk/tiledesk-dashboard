@@ -40,14 +40,14 @@ export class PaymentsListComponent implements OnInit {
     if (this.auth.user_bs && this.auth.user_bs.value) { 
 
       const stored_preferred_lang = localStorage.getItem(this.auth.user_bs.value._id + '_lang')
-      console.log('[PRICING - PAYMENT-LIST] stored_preferred_lang', stored_preferred_lang)
+      this.logger.log('[PRICING - PAYMENT-LIST] stored_preferred_lang', stored_preferred_lang)
       let dshbrd_lang = ''
       if (browserLang && !stored_preferred_lang) {
           dshbrd_lang = browserLang
-          console.log('[PRICING - PAYMENT-LIST] dshbrd_lang', dshbrd_lang)
+          this.logger.log('[PRICING - PAYMENT-LIST] dshbrd_lang', dshbrd_lang)
       } else if (browserLang && stored_preferred_lang) {
           dshbrd_lang = stored_preferred_lang
-          console.log('[PRICING - PAYMENT-LIST] dshbrd_lang', dshbrd_lang)
+          this.logger.log('[PRICING - PAYMENT-LIST] dshbrd_lang', dshbrd_lang)
       }
     }
   }

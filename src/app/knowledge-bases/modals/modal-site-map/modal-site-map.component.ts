@@ -43,7 +43,7 @@ export class ModalSiteMapComponent implements OnInit {
 
   onFileSelected(event): void {
     this.selectedFile = event.target.files[0];
-    console.log("onFileSelected: ", this.selectedFile, this.kbForm);
+    // console.log("onFileSelected: ", this.selectedFile, this.kbForm);
     if (this.kbForm.valid) {
       this.buttonDisabled = false;
     } else {
@@ -66,14 +66,14 @@ export class ModalSiteMapComponent implements OnInit {
 
   validateFileType(allowedTypes: string[]) {
     return (control) => {
-      console.log('Controllo file:', control);
+      // console.log('Controllo file:', control);
       const file = control.value;
       if (file) {
-        console.log('File selezionato:', file);
+        // console.log('File selezionato:', file);
         const extension = file.split('.').pop().toLowerCase();
-        console.log('Estensione del file:', extension);
+        // console.log('Estensione del file:', extension);
         if (allowedTypes.indexOf(extension) === -1) {
-          console.log('Estensione non consentita');
+          // console.log('Estensione non consentita');
           return {
             invalidFileType: true
           };
@@ -89,7 +89,7 @@ export class ModalSiteMapComponent implements OnInit {
     } else {
       this.buttonDisabled = true;
     }
-    console.log("onChangeInput: ", event, this.kbForm);
+    // console.log("onChangeInput: ", event, this.kbForm);
   }
 
   onCloseAddKnowledgeBaseModal() {

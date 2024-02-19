@@ -171,7 +171,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   }
 
   ngOnChanges() {
-    // console.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges wsRequestsServed', this.wsRequestsServed)
+    console.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges wsRequestsServed', this.wsRequestsServed)
     // this.subscribeToWs_MsgsByRequestId(request, request.request_id)
     // if (this.wsRequestsServed && this.wsRequestsServed.length > 0) {
     //   this.wsRequestsServed.forEach(request => {
@@ -442,8 +442,8 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
 
   goToBotProfile(bot, bot_id: string, bot_type: string) {
 
-    console.log('[WS-REQUESTS-LIST][SERVED] goToBotProfile bot', bot)
-    console.log('[WS-REQUESTS-LIST][SERVED] goToBotProfile bot_id', bot_id)
+    this.logger.log('[WS-REQUESTS-LIST][SERVED] goToBotProfile bot', bot)
+    this.logger.log('[WS-REQUESTS-LIST][SERVED] goToBotProfile bot_id', bot_id)
     if (this.ROLE_IS_AGENT === false) {
       let botType = ''
       // if (bot_type === 'internal') {

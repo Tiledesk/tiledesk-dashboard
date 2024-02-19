@@ -106,7 +106,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
                 const grecaptchaBadgeEl = <HTMLElement>document.querySelector('.grecaptcha-badge');
                 if (event.url !== '/signup') {
-                    console.log('[APP-COMPONENT] grecaptchaBadgeEl ', grecaptchaBadgeEl)
+                    // console.log('[APP-COMPONENT] grecaptchaBadgeEl ', grecaptchaBadgeEl)
                     if (grecaptchaBadgeEl) {
                         grecaptchaBadgeEl.style.visibility = 'hidden'
                     }
@@ -279,7 +279,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         link.type = 'text/css';
         link.media='all';
         
-        console.log('linkkkk', link, document)
+        this.logger.log('[APP-COMPONENT] link', link, 'document ', document)
         let head = document.getElementsByTagName('head')[0];
         head.appendChild(link);
         document.body.classList.add(data.type) //ADD class to body element as theme type ('light', 'dark', 'custom')

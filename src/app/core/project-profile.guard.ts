@@ -73,7 +73,7 @@ export class ProjectProfileGuard implements CanActivate {
 
         if ((planName !== PLAN_NAME.C && planName !== PLAN_NAME.F && url.indexOf('/automations') !== -1)) {
           this.userIsAuthorized = false;
-          console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> Plan type', type, 'Plan name: ', planName, ' - userIsAuthorized: ', this.userIsAuthorized);
+          this.logger.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> Plan type', type, 'Plan name: ', planName, ' - userIsAuthorized: ', this.userIsAuthorized);
           // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> PAGE IS ACTIVITIES', url.indexOf('/activities') !== -1);
         }
 
@@ -98,7 +98,7 @@ export class ProjectProfileGuard implements CanActivate {
 
         ) {
           this.userIsAuthorized = false;
-          console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> Plan type', type, 'Plan name: ', planName, ' - userIsAuthorized: ', this.userIsAuthorized);
+          this.logger.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> Plan type', type, 'Plan name: ', planName, ' - userIsAuthorized: ', this.userIsAuthorized);
           // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> PAGE IS ', url);
           // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> PLAN_NAME.A ', PLAN_NAME.A);
         }
@@ -171,7 +171,7 @@ export class ProjectProfileGuard implements CanActivate {
         // PLAN D (Basic) UNAUTHORIZED TO email ticketing
         if ( planName === PLAN_NAME.D && url.indexOf('/email') !== -1 ) {
           this.userIsAuthorized = false;
-          console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> Plan type', type, 'Plan name: ', planName, ' - userIsAuthorized: ', this.userIsAuthorized);
+          this.logger.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> Plan type', type, 'Plan name: ', planName, ' - userIsAuthorized: ', this.userIsAuthorized);
         }
 
         // PLAN B and PLAN C  AUTHORIZED TO OPERATING CANNED RESPONSES
@@ -230,8 +230,8 @@ export class ProjectProfileGuard implements CanActivate {
 
         if ((planName !== PLAN_NAME.C && planName !== PLAN_NAME.F && url.indexOf('/automations') !== -1)) {
           this.userIsAuthorized = false;
-          console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> Plan type', type, 'Plan name: ', planName, ' - userIsAuthorized: ', this.userIsAuthorized);
-          console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> PAGE IS automations', url.indexOf('/automations') !== -1);
+          this.logger.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> Plan type', type, 'Plan name: ', planName, ' - userIsAuthorized: ', this.userIsAuthorized);
+          this.logger.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> PAGE IS automations', url.indexOf('/automations') !== -1);
 
         } else {
           // console.log('[PROJECT-PROFILE-GUARD] (NEW WF) -> PAGE IS ACTIVITIES', url.indexOf('/activities') !== -1);

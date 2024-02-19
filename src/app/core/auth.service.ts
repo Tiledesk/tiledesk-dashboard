@@ -250,8 +250,8 @@ export class AuthService {
   // RECEIVE FROM VARIOUS COMP THE OBJECT PROJECT AND PUBLISH
   projectSelected(project: Project, calledBy) {
     // PUBLISH THE project
-    console.log('[AUTH-SERV] - PUBLISH THE PROJECT OBJECT RECEIVED project', project)
-    console.log('[AUTH-SERV] - PUBLISH THE PROJECT OBJECT RECEIVED calledBy', calledBy)
+    this.logger.log('[AUTH-SERV] - PUBLISH THE PROJECT OBJECT RECEIVED project', project)
+    this.logger.log('[AUTH-SERV] - PUBLISH THE PROJECT OBJECT RECEIVED calledBy', calledBy)
 
     this.logger.log('[AUTH-SERV] PUBLISH THE PROJECT OBJECT RECEIVED  > selected_project_id ', project._id,)
     this.selected_project_id = project._id // used in checkRoleForCurrentProject if nav_project_id is undefined
@@ -259,7 +259,7 @@ export class AuthService {
   }
 
   projectProfile(projectprofile) {
-    console.log('[AUTH-SERV] - PROJECT PROFILE ', projectprofile)
+    this.logger.log('[AUTH-SERV] - PROJECT PROFILE ', projectprofile)
     this.prjct_profile_name_for_segment = projectprofile
   }
 
@@ -291,7 +291,7 @@ export class AuthService {
   // getAndPublish_NavProjectIdAndProjectName() {
   checkStoredProjectAndPublishIfPublishedProjectIsNull() {
     this.project_bs.subscribe((prjct) => {
-     console.log('[AUTH-SERV] - PROJECT FROM SUBSCRIPTION TO project_bs ', prjct)
+      this.logger.log('[AUTH-SERV] - PROJECT FROM SUBSCRIPTION TO project_bs ', prjct)
 
       if (prjct !== null && prjct._id !== undefined) {
         this.project_trial_expired = prjct.trial_expired
@@ -355,7 +355,7 @@ export class AuthService {
               this.subscription.unsubscribe()
 
               const storedProjectJson = localStorage.getItem(this.nav_project_id )
-              console.log('[AUTH-SERV] - JSON OF STORED PROJECT: ', storedProjectJson)
+              this.logger.log('[AUTH-SERV] - JSON OF STORED PROJECT: ', storedProjectJson)
 
               // RUN THE BELOW ONLY IF EXIST THE PROJECT JSON SAVED IN THE STORAGE
               if (storedProjectJson) {
@@ -380,14 +380,14 @@ export class AuthService {
                   trial_days_left: project_trial_days_left,
                   operatingHours: storedProjectOH,
                 }
-                console.log('!! AUTH in auth.serv  - 1) PROJECT THAT IS PUBLISHED: ', project);
+                this.logger.log('!! AUTH in auth.serv  - 1) PROJECT THAT IS PUBLISHED: ', project);
                 // SE NN C'è IL PROJECT NAME COMUNQUE PUBBLICO PERCHè CON L'ID DEL PROGETTO VENGONO EFFETTUATE DIVERSE CALLBACK
 
                 /**** ******* ******* NEW BUG FIX ***** *** ** ***/
 
-                console.log('[AUTH-SERV] BEFORE TO PUBLISH this.project_bs.value ', this.project_bs.value)
+                this.logger.log('[AUTH-SERV] BEFORE TO PUBLISH this.project_bs.value ', this.project_bs.value)
                 if (this.project_bs.value == null) {
-                  console.log('[AUTH-SERV] PROJECT (get from storage) THAT IS PUBLISHED ', project)
+                  this.logger.log('[AUTH-SERV] PROJECT (get from storage) THAT IS PUBLISHED ', project)
                   this.project_bs.next(project)
                 }
               } else {

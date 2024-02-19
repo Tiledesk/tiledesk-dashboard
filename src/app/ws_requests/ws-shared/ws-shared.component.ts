@@ -152,7 +152,7 @@ export class WsSharedComponent implements OnInit {
       if (member_id && member_id !== 'system') {
 
         this.cleaned_members_array.push(member_id);
-        console.log('%%% WsRequestsMsgsComponent - CLEANED MEMBERS ARRAY ', this.cleaned_members_array);
+        this.logger.log('%%% WsRequestsMsgsComponent - CLEANED MEMBERS ARRAY ', this.cleaned_members_array);
         this.logger.log('%%% WsRequestsMsgsComponent - CLEANED MEMBERS isFirebaseUploadEngine ', isFirebaseUploadEngine);
         const memberIsBot = member_id.includes('bot_');
 
@@ -200,20 +200,27 @@ export class WsSharedComponent implements OnInit {
               this.checkImageExists(imgUrl, (existsImage) => {
                 if (existsImage == true) {
                   storeduser['hasImage'] = true
-                  console.log('HERE Y2 USER storeduser  hasImage', storeduser, 'this.agents_array ', this.agents_array)
+                  this.logger.log('HERE Y2 USER storeduser  hasImage', storeduser, 'this.agents_array ', this.agents_array)
                   this.createAgentAvatar(storeduser)
-                  const index = this.agents_array.findIndex(object => object.id === storeduser['_id']);
-                  console.log('HERE Y2 USER index (1)', index)
+                  this.logger.log('HERE Y2 USER index (1) storeduser id', storeduser['_id'])
+                  this.logger.log('HERE Y2 USER index (1) member_id', member_id)
+                  // const index = this.agents_array.findIndex(object => object.id === storeduser['_id']);
+                  const index = this.agents_array.findIndex(object => object.id === member_id);
+                  this.logger.log('HERE Y2 USER index (1)', index)
+                  
                   if (index === -1) {
                     this.agents_array.push({ '_id': storeduser['_id'], 'firstname': storeduser['firstname'], 'lastname': storeduser['lastname'], 'isBot': false, 'hasImage': storeduser['hasImage'], 'userfillColour': storeduser['fillColour'], 'userFullname': storeduser['fullname_initial'] })
                   }
                 }
                 else {
                   storeduser['hasImage'] = false
-                  console.log('HERE Y2 USER storeduser  !hasImage', storeduser, 'this.agents_array ', this.agents_array)
+                  this.logger.log('HERE Y2 USER storeduser  !hasImage', storeduser, 'this.agents_array ', this.agents_array)
                   this.createAgentAvatar(storeduser)
-                  const index = this.agents_array.findIndex(object => object.id === storeduser['_id']);
-                  console.log('HERE Y2 USER index (2)', index)
+                  this.logger.log('HERE Y2 USER index (2) storeduser id', storeduser['_id'])
+                  this.logger.log('HERE Y2 USER index (2) member_id', member_id)
+                  // const index = this.agents_array.findIndex(object => object.id === storeduser['_id']);
+                  const index = this.agents_array.findIndex(object => object.id === member_id);
+                  this.logger.log('HERE Y2 USER index (2)', index)
                   if (index === -1) {
                     this.agents_array.push({ '_id': storeduser['_id'], 'firstname': storeduser['firstname'], 'lastname': storeduser['lastname'], 'isBot': false, 'hasImage': storeduser['hasImage'], 'userfillColour': storeduser['fillColour'], 'userFullname': storeduser['fullname_initial'] })
                   }
@@ -263,13 +270,13 @@ export class WsSharedComponent implements OnInit {
                 // this.agents_array.push({ '_id': member_id, 'firstname': member_id, 'isBot': false })
                 this.agents_array.push({ '_id': user['_id'], 'firstname': user['firstname'], 'lastname': user['lastname'], 'isBot': false, 'hasImage': user['hasImage'], 'userfillColour': user['fillColour'], 'userFullname': user['fullname_initial'] })
                 this.usersLocalDbService.saveMembersInStorage(user['_id'], user, 'ws-shared (createAgentsArrayFromParticipantsId)');
-                console.log('HERE Y3 USER projectuser ', projectuser, 'this.agents_array ', this.agents_array)
+                this.logger.log('HERE Y3 USER projectuser ', projectuser, 'this.agents_array ', this.agents_array)
 
               }, (error) => {
                 this.logger.error('[WS-SHARED][WS-REQUESTS-MSGS] - USER IS NOT IN STORAGE - GET PROJECT-USER BY ID - ERROR ', error);
               }, () => {
                 this.logger.log('[WS-SHARED][WS-REQUESTS-MSGS] - USER IS NOT IN STORAGE - GET PROJECT-USER BY ID * COMPLETE *');
-                console.log('[WS-SHARED][WS-REQUESTS-MSGS] this.agents_array ', this.agents_array)
+                this.logger.log('[WS-SHARED][WS-REQUESTS-MSGS] this.agents_array ', this.agents_array)
               });
           }
         }
@@ -341,7 +348,7 @@ export class WsSharedComponent implements OnInit {
       } else {
         this.logger.log('[WS-SHARED][WS-REQUESTS-UNSERVED-X-PANEL][HISTORY & NORT-CONVS][WS-REQUESTS-LIST] - THE PARTICIP IS A BOT?', participantIsBot, 'GET USER FROM STORAGE');
         const user = this.usersLocalDbService.getMemberFromStorage(participantid);
-        console.log('[WS-SHARED][WS-REQUESTS-UNSERVED-X-PANEL][HISTORY & NORT-CONVS][WS-REQUESTS-LIST] - USER GET FROM STORAGE ', user);
+        this.logger.log('[WS-SHARED][WS-REQUESTS-UNSERVED-X-PANEL][HISTORY & NORT-CONVS][WS-REQUESTS-LIST] - USER GET FROM STORAGE ', user);
         if (user) {
           // check if user iamge exist  
           let imgUrl = ''
@@ -977,7 +984,7 @@ export class WsSharedComponent implements OnInit {
         this.user_name = attributes.userFullname;
         this.logger.log('* USER NAME: ', this.user_name);
       } else {
-        this.user_name = 'n.a.'
+        this.user_name = 'N/A'
       }
 
       /**
@@ -987,7 +994,7 @@ export class WsSharedComponent implements OnInit {
         this.user_email = attributes.userEmail;
         this.logger.log('* USER EMAIL: ', this.user_email);
       } else {
-        this.user_email = 'n.a.'
+        this.user_email = 'N/A'
       }
 
       /**
@@ -1007,7 +1014,7 @@ export class WsSharedComponent implements OnInit {
         this.department_id = attributes.departmentId;
         this.logger.log('* DEPATMENT ID: ', this.department_id);
       } else {
-        this.department_id = 'n.a.'
+        this.department_id = 'N/A'
       }
 
       /**
@@ -1017,16 +1024,16 @@ export class WsSharedComponent implements OnInit {
         this.source_page = attributes.sourcePage;
         this.logger.log('* SOURCE PAGE: ', this.source_page);
       } else {
-        this.source_page = 'n.a.'
+        this.source_page = 'N/A'
         this.logger.log('* SOURCE PAGE: ', this.source_page);
       }
 
     } else {
-      this.user_name = 'n.a.';
-      this.user_email = 'n.a.';
-      this.department_name = 'n.a.';
-      this.department_id = 'n.a.';
-      this.source_page = 'n.a.';
+      this.user_name = 'N/A';
+      this.user_email = 'N/A';
+      this.department_name = 'N/A';
+      this.department_id = 'N/A';
+      this.source_page = 'N/A';
     }
 
   }

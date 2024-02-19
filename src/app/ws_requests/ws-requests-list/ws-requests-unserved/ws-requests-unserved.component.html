@@ -713,16 +713,13 @@
 
                 <span *ngIf="!request?.lead?.fullname"
                   [ngClass]="{'requester_fullname_initial-undefined' : !request?.lead?.fullname}">
-                  n/a
+                  N/A
                 </span>
                 <!-- [ngClass]="{'requester-verified-email' : request?.requester_is_verified === true}" -->
                 <span class="requester-email">
                   {{ request?.lead?.email }}
                 </span>
-                <!-- <span class="requester-email" *ngIf="!request?.lead?.email"
-                  [ngClass]="{'requester-verified-email' : request?.requester_is_verified === true}">
-                  <!- - n.a. - ->
-                </span> -->
+            
               </span>
             </span>
           </td>
@@ -871,7 +868,7 @@
               {{ request?.dept?.name }}
             </p>
             <p *ngIf="!request?.dept?.name" class="column-td">
-              n/a
+              N/A
             </p>
 
             <!-- <p *ngIf="request?.department" class="column-td" 

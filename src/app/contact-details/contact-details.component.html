@@ -408,7 +408,7 @@
                     </span>
 
                     <span *ngIf="!contact_details?.fullname">
-                      n/a
+                      N/A
                     </span>
 
                     <svg id="edit-fullname-open-edit-fullname-icon" xmlns="http://www.w3.org/2000/svg" width="24"
@@ -421,10 +421,7 @@
 
 
                   </span>
-                  <!-- <span class="contact-details-fullname" *ngIf="!contact_details?.fullname"
-                    [ngClass]="{'contact-verified' : CONTACT_IS_VERIFIED === true}">
-                    n/a
-                  </span> -->
+              
                 </h3>
 
 
@@ -576,7 +573,7 @@
 
 
 
-          <div class="row" style="margin-top:5px">
+          <div *ngIf="!showSpinner" class="row" style="margin-top:5px">
 
             <appdashboard-contact-info [contact_details]="contact_details"> </appdashboard-contact-info>
 
@@ -611,7 +608,7 @@
                     {{ contact_details?.email }}
                   </a>
                   <span *ngIf="!contact_details?.email" class="contact-sidebar-label">
-                    n/a
+                    N/A
                   </span>
                 </p>
               </div>
@@ -636,7 +633,7 @@
                     {{ contact_details?.company }}
                   </span>
                   <span *ngIf="!contact_details?.company" class="contact-sidebar-label">
-                    n/a
+                   N/A
                   </span>
                 </p>
               </div>
@@ -772,7 +769,7 @@
                     {{ contact_details?.phone }}
                   </span>
                   <span *ngIf="!contact_details?.phone" class="contact-sidebar-label">
-                    n/a
+                    N/A
                   </span>
                 </p>
               </div>
@@ -835,7 +832,7 @@
 
                   </span>
                   <span *ngIf="!contact_details?.createdAt" class="contact-sidebar-label">
-                    n/a
+                   N/A
                   </span>
 
                 </p>

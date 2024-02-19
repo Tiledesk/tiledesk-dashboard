@@ -145,7 +145,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
   }
 
   onRunIndexing(kb){
-    console.log('onRunIndexing:: ', kb);
+    // console.log('onRunIndexing:: ', kb);
     this.runIndexing.emit(kb);
   }
 
@@ -159,7 +159,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
   }
 
   onOpenBaseModalDetail(kb){
-    console.log("OPEN DETAIL:: ",kb);
+    // console.log("OPEN DETAIL:: ",kb);
     this.openBaseModalDetail.emit(kb);
   }
 

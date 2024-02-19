@@ -22,13 +22,13 @@ export class MakeIntegrationComponent implements OnInit, OnChanges{
   ) { }
 
   ngOnInit(): void {
-    console.log("[INT-Make] integration (oninit)", this.integration);
+    this.logger.log("[INT-Make] integration (oninit)", this.integration);
     this.translateparams = { intname: 'Make' };
   }
   
   ngOnChanges(changes: SimpleChanges): void {
-    console.log("[INT-Make] integration (onchanges) changes", changes);
-    console.log("[INT-Make] integration (onchanges) integration", this.integration);
+    this.logger.log("[INT-Make] integration (onchanges) changes", changes);
+    this.logger.log("[INT-Make] integration (onchanges) integration", this.integration);
 
   }
 

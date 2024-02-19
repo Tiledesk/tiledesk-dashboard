@@ -418,6 +418,7 @@ export const featuresPlanD = [
     'Webhooks',
     'Email Support',
     'Team Inbox',
+    'Make integration',
     '2 Knowledge Bases',
     '250 Pages for Knowledge Base', 
     '50,000 AI Tokens'
@@ -440,12 +441,12 @@ export const featuresPlanE = [
     'Widget Unbranding',
     'WhatsApp Business',
     'Facebook Messenger',
+    'Help center',
     'Unlimited Departments',
     'Unlimited Groups',
-    'Zapier connector',
+    'Qapla\' integration',
     'Data export',
     'Livechat Support',
-    'Knowledge Base',
     'Analytics',
     'Email Ticketing',
     '3 Knowledge Bases',
@@ -477,7 +478,7 @@ export const featuresPlanF = [
     'Activities Log',
     'Ban Visitors',
     'Connector with 3rd party AI',
-    'Automations Log ',
+    'Automations Log',
     'SMTP Settings',
     'Support to host Tiledesk on your Infrastructure',
     'Premium Customer Support',
@@ -546,8 +547,8 @@ export const botDefaultLanguages = [
   ];
 
   export function getIndexOfbotDefaultLanguages(langcode: string): number {
-    console.log('getIndexOfbotDefaultLanguages langcode ' , langcode) 
-    console.log('getIndexOfbotDefaultLanguages index' , langcode) 
+    this.logger.log('getIndexOfbotDefaultLanguages langcode ' , langcode) 
+    this.logger.log('getIndexOfbotDefaultLanguages index' , langcode) 
     const index = botDefaultLanguages.findIndex(x => x.code === langcode);
     return index
   }

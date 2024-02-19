@@ -48,7 +48,7 @@ export class HomeCdsComponent implements OnInit, OnChanges{
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log('[HOME-CDS] - chatbots ngOnChanges', this.chatbots);
+    this.logger.log('[HOME-CDS] - chatbots ngOnChanges', this.chatbots);
     this.sortChatbots()
   }
 
@@ -159,12 +159,12 @@ export class HomeCdsComponent implements OnInit, OnChanges{
           return 0;
         });
 
-        console.log('[HOME-CDS] - GET FAQKB RES (sorted)', this.chatbots);
+        this.logger.log('[HOME-CDS] - GET FAQKB RES (sorted)', this.chatbots);
   
         this.chatbotName = this.chatbots[0].name;
         this.lastUpdatedChatbot = this.chatbots[0];
-        console.log('[HOME-CDS] - lastUpdatedChatbot ', this.lastUpdatedChatbot);
-        console.log('[HOME-CDS] - GET FAQKB lastUpdatedChatbot', this.lastUpdatedChatbot);
+        this.logger.log('[HOME-CDS] - lastUpdatedChatbot ', this.lastUpdatedChatbot);
+        this.logger.log('[HOME-CDS] - GET FAQKB lastUpdatedChatbot', this.lastUpdatedChatbot);
       } 
   
     // }
@@ -179,7 +179,7 @@ export class HomeCdsComponent implements OnInit, OnChanges{
   }
 
   goToBotProfile() {
-    console.log('[HOME-CDS] - goToBotProfile  projectId ', this.projectId);
+    this.logger.log('[HOME-CDS] - goToBotProfile  projectId ', this.projectId);
     if (this.USER_ROLE !== 'agent') {
       if (this.chatbots?.length > 0) {
           // this.router.navigate(['project/' + this.project._id + '/tilebot/intents/', bot_id, botType]);

@@ -158,7 +158,7 @@ export class AuthGuard implements CanActivate {
 
   checkStoredProject(navigationProjectId) {
     const storedProjectJson = localStorage.getItem(navigationProjectId);
-    console.log('[AUTH-GUARD] - PROJECT JSON GET FROM STORAGE ', storedProjectJson);
+    this.logger.log('[AUTH-GUARD] - PROJECT JSON GET FROM STORAGE ', storedProjectJson);
 
 
     if (storedProjectJson === null) {
@@ -171,7 +171,7 @@ export class AuthGuard implements CanActivate {
   getProjectFromRemotePublishAndSaveInStorage() {
     // this.projectService.getProjectAndUserDetailsByProjectId(this.nav_project_id).subscribe((prjct: any) => {
     this.projectService.getProjects().subscribe((prjcts: any) => {
-      console.log('[AUTH-GUARD] - PROJECTS OBJCTS FROM REMOTE CALLBACK ', prjcts);
+      this.logger.log('[AUTH-GUARD] - PROJECTS OBJCTS FROM REMOTE CALLBACK ', prjcts);
 
       const prjct = prjcts.filter(p => p.id_project._id === this.nav_project_id);
 
