@@ -13,7 +13,7 @@ import { HomeNewsFeedModalComponent } from './home-news-feed-modal/home-news-fee
 export class HomeNewsFeedComponent implements OnInit, AfterViewInit {
   @ViewChild('scrollableElement') scrollableElement: ElementRef;
 
-  @Input() showskeleton: any;
+  // @Input() showskeleton: any;
   newsFeedList: any;
   displayScrollLeftBtn = false;
   displayScrollRightBtn = true;
@@ -32,7 +32,7 @@ export class HomeNewsFeedComponent implements OnInit, AfterViewInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.logger.log('[HOME-NEWS-FEED] showskeleton', this.showskeleton)
+    // this.logger.log('[HOME-NEWS-FEED] showskeleton', this.showskeleton)
   }
 
 

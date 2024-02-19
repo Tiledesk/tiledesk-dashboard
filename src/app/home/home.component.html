@@ -542,14 +542,14 @@
 
 
               </div>
-
             </span>
           </ng-container>
         </div>
+
         <ng-container *ngIf="displayNewsAndDocumentation"> 
-          <div *ngIf="!showskeleton" class="news-feed-wpr">
-            <appdashboard-home-news-feed *ngIf="displayNewsFeed" [showskeleton]="showskeleton">
-            </appdashboard-home-news-feed>
+          <div *ngIf="!showsNewsFeedSkeleton" class="news-feed-wpr">
+            <!-- [showskeleton]="showskeleton" -->
+            <appdashboard-home-news-feed *ngIf="displayNewsFeed"></appdashboard-home-news-feed>
           </div>
         </ng-container>
       </div>

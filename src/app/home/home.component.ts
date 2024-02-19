@@ -188,6 +188,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   userHasClickedDisplayWAWizard: boolean = false
   PROJECT_ATTRIBUTES: any
   showskeleton: boolean = true;
+  showsNewsFeedSkeleton : boolean = true;
   custom_company_home_logo: string;
   companyLogoNoText: string;
   displayNewsAndDocumentation: string;
@@ -374,14 +375,25 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     }, (error) => {
       this.logger.error('[HOME] - GET FAQKB - ERROR ', error);
       this.showskeleton = false;
-      // this.showSpinner = false
+      this.delayNewsFeedSkeleton()
+
+      
     }, () => {
       this.logger.log('[HOME] - GET FAQKB * COMPLETE *');
       this.showskeleton = false;
-      // this.showSpinner = false
+      this.delayNewsFeedSkeleton()
 
     });
   }
+
+  delayNewsFeedSkeleton() {
+     setTimeout(() => {
+        this.showsNewsFeedSkeleton = false;
+        console.log('[HOME] - skeleton showskeleton ', this.showskeleton );
+      }, 500);
+  }
+
+
 
   // hasFinishedGetProjectBots() {
   //   // this.showskeleton = false;
