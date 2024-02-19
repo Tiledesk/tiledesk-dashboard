@@ -27,57 +27,63 @@
             <!--  ------------------------------------------------ -->
             <!--  Dashboard language -->
             <!--  ------------------------------------------------ -->
-            <li>
-              <a routerLink="/user-profile" fragment="language" style="cursor: pointer;">
-                <span class="tooltip-language-in-your-prjcts">
-                  <img [src]="flag_url" style="width: auto;height: 19px; position: relative;top: -1px;">
-
-                  <span class="tooltip-language-in-your-prjcts__tooltiptext"
-                    style="font-size:12px; top: 27px;text-transform:none; cursor: pointer; height: fit-content;vertical-align: middle;">
-                    <span *ngIf="!languageNotSupported">
-                      {{'TheDashboardIsTranslatedInto' | translate: tlangparams }}
-                    </span>
-                    <span *ngIf="languageNotSupported">
-                      {{'TheDashboardIsTranslatedIntoEnglish' | translate }}
-                    </span>
-                  </span>
-                </span>
+            <li class="projects-dashboard-language">
+              <!-- style="cursor: pointer;" -->
+              <a routerLink="/user-profile" fragment="language">
+                <img [src]="flag_url" matTooltipClass="custom-mat-tooltip"
+                  [matTooltip]="languageNotSupported ? ( 'TheDashboardIsTranslatedIntoEnglish' | translate ) : ( 'TheDashboardIsTranslatedInto' | translate: tlangparams ) "
+                  #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
               </a>
             </li>
 
 
-            <li class="dropdown">
+            <li class="dropdown projects-user-avatar-dropdown">
               <!-- class="dropdown-toggle" -->
               <!-- margin-top:56px; display:block; text-align:right; padding-top:15px;padding-bottom:15px; padding-right:28px; color: #555555;" -->
-              <a data-toggle="dropdown" href="#"
-                style="display:block !important; margin-top:0px; opacity:100 !important">
-                <i class="material-icons open-user-profile-person-icon">person</i>
-                <!-- <p class="hidden-lg hidden-md">Profile</p> -->
+              <a data-toggle="dropdown" href="#">
+                <!-- <i class="material-icons open-user-profile-person-icon">person</i> -->
+
 
                 <!-- matTooltipClass="custom-mat-tooltip"
                 matTooltip="{{'NavBar.PendingVerification' | translate }}"
                 #tooltip="matTooltip" 
                 matTooltipPosition='below'
                 matTooltipHideDelay="100" -->
+                <div class="project-user-avatar" *ngIf="user">
 
-                <span class="tooltip-x">
-                  <span *ngIf="user?.emailverified == false" class="pending-email-verificaton-notification">
-                    <span class="material-icons-outlined">
-                      error
-                    </span>
-                    <!-- <span class="tooltiptext">
-                      {{"NavBar.PendingVerification" | translate }}
-                    </span> -->
-                  </span>
-                </span>
+
+                  <!-- --------------------------------------------------- -->
+                  <!-- USECASE uploadEngine Firebase -->
+                  <!-- --------------------------------------------------- -->
+                  <!-- (userProfileImageExist === true || userImageHasBeenUploaded === true) -->
+                  <img *ngIf="user?.hasImage && UPLOAD_ENGINE_IS_FIREBASE" class="user-img-in-dropdown"
+                    src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{user?._id}}%2Fphoto.jpg?alt=media"
+                    onerror="this.src='assets/img/no_image_user.png'" />
+
+
+                  <!-- --------------------------------------------------- -->
+                  <!-- USECASE uploadEngine Native -->
+                  <!-- --------------------------------------------------- -->
+                  <!-- (userProfileImageExist === true || userImageHasBeenUploaded === true) -->
+                  <img *ngIf="user?.hasImage && !UPLOAD_ENGINE_IS_FIREBASE " class="user-img-user-img-in-dropdown"
+                    src="{{baseUrl}}images?path=uploads%2Fusers%2F{{user?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
+                    onerror="this.src='assets/img/no_image_user.png'" />
+
+                  <!-- --------------------------------------------------- -->
+                  <!-- USECASE No profile image -->
+                  <!-- --------------------------------------------------- -->
+                  <img *ngIf="!user?.hasImage" class="user-img" src="assets/img/no_image_user.png" />
+                </div>
               </a>
-              <!-- float:right !important; right:0px!important; left:1px!important  -->
-              <ul class="dropdown-menu">
-                <div class="card card-profile" style="border:unset !important">
-                  <div class="card-avatar user-profile-avatar">
+
+              <ul class="dropdown-menu avatar-dropdown-menu">
+                <div class="card card-profile">
+                  <!-- ------------------------------------------------- -->
+                  <!-- User image in dropdown DISPLAY NONE !!!! -->
+                  <!-- ------------------------------------------------- -->
+                  <div class="card-avatar user-profile-avatar" style="display: none;">
+
                     <a *ngIf="user">
-
-
                       <!-- --------------------------------------------------- -->
                       <!-- USECASE uploadEngine Firebase -->
                       <!-- --------------------------------------------------- -->
@@ -109,22 +115,72 @@
                   <div class="content">
 
                     <h4 class="card-title user-profile-fullname">
-                      <strong>
-                        {{ user?.firstname }} {{ user?.lastname }}
-                      </strong>
+                      {{ user?.firstname }} {{ user?.lastname }}
                     </h4>
                     <h4 class="card-title user-profile-email">
                       {{ user?.email }}
                     </h4>
 
-                    <button class="btn btn-primary view-user-profile-btn" routerLink="/user-profile">
-                      <span style="font-size:0.8em"> {{ 'ProjectsPage.UserProfile' | translate }} </span>
-                    </button>
                     <li class="divider"></li>
-                    <button type="submit" class="btn btn-white logout-user-profile-btn" (click)="openLogoutModal()">
-                      <!-- Log out -->
+
+                    <div class="user-profile-link" routerLink="/user-profile">
+
+                      <div class="user-profile-link-icon">
+
+                        <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" viewBox="0 0 24 24">
+                          <g>
+                            <rect fill="none" height="24" width="24" />
+                          </g>
+                          <g>
+                            <g>
+                              <path
+                                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM7.35 18.5C8.66 17.56 10.26 17 12 17s3.34.56 4.65 1.5c-1.31.94-2.91 1.5-4.65 1.5s-3.34-.56-4.65-1.5zm10.79-1.38C16.45 15.8 14.32 15 12 15s-4.45.8-6.14 2.12C4.7 15.73 4 13.95 4 12c0-4.42 3.58-8 8-8s8 3.58 8 8c0 1.95-.7 3.73-1.86 5.12z" />
+                              <path
+                                d="M12 6c-1.93 0-3.5 1.57-3.5 3.5S10.07 13 12 13s3.5-1.57 3.5-3.5S13.93 6 12 6zm0 5c-.83 0-1.5-.67-1.5-1.5S11.17 8 12 8s1.5.67 1.5 1.5S12.83 11 12 11z" />
+                            </g>
+                          </g>
+                        </svg>
+                      </div>
+
+                      <div class="user-profile-link-text">
+
+                        {{ 'UserProfile.Profile' | translate}}
+
+                      </div>
+
+                    </div>
+
+                    <!-- <button class="btn btn-primary view-user-profile-btn" routerLink="/user-profile">
+                      <span style="font-size:0.8em"> {{ 'ProjectsPage.UserProfile' | translate }} </span>
+                    </button> -->
+                    <li class="divider"></li>
+                    <!-- <button type="submit" class="btn btn-white logout-user-profile-btn" (click)="openLogoutModal()">
                       {{ 'NavBar.LogOut' | translate }}
-                    </button>
+                    </button> -->
+
+                    <div class="user-profile-link" (click)="openLogoutModal()">
+
+                      <div class="user-profile-link-icon">
+
+                        <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24"
+                          viewBox="0 0 24 24">
+                          <g>
+                            <path d="M0,0h24v24H0V0z" fill="none" />
+                          </g>
+                          <g>
+                            <path
+                              d="M17,8l-1.41,1.41L17.17,11H9v2h8.17l-1.58,1.58L17,16l4-4L17,8z M5,5h7V3H5C3.9,3,3,3.9,3,5v14c0,1.1,0.9,2,2,2h7v-2H5V5z" />
+                          </g>
+                        </svg>
+                      </div>
+
+                      <div class="user-profile-link-text">
+
+                        {{ 'NavBar.LogOut' | translate }}
+
+                      </div>
+
+                    </div>
                   </div>
 
                 </div>
@@ -272,7 +328,7 @@
                 project?.id_project?.trialDaysLeft, 
                 project?.id_project?.status, 
                 project?.id_project?.activeOperatingHours)'>
-           
+
 
             <div class="card-content project-card-content">
               <div *ngIf="project_plan_badge" class="project-plan-badge" [ngClass]="{
@@ -291,9 +347,9 @@
                 {{ project?.id_project?.name }}
               </h3>
 
-              <p class="id-project" [ngClass]="{'project-deleted-card-text-color' : project?.id_project?.status === 0}">
+              <!-- <p class="id-project" [ngClass]="{'project-deleted-card-text-color' : project?.id_project?.status === 0}">
                 {{ project?.id_project?._id }}
-              </p>
+              </p> -->
 
               <div class="role-and-avalibility-wpr">
                 <div class="role-and-avalibility-icon">
@@ -366,8 +422,7 @@
                     <select class="select-pu-status" #selectStatus name="status_{{project?.id_project?._id}}"
                       id="{{project?.id_project?._id}}"
                       (change)=" changeAvailabilityState(project?.id_project?._id, selectStatus.value)"
-                      [disabled]="project?.id_project?.status === 0"
-                      [ngClass]="{'available-color':project?.ws_projct_user_available === true && (project?.ws_projct_user_profileStatus === '' || !ws_projct_user_profileStatus?.profileStatus),
+                      [disabled]="project?.id_project?.status === 0" [ngClass]="{'available-color':project?.ws_projct_user_available === true && (project?.ws_projct_user_profileStatus === '' || !ws_projct_user_profileStatus?.profileStatus),
                                     'unavailable-color':project?.ws_projct_user_available === false && (project?.ws_projct_user_profileStatus === '' || !ws_projct_user_profileStatus?.profileStatus),
                                     'inactive-color': project?.ws_projct_user_available === false && project?.ws_projct_user_profileStatus === 'inactive',
                                     'deleted-project': project?.id_project?.status === 0 }">
