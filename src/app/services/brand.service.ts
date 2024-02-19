@@ -49,7 +49,7 @@ export class BrandService {
       },
       "recent_project_page": {
         "company_logo_width": "130px",
-        "company_logo_height": "38px"
+        "company_logo_height": "30px"
       },
       "signup_page": {
         "display_terms_and_conditions_link": true,
