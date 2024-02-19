@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.5.5
+- Deploys in production
+- Fixes bug: Admins can't invite teammates
+
 ### 2.5.4
 - Deploys in production
 - Restyles the "Your Projects" page
