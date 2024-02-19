@@ -415,7 +415,7 @@ export class SettingsSidebarComponent implements OnInit {
 
   goToKnowledgeBases() {
     console.log("goToKnowledgeBases -----> project._id: ", this.project._id);
-    this.router.navigate(['project/' + this.project._id + '/knowledge-bases'])
+    this.router.navigate(['project/' + this.project._id + '/knowledge-bases-pre'])
   }
 
   goToProjectSettings() {
@@ -572,7 +572,7 @@ export class SettingsSidebarComponent implements OnInit {
       this.logger.log('[SETTING-SIDEBAR] - OPERATING_HOURS_ROUTE_IS_ACTIVE ',this.OPERATING_HOURS_ROUTE_IS_ACTIVE)
     }
 
-    if (this.route.indexOf('/knowledge-bases') !== -1) {
+    if (this.route.indexOf('/knowledge-bases-pre') !== -1) {
       this.KNOWLEDGE_BASES_ROUTE_IS_ACTIVE = true
       this.logger.log('[SETTING-SIDEBAR] - KNOWLEDGE_BASES_ROUTE_IS_ACTIVE ',this.KNOWLEDGE_BASES_ROUTE_IS_ACTIVE)
     } else {

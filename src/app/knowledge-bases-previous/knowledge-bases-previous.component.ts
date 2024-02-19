@@ -196,6 +196,7 @@ export class KnowledgeBasesPreviousComponent implements OnInit, OnDestroy {
   getKnowledgeBaseSettings() {
     this.kbService.getKbSettingsPrev().subscribe((kbSettings: KbSettings) => {
       this.logger.log("[KNOWLEDGE BASES COMP] get kbSettings: ", kbSettings);
+     console.log("[KNOWLEDGE BASES COMP] get kbSettings: ", kbSettings);
       this.kbSettings = kbSettings;
       if (this.kbSettings.kbs.length == 0){
         this.router.navigate(['project/' + this.id_project + '/knowledge-bases']);
