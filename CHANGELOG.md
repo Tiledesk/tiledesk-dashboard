@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.5.7
+- Deploys in production
+- Removes,on the conversation details page, the ability to the agents to send message 
+
 ### 2.5.6
 - Deploys in production
 - Improves the modal windows displayed on teammate list page and the om invite teammates page
