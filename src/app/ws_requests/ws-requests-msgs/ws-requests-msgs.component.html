@@ -28,7 +28,7 @@
           [ngClass]="{'hidden-if-chat-panel-mode' : CHAT_PANEL_MODE === true, 'chat-col-normal-mode': CHAT_PANEL_MODE === false }">
           <div class="card chat-card" [ngClass]="{'chat-card-normal-mode': CHAT_PANEL_MODE === false}"
             style="padding-top:0px; padding-bottom:0px;">
-            <div class="row" style="padding-left:25px; padding-right:25px">
+            <div class="row" style="padding-left:25px; padding-right:25px" *ngIf="CURRENT_USER_ROLE !== 'agent'">
               <div class="col-sm-12" style="border-bottom: 1px solid #e5effe; height: 59px; padding-right: 0px;">
                 <div class="two-div-wrapper">
                   <div style="float: left; width: 30%; height: 59px;">
@@ -37,38 +37,6 @@
 
                   <div style="float: right; width: 70%; height: 59px;">
 
-
-                    <!-- ---------------------------------------- -->
-                    <!-- Resolve Chat button -->
-                    <!-- ---------------------------------------- -->
-                    <!-- <div class="chat-header-wpr-resolve-chat-btn"
-                      *ngIf="CHAT_PANEL_MODE === false && request?.status !== 1000">
-                      <div class="chat-header-wpr-btn">
-                        <button #resolveChatBtn (click)="archiveRequest(request?.request_id)"
-                          class="btn btn-primary chat-header-btn plr-8 ptb-8 pull-right" role="button"
-                          [disabled]="request?.status == 1000 || DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true"
-                          style="margin-left: 8px;">
-                          <i class="material-icons" style="vertical-align: middle; padding-bottom: 2px;">archive</i>
-                          <span style="vertical-align: middle"> {{ 'VisitorsPage.Resolve' | translate }}</span>
-                        </button>
-                      </div>
-                    </div> -->
-
-                    <!-- ---------------------------------------- -->
-                    <!-- Reopen Chat button -->
-                    <!-- ---------------------------------------- -->
-                    <!-- <div class="chat-header-wpr-reopen-chat-btn"
-                      *ngIf="CHAT_PANEL_MODE === false && request?.status === 1000">
-                      <div class="chat-header-wpr-btn">
-                        <button #reopenChatBtn (click)="reopenArchivedRequest(request, request?.request_id)"
-                          class="btn btn-primary chat-header-btn plr-8 ptb-8 pull-right" role="button"
-                          [disabled]="DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true" style="margin-left: 8px;">
-                          <i class="material-icons"
-                            style="vertical-align: middle; top:-2px !important; padding-bottom: 2px; transform: rotate(180deg)">archive</i>
-                          <span style="vertical-align: middle"> {{ 'Reopen' | translate }} </span>
-                        </button>
-                      </div>
-                    </div> -->
 
 
                     <!-- ---------------------------------------- -->
@@ -389,7 +357,7 @@
               </div>
             </div>
 
-            <div class="card---footer">
+            <div class="card---footer" *ngIf="CURRENT_USER_ROLE !== 'agent'" >
               <div class=" chat-btns-and-text-row-wpr" style="width: 100%; min-height: 69px;">
 
                 <!-- nk new -->
@@ -580,6 +548,72 @@
               </div>
 
             </div>
+            <div class="card---footer" *ngIf="CURRENT_USER_ROLE === 'agent'"> 
+
+              <!-- ---------------------------------------- -->
+              <!-- Open the chat -->
+              <!-- ---------------------------------------- -->
+              <div class="chat-header-wpr-open-chat-btn"
+                *ngIf="HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST === true || IS_CURRENT_USER_JOINED === true">
+                <!-- [ngClass]="{'disable_open_the_chat_btn' : request?.status == 1000}" -->
+                <div class="chat-header-footer-wpr-btn">
+                  <button #openChatBtn (click)="openChatAtSelectedConversation()"
+                    class="btn btn-primary chat-header-btn plr-8 ptb-8 pull-right" role="button"
+                    matTooltipClass="custom-mat-tooltip"
+                    matTooltip="{{ 'ThisConversationIsAssignedToYou' | translate }}" #tooltip="matTooltip"
+                    matTooltipPosition='below' matTooltipHideDelay="100">
+                    <i class="material-icons"
+                      style="vertical-align: middle; top:0px !important; padding-bottom: 2px;">open_in_new</i>
+                    <span style="vertical-align: middle"> {{ 'OpenChat' | translate }}</span>
+                  </button>
+                </div>
+              </div>
+              <!-- ---------------------------------------- -->
+              <!-- Join to chat -->
+              <!-- ---------------------------------------- -->
+              <div class="chat-header-wpr-join-chat-btn"
+                *ngIf="JOIN_TO_GROUP_HAS_ERROR === false && IS_CURRENT_USER_JOINED === false  && SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING === false && HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST === false">
+                <div class="chat-header-footer-wpr-btn">
+                  <button class="btn btn-primary chat-header-btn plr-8 ptb-8 pull-right" (click)="onJoinHandled()"
+                    [disabled]="request?.status == 1000" role="button" matTooltipClass="custom-mat-tooltip"
+                    matTooltip="{{ 'ThisConversationIsNotAssignedToYou' | translate }}" #tooltip="matTooltip"
+                    matTooltipPosition='below' matTooltipHideDelay="100">
+                    <i class="material-icons"
+                      style="vertical-align: middle; top:0px !important; padding-bottom: 2px;">login</i>
+                    <span style="vertical-align: middle"> {{ 'RequestMsgsPage.Enter' | translate }} </span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- ---------------------------------------- -->
+              <!-- Loading w-100-->
+              <!-- ---------------------------------------- -->
+              <div class="chat-header-wpr-loadin-chat-btn" style="height: 62px;" *ngIf="SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING === true 
+              && HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST === false  
+              && JOIN_TO_GROUP_HAS_ERROR === false">
+                <div class="chat-header-footer-wpr-btn">
+                  <button class="btn btn-primary chat-header-btn plr-8 ptb-8 pull-right">
+                    <i class="fa fa-spinner fa-spin" style="margin-right: 5px;"></i>
+                    {{ 'RequestMsgsPage.Loading' | translate }}
+                  </button>
+                </div>
+              </div>
+
+              <!-- ---------------------------------------- -->
+              <!-- Error w-100 -->
+              <!-- ---------------------------------------- -->
+              <div class="chat-header-wpr-error-chat-btn" style="height: 62px;"
+                *ngIf="JOIN_TO_GROUP_HAS_ERROR === true">
+
+                <div class="chat-header-footer-wpr-btn">
+                  <button class="btn btn-danger chat-header-btn plr-8 ptb-8 pull-right" disabled>
+                    {{ 'Error' | translate }}
+                  </button>
+                </div>
+              </div>
+
+            </div>
+
           </div> <!-- ./ card   -->
         </div> <!-- ./ col-md-7 -->
 

@@ -419,7 +419,6 @@ export const featuresPlanD = [
     'Email Support',
     'Team Inbox',
     'Make integration',
-    '2 Knowledge Bases',
     '250 Pages for Knowledge Base', 
     '50,000 AI Tokens'
 ]
@@ -449,7 +448,6 @@ export const featuresPlanE = [
     'Livechat Support',
     'Analytics',
     'Email Ticketing',
-    '3 Knowledge Bases',
     '500 Pages for Knowledge Base', 
     '250,000 AI Tokens'
 ]
