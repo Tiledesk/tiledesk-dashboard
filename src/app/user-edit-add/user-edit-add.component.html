@@ -51,14 +51,25 @@
             (prjct_profile_type === 'free' && trial_expired === true)) && 
             (projectUsersLength + countOfPendingInvites <= seatsLimit))">
 
-              <i class="material-icons" style="vertical-align: middle; color: #039be5;"> info </i>
-              <span class="msg-alert">
+              <i class="material-icons" style="vertical-align: middle;" 
+                [ngStyle]="{'color': projectUsersLength + countOfPendingInvites === seatsLimit ? '#f44336' : '#039be5' }"> 
+                info 
+              </i>
+              <span class="msg-alert" [ngStyle]="{'color': projectUsersLength + countOfPendingInvites === seatsLimit ? '#f44336' : '#394f5a' }">
                 {{ "YouCurrentlyAreUsing" | translate }}
                 {{ this.projectUsersLength + this.countOfPendingInvites }}
                 {{ "Of" | translate }} {{ seatsLimit }} {{ "ActiveOperatorSeatsInThe" | translate }}
                 <span style="text-transform: capitalize">
                   {{ prjct_profile_name }}</span> - <span style="color: #039be5; cursor:pointer"
-                  (click)="getMoreOperatorsSeats()">{{ "GetMore" | translate }} </span>
+                  (click)="getMoreOperatorsSeats()">
+                  <span *ngIf="prjct_profile_type === 'payment' && subscription_is_active === true"> 
+                    {{ "GetMore" | translate }} 
+                  </span>
+                  <span *ngIf="prjct_profile_type === 'free'"> 
+                    {{ "Pricing.UpgradePlan" | translate }} 
+                  </span>
+                
+                </span>
               </span>
 
             </div>
@@ -143,7 +154,8 @@
                 <input [(ngModel)]="user_email" (ngModelChange)="emailChange($event)" class="" type="email"
                   autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
                   placeholder='{{ "UserEditAddPage.EmailAddress" | translate }}'
-                  [ngClass]="{'invalid-email' : !EMAIL_IS_VALID}">
+                  [ngClass]="{'invalid-email' : !EMAIL_IS_VALID}"
+                  [disabled]="projectUsersLength + countOfPendingInvites >= seatsLimit">
 
                 <span *ngIf="!EMAIL_IS_VALID" style="color: #f44336">
                   {{ "EnterValidEmail" | translate }}
@@ -158,7 +170,8 @@
               </label>
               <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                 <select #selectElem (change)="setSelected(selectElem.value)" [(ngModel)]="selectedRole" class=""
-                  style="width: 100%;border-radius: 5px;">
+                  style="width: 100%;border-radius: 5px;"
+                  [disabled]="projectUsersLength + countOfPendingInvites >= seatsLimit">
                   <option class="not_selected" value="ROLE_NOT_SELECTED" [selected]="selected == true">
                     {{ "UserEditAddPage.SelectRole" | translate }}
                   </option>
@@ -177,7 +190,7 @@
                 <!-- email length {{ user_email?.length }}  -->
 
                 <button class="btn btn-primary"
-                  [disabled]="ROLE_NOT_SELECTED === true || !EMAIL_IS_VALID || user_email?.length < 1 || role?.length < 1"
+                  [disabled]="ROLE_NOT_SELECTED === true || !EMAIL_IS_VALID || user_email?.length < 1 || role?.length < 1 || projectUsersLength + countOfPendingInvites >= seatsLimit"
                   (click)="invite()">
                   {{ "UserEditAddPage.Invites" | translate }}
                 </button>

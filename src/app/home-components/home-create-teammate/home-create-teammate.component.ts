@@ -78,7 +78,7 @@ export class HomeCreateTeammateComponent extends PricingBaseComponent implements
     private translate: TranslateService
   ) {
     super(prjctPlanService, notify);
-   }
+  }
 
   ngOnInit(): void {
     this.logger.log('[HOME-CREATE-TEAMMATE] OnInit  ')
@@ -127,18 +127,18 @@ export class HomeCreateTeammateComponent extends PricingBaseComponent implements
 
   getCurrentProject() {
     this.auth.project_bs
-    .pipe(
-      takeUntil(this.unsubscribe$)
-    )
-    .subscribe((project) => {
-      this.project = project
-      this.logger.log('[HOME-CREATE-TEAMMATE] - GET CURRENT PROJECT ', this.project)
-      if (this.project) {
-        this.project_name = project.name;
-        this.id_project = project._id;
-        this.logger.log('[HOME-CREATE-TEAMMATE] - GET CURRENT PROJECT - PROJECT-NAME ', this.project_name, ' PROJECT-ID ', this.id_project)
-      }
-    });
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((project) => {
+        this.project = project
+        this.logger.log('[HOME-CREATE-TEAMMATE] - GET CURRENT PROJECT ', this.project)
+        if (this.project) {
+          this.project_name = project.name;
+          this.id_project = project._id;
+          this.logger.log('[HOME-CREATE-TEAMMATE] - GET CURRENT PROJECT - PROJECT-NAME ', this.project_name, ' PROJECT-ID ', this.id_project)
+        }
+      });
   }
 
   getPendingInvitation() {
@@ -175,17 +175,17 @@ export class HomeCreateTeammateComponent extends PricingBaseComponent implements
 
   getLoggedUser() {
     this.auth.user_bs
-    .pipe(
-      takeUntil(this.unsubscribe$)
-    )
-    .subscribe((user) => {
-      //  this.logger.log('[HOME-CREATE-TEAMMATE]  - LOGGED USER ', user)
-      if (user) {
-        this.CURRENT_USER = user
-        this.CURRENT_USER_ID = user._id;
-        this.logger.log('[HOME-CREATE-TEAMMATE] - CURRENT USER ID ', this.CURRENT_USER_ID)
-      }
-    });
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((user) => {
+        //  this.logger.log('[HOME-CREATE-TEAMMATE]  - LOGGED USER ', user)
+        if (user) {
+          this.CURRENT_USER = user
+          this.CURRENT_USER_ID = user._id;
+          this.logger.log('[HOME-CREATE-TEAMMATE] - CURRENT USER ID ', this.CURRENT_USER_ID)
+        }
+      });
   }
 
 
@@ -382,11 +382,15 @@ export class HomeCreateTeammateComponent extends PricingBaseComponent implements
   }
 
   inviteTeammate() {
-    if (this.projectUsersLength + this.countOfPendingInvites < this.seatsLimit) { 
+    if (this.projectUsersLength + this.countOfPendingInvites < this.seatsLimit) {
       this.presentModalInviteTeammate()
-    } else if (this.projectUsersLength + this.countOfPendingInvites >= this.seatsLimit) { 
+    } else if (this.projectUsersLength + this.countOfPendingInvites > this.seatsLimit) {
       if (this.USER_ROLE === 'owner') {
-        this.notify._displayContactUsModal(true, 'operators_seats_unavailable')
+        if (this.prjct_profile_type === 'free') {
+          this.notify.displayGoToPricingModal('user_exceeds')
+        } else {
+          this.notify._displayContactUsModal(true, 'seats_limit_exceed') 
+        }
       } else {
         this.presentModalOnlyOwnerCanManageTheAccountPlan()
       }
@@ -418,7 +422,7 @@ export class HomeCreateTeammateComponent extends PricingBaseComponent implements
             this.doInviteUser(result.email, result.role);
           } else if ((this.projectUsersLength + this.countOfPendingInvites) >= this.seatsLimit) {
             if (this.USER_ROLE === 'owner') {
-              this.notify._displayContactUsModal(true, 'operators_seats_unavailable')
+              this.notify._displayContactUsModal(true, 'seats_limit_reached')
             } else {
               this.presentModalOnlyOwnerCanManageTheAccountPlan()
             }
@@ -587,7 +591,7 @@ export class HomeCreateTeammateComponent extends PricingBaseComponent implements
   openModalSubsExpired() {
     this.logger.log('[HOME-CREATE-TEAMMATE] openModalSubsExpired ')
     if (this.USER_ROLE === 'owner') {
-      if (this.profile_name !== PLAN_NAME.C && this.profile_name !== PLAN_NAME.F ) {
+      if (this.profile_name !== PLAN_NAME.C && this.profile_name !== PLAN_NAME.F) {
         this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
       } else if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
         this.notify.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
@@ -598,14 +602,14 @@ export class HomeCreateTeammateComponent extends PricingBaseComponent implements
   }
 
   openModalTrialExpired() {
-    if (this.USER_ROLE === 'owner') {  
-        this.notify.displayTrialHasExpiredModal();
+    if (this.USER_ROLE === 'owner') {
+      this.notify.displayTrialHasExpiredModal();
     } else {
       this.presentModalOnlyOwnerCanManageTheAccountPlan();
     }
   }
 
- 
+
 
 
 

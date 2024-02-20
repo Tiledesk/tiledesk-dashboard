@@ -194,7 +194,6 @@ export class DepartmentsStaticComponent  extends PricingBaseComponent implements
             this.notify._displayContactUsModal(true, 'upgrade_plan');
           } else  if (this.prjct_profile_type === 'free') {
             this.router.navigate(['project/' + this.projectId + '/pricing']);
-            // this.notify.presentContactUsModalToUpgradePlan(true);
           }
         } else {
           this.presentModalOnlyOwnerCanManageTheAccountPlan();

@@ -147,7 +147,6 @@ export class NotificationMessageComponent extends PricingBaseComponent implement
       if (this.prjct_profile_type === 'free' && this.trial_expired === true) {
         this.notify.closeDataExportNotAvailable();
         this.router.navigate(['project/' + this.projectId + '/pricing']);
-        // this.notify.presentContactUsModalToUpgradePlan(true);
 
       } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
         this.notify.closeDataExportNotAvailable();
@@ -315,7 +314,6 @@ export class NotificationMessageComponent extends PricingBaseComponent implement
 
     this.notify.closeModalSubsExpired();
     this.notify.closeGoToPricingModal();
-    // this.notify.presentContactUsModalToUpgradePlan(true);
   }
 
   launchWidget() {

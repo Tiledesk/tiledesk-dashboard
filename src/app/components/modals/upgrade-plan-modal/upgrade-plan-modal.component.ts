@@ -47,7 +47,7 @@ export class UpgradePlanModalComponent implements OnInit {
     this.closeDialog()
     if (this.USER_ROLE === 'owner') {
       this.router.navigate(['project/' + this.id_project + '/pricing']);
-      // this.notify.presentContactUsModalToUpgradePlan(true);
+      
     } else {
       this.presentModalOnlyOwnerCanManageTheAccountPlan();
     }

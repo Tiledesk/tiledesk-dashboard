@@ -1477,7 +1477,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
         } else if (this.profile_name === 'free' || this.profile_name === 'Sandbox') {  // && this.trial_expired === true
           this.router.navigate(['project/' + this.projectId + '/pricing']);
-          // this.notify.presentContactUsModalToUpgradePlan(true);
+       
         }
 
       } else {

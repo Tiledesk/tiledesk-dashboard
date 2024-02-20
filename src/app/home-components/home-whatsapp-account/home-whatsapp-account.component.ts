@@ -374,54 +374,54 @@ export class HomeWhatsappAccountComponent implements OnInit, OnChanges {
   }
 
 
-  presentModalFeautureAvailableFromBPlan() {
-    const el = document.createElement('div')
-    el.innerHTML = this.featureAvailableFromBPlan
-    swal({
-      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
-      content: el,
-      icon: "info",
-      // buttons: true,
-      buttons: {
-        cancel: this.cancel,
-        catch: {
-          text: this.upgradePlan,
-          value: "catch",
-        },
-      },
-      dangerMode: false,
-    }).then((value) => {
-      if (value === 'catch') {
-        // this.logger.log('featureAvailableFromPlanC value', value)
-        // this.logger.log('[HOME-WA] prjct_profile_type', this.prjct_profile_type)
-        // this.logger.log('[HOME-WA] subscription_is_active', this.subscription_is_active)
-        // this.logger.log('[HOME-WA] prjct_profile_type', this.prjct_profile_type)
-        // this.logger.log('[HOME-WA] trial_expired', this.trial_expired)
-        // this.logger.log('[HOME-WA] isVisiblePAY', this.isVisiblePAY)
-        if (this.isVisiblePAY) {
-          // this.logger.log('[HOME-WA] HERE 1')
-          if (this.USER_ROLE === 'owner') {
-            // this.logger.log('[HOME-WA] HERE 2')
-            if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
-              // this.logger.log('[HOME-WA] HERE 3')
-              this.notify._displayContactUsModal(true, 'upgrade_plan');
-            } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true && this.profile_name === PLAN_NAME.A) {
-              this.notify._displayContactUsModal(true, 'upgrade_plan');
-            } else if (this.prjct_profile_type === 'free' && this.trial_expired === true) {
-              // this.logger.log('[HOME-WA] HERE 4')
-              this.router.navigate(['project/' + this.projectId + '/pricing']);
-            }
-          } else {
-            // this.logger.log('[HOME-WA] HERE 5')
-            this.presentModalAgentCannotManageAvancedSettings();
-          }
-        } else {
-          // this.logger.log('[HOME-WA] HERE 6')
-          this.notify._displayContactUsModal(true, 'upgrade_plan');
-        }
-      }
-    });
-  }
+  // presentModalFeautureAvailableFromBPlan() {
+  //   const el = document.createElement('div')
+  //   el.innerHTML = this.featureAvailableFromBPlan
+  //   swal({
+  //     // title: this.onlyOwnerCanManageTheAccountPlanMsg,
+  //     content: el,
+  //     icon: "info",
+  //     // buttons: true,
+  //     buttons: {
+  //       cancel: this.cancel,
+  //       catch: {
+  //         text: this.upgradePlan,
+  //         value: "catch",
+  //       },
+  //     },
+  //     dangerMode: false,
+  //   }).then((value) => {
+  //     if (value === 'catch') {
+  //       // this.logger.log('featureAvailableFromPlanC value', value)
+  //       // this.logger.log('[HOME-WA] prjct_profile_type', this.prjct_profile_type)
+  //       // this.logger.log('[HOME-WA] subscription_is_active', this.subscription_is_active)
+  //       // this.logger.log('[HOME-WA] prjct_profile_type', this.prjct_profile_type)
+  //       // this.logger.log('[HOME-WA] trial_expired', this.trial_expired)
+  //       // this.logger.log('[HOME-WA] isVisiblePAY', this.isVisiblePAY)
+  //       if (this.isVisiblePAY) {
+  //         // this.logger.log('[HOME-WA] HERE 1')
+  //         if (this.USER_ROLE === 'owner') {
+  //           // this.logger.log('[HOME-WA] HERE 2')
+  //           if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
+  //             // this.logger.log('[HOME-WA] HERE 3')
+  //             this.notify._displayContactUsModal(true, 'upgrade_plan');
+  //           } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true && this.profile_name === PLAN_NAME.A) {
+  //             this.notify._displayContactUsModal(true, 'upgrade_plan');
+  //           } else if (this.prjct_profile_type === 'free' && this.trial_expired === true) {
+  //             // this.logger.log('[HOME-WA] HERE 4')
+  //             this.router.navigate(['project/' + this.projectId + '/pricing']);
+  //           }
+  //         } else {
+  //           // this.logger.log('[HOME-WA] HERE 5')
+  //           this.presentModalAgentCannotManageAvancedSettings();
+  //         }
+  //       } else {
+  //         // this.logger.log('[HOME-WA] HERE 6')
+  //         this.notify._displayContactUsModal(true, 'upgrade_plan');
+  //       }
+  //     }
+  //   });
+  // }
 
 
   presentModalAgentCannotManageAvancedSettings() {

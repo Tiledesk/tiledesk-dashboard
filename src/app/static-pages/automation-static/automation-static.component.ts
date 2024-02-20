@@ -186,7 +186,7 @@ export class AutomationStaticComponent extends PricingBaseComponent implements O
           this.notify.presentContactUsModalToUpgradePlan(true);
         } else if (this.prjct_profile_type === 'free') {
           this.router.navigate(['project/' + this.projectId + '/pricing']);
-          // this.notify.presentContactUsModalToUpgradePlan(true);
+          
         }
       } else {
         this.presentModalOnlyOwnerCanManageTheAccountPlan();

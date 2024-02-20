@@ -316,11 +316,54 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, OnDe
     this.router.navigate(['project/' + this.id_project + '/pricing']);
   }
 
+  getMoreOperatorsSeats() {
+    if (this.USER_ROLE === 'owner') {
+      if (this.prjct_profile_type === 'free') {
+
+
+        if (this.projectUsersLength + this.countOfPendingInvites > this.seatsLimit) {
+         
+          this.notify._displayContactUsModal(true, 'seats_limit_reached')
+        } else if (this.projectUsersLength + this.countOfPendingInvites <= this.seatsLimit) {
+          this.router.navigate(['project/' + this.id_project + '/pricing']);
+        }
+      } else {
+        if (this.projectUsersLength + this.countOfPendingInvites > this.seatsLimit) { 
+          this.notify._displayContactUsModal(true, 'seats_limit_exceed') 
+        } else if (this.projectUsersLength + this.countOfPendingInvites === this.seatsLimit) {
+          this.notify._displayContactUsModal(true, 'seats_limit_reached');
+        } else if (this.projectUsersLength + this.countOfPendingInvites < this.seatsLimit) {
+          this.notify._displayContactUsModal(true, 'upgrade_plan');
+        }
+      }
+    } else if (this.USER_ROLE === 'admin') {
+
+      if (this.prjct_profile_type === 'free') {
+        if (this.projectUsersLength + this.countOfPendingInvites > this.seatsLimit) {
+         
+          this.notify._displayContactOwnerModal(true, 'seats_limit_reached')
+        } else if (this.projectUsersLength + this.countOfPendingInvites <= this.seatsLimit) {
+          // this.router.navigate(['project/' + this.id_project + '/pricing']);
+          this.notify._displayContactOwnerModal(true, 'upgrade_plan');
+        }
+      } else {
+        if (this.projectUsersLength + this.countOfPendingInvites > this.seatsLimit) { 
+          this.notify._displayContactOwnerModal(true, 'seats_limit_exceed') 
+        } else if (this.projectUsersLength + this.countOfPendingInvites === this.seatsLimit) {
+          this.notify._displayContactOwnerModal(true, 'seats_limit_reached');
+        } else if (this.projectUsersLength + this.countOfPendingInvites < this.seatsLimit) {
+          this.notify._displayContactOwnerModal(true, 'upgrade_plan');
+        }
+      }
+    }
+
+  }
+
   presentContactUsModal() {
     if (this.USER_ROLE === 'owner') {
-      this.notify._displayContactUsModal(true, 'operators_seats_unavailable')
+      this.notify._displayContactUsModal(true, 'seats_limit_exceed')
     } else {
-      this.presentModalOnlyOwnerCanManageTheAccountPlan()
+      this.notify._displayContactOwnerModal(true, 'seats_limit_exceed') 
     }
   }
 
@@ -328,7 +371,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, OnDe
     if (this.USER_ROLE === 'owner') {
       this.notify.displayGoToPricingModal('user_exceeds')
     } else {
-      this.presentModalOnlyOwnerCanManageTheAccountPlan()
+      this.notify._displayContactOwnerModal(true, 'seats_limit_exceed') 
     }
   }
 
@@ -361,7 +404,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, OnDe
     }
   }
 
-  getMoreOperatorsSeats() {
+  _getMoreOperatorsSeats() {
     if (this.USER_ROLE === 'owner') {
       if (!this.appSumoProfile) {
         this.notify._displayContactUsModal(true, 'upgrade_plan')
@@ -372,6 +415,8 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, OnDe
       this.presentModalOnlyOwnerCanManageTheAccountPlan()
     }
   }
+
+  
 
   presentModalOnlyOwnerCanManageTheAccountPlan() {
     this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(
@@ -613,7 +658,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, OnDe
         if (this.prjct_profile_type === 'free') {
           this.presentGoToPricingModal()
         } else if (this.prjct_profile_type === 'payment' && (this.subscription_is_active === false || this.subscription_is_active === true)) {
-          this.notify._displayContactUsModal(true, 'operators_seats_unavailable')
+          this.notify._displayContactUsModal(true, 'seats_limit_reached')
         }
       } else {
         this.presentModalOnlyOwnerCanManageTheAccountPlan()

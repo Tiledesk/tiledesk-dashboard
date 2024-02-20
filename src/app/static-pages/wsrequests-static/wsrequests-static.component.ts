@@ -185,7 +185,7 @@ export class WsrequestsStaticComponent extends PricingBaseComponent implements O
           this.notify._displayContactUsModal(true, 'upgrade_plan');
         } else {
           this.router.navigate(['project/' + this.projectId + '/pricing']);
-          // this.notify.presentContactUsModalToUpgradePlan(true);
+          
         }
       } else {
         this.presentModalOnlyOwnerCanManageTheAccountPlan();

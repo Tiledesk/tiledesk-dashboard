@@ -406,14 +406,54 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
 
 
   getMoreOperatorsSeats() {
-    this.notify._displayContactUsModal(true, 'upgrade_plan');
+    if (this.USER_ROLE === 'owner') {
+      if (this.prjct_profile_type === 'free') {
+        if (this.projectUsersLength + this.countOfPendingInvites > this.seatsLimit) {
+         
+          this.notify._displayContactUsModal(true, 'seats_limit_reached')
+        } else if (this.projectUsersLength + this.countOfPendingInvites <= this.seatsLimit) {
+          this.router.navigate(['project/' + this.id_project + '/pricing']);
+        }
+      } else {
+        if (this.projectUsersLength + this.countOfPendingInvites > this.seatsLimit) { 
+          this.notify._displayContactUsModal(true, 'seats_limit_exceed') 
+        } else if (this.projectUsersLength + this.countOfPendingInvites === this.seatsLimit) {
+          this.notify._displayContactUsModal(true, 'seats_limit_reached');
+        } else if (this.projectUsersLength + this.countOfPendingInvites < this.seatsLimit) {
+          this.notify._displayContactUsModal(true, 'upgrade_plan');
+        }
+      }
+    } else if (this.USER_ROLE === 'admin') {
+
+      if (this.prjct_profile_type === 'free') {
+        if (this.projectUsersLength + this.countOfPendingInvites > this.seatsLimit) {
+         
+          this.notify._displayContactOwnerModal(true, 'seats_limit_reached')
+        } else if (this.projectUsersLength + this.countOfPendingInvites <= this.seatsLimit) {
+          // this.router.navigate(['project/' + this.id_project + '/pricing']);
+          this.notify._displayContactOwnerModal(true, 'upgrade_plan');
+        }
+      } else {
+        if (this.projectUsersLength + this.countOfPendingInvites > this.seatsLimit) { 
+          this.notify._displayContactOwnerModal(true, 'seats_limit_exceed') 
+        } else if (this.projectUsersLength + this.countOfPendingInvites === this.seatsLimit) {
+          this.notify._displayContactOwnerModal(true, 'seats_limit_reached');
+        } else if (this.projectUsersLength + this.countOfPendingInvites < this.seatsLimit) {
+          this.notify._displayContactOwnerModal(true, 'upgrade_plan');
+        }
+      }
+    }
+
   }
+
+
 
   presentContactUsModal() {
     if (this.USER_ROLE === 'owner') {
-      this.notify._displayContactUsModal(true, 'operators_seats_unavailable')
+      this.notify._displayContactUsModal(true, 'seats_limit_exceed')
     } else {
-      this.presentModalOnlyOwnerCanManageTheAccountPlan()
+      // this.presentModalOnlyOwnerCanManageTheAccountPlan()
+      this.notify._displayContactOwnerModal(true, 'seats_limit_exceed') 
     }
   }
 
@@ -421,7 +461,7 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
     if (this.USER_ROLE === 'owner') {
       this.notify.displayGoToPricingModal('user_exceeds')
     } else {
-      this.presentModalOnlyOwnerCanManageTheAccountPlan()
+      this.notify._displayContactOwnerModal(true, 'seats_limit_exceed') 
     }
   }
 
@@ -757,11 +797,11 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
     //     this.doInviteUser();
     //   } else if ((this.projectUsersLength + this.countOfPendingInvites) >= this.seatsLimit) {
 
-    //     // this.notify._displayContactUsModal(true, 'operators_seats_unavailable')
+    //     // this.notify._displayContactUsModal(true, 'seats_limit_reached')
     //     if (this.prjct_profile_type === 'free') {
     //       this.presentGoToPricingModal()
     //     } else if (this.prjct_profile_type === 'payment' && (this.subscription_is_active === false || this.subscription_is_active === true)) {
-    //       this.notify._displayContactUsModal(true, 'operators_seats_unavailable')
+    //       this.notify._displayContactUsModal(true, 'seats_limit_reached')
     //     }
     //   }
     // } else {
@@ -778,11 +818,11 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
       }
     } else if ((this.projectUsersLength + this.countOfPendingInvites) >= this.seatsLimit) {
       if (this.CURRENT_USER_ROLE === 'owner') {
-        // this.notify._displayContactUsModal(true, 'operators_seats_unavailable')
+        // this.notify._displayContactUsModal(true, 'seats_limit_reached')
         if (this.prjct_profile_type === 'free') {
           this.presentGoToPricingModal()
         } else if (this.prjct_profile_type === 'payment' && (this.subscription_is_active === false || this.subscription_is_active === true)) {
-          this.notify._displayContactUsModal(true, 'operators_seats_unavailable')
+          this.notify._displayContactUsModal(true, 'seats_limit_reached')
         }
       } else {
         this.presentModalOnlyOwnerCanManageTheAccountPlan()

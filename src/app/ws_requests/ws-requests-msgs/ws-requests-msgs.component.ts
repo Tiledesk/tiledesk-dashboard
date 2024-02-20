@@ -4412,7 +4412,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
               this.notify._displayContactUsModal(true, 'upgrade_plan');
             } else if (this.profile_name === 'free') {  // 
               this.router.navigate(['project/' + this.id_project + '/pricing']);
-              // this.notify.presentContactUsModalToUpgradePlan(true);
+            
             }
 
           } else {

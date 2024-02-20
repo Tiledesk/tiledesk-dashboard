@@ -183,11 +183,11 @@ export class HoursStaticComponent extends PricingBaseComponent implements OnInit
           this.notify._displayContactUsModal(true, 'upgrade_plan');
         } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true) {
 
-          // this.notify.presentContactUsModalToUpgradePlan(true);
+       
           this.notify._displayContactUsModal(true, 'upgrade_plan');
         } else if (this.prjct_profile_type === 'free') {
           this.router.navigate(['project/' + this.projectId + '/pricing']);
-          // this.notify.presentContactUsModalToUpgradePlan(true);
+          
         }
       } else {
         this.presentModalOnlyOwnerCanManageTheAccountPlan();

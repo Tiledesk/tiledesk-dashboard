@@ -2858,7 +2858,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
             } else if (this.profile_name === 'free' && this.prjct_trial_expired === true || this.profile_name === 'Sandbox' && this.prjct_trial_expired === true) {  //
                
               this.router.navigate(['project/' + this.projectId + '/pricing']);
-              // this.notify.presentContactUsModalToUpgradePlan(true);
+             
             }
 
           } else {

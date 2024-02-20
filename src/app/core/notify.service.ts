@@ -37,6 +37,7 @@ export class NotifyService {
   displayModalTrialExpired= 'none';
   
   displayContactUsModal = 'none';
+  displayContactOwnerModal = 'none';
 
   goToPricingModal = 'none';
   
@@ -58,6 +59,7 @@ export class NotifyService {
   public cancelSubscriptionCompleted$ = new Subject();
 
   showSubtitleAllOperatorsSeatsUsed: boolean;
+  showSubtitleSeatsNumberExceed : boolean;
   showSubtitleAllChatbotUsed: boolean;
   displayLogoutModal = 'none';
   prjct_profile_name: string;
@@ -146,12 +148,17 @@ export class NotifyService {
   }
 
   // "CONTACT US - LET'S CHAT" MODAL
-  _displayContactUsModal(displayModal: boolean, areAvailableOperatorsSeats: string) {
-    this.logger.log('[NOTIFY-SERVICE] - _displayContactUsModal areAvailableOperatorsSeats ', areAvailableOperatorsSeats);
-    if (areAvailableOperatorsSeats === 'operators_seats_unavailable') {
+  _displayContactUsModal(displayModal: boolean, reason: string) {
+    // console.log('[NOTIFY-SERVICE] - _displayContactUsModal reason ', reason);
+    if (reason === 'seats_limit_reached') {
       this.showSubtitleAllOperatorsSeatsUsed = true;
+      this.showSubtitleSeatsNumberExceed= false;
+    } else if  (reason === 'seats_limit_exceed') {
+      this.showSubtitleSeatsNumberExceed= true;
+      this.showSubtitleAllOperatorsSeatsUsed = false;
     } else {
       this.showSubtitleAllOperatorsSeatsUsed = false;
+      this.showSubtitleSeatsNumberExceed = false;
     }
 
     if (displayModal === true) {
@@ -161,8 +168,31 @@ export class NotifyService {
 
   closeContactUsModal() {
     this.displayContactUsModal = 'none';
-    
   }
+
+  _displayContactOwnerModal(displayModal: boolean, reason: string) {
+    // console.log('[NOTIFY-SERVICE] - _displayContactOwnerModal reason ', reason);
+    if (reason === 'seats_limit_reached') {
+      this.showSubtitleAllOperatorsSeatsUsed = true;
+      this.showSubtitleSeatsNumberExceed= false;
+    } else if  (reason === 'seats_limit_exceed') {
+      this.showSubtitleSeatsNumberExceed= true;
+      this.showSubtitleAllOperatorsSeatsUsed = false;
+    } else {
+      this.showSubtitleAllOperatorsSeatsUsed = false;
+      this.showSubtitleSeatsNumberExceed = false;
+    }
+
+    if (displayModal === true) {
+      this.displayContactOwnerModal = 'block';
+    }
+  }
+
+  closeContactOwnerModal() {
+    this.displayContactOwnerModal = 'none';
+  }
+
+ 
 
   displayGoToPricingModal(reason) {
     this.goToPricingModal = 'block';

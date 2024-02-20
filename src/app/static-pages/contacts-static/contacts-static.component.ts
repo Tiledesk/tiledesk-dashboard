@@ -183,7 +183,7 @@ export class ContactsStaticComponent extends  PricingBaseComponent implements On
           this.notify._displayContactUsModal(true, 'upgrade_plan');
         } else {
           this.router.navigate(['project/' + this.projectId + '/pricing']);
-          // this.notify.presentContactUsModalToUpgradePlan(true);
+         
         }
       } else {
         this.presentModalOnlyOwnerCanManageTheAccountPlan();

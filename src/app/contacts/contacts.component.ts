@@ -1119,7 +1119,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
               this.notify._displayContactUsModal(true, 'upgrade_plan');
             } else if (this.profile_name === 'free') {  // 
               this.router.navigate(['project/' + this.projectId + '/pricing']);
-              // this.notify.presentContactUsModalToUpgradePlan(true);
+              
             }
 
           } else {

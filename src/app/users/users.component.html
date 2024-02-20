@@ -64,13 +64,23 @@
                  (prjct_profile_type === 'free' && trial_expired === true))  &&
                  (projectUsersLength + countOfPendingInvites <= seatsLimit))">
 
-                <i class="material-icons" style="vertical-align: middle; color: #039be5;"> info </i>
-                <span class="msg-alert">
+                <i class="material-icons" style="vertical-align: middle;" 
+                  [ngStyle]="{'color': projectUsersLength + countOfPendingInvites === seatsLimit ? '#f44336' : '#039be5' }"> 
+                  info 
+                </i>
+                <span class="msg-alert" [ngStyle]="{'color': projectUsersLength + countOfPendingInvites === seatsLimit ? '#f44336' : '#394f5a' }">
                   {{ "YouCurrentlyAreUsing" | translate }} {{ this.projectUsersLength + this.countOfPendingInvites }}
                   {{ "Of" | translate }} {{ seatsLimit }} {{ "ActiveOperatorSeatsInThe" | translate }}
                   <span style="text-transform: capitalize">
                     {{ prjct_profile_name }}</span> - <span style="color: #039be5; cursor:pointer"
-                    (click)="getMoreOperatorsSeats()">{{ "GetMore" | translate }} </span>
+                    (click)="getMoreOperatorsSeats()">
+                    <span *ngIf="prjct_profile_type === 'payment' && subscription_is_active === true"> 
+                      {{ "GetMore" | translate }} 
+                    </span>
+                    <span *ngIf="prjct_profile_type === 'free'"> 
+                      {{ "Pricing.UpgradePlan" | translate }} 
+                    </span>
+                  </span>
                 </span>
 
               </div>
@@ -150,7 +160,8 @@
 
                 <ng-container *ngIf="displayInviteTeammateBtn">
                   <button *ngIf="USER_ROLE !== 'agent'" class="btn btn-primary pull-right"
-                    style="padding: 8px 16px;margin:0px;" (click)="goToAddUser()">
+                    style="padding: 8px 16px;margin:0px;" (click)="goToAddUser()"
+                    [disabled]="projectUsersLength + countOfPendingInvites >= seatsLimit">
                     <span class="icon" style="padding-right:8px">
                       <i class="material-icons">add_circle</i>
                     </span>

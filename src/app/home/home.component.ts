@@ -359,11 +359,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.logger.error('[HOME] - GET PROJECT BY ID - ERROR ', error);
     }, () => {
       this.logger.log('[HOME] - GET PROJECT BY ID * COMPLETE * ');
-      // this.getApps();
-      // setTimeout(() => {
-      //   this.showskeleton = false;
-      //   console.log('[HOME] - skeleton showskeleton ', this.showskeleton );
-      // }, 1500);
+    
     });
   }
 
@@ -389,7 +385,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   delayNewsFeedSkeleton() {
      setTimeout(() => {
         this.showsNewsFeedSkeleton = false;
-        console.log('[HOME] - skeleton showskeleton ', this.showskeleton );
+        // console.log('[HOME] - skeleton showskeleton ', this.showskeleton );
       }, 500);
   }
 
@@ -1416,7 +1412,9 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
               if (this.userHasUnistalledWa === false) {
                 this.logger.log("[HOME] getInstallations - userHasUnistalledWa 2 ", this.userHasUnistalledWa)
                 if (this.solution_channel_for_child === 'whatsapp_fb_messenger') {
+                 
                   this.installApp();
+
                 }
               }
             } else {
@@ -1460,11 +1458,39 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     return promise;
   }
 
+  checkPlan(appTitle) {
+    if (
+      (appTitle === "WhatsApp Business" || appTitle === "Facebook Messenger") &&
+      ((this.profile_name === PLAN_NAME.A) ||
+        (this.profile_name === PLAN_NAME.B && this.subscription_is_active === false) ||
+        (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
+        (this.profile_name === 'free' && this.prjct_trial_expired === true))) {
 
+      if (!this.appSumoProfile) {
+        
+        // this.presentModalFeautureAvailableFromTier2Plan(this.featureAvailableFromBPlan)
+        return false
+      } else {
+        // this.presentModalAppSumoFeautureAvailableFromBPlan()
+        return false
+      }
+    } else if (
+      (appTitle === "WhatsApp Business" || appTitle === "Facebook Messenger") &&
+      ((this.profile_name === PLAN_NAME.D) ||
+        (this.profile_name === PLAN_NAME.E && this.subscription_is_active === false) ||
+        (this.profile_name === PLAN_NAME.F && this.subscription_is_active === false) ||
+        (this.profile_name === 'Sandbox' && this.prjct_trial_expired === true))) {
+      if (!this.appSumoProfile) {
+        // this.presentModalFeautureAvailableFromTier2Plan(this.featureAvailableFromEPlan)
+        return false
+      }
+
+    }
+  }
 
   installApp() {
     this.logger.log('[HOME] installApp appTitle ', this.appTitle)
-    const isAvailable = this.checkPlanAndPresentModal(this.appTitle)
+    const isAvailable = this.checkPlan(this.appTitle)
     this.logger.log('[APP-STORE] isAvaibleFromPlan ', isAvailable)
     if (isAvailable === false) {
       return
