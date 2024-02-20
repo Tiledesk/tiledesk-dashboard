@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.5.6
+- Deploys in production
+- Improves the modal windows displayed on teammate list page and the om invite teammates page
+
 ### 2.5.5
 - Deploys in production
 - Fixes bug: Admins can't invite teammates
