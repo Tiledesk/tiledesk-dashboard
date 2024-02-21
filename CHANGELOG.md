@@ -1,8 +1,13 @@
 # tiledesk-dashboard
 
+### 2.5.8
+- Deploys in production
+- Fixes the bug: Sidebar "Settings" menu item becomes grayed out when user selects "Installations"
+- Improves the Change Password tab available on the user's profile page
+
 ### 2.5.7
 - Deploys in production
-- Removes,on the conversation details page, the ability to the agents to send message 
+- Removes, on the conversation details page, the ability to the agents to send message 
 
 ### 2.5.6
 - Deploys in production
