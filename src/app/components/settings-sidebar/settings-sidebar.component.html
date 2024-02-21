@@ -230,10 +230,35 @@
         matTooltipHideDelay="100" 
         [matTooltipDisabled]="IS_OPEN">
         <a>
-          <i *ngIf="IS_OPEN === true || IS_OPEN === false" class="material-icons settings-sidebar-icons">school</i>
+          <i *ngIf="IS_OPEN === true || IS_OPEN === false" class="material-icons settings-sidebar-icons">
+            school
+          </i>
           <p *ngIf="IS_OPEN === true" class="custom_paragraph">
             {{ 'KnowledgeBases' | translate }}
             <span class="trigger-beta-badge">Beta</span>
+          </p>
+        </a>
+      </li>
+    </ng-container>
+
+    <!-- -------------------------------------------------------- -->
+    <!--  Integrations  --> 
+    <!-- -------------------------------------------------------- -->
+    <ng-container *ngIf="isVisibleINT && USER_ROLE !== 'agent'">
+      <li [ngClass]="{'active-item': INTEGRATIONS_ROUTE_IS_ACTIVE}" 
+        (click)="goToIntegrations()"
+        matTooltipClass="custom-mat-tooltip-in-settings-sidebar" 
+        matTooltip="Integrations"
+        #tooltip="matTooltip" 
+        matTooltipPosition='right' 
+        matTooltipHideDelay="100" 
+        [matTooltipDisabled]="IS_OPEN">
+        <a>
+          <i *ngIf="IS_OPEN === true || IS_OPEN === false" class="material-icons settings-sidebar-icons">
+            apps
+          </i>
+          <p *ngIf="IS_OPEN === true" class="custom_paragraph">
+              Integrations
           </p>
         </a>
       </li>

@@ -49,6 +49,7 @@ export class SettingsSidebarComponent implements OnInit {
   OPERATING_HOURS_ROUTE_IS_ACTIVE: boolean;
   KNOWLEDGE_BASES_ROUTE_IS_ACTIVE: boolean;
   AUTOMATIONS_ROUTE_IS_ACTIVE: boolean;
+  INTEGRATIONS_ROUTE_IS_ACTIVE: boolean;
   public_Key: string;
   USER_ROLE: any;
   CHAT_BASE_URL: string;
@@ -413,6 +414,10 @@ export class SettingsSidebarComponent implements OnInit {
     this.router.navigate(['project/' + this.project._id + '/automations'])
   }
 
+  goToIntegrations() {
+    this.router.navigate(['project/' + this.project._id + '/integrations'])
+  }
+
   goToKnowledgeBases() {
     this.logger.log("goToKnowledgeBases -----> project._id: ", this.project._id);
     this.router.navigate(['project/' + this.project._id + '/knowledge-bases-pre'])
@@ -601,5 +606,17 @@ export class SettingsSidebarComponent implements OnInit {
         this.PROJECT_SETTINGS_ROUTE_IS_ACTIVE,
       )
     }
+
+    if (this.route.indexOf('/integrations') !== -1) {
+      this.INTEGRATIONS_ROUTE_IS_ACTIVE = true
+      console.log('[SETTING-SIDEBAR] - INTEGRATIONS_ROUTE_IS_ACTIVE  ', this.INTEGRATIONS_ROUTE_IS_ACTIVE,
+      )
+    } else {
+      this.INTEGRATIONS_ROUTE_IS_ACTIVE = false
+       console.log(  '[SETTING-SIDEBAR] - INTEGRATIONS_ROUTE_IS_ACTIVE  ', this.INTEGRATIONS_ROUTE_IS_ACTIVE,
+      )
+    }
+
+    
   }
 }
