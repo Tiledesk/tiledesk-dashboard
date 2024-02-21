@@ -561,14 +561,16 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
    * 
    */
   checkAllStatuses() {
-    this.kbsList.forEach(kb => {
-      //if(kb.status == -1){
-      //   this.onRunIndexing(kb);
-      //} else 
-      if(kb.status == -1 || kb.status == 0 || kb.status == 2) {
-        this.checkStatusWithRetry(kb);
-      }
-    });
+    if(this.kbsList && this.kbsList.length>0){
+      this.kbsList.forEach(kb => {
+        //if(kb.status == -1){
+        //   this.onRunIndexing(kb);
+        //} else 
+        if(kb.status == -1 || kb.status == 0 || kb.status == 2) {
+          this.checkStatusWithRetry(kb);
+        }
+      });
+    }
   }
 
 

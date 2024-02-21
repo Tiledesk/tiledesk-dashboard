@@ -30,7 +30,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
   displayedColumns: string[] = ['type','status','createdAt','name','actions'];
   filterType: string;
   // filterText: string;
-  pagConfig: any;
+  pagConfig: any = {};
   pageSize: number = 10;
   // pageIndex: number = 0;
 
@@ -73,7 +73,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
       //this.dataSource.sort = this.sort;
       // this.dataSource.paginator = this.paginator;
     }
-    this.pagConfig.length = this.kbs.count;
+    if( this.pagConfig)this.pagConfig.length = this.kbs.count;
     // Math.ceil(this.kbs.count/this.pagConfig.pageSize);
   }
 
