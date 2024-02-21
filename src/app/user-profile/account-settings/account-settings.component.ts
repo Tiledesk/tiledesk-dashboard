@@ -95,7 +95,7 @@ export class AccountSettingsComponent extends PricingBaseComponent implements On
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
-    this.subscription.unsubscribe()
+    // this.subscription.unsubscribe()
   }
 
   // getProjectPlan() {
