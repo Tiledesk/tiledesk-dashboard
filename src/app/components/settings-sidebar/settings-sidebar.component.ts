@@ -8,6 +8,7 @@ import { TranslateService } from '@ngx-translate/core'
 import { UsersService } from 'app/services/users.service'
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { KnowledgeBaseService } from 'app/services/knowledge-base.service'
 @Component({
   selector: 'appdashboard-settings-sidebar',
   templateUrl: './settings-sidebar.component.html',
@@ -35,6 +36,7 @@ export class SettingsSidebarComponent implements OnInit {
   isVisibleETK: boolean;
   isVisibleKNB: boolean;
   isVisibleAUT: boolean;
+  isVisibleINT: boolean;
   TAG_ROUTE_IS_ACTIVE: boolean;
   EMAIL_TICKETING_ROUTE_IS_ACTIVE: boolean;
   CANNED_RESPONSES_ROUTE_IS_ACTIVE: boolean;
@@ -60,6 +62,7 @@ export class SettingsSidebarComponent implements OnInit {
   routing_and_depts_lbl: string;
   teammatates_and_groups_lbl: string;
   USER_HAS_TOGGLE_SIDEBAR: boolean;
+  ARE_NEW_KB: boolean;
   private unsubscribe$: Subject<any> = new Subject<any>();
   constructor(
     public appConfigService: AppConfigService,
@@ -69,6 +72,7 @@ export class SettingsSidebarComponent implements OnInit {
     public location: Location,
     private translate: TranslateService,
     private usersService: UsersService,
+    private kbService: KnowledgeBaseService
   ) { }
 
   ngOnInit() {
@@ -79,7 +83,18 @@ export class SettingsSidebarComponent implements OnInit {
     this.getCurrentRoute();
     // this.getMainContentHeight();
     this.listenSidebarIsOpened();
+    this.listenToKbVersion()
+  }
 
+  listenToKbVersion() {
+    this.kbService.newKb
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((newKb) => {
+        this.logger.log('[SETTINGS-SIDEBAR] - are new KB ', newKb)
+        this.ARE_NEW_KB = newKb;
+      })
   }
 
   ngAfterContentInit() {
@@ -94,7 +109,7 @@ export class SettingsSidebarComponent implements OnInit {
         takeUntil(this.unsubscribe$)
       )
       .subscribe((userRole) => {
-        //  console.log('[SETTINGS-SIDEBAR]] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
+        //  this.logger.log('[SETTINGS-SIDEBAR]] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
         this.USER_ROLE = userRole;
       })
   }
@@ -118,7 +133,7 @@ export class SettingsSidebarComponent implements OnInit {
   onResize(event: any) {
     const newInnerWidth = event.target.innerWidth;
 
-    // console.log('SETTINGS-SIDEBAR] ON RESIZE WINDOW WIDTH ', newInnerWidth);
+    // this.logger.log('SETTINGS-SIDEBAR] ON RESIZE WINDOW WIDTH ', newInnerWidth);
 
     if (newInnerWidth < 1200) {
       this.toggleSettingsSidebar(false)
@@ -166,7 +181,7 @@ export class SettingsSidebarComponent implements OnInit {
     this.logger.log('[SETTINGS-SIDEBAR] window.innerHeight ', h)
     // }, 500);
     //  const main_content_height = elemMainContent.clientHeight
-    //  console.log('[SETTINGS-SIDEBAR] main_content_height ',main_content_height)
+    //  this.logger.log('[SETTINGS-SIDEBAR] main_content_height ',main_content_height)
     this.sidebar_settings_height = main_content_height + 70 + 'px'
   }
 
@@ -293,6 +308,17 @@ export class SettingsSidebarComponent implements OnInit {
           this.isVisibleAUT = true;
         }
       }
+
+      if (key.includes("INT")) {
+        let int = key.split(":");
+        if (int[1] === "F") {
+          this.isVisibleINT = false;
+        } else {
+          this.isVisibleINT = true;
+        }
+      }
+
+
     })
 
     if (!this.public_Key.includes('CAR')) {
@@ -315,6 +341,10 @@ export class SettingsSidebarComponent implements OnInit {
     }
     if (!this.public_Key.includes('AUT')) {
       this.isVisibleAUT = false
+    }
+
+    if (!this.public_Key.includes("INT")) {
+      this.isVisibleINT = false;
     }
   }
 
@@ -609,11 +639,11 @@ export class SettingsSidebarComponent implements OnInit {
 
     if (this.route.indexOf('/integrations') !== -1) {
       this.INTEGRATIONS_ROUTE_IS_ACTIVE = true
-      console.log('[SETTING-SIDEBAR] - INTEGRATIONS_ROUTE_IS_ACTIVE  ', this.INTEGRATIONS_ROUTE_IS_ACTIVE,
+      this.logger.log('[SETTING-SIDEBAR] - INTEGRATIONS_ROUTE_IS_ACTIVE  ', this.INTEGRATIONS_ROUTE_IS_ACTIVE,
       )
     } else {
       this.INTEGRATIONS_ROUTE_IS_ACTIVE = false
-       console.log(  '[SETTING-SIDEBAR] - INTEGRATIONS_ROUTE_IS_ACTIVE  ', this.INTEGRATIONS_ROUTE_IS_ACTIVE,
+      this.logger.log(  '[SETTING-SIDEBAR] - INTEGRATIONS_ROUTE_IS_ACTIVE  ', this.INTEGRATIONS_ROUTE_IS_ACTIVE,
       )
     }
 

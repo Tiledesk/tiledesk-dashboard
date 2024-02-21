@@ -28,6 +28,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
   project: any;
   project_plan: any;
   profile_name: string;
+  public IS_OPEN_SETTINGS_SIDEBAR: boolean;
   isChromeVerGreaterThan100: boolean;
   panelOpenState = true;
   integrationSelectedName: string = "none";
@@ -78,6 +79,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
     // this.getProjectPlan();
     this.getCurrentProject();
     this.getBrowserVersion();
+    this.listenSidebarIsOpened();
     this.translateModalOnlyOwnerCanManageProjectAccount();
     // this.getAllIntegrations().then(() => {
     //   this.intName = this.route.snapshot.queryParamMap.get('name');
@@ -94,6 +96,14 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
+
+  listenSidebarIsOpened() {
+    this.auth.settingSidebarIsOpned.subscribe((isopened) => {
+      this.logger.log('[INTEGRATION-COMP] SETTINGS-SIDEBAR isopened (FROM SUBSCRIPTION) ', isopened)
+      this.IS_OPEN_SETTINGS_SIDEBAR = isopened
+    });
+  }
+
 
 
   // getProjectPlan() {

@@ -1,39 +1,53 @@
-<p style="z-index: 1050;position: relative; padding-left:30px" class="navbar-brand"
+<!-- <p style="z-index: 1050;position: relative; padding-left:30px" class="navbar-brand"
     [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }">
     Integrations
-</p>
+</p> -->
 
+<span class="navbar-brand navbar-brand-sidebar-settings"
+    [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }"
+    [ngClass]="{'is_opened':IS_OPEN_SETTINGS_SIDEBAR, 'is_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
 
-<div class="integrations-content">
+    <i class="material-icons">settings</i>
 
-    <div class="list">
+    <span *ngIf="IS_OPEN_SETTINGS_SIDEBAR">{{ 'Settings' | translate }} </span>
+</span>
 
-        <mat-accordion *ngFor="let category of CATEGORIES">
-            <mat-expansion-panel expanded="true" class="custom-expansion-panel" hideToggle>
-                <mat-expansion-panel-header class="disable_ripple">
-                    <mat-panel-title>
-                        {{ category.name }}
-                    </mat-panel-title>
-                </mat-expansion-panel-header>
+<div class="main-content" style="padding-top:0px; padding-left: 5px;padding-right: 5px;">
+    <div class="container-fluid" style="padding-left: 5px;padding-right: 5px;">
+        <div class="content-wpr" style="display: flex;">
+            <appdashboard-settings-sidebar style="border-right:1px solid #e5effe !important">
+            </appdashboard-settings-sidebar>
+            <div class="teplate-content" style="flex: 1 1 auto; margin: 0 20px;">
+                <div class="integrations-content">
 
-                <div *ngFor="let integration of INTEGRATIONS">
-                    <div *ngIf="integration.category === category.type" class="element"
-                        [ngClass]="{'element-selected': integrationSelectedName === integration.key }"
-                        (click)="onIntegrationSelect(integration)">
+                    <div class="list">
 
-                        <img [src]="integration.src_icon" alt="{{integration.name}}">
-                        <p>{{ integration.name }}</p>
-                        <span *ngIf="integration.pro === true" class="pro-badge">Pro</span>
-                        <!-- <div *ngIf="integration.pro === true" class="pro-badge">
+                        <mat-accordion *ngFor="let category of CATEGORIES">
+                            <mat-expansion-panel expanded="true" class="custom-expansion-panel" hideToggle>
+                                <mat-expansion-panel-header class="disable_ripple">
+                                    <mat-panel-title>
+                                        {{ category.name }}
+                                    </mat-panel-title>
+                                </mat-expansion-panel-header>
+
+                                <div *ngFor="let integration of INTEGRATIONS">
+                                    <div *ngIf="integration.category === category.type" class="element"
+                                        [ngClass]="{'element-selected': integrationSelectedName === integration.key }"
+                                        (click)="onIntegrationSelect(integration)">
+
+                                        <img [src]="integration.src_icon" alt="{{integration.name}}">
+                                        <p>{{ integration.name }}</p>
+                                        <span *ngIf="integration.pro === true" class="pro-badge">Pro</span>
+                                        <!-- <div *ngIf="integration.pro === true" class="pro-badge">
                             <p>Pro</p>
                         </div> -->
-                    </div>
-                </div>
+                                    </div>
+                                </div>
 
-            </mat-expansion-panel>
-        </mat-accordion>
+                            </mat-expansion-panel>
+                        </mat-accordion>
 
-        <!-- <mat-accordion>
+                        <!-- <mat-accordion>
             <mat-expansion-panel expanded="true" class="custom-expansion-panel" hideToggle>
                 <mat-expansion-panel-header class="disable_ripple">
                     <mat-panel-title>
@@ -102,88 +116,97 @@
                 </div>
             </mat-expansion-panel>
         </mat-accordion> -->
-    </div>
+                    </div>
 
-    <loading-spinner style="width: 100% !important; display: flex; align-items: center;"
-        *ngIf="showSpinner"></loading-spinner>
-    <ng-container *ngIf="!showSpinner">
-        <div *ngIf="integrationSelectedName !== 'none'" class="menu-container">
+                    <loading-spinner style="width: 100% !important; display: flex; align-items: center;"
+                        *ngIf="showSpinner"></loading-spinner>
+                    <ng-container *ngIf="!showSpinner">
+                        <div *ngIf="integrationSelectedName !== 'none'" class="menu-container">
 
-            <integration-header [integrationModel]="selectedIntegrationModel"></integration-header>
+                            <integration-header [integrationModel]="selectedIntegrationModel"></integration-header>
 
-            <div *ngIf="integrationLocked === false" class="integration-outer-container">
+                            <div *ngIf="integrationLocked === false" class="integration-outer-container">
 
-                <brevo-integration *ngIf="integrationSelectedName === INT_KEYS.BREVO"
-                    [integration]="selectedIntegration" (onUpdateIntegration)=integrationUpdateEvent($event)
-                    (onDeleteIntegration)=integrationDeletedEvent($event)>
-                </brevo-integration>
+                                <brevo-integration *ngIf="integrationSelectedName === INT_KEYS.BREVO"
+                                    [integration]="selectedIntegration"
+                                    (onUpdateIntegration)=integrationUpdateEvent($event)
+                                    (onDeleteIntegration)=integrationDeletedEvent($event)>
+                                </brevo-integration>
 
-                <customerio-integration *ngIf="integrationSelectedName === INT_KEYS.CUSTOMERIO"
-                    [integration]="selectedIntegration" (onUpdateIntegration)=integrationUpdateEvent($event)
-                    (onDeleteIntegration)=integrationDeletedEvent($event)>
-                </customerio-integration>
+                                <customerio-integration *ngIf="integrationSelectedName === INT_KEYS.CUSTOMERIO"
+                                    [integration]="selectedIntegration"
+                                    (onUpdateIntegration)=integrationUpdateEvent($event)
+                                    (onDeleteIntegration)=integrationDeletedEvent($event)>
+                                </customerio-integration>
 
-                <!-- // NOT VISIBLE -->
-                <gsheets-integration *ngIf="integrationSelectedName === 'gsheets'">
-                </gsheets-integration>
+                                <!-- // NOT VISIBLE -->
+                                <gsheets-integration *ngIf="integrationSelectedName === 'gsheets'">
+                                </gsheets-integration>
 
-                <hubspot-integration *ngIf="integrationSelectedName === INT_KEYS.HUBSPOT"
-                    [integration]="selectedIntegration" (onUpdateIntegration)=integrationUpdateEvent($event)
-                    (onDeleteIntegration)=integrationDeletedEvent($event)>
-                </hubspot-integration>
+                                <hubspot-integration *ngIf="integrationSelectedName === INT_KEYS.HUBSPOT"
+                                    [integration]="selectedIntegration"
+                                    (onUpdateIntegration)=integrationUpdateEvent($event)
+                                    (onDeleteIntegration)=integrationDeletedEvent($event)>
+                                </hubspot-integration>
 
-                <make-integration *ngIf="integrationSelectedName === INT_KEYS.MAKE" [integration]="selectedIntegration"
-                    (onUpdateIntegration)=integrationUpdateEvent($event)
-                    (onDeleteIntegration)=integrationDeletedEvent($event)>
-                </make-integration>
+                                <make-integration *ngIf="integrationSelectedName === INT_KEYS.MAKE"
+                                    [integration]="selectedIntegration"
+                                    (onUpdateIntegration)=integrationUpdateEvent($event)
+                                    (onDeleteIntegration)=integrationDeletedEvent($event)>
+                                </make-integration>
 
-                <openai-integration *ngIf="integrationSelectedName === INT_KEYS.OPENAI"
-                    [integration]="selectedIntegration" (onUpdateIntegration)=integrationUpdateEvent($event)
-                    (onDeleteIntegration)=integrationDeletedEvent($event)>
-                </openai-integration>
+                                <openai-integration *ngIf="integrationSelectedName === INT_KEYS.OPENAI"
+                                    [integration]="selectedIntegration"
+                                    (onUpdateIntegration)=integrationUpdateEvent($event)
+                                    (onDeleteIntegration)=integrationDeletedEvent($event)>
+                                </openai-integration>
 
-                <qapla-integration *ngIf="integrationSelectedName === INT_KEYS.QAPLA"
-                    [integration]="selectedIntegration" (onUpdateIntegration)=integrationUpdateEvent($event)
-                    (onDeleteIntegration)=integrationDeletedEvent($event)>
-                </qapla-integration>
+                                <qapla-integration *ngIf="integrationSelectedName === INT_KEYS.QAPLA"
+                                    [integration]="selectedIntegration"
+                                    (onUpdateIntegration)=integrationUpdateEvent($event)
+                                    (onDeleteIntegration)=integrationDeletedEvent($event)>
+                                </qapla-integration>
 
-            </div>
+                            </div>
 
-            <div *ngIf="integrationLocked === true" style="width: 100%;">
-                <div class="lock-container">
-                    <img src="assets/img/int/upgrade-icon.svg" alt="Upgrade Plan">
+                            <div *ngIf="integrationLocked === true" style="width: 100%;">
+                                <div class="lock-container">
+                                    <img src="assets/img/int/upgrade-icon.svg" alt="Upgrade Plan">
 
-                    <p *ngIf="integrationSelectedName === INT_KEYS.OPENAI" class="upgrade-title">{{
-                        'Integration.UpgradePlan' | translate }}</p>
-                    <p *ngIf="integrationSelectedName === INT_KEYS.OPENAI" class="upgrade-subtitle">{{
-                        'Integration.OpenaiSubtitle1' | translate: translateparams }}</p>
-                    <p *ngIf="integrationSelectedName === INT_KEYS.OPENAI" class="upgrade-subtitle">{{
-                        'Integration.OpenaiSubtitle2' | translate }}</p>
-                    <p *ngIf="integrationSelectedName === INT_KEYS.OPENAI" class="upgrade-subtitle"
-                        [innerHTML]="'Integration.AvailableFromPlanShort' | translate: { plan_require: plan_require }">
-                    </p>
+                                    <p *ngIf="integrationSelectedName === INT_KEYS.OPENAI" class="upgrade-title">{{
+                                        'Integration.UpgradePlan' | translate }}</p>
+                                    <p *ngIf="integrationSelectedName === INT_KEYS.OPENAI" class="upgrade-subtitle">{{
+                                        'Integration.OpenaiSubtitle1' | translate: translateparams }}</p>
+                                    <p *ngIf="integrationSelectedName === INT_KEYS.OPENAI" class="upgrade-subtitle">{{
+                                        'Integration.OpenaiSubtitle2' | translate }}</p>
+                                    <p *ngIf="integrationSelectedName === INT_KEYS.OPENAI" class="upgrade-subtitle"
+                                        [innerHTML]="'Integration.AvailableFromPlanShort' | translate: { plan_require: plan_require }">
+                                    </p>
 
-                    <p *ngIf="integrationSelectedName !== INT_KEYS.OPENAI" class="upgrade-title">{{
-                        'Integration.UpgradePlan' | translate }}</p>
-                    <p *ngIf="integrationSelectedName !== INT_KEYS.OPENAI" class="upgrade-subtitle"
-                        [innerHTML]="'Integration.AvailableFromPlan' | translate: { plan_require: plan_require }">
-                    </p>
+                                    <p *ngIf="integrationSelectedName !== INT_KEYS.OPENAI" class="upgrade-title">{{
+                                        'Integration.UpgradePlan' | translate }}</p>
+                                    <p *ngIf="integrationSelectedName !== INT_KEYS.OPENAI" class="upgrade-subtitle"
+                                        [innerHTML]="'Integration.AvailableFromPlan' | translate: { plan_require: plan_require }">
+                                    </p>
 
-                    <button class="custom-upgrade-primary-button" (click)="goToPricing()">{{
-                        'Integration.UpgradeNow' |
-                        translate }}</button>
+                                    <button class="custom-upgrade-primary-button" (click)="goToPricing()">{{
+                                        'Integration.UpgradeNow' |
+                                        translate }}</button>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                        <div *ngIf="integrationSelectedName === 'none'" class="empty-menu-container">
+                            <img src="assets/img/int/getstarted.svg" class="getstarted-icon" alt="Get started">
+                            <p class="no-integration-selected">{{ 'Integration.SelectToStart' | translate }}</p>
+                        </div>
+                    </ng-container>
+
+
                 </div>
             </div>
-
         </div>
-
-
-        <div *ngIf="integrationSelectedName === 'none'" class="empty-menu-container">
-            <img src="assets/img/int/getstarted.svg" class="getstarted-icon" alt="Get started">
-            <p class="no-integration-selected">{{ 'Integration.SelectToStart' | translate }}</p>
-        </div>
-    </ng-container>
-
-
+    </div>
 </div>
-

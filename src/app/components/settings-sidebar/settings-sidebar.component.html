@@ -220,7 +220,7 @@
     <!-- -------------------------------------------------------- -->
     <!--  Knowledge Bases  -->
     <!-- -------------------------------------------------------- -->
-    <ng-container *ngIf="isVisibleKNB && USER_ROLE !== 'agent'">
+    <ng-container *ngIf="isVisibleKNB && USER_ROLE !== 'agent' && ARE_NEW_KB === false">
       <li [ngClass]="{'active-item': KNOWLEDGE_BASES_ROUTE_IS_ACTIVE}" 
         (click)="goToKnowledgeBases()"
         matTooltipClass="custom-mat-tooltip-in-settings-sidebar" 

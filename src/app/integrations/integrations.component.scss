@@ -1,16 +1,13 @@
 @import "./src/assets/sass/md/_variables.scss";
 
 .integrations-content {
-    font-family: 'Poppins', 'Roboto',  'Arial', sans-serif !important;
-    margin-top: 60px;
-    padding: 15px 0px;
+    font-family: 'Poppins', 'Roboto', 'Arial', sans-serif !important;
     display: flex;
     flex-direction: row;
     align-items: flex-start;
-    //background-color: aliceblue;
-    //background-color: #f1f9ff5c;
-    background-color: #f7f8fa;
-    padding: 8px 16px;
+    // margin-top: 60px; // nk commented
+    // background-color: #f7f8fa; // nk commented
+    // padding: 8px 16px; // nk commented
 }
 
 ::-webkit-scrollbar {
@@ -25,15 +22,13 @@
 .list {
     width: 220px;
     min-width: 220px;
-    height: calc(100vh - 120px);
+    // height: calc(100vh - 120px); // nk commented
+    height: calc(100vh - 155px);
     padding: 0px 10px;
-    //border-right: solid 1px #00000017;
-
     background-color: white;
     border-radius: 8px;
     border: solid 1px #e9e9e9;
     margin-right: 16px;
-
     overflow: hidden;
     overflow-y: scroll;
 
@@ -42,7 +37,7 @@
             width: 3px;
         }
     }
-    
+
 
     .element {
         display: flex;
@@ -75,7 +70,7 @@
         border: solid 1px #4e96d4;
     }
 
-    
+
 }
 
 .custom-expansion-panel {
@@ -143,7 +138,8 @@ mat-expansion-panel ::ng-deep {
 
 .empty-menu-container {
     width: 100%;
-    height: calc(100vh - 130px);
+    height: 500px;
+    // height: calc(100vh - 130px); // nk commented
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -152,7 +148,7 @@ mat-expansion-panel ::ng-deep {
 
     p.no-integration-selected {
         font-size: 16px;
-        margin-bottom: 30px;    
+        margin-bottom: 30px;
         max-width: 800px;
         text-align: center;
     }
@@ -201,7 +197,7 @@ mat-expansion-panel ::ng-deep {
         height: auto;
         margin: 50px 0px;
     }
-    
+
     p {
         margin-bottom: 0px;
     }
@@ -214,7 +210,7 @@ mat-expansion-panel ::ng-deep {
 
     p.upgrade-subtitle {
         font-size: 16px;
-        margin-bottom: 30px;    
+        margin-bottom: 30px;
         max-width: 800px;
         text-align: center;
     }
@@ -236,7 +232,3 @@ mat-expansion-panel ::ng-deep {
         opacity: 1;
     }
 }
-
-
-
-
