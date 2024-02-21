@@ -91,15 +91,18 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
   UPLOAD_ENGINE_IS_FIREBASE: boolean;
   IS_OPEN_SETTINGS_SIDEBAR: boolean;
   isChromeVerGreaterThan100: boolean;
+
   allTemplatesCount: number;
   allCommunityTemplatesCount: number;
   customerSatisfactionTemplatesCount: number;
   increaseSalesTemplatesCount: number;
-  customerSatisfactionBots: any;
   customerSatisfactionBotsCount: number;
   myChatbotOtherCount: number;
-  increaseSalesBots: any;
   increaseSalesBotsCount: number;
+  
+  customerSatisfactionBots: any;
+  increaseSalesBots: any;
+  
   route: string
   dev_mode: boolean;
   isPanelRoute: boolean = false;

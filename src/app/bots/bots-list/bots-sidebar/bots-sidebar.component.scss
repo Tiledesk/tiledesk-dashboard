@@ -244,3 +244,19 @@ li > a {
 .sidebar-item-no-link:hover {
     background-color: #fff !important;
 }
+.beta-badge-wpr {
+    font-weight: 400;
+    background-color: #6c757d;
+    padding: 1px 5px;
+    border-radius: 10px;
+    font-size: 9px;
+    color: #fff;
+    position: relative;
+    top: -1px;
+    margin-left: 6px;
+    line-height: 1.2em;
+}
+.beta-badge {
+    position: relative;
+    top: 1px;
+}

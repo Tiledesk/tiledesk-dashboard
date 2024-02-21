@@ -4,6 +4,7 @@ import { AuthService } from 'app/core/auth.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { LoggerService } from './logger/logger.service';
 import { KB } from 'app/models/kbsettings-model';
+import { BehaviorSubject } from 'rxjs';
 
 
 
@@ -11,7 +12,8 @@ import { KB } from 'app/models/kbsettings-model';
   providedIn: 'root'
 })
 export class KnowledgeBaseService {
-
+  public newKb: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null)
+  
   SERVER_BASE_PATH: string;
   TOKEN: string;
   user: any;
@@ -74,6 +76,10 @@ export class KnowledgeBaseService {
   //   this.logger.log("[KNOWLEDGE BASE SERVICE] - get settings URL ", url);
   //   return this.httpClient.get(url, httpOptions);
   // }
+  areNewwKb(areNewKb: boolean) {
+    this.logger.log("[KNOWLEDGE BASE SERVICE] - areNew ", areNewKb);
+    this.newKb.next(areNewKb)
+  }
 
   getKbSettingsPrev() {
     const httpOptions = {

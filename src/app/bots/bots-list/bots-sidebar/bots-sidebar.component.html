@@ -9,7 +9,7 @@
 </div> -->
 <!-- class="settings-sidebar" -->
 <ul class="settings-sidebar"
-  style="padding-left: 0px;list-style: none;width: 216px; padding-right: 8px; padding-left: 3px;">
+  style="padding-left: 0px;list-style: none;width: 215px; padding-right: 8px; padding-left: 3px;">
 
   <!-- -------------------------------------------------------- -->
   <!--  @ My Chatbots  -->
@@ -34,7 +34,8 @@
         <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 0 24 24" width="16px" fill="#647491"
           style="margin-right: 8px;">
           <path d="M0 0h24v24H0z" fill="none" />
-          <path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z" /></svg>
+          <path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z" />
+        </svg>
 
         Increase Sales
         <span class="sidebar-item-s">{{ increaseSalesBotsCount }}</span>
@@ -169,7 +170,8 @@
         <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 0 24 24" width="16px" fill="#647491"
           style="margin-right: 8px;">
           <path d="M0 0h24v24H0z" fill="none" />
-          <path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z" /></svg>
+          <path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z" />
+        </svg>
 
         Increase Sales
         <span class="sidebar-item-s">{{ increaseSalesTemplatesCount }}</span>
@@ -194,6 +196,39 @@
 
         Customer Satisfaction
         <span class="sidebar-item-s">{{ customerSatisfactionTemplatesCount }}</span>
+      </a>
+
+    </li>
+  </ng-container>
+
+
+  <!-- -------------------------------------------------------- -->
+  <!--  @ Knowledge Bases  -->
+  <!-- -------------------------------------------------------- -->
+  <ng-container *ngIf="ARE_NEW_KB == true">
+    <li class="sidebar-item-wpr-no-link" style="margin-top: 16px;">
+      <a class="sidebar-item-no-link">
+        KNOWLEDGE BASE 
+        <span class="beta-badge-wpr">
+          <span>  Beta </span> 
+        </span>
+      </a>
+    </li>
+
+    <li class="sidebar-item-wpr" [ngClass]="{'active-item': KNOWLEDGE_BASE_ROUTE_IS_ACTIVE}"
+      (click)="goToNewKnowledgeBases()">
+
+      <a class="sidebar-item">
+       
+
+        <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 0 24 24" width="16px" fill="#647491"
+          style="margin-right: 8px;">
+          <path d="M0 0h24v24H0z" fill="none" />
+          <path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82zM12 3 1 9l11 6 9-4.91V17h2V9L12 3z" />
+        </svg>
+
+        Manage your contents
+
       </a>
 
     </li>
