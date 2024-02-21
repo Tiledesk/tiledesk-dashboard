@@ -184,7 +184,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   CONV_DETAIL_ROUTE_IS_ACTIVE: boolean;
   CONTACT_EDIT_ROUTE_IS_ACTIVE: boolean;
   CONTACT_CONVS_ROUTE_IS_ACTIVE: boolean;
-  INTEGRATIONS_ROUTE_IS_ACTIVE: boolean = true;
+  INTEGRATIONS_ROUTE_IS_ACTIVE: boolean;
+  INSTALLATION_ROUTE_IS_ACTIVE: boolean;
 
   IS_REQUEST_FOR_PANEL_ROUTE: boolean;
   IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE: boolean;
@@ -918,6 +919,22 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         } else {
           this.CONTACT_CONVS_ROUTE_IS_ACTIVE = false;
           // console.log('[SIDEBAR] NavigationEnd - CONTACT_CONVS_ROUTE_IS_ACTIVE ', this.CONTACT_CONVS_ROUTE_IS_ACTIVE);
+        }
+
+        if (event.url.indexOf('/integrations') !== -1) {
+          this.INTEGRATIONS_ROUTE_IS_ACTIVE = true;
+          console.log('[SIDEBAR] NavigationEnd - INTEGRATIONS_ROUTE_IS_ACTIVE ', this.INTEGRATIONS_ROUTE_IS_ACTIVE);
+        } else {
+          this.INTEGRATIONS_ROUTE_IS_ACTIVE = false;
+          console.log('[SIDEBAR] NavigationEnd - INTEGRATIONS_ROUTE_IS_ACTIVE ', this.INTEGRATIONS_ROUTE_IS_ACTIVE);
+        }
+
+        if (event.url.indexOf('/installation') !== -1) {
+          this.INSTALLATION_ROUTE_IS_ACTIVE = true;
+          console.log('[SIDEBAR] NavigationEnd - INSTALLATION_ROUTE_IS_ACTIVE ', this.INSTALLATION_ROUTE_IS_ACTIVE);
+        } else {
+          this.INSTALLATION_ROUTE_IS_ACTIVE = false;
+          console.log('[SIDEBAR] NavigationEnd - INSTALLATION_ROUTE_IS_ACTIVE ', this.INSTALLATION_ROUTE_IS_ACTIVE);
         }
       }
     });
