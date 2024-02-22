@@ -511,6 +511,7 @@
 	"ThisConversationIsNotAssignedToYou": "Diese Konversation ist Ihnen nicht zugeordnet. Um an der Konversation teilzunehmen, klicken Sie auf „Beitreten“.",
 	"ThereHasBeenAnErrorProcessing": "Es ist ein Fehler bei der Verarbeitung Ihrer Anfrage aufgetreten",
 	"PleaseWaitWhileWeAreProcessingYourRequest": "Bitte warten Sie, während wir Ihre Anfrage bearbeiten",
+	"ManageYourContents": "Verwalten Sie Ihre Inhalte",
 	"CannedResponses": {
 		"QuickTips": {
 			"1": "Vordefinierte Antworten sind Nachrichten, die es Ihnen ermöglichen schneller auf oft gestellte Fragen zu reagieren.",

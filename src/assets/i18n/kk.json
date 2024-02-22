@@ -511,6 +511,7 @@
     "ThisConversationIsNotAssignedToYou": "Бұл әңгіме сізге тағайындалмаған. Әңгімелесуге қосылу үшін «Қосылу» түймесін басыңыз.",
     "ThereHasBeenAnErrorProcessing": "Сұрауыңызды өңдеу кезінде қате орын алды",
     "PleaseWaitWhileWeAreProcessingYourRequest": "Сұрауыңызды өңдеу кезінде күтіңіз",
+    "ManageYourContents": "Мазмұныңызды басқарыңыз",
     "CannedResponses": {
         "QuickTips": {
             "1": "Консервіленген жауаптар - чат кезінде оңай еске түсіруге болатын алдын ала жасалған хабарлар.",

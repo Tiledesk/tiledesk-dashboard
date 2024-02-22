@@ -511,6 +511,7 @@
     "ThisConversationIsNotAssignedToYou": "Esta conversación no está asignada a ti. Para unirse a la conversación, haga clic en \"Unirse\".",
     "ThereHasBeenAnErrorProcessing": "Es ist ein Fehler bei der Verarbeitung Ihrer Anfrage aufgetreten",
     "PleaseWaitWhileWeAreProcessingYourRequest": "Espere mientras procesamos su solicitud",
+    "ManageYourContents": "Gestiona tus contenidos",
     "CannedResponses": {
         "QuickTips": {
             "1": "Las respuestas enlatadas son mensajes prefabricados que puede recordar fácilmente durante el chat.",

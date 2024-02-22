@@ -511,6 +511,7 @@
     "ThisConversationIsNotAssignedToYou": "Cette conversation ne vous est pas attribuée. Pour rejoindre la conversation, cliquez sur \"Rejoindre\".",
     "ThereHasBeenAnErrorProcessing": "Une erreur s'est produite lors du traitement de votre demande",
     "PleaseWaitWhileWeAreProcessingYourRequest": "Veuillez patienter pendant le traitement de votre demande",
+    "ManageYourContents": "Gérez votre contenu",
     "CannedResponses": {
         "QuickTips": {
             "1": "Les réponses standardisées sont des messages prédéfinis que vous pouvez facilement rappeler pendant le chat.",
