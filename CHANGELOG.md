@@ -5,6 +5,7 @@
 - Moves the "Integrations" menu item from the sidebar to the settings sidebar
 - Moves for the new Knowledge bases the menu item from the settings sidebar to the chatbot sidebar
 - Fixes the bug: dropdown menu overlaps bottom navigation bar on Change Password page
+- Fixes the bug: background image is not visible on pricing page
 
 ### 2.5.8
 - Deploys in production
