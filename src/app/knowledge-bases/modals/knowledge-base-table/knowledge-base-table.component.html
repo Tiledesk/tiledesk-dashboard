@@ -81,15 +81,16 @@
             </td>
         </ng-container>
 
-        <!-- Created At Column -->
+        <!-- Created At Column mat-sort-header -->
         <ng-container matColumnDef="createdAt">
-            <th style="min-width:120px; width:120px;" mat-header-cell *matHeaderCellDef>{{'KbPage.CreatedAt' | translate }}</th>
+            <th class="orderBy" style="min-width:120px; width:120px;" mat-header-cell *matHeaderCellDef (click)="onShortBy('createdAt')">{{'KbPage.CreatedAt' | translate }}<span *ngIf="pagConfig.direction == 1" id="expand_more" class="material-icons-outlined icon-direction">expand_more</span><span *ngIf="pagConfig.direction == -1" id="expand_more" class="material-icons-outlined icon-direction">expand_less</span></th>
+
             <td style="min-width:120px; width:120px; font-size: small;" mat-cell *matCellDef="let kb" (click)="onOpenBaseModalDetail(kb)">{{ kb.createdAt | amTimeAgo }}</td>
         </ng-container>
 
-        <!-- Name Column -->
+        <!-- Name Column mat-sort-header-->
         <ng-container matColumnDef="name">
-            <th style="max-width: 80%;" mat-header-cell *matHeaderCellDef>{{'Name' | translate }}</th>
+            <th class="orderBy" style="max-width: 80%;" mat-header-cell *matHeaderCellDef (click)="onShortBy('name')">{{'Name' | translate }}<span *ngIf="pagConfig.direction == 1" id="expand_more" class="material-icons-outlined icon-direction">expand_more</span><span *ngIf="pagConfig.direction == -1" id="expand_more" class="material-icons-outlined icon-direction">expand_less</span></th>
             <td style="max-width: 80%;" mat-cell *matCellDef="let kb" (click)="onOpenBaseModalDetail(kb)"><div class="ellipsis-text">{{ kb.name }}</div>
                 <div class="subtitle ellipsis-text">{{getSubtitle(kb)}}</div>
             </td>
@@ -129,6 +130,19 @@
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
 
-    <!-- <mat-paginator [pageSize]="20" [pageSizeOptions]="[10, 20, 100]" showFirstLastButtons></mat-paginator> -->
+
+    <mat-paginator [length]="pagConfig.length"
+        [pageIndex]="pagConfig.pageIndex"
+        [pageSize]="pagConfig.pageSize"
+        [pageSizeOptions]="[10, 25, 100]"
+        aria-label="Select page"
+        (page)="handlePageChange($event)">
+        <!-- 
+        (pageSize)="handlePageSizeChange($event)"
+        (pageSizeOptions)="handlePageSizeOptionsChange($event)"
+        (length)="handleLengthChange($event)"
+        (pageIndex)="handlePageIndexChange($event)"
+        (pageEvent)="handlePageEvent($event)" -->
+    </mat-paginator>
   </div>
   

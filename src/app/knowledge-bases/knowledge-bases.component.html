@@ -88,6 +88,7 @@
 <!-- DETAIL KNOWLEDGE BASE MODAL - START -->
 <modal-detail-knowledge-base *ngIf="baseModalDetail"
   [kb]="kbid_selected"
+  (updateKnowledgeBase)="onUpdateKb($event)"
   (closeBaseModal)="onCloseBaseModal()"
 ></modal-detail-knowledge-base>
 <!-- DETAIL KNOWLEDGE BASE MODAL - END -->

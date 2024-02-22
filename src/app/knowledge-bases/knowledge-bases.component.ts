@@ -393,24 +393,9 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
   /**
    * getListOfKb
    */
-  // getListOfKb() {
-  //   this.logger.log("[KNOWLEDGE-BASES-COMP] getListOfKb ");
-  //   this.kbService.getListOfKb().subscribe((kbList:[KB]) => {
-  //     this.logger.log("[KNOWLEDGE-BASES-COMP] get kbList: ", kbList);
-  //     this.kbsList = kbList;
-  //     this.checkAllStatuses();
-  //   }, (error) => {
-  //     this.logger.error("[KNOWLEDGE-BASES-COMP] ERROR get kbSettings: ", error);
-  //   }, () => {
-  //     this.logger.log("[KNOWLEDGE-BASES-COMP] get kbSettings *COMPLETE*");
-  //     this.showSpinner = false;
-  //   })
-  // }
-
   getListOfKb(params?) {
-    //this.showSpinner = true;
     this.logger.log("[KNOWLEDGE BASES COMP] getListOfKb ");
-    let paramsDefault = "?limit=10000&page=0";
+    let paramsDefault = "?limit=10&page=0";
     let urlParams = params?params:paramsDefault;
     this.kbService.getListOfKb(urlParams).subscribe((kbResp:any) => {
       this.logger.log("[KNOWLEDGE BASES COMP] get kbList: ", kbResp);
@@ -419,7 +404,6 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
       //this.kbsListCount = kbList.count;
       this.checkAllStatuses();
       this.refreshKbsList = !this.refreshKbsList;
-      //this.showSpinner = false;
     }, (error) => {
       this.logger.error("[KNOWLEDGE BASES COMP] ERROR get kbSettings: ", error);
       //this.showSpinner = false;
@@ -515,6 +499,69 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
       //this.trackUserActioOnKB('Deleted Knowledge Base', gptkey)
     })
   }
+
+
+  onUpdateKb(kb) {
+    // console.log("onUpdateKb: ",kb);
+    this.onCloseBaseModal();
+    let error = "update fallito"
+    let dataDelete = {
+      "id": kb._id,
+      "namespace": kb.id_project
+    }
+    let dataAdd = {
+      'name': kb.name,
+      'source': kb.url,
+      'content': '',
+      'type': 'url'
+    };
+    if(kb.type === 'text'){
+      dataAdd.source = kb.name;
+      dataAdd.content = kb.content,
+      dataAdd.type = 'text'
+    }
+
+    kb.deleting = true;
+    this.kbService.deleteKb(dataDelete).subscribe((response:any) => {
+      kb.deleting = false;
+      if(!response || (response.success && response.success === false)){
+        this.onOpenErrorModal(error);
+      } else {
+        
+        this.kbService.addKb(dataAdd).subscribe((resp: any) => {
+          let kb = resp.value;
+          if(kb.lastErrorObject && kb.lastErrorObject.updatedExisting === true){
+            const index = this.kbsList.findIndex(item => item._id === kb._id);
+            if (index !== -1) {
+              this.kbsList[index] = kb;
+              this.notify.showWidgetStyleUpdateNotification(this.msgSuccesUpdateKb, 2, 'done');
+            }
+          } else {
+            this.kbsList.push(kb);
+            this.notify.showWidgetStyleUpdateNotification(this.msgSuccesAddKb, 2, 'done');
+          }
+          this.removeKb(kb._id);
+          this.updateStatusOfKb(kb._id, 0);
+          this.refreshKbsList = !this.refreshKbsList;
+          setTimeout(() => {
+            this.checkStatusWithRetry(kb);
+          }, 2000);
+        }, (err) => {
+          this.logger.error("[KNOWLEDGE BASES COMP] ERROR add new kb: ", err);
+          this.onOpenErrorModal(error);
+        }, () => {
+          this.logger.log("[KNOWLEDGE BASES COMP] add new kb *COMPLETED*");
+        })
+      }
+    }, (err) => {
+      this.logger.error("[KNOWLEDGE BASES COMP] ERROR delete kb: ", err);
+      kb.deleting = false;
+      this.onOpenErrorModal(error);
+    }, () => {
+      this.logger.log("[KNOWLEDGE BASES COMP] delete kb *COMPLETE*");
+      kb.deleting = false;
+    })
+  }
   // ---------------- END SERVICE FUNCTIONS --------------- // 
 
 
@@ -559,9 +606,10 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
   }
 
   private removeKb(kb_id){
-    this.kbs = this.kbs.filter(item => item._id !== kb_id);
-    // this.logger.log('AGGIORNO kbsList:', this.kbsList);
+    this.kbsList = this.kbsList.filter(item => item._id !== kb_id);
+    this.kbs.kbs = this.kbsList;
     this.refreshKbsList = !this.refreshKbsList;
+    // console.log('AGGIORNO kbsList:', this.kbsList);
   }
 
 
@@ -592,6 +640,10 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
     })
   }
 
+
+  onReloadKbs(params){
+    this.getListOfKb(params);
+  }
   // ---------------- END OPEN AI FUNCTIONS --------------- //
 
   createConditionGroupUrl(): FormGroup {
