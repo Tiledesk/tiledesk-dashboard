@@ -511,6 +511,7 @@
     "ThisConversationIsNotAssignedToYou": "Ця бесіда не призначена вам. Щоб приєднатися до бесіди, натисніть «Приєднатися».",
     "ThereHasBeenAnErrorProcessing": "Під час обробки вашого запиту сталася помилка",
     "PleaseWaitWhileWeAreProcessingYourRequest": "Будь ласка, зачекайте, поки ми обробимо ваш запит",
+    "ManageYourContents": "Manage your Contents",
     "CannedResponses": {
         "QuickTips": {
             "1": "Готові відповіді — це готові повідомлення, які ви можете легко згадати під час чату.",
