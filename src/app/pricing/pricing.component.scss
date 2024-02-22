@@ -8,6 +8,7 @@ $color-enterprise-plan: #6772e5;
 .modal {
   top: 0;
 }
+
 .modal-content {
   position: relative;
   background-color: #fff;
@@ -39,6 +40,7 @@ button.close {
   background: 0 0;
   border: 0;
 }
+
 .close {
   float: right;
   font-size: 21px;
@@ -69,6 +71,7 @@ button.close {
   background-color: #eeeeee;
   padding-top: 10px !important;
 }
+
 /* MODAL END */
 
 .close-pricing-page {
@@ -100,33 +103,36 @@ button.close {
   }
 
   .pro-plan-bckgrnd {
-    background-image: url("/assets/img/background-card-vertical_2.svg"),
+    // background-image: url("/assets/img/background-card-vertical_2.svg"),
+    background-image: url("../../assets/img/background-card-vertical_2.svg"),
       linear-gradient(to bottom, $color-pro-plan 0%, $color-pro-plan 100%),
       linear-gradient(to bottom, #ffffff 0%, #ffffff 50%, #eff2f6 50%, #eff2f6 100%);
   }
 
   .enterprise-plan-bckgrnd {
-    background-image: url("/assets/img/background-card-vertical_2.svg"),
+    background-image: url("../../assets/img/background-card-vertical_2.svg"),
+      // background-image: url("/assets/img/background-card-vertical_2.svg"),
       linear-gradient(to bottom, $color-enterprise-plan 0%, $color-enterprise-plan 100%),
       linear-gradient(to bottom, #ffffff 0%, #ffffff 50%, #eff2f6 50%, #eff2f6 100%);
   }
 
   .a-plan-bckgrnd {
-    background-image: url("/assets/img/background-card-vertical_2.svg"),
-    linear-gradient(to bottom, #19a95d 0%, #19a95d 100%),
-    linear-gradient(to bottom, #ffffff 0%, #ffffff 50%, #eff2f6 50%, #eff2f6 100%);
+    background-image: url("../../assets/img/background-card-vertical_2.svg"),
+      // background-image: url("/assets/img/background-card-vertical_2.svg"),
+      linear-gradient(to bottom, #19a95d 0%, #19a95d 100%),
+      linear-gradient(to bottom, #ffffff 0%, #ffffff 50%, #eff2f6 50%, #eff2f6 100%);
   }
 
   .b-plan-bckgrnd {
     background-image: url("/assets/img/background-card-vertical_2.svg"),
-    linear-gradient(to bottom, #00a1c2 0%, #00a1c2 100%),
-    linear-gradient(to bottom, #ffffff 0%, #ffffff 50%, #eff2f6 50%, #eff2f6 100%);
+      linear-gradient(to bottom, #00a1c2 0%, #00a1c2 100%),
+      linear-gradient(to bottom, #ffffff 0%, #ffffff 50%, #eff2f6 50%, #eff2f6 100%);
   }
 
   .c-plan-bckgrnd {
     background-image: url("/assets/img/background-card-vertical_2.svg"),
-    linear-gradient(to bottom, #9966ff 0%, #9966ff 100%),
-    linear-gradient(to bottom, #ffffff 0%, #ffffff 50%, #eff2f6 50%, #eff2f6 100%);
+      linear-gradient(to bottom, #9966ff 0%, #9966ff 100%),
+      linear-gradient(to bottom, #ffffff 0%, #ffffff 50%, #eff2f6 50%, #eff2f6 100%);
   }
 }
 
@@ -243,6 +249,7 @@ label.price {
   background: $color-pro-plan;
   // box-shadow:(rgba(255,255,255, .2) 1px 1px, rgba(255,255,255, .2) 1px 1px);
   border-radius: (0 3px 2px 0px);
+
   &:after {
     content: "";
     position: absolute;
@@ -257,6 +264,7 @@ label.price {
     //   border-color: #FFDC40 #FFDC40 #FFDC40 transparent;
     border-color: $color-pro-plan $color-pro-plan $color-pro-plan transparent;
   }
+
   &:before {
     content: "";
     position: absolute;
@@ -285,19 +293,17 @@ label.price {
   line-height: 1.5;
   font-size: 60px;
   color: #f0806f;
-  border-image: linear-gradient(
-      to left,
+  border-image: linear-gradient(to left,
       rgba(255, 255, 255, 1) 1%,
       rgba(211, 215, 224, 1) 50%,
-      rgba(255, 255, 255, 1) 100%
-    )
-    100% 0 100% 0/3px 0 3px 0 stretch;
+      rgba(255, 255, 255, 1) 100%) 100% 0 100% 0/3px 0 3px 0 stretch;
 }
 
 ul {
   list-style: none;
   padding: 0;
 }
+
 li {
   padding-left: 1.3em;
   font-size: 20px;
@@ -307,25 +313,29 @@ li {
 }
 
 li:before {
-  content: "\f00c"; /* FontAwesome Unicode */
+  content: "\f00c";
+  /* FontAwesome Unicode */
   font-family: FontAwesome;
   display: inline-block;
-  margin-left: -1.3em; /* same as padding-left set on li */
-  width: 1.3em; /* same as padding-left set on li */
+  margin-left: -1.3em;
+  /* same as padding-left set on li */
+  width: 1.3em;
+  /* same as padding-left set on li */
 }
 
-.pro-plan-ul > li {
-  color: $color-pro-plan;
-}
-.pro-plan-ul > li:before {
+.pro-plan-ul>li {
   color: $color-pro-plan;
 }
 
-.enterprise-plan-ul > li {
+.pro-plan-ul>li:before {
+  color: $color-pro-plan;
+}
+
+.enterprise-plan-ul>li {
   color: $color-enterprise-plan;
 }
 
-.enterprise-plan-ul > li:before {
+.enterprise-plan-ul>li:before {
   color: $color-enterprise-plan;
 }
 
@@ -359,6 +369,7 @@ li:before {
   color: $color-pro-plan;
   border: 2px solid $color-pro-plan;
 }
+
 .pro-plan-outline-btn:active {
   background-color: #ffffff !important;
   color: $color-pro-plan;
@@ -383,6 +394,7 @@ li:before {
   .hide-when-is-open-PaymentReport {
     display: none;
   }
+
   .modal-payment-report {
     height: fit-content;
   }
@@ -395,10 +407,12 @@ li:before {
   box-shadow: 0 12px 20px -10px rgba(3, 115, 229, 0.28), 0 4px 20px 0px rgba(0, 0, 0, 0.12),
     0 7px 8px -5px rgba(3, 115, 229, 0.2) !important;
 }
+
 .pay-with-card-btn {
   will-change: box-shadow, transform;
   transition: box-shadow 0.2s cubic-bezier(0.4, 0, 1, 1), background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
+
 // @import url('https://fonts.googleapis.com/css?family=Kalam');
 // .highlight {
 //     font-family: 'Kalam', cursive;
@@ -496,7 +510,7 @@ li:before {
 .pricing-page-header-title-text {
   -webkit-box-flex: 1;
   flex-grow: 1;
-  font-family: "Poppins","Roboto", "Arial", sans-serif;
+  font-family: "Poppins", "Roboto", "Arial", sans-serif;
 }
 
 .pricing-page-header-period-switch-wpr {
@@ -599,7 +613,7 @@ li:before {
   background-color: rgb(255, 255, 255);
   color: rgb(5, 102, 255);
   box-shadow: rgb(0 27 71 / 8%) 0px 3px 8px;
-  font-family: Poppins,Roboto,Arial,sans-serif;
+  font-family: Poppins, Roboto, Arial, sans-serif;
 }
 
 .span-24 {
@@ -628,6 +642,7 @@ li:before {
 .plan-card-left-content {
   flex: 1 1 0%;
 }
+
 .plan-card-title {
   margin-top: 0px;
   margin-bottom: 0px;
@@ -636,8 +651,9 @@ li:before {
   line-height: 31px;
   letter-spacing: -0.01em;
   color: rgb(8, 15, 26);
-  font-family: "Poppins","Roboto", "Arial", sans-serif;
+  font-family: "Poppins", "Roboto", "Arial", sans-serif;
 }
+
 .span-8 {
   display: block;
   width: 8px;
@@ -825,6 +841,7 @@ li:before {
   display: inline-flex;
   justify-content: center;
 }
+
 .btn--primary {
   background-color: var(--blue-light);
   border-color: var(--blue-light);
@@ -887,9 +904,9 @@ li:before {
   margin-top: 28px;
   margin-bottom: 12px;
   // color: #0566ff;
-  color:#080f1a; 
+  color: #080f1a;
   font-weight: 400;
   /* text-align: center; */
   font-size: 16px;
-  font-family: Poppins,Roboto,Arial,sans-serif;
+  font-family: Poppins, Roboto, Arial, sans-serif;
 }
