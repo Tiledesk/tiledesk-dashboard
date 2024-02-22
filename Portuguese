@@ -511,6 +511,7 @@
     "ThisConversationIsNotAssignedToYou": "This conversation is not assigned to you. To join the conversation, click \"Join\".",
     "ThereHasBeenAnErrorProcessing": "There has been an error processing your request",
     "PleaseWaitWhileWeAreProcessingYourRequest": "Please wait while we are processing your request",
+    "ManageYourContents": "Manage your Contents",
     "CannedResponses": {
         "QuickTips": {
             "1": "As respostas predefinidas são mensagens pré-criadas que você pode lembrar facilmente durante o bate-papo.",
