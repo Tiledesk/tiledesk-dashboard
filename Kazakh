@@ -511,6 +511,7 @@
     "ThisConversationIsNotAssignedToYou": "Бұл әңгіме сізге тағайындалмаған. Әңгімелесуге қосылу үшін «Қосылу» түймесін басыңыз.",
     "ThereHasBeenAnErrorProcessing": "Сұрауыңызды өңдеу кезінде қате орын алды",
     "PleaseWaitWhileWeAreProcessingYourRequest": "Сұрауыңызды өңдеу кезінде күтіңіз",
+    "MyChatbots": "MY CHATBOTS",
     "ManageYourContents": "Manage your Contents",
     "CannedResponses": {
         "QuickTips": {
