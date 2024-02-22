@@ -15,13 +15,13 @@ import {LiveAnnouncer} from '@angular/cdk/a11y';
 
 export class KnowledgeBaseTableComponent implements OnInit {
   @Input() refresh: boolean;
-  @Input() kbsList: KB[];
+  @Input() kbs: any;
   @Output() openBaseModalDetail = new EventEmitter();
   @Output() openBaseModalDelete = new EventEmitter();
   @Output() openBaseModalPreview = new EventEmitter();
   @Output() runIndexing = new EventEmitter();
   
-  
+  kbsList: KB[] = [];
   kbsListfilterTypeFilter: KB[] = [];
   dataSource: MatTableDataSource<KB>;
   displayedColumns: string[] = ['type','status','createdAt','name','actions'];
@@ -50,13 +50,15 @@ export class KnowledgeBaseTableComponent implements OnInit {
     //console.log('ngOnChanges!!!', changes);
     //let xx: MatPaginatorIntl;
     //xx.itemsPerPageLabel = "xxx";
-
-    this.dataSource = new MatTableDataSource(this.kbsList);
-    if(this.kbsList) {
+    if(this.kbs){
+      this.kbsList = this.kbs.kbs;
       this.dataSource = new MatTableDataSource(this.kbsList);
-      this.dataSource.sort = this.sort;
-      this.dataSource.paginator = this.paginator;
     }
+    // if(this.kbsList) {
+    //   this.dataSource = new MatTableDataSource(this.kbsList);
+    //   this.dataSource.sort = this.sort;
+    //   this.dataSource.paginator = this.paginator;
+    // }
   }
 
   ngAfterViewInit() {

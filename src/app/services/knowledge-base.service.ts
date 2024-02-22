@@ -120,19 +120,33 @@ export class KnowledgeBaseService {
     return this.httpClient.put(url, kb_settings, httpOptions);
   }
 
-  getListOfKb() {
+  // getListOfKb() {
+  //   const httpOptions = {
+  //     headers: new HttpHeaders({
+  //       'Content-Type': 'application/json',
+  //       'Authorization': this.TOKEN
+  //     })
+  //   }
+  //   const url = this.SERVER_BASE_PATH + this.project_id + "/kb";
+  //   //const url = this.SERVER_BASE_PATH + this.project_id + "/kbsettings";
+  //   this.logger.log("[KNOWLEDGE BASE SERVICE] - get settings URL ", url);
+  //   return this.httpClient.get(url, httpOptions);
+  // }
+
+  getListOfKb(params?) {
+    //let params = "?limit=1&page=0&direction=-1&sortField=updatedAt";
+    //let urlParams = params?params:'';
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         'Authorization': this.TOKEN
       })
     }
-    const url = this.SERVER_BASE_PATH + this.project_id + "/kb";
+    const url = this.SERVER_BASE_PATH + this.project_id + "/kb" + params;
     //const url = this.SERVER_BASE_PATH + this.project_id + "/kbsettings";
     this.logger.log("[KNOWLEDGE BASE SERVICE] - get settings URL ", url);
     return this.httpClient.get(url, httpOptions);
   }
-
 
 
   addKb(body: any) {

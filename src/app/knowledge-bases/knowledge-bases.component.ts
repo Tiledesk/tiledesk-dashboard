@@ -54,7 +54,10 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
 
   kbFormUrl: FormGroup;
   kbFormContent: FormGroup;
+
+  kbs: any;
   kbsList = [];
+  kbsListCount: number = 0;
   refreshKbsList: boolean = true;
 
   // PREVIEW
@@ -390,17 +393,39 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
   /**
    * getListOfKb
    */
-  getListOfKb() {
-    this.logger.log("[KNOWLEDGE-BASES-COMP] getListOfKb ");
-    this.kbService.getListOfKb().subscribe((kbList:[KB]) => {
-      this.logger.log("[KNOWLEDGE-BASES-COMP] get kbList: ", kbList);
-      this.kbsList = kbList;
+  // getListOfKb() {
+  //   this.logger.log("[KNOWLEDGE-BASES-COMP] getListOfKb ");
+  //   this.kbService.getListOfKb().subscribe((kbList:[KB]) => {
+  //     this.logger.log("[KNOWLEDGE-BASES-COMP] get kbList: ", kbList);
+  //     this.kbsList = kbList;
+  //     this.checkAllStatuses();
+  //   }, (error) => {
+  //     this.logger.error("[KNOWLEDGE-BASES-COMP] ERROR get kbSettings: ", error);
+  //   }, () => {
+  //     this.logger.log("[KNOWLEDGE-BASES-COMP] get kbSettings *COMPLETE*");
+  //     this.showSpinner = false;
+  //   })
+  // }
+
+  getListOfKb(params?) {
+    //this.showSpinner = true;
+    this.logger.log("[KNOWLEDGE BASES COMP] getListOfKb ");
+    let paramsDefault = "?limit=10000&page=0";
+    let urlParams = params?params:paramsDefault;
+    this.kbService.getListOfKb(urlParams).subscribe((kbResp:any) => {
+      this.logger.log("[KNOWLEDGE BASES COMP] get kbList: ", kbResp);
+      this.kbs = kbResp;
+      this.kbsList = kbResp.kbs;
+      //this.kbsListCount = kbList.count;
       this.checkAllStatuses();
+      this.refreshKbsList = !this.refreshKbsList;
+      //this.showSpinner = false;
     }, (error) => {
-      this.logger.error("[KNOWLEDGE-BASES-COMP] ERROR get kbSettings: ", error);
+      this.logger.error("[KNOWLEDGE BASES COMP] ERROR get kbSettings: ", error);
+      //this.showSpinner = false;
     }, () => {
-      this.logger.log("[KNOWLEDGE-BASES-COMP] get kbSettings *COMPLETE*");
-      this.showSpinner = false;
+      this.logger.log("[KNOWLEDGE BASES COMP] get kbSettings *COMPLETE*");
+      //this.showSpinner = false;
     })
   }
 
@@ -534,8 +559,9 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
   }
 
   private removeKb(kb_id){
-    this.kbsList = this.kbsList.filter(item => item._id !== kb_id);
+    this.kbs = this.kbs.filter(item => item._id !== kb_id);
     // this.logger.log('AGGIORNO kbsList:', this.kbsList);
+    this.refreshKbsList = !this.refreshKbsList;
   }
 
 

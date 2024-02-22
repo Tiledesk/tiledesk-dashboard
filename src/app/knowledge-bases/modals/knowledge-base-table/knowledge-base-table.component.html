@@ -83,13 +83,13 @@
 
         <!-- Created At Column -->
         <ng-container matColumnDef="createdAt">
-            <th style="min-width:120px; width:120px;" mat-header-cell *matHeaderCellDef mat-sort-header>{{'KbPage.CreatedAt' | translate }}</th>
+            <th style="min-width:120px; width:120px;" mat-header-cell *matHeaderCellDef>{{'KbPage.CreatedAt' | translate }}</th>
             <td style="min-width:120px; width:120px; font-size: small;" mat-cell *matCellDef="let kb" (click)="onOpenBaseModalDetail(kb)">{{ kb.createdAt | amTimeAgo }}</td>
         </ng-container>
 
         <!-- Name Column -->
         <ng-container matColumnDef="name">
-            <th style="max-width: 80%;" mat-header-cell *matHeaderCellDef mat-sort-header>{{'Name' | translate }}</th>
+            <th style="max-width: 80%;" mat-header-cell *matHeaderCellDef>{{'Name' | translate }}</th>
             <td style="max-width: 80%;" mat-cell *matCellDef="let kb" (click)="onOpenBaseModalDetail(kb)"><div class="ellipsis-text">{{ kb.name }}</div>
                 <div class="subtitle ellipsis-text">{{getSubtitle(kb)}}</div>
             </td>
