@@ -511,6 +511,7 @@
     "ThisConversationIsNotAssignedToYou": "Ова конверзација није додељена вама. Да бисте се придружили разговору, кликните на „Придружи се“.",
     "ThereHasBeenAnErrorProcessing": "Дошло је до грешке при обради вашег захтева",
     "PleaseWaitWhileWeAreProcessingYourRequest": "Сачекајте док обрађујемо ваш захтев",
+    "ManageYourContents": "Manage your Contents",
     "CannedResponses": {
         "QuickTips": {
             "1": "Спремни одговори су унапред направљене поруке које можете лако да се сетите током ћаскања.",
