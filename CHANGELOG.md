@@ -2,7 +2,7 @@
 
 ### 2.5.10
 - Deploys in production
-- Improvements and bug fixing
+- Improvements and bug fixing of the Knowledge bases
 
 ### 2.5.9
 - Deploys in production
