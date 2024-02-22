@@ -511,6 +511,7 @@
     "ThisConversationIsNotAssignedToYou": "Bu söhbət sizə təyin edilməyib. Söhbətə qoşulmaq üçün \"Qoşul\" düyməsini basın.",
     "ThereHasBeenAnErrorProcessing": "Sorğunuzu emal edərkən xəta baş verdi",
     "PleaseWaitWhileWeAreProcessingYourRequest": "Sorğunuzu emal edərkən gözləyin",
+    "ManageYourContents": "Manage your Contents",
     "CannedResponses": {
         "QuickTips": {
             "1": "Konservləşdirilmiş cavablar söhbət zamanı asanlıqla xatırlaya biləcəyiniz əvvəlcədən hazırlanmış mesajlardır.",
