@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.5.10
+- Deploys in production
+- Improvements and bug fixing
+
 ### 2.5.9
 - Deploys in production
 - Moves the "Integrations" menu item from the sidebar to the settings sidebar
