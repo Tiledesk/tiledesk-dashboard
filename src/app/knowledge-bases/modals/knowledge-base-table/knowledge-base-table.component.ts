@@ -1,9 +1,9 @@
-import { Component, Input, OnInit, ViewChild, Output, EventEmitter, SimpleChanges } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
-import { MatSort, Sort } from '@angular/material/sort';
-import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
+import { Component, Input, OnInit, ViewChild, Output, EventEmitter, SimpleChanges, HostListener, ElementRef } from '@angular/core';
+// import { MatTableDataSource } from '@angular/material/table';
+// import { MatSort, Sort } from '@angular/material/sort';
+// import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { KB, KbSettings } from 'app/models/kbsettings-model';
-import {LiveAnnouncer} from '@angular/cdk/a11y';
+// import {LiveAnnouncer} from '@angular/cdk/a11y';
 
 
 @Component({
@@ -24,32 +24,22 @@ export class KnowledgeBaseTableComponent implements OnInit {
   @Output() runIndexing = new EventEmitter();
   @Output() reloadKbs = new EventEmitter();
   
-  kbsList: KB[]= [];
-  // kbsListfilterTypeFilter: KB[] = [];
-  dataSource: MatTableDataSource<KB>;
-  displayedColumns: string[] = ['type','status','createdAt','name','actions'];
-  filterType: string;
-  // filterText: string;
-  pagConfig: any = {};
-  pageSize: number = 10;
-  // pageIndex: number = 0;
+  @ViewChild('tableBody') tableBody: ElementRef;
+  data: any[] = [];
+  isLoading: boolean = false;
+  canLoadMore: boolean = true; 
 
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  kbsList: KB[]= [];
+  filterType: string;
+  pagConfig: any = {};
+  pageSize: number = 1;
 
   constructor(
-    private _liveAnnouncer: LiveAnnouncer,
-    public pag: MatPaginatorIntl
   ) { }
+
 
   ngOnInit(): void {
     this.filterType = '';
-    // this.filterText = '';
-    this.pag.firstPageLabel = 'first page:';
-    this.pag.itemsPerPageLabel = 'items per page';
-    this.pag.lastPageLabel = 'last page';
-    this.pag.nextPageLabel = 'next page';
-    this.pag.previousPageLabel = 'previous page';
     this.kbsList = this.kbs.count;
     this.pagConfig = {
       length: this.kbs.count,
@@ -60,39 +50,75 @@ export class KnowledgeBaseTableComponent implements OnInit {
       direction: -1,
       sortField: 'updatedAt'
     }
+    this.onReloadKbs();
   }
 
+  // @HostListener('window:scroll', ['$event'])
+  onScroll(event) {
+    console.log('onScroll!!!', event);
+    // if (this.isScrolledToBottom() && !this.isLoading) {
+    //   this.onReloadKbs();
+    // }
+  }
+
+  // isScrolledToBottom(): boolean {
+  //   const tableBodyElement = this.tableBody.nativeElement;
+  //   return tableBodyElement.scrollTop + tableBodyElement.clientHeight >= tableBodyElement.scrollHeight;
+  // }
+
   ngOnChanges(changes: SimpleChanges){
-    //console.log('ngOnChanges!!!', changes);
+    console.log('ngOnChanges!!!', changes);
     // let xx: MatPaginatorIntl;
     //xx.itemsPerPageLabel = "xxx";
-    this.kbsList = this.kbs.kbs;
-    this.dataSource = new MatTableDataSource(this.kbsList);
-    if(this.kbsList) {
-      this.dataSource = new MatTableDataSource(this.kbsList);
-      //this.dataSource.sort = this.sort;
-      // this.dataSource.paginator = this.paginator;
-    }
+    this.kbsList += this.kbs.kbs;
+    // this.dataSource = new MatTableDataSource(this.kbsList);
+    // if(this.kbsList) {
+    //   this.dataSource = new MatTableDataSource(this.kbsList);
+    // }
     if( this.pagConfig)this.pagConfig.length = this.kbs.count;
-    // Math.ceil(this.kbs.count/this.pagConfig.pageSize);
   }
 
   ngAfterViewInit() {
     //console.log('ngAfterViewInit!!!-->', this.kbsList);
     this.kbsList = this.kbs.kbs;
-    this.dataSource = new MatTableDataSource(this.kbsList);
-    this.dataSource.sort = this.sort;
-    this.sort.active = "updatedAt";
-    this.sort.direction = "desc"
+    // Crea un observer per rilevare quando l'ultimo elemento diventa visibile
+    // const observer = new IntersectionObserver(entries => {
+    //   console.log('ultimo elemento diventa visibile!!!', entries);
+    //   if (entries[0].isIntersecting) {
+    //     // Carica ulteriori dati quando l'ultimo elemento diventa visibile
+    //     this.loadData();
+    //   }
+    // });
+    // // Collega l'observer all'ultimo elemento della tabella
+    // observer.observe(this.tableBody.nativeElement.lastElementChild);
+
+
+    // this.dataSource = new MatTableDataSource(this.kbsList);
+    // this.dataSource.sort = this.sort;
+    // this.sort.active = "updatedAt";
+    // this.sort.direction = "desc"
     // this.dataSource.paginator = this.paginator;
-    this.dataSource.sortData(this.dataSource.data, this.sort);
+    // this.dataSource.sortData(this.dataSource.data, this.sort);
     // if(this.paginator) {
     //   this.paginator.length = 30;
     //   // this.paginator.pageSize = 1;
     //   // this.paginator.pageIndex = 1;
     // }
+    // this.ellipsText("th-width", "ellipsis-max-width");
   }
-
+  
+  // ellipsText(idDivWidth, classNameEllipsis){
+  //   var divThName = document.getElementById(idDivWidth);
+  //   if (divThName) {
+  //     var larghezzaDiv = divThName.offsetWidth;
+  //     var elements = document.getElementsByClassName(classNameEllipsis);
+  //     for (var i = 0; i < elements.length; i++) {
+  //       elements[i].classList.add("ellipsis-text");
+  //       var elementoConStyle = elements[i] as HTMLElement;
+  //       elementoConStyle.style.maxWidth = larghezzaDiv+'px!important';
+  //     }
+  //   }
+  // }
 
   applyFilter(filterValue: string, column: string) {
     //let params = "?limit="+this.pageSize+"&page="+this.pageIndex;
@@ -134,12 +160,50 @@ export class KnowledgeBaseTableComponent implements OnInit {
   //   }
   // }
 
+  onReloadKbs(): void {
+    // Simuliamo il caricamento dei dati (20 elementi alla volta)
+    //this.isLoading = true;
+    setTimeout(() => {
+      let params = "?limit="+this.pagConfig.pageSize+"&page="+this.pagConfig.pageIndex+"&direction="+this.pagConfig.direction+"&sortField="+this.pagConfig.sortField+"&status="+this.pagConfig.status+"&search="+this.pagConfig.search;
+      this.reloadKbs.emit(params);
+      //this.isLoading = false;
+    }, 1000); // Simuliamo un ritardo di caricamento di 1 secondo
+  }
+
+
+
+
+  loadMoreData() {
+    this.onReloadKbs();
+  }
+
+
+  getListOfKb(params?) {
+    //this.showSpinner = true;
+    let paramsDefault = "?limit=10&page=0";
+    let urlParams = params?params:paramsDefault;
+    // this.kbService.getListOfKb(urlParams).subscribe((kbResp:any) => {
+    //   this.kbs = kbResp;
+    //   this.kbsList = kbResp.kbs;
+    //   //this.kbsListCount = kbList.count;
+    //   //this.refreshKbsList = !this.refreshKbsList;
+    //   //this.showSpinner = false;
+    // }, (error) => {
+    //   //this.logger.error("[KNOWLEDGE BASES COMP] ERROR get kbSettings: ", error);
+    //   //this.showSpinner = false;
+    // }, () => {
+    //   //this.logger.log("[KNOWLEDGE BASES COMP] get kbSettings *COMPLETE*");
+    //   //this.showSpinner = false;
+    // })
+  }
+
   onShortBy(type){
-    if(type == 'createdAt'){
-      this.pagConfig.sortField = type;
-    } else if(type == 'name'){
-      this.pagConfig.sortField = type;
-    }
+    // if(type == 'createdAt'){
+    //   this.pagConfig.sortField = type;
+    // } else if(type == 'name'){
+    //   this.pagConfig.sortField = type;
+    // }
+    this.pagConfig.sortField = type;
     this.pagConfig.direction = this.pagConfig.direction*-1;
     this.onReloadKbs();
   }
@@ -186,10 +250,6 @@ export class KnowledgeBaseTableComponent implements OnInit {
     this.onReloadKbs();
   }
 
-  onReloadKbs(){
-    let params = "?limit="+this.pagConfig.pageSize+"&page="+this.pagConfig.pageIndex+"&direction="+this.pagConfig.direction+"&sortField="+this.pagConfig.sortField+"&status="+this.pagConfig.status+"&search="+this.pagConfig.search;
-    this.reloadKbs.emit(params);
-  }
   // handlePageSizeChange(event: any) {
   //   console.log('Page size change event:', event);n
   // }

@@ -1,27 +1,4 @@
-<div class="mat-elevation-z8">
-    <!-- <mat-form-field>
-        <input matInput (keyup)="applyFilter($event.target.value, 'name')" placeholder="Filtra per Nome o Contenuto">
-    </mat-form-field> -->
-    <!-- 
-    <mat-form-field>
-        <mat-label>Seleziona lo stato</mat-label>
-        <mat-select (selectionChange)="applyFilter($event.value, 'type')">
-          <mat-option value="">Tutti</mat-option>
-          <mat-option value="0">Not started</mat-option>
-          <mat-option value="2">Started</mat-option>
-          <mat-option value="3">Finished</mat-option>
-          <mat-option value="4">Error</mat-option>
-        </mat-select> 
-    </mat-form-field>
-    -->
-    <!-- <select class="select-status" (change)="applyFilter($event.value, 'type')">
-        <label>Seleziona lo stato</label>
-        <option value=""> All </option>
-        <option value="0"> Not started </option>
-        <option value="2"> Started </option>
-        <option value="2"> Finished </option>
-        <option value="2"> Error </option>
-    </select> -->
+<div class="mat-elevation-z8___">
 
     <div class="form-group">
 
@@ -57,23 +34,104 @@
     </div>
     
 
+
+    <div class="table-container">
+        <table #tableBody class="table-body" (scroll)="onScroll($event)" class="custom-table" style="max-height: 300px; overflow-y: auto;">
+          <thead>
+            <tr>
+                <th style="width: 100px;"><span class="th-label">{{ 'KbPage.Type' | translate }}</span></th>
+                <th style="width: 100px;"><span class="th-label">{{ 'KbPage.Status' | translate }}</span></th>
+                <th style="width: 100px;">
+                    <span class="th-label"> 
+                        {{'KbPage.CreatedAt' | translate }}
+                        <span *ngIf="pagConfig.direction == 1" id="expand_more" class="th-label material-icons-outlined icon-direction">expand_more</span>
+                        <span *ngIf="pagConfig.direction == -1" id="expand_less" class="th-label material-icons-outlined icon-direction">expand_less</span>
+                    </span>
+                </th>
+                <th style="width: calc(100% - 300px);">
+                    <span class="th-label"> 
+                        {{'Name' | translate }}
+                        <span *ngIf="pagConfig.direction == 1" id="expand_more" class="th-label material-icons-outlined icon-direction">expand_more</span>
+                        <span *ngIf="pagConfig.direction == -1" id="expand_less" class="th-label material-icons-outlined icon-direction">expand_less</span>
+                    </span>
+                    <span class="column-th-span" style="margin:12px 0; float:right">
+                        <button class="preview-button" (click)="$event.stopPropagation(); onOpenBaseModalPreview()">
+                          <span class="material-icon material-icons-round">play_arrow</span>{{'Preview' | translate}}
+                        </button>
+                    </span>
+                </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let kb of kbsList">
+                <td style="min-width: 50px; width: 50px; padding-left: 12px;" (click)="onOpenBaseModalDetail(kb)">
+                    <span *ngIf="kb.type == 'text'" id="description" class="material-icons-outlined">description</span>
+                    <span *ngIf="kb.type == 'url'" id="link" class="material-icons-outlined">link</span>
+                    <span *ngIf="kb.type == 'map'" id="site-map" class="material-icons-outlined">lan</span>
+                </td>
+              
+                <td style="min-width: 50px; width: 50px; text-align:center;" (click)="onOpenBaseModalDetail(kb)">
+                    <loading-spinner *ngIf="kb.status < 0 || kb.status > 4" class="custom-spinner"></loading-spinner>
+                    <!-- <span *ngIf="kb.status == -1" id="error" class="material-icons-outlined status-icon status-void">block</span> -->
+                    <span *ngIf="kb.status == 0" id="done" class="material-icons-outlined status-icon">schedule</span>
+                    <span *ngIf="kb.status == 2" id="cached" class="material-icons-outlined status-icon animated-icon">cached</span>
+                    <span *ngIf="kb.status == 3" id="close" class="material-icons-outlined status-icon status-done">check</span>
+                    <span *ngIf="kb.status == 4" id="error" class="material-icons-outlined status-icon status-error">error</span>
+                </td>
+
+                <td style="min-width:120px; width:120px; font-size: small;" (click)="onOpenBaseModalDetail(kb)">{{ kb.createdAt | amTimeAgo }}</td>
+              
+                <td style="position: relative;">
+                    <div style="max-width: calc(100% - 40px);" class="ellipsis-text" (click)="onOpenBaseModalDetail(kb)"><span class="ellipsis-text title">{{ kb.name }}</span></div>
+                    <div style="max-width: calc(100% - 40px);" class="ellipsis-text" (click)="onOpenBaseModalDetail(kb)"><span class="ellipsis-text subtitle">{{getSubtitle(kb)}}</span></div>
+                    <div style="position: absolute;height: 40px;top: 0;right: 0;">
+                        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Actions">
+                            <mat-icon>more_vert</mat-icon>
+                        </button>
+                        <mat-menu #menu="matMenu" xPosition="before" class="custom-menu">
+                            <button mat-menu-item (click)="onRunIndexing(kb)">
+                                <mat-icon>play_arrow</mat-icon>
+                                <span>{{'KbPage.RunIndexing' | translate}}</span>
+                            </button>
+                            <button mat-menu-item [disabled]="kb.deleting == true"
+                                (click)="onOpenBaseModalDelete(kb)">
+                                <mat-icon>close</mat-icon>
+                                <span>{{'Delete' | translate}}</span>
+                            </button>
+                        </mat-menu>
+                    </div>
+                </td>
+            </tr>
+          </tbody>
+        </table>
+        <div *ngIf="isLoading" class="loading-indicator">Loading...</div>
+        <button (click)="loadMoreData()" *ngIf="!isLoading && canLoadMore">Load More</button>
+
+    </div>
+
+    
+    <!--
     <table mat-table [dataSource]="dataSource" matSort > 
-        <!-- Type Column -->
+        <!- - Type Column - ->
         <ng-container matColumnDef="type">
-        <th style="min-width: 70px; width: 70px;" mat-header-cell *matHeaderCellDef>{{ 'KbPage.Type' | translate }}</th>
-        <td style="min-width: 70px; width: 70px;" mat-cell *matCellDef="let kb" (click)="onOpenBaseModalDetail(kb)">
+        <th style="min-width: 50px; width: 50px; padding-left: 12px;" mat-header-cell *matHeaderCellDef>
+            <span class="th-label">{{ 'KbPage.Type' | translate }}</span>
+        </th>
+        <td style="min-width: 50px; width: 50px; padding-left: 12px;" mat-cell *matCellDef="let kb" (click)="onOpenBaseModalDetail(kb)">
             <span *ngIf="kb.type == 'text'" id="description" class="material-icons-outlined">description</span>
             <span *ngIf="kb.type == 'url'" id="link" class="material-icons-outlined">link</span>
             <span *ngIf="kb.type == 'map'" id="site-map" class="material-icons-outlined">lan</span>
         </td>
         </ng-container>
 
-        <!-- Status Column -->
+        <!- - Status Column - ->
         <ng-container matColumnDef="status">
-            <th style="min-width: 70px; width: 70px; text-align:center;" mat-header-cell *matHeaderCellDef>{{ 'KbPage.Status' | translate }}</th>
-            <td style="min-width: 70px; width: 70px; text-align:center;" mat-cell *matCellDef="let kb" (click)="onOpenBaseModalDetail(kb)">
+            <th style="min-width: 50px; width: 50px; text-align:center;" mat-header-cell *matHeaderCellDef>
+                <span class="th-label">{{ 'KbPage.Status' | translate }}</span>
+            </th>
+            <td style="min-width: 50px; width: 50px; text-align:center;" mat-cell *matCellDef="let kb" (click)="onOpenBaseModalDetail(kb)">
                 <loading-spinner *ngIf="kb.status < 0 || kb.status > 4" class="custom-spinner"></loading-spinner>
-                <!-- <span *ngIf="kb.status == -1" id="error" class="material-icons-outlined status-icon status-void">block</span> -->
+                <!- - <span *ngIf="kb.status == -1" id="error" class="material-icons-outlined status-icon status-void">block</span> - ->
                 <span *ngIf="kb.status == 0" id="done" class="material-icons-outlined status-icon">schedule</span>
                 <span *ngIf="kb.status == 2" id="cached" class="material-icons-outlined status-icon animated-icon">cached</span>
                 <span *ngIf="kb.status == 3" id="close" class="material-icons-outlined status-icon status-done">check</span>
@@ -81,23 +139,61 @@
             </td>
         </ng-container>
 
-        <!-- Created At Column mat-sort-header -->
+        <!- - Created At Column mat-sort-header - ->
         <ng-container matColumnDef="createdAt">
-            <th class="orderBy" style="min-width:120px; width:120px;" mat-header-cell *matHeaderCellDef (click)="onShortBy('createdAt')">{{'KbPage.CreatedAt' | translate }}<span *ngIf="pagConfig.direction == 1" id="expand_more" class="material-icons-outlined icon-direction">expand_more</span><span *ngIf="pagConfig.direction == -1" id="expand_more" class="material-icons-outlined icon-direction">expand_less</span></th>
+            <th class="orderBy" style="min-width:120px; width:120px;" mat-header-cell *matHeaderCellDef (click)="onShortBy('createdAt')">
+                <span class="th-label"> 
+                    {{'KbPage.CreatedAt' | translate }}
+                    <span *ngIf="pagConfig.direction == 1" id="expand_more" class="th-label material-icons-outlined icon-direction">expand_more</span>
+                    <span *ngIf="pagConfig.direction == -1" id="expand_less" class="th-label material-icons-outlined icon-direction">expand_less</span>
+                </span>
+            </th>
 
             <td style="min-width:120px; width:120px; font-size: small;" mat-cell *matCellDef="let kb" (click)="onOpenBaseModalDetail(kb)">{{ kb.createdAt | amTimeAgo }}</td>
         </ng-container>
 
-        <!-- Name Column mat-sort-header-->
+        <!- - Name Column mat-sort-header - ->
         <ng-container matColumnDef="name">
-            <th class="orderBy" style="max-width: 80%;" mat-header-cell *matHeaderCellDef (click)="onShortBy('name')">{{'Name' | translate }}<span *ngIf="pagConfig.direction == 1" id="expand_more" class="material-icons-outlined icon-direction">expand_more</span><span *ngIf="pagConfig.direction == -1" id="expand_more" class="material-icons-outlined icon-direction">expand_less</span></th>
-            <td style="max-width: 80%;" mat-cell *matCellDef="let kb" (click)="onOpenBaseModalDetail(kb)"><div class="ellipsis-text">{{ kb.name }}</div>
-                <div class="subtitle ellipsis-text">{{getSubtitle(kb)}}</div>
+            <th id="th-width" class="orderBy" mat-header-cell *matHeaderCellDef (click)="onShortBy('name')">
+                <span class="th-label"> 
+                    {{'Name' | translate }}
+                    <span *ngIf="pagConfig.direction == 1" id="expand_more" class="th-label material-icons-outlined icon-direction">expand_more</span>
+                    <span *ngIf="pagConfig.direction == -1" id="expand_less" class="th-label material-icons-outlined icon-direction">expand_less</span>
+                </span>
+
+                <span class="column-th-span" style="margin:12px 0; float:right">
+                    <button class="preview-button" (click)="$event.stopPropagation(); onOpenBaseModalPreview($event)">
+                      <span class="material-icon material-icons-round">play_arrow</span>{{'Preview' | translate}}
+                    </button>
+                </span>
+
+            </th>
+            <td style="position: relative;" mat-cell *matCellDef="let kb">
+                <div style="max-width: calc(100% - 40px);" (click)="onOpenBaseModalDetail(kb)"><span class="ellipsis-max-width title">{{ kb.name }}</span></div>
+                <div style="max-width: calc(100% - 40px);" (click)="onOpenBaseModalDetail(kb)"><span class="ellipsis-max-width subtitle">{{getSubtitle(kb)}}</span></div>
+
+                <div style="position: absolute;height: 40px;top: 0;right: 0;">
+                    <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Actions">
+                        <mat-icon>more_vert</mat-icon>
+                    </button>
+                    <mat-menu #menu="matMenu" xPosition="before" class="custom-menu">
+                        <button mat-menu-item (click)="onRunIndexing(kb)">
+                            <mat-icon>play_arrow</mat-icon>
+                            <span>{{'KbPage.RunIndexing' | translate}}</span>
+                        </button>
+                        <button mat-menu-item [disabled]="kb.deleting == true"
+                            (click)="onOpenBaseModalDelete(kb)">
+                            <mat-icon>close</mat-icon>
+                            <span>{{'Delete' | translate}}</span>
+                        </button>
+                    </mat-menu>
+                </div>
+                
             </td>
         </ng-container>
 
-      <!-- Aggiunta della colonna personalizzata -->
-      <ng-container matColumnDef="actions">
+      <!- - Aggiunta della colonna personalizzata - ->
+      <!- - <ng-container matColumnDef="actions">
         <th style="max-width:100px;" mat-header-cell *matHeaderCellDef>
             <span class="column-th-span" style="float:right">
                 <button class="preview-button" (click)="$event.stopPropagation(); onOpenBaseModalPreview($event)">
@@ -106,7 +202,6 @@
             </span>
         </th>
         <td style="text-align: end;" mat-cell *matCellDef="let kb">
-            <!-- Actions -->
             <div style="width: 100%; display: flex; flex-direction: row; align-items: center; justify-content: flex-end;">
                 <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Actions">
                     <mat-icon>more_vert</mat-icon>
@@ -124,7 +219,7 @@
                 </mat-menu>
             </div>
         </td>
-      </ng-container>
+      </ng-container> - ->
    
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
@@ -137,12 +232,12 @@
         [pageSizeOptions]="[10, 25, 100]"
         aria-label="Select page"
         (page)="handlePageChange($event)">
-        <!-- 
+        <! - 
         (pageSize)="handlePageSizeChange($event)"
         (pageSizeOptions)="handlePageSizeOptionsChange($event)"
         (length)="handleLengthChange($event)"
         (pageIndex)="handlePageIndexChange($event)"
-        (pageEvent)="handlePageEvent($event)" -->
-    </mat-paginator>
+        (pageEvent)="handlePageEvent($event)" - ->
+    </mat-paginator> -->
   </div>
   

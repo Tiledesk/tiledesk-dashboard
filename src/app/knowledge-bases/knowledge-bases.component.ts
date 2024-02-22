@@ -227,6 +227,7 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
    * getListOfKb
    */
   getListOfKb(params?) {
+    //this.showSpinner = true;
     this.logger.log("[KNOWLEDGE BASES COMP] getListOfKb ");
     let paramsDefault = "?limit=10&page=0";
     let urlParams = params?params:paramsDefault;
@@ -237,11 +238,13 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
       //this.kbsListCount = kbList.count;
       this.checkAllStatuses();
       this.refreshKbsList = !this.refreshKbsList;
+      //this.showSpinner = false;
     }, (error) => {
       this.logger.error("[KNOWLEDGE BASES COMP] ERROR get kbSettings: ", error);
+      //this.showSpinner = false;
     }, () => {
       this.logger.log("[KNOWLEDGE BASES COMP] get kbSettings *COMPLETE*");
-      this.showSpinner = false;
+      //this.showSpinner = false;
     })
   }
 
@@ -571,6 +574,7 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
         }
       });
     }
+    this.showSpinner = false;
   }
 
 
