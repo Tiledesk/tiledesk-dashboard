@@ -511,6 +511,7 @@
     "ThisConversationIsNotAssignedToYou": "Bu suhbat sizga tayinlanmagan. Suhbatga qo'shilish uchun \"Qo'shilish\" tugmasini bosing.",
     "ThereHasBeenAnErrorProcessing": "So‘rovingizni qayta ishlashda xatolik yuz berdi",
     "PleaseWaitWhileWeAreProcessingYourRequest": "Iltimos, so‘rovingiz ko‘rib chiqilguncha kuting",
+    "MyChatbots":"MENING CHATBOTLARIM",
     "ManageYourContents": "Tarkibingizni Boshqaring",
     "CannedResponses": {
         "QuickTips": {

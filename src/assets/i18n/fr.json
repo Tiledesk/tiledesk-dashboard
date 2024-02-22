@@ -511,6 +511,7 @@
     "ThisConversationIsNotAssignedToYou": "Cette conversation ne vous est pas attribuée. Pour rejoindre la conversation, cliquez sur \"Rejoindre\".",
     "ThereHasBeenAnErrorProcessing": "Une erreur s'est produite lors du traitement de votre demande",
     "PleaseWaitWhileWeAreProcessingYourRequest": "Veuillez patienter pendant le traitement de votre demande",
+    "MyChatbots":"MES CHATBOTS",
     "ManageYourContents": "Gérez votre Contenus",
     "CannedResponses": {
         "QuickTips": {

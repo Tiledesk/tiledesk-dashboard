@@ -511,6 +511,7 @@
     "ThisConversationIsNotAssignedToYou": "Den här konversationen är inte tilldelad dig. För att gå med i konversationen, klicka på \"Gå med\".",
     "ThereHasBeenAnErrorProcessing": "Det har uppstått ett fel när din förfrågan behandlas",
     "PleaseWaitWhileWeAreProcessingYourRequest": "Vänta medan vi behandlar din förfrågan",
+    "MyChatbots":"MINA CHATBOTS",
     "ManageYourContents": "Hantera ditt innehåll",
     "CannedResponses": {
         "QuickTips": {

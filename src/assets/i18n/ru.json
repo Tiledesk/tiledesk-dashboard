@@ -511,6 +511,7 @@
     "ThisConversationIsNotAssignedToYou": "Эта беседа не назначена вам. Чтобы присоединиться к беседе, нажмите «Присоединиться».",
     "ThereHasBeenAnErrorProcessing": "При обработке вашего запроса произошла ошибка",
     "PleaseWaitWhileWeAreProcessingYourRequest": "Пожалуйста, подождите, пока мы обрабатываем ваш запрос",
+    "MyChatbots":"МОИ ЧАТБОТЫ",
     "ManageYourContents": "Управляйте своим содержимым",
     "CannedResponses": {
         "QuickTips": {
