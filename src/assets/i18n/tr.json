@@ -511,7 +511,7 @@
     "ThisConversationIsNotAssignedToYou": "Bu görüşme size atanmamış. Sohbete katılmak için \"Katıl\"ı tıklayın.",
     "ThereHasBeenAnErrorProcessing": "İsteğiniz işlenirken bir hata oluştu",
     "PleaseWaitWhileWeAreProcessingYourRequest": "Lütfen isteğinizi işleme koyarken bekleyin",
-    "ManageYourContents": "İçeriğinizi yönetin",
+    "ManageYourContents": "İçeriğinizi Yönetin",
     "CannedResponses": {
         "QuickTips": {
             "1": "Hazır yanıtlar, sohbet sırasında kolayca hatırlayabileceğiniz önceden hazırlanmış mesajlardır.",
