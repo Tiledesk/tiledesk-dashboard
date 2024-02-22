@@ -1,5 +1,11 @@
 # tiledesk-dashboard
 
+### 2.5.9
+- Deploys in production
+- Moves the "Integrations" menu item from the sidebar to the settings sidebar
+- Moves for the new Knowledge bases the menu item from the settings sidebar to the chatbot sidebar
+- Fixes the bug: dropdown menu overlaps bottom navigation bar on Change Password page
+
 ### 2.5.8
 - Deploys in production
 - Fixes the bug: Sidebar "Settings" menu item becomes grayed out when user selects "Installations"
