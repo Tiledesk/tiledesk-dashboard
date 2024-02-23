@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.5.12-rc1
+- Deploys in production
+- Adds the ability to reset the busy status
+
 ### 2.5.11
 - Deploys in production
 - Adds settings sidebar on "paywall" pages

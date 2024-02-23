@@ -408,20 +408,17 @@ button.close {
 }
 
 .sidebar--isBusy-icon-wpr {
-  // width: 14px;
-  // height: 14px;
-  width: 12px;
-  height: 12px;
+
+  width: 16px;
+  height: 16px;
   position: absolute;
-  // top: 94px;
-  // right: 150px;
   top: 0px; // for small sidebar
   right: 29px; // for small sidebar
 }
 
 .sidebar-is-busy-icon {
-  // font-size: 14px;
-  font-size: 12px;
+  // font-size: 12px;
+  font-size: 16px;
   color: #feb92c;
   background-color: #2d323e;
   border-radius: 50%;

@@ -34,6 +34,8 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { FaqKbService } from 'app/services/faq-kb.service';
 import { KbSettings } from 'app/models/kbsettings-model';
 import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
+import { MatDialog } from '@angular/material/dialog';
+import { UserModalComponent } from 'app/users/user-modal/user-modal.component';
 
 declare const $: any;
 
@@ -254,6 +256,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     private logger: LoggerService,
     private sanitizer: DomSanitizer,
     private faqKbService: FaqKbService,
+    public dialog: MatDialog
   ) {
     this.logger.log('[SIDEBAR] !!!!! HELLO SIDEBAR')
 
@@ -297,7 +300,21 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   }
 
 
+  presentDialogResetBusy(){
+    this.logger.log('[SIDEBAR] presentDialogResetBusy ')
+    const dialogRef = this.dialog.open(UserModalComponent, {
+      width: '600px',
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+      hasBackdrop: true,
+      data: {
+       
+      },
+    });
 
+    dialogRef.afterClosed().subscribe(result => {
+      this.logger.log(`[BOT-CREATE] Dialog result: ${result}`);
+    });
+  }
 
   getNotificationSoundPreferences() {
     // NOTIFICATION_SOUND = 'enabled';
