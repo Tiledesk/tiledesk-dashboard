@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.5.11
+- Deploys in production
+- Adds settings sidebar on "paywall" pages
+
 ### 2.5.10
 - Deploys in production
 - Improvements and bug fixing of the Knowledge bases
