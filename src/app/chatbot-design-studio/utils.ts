@@ -315,6 +315,7 @@ export function patchActionId(action) {
     return action;
 }
 
+
 // export function retriveListOfVariables(intents: Array<Intent>) {
 //     variableList.userDefined = []
 //     intents.forEach(intent => {

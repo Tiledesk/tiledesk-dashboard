@@ -1,9 +1,10 @@
-import { Component, Input, OnInit, ViewChild, Output, EventEmitter, SimpleChanges } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
-import { MatSort, Sort } from '@angular/material/sort';
-import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
+import { Component, Input, OnInit, ViewChild, Output, EventEmitter, SimpleChanges, ElementRef, HostListener } from '@angular/core';
+// import { MatTableDataSource } from '@angular/material/table';
+// import { MatSort, Sort } from '@angular/material/sort';
+// import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { KB, KbSettings } from 'app/models/kbsettings-model';
 import {LiveAnnouncer} from '@angular/cdk/a11y';
+import { KB_DEFAULT_PARAMS } from 'app/utils/util';
 
 
 @Component({
@@ -15,100 +16,130 @@ import {LiveAnnouncer} from '@angular/cdk/a11y';
 
 export class KnowledgeBaseTableComponent implements OnInit {
   @Input() refresh: boolean;
-  @Input() kbs: any;
+  @Input() kbsList: KB[];
+  @Input() kbsListCount: number;
   @Output() openBaseModalDetail = new EventEmitter();
   @Output() openBaseModalDelete = new EventEmitter();
   @Output() openBaseModalPreview = new EventEmitter();
   @Output() runIndexing = new EventEmitter();
-  
-  kbsList: KB[] = [];
-  kbsListfilterTypeFilter: KB[] = [];
-  dataSource: MatTableDataSource<KB>;
-  displayedColumns: string[] = ['type','status','createdAt','name','actions'];
+  @Output() loadPage = new EventEmitter();
+  @Output() loadByFilter = new EventEmitter();
+
+  timeoutId: any;
+  // kbsListfilterTypeFilter: KB[] = [];
   filterType: string;
   filterText: string;
+  @ViewChild('tableBody') tableBody: ElementRef;
 
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  directionDesc: number = KB_DEFAULT_PARAMS.DIRECTION;
+  isLoading: boolean = false;
+  SHOW_MORE_BTN: boolean = true;
+  searchParams: any;
 
   constructor(
-    private _liveAnnouncer: LiveAnnouncer,
-    public pag: MatPaginatorIntl
+    private _liveAnnouncer: LiveAnnouncer
   ) { }
 
   ngOnInit(): void {
     this.filterType = '';
     this.filterText = '';
-    this.pag.firstPageLabel = 'first page:';
-    this.pag.itemsPerPageLabel = 'items per page';
-    this.pag.lastPageLabel = 'last page';
-    this.pag.nextPageLabel = 'next page';
-    this.pag.previousPageLabel = 'previous page';
+    this.searchParams = {
+      "sortField": KB_DEFAULT_PARAMS.SORT_FIELD,
+      "direction": KB_DEFAULT_PARAMS.DIRECTION,
+      "status": '',
+      "search": '',
+    }
   }
 
+  // @HostListener('window:scroll', ['$event'])
+  // onScroll(event) {
+  //   if (this.isScrolledToBottom() && !this.isLoading && this.SHOW_MORE_BTN) {
+  //     //this.loadData();
+  //   }
+  // }
+
+
+  // onTableScroll(e) {
+  //   console.log('onTableScroll', e);
+  //   const tableViewHeight = e.target.offsetHeight // viewport
+  //   const tableScrollHeight = e.target.scrollHeight // length of all table
+  //   const scrollLocation = e.target.scrollTop; // how far user scrolled
+  // }
+
+
+
+  loadMoreData() {
+    this.isLoading = true;
+    this.loadPage.emit(this.searchParams);
+  }
+
+  // isScrolledToBottom(): boolean {
+  //   const tableBodyElement = this.tableBody.nativeElement;
+  //   return tableBodyElement.scrollTop + tableBodyElement.clientHeight >= tableBodyElement.scrollHeight;
+  // }
+
   ngOnChanges(changes: SimpleChanges){
-    //console.log('ngOnChanges!!!', changes);
-    //let xx: MatPaginatorIntl;
-    //xx.itemsPerPageLabel = "xxx";
-    if(this.kbs){
-      this.kbsList = this.kbs.kbs;
-      this.dataSource = new MatTableDataSource(this.kbsList);
+    console.log('ngOnChanges!!!****** ', changes, changes.kbsListCount, this.kbsList.length);
+    if(changes.kbsListCount &&  changes.kbsListCount.currentValue) {
+      if(changes.kbsListCount.currentValue <= this.kbsList.length){
+        this.SHOW_MORE_BTN = false;
+      } else {
+        this.SHOW_MORE_BTN = true;
+      }
     }
-    // if(this.kbsList) {
-    //   this.dataSource = new MatTableDataSource(this.kbsList);
-    //   this.dataSource.sort = this.sort;
-    //   this.dataSource.paginator = this.paginator;
-    // }
+    if(changes.refresh){
+      this.isLoading = false;
+    }
   }
 
   ngAfterViewInit() {
     //console.log('ngAfterViewInit!!!-->', this.kbsList);
-    this.dataSource = new MatTableDataSource(this.kbsList);
-    this.dataSource.sort = this.sort;
-    this.sort.active = "updatedAt";
-    this.sort.direction = "desc"
-    this.dataSource.sortData(this.dataSource.data, this.sort);
-    this.dataSource.paginator = this.paginator;
+    // this.dataSource = new MatTableDataSource(this.kbsList);
+    // this.dataSource.sort = this.sort;
+    // this.sort.active = "updatedAt";
+    // this.sort.direction = "desc"
+    // this.dataSource.sortData(this.dataSource.data, this.sort);
+    // this.dataSource.paginator = this.paginator;
     // this.paginator.length = this.dataSource.data.length;
     // this.paginator.pageSize = 20;
   }
 
-
-  applyFilter(filterValue: string, column: string) {
+  onOrderBy(type){
+    this.searchParams.sortField = type;
+    this.searchParams.direction = this.directionDesc;
+    this.directionDesc = this.directionDesc*-1;
+    this.isLoading = true;
+    this.loadByFilter.next(this.searchParams);
+  }
+  
+  onLoadByFilter(filterValue: string, column: string) {
+    let status = '';
+    let search = '';
     if( column == 'type'){
-      this.filterType = filterValue;
+      status = filterValue;
     } else if(column == 'name'){
-      this.filterText= filterValue;
+      search = filterValue;
     }
-    //console.log('onOptionSelected:: ', filterValue, column, this.filterType, this.filterText);
-    this.dataSource.filterPredicate = (data: KB, filter: string) => {
-      if(this.filterType && this.filterText){
-        return data.name.toLowerCase().includes(this.filterText) && data.status.toString() === this.filterType;
-      } 
-      if(this.filterText && this.filterText != ""){
-        return data.name.toLowerCase().includes(this.filterText);
-      } 
-      if(this.filterType && this.filterType != ""){
-        return data.status.toString() === this.filterType;
-      } 
-      return true;
-      
+    this.searchParams.status = status;
+    this.searchParams.search = search;
+    if (this.timeoutId) {
+      clearTimeout(this.timeoutId);
     }
-    this.dataSource.filter = filterValue;
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
+    this.timeoutId = setTimeout(() => {
+      this.isLoading = true;
+      this.loadByFilter.next(this.searchParams);
+    }, 1000);
   }
 
 
   /** Announce the change in sort state for assistive technology. */
-  announceSortChange(sortState: Sort) {
-    if (sortState.direction) {
-      this._liveAnnouncer.announce(`Sorted ${sortState.direction} ending`);
-    } else {
-      this._liveAnnouncer.announce('Sorting cleared');
-    }
-  }
+  // announceSortChange(sortState: Sort) {
+  //   if (sortState.direction) {
+  //     this._liveAnnouncer.announce(`Sorted ${sortState.direction} ending`);
+  //   } else {
+  //     this._liveAnnouncer.announce('Sorting cleared');
+  //   }
+  // }
 
 
   onRunIndexing(kb){

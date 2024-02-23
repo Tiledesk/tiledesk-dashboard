@@ -334,6 +334,14 @@ export enum KB_MAX_NUM {
     Custom = 3
 };
 
+
+export enum KB_DEFAULT_PARAMS {
+    LIMIT = 4,
+    NUMBER_PAGE = 0,
+    DIRECTION = -1,
+    SORT_FIELD = 'createdAt'
+}
+
 // Growth
 export const featuresPlanA = [
     'CRM',

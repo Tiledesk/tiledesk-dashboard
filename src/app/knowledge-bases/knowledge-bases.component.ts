@@ -14,6 +14,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { FaqKbService } from 'app/services/faq-kb.service';
+import { KB_DEFAULT_PARAMS } from 'app/utils/util';
+
 //import { Router } from '@angular/router';
 
 @Component({
@@ -56,17 +58,12 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
   kbFormContent: FormGroup;
 
   kbs: any;
-  kbsList = [];
+  kbsList: Array<any>;
   kbsListCount: number = 0;
   refreshKbsList: boolean = true;
+  numberPage: number = 0;
 
-  // PREVIEW
-  // question: string = "";
-  // answer: string = "";
-  // source_url: any;
-  // searching: boolean = false;
-  // error_answer: boolean = false;
-  // show_answer: boolean = false;
+
   kbid_selected: any;
   interval_id;
   ARE_NEW_KB: boolean
@@ -105,11 +102,12 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-
+    this.kbsList = [];
     this.getBrowserVersion();
     this.getTranslations();
     this.listenSidebarIsOpened();
-    this.getListOfKb();
+    let paramsDefault = "?limit="+KB_DEFAULT_PARAMS.LIMIT+"&page="+KB_DEFAULT_PARAMS.NUMBER_PAGE+"&sortField="+KB_DEFAULT_PARAMS.SORT_FIELD+"&direction="+KB_DEFAULT_PARAMS.DIRECTION;
+    this.getListOfKb(paramsDefault);
     this.kbFormUrl = this.createConditionGroupUrl();
     this.kbFormContent = this.createConditionGroupContent();
     this.trackPage();
@@ -407,17 +405,49 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
   //   })
   // }
 
+  onLoadPage(searchParams){
+    //console.log('onLoadNextPage:',this.kbsList);
+    this.numberPage = Math.floor(this.kbsList.length/KB_DEFAULT_PARAMS.LIMIT);
+    let params = "?limit="+KB_DEFAULT_PARAMS.LIMIT+"&page="+this.numberPage;
+    if(searchParams.status){
+      params +="&status="+searchParams.status;
+    }
+    if(searchParams.search){
+      params +="&search="+searchParams.search;
+    }
+    if(searchParams.sortField){
+      params +="&sortField="+searchParams.sortField;
+    } else {
+      params +="&sortField="+KB_DEFAULT_PARAMS.SORT_FIELD;
+    }
+    if(searchParams.direction){
+      params +="&direction="+searchParams.direction;
+    } else {
+      params +="&direction="+KB_DEFAULT_PARAMS.DIRECTION;
+    }
+    this.getListOfKb(params);
+  }
+
+  onLoadByFilter(searchParams){
+    //console.log('onLoadByFilter:',searchParams);
+    this.numberPage = 0;
+    this.kbsList = [];
+    this.onLoadPage(searchParams);
+  }
+
+
   getListOfKb(params?) {
     //this.showSpinner = true;
     this.logger.log("[KNOWLEDGE BASES COMP] getListOfKb ");
-    let paramsDefault = "?limit=10000&page=0";
-    let urlParams = params?params:paramsDefault;
-    this.kbService.getListOfKb(urlParams).subscribe((kbResp:any) => {
-      this.logger.log("[KNOWLEDGE BASES COMP] get kbList: ", kbResp);
-      this.kbs = kbResp;
-      this.kbsList = kbResp.kbs;
-      //this.kbsListCount = kbList.count;
-      this.checkAllStatuses();
+    this.kbService.getListOfKb(params).subscribe((resp:any) => {
+      this.logger.log("[KNOWLEDGE BASES COMP] get kbList: ", resp);
+      this.kbs = resp;
+      this.kbsListCount = resp.count;
+      resp.kbs.forEach(kb => {
+        this.kbsList.push(kb);
+      });
+      console.log('[KNOWLEDGE BASES COMP] get kbList: ', this.kbs, this.kbsList);
+      // this.checkAllStatuses();
       this.refreshKbsList = !this.refreshKbsList;
       //this.showSpinner = false;
     }, (error) => {
@@ -679,6 +709,7 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
    * 
    */
   checkAllStatuses() {
+    console.log('[KNOWLEDGE BASES COMP] checkAllStatuses: ', this.kbsList);
     this.kbsList.forEach(kb => {
       //if(kb.status == -1){
       //   this.onRunIndexing(kb);

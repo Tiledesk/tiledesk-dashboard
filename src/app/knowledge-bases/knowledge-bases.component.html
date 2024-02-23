@@ -50,13 +50,15 @@
 
           <!-- START TABLE -->
           <knowledge-base-table
-            [kbs]="kbs"
+            [kbsList]="kbsList"
+            [kbsListCount]="kbsListCount"
             [refresh]="refreshKbsList"
             (openBaseModalDetail)="onOpenBaseModalDetail($event)"
             (openBaseModalDelete)="onOpenBaseModalDelete($event)"
             (openBaseModalPreview)="onOpenBaseModalPreview()"
             (runIndexing)="onRunIndexing($event)"
-            (reloadKbs)="onReloadKbs($event)"
+            (loadPage)="onLoadPage($event)"
+            (loadByFilter)="onLoadByFilter($event)"
           ></knowledge-base-table>
           <!-- END TABLE -->
 
