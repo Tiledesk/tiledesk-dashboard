@@ -54,6 +54,7 @@ export class DepartmentsStaticComponent  extends PricingBaseComponent implements
   onlyOwnerCanManageTheAccountPlanMsg: string;
   learnMoreAboutDefaultRoles: string;
   profile_name: string;
+  public IS_OPEN_SETTINGS_SIDEBAR: boolean;
   isChromeVerGreaterThan100: boolean;
   tparams: any;
   appSumoProfile: string;
@@ -84,7 +85,8 @@ export class DepartmentsStaticComponent  extends PricingBaseComponent implements
     this.getProjectUserRole();
     this.getTranslationStrings();
     this.getBrowserVersion();
-    this.presentModalsOnInit()
+    this.presentModalsOnInit();
+    this.listenSidebarIsOpened();
   }
 
   ngOnDestroy() {
@@ -102,6 +104,13 @@ export class DepartmentsStaticComponent  extends PricingBaseComponent implements
       this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
       //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
     })
+  }
+
+  listenSidebarIsOpened() {
+    this.auth.settingSidebarIsOpned.subscribe((isopened) => {
+      this.logger.log('[AUTOMATION COMP.] SETTINGS-SIDEBAR isopened (FROM SUBSCRIPTION) ', isopened)
+      this.IS_OPEN_SETTINGS_SIDEBAR = isopened
+    });
   }
 
   getOSCODE() {

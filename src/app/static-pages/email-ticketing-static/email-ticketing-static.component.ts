@@ -36,6 +36,7 @@ export class EmailTicketingStaticComponent extends PricingBaseComponent implemen
   USER_ROLE: string;
   onlyOwnerCanManageTheAccountPlanMsg: string;
   learnMoreAboutDefaultRoles: string;
+  public IS_OPEN_SETTINGS_SIDEBAR: boolean;
   isChromeVerGreaterThan100: boolean;
   public_Key: any;
   payIsVisible: boolean;
@@ -63,7 +64,8 @@ export class EmailTicketingStaticComponent extends PricingBaseComponent implemen
     this.getProjectUserRole();
     this.getTranslationStrings();
     this.getBrowserVersion();
-    this.presentModalsOnInit()
+    this.presentModalsOnInit();
+    this.listenSidebarIsOpened();
   }
 
   ngOnDestroy() {
@@ -80,6 +82,13 @@ export class EmailTicketingStaticComponent extends PricingBaseComponent implemen
       this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
       //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
     })
+  }
+
+  listenSidebarIsOpened() {
+    this.auth.settingSidebarIsOpned.subscribe((isopened) => {
+      this.logger.log('[AUTOMATION COMP.] SETTINGS-SIDEBAR isopened (FROM SUBSCRIPTION) ', isopened)
+      this.IS_OPEN_SETTINGS_SIDEBAR = isopened
+    });
   }
 
   getOSCODE() {

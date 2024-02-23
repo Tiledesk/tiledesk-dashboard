@@ -37,6 +37,7 @@ export class HoursStaticComponent extends PricingBaseComponent implements OnInit
   onlyOwnerCanManageTheAccountPlanMsg: string;
   learnMoreAboutDefaultRoles: string;
   profile_name: string;
+  public IS_OPEN_SETTINGS_SIDEBAR: boolean;
   isChromeVerGreaterThan100: boolean;
   // tparams: any;
   public_Key:any
@@ -66,7 +67,8 @@ export class HoursStaticComponent extends PricingBaseComponent implements OnInit
     this.getProjectUserRole();
     this.getTranslationStrings();
     this.getBrowserVersion();
-    this.presentModalsOnInit()
+    this.presentModalsOnInit();
+    this.listenSidebarIsOpened();
   }
 
 
@@ -87,10 +89,17 @@ export class HoursStaticComponent extends PricingBaseComponent implements OnInit
     })
    }
 
+   listenSidebarIsOpened() {
+    this.auth.settingSidebarIsOpned.subscribe((isopened) => {
+      this.logger.log('[HOURS-STATIC]] SETTINGS-SIDEBAR isopened (FROM SUBSCRIPTION) ', isopened)
+      this.IS_OPEN_SETTINGS_SIDEBAR = isopened
+    });
+  }
+
   getOSCODE() {
     this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
-    this.logger.log('[HOURS-BASECOMP] AppConfigService getAppConfig public_Key', this.public_Key)
-    this.logger.log('[HOURS-BASECOMP] public_Key', this.public_Key)
+    this.logger.log('[HOURS-STATIC] AppConfigService getAppConfig public_Key', this.public_Key)
+    this.logger.log('[HOURS-STATIC] public_Key', this.public_Key)
 
     let keys = this.public_Key.split("-");
     // this.logger.log('PUBLIC-KEY (Navbar) - public_Key keys', keys)

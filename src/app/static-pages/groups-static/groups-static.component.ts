@@ -55,6 +55,7 @@ export class GroupsStaticComponent extends PricingBaseComponent implements OnIni
   onlyOwnerCanManageTheAccountPlanMsg: string;
   learnMoreAboutDefaultRoles: string;
   profile_name: string;
+  public IS_OPEN_SETTINGS_SIDEBAR: boolean;
   isChromeVerGreaterThan100: boolean;
   constructor(
     private router: Router,
@@ -81,6 +82,7 @@ export class GroupsStaticComponent extends PricingBaseComponent implements OnIni
     this.getTranslationStrings();
     this.getBrowserVersion();
     this.presentModalsOnInit();
+    this.listenSidebarIsOpened();
   }
 
   ngOnDestroy() {
@@ -98,6 +100,13 @@ export class GroupsStaticComponent extends PricingBaseComponent implements OnIni
       this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
       //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
     })
+  }
+
+  listenSidebarIsOpened() {
+    this.auth.settingSidebarIsOpned.subscribe((isopened) => {
+      this.logger.log('[AUTOMATION COMP.] SETTINGS-SIDEBAR isopened (FROM SUBSCRIPTION) ', isopened)
+      this.IS_OPEN_SETTINGS_SIDEBAR = isopened
+    });
   }
 
   getOSCODE() {
