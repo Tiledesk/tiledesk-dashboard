@@ -1,8 +1,8 @@
 # tiledesk-dashboard
 
-### 2.5.12-rc1
+### 2.5.12
 - Deploys in production
-- Adds the ability to reset the busy status
+- Fixes the bug: "Settings" sidebar menu item is not active when some settings sidebar menu items are active
 
 ### 2.5.11
 - Deploys in production
