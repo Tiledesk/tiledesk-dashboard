@@ -34,7 +34,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { FaqKbService } from 'app/services/faq-kb.service';
 import { KbSettings } from 'app/models/kbsettings-model';
 import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { UserModalComponent } from 'app/users/user-modal/user-modal.component';
 
 declare const $: any;
@@ -188,8 +188,12 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   CONV_DETAIL_ROUTE_IS_ACTIVE: boolean;
   CONTACT_EDIT_ROUTE_IS_ACTIVE: boolean;
   CONTACT_CONVS_ROUTE_IS_ACTIVE: boolean;
-  // INTEGRATIONS_ROUTE_IS_ACTIVE: boolean;
+  INTEGRATIONS_ROUTE_IS_ACTIVE: boolean;
   INSTALLATION_ROUTE_IS_ACTIVE: boolean;
+  EMAIL_TICKETING_ROUTE_IS_ACTIVE: boolean;
+  AUTOMATIONS_ROUTE_IS_ACTIVE: boolean;
+  KB_ROUTE_IS_ACTIVE: boolean;
+  
 
   IS_REQUEST_FOR_PANEL_ROUTE: boolean;
   IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE: boolean;
@@ -237,6 +241,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   myChatbotCount: number;
   companySiteUrl: string;
   companyName: string;
+  dialogRef: MatDialogRef<any>;
   constructor(
     private router: Router,
     public location: Location,
@@ -302,7 +307,11 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
   presentDialogResetBusy(){
     this.logger.log('[SIDEBAR] presentDialogResetBusy ')
-    const dialogRef = this.dialog.open(UserModalComponent, {
+    if(this.dialogRef) {
+      this.dialogRef.close();
+      return
+    }
+    this.dialogRef = this.dialog.open(UserModalComponent, {
       width: '600px',
       backdropClass: 'cdk-overlay-transparent-backdrop',
       hasBackdrop: true,
@@ -311,8 +320,9 @@ export class SidebarComponent implements OnInit, AfterViewInit {
       },
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      this.logger.log(`[BOT-CREATE] Dialog result: ${result}`);
+    this.dialogRef.afterClosed().subscribe(result => {
+      this.logger.log(`[SIDEBAR] Dialog result: ${result}`);
+      this.dialogRef = null
     });
   }
 
@@ -943,21 +953,48 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           // this.logger.log('[SIDEBAR] NavigationEnd - CONTACT_CONVS_ROUTE_IS_ACTIVE ', this.CONTACT_CONVS_ROUTE_IS_ACTIVE);
         }
 
-        // if (event.url.indexOf('/integrations') !== -1) {
-        //   this.INTEGRATIONS_ROUTE_IS_ACTIVE = true;
-        //   this.logger.log('[SIDEBAR] NavigationEnd - INTEGRATIONS_ROUTE_IS_ACTIVE ', this.INTEGRATIONS_ROUTE_IS_ACTIVE);
-        // } else {
-        //   this.INTEGRATIONS_ROUTE_IS_ACTIVE = false;
-        //   this.logger.log('[SIDEBAR] NavigationEnd - INTEGRATIONS_ROUTE_IS_ACTIVE ', this.INTEGRATIONS_ROUTE_IS_ACTIVE);
-        // }
+        if (event.url.indexOf('/integrations') !== -1) {
+          this.INTEGRATIONS_ROUTE_IS_ACTIVE = true;
+          this.logger.log('[SIDEBAR] NavigationEnd - INTEGRATIONS_ROUTE_IS_ACTIVE ', this.INTEGRATIONS_ROUTE_IS_ACTIVE);
+        } else {
+          this.INTEGRATIONS_ROUTE_IS_ACTIVE = false;
+          this.logger.log('[SIDEBAR] NavigationEnd - INTEGRATIONS_ROUTE_IS_ACTIVE ', this.INTEGRATIONS_ROUTE_IS_ACTIVE);
+        }
 
-        // if (event.url.indexOf('/installation') !== -1) {
-        //   this.INSTALLATION_ROUTE_IS_ACTIVE = true;
-        //   this.logger.log('[SIDEBAR] NavigationEnd - INSTALLATION_ROUTE_IS_ACTIVE ', this.INSTALLATION_ROUTE_IS_ACTIVE);
-        // } else {
-        //   this.INSTALLATION_ROUTE_IS_ACTIVE = false;
-        //   this.logger.log('[SIDEBAR] NavigationEnd - INSTALLATION_ROUTE_IS_ACTIVE ', this.INSTALLATION_ROUTE_IS_ACTIVE);
-        // }
+        if (event.url.indexOf('/installation') !== -1) {
+          this.INSTALLATION_ROUTE_IS_ACTIVE = true;
+          this.logger.log('[SIDEBAR] NavigationEnd - INSTALLATION_ROUTE_IS_ACTIVE ', this.INSTALLATION_ROUTE_IS_ACTIVE);
+        } else {
+          this.INSTALLATION_ROUTE_IS_ACTIVE = false;
+          this.logger.log('[SIDEBAR] NavigationEnd - INSTALLATION_ROUTE_IS_ACTIVE ', this.INSTALLATION_ROUTE_IS_ACTIVE);
+        }
+
+        if (event.url.indexOf('/email') !== -1) {
+          this.EMAIL_TICKETING_ROUTE_IS_ACTIVE = true;
+          this.logger.log('[SIDEBAR] NavigationEnd - EMAIL_TICKETING_ROUTE_IS_ACTIVE ', this.EMAIL_TICKETING_ROUTE_IS_ACTIVE);
+        } else {
+          this.EMAIL_TICKETING_ROUTE_IS_ACTIVE = false;
+          this.logger.log('[SIDEBAR] NavigationEnd - EMAIL_TICKETING_ROUTE_IS_ACTIVE ', this.EMAIL_TICKETING_ROUTE_IS_ACTIVE);
+        }
+
+        if (event.url.indexOf('/automations') !== -1) {
+          this.AUTOMATIONS_ROUTE_IS_ACTIVE = true;
+          this.logger.log('[SIDEBAR] NavigationEnd - AUTOMATIONS_ROUTE_IS_ACTIVE ', this.AUTOMATIONS_ROUTE_IS_ACTIVE);
+        } else {
+          this.AUTOMATIONS_ROUTE_IS_ACTIVE = false;
+          this.logger.log('[SIDEBAR] NavigationEnd - AUTOMATIONS_ROUTE_IS_ACTIVE ', this.AUTOMATIONS_ROUTE_IS_ACTIVE);
+        }
+
+        if (event.url.indexOf('/knowledge-bases-pre') !== -1) {
+          this.KB_ROUTE_IS_ACTIVE = true;
+          this.logger.log('[SIDEBAR] NavigationEnd - KB_ROUTE_IS_ACTIVE ', this.KB_ROUTE_IS_ACTIVE);
+        } else {
+          this.KB_ROUTE_IS_ACTIVE = false;
+          this.logger.log('[SIDEBAR] NavigationEnd - KB_ROUTE_IS_ACTIVE ', this.KB_ROUTE_IS_ACTIVE);
+        }
+
+
+        
       }
     });
   }
@@ -1100,7 +1137,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   getUserAvailability() {
     this.usersService.user_is_available_bs.subscribe((user_available) => {
       this.IS_AVAILABLE = user_available;
-      // this.logger.log('[SIDEBAR] - USER IS AVAILABLE ', this.IS_AVAILABLE);
+      // console.log('[SIDEBAR] - USER IS AVAILABLE ', this.IS_AVAILABLE);
     });
   }
 
@@ -1109,7 +1146,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
       this.IS_BUSY = user_isbusy;
       // THE VALUE OS  IS_BUSY IS THEN UPDATED WITH THE VALUE RETURNED FROM THE WEBSOCKET getWsCurrentUserIsBusy$()
       // WHEN, FOR EXAMPLE IN PROJECT-SETTINGS > ADVANCED THE NUM OF MAX CHAT IS 3 AND THE 
-      this.logger.log('[SIDEBAR] - USER IS BUSY (from db)', this.IS_BUSY);
+      // console.log('[SIDEBAR] - USER IS BUSY (from db)', this.IS_BUSY);
     });
   }
 
@@ -1264,10 +1301,10 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         takeUntil(this.unsubscribe$)
       )
       .subscribe((currentuser_isbusy) => {
-        // this.logger.log('[SIDEBAR] - GET WS CURRENT-USER - currentuser_isbusy? ', currentuser_isbusy);
+        // console.log('[SIDEBAR] - GET WS CURRENT-USER - currentuser_isbusy? ', currentuser_isbusy);
         if (currentuser_isbusy !== null) {
           this.IS_BUSY = currentuser_isbusy;
-          // this.logger.log('[SIDEBAR] - GET WS CURRENT-USER (from ws)- this.IS_BUSY? ', this.IS_BUSY);
+          // console.log('[SIDEBAR] - GET WS CURRENT-USER (from ws)- this.IS_BUSY? ', this.IS_BUSY);
         }
       }, error => {
         this.logger.error('[SIDEBAR] - GET WS CURRENT-USER IS BUSY * error * ', error)

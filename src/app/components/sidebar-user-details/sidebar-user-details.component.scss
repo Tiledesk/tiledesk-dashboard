@@ -234,6 +234,7 @@ button.user-details-btn-close {
     width: 21px;
     height: 21px;
     left: 101px;
+    cursor:pointer;
 }
 
 .user-details-user-isbusy-icon {
@@ -366,11 +367,10 @@ button.user-details-btn-close {
 .tooltip {
     position: relative;
     display: inline-block;
-    border-bottom: 1px dotted black;
-    z-index: 1054 !important;
-}
-
-.tooltip .tooltiptext {
+    // border-bottom: 1px dotted black;
+  }
+  
+  .tooltip .tooltiptext {
     visibility: hidden;
     width: 120px;
     background-color: black;
@@ -378,12 +378,29 @@ button.user-details-btn-close {
     text-align: center;
     border-radius: 6px;
     padding: 5px 0;
-
+    
     /* Position the tooltip */
     position: absolute;
     z-index: 1;
-}
+    bottom: 100%;
+    left: 50%;
+    margin-left: -60px;
+  }
 
-.tooltip:hover .tooltiptext {
-    visibility: visible;
-}
+  .busy-status-tooltip {
+    position: absolute;
+    top: 70px;
+    background: rgb(30, 41, 59);
+    left: 0;
+    text-align: center;
+    width: 201px;
+    transform: translate(-50%, -50%);
+    left: 50%;
+    color: #fff;
+    min-height: 25px;
+    line-height: 25px;
+    // padding: 10px;
+    z-index: 1052;
+    opacity: 0;
+    transition: visibility 0s, opacity 0.1s linear;
+  }
