@@ -908,6 +908,25 @@ export class UsersService {
       .put(url, JSON.stringify(body), httpOptions)
   }
 
+  public resetBusyStatus() {
+    let url = this.SERVER_BASE_PATH + this.project._id + '/project_users/'
+    this.logger.log('[USER-SERV] - RESET BUSY STATUS (PUT) URL ', url);
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    const body = { 'number_assigned_requests': 0 };
+    this.logger.log('[USER-SERV] - PROJECT-USER UPDATE AVAILABILITY - PUT REQUEST BODY ', body);
+
+    return this._httpClient
+      .put(url, JSON.stringify(body), httpOptions)
+  }
+
   // DONE - WORKS NK-TO-TEST - da fare e da testare dopo che L. esegue il commit del servizio aggiornato (lo puo fare solo l'admin)
   // this is a service equal to updateProjectUser() in which project User_id was not passed
   // must be implemented for to change the availability status (available / unavailable) of the current user

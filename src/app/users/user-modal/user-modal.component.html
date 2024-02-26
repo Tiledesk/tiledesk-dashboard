@@ -1,0 +1,28 @@
+<h1 mat-dialog-title style="text-align: center;">
+    Busy status
+</h1>
+
+<div mat-dialog-content>
+
+    <div class="dialog--content">
+      <div class="dialog--content-text-row">
+        Your status is busy because you have activated Automatic assignment
+        </div>
+        <div class="dialog--content-text-row">
+            You can reset your busy status by clicking the reset busy status button
+        </div>
+    </div>
+
+
+</div>
+<div  mat-dialog-actions style="justify-content: center;margin-top: 12px;">
+    <button mat-button tabindex="-1" class="mat-dialog-close-btn" mat-button (click)="onNoClick()">
+        <!-- {{ "Cancel" | translate }} -->
+        Cancel
+    </button>
+
+    <button mat-button tabindex="-1" class="mat-dialog-ok-btn" mat-button (click)="onOkPresssed()">
+        Reset busy status
+    </button>
+
+</div>

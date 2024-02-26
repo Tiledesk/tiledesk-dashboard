@@ -190,7 +190,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
 
 
   handlePageChange(event: any) {
-    console.log('Page change event:', event);
+    // console.log('Page change event:', event);
     this.pagConfig.pageSize = event.pageSize;
     this.pagConfig.pageIndex = event.pageIndex,
     this.onReloadKbs();

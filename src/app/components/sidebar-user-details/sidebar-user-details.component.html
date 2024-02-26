@@ -26,8 +26,13 @@
     </button>
     <!-- [ngStyle]="{'background-image': 'url('+object.image+')'}" -->
 
+    <!-- Busy status, click to reset -->
+    <div class="busy-status-tooltip">
+        {{'Busy' | translate}}
+    </div>
 
-    <div role="button" class="user-details-avatar" (click)="goToUserProfile()">
+    <!-- (click)="goToUserProfile()" -->
+    <div role="button" class="user-details-avatar">
         <img class="user-img-in-sidebar-user-details"
             *ngIf="userProfileImageExist === true || userImageHasBeenUploaded === true" [src]="getUserProfileImage()"
             onerror="this.src='assets/img/no_image_user.png'" />
@@ -46,12 +51,15 @@
 
 
     </div>
-
-    <div class="user-details-user-isbusy" *ngIf="IS_BUSY === true">
+    
+    <!--   (click)="presentDialogResetBusy()" -->
+    <div class="user-details-user-isbusy" (mouseover)="onMouseOverBusyIcon()" (mouseout)="onMouseOutBusyIcon()" *ngIf="IS_BUSY === true">
         <span class="material-icons user-details-user-isbusy-icon">
             access_time
         </span>
     </div>
+
+
     <!-- <div class="camera-on-hover" (click)="goToUserProfile()">
         <i class="material-icons is-over-camera">
             camera_alt
