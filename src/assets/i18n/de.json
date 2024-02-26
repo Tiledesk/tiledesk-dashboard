@@ -1908,6 +1908,8 @@
 		"UpgradeNow": "Jetzt upgraden",
 		"SelectToStart": "Wählen Sie eine Integration aus, um zu starten",
 		"Signup": "Melden Sie sich an",
+		"SignupNow": "Jetzt registrieren!",
+  		"StartForFree": "Starten Sie kostenlos mit <b>{{ intname }}</b>.",
 		"Join": "Verbinden",
 		"JoinNow": "<b>{{ intname }}</b> Jetzt!",
 		"FreeAccount": "kostenlos <b>{{ intname }}</b> Konto!",

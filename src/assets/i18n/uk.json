@@ -1909,6 +1909,8 @@
         "UpgradeNow": "Оновити зараз",
         "SelectToStart": "Виберіть інтеграцію, щоб почати",
         "Signup": "Зареєструватися",
+        "SignupNow": "Зареєструватися зараз!",
+        "StartForFree": "Почніть безкоштовно з <b>{{ intname }}</b>.",      
         "Join": "Приєднуйтесь",
         "JoinNow": "<b>{{ intname }}</b> зараз!",
         "FreeAccount": "безкоштовно <b>{{ intname }}</b> рахунок!",

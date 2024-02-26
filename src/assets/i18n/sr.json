@@ -1909,6 +1909,8 @@
         "UpgradeNow": "Надоградите сада",
         "SelectToStart": "Изаберите интеграцију за почетак",
         "Signup": "Пријави се",
+        "SignupNow": "Пријавите се сада!",
+        "StartForFree": "Почните бесплатно са <b>{{ intname }}</b>.",
         "Join": "Придружити",
         "JoinNow": "<b>{{ intname }}</b> Сада!",
         "FreeAccount": "за бесплатно <b>{{ intname }}</b> рачун!",

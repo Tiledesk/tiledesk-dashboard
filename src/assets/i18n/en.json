@@ -1909,6 +1909,8 @@
         "UpgradeNow": "Upgrade now",
         "SelectToStart": "Select an integration to start",
         "Signup": "Sign up",
+        "SignupNow": "Sign up now!",
+        "StartForFree": "Start for free with <b>{{ intname }}</b>.",
         "Join": "Join",
         "JoinNow": "<b>{{ intname }}</b> now!",
         "FreeAccount": "for a free <b>{{ intname }}</b> account!",

@@ -1909,6 +1909,8 @@
         "UpgradeNow": "İndi yenilə",
         "SelectToStart": "Başlamaq üçün inteqrasiya seçin",
         "Signup": "Abunə olun",
+        "SignupNow": "İndi qeydiyyatdan keçin!",
+        "StartForFree": "ilə pulsuz başlayın <b>{{ intname }}</b>.",
         "Join": "Qoşulun",
         "JoinNow": "<b>{{ intname }}</b> İndi!",
         "FreeAccount": "pulsuz üçün <b>{{ intname }}</b> hesab!",

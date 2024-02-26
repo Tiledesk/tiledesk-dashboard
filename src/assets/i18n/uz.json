@@ -1908,6 +1908,8 @@
         "UpgradeNow": "Hozir yangilang",
         "SelectToStart": "Boshlash uchun integratsiyani tanlang",
         "Signup": "Ro'yxatdan o'tish",
+        "SignupNow": "Hozir roʻyxatdan oʻting!",
+        "StartForFree": "bilan bepul boshlang <b>{{ intname }}</b>.",
         "Join": "Qo'shilish",
         "JoinNow": "<b>{{ intname }}</b> hozir!",
         "FreeAccount": "bepul <b>{{ intname }}</b> hisob!",
