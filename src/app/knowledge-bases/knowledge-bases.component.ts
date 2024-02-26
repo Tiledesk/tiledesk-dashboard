@@ -61,7 +61,7 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
   kbsList: Array<any>;
   kbsListCount: number = 0;
   refreshKbsList: boolean = true;
-  numberPage: number = 0;
+  // numberPage: number = 0;
 
 
   kbid_selected: any;
@@ -407,8 +407,13 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
 
   onLoadPage(searchParams){
     //console.log('onLoadNextPage:',this.kbsList);
-    this.numberPage = Math.floor(this.kbsList.length/KB_DEFAULT_PARAMS.LIMIT);
-    let params = "?limit="+KB_DEFAULT_PARAMS.LIMIT+"&page="+this.numberPage;
+    // 
+    let params = "?limit="+KB_DEFAULT_PARAMS.LIMIT
+    if(searchParams.page){
+      params +="&page="+searchParams.page;
+    } else {
+      +"&page=0";
+    }
     if(searchParams.status){
       params +="&status="+searchParams.status;
     }
@@ -430,7 +435,8 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
 
   onLoadByFilter(searchParams){
     //console.log('onLoadByFilter:',searchParams);
-    this.numberPage = 0;
+    // this.numberPage = 0;
+    searchParams.page = 0;
     this.kbsList = [];
     this.onLoadPage(searchParams);
   }
@@ -483,20 +489,30 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
     this.onCloseBaseModal();
     let error = this.msgErrorAddUpdateKb;
     this.kbService.addKb(body).subscribe((resp: any) => {
+      this.logger.log("onAddKb:", resp);
       let kb = resp.value;
-      this.logger.log("onAddKb:", kb);
-      if(kb.lastErrorObject && kb.lastErrorObject.updatedExisting === true){
+      if(resp.lastErrorObject && resp.lastErrorObject.updatedExisting === true){
+        //console.log("updatedExisting true:");
         const index = this.kbsList.findIndex(item => item._id === kb._id);
         if (index !== -1) {
           this.kbsList[index] = kb;
-          this.notify.showWidgetStyleUpdateNotification(this.msgSuccesUpdateKb, 2, 'done');
+          this.notify.showWidgetStyleUpdateNotification(this.msgSuccesUpdateKb, 3, 'warning');
         }
       } else {
-        this.kbsList.push(kb);
+        //this.kbsList.push(kb);
+        this.kbsList.unshift(kb);
         this.notify.showWidgetStyleUpdateNotification(this.msgSuccesAddKb, 2, 'done');
       }
       this.updateStatusOfKb(kb._id, 0);
       this.refreshKbsList = !this.refreshKbsList;
+
+      let searchParams = {
+        "sortField": KB_DEFAULT_PARAMS.SORT_FIELD,
+        "direction": KB_DEFAULT_PARAMS.DIRECTION,
+        "status": '',
+        "search": '',
+      }
+      this.onLoadByFilter(searchParams);
       // this.logger.log("kbsList:",that.kbsList);
       // that.onRunIndexing(kb);
       setTimeout(() => {
@@ -589,7 +605,8 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
   }
 
   private removeKb(kb_id){
-    this.kbs = this.kbs.filter(item => item._id !== kb_id);
+    //this.kbs = this.kbs.filter(item => item._id !== kb_id);
+    this.kbsList = this.kbsList.filter(item => item._id !== kb_id);
     // this.logger.log('AGGIORNO kbsList:', this.kbsList);
     this.refreshKbsList = !this.refreshKbsList;
   }

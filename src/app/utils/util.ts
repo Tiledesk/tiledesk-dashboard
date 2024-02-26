@@ -339,7 +339,7 @@ export enum KB_DEFAULT_PARAMS {
     LIMIT = 4,
     NUMBER_PAGE = 0,
     DIRECTION = -1,
-    SORT_FIELD = 'createdAt'
+    SORT_FIELD = 'updatedAt'
 }
 
 // Growth

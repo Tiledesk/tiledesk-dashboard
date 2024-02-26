@@ -27,16 +27,16 @@
 
                         <div class="input-container">
                             <span class="input-label">{{ 'Name' | translate }}</span>
-                            <input type="text" name="name" class="custom-input" [value]="kb.name"  disabled>
+                            <input type="text" name="name" class="custom-input" [value]="kb.name" >
                             
                             <div *ngIf="kb.type === 'url'">
                                 <span class="input-label">{{ 'KbPage.Url' | translate }}</span>
-                                <input type="url" name="url" class="custom-input" [value]="kb.source"  disabled>
+                                <input type="url" name="url" class="custom-input" [value]="kb.source" >
                             </div>
                             
                             <div *ngIf="kb.type === 'text'">
                                 <span class="input-label">{{ 'KbPage.FileText' | translate }}</span>
-                                <textarea type="text" name="content" class="custom-textarea" [value]="kb.content" rows="4" disabled></textarea>
+                                <textarea type="text" name="content" class="custom-textarea" [value]="kb.content" rows="4"></textarea>
                             </div>
                             
                         </div>

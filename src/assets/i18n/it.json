@@ -1619,6 +1619,7 @@
         "Type": "Tipo",
         "Status": "Stato",
         "CreatedAt": "Creato il",
+        "UpdatedAt": "Aggiornato il",
         "KBDetail": "Dettagli della Knowledge Base",
         "Url": "URL",
         "FileText": "File di testo",

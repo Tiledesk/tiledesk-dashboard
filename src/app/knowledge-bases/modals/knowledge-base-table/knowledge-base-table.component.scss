@@ -1,6 +1,4 @@
-td {
-    cursor: pointer;
-}
+
 
 select.select-status {
     height: 30px;
@@ -123,7 +121,8 @@ table {
 }
 
 .ellipsis-text {
-    max-width: 400px;
+    max-width: calc(100% - 350px);
+    max-width: 500px;
     width: 100%;
     white-space: nowrap;
     overflow: hidden;
@@ -140,3 +139,46 @@ table {
     margin: 50px auto 20px;
     display: block;
 }
+
+
+th {
+    display: table-cell;
+}
+
+td {
+    cursor: pointer;
+    max-width: 100%;
+    // display: inline-grid;
+}
+
+
+
+.column-th-span {
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    cursor: pointer;
+    .th-label {
+        display: inline-block;
+        opacity: 0;
+        transition: opacity 0.5s ease-in-out;
+    }
+    &:hover {
+        .th-label {
+            display: inline-block;;
+            opacity: 1;
+        }
+    }
+}
+
+.column-th-span span {
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 500;
+    margin: auto 4px;
+    color: #353f45;
+    vertical-align: middle;
+}
+
+
+

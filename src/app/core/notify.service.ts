@@ -511,6 +511,8 @@ export class NotifyService {
       icon_bckgrnd_color = '#d2291c'
     } else if (notificationColor === 2) {
       icon_bckgrnd_color = '#449d48'
+    } else if(notificationColor === 3){
+      icon_bckgrnd_color = '#ffecb5'
     }
     this.notify = $.notify({
       // icon: 'glyphicon glyphicon-warning-sign',

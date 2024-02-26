@@ -44,6 +44,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
     this.filterType = '';
     this.filterText = '';
     this.searchParams = {
+      "page":0,
       "sortField": KB_DEFAULT_PARAMS.SORT_FIELD,
       "direction": KB_DEFAULT_PARAMS.DIRECTION,
       "status": '',
@@ -70,6 +71,8 @@ export class KnowledgeBaseTableComponent implements OnInit {
 
   loadMoreData() {
     this.isLoading = true;
+
+    this.searchParams.page = Math.floor(this.kbsList.length/KB_DEFAULT_PARAMS.LIMIT);
     this.loadPage.emit(this.searchParams);
   }
 
@@ -80,12 +83,14 @@ export class KnowledgeBaseTableComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges){
     console.log('ngOnChanges!!!****** ', changes, changes.kbsListCount, this.kbsList.length);
-    if(changes.kbsListCount &&  changes.kbsListCount.currentValue) {
-      if(changes.kbsListCount.currentValue <= this.kbsList.length){
-        this.SHOW_MORE_BTN = false;
-      } else {
-        this.SHOW_MORE_BTN = true;
-      }
+    // if(changes.kbsListCount &&  changes.kbsListCount.currentValue) {
+    if(changes.kbsListCount && changes.kbsListCount.currentValue){
+      this.kbsListCount = changes.kbsListCount.currentValue;
+    }
+    if(this.kbsListCount <= this.kbsList.length){
+      this.SHOW_MORE_BTN = false;
+    } else {
+      this.SHOW_MORE_BTN = true;
     }
     if(changes.refresh){
       this.isLoading = false;
@@ -106,8 +111,8 @@ export class KnowledgeBaseTableComponent implements OnInit {
 
   onOrderBy(type){
     this.searchParams.sortField = type;
-    this.searchParams.direction = this.directionDesc;
     this.directionDesc = this.directionDesc*-1;
+    this.searchParams.direction = this.directionDesc;
     this.isLoading = true;
     this.loadByFilter.next(this.searchParams);
   }
