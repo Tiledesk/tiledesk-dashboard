@@ -1642,7 +1642,8 @@
         "msgErrorDeleteKb": "Kunskapsbasen kunde inte raderas",
         "msgErrorIndexingKb": "Indexering misslyckades",
         "msgSuccesIndexingKb": "Utbilda om innehåll som har lanserats framgångsrikt",
-        "msgErrorAddUpdateKb": "Kunskapsbasen kunde inte läggas till eller redigeras"
+        "msgErrorAddUpdateKb": "Kunskapsbasen kunde inte läggas till eller redigeras",
+        "noContent": "inget innehåll"
         },
     "AutomationsDemoPageDescription":"Med våra “API-automatiseringar” kan du hantera massutsändningsmeddelanden på Whatsapp med hjälp av designerns automatiseringar kombinerat med enkelheten hos våra API: er, skicka meddelanden till alla kontakter i din favorit-CRM, ta emot status för skickade meddelanden (mottagna, lästa, etc. ) och mycket mer!",
     "Sunday": "söndag",

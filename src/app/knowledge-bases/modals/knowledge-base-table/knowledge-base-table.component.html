@@ -75,8 +75,10 @@
             </thead>
         
             <tbody>
+                <tr *ngIf="!kbsList || kbsList.length == 0" style="text-align: center; padding: 20px 0 10px !important;">
+                    <td colspan="5">{{'KbPage.noContent' | translate}}</td>
+                </tr>
                 <tr *ngFor="let kb of kbsList">
-
                     <td style="min-width: 50px; width: 50px; text-align:center;" (click)="onOpenBaseModalDetail(kb)">
                         <span *ngIf="kb.type == 'text'" id="description" class="material-icons-outlined">description</span>
                         <span *ngIf="kb.type == 'url'" id="link" class="material-icons-outlined">link</span>

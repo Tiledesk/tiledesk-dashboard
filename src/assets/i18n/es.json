@@ -1642,7 +1642,8 @@
         "msgErrorDeleteKb": "No se pudo eliminar la base de conocimientos",
         "msgErrorIndexingKb": "Falló la indexación",
         "msgSuccesIndexingKb": "Vuelva a capacitarse sobre el contenido lanzado exitosamente",
-        "msgErrorAddUpdateKb": "La base de conocimientos no se pudo agregar ni editar."
+        "msgErrorAddUpdateKb": "La base de conocimientos no se pudo agregar ni editar.",
+        "noContent": "sin contenido"
     },
     "AutomationsDemoPageDescription":"Con nuestras “automatizaciones APIs” podrás gestionar mensajes de difusión masiva en Whatsapp utilizando las automatizaciones del diseñador combinadas con la facilidad de nuestras APIs, enviar mensajes a todos los contactos de tu CRM favorito, recibir el estado de los mensajes enviados (recibidos, leídos, etc.) ) ¡y mucho más!",
     "Sunday": "Domingo",

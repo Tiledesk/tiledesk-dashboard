@@ -1642,7 +1642,8 @@
         "msgErrorDeleteKb": "Impossibile eliminare la Knowledge Base",
         "msgErrorIndexingKb": "Indicizzazione non riuscita",
         "msgSuccesIndexingKb": "Riqualificazione sui contenuti avviata correttamente",
-        "msgErrorAddUpdateKb": "Impossibile aggiungere o modificare la Knowledge Base"
+        "msgErrorAddUpdateKb": "Impossibile aggiungere o modificare la Knowledge Base",
+        "noContent": "nessun contenuto"
     },
     "AutomationsDemoPageDescription": "Con le nostre “APIs automations” puoi gestire messaggi broadcast massivi su Whatsapp utilizzando le automazioni del designer uniti alla facilità delle nostre API, inviare messaggi a tutti i contatti del tuo CRM preferito, ricevere lo stato dei messaggi inviati (ricevuto, letto etc.) e molto altro ancora!",
     "Sunday": "Domenica",

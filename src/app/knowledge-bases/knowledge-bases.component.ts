@@ -512,7 +512,7 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
         "status": '',
         "search": '',
       }
-      this.onLoadByFilter(searchParams);
+      // this.onLoadByFilter(searchParams);
       // this.logger.log("kbsList:",that.kbsList);
       // that.onRunIndexing(kb);
       setTimeout(() => {
