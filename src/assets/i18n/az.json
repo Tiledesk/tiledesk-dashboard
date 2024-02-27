@@ -1618,6 +1618,7 @@
         "Type": "Növ",
         "Status": "Vəziyyət",
         "CreatedAt": "Yaradıldı",
+        "UpdatedAt": "Yenilənib",
         "KBDetail": "Bilik Bazasının Təfərrüatı",
         "Url": "URL",
         "FileText": "Fayl Mətni",
@@ -1640,7 +1641,7 @@
         "msgSuccesDeleteKb": "Bilik bazası uğurla silindi",
         "msgErrorDeleteKb": "Bilik Bazasını silmək mümkün olmadı",
         "msgErrorIndexingKb": "İndeksləmə uğursuz oldu",
-        "msgSuccesIndexingKb": "İndeksləmə uğurla tamamlandı",
+        "msgSuccesIndexingKb": "Uğurla işə salınan məzmunu yenidən hazırlayın",
         "msgErrorAddUpdateKb": "Bilik Bazasını əlavə etmək və ya redaktə etmək mümkün olmadı"
     },
     "AutomationsDemoPageDescription":"Bizim “API avtomatlaşdırmalarımız” ilə siz API-lərimizin asanlığı ilə birləşdirilən dizayner avtomatlaşdırmalarından istifadə edərək Whatsapp-da kütləvi yayım mesajlarını idarə edə, sevimli CRM-nin bütün kontaktlarına mesaj göndərə, göndərilən mesajların statusunu (qəbul edildi, oxundu və s.) ala bilərsiniz. ) və daha çox!",

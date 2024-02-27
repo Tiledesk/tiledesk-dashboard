@@ -1618,6 +1618,7 @@
         "Type": "Tip",
         "Status": "Durum",
         "CreatedAt": "Oluşturulma Tarihi",
+        "UpdatedAt": "Güncelleme tarihi:",
         "KBDetail": "Bilgi Bankası Detayı",
         "Url": "URL'si",
         "FileText": "Dosya Metni",
@@ -1640,7 +1641,7 @@
         "msgSuccesDeleteKb": "Bilgi Bankası başarıyla silindi",
         "msgErrorDeleteKb": "Bilgi Bankası silinemedi",
         "msgErrorIndexingKb": "Dizine ekleme başarısız oldu",
-        "msgSuccesIndexingKb": "Dizine ekleme başarıyla tamamlandı",
+        "msgSuccesIndexingKb": "Başarıyla başlatılan içerikle ilgili yeniden eğitim",
         "msgErrorAddUpdateKb": "Bilgi Bankası eklenemedi veya düzenlenemedi"
     },
     "AutomationsDemoPageDescription":"“API otomasyonlarımız” ile, API'lerimizin kolaylığıyla birlikte tasarımcının otomasyonlarını kullanarak Whatsapp'taki toplu yayın mesajlarını yönetebilir, favori CRM'nizdeki tüm kişilere mesaj gönderebilir, gönderilen mesajların durumunu (alındı, okundu vb.) alabilirsiniz. ) ve daha fazlası!",

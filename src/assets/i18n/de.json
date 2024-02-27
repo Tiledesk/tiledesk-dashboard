@@ -1618,6 +1618,7 @@
 		"Type": "Typ",
 		"Status": "Status",
 		"CreatedAt": "Hergestellt in",
+		"UpdatedAt": "Aktualisiert am",
 		"KBDetail": "Details zur Wissensdatenbank",
 		"Url": "URL",
 		"FileText": "Dateitext",
@@ -1640,7 +1641,7 @@
 		"msgSuccesDeleteKb": "Wissensdatenbank erfolgreich gelöscht",
 		"msgErrorDeleteKb": "Die Wissensdatenbank konnte nicht gelöscht werden",
 		"msgErrorIndexingKb": "Die Indizierung ist fehlgeschlagen",
-		"msgSuccesIndexingKb": "Die Indizierung wurde erfolgreich abgeschlossen",
+		"msgSuccesIndexingKb": "Neuschulung für erfolgreich eingeführte Inhalte",
 		"msgErrorAddUpdateKb": "Die Wissensdatenbank konnte nicht hinzugefügt oder bearbeitet werden"
 	},
 	"AutomationsDemoPageDescription":"Mit unseren „APIs-Automatisierungen“ können Sie Massennachrichten auf WhatsApp verwalten, indem Sie die Automatisierungen des Designers in Kombination mit der Benutzerfreundlichkeit unserer APIs nutzen, Nachrichten an alle Kontakte Ihres bevorzugten CRM senden, den Status gesendeter Nachrichten (empfangen, gelesen usw.) erhalten. ) und vieles mehr!",

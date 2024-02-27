@@ -27,16 +27,24 @@
 
                         <div class="input-container">
                             <span class="input-label">{{ 'Name' | translate }}</span>
-                            <input type="text" name="name" class="custom-input" [value]="kb.name" >
+                            <input [(ngModel)]="name" type="text" name="name" class="custom-input" >
                             
                             <div *ngIf="kb.type === 'url'">
                                 <span class="input-label">{{ 'KbPage.Url' | translate }}</span>
-                                <input type="url" name="url" class="custom-input" [value]="kb.source" >
+                                <a class="input-label link-page" [href]="source" target="_blank">
+                                    <span class="material-icons-outlined">
+                                        open_in_new
+                                    </span>
+                                </a>
+                                <input [(ngModel)]="source" type="url" name="url" class="custom-input" >
+                                <!-- <span class="material-icons-outlined">
+                                    open_in_new
+                                </span> -->
                             </div>
                             
                             <div *ngIf="kb.type === 'text'">
                                 <span class="input-label">{{ 'KbPage.FileText' | translate }}</span>
-                                <textarea type="text" name="content" class="custom-textarea" [value]="kb.content" rows="4"></textarea>
+                                <textarea [(ngModel)]="content" type="text" name="content" class="custom-textarea" rows="4"></textarea>
                             </div>
                             
                         </div>
@@ -45,10 +53,10 @@
             </div>
             
             <div class="modal-footer">
-                <!-- <button class="btn btn-white" style="padding:12px 16px;" (click)="onCloseBaseModal()">
-                {{ "Cancel" | translate }}
-                </button> -->
-                <button id="addkb-btn" class="btn btn-primary" (click)="onCloseBaseModal()">
+                <button class="btn btn-white" style="padding:12px 16px;" (click)="onCloseBaseModal()">
+                {{ 'Cancel' | translate }}
+                </button>
+                <button id="addkb-btn" class="btn btn-primary" (click)="onUpdateKnowledgeBase()">
                 {{ 'OK' | translate }}
                 </button>
             </div> 

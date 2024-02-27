@@ -1580,7 +1580,7 @@
         "Add": "Aggiungi",
         "Enter": "Invia",
         "NoKbAdded": "Non hai ancora aggiunto nessuna Knowledge Base",
-        "RunIndexing": "Indicizza",
+        "RunIndexing": "Riaddestrare",
         "CreationDate": "Data creazione",
         "KbCounterFooter": "{{ counter }} di 3 Knowledge Base aggiunte",
         "AddKbURL": "Aggiungi l'URL della tua pagina",
@@ -1641,7 +1641,7 @@
         "msgSuccesDeleteKb": "Knowledge Base eliminata con successo",
         "msgErrorDeleteKb": "Impossibile eliminare la Knowledge Base",
         "msgErrorIndexingKb": "Indicizzazione non riuscita",
-        "msgSuccesIndexingKb": "Indicizzazione completata con successo",
+        "msgSuccesIndexingKb": "Riqualificazione sui contenuti avviata correttamente",
         "msgErrorAddUpdateKb": "Impossibile aggiungere o modificare la Knowledge Base"
     },
     "AutomationsDemoPageDescription": "Con le nostre “APIs automations” puoi gestire messaggi broadcast massivi su Whatsapp utilizzando le automazioni del designer uniti alla facilità delle nostre API, inviare messaggi a tutti i contatti del tuo CRM preferito, ricevere lo stato dei messaggi inviati (ricevuto, letto etc.) e molto altro ancora!",

@@ -452,7 +452,7 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
       resp.kbs.forEach(kb => {
         this.kbsList.push(kb);
       });
-      console.log('[KNOWLEDGE BASES COMP] get kbList: ', this.kbs, this.kbsList);
+      this.logger.log('[KNOWLEDGE BASES COMP] get kbList: ', this.kbs, this.kbsList);
       // this.checkAllStatuses();
       this.refreshKbsList = !this.refreshKbsList;
       //this.showSpinner = false;
@@ -559,6 +559,75 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
     }, () => {
       this.logger.log("[KNOWLEDGE-BASES-COMP] delete kb *COMPLETE*");
       //this.trackUserActioOnKB('Deleted Knowledge Base', gptkey)
+    })
+  }
+
+
+  /** */
+  onUpdateKb(kb) {
+    this.logger.log('onUpdateKb: ', kb);
+    this.onCloseBaseModal();
+    let error = "update fallito"
+    let dataDelete = {
+      "id": kb._id,
+      "namespace": kb.id_project
+    }
+    let dataAdd = {
+      'name': kb.name,
+      'source': kb.source,
+      'content': '',
+      'type': 'url'
+    };
+    if(kb.type === 'text'){
+      dataAdd.source = kb.name;
+      dataAdd.content = kb.content,
+      dataAdd.type = 'text'
+    }
+    this.logger.log('dataAdd: ', dataAdd);
+    kb.deleting = true;
+    this.kbService.deleteKb(dataDelete).subscribe((response:any) => {
+      kb.deleting = false;
+      if(!response || (response.success && response.success === false)){
+        this.onOpenErrorModal(error);
+      } else {
+        this.kbService.addKb(dataAdd).subscribe((resp: any) => {
+          let kbNew = resp.value;
+          if(resp.lastErrorObject && resp.lastErrorObject.updatedExisting === true){
+            const index = this.kbsList.findIndex(item => item._id === kbNew._id);
+            if (index !== -1) {
+              this.kbsList[index] = kbNew;
+              this.notify.showWidgetStyleUpdateNotification(this.msgSuccesUpdateKb, 3, 'warning');
+            }
+          } else {
+            // this.kbsList.push(kb);
+            // this.kbsList.unshift(kbNew);
+            this.notify.showWidgetStyleUpdateNotification(this.msgSuccesAddKb, 2, 'done');
+          }
+
+          const index = this.kbsList.findIndex(item => item.id === kb._id);
+          if (index > -1) {
+            this.kbsList[index] = kbNew;
+          } 
+          // this.removeKb(kb._id);
+          this.updateStatusOfKb(kbNew._id, 0);
+          this.refreshKbsList = !this.refreshKbsList;
+          setTimeout(() => {
+            this.checkStatusWithRetry(kbNew);
+          }, 2000);
+        }, (err) => {
+          this.logger.error("[KNOWLEDGE BASES COMP] ERROR add new kb: ", err);
+          this.onOpenErrorModal(error);
+        }, () => {
+          this.logger.log("[KNOWLEDGE BASES COMP] add new kb *COMPLETED*");
+        })
+      }
+    }, (err) => {
+      this.logger.error("[KNOWLEDGE BASES COMP] ERROR delete kb: ", err);
+      kb.deleting = false;
+      this.onOpenErrorModal(error);
+    }, () => {
+      this.logger.log("[KNOWLEDGE BASES COMP] delete kb *COMPLETE*");
+      kb.deleting = false;
     })
   }
   // ---------------- END SERVICE FUNCTIONS --------------- // 
@@ -726,7 +795,7 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
    * 
    */
   checkAllStatuses() {
-    console.log('[KNOWLEDGE BASES COMP] checkAllStatuses: ', this.kbsList);
+    this.logger.log('[KNOWLEDGE BASES COMP] checkAllStatuses: ', this.kbsList);
     this.kbsList.forEach(kb => {
       //if(kb.status == -1){
       //   this.onRunIndexing(kb);

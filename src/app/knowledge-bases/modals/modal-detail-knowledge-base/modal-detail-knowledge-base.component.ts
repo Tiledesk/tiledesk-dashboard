@@ -8,15 +8,31 @@ import { KB } from 'app/models/kbsettings-model';
 })
 export class ModalDetailKnowledgeBaseComponent implements OnInit {
   @Input() kb: KB;
-  @Output() deleteKnowledgeBase = new EventEmitter();
   @Output() closeBaseModal = new EventEmitter();
+  @Output() updateKnowledgeBase = new EventEmitter();
+
+  name: string;
+  source: string;
+  content: string;
+
   constructor() { }
 
   ngOnInit(): void {
+    this.name = this.kb.name;
+    this.source = this.kb.source;
+    this.content = this.kb.content;
   }
 
   onCloseBaseModal() {
     this.closeBaseModal.emit();
+  }
+
+  onUpdateKnowledgeBase(){
+    this.kb.name = this.name;
+    this.kb.source = this.source;
+    this.kb.content = this.content;
+    //console.log('onUpdateKnowledgeBase: ', this.kb);
+    this.updateKnowledgeBase.emit(this.kb);
   }
 
 }

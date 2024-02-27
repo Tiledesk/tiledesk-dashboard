@@ -1618,6 +1618,7 @@
         "Type": "Taper",
         "Status": "Statut",
         "CreatedAt": "Créé à",
+        "UpdatedAt": "Mis à jour à",
         "KBDetail": "Détail de la base de connaissances",
         "Url": "URL",
         "FileText": "Texte du fichier",
@@ -1640,7 +1641,7 @@
         "msgSuccesDeleteKb": "Base de connaissances supprimée avec succès",
         "msgErrorDeleteKb": "La base de connaissances n'a pas pu être supprimée",
         "msgErrorIndexingKb": "Échec de l'indexation",
-        "msgSuccesIndexingKb": "Indexation terminée avec succès",
+        "msgSuccesIndexingKb": "Recycler sur le contenu lancé avec succès",
         "msgErrorAddUpdateKb": "La base de connaissances n'a pas pu être ajoutée ou modifiée"
     },
     "AutomationsDemoPageDescription":"Avec nos “Automatisations API” vous pouvez gérer les messages diffusés en masse sur Whatsapp grâce aux automatisations du concepteur combinées à la simplicité de nos API, envoyer des messages à tous les contacts de votre CRM préféré, recevoir le statut des messages envoyés (reçus, lus, etc. ) et beaucoup plus!",

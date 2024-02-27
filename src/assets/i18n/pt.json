@@ -1618,6 +1618,7 @@
         "Type": "Tipo",
         "Status": "Status",
         "CreatedAt": "Criado em",
+        "UpdatedAt": "Atualizado em",
         "KBDetail": "Detalhe da base de conhecimento",
         "Url": "URL",
         "FileText": "Texto do arquivo",
@@ -1640,7 +1641,7 @@
         "msgSuccesDeleteKb": "Base de conhecimento excluída com sucesso",
         "msgErrorDeleteKb": "A Base de Conhecimento não pôde ser excluída",
         "msgErrorIndexingKb": "Falha na indexação",
-        "msgSuccesIndexingKb": "Indexação concluída com sucesso",
+        "msgSuccesIndexingKb": "Treine novamente no conteúdo lançado com sucesso",
         "msgErrorAddUpdateKb": "A base de conhecimento não pôde ser adicionada ou editada"
     },
     "AutomationsDemoPageDescription":"Com nossas “automações de APIs” você pode gerenciar mensagens de difusão em massa no Whatsapp utilizando as automações do designer aliadas à facilidade de nossas APIs, enviar mensagens para todos os contatos do seu CRM favorito, receber o status das mensagens enviadas (recebidas, lidas, etc. ) e muito mais!",

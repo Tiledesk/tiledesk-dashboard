@@ -82,7 +82,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
   // }
 
   ngOnChanges(changes: SimpleChanges){
-    console.log('ngOnChanges!!!****** ', changes, changes.kbsListCount, this.kbsList.length);
+    // console.log('ngOnChanges!!!****** ', changes, changes.kbsListCount, this.kbsList.length);
     // if(changes.kbsListCount &&  changes.kbsListCount.currentValue) {
     if(changes.kbsListCount && changes.kbsListCount.currentValue){
       this.kbsListCount = changes.kbsListCount.currentValue;

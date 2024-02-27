@@ -17,8 +17,9 @@
             </label>
             <div class="col-sm-12">
                 <ng-select class="custom-input" 
+                    editable="false"
                     [clearable]='false' 
-                    [editable]='true'
+                    [editable]='false'
                     [ngModel]='filterType'
                     dropdownPosition='bottom' 
                     (ngModelChange)="onLoadByFilter($event, 'type')">
@@ -36,6 +37,11 @@
     
     <div #tableBody class="table-body card-content table-responsive">
         <!-- (scroll)="onScroll($event)" -->
+        <div class="btn-preview">
+            <button class="preview-button" (click)="$event.stopPropagation(); onOpenBaseModalPreview()">
+              <span class="material-icon material-icons-round">play_arrow</span>{{'Preview' | translate}}
+            </button>
+        </div>
         <table class="table table-hover">
             <!-- (scroll)="onTableScroll($event)" -->
             <thead>
@@ -52,16 +58,18 @@
                         <span *ngIf="directionDesc === -1" id="expand_less" class="th-label material-icons-outlined icon-direction">expand_less</span>
                     </th>
                     <th class="column-th-span" style="width:auto" (click)="onOrderBy('name')">
-                        <span>{{'Name' | translate }}</span>
-                        <span *ngIf="directionDesc === 1" id="expand_more" class="th-label material-icons-outlined icon-direction">expand_more</span>
-                        <span *ngIf="directionDesc === -1" id="expand_less" class="th-label material-icons-outlined icon-direction">expand_less</span>
+                        <div>
+                            <span>{{'Name' | translate }}</span>
+                            <span *ngIf="directionDesc === 1" id="expand_more" class="th-label material-icons-outlined icon-direction">expand_more</span>
+                            <span *ngIf="directionDesc === -1" id="expand_less" class="th-label material-icons-outlined icon-direction">expand_less</span>
+                        </div>
                     </th>
-                    <th class="column-th-span" style="min-width: 30px; width: 30px; cursor: default;">
-                        <span class="column-th-span" style="float:right">
+                    <th class="column-th-span" style="min-width: 40px; width: 40px; cursor: default;">
+                        <!-- <span class="column-th-span" style="float:right">
                             <button class="preview-button" (click)="$event.stopPropagation(); onOpenBaseModalPreview()">
                               <span class="material-icon material-icons-round">play_arrow</span>{{'Preview' | translate}}
                             </button>
-                        </span>
+                        </span> -->
                     </th>
                 </tr>
             </thead>
@@ -87,12 +95,12 @@
                         {{ kb.createdAt | amTimeAgo }}
                     </td>
 
-                    <td class="ellipsis-text" style="max-width: 100%;" (click)="onOpenBaseModalDetail(kb)">
-                        <div class="ellipsis-text">{{ kb.name }}</div>
-                        <div class="subtitle ellipsis-text">{{getSubtitle(kb)}}</div>
+                    <td class="" style="max-width: 100%; display: grid;" (click)="onOpenBaseModalDetail(kb)">
+                        <div class="ellipsis-text" style = "max-width: 100%;" >{{ kb.name }}</div>
+                        <div class="subtitle ellipsis-text" style = "max-width: 100%;">{{getSubtitle(kb)}}</div>
                     </td>
 
-                    <td style="max-width: 30px; text-align: end;">
+                    <td style="max-width: 40px; text-align: end;">
                         <div style="width: 100%; display: flex; flex-direction: row; align-items: center; justify-content: flex-end;">
                             <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Actions">
                                 <mat-icon>more_vert</mat-icon>
@@ -109,13 +117,14 @@
                                 </button>
                             </mat-menu>
                         </div>
-                    </td>
+                    </td> 
 
                 </tr>
           </tbody>
         </table>
-        <div *ngIf="isLoading" class="loading-indicator">Loading...</div>
-        <button *ngIf="!isLoading && SHOW_MORE_BTN" class="btn-more" (click)="loadMoreData()">Load More</button>
+
+        <div *ngIf="isLoading" class="loading-indicator">Loading</div>
+        <button *ngIf="!isLoading && SHOW_MORE_BTN" class="btn-more btn btn-new btn-size-m btn--primary center" (click)="loadMoreData()">Load More</button>
     </div>
 
   </div>

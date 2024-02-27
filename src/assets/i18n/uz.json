@@ -1617,6 +1617,7 @@
         "Type": "Turi",
         "Status": "Holat",
         "CreatedAt": "Yaratilgan",
+        "UpdatedAt": "Yangilangan",
         "KBDetail": "Bilimlar bazasi tafsilotlari",
         "Url": "URL",
         "FileText": "Fayl matni",
@@ -1639,7 +1640,7 @@
         "msgSuccesDeleteKb": "Ma'lumotlar bazasi muvaffaqiyatli o'chirildi",
         "msgErrorDeleteKb": "Bilimlar bazasini oʻchirib boʻlmadi",
         "msgErrorIndexingKb": "Indekslash amalga oshmadi",
-        "msgSuccesIndexingKb": "Indekslash muvaffaqiyatli yakunlandi",
+        "msgSuccesIndexingKb": "Muvaffaqiyatli ishga tushirilgan kontentni qayta o'qitish",
         "msgErrorAddUpdateKb": "Bilimlar bazasini qo‘shib bo‘lmadi yoki tahrirlab bo‘lmadi"
     },
     "AutomationsDemoPageDescription":"Bizning “API avtomatizatsiyamiz” yordamida siz Whatsapp-da ommaviy translyatsiya xabarlarini bizning API-larimiz qulayligi bilan birlashtirilgan dizayner avtomatizatsiyasidan foydalangan holda boshqarishingiz, sevimli CRM-ning barcha kontaktlariga xabarlar yuborishingiz, yuborilgan xabarlar holatini (qabul qilingan, o'qilgan va hokazo) olishingiz mumkin. ) va yana ko'p narsalar!",
