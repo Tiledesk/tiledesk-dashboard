@@ -36,7 +36,10 @@ export class KnowledgeBaseTableComponent implements OnInit {
   directionDesc: number = KB_DEFAULT_PARAMS.DIRECTION;
   isLoading: boolean = false;
   SHOW_MORE_BTN: boolean = true;
+  SHOW_TABLE: boolean = false;
   searchParams: any;
+
+  // kbsListCount: number = 0;
 
   constructor(
     private _liveAnnouncer: LiveAnnouncer
@@ -73,7 +76,6 @@ export class KnowledgeBaseTableComponent implements OnInit {
 
   loadMoreData() {
     this.isLoading = true;
-
     this.searchParams.page = Math.floor(this.kbsList.length/KB_DEFAULT_PARAMS.LIMIT);
     this.loadPage.emit(this.searchParams);
   }
@@ -84,19 +86,29 @@ export class KnowledgeBaseTableComponent implements OnInit {
   // }
 
   ngOnChanges(changes: SimpleChanges){
-    console.log('ngOnChanges!!!****** ', changes);
-    // if(changes.kbsListCount &&  changes.kbsListCount.currentValue) {
-    if(changes.kbsListCount && changes.kbsListCount.currentValue){
-      this.kbsListCount = changes.kbsListCount.currentValue;
-    }
-    if(this.kbsListCount <= this.kbsList.length){
-      this.SHOW_MORE_BTN = false;
+    console.log('ngOnChanges start ------> ', this.kbsListCount, this.kbsList.length,changes);
+
+    if(changes.kbsList?.currentValue?.length === changes.kbsList?.previousValue?.length){
+      // non è cambiato nulla ho solo rodinato la tab
     } else {
+      // if(changes.kbsListCount && changes.kbsListCount.currentValue){
+      //   this.kbsListCount = changes.kbsListCount.currentValue;
+      // } else if(changes.kbsList && changes.kbsList.currentValue){
+      //   this.kbsListCount = changes.kbsList.currentValue.length;
+      // }
+    }
+    if(this.kbsListCount > this.kbsList.length){
       this.SHOW_MORE_BTN = true;
+    } else {
+      this.SHOW_MORE_BTN = false;
     }
     if(changes.refresh){
       this.isLoading = false;
     }
+    if(this.kbsListCount>0){
+      this.SHOW_TABLE = true;
+    }
+    console.log('ngOnChanges end -------> ', this.kbsListCount, this.kbsList.length);
   }
 
   ngAfterViewInit() {

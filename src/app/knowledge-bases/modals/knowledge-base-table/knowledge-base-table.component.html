@@ -1,4 +1,4 @@
-<div *ngIf="kbsList?.length == 0" class="card-empty" >
+<div *ngIf="!SHOW_TABLE" class="card-empty" >
     <!-- <div colspan="5">{{'KbPage.noContent' | translate}}</div> -->
     <div class="menu-container ng-star-inserted">
         <!-- <integration-header>
@@ -42,7 +42,7 @@
 
 
 
-<div *ngIf="kbsList && kbsList.length > 0" class="card">
+<div *ngIf="SHOW_TABLE" class="card">
 
     <div class="form-group">
         <div class="cerca">

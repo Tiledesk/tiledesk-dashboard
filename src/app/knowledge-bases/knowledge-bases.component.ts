@@ -406,26 +406,25 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
   // }
 
   onLoadPage(searchParams){
-    //console.log('onLoadNextPage:',this.kbsList);
-    // 
+    console.log('onLoadNextPage:',searchParams);
     let params = "?limit="+KB_DEFAULT_PARAMS.LIMIT
-    if(searchParams.page){
+    if(searchParams?.page){
       params +="&page="+searchParams.page;
     } else {
       +"&page=0";
     }
-    if(searchParams.status){
+    if(searchParams?.status){
       params +="&status="+searchParams.status;
     }
-    if(searchParams.search){
+    if(searchParams?.search){
       params +="&search="+searchParams.search;
     }
-    if(searchParams.sortField){
+    if(searchParams?.sortField){
       params +="&sortField="+searchParams.sortField;
     } else {
       params +="&sortField="+KB_DEFAULT_PARAMS.SORT_FIELD;
     }
-    if(searchParams.direction){
+    if(searchParams?.direction){
       params +="&direction="+searchParams.direction;
     } else {
       params +="&direction="+KB_DEFAULT_PARAMS.DIRECTION;
@@ -449,6 +448,7 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
       this.logger.log("[KNOWLEDGE BASES COMP] get kbList: ", resp);
       this.kbs = resp;
       this.kbsListCount = resp.count;
+
       resp.kbs.forEach(kb => {
         this.kbsList.push(kb);
       });
@@ -500,24 +500,28 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
         }
       } else {
         //this.kbsList.push(kb);
-        this.kbsList.unshift(kb);
         this.notify.showWidgetStyleUpdateNotification(this.msgSuccesAddKb, 2, 'done');
-      }
-      this.updateStatusOfKb(kb._id, 0);
-      this.refreshKbsList = !this.refreshKbsList;
+        this.kbsListCount++;
+        this.kbsList.unshift(kb);
+        this.refreshKbsList = !this.refreshKbsList;
 
-      let searchParams = {
-        "sortField": KB_DEFAULT_PARAMS.SORT_FIELD,
-        "direction": KB_DEFAULT_PARAMS.DIRECTION,
-        "status": '',
-        "search": '',
+        let searchParams = {
+          "sortField": KB_DEFAULT_PARAMS.SORT_FIELD,
+          "direction": KB_DEFAULT_PARAMS.DIRECTION,
+          "status": '',
+          "search": '',
+        }
+        this.onLoadByFilter(searchParams);
       }
+      //this.updateStatusOfKb(kb._id, 0);
+
+
       // this.onLoadByFilter(searchParams);
       // this.logger.log("kbsList:",that.kbsList);
       // that.onRunIndexing(kb);
-      setTimeout(() => {
-        this.checkStatusWithRetry(kb);
-      }, 2000);
+      // setTimeout(() => {
+      //   this.checkStatusWithRetry(kb);
+      // }, 2000);
       //that.onCloseBaseModal();
     }, (err) => {
       this.logger.error("[KNOWLEDGE-BASES-COMP] ERROR add new kb: ", err);
@@ -597,6 +601,16 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
         // let error = response.error?response.error:"Errore generico";
         // this.onOpenErrorModal(error);
         this.removeKb(kb._id);
+        this.kbsListCount--;
+        this.refreshKbsList = !this.refreshKbsList;
+
+        let searchParams = {
+          "sortField": KB_DEFAULT_PARAMS.SORT_FIELD,
+          "direction": KB_DEFAULT_PARAMS.DIRECTION,
+          "status": '',
+          "search": '',
+        }
+        this.onLoadByFilter(searchParams);
       }
     }, (err) => {
       this.logger.error("[KNOWLEDGE-BASES-COMP] ERROR delete kb: ", err);
