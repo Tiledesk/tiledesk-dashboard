@@ -393,6 +393,7 @@ import { ModalDetailKnowledgeBaseComponent } from './knowledge-bases/modals/moda
 import { KnowledgeBaseTableComponent } from './knowledge-bases/modals/knowledge-base-table/knowledge-base-table.component';
 import { ModalErrorComponent } from './knowledge-bases/modals/modal-error/modal-error.component';
 import { KnowledgeBasesPreviousComponent } from './knowledge-bases-previous/knowledge-bases-previous.component';
+import { ModalUrlsKnowledgeBaseComponent } from './knowledge-bases/modals/modal-urls-knowledge-base/modal-urls-knowledge-base.component';
 
 
 
@@ -696,7 +697,8 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     ModalDetailKnowledgeBaseComponent,
     KnowledgeBaseTableComponent,
     ModalErrorComponent,
-    KnowledgeBasesPreviousComponent
+    KnowledgeBasesPreviousComponent,
+    ModalUrlsKnowledgeBaseComponent
   ],
   imports: [
     TooltipModule.forRoot(CutomTooltipOptions as TooltipOptions),

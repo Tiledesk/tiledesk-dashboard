@@ -21,6 +21,8 @@ export class KnowledgeBaseTableComponent implements OnInit {
   @Output() openBaseModalDetail = new EventEmitter();
   @Output() openBaseModalDelete = new EventEmitter();
   @Output() openBaseModalPreview = new EventEmitter();
+  @Output() openAddKnowledgeBaseModal = new EventEmitter();
+  
   @Output() runIndexing = new EventEmitter();
   @Output() loadPage = new EventEmitter();
   @Output() loadByFilter = new EventEmitter();
@@ -82,7 +84,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
   // }
 
   ngOnChanges(changes: SimpleChanges){
-    // console.log('ngOnChanges!!!****** ', changes, changes.kbsListCount, this.kbsList.length);
+    console.log('ngOnChanges!!!****** ', changes);
     // if(changes.kbsListCount &&  changes.kbsListCount.currentValue) {
     if(changes.kbsListCount && changes.kbsListCount.currentValue){
       this.kbsListCount = changes.kbsListCount.currentValue;
@@ -178,6 +180,10 @@ export class KnowledgeBaseTableComponent implements OnInit {
       // }
     }
     return subtitle;
+  }
+
+  onOpenAddKnowledgeBaseModal(type){
+    this.openAddKnowledgeBaseModal.emit(type);
   }
 }
 

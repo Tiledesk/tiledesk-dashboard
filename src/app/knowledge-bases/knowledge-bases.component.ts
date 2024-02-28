@@ -453,7 +453,7 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
         this.kbsList.push(kb);
       });
       this.logger.log('[KNOWLEDGE BASES COMP] get kbList: ', this.kbs, this.kbsList);
-      // this.checkAllStatuses();
+      this.checkAllStatuses();
       this.refreshKbsList = !this.refreshKbsList;
       //this.showSpinner = false;
     }, (error) => {
@@ -527,6 +527,53 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
       //this.trackUserActioOnKB('Added Knowledge Base', gptkey)
     })
   }
+
+
+
+  onAddMultiKb(body) {
+    // this.onCloseBaseModal();
+    console.log("onAddMultiKb");
+    let error = this.msgErrorAddUpdateKb;
+    this.kbService.addMultiKb(body).subscribe((resp: any) => {
+      this.logger.log("onAddMultiKb:", resp);
+      // let kb = resp.value;
+      if(resp.lastErrorObject && resp.lastErrorObject.updatedExisting === true){
+        //console.log("updatedExisting true:");
+        // const index = this.kbsList.findIndex(item => item._id === kb._id);
+        // if (index !== -1) {
+        //   this.kbsList[index] = kb;
+        //   this.notify.showWidgetStyleUpdateNotification(this.msgSuccesUpdateKb, 3, 'warning');
+        // }
+      } else {
+        //this.kbsList.push(kb);
+        // this.kbsList.unshift(kb);
+        // this.notify.showWidgetStyleUpdateNotification(this.msgSuccesAddKb, 2, 'done');
+      }
+      // this.updateStatusOfKb(kb._id, 0);
+      // this.refreshKbsList = !this.refreshKbsList;
+
+      // let searchParams = {
+      //   "sortField": KB_DEFAULT_PARAMS.SORT_FIELD,
+      //   "direction": KB_DEFAULT_PARAMS.DIRECTION,
+      //   "status": '',
+      //   "search": '',
+      // }
+      // this.onLoadByFilter(searchParams);
+      // this.logger.log("kbsList:",that.kbsList);
+      // that.onRunIndexing(kb);
+      // setTimeout(() => {
+      //   this.checkStatusWithRetry(kb);
+      // }, 2000);
+      //that.onCloseBaseModal();
+    }, (err) => {
+      this.logger.error("[KNOWLEDGE-BASES-COMP] ERROR add new kb: ", err);
+      this.onOpenErrorModal(error);
+    }, () => {
+      this.logger.log("[KNOWLEDGE-BASES-COMP] add new kb *COMPLETED*");
+      //this.trackUserActioOnKB('Added Knowledge Base', gptkey)
+    })
+  }
+
 
   /**
    * onDeleteKb
@@ -643,11 +690,12 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
     }
     this.openaiService.checkScrapingStatus(data).subscribe((response: any) => {
       // this.logger.log('Risposta ricevuta:', response);
-      if(response.status_code && response.status_code == -1){
-        // this.logger.log('risorsa non indicizzata');
-        // this.onRunIndexing(kb);
-        // this.checkStatusWithRetry(kb);
-      } else if(response.status_code == -1 || response.status_code == 0 || response.status_code == 2){
+      // if(response.status_code && response.status_code == -1){
+      //   // this.logger.log('risorsa non indicizzata');
+      //   // this.onRunIndexing(kb);
+      //   this.checkStatusWithRetry(kb);
+      // }  
+      if(response.status_code == -1 || response.status_code == 0 || response.status_code == 2){
         // this.logger.log('riprova tra 10 secondi...');
         this.updateStatusOfKb(kb._id, response.status_code);
         timer(10000).subscribe(() => {
