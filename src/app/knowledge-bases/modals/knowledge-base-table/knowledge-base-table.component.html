@@ -1,4 +1,4 @@
-<div *ngIf="!SHOW_TABLE" class="card-empty" >
+<div *ngIf="kbsListCount == 0" class="card-empty" >
     <!-- <div colspan="5">{{'KbPage.noContent' | translate}}</div> -->
     <div class="menu-container ng-star-inserted">
         <!-- <integration-header>
@@ -8,9 +8,10 @@
         </integration-header> -->
         <div style="width: 100%;" class="ng-star-inserted">
             <div class="lock-container">
-                <img src="assets/img/int/upgrade-icon.svg" alt="">
+                <img src="assets/img/int/getstarted.svg" alt="">
                 <p class="upgrade-title ng-star-inserted">No data sources exist</p>
-                <p class="upgrade-subtitle ng-star-inserted">Add data sources to your assistant to build a knowledge base of material. <b>Learn more</b></p>
+                <p class="upgrade-subtitle ng-star-inserted">Incorporate data sources into your assistant for constructing a knowledge repository.</p>
+                <!-- <span>Discover more</span> -->
                 <button class="custom-upgrade-primary-button" [matMenuTriggerFor]="menu" aria-label="Actions">Add data source</button>
 
                 <!-- <button class="btn btn-primary" [disabled]="addButtonDisabled" [matMenuTriggerFor]="menu" aria-label="Actions">
@@ -18,14 +19,17 @@
                     <mat-icon class="icon-big-button">add</mat-icon>
                 </button> -->
                   <mat-menu #menu="matMenu" xPosition="before" class="custom-menu">
-                    <button mat-menu-item (click)="onOpenAddKnowledgeBaseModal('url-page')">
+                    <add-content-menu class="mat-menu"
+                        (openAddKnowledgeBaseModal)="onOpenAddKnowledgeBaseModal($event)">
+                    </add-content-menu>
+                    <!-- <button mat-menu-item (click)="onOpenAddKnowledgeBaseModal('url-page')">
                       <mat-icon>link</mat-icon>
                       <span>{{ 'KbPage.AddKbURL' | translate }}</span>
                     </button>
                     <button mat-menu-item (click)="onOpenAddKnowledgeBaseModal('text-file')">
                       <mat-icon>description</mat-icon>
                       <span>{{ 'KbPage.AddKbText' | translate }}</span>
-                    </button>
+                    </button> -->
                     <!-- <button mat-menu-item (click)="openAddKnowledgeBaseModal('urls')">
                       <span>URL(s)</span>
                     </button> -->
@@ -42,7 +46,7 @@
 
 
 
-<div *ngIf="SHOW_TABLE" class="card">
+<div *ngIf="this.kbsListCount>0" class="card">
 
     <div class="form-group">
         <div class="cerca">

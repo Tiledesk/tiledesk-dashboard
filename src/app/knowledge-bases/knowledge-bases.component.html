@@ -27,27 +27,15 @@
         <loading-spinner *ngIf="showSpinner"></loading-spinner>
         <div class="card-content" *ngIf="!showSpinner" style="padding-top: 10px; margin: 0 60px">
 
-          <div *ngIf="SHOW_TABLE" class="add-kb-div">
+          <div *ngIf="kbsListCount>0" class="add-kb-div">
             <button class="btn btn-primary" [disabled]="addButtonDisabled" [matMenuTriggerFor]="menu" aria-label="Actions">
               <span class="btn-big-button">{{ 'KbPage.Add' | translate }} </span>
               <mat-icon class="icon-big-button">add</mat-icon>
             </button>
             <mat-menu #menu="matMenu" xPosition="before" class="custom-menu">
-              <button mat-menu-item (click)="openAddKnowledgeBaseModal('url-page')">
-                <mat-icon>link</mat-icon>
-                <span>{{ 'KbPage.AddKbURL' | translate }}</span>
-              </button>
-              <button mat-menu-item (click)="openAddKnowledgeBaseModal('text-file')">
-                <mat-icon>description</mat-icon>
-                <span>{{ 'KbPage.AddKbText' | translate }}</span>
-              </button>
-              <button mat-menu-item (click)="openAddKnowledgeBaseModal('urls')">
-                <span>URL(s)</span>
-              </button>
-              <!-- <button mat-menu-item (click)="openAddKnowledgeBaseModal('site-map')">
-                <mat-icon>lan</mat-icon>
-                <span>{{ 'add site map' | translate }}</span>
-              </button> -->
+              <add-content-menu class="mat-menu"
+                  (openAddKnowledgeBaseModal)="openAddKnowledgeBaseModal($event)">
+              </add-content-menu>
             </mat-menu>
           </div>
 

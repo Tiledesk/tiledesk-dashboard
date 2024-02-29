@@ -46,7 +46,7 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
 
 
   //analytics
-  SHOW_TABLE: boolean = false;
+  // SHOW_TABLE: boolean = false;
   CURRENT_USER: any;
   project: Project;
   project_name: string;
@@ -457,12 +457,12 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
           this.kbsList.push(kb);
         }
       });
-      if(this.kbsList.length>0){
-        this.SHOW_TABLE = true;
-        this.checkAllStatuses();
-      } else {
-        this.SHOW_TABLE = false;
-      }
+      // if(this.kbsList.length>0){
+      //   this.SHOW_TABLE = true;
+      //   this.checkAllStatuses();
+      // } else {
+      //   this.SHOW_TABLE = false;
+      // }
       //this.showSpinner = false;
       this.refreshKbsList = !this.refreshKbsList;
       
@@ -511,7 +511,7 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
       } else {
         //this.kbsList.push(kb);
         this.notify.showWidgetStyleUpdateNotification(this.msgSuccesAddKb, 2, 'done');
-        this.kbsListCount++;
+        // this.kbsListCount++;
         this.kbsList.unshift(kb);
         this.kbsListCount = this.kbsListCount+1;
         this.refreshKbsList = !this.refreshKbsList;

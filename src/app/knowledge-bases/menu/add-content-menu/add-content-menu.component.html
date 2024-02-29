@@ -1,0 +1,17 @@
+<div id="menu_div" class="actions-drawer" #panel_menu_div >
+ 
+    <div *ngIf="menuTitle" class="menu-title truncate">
+        {{menuTitle}}
+    </div>
+
+    <div class="menu-box" *ngFor="let item of items">
+        <div class="menu-btns-wpr" (click)="onOpenAddKnowledgeBaseModal(item.type)">
+            <!-- <div class="menu-btn-icon">
+                <span class="material-icons-outlined" *ngIf="!item.localIcon">{{item.icon}}</span>
+                <img class="icon" *ngIf="item.localIcon" [src]="item.icon"/>
+            </div> -->
+            <div class="menu-btn-text truncate">{{ item.label }}</div>
+        </div>
+    </div>
+
+</div>

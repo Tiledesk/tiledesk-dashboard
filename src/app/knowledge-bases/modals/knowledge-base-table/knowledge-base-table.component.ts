@@ -36,7 +36,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
   directionDesc: number = KB_DEFAULT_PARAMS.DIRECTION;
   isLoading: boolean = false;
   SHOW_MORE_BTN: boolean = true;
-  SHOW_TABLE: boolean = false;
+  // SHOW_TABLE: boolean = false;
   searchParams: any;
 
   // kbsListCount: number = 0;
@@ -97,6 +97,10 @@ export class KnowledgeBaseTableComponent implements OnInit {
       //   this.kbsListCount = changes.kbsList.currentValue.length;
       // }
     }
+
+    // if(this.kbsListCount==0){
+    //   this.SHOW_MORE_BTN = false;
+    // }
     if(this.kbsListCount > this.kbsList.length){
       this.SHOW_MORE_BTN = true;
     } else {
@@ -105,19 +109,12 @@ export class KnowledgeBaseTableComponent implements OnInit {
     if(changes.refresh){
       this.isLoading = false;
     }
-
-    if(this.kbsListCount>0){
-      this.SHOW_TABLE = true;
-    } else {
-      this.SHOW_TABLE = false;
-      this.SHOW_MORE_BTN = false;
-    }
-
+    
     if(this.kbsList?.length == 0){
       this.SHOW_MORE_BTN = false;
     }
 
-    console.log('ngOnChanges end -------> ', this.kbsListCount, this.kbsList.length);
+    // console.log('ngOnChanges end -------> ', this.kbsListCount, this.kbsList.length);
   }
 
   ngAfterViewInit() {
@@ -204,8 +201,10 @@ export class KnowledgeBaseTableComponent implements OnInit {
   }
 
   onOpenAddKnowledgeBaseModal(type){
+    // console.log('onOpenAddKnowledgeBaseModal', type);
     this.openAddKnowledgeBaseModal.emit(type);
   }
+
 }
 
 
