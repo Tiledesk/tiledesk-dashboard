@@ -23,6 +23,15 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
     this.content = this.kb.content;
   }
 
+
+  onChangeInput(event): void {
+    // if (this.kbForm.valid) {
+    //   this.buttonDisabled = false;
+    // } else {
+    //   this.buttonDisabled = true;
+    // }
+  }
+
   onCloseBaseModal() {
     this.closeBaseModal.emit();
   }

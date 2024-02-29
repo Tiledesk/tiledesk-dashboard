@@ -442,7 +442,6 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
 
 
   getListOfKb(params?) {
-    //this.showSpinner = true;
     this.logger.log("[KNOWLEDGE BASES COMP] getListOfKb ");
     this.kbService.getListOfKb(params).subscribe((resp:any) => {
       this.logger.log("[KNOWLEDGE BASES COMP] get kbList: ", resp);
@@ -733,6 +732,7 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
     this.kbsList = this.kbsList.filter(item => item._id !== kb_id);
     // this.logger.log('AGGIORNO kbsList:', this.kbsList);
     this.refreshKbsList = !this.refreshKbsList;
+    // console.log('AGGIORNO kbsList:', this.kbsList);
   }
 
 
@@ -763,6 +763,10 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
     })
   }
 
+
+  onReloadKbs(params){
+    this.getListOfKb(params);
+  }
   // ---------------- END OPEN AI FUNCTIONS --------------- //
 
   createConditionGroupUrl(): FormGroup {

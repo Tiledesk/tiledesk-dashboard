@@ -1916,6 +1916,8 @@
         "UpgradeNow": "تحديث الآن",
         "SelectToStart": "حدد التكامل للبدء",
         "Signup": "اشتراك",
+        "SignupNow": "أفتح حساب الأن!",
+        "StartForFree": "ابدأ مجانًا مع <b>{{ intname }}</b>.",
         "Join": "ينضم",
         "JoinNow": "<b>{{ intname }}</b> الآن!",
         "FreeAccount": "مجانا <b>{{ intname }}</b> حساب!",

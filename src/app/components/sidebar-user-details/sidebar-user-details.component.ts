@@ -17,6 +17,8 @@ import { APP_SUMO_PLAN_NAME, PLAN_NAME, tranlatedLanguage } from 'app/utils/util
 import { avatarPlaceholder, getColorBck } from '../../utils/util'
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { ProjectPlanService } from 'app/services/project-plan.service';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { UserModalComponent } from 'app/users/user-modal/user-modal.component';
 // import { slideInOutAnimation } from '../../../_animations/index';
 @Component({
   selector: 'appdashboard-sidebar-user-details',
@@ -72,6 +74,8 @@ export class SidebarUserDetailsComponent implements OnInit {
     { id: 3, name: 'Inactive', avatar: 'assets/img/teammate-status/inactive.svg' },
   ];
 
+  dialogRef: MatDialogRef<any>;
+
   constructor(
     public auth: AuthService,
     private logger: LoggerService,
@@ -86,8 +90,9 @@ export class SidebarUserDetailsComponent implements OnInit {
     private eRef: ElementRef,
     public notifyService: NotifyService,
     public projectService: ProjectService,
+    public dialog: MatDialog
   ) {
-
+  //  console.log('[SIDEBAR-USER-DETAILS] !!!!! HELLO SIDEBAR-USER-DETAILS')
   }
 
 
@@ -110,9 +115,45 @@ export class SidebarUserDetailsComponent implements OnInit {
     // this.getProjectUser()
     // this.listenTocurrentProjectUserUserAvailability$();
     this.getWsCurrentUserAvailability$()
+    this.getWsCurrentUserIsBusy$()
+  }
+
+  onMouseOutBusyIcon() {
+   
+   const busyIconEl = <HTMLElement>document.querySelector('.busy-status-tooltip');
+  //  console.log('[SIDEBAR] onMouseOutBusyIcon ', busyIconEl)
+   busyIconEl.style.opacity = "0";
+  }
+
+  onMouseOverBusyIcon() {
+    const busyIconEl = <HTMLElement>document.querySelector('.busy-status-tooltip');
+    // console.log('[SIDEBAR] onMouseOverBusyIcon ',busyIconEl)
+    busyIconEl.style.opacity = "1";
   }
 
 
+  presentDialogResetBusy(){
+    this.logger.log('[SIDEBAR] presentDialogResetBusy ')
+    if(this.dialogRef) {
+      this.dialogRef.close();
+      return
+    }
+    this.dialogRef = this.dialog.open(UserModalComponent, {
+      width: '600px',
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+      hasBackdrop: true,
+      data: {},
+    });
+
+    
+
+    this.dialogRef.afterClosed().subscribe(result => {
+      this.logger.log(`[SIDEBAR] Dialog result: ${result}`);
+      this.dialogRef = null
+    });
+
+
+  }
 
 
 
@@ -361,9 +402,11 @@ export class SidebarUserDetailsComponent implements OnInit {
       this.IS_BUSY = user_isbusy;
       // THE VALUE OS  IS_BUSY IS THEN UPDATED WITH THE VALUE RETURNED FROM THE WEBSOCKET getWsCurrentUserIsBusy$()
       // WHEN, FOR EXAMPLE IN PROJECT-SETTINGS > ADVANCED THE NUM OF MAX CHAT IS 3 AND THE 
-      this.logger.log('[SIDEBAR-USER-DETAILS] - USER IS BUSY (from db)', this.IS_BUSY);
+      // console.log('[SIDEBAR-USER-DETAILS] - USER IS BUSY (from db)', this.IS_BUSY);
     });
   }
+
+
 
   getProjectUser() {
     this.logger.log('[SIDEBAR-USER-DETAILS]  !!! SIDEBAR CALL GET-PROJECT-USER')
@@ -492,7 +535,7 @@ export class SidebarUserDetailsComponent implements OnInit {
 
 
   subsTo_WsCurrentUser(currentuserprjctuserid) {
-    this.logger.log('[SIDEBAR-USER-DETAILS] - SUBSCRIBE TO WS CURRENT-USER AVAILABILITY  prjct user id of current user ', currentuserprjctuserid);
+    // console.log('[SIDEBAR-USER-DETAILS] - SUBSCRIBE TO WS CURRENT-USER AVAILABILITY  prjct user id of current user ', currentuserprjctuserid);
     // this.usersService.subscriptionToWsCurrentUser(currentuserprjctuserid);
     this.wsRequestsService.subscriptionToWsCurrentUser(currentuserprjctuserid);
 
@@ -509,7 +552,7 @@ export class SidebarUserDetailsComponent implements OnInit {
         takeUntil(this.unsubscribe$)
       )
       .subscribe((projectUser) => {
-        // this.logger..log('[SIDEBAR] - GET WS CURRENT-USER - data ', data);
+        // console.log('[SIDEBAR-USER-DETAILS] - GET WS CURRENT-USER - projectUser ', projectUser);
         if (projectUser) {
           if (projectUser['user_available'] === false && projectUser['profileStatus'] === 'inactive') {
             // this.logger..log('teammateStatus ', this.teammateStatus) 
@@ -541,10 +584,10 @@ export class SidebarUserDetailsComponent implements OnInit {
         takeUntil(this.unsubscribe$)
       )
       .subscribe((currentuser_isbusy) => {
-        // this.logger.log('[SIDEBAR] - GET WS CURRENT-USER - currentuser_isbusy? ', currentuser_isbusy);
+        // console.log('[SIDEBAR-USER-DETAILS] - GET WS CURRENT-USER - currentuser_isbusy? ', currentuser_isbusy);
         if (currentuser_isbusy !== null) {
           this.IS_BUSY = currentuser_isbusy;
-          // this.logger.log('[SIDEBAR] - GET WS CURRENT-USER (from ws)- this.IS_BUSY? ', this.IS_BUSY);
+          // console.log('[SIDEBAR-USER-DETAILS] - GET WS CURRENT-USER (from ws)- this.IS_BUSY? ', this.IS_BUSY);
         }
       }, error => {
         this.logger.error('[SIDEBAR-USER-DETAILS] - GET WS CURRENT-USER IS BUSY * error * ', error)

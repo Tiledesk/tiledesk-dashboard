@@ -294,16 +294,24 @@
                             'is-user-offline' : projectUser?.user_available === false && (projectUser?.profileStatus === '' || !projectUser?.profileStatus), 
                             'is-user-inactive': projectUser?.user_available === false && projectUser?.profileStatus === 'inactive'}">
                           </div>
-
-                          <div *ngIf="projectUser?.isBusy" class="user-is-busy">
-                            <span class="tool__tip">
+                        
+                          <!-- [matTooltip]="projectUser.id_user._id === CURRENT_USER_ID ? ( 'Busy, click to reset' ) : ( 'Busy' ) " -->
+                          <!-- (click)="presentDialogResetBusy(); $event.stopPropagation()" -->
+                          <div *ngIf="projectUser?.isBusy" class="user-is-busy"
+                           
+                            matTooltipClass="custom-mat-tooltip"
+                            matTooltip=" {{ 'Busy' | translate }}"
+                            #tooltip="matTooltip" 
+                            matTooltipPosition='above'
+                            matTooltipHideDelay="100">
+                            <!-- <span class="tool__tip"> -->
                               <img src="assets/img/clock_hands.svg" class="img-fluid" style="width:16px;" />
 
-                              <span class="top">
+                              <!-- <span class="top">
                                 {{ 'Busy' | translate }}
                                 <i></i>
                               </span>
-                            </span>
+                            </span> -->
                           </div>
 
                         </div>
@@ -329,9 +337,12 @@
 
                       <td>
                         <span>
-                          <span class="White__Tooltip" matTooltipClass="custom-mat-tooltip"
+                          <span class="White__Tooltip" 
+                            matTooltipClass="custom-mat-tooltip"
                             matTooltip="{{ 'ChatWith' | translate }}  {{projectUser?.id_user?.firstname}} {{projectUser?.id_user?.lastname }}"
-                            #tooltip="matTooltip" matTooltipPosition='above' matTooltipHideDelay="100">
+                            #tooltip="matTooltip" 
+                            matTooltipPosition='above'
+                             matTooltipHideDelay="100">
                             <i class="material-icons chat-with-agent"
                               (click)="chatWithAgent(projectUser?.id_user?._id, projectUser?.id_user?.firstname, projectUser?.id_user?.lastname)">
                               chat

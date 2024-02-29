@@ -118,46 +118,21 @@ export class IntegrationService {
     return this.http.delete(url, httpOptions);
   }
 
+  checkIntegrationKeyValidity(url: string, key?: string) {
+    
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
 
-  checkKeyQapla(key: string) {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Authorization': this.TOKEN
-      })
+    if (key) {
+      headers = headers.append('Authorization', key)
     }
 
-    const url = "https://api.qapla.it/1.2/getCouriers/?apiKey=" + key;
-    this.logger.log('[INTEGRATION.SERV] - save integration URL: ', url);
+    const httpOptions = {
+      headers: headers
+    }
 
     return this.http.get(url, httpOptions);
   }
 
-  checkKeyHubspot(key: string) {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Authorization': this.TOKEN
-      })
-    }
-
-    //const url = // get endpoint url
-    // this.logger.debug('[INTEGRATION.SERV] - save integration URL: ', url);
-    // return this.http.get(url, httpOptions);
-    return true;  
-  }
-
-  checkKeyCustomerio(key: string) {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Authorization': this.TOKEN
-      })
-    }
-
-    //const url = // get endpoint url
-    // this.logger.debug('[INTEGRATION.SERV] - save integration URL: ', url);
-    // return this.http.get(url, httpOptions);
-    return true; 
-  }
 }

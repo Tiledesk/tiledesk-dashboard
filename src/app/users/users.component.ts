@@ -15,6 +15,8 @@ import { BrandService } from 'app/services/brand.service'
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component'
 import { takeUntil } from 'rxjs/operators'
 import { Subject } from 'rxjs';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog'
+import { UserModalComponent } from './user-modal/user-modal.component'
 
 const swal = require('sweetalert')
 
@@ -109,6 +111,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, OnDe
   prjct_name: string;
   appSumoProfile: string;
   displayInviteTeammateBtn: string;
+  dialogRef: MatDialogRef<any>;
   constructor(
     private usersService: UsersService,
     private router: Router,
@@ -118,7 +121,8 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, OnDe
     public prjctPlanService: ProjectPlanService,
     public appConfigService: AppConfigService,
     private logger: LoggerService,
-    public brandService: BrandService
+    public brandService: BrandService,
+    public dialog: MatDialog
   ) {
     super(prjctPlanService, notify);
     this.tParamsFreePlanSeatsNum = { free_plan_allowed_seats_num: PLAN_SEATS.free }
@@ -148,6 +152,29 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, OnDe
     // this.subscription.unsubscribe()
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+  }
+
+  presentDialogResetBusy(){
+    this.logger.log('[SIDEBAR] presentDialogResetBusy ')
+    if(this.dialogRef) {
+      this.dialogRef.close();
+      return
+    }
+    this.dialogRef = this.dialog.open(UserModalComponent, {
+      width: '600px',
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+      hasBackdrop: true,
+      data: {},
+    });
+
+    
+
+    this.dialogRef.afterClosed().subscribe(result => {
+      this.logger.log(`[SIDEBAR] Dialog result: ${result}`);
+      this.dialogRef = null
+    });
+
+
   }
 
   getOSCODE() {
@@ -224,10 +251,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, OnDe
         if (user) {
           this.CURRENT_USER = user;
           this.CURRENT_USER_ID = user._id;
-          this.logger.log(
-            '[USERS] LOGGED USER GET IN USERS-COMP - Current USER ID ',
-            this.CURRENT_USER_ID,
-          )
+          // console.log('[USERS] LOGGED USER GET IN USERS-COMP - Current USER ID ',this.CURRENT_USER_ID )
         }
       })
   }
@@ -239,10 +263,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, OnDe
       )
       .subscribe((user_role) => {
         this.USER_ROLE = user_role
-        this.logger.log(
-          '[USERS] - GET PROJECT USER ROLE - USER_ROLE : ',
-          this.USER_ROLE,
-        )
+        // console.log( '[USERS] - GET PROJECT USER ROLE - USER_ROLE : ', this.USER_ROLE )
       })
   }
 

@@ -1916,6 +1916,8 @@
         "UpgradeNow": "Uppgradera nu",
         "SelectToStart": "Välj en integration att starta",
         "Signup": "Bli Medlem",
+        "SignupNow": "Anmäl dig nu!",
+        "StartForFree": "Börja gratis med <b>{{ intname }}</b>.",
         "Join": "Ansluta sig",
         "JoinNow": "<b>{{ intname }}</b> nu!",
         "FreeAccount": "för en gratis <b>{{ intname }}</b> konto!",
