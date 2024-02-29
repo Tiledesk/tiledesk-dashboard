@@ -86,7 +86,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
   // }
 
   ngOnChanges(changes: SimpleChanges){
-    console.log('ngOnChanges start ------> ', this.kbsListCount, this.kbsList.length, changes);
+    // console.log('ngOnChanges start ------> ', this.kbsListCount, this.kbsList.length, changes);
 
     if(changes.kbsList?.currentValue?.length === changes.kbsList?.previousValue?.length){
       // non è cambiato nulla ho solo rodinato la tab

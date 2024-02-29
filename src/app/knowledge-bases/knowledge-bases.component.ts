@@ -524,14 +524,12 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
         // this.onLoadByFilter(searchParams);
       }
       //this.updateStatusOfKb(kb._id, 0);
-
-
       // this.onLoadByFilter(searchParams);
       // this.logger.log("kbsList:",that.kbsList);
       // that.onRunIndexing(kb);
-      // setTimeout(() => {
-      //   this.checkStatusWithRetry(kb);
-      // }, 2000);
+      setTimeout(() => {
+        this.checkStatusWithRetry(kb);
+      }, 2000);
       //that.onCloseBaseModal();
     }, (err) => {
       this.logger.error("[KNOWLEDGE-BASES-COMP] ERROR add new kb: ", err);
