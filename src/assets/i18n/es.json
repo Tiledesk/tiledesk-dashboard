@@ -1916,6 +1916,8 @@
         "UpgradeNow": "Actualizar ahora",
         "SelectToStart": "Seleccione una integración para comenzar",
         "Signup": "Inscribirse",
+        "SignupNow": "¡Regístrate ahora!",
+        "StartForFree": "Empieza gratis con <b>{{ intname }}</b>.",
         "Join": "Unirse",
         "JoinNow": "<b>{{ intname }}</b> ¡ahora!",
         "FreeAccount": "gratis <b>{{ intname }}</b> ¡cuenta!",

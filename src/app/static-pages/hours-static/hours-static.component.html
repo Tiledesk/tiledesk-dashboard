@@ -1,61 +1,78 @@
-<!-- margin-top:6px;  -->
-<p style="z-index: 1050;position: relative;padding-left:30px" class="navbar-brand"
+<!-- <p style="z-index: 1050;position: relative;padding-left:30px" class="navbar-brand"
 [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }">
   <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;" (click)="goBack()">
     keyboard_arrow_left
   </i>  
   {{ "Hours" | translate }}
-</p> 
+</p>  -->
 
-<div class="main-content" style="padding-top:0px">
-  <div class="container-fluid">
+<span class="navbar-brand navbar-brand-sidebar-settings"
+  [ngStyle]="{'margin-top':isChromeVerGreaterThan100 === true ? '-64px' : '6px' }"
+  [ngClass]="{'is_opened':IS_OPEN_SETTINGS_SIDEBAR, 'is_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
 
-    <div class="row col-container">
-      <div class="col-md-5 left-side-in-col-container"> 
-        <div class="left-div-padding">
-          <div class="row"> 
-            <div class="col-sm-12"> 
-              <h2 class="demopage-title">
-                <!-- {{ "AvailableFromThePlan" | translate: tparams }} -->
-                {{ "AvailableFromThePlan" | translate: tParamsHoursAvailableFromPlan }}
-              </h2>
-            </div>
-          </div>
+  <i class="material-icons">settings</i>
 
-          <div class="row">
-            <div class="col-sm-12">
-              <h3 class="demopage-subtitle"> 
-                <!-- Upgrade Your Account to set team office hours and let visitors know when your agents is working! -->
-              {{ "HoursPage.UpgradeYourAccountToSetTeamOfficeHours" | translate }}
-              </h3>
-            </div>
-          </div>
+  <span *ngIf="IS_OPEN_SETTINGS_SIDEBAR">{{ 'Settings' | translate }} </span>
+</span>
 
-          <div class="row">
-            <div class="col-sm-12">
-              <div style="text-align: center;"> 
-                  <!-- (click)="goToPricing()" -->
-                <button type="button" class="btn outline-btn-analytics btn-lg" style="padding:11px 22px" (click)="goToPricing()">
+<div class="main-content" style="padding-top:0px; padding-left: 5px;padding-right: 5px;">
+  <div class="container-fluid" style="padding-left: 5px;padding-right: 5px;">
 
-                  <span> {{ 'UpgradeNow' | translate }}  </span> 
+    <div class="content-wpr" style="display: flex;">
+      <appdashboard-settings-sidebar style="border-right:1px solid #e5effe !important">
+      </appdashboard-settings-sidebar>
 
-                </button>
-              </div>
-            </div>
-          </div>  
-        </div>
-      </div>
-        
-      <div class="col-md-7 right-side-in-col-container"> 
-        <div style="max-width:780px;margin:auto">
-          <div class="card" style="box-shadow: 0 14px 30px 0 rgba(60,72,91,0.22); border-radius:10px;">
-            <div class="card-content">
+      <div class="teplate-content" style="flex: 1 1 auto; margin: 0 20px;">
+
+        <div class="row col-container">
+          <div class="col-md-5 left-side-in-col-container">
+            <div class="left-div-padding">
               <div class="row">
-                <div  class="col-md-12">
-                  <img src="assets/img/static-hours2.png" class="img-fluid"/>
+                <div class="col-sm-12">
+                  <h2 class="demopage-title">
+                    <!-- {{ "AvailableFromThePlan" | translate: tparams }} -->
+                    {{ "AvailableFromThePlan" | translate: tParamsHoursAvailableFromPlan }}
+                  </h2>
                 </div>
               </div>
-            </div>  
+
+              <div class="row">
+                <div class="col-sm-12">
+                  <h3 class="demopage-subtitle">
+                    <!-- Upgrade Your Account to set team office hours and let visitors know when your agents is working! -->
+                    {{ "HoursPage.UpgradeYourAccountToSetTeamOfficeHours" | translate }}
+                  </h3>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-sm-12">
+                  <div style="text-align: center;">
+                    <!-- (click)="goToPricing()" -->
+                    <button type="button" class="btn outline-btn-analytics btn-lg" style="padding:11px 22px"
+                      (click)="goToPricing()">
+
+                      <span> {{ 'UpgradeNow' | translate }} </span>
+
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-7 right-side-in-col-container">
+            <div style="max-width:780px;margin:auto">
+              <div class="card" style="box-shadow: 0 14px 30px 0 rgba(60,72,91,0.22); border-radius:10px;">
+                <div class="card-content">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <img src="assets/img/static-hours2.png" class="img-fluid" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

@@ -169,7 +169,6 @@ export class KnowledgeBaseTableComponent implements OnInit {
   //   }
   // }
 
-
   onRunIndexing(kb){
     // console.log('onRunIndexing:: ', kb);
     this.runIndexing.emit(kb);

@@ -336,7 +336,7 @@ export enum KB_MAX_NUM {
 
 
 export enum KB_DEFAULT_PARAMS {
-    LIMIT = 2,
+    LIMIT = 20,
     NUMBER_PAGE = 0,
     DIRECTION = -1,
     SORT_FIELD = 'updatedAt'

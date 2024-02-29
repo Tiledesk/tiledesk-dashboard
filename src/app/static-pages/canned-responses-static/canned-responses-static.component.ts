@@ -51,6 +51,7 @@ export class CannedResponsesStaticComponent extends PricingBaseComponent impleme
   onlyOwnerCanManageTheAccountPlanMsg: string;
   learnMoreAboutDefaultRoles: string;
   profile_name: string;
+  public IS_OPEN_SETTINGS_SIDEBAR: boolean;
   isChromeVerGreaterThan100: boolean;
   PLAN_NAME = PLAN_NAME
   constructor(
@@ -74,8 +75,8 @@ export class CannedResponsesStaticComponent extends PricingBaseComponent impleme
     this.getProjectUserRole();
     this.getTranslationStrings();
     this.getBrowserVersion();
-    this.presentModalsOnInit()
-
+    this.presentModalsOnInit();
+    this.listenSidebarIsOpened();
     // this.tparams = {'plan_name': PLAN_NAME.A}
   }
 
@@ -93,6 +94,13 @@ export class CannedResponsesStaticComponent extends PricingBaseComponent impleme
       this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
       //  console.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
     })
+  }
+
+  listenSidebarIsOpened() {
+    this.auth.settingSidebarIsOpned.subscribe((isopened) => {
+      this.logger.log('[AUTOMATION COMP.] SETTINGS-SIDEBAR isopened (FROM SUBSCRIPTION) ', isopened)
+      this.IS_OPEN_SETTINGS_SIDEBAR = isopened
+    });
   }
 
   getOSCODE() {

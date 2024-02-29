@@ -50,7 +50,8 @@ export class AutomationStaticComponent extends PricingBaseComponent implements O
   onlyOwnerCanManageTheAccountPlanMsg: string;
   learnMoreAboutDefaultRoles: string;
   profile_name: string;
-  isChromeVerGreaterThan100: boolean;
+  public IS_OPEN_SETTINGS_SIDEBAR: boolean;
+  public isChromeVerGreaterThan100: boolean;
   PLAN_NAME = PLAN_NAME
 
   constructor(
@@ -78,6 +79,7 @@ export class AutomationStaticComponent extends PricingBaseComponent implements O
     this.getBrowserVersion();
     this.presentModalsOnInit()
     this.tparams = { 'plan_name': PLAN_NAME.F }
+    this.listenSidebarIsOpened();
   }
 
   ngOnDestroy() {
@@ -96,10 +98,17 @@ export class AutomationStaticComponent extends PricingBaseComponent implements O
       })
   }
 
+  listenSidebarIsOpened() {
+    this.auth.settingSidebarIsOpned.subscribe((isopened) => {
+      this.logger.log('[AUTOMATION-COMP-STATIC] SETTINGS-SIDEBAR isopened (FROM SUBSCRIPTION) ', isopened)
+      this.IS_OPEN_SETTINGS_SIDEBAR = isopened
+    });
+  }
+
   getOSCODE() {
     this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
-    this.logger.log('[CANNED-RES-STATIC] AppConfigService getAppConfig public_Key', this.public_Key)
-    this.logger.log('[CANNED-RES-STATIC] public_Key', this.public_Key)
+    this.logger.log('[AUTOMATION-COMP-STATIC] AppConfigService getAppConfig public_Key', this.public_Key)
+    this.logger.log('[AUTOMATION-COMP-STATIC] public_Key', this.public_Key)
 
     let keys = this.public_Key.split("-");
     // this.logger.log('PUBLIC-KEY (Navbar) - public_Key keys', keys)
@@ -107,22 +116,22 @@ export class AutomationStaticComponent extends PricingBaseComponent implements O
     keys.forEach(key => {
       // this.logger.log('NavbarComponent public_Key key', key)
       if (key.includes("PAY")) {
-        this.logger.log('[CANNED-RES-STATIC] PUBLIC-KEY - key', key);
+        this.logger.log('[AUTOMATION-COMP-STATIC] PUBLIC-KEY - key', key);
         let pay = key.split(":");
         // this.logger.log('PUBLIC-KEY (Navbar) - pay key&value', pay);
         if (pay[1] === "F") {
           this.payIsVisible = false;
-          this.logger.log('[CANNED-RES-STATIC] - pay isVisible', this.payIsVisible);
+          this.logger.log('[AUTOMATION-COMP-STATIC] - pay isVisible', this.payIsVisible);
         } else {
           this.payIsVisible = true;
-          this.logger.log('[CANNED-RES-STATIC] - pay isVisible', this.payIsVisible);
+          this.logger.log('[AUTOMATION-COMP-STATIC] - pay isVisible', this.payIsVisible);
         }
       }
     });
 
     if (!this.public_Key.includes("PAY")) {
       this.payIsVisible = false;
-      this.logger.log('[CANNED-RES-STATIC] - pay isVisible', this.payIsVisible);
+      this.logger.log('[AUTOMATION-COMP-STATIC] - pay isVisible', this.payIsVisible);
     }
   }
 
@@ -134,7 +143,7 @@ export class AutomationStaticComponent extends PricingBaseComponent implements O
       )
       .subscribe((user_role) => {
         this.USER_ROLE = user_role;
-        this.logger.log('[CANNED-RES-STATIC] - PROJECT USER ROLE: ', this.USER_ROLE);
+        this.logger.log('[AUTOMATION-COMP-STATIC] - PROJECT USER ROLE: ', this.USER_ROLE);
       });
   }
 
@@ -153,7 +162,7 @@ export class AutomationStaticComponent extends PricingBaseComponent implements O
 
         if (project) {
           this.projectId = project._id
-          this.logger.log('[CANNED-RES-STATIC] - project Id ', this.projectId)
+          this.logger.log('[AUTOMATION-COMP-STATIC] - project Id ', this.projectId)
         }
       });
   }

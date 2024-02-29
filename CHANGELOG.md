@@ -1,8 +1,16 @@
 # tiledesk-dashboard
 
+### 2.5.12
+- Deploys in production
+- Fixes the bug: "Settings" sidebar menu item is not active when some settings sidebar menu items are active
+
+### 2.5.11
+- Deploys in production
+- Adds settings sidebar on "paywall" pages
+
 ### 2.5.10
 - Deploys in production
-- Improvements and bug fixing
+- Improvements and bug fixing of the Knowledge bases
 
 ### 2.5.9
 - Deploys in production
