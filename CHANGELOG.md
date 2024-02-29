@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.5.13-rc2
+- Fixes bug: check status didn't start after adding a new source
+
 ### 2.5.13-rc1
 - Improves Knowledge Base page
 - Adds customer.io integration 
