@@ -1643,7 +1643,12 @@
         "msgErrorIndexingKb": "Indexering misslyckades",
         "msgSuccesIndexingKb": "Utbilda om innehåll som har lanserats framgångsrikt",
         "msgErrorAddUpdateKb": "Kunskapsbasen kunde inte läggas till eller redigeras",
-        "noContent": "inget innehåll"
+        "noContent": "inget innehåll",
+        "titleUrls": "Importera från webbadresser",
+        "helpUrls": "Infoga webbsidor från offentliga webbadresser i textområdet nedan, åtskilda av en retur",
+        "titleTextareaUrls": "Lista över webbadresser",
+        "placeholderUrls": "Ange webbadresser",
+        "infoUrls": "En webbadress per rad."
         },
     "AutomationsDemoPageDescription":"Med våra “API-automatiseringar” kan du hantera massutsändningsmeddelanden på Whatsapp med hjälp av designerns automatiseringar kombinerat med enkelheten hos våra API: er, skicka meddelanden till alla kontakter i din favorit-CRM, ta emot status för skickade meddelanden (mottagna, lästa, etc. ) och mycket mer!",
     "Sunday": "söndag",

@@ -1,6 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { KB, KbSettings } from 'app/models/kbsettings-model';
 
 @Component({
   selector: 'modal-urls-knowledge-base',
@@ -13,18 +12,18 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit {
   @Output() closeBaseModal = new EventEmitter();
 
   kbForm: FormGroup;
-  buttonDisabled: boolean = false;
+  buttonDisabled: boolean = true;
 
   list = [];
   content: string;
 
-  kb: KB = {
-    _id: null,
-    type: '',
-    name: '',
-    url: '',
-    content: ''
-  }
+  // kb: KB = {
+  //   _id: null,
+  //   type: '',
+  //   name: '',
+  //   url: '',
+  //   content: ''
+  // }
   constructor(
     private formBuilder: FormBuilder
   ) { }
@@ -34,30 +33,28 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit {
   }
 
   createConditionGroup(): FormGroup {
-    const contentPattern = /^[^&<>]{3,}$/;
-    const namePattern = /^[^&<>]{3,}$/;
+    // const contentPattern = /^[^&<>]{3,}$/;
+    // const namePattern = /^[^&<>]{3,}$/;
     return this.formBuilder.group({
       content: ['', [Validators.required]],
-      name: ['', [Validators.required, Validators.pattern(namePattern)]]
+      // name: ['', [Validators.required, Validators.pattern(namePattern)]]
     })
   }
 
 
   onChangeInput(event): void {
-    // if (this.kbForm.valid) {
-    //   this.buttonDisabled = false;
-    // } else {
-    //   this.buttonDisabled = true;
-    // }
+    if (this.kbForm.valid) {
+      this.buttonDisabled = false;
+    } else {
+      this.buttonDisabled = true;
+    }
   }
 
   onSaveKnowledgeBase(){
-    console.log('onSaveKnowledgeBase: ',this.content);
     const arrayURLS = this.content.split('\n');
     let body = {
       'list': arrayURLS
     }
-    console.log(body);
     this.saveKnowledgeBase.emit(body);
   }
 

@@ -1643,7 +1643,12 @@
         "msgErrorIndexingKb": "Échec de l'indexation",
         "msgSuccesIndexingKb": "Recycler sur le contenu lancé avec succès",
         "msgErrorAddUpdateKb": "La base de connaissances n'a pas pu être ajoutée ou modifiée",
-        "noContent": "Pas de contenu"
+        "noContent": "Pas de contenu",
+        "titleUrls": "Importer à partir d'URL",
+        "helpUrls": "Insérez des pages Web à partir d'URL publiques dans la zone de texte ci-dessous, séparées par un retour",
+        "titleTextareaUrls": "Liste des URL",
+        "placeholderUrls": "Saisissez les URL",
+        "infoUrls": "Une URL par ligne."
     },
     "AutomationsDemoPageDescription":"Avec nos “Automatisations API” vous pouvez gérer les messages diffusés en masse sur Whatsapp grâce aux automatisations du concepteur combinées à la simplicité de nos API, envoyer des messages à tous les contacts de votre CRM préféré, recevoir le statut des messages envoyés (reçus, lus, etc. ) et beaucoup plus!",
     "Sunday": "Dimanche",

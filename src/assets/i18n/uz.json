@@ -1642,7 +1642,12 @@
         "msgErrorIndexingKb": "Indekslash amalga oshmadi",
         "msgSuccesIndexingKb": "Muvaffaqiyatli ishga tushirilgan kontentni qayta o'qitish",
         "msgErrorAddUpdateKb": "Bilimlar bazasini qo‘shib bo‘lmadi yoki tahrirlab bo‘lmadi",
-        "noContent": "tarkib yo'q"
+        "noContent": "tarkib yo'q",
+        "titleUrls": "URL manzillaridan import qilish",
+        "helpUrls": "Veb-sahifalarni umumiy URL manzillaridan qaytish bilan ajratilgan holda quyidagi matn maydoniga kiriting",
+        "titleTextareaUrls": "URL manzillar ro'yxati",
+        "placeholderUrls": "URL manzillarini kiriting",
+        "infoUrls": "Har bir satr uchun bitta url."
     },
     "AutomationsDemoPageDescription":"Bizning “API avtomatizatsiyamiz” yordamida siz Whatsapp-da ommaviy translyatsiya xabarlarini bizning API-larimiz qulayligi bilan birlashtirilgan dizayner avtomatizatsiyasidan foydalangan holda boshqarishingiz, sevimli CRM-ning barcha kontaktlariga xabarlar yuborishingiz, yuborilgan xabarlar holatini (qabul qilingan, o'qilgan va hokazo) olishingiz mumkin. ) va yana ko'p narsalar!",
     "Sunday": "yakshanba",

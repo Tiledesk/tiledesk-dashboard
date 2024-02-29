@@ -1643,7 +1643,12 @@
         "msgErrorIndexingKb": "İndeksləmə uğursuz oldu",
         "msgSuccesIndexingKb": "Uğurla işə salınan məzmunu yenidən hazırlayın",
         "msgErrorAddUpdateKb": "Bilik Bazasını əlavə etmək və ya redaktə etmək mümkün olmadı",
-        "noContent": "məzmun yoxdur"
+        "noContent": "məzmun yoxdur",
+        "titleUrls": "URL-lərdən idxal",
+        "helpUrls": "İctimai URL-lərdən veb səhifələri geri dönüşlə ayrılaraq aşağıdakı mətn sahəsinə daxil edin",
+        "titleTextareaUrls": "URL-lərin siyahısı",
+        "placeholderUrls": "URL-ləri daxil edin",
+        "infoUrls": "Hər sətir üçün bir url."
     },
     "AutomationsDemoPageDescription":"Bizim “API avtomatlaşdırmalarımız” ilə siz API-lərimizin asanlığı ilə birləşdirilən dizayner avtomatlaşdırmalarından istifadə edərək Whatsapp-da kütləvi yayım mesajlarını idarə edə, sevimli CRM-nin bütün kontaktlarına mesaj göndərə, göndərilən mesajların statusunu (qəbul edildi, oxundu və s.) ala bilərsiniz. ) və daha çox!",
     "Sunday": "bazar günü",

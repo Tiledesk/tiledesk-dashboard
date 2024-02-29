@@ -86,7 +86,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
   // }
 
   ngOnChanges(changes: SimpleChanges){
-    console.log('ngOnChanges start ------> ', this.kbsListCount, this.kbsList.length,changes);
+    console.log('ngOnChanges start ------> ', this.kbsListCount, this.kbsList.length, changes);
 
     if(changes.kbsList?.currentValue?.length === changes.kbsList?.previousValue?.length){
       // non è cambiato nulla ho solo rodinato la tab
@@ -105,9 +105,18 @@ export class KnowledgeBaseTableComponent implements OnInit {
     if(changes.refresh){
       this.isLoading = false;
     }
+
     if(this.kbsListCount>0){
       this.SHOW_TABLE = true;
+    } else {
+      this.SHOW_TABLE = false;
+      this.SHOW_MORE_BTN = false;
     }
+
+    if(this.kbsList?.length == 0){
+      this.SHOW_MORE_BTN = false;
+    }
+
     console.log('ngOnChanges end -------> ', this.kbsListCount, this.kbsList.length);
   }
 
