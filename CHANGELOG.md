@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.5.13-rc1
+- Improves Knowledge Base page
+- Adds customer.io integration 
+
 ### 2.5.12
 - Deploys in production
 - Fixes the bug: "Settings" sidebar menu item is not active when some settings sidebar menu items are active
