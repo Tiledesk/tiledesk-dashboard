@@ -173,8 +173,6 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, OnDe
       this.logger.log(`[SIDEBAR] Dialog result: ${result}`);
       this.dialogRef = null
     });
-
-
   }
 
   getOSCODE() {
