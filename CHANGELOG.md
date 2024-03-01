@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.5.14
+- Deploys in production
+- Fixing translations
+
 ### 2.5.13
 - Deploys in production
 - Refactors the bot list page
