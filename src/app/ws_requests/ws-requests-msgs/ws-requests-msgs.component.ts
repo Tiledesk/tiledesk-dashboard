@@ -2286,6 +2286,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           this.logger.log('[WS-REQUESTS-MSGS] members_array', this.members_array)
           this.createAgentsArrayFromParticipantsId(this.members_array, this.requester_id, this.UPLOAD_ENGINE_IS_FIREBASE, this.imageStorage)
           this.createRequesterAvatar(this.request.lead);
+          this.logger.log('[WS-REQUESTS-MSGS] - IS_CURRENT_USER_JOINED this.request.participants? ', this.request.participants , 'this.currentUserID ', this.currentUserID)
           this.IS_CURRENT_USER_JOINED = this.currentUserIdIsInParticipants(this.request.participants, this.currentUserID, this.request.request_id);
           this.logger.log('[WS-REQUESTS-MSGS] - IS_CURRENT_USER_JOINED? ', this.IS_CURRENT_USER_JOINED)
         }
@@ -3358,7 +3359,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   presentModalYouCannotAddAgents(agentFullname) {
     swal({
       title: this.youCannotAddAgents,
-      text: this.translate.instant('ThisChatIsAlreadyServedBy', { agent_fullname: agentFullname }) + '. ' + this.translate.instant('EmailAndTicketCanOnlyBeServedByOneAgent') + '.',
+      text: this.translate.instant('ThisChatIsAlreadyServedBy', { agent_fullname: agentFullname }) + ' ' + this.translate.instant('EmailAndTicketCanOnlyBeServedByOneAgent') + '.',
       icon: "warning",
       buttons: 'OK',
       dangerMode: false,
@@ -3873,7 +3874,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   presentModalYouCannotJoinChat(agentFullname) {
     swal({
       title: this.youCannotJoinThisChat,
-      text: this.translate.instant('ThisChatIsAlreadyServedBy', { agent_fullname: agentFullname }) + '. ' + this.translate.instant('EmailAndTicketCanOnlyBeServedByOneAgent') + '.',
+      text: this.translate.instant('ThisChatIsAlreadyServedBy', { agent_fullname: agentFullname }) + ' ' + this.translate.instant('EmailAndTicketCanOnlyBeServedByOneAgent') + '.',
       icon: "warning",
       buttons: 'OK',
       dangerMode: false,
@@ -3922,12 +3923,12 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
     // this.displayLeaveChatModal = 'block'
   }
-
+  // this.leaveChatTitle,
   presentModalYouCannotLeaveTheChat() {
     swal({
-      title: this.leaveChatTitle,
-      text: this.youCannotLeaveTheChat,
-      icon: "info",
+      title: this.youCannotLeaveTheChat,
+      text: this.translate.instant('EmailAndTicketSupportCannotBeUnserved'),
+      icon: "warning",
       buttons: 'OK',
       dangerMode: false,
       className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
