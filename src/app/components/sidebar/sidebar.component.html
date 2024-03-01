@@ -86,18 +86,39 @@
       </li>
 
       <!-- ---------------------------------- -->
-      <!-- Bot  "project/{{ project._id }}//bots/templates/all" -->
+      <!-- Bot -->
       <!-- ---------------------------------- -->
+
+            <!--  -->
+     <!-- <div style="color: #fff"> ALL_BOTS {{MY_BOTS_ALL_ROUTE_IS_ACTIVE}} </div> 
+     <div style="color: #fff"> IS_BOTS {{MY_BOTS_IS_ROUTE_IS_ACTIVE}} </div> 
+     <div style="color: #fff"> CS_BOTS {{MY_BOTS_CS_ROUTE_IS_ACTIVE}} </div>
+     <div style="color: #fff"> TMPLT_ALL {{ TMPLT_ALL_ROUTE_IS_ACTIVE}} </div> 
+     <div style="color: #fff"> CMNT_TMPLT {{TMPLT_CMNT_ROUTE_IS_ACTIVE}} </div>
+     <div style="color: #fff"> IS_TMPLT {{TMPLT_IS_ROUTE_IS_ACTIVE}} </div>
+     <div style="color: #fff"> CS_TMPLT {{TMPLT_CS_ROUTE_IS_ACTIVE}} </div> -->
+     <!-- routerLinkActive="active" -->
+     <!-- routerLink="project/{{ project._id }}/bots/my-chatbots/all" -->
       <ng-container *ngIf="USER_ROLE !== 'agent'">
-        <li id="bot-anchor-wpr" *ngIf="project" routerLinkActive="active" 
+        <li id="bot-anchor-wpr" *ngIf="project"  
           matTooltipClass="sb-mat-tooltip"
           matTooltip="Bots" 
           #tooltip="matTooltip" 
           matTooltipPosition='right'
           matTooltipHideDelay="100"
           style="height: 50px !important;"
-          [ngClass]="{'active': CHATBOT_ROUTE_IS_ACTIVE || EDIT_FAQ_ROUTE_IS_ACTIVE, 'menu_item_active': CREATE_FAQ_ROUTE_IS_ACTIVE || BOT_TEST_ROUTE_IS_ACTIVE}">
-          <a id="bot-anchor" #botbtn class="customAncor" routerLink="project/{{ project._id }}/bots/my-chatbots/all"
+          [ngClass]="{
+            'active': 
+            MY_BOTS_ALL_ROUTE_IS_ACTIVE || 
+            MY_BOTS_IS_ROUTE_IS_ACTIVE || 
+            MY_BOTS_CS_ROUTE_IS_ACTIVE, 
+            'menu_item_active': 
+            TMPLT_ALL_ROUTE_IS_ACTIVE || 
+            TMPLT_CMNT_ROUTE_IS_ACTIVE ||
+            TMPLT_IS_ROUTE_IS_ACTIVE ||
+            TMPLT_CS_ROUTE_IS_ACTIVE ||
+            NEW_KB_ROUTE_IS_ACTIVE} ">
+          <a id="bot-anchor" #botbtn class="customAncor" (click)="goToAllMyChatbot()"  
             style="height: 40px;">
             <span class="bot-icon-wpr">
               <svg version="1.1" id="Objects" xmlns="http://www.w3.org/2000/svg"

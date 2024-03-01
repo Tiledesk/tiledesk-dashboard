@@ -173,7 +173,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   CREATE_GROUP_ROUTE_IS_ACTIVE: boolean;
   EDIT_GROUP_ROUTE_IS_ACTIVE: boolean;
   WIDGET_SETUP_ROUTE_IS_ACTIVE: boolean;
-  CHATBOT_ROUTE_IS_ACTIVE: boolean;
   CREATE_FAQ_ROUTE_IS_ACTIVE: boolean;
   EDIT_FAQ_ROUTE_IS_ACTIVE: boolean;
   BOT_TEST_ROUTE_IS_ACTIVE: boolean;
@@ -193,13 +192,19 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   EMAIL_TICKETING_ROUTE_IS_ACTIVE: boolean;
   AUTOMATIONS_ROUTE_IS_ACTIVE: boolean;
   KB_ROUTE_IS_ACTIVE: boolean;
-  
-
   IS_REQUEST_FOR_PANEL_ROUTE: boolean;
   IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE: boolean;
+    // Chatbot sidebar
+  MY_BOTS_ALL_ROUTE_IS_ACTIVE: boolean;
+  MY_BOTS_IS_ROUTE_IS_ACTIVE: boolean;
+  MY_BOTS_CS_ROUTE_IS_ACTIVE: boolean;
+  TMPLT_ALL_ROUTE_IS_ACTIVE: boolean;
+  TMPLT_CMNT_ROUTE_IS_ACTIVE: boolean;
+  TMPLT_IS_ROUTE_IS_ACTIVE: boolean;
+  TMPLT_CS_ROUTE_IS_ACTIVE: boolean;
+  NEW_KB_ROUTE_IS_ACTIVE: boolean;
 
   prjct_profile_name: string;
-
   prjct_trial_expired: boolean;
   prjc_trial_days_left: number
   prjc_trial_days_left_percentage: number
@@ -831,14 +836,73 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           this.WIDGET_SETUP_ROUTE_IS_ACTIVE = false;
           // this.logger.log('[SIDEBAR] NavigationEnd - WIDGET_SETUP_ROUTE_IS_ACTIVE ', this.WIDGET_SETUP_ROUTE_IS_ACTIVE);
         }
-
-        if (event.url.indexOf('/bots') !== -1) {
-          this.CHATBOT_ROUTE_IS_ACTIVE = true;
-          // this.logger.log('[SIDEBAR] NavigationEnd - CHATBOT_ROUTE_IS_ACTIVE ', this.CHATBOT_ROUTE_IS_ACTIVE);
+       
+        // Chatbot sidebar
+        if (event.url.indexOf('/bots/my-chatbots/all') !== -1) {
+          this.MY_BOTS_ALL_ROUTE_IS_ACTIVE = true;
+          this.logger.log('[SIDEBAR] NavigationEnd - MY_BOTS_ALL_ROUTE_IS_ACTIVE ', this.MY_BOTS_ALL_ROUTE_IS_ACTIVE);
         } else {
-          this.CHATBOT_ROUTE_IS_ACTIVE = false;
-          // this.logger.log('[SIDEBAR] NavigationEnd - CHATBOT_ROUTE_IS_ACTIVE ', this.CHATBOT_ROUTE_IS_ACTIVE);
+          this.MY_BOTS_ALL_ROUTE_IS_ACTIVE = false;
+          this.logger.log('[SIDEBAR] NavigationEnd - MY_BOTS_ALL_ROUTE_IS_ACTIVE ', this.MY_BOTS_ALL_ROUTE_IS_ACTIVE);
         }
+
+        if (event.url.indexOf('/bots/my-chatbots/increase-sales') !== -1 ) {
+          this.MY_BOTS_IS_ROUTE_IS_ACTIVE = true;
+          this.logger.log('[SIDEBAR] NavigationEnd - MY_BOTS_IS_ROUTE_IS_ACTIVE ', this.MY_BOTS_IS_ROUTE_IS_ACTIVE);
+        } else {
+          this.MY_BOTS_IS_ROUTE_IS_ACTIVE = false;
+          this.logger.log('[SIDEBAR] NavigationEnd - MY_BOTS_IS_ROUTE_IS_ACTIVE ', this.MY_BOTS_IS_ROUTE_IS_ACTIVE);
+        }
+
+        if (event.url.indexOf('/bots/my-chatbots/customer-satisfaction') !== -1 ) {
+          this.MY_BOTS_CS_ROUTE_IS_ACTIVE = true;
+          this.logger.log('[SIDEBAR] NavigationEnd - MY_BOTS_CS_ROUTE_IS_ACTIVE ', this.MY_BOTS_CS_ROUTE_IS_ACTIVE);
+        } else {
+          this.MY_BOTS_CS_ROUTE_IS_ACTIVE = false;
+          this.logger.log('[SIDEBAR] NavigationEnd - MY_BOTS_CS_ROUTE_IS_ACTIVE ', this.MY_BOTS_CS_ROUTE_IS_ACTIVE);
+        }
+
+        if (event.url.indexOf('/bots/templates/all') !== -1 ) {
+          this.TMPLT_ALL_ROUTE_IS_ACTIVE = true;
+          this.logger.log('[SIDEBAR] NavigationEnd - TMPLT_ALL_ROUTE_IS_ACTIVE ', this.TMPLT_ALL_ROUTE_IS_ACTIVE);
+        } else {
+          this.TMPLT_ALL_ROUTE_IS_ACTIVE = false;
+          this.logger.log('[SIDEBAR] NavigationEnd - TMPLT_ALL_ROUTE_IS_ACTIVE ', this.TMPLT_ALL_ROUTE_IS_ACTIVE);
+        }
+
+        if (event.url.indexOf('/bots/templates/community') !== -1 ) {
+          this.TMPLT_CMNT_ROUTE_IS_ACTIVE = true;
+          this.logger.log('[SIDEBAR] NavigationEnd - TMPLT_CMNT_ROUTE_IS_ACTIVE ', this.TMPLT_CMNT_ROUTE_IS_ACTIVE);
+        } else {
+          this.TMPLT_CMNT_ROUTE_IS_ACTIVE = false;
+          this.logger.log('[SIDEBAR] NavigationEnd - TMPLT_CMNT_ROUTE_IS_ACTIVE ', this.TMPLT_CMNT_ROUTE_IS_ACTIVE);
+        }
+
+        if (event.url.indexOf('/bots/templates/increase-sales') !== -1 ) {
+          this.TMPLT_IS_ROUTE_IS_ACTIVE = true;
+          this.logger.log('[SIDEBAR] NavigationEnd - TMPLT_IS_ROUTE_IS_ACTIVE ', this.TMPLT_IS_ROUTE_IS_ACTIVE);
+        } else {
+          this.TMPLT_IS_ROUTE_IS_ACTIVE = false;
+          this.logger.log('[SIDEBAR] NavigationEnd - TMPLT_IS_ROUTE_IS_ACTIVE ', this.TMPLT_IS_ROUTE_IS_ACTIVE);
+        }
+
+        if (event.url.indexOf('/bots/templates/customer-satisfaction') !== -1 ) {
+          this.TMPLT_CS_ROUTE_IS_ACTIVE = true;
+          this.logger.log('[SIDEBAR] NavigationEnd - TMPLT_CS_ROUTE_IS_ACTIVE ', this.TMPLT_CS_ROUTE_IS_ACTIVE);
+        } else {
+          this.TMPLT_CS_ROUTE_IS_ACTIVE = false;
+          this.logger.log('[SIDEBAR] NavigationEnd - TMPLT_CS_ROUTE_IS_ACTIVE ', this.TMPLT_CS_ROUTE_IS_ACTIVE);
+        }
+
+        if (event.url.indexOf('/knowledge-bases') !== -1 ) {
+          this.NEW_KB_ROUTE_IS_ACTIVE = true;
+          this.logger.log('[SIDEBAR] NavigationEnd - NEW_KB_ROUTE_IS_ACTIVE ', this.NEW_KB_ROUTE_IS_ACTIVE);
+        } else {
+          this.NEW_KB_ROUTE_IS_ACTIVE = false;
+          this.logger.log('[SIDEBAR] NavigationEnd - NEW_KB_ROUTE_IS_ACTIVE ', this.NEW_KB_ROUTE_IS_ACTIVE);
+        }
+
+
 
         if (event.url.indexOf('/createfaq') !== -1) {
           this.CREATE_FAQ_ROUTE_IS_ACTIVE = true;
@@ -1638,6 +1702,9 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     this.router.navigate(['/project/' + this.projectId + '/home']);
   }
 
+  goToAllMyChatbot() {
+    this.router.navigate(['/project/' + this.projectId + '/bots/my-chatbots/all']);
+  }
 
 
 
