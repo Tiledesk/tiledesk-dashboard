@@ -223,16 +223,18 @@ td {
         height: auto;
         margin: 50px 0px;
     }
-    p.upgrade-title {
+    .upgrade-title {
         font-size: 28px;
         font-weight: 500;
         margin-bottom: 20px;
+        display: block;
     }
-    p.upgrade-subtitle {
+    .upgrade-subtitle {
         font-size: 16px;
-        margin-bottom: 30px;
+        margin-bottom: 10px;
         max-width: 800px;
         text-align: center;
+        display: block;
     }
 }
 
@@ -247,4 +249,27 @@ td {
     font-weight: 500;
     padding: 0px 8px;
     opacity: 0.8;
+}
+
+.no-bot-msg {
+    font-size: 18px;
+    margin-bottom: 0px;
+    color: #353f45;
+    font-weight: 400;
+    font-family: "Poppins";
+    margin-top: 25px;
+    text-align: center;
+}
+
+.btn-size-m {
+    border-radius: 4px;
+    font-size: 14px;
+    height: 34px;
+    line-height: 18px;
+    min-width: 64px;
+    padding: 0 14px;
+    text-transform: none;
+}
+.card{
+    border: none!important;
 }

@@ -439,8 +439,9 @@ table {
     display: inline-block;
     vertical-align: middle;
     line-height: 24px;
-    font-size: medium;
+    // font-size: medium;
     text-transform: none;
+    border-radius: 4px;
 }
 
 .icon-big-button {

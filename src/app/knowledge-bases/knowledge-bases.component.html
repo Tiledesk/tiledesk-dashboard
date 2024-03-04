@@ -26,11 +26,11 @@
       <div class="teplate-content" style="flex: 1 1 auto; margin: 0 20px;">
         <loading-spinner *ngIf="showSpinner"></loading-spinner>
         <div class="card-content" *ngIf="!showSpinner" style="padding-top: 10px; margin: 0 60px">
-
-          <div *ngIf="kbsListCount>0" class="add-kb-div">
-            <button class="btn btn-primary" [disabled]="addButtonDisabled" [matMenuTriggerFor]="menu" aria-label="Actions">
-              <span class="btn-big-button">{{ 'KbPage.Add' | translate }} </span>
-              <mat-icon class="icon-big-button">add</mat-icon>
+          <!-- *ngIf="kbsListCount>0" -->
+          <div class="add-kb-div">
+            <button class="btn btn-new btn-size-m btn--primary pull-right btn-big-button" [disabled]="addButtonDisabled" [matMenuTriggerFor]="menu" aria-label="Actions">
+              <span class="">{{ 'KbPage.Add' | translate }} </span>
+              <!-- <mat-icon class="icon-big-button">add</mat-icon> -->
             </button>
             <mat-menu #menu="matMenu" xPosition="before" class="custom-menu">
               <add-content-menu class="mat-menu"
