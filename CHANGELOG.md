@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.5.15
+- Deploys in production
+- Improvements and bug fixing
+
 ### 2.5.14
 - Deploys in production
 - Fixing translations
