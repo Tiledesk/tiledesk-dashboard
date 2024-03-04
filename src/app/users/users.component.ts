@@ -112,6 +112,8 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, OnDe
   appSumoProfile: string;
   displayInviteTeammateBtn: string;
   dialogRef: MatDialogRef<any>;
+  public hideHelpLink: boolean;
+
   constructor(
     private usersService: UsersService,
     private router: Router,
@@ -127,7 +129,9 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, OnDe
     super(prjctPlanService, notify);
     this.tParamsFreePlanSeatsNum = { free_plan_allowed_seats_num: PLAN_SEATS.free }
     const brand = brandService.getBrand();
-    this.displayInviteTeammateBtn = brand['display_invite_teammate_btn']
+    this.displayInviteTeammateBtn = brand['display_invite_teammate_btn'];
+    this.logger.log('[USERS] displayInviteTeammateBtn ', this.displayInviteTeammateBtn)
+    this.hideHelpLink= brand['DOCS'];
   }
 
   ngOnInit() {
@@ -155,7 +159,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, OnDe
   }
 
   presentDialogResetBusy(){
-    this.logger.log('[SIDEBAR] presentDialogResetBusy ')
+    this.logger.log('[USERS] presentDialogResetBusy ')
     if(this.dialogRef) {
       this.dialogRef.close();
       return
@@ -170,7 +174,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, OnDe
     
 
     this.dialogRef.afterClosed().subscribe(result => {
-      this.logger.log(`[SIDEBAR] Dialog result: ${result}`);
+      this.logger.log(`[USERS] Dialog result: ${result}`);
       this.dialogRef = null
     });
   }
@@ -217,8 +221,6 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, OnDe
     if (!this.public_Key.includes("PAY")) {
       this.areActivePay = false;
     }
-
-
   }
 
   getCurrentProject() {
@@ -230,10 +232,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, OnDe
         if (project) {
           this.project = project;
           this.id_project = project._id;
-          this.logger.log(
-            '[USERS] - GET CURRENT PROJECT -> project ID',
-            this.id_project,
-          )
+         this.logger.log('[USERS] - GET CURRENT PROJECT -> project ID',  this.id_project)
         }
       })
   }
@@ -249,7 +248,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, OnDe
         if (user) {
           this.CURRENT_USER = user;
           this.CURRENT_USER_ID = user._id;
-          // console.log('[USERS] LOGGED USER GET IN USERS-COMP - Current USER ID ',this.CURRENT_USER_ID )
+          this.logger.log('[USERS] LOGGED USER GET IN USERS-COMP - Current USER ID ',this.CURRENT_USER_ID )
         }
       })
   }
@@ -261,14 +260,14 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, OnDe
       )
       .subscribe((user_role) => {
         this.USER_ROLE = user_role
-        // console.log( '[USERS] - GET PROJECT USER ROLE - USER_ROLE : ', this.USER_ROLE )
+        this.logger.log( '[USERS] - GET PROJECT USER ROLE - USER_ROLE : ', this.USER_ROLE )
       })
   }
 
   getBrowserVersion() {
     this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
       this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
-      //  console.log("[WS-REQUESTS-LIST] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+      //  this.logger.log("[WS-REQUESTS-LIST] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
     })
   }
 
@@ -366,6 +365,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, OnDe
           this.notify._displayContactOwnerModal(true, 'upgrade_plan');
         }
       } else {
+        this.logger.log('[USERS] getMoreOperatorsSeats USE CASE ADMIN')
         if (this.projectUsersLength + this.countOfPendingInvites > this.seatsLimit) { 
           this.notify._displayContactOwnerModal(true, 'seats_limit_exceed') 
         } else if (this.projectUsersLength + this.countOfPendingInvites === this.seatsLimit) {
@@ -498,7 +498,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, OnDe
 
         if (projectUsers) {
           this.projectUsersList = projectUsers
-          // console.log('[USERS] - GET ALL PROJECT-USERS OF THE PROJECT - PROJECT USERS LIST ', this.projectUsersList);
+          // this.logger.log('[USERS] - GET ALL PROJECT-USERS OF THE PROJECT - PROJECT USERS LIST ', this.projectUsersList);
 
           this.projectUsersList.forEach((projectuser) => {
             // this.logger.log('[USERS] - GET ALL PROJECT-USERS OF THE PROJECT - check if PROJECT USER IMG EXIST', projectuser);
@@ -720,7 +720,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, OnDe
     // this.logger.log('Confirm Delete Project-User');
     this.usersService.deleteProjectUser(this.id_projectUser).subscribe(
       (projectUsers: any) => {
-        //  console.log( '[USERS] ON-CLOSE-DELETE-MODAL - DELETE PROJECT USERS - RES ', projectUsers,  )
+        //  this.logger.log( '[USERS] ON-CLOSE-DELETE-MODAL - DELETE PROJECT USERS - RES ', projectUsers,  )
         this.logger.log('[USERS] ON-CLOSE-DELETE-MODAL - DELETE PROJECT USER ID  ', this.id_projectUser,)
         // this.ngOnInit();
         if (!isDevMode()) {
@@ -804,8 +804,8 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, OnDe
   // New changeAvailabilityStatus(selecedstatusID: number, projectUser_id: string, ngselectid: number, $event: any) {
   changeAvailabilityStatus(selectedStatusValue: any, projectUser_id: string) {
 
-    // console.log('[USERS] - UPDATE PROJECT USER STATUS - selectedStatusValue ', selectedStatusValue, 'projectUser_id ', projectUser_id)
-    // console.log('[USERS] - UPDATE PROJECT USER STATUS - PROJECT-USER ID ', projectUser_id)
+    // this.logger.log('[USERS] - UPDATE PROJECT USER STATUS - selectedStatusValue ', selectedStatusValue, 'projectUser_id ', projectUser_id)
+    // this.logger.log('[USERS] - UPDATE PROJECT USER STATUS - PROJECT-USER ID ', projectUser_id)
 
     let IS_AVAILABLE = null
     let profilestatus = ''
@@ -858,7 +858,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, OnDe
   hasChangedAvailabilityStatusInSidebar() {
     this.usersService.has_changed_availability_in_sidebar.subscribe(
       (has_changed_availability) => {
-        // console.log('[USERS] - SUBSCRIBES TO HAS CHANGED AVAILABILITY FROM THE SIDEBAR', has_changed_availability)
+        // this.logger.log('[USERS] - SUBSCRIBES TO HAS CHANGED AVAILABILITY FROM THE SIDEBAR', has_changed_availability)
         if (has_changed_availability === true) {
           this.getAllUsersOfCurrentProject(this.storageBucket)
         }

@@ -34,13 +34,13 @@ export class NotifyService {
 
   displayModalSubsExpired: string;
   displayModalEnterpiseSubsExpired: string;
-  displayModalTrialExpired= 'none';
-  
+  displayModalTrialExpired = 'none';
+
   displayContactUsModal = 'none';
   displayContactOwnerModal = 'none';
 
   goToPricingModal = 'none';
-  
+
   viewCancelSubscriptionModal = 'none';
   displayDataExportNotAvailable = 'none';
   displayInstallTiledeskModal = 'none';
@@ -59,11 +59,12 @@ export class NotifyService {
   public cancelSubscriptionCompleted$ = new Subject();
 
   showSubtitleAllOperatorsSeatsUsed: boolean;
-  showSubtitleSeatsNumberExceed : boolean;
+  showSubtitleSeatsNumberExceed: boolean;
   showSubtitleAllChatbotUsed: boolean;
   displayLogoutModal = 'none';
   prjct_profile_name: string;
   salesEmail: string;
+  public hideHelpLink: boolean;
 
   public URL_UNDERSTANDING_DEFAULT_ROLES = URL_understanding_default_roles
   public displayContactUsModalToUpgradePlan = 'none';
@@ -75,14 +76,15 @@ export class NotifyService {
   ) {
     const brand = brandService.getBrand();
     this.salesEmail = brand['CONTACT_SALES_EMAIL'];
-    this.logger.log('[NOTIFY-SERVICE] salesEmail ' ,  this.salesEmail) 
+    this.logger.log('[NOTIFY-SERVICE] salesEmail ', this.salesEmail)
+    this.hideHelpLink = brand['DOCS'];
   }
 
   presentContactUsModalToUpgradePlan(displayModal: boolean) {
     if (displayModal === true) {
       this.displayContactUsModalToUpgradePlan = 'block';
     }
-    
+
   }
 
   contacUsViaEmail() {
@@ -91,7 +93,7 @@ export class NotifyService {
     this.closeContactUsModal();
     window.open(`mailto:${this.salesEmail}?subject=Upgrade plan`);
   }
-  
+
   contacUsViaEmailPlanC() {
     window.open(`mailto:${this.salesEmail}?subject=Upgrade plan (${this.prjct_profile_name} expired)`);
     this.closeModalEnterpiseSubsExpired()
@@ -124,7 +126,7 @@ export class NotifyService {
   }
 
   displayEnterprisePlanHasExpiredModal(subHasExpired: boolean, prjctPlanName: string, prjctPlanSubsEndDate: Date) {
-    
+
     if (subHasExpired === true) {
       this.displayModalEnterpiseSubsExpired = 'block';
       this.prjct_profile_name = prjctPlanName // + ' plan'
@@ -152,9 +154,9 @@ export class NotifyService {
     // console.log('[NOTIFY-SERVICE] - _displayContactUsModal reason ', reason);
     if (reason === 'seats_limit_reached') {
       this.showSubtitleAllOperatorsSeatsUsed = true;
-      this.showSubtitleSeatsNumberExceed= false;
-    } else if  (reason === 'seats_limit_exceed') {
-      this.showSubtitleSeatsNumberExceed= true;
+      this.showSubtitleSeatsNumberExceed = false;
+    } else if (reason === 'seats_limit_exceed') {
+      this.showSubtitleSeatsNumberExceed = true;
       this.showSubtitleAllOperatorsSeatsUsed = false;
     } else {
       this.showSubtitleAllOperatorsSeatsUsed = false;
@@ -174,9 +176,9 @@ export class NotifyService {
     // console.log('[NOTIFY-SERVICE] - _displayContactOwnerModal reason ', reason);
     if (reason === 'seats_limit_reached') {
       this.showSubtitleAllOperatorsSeatsUsed = true;
-      this.showSubtitleSeatsNumberExceed= false;
-    } else if  (reason === 'seats_limit_exceed') {
-      this.showSubtitleSeatsNumberExceed= true;
+      this.showSubtitleSeatsNumberExceed = false;
+    } else if (reason === 'seats_limit_exceed') {
+      this.showSubtitleSeatsNumberExceed = true;
       this.showSubtitleAllOperatorsSeatsUsed = false;
     } else {
       this.showSubtitleAllOperatorsSeatsUsed = false;
@@ -192,19 +194,19 @@ export class NotifyService {
     this.displayContactOwnerModal = 'none';
   }
 
- 
+
 
   displayGoToPricingModal(reason) {
     this.goToPricingModal = 'block';
     if (reason === 'user_exceeds') {
       this.showSubtitleAllOperatorsSeatsUsed = true;
       this.showSubtitleAllChatbotUsed = false;
-    } else if (reason === 'chatbot_exceeds')  {
+    } else if (reason === 'chatbot_exceeds') {
       this.showSubtitleAllOperatorsSeatsUsed = false;
       this.showSubtitleAllChatbotUsed = true;
-    } 
-   
-    
+    }
+
+
 
   }
 
@@ -212,8 +214,8 @@ export class NotifyService {
     this.goToPricingModal = 'none';
   }
 
- 
-  
+
+
 
   // -----------------------------------------------
   // Data Export Not Available Modal
@@ -700,14 +702,17 @@ export class NotifyService {
 
 
   presentModalOnlyOwnerCanManageTheAccountPlan(onlyOwnerCanManageTheAccountPlanMsg: string, learnMoreAboutDefaultRoles: string) {
-
+    // console.log('NOTIFY SERVICE presentModalOnlyOwnerCanManageTheAccountPlan hideHelpLink', this.hideHelpLink)
     const el = document.createElement('div')
-    // el.innerHTML = onlyOwnerCanManageTheAccountPlanMsg + '. ' + "<a href='https://docs.tiledesk.com/knowledge-base/understanding-default-roles/' target='_blank'>" + learnMoreAboutDefaultRoles + "</a>"
-    el.innerHTML = onlyOwnerCanManageTheAccountPlanMsg + '. ' + `<a href=${this.URL_UNDERSTANDING_DEFAULT_ROLES} target='_blank'>` + learnMoreAboutDefaultRoles + "</a>"
+    if (this.hideHelpLink) {
+      el.innerHTML = onlyOwnerCanManageTheAccountPlanMsg + '. ' + `<a  href=${this.URL_UNDERSTANDING_DEFAULT_ROLES} target='_blank'>` + learnMoreAboutDefaultRoles + "</a>"
+    } else {
+      el.innerHTML = onlyOwnerCanManageTheAccountPlanMsg + '. '
+    }
     swal({
       // title: this.onlyOwnerCanManageTheAccountPlanMsg,
       content: el,
-      icon: "info",
+      icon: "warning",
       // buttons: true,
       button: {
         text: "OK",
@@ -717,15 +722,18 @@ export class NotifyService {
 
   }
 
-  presentModalAgentCannotManageChatbot(onlyOwnerCanManageTheAccountPlanMsg: string, learnMoreAboutDefaultRoles: string) {
+  presentModalAgentCannotManageChatbot(agentsCannotManageChatbots: string, learnMoreAboutDefaultRoles: string) {
 
     const el = document.createElement('div')
-    // el.innerHTML = onlyOwnerCanManageTheAccountPlanMsg + '. ' + "<a href='https://docs.tiledesk.com/knowledge-base/understanding-default-roles/' target='_blank'>" + learnMoreAboutDefaultRoles + "</a>"
-    el.innerHTML = onlyOwnerCanManageTheAccountPlanMsg + '. ' + `<a href=${this.URL_UNDERSTANDING_DEFAULT_ROLES} target='_blank'>` + learnMoreAboutDefaultRoles + "</a>"
+    if (this.hideHelpLink) {
+      el.innerHTML = agentsCannotManageChatbots + '. ' + `<a href=${this.URL_UNDERSTANDING_DEFAULT_ROLES} target='_blank'>` + learnMoreAboutDefaultRoles + "</a>"
+    } else {
+      el.innerHTML = agentsCannotManageChatbots + '. '
+    }
     swal({
       // title: this.onlyOwnerCanManageTheAccountPlanMsg,
       content: el,
-      icon: "info",
+      icon: "warning",
       // buttons: true,
       button: {
         text: "OK",
@@ -737,7 +745,11 @@ export class NotifyService {
 
   presentModalOnlyOwnerCanManageTSMTPsettings(onlyOwnerCanManageSMTPSettings: string, learnMoreAboutDefaultRoles: string) {
     const el = document.createElement('div')
-    el.innerHTML = onlyOwnerCanManageSMTPSettings + '. ' + `<a href=${this.URL_UNDERSTANDING_DEFAULT_ROLES} target='_blank'>` + learnMoreAboutDefaultRoles + "</a>"
+    if (this.hideHelpLink) {
+      el.innerHTML = onlyOwnerCanManageSMTPSettings + '. ' + `<a href=${this.URL_UNDERSTANDING_DEFAULT_ROLES} target='_blank'>` + learnMoreAboutDefaultRoles + "</a>"
+    } else {
+      el.innerHTML = onlyOwnerCanManageSMTPSettings + '. '
+    }
     swal({
       // title: this.onlyOwnerCanManageTheAccountPlanMsg,
       content: el,
@@ -750,9 +762,13 @@ export class NotifyService {
     })
   }
 
-  presentModalOnlyOwnerCanManageAdvancedProjectSettings (onlyOwnerCanAdvencedProjectSettings: string, learnMoreAboutDefaultRoles: string) {
+  presentModalOnlyOwnerCanManageAdvancedProjectSettings(onlyOwnerCanAdvencedProjectSettings: string, learnMoreAboutDefaultRoles: string) {
     const el = document.createElement('div')
-    el.innerHTML = onlyOwnerCanAdvencedProjectSettings + '. ' + `<a href=${this.URL_UNDERSTANDING_DEFAULT_ROLES} target='_blank'>` + learnMoreAboutDefaultRoles + "</a>"
+    if (this.hideHelpLink) {
+      el.innerHTML = onlyOwnerCanAdvencedProjectSettings + '. ' + `<a href=${this.URL_UNDERSTANDING_DEFAULT_ROLES} target='_blank'>` + learnMoreAboutDefaultRoles + "</a>"
+    } else {
+      el.innerHTML = onlyOwnerCanAdvencedProjectSettings + '. '
+    }
     swal({
       // title: this.onlyOwnerCanManageTheAccountPlanMsg,
       content: el,

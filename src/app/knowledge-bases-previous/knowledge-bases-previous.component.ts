@@ -71,6 +71,7 @@ export class KnowledgeBasesPreviousComponent implements OnInit, OnDestroy {
   kbid_selected: any;
 
   interval_id;
+  displayContactUs: boolean;
 
   constructor(
     private auth: AuthService,
@@ -89,6 +90,7 @@ export class KnowledgeBasesPreviousComponent implements OnInit, OnDestroy {
     this.company_name = brand['BRAND_NAME'];
     this.companyNameParams = { 'BRAND_NAME': this.company_name }
     this.contactUsEmail = brand['CONTACT_US_EMAIL'];
+    this.displayContactUs=  brand['display_contact_us_email'];
   }
 
   ngOnInit(): void {

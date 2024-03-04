@@ -218,6 +218,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   isTier3Plans: boolean // Plus or Custom
   isSripeSub: boolean;
   salesEmail: string;
+  public hideHelpLink: boolean;
 
   formErrors: FormErrors = {
     'creditCard': '',
@@ -275,6 +276,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   ) {
     const brand = brandService.getBrand();
     this.tparams = brand;
+    this.hideHelpLink= brand['DOCS'];
     if (brand) {
       this.contactUsEmail = brand['CONTACT_US_EMAIL'];
       this.salesEmail = brand['CONTACT_SALES_EMAIL'];

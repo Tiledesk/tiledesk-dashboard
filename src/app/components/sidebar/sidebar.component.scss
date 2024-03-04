@@ -459,12 +459,22 @@ button.close {
   color: #647491;
 }
 
+// Nk addded
+.nav>li>a:hover {
+  background-color: unset!important;
+}
+
 #sidebar_wrapper>div>ul>li:hover>a {
   background-color: transparent !important;
 }
 
 #sidebar_wrapper>div>ul>li:hover>a>i {
   color: #a9afbb;
+  background-color: transparent !important;
+}
+
+#sidebar_wrapper>div>ul>li:hover>#home-btn>i {
+  color: #a9afbb !important; 
   background-color: transparent !important;
 }
 

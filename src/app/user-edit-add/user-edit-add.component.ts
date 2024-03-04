@@ -135,6 +135,7 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
   invitedProjectUser: any
   profile_name_for_segment: string;
   appSumoProfile: string;
+  public hideHelpLink: boolean;
 
   constructor(
     private router: Router,
@@ -154,6 +155,7 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
     const brand = brandService.getBrand();
     this.tparams = brand;
     this.tParamsFreePlanSeatsNum = { free_plan_allowed_seats_num: PLAN_SEATS.free }
+    this.hideHelpLink= brand['DOCS'];
   }
 
   ngOnInit() {

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { BrandService } from 'app/services/brand.service';
 import {
   URL_google_tag_manager_add_tiledesk_to_your_sites
 } from 'app/utils/util';
@@ -9,8 +10,14 @@ import {
   styleUrls: ['./google-tag-manager-installation.component.scss']
 })
 export class GoogleTagManagerInstallationComponent implements OnInit {
+  public hideHelpLink: boolean;
 
-  constructor() { }
+  constructor(
+    public brandService: BrandService
+  ) {
+    const brand = brandService.getBrand(); 
+    this.hideHelpLink= brand['DOCS'];
+  }
 
   ngOnInit() {
   }
