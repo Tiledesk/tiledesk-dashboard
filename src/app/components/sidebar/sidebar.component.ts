@@ -191,7 +191,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   INSTALLATION_ROUTE_IS_ACTIVE: boolean;
   EMAIL_TICKETING_ROUTE_IS_ACTIVE: boolean;
   AUTOMATIONS_ROUTE_IS_ACTIVE: boolean;
-  KB_ROUTE_IS_ACTIVE: boolean;
   IS_REQUEST_FOR_PANEL_ROUTE: boolean;
   IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE: boolean;
     // Chatbot sidebar
@@ -202,7 +201,9 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   TMPLT_CMNT_ROUTE_IS_ACTIVE: boolean;
   TMPLT_IS_ROUTE_IS_ACTIVE: boolean;
   TMPLT_CS_ROUTE_IS_ACTIVE: boolean;
-  NEW_KB_ROUTE_IS_ACTIVE: boolean;
+  OLD_KB_ROUTE_IS_ACTIVE: boolean;
+  KB_ROUTE_IS_ACTIVE: boolean;
+
 
   prjct_profile_name: string;
   prjct_trial_expired: boolean;
@@ -649,6 +650,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   getCurrentRoute() {
     this.router.events.subscribe((event: NavigationEvent) => {
       if (event instanceof NavigationEnd) {
+        this.logger.log('[SIDEBAR] NavigationEnd event.url' , event.url.substring(event.url.lastIndexOf('/') + 1)) 
         if (event.url.indexOf('/request-for-panel') !== -1) {
           this.IS_REQUEST_FOR_PANEL_ROUTE = true;
           // this.logger.log('[NAVBAR] NavigationEnd - IS_REQUEST_FOR_PANEL_ROUTE  ', this.IS_REQUEST_FOR_PANEL_ROUTE);
@@ -894,16 +896,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           this.logger.log('[SIDEBAR] NavigationEnd - TMPLT_CS_ROUTE_IS_ACTIVE ', this.TMPLT_CS_ROUTE_IS_ACTIVE);
         }
 
-        if (event.url.indexOf('/knowledge-bases') !== -1 ) {
-          this.NEW_KB_ROUTE_IS_ACTIVE = true;
-          this.logger.log('[SIDEBAR] NavigationEnd - NEW_KB_ROUTE_IS_ACTIVE ', this.NEW_KB_ROUTE_IS_ACTIVE);
-        } else {
-          this.NEW_KB_ROUTE_IS_ACTIVE = false;
-          this.logger.log('[SIDEBAR] NavigationEnd - NEW_KB_ROUTE_IS_ACTIVE ', this.NEW_KB_ROUTE_IS_ACTIVE);
-        }
-
-
-
         if (event.url.indexOf('/createfaq') !== -1) {
           this.CREATE_FAQ_ROUTE_IS_ACTIVE = true;
           // this.logger.log('[SIDEBAR] NavigationEnd - CREATE_FAQ_ROUTE_IS_ACTIVE ', this.CREATE_FAQ_ROUTE_IS_ACTIVE);
@@ -1049,7 +1041,18 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           this.logger.log('[SIDEBAR] NavigationEnd - AUTOMATIONS_ROUTE_IS_ACTIVE ', this.AUTOMATIONS_ROUTE_IS_ACTIVE);
         }
 
-        if (event.url.indexOf('/knowledge-bases-pre') !== -1) {
+        // if (event.url.indexOf('/knowledge-bases-pre') ) {
+        if(event.url.substring(event.url.lastIndexOf('/') + 1) === 'knowledge-bases-pre' ) {
+          this.OLD_KB_ROUTE_IS_ACTIVE = true;
+          this.logger.log('[SIDEBAR] NavigationEnd - OLD_KB_ROUTE_IS_ACTIVE ', this.OLD_KB_ROUTE_IS_ACTIVE);
+        } else {
+          this.OLD_KB_ROUTE_IS_ACTIVE = false;
+          this.logger.log('[SIDEBAR] NavigationEnd - OLD_KB_ROUTE_IS_ACTIVE ', this.OLD_KB_ROUTE_IS_ACTIVE);
+        }
+
+
+        // if (event.url.match('/knowledge-bases')) {
+        if (event.url.substring(event.url.lastIndexOf('/') + 1) === 'knowledge-bases') {
           this.KB_ROUTE_IS_ACTIVE = true;
           this.logger.log('[SIDEBAR] NavigationEnd - KB_ROUTE_IS_ACTIVE ', this.KB_ROUTE_IS_ACTIVE);
         } else {
@@ -1201,7 +1204,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   getUserAvailability() {
     this.usersService.user_is_available_bs.subscribe((user_available) => {
       this.IS_AVAILABLE = user_available;
-      // console.log('[SIDEBAR] - USER IS AVAILABLE ', this.IS_AVAILABLE);
+      // this.logger.log('[SIDEBAR] - USER IS AVAILABLE ', this.IS_AVAILABLE);
     });
   }
 
@@ -1210,7 +1213,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
       this.IS_BUSY = user_isbusy;
       // THE VALUE OS  IS_BUSY IS THEN UPDATED WITH THE VALUE RETURNED FROM THE WEBSOCKET getWsCurrentUserIsBusy$()
       // WHEN, FOR EXAMPLE IN PROJECT-SETTINGS > ADVANCED THE NUM OF MAX CHAT IS 3 AND THE 
-      // console.log('[SIDEBAR] - USER IS BUSY (from db)', this.IS_BUSY);
+      // this.logger.log('[SIDEBAR] - USER IS BUSY (from db)', this.IS_BUSY);
     });
   }
 
@@ -1365,10 +1368,10 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         takeUntil(this.unsubscribe$)
       )
       .subscribe((currentuser_isbusy) => {
-        // console.log('[SIDEBAR] - GET WS CURRENT-USER - currentuser_isbusy? ', currentuser_isbusy);
+        // this.logger.log('[SIDEBAR] - GET WS CURRENT-USER - currentuser_isbusy? ', currentuser_isbusy);
         if (currentuser_isbusy !== null) {
           this.IS_BUSY = currentuser_isbusy;
-          // console.log('[SIDEBAR] - GET WS CURRENT-USER (from ws)- this.IS_BUSY? ', this.IS_BUSY);
+          // this.logger.log('[SIDEBAR] - GET WS CURRENT-USER (from ws)- this.IS_BUSY? ', this.IS_BUSY);
         }
       }, error => {
         this.logger.error('[SIDEBAR] - GET WS CURRENT-USER IS BUSY * error * ', error)

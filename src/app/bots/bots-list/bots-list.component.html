@@ -179,13 +179,15 @@
                         <div class="bot-card-info-wpr">
                           <span class="bot-card-bot-name-wpr">
 
-                            <div class="bot-card-bot-name" (click)="$event.stopPropagation()">
+                            <!-- (click)="$event.stopPropagation()" -->
+                            <div class="bot-card-bot-name" >
                               <!-- {{ faqkb.name }} -->
                               <!-- (click)="edit()" -->
                               <span *ngIf="botIdToRename !== faqkb._id">{{ faqkb.name }}</span>
                               <input *ngIf="botIdToRename === faqkb._id" type="text" [(ngModel)]="faqkb.name"
                                 (ngModelChange)="changeChatBotName($event)"
-                                (keypress)="onPressEnterUpdateChatBotName($event)">
+                                (click)="$event.stopPropagation()"
+                                (keypress)="onPressEnterUpdateChatBotName($event);$event.stopPropagation() ">
 
 
                             </div>
