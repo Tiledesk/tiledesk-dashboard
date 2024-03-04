@@ -2004,6 +2004,7 @@
     "OnlyUserWithOwnerRoleCanManageAdvancedProjectSettings": "Только товарищи по команде с ролью владельца могут управлять расширенными настройками проекта",
     "LearnMoreAboutDefaultRoles": "Узнайте больше о ролях по умолчанию",
     "AgentsCannotManageChatbots":"Члены команды с ролью агента не могут управлять чат-ботами", 
+    "TeammatesWithAgentRolesCannotInvite":"Товарищи по команде с ролями агентов не могут приглашать товарищей по команде.",
     "LearnHowCreateAGroup": "Узнайте, как создать группу",
     "HookTheBot": "Активировать этого бота",
     "ActivateBotsForNewConversations": "Активируйте ботов для новых разговоров",

@@ -2003,6 +2003,7 @@
     "OnlyUserWithOwnerRoleCanManageAdvancedProjectSettings":"Solo i membri del team con il ruolo Proprietario possono gestire le impostazioni avanzate del progetto",
     "LearnMoreAboutDefaultRoles": "Ulteriori informazioni sui ruoli predefiniti",
     "AgentsCannotManageChatbots":"I membri del team con ruolo di agente non possono gestire i chatbot",
+    "TeammatesWithAgentRolesCannotInvite":"I compagni di squadra con ruoli di agente non possono invitare compagni di squadra",
     "LearnHowCreateAGroup": "Impara a creare un gruppo",
     "HookTheBot": "Attiva questo bot",
     "ActivateBotsForNewConversations": "Attiva il bot per le nuove conversazioni",

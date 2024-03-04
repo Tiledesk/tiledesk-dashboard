@@ -2004,6 +2004,7 @@
     "OnlyUserWithOwnerRoleCanManageAdvancedProjectSettings":"Yalnız Sahib roluna malik komanda yoldaşları təkmil layihə parametrlərini idarə edə bilər",
     "LearnMoreAboutDefaultRoles": "Defolt rollar haqqında ətraflı məlumat əldə edin",
     "AgentsCannotManageChatbots": "Agent rolu olan komanda yoldaşları chatbotları idarə edə bilməz",
+    "TeammatesWithAgentRolesCannotInvite":"Agent rolu olan komanda yoldaşları komanda yoldaşlarını dəvət edə bilməz",
     "LearnHowCreateAGroup": "Qrup yaratmağı öyrənin",
     "HookTheBot": "Bu botu aktivləşdirin",
     "ActivateBotsForNewConversations": "Yeni söhbətlər üçün botları aktivləşdirin",

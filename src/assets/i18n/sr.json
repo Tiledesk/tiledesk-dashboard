@@ -2004,6 +2004,7 @@
     "OnlyUserWithOwnerRoleCanManageAdvancedProjectSettings":"Само саиграчи са улогом власника могу да управљају напредним подешавањима пројекта",
     "LearnMoreAboutDefaultRoles": "Сазнајте више о подразумеваним улогама",
     "AgentsCannotManageChatbots":"Саиграчи са улогом агента не могу да управљају цхатботовима",
+    "TeammatesWithAgentRolesCannotInvite":"Саиграчи са улогама агената не могу да позивају саиграче",
     "LearnHowCreateAGroup": "Научите како да креирате групу",
     "HookTheBot": "Активирајте овог бота",
     "ActivateBotsForNewConversations": "Активирајте ботове за нове разговоре",

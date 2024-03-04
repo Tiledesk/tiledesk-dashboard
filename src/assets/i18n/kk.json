@@ -2004,6 +2004,7 @@
     "OnlyUserWithOwnerRoleCanManageAdvancedProjectSettings":"Тек Ие рөлі бар командаластар жобаның кеңейтілген параметрлерін басқара алады",
     "LearnMoreAboutDefaultRoles": "Әдепкі рөлдер туралы көбірек біліңіз",
     "AgentsCannotManageChatbots":"Агент рөлі бар командаластар чат-боттарды басқара алмайды",
+    "TeammatesWithAgentRolesCannotInvite":"Агент рөлдері бар командаластар әріптестерін шақыра алмайды",
     "LearnHowCreateAGroup": "Топты құру жолын біліңіз",
     "HookTheBot": "Бұл ботты іске қосыңыз",
     "ActivateBotsForNewConversations": "Жаңа сөйлесулер үшін боттарды іске қосыңыз",

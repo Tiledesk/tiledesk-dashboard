@@ -2004,6 +2004,7 @@
     "OnlyUserWithOwnerRoleCanManageAdvancedProjectSettings":"Endast lagkamrater med rollen Ägare kan hantera avancerade projektinställningar",
     "LearnMoreAboutDefaultRoles": "Läs mer om standardroller",
     "AgentsCannotManageChatbots":"Lagkamrater med en agentroll kan inte hantera chatbots",
+    "TeammatesWithAgentRolesCannotInvite":"Lagkamrater med agentroller kan inte bjuda in lagkamrater",
     "LearnHowCreateAGroup": "Lär dig hur du skapar en grupp",
     "HookTheBot": "Aktivera denna bot",
     "ActivateBotsForNewConversations": "Aktivera bots för nya konversationer",

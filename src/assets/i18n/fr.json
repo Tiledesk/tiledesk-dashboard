@@ -2004,6 +2004,7 @@
     "OnlyUserWithOwnerRoleCanManageAdvancedProjectSettings":"Seuls les coéquipiers ayant le rôle de propriétaire peuvent gérer les paramètres de projet avancés",
     "LearnMoreAboutDefaultRoles": "En savoir plus sur les rôles par défaut",
     "AgentsCannotManageChatbots":"Les coéquipiers ayant un rôle d'agent ne peuvent pas gérer les chatbots",
+    "TeammatesWithAgentRolesCannotInvite":"Les coéquipiers ayant des rôles d'agent ne peuvent pas inviter des coéquipiers",
     "LearnHowCreateAGroup": "Apprendre à créer un groupe",
     "HookTheBot": "Activer ce robot",
     "ActivateBotsForNewConversations": "Activer les bots pour de nouvelles conversations",

@@ -2003,6 +2003,7 @@
     "OnlyUserWithOwnerRoleCanManageAdvancedProjectSettings":"Faqat Egasi roliga ega jamoadoshlar loyihaning kengaytirilgan sozlamalarini boshqarishi mumkin",
     "LearnMoreAboutDefaultRoles": "Standart rollar haqida ko'proq bilib oling",
     "AgentsCannotManageChatbots":"Agent roliga ega jamoadoshlar chatbotlarni boshqara olmaydi",
+    "TeammatesWithAgentRolesCannotInvite":"Agent roliga ega bo'lgan jamoadoshlar jamoadoshlarini taklif qila olmaydi", 
     "LearnHowCreateAGroup": "Guruhni qanday yaratishni bilib oling",
     "HookTheBot": "Ushbu botni faollashtiring",
     "ActivateBotsForNewConversations": "Yangi suhbatlar uchun botlarni faollashtiring",
