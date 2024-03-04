@@ -560,19 +560,24 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
         this.chatBotCount = this.faqkbList.length;
         this.faqkbList.forEach(bot => {
           this.logger.log('[BOTS-LIST] getFaqKbByProjectId bot ', bot)
-          this.logger.log('[BOTS-LIST] getFaqKbByProjectId bot url', bot.url)
-          let parts = bot.url.split("/");
-          let botId_FromDeployUrl = parts[parts.length - 1];
-          this.logger.log('[BOTS-LIST] getFaqKbByProjectId botIdFromDeployUrl ', botId_FromDeployUrl)
-          let botId = bot._id;
-          this.logger.log('[BOTS-LIST] getFaqKbByProjectId botId ', botId)
-          if (botId_FromDeployUrl === botId) {
-            this.logger.log('The bot has not been published')
-            bot['published'] = false
+          if (bot && bot.url) {
+            this.logger.log('[BOTS-LIST] getFaqKbByProjectId bot url', bot.url)
 
-          } else if (botId_FromDeployUrl !== botId) {
-            this.logger.log('The bot has been published')
-            bot['published'] = true
+            let parts = bot.url.split("/");
+            let botId_FromDeployUrl = parts[parts.length - 1];
+            this.logger.log('[BOTS-LIST] getFaqKbByProjectId botIdFromDeployUrl ', botId_FromDeployUrl)
+            let botId = bot._id;
+            this.logger.log('[BOTS-LIST] getFaqKbByProjectId botId ', botId)
+            if (botId_FromDeployUrl === botId) {
+              this.logger.log('The bot has not been published')
+              bot['published'] = false
+
+            } else if (botId_FromDeployUrl !== botId) {
+              this.logger.log('The bot has been published')
+              bot['published'] = true
+            }
+          } else {
+            this.logger.error('[BOTS-LIST] bot not has url ' ,bot ) 
           }
 
          
