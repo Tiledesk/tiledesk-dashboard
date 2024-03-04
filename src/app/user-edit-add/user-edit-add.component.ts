@@ -101,6 +101,7 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
 
   onlyOwnerCanManageTheAccountPlanMsg: string;
   learnMoreAboutDefaultRoles: string;
+  agentsCannotInvite: string;
   KNOWLEDGE_BASE_USER_ROLE_URL = URL_understanding_default_roles;
   profile_name: string;
 
@@ -356,6 +357,13 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
         // this.logger.log('[USER-EDIT-ADD] - TRANSLATE onlyOwnerCanManageTheAccountPlanMsg text', translation)
         this.learnMoreAboutDefaultRoles = translation;
       });
+
+      this.translate.get('TeammatesWithAgentRolesCannotInvite')
+      .subscribe((translation: any) => {
+        // this.logger.log('[USER-EDIT-ADD] - TRANSLATE onlyOwnerCanManageTheAccountPlanMsg text', translation)
+        this.agentsCannotInvite = translation;
+      });
+      
   }
 
   getProfileImageStorage() {
@@ -841,10 +849,7 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
   }
 
   presentModalAgentCannotInviteTeammates() {
-    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(
-      'Teammates with agent roles cannot invite teammates',
-      this.learnMoreAboutDefaultRoles,
-    )
+    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.agentsCannotInvite, this.learnMoreAboutDefaultRoles)
   }
 
   doInviteUser() {

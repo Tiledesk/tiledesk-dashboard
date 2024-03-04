@@ -61,7 +61,7 @@ export class GetStartChatbotForkComponent implements OnInit {
   public URL_UNDERSTANDING_DEFAULT_ROLES = URL_understanding_default_roles
   learnMoreAboutDefaultRoles: string;
   agentsCannotManageChatbots: string;
-
+  public hideHelpLink: boolean;
   constructor(
     public brandService: BrandService,
     private projectService: ProjectService,
@@ -79,6 +79,7 @@ export class GetStartChatbotForkComponent implements OnInit {
   ) {
     const brand = brandService.getBrand();
     this.companyLogo = brand['BASE_LOGO'];
+    this.hideHelpLink= brand['DOCS'];
     // this.company_name = brand['BRAND_NAME'];
     // this.company_site_url = brand['COMPANY_SITE_URL'];
   }
@@ -345,8 +346,11 @@ export class GetStartChatbotForkComponent implements OnInit {
 
   presentModalAgentCannotManageChatbotAndGoToHome() {
     const el = document.createElement('div')
-    // el.innerHTML = onlyOwnerCanManageTheAccountPlanMsg + '. ' + "<a href='https://docs.tiledesk.com/knowledge-base/understanding-default-roles/' target='_blank'>" + learnMoreAboutDefaultRoles + "</a>"
-    el.innerHTML = this.agentsCannotManageChatbots + '. ' + `<a href=${this.URL_UNDERSTANDING_DEFAULT_ROLES} target='_blank'>` + this.learnMoreAboutDefaultRoles + "</a>"
+    if (this.hideHelpLink ) {
+      el.innerHTML = this.agentsCannotManageChatbots + '. ' + `<a href=${this.URL_UNDERSTANDING_DEFAULT_ROLES} target='_blank'>` + this.learnMoreAboutDefaultRoles + "</a>"
+    } else {
+      el.innerHTML = this.agentsCannotManageChatbots + '. '
+    }
     swal({
       // title: this.onlyOwnerCanManageTheAccountPlanMsg,
       content: el,

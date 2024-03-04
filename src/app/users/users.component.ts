@@ -113,7 +113,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, OnDe
   displayInviteTeammateBtn: string;
   dialogRef: MatDialogRef<any>;
   public hideHelpLink: boolean;
-
+  agentsCannotInvite: string;
   constructor(
     private usersService: UsersService,
     private router: Router,
@@ -445,10 +445,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, OnDe
     // https://github.com/t4t5/sweetalert/issues/845
   }
   presentModalAgentCannotInviteTeammates() {
-    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(
-      'Teammates with agent roles cannot invite teammates',
-      this.learnMoreAboutDefaultRoles,
-    )
+    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.agentsCannotInvite, this.learnMoreAboutDefaultRoles)
   }
 
 
@@ -893,6 +890,12 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, OnDe
         // this.logger.log('PROJECT-EDIT-ADD  onlyOwnerCanManageTheAccountPlanMsg text', translation)
         this.learnMoreAboutDefaultRoles = translation
       })
+
+      this.translate.get('TeammatesWithAgentRolesCannotInvite')
+      .subscribe((translation: any) => {
+        // this.logger.log('[USER-EDIT-ADD] - TRANSLATE onlyOwnerCanManageTheAccountPlanMsg text', translation)
+        this.agentsCannotInvite = translation;
+      });
   }
 
 
