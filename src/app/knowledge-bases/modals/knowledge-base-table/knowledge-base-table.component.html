@@ -1,41 +1,27 @@
 <div *ngIf="kbsListCount == 0" class="card-empty" >
-    <!-- <div colspan="5">{{'KbPage.noContent' | translate}}</div> -->
     <div class="menu-container ng-star-inserted">
-        <!-- <integration-header>
+        <!-- 
+        <integration-header>
             <div class="header-container" style="display: flex; flex-direction: row;">
                 <img alt="OpenAI" src="assets/img/int/openai-logo.svg">
             </div>
-        </integration-header> -->
+        </integration-header> 
+        -->
         <div style="width: 100%;" class="ng-star-inserted">
             <div class="lock-container">
-                <!-- <img src="assets/img/int/getstarted.svg" alt="">
-                <p class="upgrade-title ng-star-inserted">No data sources exist</p>
-                <p class="upgrade-subtitle ng-star-inserted">Incorporate data sources into your assistant for constructing a knowledge repository.</p>
-                <button class="custom-upgrade-primary-button" [matMenuTriggerFor]="menu" aria-label="Actions">Add data source</button> -->
-
+                <!-- <img src="assets/img/int/getstarted.svg" alt=""> -->
                 <p class="no-bot-msg">
-                    <!-- 
-                    <span style="display: block;">You don't have Chatbots.</span>
-                    <span style="display: block;"> Get you started with a <span class="btn---link"> chatbot template </span> or create a new one from scratch </span> 
-                    -->
-                    <span class="upgrade-title ng-star-inserted">No data sources exist</span>
-                    <span class="upgrade-subtitle ng-star-inserted">Incorporate data sources into your assistant for constructing a knowledge repository.</span>
+                    <span class="upgrade-title ng-star-inserted">{{'KbPage.NoKbAdded' | translate }}</span>
+                    <span class="upgrade-subtitle ng-star-inserted">{{'KbPage.NoKbAddedText' | translate }}</span>
                     <span style="display: block;">
                         <button class="btn btn-new btn-size-m btn--primary center" style="margin-right: 20px; box-shadow: unset;" [matMenuTriggerFor]="menu"> {{ 'KbPage.Add' | translate }} </button>
                     </span>
                 </p>
-                <!-- 
-                <button class="btn btn-primary" [disabled]="addButtonDisabled" [matMenuTriggerFor]="menu" aria-label="Actions">
-                    <span class="btn-big-button">{{ 'KbPage.Add' | translate }} </span>
-                    <mat-icon class="icon-big-button">add</mat-icon>
-                </button> 
-                -->
                 <mat-menu #menu="matMenu" xPosition="before" class="custom-menu">
                     <add-content-menu class="mat-menu"
                         (openAddKnowledgeBaseModal)="onOpenAddKnowledgeBaseModal($event)">
                     </add-content-menu>
                 </mat-menu>
-
             </div>
         </div>
     </div>
@@ -149,7 +135,7 @@
                                 <button mat-menu-item [disabled]="kb.deleting == true"
                                     (click)="onOpenBaseModalDelete(kb)">
                                     <mat-icon>close</mat-icon>
-                                    <span>{{'Delete' | translate}}</span>
+                                    <span>{{'KbPage.DeleteKb' | translate}}</span>
                                 </button>
                             </mat-menu>
                         </div>
@@ -158,9 +144,9 @@
                 </tr>
           </tbody>
         </table>
-
-        <div *ngIf="isLoading" class="loading-indicator">Loading</div>
-        <button *ngIf="!isLoading && SHOW_MORE_BTN" class="btn-more btn btn-new btn-size-m btn--primary center" (click)="loadMoreData()">Load More</button>
+        <!-- btn btn-more btn-new btn-size-m btn--primary btn-xs center -->
+        <div *ngIf="isLoading" class="loading-indicator">{{'KbPage.Loading' | translate}}</div>
+        <div *ngIf="!isLoading && SHOW_MORE_BTN" class="btn-more btn--default" (click)="loadMoreData()">{{'KbPage.LoadMore' | translate}}</div>
     </div>
 
   </div>

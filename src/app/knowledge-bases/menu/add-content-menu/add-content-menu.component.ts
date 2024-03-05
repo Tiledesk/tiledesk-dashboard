@@ -25,10 +25,10 @@ export class AddContentMenuComponent implements OnInit {
     //     let item = {"label": text, "type":"url-page"};
     //     this.items.push(item);
     // });
-
-    this.translate.get('KbPage.AddKbURLs')
+    this.translate.getBrowserLang();
+    this.translate.get('KbPage.AddKbURL')
     .subscribe((text: any) => {
-        let item = {"label": 'Add URL(s)', "type":"urls"};
+        let item = {"label": text, "type":"urls"};
         this.items.push(item);
     });
 
