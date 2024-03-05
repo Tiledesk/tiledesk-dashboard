@@ -394,6 +394,8 @@ import { KnowledgeBaseTableComponent } from './knowledge-bases/modals/knowledge-
 import { ModalErrorComponent } from './knowledge-bases/modals/modal-error/modal-error.component';
 import { KnowledgeBasesPreviousComponent } from './knowledge-bases-previous/knowledge-bases-previous.component';
 import { UserModalComponent } from './users/user-modal/user-modal.component';
+import { ChatbotStatsModalComponent } from './bots/bots-list/chatbot-stats-modal/chatbot-stats-modal.component';
+
 
 
 
@@ -698,7 +700,8 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     KnowledgeBaseTableComponent,
     ModalErrorComponent,
     KnowledgeBasesPreviousComponent,
-    UserModalComponent
+    UserModalComponent,
+    ChatbotStatsModalComponent
   ],
   imports: [
     TooltipModule.forRoot(CutomTooltipOptions as TooltipOptions),

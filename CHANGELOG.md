@@ -1,5 +1,25 @@
 # tiledesk-dashboard
 
+### 2.5.15
+- Deploys in production
+- Improvements and bug fixing
+
+### 2.5.14
+- Deploys in production
+- Fixing translations
+
+### 2.5.13
+- Deploys in production
+- Refactors the bot list page
+- Improvements and bug fixing
+
+### 2.5.13-rc2
+- Fixes the bug: check status didn't start after adding a new source
+
+### 2.5.13-rc1
+- Improves Knowledge Base 
+- Adds the customer.io integration
+
 ### 2.5.12
 - Deploys in production
 - Fixes the bug: "Settings" sidebar menu item is not active when some settings sidebar menu items are active

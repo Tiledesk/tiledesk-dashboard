@@ -3,11 +3,11 @@ import { AuthService } from '../core/auth.service';
 import { GroupService } from '../services/group.service';
 import { Group } from '../models/group-model';
 import { Router } from '@angular/router';
-import { UsersService } from '../services/users.service';
 import { NotifyService } from '../core/notify.service';
 import { LoggerService } from '../services/logger/logger.service';
 import { URL_creating_groups } from '../utils/util';
 import { AppConfigService } from 'app/services/app-config.service';
+import { BrandService } from 'app/services/brand.service';
 @Component({
   selector: 'app-groups',
   templateUrl: './groups.component.html',
@@ -37,16 +37,20 @@ export class GroupsComponent implements OnInit {
   IS_OPEN_SETTINGS_SIDEBAR: boolean;
   public_Key: any;
   isVisibleGRO
-  isChromeVerGreaterThan100: boolean
+  isChromeVerGreaterThan100: boolean;
+  public hideHelpLink: boolean;
   constructor(
     private auth: AuthService,
     private groupsService: GroupService,
     private router: Router,
-    private usersService: UsersService,
     private notify: NotifyService,
     private logger: LoggerService,
     public appConfigService: AppConfigService,
-  ) { }
+    public brandService: BrandService
+  ) {
+    const brand = brandService.getBrand(); 
+    this.hideHelpLink= brand['DOCS'];
+   }
 
   ngOnInit() {
     this.auth.checkRoleForCurrentProject();

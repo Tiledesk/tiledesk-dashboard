@@ -32,7 +32,7 @@
           </li>
         </ul>
 
-        <div class="link-to-teammates-roles-docs">
+        <div *ngIf="hideHelpLink" class="link-to-teammates-roles-docs">
           <div class="row">
             <div class="col-md-12">
               <span>
@@ -72,13 +72,17 @@
                   {{ "YouCurrentlyAreUsing" | translate }} {{ this.projectUsersLength + this.countOfPendingInvites }}
                   {{ "Of" | translate }} {{ seatsLimit }} {{ "ActiveOperatorSeatsInThe" | translate }}
                   <span style="text-transform: capitalize">
-                    {{ prjct_profile_name }}</span> - <span style="color: #039be5; cursor:pointer"
-                    (click)="getMoreOperatorsSeats()">
-                    <span *ngIf="prjct_profile_type === 'payment' && subscription_is_active === true"> 
-                      {{ "GetMore" | translate }} 
-                    </span>
-                    <span *ngIf="prjct_profile_type === 'free'"> 
-                      {{ "Pricing.UpgradePlan" | translate }} 
+                    {{ prjct_profile_name }}
+                  </span>
+                   <span *ngIf="USER_ROLE !== 'agent'"> 
+                      - <span style="color: #039be5; cursor:pointer"
+                      (click)="getMoreOperatorsSeats()">
+                      <span *ngIf="prjct_profile_type === 'payment' && subscription_is_active === true"> 
+                        {{ "GetMore" | translate }} 
+                      </span>
+                      <span *ngIf="prjct_profile_type === 'free'"> 
+                        {{ "Pricing.UpgradePlan" | translate }} 
+                      </span>
                     </span>
                   </span>
                 </span>
@@ -157,7 +161,8 @@
               <!-- table-responsive -->
               <div class="card-header card-header-custom-bckgrnd"
                 style="height:55px; border-bottom:1px solid rgb(239, 242, 246);">
-
+               
+                <!-- displayBtn {{displayInviteTeammateBtn}} -> USER_ROLE > {{ USER_ROLE}} -->
                 <ng-container *ngIf="displayInviteTeammateBtn">
                   <button *ngIf="USER_ROLE !== 'agent'" class="btn btn-primary pull-right"
                     style="padding: 8px 16px;margin:0px;" (click)="goToAddUser()"

@@ -3,7 +3,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { KB, KbSettings } from 'app/models/kbsettings-model';
-import {LiveAnnouncer} from '@angular/cdk/a11y';
+import { LiveAnnouncer } from '@angular/cdk/a11y';
 
 
 @Component({
@@ -23,11 +23,11 @@ export class KnowledgeBaseTableComponent implements OnInit {
   @Output() openBaseModalPreview = new EventEmitter();
   @Output() runIndexing = new EventEmitter();
   @Output() reloadKbs = new EventEmitter();
-  
+
   kbsList: KB[] = [];
   kbsListfilterTypeFilter: KB[] = [];
   dataSource: MatTableDataSource<KB>;
-  displayedColumns: string[] = ['type','status','createdAt','name','actions'];
+  displayedColumns: string[] = ['type', 'status', 'createdAt', 'name', 'actions'];
   filterType: string;
   // filterText: string;
   pagConfig: any;
@@ -60,11 +60,11 @@ export class KnowledgeBaseTableComponent implements OnInit {
       direction: -1,
       sortField: 'updatedAt'
     }
-    
+
   }
 
-  ngOnChanges(changes: SimpleChanges){
-    if(this.kbs){
+  ngOnChanges(changes: SimpleChanges) {
+    if (this.kbs) {
       this.kbsList = this.kbs.kbs;
       this.pagConfig = {
         length: this.kbs.count,
@@ -76,14 +76,14 @@ export class KnowledgeBaseTableComponent implements OnInit {
         sortField: 'updatedAt'
       }
     }
-   
+
     this.dataSource = new MatTableDataSource(this.kbsList);
-    if(this.kbsList) {
+    if (this.kbsList) {
       this.dataSource = new MatTableDataSource(this.kbsList);
       // this.dataSource.sort = this.sort;
       // this.dataSource.paginator = this.paginator;
     }
-    if(this.pagConfig && this.kbs){
+    if (this.pagConfig && this.kbs) {
       this.pagConfig.length = this.kbs.count;
     }
     // Math.ceil(this.kbs.count/this.pagConfig.pageSize);
@@ -91,8 +91,12 @@ export class KnowledgeBaseTableComponent implements OnInit {
 
   ngAfterViewInit() {
     //console.log('ngAfterViewInit!!!-->', this.kbsList);
-    this.kbsList = this.kbs.kbs;
+    this.kbsList = [];
+    if (this.kbs && this.kbs.kbs) {
+      this.kbsList = this.kbs.kbs;
+    }
     this.dataSource = new MatTableDataSource(this.kbsList);
+
     this.dataSource.sort = this.sort;
     this.sort.active = "updatedAt";
     this.sort.direction = "desc"
@@ -106,10 +110,10 @@ export class KnowledgeBaseTableComponent implements OnInit {
 
   applyFilter(filterValue: string, column: string) {
     //let params = "?limit="+this.pageSize+"&page="+this.pageIndex;
-    if( column == 'type'){
+    if (column == 'type') {
       // this.filterType = filterValue;
       this.pagConfig.status = filterValue;
-    } else if(column == 'name'){
+    } else if (column == 'name') {
       // this.filterText= filterValue;
       this.pagConfig.search = filterValue;
     }
@@ -126,7 +130,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
     //     return data.status.toString() === this.filterType;
     //   } 
     //   return true;
-      
+
     // }
     // this.dataSource.filter = filterValue;
     // if (this.dataSource.paginator) {
@@ -144,38 +148,38 @@ export class KnowledgeBaseTableComponent implements OnInit {
   //   }
   // }
 
-  onShortBy(type){
-    if(type == 'createdAt'){
+  onShortBy(type) {
+    if (type == 'createdAt') {
       this.pagConfig.sortField = type;
-    } else if(type == 'name'){
+    } else if (type == 'name') {
       this.pagConfig.sortField = type;
     }
-    this.pagConfig.direction = this.pagConfig.direction*-1;
+    this.pagConfig.direction = this.pagConfig.direction * -1;
     this.onReloadKbs();
   }
 
-  onRunIndexing(kb){
+  onRunIndexing(kb) {
     // console.log('onRunIndexing:: ', kb);
     this.runIndexing.emit(kb);
   }
 
-  onOpenBaseModalPreview(){
+  onOpenBaseModalPreview() {
     this.openBaseModalPreview.emit();
   }
 
-  onOpenBaseModalDelete(kb){
+  onOpenBaseModalDelete(kb) {
     // kb.deleting = true;
     this.openBaseModalDelete.emit(kb);
   }
 
-  onOpenBaseModalDetail(kb){
+  onOpenBaseModalDetail(kb) {
     // console.log("OPEN DETAIL:: ",kb);
     this.openBaseModalDetail.emit(kb);
   }
 
-  getSubtitle(kb){
+  getSubtitle(kb) {
     let subtitle = kb.source;
-    if(kb.type !== 'url'){
+    if (kb.type !== 'url') {
       subtitle = kb.content;
       // const maxLength = 100;
       // if (kb.content.length > maxLength) {
@@ -193,29 +197,29 @@ export class KnowledgeBaseTableComponent implements OnInit {
     // console.log('Page change event:', event);
     this.pagConfig.pageSize = event.pageSize;
     this.pagConfig.pageIndex = event.pageIndex,
-    this.onReloadKbs();
+      this.onReloadKbs();
   }
 
-  onReloadKbs(){
-    let params = "?limit="+this.pagConfig.pageSize+"&page="+this.pagConfig.pageIndex+"&direction="+this.pagConfig.direction+"&sortField="+this.pagConfig.sortField+"&status="+this.pagConfig.status+"&search="+this.pagConfig.search;
+  onReloadKbs() {
+    let params = "?limit=" + this.pagConfig.pageSize + "&page=" + this.pagConfig.pageIndex + "&direction=" + this.pagConfig.direction + "&sortField=" + this.pagConfig.sortField + "&status=" + this.pagConfig.status + "&search=" + this.pagConfig.search;
     this.reloadKbs.emit(params);
   }
   // handlePageSizeChange(event: any) {
   //   console.log('Page size change event:', event);n
   // }
-  
+
   // handlePageSizeOptionsChange(event: any) {
   //   console.log('Page size options change event:', event);
   // }
-  
+
   // handleLengthChange(event: any) {
   //   console.log('Length change event:', event);
   // }
-  
+
   // handlePageIndexChange(event: any) {
   //   console.log('Page index change event:', event);
   // }
-  
+
   // handlePageEvent(event: any) {
   //   console.log('Generic page event:', event);
   // }
