@@ -200,7 +200,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
   }
 
   onOpenAddKnowledgeBaseModal(type){
-    // console.log('onOpenAddKnowledgeBaseModal', type);
+    console.log('onOpenAddKnowledgeBaseModal', type);
     this.openAddKnowledgeBaseModal.emit(type);
   }
 

@@ -38,6 +38,12 @@ export class AddContentMenuComponent implements OnInit {
         this.items.push(item);
     });
 
+    // this.translate.get('KbPage.AddKbSitemap')
+    // .subscribe((text: any) => {
+    //     let item = {"label": text, "type":"site-map"};
+    //     this.items.push(item);
+    // });
+
     //this.items = [{"label": "Single URL", "type":"url-page"},{"label": "URL(s)", "type":"urls"}, {"label": "Plain Text", "type":"text-file"}];
 
 
