@@ -8,7 +8,7 @@ import { KB, KbSettings } from 'app/models/kbsettings-model';
   styleUrls: ['./modal-site-map.component.scss']
 })
 export class ModalSiteMapComponent implements OnInit {
-  @Output() saveKnowledgeBase = new EventEmitter();
+  @Output() sendSitemap = new EventEmitter();
   @Output() closeBaseModal = new EventEmitter();
 
   kbForm: FormGroup;
@@ -51,13 +51,13 @@ export class ModalSiteMapComponent implements OnInit {
     this.closeBaseModal.emit();
   }
 
-  onSaveKnowledgeBase(){
+  onSendSitemap(){
     let body = {
       'name': this.kb.name,
       'source': this.kb.url,
       'type': 'url'
     }
-    this.saveKnowledgeBase.emit(body);
+    this.sendSitemap.emit(body);
   }
 
 }

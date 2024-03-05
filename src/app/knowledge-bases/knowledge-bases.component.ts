@@ -490,6 +490,20 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
   //   })
   // }
 
+  onSendSitemap(body){
+    this.onCloseBaseModal();
+    let error = this.msgErrorAddUpdateKb;
+    this.kbService.addKb(body).subscribe((resp: any) => {
+      this.logger.log("onSendSitemap:", resp);
+      let kb = resp.value;
+    }, (err) => {
+      this.logger.error("[KNOWLEDGE-BASES-COMP] ERROR send sitemap: ", err);
+      this.onOpenErrorModal(error);
+    }, () => {
+      this.logger.log("[KNOWLEDGE-BASES-COMP] send sitemap *COMPLETED*");
+    })
+  }
+
   /**
    * onAddKb
    */
@@ -544,7 +558,7 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
 
   onAddMultiKb(body) {
     this.onCloseBaseModal();
-    console.log("onAddMultiKb");
+    // console.log("onAddMultiKb");
     let error = this.msgErrorAddUpdateKb;
     this.kbService.addMultiKb(body).subscribe((kbs: any) => {
       this.logger.log("onAddMultiKb:", kbs);

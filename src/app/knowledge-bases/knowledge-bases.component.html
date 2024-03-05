@@ -73,7 +73,7 @@
 </modal-text-file>
 
 <modal-site-map *ngIf="typeKnowledgeBaseModal == 'site-map'"
-  (saveKnowledgeBase)="onAddKb($event)"
+  (sendSitemap)="onSendSitemap($event)"
   (closeBaseModal)="onCloseBaseModal()">
 </modal-site-map>
 
