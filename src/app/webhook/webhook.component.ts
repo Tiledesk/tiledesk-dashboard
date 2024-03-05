@@ -5,6 +5,7 @@ import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { LoggerService } from '../services/logger/logger.service';
 import { AuthService } from 'app/core/auth.service';
+import { BrandService } from 'app/services/brand.service';
 @Component({
   selector: 'appdashboard-webhook',
   templateUrl: './webhook.component.html',
@@ -24,7 +25,8 @@ export class WebhookComponent implements OnInit {
   showSecretError: string;
   sharedSecret: string;
   subscriptionIDToDelete: string;
-  isChromeVerGreaterThan100: boolean
+  isChromeVerGreaterThan100: boolean;
+  public hideHelpLink: boolean;
   constructor(
     private webhookService: WebhookService,
     public translate: TranslateService,
@@ -32,7 +34,12 @@ export class WebhookComponent implements OnInit {
     private location: Location,
     private logger: LoggerService,
     private auth: AuthService,
-  ) { }
+    public brandService: BrandService
+  ) { 
+    const brand = brandService.getBrand(); 
+    this.hideHelpLink= brand['DOCS'];
+    
+  }
 
   ngOnInit() {
     this.getSubscriptions();

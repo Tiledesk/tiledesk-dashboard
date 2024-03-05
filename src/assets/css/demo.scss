@@ -2453,3 +2453,20 @@ appdashboard-app-store>div>div>div>div>.card-app-store {
 // .recaptcha .grecaptcha-badge {
 //   visibility: visible;
 // }
+
+.success-snackbar {
+  font-weight: 400;
+  color: #fff !important;
+  min-width: fit-content !important;
+}
+
+.success-snackbar > div > div > simple-snack-bar > span {
+  margin-left: 22px;
+}
+
+.success-snackbar::before{      
+  font-family: "FontAwesome";
+  content: "\f00c";
+  position: absolute;
+  color: #4caf50;
+}

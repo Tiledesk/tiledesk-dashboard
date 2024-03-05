@@ -29,9 +29,9 @@
         </span>
         <span class="install-widget-step-text">
           {{'GoToGoogleTagManagerAnd' | translate}}
-          <span class="install-widget-with-tag-manager-link"
+          <span *ngIf="hideHelpLink" class="install-widget-with-tag-manager-link"
             (click)="goToInstallWithTagManagerDocs()">
-            {{'FollowTheseInstructions' | translate}}
+           ({{'FollowTheseInstructions' | translate}})
           </span>
         </span>
       </div>
