@@ -35,7 +35,7 @@ export class ModalSiteMapComponent implements OnInit {
     const namePattern = /^[^&<>]{3,}$/;
     return this.formBuilder.group({
       url: ['', [Validators.required, Validators.pattern('(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?')]],
-      name: ['', [Validators.required, Validators.pattern(namePattern)]]
+      // name: ['', [Validators.required, Validators.pattern(namePattern)]]
     })
   }
 

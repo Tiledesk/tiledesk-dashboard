@@ -1,4 +1,4 @@
-<div *ngIf="kbsListCount == 0" class="card-empty" >
+<div *ngIf="SHOW_TABLE == false" class="card-empty" >
     <div class="menu-container ng-star-inserted">
         <!-- 
         <integration-header>
@@ -29,7 +29,7 @@
 
 
 
-<div *ngIf="this.kbsListCount>0" class="card">
+<div *ngIf="SHOW_TABLE == true" class="card">
 
     <div class="form-group">
         <div class="cerca">
@@ -97,7 +97,17 @@
             </thead>
         
             <tbody>
-               
+                <tr *ngIf="kbsList?.length == 0">
+                    <td colspan="5" style="width: 100%; ">
+                        <div class="ellipsis-text" 
+                        style = "width: 100%;
+                        display: inline-block;
+                        text-align: center;
+                        padding: 10px;">{{'KbPage.NoKbMatchParams' | translate}}</div>
+                    </td>
+                </tr>
+
+
                 <tr *ngFor="let kb of kbsList">
                     <td style="min-width: 50px; width: 50px; text-align:center;" (click)="onOpenBaseModalDetail(kb)">
                         <span *ngIf="kb.type == 'text'" id="description" class="material-icons-outlined">description</span>

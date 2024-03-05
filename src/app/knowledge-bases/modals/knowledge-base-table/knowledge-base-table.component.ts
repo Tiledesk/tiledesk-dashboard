@@ -36,9 +36,8 @@ export class KnowledgeBaseTableComponent implements OnInit {
   directionDesc: number = KB_DEFAULT_PARAMS.DIRECTION;
   isLoading: boolean = false;
   SHOW_MORE_BTN: boolean = true;
-  // SHOW_TABLE: boolean = false;
+  SHOW_TABLE: boolean = false;
   searchParams: any;
-
   // kbsListCount: number = 0;
 
   constructor(
@@ -87,7 +86,9 @@ export class KnowledgeBaseTableComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges){
     // console.log('ngOnChanges start ------> ', this.kbsListCount, this.kbsList.length, changes);
-
+    if(this.kbsList.length>0){
+      this.SHOW_TABLE = true;
+    }
     if(changes.kbsList?.currentValue?.length === changes.kbsList?.previousValue?.length){
       // non è cambiato nulla ho solo rodinato la tab
     } else {
@@ -109,7 +110,6 @@ export class KnowledgeBaseTableComponent implements OnInit {
     if(changes.refresh){
       this.isLoading = false;
     }
-    
     if(this.kbsList?.length == 0){
       this.SHOW_MORE_BTN = false;
     }
