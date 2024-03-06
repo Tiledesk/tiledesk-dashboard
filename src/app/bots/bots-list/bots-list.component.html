@@ -26,7 +26,7 @@
         [customerSatisfactionTemplatesCount]="customerSatisfactionTemplatesCount"
         [increaseSalesTemplatesCount]="increaseSalesTemplatesCount" [myChatbotOtherCount]="myChatbotOtherCount"
         [customerSatisfactionBotsCount]="customerSatisfactionBotsCount"
-        [increaseSalesBotsCount]="increaseSalesBotsCount" style="border-right:1px solid #e5effe !important;">
+        [increaseSalesBotsCount]="increaseSalesBotsCount">
       </appdashboard-bots-sidebar>
       <div class="teplate-content" style="flex: 1 1 auto; margin-left: 20px;">
 
@@ -69,13 +69,13 @@
                     {{ pageName }}
                   </div>
 
-                  <div class="bot-order-by" *ngIf="faqkbList && faqkbList?.length > 0">
-                    <span>Order by </span>
+                  <div class="page--actions" *ngIf="faqkbList && faqkbList?.length > 0">
+                    <span class="order-by-label">Order by </span>
 
                     <div class="dropdown" (click)="isOpenDropdown(isOpen = !isOpen)">
                       <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <span class="order-by-label" *ngIf="orderBylastUpdated">Last updates </span>
-                        <span class="order-by-label" *ngIf="orderByCreationDate">Creation date </span>
+                        <span class="order-by-selected-value" *ngIf="orderBylastUpdated">Last updates </span>
+                        <span class="order-by-selected-value" *ngIf="orderByCreationDate">Creation date </span>
                         <span class="caret dropdown-caret"
                           [ngClass]="{'caret-rotate-0': is0penDropDown === false, 'caret-rotate-180': is0penDropDown === true}"></span>
                       </a>
@@ -123,12 +123,36 @@
 
                 </div>
 
-                <div *ngFor="let faqkb of faqkbList; let i = index">
+                <div class="card-list"  *ngFor="let faqkb of faqkbList; let i = index">
 
-                  <div class="bot-card" (click)='goToBotDtls(faqkb)'>
-                    <div class="bot-card-content">
+                  <div class="cl-card" (click)='goToBotDtls(faqkb)'>
+                    <div class="cl-card-content">
 
-                      <div class="bot-card-first-column">
+                      <div class="cl-card-first-column">
+
+                        <div class="bot-type-logo-wpr" *ngIf="faqkb.type === 'internal'">
+                          <div class="bot-type-logo--img-wpr ">
+                            <img class="bot-type-logo" src="assets/img/tiledesk_logo_no_text.png" />
+                          </div>
+                        </div>
+
+                        <div class="bot-type-logo-wpr" *ngIf="faqkb.type === 'external'">
+                          <div class="bot-type-logo--img-wpr ">
+                            <img class="bot-type-logo" src="assets/img/external_bot_logo.png" />
+                          </div>
+                        </div>
+
+                        <div class="bot-type-logo-wpr" *ngIf="faqkb.type === 'dialogflow'">
+                          <div class="bot-type-logo--img-wpr ">
+                            <img class="bot-type-logo" src="assets/img/Dialogflow_logo_no_text.png" />
+                          </div>
+                        </div>
+
+                        <div class="bot-type-logo-wpr" *ngIf="faqkb.type === 'rasa'">
+                          <div class="bot-type-logo--img-wpr ">
+                            <img class="bot-type-logo" src="assets/img/rasa_bot_logo.png" />
+                          </div>
+                        </div>
 
                         <div class="bot-type-logo-wpr" *ngIf="faqkb.type === 'tilebot'">
                           <div class="bot-list-type-logo-img-wpr ">
@@ -136,7 +160,7 @@
                           </div>
                         </div>
 
-                        <div class="bot-card-img-wpr">
+                        <div class="cl-card-img-wpr">
 
                           <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE"
                             src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{faqkb?._id}}%2Fphoto.jpg?alt=media"
@@ -145,61 +169,29 @@
                           <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" [src]="faqkb.botImage"
                             onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
 
-                          <div class="bot-type-logo-wpr" *ngIf="faqkb.type === 'internal'">
-                            <div class="bot-type-logo--img-wpr ">
-                              <img class="bot-type-logo" src="assets/img/tiledesk_logo_no_text.png" />
-                            </div>
-                          </div>
-
-                          <div class="bot-type-logo-wpr" *ngIf="faqkb.type === 'external'">
-                            <div class="bot-type-logo--img-wpr ">
-                              <img class="bot-type-logo" src="assets/img/external_bot_logo.png" />
-                            </div>
-                          </div>
-
-                          <div class="bot-type-logo-wpr" *ngIf="faqkb.type === 'dialogflow'">
-                            <div class="bot-type-logo--img-wpr ">
-                              <img class="bot-type-logo" src="assets/img/Dialogflow_logo_no_text.png" />
-                            </div>
-                          </div>
-
-                          <div class="bot-type-logo-wpr" *ngIf="faqkb.type === 'rasa'">
-                            <div class="bot-type-logo--img-wpr ">
-                              <img class="bot-type-logo" src="assets/img/rasa_bot_logo.png" />
-                            </div>
-                          </div>
-                          <!-- <div class="bot-type-logo-wpr" *ngIf="faqkb.type === 'tilebot'">
-                            <div class="bot-type-logo--img-wpr ">
-                              <img class="bot-type-logo" [src]="botLogo" />
-                            </div>
-                          </div> -->
-
                         </div>
 
-                        <div class="bot-card-info-wpr">
-                          <span class="bot-card-bot-name-wpr">
+                        <div class="cl-card-info-wpr">
+                          <span class="cl-card-item-name-wpr">
 
-                            <!-- (click)="$event.stopPropagation()" -->
-                            <div class="bot-card-bot-name" >
-                              <!-- {{ faqkb.name }} -->
-                              <!-- (click)="edit()" -->
+                           
+                            <div class="cl-card-item-name" >
+                           
                               <span *ngIf="botIdToRename !== faqkb._id">{{ faqkb.name }}</span>
                               <input *ngIf="botIdToRename === faqkb._id" type="text" [(ngModel)]="faqkb.name"
                                 (ngModelChange)="changeChatBotName($event)"
                                 (click)="$event.stopPropagation()"
                                 (keypress)="onPressEnterUpdateChatBotName($event);$event.stopPropagation() ">
-
-
                             </div>
                           </span>
-                          <div class="bot-card-bot-description-wpr">
+                          <div class="cl-card-item-description-wpr">
                             <!-- <div class="bot-card-bot-no-description" *ngIf="!faqkb.description"> No description provided</div> -->
-                            <div class="bot-card-bot-description" *ngIf="faqkb.description"> {{ faqkb?.description }}
+                            <div class="cl-card-item-description" *ngIf="faqkb.description"> {{ faqkb?.description }}
                             </div>
                           </div>
 
-                          <div class="bot-card-bot-info">
-                            <!-- {{'Created' | translate}}  {{ faqkb?.createdAt | amDateFormat: 'LLL'}} -->
+                          <div class="cl-card-item-info">
+              
                             {{'Created' | translate}} {{ faqkb?.createdAt | amTimeAgo}} / {{ "Updated" | translate }} {{
                             faqkb?.updatedAt | amTimeAgo }}
 
@@ -207,26 +199,25 @@
 
                         </div>
                       </div>
-                      <!-- [ngClass]="{'bot-card-stats-wpr-draft-bot': !faqkb.published}" -->
-                      <div class="bot-card-second-column">
-                        <div class="bot-card-stats-wpr">
-                          <div class="bot-card-stats">
-                            <div class="bot-card-stats-title">
+                     
+                      <div class="cl-card-second-column">
+                        <div class="cl-card-stats-wpr">
+                          <div class="cl-card-item-stats">
+                            <div class="cl-card-item-stats-title">
                               {{ "BotsAddEditPage.Messages" | translate }}
                             </div>
-                            <div class="bot-card-stats-values">
+                            <div class="cl-card-item-stats-values">
                               {{ faqkb?.message_count}}
                             </div>
                           </div>
 
-                          <div class="bot-card-stats">
-                            <div class="bot-card-stats-title">
+                          <div class="cl-card-item-stats">
+                            <div class="cl-card-item-stats-title">
                               <span *ngIf="faqkb.published"> Published </span>
                               <span *ngIf="!faqkb.published"> Draft </span>
 
                             </div>
-                            <div class="bot-card-stats-values">
-
+                            <div class="cl-card-item-stats-values">
 
                               <span *ngIf="faqkb.published" class="material-icons bot-published-icon">
                                 done
@@ -241,31 +232,45 @@
 
                         </div>
 
-                        <div class="bot-card-action-wpr">
-                          <div class="bot-card-action-group">
-                            <div *ngIf="isVisibleAnalytics" class="bot-card-action-btn-wpr">
-                              <button id="btn-{{faqkb._id}}" mat-icon-button
+                        <div class="cl-card-action-wpr">
+                          <div class="cl-card-action-group">
+                            <div *ngIf="isVisibleAnalytics" 
+                              class="cl-card-action-btn-wpr">
+                              <button id="btn-{{faqkb._id}}" 
+                                mat-icon-button
                                 (click)="$event.stopPropagation();openBotStats(faqkb)"
-                                matTooltipClass="custom-mat-tooltip" matTooltip="Metrics" #tooltip="matTooltip"
-                                matTooltipPosition='below' matTooltipHideDelay="100">
+                                matTooltipClass="custom-mat-tooltip" 
+                                matTooltip="Metrics" 
+                                #tooltip="matTooltip"
+                                matTooltipPosition='below' 
+                                matTooltipHideDelay="100">
                                 <mat-icon>leaderboard</mat-icon>
                               </button>
                             </div>
 
-                            <div class="bot-card-action-btn-wpr" (click)="$event.stopPropagation()">
-                              <button id="share-btn-{{faqkb._id}}" mat-icon-button [matMenuTriggerFor]="menu"
-                                matTooltipClass="custom-mat-tooltip" matTooltip="Share" #tooltip="matTooltip"
-                                matTooltipPosition='below' matTooltipHideDelay="100">
+                            <div class="cl-card-action-btn-wpr" 
+                              (click)="$event.stopPropagation()">
+                              <button id="share-btn-{{faqkb._id}}" 
+                                  mat-icon-button 
+                                  [matMenuTriggerFor]="menu"
+                                  matTooltipClass="custom-mat-tooltip" 
+                                  matTooltip="Share" 
+                                  #tooltip="matTooltip"
+                                  matTooltipPosition='below'
+                                  matTooltipHideDelay="100">
                                 <mat-icon>share</mat-icon>
                               </button>
                               <mat-menu #menu="matMenu">
-                                <button class="mat-menu-btn" mat-menu-item
+                                <button class="mat-menu-btn" 
+                                  mat-menu-item
                                   (click)='shareWithLink(faqkb._id, faqkb?.name)'>
                                   <mat-icon>link</mat-icon>
                                   <span>Share with link</span>
                                 </button>
 
-                                <button class="mat-menu-btn" mat-menu-item (click)='exportChatbotToJSON(faqkb)'>
+                                <button class="mat-menu-btn"
+                                   mat-menu-item 
+                                   (click)='exportChatbotToJSON(faqkb)'>
                                   <mat-icon>file_download</mat-icon>
 
                                   <span>Export</span>
@@ -278,32 +283,42 @@
                               </mat-menu>
                             </div>
 
-                            <div class="bot-card-action-btn-wpr" (click)="$event.stopPropagation()">
-                              <button mat-icon-button [matMenuTriggerFor]="sharemenu"
-                                matTooltipClass="custom-mat-tooltip" matTooltip="More actions" #tooltip="matTooltip"
-                                matTooltipPosition='below' matTooltipHideDelay="100">
+                            <div class="cl-card-action-btn-wpr" 
+                              (click)="$event.stopPropagation()">
+                              <button mat-icon-button 
+                                  [matMenuTriggerFor]="sharemenu"
+                                  matTooltipClass="custom-mat-tooltip" 
+                                  matTooltip="More actions" 
+                                  #tooltip="matTooltip"
+                                  matTooltipPosition='below' 
+                                  matTooltipHideDelay="100">
                                 <mat-icon>more_vert</mat-icon>
                               </button>
                               <mat-menu #sharemenu="matMenu">
 
-                                <button class="mat-menu-btn" mat-menu-item (click)='renameChatbot(faqkb)'>
+                                <button class="mat-menu-btn" 
+                                  mat-menu-item 
+                                  (click)='renameChatbot(faqkb)'>
                                   <mat-icon>edit</mat-icon>
                                   <span>Rename</span>
                                 </button>
 
-                                <button class="mat-menu-btn" mat-menu-item
+                                <button class="mat-menu-btn" 
+                                  mat-menu-item
                                   (click)="openTestSiteInPopupWindow(faqkb?._id)">
                                   <mat-icon>visibility</mat-icon>
                                   <span>Test it out</span>
                                 </button>
 
-                                <button class="mat-menu-btn" mat-menu-item
+                                <button class="mat-menu-btn" 
+                                  mat-menu-item
                                   (click)='duplicateChatbot(faqkb?._id,  faqkb?.name)'>
                                   <mat-icon>content_copy</mat-icon>
                                   <!-- <span>{{ 'Duplicate' | translate }}</span> -->
                                   <span>Duplicate</span>
                                 </button>
-                                <button class="mat-menu-btn" *ngIf="!faqkb?.is_system_identity_bot" mat-menu-item
+                                <button class="mat-menu-btn" *ngIf="!faqkb?.is_system_identity_bot" 
+                                  mat-menu-item
                                   (click)='openDeleteModal(faqkb?._id, faqkb?.name, faqkb?.has_faq, faqkb?.type)'>
                                   <mat-icon>delete</mat-icon>
                                   <!-- <span>{{ 'BotsPage.tooltipDeleteBot' | translate }}</span> -->

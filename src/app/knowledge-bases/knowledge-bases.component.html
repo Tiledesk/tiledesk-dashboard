@@ -10,7 +10,8 @@
   <div class="container-fluid" style="padding-left: 5px;padding-right: 5px;">
 
     <div class="content-wpr" style="display: flex;">
-      <appdashboard-settings-sidebar *ngIf="!ARE_NEW_KB" style="border-right:1px solid #e5effe !important"> </appdashboard-settings-sidebar>
+
+      <appdashboard-settings-sidebar *ngIf="!ARE_NEW_KB"> </appdashboard-settings-sidebar>
       
       <appdashboard-bots-sidebar *ngIf="ARE_NEW_KB"
         [allTemplatesCount]="allTemplatesCount"
@@ -19,7 +20,7 @@
         [increaseSalesTemplatesCount]="increaseSalesTemplatesCount" 
         [myChatbotOtherCount]="myChatbotOtherCount"
         [customerSatisfactionBotsCount]="customerSatisfactionBotsCount"
-        [increaseSalesBotsCount]="increaseSalesBotsCount" style="border-right:1px solid #e5effe !important;">
+        [increaseSalesBotsCount]="increaseSalesBotsCount">
       </appdashboard-bots-sidebar>
 
 
