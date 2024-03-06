@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { IntegrationService } from 'app/services/integration.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { OpenaiService } from 'app/services/openai.service';
 
@@ -18,7 +19,7 @@ export class OpenaiIntegrationComponent implements OnInit {
   translateparams: any;
 
   constructor(
-    private openaiService: OpenaiService,
+    private integrationService: IntegrationService,
     private logger: LoggerService
   ) { }
 
@@ -26,7 +27,7 @@ export class OpenaiIntegrationComponent implements OnInit {
     this.logger.debug("[INT-OpenAI] integration ", this.integration)
     this.translateparams = { intname: 'OpenAI' };
     if (this.integration.value.apikey) {
-      this.checkKey(this.integration.value.apikey);
+      this.checkKey();
     }
   }
 
@@ -41,7 +42,7 @@ export class OpenaiIntegrationComponent implements OnInit {
   }
 
   saveIntegration() {
-    this.checkKey(this.integration.value.apikey).then((status) => {
+    this.checkKey().then((status) => {
       let data = {
         integration: this.integration,
         isVerified: status
@@ -55,9 +56,11 @@ export class OpenaiIntegrationComponent implements OnInit {
     this.onDeleteIntegration.emit(this.integration);
   }
 
-  checkKey(key: string) {
-    return new Promise((resolve, reject) => {
-      this.openaiService.checkKeyValidity(key).subscribe((resp) => {
+  checkKey() {
+    return new Promise((resolve) => {
+      let url = "https://api.openai.com/v1/models";
+      let key = "Bearer " + this.integration.value.apikey;
+      this.integrationService.checkIntegrationKeyValidity(url, key).subscribe((resp) => {
         this.isVerified = true;
         resolve(true);
       }, (error) => {

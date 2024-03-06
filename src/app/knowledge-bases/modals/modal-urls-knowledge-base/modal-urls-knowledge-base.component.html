@@ -10,7 +10,7 @@
                 </button>
                 <h4 class="modal-title">
                     <span style="vertical-align: middle;">
-                        {{ 'KbPage.Add' | translate }}
+                        {{ 'KbPage.titleUrls' | translate }}
                     </span>
                 </h4>
             </div>
@@ -19,25 +19,21 @@
                 <div class="info-container">
                     <i class="material-icons-outlined info-icon">help_outline</i>
                     <div class="info-text">
-                      <p>{{ 'KbPage.AddKbInfoTextContent' | translate }}</p>
-                      <!-- <p>{{ 'KbPage.AddKbInfoTextContentMsg1' | translate }}</p> -->
-                      <p [innerHTML]="'KbPage.AddKbInfoTextContentMsg1' | translate" style="margin-top: 8px;"></p>
+                        <!-- <p>{{ 'KbPage.AddKbInfoTextContentMsg1' | translate }}</p> -->
+                        <p [innerHTML]="'KbPage.helpUrls' | translate"></p>
+                        <span>{{ 'KbPage.YouCanAddKBUrlsLimit' | translate }}</span>
                     </div>
                 </div>
                 <div class="form-container">
                     <form [formGroup]="kbForm">
                       <div class="input-container">
-                        <span class="input-label">{{ 'Name' | translate }}</span>
-                        <input type="text" name="name" class="custom-input" [(ngModel)]="kb.name" formControlName="name"
-                          placeholder="{{ 'KbPage.TypeKbNamePlaceholder' | translate }}" (input)="onChangeInput($event)"
-                          [class.invalid]="(kbForm.controls.name.errors?.pattern || kbForm.controls.name.errors?.required) && kbForm.controls.name.touched">
-                        <span class="input-label">{{ 'KbPage.FileText' | translate }}</span>
-                
-                        <textarea type="text" name="content" class="custom-textarea" [(ngModel)]="kb.content" formControlName="content"
-                          placeholder="{{ 'KbPage.TypeKbContentPlaceholder' | translate }}" (input)="onChangeInput($event)" rows="4"
-                          [class.invalid]="(kbForm.controls.content.errors?.pattern || kbForm.controls.content.errors?.required) && kbForm.controls.content.touched"
+                        <span class="input-label">{{ 'KbPage.titleTextareaUrls' | translate }}</span> 
+                        <textarea type="text" name="content" class="custom-textarea" 
+                            [(ngModel)]="content" 
+                            placeholder="{{ 'KbPage.placeholderUrls' | translate }}" (input)="onChangeInput($event)" rows="4"
+                            [class.invalid]="(kbForm.controls.content.errors?.pattern || kbForm.controls.content.errors?.required) && kbForm.controls.content.touched"
                         ></textarea>
-                        
+                        <span class="input-label" style="font-size: 12px; font-weight: normal;">{{ 'KbPage.infoUrls' | translate }}</span>
                       </div>
                     </form>
                 </div>

@@ -334,6 +334,16 @@ export enum KB_MAX_NUM {
     Custom = 3
 };
 
+
+export enum KB_DEFAULT_PARAMS {
+    LIMIT = 20,
+    NUMBER_PAGE = 0,
+    DIRECTION = -1,
+    SORT_FIELD = 'updatedAt'
+}
+
+export const KB_LIMIT_CONTENT = 20;
+
 // Growth
 export const featuresPlanA = [
     'CRM',

@@ -1,5 +1,10 @@
 # tiledesk-dashboard
 
+### 2.6.0-rc1
+- Improves Knowledge Base 
+- Adds the customer.io integration
+- Refactors the bot list page
+
 ### 2.5.16
 - Deploys in production
 - Improves the chatbots sidebar
