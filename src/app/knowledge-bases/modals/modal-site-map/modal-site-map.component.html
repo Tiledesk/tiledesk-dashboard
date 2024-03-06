@@ -8,7 +8,7 @@
               </button>
               <h4 class="modal-title">
                   <span style="vertical-align: middle;">
-                      {{ 'KbPage.Add' | translate }}
+                      {{ 'KbPage.TitleSitemap' | translate }}
                   </span>
               </h4>
           </div>
@@ -17,24 +17,15 @@
               <div class="info-container">
                   <i class="material-icons-outlined info-icon">help_outline</i>
                   <div class="info-text">
-                    <p>{{ 'KbPage.AddKbInfoFirstText' | translate }}</p>
-                    <p>{{ 'KbPage.AddKbInfoSecondText' | translate }}</p>
-                    <p [innerHTML]="'KbPage.AddKbInfoThirdText' | translate" style="margin-top: 8px;"></p>
-                      <!-- <p>{{'KbPage.AddKbInfoURL' | translate}}</p> -->
-                      <!-- <p>{{ 'KbPage.AddKbInfoSecondText' | translate }}</p> -->
-                      <!-- <p [innerHTML]="'KbPage.AddKbInfoThirdText' | translate" style="margin-top: 8px;"></p> -->
+                    <p>{{ 'KbPage.InfoSitemap' | translate }}</p>
                   </div>
               </div>
               <div class="form-container">
                   <form [formGroup]="kbForm">
                       <div class="input-container">
-                          <!-- <span class="input-label">{{ 'Name' | translate }}</span>
-                          <input type="text" name="name" class="custom-input" [(ngModel)]="kb.name" formControlName="name"
-                              placeholder="{{ 'KbPage.TypeKbNamePlaceholder' | translate }}" (input)="onChangeInput($event)"
-                              [class.invalid]="(kbForm.controls.name.errors?.pattern || kbForm.controls.name.errors?.required) && kbForm.controls.name.touched"> -->
-                          <span class="input-label">{{ 'KbPage.Url' | translate }}</span>
+                          <span class="input-label">{{ 'KbPage.LabelInputSitemap' | translate }}</span>
                           <input type="url" name="url" class="custom-input" [(ngModel)]="kb.url" formControlName="url"
-                              placeholder="{{ 'KbPage.TypeKbUrlPlaceholder' | translate }}" (input)="onChangeInput($event)"
+                              placeholder="{{ 'KbPage.PlaceholderInputSitemap' | translate }}" (input)="onChangeInput($event)"
                               [class.invalid]="(kbForm.controls.url.errors?.pattern || kbForm.controls.url.errors?.required) && kbForm.controls.url.touched">
                       </div>
                   </form>
@@ -43,10 +34,10 @@
           
           <div class="modal-footer">
               <button class="btn btn-white" style="padding:12px 16px;" (click)="onCloseBaseModal()">
-              {{ "Cancel" | translate }}
+                {{ "Cancel" | translate }}
               </button>
-              <button id="addkb-btn" class="btn btn-primary" [disabled]="buttonDisabled" (click)="onSaveKnowledgeBase()">
-              {{ 'Add' | translate }}
+              <button id="addkb-btn" class="btn btn-primary" [disabled]="buttonDisabled" (click)="onSendSitemap()">
+                {{ 'OnboardPage.Next' | translate }}
               </button>
           </div> 
 
@@ -67,7 +58,7 @@
               </button>
               <h4 class="modal-title">
                   <span style="vertical-align: middle;">
-                      {{ 'KbPage.titleUrls' | translate }}
+                      {{ 'KbPage.TitleSitemapList' | translate }}
                   </span>
               </h4>
           </div>
@@ -76,23 +67,20 @@
               <div class="info-container">
                   <i class="material-icons-outlined info-icon">help_outline</i>
                   <div class="info-text">
-                      <!-- <p>{{ 'KbPage.AddKbInfoTextContentMsg1' | translate }}</p> -->
-                      <p [innerHTML]="'KbPage.helpUrls' | translate"></p>
-                      <span>{{ 'KbPage.YouCanAddKBUrlsLimit' | translate }}</span>
+                      <span>{{ 'KbPage.InfoSitemapList' | translate }} {{KB_LIMIT_CONTENT}}</span>
                   </div>
               </div>
               <div class="form-container">
-                  <form [formGroup]="kbForm">
                     <div class="input-container">
                       <span class="input-label">{{ 'KbPage.titleTextareaUrls' | translate }}</span> 
-                      <textarea type="text" name="content" class="custom-textarea" 
-                          [(ngModel)]="content" 
-                          placeholder="{{ 'KbPage.placeholderUrls' | translate }}" (input)="onChangeInput($event)" rows="4"
-                          [class.invalid]="(kbForm.controls.content.errors?.pattern || kbForm.controls.content.errors?.required) && kbForm.controls.content.touched"
+                      <textarea type="text" name="listOfUrls" class="custom-textarea" 
+                          [(ngModel)]="listOfUrls" 
+                          [ngClass]="{'invalid':errorLimit }"
+                          placeholder="{{ 'KbPage.PlaceholderInputSitemapList' | translate }}" (input)="onChangeList($event)" rows="4"
                       ></textarea>
-                      <span class="input-label" style="font-size: 12px; font-weight: normal;">{{ 'KbPage.infoUrls' | translate }}</span>
+                      <span *ngIf="!errorLimit"class="input-label">{{countSitemap}} {{ 'KbPage.LabelSitemapList' | translate }}</span>
+                      <span *ngIf="errorLimit" class="input-label-error">{{ 'KbPage.InfoSitemapList' | translate }} {{KB_LIMIT_CONTENT}}</span>
                     </div>
-                  </form>
               </div>
           </div>
           
@@ -100,8 +88,8 @@
               <button class="btn btn-white" style="padding:12px 16px;" (click)="onCloseBaseModal()">
                 {{ "Cancel" | translate }}
               </button>
-              <button id="addkb-btn" class="btn btn-primary" [disabled]="buttonDisabled" (click)="onSendSitemap()">
-                {{ 'KbPage.Import' | translate }}
+              <button id="addkb-btn" class="btn btn-primary" [disabled]="buttonDisabled" (click)="onSaveKnowledgeBase()">
+                {{ 'KbPage.Import' | translate }} {{countSitemap}} URL
               </button>
           </div> 
 

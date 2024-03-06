@@ -62,7 +62,7 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
   kbsList: Array<any>;
   kbsListCount: number = 0;
   refreshKbsList: boolean = true;
-  // numberPage: number = 0;
+  numberPage: number = 0;
 
 
   kbid_selected: any;
@@ -86,6 +86,7 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
   customerSatisfactionBotsCount: number;
   myChatbotOtherCount: number;
   increaseSalesBotsCount: number;
+  listSitesOfSitemap: any = [];
 
   private unsubscribe$: Subject<any> = new Subject<any>();
   constructor(
@@ -409,11 +410,14 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
   onLoadPage(searchParams){
     console.log('onLoadNextPage:',searchParams);
     let params = "?limit="+KB_DEFAULT_PARAMS.LIMIT
-    if(searchParams?.page){
-      params +="&page="+searchParams.page;
-    } else {
-      +"&page=0";
-    }
+    //if(searchParams?.page){
+      let limitPage = Math.floor(this.kbsListCount/KB_DEFAULT_PARAMS.LIMIT);
+      this.numberPage++;
+      if(this.numberPage>limitPage)this.numberPage = limitPage;
+      params +="&page="+this.numberPage;
+    // } else {
+    //   +"&page=0";
+    // }
     if(searchParams?.status){
       params +="&status="+searchParams.status;
     }
@@ -434,8 +438,9 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
   }
 
   onLoadByFilter(searchParams){
-    //console.log('onLoadByFilter:',searchParams);
-    searchParams.page = 0;
+    // console.log('onLoadByFilter:',searchParams);
+    // searchParams.page = 0;
+    this.numberPage = -1;
     this.kbsList = [];
     this.onLoadPage(searchParams);
   }
@@ -463,6 +468,7 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
       //   this.SHOW_TABLE = false;
       // }
       //this.showSpinner = false;
+      //
       this.refreshKbsList = !this.refreshKbsList;
       
     }, (error) => {
@@ -491,11 +497,13 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
   // }
 
   onSendSitemap(body){
-    this.onCloseBaseModal();
+    // this.onCloseBaseModal();
     let error = this.msgErrorAddUpdateKb;
-    this.kbService.addKb(body).subscribe((resp: any) => {
+    this.kbService.addSitemap(body).subscribe((resp: any) => {
       this.logger.log("onSendSitemap:", resp);
-      let kb = resp.value;
+      // let error = resp.error;
+      // let url = resp.url;
+      this.listSitesOfSitemap = resp.sites;
     }, (err) => {
       this.logger.error("[KNOWLEDGE-BASES-COMP] ERROR send sitemap: ", err);
       this.onOpenErrorModal(error);
@@ -716,7 +724,7 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
       if(response.status_code == -1 || response.status_code == 0 || response.status_code == 2){
         // this.logger.log('riprova tra 10 secondi...');
         this.updateStatusOfKb(kb._id, response.status_code);
-        timer(10000).subscribe(() => {
+        timer(20000).subscribe(() => {
           this.checkStatusWithRetry(kb);
         });
       } else { // status == 3 || status == 4
@@ -992,6 +1000,7 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
 
   // ************** CLOSE ALL MODAL **************** //
   onCloseBaseModal(){
+    this.listSitesOfSitemap = [];
     this.baseModalDelete = false;
     this.baseModalPreview = false;
     this.baseModalError = false;

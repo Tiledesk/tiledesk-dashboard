@@ -1655,7 +1655,15 @@
         "AddKbSitemap": "Seitenverzeichnis",
         "LoadMore": "Mehr laden",
         "Loading": "Wird geladen",
-        "YouCanAddKBUrlsLimit": "Sie können maximal 300 URLs hinzufügen"
+        "YouCanAddKBUrlsLimit": "Las URL deben ser menores que ",
+        "TitleSitemap": "Importar desde el mapa del sitio",
+        "InfoSitemap": "Importe la URL del mapa del sitio de su sitio web para buscar y organizar automáticamente las URL de las páginas de su sitio web.",
+        "LabelInputSitemap": "URL del mapa del sitio",
+        "PlaceholderInputSitemap": "Ingrese la URL del mapa del sitio",
+        "TitleSitemapList": "Revisar",
+        "InfoSitemapList": "Las URL deben ser menores o iguales que ",
+        "LabelSitemapList": " URL agregada.",
+        "PlaceholderInputSitemapList": "Ingrese las URL"
     },
     "AutomationsDemoPageDescription":"Con nuestras “automatizaciones APIs” podrás gestionar mensajes de difusión masiva en Whatsapp utilizando las automatizaciones del diseñador combinadas con la facilidad de nuestras APIs, enviar mensajes a todos los contactos de tu CRM favorito, recibir el estado de los mensajes enviados (recibidos, leídos, etc.) ) ¡y mucho más!",
     "Sunday": "Domingo",

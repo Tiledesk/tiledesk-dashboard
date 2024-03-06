@@ -1655,7 +1655,15 @@
         "AddKbSitemap": "Mappa del sito",
         "LoadMore": "carica di più",
         "Loading": "caricamento",
-        "YouCanAddKBUrlsLimit": "Puoi aggiungere un massimo di 300 URL"
+        "YouCanAddKBUrlsLimit": "Gli URL devono essere inferiori a ",
+        "TitleSitemap": "Importa dalla sitemap",
+        "InfoSitemap": "Importa l'URL della sitemap del tuo sito web per recuperare e organizzare automaticamente gli URL delle pagine del tuo sito web.",
+        "LabelInputSitemap": "URL della sitemap",
+        "PlaceholderInputSitemap": "Inserisci l'URL della sitemap",
+        "TitleSitemapList": "Controlla e conferma gli URL",
+        "InfoSitemapList": "Gli URL devono essere inferiori o uguali a ",
+        "LabelSitemapList": " URL aggiunto.",
+        "PlaceholderInputSitemapList": "Inserisci gli URL"
     },
     "AutomationsDemoPageDescription": "Con le nostre “APIs automations” puoi gestire messaggi broadcast massivi su Whatsapp utilizzando le automazioni del designer uniti alla facilità delle nostre API, inviare messaggi a tutti i contatti del tuo CRM preferito, ricevere lo stato dei messaggi inviati (ricevuto, letto etc.) e molto altro ancora!",
     "Sunday": "Domenica",

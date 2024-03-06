@@ -1655,7 +1655,15 @@
         "AddKbSitemap": "Saytın xəritəsi",
         "LoadMore": "daha çox yükləyin",
         "Loading": "yüklənir",
-        "YouCanAddKBUrlsLimit": "Siz maksimum 300 URL əlavə edə bilərsiniz"
+        "YouCanAddKBUrlsLimit": "URL-lər bundan az olmalıdır ",
+        "TitleSitemap": "Sayt xəritəsindən idxal edin",
+        "InfoSitemap": "Veb saytınızın səhifələrinin URL-lərini avtomatik əldə etmək və təşkil etmək üçün veb saytınızın sayt xəritəsi URL-ni idxal edin.",
+        "LabelInputSitemap": "Sayt xəritəsi URL",
+        "PlaceholderInputSitemap": "Sayt xəritəsi URL daxil edin",
+        "TitleSitemapList": "Baxış-icmal",
+        "InfoSitemapList": "URL-lər bundan az və ya bərabər olmalıdır ",
+        "LabelSitemapList": " URL əlavə edildi.",
+        "PlaceholderInputSitemapList": "URL-ləri daxil edin"
     },
     "AutomationsDemoPageDescription":"Bizim “API avtomatlaşdırmalarımız” ilə siz API-lərimizin asanlığı ilə birləşdirilən dizayner avtomatlaşdırmalarından istifadə edərək Whatsapp-da kütləvi yayım mesajlarını idarə edə, sevimli CRM-nin bütün kontaktlarına mesaj göndərə, göndərilən mesajların statusunu (qəbul edildi, oxundu və s.) ala bilərsiniz. ) və daha çox!",
     "Sunday": "bazar günü",

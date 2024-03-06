@@ -148,18 +148,25 @@
     }
     .custom-textarea {
         width: 100%;
+        overflow: scroll auto;
+        scrollbar-width: none;
+        min-height: 300px;
         border-radius: 6px;
         border: 2px solid #c6cdd4;
         padding: 10px 15px;
         color: #22272d;
         // line-height: 35px;
         // font-weight: 400;
+        line-height: inherit;
+        white-space: pre;
+        resize: block;
         &.invalid {
             border: 2px solid red !important;
             outline: 0px solid red !important;
             transition: border 0.3s;
         }
     }
+
 }
 
 
@@ -211,3 +218,4 @@
 .btn {
     text-transform: none;
 } 
+

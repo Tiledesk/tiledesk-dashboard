@@ -38,6 +38,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
   SHOW_MORE_BTN: boolean = true;
   SHOW_TABLE: boolean = false;
   searchParams: any;
+  numberPage: number = 0;
   // kbsListCount: number = 0;
 
   constructor(
@@ -75,7 +76,9 @@ export class KnowledgeBaseTableComponent implements OnInit {
 
   loadMoreData() {
     this.isLoading = true;
-    this.searchParams.page = Math.floor(this.kbsList.length/KB_DEFAULT_PARAMS.LIMIT);
+    this.numberPage++;
+    this.searchParams.page =  this.numberPage;//Math.floor(this.kbsList.length/KB_DEFAULT_PARAMS.LIMIT);
+    
     this.loadPage.emit(this.searchParams);
   }
 
@@ -200,7 +203,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
   }
 
   onOpenAddKnowledgeBaseModal(type){
-    console.log('onOpenAddKnowledgeBaseModal', type);
+    // console.log('onOpenAddKnowledgeBaseModal', type);
     this.openAddKnowledgeBaseModal.emit(type);
   }
 

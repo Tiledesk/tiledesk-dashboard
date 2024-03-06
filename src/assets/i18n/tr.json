@@ -1655,7 +1655,15 @@
         "AddKbSitemap": "Webbplatskarta",
         "LoadMore": "ladda mer",
         "Loading": "läser in",
-        "YouCanAddKBUrlsLimit": "Du kan lägga till högst 300 webbadresser"
+        "YouCanAddKBUrlsLimit": "URL'ler şu değerden küçük olmalıdır: ",
+        "TitleSitemap": "Site haritasından içe aktar",
+        "InfoSitemap": "Web sitenizin sayfalarının URL'lerini otomatik olarak getirip düzenlemek için web sitenizin site haritası URL'sini içe aktarın.",
+        "LabelInputSitemap": "Site Haritası URL'si",
+        "PlaceholderInputSitemap": "Site haritası URL'sini girin",
+        "TitleSitemapList": "Gözden geçirmek",
+        "InfoSitemapList": "URL'ler şu değerden küçük veya ona eşit olmalıdır: ",
+        "LabelSitemapList": " URL eklendi.",
+        "PlaceholderInputSitemapList": "URL'leri girin"
     },
     "AutomationsDemoPageDescription":"“API otomasyonlarımız” ile, API'lerimizin kolaylığıyla birlikte tasarımcının otomasyonlarını kullanarak Whatsapp'taki toplu yayın mesajlarını yönetebilir, favori CRM'nizdeki tüm kişilere mesaj gönderebilir, gönderilen mesajların durumunu (alındı, okundu vb.) alabilirsiniz. ) ve daha fazlası!",
     "Sunday": "Pazar",

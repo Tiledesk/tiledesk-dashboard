@@ -1655,7 +1655,15 @@
         "AddKbSitemap": "Webbplatskarta",
         "LoadMore": "ladda mer",
         "Loading": "läser in",
-        "YouCanAddKBUrlsLimit": "Du kan lägga till högst 300 webbadresser"
+        "YouCanAddKBUrlsLimit": "Webbadresser måste vara mindre än ",
+        "TitleSitemap": "Importera från webbplatskarta",
+        "InfoSitemap": "Importera webbplatsens webbadress för webbplatskarta för att automatiskt hämta och organisera webbadresserna till webbplatsens sidor.",
+        "LabelInputSitemap": "Webbplatskartans URL",
+        "PlaceholderInputSitemap": "Ange webbplatskartans URL",
+        "TitleSitemapList": "Recension",
+        "InfoSitemapList": "Webbadresser måste vara mindre än eller lika med ",
+        "LabelSitemapList": " URL har lagts till.",
+        "PlaceholderInputSitemapList": "Ange webbadresser"
         },
     "AutomationsDemoPageDescription":"Med våra “API-automatiseringar” kan du hantera massutsändningsmeddelanden på Whatsapp med hjälp av designerns automatiseringar kombinerat med enkelheten hos våra API: er, skicka meddelanden till alla kontakter i din favorit-CRM, ta emot status för skickade meddelanden (mottagna, lästa, etc. ) och mycket mer!",
     "Sunday": "söndag",

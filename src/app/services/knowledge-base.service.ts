@@ -148,6 +148,18 @@ export class KnowledgeBaseService {
     return this.httpClient.get(url, httpOptions);
   }
 
+  
+  addSitemap(body: any) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    }
+    const url = this.SERVER_BASE_PATH + this.project_id + "/kb/sitemap";
+    this.logger.log("[KNOWLEDGE BASE SERVICE] - add new kb URL ", url);
+    return this.httpClient.post(url, JSON.stringify(body), httpOptions); 
+  }
 
   addKb(body: any) {
     const httpOptions = {
