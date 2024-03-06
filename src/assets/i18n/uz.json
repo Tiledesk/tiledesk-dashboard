@@ -1576,7 +1576,9 @@
     "KbPage": {
         "Secrets": "Sirlar",
         "Enter": "Kirish",
-        "RunIndexing": "Indekslashni ishga tushiring",
+        "RunIndexing": "Qayta mashq qilish",
+        "RunCheckStatus": "Holatni tekshirish",
+        "DeleteKb": "Oʻchirish",
         "CreationDate": "Yaratilgan sana",
         "KbCounterFooter": "{{ counter }} 3 ta bilim bazasi qo'shildi",
         "KbCounterFooter1": "Added {{counter}} Knowledge Bases",
@@ -1596,7 +1598,6 @@
         "TypeKbNamePlaceholder": "Bilimlar bazasi nomi",
         "TypeKbKeyPlaceholder": "GPT kalitingizni kiriting",
         "AskQuestionPlaceholder": "Savol bering",
-        "DeleteKb": "Ma'lumot bazasini o'chirish",
         "DeleteKbInfoFirstText": "Siz endi bu bilimlar bazasida AIdan foydalana olmaysiz",
         "SureToDelete": "Haqiqatan ham Maʼlumot bazasini oʻchirib tashlamoqchimisiz <b>{{ name }}</b>?",
         "GptKeyInfo": "Ma'lumotlar bazasidan foydalanish uchun GPT kalitingizni kiriting",

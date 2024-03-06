@@ -1577,7 +1577,9 @@
     "KbPage": {
         "Secrets": "أسرار",
         "Enter": "يدخل",
-        "RunIndexing": "تشغيل الفهرسة",
+        "RunIndexing": "إعادة التدريب",
+        "RunCheckStatus": "تحقق من حالة",
+        "DeleteKb": "يمسح",
         "CreationDate": "تاريخ الإنشاء",
         "KbCounterFooter": "{{ counter }} تمت إضافة 3 قواعد معرفية",
         "KbCounterFooter1": "Added {{counter}} Knowledge Bases",
@@ -1597,7 +1599,6 @@
         "TypeKbUrlPlaceholder": "اكتب عنوان URL لقاعدة المعرفة",
         "TypeKbKeyPlaceholder": "اكتب مفتاح GPT الخاص بك",
         "AskQuestionPlaceholder": "طرح سؤال",
-        "DeleteKb": "حذف قاعدة المعرفة",
         "DeleteKbInfoFirstText": "لن تتمكن بعد الآن من استخدام الذكاء الاصطناعي في قاعدة المعرفة هذه",
         "SureToDelete": "هل أنت متأكد أنك تريد حذف قاعدة المعرفة <b>{{ name }}</b>؟",
         "GptKeyInfo": "أدخل مفتاح GPT الخاص بك لاستخدام قواعد المعرفة الخاصة بك",

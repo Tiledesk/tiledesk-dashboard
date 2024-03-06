@@ -1577,7 +1577,9 @@
     "KbPage": {
         "Secrets": "Sirlər",
         "Enter": "Daxil edin",
-        "RunIndexing": "İndeksləşdirməni işə salın",
+        "RunIndexing": "Yenidən məşq edin",
+        "RunCheckStatus": "Vəziyyəti yoxlayın",
+        "DeleteKb": "Sil",
         "CreationDate": "Yaradılma tarixi",
         "KbCounterFooter": "{{ counter }} 3 Bilik bazası əlavə edildi",
         "KbCounterFooter1": "Added {{counter}} Knowledge Bases",
@@ -1597,7 +1599,6 @@
         "TypeKbUrlPlaceholder": "Bilik Bazasının URL-ni yazın",
         "TypeKbKeyPlaceholder": "GPT açarınızı yazın",
         "AskQuestionPlaceholder": "Sual ver",
-        "DeleteKb": "Bilik bazasını silin",
         "DeleteKbInfoFirstText": "Artıq bu bilik bazasında süni intellektdən istifadə edə bilməyəcəksiniz",
         "SureToDelete": "Bilik Bazasını silmək istədiyinizə əminsiniz <b>{{ name }}</b>?",
         "GptKeyInfo": "Bilik Bazalarınızdan istifadə etmək üçün GPT Açarınızı daxil edin",

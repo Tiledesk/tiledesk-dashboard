@@ -460,7 +460,9 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
         } else {
           this.kbsList.push(kb);
         }
+        this.updateStatusOfKb(kb._id, 3);
       });
+    
       // if(this.kbsList.length>0){
       //   this.SHOW_TABLE = true;
       //   this.checkAllStatuses();
@@ -536,7 +538,6 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
         this.kbsList.unshift(kb);
         this.kbsListCount = this.kbsListCount+1;
         this.refreshKbsList = !this.refreshKbsList;
-
         // let searchParams = {
         //   "sortField": KB_DEFAULT_PARAMS.SORT_FIELD,
         //   "direction": KB_DEFAULT_PARAMS.DIRECTION,
@@ -545,6 +546,7 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
         // }
         // this.onLoadByFilter(searchParams);
       }
+      this.updateStatusOfKb(kb._id, 3);
       // this.updateStatusOfKb(kb._id, 0);
       // this.onLoadByFilter(searchParams);
       // that.onRunIndexing(kb);
@@ -577,6 +579,7 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
         //     this.checkStatusWithRetry(kb);
         //   }, 2000);
         // }
+        this.updateStatusOfKb(kb._id, 3);
       });
       this.kbsListCount = this.kbsListCount+kbs.length;
       this.refreshKbsList = !this.refreshKbsList;
@@ -614,7 +617,6 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
         this.removeKb(kb._id);
         this.kbsListCount = this.kbsListCount-1;
         this.refreshKbsList = !this.refreshKbsList;
-
         // let searchParams = {
         //   "sortField": KB_DEFAULT_PARAMS.SORT_FIELD,
         //   "direction": KB_DEFAULT_PARAMS.DIRECTION,
@@ -965,10 +967,6 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
     // this.newKb = { name: '', url: '' }
   }
 
-
-
- 
-
   closeSecretsModal() {
     this.secretsModal = 'none';
   }
@@ -976,7 +974,6 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
   closeMissingGptkeyModal() {
     this.missingGptkeyModal = 'none';
   }
-
 
   closeDeleteKnowledgeBaseModal() {
     this.deleteKnowledgeBaseModal = 'none';
@@ -1020,7 +1017,6 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
     this.errorMessage = response;
     this.baseModalError = true;
   }
-
 
 
   // ************** CLOSE ALL MODAL **************** //

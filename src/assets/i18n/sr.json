@@ -1577,7 +1577,9 @@
     "KbPage": {
         "Secrets": "Тајне",
         "Enter": "Ентер",
-        "RunIndexing": "Покрени индексирање",
+        "RunIndexing": "Поново обучите",
+        "RunCheckStatus": "Проверите статус",
+        "DeleteKb": "Избриши",
         "CreationDate": "Датум израде",
         "KbCounterFooter": "{{ counter }} од 3 додане базе знања",
         "KbCounterFooter1": "Added {{counter}} Knowledge Bases",
@@ -1597,7 +1599,6 @@
         "TypeKbUrlPlaceholder": "Унесите УРЛ базе знања",
         "TypeKbKeyPlaceholder": "Унесите свој ГПТ кључ",
         "AskQuestionPlaceholder": "Поставите питање",
-        "DeleteKb": "Избришите базу знања",
         "DeleteKbInfoFirstText": "Више нећете моћи да користите АИ на овој бази знања",
         "SureToDelete": "Да ли сте сигурни да желите да избришете Базу знања <b>{{ name }}</b>?",
         "GptKeyInfo": "Унесите свој ГПТ кључ да бисте користили своје базе знања",

@@ -1577,7 +1577,9 @@
     "KbPage": {
         "Secrets": "Segredos",
         "Enter": "Digitar",
-        "RunIndexing": "Executar indexação",
+        "RunIndexing": "Retreinar",
+        "RunCheckStatus": "Verifique o status",
+        "DeleteKb": "Excluir",
         "CreationDate": "Data de criação",
         "KbCounterFooter": "{{ counter }} de 3 bases de conhecimento adicionadas",
         "KbCounterFooter1": "Added {{counter}} Knowledge Bases",
@@ -1597,7 +1599,6 @@
         "TypeKbUrlPlaceholder": "Digite o URL da base de conhecimento",
         "TypeKbKeyPlaceholder": "Digite sua chave GPT",
         "AskQuestionPlaceholder": "Faça uma pergunta",
-        "DeleteKb": "Excluir base de conhecimento",
         "DeleteKbInfoFirstText": "Você não poderá mais usar IA nesta base de conhecimento",
         "SureToDelete": "Tem certeza de que deseja excluir a Base de Conhecimento <b>{{ name }}</b>?",
         "GptKeyInfo": "Insira sua chave GPT para usar suas bases de conhecimento",

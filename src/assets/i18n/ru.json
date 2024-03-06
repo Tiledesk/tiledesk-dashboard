@@ -1577,7 +1577,9 @@
     "KbPage": {
         "Secrets": "Секреты",
         "Enter": "Входить",
-        "RunIndexing": "Запустить индексирование",
+        "RunIndexing": "Переобучение",
+        "RunCheckStatus": "Проверить состояние",
+        "DeleteKb": "Удалить",
         "CreationDate": "Дата создания",
         "KbCounterFooter": "{{ counter }} добавлено из 3 баз знаний",
         "KbCounterFooter1": "Added {{counter}} Knowledge Bases",
@@ -1597,7 +1599,6 @@
         "TypeKbUrlPlaceholder": "Введите URL-адрес базы знаний",
         "TypeKbKeyPlaceholder": "Введите ключ GPT",
         "AskQuestionPlaceholder": "Задайте вопрос",
-        "DeleteKb": "Удалить базу знаний",
         "DeleteKbInfoFirstText": "Вы больше не сможете использовать ИИ в этой базе знаний.",
         "SureToDelete": "Вы уверены, что хотите удалить Базу знаний <b>{{ name }}</b>?",
         "GptKeyInfo": "Введите свой ключ GPT, чтобы использовать свои базы знаний.",

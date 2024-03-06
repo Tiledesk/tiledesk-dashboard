@@ -1578,7 +1578,9 @@
 	"KbPage": {
 		"Secrets": "Geheimnisse",
 		"Enter": "Eingeben",
-		"RunIndexing": "Führen Sie die Indizierung aus",
+		"RunIndexing": "Umschulen",
+		"RunCheckStatus": "Status überprüfen",
+		"DeleteKb": "Löschen",
 		"CreationDate": "Erstellungsdatum",
 		"KbCounterFooter": "{{ counter }} von 3 Wissensdatenbanken hinzugefügt",
 		"KbCounterFooter1": "Added {{counter}} Knowledge Bases",
@@ -1598,7 +1600,6 @@
 		"TypeKbUrlPlaceholder": "Geben Sie die URL der Wissensdatenbank ein",
 		"TypeKbKeyPlaceholder": "Geben Sie Ihren GPT-Schlüssel ein",
 		"AskQuestionPlaceholder": "Stelle eine Frage",
-		"DeleteKb": "Wissensdatenbank löschen",
 		"DeleteKbInfoFirstText": "Sie können KI auf dieser Wissensdatenbank nicht mehr verwenden",
 		"SureToDelete": "Sind Sie sicher, dass Sie die Wissensdatenbank löschen möchten? <b>{{ name }}</b>?",
 		"GptKeyInfo": "Geben Sie Ihren GPT-Schlüssel ein, um Ihre Wissensdatenbanken zu nutzen",

@@ -1577,7 +1577,9 @@
     "KbPage": {
         "Secrets": "Hemligheter",
         "Enter": "Stiga på",
-        "RunIndexing": "Kör indexering",
+        "RunIndexing": "Träna om",
+        "RunCheckStatus": "Kolla statusen",
+        "DeleteKb": "Radera",
         "CreationDate": "Skapelsedagen",
         "KbCounterFooter": "{{ counter }} av 3 kunskapsbaser tillagda",
         "KbCounterFooter1": "Added {{counter}} Knowledge Bases",
@@ -1597,7 +1599,6 @@
         "TypeKbUrlPlaceholder": "Skriv Knowledge Base URL",
         "TypeKbKeyPlaceholder": "Skriv din GPT-nyckel",
         "AskQuestionPlaceholder": "Ställa en fråga",
-        "DeleteKb": "Ta bort kunskapsbas",
         "DeleteKbInfoFirstText": "Du kommer inte längre att kunna använda AI på denna kunskapsbas",
         "SureToDelete": "Är du säker på att du vill ta bort kunskapsbasen <b>{{ name }}</b>?",
         "GptKeyInfo": "Ange din GPT-nyckel för att använda dina kunskapsbaser",
