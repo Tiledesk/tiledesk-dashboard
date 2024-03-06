@@ -1,5 +1,11 @@
 # tiledesk-dashboard
 
+### 2.5.16
+- Deploys in production
+- Improves the chatbots sidebar
+- Improves the settings sidebar
+- Externalizes style variables
+
 ### 2.5.15
 - Deploys in production
 - Improvements and bug fixing
