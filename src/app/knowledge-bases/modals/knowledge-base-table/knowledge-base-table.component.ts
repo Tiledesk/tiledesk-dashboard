@@ -175,23 +175,23 @@ export class KnowledgeBaseTableComponent implements OnInit {
     this.runIndexing.emit(kb);
   }
 
-  onOpenBaseModalPreview(){
+  onOpenBaseModalPreview() {
     this.openBaseModalPreview.emit();
   }
 
-  onOpenBaseModalDelete(kb){
+  onOpenBaseModalDelete(kb) {
     // kb.deleting = true;
     this.openBaseModalDelete.emit(kb);
   }
 
-  onOpenBaseModalDetail(kb){
+  onOpenBaseModalDetail(kb) {
     // console.log("OPEN DETAIL:: ",kb);
     this.openBaseModalDetail.emit(kb);
   }
 
-  getSubtitle(kb){
+  getSubtitle(kb) {
     let subtitle = kb.source;
-    if(kb.type !== 'url'){
+    if (kb.type !== 'url') {
       subtitle = kb.content;
       // const maxLength = 100;
       // if (kb.content.length > maxLength) {
