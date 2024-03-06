@@ -4,6 +4,7 @@ import { AppConfigService } from 'app/services/app-config.service';
 import { DepartmentService } from 'app/services/department.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { URL_getting_started_with_email_ticketing } from '../utils/util';
+import { BrandService } from 'app/services/brand.service';
 @Component({
   selector: 'appdashboard-email-ticketing',
   templateUrl: './email-ticketing.component.html',
@@ -22,12 +23,19 @@ export class EmailTicketingComponent implements OnInit {
   public hasCopiedTicketingEmail: boolean = false
   public public_Key: any;
   public emailEndpoint: string;
+  public hideHelpLink: boolean;
+  public companyName: string
   constructor(
     private deptService: DepartmentService,
     private auth: AuthService,
     private logger: LoggerService,
     public appConfigService: AppConfigService,
-  ) { }
+    public brandService: BrandService
+  ) { 
+    const brand = brandService.getBrand(); 
+    this.hideHelpLink= brand['DOCS'];
+    this.companyName = this.companyName = brand["BRAND_NAME"] 
+  }
 
   ngOnInit() {
     this.getCurrentProjectAndBuildTicketingEmail();
@@ -36,6 +44,7 @@ export class EmailTicketingComponent implements OnInit {
     this.listenSidebarIsOpened();
     this.getOSCODE();
     // this.getTicketingEmailEndpoint()
+  
   }
 
   // getTicketingEmailEndpoint() {

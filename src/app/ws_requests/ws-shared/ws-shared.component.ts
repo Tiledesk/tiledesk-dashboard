@@ -9,6 +9,7 @@ import { UsersService } from '../../services/users.service';
 import { NotifyService } from '../../core/notify.service';
 import { LoggerService } from '../../services/logger/logger.service';
 import { TranslateService } from '@ngx-translate/core';
+
 @Component({
   selector: 'appdashboard-ws-shared',
   templateUrl: './ws-shared.component.html',
@@ -144,7 +145,17 @@ export class WsSharedComponent implements OnInit {
   // -----------------------------------------------------------------------------------------------------
   // @ Create the agent array from the request's participant id (used in ws-requests-msgs) 
   // -----------------------------------------------------------------------------------------------------
+  removeDuplicateAgents(agents_array){
+    const unique = agents_array.filter(
+      (obj, index) =>
+      agents_array.findIndex((item) => item._id === obj._id) === index
+    );
+    this.logger.log('HERE Y2 USER agents_array (1) unique ', unique)
+    this.agents_array = unique
+  }
+
   createAgentsArrayFromParticipantsId(members_array: any, requester_id: string, isFirebaseUploadEngine: boolean, imageStorage: any) {
+    this.logger.log('%%% WsRequestsMsgsComponent - calling createAgentsArrayFromParticipantsId');
     this.agents_array = [];
     this.cleaned_members_array = [];
     members_array.forEach(member_id => {
@@ -207,10 +218,14 @@ export class WsSharedComponent implements OnInit {
                   // const index = this.agents_array.findIndex(object => object.id === storeduser['_id']);
                   const index = this.agents_array.findIndex(object => object.id === member_id);
                   this.logger.log('HERE Y2 USER index (1)', index)
+                  this.logger.log('HERE Y2 USER agents_array (1) ', this.agents_array)
                   
-                  if (index === -1) {
-                    this.agents_array.push({ '_id': storeduser['_id'], 'firstname': storeduser['firstname'], 'lastname': storeduser['lastname'], 'isBot': false, 'hasImage': storeduser['hasImage'], 'userfillColour': storeduser['fillColour'], 'userFullname': storeduser['fullname_initial'] })
-                  }
+                    if (index === -1) {
+                      this.agents_array.push({ '_id': storeduser['_id'], 'firstname': storeduser['firstname'], 'lastname': storeduser['lastname'], 'isBot': false, 'hasImage': storeduser['hasImage'], 'userfillColour': storeduser['fillColour'], 'userFullname': storeduser['fullname_initial'] })
+                    }
+                    this.removeDuplicateAgents(this.agents_array)
+                   
+                 
                 }
                 else {
                   storeduser['hasImage'] = false
@@ -224,6 +239,7 @@ export class WsSharedComponent implements OnInit {
                   if (index === -1) {
                     this.agents_array.push({ '_id': storeduser['_id'], 'firstname': storeduser['firstname'], 'lastname': storeduser['lastname'], 'isBot': false, 'hasImage': storeduser['hasImage'], 'userfillColour': storeduser['fillColour'], 'userFullname': storeduser['fullname_initial'] })
                   }
+                  this.removeDuplicateAgents(this.agents_array)
                 }
               });
 
@@ -268,7 +284,11 @@ export class WsSharedComponent implements OnInit {
                 // console.log('WS-SHARED][WS-REQUESTS-MSGS]',  user)
 
                 // this.agents_array.push({ '_id': member_id, 'firstname': member_id, 'isBot': false })
+                const index = this.agents_array.findIndex(object => object.id === member_id);
+                if (index === -1) {
                 this.agents_array.push({ '_id': user['_id'], 'firstname': user['firstname'], 'lastname': user['lastname'], 'isBot': false, 'hasImage': user['hasImage'], 'userfillColour': user['fillColour'], 'userFullname': user['fullname_initial'] })
+                }
+                this.removeDuplicateAgents(this.agents_array)
                 this.usersLocalDbService.saveMembersInStorage(user['_id'], user, 'ws-shared (createAgentsArrayFromParticipantsId)');
                 this.logger.log('HERE Y3 USER projectuser ', projectuser, 'this.agents_array ', this.agents_array)
 

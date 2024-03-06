@@ -390,6 +390,8 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   public isVisibleWidgetUnbranding: boolean;
   public featureIsAvailable: boolean;
   public user: any;
+  public hideHelpLink: boolean;
+  public companyNametParams: any;
   @ViewChild('fileInputLauncherBtnlogo', { static: false }) fileInputLauncherBtnlogo: any;
 
 
@@ -420,6 +422,8 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.tparams = brand;
     this.company_name = brand['BRAND_NAME'];
     this.company_site_url = brand['COMPANY_SITE_URL'];
+    this.hideHelpLink= brand['DOCS'];
+    this.companyNametParams = { 'BRAND_NAME': this.company_name }
     // this.t_params = { 'plan_name': PLAN_NAME.B }
   }
 
@@ -471,11 +475,11 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       const firebase_conf = this.appConfigService.getConfig().firebase;
       this.imageStorage = firebase_conf['storageBucket'];
       this.setLauncherLogoUrl(this.imageStorage)
-      // console.log('[WIDGET-SET-UP] IMAGE STORAGE ', this.imageStorage, 'usecase firebase')
+      // this.logger.log('[WIDGET-SET-UP] IMAGE STORAGE ', this.imageStorage, 'usecase firebase')
     } else {
       this.UPLOAD_ENGINE_IS_FIREBASE = false;
       this.imageStorage = this.appConfigService.getConfig().SERVER_BASE_URL;
-      // console.log('[WIDGET-SET-UP] IMAGE STORAGE ', this.imageStorage, 'usecase native')
+      // this.logger.log('[WIDGET-SET-UP] IMAGE STORAGE ', this.imageStorage, 'usecase native')
 
     }
   }
@@ -499,7 +503,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         dangerMode: false,
       })
         .then((value) => {
-          //  console.log('[WIDGET-SET-UP] - uploadLauncherButtonLogo value', value)
+          //  this.logger.log('[WIDGET-SET-UP] - uploadLauncherButtonLogo value', value)
 
           if (value === 'catch') {
 
@@ -524,7 +528,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
   subscibeHasDeletedCustomLauncherLogo() {
     this.uploadImageService.hasdeletedLauncherLogo$.subscribe((hasdeleted) => {
-      // console.log('[WIDGET-SET-UP] IMAGE upload with fb service downoloadurl ', hasdeleted);
+      // this.logger.log('[WIDGET-SET-UP] IMAGE upload with fb service downoloadurl ', hasdeleted);
 
       this.hasOwnLauncherLogo = false
       // this.launcherLogoUrl = downoloadurl;
@@ -534,7 +538,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
   subscribeToLauncherLogoUrl() {
     this.uploadImageService.hasUploadedLauncherLogo$.subscribe((downoloadurl) => {
-      // console.log('[WIDGET-SET-UP] IMAGE upload with fb service downoloadurl ', downoloadurl);
+      // this.logger.log('[WIDGET-SET-UP] IMAGE upload with fb service downoloadurl ', downoloadurl);
       this.setLauncherLogoUrl(this.imageStorage)
       // this.hasOwnLauncherLogo = true
       // this.hasOwnLauncherBtn = false
@@ -543,7 +547,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   }
 
   setLauncherLogoUrl(imageStorage) {
-    // console.log('[WIDGET-SET-UP] setLauncherLogoUrl storageBucket ', imageStorage)
+    // this.logger.log('[WIDGET-SET-UP] setLauncherLogoUrl storageBucket ', imageStorage)
     this.launcherLogoUrl = ''
     if (this.UPLOAD_ENGINE_IS_FIREBASE) {
       // this.launcherLogoUrl = this.launcherLogoUrl = "https://firebasestorage.googleapis.com/v0/b/" + imageStorage + "/o/public%2Fimages%2F" + this.id_project + "%2Flauncher_logo.jpg?alt=media"
@@ -553,7 +557,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           this.hasOwnLauncherLogo = true
           this.hasOwnLauncherBtn = false
 
-          // console.log('[USER-SERV] - LAUNCHER LOGO EXIST ON FB? ', imageExists)
+          // this.logger.log('[USER-SERV] - LAUNCHER LOGO EXIST ON FB? ', imageExists)
         }
       });
     } else {
@@ -863,16 +867,16 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       dangerMode: false,
     }).then((value) => {
       if (value === 'catch') {
-        // console.log('featureAvailableFromPlanC value', value)
-        // console.log('[APP-STORE] prjct_profile_type', this.prjct_profile_type)
-        // console.log('[APP-STORE] subscription_is_active', this.subscription_is_active)
-        // console.log('[APP-STORE] prjct_profile_type', this.prjct_profile_type)
-        // console.log('[APP-STORE] trial_expired', this.trial_expired)
-        // console.log('[APP-STORE] isVisiblePAY', this.isVisiblePAY)
+        // this.logger.log('featureAvailableFromPlanC value', value)
+        // this.logger.log('[APP-STORE] prjct_profile_type', this.prjct_profile_type)
+        // this.logger.log('[APP-STORE] subscription_is_active', this.subscription_is_active)
+        // this.logger.log('[APP-STORE] prjct_profile_type', this.prjct_profile_type)
+        // this.logger.log('[APP-STORE] trial_expired', this.trial_expired)
+        // this.logger.log('[APP-STORE] isVisiblePAY', this.isVisiblePAY)
         if (this.payIsVisible) {
-          // console.log('[APP-STORE] HERE 1')
+          // this.logger.log('[APP-STORE] HERE 1')
           if (this.USER_ROLE === 'owner') {
-            // console.log('[APP-STORE] HERE 2')
+            // this.logger.log('[APP-STORE] HERE 2')
             if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
               if (this.profile_name !== PLAN_NAME.C && this.profile_name !== PLAN_NAME.F) {
                 this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
@@ -882,15 +886,15 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
             } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true && (this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.D)) {
               this.notify._displayContactUsModal(true, 'upgrade_plan');
             } else if (this.prjct_profile_type === 'free') {
-              // console.log('[APP-STORE] HERE 4')
+              // this.logger.log('[APP-STORE] HERE 4')
               this.router.navigate(['project/' + this.id_project + '/pricing']);
             }
           } else {
-            // console.log('[APP-STORE] HERE 5')
+            // this.logger.log('[APP-STORE] HERE 5')
             this.presentModalOnlyOwnerCanManageTheAccountPlan();
           }
         } else {
-          // console.log('[APP-STORE] HERE 6')
+          // this.logger.log('[APP-STORE] HERE 6')
           this.notify._displayContactUsModal(true, 'upgrade_plan');
         }
       }
@@ -959,7 +963,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   getBrowserVersion() {
     this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
       this.isChromeVerGreaterThan100 = isChromeVerGreaterThan100;
-      //  console.log("[WS-REQUESTS-LIST] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
+      //  this.logger.log("[WS-REQUESTS-LIST] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
     })
   }
 
@@ -1203,12 +1207,12 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   getAndManageAccordionInstallWidget() {
     var acc = document.getElementsByClassName("accordion-install-widget");
 
-    // console.log('[WIDGET-SET-UP] ACCORDION INSTALL WIDGET', acc);
+    // this.logger.log('[WIDGET-SET-UP] ACCORDION INSTALL WIDGET', acc);
 
     var i: number;
     for (i = 0; i < acc.length; i++) {
       this.logger.log('[WIDGET-SET-UP] ACCORDION ARROW - INSTALL WIDGET - QUI ENTRO');
-      // console.log('[WIDGET-SET-UP] ACCORDION ARROW - INSTALL WIDGET - acc[i]', acc[i]);
+      // this.logger.log('[WIDGET-SET-UP] ACCORDION ARROW - INSTALL WIDGET - acc[i]', acc[i]);
 
       const self = this;
 
@@ -1289,9 +1293,9 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       this.logger.log('[WIDGET-SET-UP] ACCORDION i', i, 'acc[i]', acc[i]);
       // Open the first accordion https://codepen.io/fpavision/details/xxxONGv
       var firstAccordion = acc[0];
-      // console.log('firstAccordion' , firstAccordion)
+      // this.logger.log('firstAccordion' , firstAccordion)
       var firstPanel = <HTMLElement>firstAccordion.nextElementSibling;
-      // console.log('firstPanel' , firstPanel)
+      // this.logger.log('firstPanel' , firstPanel)
       // this.logger.log('WIDGET DESIGN ACCORDION FIRST PANEL', firstPanel);
 
       setTimeout(() => {
@@ -1314,7 +1318,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         self.logger.log('[WIDGET-SET-UP] ACCORDION click i', i, 'acc[i]', acc[i]);
         this.classList.toggle("active");
         var panel = this.nextElementSibling;
-        // console.log('[WIDGET-SET-UP] ACCORDION PANEL', panel);
+        // this.logger.log('[WIDGET-SET-UP] ACCORDION PANEL', panel);
 
         var arrow_icon_div = this.children[1];
         // this.logger.log('[WIDGET-SET-UP] ACCORDION ARROW ICON WRAP DIV', arrow_icon_div);
@@ -1374,15 +1378,15 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
       // Widget unbranding
       if (key.includes("WUN")) {
-        // console.log('PUBLIC-KEY (WIDGET-SET-UP) - key', key);
+        // this.logger.log('PUBLIC-KEY (WIDGET-SET-UP) - key', key);
         let wun = key.split(":");
-        //  console.log('PUBLIC-KEY (WIDGET-SET-UP) - ips key&value', ips);
+        //  this.logger.log('PUBLIC-KEY (WIDGET-SET-UP) - ips key&value', ips);
         if (wun[1] === "F") {
           this.isVisibleWidgetUnbranding = false;
-          // console.log('PUBLIC-KEY (WIDGET-SET-UP) - isVisibleWidgetUnbranding', this.isVisibleAutoSendTranscript);
+          // this.logger.log('PUBLIC-KEY (WIDGET-SET-UP) - isVisibleWidgetUnbranding', this.isVisibleAutoSendTranscript);
         } else {
           this.isVisibleWidgetUnbranding = true;
-          // console.log('PUBLIC-KEY (WIDGET-SET-UP) - isVisibleWidgetUnbranding', this.isVisibleAutoSendTranscript);
+          // this.logger.log('PUBLIC-KEY (WIDGET-SET-UP) - isVisibleWidgetUnbranding', this.isVisibleAutoSendTranscript);
         }
       }
     });
@@ -1405,7 +1409,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
   getLabels() {
     this.widgetService.getLabels().subscribe((labels: any) => {
-      // console.log('[WIDGET-SET-UP] - GET LABELS - RES', labels);
+      // this.logger.log('[WIDGET-SET-UP] - GET LABELS - RES', labels);
 
       if (labels && Object.keys(labels).length > 0) {
 
@@ -1612,7 +1616,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
 
         this.selected_translation = translation.data
-        // console.log('[WIDGET-SET-UP] ***** selected translation: ', this.selected_translation)
+        this.logger.log('[WIDGET-SET-UP] ***** selected translation: ', this.selected_translation)
 
         // ---------------------------------------------------------------------------------------------
         // @ New Conversation (not editable in the widhet setting page but only from multilanguage page)
@@ -1630,7 +1634,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         // ---------------------------------------------------------------
         this.welcomeTitle = this.selected_translation["WELLCOME_TITLE"];
         this.welcomeMsg = this.selected_translation["WELLCOME_MSG"];
-        this.logger.log('[WIDGET-SET-UP] ***** selected translation - WELLCOME_TITLE: ', this.welcomeTitle, ' - WELLCOME_MSG: ', this.welcomeMsg);
+        this.logger.log('[WIDGET-SET-UP] ***** selected translation - WELCOME_TITLE: ', this.welcomeTitle, ' - WELLCOME_MSG: ', this.welcomeMsg);
 
 
         // ---------------------------------------------------------------
@@ -1686,23 +1690,13 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
         this.LABEL_COMPLETE_FORM = this.selected_translation["LABEL_COMPLETE_FORM"]
         this.LABEL_PLACEHOLDER = this.selected_translation["LABEL_PLACEHOLDER"]
-        // console.log('[WIDGET-SET-UP] - ***** selected translation LABEL_PLACEHOLDER: ', this.LABEL_PLACEHOLDER);
+        // this.logger.log('[WIDGET-SET-UP] - ***** selected translation LABEL_PLACEHOLDER: ', this.LABEL_PLACEHOLDER);
 
         // for custom prechat-form
         this.LABEL_PRECHAT_USER_FULLNAME = this.selected_translation["LABEL_PRECHAT_USER_FULLNAME"]
-        // console.log('getCurrentTranslation this.LABEL_PRECHAT_USER_FULLNAME ', this.LABEL_PRECHAT_USER_FULLNAME)
+        // this.logger.log('getCurrentTranslation this.LABEL_PRECHAT_USER_FULLNAME ', this.LABEL_PRECHAT_USER_FULLNAME)
 
-        // if (this.LABEL_PRECHAT_USER_FULLNAME === undefined) {
-        //   this.NEW_PRECHAT_LABEL_ARE_MISSING = true;
-        //   console.log('getCurrentTranslation NEW_PRECHAT_LABEL_ARE_MISSING ', this.NEW_PRECHAT_LABEL_ARE_MISSING)
-        //   console.log('getCurrentTranslation selectedLangCode ', this.selectedLangCode)
-        //   if (this.selectedLangCode === 'en') {
-        //     // this.selected_translation.push(this.en_missing_labels);
-        //   }
-        // } else {
-        //   this.NEW_PRECHAT_LABEL_ARE_MISSING = false;
-        //   console.log('getCurrentTranslation NEW_PRECHAT_LABEL_ARE_MISSING ', this.NEW_PRECHAT_LABEL_ARE_MISSING)
-        // }
+       
         this.LABEL_PRECHAT_USER_EMAIL = this.selected_translation["LABEL_PRECHAT_USER_EMAIL"]
         this.LABEL_PRECHAT_USER_PHONE = this.selected_translation["LABEL_PRECHAT_USER_PHONE"]
         this.LABEL_PRECHAT_FIRST_MESSAGE = this.selected_translation["LABEL_PRECHAT_FIRST_MESSAGE"]
@@ -1817,10 +1811,10 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
     // Custom launcher btn
     if (this.hasOwnLauncherBtn === true) {
-      // console.log('saveFooterBrandAndLauncherBtn customLauncherURL hasOwnLauncherBtn ', this.hasOwnLauncherBtn)
+      // this.logger.log('saveFooterBrandAndLauncherBtn customLauncherURL hasOwnLauncherBtn ', this.hasOwnLauncherBtn)
       this.widgetObj['baloonImage'] = this.customLauncherURL
     } else if (this.hasOwnLauncherBtn === false) {
-      // console.log('saveFooterBrandAndLauncherBtn customLauncherURL hasOwnLauncherBtn ', this.hasOwnLauncherBtn)
+      // this.logger.log('saveFooterBrandAndLauncherBtn customLauncherURL hasOwnLauncherBtn ', this.hasOwnLauncherBtn)
 
       delete this.widgetObj['baloonImage']
     }
@@ -2009,7 +2003,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   }
 
   saveLabels() {
-    // console.log('[WIDGET-SET-UP] - selectedLangCode (saveLabels) ', this.selectedLangCode);
+    // this.logger.log('[WIDGET-SET-UP] - selectedLangCode (saveLabels) ', this.selectedLangCode);
     this.logger.log('[WIDGET-SET-UP] - defaultLangCode (saveLabels) ', this.defaultLangCode);
     this.logger.log('[WIDGET-SET-UP] - selected_translation (saveLabels) ', this.selected_translation);
 
@@ -2077,8 +2071,8 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   getProjectById() {
     this.projectService.getProjectById(this.id_project).subscribe((project: any) => {
 
-      // console.log('[WIDGET-SET-UP] - PRJCT (onInit): ', project);
-      //  console.log('[WIDGET-SET-UP] - PRJCT > widget (onInit): ', project.widget);
+      // this.logger.log('[WIDGET-SET-UP] - PRJCT (onInit): ', project);
+      //  this.logger.log('[WIDGET-SET-UP] - PRJCT > widget (onInit): ', project.widget);
 
       if (project.widget) {
         this.widgetObj = project.widget;
@@ -2109,18 +2103,18 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         // @ Display widget desktop and mobile
         // WIDGET DEFINED
         // ------------------------------------------------------------------------
-        // console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) project.widget.displayOnDesktop 1: ', project.widget.displayOnDesktop);
+        // this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) project.widget.displayOnDesktop 1: ', project.widget.displayOnDesktop);
         if (project.widget.displayOnDesktop === false) {
-          // console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) project.widget.displayOnDesktop 2: ', project.widget.displayOnDesktop);
+          // this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) project.widget.displayOnDesktop 2: ', project.widget.displayOnDesktop);
           this.desktop_widget_is_visible = false
-          // console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) desktop_widget_is_visible : ', this.desktop_widget_is_visible);
+          // this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) desktop_widget_is_visible : ', this.desktop_widget_is_visible);
         }
 
-        // console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) project.widget.displayOnMobile 1 : ', project.widget.displayOnMobile);
+        // this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) project.widget.displayOnMobile 1 : ', project.widget.displayOnMobile);
         if (project.widget.displayOnMobile === false) {
-          // console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) project.widget.displayOnMobile 2 : ', project.widget.displayOnMobile);
+          // this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) project.widget.displayOnMobile 2 : ', project.widget.displayOnMobile);
           this.mobile_widget_is_visible = false
-          // console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) mobile_widget_is_visible : ', this.mobile_widget_is_visible);
+          // this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) mobile_widget_is_visible : ', this.mobile_widget_is_visible);
         }
 
         // ------------------------------------------------------------------------
@@ -2190,9 +2184,9 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           this.hasOwnLauncherBtn = true;
           this.hasOwnLauncherLogo = false;
 
-          // console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) BALOON IMAGE : ', this.customLauncherURL);
-          // console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) hasOwnLauncherBtn : ', this.hasOwnLauncherBtn);
-          // console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) hasOwnLauncherLogo : ', this.hasOwnLauncherLogo);
+          // this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) BALOON IMAGE : ', this.customLauncherURL);
+          // this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) hasOwnLauncherBtn : ', this.hasOwnLauncherBtn);
+          // this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) hasOwnLauncherLogo : ', this.hasOwnLauncherLogo);
 
         } else {
           // ------------------------------------------------------------------------
@@ -2201,8 +2195,8 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           // ------------------------------------------------------------------------
           this.hasOwnLauncherBtn = false;
           this.hasOwnLauncherLogo = false;
-          // console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) BUT NOT POWERED-BY hasOwnLauncherBtn: ', this.hasOwnLauncherBtn);
-          // console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) BUT NOT POWERED-BY hasOwnLauncherBtn: ', this.hasOwnLauncherLogo);
+          // this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) BUT NOT POWERED-BY hasOwnLauncherBtn: ', this.hasOwnLauncherBtn);
+          // this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) BUT NOT POWERED-BY hasOwnLauncherBtn: ', this.hasOwnLauncherLogo);
 
         }
 
@@ -2255,10 +2249,10 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         if (project.widget.singleConversation) {
 
           this.singleConversation = true;
-          // console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) - singleConversation', this.singleConversation)
+          // this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) - singleConversation', this.singleConversation)
         } else {
           this.singleConversation = false;
-          // console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) - singleConversation', this.singleConversation)
+          // this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) - singleConversation', this.singleConversation)
         }
 
 
@@ -2278,11 +2272,11 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         }
 
         if (project.widget.preChatFormJson) {
-          // console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) preChatFormJson: ', project.widget.preChatFormJson)
-          // console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) project.widget.visualTool: ',project.widget.visualTool)
+          // this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) preChatFormJson: ', project.widget.preChatFormJson)
+          // this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) project.widget.visualTool: ',project.widget.visualTool)
           // PRECHAT_FIRST_MESSAGE_ROWS
           project.widget.preChatFormJson.forEach(field => {
-            // console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) preChatFormJson - field: ',field)
+            // this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) preChatFormJson - field: ',field)
             if (field.name === 'firstMessage') {
               this.PRECHAT_FIRST_MESSAGE_ROWS = field.rows
             }
@@ -2300,13 +2294,13 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
             this.displayNewCustomPrechatFormBuilder = false
           }
 
-          // console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) > displayNewCustomPrechatFormBuilder: ', this.displayNewCustomPrechatFormBuilder);
-          // console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) > hasBuiltPrechatformWithVisualTool: ', this.hasBuiltPrechatformWithVisualTool);
+          // this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) > displayNewCustomPrechatFormBuilder: ', this.displayNewCustomPrechatFormBuilder);
+          // this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) > hasBuiltPrechatformWithVisualTool: ', this.hasBuiltPrechatformWithVisualTool);
           // this.prechatFormTexareaJson = JSON.stringify(this.widgetDefaultSettings.preChatFormJson);
           this.prechatFormArray = project.widget.preChatFormJson;
           this.prechatFormTexareaJson = JSON.stringify(project.widget.preChatFormJson, null, 4);
           this.removepreChatFormFieldsIfAlreadyUsed(this.preChatFormFields, project.widget.preChatFormJson);
-          // console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) prechatFormTexareaJson: ', this.prechatFormTexareaJson)
+          // this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) prechatFormTexareaJson: ', this.prechatFormTexareaJson)
           this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) PRE-CHAT-FORM-JSON DEFINED typeof: ', typeof project.widget.preChatFormJson)
         } else {
           this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) PRE-CHAT-FORM-JSON NOT DEFINED ')
@@ -2314,8 +2308,8 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           this.hasBuiltPrechatformWithVisualTool = true
           this.displayNewCustomPrechatFormBuilder = true
           this.PRECHAT_FIRST_MESSAGE_ROWS = 5
-          // console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) PRE-CHAT-FORM-JSON NOT DEFINED displayNewCustomPrechatFormBuilder: ', this.displayNewCustomPrechatFormBuilder);
-          // console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) PRE-CHAT-FORM-JSON NOT DEFINED hasBuiltPrechatformWithVisualTool: ', this.hasBuiltPrechatformWithVisualTool);
+          // this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) PRE-CHAT-FORM-JSON NOT DEFINED displayNewCustomPrechatFormBuilder: ', this.displayNewCustomPrechatFormBuilder);
+          // this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) PRE-CHAT-FORM-JSON NOT DEFINED hasBuiltPrechatformWithVisualTool: ', this.hasBuiltPrechatformWithVisualTool);
 
           // this.prechatFormObject = this.widgetDefaultSettings.preChatFormJson;
           // this.prechatFormTexareaJson = JSON.stringify(this.widgetDefaultSettings.preChatFormJson, null, 4);
@@ -2342,7 +2336,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         if (project.widget.themeColor) {
 
           this.primaryColor = project.widget.themeColor;
-          // console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) THEME COLOR: ', this.primaryColor);
+          // this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) THEME COLOR: ', this.primaryColor);
           this.primaryColorRgb = this.hexToRgb(this.primaryColor)
           this.generateRgbaGradientAndBorder(this.primaryColorRgb);
 
@@ -2365,12 +2359,12 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         // theme color opacity
         if (!project.widget.themeColorOpacity || project.widget.themeColorOpacity === 100) {
           this.themeColorOpacity = "1";
-          // console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) THEME COLOR OPACITY: ', this.themeColorOpacity);
+          // this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) THEME COLOR OPACITY: ', this.themeColorOpacity);
           this.primaryColorOpacityEnabled = false
           this.generateRgbaGradientAndBorder(this.primaryColorRgb);
         }
         if (project.widget.themeColorOpacity === 0) {
-          // console.log('here yes project.widget.themeColorOpacity ', project.widget.themeColorOpacity)
+          // this.logger.log('here yes project.widget.themeColorOpacity ', project.widget.themeColorOpacity)
           this.themeColorOpacity = "0.50";
           this.primaryColorOpacityEnabled = true
           this.generateRgbaGradientAndBorder(this.primaryColorRgb);
@@ -2498,7 +2492,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         // WIDGET UNDEFINED
         // -----------------------------------------------------------------------
         this.singleConversation = false;
-        // console.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) - singleConversation', this.singleConversation)
+        // this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) - singleConversation', this.singleConversation)
 
         // -----------------------------------------------------------------------
         // @ preChatForm
@@ -2509,11 +2503,11 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         this.hasBuiltPrechatformWithVisualTool = true
         this.displayNewCustomPrechatFormBuilder = true
         this.PRECHAT_FIRST_MESSAGE_ROWS = 5
-        // console.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) > preChatForm: ', this.preChatForm);
-        // console.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) > preChatFormCustomFieldsEnabled: ', this.preChatFormCustomFieldsEnabled);
-        // console.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) > hasBuiltPrechatformWithVisualTool: ', this.hasBuiltPrechatformWithVisualTool);
-        // console.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) > displayNewCustomPrechatFormBuilder: ', this.displayNewCustomPrechatFormBuilder);
-        // console.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) > PRECHAT_FIRST_MESSAGE_ROWS: ', this.PRECHAT_FIRST_MESSAGE_ROWS);
+        // this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) > preChatForm: ', this.preChatForm);
+        // this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) > preChatFormCustomFieldsEnabled: ', this.preChatFormCustomFieldsEnabled);
+        // this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) > hasBuiltPrechatformWithVisualTool: ', this.hasBuiltPrechatformWithVisualTool);
+        // this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) > displayNewCustomPrechatFormBuilder: ', this.displayNewCustomPrechatFormBuilder);
+        // this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) > PRECHAT_FIRST_MESSAGE_ROWS: ', this.PRECHAT_FIRST_MESSAGE_ROWS);
         // this.prechatFormTexareaJson = JSON.stringify(this.widgetDefaultSettings.preChatFormJson, null, 4);
         // this.prechatFormObject = this.widgetDefaultSettings.preChatFormJson;
         // -----------------------------------------------------------------------
@@ -2746,7 +2740,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     const new_col = primaryColor.replace(/rgb/i, 'rgba');
     // this.primaryColorRgba = new_col.replace(/\)/i, ',0.50)');
     this.primaryColorRgba = new_col.replace(/\)/i, `, ${this.themeColorOpacity})`);
-    // console.log('»» WIDGET DESIGN - PRIMARY COLOR RGBA ', this.primaryColorRgba);
+    // this.logger.log('»» WIDGET DESIGN - PRIMARY COLOR RGBA ', this.primaryColorRgba);
 
     // this.logger.log('»» WIDGET DESIGN - PRIMARY COLOR RGBA ', this.primaryColorRgba);
 
@@ -2758,7 +2752,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   //  @ Primary  color opacity   
   // --------------------------------------------------------------------------------------
   changePrimaryColorOpacity(event) {
-    // console.log('Enable / Disable primary color  opacity - event', event.target.checked);
+    // this.logger.log('Enable / Disable primary color  opacity - event', event.target.checked);
     this.primaryColorOpacityEnabled = event.target.checked;
     if (this.primaryColorOpacityEnabled === false) {
       this.themeColorOpacity = "1";
@@ -3036,11 +3030,11 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.DISPLAY_WIDGET_CHAT = false;
     this.DISPLAY_WIDGET_PRECHAT_FORM = false;
     this.widget_preview_selected = "0003";
-    // console.log('[WIDGET-SET-UP] - onFocuCustomLauncherURLInput');
+    // this.logger.log('[WIDGET-SET-UP] - onFocuCustomLauncherURLInput');
   }
 
   launcherLogoChange(event) {
-    // console.log('[WIDGET-SET-UP] - launcherLogoChange event.length', event.length);
+    // this.logger.log('[WIDGET-SET-UP] - launcherLogoChange event.length', event.length);
 
     if (event.length === 0) {
 
@@ -3054,18 +3048,18 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       this.verifyImageURL(event, (imageExists) => {
         // return imageExists
         if (imageExists === true) {
-          // console.log('[WIDGET-SET-UP] - launcherLogo checkImage Image Exists: ', imageExists);
+          // this.logger.log('[WIDGET-SET-UP] - launcherLogo checkImage Image Exists: ', imageExists);
           this.hasOwnLauncherBtn = true;
           this.hasOwnLauncherLogo = false;
-          // console.log('[WIDGET-SET-UP] - launcherLogo checkImage Image Exists this.customLauncherURL  ', this.customLauncherURL);
-          // console.log('[WIDGET-SET-UP] - launcherLogo checkImage Image Exists this.hasOwnLauncherBtn  ', this.hasOwnLauncherBtn);
+          // this.logger.log('[WIDGET-SET-UP] - launcherLogo checkImage Image Exists this.customLauncherURL  ', this.customLauncherURL);
+          // this.logger.log('[WIDGET-SET-UP] - launcherLogo checkImage Image Exists this.hasOwnLauncherBtn  ', this.hasOwnLauncherBtn);
           this.CUSTOM_LAUNCHER_LOGO_EXIST = true;
-          // console.log('[WIDGET-SET-UP] - launcherLogo checkImage Image Exists - hasOwnLauncherBtn: ', this.hasOwnLauncherBtn);
-          // console.log('[WIDGET-SET-UP] - launcherLogo checkImage Image Exists - launcherLogo: ', this.customLauncherURL);
+          // this.logger.log('[WIDGET-SET-UP] - launcherLogo checkImage Image Exists - hasOwnLauncherBtn: ', this.hasOwnLauncherBtn);
+          // this.logger.log('[WIDGET-SET-UP] - launcherLogo checkImage Image Exists - launcherLogo: ', this.customLauncherURL);
 
 
         } else {
-          // console.log('[WIDGET-SET-UP] - launcherLogo checkImage Image Exists: ', imageExists);
+          // this.logger.log('[WIDGET-SET-UP] - launcherLogo checkImage Image Exists: ', imageExists);
           this.hasOwnLauncherBtn = false;
           this.hasOwnLauncherLogo = false;
 
@@ -3147,13 +3141,13 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     if (appearance_save_btn_bottom) {
       appearance_save_btn_bottom.blur()
     }
-    // console.log('saveWidgetAppearance customLauncherURL ', this.customLauncherURL)
+    // this.logger.log('saveWidgetAppearance customLauncherURL ', this.customLauncherURL)
     // Custom launcher btn
     // if (this.hasOwnLauncherBtn === true) {
-    //   // console.log('saveWidgetAppearance customLauncherURL hasOwnLauncherBtn ',this.hasOwnLauncherBtn)
+    //   // this.logger.log('saveWidgetAppearance customLauncherURL hasOwnLauncherBtn ',this.hasOwnLauncherBtn)
     //   this.widgetObj['baloonImage'] = this.customLauncherURL
     // } else if (this.hasOwnLauncherBtn === false) {
-    //   // console.log('saveWidgetAppearance customLauncherURL hasOwnLauncherBtn ',this.hasOwnLauncherBtn)
+    //   // this.logger.log('saveWidgetAppearance customLauncherURL hasOwnLauncherBtn ',this.hasOwnLauncherBtn)
 
     //   delete this.widgetObj['baloonImage']
     // }
@@ -3196,7 +3190,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   //  @ Single Conversation 
   // --------------------------------------------------------------------------------------
   enableSingleConversation(event) {
-    // console.log('Enable / Disable SINGLE CONVERSATION - event', event.target.checked)
+    // this.logger.log('Enable / Disable SINGLE CONVERSATION - event', event.target.checked)
     this.singleConversation = event.target.checked
     if (this.singleConversation === true) {
 
@@ -3215,7 +3209,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   //  @ Widget visibility
   // --------------------------------------------------------------------------------------
   changeDesktopWidgetVisibility(event) {
-    // console.log('[WIDGET-SET-UP] Widget visible / hidden on desktop - event', event.target.checked)
+    // this.logger.log('[WIDGET-SET-UP] Widget visible / hidden on desktop - event', event.target.checked)
     this.desktop_widget_is_visible = event.target.checked;
 
     if (this.desktop_widget_is_visible === false) {
@@ -3233,7 +3227,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   }
 
   changeMobileWidgetVisibility(event) {
-    // console.log('[WIDGET-SET-UP] Widget visible / hidden on mobile - event', event.target.checked)
+    // this.logger.log('[WIDGET-SET-UP] Widget visible / hidden on mobile - event', event.target.checked)
     this.mobile_widget_is_visible = event.target.checked
 
     if (this.mobile_widget_is_visible === false) {
@@ -3248,13 +3242,13 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   }
 
   onSelectDesktopWidgetStatus() {
-    // console.log('[WIDGET-SET-UP] ON SELECT DESKTOP WIDGET STATUS ', this.desktopWidgetStatus)
+    // this.logger.log('[WIDGET-SET-UP] ON SELECT DESKTOP WIDGET STATUS ', this.desktopWidgetStatus)
     this.widgetObj['onPageChangeVisibilityDesktop'] = this.desktopWidgetStatus;
     this.widgetService.updateWidgetProject(this.widgetObj)
   }
 
   onSelectMobilepWidgetStatus() {
-    // console.log('[WIDGET-SET-UP] ON SELECT MOBILE WIDGET STATUS ', this.mobileWidgetStatus)
+    // this.logger.log('[WIDGET-SET-UP] ON SELECT MOBILE WIDGET STATUS ', this.mobileWidgetStatus)
     this.widgetObj['onPageChangeVisibilityMobile'] = this.mobileWidgetStatus;
     this.widgetService.updateWidgetProject(this.widgetObj)
   }
@@ -3352,7 +3346,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   //  @ Pre-chat form  
   // -----------------------------------------------------------------------
   hasOpenedPrechaFormSection() {
-    // console.log('hasOpenedPrechaFormSection')
+    // this.logger.log('hasOpenedPrechaFormSection')
     this.DISPLAY_CALLOUT = false;
     this.DISPLAY_WIDGET_HOME = false;
     this.DISPLAY_WIDGET_CHAT = false;
@@ -3421,50 +3415,50 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   }
 
   onChangeLabelCompleteForm($event) {
-    // console.log('[WIDGET-SET-UP] - onChangeLabelCompleteForm ', $event),
+    // this.logger.log('[WIDGET-SET-UP] - onChangeLabelCompleteForm ', $event),
     this.LABEL_COMPLETE_FORM = $event;
   }
 
   onChangeDafultPrechatFormName($event) {
-    // console.log('[WIDGET-SET-UP] - onChangeDafultPrechatFormName ', $event);
+    // this.logger.log('[WIDGET-SET-UP] - onChangeDafultPrechatFormName ', $event);
     this.LABEL_FIELD_NAME = $event
   }
 
   onChangeDafultPrechatFormEmail($event) {
-    // console.log('[WIDGET-SET-UP] - onChangeDafultPrechatFormEmail ', $event);
+    // this.logger.log('[WIDGET-SET-UP] - onChangeDafultPrechatFormEmail ', $event);
     this.LABEL_FIELD_EMAIL = $event
   }
 
   onChangeUserFullNameLabel($event) {
-    // console.log('[WIDGET-SET-UP] - onChangeUserFullNameLabel ', $event),
+    // this.logger.log('[WIDGET-SET-UP] - onChangeUserFullNameLabel ', $event),
     this.LABEL_PRECHAT_USER_FULLNAME = $event;
   }
   onChangeEmailLabel($event) {
-    // console.log('[WIDGET-SET-UP] - onChangeEmailLabel ', $event);
+    // this.logger.log('[WIDGET-SET-UP] - onChangeEmailLabel ', $event);
     this.LABEL_PRECHAT_USER_EMAIL = $event;
   }
   onChangePhoneLabel($event) {
-    // console.log('[WIDGET-SET-UP] - onChangePhoneLabel ', $event)
+    // this.logger.log('[WIDGET-SET-UP] - onChangePhoneLabel ', $event)
     this.LABEL_PRECHAT_USER_PHONE = $event;
   }
   onChangeAcceptTermsPrivacyLabel($event) {
-    // console.log('[WIDGET-SET-UP] - onChangeAcceptTermsPrivacyLabel ', $event)
+    // this.logger.log('[WIDGET-SET-UP] - onChangeAcceptTermsPrivacyLabel ', $event)
     this.LABEL_PRECHAT_ACCEPT_TERMS_PRIVACY = $event;
   }
   onChangeTermsPrivacyLabel($event) {
-    // console.log('[WIDGET-SET-UP] - onChangeTermsPrivacyLabel ', $event)
+    // this.logger.log('[WIDGET-SET-UP] - onChangeTermsPrivacyLabel ', $event)
     this.LABEL_PRECHAT_STATIC_TERMS_PRIVACY = $event;
   }
   onChangeFirstMessagel($event) {
-    // console.log('[WIDGET-SET-UP] - onChangeFirstMessagel ', $event)
+    // this.logger.log('[WIDGET-SET-UP] - onChangeFirstMessagel ', $event)
     this.LABEL_PRECHAT_FIRST_MESSAGE = $event;
   }
 
   onChangeFirstMessageRow($event, field) {
     this.PRECHAT_FIRST_MESSAGE_ROWS = $event;
-    // console.log('[WIDGET-SET-UP] - onChangeFirstMessageRow ', this.PRECHAT_FIRST_MESSAGE_ROWS);
+    // this.logger.log('[WIDGET-SET-UP] - onChangeFirstMessageRow ', this.PRECHAT_FIRST_MESSAGE_ROWS);
     const prechatFormTexareaObjct = JSON.parse(this.prechatFormTexareaJson);
-    // console.log('[WIDGET-SET-UP] - prechatFormArray ', this.prechatFormArray);
+    // this.logger.log('[WIDGET-SET-UP] - prechatFormArray ', this.prechatFormArray);
 
     for (var i = 0; i < this.prechatFormArray.length; i++) {
 
@@ -3481,7 +3475,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
         prechatFormTexareaObjct[i].rows = this.PRECHAT_FIRST_MESSAGE_ROWS;
         this.prechatFormTexareaJson = JSON.stringify(prechatFormTexareaObjct, null, 4);
-        // console.log('[WIDGET-SET-UP] - onChangeFirstMessageRow ', this.prechatFormTexareaJson);
+        // this.logger.log('[WIDGET-SET-UP] - onChangeFirstMessageRow ', this.prechatFormTexareaJson);
       }
     }
 
@@ -3498,14 +3492,14 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   addPrechatFormField($event) {
     this.HAS_ACTIVATED_PRECHAT_CUSTOM_FIELDS = true;
     this.preChatFormFieldName = $event.name;
-    // console.log('[WIDGET-SET-UP] - addPrechatFormField $preChatFormFieldName', this.preChatFormFieldName);
-    // console.log('[WIDGET-SET-UP] - addPrechatFormField $event', $event);
+    // this.logger.log('[WIDGET-SET-UP] - addPrechatFormField $preChatFormFieldName', this.preChatFormFieldName);
+    // this.logger.log('[WIDGET-SET-UP] - addPrechatFormField $event', $event);
     if (this.preChatFormFieldName === 'firstMessage') {
       this.PRECHAT_FIRST_MESSAGE_ROWS = $event.rows;
     }
 
     this.prechatFormArray.push($event)
-    // console.log('[WIDGET-SET-UP] - addPrechatFormField  prechatFormArray', this.prechatFormArray)
+    // this.logger.log('[WIDGET-SET-UP] - addPrechatFormField  prechatFormArray', this.prechatFormArray)
     this.prechatFormTexareaJson = JSON.stringify(this.prechatFormArray, null, 4);
 
     // this.ngSelectComponent.clearModel();
@@ -3513,7 +3507,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       this.preChatFormFieldName = null;
     }, 0)
     this.preChatFormFielsBtnsArray = JSON.parse(this.prechatFormTexareaJson)
-    // console.log('[WIDGET-SET-UP] - addPrechatFormField  preChatFormFielsBtnsArray', this.preChatFormFielsBtnsArray)
+    // this.logger.log('[WIDGET-SET-UP] - addPrechatFormField  preChatFormFielsBtnsArray', this.preChatFormFielsBtnsArray)
     this.removepreChatFormFieldsIfAlreadyUsed(this.preChatFormFields, JSON.parse(this.prechatFormTexareaJson))
   }
 
@@ -3524,7 +3518,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     // this.preChatFieldModel.name = ""
     // this.preChatFieldModel.label = ""
     // this.preChatFieldModel.type = ""
-    // console.log('presentModalCreateCustomField preChatFieldModel' , this.preChatFieldModel) 
+    // this.logger.log('presentModalCreateCustomField preChatFieldModel' , this.preChatFieldModel) 
     this.customFieldType = undefined
     this.customFieldLabel = undefined
     this.customFieldName = undefined
@@ -3539,7 +3533,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
 
     // this.prechatFormArray.push(this.preChatFieldModel)
-    // console.log('createCustomField field' , field) 
+    // this.logger.log('createCustomField field' , field) 
     const obj = {}
 
     // if(this.customFieldTypeName === 'Input') {
@@ -3548,16 +3542,16 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     obj['type'] = this.customFieldType
     obj['name'] = this.customFieldName
     obj['label'] = this.customFieldLabel
-    // console.log('createCustomField obj' ,obj)
+    // this.logger.log('createCustomField obj' ,obj)
 
-    // console.log('createCustomField preChatFieldModel' , this.preChatFieldModel)
+    // this.logger.log('createCustomField preChatFieldModel' , this.preChatFieldModel)
 
     this.prechatFormArray.push(obj)
     this.prechatFormTexareaJson = JSON.stringify(this.prechatFormArray, null, 4);
   }
 
   onChangeCustomFieldType($event) {
-    // console.log('[WIDGET-SET-UP] - onChangeCustomFieldType  TypeSelected', $event)
+    // this.logger.log('[WIDGET-SET-UP] - onChangeCustomFieldType  TypeSelected', $event)
     this.customFieldType = $event.id
     // if(this.customFieldTypeName === 'Input') {
     //   // this.preChatFieldModel.type = 'text'
@@ -3567,38 +3561,38 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     // customFieldTypeName
   }
   onChangeCustomFieldTextAreaRow($event) {
-    // console.log('[WIDGET-SET-UP] - ON CHANGE TEXAREA ROW - NUM OF ROW', $event)
-    // console.log('[WIDGET-SET-UP] - ON CHANGE TEXAREA ROW - NUM OF ROW', this.customFieldTextAreaRow)
+    // this.logger.log('[WIDGET-SET-UP] - ON CHANGE TEXAREA ROW - NUM OF ROW', $event)
+    // this.logger.log('[WIDGET-SET-UP] - ON CHANGE TEXAREA ROW - NUM OF ROW', this.customFieldTextAreaRow)
 
   }
 
   onChangeCustomFieldName($event) {
-    // console.log('[WIDGET-SET-UP] - ON CHANGE CUSTOM FIELD NAME - EVENT', $event)
-    // console.log('[WIDGET-SET-UP] - ON CHANGE CUSTOM FIELD NAME - customFieldLabel', this.customFieldLabel)
+    // this.logger.log('[WIDGET-SET-UP] - ON CHANGE CUSTOM FIELD NAME - EVENT', $event)
+    // this.logger.log('[WIDGET-SET-UP] - ON CHANGE CUSTOM FIELD NAME - customFieldLabel', this.customFieldLabel)
 
     const fieldNameUndescore = $event.replace(/ /g, "_")
-    // console.log('[WIDGET-SET-UP] - ON CHANGE CUSTOM FIELD NAME - FIELD NAME FROM EVENT ', fieldNameUndescore)
+    // this.logger.log('[WIDGET-SET-UP] - ON CHANGE CUSTOM FIELD NAME - FIELD NAME FROM EVENT ', fieldNameUndescore)
 
     // https://www.codegrepper.com/code-examples/javascript/how+to+generate+random+id+in+javascript
     // Math.random should be unique because of its seeding algorithm.
     // Convert it to base 36 (numbers + letters), and grab the first 9 characters after the decimal.
     const customFieldId = '_' + Math.random().toString(36).slice(2)
-    //  console.log('[WIDGET-SET-UP] - ON CHANGE CUSTOM FIELD NAME - CUSTOM FIELD ID ', customFieldId)
+    //  this.logger.log('[WIDGET-SET-UP] - ON CHANGE CUSTOM FIELD NAME - CUSTOM FIELD ID ', customFieldId)
 
     this.customFieldName = fieldNameUndescore + customFieldId
   }
 
   onChangeCustomFieldIsRequired($event) {
-    // console.log('[WIDGET-SET-UP] - ON CHANGE CUSTOM FIELD IS REQUIRED - IS CHECKED', $event.target.checked)
+    // this.logger.log('[WIDGET-SET-UP] - ON CHANGE CUSTOM FIELD IS REQUIRED - IS CHECKED', $event.target.checked)
 
   }
 
   onChangeRegexFieldValidation($event) {
-    // console.log('[WIDGET-SET-UP] - ON CHANGE REGEX FIELD VALIDATION - REGEX EXPRESSION', this.customFieldRegexExpression)
+    // this.logger.log('[WIDGET-SET-UP] - ON CHANGE REGEX FIELD VALIDATION - REGEX EXPRESSION', this.customFieldRegexExpression)
 
   }
   onChangeErrorLabel($event) {
-    // console.log('[WIDGET-SET-UP] - ON CHANGE ERROR LABEL - LABEL', this.customFieldErrorLabel)
+    // this.logger.log('[WIDGET-SET-UP] - ON CHANGE ERROR LABEL - LABEL', this.customFieldErrorLabel)
   }
 
 
@@ -3606,7 +3600,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   // Splice item from the select if is from already present in the prechatFormTexareaJson
   // ------------------------------------------------------------------------------------
   removepreChatFormFieldsIfAlreadyUsed(preChatFormFields: any, prechatFormTexareaJson: any) {
-    // console.log('[WIDGET-SET-UP]  preChatFormFields - ', this.preChatFormFields);
+    // this.logger.log('[WIDGET-SET-UP]  preChatFormFields - ', this.preChatFormFields);
     // remove from the custom field select list the field that are already in the preChatFormFields
     for (var i = preChatFormFields.length - 1; i >= 0; i--) {
       for (var j = 0; j < prechatFormTexareaJson.length; j++) {
@@ -3617,14 +3611,14 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       }
     }
     this.preChatFormFields = this.preChatFormFields.slice(0)
-    // console.log('[WIDGET-SET-UP] -  preChatFormFields - AFTER SPLICE ', this.preChatFormFields);
+    // this.logger.log('[WIDGET-SET-UP] -  preChatFormFields - AFTER SPLICE ', this.preChatFormFields);
   }
 
   removePrechatFormField(prechatformfield) {
-    // console.log('[WIDGET-SET-UP] - REMOVE PRECHAT FORM FIELD ', prechatformfield)
+    // this.logger.log('[WIDGET-SET-UP] - REMOVE PRECHAT FORM FIELD ', prechatformfield)
 
     const prechatFormTexareaObjct = JSON.parse(this.prechatFormTexareaJson)
-    // console.log('[WIDGET-SET-UP] - REMOVE PRECHAT FORM TEXTAREA OBJCT ', prechatFormTexareaObjct)
+    // this.logger.log('[WIDGET-SET-UP] - REMOVE PRECHAT FORM TEXTAREA OBJCT ', prechatFormTexareaObjct)
     for (var i = 0; i < prechatFormTexareaObjct.length; i++) {
 
       if (prechatFormTexareaObjct[i].name === prechatformfield.name) {
@@ -3634,15 +3628,15 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         this.preChatFormFields = this.preChatFormFields.slice(0)
       }
     }
-    // console.log('[WIDGET-SET-UP] - REMOVE PRECHAT FORM TEXTAREA OBJCT ', prechatFormTexareaObjct)
-    // console.log('[WIDGET-SET-UP] - REMOVE PRECHAT FORM FIELD (those displayed in the select) ', this.preChatFormFields)
+    // this.logger.log('[WIDGET-SET-UP] - REMOVE PRECHAT FORM TEXTAREA OBJCT ', prechatFormTexareaObjct)
+    // this.logger.log('[WIDGET-SET-UP] - REMOVE PRECHAT FORM FIELD (those displayed in the select) ', this.preChatFormFields)
     this.prechatFormArray = prechatFormTexareaObjct
     this.prechatFormTexareaJson = JSON.stringify(prechatFormTexareaObjct, null, 4);
   }
 
   onChangeFieldIsRequired($event, field) {
-    // console.log('[WIDGET-SET-UP] - ON CHANGE FIELD IS REQUIRED - IS CHECKED', $event.target.checked)
-    // console.log('[WIDGET-SET-UP] - ON CHANGE FIELD IS REQUIRED - field', field)
+    // this.logger.log('[WIDGET-SET-UP] - ON CHANGE FIELD IS REQUIRED - IS CHECKED', $event.target.checked)
+    // this.logger.log('[WIDGET-SET-UP] - ON CHANGE FIELD IS REQUIRED - field', field)
     const prechatFormTexareaObjct = JSON.parse(this.prechatFormTexareaJson)
     if ($event.target.checked === false) {
       for (var i = 0; i < prechatFormTexareaObjct.length; i++) {
@@ -3668,28 +3662,28 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   }
 
   moveUp(field) {
-    // console.log('[WIDGET-SET-UP] - MOVE UP - field', field)
-    // console.log('[WIDGET-SET-UP] - MOVE UP - this.prechatFormArray', this.prechatFormArray)
+    // this.logger.log('[WIDGET-SET-UP] - MOVE UP - field', field)
+    // this.logger.log('[WIDGET-SET-UP] - MOVE UP - this.prechatFormArray', this.prechatFormArray)
 
     let index = this.prechatFormArray.findIndex(e => e.name == field.name);
-    // console.log('[WIDGET-SET-UP] - MOVE UP - field index', index)
+    // this.logger.log('[WIDGET-SET-UP] - MOVE UP - field index', index)
     if (index > 0) {
       let el = this.prechatFormArray[index];
-      // console.log('[WIDGET-SET-UP] - MOVE UP - field index', el)
+      // this.logger.log('[WIDGET-SET-UP] - MOVE UP - field index', el)
       this.prechatFormArray[index] = this.prechatFormArray[index - 1];
       this.prechatFormArray[index - 1] = el;
       // this.prechatFormArray = this.prechatFormTexareaJson
       this.prechatFormTexareaJson = JSON.stringify(this.prechatFormArray, null, 4);
     }
-    // console.log('[WIDGET-SET-UP] - MOVE UP - this.prechatFormArray', this.prechatFormArray)
+    // this.logger.log('[WIDGET-SET-UP] - MOVE UP - this.prechatFormArray', this.prechatFormArray)
 
   }
 
   moveDown(field) {
-    // console.log('[WIDGET-SET-UP] - MOVE DOWN - field', field)
+    // this.logger.log('[WIDGET-SET-UP] - MOVE DOWN - field', field)
 
     let index = this.prechatFormArray.findIndex(e => e.name == field.name);
-    // console.log('[WIDGET-SET-UP] - MOVE DOWN - field index', index)
+    // this.logger.log('[WIDGET-SET-UP] - MOVE DOWN - field index', index)
     if (index !== -1 && index < this.prechatFormArray.length - 1) {
       let el = this.prechatFormArray[index];
       this.prechatFormArray[index] = this.prechatFormArray[index + 1];
@@ -3707,11 +3701,11 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       prechatform_savejson_btn.blur()
     }
 
-    // console.log('[WIDGET-SET-UP] - SAVE PRE-CHAT-FORM-JSON this.prechatFormArray', this.prechatFormArray)
+    // this.logger.log('[WIDGET-SET-UP] - SAVE PRE-CHAT-FORM-JSON this.prechatFormArray', this.prechatFormArray)
 
     if (this.prechatFormArray.length > 0) {
-      // console.log('[WIDGET-SET-UP] - SAVE PRE-CHAT-FORM-JSON prechatFormTexareaJson', this.prechatFormTexareaJson)
-      // console.log('[WIDGET-SET-UP] - SAVE PRE-CHAT-FORM-JSON this.isJsonString(this.prechatFormTexareaJson)', this.isJsonString(this.prechatFormTexareaJson))
+      // this.logger.log('[WIDGET-SET-UP] - SAVE PRE-CHAT-FORM-JSON prechatFormTexareaJson', this.prechatFormTexareaJson)
+      // this.logger.log('[WIDGET-SET-UP] - SAVE PRE-CHAT-FORM-JSON this.isJsonString(this.prechatFormTexareaJson)', this.isJsonString(this.prechatFormTexareaJson))
       if (this.prechatFormTexareaJson !== '' && this.isJsonString(this.prechatFormTexareaJson) === true) {
         const parsedPrechatFormTexareaJson = JSON.parse(this.prechatFormTexareaJson)
 
@@ -3752,20 +3746,20 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       dangerMode: false,
     })
       .then((value) => {
-        // console.log('[WIDGET-SET-UP] - displayModalNoFieldInCustomPrechatForm value', value)
+        // this.logger.log('[WIDGET-SET-UP] - displayModalNoFieldInCustomPrechatForm value', value)
 
         if (value === true) {
-          // console.log('[WIDGET-SET-UP] - SAVE PRE-CHAT-FORM-JSON The custom prechat form contains no fields')
-          // console.log('[WIDGET-SET-UP] - SAVE PRE-CHAT-FORM-JSON preChatFormCustomFieldsEnabled ', this.preChatFormCustomFieldsEnabled)
+          // this.logger.log('[WIDGET-SET-UP] - SAVE PRE-CHAT-FORM-JSON The custom prechat form contains no fields')
+          // this.logger.log('[WIDGET-SET-UP] - SAVE PRE-CHAT-FORM-JSON preChatFormCustomFieldsEnabled ', this.preChatFormCustomFieldsEnabled)
 
           if (this.widgetObj.hasOwnProperty('preChatFormJson')) {
-            // console.log('[WIDGET-SET-UP] - SAVE PRE-CHAT-FORM-JSON widgetObj HAS TEH KEY preChatFormJson')
+            // this.logger.log('[WIDGET-SET-UP] - SAVE PRE-CHAT-FORM-JSON widgetObj HAS TEH KEY preChatFormJson')
             delete this.widgetObj['preChatFormJson']
           }
           if (this.widgetObj.hasOwnProperty('preChatFormCustomFieldsEnabled')) {
             this.preChatFormCustomFieldsEnabled = false;
             delete this.widgetObj['preChatFormCustomFieldsEnabled'];
-            // console.log('[WIDGET-SET-UP] - SAVE PRE-CHAT-FORM-JSON this.preChatFormCustomFieldsEnabled ', this.preChatFormCustomFieldsEnabled)
+            // this.logger.log('[WIDGET-SET-UP] - SAVE PRE-CHAT-FORM-JSON this.preChatFormCustomFieldsEnabled ', this.preChatFormCustomFieldsEnabled)
 
           }
           this.widgetService.updateWidgetProject(this.widgetObj)
@@ -3985,16 +3979,16 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   //     dangerMode: false,
   //   }).then((value) => {
   //     if (value === 'catch') {
-  //       // console.log('featureAvailableFromPlanC value', value)
-  //       // console.log('[APP-STORE] prjct_profile_type', this.prjct_profile_type)
-  //       // console.log('[APP-STORE] subscription_is_active', this.subscription_is_active)
-  //       // console.log('[APP-STORE] prjct_profile_type', this.prjct_profile_type)
-  //       // console.log('[APP-STORE] trial_expired', this.trial_expired)
-  //       // console.log('[APP-STORE] isVisiblePAY', this.isVisiblePAY)
+  //       // this.logger.log('featureAvailableFromPlanC value', value)
+  //       // this.logger.log('[APP-STORE] prjct_profile_type', this.prjct_profile_type)
+  //       // this.logger.log('[APP-STORE] subscription_is_active', this.subscription_is_active)
+  //       // this.logger.log('[APP-STORE] prjct_profile_type', this.prjct_profile_type)
+  //       // this.logger.log('[APP-STORE] trial_expired', this.trial_expired)
+  //       // this.logger.log('[APP-STORE] isVisiblePAY', this.isVisiblePAY)
   //       if (this.payIsVisible) {
-  //         // console.log('[APP-STORE] HERE 1')
+  //         // this.logger.log('[APP-STORE] HERE 1')
   //         if (this.USER_ROLE === 'owner') {
-  //           // console.log('[APP-STORE] HERE 2')
+  //           // this.logger.log('[APP-STORE] HERE 2')
   //           if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
   //             if (this.profile_name !== PLAN_NAME.C) {
   //               this.notify.displaySubscripionHasExpiredModal(true, this.profile_name, this.subscription_end_date);
@@ -4004,15 +3998,15 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   //           } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true && this.profile_name === PLAN_NAME.A) {
   //             this.notify._displayContactUsModal(true, 'upgrade_plan');
   //           } else if (this.prjct_profile_type === 'free') {
-  //             // console.log('[APP-STORE] HERE 4')
+  //             // this.logger.log('[APP-STORE] HERE 4')
   //             this.router.navigate(['project/' + this.id_project + '/pricing']);
   //           }
   //         } else {
-  //           // console.log('[APP-STORE] HERE 5')
+  //           // this.logger.log('[APP-STORE] HERE 5')
   //           this.presentModalOnlyOwnerCanManageTheAccountPlan();
   //         }
   //       } else {
-  //         // console.log('[APP-STORE] HERE 6')
+  //         // this.logger.log('[APP-STORE] HERE 6')
   //         this.notify._displayContactUsModal(true, 'upgrade_plan');
   //       }
   //     }
