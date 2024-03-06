@@ -545,13 +545,12 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
         // }
         // this.onLoadByFilter(searchParams);
       }
-      //this.updateStatusOfKb(kb._id, 0);
+      // this.updateStatusOfKb(kb._id, 0);
       // this.onLoadByFilter(searchParams);
-      // this.logger.log("kbsList:",that.kbsList);
       // that.onRunIndexing(kb);
-      setTimeout(() => {
-        this.checkStatusWithRetry(kb);
-      }, 2000);
+      // setTimeout(() => {
+      //   this.checkStatusWithRetry(kb);
+      // }, 2000);
       //that.onCloseBaseModal();
     }, (err) => {
       this.logger.error("[KNOWLEDGE-BASES-COMP] ERROR add new kb: ", err);
@@ -573,11 +572,11 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
       this.notify.showWidgetStyleUpdateNotification(this.msgSuccesAddKb, 2, 'done');
       kbs.forEach(kb => {
         this.kbsList.unshift(kb);
-        if(kb.status == -1 || kb.status == 0 || kb.status == 2) {
-          setTimeout(() => {
-            this.checkStatusWithRetry(kb);
-          }, 2000);
-        }
+        // if(kb.status == -1 || kb.status == 0 || kb.status == 2) {
+        //   setTimeout(() => {
+        //     this.checkStatusWithRetry(kb);
+        //   }, 2000);
+        // }
       });
       this.kbsListCount = this.kbsListCount+kbs.length;
       this.refreshKbsList = !this.refreshKbsList;
@@ -684,9 +683,9 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
           // this.removeKb(kb._id);
           this.updateStatusOfKb(kbNew._id, 0);
           this.refreshKbsList = !this.refreshKbsList;
-          setTimeout(() => {
-            this.checkStatusWithRetry(kbNew);
-          }, 2000);
+          // setTimeout(() => {
+          //   this.checkStatusWithRetry(kbNew);
+          // }, 2000);
         }, (err) => {
           this.logger.error("[KNOWLEDGE BASES COMP] ERROR add new kb: ", err);
           this.onOpenErrorModal(error);
@@ -714,6 +713,9 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
       "namespace": this.id_project,
       "id": kb._id
     }
+    var status_msg = "Indicizzazione terminata con successo!";
+    var status_code = 2;
+    var status_label = "done"
     this.openaiService.checkScrapingStatus(data).subscribe((response: any) => {
       // this.logger.log('Risposta ricevuta:', response);
       // if(response.status_code && response.status_code == -1){
@@ -721,20 +723,36 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
       //   // this.onRunIndexing(kb);
       //   this.checkStatusWithRetry(kb);
       // }  
+      
+      
       if(response.status_code == -1 || response.status_code == 0 || response.status_code == 2){
         // this.logger.log('riprova tra 10 secondi...');
         this.updateStatusOfKb(kb._id, response.status_code);
-        timer(20000).subscribe(() => {
-          this.checkStatusWithRetry(kb);
-        });
-      } else { // status == 3 || status == 4
+        // timer(20000).subscribe(() => {
+        //   this.checkStatusWithRetry(kb);
+        // });
+        
+        status_msg = "Indicizzazione in corso stato: "+response.status_code;
+        status_code = 3;
+        status_label = "warning";
+      } else  if(response.status_code == 4 ){ // status == 3 || status == 4
         // this.logger.log('Risposta corretta:', response.status_code);
-        this.updateStatusOfKb(kb._id, response.status_code);
+        status_code = 4;
+        status_label = "dangerous";
+        status_msg = "Errore nell'indicizzazione "+response.status_code;
+      } else {
+        //status_msg = "Indicizzazione in corso stato: "+response.status_code;
       }
+      this.updateStatusOfKb(kb._id, response.status_code);
+      this.notify.showWidgetStyleUpdateNotification(status_msg, status_code, status_label);
     },
     error => {
       this.logger.error('Error: ', error);
       this.updateStatusOfKb(kb._id, -2);
+      status_code = 4;
+      status_label = "dangerous";
+      status_msg = "Errore: "+error.message;
+      this.notify.showWidgetStyleUpdateNotification(status_msg, status_code, status_label);
     });
   }
 
@@ -757,6 +775,13 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
 
 
   /**
+   * onCheckStatus
+   */
+  onCheckStatus(kb){
+    this.checkStatusWithRetry(kb);
+  }
+
+  /**
    * runIndexing
    */
   onRunIndexing(kb) {
@@ -774,7 +799,7 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
         this.notify.showWidgetStyleUpdateNotification(this.msgErrorIndexingKb, 4, 'report_problem');
       } else {
         this.notify.showWidgetStyleUpdateNotification(this.msgSuccesIndexingKb, 2, 'done');
-        this.checkStatusWithRetry(kb);
+        // this.checkStatusWithRetry(kb);
       }
     }, (error) => {
       this.logger.error("error start scraping response: ", error);

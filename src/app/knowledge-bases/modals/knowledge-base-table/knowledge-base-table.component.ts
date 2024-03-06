@@ -22,10 +22,11 @@ export class KnowledgeBaseTableComponent implements OnInit {
   @Output() openBaseModalDelete = new EventEmitter();
   @Output() openBaseModalPreview = new EventEmitter();
   @Output() openAddKnowledgeBaseModal = new EventEmitter();
-  
+  @Output() checkStatus = new EventEmitter();
   @Output() runIndexing = new EventEmitter();
   @Output() loadPage = new EventEmitter();
   @Output() loadByFilter = new EventEmitter();
+  
 
   timeoutId: any;
   // kbsListfilterTypeFilter: KB[] = [];
@@ -205,6 +206,11 @@ export class KnowledgeBaseTableComponent implements OnInit {
   onOpenAddKnowledgeBaseModal(type){
     // console.log('onOpenAddKnowledgeBaseModal', type);
     this.openAddKnowledgeBaseModal.emit(type);
+  }
+
+  onCheckStatus(kb){
+    // console.log('onCheckStatus:: ', kb);
+    this.checkStatus.emit(kb);
   }
 
 }
