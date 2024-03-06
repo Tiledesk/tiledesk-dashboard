@@ -408,7 +408,7 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
   // }
 
   onLoadPage(searchParams){
-    console.log('onLoadNextPage:',searchParams);
+    // console.log('onLoadNextPage:',searchParams);
     let params = "?limit="+KB_DEFAULT_PARAMS.LIMIT
     //if(searchParams?.page){
       let limitPage = Math.floor(this.kbsListCount/KB_DEFAULT_PARAMS.LIMIT);
