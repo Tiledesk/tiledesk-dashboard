@@ -449,13 +449,13 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
         this.kbsList.push(kb);
         this.notify.showWidgetStyleUpdateNotification(this.msgSuccesAddKb, 2, 'done');
       }
-      this.updateStatusOfKb(kb._id, 0);
+      this.updateStatusOfKb(kb._id, 3);
       this.refreshKbsList = !this.refreshKbsList;
       // this.logger.log("kbsList:",that.kbsList);
       // that.onRunIndexing(kb);
-      setTimeout(() => {
-        this.checkStatusWithRetry(kb);
-      }, 2000);
+      // setTimeout(() => {
+      //   this.checkStatusWithRetry(kb);
+      // }, 2000);
       //that.onCloseBaseModal();
     }, (err) => {
       this.logger.error("[KNOWLEDGE-BASES-COMP] ERROR add new kb: ", err);
@@ -543,9 +543,9 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
           this.removeKb(kb._id);
           this.updateStatusOfKb(kb._id, 0);
           this.refreshKbsList = !this.refreshKbsList;
-          setTimeout(() => {
-            this.checkStatusWithRetry(kb);
-          }, 2000);
+          // setTimeout(() => {
+          //   this.checkStatusWithRetry(kb);
+          // }, 2000);
         }, (err) => {
           this.logger.error("[KNOWLEDGE BASES COMP] ERROR add new kb: ", err);
           this.onOpenErrorModal(error);
@@ -582,9 +582,9 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
       } else if(response.status_code == -1 || response.status_code == 0 || response.status_code == 2){
         // this.logger.log('riprova tra 10 secondi...');
         this.updateStatusOfKb(kb._id, response.status_code);
-        timer(10000).subscribe(() => {
-          this.checkStatusWithRetry(kb);
-        });
+        // timer(10000).subscribe(() => {
+        //   this.checkStatusWithRetry(kb);
+        // });
       } else { // status == 3 || status == 4
         // this.logger.log('Risposta corretta:', response.status_code);
         this.updateStatusOfKb(kb._id, response.status_code);
@@ -631,7 +631,7 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
         this.notify.showWidgetStyleUpdateNotification(this.msgErrorIndexingKb, 4, 'report_problem');
       } else {
         this.notify.showWidgetStyleUpdateNotification(this.msgSuccesIndexingKb, 2, 'done');
-        this.checkStatusWithRetry(kb);
+        // this.checkStatusWithRetry(kb);
       }
     }, (error) => {
       this.logger.error("error start scraping response: ", error);
@@ -735,9 +735,10 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
       //if(kb.status == -1){
       //   this.onRunIndexing(kb);
       //} else 
-      if(kb.status == -1 || kb.status == 0 || kb.status == 2) {
-        this.checkStatusWithRetry(kb);
-      }
+      this.updateStatusOfKb(kb._id, 3);
+      // if(kb.status == -1 || kb.status == 0 || kb.status == 2) {
+      //   this.checkStatusWithRetry(kb);
+      // }
     });
   }
 
