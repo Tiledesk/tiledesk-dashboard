@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.5.17
+- Deploys in production
+- Fixes the bug: multiple status call in kb page
+
 ### 2.5.16
 - Deploys in production
 - Improves the chatbots sidebar
