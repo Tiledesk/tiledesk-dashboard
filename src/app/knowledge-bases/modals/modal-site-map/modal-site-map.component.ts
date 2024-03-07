@@ -41,13 +41,14 @@ export class ModalSiteMapComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges){
     // console.log('ModalSiteMapComponent changes: ', changes);
-    
     if(this.listSitesOfSitemap.length > 0){
+      this.buttonDisabled = false;
       this.listOfUrls = this.listSitesOfSitemap.join('\n');
       // console.log('ModalSiteMapComponent listOfUrls: ', this.listOfUrls);
       this.countSitemap = this.listSitesOfSitemap.length;
       this.isSitemapLoaded = true;
     } else {
+      this.buttonDisabled = true;
       this.isSitemapLoaded = false;
     }
   }
@@ -83,6 +84,7 @@ export class ModalSiteMapComponent implements OnInit {
     this.listOfUrls = "";
     this.countSitemap = 0;
     this.isSitemapLoaded = false;
+    this.buttonDisabled = false;
     this.closeBaseModal.emit();
   }
 
@@ -90,6 +92,7 @@ export class ModalSiteMapComponent implements OnInit {
     let body = {
       'sitemap': this.kb.url
     }
+    this.buttonDisabled = true;
     this.sendSitemap.emit(body);
   }
 
