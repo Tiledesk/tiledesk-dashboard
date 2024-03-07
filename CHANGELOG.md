@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.6.0-rc2
+- Improves Knowledge Base (added sitemap)
+
 ### 2.6.0-rc1
 - Improves Knowledge Base 
 - Adds the customer.io integration
