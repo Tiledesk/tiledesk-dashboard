@@ -248,6 +248,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   companySiteUrl: string;
   companyName: string;
   dialogRef: MatDialogRef<any>;
+  UPLOAD_ENGINE_IS_FIREBASE: boolean;
+
   constructor(
     private router: Router,
     public location: Location,
@@ -406,7 +408,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
   getLoggedUser() {
     this.auth.user_bs.subscribe((user) => {
-      // this.logger.log('[SIDEBAR] USER GET IN SIDEBAR ', user)
+      this.logger.log('[SIDEBAR] USER GET IN SIDEBAR ', user)
       this.user = user;
       if (user) {
         this.createUserAvatar(user)
@@ -477,10 +479,12 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
   getProfileImageStorage() {
     if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
+      this.UPLOAD_ENGINE_IS_FIREBASE = true
       const firebase_conf = this.appConfigService.getConfig().firebase;
       this.storageBucket = firebase_conf['storageBucket'];
       this.logger.log('[SIDEBAR] IMAGE STORAGE ', this.storageBucket, 'usecase Firebase')
     } else {
+      this.UPLOAD_ENGINE_IS_FIREBASE = false
       this.baseUrl = this.appConfigService.getConfig().SERVER_BASE_URL;
       this.logger.log('[SIDEBAR] IMAGE STORAGE ', this.storageBucket, 'usecase Native')
     }
@@ -1119,11 +1123,11 @@ export class SidebarComponent implements OnInit, AfterViewInit {
       if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
         if (this.storageBucket && this.userProfileImageExist === true) {
           this.logger.log('[SIDEBAR] - USER PROFILE EXIST - BUILD userProfileImageurl');
-          this.setImageProfileUrl(this.storageBucket)
+          // this.setImageProfileUrl(this.storageBucket)
         }
       } else {
         if (this.baseUrl && this.userProfileImageExist === true) {
-          this.setImageProfileUrl_Native(this.baseUrl)
+          // this.setImageProfileUrl_Native(this.baseUrl)
         }
       }
     });
@@ -1136,10 +1140,11 @@ export class SidebarComponent implements OnInit, AfterViewInit {
       this.uploadImageService.userImageWasUploaded.subscribe((image_exist) => {
         this.logger.log('[SIDEBAR] - IMAGE UPLOADING IS COMPLETE ? ', image_exist, '(usecase Firebase)');
         this.userImageHasBeenUploaded = image_exist;
-        if (this.storageBucket && this.userImageHasBeenUploaded === true) {
-          this.logger.log('[SIDEBAR] - IMAGE UPLOADING IS COMPLETE - BUILD userProfileImageurl ');
-          this.setImageProfileUrl(this.storageBucket)
-        }
+        this.timeStamp = (new Date()).getTime();
+        // if (this.storageBucket && this.userImageHasBeenUploaded === true) {
+        //   this.logger.log('[SIDEBAR] - IMAGE UPLOADING IS COMPLETE - BUILD userProfileImageurl ');
+        //   this.setImageProfileUrl(this.storageBucket)
+        // }
       });
     } else {
 
@@ -1156,24 +1161,24 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     }
   }
 
-  setImageProfileUrl_Native(storage) {
-    this.userProfileImageurl = storage + 'images?path=uploads%2Fusers%2F' + this.currentUserId + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
-    this.logger.log('[SIDEBAR] PROFILE IMAGE (USER-PROFILE ) - userProfileImageurl ', this.userProfileImageurl);
-    this.timeStamp = (new Date()).getTime();
-  }
+  // setImageProfileUrl_Native(storage) {
+  //   this.userProfileImageurl = storage + 'images?path=uploads%2Fusers%2F' + this.currentUserId + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
+  //   this.logger.log('[SIDEBAR] PROFILE IMAGE (USER-PROFILE ) - userProfileImageurl ', this.userProfileImageurl);
+  //   this.timeStamp = (new Date()).getTime();
+  // }
 
-  setImageProfileUrl(storageBucket) {
-    this.userProfileImageurl = 'https://firebasestorage.googleapis.com/v0/b/' + storageBucket + '/o/profiles%2F' + this.currentUserId + '%2Fphoto.jpg?alt=media';
-    this.timeStamp = (new Date()).getTime();
-  }
+  // setImageProfileUrl(storageBucket) {
+  //   this.userProfileImageurl = 'https://firebasestorage.googleapis.com/v0/b/' + storageBucket + '/o/profiles%2F' + this.currentUserId + '%2Fphoto.jpg?alt=media';
+  //   this.timeStamp = (new Date()).getTime();
+  // }
 
-  getUserProfileImage() {
-    if (this.timeStamp) {
-      // this.logger.log('PROFILE IMAGE (USER-PROFILE IN SIDEBAR-COMP) - getUserProfileImage ', this.userProfileImageurl);
-      return this.sanitizer.bypassSecurityTrustUrl(this.userProfileImageurl + '&' + this.timeStamp);
-    }
-    return this.sanitizer.bypassSecurityTrustUrl(this.userProfileImageurl)
-  }
+  // getUserProfileImage() {
+  //   if (this.timeStamp) {
+  //     // this.logger.log('PROFILE IMAGE (USER-PROFILE IN SIDEBAR-COMP) - getUserProfileImage ', this.userProfileImageurl);
+  //     return this.sanitizer.bypassSecurityTrustUrl(this.userProfileImageurl + '&' + this.timeStamp);
+  //   }
+  //   return this.sanitizer.bypassSecurityTrustUrl(this.userProfileImageurl)
+  // }
 
 
 
