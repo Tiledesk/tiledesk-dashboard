@@ -1,5 +1,10 @@
 # tiledesk-dashboard
 
+### 2.5.18
+- Deploys in production
+- Fixes the bug: in the settings sidebar 'setAttribute' on 'Element' is not a valid attribute name
+- User profile image is called in loop
+
 ### 2.5.17
 - Deploys in production
 - Fixes the bug: multiple status call in kb page
