@@ -21,7 +21,7 @@
                     <div class="info-text">
                         <!-- <p>{{ 'KbPage.AddKbInfoTextContentMsg1' | translate }}</p> -->
                         <p [innerHTML]="'KbPage.helpUrls' | translate"></p>
-                        <span>{{ 'KbPage.YouCanAddKBUrlsLimit' | translate }}</span>
+                        <span>{{ 'KbPage.YouCanAddKBUrlsLimit' | translate }} {{KB_LIMIT_CONTENT}}</span>
                     </div>
                 </div>
                 <div class="form-container">
@@ -44,7 +44,7 @@
                   {{ "Cancel" | translate }}
                 </button>
                 <button id="addkb-btn" class="btn btn-primary" [disabled]="buttonDisabled" (click)="onSaveKnowledgeBase()">
-                  {{ 'KbPage.Import' | translate }}
+                    {{ 'KbPage.Import' | translate }} {{countSitemap}} URL
                 </button>
             </div> 
 

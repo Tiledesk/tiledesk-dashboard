@@ -1649,7 +1649,7 @@
         "NoKbAdded": "You haven't added any data sources",
         "NoKbMatchParams": "No match for the specified parameters",
         "NoKbAddedText": "Add data-sources into your assistant to build a knowledge base.",
-        "Add": "Add data-source",
+        "Add": "Add data source",
         "Import": "Import",
         "AddKbURL": "URLs",
         "AddKbText": "Plain text",

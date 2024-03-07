@@ -1,7 +1,6 @@
 .modal-header {
     .modal-title {
         font-weight: 400;
-        padding-left: 4px;
     }
     .close{
         opacity: 0.5;
@@ -124,10 +123,6 @@
         margin-bottom: 14px;
     }
 
-    .input-label {
-        font-weight: 400;
-        // letter-spacing: 0.5px;
-    }
 
     .custom-input {
         width: 100%;
@@ -136,8 +131,8 @@
         border: 2px solid #c6cdd4;
         padding: 0px 15px;
         color: #22272d;
-        // line-height: 35px;
-        // font-weight: 400;
+        line-height: 35px;
+        font-weight: 400;
         margin-bottom: 10px;
         // letter-spacing: 0.5px;
         &.invalid {
@@ -150,7 +145,7 @@
         width: 100%;
         overflow: scroll auto;
         scrollbar-width: none;
-        min-height: 300px;
+        min-height: 150px;
         border-radius: 6px;
         border: 2px solid #c6cdd4;
         padding: 10px 15px;
@@ -166,7 +161,6 @@
             transition: border 0.3s;
         }
     }
-
 }
 
 
@@ -219,3 +213,17 @@
     text-transform: none;
 } 
 
+
+
+
+.input-label {
+    font-weight: 400;
+    font-size: 12px; 
+    font-weight: normal;
+    margin-top: 6px;
+    padding-bottom: 0;
+}
+
+.input-label-error {
+    color: #c62445;
+}
