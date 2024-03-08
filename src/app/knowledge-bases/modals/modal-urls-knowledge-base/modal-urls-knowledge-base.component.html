@@ -21,7 +21,6 @@
                     <div class="info-text">
                         <!-- <p>{{ 'KbPage.AddKbInfoTextContentMsg1' | translate }}</p> -->
                         <p [innerHTML]="'KbPage.helpUrls' | translate"></p>
-                        <span>{{ 'KbPage.YouCanAddKBUrlsLimit' | translate }} {{KB_LIMIT_CONTENT}}</span>
                     </div>
                 </div>
                 <div class="form-container">
@@ -30,10 +29,14 @@
                         <span class="input-label">{{ 'KbPage.titleTextareaUrls' | translate }}</span> 
                         <textarea type="text" name="content" class="custom-textarea" 
                             [(ngModel)]="content" 
-                            placeholder="{{ 'KbPage.placeholderUrls' | translate }}" (input)="onChangeInput($event)" rows="4"
-                            [class.invalid]="(kbForm.controls.content.errors?.pattern || kbForm.controls.content.errors?.required) && kbForm.controls.content.touched"
+                            placeholder="{{'KbPage.placeholderUrls' | translate}}" (input)="onChangeInput($event)" rows="4"
+                            [ngClass]="{'invalid':errorLimit }"
                         ></textarea>
-                        <span class="input-label" style="font-size: 12px; font-weight: normal;">{{ 'KbPage.infoUrls' | translate }}</span>
+                        <!-- [class.invalid]="(kbForm.controls.content.errors?.pattern || kbForm.controls.content.errors?.required) && kbForm.controls.content.touched" -->
+                        <!-- <span class="input-label" style="font-size: 12px; font-weight: normal;">{{ 'KbPage.infoUrls' | translate }}</span> -->
+                        <span *ngIf="!errorLimit" class="input-label" style="font-size: 12px; font-weight: normal;">{{ 'KbPage.YouCanAddKBUrlsLimit' | translate }} {{KB_LIMIT_CONTENT}}</span>
+                        <!-- <span *ngIf="!errorLimit" class="input-label">{{countSitemap}} {{ 'KbPage.LabelSitemapList' | translate }}</span> -->
+                        <span *ngIf="errorLimit" class="input-label-error">{{ 'KbPage.InfoSitemapList' | translate }} {{KB_LIMIT_CONTENT}}</span>
                       </div>
                     </form>
                 </div>

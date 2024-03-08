@@ -18,7 +18,7 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit {
   list = [];
   content: string;
   countSitemap: number;
-
+  errorLimit: boolean = false;
   // kb: KB = {
   //   _id: null,
   //   type: '',
@@ -53,14 +53,26 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit {
 
 
   onChangeInput(event): void {
-    if (this.kbForm.valid) {
-      this.buttonDisabled = false;
-    } else {
-      this.buttonDisabled = true;
-    }
+    // if (this.kbForm.valid) {
+    //   this.buttonDisabled = false;
+    // } else {
+    //   this.buttonDisabled = true;
+    // }
+    
     let listSitesOfSitemap = this.content.split("\n").filter(function(row) {
       return row.trim() !== '';
     });
+
+    var lines = this.content.split('\n');
+    
+    if (lines.length > KB_LIMIT_CONTENT) {
+      this.errorLimit = true;
+      this.buttonDisabled = true;
+      // content = lines.slice(0, KB_LIMIT_CONTENT).join('\n');
+    } else {
+      this.errorLimit = false;
+      this.buttonDisabled = false;
+    }
     this.countSitemap = listSitesOfSitemap.length;
   }
 

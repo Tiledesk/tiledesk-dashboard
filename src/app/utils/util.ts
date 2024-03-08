@@ -342,7 +342,7 @@ export enum KB_DEFAULT_PARAMS {
     SORT_FIELD = 'updatedAt'
 }
 
-export const KB_LIMIT_CONTENT = 20;
+export const KB_LIMIT_CONTENT = 300;
 
 // Growth
 export const featuresPlanA = [
