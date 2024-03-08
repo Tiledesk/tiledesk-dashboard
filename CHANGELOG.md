@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.6.0-rc3
+- Improves Knowledge Base
+
 ### 2.6.0-rc2
 - Improves Knowledge Base (added sitemap)
 
