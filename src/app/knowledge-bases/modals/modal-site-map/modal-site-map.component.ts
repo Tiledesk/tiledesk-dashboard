@@ -76,6 +76,15 @@ export class ModalSiteMapComponent implements OnInit {
     this.listSitesOfSitemap = this.listOfUrls.split("\n").filter(function(row) {
       return row.trim() !== '';
     });
+    var lines = this.listOfUrls.split('\n');
+    if (lines.length > KB_LIMIT_CONTENT) {
+      this.errorLimit = true;
+      this.buttonDisabled = true;
+      // this.listOfUrls = lines.slice(0, KB_LIMIT_CONTENT).join('\n');
+    } else {
+      this.errorLimit = false;
+      this.buttonDisabled = false;
+    }
     this.countSitemap = this.listSitesOfSitemap.length;
   }
 

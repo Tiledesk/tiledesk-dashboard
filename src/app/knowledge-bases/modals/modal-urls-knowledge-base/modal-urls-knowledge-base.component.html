@@ -24,13 +24,13 @@
                     </div>
                 </div>
                 <div class="form-container">
-                    <form [formGroup]="kbForm">
+                    <!-- <form [formGroup]="kbForm"> -->
                       <div class="input-container">
                         <span class="input-label">{{ 'KbPage.titleTextareaUrls' | translate }}</span> 
-                        <textarea type="text" name="content" class="custom-textarea" 
-                            [(ngModel)]="content" 
+                        <textarea type="text" class="custom-textarea"
+                            [ngClass]="{'invalid':errorLimit }" 
+                            [(ngModel)]="listOfUrls" 
                             placeholder="{{'KbPage.placeholderUrls' | translate}}" (input)="onChangeInput($event)" rows="4"
-                            [ngClass]="{'invalid':errorLimit }"
                         ></textarea>
                         <!-- [class.invalid]="(kbForm.controls.content.errors?.pattern || kbForm.controls.content.errors?.required) && kbForm.controls.content.touched" -->
                         <!-- <span class="input-label" style="font-size: 12px; font-weight: normal;">{{ 'KbPage.infoUrls' | translate }}</span> -->
@@ -38,7 +38,7 @@
                         <!-- <span *ngIf="!errorLimit" class="input-label">{{countSitemap}} {{ 'KbPage.LabelSitemapList' | translate }}</span> -->
                         <span *ngIf="errorLimit" class="input-label-error">{{ 'KbPage.InfoSitemapList' | translate }} {{KB_LIMIT_CONTENT}}</span>
                       </div>
-                    </form>
+                    <!-- </form> -->
                 </div>
             </div>
             

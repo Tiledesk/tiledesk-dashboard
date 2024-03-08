@@ -73,7 +73,7 @@
               <div class="form-container">
                     <div class="input-container">
                       <span class="input-label">{{ 'KbPage.titleTextareaUrls' | translate }}</span> 
-                      <textarea type="text" name="listOfUrls" class="custom-textarea" 
+                      <textarea type="text" class="custom-textarea" 
                           [(ngModel)]="listOfUrls" 
                           [ngClass]="{'invalid':errorLimit }"
                           placeholder="{{ 'KbPage.PlaceholderInputSitemapList' | translate }}" (input)="onChangeList($event)" rows="4"
