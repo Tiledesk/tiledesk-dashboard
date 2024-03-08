@@ -20,7 +20,7 @@
     <!-- -------------------------------------------------- -->
     <!--  PROJECT PROFILE INFO  -->
     <!-- -------------------------------------------------- -->
-    <div class="row" *ngIf="areActivePay">
+    <div class="row">
       <!-- <div class="col-xs-12" class="alert-exceed-numb-of-seats-allowed"
         *ngIf="prjct_profile_type === 'payment' && subscription_is_active === false">
         <i class="material-icons" style="vertical-align: middle; color: #f44336;">error_outline</i>
@@ -518,12 +518,12 @@
               {{ "UserEditAddPage.AnAgentCan" | translate }}
             </p>
 
-            <p class="title-attribute" style="margin-bottom: 3px">
+            <p *ngIf="hideHelpLink" class="title-attribute" style="margin-bottom: 3px">
 
               {{ "RelatedKnowledgeBase" | translate }}
 
             </p>
-            <p style="color:#7695a5">
+            <p *ngIf="hideHelpLink" style="color:#7695a5">
 
               <span>
                 <svg style="width: 25px;height:auto; vertical-align: middle;" aria-hidden="true" focusable="false"
