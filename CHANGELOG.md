@@ -1,11 +1,38 @@
 # tiledesk-dashboard
 
+### 2.6.0-rc2
+- Improves Knowledge Base (added sitemap)
+
+### 2.6.0-rc1
+- Improves Knowledge Base 
+- Adds the customer.io integration
+- Refactors the bot list page
+
+### 2.5.16
+- Deploys in production
+- Improves the chatbots sidebar
+- Improves the settings sidebar
+- Externalizes style variables
+
+### 2.5.15
+- Deploys in production
+- Improvements and bug fixing
+
+### 2.5.14
+- Deploys in production
+- Fixing translations
+
+### 2.5.13
+- Deploys in production
+- Refactors the bot list page
+- Improvements and bug fixing
+
 ### 2.5.13-rc2
-- Fixes bug: check status didn't start after adding a new source
+- Fixes the bug: check status didn't start after adding a new source
 
 ### 2.5.13-rc1
-- Improves Knowledge Base page
-- Adds customer.io integration 
+- Improves Knowledge Base 
+- Adds the customer.io integration
 
 ### 2.5.12
 - Deploys in production

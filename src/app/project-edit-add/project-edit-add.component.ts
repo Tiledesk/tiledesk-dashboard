@@ -177,6 +177,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   USER_ROLE: string;
 
   onlyOwnerCanManageTheAccountPlanMsg: string;
+  onlyOwnerCanManageAdvancedProjectSettings: string;
   onlyOwnerCanManageEmailTempalte: string;
   onlyAvailableWithEnterprisePlan: string;
   cPlanOnly: string
@@ -218,6 +219,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   isTier3Plans: boolean // Plus or Custom
   isSripeSub: boolean;
   salesEmail: string;
+  public hideHelpLink: boolean;
 
   formErrors: FormErrors = {
     'creditCard': '',
@@ -275,6 +277,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   ) {
     const brand = brandService.getBrand();
     this.tparams = brand;
+    this.hideHelpLink= brand['DOCS'];
     if (brand) {
       this.contactUsEmail = brand['CONTACT_US_EMAIL'];
       this.salesEmail = brand['CONTACT_SALES_EMAIL'];
@@ -687,6 +690,16 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         // this.logger.log('[PRJCT-EDIT-ADD] onlyOwnerCanManageTheAccountPlanMsg text', translation)
         this.learnMoreAboutDefaultRoles = translation;
       });
+
+      this.translate.get('OnlyUserWithOwnerRoleCanManageAdvancedProjectSettings')
+      .subscribe((translation: any) => {
+        // this.logger.log('[PRJCT-EDIT-ADD] onlyOwnerCanManageTheAccountPlanMsg text', translation)
+        this.onlyOwnerCanManageAdvancedProjectSettings = translation;
+      });
+
+
+    
+      
     // this.translate.get('AvailableWithThePlan', { plan_name: PLAN_NAME.C })
     //   .subscribe((translation: any) => {
     //     this.cPlanOnly = translation;
@@ -1052,7 +1065,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   }
 
   presentModalAgentCannotManageAvancedSettings() {
-    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan('Only a teammate with the Owner role can manage advanced settings', this.learnMoreAboutDefaultRoles)
+    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageAdvancedProjectSettings, this.learnMoreAboutDefaultRoles)
   }
 
   goToProjectSettings_BannedVisitors() {

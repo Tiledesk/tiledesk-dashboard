@@ -2807,11 +2807,11 @@ pre {
 }
 
 .widget-set-up-col {
-  background-color: rgb(241, 241, 241);
+  // background-color: rgb(241, 241, 241);
   margin-top: -15px;
   padding: 20px 20px 10px 36px;
-  margin-bottom: 24px;
-  margin-left: 32px;
+  // margin-bottom: 24px;
+  // margin-left: 32px;
 }
 
 .widget-set-up-text {
@@ -2826,6 +2826,8 @@ pre {
   font-weight: 400;
   margin-bottom: 6px;
   line-height: 20px;
+  background-color: rgb(241, 241, 241);
+  padding: 15px;
 }
 
 .widget-set-up-link-to-docs {

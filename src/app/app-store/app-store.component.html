@@ -274,8 +274,9 @@
       <!-- -------------------------------------------------------------------- -->
       <!-- @ App cards -->
       <!-- -------------------------------------------------------------------- -->
+      
       <div *ngFor="let app of apps" class="col-lg-4 col-md-4 col-sm-6" style="cursor:pointer"
-        [ngClass]="{'hide-paid-app': !this.isVisiblePAY && (app.title === 'WhatsApp Business' || app.title === 'Facebook Messenger' || app.title === 'Help Center') }">
+        [ngClass]="{'hide-paid-app': areVisiblePaidApps === false  && (app.title === 'WhatsApp Business' || app.title === 'Facebook Messenger' || app.title === 'Help Center') }">
         <div class="card card-app-store" >
 
           <div class="card-content">

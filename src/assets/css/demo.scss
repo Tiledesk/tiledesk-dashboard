@@ -2453,3 +2453,268 @@ appdashboard-app-store>div>div>div>div>.card-app-store {
 // .recaptcha .grecaptcha-badge {
 //   visibility: visible;
 // }
+
+.success-snackbar {
+  font-weight: 400;
+  color: #fff !important;
+  min-width: fit-content !important;
+}
+
+.success-snackbar>div>div>simple-snack-bar>span {
+  margin-left: 22px;
+}
+
+.success-snackbar::before {
+  font-family: "FontAwesome";
+  content: "\f00c";
+  position: absolute;
+  color: #4caf50;
+}
+
+/*
+/* Settings sidebar / Bot sidebar 
+/* ---------------------------------------------- */
+appdashboard-settings-sidebar {
+  border-right: 1px solid #e5effe !important;
+  min-height: calc(100vh - 160px);
+}
+
+appdashboard-bots-sidebar  {
+  border-right: 1px solid #e5effe !important;
+  min-height: calc(100vh - 160px);
+}
+
+.settings-sidebar-wpr {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
+  margin-top: 5px;
+  padding-right: 10px;
+  // font-size: 12px;
+}
+
+.settings-sidebar-wpr-opened {
+  width: 215px;
+  min-width: 215px;
+  max-width: 215px;
+}
+
+.settings-sidebar-wpr-closed {
+  width: 40px;
+  min-width: 40px;
+  max-width: 40px;
+}
+
+.settings-sidebar {
+  padding-left: 0px;
+  list-style: none;
+}
+
+.settings-sidebar>li {
+  height: 35px;
+  border-radius: var(--settings-sidebar-border-radius);
+  margin-right: 6px;
+  cursor: pointer;
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 3px;
+  justify-content: center;
+  font-family: var(--header-font-family);
+  font-weight: var(--settings-sidebar-font-weight);
+  font-size: var(--settings-sidebar-font-size);
+  // height: 40px;
+  // padding-right: 6px;
+}
+
+.settings-sidebar>li:hover {
+  background-color: var(--settings-sidebar-hover-background-color);
+  color: var(--settings-sidebar-hover-color);
+}
+
+// ---------------------------------------
+// Only in Bot sidebar 
+// ---------------------------------------
+// Group name (i.e. MY CHATBOTS, TEMPLATES ...)
+.sidebar-item-wpr-no-link {
+  flex-direction: column;
+  position: relative;
+  padding: 0px;
+  font-weight: var(--settings-sidebar-group-name-font-weight) !important;
+
+  // letter-spacing:var(--settings-sidebar-group-name-letter-spacing);
+  // line-height: 18px;
+  // color: var(--settings-sidebar-group-name-color); 
+  // width: 100%;
+  // display: flex;
+}
+
+.settings-sidebar>li:hover:not(.sidebar-item-wpr-no-link) {
+  background-color: var(--settings-sidebar-hover-background-color);
+  color: var(--settings-sidebar-hover-color);
+}
+
+.sidebar-item-no-link {
+  color: var(--settings-sidebar-color);
+  padding-left: 12px;
+  font-size: var(--settings-sidebar-group-name-font-size);
+  line-height: 14px;
+  text-transform: var(--settings-sidebar-group-name-text-transform);
+  cursor: default;
+  // letter-spacing: -0.01em;
+  // font-weight: bold;
+  // display: flex;
+  // -webkit-box-pack: justify;
+  // justify-content: space-between;
+  // -webkit-box-align: center;
+  // align-items: center;
+}
+
+.settings-sidebar>.sidebar-item-wpr-no-link:hover {
+  background-color: #fff !important;
+  color: var(--settings-sidebar-color);
+}
+
+.settings-sidebar>li:hover .sidebar-item-no-link {
+  background-color: #fff !important;
+  color: var(--settings-sidebar-color);
+}
+
+.sidebar-item-wpr {
+  flex-direction: column;
+  position: relative;
+  color: var(--settings-sidebar-color);
+  letter-spacing: var(--settings-sidebar-group-name-letter-spacing);
+
+  // padding: 0px;
+  // font-size: 14px;
+  // line-height: 18px;
+  // display: flex;
+  // width: 100%;
+  // font-weight: 500;
+}
+
+.sidebar-item {
+  position: relative;
+  outline: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  background-color: transparent;
+  color: inherit;
+  padding: 9px 12px;
+
+  // font-weight: var(--settings-sidebar-font-weight);
+  // display: flex;
+  // -webkit-box-align: center;
+  // align-items: center;
+  // border-radius: 4px;
+}
+
+.sidebar-item-s {
+  margin-left: auto;
+  transition: opacity 0.2s ease 0s;
+  padding-left: 6px;
+  // opacity: 1;
+  // line-height: 16px;
+  // font-size: 12px;
+  // letter-spacing: -0.01em;
+  // font-weight: 500;
+}
+
+.settings-sidebar>li:hover .sidebar-item-s {
+  color: var(--settings-sidebar-hover-color);
+}
+
+li.active-item a .sidebar-item-s {
+  color: var(--settings-sidebar-active-color) !important;
+}
+
+// ./ only in Bot sidebar  
+
+.settings-sidebar>li>a {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.settings-sidebar-icons {
+  color: var(--settings-sidebar-color);
+  vertical-align: middle !important;
+  font-size: var(--settings-sidebar-icon-font-size) !important;
+  margin-left: 6px !important;
+}
+
+.custom_paragraph {
+  margin-bottom: 0px;
+  padding-left: 8px;
+  display: inline-block;
+  vertical-align: middle;
+  width: 170px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--settings-sidebar-color);
+  // font-size: 12px;
+  // line-height: 1.4;
+}
+
+.settings-sidebar>li:hover .custom_paragraph {
+  color: var(--settings-sidebar-hover-color);
+}
+
+.settings-sidebar>li:hover .settings-sidebar-icons {
+  color: var(--settings-sidebar-hover-color);
+}
+
+li.active-item a p.custom_paragraph {
+  color: var(--settings-sidebar-active-color);
+}
+
+li.active-item a i.settings-sidebar-icons {
+  color: var(--settings-sidebar-active-color) !important;
+}
+
+.active-item {
+  background-color: var(--settings-sidebar-active-background-color);
+  font-weight: var(--settings-sidebar-active-font-weight) !important;
+}
+
+// Only Settings sidebar
+.settings-sidebar>li>.settings-sidebar-anchor {
+  padding-top: 3px;
+}
+
+.toggle-setting-sidebar-icon-wpr {
+  position: absolute;
+  top: 22px;
+  z-index: 1050;
+  width: 22px;
+  height: 22px;
+  background: var(--settings-sidebar-toggle-icon-background);
+  padding-top: 1px;
+}
+
+.toggle-setting-sidebar-icon-wpr.is_opened {
+  left: 215px;
+}
+
+.toggle-setting-sidebar-icon-wpr.is_closed {
+  left: 40px;
+}
+
+.toggle-setting-sidebar-icon {
+  border: var(--settings-sidebar-toggle-icon-border) !important;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  font-size: var(--settings-sidebar-icon-font-size) !important;
+  // background: #fff;
+}
+
+.toggle-setting-sidebar-icon:hover {
+  background: var(--settings-sidebar-toggle-icon-hover-background-color);
+}

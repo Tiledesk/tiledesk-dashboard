@@ -12,9 +12,9 @@
     "display_google_auth_btn": false,
     "display_help_in_installation": false,
     "display_invite_teammate_btn": false,
+    "display_contact_us_email": false,
     "footer": {
         "display_terms_and_conditions_link": true,
-        "display_contact_us_email": false,
         "display_star_us_on_github": false,
         "display_leave_us_a_feedback": false,
         "display_followus_on_x": true,
@@ -65,6 +65,7 @@
     "CONTACT_US_EMAIL": "",
     "CONTACT_SALES_EMAIL": "",
     "BRAND_PRIMARY_COLOR": "#00c0f0",
-    "BRAND_SECONDARY_COLOR": "#002159"
+    "BRAND_SECONDARY_COLOR": "#002159",
+    "DOCS": false
   }
 }

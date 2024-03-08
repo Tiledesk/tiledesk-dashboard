@@ -24,8 +24,9 @@
 	<div class="container-fluid" style="padding-left: 5px;padding-right: 5px;">
 
 		<div class="content-wpr" style="display: flex;">
-			<appdashboard-settings-sidebar style="border-right:1px solid #e5effe !important">
-			</appdashboard-settings-sidebar>
+
+			<appdashboard-settings-sidebar> </appdashboard-settings-sidebar>
+			
 			<div class="teplate-content" style="flex: 1 1 auto;">
 				<!-- ------------------------------- -->
 				<!--  Widget Set Up  HEADER -->
@@ -41,7 +42,7 @@
 					Setting up the Widget for visitors lets you chat with people when they're on your website.
 				</div> -->
 
-						<div class="widget-set-up-link-to-docs-wpr">
+						<div *ngIf="hideHelpLink" class="widget-set-up-link-to-docs-wpr">
 							<span>
 								<svg style="width: 25px;height:auto; vertical-align: middle;" aria-hidden="true"
 									focusable="false" data-prefix="fab" data-icon="readme"
@@ -52,7 +53,7 @@
 									</path>
 								</svg>
 							</span>
-							<span class="widget-set-up-link-to-docs" (click)="goToWidgetWebSdk()">
+							<span  class="widget-set-up-link-to-docs" (click)="goToWidgetWebSdk()">
 								{{'LearnAboutAdvancedWidgetConfiguration'| translate}}
 							</span>
 						</div>
@@ -1143,7 +1144,7 @@
 													class="col-sm-12 control-label widget-settings-control-head-label-info"
 													style="background: none !important;max-width:600px">
 
-													{{'SingleConversationDescription' | translate}}
+													{{'SingleConversationDescription' | translate : companyNametParams}}
 												</label>
 											</div>
 
