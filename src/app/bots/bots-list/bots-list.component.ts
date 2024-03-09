@@ -775,6 +775,10 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
 
       }
     })
+    
+    if (!this.public_Key.includes("ANA")) {
+      this.isVisibleAnalytics = false;
+    }
   }
 
   goToBotExternalUrl(botExternalUrl) {

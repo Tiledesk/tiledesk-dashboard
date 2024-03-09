@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChildren, QueryList, ElementRef, isDevMode } from '@angular/core'
+import { Component, OnInit, OnDestroy, ViewChildren, QueryList, ElementRef, isDevMode, AfterViewInit } from '@angular/core'
 import { Router } from '@angular/router'
 import { AuthService } from '../core/auth.service'
 import { Project } from '../models/project-model'
@@ -17,6 +17,10 @@ import { takeUntil } from 'rxjs/operators'
 import { Subject } from 'rxjs';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog'
 import { UserModalComponent } from './user-modal/user-modal.component'
+import { element } from 'protractor'
+import { WsRequestsService } from 'app/services/websocket/ws-requests.service'
+import { UsersConvsStatsModalComponent } from './users-convs-stats-modal/users-convs-stats-modal.component'
+
 
 const swal = require('sweetalert')
 
@@ -25,7 +29,7 @@ const swal = require('sweetalert')
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.scss'],
 })
-export class UsersComponent extends PricingBaseComponent implements OnInit, OnDestroy {
+export class UsersComponent extends PricingBaseComponent implements OnInit, AfterViewInit, OnDestroy {
   private unsubscribe$: Subject<any> = new Subject<any>();
   PLAN_NAME = PLAN_NAME;
   PLAN_SEATS = PLAN_SEATS;
@@ -89,6 +93,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, OnDe
   subscription: Subscription
   isVisibleGroups: boolean;
   areActivePay: boolean;
+  isVisibleAnalytics: boolean;
   storageBucket: string
 
   baseUrl: string
@@ -114,6 +119,8 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, OnDe
   dialogRef: MatDialogRef<any>;
   public hideHelpLink: boolean;
   agentsCannotInvite: string;
+  widthOfLargestDiv: any;
+  
   constructor(
     private usersService: UsersService,
     private router: Router,
@@ -124,14 +131,15 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, OnDe
     public appConfigService: AppConfigService,
     private logger: LoggerService,
     public brandService: BrandService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    public wsRequestsService: WsRequestsService,
   ) {
     super(prjctPlanService, notify);
     this.tParamsFreePlanSeatsNum = { free_plan_allowed_seats_num: PLAN_SEATS.free }
     const brand = brandService.getBrand();
     this.displayInviteTeammateBtn = brand['display_invite_teammate_btn'];
     this.logger.log('[USERS] displayInviteTeammateBtn ', this.displayInviteTeammateBtn)
-    this.hideHelpLink= brand['DOCS'];
+    this.hideHelpLink = brand['DOCS'];
   }
 
   ngOnInit() {
@@ -151,6 +159,12 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, OnDe
     this.getBrowserVersion()
 
   }
+  ngAfterViewInit(): void {
+
+
+  }
+
+
 
   ngOnDestroy() {
     // this.subscription.unsubscribe()
@@ -158,9 +172,9 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, OnDe
     this.unsubscribe$.complete();
   }
 
-  presentDialogResetBusy(){
+  presentDialogResetBusy() {
     this.logger.log('[USERS] presentDialogResetBusy ')
-    if(this.dialogRef) {
+    if (this.dialogRef) {
       this.dialogRef.close();
       return
     }
@@ -171,11 +185,33 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, OnDe
       data: {},
     });
 
-    
+
 
     this.dialogRef.afterClosed().subscribe(result => {
       this.logger.log(`[USERS] Dialog result: ${result}`);
       this.dialogRef = null
+    });
+  }
+
+  opeUserStats(user) {
+    this.logger.log('[USERS] opeUserStats  ')
+
+    const statsDialogRef = this.dialog.open(UsersConvsStatsModalComponent, {
+      width: '800px',
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+      hasBackdrop: true,
+      data: { user: user },
+    });
+
+    this.logger.log('[USERS] opeUserStats  statsDialogRef ', statsDialogRef)
+
+    statsDialogRef.afterClosed().subscribe(botId => {
+      this.logger.log(`[USERS] Dialog afterClosed botId: ${botId}`);
+      if (botId) {
+        // const statBtnEl = <HTMLElement>document.querySelector('#btn-' + `${botId}`);
+        // this.logger.log('[USERS] Dialog afterClosed statBtnEl', statBtnEl);
+        // statBtnEl.blur()
+      }
     });
   }
 
@@ -211,7 +247,21 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, OnDe
           this.areActivePay = true
           // this.logger.log('[USERS] - PUBLIC-KEY (Users) - areActivePay', this.areActivePay);
         }
+       }
+
+      if (key.includes("ANA")) {
+        
+        let ana = key.split(":");
+      
+        if (ana[1] === "F") {
+          this.isVisibleAnalytics = false;
+          console.log('[USERS] - PUBLIC-KEY (Users) - isVisibleAnalytics', this.isVisibleAnalytics);
+        } else {
+          this.isVisibleAnalytics = true;
+          console.log('[USERS] - PUBLIC-KEY (Users) - isVisibleAnalytics', this.isVisibleAnalytics);
+        }
       }
+      
     })
 
     if (!this.public_Key.includes("GRO")) {
@@ -220,6 +270,10 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, OnDe
 
     if (!this.public_Key.includes("PAY")) {
       this.areActivePay = false;
+    }
+
+    if (!this.public_Key.includes("ANA")) {
+      this.isVisibleAnalytics = false;
     }
   }
 
@@ -232,7 +286,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, OnDe
         if (project) {
           this.project = project;
           this.id_project = project._id;
-         this.logger.log('[USERS] - GET CURRENT PROJECT -> project ID',  this.id_project)
+          this.logger.log('[USERS] - GET CURRENT PROJECT -> project ID', this.id_project)
         }
       })
   }
@@ -248,7 +302,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, OnDe
         if (user) {
           this.CURRENT_USER = user;
           this.CURRENT_USER_ID = user._id;
-          this.logger.log('[USERS] LOGGED USER GET IN USERS-COMP - Current USER ID ',this.CURRENT_USER_ID )
+          this.logger.log('[USERS] LOGGED USER GET IN USERS-COMP - Current USER ID ', this.CURRENT_USER_ID)
         }
       })
   }
@@ -260,7 +314,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, OnDe
       )
       .subscribe((user_role) => {
         this.USER_ROLE = user_role
-        this.logger.log( '[USERS] - GET PROJECT USER ROLE - USER_ROLE : ', this.USER_ROLE )
+        this.logger.log('[USERS] - GET PROJECT USER ROLE - USER_ROLE : ', this.USER_ROLE)
       })
   }
 
@@ -340,14 +394,14 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, OnDe
 
 
         if (this.projectUsersLength + this.countOfPendingInvites > this.seatsLimit) {
-         
+
           this.notify._displayContactUsModal(true, 'seats_limit_reached')
         } else if (this.projectUsersLength + this.countOfPendingInvites <= this.seatsLimit) {
           this.router.navigate(['project/' + this.id_project + '/pricing']);
         }
       } else {
-        if (this.projectUsersLength + this.countOfPendingInvites > this.seatsLimit) { 
-          this.notify._displayContactUsModal(true, 'seats_limit_exceed') 
+        if (this.projectUsersLength + this.countOfPendingInvites > this.seatsLimit) {
+          this.notify._displayContactUsModal(true, 'seats_limit_exceed')
         } else if (this.projectUsersLength + this.countOfPendingInvites === this.seatsLimit) {
           this.notify._displayContactUsModal(true, 'seats_limit_reached');
         } else if (this.projectUsersLength + this.countOfPendingInvites < this.seatsLimit) {
@@ -358,7 +412,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, OnDe
 
       if (this.prjct_profile_type === 'free') {
         if (this.projectUsersLength + this.countOfPendingInvites > this.seatsLimit) {
-         
+
           this.notify._displayContactOwnerModal(true, 'seats_limit_reached')
         } else if (this.projectUsersLength + this.countOfPendingInvites <= this.seatsLimit) {
           // this.router.navigate(['project/' + this.id_project + '/pricing']);
@@ -366,8 +420,8 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, OnDe
         }
       } else {
         this.logger.log('[USERS] getMoreOperatorsSeats USE CASE ADMIN')
-        if (this.projectUsersLength + this.countOfPendingInvites > this.seatsLimit) { 
-          this.notify._displayContactOwnerModal(true, 'seats_limit_exceed') 
+        if (this.projectUsersLength + this.countOfPendingInvites > this.seatsLimit) {
+          this.notify._displayContactOwnerModal(true, 'seats_limit_exceed')
         } else if (this.projectUsersLength + this.countOfPendingInvites === this.seatsLimit) {
           this.notify._displayContactOwnerModal(true, 'seats_limit_reached');
         } else if (this.projectUsersLength + this.countOfPendingInvites < this.seatsLimit) {
@@ -382,7 +436,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, OnDe
     if (this.USER_ROLE === 'owner') {
       this.notify._displayContactUsModal(true, 'seats_limit_exceed')
     } else {
-      this.notify._displayContactOwnerModal(true, 'seats_limit_exceed') 
+      this.notify._displayContactOwnerModal(true, 'seats_limit_exceed')
     }
   }
 
@@ -390,7 +444,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, OnDe
     if (this.USER_ROLE === 'owner') {
       this.notify.displayGoToPricingModal('user_exceeds')
     } else {
-      this.notify._displayContactOwnerModal(true, 'seats_limit_exceed') 
+      this.notify._displayContactOwnerModal(true, 'seats_limit_exceed')
     }
   }
 
@@ -435,7 +489,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, OnDe
     }
   }
 
-  
+
 
   presentModalOnlyOwnerCanManageTheAccountPlan() {
     this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(
@@ -488,17 +542,21 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, OnDe
   }
 
   getAllUsersOfCurrentProject(storage) {
+    let users_id_array = [];
     this.usersService.getProjectUsersByProjectId().subscribe(
       (projectUsers: any) => {
 
         this.logger.log('[USERS] - GET PROJECT USERS (FILTERED FOR PROJECT ID) - PROJECT-USERS ', projectUsers)
-
+        
         if (projectUsers) {
           this.projectUsersList = projectUsers
           // this.logger.log('[USERS] - GET ALL PROJECT-USERS OF THE PROJECT - PROJECT USERS LIST ', this.projectUsersList);
-
+          
           this.projectUsersList.forEach((projectuser) => {
             // this.logger.log('[USERS] - GET ALL PROJECT-USERS OF THE PROJECT - check if PROJECT USER IMG EXIST', projectuser);
+            const _user_id = projectuser['id_user']['_id']
+            users_id_array.push(_user_id);
+            console.log('[USERS] - GET ALL PROJECT-USERS OF THE PROJECT - users_id_array', users_id_array)
 
             let imgUrl = ''
             if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
@@ -531,10 +589,86 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, OnDe
         this.logger.error('[USERS] - GET PROJECT USERS (FILTERED FOR PROJECT ID) - ERROR', error)
       }, () => {
         this.HAS_FINISHED_GET_PROJECT_USERS = true
-        this.showSpinner = false
+        this.showSpinner = false;
         this.logger.log('[USERS] - PROJECT USERS (FILTERED FOR PROJECT ID) - COMPLETE')
+        setTimeout(() => {
+          this.getWidthOfRoleDiv()
+        }, 2000);
+        this.getFlatMembersArrayFromAllRequestsAndRunGetOccurrence(users_id_array)
       },
     )
+  }
+
+  getFlatMembersArrayFromAllRequestsAndRunGetOccurrence(users_id_array) {
+    this.logger.log('[USERS] CALL GET COUNT OF REQUEST FOR AGENT');
+
+    // this.subscription = this.requestsService.allRequestsList_bs.subscribe((requests) => {
+    this.subscription = this.wsRequestsService.wsRequestsList$.subscribe((requests) => {
+      this.logger.log('[USERS] - !!!!! SUBSCRIPTION TO ALL-THE-REQUESTS-LIST-BS');
+
+      if (requests) {
+        this.logger.log('[USERS] - !!!!! REQUESTS LENGHT ', requests.length)
+
+        /**
+         * NK:
+         * CREATES AN UNIQUE ARRAY FROM ALL THE ARRAYS OF 'MEMBERS' THAT ARE NESTED IN THE ITERATED REQUESTS  */
+        let flat_members_array = [];
+       
+        for (let i = 0; i < requests.length; i++) {
+          // flat_members_array = flat_members_array.concat(Object.keys(requests[i].members));
+          flat_members_array = flat_members_array.concat(requests[i].participants);
+        }
+        // Result of the concatenation of the single arrays of members
+        console.log('[USERS] - !!!!! FLAT-MEMBERS-ARRAY  ', flat_members_array)
+        console.log('[USERS] - !!!!! USER_ID_ARRAY - LENGTH ', users_id_array.length);
+        /**
+         * FOR EACH USER-ID IN THE 'USER_ID_ARRAY' IS RUNNED 'getOccurrenceAndAssignToProjectUsers'
+         * THAT RETURNS THE COUNT OF HOW MAMY TIMES THE USER-ID IS PRESENT IN THE 'flat_members_array' AND THEN
+         * ASSIGN THE VALUE OF 'COUNT' TO THE PROPERTY 'VALUE' OF THE OBJECT 'PROJECT-USERS' */
+
+        if (flat_members_array) {
+          for (let i = 0; i < users_id_array.length; i++) {
+            console.log('[USERS] - !!!!! USER_ID_ARRAY - LENGTH ', users_id_array.length);
+            this.getOccurrenceAndAssignToProjectUser(flat_members_array, users_id_array[i])
+          }
+        }
+      }
+    });
+  }
+
+  getOccurrenceAndAssignToProjectUser(array, value) {
+    console.log('[USERS] - !!!!! CALLING GET OCCURRENCE REQUESTS FOR AGENT AND ASSIGN TO PROJECT USERS');
+    let count = 0;
+    array.forEach((v) => (v === value && count++));
+    this.logger.log('[USERS] - !!!!! #', count, ' REQUESTS ASSIGNED TO THE USER ', value);
+    for (const p of this.projectUsersList) {
+      if (value === p.id_user._id) {
+        p.assigned_requests = count
+      }
+    }
+    console.log('[USERS]  GET OCCURRENCE REQUESTS FOR AGENT projectUsersList ', this.projectUsersList) 
+    // this.showSpinner = false;
+    // this.logger.log('!!! ANALYTICS - !!!!! SHOW SPINNER', this.showSpinner);
+    return count;
+  }
+
+
+
+  getWidthOfRoleDiv() {
+    let roleDivEl = document.querySelectorAll<HTMLElement>("#pu-role");
+    console.log('[USERS] roleDivEl all', roleDivEl)
+    let arrayUserRoleDivWidth = []
+    for (var i = 0; i < roleDivEl.length; i++) {
+      console.log('roleDivEl: ', roleDivEl[i]);
+      let roleDivElWidth = roleDivEl[i].offsetWidth;
+      console.log('[USERS] roleDivElWidth offsetWidth', roleDivElWidth)
+      let roleDivElWidthPlusPadding = roleDivElWidth + 20
+      arrayUserRoleDivWidth.push(roleDivElWidthPlusPadding)
+    }
+    console.log('[USERS] arrayUserRoleDivWidth', arrayUserRoleDivWidth)
+    this.widthOfLargestDiv = Math.max(...arrayUserRoleDivWidth) + 'px'
+    console.log('[USERS] widthOfLargestDiv', this.widthOfLargestDiv)
+   
   }
 
   createProjectUserAvatar(user) {
@@ -576,12 +710,12 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, OnDe
           this.logger.log('[USERS] - GET PENDING INVITATION - # OF PENDING INVITATION ', this.countOfPendingInvites)
         }
       }, (error) => {
-        this.showSpinner = false
+        // this.showSpinner = false
         this.logger.error('[USERS] - GET PENDING INVITATION - ERROR', error)
       }, () => {
         this.logger.log('[USERS] - GET PENDING INVITATION * COMPLETE * ')
         this.HAS_FINISHED_GET_PENDING_USERS = true
-        this.showSpinner = false
+        // this.showSpinner = false
       },
     )
   }
@@ -874,6 +1008,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, OnDe
     this.translateCanceledInviteErrorMsg()
 
     this.translateModalOnlyOwnerCanManageProjectAccount()
+
   }
 
   translateModalOnlyOwnerCanManageProjectAccount() {
@@ -891,7 +1026,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, OnDe
         this.learnMoreAboutDefaultRoles = translation
       })
 
-      this.translate.get('TeammatesWithAgentRolesCannotInvite')
+    this.translate.get('TeammatesWithAgentRolesCannotInvite')
       .subscribe((translation: any) => {
         // this.logger.log('[USER-EDIT-ADD] - TRANSLATE onlyOwnerCanManageTheAccountPlanMsg text', translation)
         this.agentsCannotInvite = translation;
@@ -975,6 +1110,10 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, OnDe
         // this.logger.log('[USERS] + + + resend Invite Error Notication Msg', text)
       })
   }
+
+
+
+
 
   // trackByFn(index, item) {
   //   this.logger.log('USER COMP ***** trackByFn ***** ', index)

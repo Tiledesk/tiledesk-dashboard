@@ -202,23 +202,14 @@
                      
                       <div class="cl-card-second-column">
                         <div class="cl-card-stats-wpr">
-                          <div class="cl-card-item-stats">
-                            <div class="cl-card-item-stats-title">
-                              {{ "BotsAddEditPage.Messages" | translate }}
-                            </div>
-                            <div class="cl-card-item-stats-values">
-                              {{ faqkb?.message_count}}
-                            </div>
-                          </div>
 
                           <div class="cl-card-item-stats">
                             <div class="cl-card-item-stats-title">
                               <span *ngIf="faqkb.published"> Published </span>
                               <span *ngIf="!faqkb.published"> Draft </span>
-
                             </div>
-                            <div class="cl-card-item-stats-values">
 
+                            <div class="cl-card-item-stats-values">
                               <span *ngIf="faqkb.published" class="material-icons bot-published-icon">
                                 done
                               </span>
@@ -226,9 +217,20 @@
                               <span *ngIf="!faqkb.published" class="material-icons bot-unpublished-icon">
                                 error_outline
                               </span>
-
                             </div>
                           </div>
+
+                          <div *ngIf="isVisibleAnalytics" class="cl-card-item-stats">
+                            <div class="cl-card-item-stats-title">
+                              <!-- {{ "BotsAddEditPage.Messages" | translate }} -->
+                              Messages
+                            </div>
+                            <div class="cl-card-item-stats-values">
+                              {{ faqkb?.message_count}}
+                            </div>
+                          </div>
+
+                         
 
                         </div>
 
@@ -240,7 +242,7 @@
                                 mat-icon-button
                                 (click)="$event.stopPropagation();openBotStats(faqkb)"
                                 matTooltipClass="custom-mat-tooltip" 
-                                matTooltip="Metrics" 
+                                matTooltip="Messages" 
                                 #tooltip="matTooltip"
                                 matTooltipPosition='below' 
                                 matTooltipHideDelay="100">

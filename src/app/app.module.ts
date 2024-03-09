@@ -395,6 +395,7 @@ import { ModalErrorComponent } from './knowledge-bases/modals/modal-error/modal-
 import { KnowledgeBasesPreviousComponent } from './knowledge-bases-previous/knowledge-bases-previous.component';
 import { UserModalComponent } from './users/user-modal/user-modal.component';
 import { ChatbotStatsModalComponent } from './bots/bots-list/chatbot-stats-modal/chatbot-stats-modal.component';
+import { UsersConvsStatsModalComponent } from './users/users-convs-stats-modal/users-convs-stats-modal.component';
 
 
 
@@ -701,7 +702,8 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     ModalErrorComponent,
     KnowledgeBasesPreviousComponent,
     UserModalComponent,
-    ChatbotStatsModalComponent
+    ChatbotStatsModalComponent,
+    UsersConvsStatsModalComponent
   ],
   imports: [
     TooltipModule.forRoot(CutomTooltipOptions as TooltipOptions),

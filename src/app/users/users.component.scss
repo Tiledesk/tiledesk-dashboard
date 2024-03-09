@@ -67,6 +67,7 @@
 
 button.close {
   -webkit-appearance: none;
+  appearance: none;
   padding: 0;
   cursor: pointer;
   background: 0 0;
@@ -613,11 +614,13 @@ $f21blue: #039be5;
 
 .user-img-in-teammates-list {
   vertical-align: middle;
-  width: 52px;
-  height: 52px;
-  border-radius: 50%;
-  border: 1px solid #eee;
+  width: 64px;
+  height: 64px;
   object-fit: cover;
+  // height: 52px;
+  // border-radius: 50%;
+  // border: 1px solid #eee;
+ 
 }
 
 .altenative-projetuser-avatar {
@@ -761,14 +764,28 @@ $f21blue: #039be5;
 }
 
 /* ./end tootip top  */
+#pu-role {
+  font-weight: 400;
+  font-size: 14px;
+}
+
+// #pu-status {
+//   margin-top: 4px;
+// }
 
 .select-teammate-status {
-  height: 30px;
-  background: #fff;
-  border-radius: 5px;
-  border-color: #d9d9d9;
-  width: 130px;
+  // height: 30px;
+  height: 20px;
+  background: rgb(226, 232, 239);
+  border-radius: 15px;
+  // border-color: #d9d9d9;
+  // width: 130px;
   text-transform: capitalize;
+  font-weight: 400;
+  text-align: center;
+  border: unset;
+  font-size: 14px;
+  padding: 0 6px;
 }
 
 .is-user-online {
@@ -787,11 +804,17 @@ $f21blue: #039be5;
   position: absolute;
   border: 2px solid #fff;
   border-radius: 50%;
-  left: 54px;
-  bottom: 4px;
-  width: 12px;
-  height: 12px;
+  left: 73px;
+  top: 20px;
+  width: 14px;
+  height: 14px;
+  // left: 54px;
+  // bottom: 4px;
+  // width: 12px;
+  // height: 12px;
 }
+
+
 
 ::ng-deep .custom-mat-tooltip {
   background-color: #2d323e !important;
