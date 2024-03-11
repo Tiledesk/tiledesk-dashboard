@@ -1,5 +1,10 @@
 # tiledesk-dashboard
 
+### 2.5.19
+- Deploys in production
+- Fixes the bug: not all chatbot images are displayed
+- Fixes the bug: published chatbots is not appearing as a draft
+
 ### 2.5.18
 - Deploys in production
 - Fixes the bug: in the settings sidebar 'setAttribute' on 'Element' is not a valid attribute name
