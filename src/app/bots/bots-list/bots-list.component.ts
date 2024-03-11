@@ -558,6 +558,34 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
 
         this.faqkbList = faqKb;
         this.chatBotCount = this.faqkbList.length;
+
+        if (this.orderBylastUpdated)  {
+          this.logger.log('[BOTS-LIST] - orderBylastUpdated Here yes');
+          this.faqkbList.sort(function compare(a: Chatbot, b: Chatbot) {
+            if (a['updatedAt'] > b['updatedAt']) {
+              return -1;
+            }
+            if (a['updatedAt'] < b['updatedAt']) {
+              return 1;
+            }
+            return 0;
+          });
+        }
+
+
+        if (this.orderByCreationDate)  {
+          this.logger.log('[BOTS-LIST] - orderByCreationDate Here yes');
+          this.faqkbList.sort(function compare(a: Chatbot, b: Chatbot) {
+            if (a['createdAt'] > b['createdAt']) {
+              return -1;
+            }
+            if (a['createdAt'] < b['createdAt']) {
+              return 1;
+            }
+            return 0;
+          });
+        }
+        
         this.faqkbList.forEach(bot => {
           this.logger.log('[BOTS-LIST] getFaqKbByProjectId bot ', bot)
           if (bot && bot.url) {
@@ -589,32 +617,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
           this.logger.log('[BOTS-LIST] - orderBylastUpdated', this.orderBylastUpdated);
           this.logger.log('[BOTS-LIST] - orderByCreationDate', this.orderByCreationDate);
           
-          if (this.orderBylastUpdated)  {
-            this.logger.log('[BOTS-LIST] - orderBylastUpdated Here yes');
-            this.faqkbList.sort(function compare(a: Chatbot, b: Chatbot) {
-              if (a['updatedAt'] > b['updatedAt']) {
-                return -1;
-              }
-              if (a['updatedAt'] < b['updatedAt']) {
-                return 1;
-              }
-              return 0;
-            });
-          }
 
-
-          if (this.orderByCreationDate)  {
-            this.logger.log('[BOTS-LIST] - orderByCreationDate Here yes');
-            this.faqkbList.sort(function compare(a: Chatbot, b: Chatbot) {
-              if (a['createdAt'] > b['createdAt']) {
-                return -1;
-              }
-              if (a['createdAt'] < b['createdAt']) {
-                return 1;
-              }
-              return 0;
-            });
-          }
 
           
 
