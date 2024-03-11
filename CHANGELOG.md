@@ -3,7 +3,7 @@
 ### 2.5.19
 - Deploys in production
 - Fixes the bug: not all chatbot images are displayed
-- Fixes the bug: published chatbots is not appearing as a draft
+- Fixes the bug: published chatbots is appearing as a draft
 
 ### 2.5.18
 - Deploys in production
