@@ -17,10 +17,10 @@ import { takeUntil } from 'rxjs/operators'
 import { Subject } from 'rxjs';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog'
 import { UserModalComponent } from './user-modal/user-modal.component'
-import { element } from 'protractor'
 import { WsRequestsService } from 'app/services/websocket/ws-requests.service'
-import { UsersConvsStatsModalComponent } from './users-convs-stats-modal/users-convs-stats-modal.component'
-
+import { MesssagesStatsModalComponent } from 'app/components/modals/messages-stats-modal/messages-stats-modal.component'
+import {Clipboard} from '@angular/cdk/clipboard';
+import { MatSnackBar } from '@angular/material/snack-bar'
 
 const swal = require('sweetalert')
 
@@ -120,6 +120,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
   public hideHelpLink: boolean;
   agentsCannotInvite: string;
   widthOfLargestDiv: any;
+  tagsArray: Array<any> = [];
   
   constructor(
     private usersService: UsersService,
@@ -133,6 +134,9 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
     public brandService: BrandService,
     public dialog: MatDialog,
     public wsRequestsService: WsRequestsService,
+    private clipboard: Clipboard,
+    private _snackBar: MatSnackBar
+
   ) {
     super(prjctPlanService, notify);
     this.tParamsFreePlanSeatsNum = { free_plan_allowed_seats_num: PLAN_SEATS.free }
@@ -144,7 +148,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
 
   ngOnInit() {
     this.auth.checkRoleForCurrentProject()
-    this.getUploadEgine()
+    this.getUploadEgineAndProjectUsers()
     this.translateStrings()
     // this.getAllUsersOfCurrentProject(); // MOVED IN GET STORAGE BUCKET
     this.getCurrentProject()
@@ -193,24 +197,24 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
     });
   }
 
-  opeUserStats(user) {
-    this.logger.log('[USERS] opeUserStats  ')
+  opeUserMsgsStats(user) {
+    console.log('[USERS] opeUserMsgsStats  user', user)
 
-    const statsDialogRef = this.dialog.open(UsersConvsStatsModalComponent, {
+    const statsDialogRef = this.dialog.open(MesssagesStatsModalComponent, {
       width: '800px',
       backdropClass: 'cdk-overlay-transparent-backdrop',
       hasBackdrop: true,
-      data: { user: user },
+      data: { agent: user },
     });
 
-    this.logger.log('[USERS] opeUserStats  statsDialogRef ', statsDialogRef)
+    this.logger.log('[USERS] opeUserMsgsStats  statsDialogRef ', statsDialogRef)
 
-    statsDialogRef.afterClosed().subscribe(botId => {
-      this.logger.log(`[USERS] Dialog afterClosed botId: ${botId}`);
-      if (botId) {
-        // const statBtnEl = <HTMLElement>document.querySelector('#btn-' + `${botId}`);
-        // this.logger.log('[USERS] Dialog afterClosed statBtnEl', statBtnEl);
-        // statBtnEl.blur()
+    statsDialogRef.afterClosed().subscribe(agentId => {
+      this.logger.log(`[USERS] Dialog afterClosed agentId: ${agentId}`);
+      if (agentId) {
+        const statBtnEl = <HTMLElement>document.querySelector('#btn-' + `${agentId}`);
+        console.log('[USERS] Dialog afterClosed statBtnEl', statBtnEl);
+        statBtnEl.blur()
       }
     });
   }
@@ -290,7 +294,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
         }
       })
   }
-
+ 
 
   getLoggedUser() {
     this.auth.user_bs
@@ -503,20 +507,14 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
   }
 
 
-  getUploadEgine() {
+  getUploadEgineAndProjectUsers() {
     if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
       this.UPLOAD_ENGINE_IS_FIREBASE = true
-      this.logger.log(
-        '[USERS] - UPLOAD ENGINE IS FIREBASE ? ',
-        this.UPLOAD_ENGINE_IS_FIREBASE,
-      )
+      this.logger.log('[USERS] - UPLOAD ENGINE IS FIREBASE ? ',this.UPLOAD_ENGINE_IS_FIREBASE)
       this.getProjectUsersAndCheckIfPhotoExistOnFirebase()
     } else {
       this.UPLOAD_ENGINE_IS_FIREBASE = false
-      this.logger.log(
-        '[USERS] - UPLOAD ENGINE IS FIREBASE ? ',
-        this.UPLOAD_ENGINE_IS_FIREBASE,
-      )
+      this.logger.log('[USERS] - UPLOAD ENGINE IS FIREBASE ? ', this.UPLOAD_ENGINE_IS_FIREBASE)
       this.getProjectUsersAndCheckIfPhotoExistOnNative()
     }
   }
@@ -524,9 +522,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
   getProjectUsersAndCheckIfPhotoExistOnFirebase() {
     const firebase_conf = this.appConfigService.getConfig().firebase
     this.storageBucket = firebase_conf['storageBucket']
-    this.logger.log(
-      '[USERS] - IMAGE STORAGE URL (usecase FIREBASE) ',
-      this.storageBucket,
+    this.logger.log( '[USERS] - IMAGE STORAGE URL (usecase FIREBASE) ',this.storageBucket,
     )
 
     this.getAllUsersOfCurrentProject(this.storageBucket)
@@ -534,10 +530,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
 
   getProjectUsersAndCheckIfPhotoExistOnNative() {
     this.baseUrl = this.appConfigService.getConfig().SERVER_BASE_URL
-    this.logger.log(
-      '[USERS] - IMAGE STORAGE URL (usecase NATIVE) ',
-      this.baseUrl,
-    )
+    this.logger.log( '[USERS] - IMAGE STORAGE URL (usecase NATIVE) ', this.baseUrl)
     this.getAllUsersOfCurrentProject(this.baseUrl)
   }
 
@@ -546,17 +539,20 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
     this.usersService.getProjectUsersByProjectId().subscribe(
       (projectUsers: any) => {
 
-        this.logger.log('[USERS] - GET PROJECT USERS (FILTERED FOR PROJECT ID) - PROJECT-USERS ', projectUsers)
+        this.logger.log('[USERS] - GET PROJECT USERS - PROJECT-USERS ', projectUsers)
         
         if (projectUsers) {
           this.projectUsersList = projectUsers
           // this.logger.log('[USERS] - GET ALL PROJECT-USERS OF THE PROJECT - PROJECT USERS LIST ', this.projectUsersList);
           
+        
           this.projectUsersList.forEach((projectuser) => {
+            this.tagsArray = projectuser.tags
+            console.log('[USERS] - PROJECT-USER  - tagsArray ', this.tagsArray);
             // this.logger.log('[USERS] - GET ALL PROJECT-USERS OF THE PROJECT - check if PROJECT USER IMG EXIST', projectuser);
             const _user_id = projectuser['id_user']['_id']
             users_id_array.push(_user_id);
-            console.log('[USERS] - GET ALL PROJECT-USERS OF THE PROJECT - users_id_array', users_id_array)
+            console.log('[USERS] - PROJECT-USER - users_id_array', users_id_array)
 
             let imgUrl = ''
             if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
@@ -721,25 +717,15 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
   }
 
   resendInvite(pendingInvitationId: string) {
-    this.logger.log(
-      '[USERS] - RESEND INVITE TO PENDING INVITATION ID: ',
-      pendingInvitationId,
-    )
+    console.log( '[USERS] - RESEND INVITE TO PENDING INVITATION ID: ',  pendingInvitationId )
     this.usersService
       .getPendingUsersByIdAndResendEmail(pendingInvitationId)
       .subscribe(
         (pendingInvitation: any) => {
-          this.logger.log(
-            '[USERS] - GET PENDING INVITATION BY ID AND RESEND INVITE - RES ',
-            pendingInvitation,
-          )
+          console.log( '[USERS] - GET PENDING INVITATION BY ID AND RESEND INVITE - RES ', pendingInvitation)
 
-          this.pendingInvitationEmail =
-            pendingInvitation['Resend invitation email to']['email']
-          this.logger.log(
-            '[USERS] - GET PENDING INVITATION BY ID AND RESEND INVITE - RES  email',
-            this.pendingInvitationEmail,
-          )
+          this.pendingInvitationEmail = pendingInvitation['Resend invitation email to']['email']
+          console.log( '[USERS] - GET PENDING INVITATION BY ID AND RESEND INVITE - RES  email', this.pendingInvitationEmail)
         }, (error) => {
           this.logger.error('[USERS] - GET PENDING INVITATION BY ID AND RESEND INVITE - ERROR', error)
 
@@ -751,6 +737,39 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
         },
       )
   }
+
+  copyInviteURL(pendingInvitationId) {
+    console.log( '[USERS] - copyInviteLink PENDING INVITATION ID: ',  pendingInvitationId )
+   this.baseUrl = this.appConfigService.getConfig().SERVER_BASE_URL
+   console.log('[USERS] copyInviteLink baseUrl ' , this.baseUrl) 
+   console.log('[USERS] copyInviteLink CURRENT_USER ' , this.CURRENT_USER) 
+   console.log('[USERS] copyInviteLink project ' , this.project)
+   let projectName = this.project.name.trim()
+   let userFirstname = ""
+   let userLastmame = ""
+   let inviteUrl = ""
+   if (this.CURRENT_USER.firstname && this.CURRENT_USER.lastname !== "") {
+    userFirstname = this.CURRENT_USER.firstname
+    userLastmame = this.CURRENT_USER.lastname
+    inviteUrl = this.baseUrl + "dashboard/#/handle-invitation/" + pendingInvitationId + '/'+ projectName + '/'+ userFirstname + '/'+ userLastmame
+   } else if (this.CURRENT_USER.firstname && this.CURRENT_USER.lastname == "" ){
+    userFirstname = this.CURRENT_USER.firstname
+    inviteUrl = this.baseUrl + "dashboard/#/handle-invitation/" + pendingInvitationId + '/'+ projectName + '/'+ userFirstname
+   }
+  
+   
+   this.clipboard.copy(inviteUrl.trim())
+   this._snackBar.open(" Copied to clipboard", null, {
+     duration: 3000,
+     verticalPosition: 'top',
+     panelClass:'success-snackbar'
+   });
+  }
+                                                                  // 65eeee168b35030013eae4ce
+  // https://panel.tiledesk.com/v3/dashboard/#/handle-invitation/65eeee168b35030013eae4ce/Custom/Di/Saji
+  // https://api.tiledesk.com/v3/dashboard/#/handle-invitation/65eeee168b35030013eae4ce/Custom/Di/Saji
+ 
+ 
 
   openCancelInvitationModal(pendingInvitationId: string, pendingInvitationEmail: string) {
     this.displayCancelInvitationModal = 'block'
@@ -980,7 +999,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
         this.notify.showWidgetStyleUpdateNotification(this.changeAvailabilitySuccessNoticationMsg, 2, 'done')
 
 
-        this.getUploadEgine()
+        this.getUploadEgineAndProjectUsers()
       },)
   }
 

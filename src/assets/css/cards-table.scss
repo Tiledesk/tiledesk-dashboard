@@ -73,7 +73,9 @@
 }
 
 .cl-card:hover {
-  box-shadow: var(--card-deep-elevation)
+  // box-shadow: var(--card-deep-elevation);
+  box-shadow: var(--card-light-elevation);
+ 
 }
 
 .cl-card-content {
@@ -120,6 +122,11 @@
   object-fit: cover;
   // border-radius: 50%;
   // border: 1px solid #eee;
+}
+
+.cl-card-img-wpr > svg { 
+  width: 46px;
+  fill: var(--icon-color);
 }
 
 .cl-card-info-wpr {
@@ -218,6 +225,7 @@
   font-weight: var(--cl-card-item-stats-values-font-weight);
   letter-spacing: 0px;
   color: var(--text-color);
+  text-transform: var(--cl-card-item-stats-values-text-transform) ;
 }
 
 .cl-card-item-stats-values>.bot-published-icon {
@@ -249,6 +257,10 @@
 .cl-card-action-btn-wpr > .mat-icon-button {
   color: var(--icon-color)
 }
+
+.cl-card-action-btn-wpr > .mat-icon-button > span > mat-icon{
+  font-size: 18px;
+ }
 
 .mat-icon-button:hover {
   background-color: var(--mat-icon-button-hover-background-color);

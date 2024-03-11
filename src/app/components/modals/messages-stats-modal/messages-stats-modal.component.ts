@@ -8,14 +8,14 @@ import { TranslateService } from '@ngx-translate/core';
 import { Chart } from 'chart.js';
 
 @Component({
-  selector: 'appdashboard-chatbot-stats-modal',
-  templateUrl: './chatbot-stats-modal.component.html',
-  styleUrls: ['./chatbot-stats-modal.component.scss']
+  selector: 'appdashboard-messages-stats-modal',
+  templateUrl: './messages-stats-modal.component.html',
+  styleUrls: ['./messages-stats-modal.component.scss']
 })
 
-export class ChatbotStatsModalComponent implements OnInit {
-  public botName: string;
-  public botId: string;
+export class MesssagesStatsModalComponent implements OnInit {
+  public agentName: string;
+  public agentId: string;
   lang: string;
   selectedDaysId: number;
   monthNames: any;
@@ -28,17 +28,30 @@ export class ChatbotStatsModalComponent implements OnInit {
  
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
-    public dialogRef: MatDialogRef<ChatbotStatsModalComponent>,
+    public dialogRef: MatDialogRef<MesssagesStatsModalComponent>,
     private logger: LoggerService,
     private analyticsService: AnalyticsService,
     private translate: TranslateService,
   ) {
-    this.logger.log('[CHATBOT-STATS-MODAL] data ', data)
-    if (data && data.bot) {
-      this.botName = data.bot.name;
-      this.logger.log('[CHATBOT-STATS-MODAL] data  > botName',  this.botName)
-      this.botId = data.bot._id;
-      this.logger.log('[CHATBOT-STATS-MODAL] data  > botId',  this.botId)
+    console.log('[MSGS-STATS-MODAL] data ', data)
+    if (data && data.agent) {
+      console.log('[MSGS-STATS-MODAL] data  > hasOwnProperty email', data.agent.hasOwnProperty('email'))
+      if ( data.agent.hasOwnProperty('email')) { 
+        console.log('[MSGS-STATS-MODAL] data  >  data.agent.lastname.length', data.agent.lastname.lenght)
+        if (data.agent.firstname && data.agent.lastname !== "" ) {
+          this.agentName = data.agent.firstname + ' ' + data.agent.lastname
+        } else if (data.agent.firstname && data.agent.lastname === "" ){
+          this.agentName = data.agent.firstname
+        }
+      } else {
+        this.agentName = data.agent.name;
+      }
+      
+      this.logger.log('[MSGS-STATS-MODAL] data  > agentName',  this.agentName)
+      this.agentId = data.agent._id;
+      this.logger.log('[MSGS-STATS-MODAL] data  > agentId',  this.agentId)
+     
+      // if (data.agent) 
     }
   }
 
@@ -51,7 +64,7 @@ export class ChatbotStatsModalComponent implements OnInit {
     this.initDay = moment().subtract(6, 'd').format('D/M/YYYY')
     this.endDay = moment().subtract(0, 'd').format('D/M/YYYY')
     this.logger.log("[consoCHATBOT-STATS-MODALl] INIT", this.initDay, "END", this.endDay);
-    this.getMessagesByLastNDays(this.selectedDaysId, this.botId);
+    this.getMessagesByLastNDays(this.selectedDaysId, this.agentId);
   }
 
   switchMonthName() {
@@ -74,7 +87,7 @@ export class ChatbotStatsModalComponent implements OnInit {
   }
 
   onOkPresssed() {
-    this.dialogRef.close(this.botId);
+    this.dialogRef.close(this.agentId);
     this.subscription.unsubscribe();
   }
 
@@ -90,7 +103,7 @@ export class ChatbotStatsModalComponent implements OnInit {
       this.lastdays = 1;
     }
     this.lineChart.destroy();
-    this.getMessagesByLastNDays(value, this.botId);
+    this.getMessagesByLastNDays(value, this.agentId);
   }
 
   getMessagesByLastNDays(lastdays, senderID) {

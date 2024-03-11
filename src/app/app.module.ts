@@ -394,8 +394,8 @@ import { KnowledgeBaseTableComponent } from './knowledge-bases/modals/knowledge-
 import { ModalErrorComponent } from './knowledge-bases/modals/modal-error/modal-error.component';
 import { KnowledgeBasesPreviousComponent } from './knowledge-bases-previous/knowledge-bases-previous.component';
 import { UserModalComponent } from './users/user-modal/user-modal.component';
-import { ChatbotStatsModalComponent } from './bots/bots-list/chatbot-stats-modal/chatbot-stats-modal.component';
 import { UsersConvsStatsModalComponent } from './users/users-convs-stats-modal/users-convs-stats-modal.component';
+import { MesssagesStatsModalComponent } from './components/modals/messages-stats-modal/messages-stats-modal.component';
 
 
 
@@ -702,7 +702,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     ModalErrorComponent,
     KnowledgeBasesPreviousComponent,
     UserModalComponent,
-    ChatbotStatsModalComponent,
+    MesssagesStatsModalComponent,
     UsersConvsStatsModalComponent
   ],
   imports: [

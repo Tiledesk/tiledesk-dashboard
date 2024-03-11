@@ -764,28 +764,40 @@ $f21blue: #039be5;
 }
 
 /* ./end tootip top  */
-#pu-role {
-  font-weight: 400;
-  font-size: 14px;
-}
+// #pu-role {
+//   font-weight: 400;
+//   font-size: 14px;
+// }
+
+// #pu-pending-status > div {
+//   font-weight: 400;
+//   font-size: 14px;
+// }
 
 // #pu-status {
 //   margin-top: 4px;
 // }
 
 .select-teammate-status {
-  // height: 30px;
   height: 20px;
-  background: rgb(226, 232, 239);
-  border-radius: 15px;
+  cursor: pointer;
+  border: unset;
+  padding: 0 6px;
+  text-transform: var(--cl-card-item-stats-values-text-transform);
+  // background: rgb(226, 232, 239);
+  // border-radius: 15px;
+  // text-transform: capitalize;
+  // font-weight: 400;
+  // text-align: center;
+  // font-size: 14px;
   // border-color: #d9d9d9;
   // width: 130px;
-  text-transform: capitalize;
-  font-weight: 400;
-  text-align: center;
-  border: unset;
-  font-size: 14px;
-  padding: 0 6px;
+  // height: 30px;
+}
+
+.select-teammate-status:hover { 
+  // border: 1px solid #eee;
+  background-color: #eef0fc
 }
 
 .is-user-online {
