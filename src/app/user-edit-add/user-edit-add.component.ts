@@ -101,6 +101,7 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
 
   onlyOwnerCanManageTheAccountPlanMsg: string;
   learnMoreAboutDefaultRoles: string;
+  agentsCannotInvite: string;
   KNOWLEDGE_BASE_USER_ROLE_URL = URL_understanding_default_roles;
   profile_name: string;
 
@@ -135,6 +136,7 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
   invitedProjectUser: any
   profile_name_for_segment: string;
   appSumoProfile: string;
+  public hideHelpLink: boolean;
 
   constructor(
     private router: Router,
@@ -154,6 +156,7 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
     const brand = brandService.getBrand();
     this.tparams = brand;
     this.tParamsFreePlanSeatsNum = { free_plan_allowed_seats_num: PLAN_SEATS.free }
+    this.hideHelpLink= brand['DOCS'];
   }
 
   ngOnInit() {
@@ -354,6 +357,13 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
         // this.logger.log('[USER-EDIT-ADD] - TRANSLATE onlyOwnerCanManageTheAccountPlanMsg text', translation)
         this.learnMoreAboutDefaultRoles = translation;
       });
+
+      this.translate.get('TeammatesWithAgentRolesCannotInvite')
+      .subscribe((translation: any) => {
+        // this.logger.log('[USER-EDIT-ADD] - TRANSLATE onlyOwnerCanManageTheAccountPlanMsg text', translation)
+        this.agentsCannotInvite = translation;
+      });
+      
   }
 
   getProfileImageStorage() {
@@ -839,10 +849,7 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
   }
 
   presentModalAgentCannotInviteTeammates() {
-    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(
-      'Teammates with agent roles cannot invite teammates',
-      this.learnMoreAboutDefaultRoles,
-    )
+    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.agentsCannotInvite, this.learnMoreAboutDefaultRoles)
   }
 
   doInviteUser() {

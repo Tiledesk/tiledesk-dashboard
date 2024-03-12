@@ -74,6 +74,7 @@ export class ResetPswComponent implements OnInit {
   ERROR_SENDING_EMAIL_RESET_PSW_USER_NOT_FOUND: boolean;
   ERROR_SENDING_EMAIL_RESET_PSW_OTHER_ERROR: boolean;
   OTHER_ERROR_MSG: string;
+  primaryBrandColor: string;
   constructor
     (
       private fb: FormBuilder,
@@ -89,6 +90,8 @@ export class ResetPswComponent implements OnInit {
     this.companyLogo = brand['BASE_LOGO'];
     this.contact_us_email = brand['CONTACT_US_EMAIL'];
     this.company_site_url = brand['COMPANY_SITE_URL'];
+    this.primaryBrandColor = brand['BRAND_PRIMARY_COLOR'];
+
   }
 
   ngOnInit() {
