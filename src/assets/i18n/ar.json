@@ -1630,6 +1630,7 @@
         "AddKbInfoTextContentMsg1": "انتبه، الحد الأقصى لعدد الأحرف المسموح به لكل محتوى نصي هو 32768.",
         "StatusAll": "الجميع",
         "StatusNotStarted": "لم يبدأ",
+        "StatusQueued": "في قائمة الانتظار",
         "StatusStarted": "بدأت",
         "StatusFinished": "انتهى",
         "StatusError": "خطأ",

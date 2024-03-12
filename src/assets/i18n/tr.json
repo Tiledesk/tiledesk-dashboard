@@ -1630,6 +1630,7 @@
         "AddKbInfoTextContentMsg1": "Dikkat, her metin içeriği için izin verilen maksimum karakter sayısı 32768'dir.",
         "StatusAll": "Tüm",
         "StatusNotStarted": "Başlatılmadı",
+        "StatusQueued": "Sıraya alındı",
         "StatusStarted": "Başlatıldı",
         "StatusFinished": "Bitti",
         "StatusError": "Hata",

@@ -1630,6 +1630,7 @@
         "AddKbInfoTextContentMsg1": "Назар аударыңыз, әрбір мәтін мазмұны үшін рұқсат етілген таңбалардың ең көп саны 32768.",
         "StatusAll": "Барлық",
         "StatusNotStarted": "Басталған жоқ",
+        "StatusQueued": "Кезекте",
         "StatusStarted": "Басталды",
         "StatusFinished": "Аяқталды",
         "StatusError": "Қате",

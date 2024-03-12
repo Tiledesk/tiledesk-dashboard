@@ -1629,6 +1629,7 @@
         "AddKbInfoTextContentMsg1": "Diqqat, har bir matn mazmuni uchun ruxsat etilgan belgilarning maksimal soni 32768 ni tashkil qiladi.",
         "StatusAll": "Hammasi",
         "StatusNotStarted": "Boshlanmagan",
+        "StatusQueued": "Navbatda",
         "StatusStarted": "Boshlandi",
         "StatusFinished": "Tugallandi",
         "StatusError": "Xato",

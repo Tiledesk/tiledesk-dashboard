@@ -1630,6 +1630,7 @@
         "AddKbInfoTextContentMsg1": "Observera, det maximala antalet tillåtna tecken för varje textinnehåll är 32768.",
         "StatusAll": "Allt",
         "StatusNotStarted": "Ej påbörjad",
+        "StatusQueued": "I kö",
         "StatusStarted": "Satte igång",
         "StatusFinished": "Färdiga",
         "StatusError": "Fel",

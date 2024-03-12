@@ -1630,6 +1630,7 @@
         "AddKbInfoTextContentMsg1": "Atención, el número máximo de caracteres permitidos para cada contenido de texto es 32768.",
         "StatusAll": "Todo",
         "StatusNotStarted": "No empezado",
+        "StatusQueued": "Puesto en cola",
         "StatusStarted": "Comenzó",
         "StatusFinished": "Finalizado",
         "StatusError": "Error",

@@ -1630,6 +1630,7 @@
         "AddKbInfoTextContentMsg1": "Увага, максимальна кількість символів, дозволена для кожного текстового вмісту, становить 32768.",
         "StatusAll": "все",
         "StatusNotStarted": "Не розпочато",
+        "StatusQueued": "У черзі",
         "StatusStarted": "розпочато",
         "StatusFinished": "Готово",
         "StatusError": "Помилка",

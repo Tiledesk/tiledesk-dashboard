@@ -1630,6 +1630,7 @@
 		"AddKbInfoTextContentMsg1": "Achtung, die maximal zulässige Zeichenanzahl für jeden Textinhalt beträgt 32768.",
 		"StatusAll": "Alle",
 		"StatusNotStarted": "Nicht angefangen",
+		"StatusQueued": "In Warteschlange",
 		"StatusStarted": "Gestartet",
 		"StatusFinished": "Fertig",
 		"StatusError": "Fehler",

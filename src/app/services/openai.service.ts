@@ -152,7 +152,7 @@ export class OpenaiService {
     }
     //const url = this.GPT_API_URL + "/scrape/status";
     //const url = this.SERVER_BASE_PATH + this.project_id + "/kbsettings/checkstatus";
-    const url = this.SERVER_BASE_PATH + this.project_id + "/kb/scrape/status";
+    const url = this.SERVER_BASE_PATH + this.project_id + "/kb/scrape/status?returnObject=true";
     this.logger.debug('[OPENAI.SERVICE] - check scraping URL: ', url);
     return this.httpClient.post(url, JSON.stringify(data), httpOptions);
   }

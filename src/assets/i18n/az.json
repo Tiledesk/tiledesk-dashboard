@@ -1630,6 +1630,7 @@
         "AddKbInfoTextContentMsg1": "Diqqət, hər mətn məzmunu üçün icazə verilən simvolların maksimum sayı 32768-dir.",
         "StatusAll": "Hamısı",
         "StatusNotStarted": "Başlanmayıb",
+        "StatusQueued": "Növbədə",
         "StatusStarted": "başladı",
         "StatusFinished": "Bitdi",
         "StatusError": "Xəta",

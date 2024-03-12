@@ -1630,6 +1630,7 @@
         "AddKbInfoTextContentMsg1": "Пажња, максимални дозвољени број знакова за сваки текстуални садржај је 32768.",
         "StatusAll": "Све",
         "StatusNotStarted": "Није почео",
+        "StatusQueued": "У реду чекања",
         "StatusStarted": "Почело",
         "StatusFinished": "Готов",
         "StatusError": "Грешка",

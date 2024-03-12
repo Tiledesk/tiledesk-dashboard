@@ -142,15 +142,14 @@ export class KnowledgeBaseTableComponent implements OnInit {
   }
   
   onLoadByFilter(filterValue: string, column: string) {
-    let status = '';
-    let search = '';
+    // let status = '';
+    // let search = '';
     if( column == 'type'){
-      status = filterValue;
+      this.searchParams.status = filterValue;
     } else if(column == 'name'){
-      search = filterValue;
+      this.searchParams.search = filterValue;
     }
-    this.searchParams.status = status;
-    this.searchParams.search = search;
+    console.log("this.searchParams ", this.searchParams);
     if (this.timeoutId) {
       clearTimeout(this.timeoutId);
     }
