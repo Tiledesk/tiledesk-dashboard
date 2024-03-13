@@ -15,6 +15,7 @@
      --card-background-color: rgb(255, 255, 255);
      --card--elevation: rgb(0 27 71 / 8%) 0px 3px 8px;
      --card-elevation: 0 0 #0000, 0 0 #0000, 0 1px 3px #0000001a, 0 1px 2px -1px #0000001a;
+     --card-light-elevation: 0 4px 20px -6px #444d9673;
      --card-deep-elevation: 0 7px 8px -4px rgba(0, 0, 0, 0.2), 0 12px 17px 2px rgba(0, 0, 0, 0.14), 0 5px 22px 4px rgba(0, 0, 0, 0.12);
      --icon-color: #8796af;
      --light-periwinkle: #5b72a7;
@@ -48,8 +49,9 @@
      --cl-card-item-stats-title-font-size: 12px;
      --cl-card-item-stats-title-text-transform: uppercase;
      --cl-card-item-stats-title-font-weight: 400;
-     --cl-card-item-stats-values-font-size: 16px;
-     --cl-card-item-stats-values-font-weight: 700;
+     --cl-card-item-stats-values-font-size: 14px;
+     --cl-card-item-stats-values-text-transform:capitalize;
+     --cl-card-item-stats-values-font-weight: 400;
      --mat-icon-button-hover-background-color: #f0f0f0;
      --mat-icon-font-size:18px;
 

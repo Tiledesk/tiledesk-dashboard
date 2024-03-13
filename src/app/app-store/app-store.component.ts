@@ -710,12 +710,12 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
       dangerMode: false,
     }).then((value) => {
       if (value === 'catch') {
-        console.log('presentModalFeautureAvailableFromTier2Plan value', value)
+        this.logger.log('presentModalFeautureAvailableFromTier2Plan value', value)
         // this.logger.log('[APP-STORE] prjct_profile_type', this.prjct_profile_type)
         // this.logger.log('[APP-STORE] subscription_is_active', this.subscription_is_active)
         // this.logger.log('[APP-STORE] prjct_profile_type', this.prjct_profile_type)
         // this.logger.log('[APP-STORE] trial_expired', this.trial_expired)
-        console.log('[APP-STORE] isVisiblePAY', this.isVisiblePAY)
+        this.logger.log('[APP-STORE] isVisiblePAY', this.isVisiblePAY)
         if (this.isVisiblePAY) {
           // this.logger.log('[APP-STORE] HERE 1')
           if (this.USER_ROLE === 'owner') {

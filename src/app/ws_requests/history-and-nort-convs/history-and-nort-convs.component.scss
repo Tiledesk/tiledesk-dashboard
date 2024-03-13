@@ -805,13 +805,12 @@ p.member:hover {
 }
 
 // https://stackoverflow.com/questions/13014808/is-there-anyway-to-animate-an-ellipsis-with-css-animations
-/**
-// --------------------------------------------------
-// Animate ellipsis 
-/  --------------------------------------------------
-*/
+/*
+ * Animate ellipsis 
+ * -------------------------------------------------- */
+
 .loading {
-  color: #ddd
+  color: #aaa
 }
 .loading:after {
   overflow: hidden;

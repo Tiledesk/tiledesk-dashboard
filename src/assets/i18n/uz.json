@@ -153,6 +153,8 @@
     "UserEmail": "Foydalanuvchi elektron pochtasi",
     "ExportToCSV": "CSV ga eksport qilish",
     "Actions": "Harakatlar",
+    "CopyInviteURL": "Taklif URL manzilidan nusxa oling",
+    "MoreFilterInAnalytics": "Analytics-da koʻproq filtr",
     "owner": "Egasi",
     "admin": "Administrator",
     "agent": "Agent",

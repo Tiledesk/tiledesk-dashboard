@@ -6,16 +6,21 @@ import moment from "moment"
 import { AnalyticsService } from 'app/analytics/analytics-service/analytics.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Chart } from 'chart.js';
+import { UsersService } from 'app/services/users.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators'
+import { Router } from '@angular/router';
+import { AuthService } from 'app/core/auth.service';
 
 @Component({
-  selector: 'appdashboard-chatbot-stats-modal',
-  templateUrl: './chatbot-stats-modal.component.html',
-  styleUrls: ['./chatbot-stats-modal.component.scss']
+  selector: 'appdashboard-messages-stats-modal',
+  templateUrl: './messages-stats-modal.component.html',
+  styleUrls: ['./messages-stats-modal.component.scss']
 })
 
-export class ChatbotStatsModalComponent implements OnInit {
-  public botName: string;
-  public botId: string;
+export class MessagesStatsModalComponent implements OnInit {
+  public agentName: string;
+  public agentId: string;
   lang: string;
   selectedDaysId: number;
   monthNames: any;
@@ -25,20 +30,41 @@ export class ChatbotStatsModalComponent implements OnInit {
   lastdays = 7;
   lineChart: any;
   subscription:Subscription;
- 
+  showSpinner: boolean = true;
+  private unsubscribe$: Subject<any> = new Subject<any>();
+  public USER_ROLE: string;
+  
+  projectId: string
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
-    public dialogRef: MatDialogRef<ChatbotStatsModalComponent>,
+    public dialogRef: MatDialogRef<MessagesStatsModalComponent>,
     private logger: LoggerService,
     private analyticsService: AnalyticsService,
     private translate: TranslateService,
+    private usersService: UsersService,
+    public auth: AuthService,
+    private router: Router,
   ) {
-    this.logger.log('[CHATBOT-STATS-MODAL] data ', data)
-    if (data && data.bot) {
-      this.botName = data.bot.name;
-      this.logger.log('[CHATBOT-STATS-MODAL] data  > botName',  this.botName)
-      this.botId = data.bot._id;
-      this.logger.log('[CHATBOT-STATS-MODAL] data  > botId',  this.botId)
+    this.logger.log('[MSGS-STATS-MODAL] data ', data)
+    if (data && data.agent) {
+      this.logger.log('[MSGS-STATS-MODAL] data  > hasOwnProperty email', data.agent.hasOwnProperty('email'))
+      if ( data.agent.hasOwnProperty('email')) { 
+        this.logger.log('[MSGS-STATS-MODAL] data  >  data.agent.lastname.length', data.agent.lastname.lenght)
+        if (data.agent.firstname && data.agent.lastname !== "" ) {
+          this.agentName = data.agent.firstname + ' ' + data.agent.lastname
+        } else if (data.agent.firstname && data.agent.lastname === "" ){
+          this.agentName = data.agent.firstname
+        }
+      } else {
+        this.agentName = data.agent.name;
+      }
+      
+      this.logger.log('[MSGS-STATS-MODAL] data  > agentName',  this.agentName)
+      this.agentId = data.agent._id;
+      this.logger.log('[MSGS-STATS-MODAL] data  > agentId',  this.agentId)
+     
+      // if (data.agent) 
     }
   }
 
@@ -51,7 +77,34 @@ export class ChatbotStatsModalComponent implements OnInit {
     this.initDay = moment().subtract(6, 'd').format('D/M/YYYY')
     this.endDay = moment().subtract(0, 'd').format('D/M/YYYY')
     this.logger.log("[consoCHATBOT-STATS-MODALl] INIT", this.initDay, "END", this.endDay);
-    this.getMessagesByLastNDays(this.selectedDaysId, this.botId);
+    this.getMessagesByLastNDays(this.selectedDaysId, this.agentId);
+    this.getUserRole()
+    this.getCurrentProject()
+  }
+
+  ngOnDestroy(): void {
+    // Unsubscribe from all subscriptions
+    this.unsubscribe$.next(null);
+    this.unsubscribe$.complete();
+  }
+
+  getUserRole() {
+    this.usersService.project_user_role_bs
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((userRole) => {
+        this.USER_ROLE = userRole;
+      })
+  }
+
+  getCurrentProject() {
+    this.subscription = this.auth.project_bs.subscribe((project) => {
+      if (project) {
+        this.projectId = project._id
+        this.logger.log('[ActivitiesComponent] - projectId ', this.projectId)
+      }
+    });
   }
 
   switchMonthName() {
@@ -74,8 +127,13 @@ export class ChatbotStatsModalComponent implements OnInit {
   }
 
   onOkPresssed() {
-    this.dialogRef.close(this.botId);
+    this.dialogRef.close(this.agentId);
     this.subscription.unsubscribe();
+  }
+
+  goToRequestsAnalytics() {
+    this.router.navigate(['project/' + this.projectId + '/analytics/metrics']);
+    this.dialogRef.close(null);
   }
 
   daysSelect(value, $event) {
@@ -90,7 +148,7 @@ export class ChatbotStatsModalComponent implements OnInit {
       this.lastdays = 1;
     }
     this.lineChart.destroy();
-    this.getMessagesByLastNDays(value, this.botId);
+    this.getMessagesByLastNDays(value, this.agentId);
   }
 
   getMessagesByLastNDays(lastdays, senderID) {
@@ -233,8 +291,10 @@ export class ChatbotStatsModalComponent implements OnInit {
       })
     }, (error) => {
       console.error('[CHATBOT-STATS-MODALl] »» MESSAGES BY DAY - ERROR ', error);
+      this.showSpinner = false
     }, () => {
       this.logger.log('[CHATBOT-STATS-MODALl] »» MESSAGES BY DAY - * COMPLETE * ');
+      this.showSpinner = false
     })
 
   }

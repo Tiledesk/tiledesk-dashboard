@@ -23,9 +23,9 @@ import { takeUntil } from 'rxjs/operators'
 import { UsersService } from 'app/services/users.service';
 import { ChatbotModalComponent } from './chatbot-modal/chatbot-modal.component';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
-import { ChatbotStatsModalComponent } from './chatbot-stats-modal/chatbot-stats-modal.component';
 import {Clipboard} from '@angular/cdk/clipboard';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import { MessagesStatsModalComponent } from 'app/components/modals/messages-stats-modal/messages-stats-modal.component';
 
 const swal = require('sweetalert');
 @Component({
@@ -505,22 +505,22 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
 
 
 
-  openBotStats(bot) {
+  openBotMsgsStats(bot) {
     this.logger.log('[BOTS-LIST] openBotStats  ')
 
-    const statsDialogRef = this.dialog.open(ChatbotStatsModalComponent, {
+    const statsDialogRef = this.dialog.open(MessagesStatsModalComponent, {
       width: '800px',
       backdropClass: 'cdk-overlay-transparent-backdrop',
       hasBackdrop: true,
-      data: { bot: bot },
+      data: { agent: bot },
     });
 
     this.logger.log('[BOTS-LIST] openBotStats  statsDialogRef ', statsDialogRef)
 
-    statsDialogRef.afterClosed().subscribe(botId => {
-      this.logger.log(`[BOTS-LIST] Dialog afterClosed botId: ${botId}`);
-      if (botId) {
-        const statBtnEl = <HTMLElement>document.querySelector('#btn-' + `${botId}`);
+    statsDialogRef.afterClosed().subscribe(agentId => {
+      this.logger.log(`[BOTS-LIST] Dialog afterClosed agentId: ${agentId}`);
+      if (agentId) {
+        const statBtnEl = <HTMLElement>document.querySelector('#btn-' + `${agentId}`);
         this.logger.log('[BOTS-LIST] Dialog afterClosed statBtnEl', statBtnEl);
         statBtnEl.blur()
       }
@@ -558,6 +558,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
 
         this.faqkbList = faqKb;
         this.chatBotCount = this.faqkbList.length;
+        this.myChatbotOtherCount = faqKb.length
 
         if (this.orderBylastUpdated)  {
           this.logger.log('[BOTS-LIST] - orderBylastUpdated Here yes');
@@ -608,22 +609,13 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
             this.logger.error('[BOTS-LIST] bot not has url ' ,bot ) 
           }
 
-         
-
-
-
           this.getBotProfileImage(bot)
 
           this.logger.log('[BOTS-LIST] - orderBylastUpdated', this.orderBylastUpdated);
           this.logger.log('[BOTS-LIST] - orderByCreationDate', this.orderByCreationDate);
-          
-
-
-          
-
         });
 
-        this.myChatbotOtherCount = faqKb.length
+   
 
         // ---------------------------------------------------------------------
         // Bot forked from Customer Satisfaction templates
