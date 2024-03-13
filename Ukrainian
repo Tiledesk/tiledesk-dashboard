@@ -153,6 +153,8 @@
     "UserEmail": "Електронна адреса користувача",
     "ExportToCSV": "Експортувати в CSV",
     "Actions": "Дії",
+    "CopyInviteURL": "Copy invite URL",
+    "MoreFilterInAnalytics": "More filter in Analytics",
     "owner": "Власник",
     "admin": "Адміністратор",
     "agent": "Агент",
