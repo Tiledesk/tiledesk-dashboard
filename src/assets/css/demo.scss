@@ -1,6 +1,11 @@
 @import "./src/assets/sass/md/_variables.scss";
 @import "./src/assets/sass/cds/_variables.scss";
 
+
+body {
+  background-color: var(--body-background);
+}
+
 my-app .main-panel .main-content .card {
   animation-duration: 750ms;
   opacity: 0;
@@ -2477,11 +2482,17 @@ appdashboard-app-store>div>div>div>div>.card-app-store {
 appdashboard-settings-sidebar {
   border-right: 1px solid #e5effe !important;
   min-height: calc(100vh - 160px);
+  margin-left: -10px;
+  margin-top: -9px;
+  background-color: var(--settings-sidebar-background) ;
 }
 
 appdashboard-bots-sidebar  {
   border-right: 1px solid #e5effe !important;
   min-height: calc(100vh - 160px);
+  margin-left: -10px;
+  margin-top: -9px;
+  background-color: var(--settings-sidebar-background) ;
 }
 
 .settings-sidebar-wpr {
@@ -2489,21 +2500,24 @@ appdashboard-bots-sidebar  {
   display: flex;
   flex-direction: column;
   flex: 1 0 auto;
-  margin-top: 5px;
+  // margin-top: 5px;
   padding-right: 10px;
+  padding-left: 10px;
+  padding-top: 15px;
+
   // font-size: 12px;
 }
 
 .settings-sidebar-wpr-opened {
-  width: 215px;
-  min-width: 215px;
-  max-width: 215px;
+  width: 225px;
+  min-width: 225px;
+  max-width: 225px;
 }
 
 .settings-sidebar-wpr-closed {
-  width: 40px;
-  min-width: 40px;
-  max-width: 40px;
+  width: 50px;
+  min-width: 50px;
+  max-width: 50px;
 }
 
 .settings-sidebar {

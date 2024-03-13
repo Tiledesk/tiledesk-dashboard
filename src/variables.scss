@@ -9,6 +9,10 @@
  // https://www.rgbtohex.net/rgb/91-114-167  intessant link for the new color 5b72a7
  // https://color.adobe.com/color-palette-free-download-color-theme-14037012/ intessant linkfor the new color  5b72a7
  body {
+     --body-background: var(--gray99);
+     --settings-sidebar-background: var(--white);
+     --white: #ffffff;
+     --gray99: #fcfcfc;
      --brand-color: #f0806f;
      --conv-details-header-background: #ffffff;
      --conversation-detail-background: #f8fafc;
@@ -21,7 +25,7 @@
      --light-periwinkle: #5b72a7;
      --blue-turquoise: #2196f3;
      --blue-light: #3ea9f5;
-     --vivid-blue:#0d8aee;
+     --vivid-blue: #0d8aee;
      --opal-violet: #7c8eb9;
      --indigo: #6883d0;
      --indigo-deep: #5b5dbc;
@@ -50,16 +54,16 @@
      --cl-card-item-stats-title-text-transform: uppercase;
      --cl-card-item-stats-title-font-weight: 400;
      --cl-card-item-stats-values-font-size: 14px;
-     --cl-card-item-stats-values-text-transform:capitalize;
+     --cl-card-item-stats-values-text-transform: capitalize;
      --cl-card-item-stats-values-font-weight: 400;
      --mat-icon-button-hover-background-color: #f0f0f0;
-     --mat-icon-font-size:18px;
+     --mat-icon-font-size: 18px;
 
      --settings-sidebar-border-radius: 4px;
      --settings-sidebar-font-weight: 400;
      --settings-sidebar-font-size: 12px;
      --settings-sidebar-color: #647491;
-     --settings-sidebar-hover-background-color:rgba(100, 116, 145, 0.08);
+     --settings-sidebar-hover-background-color: rgba(100, 116, 145, 0.08);
      --settings-sidebar-hover-color: #080f1a;
      --settings-sidebar-active-color: #080f1a;
      --settings-sidebar-active-background-color: rgb(220, 233, 255);
@@ -68,9 +72,9 @@
      --settings-sidebar-toggle-icon-background: #fff;
      --settings-sidebar-border-color: #e5effe;
      --settings-sidebar-toggle-icon-border: 1px solid var(--settings-sidebar-border-color);
-     --settings-sidebar-toggle-icon-hover-background-color:#f5f8fa;
+     --settings-sidebar-toggle-icon-hover-background-color: #f5f8fa;
      --settings-sidebar-beta-badge-font-weight: 400;
-     --settings-sidebar-beta-badge-background-color:#6c757d;
+     --settings-sidebar-beta-badge-background-color: #6c757d;
      --settings-sidebar-beta-badge-border-radius: 10px;
      --settings-sidebar-beta-badge-font-size: 9px;
      --settings-sidebar-beta-badge-color: #fff;
@@ -84,7 +88,7 @@
      --settings-sidebar-group-name-letter-spacing: -0.01em;
      --settings-sidebar-group-name-font-weight: 500;
      --settings-sidebar-group-name-text-transform: uppercase;
-  
+
 
      --list-item-input-row-hover-background: rgb(245, 247, 249);
      --texarea-background: #ffffff;
@@ -250,7 +254,7 @@
      --icon-color: #8796af;
      --light-periwinkle: #5b72a7;
      --blue-turquoise: #2196f3;
-     --vivid-blue:#0d8aee;
+     --vivid-blue: #0d8aee;
      --opal-violet: #7c8eb9;
      --indigo: #6883d0;
      --indigo-deep: #5b5dbc;
@@ -260,7 +264,8 @@
      --list-item-input-row-hover-background: rgb(30, 41, 59);
      --texarea-background: rgb(30, 41, 59);
      --texarea-border: 1px solid #ccc;
-     --table-tr-hover: #1e293b;;
+     --table-tr-hover: #1e293b;
+     ;
      --select-background: #101725;
      --select-background-marked: rgba(30, 33, 41, 0.8);
      --select-border: unset !important;
