@@ -153,6 +153,8 @@
     "UserEmail": "E-mail do usuário",
     "ExportToCSV": "Exportar para CSV",
     "Actions": "Ações",
+    "CopyInviteURL": "Copy invite URL",
+    "MoreFilterInAnalytics": "More filter in Analytics",
     "owner": "Proprietário",
     "admin": "Administrador",
     "agent": "Agente",
