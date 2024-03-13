@@ -1,5 +1,11 @@
 # tiledesk-dashboard
 
+### 2.6.0
+- Deploys in production
+- Improves Knowledge Bases 
+- Adds the ability to create Knowledge Bases by adding a sitemap
+- Adds the customer.io integration
+
 ### 2.5.20
 - Deploys in production
 - Refactors the teammates table
