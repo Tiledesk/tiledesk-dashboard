@@ -18,9 +18,11 @@ import { Subject } from 'rxjs';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog'
 import { UserModalComponent } from './user-modal/user-modal.component'
 import { WsRequestsService } from 'app/services/websocket/ws-requests.service'
-import { MesssagesStatsModalComponent } from 'app/components/modals/messages-stats-modal/messages-stats-modal.component'
+import { MessagesStatsModalComponent } from 'app/components/modals/messages-stats-modal/messages-stats-modal.component'
 import {Clipboard} from '@angular/cdk/clipboard';
 import { MatSnackBar } from '@angular/material/snack-bar'
+import * as moment from 'moment';
+import { ProjectUser } from 'app/models/project-user'
 
 const swal = require('sweetalert')
 
@@ -120,7 +122,8 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
   public hideHelpLink: boolean;
   agentsCannotInvite: string;
   widthOfLargestDiv: any;
-  tagsArray: Array<any> = [];
+  // tagsArray: Array<any> = [];
+  // displayAvatarNoProfileFoto: boolean = false
   
   constructor(
     private usersService: UsersService,
@@ -161,12 +164,75 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
     this.getChatUrl()
     this.listenSidebarIsOpened();
     this.getBrowserVersion()
-
+    this.getDashboardCurrentLang()
   }
   ngAfterViewInit(): void {
-
-
+    // setTimeout(() => {
+    //   this.displayAvatarNoProfileFoto = true
+    // }, 500);
   }
+
+  getDashboardCurrentLang() {
+    const browserLang = this.translate.getBrowserLang();
+    if (this.auth.user_bs && this.auth.user_bs.value) {
+      this.logger.log('[USERS] this.auth.user_bs.value._id ', this.auth.user_bs.value._id)
+      const stored_preferred_lang = localStorage.getItem(this.auth.user_bs.value._id + '_lang')
+      this.logger.log('[USERS] stored_preferred_lang', stored_preferred_lang)
+      let dshbrd_lang = ''
+      if (browserLang && !stored_preferred_lang) {
+          dshbrd_lang = browserLang
+      } else if (browserLang && stored_preferred_lang) {
+          dshbrd_lang = stored_preferred_lang
+      }
+
+      this.logger.log('[USERS] dshbrd_lang', dshbrd_lang)
+
+      this.calculateWidthOfRoleDiv(dshbrd_lang)
+
+
+      moment.locale(dshbrd_lang) 
+    }
+  }
+ 
+  // When a new language is added to obtain the width to be set, uncomment the method this.getWidthOfRoleDiv()
+  calculateWidthOfRoleDiv(dshbrd_lang) {
+    if (dshbrd_lang  === 'ar') {
+      this.widthOfLargestDiv = 55 + 'px'
+    }
+    if (dshbrd_lang  === 'az' || dshbrd_lang  === 'de' || dshbrd_lang  === 'en' || dshbrd_lang  === 'sv' || dshbrd_lang  === 'uz') {
+      this.widthOfLargestDiv = 105 + 'px'
+    }
+
+    if (dshbrd_lang  === 'es' || dshbrd_lang  === 'pt') {
+      this.widthOfLargestDiv = 108 + 'px'
+    }
+
+    if (dshbrd_lang  === 'fr') {
+      this.widthOfLargestDiv = 112 + 'px'
+    }
+
+    if (dshbrd_lang  === 'it') {
+      this.widthOfLargestDiv = 117 + 'px'
+    }
+
+    if (dshbrd_lang  === 'kk') {
+      this.widthOfLargestDiv = 93 + 'px'
+    }
+
+    if (dshbrd_lang  === 'ru' || dshbrd_lang  === 'sr') {
+      this.widthOfLargestDiv = 124 + 'px'
+    }
+
+    if (dshbrd_lang  === 'tr') {
+      this.widthOfLargestDiv = 70 + 'px'
+    }
+
+    if (dshbrd_lang  === 'uk') {
+      this.widthOfLargestDiv = 115 + 'px'
+    }
+  }
+
+
 
 
 
@@ -198,9 +264,9 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
   }
 
   opeUserMsgsStats(user) {
-    console.log('[USERS] opeUserMsgsStats  user', user)
+    this.logger.log('[USERS] opeUserMsgsStats  user', user)
 
-    const statsDialogRef = this.dialog.open(MesssagesStatsModalComponent, {
+    const statsDialogRef = this.dialog.open(MessagesStatsModalComponent, {
       width: '800px',
       backdropClass: 'cdk-overlay-transparent-backdrop',
       hasBackdrop: true,
@@ -213,7 +279,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
       this.logger.log(`[USERS] Dialog afterClosed agentId: ${agentId}`);
       if (agentId) {
         const statBtnEl = <HTMLElement>document.querySelector('#btn-' + `${agentId}`);
-        console.log('[USERS] Dialog afterClosed statBtnEl', statBtnEl);
+        this.logger.log('[USERS] Dialog afterClosed statBtnEl', statBtnEl);
         statBtnEl.blur()
       }
     });
@@ -259,10 +325,10 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
       
         if (ana[1] === "F") {
           this.isVisibleAnalytics = false;
-          console.log('[USERS] - PUBLIC-KEY (Users) - isVisibleAnalytics', this.isVisibleAnalytics);
+          this.logger.log('[USERS] - PUBLIC-KEY (Users) - isVisibleAnalytics', this.isVisibleAnalytics);
         } else {
           this.isVisibleAnalytics = true;
-          console.log('[USERS] - PUBLIC-KEY (Users) - isVisibleAnalytics', this.isVisibleAnalytics);
+          this.logger.log('[USERS] - PUBLIC-KEY (Users) - isVisibleAnalytics', this.isVisibleAnalytics);
         }
       }
       
@@ -543,38 +609,43 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
         
         if (projectUsers) {
           this.projectUsersList = projectUsers
-          // this.logger.log('[USERS] - GET ALL PROJECT-USERS OF THE PROJECT - PROJECT USERS LIST ', this.projectUsersList);
-          
+         
+          let order = { owner : 1, admin: 2, agent: 3 };
+          this.projectUsersList.sort(function (a, b) {
+            return order[a.role] - order[b.role];
+          });
         
           this.projectUsersList.forEach((projectuser) => {
-            this.tagsArray = projectuser.tags
-            console.log('[USERS] - PROJECT-USER  - tagsArray ', this.tagsArray);
-            // this.logger.log('[USERS] - GET ALL PROJECT-USERS OF THE PROJECT - check if PROJECT USER IMG EXIST', projectuser);
-            const _user_id = projectuser['id_user']['_id']
-            users_id_array.push(_user_id);
-            console.log('[USERS] - PROJECT-USER - users_id_array', users_id_array)
+            // -----------------------------------------------------------------------------------------------
+            // Used to get  the number of assigned conversatons (in realtime)
+            // se the method this.getFlatMembersArrayFromAllRequestsAndRunGetOccurrence() - actually commented
+            // -----------------------------------------------------------------------------------------------
+            // const _user_id = projectuser['id_user']['_id']
+            // users_id_array.push(_user_id);
+            // this.logger.log('[USERS] - PROJECT-USER - users_id_array', users_id_array)
 
-            let imgUrl = ''
-            if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
-              imgUrl = 'https://firebasestorage.googleapis.com/v0/b/' + storage + '/o/profiles%2F' + projectuser['id_user']['_id'] + '%2Fphoto.jpg?alt=media'
-              // this.logger.log('[USERS] - PROJECT USERS imgUrl (usecase firebase)', imgUrl);
-            } else {
-              imgUrl = storage + 'images?path=uploads%2Fusers%2F' + projectuser['id_user']['_id'] + '%2Fimages%2Fthumbnails_200_200-photo.jpg'
-              // this.logger.log('[USERS] - PROJECT USERS imgUrl (usecase native)', imgUrl);
-            }
+            // let imgUrl = ''
+            // if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
+            //   imgUrl = 'https://firebasestorage.googleapis.com/v0/b/' + storage + '/o/profiles%2F' + projectuser['id_user']['_id'] + '%2Fphoto.jpg?alt=media'
+            //   // this.logger.log('[USERS] - PROJECT USERS imgUrl (usecase firebase)', imgUrl);
+            // } else {
+            //   imgUrl = storage + 'images?path=uploads%2Fusers%2F' + projectuser['id_user']['_id'] + '%2Fimages%2Fthumbnails_200_200-photo.jpg'
+            //   // this.logger.log('[USERS] - PROJECT USERS imgUrl (usecase native)', imgUrl);
+            // }
 
-            this.checkImageExists(imgUrl, (existsImage) => {
-              if (existsImage == true) {
-                this.logger.log('[USERS] - IMAGE EXIST X PROJECT USERS', projectuser)
-                projectuser.hasImage = true
-              } else {
-                this.logger.log('[USERS] - IMAGE NOT EXIST X PROJECT USERS', projectuser)
-                projectuser.hasImage = false
-              }
-            })
+            // this.checkImageExists(imgUrl, (existsImage) => {
+            //   if (existsImage == true) {
+            //     this.logger.log('[USERS] - IMAGE EXIST X PROJECT USERS', projectuser)
+            //     projectuser.hasImage = true
+            //   } else {
+            //     this.logger.log('[USERS] - IMAGE NOT EXIST X PROJECT USERS', projectuser)
+            //     projectuser.hasImage = false
+            //   }
+            // })
 
-            if (projectuser && projectuser['id_user'])
+            if (projectuser && projectuser['id_user']) {
               this.createProjectUserAvatar(projectuser['id_user'])
+            }
           })
 
           this.projectUsersLength = projectUsers.length
@@ -587,10 +658,11 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
         this.HAS_FINISHED_GET_PROJECT_USERS = true
         this.showSpinner = false;
         this.logger.log('[USERS] - PROJECT USERS (FILTERED FOR PROJECT ID) - COMPLETE')
-        setTimeout(() => {
-          this.getWidthOfRoleDiv()
-        }, 2000);
-        this.getFlatMembersArrayFromAllRequestsAndRunGetOccurrence(users_id_array)
+        // setTimeout(() => {
+        //   this.getWidthOfRoleDiv()
+        // }, 2000);
+
+        // this.getFlatMembersArrayFromAllRequestsAndRunGetOccurrence(users_id_array)
       },
     )
   }
@@ -615,8 +687,8 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
           flat_members_array = flat_members_array.concat(requests[i].participants);
         }
         // Result of the concatenation of the single arrays of members
-        console.log('[USERS] - !!!!! FLAT-MEMBERS-ARRAY  ', flat_members_array)
-        console.log('[USERS] - !!!!! USER_ID_ARRAY - LENGTH ', users_id_array.length);
+        this.logger.log('[USERS] - !!!!! FLAT-MEMBERS-ARRAY  ', flat_members_array)
+        this.logger.log('[USERS] - !!!!! USER_ID_ARRAY - LENGTH ', users_id_array.length);
         /**
          * FOR EACH USER-ID IN THE 'USER_ID_ARRAY' IS RUNNED 'getOccurrenceAndAssignToProjectUsers'
          * THAT RETURNS THE COUNT OF HOW MAMY TIMES THE USER-ID IS PRESENT IN THE 'flat_members_array' AND THEN
@@ -624,7 +696,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
 
         if (flat_members_array) {
           for (let i = 0; i < users_id_array.length; i++) {
-            console.log('[USERS] - !!!!! USER_ID_ARRAY - LENGTH ', users_id_array.length);
+            this.logger.log('[USERS] - !!!!! USER_ID_ARRAY - LENGTH ', users_id_array.length);
             this.getOccurrenceAndAssignToProjectUser(flat_members_array, users_id_array[i])
           }
         }
@@ -633,7 +705,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
   }
 
   getOccurrenceAndAssignToProjectUser(array, value) {
-    console.log('[USERS] - !!!!! CALLING GET OCCURRENCE REQUESTS FOR AGENT AND ASSIGN TO PROJECT USERS');
+    this.logger.log('[USERS] - !!!!! CALLING GET OCCURRENCE REQUESTS FOR AGENT AND ASSIGN TO PROJECT USERS');
     let count = 0;
     array.forEach((v) => (v === value && count++));
     this.logger.log('[USERS] - !!!!! #', count, ' REQUESTS ASSIGNED TO THE USER ', value);
@@ -642,7 +714,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
         p.assigned_requests = count
       }
     }
-    console.log('[USERS]  GET OCCURRENCE REQUESTS FOR AGENT projectUsersList ', this.projectUsersList) 
+    this.logger.log('[USERS]  GET OCCURRENCE REQUESTS FOR AGENT projectUsersList ', this.projectUsersList) 
     // this.showSpinner = false;
     // this.logger.log('!!! ANALYTICS - !!!!! SHOW SPINNER', this.showSpinner);
     return count;
@@ -652,20 +724,30 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
 
   getWidthOfRoleDiv() {
     let roleDivEl = document.querySelectorAll<HTMLElement>("#pu-role");
-    console.log('[USERS] roleDivEl all', roleDivEl)
+    this.logger.log('[USERS] roleDivEl all', roleDivEl)
     let arrayUserRoleDivWidth = []
     for (var i = 0; i < roleDivEl.length; i++) {
-      console.log('roleDivEl: ', roleDivEl[i]);
+      this.logger.log('roleDivEl: ', roleDivEl[i]);
       let roleDivElWidth = roleDivEl[i].offsetWidth;
-      console.log('[USERS] roleDivElWidth offsetWidth', roleDivElWidth)
+      this.logger.log('[USERS] roleDivElWidth offsetWidth', roleDivElWidth)
       let roleDivElWidthPlusPadding = roleDivElWidth + 20
       arrayUserRoleDivWidth.push(roleDivElWidthPlusPadding)
     }
-    console.log('[USERS] arrayUserRoleDivWidth', arrayUserRoleDivWidth)
+    this.logger.log('[USERS] arrayUserRoleDivWidth', arrayUserRoleDivWidth)
     this.widthOfLargestDiv = Math.max(...arrayUserRoleDivWidth) + 'px'
-    console.log('[USERS] widthOfLargestDiv', this.widthOfLargestDiv)
+    this.logger.log('[USERS] widthOfLargestDiv', this.widthOfLargestDiv)
    
   }
+
+  // imageOnError(event, userid) {
+  //   this.logger.log('[USERS] - imageOnError event ', event)
+  //   this.logger.log('[USERS] - imageOnError userid', userid)
+
+  //   const photoProfileImageEl = <HTMLElement>document.querySelector('#img-' + `${userid}`);
+  //   this.logger.log('[USERS] - imageOnError photoProfileImageEl', photoProfileImageEl)
+  //   // photoProfileImageEl.classList.add('broken-image')
+  //   photoProfileImageEl.style.display = 'none'
+  // }
 
   createProjectUserAvatar(user) {
     this.logger.log('[USERS] - createProjectUserAvatar ', user)
@@ -717,15 +799,15 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
   }
 
   resendInvite(pendingInvitationId: string) {
-    console.log( '[USERS] - RESEND INVITE TO PENDING INVITATION ID: ',  pendingInvitationId )
+    this.logger.log( '[USERS] - RESEND INVITE TO PENDING INVITATION ID: ',  pendingInvitationId )
     this.usersService
       .getPendingUsersByIdAndResendEmail(pendingInvitationId)
       .subscribe(
         (pendingInvitation: any) => {
-          console.log( '[USERS] - GET PENDING INVITATION BY ID AND RESEND INVITE - RES ', pendingInvitation)
+          this.logger.log( '[USERS] - GET PENDING INVITATION BY ID AND RESEND INVITE - RES ', pendingInvitation)
 
           this.pendingInvitationEmail = pendingInvitation['Resend invitation email to']['email']
-          console.log( '[USERS] - GET PENDING INVITATION BY ID AND RESEND INVITE - RES  email', this.pendingInvitationEmail)
+          this.logger.log( '[USERS] - GET PENDING INVITATION BY ID AND RESEND INVITE - RES  email', this.pendingInvitationEmail)
         }, (error) => {
           this.logger.error('[USERS] - GET PENDING INVITATION BY ID AND RESEND INVITE - ERROR', error)
 
@@ -739,23 +821,31 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
   }
 
   copyInviteURL(pendingInvitationId) {
-    console.log( '[USERS] - copyInviteLink PENDING INVITATION ID: ',  pendingInvitationId )
-   this.baseUrl = this.appConfigService.getConfig().SERVER_BASE_URL
-   console.log('[USERS] copyInviteLink baseUrl ' , this.baseUrl) 
-   console.log('[USERS] copyInviteLink CURRENT_USER ' , this.CURRENT_USER) 
-   console.log('[USERS] copyInviteLink project ' , this.project)
-   let projectName = this.project.name.trim()
-   let userFirstname = ""
-   let userLastmame = ""
-   let inviteUrl = ""
-   if (this.CURRENT_USER.firstname && this.CURRENT_USER.lastname !== "") {
-    userFirstname = this.CURRENT_USER.firstname
-    userLastmame = this.CURRENT_USER.lastname
-    inviteUrl = this.baseUrl + "dashboard/#/handle-invitation/" + pendingInvitationId + '/'+ projectName + '/'+ userFirstname + '/'+ userLastmame
-   } else if (this.CURRENT_USER.firstname && this.CURRENT_USER.lastname == "" ){
-    userFirstname = this.CURRENT_USER.firstname
-    inviteUrl = this.baseUrl + "dashboard/#/handle-invitation/" + pendingInvitationId + '/'+ projectName + '/'+ userFirstname
-   }
+    const copyInviteUrlBtnEl = <HTMLElement>document.querySelector('#btn-copy-' + `${pendingInvitationId}`);
+    this.logger.log('[USERS] copyInviteURL copyInviteUrlBtnEl ', copyInviteUrlBtnEl);
+    copyInviteUrlBtnEl.blur()
+
+    this.logger.log( '[USERS] - copyInviteLink PENDING INVITATION ID: ',  pendingInvitationId )
+    this.CHAT_BASE_URL = this.appConfigService.getConfig().CHAT_BASE_URL
+    this.logger.log('[USERS] copyInviteLink CHAT_BASE_URL ' , this.CHAT_BASE_URL) 
+
+    let domainURL =   this.CHAT_BASE_URL.split('/').slice(0, -2).join('/')
+ 
+    this.logger.log('[USERS] copyInviteLink domainURL ' , domainURL) 
+    this.logger.log('[USERS] copyInviteLink CURRENT_USER ' , this.CURRENT_USER) 
+    this.logger.log('[USERS] copyInviteLink project ' , this.project)
+    let projectName = this.project.name.trim()
+    let userFirstname = ""
+    let userLastmame = ""
+    let inviteUrl = ""
+    if (this.CURRENT_USER.firstname && this.CURRENT_USER.lastname !== "") {
+      userFirstname = this.CURRENT_USER.firstname
+      userLastmame = this.CURRENT_USER.lastname
+      inviteUrl = domainURL + "/dashboard/#/handle-invitation/" + pendingInvitationId + '/'+ projectName + '/'+ userFirstname + '/'+ userLastmame
+    } else if (this.CURRENT_USER.firstname && this.CURRENT_USER.lastname == "" ){
+      userFirstname = this.CURRENT_USER.firstname
+      inviteUrl = domainURL + "/dashboard/#/handle-invitation/" + pendingInvitationId + '/'+ projectName + '/'+ userFirstname
+    }
   
    
    this.clipboard.copy(inviteUrl.trim())
@@ -765,10 +855,6 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
      panelClass:'success-snackbar'
    });
   }
-                                                                  // 65eeee168b35030013eae4ce
-  // https://panel.tiledesk.com/v3/dashboard/#/handle-invitation/65eeee168b35030013eae4ce/Custom/Di/Saji
-  // https://api.tiledesk.com/v3/dashboard/#/handle-invitation/65eeee168b35030013eae4ce/Custom/Di/Saji
- 
  
 
   openCancelInvitationModal(pendingInvitationId: string, pendingInvitationEmail: string) {
@@ -954,8 +1040,8 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
   // New changeAvailabilityStatus(selecedstatusID: number, projectUser_id: string, ngselectid: number, $event: any) {
   changeAvailabilityStatus(selectedStatusValue: any, projectUser_id: string) {
 
-    // this.logger.log('[USERS] - UPDATE PROJECT USER STATUS - selectedStatusValue ', selectedStatusValue, 'projectUser_id ', projectUser_id)
-    // this.logger.log('[USERS] - UPDATE PROJECT USER STATUS - PROJECT-USER ID ', projectUser_id)
+    this.logger.log('[USERS] - UPDATE PROJECT USER STATUS - selectedStatusValue ', selectedStatusValue)
+   this.logger.log('[USERS] - UPDATE PROJECT USER STATUS - PROJECT-USER ID ', projectUser_id)
 
     let IS_AVAILABLE = null
     let profilestatus = ''
@@ -971,16 +1057,23 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
     this.usersService.updateProjectUser(projectUser_id, IS_AVAILABLE, profilestatus)
 
       .subscribe((updatedProjectUser: any) => {
-        this.logger.log('[USERS] - UPDATE PROJECT USER STATUS RES', updatedProjectUser)
+       this.logger.log('[USERS] - UPDATE PROJECT USER STATUS RES', updatedProjectUser)
 
-        // this.projectUsersList.forEach(projectUser => {
-        //   if (projectUser._id === updatedProjectUser._id) {
-        //     projectUser.user_available = updatedProjectUser.user_available
-        //     if (updatedProjectUser.profileStatus) {
-        //       projectUser.profileStatus = updatedProjectUser.profileStatus
-        //     }
-        //   }
-        // });
+      //  projectUser?.user_available === true && (projectUser?.profileStatus === ''
+      //  projectUser?.user_available === false && (projectUser?.profileStatus === ''
+      //  projectUser?.user_available === false && projectUser?.profileStatus === 'inactive'
+
+        this.projectUsersList.forEach(projectUser => {
+          if (projectUser._id === updatedProjectUser._id) {
+            projectUser.user_available = updatedProjectUser.user_available
+            if (updatedProjectUser.profileStatus) {
+              projectUser.profileStatus = updatedProjectUser.profileStatus
+            } 
+            else {
+              projectUser.profileStatus = '' 
+            }
+          }
+        });
 
 
         // this.projectUsersList = this.projectUsersList.slice(0)
@@ -999,7 +1092,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
         this.notify.showWidgetStyleUpdateNotification(this.changeAvailabilitySuccessNoticationMsg, 2, 'done')
 
 
-        this.getUploadEgineAndProjectUsers()
+        // this.getUploadEgineAndProjectUsers()
       },)
   }
 

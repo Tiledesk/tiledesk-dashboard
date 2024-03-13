@@ -25,8 +25,7 @@ import { ChatbotModalComponent } from './chatbot-modal/chatbot-modal.component';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import {Clipboard} from '@angular/cdk/clipboard';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import { MesssagesStatsModalComponent } from 'app/components/modals/messages-stats-modal/messages-stats-modal.component';
-
+import { MessagesStatsModalComponent } from 'app/components/modals/messages-stats-modal/messages-stats-modal.component';
 
 const swal = require('sweetalert');
 @Component({
@@ -507,19 +506,19 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
 
 
   openBotMsgsStats(bot) {
-    this.logger.log('[BOTS-LIST] openBotMsgsStats  ')
+    this.logger.log('[BOTS-LIST] openBotStats  ')
 
-    const statsDialogRef = this.dialog.open(MesssagesStatsModalComponent, {
+    const statsDialogRef = this.dialog.open(MessagesStatsModalComponent, {
       width: '800px',
       backdropClass: 'cdk-overlay-transparent-backdrop',
       hasBackdrop: true,
       data: { agent: bot },
     });
 
-    this.logger.log('[BOTS-LIST] openBotMsgsStats  statsDialogRef ', statsDialogRef)
+    this.logger.log('[BOTS-LIST] openBotStats  statsDialogRef ', statsDialogRef)
 
     statsDialogRef.afterClosed().subscribe(agentId => {
-     console.log(`[BOTS-LIST] Dialog afterClosed botId: ${agentId}`);
+      this.logger.log(`[BOTS-LIST] Dialog afterClosed agentId: ${agentId}`);
       if (agentId) {
         const statBtnEl = <HTMLElement>document.querySelector('#btn-' + `${agentId}`);
         this.logger.log('[BOTS-LIST] Dialog afterClosed statBtnEl', statBtnEl);
@@ -554,17 +553,13 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     this.showSpinner = true
     // this.faqKbService.getAllBotByProjectId().subscribe((faqKb: any) => {
     this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
-      
+      this.logger.log('[BOTS-LIST] - GET BOTS BY PROJECT ID', faqKb);
       if (faqKb) {
 
         this.faqkbList = faqKb;
-        console.log('[BOTS-LIST] - GET BOTS BY PROJECT ID faqKb', faqKb);
-        console.log('[BOTS-LIST] - GET BOTS BY PROJECT ID faqkbList', this.faqkbList);
- 
-        // sort 
-        console.log('[BOTS-LIST] - orderBylastUpdated', this.orderBylastUpdated);
-        console.log('[BOTS-LIST] - orderByCreationDate', this.orderByCreationDate);
-        
+        this.chatBotCount = this.faqkbList.length;
+        this.myChatbotOtherCount = faqKb.length
+
         if (this.orderBylastUpdated)  {
           this.logger.log('[BOTS-LIST] - orderBylastUpdated Here yes');
           this.faqkbList.sort(function compare(a: Chatbot, b: Chatbot) {
@@ -591,19 +586,10 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
             return 0;
           });
         }
-
-
-
-     
-        this.chatBotCount = this.faqkbList.length;
-
-        this.myChatbotOtherCount = faqKb.length
-
+        
         this.faqkbList.forEach(bot => {
-         console.log('[BOTS-LIST] getFaqKbByProjectId bot ', bot)
-         console.log('[BOTS-LIST] getFaqKbByProjectId bot name', bot.name)
+          this.logger.log('[BOTS-LIST] getFaqKbByProjectId bot ', bot)
           if (bot && bot.url) {
-         
             this.logger.log('[BOTS-LIST] getFaqKbByProjectId bot url', bot.url)
 
             let parts = bot.url.split("/");
@@ -624,9 +610,12 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
           }
 
           this.getBotProfileImage(bot)
+
+          this.logger.log('[BOTS-LIST] - orderBylastUpdated', this.orderBylastUpdated);
+          this.logger.log('[BOTS-LIST] - orderByCreationDate', this.orderByCreationDate);
         });
 
-        
+   
 
         // ---------------------------------------------------------------------
         // Bot forked from Customer Satisfaction templates
@@ -781,10 +770,6 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
 
       }
     })
-
-    if (!this.public_Key.includes("ANA")) {
-      this.isVisibleAnalytics = false;
-    }
   }
 
   goToBotExternalUrl(botExternalUrl) {

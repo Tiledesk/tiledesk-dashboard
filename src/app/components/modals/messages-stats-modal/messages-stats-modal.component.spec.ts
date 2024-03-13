@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MesssagesStatsModalComponent } from './messages-stats-modal.component';
+import { MessagesStatsModalComponent } from './messages-stats-modal.component';
 
 describe('ChatbotStatsModalComponent', () => {
-  let component: MesssagesStatsModalComponent;
-  let fixture: ComponentFixture<MesssagesStatsModalComponent>;
+  let component: MessagesStatsModalComponent;
+  let fixture: ComponentFixture<MessagesStatsModalComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ MesssagesStatsModalComponent ]
+      declarations: [ MessagesStatsModalComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(MesssagesStatsModalComponent);
+    fixture = TestBed.createComponent(MessagesStatsModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

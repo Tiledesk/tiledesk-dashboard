@@ -35,7 +35,7 @@ import { NotifyService } from './core/notify.service';
 import { avatarPlaceholder, getColorBck } from './utils/util';
 import { LocalDbService } from './services/users-local-db.service';
 import { ProjectService } from './services/project.service';
-import { style } from '@angular/animations';
+
 
 
 declare const gtag: Function;

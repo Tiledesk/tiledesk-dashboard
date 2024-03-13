@@ -19,7 +19,8 @@ export class BrandService {
   _brand = {
     DASHBOARD: {
       META_TITLE: "Tiledesk Design Studio",
-      FAVICON_URL: "https://tiledesk.com/wp-content/uploads/2022/07/tiledesk_v13-300x300.png",
+      // FAVICON_URL: "https://tiledesk.com/wp-content/uploads/2022/07/tiledesk_v13-300x300.png",
+      FAVICON_URL: "assets/img/logos/favicon.ico",
       CUSTOM_COMPANY_HOME_LOGO: false,
       COMPANY_LOGO_PLANET: "assets/img/logos/tiledesk_planet.svg",
       "privacy_policy_link_text": "Privacy Policy",

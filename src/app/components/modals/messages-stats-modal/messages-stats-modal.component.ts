@@ -6,6 +6,11 @@ import moment from "moment"
 import { AnalyticsService } from 'app/analytics/analytics-service/analytics.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Chart } from 'chart.js';
+import { UsersService } from 'app/services/users.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators'
+import { Router } from '@angular/router';
+import { AuthService } from 'app/core/auth.service';
 
 @Component({
   selector: 'appdashboard-messages-stats-modal',
@@ -13,7 +18,7 @@ import { Chart } from 'chart.js';
   styleUrls: ['./messages-stats-modal.component.scss']
 })
 
-export class MesssagesStatsModalComponent implements OnInit {
+export class MessagesStatsModalComponent implements OnInit {
   public agentName: string;
   public agentId: string;
   lang: string;
@@ -25,19 +30,27 @@ export class MesssagesStatsModalComponent implements OnInit {
   lastdays = 7;
   lineChart: any;
   subscription:Subscription;
- 
+  showSpinner: boolean = true;
+  private unsubscribe$: Subject<any> = new Subject<any>();
+  public USER_ROLE: string;
+  
+  projectId: string
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
-    public dialogRef: MatDialogRef<MesssagesStatsModalComponent>,
+    public dialogRef: MatDialogRef<MessagesStatsModalComponent>,
     private logger: LoggerService,
     private analyticsService: AnalyticsService,
     private translate: TranslateService,
+    private usersService: UsersService,
+    public auth: AuthService,
+    private router: Router,
   ) {
-    console.log('[MSGS-STATS-MODAL] data ', data)
+    this.logger.log('[MSGS-STATS-MODAL] data ', data)
     if (data && data.agent) {
-      console.log('[MSGS-STATS-MODAL] data  > hasOwnProperty email', data.agent.hasOwnProperty('email'))
+      this.logger.log('[MSGS-STATS-MODAL] data  > hasOwnProperty email', data.agent.hasOwnProperty('email'))
       if ( data.agent.hasOwnProperty('email')) { 
-        console.log('[MSGS-STATS-MODAL] data  >  data.agent.lastname.length', data.agent.lastname.lenght)
+        this.logger.log('[MSGS-STATS-MODAL] data  >  data.agent.lastname.length', data.agent.lastname.lenght)
         if (data.agent.firstname && data.agent.lastname !== "" ) {
           this.agentName = data.agent.firstname + ' ' + data.agent.lastname
         } else if (data.agent.firstname && data.agent.lastname === "" ){
@@ -65,6 +78,33 @@ export class MesssagesStatsModalComponent implements OnInit {
     this.endDay = moment().subtract(0, 'd').format('D/M/YYYY')
     this.logger.log("[consoCHATBOT-STATS-MODALl] INIT", this.initDay, "END", this.endDay);
     this.getMessagesByLastNDays(this.selectedDaysId, this.agentId);
+    this.getUserRole()
+    this.getCurrentProject()
+  }
+
+  ngOnDestroy(): void {
+    // Unsubscribe from all subscriptions
+    this.unsubscribe$.next(null);
+    this.unsubscribe$.complete();
+  }
+
+  getUserRole() {
+    this.usersService.project_user_role_bs
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((userRole) => {
+        this.USER_ROLE = userRole;
+      })
+  }
+
+  getCurrentProject() {
+    this.subscription = this.auth.project_bs.subscribe((project) => {
+      if (project) {
+        this.projectId = project._id
+        this.logger.log('[ActivitiesComponent] - projectId ', this.projectId)
+      }
+    });
   }
 
   switchMonthName() {
@@ -89,6 +129,11 @@ export class MesssagesStatsModalComponent implements OnInit {
   onOkPresssed() {
     this.dialogRef.close(this.agentId);
     this.subscription.unsubscribe();
+  }
+
+  goToRequestsAnalytics() {
+    this.router.navigate(['project/' + this.projectId + '/analytics/metrics']);
+    this.dialogRef.close(null);
   }
 
   daysSelect(value, $event) {
@@ -246,8 +291,10 @@ export class MesssagesStatsModalComponent implements OnInit {
       })
     }, (error) => {
       console.error('[CHATBOT-STATS-MODALl] »» MESSAGES BY DAY - ERROR ', error);
+      this.showSpinner = false
     }, () => {
       this.logger.log('[CHATBOT-STATS-MODALl] »» MESSAGES BY DAY - * COMPLETE * ');
+      this.showSpinner = false
     })
 
   }
