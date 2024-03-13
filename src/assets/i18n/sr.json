@@ -153,6 +153,8 @@
     "UserEmail": "Корисничко имејл",
     "ExportToCSV": "Извези у ЦСВ",
     "Actions": "Радње",
+    "CopyInviteURL": "Копирај УРЛ позивнице",
+    "MoreFilterInAnalytics": "Више филтера у Аналитици",
     "owner": "Власник",
     "admin": "Администратор",
     "agent": "Агент",

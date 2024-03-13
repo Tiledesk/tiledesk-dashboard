@@ -153,6 +153,8 @@
     "UserEmail": "Kullanıcı e-postası",
     "ExportToCSV": "CSV'ye aktar",
     "Actions": "Hareketler",
+    "CopyInviteURL": "Davet URL'sini kopyala",
+    "MoreFilterInAnalytics": "Analytics'te daha fazla filtre",
     "owner": "Sahip",
     "admin": "Yönetici",
     "agent": "Ajan",

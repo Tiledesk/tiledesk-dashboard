@@ -153,6 +153,8 @@
     "UserEmail": "Пайдаланушы электрондық поштасы",
     "ExportToCSV": "CSV файлына экспорттау",
     "Actions": "Әрекеттер",
+    "CopyInviteURL": "Шақыру URL мекенжайын көшіру",
+    "MoreFilterInAnalytics": "Analytics-тегі қосымша сүзгі",
     "owner": "Меншік иесі",
     "admin": "Әкімші",
     "agent": "Агент",

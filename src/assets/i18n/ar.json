@@ -153,6 +153,8 @@
     "UserEmail": "البريد الالكتروني للمستخدم",
     "ExportToCSV": "تصدير إلى CSV",
     "Actions": "أجراءات",
+    "CopyInviteURL": "انسخ عنوان URL للدعوة",
+    "MoreFilterInAnalytics": "المزيد من التصفية في التحليلات",
     "owner": "صاحب",
     "admin": "مدير",
     "agent": "وكيلات",
