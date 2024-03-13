@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.5.20
+- Deploys in production
+- Refactors the teammates table
+
 ### 2.5.19
 - Deploys in production
 - Fixes the bug: not all chatbot images are displayed
