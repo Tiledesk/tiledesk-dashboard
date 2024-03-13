@@ -49,6 +49,7 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
   USER_ROLE: string;
   public_Key: string;
   isVisiblePAY: boolean;
+  areVisiblePaidApps: boolean;
   agentCannotManageAdvancedOptions: string;
   learnMoreAboutDefaultRoles: string;
   tPlanParams: any;
@@ -59,6 +60,7 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
   project: any;
   callingPage: string;
   onlyOwnerCanManageTheAccountPlanMsg: string;
+  
   constructor(
     public appStoreService: AppStoreService,
     private router: Router,
@@ -194,11 +196,29 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
           this.isVisiblePAY = true;
         }
       }
+
+      if (key.includes("DPA")) {
+
+        let paidApps = key.split(":");
+
+        if (paidApps[1] === "F") {
+          this.areVisiblePaidApps = false;
+          this.logger.log('APP-STORE areVisiblePaidApps ',this.areVisiblePaidApps) 
+        } else {
+          this.areVisiblePaidApps = true;
+          this.logger.log('APP-STORE areVisiblePaidApps ',this.areVisiblePaidApps) 
+        }
+      }
+
+      
     });
 
 
     if (!this.public_Key.includes("PAY")) {
       this.isVisiblePAY = false;
+    }
+    if (!this.public_Key.includes("DPA")) {
+      this.areVisiblePaidApps = false;
     }
   }
 
@@ -690,12 +710,12 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
       dangerMode: false,
     }).then((value) => {
       if (value === 'catch') {
-        // this.logger.log('featureAvailableFromPlanC value', value)
+        this.logger.log('presentModalFeautureAvailableFromTier2Plan value', value)
         // this.logger.log('[APP-STORE] prjct_profile_type', this.prjct_profile_type)
         // this.logger.log('[APP-STORE] subscription_is_active', this.subscription_is_active)
         // this.logger.log('[APP-STORE] prjct_profile_type', this.prjct_profile_type)
         // this.logger.log('[APP-STORE] trial_expired', this.trial_expired)
-        // this.logger.log('[APP-STORE] isVisiblePAY', this.isVisiblePAY)
+        this.logger.log('[APP-STORE] isVisiblePAY', this.isVisiblePAY)
         if (this.isVisiblePAY) {
           // this.logger.log('[APP-STORE] HERE 1')
           if (this.USER_ROLE === 'owner') {
@@ -793,6 +813,12 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
 
         this.learnMoreAboutDefaultRoles = translation;
       });
+
+      this.translate
+      .get('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan')
+      .subscribe((translation: any) => {
+        this.onlyOwnerCanManageTheAccountPlanMsg = translation
+      })
 
   }
 

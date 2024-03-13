@@ -201,6 +201,8 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
     this.getProjectPlan();
     this.trackPage()
   }
+
+
   trackPage() {
     if (!isDevMode()) {
       if (window['analytics']) {
@@ -318,6 +320,7 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
       this.logger.error('[USER-PROFILE] - QUERY SELECTOR language ERROR  ', e)
     }
   }
+
 
   getLoggedUser() {
     this.auth.user_bs.subscribe((user) => {

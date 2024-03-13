@@ -12,13 +12,21 @@
   <div class="container-fluid" style="padding-left: 5px;padding-right: 5px;">
 
     <div class="content-wpr" style="display: flex;">
-      <appdashboard-settings-sidebar style="border-right:1px solid #e5effe !important"> </appdashboard-settings-sidebar>
-      <div class="teplate-content" style="flex: 1 1 auto; margin-left: 20px;">
 
-        <div class="link-to-trigger-docs-wpr">
-          <div class="row link-to-trigger-docs">
+      <appdashboard-settings-sidebar> </appdashboard-settings-sidebar>
+      
+      <div class="teplate-content" style="flex: 1 1 auto; margin-left: 20px;">
+        <div class="row">
+          <div class="col-xs-12 email-ticketing-title">
+            {{'EmailTicketing' | translate}}
+          </div> 
+
+        </div>
+        
+        <div *ngIf="hideHelpLink" class="link-to-email-ticketing-wpr">
+          <div class="row link-to-email-ticketing-docs">
             <div class="col-md-12">
-              <span style="margin-left: 15px;">
+              <span>
                 <svg aria-hidden="true" class="svg-inline--fa fa-readme fa-w-18" data-icon="readme" data-prefix="fab"
                   focusable="false" role="img" style="width: 25px;height:auto; vertical-align: middle;"
                   viewBox="0 0 576 512" xmlns="http://www.w3.org/2000/svg">
@@ -34,10 +42,11 @@
             </div>
           </div>
         </div>
+        
 
         <div class="row">
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8">
-            <div class="card card card--no-border">
+            <div class="card card card--no-border" style="margin-top: 0px ;">
 
 
               <div class="row">
@@ -98,9 +107,9 @@
                 <div class="row">
                   <div class="col-md-12">
                     <p class="paragraph-custom-margin-and-weight">
-                      Instead of creating a ticket in the Tiledesk Default Department you can explicitly specify the
+                      Instead of creating a ticket in the {{companyName}} Default Department you can explicitly specify the
                       department to which the ticket belongs by sending an email to the address genetated after the
-                      deparment selction:
+                      department selection:
                     </p>
                   </div>
                 </div>

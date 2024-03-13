@@ -943,9 +943,10 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
       //if(kb.status == -1){
       //   this.onRunIndexing(kb);
       //} else 
-      if(kb.status == -1 || kb.status == 0 || kb.status == 2) {
-        this.checkStatusWithRetry(kb);
-      }
+      this.updateStatusOfKb(kb._id, 3);
+      // if(kb.status == -1 || kb.status == 0 || kb.status == 2) {
+      //   this.checkStatusWithRetry(kb);
+      // }
     });
   }
 

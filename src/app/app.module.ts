@@ -396,6 +396,8 @@ import { KnowledgeBasesPreviousComponent } from './knowledge-bases-previous/know
 import { ModalUrlsKnowledgeBaseComponent } from './knowledge-bases/modals/modal-urls-knowledge-base/modal-urls-knowledge-base.component';
 import { AddContentMenuComponent } from './knowledge-bases/menu/add-content-menu/add-content-menu.component';
 import { UserModalComponent } from './users/user-modal/user-modal.component';
+import { MessagesStatsModalComponent } from './components/modals/messages-stats-modal/messages-stats-modal.component';
+
 
 
 
@@ -702,7 +704,8 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     KnowledgeBasesPreviousComponent,
     ModalUrlsKnowledgeBaseComponent,
     AddContentMenuComponent,
-    UserModalComponent
+    UserModalComponent,
+    MessagesStatsModalComponent
   ],
   imports: [
     TooltipModule.forRoot(CutomTooltipOptions as TooltipOptions),

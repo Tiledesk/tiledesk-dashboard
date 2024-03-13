@@ -3,9 +3,26 @@
 
   <div id="sidebaravatar-img-wpr" class="avatar-container tiledesk-nav-avatar" (click)="openUserDetailSidePanel()"
     [ngClass]="{'small-sidebar-avatar' : SIDEBAR_IS_SMALL === true }">
-    <img id="sidebaravatar-img" class="avatar"
+
+    <!-- <img id="sidebaravatar-img" class="avatar"
       *ngIf="userProfileImageExist === true || userImageHasBeenUploaded === true" [src]="getUserProfileImage()"
-      onerror="this.src='assets/img/no_image_user.png'" />
+      onerror="this.src='assets/img/no_image_user.png'" /> -->
+
+      <!-- --------------------------------------------------- -->
+      <!-- USECASE uploadEngine Firebase -->
+      <!-- --------------------------------------------------- -->
+      <img id="sidebaravatar-img" *ngIf="(userProfileImageExist === true || userImageHasBeenUploaded === true) && UPLOAD_ENGINE_IS_FIREBASE"
+        class="avatar"
+        src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{currentUserId}}%2Fphoto.jpg?alt=media&{{timeStamp}}"
+        onerror="this.src='assets/img/no_image_user.png'" />
+
+      <!-- --------------------------------------------------- -->
+      <!-- USECASE uploadEngine Native -->
+      <!-- --------------------------------------------------- -->
+      <img id="sidebaravatar-img" *ngIf="(userProfileImageExist === true || userImageHasBeenUploaded === true) && !UPLOAD_ENGINE_IS_FIREBASE"
+        class="avatar"
+        src="{{baseUrl}}images?path=uploads%2Fusers%2F{{currentUserId}}%2Fimages%2Fthumbnails_200_200-photo.jpg&{{timeStamp}}"
+        onerror="this.src='assets/img/no_image_user.png'" />
 
     <div id="sidebaravatar-no-img" class="avatar"
       *ngIf="userProfileImageExist !== true && userImageHasBeenUploaded !== true"
@@ -77,7 +94,7 @@
         matTooltipPosition='right' 
         matTooltipHideDelay="100" 
         style="height:50px !important">
-        <a #homebtn class="customAncor" routerLink="project/{{ project._id }}/home">
+        <a #homebtn id="home-btn" class="customAncor" routerLink="project/{{ project._id }}/home">
           <i class="material-icons sidebar-icons"
             [ngStyle]="{'color':HOME_ROUTE_IS_ACTIVE === true ? '#fff' : '#647491' }">
             home
@@ -86,18 +103,39 @@
       </li>
 
       <!-- ---------------------------------- -->
-      <!-- Bot  "project/{{ project._id }}//bots/templates/all" -->
+      <!-- Bot -->
       <!-- ---------------------------------- -->
+
+            <!--  -->
+     <!-- <div style="color: #fff"> ALL_BOTS {{MY_BOTS_ALL_ROUTE_IS_ACTIVE}} </div> 
+     <div style="color: #fff"> IS_BOTS {{MY_BOTS_IS_ROUTE_IS_ACTIVE}} </div> 
+     <div style="color: #fff"> CS_BOTS {{MY_BOTS_CS_ROUTE_IS_ACTIVE}} </div>
+     <div style="color: #fff"> TMPLT_ALL {{ TMPLT_ALL_ROUTE_IS_ACTIVE}} </div> 
+     <div style="color: #fff"> CMNT_TMPLT {{TMPLT_CMNT_ROUTE_IS_ACTIVE}} </div>
+     <div style="color: #fff"> IS_TMPLT {{TMPLT_IS_ROUTE_IS_ACTIVE}} </div>
+     <div style="color: #fff"> CS_TMPLT {{TMPLT_CS_ROUTE_IS_ACTIVE}} </div> -->
+     <!-- routerLinkActive="active" -->
+     <!-- routerLink="project/{{ project._id }}/bots/my-chatbots/all" -->
       <ng-container *ngIf="USER_ROLE !== 'agent'">
-        <li id="bot-anchor-wpr" *ngIf="project" routerLinkActive="active" 
+        <li id="bot-anchor-wpr" *ngIf="project"  
           matTooltipClass="sb-mat-tooltip"
           matTooltip="Bots" 
           #tooltip="matTooltip" 
           matTooltipPosition='right'
           matTooltipHideDelay="100"
-          style="height: 50px !important;"
-          [ngClass]="{'active': CHATBOT_ROUTE_IS_ACTIVE || EDIT_FAQ_ROUTE_IS_ACTIVE, 'menu_item_active': CREATE_FAQ_ROUTE_IS_ACTIVE || BOT_TEST_ROUTE_IS_ACTIVE}">
-          <a id="bot-anchor" #botbtn class="customAncor" routerLink="project/{{ project._id }}/bots/my-chatbots/all"
+          style="height: 50px !important; cursor: pointer;"
+          [ngClass]="{
+            'active': 
+            MY_BOTS_ALL_ROUTE_IS_ACTIVE || 
+            MY_BOTS_IS_ROUTE_IS_ACTIVE || 
+            MY_BOTS_CS_ROUTE_IS_ACTIVE, 
+            'menu_item_active': 
+            TMPLT_ALL_ROUTE_IS_ACTIVE || 
+            TMPLT_CMNT_ROUTE_IS_ACTIVE ||
+            TMPLT_IS_ROUTE_IS_ACTIVE ||
+            TMPLT_CS_ROUTE_IS_ACTIVE ||
+            KB_ROUTE_IS_ACTIVE} ">
+          <a id="bot-anchor" #botbtn class="customAncor" (click)="goToAllMyChatbot()"  
             style="height: 40px;">
             <span class="bot-icon-wpr">
               <svg version="1.1" id="Objects" xmlns="http://www.w3.org/2000/svg"
@@ -286,7 +324,7 @@
       INSTALLATION_ROUTE_IS_ACTIVE ||
       EMAIL_TICKETING_ROUTE_IS_ACTIVE ||
       AUTOMATIONS_ROUTE_IS_ACTIVE ||
-      KB_ROUTE_IS_ACTIVE ||
+      OLD_KB_ROUTE_IS_ACTIVE ||
       INTEGRATIONS_ROUTE_IS_ACTIVE}" (click)="goToWidgetSetUpOrToCannedResponses()"
         style="cursor:pointer; height: 50px !important;" 
         matTooltipClass="sb-mat-tooltip"

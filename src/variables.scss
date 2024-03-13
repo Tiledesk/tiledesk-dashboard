@@ -9,12 +9,13 @@
  // https://www.rgbtohex.net/rgb/91-114-167  intessant link for the new color 5b72a7
  // https://color.adobe.com/color-palette-free-download-color-theme-14037012/ intessant linkfor the new color  5b72a7
  body {
-      --brand-color: #f0806f;
+     --brand-color: #f0806f;
      --conv-details-header-background: #ffffff;
      --conversation-detail-background: #f8fafc;
      --card-background-color: rgb(255, 255, 255);
      --card--elevation: rgb(0 27 71 / 8%) 0px 3px 8px;
      --card-elevation: 0 0 #0000, 0 0 #0000, 0 1px 3px #0000001a, 0 1px 2px -1px #0000001a;
+     --card-light-elevation: 0 4px 20px -6px #444d9673;
      --card-deep-elevation: 0 7px 8px -4px rgba(0, 0, 0, 0.2), 0 12px 17px 2px rgba(0, 0, 0, 0.14), 0 5px 22px 4px rgba(0, 0, 0, 0.12);
      --icon-color: #8796af;
      --light-periwinkle: #5b72a7;
@@ -24,9 +25,67 @@
      --opal-violet: #7c8eb9;
      --indigo: #6883d0;
      --indigo-deep: #5b5dbc;
+     --light-gray: #eee;
      --icon-hover-color: rgb(5, 102, 255);
      --text-color: #1e293b;
      --secondary-text-color: #64748b;
+     --title--header-font-size: 24px;
+     --title--header-font-weight: 600;
+     --title--header-text-transform: uppercase;
+     --order-by-label-font-weight: 400;
+     --order-by-label-font-size: 14px;
+     --order-by-selectet-value-font-weight: 500;
+     --order-by-selectet-value-font-size: 14px;
+     --cl-card-border-radius: 6px;
+     --cl-card-img-wpr-border-radius: 4px;
+     --cl-card-img-wpr-border: 1px solid var(--light-gray);
+     --cl-card-item-name-font-size: 16px;
+     --cl-card-item-name-font-weight: 600;
+     --cl-card-item-description-wpr-font-size: 14px;
+     --cl-card-item-description-wpr-font-weight: 400;
+     --cl-card-item-info-font-size: 12px;
+     --cl-card-item-info-opacity: 0.8;
+     --cl-card-item-info-font-weight: 400;
+     --cl-card-item-stats-title-font-size: 12px;
+     --cl-card-item-stats-title-text-transform: uppercase;
+     --cl-card-item-stats-title-font-weight: 400;
+     --cl-card-item-stats-values-font-size: 14px;
+     --cl-card-item-stats-values-text-transform:capitalize;
+     --cl-card-item-stats-values-font-weight: 400;
+     --mat-icon-button-hover-background-color: #f0f0f0;
+     --mat-icon-font-size:18px;
+
+     --settings-sidebar-border-radius: 4px;
+     --settings-sidebar-font-weight: 400;
+     --settings-sidebar-font-size: 12px;
+     --settings-sidebar-color: #647491;
+     --settings-sidebar-hover-background-color:rgba(100, 116, 145, 0.08);
+     --settings-sidebar-hover-color: #080f1a;
+     --settings-sidebar-active-color: #080f1a;
+     --settings-sidebar-active-background-color: rgb(220, 233, 255);
+     --settings-sidebar-active-font-weight: 500;
+     --settings-sidebar-icon-font-size: 18px;
+     --settings-sidebar-toggle-icon-background: #fff;
+     --settings-sidebar-border-color: #e5effe;
+     --settings-sidebar-toggle-icon-border: 1px solid var(--settings-sidebar-border-color);
+     --settings-sidebar-toggle-icon-hover-background-color:#f5f8fa;
+     --settings-sidebar-beta-badge-font-weight: 400;
+     --settings-sidebar-beta-badge-background-color:#6c757d;
+     --settings-sidebar-beta-badge-border-radius: 10px;
+     --settings-sidebar-beta-badge-font-size: 9px;
+     --settings-sidebar-beta-badge-color: #fff;
+     --settings-sidebar-mat-tooltip-background-color: #fff;
+     --settings-sidebar-mat-tooltip-color: #555555;
+     --settings-sidebar-mat-tooltip-font-size: 12px;
+     --settings-sidebar-mat-tooltip-border-radius: 2px;
+     --settings-sidebar-mat-tooltip-border: 1px solid var(--settings-sidebar-border-color);
+
+     --settings-sidebar-group-name-font-size: 11px;
+     --settings-sidebar-group-name-letter-spacing: -0.01em;
+     --settings-sidebar-group-name-font-weight: 500;
+     --settings-sidebar-group-name-text-transform: uppercase;
+  
+
      --list-item-input-row-hover-background: rgb(245, 247, 249);
      --texarea-background: #ffffff;
      --select-background: #ffffff;

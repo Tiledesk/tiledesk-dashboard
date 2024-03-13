@@ -60,7 +60,7 @@
                       {{ formErrors.email }}
                     </div> -->
 
-                <button type="submit" class="btn request-new-psw" [disabled]="!emailForm.valid">
+                <button type="submit" class="btn request-new-psw" [disabled]="!emailForm.valid" [ngStyle]="{'background-color': primaryBrandColor ? primaryBrandColor : '#f0806f' }">
                   <span *ngIf="!showSpinnerInRequestNewPswBtn">
                     {{ "RequestNewPsw" | translate }}
                   </span>
@@ -194,7 +194,8 @@
                     </div>
                   </div>
 
-                  <button type="submit" style="" class="btn btn-forgotpsw_nomatch" [disabled]="!pswForm.valid">
+                  <button type="submit" class="btn btn-forgotpsw_nomatch" [disabled]="!pswForm.valid"
+                    [ngStyle]="{'background-color': primaryBrandColor ? primaryBrandColor : '#f0806f' }">
                     <span *ngIf="!showSpinnerInResetPswBtn">
                       <!-- RESET PASSWORD  -->
                       {{ "ResetPsw" | translate }}
@@ -221,7 +222,8 @@
                   {{ "YourPswHasBeenChanged" | translate }}
                 </h4>
                 <!-- (click)="goToLoginForm()" -->
-                <button type="submit" class="btn btn-forgotpsw" routerLink="/login">
+                <button type="submit" class="btn btn-forgotpsw" routerLink="/login"
+                 [ngStyle]="{'background-color': primaryBrandColor ? primaryBrandColor : '#f0806f' }">
                   <!-- GO TO LOGIN -->
                   {{ "GoToLogin" | translate }}
                   <span *ngIf="showSpinnerInResetPswBtn"> <i class="fa fa-spinner fa-spin"></i></span>
