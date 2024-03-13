@@ -153,6 +153,8 @@
     "UserEmail": "Электронная почта пользователя",
     "ExportToCSV": "Экспорт в CSV",
     "Actions": "Действия",
+    "CopyInviteURL": "Copy invite URL",
+    "MoreFilterInAnalytics": "More filter in Analytics",
     "owner": "Владелец",
     "admin": "Администратор",
     "agent": "Агент",
