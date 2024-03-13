@@ -153,6 +153,8 @@
     "UserEmail": "Användarens e-post",
     "ExportToCSV": "Exportera till CSV",
     "Actions": "Handlingar",
+    "CopyInviteURL": "Copy invite URL",
+    "MoreFilterInAnalytics": "More filter in Analytics",
     "owner": "Ägare",
     "admin": "Administratör",
     "agent": "Ombud",
