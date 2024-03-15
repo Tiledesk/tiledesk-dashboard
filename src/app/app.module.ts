@@ -42,6 +42,8 @@ import { FaqService } from './services/faq.service';
 import { UrlService } from './services/shared/url.service';
 
 import { ProjectsComponent } from './projects/projects.component';
+// import { ProjectsForPanelComponent } from './projects/for-panel/projects-for-panel/projects-for-panel.component'; // removed
+
 import { UsersComponent } from './users/users.component';
 
 
@@ -178,7 +180,7 @@ import { TagsEditComponent } from './tags/tags-edit/tags-edit.component';
 import { TriggerStaticComponent } from './static-pages/trigger-static/trigger-static.component';
 import { AccountSettingsComponent } from './user-profile/account-settings/account-settings.component';
 
-import { ProjectsForPanelComponent } from './projects/for-panel/projects-for-panel/projects-for-panel.component';
+
 
 
 import { WsRequestsUnservedForPanelComponent } from './ws_requests/for-panel/ws-requests-unserved-for-panel/ws-requests-unserved-for-panel.component';
@@ -559,7 +561,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     TagsEditComponent,
     TriggerStaticComponent,
     AccountSettingsComponent,
-    ProjectsForPanelComponent,
+    // ProjectsForPanelComponent, // removed
     WsRequestsUnservedForPanelComponent,
     WsRequestDetailForPanelComponent,
     AutologinComponent,

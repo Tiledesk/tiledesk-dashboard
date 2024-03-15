@@ -29,6 +29,8 @@ import { DepartmentsComponent } from './departments/departments.component';
 import { DepartmentEditAddComponent } from './department-edit-add/department-edit-add.component';
 
 import { ProjectsComponent } from './projects/projects.component';
+// import { ProjectsForPanelComponent } from './projects/for-panel/projects-for-panel/projects-for-panel.component'; // removed
+
 import { UsersComponent } from './users/users.component';
 
 // BOTS & FAQ
@@ -110,7 +112,7 @@ import { ConfigureWidgetComponent } from './create-project-wizard/configure-widg
 import { LoadingPageComponent } from './loading-page/loading-page.component';
 import { CannedResponsesListComponent } from './canned-responses/canned-responses-list.component';
 import { TagsComponent } from './tags/tags.component';
-import { ProjectsForPanelComponent } from './projects/for-panel/projects-for-panel/projects-for-panel.component';
+
 
 import { WsRequestsUnservedForPanelComponent } from './ws_requests/for-panel/ws-requests-unserved-for-panel/ws-requests-unserved-for-panel.component';
 import { AppStoreComponent } from './app-store/app-store.component';
@@ -158,6 +160,11 @@ import { IntegrationsComponent } from './integrations/integrations.component';
 
 const routes: Routes = [
 
+  // PROJECTS 
+  { path: '', redirectTo: 'projects', pathMatch: 'full' },
+  { path: 'projects', component: ProjectsComponent, canActivate: [AuthGuard] },
+
+
   // Lazy loading
   { path: 'project/:projectid/contacts', component: ContactsComponent, canActivate: [AuthGuard, ProjectProfileGuard] },
   // {
@@ -178,7 +185,7 @@ const routes: Routes = [
   // { path: 'success', component: PaymentSuccessPageComponent, canActivate: [AuthGuard] }, // now Lazy
   // { path: 'project/:projectid/canceled', component: PaymentCanceledPageComponent, canActivate: [AuthGuard] }, // now Lazy
 
-  
+
   // Pricing Lazy loading
   { path: 'project/:projectid/pricing', loadChildren: () => import('app/pricing/pricing.module').then(m => m.PricingModule), canActivate: [AuthGuard] },
   { path: 'project/:projectid/chat-pricing', loadChildren: () => import('app/pricing/pricing.module').then(m => m.PricingModule), canActivate: [AuthGuard] },
@@ -189,12 +196,10 @@ const routes: Routes = [
 
   { path: 'project/:projectid/template-details/:templateid', component: CommunityTemplateDtlsComponent },
 
-  // PROJECTS IS THE NEW HOME
-  { path: 'projects', component: ProjectsComponent, canActivate: [AuthGuard] },
-  { path: '', redirectTo: 'projects', pathMatch: 'full' },
 
-  // are used in the left panel of the chat
-  { path: 'projects-for-panel', component: ProjectsForPanelComponent, canActivate: [AuthGuard] },
+
+ 
+  // { path: 'projects-for-panel', component: ProjectsForPanelComponent, canActivate: [AuthGuard] }, // removed - was used in the left panel of the chat
   { path: 'get-chatbot/:botid', component: GetStartChatbotForkComponent, canActivate: [AuthGuard] },
   { path: 'activate-product/:activation_email/:licenseproductkeyuuid/:plan_id/:invoice_item_uuid', component: ActivateAppsumoProductComponent, canActivate: [AuthGuard] },
   { path: 'install-template/:botid/:projectid', component: InstallTemplateComponent, canActivate: [AuthGuard] },
