@@ -62,7 +62,7 @@ export class PaymentsListComponent implements OnInit {
 
   getProjectPlan() {
     this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-      this.logger.log('[PRICING - PAYMENT-LIST] getProjectPlan project Profile Data', projectProfileData)
+      console.log('[PRICING - PAYMENT-LIST] getProjectPlan project Profile Data', projectProfileData)
 
       if (projectProfileData && projectProfileData.subscription_id) {
         this.getSubscriptionPayments(projectProfileData.subscription_id)
@@ -85,12 +85,12 @@ export class PaymentsListComponent implements OnInit {
 
   getSubscriptionPayments(subscription_id) {
     this.prjctService.getSubscriptionPayments(subscription_id).subscribe((subscriptionPayments: any) => {
-      this.logger.log('[PRICING - PAYMENT-LIST] get subscriptionPayments ', subscriptionPayments);
+      console.log('[PRICING - PAYMENT-LIST] get subscriptionPayments ', subscriptionPayments);
 
       if (subscriptionPayments) {
         this.subscription_payments = [];
         subscriptionPayments.forEach(subscriptionPayment => {
-          this.logger.log('[PRICING - PAYMENT-LIST] get subscriptionPayment ', subscriptionPayment);
+          console.log('[PRICING - PAYMENT-LIST] get subscriptionPayment ', subscriptionPayment);
           this.logger.log('[PRICING - PAYMENT-LIST] get subscriptionPayment.stripe_event ', subscriptionPayment.stripe_event);
 
 

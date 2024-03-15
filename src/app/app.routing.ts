@@ -97,10 +97,10 @@ import { SmtpSettingsComponent } from './project-edit-add/smtp-settings/smtp-set
 // import { UserProfileComponent } from './ui/user-profile/user-profile.component';
 
 /* PRIVATE */
-import { PricingComponent } from './pricing/pricing.component';
+// import { PricingComponent } from './pricing/pricing.component'; // lazy
 import { PaymentSuccessPageComponent } from './pricing/payment-success-page/payment-success-page.component';
 import { PaymentCanceledPageComponent } from './pricing/payment-canceled-page/payment-canceled-page.component';
-import { PaymentsListComponent } from './pricing/payments-list/payments-list.component';
+// import { PaymentsListComponent } from './pricing/payments-list/payments-list.component'; // lazy
 import { CreateProjectComponent } from './create-project-wizard/create-project/create-project.component';
 import { OnboardingContentComponent } from './create-new-project/onboarding-content/onboarding-content.component';
 
@@ -155,6 +155,7 @@ import { IntegrationsComponent } from './integrations/integrations.component';
 
 
 
+
 const routes: Routes = [
 
   // Lazy loading
@@ -172,13 +173,18 @@ const routes: Routes = [
   /* PRIVATE */
   // { path: 'project/:projectid/pricing', component: PricingComponent, canActivate: [AuthGuard] },  // now Lazy
   // { path: 'project/:projectid/chat-pricing', component: PricingComponent, canActivate: [AuthGuard] },  // now Lazy 
-  { path: 'project/:projectid/success', component: PaymentSuccessPageComponent, canActivate: [AuthGuard] }, // now Lazy 
+    // { path: 'project/:projectid/payments', component: PaymentsListComponent, canActivate: [AuthGuard] }, now Lazy
+  { path: 'project/:projectid/success', component: PaymentSuccessPageComponent, canActivate: [AuthGuard] }, 
   { path: 'success', component: PaymentSuccessPageComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/canceled', component: PaymentCanceledPageComponent, canActivate: [AuthGuard] },
+
+
 
   // Pricing Lazy loading
   { path: 'project/:projectid/pricing', loadChildren: () => import('app/pricing/pricing.module').then(m => m.PricingModule), canActivate: [AuthGuard] },
   { path: 'project/:projectid/chat-pricing', loadChildren: () => import('app/pricing/pricing.module').then(m => m.PricingModule), canActivate: [AuthGuard] },
+  { path: 'project/:projectid/payments', loadChildren: () => import('app/pricing/payments-list/payments-list.module').then(m => m.PaymentsListModule), canActivate: [AuthGuard] },
+
   // { path: 'project/:projectid/success', loadChildren: () => import('app/pricing/pricing.module').then(m => m.PricingModule), canActivate: [AuthGuard] },
 
   
@@ -493,7 +499,7 @@ const routes: Routes = [
   { path: 'project/:projectid/contact/:requesterid', component: ContactDetailsComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/contact/edit/:requesterid', component: ContactEditComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/contact/_edit/:requesterid', component: ContactEditComponent, canActivate: [AuthGuard] }, // called from the dropodown of the chat to change contact email , name amd lastname on fly (use to not display the goBack)
-  { path: 'project/:projectid/payments', component: PaymentsListComponent, canActivate: [AuthGuard] },
+  
 
   { path: 'project/:projectid/app-store', component: AppStoreComponent, canActivate: [AuthGuard] },
   //{ path: 'project/:projectid/app-store-install/:url/:apptitle', component: AppStoreInstallComponent, canActivate: [AuthGuard] },
