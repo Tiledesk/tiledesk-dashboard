@@ -41,7 +41,7 @@ import { DepartmentsComponent } from './departments/departments.component';
 import { FaqService } from './services/faq.service';
 import { UrlService } from './services/shared/url.service';
 
-import { ProjectsComponent } from './projects/projects.component';
+// import { ProjectsComponent } from './projects/projects.component'; // now lazy
 // import { ProjectsForPanelComponent } from './projects/for-panel/projects-for-panel/projects-for-panel.component'; // removed
 
 import { UsersComponent } from './users/users.component';
@@ -487,7 +487,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     ChatComponent,
     DepartmentsComponent,
     FaqComponent,
-    ProjectsComponent,
+    // ProjectsComponent, // now lazy
     UsersComponent,
     BotListComponent,
     BotCreateComponent,

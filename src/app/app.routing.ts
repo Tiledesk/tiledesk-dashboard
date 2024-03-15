@@ -28,7 +28,7 @@ import { WsRequestsMsgsComponent } from './ws_requests/ws-requests-msgs/ws-reque
 import { DepartmentsComponent } from './departments/departments.component';
 import { DepartmentEditAddComponent } from './department-edit-add/department-edit-add.component';
 
-import { ProjectsComponent } from './projects/projects.component';
+// import { ProjectsComponent } from './projects/projects.component'; // now lazy
 // import { ProjectsForPanelComponent } from './projects/for-panel/projects-for-panel/projects-for-panel.component'; // removed
 
 import { UsersComponent } from './users/users.component';
@@ -162,9 +162,9 @@ const routes: Routes = [
 
   // PROJECTS 
   { path: '', redirectTo: 'projects', pathMatch: 'full' },
-  { path: 'projects', component: ProjectsComponent, canActivate: [AuthGuard] },
-
-
+  { path: 'projects', loadChildren: () => import('app/projects/projects.module').then(m => m.ProjectsModule), canActivate: [AuthGuard] },
+  // { path: 'projects', component: ProjectsComponent, canActivate: [AuthGuard] }, // now Lazy
+  
   // Lazy loading
   { path: 'project/:projectid/contacts', component: ContactsComponent, canActivate: [AuthGuard, ProjectProfileGuard] },
   // {
@@ -193,6 +193,8 @@ const routes: Routes = [
   { path: 'project/::projectid/success', loadChildren: () => import('app/pricing/payment-success-page/payment-success.module').then(m => m.PaymentSuccessModule), canActivate: [AuthGuard] },
   { path: 'success', loadChildren: () => import('app/pricing/payment-success-page/payment-success.module').then(m => m.PaymentSuccessModule), canActivate: [AuthGuard] },
   { path: 'project/:projectid/canceled', loadChildren: () => import('app/pricing/payment-canceled-page/payment-canceled.module').then(m => m.PaymentCanceledModule), canActivate: [AuthGuard] },
+
+
 
   { path: 'project/:projectid/template-details/:templateid', component: CommunityTemplateDtlsComponent },
 
