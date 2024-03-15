@@ -97,10 +97,11 @@ import { SmtpSettingsComponent } from './project-edit-add/smtp-settings/smtp-set
 // import { UserProfileComponent } from './ui/user-profile/user-profile.component';
 
 /* PRIVATE */
-import { PricingComponent } from './pricing/pricing.component';
-import { PaymentSuccessPageComponent } from './pricing/payment-success-page/payment-success-page.component';
-import { PaymentCanceledPageComponent } from './pricing/payment-canceled-page/payment-canceled-page.component';
-import { PaymentsListComponent } from './pricing/payments-list/payments-list.component';
+// import { PricingComponent } from './pricing/pricing.component'; //  now Lazy
+// import { PaymentsListComponent } from './pricing/payments-list/payments-list.component'; // now Lazy
+// import { PaymentSuccessPageComponent } from './pricing/payment-success-page/payment-success-page.component'; // now Lazy
+// import { PaymentCanceledPageComponent } from './pricing/payment-canceled-page/payment-canceled-page.component'; // now Lazy
+
 import { CreateProjectComponent } from './create-project-wizard/create-project/create-project.component';
 import { OnboardingContentComponent } from './create-new-project/onboarding-content/onboarding-content.component';
 
@@ -166,16 +167,25 @@ const routes: Routes = [
   // },
 
   { path: 'project/:projectid/contacts-demo', component: ContactsStaticComponent, canActivate: [AuthGuard] },
-  
-  
+
+
 
   /* PRIVATE */
-  { path: 'project/:projectid/pricing', component: PricingComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/chat-pricing', component: PricingComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/success', component: PaymentSuccessPageComponent, canActivate: [AuthGuard] },
-  { path: 'success', component: PaymentSuccessPageComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/canceled', component: PaymentCanceledPageComponent, canActivate: [AuthGuard] },
+  // { path: 'project/:projectid/pricing', component: PricingComponent, canActivate: [AuthGuard] }, // now Lazy
+  // { path: 'project/:projectid/chat-pricing', component: PricingComponent, canActivate: [AuthGuard] }, // now Lazy
+  // { path: 'project/:projectid/payments', component: PaymentsListComponent, canActivate: [AuthGuard] }, // now Lazy
+  // { path: 'project/:projectid/success', component: PaymentSuccessPageComponent, canActivate: [AuthGuard] }, // now Lazy
+  // { path: 'success', component: PaymentSuccessPageComponent, canActivate: [AuthGuard] }, // now Lazy
+  // { path: 'project/:projectid/canceled', component: PaymentCanceledPageComponent, canActivate: [AuthGuard] }, // now Lazy
 
+  
+  // Pricing Lazy loading
+  { path: 'project/:projectid/pricing', loadChildren: () => import('app/pricing/pricing.module').then(m => m.PricingModule), canActivate: [AuthGuard] },
+  { path: 'project/:projectid/chat-pricing', loadChildren: () => import('app/pricing/pricing.module').then(m => m.PricingModule), canActivate: [AuthGuard] },
+  { path: 'project/:projectid/payments', loadChildren: () => import('app/pricing/payments-list/payments-list.module').then(m => m.PaymentsListModule), canActivate: [AuthGuard] },
+  { path: 'project/::projectid/success', loadChildren: () => import('app/pricing/payment-success-page/payment-success.module').then(m => m.PaymentSuccessModule), canActivate: [AuthGuard] },
+  { path: 'success', loadChildren: () => import('app/pricing/payment-success-page/payment-success.module').then(m => m.PaymentSuccessModule), canActivate: [AuthGuard] },
+  { path: 'project/:projectid/canceled', loadChildren: () => import('app/pricing/payment-canceled-page/payment-canceled.module').then(m => m.PaymentCanceledModule), canActivate: [AuthGuard] },
 
   { path: 'project/:projectid/template-details/:templateid', component: CommunityTemplateDtlsComponent },
 
@@ -190,7 +200,7 @@ const routes: Routes = [
   { path: 'install-template/:botid/:projectid', component: InstallTemplateComponent, canActivate: [AuthGuard] },
   { path: 'install-template-np/:botid/:projectid/:langcode/:langname', component: InstallTemplateComponent, canActivate: [AuthGuard] },
   { path: 'create-project-itw/:botid', component: CreateProjectComponent, canActivate: [AuthGuard] }, // wizard 
-  { path: 'create-project-gs', component: CreateProjectGsComponent, canActivate: [AuthGuard] }, 
+  { path: 'create-project-gs', component: CreateProjectGsComponent, canActivate: [AuthGuard] },
 
   // **** NEW - WIZARD CREATE PROJECT ****
   // { path: 'project/create-project', component: CreateProjectComponent, canActivate: [AuthGuard] },
@@ -200,24 +210,24 @@ const routes: Routes = [
 
   // USED AFTER THE SIGNUP
   { path: 'create-project', component: CreateProjectComponent, canActivate: [AuthGuard] }, // wizard 
-  
+
 
   // USED WHEN THE USER CLICK ON 'ADD NEW PROJECT' FROM THE NAVBAR
   //{ path: 'create-new-project', component: CreateProjectComponent, canActivate: [AuthGuard] }, // wizard 
-  
+
   { path: 'onboarding', component: OnboardingWelcomeComponent, canActivate: [AuthGuard] }, // wizard
   { path: 'create-new-project', component: OnboardingContentComponent, canActivate: [AuthGuard] }, // wizard 
   { path: 'project/:projectid/onboarding-widget', component: OnboardingWidgetComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/desktop-access/:botid', component: CnpIsMobileComponent, canActivate: [AuthGuard] }, // wizard 
   { path: 'project/:projectid/onboarding-templates', component: CnpTemplatesComponent, canActivate: [AuthGuard] }, // wizard 
-  
+
 
   { path: 'project/:projectid/configure-widget', component: ConfigureWidgetComponent, canActivate: [AuthGuard] }, // wizard step 2
   { path: 'project/:projectid/onboarding/:langcode/:langname', component: OnboardingComponent, canActivate: [AuthGuard] }, // wizard step 3
   { path: 'project/:projectid/install-widget/:langcode/:langname', component: InstallWidgetComponent, canActivate: [AuthGuard] },
 
-  { path: 'project/:projectid/cannedresponses', component: CannedResponsesListComponent, canActivate: [AuthGuard , ProjectProfileGuard] },
-  { path: 'project/:projectid/cannedresponses-demo', component: CannedResponsesStaticComponent, canActivate: [AuthGuard]},
+  { path: 'project/:projectid/cannedresponses', component: CannedResponsesListComponent, canActivate: [AuthGuard, ProjectProfileGuard] },
+  { path: 'project/:projectid/cannedresponses-demo', component: CannedResponsesStaticComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/labels', component: TagsComponent, canActivate: [AuthGuard] },
 
   { path: 'project/create', component: ProjectEditAddComponent, canActivate: [AuthGuard] },
@@ -352,7 +362,7 @@ const routes: Routes = [
   { path: 'project/:projectid/cds/:faqkbid', component: CdsDashboardComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/cds/:faqkbid/intent/:intent_id', component: CdsDashboardComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/cds/:faqkbid/intent/:intent_id/:calledby', component: CdsDashboardComponent, canActivate: [AuthGuard] },
-  
+
   { path: 'project/:projectid/tilebot/intents/:faqkbid/:type', component: TilebotComponent, canActivate: [AuthGuard] },
 
   // old
@@ -395,7 +405,7 @@ const routes: Routes = [
 
   // new routing page is the edit department
   { path: 'project/:projectid/routing/:deptid', component: DepartmentEditAddComponent, canActivate: [AuthGuard] }, // new
- 
+
 
 
 
@@ -463,19 +473,19 @@ const routes: Routes = [
   { path: 'project/:projectid/hours-demo', component: HoursStaticComponent, canActivate: [AuthGuard] },
 
   // AUTOMATIONS
-  { path: 'project/:projectid/automations', component: AutomationsComponent, canActivate: [AuthGuard, ProjectProfileGuard]},
-  { path: 'project/:projectid/automations-demo', component: AutomationStaticComponent, canActivate: [AuthGuard]},
- 
+  { path: 'project/:projectid/automations', component: AutomationsComponent, canActivate: [AuthGuard, ProjectProfileGuard] },
+  { path: 'project/:projectid/automations-demo', component: AutomationStaticComponent, canActivate: [AuthGuard] },
+
 
   // KNOWLEDGE BASES
-  { path: 'project/:projectid/knowledge-bases', component: KnowledgeBasesComponent, canActivate: [AuthGuard]},
-  { path: 'project/:projectid/knowledge-bases/:calledby', component: KnowledgeBasesComponent, canActivate: [AuthGuard]}, // when called from home
+  { path: 'project/:projectid/knowledge-bases', component: KnowledgeBasesComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/knowledge-bases/:calledby', component: KnowledgeBasesComponent, canActivate: [AuthGuard] }, // when called from home
 
 
   // KNOWLEDGE BASES OLD
-  { path: 'project/:projectid/knowledge-bases-pre', component: KnowledgeBasesPreviousComponent, canActivate: [AuthGuard]},
-  { path: 'project/:projectid/knowledge-bases-pre/:calledby', component: KnowledgeBasesPreviousComponent, canActivate: [AuthGuard]},
-  
+  { path: 'project/:projectid/knowledge-bases-pre', component: KnowledgeBasesPreviousComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/knowledge-bases-pre/:calledby', component: KnowledgeBasesPreviousComponent, canActivate: [AuthGuard] },
+
   // RESET PASSORD (i.e. page forgot psw & reset psw )
   { path: 'forgotpsw', component: ResetPswComponent },
   { path: 'resetpassword/:resetpswrequestid', component: ResetPswComponent },
@@ -488,7 +498,7 @@ const routes: Routes = [
   { path: 'project/:projectid/contact/:requesterid', component: ContactDetailsComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/contact/edit/:requesterid', component: ContactEditComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/contact/_edit/:requesterid', component: ContactEditComponent, canActivate: [AuthGuard] }, // called from the dropodown of the chat to change contact email , name amd lastname on fly (use to not display the goBack)
-  { path: 'project/:projectid/payments', component: PaymentsListComponent, canActivate: [AuthGuard] },
+
 
   { path: 'project/:projectid/app-store', component: AppStoreComponent, canActivate: [AuthGuard] },
   //{ path: 'project/:projectid/app-store-install/:url/:apptitle', component: AppStoreInstallComponent, canActivate: [AuthGuard] },

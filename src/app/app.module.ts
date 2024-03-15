@@ -134,7 +134,7 @@ import { TriggerEditComponent } from './trigger/trigger-edit/trigger-edit.compon
 
 
 /* PRIVATE */
-import { PricingModule } from './pricing/pricing.module';
+// import { PricingModule } from './pricing/pricing.module'; // lazy loading
 
 import { StaticPageBaseComponent } from './static-pages/static-page-base/static-page-base.component';
 
@@ -736,7 +736,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     MatPaginatorModule,
     MatSortModule,
     /* PRIVATE */
-    PricingModule,
+    // PricingModule,
     ChatbotDesignStudioModule,
     /* PRIVATE */
     BrowserModule,
