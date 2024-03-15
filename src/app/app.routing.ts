@@ -170,13 +170,18 @@ const routes: Routes = [
   
 
   /* PRIVATE */
-  { path: 'project/:projectid/pricing', component: PricingComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/chat-pricing', component: PricingComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/success', component: PaymentSuccessPageComponent, canActivate: [AuthGuard] },
+  // { path: 'project/:projectid/pricing', component: PricingComponent, canActivate: [AuthGuard] },  // now Lazy
+  // { path: 'project/:projectid/chat-pricing', component: PricingComponent, canActivate: [AuthGuard] },  // now Lazy 
+  { path: 'project/:projectid/success', component: PaymentSuccessPageComponent, canActivate: [AuthGuard] }, // now Lazy 
   { path: 'success', component: PaymentSuccessPageComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/canceled', component: PaymentCanceledPageComponent, canActivate: [AuthGuard] },
 
+  // Pricing Lazy loading
+  { path: 'project/:projectid/pricing', loadChildren: () => import('app/pricing/pricing.module').then(m => m.PricingModule), canActivate: [AuthGuard] },
+  { path: 'project/:projectid/chat-pricing', loadChildren: () => import('app/pricing/pricing.module').then(m => m.PricingModule), canActivate: [AuthGuard] },
+  // { path: 'project/:projectid/success', loadChildren: () => import('app/pricing/pricing.module').then(m => m.PricingModule), canActivate: [AuthGuard] },
 
+  
   { path: 'project/:projectid/template-details/:templateid', component: CommunityTemplateDtlsComponent },
 
   // PROJECTS IS THE NEW HOME
