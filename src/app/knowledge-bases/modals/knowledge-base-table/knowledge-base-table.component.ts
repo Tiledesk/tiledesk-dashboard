@@ -1,9 +1,10 @@
-import { Component, Input, OnInit, ViewChild, Output, EventEmitter, SimpleChanges } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
-import { MatSort, Sort } from '@angular/material/sort';
-import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
+import { Component, Input, OnInit, ViewChild, Output, EventEmitter, SimpleChanges, ElementRef, HostListener } from '@angular/core';
+// import { MatTableDataSource } from '@angular/material/table';
+// import { MatSort, Sort } from '@angular/material/sort';
+// import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { KB, KbSettings } from 'app/models/kbsettings-model';
-import { LiveAnnouncer } from '@angular/cdk/a11y';
+import {LiveAnnouncer} from '@angular/cdk/a11y';
+import { KB_DEFAULT_PARAMS } from 'app/utils/util';
 
 
 @Component({
@@ -15,127 +16,147 @@ import { LiveAnnouncer } from '@angular/cdk/a11y';
 
 export class KnowledgeBaseTableComponent implements OnInit {
   @Input() refresh: boolean;
-  @Input() kbs: any;
-  //@Input() kbsList: KB[];
-  //@Input() pagConfig: any;
+  @Input() kbsList: KB[];
+  @Input() kbsListCount: number;
   @Output() openBaseModalDetail = new EventEmitter();
   @Output() openBaseModalDelete = new EventEmitter();
   @Output() openBaseModalPreview = new EventEmitter();
+  @Output() openAddKnowledgeBaseModal = new EventEmitter();
+  @Output() checkStatus = new EventEmitter();
   @Output() runIndexing = new EventEmitter();
-  @Output() reloadKbs = new EventEmitter();
+  @Output() loadPage = new EventEmitter();
+  @Output() loadByFilter = new EventEmitter();
+  
 
-  kbsList: KB[] = [];
-  kbsListfilterTypeFilter: KB[] = [];
-  dataSource: MatTableDataSource<KB>;
-  displayedColumns: string[] = ['type', 'status', 'createdAt', 'name', 'actions'];
+  timeoutId: any;
+  // kbsListfilterTypeFilter: KB[] = [];
   filterType: string;
-  // filterText: string;
-  pagConfig: any;
-  pageSize: number = 10;
-  pageIndex: number = 0;
+  filterText: string;
+  @ViewChild('tableBody') tableBody: ElementRef;
 
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  directionDesc: number = KB_DEFAULT_PARAMS.DIRECTION;
+  isLoading: boolean = false;
+  SHOW_MORE_BTN: boolean = true;
+  SHOW_TABLE: boolean = false;
+  searchParams: any;
+  numberPage: number = 0;
+  // kbsListCount: number = 0;
 
   constructor(
-    private _liveAnnouncer: LiveAnnouncer,
-    public pag: MatPaginatorIntl
+    private _liveAnnouncer: LiveAnnouncer
   ) { }
 
   ngOnInit(): void {
     this.filterType = '';
-    // this.filterText = '';
-    this.pag.firstPageLabel = 'first page:';
-    this.pag.itemsPerPageLabel = 'items per page';
-    this.pag.lastPageLabel = 'last page';
-    this.pag.nextPageLabel = 'next page';
-    this.pag.previousPageLabel = 'previous page';
-
-    this.pagConfig = {
-      length: 0,
-      pageSize: this.pageSize,
-      pageIndex: 0,
-      status: '',
-      search: '',
-      direction: -1,
-      sortField: 'updatedAt'
+    this.filterText = '';
+    this.searchParams = {
+      "page":0,
+      "sortField": KB_DEFAULT_PARAMS.SORT_FIELD,
+      "direction": KB_DEFAULT_PARAMS.DIRECTION,
+      "status": '',
+      "search": '',
     }
-
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (this.kbs) {
-      this.kbsList = this.kbs.kbs;
-      this.pagConfig = {
-        length: this.kbs.count,
-        pageSize: this.pageSize,
-        pageIndex: 0,
-        status: '',
-        search: '',
-        direction: -1,
-        sortField: 'updatedAt'
-      }
+  // @HostListener('window:scroll', ['$event'])
+  // onScroll(event) {
+  //   if (this.isScrolledToBottom() && !this.isLoading && this.SHOW_MORE_BTN) {
+  //     //this.loadData();
+  //   }
+  // }
+
+
+  // onTableScroll(e) {
+  //   console.log('onTableScroll', e);
+  //   const tableViewHeight = e.target.offsetHeight // viewport
+  //   const tableScrollHeight = e.target.scrollHeight // length of all table
+  //   const scrollLocation = e.target.scrollTop; // how far user scrolled
+  // }
+
+
+
+  loadMoreData() {
+    this.isLoading = true;
+    this.numberPage++;
+    this.searchParams.page =  this.numberPage;//Math.floor(this.kbsList.length/KB_DEFAULT_PARAMS.LIMIT);
+    
+    this.loadPage.emit(this.searchParams);
+  }
+
+  // isScrolledToBottom(): boolean {
+  //   const tableBodyElement = this.tableBody.nativeElement;
+  //   return tableBodyElement.scrollTop + tableBodyElement.clientHeight >= tableBodyElement.scrollHeight;
+  // }
+
+  ngOnChanges(changes: SimpleChanges){
+    // console.log('ngOnChanges start ------> ', this.kbsListCount, this.kbsList.length, changes);
+    if(this.kbsList.length>0){
+      this.SHOW_TABLE = true;
+    }
+    if(changes.kbsList?.currentValue?.length === changes.kbsList?.previousValue?.length){
+      // non è cambiato nulla ho solo rodinato la tab
+    } else {
+      // if(changes.kbsListCount && changes.kbsListCount.currentValue){
+      //   this.kbsListCount = changes.kbsListCount.currentValue;
+      // } else if(changes.kbsList && changes.kbsList.currentValue){
+      //   this.kbsListCount = changes.kbsList.currentValue.length;
+      // }
     }
 
-    this.dataSource = new MatTableDataSource(this.kbsList);
-    if (this.kbsList) {
-      this.dataSource = new MatTableDataSource(this.kbsList);
-      // this.dataSource.sort = this.sort;
-      // this.dataSource.paginator = this.paginator;
+    // if(this.kbsListCount==0){
+    //   this.SHOW_MORE_BTN = false;
+    // }
+    if(this.kbsListCount > this.kbsList.length){
+      this.SHOW_MORE_BTN = true;
+    } else {
+      this.SHOW_MORE_BTN = false;
     }
-    if (this.pagConfig && this.kbs) {
-      this.pagConfig.length = this.kbs.count;
+    if(changes.refresh){
+      this.isLoading = false;
     }
-    // Math.ceil(this.kbs.count/this.pagConfig.pageSize);
+    if(this.kbsList?.length == 0){
+      this.SHOW_MORE_BTN = false;
+    }
+
+    // console.log('ngOnChanges end -------> ', this.kbsListCount, this.kbsList.length);
   }
 
   ngAfterViewInit() {
     //console.log('ngAfterViewInit!!!-->', this.kbsList);
-    this.kbsList = [];
-    if (this.kbs && this.kbs.kbs) {
-      this.kbsList = this.kbs.kbs;
-    }
-    this.dataSource = new MatTableDataSource(this.kbsList);
-
-    this.dataSource.sort = this.sort;
-    this.sort.active = "updatedAt";
-    this.sort.direction = "desc"
+    // this.dataSource = new MatTableDataSource(this.kbsList);
+    // this.dataSource.sort = this.sort;
+    // this.sort.active = "updatedAt";
+    // this.sort.direction = "desc"
+    // this.dataSource.sortData(this.dataSource.data, this.sort);
     // this.dataSource.paginator = this.paginator;
-    this.dataSource.sortData(this.dataSource.data, this.sort);
-    this.dataSource.paginator = this.paginator;
     // this.paginator.length = this.dataSource.data.length;
     // this.paginator.pageSize = 20;
   }
 
-
-  applyFilter(filterValue: string, column: string) {
-    //let params = "?limit="+this.pageSize+"&page="+this.pageIndex;
-    if (column == 'type') {
-      // this.filterType = filterValue;
-      this.pagConfig.status = filterValue;
-    } else if (column == 'name') {
-      // this.filterText= filterValue;
-      this.pagConfig.search = filterValue;
+  onOrderBy(type){
+    this.searchParams.sortField = type;
+    this.directionDesc = this.directionDesc*-1;
+    this.searchParams.direction = this.directionDesc;
+    this.isLoading = true;
+    this.loadByFilter.next(this.searchParams);
+  }
+  
+  onLoadByFilter(filterValue: string, column: string) {
+    // let status = '';
+    // let search = '';
+    if( column == 'type'){
+      this.searchParams.status = filterValue;
+    } else if(column == 'name'){
+      this.searchParams.search = filterValue;
     }
-    this.onReloadKbs();
-    //console.log('onOptionSelected:: ', filterValue, column, this.filterType, this.filterText);
-    // this.dataSource.filterPredicate = (data: KB, filter: string) => {
-    //   if(this.filterType && this.filterText){
-    //     return data.name.toLowerCase().includes(this.filterText) && data.status.toString() === this.filterType;
-    //   } 
-    //   if(this.filterText && this.filterText != ""){
-    //     return data.name.toLowerCase().includes(this.filterText);
-    //   } 
-    //   if(this.filterType && this.filterType != ""){
-    //     return data.status.toString() === this.filterType;
-    //   } 
-    //   return true;
-
-    // }
-    // this.dataSource.filter = filterValue;
-    // if (this.dataSource.paginator) {
-    //   this.dataSource.paginator.firstPage();
-    // }
+    console.log("this.searchParams ", this.searchParams);
+    if (this.timeoutId) {
+      clearTimeout(this.timeoutId);
+    }
+    this.timeoutId = setTimeout(() => {
+      this.isLoading = true;
+      this.loadByFilter.next(this.searchParams);
+    }, 1000);
   }
 
 
@@ -148,17 +169,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
   //   }
   // }
 
-  onShortBy(type) {
-    if (type == 'createdAt') {
-      this.pagConfig.sortField = type;
-    } else if (type == 'name') {
-      this.pagConfig.sortField = type;
-    }
-    this.pagConfig.direction = this.pagConfig.direction * -1;
-    this.onReloadKbs();
-  }
-
-  onRunIndexing(kb) {
+  onRunIndexing(kb){
     // console.log('onRunIndexing:: ', kb);
     this.runIndexing.emit(kb);
   }
@@ -191,38 +202,16 @@ export class KnowledgeBaseTableComponent implements OnInit {
     return subtitle;
   }
 
-
-
-  handlePageChange(event: any) {
-    // console.log('Page change event:', event);
-    this.pagConfig.pageSize = event.pageSize;
-    this.pagConfig.pageIndex = event.pageIndex,
-      this.onReloadKbs();
+  onOpenAddKnowledgeBaseModal(type){
+    // console.log('onOpenAddKnowledgeBaseModal', type);
+    this.openAddKnowledgeBaseModal.emit(type);
   }
 
-  onReloadKbs() {
-    let params = "?limit=" + this.pagConfig.pageSize + "&page=" + this.pagConfig.pageIndex + "&direction=" + this.pagConfig.direction + "&sortField=" + this.pagConfig.sortField + "&status=" + this.pagConfig.status + "&search=" + this.pagConfig.search;
-    this.reloadKbs.emit(params);
+  onCheckStatus(kb){
+    // console.log('onCheckStatus:: ', kb);
+    this.checkStatus.emit(kb);
   }
-  // handlePageSizeChange(event: any) {
-  //   console.log('Page size change event:', event);n
-  // }
 
-  // handlePageSizeOptionsChange(event: any) {
-  //   console.log('Page size options change event:', event);
-  // }
-
-  // handleLengthChange(event: any) {
-  //   console.log('Length change event:', event);
-  // }
-
-  // handlePageIndexChange(event: any) {
-  //   console.log('Page index change event:', event);
-  // }
-
-  // handlePageEvent(event: any) {
-  //   console.log('Generic page event:', event);
-  // }
 }
 
 

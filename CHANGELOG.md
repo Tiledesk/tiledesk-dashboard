@@ -1,22 +1,21 @@
 # tiledesk-dashboard
 
-### 2.5.20
-- Deploys in production
-- Refactors the teammates table
+### 2.6.0-rc6
+- Improves Knowledge Base
 
-### 2.5.19
-- Deploys in production
-- Fixes the bug: not all chatbot images are displayed
-- Fixes the bug: published chatbots is not appearing as a draft
+### 2.6.0-rc4
+- Improves Knowledge Base
 
-### 2.5.18
-- Deploys in production
-- Fixes the bug: in the settings sidebar 'setAttribute' on 'Element' is not a valid attribute name
-- User profile image is called in loop
+### 2.6.0-rc3
+- Improves Knowledge Base
 
-### 2.5.17
-- Deploys in production
-- Fixes the bug: multiple status call in kb page
+### 2.6.0-rc2
+- Improves Knowledge Base (added sitemap)
+
+### 2.6.0-rc1
+- Improves Knowledge Base 
+- Adds the customer.io integration
+- Refactors the bot list page
 
 ### 2.5.16
 - Deploys in production

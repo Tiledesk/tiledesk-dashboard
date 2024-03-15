@@ -27,7 +27,7 @@ export class QaplaIntegrationComponent implements OnInit {
     this.logger.debug("[INT-Qapla] integration ", this.integration)
     this.translateparams = { intname: "Qapla'" };
     if (this.integration.value.apikey) {
-      this.checkKey(this.integration.value.apikey);
+      this.checkKey();
     }
   }
 
@@ -42,7 +42,7 @@ export class QaplaIntegrationComponent implements OnInit {
   }
 
   saveIntegration() {
-    this.checkKey(this.integration.value.apikey).then((status) => {
+    this.checkKey().then((status) => {
       let data = {
         integration: this.integration,
         isVerified: status
@@ -56,9 +56,10 @@ export class QaplaIntegrationComponent implements OnInit {
     this.onDeleteIntegration.emit(this.integration);
   }
 
-  checkKey(key: string) {
-    return new Promise((resolve, reject) => {
-      this.integrationService.checkKeyQapla(key).subscribe((resp: any) => {
+  checkKey() {
+    return new Promise((resolve) => {
+      let url = "https://api.qapla.it/1.2/getCouriers/?apiKey=" + this.integration.value.apikey;
+      this.integrationService.checkIntegrationKeyValidity(url).subscribe((resp: any) => {
         if (resp.getCouriers.result === 'OK') {
           this.isVerified = true;
           resolve(true);
@@ -68,8 +69,13 @@ export class QaplaIntegrationComponent implements OnInit {
         }
       }, (error) => {
         this.logger.error("[INT-Qapla] Key verification failed: ", error);
-        this.isVerified = false;
-        resolve(false);
+        // check for CORS policies errors
+        if (error.status == 0) {
+          resolve(false);  
+        } else {
+          this.isVerified = false;
+          resolve(false);
+        }
       })
     })
   }

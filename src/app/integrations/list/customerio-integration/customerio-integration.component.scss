@@ -10,7 +10,16 @@ p {
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  height: 50px;
+  
+  .signup {
+    display: flex;
 
+    p {
+      margin: 0 0 0 5px;
+    }
+  }
+  
   .status {
     display: flex;
     align-items: center;

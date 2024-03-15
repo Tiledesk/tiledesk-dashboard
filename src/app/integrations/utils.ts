@@ -55,7 +55,7 @@ export const CATEGORIES_LIST = [
 
 export const INTEGRATIONS_LIST: { [key: string]: { name: string, category: INTEGRATIONS_CATEGORIES, key: INTEGRATIONS_KEYS, src_icon: string, src_logo: string, pro?: boolean, plan: 'Sandbox' | 'Basic' | 'Premium' | 'Custom' } } = {
     //BREVO:              { name: "Brevo",            category: INTEGRATIONS_CATEGORIES.CRM,              key: INTEGRATIONS_KEYS.BREVO,           src_icon: "assets/img/int/brevo.png",                   src_logo: "assets/img/int/brevo-logo.png",              pro: true,  plan: 'Premium' },
-    //CUSTOMERIO:         { name: "Customer.io",      category: INTEGRATIONS_CATEGORIES.CRM,              key: INTEGRATIONS_KEYS.CUSTOMERIO,      src_icon: "assets/img/int/customer-io-logo-color.svg",  src_logo: "assets/img/int/customerio-logo.svg",         pro: true,  plan: 'Premium' },
+    CUSTOMERIO:         { name: "Customer.io",      category: INTEGRATIONS_CATEGORIES.CRM,              key: INTEGRATIONS_KEYS.CUSTOMERIO,      src_icon: "assets/img/int/customer-io-logo-color.svg",  src_logo: "assets/img/int/customerio-logo.svg",         pro: true,  plan: 'Premium' },
     HUBSPOT:            { name: "HubSpot",          category: INTEGRATIONS_CATEGORIES.CRM,              key: INTEGRATIONS_KEYS.HUBSPOT,         src_icon: "assets/img/int/hubspot.png",                 src_logo: "assets/img/int/hubspot-logo.svg",            pro: true,  plan: 'Premium' },
     OPENAI:             { name: "OpenAI",           category: INTEGRATIONS_CATEGORIES.AI,               key: INTEGRATIONS_KEYS.OPENAI,          src_icon: "assets/cds/images/actions/openai-icon.svg",  src_logo: "assets/img/int/openai-logo.svg",             pro: true,  plan: 'Custom' },
     QAPLA:              { name: "Qapla'",           category: INTEGRATIONS_CATEGORIES.ECOMMERCE,        key: INTEGRATIONS_KEYS.QAPLA,           src_icon: "assets/cds/images/actions/qapla.jpg",        src_logo: "assets/img/int/qapla-logo.png",              pro: true,  plan: 'Premium' },
@@ -76,7 +76,7 @@ export const INTEGRATIONS_LIST: { [key: string]: { name: string, category: INTEG
 
 export const INTEGRATION_LIST_ARRAY = [
     //{ name: "Brevo",            category: INTEGRATIONS_CATEGORIES.CRM,              key: INTEGRATIONS_KEYS.BREVO,           src_icon: "assets/img/int/brevo-icon.png",              src_logo: "assets/img/int/brevo-logo.png",              pro: true,  plan: 'Premium' },
-    //{ name: "Customer.io",      category: INTEGRATIONS_CATEGORIES.CRM,              key: INTEGRATIONS_KEYS.CUSTOMERIO,      src_icon: "assets/img/int/customerio-icon.png",         src_logo: "assets/img/int/customerio-logo.svg",         pro: true,  plan: 'Premium' },
+    { name: "Customer.io",      category: INTEGRATIONS_CATEGORIES.CRM,              key: INTEGRATIONS_KEYS.CUSTOMERIO,      src_icon: "assets/img/int/customerio-icon.png",         src_logo: "assets/img/int/customerio-logo.svg",         pro: true,  plan: 'Premium' },
     { name: "HubSpot",          category: INTEGRATIONS_CATEGORIES.CRM,              key: INTEGRATIONS_KEYS.HUBSPOT,         src_icon: "assets/img/int/hubspot-icon.png",            src_logo: "assets/img/int/hubspot-logo.svg",            pro: true,  plan: 'Premium' },
     { name: "OpenAI",           category: INTEGRATIONS_CATEGORIES.AI,               key: INTEGRATIONS_KEYS.OPENAI,          src_icon: "assets/img/int/openai-icon.svg",             src_logo: "assets/img/int/openai-logo.svg",             pro: true,  plan: 'Custom' },
     { name: "Qapla'",           category: INTEGRATIONS_CATEGORIES.ECOMMERCE,        key: INTEGRATIONS_KEYS.QAPLA,           src_icon: "assets/img/int/qapla-icon.jpg",              src_logo: "assets/img/int/qapla-logo.png",              pro: true,  plan: 'Premium' },
@@ -145,8 +145,9 @@ export class CustomerioIntegration extends Integration {
         super();
         this.name = INTEGRATIONS_KEYS.CUSTOMERIO;
         this.value = {
-            apikey: null,
-            siteid: null
+            siteid: null,
+            key: null,
+            apikey: null //base64 format of siteid:key
         }
     }
 }

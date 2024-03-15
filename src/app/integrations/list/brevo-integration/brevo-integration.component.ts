@@ -41,13 +41,13 @@ export class BrevoIntegrationComponent implements OnInit {
   }
 
   saveIntegration() {
-    this.checkKey(this.integration.value.apikey).then((status) => {
-      let data = {
-        integration: this.integration,
-        isVerified: status
-      }
-      this.onUpdateIntegration.emit(data);
-    })
+    // this.checkKey(this.integration.value.apikey).then((status) => {
+    //   let data = {
+    //     integration: this.integration,
+    //     isVerified: status
+    //   }
+    //   this.onUpdateIntegration.emit(data);
+    // })
   }
 
   deleteIntegration() {
@@ -56,21 +56,6 @@ export class BrevoIntegrationComponent implements OnInit {
   }
 
   checkKey(key: string) {
-    return new Promise((resolve, reject) => {
-      this.integrationService.checkKeyQapla(key).subscribe((resp: any) => {
-        if (resp.getCouriers.result === 'OK') {
-          this.isVerified = true;
-          resolve(true);
-        } else {
-          this.isVerified = false;
-          resolve(false);
-        }
-      }, (error) => {
-        this.logger.error("[INT-Qapla] Key verification failed: ", error);
-        this.isVerified = false;
-        resolve(false);
-      })
-    })
   }
 
   resetValues() {

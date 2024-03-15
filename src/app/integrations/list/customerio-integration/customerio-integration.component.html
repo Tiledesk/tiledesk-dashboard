@@ -1,7 +1,11 @@
 <div class="header">
-    <p>Start for free with <b>Customer.io.</b><a href="https://fly.customer.io/signup" target="_blank"> Sign up now!</a></p>
+    <!-- <p>Start for free with <b>Customer.io.</b><a href="https://fly.customer.io/signup" target="_blank"> Sign up now!</a></p> -->
 
-    <!-- <div *ngIf="isVerified === true" class="status">
+    <div class="signup">
+        <p [innerHTML]="'Integration.StartForFree' | translate: translateparams"></p><a href="https://fly.customer.io/signup" target="_blank" style="margin-left: 4px;"> {{ 'Integration.SignupNow' | translate }}</a>
+    </div>
+
+    <div *ngIf="isVerified === true" class="status">
         <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130.2 130.2">
             <circle class="path circle" fill="none" stroke="#73AF55" stroke-width="6" stroke-miterlimit="10" cx="65.1"
                 cy="65.1" r="62.1" />
@@ -21,7 +25,7 @@
                 stroke-miterlimit="10" x1="95.8" y1="38" x2="34.4" y2="92.2" />
         </svg>
         <p class="error">Failed!</p>
-    </div> -->
+    </div>
 </div>
 
 <div class="content">
@@ -36,7 +40,7 @@
         <label>Api Key</label>
         <div class="password-input">
             <input id="api-key-input" type="password" placeholder="Your api key"
-                [(ngModel)]="integration.value.apikey">
+                [(ngModel)]="integration.value.key">
             <div class="show-hide-button">
                 <span *ngIf="keyVisibile === false" class="material-icons-outlined"
                     (click)="showHideKey()">visibility</span>
