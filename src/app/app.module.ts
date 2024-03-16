@@ -29,7 +29,21 @@ import { CoreModule } from './core/core.module';
 // Shared/Widget
 import { SharedModule } from './shared/shared.module';
 
-import { HomeComponent } from './home/home.component';
+// import { HomeComponent } from './home/home.component'; //now lazy
+// new home comp
+// import { HomeConvsGraphComponent } from './home-components/home-convs-graph/home-convs-graph.component'; //now lazy
+// import { HomeWhatsappAccountComponent } from './home-components/home-whatsapp-account/home-whatsapp-account.component'; // now lazy
+// import { HomeCreateChatbotComponent } from './home-components/home-create-chatbot/home-create-chatbot.component'; // now lazy
+// import { HomeNewsFeedComponent } from './home-components/home-news-feed/home-news-feed.component'; // now lazy
+// import { HomeAnalyticsIndicatorComponent } from './home-components/home-analytics-indicator/home-analytics-indicator.component'; // now lazy
+// import { HomeWhatsappAccountWizardComponent } from './home-components/home-whatsapp-account-wizard/home-whatsapp-account-wizard.component'; // now lazy
+// import { HomeWhatsappAccountWizardModalComponent } from './home-components/home-whatsapp-account-wizard/home-whatsapp-account-wizard-modal/home-whatsapp-account-wizard-modal.component'; // now lazy
+// import { HomeCustomizeWidgetComponent } from './home-components/home-customize-widget/home-customize-widget.component'; // now lazy
+// import { HomeCreateTeammateComponent } from './home-components/home-create-teammate/home-create-teammate.component'; // now lazy
+// import { HomeKbComponent } from './home-components/home-kb/home-kb.component'; // now lazy
+// ./new home comp 
+
+
 import { ChatComponent } from './chat/chat.component';
 
 import { UsersService } from './services/users.service';
@@ -69,8 +83,8 @@ import { ProjectEditAddComponent } from './project-edit-add/project-edit-add.com
 import { ProjectService } from './services/project.service';
 // import { RequestsListHistoryComponent } from './requests-list-history/requests-list-history.component';
 
-import { SigninComponent } from './auth/signin/signin.component';
-import { SignupComponent } from './auth/signup/signup.component';
+// import { SigninComponent } from './auth/signin/signin.component'; // now lazy
+// import { SignupComponent } from './auth/signup/signup.component'; // now lazy
 import { UnauthorizedComponent } from './auth/unauthorized/unauthorized.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
@@ -338,18 +352,7 @@ import { ActivateAppsumoProductComponent } from './create-project-wizard/activat
 import { ContactCustomPropertiesComponent } from './components/modals/contact-custom-properties/contact-custom-properties.component';
 import { ContactInfoComponent } from './components/shared/contact-info/contact-info.component';
 import { CreateProjectGsComponent } from './create-project-wizard/create-project-gs/create-project-gs.component';
-// new home comp
-import { HomeConvsGraphComponent } from './home-components/home-convs-graph/home-convs-graph.component';
-import { HomeWhatsappAccountComponent } from './home-components/home-whatsapp-account/home-whatsapp-account.component';
-import { HomeCreateChatbotComponent } from './home-components/home-create-chatbot/home-create-chatbot.component';
-import { HomeNewsFeedComponent } from './home-components/home-news-feed/home-news-feed.component';
-import { HomeAnalyticsIndicatorComponent } from './home-components/home-analytics-indicator/home-analytics-indicator.component';
-import { HomeWhatsappAccountWizardComponent } from './home-components/home-whatsapp-account-wizard/home-whatsapp-account-wizard.component';
-import { HomeWhatsappAccountWizardModalComponent } from './home-components/home-whatsapp-account-wizard/home-whatsapp-account-wizard-modal/home-whatsapp-account-wizard-modal.component';
-import { HomeCustomizeWidgetComponent } from './home-components/home-customize-widget/home-customize-widget.component';
-import { HomeCreateTeammateComponent } from './home-components/home-create-teammate/home-create-teammate.component';
-import { HomeKbComponent } from './home-components/home-kb/home-kb.component';
-// ./new home comp
+
 
 
 import { OpenaiService } from './services/openai.service';
@@ -482,7 +485,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     OnlynumberDirective,
     AppComponent,
     UserProfileComponent,
-    HomeComponent,
+    // HomeComponent, // now lazy
     ContactsComponent,
     ChatComponent,
     DepartmentsComponent,
@@ -495,8 +498,8 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     DepartmentEditAddComponent,
     ProjectEditAddComponent,
     // RequestsListHistoryComponent,
-    SigninComponent,
-    SignupComponent,
+    // SigninComponent, // now lazy
+    // SignupComponent, // now lazy
     UnauthorizedComponent,
     FaqTestComponent,
     UserEditAddComponent,
@@ -659,17 +662,17 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     ContactInfoComponent,
     CreateProjectGsComponent,
     KnowledgeBasesComponent,
-    HomeConvsGraphComponent,
-    HomeWhatsappAccountComponent,
-    HomeCreateChatbotComponent,
-    HomeNewsFeedComponent,
-    HomeAnalyticsIndicatorComponent,
-    HomeWhatsappAccountWizardComponent,
-    HomeWhatsappAccountWizardModalComponent,
-    HomeCustomizeWidgetComponent,
-    HomeCreateTeammateComponent,
+    // HomeConvsGraphComponent, // now lazy
+    // HomeWhatsappAccountComponent, // now lazy
+    // HomeCreateChatbotComponent, // now lazy
+    // HomeNewsFeedComponent, // now lazy
+    // HomeAnalyticsIndicatorComponent, // now lazy
+    // HomeWhatsappAccountWizardComponent, // now lazy
+    // HomeWhatsappAccountWizardModalComponent, // now lazy
+    // HomeCustomizeWidgetComponent, // now lazy
+    // HomeCreateTeammateComponent, // now lazy
+    // HomeKbComponent, // now lazy
     CnpIsMobileComponent,
-    HomeKbComponent,
     HomeKbModalComponent,
     HomeCreateChatbotModalComponent,
     HomeInviteTeammateModalComponent,

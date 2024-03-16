@@ -1,28 +1,27 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ProjectsComponent } from './projects.component';
+import { SignupComponent } from './signup.component';
 import { RouterModule ,Routes} from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { SharedModule } from 'app/shared/shared.module';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 const routes: Routes = [
-  { path: "", component: ProjectsComponent},
+  { path: "", component: SignupComponent},
 ];
 
 @NgModule({
   declarations: [
-    ProjectsComponent
+    SignupComponent
   ],
   imports: [
     RouterModule.forChild(routes),
     CommonModule,
     TranslateModule,
-    SharedModule,
-    MatTooltipModule
+    FormsModule,
+    ReactiveFormsModule
   ],
   exports: [
     RouterModule
   ]
 })
-export class ProjectsModule { }
+export class SignupModule { }

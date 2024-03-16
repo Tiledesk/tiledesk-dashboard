@@ -1,5 +1,5 @@
 import { Component, OnInit, HostListener, isDevMode } from '@angular/core';
-import { ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AppConfigService } from '../../services/app-config.service';
 import { AuthService } from '../../core/auth.service';
 import { Router } from '@angular/router';

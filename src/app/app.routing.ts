@@ -13,7 +13,7 @@ import { ProjectProfileGuard } from './core/project-profile.guard';
 import { PendingChangesGuard } from './core/pending-changes.guard';
 import { CoreModule } from './core/core.module';
 
-import { HomeComponent } from './home/home.component';
+// import { HomeComponent } from './home/home.component'; // now lazy
 
 // NK
 
@@ -50,8 +50,8 @@ import { HistoryAndNortConvsComponent } from './ws_requests/history-and-nort-con
 // --------------------------------------------------------------------------------------------
 // AUTH PAGES
 // --------------------------------------------------------------------------------------------
-import { SigninComponent } from './auth/signin/signin.component';
-import { SignupComponent } from './auth/signup/signup.component';
+// import { SigninComponent } from './auth/signin/signin.component'; // now lazy
+// import { SignupComponent } from './auth/signup/signup.component'; // now lazy
 import { UnauthorizedComponent } from './auth/unauthorized/unauthorized.component';
 import { UnauthorizedForPricingComponent } from './auth/unauthorized-for-pricing/unauthorized-for-pricing.component';
 import { UnauthorizedForProjectComponent } from './auth/unauthorized-for-project/unauthorized-for-project.component';
@@ -162,9 +162,47 @@ const routes: Routes = [
 
   // PROJECTS 
   { path: '', redirectTo: 'projects', pathMatch: 'full' },
-  { path: 'projects', loadChildren: () => import('app/projects/projects.module').then(m => m.ProjectsModule), canActivate: [AuthGuard] },
+  {
+    path: 'projects',
+    loadChildren: () => import('app/projects/projects.module').then(m => m.ProjectsModule),
+    canActivate: [AuthGuard]
+  },
   // { path: 'projects', component: ProjectsComponent, canActivate: [AuthGuard] }, // now Lazy
-  
+
+ 
+  {
+    path: 'project/:projectid/home',
+    loadChildren: () => import('app/home/home.module').then(m => m.HomeModule),
+    canActivate: [AuthGuard]
+  },
+  // { path: 'project/:projectid/home', component: HomeComponent, canActivate: [AuthGuard] }, // now Lazy
+
+  {
+    path: 'login',
+    loadChildren: () => import('app/auth/signin/signin.module').then(m => m.SigninModule)
+  },
+  // { path: 'login', component: SigninComponent }, // now lazy
+
+  {
+    path: 'signup',
+    loadChildren: () => import('app/auth/signup/signup.module').then(m => m.SignupModule)
+  },
+  // { path: 'signup', component: SignupComponent },// now lazy
+
+  {
+    path: 'signup-on-invitation/:pendinginvitationemail',
+    loadChildren: () => import('app/auth/signup/signup.module').then(m => m.SignupModule)
+  },
+  // { path: 'signup-on-invitation/:pendinginvitationemail', component: SignupComponent }, // now lazy
+ 
+ 
+  { path: 'verify/email/:user_id', component: VerifyEmailComponent },
+
+  // -------------------------------------------------
+  // Autologin 
+  // -------------------------------------------------
+  { path: 'autologin/:route/:token', component: AutologinComponent },
+
   // Lazy loading
   { path: 'project/:projectid/contacts', component: ContactsComponent, canActivate: [AuthGuard, ProjectProfileGuard] },
   // {
@@ -200,7 +238,7 @@ const routes: Routes = [
 
 
 
- 
+
   // { path: 'projects-for-panel', component: ProjectsForPanelComponent, canActivate: [AuthGuard] }, // removed - was used in the left panel of the chat
   { path: 'get-chatbot/:botid', component: GetStartChatbotForkComponent, canActivate: [AuthGuard] },
   { path: 'activate-product/:activation_email/:licenseproductkeyuuid/:plan_id/:invoice_item_uuid', component: ActivateAppsumoProductComponent, canActivate: [AuthGuard] },
@@ -252,17 +290,7 @@ const routes: Routes = [
 
 
   // { path: 'home', component: HomeComponent, canActivate: [AuthGuard]}, // , canDeactivate: [AuthGuard]
-  { path: 'project/:projectid/home', component: HomeComponent, canActivate: [AuthGuard] },
 
-  { path: 'login', component: SigninComponent },
-  { path: 'signup', component: SignupComponent },
-  { path: 'signup-on-invitation/:pendinginvitationemail', component: SignupComponent },
-  { path: 'verify/email/:user_id', component: VerifyEmailComponent },
-
-  // -------------------------------------------------
-  // Autologin 
-  // -------------------------------------------------
-  { path: 'autologin/:route/:token', component: AutologinComponent },
 
 
 
