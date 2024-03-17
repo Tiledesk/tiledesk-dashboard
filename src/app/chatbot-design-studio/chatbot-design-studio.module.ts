@@ -5,7 +5,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { A11yModule } from '@angular/cdk/a11y';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
@@ -124,6 +124,9 @@ import { GalleryResponseComponent } from './cds-dashboard/panel-intent-detail/ac
 import { RedirectResponseComponent } from './cds-dashboard/panel-intent-detail/actions/action-reply/reply-types/redirect-response/redirect-response.component';
 
 
+const routes: Routes = [
+  { path: "", component: CdsDashboardComponent},
+];
 
 @NgModule({
   declarations: [
@@ -138,7 +141,6 @@ import { RedirectResponseComponent } from './cds-dashboard/panel-intent-detail/a
     GalleryResponseComponent,
     ImageUploadComponent,
     RedirectResponseComponent,
-
     PanelIntentListComponent,
     PanelIntentComponent,
     PanelActionsComponent,
@@ -210,6 +212,7 @@ import { RedirectResponseComponent } from './cds-dashboard/panel-intent-detail/a
     ActionWhatsappSegmentComponent
   ],
   imports: [
+    RouterModule.forChild(routes),
     A11yModule,
     CommonModule,
     DragDropModule,
@@ -240,20 +243,24 @@ import { RedirectResponseComponent } from './cds-dashboard/panel-intent-detail/a
     FormsModule,
     ReactiveFormsModule,
     SatPopoverModule,
-    TranslateModule.forRoot({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: HttpLoaderFactory,
-        deps: [HttpClient],
-      },
-    })
+    // TranslateModule.forRoot({
+    //   loader: {
+    //     provide: TranslateLoader,
+    //     useFactory: HttpLoaderFactory,
+    //     deps: [HttpClient],
+    //   },
+    // })
   ],
-  providers: [
-    WsChatbotService
+  exports: [
+    RouterModule
   ]
+  // ,
+  // providers: [
+  //   WsChatbotService
+  // ]
 })
 export class ChatbotDesignStudioModule { }
 
-export function HttpLoaderFactory(http: HttpClient) {
-  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
-}
+// export function HttpLoaderFactory(http: HttpClient) {
+//   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+// }

@@ -138,7 +138,8 @@ import { ContactsComponent } from './contacts/contacts.component';
 // Lazy loading
 // import { ContactsComponent } from './contacts/contacts.component';
 // import { ContactsModule } from './contacts/contacts.module';
-import { CdsDashboardComponent } from './chatbot-design-studio/cds-dashboard/cds-dashboard.component';
+
+// import { CdsDashboardComponent } from './chatbot-design-studio/cds-dashboard/cds-dashboard.component'; // now lazy
 import { CreateChatbotComponent } from './bots/create-chatbot/create-chatbot.component';
 import { CommunityTemplateDtlsComponent } from './bots/templates/community-template-dtls/community-template-dtls.component';
 import { CannedResponsesStaticComponent } from './static-pages/canned-responses-static/canned-responses-static.component';
@@ -160,7 +161,36 @@ import { IntegrationsComponent } from './integrations/integrations.component';
 
 const routes: Routes = [
 
-  // PROJECTS 
+
+
+  // Login
+  {
+    path: 'login',
+    loadChildren: () => import('app/auth/signin/signin.module').then(m => m.SigninModule)
+  },
+  // { path: 'login', component: SigninComponent }, // now lazy
+
+  // Signup
+  {
+    path: 'signup',
+    loadChildren: () => import('app/auth/signup/signup.module').then(m => m.SignupModule)
+  },
+  // { path: 'signup', component: SignupComponent },// now lazy
+
+  // Signup on invitations
+  {
+    path: 'signup-on-invitation/:pendinginvitationemail',
+    loadChildren: () => import('app/auth/signup/signup.module').then(m => m.SignupModule)
+  },
+  // { path: 'signup-on-invitation/:pendinginvitationemail', component: SignupComponent }, // now lazy
+
+  // Autologin 
+  { path: 'autologin/:route/:token', component: AutologinComponent },
+
+
+  { path: 'verify/email/:user_id', component: VerifyEmailComponent },
+
+  // Projects
   { path: '', redirectTo: 'projects', pathMatch: 'full' },
   {
     path: 'projects',
@@ -169,7 +199,7 @@ const routes: Routes = [
   },
   // { path: 'projects', component: ProjectsComponent, canActivate: [AuthGuard] }, // now Lazy
 
- 
+  // Home
   {
     path: 'project/:projectid/home',
     loadChildren: () => import('app/home/home.module').then(m => m.HomeModule),
@@ -177,31 +207,7 @@ const routes: Routes = [
   },
   // { path: 'project/:projectid/home', component: HomeComponent, canActivate: [AuthGuard] }, // now Lazy
 
-  {
-    path: 'login',
-    loadChildren: () => import('app/auth/signin/signin.module').then(m => m.SigninModule)
-  },
-  // { path: 'login', component: SigninComponent }, // now lazy
 
-  {
-    path: 'signup',
-    loadChildren: () => import('app/auth/signup/signup.module').then(m => m.SignupModule)
-  },
-  // { path: 'signup', component: SignupComponent },// now lazy
-
-  {
-    path: 'signup-on-invitation/:pendinginvitationemail',
-    loadChildren: () => import('app/auth/signup/signup.module').then(m => m.SignupModule)
-  },
-  // { path: 'signup-on-invitation/:pendinginvitationemail', component: SignupComponent }, // now lazy
- 
- 
-  { path: 'verify/email/:user_id', component: VerifyEmailComponent },
-
-  // -------------------------------------------------
-  // Autologin 
-  // -------------------------------------------------
-  { path: 'autologin/:route/:token', component: AutologinComponent },
 
   // Lazy loading
   { path: 'project/:projectid/contacts', component: ContactsComponent, canActivate: [AuthGuard, ProjectProfileGuard] },
@@ -214,23 +220,74 @@ const routes: Routes = [
   { path: 'project/:projectid/contacts-demo', component: ContactsStaticComponent, canActivate: [AuthGuard] },
 
 
-
-  /* PRIVATE */
+  // Pricing Lazy loading
+  {
+    path: 'project/:projectid/pricing',
+    loadChildren: () => import('app/pricing/pricing.module').then(m => m.PricingModule),
+    canActivate: [AuthGuard]
+  },
   // { path: 'project/:projectid/pricing', component: PricingComponent, canActivate: [AuthGuard] }, // now Lazy
+  {
+    path: 'project/:projectid/chat-pricing',
+    loadChildren: () => import('app/pricing/pricing.module').then(m => m.PricingModule),
+    canActivate: [AuthGuard]
+  },
   // { path: 'project/:projectid/chat-pricing', component: PricingComponent, canActivate: [AuthGuard] }, // now Lazy
+  {
+    path: 'project/:projectid/payments',
+    loadChildren: () => import('app/pricing/payments-list/payments-list.module').then(m => m.PaymentsListModule),
+    canActivate: [AuthGuard]
+  },
   // { path: 'project/:projectid/payments', component: PaymentsListComponent, canActivate: [AuthGuard] }, // now Lazy
+  {
+    path: 'project/::projectid/success',
+    loadChildren: () => import('app/pricing/payment-success-page/payment-success.module').then(m => m.PaymentSuccessModule),
+    canActivate: [AuthGuard]
+  },
   // { path: 'project/:projectid/success', component: PaymentSuccessPageComponent, canActivate: [AuthGuard] }, // now Lazy
+
+  {
+    path: 'success',
+    loadChildren: () => import('app/pricing/payment-success-page/payment-success.module').then(m => m.PaymentSuccessModule),
+    canActivate: [AuthGuard]
+  },
   // { path: 'success', component: PaymentSuccessPageComponent, canActivate: [AuthGuard] }, // now Lazy
+  {
+    path: 'project/:projectid/canceled',
+    loadChildren: () => import('app/pricing/payment-canceled-page/payment-canceled.module').then(m => m.PaymentCanceledModule),
+    canActivate: [AuthGuard]
+  },
   // { path: 'project/:projectid/canceled', component: PaymentCanceledPageComponent, canActivate: [AuthGuard] }, // now Lazy
 
+  // CDS
+  {
+    path: 'project/:projectid/cds/:faqkbid',
+    loadChildren: () => import('app/chatbot-design-studio/chatbot-design-studio.module').then(m => m.ChatbotDesignStudioModule),
+    canActivate: [AuthGuard]
+  },
+  // { path: 'project/:projectid/cds/:faqkbid', component: CdsDashboardComponent, canActivate: [AuthGuard] }, // now Lazy
 
-  // Pricing Lazy loading
-  { path: 'project/:projectid/pricing', loadChildren: () => import('app/pricing/pricing.module').then(m => m.PricingModule), canActivate: [AuthGuard] },
-  { path: 'project/:projectid/chat-pricing', loadChildren: () => import('app/pricing/pricing.module').then(m => m.PricingModule), canActivate: [AuthGuard] },
-  { path: 'project/:projectid/payments', loadChildren: () => import('app/pricing/payments-list/payments-list.module').then(m => m.PaymentsListModule), canActivate: [AuthGuard] },
-  { path: 'project/::projectid/success', loadChildren: () => import('app/pricing/payment-success-page/payment-success.module').then(m => m.PaymentSuccessModule), canActivate: [AuthGuard] },
-  { path: 'success', loadChildren: () => import('app/pricing/payment-success-page/payment-success.module').then(m => m.PaymentSuccessModule), canActivate: [AuthGuard] },
-  { path: 'project/:projectid/canceled', loadChildren: () => import('app/pricing/payment-canceled-page/payment-canceled.module').then(m => m.PaymentCanceledModule), canActivate: [AuthGuard] },
+  {
+    path: 'project/:projectid/cds/:faqkbid/intent/:intent_id',
+    loadChildren: () => import('app/chatbot-design-studio/chatbot-design-studio.module').then(m => m.ChatbotDesignStudioModule),
+    canActivate: [AuthGuard]
+  },
+  // { path: 'project/:projectid/cds/:faqkbid/intent/:intent_id', component: CdsDashboardComponent, canActivate: [AuthGuard] }, // now Lazy
+  
+  {
+    path: 'project/:projectid/cds/:faqkbid/intent/:intent_id',
+    loadChildren: () => import('app/chatbot-design-studio/chatbot-design-studio.module').then(m => m.ChatbotDesignStudioModule),
+    canActivate: [AuthGuard]
+  },
+  // { path: 'project/:projectid/cds/:faqkbid/intent/:intent_id/:calledby', component: CdsDashboardComponent, canActivate: [AuthGuard] }, // now Lazy
+  
+  // -----------------------------------------
+  // NEW  replace the path ...createfaq and ...editfaq
+  // -----------------------------------------
+  // old
+  // { path: 'project/:projectid/tilebot/intents/:faqkbid/:type', component: TilebotComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/_createfaq/:faqkbid/:bottype/:botlang', component: FaqEditAddComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/_editfaq/:faqkbid/:faqid/:bottype', component: FaqEditAddComponent, canActivate: [AuthGuard] },
 
 
 
@@ -391,19 +448,7 @@ const routes: Routes = [
   { path: 'project/:projectid/createfaq/:faqkbid/:bottype/:botlang', component: FaqEditAddComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/editfaq/:faqkbid/:faqid/:bottype', component: FaqEditAddComponent, canActivate: [AuthGuard] },
 
-  // -----------------------------------------
-  // NEW  replace the path ...createfaq and ...editfaq
-  // -----------------------------------------
-  { path: 'project/:projectid/cds/:faqkbid', component: CdsDashboardComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/cds/:faqkbid/intent/:intent_id', component: CdsDashboardComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/cds/:faqkbid/intent/:intent_id/:calledby', component: CdsDashboardComponent, canActivate: [AuthGuard] },
-
-  { path: 'project/:projectid/tilebot/intents/:faqkbid/:type', component: TilebotComponent, canActivate: [AuthGuard] },
-
-  // old
-  // { path: 'project/:projectid/tilebot/intents/:faqkbid/:type', component: TilebotComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/_createfaq/:faqkbid/:bottype/:botlang', component: FaqEditAddComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/_editfaq/:faqkbid/:faqid/:bottype', component: FaqEditAddComponent, canActivate: [AuthGuard] },
+ 
 
   // TEST-FAQ PAGE
   // { path: 'project/:projectid/faq/test/:remoteFaqKbKey/:faqkbid', component: FaqTestComponent, canActivate: [AuthGuard] },

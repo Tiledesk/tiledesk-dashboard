@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AuthService } from 'app/core/auth.service';
 import { LoggerService } from 'app/services/logger/logger.service';
-import { MultichannelService } from 'app/services/multichannel.service';
+// import { MultichannelService } from 'app/services/multichannel.service';
 
 @Component({
   selector: 'appdashboard-home-whatsapp-account-wizard-modal',
@@ -21,7 +21,7 @@ export class HomeWhatsappAccountWizardModalComponent implements OnInit {
     public dialogRef: MatDialogRef<HomeWhatsappAccountWizardModalComponent>,
     public dialog: MatDialog,
     public logger: LoggerService,
-    private multichannelService: MultichannelService,
+    // private multichannelService: MultichannelService,
     private auth: AuthService,
   ) { 
     this.logger.log('[HOME-WHATSAPP-ACCOUNT-WIZARD-MODAL] data ', data)

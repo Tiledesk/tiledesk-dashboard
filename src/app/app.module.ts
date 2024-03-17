@@ -328,7 +328,7 @@ import { TemplateDetailComponent } from './bots/templates/template-detail/templa
 import { BotsSidebarComponent } from './bots/bots-list/bots-sidebar/bots-sidebar.component';
 import { GetStartChatbotForkComponent } from './create-project-wizard/get-start-chatbot-fork/get-start-chatbot-fork.component';
 import { InstallTemplateComponent } from './create-project-wizard/install-template/install-template.component';
-import { ChatbotDesignStudioModule } from './chatbot-design-studio/chatbot-design-studio.module';
+// import { ChatbotDesignStudioModule } from './chatbot-design-studio/chatbot-design-studio.module'; // now lazy
 import { CreateChatbotComponent } from './bots/create-chatbot/create-chatbot.component';
 import { OnboardingWidgetComponent } from './create-project-wizard/onboarding-widget/onboarding-widget.component';
 import { CommunityTemplateDtlsComponent } from './bots/templates/community-template-dtls/community-template-dtls.component';
@@ -741,8 +741,8 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     MatPaginatorModule,
     MatSortModule,
     /* PRIVATE */
-    // PricingModule,
-    ChatbotDesignStudioModule,
+    // PricingModule, // now lazy
+    // ChatbotDesignStudioModule, // now lazy
     /* PRIVATE */
     BrowserModule,
     FormsModule,
