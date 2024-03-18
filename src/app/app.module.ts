@@ -48,7 +48,9 @@ import { ChatComponent } from './chat/chat.component';
 
 import { UsersService } from './services/users.service';
 import { ContactsService } from './services/contacts.service';
-import { ContactsComponent } from './contacts/contacts.component';
+// import { ContactsComponent } from './contacts/contacts.component'; // now lazy
+import { ContactEditComponent } from './contact-edit/contact-edit.component'; // now lazy
+
 import { DepartmentService } from './services/department.service';
 import { DepartmentsComponent } from './departments/departments.component';
 
@@ -124,7 +126,7 @@ import { HistoryAndNortConvsComponent } from './ws_requests/history-and-nort-con
 import { ContactDetailsComponent } from './contact-details/contact-details.component';
 
 import { WidgetService } from './services/widget.service';
-import { ContactEditComponent } from './contact-edit/contact-edit.component';
+
 import { ActivitiesComponent } from './activities/activities.component';
 
 import { AnalyticsStaticComponent } from './static-pages/analytics-static/analytics-static.component';
@@ -494,7 +496,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     AppComponent,
     UserProfileComponent,
     // HomeComponent, // now lazy
-    ContactsComponent,
+    // ContactsComponent, // now lazy
     ChatComponent,
     DepartmentsComponent,
     FaqComponent,
@@ -526,7 +528,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     WidgetSetUp,
     HistoryAndNortConvsComponent,
     ContactDetailsComponent,
-    ContactEditComponent,
+    // ContactEditComponent, // now lazy
     ActivitiesComponent,
     AnalyticsStaticComponent,
     ActivitiesStaticComponent,

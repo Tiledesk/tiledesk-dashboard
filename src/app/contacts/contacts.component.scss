@@ -26,6 +26,7 @@ input[type="email"] {
     width: 100%;
     margin-bottom: 10px;
     -webkit-appearance: none;
+    appearance: none;
     background: #fff;
     border: 1px solid #d9d9d9 !important;
     // border-top: 1px solid #c0c0c0;
@@ -363,7 +364,7 @@ input:-webkit-autofill:active {
     border-radius: 10px;
     text-align: center;
     line-height: 19px;
-    vertical-align: middle;
+    // vertical-align: middle;
     display: block;
 }
 
@@ -525,4 +526,13 @@ input:-webkit-autofill:active {
 
 .display-more-tags-btn:hover {
     text-decoration: underline;
+}
+
+::ng-deep .custom-mat-tooltip {
+    background-color: #2d323e !important;
+    font-size: 12px !important;
+    border-radius: 2px !important;
+    font-family: "Poppins", "Roboto", "Arial", sans-serif !important;
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
 }

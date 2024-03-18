@@ -71,8 +71,7 @@ import { ChangePasswordComponent } from './user-profile/change-password/change-p
 import { AccountSettingsComponent } from './user-profile/account-settings/account-settings.component';
 import { HoursComponent } from './hours/hours.component';
 import { ResetPswComponent } from './reset-psw/reset-psw.component';
-import { ContactDetailsComponent } from './contact-details/contact-details.component';
-import { ContactEditComponent } from './contact-edit/contact-edit.component';
+
 import { ActivitiesComponent } from './activities/activities.component';
 
 // Andrea
@@ -132,11 +131,11 @@ import { TilebotComponent } from './bots/tilebot/tilebot.component';
 import { OnboardingComponent } from './create-project-wizard/onboarding/onboarding.component';
 import { GetStartChatbotForkComponent } from './create-project-wizard/get-start-chatbot-fork/get-start-chatbot-fork.component';
 import { InstallTemplateComponent } from './create-project-wizard/install-template/install-template.component';
-import { ContactsComponent } from './contacts/contacts.component';
+// import { ContactsComponent } from './contacts/contacts.component'; // now lazy
+import { ContactDetailsComponent } from './contact-details/contact-details.component';
+// import { ContactEditComponent } from './contact-edit/contact-edit.component'; // now lazy
 
-// Lazy loading
-// import { ContactsComponent } from './contacts/contacts.component';
-// import { ContactsModule } from './contacts/contacts.module';
+
 
 // import { CdsDashboardComponent } from './chatbot-design-studio/cds-dashboard/cds-dashboard.component'; // now lazy
 import { CreateChatbotComponent } from './bots/create-chatbot/create-chatbot.component';
@@ -207,19 +206,7 @@ const routes: Routes = [
   // { path: 'project/:projectid/home', component: HomeComponent, canActivate: [AuthGuard] }, // now Lazy
 
 
-
-  // Lazy loading
-  { path: 'project/:projectid/contacts', component: ContactsComponent, canActivate: [AuthGuard, ProjectProfileGuard] },
-  // {
-  //   canActivate: [AuthGuard],
-  //   path: 'project/:projectid/contacts',
-  //   loadChildren: () => import('./contacts/contacts.module').then(m => m.ContactsModule)
-  // },
-
-  { path: 'project/:projectid/contacts-demo', component: ContactsStaticComponent, canActivate: [AuthGuard] },
-
-
-  // Pricing Lazy loading
+  // Pricing 
   {
     path: 'project/:projectid/pricing',
     loadChildren: () => import('app/pricing/pricing.module').then(m => m.PricingModule),
@@ -358,6 +345,35 @@ const routes: Routes = [
   // { path: 'project/:projectid/app-edit/:appid', component: AppCreateComponent, canActivate: [AuthGuard] }, // now lazy
 
 
+   // Contacts
+   {
+     path: 'project/:projectid/contacts',
+     loadChildren: () => import('app/contacts/contacts.module').then(m => m.ContactsModule),
+     canActivate: [AuthGuard, ProjectProfileGuard],
+   },
+  //  { path: 'project/:projectid/contacts', component: ContactsComponent, canActivate: [AuthGuard, ProjectProfileGuard] },  // now lazy
+ 
+
+  { path: 'project/:projectid/contact/:requesterid', component: ContactDetailsComponent, canActivate: [AuthGuard] },
+  
+  {
+    path: 'project/:projectid/contact/edit/:requesterid',
+    loadChildren: () => import('app/contact-edit/contact-edit.module').then(m => m.ContactEditModule),
+    canActivate: [AuthGuard],
+  },
+  // { path: 'project/:projectid/contact/edit/:requesterid', component: ContactEditComponent, canActivate: [AuthGuard] }, // now lazy
+  
+  {
+    path: 'project/:projectid/contact/_edit/:requesterid',
+    loadChildren: () => import('app/contact-edit/contact-edit.module').then(m => m.ContactEditModule),
+    canActivate: [AuthGuard],
+  },
+  
+  // { path: 'project/:projectid/contact/_edit/:requesterid', component: ContactEditComponent, canActivate: [AuthGuard] }, // now lazy // called from the dropodown of the chat to change contact email , name amd lastname on fly (use to not display the goBack)
+
+
+
+   { path: 'project/:projectid/contacts-demo', component: ContactsStaticComponent, canActivate: [AuthGuard] },
 
 
   { path: 'project/:projectid/template-details/:templateid', component: CommunityTemplateDtlsComponent },
@@ -637,9 +653,7 @@ const routes: Routes = [
   { path: 'project/:projectid/events/:requesterid', component: EventsComponent, canActivate: [AuthGuard] },
 
 
-  { path: 'project/:projectid/contact/:requesterid', component: ContactDetailsComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/contact/edit/:requesterid', component: ContactEditComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/contact/_edit/:requesterid', component: ContactEditComponent, canActivate: [AuthGuard] }, // called from the dropodown of the chat to change contact email , name amd lastname on fly (use to not display the goBack)
+ 
 
 
 

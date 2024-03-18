@@ -451,10 +451,15 @@
                               [ngStyle]="{'background':  'linear-gradient(rgb(255,255,255) -125%,' + contact?.avatar_fill_colour + ')'}">
                               <span style="color: #ffffff"> {{ contact?.name_initial }} </span>
                             </span>
-                            <span *ngIf="contact?.contact_is_verified === true" class="tooltipx">
+                            <span *ngIf="contact?.contact_is_verified === true" class="contact-verified-icon-wpr"    
+                                matTooltipClass="custom-mat-tooltip" 
+                                matTooltip="{{ 'VisitorsPage.AuthenticatedUser' | translate }}" 
+                                #tooltip="matTooltip"
+                                matTooltipPosition='above' 
+                                matTooltipHideDelay="100">
                               <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
                                 xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 26.6 26.6"
-                                width="18" height="18" style="position: relative;left: -52px;top: -7px;"
+                                width="18" height="18" style="position: relative;left: -47px;top: -7px;"
                                 xml:space="preserve">
                                 <style type="text/css">
                                   .st0 {
@@ -473,11 +478,8 @@
                                 <path class="st1"
                                   d="M13.3,0L2.4,4.9v7.3c0,6.7,4.6,13,10.9,14.5c6.2-1.5,10.9-7.8,10.9-14.5V4.9L13.3,0z" />
                                 <path class="st2" d="M13.3,2.3l-9,4v6c0,5.5,3.8,10.7,9,12c5.2-1.3,9-6.5,9-12v-6L13.3,2.3z M11.3,18.3l-4-4l1.4-1.4l2.6,2.6
-                      l6.6-6.6l1.4,1.4L11.3,18.3z" />
+                                  l6.6-6.6l1.4,1.4L11.3,18.3z" />
                               </svg>
-
-                              <span class="tooltiptext-custom"> {{ "VisitorsPage.AuthenticatedUser" | translate }}
-                              </span>
                             </span>
 
                             <span class="column-td" style="margin-left: 10px;"
@@ -612,16 +614,18 @@
                           <td *ngIf="hasClickedTrashed === false" class="td-actions text-right"
                             style="padding-left: 0px;padding-top: 17px!important;">
 
-                            <!-- VIEW CONVERSATIONS -->
-                            <button type="button" class="btn btn-primary btn-simple btn-xs tooltipx"
-                              (click)='goToContactDetails(contact?._id)'>
-                              <!-- <i class="material-icons">view_list</i> -->
+                            <!-- VIEW CONVERSATIONS {{ 'ViewContactRequests' | translate }}  -->
+                            <button type="button" class="btn btn-primary btn-simple btn-xs"
+                              (click)='goToContactDetails(contact?._id)'
+                              matTooltipClass="custom-mat-tooltip" 
+                              matTooltip="{{ 'ContactDetails' | translate }}" 
+                              #tooltip="matTooltip"
+                              matTooltipPosition='above' 
+                              matTooltipHideDelay="100">
                               <i class="material-icons">contact_page</i>
-                              <span class="tooltiptext-custom" style="text-transform:none">
-                                <!-- {{ 'ViewContactRequests' | translate }} -->
+                              <!-- <span class="tooltiptext-custom" style="text-transform:none">
                                 {{ 'ContactDetails' | translate }}
-
-                              </span>
+                              </span> -->
                             </button>
 
                             <!-- EDIT CONTACT -->
@@ -633,38 +637,50 @@
                               </span>
                             </button> -->
 
-                            <!-- DELETE CONTACT -->
-                            <button type="button" class="btn btn-danger btn-simple btn-xs tooltipx"
+                            <!-- DELETE CONTACT {{ 'DeleteContact' | translate }} -->
+                            <button type="button" class="btn btn-danger btn-simple btn-xs"
                               [disabled]="IS_CURRENT_USER_AGENT === true"
-                              (click)='moveContactToTrash(contact?._id, contact?.fullname)'>
+                              (click)='moveContactToTrash(contact?._id, contact?.fullname)'
+                              matTooltipClass="custom-mat-tooltip" 
+                              matTooltip="{{ 'MoveToTrash' | translate }}" 
+                              #tooltip="matTooltip"
+                              matTooltipPosition='above' 
+                              matTooltipHideDelay="100">
                               <i class="material-icons">delete</i>
-                              <span class="tooltiptext-custom" style="text-transform:none">
-                                <!-- {{ 'DeleteContact' | translate }} -->
+                              <!-- <span class="tooltiptext-custom" style="text-transform:none">
                                 {{ 'MoveToTrash' | translate }}
-                              </span>
+                              </span> -->
                             </button>
                           </td>
 
                           <td *ngIf="hasClickedTrashed === true" class="td-actions text-right"
                             style="padding-left: 0px;padding-top: 17px;">
-                            <button type="button" class="btn btn-danger btn-simple btn-xs tooltipx"
+                            <button type="button" class="btn btn-danger btn-simple btn-xs"
                               [disabled]="IS_CURRENT_USER_OWNER !== true"
-                              (click)='deleteContactForever(contact?._id, contact?.fullname)'>
+                              (click)='deleteContactForever(contact?._id, contact?.fullname)'
+                              matTooltipClass="custom-mat-tooltip" 
+                              matTooltip="{{ 'DeleteContact' | translate }}" 
+                              #tooltip="matTooltip"
+                              matTooltipPosition='above' 
+                              matTooltipHideDelay="100">
                               <i class="material-icons">delete_forever</i>
-                              <span class="tooltiptext-custom" style="text-transform:none">
+                              <!-- <span class="tooltiptext-custom" style="text-transform:none">
                                 {{ 'DeleteContact' | translate }}
-
-                              </span>
+                              </span> -->
                             </button>
 
-                            <button type="button" class="btn btn-default btn-simple btn-xs tooltipx"
-                              [disabled]="IS_CURRENT_USER_OWNER !== true" (click)='restore_contact(contact?._id)'>
-                              <!-- {{ 'RestoreContact' | translate }} -->
+                            <button type="button" class="btn btn-default btn-simple btn-xs"
+                              [disabled]="IS_CURRENT_USER_OWNER !== true" (click)='restore_contact(contact?._id)'
+                              matTooltipClass="custom-mat-tooltip" 
+                              matTooltip="{{ 'RestoreContact' | translate }}" 
+                              #tooltip="matTooltip"
+                              matTooltipPosition='above' 
+                              matTooltipHideDelay="100">
+                    
                               <i class="material-icons">forward</i>
-                              <span class="tooltiptext-custom" style="text-transform:none">
+                              <!-- <span class="tooltiptext-custom" style="text-transform:none">
                                 {{ 'RestoreContact' | translate }}
-
-                              </span>
+                              </span> -->
                             </button>
 
                           </td>

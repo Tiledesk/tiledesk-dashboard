@@ -4,7 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from '../core/auth.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs'
-import * as Chartist from 'chartist';
+// import * as Chartist from 'chartist';
 // import * as moment from 'moment';
 import moment from "moment"
 
@@ -337,39 +337,39 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
   }
 
 
-  startAnimationForLineChart(chart) {
-    let seq: any, delays: any, durations: any;
-    seq = 0;
-    delays = 80;
-    durations = 500;
+  // startAnimationForLineChart(chart) {
+  //   let seq: any, delays: any, durations: any;
+  //   seq = 0;
+  //   delays = 80;
+  //   durations = 500;
 
-    chart.on('draw', function (data) {
-      if (data.type === 'line' || data.type === 'area') {
-        data.element.animate({
-          d: {
-            begin: 600,
-            dur: 700,
-            from: data.path.clone().scale(1, 0).translate(0, data.chartRect.height()).stringify(),
-            to: data.path.clone().stringify(),
-            easing: Chartist.Svg.Easing.easeOutQuint
-          }
-        });
-      } else if (data.type === 'point') {
-        seq++;
-        data.element.animate({
-          opacity: {
-            begin: seq * delays,
-            dur: durations,
-            from: 0,
-            to: 1,
-            easing: 'ease'
-          }
-        });
-      }
-    });
+  //   chart.on('draw', function (data) {
+  //     if (data.type === 'line' || data.type === 'area') {
+  //       data.element.animate({
+  //         d: {
+  //           begin: 600,
+  //           dur: 700,
+  //           from: data.path.clone().scale(1, 0).translate(0, data.chartRect.height()).stringify(),
+  //           to: data.path.clone().stringify(),
+  //           easing: Chartist.Svg.Easing.easeOutQuint
+  //         }
+  //       });
+  //     } else if (data.type === 'point') {
+  //       seq++;
+  //       data.element.animate({
+  //         opacity: {
+  //           begin: seq * delays,
+  //           dur: durations,
+  //           from: 0,
+  //           to: 1,
+  //           easing: 'ease'
+  //         }
+  //       });
+  //     }
+  //   });
 
-    seq = 0;
-  };
+  //   seq = 0;
+  // };
 
   buildgraph() {
 
