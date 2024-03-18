@@ -114,7 +114,7 @@ import { TagsComponent } from './tags/tags.component';
 
 
 import { WsRequestsUnservedForPanelComponent } from './ws_requests/for-panel/ws-requests-unserved-for-panel/ws-requests-unserved-for-panel.component';
-import { AppStoreComponent } from './app-store/app-store.component';
+// import { AppStoreComponent } from './app-store/app-store.component'; // now lazy
 import { AppStoreInstallComponent } from './app-store/app-store-install/app-store-install.component';
 
 import { WebhookComponent } from './webhook/webhook.component';
@@ -319,6 +319,20 @@ const routes: Routes = [
 
   // { path: 'project/:projectid/messages-analytics', component: MessagesComponent, canActivate: [AuthGuard] }, // doesn't works
   // { path: 'project/:projectid/conversation-analytics', component: RequestsComponent, canActivate: [AuthGuard] }, // doesn't works
+
+
+  // Apps
+  {
+    path: 'project/:projectid/app-store',
+    loadChildren: () => import('app/app-store/app-store.module').then(m => m.AppStoreModule),
+    canActivate: [AuthGuard]
+  },
+  // { path: 'project/:projectid/app-store', component: AppStoreComponent, canActivate: [AuthGuard] }, // now lazy
+  { path: 'project/:projectid/app-store-install/:appid/:reason', component: AppStoreInstallComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/app-store-install/:appid/:reason/:calledby', component: AppStoreInstallComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/app-create', component: AppCreateComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/app-edit/:appid', component: AppCreateComponent, canActivate: [AuthGuard] },
+
 
 
 
@@ -604,12 +618,7 @@ const routes: Routes = [
   { path: 'project/:projectid/contact/_edit/:requesterid', component: ContactEditComponent, canActivate: [AuthGuard] }, // called from the dropodown of the chat to change contact email , name amd lastname on fly (use to not display the goBack)
 
 
-  { path: 'project/:projectid/app-store', component: AppStoreComponent, canActivate: [AuthGuard] },
-  //{ path: 'project/:projectid/app-store-install/:url/:apptitle', component: AppStoreInstallComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/app-store-install/:appid/:reason', component: AppStoreInstallComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/app-store-install/:appid/:reason/:calledby', component: AppStoreInstallComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/app-create', component: AppCreateComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/app-edit/:appid', component: AppCreateComponent, canActivate: [AuthGuard] },
+
   // Webhook
   { path: 'project/:projectid/webhook', component: WebhookComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/map-request', component: MapRequestComponent, canActivate: [AuthGuard] },

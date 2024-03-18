@@ -208,7 +208,7 @@ import { WsRequestsUnservedForPanelComponent } from './ws_requests/for-panel/ws-
 import { WsRequestDetailForPanelComponent } from './ws_requests/for-panel//ws-request-detail-for-panel/ws-request-detail-for-panel.component';
 import { AutologinComponent } from './auth/autologin/autologin.component';
 // APP
-import { AppStoreComponent } from './app-store/app-store.component';
+// import { AppStoreComponent } from './app-store/app-store.component'; // now lazy
 import { AppStoreInstallComponent } from './app-store/app-store-install/app-store-install.component';
 import { AppCreateComponent } from './app-store/app-create/app-create.component';
 import { AppStoreService } from './services/app-store.service';
@@ -580,7 +580,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     WsRequestsUnservedForPanelComponent,
     WsRequestDetailForPanelComponent,
     AutologinComponent,
-    AppStoreComponent,
+    // AppStoreComponent, // now lazy
     AppStoreInstallComponent,
     // PerfectScrollbarTdDirective,
     DocsUrlRowComponent,
