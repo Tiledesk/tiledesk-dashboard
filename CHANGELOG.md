@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.5.21
+- Deploys in production
+- Adds the ability to sort chatbot by name
+
 ### 2.5.20
 - Deploys in production
 - Refactors the teammates table
