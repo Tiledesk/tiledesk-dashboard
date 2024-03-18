@@ -8,6 +8,10 @@
 - Adds the customer.io integration
 - Fixes the bug: app cards are not all the same height
 
+### 2.5.21
+- Deploys in production
+- Adds the ability to sort chatbot by name
+
 ### 2.5.20
 - Deploys in production
 - Refactors the teammates table

@@ -76,6 +76,7 @@
                       <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <span class="order-by-selected-value" *ngIf="orderBylastUpdated">Last updates </span>
                         <span class="order-by-selected-value" *ngIf="orderByCreationDate">Creation date </span>
+                        <span class="order-by-selected-value" *ngIf="orderByChatbotName">Name </span>
                         <span class="caret dropdown-caret"
                           [ngClass]="{'caret-rotate-0': is0penDropDown === false, 'caret-rotate-180': is0penDropDown === true}"></span>
                       </a>
@@ -88,6 +89,11 @@
                         <li>
                           <a (click)="orderBy('creationDate')">
                             Creation date
+                          </a>
+                        </li>
+                        <li>
+                          <a (click)="orderBy('botname')">
+                            Name
                           </a>
                         </li>
                       </ul>
