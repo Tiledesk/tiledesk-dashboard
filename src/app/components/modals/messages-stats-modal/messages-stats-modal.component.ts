@@ -3,7 +3,6 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { Subscription } from 'rxjs';
 import moment from "moment"
-import { AnalyticsService } from 'app/analytics/analytics-service/analytics.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Chart } from 'chart.js';
 import { UsersService } from 'app/services/users.service';
@@ -11,6 +10,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
 import { Router } from '@angular/router';
 import { AuthService } from 'app/core/auth.service';
+import { AnalyticsService } from 'app/services/analytics.service';
 
 @Component({
   selector: 'appdashboard-messages-stats-modal',

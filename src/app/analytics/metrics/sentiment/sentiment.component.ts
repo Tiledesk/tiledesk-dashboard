@@ -7,7 +7,8 @@ import moment from "moment";
 import { DepartmentService } from 'app/services/department.service';
 import { TranslateService } from '@ngx-translate/core';
 import { LoggerService } from '../../../services/logger/logger.service';
-import { AnalyticsService } from 'app/analytics/analytics-service/analytics.service';
+import { AnalyticsService } from 'app/services/analytics.service';
+
 @Component({
   selector: 'appdashboard-sentiment',
   templateUrl: './sentiment.component.html',

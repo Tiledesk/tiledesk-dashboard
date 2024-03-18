@@ -8,7 +8,7 @@ import { ActivitiesService } from './activities/activities-service/activities.se
 
 // import { LoggerInstance } from './services/logger/LoggerInstance';
 import { MapRequestComponent } from './map-request/map-request.component';
-import { MetricsComponent } from './analytics/metrics/metrics.component';
+
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, APP_INITIALIZER, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
@@ -132,13 +132,20 @@ import { ActivitiesStaticComponent } from './static-pages/activities-static/acti
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { AnalyticsComponent } from './analytics/analytics.component';
-import { PanoramicaComponent } from './analytics/panoramica/panoramica.component';
-import { RealtimeComponent } from './analytics/realtime/realtime.component';
-import { RequestsComponent } from './analytics/metrics/requests/requests.component';
-import { SentimentComponent } from './analytics/metrics/sentiment/sentiment.component';
-import { ResponseTimesComponent } from './analytics/metrics/responsetimes/responsetimes.component';
-import { ConvsDurationComponent } from './analytics/metrics/convsduration/convsduration.component';
+// import { AnalyticsComponent } from './analytics/analytics.component'; // now lazy
+// import { EventsAnalyticsComponent } from './analytics/metrics/events-analytics/events-analytics.component'; // now lazy
+// import { ConvsDurationComponent } from './analytics/metrics/convsduration/convsduration.component'; // now lazy
+// import { MessagesComponent } from './analytics/metrics/messages/messages.component'; // now lazy
+// import { RequestsComponent } from './analytics/metrics/requests/requests.component'; // now lazy
+// import { MetricsComponent } from './analytics/metrics/metrics.component'; // now lazy
+// import { ResponseTimesComponent } from './analytics/metrics/responsetimes/responsetimes.component'; // now lazy 
+// import { SatisfactionComponent } from './analytics/metrics/satisfaction/satisfaction.component';  // now lazy 
+// import { SentimentComponent } from './analytics/metrics/sentiment/sentiment.component'; // now lazy
+// import { VisitorsAnalyticsComponent } from './analytics/metrics/visitors-analytics/visitors-analytics.component'; // now lazy
+// import { PanoramicaComponent } from './analytics/panoramica/panoramica.component'; // now lazy
+// import { RealtimeComponent } from './analytics/realtime/realtime.component'; // now lazy
+
+
 import { HoursStaticComponent } from './static-pages/hours-static/hours-static.component';
 import { DepartmentsStaticComponent } from './static-pages/departments-static/departments-static.component';
 import { ProjectPlanService } from './services/project-plan.service';
@@ -224,16 +231,15 @@ import { WebhookAddEditComponent } from './webhook/webhook-add-edit/webhook-add-
 import { WebhookService } from './services/webhook.service';
 
 
-import { VisitorsAnalyticsComponent } from './analytics/metrics/visitors-analytics/visitors-analytics.component';
-import { MessagesComponent } from './analytics/metrics/messages/messages.component';
+
 import { NotificationSettingsComponent } from './user-profile/notification-settings/notification-settings.component';
 
 import { CreateGroupComponent } from './department-edit-add/create-group/create-group.component';
 import { CreateBotComponent } from './department-edit-add/create-bot/create-bot.component';
 
-import { SatisfactionComponent } from './analytics/metrics/satisfaction/satisfaction.component';
+
 import { UnauthorizedForPricingComponent } from './auth/unauthorized-for-pricing/unauthorized-for-pricing.component';
-import { EventsAnalyticsComponent } from './analytics/metrics/events-analytics/events-analytics.component';
+
 import { SanitizeHtmlPipe } from './sanitize-html.pipe'; // used for iframe to bypass security 
 import { SafeHtmlPipe } from './safe-html.pipe'; // used to sanitize email 
 import { UnauthorizedForProjectComponent } from './auth/unauthorized-for-project/unauthorized-for-project.component';
@@ -265,7 +271,7 @@ import { WsSidebarAppsComponent } from './ws_requests/ws-requests-msgs/ws-sideba
 import { ImageViewerComponent } from './ws_requests/ws-requests-msgs/image-viewer/image-viewer.component';
 import { WidgetInstallationComponent } from './widget-installation/widget-installation.component';
 import { AutofocusDirective } from './_directives/autofocus.directive';
-import { AnalyticsService } from './analytics/analytics-service/analytics.service';
+
 import { TooltipModule, TooltipOptions } from 'ng2-tooltip-directive';
 
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -402,6 +408,8 @@ import { ModalUrlsKnowledgeBaseComponent } from './knowledge-bases/modals/modal-
 import { AddContentMenuComponent } from './knowledge-bases/menu/add-content-menu/add-content-menu.component';
 import { UserModalComponent } from './users/user-modal/user-modal.component';
 import { MessagesStatsModalComponent } from './components/modals/messages-stats-modal/messages-stats-modal.component';
+import { WsChatbotService } from './services/websocket/ws-chatbot.service';
+import { AnalyticsService } from './services/analytics.service';
 
 
 
@@ -523,14 +531,18 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     AnalyticsStaticComponent,
     ActivitiesStaticComponent,
     FaqTestTrainBotComponent,
-    AnalyticsComponent,
-    PanoramicaComponent,
-    MetricsComponent,
-    RealtimeComponent,
-    RequestsComponent,
-    SentimentComponent,
-    ResponseTimesComponent,
-    ConvsDurationComponent,
+    // AnalyticsComponent, // now lazy
+    // ConvsDurationComponent,  // now lazy
+    // EventsAnalyticsComponent, // now lazy
+    // MessagesComponent, // now lazy
+    // RequestsComponent, // now lazy
+    // MetricsComponent, // now lazy
+    // ResponseTimesComponent, // now lazy
+    // SatisfactionComponent, // now lazy
+    // SentimentComponent, // now lazy
+    // VisitorsAnalyticsComponent, // now lazy
+    // PanoramicaComponent, // now lazy
+    // RealtimeComponent, // now lazy
     HoursStaticComponent,
     DepartmentsStaticComponent,
     StaticPageBaseComponent,
@@ -584,14 +596,10 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     WebhookComponent,
     WebhookAddEditComponent,
     MapRequestComponent,
-    MessagesComponent,
     NotificationSettingsComponent,
-    VisitorsAnalyticsComponent,
     CreateGroupComponent,
     CreateBotComponent,
-    SatisfactionComponent,
     UnauthorizedForPricingComponent,
-    EventsAnalyticsComponent,
     MarkedPipe,
     SanitizeHtmlPipe,
     SafeHtmlPipe,
@@ -796,6 +804,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     //   multi: true,
     //   deps: [BrandService]
     // },
+    WsChatbotService,
     ActivitiesService,
     ScriptService,
     WsRequestsService,

@@ -85,10 +85,9 @@ import { DepartmentsStaticComponent } from './static-pages/departments-static/de
 import { ContactsStaticComponent } from './static-pages/contacts-static/contacts-static.component';
 import { AutomationStaticComponent } from './static-pages/automation-static/automation-static.component';
 
-import { AnalyticsComponent } from './analytics/analytics.component';
-import { PanoramicaComponent } from './analytics/panoramica/panoramica.component';
-import { MetricsComponent } from './analytics/metrics/metrics.component';
-import { RealtimeComponent } from './analytics/realtime/realtime.component';
+// import { AnalyticsComponent } from './analytics/analytics.component'; // now lazy
+// import { RequestsComponent } from './analytics/metrics/requests/requests.component'; // now lazy
+// import { MessagesComponent } from './analytics/metrics/messages/messages.component'; // now lazy
 
 import { TriggerComponent } from './trigger/trigger.component';
 import { TriggerEditComponent } from './trigger/trigger-edit/trigger-edit.component';
@@ -120,8 +119,8 @@ import { AppStoreInstallComponent } from './app-store/app-store-install/app-stor
 
 import { WebhookComponent } from './webhook/webhook.component';
 import { NotificationSettingsComponent } from './user-profile/notification-settings/notification-settings.component';
-import { MessagesComponent } from './analytics/metrics/messages/messages.component';
-import { RequestsComponent } from './analytics/metrics/requests/requests.component';
+
+
 import { NativeBotComponent } from './bots/native-bot/native-bot.component';
 import { NativeBotSelectTypeComponent } from './bots/native-bot-select-type/native-bot-select-type.component';
 import { RasaBotComponent } from './bots/rasa-bot/rasa-bot.component';
@@ -289,6 +288,38 @@ const routes: Routes = [
   { path: 'project/:projectid/_createfaq/:faqkbid/:bottype/:botlang', component: FaqEditAddComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/_editfaq/:faqkbid/:faqid/:bottype', component: FaqEditAddComponent, canActivate: [AuthGuard] },
 
+  // Analytics
+  {
+    path: 'project/:projectid/analytics',
+    loadChildren: () => import('app/analytics/analytics.module').then(m => m.AnalyticsModule),
+    canActivate: [AuthGuard, ProjectProfileGuard]
+  },
+  // { path: 'project/:projectid/analytics', component: AnalyticsComponent, canActivate: [AuthGuard, ProjectProfileGuard] }, // now lazy
+
+  {
+    path: 'project/:projectid/analytics/metrics',
+    loadChildren: () => import('app/analytics/analytics.module').then(m => m.AnalyticsModule),
+    canActivate: [AuthGuard, ProjectProfileGuard]
+  },
+  // { path: 'project/:projectid/analytics/metrics', component: AnalyticsComponent, canActivate: [AuthGuard, ProjectProfileGuard] }, // now lazy
+  
+  {
+    path: 'project/:projectid/analytics/metrics/visitors',
+    loadChildren: () => import('app/analytics/analytics.module').then(m => m.AnalyticsModule),
+    canActivate: [AuthGuard, ProjectProfileGuard]
+  },
+  // { path: 'project/:projectid/analytics/metrics/visitors', component: AnalyticsComponent, canActivate: [AuthGuard, ProjectProfileGuard] }, // now lazy
+  
+  {
+    path: 'project/:projectid/analytics/metrics/messages',
+    loadChildren: () => import('app/analytics/analytics.module').then(m => m.AnalyticsModule),
+    canActivate: [AuthGuard, ProjectProfileGuard]
+  },
+  // { path: 'project/:projectid/analytics/metrics/messages', component: AnalyticsComponent, canActivate: [AuthGuard, ProjectProfileGuard] }, // now lazy
+
+  // { path: 'project/:projectid/messages-analytics', component: MessagesComponent, canActivate: [AuthGuard] }, // doesn't works
+  // { path: 'project/:projectid/conversation-analytics', component: RequestsComponent, canActivate: [AuthGuard] }, // doesn't works
+
 
 
   { path: 'project/:projectid/template-details/:templateid', component: CommunityTemplateDtlsComponent },
@@ -454,19 +485,12 @@ const routes: Routes = [
   // { path: 'project/:projectid/faq/test/:remoteFaqKbKey/:faqkbid', component: FaqTestComponent, canActivate: [AuthGuard] },
   // TEST-FAQ PAGE NEW URL
 
-  { path: 'project/:projectid/analytics', component: AnalyticsComponent, canActivate: [AuthGuard, ProjectProfileGuard] },
-  { path: 'project/:projectid/analytics/metrics', component: AnalyticsComponent, canActivate: [AuthGuard, ProjectProfileGuard] },
-  { path: 'project/:projectid/analytics/metrics/visitors', component: AnalyticsComponent, canActivate: [AuthGuard, ProjectProfileGuard] },
-  { path: 'project/:projectid/analytics/metrics/messages', component: AnalyticsComponent, canActivate: [AuthGuard, ProjectProfileGuard] },
-
-
   { path: 'project/:projectid/analytics-demo', component: AnalyticsStaticComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/analytics/metrics-demo', component: AnalyticsStaticComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/analytics/metrics/visitors-demo', component: AnalyticsStaticComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/analytics/metrics/messages-demo', component: AnalyticsStaticComponent, canActivate: [AuthGuard] },
 
-  { path: 'project/:projectid/messages-analytics', component: MessagesComponent, canActivate: [AuthGuard] }, // doesn't works
-  { path: 'project/:projectid/conversation-analytics', component: RequestsComponent, canActivate: [AuthGuard] }, // doesn't works
+
 
 
   // , ProjectProfileGuard

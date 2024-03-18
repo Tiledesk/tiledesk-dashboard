@@ -7,7 +7,8 @@ import { Router } from '@angular/router';
 import { WsRequestsService } from '../../services/websocket/ws-requests.service';
 import { AppConfigService } from '../../services/app-config.service';
 import { LoggerService } from '../../services/logger/logger.service';
-import { AnalyticsService } from '../analytics-service/analytics.service';
+import { AnalyticsService } from 'app/services/analytics.service';
+
 
 @Component({
   selector: 'appdashboard-realtime',

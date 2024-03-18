@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { AuthService } from 'app/core/auth.service';
-import { AppConfigService } from '../../services/app-config.service';
-import { LoggerService } from '../../services/logger/logger.service';
+import { AppConfigService } from './app-config.service';
+import { LoggerService } from './logger/logger.service';
+
 @Injectable()
 export class AnalyticsService {
  

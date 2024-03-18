@@ -8,7 +8,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { Subscription, zip } from 'rxjs';
 import { UsersService } from 'app/services/users.service';
 import { LoggerService } from '../../../services/logger/logger.service';
-import { AnalyticsService } from 'app/analytics/analytics-service/analytics.service';
+import { AnalyticsService } from 'app/services/analytics.service';
+
 @Component({
   selector: 'appdashboard-requests',
   templateUrl: './requests.component.html',

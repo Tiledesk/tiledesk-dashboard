@@ -10,7 +10,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Chart } from 'chart.js';
 import { AuthService } from 'app/core/auth.service';
 import { LoggerService } from '../../services/logger/logger.service';
-import { AnalyticsService } from '../analytics-service/analytics.service';
+
 
 import {
   ChartComponent,
@@ -23,6 +23,7 @@ import {
   ApexGrid, 
   ApexStroke
 } from "ng-apexcharts";
+import { AnalyticsService } from 'app/services/analytics.service';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;

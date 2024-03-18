@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { AnalyticsService } from 'app/analytics/analytics-service/analytics.service';
+
 // import { ApexOptions } from 'ng-apexcharts';
 import { Chart } from 'chart.js';
 import moment from "moment";
@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 import { ContactsService } from 'app/services/contacts.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { AppConfigService } from 'app/services/app-config.service';
+import { AnalyticsService } from 'app/services/analytics.service';
 
 @Component({
   selector: 'appdashboard-home-convs-graph',

@@ -9,7 +9,8 @@ import moment from "moment";
 import { LoggerService } from '../../../services/logger/logger.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
-import { AnalyticsService } from 'app/analytics/analytics-service/analytics.service';
+import { AnalyticsService } from 'app/services/analytics.service';
+
 @Component({
   selector: 'appdashboard-satisfaction',
   templateUrl: './satisfaction.component.html',

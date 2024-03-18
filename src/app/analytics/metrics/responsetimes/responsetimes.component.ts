@@ -11,7 +11,8 @@ import { Subscription, zip } from 'rxjs';
 import { Observable } from 'rxjs';
 import { LoggerService } from '../../../services/logger/logger.service';
 import { AuthService } from 'app/core/auth.service';
-import { AnalyticsService } from 'app/analytics/analytics-service/analytics.service';
+import { AnalyticsService } from 'app/services/analytics.service';
+
 
 @Component({
   selector: 'appdashboard-responsetimes',

@@ -28,12 +28,13 @@ import { ProjectPlanService } from 'app/services/project-plan.service';
 import { UploadImageService } from 'app/services/upload-image.service';
 import { UploadImageNativeService } from 'app/services/upload-image-native.service';
 
-import { AnalyticsService } from 'app/analytics/analytics-service/analytics.service';
+
 const swal = require('sweetalert');
 import { AbstractControl, FormControl } from '@angular/forms';
 import { ThemePalette } from '@angular/material/core';
 import { isDevMode } from '@angular/core';
 import { SelectOptionsTranslatePipe } from '../../selectOptionsTranslate.pipe';
+import { AnalyticsService } from 'app/services/analytics.service';
 
 @Component({
   selector: 'appdashboard-widget-set-up',

@@ -33,10 +33,11 @@ import {
   URL_getting_started_for_agents,
   URL_google_tag_manager_add_tiledesk_to_your_sites
 } from '../utils/util';
-import { AnalyticsService } from 'app/analytics/analytics-service/analytics.service';
+
 import { AppStoreService } from 'app/services/app-store.service';
 import { DepartmentService } from 'app/services/department.service';
 import { FaqKb } from 'app/models/faq_kb-model';
+import { AnalyticsService } from 'app/services/analytics.service';
 
 
 const swal = require('sweetalert');

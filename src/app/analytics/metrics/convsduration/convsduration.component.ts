@@ -12,8 +12,9 @@ import { FaqKb } from '../../../models/faq_kb-model';
 
 import { LoggerService } from '../../../services/logger/logger.service';
 import { AuthService } from 'app/core/auth.service';
-import { AnalyticsService } from 'app/analytics/analytics-service/analytics.service';
+
 import { map } from 'rxjs/operators';
+import { AnalyticsService } from 'app/services/analytics.service';
 
 @Component({
   selector: 'appdashboard-convsduration',

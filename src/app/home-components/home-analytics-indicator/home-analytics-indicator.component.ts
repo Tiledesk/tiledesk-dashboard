@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
-import { AnalyticsService } from 'app/analytics/analytics-service/analytics.service';
+
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
 import { TranslateService } from '@ngx-translate/core';
@@ -8,6 +8,7 @@ import { UsersService } from 'app/services/users.service';
 import { ContactsService } from 'app/services/contacts.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { AppConfigService } from 'app/services/app-config.service';
+import { AnalyticsService } from 'app/services/analytics.service';
 @Component({
   selector: 'appdashboard-home-analytics-indicator',
   templateUrl: './home-analytics-indicator.component.html',

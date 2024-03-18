@@ -114,7 +114,7 @@ import { DialogYesNoComponent } from './cds-base-element/dialog-yes-no/dialog-ye
 import { CDSFilterComponent } from './cds-base-element/filter/filter.component';
 import { CDSDetailBotDetailComponent } from './cds-chatbot-details/detail/detail.component';
 import { CDSDetailImportExportComponent } from './cds-chatbot-details/import-export/import-export.component';
-import { WsChatbotService } from 'app/services/websocket/ws-chatbot.service';
+// import { WsChatbotService } from 'app/services/websocket/ws-chatbot.service';
 import { ChangeBotLangModalComponent } from 'app/components/modals/change-bot-lang/change-bot-lang.component';
 import { ActionWhatsappStaticComponent } from './cds-dashboard/panel-intent-detail/actions/action-whatsapp-static/action-whatsapp-static.component';
 import { ActionWhatsappAttributeComponent } from './cds-dashboard/panel-intent-detail/actions/action-whatsapp-attribute/action-whatsapp-attribute.component';
