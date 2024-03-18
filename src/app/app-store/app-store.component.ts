@@ -164,13 +164,14 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
         takeUntil(this.unsubscribe$)
       )
       .subscribe((user) => {
-        this.logger.log('[BOT-CREATE] - USER GET IN HOME ', user)
+        this.logger.log('[APP-STORE] - user ', user)
 
 
         if (user) {
           this.user = user;
           this.TOKEN = user.token
           this.userId = user._id
+          this.logger.log('[APP-STORE] - userId ', this.userId)
         }
       })
   }
@@ -279,13 +280,13 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
       this.apps.splice(sendTranscriptAppIndex, 1);
 
       this.apps.forEach(app => {
-
+        this.logger.log('APP-STORE - getApps APPS app ', app )
 
 
         if (app.description.length > 118) {
           app.description = app.description.slice(0, 118) + '...'
         }
-        // this.logger.log('APP-STORE - getApps APPS app ', app )
+        
         if (app && app.version === "v2") {
           if (app.installActionURL === "") {
             // this.logger.log('APP-STORE - getApps APPS app installActionURL', app.installActionURL)

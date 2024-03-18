@@ -114,18 +114,18 @@ import { TagsComponent } from './tags/tags.component';
 
 
 import { WsRequestsUnservedForPanelComponent } from './ws_requests/for-panel/ws-requests-unserved-for-panel/ws-requests-unserved-for-panel.component';
+
+// @ Apps
 // import { AppStoreComponent } from './app-store/app-store.component'; // now lazy
-import { AppStoreInstallComponent } from './app-store/app-store-install/app-store-install.component';
+// import { AppStoreInstallComponent } from './app-store/app-store-install/app-store-install.component'; // now lazy
+// import { AppCreateComponent } from './app-store/app-create/app-create.component'; // now lazy
 
 import { WebhookComponent } from './webhook/webhook.component';
 import { NotificationSettingsComponent } from './user-profile/notification-settings/notification-settings.component';
-
-
 import { NativeBotComponent } from './bots/native-bot/native-bot.component';
 import { NativeBotSelectTypeComponent } from './bots/native-bot-select-type/native-bot-select-type.component';
 import { RasaBotComponent } from './bots/rasa-bot/rasa-bot.component';
 import { EmailTicketingComponent } from './email-ticketing/email-ticketing.component';
-import { AppCreateComponent } from './app-store/app-create/app-create.component';
 import { WidgetInstallationComponent } from './widget-installation/widget-installation.component';
 import { TilebotSelectTypeComponent } from './bots/tilebot-select-type/tilebot-select-type.component';
 import { TilebotComponent } from './bots/tilebot/tilebot.component';
@@ -272,14 +272,14 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   // { path: 'project/:projectid/cds/:faqkbid/intent/:intent_id', component: CdsDashboardComponent, canActivate: [AuthGuard] }, // now Lazy
-  
+
   {
     path: 'project/:projectid/cds/:faqkbid/intent/:intent_id',
     loadChildren: () => import('app/chatbot-design-studio/chatbot-design-studio.module').then(m => m.ChatbotDesignStudioModule),
     canActivate: [AuthGuard]
   },
   // { path: 'project/:projectid/cds/:faqkbid/intent/:intent_id/:calledby', component: CdsDashboardComponent, canActivate: [AuthGuard] }, // now Lazy
-  
+
   // -----------------------------------------
   // NEW  replace the path ...createfaq and ...editfaq
   // -----------------------------------------
@@ -302,14 +302,14 @@ const routes: Routes = [
     canActivate: [AuthGuard, ProjectProfileGuard]
   },
   // { path: 'project/:projectid/analytics/metrics', component: AnalyticsComponent, canActivate: [AuthGuard, ProjectProfileGuard] }, // now lazy
-  
+
   {
     path: 'project/:projectid/analytics/metrics/visitors',
     loadChildren: () => import('app/analytics/analytics.module').then(m => m.AnalyticsModule),
     canActivate: [AuthGuard, ProjectProfileGuard]
   },
   // { path: 'project/:projectid/analytics/metrics/visitors', component: AnalyticsComponent, canActivate: [AuthGuard, ProjectProfileGuard] }, // now lazy
-  
+
   {
     path: 'project/:projectid/analytics/metrics/messages',
     loadChildren: () => import('app/analytics/analytics.module').then(m => m.AnalyticsModule),
@@ -328,10 +328,34 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   // { path: 'project/:projectid/app-store', component: AppStoreComponent, canActivate: [AuthGuard] }, // now lazy
-  { path: 'project/:projectid/app-store-install/:appid/:reason', component: AppStoreInstallComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/app-store-install/:appid/:reason/:calledby', component: AppStoreInstallComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/app-create', component: AppCreateComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/app-edit/:appid', component: AppCreateComponent, canActivate: [AuthGuard] },
+
+  {
+    path: 'project/:projectid/app-store-install/:appid/:reason',
+    loadChildren: () => import('app/app-store/app-store-install/app-store-install.module').then(m => m.AppStoreInstallModule),
+    canActivate: [AuthGuard]
+  },
+  // { path: 'project/:projectid/app-store-install/:appid/:reason', component: AppStoreInstallComponent, canActivate: [AuthGuard] }, // now lazy
+ 
+  {
+    path: 'project/:projectid/app-store-install/:appid/:reason/:calledby',
+    loadChildren: () => import('app/app-store/app-store-install/app-store-install.module').then(m => m.AppStoreInstallModule),
+    canActivate: [AuthGuard]
+  },
+  // { path: 'project/:projectid/app-store-install/:appid/:reason/:calledby', component: AppStoreInstallComponent, canActivate: [AuthGuard] }, // now lazy
+  
+  {
+    path: 'project/:projectid/app-create',
+    loadChildren: () => import('app/app-store/app-create/app-create.module').then(m => m.AppCreateModule),
+    canActivate: [AuthGuard]
+  },
+  // { path: 'project/:projectid/app-create', component: AppCreateComponent, canActivate: [AuthGuard] }, // now lazy
+
+  {
+    path: 'project/:projectid/app-edit/:appid',
+    loadChildren: () => import('app/app-store/app-create/app-create.module').then(m => m.AppCreateModule),
+    canActivate: [AuthGuard]
+  },
+  // { path: 'project/:projectid/app-edit/:appid', component: AppCreateComponent, canActivate: [AuthGuard] }, // now lazy
 
 
 
@@ -493,7 +517,7 @@ const routes: Routes = [
   { path: 'project/:projectid/createfaq/:faqkbid/:bottype/:botlang', component: FaqEditAddComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/editfaq/:faqkbid/:faqid/:bottype', component: FaqEditAddComponent, canActivate: [AuthGuard] },
 
- 
+
 
   // TEST-FAQ PAGE
   // { path: 'project/:projectid/faq/test/:remoteFaqKbKey/:faqkbid', component: FaqTestComponent, canActivate: [AuthGuard] },

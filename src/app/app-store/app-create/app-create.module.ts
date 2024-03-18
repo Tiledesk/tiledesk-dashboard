@@ -1,29 +1,28 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AppStoreComponent } from './app-store.component';
+import { AppCreateComponent } from './app-create.component';
 import { RouterModule ,Routes} from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { SharedModule } from 'app/shared/shared.module';
-import { MatTooltipModule } from '@angular/material/tooltip';
-
+import { FormsModule } from '@angular/forms';
 
 const routes: Routes = [
-  { path: "", component: AppStoreComponent},
+  { path: "", component: AppCreateComponent},
 ];
 
 @NgModule({
   declarations: [
-    AppStoreComponent
+    AppCreateComponent
   ],
   imports: [
     RouterModule.forChild(routes),
     CommonModule,
     TranslateModule,
     SharedModule,
-    MatTooltipModule,
+    FormsModule
   ],
   exports: [
     RouterModule
   ]
 })
-export class AppStoreModule { }
+export class AppCreateModule { }

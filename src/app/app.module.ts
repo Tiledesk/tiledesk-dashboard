@@ -209,8 +209,8 @@ import { WsRequestDetailForPanelComponent } from './ws_requests/for-panel//ws-re
 import { AutologinComponent } from './auth/autologin/autologin.component';
 // APP
 // import { AppStoreComponent } from './app-store/app-store.component'; // now lazy
-import { AppStoreInstallComponent } from './app-store/app-store-install/app-store-install.component';
-import { AppCreateComponent } from './app-store/app-create/app-create.component';
+// import { AppStoreInstallComponent } from './app-store/app-store-install/app-store-install.component'; // now lazy
+// import { AppCreateComponent } from './app-store/app-create/app-create.component'; // now lazy
 import { AppStoreService } from './services/app-store.service';
 
 import { BrandService } from './services/brand.service';
@@ -581,7 +581,8 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     WsRequestDetailForPanelComponent,
     AutologinComponent,
     // AppStoreComponent, // now lazy
-    AppStoreInstallComponent,
+    // AppStoreInstallComponent, // now lazy
+    // AppCreateComponent, // now lazy
     // PerfectScrollbarTdDirective,
     DocsUrlRowComponent,
     VisitorsComponent,
@@ -614,7 +615,6 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     NativeBotSelectTypeComponent,
     EmailTicketingComponent,
     WsSidebarAppsComponent,
-    AppCreateComponent,
     RasaBotComponent,
     ImageViewerComponent,
     WidgetInstallationComponent,
