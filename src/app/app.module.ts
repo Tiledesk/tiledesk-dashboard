@@ -122,7 +122,7 @@ import { UploadImageService } from './services/upload-image.service';
 import { UploadImageNativeService } from './services/upload-image-native.service';
 
 
-import { HistoryAndNortConvsComponent } from './ws_requests/history-and-nort-convs/history-and-nort-convs.component';
+// import { HistoryAndNortConvsComponent } from './ws_requests/history-and-nort-convs/history-and-nort-convs.component'; // now lazy
 import { WidgetService } from './services/widget.service';
 
 import { ActivitiesComponent } from './activities/activities.component';
@@ -272,7 +272,7 @@ import { ImageViewerComponent } from './ws_requests/ws-requests-msgs/image-viewe
 import { WidgetInstallationComponent } from './widget-installation/widget-installation.component';
 import { AutofocusDirective } from './_directives/autofocus.directive';
 
-import { TooltipModule, TooltipOptions } from 'ng2-tooltip-directive';
+// import { TooltipModule, TooltipOptions } from 'ng2-tooltip-directive';
 
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -524,8 +524,8 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     HoursComponent,
     ResetPswComponent,
     WidgetSetUp,
-    HistoryAndNortConvsComponent,
-    // ContactDetailsComponent,
+    // HistoryAndNortConvsComponent, // now lazy
+    // ContactDetailsComponent, // now lazy
     // ContactEditComponent, // now lazy
     ActivitiesComponent,
     AnalyticsStaticComponent,
@@ -721,7 +721,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     MessagesStatsModalComponent
   ],
   imports: [
-    TooltipModule.forRoot(CutomTooltipOptions as TooltipOptions),
+    // TooltipModule.forRoot(CutomTooltipOptions as TooltipOptions),
     NgApexchartsModule,
     DragDropModule,
     CreditCardDirectivesModule,

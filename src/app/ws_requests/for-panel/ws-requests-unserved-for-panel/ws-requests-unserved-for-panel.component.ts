@@ -726,8 +726,8 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
         } else {
 
         }
-        console.log('[WS-REQUESTS-UNSERVED-X-PANEL] - getWsRequests$ (served)', this.wsRequestsServed);
-        console.log('[WS-REQUESTS-UNSERVED-X-PANEL] - getWsRequests$ (unserved)', this.wsRequestsUnserved);
+        this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - getWsRequests$ (served)', this.wsRequestsServed);
+        this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] - getWsRequests$ (unserved)', this.wsRequestsUnserved);
 
 
       }, error => {

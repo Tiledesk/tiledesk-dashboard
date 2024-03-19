@@ -113,6 +113,12 @@ export function htmlEntities(str) {
     // .replace(/\n/g, '<br>')
 }
 
+export function unescapeHTML (str) {
+    return String(str)
+    .replace(/&lt;/g,'<')
+    .replace(/&gt;/g,'>')
+}
+
 export function replaceEndOfLine(text) {
     // const newText =   text.replace(/\n/g, '<br>')
     const newText = text.replace(/[\n\r]/g, '<br>');

@@ -46,7 +46,7 @@ import { TemplatesComponent } from './bots/templates/templates.component';
 
 import { ProjectEditAddComponent } from './project-edit-add/project-edit-add.component';
 // import { RequestsListHistoryComponent } from './requests-list-history/requests-list-history.component';
-import { HistoryAndNortConvsComponent } from './ws_requests/history-and-nort-convs/history-and-nort-convs.component';
+// import { HistoryAndNortConvsComponent } from './ws_requests/history-and-nort-convs/history-and-nort-convs.component'; // now lazy
 
 // --------------------------------------------------------------------------------------------
 // AUTH PAGES
@@ -418,6 +418,65 @@ const routes: Routes = [
   },
   // { path: 'project/:projectid/wsrequest/:requestid/:calledby/:hassearchedby/:isopenadvancedsearch/:deptid/messages', component: WsRequestsMsgsComponent, canActivate: [AuthGuard] }, // now lazy
 
+
+  // HISTORY & NORT
+  {
+    path: 'project/:projectid/history',
+    loadChildren: () => import('app/ws_requests/history-and-nort-convs/history-and-nort-convs.module').then(m => m.HistoryAndNortConvsModule),
+    canActivate: [AuthGuard]
+  },
+  // { path: 'project/:projectid/history', component: HistoryAndNortConvsComponent, canActivate: [AuthGuard] }, // now lazy
+
+  {
+    path: 'project/:projectid/all-conversations',
+    loadChildren: () => import('app/ws_requests/history-and-nort-convs/history-and-nort-convs.module').then(m => m.HistoryAndNortConvsModule),
+    canActivate: [AuthGuard]
+  },
+  // { path: 'project/:projectid/all-conversations', component: HistoryAndNortConvsComponent, canActivate: [AuthGuard] }, // now lazy
+
+  {
+    path: 'project/:projectid/history/:hassearcedby',
+    loadChildren: () => import('app/ws_requests/history-and-nort-convs/history-and-nort-convs.module').then(m => m.HistoryAndNortConvsModule),
+    canActivate: [AuthGuard]
+  },
+  // { path: 'project/:projectid/history/:hassearcedby', component: HistoryAndNortConvsComponent, canActivate: [AuthGuard] }, // now lazy
+  
+  {
+    path: 'project/:projectid/history/:hassearcedby/:isopenadvancedsearch',
+    loadChildren: () => import('app/ws_requests/history-and-nort-convs/history-and-nort-convs.module').then(m => m.HistoryAndNortConvsModule),
+    canActivate: [AuthGuard]
+  },
+  // { path: 'project/:projectid/history/:hassearcedby/:isopenadvancedsearch', component: HistoryAndNortConvsComponent, canActivate: [AuthGuard] }, // now lazy
+  
+  {
+    path: 'project/:projectid/history/:hassearcedby/:isopenadvancedsearch/:deptid',
+    loadChildren: () => import('app/ws_requests/history-and-nort-convs/history-and-nort-convs.module').then(m => m.HistoryAndNortConvsModule),
+    canActivate: [AuthGuard]
+  },
+  // { path: 'project/:projectid/history/:hassearcedby/:isopenadvancedsearch/:deptid', component: HistoryAndNortConvsComponent, canActivate: [AuthGuard] }, // now lazy
+
+  {
+    path: 'project/:projectid/all-conversations/:hassearcedby',
+    loadChildren: () => import('app/ws_requests/history-and-nort-convs/history-and-nort-convs.module').then(m => m.HistoryAndNortConvsModule),
+    canActivate: [AuthGuard]
+  },
+  // { path: 'project/:projectid/all-conversations/:hassearcedby', component: HistoryAndNortConvsComponent, canActivate: [AuthGuard] }, // now lazy
+  
+  {
+    path: 'project/:projectid/all-conversations/:hassearcedby/:isopenadvancedsearch',
+    loadChildren: () => import('app/ws_requests/history-and-nort-convs/history-and-nort-convs.module').then(m => m.HistoryAndNortConvsModule),
+    canActivate: [AuthGuard]
+  },
+  // { path: 'project/:projectid/all-conversations/:hassearcedby/:isopenadvancedsearch', component: HistoryAndNortConvsComponent, canActivate: [AuthGuard] }, // now lazy
+
+  {
+    path: 'project/:projectid/all-conversations/:hassearcedby/:isopenadvancedsearch/:deptid',
+    loadChildren: () => import('app/ws_requests/history-and-nort-convs/history-and-nort-convs.module').then(m => m.HistoryAndNortConvsModule),
+    canActivate: [AuthGuard]
+  },
+  // { path: 'project/:projectid/all-conversations/:hassearcedby/:isopenadvancedsearch/:deptid', component: HistoryAndNortConvsComponent, canActivate: [AuthGuard] }, // now lazy
+
+
   // Unserved for chat ionic
   {
     path: 'project/:projectid/unserved-request-for-panel',
@@ -621,17 +680,7 @@ const routes: Routes = [
 
 
 
-  // HISTORY & NORT
-  { path: 'project/:projectid/history', component: HistoryAndNortConvsComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/all-conversations', component: HistoryAndNortConvsComponent, canActivate: [AuthGuard] },
-
-  { path: 'project/:projectid/history/:hassearcedby', component: HistoryAndNortConvsComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/history/:hassearcedby/:isopenadvancedsearch', component: HistoryAndNortConvsComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/history/:hassearcedby/:isopenadvancedsearch/:deptid', component: HistoryAndNortConvsComponent, canActivate: [AuthGuard] },
-
-  { path: 'project/:projectid/all-conversations/:hassearcedby', component: HistoryAndNortConvsComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/all-conversations/:hassearcedby/:isopenadvancedsearch', component: HistoryAndNortConvsComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/all-conversations/:hassearcedby/:isopenadvancedsearch/:deptid', component: HistoryAndNortConvsComponent, canActivate: [AuthGuard] },
+  
 
   
 

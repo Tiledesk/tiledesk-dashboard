@@ -1120,8 +1120,10 @@
                     matTooltipPosition='right' matTooltipHideDelay="100">
                     #{{request?.ticket_id }}
                   </span>
-                  <p class="column-td request-first-text" [innerHTML]="getRequestText(request?.first_text)"
+                  <!-- [innerHTML]="getRequestText(request?.first_text)" -->
+                  <p class="column-td request-first-text" style="max-width: 215px;white-space: nowrap; overflow: hidden;text-overflow: ellipsis;" 
                     [tooltip]="HtmlContent" contentType="template" (mouseover)='overfirstTextGetRequestMsg(request)'>
+                    {{ request?.first_text }} 
                   </p>
 
                   <ng-template #HtmlContent>

@@ -9,8 +9,10 @@ import { HtmlEntitiesEncodePipe } from 'app/html-entities-encode.pipe';
 import { SanitizeHtmlPipe } from 'app/sanitize-html.pipe';
 
 
+
 @NgModule({
   imports: [
+   
     CommonModule,
     TranslateModule,
     DirectivesModule

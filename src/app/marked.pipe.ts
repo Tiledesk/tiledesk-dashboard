@@ -9,6 +9,8 @@ export class MarkedPipe implements PipeTransform {
     // console.log('MARKED PIPE value ', value)
     const renderer = new marked.Renderer();
     renderer.link = function(href, title, text) {
+      // console.log('MARKED PIPE renderer.link text ', text) 
+      // console.log('MARKED PIPE renderer.link href ', href) 
         const link = marked.Renderer.prototype.link.call(this, href, title, text);
         return link.replace('<a', '<a target="_blank" ');
     };

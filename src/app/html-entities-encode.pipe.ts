@@ -9,8 +9,9 @@ export class HtmlEntitiesEncodePipe implements PipeTransform {
   transform(text: any, args?: any): any {
 
     // console.log('htmlEntitiesEncode text ', text)
-    // if (text.indexOf("href") === -1 && text.indexOf("</a>") === -1) {
-    //   text = htmlEntities(text);
+    // if (this.isAnchor(text)) {
+    //   console.log('htmlEntitiesEncode here yes ', text)
+    //   return
     // }
     text = htmlEntities(text);
     text = replaceEndOfLine(text);
@@ -18,5 +19,9 @@ export class HtmlEntitiesEncodePipe implements PipeTransform {
 
     return text;
   }
+
+  // isAnchor(str){
+  //   return /^\<a.*\>.*\<\/a\>/i.test(str);
+  // }
 
 }
