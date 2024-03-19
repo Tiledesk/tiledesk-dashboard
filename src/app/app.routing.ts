@@ -132,7 +132,7 @@ import { OnboardingComponent } from './create-project-wizard/onboarding/onboardi
 import { GetStartChatbotForkComponent } from './create-project-wizard/get-start-chatbot-fork/get-start-chatbot-fork.component';
 import { InstallTemplateComponent } from './create-project-wizard/install-template/install-template.component';
 // import { ContactsComponent } from './contacts/contacts.component'; // now lazy
-import { ContactDetailsComponent } from './contact-details/contact-details.component';
+// import { ContactDetailsComponent } from './contact-details/contact-details.component'; // now lazy
 // import { ContactEditComponent } from './contact-edit/contact-edit.component'; // now lazy
 
 
@@ -353,8 +353,12 @@ const routes: Routes = [
    },
   //  { path: 'project/:projectid/contacts', component: ContactsComponent, canActivate: [AuthGuard, ProjectProfileGuard] },  // now lazy
  
-
-  { path: 'project/:projectid/contact/:requesterid', component: ContactDetailsComponent, canActivate: [AuthGuard] },
+  {
+    path: 'project/:projectid/contact/:requesterid',
+    loadChildren: () => import('app/contact-details/contact-details.module').then(m => m.ContactDetailsModule),
+    canActivate: [AuthGuard],
+  },
+  // { path: 'project/:projectid/contact/:requesterid', component: ContactDetailsComponent, canActivate: [AuthGuard] }, // now lazy
   
   {
     path: 'project/:projectid/contact/edit/:requesterid',

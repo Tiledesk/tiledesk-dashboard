@@ -49,7 +49,8 @@ import { ChatComponent } from './chat/chat.component';
 import { UsersService } from './services/users.service';
 import { ContactsService } from './services/contacts.service';
 // import { ContactsComponent } from './contacts/contacts.component'; // now lazy
-import { ContactEditComponent } from './contact-edit/contact-edit.component'; // now lazy
+// import { ContactEditComponent } from './contact-edit/contact-edit.component'; // now lazy
+// import { ContactDetailsComponent } from './contact-details/contact-details.component'; // now lazy
 
 import { DepartmentService } from './services/department.service';
 import { DepartmentsComponent } from './departments/departments.component';
@@ -122,9 +123,6 @@ import { UploadImageNativeService } from './services/upload-image-native.service
 
 
 import { HistoryAndNortConvsComponent } from './ws_requests/history-and-nort-convs/history-and-nort-convs.component';
-
-import { ContactDetailsComponent } from './contact-details/contact-details.component';
-
 import { WidgetService } from './services/widget.service';
 
 import { ActivitiesComponent } from './activities/activities.component';
@@ -358,7 +356,7 @@ import { CnpIsMobileComponent } from './create-new-project/cnp-is-mobile/cnp-is-
 import { LoadingSectionComponent } from './create-new-project/loading-section/loading-section.component';
 import { ActivateAppsumoProductComponent } from './create-project-wizard/activate-appsumo-product/activate-appsumo-product.component';
 import { ContactCustomPropertiesComponent } from './components/modals/contact-custom-properties/contact-custom-properties.component';
-import { ContactInfoComponent } from './components/shared/contact-info/contact-info.component';
+// import { ContactInfoComponent } from './components/shared/contact-info/contact-info.component'; // now lazy
 import { CreateProjectGsComponent } from './create-project-wizard/create-project-gs/create-project-gs.component';
 
 
@@ -527,7 +525,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     ResetPswComponent,
     WidgetSetUp,
     HistoryAndNortConvsComponent,
-    ContactDetailsComponent,
+    // ContactDetailsComponent,
     // ContactEditComponent, // now lazy
     ActivitiesComponent,
     AnalyticsStaticComponent,
@@ -669,8 +667,8 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     LoadingSectionComponent,
     ActivateAppsumoProductComponent,
     ContactCustomPropertiesComponent,
-    ContactInfoComponent,
-    CreateProjectGsComponent,
+    // ContactInfoComponent, ContactInfoComponent
+    CreateProjectGsComponent, // now lazy
     KnowledgeBasesComponent,
     // HomeConvsGraphComponent, // now lazy
     // HomeWhatsappAccountComponent, // now lazy
