@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ContactDetailsComponent } from './contact-details.component';
-import { RouterModule ,Routes} from '@angular/router';
+import { WsRequestsMsgsComponent } from './ws-requests-msgs.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { SharedModule } from 'app/shared/shared.module';
 import { MomentModule } from 'ngx-moment';
@@ -9,17 +8,23 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 // import { ContactInfoComponent } from 'app/components/shared/contact-info/contact-info.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { WsTrainBotComponent } from './ws-train-bot/ws-train-bot.component';
+import { WsSidebarAppsComponent } from './ws-sidebar-apps/ws-sidebar-apps.component';
 import { ContactInfoModule } from 'app/components/shared/contact-info/contact-info.module';
+import { RouterModule ,Routes} from '@angular/router';
+import { SatPopoverModule } from '@ncstate/sat-popover';
 
 const routes: Routes = [
-  { path: "", component: ContactDetailsComponent},
+  { path: "", component: WsRequestsMsgsComponent},
 ];
 
 
 @NgModule({
   declarations: [
-    ContactDetailsComponent,
-    // ContactInfoComponent
+    WsRequestsMsgsComponent,
+    // ContactInfoComponent,
+    WsTrainBotComponent,
+    WsSidebarAppsComponent,
   ],
   imports: [
     RouterModule.forChild(routes),
@@ -31,10 +36,8 @@ const routes: Routes = [
     FormsModule,
     ReactiveFormsModule,
     NgSelectModule,
-    ContactInfoModule
-  ],
-  exports: [
-    RouterModule
+    ContactInfoModule,
+    SatPopoverModule
   ]
 })
-export class ContactDetailsModule { }
+export class WsRequestsMsgsModule { }

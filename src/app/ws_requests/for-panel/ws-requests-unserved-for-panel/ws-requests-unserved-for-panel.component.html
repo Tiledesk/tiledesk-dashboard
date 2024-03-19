@@ -132,7 +132,7 @@
                 </div>
               </div>
               <div class="first-msg">
-                <div class="request--first-message text-truncated" [innerHTML]="request?.first_text">
+                <div class="request--first-message text-truncated" [innerHTML]="request?.first_text | htmlEntitiesEncode  | marked">
                 </div>
               </div>
               <div class="actions-btns">

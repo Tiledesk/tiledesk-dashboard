@@ -356,7 +356,7 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
         if (requests_object) {
           this.logger.log('[CONTACTS-DTLS] - getRequests REQUESTS OBJECTS ', requests_object);
           this.requests_list = requests_object['requests'];
-          console.log('[CONTACTS-DTLS] - getRequests REQUESTS LIST (got by requester_id) ', this.requests_list);
+          this.logger.log('[CONTACTS-DTLS] - getRequests REQUESTS LIST (got by requester_id) ', this.requests_list);
 
           // this.requests_list = requests_object['requests'];
 

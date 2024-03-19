@@ -23,7 +23,8 @@ import { EventsComponent } from './events/events.component';
 
 /*** WEBSOCKET ***/
 import { WsRequestsListComponent } from './ws_requests/ws-requests-list/ws-requests-list.component';
-import { WsRequestsMsgsComponent } from './ws_requests/ws-requests-msgs/ws-requests-msgs.component';
+// import { WsRequestsMsgsComponent } from './ws_requests/ws-requests-msgs/ws-requests-msgs.component';  // now lazy
+// import { WsRequestsUnservedForPanelComponent } from './ws_requests/for-panel/ws-requests-unserved-for-panel/ws-requests-unserved-for-panel.component'; // now lazy
 
 import { DepartmentsComponent } from './departments/departments.component';
 import { DepartmentEditAddComponent } from './department-edit-add/department-edit-add.component';
@@ -112,7 +113,7 @@ import { CannedResponsesListComponent } from './canned-responses/canned-response
 import { TagsComponent } from './tags/tags.component';
 
 
-import { WsRequestsUnservedForPanelComponent } from './ws_requests/for-panel/ws-requests-unserved-for-panel/ws-requests-unserved-for-panel.component';
+
 
 // @ Apps
 // import { AppStoreComponent } from './app-store/app-store.component'; // now lazy
@@ -372,10 +373,58 @@ const routes: Routes = [
     loadChildren: () => import('app/contact-edit/contact-edit.module').then(m => m.ContactEditModule),
     canActivate: [AuthGuard],
   },
-  
   // { path: 'project/:projectid/contact/_edit/:requesterid', component: ContactEditComponent, canActivate: [AuthGuard] }, // now lazy // called from the dropodown of the chat to change contact email , name amd lastname on fly (use to not display the goBack)
 
 
+  // Conversation details
+  {
+    path: 'project/:projectid/wsrequest/:requestid/messages',
+    loadChildren: () => import('app/ws_requests/ws-requests-msgs/ws-requests-msgs.module').then(m => m.WsRequestsMsgsModule),
+    canActivate: [AuthGuard]
+  },
+  // { path: 'project/:projectid/wsrequest/:requestid/messages', component: WsRequestsMsgsComponent, canActivate: [AuthGuard] }, // now lazy
+  {
+    path: 'project/:projectid/request-for-panel/:requestid',
+    loadChildren: () => import('app/ws_requests/ws-requests-msgs/ws-requests-msgs.module').then(m => m.WsRequestsMsgsModule),
+    canActivate: [AuthGuard]
+  },
+  // { path: 'project/:projectid/request-for-panel/:requestid', component: WsRequestsMsgsComponent, canActivate: [AuthGuard] }, // now lazy
+
+  {
+    path: 'project/:projectid/wsrequest/:requestid/:calledby/messages',
+    loadChildren: () => import('app/ws_requests/ws-requests-msgs/ws-requests-msgs.module').then(m => m.WsRequestsMsgsModule),
+    canActivate: [AuthGuard]
+  },
+  // { path: 'project/:projectid/wsrequest/:requestid/:calledby/messages', component: WsRequestsMsgsComponent, canActivate: [AuthGuard] }, 
+
+  {
+    path: 'project/:projectid/wsrequest/:requestid/:calledby/:hassearchedby/messages',
+    loadChildren: () => import('app/ws_requests/ws-requests-msgs/ws-requests-msgs.module').then(m => m.WsRequestsMsgsModule),
+    canActivate: [AuthGuard]
+  },
+  // { path: 'project/:projectid/wsrequest/:requestid/:calledby/:hassearchedby/messages', component: WsRequestsMsgsComponent, canActivate: [AuthGuard] }, // now lazy
+  
+  {
+    path: 'project/:projectid/wsrequest/:requestid/:calledby/:hassearchedby/:isopenadvancedsearch/messages',
+    loadChildren: () => import('app/ws_requests/ws-requests-msgs/ws-requests-msgs.module').then(m => m.WsRequestsMsgsModule),
+    canActivate: [AuthGuard]
+  },
+  // { path: 'project/:projectid/wsrequest/:requestid/:calledby/:hassearchedby/:isopenadvancedsearch/messages', component: WsRequestsMsgsComponent, canActivate: [AuthGuard] },  // now lazy
+  
+  {
+    path: 'project/:projectid/wsrequest/:requestid/:calledby/:hassearchedby/:isopenadvancedsearch/:deptid/messages',
+    loadChildren: () => import('app/ws_requests/ws-requests-msgs/ws-requests-msgs.module').then(m => m.WsRequestsMsgsModule),
+    canActivate: [AuthGuard]
+  },
+  // { path: 'project/:projectid/wsrequest/:requestid/:calledby/:hassearchedby/:isopenadvancedsearch/:deptid/messages', component: WsRequestsMsgsComponent, canActivate: [AuthGuard] }, // now lazy
+
+  // Unserved for chat ionic
+  {
+    path: 'project/:projectid/unserved-request-for-panel',
+    loadChildren: () => import('app/ws_requests/for-panel/ws-requests-unserved-for-panel/ws-requests-unserved-for-panel.module').then(m => m.WsRequestsUnservedForPanelModule),
+    canActivate: [AuthGuard]
+  },
+  // { path: 'project/:projectid/unserved-request-for-panel', component: WsRequestsUnservedForPanelComponent, canActivate: [AuthGuard] }, // now lazy
 
    { path: 'project/:projectid/contacts-demo', component: ContactsStaticComponent, canActivate: [AuthGuard] },
 
@@ -461,9 +510,9 @@ const routes: Routes = [
   { path: 'project/:projectid/wsrequests', component: WsRequestsListComponent, canActivate: [AuthGuard, ProjectProfileGuard] },
   { path: 'project/:projectid/wsrequests-demo', component: WsrequestsStaticComponent, canActivate: [AuthGuard] },
 
-  { path: 'project/:projectid/request-for-panel/:requestid', component: WsRequestsMsgsComponent, canActivate: [AuthGuard] },
+  
 
-  { path: 'project/:projectid/unserved-request-for-panel', component: WsRequestsUnservedForPanelComponent, canActivate: [AuthGuard] },
+  
 
   { path: 'chat', component: ChatComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/chat', component: ChatComponent, canActivate: [AuthGuard] },
@@ -584,13 +633,7 @@ const routes: Routes = [
   { path: 'project/:projectid/all-conversations/:hassearcedby/:isopenadvancedsearch', component: HistoryAndNortConvsComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/all-conversations/:hassearcedby/:isopenadvancedsearch/:deptid', component: HistoryAndNortConvsComponent, canActivate: [AuthGuard] },
 
-  // Conversation details
-  { path: 'project/:projectid/wsrequest/:requestid/messages', component: WsRequestsMsgsComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/wsrequest/:requestid/:calledby/messages', component: WsRequestsMsgsComponent, canActivate: [AuthGuard] },
-
-  { path: 'project/:projectid/wsrequest/:requestid/:calledby/:hassearchedby/messages', component: WsRequestsMsgsComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/wsrequest/:requestid/:calledby/:hassearchedby/:isopenadvancedsearch/messages', component: WsRequestsMsgsComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/wsrequest/:requestid/:calledby/:hassearchedby/:isopenadvancedsearch/:deptid/messages', component: WsRequestsMsgsComponent, canActivate: [AuthGuard] },
+  
 
   // is the dummy component used in ws-requests-msgs: when the user is in the request' details page and 
   // click an in-app notification (of a request unserved or assigned to him) the navigation is redirect to the loading component 

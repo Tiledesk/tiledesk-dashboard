@@ -108,7 +108,7 @@ import { SortByDesPipe } from './sortbydes.pipe';
 import { MapToIterable } from './map-to-iterable-pipe';
 import { SelectOptionsTranslatePipe } from './selectOptionsTranslate.pipe';
 import { FilterArrayPipe } from './filterarray.pipe';
-import { MarkedPipe } from './marked.pipe';
+// import { MarkedPipe } from './marked.pipe'; // moved in SharedModule
 
 import { HoursComponent } from './hours/hours.component';
 
@@ -177,10 +177,10 @@ import { environment } from '../environments/environment';
 import { AppConfigService } from './services/app-config.service';
 import { WsRequestsListComponent } from './ws_requests/ws-requests-list/ws-requests-list.component';
 import { WsRequestsService } from './services/websocket/ws-requests.service';
-import { WsRequestsMsgsComponent } from './ws_requests/ws-requests-msgs/ws-requests-msgs.component';
+// import { WsRequestsMsgsComponent } from './ws_requests/ws-requests-msgs/ws-requests-msgs.component'; // now lazy
 import { WsMsgsService } from './services/websocket/ws-msgs.service';
 import { WsSharedComponent } from './ws_requests/ws-shared/ws-shared.component';
-import { WsTrainBotComponent } from './ws_requests/ws-requests-msgs/ws-train-bot/ws-train-bot.component';
+// import { WsTrainBotComponent } from './ws_requests/ws-requests-msgs/ws-train-bot/ws-train-bot.component';  // now lazy
 import { WebSocketJs } from './services/websocket/websocket-js';
 import { WidgetMultilanguageComponent } from './widget_components/widget-multilanguage/widget-multilanguage.component';
 import { BaseTranslationComponent } from './widget_components/widget-multilanguage/base-translation/base-translation.component';
@@ -204,8 +204,8 @@ import { AccountSettingsComponent } from './user-profile/account-settings/accoun
 
 
 
-import { WsRequestsUnservedForPanelComponent } from './ws_requests/for-panel/ws-requests-unserved-for-panel/ws-requests-unserved-for-panel.component';
-import { WsRequestDetailForPanelComponent } from './ws_requests/for-panel//ws-request-detail-for-panel/ws-request-detail-for-panel.component';
+// import { WsRequestsUnservedForPanelComponent } from './ws_requests/for-panel/ws-requests-unserved-for-panel/ws-requests-unserved-for-panel.component'; // now lazy
+import { WsRequestDetailForPanelComponent } from './ws_requests/for-panel//ws-request-detail-for-panel/ws-request-detail-for-panel.component'; // now lazy
 import { AutologinComponent } from './auth/autologin/autologin.component';
 // APP
 // import { AppStoreComponent } from './app-store/app-store.component'; // now lazy
@@ -240,11 +240,11 @@ import { CreateBotComponent } from './department-edit-add/create-bot/create-bot.
 
 import { UnauthorizedForPricingComponent } from './auth/unauthorized-for-pricing/unauthorized-for-pricing.component';
 
-import { SanitizeHtmlPipe } from './sanitize-html.pipe'; // used for iframe to bypass security 
+// import { SanitizeHtmlPipe } from './sanitize-html.pipe'; // moved in SharedModule // used for iframe to bypass security 
 import { SafeHtmlPipe } from './safe-html.pipe'; // used to sanitize email 
 import { UnauthorizedForProjectComponent } from './auth/unauthorized-for-project/unauthorized-for-project.component';
 
-import { HtmlEntitiesEncodePipe } from './html-entities-encode.pipe';
+// import { HtmlEntitiesEncodePipe } from './html-entities-encode.pipe';  // moved in SharedModule
 import { NotificationEmailComponent } from './project-edit-add/notification-email/notification-email.component';
 import { SmtpSettingsComponent } from './project-edit-add/smtp-settings/smtp-settings.component';
 import { SettingsSidebarComponent } from './components/settings-sidebar/settings-sidebar.component';
@@ -267,7 +267,7 @@ import { TemplatesComponent } from './bots/templates/templates.component';
 import { EmailTicketingComponent } from './email-ticketing/email-ticketing.component';
 
 import { CutomTooltipOptions } from './utils/util';
-import { WsSidebarAppsComponent } from './ws_requests/ws-requests-msgs/ws-sidebar-apps/ws-sidebar-apps.component';
+// import { WsSidebarAppsComponent } from './ws_requests/ws-requests-msgs/ws-sidebar-apps/ws-sidebar-apps.component'; // now lazy
 import { ImageViewerComponent } from './ws_requests/ws-requests-msgs/image-viewer/image-viewer.component';
 import { WidgetInstallationComponent } from './widget-installation/widget-installation.component';
 import { AutofocusDirective } from './_directives/autofocus.directive';
@@ -556,9 +556,9 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     InstallWidgetComponent,
     HandleInvitationComponent,
     WsRequestsListComponent,
-    WsRequestsMsgsComponent,
+    // WsRequestsMsgsComponent,
     WsSharedComponent,
-    WsTrainBotComponent,
+    // WsTrainBotComponent, // now lazy
     WidgetMultilanguageComponent,
     BaseTranslationComponent,
     WidgetSharedComponent,
@@ -577,8 +577,8 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     TriggerStaticComponent,
     AccountSettingsComponent,
     // ProjectsForPanelComponent, // removed
-    WsRequestsUnservedForPanelComponent,
-    WsRequestDetailForPanelComponent,
+    // WsRequestsUnservedForPanelComponent, // now lazy
+    // WsRequestDetailForPanelComponent, // now lazy
     AutologinComponent,
     // AppStoreComponent, // now lazy
     // AppStoreInstallComponent, // now lazy
@@ -601,11 +601,11 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     CreateGroupComponent,
     CreateBotComponent,
     UnauthorizedForPricingComponent,
-    MarkedPipe,
-    SanitizeHtmlPipe,
+    // MarkedPipe, // moved in SharedModule
+    // HtmlEntitiesEncodePipe, // moved in SharedModule
+    // SanitizeHtmlPipe, // moved in SharedModule
     SafeHtmlPipe,
     UnauthorizedForProjectComponent,
-    HtmlEntitiesEncodePipe,
     NotificationEmailComponent,
     SmtpSettingsComponent,
     SettingsSidebarComponent,
@@ -614,7 +614,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     NativeBotComponent,
     NativeBotSelectTypeComponent,
     EmailTicketingComponent,
-    WsSidebarAppsComponent,
+    // WsSidebarAppsComponent, // now lazy
     RasaBotComponent,
     ImageViewerComponent,
     WidgetInstallationComponent,
