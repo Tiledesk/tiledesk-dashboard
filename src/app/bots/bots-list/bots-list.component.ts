@@ -1,9 +1,8 @@
 import { Component, isDevMode, OnInit, OnDestroy } from '@angular/core';
 import { FaqKbService } from '../../services/faq-kb.service';
-import { FaqKb } from '../../models/faq_kb-model';
-import { Router, RoutesRecognized } from '@angular/router';
+import { Chatbot, FaqKb } from '../../models/faq_kb-model';
+import { Router } from '@angular/router';
 import { FaqService } from '../../services/faq.service';
-
 import { Project } from '../../models/project-model';
 import { AuthService } from '../../core/auth.service';
 import { Location } from '@angular/common';
@@ -11,22 +10,22 @@ import { NotifyService } from '../../core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
 import { AppConfigService } from '../../services/app-config.service';
 import { DepartmentService } from '../../services/department.service';
-// import brand from 'assets/brand/brand.json';
 import { BrandService } from '../../services/brand.service';
 import { LoggerService } from '../../services/logger/logger.service';
 import { ProjectService } from 'app/services/project.service';
 import { BotLocalDbService } from 'app/services/bot-local-db.service';
 import { MatDialog } from '@angular/material/dialog';
 import { CloneBotComponent } from './clone-bot/clone-bot.component';
-// import { goToCDSVersion } from 'app/utils/util';
 import { CHATBOT_MAX_NUM, goToCDSVersion, PLAN_NAME } from 'app/utils/util';
 import { ProjectPlanService } from 'app/services/project-plan.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
 import { UsersService } from 'app/services/users.service';
 import { ChatbotModalComponent } from './chatbot-modal/chatbot-modal.component';
-import { BotsBaseComponent } from '../bots-base/bots-base.component';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
+import {Clipboard} from '@angular/cdk/clipboard';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import { MessagesStatsModalComponent } from 'app/components/modals/messages-stats-modal/messages-stats-modal.component';
 
 const swal = require('sweetalert');
 @Component({
@@ -44,8 +43,6 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
   faqkbList: FaqKb[];
   myChatbotAllCount: number;
   navigationBaseUrl: string;
-
-
   // set to none the property display of the modal
   display = 'none';  // NO MORE USED (IS THE OLD MODAL USED TO DELETE THE BOT)
   displayDeleteBotModal = 'none'; // THE NEW MODAL USED TO DELETE THE BOT
@@ -53,7 +50,9 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
   SHOW_CIRCULAR_SPINNER = false;
 
   id_toDelete: string;
-
+  botIdToRename: string = '';
+  botToRename: any;
+  newBotName:string; 
   faqKbId: string;
   faq_faqKbId: string;
 
@@ -99,10 +98,10 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
   customerSatisfactionBotsCount: number;
   myChatbotOtherCount: number;
   increaseSalesBotsCount: number;
-  
+
   customerSatisfactionBots: any;
   increaseSalesBots: any;
-  
+
   route: string
   dev_mode: boolean;
   isPanelRoute: boolean = false;
@@ -127,7 +126,17 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
   public contactUs: string;
   learnMoreAboutDefaultRoles: string;
   agentsCannotManageChatbots: string;
-  salesEmail:string;
+  salesEmail: string;
+  WIDGET_BASE_URL: string;
+  defaultDeptId: string;
+  is0penDropDown: boolean = false
+  isOpen: boolean;
+
+  orderBylastUpdated: boolean = true;
+  orderByCreationDate: boolean = false;
+  pageName: string;
+
+  // editBotName: boolean = false;
   constructor(
     private faqKbService: FaqKbService,
     private router: Router,
@@ -144,7 +153,9 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     private botLocalDbService: BotLocalDbService,
     public dialog: MatDialog,
     public prjctPlanService: ProjectPlanService,
-    public usersService: UsersService
+    public usersService: UsersService,
+    private clipboard: Clipboard,
+    private _snackBar: MatSnackBar
   ) {
     super(prjctPlanService, notify);
     const brand = brandService.getBrand();
@@ -171,6 +182,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     this.getNavigationBaseUrl()
     this.getProjectPlan();
     this.getUserRole();
+    this.getDefaultDeptId();
   }
 
   ngOnDestroy() {
@@ -270,10 +282,107 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     });
   }
 
+  renameChatbot(bot) {
+    this.botIdToRename = bot._id;
+    this.logger.log('[BOTS-LIST] botIdToRename' , this.botIdToRename) 
+    this.botToRename = bot
+    this.logger.log('[BOTS-LIST] botToRename' , this.botToRename) 
+    // this.editBotName = true;
+  }
+
+  onPressEnterUpdateChatBotName(event) {
+    this.logger.log('[BOTS-LIST] onPressEnterUpdateChatBotName event ', event )
+    if (event.code === 'Enter' || event.which === 13) {
+      this.updateChatbot()
+    }
+  }
+
+  changeChatBotName(event) {
+    this.logger.log('[BOTS-LIST] changeChatBotName event ', event ) 
+    this.newBotName = event
+  }
+
+
+
+  shareWithLink(botid, botname) {
+    this.logger.log('[BOTS-LIST] - UPDATED CHATBOT - shareWithLink botid', botid);
+    this.logger.log('[BOTS-LIST] - UPDATED CHATBOT - shareWithLink botname', botname);
+    // https://widget.tiledesk.com/v6/assets/twp/chatbot-panel.html?tiledesk_projectid=64959b8a6998ee001399056e&tiledesk_participants=bot_65bc881f4bc2250013ca8832&tiledesk_departmentID=64959b8a6998ee0013990572&tiledesk_hideHeaderCloseButton=true&tiledesk_widgetTitle=Showcase%20Deals&tiledesk_preChatForm=false&td_draft=true
+    // https://widget-pre.tiledesk.com/v5/assets/twp/chatbot-panel.html?tiledesk_projectid=65cb48c7b6343a002fce77de&tiledesk_participants=bot_65cb48d5b6343a002fce7845&tiledesk_departmentID=65cb48c7b6343a002fce77e2&tiledesk_hideHeaderCloseButton=true&tiledesk_widgetTitle=Nikola&tiledesk_preChatForm=false&td_draft=true
+    // WIDGET_BASE_URL = 'https://widget.tiledesk.com/v6/' (prod)
+    // WIDGET_BASE_URL = ''https://widget-pre.tiledesk.com/v5/' (pre)
+    this.WIDGET_BASE_URL = this.appConfigService.getConfig().WIDGET_BASE_URL;
+    const botLink =  this.WIDGET_BASE_URL + "assets/twp/chatbot-panel.html?tiledesk_projectid=" +this.currentProjectId+ "&tiledesk_participants=bot_" + botid + "&tiledesk_departmentID="+ this.defaultDeptId + "&tiledesk_hideHeaderCloseButton=true&tiledesk_widgetTitle="+botname + "&tiledesk_preChatForm=false&td_draft=true"
+    this.clipboard.copy(botLink)
+    this._snackBar.open(" Copied to clipboard", null, {
+      duration: 3000,
+      verticalPosition: 'top',
+      panelClass:'success-snackbar'
+    });
+  }
+
+  openTestSiteInPopupWindow(botid) {
+    // https://widget.tiledesk.com/v6/assets/twp/chatbot-panel.html?tiledesk_projectid=63d7911ca7b3d3001a4a9404&tiledesk_participants=bot_65605e3dfb23780013b92711&tiledesk_departmentID=63d7911ca7b3d3001a4a9408
+    // this.logger.log('openTestSiteInPopupWindow TESTSITE_BASE_URL', this.TESTSITE_BASE_URL)
+    this.WIDGET_BASE_URL = this.appConfigService.getConfig().WIDGET_BASE_URL;
+    
+    const testItOutUrl = this.WIDGET_BASE_URL  + "assets/twp/chatbot-panel.html?tiledesk_projectid=" + this.currentProjectId +  '&tiledesk_participants=bot_' + botid + "&tiledesk_departmentID=" + this.defaultDeptId
+    // this.logger.log('openTestSiteInPopupWindow testItOutUrl ', testItOutUrl)
+    let left = (screen.width - 830) / 2;
+    let top = (screen.height - 727) / 4;
+
+    let params = `toolbar=no,menubar=no,width=830,height=727,left=${left},top=${top}`;
+    window.open(testItOutUrl, '_blank', params);
+  }
+
+   // -------------------------------------------------------------------------------------- 
+  // Export chatbot to JSON
+  // -------------------------------------------------------------------------------------- 
+  exportChatbotToJSON(faqkb) {
+    // const exportFaqToJsonBtnEl = <HTMLElement>document.querySelector('.export-chatbot-to-json-btn');
+    // exportFaqToJsonBtnEl.blur();
+    this.faqService.exportChatbotToJSON(faqkb._id).subscribe((faq: any) => {
+      // this.logger.log('[TILEBOT] - EXPORT CHATBOT TO JSON - FAQS', faq)
+      // this.logger.log('[TILEBOT] - EXPORT FAQ TO JSON - FAQS INTENTS', faq.intents)
+      if (faq) {
+        this.downloadObjectAsJson(faq, faq.name);
+      }
+    }, (error) => {
+      this.logger.error('[BOTS-LIST] - EXPORT BOT TO JSON - ERROR', error);
+    }, () => {
+      this.logger.log('[BOTS-LIST] - EXPORT BOT TO JSON - COMPLETE');
+    });
+  }
+
+  downloadObjectAsJson(exportObj, exportName) {
+    var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportObj));
+    var downloadAnchorNode = document.createElement('a');
+    downloadAnchorNode.setAttribute("href", dataStr);
+    downloadAnchorNode.setAttribute("download", exportName + ".json");
+    document.body.appendChild(downloadAnchorNode); // required for firefox
+    downloadAnchorNode.click();
+    downloadAnchorNode.remove();
+  }
+
+
+  updateChatbot() {
+    this.botToRename.name = this.newBotName
+    this.faqKbService.updateChatbot(this.botToRename)
+      .subscribe((chatbot: any) => {
+        this.logger.log('[BOTS-LIST] - UPDATED CHATBOT - RES ', chatbot);
+
+      }, (error) => {
+        this.logger.error('[BOTS-LIST] - UPDATED CHATBOT - ERROR  ', error);
+        // self.notify.showWidgetStyleUpdateNotification(this.create_label_error, 4, 'report_problem');
+      }, () => {
+        this.logger.log('[BOTS-LIST] - UPDATED CHATBOT * COMPLETE *');
+        this.botIdToRename = '';
+        this.botToRename = null;
+      });
+  }
+
   duplicateChatbot(bot_id, bot_name) {
     this.logger.log('[BOTS-LIST] duplicateChatbot chatBotCount ', this.chatBotCount, ' chatBotLimit ', this.chatBotLimit, ' USER_ROLE ', this.USER_ROLE, ' profile_name ', this.profile_name)
-
-
     if (this.USER_ROLE !== 'agent') {
       if (this.chatBotLimit) {
         if (this.chatBotCount < this.chatBotLimit) {
@@ -372,10 +481,10 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
       this.logger.log('[BOTS-LIST] IMAGE STORAGE ', this.storageBucket, 'usecase Firebase')
     } else {
       this.UPLOAD_ENGINE_IS_FIREBASE = false;
-      // this.baseUrl = this.appConfigService.getConfig().SERVER_BASE_URL;
+      
       this.baseUrl = this.appConfigService.getConfig().baseImageUrl;
 
-
+      
       this.logger.log('[BOTS-LIST] IMAGE STORAGE ', this.baseUrl, 'usecase native')
     }
   }
@@ -394,6 +503,48 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     });
   }
 
+
+
+  openBotMsgsStats(bot) {
+    this.logger.log('[BOTS-LIST] openBotStats  ')
+
+    const statsDialogRef = this.dialog.open(MessagesStatsModalComponent, {
+      width: '800px',
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+      hasBackdrop: true,
+      data: { agent: bot },
+    });
+
+    this.logger.log('[BOTS-LIST] openBotStats  statsDialogRef ', statsDialogRef)
+
+    statsDialogRef.afterClosed().subscribe(agentId => {
+      this.logger.log(`[BOTS-LIST] Dialog afterClosed agentId: ${agentId}`);
+      if (agentId) {
+        const statBtnEl = <HTMLElement>document.querySelector('#btn-' + `${agentId}`);
+        this.logger.log('[BOTS-LIST] Dialog afterClosed statBtnEl', statBtnEl);
+        statBtnEl.blur()
+      }
+    });
+  }
+
+  isOpenDropdown(_is0penDropDown) {
+    this.is0penDropDown = _is0penDropDown
+    this.logger.log('[BOTS-LIST] this.is0penDropDown ',this.is0penDropDown)  
+  }
+  orderBy(sortfor) {
+    this.logger.log('[BOTS-LIST] - orderBy', sortfor);
+    if (sortfor === 'lastUpdates') {
+      this.orderBylastUpdated = true;
+      this.orderByCreationDate = false;
+      this.getFaqKbByProjectId()
+    } else if (sortfor === 'creationDate') {
+      this.orderBylastUpdated = false;
+      this.orderByCreationDate = true;
+      this.getFaqKbByProjectId()
+      
+    }
+  }
+
   /**
    * GETS ONLY THE FAQ-KB WITH THE CURRENT PROJECT ID
    * NOTE: THE CURRENT PROJECT-ID IS OBTAINED IN THE FAQ-KB SERVICE
@@ -407,13 +558,64 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
 
         this.faqkbList = faqKb;
         this.chatBotCount = this.faqkbList.length;
+        this.myChatbotOtherCount = faqKb.length
+
+        if (this.orderBylastUpdated)  {
+          this.logger.log('[BOTS-LIST] - orderBylastUpdated Here yes');
+          this.faqkbList.sort(function compare(a: Chatbot, b: Chatbot) {
+            if (a['updatedAt'] > b['updatedAt']) {
+              return -1;
+            }
+            if (a['updatedAt'] < b['updatedAt']) {
+              return 1;
+            }
+            return 0;
+          });
+        }
+
+
+        if (this.orderByCreationDate)  {
+          this.logger.log('[BOTS-LIST] - orderByCreationDate Here yes');
+          this.faqkbList.sort(function compare(a: Chatbot, b: Chatbot) {
+            if (a['createdAt'] > b['createdAt']) {
+              return -1;
+            }
+            if (a['createdAt'] < b['createdAt']) {
+              return 1;
+            }
+            return 0;
+          });
+        }
+        
         this.faqkbList.forEach(bot => {
           this.logger.log('[BOTS-LIST] getFaqKbByProjectId bot ', bot)
+          if (bot && bot.url) {
+            this.logger.log('[BOTS-LIST] getFaqKbByProjectId bot url', bot.url)
+
+            let parts = bot.url.split("/");
+            let botId_FromDeployUrl = parts[parts.length - 1];
+            this.logger.log('[BOTS-LIST] getFaqKbByProjectId botIdFromDeployUrl ', botId_FromDeployUrl)
+            let botId = bot._id;
+            this.logger.log('[BOTS-LIST] getFaqKbByProjectId botId ', botId)
+            if (botId_FromDeployUrl === botId) {
+              this.logger.log('The bot has not been published')
+              bot['published'] = false
+
+            } else if (botId_FromDeployUrl !== botId) {
+              this.logger.log('The bot has been published')
+              bot['published'] = true
+            }
+          } else {
+            this.logger.error('[BOTS-LIST] bot not has url ' ,bot ) 
+          }
+
           this.getBotProfileImage(bot)
 
+          this.logger.log('[BOTS-LIST] - orderBylastUpdated', this.orderBylastUpdated);
+          this.logger.log('[BOTS-LIST] - orderByCreationDate', this.orderByCreationDate);
         });
 
-        this.myChatbotOtherCount = faqKb.length
+   
 
         // ---------------------------------------------------------------------
         // Bot forked from Customer Satisfaction templates
@@ -443,11 +645,14 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
         this.route = this.router.url
         if (this.route.indexOf('/bots/my-chatbots/all') !== -1) {
           this.faqkbList = this.faqkbList
+          this.pageName ="ALL MY CHATBOTS"
           this.logger.log('[BOTS-LIST] ROUTE my-chatbots/all');
         } else if (this.route.indexOf('/bots/my-chatbots/customer-satisfaction') !== -1) {
           this.faqkbList = this.customerSatisfactionBots
+          this.pageName ="CUSTOMER SATISFACTION CHATBOTS"
           this.logger.log('[BOTS-LIST] ROUTE my-chatbots/customer-satisfaction faqkbList ', this.faqkbList);
         } else if (this.route.indexOf('/bots/my-chatbots/increase-sales') !== -1) {
+          this.pageName ="INCREASE SALES CHATBOTS"
           this.faqkbList = this.increaseSalesBots
           this.logger.log('[BOTS-LIST] ROUTE my-chatbots/increase-sales faqkbList ', this.faqkbList);
         }
@@ -656,8 +861,26 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     this.bot_name_to_delete = bot_name;
   }
 
+  getDefaultDeptId() {
+    this.departmentService.getDeptsByProjectId().subscribe((depts: any) => {
+      this.logger.log('[BOTS-LIST] - GET DEPTS RES', depts);
+      
 
-  getDepartments(selectedBotId) {
+      depts.forEach(dept => {
+        if (dept.default === true) {
+          this.defaultDeptId = dept._id
+        }
+      });
+
+    }, error => {
+      this.logger.error('[BOTS-LIST] - GET DEPTS - ERROR: ', error);
+    }, () => {
+      this.logger.log('[BOTS-LIST] - GET DEPTS * COMPLETE *')
+    });
+
+  }
+
+  getDepartments(selectedBotId?: string) {
     this.departmentService.getDeptsByProjectId().subscribe((_departments: any) => {
       this.logger.log('[BOTS-LIST] ON MODAL DELETE OPEN - GET DEPTS RES', _departments);
       // this.departments = _departments
@@ -930,7 +1153,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
       // this.router.navigate(['project/' + this.project._id + '/tilebot/intents/', idFaqKb, _botType]);
       // this.router.navigate(['project/' + this.project._id + '/createfaq', idFaqKb, _botType, 'en']);
       this.goToCDS(faqkb)
-    
+
     } else if (faqkb.type === 'tiledesk-ai') {
       _botType = 'tiledesk-ai'
       // this.router.navigate(['project/' + this.project._id + '/tilebot/intents/', idFaqKb, _botType]);

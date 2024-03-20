@@ -342,6 +342,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   youCannotJoinChat: string;
   joinChatTitle: string;
+  youCannotJoinThisChat: string;
+  thisChatIsAlreadyServedBy: string;
   visitorAlreadyBanned: string;
 
   is0penDropDown = false
@@ -392,7 +394,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   subscription_end_date: any;
   onlyAvailableWithEnterprisePlan: string;
   cPlanOnly: string;
-  fPlanOnly:  string;
+  fPlanOnly: string;
   learnMoreAboutDefaultRoles: string;
   onlyUserWithOwnerRoleCanManageAdvancedProjectSettings: string;
   displayChatRatings: boolean = true;
@@ -679,7 +681,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   openUpgradePlanDialog(projectid, planName) {
     const dialogRef = this.dialog.open(UpgradePlanModalComponent, {
       data: {
-        featureAvailableFrom:  planName,
+        featureAvailableFrom: planName,
         projectId: projectid,
         userRole: this.CURRENT_USER_ROLE
       },
@@ -1382,10 +1384,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.wsRequestsService.getConversationByIDWithRestRequest(requestid)
       .subscribe((request: any) => {
         this.logger.log('[WS-REQUESTS-MSGS] - GET REQUEST BY ID (REST CALL) - RES NIKO ', request);
-        if(request)  {
+        if (request) {
           this.REQUEST_EXIST = true
         }
-       
+
       }, (error) => {
         // this.showSpinner = false;
         this.logger.error('[WS-REQUESTS-MSGS] - GET REQUEST BY ID (REST CALL) - ERROR  ', error);
@@ -2281,9 +2283,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           }
 
 
-
+          this.logger.log('[WS-REQUESTS-MSGS] members_array', this.members_array)
           this.createAgentsArrayFromParticipantsId(this.members_array, this.requester_id, this.UPLOAD_ENGINE_IS_FIREBASE, this.imageStorage)
           this.createRequesterAvatar(this.request.lead);
+          this.logger.log('[WS-REQUESTS-MSGS] - IS_CURRENT_USER_JOINED this.request.participants? ', this.request.participants , 'this.currentUserID ', this.currentUserID)
           this.IS_CURRENT_USER_JOINED = this.currentUserIdIsInParticipants(this.request.participants, this.currentUserID, this.request.request_id);
           this.logger.log('[WS-REQUESTS-MSGS] - IS_CURRENT_USER_JOINED? ', this.IS_CURRENT_USER_JOINED)
         }
@@ -3297,14 +3300,22 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   openSelectUsersModal(actionSelected) {
     this.actionInModal = actionSelected
-    // this.logger.log('[WS-REQUESTS-MSGS] - ACTION IN MODAL ', this.actionInModal);
+    this.logger.log('[WS-REQUESTS-MSGS] - ACTION IN MODAL ', this.actionInModal);
     this.closeMoreOptionDropdown();
 
 
     if (this.actionInModal === 'invite') {
       if (this.request.channel.name === 'email' || this.request.channel.name === 'form') {
-        if (this.agents_array.length === 1) {
-          this.presentModalYouCannotAddAgents()
+        if (this.agents_array.length === 1 && this.agents_array[0].isBot === false) {
+          let agentFullname = ""
+          if (this.agents_array[0].firstname && this.agents_array[0].lastname) {
+            agentFullname = this.agents_array[0].firstname + ' ' + this.agents_array[0].lastname
+          } else if (this.agents_array[0].firstname && !this.agents_array[0].lastname) {
+            agentFullname = this.agents_array[0].firstname
+          }
+          this.presentModalYouCannotAddAgents(agentFullname)
+        } else if (this.agents_array.length === 1 && this.agents_array[0].isBot === true) {
+          this.presentModalAddAgent()
         } else if (this.agents_array.length === 0) {
           this.presentModalAddAgent()
         }
@@ -3344,12 +3355,12 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       }
     }
   }
-
-  presentModalYouCannotAddAgents() {
+  // this.addAgentTitle
+  presentModalYouCannotAddAgents(agentFullname) {
     swal({
-      title: this.addAgentTitle,
-      text: this.youCannotAddAgents,
-      icon: "info",
+      title: this.youCannotAddAgents,
+      text: this.translate.instant('ThisChatIsAlreadyServedBy', { agent_fullname: agentFullname }) + ' ' + this.translate.instant('EmailAndTicketCanOnlyBeServedByOneAgent') + '.',
+      icon: "warning",
       buttons: 'OK',
       dangerMode: false,
       className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
@@ -3591,10 +3602,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   presentSwalModalAddAgentToConversation(userid, userfirstname, userlastname) {
-    this.logger.log('[WS-REQUESTS-MSGS] presentSwalModalAddAgentToConversation' )
+    this.logger.log('[WS-REQUESTS-MSGS] presentSwalModalAddAgentToConversation')
     swal({
       title: this.addAgentMsg,
-      text: this.translate.instant('VisitorsPage.TheRequestWillBeAssignedTo', {user: userfirstname + ' ' + userlastname}),
+      text: this.translate.instant('VisitorsPage.TheRequestWillBeAssignedTo', { user: userfirstname + ' ' + userlastname }),
       icon: "info",
       buttons: true,
       dangerMode: false,
@@ -3839,8 +3850,18 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   // JOIN TO CHAT GROUP
   onJoinHandled() {
     if (this.request.channel.name === 'email' || this.request.channel.name === 'form') {
-      if (this.agents_array.length === 1) {
-        this.presentModalYouCannotJoinChat()
+      if (this.agents_array.length === 1 && this.agents_array[0].isBot === false) {
+        this.logger.log('[WS-REQUESTS-MSGS] onJoinHandled this.agents_array ', this.agents_array)
+        this.logger.log('[WS-REQUESTS-MSGS] onJoinHandled this.agents_array 0 is a bot', this.agents_array[0].isBot)
+        let agentFullname = ""
+        if (this.agents_array[0].firstname && this.agents_array[0].lastname) {
+          agentFullname = this.agents_array[0].firstname + ' ' + this.agents_array[0].lastname
+        } else if (this.agents_array[0].firstname && !this.agents_array[0].lastname) {
+          agentFullname = this.agents_array[0].firstname
+        }
+        this.presentModalYouCannotJoinChat(agentFullname)
+      } else if (this.agents_array.length === 1 && this.agents_array[0].isBot === true) {
+        this.joinChat()
       } else if (this.agents_array.length === 0) {
         this.joinChat()
       }
@@ -3850,11 +3871,11 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
 
-  presentModalYouCannotJoinChat() {
+  presentModalYouCannotJoinChat(agentFullname) {
     swal({
-      title: this.joinChatTitle,
-      text: this.youCannotJoinChat,
-      icon: "info",
+      title: this.youCannotJoinThisChat,
+      text: this.translate.instant('ThisChatIsAlreadyServedBy', { agent_fullname: agentFullname }) + ' ' + this.translate.instant('EmailAndTicketCanOnlyBeServedByOneAgent') + '.',
+      icon: "warning",
       buttons: 'OK',
       dangerMode: false,
       className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
@@ -3902,12 +3923,12 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
     // this.displayLeaveChatModal = 'block'
   }
-
+  // this.leaveChatTitle,
   presentModalYouCannotLeaveTheChat() {
     swal({
-      title: this.leaveChatTitle,
-      text: this.youCannotLeaveTheChat,
-      icon: "info",
+      title: this.youCannotLeaveTheChat,
+      text: this.translate.instant('EmailAndTicketSupportCannotBeUnserved'),
+      icon: "warning",
       buttons: 'OK',
       dangerMode: false,
       className: this.CHAT_PANEL_MODE === true ? "swal-size-sm" : ""
@@ -4080,7 +4101,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     }
   }
 
- 
+
   checkPlanAndPresentModal() {
 
     if ((this.profile_name === PLAN_NAME.A) ||
@@ -4088,7 +4109,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       (this.profile_name === PLAN_NAME.C && this.subscription_is_active === false) ||
       (this.profile_name === 'free' && this.trial_expired === true)) {
       if (!this.appSumoProfile) {
-       
+
         this.presentModalFeautureAvailableFromTier2Plan(this.featureAvailableFromBPlan)
         return false
       } else {
@@ -4111,7 +4132,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   displayModalDownloadTranscript() {
     if (this.isVisiblePaymentTab) {
-      
+
       const isAvailable = this.checkPlanAndPresentModal()
       this.logger.log('[WS-REQUESTS-MSGS] feature is available ', isAvailable)
       if (isAvailable === false) {
@@ -4307,7 +4328,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
             this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.F, this.subscription_end_date);
           } else if (this.profile_name === PLAN_NAME.F) {
             this.notify.displayEnterprisePlanHasExpiredModal(true, PLAN_NAME.F, this.subscription_end_date);
-          } 
+          }
         }
       } else if (this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.B || this.profile_name === 'free') {
         this.logger.log('displayModalBanVisitor HERE 4 ')
@@ -4412,7 +4433,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
               this.notify._displayContactUsModal(true, 'upgrade_plan');
             } else if (this.profile_name === 'free') {  // 
               this.router.navigate(['project/' + this.id_project + '/pricing']);
-            
+
             }
 
           } else {
@@ -4923,6 +4944,12 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       this.joinChatTitle = text;
     });
 
+    this.translate.get('RequestMsgsPage.YouCannotJoinThisChat').subscribe((text: string) => {
+      this.youCannotJoinThisChat = text;
+    });
+
+
+
 
     this.translate.get('VisitorAlreadyBanned').subscribe((text: string) => {
       this.visitorAlreadyBanned = text;
@@ -4995,11 +5022,11 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         this.featureAvailableFromBPlan = translation;
       });
 
-      
+
     this.translate.get('AvailableFromThePlan', { plan_name: PLAN_NAME.E })
-    .subscribe((translation: any) => {
-      this.featureAvailableFromEPlan = translation;
-    });
+      .subscribe((translation: any) => {
+        this.featureAvailableFromEPlan = translation;
+      });
 
 
     this.translate.get('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan')

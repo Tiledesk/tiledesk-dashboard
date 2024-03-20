@@ -21,27 +21,25 @@
 
     <div class="content-wpr" style="display: flex;">
 
-      <appdashboard-bots-sidebar 
-        [allTemplatesCount]="allTemplatesCount"
+      <appdashboard-bots-sidebar [allTemplatesCount]="allTemplatesCount"
         [allCommunityTemplatesCount]="allCommunityTemplatesCount"
         [customerSatisfactionTemplatesCount]="customerSatisfactionTemplatesCount"
-        [increaseSalesTemplatesCount]="increaseSalesTemplatesCount" 
-        [myChatbotOtherCount]="myChatbotOtherCount"
+        [increaseSalesTemplatesCount]="increaseSalesTemplatesCount" [myChatbotOtherCount]="myChatbotOtherCount"
         [customerSatisfactionBotsCount]="customerSatisfactionBotsCount"
-        [increaseSalesBotsCount]="increaseSalesBotsCount" style="border-right:1px solid #e5effe !important;">
+        [increaseSalesBotsCount]="increaseSalesBotsCount">
       </appdashboard-bots-sidebar>
       <div class="teplate-content" style="flex: 1 1 auto; margin-left: 20px;">
 
         <!-- -------------------------------------------------------------------- -->
         <!-- Alert displayed when the number of chatbot exceed the chatbot limit -->
         <!-- -------------------------------------------------------------------- -->
-        <appdashboard-chatbot-alert *ngIf="chatBotLimit && chatBotCount > chatBotLimit" ></appdashboard-chatbot-alert>
+        <appdashboard-chatbot-alert *ngIf="chatBotLimit && chatBotCount > chatBotLimit"></appdashboard-chatbot-alert>
 
         <div class="row">
           <div class="col-xs-12">
             <button class="btn btn-new btn-size-m btn--primary pull-right" (click)="createBlankTilebot()"
               style="margin-right: 20px; box-shadow: unset;">
-              Add from scratch
+              Create from scratch
             </button>
             <button class="btn btn-new btn-size-m btn--primary pull-right" (click)="goToBotAllTemplates()"
               style="margin-right: 16px;box-shadow: unset;">
@@ -64,8 +62,289 @@
               <!-- <div (click)="goToBotsTemplates()">Bot templates </div> -->
 
               <loading-spinner *ngIf="showSpinner"></loading-spinner>
+              <!-- New chatbot list -->
+              <div *ngIf="!showSpinner" class="main--wrapper">
+                <div class="page-title--wrapper">
+                  <div class="title--header">
+                    {{ pageName }}
+                  </div>
+
+                  <div class="page--actions" *ngIf="faqkbList && faqkbList?.length > 0">
+                    <span class="order-by-label">Order by </span>
+
+                    <div class="dropdown" (click)="isOpenDropdown(isOpen = !isOpen)">
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <span class="order-by-selected-value" *ngIf="orderBylastUpdated">Last updates </span>
+                        <span class="order-by-selected-value" *ngIf="orderByCreationDate">Creation date </span>
+                        <span class="caret dropdown-caret"
+                          [ngClass]="{'caret-rotate-0': is0penDropDown === false, 'caret-rotate-180': is0penDropDown === true}"></span>
+                      </a>
+                      <ul class="dropdown-menu" style="left: -53px;">
+                        <li>
+                          <a (click)="orderBy('lastUpdates')">
+                            Last updates
+                          </a>
+                        </li>
+                        <li>
+                          <a (click)="orderBy('creationDate')">
+                            Creation date
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+                <div *ngIf="faqkbList && faqkbList?.length === 0" class="no-bot-tr-msg-wpr">
+
+                  <p class="no-bot-msg">
+                    <!-- <i class="material-icons" style="vertical-align: middle; margin-bottom: 2px;color: #00bcd4;">
+                        info
+                      </i>
+                      {{ 'BotsPage.NoBot' | translate }} -->
+
+                    <span style="display: block;">
+                      You don't have Chatbots.
+                    </span>
+                    <span style="display: block;">
+                      Get you started with a <span class="btn---link" (click)="goToBotAllTemplates()"> chatbot
+                        template </span> or create a new one from scratch
+                    </span>
+                    <span style="display: block;">
+                      <!-- <span class="btn---link" (click)="createBlankTilebot()"> create a new one from scratch
+                        </span> -->
+
+                      <button class="btn btn-new btn-size-m btn--primary center" (click)="createBlankTilebot()"
+                        style="margin-right: 20px; box-shadow: unset;">
+                        Create from scratch
+                      </button>
+                    </span>
+                  </p>
+
+                </div>
+
+                <div class="card-list"  *ngFor="let faqkb of faqkbList; let i = index">
+
+                  <div class="cl-card" (click)='goToBotDtls(faqkb)'>
+                    <div class="cl-card-content">
+
+                      <div class="cl-card-first-column">
+
+                        <div class="bot-type-logo-wpr" *ngIf="faqkb.type === 'internal'">
+                          <div class="bot-type-logo--img-wpr ">
+                            <img class="bot-type-logo" src="assets/img/tiledesk_logo_no_text.png" />
+                          </div>
+                        </div>
+
+                        <div class="bot-type-logo-wpr" *ngIf="faqkb.type === 'external'">
+                          <div class="bot-type-logo--img-wpr ">
+                            <img class="bot-type-logo" src="assets/img/external_bot_logo.png" />
+                          </div>
+                        </div>
+
+                        <div class="bot-type-logo-wpr" *ngIf="faqkb.type === 'dialogflow'">
+                          <div class="bot-type-logo--img-wpr ">
+                            <img class="bot-type-logo" src="assets/img/Dialogflow_logo_no_text.png" />
+                          </div>
+                        </div>
+
+                        <div class="bot-type-logo-wpr" *ngIf="faqkb.type === 'rasa'">
+                          <div class="bot-type-logo--img-wpr ">
+                            <img class="bot-type-logo" src="assets/img/rasa_bot_logo.png" />
+                          </div>
+                        </div>
+
+                        <div class="bot-type-logo-wpr" *ngIf="faqkb.type === 'tilebot'">
+                          <div class="bot-list-type-logo-img-wpr ">
+                            <img class="bot-type-logo" [src]="botLogo" />
+                          </div>
+                        </div>
+
+                        <div class="cl-card-img-wpr">
+
+                          <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE"
+                            src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{faqkb?._id}}%2Fphoto.jpg?alt=media"
+                            onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
+
+                          <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" [src]="faqkb.botImage"
+                            onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
+
+                        </div>
+
+                        <div class="cl-card-info-wpr">
+                          <span class="cl-card-item-name-wpr">
+
+                           
+                            <div class="cl-card-item-name" >
+                           
+                              <span *ngIf="botIdToRename !== faqkb._id">{{ faqkb.name }}</span>
+                              <input *ngIf="botIdToRename === faqkb._id" type="text" [(ngModel)]="faqkb.name"
+                                (ngModelChange)="changeChatBotName($event)"
+                                (click)="$event.stopPropagation()"
+                                (keypress)="onPressEnterUpdateChatBotName($event);$event.stopPropagation() ">
+                            </div>
+                          </span>
+                          <div class="cl-card-item-description-wpr">
+                            <!-- <div class="bot-card-bot-no-description" *ngIf="!faqkb.description"> No description provided</div> -->
+                            <div class="cl-card-item-description" *ngIf="faqkb.description"> {{ faqkb?.description }}
+                            </div>
+                          </div>
+
+                          <div class="cl-card-item-info">
+              
+                            {{'Created' | translate}} {{ faqkb?.createdAt | amTimeAgo}} / {{ "Updated" | translate }} {{
+                            faqkb?.updatedAt | amTimeAgo }}
+
+                          </div>
+
+                        </div>
+                      </div>
+                     
+                      <div class="cl-card-second-column">
+                        <div class="cl-card-stats-wpr">
+
+                          <div class="cl-card-item-stats">
+                            <div class="cl-card-item-stats-title">
+                              <span *ngIf="faqkb.published"> Published </span>
+                              <span *ngIf="!faqkb.published"> Draft </span>
+                            </div>
+
+                            <div class="cl-card-item-stats-values">
+                              <span *ngIf="faqkb.published" class="material-icons bot-published-icon">
+                                done
+                              </span>
+
+                              <span *ngIf="!faqkb.published" class="material-icons bot-unpublished-icon">
+                                error_outline
+                              </span>
+                            </div>
+                          </div>
+
+                          <div *ngIf="isVisibleAnalytics" class="cl-card-item-stats">
+                            <div class="cl-card-item-stats-title">
+                              <!-- {{ "BotsAddEditPage.Messages" | translate }} -->
+                              Messages
+                            </div>
+                            <div class="cl-card-item-stats-values">
+                              {{ faqkb?.message_count}}
+                            </div>
+                          </div>
+
+                         
+
+                        </div>
+
+                        <div class="cl-card-action-wpr">
+                          <div class="cl-card-action-group">
+                            <div *ngIf="isVisibleAnalytics" 
+                              class="cl-card-action-btn-wpr">
+                              <button id="btn-{{faqkb._id}}" 
+                                mat-icon-button
+                                (click)="$event.stopPropagation();openBotMsgsStats(faqkb)"
+                                matTooltipClass="custom-mat-tooltip" 
+                                matTooltip="Messages" 
+                                #tooltip="matTooltip"
+                                matTooltipPosition='below' 
+                                matTooltipHideDelay="100">
+                                <mat-icon>leaderboard</mat-icon>
+                              </button>
+                            </div>
+
+                            <div class="cl-card-action-btn-wpr" 
+                              (click)="$event.stopPropagation()">
+                              <button id="share-btn-{{faqkb._id}}" 
+                                  mat-icon-button 
+                                  [matMenuTriggerFor]="menu"
+                                  matTooltipClass="custom-mat-tooltip" 
+                                  matTooltip="Share" 
+                                  #tooltip="matTooltip"
+                                  matTooltipPosition='below'
+                                  matTooltipHideDelay="100">
+                                <mat-icon>share</mat-icon>
+                              </button>
+                              <mat-menu #menu="matMenu">
+                                <button class="mat-menu-btn" 
+                                  mat-menu-item
+                                  (click)='shareWithLink(faqkb._id, faqkb?.name)'>
+                                  <mat-icon>link</mat-icon>
+                                  <span>Share with link</span>
+                                </button>
+
+                                <button class="mat-menu-btn"
+                                   mat-menu-item 
+                                   (click)='exportChatbotToJSON(faqkb)'>
+                                  <mat-icon>file_download</mat-icon>
+
+                                  <span>Export</span>
+                                </button>
+                                <!-- <button *ngIf="!faqkb?.is_system_identity_bot" mat-menu-item 
+                                (click)='openDeleteModal(faqkb?._id, faqkb?.name, faqkb?.has_faq, faqkb?.type)'>
+                                <mat-icon>delete</mat-icon>
+                                <span>{{ 'BotsPage.tooltipDeleteBot' | translate }}</span>
+                              </button> -->
+                              </mat-menu>
+                            </div>
+
+                            <div class="cl-card-action-btn-wpr" 
+                              (click)="$event.stopPropagation()">
+                              <button mat-icon-button 
+                                  [matMenuTriggerFor]="sharemenu"
+                                  matTooltipClass="custom-mat-tooltip" 
+                                  matTooltip="Actions" 
+                                  #tooltip="matTooltip"
+                                  matTooltipPosition='below' 
+                                  matTooltipHideDelay="100">
+                                <mat-icon>more_vert</mat-icon>
+                              </button>
+                              <mat-menu #sharemenu="matMenu">
+
+                                <!-- <button class="mat-menu-btn" 
+                                  mat-menu-item 
+                                  (click)='renameChatbot(faqkb)'>
+                                  <mat-icon>edit</mat-icon>
+                                  <span>Rename</span>
+                                </button> -->
+
+                                <button class="mat-menu-btn" 
+                                  mat-menu-item
+                                  (click)="openTestSiteInPopupWindow(faqkb?._id)">
+                                  <mat-icon>visibility</mat-icon>
+                                  <span>Test it out</span>
+                                </button>
+
+                                <button class="mat-menu-btn" 
+                                  mat-menu-item
+                                  (click)='duplicateChatbot(faqkb?._id,  faqkb?.name)'>
+                                  <mat-icon>content_copy</mat-icon>
+                                  <!-- <span>{{ 'Duplicate' | translate }}</span> -->
+                                  <span>Duplicate</span>
+                                </button>
+                                <button class="mat-menu-btn" *ngIf="!faqkb?.is_system_identity_bot" 
+                                  mat-menu-item
+                                  (click)='openDeleteModal(faqkb?._id, faqkb?.name, faqkb?.has_faq, faqkb?.type)'>
+                                  <mat-icon>delete</mat-icon>
+                                  <!-- <span>{{ 'BotsPage.tooltipDeleteBot' | translate }}</span> -->
+                                  <span>Delete</span>
+                                </button>
+                              </mat-menu>
+
+                            </div>
+
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+              <!-- ./ New chatbot list -->
+
+
               <!-- style="overflow:visible;" -->
-              <div *ngIf="!showSpinner" class="card-content table-responsive">
+              <div style="display: none;" *ngIf="!showSpinner" class="card-content table-responsive">
                 <table class="table table-hover">
                   <thead>
                     <tr>
@@ -110,11 +389,11 @@
 
                       <th>
                         <span class="column-th-span">
-                       
-                          {{ "BotsPage.CreationDate" | translate }} 
-                        
-                      </span>
-                    </th>
+
+                          {{ "BotsPage.CreationDate" | translate }}
+
+                        </span>
+                      </th>
 
                       <th>
                         <span class="column-th-span">
@@ -175,35 +454,34 @@
                           <!-- <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" class="bot--img"
                             src="{{baseUrl}}images?path=uploads%2Fusers%2F{{faqkb?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                             onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" /> -->
-                            
-                            <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" class="bot--img"
-                            [src]="faqkb.botImage"
+
+                          <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" class="bot--img" [src]="faqkb.botImage"
                             onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
 
-                            
+
 
                           <div class="bot-type-logo-wpr" *ngIf="faqkb.type === 'internal'">
-                            <div class="bot-type-logo--img-wpr ">  
+                            <div class="bot-type-logo--img-wpr ">
                               <img class="bot-type-logo" src="assets/img/tiledesk_logo_no_text.png" />
                             </div>
                           </div>
 
                           <div class="bot-type-logo-wpr" *ngIf="faqkb.type === 'external'">
-                            <div class="bot-type-logo--img-wpr ">  
+                            <div class="bot-type-logo--img-wpr ">
                               <img class="bot-type-logo" src="assets/img/external_bot_logo.png" />
                             </div>
                           </div>
 
                           <div class="bot-type-logo-wpr" *ngIf="faqkb.type === 'dialogflow'">
-                            <div class="bot-type-logo--img-wpr ">  
+                            <div class="bot-type-logo--img-wpr ">
                               <img class="bot-type-logo" src="assets/img/Dialogflow_logo_no_text.png" />
                             </div>
                           </div>
 
                           <div class="bot-type-logo-wpr" *ngIf="faqkb.type === 'rasa'">
-                            <div class="bot-type-logo--img-wpr ">  
+                            <div class="bot-type-logo--img-wpr ">
                               <img class="bot-type-logo" src="assets/img/rasa_bot_logo.png" />
-                            </div>  
+                            </div>
                           </div>
 
                           <!-- <span class="bot-type-logo-wpr" *ngIf="faqkb.type === 'tilebot'">
@@ -211,18 +489,18 @@
                           </span> -->
 
                           <div class="bot-type-logo-wpr" *ngIf="faqkb.type === 'tilebot'">
-                            <div class="bot-type-logo--img-wpr ">  
+                            <div class="bot-type-logo--img-wpr ">
                               <img class="bot-type-logo" [src]="botLogo" />
                             </div>
                           </div>
 
-                         
+
 
                           <!-- <span class="bot-type-logo-wpr"   *ngIf="faqkb.type === 'tiledesk-ai'">
                             <img src="assets/img/tiledesk-ai-logo.png" />
                           </span> -->
 
-                          
+
 
                           <!-- <span class="tooltiptext">
                             {{ 'BotsPage.BotId' | translate }}: <br> {{ faqkb?._id  }}
@@ -333,47 +611,37 @@
                       <td>
                         <!-- {{ faqkb?.createdAt | date: 'd/M/y'}} -->
                         {{ faqkb?.createdAt | amDateFormat: 'LLL'}}
-                        
-                      </td> 
-                  
+
+                      </td>
+
                       <td class="td-actions text-right" style="padding-top:18px !important">
                         <!-- rel="tooltip" title="{{ 'BotsPage.tooltipEditBot' | translate }}" -->
-                        <button type="button" 
-                          class="btn btn-primary btn-simple btn-xs"
-                          (click)='goToBotDtls(faqkb)'
-                          matTooltipClass="custom-mat-tooltip"
-                          matTooltip="{{ 'BotsPage.tooltipEditBot' | translate }}" 
-                          #tooltip="matTooltip" 
-                          matTooltipPosition='below' 
-                          matTooltipHideDelay="100">
+                        <button type="button" class="btn btn-primary btn-simple btn-xs" (click)='goToBotDtls(faqkb)'
+                          matTooltipClass="custom-mat-tooltip" matTooltip="{{ 'BotsPage.tooltipEditBot' | translate }}"
+                          #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
                           <i class="material-icons">edit</i>
                         </button>
 
                         <!-- rel="tooltip" title="{{ 'Duplicate' | translate }}" -->
-                      <button type="button" 
-                        class="btn btn-primary btn-simple btn-xs"
-                        (click)='duplicateChatbot(faqkb?._id,  faqkb?.name)'
-                          matTooltipClass="custom-mat-tooltip"
-                          matTooltip="{{ 'Duplicate' | translate }}" 
-                          #tooltip="matTooltip" 
-                          matTooltipPosition='below' 
-                          matTooltipHideDelay="100" >
-                        <i class="material-icons">content_copy</i>
-                      </button>
+                        <button type="button" class="btn btn-primary btn-simple btn-xs"
+                          (click)='duplicateChatbot(faqkb?._id,  faqkb?.name)' matTooltipClass="custom-mat-tooltip"
+                          matTooltip="{{ 'Duplicate' | translate }}" #tooltip="matTooltip" matTooltipPosition='below'
+                          matTooltipHideDelay="100">
+                          <i class="material-icons">content_copy</i>
+                        </button>
 
-                        
-                      <!-- <button *ngIf="faqkb?.type === 'tilebot' && isPanelRoute === false" type="button" rel="tooltip" title="{{ 'BotsPage.tooltipEditBot' | translate }}"
+
+                        <!-- <button *ngIf="faqkb?.type === 'tilebot' && isPanelRoute === false" type="button" rel="tooltip" title="{{ 'BotsPage.tooltipEditBot' | translate }}"
                         class="btn btn-primary btn-simple btn-xs" (click)='goToCDS(faqkb?._id, faqkb?.type,  faqkb?.name)'>
                         <i class="material-icons" style="color: rgb(0, 0, 0);">rocket_launch</i>
                       </button> -->
-                      <!-- rel="tooltip"title="{{ 'BotsPage.tooltipDeleteBot' | translate }}" -->
-                        <button *ngIf="!faqkb?.is_system_identity_bot" type="button"  class="btn btn-danger btn-simple btn-xs"
+                        <!-- rel="tooltip"title="{{ 'BotsPage.tooltipDeleteBot' | translate }}" -->
+                        <button *ngIf="!faqkb?.is_system_identity_bot" type="button"
+                          class="btn btn-danger btn-simple btn-xs"
                           (click)='openDeleteModal(faqkb?._id, faqkb?.name, faqkb?.has_faq, faqkb?.type)'
                           matTooltipClass="custom-mat-tooltip"
-                          matTooltip="{{ 'BotsPage.tooltipDeleteBot' | translate }}" 
-                          #tooltip="matTooltip" 
-                          matTooltipPosition='below' 
-                          matTooltipHideDelay="100">
+                          matTooltip="{{ 'BotsPage.tooltipDeleteBot' | translate }}" #tooltip="matTooltip"
+                          matTooltipPosition='below' matTooltipHideDelay="100">
                           <i class="material-icons">close</i>
                         </button>
                       </td>

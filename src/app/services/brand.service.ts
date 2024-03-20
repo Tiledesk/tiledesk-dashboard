@@ -19,7 +19,8 @@ export class BrandService {
   _brand = {
     DASHBOARD: {
       META_TITLE: "Tiledesk Design Studio",
-      FAVICON_URL: "https://tiledesk.com/wp-content/uploads/2022/07/tiledesk_v13-300x300.png",
+      // FAVICON_URL: "https://tiledesk.com/wp-content/uploads/2022/07/tiledesk_v13-300x300.png",
+      FAVICON_URL: "assets/img/logos/favicon.ico",
       CUSTOM_COMPANY_HOME_LOGO: false,
       COMPANY_LOGO_PLANET: "assets/img/logos/tiledesk_planet.svg",
       "privacy_policy_link_text": "Privacy Policy",
@@ -31,9 +32,9 @@ export class BrandService {
       "display_google_auth_btn": true,
       "display_help_in_installation": true,
       "display_invite_teammate_btn": true,
+      "display_contact_us_email": true,
       "footer": {
         "display_terms_and_conditions_link": true,
-        "display_contact_us_email": true,
         "display_star_us_on_github": true,
         "display_leave_us_a_feedback": true,
         "display_followus_on_x": true,
@@ -83,6 +84,7 @@ export class BrandService {
       CONTACT_SALES_EMAIL: "sales@tiledesk.com",
       BRAND_PRIMARY_COLOR: "#f0806f",
       BRAND_SECONDARY_COLOR: "#f0806f",
+      DOCS: true
 
     }
   }
@@ -136,7 +138,7 @@ export class BrandService {
 
       if (environment.hasOwnProperty("brandSrc")) {
 
-        this.logger.log('[BRAND-SERV] loadBrand remoteConfig is false - env has Property brandSrc');
+       console.log('[BRAND-SERV] loadBrand remoteConfig is false - env has Property brandSrc');
         const remoteBrandUrl = this.isEmpty(environment['brandSrc']);
 
         if (!remoteBrandUrl) {

@@ -1,0 +1,104 @@
+<h1 mat-dialog-title style="text-align: center;margin-bottom:10px">
+  {{agentName}}
+</h1>
+
+<div>
+
+</div>
+
+<div mat-dialog-content>
+
+  <div class="dialog--content">
+    <div class="dialog--content-first-row">
+
+      <div class="graph-filter-wpr"> 
+  
+
+        <div class="graph-filter">
+
+          <label class="filter-label" style="margin-bottom: 0px;">
+            {{ 'Analytics.FilterReport' | translate }}
+          </label>
+          
+          <div class="ng-select-wpr" style="text-align: left">
+            <ng-select class="custom" name="days" [(ngModel)]="selectedDaysId" [clearable]="false" [searchable]="false"
+              (change)="daysSelect(selectedDaysId, $event)">
+              <ng-option [value]="7">{{ 'Analytics.Last' | translate}} 7 {{ 'Analytics.Days' |
+                translate}}
+              </ng-option>
+              <ng-option [value]="15">{{ 'Analytics.Last' | translate}} 15 {{ 'Analytics.Days' |
+                translate}}
+              </ng-option>
+              <ng-option [value]="30">{{ 'Analytics.Last' | translate}} 30 {{ 'Analytics.Days' |
+                translate}}
+              </ng-option>
+              <ng-option [value]="90">{{ 'Analytics.Last' | translate}} 3 {{ 'Analytics.Months' |
+                translate}}
+              </ng-option>
+              <ng-option [value]="180">{{ 'Analytics.Last' | translate}} 6 {{ 'Analytics.Months' |
+                translate}}
+              </ng-option>
+              <ng-option [value]="360">{{ 'Analytics.Last' | translate}} 1 {{ 'Analytics.Year' |
+                translate}}
+              </ng-option>
+            </ng-select>
+          </div>
+
+        </div>
+
+        <div class="chart-header">
+          <div class="chart-header-subtitle">
+
+            {{ 'Analytics.Messages.MessagesChartTitle' | translate }} {{lastdays}}
+
+            <span *ngIf="selectedDaysId <= 30">
+              {{ 'Analytics.Days' | translate }}
+            </span>
+            <span *ngIf="selectedDaysId === 90 || selectedDaysId === 180  ">
+              {{ 'Analytics.Months' | translate }}</span>
+            <span *ngIf="selectedDaysId === 360">
+              {{ 'Analytics.Year' | translate }}
+            </span>
+          </div>
+
+          <!-- <div class="range-selected">
+            {{initDay}}
+            <i class="material-icons arrow_forward-custom">
+              arrow_forward
+            </i>
+            {{endDay}}
+          </div> -->
+
+
+        </div>
+      </div>
+
+      <div *ngIf="USER_ROLE !== 'agent'" class="text--link" (click)="goToRequestsAnalytics()">
+        <span> {{'MoreFilterInAnalytics' | translate }} </span>
+        <span class="material-icons m-i-arrow-on-black">
+          keyboard_arrow_right
+        </span>
+      </div>
+
+      
+      
+      
+      <div class="chart-container">
+        <div *ngIf="showSpinner" class="processing"> {{'Processing' | translate}} </div>
+        <canvas id="lastdaysMessages"></canvas>
+      </div>
+
+     
+
+    </div>
+
+  </div>
+
+  <div mat-dialog-actions style="justify-content: center;margin-bottom: 0px">
+
+    <button class="mat-dialog-ok-btn" mat-button (click)="onOkPresssed()">
+      <!-- {{ "Cancel" | translate }} -->
+      Close
+    </button>
+
+  </div>

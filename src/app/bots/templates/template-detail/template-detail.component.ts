@@ -251,9 +251,11 @@ export class TemplateDetailComponent extends PricingBaseComponent implements OnI
     // const url = testItOutUrl + '?tiledesk_projectid=' + "635b97cc7d7275001a2ab3e0" + '&tiledesk_participants=bot_' + this.templateid + "&tiledesk_departmentID=635b97cc7d7275001a2ab3e4"
     const url = testItOutUrl + '?tiledesk_projectid=' + this.templateProjectId + '&tiledesk_participants=bot_' + this.templateid + "&tiledesk_departmentID=" + "63d7911ca7b3d3001a4a9408"
     // this.logger.log('openTestSiteInPopupWindow URL ', url)
+    let left = (screen.width - 830) / 2;
+    let top = (screen.height - 727) / 4;
 
-
-    let params = `toolbar=no,menubar=no,width=815,height=727,left=100,top=100`;
+    // let params = `toolbar=no,menubar=no,width=815,height=727,left=100,top=100`;
+    let params = `toolbar=no,menubar=no,width=830,height=727,left=${left},top=${top}`;
     window.open(url, '_blank', params);
   }
 
