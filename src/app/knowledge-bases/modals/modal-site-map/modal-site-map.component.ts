@@ -1,6 +1,7 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, SimpleChanges, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { KB, KbSettings } from 'app/models/kbsettings-model';
+import { KB_LIMIT_CONTENT } from 'app/utils/util';
 
 @Component({
   selector: 'modal-site-map',
@@ -8,14 +9,19 @@ import { KB, KbSettings } from 'app/models/kbsettings-model';
   styleUrls: ['./modal-site-map.component.scss']
 })
 export class ModalSiteMapComponent implements OnInit {
-
+  
+  @Input() listSitesOfSitemap: any[];
+  @Output() sendSitemap = new EventEmitter();
   @Output() saveKnowledgeBase = new EventEmitter();
-  @Output() closeAddKnowledgeBaseModal = new EventEmitter();
+  @Output() closeBaseModal = new EventEmitter();
 
+  KB_LIMIT_CONTENT = KB_LIMIT_CONTENT;
   kbForm: FormGroup;
   buttonDisabled: boolean = true;
-  selectedFile: File;
-  fileContent: any;
+  isSitemapLoaded: boolean = false;
+  listOfUrls: string;
+  countSitemap: number;
+  errorLimit: boolean = false;
 
   kb: KB = {
     _id: null,
@@ -33,54 +39,28 @@ export class ModalSiteMapComponent implements OnInit {
     this.kbForm = this.createConditionGroup();
   }
 
+  ngOnChanges(changes: SimpleChanges){
+    // console.log('ModalSiteMapComponent changes: ', changes);
+    if(this.listSitesOfSitemap.length > 0){
+      this.buttonDisabled = false;
+      this.listOfUrls = this.listSitesOfSitemap.join('\n');
+      // console.log('ModalSiteMapComponent listOfUrls: ', this.listOfUrls);
+      this.countSitemap = this.listSitesOfSitemap.length;
+      this.isSitemapLoaded = true;
+    } else {
+      this.buttonDisabled = true;
+      this.isSitemapLoaded = false;
+    }
+  }
+
+
   createConditionGroup(): FormGroup {
     const namePattern = /^[^&<>]{3,}$/;
     return this.formBuilder.group({
-      name: ['', [Validators.required, Validators.pattern(namePattern)]],
-      file: [null, [Validators.required, this.validateFileType(['xml'])]]
+      //url: ['', [Validators.required, Validators.pattern('(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?')]],
+      url: ['', [Validators.required]],
+      // name: ['', [Validators.required, Validators.pattern(namePattern)]]
     })
-  }
-
-  onFileSelected(event): void {
-    this.selectedFile = event.target.files[0];
-    // console.log("onFileSelected: ", this.selectedFile, this.kbForm);
-    if (this.kbForm.valid) {
-      this.buttonDisabled = false;
-    } else {
-      this.buttonDisabled = true;
-      this.readFile();
-    }
-  }
-
-  private readFile(): void {
-    if (!this.selectedFile) {
-      return;
-    }
-    const reader = new FileReader();
-    reader.onload = () => {
-      this.fileContent = reader.result as string;
-    };
-    reader.readAsText(this.selectedFile);
-  }
-
-
-  validateFileType(allowedTypes: string[]) {
-    return (control) => {
-      // console.log('Controllo file:', control);
-      const file = control.value;
-      if (file) {
-        // console.log('File selezionato:', file);
-        const extension = file.split('.').pop().toLowerCase();
-        // console.log('Estensione del file:', extension);
-        if (allowedTypes.indexOf(extension) === -1) {
-          // console.log('Estensione non consentita');
-          return {
-            invalidFileType: true
-          };
-        }
-      }
-      return null;
-    };
   }
 
   onChangeInput(event): void {
@@ -89,22 +69,57 @@ export class ModalSiteMapComponent implements OnInit {
     } else {
       this.buttonDisabled = true;
     }
-    // console.log("onChangeInput: ", event, this.kbForm);
   }
 
-  onCloseAddKnowledgeBaseModal() {
-    this.closeAddKnowledgeBaseModal.emit();
+
+  onChangeList(event):void {
+    // this.listSitesOfSitemap = this.listOfUrls.split("\n");
+    this.listSitesOfSitemap = this.listOfUrls.split("\n").filter(function(row) {
+      return row.trim() !== '';
+    });
+    var lines = this.listOfUrls.split('\n');
+    if (lines.length > KB_LIMIT_CONTENT) {
+      this.errorLimit = true;
+      this.buttonDisabled = true;
+      // this.listOfUrls = lines.slice(0, KB_LIMIT_CONTENT).join('\n');
+    } else {
+      this.errorLimit = false;
+      this.buttonDisabled = false;
+    }
+    this.countSitemap = this.listSitesOfSitemap.length;
+  }
+
+  onCloseBaseModal() {
+    this.listSitesOfSitemap = [];
+    this.listOfUrls = "";
+    this.countSitemap = 0;
+    this.isSitemapLoaded = false;
+    this.buttonDisabled = false;
+    this.closeBaseModal.emit();
+  }
+
+  onSendSitemap(){
+    let body = {
+      'sitemap': this.kb.url
+    }
+    this.buttonDisabled = true;
+    this.sendSitemap.emit(body);
   }
 
   onSaveKnowledgeBase(){
-    let body = {
-      'name': this.kb.name,
-      'source': this.fileContent,
-      'content': '',
-      'type': 'map'
+    if(this.listSitesOfSitemap.length > this.KB_LIMIT_CONTENT){
+      this.errorLimit = true;
+    } else {
+      this.errorLimit = false;
+      const arrayURLS = this.listOfUrls.split("\n").filter(function(row) {
+        return row.trim() !== '';
+      });
+      let body = {
+        'list': arrayURLS
+      }
+      this.saveKnowledgeBase.emit(body);
     }
-    this.saveKnowledgeBase.emit(body);
+    
   }
-
 
 }

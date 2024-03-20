@@ -999,6 +999,15 @@ my-app .main-panel .main-content .card {
   font-size: 18px;
 }
 
+.custom-swal>.swal-title {
+  color: black;
+  font-weight: 500;
+}
+
+.custom-swal>.swal-text {
+  text-align: center;
+}
+
 .swal-size-sm {
   width: 260px !important;
   background-color: var(--card-background-color);
@@ -1763,9 +1772,9 @@ appdashboard-app-store>div>div>div>div>div>div.card-content>div.available-from-b
   margin-top: -25px;
 }
 
-appdashboard-app-store>div>div>div>div>div>div.card-content>.app-store-card-no-badge {
-  height: 48px !important;
-}
+// appdashboard-app-store>div>div>div>div>div>div.card-content>.app-store-card-no-badge {
+//   height: 48px !important;
+// }
 
 appdashboard-app-store>div>div>div>div>.card-app-store {
   height: 269px;

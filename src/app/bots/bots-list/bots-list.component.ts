@@ -607,6 +607,19 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
           });
         }
         
+        if (this.orderByChatbotName)  {
+          this.logger.log('[BOTS-LIST] - orderByChatbotName Here yes');
+          this.faqkbList.sort(function compare(a: Chatbot, b: Chatbot) {
+            if (a['name'].toLowerCase() <  b['name'].toLowerCase()) {
+              return -1;
+            }
+            if (a['name'].toLowerCase() > b['name'].toLowerCase()) {
+              return 1;
+            }
+            return 0;
+          });
+        }
+        
         this.faqkbList.forEach(bot => {
           this.logger.log('[BOTS-LIST] getFaqKbByProjectId bot ', bot)
           if (bot && bot.url) {

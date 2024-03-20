@@ -27,37 +27,32 @@
       <div class="teplate-content" style="flex: 1 1 auto; margin: 0 20px;">
         <loading-spinner *ngIf="showSpinner"></loading-spinner>
         <div class="card-content" *ngIf="!showSpinner" style="padding-top: 10px; margin: 0 60px">
-
+          <!-- *ngIf="kbsListCount>0" -->
           <div class="add-kb-div">
-            <button class="btn btn-primary" [disabled]="addButtonDisabled" [matMenuTriggerFor]="menu" aria-label="Actions">
-              <span class="btn-big-button">{{ 'KbPage.Add' | translate }} </span>
-              <mat-icon class="icon-big-button">add</mat-icon>
+            <button class="btn btn-new btn-size-m btn--primary pull-right btn-big-button" [disabled]="addButtonDisabled" [matMenuTriggerFor]="menu" aria-label="Actions">
+              <span class="">{{ 'KbPage.Add' | translate }} </span>
+              <!-- <mat-icon class="icon-big-button">add</mat-icon> -->
             </button>
             <mat-menu #menu="matMenu" xPosition="before" class="custom-menu">
-              <button mat-menu-item (click)="openAddKnowledgeBaseModal('url-page')">
-                <mat-icon>link</mat-icon>
-                <span>{{ 'KbPage.AddKbURL' | translate }}</span>
-              </button>
-              <button mat-menu-item (click)="openAddKnowledgeBaseModal('text-file')">
-                <mat-icon>description</mat-icon>
-                <span>{{ 'KbPage.AddKbText' | translate }}</span>
-              </button>
-              <!-- <button mat-menu-item (click)="openAddKnowledgeBaseModal('site-map')">
-                <mat-icon>lan</mat-icon>
-                <span>{{ 'add site map' | translate }}</span>
-              </button> -->
+              <add-content-menu class="mat-menu"
+                  (openAddKnowledgeBaseModal)="openAddKnowledgeBaseModal($event)">
+              </add-content-menu>
             </mat-menu>
           </div>
 
           <!-- START TABLE -->
           <knowledge-base-table
-            [kbs]="kbs"
+            [kbsList]="kbsList"
+            [kbsListCount]="kbsListCount"
             [refresh]="refreshKbsList"
             (openBaseModalDetail)="onOpenBaseModalDetail($event)"
             (openBaseModalDelete)="onOpenBaseModalDelete($event)"
             (openBaseModalPreview)="onOpenBaseModalPreview()"
+            (openAddKnowledgeBaseModal)="openAddKnowledgeBaseModal($event)"
+            (checkStatus)="onCheckStatus($event)"
             (runIndexing)="onRunIndexing($event)"
-            (reloadKbs)="onReloadKbs($event)"
+            (loadPage)="onLoadPage($event)"
+            (loadByFilter)="onLoadByFilter($event)"
           ></knowledge-base-table>
           <!-- END TABLE -->
 
@@ -80,9 +75,16 @@
 </modal-text-file>
 
 <modal-site-map *ngIf="typeKnowledgeBaseModal == 'site-map'"
-  (saveKnowledgeBase)="onAddKb($event)"
+  [listSitesOfSitemap]="listSitesOfSitemap"
+  (sendSitemap)="onSendSitemap($event)"
+  (saveKnowledgeBase)="onAddMultiKb($event)"
   (closeBaseModal)="onCloseBaseModal()">
 </modal-site-map>
+
+<modal-urls-knowledge-base *ngIf="typeKnowledgeBaseModal == 'urls'"
+  (saveKnowledgeBase)="onAddMultiKb($event)"
+  (closeBaseModal)="onCloseBaseModal()">
+</modal-urls-knowledge-base>
 <!-- ADD KNOWLEDGE BASE MODAL - END -->
 
 

@@ -439,11 +439,40 @@ table {
     display: inline-block;
     vertical-align: middle;
     line-height: 24px;
-    font-size: medium;
+    // font-size: medium;
+    text-transform: none;
+    border-radius: 4px;
 }
 
 .icon-big-button {
     padding: 0 14px;
     font-weight: bold;
     height: auto;
+}
+
+
+// .mat-menu-panel {
+//     margin-top: 6px !important;
+//     border-radius: 8px !important;
+//     background: #FFFFFF!important;
+//     box-shadow: 0 40px 64px -32px #161a1e1f, 0 32px 40px -32px #161a1e1a, 0 24px 32px -32px #161a1e14, 0 16px 20px -32px #161a1e14, 0 10px 16px -32px #161a1e0f, 0 4px 8px -32px #161a1e0a, 0 1px 1px #161a1e0a, 0 0 0 1px #161a1e0f!important;
+//     border-radius: 10px!important;
+//   }
+  
+
+
+  ::ng-deep.mat-elevation-z4{
+    background: #FFFFFF;
+    box-shadow: 0 40px 64px -32px #161a1e1f, 0 32px 40px -32px #161a1e1a, 0 24px 32px -32px #161a1e14, 0 16px 20px -32px #161a1e14, 0 10px 16px -32px #161a1e0f, 0 4px 8px -32px #161a1e0a, 0 1px 1px #161a1e0a, 0 0 0 1px #161a1e0f;
+    border-radius: 10px;
+    margin-top: 4px;
+}
+
+.btn {
+    text-transform: none;
+} 
+
+.title-class {
+    color: black;
+    font-weight: 500;
 }

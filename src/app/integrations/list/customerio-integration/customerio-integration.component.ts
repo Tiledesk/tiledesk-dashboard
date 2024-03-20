@@ -16,16 +16,18 @@ export class CustomerioIntegrationComponent implements OnInit {
   keyVisibile: boolean = false;
   isVerified: boolean;
 
+  translateparams: any;
+
   constructor(
     private integrationService: IntegrationService,
     private logger: LoggerService
   ) { }
 
   ngOnInit(): void {
-    this.logger.log("[INT-Customer.io] integration ", this.integration)
     this.logger.debug("[INT-Customer.io] integration ", this.integration)
+    this.translateparams = { intname: "Customer.io" };
     if (this.integration.value.apikey) {
-      this.checkKey(this.integration.value.apikey);
+      this.checkKey();
     }
   }
 
@@ -41,7 +43,9 @@ export class CustomerioIntegrationComponent implements OnInit {
   }
 
   saveIntegration() {
-    this.checkKey(this.integration.value.apikey).then((status) => {
+    let apikey = btoa(this.integration.value.siteid + ":" +  this.integration.value.key);
+    this.integration.value.apikey = apikey;
+    this.checkKey().then((status) => {
       let data = {
         integration: this.integration,
         isVerified: status
@@ -55,16 +59,13 @@ export class CustomerioIntegrationComponent implements OnInit {
     this.onDeleteIntegration.emit(this.integration);
   }
 
-  checkKey(key: string) {
-    return new Promise((resolve, reject) => {
-      this.integrationService.checkKeyQapla(key).subscribe((resp: any) => {
-        if (resp.getCouriers.result === 'OK') {
-          this.isVerified = true;
-          resolve(true);
-        } else {
-          this.isVerified = false;
-          resolve(false);
-        }
+  checkKey() {
+    return new Promise((resolve) => {
+      let url = "https://track.customer.io/api/v1/accounts/region";
+      let apikey = 'Basic ' + this.integration.value.apikey;
+      this.integrationService.checkIntegrationKeyValidity(url, apikey).subscribe((resp: any) => {
+        this.isVerified = true;
+        resolve(true);
       }, (error) => {
         this.logger.error("[INT-Customer.io] Key verification failed: ", error);
         this.isVerified = false;
@@ -75,8 +76,9 @@ export class CustomerioIntegrationComponent implements OnInit {
 
   resetValues() {
     this.integration.value = {
-      apikey: null,
-      siteid: null
+      siteid: null,
+      key: null,
+      apikey: null
     }
   }
 

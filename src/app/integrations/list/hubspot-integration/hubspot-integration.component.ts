@@ -28,7 +28,7 @@ export class HubspotIntegrationComponent implements OnInit {
     this.logger.debug("[INT-Hubspot] integration ", this.integration)
     this.translateparams = { intname: 'Hubspot' };
     if (this.integration.value.apikey) {
-      this.checkKey(this.integration.value.apikey);
+      this.checkKey();
     }
   }
 
@@ -44,7 +44,7 @@ export class HubspotIntegrationComponent implements OnInit {
   }
 
   saveIntegration() {
-    this.checkKey(this.integration.value.apikey).then((status) => {
+    this.checkKey().then((status) => {
       let data = {
         integration: this.integration,
         isVerified: status
@@ -87,27 +87,29 @@ export class HubspotIntegrationComponent implements OnInit {
   //   })
   // }
 
-  checkKey(key: string) {
-    return new Promise((resolve, reject) => {
-      this.integrationService.checkKeyQapla(key).subscribe((resp: any) => {
-        if (resp.getCouriers.result === 'OK') {
-          this.isVerified = true;
-          resolve(true);
+  checkKey() {
+    return new Promise((resolve) => {
+      let url = "https://api.hubapi.com/crm/v3/objects/contacts?limit=10";
+      let key = "Bearer " + this.integration.value.apikey;
+      this.integrationService.checkIntegrationKeyValidity(url, key).subscribe((resp: any) => {
+        this.isVerified = true;      
+        resolve(true);
+      }, (error) => {
+        this.logger.error("[INT-Hubspot] Key verification failed: ", error);
+        if (error.status === 0) {
+          resolve(false);
         } else {
           this.isVerified = false;
           resolve(false);
+
         }
-      }, (error) => {
-        this.logger.error("[INT-Qapla] Key verification failed: ", error);
-        this.isVerified = false;
-        resolve(false);
       })
     })
   }
 
   resetValues() {
     this.integration.value = {
-      apikey: null,
+      apikey: null
     }
   }
 

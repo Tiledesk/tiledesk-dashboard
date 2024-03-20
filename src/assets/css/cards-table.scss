@@ -125,6 +125,13 @@
   // border: 1px solid #eee;
 }
 
+.cl-card-img-wpr >img {
+  vertical-align: middle;
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+}
+
 .cl-card-img-wpr>.photo-profile-container>.avatar-no-profile-photo {
   vertical-align: middle;
   width: 64px;
