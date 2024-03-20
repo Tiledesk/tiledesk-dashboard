@@ -12,7 +12,7 @@ import { MomentModule } from 'ngx-moment';
 import { TooltipModule, TooltipOptions } from 'ng2-tooltip-directive';
 import { CutomTooltipOptions } from 'app/utils/util';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { SelectOptionsTranslatePipe } from 'app/selectOptionsTranslate.pipe';
+// import { SelectOptionsTranslatePipe } from 'app/selectOptionsTranslate.pipe';
 import { MatIconModule } from '@angular/material/icon';
 
 const routes: Routes = [
@@ -22,7 +22,7 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     HistoryAndNortConvsComponent,
-    SelectOptionsTranslatePipe
+    // SelectOptionsTranslatePipe
   ],
   imports: [
     RouterModule.forChild(routes),

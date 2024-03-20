@@ -106,7 +106,7 @@ import { GroupNamePipe } from './groupname.pipe';
 import { SortByPipe } from './sortby.pipe';
 import { SortByDesPipe } from './sortbydes.pipe';
 import { MapToIterable } from './map-to-iterable-pipe';
-import { SelectOptionsTranslatePipe } from './selectOptionsTranslate.pipe';
+// import { SelectOptionsTranslatePipe } from './selectOptionsTranslate.pipe';
 import { FilterArrayPipe } from './filterarray.pipe';
 // import { MarkedPipe } from './marked.pipe'; // moved in SharedModule
 
@@ -518,7 +518,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     SortByPipe,
     SortByDesPipe,
     MapToIterable,
-    SelectOptionsTranslatePipe,
+    // SelectOptionsTranslatePipe, moved in SharedModule
     FilterArrayPipe,
     ChangePasswordComponent,
     HoursComponent,
@@ -832,7 +832,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     AnalyticsService,
     HttpClientModule,
     TriggerService,
-    SelectOptionsTranslatePipe,
+    // SelectOptionsTranslatePipe, // Moved in moved in SharedModule
     FilterArrayPipe,
     MarkerService,
     // LoggerInstance,

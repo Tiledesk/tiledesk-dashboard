@@ -7,6 +7,7 @@ import { DirectivesModule } from '../_directives/directives';
 import { MarkedPipe } from 'app/marked.pipe';
 import { HtmlEntitiesEncodePipe } from 'app/html-entities-encode.pipe';
 import { SanitizeHtmlPipe } from 'app/sanitize-html.pipe';
+import { SelectOptionsTranslatePipe } from 'app/selectOptionsTranslate.pipe';
 
 
 
@@ -21,7 +22,8 @@ import { SanitizeHtmlPipe } from 'app/sanitize-html.pipe';
     LoadingSpinnerComponent,
     MarkedPipe,
     HtmlEntitiesEncodePipe,
-    SanitizeHtmlPipe
+    SanitizeHtmlPipe,
+    SelectOptionsTranslatePipe, 
   ],
   exports: [
     LoadingSpinnerComponent,
@@ -29,7 +31,12 @@ import { SanitizeHtmlPipe } from 'app/sanitize-html.pipe';
     DirectivesModule,
     MarkedPipe,
     HtmlEntitiesEncodePipe,
-    SanitizeHtmlPipe
-  ],
+    SanitizeHtmlPipe,
+    SelectOptionsTranslatePipe
+  ]
+  ,
+  providers: [ 
+    SelectOptionsTranslatePipe
+  ]
 })
 export class SharedModule { }

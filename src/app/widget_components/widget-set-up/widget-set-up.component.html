@@ -1041,9 +1041,10 @@
 													{{'OnPageLoad' | translate}}
 												</div>
 												<div class="on-page-change-widget-option">
+													<!-- [items]="widget_status_on_page_change | selectOptionsTranslate" -->
 													<ng-select id="desktop_widget_status" [clearable]="false"
 														[(ngModel)]="desktopWidgetStatus"
-														[items]="widget_status_on_page_change | selectOptionsTranslate"
+														[items]="widget_status_on_page_change"
 														bindLabel="name" bindValue="id" appendTo="body"
 														(change)="onSelectDesktopWidgetStatus()"
 														[disabled]="!desktop_widget_is_visible">
