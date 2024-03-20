@@ -162,9 +162,7 @@ export class SettingsSidebarComponent implements OnInit {
   // @ Not used 
   getMainContentHeight() {
     const elemMainContent = <HTMLElement>document.querySelector('.main-content')
-    const elemAppdashboardSettingsSidebar = <HTMLElement>(
-      document.querySelector('appdashboard-settings-sidebar')
-    )
+    const elemAppdashboardSettingsSidebar = <HTMLElement>( document.querySelector('appdashboard-settings-sidebar'))
     this.logger.log('[SETTINGS-SIDEBAR] elemMainContent ', elemMainContent)
     this.logger.log('[SETTINGS-SIDEBAR] elemAppdashboardSettingsSidebar ', elemAppdashboardSettingsSidebar)
     setTimeout(() => {

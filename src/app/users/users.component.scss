@@ -67,6 +67,7 @@
 
 button.close {
   -webkit-appearance: none;
+  appearance: none;
   padding: 0;
   cursor: pointer;
   background: 0 0;
@@ -550,6 +551,10 @@ $f21blue: #039be5;
 
 // TOOLTIP END
 
+// .broken-image {
+//   display: none;
+// }
+
 .chat-with-agent {
   color: #7695a5 !important;
   cursor: pointer !important;
@@ -580,13 +585,16 @@ $f21blue: #039be5;
   min-width: 16px;
   width: 16px;
   height: 16px;
-  top: 5px;
-  left: 12px;
+  // top: 5px;
+  // left: 12px;
+  bottom: 18px;
+  left: 16px;
   border-radius: 9px;
   /* padding: 0 5px; */
   font-size: 11px;
   text-align: center;
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.35);
+  z-index: 2;
 }
 
 .is-busy-text {
@@ -613,22 +621,24 @@ $f21blue: #039be5;
 
 .user-img-in-teammates-list {
   vertical-align: middle;
-  width: 52px;
-  height: 52px;
-  border-radius: 50%;
-  border: 1px solid #eee;
+  width: 64px;
+  height: 64px;
   object-fit: cover;
+  // height: 52px;
+  // border-radius: 50%;
+  // border: 1px solid #eee;
+ 
 }
 
-.altenative-projetuser-avatar {
-  color: #ffffff;
-  line-height: 50px;
-  margin: auto;
-  display: block;
-  font-weight: 400;
-  font-size: 18px;
-  text-align: center;
-}
+// .altenative-projetuser-avatar {
+//   color: #ffffff;
+//   line-height: 50px;
+//   margin: auto;
+//   display: block;
+//   font-weight: 400;
+//   font-size: 18px;
+//   text-align: center;
+// }
 
 .is-busy-color-transition {
   color: #fedd00;
@@ -761,15 +771,45 @@ $f21blue: #039be5;
 }
 
 /* ./end tootip top  */
+// #pu-role {
+//   font-weight: 400;
+//   font-size: 14px;
+// }
+
+// #pu-pending-status > div {
+//   font-weight: 400;
+//   font-size: 14px;
+// }
+
+// #pu-status {
+//   margin-top: 4px;
+// }
 
 .select-teammate-status {
-  height: 30px;
-  background: #fff;
-  border-radius: 5px;
-  border-color: #d9d9d9;
-  width: 130px;
-  text-transform: capitalize;
+  height: 20px;
+  cursor: pointer;
+  border: unset;
+  padding: 0 6px;
+  text-transform: var(--cl-card-item-stats-values-text-transform);
+  // background: rgb(226, 232, 239);
+  // border-radius: 15px;
+  // text-transform: capitalize;
+  // font-weight: 400;
+  // text-align: center;
+  // font-size: 14px;
+  // border-color: #d9d9d9;
+  // width: 130px;
+  // height: 30px;
 }
+#pu-status-wpr:hover > div > .select-teammate-status {
+  height: 30px;
+  background-color: #eef0fc
+}
+// .select-teammate-status:hover { 
+//   height: 30px;
+//   // border: 1px solid #eee;
+//   background-color: #eef0fc
+// }
 
 .is-user-online {
   background-color: #4caf50;
@@ -787,11 +827,18 @@ $f21blue: #039be5;
   position: absolute;
   border: 2px solid #fff;
   border-radius: 50%;
-  left: 54px;
-  bottom: 4px;
-  width: 12px;
-  height: 12px;
+  left: 73px;
+  top: 20px;
+  width: 14px;
+  height: 14px;
+  z-index: 2;
+  // left: 54px;
+  // bottom: 4px;
+  // width: 12px;
+  // height: 12px;
 }
+
+
 
 ::ng-deep .custom-mat-tooltip {
   background-color: #2d323e !important;

@@ -58,7 +58,7 @@ export class FooterComponent implements OnInit {
     this.privacyPolicyUrl = brand['privacy_policy_url']
     this.displayTermsAndConditionsLink = brand['footer']['display_terms_and_conditions_link']
     this.termsAndConditionsUrl = brand['terms_and_conditions_url']
-    this.display_contact_us_email = brand['footer']['display_contact_us_email'];
+    this.display_contact_us_email = brand['display_contact_us_email'];
     this.display_star_us_on_github = brand['footer']['display_star_us_on_github'];
     this.display_leave_us_a_feedback =  brand['footer']['display_leave_us_a_feedback'];
     this.display_followus_on_x = brand['footer']['display_followus_on_x'];

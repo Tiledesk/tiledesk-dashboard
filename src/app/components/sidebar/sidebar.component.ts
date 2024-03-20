@@ -173,7 +173,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   CREATE_GROUP_ROUTE_IS_ACTIVE: boolean;
   EDIT_GROUP_ROUTE_IS_ACTIVE: boolean;
   WIDGET_SETUP_ROUTE_IS_ACTIVE: boolean;
-  CHATBOT_ROUTE_IS_ACTIVE: boolean;
   CREATE_FAQ_ROUTE_IS_ACTIVE: boolean;
   EDIT_FAQ_ROUTE_IS_ACTIVE: boolean;
   BOT_TEST_ROUTE_IS_ACTIVE: boolean;
@@ -192,14 +191,21 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   INSTALLATION_ROUTE_IS_ACTIVE: boolean;
   EMAIL_TICKETING_ROUTE_IS_ACTIVE: boolean;
   AUTOMATIONS_ROUTE_IS_ACTIVE: boolean;
-  KB_ROUTE_IS_ACTIVE: boolean;
-  
-
   IS_REQUEST_FOR_PANEL_ROUTE: boolean;
   IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE: boolean;
+    // Chatbot sidebar
+  MY_BOTS_ALL_ROUTE_IS_ACTIVE: boolean;
+  MY_BOTS_IS_ROUTE_IS_ACTIVE: boolean;
+  MY_BOTS_CS_ROUTE_IS_ACTIVE: boolean;
+  TMPLT_ALL_ROUTE_IS_ACTIVE: boolean;
+  TMPLT_CMNT_ROUTE_IS_ACTIVE: boolean;
+  TMPLT_IS_ROUTE_IS_ACTIVE: boolean;
+  TMPLT_CS_ROUTE_IS_ACTIVE: boolean;
+  OLD_KB_ROUTE_IS_ACTIVE: boolean;
+  KB_ROUTE_IS_ACTIVE: boolean;
+
 
   prjct_profile_name: string;
-
   prjct_trial_expired: boolean;
   prjc_trial_days_left: number
   prjc_trial_days_left_percentage: number
@@ -242,6 +248,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   companySiteUrl: string;
   companyName: string;
   dialogRef: MatDialogRef<any>;
+  UPLOAD_ENGINE_IS_FIREBASE: boolean;
+
   constructor(
     private router: Router,
     public location: Location,
@@ -400,7 +408,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
   getLoggedUser() {
     this.auth.user_bs.subscribe((user) => {
-      // this.logger.log('[SIDEBAR] USER GET IN SIDEBAR ', user)
+      this.logger.log('[SIDEBAR] USER GET IN SIDEBAR ', user)
       this.user = user;
       if (user) {
         this.createUserAvatar(user)
@@ -471,10 +479,12 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
   getProfileImageStorage() {
     if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
+      this.UPLOAD_ENGINE_IS_FIREBASE = true
       const firebase_conf = this.appConfigService.getConfig().firebase;
       this.storageBucket = firebase_conf['storageBucket'];
       this.logger.log('[SIDEBAR] IMAGE STORAGE ', this.storageBucket, 'usecase Firebase')
     } else {
+      this.UPLOAD_ENGINE_IS_FIREBASE = false
       this.baseUrl = this.appConfigService.getConfig().SERVER_BASE_URL;
       this.logger.log('[SIDEBAR] IMAGE STORAGE ', this.storageBucket, 'usecase Native')
     }
@@ -644,6 +654,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   getCurrentRoute() {
     this.router.events.subscribe((event: NavigationEvent) => {
       if (event instanceof NavigationEnd) {
+        this.logger.log('[SIDEBAR] NavigationEnd event.url' , event.url.substring(event.url.lastIndexOf('/') + 1)) 
         if (event.url.indexOf('/request-for-panel') !== -1) {
           this.IS_REQUEST_FOR_PANEL_ROUTE = true;
           // this.logger.log('[NAVBAR] NavigationEnd - IS_REQUEST_FOR_PANEL_ROUTE  ', this.IS_REQUEST_FOR_PANEL_ROUTE);
@@ -831,13 +842,62 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           this.WIDGET_SETUP_ROUTE_IS_ACTIVE = false;
           // this.logger.log('[SIDEBAR] NavigationEnd - WIDGET_SETUP_ROUTE_IS_ACTIVE ', this.WIDGET_SETUP_ROUTE_IS_ACTIVE);
         }
-
-        if (event.url.indexOf('/bots') !== -1) {
-          this.CHATBOT_ROUTE_IS_ACTIVE = true;
-          // this.logger.log('[SIDEBAR] NavigationEnd - CHATBOT_ROUTE_IS_ACTIVE ', this.CHATBOT_ROUTE_IS_ACTIVE);
+       
+        // Chatbot sidebar
+        if (event.url.indexOf('/bots/my-chatbots/all') !== -1) {
+          this.MY_BOTS_ALL_ROUTE_IS_ACTIVE = true;
+          this.logger.log('[SIDEBAR] NavigationEnd - MY_BOTS_ALL_ROUTE_IS_ACTIVE ', this.MY_BOTS_ALL_ROUTE_IS_ACTIVE);
         } else {
-          this.CHATBOT_ROUTE_IS_ACTIVE = false;
-          // this.logger.log('[SIDEBAR] NavigationEnd - CHATBOT_ROUTE_IS_ACTIVE ', this.CHATBOT_ROUTE_IS_ACTIVE);
+          this.MY_BOTS_ALL_ROUTE_IS_ACTIVE = false;
+          this.logger.log('[SIDEBAR] NavigationEnd - MY_BOTS_ALL_ROUTE_IS_ACTIVE ', this.MY_BOTS_ALL_ROUTE_IS_ACTIVE);
+        }
+
+        if (event.url.indexOf('/bots/my-chatbots/increase-sales') !== -1 ) {
+          this.MY_BOTS_IS_ROUTE_IS_ACTIVE = true;
+          this.logger.log('[SIDEBAR] NavigationEnd - MY_BOTS_IS_ROUTE_IS_ACTIVE ', this.MY_BOTS_IS_ROUTE_IS_ACTIVE);
+        } else {
+          this.MY_BOTS_IS_ROUTE_IS_ACTIVE = false;
+          this.logger.log('[SIDEBAR] NavigationEnd - MY_BOTS_IS_ROUTE_IS_ACTIVE ', this.MY_BOTS_IS_ROUTE_IS_ACTIVE);
+        }
+
+        if (event.url.indexOf('/bots/my-chatbots/customer-satisfaction') !== -1 ) {
+          this.MY_BOTS_CS_ROUTE_IS_ACTIVE = true;
+          this.logger.log('[SIDEBAR] NavigationEnd - MY_BOTS_CS_ROUTE_IS_ACTIVE ', this.MY_BOTS_CS_ROUTE_IS_ACTIVE);
+        } else {
+          this.MY_BOTS_CS_ROUTE_IS_ACTIVE = false;
+          this.logger.log('[SIDEBAR] NavigationEnd - MY_BOTS_CS_ROUTE_IS_ACTIVE ', this.MY_BOTS_CS_ROUTE_IS_ACTIVE);
+        }
+
+        if (event.url.indexOf('/bots/templates/all') !== -1 ) {
+          this.TMPLT_ALL_ROUTE_IS_ACTIVE = true;
+          this.logger.log('[SIDEBAR] NavigationEnd - TMPLT_ALL_ROUTE_IS_ACTIVE ', this.TMPLT_ALL_ROUTE_IS_ACTIVE);
+        } else {
+          this.TMPLT_ALL_ROUTE_IS_ACTIVE = false;
+          this.logger.log('[SIDEBAR] NavigationEnd - TMPLT_ALL_ROUTE_IS_ACTIVE ', this.TMPLT_ALL_ROUTE_IS_ACTIVE);
+        }
+
+        if (event.url.indexOf('/bots/templates/community') !== -1 ) {
+          this.TMPLT_CMNT_ROUTE_IS_ACTIVE = true;
+          this.logger.log('[SIDEBAR] NavigationEnd - TMPLT_CMNT_ROUTE_IS_ACTIVE ', this.TMPLT_CMNT_ROUTE_IS_ACTIVE);
+        } else {
+          this.TMPLT_CMNT_ROUTE_IS_ACTIVE = false;
+          this.logger.log('[SIDEBAR] NavigationEnd - TMPLT_CMNT_ROUTE_IS_ACTIVE ', this.TMPLT_CMNT_ROUTE_IS_ACTIVE);
+        }
+
+        if (event.url.indexOf('/bots/templates/increase-sales') !== -1 ) {
+          this.TMPLT_IS_ROUTE_IS_ACTIVE = true;
+          this.logger.log('[SIDEBAR] NavigationEnd - TMPLT_IS_ROUTE_IS_ACTIVE ', this.TMPLT_IS_ROUTE_IS_ACTIVE);
+        } else {
+          this.TMPLT_IS_ROUTE_IS_ACTIVE = false;
+          this.logger.log('[SIDEBAR] NavigationEnd - TMPLT_IS_ROUTE_IS_ACTIVE ', this.TMPLT_IS_ROUTE_IS_ACTIVE);
+        }
+
+        if (event.url.indexOf('/bots/templates/customer-satisfaction') !== -1 ) {
+          this.TMPLT_CS_ROUTE_IS_ACTIVE = true;
+          this.logger.log('[SIDEBAR] NavigationEnd - TMPLT_CS_ROUTE_IS_ACTIVE ', this.TMPLT_CS_ROUTE_IS_ACTIVE);
+        } else {
+          this.TMPLT_CS_ROUTE_IS_ACTIVE = false;
+          this.logger.log('[SIDEBAR] NavigationEnd - TMPLT_CS_ROUTE_IS_ACTIVE ', this.TMPLT_CS_ROUTE_IS_ACTIVE);
         }
 
         if (event.url.indexOf('/createfaq') !== -1) {
@@ -985,7 +1045,18 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           this.logger.log('[SIDEBAR] NavigationEnd - AUTOMATIONS_ROUTE_IS_ACTIVE ', this.AUTOMATIONS_ROUTE_IS_ACTIVE);
         }
 
-        if (event.url.indexOf('/knowledge-bases-pre') !== -1) {
+        // if (event.url.indexOf('/knowledge-bases-pre') ) {
+        if(event.url.substring(event.url.lastIndexOf('/') + 1) === 'knowledge-bases-pre' ) {
+          this.OLD_KB_ROUTE_IS_ACTIVE = true;
+          this.logger.log('[SIDEBAR] NavigationEnd - OLD_KB_ROUTE_IS_ACTIVE ', this.OLD_KB_ROUTE_IS_ACTIVE);
+        } else {
+          this.OLD_KB_ROUTE_IS_ACTIVE = false;
+          this.logger.log('[SIDEBAR] NavigationEnd - OLD_KB_ROUTE_IS_ACTIVE ', this.OLD_KB_ROUTE_IS_ACTIVE);
+        }
+
+
+        // if (event.url.match('/knowledge-bases')) {
+        if (event.url.substring(event.url.lastIndexOf('/') + 1) === 'knowledge-bases') {
           this.KB_ROUTE_IS_ACTIVE = true;
           this.logger.log('[SIDEBAR] NavigationEnd - KB_ROUTE_IS_ACTIVE ', this.KB_ROUTE_IS_ACTIVE);
         } else {
@@ -1052,11 +1123,11 @@ export class SidebarComponent implements OnInit, AfterViewInit {
       if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
         if (this.storageBucket && this.userProfileImageExist === true) {
           this.logger.log('[SIDEBAR] - USER PROFILE EXIST - BUILD userProfileImageurl');
-          this.setImageProfileUrl(this.storageBucket)
+          // this.setImageProfileUrl(this.storageBucket)
         }
       } else {
         if (this.baseUrl && this.userProfileImageExist === true) {
-          this.setImageProfileUrl_Native(this.baseUrl)
+          // this.setImageProfileUrl_Native(this.baseUrl)
         }
       }
     });
@@ -1069,10 +1140,11 @@ export class SidebarComponent implements OnInit, AfterViewInit {
       this.uploadImageService.userImageWasUploaded.subscribe((image_exist) => {
         this.logger.log('[SIDEBAR] - IMAGE UPLOADING IS COMPLETE ? ', image_exist, '(usecase Firebase)');
         this.userImageHasBeenUploaded = image_exist;
-        if (this.storageBucket && this.userImageHasBeenUploaded === true) {
-          this.logger.log('[SIDEBAR] - IMAGE UPLOADING IS COMPLETE - BUILD userProfileImageurl ');
-          this.setImageProfileUrl(this.storageBucket)
-        }
+        this.timeStamp = (new Date()).getTime();
+        // if (this.storageBucket && this.userImageHasBeenUploaded === true) {
+        //   this.logger.log('[SIDEBAR] - IMAGE UPLOADING IS COMPLETE - BUILD userProfileImageurl ');
+        //   this.setImageProfileUrl(this.storageBucket)
+        // }
       });
     } else {
 
@@ -1089,24 +1161,24 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     }
   }
 
-  setImageProfileUrl_Native(storage) {
-    this.userProfileImageurl = storage + 'images?path=uploads%2Fusers%2F' + this.currentUserId + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
-    this.logger.log('[SIDEBAR] PROFILE IMAGE (USER-PROFILE ) - userProfileImageurl ', this.userProfileImageurl);
-    this.timeStamp = (new Date()).getTime();
-  }
+  // setImageProfileUrl_Native(storage) {
+  //   this.userProfileImageurl = storage + 'images?path=uploads%2Fusers%2F' + this.currentUserId + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
+  //   this.logger.log('[SIDEBAR] PROFILE IMAGE (USER-PROFILE ) - userProfileImageurl ', this.userProfileImageurl);
+  //   this.timeStamp = (new Date()).getTime();
+  // }
 
-  setImageProfileUrl(storageBucket) {
-    this.userProfileImageurl = 'https://firebasestorage.googleapis.com/v0/b/' + storageBucket + '/o/profiles%2F' + this.currentUserId + '%2Fphoto.jpg?alt=media';
-    this.timeStamp = (new Date()).getTime();
-  }
+  // setImageProfileUrl(storageBucket) {
+  //   this.userProfileImageurl = 'https://firebasestorage.googleapis.com/v0/b/' + storageBucket + '/o/profiles%2F' + this.currentUserId + '%2Fphoto.jpg?alt=media';
+  //   this.timeStamp = (new Date()).getTime();
+  // }
 
-  getUserProfileImage() {
-    if (this.timeStamp) {
-      // this.logger.log('PROFILE IMAGE (USER-PROFILE IN SIDEBAR-COMP) - getUserProfileImage ', this.userProfileImageurl);
-      return this.sanitizer.bypassSecurityTrustUrl(this.userProfileImageurl + '&' + this.timeStamp);
-    }
-    return this.sanitizer.bypassSecurityTrustUrl(this.userProfileImageurl)
-  }
+  // getUserProfileImage() {
+  //   if (this.timeStamp) {
+  //     // this.logger.log('PROFILE IMAGE (USER-PROFILE IN SIDEBAR-COMP) - getUserProfileImage ', this.userProfileImageurl);
+  //     return this.sanitizer.bypassSecurityTrustUrl(this.userProfileImageurl + '&' + this.timeStamp);
+  //   }
+  //   return this.sanitizer.bypassSecurityTrustUrl(this.userProfileImageurl)
+  // }
 
 
 
@@ -1137,7 +1209,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   getUserAvailability() {
     this.usersService.user_is_available_bs.subscribe((user_available) => {
       this.IS_AVAILABLE = user_available;
-      // console.log('[SIDEBAR] - USER IS AVAILABLE ', this.IS_AVAILABLE);
+      // this.logger.log('[SIDEBAR] - USER IS AVAILABLE ', this.IS_AVAILABLE);
     });
   }
 
@@ -1146,7 +1218,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
       this.IS_BUSY = user_isbusy;
       // THE VALUE OS  IS_BUSY IS THEN UPDATED WITH THE VALUE RETURNED FROM THE WEBSOCKET getWsCurrentUserIsBusy$()
       // WHEN, FOR EXAMPLE IN PROJECT-SETTINGS > ADVANCED THE NUM OF MAX CHAT IS 3 AND THE 
-      // console.log('[SIDEBAR] - USER IS BUSY (from db)', this.IS_BUSY);
+      // this.logger.log('[SIDEBAR] - USER IS BUSY (from db)', this.IS_BUSY);
     });
   }
 
@@ -1301,10 +1373,10 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         takeUntil(this.unsubscribe$)
       )
       .subscribe((currentuser_isbusy) => {
-        // console.log('[SIDEBAR] - GET WS CURRENT-USER - currentuser_isbusy? ', currentuser_isbusy);
+        // this.logger.log('[SIDEBAR] - GET WS CURRENT-USER - currentuser_isbusy? ', currentuser_isbusy);
         if (currentuser_isbusy !== null) {
           this.IS_BUSY = currentuser_isbusy;
-          // console.log('[SIDEBAR] - GET WS CURRENT-USER (from ws)- this.IS_BUSY? ', this.IS_BUSY);
+          // this.logger.log('[SIDEBAR] - GET WS CURRENT-USER (from ws)- this.IS_BUSY? ', this.IS_BUSY);
         }
       }, error => {
         this.logger.error('[SIDEBAR] - GET WS CURRENT-USER IS BUSY * error * ', error)
@@ -1638,6 +1710,9 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     this.router.navigate(['/project/' + this.projectId + '/home']);
   }
 
+  goToAllMyChatbot() {
+    this.router.navigate(['/project/' + this.projectId + '/bots/my-chatbots/all']);
+  }
 
 
 

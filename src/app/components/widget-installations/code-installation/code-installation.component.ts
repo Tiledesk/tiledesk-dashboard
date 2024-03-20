@@ -14,7 +14,7 @@ export class CodeInstallationComponent implements OnInit {
 
   constructor(
     private auth: AuthService,
-    public appConfigService: AppConfigService,
+    public appConfigService: AppConfigService
   ) { }
 
   ngOnInit() {
