@@ -9,10 +9,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { SharedModule } from 'app/shared/shared.module';
 import { RouterModule ,Routes} from '@angular/router';
 import { MomentModule } from 'ngx-moment';
-import { TooltipModule, TooltipOptions } from 'ng2-tooltip-directive';
-import { CutomTooltipOptions } from 'app/utils/util';
+import { TooltipModule } from 'ng2-tooltip-directive';
 import { MatFormFieldModule } from '@angular/material/form-field';
-// import { SelectOptionsTranslatePipe } from 'app/selectOptionsTranslate.pipe';
 import { MatIconModule } from '@angular/material/icon';
 
 const routes: Routes = [

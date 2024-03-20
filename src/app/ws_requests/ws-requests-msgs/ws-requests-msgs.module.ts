@@ -5,10 +5,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { SharedModule } from 'app/shared/shared.module';
 import { MomentModule } from 'ngx-moment';
 import { MatTooltipModule } from '@angular/material/tooltip';
-// import { ContactInfoComponent } from 'app/components/shared/contact-info/contact-info.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
-// import { WsTrainBotComponent } from './ws-train-bot/ws-train-bot.component';
 import { WsSidebarAppsComponent } from './ws-sidebar-apps/ws-sidebar-apps.component';
 import { ContactInfoModule } from 'app/components/shared/contact-info/contact-info.module';
 import { RouterModule ,Routes} from '@angular/router';
@@ -23,7 +21,6 @@ const routes: Routes = [
   declarations: [
     WsRequestsMsgsComponent,
     // ContactInfoComponent,
-    // WsTrainBotComponent,
     WsSidebarAppsComponent,
   ],
   imports: [

@@ -218,12 +218,6 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   desktop_widget_is_visible: boolean = true;
   mobile_widget_is_visible: boolean = true;
 
-  // widget_status_on_page_change = [
-  //   { id: 'open', name: 'OnPageLoad' },
-  //   { id: 'close', name: 'DisplayWidget' },
-  //   { id: 'last', name: 'WidgetVisibility' },
-  // ]
-
   widget_status_on_page_change = [
     { id: 'open', name: 'Always opened' },
     { id: 'close', name: 'Always Closed' },
