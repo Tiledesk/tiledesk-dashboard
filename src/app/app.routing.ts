@@ -1,5 +1,5 @@
 import { OnboardingWidgetComponent } from './create-project-wizard/onboarding-widget/onboarding-widget.component';
-import { MapRequestComponent } from './map-request/map-request.component';
+// import { MapRequestComponent } from './map-request/map-request.component'; // now lazy
 import { NgModule } from '@angular/core';
 import { CommonModule, } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
@@ -21,8 +21,8 @@ import { VisitorsComponent } from './visitors/visitors.component';
 import { EventsComponent } from './events/events.component';
 
 
-/*** WEBSOCKET ***/
-import { WsRequestsListComponent } from './ws_requests/ws-requests-list/ws-requests-list.component';
+/*** WEBSOCKET ***/ 
+// import { WsRequestsListComponent } from './ws_requests/ws-requests-list/ws-requests-list.component'; // now lazy
 // import { WsRequestsMsgsComponent } from './ws_requests/ws-requests-msgs/ws-requests-msgs.component';  // now lazy
 // import { WsRequestsUnservedForPanelComponent } from './ws_requests/for-panel/ws-requests-unserved-for-panel/ws-requests-unserved-for-panel.component'; // now lazy
 
@@ -418,6 +418,14 @@ const routes: Routes = [
   },
   // { path: 'project/:projectid/wsrequest/:requestid/:calledby/:hassearchedby/:isopenadvancedsearch/:deptid/messages', component: WsRequestsMsgsComponent, canActivate: [AuthGuard] }, // now lazy
 
+  // Conversations list - Served - Unserved
+  {
+    path: 'project/:projectid/wsrequests',
+    loadChildren: () => import('app/ws_requests/ws-requests-list/ws-requests-list.module').then(m => m.WsRequestsListModule),
+    canActivate: [AuthGuard, ProjectProfileGuard]
+  },
+
+  // { path: 'project/:projectid/wsrequests', component: WsRequestsListComponent, canActivate: [AuthGuard, ProjectProfileGuard] }, // now lazy
 
   // HISTORY & NORT
   {
@@ -566,7 +574,7 @@ const routes: Routes = [
   /**
    * if change wsrequest search for all occurrence - 
    * remember that in the navbar component wsrequest is used for the link from the in app-notification to the request's messages */
-  { path: 'project/:projectid/wsrequests', component: WsRequestsListComponent, canActivate: [AuthGuard, ProjectProfileGuard] },
+ 
   { path: 'project/:projectid/wsrequests-demo', component: WsrequestsStaticComponent, canActivate: [AuthGuard] },
 
   
@@ -755,7 +763,7 @@ const routes: Routes = [
 
   // Webhook
   { path: 'project/:projectid/webhook', component: WebhookComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/map-request', component: MapRequestComponent, canActivate: [AuthGuard] },
+  // { path: 'project/:projectid/map-request', component: MapRequestComponent, canActivate: [AuthGuard] }, // now lazy
   { path: 'project/:projectid/email', component: EmailTicketingComponent, canActivate: [AuthGuard, ProjectProfileGuard] },
   { path: 'project/:projectid/email-demo', component: EmailTicketingStaticComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/integrations', component: IntegrationsComponent, canActivate: [AuthGuard] },

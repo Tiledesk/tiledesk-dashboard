@@ -1,27 +1,33 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HistoryAndNortConvsComponent } from './history-and-nort-convs.component';
+import { WsRequestsListComponent } from './ws-requests-list.component';
+import { WsRequestsServedComponent } from './ws-requests-served/ws-requests-served.component';
+import { WsRequestsUnservedComponent } from './ws-requests-unserved/ws-requests-unserved.component';
+import { RouterModule ,Routes} from '@angular/router';
+import { TooltipModule, TooltipOptions } from 'ng2-tooltip-directive';
+import { CutomTooltipOptions } from 'app/utils/util';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { TranslateModule } from '@ngx-translate/core';
+import { SharedModule } from 'app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { TranslateModule } from '@ngx-translate/core';
-import { SharedModule } from 'app/shared/shared.module';
-import { RouterModule ,Routes} from '@angular/router';
 import { MomentModule } from 'ngx-moment';
-import { TooltipModule, TooltipOptions } from 'ng2-tooltip-directive';
-import { CutomTooltipOptions } from 'app/utils/util';
 import { MatFormFieldModule } from '@angular/material/form-field';
-// import { SelectOptionsTranslatePipe } from 'app/selectOptionsTranslate.pipe';
 import { MatIconModule } from '@angular/material/icon';
+import { MapRequestComponent } from 'app/map-request/map-request.component';
+
 
 const routes: Routes = [
-  { path: "", component: HistoryAndNortConvsComponent},
+  { path: "", component: WsRequestsListComponent},
 ];
 
 @NgModule({
   declarations: [
-    HistoryAndNortConvsComponent,
+    WsRequestsListComponent,
+    WsRequestsServedComponent,
+    WsRequestsUnservedComponent,
+    MapRequestComponent
   ],
   imports: [
     RouterModule.forChild(routes),
@@ -39,4 +45,4 @@ const routes: Routes = [
     MatIconModule
   ]
 })
-export class HistoryAndNortConvsModule { }
+export class WsRequestsListModule { }

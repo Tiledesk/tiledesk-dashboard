@@ -179,19 +179,14 @@
 
                             <p class="name" [ngStyle]="{'color': fillColour }">
                               {{ message.senderFullname }}
-                              <!-- <span *ngIf="message?.type === 'text' && !message?.metadata"
-                                style="float:right; cursor:pointer; color: #00bcf8; text-decoration: underline;"
-                                (click)="openRightSideBar(message?.text)">
-                                {{ 'Train' | translate }}
-                              </span> -->
                             </p>
 
                             <ng-container *ngIf="resolutionBotCount > 0">
-                              <p class="train-btn-wpr" *ngIf="message?.type === 'text' && !message?.metadata">
+                              <!-- <p class="train-btn-wpr" *ngIf="message?.type === 'text' && !message?.metadata">
                                 <span class="train-btn" (click)="openRightSideBar(message?.text)">
                                   {{ 'Train' | translate }}
                                 </span>
-                              </p>
+                              </p> -->
                             </ng-container>
                             <!-- -------------------------------------------------------------- -->
                             <!-- first combination: | marked | sanitizeHtml -->
@@ -4270,11 +4265,6 @@
 <!-- ----- -->
 
 
-<div *ngIf="OPEN_RIGHT_SIDEBAR === true" class="view-side">
-  <appdashboard-ws-train-bot [ngStyle]="{'height':train_bot_sidebar_height }" [selectedQuestion]="selectedQuestion"
-    (valueChange)='handleCloseRightSidebar($event)'>
-  </appdashboard-ws-train-bot>
-</div>
 
 <!-- [ngStyle]="{'height':apps_sidebar_height }" -->
 <div *ngIf="OPEN_APPS_RIGHT_SIDEBAR === true" class="view-side">

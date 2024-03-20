@@ -7,7 +7,7 @@ import { ActivitiesService } from './activities/activities-service/activities.se
 
 
 // import { LoggerInstance } from './services/logger/LoggerInstance';
-import { MapRequestComponent } from './map-request/map-request.component';
+// import { MapRequestComponent } from './map-request/map-request.component'; // now lazy
 
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, APP_INITIALIZER, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
@@ -175,19 +175,19 @@ import { ErrorResultComponent } from './create-project-wizard/onboarding/error-r
 import { HandleInvitationComponent } from './auth/handle-invitation/handle-invitation.component';
 import { environment } from '../environments/environment';
 import { AppConfigService } from './services/app-config.service';
-import { WsRequestsListComponent } from './ws_requests/ws-requests-list/ws-requests-list.component';
+// import { WsRequestsListComponent } from './ws_requests/ws-requests-list/ws-requests-list.component'; // now lazy
 import { WsRequestsService } from './services/websocket/ws-requests.service';
 // import { WsRequestsMsgsComponent } from './ws_requests/ws-requests-msgs/ws-requests-msgs.component'; // now lazy
 import { WsMsgsService } from './services/websocket/ws-msgs.service';
 import { WsSharedComponent } from './ws_requests/ws-shared/ws-shared.component';
-// import { WsTrainBotComponent } from './ws_requests/ws-requests-msgs/ws-train-bot/ws-train-bot.component';  // now lazy
+// import { WsTrainBotComponent } from './ws_requests/ws-requests-msgs/ws-train-bot/ws-train-bot.component';  // now removed
 import { WebSocketJs } from './services/websocket/websocket-js';
 import { WidgetMultilanguageComponent } from './widget_components/widget-multilanguage/widget-multilanguage.component';
 import { BaseTranslationComponent } from './widget_components/widget-multilanguage/base-translation/base-translation.component';
 import { WidgetSharedComponent } from './widget_components/widget-shared/widget-shared.component';
 import { WidgetSetUpBaseComponent } from './widget_components/widget-set-up/widget-set-up-base/widget-set-up-base.component';
-import { WsRequestsServedComponent } from './ws_requests/ws-requests-list/ws-requests-served/ws-requests-served.component';
-import { WsRequestsUnservedComponent } from './ws_requests/ws-requests-list/ws-requests-unserved/ws-requests-unserved.component';
+// import { WsRequestsServedComponent } from './ws_requests/ws-requests-list/ws-requests-served/ws-requests-served.component'; // now lazy
+// import { WsRequestsUnservedComponent } from './ws_requests/ws-requests-list/ws-requests-unserved/ws-requests-unserved.component'; // now lazy
 import { CloseRequestModalComponent } from './ws_requests/modals/close-request-modal/close-request-modal.component';
 import { LoadingPageComponent } from './loading-page/loading-page.component';
 import { BotsBaseComponent } from './bots/bots-base/bots-base.component';
@@ -272,7 +272,7 @@ import { ImageViewerComponent } from './ws_requests/ws-requests-msgs/image-viewe
 import { WidgetInstallationComponent } from './widget-installation/widget-installation.component';
 import { AutofocusDirective } from './_directives/autofocus.directive';
 
-// import { TooltipModule, TooltipOptions } from 'ng2-tooltip-directive';
+import { TooltipModule, TooltipOptions } from 'ng2-tooltip-directive';
 
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -555,16 +555,16 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     CreateProjectComponent,
     InstallWidgetComponent,
     HandleInvitationComponent,
-    WsRequestsListComponent,
-    // WsRequestsMsgsComponent,
+    // WsRequestsListComponent, // now lazy
+    // WsRequestsMsgsComponent, // now lazy
     WsSharedComponent,
-    // WsTrainBotComponent, // now lazy
+    // WsTrainBotComponent, // now removed
     WidgetMultilanguageComponent,
     BaseTranslationComponent,
     WidgetSharedComponent,
     WidgetSetUpBaseComponent,
-    WsRequestsServedComponent,
-    WsRequestsUnservedComponent,
+    // WsRequestsServedComponent, // now lazy
+    // WsRequestsUnservedComponent, // now lazy
     CloseRequestModalComponent,
     LoadingPageComponent,
     BotTypeSelectComponent,
@@ -593,10 +593,9 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     WidgetChatComponent,
     WebhookComponent,
     WebhookAddEditComponent,
-    MapRequestComponent,
+    // MapRequestComponent, // now lazy
     WebhookComponent,
     WebhookAddEditComponent,
-    MapRequestComponent,
     NotificationSettingsComponent,
     CreateGroupComponent,
     CreateBotComponent,
@@ -721,7 +720,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     MessagesStatsModalComponent
   ],
   imports: [
-    // TooltipModule.forRoot(CutomTooltipOptions as TooltipOptions),
+    TooltipModule.forRoot(CutomTooltipOptions as TooltipOptions),
     NgApexchartsModule,
     DragDropModule,
     CreditCardDirectivesModule,
