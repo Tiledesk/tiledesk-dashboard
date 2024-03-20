@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.6.1-rc1
+- Improves get and save methods of translation strings
+
 ### 2.6.0-rc6
 - Fixes the bug: App cards are not of the same height
 
