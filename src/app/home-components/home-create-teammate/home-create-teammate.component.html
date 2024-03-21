@@ -250,7 +250,7 @@
 
         <div class="ct-action-btns-wpr" *ngIf="USER_ROLE !== 'agent'">
             <!-- goToTeammates() presentModalInviteTeammate()  -->
-            <button id="home-material-btn" class="mat-focus-indicator mat-flat-button mat-button-base"
+            <button *ngIf="displayInviteTeammateBtn" id="home-material-btn" class="mat-focus-indicator mat-flat-button mat-button-base"
                 [disabled]="projectUsersLength + countOfPendingInvites >= seatsLimit"
                 [ngClass]="{'invite-teammate-btn-disabled': projectUsersLength + countOfPendingInvites >= seatsLimit}"
                 (click)="inviteTeammate()">
