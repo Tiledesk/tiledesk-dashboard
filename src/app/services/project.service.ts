@@ -295,7 +295,7 @@ export class ProjectService {
 
 
     // -----------------------------------------------------------------
-  // Used to update the project name - todo from put to patch
+  // Used to update the project name - todo from post to patch
   // -----------------------------------------------------------------
   public updateAppSumoProject(
     proiectid: string, 

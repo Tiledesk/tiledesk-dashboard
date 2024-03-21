@@ -916,7 +916,7 @@ export class AuthService {
   }
 
   signOut(calledby: string) {
-    this.logger.log('[AUTH-SERV] Signout calledby +++++ ', calledby)
+    // console.log('[AUTH-SERV] Signout calledby +++++ ', calledby)
     if (calledby !== 'autologin') {
       try {
         if (window && window['tiledesk_widget_logout']) {
@@ -1046,9 +1046,10 @@ export class AuthService {
 
     this.user_bs.next(null)
     this.project_bs.next(null)
-    this.logger.log('[AUTH-SERV] SIGNOUT project_bs VALUE: ', this.project_bs.value,)
+    this.logger.log('[AUTH-SERV] SIGNOUT project_bs VALUE: ', this.project_bs.value)
 
     const storedRoute = this.localDbService.getFromStorage('wannago')
+    // console.log('[AUTH-SERV] storedRoute: ', storedRoute)
     if (storedRoute) {
       this.localDbService.removeFromStorage('wannago')
     }
@@ -1210,11 +1211,12 @@ export class AuthService {
           // that.widgetReInit()
 
           if (calledby !== 'autologin') {
-            if ( this.customRedirectAfterLogout  === false) {
-              that.router.navigate(['/login'])
-            } else {
-              window.open( this.afterLogoutRedirectURL, '_self');
-            }
+            that.router.navigate(['/login'])
+            // if ( this.customRedirectAfterLogout  === false) {
+            //   that.router.navigate(['/login'])
+            // } else {
+            //   window.open( this.afterLogoutRedirectURL, '_self');
+            // }
           }
         },
         function (error) {
@@ -1222,11 +1224,12 @@ export class AuthService {
           // that.widgetReInit()
 
           if (calledby !== 'autologin') {
-            if ( this.customRedirectAfterLogout  === false) {
-              that.router.navigate(['/login'])
-            } else {
-              window.open( this.afterLogoutRedirectURL, '_self');
-            }
+            that.router.navigate(['/login'])
+            // if ( this.customRedirectAfterLogout  === false) {
+            //   that.router.navigate(['/login'])
+            // } else {
+            //   window.open( this.afterLogoutRedirectURL, '_self');
+            // }
           }
         },
       )
@@ -1236,11 +1239,12 @@ export class AuthService {
     this.logger.log('[AUTH-SERV] signoutNoFirebase called By (1)', calledby)
     if (calledby !== 'autologin') {
       this.logger.log('[AUTH-SERV] signoutNoFirebase called By (2)', calledby)
-      if ( this.customRedirectAfterLogout  === false) {
-        this.router.navigate(['/login'])
-      } else {
-        window.open( this.afterLogoutRedirectURL, '_self');
-      }
+      this.router.navigate(['/login'])
+      // if ( this.customRedirectAfterLogout  === false) {
+      //   this.router.navigate(['/login'])
+      // } else {
+      //   window.open( this.afterLogoutRedirectURL, '_self');
+      // }
     }
   }
 
