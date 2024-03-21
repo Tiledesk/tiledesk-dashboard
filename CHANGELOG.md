@@ -1,7 +1,7 @@
 # tiledesk-dashboard
 
 ### 2.6.1
-- Improves get and save methods of translation strings
+- Improves the Get and Save methods used for translation strings
 
 ### 2.6.0
 - Deploys in production
