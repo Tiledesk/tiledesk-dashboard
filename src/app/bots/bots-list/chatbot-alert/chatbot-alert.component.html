@@ -10,7 +10,7 @@
     <span class="msg-alert">
       {{ 'NumberOfChatbotExceedsThePlan' | translate: tParamsPlanAndChatBot }}
     </span>
-    <!-- (click)=" openModalTrialExpired" -->
+    <!-- (click)=" openModalTrialExpired()  " -->
     <div class="upgrade--plan-btn-wpr" style="text-align: center;">
       <button class="upgrade--plan-btn" (click)="presentGoToPricingModal()">
         {{ "Pricing.UpgradePlan" | translate }}
