@@ -598,7 +598,8 @@
         "ContactTheProjectOwner": "Contatta il proprietario del progetto",
         "NoPayments": "Nessun pagamento",
         "ToEnableAllFeatures": "per abilitare tutte le funzionalità",
-        "YourTrialHasEnded": "Your trial has ended",
+        "YourTrialHasEnded": "La tua prova gratuita di 14 giorni è scaduta",
+        "UpgradeNowToKeepOurAmazingFeatures": "Esegui ora l'upgrade per mantenere le nostre straordinarie funzionalità",
         "YouHaveBeenRevertedToOurFreePlan":  "You have been reverted to our free plan and the paid features have been paused. To keep using our paid features, upgrade to one of our paid plans",
         "AutoSendTranscriptByEmailIsUnavailable": "L'invio automatico via e-mail del chat transcript non è disponibile nel piano corrente."
     },

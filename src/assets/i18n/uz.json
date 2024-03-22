@@ -598,7 +598,8 @@
         "ContactTheProjectOwner": "Loyiha egasi bilan bog'laning",
         "NoPayments": "Toʻlovlar yoʻq",
         "ToEnableAllFeatures": "barcha xususiyatlarni yoqish uchun",
-        "YourTrialHasEnded": "Your trial has ended",
+        "YourTrialHasEnded": "14 kunlik bepul sinov muddati tugadi",
+        "UpgradeNowToKeepOurAmazingFeatures": "Ajoyib xususiyatlarimizni saqlab qolish uchun hozir yangilang",
         "YouHaveBeenRevertedToOurFreePlan":  "You have been reverted to our free plan and the paid features have been paused. To keep using our paid features, upgrade to one of our paid plans",
         "AutoSendTranscriptByEmailIsUnavailable": "Elektron pochta orqali transkriptni avtomatik yuborish joriy rejangizda mavjud emas"
     },

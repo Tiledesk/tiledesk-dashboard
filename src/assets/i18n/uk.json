@@ -598,7 +598,8 @@
         "ContactTheProjectOwner": "Зверніться до власника проекту",
         "NoPayments": "Без платежів",
         "ToEnableAllFeatures": "Щоб увімкнути всі функції",
-        "YourTrialHasEnded": "Your trial has ended",
+        "YourTrialHasEnded": "Термін дії вашої 14-денної безкоштовної пробної версії закінчився",
+        "UpgradeNowToKeepOurAmazingFeatures": "Оновіть зараз, щоб зберегти наші чудові функції",
         "YouHaveBeenRevertedToOurFreePlan":  "You have been reverted to our free plan and the paid features have been paused. To keep using our paid features, upgrade to one of our paid plans",
         "AutoSendTranscriptByEmailIsUnavailable": "Автоматичне надсилання стенограми електронною поштою недоступне у вашому поточному плані"
     },

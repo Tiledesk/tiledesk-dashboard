@@ -598,7 +598,8 @@
         "ContactTheProjectOwner": "Contacta con el propietario del proyecto",
         "NoPayments": "Sin pagos",
         "ToEnableAllFeatures": "para activar todas las características",
-        "YourTrialHasEnded": "Your trial has ended",
+        "YourTrialHasEnded": "Tu prueba gratuita de 14 días ha caducado",
+        "UpgradeNowToKeepOurAmazingFeatures": "Actualice ahora para conservar nuestras increíbles funciones",
         "YouHaveBeenRevertedToOurFreePlan":  "You have been reverted to our free plan and the paid features have been paused. To keep using our paid features, upgrade to one of our paid plans",
         "AutoSendTranscriptByEmailIsUnavailable": "Auto-enviar transcripción por correo electrónico no está disponible en su plan actual"
     },

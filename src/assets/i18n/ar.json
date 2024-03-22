@@ -598,7 +598,8 @@
         "ContactTheProjectOwner": "اتصل بصاحب المشروع",
         "NoPayments": "لا مدفوعات",
         "ToEnableAllFeatures": "لتمكين جميع الميزات",
-        "YourTrialHasEnded": "Your trial has ended",
+        "YourTrialHasEnded": "لقد انتهت صلاحية النسخة التجريبية المجانية التي تبلغ 14 يومًا",
+        "UpgradeNowToKeepOurAmazingFeatures": "قم بالترقية الآن للحفاظ على ميزاتنا المذهلة",
         "YouHaveBeenRevertedToOurFreePlan":  "You have been reverted to our free plan and the paid features have been paused. To keep using our paid features, upgrade to one of our paid plans",
         "AutoSendTranscriptByEmailIsUnavailable": "إرسال النص تلقائيًا عبر البريد الإلكتروني غير متوفر في خطتك الحالية"
     },
