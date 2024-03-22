@@ -300,7 +300,8 @@
     <div *ngIf="(!subscription_is_active && prjct_profile_type === 'payment') && (countOfChatbots > chatBotLimit)"
       matTooltipClass="h-custom-mat-tooltip" 
       matTooltip="Subscription payment problem"
-      #tooltip="matTooltip" matTooltipPosition='below' 
+      #tooltip="matTooltip" 
+      matTooltipPosition='below' 
       matTooltipHideDelay="100"
       (click)="openModalSubsExpired()">
       <!--  -->
@@ -310,13 +311,14 @@
         error
       </i>
     </div>
-    <!-- (click)="openModalTrialExpired()" -->
+    <!--  -->
     <div style="cursor: pointer;" *ngIf="(trial_expired && prjct_profile_type === 'free') && (countOfChatbots > chatBotLimit)"
       matTooltipClass="h-custom-mat-tooltip" 
       matTooltip="Your 14-day free trial has expired"
       #tooltip="matTooltip" 
       matTooltipPosition='below' 
-      matTooltipHideDelay="100">
+      matTooltipHideDelay="100"
+      (click)="openModalTrialExpired()">
       <i class="material-icons" 
         style="vertical-align: middle; cursor: pointer; color: #f44336; font-size: 20px;  position: relative;
         top: -1px;">

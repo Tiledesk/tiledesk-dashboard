@@ -4,7 +4,13 @@ import { Location } from '@angular/common';
 import { LoggerService } from '../services/logger/logger.service';
 import { PLAN_NAME, URL_understanding_default_roles } from './../utils/util';
 import { BrandService } from 'app/services/brand.service';
+import { Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 const swal = require('sweetalert');
+const Swal = require('sweetalert2')
+// import Swal from 'sweetalert2';
+// import Swal from 'sweetalert2';
+
 declare var $: any;
 /// Notify users about errors and other helpful stuff
 export interface Msg {
@@ -68,17 +74,25 @@ export class NotifyService {
 
   public URL_UNDERSTANDING_DEFAULT_ROLES = URL_understanding_default_roles
   public displayContactUsModalToUpgradePlan = 'none';
+
+  yourTrialHasEnded: string
+  upgradeNowToKeepOurAmazingFeatures: string
   constructor(
     public location: Location,
     public brandService: BrandService,
-    private logger: LoggerService
-
+    private logger: LoggerService,
+    private router: Router,
+    private translate: TranslateService
   ) {
     const brand = brandService.getBrand();
     this.salesEmail = brand['CONTACT_SALES_EMAIL'];
     this.logger.log('[NOTIFY-SERVICE] salesEmail ', this.salesEmail)
     this.hideHelpLink = brand['DOCS'];
+ 
   }
+
+ 
+
 
   presentContactUsModalToUpgradePlan(displayModal: boolean) {
     if (displayModal === true) {
@@ -115,10 +129,38 @@ export class NotifyService {
     this.logger.log('[NOTIFY-SERVICE] - HasExpiredModal prjctPlanSubsEndDate ', prjctPlanSubsEndDate);
     this._prjctPlanSubsEndDate = prjctPlanSubsEndDate;
     this._prjctPlanName = prjctPlanName;
-  }
 
-  displayTrialHasExpiredModal() {
-    this.displayModalTrialExpired = 'block';
+    // const el = document.createElement('div')
+    // if (this.hideHelpLink) {
+    //   el.innerHTML = onlyOwnerCanManageTheAccountPlanMsg + '. ' + `<a  href=${this.URL_UNDERSTANDING_DEFAULT_ROLES} target='_blank'>` + learnMoreAboutDefaultRoles + "</a>"
+    // } else {
+    //   el.innerHTML = onlyOwnerCanManageTheAccountPlanMsg + '. '
+    // }
+  
+  }
+  
+  
+  // "{{'YourTrialHasEnded' | translate }}"
+  // "{{'UpgradeNowToKeepOurAmazingFeatures' | translate}}"
+  displayTrialHasExpiredModal(projectId,  yourTrialHasEnded, upgradeNowToKeepOurAmazingFeatures , upgrade) {
+   console.log('displayTrialHasExpiredModal yourTrialHasEnded' , yourTrialHasEnded, 'upgradeNowToKeepOurAmazingFeatures ', upgradeNowToKeepOurAmazingFeatures )
+    Swal.fire({
+      title: yourTrialHasEnded, // "Your 14-days free trial has expired",
+      text: upgradeNowToKeepOurAmazingFeatures, //"Upgrade now to keep our amazing features",
+      icon: "warning",
+      showCloseButton: true,
+      showCancelButton: false,
+      confirmButtonText: upgrade,
+      confirmButtonColor: "var(--blue-light)",
+      // cancelButtonColor: "var(--red-color)",
+      focusConfirm: false,
+      // reverseButtons: true,
+    }).then((result) => { 
+      if (result.isConfirmed) {
+        this.router.navigate(['project/' + projectId + '/pricing']);
+      }
+
+    });
   }
 
   closeModalTrialExpired() {

@@ -28,6 +28,7 @@ export class HomeKbComponent extends PricingBaseComponent implements OnInit {
   addButtonDisabled: boolean = false;
   project: any;
   kbCount: number;
+  projectId: string;
   kbSettings: KbSettings = {
     _id: null,
     id_project: null,
@@ -75,7 +76,8 @@ export class HomeKbComponent extends PricingBaseComponent implements OnInit {
       takeUntil(this.unsubscribe$)
     )
     .subscribe((project) => {
-      this.project = project
+      this.project = project;
+      this.projectId = project._id
       
     })
   }
@@ -206,13 +208,13 @@ export class HomeKbComponent extends PricingBaseComponent implements OnInit {
     }
   }
 
-  openModalTrialExpired() {
-    if (this.USER_ROLE === 'owner') {  
-        this.notify.displayTrialHasExpiredModal();
-    } else {
-      this.presentModalOnlyOwnerCanManageTheAccountPlan();
-    }
-  }
+  // openModalTrialExpired() {
+  //   if (this.USER_ROLE === 'owner') {  
+  //       this.notify.displayTrialHasExpiredModal(this.projectId);
+  //   } else {
+  //     this.presentModalOnlyOwnerCanManageTheAccountPlan();
+  //   }
+  // }
 
   presentModalOnlyOwnerCanManageTheAccountPlan() {
     this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles)

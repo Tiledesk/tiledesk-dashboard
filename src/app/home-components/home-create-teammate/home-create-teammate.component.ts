@@ -65,6 +65,11 @@ export class HomeCreateTeammateComponent extends PricingBaseComponent implements
   onlyOwnerCanManageTheAccountPlanMsg: string;
   learnMoreAboutDefaultRoles: string;
 
+
+  yourTrialHasEnded: string;
+  upgradeNowToKeepOurAmazingFeatures: string;
+  upgrade: string;
+
   constructor(
     public auth: AuthService,
     private logger: LoggerService,
@@ -603,7 +608,7 @@ export class HomeCreateTeammateComponent extends PricingBaseComponent implements
 
   openModalTrialExpired() {
     if (this.USER_ROLE === 'owner') {
-      this.notify.displayTrialHasExpiredModal();
+      this.notify.displayTrialHasExpiredModal(this.projectId,this.yourTrialHasEnded, this.upgradeNowToKeepOurAmazingFeatures, this.upgrade);
     } else {
       this.presentModalOnlyOwnerCanManageTheAccountPlan();
     }
@@ -615,6 +620,21 @@ export class HomeCreateTeammateComponent extends PricingBaseComponent implements
 
   translateString() {
     this.translateModalOnlyOwnerCanManageProjectAccount()
+    this.translate.get('Pricing.YourTrialHasEnded')
+    .subscribe((translation: any) => {
+      this.yourTrialHasEnded = translation;
+    });
+
+    this.translate.get('Pricing.UpgradeNowToKeepOurAmazingFeatures')
+    .subscribe((translation: any) => {
+      this.upgradeNowToKeepOurAmazingFeatures = translation;
+    });
+
+    this.translate.get('Upgrade')
+    .subscribe((translation: any) => {
+      this.upgrade = translation;
+    });
+
   }
   translateModalOnlyOwnerCanManageProjectAccount() {
     this.translate.get('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan')

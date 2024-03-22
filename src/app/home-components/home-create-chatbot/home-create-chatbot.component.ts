@@ -64,6 +64,10 @@ export class HomeCreateChatbotComponent extends PricingBaseComponent implements 
   public_Key: string;
   areActivePay: boolean;
 
+  yourTrialHasEnded: string;
+  upgradeNowToKeepOurAmazingFeatures: string;
+  upgrade: string;
+
   constructor(
     public appConfigService: AppConfigService,
     public auth: AuthService,
@@ -159,6 +163,21 @@ export class HomeCreateChatbotComponent extends PricingBaseComponent implements 
     this.translate.get('LearnMoreAboutDefaultRoles')
       .subscribe((translation: any) => {
         this.learnMoreAboutDefaultRoles = translation;
+      });
+     
+      this.translate.get('Pricing.YourTrialHasEnded')
+      .subscribe((translation: any) => {
+        this.yourTrialHasEnded = translation;
+      });
+  
+      this.translate.get('Pricing.UpgradeNowToKeepOurAmazingFeatures')
+      .subscribe((translation: any) => {
+        this.upgradeNowToKeepOurAmazingFeatures = translation;
+      });
+
+      this.translate.get('Upgrade')
+      .subscribe((translation: any) => {
+        this.upgrade = translation;
       });
   }
 
@@ -587,10 +606,10 @@ export class HomeCreateChatbotComponent extends PricingBaseComponent implements 
       this.presentModalAgentCannotManageChatbot();
     }
   }
-
+  
   openModalTrialExpired() {
     if (this.USER_ROLE === 'owner') {
-      this.notify.displayTrialHasExpiredModal();
+      this.notify.displayTrialHasExpiredModal(this.projectId, this.yourTrialHasEnded, this.upgradeNowToKeepOurAmazingFeatures, this.upgrade);
     } else {
       this.presentModalOnlyOwnerCanManageTheAccountPlan();
     }
