@@ -519,13 +519,13 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
   }
 
 
-  openModalTrialExpired() {
-    if (this.USER_ROLE === 'owner') {
-      this.notify.displayTrialHasExpiredModal();
-    } else {
-      this.presentModalOnlyOwnerCanManageTheAccountPlan();
-    }
-  }
+  // openModalTrialExpired() {
+  //   if (this.USER_ROLE === 'owner') {
+  //     this.notify.displayTrialHasExpiredModal(this.id_project);
+  //   } else {
+  //     this.presentModalOnlyOwnerCanManageTheAccountPlan();
+  //   }
+  // }
 
   openModalSubsExpired() {
     if (this.USER_ROLE === 'owner') {

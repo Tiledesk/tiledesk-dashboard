@@ -9,6 +9,10 @@ import { TranslateService } from '@ngx-translate/core'
 import { UsersService } from 'app/services/users.service';
 import { Router } from '@angular/router';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
+import { AuthService } from 'app/core/auth.service';
+import { Project } from 'app/models/project-model';
+import { takeUntil } from 'rxjs/operators'
+import { Subject } from 'rxjs';
 
 
 @Component({
@@ -18,7 +22,7 @@ import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.comp
 })
 
 export class ChatbotAlertComponent extends PricingBaseComponent implements OnInit {
-
+  private unsubscribe$: Subject<any> = new Subject<any>();
   public chatBotCount: number;
   PLAN_NAME = PLAN_NAME;
   public USER_ROLE: string;
@@ -26,7 +30,8 @@ export class ChatbotAlertComponent extends PricingBaseComponent implements OnIni
   learnMoreAboutDefaultRoles: string;
   route: string;
   IS_TEMPLATE_ROUTE: boolean
-
+  projectId: string;
+  project: Project
   constructor(
     public prjctPlanService: ProjectPlanService,
     private logger: LoggerService,
@@ -34,7 +39,8 @@ export class ChatbotAlertComponent extends PricingBaseComponent implements OnIni
     private translate: TranslateService,
     public notify: NotifyService,
     public usersService: UsersService,
-    private router: Router
+    private router: Router,
+    private auth: AuthService,
   ) {
     super(prjctPlanService, notify);
     this.getProjectPlan();
@@ -43,8 +49,22 @@ export class ChatbotAlertComponent extends PricingBaseComponent implements OnIni
   ngOnInit(): void {
     this.getFaqKbByProjectId();
     this.translateModalOnlyOwnerCanManageProjectAccount();
-    this.getProjectUserRole()
-    this.getActiveRoute()
+    this.getProjectUserRole();
+    this.getActiveRoute();
+    this.getCurrentProject();
+  }
+
+  getCurrentProject() {
+    this.logger.log('[HOME-KB] - $ubscribe to CURRENT PROJECT ',this.project)
+    this.auth.project_bs
+    .pipe(
+      takeUntil(this.unsubscribe$)
+    )
+    .subscribe((project) => {
+      this.project = project;
+      this.projectId = project._id
+      
+    })
   }
 
   getActiveRoute() {
@@ -113,13 +133,13 @@ export class ChatbotAlertComponent extends PricingBaseComponent implements OnIni
     }
   }
 
-  openModalTrialExpired() {
-    if (this.USER_ROLE === 'owner') {
-      this.notify.displayTrialHasExpiredModal();
-    } else {
-      this.presentModalOnlyOwnerCanManageTheAccountPlan();
-    }
-  }
+  // openModalTrialExpired() {
+  //   if (this.USER_ROLE === 'owner') {
+  //     this.notify.displayTrialHasExpiredModal(this.projectId);
+  //   } else {
+  //     this.presentModalOnlyOwnerCanManageTheAccountPlan();
+  //   }
+  // }
 
   presentModalOnlyOwnerCanManageTheAccountPlan() {
     this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles)
