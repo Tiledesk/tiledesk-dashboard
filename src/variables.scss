@@ -101,7 +101,8 @@
      --conv-details-contact-location-color: #03a5e8;
      --active-tab-text-color: rgb(8, 15, 26);
      --conv-details-edit-contact-fullname-form-background-color: #fff;
-     --error-color: #f44336;
+     --error-color: var(--red-color)
+     --red-color: #f44336;
      --header-font-family: Poppins, Roboto, Helvetica, Arial, sans-serif;
      --content-font-family: Roboto, Helvetica, Arial, sans-serif;
      --text-color-on-dark: #dbddde;
