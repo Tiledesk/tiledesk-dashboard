@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.6.3-rc1
+- Improvements and bug fixing
+
 ### 2.6.1-rc1
 - Improves get and save methods of translation strings
 - Improves performance
