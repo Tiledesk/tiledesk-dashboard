@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.6.2
+- Deploys in production
+- Improvements and bug fixing
+
 ### 2.6.1
 - Improves the Get and Save methods used for translation strings
 
