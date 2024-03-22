@@ -2718,3 +2718,14 @@ li.active-item a i.settings-sidebar-icons {
 .toggle-setting-sidebar-icon:hover {
   background: var(--settings-sidebar-toggle-icon-hover-background-color);
 }
+
+/*
+ * Sweet Alert 2 
+/* ********************************** */
+.swal2-popup {
+  font-size: 1.6rem !important;
+}
+
+.swal2-close:focus {
+  box-shadow: unset !important;
+}
