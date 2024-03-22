@@ -81,6 +81,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
     this.getBrowserVersion();
     this.listenSidebarIsOpened();
     this.translateModalOnlyOwnerCanManageProjectAccount();
+    this.getProjectUserRole()
     // this.getAllIntegrations().then(() => {
     //   this.intName = this.route.snapshot.queryParamMap.get('name');
     //   console.log("[INTEGRATION-COMP] intName: ", this.intName);
