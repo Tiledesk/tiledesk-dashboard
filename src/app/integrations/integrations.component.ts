@@ -81,6 +81,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
     this.getBrowserVersion();
     this.listenSidebarIsOpened();
     this.translateModalOnlyOwnerCanManageProjectAccount();
+    this.getProjectUserRole()
     // this.getAllIntegrations().then(() => {
     //   this.intName = this.route.snapshot.queryParamMap.get('name');
     //   console.log("[INTEGRATION-COMP] intName: ", this.intName);
@@ -191,7 +192,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
         takeUntil(this.unsubscribe$)
       )
       .subscribe((user_role) => {
-        this.logger.log("[INTEGRATION-COMP] user is ", user_role);
+      //  console.log("[INTEGRATION-COMP] user is ", user_role);
         if (user_role) {
           this.USER_ROLE = user_role
           if (user_role === 'agent') {
