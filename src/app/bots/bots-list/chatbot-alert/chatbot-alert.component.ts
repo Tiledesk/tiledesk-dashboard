@@ -55,7 +55,7 @@ export class ChatbotAlertComponent extends PricingBaseComponent implements OnIni
   }
 
   getCurrentProject() {
-    this.logger.log('[HOME-KB] - $ubscribe to CURRENT PROJECT ',this.project)
+    this.logger.log('[CHATBOT-ALERT] - $ubscribe to CURRENT PROJECT ',this.project)
     this.auth.project_bs
     .pipe(
       takeUntil(this.unsubscribe$)

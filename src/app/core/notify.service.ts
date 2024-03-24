@@ -193,7 +193,7 @@ export class NotifyService {
 
   // "CONTACT US - LET'S CHAT" MODAL
   _displayContactUsModal(displayModal: boolean, reason: string) {
-    // console.log('[NOTIFY-SERVICE] - _displayContactUsModal reason ', reason);
+    console.log('[NOTIFY-SERVICE] - _displayContactUsModal reason ', reason);
     if (reason === 'seats_limit_reached') {
       this.showSubtitleAllOperatorsSeatsUsed = true;
       this.showSubtitleSeatsNumberExceed = false;
@@ -204,10 +204,38 @@ export class NotifyService {
       this.showSubtitleAllOperatorsSeatsUsed = false;
       this.showSubtitleSeatsNumberExceed = false;
     }
-
-    if (displayModal === true) {
-      this.displayContactUsModal = 'block';
+    let contentText = ""
+    if (reason === 'upgrade_plan') {
+      contentText = this.translate.instant('Pricing.ContactUsViaEmailToUpgradeYourPricingPlan')
+    } 
+    else if (reason === 'seats_limit_exceed' ) {
+      contentText = this.translate.instant("Pricing.TheSeatsNumberExceedsTheAllowed" ) + '. ' +  this.translate.instant('Pricing.ContactUsViaEmailToUpgradeYourPricingPlan') 
     }
+    else if (reason === 'seats_limit_reached' ) {
+      contentText = this.translate.instant("Pricing.YouCurrentlyAreUsingAllActiveOperatorSeats" ) + '. ' +  this.translate.instant('Pricing.ContactUsViaEmailToUpgradeYourPricingPlan') 
+    }
+
+    Swal.fire({
+      title: this.translate.instant('Pricing.PlanChange'),   
+      text: contentText, 
+      // html: `contentText`,
+      icon: "warning",
+      showCloseButton: true,
+      showCancelButton: false,
+      confirmButtonText: this.translate.instant('ContactUs'),
+      confirmButtonColor: "var(--blue-light)",
+      // cancelButtonColor: "var(--red-color)",
+      focusConfirm: false,
+      // reverseButtons: true,
+    }).then((result) => { 
+      if (result.isConfirmed) {
+        window.open(`mailto:${this.salesEmail}?subject=Upgrade plan`);
+      }
+    });
+
+    // if (displayModal === true) {
+    //   this.displayContactUsModal = 'block';
+    // }
   }
 
   closeContactUsModal() {
@@ -753,15 +781,29 @@ export class NotifyService {
     } else {
       el.innerHTML = onlyOwnerCanManageTheAccountPlanMsg + '. '
     }
-    swal({
-      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
+    // swal({
+    //   // title: this.onlyOwnerCanManageTheAccountPlanMsg,
+    //   content: el,
+    //   icon: "warning",
+    //   // buttons: true,
+    //   button: {
+    //     text: "OK",
+    //   },
+    //   dangerMode: false,
+    // })
+
+    Swal.fire({
+      // title: yourTrialHasEnded, // "Your 14-days free trial has expired",
+      // text: upgradeNowToKeepOurAmazingFeatures, //"Upgrade now to keep our amazing features",
       content: el,
       icon: "warning",
-      // buttons: true,
-      button: {
-        text: "OK",
-      },
-      dangerMode: false,
+      showCloseButton: true,
+      showCancelButton: false,
+      confirmButtonText: "OK",
+      confirmButtonColor: "var(--blue-light)",
+      // cancelButtonColor: "var(--red-color)",
+      focusConfirm: false,
+      // reverseButtons: true,
     })
 
   }

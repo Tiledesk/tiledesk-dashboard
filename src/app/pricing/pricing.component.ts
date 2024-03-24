@@ -184,7 +184,7 @@ export class PricingComponent implements OnInit, OnDestroy {
 
 
   ngOnInit() {
-    this.auth.checkRoleForCurrentProjectAndRedirectAdminAndAgent(); // redirect admin and ahent -- only owner has access to payment
+    // this.auth.checkRoleForCurrentProjectAndRedirectAdminAndAgent(); // redirect admin and ahent -- only owner has access to payment
     this.getCurrentProject();
     this.selectedPlanName = 'pro'
     this.getBaseUrl()

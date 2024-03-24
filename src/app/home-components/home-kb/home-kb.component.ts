@@ -29,6 +29,7 @@ export class HomeKbComponent extends PricingBaseComponent implements OnInit {
   project: any;
   kbCount: number;
   projectId: string;
+  areNewKb: boolean;
   kbSettings: KbSettings = {
     _id: null,
     id_project: null,
@@ -57,8 +58,9 @@ export class HomeKbComponent extends PricingBaseComponent implements OnInit {
     public prjctPlanService: ProjectPlanService,
     public notify: NotifyService,
     public usersService: UsersService,
-    private translate: TranslateService
-  ) { 
+    private translate: TranslateService,
+
+  ) {
     super(prjctPlanService, notify);
   }
 
@@ -66,139 +68,60 @@ export class HomeKbComponent extends PricingBaseComponent implements OnInit {
     // this.getKnowledgeBaseSettings();
     this.getCurrentProject();
     this.getProjectPlan();
-    this.translateString()
+    this.translateString();
+    this.getKnowledgeBaseSettings()
   }
 
   getCurrentProject() {
-    this.logger.log('[HOME-KB] - $ubscribe to CURRENT PROJECT ',this.project)
+    console.log('[HOME-KB] - $ubscribe to CURRENT PROJECT ', this.project)
     this.auth.project_bs
-    .pipe(
-      takeUntil(this.unsubscribe$)
-    )
-    .subscribe((project) => {
-      this.project = project;
-      this.projectId = project._id
-      
-    })
-  }
-
-
-  // presentModalAddKb() {
-  //   this.logger.log('[HOME-KB] - presentModalAddKb ');
-  //   const addKbBtnEl = <HTMLElement>document.querySelector('#home-material-btn'); 
-  //   this.logger.log('[HOME-KB] - presentModalAddKb addKbBtnEl ', addKbBtnEl);
-  //   addKbBtnEl.blur()
-  //   const dialogRef = this.dialog.open(HomeKbModalComponent, {
-  //     width: '600px',
-  //     // data: {
-  //     //   calledBy: 'step1'
-  //     // },
-  //   })
-
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     this.logger.log(`[HOME-KB] Dialog result:`, result);
-
-  //     if (result) {
-  //       this.newKb = result.newKb;
-  //       this.kbSettings = result.kbSettings;
-
-  //       this.logger.log(`[HOME-KB] Dialog this.newKb:`, this.newKb);
-
-  //       if (this.newKb) {
-  //         this.saveKnowledgeBase()
-  //       }
-  //     }
-  //   });
-  // }
-
-
-  // saveKnowledgeBase() {
-
-  //   let first_index = this.newKb.url.indexOf('://') + 3;
-  //   let second_index = this.newKb.url.indexOf('www.') + 4;
-  //   let split_index;
-  //   if (second_index > first_index) {
-  //     split_index = second_index;
-  //   } else {
-  //     split_index = first_index;
-  //   }
-  //   this.newKb.name = this.newKb.url.substring(split_index);
-
-  //   this.kbService.addNewKb(this.kbSettings._id, this.newKb).subscribe((savedSettings: KbSettings) => {
-  //     this.getKnowledgeBaseSettings();
-  //     let kb = savedSettings.kbs.find(kb => kb.url === this.newKb.url);
-  //     this.checkStatus(kb).then((status_code) => {
-  //       if (status_code === 0) {
-  //         this.runIndexing(kb);
-  //       }
-  //     })
-  //   }, (error) => {
-  //     this.logger.error("[HOME-KB] ERROR add new kb: ", error);
-  //   }, () => {
-  //     this.logger.info("[HOME-KB] add new kb *COMPLETED*");
-  //   })
-  // }
-
-  // getKnowledgeBaseSettings() {
-  //   this.kbService.getKbSettings().subscribe((kbSettings: KbSettings) => {
-  //     this.logger.log("[HOME-KB] get kbSettings: ", kbSettings);
-  //     this.kbSettings = kbSettings;
-  //     if (this.kbSettings) {
-  //       this.kbCount = this.kbSettings.kbs.length
-  //       console.log("[HOME-KB] KbCount: ", this.kbCount);
-  //     }
-    
-  //     // if (this.kbSettings.kbs.length < kbSettings.maxKbsNumber) {
-  //     //   this.addButtonDisabled = false;
-  //     // } else {
-  //     //   this.addButtonDisabled = true;
-  //     // }
-  //     // this.checkAllStatuses();
-  //   }, (error) => {
-  //     this.logger.error("[HOME-KB] ERROR get kbSettings: ", error);
-  //   }, () => {
-  //     this.logger.log("[HOME-KB] get kbSettings *COMPLETE*");
-  //   })
-  // }
-
-  checkStatus(kb) {
-    let data = {
-      "full_url": kb.url
-    }
-    return new Promise((resolve, reject) => {
-      this.openaiService.checkScrapingStatus(data).subscribe((response: any) => {
-        resolve(response.status_code);
-      }, (error) => {
-        this.logger.error(error);
-        reject(null)
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((project) => {
+        if (project) {
+          this.project = project;
+          this.projectId = project._id;
+          
+        }
       })
+  }
+
+  getKnowledgeBaseSettings() {
+    this.kbService.getKbSettingsPrev().subscribe((kbSettings: KbSettings) => {
+      this.logger.log("[HOME-KB] get kbSettings RES ", kbSettings);
+      if (kbSettings && kbSettings.kbs) {
+        if (kbSettings.kbs.length === 0) {
+          this.areNewKb = true;
+        } else if (kbSettings.kbs.length > 0) {
+          this.areNewKb = false;
+        }
+
+      }
+
+    }, (error) => {
+      this.logger.error("[HOME-KB] get kbSettings ERROR ", error);
+    }, () => {
+      this.logger.log("HOME-KB] get kbSettings * COMPLETE *");
+
     })
   }
 
-  runIndexing(kb) {
-    let data = {
-      full_url: kb.url,
-      gptkey: this.kbSettings.gptkey
-    }
-    this.openaiService.startScraping(data).subscribe((response) => {
-      this.logger.log("[HOME-KB] start scraping response: ", response);
-    }, (error) => {
-      this.logger.error("[HOME-KB] error start scraping response: ", error);
-    }, () => {
-      this.logger.log("[HOME-KB] start scraping *COMPLETE*");
-    })
-  }
 
   goToKnowledgeBases() {
     // this.trackUserAction.emit({action:'Home, Add Knowledge Base button clicked',actionRes: null })
-    this.logger.log("goToKnowledgeBases -----> project._id: ", this.project._id);
-    this.router.navigate(['project/' + this.project._id + '/knowledge-bases/h'])
+    console.log("goToKnowledgeBases -----> project._id: ", this.project._id);
+    if (this.areNewKb) {
+      this.router.navigate(['project/' + this.project._id + '/knowledge-bases'])
+    } else if (!this.areNewKb) {
+      this.router.navigate(['project/' + this.project._id + '/knowledge-bases-pre'])
+    }
   }
 
 
   openModalSubsExpired() {
     if (this.USER_ROLE === 'owner') {
-      if (this.profile_name !== PLAN_NAME.C && this.profile_name !== PLAN_NAME.F ) {
+      if (this.profile_name !== PLAN_NAME.C && this.profile_name !== PLAN_NAME.F) {
         this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
       } else if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
         this.notify.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);

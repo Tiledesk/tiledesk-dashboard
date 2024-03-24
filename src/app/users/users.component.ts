@@ -19,7 +19,7 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog'
 import { UserModalComponent } from './user-modal/user-modal.component'
 import { WsRequestsService } from 'app/services/websocket/ws-requests.service'
 import { MessagesStatsModalComponent } from 'app/components/modals/messages-stats-modal/messages-stats-modal.component'
-import {Clipboard} from '@angular/cdk/clipboard';
+import { Clipboard } from '@angular/cdk/clipboard';
 import { MatSnackBar } from '@angular/material/snack-bar'
 import * as moment from 'moment';
 import { ProjectUser } from 'app/models/project-user'
@@ -124,7 +124,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
   widthOfLargestDiv: any;
   // tagsArray: Array<any> = [];
   // displayAvatarNoProfileFoto: boolean = false
-  
+
   constructor(
     private usersService: UsersService,
     private router: Router,
@@ -180,9 +180,9 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
       this.logger.log('[USERS] stored_preferred_lang', stored_preferred_lang)
       let dshbrd_lang = ''
       if (browserLang && !stored_preferred_lang) {
-          dshbrd_lang = browserLang
+        dshbrd_lang = browserLang
       } else if (browserLang && stored_preferred_lang) {
-          dshbrd_lang = stored_preferred_lang
+        dshbrd_lang = stored_preferred_lang
       }
 
       this.logger.log('[USERS] dshbrd_lang', dshbrd_lang)
@@ -190,44 +190,44 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
       this.calculateWidthOfRoleDiv(dshbrd_lang)
 
 
-      moment.locale(dshbrd_lang) 
+      moment.locale(dshbrd_lang)
     }
   }
- 
+
   // When a new language is added to obtain the width to be set, uncomment the method this.getWidthOfRoleDiv()
   calculateWidthOfRoleDiv(dshbrd_lang) {
-    if (dshbrd_lang  === 'ar') {
+    if (dshbrd_lang === 'ar') {
       this.widthOfLargestDiv = 55 + 'px'
     }
-    if (dshbrd_lang  === 'az' || dshbrd_lang  === 'de' || dshbrd_lang  === 'en' || dshbrd_lang  === 'sv' || dshbrd_lang  === 'uz') {
+    if (dshbrd_lang === 'az' || dshbrd_lang === 'de' || dshbrd_lang === 'en' || dshbrd_lang === 'sv' || dshbrd_lang === 'uz') {
       this.widthOfLargestDiv = 105 + 'px'
     }
 
-    if (dshbrd_lang  === 'es' || dshbrd_lang  === 'pt') {
+    if (dshbrd_lang === 'es' || dshbrd_lang === 'pt') {
       this.widthOfLargestDiv = 108 + 'px'
     }
 
-    if (dshbrd_lang  === 'fr') {
+    if (dshbrd_lang === 'fr') {
       this.widthOfLargestDiv = 112 + 'px'
     }
 
-    if (dshbrd_lang  === 'it') {
+    if (dshbrd_lang === 'it') {
       this.widthOfLargestDiv = 117 + 'px'
     }
 
-    if (dshbrd_lang  === 'kk') {
+    if (dshbrd_lang === 'kk') {
       this.widthOfLargestDiv = 93 + 'px'
     }
 
-    if (dshbrd_lang  === 'ru' || dshbrd_lang  === 'sr') {
+    if (dshbrd_lang === 'ru' || dshbrd_lang === 'sr') {
       this.widthOfLargestDiv = 124 + 'px'
     }
 
-    if (dshbrd_lang  === 'tr') {
+    if (dshbrd_lang === 'tr') {
       this.widthOfLargestDiv = 70 + 'px'
     }
 
-    if (dshbrd_lang  === 'uk') {
+    if (dshbrd_lang === 'uk') {
       this.widthOfLargestDiv = 115 + 'px'
     }
   }
@@ -317,12 +317,12 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
           this.areActivePay = true
           // this.logger.log('[USERS] - PUBLIC-KEY (Users) - areActivePay', this.areActivePay);
         }
-       }
+      }
 
       if (key.includes("ANA")) {
-        
+
         let ana = key.split(":");
-      
+
         if (ana[1] === "F") {
           this.isVisibleAnalytics = false;
           this.logger.log('[USERS] - PUBLIC-KEY (Users) - isVisibleAnalytics', this.isVisibleAnalytics);
@@ -331,7 +331,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
           this.logger.log('[USERS] - PUBLIC-KEY (Users) - isVisibleAnalytics', this.isVisibleAnalytics);
         }
       }
-      
+
     })
 
     if (!this.public_Key.includes("GRO")) {
@@ -360,7 +360,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
         }
       })
   }
- 
+
 
   getLoggedUser() {
     this.auth.user_bs
@@ -576,7 +576,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
   getUploadEgineAndProjectUsers() {
     if (this.appConfigService.getConfig().uploadEngine === 'firebase') {
       this.UPLOAD_ENGINE_IS_FIREBASE = true
-      this.logger.log('[USERS] - UPLOAD ENGINE IS FIREBASE ? ',this.UPLOAD_ENGINE_IS_FIREBASE)
+      this.logger.log('[USERS] - UPLOAD ENGINE IS FIREBASE ? ', this.UPLOAD_ENGINE_IS_FIREBASE)
       this.getProjectUsersAndCheckIfPhotoExistOnFirebase()
     } else {
       this.UPLOAD_ENGINE_IS_FIREBASE = false
@@ -588,7 +588,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
   getProjectUsersAndCheckIfPhotoExistOnFirebase() {
     const firebase_conf = this.appConfigService.getConfig().firebase
     this.storageBucket = firebase_conf['storageBucket']
-    this.logger.log( '[USERS] - IMAGE STORAGE URL (usecase FIREBASE) ',this.storageBucket,
+    this.logger.log('[USERS] - IMAGE STORAGE URL (usecase FIREBASE) ', this.storageBucket,
     )
 
     this.getAllUsersOfCurrentProject(this.storageBucket)
@@ -596,7 +596,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
 
   getProjectUsersAndCheckIfPhotoExistOnNative() {
     this.baseUrl = this.appConfigService.getConfig().SERVER_BASE_URL
-    this.logger.log( '[USERS] - IMAGE STORAGE URL (usecase NATIVE) ', this.baseUrl)
+    this.logger.log('[USERS] - IMAGE STORAGE URL (usecase NATIVE) ', this.baseUrl)
     this.getAllUsersOfCurrentProject(this.baseUrl)
   }
 
@@ -606,15 +606,15 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
       (projectUsers: any) => {
 
         this.logger.log('[USERS] - GET PROJECT USERS - PROJECT-USERS ', projectUsers)
-        
+
         if (projectUsers) {
           this.projectUsersList = projectUsers
-         
-          let order = { owner : 1, admin: 2, agent: 3 };
+
+          let order = { owner: 1, admin: 2, agent: 3 };
           this.projectUsersList.sort(function (a, b) {
             return order[a.role] - order[b.role];
           });
-        
+
           this.projectUsersList.forEach((projectuser) => {
             // -----------------------------------------------------------------------------------------------
             // Used to get  the number of assigned conversatons (in realtime)
@@ -681,7 +681,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
          * NK:
          * CREATES AN UNIQUE ARRAY FROM ALL THE ARRAYS OF 'MEMBERS' THAT ARE NESTED IN THE ITERATED REQUESTS  */
         let flat_members_array = [];
-       
+
         for (let i = 0; i < requests.length; i++) {
           // flat_members_array = flat_members_array.concat(Object.keys(requests[i].members));
           flat_members_array = flat_members_array.concat(requests[i].participants);
@@ -714,7 +714,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
         p.assigned_requests = count
       }
     }
-    this.logger.log('[USERS]  GET OCCURRENCE REQUESTS FOR AGENT projectUsersList ', this.projectUsersList) 
+    this.logger.log('[USERS]  GET OCCURRENCE REQUESTS FOR AGENT projectUsersList ', this.projectUsersList)
     // this.showSpinner = false;
     // this.logger.log('!!! ANALYTICS - !!!!! SHOW SPINNER', this.showSpinner);
     return count;
@@ -736,7 +736,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
     this.logger.log('[USERS] arrayUserRoleDivWidth', arrayUserRoleDivWidth)
     this.widthOfLargestDiv = Math.max(...arrayUserRoleDivWidth) + 'px'
     this.logger.log('[USERS] widthOfLargestDiv', this.widthOfLargestDiv)
-   
+
   }
 
   // imageOnError(event, userid) {
@@ -799,15 +799,15 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
   }
 
   resendInvite(pendingInvitationId: string) {
-    this.logger.log( '[USERS] - RESEND INVITE TO PENDING INVITATION ID: ',  pendingInvitationId )
+    this.logger.log('[USERS] - RESEND INVITE TO PENDING INVITATION ID: ', pendingInvitationId)
     this.usersService
       .getPendingUsersByIdAndResendEmail(pendingInvitationId)
       .subscribe(
         (pendingInvitation: any) => {
-          this.logger.log( '[USERS] - GET PENDING INVITATION BY ID AND RESEND INVITE - RES ', pendingInvitation)
+          this.logger.log('[USERS] - GET PENDING INVITATION BY ID AND RESEND INVITE - RES ', pendingInvitation)
 
           this.pendingInvitationEmail = pendingInvitation['Resend invitation email to']['email']
-          this.logger.log( '[USERS] - GET PENDING INVITATION BY ID AND RESEND INVITE - RES  email', this.pendingInvitationEmail)
+          this.logger.log('[USERS] - GET PENDING INVITATION BY ID AND RESEND INVITE - RES  email', this.pendingInvitationEmail)
         }, (error) => {
           this.logger.error('[USERS] - GET PENDING INVITATION BY ID AND RESEND INVITE - ERROR', error)
 
@@ -825,15 +825,15 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
     this.logger.log('[USERS] copyInviteURL copyInviteUrlBtnEl ', copyInviteUrlBtnEl);
     copyInviteUrlBtnEl.blur()
 
-    this.logger.log( '[USERS] - copyInviteLink PENDING INVITATION ID: ',  pendingInvitationId )
+    this.logger.log('[USERS] - copyInviteLink PENDING INVITATION ID: ', pendingInvitationId)
     this.CHAT_BASE_URL = this.appConfigService.getConfig().CHAT_BASE_URL
-    this.logger.log('[USERS] copyInviteLink CHAT_BASE_URL ' , this.CHAT_BASE_URL) 
+    this.logger.log('[USERS] copyInviteLink CHAT_BASE_URL ', this.CHAT_BASE_URL)
 
-    let domainURL =   this.CHAT_BASE_URL.split('/').slice(0, -2).join('/')
- 
-    this.logger.log('[USERS] copyInviteLink domainURL ' , domainURL) 
-    this.logger.log('[USERS] copyInviteLink CURRENT_USER ' , this.CURRENT_USER) 
-    this.logger.log('[USERS] copyInviteLink project ' , this.project)
+    let domainURL = this.CHAT_BASE_URL.split('/').slice(0, -2).join('/')
+
+    this.logger.log('[USERS] copyInviteLink domainURL ', domainURL)
+    this.logger.log('[USERS] copyInviteLink CURRENT_USER ', this.CURRENT_USER)
+    this.logger.log('[USERS] copyInviteLink project ', this.project)
     let projectName = this.project.name.trim()
     let userFirstname = ""
     let userLastmame = ""
@@ -841,21 +841,21 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
     if (this.CURRENT_USER.firstname && this.CURRENT_USER.lastname !== "") {
       userFirstname = this.CURRENT_USER.firstname
       userLastmame = this.CURRENT_USER.lastname
-      inviteUrl = domainURL + "/dashboard/#/handle-invitation/" + pendingInvitationId + '/'+ projectName + '/'+ userFirstname + '/'+ userLastmame
-    } else if (this.CURRENT_USER.firstname && this.CURRENT_USER.lastname == "" ){
+      inviteUrl = domainURL + "/dashboard/#/handle-invitation/" + pendingInvitationId + '/' + projectName + '/' + userFirstname + '/' + userLastmame
+    } else if (this.CURRENT_USER.firstname && this.CURRENT_USER.lastname == "") {
       userFirstname = this.CURRENT_USER.firstname
-      inviteUrl = domainURL + "/dashboard/#/handle-invitation/" + pendingInvitationId + '/'+ projectName + '/'+ userFirstname
+      inviteUrl = domainURL + "/dashboard/#/handle-invitation/" + pendingInvitationId + '/' + projectName + '/' + userFirstname
     }
-  
-   
-   this.clipboard.copy(inviteUrl.trim())
-   this._snackBar.open(" Copied to clipboard", null, {
-     duration: 3000,
-     verticalPosition: 'top',
-     panelClass:'success-snackbar'
-   });
+
+
+    this.clipboard.copy(inviteUrl.trim())
+    this._snackBar.open(" Copied to clipboard", null, {
+      duration: 3000,
+      verticalPosition: 'top',
+      panelClass: 'success-snackbar'
+    });
   }
- 
+
 
   openCancelInvitationModal(pendingInvitationId: string, pendingInvitationEmail: string) {
     this.displayCancelInvitationModal = 'block'
@@ -908,7 +908,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
       } else {
         this.presentModalAgentCannotInviteTeammates()
       }
-    } else if (this.projectUsersLength + this.countOfPendingInvites >= this.seatsLimit) {
+    } else if (this.projectUsersLength + this.countOfPendingInvites === this.seatsLimit) {
       if (this.USER_ROLE === 'owner') {
         if (this.prjct_profile_type === 'free') {
           this.presentGoToPricingModal()
@@ -919,10 +919,20 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
         this.presentModalOnlyOwnerCanManageTheAccountPlan()
       }
 
+    } else if (this.projectUsersLength + this.countOfPendingInvites > this.seatsLimit) {
+      if (this.USER_ROLE === 'owner') {
+        if (this.prjct_profile_type === 'free') {
+          this.presentGoToPricingModal()
+        } else if (this.prjct_profile_type === 'payment' && (this.subscription_is_active === false || this.subscription_is_active === true)) {
+          this.notify._displayContactUsModal(true, 'seats_limit_exceed')
+        }
+      } else {
+        this.presentModalOnlyOwnerCanManageTheAccountPlan()
+      }
+      // } else {
+      //   this.router.navigate(['project/' + this.id_project + '/user/add'])
+      // }
     }
-    // } else {
-    //   this.router.navigate(['project/' + this.id_project + '/user/add'])
-    // }
   }
 
 
@@ -1041,7 +1051,7 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
   changeAvailabilityStatus(selectedStatusValue: any, projectUser_id: string) {
 
     this.logger.log('[USERS] - UPDATE PROJECT USER STATUS - selectedStatusValue ', selectedStatusValue)
-   this.logger.log('[USERS] - UPDATE PROJECT USER STATUS - PROJECT-USER ID ', projectUser_id)
+    this.logger.log('[USERS] - UPDATE PROJECT USER STATUS - PROJECT-USER ID ', projectUser_id)
 
     let IS_AVAILABLE = null
     let profilestatus = ''
@@ -1057,20 +1067,20 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
     this.usersService.updateProjectUser(projectUser_id, IS_AVAILABLE, profilestatus)
 
       .subscribe((updatedProjectUser: any) => {
-       this.logger.log('[USERS] - UPDATE PROJECT USER STATUS RES', updatedProjectUser)
+        this.logger.log('[USERS] - UPDATE PROJECT USER STATUS RES', updatedProjectUser)
 
-      //  projectUser?.user_available === true && (projectUser?.profileStatus === ''
-      //  projectUser?.user_available === false && (projectUser?.profileStatus === ''
-      //  projectUser?.user_available === false && projectUser?.profileStatus === 'inactive'
+        //  projectUser?.user_available === true && (projectUser?.profileStatus === ''
+        //  projectUser?.user_available === false && (projectUser?.profileStatus === ''
+        //  projectUser?.user_available === false && projectUser?.profileStatus === 'inactive'
 
         this.projectUsersList.forEach(projectUser => {
           if (projectUser._id === updatedProjectUser._id) {
             projectUser.user_available = updatedProjectUser.user_available
             if (updatedProjectUser.profileStatus) {
               projectUser.profileStatus = updatedProjectUser.profileStatus
-            } 
+            }
             else {
-              projectUser.profileStatus = '' 
+              projectUser.profileStatus = ''
             }
           }
         });
