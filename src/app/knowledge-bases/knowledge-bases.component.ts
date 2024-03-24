@@ -292,10 +292,10 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
         // this.logger.log('PUBLIC-KEY (Navbar) - pay key&value', pay);
         if (pay[1] === "F") {
           this.payIsVisible = false;
-          console.log("payIsVisible: ", this.payIsVisible)
+          // console.log("payIsVisible: ", this.payIsVisible)
         } else {
           this.payIsVisible = true;
-          console.log("payIsVisible: ", this.payIsVisible)
+          // console.log("payIsVisible: ", this.payIsVisible)
         }
       }
     })
