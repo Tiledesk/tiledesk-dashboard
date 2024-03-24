@@ -9,6 +9,7 @@
 - Improvements and bug fixing
 
 ### 2.6.1
+- Deploys in production
 - Improves the Get and Save methods used for translation strings
 
 ### 2.6.0
