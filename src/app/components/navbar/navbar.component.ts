@@ -974,7 +974,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   goToPricing() {
     // if (this.ROLE_IS_AGENT === false) {
     if (this.USER_ROLE === 'owner') {
-      // this.presentModalUpgradePlan()
+     
       this.router.navigate(['project/' + this.projectId + '/pricing']);
     } else {
 
@@ -982,54 +982,54 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     }
   }
 
-  presentModalUpgradePlan() {
+  // presentModalUpgradePlan() {
 
-    this.notifyService.presentContactUsModalToUpgradePlan(true);
-    if (!isDevMode()) {
-      if (window['analytics']) {
+  //   this.notifyService.presentContactUsModalToUpgradePlan(true);
+  //   if (!isDevMode()) {
+  //     if (window['analytics']) {
 
-        try {
-          window['analytics'].track('Update plan', {
-            "email": this.user.email,
-          }, {
-            "context": {
-              "groupId": this.projectId
-            }
-          });
-        } catch (err) {
-          this.logger.error('track [NAVBAR] Update plan error', err);
-        }
+  //       try {
+  //         window['analytics'].track('Update plan', {
+  //           "email": this.user.email,
+  //         }, {
+  //           "context": {
+  //             "groupId": this.projectId
+  //           }
+  //         });
+  //       } catch (err) {
+  //         this.logger.error('track [NAVBAR] Update plan error', err);
+  //       }
 
-        let userFullname = ''
-        if (this.user.firstname && this.user.lastname)  {
-          userFullname = this.user.firstname + ' ' + this.user.lastname
-        } else if (this.user.firstname && !this.user.lastname) {
-          userFullname = this.user.firstname
-        }
+  //       let userFullname = ''
+  //       if (this.user.firstname && this.user.lastname)  {
+  //         userFullname = this.user.firstname + ' ' + this.user.lastname
+  //       } else if (this.user.firstname && !this.user.lastname) {
+  //         userFullname = this.user.firstname
+  //       }
 
-        try {
-          window['analytics'].identify(this.user._id, {
-            name: userFullname,
-            email: this.user.email,
-            logins: 5,
-            plan: this.prjct_profile_name_for_segment,
-          });
-        } catch (err) {
-          this.logger.error('identify [NAVBAR] Update plan error', err);
-        }
+  //       try {
+  //         window['analytics'].identify(this.user._id, {
+  //           name: userFullname,
+  //           email: this.user.email,
+  //           logins: 5,
+  //           plan: this.prjct_profile_name_for_segment,
+  //         });
+  //       } catch (err) {
+  //         this.logger.error('identify [NAVBAR] Update plan error', err);
+  //       }
 
-        try {
-          window['analytics'].group(this.projectId, {
-            name: this.projectName,
-            plan: this.prjct_profile_name_for_segment,
-          });
-        } catch (err) {
-          this.logger.error('group [NAVBAR] Update plan error', err);
-        }
-      }
-    }
+  //       try {
+  //         window['analytics'].group(this.projectId, {
+  //           name: this.projectName,
+  //           plan: this.prjct_profile_name_for_segment,
+  //         });
+  //       } catch (err) {
+  //         this.logger.error('group [NAVBAR] Update plan error', err);
+  //       }
+  //     }
+  //   }
 
-  }
+  // }
 
 
 

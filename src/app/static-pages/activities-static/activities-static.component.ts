@@ -201,7 +201,8 @@ export class ActivitiesStaticComponent extends PricingBaseComponent implements O
         this.notify._displayContactUsModal(true, 'upgrade_plan');
       }
     } else {
-      this.notify.presentContactUsModalToUpgradePlan(true);
+      // this.notify.presentContactUsModalToUpgradePlan(true);
+      this.notify._displayContactUsModal(true, 'upgrade_plan');
     }
     
     // else if (this.projectProfileData && this.projectProfileData.extra3) {

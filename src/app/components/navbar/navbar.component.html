@@ -218,7 +218,8 @@
               <!--  TOOLTIP SUB EXPIRED (PROFILE TYPE = PAYMENTS) -->
               <!--  ------------------------------------------------ -->
               <span *ngIf="prjct_profile_type === 'payment' && subscription_is_active === false" style="color:#f44336;"
-                (click)="openModalSubsExpired()" class="expired__Tooltip">
+                (click)="openModalSubsExpired()" 
+                  class="expired__Tooltip">
                 <i class="material-icons"
                   style="vertical-align: middle; color:#f44336; cursor:pointer; position: relative; top: 2px">
                   error_outline

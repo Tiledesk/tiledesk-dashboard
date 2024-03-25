@@ -15,6 +15,7 @@ import { Subject } from 'rxjs';
 import { AppConfigService } from 'app/services/app-config.service';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 const swal = require('sweetalert');
+const Swal = require('sweetalert2')
 @Component({
   selector: 'appdashboard-app-store',
   templateUrl: './app-store.component.html',
@@ -697,22 +698,64 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
     console.log( 'presentModalFeautureAvailableFromTier2Plan' , planName)
     const el = document.createElement('div')
     el.innerHTML = planName //this.featureAvailableFromBPlan
-    swal({
+    // swal({
+    //   // title: this.onlyOwnerCanManageTheAccountPlanMsg,
+    //   content: el,
+    //   icon: "info",
+    //   // buttons: true,
+    //   buttons: {
+    //     cancel: this.cancel,
+    //     catch: {
+    //       text: this.upgradePlan,
+    //       value: "catch",
+    //     },
+    //   },
+    //   dangerMode: false,
+    // }).then((value) => {
+    //   if (value === 'catch') {
+    //     this.logger.log('presentModalFeautureAvailableFromTier2Plan value', value)
+    //     // this.logger.log('[APP-STORE] prjct_profile_type', this.prjct_profile_type)
+    //     // this.logger.log('[APP-STORE] subscription_is_active', this.subscription_is_active)
+    //     // this.logger.log('[APP-STORE] prjct_profile_type', this.prjct_profile_type)
+    //     // this.logger.log('[APP-STORE] trial_expired', this.trial_expired)
+    //     this.logger.log('[APP-STORE] isVisiblePAY', this.isVisiblePAY)
+    //     if (this.isVisiblePAY) {
+    //       // this.logger.log('[APP-STORE] HERE 1')
+    //       if (this.USER_ROLE === 'owner') {
+    //         // this.logger.log('[APP-STORE] HERE 2')
+    //         if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
+    //           // this.logger.log('[APP-STORE] HERE 3')
+    //           this.notify._displayContactUsModal(true, 'upgrade_plan');
+    //         } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true && (this.profile_name === PLAN_NAME.A || this.profile_name === PLAN_NAME.D)) {
+    //           this.notify._displayContactUsModal(true, 'upgrade_plan');
+    //         } else if (this.prjct_profile_type === 'free' && this.trial_expired === true) {
+    //           // this.logger.log('[APP-STORE] HERE 4')
+    //           this.router.navigate(['project/' + this.projectId + '/pricing']);
+    //         }
+    //       } else {
+    //         // this.logger.log('[APP-STORE] HERE 5')
+
+    //         this.presentModalOnlyOwnerCanManageTheAccountPlan();
+    //       }
+    //     } else {
+    //       // this.logger.log('[APP-STORE] HERE 6')
+    //       this.notify._displayContactUsModal(true, 'upgrade_plan');
+    //     }
+    //   }
+    // });
+
+    Swal.fire({
       // title: this.onlyOwnerCanManageTheAccountPlanMsg,
-      content: el,
-      icon: "info",
-      // buttons: true,
-      buttons: {
-        cancel: this.cancel,
-        catch: {
-          text: this.upgradePlan,
-          value: "catch",
-        },
-      },
-      dangerMode: false,
-    }).then((value) => {
-      if (value === 'catch') {
-        this.logger.log('presentModalFeautureAvailableFromTier2Plan value', value)
+      html: el,
+      icon: "info",      
+      showCloseButton: true,
+      showCancelButton: false,
+      confirmButtonText: this.upgradePlan,
+      confirmButtonColor: "var(--blue-light)",
+      focusConfirm: false,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.logger.log('presentModalFeautureAvailableFromTier2Plan result', result)
         // this.logger.log('[APP-STORE] prjct_profile_type', this.prjct_profile_type)
         // this.logger.log('[APP-STORE] subscription_is_active', this.subscription_is_active)
         // this.logger.log('[APP-STORE] prjct_profile_type', this.prjct_profile_type)

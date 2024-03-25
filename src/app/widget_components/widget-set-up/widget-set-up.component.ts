@@ -757,31 +757,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       });
   }
 
-  // goToPricing() {
-  //   this.logger.log('[WIDGET-SET-UP] - goToPricing projectId ', this.id_project);
-
-  //   // if (this.payIsVisible) {
-  //   //   if (this.USER_ROLE === 'owner') {
-  //   //     if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
-  //   //       this.notify._displayContactUsModal(true, 'upgrade_plan');
-  //   //     } else {
-  //   //       this.router.navigate(['project/' + this.id_project + '/pricing']);
-  //   //       // this.presentModalContactUsToUpgradePlan()
-
-  //   //     }
-  //   //   } else {
-  //   //     this.presentModalOnlyOwnerCanManageTheAccountPlan();
-  //   //   }
-  //   // } else {
-  //   //   this.notify._displayContactUsModal(true, 'upgrade_plan');
-  //   // }
-  //   if (!this.appSumoProfile) {
-  //     this.presentModalFeautureAvailableFromBPlan()
-  //   } else {
-  //     this.router.navigate(['project/' + this.id_project + '/project-settings/payments']);
-  //   }
-  // }
-
+ 
   goToPricing() {
     this.logger.log('[WIDGET-SET-UP] - goToPricing projectId ', this.id_project);
 
@@ -899,51 +875,51 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   
 
 
-  presentModalContactUsToUpgradePlan() {
-    this.notify.presentContactUsModalToUpgradePlan(true);
-    if (!isDevMode()) {
-      if (window['analytics']) {
+  // presentModalContactUsToUpgradePlan() {
+  //   this.notify.presentContactUsModalToUpgradePlan(true);
+  //   if (!isDevMode()) {
+  //     if (window['analytics']) {
 
-        try {
-          window['analytics'].track('Update plan', {
-            "email": this.user.email,
-          }, {
-            "context": {
-              "groupId": this.id_project
-            }
-          });
-        } catch (err) {
-          this.logger.error('track [WIDGET-SET-UP] Update plan error', err);
-        }
+  //       try {
+  //         window['analytics'].track('Update plan', {
+  //           "email": this.user.email,
+  //         }, {
+  //           "context": {
+  //             "groupId": this.id_project
+  //           }
+  //         });
+  //       } catch (err) {
+  //         this.logger.error('track [WIDGET-SET-UP] Update plan error', err);
+  //       }
 
-        let userFullname = ''
-        if (this.user.firstname && this.user.lastname) {
-          userFullname = this.user.firstname + ' ' + this.user.lastname
-        } else if (this.user.firstname && !this.user.lastname) {
-          userFullname = this.user.firstname
-        }
-        try {
-          window['analytics'].identify(this.user._id, {
-            name: userFullname,
-            email: this.user.email,
-            logins: 5,
-            plan: this.prjct_profile_name_for_segment,
-          });
-        } catch (err) {
-          this.logger.error('identify [WIDGET-SET-UP] Update plan error', err);
-        }
+  //       let userFullname = ''
+  //       if (this.user.firstname && this.user.lastname) {
+  //         userFullname = this.user.firstname + ' ' + this.user.lastname
+  //       } else if (this.user.firstname && !this.user.lastname) {
+  //         userFullname = this.user.firstname
+  //       }
+  //       try {
+  //         window['analytics'].identify(this.user._id, {
+  //           name: userFullname,
+  //           email: this.user.email,
+  //           logins: 5,
+  //           plan: this.prjct_profile_name_for_segment,
+  //         });
+  //       } catch (err) {
+  //         this.logger.error('identify [WIDGET-SET-UP] Update plan error', err);
+  //       }
 
-        try {
-          window['analytics'].group(this.id_project, {
-            name: this.projectName,
-            plan: this.prjct_profile_name_for_segment,
-          });
-        } catch (err) {
-          this.logger.error('group [WIDGET-SET-UP] Update plan error', err);
-        }
-      }
-    }
-  }
+  //       try {
+  //         window['analytics'].group(this.id_project, {
+  //           name: this.projectName,
+  //           plan: this.prjct_profile_name_for_segment,
+  //         });
+  //       } catch (err) {
+  //         this.logger.error('group [WIDGET-SET-UP] Update plan error', err);
+  //       }
+  //     }
+  //   }
+  // }
 
   // else {
   //   this.notify._displayContactUsModal(true, 'upgrade_plan');
