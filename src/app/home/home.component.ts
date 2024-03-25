@@ -3412,9 +3412,9 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  displayCheckListModal() {
-    this.notify.showCheckListModal(true);
-  }
+  // displayCheckListModal() {
+  //   this.notify.showCheckListModal(true);
+  // }
 
   goToUserActivitiesLog() {
     this.router.navigate(['project/' + this.projectId + '/activities']);
