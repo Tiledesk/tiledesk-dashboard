@@ -19,6 +19,7 @@ import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.comp
 import { ProjectPlanService } from 'app/services/project-plan.service';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { UserModalComponent } from 'app/users/user-modal/user-modal.component';
+import { BrandService } from 'app/services/brand.service';
 // import { slideInOutAnimation } from '../../../_animations/index';
 @Component({
   selector: 'appdashboard-sidebar-user-details',
@@ -75,7 +76,7 @@ export class SidebarUserDetailsComponent implements OnInit {
   ];
 
   dialogRef: MatDialogRef<any>;
-
+  hideHelpLink: boolean;
   constructor(
     public auth: AuthService,
     private logger: LoggerService,
@@ -90,8 +91,11 @@ export class SidebarUserDetailsComponent implements OnInit {
     private eRef: ElementRef,
     public notifyService: NotifyService,
     public projectService: ProjectService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    public brandService: BrandService
   ) {
+    const brand = brandService.getBrand(); 
+    this.hideHelpLink= brand['DOCS'];
   //  console.log('[SIDEBAR-USER-DETAILS] !!!!! HELLO SIDEBAR-USER-DETAILS')
   }
 
