@@ -376,7 +376,7 @@ import { OnboardingWelcomeComponent } from './create-new-project/onboarding-welc
 import { HomeNewsFeedModalComponent } from './home-components/home-news-feed/home-news-feed-modal/home-news-feed-modal.component';
 import { AutomationsComponent } from './automations/automations.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { HomeCdsComponent } from './home-components/home-cds/home-cds.component';
+// import { HomeCdsComponent } from './home-components/home-cds/home-cds.component'; // now lazy
 import { AutomationStaticComponent } from './static-pages/automation-static/automation-static.component';
 // import { KbModalComponent } from './knowledge-bases/kb-modal/kb-modal.component';
 // import { KbAlertComponent } from './knowledge-bases/kb-alert/kb-alert.component';
@@ -691,7 +691,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     OnboardingWelcomeComponent,
     HomeNewsFeedModalComponent,
     AutomationsComponent,
-    HomeCdsComponent,
+    // HomeCdsComponent, // now lazy
     AutomationStaticComponent,
     // KbModalComponent,
     // KbAlertComponent,
