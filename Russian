@@ -598,7 +598,8 @@
         "ContactTheProjectOwner": "Contact the project owner",
         "NoPayments": "Нет платежей",
         "ToEnableAllFeatures": "чтобы включить все функции",
-        "YourTrialHasEnded": "Your trial has ended",
+        "YourTrialHasEnded": "Your 14-days free trial has expired",
+        "UpgradeNowToKeepOurAmazingFeatures": "Upgrade now to keep our amazing features",
         "YouHaveBeenRevertedToOurFreePlan": "You have been reverted to our free plan and the paid features have been paused. To keep using our paid features, upgrade to one of our paid plans",
         "AutoSendTranscriptByEmailIsUnavailable": "Автоматическая отправка стенограммы по электронной почте недоступна в вашем текущем плане"
     },
