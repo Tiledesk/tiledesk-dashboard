@@ -20,6 +20,7 @@ import { HomeWhatsappAccountWizardModalComponent } from 'app/home-components/hom
 import { HomeCustomizeWidgetComponent } from 'app/home-components/home-customize-widget/home-customize-widget.component';
 import { HomeCreateTeammateComponent } from 'app/home-components/home-create-teammate/home-create-teammate.component';
 import { HomeKbComponent } from 'app/home-components/home-kb/home-kb.component';
+import { HomeCdsComponent } from 'app/home-components/home-cds/home-cds.component';
 const routes: Routes = [
   { path: "", component: HomeComponent},
 ];
@@ -36,7 +37,8 @@ const routes: Routes = [
     HomeWhatsappAccountWizardModalComponent,
     HomeCustomizeWidgetComponent,
     HomeCreateTeammateComponent,
-    HomeKbComponent
+    HomeKbComponent,
+    HomeCdsComponent
   ],
   imports: [
     RouterModule.forChild(routes),
