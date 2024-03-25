@@ -143,10 +143,10 @@ export class AutologinComponent implements OnInit {
     }
 
     this.sso.getCurrentAuthenticatedUser(JWT).subscribe(auth_user => {
-      // console.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser RES ', auth_user);
+      // this.logger.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser RES ', auth_user);
 
       const user = { firstname: auth_user['firstname'], lastname: auth_user['lastname'], _id: auth_user['_id'], email: auth_user['email'], emailverified: auth_user['emailverified'], token: JWT }
-      // console.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser user ', user);
+      // this.logger.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser user ', user);
 
       localStorage.setItem('user', JSON.stringify(user));
       // localStorage.setItem(chatPrefix + '__tiledeskToken', JWT);
@@ -159,7 +159,7 @@ export class AutologinComponent implements OnInit {
       const hasSigninWithGoogle = this.localDbService.getFromStorage('swg')
       if ( hasSigninWithGoogle ) {
         this.localDbService.removeFromStorage('swg')
-        // console.log('[AUTOLOGIN] SSO removeFromStorage swg') 
+        // this.logger.log('[AUTOLOGIN] SSO removeFromStorage swg') 
         this.trackUserHasSignedInWithGoogle(user)
       }
 

@@ -29,7 +29,6 @@ export class HomeKbComponent extends PricingBaseComponent implements OnInit {
   project: any;
   kbCount: number;
   projectId: string;
-  areNewKb: boolean;
   kbSettings: KbSettings = {
     _id: null,
     id_project: null,
@@ -47,7 +46,7 @@ export class HomeKbComponent extends PricingBaseComponent implements OnInit {
 
   onlyOwnerCanManageTheAccountPlanMsg: string;
   learnMoreAboutDefaultRoles: string;
-
+  areNewKb: boolean;
   constructor(
     public dialog: MatDialog,
     private kbService: KnowledgeBaseService,
@@ -75,16 +74,13 @@ export class HomeKbComponent extends PricingBaseComponent implements OnInit {
   getCurrentProject() {
     this.logger.log('[HOME-KB] - $ubscribe to CURRENT PROJECT ', this.project)
     this.auth.project_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((project) => {
-        if (project) {
-          this.project = project;
-          this.projectId = project._id;
-          
-        }
-      })
+    .pipe(
+      takeUntil(this.unsubscribe$)
+    )
+    .subscribe((project) => {
+      this.project = project
+      
+    })
   }
 
   getKnowledgeBaseSettings() {
@@ -108,8 +104,14 @@ export class HomeKbComponent extends PricingBaseComponent implements OnInit {
   }
 
 
+  // goToKnowledgeBases() {
+  //   // this.trackUserAction.emit({action:'Home, Add Knowledge Base button clicked',actionRes: null })
+  //   this.logger.log("goToKnowledgeBases -----> project._id: ", this.project._id);
+  //   this.router.navigate(['project/' + this.project._id + '/knowledge-bases/h'])
+  // }
+
   goToKnowledgeBases() {
-    // this.trackUserAction.emit({action:'Home, Add Knowledge Base button clicked',actionRes: null })
+   
     this.logger.log("goToKnowledgeBases -----> project._id: ", this.project._id);
     if (this.areNewKb) {
       this.router.navigate(['project/' + this.project._id + '/knowledge-bases'])

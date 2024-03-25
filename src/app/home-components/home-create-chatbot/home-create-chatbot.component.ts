@@ -492,14 +492,17 @@ export class HomeCreateChatbotComponent extends PricingBaseComponent implements 
       if (this.chatBotLimit) {
         if (this.countOfChatbots < this.chatBotLimit) {
           this.logger.log('[HOME-CREATE-CHATBOT] USECASE  countOfChatbots < chatBotLimit: RUN IMPORT CHATBOT FROM JSON')
-          this.presentModalAddBotFromScratch()
+          // this.presentModalAddBotFromScratch()
+          this.router.navigate(['project/' + this.projectId + '/bots/create/tilebot/blank']);
+
         } else if (this.countOfChatbots >= this.chatBotLimit) {
           this.logger.log('[HOME-CREATE-CHATBOT] USECASE  countOfChatbots >= chatBotLimit DISPLAY MODAL')
           this.presentDialogReachedChatbotLimit()
         }
       } else if (!this.chatBotLimit) {
         this.logger.log('[HOME-CREATE-CHATBOT] USECASE  NO chatBotLimit: RUN IMPORT CHATBOT FROM JSON')
-        this.presentModalAddBotFromScratch()
+        // this.presentModalAddBotFromScratch()
+        this.router.navigate(['project/' + this.projectId  + '/bots/create/tilebot/blank']);
       }
     } if (this.USER_ROLE === 'agent') {
       this.presentModalAgentCannotManageChatbot()

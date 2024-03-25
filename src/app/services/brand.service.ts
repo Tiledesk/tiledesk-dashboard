@@ -33,6 +33,8 @@ export class BrandService {
       "display_help_in_installation": true,
       "display_invite_teammate_btn": true,
       "display_contact_us_email": true,
+      "custom_redirect_after_logout": false,
+      "after_logout_redirect_URL": "",
       "footer": {
         "display_terms_and_conditions_link": true,
         "display_star_us_on_github": true,

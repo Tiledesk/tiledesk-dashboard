@@ -24,6 +24,7 @@ import { WebSocketJs } from '../services/websocket/websocket-js'
 import { LoggerService } from '../services/logger/logger.service'
 import { ScriptService } from '../services/script/script.service'
 import { APP_SUMO_PLAN_NAME, PLAN_NAME } from 'app/utils/util'
+import { BrandService } from 'app/services/brand.service'
 // import { ProjectPlanService } from 'app/services/project-plan.service'
 
 // import { SsoService } from './sso.service';
@@ -64,7 +65,7 @@ export class AuthService {
   public tilebotSidebarIsOpened: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null)
   public botsSidebarIsOpened: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null)
   public isChromeVerGreaterThan100: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null)
-  
+
   show_ExpiredSessionPopup: boolean
 
   _user_role: string
@@ -87,6 +88,8 @@ export class AuthService {
   public_Key: string;
   appSumoProfile: string;
   prjct_profile_name_for_segment: string;
+  customRedirectAfterLogout: boolean;
+  afterLogoutRedirectURL: string
 
   constructor(
     private _httpClient: HttpClient,
@@ -98,14 +101,21 @@ export class AuthService {
     public appConfigService: AppConfigService,
     public webSocketJs: WebSocketJs,
     private logger: LoggerService,
+    public brandService: BrandService,
     private scriptService: ScriptService,
     // private prjctPlanService: ProjectPlanService,
   ) // public ssoService: SsoService
   {
-    this.logger.log(
-      '[AUTH-SERV] !!! ====== HELLO AUTH SERVICE ====== DASHBOARD version ',
-      this.version,
-    )
+
+    const brand = brandService.getBrand();
+    this.customRedirectAfterLogout = brand['custom_redirect_after_logout'];
+    this.logger.log('[AUTH-SERV] customRedirectAfterLogout ', this.customRedirectAfterLogout)
+    if (this.customRedirectAfterLogout === true) {
+      this.afterLogoutRedirectURL = brand['after_logout_redirect_URL'];
+      this.logger.log('[AUTH-SERV] afterLogoutRedirectURL ', this.afterLogoutRedirectURL)
+    }
+
+    this.logger.log('[AUTH-SERV] !!! ====== HELLO AUTH SERVICE ====== DASHBOARD version ', this.version)
     this.APP_IS_DEV_MODE = isDevMode()
     // this.logger.log('[AUTH-SERV] ====== isDevMode ', this.APP_IS_DEV_MODE);
 
@@ -126,13 +136,13 @@ export class AuthService {
 
 
   browserNameAndVersion(browserName, browserVersion) {
-    // console.log('[AUTH-SERV] browserName ', browserName)
-    // console.log('[AUTH-SERV] browserVersion ', browserVersion)
+    // this.logger.log('[AUTH-SERV] browserName ', browserName)
+    // this.logger.log('[AUTH-SERV] browserVersion ', browserVersion)
     const browserbrowserVersionArray = browserVersion.split(" ")
-    // console.log('[AUTH-SERV] browserbrowserVersionArray ', browserbrowserVersionArray)
+    // this.logger.log('[AUTH-SERV] browserbrowserVersionArray ', browserbrowserVersionArray)
     if (browserName === 'chrome') {
       const version = +browserbrowserVersionArray[1];
-      // console.log('[AUTH-SERV] version ', version)
+      // this.logger.log('[AUTH-SERV] version ', version)
       if (version === 101 || version > 101) {
         this.isChromeVerGreaterThan100.next(true)
       }
@@ -180,7 +190,7 @@ export class AuthService {
         try {
           this.logger.log('[AUTH-SERV] Calling tiledesk_widget_login ')
           if (window && window['tiledesk_widget_login']) {
-            // console.log('window', window)
+            // this.logger.log('window', window)
             window['tiledesk_widget_login']()
           }
         } catch (err) {
@@ -209,7 +219,7 @@ export class AuthService {
   // --------------------------------------------------------------------------------------
   publishSSOloggedUser() {
     const storedUser = localStorage.getItem('user')
-    // console.log('[AUTH-SERV] publishSSOloggedUser storedUser ', storedUser)
+    // this.logger.log('[AUTH-SERV] publishSSOloggedUser storedUser ', storedUser)
     if (storedUser !== null) {
       this.user_bs.next(JSON.parse(storedUser))
 
@@ -218,7 +228,7 @@ export class AuthService {
         try {
           this.logger.log('[AUTH-SERV] Calling tiledesk_widget_autologin ')
           if (window && window['tiledesk_widget_autologin']) {
-            // console.log('window', window)
+            // this.logger.log('window', window)
             window['tiledesk_widget_autologin']()
           }
         } catch (err) {
@@ -275,7 +285,7 @@ export class AuthService {
 
   toggletilebotSidebar(isopened) {
     this.tilebotSidebarIsOpened.next(isopened)
-    // console.log('[AUTH-SERV] - TOGGLE NATIVE BOT SIDEBAR IS OPENED ', isopened)
+    // this.logger.log('[AUTH-SERV] - TOGGLE NATIVE BOT SIDEBAR IS OPENED ', isopened)
   }
 
 
@@ -354,7 +364,7 @@ export class AuthService {
 
               this.subscription.unsubscribe()
 
-              const storedProjectJson = localStorage.getItem(this.nav_project_id )
+              const storedProjectJson = localStorage.getItem(this.nav_project_id)
               this.logger.log('[AUTH-SERV] - JSON OF STORED PROJECT: ', storedProjectJson)
 
               // RUN THE BELOW ONLY IF EXIST THE PROJECT JSON SAVED IN THE STORAGE
@@ -443,12 +453,12 @@ export class AuthService {
           this._user_role === 'admin' ||
           this._user_role === undefined
         ) {
-          this.logger.log( '[AUTH-SERV] - CHECK ROLE (GOT FROM STORAGE) »»» ',this._user_role)
+          this.logger.log('[AUTH-SERV] - CHECK ROLE (GOT FROM STORAGE) »»» ', this._user_role)
 
           this.router.navigate([`project/${project_id}/unauthorized`])
           // this.router.navigate(['/unauthorized']);
         } else {
-          this.logger.log( '[AUTH-SERV] - CHECK ROLE (GOT FROM STORAGE) »»» ', this._user_role )
+          this.logger.log('[AUTH-SERV] - CHECK ROLE (GOT FROM STORAGE) »»» ', this._user_role)
         }
       }
     }
@@ -509,12 +519,12 @@ export class AuthService {
           this._user_role === 'admin' ||
           this._user_role === undefined
         ) {
-          this.logger.log( '[AUTH-SERV] - CHECK ROLE (GOT FROM STORAGE) »»» ', this._user_role )
+          this.logger.log('[AUTH-SERV] - CHECK ROLE (GOT FROM STORAGE) »»» ', this._user_role)
 
           this.router.navigate([`project/${project_id}/unauthorized-access`])
           // this.router.navigate(['/unauthorized']);
         } else {
-          this.logger.log( '[AUTH-SERV] - CHECK ROLE (GOT FROM STORAGE) »»» ',this._user_role )
+          this.logger.log('[AUTH-SERV] - CHECK ROLE (GOT FROM STORAGE) »»» ', this._user_role)
         }
       }
     }
@@ -574,7 +584,7 @@ export class AuthService {
 
     // const url = this.SIGNIN_BASE_URL
     const url = baseUrl + 'auth/signin';
-    // console.log('[AUTH-SERV] - SIGNIN URL ', url)
+    // this.logger.log('[AUTH-SERV] - SIGNIN URL ', url)
 
     return this._httpClient
       .post(url, JSON.stringify(body), httpOptions)
@@ -808,7 +818,7 @@ export class AuthService {
 
   hasClickedGoToProjects() {
     this.project_bs.next(null)
-    this.logger.log('[AUTH-SERV] - HAS CLICKED GO TO PROJECT - PUBLISH PRJCT = ',this.project_bs.next(null))
+    this.logger.log('[AUTH-SERV] - HAS CLICKED GO TO PROJECT - PUBLISH PRJCT = ', this.project_bs.next(null))
     this.logger.log('[AUTH-SERV] - HAS CLICKED GO TO PROJECT - PRJCT VALUE = ', this.project_bs.value)
     // this.logger.log('!!C-U »»»»» AUTH SERV - HAS BEEN CALLED "HAS CLICKED GOTO PROJECTS" - PUBLISH PRJCT = ', this.project_bs.next(null))
     localStorage.removeItem('project') // NOTE: questo serve????
@@ -906,11 +916,11 @@ export class AuthService {
   }
 
   signOut(calledby: string) {
-    this.logger.log('[AUTH-SERV] Signout calledby +++++ ', calledby)
+    // console.log('[AUTH-SERV] Signout calledby +++++ ', calledby)
     if (calledby !== 'autologin') {
       try {
         if (window && window['tiledesk_widget_logout']) {
-          // console.log('window', window)
+          // this.logger.log('window', window)
           window['tiledesk_widget_logout']()
         }
       } catch (err) {
@@ -926,9 +936,9 @@ export class AuthService {
       }
 
       const currentUrl = this.router.url;
-      // console.log('[AUTH-SERV] currentUrl ', currentUrl)
+      // this.logger.log('[AUTH-SERV] currentUrl ', currentUrl)
       const currentUrlSegment = currentUrl.split('/')
-      // console.log('[AUTH-SERV] currentUrlSegment ', currentUrlSegment)
+      // this.logger.log('[AUTH-SERV] currentUrlSegment ', currentUrlSegment)
 
       let projectId = null;
       let storedPrjctParsed = null;
@@ -937,16 +947,16 @@ export class AuthService {
       if (currentUrlSegment[2] && currentUrlSegment[2].match(/^\d+/)[0]) { // regex exp to Check if String starts with Number -> .match(/^\d+/)[0]
         projectId = currentUrlSegment[2]
       }
-      // console.log('[AUTH-SERV] projectId ', projectId)
+      // this.logger.log('[AUTH-SERV] projectId ', projectId)
 
       if (projectId) {
-       
-        // console.log('[AUTH-SERV] projectProfileName ', projectProfileName)
+
+        // this.logger.log('[AUTH-SERV] projectProfileName ', projectProfileName)
         if (!isDevMode()) {
           if (window['analytics']) {
 
             let userFullname = ''
-            if (storedUserParsed.firstname && storedUserParsed.lastname)  {
+            if (storedUserParsed.firstname && storedUserParsed.lastname) {
               userFullname = storedUserParsed.firstname + ' ' + storedUserParsed.lastname
             } else if (storedUserParsed.firstname && !storedUserParsed.lastname) {
               userFullname = storedUserParsed.firstname
@@ -993,7 +1003,7 @@ export class AuthService {
           if (window['analytics']) {
 
             let userFullname = ''
-            if (storedUserParsed.firstname && storedUserParsed.lastname)  {
+            if (storedUserParsed.firstname && storedUserParsed.lastname) {
               userFullname = storedUserParsed.firstname + ' ' + storedUserParsed.lastname
             } else if (storedUserParsed.firstname && !storedUserParsed.lastname) {
               userFullname = storedUserParsed.firstname
@@ -1036,9 +1046,10 @@ export class AuthService {
 
     this.user_bs.next(null)
     this.project_bs.next(null)
-    this.logger.log(  '[AUTH-SERV] SIGNOUT project_bs VALUE: ', this.project_bs.value, )
+    this.logger.log('[AUTH-SERV] SIGNOUT project_bs VALUE: ', this.project_bs.value)
 
     const storedRoute = this.localDbService.getFromStorage('wannago')
+    // console.log('[AUTH-SERV] storedRoute: ', storedRoute)
     if (storedRoute) {
       this.localDbService.removeFromStorage('wannago')
     }
@@ -1113,10 +1124,7 @@ export class AuthService {
               vapidKey: this.appConfigService.getConfig().firebase.vapidKey,
             })
             .then((FCMtoken) => {
-              this.logger.log(
-                '[AUTH-SERV] signOut >>>> getToken FCMtoken',
-                FCMtoken,
-              )
+              this.logger.log( '[AUTH-SERV] signOut >>>> getToken FCMtoken',  FCMtoken)
               this.FCMcurrentToken = FCMtoken
               const storedUser = localStorage.getItem('user')
               const storedUserObj = JSON.parse(storedUser)
@@ -1159,13 +1167,12 @@ export class AuthService {
   }
 
   removeInstanceIdAndSignout(calledby, FCMcurrentToken, userId) {
-    // console.log('[AUTH-SERV] - removeInstanceIdAndSignout calledby ', calledby)
-    // console.log('[AUTH-SERV] - removeInstanceIdAndSignout - FCM Token: ', FCMcurrentToken);
-    // console.log('[AUTH-SERV] - removeInstanceIdAndSignout - USER ID: ', userId);
+    // this.logger.log('[AUTH-SERV] - removeInstanceIdAndSignout calledby ', calledby)
+    // this.logger.log('[AUTH-SERV] - removeInstanceIdAndSignout - FCM Token: ', FCMcurrentToken);
+    // this.logger.log('[AUTH-SERV] - removeInstanceIdAndSignout - USER ID: ', userId);
     // this.connectionsRefinstancesId = this.urlNodeFirebase+"/users/"+userUid+"/instances/";
     const urlNodeFirebase = '/apps/tilechat'
-    const connectionsRefinstancesId =
-      urlNodeFirebase + '/users/' + userId + '/instances/'
+    const connectionsRefinstancesId = urlNodeFirebase + '/users/' + userId + '/instances/'
 
     let connectionsRefURL = ''
     if (connectionsRefinstancesId) {
@@ -1205,6 +1212,11 @@ export class AuthService {
 
           if (calledby !== 'autologin') {
             that.router.navigate(['/login'])
+            // if ( this.customRedirectAfterLogout  === false) {
+            //   that.router.navigate(['/login'])
+            // } else {
+            //   window.open( this.afterLogoutRedirectURL, '_self');
+            // }
           }
         },
         function (error) {
@@ -1213,6 +1225,11 @@ export class AuthService {
 
           if (calledby !== 'autologin') {
             that.router.navigate(['/login'])
+            // if ( this.customRedirectAfterLogout  === false) {
+            //   that.router.navigate(['/login'])
+            // } else {
+            //   window.open( this.afterLogoutRedirectURL, '_self');
+            // }
           }
         },
       )
@@ -1223,6 +1240,11 @@ export class AuthService {
     if (calledby !== 'autologin') {
       this.logger.log('[AUTH-SERV] signoutNoFirebase called By (2)', calledby)
       this.router.navigate(['/login'])
+      // if ( this.customRedirectAfterLogout  === false) {
+      //   this.router.navigate(['/login'])
+      // } else {
+      //   window.open( this.afterLogoutRedirectURL, '_self');
+      // }
     }
   }
 
@@ -1243,23 +1265,23 @@ export class AuthService {
     }
   }
 
-  
+
 
   public siginWithGoogle() {
-    // console.log('[AUTH-SERV] siginWithGoogle HERE YES!!!')
+    // this.logger.log('[AUTH-SERV] siginWithGoogle HERE YES!!!')
     // const url = this.SERVER_BASE_PATH + "auth/google"
     const url = "https://eu.rtmv3.tiledesk.com/api/auth/google"
     window.open(url, '_self');
 
     this.localDbService.setInStorage('swg', 'true')
-  
+
   }
 
   public siginUpWithGoogle() {
-  
+
     const url = "https://eu.rtmv3.tiledesk.com/api/auth/google?redirect_url=%23%2Fcreate-project-gs"
-                
-    // console.log('siginUpWithGoogle ', url)
+
+    // this.logger.log('siginUpWithGoogle ', url)
     window.open(url, '_self');
 
   }

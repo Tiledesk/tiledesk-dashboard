@@ -82,10 +82,12 @@ button.close {
 }
 
 .close-btn {
-  font-size: 50px;
+  font-size: 35px;
   font-weight: 100;
-  color: #fff;
+  // color: #fff;
+  color: rgb(60, 72, 88);
   cursor: pointer;
+  margin-top: 16px;
   // opacity: 0.2;
 }
 
@@ -116,24 +118,24 @@ button.close {
       linear-gradient(to bottom, #ffffff 0%, #ffffff 50%, #eff2f6 50%, #eff2f6 100%);
   }
 
-  .a-plan-bckgrnd {
-    background-image: url("../../assets/img/background-card-vertical_2.svg"),
-      // background-image: url("/assets/img/background-card-vertical_2.svg"),
-      linear-gradient(to bottom, #19a95d 0%, #19a95d 100%),
-      linear-gradient(to bottom, #ffffff 0%, #ffffff 50%, #eff2f6 50%, #eff2f6 100%);
-  }
+  // .a-plan-bckgrnd {
+  //   background-image: url("../../assets/img/background-card-vertical_2.svg"),
+  //     // background-image: url("/assets/img/background-card-vertical_2.svg"),
+  //     linear-gradient(to bottom, #19a95d 0%, #19a95d 100%),
+  //     linear-gradient(to bottom, #ffffff 0%, #ffffff 50%, #eff2f6 50%, #eff2f6 100%);
+  // }
 
-  .b-plan-bckgrnd {
-    background-image: url("/assets/img/background-card-vertical_2.svg"),
-      linear-gradient(to bottom, #00a1c2 0%, #00a1c2 100%),
-      linear-gradient(to bottom, #ffffff 0%, #ffffff 50%, #eff2f6 50%, #eff2f6 100%);
-  }
+  // .b-plan-bckgrnd {
+  //   background-image: url("/assets/img/background-card-vertical_2.svg"),
+  //     linear-gradient(to bottom, #00a1c2 0%, #00a1c2 100%),
+  //     linear-gradient(to bottom, #ffffff 0%, #ffffff 50%, #eff2f6 50%, #eff2f6 100%);
+  // }
 
-  .c-plan-bckgrnd {
-    background-image: url("/assets/img/background-card-vertical_2.svg"),
-      linear-gradient(to bottom, #9966ff 0%, #9966ff 100%),
-      linear-gradient(to bottom, #ffffff 0%, #ffffff 50%, #eff2f6 50%, #eff2f6 100%);
-  }
+  // .c-plan-bckgrnd {
+  //   background-image: url("/assets/img/background-card-vertical_2.svg"),
+  //     linear-gradient(to bottom, #9966ff 0%, #9966ff 100%),
+  //     linear-gradient(to bottom, #ffffff 0%, #ffffff 50%, #eff2f6 50%, #eff2f6 100%);
+  // }
 }
 
 .quantity-status {

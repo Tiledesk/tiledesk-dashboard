@@ -547,7 +547,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     } else if (sortfor === 'botname') {
       this.orderBylastUpdated = false;
       this.orderByCreationDate = false;
-      this.orderByChatbotName = true; 
+      this.orderByChatbotName = true;
       this.getFaqKbByProjectId()
     }
   }
@@ -588,6 +588,19 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
               return -1;
             }
             if (a['createdAt'] < b['createdAt']) {
+              return 1;
+            }
+            return 0;
+          });
+        }
+
+        if (this.orderByChatbotName)  {
+          this.logger.log('[BOTS-LIST] - orderByChatbotName Here yes');
+          this.faqkbList.sort(function compare(a: Chatbot, b: Chatbot) {
+            if (a['name'].toLowerCase() <  b['name'].toLowerCase()) {
+              return -1;
+            }
+            if (a['name'].toLowerCase() > b['name'].toLowerCase()) {
               return 1;
             }
             return 0;

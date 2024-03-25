@@ -1605,6 +1605,17 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         // ---------------------------------------------------------------
         this.welcomeTitle = this.selected_translation["WELLCOME_TITLE"];
         this.welcomeMsg = this.selected_translation["WELLCOME_MSG"];
+
+        this.welcomeTitle = this.selected_translation["WELCOME_TITLE"];
+        if (this.selected_translation.hasOwnProperty("WELLCOME_TITLE") ) {
+          this.welcomeTitle = this.selected_translation["WELLCOME_TITLE"];
+        }
+
+        this.welcomeMsg = this.selected_translation["WELCOME_MSG"];
+        if (this.selected_translation.hasOwnProperty("WELLCOME_MSG") ) {
+          this.welcomeMsg = this.selected_translation["WELLCOME_MSG"];
+        }
+
         this.logger.log('[WIDGET-SET-UP] ***** selected translation - WELCOME_TITLE: ', this.welcomeTitle, ' - WELLCOME_MSG: ', this.welcomeMsg);
 
 
@@ -1940,6 +1951,8 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
     this.selected_translation["WELLCOME_TITLE"] = this.welcomeTitle;
     this.selected_translation["WELLCOME_MSG"] = this.welcomeMsg;
+    this.selected_translation["WELCOME_TITLE"] = this.welcomeTitle;
+    this.selected_translation["WELCOME_MSG"] = this.welcomeMsg;
     this.selected_translation["CALLOUT_TITLE_PLACEHOLDER"] = this.calloutTitle;
     this.selected_translation["CALLOUT_MSG_PLACEHOLDER"] = this.calloutMsg;
     this.selected_translation["LABEL_FIRST_MSG"] = this.onlineMsg;

@@ -1,5 +1,16 @@
 # tiledesk-dashboard
 
+### 2.6.3
+- Deploys in production
+- Improves the path to the knowledge bases page on the home page
+
+### 2.6.2
+- Deploys in production
+- Improvements and bug fixing
+
+### 2.6.1
+- Deploys in production
+- Improves the Get and Save methods used for translation strings
 
 ### 2.6.0
 - Deploys in production
@@ -19,7 +30,7 @@
 ### 2.5.19
 - Deploys in production
 - Fixes the bug: not all chatbot images are displayed
-- Fixes the bug: published chatbots is not appearing as a draft
+- Fixes the bug: published chatbots is appearing as a draft
 
 ### 2.5.18
 - Deploys in production

@@ -15,6 +15,7 @@ import { NotifyService } from 'app/core/notify.service';
 import { HomeInviteTeammateErrorModalComponent } from './home-invite-teammate-error-modal/home-invite-teammate-error-modal.component';
 import { TranslateService } from '@ngx-translate/core';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
+import { BrandService } from 'app/services/brand.service';
 
 @Component({
   selector: 'appdashboard-home-create-teammate',
@@ -64,6 +65,7 @@ export class HomeCreateTeammateComponent extends PricingBaseComponent implements
 
   onlyOwnerCanManageTheAccountPlanMsg: string;
   learnMoreAboutDefaultRoles: string;
+  displayInviteTeammateBtn: string;
 
 
   yourTrialHasEnded: string;
@@ -80,9 +82,12 @@ export class HomeCreateTeammateComponent extends PricingBaseComponent implements
     public dialog: MatDialog,
     public prjctPlanService: ProjectPlanService,
     public notify: NotifyService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    public brandService: BrandService,
   ) {
     super(prjctPlanService, notify);
+    const brand = brandService.getBrand();
+    this.displayInviteTeammateBtn = brand['display_invite_teammate_btn'];
   }
 
   ngOnInit(): void {
