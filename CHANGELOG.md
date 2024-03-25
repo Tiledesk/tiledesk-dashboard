@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.6.4
+- Deploys in production
+- Improves performance
+
 ### 2.6.3
 - Deploys in production
 - Improves the path to the knowledge bases page on the home page
