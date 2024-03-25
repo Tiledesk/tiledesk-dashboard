@@ -149,7 +149,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
     } else if(column == 'name'){
       this.searchParams.search = filterValue;
     }
-    console.log("this.searchParams ", this.searchParams);
+    // console.log("this.searchParams ", this.searchParams);
     if (this.timeoutId) {
       clearTimeout(this.timeoutId);
     }

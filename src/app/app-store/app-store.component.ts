@@ -695,7 +695,7 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
   // Modals
   // -----------------------------
   presentModalFeautureAvailableFromTier2Plan(planName) {
-    console.log( 'presentModalFeautureAvailableFromTier2Plan' , planName)
+    this.logger.log( 'presentModalFeautureAvailableFromTier2Plan' , planName)
     const el = document.createElement('div')
     el.innerHTML = planName //this.featureAvailableFromBPlan
     // swal({

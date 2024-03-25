@@ -138,7 +138,7 @@ export class BrandService {
 
       if (environment.hasOwnProperty("brandSrc")) {
 
-       console.log('[BRAND-SERV] loadBrand remoteConfig is false - env has Property brandSrc');
+      //  console.log('[BRAND-SERV] loadBrand remoteConfig is false - env has Property brandSrc');
         const remoteBrandUrl = this.isEmpty(environment['brandSrc']);
 
         if (!remoteBrandUrl) {

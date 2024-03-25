@@ -135,7 +135,7 @@ export class NotifyService {
         // reverseButtons: true,
       }).then((result) => { 
         if (result.isConfirmed) {
-          console.log('[NOTIFY-SERVICE] displaySubscripionHasExpiredModal result.isConfirmed',  result.isConfirmed) 
+          this.logger.log('[NOTIFY-SERVICE] displaySubscripionHasExpiredModal result.isConfirmed',  result.isConfirmed) 
           window.open(`mailto:${this.salesEmail}?subject=Upgrade plan`);
         }
   
@@ -156,7 +156,7 @@ export class NotifyService {
   // "{{'YourTrialHasEnded' | translate }}"
   // "{{'UpgradeNowToKeepOurAmazingFeatures' | translate}}"
   displayTrialHasExpiredModal(projectId,  yourTrialHasEnded, upgradeNowToKeepOurAmazingFeatures , upgrade) {
-   console.log('displayTrialHasExpiredModal yourTrialHasEnded' , yourTrialHasEnded, 'upgradeNowToKeepOurAmazingFeatures ', upgradeNowToKeepOurAmazingFeatures )
+    this.logger.log('displayTrialHasExpiredModal yourTrialHasEnded' , yourTrialHasEnded, 'upgradeNowToKeepOurAmazingFeatures ', upgradeNowToKeepOurAmazingFeatures )
     Swal.fire({
       title: yourTrialHasEnded, // "Your 14-days free trial has expired",
       text: upgradeNowToKeepOurAmazingFeatures, //"Upgrade now to keep our amazing features",
@@ -199,7 +199,7 @@ export class NotifyService {
         // reverseButtons: true,
       }).then((result) => { 
         if (result.isConfirmed) {
-          console.log('[NOTIFY-SERVICE] displayModalEnterpiseSubsExpired result.isConfirmed',  result.isConfirmed) 
+          this.logger.log('[NOTIFY-SERVICE] displayModalEnterpiseSubsExpired result.isConfirmed',  result.isConfirmed) 
           window.open(`mailto:${this.salesEmail}?subject=Upgrade plan (${this.prjct_profile_name} expired)`);
         }
   
@@ -226,7 +226,7 @@ export class NotifyService {
 
   // "CONTACT US - LET'S CHAT" MODAL
   _displayContactUsModal(displayModal: boolean, reason: string) {
-    console.log('[NOTIFY-SERVICE] - _displayContactUsModal reason ', reason);
+    this.logger.log('[NOTIFY-SERVICE] - _displayContactUsModal reason ', reason);
     if (reason === 'seats_limit_reached') {
       this.showSubtitleAllOperatorsSeatsUsed = true;
       this.showSubtitleSeatsNumberExceed = false;
@@ -277,7 +277,7 @@ export class NotifyService {
 
   _displayContactOwnerModal(displayModal: boolean, reason: string) {
     const el = document.createElement('div')
-    console.log('[NOTIFY-SERVICE] - _displayContactOwnerModal reason ', reason);
+    this.logger.log('[NOTIFY-SERVICE] - _displayContactOwnerModal reason ', reason);
     if (reason === 'seats_limit_reached') {
       // this.showSubtitleAllOperatorsSeatsUsed = true;
       // this.showSubtitleSeatsNumberExceed = false;

@@ -73,7 +73,7 @@ export class HomeKbComponent extends PricingBaseComponent implements OnInit {
   }
 
   getCurrentProject() {
-    console.log('[HOME-KB] - $ubscribe to CURRENT PROJECT ', this.project)
+    this.logger.log('[HOME-KB] - $ubscribe to CURRENT PROJECT ', this.project)
     this.auth.project_bs
       .pipe(
         takeUntil(this.unsubscribe$)
@@ -110,7 +110,7 @@ export class HomeKbComponent extends PricingBaseComponent implements OnInit {
 
   goToKnowledgeBases() {
     // this.trackUserAction.emit({action:'Home, Add Knowledge Base button clicked',actionRes: null })
-    console.log("goToKnowledgeBases -----> project._id: ", this.project._id);
+    this.logger.log("goToKnowledgeBases -----> project._id: ", this.project._id);
     if (this.areNewKb) {
       this.router.navigate(['project/' + this.project._id + '/knowledge-bases'])
     } else if (!this.areNewKb) {
