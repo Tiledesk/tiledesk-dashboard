@@ -308,37 +308,8 @@ export enum APPSUMO_PLAN_SEATS {
 //     Growth = 4, 
 //     Scale = 15,
 // };
-export enum PLAN_NAME {
-    A = 'Growth',
-    B = 'Scale',
-    C = 'Plus',
-    D = 'Basic',
-    E = 'Premium',
-    F = 'Custom'
-}
 
-export enum PLAN_SEATS {
-    free = 1, // Sandbox
-    Growth = 4, 
-    Scale = 15,
-    Basic = 1,
-    Premium = 2,
-    Custom = 'Custom'
-};
 
-export enum CHATBOT_MAX_NUM {
-    free = 2, 
-    Basic = 5,
-    Premium = 20,
-    Custom = 'Custom'
-};
-
-export enum KB_MAX_NUM {
-    free = 1, 
-    Basic = 2,
-    Premium = 3,
-    Custom = 3
-};
 
 
 export enum KB_DEFAULT_PARAMS {
@@ -415,12 +386,53 @@ export const highlightedFeaturesPlanC = [
 // ------------------------
 // New Pricing
 // ------------------------
+// export const PLANS_LIST = {
+//     FREE_TRIAL: { requests: 3000,   messages: 0,    tokens: 250000,     email: 200 }, // same as PREMIUM
+//     Sandbox:    { requests: 200,    messages: 0,    tokens: 10000,      email: 200 },
+//     Basic:      { requests: 800,    messages: 0,    tokens: 50000,      email: 200 },
+//     Premium:    { requests: 3000,   messages: 0,    tokens: 250000,     email: 200 },
+//     Custom:     { requests: 3000,   messages: 0,    tokens: 250000,     email: 200 }
+// }
+
+export enum PLAN_NAME {
+    A = 'Growth',
+    B = 'Scale',
+    C = 'Plus',
+    D = 'Basic',
+    E = 'Premium',
+    F = 'Custom'
+}
+
+export enum PLAN_SEATS {
+    free = 1, // Sandbox
+    Growth = 4, 
+    Scale = 15,
+    Basic = 1,
+    Premium = 2,
+    Custom = 'Custom'
+};
+
+
+export enum CHATBOT_MAX_NUM {
+    free = 2, 
+    Basic = 5,
+    Premium = 20,
+    Custom = 20
+};
+
+export enum KB_MAX_NUM {
+    free = 50, 
+    Basic = 150,
+    Premium = 300,
+    Custom = 1000
+};
+
 export const PLANS_LIST = {
-    FREE_TRIAL: { requests: 3000,   messages: 0,    tokens: 250000,     email: 200 }, // same as PREMIUM
-    Sandbox:    { requests: 200,    messages: 0,    tokens: 10000,      email: 200 },
-    Basic:      { requests: 800,    messages: 0,    tokens: 50000,      email: 200 },
-    Premium:    { requests: 3000,   messages: 0,    tokens: 250000,     email: 200 },
-    Custom:     { requests: 3000,   messages: 0,    tokens: 250000,     email: 200 }
+    FREE_TRIAL: { requests: 3000,   messages: 0,    tokens: 250000,     email: 200,     chatbots: 20,       kbs: 50 }, // same as PREMIUM
+    SANDBOX:    { requests: 200,    messages: 0,    tokens: 10000,      email: 200,     chatbots: 2,        kbs: 50 },
+    BASIC:      { requests: 800,    messages: 0,    tokens: 50000,      email: 200,     chatbots: 5,        kbs: 150},
+    PREMIUM:    { requests: 3000,   messages: 0,    tokens: 250000,     email: 200,     chatbots: 20,       kbs: 300},
+    CUSTOM:     { requests: 3000,   messages: 0,    tokens: 250000,     email: 200,     chatbots: 20,       kbs: 1000}
 }
 
 // Basic plan
