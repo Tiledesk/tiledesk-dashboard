@@ -78,7 +78,7 @@ export class PricingBaseComponent implements OnInit {
   getProjectPlan() {
     this.prjctPlanService.projectPlan$.subscribe(
       (projectProfileData: any) => {
-        // console.log('[P-BASE] - GET PROJECT PLAN - RES ', projectProfileData)
+        console.log('[P-BASE] - GET PROJECT PLAN - RES ', projectProfileData)
         if (projectProfileData) {
           this.projectProfileData = projectProfileData
           this.prjct_id = projectProfileData._id
