@@ -162,6 +162,8 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   tlangparams: any;
 
   // QUOTES
+  isVisibleQuoteBtn: boolean;
+  isVisiblePay: boolean
   color: ThemePalette = 'primary';
   mode: ProgressSpinnerMode = 'determinate';
   requests_count = 0;
@@ -539,11 +541,47 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
           // this.logger.log('PUBLIC-KEY (Navbar) - mt is', this.MT);
         }
       }
+
+      if (key.includes("QIN")) {
+        // this.logger.log('PUBLIC-KEY (Navbar) - key', key);
+        let qt = key.split(":");
+        // this.logger.log('PUBLIC-KEY (Navbar) - mt key&value', mt);
+        if (qt[1] === "F") {
+          this.isVisibleQuoteBtn = false;
+          // this.logger.log('PUBLIC-KEY (Navbar) - isVisibleQuoteBtn ', this.isVisibleQuoteBtn);
+        } else {
+          this.isVisibleQuoteBtn = true;
+          // this.logger.log('PUBLIC-KEY (Navbar) - isVisibleQuoteBtn ', this.isVisibleQuoteBtn);
+        }
+      }
+
+      if (key.includes("PAY")) {
+        // this.logger.log('PUBLIC-KEY (Navbar) - key', key);
+        let pay = key.split(":");
+        // this.logger.log('PUBLIC-KEY (Navbar) - mt key&value', mt);
+        if (pay[1] === "F") {
+          this.isVisiblePay = false;
+          // this.logger.log('PUBLIC-KEY (Navbar) - isVisibleQuoteBtn ', this.isVisibleQuoteBtn);
+        } else {
+          this.isVisiblePay = true;
+          // this.logger.log('PUBLIC-KEY (Navbar) - isVisibleQuoteBtn ', this.isVisibleQuoteBtn);
+        }
+      }
+
+      
     });
 
     if (!this.public_Key.includes("MTT")) {
       this.MT = false;
       // this.logger.log('PUBLIC-KEY (Navbar) - mt is', this.MT);
+    }
+    if (!this.public_Key.includes("QIN")) {
+      this.isVisibleQuoteBtn = false;
+      // this.logger.log('PUBLIC-KEY (Navbar) - isVisibleQuoteBtn', this.isVisibleQuoteBtn);
+    }
+    if (!this.public_Key.includes("PAY")) {
+      this.isVisiblePay = false;
+      // this.logger.log('PUBLIC-KEY (Navbar) - isVisiblePay', this.isVisiblePay);
     }
   }
 
