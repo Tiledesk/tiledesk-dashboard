@@ -1,6 +1,6 @@
 # tiledesk-dashboard
 
-### 2.6.5-rc1
+### 2.6.6-rc1
 - Move email ticketing features to "Custom" plan
 
 ### 2.6.5-rc1
