@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.6.5-rc1
+Adds the ability to manage the number of chatbots and the number of Knowledge Base contents
+
 ### 2.6.4
 - Deploys in production
 - Improves performance
