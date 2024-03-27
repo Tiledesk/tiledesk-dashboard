@@ -561,6 +561,7 @@ export class KnowledgeBasesPreviousComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     clearInterval(this.interval_id);
   }
+  
   contactUsForChatGptKey() {
     this.closeSecretsModal()
     window.open(`mailto:${this.contactUsEmail}?subject=I don't have a GPT-Key`);
