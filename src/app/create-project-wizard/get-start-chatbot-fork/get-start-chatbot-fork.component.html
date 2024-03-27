@@ -67,7 +67,7 @@
                     <!-- (clear)="onClearSelectedLanguage()" -->
                     <ng-select class="select-language-in-wizard" id="language_option"
                         style="margin-top: 0px; max-width: 500px;" [clearable]="false" [(ngModel)]="selectedProject"
-                        [items]="projects" bindLabel="id_project.name" bindValue="id_project._id" groupBy="type"
+                        [items]="activeProjects" bindLabel="id_project.name" bindValue="id_project._id" groupBy="type"
                         placeholder="Choose a project" (change)="onSelectProject(selectedProject)">
                     </ng-select>
                 </div>

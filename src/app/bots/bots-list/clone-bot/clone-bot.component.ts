@@ -11,6 +11,7 @@ import { LoggerService } from 'app/services/logger/logger.service';
 })
 export class CloneBotComponent implements OnInit {
   public projects: any;
+  public activeProjects: any;
   public bot_name: string;
   public current_project_id: string;
   public selectedProjectId: Project;
@@ -28,9 +29,14 @@ export class CloneBotComponent implements OnInit {
     this.bot_name = data.botName;
     this.current_project_id = data.currentProjectId
     this.logger.log('[CLONE-BOT] data botName  ', this.bot_name)
-    this.logger.log('[CLONE-BOT] data projects  ', this.projects)
+    // console.log('[CLONE-BOT] data projects  ', this.projects)
     this.logger.log('[CLONE-BOT] data current_project_id  ', this.current_project_id)
 
+  this.activeProjects = this.projects.filter( (project) => {
+      return project.id_project.status === 100
+    });
+
+    // console.log('[CLONE-BOT] newArray  ', this.activeProjects)
   }
 
   ngOnInit(): void {
