@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.6.5
+- Deploys in production
+- Improvements and bug fixing
+
 ### 2.6.4
 - Deploys in production
 - Improves performance
