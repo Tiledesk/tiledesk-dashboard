@@ -73,7 +73,7 @@ declare interface RouteInfo {
 export class SidebarComponent implements OnInit, AfterViewInit {
 
   // tparams = brand;
- 
+
   // hidechangelogrocket = brand.sidebar__hide_changelog_rocket;
   tparams: any;
   sidebarLogoWhite_Url: string;
@@ -193,7 +193,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   AUTOMATIONS_ROUTE_IS_ACTIVE: boolean;
   IS_REQUEST_FOR_PANEL_ROUTE: boolean;
   IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE: boolean;
-    // Chatbot sidebar
+  // Chatbot sidebar
   MY_BOTS_ALL_ROUTE_IS_ACTIVE: boolean;
   MY_BOTS_IS_ROUTE_IS_ACTIVE: boolean;
   MY_BOTS_CS_ROUTE_IS_ACTIVE: boolean;
@@ -279,7 +279,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     if (brand) {
       this.companyLogoNoText = brand['COMPANY_LOGO_NO_TEXT'];
       this.companySiteUrl = brand["COMPANY_SITE_URL"]
-      this.companyName = brand["COMPANY_NAME"] 
+      this.companyName = brand["COMPANY_NAME"]
     }
   }
 
@@ -309,13 +309,13 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     this.listenSoundPreference();
     this.getNotificationSoundPreferences();
     this.getWsCurrentUserAvailability$();
-    
+
   }
 
 
-  presentDialogResetBusy(){
+  presentDialogResetBusy() {
     this.logger.log('[SIDEBAR] presentDialogResetBusy ')
-    if(this.dialogRef) {
+    if (this.dialogRef) {
       this.dialogRef.close();
       return
     }
@@ -324,7 +324,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
       backdropClass: 'cdk-overlay-transparent-backdrop',
       hasBackdrop: true,
       data: {
-       
+
       },
     });
 
@@ -654,7 +654,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   getCurrentRoute() {
     this.router.events.subscribe((event: NavigationEvent) => {
       if (event instanceof NavigationEnd) {
-        this.logger.log('[SIDEBAR] NavigationEnd event.url' , event.url.substring(event.url.lastIndexOf('/') + 1)) 
+        this.logger.log('[SIDEBAR] NavigationEnd event.url', event.url.substring(event.url.lastIndexOf('/') + 1))
         if (event.url.indexOf('/request-for-panel') !== -1) {
           this.IS_REQUEST_FOR_PANEL_ROUTE = true;
           // this.logger.log('[NAVBAR] NavigationEnd - IS_REQUEST_FOR_PANEL_ROUTE  ', this.IS_REQUEST_FOR_PANEL_ROUTE);
@@ -842,7 +842,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           this.WIDGET_SETUP_ROUTE_IS_ACTIVE = false;
           // this.logger.log('[SIDEBAR] NavigationEnd - WIDGET_SETUP_ROUTE_IS_ACTIVE ', this.WIDGET_SETUP_ROUTE_IS_ACTIVE);
         }
-       
+
         // Chatbot sidebar
         if (event.url.indexOf('/bots/my-chatbots/all') !== -1) {
           this.MY_BOTS_ALL_ROUTE_IS_ACTIVE = true;
@@ -852,7 +852,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           this.logger.log('[SIDEBAR] NavigationEnd - MY_BOTS_ALL_ROUTE_IS_ACTIVE ', this.MY_BOTS_ALL_ROUTE_IS_ACTIVE);
         }
 
-        if (event.url.indexOf('/bots/my-chatbots/increase-sales') !== -1 ) {
+        if (event.url.indexOf('/bots/my-chatbots/increase-sales') !== -1) {
           this.MY_BOTS_IS_ROUTE_IS_ACTIVE = true;
           this.logger.log('[SIDEBAR] NavigationEnd - MY_BOTS_IS_ROUTE_IS_ACTIVE ', this.MY_BOTS_IS_ROUTE_IS_ACTIVE);
         } else {
@@ -860,7 +860,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           this.logger.log('[SIDEBAR] NavigationEnd - MY_BOTS_IS_ROUTE_IS_ACTIVE ', this.MY_BOTS_IS_ROUTE_IS_ACTIVE);
         }
 
-        if (event.url.indexOf('/bots/my-chatbots/customer-satisfaction') !== -1 ) {
+        if (event.url.indexOf('/bots/my-chatbots/customer-satisfaction') !== -1) {
           this.MY_BOTS_CS_ROUTE_IS_ACTIVE = true;
           this.logger.log('[SIDEBAR] NavigationEnd - MY_BOTS_CS_ROUTE_IS_ACTIVE ', this.MY_BOTS_CS_ROUTE_IS_ACTIVE);
         } else {
@@ -868,7 +868,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           this.logger.log('[SIDEBAR] NavigationEnd - MY_BOTS_CS_ROUTE_IS_ACTIVE ', this.MY_BOTS_CS_ROUTE_IS_ACTIVE);
         }
 
-        if (event.url.indexOf('/bots/templates/all') !== -1 ) {
+        if (event.url.indexOf('/bots/templates/all') !== -1) {
           this.TMPLT_ALL_ROUTE_IS_ACTIVE = true;
           this.logger.log('[SIDEBAR] NavigationEnd - TMPLT_ALL_ROUTE_IS_ACTIVE ', this.TMPLT_ALL_ROUTE_IS_ACTIVE);
         } else {
@@ -876,7 +876,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           this.logger.log('[SIDEBAR] NavigationEnd - TMPLT_ALL_ROUTE_IS_ACTIVE ', this.TMPLT_ALL_ROUTE_IS_ACTIVE);
         }
 
-        if (event.url.indexOf('/bots/templates/community') !== -1 ) {
+        if (event.url.indexOf('/bots/templates/community') !== -1) {
           this.TMPLT_CMNT_ROUTE_IS_ACTIVE = true;
           this.logger.log('[SIDEBAR] NavigationEnd - TMPLT_CMNT_ROUTE_IS_ACTIVE ', this.TMPLT_CMNT_ROUTE_IS_ACTIVE);
         } else {
@@ -884,7 +884,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           this.logger.log('[SIDEBAR] NavigationEnd - TMPLT_CMNT_ROUTE_IS_ACTIVE ', this.TMPLT_CMNT_ROUTE_IS_ACTIVE);
         }
 
-        if (event.url.indexOf('/bots/templates/increase-sales') !== -1 ) {
+        if (event.url.indexOf('/bots/templates/increase-sales') !== -1) {
           this.TMPLT_IS_ROUTE_IS_ACTIVE = true;
           this.logger.log('[SIDEBAR] NavigationEnd - TMPLT_IS_ROUTE_IS_ACTIVE ', this.TMPLT_IS_ROUTE_IS_ACTIVE);
         } else {
@@ -892,7 +892,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           this.logger.log('[SIDEBAR] NavigationEnd - TMPLT_IS_ROUTE_IS_ACTIVE ', this.TMPLT_IS_ROUTE_IS_ACTIVE);
         }
 
-        if (event.url.indexOf('/bots/templates/customer-satisfaction') !== -1 ) {
+        if (event.url.indexOf('/bots/templates/customer-satisfaction') !== -1) {
           this.TMPLT_CS_ROUTE_IS_ACTIVE = true;
           this.logger.log('[SIDEBAR] NavigationEnd - TMPLT_CS_ROUTE_IS_ACTIVE ', this.TMPLT_CS_ROUTE_IS_ACTIVE);
         } else {
@@ -1046,7 +1046,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         }
 
         // if (event.url.indexOf('/knowledge-bases-pre') ) {
-        if(event.url.substring(event.url.lastIndexOf('/') + 1) === 'knowledge-bases-pre' ) {
+        if (event.url.substring(event.url.lastIndexOf('/') + 1) === 'knowledge-bases-pre') {
           this.OLD_KB_ROUTE_IS_ACTIVE = true;
           this.logger.log('[SIDEBAR] NavigationEnd - OLD_KB_ROUTE_IS_ACTIVE ', this.OLD_KB_ROUTE_IS_ACTIVE);
         } else {
@@ -1065,7 +1065,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         }
 
 
-        
+
       }
     });
   }
@@ -1446,20 +1446,22 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   getKnowledgeBaseSettings() {
     this.kbService.getKbSettingsPrev().subscribe((kbSettings: KbSettings) => {
       this.logger.log("[SIDEBAR] get kbSettings RES ", kbSettings);
-      if( kbSettings && kbSettings.kbs) {
+      if (kbSettings && kbSettings.kbs) {
         if (kbSettings.kbs.length === 0) {
           this.kbService.areNewwKb(true)
-        } else if  (kbSettings.kbs.length > 0) {
+        } else if (kbSettings.kbs.length > 0) {
           this.kbService.areNewwKb(false)
         }
 
+      } else {
+        this.kbService.areNewwKb(true)
       }
-     
+
     }, (error) => {
       this.logger.error("[SIDEBAR] get kbSettings ERROR ", error);
     }, () => {
       this.logger.log("SIDEBAR] get kbSettings * COMPLETE *");
-    
+
     })
   }
 
