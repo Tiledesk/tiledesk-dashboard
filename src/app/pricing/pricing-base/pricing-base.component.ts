@@ -78,7 +78,7 @@ export class PricingBaseComponent implements OnInit {
   getProjectPlan() {
     this.prjctPlanService.projectPlan$.subscribe(
       (projectProfileData: any) => {
-        console.log('[P-BASE] - GET PROJECT PLAN - RES ', projectProfileData)
+        // console.log('[P-BASE] - GET PROJECT PLAN - RES ', projectProfileData)
         if (projectProfileData) {
           this.projectProfileData = projectProfileData
           this.prjct_id = projectProfileData._id
@@ -210,6 +210,7 @@ export class PricingBaseComponent implements OnInit {
 
                   // Translate params 
                   this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.F }
+                  this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.F }
                   this.tParamsPlanNameTrialExpired = { plan_name: PLAN_NAME.E }
 
                   this.dispayBadgeAvaibleFromInAppStore = false;
@@ -220,6 +221,7 @@ export class PricingBaseComponent implements OnInit {
                   this.kbLimit = null;
 
                   this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.F }
+                  this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.F }
                   this.tParamsPlanNameTrialExpired = { plan_name: PLAN_NAME.E }
 
                   this.dispayBadgeAvaibleFromInAppStore = false;
@@ -343,7 +345,7 @@ export class PricingBaseComponent implements OnInit {
                   this.tParamsCannedAvailableFromPlan = { plan_name: PLAN_NAME.D }
                   this.tParamsAvailableFromTier2 = { plan_name: PLAN_NAME.E }
                   this.tParamsPlanNameTrialExpired = { plan_name: PLAN_NAME.E }
-                  this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.E }
+                  this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.F }
                   this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.F }
                   this.dispayBadgeAvaibleFromInAppStore = true;
                 } else if (this.areActivePay === false) {
@@ -360,7 +362,7 @@ export class PricingBaseComponent implements OnInit {
                   this.tParamsCannedAvailableFromPlan = { plan_name: PLAN_NAME.D }
                   this.tParamsAvailableFromTier2 = { plan_name: PLAN_NAME.E }
                   this.tParamsPlanNameTrialExpired = { plan_name: PLAN_NAME.E }
-                  this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.E }
+                  this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.F }
                   this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.F }
                   this.dispayBadgeAvaibleFromInAppStore = true;
                   // console.log('[P-BASE] - GET PROJECT PLAN - CB LIMIT ', this.chatBotLimit)
@@ -546,7 +548,7 @@ export class PricingBaseComponent implements OnInit {
                 // --------------------------------------------------------------------------------
                 // @ Translate params for static page
                 // --------------------------------------------------------------------------------
-                this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.E }
+                this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.F }
                 this.tParamsAvailableFromTier2 = { plan_name: PLAN_NAME.E }
                 this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.F }
                 this.dispayBadgeAvaibleFromInAppStore = true;
@@ -591,6 +593,7 @@ export class PricingBaseComponent implements OnInit {
 
                 // Translate params for static page
                 this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.F }
+                this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.F }
                 this.dispayBadgeAvaibleFromInAppStore = false;
                 // ------------------------------------------------------------------------
                 // USECASE: Custom Plan (SUB ACTIVE) new for Plus Plan
@@ -807,7 +810,7 @@ export class PricingBaseComponent implements OnInit {
                 this.tParamsMonitorAvailableFromPlan = { plan_name: PLAN_NAME.D }
                 this.tParamsHoursAvailableFromPlan = { plan_name: PLAN_NAME.D }
                 this.tParamsCannedAvailableFromPlan = { plan_name: PLAN_NAME.D }
-                this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.E }
+                this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.F }
                 this.tParamsAvailableFromTier2 = { plan_name: PLAN_NAME.E }
                 this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.F }
                 this.dispayBadgeAvaibleFromInAppStore = true;
@@ -842,7 +845,7 @@ export class PricingBaseComponent implements OnInit {
                 this.tParamsHoursAvailableFromPlan = { plan_name: PLAN_NAME.D }
                 this.tParamsCannedAvailableFromPlan = { plan_name: PLAN_NAME.D }
                 this.tParamsAvailableFromTier2 = { plan_name: PLAN_NAME.E }
-                this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.E }
+                this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.F }
                 this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.F }
                 this.dispayBadgeAvaibleFromInAppStore = true;
 
@@ -876,7 +879,7 @@ export class PricingBaseComponent implements OnInit {
                 this.tParamsHoursAvailableFromPlan = { plan_name: PLAN_NAME.D }
                 this.tParamsCannedAvailableFromPlan = { plan_name: PLAN_NAME.D }
                 this.tParamsAvailableFromTier2 = { plan_name: PLAN_NAME.E }
-                this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.E }
+                this.tParamsEmailTicketingFromPlan = { plan_name: PLAN_NAME.F }
                 this.tParamsActivitiesFromPlan = { plan_name: PLAN_NAME.F }
                 this.dispayBadgeAvaibleFromInAppStore = true;
 
