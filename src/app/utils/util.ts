@@ -447,7 +447,7 @@ export const featuresPlanD = [
     'Email Support',
     'Team Inbox',
     'Make integration',
-    '250 Pages for Knowledge Base', 
+    '50 Contents for Knowledge Base', 
     '50,000 AI Tokens'
 ]
 // Basic plan
@@ -459,7 +459,7 @@ export const highlightedFeaturesPlanD = [
 
 export const additionalFeaturesPlanD = [
     'Addional users at 8€/User',
-   'Addional Chat/mo at 10€/500 Conversations'
+    'Addional Chat/mo at 10€/500 Conversations'
 ]
 
 
@@ -475,8 +475,7 @@ export const featuresPlanE = [
     'Data export',
     'Livechat Support',
     'Analytics',
-    'Email Ticketing',
-    '500 Pages for Knowledge Base', 
+    '300 Contents for Knowledge Base', 
     '250,000 AI Tokens'
 ]
 
@@ -495,19 +494,22 @@ export const additionalFeaturesPlanE = [
 
 // Custom Plan
 export const featuresPlanF = [
-    'Dedicated Customer Success Manager',
+    'Self Hosting or Private Cloud',
+    'Bring your own AI',
+    'Single-Sign-On (SSO)',
+    'Dedicated Account Manager',
+    '1-1 Training and Onboarding',
     'Chatbot Design Assistance',
-    'Onboarding and Training',
+    "Custom contracting / SLAs",
+    'Priority Support',
     'Smart Assignment',
     'IP Filtering',
     'Email Templates Customisation',
     'Activities Log',
     'Ban Visitors',
-    'Connector with 3rd party AI',
     'Automations Log',
     'SMTP Settings',
-    'Support to host Tiledesk on your Infrastructure',
-    'Premium Customer Support',
+    'Email Ticketing',
 ]
   
 // Custom Plan

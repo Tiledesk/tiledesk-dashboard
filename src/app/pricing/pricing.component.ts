@@ -22,9 +22,9 @@ enum PLAN_DESC {
   Growth = 'Improve customer experience and qualify leads better with premium features',
   Scale = 'Go omni-channel & find your customers where they already are: WhatsApp, Facebook, etc.',
   Plus = 'Exploit all the premium features and receive support to design chatbots tailor-made',
-  Basic = 'Automate simple website conversations as an individual',
-  Premium = 'Expand automation across channels for individuals and small teams',
-  Custom = 'Exploit all the premium features and receive support to design chatbots tailor-made'
+  Basic = 'Personalize website chats easily as a solo user', //'Automate simple website conversations as an individual',
+  Premium = "Scale up with multi-channel automation for small teams", // 'Expand automation across channels for individuals and small teams',
+  Custom = "Enterprise-level automation designed for your business", // 'Exploit all the premium features and receive support to design chatbots tailor-made'
 }
 
 enum MONTHLY_PRICE {
