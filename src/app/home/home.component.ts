@@ -189,7 +189,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   userHasClickedDisplayWAWizard: boolean = false
   PROJECT_ATTRIBUTES: any
   showskeleton: boolean = true;
-  showsNewsFeedSkeleton : boolean = true;
+  showsNewsFeedSkeleton: boolean = true;
   custom_company_home_logo: string;
   companyLogoNoText: string;
   displayNewsAndDocumentation: string;
@@ -325,7 +325,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           this.logger.log('[HOME] > OPERATING_HOURS_ACTIVE', this.OPERATING_HOURS_ACTIVE)
 
           this.findCurrentProjectAmongAll(this.projectId)
-          this.getProjectById(this.projectId);
+          // this.getProjectById(this.projectId);
           this.getProjectBots();
           this.init()
         }
@@ -339,7 +339,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   getProjectById(projectId) {
     this.projectService.getProjectById(projectId).subscribe((project: any) => {
-      this.logger.log('[HOME] - GET PROJECT BY ID - PROJECT: ', project);
+      console.log('[HOME] - GET PROJECT BY ID - PROJECT: ', project);
 
       if (project && project.attributes && project.attributes.dashlets) {
         this.PROJECT_ATTRIBUTES = project.attributes;
@@ -360,7 +360,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.logger.error('[HOME] - GET PROJECT BY ID - ERROR ', error);
     }, () => {
       this.logger.log('[HOME] - GET PROJECT BY ID * COMPLETE * ');
-    
+
     });
   }
 
@@ -374,7 +374,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.showskeleton = false;
       this.delayNewsFeedSkeleton()
 
-      
+
     }, () => {
       this.logger.log('[HOME] - GET FAQKB * COMPLETE *');
       this.showskeleton = false;
@@ -384,10 +384,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   delayNewsFeedSkeleton() {
-     setTimeout(() => {
-        this.showsNewsFeedSkeleton = false;
-        // console.log('[HOME] - skeleton showskeleton ', this.showskeleton );
-      }, 500);
+    setTimeout(() => {
+      this.showsNewsFeedSkeleton = false;
+      // console.log('[HOME] - skeleton showskeleton ', this.showskeleton );
+    }, 500);
   }
 
 
@@ -405,7 +405,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   getDashlet(project_attributes) {
-    this.logger.log('[HOME] - (onInit) - DASHLETS PREFERENCES project_attributes ', project_attributes);
+    // console.log('[HOME] - (onInit) - DASHLETS PREFERENCES project_attributes ', project_attributes);
     if (project_attributes && project_attributes.dashlets) {
       this.logger.log('[HOME] - (onInit) - DASHLETS PREFERENCES ', project_attributes.dashlets);
       const dashlets = project_attributes.dashlets;
@@ -461,7 +461,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.projectService.getProjects().subscribe((projects: any) => {
       // this.projectService.getProjectById(projectId).subscribe((project: any) => {
 
-      // this.logger.log('[HOME] getProjects By id project', project);
+      // console.log('[HOME] getProjects findCurrentProjectAmongAll projects ', projects);
       if (projects) {
         this.projects = projects;
 
@@ -474,9 +474,23 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       }
 
       this.current_prjct = projects.find(prj => prj.id_project.id === projectId);
-      this.logger.log('[HOME] - CURRENT PROJECT - current_prjct (findCurrentProjectAmongAll)', this.current_prjct);
+      console.log('[HOME] - CURRENT PROJECT - current_prjct (findCurrentProjectAmongAll)', this.current_prjct);
       if (this.current_prjct) {
         this.logger.log('[HOME] - CURRENT PROJECT - current_prjct  > attributes', this.current_prjct.id_project.attributes);
+        const project = this.current_prjct.id_project
+        if (project && project.attributes && project.attributes.dashlets) {
+          this.PROJECT_ATTRIBUTES = project.attributes;
+          this.getDashlet(this.PROJECT_ATTRIBUTES)
+        }
+
+        if (project && project.attributes && project.attributes.userPreferences) {
+          this.PROJECT_ATTRIBUTES = project.attributes;
+          this.getOnbordingPreferences(this.PROJECT_ATTRIBUTES)
+
+        } else {
+          this.logger.log('[HOME] USECASE  PROJECT_ATTRIBUTES UNDEFINED', this.PROJECT_ATTRIBUTES)
+          this.setDefaultPreferences()
+        }
       }
 
 
@@ -826,7 +840,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   async getOnbordingPreferences(project_attributes) {
 
-    this.logger.log('[HOME] - getOnbordingPreferences PREFERENCES  project_attributes', project_attributes);
+    // console.log('[HOME] - getOnbordingPreferences PREFERENCES  project_attributes', project_attributes);
     // if (this.current_prjct &&
     //   this.current_prjct.id_project &&
     //   this.current_prjct.id_project.attributes &&
@@ -1413,7 +1427,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
               if (this.userHasUnistalledWa === false) {
                 this.logger.log("[HOME] getInstallations - userHasUnistalledWa 2 ", this.userHasUnistalledWa)
                 if (this.solution_channel_for_child === 'whatsapp_fb_messenger') {
-                 
+
                   this.installApp();
 
                 }
@@ -1468,7 +1482,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         (this.profile_name === 'free' && this.prjct_trial_expired === true))) {
 
       if (!this.appSumoProfile) {
-        
+
         // this.presentModalFeautureAvailableFromTier2Plan(this.featureAvailableFromBPlan)
         return false
       } else {

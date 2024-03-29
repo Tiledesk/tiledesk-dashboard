@@ -345,6 +345,8 @@ const routes: Routes = [
   },
   // { path: 'project/:projectid/app-edit/:appid', component: AppCreateComponent, canActivate: [AuthGuard] }, // now lazy
 
+  // Canned Responses
+  { path: 'project/:projectid/cannedresponses', component: CannedResponsesListComponent, canActivate: [AuthGuard, ProjectProfileGuard] },
 
    // Contacts
    {
@@ -533,7 +535,7 @@ const routes: Routes = [
   { path: 'project/:projectid/onboarding/:langcode/:langname', component: OnboardingComponent, canActivate: [AuthGuard] }, // wizard step 3
   { path: 'project/:projectid/install-widget/:langcode/:langname', component: InstallWidgetComponent, canActivate: [AuthGuard] },
 
-  { path: 'project/:projectid/cannedresponses', component: CannedResponsesListComponent, canActivate: [AuthGuard, ProjectProfileGuard] },
+
   { path: 'project/:projectid/cannedresponses-demo', component: CannedResponsesStaticComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/labels', component: TagsComponent, canActivate: [AuthGuard] },
 

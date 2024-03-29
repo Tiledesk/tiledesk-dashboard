@@ -151,7 +151,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
 
   getProjectById(projectId) {
     this.projectService.getProjectById(projectId).subscribe((project: any) => {
-      this.logger.log('[INTEGRATION-COMP] - GET PROJECT BY ID - PROJECT: ', project);
+      console.log('[INTEGRATION-COMP] - GET PROJECT BY ID - PROJECT: ', project);
 
       this.profile_name = project.profile.name;
       this.logger.log('[INTEGRATION-COMP] - GET PROJECT BY ID - PROJECT > profile_name : ', this.profile_name);

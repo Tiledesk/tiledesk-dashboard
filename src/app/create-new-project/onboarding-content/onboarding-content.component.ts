@@ -240,7 +240,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
   private getProjects() {
     this.showSpinner = true;
     this.projectService.getProjects().subscribe((projects: any) => {
-      // console.log('[ONBOARDING-CONTENT] projects ', projects) 
+     console.log('[ONBOARDING-CONTENT] projects ', projects) 
       this.isFirstProject = true;
       if (projects) {
         this.projects = projects;

@@ -149,7 +149,7 @@ export class ConfigureWidgetComponent extends WidgetSetUpBaseComponent implement
 
   getProjectById() {
     this.projectService.getProjectById(this.projectId).subscribe((project: any) => {
-      // console.log('WIDGET DESIGN - GET PROJECT BY ID - PROJECT OBJECT: ', project);
+      console.log('WIDGET DESIGN - GET PROJECT BY ID - PROJECT OBJECT: ', project);
       this.logger.log('[WIZARD - CONFIGURE-WIDGET] - PRJCT-WIDGET (onInit): ', project.widget);
 
       if (project.widget) {
