@@ -445,8 +445,8 @@ export const featuresPlanD = [
     'Canned Responses',
     'Webhooks',
     'Email Support',
-    'Team Inbox',
-    'Make integration',
+    'Shared Inbox',
+    'Connects with Make and more',
     '150 Contents for Knowledge Base', 
     '50,000 AI Tokens'
 ]
@@ -464,18 +464,31 @@ export const additionalFeaturesPlanD = [
 
 
 // Premium plan 
+// export const featuresPlanE = [
+//     'Widget Unbranding',
+//     'WhatsApp Business',
+//     'Facebook Messenger',
+//     'Help center',
+//     'Unlimited Departments',
+//     'Unlimited Groups',
+//     'Qapla\' integration',
+//     'Hubspot integration',
+//     'Data export',
+//     'Livechat Support',
+//     'Analytics',
+//     '300 Contents for Knowledge Base', 
+//     '250,000 AI Tokens'
+// ]
+
 export const featuresPlanE = [
     'Widget Unbranding',
-    'WhatsApp Business',
-    'Facebook Messenger',
+    'WhatsApp and Messenger ready',
     'Help center',
-    'Unlimited Departments',
-    'Unlimited Groups',
-    'Qapla\' integration',
-    'Hubspot integration',
+    'Departments and Groups',
+    'Connects with Hubspot and more',
     'Data export',
     'Livechat Support',
-    'Analytics',
+    'Chat Analytics',
     '300 Contents for Knowledge Base', 
     '250,000 AI Tokens'
 ]
@@ -494,41 +507,41 @@ export const additionalFeaturesPlanE = [
 
 
 // Custom Plan
-// export const featuresPlanF = [
-//     'Self Hosting or Private Cloud',
-//     'Bring your own AI',
-//     'Single-Sign-On (SSO)',
-//     'Dedicated Account Manager',
-//     '1-1 Training and Onboarding',
-//     'Chatbot Design Assistance',
-//     "Custom contracting / SLAs",
-//     'Priority Support',
-//     'Smart Assignment',
-//     'IP Filtering',
-//     'Email Templates Customisation',
-//     'Activities Log',
-//     'Ban Visitors',
-//     'Automations Log',
-//     'SMTP Settings',
-//     'Email Ticketing',
-// ]
-// Custom Plan
 export const featuresPlanF = [
-    'Dedicated Customer Success Manager',
-    'Onboarding and Training',
-    'IP Filtering',
-    'Activities Log',
-    'Connector with 3rd party AI',
-    'SMTP Settings',
-    'Premium Customer Support',
+    'Self Hosting or Private Cloud',
+    'Bring your own AI',
+    'Single-Sign-On (SSO)',
+    'Dedicated Account Manager',
+    '1-1 Training and Onboarding',
     'Chatbot Design Assistance',
+    "Custom contracting / SLAs",
+    'Priority Support',
     'Smart Assignment',
+    'IP Filtering',
     'Email Templates Customisation',
+    'Activities Log',
     'Ban Visitors',
     'Automations Log',
+    'SMTP Settings',
     'Email Ticketing',
-    'Support to host Tiledesk on your Infrastructure'
 ]
+// Custom Plan
+// export const featuresPlanF = [
+//     'Dedicated Customer Success Manager',
+//     'Onboarding and Training',
+//     'IP Filtering',
+//     'Activities Log',
+//     'Connector with 3rd party AI',
+//     'SMTP Settings',
+//     'Premium Customer Support',
+//     'Chatbot Design Assistance',
+//     'Smart Assignment',
+//     'Email Templates Customisation',
+//     'Ban Visitors',
+//     'Automations Log',
+//     'Email Ticketing',
+//     'Support to host Tiledesk on your Infrastructure'
+// ]
 
   
 // Custom Plan
