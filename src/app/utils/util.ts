@@ -447,7 +447,7 @@ export const featuresPlanD = [
     'Email Support',
     'Team Inbox',
     'Make integration',
-    '50 Contents for Knowledge Base', 
+    '150 Contents for Knowledge Base', 
     '50,000 AI Tokens'
 ]
 // Basic plan
@@ -472,6 +472,7 @@ export const featuresPlanE = [
     'Unlimited Departments',
     'Unlimited Groups',
     'Qapla\' integration',
+    'Hubspot integration',
     'Data export',
     'Livechat Support',
     'Analytics',
@@ -493,24 +494,42 @@ export const additionalFeaturesPlanE = [
 
 
 // Custom Plan
+// export const featuresPlanF = [
+//     'Self Hosting or Private Cloud',
+//     'Bring your own AI',
+//     'Single-Sign-On (SSO)',
+//     'Dedicated Account Manager',
+//     '1-1 Training and Onboarding',
+//     'Chatbot Design Assistance',
+//     "Custom contracting / SLAs",
+//     'Priority Support',
+//     'Smart Assignment',
+//     'IP Filtering',
+//     'Email Templates Customisation',
+//     'Activities Log',
+//     'Ban Visitors',
+//     'Automations Log',
+//     'SMTP Settings',
+//     'Email Ticketing',
+// ]
+// Custom Plan
 export const featuresPlanF = [
-    'Self Hosting or Private Cloud',
-    'Bring your own AI',
-    'Single-Sign-On (SSO)',
-    'Dedicated Account Manager',
-    '1-1 Training and Onboarding',
-    'Chatbot Design Assistance',
-    "Custom contracting / SLAs",
-    'Priority Support',
-    'Smart Assignment',
+    'Dedicated Customer Success Manager',
+    'Onboarding and Training',
     'IP Filtering',
-    'Email Templates Customisation',
     'Activities Log',
+    'Connector with 3rd party AI',
+    'SMTP Settings',
+    'Premium Customer Support',
+    'Chatbot Design Assistance',
+    'Smart Assignment',
+    'Email Templates Customisation',
     'Ban Visitors',
     'Automations Log',
-    'SMTP Settings',
     'Email Ticketing',
+    'Support to host Tiledesk on your Infrastructure'
 ]
+
   
 // Custom Plan
 export const highlightedFeaturesPlanF = [
