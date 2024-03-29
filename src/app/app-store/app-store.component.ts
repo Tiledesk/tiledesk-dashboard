@@ -258,7 +258,7 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
   getApps() {
     this.appStoreService.getApps().subscribe((_apps: any) => {
       this.apps = _apps.apps;
-      console.log('APP-STORE - getApps APPS ', this.apps);
+      this.logger.log('APP-STORE - getApps APPS ', this.apps);
 
 
 

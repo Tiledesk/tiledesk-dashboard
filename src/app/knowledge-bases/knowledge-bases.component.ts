@@ -134,7 +134,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     this.getFaqKbByProjectId();
     this.getOSCODE();
     this.getProjectPlan();
-    console.log('[KNOWLEDGE-BASES-COMP] - kbLimit', this.kbLimit);
+    // console.log('[KNOWLEDGE-BASES-COMP] - kbLimit', this.kbLimit);
   }
 
 
@@ -500,7 +500,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       this.logger.log("[KNOWLEDGE BASES COMP] get kbList: ", resp);
       //this.kbs = resp;
       this.kbsListCount = resp.count;
-      console.log('[KNOWLEDGE BASES COMP] kbsListCount ', this.kbsListCount )
+      this.logger.log('[KNOWLEDGE BASES COMP] kbsListCount ', this.kbsListCount )
       resp.kbs.forEach(kb => {
         // this.kbsList.push(kb);
         const index = this.kbsList.findIndex(objA => objA._id === kb._id);
@@ -552,7 +552,6 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     let error = this.msgErrorAddUpdateKb;
     this.kbService.addSitemap(body).subscribe((resp: any) => {
       this.logger.log("onSendSitemap:", resp);
-      console.log("onSendSitemap:", resp);
       if (resp.errors && resp.errors[0]) {
         swal({
           title: this.warningTitle,
