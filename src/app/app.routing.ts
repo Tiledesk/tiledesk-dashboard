@@ -21,7 +21,7 @@ import { VisitorsComponent } from './visitors/visitors.component';
 import { EventsComponent } from './events/events.component';
 
 
-/*** WEBSOCKET ***/ 
+/*** WEBSOCKET ***/
 // import { WsRequestsListComponent } from './ws_requests/ws-requests-list/ws-requests-list.component'; // now lazy
 // import { WsRequestsMsgsComponent } from './ws_requests/ws-requests-msgs/ws-requests-msgs.component';  // now lazy
 // import { WsRequestsUnservedForPanelComponent } from './ws_requests/for-panel/ws-requests-unserved-for-panel/ws-requests-unserved-for-panel.component'; // now lazy
@@ -59,7 +59,7 @@ import { UnauthorizedForProjectComponent } from './auth/unauthorized-for-project
 import { HandleInvitationComponent } from './auth/handle-invitation/handle-invitation.component';
 import { AutologinComponent } from './auth/autologin/autologin.component';
 
-import { WidgetSetUp } from './widget_components/widget-set-up/widget-set-up.component';
+// import { WidgetSetUp } from './widget_components/widget-set-up/widget-set-up.component'; // now lazy
 import { WidgetMultilanguageComponent } from './widget_components/widget-multilanguage/widget-multilanguage.component';
 
 import { UserEditAddComponent } from './user-edit-add/user-edit-add.component';
@@ -109,7 +109,7 @@ import { OnboardingContentComponent } from './create-new-project/onboarding-cont
 import { InstallWidgetComponent } from './create-project-wizard/install-widget/install-widget.component';
 import { ConfigureWidgetComponent } from './create-project-wizard/configure-widget/configure-widget.component';
 import { LoadingPageComponent } from './loading-page/loading-page.component';
-import { CannedResponsesListComponent } from './canned-responses/canned-responses-list.component';
+// import { CannedResponsesListComponent } from './canned-responses/canned-responses-list.component'; // now Lazy
 import { TagsComponent } from './tags/tags.component';
 
 
@@ -323,14 +323,14 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   // { path: 'project/:projectid/app-store-install/:appid/:reason', component: AppStoreInstallComponent, canActivate: [AuthGuard] }, // now lazy
- 
+
   {
     path: 'project/:projectid/app-store-install/:appid/:reason/:calledby',
     loadChildren: () => import('app/app-store/app-store-install/app-store-install.module').then(m => m.AppStoreInstallModule),
     canActivate: [AuthGuard]
   },
   // { path: 'project/:projectid/app-store-install/:appid/:reason/:calledby', component: AppStoreInstallComponent, canActivate: [AuthGuard] }, // now lazy
-  
+
   {
     path: 'project/:projectid/app-create',
     loadChildren: () => import('app/app-store/app-create/app-create.module').then(m => m.AppCreateModule),
@@ -345,31 +345,30 @@ const routes: Routes = [
   },
   // { path: 'project/:projectid/app-edit/:appid', component: AppCreateComponent, canActivate: [AuthGuard] }, // now lazy
 
-  // Canned Responses
-  { path: 'project/:projectid/cannedresponses', component: CannedResponsesListComponent, canActivate: [AuthGuard, ProjectProfileGuard] },
 
-   // Contacts
-   {
-     path: 'project/:projectid/contacts',
-     loadChildren: () => import('app/contacts/contacts.module').then(m => m.ContactsModule),
-     canActivate: [AuthGuard, ProjectProfileGuard],
-   },
+
+  // Contacts
+  {
+    path: 'project/:projectid/contacts',
+    loadChildren: () => import('app/contacts/contacts.module').then(m => m.ContactsModule),
+    canActivate: [AuthGuard, ProjectProfileGuard],
+  },
   //  { path: 'project/:projectid/contacts', component: ContactsComponent, canActivate: [AuthGuard, ProjectProfileGuard] },  // now lazy
- 
+
   {
     path: 'project/:projectid/contact/:requesterid',
     loadChildren: () => import('app/contact-details/contact-details.module').then(m => m.ContactDetailsModule),
     canActivate: [AuthGuard],
   },
   // { path: 'project/:projectid/contact/:requesterid', component: ContactDetailsComponent, canActivate: [AuthGuard] }, // now lazy
-  
+
   {
     path: 'project/:projectid/contact/edit/:requesterid',
     loadChildren: () => import('app/contact-edit/contact-edit.module').then(m => m.ContactEditModule),
     canActivate: [AuthGuard],
   },
   // { path: 'project/:projectid/contact/edit/:requesterid', component: ContactEditComponent, canActivate: [AuthGuard] }, // now lazy
-  
+
   {
     path: 'project/:projectid/contact/_edit/:requesterid',
     loadChildren: () => import('app/contact-edit/contact-edit.module').then(m => m.ContactEditModule),
@@ -405,14 +404,14 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   // { path: 'project/:projectid/wsrequest/:requestid/:calledby/:hassearchedby/messages', component: WsRequestsMsgsComponent, canActivate: [AuthGuard] }, // now lazy
-  
+
   {
     path: 'project/:projectid/wsrequest/:requestid/:calledby/:hassearchedby/:isopenadvancedsearch/messages',
     loadChildren: () => import('app/ws_requests/ws-requests-msgs/ws-requests-msgs.module').then(m => m.WsRequestsMsgsModule),
     canActivate: [AuthGuard]
   },
   // { path: 'project/:projectid/wsrequest/:requestid/:calledby/:hassearchedby/:isopenadvancedsearch/messages', component: WsRequestsMsgsComponent, canActivate: [AuthGuard] },  // now lazy
-  
+
   {
     path: 'project/:projectid/wsrequest/:requestid/:calledby/:hassearchedby/:isopenadvancedsearch/:deptid/messages',
     loadChildren: () => import('app/ws_requests/ws-requests-msgs/ws-requests-msgs.module').then(m => m.WsRequestsMsgsModule),
@@ -450,14 +449,14 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   // { path: 'project/:projectid/history/:hassearcedby', component: HistoryAndNortConvsComponent, canActivate: [AuthGuard] }, // now lazy
-  
+
   {
     path: 'project/:projectid/history/:hassearcedby/:isopenadvancedsearch',
     loadChildren: () => import('app/ws_requests/history-and-nort-convs/history-and-nort-convs.module').then(m => m.HistoryAndNortConvsModule),
     canActivate: [AuthGuard]
   },
   // { path: 'project/:projectid/history/:hassearcedby/:isopenadvancedsearch', component: HistoryAndNortConvsComponent, canActivate: [AuthGuard] }, // now lazy
-  
+
   {
     path: 'project/:projectid/history/:hassearcedby/:isopenadvancedsearch/:deptid',
     loadChildren: () => import('app/ws_requests/history-and-nort-convs/history-and-nort-convs.module').then(m => m.HistoryAndNortConvsModule),
@@ -471,7 +470,7 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   // { path: 'project/:projectid/all-conversations/:hassearcedby', component: HistoryAndNortConvsComponent, canActivate: [AuthGuard] }, // now lazy
-  
+
   {
     path: 'project/:projectid/all-conversations/:hassearcedby/:isopenadvancedsearch',
     loadChildren: () => import('app/ws_requests/history-and-nort-convs/history-and-nort-convs.module').then(m => m.HistoryAndNortConvsModule),
@@ -495,7 +494,36 @@ const routes: Routes = [
   },
   // { path: 'project/:projectid/unserved-request-for-panel', component: WsRequestsUnservedForPanelComponent, canActivate: [AuthGuard] }, // now lazy
 
-   { path: 'project/:projectid/contacts-demo', component: ContactsStaticComponent, canActivate: [AuthGuard] },
+  // ---------------------------------
+  // Components with setting sidebar
+  // ---------------------------------
+
+
+  // Canned Responses
+  {
+    path: 'project/:projectid/cannedresponses',
+    loadChildren: () => import('app/canned-responses/canned-responses-list.module').then(m => m.CannedResponsesListModule),
+    canActivate: [AuthGuard, ProjectProfileGuard],
+  },
+  // { path: 'project/:projectid/cannedresponses', component: CannedResponsesListComponent, canActivate: [AuthGuard, ProjectProfileGuard] },
+
+  {
+    path: 'project/:projectid/widget-set-up',
+    loadChildren: () => import('app/widget_components/widget-set-up/widget-set-up.module').then(m => m.WidgetSetUpModule),
+    canActivate: [AuthGuard],
+  },
+  // { path: 'project/:projectid/widget-set-up', component: WidgetSetUp, canActivate: [AuthGuard] },
+  
+
+
+  { path: 'project/:projectid/widget/translations', component: WidgetMultilanguageComponent, canActivate: [AuthGuard] }, // old
+
+  { path: 'project/:projectid/installation', component: WidgetInstallationComponent, canActivate: [AuthGuard] },
+
+
+
+
+  { path: 'project/:projectid/contacts-demo', component: ContactsStaticComponent, canActivate: [AuthGuard] },
 
 
   { path: 'project/:projectid/template-details/:templateid', component: CommunityTemplateDtlsComponent },
@@ -576,12 +604,12 @@ const routes: Routes = [
   /**
    * if change wsrequest search for all occurrence - 
    * remember that in the navbar component wsrequest is used for the link from the in app-notification to the request's messages */
- 
+
   { path: 'project/:projectid/wsrequests-demo', component: WsrequestsStaticComponent, canActivate: [AuthGuard] },
 
-  
 
-  
+
+
 
   { path: 'chat', component: ChatComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/chat', component: ChatComponent, canActivate: [AuthGuard] },
@@ -690,9 +718,9 @@ const routes: Routes = [
 
 
 
-  
 
-  
+
+
 
   // is the dummy component used in ws-requests-msgs: when the user is in the request' details page and 
   // click an in-app notification (of a request unserved or assigned to him) the navigation is redirect to the loading component 
@@ -712,9 +740,7 @@ const routes: Routes = [
   // { path: 'project/:projectid/widget/greetings', component: WidgetSetUp, canActivate: [AuthGuard] }, // old
   // { path: 'project/:projectid/widget/callout', component: WidgetSetUp, canActivate: [AuthGuard] }, // old
   // { path: 'project/:projectid/widget/appearance', component: WidgetSetUp, canActivate: [AuthGuard] }, // old
-  { path: 'project/:projectid/widget/translations', component: WidgetMultilanguageComponent, canActivate: [AuthGuard] }, // old
-  { path: 'project/:projectid/widget-set-up', component: WidgetSetUp, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/installation', component: WidgetInstallationComponent, canActivate: [AuthGuard] },
+
 
 
   // CHANGE PSWRD if project is defined (use case: THE USER SELECTED A PROJECT)
@@ -759,7 +785,7 @@ const routes: Routes = [
   { path: 'project/:projectid/events/:requesterid', component: EventsComponent, canActivate: [AuthGuard] },
 
 
- 
+
 
 
 

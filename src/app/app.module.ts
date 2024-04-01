@@ -111,13 +111,10 @@ import { FilterArrayPipe } from './filterarray.pipe';
 // import { MarkedPipe } from './marked.pipe'; // moved in SharedModule
 
 import { HoursComponent } from './hours/hours.component';
-
-
-
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ResetPswComponent } from './reset-psw/reset-psw.component';
 import { ResetPswService } from './services/reset-psw.service';
-import { WidgetSetUp } from './widget_components/widget-set-up/widget-set-up.component';
+
 import { UploadImageService } from './services/upload-image.service';
 import { UploadImageNativeService } from './services/upload-image-native.service';
 
@@ -182,7 +179,7 @@ import { WsMsgsService } from './services/websocket/ws-msgs.service';
 import { WsSharedComponent } from './ws_requests/ws-shared/ws-shared.component';
 // import { WsTrainBotComponent } from './ws_requests/ws-requests-msgs/ws-train-bot/ws-train-bot.component';  // now removed
 import { WebSocketJs } from './services/websocket/websocket-js';
-import { WidgetMultilanguageComponent } from './widget_components/widget-multilanguage/widget-multilanguage.component';
+import { WidgetMultilanguageComponent } from './widget_components/widget-multilanguage/widget-multilanguage.component'; 
 import { BaseTranslationComponent } from './widget_components/widget-multilanguage/base-translation/base-translation.component';
 import { WidgetSharedComponent } from './widget_components/widget-shared/widget-shared.component';
 import { WidgetSetUpBaseComponent } from './widget_components/widget-set-up/widget-set-up-base/widget-set-up-base.component';
@@ -191,8 +188,8 @@ import { WidgetSetUpBaseComponent } from './widget_components/widget-set-up/widg
 import { CloseRequestModalComponent } from './ws_requests/modals/close-request-modal/close-request-modal.component';
 import { LoadingPageComponent } from './loading-page/loading-page.component';
 import { BotsBaseComponent } from './bots/bots-base/bots-base.component';
-import { CannedResponsesListComponent } from './canned-responses/canned-responses-list.component';
-import { CannedResponsesAddEditComponent } from './canned-responses/canned-responses-add-edit/canned-responses-add-edit.component';
+// import { CannedResponsesListComponent } from './canned-responses/canned-responses-list.component'; // now lazy
+// import { CannedResponsesAddEditComponent } from './canned-responses/canned-responses-add-edit/canned-responses-add-edit.component'; // now lazy
 import { CannedResponsesService } from './services/canned-responses.service';
 import { TagsService } from './services/tags.service';
 import { TagsComponent } from './tags/tags.component';
@@ -205,7 +202,7 @@ import { AccountSettingsComponent } from './user-profile/account-settings/accoun
 
 
 // import { WsRequestsUnservedForPanelComponent } from './ws_requests/for-panel/ws-requests-unserved-for-panel/ws-requests-unserved-for-panel.component'; // now lazy
-import { WsRequestDetailForPanelComponent } from './ws_requests/for-panel//ws-request-detail-for-panel/ws-request-detail-for-panel.component'; // now lazy
+// import { WsRequestDetailForPanelComponent } from './ws_requests/for-panel//ws-request-detail-for-panel/ws-request-detail-for-panel.component'; // now lazy
 import { AutologinComponent } from './auth/autologin/autologin.component';
 // APP
 // import { AppStoreComponent } from './app-store/app-store.component'; // now lazy
@@ -220,10 +217,12 @@ import { ScriptService } from './services/script/script.service';
 import { DocsUrlRowComponent } from './components/docs-url-row/docs-url-row.component';
 import { VisitorsComponent } from './visitors/visitors.component';
 import { EventsComponent } from './events/events.component';
-import { WidgetHomeComponent } from './widget-home-preview/widget-home.component';
-import { WidgetCalloutComponent } from './widget-callout/widget-callout.component';
-import { WidgetChatComponent } from './widget-chat/widget-chat.component';
 
+// import { WidgetSetUp } from './widget_components/widget-set-up/widget-set-up.component'; // now lazy
+// import { WidgetHomeComponent } from './widget-home-preview/widget-home.component'; // now lazy
+// import { WidgetCalloutComponent } from './widget-callout/widget-callout.component'; // now lazy
+// import { WidgetChatComponent } from './widget-chat/widget-chat.component'; // now lazy
+// import { WidgetPrechatFormComponent } from './widget-prechat-form/widget-prechat-form.component'; // now lazy
 
 
 import { WebhookComponent } from './webhook/webhook.component';
@@ -247,11 +246,7 @@ import { UnauthorizedForProjectComponent } from './auth/unauthorized-for-project
 // import { HtmlEntitiesEncodePipe } from './html-entities-encode.pipe';  // moved in SharedModule
 import { NotificationEmailComponent } from './project-edit-add/notification-email/notification-email.component';
 import { SmtpSettingsComponent } from './project-edit-add/smtp-settings/smtp-settings.component';
-import { SettingsSidebarComponent } from './components/settings-sidebar/settings-sidebar.component';
-
-
-import { WidgetPrechatFormComponent } from './widget-prechat-form/widget-prechat-form.component';
-
+// import { SettingsSidebarComponent } from './components/settings-sidebar/settings-sidebar.component';
 
 import { OnlynumberDirective } from './_directives/onlynumber.directive';
 import { NativeBotSidebarComponent } from './bots/native-bot-sidebar/native-bot-sidebar.component';
@@ -278,7 +273,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule, MAT_DATE_LOCALE, DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
-import { ColorPickerModule } from 'ngx-color-picker';
+// import { ColorPickerModule } from 'ngx-color-picker';
 import { NgxMatTimepickerModule } from 'ngx-mat-timepicker';
 
 
@@ -301,13 +296,6 @@ import { CreditCardDirectivesModule } from 'angular-cc-library';
 import { NgApexchartsModule } from "ng-apexcharts";
 import { DragDropModule } from '@angular/cdk/drag-drop';
 
-// Removed libraries
-// import { ColorPickerModule } from 'ngx-color-picker'; -- ColorPickerModule v12.0.1 (was v6.7.0) -| widget-set-up.component.ts |--|
-// import { MyDatePickerModule } from 'mydatepicker'; -- replaced with MatDatepickerModule -| activities.componet.ts |--| history-and-nort-convs.component.ts |--| activities-static.component.ts
-// import { SlideshowModule } from 'ng-simple-slideshow'; --  replaced with npm i ng-image-slider -| analytics-static.component |--| departments-static |--|  groups-static
-
-// import { AmazingTimePickerModule } from 'amazing-time-picker'; -- ngx-mat-timepicker -| hours.component.ts |--| // see https://stackblitz.com/edit/ngx-mat-timepicker?file=src%2Fapp%2Fapp.component.ts
-// import { MomentModule } from 'angular2-moment';
 
 // Custom component widget installation //
 import { CodeInstallationComponent } from './components/widget-installations/code-installation/code-installation.component';
@@ -410,6 +398,7 @@ import { UserModalComponent } from './users/user-modal/user-modal.component';
 import { MessagesStatsModalComponent } from './components/modals/messages-stats-modal/messages-stats-modal.component';
 import { WsChatbotService } from './services/websocket/ws-chatbot.service';
 import { AnalyticsService } from './services/analytics.service';
+
 
 
 
@@ -523,7 +512,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     ChangePasswordComponent,
     HoursComponent,
     ResetPswComponent,
-    WidgetSetUp,
+   // WidgetSetUp, // now lazy
     // HistoryAndNortConvsComponent, // now lazy
     // ContactDetailsComponent, // now lazy
     // ContactEditComponent, // now lazy
@@ -559,7 +548,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     // WsRequestsMsgsComponent, // now lazy
     WsSharedComponent,
     // WsTrainBotComponent, // now removed
-    WidgetMultilanguageComponent,
+    WidgetMultilanguageComponent, 
     BaseTranslationComponent,
     WidgetSharedComponent,
     WidgetSetUpBaseComponent,
@@ -569,8 +558,8 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     LoadingPageComponent,
     BotTypeSelectComponent,
     BotsBaseComponent,
-    CannedResponsesListComponent,
-    CannedResponsesAddEditComponent,
+    // CannedResponsesListComponent, // now lazy
+    // CannedResponsesAddEditComponent, // now lazy
     TagsComponent,
     TagsDeleteComponent,
     TagsEditComponent,
@@ -587,10 +576,10 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     DocsUrlRowComponent,
     VisitorsComponent,
     EventsComponent,
-    WidgetHomeComponent,
-    WidgetCalloutComponent,
+    // WidgetHomeComponent, // now lazy
+    // WidgetCalloutComponent, // now lazy
     ConfigureWidgetComponent,
-    WidgetChatComponent,
+    // WidgetChatComponent, // now lazy
     WebhookComponent,
     WebhookAddEditComponent,
     // MapRequestComponent, // now lazy
@@ -607,8 +596,8 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     UnauthorizedForProjectComponent,
     NotificationEmailComponent,
     SmtpSettingsComponent,
-    SettingsSidebarComponent,
-    WidgetPrechatFormComponent,
+    // SettingsSidebarComponent,
+    // WidgetPrechatFormComponent, // now lazy
     NativeBotSidebarComponent,
     NativeBotComponent,
     NativeBotSelectTypeComponent,
@@ -727,7 +716,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     NgImageSliderModule,
     MomentModule,
     NgxMatTimepickerModule,
-    ColorPickerModule,
+    // ColorPickerModule, // moved in WidgetSetUpModule
     MatTooltipModule,
     MatDatepickerModule,
     MatNativeDateModule,
@@ -766,7 +755,6 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     // CreditCardDirectivesModule,
     // MomentModule,
     // AmazingTimePickerModule,
-    // ColorPickerModule,
     // MyDatePickerModule,
     // SlideshowModule,
     NgSelectModule,
