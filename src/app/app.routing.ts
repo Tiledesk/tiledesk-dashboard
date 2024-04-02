@@ -26,7 +26,7 @@ import { EventsComponent } from './events/events.component';
 // import { WsRequestsMsgsComponent } from './ws_requests/ws-requests-msgs/ws-requests-msgs.component';  // now lazy
 // import { WsRequestsUnservedForPanelComponent } from './ws_requests/for-panel/ws-requests-unserved-for-panel/ws-requests-unserved-for-panel.component'; // now lazy
 
-import { DepartmentsComponent } from './departments/departments.component';
+// import { DepartmentsComponent } from './departments/departments.component'; // now lazy
 import { DepartmentEditAddComponent } from './department-edit-add/department-edit-add.component';
 
 // import { ProjectsComponent } from './projects/projects.component'; // now lazy
@@ -514,7 +514,7 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   // { path: 'project/:projectid/widget-set-up', component: WidgetSetUp, canActivate: [AuthGuard] },
-  
+
 
   // Widget installation
   {
@@ -524,10 +524,24 @@ const routes: Routes = [
   },
   // { path: 'project/:projectid/installation', component: WidgetInstallationComponent, canActivate: [AuthGuard] },
 
+  // Departments
+  {
+    path: 'project/:projectid/departments',
+    loadChildren: () => import('app/departments/departments.module').then(m => m.DepartmentsModule),
+    canActivate: [AuthGuard],
+  },
+  // { path: 'project/:projectid/departments', component: DepartmentsComponent, canActivate: [AuthGuard] }, // now lazy
+
+
+  { path: 'project/:projectid/departments-demo', component: DepartmentsStaticComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/department/create', component: DepartmentEditAddComponent, canActivate: [AuthGuard], canDeactivate: [PendingChangesGuard] },
+
+  { path: 'project/:projectid/department/edit/:deptid', component: DepartmentEditAddComponent, canActivate: [AuthGuard], canDeactivate: [PendingChangesGuard] },
+
 
   { path: 'project/:projectid/widget/translations', component: WidgetMultilanguageComponent, canActivate: [AuthGuard] }, // old
 
- 
+
 
 
 
@@ -712,12 +726,7 @@ const routes: Routes = [
 
 
   // , ProjectProfileGuard
-  { path: 'project/:projectid/departments', component: DepartmentsComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/departments-demo', component: DepartmentsStaticComponent, canActivate: [AuthGuard] },
-  // 
-  { path: 'project/:projectid/department/create', component: DepartmentEditAddComponent, canActivate: [AuthGuard], canDeactivate: [PendingChangesGuard] },
 
-  { path: 'project/:projectid/department/edit/:deptid', component: DepartmentEditAddComponent, canActivate: [AuthGuard], canDeactivate: [PendingChangesGuard] },
 
 
   // new routing page is the edit department

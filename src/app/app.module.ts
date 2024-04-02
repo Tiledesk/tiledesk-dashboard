@@ -53,7 +53,7 @@ import { ContactsService } from './services/contacts.service';
 // import { ContactDetailsComponent } from './contact-details/contact-details.component'; // now lazy
 
 import { DepartmentService } from './services/department.service';
-import { DepartmentsComponent } from './departments/departments.component';
+// import { DepartmentsComponent } from './departments/departments.component'; // now lazy
 
 import { FaqService } from './services/faq.service';
 import { UrlService } from './services/shared/url.service';
@@ -485,7 +485,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     // HomeComponent, // now lazy
     // ContactsComponent, // now lazy
     ChatComponent,
-    DepartmentsComponent,
+    // DepartmentsComponent,  // now lazy
     FaqComponent,
     // ProjectsComponent, // now lazy
     UsersComponent,
