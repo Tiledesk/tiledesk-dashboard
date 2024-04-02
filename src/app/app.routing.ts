@@ -27,7 +27,7 @@ import { EventsComponent } from './events/events.component';
 // import { WsRequestsUnservedForPanelComponent } from './ws_requests/for-panel/ws-requests-unserved-for-panel/ws-requests-unserved-for-panel.component'; // now lazy
 
 // import { DepartmentsComponent } from './departments/departments.component'; // now lazy
-import { DepartmentEditAddComponent } from './department-edit-add/department-edit-add.component';
+// import { DepartmentEditAddComponent } from './department-edit-add/department-edit-add.component'; // now lazy
 
 // import { ProjectsComponent } from './projects/projects.component'; // now lazy
 // import { ProjectsForPanelComponent } from './projects/for-panel/projects-for-panel/projects-for-panel.component'; // removed
@@ -532,12 +532,36 @@ const routes: Routes = [
   },
   // { path: 'project/:projectid/departments', component: DepartmentsComponent, canActivate: [AuthGuard] }, // now lazy
 
+  // Department Create
+  {
+    path: 'project/:projectid/department/create',
+    loadChildren: () => import('app/department-edit-add/department-edit-add.module').then(m => m.DepartmentEditAddModule),
+    canActivate: [AuthGuard]
+    // ,
+    // canDeactivate: [PendingChangesGuard]
+  },
+  // { path: 'project/:projectid/department/create', component: DepartmentEditAddComponent, canActivate: [AuthGuard], canDeactivate: [PendingChangesGuard] },
+
+  // Department Edit
+  {
+    path: 'project/:projectid/department/edit/:deptid',
+    loadChildren: () => import('app/department-edit-add/department-edit-add.module').then(m => m.DepartmentEditAddModule),
+    canActivate: [AuthGuard]
+    // ,
+    // canDeactivate: [PendingChangesGuard]
+  },
+  // { path: 'project/:projectid/department/edit/:deptid', component: DepartmentEditAddComponent, canActivate: [AuthGuard], canDeactivate: [PendingChangesGuard] },
+
+  // new routing page is the edit department
+  // {
+  //   path: 'project/:projectid/routing/:deptid',
+  //   loadChildren: () => import('app/departments/departments.module').then(m => m.DepartmentsModule),
+  //   canActivate: [AuthGuard],
+  //   canDeactivate: [PendingChangesGuard]
+  // },
+  // { path: 'project/:projectid/routing/:deptid', component: DepartmentEditAddComponent, canActivate: [AuthGuard] }, // new
 
   { path: 'project/:projectid/departments-demo', component: DepartmentsStaticComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/department/create', component: DepartmentEditAddComponent, canActivate: [AuthGuard], canDeactivate: [PendingChangesGuard] },
-
-  { path: 'project/:projectid/department/edit/:deptid', component: DepartmentEditAddComponent, canActivate: [AuthGuard], canDeactivate: [PendingChangesGuard] },
-
 
   { path: 'project/:projectid/widget/translations', component: WidgetMultilanguageComponent, canActivate: [AuthGuard] }, // old
 
@@ -729,8 +753,7 @@ const routes: Routes = [
 
 
 
-  // new routing page is the edit department
-  { path: 'project/:projectid/routing/:deptid', component: DepartmentEditAddComponent, canActivate: [AuthGuard] }, // new
+  
 
 
 

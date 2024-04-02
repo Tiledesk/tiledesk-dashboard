@@ -19,7 +19,7 @@ const routes: Routes = [
     CommonModule,
     SettingsSidebarModule,
     SharedModule,
-    TranslateModule,
+    TranslateModule
   ]
 })
 export class DepartmentsModule { }

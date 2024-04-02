@@ -80,7 +80,7 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
-import { DepartmentEditAddComponent } from './department-edit-add/department-edit-add.component';
+// import { DepartmentEditAddComponent } from './department-edit-add/department-edit-add.component'; // now lazy
 import { ProjectEditAddComponent } from './project-edit-add/project-edit-add.component';
 
 import { ProjectService } from './services/project.service';
@@ -233,8 +233,8 @@ import { WebhookService } from './services/webhook.service';
 
 import { NotificationSettingsComponent } from './user-profile/notification-settings/notification-settings.component';
 
-import { CreateGroupComponent } from './department-edit-add/create-group/create-group.component';
-import { CreateBotComponent } from './department-edit-add/create-bot/create-bot.component';
+// import { CreateGroupComponent } from './department-edit-add/create-group/create-group.component'; // now lazy
+// import { CreateBotComponent } from './department-edit-add/create-bot/create-bot.component'; // now lazy
 
 
 import { UnauthorizedForPricingComponent } from './auth/unauthorized-for-pricing/unauthorized-for-pricing.component';
@@ -492,7 +492,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     BotListComponent,
     BotCreateComponent,
     FaqEditAddComponent,
-    DepartmentEditAddComponent,
+    // DepartmentEditAddComponent, // now lazy
     ProjectEditAddComponent,
     // RequestsListHistoryComponent,
     // SigninComponent, // now lazy
@@ -586,8 +586,8 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     WebhookComponent,
     WebhookAddEditComponent,
     NotificationSettingsComponent,
-    CreateGroupComponent,
-    CreateBotComponent,
+    // CreateGroupComponent, // now lazy
+    // CreateBotComponent, // now lazy
     UnauthorizedForPricingComponent,
     // MarkedPipe, // moved in SharedModule
     // HtmlEntitiesEncodePipe, // moved in SharedModule
