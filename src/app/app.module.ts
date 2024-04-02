@@ -264,7 +264,7 @@ import { EmailTicketingComponent } from './email-ticketing/email-ticketing.compo
 import { CutomTooltipOptions } from './utils/util';
 // import { WsSidebarAppsComponent } from './ws_requests/ws-requests-msgs/ws-sidebar-apps/ws-sidebar-apps.component'; // now lazy
 import { ImageViewerComponent } from './ws_requests/ws-requests-msgs/image-viewer/image-viewer.component';
-import { WidgetInstallationComponent } from './widget-installation/widget-installation.component';
+// import { WidgetInstallationComponent } from './widget-installation/widget-installation.component'; // now lazy
 import { AutofocusDirective } from './_directives/autofocus.directive';
 
 import { TooltipModule, TooltipOptions } from 'ng2-tooltip-directive';
@@ -298,13 +298,13 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 
 
 // Custom component widget installation //
-import { CodeInstallationComponent } from './components/widget-installations/code-installation/code-installation.component';
-import { JsInstallationComponent } from './components/widget-installations/js-installation/js-installation.component';
-import { GoogleTagManagerInstallationComponent } from './components/widget-installations/google-tag-manager-installation/google-tag-manager-installation.component'
-import { ShopifyInstallationComponent } from './components/widget-installations/shopify-installation/shopify-installation.component';
-import { WordpressInstallationComponent } from './components/widget-installations/wordpress-installation/wordpress-installation.component';
-import { PrestashopInstallationComponent } from './components/widget-installations/prestashop-installation/prestashop-installation.component';
-import { JoomlaInstallationComponent } from './components/widget-installations/joomla-installation/joomla-installation.component';
+// import { CodeInstallationComponent } from './components/widget-installations/code-installation/code-installation.component'; // now lazy
+// import { JsInstallationComponent } from './components/widget-installations/js-installation/js-installation.component'; // now lazy
+// import { GoogleTagManagerInstallationComponent } from './components/widget-installations/google-tag-manager-installation/google-tag-manager-installation.component' // now lazy
+// import { ShopifyInstallationComponent } from './components/widget-installations/shopify-installation/shopify-installation.component'; // now lazy
+// import { WordpressInstallationComponent } from './components/widget-installations/wordpress-installation/wordpress-installation.component'; // now lazy
+// import { PrestashopInstallationComponent } from './components/widget-installations/prestashop-installation/prestashop-installation.component'; //no lazy
+// import { JoomlaInstallationComponent } from './components/widget-installations/joomla-installation/joomla-installation.component'; //no lazy
 import { SatPopoverModule } from '@ncstate/sat-popover';
 import { TilebotFormComponent } from './bots/tilebot/tilebot-form/tilebot-form.component';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
@@ -605,7 +605,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     // WsSidebarAppsComponent, // now lazy
     RasaBotComponent,
     ImageViewerComponent,
-    WidgetInstallationComponent,
+    // WidgetInstallationComponent,  // now lazy
     AutofocusDirective,
     TilebotSelectTypeComponent,
     TilebotSidebarComponent,
@@ -615,13 +615,13 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     ChatbotConfigurationComponent,
     HumanConfigurationComponent,
     ErrorResultComponent,
-    CodeInstallationComponent,
-    JsInstallationComponent,
-    GoogleTagManagerInstallationComponent,
-    ShopifyInstallationComponent,
-    WordpressInstallationComponent,
-    PrestashopInstallationComponent,
-    JoomlaInstallationComponent,
+    // CodeInstallationComponent, // now lazy
+    // JsInstallationComponent, // now lazy
+    // GoogleTagManagerInstallationComponent, // now lazy
+    // ShopifyInstallationComponent, // now lazy
+    // WordpressInstallationComponent, // now lazy
+    // PrestashopInstallationComponent, // now lazy
+    // JoomlaInstallationComponent, // now lazy
     TilebotFormComponent, 
     ModalDeleteComponent, 
     TilebotAddEditFormComponent, 

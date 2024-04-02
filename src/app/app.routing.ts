@@ -126,7 +126,7 @@ import { NativeBotComponent } from './bots/native-bot/native-bot.component';
 import { NativeBotSelectTypeComponent } from './bots/native-bot-select-type/native-bot-select-type.component';
 import { RasaBotComponent } from './bots/rasa-bot/rasa-bot.component';
 import { EmailTicketingComponent } from './email-ticketing/email-ticketing.component';
-import { WidgetInstallationComponent } from './widget-installation/widget-installation.component';
+// import { WidgetInstallationComponent } from './widget-installation/widget-installation.component'; // now lazy
 import { TilebotSelectTypeComponent } from './bots/tilebot-select-type/tilebot-select-type.component';
 import { TilebotComponent } from './bots/tilebot/tilebot.component';
 import { OnboardingComponent } from './create-project-wizard/onboarding/onboarding.component';
@@ -507,6 +507,7 @@ const routes: Routes = [
   },
   // { path: 'project/:projectid/cannedresponses', component: CannedResponsesListComponent, canActivate: [AuthGuard, ProjectProfileGuard] },
 
+  // Widget Set Up
   {
     path: 'project/:projectid/widget-set-up',
     loadChildren: () => import('app/widget_components/widget-set-up/widget-set-up.module').then(m => m.WidgetSetUpModule),
@@ -515,10 +516,18 @@ const routes: Routes = [
   // { path: 'project/:projectid/widget-set-up', component: WidgetSetUp, canActivate: [AuthGuard] },
   
 
+  // Widget installation
+  {
+    path: 'project/:projectid/installation',
+    loadChildren: () => import('app/widget-installation/widget-installation.module').then(m => m.WidgetInstallationModule),
+    canActivate: [AuthGuard],
+  },
+  // { path: 'project/:projectid/installation', component: WidgetInstallationComponent, canActivate: [AuthGuard] },
+
 
   { path: 'project/:projectid/widget/translations', component: WidgetMultilanguageComponent, canActivate: [AuthGuard] }, // old
 
-  { path: 'project/:projectid/installation', component: WidgetInstallationComponent, canActivate: [AuthGuard] },
+ 
 
 
 
