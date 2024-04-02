@@ -132,7 +132,7 @@
                 </cnp-templates>
             </div>
 
-                 <!-- CHATBOT WELCOME MESSAGE -->
+                 <!-- !! Not used -- CHATBOT WELCOME MESSAGE -->
                  <div *ngIf="nameStep === typeStep.WELCOME_MESSAGE" 
                  class="type-step box-welcome-msg"
                  [ngClass]="{'active': arrayOfSteps[activeTypeStepNumber]===typeStep.WELCOME_MESSAGE}">
@@ -144,8 +144,8 @@
                  </cnp-chatbot-welcome-message>
              </div>
 
-            <!-- WIDGET INSTALLATION -->
-            <div *ngIf="nameStep === typeStep.WIDGET_INSTALLATION" 
+            <!-- !! Not used WIDGET INSTALLATION -->
+            <!-- <div *ngIf="nameStep === typeStep.WIDGET_INSTALLATION" 
                 class="type-step fade-in-right"
                 [ngClass]="{'active': arrayOfSteps[activeTypeStepNumber]===typeStep.WIDGET_INSTALLATION}">
                 <cnp-widget-installation 
@@ -155,7 +155,7 @@
                     (nextPage)="goToSaveProjectAndCreateBot($event)"
                     (prevPage)="goToPrevStep()">
                 </cnp-widget-installation>
-            </div>
+            </div> -->
 
         </div>
 

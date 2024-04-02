@@ -339,7 +339,7 @@ import { CnpProjectNameComponent } from './create-new-project/cnp-project-name/c
 import { CnpQuestionSelectComponent } from './create-new-project/cnp-question-select/cnp-question-select.component';
 import { CnpQuestionButtonComponent } from './create-new-project/cnp-question-button/cnp-question-button.component';
 import { CnpChatbotWelcomeMessageComponent } from './create-new-project/cnp-chatbot-welcome-message/cnp-chatbot-welcome-message.component';
-import { CnpWidgetInstallationComponent } from './create-new-project/cnp-widget-installation/cnp-widget-installation.component';
+// import { CnpWidgetInstallationComponent } from './create-new-project/cnp-widget-installation/cnp-widget-installation.component'; // no more used
 import { CnpIsMobileComponent } from './create-new-project/cnp-is-mobile/cnp-is-mobile.component';
 import { LoadingSectionComponent } from './create-new-project/loading-section/loading-section.component';
 import { ActivateAppsumoProductComponent } from './create-project-wizard/activate-appsumo-product/activate-appsumo-product.component';
@@ -651,7 +651,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     CnpQuestionSelectComponent,
     CnpQuestionButtonComponent,
     CnpChatbotWelcomeMessageComponent,
-    CnpWidgetInstallationComponent,
+    // CnpWidgetInstallationComponent, // no more used
     LoadingSectionComponent,
     ActivateAppsumoProductComponent,
     ContactCustomPropertiesComponent,

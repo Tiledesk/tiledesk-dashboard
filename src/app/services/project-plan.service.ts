@@ -92,7 +92,7 @@ export class ProjectPlanService {
 
 
   getProjectIdFroUrlAndIfExistGetProjectByIdAndPublish(calledBy) {
-    console.log('[PROJECT-PLAN-SERV] - getProjectIdFroUrlAndIfExistGetProjectByIdAndPublish (called', calledBy);
+    console.log('[PROJECT-PLAN-SERV] - getProjectIdFroUrlAndIfExistGetProjectByIdAndPublish (called by)', calledBy);
     this.router.events.subscribe((ev) => {
       if (ev instanceof NavigationEnd) {
 
