@@ -110,7 +110,7 @@ import { InstallWidgetComponent } from './create-project-wizard/install-widget/i
 import { ConfigureWidgetComponent } from './create-project-wizard/configure-widget/configure-widget.component';
 import { LoadingPageComponent } from './loading-page/loading-page.component';
 // import { CannedResponsesListComponent } from './canned-responses/canned-responses-list.component'; // now Lazy
-import { TagsComponent } from './tags/tags.component';
+// import { TagsComponent } from './tags/tags.component'; // now Lazy
 
 
 
@@ -629,6 +629,14 @@ const routes: Routes = [
 
   { path: 'project/:projectid/email-demo', component: EmailTicketingStaticComponent, canActivate: [AuthGuard] },
 
+  // Tags
+  {
+    path: 'project/:projectid/labels',
+    loadChildren: () => import('app/tags/tags.module').then(m => m.TagsModule),
+    canActivate: [AuthGuard],
+  },
+  // { path: 'project/:projectid/labels', component: TagsComponent, canActivate: [AuthGuard] }, // now Lazy
+
 
 
   { path: 'project/:projectid/widget/translations', component: WidgetMultilanguageComponent, canActivate: [AuthGuard] }, // old
@@ -680,7 +688,7 @@ const routes: Routes = [
 
 
   { path: 'project/:projectid/cannedresponses-demo', component: CannedResponsesStaticComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/labels', component: TagsComponent, canActivate: [AuthGuard] },
+
 
   { path: 'project/create', component: ProjectEditAddComponent, canActivate: [AuthGuard] },
 

@@ -192,9 +192,9 @@ import { BotsBaseComponent } from './bots/bots-base/bots-base.component';
 // import { CannedResponsesAddEditComponent } from './canned-responses/canned-responses-add-edit/canned-responses-add-edit.component'; // now lazy
 import { CannedResponsesService } from './services/canned-responses.service';
 import { TagsService } from './services/tags.service';
-import { TagsComponent } from './tags/tags.component';
-import { TagsDeleteComponent } from './tags/tags-delete/tags-delete.component';
-import { TagsEditComponent } from './tags/tags-edit/tags-edit.component';
+// import { TagsComponent } from './tags/tags.component'; // now lazy
+// import { TagsDeleteComponent } from './tags/tags-delete/tags-delete.component'; // now lazy
+// import { TagsEditComponent } from './tags/tags-edit/tags-edit.component'; // now lazy
 import { TriggerStaticComponent } from './static-pages/trigger-static/trigger-static.component';
 import { AccountSettingsComponent } from './user-profile/account-settings/account-settings.component';
 
@@ -560,9 +560,9 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     BotsBaseComponent,
     // CannedResponsesListComponent, // now lazy
     // CannedResponsesAddEditComponent, // now lazy
-    TagsComponent,
-    TagsDeleteComponent,
-    TagsEditComponent,
+    // TagsComponent, // now lazy
+    // TagsDeleteComponent, // now lazy
+    // TagsEditComponent, // now lazy
     TriggerStaticComponent,
     AccountSettingsComponent,
     // ProjectsForPanelComponent, // removed
