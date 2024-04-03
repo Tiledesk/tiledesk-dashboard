@@ -95,15 +95,15 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { LocalDbService } from './services/users-local-db.service';
 import { VerifyEmailComponent } from './verify-email/verify-email.component';
 import { GroupService } from './services/group.service';
-import { GroupsComponent } from './groups/groups.component';
-import { GroupEditAddComponent } from './group-edit-add/group-edit-add.component';
+// import { GroupsComponent } from './groups/groups.component'; // now lazy
+// import { GroupEditAddComponent } from './group-edit-add/group-edit-add.component'; // now lazy
 
 import { BotLocalDbService } from './services/bot-local-db.service';
 import { ChangePasswordComponent } from './user-profile//change-password/change-password.component';
 
 // PIPE
 import { GroupNamePipe } from './groupname.pipe';
-import { SortByPipe } from './sortby.pipe';
+// import { SortByPipe } from './sortby.pipe'; // now lazy
 import { SortByDesPipe } from './sortbydes.pipe';
 import { MapToIterable } from './map-to-iterable-pipe';
 // import { SelectOptionsTranslatePipe } from './selectOptionsTranslate.pipe';
@@ -501,10 +501,10 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     FaqTestComponent,
     // UserEditAddComponent, // now lazy
     VerifyEmailComponent,
-    GroupsComponent,
-    GroupEditAddComponent,
+    // GroupsComponent, // now lazy
+    // GroupEditAddComponent, // now lazy
     GroupNamePipe,
-    SortByPipe,
+    // SortByPipe, // now lazy
     SortByDesPipe,
     MapToIterable,
     // SelectOptionsTranslatePipe, moved in SharedModule

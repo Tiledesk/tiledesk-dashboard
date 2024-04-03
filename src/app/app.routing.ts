@@ -65,8 +65,8 @@ import { WidgetMultilanguageComponent } from './widget_components/widget-multila
 // import { UserEditAddComponent } from './user-edit-add/user-edit-add.component'; // now lazy
 import { VerifyEmailComponent } from './verify-email/verify-email.component';
 
-import { GroupsComponent } from './groups/groups.component';
-import { GroupEditAddComponent } from './group-edit-add/group-edit-add.component';
+// import { GroupsComponent } from './groups/groups.component'; // now lazy
+// import { GroupEditAddComponent } from './group-edit-add/group-edit-add.component'; // now lazy
 import { GroupsStaticComponent } from './static-pages/groups-static/groups-static.component';
 import { ChangePasswordComponent } from './user-profile/change-password/change-password.component';
 import { AccountSettingsComponent } from './user-profile/account-settings/account-settings.component';
@@ -574,21 +574,49 @@ const routes: Routes = [
   },
   // { path: 'project/:projectid/users', component: UsersComponent, canActivate: [AuthGuard] }, // now lazy
 
-   // Add Teammate
-   {
+  // Add Teammate
+  {
     path: 'project/:projectid/user/add',
     loadChildren: () => import('app/user-edit-add/user-edit-add.module').then(m => m.UserEditAddModule),
     canActivate: [AuthGuard]
   },
-  // { path: 'project/:projectid/user/add', component: UserEditAddComponent, canActivate: [AuthGuard] },
+  // { path: 'project/:projectid/user/add', component: UserEditAddComponent, canActivate: [AuthGuard] }, // now lazy
 
-   // Teammate profile
-   {
+  // Teammate profile
+  {
     path: 'project/:projectid/user/edit/:projectuserid',
     loadChildren: () => import('app/user-edit-add/user-edit-add.module').then(m => m.UserEditAddModule),
     canActivate: [AuthGuard]
   },
-  // { path: 'project/:projectid/user/edit/:projectuserid', component: UserEditAddComponent, canActivate: [AuthGuard] },
+  // { path: 'project/:projectid/user/edit/:projectuserid', component: UserEditAddComponent, canActivate: [AuthGuard] }, // now lazy
+
+
+  // Groups
+  {
+    path: 'project/:projectid/groups',
+    loadChildren: () => import('app/groups/groups.module').then(m => m.GroupsModule),
+    canActivate: [AuthGuard, ProjectProfileGuard],
+  },
+  // { path: 'project/:projectid/groups', component: GroupsComponent, canActivate: [AuthGuard, ProjectProfileGuard] },
+
+
+  // Group create 
+  {
+    path: 'project/:projectid/group/create',
+    loadChildren: () => import('app/group-edit-add/group-edit-add.module').then(m => m.GroupEditAddModule),
+    canActivate: [AuthGuard],
+  },
+  // { path: 'project/:projectid/group/create', component: GroupEditAddComponent, canActivate: [AuthGuard] }, // now lazy
+
+  // Group edit
+  {
+    path: 'project/:projectid/group/edit/:groupid',
+    loadChildren: () => import('app/group-edit-add/group-edit-add.module').then(m => m.GroupEditAddModule),
+    canActivate: [AuthGuard],
+  },
+  // { path: 'project/:projectid/group/edit/:groupid', component: GroupEditAddComponent, canActivate: [AuthGuard] }, // now lazy
+
+  { path: 'project/:projectid/groups-demo', component: GroupsStaticComponent, canActivate: [AuthGuard] },
 
 
 
@@ -695,11 +723,7 @@ const routes: Routes = [
 
   // GROUPS
   // , ProjectProfileGuard
-  { path: 'project/:projectid/groups', component: GroupsComponent, canActivate: [AuthGuard, ProjectProfileGuard] },
-  // GROUP EDIT/ADD
-  { path: 'project/:projectid/group/create', component: GroupEditAddComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/group/edit/:groupid', component: GroupEditAddComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/groups-demo', component: GroupsStaticComponent, canActivate: [AuthGuard] },
+
 
 
   // IS THE PROFILE OF THE LOGGED USER
