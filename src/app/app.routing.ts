@@ -125,7 +125,7 @@ import { NotificationSettingsComponent } from './user-profile/notification-setti
 import { NativeBotComponent } from './bots/native-bot/native-bot.component';
 import { NativeBotSelectTypeComponent } from './bots/native-bot-select-type/native-bot-select-type.component';
 import { RasaBotComponent } from './bots/rasa-bot/rasa-bot.component';
-import { EmailTicketingComponent } from './email-ticketing/email-ticketing.component';
+// import { EmailTicketingComponent } from './email-ticketing/email-ticketing.component'; // now lazy
 // import { WidgetInstallationComponent } from './widget-installation/widget-installation.component'; // now lazy
 import { TilebotSelectTypeComponent } from './bots/tilebot-select-type/tilebot-select-type.component';
 import { TilebotComponent } from './bots/tilebot/tilebot.component';
@@ -619,6 +619,17 @@ const routes: Routes = [
   { path: 'project/:projectid/groups-demo', component: GroupsStaticComponent, canActivate: [AuthGuard] },
 
 
+  // Email ticketing
+  {
+    path: 'project/:projectid/email',
+    loadChildren: () => import('app/email-ticketing/email-ticketing.module').then(m => m.EmailTicketingModule),
+    canActivate: [AuthGuard, ProjectProfileGuard],
+  },
+  // { path: 'project/:projectid/email', component: EmailTicketingComponent, canActivate: [AuthGuard, ProjectProfileGuard] }, // now lazy
+
+  { path: 'project/:projectid/email-demo', component: EmailTicketingStaticComponent, canActivate: [AuthGuard] },
+
+
 
   { path: 'project/:projectid/widget/translations', component: WidgetMultilanguageComponent, canActivate: [AuthGuard] }, // old
 
@@ -883,8 +894,7 @@ const routes: Routes = [
   // Webhook
   { path: 'project/:projectid/webhook', component: WebhookComponent, canActivate: [AuthGuard] },
   // { path: 'project/:projectid/map-request', component: MapRequestComponent, canActivate: [AuthGuard] }, // now lazy
-  { path: 'project/:projectid/email', component: EmailTicketingComponent, canActivate: [AuthGuard, ProjectProfileGuard] },
-  { path: 'project/:projectid/email-demo', component: EmailTicketingStaticComponent, canActivate: [AuthGuard] },
+
   { path: 'project/:projectid/integrations', component: IntegrationsComponent, canActivate: [AuthGuard] },
 
 

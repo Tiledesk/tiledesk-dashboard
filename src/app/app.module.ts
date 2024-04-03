@@ -259,7 +259,7 @@ import { TilebotComponent } from './bots/tilebot/tilebot.component';
 import { RasaBotComponent } from './bots/rasa-bot/rasa-bot.component';
 import { TemplatesComponent } from './bots/templates/templates.component';
 
-import { EmailTicketingComponent } from './email-ticketing/email-ticketing.component';
+// import { EmailTicketingComponent } from './email-ticketing/email-ticketing.component'; // now lazy
 
 import { CutomTooltipOptions } from './utils/util';
 // import { WsSidebarAppsComponent } from './ws_requests/ws-requests-msgs/ws-sidebar-apps/ws-sidebar-apps.component'; // now lazy
@@ -601,7 +601,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     NativeBotSidebarComponent,
     NativeBotComponent,
     NativeBotSelectTypeComponent,
-    EmailTicketingComponent,
+    // EmailTicketingComponent, // now lazy
     // WsSidebarAppsComponent, // now lazy
     RasaBotComponent,
     ImageViewerComponent,
