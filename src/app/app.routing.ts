@@ -70,7 +70,7 @@ import { VerifyEmailComponent } from './verify-email/verify-email.component';
 import { GroupsStaticComponent } from './static-pages/groups-static/groups-static.component';
 import { ChangePasswordComponent } from './user-profile/change-password/change-password.component';
 import { AccountSettingsComponent } from './user-profile/account-settings/account-settings.component';
-import { HoursComponent } from './hours/hours.component';
+// import { HoursComponent } from './hours/hours.component'; // now lazy
 import { ResetPswComponent } from './reset-psw/reset-psw.component';
 
 import { ActivitiesComponent } from './activities/activities.component';
@@ -150,7 +150,7 @@ import { KnowledgeBasesComponent } from './knowledge-bases/knowledge-bases.compo
 import { CnpIsMobileComponent } from './create-new-project/cnp-is-mobile/cnp-is-mobile.component';
 import { CnpTemplatesComponent } from './create-new-project/cnp-templates/cnp-templates.component';
 import { OnboardingWelcomeComponent } from './create-new-project/onboarding-welcome/onboarding-welcome.component';
-import { AutomationsComponent } from './automations/automations.component';
+// import { AutomationsComponent } from './automations/automations.component'; // now lazy
 
 
 import { KnowledgeBasesPreviousComponent } from './knowledge-bases-previous/knowledge-bases-previous.component';
@@ -638,6 +638,28 @@ const routes: Routes = [
   // { path: 'project/:projectid/labels', component: TagsComponent, canActivate: [AuthGuard] }, // now Lazy
 
 
+  // Working hours 
+  {
+    path: 'project/:projectid/hours',
+    loadChildren: () => import('app/hours/hours.module').then(m => m.HoursModule),
+    canActivate: [AuthGuard, ProjectProfileGuard],
+  },
+  // { path: 'project/:projectid/hours', component: HoursComponent, canActivate: [AuthGuard, ProjectProfileGuard] }, // now lazy
+
+  { path: 'project/:projectid/hours-demo', component: HoursStaticComponent, canActivate: [AuthGuard] },
+
+
+  // Automations
+  {
+    path: 'project/:projectid/automations',
+    loadChildren: () => import('app/automations/automations.module').then(m => m.AutomationsModule),
+    canActivate: [AuthGuard, ProjectProfileGuard],
+  },
+  // { path: 'project/:projectid/automations', component: AutomationsComponent, canActivate: [AuthGuard, ProjectProfileGuard] }, // now lazy
+
+  { path: 'project/:projectid/automations-demo', component: AutomationStaticComponent, canActivate: [AuthGuard] },
+
+
 
   { path: 'project/:projectid/widget/translations', component: WidgetMultilanguageComponent, canActivate: [AuthGuard] }, // old
 
@@ -868,13 +890,9 @@ const routes: Routes = [
   // Account settings if project is undefined (use case: THE USER HAS NOT YET SELECTED A PROJECT)
   { path: 'user/:userid/notifications', component: NotificationSettingsComponent, canActivate: [AuthGuard] },
 
-  // HOURS
-  { path: 'project/:projectid/hours', component: HoursComponent, canActivate: [AuthGuard, ProjectProfileGuard] },
-  { path: 'project/:projectid/hours-demo', component: HoursStaticComponent, canActivate: [AuthGuard] },
 
-  // AUTOMATIONS
-  { path: 'project/:projectid/automations', component: AutomationsComponent, canActivate: [AuthGuard, ProjectProfileGuard] },
-  { path: 'project/:projectid/automations-demo', component: AutomationStaticComponent, canActivate: [AuthGuard] },
+
+
 
 
   // KNOWLEDGE BASES

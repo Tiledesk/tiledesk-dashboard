@@ -110,7 +110,7 @@ import { MapToIterable } from './map-to-iterable-pipe';
 import { FilterArrayPipe } from './filterarray.pipe';
 // import { MarkedPipe } from './marked.pipe'; // moved in SharedModule
 
-import { HoursComponent } from './hours/hours.component';
+// import { HoursComponent } from './hours/hours.component'; // now lazy
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ResetPswComponent } from './reset-psw/reset-psw.component';
 import { ResetPswService } from './services/reset-psw.service';
@@ -362,7 +362,7 @@ import { KnowledgeBasesComponent } from './knowledge-bases/knowledge-bases.compo
 import { CnpTemplatesComponent } from './create-new-project/cnp-templates/cnp-templates.component';
 import { OnboardingWelcomeComponent } from './create-new-project/onboarding-welcome/onboarding-welcome.component';
 import { HomeNewsFeedModalComponent } from './home-components/home-news-feed/home-news-feed-modal/home-news-feed-modal.component';
-import { AutomationsComponent } from './automations/automations.component';
+// import { AutomationsComponent } from './automations/automations.component'; // now lazy
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 // import { HomeCdsComponent } from './home-components/home-cds/home-cds.component'; // now lazy
 import { AutomationStaticComponent } from './static-pages/automation-static/automation-static.component';
@@ -510,7 +510,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     // SelectOptionsTranslatePipe, moved in SharedModule
     FilterArrayPipe,
     ChangePasswordComponent,
-    HoursComponent,
+    // HoursComponent, // now lazy
     ResetPswComponent,
    // WidgetSetUp, // now lazy
     // HistoryAndNortConvsComponent, // now lazy
@@ -679,7 +679,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     CnpTemplatesComponent,
     OnboardingWelcomeComponent,
     HomeNewsFeedModalComponent,
-    AutomationsComponent,
+    // AutomationsComponent, // now lazy
     // HomeCdsComponent, // now lazy
     AutomationStaticComponent,
     // KbModalComponent,
