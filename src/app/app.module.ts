@@ -91,7 +91,7 @@ import { ProjectService } from './services/project.service';
 import { UnauthorizedComponent } from './auth/unauthorized/unauthorized.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
-import { UserEditAddComponent } from './user-edit-add/user-edit-add.component';
+// import { UserEditAddComponent } from './user-edit-add/user-edit-add.component'; // now lazy
 import { LocalDbService } from './services/users-local-db.service';
 import { VerifyEmailComponent } from './verify-email/verify-email.component';
 import { GroupService } from './services/group.service';
@@ -499,7 +499,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     // SignupComponent, // now lazy
     UnauthorizedComponent,
     FaqTestComponent,
-    UserEditAddComponent,
+    // UserEditAddComponent, // now lazy
     VerifyEmailComponent,
     GroupsComponent,
     GroupEditAddComponent,

@@ -62,7 +62,7 @@ import { AutologinComponent } from './auth/autologin/autologin.component';
 // import { WidgetSetUp } from './widget_components/widget-set-up/widget-set-up.component'; // now lazy
 import { WidgetMultilanguageComponent } from './widget_components/widget-multilanguage/widget-multilanguage.component';
 
-import { UserEditAddComponent } from './user-edit-add/user-edit-add.component';
+// import { UserEditAddComponent } from './user-edit-add/user-edit-add.component'; // now lazy
 import { VerifyEmailComponent } from './verify-email/verify-email.component';
 
 import { GroupsComponent } from './groups/groups.component';
@@ -574,9 +574,21 @@ const routes: Routes = [
   },
   // { path: 'project/:projectid/users', component: UsersComponent, canActivate: [AuthGuard] }, // now lazy
 
+   // Add Teammate
+   {
+    path: 'project/:projectid/user/add',
+    loadChildren: () => import('app/user-edit-add/user-edit-add.module').then(m => m.UserEditAddModule),
+    canActivate: [AuthGuard]
+  },
+  // { path: 'project/:projectid/user/add', component: UserEditAddComponent, canActivate: [AuthGuard] },
 
-  { path: 'project/:projectid/user/add', component: UserEditAddComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/user/edit/:projectuserid', component: UserEditAddComponent, canActivate: [AuthGuard] },
+   // Teammate profile
+   {
+    path: 'project/:projectid/user/edit/:projectuserid',
+    loadChildren: () => import('app/user-edit-add/user-edit-add.module').then(m => m.UserEditAddModule),
+    canActivate: [AuthGuard]
+  },
+  // { path: 'project/:projectid/user/edit/:projectuserid', component: UserEditAddComponent, canActivate: [AuthGuard] },
 
 
 
