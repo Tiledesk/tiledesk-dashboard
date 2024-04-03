@@ -61,7 +61,7 @@ import { UrlService } from './services/shared/url.service';
 // import { ProjectsComponent } from './projects/projects.component'; // now lazy
 // import { ProjectsForPanelComponent } from './projects/for-panel/projects-for-panel/projects-for-panel.component'; // removed
 
-import { UsersComponent } from './users/users.component';
+// import { UsersComponent } from './users/users.component'; // now lazy
 
 
 // BOTS & FAQ
@@ -488,7 +488,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     // DepartmentsComponent,  // now lazy
     FaqComponent,
     // ProjectsComponent, // now lazy
-    UsersComponent,
+    // UsersComponent, // now lazy
     BotListComponent,
     BotCreateComponent,
     FaqEditAddComponent,

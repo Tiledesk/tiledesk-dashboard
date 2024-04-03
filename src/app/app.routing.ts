@@ -32,7 +32,7 @@ import { EventsComponent } from './events/events.component';
 // import { ProjectsComponent } from './projects/projects.component'; // now lazy
 // import { ProjectsForPanelComponent } from './projects/for-panel/projects-for-panel/projects-for-panel.component'; // removed
 
-import { UsersComponent } from './users/users.component';
+// import { UsersComponent } from './users/users.component'; // now lazy
 
 // BOTS & FAQ
 import { BotListComponent } from './bots/bots-list/bots-list.component';
@@ -563,6 +563,23 @@ const routes: Routes = [
 
   { path: 'project/:projectid/departments-demo', component: DepartmentsStaticComponent, canActivate: [AuthGuard] },
 
+
+  // ARE ALL THE USER OF A PROJECT (e.g. THE USER THAT HAS CREATED THE PROJECT AND THE USERS THAT HE HAS INVITED (THE OTHER MEMBERS OF THE PROJECT)
+
+  // Teammates
+  {
+    path: 'project/:projectid/users',
+    loadChildren: () => import('app/users/users.module').then(m => m.UsersModule),
+    canActivate: [AuthGuard]
+  },
+  // { path: 'project/:projectid/users', component: UsersComponent, canActivate: [AuthGuard] }, // now lazy
+
+
+  { path: 'project/:projectid/user/add', component: UserEditAddComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/user/edit/:projectuserid', component: UserEditAddComponent, canActivate: [AuthGuard] },
+
+
+
   { path: 'project/:projectid/widget/translations', component: WidgetMultilanguageComponent, canActivate: [AuthGuard] }, // old
 
 
@@ -661,10 +678,7 @@ const routes: Routes = [
   { path: 'chat', component: ChatComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/chat', component: ChatComponent, canActivate: [AuthGuard] },
 
-  // ARE ALL THE USER OF A PROJECT (e.g. THE USER THAT HAS CREATED THE PROJECT AND THE USERS THAT HE HAS INVITED (THE OTHER MEMBERS OF THE PROJECT))
-  { path: 'project/:projectid/users', component: UsersComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/user/add', component: UserEditAddComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/user/edit/:projectuserid', component: UserEditAddComponent, canActivate: [AuthGuard] },
+
 
 
   // GROUPS
@@ -753,7 +767,7 @@ const routes: Routes = [
 
 
 
-  
+
 
 
 
