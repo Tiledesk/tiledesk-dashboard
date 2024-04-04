@@ -81,7 +81,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 // import { DepartmentEditAddComponent } from './department-edit-add/department-edit-add.component'; // now lazy
-import { ProjectEditAddComponent } from './project-edit-add/project-edit-add.component';
+// import { ProjectEditAddComponent } from './project-edit-add/project-edit-add.component'; // now lazy
 
 import { ProjectService } from './services/project.service';
 // import { RequestsListHistoryComponent } from './requests-list-history/requests-list-history.component';
@@ -493,7 +493,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     BotCreateComponent,
     FaqEditAddComponent,
     // DepartmentEditAddComponent, // now lazy
-    ProjectEditAddComponent,
+    // ProjectEditAddComponent, // now lazy
     // RequestsListHistoryComponent,
     // SigninComponent, // now lazy
     // SignupComponent, // now lazy

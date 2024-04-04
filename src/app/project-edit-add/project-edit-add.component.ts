@@ -1711,7 +1711,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
   getCustomerAndPaymentMethods() {
     this.projectService.getStripeCustomer().subscribe((customer: any) => {
-      this.logger.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT METHODS - customer ', customer);
+      console.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT METHODS - customer ', customer);
       if (customer) {
         this.customer_id = customer.id
         this.logger.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT METHODS - customer id', this.customer_id);
@@ -1858,9 +1858,10 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
 
   onSubmit(form) {
+    console.log('onSubmit form',  form)
     this.submitted = true;
     this.logger.log('onSubmit form', form);
-    if (form.expirationDate !== '') {
+    if (form.expirationDate && form.expirationDate !== '') {
       const expirationDateSegment = form.expirationDate.split('/');
       this.logger.log('onSubmit expirationDateSegment', expirationDateSegment);
       const expirationDateMonth = expirationDateSegment[0].trim()
@@ -1890,12 +1891,24 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       // console.log('[PRJCT-EDIT-ADD] - UPDATED CUSTOMER error _body', error._body);
 
       const error_body = error
-      this.logger.error('[PRJCT-EDIT-ADD] - UPDATED CUSTOMER error_body ', error_body);
+      console.error('[PRJCT-EDIT-ADD] - UPDATED CUSTOMER error_body ', error_body);
+      console.error('[PRJCT-EDIT-ADD] - UPDATED CUSTOMER error_body > msg ', error_body.msg);
+      
+      if (error_body && error_body.msg)  { 
       this.credit_card_error_msg = error_body.msg.raw.message;
-      this.logger.error('[PRJCT-EDIT-ADD] - UPDATED CUSTOMER credit_card_error_msg ', this.credit_card_error_msg);
+      console.error('[PRJCT-EDIT-ADD] - UPDATED CUSTOMER error_body > msg > raw ', error_body.msg.raw);
+      console.error('[PRJCT-EDIT-ADD] - UPDATED CUSTOMER credit_card_error_msg ', this.credit_card_error_msg);
       this.CARD_HAS_ERROR = true;
       this.SPINNER_IN_ADD_CARD_MODAL = false
       this.DISPLAY_ADD_CARD_COMPLETED = false
+    } else if (error_body && !error_body.msg) {
+      if (error_body && error_body.error && error_body.error && error_body.error.msg.code) {
+        this.credit_card_error_msg = error_body.error.msg.code;
+        this.CARD_HAS_ERROR = true;
+        this.SPINNER_IN_ADD_CARD_MODAL = false
+        this.DISPLAY_ADD_CARD_COMPLETED = false
+      }
+    }
     }, () => {
       this.logger.log('[PRJCT-EDIT-ADD] - UPDATED CUSTOMER * COMPLETE * ');
       this.CARD_HAS_ERROR = false;

@@ -44,7 +44,7 @@ import { FaqEditAddComponent } from './bots/faq-edit-add/faq-edit-add.component'
 import { FaqTestComponent } from './bots/faq-test/faq-test.component';
 import { TemplatesComponent } from './bots/templates/templates.component';
 
-import { ProjectEditAddComponent } from './project-edit-add/project-edit-add.component';
+// import { ProjectEditAddComponent } from './project-edit-add/project-edit-add.component'; // now lazy
 // import { RequestsListHistoryComponent } from './requests-list-history/requests-list-history.component';
 // import { HistoryAndNortConvsComponent } from './ws_requests/history-and-nort-convs/history-and-nort-convs.component'; // now lazy
 
@@ -507,6 +507,8 @@ const routes: Routes = [
   },
   // { path: 'project/:projectid/cannedresponses', component: CannedResponsesListComponent, canActivate: [AuthGuard, ProjectProfileGuard] },
 
+  { path: 'project/:projectid/cannedresponses-demo', component: CannedResponsesStaticComponent, canActivate: [AuthGuard] },
+
   // Widget Set Up
   {
     path: 'project/:projectid/widget-set-up',
@@ -665,16 +667,77 @@ const routes: Routes = [
     loadChildren: () => import('app/integrations/integrations.module').then(m => m.IntegrationsModule),
     canActivate: [AuthGuard],
   },
-  // { path: 'project/:projectid/integrations', component: IntegrationsComponent, canActivate: [AuthGuard] },
+  // { path: 'project/:projectid/integrations', component: IntegrationsComponent, canActivate: [AuthGuard] }, // now lazy
+
+
+
+  // { path: 'project/create', component: ProjectEditAddComponent, canActivate: [AuthGuard] }, seems not used
+
+  // Project edit / add - General
+  {
+    path: 'project/:projectid/project-settings/general',
+    loadChildren: () => import('app/project-edit-add/project-edit-add.module').then(m => m.ProjectEditAddModule),
+    canActivate: [AuthGuard],
+  },
+  // { path: 'project/:projectid/project-settings/general', component: ProjectEditAddComponent, canActivate: [AuthGuard] }, // now lazy
+
+  // Project edit / add - Payments section)
+  {
+    path: 'project/:projectid/project-settings/payments',
+    loadChildren: () => import('app/project-edit-add/project-edit-add.module').then(m => m.ProjectEditAddModule),
+    canActivate: [AuthGuard],
+  },
+  // { path: 'project/:projectid/project-settings/payments', component: ProjectEditAddComponent, canActivate: [AuthGuard] }, // now lazy
+
+  // Project edit / add - Developer section
+  {
+    path: 'project/:projectid/project-settings/auth',
+    loadChildren: () => import('app/project-edit-add/project-edit-add.module').then(m => m.ProjectEditAddModule),
+    canActivate: [AuthGuard],
+  },
+  // { path: 'project/:projectid/project-settings/auth', component: ProjectEditAddComponent, canActivate: [AuthGuard] }, // now lazy
+
+  // Project edit / add - Smart assign
+  {
+    path: 'project/:projectid/project-settings/advanced',
+    loadChildren: () => import('app/project-edit-add/project-edit-add.module').then(m => m.ProjectEditAddModule),
+    canActivate: [AuthGuard],
+  },
+  // { path: 'project/:projectid/project-settings/advanced', component: ProjectEditAddComponent, canActivate: [AuthGuard] }, // now lazy
+
+  // Project edit / add - Notifications
+  {
+    path: 'project/:projectid/project-settings/notification',
+    loadChildren: () => import('app/project-edit-add/project-edit-add.module').then(m => m.ProjectEditAddModule),
+    canActivate: [AuthGuard],
+  },
+  // { path: 'project/:projectid/project-settings/notification', component: ProjectEditAddComponent, canActivate: [AuthGuard] }, // now lazy
+
+
+  // Project edit / add - Security
+  {
+    path: 'project/:projectid/project-settings/security',
+    loadChildren: () => import('app/project-edit-add/project-edit-add.module').then(m => m.ProjectEditAddModule),
+    canActivate: [AuthGuard],
+  },
+  // { path: 'project/:projectid/project-settings/security', component: ProjectEditAddComponent, canActivate: [AuthGuard] }, // now lazy
+
+
+  // Project edit / add - Banned visitors
+  {
+    path: 'project/:projectid/project-settings/banned',
+    loadChildren: () => import('app/project-edit-add/project-edit-add.module').then(m => m.ProjectEditAddModule),
+    canActivate: [AuthGuard],
+  },
+  // { path: 'project/:projectid/project-settings/banned', component: ProjectEditAddComponent, canActivate: [AuthGuard] }, // now lazy
+
+
+  { path: 'project/:projectid/notification-email', component: NotificationEmailComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/smtp-settings', component: SmtpSettingsComponent, canActivate: [AuthGuard] },
 
 
 
   { path: 'project/:projectid/widget/translations', component: WidgetMultilanguageComponent, canActivate: [AuthGuard] }, // old
-
-
-
-
-
 
   { path: 'project/:projectid/contacts-demo', component: ContactsStaticComponent, canActivate: [AuthGuard] },
 
@@ -717,21 +780,13 @@ const routes: Routes = [
   { path: 'project/:projectid/install-widget/:langcode/:langname', component: InstallWidgetComponent, canActivate: [AuthGuard] },
 
 
-  { path: 'project/:projectid/cannedresponses-demo', component: CannedResponsesStaticComponent, canActivate: [AuthGuard] },
 
 
-  { path: 'project/create', component: ProjectEditAddComponent, canActivate: [AuthGuard] },
 
-  // { path: 'project/:projectid/edit', component: ProjectEditAddComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/project-settings/general', component: ProjectEditAddComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/project-settings/payments', component: ProjectEditAddComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/project-settings/auth', component: ProjectEditAddComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/project-settings/advanced', component: ProjectEditAddComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/notification-email', component: NotificationEmailComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/project-settings/notification', component: ProjectEditAddComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/project-settings/security', component: ProjectEditAddComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/project-settings/banned', component: ProjectEditAddComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/smtp-settings', component: SmtpSettingsComponent, canActivate: [AuthGuard] },
+
+
+
+
 
 
   // { path: 'home', component: HomeComponent, canActivate: [AuthGuard]}, // , canDeactivate: [AuthGuard]
@@ -929,7 +984,7 @@ const routes: Routes = [
   { path: 'project/:projectid/webhook', component: WebhookComponent, canActivate: [AuthGuard] },
   // { path: 'project/:projectid/map-request', component: MapRequestComponent, canActivate: [AuthGuard] }, // now lazy
 
- 
+
 
 
 ];
