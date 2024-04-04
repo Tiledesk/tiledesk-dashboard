@@ -232,3 +232,11 @@ mat-expansion-panel ::ng-deep {
         opacity: 1;
     }
 }
+
+.integration-name-and-badge {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}

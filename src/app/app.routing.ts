@@ -154,7 +154,7 @@ import { OnboardingWelcomeComponent } from './create-new-project/onboarding-welc
 
 
 import { KnowledgeBasesPreviousComponent } from './knowledge-bases-previous/knowledge-bases-previous.component';
-import { IntegrationsComponent } from './integrations/integrations.component';
+// import { IntegrationsComponent } from './integrations/integrations.component'; // now lazy
 
 
 
@@ -659,6 +659,14 @@ const routes: Routes = [
 
   { path: 'project/:projectid/automations-demo', component: AutomationStaticComponent, canActivate: [AuthGuard] },
 
+  // Integrations
+  {
+    path: 'project/:projectid/integrations',
+    loadChildren: () => import('app/integrations/integrations.module').then(m => m.IntegrationsModule),
+    canActivate: [AuthGuard],
+  },
+  // { path: 'project/:projectid/integrations', component: IntegrationsComponent, canActivate: [AuthGuard] },
+
 
 
   { path: 'project/:projectid/widget/translations', component: WidgetMultilanguageComponent, canActivate: [AuthGuard] }, // old
@@ -921,7 +929,7 @@ const routes: Routes = [
   { path: 'project/:projectid/webhook', component: WebhookComponent, canActivate: [AuthGuard] },
   // { path: 'project/:projectid/map-request', component: MapRequestComponent, canActivate: [AuthGuard] }, // now lazy
 
-  { path: 'project/:projectid/integrations', component: IntegrationsComponent, canActivate: [AuthGuard] },
+ 
 
 
 ];
