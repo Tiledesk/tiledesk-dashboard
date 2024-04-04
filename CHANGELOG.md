@@ -1,5 +1,13 @@
 # tiledesk-dashboard
 
+### 2.6.7
+- Deploys in production
+- Improves bot list page
+
+### 2.6.6
+- Deploys in production 
+- Fixes the bug: WordPress section does not open on installations page
+
 ### 2.6.5
 - Deploys in production
 - Improvements and bug fixing
