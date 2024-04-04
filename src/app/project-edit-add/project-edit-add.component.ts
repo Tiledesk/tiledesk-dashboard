@@ -132,7 +132,8 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   isVisibleCustomizeEmailTemplate: boolean
   isVisibleSMTPsettings: boolean;
   isVisibleBannedVisitor: boolean
-  isVisibleAutoSendTranscript: boolean
+  isVisibleAutoSendTranscript: boolean;
+  isVisibleVisitorAuthentication: boolean;
   max_agent_assigned_chat: number
   reassignment_delay: number
   automatic_idle_chats: number
@@ -426,12 +427,29 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
           // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - isVisibleAutoSendTranscript', this.isVisibleAutoSendTranscript);
         }
       }
-    
+
+      if (key.includes("VAU")) {
+        // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
+        let vau = key.split(":");
+        //  console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - ips key&value', ips);
+        if (vau[1] === "F") {
+          this.isVisibleVisitorAuthentication = false;
+          // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - isVisibleVisitorAuthentication', this.isVisibleVisitorAuthentication);
+        } else {
+          this.isVisibleVisitorAuthentication = true;
+          // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - isVisibleVisitorAuthentication', this.isVisibleVisitorAuthentication);
+        }
+      }    
     });
 
     if (!this.public_Key.includes("PAY")) {
       // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("PAY")', this.public_Key.includes("PAY"));
       this.isVisiblePaymentTab = false;
+    }
+
+    if (!this.public_Key.includes("VAU")) {
+      // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("VAU")', this.public_Key.includes("VAU"));
+      this.isVisibleVisitorAuthentication = false;
     }
 
     if (!this.public_Key.includes("PSA")) {
