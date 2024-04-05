@@ -81,7 +81,7 @@ import { ChatComponent } from './chat/chat.component';
 import { AnalyticsStaticComponent } from './static-pages/analytics-static/analytics-static.component';
 import { ActivitiesStaticComponent } from './static-pages/activities-static/activities-static.component';
 import { HoursStaticComponent } from './static-pages/hours-static/hours-static.component';
-import { DepartmentsStaticComponent } from './static-pages/departments-static/departments-static.component';
+// import { DepartmentsStaticComponent } from './static-pages/departments-static/departments-static.component'; // now lazy 
 import { ContactsStaticComponent } from './static-pages/contacts-static/contacts-static.component';
 import { AutomationStaticComponent } from './static-pages/automation-static/automation-static.component';
 
@@ -563,7 +563,13 @@ const routes: Routes = [
   // },
   // { path: 'project/:projectid/routing/:deptid', component: DepartmentEditAddComponent, canActivate: [AuthGuard] }, // new
 
-  { path: 'project/:projectid/departments-demo', component: DepartmentsStaticComponent, canActivate: [AuthGuard] },
+  // Departments demo page
+  {
+    path: 'project/:projectid/departments-demo',
+    loadChildren: () => import('app/static-pages/departments-static/departments-static.module').then(m => m.DepartmentsStaticModule),
+    canActivate: [AuthGuard]
+  },
+  // { path: 'project/:projectid/departments-demo', component: DepartmentsStaticComponent, canActivate: [AuthGuard] }, // now lazy
 
 
   // ARE ALL THE USER OF A PROJECT (e.g. THE USER THAT HAS CREATED THE PROJECT AND THE USERS THAT HE HAS INVITED (THE OTHER MEMBERS OF THE PROJECT)
