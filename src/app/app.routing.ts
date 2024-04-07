@@ -67,7 +67,7 @@ import { VerifyEmailComponent } from './verify-email/verify-email.component';
 
 // import { GroupsComponent } from './groups/groups.component'; // now lazy
 // import { GroupEditAddComponent } from './group-edit-add/group-edit-add.component'; // now lazy
-import { GroupsStaticComponent } from './static-pages/groups-static/groups-static.component';
+// import { GroupsStaticComponent } from './static-pages/groups-static/groups-static.component'; // now lazy
 import { ChangePasswordComponent } from './user-profile/change-password/change-password.component';
 import { AccountSettingsComponent } from './user-profile/account-settings/account-settings.component';
 // import { HoursComponent } from './hours/hours.component'; // now lazy
@@ -78,12 +78,12 @@ import { ActivitiesComponent } from './activities/activities.component';
 // Andrea
 import { ChatComponent } from './chat/chat.component';
 
-import { AnalyticsStaticComponent } from './static-pages/analytics-static/analytics-static.component';
-import { ActivitiesStaticComponent } from './static-pages/activities-static/activities-static.component';
-import { HoursStaticComponent } from './static-pages/hours-static/hours-static.component';
+// import { AnalyticsStaticComponent } from './static-pages/analytics-static/analytics-static.component'; // now lazy 
+// import { ActivitiesStaticComponent } from './static-pages/activities-static/activities-static.component'; // now lazy
+// import { HoursStaticComponent } from './static-pages/hours-static/hours-static.component'; // now lazy 
 // import { DepartmentsStaticComponent } from './static-pages/departments-static/departments-static.component'; // now lazy 
-import { ContactsStaticComponent } from './static-pages/contacts-static/contacts-static.component';
-import { AutomationStaticComponent } from './static-pages/automation-static/automation-static.component';
+// import { ContactsStaticComponent } from './static-pages/contacts-static/contacts-static.component'; // now lazy 
+// import { AutomationStaticComponent } from './static-pages/automation-static/automation-static.component'; // now lazy
 
 // import { AnalyticsComponent } from './analytics/analytics.component'; // now lazy
 // import { RequestsComponent } from './analytics/metrics/requests/requests.component'; // now lazy
@@ -92,7 +92,7 @@ import { AutomationStaticComponent } from './static-pages/automation-static/auto
 import { TriggerComponent } from './trigger/trigger.component';
 import { TriggerEditComponent } from './trigger/trigger-edit/trigger-edit.component';
 import { TriggerAddComponent } from './trigger/trigger-add/trigger-add.component';
-import { TriggerStaticComponent } from './static-pages/trigger-static/trigger-static.component';
+// import { TriggerStaticComponent } from './static-pages/trigger-static/trigger-static.component'; // now lazy
 import { NotificationEmailComponent } from './project-edit-add/notification-email/notification-email.component';
 import { SmtpSettingsComponent } from './project-edit-add/smtp-settings/smtp-settings.component';
 // import { UserProfileComponent } from './ui/user-profile/user-profile.component';
@@ -141,9 +141,9 @@ import { InstallTemplateComponent } from './create-project-wizard/install-templa
 // import { CdsDashboardComponent } from './chatbot-design-studio/cds-dashboard/cds-dashboard.component'; // now lazy
 import { CreateChatbotComponent } from './bots/create-chatbot/create-chatbot.component';
 import { CommunityTemplateDtlsComponent } from './bots/templates/community-template-dtls/community-template-dtls.component';
-import { CannedResponsesStaticComponent } from './static-pages/canned-responses-static/canned-responses-static.component';
-import { WsrequestsStaticComponent } from './static-pages/wsrequests-static/wsrequests-static.component';
-import { EmailTicketingStaticComponent } from './static-pages/email-ticketing-static/email-ticketing-static.component';
+// import { CannedResponsesStaticComponent } from './static-pages/canned-responses-static/canned-responses-static.component'; // now lazy
+// import { WsrequestsStaticComponent } from './static-pages/wsrequests-static/wsrequests-static.component'; // now lazy
+// import { EmailTicketingStaticComponent } from './static-pages/email-ticketing-static/email-ticketing-static.component'; // now lazy
 import { ActivateAppsumoProductComponent } from './create-project-wizard/activate-appsumo-product/activate-appsumo-product.component';
 import { CreateProjectGsComponent } from './create-project-wizard/create-project-gs/create-project-gs.component';
 import { KnowledgeBasesComponent } from './knowledge-bases/knowledge-bases.component';
@@ -227,7 +227,7 @@ const routes: Routes = [
   },
   // { path: 'project/:projectid/payments', component: PaymentsListComponent, canActivate: [AuthGuard] }, // now Lazy
   {
-    path: 'project/::projectid/success',
+    path: 'project/:projectid/success',
     loadChildren: () => import('app/pricing/payment-success-page/payment-success.module').then(m => m.PaymentSuccessModule),
     canActivate: [AuthGuard]
   },
@@ -276,6 +276,17 @@ const routes: Routes = [
   { path: 'project/:projectid/_createfaq/:faqkbid/:bottype/:botlang', component: FaqEditAddComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/_editfaq/:faqkbid/:faqid/:bottype', component: FaqEditAddComponent, canActivate: [AuthGuard] },
 
+  // Activities
+  { path: 'project/:projectid/activities', component: ActivitiesComponent, canActivate: [AuthGuard, ProjectProfileGuard] },
+
+  // Activities demo page
+  {
+    path: 'project/:projectid/activities-demo',
+    loadChildren: () => import('app/static-pages/activities-static/activities-static.module').then(m => m.ActivitiesStaticModule),
+    canActivate: [AuthGuard]
+  },
+  // { path: 'project/:projectid/activities-demo', component: ActivitiesStaticComponent, canActivate: [AuthGuard] }, // now lazy
+
   // Analytics
   {
     path: 'project/:projectid/analytics',
@@ -304,6 +315,36 @@ const routes: Routes = [
     canActivate: [AuthGuard, ProjectProfileGuard]
   },
   // { path: 'project/:projectid/analytics/metrics/messages', component: AnalyticsComponent, canActivate: [AuthGuard, ProjectProfileGuard] }, // now lazy
+
+  // Analytics demo page
+  {
+    path: 'project/:projectid/analytics-demo',
+    loadChildren: () => import('app/static-pages/analytics-static/analytics-static.module').then(m => m.AnalyticsStaticModule),
+    canActivate: [AuthGuard]
+  },
+  // { path: 'project/:projectid/analytics-demo', component: AnalyticsStaticComponent, canActivate: [AuthGuard] }, // Now lazy
+
+  {
+    path: 'project/:projectid/analytics/metrics-demo',
+    loadChildren: () => import('app/static-pages/analytics-static/analytics-static.module').then(m => m.AnalyticsStaticModule),
+    canActivate: [AuthGuard]
+  },
+  // { path: 'project/:projectid/analytics/metrics-demo', component: AnalyticsStaticComponent, canActivate: [AuthGuard] }, // Now lazy
+
+  {
+    path: 'project/:projectid/analytics/metrics/visitors-demo',
+    loadChildren: () => import('app/static-pages/analytics-static/analytics-static.module').then(m => m.AnalyticsStaticModule),
+    canActivate: [AuthGuard]
+  },
+  // { path: 'project/:projectid/analytics/metrics/visitors-demo', component: AnalyticsStaticComponent, canActivate: [AuthGuard] }, // Now lazy
+
+  {
+    path: 'project/:projectid/analytics/metrics/messages-demo',
+    loadChildren: () => import('app/static-pages/analytics-static/analytics-static.module').then(m => m.AnalyticsStaticModule),
+    canActivate: [AuthGuard]
+  },
+  // { path: 'project/:projectid/analytics/metrics/messages-demo', component: AnalyticsStaticComponent, canActivate: [AuthGuard] }, // Now lazy
+
 
   // { path: 'project/:projectid/messages-analytics', component: MessagesComponent, canActivate: [AuthGuard] }, // doesn't works
   // { path: 'project/:projectid/conversation-analytics', component: RequestsComponent, canActivate: [AuthGuard] }, // doesn't works
@@ -374,6 +415,16 @@ const routes: Routes = [
     loadChildren: () => import('app/contact-edit/contact-edit.module').then(m => m.ContactEditModule),
     canActivate: [AuthGuard],
   },
+
+  // Contacts demo page
+  {
+    path: 'project/:projectid/contacts-demo',
+    loadChildren: () => import('app/static-pages/contacts-static/contacts-static.module').then(m => m.ContactsStaticModule),
+    canActivate: [AuthGuard],
+  },
+  // { path: 'project/:projectid/contacts-demo', component: ContactsStaticComponent, canActivate: [AuthGuard] }, // now lazy 
+
+
   // { path: 'project/:projectid/contact/_edit/:requesterid', component: ContactEditComponent, canActivate: [AuthGuard] }, // now lazy // called from the dropodown of the chat to change contact email , name amd lastname on fly (use to not display the goBack)
 
 
@@ -425,8 +476,17 @@ const routes: Routes = [
     loadChildren: () => import('app/ws_requests/ws-requests-list/ws-requests-list.module').then(m => m.WsRequestsListModule),
     canActivate: [AuthGuard, ProjectProfileGuard]
   },
+   // { path: 'project/:projectid/wsrequests', component: WsRequestsListComponent, canActivate: [AuthGuard, ProjectProfileGuard] }, // now lazy
 
-  // { path: 'project/:projectid/wsrequests', component: WsRequestsListComponent, canActivate: [AuthGuard, ProjectProfileGuard] }, // now lazy
+   // Conversations list demo page
+   {
+    path: 'project/:projectid/wsrequests-demo',
+    loadChildren: () => import('app/static-pages/wsrequests-static/wsrequests-static.module').then(m => m.WsrequestsStaticModule),
+    canActivate: [AuthGuard]
+  },
+  // { path: 'project/:projectid/wsrequests-demo', component: WsrequestsStaticComponent, canActivate: [AuthGuard] }, // now lazy
+
+ 
 
   // HISTORY & NORT
   {
@@ -497,8 +557,6 @@ const routes: Routes = [
   // ---------------------------------
   // Components with setting sidebar
   // ---------------------------------
-
-
   // Canned Responses
   {
     path: 'project/:projectid/cannedresponses',
@@ -507,7 +565,13 @@ const routes: Routes = [
   },
   // { path: 'project/:projectid/cannedresponses', component: CannedResponsesListComponent, canActivate: [AuthGuard, ProjectProfileGuard] },
 
-  { path: 'project/:projectid/cannedresponses-demo', component: CannedResponsesStaticComponent, canActivate: [AuthGuard] },
+  // Canned Responses demo page
+  {
+    path: 'project/:projectid/cannedresponses-demo',
+    loadChildren: () => import('app/static-pages/canned-responses-static/canned-responses-static.module').then(m => m.CannedResponsesStaticModule),
+    canActivate: [AuthGuard],
+  },
+  // { path: 'project/:projectid/cannedresponses-demo', component: CannedResponsesStaticComponent, canActivate: [AuthGuard] },
 
   // Widget Set Up
   {
@@ -624,7 +688,13 @@ const routes: Routes = [
   },
   // { path: 'project/:projectid/group/edit/:groupid', component: GroupEditAddComponent, canActivate: [AuthGuard] }, // now lazy
 
-  { path: 'project/:projectid/groups-demo', component: GroupsStaticComponent, canActivate: [AuthGuard] },
+  // Group demo page
+  {
+    path: 'project/:projectid/groups-demo',
+    loadChildren: () => import('app/static-pages/groups-static/groups-static.module').then(m => m.GroupsStaticModule),
+    canActivate: [AuthGuard],
+  },
+  // { path: 'project/:projectid/groups-demo', component: GroupsStaticComponent, canActivate: [AuthGuard] }, // now lazy
 
 
   // Email ticketing
@@ -635,7 +705,14 @@ const routes: Routes = [
   },
   // { path: 'project/:projectid/email', component: EmailTicketingComponent, canActivate: [AuthGuard, ProjectProfileGuard] }, // now lazy
 
-  { path: 'project/:projectid/email-demo', component: EmailTicketingStaticComponent, canActivate: [AuthGuard] },
+
+  // Email ticketing demo page
+  {
+    path: 'project/:projectid/email-demo',
+    loadChildren: () => import('app/static-pages/email-ticketing-static/email-ticketing-static.module').then(m => m.EmailTicketingStaticModule),
+    canActivate: [AuthGuard],
+  },
+  // { path: 'project/:projectid/email-demo', component: EmailTicketingStaticComponent, canActivate: [AuthGuard] },
 
   // Tags
   {
@@ -654,7 +731,13 @@ const routes: Routes = [
   },
   // { path: 'project/:projectid/hours', component: HoursComponent, canActivate: [AuthGuard, ProjectProfileGuard] }, // now lazy
 
-  { path: 'project/:projectid/hours-demo', component: HoursStaticComponent, canActivate: [AuthGuard] },
+  // Working hours demo page
+  {
+    path: 'project/:projectid/hours-demo',
+    loadChildren: () => import('app/static-pages/hours-static/hours-static.module').then(m => m.HoursStaticModule),
+    canActivate: [AuthGuard],
+  },
+  // { path: 'project/:projectid/hours-demo', component: HoursStaticComponent, canActivate: [AuthGuard] }, // now lazy 
 
 
   // Automations
@@ -665,7 +748,13 @@ const routes: Routes = [
   },
   // { path: 'project/:projectid/automations', component: AutomationsComponent, canActivate: [AuthGuard, ProjectProfileGuard] }, // now lazy
 
-  { path: 'project/:projectid/automations-demo', component: AutomationStaticComponent, canActivate: [AuthGuard] },
+  // Automations demo page
+  {
+    path: 'project/:projectid/automations-demo',
+    loadChildren: () => import('app/automations/automations.module').then(m => m.AutomationsModule),
+    canActivate: [AuthGuard],
+  },
+  // { path: 'project/:projectid/automations-demo', component: AutomationStaticComponent, canActivate: [AuthGuard] }, // now lazy
 
   // Integrations
   {
@@ -737,6 +826,13 @@ const routes: Routes = [
   },
   // { path: 'project/:projectid/project-settings/banned', component: ProjectEditAddComponent, canActivate: [AuthGuard] }, // now lazy
 
+  // Trigger demo page
+  {
+    path: 'project/:projectid/trigger-demo',
+    loadChildren: () => import('app/static-pages/trigger-static/trigger-static.module').then(m => m.TriggerStaticModule),
+    canActivate: [AuthGuard],
+  },
+  // { path: 'project/:projectid/trigger-demo', component: TriggerStaticComponent, canActivate: [AuthGuard] }, // now lazy
 
   { path: 'project/:projectid/notification-email', component: NotificationEmailComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/smtp-settings', component: SmtpSettingsComponent, canActivate: [AuthGuard] },
@@ -745,7 +841,7 @@ const routes: Routes = [
 
   { path: 'project/:projectid/widget/translations', component: WidgetMultilanguageComponent, canActivate: [AuthGuard] }, // old
 
-  { path: 'project/:projectid/contacts-demo', component: ContactsStaticComponent, canActivate: [AuthGuard] },
+  
 
 
   { path: 'project/:projectid/template-details/:templateid', component: CommunityTemplateDtlsComponent },
@@ -819,7 +915,7 @@ const routes: Routes = [
    * if change wsrequest search for all occurrence - 
    * remember that in the navbar component wsrequest is used for the link from the in app-notification to the request's messages */
 
-  { path: 'project/:projectid/wsrequests-demo', component: WsrequestsStaticComponent, canActivate: [AuthGuard] },
+
 
 
 
@@ -896,17 +992,13 @@ const routes: Routes = [
   // { path: 'project/:projectid/faq/test/:remoteFaqKbKey/:faqkbid', component: FaqTestComponent, canActivate: [AuthGuard] },
   // TEST-FAQ PAGE NEW URL
 
-  { path: 'project/:projectid/analytics-demo', component: AnalyticsStaticComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/analytics/metrics-demo', component: AnalyticsStaticComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/analytics/metrics/visitors-demo', component: AnalyticsStaticComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/analytics/metrics/messages-demo', component: AnalyticsStaticComponent, canActivate: [AuthGuard] },
+
 
 
 
 
   // , ProjectProfileGuard
-  { path: 'project/:projectid/activities', component: ActivitiesComponent, canActivate: [AuthGuard, ProjectProfileGuard] },
-  { path: 'project/:projectid/activities-demo', component: ActivitiesStaticComponent, canActivate: [AuthGuard] },
+
 
 
   // , ProjectProfileGuard
@@ -930,7 +1022,7 @@ const routes: Routes = [
 
   // TRIGGER , ProjectProfileGuard
   { path: 'project/:projectid/trigger', component: TriggerComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/trigger-demo', component: TriggerStaticComponent, canActivate: [AuthGuard] },
+ 
 
   { path: 'project/:projectid/trigger/add', component: TriggerAddComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/trigger/:triggerId', component: TriggerEditComponent, canActivate: [AuthGuard] },

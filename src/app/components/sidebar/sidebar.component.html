@@ -167,7 +167,7 @@
           #tooltip="matTooltip" 
           matTooltipPosition='right' 
           matTooltipHideDelay="100"
-          [ngClass]="{'menu_item_active': CONV_DETAIL_ROUTE_IS_ACTIVE }" style="text-align: center; height: 50px !important;">
+          [ngClass]="{'menu_item_active': CONV_DETAIL_ROUTE_IS_ACTIVE || CONV_DEMO_ROUTE_IS_ACTIVE}" style="text-align: center; height: 50px !important;">
           <a class="customAncor" routerLink="project/{{ project._id }}/wsrequests" style="height: 40px;">
 
           <!-- <a class="customAncor" routerLink="project/{{ project._id }}/all-conversations" style="height: 40px;"> -->
@@ -220,7 +220,7 @@
           matTooltipPosition='right'
           matTooltipHideDelay="100" 
           style="height: 50px !important;"
-          [ngClass]="{'menu_item_active': CONTACT_EDIT_ROUTE_IS_ACTIVE || CONTACT_CONVS_ROUTE_IS_ACTIVE}">
+          [ngClass]="{'menu_item_active': CONTACT_EDIT_ROUTE_IS_ACTIVE || CONTACT_CONVS_ROUTE_IS_ACTIVE || CONTACTS_DEMO_ROUTE_IS_ACTIVE}">
           <a class="customAncor" routerLink="project/{{ project._id }}/contacts">
             <i class="material-icons sidebar-icons">contacts</i>
           </a>

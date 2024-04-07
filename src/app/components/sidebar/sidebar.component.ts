@@ -185,8 +185,10 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   EDIT_PROJECT_USER_ROUTE_IS_ACTIVE: boolean;
   OPERATING_HOURS_ROUTE_IS_ACTIVE: boolean;
   CONV_DETAIL_ROUTE_IS_ACTIVE: boolean;
+  CONV_DEMO_ROUTE_IS_ACTIVE: boolean;
   CONTACT_EDIT_ROUTE_IS_ACTIVE: boolean;
   CONTACT_CONVS_ROUTE_IS_ACTIVE: boolean;
+  CONTACTS_DEMO_ROUTE_IS_ACTIVE: boolean;
   INTEGRATIONS_ROUTE_IS_ACTIVE: boolean;
   INSTALLATION_ROUTE_IS_ACTIVE: boolean;
   EMAIL_TICKETING_ROUTE_IS_ACTIVE: boolean;
@@ -997,6 +999,16 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           // this.logger.log('[SIDEBAR] NavigationEnd - CONV_DETAIL_ROUTE_IS_ACTIVE ', this.CONV_DETAIL_ROUTE_IS_ACTIVE);
         }
 
+        if (event.url.indexOf('/wsrequests-demo') !== -1) {
+          this.CONV_DEMO_ROUTE_IS_ACTIVE = true;
+          // this.logger.log('[SIDEBAR] NavigationEnd - CONV_DEMO_ROUTE_IS_ACTIVE ', this.CONV_DEMO_ROUTE_IS_ACTIVE);
+        } else {
+          this.CONV_DEMO_ROUTE_IS_ACTIVE = false;
+          // this.logger.log('[SIDEBAR] NavigationEnd - CONV_DEMO_ROUTE_IS_ACTIVE ', this.CONV_DEMO_ROUTE_IS_ACTIVE);
+        }
+
+        
+
         if (event.url.indexOf('/contact/edit/') !== -1) {
           this.CONTACT_EDIT_ROUTE_IS_ACTIVE = true;
           // this.logger.log('[SIDEBAR] NavigationEnd - CONTACT_EDIT_ROUTE_IS_ACTIVE ', this.CONTACT_EDIT_ROUTE_IS_ACTIVE);
@@ -1012,6 +1024,16 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           this.CONTACT_CONVS_ROUTE_IS_ACTIVE = false;
           // this.logger.log('[SIDEBAR] NavigationEnd - CONTACT_CONVS_ROUTE_IS_ACTIVE ', this.CONTACT_CONVS_ROUTE_IS_ACTIVE);
         }
+
+        if (event.url.indexOf('/contacts-demo') !== -1) {
+          this.CONTACTS_DEMO_ROUTE_IS_ACTIVE = true;
+          // this.logger.log('[SIDEBAR] NavigationEnd - CONTACTS_DEMO_ROUTE_IS_ACTIVE ', this.CONTACTS_DEMO_ROUTE_IS_ACTIVE);
+        } else {
+          this.CONTACTS_DEMO_ROUTE_IS_ACTIVE = false;
+          // this.logger.log('[SIDEBAR] NavigationEnd - CONTACTS_DEMO_ROUTE_IS_ACTIVE ', this.CONTACTS_DEMO_ROUTE_IS_ACTIVE);
+        }
+
+       
 
         if (event.url.indexOf('/integrations') !== -1) {
           this.INTEGRATIONS_ROUTE_IS_ACTIVE = true;

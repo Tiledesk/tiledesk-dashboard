@@ -124,8 +124,8 @@ import { WidgetService } from './services/widget.service';
 
 import { ActivitiesComponent } from './activities/activities.component';
 
-import { AnalyticsStaticComponent } from './static-pages/analytics-static/analytics-static.component';
-import { ActivitiesStaticComponent } from './static-pages/activities-static/activities-static.component';
+// import { AnalyticsStaticComponent } from './static-pages/analytics-static/analytics-static.component'; // now lazy
+// import { ActivitiesStaticComponent } from './static-pages/activities-static/activities-static.component'; // now lazy
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -143,7 +143,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // import { RealtimeComponent } from './analytics/realtime/realtime.component'; // now lazy
 
 
-import { HoursStaticComponent } from './static-pages/hours-static/hours-static.component';
+// import { HoursStaticComponent } from './static-pages/hours-static/hours-static.component'; // now lazy
 // import { DepartmentsStaticComponent } from './static-pages/departments-static/departments-static.component'; // now lazy
 import { ProjectPlanService } from './services/project-plan.service';
 import { TriggerComponent } from './trigger/trigger.component';
@@ -156,9 +156,9 @@ import { TriggerEditComponent } from './trigger/trigger-edit/trigger-edit.compon
 /* PRIVATE */
 // import { PricingModule } from './pricing/pricing.module'; // lazy loading
 
-import { StaticPageBaseComponent } from './static-pages/static-page-base/static-page-base.component';
+// import { StaticPageBaseComponent } from './static-pages/static-page-base/static-page-base.component'; // deleted
 
-import { GroupsStaticComponent } from './static-pages/groups-static/groups-static.component';
+// import { GroupsStaticComponent } from './static-pages/groups-static/groups-static.component'; // now lazy
 
 import { CreateProjectComponent } from './create-project-wizard/create-project/create-project.component';
 import { InstallWidgetComponent } from './create-project-wizard/install-widget/install-widget.component';
@@ -195,7 +195,7 @@ import { TagsService } from './services/tags.service';
 // import { TagsComponent } from './tags/tags.component'; // now lazy
 // import { TagsDeleteComponent } from './tags/tags-delete/tags-delete.component'; // now lazy
 // import { TagsEditComponent } from './tags/tags-edit/tags-edit.component'; // now lazy
-import { TriggerStaticComponent } from './static-pages/trigger-static/trigger-static.component';
+// import { TriggerStaticComponent } from './static-pages/trigger-static/trigger-static.component'; // now lazy
 import { AccountSettingsComponent } from './user-profile/account-settings/account-settings.component';
 
 
@@ -329,11 +329,11 @@ import { CommunityTemplateDtlsComponent } from './bots/templates/community-templ
 import { HomePromoDesignStudioComponent } from './home-promo-design-studio/home-promo-design-studio.component';
 import { PasswordStrengthComponent } from './auth/signup/password-strength/password-strength.component';
 import { CloneBotComponent } from './bots/bots-list/clone-bot/clone-bot.component';
-import { ContactsStaticComponent } from './static-pages/contacts-static/contacts-static.component';
-import { CannedResponsesStaticComponent } from './static-pages/canned-responses-static/canned-responses-static.component';
+// import { ContactsStaticComponent } from './static-pages/contacts-static/contacts-static.component'; // now lazy
+// import { CannedResponsesStaticComponent } from './static-pages/canned-responses-static/canned-responses-static.component'; // now lazy
 import { UpgradePlanModalComponent } from './components/modals/upgrade-plan-modal/upgrade-plan-modal.component';
-import { WsrequestsStaticComponent } from './static-pages/wsrequests-static/wsrequests-static.component';
-import { EmailTicketingStaticComponent } from './static-pages/email-ticketing-static/email-ticketing-static.component';
+// import { WsrequestsStaticComponent } from './static-pages/wsrequests-static/wsrequests-static.component'; // now lazy
+// import { EmailTicketingStaticComponent } from './static-pages/email-ticketing-static/email-ticketing-static.component'; // now lazy
 import { OnboardingContentComponent } from './create-new-project/onboarding-content/onboarding-content.component';
 import { CnpProjectNameComponent } from './create-new-project/cnp-project-name/cnp-project-name.component';
 import { CnpQuestionSelectComponent } from './create-new-project/cnp-question-select/cnp-question-select.component';
@@ -365,7 +365,7 @@ import { HomeNewsFeedModalComponent } from './home-components/home-news-feed/hom
 // import { AutomationsComponent } from './automations/automations.component'; // now lazy
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 // import { HomeCdsComponent } from './home-components/home-cds/home-cds.component'; // now lazy
-import { AutomationStaticComponent } from './static-pages/automation-static/automation-static.component';
+// import { AutomationStaticComponent } from './static-pages/automation-static/automation-static.component'; // now lazy
 // import { KbModalComponent } from './knowledge-bases/kb-modal/kb-modal.component';
 // import { KbAlertComponent } from './knowledge-bases/kb-alert/kb-alert.component';
 
@@ -517,8 +517,8 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     // ContactDetailsComponent, // now lazy
     // ContactEditComponent, // now lazy
     ActivitiesComponent,
-    AnalyticsStaticComponent,
-    ActivitiesStaticComponent,
+    // AnalyticsStaticComponent, // now lazy
+    // ActivitiesStaticComponent, // now lazy
     FaqTestTrainBotComponent,
     // AnalyticsComponent, // now lazy
     // ConvsDurationComponent,  // now lazy
@@ -532,10 +532,10 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     // VisitorsAnalyticsComponent, // now lazy
     // PanoramicaComponent, // now lazy
     // RealtimeComponent, // now lazy
-    HoursStaticComponent,
+    // HoursStaticComponent, // now lazy
     // DepartmentsStaticComponent, // now lazy
-    StaticPageBaseComponent,
-    GroupsStaticComponent,
+    // StaticPageBaseComponent, //deleted
+    // GroupsStaticComponent, // now lazy
     TriggerComponent,
     TriggerAddComponent,
     TriggerEditComponent,
@@ -563,7 +563,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     // TagsComponent, // now lazy
     // TagsDeleteComponent, // now lazy
     // TagsEditComponent, // now lazy
-    TriggerStaticComponent,
+    // TriggerStaticComponent, // now lazy
     AccountSettingsComponent,
     // ProjectsForPanelComponent, // removed
     // WsRequestsUnservedForPanelComponent, // now lazy
@@ -641,11 +641,11 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     HomePromoDesignStudioComponent,
     PasswordStrengthComponent,
     CloneBotComponent,
-    ContactsStaticComponent,
-    CannedResponsesStaticComponent,
+    // ContactsStaticComponent, // now lazy
+    // CannedResponsesStaticComponent, // now lazy
     UpgradePlanModalComponent,
-    WsrequestsStaticComponent,
-    EmailTicketingStaticComponent,
+    // WsrequestsStaticComponent, // now lazy
+    // EmailTicketingStaticComponent, // now lazy
     OnboardingContentComponent,
     CnpProjectNameComponent,
     CnpQuestionSelectComponent,
@@ -681,7 +681,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     HomeNewsFeedModalComponent,
     // AutomationsComponent, // now lazy
     // HomeCdsComponent, // now lazy
-    AutomationStaticComponent,
+    // AutomationStaticComponent, // now lazy
     // KbModalComponent,
     // KbAlertComponent,
     // IntegrationsComponent, // now lazy

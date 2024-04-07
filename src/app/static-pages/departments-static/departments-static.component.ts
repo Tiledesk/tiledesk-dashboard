@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../core/auth.service';
-import { StaticPageBaseComponent } from './../static-page-base/static-page-base.component';
 import { Subscription } from 'rxjs';
 import { NotifyService } from '../../core/notify.service';
 import { ProjectPlanService } from '../../services/project-plan.service';
@@ -23,7 +22,7 @@ const swal = require('sweetalert');
   templateUrl: './departments-static.component.html',
   styleUrls: ['./departments-static.component.scss']
 })
-// extends StaticPageBaseComponent
+
 export class DepartmentsStaticComponent  extends PricingBaseComponent implements OnInit, OnDestroy {
   private unsubscribe$: Subject<any> = new Subject<any>();
   PLAN_NAME = PLAN_NAME
