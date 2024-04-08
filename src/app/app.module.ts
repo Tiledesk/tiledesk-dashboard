@@ -391,7 +391,7 @@ import { ModalPreviewKnowledgeBaseComponent } from './knowledge-bases/modals/mod
 import { ModalDetailKnowledgeBaseComponent } from './knowledge-bases/modals/modal-detail-knowledge-base/modal-detail-knowledge-base.component';
 import { KnowledgeBaseTableComponent } from './knowledge-bases/modals/knowledge-base-table/knowledge-base-table.component';
 import { ModalErrorComponent } from './knowledge-bases/modals/modal-error/modal-error.component';
-import { KnowledgeBasesPreviousComponent } from './knowledge-bases-previous/knowledge-bases-previous.component';
+// import { KnowledgeBasesPreviousComponent } from './knowledge-bases-previous/knowledge-bases-previous.component'; // now lazy
 import { ModalUrlsKnowledgeBaseComponent } from './knowledge-bases/modals/modal-urls-knowledge-base/modal-urls-knowledge-base.component';
 import { AddContentMenuComponent } from './knowledge-bases/menu/add-content-menu/add-content-menu.component';
 import { UserModalComponent } from './users/user-modal/user-modal.component';
@@ -702,7 +702,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     ModalDetailKnowledgeBaseComponent,
     KnowledgeBaseTableComponent,
     ModalErrorComponent,
-    KnowledgeBasesPreviousComponent,
+    // KnowledgeBasesPreviousComponent, // now lazy
     ModalUrlsKnowledgeBaseComponent,
     AddContentMenuComponent,
     UserModalComponent,

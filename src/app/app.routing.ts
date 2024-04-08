@@ -153,7 +153,7 @@ import { OnboardingWelcomeComponent } from './create-new-project/onboarding-welc
 // import { AutomationsComponent } from './automations/automations.component'; // now lazy
 
 
-import { KnowledgeBasesPreviousComponent } from './knowledge-bases-previous/knowledge-bases-previous.component';
+// import { KnowledgeBasesPreviousComponent } from './knowledge-bases-previous/knowledge-bases-previous.component'; // now lazy
 // import { IntegrationsComponent } from './integrations/integrations.component'; // now lazy
 
 
@@ -476,17 +476,17 @@ const routes: Routes = [
     loadChildren: () => import('app/ws_requests/ws-requests-list/ws-requests-list.module').then(m => m.WsRequestsListModule),
     canActivate: [AuthGuard, ProjectProfileGuard]
   },
-   // { path: 'project/:projectid/wsrequests', component: WsRequestsListComponent, canActivate: [AuthGuard, ProjectProfileGuard] }, // now lazy
+  // { path: 'project/:projectid/wsrequests', component: WsRequestsListComponent, canActivate: [AuthGuard, ProjectProfileGuard] }, // now lazy
 
-   // Conversations list demo page
-   {
+  // Conversations list demo page
+  {
     path: 'project/:projectid/wsrequests-demo',
     loadChildren: () => import('app/static-pages/wsrequests-static/wsrequests-static.module').then(m => m.WsrequestsStaticModule),
     canActivate: [AuthGuard]
   },
   // { path: 'project/:projectid/wsrequests-demo', component: WsrequestsStaticComponent, canActivate: [AuthGuard] }, // now lazy
 
- 
+
 
   // HISTORY & NORT
   {
@@ -834,6 +834,23 @@ const routes: Routes = [
   },
   // { path: 'project/:projectid/trigger-demo', component: TriggerStaticComponent, canActivate: [AuthGuard] }, // now lazy
 
+  // KNOWLEDGE BASES OLD
+  {
+    path: 'project/:projectid/knowledge-bases-pre',
+    loadChildren: () => import('app/knowledge-bases-previous/knowledge-bases-previous.module').then(m => m.KnowledgeBasesPreviousModule),
+    canActivate: [AuthGuard],
+  },
+  //  { path: 'project/:projectid/knowledge-bases-pre', component: KnowledgeBasesPreviousComponent, canActivate: [AuthGuard] }, // now lazy
+
+  {
+    path: 'project/:projectid/knowledge-bases-pre/:calledby',
+    loadChildren: () => import('app/knowledge-bases-previous/knowledge-bases-previous.module').then(m => m.KnowledgeBasesPreviousModule),
+    canActivate: [AuthGuard],
+  },
+  //  { path: 'project/:projectid/knowledge-bases-pre/:calledby', component: KnowledgeBasesPreviousComponent, canActivate: [AuthGuard] }, // now lazy
+
+
+
   { path: 'project/:projectid/notification-email', component: NotificationEmailComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/smtp-settings', component: SmtpSettingsComponent, canActivate: [AuthGuard] },
 
@@ -841,7 +858,7 @@ const routes: Routes = [
 
   { path: 'project/:projectid/widget/translations', component: WidgetMultilanguageComponent, canActivate: [AuthGuard] }, // old
 
-  
+
 
 
   { path: 'project/:projectid/template-details/:templateid', component: CommunityTemplateDtlsComponent },
@@ -1022,7 +1039,7 @@ const routes: Routes = [
 
   // TRIGGER , ProjectProfileGuard
   { path: 'project/:projectid/trigger', component: TriggerComponent, canActivate: [AuthGuard] },
- 
+
 
   { path: 'project/:projectid/trigger/add', component: TriggerAddComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/trigger/:triggerId', component: TriggerEditComponent, canActivate: [AuthGuard] },
@@ -1061,9 +1078,7 @@ const routes: Routes = [
   { path: 'project/:projectid/knowledge-bases/:calledby', component: KnowledgeBasesComponent, canActivate: [AuthGuard] }, // when called from home
 
 
-  // KNOWLEDGE BASES OLD
-  { path: 'project/:projectid/knowledge-bases-pre', component: KnowledgeBasesPreviousComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/knowledge-bases-pre/:calledby', component: KnowledgeBasesPreviousComponent, canActivate: [AuthGuard] },
+
 
   // RESET PASSORD (i.e. page forgot psw & reset psw )
   { path: 'forgotpsw', component: ResetPswComponent },

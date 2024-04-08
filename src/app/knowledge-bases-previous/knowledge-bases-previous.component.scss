@@ -337,9 +337,9 @@ td {
 
 ::ng-deep .custom-spinner {
     .sk-fading-circle {
-        width: 20px;
-        height: 20px;
-        margin: 0px;
+        width: 20px !important;
+        height: 20px !important;
+        margin: 0px !important;
     }
 
     .sk-fading-circle .sk-circle:before {
