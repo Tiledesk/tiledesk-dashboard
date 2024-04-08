@@ -42,6 +42,7 @@
               "src/dashboard-pre-config-nofb.json",
               "src/dashboard-mqtt.json",
               "src/dashboard-pre-mqtt-engine-config.json",
+              "src/environments/externalenv.json",
               {
                 "glob": "**/*",
                 "input": "node_modules/leaflet/dist/images/",

@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.6.8
+- Deploys in production
+- Improves the app config service
+
 ### 2.6.7
 - Deploys in production
 - Improves bot list page
