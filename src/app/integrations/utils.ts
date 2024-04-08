@@ -10,6 +10,7 @@ export enum INTEGRATIONS_KEYS {
     KLAVIYO = 'klaviyo',
     MAILCHIMP = 'mailchimp',
     MAKE = 'make',
+    N8N = 'n8n',
     PIPEDRIVE = 'pipedrive',
     SALESFORCE = 'salesforce',
     TELEGRAM = 'telegram',
@@ -54,7 +55,7 @@ export const CATEGORIES_LIST = [
 
 
 export const INTEGRATIONS_LIST: { [key: string]: { name: string, category: INTEGRATIONS_CATEGORIES, key: INTEGRATIONS_KEYS, src_icon: string, src_logo: string, pro?: boolean, plan: 'Sandbox' | 'Basic' | 'Premium' | 'Custom' } } = {
-    //BREVO:              { name: "Brevo",            category: INTEGRATIONS_CATEGORIES.CRM,              key: INTEGRATIONS_KEYS.BREVO,           src_icon: "assets/img/int/brevo.png",                   src_logo: "assets/img/int/brevo-logo.png",              pro: true,  plan: 'Premium' },
+    BREVO:              { name: "Brevo",            category: INTEGRATIONS_CATEGORIES.CRM,              key: INTEGRATIONS_KEYS.BREVO,           src_icon: "assets/img/int/brevo.png",                   src_logo: "assets/img/int/brevo-logo.png",              pro: true,  plan: 'Premium' },
     CUSTOMERIO:         { name: "Customer.io",      category: INTEGRATIONS_CATEGORIES.CRM,              key: INTEGRATIONS_KEYS.CUSTOMERIO,      src_icon: "assets/img/int/customer-io-logo-color.svg",  src_logo: "assets/img/int/customerio-logo.svg",         pro: true,  plan: 'Premium' },
     HUBSPOT:            { name: "HubSpot",          category: INTEGRATIONS_CATEGORIES.CRM,              key: INTEGRATIONS_KEYS.HUBSPOT,         src_icon: "assets/img/int/hubspot.png",                 src_logo: "assets/img/int/hubspot-logo.svg",            pro: true,  plan: 'Premium' },
     OPENAI:             { name: "OpenAI",           category: INTEGRATIONS_CATEGORIES.AI,               key: INTEGRATIONS_KEYS.OPENAI,          src_icon: "assets/cds/images/actions/openai-icon.svg",  src_logo: "assets/img/int/openai-logo.svg",             pro: true,  plan: 'Custom' },
@@ -64,6 +65,7 @@ export const INTEGRATIONS_LIST: { [key: string]: { name: string, category: INTEG
     //KLAVIYO:            { name: "Klaviyo",          category: INTEGRATIONS_CATEGORIES.AUTOMATION,       key: INTEGRATIONS_KEYS.KLAVIYO,         src_icon: "assets/img/int/klaviyo-icon.png",            src_logo: "assets/img/int/klaviyo-logo.png",            pro: true,  plan: 'Premium' },
     //MAILCHIMP:          { name: "Mailchimp",        category: INTEGRATIONS_CATEGORIES.EMAIL,            key: INTEGRATIONS_KEYS.MAILCHIMP,       src_icon: "assets/img/int/mailchimp-icon.png",          src_logo: "assets/img/int/mailchimp-logo.png",          pro: true,  plan: 'Premium' },
     MAKE:               { name: "Make",             category: INTEGRATIONS_CATEGORIES.INT_PLAT,         key: INTEGRATIONS_KEYS.MAKE,            src_icon: "assets/img/int/make-icon.png",               src_logo: "assets/img/int/make-logo.svg",               pro: true,  plan: 'Basic'},
+    N8N:                { name: "N8N",              category: INTEGRATIONS_CATEGORIES.INT_PLAT,         key: INTEGRATIONS_KEYS.N8N,             src_icon: "assets/img/int/n8n-icon.svg",                src_logo: "assets/img/int/n8n-logo.png",                pro: true,  plan: 'Basic'},
     //PIPEDRIVE:          { name: "Pipedrive",        category: INTEGRATIONS_CATEGORIES.CRM,              key: INTEGRATIONS_KEYS.PIPEDRIVE,       src_icon: "assets/img/int/pipedrive-icon.png",          src_logo: "assets/img/int/pipedrive-logo.png",          pro: true,  plan: 'Premium' },
     //SALESFORCE:         { name: "Salesforce",       category: INTEGRATIONS_CATEGORIES.CRM,              key: INTEGRATIONS_KEYS.SALESFORCE,      src_icon: "assets/img/int/salesforce-icon.png",         src_logo: "assets/img/int/salesforce-logo.png",         pro: true,  plan: 'Premium' },
     //ZAPIER:             { name: "Zapier",           category: INTEGRATIONS_CATEGORIES.INT_PLAT,         key: INTEGRATIONS_KEYS.ZAPIER,          src_icon: "assets/img/int/zapier-icon.png",             src_logo: "assets/img/int/zapier-logo.svg",             pro: true,  plan: 'Basic' },
@@ -75,7 +77,7 @@ export const INTEGRATIONS_LIST: { [key: string]: { name: string, category: INTEG
 }
 
 export const INTEGRATION_LIST_ARRAY = [
-    //{ name: "Brevo",            category: INTEGRATIONS_CATEGORIES.CRM,              key: INTEGRATIONS_KEYS.BREVO,           src_icon: "assets/img/int/brevo-icon.png",              src_logo: "assets/img/int/brevo-logo.png",              pro: true,  plan: 'Premium' },
+    { name: "Brevo",            category: INTEGRATIONS_CATEGORIES.CRM,              key: INTEGRATIONS_KEYS.BREVO,           src_icon: "assets/img/int/brevo-icon.png",              src_logo: "assets/img/int/brevo-logo.png",              pro: true,  plan: 'Premium' },
     { name: "Customer.io",      category: INTEGRATIONS_CATEGORIES.CRM,              key: INTEGRATIONS_KEYS.CUSTOMERIO,      src_icon: "assets/img/int/customerio-icon.png",         src_logo: "assets/img/int/customerio-logo.svg",         pro: true,  plan: 'Premium' },
     { name: "HubSpot",          category: INTEGRATIONS_CATEGORIES.CRM,              key: INTEGRATIONS_KEYS.HUBSPOT,         src_icon: "assets/img/int/hubspot-icon.png",            src_logo: "assets/img/int/hubspot-logo.svg",            pro: true,  plan: 'Premium' },
     { name: "OpenAI",           category: INTEGRATIONS_CATEGORIES.AI,               key: INTEGRATIONS_KEYS.OPENAI,          src_icon: "assets/img/int/openai-icon.svg",             src_logo: "assets/img/int/openai-logo.svg",             pro: true,  plan: 'Custom' },
@@ -85,6 +87,7 @@ export const INTEGRATION_LIST_ARRAY = [
     //{ name: "Klaviyo",          category: INTEGRATIONS_CATEGORIES.AUTOMATION,       key: INTEGRATIONS_KEYS.KLAVIYO,         src_icon: "assets/img/int/klaviyo-icon.png",            src_logo: "assets/img/int/klaviyo-logo.png",            pro: true,  plan: 'Premium' },
     //{ name: "Mailchimp",        category: INTEGRATIONS_CATEGORIES.EMAIL,            key: INTEGRATIONS_KEYS.MAILCHIMP,       src_icon: "assets/img/int/mailchimp-icon.png",          src_logo: "assets/img/int/mailchimp-logo.png",          pro: true,  plan: 'Premium' },
     { name: "Make",             category: INTEGRATIONS_CATEGORIES.INT_PLAT,         key: INTEGRATIONS_KEYS.MAKE,            src_icon: "assets/img/int/make-icon.png",               src_logo: "assets/img/int/make-logo.svg",               pro: true,  plan: 'Basic'},
+    { name: "N8N",              category: INTEGRATIONS_CATEGORIES.INT_PLAT,         key: INTEGRATIONS_KEYS.N8N,             src_icon: "assets/img/int/n8n-icon.svg",                src_logo: "assets/img/int/n8n-logo.png",                pro: true,  plan: 'Basic'},
     //{ name: "Pipedrive",        category: INTEGRATIONS_CATEGORIES.CRM,              key: INTEGRATIONS_KEYS.PIPEDRIVE,       src_icon: "assets/img/int/pipedrive-icon.png",          src_logo: "assets/img/int/pipedrive-logo.png",          pro: true,  plan: 'Premium' },
     //{ name: "Salesforce",       category: INTEGRATIONS_CATEGORIES.CRM,              key: INTEGRATIONS_KEYS.SALESFORCE,      src_icon: "assets/img/int/salesforce-icon.png",         src_logo: "assets/img/int/salesforce-logo.png",         pro: true,  plan: 'Premium' },
     //{ name: "Zapier",           category: INTEGRATIONS_CATEGORIES.INT_PLAT,         key: INTEGRATIONS_KEYS.ZAPIER,          src_icon: "assets/img/int/zapier-icon.png",             src_logo: "assets/img/int/zapier-logo.svg",             pro: true,  plan: 'Basic' },
@@ -167,5 +170,13 @@ export class MakeIntegration extends Integration {
         super();
         this.name = INTEGRATIONS_KEYS.MAKE;
         this.value = {}
+    }
+}
+
+export class N8nIntegration extends Integration {
+    constructor() {
+        super();
+        this.name = INTEGRATIONS_KEYS.N8N;
+        this.value = {};
     }
 }

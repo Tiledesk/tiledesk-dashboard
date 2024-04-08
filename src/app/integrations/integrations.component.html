@@ -156,6 +156,12 @@
                                     (onDeleteIntegration)=integrationDeletedEvent($event)>
                                 </make-integration>
 
+                                <n8n-integration *ngIf="integrationSelectedName === INT_KEYS.N8N"
+                                    [integration]="selectedIntegration"
+                                    (onUpdateIntegration)=integrationUpdateEvent($event)
+                                    (onDeleteIntegration)=integrationDeletedEvent($event)>
+                                </n8n-integration>
+
                                 <openai-integration *ngIf="integrationSelectedName === INT_KEYS.OPENAI"
                                     [integration]="selectedIntegration"
                                     (onUpdateIntegration)=integrationUpdateEvent($event)
