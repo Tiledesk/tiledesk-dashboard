@@ -61,8 +61,10 @@ export class ChatbotAlertComponent extends PricingBaseComponent implements OnIni
       takeUntil(this.unsubscribe$)
     )
     .subscribe((project) => {
-      this.project = project;
-      this.projectId = project._id
+      if (project) {
+        this.project = project;
+        this.projectId = project._id
+      }
       
     })
   }
