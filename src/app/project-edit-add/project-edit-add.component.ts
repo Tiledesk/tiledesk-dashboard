@@ -2181,7 +2181,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
    */
   getProjectById() {
     this.projectService.getProjectById(this.id_project).subscribe((project: any) => {
-      console.log('[PRJCT-EDIT-ADD] - GET PROJECT BY ID - PROJECT OBJECT: ', project);
+      this.logger.log('[PRJCT-EDIT-ADD] - GET PROJECT BY ID - PROJECT OBJECT: ', project);
       if (project) {
         this.projectObject = project;
         this.logger.log('[PRJCT-EDIT-ADD] - GET PROJECT BY ID - PROJECT OBJECT: ', this.projectObject);

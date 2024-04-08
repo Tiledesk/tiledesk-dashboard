@@ -7,6 +7,7 @@ import { SettingsSidebarModule } from 'app/components/settings-sidebar/settings-
 import { SharedModule } from 'app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MomentModule } from 'ngx-moment';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 const routes: Routes = [
   { path: "", component: ProjectEditAddComponent},
@@ -24,7 +25,8 @@ const routes: Routes = [
     SharedModule,
     FormsModule,
     ReactiveFormsModule,
-    MomentModule
+    MomentModule,
+    MatTooltipModule
   ]
 })
 export class ProjectEditAddModule { }
