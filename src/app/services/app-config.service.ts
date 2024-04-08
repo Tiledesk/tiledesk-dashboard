@@ -21,7 +21,7 @@ export class AppConfigService {
       const data = await this._httpClient.get(this.appConfig.remoteConfigUrl)
         .toPromise();
       // console.log('AppConfigService loadAppConfig data: ', data['_body']['firebase']);
-      console.log('[APP-CONFIG-SERVICE] loadAppConfig data: ', data);
+      // console.log('[APP-CONFIG-SERVICE] loadAppConfig data: ', data);
 
       // const dataObject = JSON.parse(data['_body'])
       const allconfig = data
@@ -64,16 +64,16 @@ export class AppConfigService {
 
           if (window.location.protocol === 'http:') {
             allconfig['wsUrl'] = 'ws://' + window.location.hostname + ':' + window.location.port + allconfig['wsUrlRel']
-            console.log('[APP-CONFIG-SERVICE] wsUrl (1)', allconfig['wsUrl'])
+            // console.log('[APP-CONFIG-SERVICE] wsUrl (1)', allconfig['wsUrl'])
 
           } else if (window.location.protocol === 'https:') {
 
             allconfig['wsUrl'] = 'wss://' + window.location.hostname + ':' + window.location.port + allconfig['wsUrlRel']
-            console.log('[APP-CONFIG-SERVICE] wsUrl (2)', allconfig['wsUrl'])
+            // console.log('[APP-CONFIG-SERVICE] wsUrl (2)', allconfig['wsUrl'])
           } else {
 
             allconfig['wsUrl'] = 'ws://' + window.location.hostname + ':' + window.location.port + allconfig['wsUrlRel']
-            console.log('[APP-CONFIG-SERVICE] wsUrl (3)', allconfig['wsUrl'])
+            // console.log('[APP-CONFIG-SERVICE] wsUrl (3)', allconfig['wsUrl'])
           }
 
         } else {
