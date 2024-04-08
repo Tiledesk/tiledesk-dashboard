@@ -339,7 +339,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   getProjectById(projectId) {
     this.projectService.getProjectById(projectId).subscribe((project: any) => {
-      console.log('[HOME] - GET PROJECT BY ID - PROJECT: ', project);
+      this.logger.log('[HOME] - GET PROJECT BY ID - PROJECT: ', project);
 
       if (project && project.attributes && project.attributes.dashlets) {
         this.PROJECT_ATTRIBUTES = project.attributes;
@@ -474,7 +474,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       }
 
       this.current_prjct = projects.find(prj => prj.id_project.id === projectId);
-      console.log('[HOME] - CURRENT PROJECT - current_prjct (findCurrentProjectAmongAll)', this.current_prjct);
+      this.logger.log('[HOME] - CURRENT PROJECT - current_prjct (findCurrentProjectAmongAll)', this.current_prjct);
       if (this.current_prjct) {
         this.logger.log('[HOME] - CURRENT PROJECT - current_prjct  > attributes', this.current_prjct.id_project.attributes);
         const project = this.current_prjct.id_project

@@ -1711,7 +1711,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
   getCustomerAndPaymentMethods() {
     this.projectService.getStripeCustomer().subscribe((customer: any) => {
-      console.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT METHODS - customer ', customer);
+      this.logger.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT METHODS - customer ', customer);
       if (customer) {
         this.customer_id = customer.id
         this.logger.log('[PRJCT-EDIT-ADD] - GET STRIPE CUSTOMER & PAYMENT METHODS - customer id', this.customer_id);
@@ -1858,7 +1858,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
 
   onSubmit(form) {
-    console.log('onSubmit form',  form)
+    this.logger.log('onSubmit form',  form)
     this.submitted = true;
     this.logger.log('onSubmit form', form);
     if (form.expirationDate && form.expirationDate !== '') {

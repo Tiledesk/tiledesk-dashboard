@@ -395,7 +395,7 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
 
   getProjectById(projectId) {
     this.projectService.getProjectById(projectId).subscribe((project: any) => {
-      console.log('[KNOWLEDGE-BASES-COMP] - GET PROJECT BY ID - PROJECT: ', project);
+      this.logger.log('[KNOWLEDGE-BASES-COMP] - GET PROJECT BY ID - PROJECT: ', project);
       this.profile_name = project.profile.name
       this.logger.log('[KNOWLEDGE-BASES-COMP] - GET PROJECT BY ID - profile_name: ', this.profile_name);
     }, error => {
@@ -544,7 +544,6 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
     let error = this.msgErrorAddUpdateKb;
     this.kbService.addSitemap(body).subscribe((resp: any) => {
       this.logger.log("onSendSitemap:", resp);
-      console.log("onSendSitemap:", resp);
       if (resp.errors && resp.errors[0]) {
         swal({
           title: this.warningTitle,

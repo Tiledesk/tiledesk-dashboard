@@ -562,7 +562,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
 
   getProjectById(projectId) {
     this.projectService.getProjectById(projectId).subscribe((project: any) => {
-     console.log('[BOT-CREATE] - GET PROJECT BY ID - PROJECT: ', project);
+      this.logger.log('[BOT-CREATE] - GET PROJECT BY ID - PROJECT: ', project);
       this.prjct_profile_name = project.profile.name
       // this.logger.log('[BOT-CREATE] - GET PROJECT BY ID - PROJECT > prjct_profile_name: ', this.prjct_profile_name);
 

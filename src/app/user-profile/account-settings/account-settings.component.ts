@@ -185,7 +185,7 @@ export class AccountSettingsComponent extends PricingBaseComponent implements On
    */
   getProjects() {
     this.projectService.getProjects().subscribe((projects: any) => {
-      console.log('[USER-PROFILE][ACCOUNT-SETTINGS] - GET PROJECTS ', projects);
+      this.logger.log('[USER-PROFILE][ACCOUNT-SETTINGS] - GET PROJECTS ', projects);
 
       if (projects) {
         this.countOfPrjctsInWichAreOwner = 0;

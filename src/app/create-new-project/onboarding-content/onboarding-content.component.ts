@@ -240,7 +240,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
   private getProjects() {
     this.showSpinner = true;
     this.projectService.getProjects().subscribe((projects: any) => {
-     console.log('[ONBOARDING-CONTENT] projects ', projects) 
+      this.logger.log('[ONBOARDING-CONTENT] projects ', projects) 
       this.isFirstProject = true;
       if (projects) {
         this.projects = projects;
@@ -329,7 +329,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
     //   lang = this.translate.currentLang;
     // }
     // let onboardingConfig = 'assets/config/onboarding-config-'+lang+'.json';
-    console.log('loadJsonOnboardingConfig:: ',onboardingConfig);
+    this.logger.log('loadJsonOnboardingConfig:: ',onboardingConfig);
     let jsonSteps: any;
     this.httpClient.get(onboardingConfig).subscribe(data => {
       let jsonString = JSON.stringify(data);
@@ -353,7 +353,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
 
       // this.arrayOfSteps.push(TYPE_STEP.WIDGET_INSTALLATION);
       this.arrayOfSteps.push(TYPE_STEP.TEMPLATES_INSTALLATION);
-      console.log('[ONBOARDING-CONTENT] arrayOfSteps ', this.arrayOfSteps)
+      this.logger.log('[ONBOARDING-CONTENT] arrayOfSteps ', this.arrayOfSteps)
 
     });
   }
@@ -461,13 +461,13 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
     // console.log('[ONBOARDING-CONTENT] activeTypeStepNumber: ', this.activeTypeStepNumber)
 
     if (this.segmentIdentifyAttributes && this.segmentIdentifyAttributes["solution_channel"] === "whatsapp_fb_messenger") {
-      console.log('[ONBOARDING-CONTENT] this.arrayOfSteps[this.activeTypeStepNumber] ', this.arrayOfSteps[this.activeTypeStepNumber])
+      this.logger.log('[ONBOARDING-CONTENT] this.arrayOfSteps[this.activeTypeStepNumber] ', this.arrayOfSteps[this.activeTypeStepNumber])
       // if(this.arrayOfSteps[this.activeTypeStepNumber] === TYPE_STEP.WIDGET_INSTALLATION) {
 
       // console.log('[ONBOARDING-CONTENT] goToNextStep (1): ', this.arrayOfSteps)
 
       this.arrayOfSteps = this.arrayOfSteps.filter(item => item !== TYPE_STEP.WIDGET_INSTALLATION);
-      console.log('[ONBOARDING-CONTENT] goToNextStep (2): ', this.arrayOfSteps)
+      this.logger.log('[ONBOARDING-CONTENT] goToNextStep (2): ', this.arrayOfSteps)
 
       // this.arrayOfSteps.splice((this.arrayOfSteps.length - 2), 1);
       // } 
@@ -675,7 +675,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
   // -----------------  FUNCTION CALLBACK   ------------------------ //
   callback(step: string, variable?: any) {
     // console.log('[ONBOARDING-CONTENT] callback HRE YESSSSS step ', step)
-    console.log('[ONBOARDING-CONTENT] callback: ', this.arrayOfSteps)
+    this.logger.log('[ONBOARDING-CONTENT] callback: ', this.arrayOfSteps)
     if (step === 'createNewProject') {
 
       //   this.createBot();
@@ -723,7 +723,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
 
   // for new home
   saveUserPreferences(segmentIdentifyAttributes) {
-    console.log('[ONBOARDING-CONTENT] saveUserPreferences arrayOfSteps: ', this.arrayOfSteps)
+    this.logger.log('[ONBOARDING-CONTENT] saveUserPreferences arrayOfSteps: ', this.arrayOfSteps)
     this.projectService.updateProjectWithUserPreferences(segmentIdentifyAttributes)
       .subscribe((res: any) => {
 

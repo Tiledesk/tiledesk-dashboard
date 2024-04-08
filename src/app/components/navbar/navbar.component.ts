@@ -550,7 +550,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   getProjects() {
     // console.log('[NAVBAR] calling getProjects ... ');
     this.projectService.getProjects().subscribe((projects: any) => {
-      console.log('[NAVBAR] getProjects PROJECTS ', projects);
+      this.logger.log('[NAVBAR] getProjects PROJECTS ', projects);
 
       if (projects) {
         // this.projects = projects;
