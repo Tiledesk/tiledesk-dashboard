@@ -196,7 +196,7 @@ export class ActivateAppsumoProductComponent extends WidgetSetUpBaseComponent im
 
   getProjects() {
     this.projectService.getProjects().subscribe((projects: any) => {
-      // console.log('[ACTIVATE-APPSUMO-PRODUCT]  getProjects > projects ', projects);
+      this.logger.log('[ACTIVATE-APPSUMO-PRODUCT]  getProjects > projects ', projects);
       if(projects.length === 0) {
         this.createNewProject()
         // console.log('[ACTIVATE-APPSUMO-PRODUCT] user has not a projects - create a new one ') 

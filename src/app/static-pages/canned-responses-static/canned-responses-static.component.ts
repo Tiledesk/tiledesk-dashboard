@@ -1,7 +1,6 @@
 import { Component,OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../core/auth.service';
-import { StaticPageBaseComponent } from './../static-page-base/static-page-base.component';
 import { Subscription } from 'rxjs';
 import { NotifyService } from '../../core/notify.service';
 import { ProjectPlanService } from '../../services/project-plan.service';
@@ -20,7 +19,7 @@ import { Location } from '@angular/common';
   templateUrl: './canned-responses-static.component.html',
   styleUrls: ['./canned-responses-static.component.scss']
 })
-// extends StaticPageBaseComponent
+
 export class CannedResponsesStaticComponent extends PricingBaseComponent implements OnInit, OnDestroy {
   // tparams: any;
   private unsubscribe$: Subject<any> = new Subject<any>();

@@ -702,7 +702,7 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
 
 
   createExternalBot(type: string) {
-   console.log('[APP-STORE] createExternalBot ', type)
+    this.logger.log('[APP-STORE] createExternalBot ', type)
     if (this.USER_ROLE !== 'agent') {
       if (this.chatBotLimit) {
         if (this.chatBotCount < this.chatBotLimit) {

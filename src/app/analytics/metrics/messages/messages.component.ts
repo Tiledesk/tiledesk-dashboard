@@ -158,7 +158,7 @@ export class MessagesComponent implements OnInit {
   }
 
   agentSelected(selectedAgentId) {
-    console.log("[ANALYTICS - MSGS] Selected agent: ", selectedAgentId);
+    this.logger.log("[ANALYTICS - MSGS] Selected agent: ", selectedAgentId);
     this.lineChart.destroy();
     this.subscription.unsubscribe();
     this.getMessagesByLastNDays(this.selectedDaysId, selectedAgentId)
