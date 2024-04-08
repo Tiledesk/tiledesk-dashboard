@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.6.9
+- Deploys in production
+- Improves performance
+
 ### 2.6.8
 - Deploys in production
 - Improves the app config service
