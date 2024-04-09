@@ -161,6 +161,8 @@ export class ProjectPlanService {
           subscription_end_date: current_prjct.id_project.profile['subEnd'],
           subscription_id: current_prjct.id_project.profile['subscriptionId'],
           subscription_creation_date: current_prjct.id_project.profile['subscription_creation_date'],
+          extra1: current_prjct.id_project.profile['extra1'],
+          extra2: current_prjct.id_project.profile['extra2'],
           extra3: current_prjct.id_project.profile['extra3'],
           extra4: current_prjct.id_project.profile['extra4'],
           user_role: current_prjct.role,
@@ -168,7 +170,7 @@ export class ProjectPlanService {
         }
 
 
-        this.logger.log('[PROJECT-PLAN-SERV] - FIND CURRENT PROJECT AMONG ALL - projectPlanData ', projectPlanData) 
+        console.log('[PROJECT-PLAN-SERV] - FIND CURRENT PROJECT AMONG ALL - projectPlanData ', projectPlanData) 
 
         this.projectPlan$.next(projectPlanData);
       } else {
