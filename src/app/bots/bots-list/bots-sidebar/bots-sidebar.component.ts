@@ -1,6 +1,7 @@
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'app/core/auth.service';
+import { BrandService } from 'app/services/brand.service';
 import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { Subject } from 'rxjs';
@@ -35,12 +36,21 @@ export class BotsSidebarComponent implements OnInit, OnChanges {
   public BOTS_MYCHATBOT_CUSTOMER_SATISFACTION_ROUTE_IS_ACTIVE: boolean;
   public BOTS_COMMUNITY_TEMPLATES_ROUTE_IS_ACTIVE: boolean;
   public KNOWLEDGE_BASE_ROUTE_IS_ACTIVE: boolean;
+  public displayChatbotsCommunity : boolean;
+  public displayTemplatesCategory: boolean;
   constructor(
     private auth: AuthService,
     private logger: LoggerService,
     public router: Router,
-    private kbService: KnowledgeBaseService
-  ) { }
+    private kbService: KnowledgeBaseService,
+    public brandService: BrandService
+  ) { 
+    const brand = brandService.getBrand();
+    this.displayChatbotsCommunity =  brand['display_chatbots_community']
+    this.displayTemplatesCategory =  brand['display_templates_category']
+    // console.log('[BOTS-SIDEBAR] - displayChatbotsCommunity ', this.displayChatbotsCommunity)
+    // console.log('[BOTS-SIDEBAR] - displayTemplatesCategory ', this.displayTemplatesCategory)
+  }
 
   ngOnInit(): void {
     this.getCurrentRoute()

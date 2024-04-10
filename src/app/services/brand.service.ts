@@ -35,6 +35,8 @@ export class BrandService {
       "display_contact_us_email": true,
       "custom_redirect_after_logout": false,
       "after_logout_redirect_URL": "",
+      "display_chatbots_community": true,
+      "display_templates_category": true,
       "footer": {
         "display_terms_and_conditions_link": true,
         "display_star_us_on_github": true,

@@ -13,8 +13,10 @@
     "display_help_in_installation": false,
     "display_invite_teammate_btn": false,
     "display_contact_us_email": false,
-    "custom_redirect_after_logout": true,
+    "custom_redirect_after_logout": false,
     "after_logout_redirect_URL": "https://www.imagicle.com/en/products/conversational-ai/",
+    "display_chatbots_community": false,
+    "display_templates_category": false,
     "footer": {
         "display_terms_and_conditions_link": true,
         "display_star_us_on_github": false,
