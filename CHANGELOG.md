@@ -1,11 +1,5 @@
 # tiledesk-dashboard
 
-### 2.6.6-rc1
-- Move email ticketing features to "Custom" plan
-
-### 2.6.5-rc1
-- Adds the ability to manage the number of chatbots and the number of Knowledge Base contents
-
 ### 2.6.9
 - Deploys in production
 - Improves performance
@@ -21,6 +15,12 @@
 ### 2.6.6
 - Deploys in production 
 - Fixes the bug: WordPress section does not open on installations page
+
+### 2.6.6-rc1
+- Move email ticketing features to "Custom" plan
+
+### 2.6.5-rc1
+- Adds the ability to manage the number of chatbots and the number of Knowledge Base contents
 
 ### 2.6.5
 - Deploys in production
