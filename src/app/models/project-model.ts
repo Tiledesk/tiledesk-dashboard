@@ -31,6 +31,12 @@ export interface Project {
     extra2?: string;
     extra3?: string;
     extra4?: string;
-    customization?: any;
+    customization?: {
+        widgetUnbranding?: boolean;
+        smtpSettings?: boolean;
+        whatsAppBusiness?: boolean;
+        facebookMessenger?: boolean;
+        telegram?: boolean;
+    }
     __v?: any;
 }
