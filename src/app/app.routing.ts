@@ -577,7 +577,7 @@ const routes: Routes = [
   {
     path: 'project/:projectid/widget-set-up',
     loadChildren: () => import('app/widget_components/widget-set-up/widget-set-up.module').then(m => m.WidgetSetUpModule),
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard ],
   },
   // { path: 'project/:projectid/widget-set-up', component: WidgetSetUp, canActivate: [AuthGuard] },
 

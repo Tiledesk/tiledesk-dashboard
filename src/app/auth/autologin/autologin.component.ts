@@ -74,7 +74,7 @@ export class AutologinComponent implements OnInit {
       this.logger.log('[AUTOLOGIN] SSO - autologin page params ', params)
 
       const route = params.route
-      this.logger.log('[AUTOLOGIN] SSO - autologin page params route', route);
+      console.log('[AUTOLOGIN] SSO - autologin page params route', route);
 
 
       const JWT = params.token
@@ -131,9 +131,9 @@ export class AutologinComponent implements OnInit {
   }
 
   ssoLogin(JWT, route, storedJWT) {
-    this.logger.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser route ', route);
-    this.logger.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser JWT ', JWT);
-    this.logger.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser storedJWT ', storedJWT);
+    console.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser route ', route);
+    console.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser JWT ', JWT);
+    console.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser storedJWT ', storedJWT);
     // const chatPrefix = this.appConfigService.getConfig().chatStoragePrefix;
     if (JWT !== storedJWT) {
       this.logger.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser stored tiledesk_token is equal to params JWT ');
@@ -143,10 +143,10 @@ export class AutologinComponent implements OnInit {
     }
 
     this.sso.getCurrentAuthenticatedUser(JWT).subscribe(auth_user => {
-      // this.logger.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser RES ', auth_user);
+      console.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser RES ', auth_user);
 
       const user = { firstname: auth_user['firstname'], lastname: auth_user['lastname'], _id: auth_user['_id'], email: auth_user['email'], emailverified: auth_user['emailverified'], token: JWT }
-      // this.logger.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser user ', user);
+      console.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser user ', user);
 
       localStorage.setItem('user', JSON.stringify(user));
       // localStorage.setItem(chatPrefix + '__tiledeskToken', JWT);

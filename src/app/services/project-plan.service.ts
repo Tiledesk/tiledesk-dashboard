@@ -143,6 +143,7 @@ export class ProjectPlanService {
 
       const current_prjct = projects.find(prj => prj.id_project.id === projectId);
       this.logger.log('[PROJECT-PLAN-SERV] - FIND CURRENT PROJECT AMONG ALL - (called by project-plan-service) current_prjct ', current_prjct);
+      
      
       if (current_prjct) {
         const projectPlanData: Project = {
@@ -165,6 +166,7 @@ export class ProjectPlanService {
           extra2: current_prjct.id_project.profile['extra2'],
           extra3: current_prjct.id_project.profile['extra3'],
           extra4: current_prjct.id_project.profile['extra4'],
+          customization: current_prjct.id_project.profile['customization'],
           user_role: current_prjct.role,
           payActive: this.areActivePay
         }

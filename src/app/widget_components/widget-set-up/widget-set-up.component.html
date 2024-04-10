@@ -71,7 +71,7 @@
 					</div>
 				</div>
 
-				<div class="widget-all-settings-wrap" role="main" style="margin-bottom:36px; display: none;">
+				<!-- <div class="widget-all-settings-wrap" role="main" style="margin-bottom:36px; display: none;">
 					<div class="row no-gap" style="margin-left: 0; margin-right: 0;">
 						<div class="col-xs-12" style="padding: 0px 20px 0px 20px;">
 							<button class="accordion-install-widget" (click)="close_panel_install_widget()">
@@ -163,7 +163,7 @@
 
 												<div *ngIf="HAS_SELECT_INSTALL_WITH_CODE || HAS_SELECT_INSTALL_WITH_GTM"
 													class="install-widget-instructions">
-													<!-- https://stackoverflow.com/questions/34820524/how-to-align-multi-line-text-after-icon -->
+												
 													<div *ngIf="HAS_SELECT_INSTALL_WITH_CODE"
 														class="install-widget-steps">
 														<span class="install-widget-step-number-wrapper">
@@ -196,10 +196,10 @@
 													</div>
 
 
-													<!-- ----------------------------------------------------------------------------------------------------------------------- -->
-													<!-- REMEMBER TO UPDATE TEXAREA CODE IF UPDATE SCRIPT CODE IN PRE TAG -->
-													<!-- !!!!!!! NOTE THAT: WHEN IS CLICKED THE BUTTON "COPY CODE" IS COPIED THE CODE IN THE ABOVE TEXAREA -->
-													<!-- ----------------------------------------------------------------------------------------------------------------------- -->
+													<!- - ----------------------------------------------------------------------------------------------------------------------- - ->
+													<!- - REMEMBER TO UPDATE TEXAREA CODE IF UPDATE SCRIPT CODE IN PRE TAG - ->
+													<!- - !!!!!!! NOTE THAT: WHEN IS CLICKED THE BUTTON "COPY CODE" IS COPIED THE CODE IN THE ABOVE TEXAREA - ->
+													<!- - ----------------------------------------------------------------------------------------------------------------------- - ->
 													<div class="script-wrap"
 														style="padding-left: 46px;padding-right: 20px;">
 														<pre class="widget-design-pre"
@@ -241,10 +241,10 @@
 													</div>
 
 
-													<!-- ----------------------------------------------------------------------------------------------------------------------- -->
-													<!-- REMEMBER TO UPDATE THIS TEXAREA CODE IF UPDATE SCRIPT CODE IN PRE TAG -->
-													<!-- !!!!!!! NOTE THAT TEXT AREA IS HIDDEN - IS USED ONLY TO COPY THE CODE WHEN THE USER CLICK ON THE BUTTON COPY CODE -->
-													<!-- ----------------------------------------------------------------------------------------------------------------------- -->
+													<!- - ----------------------------------------------------------------------------------------------------------------------- - ->
+													<!- - REMEMBER TO UPDATE THIS TEXAREA CODE IF UPDATE SCRIPT CODE IN PRE TAG - ->
+													<!- - !!!!!!! NOTE THAT TEXT AREA IS HIDDEN - IS USED ONLY TO COPY THE CODE WHEN THE USER CLICK ON THE BUTTON COPY CODE - ->
+													<!- - ----------------------------------------------------------------------------------------------------------------------- - ->
 													<textarea name="exampleClipboard" class="textarea" readonly
 														id="hidden-texarea" rows="20" value="" type="text"
 														style="opacity: .01;height:0; position:absolute; z-index: -1;">
@@ -265,7 +265,7 @@
     &lt;/script&gt;</textarea>
 
 
-													<!-- https://stackoverflow.com/questions/34820524/how-to-align-multi-line-text-after-icon -->
+												
 													<div *ngIf="HAS_SELECT_INSTALL_WITH_CODE"
 														class="install-widget-steps">
 														<span class="install-widget-step-number-wrapper">
@@ -280,17 +280,7 @@
 														</span>
 													</div>
 
-													<!-- <div *ngIf="HAS_SELECT_INSTALL_WITH_CODE" class="install-widget-steps">
-												<span class="install-widget-step-number-wrapper">
-													<span class="install-widget-step-number">
-														3
-													</span>
-												</span>
-												<span class="install-widget-step-text">
-													Once you’ve completed your changes, open your website. Your Widget
-													should appear in the bottom right corner.
-												</span>
-											</div> -->
+							
 
 													<div *ngIf="HAS_SELECT_INSTALL_WITH_GTM"
 														class="install-widget-steps">
@@ -322,15 +312,15 @@
 														</span>
 													</div>
 
-												</div> <!-- /. install-with-code -->
-											</div> <!-- /. card content -->
-										</div> <!-- /. card -->
+												</div> 
+											</div> 
+										</div> 
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-				</div>
+				</div> -->
 
 				<div class="row">
 					<div class="col-xs-12">
@@ -1286,6 +1276,7 @@
 								<!-- @ Unbranding SECTION -->
 								<!-- ---------------------------------------------------------------------------- -->
 								<!-- <ng-container *ngIf="payIsVisible"> -->
+									isVisibleWidgetUnbranding >	{{ isVisibleWidgetUnbranding}}
 									<button [ngClass]="{'hide-unbranding': !isVisibleWidgetUnbranding}" id="unbranding-btn" type="button" class="widget-section-accordion widget-section-header">
 
 										<div class="widget-section-title">
@@ -3015,7 +3006,8 @@
 											[hasOwnLauncherBtn]="hasOwnLauncherBtn"
 											[hasOwnLauncherLogo]="hasOwnLauncherLogo"
 											[customLauncherURL]="customLauncherURL"
-											[featureIsAvailable]="featureIsAvailable" [id_project]="id_project"
+											[featureIsAvailable]="featureIsAvailable" 
+											[id_project]="id_project"
 											[imageStorage]="imageStorage">
 										</appdashboard-widget-callout>
 

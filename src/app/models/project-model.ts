@@ -31,5 +31,6 @@ export interface Project {
     extra2?: string;
     extra3?: string;
     extra4?: string;
+    customization?: any;
     __v?: any;
 }

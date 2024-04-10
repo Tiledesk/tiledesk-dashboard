@@ -20,7 +20,7 @@ import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts
 import { LoggerService } from '../../services/logger/logger.service';
 import { UsersService } from '../../services/users.service';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { startWith, takeUntil } from 'rxjs/operators';
 import { APP_SUMO_PLAN_NAME, PLAN_NAME, URL_google_tag_manager_add_tiledesk_to_your_sites } from '../../utils/util';
 import { NgSelectComponent } from '@ng-select/ng-select';
 import * as moment from 'moment';
@@ -417,7 +417,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.tparams = brand;
     this.company_name = brand['BRAND_NAME'];
     this.company_site_url = brand['COMPANY_SITE_URL'];
-    this.hideHelpLink= brand['DOCS'];
+    this.hideHelpLink = brand['DOCS'];
     this.companyNametParams = { 'BRAND_NAME': this.company_name }
     // this.t_params = { 'plan_name': PLAN_NAME.B }
   }
@@ -587,7 +587,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         takeUntil(this.unsubscribe$)
       )
       .subscribe((projectProfileData: any) => {
-        this.logger.log('[WIDGET-SET-UP] - getProjectPlan project Profile Data', projectProfileData)
+        console.log('[WIDGET-SET-UP] - getProjectPlan project Profile Data', projectProfileData)
         if (projectProfileData) {
 
 
@@ -598,6 +598,11 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           this.prjct_profile_type = projectProfileData.profile_type;
           this.subscription_is_active = projectProfileData.subscription_is_active;
           this.subscription_end_date = projectProfileData.subscription_end_date;
+
+          // this.getOSCODE(projectProfileData);
+          this.manageWidgetUnbrandingVisibility(projectProfileData)
+
+
 
           if (projectProfileData.extra3) {
             this.logger.log('[WIDGET-SET-UP] projectProfileData.extra3 ', projectProfileData.extra3)
@@ -618,7 +623,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
               // Trial active
               if (this.profile_name === 'free') {
                 this.prjct_profile_name_for_segment = PLAN_NAME.B + " plan (trial)"
-                this.prjct_profile_name  = PLAN_NAME.B + " plan (trial)"
+                this.prjct_profile_name = PLAN_NAME.B + " plan (trial)"
                 this.logger.log('[WIDGET-SET-UP] n0 ')
                 this.featureIsAvailable = true;
               } else if (this.profile_name === 'Sandbox') {
@@ -757,7 +762,290 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       });
   }
 
- 
+  getWunValue() {
+    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
+    // console.log('[WIDGET-SET-UP] getAppConfig  public_Key', this.public_Key);
+    // console.log('[WIDGET-SET-UP] getAppConfig  public_Key type of', typeof this.public_Key);
+    // console.log('[WIDGET-SET-UP] getAppConfig  this.public_Key.includes("WUN") ', this.public_Key.includes("WUN"));
+    // let substring = this.public_Key.substring(this.public_Key.indexOf('WUN'));
+    let parts = this.public_Key.split('-');
+    // console.log('[WIDGET-SET-UP] getAppConfig  parts ', parts);
+
+    let wun = parts.find((part) => part.startsWith('WUN'));
+    console.log('[WIDGET-SET-UP] getAppConfig  wun ', wun);
+    let wunParts = wun.split(':');
+    console.log('[WIDGET-SET-UP] getAppConfig  wunParts ', wunParts);
+    let wunValue = wunParts[1]
+    console.log('[WIDGET-SET-UP] getAppConfig  wunValue ', wunValue);
+    if (wunValue === 'T')  {
+      return true
+    } else  if (wunValue === 'F'){
+      return false
+    }
+    
+  }
+
+  manageWidgetUnbrandingVisibility(projectProfileData) {
+    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
+    if (projectProfileData['customization']) {
+      console.log('[WIDGET-SET-UP] USECASE EXIST customization > widgetUnbranding (1)', projectProfileData['customization']['widgetUnbranding'])
+    }
+
+    if (projectProfileData['customization'] && projectProfileData['customization']['widgetUnbranding'] !== undefined) {
+      console.log('[WIDGET-SET-UP] USECASE A EXIST customization ', projectProfileData['customization'], ' & widgetUnbranding', projectProfileData['customization']['widgetUnbranding'])
+
+      if (projectProfileData['customization']['widgetUnbranding'] === true) {
+        this.isVisibleWidgetUnbranding = true;
+        console.log('[WIDGET-SET-UP] Widget unbranding USECASE A isVisibleWidgetUnbranding', this.isVisibleWidgetUnbranding)
+      } else if (projectProfileData['customization']['widgetUnbranding'] === false) {
+
+        this.isVisibleWidgetUnbranding = false;
+        console.log('[WIDGET-SET-UP] Widget unbranding USECASE A isVisibleWidgetUnbranding', this.isVisibleWidgetUnbranding)
+      }
+
+    } else if (projectProfileData['customization'] && projectProfileData['customization']['widgetUnbranding'] === undefined) {
+      console.log('[WIDGET-SET-UP] USECASE B EXIST customization ', projectProfileData['customization'], ' BUT widgetUnbranding IS', projectProfileData['customization']['widgetUnbranding'])
+
+      if (this.public_Key.includes("WUN")) {
+        console.log('[WIDGET-SET-UP] Widget unbranding  USECASE B  (from FT) - EXIST WUN ', this.public_Key.includes("WUN"));
+
+        this.isVisibleWidgetUnbranding = this.getWunValue()
+        console.log('[WIDGET-SET-UP]  this.isVisibleWidgetUnbranding from FT ', this.isVisibleWidgetUnbranding)
+        // if (key.includes("WUN")) {
+        //   // this.logger.log('PUBLIC-KEY (WIDGET-SET-UP) - key', key);
+        //   let wun = key.split(":");
+        //   //  this.logger.log('PUBLIC-KEY (WIDGET-SET-UP) - ips key&value', ips);
+        //   if (wun[1] === "F") {
+        //     this.isVisibleWidgetUnbranding = false;
+        //     console.log('[WIDGET-SET-UP] Widget unbranding USECASE B  (from FT) isVisibleWidgetUnbranding', this.isVisibleWidgetUnbranding);
+        //     // this.logger.log('PUBLIC-KEY (WIDGET-SET-UP) - isVisibleWidgetUnbranding', this.isVisibleAutoSendTranscript);
+        //   } else {
+        //     this.isVisibleWidgetUnbranding = true;
+        //     console.log('[WIDGET-SET-UP] Widget unbranding  USECASE B  (from FT) isVisibleWidgetUnbranding', this.isVisibleWidgetUnbranding);
+        //     // this.logger.log('PUBLIC-KEY (WIDGET-SET-UP) - isVisibleWidgetUnbranding', this.isVisibleAutoSendTranscript);
+        //   }
+        // }
+      } else if (!this.public_Key.includes("WUN")) {
+        console.log('[WIDGET-SET-UP] Widget unbranding  USECASE B (from FT) -  EXIST WUN ', this.public_Key.includes("WUN"));
+        this.isVisibleWidgetUnbranding = false;
+        console.log('[WIDGET-SET-UP] Widget unbranding  USECASE B (from FT) isVisibleWidgetUnbranding', this.isVisibleWidgetUnbranding);
+      }
+
+    } else if (projectProfileData['customization'] === undefined) {
+      console.log('[WIDGET-SET-UP] USECASE C customization is  ', projectProfileData['customization'] , 'get value foem FT')
+      if (this.public_Key.includes("WUN")) {
+        console.log('[WIDGET-SET-UP] Widget unbranding  USECASE B  (from FT) - EXIST WUN ', this.public_Key.includes("WUN"));
+
+        this.isVisibleWidgetUnbranding = this.getWunValue()
+        console.log('[WIDGET-SET-UP]  this.isVisibleWidgetUnbranding from FT ', this.isVisibleWidgetUnbranding)
+        // if (key.includes("WUN")) {
+        //   // this.logger.log('PUBLIC-KEY (WIDGET-SET-UP) - key', key);
+        //   let wun = key.split(":");
+        //   //  this.logger.log('PUBLIC-KEY (WIDGET-SET-UP) - ips key&value', ips);
+        //   if (wun[1] === "F") {
+        //     this.isVisibleWidgetUnbranding = false;
+        //     console.log('[WIDGET-SET-UP] Widget unbranding USECASE B  (from FT) isVisibleWidgetUnbranding', this.isVisibleWidgetUnbranding);
+        //     // this.logger.log('PUBLIC-KEY (WIDGET-SET-UP) - isVisibleWidgetUnbranding', this.isVisibleAutoSendTranscript);
+        //   } else {
+        //     this.isVisibleWidgetUnbranding = true;
+        //     console.log('[WIDGET-SET-UP] Widget unbranding  USECASE B  (from FT) isVisibleWidgetUnbranding', this.isVisibleWidgetUnbranding);
+        //     // this.logger.log('PUBLIC-KEY (WIDGET-SET-UP) - isVisibleWidgetUnbranding', this.isVisibleAutoSendTranscript);
+        //   }
+        // }
+      } else if (!this.public_Key.includes("WUN")) {
+        console.log('[WIDGET-SET-UP] Widget unbranding  USECASE B (from FT) -  EXIST WUN ', this.public_Key.includes("WUN"));
+        this.isVisibleWidgetUnbranding = false;
+        console.log('[WIDGET-SET-UP] Widget unbranding  USECASE B (from FT) isVisibleWidgetUnbranding', this.isVisibleWidgetUnbranding);
+      }
+
+    }
+  }
+
+  getOSCODE() {
+    console.log('[WIDGET-SET-UP] getOSCODE')
+    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
+
+
+
+    let keys = this.public_Key.split("-");
+    this.logger.log('[WIDGET-SET-UP] PUBLIC-KEY keys', keys)
+    keys.forEach(key => {
+      // this.logger.log('NavbarComponent public_Key key', key)
+      if (key.includes("MTL")) {
+        // this.logger.log('PUBLIC-KEY (Widget-design) - mlt', key);
+        let mlt = key.split(":");
+        // this.logger.log('PUBLIC-KEY (Widget-design) - mlt key&value', mlt);
+        if (mlt[1] === "F") {
+          this.isVisible = false;
+        } else {
+          this.isVisible = true;
+        }
+      }
+
+      if (key.includes("PAY")) {
+        this.logger.log('[WIDGET-SET-UP] PUBLIC-KEY - key', key);
+        let pay = key.split(":");
+        // this.logger.log('PUBLIC-KEY (Navbar) - pay key&value', pay);
+        if (pay[1] === "F") {
+          this.payIsVisible = false;
+          this.logger.log('[WIDGET-SET-UP] - pay isVisible', this.payIsVisible);
+        } else {
+          this.payIsVisible = true;
+          this.logger.log('[WIDGET-SET-UP] - pay isVisible', this.payIsVisible);
+        }
+      }
+
+      // Widget unbranding
+      // console.log('[WIDGET-SET-UP] USECASE EXIST customization (1)', projectProfileData['customization'])
+      // if (projectProfileData['customization']) {
+      //   console.log('[WIDGET-SET-UP] USECASE EXIST customization > widgetUnbranding (1)', projectProfileData['customization']['widgetUnbranding'])
+      // }
+
+      // if (projectProfileData['customization'] && projectProfileData['customization']['widgetUnbranding'] !== undefined) {
+      //   console.log('[WIDGET-SET-UP] USECASE A EXIST customization ', projectProfileData['customization'], ' & widgetUnbranding', projectProfileData['customization']['widgetUnbranding'])
+
+      //   if (projectProfileData['customization']['widgetUnbranding'] === true) {
+      //     this.isVisibleWidgetUnbranding = true;
+      //     console.log('[WIDGET-SET-UP] Widget unbranding USECASE A isVisibleWidgetUnbranding', this.isVisibleWidgetUnbranding)
+      //   } else if (projectProfileData['customization']['widgetUnbranding'] === false) {
+      //     console.log('[WIDGET-SET-UP] Widget unbranding USECASE A isVisibleWidgetUnbranding', this.isVisibleWidgetUnbranding)
+      //     this.isVisibleWidgetUnbranding = false;
+      //   }
+
+      // } else if (projectProfileData['customization'] && projectProfileData['customization']['widgetUnbranding'] === undefined) {
+      //   console.log('[WIDGET-SET-UP] USECASE B EXIST customization ', projectProfileData['customization'], ' BUT widgetUnbranding IS', projectProfileData['customization']['widgetUnbranding'])
+
+      //   if (this.public_Key.includes("WUN")) {
+      //     console.log('[WIDGET-SET-UP] Widget unbranding  USECASE B  (from FT) - EXIST WUN ', this.public_Key.includes("WUN"));
+      //     if (key.includes("WUN")) {
+      //       // this.logger.log('PUBLIC-KEY (WIDGET-SET-UP) - key', key);
+      //       let wun = key.split(":");
+      //       //  this.logger.log('PUBLIC-KEY (WIDGET-SET-UP) - ips key&value', ips);
+      //       if (wun[1] === "F") {
+      //         this.isVisibleWidgetUnbranding = false;
+      //         console.log('[WIDGET-SET-UP] Widget unbranding USECASE B  (from FT) isVisibleWidgetUnbranding', this.isVisibleWidgetUnbranding);
+      //         // this.logger.log('PUBLIC-KEY (WIDGET-SET-UP) - isVisibleWidgetUnbranding', this.isVisibleAutoSendTranscript);
+      //       } else {
+      //         this.isVisibleWidgetUnbranding = true;
+      //         console.log('[WIDGET-SET-UP] Widget unbranding  USECASE B  (from FT) isVisibleWidgetUnbranding', this.isVisibleWidgetUnbranding);
+      //         // this.logger.log('PUBLIC-KEY (WIDGET-SET-UP) - isVisibleWidgetUnbranding', this.isVisibleAutoSendTranscript);
+      //       }
+      //     }
+      //   } else if (!this.public_Key.includes("WUN")) {
+      //     console.log('[WIDGET-SET-UP] Widget unbranding  USECASE B (from FT) -  EXIST WUN ', this.public_Key.includes("WUN"));
+      //     this.isVisibleWidgetUnbranding = false;
+      //     console.log('[WIDGET-SET-UP] Widget unbranding  USECASE B (from FT) isVisibleWidgetUnbranding', this.isVisibleWidgetUnbranding);
+      //   }
+
+      // } else if (projectProfileData['customization'] === undefined) {
+      //   console.log('[WIDGET-SET-UP] USECASE C customization is  ', projectProfileData['customization']) 
+      //   if (this.public_Key.includes("WUN")) {
+      //     console.log('[WIDGET-SET-UP] Widget unbranding  USECASE B  (from FT) - EXIST WUN ', this.public_Key.includes("WUN"));
+      //     if (key.includes("WUN")) {
+      //       // this.logger.log('PUBLIC-KEY (WIDGET-SET-UP) - key', key);
+      //       let wun = key.split(":");
+      //       //  this.logger.log('PUBLIC-KEY (WIDGET-SET-UP) - ips key&value', ips);
+      //       if (wun[1] === "F") {
+      //         this.isVisibleWidgetUnbranding = false;
+      //         console.log('[WIDGET-SET-UP] Widget unbranding USECASE B  (from FT) isVisibleWidgetUnbranding', this.isVisibleWidgetUnbranding);
+      //         // this.logger.log('PUBLIC-KEY (WIDGET-SET-UP) - isVisibleWidgetUnbranding', this.isVisibleAutoSendTranscript);
+      //       } else {
+      //         this.isVisibleWidgetUnbranding = true;
+      //         console.log('[WIDGET-SET-UP] Widget unbranding  USECASE B  (from FT) isVisibleWidgetUnbranding', this.isVisibleWidgetUnbranding);
+      //         // this.logger.log('PUBLIC-KEY (WIDGET-SET-UP) - isVisibleWidgetUnbranding', this.isVisibleAutoSendTranscript);
+      //       }
+      //     }
+      //   } else if (!this.public_Key.includes("WUN")) {
+      //     console.log('[WIDGET-SET-UP] Widget unbranding  USECASE B (from FT) -  EXIST WUN ', this.public_Key.includes("WUN"));
+      //     this.isVisibleWidgetUnbranding = false;
+      //     console.log('[WIDGET-SET-UP] Widget unbranding  USECASE B (from FT) isVisibleWidgetUnbranding', this.isVisibleWidgetUnbranding);
+      //   }
+
+      // }
+
+
+
+
+
+
+      // console.log('[WIDGET-SET-UP] EXIST Property customization', projectProfileData.hasOwnProperty('customization'))
+      // const profileCustomization = projectProfileData['customization']
+      // console.log('[WIDGET-SET-UP] Widget unbranding profileCustomization hasOwnProperty widgetUnbranding', profileCustomization.hasOwnProperty('widgetUnbranding'));
+      // // if (projectProfileData.hasOwnProperty('customization') && projectProfileData['customization'] && projectProfileData['customization']['widgetUnbranding']) {
+      // //   console.log('[WIDGET-SET-UP] EXIST  projectProfileData[customization][widgetUnbranding]', projectProfileData['customization']['widgetUnbranding'])
+      // // } else if (projectProfileData.hasOwnProperty('customization') && projectProfileData['customization'] && projectProfileData['customization']['widgetUnbranding'] !== true) {
+      // //   console.log('[WIDGET-SET-UP]  NOT EXIST or IS false projectProfileData[customization][widgetUnbranding]')
+      // // }
+
+
+      // // || (projectProfileData.hasOwnProperty('customization')) && projectProfileData['customization'] && projectProfileData['customization']['widgetUnbranding'] !== true
+      // if (!projectProfileData.hasOwnProperty('customization')) {
+      //   // const profileCustomization = projectProfileData['customization']
+      //   console.log('[WIDGET-SET-UP] Widget unbranding Here 1 profileCustomization hasOwnProperty widgetUnbranding', profileCustomization.hasOwnProperty('widgetUnbranding'));
+      //   if (!profileCustomization.hasOwnProperty('widgetUnbranding')) {
+      //     if (this.public_Key.includes("WUN")) {
+      //       console.log('[WIDGET-SET-UP] Widget unbranding Here 1');
+      //       if (key.includes("WUN")) {
+      //         // this.logger.log('PUBLIC-KEY (WIDGET-SET-UP) - key', key);
+      //         let wun = key.split(":");
+      //         //  this.logger.log('PUBLIC-KEY (WIDGET-SET-UP) - ips key&value', ips);
+      //         if (wun[1] === "F") {
+      //           this.isVisibleWidgetUnbranding = false;
+      //           console.log('[WIDGET-SET-UP] Widget unbranding Here 2 isVisibleWidgetUnbranding ', this.isVisibleWidgetUnbranding);
+      //           // this.logger.log('PUBLIC-KEY (WIDGET-SET-UP) - isVisibleWidgetUnbranding', this.isVisibleAutoSendTranscript);
+      //         } else {
+      //           this.isVisibleWidgetUnbranding = true;
+      //           console.log('[WIDGET-SET-UP] Widget unbranding Here 3 isVisibleWidgetUnbranding ', this.isVisibleWidgetUnbranding);
+      //           // this.logger.log('PUBLIC-KEY (WIDGET-SET-UP) - isVisibleWidgetUnbranding', this.isVisibleAutoSendTranscript);
+      //         }
+      //       }
+      //     } else if (!this.public_Key.includes("WUN")) {
+      //       this.isVisibleWidgetUnbranding = false;
+      //       console.log('[WIDGET-SET-UP] Widget unbranding Here 3A isVisibleWidgetUnbranding ', this.isVisibleWidgetUnbranding);
+      //     }
+      //   } else if (profileCustomization.hasOwnProperty('widgetUnbranding')) {
+      //     console.log('[WIDGET-SET-UP] usecase HERE' )
+      //   }
+      //   // && projectProfileData['customization'] && projectProfileData['customization']['widgetUnbranding']
+      // } else if (projectProfileData.hasOwnProperty('customization') && projectProfileData['customization'].hasOwnProperty('widgetUnbranding')) {
+      //   console.log('[WIDGET-SET-UP] Widget unbranding projectProfileData  hasOwnProperty customization ', projectProfileData.hasOwnProperty('customization'));
+      //   const profileCustomization = projectProfileData['customization']
+      //   console.log('[WIDGET-SET-UP] Widget unbranding Here 4 projectProfileData[customization', profileCustomization);
+      //   console.log('[WIDGET-SET-UP] Widget unbranding Here 4 profileCustomization hasOwnProperty widgetUnbranding', profileCustomization.hasOwnProperty('widgetUnbranding'));
+      //   if (profileCustomization.hasOwnProperty('widgetUnbranding')) {
+
+      //     if (projectProfileData['customization']['widgetUnbranding'] === true) {
+      //       this.isVisibleWidgetUnbranding = true;
+      //       console.log('[WIDGET-SET-UP] Widget unbranding Here 4A isVisibleWidgetUnbranding', this.isVisibleWidgetUnbranding)
+      //     } else if (projectProfileData['customization']['widgetUnbranding'] === false) {
+      //       console.log('[WIDGET-SET-UP] Widget unbranding Here 4B isVisibleWidgetUnbranding', this.isVisibleWidgetUnbranding)
+      //       this.isVisibleWidgetUnbranding = false;
+      //     }
+      //   }
+      // }
+
+
+
+    });
+
+    if (!this.public_Key.includes("PAY")) {
+      // this.logger.log('PUBLIC-KEY (WIDGET-SET-UP) - key.includes("PAY")', this.public_Key.includes("PAY"));
+      this.payIsVisible = false;
+    }
+
+    // if (!this.public_Key.includes("WUN")) {
+    //   // this.logger.log('PUBLIC-KEY (WIDGET-SET-UP) - key.includes("PAY")', this.public_Key.includes("PAY"));
+    //   this.isVisibleWidgetUnbranding = false;
+    // }
+
+    if (!this.public_Key.includes("MTL")) {
+      // this.logger.log('PUBLIC-KEY (WIDGET-SET-UP) - key.includes("PAY")', this.public_Key.includes("PAY"));
+      this.isVisible = false;
+    }
+  }
+
+
+
   goToPricing() {
     this.logger.log('[WIDGET-SET-UP] - goToPricing projectId ', this.id_project);
 
@@ -872,7 +1160,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     });
   }
 
-  
+
 
 
   // presentModalContactUsToUpgradePlan() {
@@ -969,7 +1257,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         this.featureAvailableFromBPlan = translation;
       });
 
-      this.translate.get('AvailableFromThePlan', { plan_name: PLAN_NAME.E })
+    this.translate.get('AvailableFromThePlan', { plan_name: PLAN_NAME.E })
       .subscribe((translation: any) => {
         this.featureAvailableFromEPlan = translation;
       });
@@ -1315,68 +1603,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.logger.log('[WIDGET-SET-UP] getAppConfig [WIDGET-SET-UP] TESTSITE_BASE_URL', this.TESTSITE_BASE_URL);
   }
 
-  getOSCODE() {
-    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
-    this.logger.log('[WIDGET-SET-UP] getAppConfig  public_Key', this.public_Key);
 
-    let keys = this.public_Key.split("-");
-    this.logger.log('[WIDGET-SET-UP] PUBLIC-KEY keys', keys)
-    keys.forEach(key => {
-      // this.logger.log('NavbarComponent public_Key key', key)
-      if (key.includes("MTL")) {
-        // this.logger.log('PUBLIC-KEY (Widget-design) - mlt', key);
-        let mlt = key.split(":");
-        // this.logger.log('PUBLIC-KEY (Widget-design) - mlt key&value', mlt);
-        if (mlt[1] === "F") {
-          this.isVisible = false;
-        } else {
-          this.isVisible = true;
-        }
-      }
-
-      if (key.includes("PAY")) {
-        this.logger.log('[WIDGET-SET-UP] PUBLIC-KEY - key', key);
-        let pay = key.split(":");
-        // this.logger.log('PUBLIC-KEY (Navbar) - pay key&value', pay);
-        if (pay[1] === "F") {
-          this.payIsVisible = false;
-          this.logger.log('[WIDGET-SET-UP] - pay isVisible', this.payIsVisible);
-        } else {
-          this.payIsVisible = true;
-          this.logger.log('[WIDGET-SET-UP] - pay isVisible', this.payIsVisible);
-        }
-      }
-
-      // Widget unbranding
-      if (key.includes("WUN")) {
-        // this.logger.log('PUBLIC-KEY (WIDGET-SET-UP) - key', key);
-        let wun = key.split(":");
-        //  this.logger.log('PUBLIC-KEY (WIDGET-SET-UP) - ips key&value', ips);
-        if (wun[1] === "F") {
-          this.isVisibleWidgetUnbranding = false;
-          // this.logger.log('PUBLIC-KEY (WIDGET-SET-UP) - isVisibleWidgetUnbranding', this.isVisibleAutoSendTranscript);
-        } else {
-          this.isVisibleWidgetUnbranding = true;
-          // this.logger.log('PUBLIC-KEY (WIDGET-SET-UP) - isVisibleWidgetUnbranding', this.isVisibleAutoSendTranscript);
-        }
-      }
-    });
-
-    if (!this.public_Key.includes("PAY")) {
-      // this.logger.log('PUBLIC-KEY (WIDGET-SET-UP) - key.includes("PAY")', this.public_Key.includes("PAY"));
-      this.payIsVisible = false;
-    }
-
-    if (!this.public_Key.includes("WUN")) {
-      // this.logger.log('PUBLIC-KEY (WIDGET-SET-UP) - key.includes("PAY")', this.public_Key.includes("PAY"));
-      this.isVisibleWidgetUnbranding = false;
-    }
-
-    if (!this.public_Key.includes("MTL")) {
-      // this.logger.log('PUBLIC-KEY (WIDGET-SET-UP) - key.includes("PAY")', this.public_Key.includes("PAY"));
-      this.isVisible = false;
-    }
-  }
 
   getLabels() {
     this.widgetService.getLabels().subscribe((labels: any) => {
@@ -1607,12 +1834,12 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         this.welcomeMsg = this.selected_translation["WELLCOME_MSG"];
 
         this.welcomeTitle = this.selected_translation["WELCOME_TITLE"];
-        if (this.selected_translation.hasOwnProperty("WELLCOME_TITLE") ) {
+        if (this.selected_translation.hasOwnProperty("WELLCOME_TITLE")) {
           this.welcomeTitle = this.selected_translation["WELLCOME_TITLE"];
         }
 
         this.welcomeMsg = this.selected_translation["WELCOME_MSG"];
-        if (this.selected_translation.hasOwnProperty("WELLCOME_MSG") ) {
+        if (this.selected_translation.hasOwnProperty("WELLCOME_MSG")) {
           this.welcomeMsg = this.selected_translation["WELLCOME_MSG"];
         }
 
@@ -1678,7 +1905,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         this.LABEL_PRECHAT_USER_FULLNAME = this.selected_translation["LABEL_PRECHAT_USER_FULLNAME"]
         // this.logger.log('getCurrentTranslation this.LABEL_PRECHAT_USER_FULLNAME ', this.LABEL_PRECHAT_USER_FULLNAME)
 
-       
+
         this.LABEL_PRECHAT_USER_EMAIL = this.selected_translation["LABEL_PRECHAT_USER_EMAIL"]
         this.LABEL_PRECHAT_USER_PHONE = this.selected_translation["LABEL_PRECHAT_USER_PHONE"]
         this.LABEL_PRECHAT_FIRST_MESSAGE = this.selected_translation["LABEL_PRECHAT_FIRST_MESSAGE"]
