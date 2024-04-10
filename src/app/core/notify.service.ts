@@ -333,9 +333,6 @@ export class NotifyService {
       this.showSubtitleAllOperatorsSeatsUsed = false;
       this.showSubtitleAllChatbotUsed = true;
     }
-
-
-
   }
 
   closeGoToPricingModal() {

@@ -1475,6 +1475,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           this.kbService.areNewwKb(false)
         }
 
+      } else {
+        this.kbService.areNewwKb(true)
       }
      
     }, (error) => {

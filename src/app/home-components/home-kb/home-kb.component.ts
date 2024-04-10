@@ -93,6 +93,8 @@ export class HomeKbComponent extends PricingBaseComponent implements OnInit {
           this.areNewKb = false;
         }
 
+      } else {
+        this.areNewKb = true;
       }
 
     }, (error) => {

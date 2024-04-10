@@ -13,6 +13,8 @@ export interface Project {
     user_available?: boolean;
     profile_name?: any;
     profile_agents?: any;
+    profile_chatbots?: any;
+    profile_kbs?: any;
     trial_expired?: any;
     trialExpired?: any;
     trial_days_left?: number;

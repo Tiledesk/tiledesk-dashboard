@@ -1697,8 +1697,8 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         // ---------------------------------------------------------------
         // @ Welcome title and company intro
         // ---------------------------------------------------------------
-        this.welcomeTitle = this.selected_translation["WELLCOME_TITLE"];
-        this.welcomeMsg = this.selected_translation["WELLCOME_MSG"];
+        // this.welcomeTitle = this.selected_translation["WELLCOME_TITLE"];
+        // this.welcomeMsg = this.selected_translation["WELLCOME_MSG"];
 
         this.welcomeTitle = this.selected_translation["WELCOME_TITLE"];
         if (this.selected_translation.hasOwnProperty("WELLCOME_TITLE")) {

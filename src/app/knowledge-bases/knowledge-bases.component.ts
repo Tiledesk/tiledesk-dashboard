@@ -16,6 +16,8 @@ import { takeUntil } from 'rxjs/operators';
 import { FaqKbService } from 'app/services/faq-kb.service';
 import { KB_DEFAULT_PARAMS } from 'app/utils/util';
 import { AppConfigService } from 'app/services/app-config.service';
+import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
+import { ProjectPlanService } from 'app/services/project-plan.service';
 const swal = require('sweetalert');
 
 //import { Router } from '@angular/router';
@@ -25,7 +27,7 @@ const swal = require('sweetalert');
   templateUrl: './knowledge-bases.component.html',
   styleUrls: ['./knowledge-bases.component.scss']
 })
-export class KnowledgeBasesComponent implements OnInit, OnDestroy {
+export class KnowledgeBasesComponent extends PricingBaseComponent implements OnInit, OnDestroy {
 
   public IS_OPEN_SETTINGS_SIDEBAR: boolean;
   public isChromeVerGreaterThan100: boolean;
@@ -104,11 +106,14 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
     private router: Router,
     public route: ActivatedRoute,
     //private router: Router,
-    private notify: NotifyService,
+    public notify: NotifyService,
     private translate: TranslateService,
     private faqKbService: FaqKbService,
     public appConfigService: AppConfigService,
-  ) { }
+    public prjctPlanService: ProjectPlanService,
+  ) { 
+    super(prjctPlanService, notify);
+  }
 
   ngOnInit(): void {
     this.kbsList = [];
@@ -128,6 +133,8 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
     this.getCommunityTemplates()
     this.getFaqKbByProjectId();
     this.getOSCODE();
+    this.getProjectPlan();
+    console.log('[KNOWLEDGE-BASES-COMP] - kbLimit', this.kbLimit);
   }
 
 
@@ -142,7 +149,7 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
         takeUntil(this.unsubscribe$)
       )
       .subscribe((newKb) => {
-        this.logger.log('[SETTINGS-SIDEBAR] - are new KB ', newKb)
+        this.logger.log('[KNOWLEDGE-BASES-COMP] - are new KB ', newKb)
         this.ARE_NEW_KB = newKb;
       })
   }
@@ -364,7 +371,7 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
           window['analytics'].page("Knowledge Bases Page", {
           });
         } catch (err) {
-          this.logger.error('Signin page error', err);
+          this.logger.error('Knowledge page error', err);
         }
       }
     }
@@ -493,6 +500,7 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
       this.logger.log("[KNOWLEDGE BASES COMP] get kbList: ", resp);
       //this.kbs = resp;
       this.kbsListCount = resp.count;
+      console.log('[KNOWLEDGE BASES COMP] kbsListCount ', this.kbsListCount )
       resp.kbs.forEach(kb => {
         // this.kbsList.push(kb);
         const index = this.kbsList.findIndex(objA => objA._id === kb._id);
@@ -651,7 +659,7 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
 
     }, () => {
       this.logger.log("[KNOWLEDGE-BASES-COMP] add new kb *COMPLETED*");
-      //this.trackUserActioOnKB('Added Knowledge Base', gptkey)
+      this.trackUserActioOnKB('Added Knowledge Base')
     })
   }
 
@@ -717,7 +725,7 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
 
     }, () => {
       this.logger.log("[KNOWLEDGE-BASES-COMP] add new kb *COMPLETED*");
-      //this.trackUserActioOnKB('Added Knowledge Base', gptkey)
+      this.trackUserActioOnKB('Added Knowledge Base')
     })
   }
 
@@ -782,7 +790,7 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
 
     }, () => {
       this.logger.log("[KNOWLEDGE-BASES-COMP] delete kb *COMPLETE*");
-      //this.trackUserActioOnKB('Deleted Knowledge Base', gptkey)
+      this.trackUserActioOnKB('Deleted Knowledge Base')
     })
   }
 
@@ -1062,7 +1070,7 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
     }
   }
 
-  trackUserActioOnKB(event: any, gptkey: string) {
+  trackUserActioOnKB(event: any) {
     if (!isDevMode()) {
       if (window['analytics']) {
         let userFullname = ''
@@ -1087,8 +1095,7 @@ export class KnowledgeBasesComponent implements OnInit, OnDestroy {
             "username": userFullname,
             "email": this.CURRENT_USER.email,
             'userId': this.CURRENT_USER._id,
-            'page': this.callingPage,
-            'gptkey': gptkey
+            'page': this.callingPage
 
           }, {
             "context": {
