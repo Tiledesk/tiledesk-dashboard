@@ -5,6 +5,7 @@
 - Adds the ability to display/hide the "Community" and template categories menu items in the chatbots sidebar
 
 ### 2.6.10-rc1
+- Deploys in production
 - Allows auto login to not registered users
 
 ### 2.6.9
