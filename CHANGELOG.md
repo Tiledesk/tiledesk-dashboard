@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.6.10-rc1
+- Deploys in production
+- Allows auto login to not registered users
+
 ### 2.6.9
 - Deploys in production
 - Improves performance
