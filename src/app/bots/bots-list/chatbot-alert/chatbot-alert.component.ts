@@ -56,17 +56,16 @@ export class ChatbotAlertComponent extends PricingBaseComponent implements OnIni
 
   getCurrentProject() {
     this.auth.project_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((project) => {
-        this.logger.log('[CHATBOT-ALERT] - $ubscribe to CURRENT PROJECT ', project)
-        if (project) {
-          this.project = project;
-          this.projectId = project._id
-        }
-
-      })
+    .pipe(
+      takeUntil(this.unsubscribe$)
+    )
+    .subscribe((project) => {
+      if (project) {
+        this.project = project;
+        this.projectId = project._id
+      }
+      
+    })
   }
 
   getActiveRoute() {

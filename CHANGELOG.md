@@ -6,6 +6,26 @@
 ### 2.6.5-rc1
 - Adds the ability to manage the number of chatbots and the number of Knowledge Base contents
 
+### 2.6.9
+- Deploys in production
+- Improves performance
+
+### 2.6.8
+- Deploys in production
+- Improves the app config service
+
+### 2.6.7
+- Deploys in production
+- Improves bot list page
+
+### 2.6.6
+- Deploys in production 
+- Fixes the bug: WordPress section does not open on installations page
+
+### 2.6.5
+- Deploys in production
+- Improvements and bug fixing
+
 ### 2.6.4
 - Deploys in production
 - Improves performance
@@ -21,6 +41,7 @@
 ### 2.6.1
 - Deploys in production
 - Improves the Get and Save methods used for translation strings
+
 ### 2.6.3-rc3
 - Improves pop-up windows
 

@@ -31,7 +31,7 @@ export class WidgetInstallationComponent implements OnInit {
 
   elActive: any;
   displayHelpInInstallation: string;
-  hideWordpressSection: boolean
+  showWordpressSection: boolean
   // get nativeWindow() : any {
   //   return _window();
   // }
@@ -45,7 +45,7 @@ export class WidgetInstallationComponent implements OnInit {
       this.tparams = brand;
       this.company_name = brand['BRAND_NAME'];
       this.displayHelpInInstallation = brand['display_help_in_installation'];
-      this.hideWordpressSection = brand['DOCS'];
+      this.showWordpressSection = brand['DOCS'];
      }
 
   ngOnInit() {

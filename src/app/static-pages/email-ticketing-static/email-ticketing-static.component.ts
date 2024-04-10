@@ -5,7 +5,6 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { NotifyService } from '../../core/notify.service';
 import { ProjectPlanService } from '../../services/project-plan.service';
-import { StaticPageBaseComponent } from './../static-page-base/static-page-base.component';
 import { UsersService } from '../../services/users.service';
 import { LoggerService } from '../../services/logger/logger.service';
 import { AppConfigService } from 'app/services/app-config.service';
@@ -21,7 +20,7 @@ import { Location } from '@angular/common';
   styleUrls: ['./email-ticketing-static.component.scss']
 })
 
-// extends StaticPageBaseComponent
+
 export class EmailTicketingStaticComponent extends PricingBaseComponent implements OnInit, OnDestroy {
   private unsubscribe$: Subject<any> = new Subject<any>();
   PLAN_NAME = PLAN_NAME

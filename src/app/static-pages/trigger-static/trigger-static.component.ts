@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { StaticPageBaseComponent } from './../static-page-base/static-page-base.component';
 import { AuthService } from '../../core/auth.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -17,7 +16,8 @@ const swal = require('sweetalert');
   templateUrl: './trigger-static.component.html',
   styleUrls: ['./trigger-static.component.scss']
 })
-export class TriggerStaticComponent extends StaticPageBaseComponent implements OnInit, OnDestroy {
+
+export class TriggerStaticComponent  implements OnInit, OnDestroy {
   PLAN_NAME = PLAN_NAME
   projectId: string;
   browserLang: string;
@@ -32,6 +32,8 @@ export class TriggerStaticComponent extends StaticPageBaseComponent implements O
   learnMoreAboutDefaultRoles: string;
   profile_name: string;
   isChromeVerGreaterThan100: boolean;
+  public_Key: string;
+  payIsVisible: boolean;
   constructor(
     private router: Router,
     public auth: AuthService,
@@ -42,7 +44,7 @@ export class TriggerStaticComponent extends StaticPageBaseComponent implements O
     private logger: LoggerService,
     public appConfigService: AppConfigService
   ) {
-    super(translate);
+    // super(translate);
   }
 
   ngOnInit() {
@@ -143,7 +145,7 @@ export class TriggerStaticComponent extends StaticPageBaseComponent implements O
 
         this.subscription_end_date = projectProfileData.subscription_end_date;
         this.profile_name = projectProfileData.profile_name;
-        this.buildPlanName(projectProfileData.profile_name, this.browserLang, this.prjct_profile_type);
+        // this.buildPlanName(projectProfileData.profile_name, this.browserLang, this.prjct_profile_type);
 
         if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
           if (this.USER_ROLE === 'owner') {

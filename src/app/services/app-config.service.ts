@@ -33,29 +33,47 @@ export class AppConfigService {
         // console.log('[APP-CONFIG-SERVICE] - loadAppConfig allconfig !!!! exist wsUrlRel -> wsUrlRelIsEmpty ?', wsUrlRelIsEmpty);
 
         if (wsUrlRelIsEmpty === false) {
-          // console.log('[APP-CONFIG-SERVICE]- loadAppConfig allconfig !!!! exist - SERVER_BASE_URL', allconfig.SERVER_BASE_URL);
-          if (allconfig['SERVER_BASE_URL'].indexOf("http://") !== -1) {
-            const ws_url = allconfig['SERVER_BASE_URL'].replace("http://", "ws://").slice(0, -1) + allconfig['wsUrlRel'];
-            // console.log('AppConfigService loadAppConfig allconfig !!!! exist - SERVER_BASE_URL protocol is HTTP - wsUrl', ws_url);
+          //   console.log('[APP-CONFIG-SERVICE]- loadAppConfig allconfig !!!! exist - allconfig ', allconfig);
+          //   if (allconfig['SERVER_BASE_URL'].indexOf("http://") !== -1) {
+          //     const ws_url = allconfig['SERVER_BASE_URL'].replace("http://", "ws://").slice(0, -1) + allconfig['wsUrlRel'];
+          //     console.log('AppConfigService loadAppConfig allconfig !!!! exist - SERVER_BASE_URL protocol is HTTP - wsUrl (1)', ws_url);
 
-            allconfig['wsUrl'] = ws_url
-          } else if (allconfig['SERVER_BASE_URL'].indexOf("https://") !== -1) {
+          //     allconfig['wsUrl'] = ws_url
+          //   } else if (allconfig['SERVER_BASE_URL'].indexOf("https://") !== -1) {
 
-            const ws_url = allconfig['SERVER_BASE_URL'].replace("https://", "wss://").slice(0, -1) + allconfig['wsUrlRel'];
-            allconfig['wsUrl'] = ws_url
-            // console.log('AppConfigService loadAppConfig allconfig !!!! exist - SERVER_BASE_URL protocol is HTTPS - wsUrl', ws_url);
+          //     const ws_url = allconfig['SERVER_BASE_URL'].replace("https://", "wss://").slice(0, -1) + allconfig['wsUrlRel'];
+          //     allconfig['wsUrl'] = ws_url
+          //     console.log('AppConfigService loadAppConfig allconfig !!!! exist - SERVER_BASE_URL protocol is HTTPS - wsUrl (2)', ws_url);
+          //   } else {
+
+          //     if (window.location.protocol === 'http:') {
+          //       allconfig['wsUrl'] = 'ws://' + window.location.hostname + ':' + window.location.port + allconfig['wsUrlRel']
+          //       console.log('[APP-CONFIG-SERVICE] wsUrl (3)',  allconfig['wsUrl'] )
+
+          //     } else if (window.location.protocol === 'https:') {
+
+          //       allconfig['wsUrl'] = 'wss://' + window.location.hostname + ':' + window.location.port + allconfig['wsUrlRel']
+          //       console.log('[APP-CONFIG-SERVICE] wsUrl (4)',  allconfig['wsUrl'] )
+          //     } else {
+
+          //       allconfig['wsUrl'] = 'ws://' + window.location.hostname + ':' + window.location.port + allconfig['wsUrlRel']
+          //       console.log('[APP-CONFIG-SERVICE] wsUrl (4)',  allconfig['wsUrl'] )
+          //     }
+          //   }
+
+
+          if (window.location.protocol === 'http:') {
+            allconfig['wsUrl'] = 'ws://' + window.location.hostname + ':' + window.location.port + allconfig['wsUrlRel']
+            // console.log('[APP-CONFIG-SERVICE] wsUrl (1)', allconfig['wsUrl'])
+
+          } else if (window.location.protocol === 'https:') {
+
+            allconfig['wsUrl'] = 'wss://' + window.location.hostname + ':' + window.location.port + allconfig['wsUrlRel']
+            // console.log('[APP-CONFIG-SERVICE] wsUrl (2)', allconfig['wsUrl'])
           } else {
 
-            if (window.location.protocol === 'http:') {
-              allconfig['wsUrl'] = 'ws://' + window.location.hostname + ':' + window.location.port + allconfig['wsUrlRel']
-
-            } else if (window.location.protocol === 'https:') {
-
-              allconfig['wsUrl'] = 'wss://' + window.location.hostname + ':' + window.location.port + allconfig['wsUrlRel']
-            } else {
-
-              allconfig['wsUrl'] = 'ws://' + window.location.hostname + ':' + window.location.port + allconfig['wsUrlRel']
-            }
+            allconfig['wsUrl'] = 'ws://' + window.location.hostname + ':' + window.location.port + allconfig['wsUrlRel']
+            // console.log('[APP-CONFIG-SERVICE] wsUrl (3)', allconfig['wsUrl'])
           }
 
         } else {
@@ -70,7 +88,7 @@ export class AppConfigService {
       // return this.appConfig;
 
     } catch (err) {
-     console.error('[APP-CONFIG-SERVICE] - loadAppConfig error : ', err);
+      console.error('[APP-CONFIG-SERVICE] - loadAppConfig error : ', err);
     }
   }
 

@@ -65,9 +65,9 @@
               <!-- New chatbot list -->
               <div *ngIf="!showSpinner" class="main--wrapper">
                 <div class="page-title--wrapper">
-                  <div class="title--header">
-                    {{ pageName }}
-                  </div>
+                   <div class="title--header">
+                    <!-- {{ pageName }} -->
+                  </div> 
 
                   <div class="page--actions" *ngIf="faqkbList && faqkbList?.length > 0">
                     <span class="order-by-label">Order by </span>
@@ -137,13 +137,13 @@
                       <div class="cl-card-first-column">
 
                         <div class="bot-type-logo-wpr" *ngIf="faqkb.type === 'internal'">
-                          <div class="bot-type-logo--img-wpr ">
+                          <div class="bot-type-logo--img-wpr " style="top: -39px; left: 14px;">
                             <img class="bot-type-logo" src="assets/img/tiledesk_logo_no_text.png" />
                           </div>
                         </div>
 
                         <div class="bot-type-logo-wpr" *ngIf="faqkb.type === 'external'">
-                          <div class="bot-type-logo--img-wpr ">
+                          <div class="bot-type-logo--img-wpr" style="top: -39px; left: 14px;">
                             <img class="bot-type-logo" src="assets/img/external_bot_logo.png" />
                           </div>
                         </div>
@@ -209,7 +209,7 @@
                       <div class="cl-card-second-column">
                         <div class="cl-card-stats-wpr">
 
-                          <div class="cl-card-item-stats">
+                          <div *ngIf="faqkb.type === 'tilebot'" class="cl-card-item-stats">
                             <div class="cl-card-item-stats-title">
                               <span *ngIf="faqkb.published"> Published </span>
                               <span *ngIf="!faqkb.published"> Draft </span>

@@ -92,7 +92,7 @@ export class ProjectPlanService {
 
 
   getProjectIdFroUrlAndIfExistGetProjectByIdAndPublish(calledBy) {
-    this.logger.log('[PROJECT-PLAN-SERV] - getProjectIdFroUrlAndIfExistGetProjectByIdAndPublish (called', calledBy);
+    this.logger.log('[PROJECT-PLAN-SERV] - getProjectIdFroUrlAndIfExistGetProjectByIdAndPublish (called by)', calledBy);
     this.router.events.subscribe((ev) => {
       if (ev instanceof NavigationEnd) {
 
@@ -142,7 +142,7 @@ export class ProjectPlanService {
       this.logger.log('[PROJECT-PLAN-SERV] - GET PROJECTS - projects ', projects)
 
       const current_prjct = projects.find(prj => prj.id_project.id === projectId);
-      this.logger.log('[PROJECT-PLAN-SERV] - FIND CURRENT PROJECT AMONG ALL - current_prjct ', current_prjct);
+      this.logger.log('[PROJECT-PLAN-SERV] - FIND CURRENT PROJECT AMONG ALL - (called by project-plan-service) current_prjct ', current_prjct);
      
       if (current_prjct) {
         const projectPlanData: Project = {

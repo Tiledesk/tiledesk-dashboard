@@ -43,6 +43,7 @@ export class GetStartChatbotForkComponent implements OnInit {
   public templateImg: string;
   public templateNameOnSite: string;
   public projects: Project[];
+  public activeProjects : Project[];
   public botid: string;
   public selectedProjectId: string;
   public projectname: string;
@@ -194,12 +195,16 @@ export class GetStartChatbotForkComponent implements OnInit {
       if (projects) {
         this.projects = projects;
 
-        if (this.projects && this.projects.length === 1) {
+        this.activeProjects = this.projects.filter( (project) => {
+          return project.id_project.status === 100
+        });
+
+        if (this.activeProjects && this.activeProjects.length === 1) {
           // console.log('[GET START CHATBOT FORK] USE-CASE PROJECTS NO = 1')
-          this.projectName = this.projects[0].id_project.name
-          this.selectedProjectId = this.projects[0].id_project._id
+          this.projectName = this.activeProjects[0].id_project.name
+          this.selectedProjectId = this.activeProjects[0].id_project._id
           // console.log('[GET START CHATBOT FORK] this.project ', this.selectedProjectId)
-          this.project = this.projects[0].id_project;
+          this.project = this.activeProjects[0].id_project;
           // console.log('[GET START CHATBOT FORK] this.project ', this.project)
           this.getProjectBotsByPassingProjectId(this.selectedProjectId);
           this.getProjectPlan(this.project)
@@ -207,9 +212,9 @@ export class GetStartChatbotForkComponent implements OnInit {
         }
         if (projectid) {
           // console.log('[GET START CHATBOT FORK] USE-CASE PROJECTS NO > 1' , projectid)
-          if (this.projects && this.projects.length > 1) {
+          if (this.activeProjects && this.activeProjects.length > 1) {
             // console.log('[GET START CHATBOT FORK] USE-CASE PROJECTS NO > 1')
-            projects.forEach(project => {
+            this.activeProjects.forEach(project => {
               if (project.id_project.id === projectid) {
                 this.project = project.id_project
                 // console.log('[GET START CHATBOT FORK] this.project ', this.project)

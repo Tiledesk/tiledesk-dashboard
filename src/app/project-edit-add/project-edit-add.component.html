@@ -827,7 +827,7 @@
                 <!-- -------------------------------------------------------- -->
                 <span *ngIf="PROJECT_SETTINGS_AUTH_ROUTE">
                   <!-- SECTION SHARED SECRET - TITLE AND SUBTITLE -->
-                  <div class="row">
+                  <div class="row" *ngIf="isVisibleVisitorAuthentication">
                     <div class="col-md-12">
                       <h3 class="card_title__underlined">
                         <span class="card_title__underline">
@@ -842,7 +842,7 @@
                   </div>
 
                   <!-- SHARED SECRET GENERATE -->
-                  <div class="input-wrapper" style="max-width: 992px;">
+                  <div class="input-wrapper" style="max-width: 992px;" *ngIf="isVisibleVisitorAuthentication">
 
                     <div class="row">
                       <div class="col-sm-8">
@@ -876,7 +876,7 @@
                   <div class="input-wrapper" style="max-width: 992px;">
                     <div class="row">
                       <div class="col-md-12">
-                        <h3 class="card_title__underlined" style="margin-top:30px">
+                        <h3 class="card_title__underlined"  [ngStyle]="{'margin-top':isVisibleVisitorAuthentication === true ? '30px' : '0px' }">
                           <span class="card_title__underline">
                             {{ "ProjectEditPage.Webhook" | translate }}
                           </span>
@@ -2197,7 +2197,7 @@
             <div class="row">
               <div class="col-sm-8">
                 <label class="change-card-label" for="expirationDate">{{'ExpirationDate' | translate }}</label>
-                <input #ccExpdate id="cc-exp-date" placeholder="MM / YY" formControlName="expirationDate"
+                <input #ccExpdate id="cc-exp-date" placeholder="MM / YYYY" formControlName="expirationDate"
                   name="expirationDate" type="tel" autocomplete="off" ccExp minlength="7" maxlength="7">
               </div>
               <div class="col-sm-4">

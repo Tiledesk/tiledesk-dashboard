@@ -14,6 +14,9 @@ import { takeUntil } from 'rxjs/operators'
 import { Subject } from 'rxjs';
 import { AppConfigService } from 'app/services/app-config.service';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
+import { FaqKbService } from 'app/services/faq-kb.service';
+import { ChatbotModalComponent } from 'app/bots/bots-list/chatbot-modal/chatbot-modal.component';
+import { MatDialog } from '@angular/material/dialog';
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
 @Component({
@@ -53,6 +56,7 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
   areVisiblePaidApps: boolean;
   agentCannotManageAdvancedOptions: string;
   learnMoreAboutDefaultRoles: string;
+  agentsCannotManageChatbots: string;
   tPlanParams: any;
   appIsAvailable: boolean = true;
   appSumoProfile: string;
@@ -62,6 +66,7 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
   callingPage: string;
   onlyOwnerCanManageTheAccountPlanMsg: string;
 
+  public chatBotCount: any;
   constructor(
     public appStoreService: AppStoreService,
     private router: Router,
@@ -74,6 +79,8 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
     public usersService: UsersService,
     public appConfigService: AppConfigService,
     public route: ActivatedRoute,
+    private faqKbService: FaqKbService,
+    public dialog: MatDialog,
   ) {
     super(prjctPlanService, notify);
     const brand = brandService.getBrand();
@@ -94,6 +101,7 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
     this.getLoggedUser();
     this.getRouteParams();
     this.listenToParentPostMessage()
+    this.getFaqKbByProjectId()
   }
 
 
@@ -671,6 +679,47 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
     window.open(url, '_blank');
   }
 
+  getFaqKbByProjectId() {
+    this.showSpinner = true
+    // this.faqKbService.getAllBotByProjectId().subscribe((faqKb: any) => {
+    this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
+      this.logger.log('[APP-STORE] - GET BOTS BY PROJECT ID', faqKb);
+      if (faqKb) {
+        this.chatBotCount = faqKb.length;
+      }
+
+    }, (error) => {
+      this.logger.error('[APP-STORE] GET BOTS ERROR ', error);
+      this.showSpinner = false;
+    }, () => {
+      this.logger.log('[APP-STORE] GET BOTS COMPLETE');
+  
+    });
+  }
+
+
+  createExternalBot(type: string) {
+    this.logger.log('[APP-STORE] createExternalBot ', type)
+    if (this.USER_ROLE !== 'agent') {
+      if (this.chatBotLimit) {
+        if (this.chatBotCount < this.chatBotLimit) {
+          this.logger.log('[APP-STORE] USECASE  chatBotCount < chatBotLimit')
+          this.goToCreateBot(type)
+        } else if (this.chatBotCount >= this.chatBotLimit) {
+          this.logger.log('[APP-STORE] USECASE  chatBotCount >= chatBotLimit DISPLAY MODAL')
+          this.presentDialogReachedChatbotLimit()
+        }
+      } else if (!this.chatBotLimit) {
+        this.logger.log('[APP-STORE] USECASE  NO chatBotLimit: RUN PRJCTS')
+        this.goToCreateBot(type)
+      }
+    } else if (this.USER_ROLE === 'agent') {
+      this.presentModalAgentCannotManageChatbot()
+    }
+  }
+
+ 
+
   goToCreateBot(type: string) {
     //  this.logger.log('[BOT-TYPE-SELECT] Bot Type Selected type ', type)
     if (type !== 'native' && type !== 'tilebot') {
@@ -683,6 +732,28 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
       // this.logger.log('[BOT-TYPE-SELECT] HERE Y ')
       this.router.navigate(['project/' + this.projectId + '/tilebot/prebuilt']);
     }
+  }
+
+  presentDialogReachedChatbotLimit() {
+    this.logger.log('[BOTS-LIST] openDialog presentDialogReachedChatbotLimit prjct_profile_name ', this.prjct_profile_name)
+    const dialogRef = this.dialog.open(ChatbotModalComponent, {
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+      hasBackdrop: true,
+      data: {
+        projectProfile: this.prjct_profile_name,
+        subscriptionIsActive: this.subscription_is_active,
+        prjctProfileType: this.prjct_profile_type,
+        trialExpired: this.trial_expired
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.logger.log(`[BOTS-LIST] Dialog result: ${result}`);
+    });
+  }
+
+  presentModalAgentCannotManageChatbot() {
+    this.notify.presentModalAgentCannotManageChatbot(this.agentsCannotManageChatbots, this.learnMoreAboutDefaultRoles)
   }
 
   goToCreateRasaBot() {
@@ -861,6 +932,12 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
       .get('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan')
       .subscribe((translation: any) => {
         this.onlyOwnerCanManageTheAccountPlanMsg = translation
+      })
+
+      this.translate
+      .get('AgentsCannotManageChatbots')
+      .subscribe((translation: any) => {
+        this.agentsCannotManageChatbots = translation
       })
 
   }

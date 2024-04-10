@@ -419,7 +419,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
         }
 
         this.currentUserId = this.user._id;
-        this.getProjects();
+        // this.getProjects();
       }
     });
   }
@@ -586,7 +586,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   }
 
   getProjects() {
-    this.logger.log('[NAVBAR] calling getProjects ... ');
+    // console.log('[NAVBAR] calling getProjects ... ');
     this.projectService.getProjects().subscribe((projects: any) => {
       this.logger.log('[NAVBAR] getProjects PROJECTS ', projects);
 

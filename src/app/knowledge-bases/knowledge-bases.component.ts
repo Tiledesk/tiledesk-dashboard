@@ -552,7 +552,6 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     let error = this.msgErrorAddUpdateKb;
     this.kbService.addSitemap(body).subscribe((resp: any) => {
       this.logger.log("onSendSitemap:", resp);
-      console.log("onSendSitemap:", resp);
       if (resp.errors && resp.errors[0]) {
         swal({
           title: this.warningTitle,
