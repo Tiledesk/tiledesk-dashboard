@@ -1052,11 +1052,11 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     // console.log('[WIDGET-SET-UP] getAppConfig  parts ', parts);
 
     let mts = parts.find((part) => part.startsWith('MTS'));
-    console.log('[PRJCT-EDIT-ADD] getAppConfig  mts ', mts);
+    this.logger.log('[PRJCT-EDIT-ADD] getAppConfig  mts ', mts);
     let mtsParts = mts.split(':');
-    console.log('[PRJCT-EDIT-ADD] getAppConfig  mtsParts ', mtsParts);
+    this.logger.log('[PRJCT-EDIT-ADD] getAppConfig  mtsParts ', mtsParts);
     let mtsValue = mtsParts[1]
-    console.log('[PRJCT-EDIT-ADD] getAppConfig  mtsValue ', mtsValue);
+    this.logger.log('[PRJCT-EDIT-ADD] getAppConfig  mtsValue ', mtsValue);
     if (mtsValue === 'T')  {
       return true
     } else  if (mtsValue === 'F'){
@@ -1068,48 +1068,48 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   manageSmtpSettingsVisibility(projectProfileData) {
     this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
     if (projectProfileData['customization']) {
-      console.log('[PRJCT-EDIT-ADD] USECASE EXIST customization > SMTPsettings (1)', projectProfileData['customization']['smtpSettings'])
+      this.logger.log('[PRJCT-EDIT-ADD] USECASE EXIST customization > SMTPsettings (1)', projectProfileData['customization']['smtpSettings'])
     }
 
     if (projectProfileData['customization'] && projectProfileData['customization']['smtpSettings'] !== undefined) {
-      console.log('[PRJCT-EDIT-ADD] USECASE A EXIST customization ', projectProfileData['customization'], ' & smtpSettings', projectProfileData['customization']['smtpSettings'])
+      this.logger.log('[PRJCT-EDIT-ADD] USECASE A EXIST customization ', projectProfileData['customization'], ' & smtpSettings', projectProfileData['customization']['smtpSettings'])
 
       if (projectProfileData['customization']['smtpSettings'] === true) {
         this.isVisibleSMTPsettings = true;
-        console.log('[PRJCT-EDIT-ADD] SMTP Settings USECASE A isVisibleSMTPsettings', this.isVisibleSMTPsettings)
+        this.logger.log('[PRJCT-EDIT-ADD] SMTP Settings USECASE A isVisibleSMTPsettings', this.isVisibleSMTPsettings)
       } else if (projectProfileData['customization']['smtpSettings'] === false) {
 
         this.isVisibleSMTPsettings = false;
-        console.log('[WIDGET-SET-UP] SMTP Settings USECASE A isVisibleSMTPsettings', this.isVisibleSMTPsettings)
+        this.logger.log('[PRJCT-EDIT-ADD] SMTP Settings USECASE A isVisibleSMTPsettings', this.isVisibleSMTPsettings)
       }
 
     } else if (projectProfileData['customization'] && projectProfileData['customization']['smtpSettings'] === undefined) {
-      console.log('[WIDGET-SET-UP] USECASE B EXIST customization ', projectProfileData['customization'], ' BUT smtpSettings IS', projectProfileData['customization']['smtpSettings'])
+      this.logger.log('PRJCT-EDIT-ADD] USECASE B EXIST customization ', projectProfileData['customization'], ' BUT smtpSettings IS', projectProfileData['customization']['smtpSettings'])
 
       if (this.public_Key.includes("MTS")) {
-        console.log('[WIDGET-SET-UP] SMTP Settings  USECASE B  (from FT) - EXIST MTS ', this.public_Key.includes("MTS"));
+        this.logger.log('[PRJCT-EDIT-ADD] SMTP Settings  USECASE B  (from FT) - EXIST MTS ', this.public_Key.includes("MTS"));
 
         this.isVisibleSMTPsettings = this.SMTPsettingsValue()
-        console.log('[WIDGET-SET-UP]  this.isVisibleSMTPsettings from FT ', this.isVisibleSMTPsettings)
+        this.logger.log('[PRJCT-EDIT-ADD]  this.isVisibleSMTPsettings from FT ', this.isVisibleSMTPsettings)
       
       } else if (!this.public_Key.includes("MTS")) {
-        console.log('[WIDGET-SET-UP] SMTP Settings  USECASE B (from FT) -  EXIST MTS ', this.public_Key.includes("MTS"));
+        this.logger.log('[PRJCT-EDIT-ADD] SMTP Settings  USECASE B (from FT) -  EXIST MTS ', this.public_Key.includes("MTS"));
         this.isVisibleSMTPsettings = false;
-        console.log('[WIDGET-SET-UP] SMTP Settings  USECASE B (from FT) isVisibleSMTPsettings', this.isVisibleSMTPsettings);
+        this.logger.log('[PRJCT-EDIT-ADD] SMTP Settings  USECASE B (from FT) isVisibleSMTPsettings', this.isVisibleSMTPsettings);
       }
 
     } else if (projectProfileData['customization'] === undefined) {
-      console.log('[WIDGET-SET-UP] USECASE C customization is  ', projectProfileData['customization'] , 'get value foem FT')
+      this.logger.log('[PRJCT-EDIT-ADD] USECASE C customization is  ', projectProfileData['customization'] , 'get value foem FT')
       if (this.public_Key.includes("MTS")) {
-        console.log('[WIDGET-SET-UP] SMTP Settings  USECASE B  (from FT) - EXIST MTS ', this.public_Key.includes("MTS"));
+        this.logger.log('[PRJCT-EDIT-ADD] SMTP Settings  USECASE B  (from FT) - EXIST MTS ', this.public_Key.includes("MTS"));
 
         this.isVisibleSMTPsettings = this.SMTPsettingsValue()
-        console.log('[WIDGET-SET-UP]  this.isVisibleSMTPsettings from FT ', this.isVisibleSMTPsettings)
+        this.logger.log('[PRJCT-EDIT-ADD]  this.isVisibleSMTPsettings from FT ', this.isVisibleSMTPsettings)
       
       } else if (!this.public_Key.includes("MTS")) {
-        console.log('[WIDGET-SET-UP] SMTP Settings  USECASE B (from FT) -  EXIST MTS ', this.public_Key.includes("MTS"));
+        this.logger.log('[PRJCT-EDIT-ADD] SMTP Settings  USECASE B (from FT) -  EXIST MTS ', this.public_Key.includes("MTS"));
         this.isVisibleSMTPsettings = false;
-        console.log('[WIDGET-SET-UP] WSMTP Settings  USECASE B (from FT) isVisibleWidgetUnbranding', this.isVisibleSMTPsettings);
+        this.logger.log('[WPRJCT-EDIT-ADD] WSMTP Settings  USECASE B (from FT) isVisibleWidgetUnbranding', this.isVisibleSMTPsettings);
       }
 
     }
