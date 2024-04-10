@@ -44,7 +44,7 @@ export class SsoService {
   }
 
   getCurrentAuthenticatedUser(JWT_token) {
-   console.log('[SSO-SERV] - getCurrentAuthenticatedUser JWT_token ', JWT_token)
+    this.logger.log('[SSO-SERV] - getCurrentAuthenticatedUser JWT_token ', JWT_token)
     
     const httpOptions = {
       headers: new HttpHeaders({
@@ -55,7 +55,7 @@ export class SsoService {
     };
 
     const url = this.GET_CURRENT_AUTHENTICATED_USER;
-    console.log('[SSO-SERV] - getCurrentAuthenticatedUser ', url)
+    this.logger.log('[SSO-SERV] - getCurrentAuthenticatedUser ', url)
 
     return this._httpclient
       .get(url, httpOptions)
