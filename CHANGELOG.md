@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.6.10-rc3
+- Adds the ability to view the project id on the "Your projects" page
+
 ### 2.6.10-rc2
 - Adds the ability to profiling the plans via DB (Widget Unbranding and SMTP settings)
 - Adds the ability to display/hide the "Community" and template categories menu items in the chatbots sidebar
