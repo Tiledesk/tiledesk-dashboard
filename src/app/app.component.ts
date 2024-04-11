@@ -817,6 +817,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                     (this.route.indexOf('/signup-on-invitation') !== -1) ||
                     (this.route === '/forgotpsw') ||
                     (this.route === '/projects') ||
+                    (this.route === '/projects?showid=y') ||
                     (this.route.indexOf('/verify') !== -1) ||
                     (this.route.indexOf('/resetpassword') !== -1) ||
                     (this.route.indexOf('/pricing') !== -1) ||
