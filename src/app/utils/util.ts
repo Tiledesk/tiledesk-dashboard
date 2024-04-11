@@ -435,7 +435,7 @@ export const featuresPlanD = [
     'Email Support',
     'Team Inbox',
     'Make integration',
-    '250 Pages for Knowledge Base', 
+    '150 Contents for Knowledge Base', //'250 Pages for Knowledge Base', 
     '50,000 AI Tokens'
 ]
 // Basic plan
@@ -464,14 +464,14 @@ export const featuresPlanE = [
     'Livechat Support',
     'Analytics',
     'Email Ticketing',
-    '500 Pages for Knowledge Base', 
+    '300 Contents for Knowledge Base', // '500 Pages for Knowledge Base', 
     '250,000 AI Tokens'
 ]
 
 // Premium plan 
 export const highlightedFeaturesPlanE = [
     { 'color': '#a613ec', 'background': 'rgba(166,19,236,.2)', 'feature': '2 User' },
-    { 'color': '#0d8cff', 'background': 'rgba(13,140,255,.2)', 'feature': '3000 Chat/mo.' },
+    { 'color': '#0d8cff', 'background': 'rgba(13,140,255,.2)', 'feature': '3,000 Chat/mo.' },
     { 'color': '#19a95d', 'background': 'rgba(28,191,105,.2)', 'feature': '20 Chatbot' }
 ]
 
