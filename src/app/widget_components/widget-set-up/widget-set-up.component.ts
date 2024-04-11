@@ -387,6 +387,10 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   public user: any;
   public hideHelpLink: boolean;
   public companyNametParams: any;
+  public widgetLogoURL: string;
+  public defaultFooter: string;
+  public widgetLauncherButtonPlaceholder: string;
+
   @ViewChild('fileInputLauncherBtnlogo', { static: false }) fileInputLauncherBtnlogo: any;
 
 
@@ -419,6 +423,11 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.company_site_url = brand['COMPANY_SITE_URL'];
     this.hideHelpLink = brand['DOCS'];
     this.companyNametParams = { 'BRAND_NAME': this.company_name }
+    this.widgetLogoURL = brand['widget_logo_URL']
+    this.defaultFooter = brand['widget_default_footer'];
+    this.widgetLauncherButtonPlaceholder = brand['widget_launcher_button_placeholder']
+    console.log('[WIDGET-SET-UP] widgetLogoURL ', this.widgetLogoURL)
+    console.log('[WIDGET-SET-UP] widgetLauncherButtonPlaceholder ', this.widgetLauncherButtonPlaceholder)
     // this.t_params = { 'plan_name': PLAN_NAME.B }
   }
 
@@ -2251,7 +2260,8 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           this.logger.log('[WIDGET-SET-UP] - onInit WIDGET DEFINED BUT POWERED-BY IS: ', project.widget.poweredBy, ' > SET DEFAULT ')
           // this.calloutTimerSecondSelected = -1;
 
-          this.footerBrand = '<a tabindex="-1" target="_blank" href="http://www.tiledesk.com/?utm_source=widget"><img src="https://panel.tiledesk.com/v3/dashboard/assets/img/logos/tiledesk-solo_logo_new_gray.svg"/><span>Powered by Tiledesk</span></a>';
+          // this.footerBrand = '<a tabindex="-1" target="_blank" href="http://www.tiledesk.com/?utm_source=widget"><img src="https://panel.tiledesk.com/v3/dashboard/assets/img/logos/tiledesk-solo_logo_new_gray.svg"/><span>Powered by Tiledesk</span></a>';
+          this.footerBrand = this.defaultFooter
         }
 
         // -------------------------------------------
@@ -2285,8 +2295,8 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         // case logoChat = 'userCompanyLogoUrl' > display the userCompanyLogoUrl
         // logoChat (WIDGET AND LOGOCHAT DEFINED - USER HAS SETTED HIS LOGO)
         // ------------------------------------------------------------------------
-        // if (project.widget.logoChat && project.widget.logoChat !== 'nologo' && project.widget.logoChat !== 'tiledesklogo') {
-        if (project.widget.logoChat && project.widget.logoChat !== 'nologo' && project.widget.logoChat !== 'https://tiledesk.com/tiledesk-logo-white.png') {
+        // if (project.widget.logoChat && project.widget.logoChat !== 'nologo' && project.widget.logoChat !== 'https://tiledesk.com/tiledesk-logo-white.png') {
+        if (project.widget.logoChat && project.widget.logoChat !== 'nologo' && project.widget.logoChat !== this.widgetLogoURL) {
           this.logoUrl = project.widget.logoChat;
           this.hasOwnLogo = true;
           this.LOGO_IS_ON = true;
@@ -2298,8 +2308,8 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           // case logoChat = 'nologo' > no logo is displayed
           // logoChat (WIDGET AND LOGOCHAT DEFINED - USER HAS SELECTED 'NO LOGO')
           // ------------------------------------------------------------------------
-          // } else if (project.widget.logoChat && project.widget.logoChat === 'nologo' && project.widget.logoChat !== 'tiledesklogo') {
-        } else if (project.widget.logoChat && project.widget.logoChat === 'nologo' && project.widget.logoChat !== 'https://tiledesk.com/tiledesk-logo-white.png') {
+        // } else if (project.widget.logoChat && project.widget.logoChat === 'nologo' && project.widget.logoChat !== 'https://tiledesk.com/tiledesk-logo-white.png') {
+        } else if (project.widget.logoChat && project.widget.logoChat === 'nologo' && project.widget.logoChat !== this.widgetLogoURL) {
           this.logoUrl = 'No Logo';
           this.hasOwnLogo = false;
           this.LOGO_IS_ON = false;
@@ -2313,10 +2323,10 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           // logoChat (WIDGET DEFINED BUT NOT LOGOCHAT - SET DEFAULT)
           // ------------------------------------------------------------------------
         } else {
-          // this.logoUrl = 'tiledesklogo'
-          this.logoUrl = 'https://tiledesk.com/tiledesk-logo-white.png'
+        
+          this.logoUrl =  this.widgetLogoURL; //'https://tiledesk.com/tiledesk-logo-white.png'
           this.hasOwnLogo = false;
-          this.LOGO_IS_ON = true
+          this.LOGO_IS_ON = true;
 
           this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) LOGO URL: ', project.widget.logoChat, ' HAS HOWN LOGO ', this.hasOwnLogo, ' LOGO IS ON', this.LOGO_IS_ON);
         }
@@ -2514,8 +2524,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         // @ LogoChat
         // WIDGET UNDEFINED
         // -----------------------------------------------------------------------
-        // this.logoUrl = 'tiledesklogo'
-        this.logoUrl = 'https://tiledesk.com/tiledesk-logo-white.png'
+        this.logoUrl = this.widgetLogoURL; // 'https://tiledesk.com/tiledesk-logo-white.png'
         this.hasOwnLogo = false;
         this.LOGO_IS_ON = true
 
@@ -2562,8 +2571,8 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         // WIDGET UNDEFINED
         // -----------------------------------------------------------------------
 
-        this.footerBrand = '<a tabindex="-1" target="_blank" href="http://www.tiledesk.com/?utm_source=widget"><img src="https://panel.tiledesk.com/v3/dashboard/assets/img/logos/tiledesk-solo_logo_new_gray.svg"/><span>Powered by Tiledesk</span></a>'
-
+        // this.footerBrand = '<a tabindex="-1" target="_blank" href="http://www.tiledesk.com/?utm_source=widget"><img src="https://panel.tiledesk.com/v3/dashboard/assets/img/logos/tiledesk-solo_logo_new_gray.svg"/><span>Powered by Tiledesk</span></a>'
+        this.footerBrand = this.defaultFooter
 
         // -----------------------------------------------------------------------
         // @ Single conversation
@@ -3176,8 +3185,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
     } else if ($event.target.checked === true) {
 
-      // this.logoUrl = 'tiledesklogo'
-      this.logoUrl = 'https://tiledesk.com/tiledesk-logo-white.png'
+      this.logoUrl = this.widgetLogoURL; //'https://tiledesk.com/tiledesk-logo-white.png'
       this.LOGO_IS_ON = true;
       this.logger.log('[WIDGET-SET-UP] LOGO_IS_ON ', this.LOGO_IS_ON)
       this.hasOwnLogo = false;
@@ -3232,8 +3240,8 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
     /// LOGO
     if (this.logoUrl && this.LOGO_IS_ON === true) {
-      // if (this.logoUrl !== 'tiledesklogo') {
-      if (this.logoUrl !== 'https://tiledesk.com/tiledesk-logo-white.png') {
+      // if (this.logoUrl !== 'https://tiledesk.com/tiledesk-logo-white.png') { 
+      if (this.logoUrl !== this.widgetLogoURL) { 
         this.hasOwnLogo = true;
         this.logger.log('[WIDGET-SET-UP] - HAS OWN LOGO ', this.hasOwnLogo, 'LOGO IS ON ', this.LOGO_IS_ON, ' logoUrl: ', this.logoUrl);
       } else {
@@ -3254,9 +3262,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       // if is not defined logoUrl remove the property logoChat
       // *** REMOVE PROPERTY
       delete this.widgetObj['logoChat'];
-
-      // this.logoUrl = 'tiledesklogo'
-      this.logoUrl = 'https://tiledesk.com/tiledesk-logo-white.png'
+      this.logoUrl = this.widgetLogoURL; // 'https://tiledesk.com/tiledesk-logo-white.png'
       this.hasOwnLogo = false;
       this.logger.log('[WIDGET-SET-UP] - HAS OWN LOGO ', this.hasOwnLogo, 'LOGO IS ON ', this.LOGO_IS_ON, ' logoUrl: ', this.logoUrl);
     }

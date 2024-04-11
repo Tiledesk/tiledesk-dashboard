@@ -80,6 +80,8 @@ export class ConfigureWidgetComponent extends WidgetSetUpBaseComponent implement
   // EXIST_STORED_ROUTE: boolean = false
   storedRoute: string;
   browser_lang: string;
+  public widgetLogoURL: string;
+
   constructor(
     private auth: AuthService,
     private router: Router,
@@ -97,6 +99,9 @@ export class ConfigureWidgetComponent extends WidgetSetUpBaseComponent implement
     // this.tparams = brand;
     this.company_name = brand['BRAND_NAME'];
     this.company_site_url = brand['COMPANY_SITE_URL'];
+   
+    this.widgetLogoURL = brand['widget_logo_URL']
+    console.log('[WIZARD - CONFIGURE-WIDGET] widgetLogoURL ', this.widgetLogoURL)
   }
 
   ngOnInit() {
@@ -149,7 +154,7 @@ export class ConfigureWidgetComponent extends WidgetSetUpBaseComponent implement
 
   getProjectById() {
     this.projectService.getProjectById(this.projectId).subscribe((project: any) => {
-      this.logger.log('WIDGET DESIGN - GET PROJECT BY ID - PROJECT OBJECT: ', project);
+      // console.log('WIDGET DESIGN - GET PROJECT BY ID - PROJECT OBJECT: ', project);
       this.logger.log('[WIZARD - CONFIGURE-WIDGET] - PRJCT-WIDGET (onInit): ', project.widget);
 
       if (project.widget) {
@@ -159,8 +164,8 @@ export class ConfigureWidgetComponent extends WidgetSetUpBaseComponent implement
         // case logoChat = 'userCompanyLogoUrl' > display the userCompanyLogoUrl
         // logoChat (WIDGET AND LOGOCHAT DEFINED - USER HAS SETTED HIS LOGO)
         // ------------------------------------------------------------------------
-        // if (project.widget.logoChat && project.widget.logoChat !== 'nologo' && project.widget.logoChat !== 'tiledesklogo') {
-        if (project.widget.logoChat && project.widget.logoChat !== 'nologo' && project.widget.logoChat !== 'https://tiledesk.com/tiledesk-logo-white.png') {
+        // if (project.widget.logoChat && project.widget.logoChat !== 'nologo' && project.widget.logoChat !== 'https://tiledesk.com/tiledesk-logo-white.png') {
+        if (project.widget.logoChat && project.widget.logoChat !== 'nologo' && project.widget.logoChat !== this.widgetLogoURL) {
           this.logoUrl = project.widget.logoChat;
           this.hasOwnLogo = true;
           this.LOGO_IS_ON = true;
@@ -172,10 +177,10 @@ export class ConfigureWidgetComponent extends WidgetSetUpBaseComponent implement
           // ------------------------------------------------------------------------
           // @ Logochat
           // case logoChat = 'nologo' > no logo is displayed
-          // logoChat (WIDGET AND LOGOCHAT DEFINED - USER HAS SELECTED 'NO LOGO')
+          // logoChat (WIDGET AND LOGOCHAT DEFINED - USER HAS SELECTED 'NO LOGO') 
           // ------------------------------------------------------------------------
-          // } else if (project.widget.logoChat && project.widget.logoChat === 'nologo' && project.widget.logoChat !== 'tiledesklogo') {
-        } else if (project.widget.logoChat && project.widget.logoChat === 'nologo' && project.widget.logoChat !== 'https://tiledesk.com/tiledesk-logo-white.png') {
+        // } else if (project.widget.logoChat && project.widget.logoChat === 'nologo' && project.widget.logoChat !== 'https://tiledesk.com/tiledesk-logo-white.png') {
+        } else if (project.widget.logoChat && project.widget.logoChat === 'nologo' && project.widget.logoChat !== this.widgetLogoURL) {
           this.logoUrl = 'No Logo';
           this.hasOwnLogo = false;
           this.LOGO_IS_ON = false;
@@ -191,8 +196,8 @@ export class ConfigureWidgetComponent extends WidgetSetUpBaseComponent implement
           // logoChat (WIDGET DEFINED BUT NOT LOGOCHAT - SET DEFAULT)
           // ------------------------------------------------------------------------
         } else {
-          // this.logoUrl = 'tiledesklogo'
-          this.logoUrl = 'https://tiledesk.com/tiledesk-logo-white.png'
+          
+          this.logoUrl = this.widgetLogoURL; //'https://tiledesk.com/tiledesk-logo-white.png'
           this.hasOwnLogo = false;
           this.LOGO_IS_ON = true
 
@@ -257,7 +262,7 @@ export class ConfigureWidgetComponent extends WidgetSetUpBaseComponent implement
         // WIDGET UNDEFINED
         // -----------------------------------------------------------------------
         // this.logoUrl = 'tiledesklogo'
-        this.logoUrl = 'https://tiledesk.com/tiledesk-logo-white.png'
+        this.logoUrl = this.widgetLogoURL; // 'https://tiledesk.com/tiledesk-logo-white.png'
         this.hasOwnLogo = false;
         this.LOGO_IS_ON = true
 
