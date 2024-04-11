@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.6.10
+- Deploys in production
+- Improves pricing page
+
 ### 2.6.9
 - Deploys in production
 - Improves performance
