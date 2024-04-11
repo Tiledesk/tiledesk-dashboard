@@ -198,7 +198,7 @@ export class PricingBaseComponent implements OnInit {
                   // Kb contents Limit
                   // this.kbLimit = KB_MAX_NUM[PLAN_NAME.E]
                   this.kbLimit = projectProfileData.profile_kbs;
-                  console.log('[P-BASE] - SANDBOX (TRIAL ACTIVE) - KB LIMIT FROM DB  ', this.chatBotLimit)
+                  console.log('[P-BASE] - SANDBOX (TRIAL ACTIVE) - KB LIMIT FROM DB  ', this.kbLimit)
                   if (this.kbLimit === null || this.kbLimit === undefined) {
                     this.kbLimit = KB_MAX_NUM[PLAN_NAME.E]
                     console.log('[P-BASE] - SANDBOX (TRIAL ACTIVE) - KB DEFAULT LIMIT   ', this.kbLimit)
