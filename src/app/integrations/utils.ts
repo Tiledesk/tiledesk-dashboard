@@ -8,6 +8,7 @@ export enum INTEGRATIONS_KEYS {
     ACTIVE_CAMPAIGN = 'active_campaign',
     JIRA = 'jira',
     KLAVIYO = 'klaviyo',
+    MESSENGER = 'messenger',
     MAILCHIMP = 'mailchimp',
     MAKE = 'make',
     PIPEDRIVE = 'pipedrive',
@@ -20,9 +21,16 @@ export enum INTEGRATIONS_KEYS {
     ZOHO = 'zoho'
 }
 
+export enum APPS_TITLE {
+    WHATSAPP = "WhatsApp Business",
+    MESSENGER = "Facebook Messenger",
+    TELEGRAM = "Telegram"
+}
+
 export enum INTEGRATIONS_CATEGORIES {
     AI = 'ai',
     AUTOMATION = "automation",
+    CHANNEL = "channel",
     COMMUNICATION = 'communication',
     CRM = 'crm',
     ECOMMERCE = 'ecommerce',
@@ -35,6 +43,7 @@ export enum INTEGRATIONS_CATEGORIES {
 
 export const CATEGORIES_LIST = [
     { type: INTEGRATIONS_CATEGORIES.AI, name: "Artificial Intelligence" },
+    { type: INTEGRATIONS_CATEGORIES.CHANNEL, name: "Channels" },
     //{ type: INTEGRATIONS_CATEGORIES.AUTOMATION, name: "Automation" },
     //{ type: INTEGRATIONS_CATEGORIES.COMMUNICATION, name: "Communication" },
     { type: INTEGRATIONS_CATEGORIES.CRM, name: "CRM" },
@@ -85,8 +94,11 @@ export const INTEGRATION_LIST_ARRAY = [
     //{ name: "Klaviyo",          category: INTEGRATIONS_CATEGORIES.AUTOMATION,       key: INTEGRATIONS_KEYS.KLAVIYO,         src_icon: "assets/img/int/klaviyo-icon.png",            src_logo: "assets/img/int/klaviyo-logo.png",            pro: true,  plan: 'Premium' },
     //{ name: "Mailchimp",        category: INTEGRATIONS_CATEGORIES.EMAIL,            key: INTEGRATIONS_KEYS.MAILCHIMP,       src_icon: "assets/img/int/mailchimp-icon.png",          src_logo: "assets/img/int/mailchimp-logo.png",          pro: true,  plan: 'Premium' },
     { name: "Make",             category: INTEGRATIONS_CATEGORIES.INT_PLAT,         key: INTEGRATIONS_KEYS.MAKE,            src_icon: "assets/img/int/make-icon.png",               src_logo: "assets/img/int/make-logo.svg",               pro: true,  plan: 'Basic'},
+    { name: "Messenger",        category: INTEGRATIONS_CATEGORIES.CHANNEL,          key: INTEGRATIONS_KEYS.MESSENGER,       src_icon: "assets/img/int/messenger-icon.png",          src_logo: "assets/img/int/messenger-icon.png",          pro: true,  plan: 'Premium' },
     //{ name: "Pipedrive",        category: INTEGRATIONS_CATEGORIES.CRM,              key: INTEGRATIONS_KEYS.PIPEDRIVE,       src_icon: "assets/img/int/pipedrive-icon.png",          src_logo: "assets/img/int/pipedrive-logo.png",          pro: true,  plan: 'Premium' },
     //{ name: "Salesforce",       category: INTEGRATIONS_CATEGORIES.CRM,              key: INTEGRATIONS_KEYS.SALESFORCE,      src_icon: "assets/img/int/salesforce-icon.png",         src_logo: "assets/img/int/salesforce-logo.png",         pro: true,  plan: 'Premium' },
+    { name: "Telegram",         category: INTEGRATIONS_CATEGORIES.CHANNEL,          key: INTEGRATIONS_KEYS.TELEGRAM,        src_icon: "assets/img/int/telegram-icon.png",           src_logo: "assets/img/int/telegram-icon.png",           pro: true,  plan: 'Premium' },
+    { name: "WhatsApp",         category: INTEGRATIONS_CATEGORIES.CHANNEL,          key: INTEGRATIONS_KEYS.WHATSAPP,        src_icon: "assets/img/int/whatsapp-icon.png",           src_logo: "assets/img/int/whatsapp-icon.png",           pro: true,  plan: 'Premium' },
     //{ name: "Zapier",           category: INTEGRATIONS_CATEGORIES.INT_PLAT,         key: INTEGRATIONS_KEYS.ZAPIER,          src_icon: "assets/img/int/zapier-icon.png",             src_logo: "assets/img/int/zapier-logo.svg",             pro: true,  plan: 'Basic' },
     //{ name: "Zendesk",          category: INTEGRATIONS_CATEGORIES.LIVE_CHAT,        key: INTEGRATIONS_KEYS.ZENDESK,         src_icon: "assets/img/int/zendesk-icon.png",            src_logo: "assets/img/int/zendesk-logo.png",            pro: true,  plan: 'Premium' },
     //{ name: "Zoho",             category: INTEGRATIONS_CATEGORIES.OTHER,            key: INTEGRATIONS_KEYS.ZOHO,            src_icon: "assets/img/int/zoho-icon.png",               src_logo: "assets/img/int/zoho-logo.png",               pro: true,  plan: 'Premium' }

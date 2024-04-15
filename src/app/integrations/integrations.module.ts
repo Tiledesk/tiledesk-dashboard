@@ -15,6 +15,7 @@ import { SettingsSidebarModule } from 'app/components/settings-sidebar/settings-
 import { SharedModule } from 'app/shared/shared.module';
 import { RouterModule, Routes } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { ExtIntegrationComponent } from './list/ext-integration/ext-integration.component';
 
 const routes: Routes = [
   { path: "", component: IntegrationsComponent},
@@ -30,7 +31,8 @@ const routes: Routes = [
     HubspotIntegrationComponent,
     MakeIntegrationComponent,
     OpenaiIntegrationComponent,
-    QaplaIntegrationComponent
+    QaplaIntegrationComponent,
+    ExtIntegrationComponent
   ],
   imports: [
     RouterModule.forChild(routes),

@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from 'app/core/auth.service';
 import { IntegrationService } from 'app/services/integration.service';
-import { BrevoIntegration, CATEGORIES_LIST, CustomerioIntegration, HubspotIntegration, INTEGRATIONS_KEYS, INTEGRATION_LIST_ARRAY, MakeIntegration, OpenaiIntegration, QaplaIntegration } from './utils';
+import { APPS_TITLE, BrevoIntegration, CATEGORIES_LIST, CustomerioIntegration, HubspotIntegration, INTEGRATIONS_CATEGORIES, INTEGRATIONS_KEYS, INTEGRATION_LIST_ARRAY, MakeIntegration, OpenaiIntegration, QaplaIntegration } from './utils';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { NotifyService } from 'app/core/notify.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -10,10 +10,11 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { BrandService } from 'app/services/brand.service';
-import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { ProjectPlanService } from 'app/services/project-plan.service';
 import { PLAN_NAME } from 'app/utils/util';
 import { ProjectService } from 'app/services/project.service';
+import { AppStoreService } from 'app/services/app-store.service';
+import { environment } from 'environments/environment';
 
 const swal = require('sweetalert');
 
@@ -28,6 +29,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
   project: any;
   project_plan: any;
   profile_name: string;
+  customization: string;
   public IS_OPEN_SETTINGS_SIDEBAR: boolean;
   isChromeVerGreaterThan100: boolean;
   panelOpenState = true;
@@ -54,6 +56,9 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
 
   translateparams: any;
   showSpinner: boolean = true;
+  showInIframe: boolean = false;
+  renderUrl: string;
+  availableApps = [];
 
   constructor(
     private auth: AuthService,
@@ -67,6 +72,8 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
     private brand: BrandService,
     public prjctPlanService: ProjectPlanService,
     private projectService: ProjectService,
+    private projectPlanService: ProjectPlanService,
+    private appService: AppStoreService
   ) {
 
     const _brand = this.brand.getBrand();
@@ -76,22 +83,17 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    // this.getProjectPlan();
     this.getCurrentProject();
     this.getBrowserVersion();
     this.listenSidebarIsOpened();
     this.translateModalOnlyOwnerCanManageProjectAccount();
     this.getProjectUserRole()
-    // this.getAllIntegrations().then(() => {
-    //   this.intName = this.route.snapshot.queryParamMap.get('name');
-    //   console.log("[INTEGRATION-COMP] intName: ", this.intName);
-    //   if (this.intName) {
-    //     this.onIntegrationSelect(this.INTEGRATIONS.find(i => i.key === this.intName));
-    //   }
-
-    // })
-
   }
+
+
+  /**
+   * UTILS FUNCTIONS - START
+   */
 
   ngOnDestroy(): void {
     this.unsubscribe$.next();
@@ -104,33 +106,6 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
       this.IS_OPEN_SETTINGS_SIDEBAR = isopened
     });
   }
-
-
-
-  // getProjectPlan() {
-  //   this.prjctPlanService.projectPlan$
-  //     .pipe(
-  //       takeUntil(this.unsubscribe$)
-  //     )
-  //     .subscribe((projectProfileData: any) => {
-  //       console.log('[INTEGRATION-COMP] - getProjectPlan - project Profile Data', projectProfileData)
-  //       if (projectProfileData) {
-
-  //         this.profile_name = projectProfileData.profile_name;
-  //         console.log('[INTEGRATION-COMP] - getProjectPlan -profile_name ', this.profile_name)
-
-
-  //       }
-  //     }, error => {
-
-  //       this.logger.error('[INTEGRATION-COMP] - getProjectPlan - ERROR', error);
-  //     }, () => {
-
-  //       this.logger.log('[INTEGRATION-COMP] - getProjectPlan - COMPLETE')
-
-
-  //     });
-  // }
 
   getCurrentProject() {
     this.auth.project_bs
@@ -145,36 +120,39 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
         // if ((this.project.profile_name === 'Sandbox' || this.project.profile_name === 'free') && this.project.trial_expired === true) {
         //   this.plan_expired = true;
         // }
-        this.getProjectById(this.project._id);
+        this.getProjectPlan();
+        //this.getProjectById(this.project._id);
       });
   }
 
-  getProjectById(projectId) {
-    this.projectService.getProjectById(projectId).subscribe((project: any) => {
-      this.logger.log('[INTEGRATION-COMP] - GET PROJECT BY ID - PROJECT: ', project);
-
-      this.profile_name = project.profile.name;
-      this.logger.log('[INTEGRATION-COMP] - GET PROJECT BY ID - PROJECT > profile_name : ', this.profile_name);
-
-    }, error => {
-      this.logger.error('[INTEGRATION-COMP] - GET PROJECT BY ID - ERROR ', error);
-    }, () => {
-      this.logger.log('[INTEGRATION-COMP] - GET PROJECT BY ID * COMPLETE * ');
-      this.getIntegratons()
-    });
+  getProjectPlan() {
+    this.projectPlanService.projectPlan$
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe( async (profileData: any) => {
+          if (profileData) {
+            this.profile_name = profileData.profile_name;
+            this.customization = profileData.customization;
+            await this.getApps();
+            this.getIntegrations();
+          }
+        }, (error) => {
+          console.error("err: ", error);
+        })
   }
 
-  getIntegratons() {
-    this.getAllIntegrations().then(() => {
-      this.intName = this.route.snapshot.queryParamMap.get('name');
-      this.logger.log("[INTEGRATION-COMP] intName: ", this.intName);
-      if (this.intName) {
-        this.onIntegrationSelect(this.INTEGRATIONS.find(i => i.key === this.intName));
-      }
+  // getProjectById(projectId) {
+  //   this.projectService.getProjectById(projectId).subscribe( async (project: any) => {
+  //     this.logger.log('[INTEGRATION-COMP] - GET PROJECT BY ID - PROJECT: ', project);
       
-    })
-  }
-
+  //     this.logger.log('[INTEGRATION-COMP] - GET PROJECT BY ID - PROJECT > profile_name : ', this.profile_name);
+  //   }, error => {
+  //     this.logger.error('[INTEGRATION-COMP] - GET PROJECT BY ID - ERROR ', error);
+  //   }, async () => {
+  //     this.logger.log('[INTEGRATION-COMP] - GET PROJECT BY ID * COMPLETE * ');
+  //     await this.getApps();
+  //     this.getIntegrations()
+  //   });
+  // }
 
   getBrowserVersion() {
     this.auth.isChromeVerGreaterThan100.subscribe((isChromeVerGreaterThan100: boolean) => {
@@ -184,15 +162,11 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
   }
 
   getProjectUserRole() {
-    // const user___role =  this.usersService.project_user_role_bs.value;
-    // this.logger.log('[NAVBAR] % »»» WebSocketJs WF +++++ ws-requests--- navbar - USER ROLE 1 ', user___role);
-
     this.usersService.project_user_role_bs
       .pipe(
         takeUntil(this.unsubscribe$)
       )
       .subscribe((user_role) => {
-      //  console.log("[INTEGRATION-COMP] user is ", user_role);
         if (user_role) {
           this.USER_ROLE = user_role
           if (user_role === 'agent') {
@@ -205,10 +179,24 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
       });
   }
 
+  /**
+   * UTILS FUNCTIONS - END
+   */
+
+
+  getIntegrations() {
+    this.getAllIntegrations().then(() => {
+      this.intName = this.route.snapshot.queryParamMap.get('name');
+      this.logger.log("[INTEGRATION-COMP] intName: ", this.intName);
+      if (this.intName) {
+        this.onIntegrationSelect(this.INTEGRATIONS.find(i => i.key === this.intName));
+      }
+    })
+  }
+
   getAllIntegrations() {
     return new Promise((resolve, reject) => {
       this.integrationService.getAllIntegrations().subscribe((integrations: Array<any>) => {
-        this.logger.log("[INTEGRATION-COMP] Integrations for this project ", integrations)
         this.logger.log("[INTEGRATION-COMP] Integrations for this project ", integrations)
         this.integrations = integrations;
         this.showSpinner = false
@@ -221,6 +209,60 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
     })
   }
 
+  async getApps() {
+    
+    return new Promise((resolve) => {
+      this.appService.getApps().subscribe((response: any) => {
+        
+        let whatsappApp = response.apps.find(a => (a.title === APPS_TITLE.WHATSAPP && a.version === "v2"));
+        if (environment.whatsappConfigUrl) {
+          if (whatsappApp) {
+            whatsappApp.runUrl = environment.whatsappConfigUrl;
+            whatsappApp.channel = "whatsapp";
+          } else {
+            whatsappApp = {
+              runUrl: environment.whatsappConfigUrl,
+              channel: "whatsapp"
+            }
+          }
+        }
+        this.availableApps.push(whatsappApp);
+  
+        let messengerApp = response.apps.find(a => (a.title === APPS_TITLE.MESSENGER && a.version === "v2"));
+        if (environment.messengerConfigUrl) {
+          if (messengerApp) {
+            messengerApp.runUrl = environment.messengerConfigUrl;
+            messengerApp.channel = "messenger";
+          } else {
+            messengerApp = {
+              runUrl: environment.messengerConfigUrl,
+              channel: "messenger"
+            }
+          }
+        }
+        this.availableApps.push(messengerApp);
+  
+        let telegramApp = response.apps.find(a => (a.title === APPS_TITLE.TELEGRAM && a.version === "v2"));
+        if (environment.telegramConfigUrl) {
+          if (telegramApp) {
+            telegramApp.runUrl = environment.telegramConfigUrl;
+            telegramApp.channel = "telegram";
+          } else {
+            telegramApp = {
+              runUrl: environment.telegramConfigUrl,
+              channel: "telegram"
+            }
+          }
+        }
+        this.availableApps.push(telegramApp);
+        
+        resolve(true);
+  
+      }, (error) => {
+        console.error("--> error getting apps: ", error)
+      })
+    })
+  }
 
   onIntegrationSelect(integration) {
     this.integrationLocked = false;
@@ -229,6 +271,14 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
       this.selectedIntegration = this.integrations.find(i => i.name === integration.key);
       if (!this.selectedIntegration) {
         this.selectedIntegration = this.initializeIntegration(integration.key);
+      }
+      if (integration && integration.category === INTEGRATIONS_CATEGORIES.CHANNEL) {
+        this.integrationSelectedName = "external";
+        this.showInIframe = true;
+        let app = this.availableApps.find(a => a.channel === integration.key);
+        this.renderUrl = app.runUrl;
+      } else {
+        this.showInIframe = false;
       }
       this.selectedIntegrationModel = integration;
       this.changeRoute(integration.key);
@@ -271,12 +321,6 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
 
   integrationDeletedEvent(integration) {
     this.presentDeleteConfirmModal(integration);
-    // this.integrationService.deleteIntegration(integration._id).subscribe((result) => {
-    //   this.logger.debug("[INTEGRATION-COMP] Delete integration result: ", result);
-    //   this.reloadSelectedIntegration(integration);
-    // }, (error) => {
-    //   this.logger.error("[INTEGRATION-COMP] Delete integration error: ", error);
-    // })
   }
 
   reloadSelectedIntegration(integration) {

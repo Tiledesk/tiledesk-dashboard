@@ -47,83 +47,16 @@
                             </mat-expansion-panel>
                         </mat-accordion>
 
-                        <!-- <mat-accordion>
-            <mat-expansion-panel expanded="true" class="custom-expansion-panel" hideToggle>
-                <mat-expansion-panel-header class="disable_ripple">
-                    <mat-panel-title>
-                        Artificial Intelligence
-                    </mat-panel-title>
-                </mat-expansion-panel-header>
-                <div class="element" (click)="onIntegrationSelect('openai')"
-                    [ngClass]="{'element-selected': integrationSelectedName === 'openai' }">
-                    <img src="../../assets/cds/images/actions/openai-icon.svg" alt="OpenAI">
-                    <p>OpenAI</p>
-                </div>
-            </mat-expansion-panel>
-        </mat-accordion>
-
-        <mat-accordion>
-            <mat-expansion-panel expanded="true" class="custom-expansion-panel" hideToggle>
-                <mat-expansion-panel-header class="disable_ripple">
-                    <mat-panel-title>
-                        CRM
-                    </mat-panel-title>
-                </mat-expansion-panel-header>
-                <div class="element" (click)="onIntegrationSelect('customerio')"
-                    [ngClass]="{'element-selected': integrationSelectedName === 'customerio' }">
-                    <img src="../../assets/img/customerio.png" alt="Customer.io'">
-                    <p>Customer.io</p>
-                </div>
-                <div class="element" (click)="onIntegrationSelect('hubspot')"
-                    [ngClass]="{'element-selected': integrationSelectedName === 'hubspot' }">
-                    <img src="../../assets/img/hubspot.png" alt="Hubspot'">
-                    <p>Hubspot</p>
-                </div>
-                <div class="element" (click)="onIntegrationSelect('brevo')"
-                    [ngClass]="{'element-selected': integrationSelectedName === 'brevo' }">
-                    <img src="../../assets/img/brevo.png" alt="Brevo'">
-                    <p>Brevo (Sendinblue)</p>
-                </div>
-            </mat-expansion-panel>
-        </mat-accordion>
-
-        <mat-accordion>
-            <mat-expansion-panel expanded="true" class="custom-expansion-panel" hideToggle>
-                <mat-expansion-panel-header class="disable_ripple">
-                    <mat-panel-title>
-                        E-Commerce
-                    </mat-panel-title>
-                </mat-expansion-panel-header>
-                <div class="element" (click)="onIntegrationSelect('qapla')"
-                    [ngClass]="{'element-selected': integrationSelectedName === 'qapla' }">
-                    <img src="../../assets/img/qapla.jpg" alt="Qapla'">
-                    <p>Qapla'</p>
-                </div>
-            </mat-expansion-panel>
-        </mat-accordion>
-
-        <mat-accordion>
-            <mat-expansion-panel expanded="true" class="custom-expansion-panel" hideToggle>
-                <mat-expansion-panel-header class="disable_ripple">
-                    <mat-panel-title>
-                        Data/File Storage
-                    </mat-panel-title>
-                </mat-expansion-panel-header>
-                <div class="element" (click)="onIntegrationSelect('gsheets')"
-                    [ngClass]="{'element-selected': integrationSelectedName === 'gsheets' }">
-                    <img src="../../assets/img/google_sheets.png" alt="Google Sheets'">
-                    <p>Google Sheets</p>
-                </div>
-            </mat-expansion-panel>
-        </mat-accordion> -->
                     </div>
 
-                    <loading-spinner style="width: 100% !important; display: flex; align-items: center;"
-                        *ngIf="showSpinner"></loading-spinner>
+                    <div class="spinner-container" *ngIf="showSpinner">
+                        <loading-spinner style="width: 100% !important; display: flex; align-items: center;"></loading-spinner>
+                    </div>
                     <ng-container *ngIf="!showSpinner">
                         <div *ngIf="integrationSelectedName !== 'none'" class="menu-container">
 
-                            <integration-header [integrationModel]="selectedIntegrationModel"></integration-header>
+                            <integration-header *ngIf="!showInIframe" 
+                                [integrationModel]="selectedIntegrationModel"></integration-header>
 
                             <div *ngIf="integrationLocked === false" class="integration-outer-container">
 
@@ -161,11 +94,20 @@
                                     (onDeleteIntegration)=integrationDeletedEvent($event)>
                                 </openai-integration>
 
+
                                 <qapla-integration *ngIf="integrationSelectedName === INT_KEYS.QAPLA"
                                     [integration]="selectedIntegration"
                                     (onUpdateIntegration)=integrationUpdateEvent($event)
                                     (onDeleteIntegration)=integrationDeletedEvent($event)>
                                 </qapla-integration>
+
+                                <ext-integration *ngIf="integrationSelectedName === 'external'"
+                                    [integration]="selectedIntegration"
+                                    [renderUrl]="renderUrl"
+                                    [id_project]="project._id"
+                                    (onUpdateIntegration)=integrationUpdateEvent($event)
+                                    (onDeleteIntegration)=integrationDeletedEvent($event)>
+                                </ext-integration>
 
                             </div>
 

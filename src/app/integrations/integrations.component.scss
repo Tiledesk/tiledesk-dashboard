@@ -10,6 +10,12 @@
     // padding: 8px 16px; // nk commented
 }
 
+.spinner-container {
+    width: 100%;
+    height: calc(100vh - 160px);
+    display: flex;
+}
+
 ::-webkit-scrollbar {
     width: 0px;
 }
@@ -53,7 +59,7 @@
 
         img {
             margin-right: 8px;
-            border-radius: 10px;
+            border-radius: 4px;
             width: 20px;
             height: 20px;
         }
