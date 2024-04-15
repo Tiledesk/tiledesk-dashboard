@@ -447,7 +447,7 @@ export const featuresPlanD = [
     'Email Support',
     'Team Inbox',
     'Make integration',
-    '250 Pages for Knowledge Base', 
+    '150 Contents for Knowledge Base', 
     '50,000 AI Tokens'
 ]
 // Basic plan
@@ -475,8 +475,7 @@ export const featuresPlanE = [
     'Data export',
     'Livechat Support',
     'Analytics',
-    'Email Ticketing',
-    '500 Pages for Knowledge Base', 
+    '300 Contents for Knowledge Base', 
     '250,000 AI Tokens'
 ]
 
@@ -499,6 +498,7 @@ export const featuresPlanF = [
     'Chatbot Design Assistance',
     'Onboarding and Training',
     'Smart Assignment',
+    'Email Ticketing',
     'IP Filtering',
     'Email Templates Customisation',
     'Activities Log',
