@@ -511,41 +511,4 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
     this.integrationListReady = true;
   }
 
-  manageTelegramVisibility(projectProfileData) {
-
-    if (projectProfileData['customization']) {
-      console.log('[WIDGET-SET-UP] USECASE EXIST customization > telegram (1)', projectProfileData['customization']['telegram'])
-    }
-
-    if (projectProfileData['customization'] && projectProfileData['customization']['telegram'] !== undefined) {
-      console.log('[WIDGET-SET-UP] USECASE A EXIST customization ', projectProfileData['customization'], ' & telegram', projectProfileData['customization']['telegram'])
-
-      this.isVisibleTelegram = projectProfileData['customization']['telegram'];
-      
-
-      //*** */
-      if (projectProfileData['customization']['telegram'] === true) {
-        this.isVisibleTelegram = true;
-        console.log('[WIDGET-SET-UP] Widget unbranding USECASE A isVisibleTelegram', this.isVisibleTelegram)
-      } else if (projectProfileData['customization']['telegram'] === false) {
-
-        this.isVisibleTelegram = false;
-        console.log('[WIDGET-SET-UP] Widget unbranding USECASE A isVisibleTelegram', this.isVisibleTelegram)
-      }
-
-    } else if (projectProfileData['customization'] && projectProfileData['customization']['telegram'] === undefined) {
-      console.log('[WIDGET-SET-UP] USECASE B EXIST customization ', projectProfileData['customization'], ' BUT telegram IS', projectProfileData['customization']['telegram'])
-
-      
-
-    } else if (projectProfileData['customization'] === undefined) {
-      console.log('[WIDGET-SET-UP] USECASE C customization is  ', projectProfileData['customization'], 'get value foem FT')
-      
-      this.isVisibleTelegram = true;
-      console.log("isVisibleTelegram: ", this.isVisibleTelegram);
-      console.log('[WIDGET-SET-UP]  this.isVisibleTelegram from FT ', this.isVisibleTelegram)
-    } 
-
-  }
-
 }
