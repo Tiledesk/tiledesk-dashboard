@@ -426,7 +426,7 @@
           <ng-container *ngIf="!showskeleton ">
             <span *ngIf="USER_ROLE !== 'agent'">
               <!-- (hasFinishedGetProjectBots)="hasFinishedGetProjectBots()" -->
-              <home-cds 
+              <home-cds *ngIf="areVisibleChatbot"
                 (goToCreateChatbot)="goToCreateChatbot()" 
                 [chatbots] = "chatbots"> </home-cds>
 
@@ -483,7 +483,7 @@
                 <!-- ----------------------- -->
                 <!-- Child 5 Create Chatbot -->
                 <!-- ----------------------- -->
-                <ng-container *ngIf="item.type === 'child5'">
+                <ng-container *ngIf="item.type === 'child5' && areVisibleChatbot">
                   <appdashboard-home-create-chatbot #childCreateChatbot *ngIf="displayCreateChatbot"
                     [use_case_for_child]="use_case_for_child" [solution_channel_for_child]="solution_channel_for_child"
                     [waBotId]="waBotId" [wadepartmentName]="wadepartmentName"

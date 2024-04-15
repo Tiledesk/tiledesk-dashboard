@@ -36,6 +36,7 @@ import { KbSettings } from 'app/models/kbsettings-model';
 import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { UserModalComponent } from 'app/users/user-modal/user-modal.component';
+import { ProjectPlanService } from 'app/services/project-plan.service';
 
 declare const $: any;
 
@@ -251,6 +252,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   companyName: string;
   dialogRef: MatDialogRef<any>;
   UPLOAD_ENGINE_IS_FIREBASE: boolean;
+  areVisibleChatbot: boolean;
 
   constructor(
     private router: Router,
@@ -271,7 +273,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     private logger: LoggerService,
     private sanitizer: DomSanitizer,
     private faqKbService: FaqKbService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private prjctPlanService: ProjectPlanService,
   ) {
     this.logger.log('[SIDEBAR] !!!!! HELLO SIDEBAR')
 
@@ -311,7 +314,55 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     this.listenSoundPreference();
     this.getNotificationSoundPreferences();
     this.getWsCurrentUserAvailability$();
-    
+    this.getProjectPlan()
+  }
+
+
+  getProjectPlan() {
+    this.prjctPlanService.projectPlan$
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((projectProfileData: any) => {
+        this.logger.log('[SIDEBAR] - getProjectPlan project Profile Data', projectProfileData)
+        if (projectProfileData) {
+          this.manageChatbotVisibility(projectProfileData)
+        }
+      }, error => {
+
+        this.logger.error('[SIDEBAR] - getProjectPlan - ERROR', error);
+      }, () => {
+        this.logger.log('[SIDEBAR] - getProjectPlan * COMPLETE *')
+      });
+  }
+
+  manageChatbotVisibility(projectProfileData) {
+
+    if (projectProfileData['customization']) {
+      this.logger.log('[WIDGET-SET-UP] USECASE EXIST customization > chatbot (1)', projectProfileData['customization']['chatbot'])
+    }
+
+    if (projectProfileData['customization'] && projectProfileData['customization']['chatbot'] !== undefined) {
+      this.logger.log('[WIDGET-SET-UP] USECASE A EXIST customization ', projectProfileData['customization'], ' & chatbot', projectProfileData['customization']['chatbot'])
+
+      if (projectProfileData['customization']['chatbot'] === true) {
+        this.areVisibleChatbot = true;
+        this.logger.log('[WIDGET-SET-UP] Widget unbranding USECASE A areVisibleChatbot', this.areVisibleChatbot)
+      } else if (projectProfileData['customization']['chatbot'] === false) {
+
+        this.areVisibleChatbot = false;
+        this.logger.log('[WIDGET-SET-UP] Widget unbranding USECASE A areVisibleChatbot', this.areVisibleChatbot)
+      }
+
+    } else if (projectProfileData['customization'] && projectProfileData['customization']['chatbot'] === undefined) {
+      this.logger.log('[WIDGET-SET-UP] USECASE B EXIST customization ', projectProfileData['customization'], ' BUT chatbot IS', projectProfileData['customization']['chatbot'])
+      this.areVisibleChatbot = true;
+
+    } else if (projectProfileData['customization'] === undefined) {
+      this.logger.log('[WIDGET-SET-UP] USECASE C customization is  ', projectProfileData['customization'] )
+      this.areVisibleChatbot = true;
+
+    }
   }
 
 

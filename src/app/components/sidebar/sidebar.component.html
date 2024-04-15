@@ -116,7 +116,7 @@
      <div style="color: #fff"> CS_TMPLT {{TMPLT_CS_ROUTE_IS_ACTIVE}} </div> -->
      <!-- routerLinkActive="active" -->
      <!-- routerLink="project/{{ project._id }}/bots/my-chatbots/all" -->
-      <ng-container *ngIf="USER_ROLE !== 'agent'">
+      <ng-container *ngIf="USER_ROLE !== 'agent' && areVisibleChatbot">
         <li id="bot-anchor-wpr" *ngIf="project"  
           matTooltipClass="sb-mat-tooltip"
           matTooltip="Bots" 
