@@ -220,7 +220,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   subscription: Subscription;
   CURRENT_USER_ROLE: string;
 
-  CHAT_PANEL_MODE: boolean // = true; // nk for test change color
+  CHAT_PANEL_MODE: boolean  // = true; // Nikola for test change color
   dshbrdBaseUrl: string;
   project_name: string;
 
@@ -1241,7 +1241,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       _elemMainPanel.classList.add("main-panel-chat-panel-mode");
 
     } else {
-      // this.CHAT_PANEL_MODE = true; // nk for test change color
+   
       this.CHAT_PANEL_MODE = false;
       // this.CHAT_PANEL_MODE = true; // Nikola to test chat mode
       // thia.logger.log('[WS-REQUESTS-MSGS] - CHAT_PANEL_MODE »»» ', this.CHAT_PANEL_MODE);
@@ -4631,7 +4631,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   goToContactDetails() {
-    this.router.navigate(['project/' + this.id_project + '/contact', this.contact_id]);
+    if(this.CHAT_PANEL_MODE === false)  {
+      this.router.navigate(['project/' + this.id_project + '/contact', this.contact_id]);
+    }
   }
 
   openContactDetailsInNewWindow() {
