@@ -53,7 +53,7 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
   USER_ROLE: string;
   public_Key: string;
   isVisiblePAY: boolean;
-  areVisiblePaidApps: boolean;
+  // areVisiblePaidApps: boolean = false;
   agentCannotManageAdvancedOptions: string;
   learnMoreAboutDefaultRoles: string;
   agentsCannotManageChatbots: string;
@@ -207,18 +207,18 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
         }
       }
 
-      if (key.includes("DPA")) {
+      // if (key.includes("DPA")) {
 
-        let paidApps = key.split(":");
+      //   let paidApps = key.split(":");
 
-        if (paidApps[1] === "F") {
-          this.areVisiblePaidApps = false;
-          this.logger.log('APP-STORE areVisiblePaidApps ', this.areVisiblePaidApps)
-        } else {
-          this.areVisiblePaidApps = true;
-          this.logger.log('APP-STORE areVisiblePaidApps ', this.areVisiblePaidApps)
-        }
-      }
+      //   if (paidApps[1] === "F") {
+      //     this.areVisiblePaidApps = false;
+      //     this.logger.log('APP-STORE areVisiblePaidApps ', this.areVisiblePaidApps)
+      //   } else {
+      //     this.areVisiblePaidApps = true;
+      //     this.logger.log('APP-STORE areVisiblePaidApps ', this.areVisiblePaidApps)
+      //   }
+      // }
 
 
     });
@@ -227,9 +227,9 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
     if (!this.public_Key.includes("PAY")) {
       this.isVisiblePAY = false;
     }
-    if (!this.public_Key.includes("DPA")) {
-      this.areVisiblePaidApps = false;
-    }
+    // if (!this.public_Key.includes("DPA")) {
+    //   this.areVisiblePaidApps = false;
+    // }
   }
 
   getCurrentProject() {
@@ -266,14 +266,15 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
   getApps() {
     this.appStoreService.getApps().subscribe((_apps: any) => {
       this.apps = _apps.apps;
-      this.logger.log('APP-STORE - getApps APPS ', this.apps);
+      console.log('APP-STORE - getApps APPS ', this.apps);
 
 
 
-      if (this.areVisiblePaidApps) {
-        let paidApps = ['WhatsApp Business', 'Facebook Messenger', 'Help Center']
-        this.apps = this.apps.filter(x => !paidApps.includes(x.title));
-      }
+      // 'Help Center'
+      let paidApps = ['WhatsApp Business', 'Facebook Messenger', 'Telegram']
+      this.apps = this.apps.filter(x => !paidApps.includes(x.title));
+      console.log('APP-STORE - getApps APPS ', this.apps)
+
 
       const sendTranscriptAppIndex = this.apps.findIndex(object => {
         return object.title === "Send transcript by email";
@@ -693,7 +694,7 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
       this.showSpinner = false;
     }, () => {
       this.logger.log('[APP-STORE] GET BOTS COMPLETE');
-  
+
     });
   }
 
@@ -718,7 +719,7 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
     }
   }
 
- 
+
 
   goToCreateBot(type: string) {
     //  this.logger.log('[BOT-TYPE-SELECT] Bot Type Selected type ', type)
@@ -934,7 +935,7 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
         this.onlyOwnerCanManageTheAccountPlanMsg = translation
       })
 
-      this.translate
+    this.translate
       .get('AgentsCannotManageChatbots')
       .subscribe((translation: any) => {
         this.agentsCannotManageChatbots = translation
