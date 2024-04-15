@@ -839,6 +839,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                     (this.route.indexOf('/get-chatbot') !== -1) ||
                     (this.route.indexOf('/install-template') !== -1) ||
                     (this.route.indexOf('/unauthorized_access') !== -1) ||
+                    (this.route.indexOf('/unauthorized') !== -1) ||
                     (this.route.indexOf('/editfaq') !== -1) ||
                     (this.route.indexOf('/createfaq') !== -1) ||
                     (this.route.indexOf('/cds') !== -1) ||
@@ -965,6 +966,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                     (this.route.indexOf('/unserved-request-for-panel') !== -1) ||
                     (this.route.indexOf('/autologin') !== -1) ||
                     (this.route.indexOf('/unauthorized_access') !== -1) ||
+                    (this.route.indexOf('/unauthorized') !== -1) ||
                     (this.route.indexOf('/editfaq') !== -1) ||
                     (this.route.indexOf('/createfaq') !== -1) ||
                     (this.route.indexOf('/cds') !== -1) ||
