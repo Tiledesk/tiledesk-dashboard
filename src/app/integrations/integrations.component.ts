@@ -12,7 +12,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { BrandService } from 'app/services/brand.service';
 import { ProjectPlanService } from 'app/services/project-plan.service';
 import { PLAN_NAME } from 'app/utils/util';
-import { ProjectService } from 'app/services/project.service';
 import { AppStoreService } from 'app/services/app-store.service';
 import { environment } from 'environments/environment';
 
@@ -40,6 +39,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
   selectedIntegrationModel: null;
   integrationLocked: boolean = false;
   intName: string;
+  integrationListReady: boolean = false;
 
   INT_KEYS = INTEGRATIONS_KEYS;
   INTEGRATIONS = INTEGRATION_LIST_ARRAY;
@@ -60,6 +60,8 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
   renderUrl: string;
   availableApps = [];
 
+  isVisibleTelegram: boolean;
+
   constructor(
     private auth: AuthService,
     private usersService: UsersService,
@@ -71,7 +73,6 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
     private translate: TranslateService,
     private brand: BrandService,
     public prjctPlanService: ProjectPlanService,
-    private projectService: ProjectService,
     private projectPlanService: ProjectPlanService,
     private appService: AppStoreService
   ) {
@@ -84,6 +85,8 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getCurrentProject();
+    this.getProjectPlan();
+
     this.getBrowserVersion();
     this.listenSidebarIsOpened();
     this.translateModalOnlyOwnerCanManageProjectAccount();
@@ -115,35 +118,31 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
       .subscribe((project) => {
         this.project = project
         this.logger.log("[INTEGRATION-COMP] Project: ", this.project);
-        // this.project_plan = this.project.profile_name;
-        // console.log("Current project plan: ", this.project_plan);
-        // if ((this.project.profile_name === 'Sandbox' || this.project.profile_name === 'free') && this.project.trial_expired === true) {
-        //   this.plan_expired = true;
-        // }
-        this.getProjectPlan();
-        //this.getProjectById(this.project._id);
       });
   }
 
   getProjectPlan() {
     this.projectPlanService.projectPlan$
-        .pipe(takeUntil(this.unsubscribe$))
-        .subscribe( async (profileData: any) => {
-          if (profileData) {
-            this.profile_name = profileData.profile_name;
-            this.customization = profileData.customization;
-            await this.getApps();
-            this.getIntegrations();
-          }
-        }, (error) => {
-          console.error("err: ", error);
-        })
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(async (projectProfileData: any) => {
+        if (projectProfileData) {
+          this.profile_name = projectProfileData.profile_name;
+          this.customization = projectProfileData.customization;
+          await this.getApps();
+          //this.manageTelegramVisibility(projectProfileData);
+          console.log("app retrieved")
+          this.manageAppVisibility(projectProfileData)
+          this.getIntegrations();
+        }
+      }, (error) => {
+        console.error("err: ", error);
+      })
   }
 
   // getProjectById(projectId) {
   //   this.projectService.getProjectById(projectId).subscribe( async (project: any) => {
   //     this.logger.log('[INTEGRATION-COMP] - GET PROJECT BY ID - PROJECT: ', project);
-      
+
   //     this.logger.log('[INTEGRATION-COMP] - GET PROJECT BY ID - PROJECT > profile_name : ', this.profile_name);
   //   }, error => {
   //     this.logger.error('[INTEGRATION-COMP] - GET PROJECT BY ID - ERROR ', error);
@@ -210,54 +209,54 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
   }
 
   async getApps() {
-    
+
     return new Promise((resolve) => {
       this.appService.getApps().subscribe((response: any) => {
-        
+
         let whatsappApp = response.apps.find(a => (a.title === APPS_TITLE.WHATSAPP && a.version === "v2"));
-        if (environment.whatsappConfigUrl) {
+        if (environment['whatsappConfigUrl']) {
           if (whatsappApp) {
-            whatsappApp.runUrl = environment.whatsappConfigUrl;
+            whatsappApp.runUrl = environment['whatsappConfigUrl'];
             whatsappApp.channel = "whatsapp";
           } else {
             whatsappApp = {
-              runUrl: environment.whatsappConfigUrl,
+              runUrl: environment['whatsappConfigUrl'],
               channel: "whatsapp"
             }
           }
         }
         this.availableApps.push(whatsappApp);
-  
+
         let messengerApp = response.apps.find(a => (a.title === APPS_TITLE.MESSENGER && a.version === "v2"));
-        if (environment.messengerConfigUrl) {
+        if (environment['messengerConfigUrl']) {
           if (messengerApp) {
-            messengerApp.runUrl = environment.messengerConfigUrl;
+            messengerApp.runUrl = environment['messengerConfigUrl'];
             messengerApp.channel = "messenger";
           } else {
             messengerApp = {
-              runUrl: environment.messengerConfigUrl,
+              runUrl: environment['messengerConfigUrl'],
               channel: "messenger"
             }
           }
         }
         this.availableApps.push(messengerApp);
-  
+
         let telegramApp = response.apps.find(a => (a.title === APPS_TITLE.TELEGRAM && a.version === "v2"));
-        if (environment.telegramConfigUrl) {
+        if (environment['telegramConfigUrl']) {
           if (telegramApp) {
-            telegramApp.runUrl = environment.telegramConfigUrl;
+            telegramApp.runUrl = environment['telegramConfigUrl'];
             telegramApp.channel = "telegram";
           } else {
             telegramApp = {
-              runUrl: environment.telegramConfigUrl,
+              runUrl: environment['telegramConfigUrl'],
               channel: "telegram"
             }
           }
         }
         this.availableApps.push(telegramApp);
-        
+
         resolve(true);
-  
+
       }, (error) => {
         console.error("--> error getting apps: ", error)
       })
@@ -311,9 +310,9 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
       // } else {
       //   this.notify.showWidgetStyleUpdateNotification("Saved but not verified", 3, 'priority_high');
       // }
-    
+
       this.notify.showWidgetStyleUpdateNotification("Saved successfully", 2, 'done');
-      
+
     }, (error) => {
       this.logger.error("[INTEGRATION-COMP] Save integration error: ", error);
     })
@@ -481,6 +480,71 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
         resolve(true)
       }
     })
+
+  }
+
+  manageAppVisibility(projectProfileData) {
+    
+    if (projectProfileData && projectProfileData.customization) {
+
+      if (projectProfileData.customization[this.INT_KEYS.WHATSAPP] === false) {
+        let index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.WHATSAPP);
+        if (index != -1) { this.INTEGRATIONS.splice(index, 1) };
+      }
+      if (projectProfileData.customization[this.INT_KEYS.TELEGRAM] === false) {
+        let index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.TELEGRAM);
+        if (index != -1) { this.INTEGRATIONS.splice(index, 1) };
+      }
+      if (projectProfileData.customization[this.INT_KEYS.MESSENGER] === false) {
+        let index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.MESSENGER);
+        if (index != -1) { this.INTEGRATIONS.splice(index, 1) };
+      }
+
+      let index = this.INTEGRATIONS.findIndex(i => i.category === INTEGRATIONS_CATEGORIES.CHANNEL);
+      if (index === -1) {
+        let idx = this.CATEGORIES.findIndex(c => c.type === INTEGRATIONS_CATEGORIES.CHANNEL); 
+        if (idx != -1) {
+          this.CATEGORIES.splice(idx, 1);
+        }
+      }
+    }
+    this.integrationListReady = true;
+  }
+
+  manageTelegramVisibility(projectProfileData) {
+
+    if (projectProfileData['customization']) {
+      console.log('[WIDGET-SET-UP] USECASE EXIST customization > telegram (1)', projectProfileData['customization']['telegram'])
+    }
+
+    if (projectProfileData['customization'] && projectProfileData['customization']['telegram'] !== undefined) {
+      console.log('[WIDGET-SET-UP] USECASE A EXIST customization ', projectProfileData['customization'], ' & telegram', projectProfileData['customization']['telegram'])
+
+      this.isVisibleTelegram = projectProfileData['customization']['telegram'];
+      
+
+      //*** */
+      if (projectProfileData['customization']['telegram'] === true) {
+        this.isVisibleTelegram = true;
+        console.log('[WIDGET-SET-UP] Widget unbranding USECASE A isVisibleTelegram', this.isVisibleTelegram)
+      } else if (projectProfileData['customization']['telegram'] === false) {
+
+        this.isVisibleTelegram = false;
+        console.log('[WIDGET-SET-UP] Widget unbranding USECASE A isVisibleTelegram', this.isVisibleTelegram)
+      }
+
+    } else if (projectProfileData['customization'] && projectProfileData['customization']['telegram'] === undefined) {
+      console.log('[WIDGET-SET-UP] USECASE B EXIST customization ', projectProfileData['customization'], ' BUT telegram IS', projectProfileData['customization']['telegram'])
+
+      
+
+    } else if (projectProfileData['customization'] === undefined) {
+      console.log('[WIDGET-SET-UP] USECASE C customization is  ', projectProfileData['customization'], 'get value foem FT')
+      
+      this.isVisibleTelegram = true;
+      console.log("isVisibleTelegram: ", this.isVisibleTelegram);
+      console.log('[WIDGET-SET-UP]  this.isVisibleTelegram from FT ', this.isVisibleTelegram)
+    } 
 
   }
 

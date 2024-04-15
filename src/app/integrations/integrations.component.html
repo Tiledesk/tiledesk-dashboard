@@ -21,7 +21,7 @@
             <div class="teplate-content" style="flex: 1 1 auto; margin: 0 20px;">
                 <div class="integrations-content">
 
-                    <div class="list">
+                    <div class="list" *ngIf="integrationListReady">
 
                         <mat-accordion *ngFor="let category of CATEGORIES">
                             <mat-expansion-panel expanded="true" class="custom-expansion-panel" hideToggle>
