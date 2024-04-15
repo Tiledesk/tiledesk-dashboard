@@ -13,8 +13,10 @@
     "display_help_in_installation": false,
     "display_invite_teammate_btn": false,
     "display_contact_us_email": false,
-    "custom_redirect_after_logout": true,
+    "custom_redirect_after_logout": false,
     "after_logout_redirect_URL": "https://www.imagicle.com/en/products/conversational-ai/",
+    "display_chatbots_community": false,
+    "display_templates_category": false,
     "footer": {
         "display_terms_and_conditions_link": true,
         "display_star_us_on_github": false,
@@ -43,6 +45,10 @@
     "handle_invitation_page": {
       "company_logo_45x45": "assets/img/logos/tiledesk-solo-logo.png"
     }
+  },
+  "WIDGET": {
+    "LOGO_CHAT": "https://smartflows-eu-public.s3.eu-central-1.amazonaws.com/imagicle-resources/SmartflowsLogo-NoText.svg",
+    "POWERED_BY": "<a tabindex='-1' target='_blank href='https://www.imagicle.com/en/products/conversational-ai/'><img src='https://smartflows-eu-public.s3.eu-central-1.amazonaws.com/imagicle-resources/SmartflowsLogo-NoText.svg'/><span> Powered by Conversational AI</span></a>"
   },
   "CHAT": {
 

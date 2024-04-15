@@ -20,6 +20,12 @@
 - Deploys in production 
 - Fixes the bug: WordPress section does not open on installations page
 
+### 2.6.6-rc1
+- Move email ticketing features to "Custom" plan
+
+### 2.6.5-rc1
+- Adds the ability to manage the number of chatbots and the number of Knowledge Base contents
+
 ### 2.6.5
 - Deploys in production
 - Improvements and bug fixing
@@ -40,6 +46,19 @@
 - Deploys in production
 - Improves the Get and Save methods used for translation strings
 
+### 2.6.3-rc3
+- Improves pop-up windows
+
+### 2.6.3-rc2
+- Bug fixing
+
+### 2.6.3-rc1
+- Improvements and bug fixing
+
+### 2.6.1-rc1
+- Improves get and save methods of translation strings
+- Improves performance
+
 ### 2.6.0
 - Deploys in production
 - Improves Knowledge Bases 
@@ -55,19 +74,29 @@
 - Deploys in production
 - Refactors the teammates table
 
+<<<<<<< HEAD
 ### 2.5.19
 - Deploys in production
 - Fixes the bug: not all chatbot images are displayed
 - Fixes the bug: published chatbots is appearing as a draft
+=======
+### 2.6.0-rc6
+- Fixes the bug: App cards are not of the same height
+>>>>>>> master-PRE
 
-### 2.5.18
-- Deploys in production
-- Fixes the bug: in the settings sidebar 'setAttribute' on 'Element' is not a valid attribute name
-- User profile image is called in loop
+### 2.6.0-rc4
+- Improves Knowledge Base
 
-### 2.5.17
-- Deploys in production
-- Fixes the bug: multiple status call in kb page
+### 2.6.0-rc3
+- Improves Knowledge Base
+
+### 2.6.0-rc2
+- Improves Knowledge Base (added sitemap)
+
+### 2.6.0-rc1
+- Improves Knowledge Base 
+- Adds the customer.io integration
+- Refactors the bot list page
 
 ### 2.5.16
 - Deploys in production

@@ -28,8 +28,10 @@
 
               <div class="c21-header-content">
                 <div class="c21-logo" *ngIf="LOGO_IS_ON === true">
+                  <!-- <img *ngIf="!hasOwnLogo" style="height: 32px; width: auto;margin-bottom: 20px;" alt="logo"
+                    src="https://tiledesk.com/tiledesk-logo-white.png/"> -->
                   <img *ngIf="!hasOwnLogo" style="height: 32px; width: auto;margin-bottom: 20px;" alt="logo"
-                    src="https://tiledesk.com/tiledesk-logo-white.png/">
+                    [src]="widgetLogoURL ">
                   <img *ngIf="hasOwnLogo" style="height: 32px; width: auto;margin-bottom: 20px;" alt="myLogo"
                     [src]="logoUrl">
                 </div>

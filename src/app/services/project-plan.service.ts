@@ -142,7 +142,8 @@ export class ProjectPlanService {
       this.logger.log('[PROJECT-PLAN-SERV] - GET PROJECTS - projects ', projects)
 
       const current_prjct = projects.find(prj => prj.id_project.id === projectId);
-      this.logger.log('[PROJECT-PLAN-SERV] - FIND CURRENT PROJECT AMONG ALL - (called by project-plan-service) current_prjct ', current_prjct);
+      // console.log('[PROJECT-PLAN-SERV] - FIND CURRENT PROJECT AMONG ALL - (called by project-plan-service) current_prjct ', current_prjct);
+      
      
       if (current_prjct) {
         const projectPlanData: Project = {
@@ -152,6 +153,9 @@ export class ProjectPlanService {
           createdAt: current_prjct.id_project.createdAt,
           profile_name: current_prjct.id_project.profile['name'],
           profile_agents: current_prjct.id_project.profile['agents'],
+          // profile_chatbots: current_prjct.id_project.profile['quote']['chatbots'],
+          profile_chatbots: current_prjct.id_project.profile['quotes'] ? current_prjct.id_project.profile['quotes']['chatbots'] : null,
+          profile_kbs: current_prjct.id_project.profile['quotes'] ? current_prjct.id_project.profile['quotes']['kbs'] : null,
           trial_days: current_prjct.id_project.profile['trialDays'],
           trial_days_left: current_prjct.id_project.trialDaysLeft,
           trial_expired: current_prjct.id_project.trialExpired,
@@ -161,8 +165,11 @@ export class ProjectPlanService {
           subscription_end_date: current_prjct.id_project.profile['subEnd'],
           subscription_id: current_prjct.id_project.profile['subscriptionId'],
           subscription_creation_date: current_prjct.id_project.profile['subscription_creation_date'],
+          extra1: current_prjct.id_project.profile['extra1'],
+          extra2: current_prjct.id_project.profile['extra2'],
           extra3: current_prjct.id_project.profile['extra3'],
           extra4: current_prjct.id_project.profile['extra4'],
+          customization: current_prjct.id_project.profile['customization'],
           user_role: current_prjct.role,
           payActive: this.areActivePay
         }

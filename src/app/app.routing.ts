@@ -577,7 +577,7 @@ const routes: Routes = [
   {
     path: 'project/:projectid/widget-set-up',
     loadChildren: () => import('app/widget_components/widget-set-up/widget-set-up.module').then(m => m.WidgetSetUpModule),
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard ],
   },
   // { path: 'project/:projectid/widget-set-up', component: WidgetSetUp, canActivate: [AuthGuard] },
 
@@ -918,6 +918,7 @@ const routes: Routes = [
   { path: 'handle-invitation/:pendinginvitationid/:projectname/:adminfirstname', component: HandleInvitationComponent },
 
   { path: 'project/:projectid/unauthorized', component: UnauthorizedComponent },
+  { path: 'unauthorized', component: UnauthorizedComponent },
   { path: 'project/:projectid/unauthorized-access', component: UnauthorizedForPricingComponent },
   { path: 'project/:projectid/unauthorized_access', component: UnauthorizedForProjectComponent },
 

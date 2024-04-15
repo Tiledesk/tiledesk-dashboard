@@ -19,6 +19,7 @@ import { BotLocalDbService } from 'app/services/bot-local-db.service';
 import { DepartmentService } from 'app/services/department.service';
 import { FaqService } from 'app/services/faq.service';
 import { WidgetService } from 'app/services/widget.service';
+import { AppConfigService } from 'app/services/app-config.service';
 
 
 export enum TYPE_STEP {
@@ -86,6 +87,8 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
   isMobile: boolean = true;
   updatedProject: any;
   showSpinner: boolean = false;
+  public_Key: string;
+  isMTT: boolean;
 
   constructor(
     private auth: AuthService,
@@ -103,10 +106,11 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
     private botLocalDbService: BotLocalDbService,
     private departmentService: DepartmentService,
     private widgetService: WidgetService,
+    public appConfigService: AppConfigService,
   ) {
     super(translate);
     const brand = brandService.getBrand();
- 
+
     this.companyLogo = brand['BASE_LOGO'];
     this.companyLogoNoText = brand['BASE_LOGO_NO_TEXT'];
     this.botid = this.route.snapshot.params['botid'];
@@ -130,6 +134,32 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
     this.initialize();
     this.onInitWindowHeight();
     this.detectMobile();
+    this.getOSCODE()
+  }
+
+  getOSCODE() {
+    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
+
+    let keys = this.public_Key.split("-");
+
+    keys.forEach(key => {
+
+      if (key.includes("MTT")) {
+
+        let mtt = key.split(":");
+
+        if (mtt[1] === "F") {
+          this.isMTT = false;
+        } else {
+          this.isMTT = true;
+        }
+      }
+    });
+
+    if (!this.public_Key.includes("MTT")) {
+      this.isMTT = false;
+    }
+
   }
 
   onInitWindowHeight(): any {
@@ -240,7 +270,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
   private getProjects() {
     this.showSpinner = true;
     this.projectService.getProjects().subscribe((projects: any) => {
-      this.logger.log('[ONBOARDING-CONTENT] projects ', projects) 
+      this.logger.log('[ONBOARDING-CONTENT] projects ', projects)
       this.isFirstProject = true;
       if (projects) {
         this.projects = projects;
@@ -249,7 +279,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
         this.isFirstProject = false; // the good one
         // this.isFirstProject = true; // for test without sign up
       }
-      // console.log('[ONBOARDING-CONTENT] getProjects  projects:   ', projects, ' isFirstProject ', this.isFirstProject);
+      this.logger.log('[ONBOARDING-CONTENT] getProjects  projects:   ', projects, ' isFirstProject ', this.isFirstProject);
       this.getLoggedUser();
     }, (error) => {
       this.logger.error('[ONBOARDING-CONTENT] - GET PROJECTS ', error);
@@ -285,17 +315,22 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
 
           this.projectName = this.setProjectName();
           if (!this.projectName) {
-            // console.log('[ONBOARDING-CONTENT] - CREATE-PRJCT] here yes ', this.projectName);
+            // this.logger.log('[ONBOARDING-CONTENT] - CREATE-PRJCT] here yes ', this.projectName);
             this.arrayOfSteps.push(TYPE_STEP.NAME_PROJECT);
           }
           this.setFirstStep();
 
-          // console.log('[ONBOARDING-CONTENT]  isFirstProject  ', this.isFirstProject, ' arrayOfSteps ', this.arrayOfSteps);
+          // this.logger.log('[ONBOARDING-CONTENT]  isFirstProject  ', this.isFirstProject, ' arrayOfSteps ', this.arrayOfSteps);
         } else {
-          this.arrayOfSteps.push(TYPE_STEP.NAME_PROJECT);
-          // console.log('[ONBOARDING-CONTENT]  isFirstProject  ', this.isFirstProject, ' arrayOfSteps ', this.arrayOfSteps)
-          // this.arrayOfSteps.push(TYPE_STEP.WELCOME_MESSAGE);
+          if (this.isMTT) {
+            this.arrayOfSteps.push(TYPE_STEP.NAME_PROJECT);
 
+            this.logger.log('[ONBOARDING-CONTENT]  isFirstProject  ', this.isFirstProject, ' arrayOfSteps ', this.arrayOfSteps , ' isMTT ', this.isMTT )
+          } else  if (this.isMTT === false) {
+            this.logger.log('[ONBOARDING-CONTENT] isMTT  ', this.isMTT)
+            this.router.navigate(['/unauthorized']);
+          }
+          // this.arrayOfSteps.push(TYPE_STEP.WELCOME_MESSAGE);
           // this.arrayOfSteps.push(TYPE_STEP.WIDGET_INSTALLATION);
         }
 
@@ -305,7 +340,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
 
 
   private setFirstStep() {
-    // console.log('setFirstStep:: ');
+    // this.logger.log('setFirstStep:: ');
     // if(this.previousUrl.endsWith('/signup')){
     let lang = "en";
     if (this.translate.currentLang) {
@@ -329,7 +364,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
     //   lang = this.translate.currentLang;
     // }
     // let onboardingConfig = 'assets/config/onboarding-config-'+lang+'.json';
-    this.logger.log('loadJsonOnboardingConfig:: ',onboardingConfig);
+    this.logger.log('loadJsonOnboardingConfig:: ', onboardingConfig);
     let jsonSteps: any;
     this.httpClient.get(onboardingConfig).subscribe(data => {
       let jsonString = JSON.stringify(data);
@@ -369,7 +404,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
   private nextNumberStep() {
 
     this.activeTypeStepNumber++;
-    // console.log('[ONBOARDING-CONTENT] nextNumberStep activeTypeStepNumber', this.activeTypeStepNumber)
+    // this.logger.log('[ONBOARDING-CONTENT] nextNumberStep activeTypeStepNumber', this.activeTypeStepNumber)
     this.translateY = 'translateY(' + (-(this.activeTypeStepNumber + 1) * 20 + 20) + 'px)';
   }
 
@@ -412,13 +447,13 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
   goToSetProjectName($event) {
     this.projectName = $event;
     this.nextNumberStep();
-    // console.log('[ONBOARDING-CONTENT] goToSetProjectName ', this.projectName)
+    this.logger.log('[ONBOARDING-CONTENT] goToSetProjectName ', this.projectName)
     this.createNewProject();
   }
 
   goToNextQuestion($event) {
     this.segmentIdentifyAttributes = $event;
-    // console.log('[ONBOARDING-CONTENT] goToNextQuestion::: ', $event, this.segmentIdentifyAttributes)
+    // this.logger.log('[ONBOARDING-CONTENT] goToNextQuestion::: ', $event, this.segmentIdentifyAttributes)
     this.checkQuestions();
   }
 
@@ -429,10 +464,10 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
       this.checkQuestions();
       this.activeQuestionNumber = 0;
       this.activeQuestion = this.activeStep.questions[0];
-      // console.log('[ONBOARDING-CONTENT]  goToNextCustomStep activeTypeStepNumber: ', this.activeTypeStepNumber)
+      // this.logger.log('[ONBOARDING-CONTENT]  goToNextCustomStep activeTypeStepNumber: ', this.activeTypeStepNumber)
       this.goToNextStep();
     } else {
-      // console.log('[ONBOARDING-CONTENT]  goToNextCustomStep activeTypeStepNumber: ', this.activeTypeStepNumber)
+      // this.logger.log('[ONBOARDING-CONTENT]  goToNextCustomStep activeTypeStepNumber: ', this.activeTypeStepNumber)
       this.goToNextStep();
     }
   }
@@ -458,13 +493,13 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
   goToNextStep() {
 
     // this.DISPLAY_SPINNER_SECTION = false;  
-    // console.log('[ONBOARDING-CONTENT] activeTypeStepNumber: ', this.activeTypeStepNumber)
+    // this.logger.log('[ONBOARDING-CONTENT] activeTypeStepNumber: ', this.activeTypeStepNumber)
 
     if (this.segmentIdentifyAttributes && this.segmentIdentifyAttributes["solution_channel"] === "whatsapp_fb_messenger") {
       this.logger.log('[ONBOARDING-CONTENT] this.arrayOfSteps[this.activeTypeStepNumber] ', this.arrayOfSteps[this.activeTypeStepNumber])
       // if(this.arrayOfSteps[this.activeTypeStepNumber] === TYPE_STEP.WIDGET_INSTALLATION) {
 
-      // console.log('[ONBOARDING-CONTENT] goToNextStep (1): ', this.arrayOfSteps)
+      // this.logger.log('[ONBOARDING-CONTENT] goToNextStep (1): ', this.arrayOfSteps)
 
       this.arrayOfSteps = this.arrayOfSteps.filter(item => item !== TYPE_STEP.WIDGET_INSTALLATION);
       this.logger.log('[ONBOARDING-CONTENT] goToNextStep (2): ', this.arrayOfSteps)
@@ -529,7 +564,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
     this.DISPLAY_SPINNER_SECTION = true;
     this.DISPLAY_SPINNER = true;
     this.projectService.createProject(this.projectName, 'onboarding-content').subscribe((project) => {
-      // console.log('[ONBOARDING-CONTENT] POST DATA PROJECT RESPONSE ', project);
+      this.logger.log('[ONBOARDING-CONTENT] POST DATA PROJECT RESPONSE ', project);
       if (project) {
 
         this.newProject = project
@@ -674,7 +709,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
 
   // -----------------  FUNCTION CALLBACK   ------------------------ //
   callback(step: string, variable?: any) {
-    // console.log('[ONBOARDING-CONTENT] callback HRE YESSSSS step ', step)
+    // this.logger.log('[ONBOARDING-CONTENT] callback HRE YESSSSS step ', step)
     this.logger.log('[ONBOARDING-CONTENT] callback: ', this.arrayOfSteps)
     if (step === 'createNewProject') {
 
@@ -712,7 +747,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
       // let segmentTrackAttr = this.segmentAttributes;
       this.segment(segmentPageName, segmentTrackName, segmentTrackAttr, this.segmentIdentifyAttributes);
 
-      // console.log('[ONBOARDING-CONTENT]  segmentIdentifyAttributes ', this.segmentIdentifyAttributes)
+      // this.logger.log('[ONBOARDING-CONTENT]  segmentIdentifyAttributes ', this.segmentIdentifyAttributes)
       this.saveUserPreferences(this.segmentIdentifyAttributes)
       // this.DISPLAY_SPINNER_SECTION = false;
       // this.DISPLAY_BOT = true;
@@ -727,7 +762,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
     this.projectService.updateProjectWithUserPreferences(segmentIdentifyAttributes)
       .subscribe((res: any) => {
 
-        // console.log('[ONBOARDING-D] - UPDATE PRJCT WITH USER PREFERENCES RES ', res);
+        // this.logger.log('[ONBOARDING-D] - UPDATE PRJCT WITH USER PREFERENCES RES ', res);
         this.updatedProject = res
 
       }, error => {
@@ -739,7 +774,7 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
         if (this.arrayOfSteps.length === 1) {
           this.goToHome()
         }
-        
+
       });
   }
 

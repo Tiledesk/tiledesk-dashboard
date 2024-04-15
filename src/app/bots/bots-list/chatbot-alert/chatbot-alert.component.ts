@@ -55,7 +55,6 @@ export class ChatbotAlertComponent extends PricingBaseComponent implements OnIni
   }
 
   getCurrentProject() {
-    this.logger.log('[CHATBOT-ALERT] - $ubscribe to CURRENT PROJECT ',this.project)
     this.auth.project_bs
     .pipe(
       takeUntil(this.unsubscribe$)
@@ -71,7 +70,7 @@ export class ChatbotAlertComponent extends PricingBaseComponent implements OnIni
 
   getActiveRoute() {
     const currentUrl = this.router.url;
-    this.logger.log('[CHATBOT-ALERT] currentUrl route' ,currentUrl)
+    this.logger.log('[CHATBOT-ALERT] currentUrl route', currentUrl)
     if (currentUrl.indexOf('/templates/') !== -1) {
       this.logger.log('[CHATBOT-ALERT] template route')
       this.IS_TEMPLATE_ROUTE = true
@@ -79,7 +78,7 @@ export class ChatbotAlertComponent extends PricingBaseComponent implements OnIni
       this.logger.log('[CHATBOT-ALERT] chatbots route')
       this.IS_TEMPLATE_ROUTE = false
     }
-   
+
   }
 
   getProjectUserRole() {
@@ -125,9 +124,9 @@ export class ChatbotAlertComponent extends PricingBaseComponent implements OnIni
   openModalSubsExpired() {
     if (this.USER_ROLE === 'owner') {
       if (this.profile_name !== PLAN_NAME.C && this.profile_name !== PLAN_NAME.F) {
-        this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date )
+        this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date)
       } else if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
-        this.notify.displayEnterprisePlanHasExpiredModal( true, this.prjct_profile_name, this.subscription_end_date,
+        this.notify.displayEnterprisePlanHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date,
         )
       }
     } else {
