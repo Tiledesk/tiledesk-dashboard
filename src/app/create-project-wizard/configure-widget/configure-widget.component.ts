@@ -100,7 +100,8 @@ export class ConfigureWidgetComponent extends WidgetSetUpBaseComponent implement
     this.company_name = brand['BRAND_NAME'];
     this.company_site_url = brand['COMPANY_SITE_URL'];
    
-    this.widgetLogoURL = brand['widget_logo_URL']
+    // this.widgetLogoURL = brand['widget_logo_URL']
+    this.widgetLogoURL = brand['LOGO_CHAT'];
     console.log('[WIZARD - CONFIGURE-WIDGET] widgetLogoURL ', this.widgetLogoURL)
   }
 

@@ -35,6 +35,7 @@ import { ThemePalette } from '@angular/material/core';
 import { isDevMode } from '@angular/core';
 import { SelectOptionsTranslatePipe } from '../../selectOptionsTranslate.pipe';
 import { AnalyticsService } from 'app/services/analytics.service';
+import { LocalDbService } from 'app/services/users-local-db.service';
 
 @Component({
   selector: 'appdashboard-widget-set-up',
@@ -389,7 +390,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   public companyNametParams: any;
   public widgetLogoURL: string;
   public defaultFooter: string;
-  public widgetLauncherButtonPlaceholder: string;
+  // public widgetLauncherButtonPlaceholder: string;
 
   @ViewChild('fileInputLauncherBtnlogo', { static: false }) fileInputLauncherBtnlogo: any;
 
@@ -414,6 +415,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     private uploadImageService: UploadImageService,
     private uploadImageNativeService: UploadImageNativeService,
     public selectOptionsTranslatePipe: SelectOptionsTranslatePipe,
+    public localDbService: LocalDbService
   ) {
     super(translate);
     const brand = brandService.getBrand();
@@ -423,11 +425,16 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.company_site_url = brand['COMPANY_SITE_URL'];
     this.hideHelpLink = brand['DOCS'];
     this.companyNametParams = { 'BRAND_NAME': this.company_name }
-    this.widgetLogoURL = brand['widget_logo_URL']
-    this.defaultFooter = brand['widget_default_footer'];
-    this.widgetLauncherButtonPlaceholder = brand['widget_launcher_button_placeholder']
-    console.log('[WIDGET-SET-UP] widgetLogoURL ', this.widgetLogoURL)
-    console.log('[WIDGET-SET-UP] widgetLauncherButtonPlaceholder ', this.widgetLauncherButtonPlaceholder)
+    // this.widgetLogoURL = brand['widget_logo_URL']
+    // this.defaultFooter = brand['widget_default_footer'];
+
+    this.widgetLogoURL = brand['LOGO_CHAT'];
+    // console.log('[WIDGET-SET-UP] widgetLogoURL ', this.widgetLogoURL)
+
+    this.defaultFooter = brand['POWERED_BY'];
+    // console.log('[[WIDGET-SET-UP] defaultFooter ', this.defaultFooter)
+
+    // console.log('[WIDGET-SET-UP] widgetLauncherButtonPlaceholder ', this.widgetLauncherButtonPlaceholder)
     // this.t_params = { 'plan_name': PLAN_NAME.B }
   }
 
@@ -458,7 +465,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.getLabels();
     this.getOSCODE();
     this.getTestSiteUrl();
-    this.getAndManageAccordionInstallWidget();
+    // this.getAndManageAccordionInstallWidget();
     this.getAndManageAccordion();
     // this.avarageWaitingTimeCLOCK(); // as dashboard
     // this.showWaitingTime(); // as dario
@@ -786,12 +793,12 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.logger.log('[WIDGET-SET-UP] getAppConfig  wunParts ', wunParts);
     let wunValue = wunParts[1]
     this.logger.log('[WIDGET-SET-UP] getAppConfig  wunValue ', wunValue);
-    if (wunValue === 'T')  {
+    if (wunValue === 'T') {
       return true
-    } else  if (wunValue === 'F'){
+    } else if (wunValue === 'F') {
       return false
     }
-    
+
   }
 
   manageWidgetUnbrandingVisibility(projectProfileData) {
@@ -841,7 +848,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       }
 
     } else if (projectProfileData['customization'] === undefined) {
-      this.logger.log('[WIDGET-SET-UP] USECASE C customization is  ', projectProfileData['customization'] , 'get value foem FT')
+      this.logger.log('[WIDGET-SET-UP] USECASE C customization is  ', projectProfileData['customization'], 'get value foem FT')
       if (this.public_Key.includes("WUN")) {
         this.logger.log('[WIDGET-SET-UP] Widget unbranding  USECASE B  (from FT) - EXIST WUN ', this.public_Key.includes("WUN"));
 
@@ -1422,44 +1429,68 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   getAndManageAccordion() {
     var acc = document.getElementsByClassName("widget-section-accordion");
     // this.logger.log('[WIDGET-SET-UP] ACCORDION', acc);
-    var i: number;
+    let i: number;
     // #widget-all-settings-form > button:nth-child(7)
     for (i = 0; i < acc.length; i++) {
-      this.logger.log('[WIDGET-SET-UP] ACCORDION i', i, 'acc[i]', acc[i]);
+      // console.log('[WIDGET-SET-UP] ACCORDION i', i, 'acc[i]', acc[i]);
       // Open the first accordion https://codepen.io/fpavision/details/xxxONGv
-      var firstAccordion = acc[0];
-      // this.logger.log('firstAccordion' , firstAccordion)
-      var firstPanel = <HTMLElement>firstAccordion.nextElementSibling;
-      // this.logger.log('firstPanel' , firstPanel)
-      // this.logger.log('WIDGET DESIGN ACCORDION FIRST PANEL', firstPanel);
+      let firstAccordion = acc[0];
 
-      setTimeout(() => {
-        firstAccordion.classList.add("active");
-        firstPanel.style.maxHeight = firstPanel.scrollHeight + "px";
-      }, 2000);
+      let firstPanel = <HTMLElement>firstAccordion.nextElementSibling;
+      this.logger.log('[WIDGET-SET-UP] ACCORDION firstPanel', firstPanel)
 
+      const hasClosedFirstAccordion = this.localDbService.getFromStorage('hasclosedfirstaccordion')
+      this.logger.log('[WIDGET-SET-UP] hasClosedFirstAccordion get from storage', hasClosedFirstAccordion)
+      if (hasClosedFirstAccordion === null || hasClosedFirstAccordion === 'false') {
+        this.logger.log('[WIDGET-SET-UP] hasClosedFirstAccordion HERE YES ', hasClosedFirstAccordion)
+        setTimeout(() => {
+          firstAccordion.classList.add("active");
+          firstPanel.style.maxHeight = firstPanel.scrollHeight + "px";
 
+          var arrow_icon_div = firstAccordion.children[1];
+          this.logger.log('[WIDGET-SET-UP] ACCORDION ARROW ICON WRAP DIV', arrow_icon_div);
+    
+          var arrow_icon = arrow_icon_div.children[0]
+          // this.logger.log('[WIDGET-SET-UP] ACCORDION ARROW ICON', arrow_icon);
+          arrow_icon.classList.add("arrow-up");
+        }, 2000);
+      }
 
-      var arrow_icon_div = firstAccordion.children[1];
+      // var arrow_icon_div = firstAccordion.children[1];
+      // console.log('[WIDGET-SET-UP] ACCORDION ARROW ICON WRAP DIV', arrow_icon_div);
 
-
-      // this.logger.log('[WIDGET-SET-UP] ACCORDION ARROW ICON WRAP DIV', arrow_icon_div);
-
-      var arrow_icon = arrow_icon_div.children[0]
-      // this.logger.log('[WIDGET-SET-UP] ACCORDION ARROW ICON', arrow_icon);
-      arrow_icon.classList.add("arrow-up");
+      // var arrow_icon = arrow_icon_div.children[0]
+      // // this.logger.log('[WIDGET-SET-UP] ACCORDION ARROW ICON', arrow_icon);
+      // arrow_icon.classList.add("arrow-up");
+      
       const self = this
       acc[i].addEventListener("click", function () {
+        let firstAccordion = acc[0];
+        // console.log('firstAccordion', firstAccordion)
+        let firstPanel = <HTMLElement>firstAccordion.nextElementSibling;
+        // console.log('firstPanel', firstPanel)
+        // console.log('[WIDGET-SET-UP] ACCORDION click acc[0]', acc[0]);
+
+        setTimeout(() => {
+          // console.log('firstAccordion contains class active', firstAccordion.classList.contains('active'))
+
+          if (firstAccordion.classList.contains('active')) {
+            self.localDbService.setInStorage('hasclosedfirstaccordion', 'false')
+          } else if (!firstAccordion.classList.contains('active')) {
+            self.localDbService.setInStorage('hasclosedfirstaccordion', 'true')
+          }
+        }, 2000);
         self.logger.log('[WIDGET-SET-UP] ACCORDION click i', i, 'acc[i]', acc[i]);
+        // console.log('[WIDGET-SET-UP] ACCORDION click i', i, 'acc[i]', acc[i]);
         this.classList.toggle("active");
         var panel = this.nextElementSibling;
-        // this.logger.log('[WIDGET-SET-UP] ACCORDION PANEL', panel);
+        // console.log('[WIDGET-SET-UP] ACCORDION PANEL', panel);
 
         var arrow_icon_div = this.children[1];
         // this.logger.log('[WIDGET-SET-UP] ACCORDION ARROW ICON WRAP DIV', arrow_icon_div);
 
         var arrow_icon = arrow_icon_div.children[0]
-        // this.logger.log('[WIDGET-SET-UP] ACCORDION ARROW ICON', arrow_icon);
+        // console.log('[WIDGET-SET-UP] ACCORDION ARROW ICON', arrow_icon);
         arrow_icon.classList.toggle("arrow-up");
 
         if (panel.style.maxHeight) {
@@ -2308,7 +2339,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           // case logoChat = 'nologo' > no logo is displayed
           // logoChat (WIDGET AND LOGOCHAT DEFINED - USER HAS SELECTED 'NO LOGO')
           // ------------------------------------------------------------------------
-        // } else if (project.widget.logoChat && project.widget.logoChat === 'nologo' && project.widget.logoChat !== 'https://tiledesk.com/tiledesk-logo-white.png') {
+          // } else if (project.widget.logoChat && project.widget.logoChat === 'nologo' && project.widget.logoChat !== 'https://tiledesk.com/tiledesk-logo-white.png') {
         } else if (project.widget.logoChat && project.widget.logoChat === 'nologo' && project.widget.logoChat !== this.widgetLogoURL) {
           this.logoUrl = 'No Logo';
           this.hasOwnLogo = false;
@@ -2323,8 +2354,8 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           // logoChat (WIDGET DEFINED BUT NOT LOGOCHAT - SET DEFAULT)
           // ------------------------------------------------------------------------
         } else {
-        
-          this.logoUrl =  this.widgetLogoURL; //'https://tiledesk.com/tiledesk-logo-white.png'
+
+          this.logoUrl = this.widgetLogoURL; //'https://tiledesk.com/tiledesk-logo-white.png'
           this.hasOwnLogo = false;
           this.LOGO_IS_ON = true;
 
@@ -3241,7 +3272,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     /// LOGO
     if (this.logoUrl && this.LOGO_IS_ON === true) {
       // if (this.logoUrl !== 'https://tiledesk.com/tiledesk-logo-white.png') { 
-      if (this.logoUrl !== this.widgetLogoURL) { 
+      if (this.logoUrl !== this.widgetLogoURL) {
         this.hasOwnLogo = true;
         this.logger.log('[WIDGET-SET-UP] - HAS OWN LOGO ', this.hasOwnLogo, 'LOGO IS ON ', this.LOGO_IS_ON, ' logoUrl: ', this.logoUrl);
       } else {

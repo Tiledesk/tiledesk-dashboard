@@ -37,9 +37,9 @@ export class BrandService {
       "after_logout_redirect_URL": "",
       "display_chatbots_community": true,
       "display_templates_category": true,
-      "widget_logo_URL":"https://tiledesk.com/tiledesk-logo-white.png",
-      "widget_default_footer" :"<a tabindex='-1' target='_blank href='http://www.tiledesk.com/?utm_source=widget'><img src='https://panel.tiledesk.com/v3/dashboard/assets/img/logos/tiledesk-solo_logo_new_gray.svg'/><span> Powered by Tiledesk</span></a>",
-      "widget_launcher_button_placeholder": "assets/img/logos/custom-launcher-button-placeholder_v2.svg",
+      // "widget_logo_URL":"https://tiledesk.com/tiledesk-logo-white.png",
+      // "widget_default_footer" :"<a tabindex='-1' target='_blank href='http://www.tiledesk.com/?utm_source=widget'><img src='https://panel.tiledesk.com/v3/dashboard/assets/img/logos/tiledesk-solo_logo_new_gray.svg'/><span> Powered by Tiledesk</span></a>",
+      // "widget_launcher_button_placeholder": "assets/img/logos/custom-launcher-button-placeholder_v2.svg",
       "footer": {
         "display_terms_and_conditions_link": true,
         "display_star_us_on_github": true,
@@ -66,6 +66,10 @@ export class BrandService {
       "handle_invitation_page": {
         "company_logo_45x45": "assets/img/logos/tiledesk-solo-logo.png"
       },
+    },
+    WIDGET: {
+      "LOGO_CHAT": "https://tiledesk.com/tiledesk-logo-white.png",
+      "POWERED_BY": "<a tabindex='-1' target='_blank href='http://www.tiledesk.com/?utm_source=widget'><img src='https://panel.tiledesk.com/v3/dashboard/assets/img/logos/tiledesk-solo_logo_new_gray.svg'/><span> Powered by Tiledesk</span></a>"
     },
     CHAT: {
 
@@ -227,7 +231,7 @@ export class BrandService {
   // }
   getBrand() {
     this.logger.log('BrandService getBrand has been called - brand: ', this.brand);
-    return { ...this.brand['DASHBOARD'], ...this.brand['COMMON'] };
+    return { ...this.brand['DASHBOARD'], ...this.brand['COMMON'], ...this.brand['WIDGET'] };
 
   }
 

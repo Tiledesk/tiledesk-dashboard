@@ -66,16 +66,25 @@ export class WidgetHomeComponent implements OnInit, OnChanges {
     private sanitizer: DomSanitizer
   ) {
     const brand = brandService.getBrand();
-    this.widgetLogoURL = brand['widget_logo_URL'];
-    this.defaultFooter = brand['widget_default_footer'];
-    console.log('[WIDGET HOME COMP] widgetLogoURL ', this.widgetLogoURL)
+
+    // this.widgetLogoURL = brand['widget_logo_URL'];
+    // this.defaultFooter = brand['widget_default_footer'];
+
+    this.widgetLogoURL = brand['LOGO_CHAT'];
+    // console.log('[WIDGET HOME COMP] widgetLogoURL ', this.widgetLogoURL)
+    
+    this.defaultFooter = brand['POWERED_BY'];
+    // console.log('[WIDGET HOME COMP] defaultFooter ', this.defaultFooter)
+    
     const fileType = this.getFileTypeFromURL(this.widgetLogoURL);
-    console.log('[WIDGET HOME COMP] File type:', fileType);  
+    // console.log('[WIDGET HOME COMP] File type:', fileType);  
     if (fileType === 'svg')  {
       this.widgetLogoURL = this.sanitizer.bypassSecurityTrustUrl(this.widgetLogoURL)
     }
 
   }
+
+
 
   getFileTypeFromURL(url) {
     const segments = url.split('.');
