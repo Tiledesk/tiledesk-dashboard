@@ -50,7 +50,7 @@ export class KnowledgeBasesAlertComponent extends PricingBaseComponent  implemen
   }
   
   ngOnChanges(changes: SimpleChanges): void {
-    console.log('[KB-ALERT] (ngOnChanges) kbsListCount ', this.kbsListCount )
+    this.logger.log('[KB-ALERT] (ngOnChanges) kbsListCount ', this.kbsListCount )
   }
 
   getCurrentProject() {
@@ -59,7 +59,7 @@ export class KnowledgeBasesAlertComponent extends PricingBaseComponent  implemen
         takeUntil(this.unsubscribe$)
       )
       .subscribe((project) => {
-        console.log('[KB-ALERT] - $ubscribe to CURRENT PROJECT ', project)
+        this.logger.log('[KB-ALERT] - $ubscribe to CURRENT PROJECT ', project)
         if (project) {
           this.project = project;
           this.projectId = project._id
@@ -78,10 +78,10 @@ export class KnowledgeBasesAlertComponent extends PricingBaseComponent  implemen
   getListOfKb(params?) {
     this.logger.log("[KB-ALERT] getListOfKb ");
     this.kbService.getListOfKb(params).subscribe((resp:any) => {
-      console.log("[KB-ALERT] get kbList: ", resp);
+      this.logger.log("[KB-ALERT] get kbList: ", resp);
       //this.kbs = resp;
       this.kbsListCount = resp.count;
-      console.log('[KB-ALERT] kbsListCount ', this.kbsListCount )
+      this.logger.log('[KB-ALERT] kbsListCount ', this.kbsListCount )
       // resp.kbs.forEach(kb => {
       //   // this.kbsList.push(kb);
       //   const index = this.kbsList.findIndex(objA => objA._id === kb._id);

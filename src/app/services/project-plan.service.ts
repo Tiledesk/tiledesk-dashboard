@@ -142,7 +142,7 @@ export class ProjectPlanService {
       this.logger.log('[PROJECT-PLAN-SERV] - GET PROJECTS - projects ', projects)
 
       const current_prjct = projects.find(prj => prj.id_project.id === projectId);
-      this.logger.log('[PROJECT-PLAN-SERV] - FIND CURRENT PROJECT AMONG ALL - (called by project-plan-service) current_prjct ', current_prjct);
+      // console.log('[PROJECT-PLAN-SERV] - FIND CURRENT PROJECT AMONG ALL - (called by project-plan-service) current_prjct ', current_prjct);
       
      
       if (current_prjct) {

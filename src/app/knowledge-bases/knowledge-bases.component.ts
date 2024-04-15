@@ -134,7 +134,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     this.getFaqKbByProjectId();
     this.getOSCODE();
     this.getProjectPlan();
-    console.log('[KNOWLEDGE-BASES-COMP] - kbLimit', this.kbLimit);
+    this.logger.log('[KNOWLEDGE-BASES-COMP] - kbLimit', this.kbLimit);
   }
 
 
@@ -299,10 +299,10 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         // this.logger.log('PUBLIC-KEY (Navbar) - pay key&value', pay);
         if (pay[1] === "F") {
           this.payIsVisible = false;
-          // console.log("payIsVisible: ", this.payIsVisible)
+          // this.logger.log("payIsVisible: ", this.payIsVisible)
         } else {
           this.payIsVisible = true;
-          // console.log("payIsVisible: ", this.payIsVisible)
+          // this.logger.log("payIsVisible: ", this.payIsVisible)
         }
       }
     })
@@ -456,7 +456,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   // }
 
   onLoadPage(searchParams){
-    // console.log('onLoadNextPage:',searchParams);
+    // this.logger.log('onLoadNextPage:',searchParams);
     let params = "?limit="+KB_DEFAULT_PARAMS.LIMIT
     //if(searchParams?.page){
       let limitPage = Math.floor(this.kbsListCount/KB_DEFAULT_PARAMS.LIMIT);
@@ -486,7 +486,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   }
 
   onLoadByFilter(searchParams){
-    // console.log('onLoadByFilter:',searchParams);
+    // this.logger.log('onLoadByFilter:',searchParams);
     // searchParams.page = 0;
     this.numberPage = -1;
     this.kbsList = [];
@@ -500,7 +500,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       this.logger.log("[KNOWLEDGE BASES COMP] get kbList: ", resp);
       //this.kbs = resp;
       this.kbsListCount = resp.count;
-      console.log('[KNOWLEDGE BASES COMP] kbsListCount ', this.kbsListCount )
+      this.logger.log('[KNOWLEDGE BASES COMP] kbsListCount ', this.kbsListCount )
       resp.kbs.forEach(kb => {
         // this.kbsList.push(kb);
         const index = this.kbsList.findIndex(objA => objA._id === kb._id);
@@ -595,7 +595,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       this.logger.log("onAddKb:", resp);
       let kb = resp.value;
       if(resp.lastErrorObject && resp.lastErrorObject.updatedExisting === true){
-        //console.log("updatedExisting true:");
+        //this.logger.log("updatedExisting true:");
         const index = this.kbsList.findIndex(item => item._id === kb._id);
         if (index !== -1) {
           this.kbsList[index] = kb;
@@ -667,7 +667,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
   onAddMultiKb(body) {
     this.onCloseBaseModal();
-    // console.log("onAddMultiKb");
+    // this.logger.log("onAddMultiKb");
     let error = this.msgErrorAddUpdateKb;
     this.kbService.addMultiKb(body).subscribe((kbs: any) => {
       this.logger.log("onAddMultiKb:", kbs);
@@ -993,7 +993,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     this.kbsList = this.kbsList.filter(item => item._id !== kb_id);
     // this.logger.log('AGGIORNO kbsList:', this.kbsList);
     this.refreshKbsList = !this.refreshKbsList;
-    // console.log('AGGIORNO kbsList:', this.kbsList);
+    // this.logger.log('AGGIORNO kbsList:', this.kbsList);
   }
 
 
