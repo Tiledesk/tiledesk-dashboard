@@ -1,9 +1,11 @@
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'app/core/auth.service';
+import { AppConfigService } from 'app/services/app-config.service';
 import { BrandService } from 'app/services/brand.service';
 import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
 import { LoggerService } from 'app/services/logger/logger.service';
+import { ProjectPlanService } from 'app/services/project-plan.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 @Component({
@@ -38,18 +40,23 @@ export class BotsSidebarComponent implements OnInit, OnChanges {
   public KNOWLEDGE_BASE_ROUTE_IS_ACTIVE: boolean;
   public displayChatbotsCommunity : boolean;
   public displayTemplatesCategory: boolean;
+  public isVisibleKNB: boolean;
+  public_Key: string;
+
   constructor(
     private auth: AuthService,
     private logger: LoggerService,
     public router: Router,
     private kbService: KnowledgeBaseService,
-    public brandService: BrandService
+    public brandService: BrandService,
+    private prjctPlanService: ProjectPlanService,
+    public appConfigService: AppConfigService,
   ) { 
     const brand = brandService.getBrand();
     this.displayChatbotsCommunity =  brand['display_chatbots_community']
     this.displayTemplatesCategory =  brand['display_templates_category']
-    // console.log('[BOTS-SIDEBAR] - displayChatbotsCommunity ', this.displayChatbotsCommunity)
-    // console.log('[BOTS-SIDEBAR] - displayTemplatesCategory ', this.displayTemplatesCategory)
+    // this.logger.log('[BOTS-SIDEBAR] - displayChatbotsCommunity ', this.displayChatbotsCommunity)
+    // this.logger.log('[BOTS-SIDEBAR] - displayTemplatesCategory ', this.displayTemplatesCategory)
   }
 
   ngOnInit(): void {
@@ -58,6 +65,7 @@ export class BotsSidebarComponent implements OnInit, OnChanges {
     this.getCurrentProject();
     this.IS_OPEN = true
     this.listenToKbVersion()
+    this.getProjectPlan()
     // this.logger.log('[BOTS-SIDEBAR] - IS_OPEN ', this.IS_OPEN)
   }
   ngOnChanges() {
@@ -66,6 +74,107 @@ export class BotsSidebarComponent implements OnInit, OnChanges {
     // this.logger.log('[BOTS-SIDEBAR] - increaseSalesTemplatesCount ', this.increaseSalesTemplatesCount)
     // this.logger.log('[BOTS-SIDEBAR] - myChatbotOtherCount ', this.myChatbotOtherCount)
   }
+
+  getProjectPlan() {
+    this.prjctPlanService.projectPlan$
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((projectProfileData: any) => {
+        this.logger.log('[BOTS-SIDEBAR] - getProjectPlan project Profile Data', projectProfileData)
+        if (projectProfileData) { 
+
+          this.manageknowledgeBasesVisibility(projectProfileData)
+        
+        }
+      })
+    }
+
+    getKnbValue() {
+      this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
+      // this.logger.log('[BOTS-SIDEBAR] getAppConfig  public_Key', this.public_Key);
+      // this.logger.log('[BOTS-SIDEBAR] getAppConfig  public_Key type of', typeof this.public_Key);
+      // this.logger.log('[BOTS-SIDEBAR] getAppConfig  this.public_Key.includes("KNB") ', this.public_Key.includes("KNB"));
+      // let substring = this.public_Key.substring(this.public_Key.indexOf('KNB'));
+      let parts = this.public_Key.split('-');
+      // this.logger.log('[BOTS-SIDEBAR] getAppConfig  parts ', parts);
+  
+      let kbn = parts.find((part) => part.startsWith('KNB'));
+      this.logger.log('[BOTS-SIDEBAR] getAppConfig  kbn ', kbn);
+      let kbnParts = kbn.split(':');
+      this.logger.log('[BOTS-SIDEBAR] getAppConfig  kbnParts ', kbnParts);
+      let kbnValue = kbnParts[1]
+      this.logger.log('[BOTS-SIDEBAR] getAppConfig  kbnValue ', kbnValue);
+      if (kbnValue === 'T')  {
+        return true
+      } else  if (kbnValue === 'F'){
+        return false
+      }
+      
+    }
+
+    manageknowledgeBasesVisibility(projectProfileData) {
+    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
+    if (projectProfileData['customization']) {
+      this.logger.log('[BOTS-SIDEBAR] USECASE EXIST customization > knowledgeBases (1)', projectProfileData['customization']['knowledgeBases'])
+    }
+
+    if (projectProfileData['customization'] && projectProfileData['customization']['knowledgeBases'] !== undefined) {
+      this.logger.log('[BOTS-SIDEBAR] USECASE A EXIST customization ', projectProfileData['customization'], ' & knowledgeBases', projectProfileData['customization']['knowledgeBases'])
+
+      if (projectProfileData['customization']['knowledgeBases'] === true) {
+        this.isVisibleKNB = true;
+        this.logger.log('[BOTS-SIDEBAR] Widget unbranding USECASE A isVisibleKNB', this.isVisibleKNB)
+      } else if (projectProfileData['customization']['knowledgeBases'] === false) {
+
+        this.isVisibleKNB = false;
+        this.logger.log('[BOTS-SIDEBAR] Widget unbranding USECASE A isVisibleKNB', this.isVisibleKNB)
+      }
+
+    } else if (projectProfileData['customization'] && projectProfileData['customization']['knowledgeBases'] === undefined) {
+      this.logger.log('[BOTS-SIDEBAR] USECASE B EXIST customization ', projectProfileData['customization'], ' BUT knowledgeBases IS', projectProfileData['customization']['knowledgeBases'])
+
+      if (this.public_Key.includes("KNB")) {
+        this.logger.log('[BOTS-SIDEBAR] Widget unbranding  USECASE B  (from FT) - EXIST KNB ', this.public_Key.includes("KNB"));
+
+        this.isVisibleKNB = this.getKnbValue()
+        this.logger.log('[BOTS-SIDEBAR]  this.isVisibleKNB from FT ', this.isVisibleKNB)
+        // if (key.includes("KNB")) {
+        //   // this.logger.log('PUBLIC-KEY (BOTS-SIDEBAR) - key', key);
+        //   let wun = key.split(":");
+        //   //  this.logger.log('PUBLIC-KEY (BOTS-SIDEBAR) - ips key&value', ips);
+        //   if (wun[1] === "F") {
+        //     this.isVisibleKNB = false;
+        //     this.logger.log('[BOTS-SIDEBAR] Widget unbranding USECASE B  (from FT) isVisibleKNB', this.isVisibleKNB);
+        //     // this.logger.log('PUBLIC-KEY (BOTS-SIDEBAR) - isVisibleKNB', this.isVisibleAutoSendTranscript);
+        //   } else {
+        //     this.isVisibleKNB = true;
+        //     this.logger.log('[BOTS-SIDEBAR] Widget unbranding  USECASE B  (from FT) isVisibleKNB', this.isVisibleKNB);
+        //     // this.logger.log('PUBLIC-KEY (BOTS-SIDEBAR) - isVisibleKNB', this.isVisibleAutoSendTranscript);
+        //   }
+        // }
+      } else if (!this.public_Key.includes("KNB")) {
+        this.logger.log('[BOTS-SIDEBAR] Widget unbranding  USECASE B (from FT) -  EXIST KNB ', this.public_Key.includes("KNB"));
+        this.isVisibleKNB = false;
+        this.logger.log('[BOTS-SIDEBAR] Widget unbranding  USECASE B (from FT) isVisibleKNB', this.isVisibleKNB);
+      }
+
+    } else if (projectProfileData['customization'] === undefined) {
+      this.logger.log('[BOTS-SIDEBAR] USECASE C customization is  ', projectProfileData['customization'] , 'get value from FT')
+      if (this.public_Key.includes("KNB")) {
+        this.logger.log('[BOTS-SIDEBAR] Widget unbranding  USECASE B  (from FT) - EXIST KNB ', this.public_Key.includes("KNB"));
+
+        this.isVisibleKNB = this.getKnbValue()
+        this.logger.log('[BOTS-SIDEBAR]  this.isVisibleKNB from FT ', this.isVisibleKNB)
+      
+      } else if (!this.public_Key.includes("KNB")) {
+        this.logger.log('[BOTS-SIDEBAR] Widget unbranding  USECASE B (from FT) -  EXIST KNB ', this.public_Key.includes("KNB"));
+        this.isVisibleKNB = false;
+        this.logger.log('[BOTS-SIDEBAR] Widget unbranding  USECASE B (from FT) isVisibleKNB', this.isVisibleKNB);
+      }
+
+    }
+    }
 
   listenToKbVersion() {
     this.kbService.newKb
