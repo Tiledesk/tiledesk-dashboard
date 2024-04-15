@@ -201,6 +201,7 @@ export class KnowledgeBasesPreviousComponent implements OnInit, OnDestroy {
       this.kbSettings = kbSettings;
       if (this.kbSettings.kbs.length == 0){
         this.router.navigate(['project/' + this.id_project + '/knowledge-bases']);
+        // this.router.navigate(['project/' + this.id_project + '/bots/my-chatbots/all']);
       }
       if (this.kbSettings.kbs.length < kbSettings.maxKbsNumber) {
         this.addButtonDisabled = false;
@@ -561,6 +562,7 @@ export class KnowledgeBasesPreviousComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     clearInterval(this.interval_id);
   }
+  
   contactUsForChatGptKey() {
     this.closeSecretsModal()
     window.open(`mailto:${this.contactUsEmail}?subject=I don't have a GPT-Key`);

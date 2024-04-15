@@ -278,7 +278,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   ) {
     const brand = brandService.getBrand();
     this.tparams = brand;
-    this.hideHelpLink= brand['DOCS'];
+    this.hideHelpLink = brand['DOCS'];
     if (brand) {
       this.contactUsEmail = brand['CONTACT_US_EMAIL'];
       this.salesEmail = brand['CONTACT_SALES_EMAIL'];
@@ -311,187 +311,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     this.buildCreditCardForm()
   }
 
-  getOSCODE() {
-    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
-    this.logger.log('[PRJCT-EDIT-ADD] getAppConfig public_Key', this.public_Key);
-    let keys = this.public_Key.split("-");
-    this.logger.log('[PRJCT-EDIT-ADD] keys', keys)
-    keys.forEach(key => {
-      // this.logger.log('NavbarComponent public_Key key', key)
-      if (key.includes("PAY")) {
-        // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
-        let pay = key.split(":");
-        // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - pay key&value', pay);
-        if (pay[1] === "F") {
-          this.isVisiblePaymentTab = false;
-        } else {
-          this.isVisiblePaymentTab = true;
-        }
-      }
 
-      if (key.includes("PSA")) {
-        // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
-        let psa = key.split(":");
-        // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - pay key&value', psa);
-        if (psa[1] === "F") {
-          this.isVisibleAdvancedTab = false;
-        } else {
-          this.isVisibleAdvancedTab = true;
-        }
-      }
-
-      if (key.includes("DEV")) {
-        // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
-        let dev = key.split(":");
-        // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - dev key&value', dev);
-        if (dev[1] === "F") {
-          this.isVisibleDeveloperTab = false;
-        } else {
-          this.isVisibleDeveloperTab = true;
-        }
-      }
-
-      if (key.includes("NOT")) {
-        // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
-        let not = key.split(":");
-        // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - not key&value', not);
-        if (not[1] === "F") {
-          this.isVisibleNotificationTab = false;
-        } else {
-          this.isVisibleNotificationTab = true;
-        }
-      }
-
-      if (key.includes("IPS")) {
-        // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
-        let ips = key.split(":");
-        //  console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - ips key&value', ips);
-        if (ips[1] === "F") {
-          this.isVisibleSecurityTab = false;
-          // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - isVisibleSecurityTab', this.isVisibleSecurityTab);
-        } else {
-          this.isVisibleSecurityTab = true;
-          // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - isVisibleSecurityTab', this.isVisibleSecurityTab);
-        }
-      }
-      // Customize the notification email template
-      if (key.includes("PET")) {
-        // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
-        let pet = key.split(":");
-        //  console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - ips key&value', ips);
-        if (pet[1] === "F") {
-          this.isVisibleCustomizeEmailTemplate = false;
-          // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - isVisibleCustomizeEmailTemplate', this.isVisibleCustomizeEmailTemplate);
-        } else {
-          this.isVisibleCustomizeEmailTemplate = true;
-          // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - isVisibleCustomizeEmailTemplate', this.isVisibleCustomizeEmailTemplate);
-        }
-      }
-      // SMTP settings
-      if (key.includes("MTS")) {
-        // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
-        let mts = key.split(":");
-        //  console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - ips key&value', ips);
-        if (mts[1] === "F") {
-          this.isVisibleSMTPsettings = false;
-          // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - isVisibleSMTPsettings', this.isVisibleSMTPsettings);
-        } else {
-          this.isVisibleSMTPsettings = true;
-          // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - isVisibleSMTPsettings', this.isVisibleSMTPsettings);
-        }
-      }
-
-      if (key.includes("BAN")) {
-        // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
-        let mts = key.split(":");
-        //  console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - ips key&value', ips);
-        if (mts[1] === "F") {
-          this.isVisibleBannedVisitor = false;
-          // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - isVisibleBannedVisitor', this.isVisibleBannedVisitor);
-        } else {
-          this.isVisibleBannedVisitor = true;
-          // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - isVisibleBannedVisitor', this.isVisibleBannedVisitor);
-        }
-      }
-
-      // Auto send transcript by email 
-      if (key.includes("AST")) {
-        // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
-        let mts = key.split(":");
-        //  console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - ips key&value', ips);
-        if (mts[1] === "F") {
-          this.isVisibleAutoSendTranscript = false;
-          // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - isVisibleAutoSendTranscript', this.isVisibleAutoSendTranscript);
-        } else {
-          this.isVisibleAutoSendTranscript = true;
-          // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - isVisibleAutoSendTranscript', this.isVisibleAutoSendTranscript);
-        }
-      }
-
-      if (key.includes("VAU")) {
-        // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
-        let vau = key.split(":");
-        //  console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - ips key&value', ips);
-        if (vau[1] === "F") {
-          this.isVisibleVisitorAuthentication = false;
-          // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - isVisibleVisitorAuthentication', this.isVisibleVisitorAuthentication);
-        } else {
-          this.isVisibleVisitorAuthentication = true;
-          // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - isVisibleVisitorAuthentication', this.isVisibleVisitorAuthentication);
-        }
-      }    
-    });
-
-    if (!this.public_Key.includes("PAY")) {
-      // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("PAY")', this.public_Key.includes("PAY"));
-      this.isVisiblePaymentTab = false;
-    }
-
-    if (!this.public_Key.includes("VAU")) {
-      // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("VAU")', this.public_Key.includes("VAU"));
-      this.isVisibleVisitorAuthentication = false;
-    }
-
-    if (!this.public_Key.includes("PSA")) {
-      // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("PSA")', this.public_Key.includes("PSA"));
-      this.isVisibleAdvancedTab = false;
-    }
-
-    if (!this.public_Key.includes("DEV")) {
-      // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("DEV")', this.public_Key.includes("DEV"));
-      this.isVisibleDeveloperTab = false;
-    }
-
-    if (!this.public_Key.includes("NOT")) {
-      // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("NOT")', this.public_Key.includes("NOT"));
-      this.isVisibleNotificationTab = false;
-    }
-
-    if (!this.public_Key.includes("IPS")) {
-      //  console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("IPS")', this.public_Key.includes("IPS"));
-      this.isVisibleSecurityTab = false;
-    }
-
-    if (!this.public_Key.includes("PET")) {
-      //  console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("PET")', this.public_Key.includes("PET"));
-      this.isVisibleCustomizeEmailTemplate = false;
-    }
-
-    if (!this.public_Key.includes("MTS")) {
-      // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("MTS")', this.public_Key.includes("MTS"));
-      this.isVisibleSMTPsettings = false;
-    }
-
-    if (!this.public_Key.includes("BAN")) {
-      // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("BAN")', this.public_Key.includes("BAN"));
-      this.isVisibleBannedVisitor = false;
-    }
-
-    if (!this.public_Key.includes("AST")) {
-      // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("AST")', this.public_Key.includes("AST"));
-      this.isVisibleAutoSendTranscript = false;
-    }
-  }
 
 
   getBrowserVersion() {
@@ -709,15 +529,15 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         this.learnMoreAboutDefaultRoles = translation;
       });
 
-      this.translate.get('OnlyUserWithOwnerRoleCanManageAdvancedProjectSettings')
+    this.translate.get('OnlyUserWithOwnerRoleCanManageAdvancedProjectSettings')
       .subscribe((translation: any) => {
         // this.logger.log('[PRJCT-EDIT-ADD] onlyOwnerCanManageTheAccountPlanMsg text', translation)
         this.onlyOwnerCanManageAdvancedProjectSettings = translation;
       });
 
 
-    
-      
+
+
     // this.translate.get('AvailableWithThePlan', { plan_name: PLAN_NAME.C })
     //   .subscribe((translation: any) => {
     //     this.cPlanOnly = translation;
@@ -1222,6 +1042,81 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       });
   }
 
+  SMTPsettingsValue() {
+    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
+    // console.log('[WIDGET-SET-UP] getAppConfig  public_Key', this.public_Key);
+    // console.log('[WIDGET-SET-UP] getAppConfig  public_Key type of', typeof this.public_Key);
+    // console.log('[WIDGET-SET-UP] getAppConfig  this.public_Key.includes("WUN") ', this.public_Key.includes("WUN"));
+    // let substring = this.public_Key.substring(this.public_Key.indexOf('WUN'));
+    let parts = this.public_Key.split('-');
+    // console.log('[WIDGET-SET-UP] getAppConfig  parts ', parts);
+
+    let mts = parts.find((part) => part.startsWith('MTS'));
+    this.logger.log('[PRJCT-EDIT-ADD] getAppConfig  mts ', mts);
+    let mtsParts = mts.split(':');
+    this.logger.log('[PRJCT-EDIT-ADD] getAppConfig  mtsParts ', mtsParts);
+    let mtsValue = mtsParts[1]
+    this.logger.log('[PRJCT-EDIT-ADD] getAppConfig  mtsValue ', mtsValue);
+    if (mtsValue === 'T')  {
+      return true
+    } else  if (mtsValue === 'F'){
+      return false
+    }
+
+  }
+
+  manageSmtpSettingsVisibility(projectProfileData) {
+    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
+    if (projectProfileData['customization']) {
+      this.logger.log('[PRJCT-EDIT-ADD] USECASE EXIST customization > SMTPsettings (1)', projectProfileData['customization']['smtpSettings'])
+    }
+
+    if (projectProfileData['customization'] && projectProfileData['customization']['smtpSettings'] !== undefined) {
+      this.logger.log('[PRJCT-EDIT-ADD] USECASE A EXIST customization ', projectProfileData['customization'], ' & smtpSettings', projectProfileData['customization']['smtpSettings'])
+
+      if (projectProfileData['customization']['smtpSettings'] === true) {
+        this.isVisibleSMTPsettings = true;
+        this.logger.log('[PRJCT-EDIT-ADD] SMTP Settings USECASE A isVisibleSMTPsettings', this.isVisibleSMTPsettings)
+      } else if (projectProfileData['customization']['smtpSettings'] === false) {
+
+        this.isVisibleSMTPsettings = false;
+        this.logger.log('[PRJCT-EDIT-ADD] SMTP Settings USECASE A isVisibleSMTPsettings', this.isVisibleSMTPsettings)
+      }
+
+    } else if (projectProfileData['customization'] && projectProfileData['customization']['smtpSettings'] === undefined) {
+      this.logger.log('PRJCT-EDIT-ADD] USECASE B EXIST customization ', projectProfileData['customization'], ' BUT smtpSettings IS', projectProfileData['customization']['smtpSettings'])
+
+      if (this.public_Key.includes("MTS")) {
+        this.logger.log('[PRJCT-EDIT-ADD] SMTP Settings  USECASE B  (from FT) - EXIST MTS ', this.public_Key.includes("MTS"));
+
+        this.isVisibleSMTPsettings = this.SMTPsettingsValue()
+        this.logger.log('[PRJCT-EDIT-ADD]  this.isVisibleSMTPsettings from FT ', this.isVisibleSMTPsettings)
+      
+      } else if (!this.public_Key.includes("MTS")) {
+        this.logger.log('[PRJCT-EDIT-ADD] SMTP Settings  USECASE B (from FT) -  EXIST MTS ', this.public_Key.includes("MTS"));
+        this.isVisibleSMTPsettings = false;
+        this.logger.log('[PRJCT-EDIT-ADD] SMTP Settings  USECASE B (from FT) isVisibleSMTPsettings', this.isVisibleSMTPsettings);
+      }
+
+    } else if (projectProfileData['customization'] === undefined) {
+      this.logger.log('[PRJCT-EDIT-ADD] USECASE C customization is  ', projectProfileData['customization'] , 'get value foem FT')
+      if (this.public_Key.includes("MTS")) {
+        this.logger.log('[PRJCT-EDIT-ADD] SMTP Settings  USECASE B  (from FT) - EXIST MTS ', this.public_Key.includes("MTS"));
+
+        this.isVisibleSMTPsettings = this.SMTPsettingsValue()
+        this.logger.log('[PRJCT-EDIT-ADD]  this.isVisibleSMTPsettings from FT ', this.isVisibleSMTPsettings)
+      
+      } else if (!this.public_Key.includes("MTS")) {
+        this.logger.log('[PRJCT-EDIT-ADD] SMTP Settings  USECASE B (from FT) -  EXIST MTS ', this.public_Key.includes("MTS"));
+        this.isVisibleSMTPsettings = false;
+        this.logger.log('[WPRJCT-EDIT-ADD] WSMTP Settings  USECASE B (from FT) isVisibleWidgetUnbranding', this.isVisibleSMTPsettings);
+      }
+
+    }
+  }
+
+
+
   getProjectPlan() {
     this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
       this.logger.log('[PRJCT-EDIT-ADD] - getProjectPlan project Profile Data', projectProfileData)
@@ -1249,6 +1144,10 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
         this.prjct_profile_type = projectProfileData.profile_type;
         this.logger.log('[PRJCT-EDIT-ADD] - getProjectPlan prjct_profile_type', this.prjct_profile_type)
+
+        // this.getOSCODE(projectProfileData)
+
+        this.manageSmtpSettingsVisibility(projectProfileData)
 
         if (projectProfileData.subscription_creation_date) {
           this.subscription_creation_date = projectProfileData.subscription_creation_date;
@@ -1340,7 +1239,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
               this.tParamsFeatureAvailableWith = { plan_name: PLAN_NAME.F }
               this.translateAvailableWithPlusOrCustomPlan(PLAN_NAME.F)
               this.translationParams = { plan_name: PLAN_NAME.B } // Scale
-   
+
 
             } else if (this.profile_name === 'Sandbox') {
               this.prjct_profile_name = "Sandbox";
@@ -1600,6 +1499,196 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     });
   }
 
+
+  getOSCODE() {
+    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
+    this.logger.log('[PRJCT-EDIT-ADD] getAppConfig public_Key', this.public_Key);
+    let keys = this.public_Key.split("-");
+    this.logger.log('[PRJCT-EDIT-ADD] keys', keys)
+    keys.forEach(key => {
+      // this.logger.log('NavbarComponent public_Key key', key)
+      if (key.includes("PAY")) {
+        // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
+        let pay = key.split(":");
+        // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - pay key&value', pay);
+        if (pay[1] === "F") {
+          this.isVisiblePaymentTab = false;
+        } else {
+          this.isVisiblePaymentTab = true;
+        }
+      }
+
+      if (key.includes("PSA")) {
+        // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
+        let psa = key.split(":");
+        // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - pay key&value', psa);
+        if (psa[1] === "F") {
+          this.isVisibleAdvancedTab = false;
+        } else {
+          this.isVisibleAdvancedTab = true;
+        }
+      }
+
+      if (key.includes("DEV")) {
+        // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
+        let dev = key.split(":");
+        // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - dev key&value', dev);
+        if (dev[1] === "F") {
+          this.isVisibleDeveloperTab = false;
+        } else {
+          this.isVisibleDeveloperTab = true;
+        }
+      }
+
+      if (key.includes("NOT")) {
+        // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
+        let not = key.split(":");
+        // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - not key&value', not);
+        if (not[1] === "F") {
+          this.isVisibleNotificationTab = false;
+        } else {
+          this.isVisibleNotificationTab = true;
+        }
+      }
+
+      if (key.includes("IPS")) {
+        // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
+        let ips = key.split(":");
+        //  console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - ips key&value', ips);
+        if (ips[1] === "F") {
+          this.isVisibleSecurityTab = false;
+          // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - isVisibleSecurityTab', this.isVisibleSecurityTab);
+        } else {
+          this.isVisibleSecurityTab = true;
+          // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - isVisibleSecurityTab', this.isVisibleSecurityTab);
+        }
+      }
+      // Customize the notification email template
+      if (key.includes("PET")) {
+        // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
+        let pet = key.split(":");
+        //  console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - ips key&value', ips);
+        if (pet[1] === "F") {
+          this.isVisibleCustomizeEmailTemplate = false;
+          // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - isVisibleCustomizeEmailTemplate', this.isVisibleCustomizeEmailTemplate);
+        } else {
+          this.isVisibleCustomizeEmailTemplate = true;
+          // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - isVisibleCustomizeEmailTemplate', this.isVisibleCustomizeEmailTemplate);
+        }
+      }
+      // SMTP settings
+      // if (this.public_Key.includes("MTS")) {
+      //   console.log('[PROJECT-EDIT-ADD] - includes MTS ');
+      //   if (key.includes("MTS")) {
+      //     // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
+      //     let mts = key.split(":");
+      //     //  console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - ips key&value', ips);
+      //     if (mts[1] === "F") {
+      //       this.isVisibleSMTPsettings = false;
+      //       // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - isVisibleSMTPsettings', this.isVisibleSMTPsettings);
+      //     } else {
+      //       this.isVisibleSMTPsettings = true;
+      //       // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - isVisibleSMTPsettings', this.isVisibleSMTPsettings);
+      //     }
+      //   }
+      // } else if (!this.public_Key.includes("MTS")) {
+      //   console.log('[PROJECT-EDIT-ADD] - NOT includes MTS ');
+      //   this.isVisibleSMTPsettings = false;
+      // }
+
+
+      if (key.includes("BAN")) {
+        // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
+        let mts = key.split(":");
+        //  console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - ips key&value', ips);
+        if (mts[1] === "F") {
+          this.isVisibleBannedVisitor = false;
+          // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - isVisibleBannedVisitor', this.isVisibleBannedVisitor);
+        } else {
+          this.isVisibleBannedVisitor = true;
+          // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - isVisibleBannedVisitor', this.isVisibleBannedVisitor);
+        }
+      }
+
+      // Auto send transcript by email 
+      if (key.includes("AST")) {
+        // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
+        let mts = key.split(":");
+        //  console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - ips key&value', ips);
+        if (mts[1] === "F") {
+          this.isVisibleAutoSendTranscript = false;
+          // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - isVisibleAutoSendTranscript', this.isVisibleAutoSendTranscript);
+        } else {
+          this.isVisibleAutoSendTranscript = true;
+          // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - isVisibleAutoSendTranscript', this.isVisibleAutoSendTranscript);
+        }
+      }
+
+      if (key.includes("VAU")) {
+        // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
+        let vau = key.split(":");
+        //  console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - ips key&value', ips);
+        if (vau[1] === "F") {
+          this.isVisibleVisitorAuthentication = false;
+          // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - isVisibleVisitorAuthentication', this.isVisibleVisitorAuthentication);
+        } else {
+          this.isVisibleVisitorAuthentication = true;
+          // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - isVisibleVisitorAuthentication', this.isVisibleVisitorAuthentication);
+        }
+      }
+    });
+
+    if (!this.public_Key.includes("PAY")) {
+      // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("PAY")', this.public_Key.includes("PAY"));
+      this.isVisiblePaymentTab = false;
+    }
+
+    if (!this.public_Key.includes("VAU")) {
+      // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("VAU")', this.public_Key.includes("VAU"));
+      this.isVisibleVisitorAuthentication = false;
+    }
+
+    if (!this.public_Key.includes("PSA")) {
+      // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("PSA")', this.public_Key.includes("PSA"));
+      this.isVisibleAdvancedTab = false;
+    }
+
+    if (!this.public_Key.includes("DEV")) {
+      // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("DEV")', this.public_Key.includes("DEV"));
+      this.isVisibleDeveloperTab = false;
+    }
+
+    if (!this.public_Key.includes("NOT")) {
+      // this.logger.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("NOT")', this.public_Key.includes("NOT"));
+      this.isVisibleNotificationTab = false;
+    }
+
+    if (!this.public_Key.includes("IPS")) {
+      //  console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("IPS")', this.public_Key.includes("IPS"));
+      this.isVisibleSecurityTab = false;
+    }
+
+    if (!this.public_Key.includes("PET")) {
+      //  console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("PET")', this.public_Key.includes("PET"));
+      this.isVisibleCustomizeEmailTemplate = false;
+    }
+
+    // if (!this.public_Key.includes("MTS")) {
+    //   // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("MTS")', this.public_Key.includes("MTS"));
+    //   this.isVisibleSMTPsettings = false;
+    // }
+
+    if (!this.public_Key.includes("BAN")) {
+      // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("BAN")', this.public_Key.includes("BAN"));
+      this.isVisibleBannedVisitor = false;
+    }
+
+    if (!this.public_Key.includes("AST")) {
+      // console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("AST")', this.public_Key.includes("AST"));
+      this.isVisibleAutoSendTranscript = false;
+    }
+  }
+
   changeAppSumoProduct() {
     const el = document.createElement('div')
     el.innerHTML = "Hi Sumo-ling! After managing your subscription in AppSumo, refresh the page to see plan updates",
@@ -1667,8 +1756,8 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         this.subscription_payments = [];
         subscriptionPayments.forEach((subscriptionPayment, index) => {
           this.logger.log('[PRJCT-EDIT-ADD] subscriptionPayment.stripe_event ', subscriptionPayment.stripe_event);
-          
-          if  (subscriptionPayment.stripe_event === "checkout.session.completed") {
+
+          if (subscriptionPayment.stripe_event === "checkout.session.completed") {
             this.subscription_creation_date = subscriptionPayment.object.start_date
             this.logger.log('[PRJCT-EDIT-ADD] -  subscriptionPayments (checkout.session.completed) > subscription creation date ', this.subscription_creation_date);
           }
@@ -1876,7 +1965,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
 
   onSubmit(form) {
-    this.logger.log('onSubmit form',  form)
+    this.logger.log('onSubmit form', form)
     this.submitted = true;
     this.logger.log('onSubmit form', form);
     if (form.expirationDate && form.expirationDate !== '') {
@@ -1911,22 +2000,22 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       const error_body = error
       console.error('[PRJCT-EDIT-ADD] - UPDATED CUSTOMER error_body ', error_body);
       console.error('[PRJCT-EDIT-ADD] - UPDATED CUSTOMER error_body > msg ', error_body.msg);
-      
-      if (error_body && error_body.msg)  { 
-      this.credit_card_error_msg = error_body.msg.raw.message;
-      console.error('[PRJCT-EDIT-ADD] - UPDATED CUSTOMER error_body > msg > raw ', error_body.msg.raw);
-      console.error('[PRJCT-EDIT-ADD] - UPDATED CUSTOMER credit_card_error_msg ', this.credit_card_error_msg);
-      this.CARD_HAS_ERROR = true;
-      this.SPINNER_IN_ADD_CARD_MODAL = false
-      this.DISPLAY_ADD_CARD_COMPLETED = false
-    } else if (error_body && !error_body.msg) {
-      if (error_body && error_body.error && error_body.error && error_body.error.msg.code) {
-        this.credit_card_error_msg = error_body.error.msg.code;
+
+      if (error_body && error_body.msg) {
+        this.credit_card_error_msg = error_body.msg.raw.message;
+        console.error('[PRJCT-EDIT-ADD] - UPDATED CUSTOMER error_body > msg > raw ', error_body.msg.raw);
+        console.error('[PRJCT-EDIT-ADD] - UPDATED CUSTOMER credit_card_error_msg ', this.credit_card_error_msg);
         this.CARD_HAS_ERROR = true;
         this.SPINNER_IN_ADD_CARD_MODAL = false
         this.DISPLAY_ADD_CARD_COMPLETED = false
+      } else if (error_body && !error_body.msg) {
+        if (error_body && error_body.error && error_body.error && error_body.error.msg.code) {
+          this.credit_card_error_msg = error_body.error.msg.code;
+          this.CARD_HAS_ERROR = true;
+          this.SPINNER_IN_ADD_CARD_MODAL = false
+          this.DISPLAY_ADD_CARD_COMPLETED = false
+        }
       }
-    }
     }, () => {
       this.logger.log('[PRJCT-EDIT-ADD] - UPDATED CUSTOMER * COMPLETE * ');
       this.CARD_HAS_ERROR = false;
@@ -2892,17 +2981,17 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
           if (this.USER_ROLE === 'owner') {
             if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
-              if (this.profile_name !== PLAN_NAME.C && this.profile_name !== PLAN_NAME.F ) {
+              if (this.profile_name !== PLAN_NAME.C && this.profile_name !== PLAN_NAME.F) {
                 this.notify.displaySubscripionHasExpiredModal(true, this.profile_name, this.subscription_end_date);
               } else if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
                 this.notify.displayEnterprisePlanHasExpiredModal(true, this.profile_name, this.subscription_end_date);
               }
 
-              this.logger.log('[PRJCT-EDIT-ADD] profile_name ', this.profile_name) 
+              this.logger.log('[PRJCT-EDIT-ADD] profile_name ', this.profile_name)
             } else if (this.profile_name === 'free' && this.prjct_trial_expired === true || this.profile_name === 'Sandbox' && this.prjct_trial_expired === true) {  //
-               
+
               this.router.navigate(['project/' + this.projectId + '/pricing']);
-             
+
             }
 
           } else {

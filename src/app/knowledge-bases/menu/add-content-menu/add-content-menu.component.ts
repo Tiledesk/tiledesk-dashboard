@@ -30,18 +30,21 @@ export class AddContentMenuComponent implements OnInit {
     .subscribe((text: any) => {
         let item = {"label": text, "type":"urls"};
         this.items.push(item);
+        // console.log('ADD CONTENT MENU this.items ', this.items) 
     });
 
     this.translate.get('KbPage.AddKbText')
     .subscribe((text: any) => {
         let item = {"label": text, "type":"text-file"};
         this.items.push(item);
+        // console.log('ADD CONTENT MENU this.items ', this.items) 
     });
 
     this.translate.get('KbPage.AddKbSitemap')
     .subscribe((text: any) => {
         let item = {"label": text, "type":"site-map"};
         this.items.push(item);
+        // console.log('ADD CONTENT MENU this.items ', this.items) 
     });
 
     //this.items = [{"label": "Single URL", "type":"url-page"},{"label": "URL(s)", "type":"urls"}, {"label": "Plain Text", "type":"text-file"}];

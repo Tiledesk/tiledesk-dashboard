@@ -142,15 +142,20 @@ export class AutologinComponent implements OnInit {
       this.logger.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser stored tiledesk_token is NOT equal to params JWT ');
     }
 
-    this.sso.getCurrentAuthenticatedUser(JWT).subscribe(auth_user => {
-      // this.logger.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser RES ', auth_user);
+    // this.sso.getCurrentAuthenticatedUser(JWT).subscribe(auth_user => {
+    this.sso.signInWithCustomToken(JWT).subscribe(resp => {
+      
+      const auth_user = resp['user']
+      const token = resp['token']
+      this.logger.log('[AUTOLOGIN] SSO - ssoLogin signInWithCustomToken  auth_user ', auth_user);
+      this.logger.log('[AUTOLOGIN] SSO - ssoLogin signInWithCustomToken  token ', token);
 
-      const user = { firstname: auth_user['firstname'], lastname: auth_user['lastname'], _id: auth_user['_id'], email: auth_user['email'], emailverified: auth_user['emailverified'], token: JWT }
+      const user = { firstname: auth_user['firstname'], lastname: auth_user['lastname'], _id: auth_user['_id'], email: auth_user['email'], emailverified: auth_user['emailverified'], token: token }
       // this.logger.log('[AUTOLOGIN] SSO - ssoLogin getCurrentAuthenticatedUser user ', user);
 
       localStorage.setItem('user', JSON.stringify(user));
       // localStorage.setItem(chatPrefix + '__tiledeskToken', JWT);
-      localStorage.setItem('tiledesk_token', JWT);
+      localStorage.setItem('tiledesk_token', token);
       this.auth.publishSSOloggedUser();
 
       this.router.navigate([route]);

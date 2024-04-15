@@ -347,9 +347,9 @@
                 {{ project?.id_project?.name }}
               </h3>
 
-              <!-- <p class="id-project" [ngClass]="{'project-deleted-card-text-color' : project?.id_project?.status === 0}">
+              <p *ngIf="DISPLAY_PROJECT_ID" class="id-project" [ngClass]="{'project-deleted-card-text-color' : project?.id_project?.status === 0}">
                 {{ project?.id_project?._id }}
-              </p> -->
+              </p>
 
               <div class="role-and-avalibility-wpr">
                 <div class="role-and-avalibility-icon">

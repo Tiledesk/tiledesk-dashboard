@@ -65,6 +65,7 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
   project: any;
   callingPage: string;
   onlyOwnerCanManageTheAccountPlanMsg: string;
+
   public chatBotCount: any;
   constructor(
     public appStoreService: AppStoreService,
@@ -212,14 +213,14 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
 
         if (paidApps[1] === "F") {
           this.areVisiblePaidApps = false;
-          this.logger.log('APP-STORE areVisiblePaidApps ',this.areVisiblePaidApps) 
+          this.logger.log('APP-STORE areVisiblePaidApps ', this.areVisiblePaidApps)
         } else {
           this.areVisiblePaidApps = true;
-          this.logger.log('APP-STORE areVisiblePaidApps ',this.areVisiblePaidApps) 
+          this.logger.log('APP-STORE areVisiblePaidApps ', this.areVisiblePaidApps)
         }
       }
 
-      
+
     });
 
 
@@ -268,21 +269,17 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
       this.logger.log('APP-STORE - getApps APPS ', this.apps);
 
 
-      const paidApps = [
-        {
-          title: "WhatsApp Business"
-        },
-        {
-          title: "Facebook Messenger"
-        },
-        {
-          title: "Help Center"
-        }
-      ]
+
+      if (this.areVisiblePaidApps) {
+        let paidApps = ['WhatsApp Business', 'Facebook Messenger', 'Help Center']
+        this.apps = this.apps.filter(x => !paidApps.includes(x.title));
+      }
 
       const sendTranscriptAppIndex = this.apps.findIndex(object => {
         return object.title === "Send transcript by email";
       });
+
+
 
       this.logger.log('sendTranscriptAppIndex ', sendTranscriptAppIndex);
       if (sendTranscriptAppIndex > -1) {
@@ -290,13 +287,13 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
       }
 
       this.apps.forEach(app => {
-        this.logger.log('APP-STORE - getApps APPS app ', app )
+        this.logger.log('APP-STORE - getApps APPS app ', app)
 
 
         if (app.description.length > 118) {
           app.description = app.description.slice(0, 118) + '...'
         }
-        
+
         if (app && app.version === "v2") {
           if (app.installActionURL === "") {
             // this.logger.log('APP-STORE - getApps APPS app installActionURL', app.installActionURL)
@@ -767,7 +764,7 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
   // Modals
   // -----------------------------
   presentModalFeautureAvailableFromTier2Plan(planName) {
-    this.logger.log( 'presentModalFeautureAvailableFromTier2Plan' , planName)
+    this.logger.log('presentModalFeautureAvailableFromTier2Plan', planName)
     const el = document.createElement('div')
     el.innerHTML = planName //this.featureAvailableFromBPlan
     // swal({
@@ -819,7 +816,7 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
     Swal.fire({
       // title: this.onlyOwnerCanManageTheAccountPlanMsg,
       html: el,
-      icon: "info",      
+      icon: "info",
       showCloseButton: true,
       showCancelButton: false,
       confirmButtonText: this.upgradePlan,
@@ -931,7 +928,7 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
         this.learnMoreAboutDefaultRoles = translation;
       });
 
-      this.translate
+    this.translate
       .get('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan')
       .subscribe((translation: any) => {
         this.onlyOwnerCanManageTheAccountPlanMsg = translation

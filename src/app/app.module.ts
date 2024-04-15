@@ -398,6 +398,7 @@ import { UserModalComponent } from './users/user-modal/user-modal.component';
 import { MessagesStatsModalComponent } from './components/modals/messages-stats-modal/messages-stats-modal.component';
 import { WsChatbotService } from './services/websocket/ws-chatbot.service';
 import { AnalyticsService } from './services/analytics.service';
+import { KnowledgeBasesAlertComponent } from './knowledge-bases/knowledge-bases-alert/knowledge-bases-alert.component';
 
 
 
@@ -706,7 +707,8 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     ModalUrlsKnowledgeBaseComponent,
     AddContentMenuComponent,
     UserModalComponent,
-    MessagesStatsModalComponent
+    MessagesStatsModalComponent,
+    KnowledgeBasesAlertComponent
   ],
   imports: [
     TooltipModule.forRoot(CutomTooltipOptions as TooltipOptions),

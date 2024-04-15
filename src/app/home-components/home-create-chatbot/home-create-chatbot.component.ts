@@ -20,6 +20,7 @@ import { ChatbotModalComponent } from 'app/bots/bots-list/chatbot-modal/chatbot-
 import { NotifyService } from 'app/core/notify.service';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { TranslateService } from '@ngx-translate/core';
+import { BrandService } from 'app/services/brand.service';
 
 @Component({
   selector: 'appdashboard-home-create-chatbot',
@@ -67,6 +68,7 @@ export class HomeCreateChatbotComponent extends PricingBaseComponent implements 
   yourTrialHasEnded: string;
   upgradeNowToKeepOurAmazingFeatures: string;
   upgrade: string;
+  displayTemplatesCategory: boolean;
 
   constructor(
     public appConfigService: AppConfigService,
@@ -80,9 +82,13 @@ export class HomeCreateChatbotComponent extends PricingBaseComponent implements 
     private botLocalDbService: BotLocalDbService,
     public prjctPlanService: ProjectPlanService,
     public notify: NotifyService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    public brandService: BrandService
   ) {
     super(prjctPlanService, notify);
+    const brand = brandService.getBrand();
+    this.displayTemplatesCategory = brand['display_templates_category']
+    this.logger.log('[HOME-CREATE-CHATBOT] displayTemplatesCategory', this.displayTemplatesCategory)
   }
 
   ngOnInit(): void {

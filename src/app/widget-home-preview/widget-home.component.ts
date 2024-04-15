@@ -1,4 +1,6 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
+import { BrandService } from 'app/services/brand.service';
 
 
 @Component({
@@ -40,7 +42,7 @@ export class WidgetHomeComponent implements OnInit, OnChanges {
 
   @Input() prjct_profile_type: string
   @Input() subscription_is_active: boolean;
-	@Input() prjct_trial_expired: boolean;
+  @Input() prjct_trial_expired: boolean;
 
   public footerImageUrl: string
   public footerImageHref: string
@@ -53,11 +55,42 @@ export class WidgetHomeComponent implements OnInit, OnChanges {
   @Input() featureIsAvailable: boolean;
   @Input() id_project: string;
   @Input() imageStorage: string;
-  public defaultFooter = '<a tabindex="-1" target="_blank" href="http://www.tiledesk.com/?utm_source=widget"><img src="https://panel.tiledesk.com/v3/dashboard/assets/img/logos/tiledesk-solo_logo_new_gray.svg"/><span>Powered by Tiledesk</span></a>'
- 
+  public widgetLogoURL: any;
 
-  constructor() { }
+  public defaultFooter: string;
+  // = '<a tabindex="-1" target="_blank" href="http://www.tiledesk.com/?utm_source=widget"><img src="https://panel.tiledesk.com/v3/dashboard/assets/img/logos/tiledesk-solo_logo_new_gray.svg"/><span>Powered by Tiledesk</span></a>'
 
+
+  constructor(
+    public brandService: BrandService,
+    private sanitizer: DomSanitizer
+  ) {
+    const brand = brandService.getBrand();
+
+    // this.widgetLogoURL = brand['widget_logo_URL'];
+    // this.defaultFooter = brand['widget_default_footer'];
+
+    this.widgetLogoURL = brand['LOGO_CHAT'];
+    // console.log('[WIDGET HOME COMP] widgetLogoURL ', this.widgetLogoURL)
+    
+    this.defaultFooter = brand['POWERED_BY'];
+    // console.log('[WIDGET HOME COMP] defaultFooter ', this.defaultFooter)
+    
+    const fileType = this.getFileTypeFromURL(this.widgetLogoURL);
+    // console.log('[WIDGET HOME COMP] File type:', fileType);  
+    if (fileType === 'svg')  {
+      this.widgetLogoURL = this.sanitizer.bypassSecurityTrustUrl(this.widgetLogoURL)
+    }
+
+  }
+
+
+
+  getFileTypeFromURL(url) {
+    const segments = url.split('.');
+    const extension = segments[segments.length - 1];
+    return extension.toLowerCase(); // Convert to lowercase for consistency
+  }
   ngOnInit() {
     this.colorBck = '#000000';
     // card-header-left
@@ -66,31 +99,31 @@ export class WidgetHomeComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-  //  console.log('[WIDGET HOME COMP] - hasOwnLauncherBtn  ', this.hasOwnLauncherBtn)
-  //  console.log('[WIDGET HOME COMP] - hasOwnLauncherLogo  ', this.hasOwnLauncherLogo)
-  //  console.log('[WIDGET HOME COMP] - id_project  ', this.id_project)
-  //  console.log('[WIDGET HOME COMP] - imageStorage  ', this.imageStorage)
+    //  console.log('[WIDGET HOME COMP] - hasOwnLauncherBtn  ', this.hasOwnLauncherBtn)
+    //  console.log('[WIDGET HOME COMP] - hasOwnLauncherLogo  ', this.hasOwnLauncherLogo)
+    //  console.log('[WIDGET HOME COMP] - id_project  ', this.id_project)
+    //  console.log('[WIDGET HOME COMP] - imageStorage  ', this.imageStorage)
 
-  //  console.log('[WIDGET HOME COMP] - imageUrl  ', this.imageUrl)
-  //  console.log('[WIDGET HOME COMP] - currentUserId  ', this.currentUserId)
+    //  console.log('[WIDGET HOME COMP] - imageUrl  ', this.imageUrl)
+    //  console.log('[WIDGET HOME COMP] - currentUserId  ', this.currentUserId)
 
 
-   if (this.UPLOAD_ENGINE_IS_FIREBASE === true) {
-    this.userProfileImageurl = 'https://firebasestorage.googleapis.com/v0/b/' + this.imageStorage + '/o/profiles%2F' + this.currentUserId + '%2Fphoto.jpg?alt=media';
-  } else {
-    this.userProfileImageurl = this.imageStorage + 'images?path=uploads%2Fusers%2F' + this.currentUserId + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
-  }
+    if (this.UPLOAD_ENGINE_IS_FIREBASE === true) {
+      this.userProfileImageurl = 'https://firebasestorage.googleapis.com/v0/b/' + this.imageStorage + '/o/profiles%2F' + this.currentUserId + '%2Fphoto.jpg?alt=media';
+    } else {
+      this.userProfileImageurl = this.imageStorage + 'images?path=uploads%2Fusers%2F' + this.currentUserId + '%2Fimages%2Fthumbnails_200_200-photo.jpg';
+    }
 
     // console.log('footerBrand  ', this.footerBrand)
     // console.log('prjct_profile_type  ', this.prjct_profile_type)
     // console.log('subscription_is_active  ', this.subscription_is_active)
     // console.log('prjct_trial_expired  ', this.prjct_trial_expired)
-    
+
     // if (this.footerBrand) {
 
-      // ------------------------------------------------------
-      // No more uses replaced wiyj innerHTML in the tempalte
-      // ------------------------------------------------------
+    // ------------------------------------------------------
+    // No more uses replaced wiyj innerHTML in the tempalte
+    // ------------------------------------------------------
     //   var elem = document.createElement("div");
     //   elem.innerHTML = this.footerBrand;
     //   let images = null

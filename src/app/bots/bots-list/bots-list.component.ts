@@ -184,6 +184,8 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     this.getProjectPlan();
     this.getUserRole();
     this.getDefaultDeptId();
+  
+  //  console.log('[BOTS-LIST] - chatBotLimit »»» ',   this.chatBotLimit)
   }
 
   ngOnDestroy() {

@@ -53,7 +53,7 @@
         <!-- Quote - usage stats  indicator -->
         <!-- -------------------------------------------- -->
         <!-- // Alternative: follow the example on https://codepen.io/nikitahl/pen/ZEjRBEE -->
-        <!-- <ng-container *ngIf="project">
+        <ng-container *ngIf="project && isVisibleQuoteBtn">
           <li id="usage-stats">
 
             <button mat-mini-fab aria-label="trend icon" [matMenuTriggerFor]="menu" class="quote-modal-btn"
@@ -124,7 +124,7 @@
                 </div>
 
 
-                <button mat-flat-button class="upgrade-btn" (click)="goToPricing()">
+                <button *ngIf="isVisiblePay"  mat-flat-button class="upgrade-btn" (click)="goToPricing()">
                   <span class="material-icons-outlined">bolt</span>
                   {{ "Pricing.UpgradePlan" | translate }}
                 </button>
@@ -133,7 +133,7 @@
 
             </mat-menu>
           </li>
-        </ng-container> -->
+        </ng-container>
 
         <!-- ------------------------------------------------  -->
         <!--  UPGRADE (PROFILE TYPE = FREE) -->
