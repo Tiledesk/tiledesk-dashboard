@@ -136,6 +136,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
   orderByCreationDate: boolean = false;
   orderByChatbotName: boolean = false;
   pageName: string;
+  isVisiblePAY: boolean;
 
   // editBotName: boolean = false;
   constructor(
@@ -802,9 +803,27 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
         } else {
           this.isVisibleAnalytics = true;
         }
+      }
 
+      if (key.includes("PAY")) {
+
+        let pay = key.split(":");
+
+        if (pay[1] === "F") {
+          this.isVisiblePAY = false;
+        } else {
+          this.isVisiblePAY = true;
+        }
       }
     })
+
+    if (!this.public_Key.includes("PAY")) {
+      this.isVisiblePAY = false;
+    }
+
+    if (!this.public_Key.includes("ANA")) {
+      this.isVisibleAnalytics = false;
+    }
   }
 
   goToBotExternalUrl(botExternalUrl) {
@@ -1139,7 +1158,8 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
         projectProfile: this.prjct_profile_name,
         subscriptionIsActive: this.subscription_is_active,
         prjctProfileType: this.prjct_profile_type,
-        trialExpired: this.trial_expired
+        trialExpired: this.trial_expired,
+        chatBotLimit:  this.chatBotLimit
       },
     });
 

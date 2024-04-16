@@ -491,7 +491,7 @@ export class HomeCreateChatbotComponent extends PricingBaseComponent implements 
   }
 
   createBlankTilebot() {
-    this.logger.log('[HOME-CREATE-CHATBOT] createBlankTilebot chatBotCount ', this.countOfChatbots, ' chatBotLimit ', this.chatBotLimit, ' PROJECT PLAN ', this.profile_name)
+   console.log('[HOME-CREATE-CHATBOT] createBlankTilebot chatBotCount ', this.countOfChatbots, ' chatBotLimit ', this.chatBotLimit, ' PROJECT PLAN ', this.profile_name)
 
 
     if (this.USER_ROLE !== 'agent') {
@@ -582,7 +582,8 @@ export class HomeCreateChatbotComponent extends PricingBaseComponent implements 
         projectProfile: this.prjct_profile_name,
         subscriptionIsActive: this.subscription_is_active,
         prjctProfileType: this.prjct_profile_type,
-        trialExpired: this.trial_expired
+        trialExpired: this.trial_expired,
+        chatBotLimit: this.chatBotLimit
       },
     });
 

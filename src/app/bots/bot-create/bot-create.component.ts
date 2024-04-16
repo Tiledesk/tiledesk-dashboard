@@ -351,7 +351,8 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit {
         projectProfile: this.prjct_profile_name,
         subscriptionIsActive: this.subscription_is_active,
         prjctProfileType: this.prjct_profile_type,
-        trialExpired: this.trial_expired
+        trialExpired: this.trial_expired,
+        chatBotLimit: this.chatBotLimit
       },
     });
 

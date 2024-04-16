@@ -338,6 +338,7 @@ export class GetStartChatbotForkComponent implements OnInit {
         projectProfile: this.prjct_profile_name,
         callingPage: "getStartChatbotFork",
         projectId: this.project._id,
+        
         // subscriptionIsActive: this.subscription_is_active,
         // prjctProfileType: this.prjct_profile_type,
         // trialExpired: this.trial_expired

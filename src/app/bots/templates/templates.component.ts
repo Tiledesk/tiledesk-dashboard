@@ -62,6 +62,8 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
   public USER_ROLE: string;
   learnMoreAboutDefaultRoles: string;
   agentsCannotManageChatbots: string;
+  isVisiblePAY: boolean;
+  public_Key: string;
  
   constructor(
     private auth: AuthService,
@@ -90,13 +92,38 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
     this.getRoutes();
     this.getProfileImageStorage();
     this.getProjectPlan();
-    this.getUserRole()
+    this.getUserRole();
+    this.getOSCODE()
   }
 
 
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+  }
+  getOSCODE() {
+    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
+    // this.logger.log('AppConfigService getAppConfig (BOT LIST) public_Key', this.public_Key);
+    let keys = this.public_Key.split("-");
+    // this.logger.log('PUBLIC-KEY (BOT LIST) keys', keys)
+    keys.forEach(key => {
+
+      if (key.includes("PAY")) {
+
+        let pay = key.split(":");
+
+        if (pay[1] === "F") {
+          this.isVisiblePAY = false;
+        } else {
+          this.isVisiblePAY = true;
+        }
+      }
+    })
+
+    if (!this.public_Key.includes("PAY")) {
+      this.isVisiblePAY = false;
+    }
+
   }
 
   getUserRole() {
@@ -105,7 +132,7 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
         takeUntil(this.unsubscribe$)
       )
       .subscribe((userRole) => {
-        this.logger.log('[BOTS-LIST] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
+        this.logger.log('[BOTS-TEMPLATES] - SUBSCRIPTION TO USER ROLE »»» ', userRole)
         this.USER_ROLE = userRole;
       })
   }
@@ -473,7 +500,8 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
         projectProfile: this.prjct_profile_name,
         subscriptionIsActive: this.subscription_is_active,
         prjctProfileType: this.prjct_profile_type,
-        trialExpired: this.trial_expired
+        trialExpired: this.trial_expired,
+        chatBotLimit: this.chatBotLimit
       },
     });
 
