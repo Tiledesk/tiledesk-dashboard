@@ -216,13 +216,17 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
         let whatsappApp = response.apps.find(a => (a.title === APPS_TITLE.WHATSAPP && a.version === "v2"));
         if (environment['whatsappConfigUrl']) {
           if (whatsappApp) {
-            whatsappApp.runUrl = environment['whatsappConfigUrl'];
+            whatsappApp.runURL = environment['whatsappConfigUrl'];
             whatsappApp.channel = "whatsapp";
           } else {
             whatsappApp = {
-              runUrl: environment['whatsappConfigUrl'],
+              runURL: environment['whatsappConfigUrl'],
               channel: "whatsapp"
             }
+          }
+        } else {
+          if (whatsappApp) {
+            whatsappApp.channel = "whatsapp";
           }
         }
         this.availableApps.push(whatsappApp);
@@ -230,13 +234,18 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
         let messengerApp = response.apps.find(a => (a.title === APPS_TITLE.MESSENGER && a.version === "v2"));
         if (environment['messengerConfigUrl']) {
           if (messengerApp) {
-            messengerApp.runUrl = environment['messengerConfigUrl'];
+            messengerApp.runURL = environment['messengerConfigUrl'];
             messengerApp.channel = "messenger";
           } else {
             messengerApp = {
-              runUrl: environment['messengerConfigUrl'],
+              runURL: environment['messengerConfigUrl'],
               channel: "messenger"
             }
+          }
+        }
+        else {
+          if (messengerApp) {
+            messengerApp.channel = "messenger";
           }
         }
         this.availableApps.push(messengerApp);
@@ -244,13 +253,18 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
         let telegramApp = response.apps.find(a => (a.title === APPS_TITLE.TELEGRAM && a.version === "v2"));
         if (environment['telegramConfigUrl']) {
           if (telegramApp) {
-            telegramApp.runUrl = environment['telegramConfigUrl'];
+            telegramApp.runURL = environment['telegramConfigUrl'];
             telegramApp.channel = "telegram";
           } else {
             telegramApp = {
-              runUrl: environment['telegramConfigUrl'],
+              runURL: environment['telegramConfigUrl'],
               channel: "telegram"
             }
+          }
+        }
+        else {
+          if (telegramApp) {
+            telegramApp.channel = "telegram";
           }
         }
         this.availableApps.push(telegramApp);
@@ -275,7 +289,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
         this.integrationSelectedName = "external";
         this.showInIframe = true;
         let app = this.availableApps.find(a => a.channel === integration.key);
-        this.renderUrl = app.runUrl;
+        this.renderUrl = app.runURL;
       } else {
         this.showInIframe = false;
       }
