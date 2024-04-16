@@ -79,15 +79,10 @@
 - Deploys in production
 - Refactors the teammates table
 
-<<<<<<< HEAD
 ### 2.5.19
 - Deploys in production
 - Fixes the bug: not all chatbot images are displayed
 - Fixes the bug: published chatbots is appearing as a draft
-=======
-### 2.6.0-rc6
-- Fixes the bug: App cards are not of the same height
->>>>>>> master-PRE
 
 ### 2.6.0-rc4
 - Improves Knowledge Base
