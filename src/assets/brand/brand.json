@@ -71,7 +71,7 @@
     "COMPANY_SITE_NAME": "imagicle.com",
     "COMPANY_SITE_URL": "https://www.imagicle.com/en/products/conversational-ai/",
     "CONTACT_US_EMAIL": "",
-    "CONTACT_SALES_EMAIL": "",
+    "CONTACT_SALES_EMAIL": "sales@imagicle.com",
     "BRAND_PRIMARY_COLOR": "#00c0f0",
     "BRAND_SECONDARY_COLOR": "#002159",
     "DOCS": false
