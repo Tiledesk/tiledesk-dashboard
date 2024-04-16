@@ -6,7 +6,6 @@
 - Manages chatbot limit of zero
 
 ### 2.6.11
-- Deploys in production
 - Moves email ticketing features to "Custom" plan
 - Adds the ability to manage the number of chatbots and the number of Knowledge Base contents via DB
 - Adds the ability to manage the visibility of menu items widget unbranding, SMTP settings and Knowledge Bases via DB
