@@ -1,7 +1,9 @@
 # tiledesk-dashboard
 
-### 2.6.12
-- Deploys in production
+### 2.6.12-rc2
+- Adds an alert on the app store page to explain that some apps have been moved to the integrations page
+
+### 2.6.12-rc1
 - Adds the ability to manage the visibility of menu item chatbot and the home chatbot section via DB
 - Manages chatbot limit of zero
 
