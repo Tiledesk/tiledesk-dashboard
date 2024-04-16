@@ -566,6 +566,7 @@
         "30DaysFreeTrialOfTiledeskProPlan": "{{ BRAND_NAME }} Pro rejasining 14 kunlik bepul sinov muddati",
         "30DaysFreeTrial": "{{ plan_name }} tarif rejasining 14 kunlik bepul sinov muddati",
         "ChatbotLimitReached":"{{plan_name}} uchun chatbot chegarasiga yetdi",
+        "ChatbotsNotAvailableWithCurrentPlan": "Joriy tarif rejangizda chatbotlar mavjud emas",
         "WillExpireIn": "yilda muddati tugaydi",
         "Days": "kunlar",
         "Tomorrow": "ertaga",

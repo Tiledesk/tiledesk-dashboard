@@ -566,6 +566,7 @@
         "30DaysFreeTrialOfTiledeskProPlan": "14 dagars gratis provperiod på {{ BRAND_NAME }} Pro-planen",
         "30DaysFreeTrial": "14 dagars gratis provperiod på {{ plan_name }}-planen",
         "ChatbotLimitReached":"Chatbotgräns nådd för {{plan_name}}",
+        "ChatbotsNotAvailableWithCurrentPlan": "Chatbots är inte tillgängliga med din nuvarande plan",
         "WillExpireIn": "kommer att löpa ut om",
         "Days": "dagar",
         "Tomorrow": "i morgon",

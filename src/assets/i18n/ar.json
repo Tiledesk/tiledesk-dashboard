@@ -566,6 +566,7 @@
         "30DaysFreeTrialOfTiledeskProPlan": "نسخة تجريبية مجانية لمدة 14 يومًا من خطة {{plan_name}}",
         "30DaysFreeTrial": "نسخة تجريبية مجانية لمدة 14 يومًا من خطة {{plan_name}}",
         "ChatbotLimitReached": "تم الوصول إلى حد Chatbot لـ {{plan_name}}",
+        "ChatbotsNotAvailableWithCurrentPlan": "Chatbots غير متوفرة مع خطتك الحالية",
         "WillExpireIn": "ستنتهي في",
         "Days": "أيام",
         "Tomorrow": "غدا",

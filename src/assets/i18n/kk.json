@@ -566,6 +566,7 @@
         "30DaysFreeTrialOfTiledeskProPlan": "{{ BRAND_NAME }} Pro жоспарының 14 күндік тегін сынақ нұсқасы",
         "30DaysFreeTrial": "{{ plan_name }} жоспарының 14 күндік тегін сынақ нұсқасы",
         "ChatbotLimitReached":"{{plan_name}} үшін чатбот шегіне жетті",
+        "ChatbotsNotAvailableWithCurrentPlan": "Ағымдағы жоспарыңызда чатботтар қолжетімді емес",
         "WillExpireIn": "жылы аяқталады",
         "Days": "күндер",
         "Tomorrow": "ертең",

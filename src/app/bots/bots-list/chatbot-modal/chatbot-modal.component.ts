@@ -83,7 +83,12 @@ export class ChatbotModalComponent implements OnInit {
   }
 
   getTranslatedStringChatbotAreNotAvailableInYourCurrentPlan() {
-    this.chatbotLimitReached = 'Chatbots are not available with your current plan'
+    this.translate.get('Pricing.ChatbotsNotAvailableWithCurrentPlan')
+      .subscribe((text: string) => {
+
+        this.chatbotLimitReached = text;
+        this.logger.log('+ + + ChatbotLimitReached', text)
+      });
   }
 
   onNoClick(): void {
