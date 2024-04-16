@@ -90,6 +90,7 @@
     background-color: #e4e6eb;
     pointer-events: none;
 }
+
 .app-installed-wpr:hover {
     background-color: #00a11b;
 }
@@ -141,9 +142,10 @@
 
 
 .div-disabled {
-    pointer-events:none;
+    pointer-events: none;
     background: #eee;
 }
+
 .card-create-app-icon-wpr {
     color: #f0806f;
     text-align: center;
@@ -187,4 +189,25 @@
 
 .hide-paid-app {
     display: none;
+}
+
+.app-alert>div {
+    background: #f44336;
+    color: #fff;
+    text-align: center;
+    position: absolute;
+    top: 60px;
+    padding: 15px;
+    font-size: 16px;
+    font-family: "Poppins", "Roboto", "Arial", sans-serif
+}
+
+.app-alert>div>.link-to-integrations { 
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.app-alert>div>.link-to-integrations:hover { 
+    // font-weight: 500;
+    text-decoration: underline;
 }

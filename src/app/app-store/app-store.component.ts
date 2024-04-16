@@ -982,4 +982,20 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
     });
   }
 
+  goToWhatsapp() {
+    this.router.navigate(['project/' + this.projectId + '/integrations' ],{ queryParams: { 'name': 'whatsapp' } })
+  }
+
+  goToMessenger() {
+    this.router.navigate(['project/' + this.projectId + '/integrations' ],{ queryParams: { 'name': 'messenger' } })
+  }
+
+  goToTelegram() {
+    this.router.navigate(['project/' + this.projectId + '/integrations' ],{ queryParams: { 'name': 'telegram' } })
+  }
+
+  goToIntegrations() {
+    this.router.navigate(['project/' + this.projectId + '/integrations' ])
+  }
+
 }
