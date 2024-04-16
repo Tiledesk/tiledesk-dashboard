@@ -566,6 +566,7 @@
         "30DaysFreeTrialOfTiledeskProPlan": "14-days free trial of the {{ BRAND_NAME }} Pro plan",
         "30DaysFreeTrial": "14-days free trial of the {{ plan_name }} plan",
         "ChatbotLimitReached": "Chatbot limit reached for {{plan_name}}",
+        "ChatbotsNotAvailableWithCurrentPlan": "Chatbots are not available with your current plan",
         "WillExpireIn": "expirera dans",
         "Days": "jours",
         "Tomorrow": "demain",
