@@ -186,10 +186,10 @@ export class PricingBaseComponent implements OnInit {
                   // Chatbot limit
                   // this.chatBotLimit = CHATBOT_MAX_NUM[PLAN_NAME.E]
                   this.chatBotLimit = projectProfileData.profile_chatbots;
-                  console.log('[P-BASE] - SANDBOX (TRIAL ACTIVE) - CHATBOTS LIMIT FROM DB  ', this.chatBotLimit)
+                  // console.log('[P-BASE] - SANDBOX (TRIAL ACTIVE) - CHATBOTS LIMIT FROM DB  ', this.chatBotLimit)
                   if (this.chatBotLimit === null || this.chatBotLimit === undefined) {
                     this.chatBotLimit = CHATBOT_MAX_NUM[PLAN_NAME.E]
-                    console.log('[P-BASE] - SANDBOX (TRIAL ACTIVE) - CHATBOTS DEFAULT LIMIT   ', this.chatBotLimit)
+                    // console.log('[P-BASE] - SANDBOX (TRIAL ACTIVE) - CHATBOTS DEFAULT LIMIT   ', this.chatBotLimit)
                   }
 
                   this.tParamsPlanAndChatBot = { plan_name: this.prjct_profile_name, allowed_cb_num: this.chatBotLimit }
@@ -198,10 +198,10 @@ export class PricingBaseComponent implements OnInit {
                   // Kb contents Limit
                   // this.kbLimit = KB_MAX_NUM[PLAN_NAME.E]
                   this.kbLimit = projectProfileData.profile_kbs;
-                  console.log('[P-BASE] - SANDBOX (TRIAL ACTIVE) - KB LIMIT FROM DB  ', this.kbLimit)
+                  // console.log('[P-BASE] - SANDBOX (TRIAL ACTIVE) - KB LIMIT FROM DB  ', this.kbLimit)
                   if (this.kbLimit === null || this.kbLimit === undefined) {
                     this.kbLimit = KB_MAX_NUM[PLAN_NAME.E]
-                    console.log('[P-BASE] - SANDBOX (TRIAL ACTIVE) - KB DEFAULT LIMIT   ', this.kbLimit)
+                    // console.log('[P-BASE] - SANDBOX (TRIAL ACTIVE) - KB DEFAULT LIMIT   ', this.kbLimit)
                   }
 
 

@@ -24,7 +24,7 @@ export class ExtIntegrationComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log("Starting External App Integration");
+    this.logger.log("Starting External App Integration");
 
 
   }
@@ -32,27 +32,27 @@ export class ExtIntegrationComponent implements OnInit {
   ngOnChanges(): void {
     
     this.showSpinner = true;
-    console.log("id_project: ", this.id_project);
-    console.log("renderUlr: ", this.renderUrl);
+    this.logger.log("id_project: ", this.id_project);
+    this.logger.log("renderUlr: ", this.renderUrl);
 
       this.auth.user_bs.subscribe((user) => {
         if (user) {
           this.TOKEN = user.token
 
           this.URL = this.sanitizer.bypassSecurityTrustResourceUrl(this.renderUrl + "?project_id=" + this.id_project + "&token=" + this.TOKEN);
-          console.log("URL: ", this.URL);
+          this.logger.log("URL: ", this.URL);
 
           //this.getIframeHasLoaded();
 
 
         } else {
-          console.log("Get user token failed")
+          this.logger.log("Get user token failed")
         }
       });
   }
 
   onIframeLoaded() {
-    console.log("onIframeLoaded")
+    this.logger.log("onIframeLoaded")
     this.showSpinner = false;
   }
 

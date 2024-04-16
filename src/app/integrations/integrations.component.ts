@@ -130,12 +130,12 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
           this.customization = projectProfileData.customization;
           await this.getApps();
           //this.manageTelegramVisibility(projectProfileData);
-          console.log("app retrieved")
+          this.logger.log("app retrieved")
           this.manageAppVisibility(projectProfileData)
           this.getIntegrations();
         }
       }, (error) => {
-        console.error("err: ", error);
+        this.logger.error("err: ", error);
       })
   }
 
@@ -272,7 +272,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
         resolve(true);
 
       }, (error) => {
-        console.error("--> error getting apps: ", error)
+        this.logger.error("--> error getting apps: ", error)
       })
     })
   }

@@ -491,7 +491,7 @@ export class HomeCreateChatbotComponent extends PricingBaseComponent implements 
   }
 
   createBlankTilebot() {
-   console.log('[HOME-CREATE-CHATBOT] createBlankTilebot chatBotCount ', this.countOfChatbots, ' chatBotLimit ', this.chatBotLimit, ' PROJECT PLAN ', this.profile_name)
+    this.logger.log('[HOME-CREATE-CHATBOT] createBlankTilebot chatBotCount ', this.countOfChatbots, ' chatBotLimit ', this.chatBotLimit, ' PROJECT PLAN ', this.profile_name)
 
 
     if (this.USER_ROLE !== 'agent') {

@@ -102,7 +102,7 @@ export class ConfigureWidgetComponent extends WidgetSetUpBaseComponent implement
    
     // this.widgetLogoURL = brand['widget_logo_URL']
     this.widgetLogoURL = brand['LOGO_CHAT'];
-    console.log('[WIZARD - CONFIGURE-WIDGET] widgetLogoURL ', this.widgetLogoURL)
+    this.logger.log('[WIZARD - CONFIGURE-WIDGET] widgetLogoURL ', this.widgetLogoURL)
   }
 
   ngOnInit() {

@@ -28,10 +28,10 @@ export class ChatbotModalComponent implements OnInit {
   ) {
     this.logger.log('[CHATBOT-MODAL] data ', data)
     if (data && data.projectProfile && data.chatBotLimit != 0) {
-      console.log('[CHATBOT-MODAL] projectProfile ', data.projectProfile , ' USECASE chatBotLimit ', data.chatBotLimit)
+      this.logger.log('[CHATBOT-MODAL] projectProfile ', data.projectProfile , ' USECASE chatBotLimit ', data.chatBotLimit)
       this.getTranslatedStringChatbotLimitReached(data.projectProfile)
     } else  if (data && data.projectProfile && data.chatBotLimit == 0) {
-      console.log('[CHATBOT-MODAL] projectProfile ', data.projectProfile , ' USECASE chatBotLimit ', data.chatBotLimit)
+      this.logger.log('[CHATBOT-MODAL] projectProfile ', data.projectProfile , ' USECASE chatBotLimit ', data.chatBotLimit)
       this.getTranslatedStringChatbotAreNotAvailableInYourCurrentPlan()
     }
     if (data && data.callingPage) { 
