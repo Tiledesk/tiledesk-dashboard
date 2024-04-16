@@ -1,6 +1,12 @@
 # tiledesk-dashboard
 
+### 2.6.12
+- Deploys in production
+- Adds the ability to manage the visibility of menu item chatbot and the home chatbot section via DB
+- Manages chatbot limit of zero
+
 ### 2.6.11
+- Deploys in production
 - Moves email ticketing features to "Custom" plan
 - Adds the ability to manage the number of chatbots and the number of Knowledge Base contents via DB
 - Adds the ability to manage the visibility of menu items widget unbranding, SMTP settings and Knowledge Bases via DB
