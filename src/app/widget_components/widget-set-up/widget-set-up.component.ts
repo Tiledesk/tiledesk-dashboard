@@ -1439,10 +1439,10 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       let firstPanel = <HTMLElement>firstAccordion.nextElementSibling;
       this.logger.log('[WIDGET-SET-UP] ACCORDION firstPanel', firstPanel)
 
-      const hasClosedFirstAccordion = this.localDbService.getFromStorage('hasclosedfirstaccordion')
-      this.logger.log('[WIDGET-SET-UP] hasClosedFirstAccordion get from storage', hasClosedFirstAccordion)
-      if (hasClosedFirstAccordion === null || hasClosedFirstAccordion === 'false') {
-        this.logger.log('[WIDGET-SET-UP] hasClosedFirstAccordion HERE YES ', hasClosedFirstAccordion)
+      // const hasClosedFirstAccordion = this.localDbService.getFromStorage('hasclosedfirstaccordion')
+      // this.logger.log('[WIDGET-SET-UP] hasClosedFirstAccordion get from storage', hasClosedFirstAccordion)
+      // if (hasClosedFirstAccordion === null || hasClosedFirstAccordion === 'false') {
+        // this.logger.log('[WIDGET-SET-UP] hasClosedFirstAccordion HERE YES ', hasClosedFirstAccordion)
         setTimeout(() => {
           firstAccordion.classList.add("active");
           firstPanel.style.maxHeight = firstPanel.scrollHeight + "px";
@@ -1454,7 +1454,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           // this.logger.log('[WIDGET-SET-UP] ACCORDION ARROW ICON', arrow_icon);
           arrow_icon.classList.add("arrow-up");
         }, 2000);
-      }
+      // }
 
       // var arrow_icon_div = firstAccordion.children[1];
       // console.log('[WIDGET-SET-UP] ACCORDION ARROW ICON WRAP DIV', arrow_icon_div);
@@ -1471,15 +1471,15 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         // console.log('firstPanel', firstPanel)
         // console.log('[WIDGET-SET-UP] ACCORDION click acc[0]', acc[0]);
 
-        setTimeout(() => {
-          // console.log('firstAccordion contains class active', firstAccordion.classList.contains('active'))
+        // setTimeout(() => {
+        //   // console.log('firstAccordion contains class active', firstAccordion.classList.contains('active'))
 
-          if (firstAccordion.classList.contains('active')) {
-            self.localDbService.setInStorage('hasclosedfirstaccordion', 'false')
-          } else if (!firstAccordion.classList.contains('active')) {
-            self.localDbService.setInStorage('hasclosedfirstaccordion', 'true')
-          }
-        }, 2000);
+        //   if (firstAccordion.classList.contains('active')) {
+        //     self.localDbService.setInStorage('hasclosedfirstaccordion', 'false')
+        //   } else if (!firstAccordion.classList.contains('active')) {
+        //     self.localDbService.setInStorage('hasclosedfirstaccordion', 'true')
+        //   }
+        // }, 2000);
         self.logger.log('[WIDGET-SET-UP] ACCORDION click i', i, 'acc[i]', acc[i]);
         // console.log('[WIDGET-SET-UP] ACCORDION click i', i, 'acc[i]', acc[i]);
         this.classList.toggle("active");
