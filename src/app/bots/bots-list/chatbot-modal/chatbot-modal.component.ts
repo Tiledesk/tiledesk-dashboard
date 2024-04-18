@@ -60,7 +60,7 @@ export class ChatbotModalComponent implements OnInit {
     }
 
     if (data && data.chatBotLimit) { 
-      console.log('[CHATBOT-MODAL] chatBotLimit ', data.chatBotLimit)
+      this.logger.log('[CHATBOT-MODAL] chatBotLimit ', data.chatBotLimit)
     }
     
  

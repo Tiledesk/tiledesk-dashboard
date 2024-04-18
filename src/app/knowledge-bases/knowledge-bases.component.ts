@@ -18,6 +18,8 @@ import { KB_DEFAULT_PARAMS } from 'app/utils/util';
 import { AppConfigService } from 'app/services/app-config.service';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { ProjectPlanService } from 'app/services/project-plan.service';
+import { UsersService } from 'app/services/users.service';
+import { BrandService } from 'app/services/brand.service';
 const swal = require('sweetalert');
 
 //import { Router } from '@angular/router';
@@ -94,6 +96,15 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   listSitesOfSitemap: any = [];
 
   payIsVisible: boolean = false;
+  onlyOwnerCanManageTheAccountPlanMsg: string;
+  learnMoreAboutDefaultRoles: string;
+  anErrorOccurredWhileUpdating: string;
+  salesEmail: string; 
+  contactUsToUpgrade: string;
+  contactUs: string;
+  upgrade: string;
+  cancel: string;
+
 
   private unsubscribe$: Subject<any> = new Subject<any>();
   constructor(
@@ -111,8 +122,13 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     private faqKbService: FaqKbService,
     public appConfigService: AppConfigService,
     public prjctPlanService: ProjectPlanService,
-  ) { 
+    private usersService: UsersService,
+    public brandService: BrandService,
+  ) {
     super(prjctPlanService, notify);
+    const brand = brandService.getBrand();
+    this.salesEmail = brand['CONTACT_SALES_EMAIL'];
+    
   }
 
   ngOnInit(): void {
@@ -120,7 +136,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     this.getBrowserVersion();
     this.getTranslations();
     this.listenSidebarIsOpened();
-    let paramsDefault = "?limit="+KB_DEFAULT_PARAMS.LIMIT+"&page="+KB_DEFAULT_PARAMS.NUMBER_PAGE+"&sortField="+KB_DEFAULT_PARAMS.SORT_FIELD+"&direction="+KB_DEFAULT_PARAMS.DIRECTION;
+    let paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION;
     this.getListOfKb(paramsDefault);
     this.kbFormUrl = this.createConditionGroupUrl();
     this.kbFormContent = this.createConditionGroupContent();
@@ -134,9 +150,23 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     this.getFaqKbByProjectId();
     this.getOSCODE();
     this.getProjectPlan();
+    this.getProjectUserRole()
     this.logger.log('[KNOWLEDGE-BASES-COMP] - kbLimit', this.kbLimit);
   }
 
+  getProjectUserRole() {
+    this.usersService.project_user_role_bs
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((user_role) => {
+        this.logger.log('[PRJCT-EDIT-ADD] - USER ROLE ', user_role);
+        if (user_role) {
+          this.USER_ROLE = user_role
+
+        }
+      });
+  }
 
 
   ngOnDestroy(): void {
@@ -225,7 +255,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
         // this.faqkbList = faqKb;
         // this.chatBotCount = faqKb.length;
-       
+
 
         this.myChatbotOtherCount = faqKb.length
 
@@ -245,7 +275,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         // ---------------------------------------------------------------------
         // Bot forked from Customer Increase Sales
         // ---------------------------------------------------------------------
-         let increaseSalesBots = faqKb.filter((obj) => {
+        let increaseSalesBots = faqKb.filter((obj) => {
           return obj.mainCategory === "Increase Sales"
         });
         this.logger.log('[KNOWLEDGE-BASES-COMP] - Increase Sales BOTS ', increaseSalesBots);
@@ -268,7 +298,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
 
 
-       
+
       }
 
       /* this.showSpinner = false moved in getAllFaqByFaqKbId:
@@ -308,7 +338,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     })
   }
 
-  
+
 
   // loadKbSettings(){
   //   this.kbService.getKbSettings().subscribe((kb: any) => {
@@ -335,13 +365,51 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         this.msgSuccesIndexingKb = KbPage['msgSuccesIndexingKb'];
         this.msgErrorAddUpdateKb = KbPage['msgErrorAddUpdateKb'];
       });
-    
+
     this.translate.get('Warning')
       .subscribe((text: string) => {
         // this.deleteContact_msg = text;
         // this.logger.log('+ + + BotsPage translation: ', text)
         this.warningTitle = text;
       });
+
+    this.translate.get('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan')
+      .subscribe((translation: any) => {
+
+        this.onlyOwnerCanManageTheAccountPlanMsg = translation;
+      });
+
+    this.translate.get('LearnMoreAboutDefaultRoles')
+      .subscribe((translation: any) => {
+        this.learnMoreAboutDefaultRoles = translation;
+      });
+
+
+    this.translate.get('AnErrorOccurredWhileUpdating')
+      .subscribe((translation: any) => {
+        this.anErrorOccurredWhileUpdating = translation;
+      });
+
+      this.translate.get('Pricing.ContactUsViaEmailToUpgradeYourPricingPlan')
+      .subscribe((translation: any) => {
+        this.contactUsToUpgrade = translation;
+      });
+
+      this.translate.get('ContactUs')
+      .subscribe((translation: any) => {
+        this.contactUs = translation;
+      });
+
+      this.translate.get('Upgrade')
+      .subscribe((translation: any) => {
+        this.upgrade = translation;
+      });
+
+      this.translate.get('Cancel')
+      .subscribe((translation: any) => {
+        this.cancel = translation;
+      });
+
   }
 
   getTranslatedStringKbLimitReached(max_num) {
@@ -437,7 +505,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
 
   // ---------------- SERVICE FUNCTIONS --------------- // 
-  
+
   /**
    * getListOfKb
    */
@@ -455,37 +523,37 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   //   })
   // }
 
-  onLoadPage(searchParams){
+  onLoadPage(searchParams) {
     // this.logger.log('onLoadNextPage:',searchParams);
-    let params = "?limit="+KB_DEFAULT_PARAMS.LIMIT
+    let params = "?limit=" + KB_DEFAULT_PARAMS.LIMIT
     //if(searchParams?.page){
-      let limitPage = Math.floor(this.kbsListCount/KB_DEFAULT_PARAMS.LIMIT);
-      this.numberPage++;
-      if(this.numberPage>limitPage)this.numberPage = limitPage;
-      params +="&page="+this.numberPage;
+    let limitPage = Math.floor(this.kbsListCount / KB_DEFAULT_PARAMS.LIMIT);
+    this.numberPage++;
+    if (this.numberPage > limitPage) this.numberPage = limitPage;
+    params += "&page=" + this.numberPage;
     // } else {
     //   +"&page=0";
     // }
-    if(searchParams?.status){
-      params +="&status="+searchParams.status;
+    if (searchParams?.status) {
+      params += "&status=" + searchParams.status;
     }
-    if(searchParams?.search){
-      params +="&search="+searchParams.search;
+    if (searchParams?.search) {
+      params += "&search=" + searchParams.search;
     }
-    if(searchParams?.sortField){
-      params +="&sortField="+searchParams.sortField;
+    if (searchParams?.sortField) {
+      params += "&sortField=" + searchParams.sortField;
     } else {
-      params +="&sortField="+KB_DEFAULT_PARAMS.SORT_FIELD;
+      params += "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD;
     }
-    if(searchParams?.direction){
-      params +="&direction="+searchParams.direction;
+    if (searchParams?.direction) {
+      params += "&direction=" + searchParams.direction;
     } else {
-      params +="&direction="+KB_DEFAULT_PARAMS.DIRECTION;
+      params += "&direction=" + KB_DEFAULT_PARAMS.DIRECTION;
     }
     this.getListOfKb(params);
   }
 
-  onLoadByFilter(searchParams){
+  onLoadByFilter(searchParams) {
     // this.logger.log('onLoadByFilter:',searchParams);
     // searchParams.page = 0;
     this.numberPage = -1;
@@ -496,11 +564,11 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
   getListOfKb(params?) {
     this.logger.log("[KNOWLEDGE BASES COMP] getListOfKb ");
-    this.kbService.getListOfKb(params).subscribe((resp:any) => {
+    this.kbService.getListOfKb(params).subscribe((resp: any) => {
       this.logger.log("[KNOWLEDGE BASES COMP] get kbList: ", resp);
       //this.kbs = resp;
       this.kbsListCount = resp.count;
-      this.logger.log('[KNOWLEDGE BASES COMP] kbsListCount ', this.kbsListCount )
+      this.logger.log('[KNOWLEDGE BASES COMP] kbsListCount ', this.kbsListCount)
       resp.kbs.forEach(kb => {
         // this.kbsList.push(kb);
         const index = this.kbsList.findIndex(objA => objA._id === kb._id);
@@ -511,7 +579,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         }
         //--> this.updateStatusOfKb(kb._id, 3);
       });
-    
+
       // if(this.kbsList.length>0){
       //   this.SHOW_TABLE = true;
       //   this.checkAllStatuses();
@@ -521,7 +589,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       //this.showSpinner = false;
       //
       this.refreshKbsList = !this.refreshKbsList;
-      
+
     }, (error) => {
       this.logger.error("[KNOWLEDGE BASES COMP] ERROR get kbSettings: ", error);
       //this.showSpinner = false;
@@ -547,7 +615,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   //   })
   // }
 
-  onSendSitemap(body){
+  onSendSitemap(body) {
     // this.onCloseBaseModal();
     let error = this.msgErrorAddUpdateKb;
     this.kbService.addSitemap(body).subscribe((resp: any) => {
@@ -558,16 +626,16 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
           text: error,
           icon: "warning",
           className: "custom-swal",
-          buttons: [null, "Cancel"],
+          buttons: [null, this.cancel],
           dangerMode: false
         })
       } else {
         this.listSitesOfSitemap = resp.sites;
       }
-      
+
     }, (err) => {
       this.logger.error("[KNOWLEDGE-BASES-COMP] ERROR send sitemap: ", err);
-      
+
       //this.onOpenErrorModal(error);
 
       swal({
@@ -594,7 +662,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     this.kbService.addKb(body).subscribe((resp: any) => {
       this.logger.log("onAddKb:", resp);
       let kb = resp.value;
-      if(resp.lastErrorObject && resp.lastErrorObject.updatedExisting === true){
+      if (resp.lastErrorObject && resp.lastErrorObject.updatedExisting === true) {
         //this.logger.log("updatedExisting true:");
         const index = this.kbsList.findIndex(item => item._id === kb._id);
         if (index !== -1) {
@@ -606,7 +674,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         this.notify.showWidgetStyleUpdateNotification(this.msgSuccesAddKb, 2, 'done');
         // this.kbsListCount++;
         this.kbsList.unshift(kb);
-        this.kbsListCount = this.kbsListCount+1;
+        this.kbsListCount = this.kbsListCount + 1;
         this.refreshKbsList = !this.refreshKbsList;
         // let searchParams = {
         //   "sortField": KB_DEFAULT_PARAMS.SORT_FIELD,
@@ -628,6 +696,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       this.logger.error("[KNOWLEDGE-BASES-COMP] ERROR add new kb: ", err);
       // this.onOpenErrorModal(error);
       if (err.error && err.error.plan_limit) {
+        // console.log('here 1 ')
         this.getTranslatedStringKbLimitReached(err.error.plan_limit);
         error = this.msgErrorAddUpdateKbLimit
       }
@@ -638,25 +707,48 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
           text: error,
           icon: "warning",
           className: "custom-swal",
-          buttons: ["Cancel", "Upgrade Plan"],
+          buttons: [this.cancel, this.upgrade],
           dangerMode: false
         }).then((willUpgradePlan: any) => {
-  
+
           if (willUpgradePlan) {
-            this.router.navigate(['project/' + this.id_project + '/pricing']);
+            if (this.USER_ROLE === 'owner') {
+              if (this.prjct_profile_type === 'free') {
+                this.router.navigate(['project/' + this.id_project + '/pricing']);
+              } else {
+                this.notify._displayContactUsModal(true, 'upgrade_plan');
+              }
+            } else {
+              this.presentModalOnlyOwnerCanManageTheAccountPlan();
+            }
+
           }
         })
-      } else {
+      } else if (this.payIsVisible === false && this.kbLimit != Number(0)) {
+        // console.log('here 2 this.kbLimit ', this.kbLimit)
         swal({
           title: this.warningTitle,
           text: error,
           icon: "warning",
           className: "custom-swal",
-          buttons: [null, "Cancel"],
+          buttons: [null, this.cancel],
           dangerMode: false
         })
+      } else if (this.payIsVisible === false && this.kbLimit == Number(0)) {
+        // console.log('here 1')
+        swal({
+          title: this.warningTitle,
+          text: error + '. ' + this.contactUsToUpgrade,
+          icon: "warning",
+          className: "custom-swal",
+          buttons: [this.cancel, this.contactUs],
+          dangerMode: false
+        }).then((result) => {
+          if (result) {
+            window.open(`mailto:${this.salesEmail}?subject=Upgrade plan`);
+          }
+        })
       }
-
     }, () => {
       this.logger.log("[KNOWLEDGE-BASES-COMP] add new kb *COMPLETED*");
       this.trackUserActioOnKB('Added Knowledge Base')
@@ -665,6 +757,12 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
 
 
+  presentModalOnlyOwnerCanManageTheAccountPlan() {
+
+    this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles)
+
+  }
+
   onAddMultiKb(body) {
     this.onCloseBaseModal();
     // this.logger.log("onAddMultiKb");
@@ -672,8 +770,8 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     this.kbService.addMultiKb(body).subscribe((kbs: any) => {
       this.logger.log("onAddMultiKb:", kbs);
       this.notify.showWidgetStyleUpdateNotification(this.msgSuccesAddKb, 2, 'done');
-      
-      let paramsDefault = "?limit="+KB_DEFAULT_PARAMS.LIMIT+"&page="+KB_DEFAULT_PARAMS.NUMBER_PAGE+"&sortField="+KB_DEFAULT_PARAMS.SORT_FIELD+"&direction="+KB_DEFAULT_PARAMS.DIRECTION;
+
+      let paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION;
       this.getListOfKb(paramsDefault);
       // kbs.forEach(kb => {
       //   //this.kbsList.unshift(kb);
@@ -685,11 +783,11 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       //   // this.updateStatusOfKb(kb._id, 3);
       //   //this.updateStatusOfKb(kb._id, -1);
       // });
-      this.kbsListCount = this.kbsListCount+kbs.length;
+      this.kbsListCount = this.kbsListCount + kbs.length;
       this.refreshKbsList = !this.refreshKbsList;
     }, (err) => {
       this.logger.error("[KNOWLEDGE-BASES-COMP] ERROR add new kb: ", err);
-      
+
       //this.onOpenErrorModal(error);
       if (err.error && err.error.plan_limit) {
         this.getTranslatedStringKbLimitReached(err.error.plan_limit);
@@ -702,10 +800,10 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
           text: error,
           icon: "warning",
           className: "custom-swal",
-          buttons: ["Cancel", "Upgrade Plan"],
+          buttons: [this.cancel, this.upgrade],
           dangerMode: false
         }).then((willUpgradePlan: any) => {
-  
+
           if (willUpgradePlan) {
             this.router.navigate(['project/' + this.id_project + '/pricing']);
           }
@@ -716,12 +814,10 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
           text: error,
           icon: "warning",
           className: "custom-swal",
-          buttons: [null, "Cancel"],
+          buttons: [null, this.cancel],
           dangerMode: false
         })
       }
-
-      
 
     }, () => {
       this.logger.log("[KNOWLEDGE-BASES-COMP] add new kb *COMPLETED*");
@@ -741,29 +837,30 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     // this.logger.log("[KNOWLEDGE-BASES-COMP] kb to delete id: ", data);
     this.onCloseBaseModal();
     let error = this.msgErrorDeleteKb; //"Non è stato possibile eliminare il kb";
-    this.kbService.deleteKb(data).subscribe((response:any) => {
+    this.kbService.deleteKb(data).subscribe((response: any) => {
       //this.logger.log('onDeleteKb:: ', response);
       kb.deleting = false;
-      if(!response || (response.success && response.success === false)){
+      if (!response || (response.success && response.success === false)) {
         // this.updateStatusOfKb(kb._id, 0);
-        
+
         // this.onOpenErrorModal(error);
         swal({
           title: this.warningTitle,
           text: error,
           icon: "warning",
           className: "custom-swal",
-          buttons: [null, "Cancel"],
+          buttons: [null, this.cancel],
           dangerMode: false
         })
 
 
+       
       } else {
         this.notify.showWidgetStyleUpdateNotification(this.msgSuccesDeleteKb, 2, 'done');
         // let error = response.error?response.error:"Errore generico";
         // this.onOpenErrorModal(error);
         this.removeKb(kb._id);
-        this.kbsListCount = this.kbsListCount-1;
+        this.kbsListCount = this.kbsListCount - 1;
         this.refreshKbsList = !this.refreshKbsList;
         // let searchParams = {
         //   "sortField": KB_DEFAULT_PARAMS.SORT_FIELD,
@@ -777,14 +874,14 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       this.logger.error("[KNOWLEDGE-BASES-COMP] ERROR delete kb: ", err);
       kb.deleting = false;
       //this.kbid_selected.deleting = false;
-      
+
       // this.onOpenErrorModal(error);
       swal({
         title: this.warningTitle,
         text: error,
         icon: "warning",
         className: "custom-swal",
-        buttons: [null, "Cancel"],
+        buttons: [null, this.cancel],
         dangerMode: false
       })
 
@@ -794,12 +891,12 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     })
   }
 
-
+  
   /** */
   onUpdateKb(kb) {
     this.logger.log('onUpdateKb: ', kb);
     this.onCloseBaseModal();
-    let error = "update fallito"
+    let error = this.anErrorOccurredWhileUpdating
     let dataDelete = {
       "id": kb._id,
       "namespace": kb.id_project
@@ -810,31 +907,33 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       'content': '',
       'type': 'url'
     };
-    if(kb.type === 'text'){
+    if (kb.type === 'text') {
       dataAdd.source = kb.name;
       dataAdd.content = kb.content,
-      dataAdd.type = 'text'
+        dataAdd.type = 'text'
     }
     this.logger.log('dataAdd: ', dataAdd);
     kb.deleting = true;
-    this.kbService.deleteKb(dataDelete).subscribe((response:any) => {
+    this.kbService.deleteKb(dataDelete).subscribe((response: any) => {
       kb.deleting = false;
-      if(!response || (response.success && response.success === false)){
-        
+      if (!response || (response.success && response.success === false)) {
+
         // this.onOpenErrorModal(error);
         swal({
           title: this.warningTitle,
           text: error,
           icon: "warning",
           className: "custom-swal",
-          buttons: [null, "Cancel"],
+          buttons: [null, this.cancel],
           dangerMode: false
         })
+
+  
 
       } else {
         this.kbService.addKb(dataAdd).subscribe((resp: any) => {
           let kbNew = resp.value;
-          if(resp.lastErrorObject && resp.lastErrorObject.updatedExisting === true){
+          if (resp.lastErrorObject && resp.lastErrorObject.updatedExisting === true) {
             const index = this.kbsList.findIndex(item => item._id === kbNew._id);
             if (index !== -1) {
               this.kbsList[index] = kbNew;
@@ -849,7 +948,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
           const index = this.kbsList.findIndex(item => item.id === kb._id);
           if (index > -1) {
             this.kbsList[index] = kbNew;
-          } 
+          }
           // this.removeKb(kb._id);
           //-->this.updateStatusOfKb(kbNew._id, 0);
           this.refreshKbsList = !this.refreshKbsList;
@@ -858,16 +957,18 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
           // }, 2000);
         }, (err) => {
           this.logger.error("[KNOWLEDGE BASES COMP] ERROR add new kb: ", err);
-          
+
           //this.onOpenErrorModal(error);
           swal({
             title: this.warningTitle,
             text: error,
             icon: "warning",
             className: "custom-swal",
-            buttons: [null, "Cancel"],
+            buttons: [null, this.cancel],
             dangerMode: false
           })
+
+  
 
         }, () => {
           this.logger.log("[KNOWLEDGE BASES COMP] add new kb *COMPLETED*");
@@ -876,14 +977,14 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     }, (err) => {
       this.logger.error("[KNOWLEDGE BASES COMP] ERROR delete kb: ", err);
       kb.deleting = false;
-      
+
       // this.onOpenErrorModal(error);
       swal({
         title: this.warningTitle,
         text: error,
         icon: "warning",
         className: "custom-swal",
-        buttons: [null, "Cancel"],
+        buttons: [null, this.cancel],
         dangerMode: false
       })
 
@@ -893,7 +994,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     })
   }
   // ---------------- END SERVICE FUNCTIONS --------------- // 
-
+  
 
   // ---------------- OPEN AI FUNCTIONS --------------- //
 
@@ -931,7 +1032,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         status_msg = "Indexing in progress";
         status_code = 3;
         status_label = "warning";
-      } else if (response.status = 300)  {
+      } else if (response.status = 300) {
         // default message already seat
       } else if (response.status == 400) {
         status_code = 4;
@@ -940,55 +1041,55 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       } else {
         this.logger.log("Unrecognized status")
       }
-      
+
       /**
        *    OLD STATUSES - START 
        */
-      if(response.status_code == -1 || response.status_code == 0 || response.status_code == 2){
+      if (response.status_code == -1 || response.status_code == 0 || response.status_code == 2) {
         // this.logger.log('riprova tra 10 secondi...');
         // this.updateStatusOfKb(kb._id, response.status_code);
         // timer(20000).subscribe(() => {
         //   this.checkStatusWithRetry(kb);
         // });
-        
-        status_msg = "Indexing in progress: "+response.status_code;
+
+        status_msg = "Indexing in progress: " + response.status_code;
         status_code = 3;
         status_label = "warning";
-      } else  if(response.status_code == 4 ){ // status == 3 || status == 4
+      } else if (response.status_code == 4) { // status == 3 || status == 4
         // this.logger.log('Risposta corretta:', response.status_code);
         status_code = 4;
         status_label = "dangerous";
-        status_msg = "The resource could not be indexed "+response.status_code;
+        status_msg = "The resource could not be indexed " + response.status_code;
       } else {
         //status_msg = "Indicizzazione in corso stato: "+response.status_code;
       }
       /**   
        *    OLD STATUSES - END 
-       */   
+       */
 
       this.updateStatusOfKb(kb._id, resource_status);
       this.notify.showWidgetStyleUpdateNotification(status_msg, status_code, status_label);
     },
-    error => {
-      this.logger.error('Error: ', error);
-      //-->this.updateStatusOfKb(kb._id, -2);
-      status_code = 4;
-      status_label = "dangerous";
-      status_msg = "Error: "+error.message;
-      this.notify.showWidgetStyleUpdateNotification(status_msg, status_code, status_label);
-    });
+      error => {
+        this.logger.error('Error: ', error);
+        //-->this.updateStatusOfKb(kb._id, -2);
+        status_code = 4;
+        status_label = "dangerous";
+        status_msg = "Error: " + error.message;
+        this.notify.showWidgetStyleUpdateNotification(status_msg, status_code, status_label);
+      });
   }
 
   /**
    * updateStatusOfKb
    */
-  private updateStatusOfKb(kb_id, status_code){
+  private updateStatusOfKb(kb_id, status_code) {
     let kb = this.kbsList.find(item => item._id === kb_id);
-    if(kb)kb.status = status_code;
+    if (kb) kb.status = status_code;
     // this.logger.log('AGGIORNO updateStatusOfKb:', kb_id, status_code, kb);
   }
 
-  private removeKb(kb_id){
+  private removeKb(kb_id) {
     //this.kbs = this.kbs.filter(item => item._id !== kb_id);
     this.kbsList = this.kbsList.filter(item => item._id !== kb_id);
     // this.logger.log('AGGIORNO kbsList:', this.kbsList);
@@ -1000,7 +1101,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   /**
    * onCheckStatus
    */
-  onCheckStatus(kb){
+  onCheckStatus(kb) {
     this.checkStatusWithRetry(kb);
   }
 
@@ -1012,8 +1113,8 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       "id": kb._id,
       "source": kb.source,
       "type": kb.type,
-      "content": kb.content?kb.content:'',
-      "namespace": this.id_project 
+      "content": kb.content ? kb.content : '',
+      "namespace": this.id_project
     }
     this.updateStatusOfKb(kb._id, 100);
     this.openaiService.startScraping(data).subscribe((response: any) => {
@@ -1032,7 +1133,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   }
 
 
-  onReloadKbs(params){
+  onReloadKbs(params) {
     this.getListOfKb(params);
   }
   // ---------------- END OPEN AI FUNCTIONS --------------- //
@@ -1055,13 +1156,13 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   }
 
   onChangeInput(event, type): void {
-    if(type === 'url'){
+    if (type === 'url') {
       if (this.kbFormUrl.valid) {
         this.buttonDisabled = false;
       } else {
         this.buttonDisabled = true;
       }
-    } else if(type === 'text'){
+    } else if (type === 'text') {
       if (this.kbFormContent.valid) {
         this.buttonDisabled = false;
       } else {
@@ -1208,25 +1309,25 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
 
   // ************** DELETE **************** //
-  onDeleteKnowledgeBase(kb){
+  onDeleteKnowledgeBase(kb) {
     this.onDeleteKb(kb);
     // this.baseModalDelete = false;
   }
 
-  onOpenBaseModalDelete(kb){
+  onOpenBaseModalDelete(kb) {
     this.kbid_selected = kb;
     this.kbid_selected.deleting = true;
     this.baseModalDelete = true;
   }
   // ************** PREVIEW **************** //
 
-  onOpenBaseModalDetail(kb){
+  onOpenBaseModalDetail(kb) {
     this.kbid_selected = kb;
     this.logger.log('onOpenBaseModalDetail:: ', this.kbid_selected);
-    this.baseModalDetail=true;
+    this.baseModalDetail = true;
   }
 
-  onOpenBaseModalPreview(){
+  onOpenBaseModalPreview() {
     // this.logger.log("onOpenBaseModalPreview:: ")
     //this.kbid_selected = kb;
     this.baseModalPreview = true;
@@ -1234,14 +1335,14 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
 
 
-  onOpenErrorModal(response){
+  onOpenErrorModal(response) {
     this.errorMessage = response;
     this.baseModalError = true;
   }
 
 
   // ************** CLOSE ALL MODAL **************** //
-  onCloseBaseModal(){
+  onCloseBaseModal() {
     this.listSitesOfSitemap = [];
     this.baseModalDelete = false;
     this.baseModalPreview = false;
