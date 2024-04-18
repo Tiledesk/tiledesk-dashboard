@@ -99,7 +99,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   onlyOwnerCanManageTheAccountPlanMsg: string;
   learnMoreAboutDefaultRoles: string;
   anErrorOccurredWhileUpdating: string;
-  salesEmail: string; 
+  salesEmail: string;
   contactUsToUpgrade: string;
   contactUs: string;
   upgrade: string;
@@ -128,7 +128,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     super(prjctPlanService, notify);
     const brand = brandService.getBrand();
     this.salesEmail = brand['CONTACT_SALES_EMAIL'];
-    
+
   }
 
   ngOnInit(): void {
@@ -390,22 +390,22 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         this.anErrorOccurredWhileUpdating = translation;
       });
 
-      this.translate.get('Pricing.ContactUsViaEmailToUpgradeYourPricingPlan')
+    this.translate.get('Pricing.ContactUsViaEmailToUpgradeYourPricingPlan')
       .subscribe((translation: any) => {
         this.contactUsToUpgrade = translation;
       });
 
-      this.translate.get('ContactUs')
+    this.translate.get('ContactUs')
       .subscribe((translation: any) => {
         this.contactUs = translation;
       });
 
-      this.translate.get('Upgrade')
+    this.translate.get('Upgrade')
       .subscribe((translation: any) => {
         this.upgrade = translation;
       });
 
-      this.translate.get('Cancel')
+    this.translate.get('Cancel')
       .subscribe((translation: any) => {
         this.cancel = translation;
       });
@@ -619,7 +619,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     // this.onCloseBaseModal();
     let error = this.msgErrorAddUpdateKb;
     this.kbService.addSitemap(body).subscribe((resp: any) => {
-      this.logger.log("onSendSitemap:", resp);
+      console.log("onSendSitemap:", resp);
       if (resp.errors && resp.errors[0]) {
         swal({
           title: this.warningTitle,
@@ -805,10 +805,18 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         }).then((willUpgradePlan: any) => {
 
           if (willUpgradePlan) {
-            this.router.navigate(['project/' + this.id_project + '/pricing']);
+            if (this.USER_ROLE === 'owner') {
+              if (this.prjct_profile_type === 'free') {
+                this.router.navigate(['project/' + this.id_project + '/pricing']);
+              } else {
+                this.notify._displayContactUsModal(true, 'upgrade_plan');
+              }
+            } else {
+              this.presentModalOnlyOwnerCanManageTheAccountPlan();
+            }
           }
         })
-      } else {
+      } else if (this.payIsVisible === false && this.kbLimit != Number(0)) {
         swal({
           title: this.warningTitle,
           text: error,
@@ -816,6 +824,20 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
           className: "custom-swal",
           buttons: [null, this.cancel],
           dangerMode: false
+        })
+      } else if (this.payIsVisible === false && this.kbLimit == Number(0)) {
+        // console.log('here 1')
+        swal({
+          title: this.warningTitle,
+          text: error + '. ' + this.contactUsToUpgrade,
+          icon: "warning",
+          className: "custom-swal",
+          buttons: [this.cancel, this.contactUs],
+          dangerMode: false
+        }).then((result) => {
+          if (result) {
+            window.open(`mailto:${this.salesEmail}?subject=Upgrade plan`);
+          }
         })
       }
 
@@ -854,7 +876,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         })
 
 
-       
+
       } else {
         this.notify.showWidgetStyleUpdateNotification(this.msgSuccesDeleteKb, 2, 'done');
         // let error = response.error?response.error:"Errore generico";
@@ -891,7 +913,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     })
   }
 
-  
+
   /** */
   onUpdateKb(kb) {
     this.logger.log('onUpdateKb: ', kb);
@@ -928,7 +950,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
           dangerMode: false
         })
 
-  
+
 
       } else {
         this.kbService.addKb(dataAdd).subscribe((resp: any) => {
@@ -968,7 +990,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
             dangerMode: false
           })
 
-  
+
 
         }, () => {
           this.logger.log("[KNOWLEDGE BASES COMP] add new kb *COMPLETED*");
@@ -994,7 +1016,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     })
   }
   // ---------------- END SERVICE FUNCTIONS --------------- // 
-  
+
 
   // ---------------- OPEN AI FUNCTIONS --------------- //
 
