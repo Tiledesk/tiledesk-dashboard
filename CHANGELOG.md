@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.6.13
+- Minor improvements
+
 ### 2.6.12
 - Deploys in production
 - Adds an alert on the app store page to explain that some apps have been moved to the integrations page
