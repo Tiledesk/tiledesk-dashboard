@@ -225,8 +225,8 @@ import { EventsComponent } from './events/events.component';
 // import { WidgetPrechatFormComponent } from './widget-prechat-form/widget-prechat-form.component'; // now lazy
 
 
-import { WebhookComponent } from './webhook/webhook.component';
-import { WebhookAddEditComponent } from './webhook/webhook-add-edit/webhook-add-edit.component';
+// import { WebhookComponent } from './webhook/webhook.component'; // now lazy
+// import { WebhookAddEditComponent } from './webhook/webhook-add-edit/webhook-add-edit.component'; // now lazy
 import { WebhookService } from './services/webhook.service';
 
 
@@ -581,11 +581,9 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     // WidgetCalloutComponent, // now lazy
     ConfigureWidgetComponent,
     // WidgetChatComponent, // now lazy
-    WebhookComponent,
-    WebhookAddEditComponent,
+    // WebhookComponent, // now lazy
+    // WebhookAddEditComponent,
     // MapRequestComponent, // now lazy
-    WebhookComponent,
-    WebhookAddEditComponent,
     NotificationSettingsComponent,
     // CreateGroupComponent, // now lazy
     // CreateBotComponent, // now lazy

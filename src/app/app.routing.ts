@@ -94,7 +94,7 @@ import { TriggerEditComponent } from './trigger/trigger-edit/trigger-edit.compon
 import { TriggerAddComponent } from './trigger/trigger-add/trigger-add.component';
 // import { TriggerStaticComponent } from './static-pages/trigger-static/trigger-static.component'; // now lazy
 // import { NotificationEmailComponent } from './project-edit-add/notification-email/notification-email.component'; // now lazy
-import { SmtpSettingsComponent } from './project-edit-add/smtp-settings/smtp-settings.component'; // now lazy
+// import { SmtpSettingsComponent } from './project-edit-add/smtp-settings/smtp-settings.component'; // now lazy
 // import { UserProfileComponent } from './ui/user-profile/user-profile.component';
 
 /* PRIVATE */
@@ -120,7 +120,7 @@ import { LoadingPageComponent } from './loading-page/loading-page.component';
 // import { AppStoreInstallComponent } from './app-store/app-store-install/app-store-install.component'; // now lazy
 // import { AppCreateComponent } from './app-store/app-create/app-create.component'; // now lazy
 
-import { WebhookComponent } from './webhook/webhook.component';
+// import { WebhookComponent } from './webhook/webhook.component'; // now lazy
 import { NotificationSettingsComponent } from './user-profile/notification-settings/notification-settings.component';
 import { NativeBotComponent } from './bots/native-bot/native-bot.component';
 import { NativeBotSelectTypeComponent } from './bots/native-bot-select-type/native-bot-select-type.component';
@@ -574,7 +574,7 @@ const routes: Routes = [
   {
     path: 'project/:projectid/widget-set-up',
     loadChildren: () => import('app/widget_components/widget-set-up/widget-set-up.module').then(m => m.WidgetSetUpModule),
-    canActivate: [AuthGuard ],
+    canActivate: [AuthGuard],
   },
   // { path: 'project/:projectid/widget-set-up', component: WidgetSetUp, canActivate: [AuthGuard] },
 
@@ -830,8 +830,8 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   // { path: 'project/:projectid/notification-email', component: NotificationEmailComponent, canActivate: [AuthGuard] }, // now lazy
-  
-  
+
+
   // Project edit / add - SMTP settings
   {
     path: 'project/:projectid/smtp-settings',
@@ -839,6 +839,14 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   // { path: 'project/:projectid/smtp-settings', component: SmtpSettingsComponent, canActivate: [AuthGuard] }, // now lazy
+
+  // Project edit / add - Webhook
+  {
+    path: 'project/:projectid/webhook',
+    loadChildren: () => import('app/webhook/webhook.module').then(m => m.WebhookModule),
+    canActivate: [AuthGuard],
+  },
+  // { path: 'project/:projectid/webhook', component: WebhookComponent, canActivate: [AuthGuard] }, // now lazy
 
   // Trigger demo page
   {
@@ -1107,8 +1115,7 @@ const routes: Routes = [
 
 
 
-  // Webhook
-  { path: 'project/:projectid/webhook', component: WebhookComponent, canActivate: [AuthGuard] },
+
   // { path: 'project/:projectid/map-request', component: MapRequestComponent, canActivate: [AuthGuard] }, // now lazy
 
 
