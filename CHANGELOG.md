@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.6.14
+- Deploys in production
+- Improves performance and bug fixing
+
 ### 2.6.13
 - Minor improvements
 
@@ -47,12 +51,12 @@
 ### 2.6.6-rc1
 - Move email ticketing features to "Custom" plan
 
-### 2.6.5-rc1
-- Adds the ability to manage the number of chatbots and the number of Knowledge Base contents
-
 ### 2.6.5
 - Deploys in production
 - Improvements and bug fixing
+
+### 2.6.5-rc1
+- Adds the ability to manage the number of chatbots and the number of Knowledge Base contents
 
 ### 2.6.4
 - Deploys in production
@@ -62,14 +66,6 @@
 - Deploys in production
 - Improves the path to the knowledge bases page on the home page
 
-### 2.6.2
-- Deploys in production
-- Improvements and bug fixing
-
-### 2.6.1
-- Deploys in production
-- Improves the Get and Save methods used for translation strings
-
 ### 2.6.3-rc3
 - Improves pop-up windows
 
@@ -78,6 +74,14 @@
 
 ### 2.6.3-rc1
 - Improvements and bug fixing
+
+### 2.6.2
+- Deploys in production
+- Improvements and bug fixing
+
+### 2.6.1
+- Deploys in production
+- Improves the Get and Save methods used for translation strings
 
 ### 2.6.1-rc1
 - Improves get and save methods of translation strings
@@ -90,23 +94,8 @@
 - Adds the customer.io integration
 - Fixes the bug: app cards are not all the same height
 
-### 2.5.21
-- Deploys in production
-- Adds the ability to sort chatbot by name
-
-### 2.5.20
-- Deploys in production
-- Refactors the teammates table
-
-<<<<<<< HEAD
-### 2.5.19
-- Deploys in production
-- Fixes the bug: not all chatbot images are displayed
-- Fixes the bug: published chatbots is appearing as a draft
-=======
 ### 2.6.0-rc6
 - Fixes the bug: App cards are not of the same height
->>>>>>> master-PRE
 
 ### 2.6.0-rc4
 - Improves Knowledge Base
@@ -121,6 +110,19 @@
 - Improves Knowledge Base 
 - Adds the customer.io integration
 - Refactors the bot list page
+
+### 2.5.21
+- Deploys in production
+- Adds the ability to sort chatbot by name
+
+### 2.5.20
+- Deploys in production
+- Refactors the teammates table
+
+### 2.5.19
+- Deploys in production
+- Fixes the bug: not all chatbot images are displayed
+- Fixes the bug: published chatbots is appearing as a draft
 
 ### 2.5.16
 - Deploys in production
