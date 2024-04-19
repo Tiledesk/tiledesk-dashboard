@@ -60,7 +60,7 @@ import { HandleInvitationComponent } from './auth/handle-invitation/handle-invit
 import { AutologinComponent } from './auth/autologin/autologin.component';
 
 // import { WidgetSetUp } from './widget_components/widget-set-up/widget-set-up.component'; // now lazy
-import { WidgetMultilanguageComponent } from './widget_components/widget-multilanguage/widget-multilanguage.component';
+// import { WidgetMultilanguageComponent } from './widget_components/widget-multilanguage/widget-multilanguage.component'; // now lazy
 
 // import { UserEditAddComponent } from './user-edit-add/user-edit-add.component'; // now lazy
 import { VerifyEmailComponent } from './verify-email/verify-email.component';
@@ -483,8 +483,6 @@ const routes: Routes = [
   },
   // { path: 'project/:projectid/wsrequests-demo', component: WsrequestsStaticComponent, canActivate: [AuthGuard] }, // now lazy
 
-
-
   // HISTORY & NORT
   {
     path: 'project/:projectid/history',
@@ -577,6 +575,14 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   // { path: 'project/:projectid/widget-set-up', component: WidgetSetUp, canActivate: [AuthGuard] },
+
+  // Widget Multilanguage
+  {
+    path: 'project/:projectid/widget/translations',
+    loadChildren: () => import('app/widget_components/widget-multilanguage/widget-multilanguage.module').then(m => m.WidgetMultilanguageModule),
+    canActivate: [AuthGuard],
+  },
+  // { path: 'project/:projectid/widget/translations', component: WidgetMultilanguageComponent, canActivate: [AuthGuard] },
 
 
   // Widget installation
@@ -877,7 +883,7 @@ const routes: Routes = [
 
 
 
-  { path: 'project/:projectid/widget/translations', component: WidgetMultilanguageComponent, canActivate: [AuthGuard] }, // old
+
 
 
 

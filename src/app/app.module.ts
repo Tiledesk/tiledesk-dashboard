@@ -179,8 +179,8 @@ import { WsMsgsService } from './services/websocket/ws-msgs.service';
 import { WsSharedComponent } from './ws_requests/ws-shared/ws-shared.component';
 // import { WsTrainBotComponent } from './ws_requests/ws-requests-msgs/ws-train-bot/ws-train-bot.component';  // now removed
 import { WebSocketJs } from './services/websocket/websocket-js';
-import { WidgetMultilanguageComponent } from './widget_components/widget-multilanguage/widget-multilanguage.component'; 
-import { BaseTranslationComponent } from './widget_components/widget-multilanguage/base-translation/base-translation.component';
+import { WidgetMultilanguageComponent } from './widget_components/widget-multilanguage/widget-multilanguage.component';  // now lazy
+// import { BaseTranslationComponent } from './widget_components/widget-multilanguage/base-translation/base-translation.component'; // now lazy
 import { WidgetSharedComponent } from './widget_components/widget-shared/widget-shared.component';
 import { WidgetSetUpBaseComponent } from './widget_components/widget-set-up/widget-set-up-base/widget-set-up-base.component';
 // import { WsRequestsServedComponent } from './ws_requests/ws-requests-list/ws-requests-served/ws-requests-served.component'; // now lazy
@@ -549,8 +549,8 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     // WsRequestsMsgsComponent, // now lazy
     WsSharedComponent,
     // WsTrainBotComponent, // now removed
-    WidgetMultilanguageComponent, 
-    BaseTranslationComponent,
+    // WidgetMultilanguageComponent,   // now lazy
+    // BaseTranslationComponent, // now lazy
     WidgetSharedComponent,
     WidgetSetUpBaseComponent,
     // WsRequestsServedComponent, // now lazy
