@@ -8,6 +8,7 @@ import { SettingsSidebarComponent } from 'app/components/settings-sidebar/settin
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 import { SettingsSidebarModule } from 'app/components/settings-sidebar/settings-sidebar.module';
+import { FormsModule } from '@angular/forms';
 
 const routes: Routes = [
   { path: "", component: CannedResponsesListComponent},
@@ -26,7 +27,8 @@ const routes: Routes = [
     SharedModule,
     MatTooltipModule,
     TranslateModule,
-    SettingsSidebarModule
+    SettingsSidebarModule,
+    FormsModule
   ]
 })
 export class CannedResponsesListModule { }
