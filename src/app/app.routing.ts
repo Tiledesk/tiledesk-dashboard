@@ -93,8 +93,8 @@ import { TriggerComponent } from './trigger/trigger.component';
 import { TriggerEditComponent } from './trigger/trigger-edit/trigger-edit.component';
 import { TriggerAddComponent } from './trigger/trigger-add/trigger-add.component';
 // import { TriggerStaticComponent } from './static-pages/trigger-static/trigger-static.component'; // now lazy
-import { NotificationEmailComponent } from './project-edit-add/notification-email/notification-email.component';
-import { SmtpSettingsComponent } from './project-edit-add/smtp-settings/smtp-settings.component';
+// import { NotificationEmailComponent } from './project-edit-add/notification-email/notification-email.component'; // now lazy
+import { SmtpSettingsComponent } from './project-edit-add/smtp-settings/smtp-settings.component'; // now lazy
 // import { UserProfileComponent } from './ui/user-profile/user-profile.component';
 
 /* PRIVATE */
@@ -415,6 +415,7 @@ const routes: Routes = [
     loadChildren: () => import('app/contact-edit/contact-edit.module').then(m => m.ContactEditModule),
     canActivate: [AuthGuard],
   },
+  // { path: 'project/:projectid/contact/_edit/:requesterid', component: ContactEditComponent, canActivate: [AuthGuard] }, // now lazy // called from the dropodown of the chat to change contact email , name amd lastname on fly (use to not display the goBack)
 
   // Contacts demo page
   {
@@ -423,10 +424,6 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   // { path: 'project/:projectid/contacts-demo', component: ContactsStaticComponent, canActivate: [AuthGuard] }, // now lazy 
-
-
-  // { path: 'project/:projectid/contact/_edit/:requesterid', component: ContactEditComponent, canActivate: [AuthGuard] }, // now lazy // called from the dropodown of the chat to change contact email , name amd lastname on fly (use to not display the goBack)
-
 
   // Conversation details
   {
@@ -826,6 +823,23 @@ const routes: Routes = [
   },
   // { path: 'project/:projectid/project-settings/banned', component: ProjectEditAddComponent, canActivate: [AuthGuard] }, // now lazy
 
+  // Project edit / add - Customize the notification email templates
+  {
+    path: 'project/:projectid/notification-email',
+    loadChildren: () => import('app/project-edit-add/notification-email/notification-email.module').then(m => m.NotificationEmailModule),
+    canActivate: [AuthGuard],
+  },
+  // { path: 'project/:projectid/notification-email', component: NotificationEmailComponent, canActivate: [AuthGuard] }, // now lazy
+  
+  
+  // Project edit / add - SMTP settings
+  {
+    path: 'project/:projectid/smtp-settings',
+    loadChildren: () => import('app/project-edit-add/smtp-settings/smtp-settings.module').then(m => m.SmtpSettingsModule),
+    canActivate: [AuthGuard],
+  },
+  // { path: 'project/:projectid/smtp-settings', component: SmtpSettingsComponent, canActivate: [AuthGuard] }, // now lazy
+
   // Trigger demo page
   {
     path: 'project/:projectid/trigger-demo',
@@ -851,8 +865,7 @@ const routes: Routes = [
 
 
 
-  { path: 'project/:projectid/notification-email', component: NotificationEmailComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/smtp-settings', component: SmtpSettingsComponent, canActivate: [AuthGuard] },
+
 
 
 
