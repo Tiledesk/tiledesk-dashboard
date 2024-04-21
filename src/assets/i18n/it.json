@@ -1673,6 +1673,7 @@
         "LabelSitemapList": " URL aggiunto.",
         "PlaceholderInputSitemapList": "Inserisci gli URL"
     },
+    "AutomationsLog": "Registro delle automazioni",
     "AutomationsDemoPageDescription": "Con le nostre “APIs automations” puoi gestire messaggi broadcast massivi su Whatsapp utilizzando le automazioni del designer uniti alla facilità delle nostre API, inviare messaggi a tutti i contatti del tuo CRM preferito, ricevere lo stato dei messaggi inviati (ricevuto, letto etc.) e molto altro ancora!",
     "Sunday": "Domenica",
     "Monday": "Lunedì",

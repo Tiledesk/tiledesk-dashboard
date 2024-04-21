@@ -1673,6 +1673,7 @@
         "LabelSitemapList": " URL ajoutée.",
         "PlaceholderInputSitemapList": "Saisissez les URL"
     },
+    "AutomationsLog": "Journal des automatisations",
     "AutomationsDemoPageDescription":"Avec nos “Automatisations API” vous pouvez gérer les messages diffusés en masse sur Whatsapp grâce aux automatisations du concepteur combinées à la simplicité de nos API, envoyer des messages à tous les contacts de votre CRM préféré, recevoir le statut des messages envoyés (reçus, lus, etc. ) et beaucoup plus!",
     "Sunday": "Dimanche",
     "Monday": "Lundi",
