@@ -224,6 +224,10 @@ export class DepartmentsStaticComponent  extends PricingBaseComponent implements
     this.location.back();
   }
 
+  goBackToDeptsList() {
+    this.router.navigate(['project/' + this.projectId + '/departments']);
+  }
+
   getTranslationStrings() {
     this.translateModalOnlyOwnerCanManageProjectAccount()
   }
@@ -242,6 +246,8 @@ export class DepartmentsStaticComponent  extends PricingBaseComponent implements
         this.learnMoreAboutDefaultRoles = translation;
       });
   }
+
+ 
  
 
 }
