@@ -141,6 +141,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
   agentCannotManageAdvancedOptions: string;
   learnMoreAboutDefaultRoles: string;
   onlyOwnerCanManageTheAccountPlanMsg: string;
+  IS_OPEN_SETTINGS_SIDEBAR: boolean;
 
   constructor(
     private router: Router,
@@ -242,6 +243,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
   ngOnInit() {
     this.auth.checkRoleForCurrentProject();
     this.getProfileImageStorage();
+    this.listenSidebarIsOpened();
    
 
     this.logger.log('[DEPT-EDIT-ADD] selectedDeptId FROM @INPUT: ', this.ws_requestslist_deptIdSelected)
@@ -321,9 +323,17 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
     this.getOSCODE();
   }
 
+
+  listenSidebarIsOpened() {
+    this.auth.settingSidebarIsOpned.subscribe((isopened) => {
+      this.logger.log('[DEPT-EDIT-ADD] SETTNGS-SIDEBAR isopened (FROM SUBSCRIPTION) ', isopened)
+      this.IS_OPEN_SETTINGS_SIDEBAR = isopened
+    });
+  }
+
   getOSCODE() {
     this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK
-    this.logger.log('[USERS] getAppConfig - public_Key', this.public_Key)
+    this.logger.log('[DEPT-EDIT-ADD] getAppConfig - public_Key', this.public_Key)
 
     let keys = this.public_Key.split('-')
     keys.forEach((key) => {
