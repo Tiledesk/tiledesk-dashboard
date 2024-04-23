@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.6.16
+- Deploys in production
+- Improves performance and improves the settings sidebar
+
 ### 2.6.15
 - Deploys in production
 - Improves performance and bug fixing
