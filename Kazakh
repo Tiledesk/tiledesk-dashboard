@@ -411,6 +411,7 @@
     "AssigneeAgent": "Тағайындаушы агент",
     "Assignee": "Тағайындаушы",
     "WidgetTranslations": "Виджет аудармалары",
+    "Translations": "Translations",
     "Multilanguage": "Көптілді",
     "TranslateOrEditWidgetPhrases": "Виджетте пайда болатын барлық сөз тіркестерін аударыңыз немесе өңдеңіз",
     "IfYouWantToTranslateOrEditWidgetPhrases": "Тілді қосқыңыз келсе немесе виджеттегі барлық сөз тіркестерін өңдеңіз",
@@ -1673,6 +1674,7 @@
         "LabelSitemapList": " URL added.",
         "PlaceholderInputSitemapList": "Enter URLs"
     },
+    "AutomationsLog": "Automations Log",
     "AutomationsDemoPageDescription": "With our “APIs automations” you can manage mass broadcast messages on Whatsapp using the designer's automations combined with the ease of our APIs, send messages to all the contacts of your favorite CRM, receive the status of sent messages (received, read, etc.) and much more!",
     "Sunday": "Жексенбі",
     "Monday": "дүйсенбі",
@@ -2187,6 +2189,7 @@
     "YouAreCurrentlySetToUnavailable": "Сіз қазір «Қолжетімсіз» күйіне орнатылғансыз және жаңа сөйлесулерді қабылдап жатқан жоқсыз",
     "Shortcuts": "Таңбашалар",
     "AddLanguages": "Тілдерді қосыңыз",
+    "ManageAndEditTranslations": "Manage and edit translations",
     "TheLanguageWillBeRemovedFromYourProject": "{{ language_name }} тілі жобаңыздан жойылады",
     "HowWebhooksWorks": "Webhooks қалай жұмыс істейді",
     "WebhooksQuickTipsIntroduction": "Вебхуктар - пайдалану жағдайларын автоматтандыру және өнімділікті арттыру үшін пайдалануға болатын қуатты ресурс.",
