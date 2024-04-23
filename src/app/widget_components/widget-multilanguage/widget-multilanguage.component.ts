@@ -6,6 +6,7 @@ import { NotifyService } from '../../core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
 import { LoggerService } from '../../services/logger/logger.service';
 import { AuthService } from 'app/core/auth.service';
+import { ActivatedRoute } from '@angular/router';
 const swal = require('sweetalert');
 
 @Component({
@@ -47,13 +48,16 @@ export class WidgetMultilanguageComponent extends BaseTranslationComponent imple
   deleteMsg: string;
   cancelMsg: string;
   isChromeVerGreaterThan100: boolean;
+  IS_OPEN_SETTINGS_SIDEBAR: boolean; 
+  callingPage: string;
   constructor(
     public location: Location,
     public widgetService: WidgetService,
     private notify: NotifyService,
     private translate: TranslateService,
     public auth: AuthService,
-    private logger: LoggerService
+    private logger: LoggerService,
+    public route: ActivatedRoute
   ) {
     super();
   }
@@ -65,6 +69,21 @@ export class WidgetMultilanguageComponent extends BaseTranslationComponent imple
     this.getEnDefaultTranslation();
     // this.getLabels();
     this.getBrowserVersion()
+    this.listenSidebarIsOpened();
+    this.getRouteParams()
+  }
+
+  getRouteParams() {
+    this.route.params.subscribe((params) => {
+      this.logger.log('[MULTILANGUAGE] - GET ROUTE PARAMS ', params);
+      if (params.calledby && params.calledby === 'w') {
+        this.callingPage = 'widgetsetup'
+        this.logger.log('[MULTILANGUAGE] - GET ROUTE PARAMS callingPage ', this.callingPage);
+      } else if (!params.calledby) {
+        this.callingPage = 'settingsb'
+        this.logger.log('[MULTILANGUAGE] - GET ROUTE PARAMS callingPage ', this.callingPage);
+      }
+    })
   }
 
   getBrowserVersion() {
@@ -73,6 +92,13 @@ export class WidgetMultilanguageComponent extends BaseTranslationComponent imple
     //   this.logger.log("[BOT-CREATE] isChromeVerGreaterThan100 ",this.isChromeVerGreaterThan100);
     })
    }
+
+   listenSidebarIsOpened() {
+    this.auth.settingSidebarIsOpned.subscribe((isopened) => {
+      this.logger.log('Multilanguage (widget-multilanguage) isopened (FROM SUBSCRIPTION) ', isopened)
+      this.IS_OPEN_SETTINGS_SIDEBAR = isopened
+    })
+  }
 
 
 
