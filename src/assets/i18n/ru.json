@@ -411,6 +411,8 @@
     "AssigneeAgent": "Агент-цессионарий",
     "Assignee": "Правопреемник",
     "WidgetTranslations": "Переводы виджетов",
+    "Translations": "Переводы",
+    "ManageAndEditTranslations": "Управляйте и редактируйте переводы",
     "Multilanguage": "Многоязычный",
     "TranslateOrEditWidgetPhrases": "Переведите или отредактируйте все фразы, появляющиеся в виджете",
     "IfYouWantToTranslateOrEditWidgetPhrases": "Если вы хотите добавить язык или отредактировать все фразы, отображаемые в виджете",

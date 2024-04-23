@@ -411,6 +411,8 @@
     "AssigneeAgent": "Atanan temsilci",
     "Assignee": "Atanan",
     "WidgetTranslations": "Widget çevirileri",
+    "Translations": "Çeviriler",
+    "ManageAndEditTranslations": "Çevirileri yönetin ve düzenleyin",
     "Multilanguage": "Çoklu dil",
     "TranslateOrEditWidgetPhrases": "Widget'ta görünen tüm ifadeleri çevirin veya düzenleyin",
     "IfYouWantToTranslateOrEditWidgetPhrases": "Bir dil eklemek veya widget'ta görünen tüm ifadeleri düzenlemek istiyorsanız",
@@ -2188,6 +2190,7 @@
     "YouAreCurrentlySetToUnavailable": "Şu anda Uygun Değil olarak ayarlandınız ve yeni konuşma almıyorsunuz",
     "Shortcuts": "Kısayollar",
     "AddLanguages": "Dil ekle",
+
     "TheLanguageWillBeRemovedFromYourProject": "{{ language_name }} dili projenizden kaldırılacak",
     "HowWebhooksWorks": "Web kancaları nasıl çalışır",
     "WebhooksQuickTipsIntroduction": "Web kancaları, kullanım durumlarınızı otomatikleştirmek ve üretkenliğinizi artırmak için kullanabileceğiniz güçlü bir kaynaktır.",

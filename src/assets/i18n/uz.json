@@ -411,6 +411,8 @@
     "AssigneeAgent": "Vakolatli agent",
     "Assignee": "Tayinlovchi",
     "WidgetTranslations": "Vidjet tarjimalari",
+    "Translations": "Tarjimalar",
+    "ManageAndEditTranslations": "Tarjimalarni boshqarish va tahrirlash",
     "Multilanguage": "Ko'p tilli",
     "TranslateOrEditWidgetPhrases": "Vidjetdagi barcha iboralarni tarjima qiling yoki tahrirlang",
     "IfYouWantToTranslateOrEditWidgetPhrases": "Agar siz til qo'shmoqchi bo'lsangiz yoki vidjetda ko'rinadigan barcha iboralarni tahrirlamoqchi bo'lsangiz",
