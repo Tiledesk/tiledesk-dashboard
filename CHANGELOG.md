@@ -1,5 +1,16 @@
 # tiledesk-dashboard
 
+### 2.6.16
+- Deploys in production
+- Improves performance and the settings sidebar
+
+### 2.6.15
+- Deploys in production
+- Improves performance and bug fixing
+
+### 2.6.15-rc1
+- Improves performance and bug fixing
+
 ### 2.6.14
 - Deploys in production
 - Improves performance and bug fixing
@@ -94,8 +105,18 @@
 - Adds the customer.io integration
 - Fixes the bug: app cards are not all the same height
 
-### 2.6.0-rc6
-- Fixes the bug: App cards are not of the same height
+### 2.5.21
+- Deploys in production
+- Adds the ability to sort chatbot by name
+
+### 2.5.20
+- Deploys in production
+- Refactors the teammates table
+
+### 2.5.19
+- Deploys in production
+- Fixes the bug: not all chatbot images are displayed
+- Fixes the bug: published chatbots is appearing as a draft
 
 ### 2.6.0-rc4
 - Improves Knowledge Base
