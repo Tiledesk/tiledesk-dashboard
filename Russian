@@ -411,6 +411,7 @@
     "AssigneeAgent": "Агент-цессионарий",
     "Assignee": "Правопреемник",
     "WidgetTranslations": "Переводы виджетов",
+    "Translations": "Translations",
     "Multilanguage": "Многоязычный",
     "TranslateOrEditWidgetPhrases": "Переведите или отредактируйте все фразы, появляющиеся в виджете",
     "IfYouWantToTranslateOrEditWidgetPhrases": "Если вы хотите добавить язык или отредактировать все фразы, отображаемые в виджете",
@@ -1673,6 +1674,7 @@
         "LabelSitemapList": " URL added.",
         "PlaceholderInputSitemapList": "Enter URLs"
     },
+    "AutomationsLog": "Automations Log",
     "AutomationsDemoPageDescription": "With our “APIs automations” you can manage mass broadcast messages on Whatsapp using the designer's automations combined with the ease of our APIs, send messages to all the contacts of your favorite CRM, receive the status of sent messages (received, read, etc.) and much more!",
     "Sunday": "Воскресенье",
     "Monday": "Понедельник",
@@ -2187,6 +2189,7 @@
     "YouAreCurrentlySetToUnavailable": "You are currently set to Unavailable and are not receiving new conversations",
     "Shortcuts": "Shortcuts",
     "AddLanguages": "Add languages",
+    "ManageAndEditTranslations": "Manage and edit translations",
     "TheLanguageWillBeRemovedFromYourProject": "The {{ language_name }} language will be removed from your project",
     "HowWebhooksWorks": "How webhooks works",
     "WebhooksQuickTipsIntroduction": "Webhooks are a powerful resource that you can use to automate your use cases and improve your productivity.",
