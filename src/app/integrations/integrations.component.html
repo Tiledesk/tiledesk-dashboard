@@ -108,7 +108,7 @@
                                     (onDeleteIntegration)=integrationDeletedEvent($event)>
                                 </qapla-integration>
 
-                                <ext-integration *ngIf="integrationSelectedName === 'external'"
+                                <ext-integration *ngIf="integrationSelectedType === 'external'"
                                     [integration]="selectedIntegration"
                                     [renderUrl]="renderUrl"
                                     [id_project]="project._id"
