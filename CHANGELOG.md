@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.6.17
+- Deploys in production
+- Fixes the bug: Agents can't edit requester information
+
 ### 2.6.16
 - Deploys in production
 - Improves performance and the settings sidebar
