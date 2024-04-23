@@ -411,6 +411,7 @@
     "AssigneeAgent": "Цесіонарій агент",
     "Assignee": "Цесіонарій",
     "WidgetTranslations": "Переклади віджетів",
+    "Translations": "Translations",
     "Multilanguage": "Багатомовний",
     "TranslateOrEditWidgetPhrases": "Перекладіть або відредагуйте всі фрази, що з’являються у віджеті",
     "IfYouWantToTranslateOrEditWidgetPhrases": "Якщо ви хочете додати мову або відредагувати всі фрази, що з’являються у віджеті",
@@ -1673,6 +1674,7 @@
         "LabelSitemapList": " URL added.",
         "PlaceholderInputSitemapList": "Enter URLs"
     },
+    "AutomationsLog": "Automations Log",
     "AutomationsDemoPageDescription": "With our “APIs automations” you can manage mass broadcast messages on Whatsapp using the designer's automations combined with the ease of our APIs, send messages to all the contacts of your favorite CRM, receive the status of sent messages (received, read, etc.) and much more!",
     "Sunday": "неділя",
     "Monday": "понеділок",
@@ -2187,6 +2189,7 @@
     "YouAreCurrentlySetToUnavailable": "Наразі ви налаштовано на «Недоступний», і ви не отримуєте нових розмов",
     "Shortcuts": "Ярлики",
     "AddLanguages": "Додайте мови",
+    "ManageAndEditTranslations": "Manage and edit translations",
     "TheLanguageWillBeRemovedFromYourProject": "Мова {{ ім'я  мови}} буде видалена з вашого проекту",
     "HowWebhooksWorks": "Як працюють веб-хуки",
     "WebhooksQuickTipsIntroduction": "Веб-хуки — це потужний ресурс, який можна використовувати для автоматизації випадків використання та підвищення продуктивності.",
