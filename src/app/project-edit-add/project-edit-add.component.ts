@@ -1998,13 +1998,13 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       // console.log('[PRJCT-EDIT-ADD] - UPDATED CUSTOMER error _body', error._body);
 
       const error_body = error
-      console.error('[PRJCT-EDIT-ADD] - UPDATED CUSTOMER error_body ', error_body);
-      console.error('[PRJCT-EDIT-ADD] - UPDATED CUSTOMER error_body > msg ', error_body.msg);
+      this.logger.error('[PRJCT-EDIT-ADD] - UPDATED CUSTOMER error_body ', error_body);
+      this.logger.error('[PRJCT-EDIT-ADD] - UPDATED CUSTOMER error_body > msg ', error_body.msg);
 
       if (error_body && error_body.msg) {
         this.credit_card_error_msg = error_body.msg.raw.message;
-        console.error('[PRJCT-EDIT-ADD] - UPDATED CUSTOMER error_body > msg > raw ', error_body.msg.raw);
-        console.error('[PRJCT-EDIT-ADD] - UPDATED CUSTOMER credit_card_error_msg ', this.credit_card_error_msg);
+        this.logger.error('[PRJCT-EDIT-ADD] - UPDATED CUSTOMER error_body > msg > raw ', error_body.msg.raw);
+        this.logger.error('[PRJCT-EDIT-ADD] - UPDATED CUSTOMER credit_card_error_msg ', this.credit_card_error_msg);
         this.CARD_HAS_ERROR = true;
         this.SPINNER_IN_ADD_CARD_MODAL = false
         this.DISPLAY_ADD_CARD_COMPLETED = false
