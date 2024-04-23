@@ -411,6 +411,7 @@
     "AssigneeAgent": "Agent cessionnaire",
     "Assignee": "Cessionnaire",
     "WidgetTranslations": "Traductions de widgets",
+    "Translations": "Traductions",
     "Multilanguage": "Multilingue",
     "TranslateOrEditWidgetPhrases": "Traduire ou modifier toutes les phrases apparaissant dans le widget",
     "IfYouWantToTranslateOrEditWidgetPhrases": "Si vous souhaitez ajouter une langue ou modifier toutes les phrases apparaissant dans le widget",
@@ -1673,6 +1674,7 @@
         "LabelSitemapList": " URL ajoutée.",
         "PlaceholderInputSitemapList": "Saisissez les URL"
     },
+    "AutomationsLog": "Journal des automatisations",
     "AutomationsDemoPageDescription":"Avec nos “Automatisations API” vous pouvez gérer les messages diffusés en masse sur Whatsapp grâce aux automatisations du concepteur combinées à la simplicité de nos API, envoyer des messages à tous les contacts de votre CRM préféré, recevoir le statut des messages envoyés (reçus, lus, etc. ) et beaucoup plus!",
     "Sunday": "Dimanche",
     "Monday": "Lundi",
@@ -2187,6 +2189,7 @@
     "YouAreCurrentlySetToUnavailable": "Vous êtes actuellement défini sur Indisponible et ne recevez pas de nouvelles conversations",
     "Shortcuts": "Raccourcis",
     "AddLanguages": "Ajouter des langues",
+    "ManageAndEditTranslations": "Gérer et modifier les traductions",
     "TheLanguageWillBeRemovedFromYourProject": "La langue {{ language_name }} sera supprimée de votre projet",
     "HowWebhooksWorks": "Comment fonctionnent les webhooks",
     "WebhooksQuickTipsIntroduction": "Les webhooks sont une ressource puissante que vous pouvez utiliser pour automatiser vos cas d'utilisation et améliorer votre productivité.",

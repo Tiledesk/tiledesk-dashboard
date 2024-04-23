@@ -33,6 +33,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
   isChromeVerGreaterThan100: boolean;
   panelOpenState = true;
   integrationSelectedName: string = "none";
+  integrationSelectedType: string = "none";
 
   integrations = [];
   selectedIntegration: any;
@@ -278,6 +279,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
   }
 
   onIntegrationSelect(integration) {
+    this.integrationSelectedType = 'none'
     this.integrationLocked = false;
     this.checkPlan(integration.plan).then(() => {
       this.integrationSelectedName = integration.key;
@@ -286,7 +288,8 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
         this.selectedIntegration = this.initializeIntegration(integration.key);
       }
       if (integration && integration.category === INTEGRATIONS_CATEGORIES.CHANNEL) {
-        this.integrationSelectedName = "external";
+        // this.integrationSelectedName = "external";
+        this.integrationSelectedType = "external";
         this.showInIframe = true;
         let app = this.availableApps.find(a => a.channel === integration.key);
         this.renderUrl = app.runURL;

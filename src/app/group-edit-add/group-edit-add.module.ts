@@ -5,6 +5,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { FormsModule } from '@angular/forms';
 import { SharedModule } from 'app/shared/shared.module';
+import { SettingsSidebarModule } from 'app/components/settings-sidebar/settings-sidebar.module';
 
 const routes: Routes = [
   { path: "", component: GroupEditAddComponent },
@@ -20,6 +21,7 @@ const routes: Routes = [
     TranslateModule,
     FormsModule,
     SharedModule,
+    SettingsSidebarModule
   ]
 })
 export class GroupEditAddModule { }

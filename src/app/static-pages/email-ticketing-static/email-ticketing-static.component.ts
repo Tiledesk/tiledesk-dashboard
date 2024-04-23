@@ -39,6 +39,7 @@ export class EmailTicketingStaticComponent extends PricingBaseComponent implemen
   isChromeVerGreaterThan100: boolean;
   public_Key: any;
   payIsVisible: boolean;
+ 
 
   constructor(
     private router: Router,

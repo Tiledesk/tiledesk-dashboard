@@ -411,6 +411,8 @@
     "AssigneeAgent": "Vakolatli agent",
     "Assignee": "Tayinlovchi",
     "WidgetTranslations": "Vidjet tarjimalari",
+    "Translations": "Tarjimalar",
+    "ManageAndEditTranslations": "Tarjimalarni boshqarish va tahrirlash",
     "Multilanguage": "Ko'p tilli",
     "TranslateOrEditWidgetPhrases": "Vidjetdagi barcha iboralarni tarjima qiling yoki tahrirlang",
     "IfYouWantToTranslateOrEditWidgetPhrases": "Agar siz til qo'shmoqchi bo'lsangiz yoki vidjetda ko'rinadigan barcha iboralarni tahrirlamoqchi bo'lsangiz",
@@ -1672,6 +1674,7 @@
         "LabelSitemapList": " URL qo'shildi.",
         "PlaceholderInputSitemapList": "URL manzillarini kiriting"
     },
+    "AutomationsLog": "Avtomatlashtirish jurnali",
     "AutomationsDemoPageDescription":"Bizning “API avtomatizatsiyamiz” yordamida siz Whatsapp-da ommaviy translyatsiya xabarlarini bizning API-larimiz qulayligi bilan birlashtirilgan dizayner avtomatizatsiyasidan foydalangan holda boshqarishingiz, sevimli CRM-ning barcha kontaktlariga xabarlar yuborishingiz, yuborilgan xabarlar holatini (qabul qilingan, o'qilgan va hokazo) olishingiz mumkin. ) va yana ko'p narsalar!",
     "Sunday": "yakshanba",
     "Monday": "dushanba",

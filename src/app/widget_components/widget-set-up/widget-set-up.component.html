@@ -21,6 +21,11 @@
 </span> -->
 
 <div class="main-content" style="padding-top:0px; padding-left: 5px;padding-right: 5px;">
+
+	<div class="page-title--sidebar-settings"
+	[ngClass]="{'page-title--sidebar-settings_opened':IS_OPEN_SETTINGS_SIDEBAR, 'page-title--sidebar-settings_closed':!IS_OPEN_SETTINGS_SIDEBAR }">
+		{{ 'WidgetSetUp' | translate }}
+	</div>
 	<div class="container-fluid" style="padding-left: 5px;padding-right: 5px;">
 
 		<div class="content-wpr" style="display: flex;">
@@ -34,9 +39,9 @@
 				<div class="row">
 					<div class="col-xs-12 widget-set-up-col">
 
-						<div class="widget-set-up-text">
+						<!-- <div class="widget-set-up-text">
 							{{ 'WidgetSetUp' | translate }}
-						</div>
+						</div> -->
 
 						<!-- <div style="font-size: 14px;font-weight: 400;margin-bottom: 6px;line-height: 20px;">
 					Setting up the Widget for visitors lets you chat with people when they're on your website.
@@ -2892,7 +2897,7 @@
 											<h5 style="color:#687882; font-size:14px; font-weight: 400;">
 												{{ 'IfYouWantToTranslateOrEditWidgetPhrases' | translate }}
 												<span class="add-languages-link" (click)="goToWidgetMultilanguage()">
-													- {{ 'AddLanguages' | translate }}
+													- {{ 'ManageAndEditTranslations' | translate }}
 												</span>
 
 											</h5>

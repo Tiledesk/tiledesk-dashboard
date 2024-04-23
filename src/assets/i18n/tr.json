@@ -411,6 +411,8 @@
     "AssigneeAgent": "Atanan temsilci",
     "Assignee": "Atanan",
     "WidgetTranslations": "Widget çevirileri",
+    "Translations": "Çeviriler",
+    "ManageAndEditTranslations": "Çevirileri yönetin ve düzenleyin",
     "Multilanguage": "Çoklu dil",
     "TranslateOrEditWidgetPhrases": "Widget'ta görünen tüm ifadeleri çevirin veya düzenleyin",
     "IfYouWantToTranslateOrEditWidgetPhrases": "Bir dil eklemek veya widget'ta görünen tüm ifadeleri düzenlemek istiyorsanız",
@@ -1673,6 +1675,7 @@
         "LabelSitemapList": " URL eklendi.",
         "PlaceholderInputSitemapList": "URL'leri girin"
     },
+    "AutomationsLog": "Otomasyon Günlüğü",
     "AutomationsDemoPageDescription":"“API otomasyonlarımız” ile, API'lerimizin kolaylığıyla birlikte tasarımcının otomasyonlarını kullanarak Whatsapp'taki toplu yayın mesajlarını yönetebilir, favori CRM'nizdeki tüm kişilere mesaj gönderebilir, gönderilen mesajların durumunu (alındı, okundu vb.) alabilirsiniz. ) ve daha fazlası!",
     "Sunday": "Pazar",
     "Monday": "Pazartesi",
@@ -2187,6 +2190,7 @@
     "YouAreCurrentlySetToUnavailable": "Şu anda Uygun Değil olarak ayarlandınız ve yeni konuşma almıyorsunuz",
     "Shortcuts": "Kısayollar",
     "AddLanguages": "Dil ekle",
+
     "TheLanguageWillBeRemovedFromYourProject": "{{ language_name }} dili projenizden kaldırılacak",
     "HowWebhooksWorks": "Web kancaları nasıl çalışır",
     "WebhooksQuickTipsIntroduction": "Web kancaları, kullanım durumlarınızı otomatikleştirmek ve üretkenliğinizi artırmak için kullanabileceğiniz güçlü bir kaynaktır.",

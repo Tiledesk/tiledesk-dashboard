@@ -411,6 +411,7 @@
 	"AssigneeAgent": "Assignee Agent",
 	"Assignee": "Assignee",
 	"WidgetTranslations": "Widget Übersetzungen",
+	"Translations": "Übersetzungen",
 	"Multilanguage": "Mehrsprachig",
 	"TranslateOrEditWidgetPhrases": "Übersetzen oder bearbeiten Sie alle Texte des Widgets",
 	"IfYouWantToTranslateOrEditWidgetPhrases": "Wenn Sie eine Sprache für das Widget hinzufügen oder bearbeiten wollen",
@@ -1673,6 +1674,7 @@
 		"LabelSitemapList": " URL hinzugefügt.",
 		"PlaceholderInputSitemapList": "Geben Sie URLs ein"
 	},
+	"AutomationsLog": "Protokoll der Automatisierungen",
 	"AutomationsDemoPageDescription":"Mit unseren „APIs-Automatisierungen“ können Sie Massennachrichten auf WhatsApp verwalten, indem Sie die Automatisierungen des Designers in Kombination mit der Benutzerfreundlichkeit unserer APIs nutzen, Nachrichten an alle Kontakte Ihres bevorzugten CRM senden, den Status gesendeter Nachrichten (empfangen, gelesen usw.) erhalten. ) und vieles mehr!",
 	"Sunday": "Sonntag",
 	"Monday": "Montag",
@@ -2186,6 +2188,7 @@
 	"YouAreCurrentlySetToUnavailable": "Sie sind derzeit auf Nicht verfügbar eingestellt und erhalten keine neuen Konversationen",
 	"Shortcuts": "Direkte Verbindungen",
 	"AddLanguages": "Sprachen hinzufügen",
+	"ManageAndEditTranslations": "Übersetzungen verwalten und bearbeiten",
 	"TheLanguageWillBeRemovedFromYourProject": "Die Sprache {{ language_name }} wird aus Ihrem Projekt entfernt",
 	"HowWebhooksWorks": "Wie Webhooks funktionieren",
 	"WebhooksQuickTipsIntroduction": "Webhooks sind eine leistungsstarke Ressource, mit der Sie Ihre Anwendungsfälle automatisieren und Ihre Produktivität verbessern können.",

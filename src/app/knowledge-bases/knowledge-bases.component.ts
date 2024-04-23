@@ -619,7 +619,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     // this.onCloseBaseModal();
     let error = this.msgErrorAddUpdateKb;
     this.kbService.addSitemap(body).subscribe((resp: any) => {
-      console.log("onSendSitemap:", resp);
+      this.logger.log("onSendSitemap:", resp);
       if (resp.errors && resp.errors[0]) {
         swal({
           title: this.warningTitle,
@@ -1271,6 +1271,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   }
 
   openAddKnowledgeBaseModal(type?) {
+    this.logger.log('openAddKnowledgeBaseModal type', type)
     this.typeKnowledgeBaseModal = type;
     this.addKnowledgeBaseModal = 'block';
   }

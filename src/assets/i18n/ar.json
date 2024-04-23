@@ -411,6 +411,7 @@
     "AssigneeAgent": "الوكيل المعين",
     "Assignee": "الوكيل",
     "WidgetTranslations": "ترجمة القطعة",
+    "Translations": "ترجمات",
     "Multilanguage": "متعدد اللغات",
     "TranslateOrEditWidgetPhrases": "ترجمة أو تحرير جميع العبارات التي تظهر في القطعة",
     "IfYouWantToTranslateOrEditWidgetPhrases": "إذا كنت تريد إضافة لغة أو تحرير جميع العبارات التي تظهر في الأداة",
@@ -1673,6 +1674,7 @@
         "LabelSitemapList": " تمت إضافة عنوان URL.",
         "PlaceholderInputSitemapList": "أدخل عناوين URL"
     },
+    "AutomationsLog": "سجل الأتمتة",
     "AutomationsDemoPageDescription":"من خلال أتمتة واجهات برمجة التطبيقات لدينا، يمكنك إدارة رسائل البث الجماعية على Whatsapp باستخدام أتمتة المصمم جنبًا إلى جنب مع سهولة واجهات برمجة التطبيقات لدينا، وإرسال رسائل إلى جميع جهات الاتصال الخاصة بإدارة علاقات العملاء (CRM) المفضلة لديك، وتلقي حالة الرسائل المرسلة (المستلمة، المقروءة، وما إلى ذلك) و أكثر بكثير!",
     "Sunday": "الأحد",
     "Monday": "الاثنين",
@@ -2187,6 +2189,7 @@
     "YouAreCurrentlySetToUnavailable": "أنت مضبوط حاليًا على غير متاح ولا تتلقى محادثات جديدة",
     "Shortcuts": "الاختصارات",
     "AddLanguages": "أضف اللغات",
+    "ManageAndEditTranslations": "إدارة وتحرير الترجمات",
     "TheLanguageWillBeRemovedFromYourProject": "ستتم إزالة اللغة {{ language_name }} من مشروعك",
     "HowWebhooksWorks": "كيف يعمل الخطاف على الويب",
     "WebhooksQuickTipsIntroduction": "تعد Webhooks موردًا قويًا يمكنك استخدامه لأتمتة حالات الاستخدام وتحسين إنتاجيتك.",

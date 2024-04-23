@@ -429,12 +429,12 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     // this.defaultFooter = brand['widget_default_footer'];
 
     this.widgetLogoURL = brand['LOGO_CHAT'];
-    // console.log('[WIDGET-SET-UP] widgetLogoURL ', this.widgetLogoURL)
+    // this.logger.log('[WIDGET-SET-UP] widgetLogoURL ', this.widgetLogoURL)
 
     this.defaultFooter = brand['POWERED_BY'];
-    // console.log('[[WIDGET-SET-UP] defaultFooter ', this.defaultFooter)
+    // this.logger.log('[[WIDGET-SET-UP] defaultFooter ', this.defaultFooter)
 
-    // console.log('[WIDGET-SET-UP] widgetLauncherButtonPlaceholder ', this.widgetLauncherButtonPlaceholder)
+    // this.logger.log('[WIDGET-SET-UP] widgetLauncherButtonPlaceholder ', this.widgetLauncherButtonPlaceholder)
     // this.t_params = { 'plan_name': PLAN_NAME.B }
   }
 
@@ -780,12 +780,12 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
   getWunValue() {
     this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
-    // console.log('[WIDGET-SET-UP] getAppConfig  public_Key', this.public_Key);
-    // console.log('[WIDGET-SET-UP] getAppConfig  public_Key type of', typeof this.public_Key);
-    // console.log('[WIDGET-SET-UP] getAppConfig  this.public_Key.includes("WUN") ', this.public_Key.includes("WUN"));
+    // this.logger.log('[WIDGET-SET-UP] getAppConfig  public_Key', this.public_Key);
+    // this.logger.log('[WIDGET-SET-UP] getAppConfig  public_Key type of', typeof this.public_Key);
+    // this.logger.log('[WIDGET-SET-UP] getAppConfig  this.public_Key.includes("WUN") ', this.public_Key.includes("WUN"));
     // let substring = this.public_Key.substring(this.public_Key.indexOf('WUN'));
     let parts = this.public_Key.split('-');
-    // console.log('[WIDGET-SET-UP] getAppConfig  parts ', parts);
+    // this.logger.log('[WIDGET-SET-UP] getAppConfig  parts ', parts);
 
     let wun = parts.find((part) => part.startsWith('WUN'));
     this.logger.log('[WIDGET-SET-UP] getAppConfig  wun ', wun);
@@ -833,11 +833,11 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         //   //  this.logger.log('PUBLIC-KEY (WIDGET-SET-UP) - ips key&value', ips);
         //   if (wun[1] === "F") {
         //     this.isVisibleWidgetUnbranding = false;
-        //     console.log('[WIDGET-SET-UP] Widget unbranding USECASE B  (from FT) isVisibleWidgetUnbranding', this.isVisibleWidgetUnbranding);
+        //     this.logger.log('[WIDGET-SET-UP] Widget unbranding USECASE B  (from FT) isVisibleWidgetUnbranding', this.isVisibleWidgetUnbranding);
         //     // this.logger.log('PUBLIC-KEY (WIDGET-SET-UP) - isVisibleWidgetUnbranding', this.isVisibleAutoSendTranscript);
         //   } else {
         //     this.isVisibleWidgetUnbranding = true;
-        //     console.log('[WIDGET-SET-UP] Widget unbranding  USECASE B  (from FT) isVisibleWidgetUnbranding', this.isVisibleWidgetUnbranding);
+        //     this.logger.log('[WIDGET-SET-UP] Widget unbranding  USECASE B  (from FT) isVisibleWidgetUnbranding', this.isVisibleWidgetUnbranding);
         //     // this.logger.log('PUBLIC-KEY (WIDGET-SET-UP) - isVisibleWidgetUnbranding', this.isVisibleAutoSendTranscript);
         //   }
         // }
@@ -860,11 +860,11 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         //   //  this.logger.log('PUBLIC-KEY (WIDGET-SET-UP) - ips key&value', ips);
         //   if (wun[1] === "F") {
         //     this.isVisibleWidgetUnbranding = false;
-        //     console.log('[WIDGET-SET-UP] Widget unbranding USECASE B  (from FT) isVisibleWidgetUnbranding', this.isVisibleWidgetUnbranding);
+        //     this.logger.log('[WIDGET-SET-UP] Widget unbranding USECASE B  (from FT) isVisibleWidgetUnbranding', this.isVisibleWidgetUnbranding);
         //     // this.logger.log('PUBLIC-KEY (WIDGET-SET-UP) - isVisibleWidgetUnbranding', this.isVisibleAutoSendTranscript);
         //   } else {
         //     this.isVisibleWidgetUnbranding = true;
-        //     console.log('[WIDGET-SET-UP] Widget unbranding  USECASE B  (from FT) isVisibleWidgetUnbranding', this.isVisibleWidgetUnbranding);
+        //     this.logger.log('[WIDGET-SET-UP] Widget unbranding  USECASE B  (from FT) isVisibleWidgetUnbranding', this.isVisibleWidgetUnbranding);
         //     // this.logger.log('PUBLIC-KEY (WIDGET-SET-UP) - isVisibleWidgetUnbranding', this.isVisibleAutoSendTranscript);
         //   }
         // }
@@ -1427,21 +1427,22 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
 
   getAndManageAccordion() {
+    this.logger.log('[WIDGET-SET-UP] ACCORDION id_project', this.id_project)
     var acc = document.getElementsByClassName("widget-section-accordion");
     // this.logger.log('[WIDGET-SET-UP] ACCORDION', acc);
     let i: number;
     // #widget-all-settings-form > button:nth-child(7)
     for (i = 0; i < acc.length; i++) {
-      // console.log('[WIDGET-SET-UP] ACCORDION i', i, 'acc[i]', acc[i]);
+      // this.logger.log('[WIDGET-SET-UP] ACCORDION i', i, 'acc[i]', acc[i]);
       // Open the first accordion https://codepen.io/fpavision/details/xxxONGv
       let firstAccordion = acc[0];
 
       let firstPanel = <HTMLElement>firstAccordion.nextElementSibling;
       this.logger.log('[WIDGET-SET-UP] ACCORDION firstPanel', firstPanel)
 
-      // const hasClosedFirstAccordion = this.localDbService.getFromStorage('hasclosedfirstaccordion')
-      // this.logger.log('[WIDGET-SET-UP] hasClosedFirstAccordion get from storage', hasClosedFirstAccordion)
-      // if (hasClosedFirstAccordion === null || hasClosedFirstAccordion === 'false') {
+      const hasClosedFirstAccordion = this.localDbService.getFromStorage(`hasclosedfirstaccordion-${this.id_project}`)
+      this.logger.log('[WIDGET-SET-UP] hasClosedFirstAccordion get from storage', hasClosedFirstAccordion)
+      if (hasClosedFirstAccordion === null || hasClosedFirstAccordion === 'false') {
         // this.logger.log('[WIDGET-SET-UP] hasClosedFirstAccordion HERE YES ', hasClosedFirstAccordion)
         setTimeout(() => {
           firstAccordion.classList.add("active");
@@ -1454,10 +1455,10 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           // this.logger.log('[WIDGET-SET-UP] ACCORDION ARROW ICON', arrow_icon);
           arrow_icon.classList.add("arrow-up");
         }, 2000);
-      // }
+      }
 
       // var arrow_icon_div = firstAccordion.children[1];
-      // console.log('[WIDGET-SET-UP] ACCORDION ARROW ICON WRAP DIV', arrow_icon_div);
+      // this.logger.log('[WIDGET-SET-UP] ACCORDION ARROW ICON WRAP DIV', arrow_icon_div);
 
       // var arrow_icon = arrow_icon_div.children[0]
       // // this.logger.log('[WIDGET-SET-UP] ACCORDION ARROW ICON', arrow_icon);
@@ -1466,31 +1467,31 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       const self = this
       acc[i].addEventListener("click", function () {
         let firstAccordion = acc[0];
-        // console.log('firstAccordion', firstAccordion)
+        // this.logger.log('firstAccordion', firstAccordion)
         let firstPanel = <HTMLElement>firstAccordion.nextElementSibling;
-        // console.log('firstPanel', firstPanel)
-        // console.log('[WIDGET-SET-UP] ACCORDION click acc[0]', acc[0]);
+        // this.logger.log('firstPanel', firstPanel)
+        // this.logger.log('[WIDGET-SET-UP] ACCORDION click acc[0]', acc[0]);
 
-        // setTimeout(() => {
-        //   // console.log('firstAccordion contains class active', firstAccordion.classList.contains('active'))
+        setTimeout(() => {
+          // this.logger.log('firstAccordion contains class active', firstAccordion.classList.contains('active'))
 
-        //   if (firstAccordion.classList.contains('active')) {
-        //     self.localDbService.setInStorage('hasclosedfirstaccordion', 'false')
-        //   } else if (!firstAccordion.classList.contains('active')) {
-        //     self.localDbService.setInStorage('hasclosedfirstaccordion', 'true')
-        //   }
-        // }, 2000);
+          if (firstAccordion.classList.contains('active')) {
+            self.localDbService.setInStorage(`hasclosedfirstaccordion-${self.id_project}`, 'false')
+          } else if (!firstAccordion.classList.contains('active')) {
+            self.localDbService.setInStorage(`hasclosedfirstaccordion-${self.id_project}`, 'true')
+          }
+        }, 2000);
         self.logger.log('[WIDGET-SET-UP] ACCORDION click i', i, 'acc[i]', acc[i]);
-        // console.log('[WIDGET-SET-UP] ACCORDION click i', i, 'acc[i]', acc[i]);
+        // this.logger.log('[WIDGET-SET-UP] ACCORDION click i', i, 'acc[i]', acc[i]);
         this.classList.toggle("active");
         var panel = this.nextElementSibling;
-        // console.log('[WIDGET-SET-UP] ACCORDION PANEL', panel);
+        // this.logger.log('[WIDGET-SET-UP] ACCORDION PANEL', panel);
 
         var arrow_icon_div = this.children[1];
         // this.logger.log('[WIDGET-SET-UP] ACCORDION ARROW ICON WRAP DIV', arrow_icon_div);
 
         var arrow_icon = arrow_icon_div.children[0]
-        // console.log('[WIDGET-SET-UP] ACCORDION ARROW ICON', arrow_icon);
+        // this.logger.log('[WIDGET-SET-UP] ACCORDION ARROW ICON', arrow_icon);
         arrow_icon.classList.toggle("arrow-up");
 
         if (panel.style.maxHeight) {
@@ -3988,7 +3989,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   }
 
   goToWidgetMultilanguage() {
-    this.router.navigate(['project/' + this.id_project + '/widget/translations']);
+    this.router.navigate(['project/' + this.id_project + '/widget/translations/w']);
   }
 
   goToInstallWithTagManagerDocs() {
