@@ -411,6 +411,7 @@
     "AssigneeAgent": "Tilldelad agent",
     "Assignee": "Uppdragstagare",
     "WidgetTranslations": "Widgetöversättningar",
+    "Translations": "Translations",
     "Multilanguage": "Flerspråkig",
     "TranslateOrEditWidgetPhrases": "Översätt eller redigera alla fraser som visas i widgeten",
     "IfYouWantToTranslateOrEditWidgetPhrases": "Om du vill lägga till ett språk eller redigera alla fraser som visas i widgeten",
@@ -1673,6 +1674,7 @@
         "LabelSitemapList": " URL added.",
         "PlaceholderInputSitemapList": "Enter URLs"
     },
+    "AutomationsLog": "Automations Log",
     "AutomationsDemoPageDescription": "With our “APIs automations” you can manage mass broadcast messages on Whatsapp using the designer's automations combined with the ease of our APIs, send messages to all the contacts of your favorite CRM, receive the status of sent messages (received, read, etc.) and much more!",
     "Sunday": "söndag",
     "Monday": "måndag",
@@ -2187,6 +2189,7 @@
     "YouAreCurrentlySetToUnavailable": "Du är för närvarande inställd på Ej tillgänglig och tar inte emot nya konversationer",
     "Shortcuts": "Genvägar",
     "AddLanguages": "Lägg till språk",
+    "ManageAndEditTranslations": "Manage and edit translations",
     "TheLanguageWillBeRemovedFromYourProject": "Språket {{ language_name }} kommer att tas bort från ditt projekt",
     "HowWebhooksWorks": "Hur webhooks fungerar",
     "WebhooksQuickTipsIntroduction": "Webhooks är en kraftfull resurs som du kan använda för att automatisera dina användningsfall och förbättra din produktivitet.",
