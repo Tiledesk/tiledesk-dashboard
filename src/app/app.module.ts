@@ -66,7 +66,7 @@ import { UrlService } from './services/shared/url.service';
 
 // BOTS & FAQ
 import { FaqKbService } from './services/faq-kb.service';
-import { BotListComponent } from './bots/bots-list/bots-list.component';
+// import { BotListComponent } from './bots/bots-list/bots-list.component'; // // now lazy
 import { BotTypeSelectComponent } from './bots/bot-create/bot-type-select/bot-type-select.component';
 import { BotCreateComponent } from './bots/bot-create/bot-create.component';
 import { FaqEditAddComponent } from './bots/faq-edit-add/faq-edit-add.component';
@@ -257,7 +257,7 @@ import { TilebotSelectTypeComponent } from './bots/tilebot-select-type/tilebot-s
 import { TilebotSidebarComponent } from './bots/tilebot-sidebar/tilebot-sidebar.component';
 import { TilebotComponent } from './bots/tilebot/tilebot.component';
 import { RasaBotComponent } from './bots/rasa-bot/rasa-bot.component';
-import { TemplatesComponent } from './bots/templates/templates.component';
+// import { TemplatesComponent } from './bots/templates/templates.component'; // now lazy
 
 // import { EmailTicketingComponent } from './email-ticketing/email-ticketing.component'; // now lazy
 
@@ -319,7 +319,7 @@ import { SidebarClaimsComponent } from './create-project-wizard/onboarding/sideb
 import { NetworkOfflineComponent } from './network-offline/network-offline.component';
 import { HomePromoBannerComponent } from './home-promo-banner/home-promo-banner.component';
 import { TemplateDetailComponent } from './bots/templates/template-detail/template-detail.component';
-import { BotsSidebarComponent } from './bots/bots-list/bots-sidebar/bots-sidebar.component';
+// import { BotsSidebarComponent } from './bots/bots-list/bots-sidebar/bots-sidebar.component'; // now lazy
 import { GetStartChatbotForkComponent } from './create-project-wizard/get-start-chatbot-fork/get-start-chatbot-fork.component';
 import { InstallTemplateComponent } from './create-project-wizard/install-template/install-template.component';
 // import { ChatbotDesignStudioModule } from './chatbot-design-studio/chatbot-design-studio.module'; // now lazy
@@ -350,7 +350,6 @@ import { CreateProjectGsComponent } from './create-project-wizard/create-project
 
 
 import { OpenaiService } from './services/openai.service';
-// import { KnowledgeBasesComponent } from './knowledge-bases/knowledge-bases.component';
 import { HomeKbModalComponent } from './home-components/home-kb/home-kb-modal/home-kb-modal.component';
 import { HomeCreateChatbotModalComponent } from './home-components/home-create-chatbot/home-create-chatbot-modal/home-create-chatbot-modal.component';
 import { HomeInviteTeammateModalComponent } from './home-components/home-create-teammate/home-invite-teammate-modal/home-invite-teammate-modal.component';
@@ -358,7 +357,7 @@ import { HomeInviteTeammateErrorModalComponent } from './home-components/home-cr
 import { HomeGoToChatComponent } from './home-components/home-go-to-chat/home-go-to-chat.component';
 import { ChatbotModalComponent } from './bots/bots-list/chatbot-modal/chatbot-modal.component';
 import { ChatbotAlertComponent } from './bots/bots-list/chatbot-alert/chatbot-alert.component';
-import { KnowledgeBasesComponent } from './knowledge-bases/knowledge-bases.component';
+// import { KnowledgeBasesComponent } from './knowledge-bases/knowledge-bases.component'; // now lazy
 import { CnpTemplatesComponent } from './create-new-project/cnp-templates/cnp-templates.component';
 import { OnboardingWelcomeComponent } from './create-new-project/onboarding-welcome/onboarding-welcome.component';
 import { HomeNewsFeedModalComponent } from './home-components/home-news-feed/home-news-feed-modal/home-news-feed-modal.component';
@@ -382,18 +381,18 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
-import { ModalPageUrlComponent } from './knowledge-bases/modals/modal-page-url/modal-page-url.component';
-import { ModalSiteMapComponent } from './knowledge-bases/modals/modal-site-map/modal-site-map.component';
-import { ModalTextFileComponent } from './knowledge-bases/modals/modal-text-file/modal-text-file.component';
-import { ModalGptKeyComponent } from './knowledge-bases/modals/modal-gpt-key/modal-gpt-key.component';
-import { ModalDeleteKnowledgeBaseComponent } from './knowledge-bases/modals/modal-delete-knowledge-base/modal-delete-knowledge-base.component';
-import { ModalPreviewKnowledgeBaseComponent } from './knowledge-bases/modals/modal-preview-knowledge-base/modal-preview-knowledge-base.component';
-import { ModalDetailKnowledgeBaseComponent } from './knowledge-bases/modals/modal-detail-knowledge-base/modal-detail-knowledge-base.component';
-import { KnowledgeBaseTableComponent } from './knowledge-bases/modals/knowledge-base-table/knowledge-base-table.component';
-import { ModalErrorComponent } from './knowledge-bases/modals/modal-error/modal-error.component';
+// import { ModalPageUrlComponent } from './knowledge-bases/modals/modal-page-url/modal-page-url.component'; // now lazy
+// import { ModalSiteMapComponent } from './knowledge-bases/modals/modal-site-map/modal-site-map.component'; // now lazy
+// import { ModalTextFileComponent } from './knowledge-bases/modals/modal-text-file/modal-text-file.component'; // now lazy
+// import { ModalGptKeyComponent } from './knowledge-bases/modals/modal-gpt-key/modal-gpt-key.component'; // now lazy
+// import { ModalDeleteKnowledgeBaseComponent } from './knowledge-bases/modals/modal-delete-knowledge-base/modal-delete-knowledge-base.component'; // now lazy
+// import { ModalPreviewKnowledgeBaseComponent } from './knowledge-bases/modals/modal-preview-knowledge-base/modal-preview-knowledge-base.component'; // now lazy
+// import { ModalDetailKnowledgeBaseComponent } from './knowledge-bases/modals/modal-detail-knowledge-base/modal-detail-knowledge-base.component'; // now lazy
+// import { KnowledgeBaseTableComponent } from './knowledge-bases/modals/knowledge-base-table/knowledge-base-table.component'; // now lazy
+// import { ModalErrorComponent } from './knowledge-bases/modals/modal-error/modal-error.component'; // now lazy
 // import { KnowledgeBasesPreviousComponent } from './knowledge-bases-previous/knowledge-bases-previous.component'; // now lazy
-import { ModalUrlsKnowledgeBaseComponent } from './knowledge-bases/modals/modal-urls-knowledge-base/modal-urls-knowledge-base.component';
-import { AddContentMenuComponent } from './knowledge-bases/menu/add-content-menu/add-content-menu.component';
+// import { ModalUrlsKnowledgeBaseComponent } from './knowledge-bases/modals/modal-urls-knowledge-base/modal-urls-knowledge-base.component'; // now lazy
+// import { AddContentMenuComponent } from './knowledge-bases/menu/add-content-menu/add-content-menu.component'; // now lazy
 import { UserModalComponent } from './users/user-modal/user-modal.component';
 import { MessagesStatsModalComponent } from './components/modals/messages-stats-modal/messages-stats-modal.component';
 import { WsChatbotService } from './services/websocket/ws-chatbot.service';
@@ -490,7 +489,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     FaqComponent,
     // ProjectsComponent, // now lazy
     // UsersComponent, // now lazy
-    BotListComponent,
+    // BotListComponent, // now lazy
     BotCreateComponent,
     FaqEditAddComponent,
     // DepartmentEditAddComponent, // now lazy
@@ -629,9 +628,9 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     SidebarClaimsComponent, 
     NetworkOfflineComponent, 
     HomePromoBannerComponent, 
-    TemplatesComponent, 
+    // TemplatesComponent, // now lazy
     TemplateDetailComponent, 
-    BotsSidebarComponent, 
+    // BotsSidebarComponent,  // now lazy
     GetStartChatbotForkComponent, 
     InstallTemplateComponent, 
     CreateChatbotComponent,
@@ -656,7 +655,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     ContactCustomPropertiesComponent,
     // ContactInfoComponent, ContactInfoComponent
     CreateProjectGsComponent, // now lazy
-    KnowledgeBasesComponent,
+    // KnowledgeBasesComponent, // now lazy
     // HomeConvsGraphComponent, // now lazy
     // HomeWhatsappAccountComponent, // now lazy
     // HomeCreateChatbotComponent, // now lazy
@@ -692,18 +691,18 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     // BrevoIntegrationComponent, // now lazy
     // GsheetsIntegrationComponent, // now lazy
     // IntegrationHeaderComponent, // now lazy
-    ModalPageUrlComponent,
-    ModalSiteMapComponent,
-    ModalTextFileComponent,
-    ModalGptKeyComponent,
-    ModalDeleteKnowledgeBaseComponent,
-    ModalPreviewKnowledgeBaseComponent,
-    ModalDetailKnowledgeBaseComponent,
-    KnowledgeBaseTableComponent,
-    ModalErrorComponent,
+    // ModalPageUrlComponent, // now lazy
+    // ModalSiteMapComponent, // now lazy
+    // ModalTextFileComponent, // now lazy
+    // ModalGptKeyComponent, // now lazy
+    // ModalDeleteKnowledgeBaseComponent, // now lazy
+    // ModalPreviewKnowledgeBaseComponent, // now lazy
+    // ModalDetailKnowledgeBaseComponent, // now lazy
+    // KnowledgeBaseTableComponent, // now lazy
+    // ModalErrorComponent, // now lazy
     // KnowledgeBasesPreviousComponent, // now lazy
-    ModalUrlsKnowledgeBaseComponent,
-    AddContentMenuComponent,
+    // ModalUrlsKnowledgeBaseComponent, // now lazy
+    // AddContentMenuComponent, // now lazy
     UserModalComponent,
     MessagesStatsModalComponent,
     KnowledgeBasesAlertComponent

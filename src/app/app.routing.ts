@@ -35,14 +35,14 @@ import { EventsComponent } from './events/events.component';
 // import { UsersComponent } from './users/users.component'; // now lazy
 
 // BOTS & FAQ
-import { BotListComponent } from './bots/bots-list/bots-list.component';
+// import { BotListComponent } from './bots/bots-list/bots-list.component'; // now lazy
 import { BotTypeSelectComponent } from './bots/bot-create/bot-type-select/bot-type-select.component';
 import { BotCreateComponent } from './bots/bot-create/bot-create.component';
 import { FaqComponent } from './bots/faq/faq.component';
 import { FaqEditAddComponent } from './bots/faq-edit-add/faq-edit-add.component';
 
 import { FaqTestComponent } from './bots/faq-test/faq-test.component';
-import { TemplatesComponent } from './bots/templates/templates.component';
+// import { TemplatesComponent } from './bots/templates/templates.component'; // now lazy
 
 // import { ProjectEditAddComponent } from './project-edit-add/project-edit-add.component'; // now lazy
 // import { RequestsListHistoryComponent } from './requests-list-history/requests-list-history.component';
@@ -146,7 +146,7 @@ import { CommunityTemplateDtlsComponent } from './bots/templates/community-templ
 // import { EmailTicketingStaticComponent } from './static-pages/email-ticketing-static/email-ticketing-static.component'; // now lazy
 import { ActivateAppsumoProductComponent } from './create-project-wizard/activate-appsumo-product/activate-appsumo-product.component';
 import { CreateProjectGsComponent } from './create-project-wizard/create-project-gs/create-project-gs.component';
-import { KnowledgeBasesComponent } from './knowledge-bases/knowledge-bases.component';
+// import { KnowledgeBasesComponent } from './knowledge-bases/knowledge-bases.component'; // now lazy
 import { CnpIsMobileComponent } from './create-new-project/cnp-is-mobile/cnp-is-mobile.component';
 import { CnpTemplatesComponent } from './create-new-project/cnp-templates/cnp-templates.component';
 import { OnboardingWelcomeComponent } from './create-new-project/onboarding-welcome/onboarding-welcome.component';
@@ -584,6 +584,12 @@ const routes: Routes = [
   },
   // { path: 'project/:projectid/widget/translations', component: WidgetMultilanguageComponent, canActivate: [AuthGuard] },
 
+   // Widget Multilanguage called from widget setup
+  {
+    path: 'project/:projectid/widget/translations/:calledby',
+    loadChildren: () => import('app/widget_components/widget-multilanguage/widget-multilanguage.module').then(m => m.WidgetMultilanguageModule),
+    canActivate: [AuthGuard],
+  },
 
   // Widget installation
   {
@@ -877,11 +883,78 @@ const routes: Routes = [
   },
   //  { path: 'project/:projectid/knowledge-bases-pre/:calledby', component: KnowledgeBasesPreviousComponent, canActivate: [AuthGuard] }, // now lazy
 
+  // KNOWLEDGE BASES (new)
+  {
+    path: 'project/:projectid/knowledge-bases',
+    loadChildren: () => import('app/knowledge-bases/knowledge-bases.module').then(m => m.KnowledgeBasesModule),
+    canActivate: [AuthGuard],
+  },
+  // { path: 'project/:projectid/knowledge-bases', component: KnowledgeBasesComponent, canActivate: [AuthGuard] }, // now lazy
 
+  {
+    path: 'project/:projectid/knowledge-bases/:calledby',
+    loadChildren: () => import('app/knowledge-bases/knowledge-bases.module').then(m => m.KnowledgeBasesModule),
+    canActivate: [AuthGuard],
+  },
+  // { path: 'project/:projectid/knowledge-bases/:calledby', component: KnowledgeBasesComponent, canActivate: [AuthGuard] }, // now lazy // when called from home
 
+  // Chatbots
+  {
+    path: 'project/:projectid/bots',
+    loadChildren: () => import('app/bots/bots-list/bots-list.module').then(m => m.BotsListModule),
+    canActivate: [AuthGuard],
+  },
+  // { path: 'project/:projectid/bots', component: BotListComponent, canActivate: [AuthGuard] }, // now lazy
 
+  {
+    path: 'project/:projectid/bots/my-chatbots/all',
+    loadChildren: () => import('app/bots/bots-list/bots-list.module').then(m => m.BotsListModule),
+    canActivate: [AuthGuard],
+  },
+  // { path: 'project/:projectid/bots/my-chatbots/all', component: BotListComponent, canActivate: [AuthGuard] }, // now lazy
 
+  {
+    path: 'project/:projectid/bots/my-chatbots/customer-satisfaction',
+    loadChildren: () => import('app/bots/bots-list/bots-list.module').then(m => m.BotsListModule),
+    canActivate: [AuthGuard],
+  },
+  // { path: 'project/:projectid/bots/my-chatbots/customer-satisfaction', component: BotListComponent, canActivate: [AuthGuard] }, // now lazy
+  
+  {
+    path: 'project/:projectid/bots/my-chatbots/increase-sales',
+    loadChildren: () => import('app/bots/bots-list/bots-list.module').then(m => m.BotsListModule),
+    canActivate: [AuthGuard],
+  },
+  // { path: 'project/:projectid/bots/my-chatbots/increase-sales', component: BotListComponent, canActivate: [AuthGuard] }, // now lazy
 
+  // Templates
+  {
+    path: 'project/:projectid/bots/templates/all',
+    loadChildren: () => import('app/bots/templates/templates.module').then(m => m.TemplatesModule),
+    canActivate: [AuthGuard],
+  },
+  // { path: 'project/:projectid/bots/templates/all', component: TemplatesComponent, canActivate: [AuthGuard] }, // now lazy
+
+  {
+    path: 'project/:projectid/bots/templates/customer-satisfaction',
+    loadChildren: () => import('app/bots/templates/templates.module').then(m => m.TemplatesModule),
+    canActivate: [AuthGuard],
+  },
+  // { path: 'project/:projectid/bots/templates/customer-satisfaction', component: TemplatesComponent, canActivate: [AuthGuard] }, // now lazy
+
+  {
+    path: 'project/:projectid/bots/templates/increase-sales',
+    loadChildren: () => import('app/bots/templates/templates.module').then(m => m.TemplatesModule),
+    canActivate: [AuthGuard],
+  },
+  // { path: 'project/:projectid/bots/templates/increase-sales', component: TemplatesComponent, canActivate: [AuthGuard] }, // now lazy
+
+  {
+    path: 'project/:projectid/bots/templates/community',
+    loadChildren: () => import('app/bots/templates/templates.module').then(m => m.TemplatesModule),
+    canActivate: [AuthGuard],
+  },
+  // { path: 'project/:projectid/bots/templates/community', component: TemplatesComponent, canActivate: [AuthGuard] }, // now lazy
 
 
 
@@ -986,20 +1059,14 @@ const routes: Routes = [
   // FAQKB (i.e. BOT)
   /* path /faqkb commented and duplicated RENAMED IN /bots */
   // { path: 'project/:projectid/faqkb', component: FaqKbComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/bots', component: BotListComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/bots/my-chatbots/all', component: BotListComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/bots/my-chatbots/customer-satisfaction', component: BotListComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/bots/my-chatbots/increase-sales', component: BotListComponent, canActivate: [AuthGuard] },
+ 
 
   { path: 'project/:projectid/bots/bot-select-type', component: BotTypeSelectComponent, canActivate: [AuthGuard] },
   // { path: 'project/:projectid/bots/createfaqkb', component: BotCreateComponent, canActivate: [AuthGuard] }, // replaced by the bottom path
   { path: 'project/:projectid/bots/create/:type', component: BotCreateComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/chatbot/create', component: CreateChatbotComponent, canActivate: [AuthGuard] }, //Multilanguage bot from scratch
 
-  { path: 'project/:projectid/bots/templates/all', component: TemplatesComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/bots/templates/customer-satisfaction', component: TemplatesComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/bots/templates/increase-sales', component: TemplatesComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/bots/templates/community', component: TemplatesComponent, canActivate: [AuthGuard] },
+
 
 
   // rasa bot
@@ -1101,9 +1168,7 @@ const routes: Routes = [
 
 
 
-  // KNOWLEDGE BASES
-  { path: 'project/:projectid/knowledge-bases', component: KnowledgeBasesComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/knowledge-bases/:calledby', component: KnowledgeBasesComponent, canActivate: [AuthGuard] }, // when called from home
+
 
 
 
