@@ -354,9 +354,9 @@ import { HomeKbModalComponent } from './home-components/home-kb/home-kb-modal/ho
 import { HomeCreateChatbotModalComponent } from './home-components/home-create-chatbot/home-create-chatbot-modal/home-create-chatbot-modal.component';
 import { HomeInviteTeammateModalComponent } from './home-components/home-create-teammate/home-invite-teammate-modal/home-invite-teammate-modal.component';
 import { HomeInviteTeammateErrorModalComponent } from './home-components/home-create-teammate/home-invite-teammate-error-modal/home-invite-teammate-error-modal.component';
-import { HomeGoToChatComponent } from './home-components/home-go-to-chat/home-go-to-chat.component';
+// import { HomeGoToChatComponent } from './home-components/home-go-to-chat/home-go-to-chat.component'; // now lazy
 import { ChatbotModalComponent } from './bots/bots-list/chatbot-modal/chatbot-modal.component';
-import { ChatbotAlertComponent } from './bots/bots-list/chatbot-alert/chatbot-alert.component';
+// import { ChatbotAlertComponent } from './bots/bots-list/chatbot-alert/chatbot-alert.component'; // now lazy
 // import { KnowledgeBasesComponent } from './knowledge-bases/knowledge-bases.component'; // now lazy
 import { CnpTemplatesComponent } from './create-new-project/cnp-templates/cnp-templates.component';
 import { OnboardingWelcomeComponent } from './create-new-project/onboarding-welcome/onboarding-welcome.component';
@@ -398,9 +398,6 @@ import { MessagesStatsModalComponent } from './components/modals/messages-stats-
 import { WsChatbotService } from './services/websocket/ws-chatbot.service';
 import { AnalyticsService } from './services/analytics.service';
 import { KnowledgeBasesAlertComponent } from './knowledge-bases/knowledge-bases-alert/knowledge-bases-alert.component';
-
-
-
 
 
 // NOTE: Eliminazione del local storage produce inconsistenza delle instances Firebase. Si salta il logout.
@@ -671,9 +668,9 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     HomeCreateChatbotModalComponent,
     HomeInviteTeammateModalComponent,
     HomeInviteTeammateErrorModalComponent,
-    HomeGoToChatComponent,
+    // HomeGoToChatComponent, // now lazy
     ChatbotModalComponent,
-    ChatbotAlertComponent,
+    // ChatbotAlertComponent, // now lazy
     CnpTemplatesComponent,
     OnboardingWelcomeComponent,
     HomeNewsFeedModalComponent,
@@ -705,7 +702,8 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     // AddContentMenuComponent, // now lazy
     UserModalComponent,
     MessagesStatsModalComponent,
-    KnowledgeBasesAlertComponent
+    KnowledgeBasesAlertComponent,
+    
   ],
   imports: [
     TooltipModule.forRoot(CutomTooltipOptions as TooltipOptions),
