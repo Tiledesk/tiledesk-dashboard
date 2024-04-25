@@ -467,7 +467,7 @@
     "OurNativeEasyAndPowerfulNLPChatbot": "Bizning ona, oson va kuchli NLP (Tabiiy tilni qayta ishlash) chatbotimiz",
     "ResolutionBotDescription": "Tez yechim va baxtli mijozlar uchun umumiy savollaringizga javoblarni avtomatlashtiring",
     "UseDialogflowToTrainYourBot...": "Dialogflow-dan o'z botingizni mahalliy va innovatsion Dialogflow integratsiyasi bilan o'rgatish uchun foydalaning",
-    "UseYourFavouriteTechnology...": "Chatbotingizni {{ BRAND_NAME }}bilan joylashtirish uchun sevimli texnologiyangizdan foydalaning. Bizning holatimizga qarang",
+    "UseYourFavouriteTechnology...": "Chatbotingizni {{ BRAND_NAME }}bilan joylashtirish uchun sevimli texnologiyangizdan foydalaning.",
     "GetStartedTutorial": "Boshlash uchun qoʻllanma",
     "AnIdentityBotRepresents": "Identifikatsiya boti tizim tomonidan yuboriladigan avtomatik xabarlar uchun ishlatiladigan virtual profilni ifodalaydi (masalan, triggerlarda xabarlarni yuborish)",
     "DialogflowKnowledgeBaseID": "Dialogflow bilimlar bazasi identifikatori",

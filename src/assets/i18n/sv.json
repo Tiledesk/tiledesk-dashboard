@@ -467,7 +467,7 @@
     "OurNativeEasyAndPowerfulNLPChatbot": "Vår infödda, lätta och kraftfulla NLP (Natural Language Processing) chatbot",
     "ResolutionBotDescription": "Automatisera svaren på dina vanliga frågor för omedelbara lösningar och nöjdare kunder",
     "UseDialogflowToTrainYourBot...": "Använd Dialogflow för att träna din bot med vår inhemska och innovativa Dialogflow-integration",
-    "UseYourFavouriteTechnology...": "Använd din favoritteknik för att bädda in din chatbot med {{ BRAND_NAME }}. Ta en titt på vår",
+    "UseYourFavouriteTechnology...": "Använd din favoritteknik för att bädda in din chatbot med {{ BRAND_NAME }}.",
     "GetStartedTutorial": "Kom igång handledning",
     "AnIdentityBotRepresents": "En identitetsbot representerar en virtuell profil som används för automatiska meddelanden som skickas av systemet (t.ex. att skicka meddelanden i triggers)",
     "DialogflowKnowledgeBaseID": "Dialogflow kunskapsbas-ID",
